@@ -16,19 +16,17 @@ namespace GlobalTheory.SplitRowLat
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha y hy`. Express the relevant statement in the definitionally equal form `y ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E)) at hy`. Express the relevant statement in the definitionally equal form `_ ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨s, hs, o, rfl⟩` from `ha`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨t, ht, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨s * t, fun v => mul_mem (hs v) (ht v), o • x, Λ.smul_mem o hx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero`. Simplify using `only [Pi.zero_apply, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `add_mem hu hw`. Consider the case `neg u _ hu`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [Pi.neg_apply, mul_neg]`. Conclude with `neg_mem hu`. Consider the case `zero`. Simplify using `only [zero_mul]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add u w _ _ hu hw`. Simplify using `only [add_mul]`. Conclude with `add_mem hu hw`. Consider the case `neg u _ hu`. Simplify using `only [neg_mul]`.
-
-Conclude with `neg_mem hu`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_latHat (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) :
     ∀ a ∈ intAE D, ∀ y ∈ latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E)),
@@ -67,25 +65,23 @@ theorem smul_mem_latHat (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank 
     exact neg_mem hu
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hcc, -, -, hG, hdet, -, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hsum : ∀ w x : Fin V.rank → D.host.E, (∑ a, ∑ b, w a * (HSpace.gram V)ᵀ a b * (GlobalTheory.Member.cF D) (x b)) = ∑ i, ∑ j, star (x i) * HSpace.gram V i j * w j`. Introduce `w x`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.transpose_apply]`. Express the relevant statement in the definitionally equal form `w b * HSpace.gram V a b * star (x a) = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ w : Fin V.rank → D.host.E, (∀ x ∈ Λ, ∑ a, ∑ b, w a * (HSpace.gram V)ᵀ a b * (GlobalTheory.Member.cF D) (x b) ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ↔ w ∈ Λ`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΛ.2 w]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_one_iff, hsum]`. Establish `key` using `GlobalTheory.AdLat.hat_selfDual D.host.F D.host.E V.rank Λ (GlobalTheory.Member.cF D) (HSpace.gram V)ᵀ 1 hΛ.1.fg hΛ.1.span_eq_top hcc hG hdet one_ne_zero hL`. Rewrite `key` using `[← GlobalTheory.LatDual.integralTensorAdeles_eq_adelicCompletion_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [GlobalTheory.LatDual.hR_eq_hermA]`. Prove the components needed by the constructor for the conclusion. Introduce `hy z hz`. Express the relevant statement in the definitionally equal form `z ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E)) at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨t, ht, x, hx, rfl⟩` from `hz`. Establish `h1 : (t ⊗ₜ[D.host.F] ((1 : 𝓞 D.host.E) : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨t, ht, 1, rfl⟩`. Establish `h2` using `(key _).2 (smul_mem_latHat V Λ _ h1 y hy) x hx`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Unfold `GlobalTheory.AdLat.hermA`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e : GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (GlobalTheory.Member.cF D) (t ⊗ₜ[D.host.F] x b) = (t ⊗ₜ[D.host.F] ((1 : 𝓞 D.host.E) : D.host.E)) * GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (GlobalTheory.Member.cF D) (GlobalTheory.AdLat.fv D.h …`. Simplify using `[GlobalTheory.AdLat.sg, GlobalTheory.AdLat.fv]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Establish `: GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y 0 = 0` using `by simp [GlobalTheory.AdLat.hermA]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add u w _ _ hu hw`. Establish `: GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y (u + w) = GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y u + GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y w`. Simplify using `only [GlobalTheory.AdLat.hermA, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this]`. Conclude with `add_mem hu hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `neg u _ hu`. Establish `: GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y (-u) = -GlobalTheory.AdLat.hermA (GlobalTheory.Member.cF D) V.gram.transpose y u`. Simplify using `only [GlobalTheory.AdLat.hermA, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`. Rewrite using `[this]`. Conclude with `neg_mem hu`.
-
-Introduce `h`. Use `(key y).1 fun x hx => h _ ?_` and prove the remaining obligations. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latHat_selfDual (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : IsSelfDualC V Λ) (y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
@@ -150,9 +146,9 @@ theorem latHat_selfDual (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank 
     exact AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[latHat_selfDual V Λ hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Rewrite using `[← GlobalTheory.SplitDualLat.cA_form, GlobalTheory.SplitDualLat.finPart_cA, GlobalTheory.SplitDualLat.finPart_form]`. Conclude with `GlobalTheory.SplitDualLat.sigR_mem_intAE (h _ hz)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Take `⟨w, rfl⟩ : ∃ w : Fin V.rank → AE D, (fun i => finPart D (w i)) = z` from `by choose s hs using GlobalTheory.SplitDualLat.finPart_surjective (D := D)`. Conclude with `⟨fun i => s (z i), funext fun i => hs _⟩`. Rewrite using `[← GlobalTheory.SplitDualLat.finPart_form, ← GlobalTheory.SplitDualLat.cA_form, GlobalTheory.SplitDualLat.finPart_cA]`. Conclude with `GlobalTheory.SplitDualLat.sigR_mem_intAE (h _ hz)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : IsSelfDualC V Λ) (x : Fin V.rank → AE D) :
@@ -173,9 +169,9 @@ theorem mem_iff (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.ho
     exact GlobalTheory.SplitDualLat.sigR_mem_intAE (h _ hz)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SplitHecke.isInt_iff, ← HeightOneSpectrum.mem_adicCompletionIntegers]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, rfl⟩`. Conclude with `o.2`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isInt_iff_le_one {v : FinPl D} (x : Fv D.host.F v) :
     GlobalTheory.SplitHecke.IsInt (GlobalTheory.SplitHecke.Ov D v) x ↔ Valued.v x ≤ 1 := by
@@ -187,19 +183,19 @@ theorem isInt_iff_le_one {v : FinPl D} (x : Fv D.host.F v) :
     exact ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `D V Λ β hΛ hβ v φ e he y`. Take `⟨hπ, -, hQ, -, -⟩` from `GlobalTheory.T.splitProjAdeleComponent_chart_properties D v φ e he`. Establish `hcol` using `GlobalTheory.T.splitPlace_column_mem_completedLattice_iff_frame_integral D V Λ β hΛ hβ v φ e he`. Establish `hmapQ : V.gram.map (rdQ φ) = V.gram.map fun a => rdA φ (incA D a)`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, hQ]`. Rewrite using `[mem_iff V Λ hΛ, hmapQ]`. Prove the components needed by the constructor for the conclusion. Introduce `h j choose s hs using hπ.1`. Establish `h1 : (fun k => rdA φ (s ((frCo φ β).1 k j))) = (frCo φ β).1 *ᵥ Pi.single j 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hs, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `h2` using `h _ ((hcol fun k => s ((frCo φ β).1 k j)).2 fun i => by`. Rewrite using `[h1, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Rewrite `h2` using `[GlobalTheory.SplitDualLat.form_mul, GlobalTheory.SplitDualLat.cA_cA, he.1.1, hπ.2.2.2, GlobalTheory.SplitDualLat.map_form, h1, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, dotProduct_single, mul_one]`. Conclude with `(isInt_iff_le_one _).1 h2`. Introduce `h z hz`. Establish `h1` using `smul_mem_latHat V Λ _ (GlobalTheory.AdIdem.idempotent_mem_intAE D (finPart D e) (by rw [← RingHom.map_mul, he.1.1])) _ hz`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← RingHom.map_mul] at h1`. Establish `h2` using `(hcol z).1 h1`. Establish `h3` using `GlobalTheory.SplitDualLat.form_mul V (cA D e) 1 y z`. Simplify using `only [one_mul, mul_one, GlobalTheory.SplitDualLat.cA_cA] at h3`. Establish `h4 : (fun k => rdA φ (z k)) = (frCo φ β).1 *ᵥ (((frCo φ β)⁻¹).1 *ᵥ fun k => rdA φ (z k))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[h3, hπ.2.2.2, GlobalTheory.SplitDualLat.map_form, h4, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, GlobalTheory.SplitHecke.isInt_iff]`. Conclude with `sum_mem fun i _ => mul_mem (GlobalTheory.SplitHecke.isInt_iff.1 ((isInt_iff_le_one _).2 (h i))) (GlobalTheory.SplitHecke.isInt_iff.1 ((isInt_iff_le_one _).2 (h2 i)))`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_latHat_iff : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (β : GL (Fin V.rank) (EAf D)), IsSelfDualC V Λ → Formalism.L2.DIV.IsFrame β Λ → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ y : Fin V.rank → AE D, (fun i => finPart D (cA D e * y i)) ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E)) ↔ ∀ j, Valued.v (((fun i => rdA φ (cA D (y i))) ᵥ* ((V.gram.map (rdQ φ)) * (frCo φ β).1)) j) ≤ 1 := by
   intro D V Λ β hΛ hβ v φ e he y

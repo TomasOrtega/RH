@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (P : PPol σ r)
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun c => Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) (IsScalarTower.toAlgHom F E (Fld P)) c ∈ intLoc F (Fld P) v) (fun a ha x => ?_) (by simp) (fun y z hy hz => by rw [map_add]; exact add_mem hy hz) (fun y hy => by rw [map_neg]; exact neg_mem hy) hc` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `tmul_mem_intLoc ha ⟨algebraMap E (Fld P) x, x.2.algebraMap⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_intLoc_fld {v : HeightOneSpectrum (𝓞 F)} {c : Fv F v ⊗[F] E} (hc : c ∈ intLoc F E v) :
     Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) (IsScalarTower.toAlgHom F E (Fld P)) c ∈
@@ -26,15 +26,15 @@ theorem map_mem_intLoc_fld {v : HeightOneSpectrum (𝓞 F)} {c : Fv F v ⊗[F] E
   exact tmul_mem_intLoc ha ⟨algebraMap E (Fld P) x, x.2.algebraMap⟩
 
 /- English proof (translation)
-Set `b` to `RingOfIntegers.basis (Fld P)`. Use `filter_upwards [eventually_all.2 fun i => eventually_all.2 fun j => eventually_one_tmul_mem_intLoc (F := F) ((powB P).repr (b j : Fld P) i), eventually_all.2 fun i => eventually_one_tmul_mem_intLoc (F := F) (E := Fld P) (powB P i)] with v h1 h2 y`. Rewrite using `[mem_latLoc_stdLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `hy i`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coordEquiv_apply]`. Use `intLoc_induction (p := fun y => coordF P (Fv F v) i y ∈ intLoc F E v) (fun a ha x => ?_) (by simp) (fun y z hy hz => by rw [map_add]; exact add_mem hy hz) (fun y hy => by rw [map_neg]; exact neg_mem hy) hy` and prove the remaining obligations. Rewrite using `[coordF_tmul]`. Establish `e : (powB P).repr (x : Fld P) i = ∑ j, b.repr x j • (powB P).repr (b j : Fld P) i` using `by conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, map_zsmul, Finsupp.coe_finset_sum, Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[← zsmul_eq_mul, map_zsmul]`. Rewrite using `[e, TensorProduct.tmul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `zsmul_mem ?_ _` and prove the remaining obligations. Establish `e2 : a ⊗ₜ[F] ((powB P).repr (b j : Fld P) i) = (a ⊗ₜ[F] ((1 : 𝓞 E) : E)) * ((1 : Fv F v) ⊗ₜ[F] (powB P).repr (b j : Fld P) i)` using `by simp`. Rewrite using `[e2]`. Conclude with `mul_mem (tmul_mem_intLoc ha 1) (h1 i j)`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coordInv_coordF P (Fv F v) y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_map_mul]`. Conclude with `mul_mem (map_mem_intLoc_fld P (h i)) (h2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_intLoc_iff_coordEquiv_mem :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ y : Fv F v ⊗[F] Fld P,
@@ -72,7 +72,7 @@ theorem eventually_mem_intLoc_iff_coordEquiv_mem :
 end GlobalTheory.TrUnitLat
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ r P` and use `GlobalTheory.TrUnitLat.eventually_mem_intLoc_iff_coordEquiv_mem P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrUnitLat.eventually_mem_intLoc_iff_coordEquiv_mem_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (r : ℕ) (P : PPol σ r), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ y : Fv F v ⊗[F] Fld P, y ∈ intLoc F (Fld P) v ↔ GlobalTheory.TrUnitLat.coordEquiv P (Fv F v) y ∈ latLoc F (stdLattice E r) v :=
   fun F E _ _ _ _ _ σ r P => GlobalTheory.TrUnitLat.eventually_mem_intLoc_iff_coordEquiv_mem P

@@ -18,17 +18,17 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [
   {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N}
 variable {D : Dat Ω K c e ψ} {ι : Qbar l ≃+* ℂ} {W : G ℚ Ω →* GL (Fin 2) (PadicAlgCl l)}
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem mod0'_alt (h : _root_.UpperTheory.V.Z.Win.Dn.IsModularA D ι W) : ∃ f : Af.Newform (2 * e + 1), f.Att ι (Af.tw W (cycBar ℚ Ω l ^ (-(e : ℤ)))) := h.1
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem witAQ_of_isModularA (_ : _root_.UpperTheory.V.Af.Hypotheses') (_ : Continuous W) (_ : IsCycWt l 0 (Matrix.GeneralLinearGroup.det.comp W)) (_ : 1 ≤ e)
     (h : _root_.UpperTheory.V.Z.Win.Dn.IsModularA D ι W) : _root_.UpperTheory.V.Z.Win.WitAQ ι W := h.2
 end
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem adm2B_of_adm2B (_ : _root_.UpperTheory.V.Af.Hypotheses') (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω]
     [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (_ : l ≠ 2) (ι : Qbar l ≃+* ℂ) (e M : ℕ) (_ : 1 ≤ e) (ρ : G K Ω →* GL (Fin 3) (Qbar l))

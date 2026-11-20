@@ -5,9 +5,9 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Ine
 open NumberField Formalism.HC
 
 /- English proof (translation)
-Introduce `φ H z hz`. Establish `C : HostCore H.toHostRaw` using `{ H.der with }`. Establish `h1 : H.gal.symm φ.iod z = z` using `Der.kc_iod_fix H.toHostRaw C _ (H.gal.apply_symm_apply _) z hz`. Establish `h2 : H.conj z = z⁻¹` using `eq_inv_of_mul_eq_one_right (Der.kc_conj_mul_self H.toHostRaw C z hz)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← φ.cc_mul_iod, map_mul, AlgEquiv.mul_apply, h1]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.rootOfUnity_galois_action_CMDatum :
     ∀ (φ : Frame) (H : HostAx φ) (z : H.E), (∃ m : ℕ, 0 < m ∧ z ^ m = 1) →

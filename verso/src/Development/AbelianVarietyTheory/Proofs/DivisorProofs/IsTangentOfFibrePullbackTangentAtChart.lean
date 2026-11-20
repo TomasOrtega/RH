@@ -17,19 +17,17 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t U n v hv K _ x0 hU A _ m u hm hu a`. Establish `hunit : η[A].left ≫ m = x0 ≫ η[t.G].left`. Establish `hw : (η[A].left ≫ m) ≫ t.G.hom = (𝟙_ (Over (Sp K))).hom ≫ x0`. Rewrite using `[Category.assoc, hm.1.w, ← Category.assoc, Over.w η[A]]`. Set `p : Over.mk ((𝟙_ (Over (Sp K))).hom ≫ x0) ⟶ t.G` to `Over.homMk (η[A].left ≫ m) hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : (1 : 𝟙_ (Over (Sp K)) ⟶ A) = η[A]`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `hpp` using `hm.2 (𝟙_ (Over (Sp K))) 1 1 p p (by rw [h1]; rfl) (by rw [h1]; rfl)`. Rewrite `hpp` using `[_root_.mul_one, h1]`. Establish `hp : p * p = p` using `Over.OverMorphism.ext hpp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp1 : p = 1` using `mul_eq_left.mp hp`. Use `congrArg (fun q => q.left) hp1` as an intermediate fact. Simplify using `only [p, Over.homMk_left, Hom.one_def, Over.comp_left, Over.toUnit_left, Over.mk_hom] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ (u a).left = η[A].left`. Apply `hm.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hu a, hunit, ← Category.assoc, ← Spec.map_comp]`. Establish `hr : CommRingCat.ofHom (dualMap (ev x0 U.1 hU)) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom K K K).toRingHom = CommRingCat.ofHom (TrivSqZeroExt.fstHom Γ(X, U.1) Γ(X, U.1) Γ(X, U.1)).toRingHom ≫ CommRingCat.ofHom (ev x0 U.1 hU)`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[dualMap]`. Rewrite using `[hr, Spec.map_comp, Category.assoc, (hv a).2, Hom.one_def, Over.comp_left, Over.toUnit_left, ← Category.assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FlagMod.spMap_ev x0 U.2 hU`. Rewrite using `[Category.assoc, Over.w (u a), Over.w η[A]] show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp]`. Use `show _ = 𝟙 (Sp K)`. Rewrite using `[← Spec.map_id]`.
-
-Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CechKS.isTangent_of_fibre : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X) (U : X.affineOpens) {n : ℕ} (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)) (hv : ∀ a, IsTanAtG t (LogKS.chart U) (v a)) {K : Type} [Field K] (x0 : Sp K ⟶ X) (hU : ⊤ ≤ x0 ⁻¹ᵁ U.1) (A : Over (Sp K)) [GrpObj A] (m : A.left ⟶ t.G.left) (u : Fin n → (epsR K ⟶ A)) (hm : IsGrpPullback A t.G x0 m) (hu : ∀ a, (u a).left ≫ m = spMap (dualMap (ev x0 U.1 hU)) ≫ v a) (a : Fin n), IsTangent (u a) := by
   intro E _ _ _ H X t U n v hv K _ x0 hU A _ m u hm hu a

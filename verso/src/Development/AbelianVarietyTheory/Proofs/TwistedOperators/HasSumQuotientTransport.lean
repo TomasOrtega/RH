@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G H _ _ e K K' hK f hf s hs`. Establish `hrel : ∀ a b : G, (QuotientGroup.leftRel K) a b ↔ (QuotientGroup.leftRel K') (e a) (e b)`. Introduce `a b`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, hK, map_mul, map_inv]`. Set `ψ : G ⧸ K ≃ H ⧸ K'` to `Quotient.congr e.toEquiv hrel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ q : G ⧸ K, f (e.symm (ψ q).out) = f q.out`. Introduce `q`. Establish `h2 : ψ q = QuotientGroup.mk (e q.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `h3 : (e q.out)⁻¹ * (ψ q).out ∈ K'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', h2]`. Establish `h4 : e.symm (ψ q).out = q.out * e.symm ((e q.out)⁻¹ * (ψ q).out)`. Rewrite using `[map_mul, map_inv, MulEquiv.symm_apply_apply, mul_inv_cancel_left]`. Rewrite using `[h4, hf _ _ ((hK _).2 (by simpa using h3))]`. Establish `hcomp : (fun a : G ⧸ K => f a.out) = (fun b : H ⧸ K' => f (e.symm b.out)) ∘ ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Conclude with `(hψ q).symm`. Rewrite using `[hcomp]`. Conclude with `(Equiv.hasSum_iff ψ).2 hs`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_quotient_transport :
     ∀ (G H : Type) [Group G] [Group H] (e : G ≃* H) (K : Subgroup G) (K' : Subgroup H),

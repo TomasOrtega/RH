@@ -36,9 +36,7 @@ section Mat
 variable {R : Type} [CommRing R] {a : ℕ}
 
 /- English proof (translation)
-Simplify using `only [posM, Matrix.sum_apply] at h`. Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[Matrix.single_apply]`. Use `split_ifs at ht with hc`.
-
-Conclude with `Prod.ext hc.1 hc.2`. Conclude with `absurd rfl ht`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posM_apply_ne_zero {ι : Type} [Fintype ι] {p : ι → Fin a × Fin a} {x : ι → R} {i k : Fin a}
     (h : posM p x i k ≠ 0) : ∃ t, p t = (i, k) := by
@@ -51,13 +49,13 @@ theorem posM_apply_ne_zero {ι : Type} [Fintype ι] {p : ι → Fin a × Fin a} 
   · exact absurd rfl ht
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [posM, Matrix.sum_apply, Matrix.single_apply]`. Distinguish the cases in `h : ∃ t, p t = (i, k)`. Take `⟨t, ht⟩` from `h`. Rewrite using `[Finset.sum_eq_single t]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ht]`. Introduce `t' _ ht'`. Rewrite using `[if_neg]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `ht' (hp (by rw [ht]; exact Prod.ext e1 e2))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h0 : M i k = 0`. Assume the negation of the conclusion as `h1`. Conclude with `h (hM i k h1)`. Rewrite using `[h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `h ⟨t, Prod.ext e1 e2⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem posM_eq_of_support {ι : Type} [Fintype ι] {p : ι → Fin a × Fin a} (hp : Function.Injective p)
     (M : Matrix (Fin a) (Fin a) R) (hM : ∀ i k, M i k ≠ 0 → ∃ t, p t = (i, k)) :
@@ -83,7 +81,7 @@ theorem posM_eq_of_support {ι : Type} [Fintype ι] {p : ι → Fin a × Fin a} 
     exact h ⟨t, Prod.ext e1 e2⟩
 
 /- English proof (translation)
-Simplify using `only [posM]`. Conclude with `(Fintype.sum_equiv τ.symm _ _ (fun t => by simp)).trans rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posM_comp_symm {ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → Fin a × Fin a) (τ : κ ≃ ι) (w : κ → R) :
     posM p (w ∘ τ.symm) = posM (p ∘ τ) w := by
@@ -91,27 +89,27 @@ theorem posM_comp_symm {ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → Fin 
   exact (Fintype.sum_equiv τ.symm _ _ (fun t => by simp)).trans rfl
 
 /- English proof (translation)
-Simplify using `only [posM, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Function.comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posM_sumElim {ι κ : Type} [Fintype ι] [Fintype κ] (p : ι ⊕ κ → Fin a × Fin a) (z : ι → R) (y : κ → R) :
     posM p (Sum.elim z y) = posM (p ∘ Sum.inl) z + posM (p ∘ Sum.inr) y := by
   simp only [posM, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Function.comp]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← posM_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem posM_sub {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) (x y : ι → R) :
     posM p (x - y) = posM p x - posM p y := by
   rw [eq_sub_iff_add_eq, ← posM_add, sub_add_cancel]
 
 /- English proof (translation)
-Simplify using `[posM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posM_zero' {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) : posM p (0 : ι → R) = 0 := by
   simp [posM]
 
 /- English proof (translation)
-Simplify using `only [posM, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ (h _ _) _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem posM_mul_eq_zero {ι κ : Type} [Fintype ι] [Fintype κ] {p : ι → Fin a × Fin a} {q : κ → Fin a × Fin a}
     (h : ∀ s t, (p s).2 ≠ (q t).1) (x : ι → R) (y : κ → R) : posM p x * posM q y = 0 := by
@@ -123,11 +121,11 @@ def corr {r m : ℕ} (n : UnipotentBlockColumnIndex a r m → R) (z : HiIx a r (
   (posM Subtype.val n * posM (fun t : HiIx a r (m + 1) => t.1.1) z) l.1.1.1 l.1.1.2
 
 /- English proof (translation)
-Use `posM_eq_of_support (fun l l' e => Subtype.ext (Subtype.ext e)) _ fun i k hik => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, posM Subtype.val n i l * posM (fun t : HiIx a r (m + 1) => t.1.1) z l k ≠ 0 := by`. Rewrite `hik` using `[Matrix.mul_apply]`. Take `⟨l, -, hl⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hik`. Conclude with `⟨l, hl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `posM_apply_ne_zero (left_ne_zero_of_mul hl)`. Take `⟨t, ht⟩` from `posM_apply_ne_zero (right_ne_zero_of_mul hl)`. Establish `s2` using `s.2`. Establish `t2` using `t.1.2`. Rewrite `s2` using `[hs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t2` using `[ht]`. Simplify using `only at s2 t2`. Conclude with `⟨⟨⟨(i, k), show (i : ℕ) < m + 1 by omega, show m + 1 ≤ (k : ℕ) by omega, show (k : ℕ) ≤ m + 1 by omega⟩, show ¬ r ≤ (i : ℕ) by omega⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem posM_corr {r m : ℕ} (n : UnipotentBlockColumnIndex a r m → R) (z : HiIx a r (m + 1) → R) :
     posM (fun l : LoIx a r (m + 1) => l.1.1) (corr n z) =
@@ -154,17 +152,15 @@ section Id
 variable {R : Type} [CommRing R] {a : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm)) * (1 + posM Subtype.val n) = (1 + posM Subtype.val (Sum.elim n (y - corr n z) ∘ (blkEquiv a r m hr).symm)) * (1 + posM Subtype.val (Sum.elim z 0 ∘ (colEquiv a r (m + 1)).symm))`. Simplify using `only [posM_comp_symm, posM_sumElim, posM_sub, posM_zero', add_zero]`. Establish `e1 : ((Subtype.val ∘ colEquiv a r (m + 1)) ∘ Sum.inl) = fun t : HiIx a r (m + 1) => t.1.1` using `rfl`. Establish `e2 : ((Subtype.val ∘ colEquiv a r (m + 1)) ∘ Sum.inr) = fun t : LoIx a r (m + 1) => t.1.1` using `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ((Subtype.val ∘ blkEquiv a r m hr) ∘ Sum.inl) = (Subtype.val : UnipotentBlockColumnIndex a r m → Fin a × Fin a)` using `rfl`. Establish `e4 : ((Subtype.val ∘ blkEquiv a r m hr) ∘ Sum.inr) = fun t : LoIx a r (m + 1) => t.1.1` using `rfl`. Rewrite using `[e1, e2, e3, e4, posM_corr]`. Use `set P := posM (fun t : HiIx a r (m + 1) => t.1.1) z`. Use `set Q := posM (fun t : LoIx a r (m + 1) => t.1.1) y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := posM (Subtype.val : UnipotentBlockColumnIndex a r m → Fin a × Fin a) n`. Establish `hPN : P * N = 0` using `posM_mul_eq_zero (fun s t => by`. Use `s.1.2` as an intermediate fact. Use `t.2` as an intermediate fact. Use the proof step `omega) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQN : Q * N = 0` using `posM_mul_eq_zero (fun s t => by`. Use `s.1.2` as an intermediate fact. Use `t.2` as an intermediate fact. Use the proof step `omega) _ _`. Establish `hQP : Q * P = 0` using `posM_mul_eq_zero (fun s t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `s.1.2` as an intermediate fact. Use `t.1.2` as an intermediate fact. Use the proof step `omega) _ _`. Establish `hNPP : N * P * P = 0`. Rewrite using `[mul_assoc, posM_mul_eq_zero (fun s t => by have := s.1.2; have := t.1.2; omega) z z, mul_zero]`.
-
-Simplify using `only [mul_add, add_mul, mul_one, one_mul, mul_sub, sub_mul, hPN, hQN, hQP, hNPP]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem blkU_col_mul_blkU {r m : ℕ} (hr : r ≤ m + 1) (n : UnipotentBlockColumnIndex a r m → R) (z : HiIx a r (m + 1) → R)
     (y : LoIx a r (m + 1) → R) :

@@ -20,21 +20,19 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 /- English proof (translation)
-Establish `h2 : inUJ ε g` using `hg`. Use `delta inUJ Jm at h2`. Use `delta pOf qOf at hpq`. Establish `hU : g.conjTranspose * g = 1`. Break down `hpq with hp | hq` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ a, ε a = false`. Introduce `a`. Establish `h0` using `Finset.filter_eq_empty_iff.mp (Finset.card_eq_zero.mp hp) (Finset.mem_univ a)`. Simplify using `using h0`. Establish `hd : (Matrix.diagonal fun a => if ε a = true then (1 : ℂ) else -1) = -1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, Matrix.one_apply, hall, h]`. Rewrite `h2` using `[hd]`. Simplify using `using h2`. Establish `hall : ∀ a, ε a = true`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h0` using `Finset.filter_eq_empty_iff.mp (Finset.card_eq_zero.mp hq) (Finset.mem_univ a)`. Simplify using `using h0`. Establish `hd : (Matrix.diagonal fun a => if ε a = true then (1 : ℂ) else -1) = 1`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, Matrix.one_apply, hall, h]`. Rewrite `h2` using `[hd]`. Simplify using `using h2`. Use `delta S7.hs`. Rewrite using `[Finset.sum_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ j, ∑ i, ‖g i j‖ ^ 2 = (1 : ℝ)`. Introduce `j`. Establish `hjj` using `congrFun (congrFun hU j) j`. Rewrite `hjj` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `hc : ∀ i, g.conjTranspose j i * g i j = ((‖g i j‖ ^ 2 : ℝ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Introduce `i`. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`. Simplify using `only [hc] at hjj`. Conclude with `hjj` after adjusting the coercions.
-
-Simplify using `[key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_eq_of_compact {n : ℕ} {ε : Fin n → Bool} (hpq : pOf ε = 0 ∨ qOf ε = 0) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : S7.hs g = n := by
@@ -76,11 +74,11 @@ theorem hs_eq_of_compact {n : ℕ} {ε : Fin n → Bool} (hpq : pOf ε = 0 ∨ q
   simp [key]
 
 /- English proof (translation)
-Take `⟨_, _, hU, _⟩` from `hσ`. Use `⟨Real.sqrt (n : ℝ) ^ m, [[]], ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [List.mem_singleton] at hw`. Substitute `hw` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Introduce `u v _ _ g hg`. Establish `hn : S7.hs g = n` using `hs_eq_of_compact hpq hg`. Establish `hnorm : ‖σ g u‖ = ‖u‖` using `hU.2.1 g hg u`. Simplify using `only [nuJ, dSW, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hn, mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg (Real.sqrt_nonneg _) _)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem decBound_of_compact {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hpq : pOf ε = 0 ∨ qOf ε = 0) (m N : ℕ)
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -102,15 +100,15 @@ theorem decBound_of_compact {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ
       _ = ‖u‖ * ‖v‖ := by rw [hnorm, mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hpq : pOf ε = 0 ∨ qOf ε = 0`. Conclude with `decBound_of_compact hpq m _ hσ`. Establish `hp : 1 ≤ pOf ε` using `by omega`. Establish `hq : 1 ≤ qOf ε` using `by omega`. Establish `hq0 : 1 ≤ S7.q0 ε` using `by unfold S7.q0; omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth : thrStar ε < h`. Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : 8 * (n : ℝ) * S7.q0 ε < h`. Establish `h1 : 16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ thrStar ε` using `le_max_right _ _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ (n : ℝ) * (S7.q0 ε : ℝ)` using `by positivity`. Establish `h3 : 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨Ψ, hP, -⟩` from `exists_isPsiFor S7.psiExists T hlam hgap hq0 h8`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv₀ : T.w ≠ 0` using `HW.KType.w_ne_zero T`. Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hgap, lt_of_le_of_lt (le_max_left _ _) hth⟩`. Take `⟨C, hC⟩` from `pm_induction hp hq m hlam hgap hm hP hv₀`. Use `decBoundJ_of_sigLam hlam hgap hth hP hv₀ hσ m _ ?_` and prove the remaining obligations. Use `decBoundJ_sigLam hlam hstd hP hv₀ m _ ⟨(n : ℝ) ^ (2 * m) * C, fun x hx y hy g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hs_pow_mul_le m g (norm_nonneg _) fun idx => hC x hx y hy g hg idx` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decSmJ {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam) {h : ℝ}
     (hgap : GapAtLeast ε lam h) (m : ℕ) (hm : thrStar ε + m < h)
@@ -142,7 +140,7 @@ theorem decSmJ {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : S7.
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨P, hP, hDS⟩` from `hσ`. Establish `hJ` using `decSmJ ((mir_isHCParam_iff lam).1 hlam) ((mir_gapAtLeast_iff ε lam h).1 hgap) m hm hDS`. Establish `hN : m * (2 * r + k + 1 - 1) = m * (2 * r + k)` using `by rw [Nat.add_sub_cancel]`. Rewrite `hJ` using `[hN]`. Conclude with `decSm_of_decBoundJ hP m _ hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decSm {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ} (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (m : ℕ)

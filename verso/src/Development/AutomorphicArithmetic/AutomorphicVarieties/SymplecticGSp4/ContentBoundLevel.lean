@@ -9,17 +9,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `z1 : z 1 = 0` using `by simpa using hz 1 1`. Establish `key : ∀ g ∈ H, θ g = 1 → z g = 0`. Introduce `g hg h1`. Establish `hp : ∀ n : ℕ, z (g ^ n) = n * z g`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [z1]`. Consider the case `succ n ih => rw [pow_succ', hz, ih, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨n, hn, -, hN⟩` from `N.exists_pow_mem_of_index_ne_zero Subgroup.FiniteIndex.index_ne_zero g`. Use `h0 _ (H.pow_mem hg n) hN` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `(mul_eq_zero.1 this).resolve_left (Nat.cast_ne_zero.2 hn.ne')`. Distinguish the cases in `h1 : ∀ g ∈ H, θ g = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun g hg => by simp [key g hg (h1 g hg)]⟩`. Use `push Not at h1`. Take `⟨a, ha, h1⟩` from `h1`. Establish `hne : (θ a : K) - 1 ≠ 0` using `sub_ne_zero.2 fun h => h1 (Units.ext h)`. Use `⟨z a / (θ a - 1), fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : θ (g * a * (a * g)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm (θ g), mul_inv_cancel]`. Establish `e` using `hz (g * a * (a * g)⁻¹) (a * g)`. Rewrite `e` using `[inv_mul_cancel_right, hc, key _ (H.mul_mem (H.mul_mem hg ha) (H.inv_mem (H.mul_mem ha hg))) hc, hz, hz]`. Move the coercions through the operations in `at e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`.
+A detailed English derivation is pending.
 -/
 private theorem cob_fin {G K : Type} [Group G] [Field K] [CharZero K] (θ : G →* Kˣ) (z : G → K)
     (hz : ∀ g h, z (g * h) = z g + θ g * z h) (H N : Subgroup G) [N.FiniteIndex] (h0 : ∀ g ∈ H, g ∈ N → z g = 0) :
@@ -51,9 +51,9 @@ private theorem cob_fin {G K : Type} [Group G] [Field K] [CharZero K] (θ : G �
     linear_combination -e
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Use `⟨θ u * m - z u, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e` using `hz u (u⁻¹ * x * u)`. Establish `e2 : θ (u⁻¹ * x * u) = θ x`. Rewrite using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hm _ (hu x hx), e2, ← mul_assoc, mul_inv_cancel_left, hz]`. Take the linear combination `e`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cob_conj {G K : Type} [Group G] [Field K] (θ : G →* Kˣ) (z : G → K)
     (hz : ∀ g h, z (g * h) = z g + θ g * z h) (H H' : Subgroup G) (u : G) (hu : ∀ x ∈ H, u⁻¹ * x * u ∈ H')
@@ -67,17 +67,15 @@ private theorem cob_conj {G K : Type} [Group G] [Field K] (θ : G →* Kˣ) (z :
   linear_combination e
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n i j, (Finset.univ.filter fun k => k ≠ i ∧ k ≠ j ∧ R i k ∧ R k j).card = n → i ≠ j → R i j → m i < m j from fun i j => H _ i j rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `i j hn hij hR`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : ∀ k, k ≠ i → k ≠ j → R i k → ¬ R k j`. Conclude with `h i j hij hR hk`. Use `push Not at hk`. Take `⟨k, ki, kj, r1, r2⟩` from `hk`. Use `(ih _ ?_ i k rfl ki.symm r1).trans (ih _ ?_ k j rfl kj r2)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hn]`. Use `Finset.card_lt_card ⟨fun a ha => ?_, fun hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Use `⟨ha.1, ?_, ha.2.2.1, tr _ _ _ ha.2.2.2 r2⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `as _ _ kj r2 ha.2.2.2`. Use `@hs k (by simp [ki, kj, r1, r2])` as an intermediate fact. Simplify using `at this`. Rewrite using `[← hn]`. Use `Finset.card_lt_card ⟨fun a ha => ?_, fun hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Use `⟨?_, ha.2.1, tr _ _ _ r1 ha.2.2.1, ha.2.2.2⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `as _ _ ki ha.2.2.1 r1`. Use `@hs k (by simp [ki, kj, r1, r2])` as an intermediate fact.
-
-Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cover (R : Fin 4 → Fin 4 → Prop) (tr : ∀ a b c, R a b → R b c → R a c)
     (as : ∀ a b, a ≠ b → R a b → ¬ R b a) (m : Fin 4 → Fin 4)
@@ -132,7 +130,7 @@ section
 variable {K : Type} [Field K] {R : Fin 4 → Fin 4 → Prop} {rf : ∀ a, R a a} {tr : ∀ a b c, R a b → R b c → R a c}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Assume the negation of the conclusion as `h`. Conclude with `as _ _ hk (hY _ _ (right_ne_zero_of_mul h)) (hX _ _ (left_ne_zero_of_mul h))`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pat_diag (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X Y : M4 K} (hX : X ∈ pat K R rf tr) (hY : Y ∈ pat K R rf tr)
     (i : Fin 4) : (X * Y) i i = X i i * Y i i := by
@@ -143,9 +141,9 @@ private theorem pat_diag (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X Y : M
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← Finset.sum_pair (f := fun k => X i k * Y k j) hij]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk'`. Assume the negation of the conclusion as `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hk k hk'.1 hk'.2 (hX _ _ (left_ne_zero_of_mul h)) (hY _ _ (right_ne_zero_of_mul h))`.
+A detailed English derivation is pending.
 -/
 private theorem pat_off {X Y : M4 K} (hX : X ∈ pat K R rf tr) (hY : Y ∈ pat K R rf tr) {i j : Fin 4} (hij : i ≠ j)
     (hk : ∀ k, k ≠ i → k ≠ j → R i k → ¬ R k j) : (X * Y) i j = X i i * Y i j + X i j * Y j j := by
@@ -157,9 +155,9 @@ private theorem pat_off {X Y : M4 K} (hX : X ∈ pat K R rf tr) (hY : Y ∈ pat 
   exact hk k hk'.1 hk'.2 (hX _ _ (left_ne_zero_of_mul h)) (hY _ _ (right_ne_zero_of_mul h))
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => exact ⟨by rw [Polynomial.aeval_C]; exact Subalgebra.algebraMap_mem _ _, fun i => by simp [Matrix.algebraMap_matrix_apply]⟩`. Consider the case `add p q hp hq => exact ⟨by rw [map_add]; exact add_mem hp.1 hq.1, fun i => by simp [hp.2, hq.2]⟩`. Consider the case `monomial n a h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨mul_mem h.1 hX, fun i => by rw [pat_diag as h.1 hX, h.2, Polynomial.eval_mul_X]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem pat_aeval (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X : M4 K} (hX : X ∈ pat K R rf tr) (p : Polynomial K) :
     Polynomial.aeval X p ∈ pat K R rf tr ∧ ∀ i, (Polynomial.aeval X p) i i = p.eval (X i i) := by
@@ -171,7 +169,7 @@ private theorem pat_aeval (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X : M4
     exact ⟨mul_mem h.1 hX, fun i => by rw [pat_diag as h.1 hX, h.2, Polynomial.eval_mul_X]⟩
 
 /- English proof (translation)
-Use `⟨(pat_aeval as hX _).1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[prj, (pat_aeval as hX _).2, hm, Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Simplify using `[sub_eq_zero, hc.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pat_prj (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X : M4 K} (hX : X ∈ pat K R rf tr) (c : Fin 4 → K)
     (hc : Function.Injective c) (m : Fin 4 → Fin 4) (hm : ∀ i, X i i = c (m i)) (a : Fin 4) :
@@ -181,13 +179,13 @@ private theorem pat_prj (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {X : M4 K
   simp [sub_eq_zero, hc.eq_iff]
 
 /- English proof (translation)
-Take `⟨hP, hP'⟩` from `pat_prj as (hr s) _ hc m hm (m i)`. Take `⟨hQ, hQ'⟩` from `pat_prj as (hr s) _ hc m hm (m j)`. Establish `st` using `fun g => ho.stable g _ _ hlt`. Generalize the expression as in `prj (fun a => ps a s) (r s) (m i) = P at *`. Generalize the expression as in `prj (fun a => ps a s) (r s) (m j) = Q at *`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `p1 : P i i ≠ 0` using `fun h => (hP' i).1 h rfl`. Establish `p2 : P j j = 0` using `(hP' j).2 hlt.ne`. Establish `q1 : Q j j ≠ 0` using `fun h => (hQ' j).1 h rfl`. Establish `q2 : Q i i = 0` using `(hQ' i).2 hlt.ne'`. Establish `e : ∀ g, P i i * r g i i * Q i j + (P i i * r g i j + P i j * r g j j) * Q j j = 0` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun (st g) i) j` as an intermediate fact. Rewrite `this` using `[pat_off (mul_mem hP (hr g)) hQ hij hk, pat_off hP (hr g) hij hk, pat_diag as hP (hr g)]`. Then use the resulting hypothesis. Establish `e1` using `e 1`. Simplify using `only [map_one, Matrix.one_apply_eq, Matrix.one_apply_ne hij] at e1`. Use `⟨P i j / P i i, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff p1]`. Apply `mul_right_cancel₀ q1` to reduce the goal to its premises. Take the linear combination `e g - r g i i * e1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem pat_split (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {H : Type} [Group H] (r : H →* M4 K)
     (hr : ∀ g, r g ∈ pat K R rf tr) {I : Subgroup H} {ps : Fin 4 → H → K} {s : H} (ho : Ord I ps s r)
@@ -215,43 +213,41 @@ private theorem pat_split (as : ∀ a b, a ≠ b → R a b → ¬ R b a) {H : Ty
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD hSo r hr hdt m hm hI`. Take `⟨hmult, hunr, -, heq, heqP, hE, -⟩` from `ptIn D hD _ r hr`. Take `⟨-, grefl, gtr, -⟩` from `geAlg _ r _ hmult hE`. Take `⟨fSb, -, -, -, -, -, hinj, -, -, -, -, fo, -⟩` from `facts D hD`. Take `⟨hcont, -⟩` from `eptInt D hD r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, m', hκ, -, hI', hδ⟩` from `diagChar D hD r hr hdt`. Establish `hs0 : (D.s0 : G ℚ Ω) ∈ D.Ip l` using `hD.decompSigma_mem.1.1`. Take `rfl : m' = m` from `funext fun i => hinj (Subtype.ext ((hI' i _ hs0).symm.trans (hI i _ hs0)))`. Use `cover (Ge r) gtr hdt m' fun i j hij hge hk => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hlt : m' j < m' i` using `lt_of_le_of_ne (not_lt.1 hlt) fun h => hij (hm h).symm`. Establish `hp : ∀ g, r g ∈ pat _ (Ge r) grefl gtr` using `fun g a b h => ⟨g, h⟩`. Establish `hκ0 : ∀ i g, r g i i ≠ 0` using `fun i g => hκ i g ▸ (κ i g).ne_zero`. Set `θ : G ℚ Ω →* (PadicAlgCl l)ˣ` to `κ i / κ j`. Establish `hθ : ∀ g, (θ g : PadicAlgCl l) = r g i i / r g j j` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[θ, hκ]`. Set `z : G ℚ Ω → PadicAlgCl l` to `fun g => r g i j / r g j j`. Establish `hz : ∀ g h, z (g * h) = z g + θ g * z h` using `fun g h => by`. Simplify using `only [z]`. Rewrite using `[hθ, map_mul, pat_off (hp g) (hp h) hij hk, pat_diag hdt (hp g) (hp h)]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hκ0 j g` as an intermediate fact. Use `hκ0 j h` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hz1 : ∀ g, r g = 1 → z g = 0` using `fun g h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [z, h, Matrix.one_apply_ne hij, zero_div]`. Establish `hent : ∀ i j, Continuous fun g => r g i j` using `fun i j => (continuous_apply_apply i j).comp hcont`. Take `⟨-, -, hconj⟩` from `Chr.placesQ Ω`. Establish `hL : ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ m, ∀ g ∈ Dec (F` using `ℚ) A, z g = θ g * m - m := by`. Introduce `A hA`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, -⟩` from `hconj l A (D.pl l) hl.out hA (hD.pl_over l hl.out)`. Use `cob_conj θ z hz _ _ u hu ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `pat_split hdt (r.comp (D.Gp l).subtype) (fun g => hp g) heq.2 (fun a b h => hinj (Subtype.ext h)) m' (fun i => hI i _ hs0) hij hk hlt`. Use `⟨a, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : r g i j = a * (r g i i - r g j j)` using `ha ⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [z]`. Rewrite using `[hθ, e]`. Use `hκ0 j g` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hU : ∀ A : ValuationSubring Ω, ∃ m, ∀ g ∈ Ine (F` using `ℚ) A, z g = θ g * m - m := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce `A`. Distinguish the cases in `hA : Raw.Away D.T A`. Use `haveI := D.rbar.ker.quotient_finite_of_isOpen fo haveI : D.rbar.ker.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Conclude with `cob_fin θ z hz _ D.rbar.ker fun g hg h1 => hz1 g (hunr A hA g hg h1)`. Simplify using `only [Raw.Away, not_forall, not_not] at hA`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨p, hpT, hA⟩` from `hA`. Break down `Finset.mem_insert.1 hpT with rfl | hpb` into its components or cases. Take `⟨a, ha⟩` from `hL A hA`. Conclude with `⟨a, fun g hg => ha g hg.1⟩`. Establish `hpp` using `(fSb p hpb).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, -, hu⟩` from `hconj p A (D.pl p) hpp hA (hD.pl_over p hpp)`. Use `cob_conj θ z hz _ _ u hu ?_` and prove the remaining obligations. Use `haveI := D.ψ.ker.quotient_finite_of_isOpen hD.psi_open`. Use `haveI : D.ψ.ker.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Conclude with `cob_fin θ z hz _ D.ψ.ker fun g hg h1 => hz1 g ((heqP p hpb).2 ⟨g, hg.1⟩ ⟨hg, h1⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hw : ∀ a b : Fin 4, a < b → D.wts4 b < D.wts4 a`. Use `hD.two_le` as an intermediate fact. Introduce `a b h`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Raw.wts4] at h ⊢ <;> omega`. Take `⟨δ, hδo, hδ1⟩` from `hδ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ', hδo', hδ1'⟩` from `hδ j`. Take `⟨n, hn⟩` from `Nat.exists_eq_add_of_lt (hw _ _ hlt)`. Take `⟨a, ha⟩` from `hSo (δ' / δ) (Subgroup.isOpen_mono (H₁ := δ.ker ⊓ δ'.ker) (fun g hg => by`. Establish `h1 : δ g = 1` using `hg.1`. Establish `h2 : δ' g = 1` using `hg.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1, h2]) (hδo.inter hδo')) (n + 1) (by omega) (fun g => θ g) (fun g => by`. Establish `h0` using `hκ0 j g`. Rewrite using `[hθ]`. Rewrite `h0`, the goal using `[hδ1', hn]`. Rewrite using `[hδ1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(δ g).ne_zero`. Simplify using `only [MonoidHom.div_apply, Units.val_div_eq_div_val]`. Rewrite using `[div_mul_div_comm, div_mul_eq_mul_div, div_eq_one_iff_eq (mul_ne_zero h0 h1)]`. Use the proof step `ring) z ((hent i j).div (hent j j) (hκ0 j)) hz hU hL`. Establish `hs : ∀ X ∈ Submodule.span (PadicAlgCl l) (Set.range r), X i j = a * (X i i - X j j)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `X hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Establish `e` using `ha g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Simplify using `only [z] at e`. Use `hκ0 j g` as an intermediate fact. Rewrite `e` using `[hθ, div_eq_iff this]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [Matrix.add_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul b x _ hx => simp only [Matrix.smul_apply, hx, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `a0 : a = 0`. Use `hs _ (hE i)` as an intermediate fact. Simplify `this.symm` using `[Matrix.single_apply, hij]`. Take `⟨g, hg⟩` from `hge`. Conclude with `hg (by rw [hs _ (Submodule.subset_span ⟨g, rfl⟩), a0, zero_mul])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.diagonal_character_order_lt_of_stable_flag :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → SoV Ω l → ∀ r, D.EPt r → DiagType r → ∀ m : Fin 4 → Fin 4, Function.Injective m → (∀ i, ∀ s ∈ D.Ip l, r s i i = ((D.ps (m i) s : c.O) : PadicAlgCl l)) → ∀ i j, i ≠ j → Ge r i j → m i < m j := by

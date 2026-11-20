@@ -17,22 +17,22 @@ def IsRestricted (ξ x : ∀ v, V v) : Prop :=
   ∀ᶠ v in cofinite, x v = ξ v
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite`.
+A detailed English derivation is pending.
 -/
 theorem isRestricted_iff_finite {ξ x : ∀ v, V v} :
     IsRestricted ξ x ↔ {v | x v ≠ ξ v}.Finite :=
   Filter.eventually_cofinite
 
 /- English proof (translation)
-The claim follows from `Eventually.of_forall fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isRestricted_self (ξ : ∀ v, V v) : IsRestricted ξ ξ :=
   Eventually.of_forall fun _ => rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isRestricted_iff_finite]`. Use `(h.union (Set.finite_singleton i)).subset fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `hvi : v = i`. Conclude with `Or.inr hvi`. Use `left`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv` using `[Function.update_of_ne hvi]`.
+A detailed English derivation is pending.
 -/
 theorem IsRestricted.update [DecidableEq ι] {ξ x : ∀ v, V v} (h : IsRestricted ξ x) (i : ι)
     (a : V i) : IsRestricted ξ (Function.update x i a) := by
@@ -44,7 +44,7 @@ theorem IsRestricted.update [DecidableEq ι] {ξ x : ∀ v, V v} (h : IsRestrict
     simpa [Function.update_of_ne hvi] using hv
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.update i a⟩` and prove the remaining obligations. Use `h.update i (x i)` as an intermediate fact. Rewrite `this` using `[Function.update_idem, Function.update_eq_self]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isRestricted_update_iff [DecidableEq ι] {ξ x : ∀ v, V v} {i : ι} {a : V i} :
     IsRestricted ξ (Function.update x i a) ↔ IsRestricted ξ x := by
@@ -56,16 +56,16 @@ def restrictedTensor (ξ : ∀ v, V v) : Submodule ℂ (⨂[ℂ] v, V v) :=
   Submodule.span ℂ (tprod ℂ '' {x | IsRestricted ξ x})
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tprod_mem_restrictedTensor {ξ x : ∀ v, V v} (h : IsRestricted ξ x) :
     tprod ℂ x ∈ restrictedTensor ξ :=
   Submodule.subset_span ⟨x, h, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ {ξ ξ' : ∀ v, V v}, (∀ᶠ v in cofinite, ξ v = ξ' v) → restrictedTensor ξ ≤ restrictedTensor ξ'`. Introduce `ξ ξ' h`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `tprod_mem_restrictedTensor ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [show ∀ᶠ v in cofinite, x v = ξ v from hx, h] with v h1 h2 using h1.trans h2`. Conclude with `le_antisymm (key h) (key (h.mono fun v hv => hv.symm))`.
+A detailed English derivation is pending.
 -/
 theorem restrictedTensor_congr {ξ ξ' : ∀ v, V v} (h : ∀ᶠ v in cofinite, ξ v = ξ' v) :
     restrictedTensor ξ = restrictedTensor ξ' := by
@@ -85,23 +85,23 @@ def weight (T : Finset ι) (l : ∀ v, Dual ℂ (V v)) (x : ∀ v, V v) (v : ι)
   exact if v ∈ T then 1 else l v (x v)
 
 /- English proof (translation)
-Simplify using `[weight, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_of_mem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x : ∀ v, V v) {v : ι}
     (hv : v ∈ T) : weight T l x v = 1 := by
   simp [weight, hv]
 
 /- English proof (translation)
-Simplify using `[weight, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_of_notMem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x : ∀ v, V v) {v : ι}
     (hv : v ∉ T) : weight T l x v = l v (x v) := by
   simp [weight, hv]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv` using `[mem_mulSupport]`. Distinguish the cases in `hvT : v ∈ T`. Conclude with `absurd (weight_of_mem l x hvT) hv`. Rewrite `hv` using `[weight_of_notMem l x hvT]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x v = ξ v`. Use `right show l v (ξ v) ≠ 1`. Rewrite using `[← hx]`. Conclude with `hv`. Conclude with `Or.inl hx`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mulSupport_weight_subset (ξ : ∀ v, V v) (T : Finset ι) (l : ∀ v, Dual ℂ (V v))
     (x : ∀ v, V v) :
@@ -119,7 +119,7 @@ theorem mulSupport_weight_subset (ξ : ∀ v, V v) (T : Finset ι) (l : ∀ v, D
     · exact Or.inl hx
 
 /- English proof (translation)
-The claim follows from `((isRestricted_iff_finite.1 hx).union (Filter.eventually_cofinite.1 hl)).subset (mulSupport_weight_subset ξ T l x)`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_weight {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) (T : Finset ι)
     {l : ∀ v, Dual ℂ (V v)} (hl : ∀ᶠ v in cofinite, l v (ξ v) = 1) :
@@ -128,9 +128,9 @@ theorem finite_mulSupport_weight {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) (T
     (mulSupport_weight_subset ξ T l x)
 
 /- English proof (translation)
-Use `set s : Finset ι := insert i hw.toFinset`. Establish `hs : ∀ c, mulSupport (Function.update w i c) ⊆ (s : Set ι)`. Introduce `c v hv`. Distinguish the cases in `hvi : v = i`. Simplify using `[s, hvi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[mem_mulSupport, Function.update_of_ne hvi]`. Simplify using `[s, hv]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (hs c), finprod_eq_prod_of_mulSupport_subset _ (hs 1), Finset.prod_update_of_mem (Finset.mem_insert_self i _), Finset.prod_update_of_mem (Finset.mem_insert_self i _), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_update_eq_mul [DecidableEq ι] (w : ι → ℂ) (hw : (mulSupport w).Finite) (i : ι) (c : ℂ) :
     ∏ᶠ v, Function.update w i c v = c * ∏ᶠ v, Function.update w i 1 v := by
@@ -148,7 +148,7 @@ theorem finprod_update_eq_mul [DecidableEq ι] (w : ι → ℂ) (hw : (mulSuppor
     Finset.prod_update_of_mem (Finset.mem_insert_self i _), one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[weight_of_mem l _ hv, weight_of_mem l _ hv]`. Rewrite using `[weight_of_notMem l _ hv, weight_of_notMem l _ hv, Function.update_of_ne (fun h => hv (by rw [h]; exact hi))]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weight_update_of_mem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x : ∀ v, V v) {i : ι}
     (hi : i ∈ T) (a : V i) {inst : DecidableEq ι} :
@@ -160,9 +160,9 @@ theorem weight_update_of_mem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x : �
       Function.update_of_ne (fun h => hv (by rw [h]; exact hi))]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hvi : v = i`. Substitute `hvi` using the available equality. Rewrite using `[Function.update_self, weight_of_notMem l _ hi, Function.update_self]`. Rewrite using `[Function.update_of_ne hvi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ T`. Rewrite using `[weight_of_mem l _ hv, weight_of_mem l _ hv]`. Rewrite using `[weight_of_notMem l _ hv, weight_of_notMem l _ hv, Function.update_of_ne hvi]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weight_update_of_notMem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x : ∀ v, V v) {i : ι}
     (hi : i ∉ T) (a : V i) {inst : DecidableEq ι} :
@@ -178,7 +178,7 @@ theorem weight_update_of_notMem {T : Finset ι} (l : ∀ v, Dual ℂ (V v)) (x :
     · rw [weight_of_notMem l _ hv, weight_of_notMem l _ hv, Function.update_of_ne hvi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨v, hv⟩`. Distinguish the cases in `hvi : v = i`. Substitute `hvi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hvi, Function.update_of_ne (fun h => hvi (congrArg Subtype.val h))]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrict_update_of_mem {T : Finset ι} (x : ∀ v, V v) {i : ι} (hi : i ∈ T) (a : V i)
     {inst : DecidableEq ι} :
@@ -191,7 +191,7 @@ theorem restrict_update_of_mem {T : Finset ι} (x : ∀ v, V v) {i : ι} (hi : i
   · rw [Function.update_of_ne hvi, Function.update_of_ne (fun h => hvi (congrArg Subtype.val h))]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨v, hv⟩`. Rewrite using `[Function.update_of_ne (fun h => hi (by rw [← h]; exact hv))]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrict_update_of_notMem {T : Finset ι} (x : ∀ v, V v) {i : ι} (hi : i ∉ T) (a : V i)
     {inst : DecidableEq ι} :
@@ -206,14 +206,14 @@ def restrictedIndicator (ξ x : ∀ v, V v) : ℂ := by
   exact if IsRestricted ξ x then 1 else 0
 
 /- English proof (translation)
-Simplify using `[restrictedIndicator, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictedIndicator_of {ξ x : ∀ v, V v} (h : IsRestricted ξ x) :
     restrictedIndicator ξ x = 1 := by
   simp [restrictedIndicator, h]
 
 /- English proof (translation)
-Simplify using `[restrictedIndicator, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictedIndicator_of_not {ξ x : ∀ v, V v} (h : ¬ IsRestricted ξ x) :
     restrictedIndicator ξ x = 0 := by
@@ -263,7 +263,7 @@ def restrictedLift (ξ : ∀ v, V v) (T : Finset ι) (l : ∀ v, Dual ℂ (V v))
       simp [restrictedIndicator_of_not (h1 _)]
 
 /- English proof (translation)
-Use `show restrictedIndicator ξ x • ((∏ᶠ v, weight T l x v) • f (fun v => x v)) = _`. Rewrite using `[restrictedIndicator_of hx, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictedLift_apply_of {ξ : ∀ v, V v} {T : Finset ι} {l : ∀ v, Dual ℂ (V v)}
     {hl : ∀ᶠ v in cofinite, l v (ξ v) = 1} (f : MultilinearMap ℂ (fun v : T => V v) N)
@@ -277,7 +277,7 @@ def evalForm (ξ : ∀ v, V v) (l : ∀ v, Dual ℂ (V v)) (hl : ∀ᶠ v in cof
   lift (restrictedLift ξ ∅ l hl (MultilinearMap.constOfIsEmpty ℂ _ 1))
 
 /- English proof (translation)
-Rewrite using `[evalForm, lift.tprod, restrictedLift_apply_of _ hx]`. Simplify using `only [MultilinearMap.constOfIsEmpty_apply, Function.const_apply, smul_eq_mul, mul_one]`. Conclude with `finprod_congr fun v => weight_of_notMem l x (Finset.notMem_empty v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalForm_tprod {ξ : ∀ v, V v} {l : ∀ v, Dual ℂ (V v)}
     {hl : ∀ᶠ v in cofinite, l v (ξ v) = 1} {x : ∀ v, V v} (hx : IsRestricted ξ x) :
@@ -302,7 +302,7 @@ def contract (ξ : ∀ v, V v) (l : ∀ v, Dual ℂ (V v)) (hl : ∀ᶠ v in cof
   lift (restrictedLift ξ {v} l hl (projSingleton v))
 
 /- English proof (translation)
-Rewrite using `[contract, lift.tprod, restrictedLift_apply_of _ hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem contract_tprod {ξ : ∀ v, V v} {l : ∀ v, Dual ℂ (V v)}
     {hl : ∀ᶠ v in cofinite, l v (ξ v) = 1} (v : ι) {x : ∀ v, V v} (hx : IsRestricted ξ x) :
@@ -311,11 +311,11 @@ theorem contract_tprod {ξ : ∀ v, V v} {l : ∀ v, Dual ℂ (V v)}
   rfl
 
 /- English proof (translation)
-Establish `h0 : (fun w => l w (x w)) = weight ∅ l x`. Use function extensionality and compare the values at `w`. Rewrite using `[weight_of_notMem l x (Finset.notMem_empty w)]`. Establish `h1 : weight {v} l x = Function.update (weight ∅ l x) v 1`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self, weight_of_mem l x (Finset.mem_singleton_self w)]`. Rewrite using `[Function.update_of_ne hw, weight_of_notMem l x (by simpa using hw), weight_of_notMem l x (Finset.notMem_empty w)]`. Establish `h2 : weight ∅ l x = Function.update (weight ∅ l x) v (l v (x v))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: weight ∅ l x v = l v (x v)` using `weight_of_notMem l x (Finset.notMem_empty v)`. Rewrite using `[← this, Function.update_eq_self]`. Rewrite using `[h0, h1]`. Use `conv_lhs => rw [h2]`. Conclude with `finprod_update_eq_mul _ (finite_mulSupport_weight hx ∅ hl) v _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_eq_mul_weight {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) {l : ∀ v, Dual ℂ (V v)}
     (hl : ∀ᶠ v in cofinite, l v (ξ v) = 1) (v : ι) :
@@ -337,9 +337,9 @@ theorem finprod_eq_mul_weight {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) {l : 
   exact finprod_update_eq_mul _ (finite_mulSupport_weight hx ∅ hl) v _
 
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul, map_smul, map_smul]`. Use `congr 1`. Distinguish the cases in `hx : IsRestricted ξ x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[contract_tprod v hx, evalForm_tprod hx, map_smul, smul_eq_mul, mul_comm, finprod_eq_mul_weight hx hl v]`. Rewrite using `[contract, evalForm, lift.tprod, lift.tprod] show l v (restrictedIndicator ξ x • _) = restrictedIndicator ξ x • _`. Simplify using `[restrictedIndicator_of_not hx]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem apply_contract {ξ : ∀ v, V v} {l : ∀ v, Dual ℂ (V v)}
     {hl : ∀ᶠ v in cofinite, l v (ξ v) = 1} (v : ι) (t : ⨂[ℂ] w, V w) :
@@ -366,7 +366,7 @@ def extend (ξ : ∀ v, V v) (T : Finset ι) (y : ∀ v : T, V v) : ∀ v, V v :
   fun v => if h : v ∈ T then y ⟨v, h⟩ else ξ v
 
 /- English proof (translation)
-Rewrite using `[isRestricted_iff_finite]`. Use `T.finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Establish `hvT' : v ∉ T` using `by simpa using hvT`. Conclude with `hv (by simp [extend, hvT'])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRestricted_extend (ξ : ∀ v, V v) (T : Finset ι) (y : ∀ v : T, V v) :
     IsRestricted ξ (extend ξ T y) := by
@@ -380,7 +380,7 @@ def finiteEmbed (ξ : ∀ v, V v) (T : Finset ι) : (⨂[ℂ] v : T, V v) →ₗ
   lift ((PiTensorProduct.tprod ℂ).domDomRestrict (· ∈ T) fun w => ξ w)
 
 /- English proof (translation)
-Rewrite using `[finiteEmbed, lift.tprod, MultilinearMap.domDomRestrict_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteEmbed_tprod (ξ : ∀ v, V v) (T : Finset ι) (y : ∀ v : T, V v) :
     finiteEmbed ξ T (tprod ℂ y) = tprod ℂ (extend ξ T y) := by
@@ -388,9 +388,9 @@ theorem finiteEmbed_tprod (ξ : ∀ v, V v) (T : Finset ι) (y : ∀ v : T, V v)
   rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c y`. Rewrite using `[map_smul, finiteEmbed_tprod]`. Conclude with `Submodule.smul_mem _ _ (tprod_mem_restrictedTensor (isRestricted_extend ξ T y))`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+A detailed English derivation is pending.
 -/
 theorem range_finiteEmbed_le (ξ : ∀ v, V v) (T : Finset ι) :
     LinearMap.range (finiteEmbed ξ T) ≤ restrictedTensor ξ := by
@@ -402,7 +402,7 @@ theorem range_finiteEmbed_le (ξ : ∀ v, V v) (T : Finset ι) :
   | add a b ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `extend`. Use `split_ifs with hv`. Both sides reduce to the same expression. Conclude with `(h v hv).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem extend_restrict {ξ x : ∀ v, V v} {T : Finset ι} (h : ∀ v ∉ T, x v = ξ v) :
     extend ξ T (fun v => x v) = x := by
@@ -413,17 +413,15 @@ theorem extend_restrict {ξ x : ∀ v, V v} {T : Finset ι} (h : ∀ v ∉ T, x 
   · exact (h v hv).symm
 
 /- English proof (translation)
-Establish `hex : ∀ v, ∃ f : Dual ℂ (V v), v ∉ T → f (ξ v) = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Conclude with `⟨0, fun h => absurd hv h⟩`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Dual ℂ (V v), f (ξ v) ≠ 0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hξ v hv ((Module.forall_dual_apply_eq_zero_iff ℂ (ξ v)).1 hcon)`. Conclude with `⟨(f (ξ v))⁻¹ • f, fun _ => by simp [hf]⟩`. Use `choose l hl using hex`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Establish `hl' : ∀ᶠ v in cofinite, l v (ξ v) = 1` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `hvT`. Conclude with `hv (hl v hvT))`. Set `P` to `lift (restrictedLift ξ T l hl' (PiTensorProduct.tprod ℂ))`. Establish `hP : P ∘ₗ finiteEmbed ξ T = LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, finiteEmbed_tprod, LinearMap.id_apply, P, lift.tprod]`. Rewrite using `[restrictedLift_apply_of _ (isRestricted_extend ξ T y)]`. Establish `hw : weight T l (extend ξ T y) = fun _ => 1`. Use function extensionality and compare the values at `v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ T`. Conclude with `weight_of_mem l _ hv`. Rewrite using `[weight_of_notMem l _ hv]`. Simplify using `[extend, hv, hl v hv]`. Rewrite using `[hw, finprod_one, one_smul]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `⟨v, hv⟩`. Simplify using `[extend, hv]`. Conclude with `Function.LeftInverse.injective (g := P) fun t => by`. Simplify using `using congrArg (fun F => F t) hP`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finiteEmbed_injective {ξ : ∀ v, V v} {T : Finset ι} (hξ : ∀ v ∉ T, ξ v ≠ 0) :
     Injective (finiteEmbed ξ T) := by
@@ -461,13 +459,13 @@ theorem finiteEmbed_injective {ξ : ∀ v, V v} {T : Finset ι} (hξ : ∀ v ∉
     simpa using congrArg (fun F => F t) hP
 
 /- English proof (translation)
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨x, hx, rfl⟩` from `ht`. Use `⟨(isRestricted_iff_finite.1 hx).toFinset, fun T hT => ⟨tprod ℂ fun v => x v, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[finiteEmbed_tprod, extend_restrict]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hxv`. Conclude with `hv (hT (by simpa using hxv))`. Consider the case `zero => exact ⟨∅, fun T _ => Submodule.zero_mem _⟩`. Consider the case `add a b _ _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `ha`. Take `⟨B, hB⟩` from `hb`. Conclude with `⟨A ∪ B, fun T hT => Submodule.add_mem _ (hA T (Finset.union_subset_left hT)) (hB T (Finset.union_subset_right hT))⟩`. Consider the case `smul c a _ ha`. Take `⟨A, hA⟩` from `ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨A, fun T hT => Submodule.smul_mem _ c (hA T hT)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_range_finiteEmbed {ξ : ∀ v, V v} {t : ⨂[ℂ] v, V v}
     (ht : t ∈ restrictedTensor ξ) : ∃ T₀ : Finset ι, ∀ T, T₀ ⊆ T →
@@ -491,27 +489,23 @@ theorem exists_mem_range_finiteEmbed {ξ : ∀ v, V v} {t : ⨂[ℂ] v, V v}
     exact ⟨A, fun T hT => Submodule.smul_mem _ c (hA T hT)⟩
 
 /- English proof (translation)
-Take `⟨T₀, hT₀⟩` from `exists_mem_range_finiteEmbed ht`. Use `set T : Finset ι := T₀ ∪ (Filter.eventually_cofinite.1 hξ).toFinset`. Establish `hξT : ∀ v ∉ T, ξ v ≠ 0` using `fun v hv h => hv (Finset.mem_union_right _ (by simpa using h))`. Take `⟨s, rfl⟩` from `hT₀ T Finset.subset_union_left`. Establish `hs0 : s ≠ 0` using `by rintro rfl; exact ht0 (map_zero _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : ∀ v : T, Basis (Basis.ofVectorSpaceIndex ℂ (V v)) ℂ (V v)` to `fun v => Basis.ofVectorSpace ℂ (V v)`. Set `B` to `Basis.piTensorProduct b`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, B.repr s k ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs0 (B.repr.injective (Finsupp.ext fun k => by simp [hcon k]))`. Establish `hex : ∀ v, ∃ f : Dual ℂ (V v), v ∉ T → f (ξ v) = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Conclude with `⟨0, fun h => absurd hv h⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Dual ℂ (V v), f (ξ v) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hξT v hv ((Module.forall_dual_apply_eq_zero_iff ℂ (ξ v)).1 hcon)`. Conclude with `⟨(f (ξ v))⁻¹ • f, fun _ => by simp [hf]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf using hex`. Set `l : ∀ v, Dual ℂ (V v)` to `fun v => if hv : v ∈ T then (b ⟨v, hv⟩).coord (k ⟨v, hv⟩) else f v`. Establish `hl : ∀ᶠ v in cofinite, l v (ξ v) = 1` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `hvT`. Establish `hvT' : v ∉ T` using `by simpa using hvT`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv (by simp [l, hvT', hf v hvT']))`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `key : evalForm ξ l hl ∘ₗ finiteEmbed ξ T = B.coord k`. Use `B.ext fun k' => ?_` and prove the remaining obligations. Rewrite using `[Basis.coord_apply, Basis.repr_self, LinearMap.comp_apply, Basis.piTensorProduct_apply, finiteEmbed_tprod, evalForm_tprod (isRestricted_extend ξ T _), finprod_eq_prod_of_mulSupport_subset (s := T)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[← Finset.prod_coe_sort T]`. Establish `hterm : ∀ v : T, l v (extend ξ T (fun i => b i (k' i)) v) = if k' v = k v then 1 else 0`. Introduce `v`. Simplify using `only [l, extend, Finset.coe_mem, dif_pos, Basis.coord_apply, Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [hterm, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hkk : k' = k`. Substitute `hkk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hkk]`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, k' v ≠ k v := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hkk (funext hcon)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by simp [hv])`. Introduce `v hv`.
-
-Assume the negation of the conclusion as `hvT`. Establish `hvT' : v ∉ T` using `by simpa using hvT`. Apply `hv` to reduce the goal to its premises. Simplify using `[l, extend, hvT', hf v hvT']`. Use `congrArg (fun F => F s) key` as an intermediate fact.
-
-Simplify using `only [LinearMap.comp_apply, Basis.coord_apply] at this`. Rewrite using `[this]`. Conclude with `hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_evalForm_ne_zero {ξ : ∀ v, V v} (hξ : ∀ᶠ v in cofinite, ξ v ≠ 0)
     {t : ⨂[ℂ] v, V v} (ht : t ∈ restrictedTensor ξ) (ht0 : t ≠ 0) :
@@ -595,7 +589,7 @@ def tensorRep (π : ∀ v, Representation ℂ (G v) (V v)) :
     exact PiTensorProduct.map_mul _ _
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.map_tprod _ _`.
+A detailed English derivation is pending.
 -/
 theorem tensorRep_tprod (π : ∀ v, Representation ℂ (G v) (V v)) (g : Πʳ v, [G v, K v])
     (x : ∀ v, V v) :

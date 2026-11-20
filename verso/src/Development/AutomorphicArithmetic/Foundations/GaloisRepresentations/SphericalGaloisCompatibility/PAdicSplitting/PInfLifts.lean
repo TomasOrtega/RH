@@ -6,11 +6,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.ToralGalois.R2
 
 /- English proof (translation)
-Introduce `hS E Ω _ _ _ _ _ _ n hn π Y hY`. Proceed by induction on `hY with`. Consider the case `refl`. Introduce `τ`. Conclude with `congrArg (CG.mk π).infChar (RingHom.comp_id τ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `@tail Y Z _ hs ih`. Introduce `τ`. Take `⟨alg, tow, hG, hP, hW⟩` from `hs`. Establish `hcomp : (algebraMap Y.K Z.K).comp (algebraMap E Y.K) = algebraMap E Z.K`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap Z.K Ω).injective` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply Y.K Z.K Ω, ← IsScalarTower.algebraMap_apply E Y.K Ω, ← IsScalarTower.algebraMap_apply E Z.K Ω]`. Rewrite using `[hS Y.K Z.K hP n hn Y.π Z.π hW τ, ih (τ.comp (algebraMap Y.K Z.K)), RingHom.comp_assoc, hcomp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ToralGalois.R2.infLifts :
     InfStep → InfLifts := by

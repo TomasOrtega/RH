@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActEqZeroOfMem
 open GroundTheory.Automorphic.HarishChandra GlobalTheory.CompanionTheory.PresRho
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.PresRho.LowMeet.mem_sqSpan_of_mem_lowSpan_of_mem_Jp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLowSpanInfIdealLeSquareSpan.lean&line=129#L129)
 -/

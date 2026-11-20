@@ -10,37 +10,35 @@ open Topology Filter Metric Matrix
 noncomputable section
 
 /- English proof (translation)
-Take `⟨hwY, hN, hmaps, huniq, hcard, -, hsec⟩` from `hY`. Establish `hρ : 0 < ρ` using `dist_nonneg.trans_lt (hmaps hwY)`. Set `e : σ ≃ Fin (Fintype.card σ)` to `Fintype.equivFin σ`. Set `Φ : (Fin (Fintype.card σ) → ℂ) ≃L[ℂ] (σ → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ e).toContinuousLinearEquiv`. Set `L : (Fin (Fintype.card σ) → ℂ) →L[ℂ] (Fin 1 → ℂ)` to `ContinuousLinearMap.pi fun _ => p.comp (Φ : (Fin (Fintype.card σ) → ℂ) →L[ℂ] (σ → ℂ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : Matrix (Fin (0 + 1)) (Fin (Fintype.card σ)) ℂ` to `LinearMap.toMatrix' (L : (Fin (Fintype.card σ) → ℂ) →ₗ[ℂ] (Fin 1 → ℂ))`. Establish `hA : ∀ z, A *ᵥ z = fun _ => p (Φ z)` using `fun z => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression. Establish `hpT : ∀ z, p (w + Φ z) = p w + p (Φ z)` using `fun z => map_add p w (Φ z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hT : ∀ x, w + Φ (Φ.symm (x - w)) = x` using `fun x => by simp`. Establish `hone : ∀ (y : Fin (0 + 1) → ℂ) (t : ℂ), t = y 0 → (fun _ => t) = y` using `fun y t ht => by`. Use function extensionality and compare the values at `i`. Rewrite using `[show i = 0 from Subsingleton.elim (α := Fin 1) _ _, ht]`. Set `X : Set (Fin (Fintype.card σ) → ℂ)` to `{z | w + Φ z ∈ Y ∧ p (Φ z) ≠ 0}`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨m, ord, ψ, δ, hδ, hδ1, hsum, hord, hdiff, hmap, hinj, -, -⟩` from `hPCC (Fintype.card σ) 0 N A 0 ρ X hρ rfl (fun x hx => by`. Rewrite using `[hA, dist_zero_right, pi_norm_const]`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Use `hmaps hx.1` as an intermediate fact. Rewrite using `[mem_ball, dist_eq_norm, hpT, add_sub_cancel_left] at this)` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(fun y hy hy0 => by`. Establish `hyρ : p w + y 0 ∈ ball (p w) ρ`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left]`. Conclude with `(norm_le_pi_norm y 0).trans_lt (by rwa [dist_zero_right] at hy)`. Rewrite using `[← hcard _ hyρ (by simpa using hy0), ← ((add_right_injective w).comp Φ.injective).injOn.encard_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨⟨hzY, -⟩, hzy⟩, rfl⟩`. Use `⟨hzY, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Function.comp_apply, hpT, ← congrFun ((hA z).symm.trans hzy) 0]`. Introduce and unpack `⟨hxY, hxp⟩`. Use `⟨Φ.symm (x - w), ⟨⟨by rwa [hT], ?_⟩, ?_⟩, hT x⟩` and prove the remaining obligations. Simplify `hy0` using `[hxp]`. Rewrite using `[hA]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hone y _ (by simp [hxp]))`. Use the proof step `(fun x hx => by`. Take `⟨O₀, V₀, g₀, hO₀, hV₀, hxV₀, hg₀, hpg₀, hYV⟩` from `hsec (w + Φ x) hx.1 (by rw [hpT]; simpa using hx.2)`. Establish `hsec' : ∀ z, w + Φ z ∈ Y ∩ V₀ → p w + p (Φ z) ∈ O₀ ∧ g₀ (p w + p (Φ z)) = w + Φ z`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `hz` using `[hYV]`. Take `⟨t, ht, hgt⟩` from `hz`. Establish `: t = p w + p (Φ z)` using `by rw [← hpT, ← hgt, hpg₀ t ht]`. Substitute `this` using the available equality. Conclude with `⟨ht, hgt⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hxO, hgx⟩` from `hsec' x ⟨hx.1, hxV₀⟩`. Use `⟨{y | p w + y 0 ∈ O₀ ∧ y 0 ≠ 0}, {z | w + Φ z ∈ V₀ ∧ p (Φ z) ≠ 0}, fun y => Φ.symm (g₀ (p w + y 0) - w), (hO₀.preimage (continuous_const.add (continuous_apply 0))).inter (isOpen_ne_fun (continuous_apply 0) continuous_const), by rw [hA]; exact ⟨hxO, hx.2⟩, (hV₀.preimage (continuou …` and prove the remaining obligations. Conclude with `Φ.symm.differentiable.comp_differentiableOn ((hg₀.comp ((differentiableOn_const _).add (differentiable_apply 0).differentiableOn) fun y hy => hy.1).sub_const w)`. Rewrite using `[hA]`. Use `hone y _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `[hpg₀ _ hy.1]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzY, hz0⟩, hzV, -⟩`. Take `⟨hzO, hgz⟩` from `hsec' z ⟨hzY, hzV⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun _ => p (Φ z), ⟨hzO, hz0⟩, by simp [hgz]⟩`. Introduce and unpack `⟨y, ⟨hyO, hy0⟩, rfl⟩`. Establish `hw : w + Φ (Φ.symm (g₀ (p w + y 0) - w)) = g₀ (p w + y 0)` using `hT _`. Establish `hp : p (Φ (Φ.symm (g₀ (p w + y 0) - w))) = y 0` using `by simp [hpg₀ _ hyO]`. Establish `hmem : g₀ (p w + y 0) ∈ Y ∩ V₀` using `by rw [hYV]; exact ⟨_, hyO, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `show (w + Φ (Φ.symm (g₀ (p w + y 0) - w)) ∈ Y ∧ p (Φ (Φ.symm (g₀ (p w + y 0) - w))) ≠ 0) ∧ (w + Φ (Φ.symm (g₀ (p w + y 0) - w)) ∈ V₀ ∧ p (Φ (Φ.symm (g₀ (p w + y 0) - w))) ≠ 0)`. Rewrite using `[hw, hp]`. Conclude with `⟨⟨hmem.1, hy0⟩, hmem.2, hy0⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨b⟩ : Nonempty (Fin m) := by`. Break down `m with _ | m` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hsum`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨0⟩`. Establish `hpunct : ∀ s ∈ ball (0 : ℂ) δ \ {0}, (fun _ => s) ∈ ball (0 : Fin (0 + 1) → ℂ) δ ∩ {t | t 0 ≠ 0}` using `fun s hs => ⟨by rw [mem_ball, dist_zero_right, pi_norm_const]; exact mem_ball_zero_iff.1 hs.1, hs.2⟩`. Use `⟨δ, ord b, fun s => w + Φ (ψ b fun _ => s), hδ, hδ1, hord b, ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(differentiableOn_const w).add (Φ.differentiable.comp_differentiableOn ((hdiff b).comp (differentiable_pi.2 fun _ => differentiable_id).differentiableOn hpunct))`. Introduce `s hs s' hs' hss'`. Use `hinj b (hpunct s hs) (hpunct s' hs') (Φ.injective (add_left_cancel hss'))` as an intermediate fact. Conclude with `congrFun this 0`. Take `⟨hX, hAψ⟩` from `hmap b _ (hpunct s hs)`.
-
-Use `⟨hX.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hpT]`. Use `congrFun ((hA _).symm.trans hAψ) 0` as an intermediate fact. Simplify using `only [Function.update_self] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centredDiscCover_punctured_branch (hPCC : PuncturedCoverCycles.Statement)
     {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {w : σ → ℂ} {p : (σ → ℂ) →L[ℂ] ℂ} {ρ : ℝ} {N : ℕ}
@@ -149,31 +147,27 @@ theorem centredDiscCover_punctured_branch (hPCC : PuncturedCoverCycles.Statement
     rw [this]
 
 /- English proof (translation)
-Take `⟨hwY, -, hmaps, huniq, -, hprop, -⟩` from `hY`. Establish `hρ : 0 < ρ` using `dist_nonneg.trans_lt (hmaps hwY)`. Use `set r := min δ (ρ / 2) with hr`. Establish `hr0 : 0 < r` using `lt_min hδ (half_pos hρ)`. Establish `hrδ : ball (0 : ℂ) r \ {0} ⊆ ball 0 δ \ {0}` using `Set.sdiff_subset_sdiff_left (ball_subset_ball (min_le_left _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact {x | x ∈ Y ∧ p x ∈ closedBall (p w) (ρ / 2)}` using `hprop _ (closedBall_subset_ball (half_lt_self hρ)) (isCompact_closedBall _ _)`. Establish `hφK : ∀ s ∈ ball (0 : ℂ) r \ {0}, φ s ∈ {x | x ∈ Y ∧ p x ∈ closedBall (p w) (ρ / 2)}`. Introduce `s hs`. Take `⟨hY', hp⟩` from `hφY s (hrδ hs)`. Use `⟨hY', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall, hp, dist_eq_norm, add_sub_cancel_left, norm_pow]`. Establish `h1 : ‖s‖ < r` using `mem_ball_zero_iff.1 hs.1`. Combine the equalities or inequalities in the displayed calculation. Establish `hbdd : BddAbove (norm ∘ φ '' (ball 0 r \ {0}))`. Use `(hK.image continuous_norm).bddAbove.mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨φ s, hφK s hs, rfl⟩`. Establish `hF` using `Complex.differentiableOn_update_limUnder_of_bddAbove (ball_mem_nhds 0 hr0) (hφd.mono hrδ) hbdd`. Use `set ℓ := limUnder (𝓝[≠] (0 : ℂ)) φ with hℓdef`. Establish `hev : ∀ᶠ s in 𝓝[≠] (0 : ℂ), s ∈ ball (0 : ℂ) r \ {0}` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (ball_mem_nhds 0 hr0)] with s h1 h2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨h2, h1⟩`. Establish `hlim : Tendsto φ (𝓝[≠] 0) (𝓝 ℓ)`. Establish `hc` using `(hF.continuousOn.continuousAt (ball_mem_nhds 0 hr0)).tendsto.mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))`. Rewrite `hc` using `[Function.update_self]`. Use `hc.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `Function.update_of_ne hs _ _`. Establish `hℓK : ℓ ∈ {x | x ∈ Y ∧ p x ∈ closedBall (p w) (ρ / 2)}` using `hK.isClosed.mem_of_tendsto hlim (hev.mono hφK)`. Establish `hpℓ : p ℓ = p w`. Establish `h1 : Tendsto (fun s => p (φ s)) (𝓝[≠] 0) (𝓝 (p ℓ))` using `(p.continuous.tendsto ℓ).comp hlim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Tendsto (fun s : ℂ => p w + s ^ k) (𝓝[≠] 0) (𝓝 (p w))`. Establish `: Tendsto (fun s : ℂ => p w + s ^ k) (𝓝 0) (𝓝 (p w + 0 ^ k))` using `(continuous_const.add (continuous_pow k)).tendsto 0`. Rewrite `this` using `[zero_pow (by omega), add_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `tendsto_nhds_unique (h1.congr' ?_) h2` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hev] with s hs`. Conclude with `(hφY s (hrδ hs)).2`. Establish `hℓ : ℓ = w` using `huniq ℓ hℓK.1 hpℓ`. Use `⟨r, hr0, Function.update φ 0 w, ?_, ?_, Function.update_self _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hℓ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hF`. Establish `hoff : ∀ s ∈ ball (0 : ℂ) r, s ≠ 0 → Function.update φ 0 w s ≠ w`. Introduce `s hs h0 heq`. Rewrite `heq` using `[Function.update_of_ne h0]`. Use `(hφY s (hrδ ⟨hs, h0⟩)).2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[heq]`. Conclude with `pow_ne_zero k h0 (by linear_combination -this)`. Introduce `s hs s' hs' hss'`. Apply the tactic sequence `by_cases h0 : s = 0 <;> by_cases h0' : s' = 0`. Rewrite using `[h0, h0']`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h0` using the available equality. Rewrite `hss'` using `[Function.update_self]`. Conclude with `absurd hss'.symm (hoff s' hs' h0')`. Substitute `h0'` using the available equality. Rewrite `hss'` using `[Function.update_self]`.
-
-Conclude with `absurd hss' (hoff s hs h0)`. Rewrite `hss'` using `[Function.update_of_ne h0, Function.update_of_ne h0']`. Conclude with `hφi (hrδ ⟨hs, h0⟩) (hrδ ⟨hs', h0'⟩) hss'`. Introduce `s hs`. Distinguish the cases in `h0 : s = 0`.
-
-Substitute `h0` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hwY`. Rewrite using `[Function.update_of_ne h0]`. Conclude with `(hφY s (hrδ ⟨hs, h0⟩)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centredDiscCover_extend_across_centre
     {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {w : σ → ℂ} {p : (σ → ℂ) →L[ℂ] ℂ} {ρ : ℝ} {N : ℕ}
@@ -257,7 +251,7 @@ theorem centredDiscCover_extend_across_centre
       exact (hφY s (hrδ ⟨hs, h0⟩)).1
 
 /- English proof (translation)
-Introduce `σ _ Y w p ρ N hY`. Take `⟨δ, k, φ, hδ, hδ1, hk, hφd, hφi, hφY⟩` from `centredDiscCover_punctured_branch hPCC hY`. Conclude with `centredDiscCover_extend_across_centre hY hδ hδ1 hk hφd hφi hφY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem CentredDiscCoverCurve.proof (hPCC : PuncturedCoverCycles.Statement) :
     CentredDiscCoverCurve.Statement := by

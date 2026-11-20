@@ -15,11 +15,11 @@ namespace GlobalTheory.RatAnnihF
 section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Use `haveI : IsTotallyReal F := hB.cm.1`. Take `⟨⟨θ, hθ⟩, -⟩` from `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).2`. Set `L : Ainf F →+ ℂ` to `AddMonoidHom.mk' (fun x => ∑ w, θ w (x ⊗ₜ[F] (1 : E))) fun a b => by`. Simplify using `only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib]`. Establish `hL : ∀ x, L x = ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F x) : ℝ) : ℂ)` using `fun x => GlobalTheory.StdCharWeilDatum.sum_infFam B θ hθ x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.RatAnnih.adele_rat (GlobalTheory.StdCharWeilDatum.isCharAF hB.std) (psiV_exists_ne_one hB.std) L (continuous_finset_sum _ fun w _ => (hθ w).2) (fun x => ?_) (fun x => ?_) a h` and prove the remaining obligations. Rewrite using `[hL]`. Establish `e : InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (Ainf F) x) = mixedEmbedding F x`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Rewrite using `[e, GlobalTheory.LatVacArith.trace_mixedEmbedding]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.ofReal_ratCast _`. Use `show B.ψ (pairA F x 0) = _`. Rewrite using `[GlobalTheory.StdCharWeilDatum.psi_pairA hB.std, hL]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem adele_rat_of_isGood_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (a : AF F)
     (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d := by
@@ -42,13 +42,11 @@ theorem adele_rat_of_isGood_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.U
     ring
 end
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ x`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)`. Establish `hσ : Function.Surjective σ` using `(Algebra.IsAlgebraic.algHom_bijective σ).2`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, ∃ e : E, x i j = (1 : AF F) ⊗ₜ[F] e` using `fun i j => GlobalTheory.RatAnnih.tensor_rat (x i j) fun e => _root_.GlobalTheory.RatAnnihF.adele_rat_of_isGood_k hB _ fun c => by`. Take `⟨γ, hγ, hγe⟩` from `exists_symplOF_eq σ hσ hS hT hξ x i j (c • e)`. Conclude with `(congrArg B.ψ ((GlobalTheory.RatAnnih.trace_mul_algebraMap (x i j) e c).trans hγe.symm)).trans (h γ hγ)`. Use `choose M hM using hent`. Use `⟨Matrix.of M, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hM i j]`. Both sides reduce to the same expression. Introduce and unpack `⟨M, rfl⟩ _ ⟨N, rfl⟩`. Take `⟨a, ha⟩` from `symplOF_rat σ JS JT ξ₀ M N`. Rewrite using `[ha]`.
-
-Conclude with `(GlobalTheory.StdCharWeilDatum.isCharAF hB.std).2.2.1 a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLF_annihilator_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

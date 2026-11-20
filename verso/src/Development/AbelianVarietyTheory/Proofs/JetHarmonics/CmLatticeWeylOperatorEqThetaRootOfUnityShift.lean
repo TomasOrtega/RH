@@ -22,9 +22,9 @@ namespace GlobalTheory.MomOne.ThShift
 variable {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ`. Proceed by induction on `m with`. Consider the case `zero => simpa using h2 1`. Consider the case `succ k ih`. Establish `hk : AnalyticAt ℂ (fun z => F z ^ k) 0` using `hF.pow k`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `(h1 _ F hk hF).2.1` as an intermediate fact. Simplify using `only [pow_succ]`. Rewrite using `[this, ih]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_pow (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (hℓ : constantCoeff ℓ = 0) (F : ℂ → ℂ)
     (hF : AnalyticAt ℂ F 0) (m : ℕ) : hat ι ℓ (fun z => F z ^ m) = hat ι ℓ F ^ m := by
@@ -38,7 +38,7 @@ theorem hat_pow (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (hℓ : constant
     rw [this, ih]
 
 /- English proof (translation)
-Establish `: constantCoeff (logS : ℂ_[q]⟦X⟧) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Simplify using `[logS]`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem const_ell (ω : ℂ_[q]) : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by
   have : constantCoeff (logS : ℂ_[q]⟦X⟧) = 0 := by
@@ -46,9 +46,9 @@ theorem const_ell (ω : ℂ_[q]) : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) 
   simp [this]
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `GlobalTheory.MomOne.TaylorRead.hat_laws q ι _ (const_ell ω)`. Rewrite using `[← (GlobalTheory.MomOne.hat_multiplicative_chart q ι ω F hF).2.2.1 α a ha, ← hat_pow ι _ (const_ell ω) F hF m]`. Establish `hk : AnalyticAt ℂ (fun z => F z ^ m) 0` using `hF.pow m`. Rewrite using `[← (h1 _ G hk hG).2.1]`. Establish `hα : AnalyticAt ℂ (fun z => F (α * z)) 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : AnalyticAt ℂ (fun z : ℂ => α * z) 0` using `by fun_prop`. Conclude with `AnalyticAt.comp_of_eq hF h0 (by simp)`. Conclude with `(h1 _ _ hα (hk.mul hG)).2.2.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hat_funEq (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (F G : ℂ → ℂ) (hF : AnalyticAt ℂ F 0)
     (hG : AnalyticAt ℂ G 0) (α : ℂ) (a : ℤ_[q]) (ha : ι α = zc a) (m : ℕ)
@@ -66,9 +66,9 @@ theorem hat_funEq (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (F G : ℂ → ℂ) (h
   exact (h1 _ _ hα (hk.mul hG)).2.2.1 h
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `n`. Rewrite using `[pow_zero, coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ k ih`. Use `((GlobalTheory.MomOne.sup_norm_laws q).1 _ _ _ _ ih hf).2` as an intermediate fact. Simplify `this` using `[pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bd_pow (f : ℂ_[q]⟦X⟧) (hf : Bd 1 f) (m : ℕ) : Bd 1 (f ^ m) := by
   induction m with
@@ -81,7 +81,7 @@ theorem bd_pow (f : ℂ_[q]⟦X⟧) (hf : Bd 1 f) (m : ℕ) : Bd 1 (f ^ m) := by
     simpa [pow_succ] using this
 
 /- English proof (translation)
-Take `⟨-, h2, h3, -⟩` from `GlobalTheory.MomOne.Shift.shift_laws q ζ hζ`. Proceed by induction on `m with`. Consider the case `zero => simpa using h3 1`. Consider the case `succ k ih`. Rewrite using `[pow_succ, (h2 _ _ ⟨1, bd_pow f hf k⟩ ⟨1, hf⟩).2, ih, pow_succ]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_pow (ζ : ℂ_[q]) (hζ : ‖ζ - 1‖ < 1) (f : ℂ_[q]⟦X⟧) (hf : Bd 1 f) (m : ℕ) :
     shiftS ζ (f ^ m) = shiftS ζ f ^ m := by
@@ -92,11 +92,11 @@ theorem shift_pow (ζ : ℂ_[q]) (hζ : ‖ζ - 1‖ < 1) (f : ℂ_[q]⟦X⟧) (
     rw [pow_succ, (h2 _ _ ⟨1, bd_pow f hf k⟩ ⟨1, hf⟩).2, ih, pow_succ]
 
 /- English proof (translation)
-Introduce and unpack `⟨u, v, h⟩`. Establish `hs : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Establish `him` using `congrArg Complex.im h`. Establish `hre` using `congrArg Complex.re h`. Simplify using `[wK] at him hre`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv : v = 0`. Break down `him with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply the tactic sequence `first | exact hs.ne' h | omega | (simp at h; omega)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hv` using the available equality. Establish `: (2 * u : ℝ) = -1` using `by simp at hre; linarith`. Establish `: 2 * u = -1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_half (d : ℕ) (hd : 0 < d) : ¬ InOK d (0 - 1 / 2) := by
   rintro ⟨u, v, h⟩
@@ -114,21 +114,21 @@ theorem not_half (d : ℕ) (hd : 0 < d) : ¬ InOK d (0 - 1 / 2) := by
   omega
 
 /- English proof (translation)
-Simplify using `[zc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zc_natCast (k : ℕ) : zc (k : ℤ_[q]) = (k : ℂ_[q]) := by simp [zc]
 
 /- English proof (translation)
-Simplify using `[zc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zc_sub_one (a : ℤ_[q]) : zc (a - 1) = zc a - 1 := by simp [zc]
 
 /- English proof (translation)
-Establish `hn` using `(GlobalTheory.MomOne.MulSeries.mulS_laws q).2.2.2.2.2`. Rewrite `h` using `[← zc_natCast, hn]`. Establish `h1 : (q : ℤ) ∣ (m : ℤ)`. Rewrite using `[← PadicInt.norm_int_lt_one_iff_dvd]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : q ∣ m` using `by exact_mod_cast h1`. Rewrite using `[Nat.coprime_comm, (Fact.out : q.Prime).coprime_iff_not_dvd]`. Introduce `h3`. Establish `h4 : q ∣ m - (m - 1)` using `Nat.dvd_sub h2 h3`. Establish `h5 : m - (m - 1) = 1` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h5]`. Conclude with `(Fact.out : q.Prime).one_lt.ne' (Nat.dvd_one.mp h4)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_pred (m : ℕ) (hm : 1 ≤ m) (h : ‖(m : ℂ_[q])‖ < 1) : Nat.Coprime (m - 1) q := by
   have hn := (GlobalTheory.MomOne.MulSeries.mulS_laws q).2.2.2.2.2
@@ -144,23 +144,23 @@ theorem coprime_pred (m : ℕ) (hm : 1 ≤ m) (h : ‖(m : ℂ_[q])‖ < 1) : Na
   exact (Fact.out : q.Prime).one_lt.ne' (Nat.dvd_one.mp h4)
 
 /- English proof (translation)
-Take `⟨⟨o1, -, oR⟩, oZ, oD, -⟩` from `GlobalTheory.MomOne.okArith d q ι hd hd7 hs`. Establish `hn` using `(GlobalTheory.MomOne.MulSeries.mulS_laws q).2.2.2.2.2`. Establish `hle : ∀ β, InOK d β → ‖ι β‖ ≤ 1`. Introduce `β hβ`. Take `⟨a, ha⟩` from `(oZ β hβ).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ha, hn]`. Conclude with `a.norm_le_one`. Establish `hmul : ∀ a b, InOK d a → InOK d b → InOK d (a * b)` using `fun a b ha hb => (oR a b ha hb).2.1`. Establish `hconj : ∀ a, InOK d a → InOK d (conj a)` using `fun a ha => (oR a a ha ha).2.2.2`. Take `⟨v, hv, hvn, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (Fact.out : q.Prime).one_lt.le`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (Fact.out : q.Prime).ne_zero`. Establish `hβ : InOK d (α - 1)`. Use `(oR α (-1) hα (oR 1 1 o1 o1).2.2.1).1` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hl : InOK d ((α - 1) * v / (q : ℂ) ^ n)`. Apply `oD _ n (hmul _ _ hβ hv)` to reduce the goal to its premises. Rewrite using `[map_mul, norm_mul, map_sub, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, norm_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]; exact zpow_le_zpow_right₀ hq1 (by omega)`. Establish `hc : InOK d (conj v * (v * conj (α - 1)) / (q : ℂ) ^ (2 * n))`. Apply `oD _ (2 * n) (hmul _ _ (hconj _ hv) (hmul _ _ hv (hconj _ hβ)))` to reduce the goal to its premises. Rewrite using `[map_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: conj (conj v * (v * conj (α - 1))) = conj v * (v * (α - 1))`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_mul, norm_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hW` using `(GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.2.2.2.1 (((1 : ℕ) : ℂ) * v / (q : ℂ) ^ n) ((α - 1) * v / (q : ℂ) ^ n) θ (by omega) (by`. Use `hc using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_div₀, map_mul, map_pow, Complex.conj_natCast]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the proof step `ring)`. Rewrite `hW` using `[hθ.2.2.2.1 _ hl]`. Rewrite using `[hW]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem W_mul_eq (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (θ : ℂ → ℂ) (hd : d.Prime) (hd7 : d % 16 = 7)
     (hs : Split d q) (hθ : IsTh d θ) (n : ℕ) (y : ℂ) (hy : Good ι d n 1 y) (α : ℂ) (hα : InOK d α)
@@ -216,51 +216,47 @@ theorem W_mul_eq (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (θ : ℂ → ℂ) (hd : d.P
   ring
 
 /- English proof (translation)
-Introduce `d q _ M ω θ hd hd7 hs hL hM hθ hAt n y hy`. Take `⟨hζq, hA⟩` from `hAt n y hy`. Use `set ζ := M.ι (kap1 d 1 y) with hζdef`. Establish `hζ : ‖ζ - 1‖ < 1` using `hA.2.1`. Take `⟨⟨o1, -, oR⟩, oZ, oD, oE, -⟩` from `GlobalTheory.MomOne.okArith d q M.ι hd hd7 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mu1, -, -, -, -, hn⟩` from `GlobalTheory.MomOne.MulSeries.mulS_laws q`. Take `⟨-, sh2, sh3, -⟩` from `GlobalTheory.MomOne.Shift.shift_laws q ζ hζ`. Take `⟨-, -, -, ht0, -⟩` from `GlobalTheory.MomOne.TaylorRead.hat_laws q M.ι _ (const_ell ω)`. Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast (Fact.out : q.Prime).one_lt`. Establish `hθy : θ y ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `hθ.2.2.2.2 y h0`. Use `(GlobalTheory.T.smallTorsion_killed_by_prime_powers d q M ω hd hd7 hs hL hM).2.2.2 y 1 0 o1 one_ne_zero ⟨1, one_pos, Nat.coprime_one_left q, ⟨0, 0, by simp⟩⟩ (by simpa using h1) hA.1` as an intermediate fact. Conclude with `not_half d hd.pos this.2`. Establish `hθan : AnalyticAt ℂ θ 0` using `hθ.1.analyticAt 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWan : AnalyticAt ℂ (W1 d y θ) 0` using `((GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.2.1 y θ hθ.1).2.analyticAt 0`. Use `set f := hat M.ι (C ω * logS) θ with hf`. Use `set g := hat M.ι (C ω * logS) (W1 d y θ) with hg`. Establish `hfb : Bd 1 f` using `GlobalTheory.T.cm_even_theta_series_chart_coeff_integral d q M ω θ hd hd7 hs hL hM hθ`. Establish `hf0 : constantCoeff f = 1` using `by rw [hf, ht0, hθ.2.1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hff : f * f⁻¹ = 1` using `PowerSeries.mul_inv_cancel f (by rw [hf0]; exact one_ne_zero)`. Establish `hfi : Bd 1 f⁻¹` using `(GlobalTheory.MomOne.sup_norm_laws q).2.2.1 f _ hfb (by rw [hf0, norm_one]) hff`. Use `set h := shiftS ζ f with hh`. Use `set h' := shiftS ζ f⁻¹ with hh'`. Establish `hhh : h * h' = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hh, hh', ← (sh2 _ _ ⟨1, hfb⟩ ⟨1, hfi⟩).2, hff]`. Simplify using `using sh3 1`. Establish `hg0 : g ≠ 0`. Introduce `h0`. Establish `h1 : constantCoeff g = 0` using `by rw [h0, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hg, ht0, _root_.map_eq_zero]`. Simplify using `[W1, U1, hθy] at h1`. Establish `hρ : g * h' ≠ 0` using `mul_ne_zero hg0 (right_ne_zero_of_mul_eq_one hhh)`. Establish `key : ∀ s : ℕ, Nat.Coprime s q → ∃ m : ℕ, 2 ≤ m ∧ ‖(m : ℂ_[q])‖ < 1 ∧ s ∣ m ∧ ∃ c : ℂ_[q], g * h' = C c ∧ c ^ (m - 1) = 1`. Introduce `s hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, he1, he2⟩` from `oE (n + 1) s hsq`. Establish `hsO : InOK d (s : ℂ)` using `⟨s, 0, by simp⟩`. Use `set α := (s : ℂ) * e with hαdef`. Establish `hα : InOK d α` using `(oR _ _ hsO he).2.1`. Take `⟨⟨a, ha⟩, -, -⟩` from `oZ α hα`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, ⟨N, hN⟩, -⟩` from `oZ e he`. Take `⟨⟨b, hb⟩, -, -⟩` from `oZ _ hsO`. Establish `hlt : (q : ℝ) ^ (-((n + 1 : ℕ) : ℤ)) < 1` using `zpow_lt_one_of_neg₀ hq1 (by omega)`. Establish `hlen : (q : ℝ) ^ (-((n + 1 : ℕ) : ℤ)) ≤ (q : ℝ) ^ (-(n : ℤ))` using `zpow_le_zpow_right₀ hq1.le (by omega)`. Establish `hα1 : ‖M.ι α‖ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ‖M.ι α - 1‖ < ‖(1 : ℂ_[q])‖` using `by rw [norm_one]; exact lt_of_le_of_lt he1 hlt`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h1.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right h1.le, norm_one]`. Conclude with `this`. Establish `hα0 : α ≠ 0`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hα1` using `[h0]`. Simplify using `at hα1`. Establish `hm : ((s * s * N : ℕ) : ℂ) = α * conj α`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hN, hαdef, map_mul, Complex.conj_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `set m := s * s * N with hmdef`. Establish `hmn : ‖(m : ℂ_[q])‖ < 1`. Establish `h1 : (m : ℂ_[q]) = M.ι α * (M.ι s * M.ι (conj e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast M.ι m, hm, ← map_mul, ← map_mul, hαdef, map_mul (starRingEnd ℂ), Complex.conj_natCast]`. Rewrite using `[h1, norm_mul, hα1, one_mul, norm_mul, hb, hn]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm2 : 2 ≤ m`. Establish `h0 : m ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Rewrite `hm` using `[h0]`. Simplify using `[hα0] at hm`. Establish `h1 : m ≠ 1`. Introduce `h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hmn` using `[h1]`. Simplify using `at hmn`. Use linear arithmetic over natural numbers and integers. Use `⟨m, hm2, hmn, ⟨s * N, by rw [hmdef]; ring⟩, ?_⟩` and prove the remaining obligations. Take `⟨ε, hε1, hε2, -, hε4, hε5, hε6⟩` from `GlobalTheory.T.thetaNormQuotient_elliptic_unitSeries d q M ω θ hd hd7 hs hL hM hθ α m hα hα0 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ, hψ1, hψ2, hψ3⟩` from `GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate q M ω ζ y ε hM hA hε1 hε2 ⟨1, hε4⟩`. Establish `hWW` using `W_mul_eq d M.ι θ hd hd7 hs hθ n y hy α hα (he1.trans hlen)`. Establish `e1 : f.subst (mulS a : ℂ_[q]⟦X⟧) = f ^ m * hat M.ι (C ω * logS) ε`. Apply `hat_funEq M.ι ω θ ε hθan hε2 α a ha m` to reduce the goal to its premises. Establish `: ∀ᶠ z in 𝓝 (0 : ℂ), θ z ≠ 0` using `hθan.continuousAt.eventually_ne (by rw [hθ.2.1]; exact one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(this.filter_mono nhdsWithin_le_nhds).mono fun z hz => hε5 z hz`. Establish `e2 : g.subst (mulS a : ℂ_[q]⟦X⟧) = g ^ m * hat M.ι (C ω * logS) ψ`. Apply `hat_funEq M.ι ω _ ψ hWan hψ1 α a ha m` to reduce the goal to its premises. Establish `hc : ContinuousAt (fun z => θ (z + y)) 0` using `(hθ.1.continuous.comp (continuous_id.add continuous_const)).continuousAt`. Establish `: ∀ᶠ z in 𝓝 (0 : ℂ), θ (z + y) ≠ 0` using `hc.eventually_ne (by simpa using hθy)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [this.filter_mono nhdsWithin_le_nhds, hψ2] with z hz hz2`. Rewrite using `[hz2, ← hε6 y z hz, hWW]`. Establish `ha1 : ‖a - ((1 : ℕ) : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ))`. Rewrite using `[Nat.cast_one, ← hn, zc_sub_one, ← ha]`. Conclude with `he1.trans hlen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : h.subst (mulS a : ℂ_[q]⟦X⟧) = h ^ m * hat M.ι (C ω * logS) ψ`. Use `((GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).2 ζ n 1 a f hζq ha1 ⟨1, hfb⟩).2` as an intermediate fact. Rewrite `this` using `[pow_one, e1, (sh2 _ _ ⟨1, bd_pow f hfb m⟩ ⟨1, hε4⟩).2, shift_pow ζ hζ f hfb m]`. Rewrite using `[hψ3, this]`. Establish `hsub : HasSubst (mulS a : ℂ_[q]⟦X⟧)` using `HasSubst.of_constantCoeff_zero' (mu1 a).2.1`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : h.subst (mulS a : ℂ_[q]⟦X⟧) * h'.subst (mulS a : ℂ_[q]⟦X⟧) = 1`. Rewrite using `[← subst_mul hsub, hhh, ← coe_substAlgHom hsub, map_one]`. Establish `e5 : (g * h').subst (mulS a : ℂ_[q]⟦X⟧) = (g * h') ^ m`. Rewrite using `[subst_mul hsub, e2]`. Rewrite `e4` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e6 : h ^ m * h' ^ m = 1` using `by rw [← mul_pow, hhh, one_pow]`. Rewrite using `[mul_pow]`. Take the linear combination `(g ^ m * h' ^ m) * e4 - (g ^ m * hat M.ι (C ω * logS) ψ * h'.subst (mulS a : ℂ_[q]⟦X⟧)) * e6`. Conclude with `(GlobalTheory.MomOne.FeUniq.funEq_unique q (mulS a) m (mu1 a).2.1 (by rw [(mu1 a).2.2.1, ← ha, hα1]) hmn hm2).1 _ hρ e5`. Take `⟨m₁, h12, h1n, -, c, hc, hc1⟩` from `key 1 (Nat.coprime_one_left q)`.
-
-Take `⟨m₂, h22, -, ⟨k, hk⟩, c', hc', hc2⟩` from `key (m₁ - 1) (coprime_pred m₁ (by omega) h1n)`. Establish `hcc : c' = c` using `C_injective (hc'.symm.trans hc)`. Rewrite `hc2` using `[hcc]`. Establish `hone : c = 1`. Establish `h1 : c ^ m₂ = 1` using `by rw [hk, pow_mul, hc1, one_pow]`.
-
-Establish `h2 : m₂ = (m₂ - 1) + 1` using `by omega`. Rewrite `h1` using `[h2, pow_succ, hc2, one_mul]`. Conclude with `h1`. Rewrite `hc` using `[hone, map_one]`. Take the linear combination `h * hc - g * hhh`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem theta_shift : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]) (θ : ℂ → ℂ), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → IsTh d θ → (∀ (n : ℕ) (y : ℂ), Good M.ι d n 1 y → M.ι (kap1 d 1 y) ^ (q ^ n) = 1 ∧ M.At ω (M.ι (kap1 d 1 y)) y) → ∀ (n : ℕ) (y : ℂ), Good M.ι d n 1 y → hat M.ι (C ω * logS) (W1 d y θ) = shiftS (M.ι (kap1 d 1 y)) (hat M.ι (C ω * logS) θ) := by
   intro d q _ M ω θ hd hd7 hs hL hM hθ hAt n y hy

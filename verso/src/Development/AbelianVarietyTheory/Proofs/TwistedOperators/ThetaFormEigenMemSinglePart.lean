@@ -20,11 +20,11 @@ namespace GlobalTheory.ConjScalar.OnePart
 open GlobalTheory.Hk3 GlobalTheory.Hk3.LabDet
 
 /- English proof (translation)
-Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `algebraMap r`. Use `⟨r, fun u _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Module.algebraMap_end_apply]`. Consider the case `add x y _ _ hx hy`. Take `⟨l, hl⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Conclude with `⟨l + m, fun u hu => by rw [LinearMap.add_apply, hl u hu, hm u hu, add_smul]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨l, hl⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Conclude with `⟨m * l, fun u hu => by rw [Module.End.mul_apply, hm u hu, map_smul, hl u hu, smul_smul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adjoin_scalar {M : Type} [AddCommGroup M] [Module ℂ M] (s : Set (Module.End ℂ M)) (S : M → Prop)
     (h : ∀ x ∈ s, ∃ l : ℂ, ∀ u, S u → x u = l • u) :
@@ -47,11 +47,11 @@ theorem adjoin_scalar {M : Type} [AddCommGroup M] [Module ℂ M] (s : Set (Modul
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨z, hz, hzu⟩` from `GlobalTheory.T.exists_adjoin_splitHeckeGenerators_duals_spherical V P hP M π d`. Establish `gen : ∀ x ∈ {x : Module.End ℂ M | ∃ k, k ≤ V.rank ∧ (x = opOf π P (Finsupp.single (splitLab V.rank k) 1) ∨ x = opOf π P (Finsupp.single (dualLab (splitLab V.rank k)) 1))}, ∃ l : ℂ, ∀ u, S u → x u = l • u`. Introduce and unpack `x ⟨k, hk, rfl | rfl⟩`. Conclude with `⟨a (splitLab V.rank k), fun u hu => ha u hu k hk⟩`. Use `⟨b (splitLab V.rank k), fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `(GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 (Finsupp.single (splitLab V.rank k) 1) M π u (fu u hu)`. Rewrite `hc` using `[GlobalTheory.Hk3.dualC, Finsupp.mapDomain_single]`. Rewrite using `[← hc]`. Conclude with `hb u hu k hk`. Take `⟨l, hl⟩` from `adjoin_scalar _ S gen z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l, fun u hu => by rw [← hzu u (fu u hu), hl u hu]⟩`.
+A detailed English derivation is pending.
 -/
 theorem scalar_of_split {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (P : Pl D.host.E)
     (hP : Formalism.DivisionValues.conjPl P ≠ P) (S : M → Prop) (fu : ∀ u, S u → ∀ k ∈ hyp V P, π k u = u) (a b : List ℤ → ℂ)
@@ -74,7 +74,7 @@ theorem scalar_of_split {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (
   exact ⟨l, fun u hu => by rw [← hzu u (fu u hu), hl u hu]⟩
 
 /- English proof (translation)
-Unfold `rRep`. Simplify using `only [hk, opOf, Finsupp.sum_single_index, one_smul, zero_smul]`. Use extensionality with `v g`. Simplify using `[postOn, heckeLin, rLin, LinearMap.compMultilinearMap_apply, Finset.sum_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem postOn_hk_single {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (P : Pl D.host.E) (d : List ℤ) (U : MMap M) :
     postOn M (hk V P (Finsupp.single d 1)) U = opOf (rRep M) P (Finsupp.single d 1) U := by
@@ -84,7 +84,7 @@ theorem postOn_hk_single {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V
   simp [postOn, heckeLin, rLin, LinearMap.compMultilinearMap_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Establish `hm : (algebraMap D.host.F D.host.E c) ∈ NumberField.maximalRealSubfield D.host.E` using `NumberField.IsTotallyReal.le_maximalRealSubfield D.host.F c.2`. Conclude with `(NumberField.IsCMField.complexConj_eq_self_iff _ _).mpr hm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem star_algebraMap_eq (c : D.host.F) : star (algebraMap D.host.F D.host.E c) = algebraMap D.host.F D.host.E c := by
   have hm : (algebraMap D.host.F D.host.E c) ∈ NumberField.maximalRealSubfield D.host.E :=
@@ -95,9 +95,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Introduce `PP hPP`. Take `⟨h1, h2⟩` from `hP PP hPP`. Rewrite `h2`, the goal using `[GlobalTheory.GoodPrimes.isConjPl_iff]`. Use `⟨fun e => h2 ?_, fun e => h1 ?_⟩` and prove the remaining obligations. Rewrite using `[e, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e'` using `congrArg Formalism.DivisionValues.conjPl e`. Rewrite `e'` using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Conclude with `e'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_conj (R : RealDat D A Ks) (t : T0) (P : Pl D.host.E) (hP : Good R t P) : Good R t (Formalism.DivisionValues.conjPl P) := by
   intro PP hPP
@@ -110,11 +110,11 @@ theorem good_conj (R : RealDat D A Ks) (t : T0) (P : Pl D.host.E) (hP : Good R t
     exact e'.symm
 
 /- English proof (translation)
-Introduce `PP hPP`. Establish `hPg : PP ∈ R.Pg`. Break down `hPP with h1 | h1` into its components or cases. Conclude with `h1`. Rewrite `h1` using `[GlobalTheory.LiftLower.Q_base hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Take `⟨x, hx, hy⟩` from `h (PP.under (𝓞 D.host.F)) (Finset.mem_image_of_mem _ hPg)`. Establish `hx' : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ PP.asIdeal` using `hx`. Establish `hcoe : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (x : D.host.F)` using `by first`. Consider the case `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← IsScalarTower.algebraMap_apply (𝓞 D.host.F) (𝓞 D.host.E) D.host.E, IsScalarTower.algebraMap_apply (𝓞 D.host.F) D.host.F D.host.E]; rfl)`. Establish `hnot` using `hy _ hcoe`. Use `⟨fun e => hnot (by rw [← e]; exact hx'), fun hc => ?_⟩` and prove the remaining obligations. Take `⟨c', hc'P, hc'eq⟩` from `hc _ hx'`. Conclude with `hy c' (by rw [hc'eq, hcoe, star_algebraMap_eq]) hc'P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_offS (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (P : Pl D.host.E)
     (h : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R) P) : Good R A.μ0 P := by
@@ -139,9 +139,9 @@ theorem good_of_offS (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (P : Pl D.ho
   exact hy c' (by rw [hc'eq, hcoe, star_algebraMap_eq]) hc'P
 
 /- English proof (translation)
-Unfold `Hecke₂ at h`. Take `⟨e, f, ϖ, α, hS, hPf, h1, h2, h3, hJ, hχ, hα, hd, hR, hc⟩` from `h`. Use `⟨⟨e, f, hPf, hS, hJ, hχ⟩, ?_⟩` and prove the remaining obligations. Establish `hset : {k | k ∈ J ∧ SuppF V f k} = {k | k ∈ KsphC V ∅ ∧ SuppF V f k}`. Use extensionality with `k`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun hk => ⟨(hJ k hk.2).1 hk.1, hk.2⟩, fun hk => ⟨(hJ k hk.2).2 hk.1, hk.2⟩⟩`. Unfold `SphOp Hecke₂`. Use `⟨e, f, ϖ, α, GlobalTheory.LevOp.offS_empty, hPf, h1, h2, h3, fun _ _ => Iff.rfl, fun _ _ _ => rfl, hα, hd, hR, ?_⟩` and prove the remaining obligations. Rewrite using `[← hset]`. Conclude with `hc`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem primeIdem_and_sphOp_of_isHeckeOpFull {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ}
     {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {P : Pl D.host.E} {d : List ℤ} {Rp : Finset (GA D V)}
@@ -160,11 +160,11 @@ private theorem primeIdem_and_sphOp_of_isHeckeOpFull {V : HSp D} {J : Set (GA D 
   exact hc
 
 /- English proof (translation)
-Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `v g`. Rewrite using `[hT.lev v k hk g, hχ, one_mul]`. Consider the case `zero => intro v g`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add T T' _ _ h1 h2`. Introduce `v g`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, h1 v g, h2 v g]`. Consider the case `smul c T _ h1`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v g`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, h1 v g]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem mult_map_mul_right_eq_of_chi_eq_one {θ} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {U : MMap M} (hU : U ∈ Mult θ M J χ) (k : GA D V) (hk : k ∈ J) (hχ : χ k = 1) :
@@ -182,25 +182,23 @@ private theorem mult_map_mul_right_eq_of_chi_eq_one {θ} {V : HSp D} {S : D.what
     simp only [MultilinearMap.smul_apply, Pi.smul_apply, h1 v g]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL hM i σ b`. Take `⟨Sw, hSw⟩ : ∃ Sw : MMap (R.MW i σ) → Prop, ∀ u, Sw u ↔ ∃ w : (R.HW i σ).H, (∀ P d, GlobalTheory.Hk3.Good R A.μ0 P → GlobalTheory.ConjScalar.RelLab (Wc D i) P d → postOn (R.MW i σ) (GlobalTheory.Hk3.hk (Wc D i) P (Finsupp.single d 1)) ((R.HW i σ).e w) = b P d • (R.HW i σ).e w) ∧ u …` from `⟨_, fun _ => Iff.rfl⟩`. Use `⟨fun P d => if h : ∃ l : ℂ, ∀ u, Sw u → opOf (rRep (R.MW i σ)) P (Finsupp.single d 1) u = l • u then h.choose else 0, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hW : ∀ w' : (R.HW i σ).H, (R.HW i σ).e w' ∈ R.Wall i σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w'`. Rewrite using `[← (hM i σ).2.1]`. Conclude with `LinearMap.mem_range_self _ w'`. Simplify using `only [GlobalTheory.LiftLower.partH, Submodule.mem_comap, partFull, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `⟨hW w, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P d Rp hfull`. Take `⟨⟨e, f, hPf, hS, hJ, hχ⟩, hsph⟩` from `primeIdem_and_sphOp_of_isHeckeOpFull hfull`. Establish `hG : GlobalTheory.Hk3.Good R A.μ0 P` using `good_of_offS R hL P hS`. Establish `hfix : ∀ w' : (R.HW i σ).H, ∀ k ∈ hyp (Wc D i) P, rRep (R.MW i σ) k ((R.HW i σ).e w') = (R.HW i σ).e w'`. Introduce `w' k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hk1, hk2⟩` from `(GlobalTheory.LevOp.mem_hyp hPf).1 hk`. Establish `hkJ` using `(hJ k hk2).2 hk1`. Establish `hinv` using `mult_map_mul_right_eq_of_chi_eq_one (hW w') k hkJ (hχ k hkJ hk2)`. Unfold `rRep`. Use extensionality with `v g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[postOn, rLin, LinearMap.compMultilinearMap_apply, hinv]`. Establish `hSfix : ∀ u, Sw u → ∀ k ∈ hyp (Wc D i) P, rRep (R.MW i σ) k u = u`. Introduce `u hu k hk`. Take `⟨w', -, rfl⟩` from `(hSw u).1 hu`. Conclude with `hfix w' k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hex : ∃ l : ℂ, ∀ u, Sw u → opOf (rRep (R.MW i σ)) P (Finsupp.single d 1) u = l • u`. Distinguish the cases in `hc : Formalism.DivisionValues.conjPl P = P`. Use `⟨b P d, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', rfl⟩` from `(hSw u).1 hu`. Rewrite using `[← postOn_hk_single]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw' P d hG (Or.inr ⟨hc, Rp, hsph⟩)`. Use `scalar_of_split (rRep (R.MW i σ)) P hc Sw hSfix (b P) (b (Formalism.DivisionValues.conjPl P)) ?_ ?_ d` and prove the remaining obligations. Introduce `u hu k hk`. Take `⟨w', hw', rfl⟩` from `(hSw u).1 hu`. Rewrite using `[← postOn_hk_single]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw' P _ hG (Or.inl ⟨hc, k, hk, rfl⟩)`. Introduce `u hu k hk`. Take `⟨w', hw', rfl⟩` from `(hSw u).1 hu`. Rewrite using `[← postOn_hk_single]`. Use `hw' (Formalism.DivisionValues.conjPl P) _ (good_conj R A.μ0 P hG) (Or.inl ⟨?_, k, hk, rfl⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Conclude with `fun h => hc h.symm`. Establish `hsum : heckeOn (R.MW i σ) Rp ((R.HW i σ).e w) = ∑ γ ∈ Rp, rRep (R.MW i σ) γ ((R.HW i σ).e w)`. Unfold `rRep`. Use extensionality with `v g`.
-
-Simplify using `[heckeOn, postOn, heckeLin, rLin, LinearMap.compMultilinearMap_apply]`. Rewrite using `[hsum, ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors (Wc D i) P).1 d Rp hsph).2 _ (rRep (R.MW i σ)) _ (hfix w), dif_pos hex]`. Conclude with `hex.choose_spec _ ((hSw _).2 ⟨w, hw, rfl⟩)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_one_part : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_HW → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (b : Pl D.host.E → List ℤ → ℂ), ∃ ev, ∀ w : (R.HW i σ).H, (∀ P d, GlobalTheory.Hk3.Good R A.μ0 P → GlobalTheory.ConjScalar.RelLab (Wc D i) P d → postOn (R.MW i σ) (GlobalTheory.Hk3.hk (Wc D i) P (Finsupp.single d 1)) ((R.HW i σ).e w) = b P d • (R.HW i σ).e w) → w ∈ GlobalTheory.LiftLower.partH R i σ ev := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hL hM i σ b

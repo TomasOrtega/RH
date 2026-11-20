@@ -9,25 +9,23 @@ open NumberField MeasureTheory GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cu
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-Introduce `E _ _ _ N`. Establish `hF` using `PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL`. Establish `hW : IsStable (A2 E N)` using `PrSt.isStable_square_integrable_forms hF`. Use `⟨hW, fun ψ hψ hψ0 => ?_⟩` and prove the remaining obligations. Set `μ : Measure (GA E N)` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `: μ.IsMulRightInvariant` using `GlobalTheory.CovolGL.isMulRightInvariant E N μ`. Establish `hA : ∀ φ ∈ A2 E N, IsAutForm φ` using `fun φ hφ => (PrSt.mem_square_integrable_forms hφ).1`. Establish `h : ∀ φ ∈ A2 E N, MemL2Quotient (latticeGL E N) μ φ.1` using `fun φ hφ => memL2_of_isAutForm (PrSt.mem_square_integrable_forms hφ).1 (PrSt.mem_square_integrable_forms hφ).2`. Establish `hF2` using `toL2ₗ_injective h fun φ hφ => ContAut.continuous_of_isOpen_stab E N φ (hA φ hφ).level`. Establish `hinj : ∀ x ∈ A2 E N, cls h x = 0 → x = 0` using `fun x hx e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_mk h hx]`. Conclude with `congrArg Subtype.val (hF2 (e.trans (map_zero _).symm))`. Establish `hadj` using `fun o => PrSt.exists_adj h hW hA o`. Take `⟨V, hVst, hVA, hV0, hirr, v, hvV, hvψ⟩` from `PrIrr.exists_irr h hW hA hinj hadj hψ hψ0`. Establish `hVW : V ≤ A2 E N` using `hVA.trans (admissible_span_le _ ψ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexist : ∀ χ ∈ A2 E N, ∃ v ∈ V, ∀ w ∈ V, inner ℂ (cls h (χ - v)) (cls h w) = 0`. Introduce `χ hχ`. Take `⟨L, hLo, hLc, hχT⟩` from `exists_type (hA χ hχ)`. Establish `: FiniteDimensional ℂ (orbSpan χ)` using `(hA χ hχ).kfin`. Establish `hρ` using `isContRep_sub (orbSpan χ) (orbSpan_stable χ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ (V ⊓ typePart L (sub (cptRep E N) (orbSpan χ) (orbSpan_stable χ)) : Submodule ℂ (Sm E N))`. Use `finiteDimensional_admissible_isotypic hA (hA ψ hψ) hLo _ hρ` as an intermediate fact. Use the proof step `Submodule.finiteDimensional_of_le (inf_le_inf_right _ hVA)`. Take `⟨v, hv, hv'⟩` from `exists_orth h hW hA hinj hVst hVW hχ hLo hLc _ hρ hχT`. Conclude with `⟨v, hv.1, hv'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! P hPV hP using hexist`. Set `pW : A2 E N →ₗ[ℂ] Sm E N` to `{ toFun := fun χ => P χ.1 map_add' := fun x y => by`. Use `orth_unique h hinj hVW ((A2 E N).add_mem x.2 y.2) (hPV _ ((A2 E N).add_mem x.2 y.2)) (V.add_mem (hPV _ x.2) (hPV _ y.2)) (hP _ ((A2 E N).add_mem x.2 y.2)) fun w hw => ?_` and prove the remaining obligations. Establish `e : x.1 + y.1 - (P x.1 + P y.1) = (x.1 - P x.1) + (y.1 - P y.1)` using `by abel`. Express the relevant statement in the definitionally equal form `inner ℂ (cls h (x.1 + y.1 - (P x.1 + P y.1))) (cls h w) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, cls_add h ((A2 E N).sub_mem x.2 (hVW (hPV _ x.2))) ((A2 E N).sub_mem y.2 (hVW (hPV _ y.2))), inner_add_left, hP _ x.2 w hw, hP _ y.2 w hw, add_zero]`. Use the proof step `map_smul' := fun c x => by`. Use `orth_unique h hinj hVW ((A2 E N).smul_mem c x.2) (hPV _ ((A2 E N).smul_mem c x.2)) (V.smul_mem c (hPV _ x.2)) (hP _ ((A2 E N).smul_mem c x.2)) fun w hw => ?_` and prove the remaining obligations. Establish `e : c • x.1 - c • P x.1 = c • (x.1 - P x.1)` using `(smul_sub c _ _).symm`. Express the relevant statement in the definitionally equal form `inner ℂ (cls h (c • x.1 - (RingHom.id ℂ) c • P x.1)) (cls h w) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.id_apply, e, cls_smul h c ((A2 E N).sub_mem x.2 (hVW (hPV _ x.2))), inner_smul_left, hP _ x.2 w hw, mul_zero] }`. Take `⟨p, hp⟩` from `LinearMap.exists_extend pW`. Establish `hpW : ∀ χ ∈ A2 E N, p χ = P χ` using `fun χ hχ => LinearMap.congr_fun hp ⟨χ, hχ⟩`. Use `⟨V, p, ⟨fun φ hφ => hA φ (hVW hφ), fun φ hφ => (PrSt.mem_square_integrable_forms (hVW hφ)).2, hVst, hV0, hirr⟩, fun χ hχ => by rw [hpW χ hχ]; exact hPV χ hχ, fun o χ hχ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpW _ (hW o χ hχ), hpW χ hχ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `orth_unique h hinj hVW (hW o χ hχ) (hPV _ (hW o χ hχ)) (hVst o _ (hPV χ hχ)) (hP _ (hW o χ hχ)) fun w hw => ?_` and prove the remaining obligations. Take `⟨B, hB, hadjB⟩` from `hadj o`. Rewrite using `[← map_sub, hadjB _ ((A2 E N).sub_mem hχ (hVW (hPV χ hχ))) w (hVW hw)]`. Conclude with `hP χ hχ _ (hB V hVst w hw)`. Rewrite using `[hpW ψ hψ]`.
-
-Introduce `e`. Use `hP ψ hψ v hvV` as an intermediate fact. Rewrite `this` using `[e, sub_zero]`. Conclude with `hvψ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_holds : Pr := by
   intro E _ _ _ N

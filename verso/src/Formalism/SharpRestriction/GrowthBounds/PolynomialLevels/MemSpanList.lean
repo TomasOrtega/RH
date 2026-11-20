@@ -14,9 +14,9 @@ variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] {ι : T
   (E : ι → GLOps n K V) (ee : ι → (Fin n → ℤ) → Module.End K V)
 
 /- English proof (translation)
-Take `⟨_, _, h2⟩` from `hdec i' (ee i mu x)`. Establish `h1 : ee i' nu x = x` using `(hee i' nu).1 x hx`. Establish `h3 : ee i mu x = ee i' nu (ee i mu x)`. Establish `h4` using `congrArg (fun f : Module.End K V => f x) (hcomm i i' mu nu)`. Simplify using `only [Module.End.mul_apply] at h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h4, h1]`. Rewrite using `[h3]`. Conclude with `h2 nu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee_pres (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
     (hdec : ∀ i (G : V), ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee i mu G ∧ ∀ mu, ee i mu G ∈ isoSub (E i) mu)
@@ -32,13 +32,11 @@ theorem ee_pres (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
   exact h2 nu
 
 /- English proof (translation)
-Proceed by induction on `l generalizing y with`. Consider the case `nil => exact Submodule.subset_span ⟨fun _ _ => 0, by simp⟩`. Consider the case `cons i l ih`. Establish `key : Submodule.span K {x : V | ∃ lam : ι → Fin n → ℤ, ∀ j ∈ l, x ∈ isoSub (E j) (lam j)} ≤ Submodule.span K {x : V | ∃ lam : ι → Fin n → ℤ, ∀ j ∈ i :: l, x ∈ isoSub (E j) (lam j)}`. Rewrite using `[Submodule.span_le]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨lam, hlam⟩`. Take `⟨T, hT, hmem⟩` from `hdec i x`. Use `show x ∈ Submodule.span K {x : V | ∃ lam : ι → Fin n → ℤ, ∀ j ∈ i :: l, x ∈ isoSub (E j) (lam j)}`. Rewrite using `[hT]`. Use `Submodule.sum_mem _ fun mu _ => Submodule.subset_span ⟨Function.update lam i mu, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hmem mu`.
-
-Rewrite using `[Function.update_of_ne hji]`. Conclude with `ee_pres E ee hee hdec hcomm i j mu (lam j) x (hlam j ((List.mem_cons.mp hj).resolve_left hji))`. Conclude with `key (ih y)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_list (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
     (hdec : ∀ i (G : V), ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee i mu G ∧ ∀ mu, ee i mu G ∈ isoSub (E i) mu)
@@ -65,13 +63,13 @@ theorem mem_span_list (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
     exact key (ih y)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, ih]`. Distinguish the cases in `h : ∀ i ∈ l, lam i = ka i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Distinguish the cases in `ha : lam a = ka a`. Establish `hall : ∀ i ∈ a :: l, lam i = ka i`. Introduce `i hi`. Break down `List.mem_cons.mp hi with rfl | hi` into its components or cases.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ha`. Conclude with `h i hi`. Rewrite using `[if_pos hall]`. Conclude with `(hee a (ka a)).1 x (by rw [← ha]; exact hx a)`. Establish `hno : ¬ ∀ i ∈ a :: l, lam i = ka i` using `fun hh => ha (hh a (List.mem_cons.mpr (Or.inl rfl)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hno]`. Conclude with `(hee a (ka a)).2 (lam a) ha x (hx a)`. Establish `hno : ¬ ∀ i ∈ a :: l, lam i = ka i` using `fun hh => h fun i hi => hh i (List.mem_cons.mpr (Or.inr hi))`. Rewrite using `[if_neg h, if_neg hno, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem list_prod_isoProj_apply_eq_ite (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu)) (ka lam : ι → Fin n → ℤ) (x : V)
     (hx : ∀ i, x ∈ isoSub (E i) (lam i)) (l : List ι) :
@@ -97,13 +95,13 @@ private theorem list_prod_isoProj_apply_eq_ite (hee : ∀ i mu, IsIsoProj (E i) 
       rw [if_neg h, if_neg hno, map_zero]
 
 /- English proof (translation)
-Establish `hy` using `mem_span_list E ee hee hdec hcomm Finset.univ.toList y`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨lam, hlam⟩` from `hx`. Establish `hx' : ∀ i, x ∈ isoSub (E i) (lam i)` using `fun i => hlam i (Finset.mem_toList.mpr (Finset.mem_univ i))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxj : x ∈ jIso E lam`. Simplify using `only [jIso, Submodule.mem_iInf]`. Conclude with `hx'`. Unfold `jointE`. Rewrite using `[list_prod_isoProj_apply_eq_ite E ee hee ka lam x hx']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : lam = ka`. Rewrite using `[if_pos (fun i _ => congrFun h i)]`. Conclude with `he.1 lam h x hxj`. Establish `hno : ¬ ∀ i ∈ (Finset.univ : Finset ι).toList, lam i = ka i` using `fun hh => h (funext fun i => hh i (Finset.mem_toList.mpr (Finset.mem_univ i)))`. Rewrite using `[if_neg hno]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `he.2 lam h x hxj`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, map_smul, ha]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jproj_eq (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
     (hdec : ∀ i (G : V), ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee i mu G ∧ ∀ mu, ee i mu G ∈ isoSub (E i) mu)
@@ -131,15 +129,15 @@ theorem jproj_eq (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
   | smul c a _ ha => rw [map_smul, map_smul, ha]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hy` to reduce the goal to its premises. Establish `hfix : ∀ z : V, ee i (ka i) (jointE ee ka z) = jointE ee ka z`. Introduce `z`. Establish `hz` using `mem_span_list E ee hee hdec hcomm Finset.univ.toList z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨lam, hlam⟩` from `hx`. Establish `hx' : ∀ j, x ∈ isoSub (E j) (lam j)` using `fun j => hlam j (Finset.mem_toList.mpr (Finset.mem_univ j))`. Unfold `jointE`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[list_prod_isoProj_apply_eq_ite E ee hee ka lam x hx']`. Use `split_ifs with h`. Conclude with `(hee i (ka i)).1 x (by rw [← h i (Finset.mem_toList.mpr (Finset.mem_univ i))]; exact hx' i)`. Conclude with `map_zero _`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, map_smul, ha]`. Establish `hc : Commute (ee i (ka i)) (jointE ee ka)`. Unfold `jointE`. Apply `Commute.list_prod_right` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Take `⟨j, -, rfl⟩` from `List.mem_map.mp hb`. Conclude with `hcomm i j (ka i) (ka j)`. Rewrite using `[jproj_eq E ee hee hdec hcomm ka e he y, ← hfix y, ← Module.End.mul_apply, hc.eq, Module.End.mul_apply, h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem jproj_ne (hee : ∀ i mu, IsIsoProj (E i) mu (ee i mu))
     (hdec : ∀ i (G : V), ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee i mu G ∧ ∀ mu, ee i mu G ∈ isoSub (E i) mu)

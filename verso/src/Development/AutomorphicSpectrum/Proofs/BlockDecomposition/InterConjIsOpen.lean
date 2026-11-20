@@ -6,11 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.TopGroup
 
 /- English proof (translation)
-Introduce `G _ _ _ J hJ g`. Establish `hpre : ((J.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) = (fun x : G => g⁻¹ * x * g) ⁻¹' (J : Set G)`. Use extensionality with `x`. Simplify using `only [Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `hx`. Conclude with `⟨g⁻¹ * x * g, hx, by simp [mul_assoc]⟩`. Establish `hcont : Continuous (fun x : G => g⁻¹ * x * g)` using `by fun_prop`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : IsOpen ((J.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[hpre]`. Conclude with `hJ.preimage hcont`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hJ.inter h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_conj_isOpen :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G),

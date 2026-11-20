@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockPos
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GL3Theta.applyAt0`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_monomial' (D : D7) {N N' : ℕ} (k : Formalism.MainNotions.GL3Theta.Idx D N N' →₀ ℕ) (G : Formalism.MainNotions.TaylorLogMetric.VC D N N' → ℂ) :
     Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) G = (k.prod fun _ n => (n.factorial : ℂ)) * Formalism.MainNotions.TaylorLogMetric.taylor D G k := by
@@ -25,9 +25,9 @@ theorem applyAt0_monomial' (D : D7) {N N' : ℕ} (k : Formalism.MainNotions.GL3T
     one_mul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.TaylorLogMetric.taylor`. Establish `key` using `iteratedFDeriv_comp_const_smul (𝕜 := ℂ) (i := Multiset.card (Finsupp.toMultiset α)) (f := G) a ((ReciprocityTheory.ChartRestriction.G.I2.contDiff_of_diff hG).of_le (by exact_mod_cast le_top))`. Rewrite using `[key]`. Simplify using `only [smul_zero, ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finsupp.card_toMultiset α`.
+A detailed English derivation is pending.
 -/
 theorem taylor_comp_smul' (D : D7) {N N' : ℕ} (G : Formalism.MainNotions.TaylorLogMetric.VC D N N' → ℂ) (hG : Differentiable ℂ G) (a : ℂ) (α : Formalism.MainNotions.TaylorLogMetric.Mono D N N') :
     Formalism.MainNotions.TaylorLogMetric.taylor D (fun z => G (a • z)) α = a ^ (α.sum fun _ n => n) * Formalism.MainNotions.TaylorLogMetric.taylor D G α := by
@@ -39,19 +39,17 @@ theorem taylor_comp_smul' (D : D7) {N N' : ℕ} (G : Formalism.MainNotions.Taylo
   exact Finsupp.card_toMultiset α
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT frS frT hS hT hcS hcT δ hC hδ f hf`. Establish `hsS` using `cart_one frS hS hcS`. Establish `hsT` using `cart_one frT hT hcT`. Substitute `hsS hsT` using the available equality. Take `⟨Φ, hΦd, hreal⟩` from `GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hTh` using `GlobalTheory.T.unit_vacuum_entire_factor_isThetaFunction_standard ψ θ S T frS frT hS hT δ hC hδ f hf Φ hΦd hreal`. Take `⟨Θ, hΘ⟩ : ∃ Θ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ, Θ = fun Y => Φ (δ⁻¹ • Y)` from `⟨_, rfl⟩`. Rewrite `hTh` using `[← hΘ]`. Establish `hΦeq : Φ = fun z => Θ (δ • z)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hΘ, smul_smul, inv_mul_cancel₀ hδ, one_smul]`. Use `⟨Θ, hTh, ?_, fun k => ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨w, hw, hfw⟩` from `GlobalTheory.T.exists_finitePartZero_ne_of_isVacuum_orientedModel ψ θ S T _ _ _ _ f hf`. Apply `hfw` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : Φ (zCo θ frS frT w) = 0`. Rewrite using `[hΦeq]`. Conclude with `congrFun h0 _`. Rewrite using `[hreal w hw, h1, mul_zero]`. Establish `hdiff : Differentiable ℂ Θ` using `hTh.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hf.1 hf.2.inf hS hT f Φ hΦd hreal k`. Express the relevant statement in the definitionally equal form `pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (GlobalTheory.FockPos.frAt frS) (GlobalTheory.FockPos.frAt frT) f (MvPolynomial.monomial k 1) 0 = _`. Rewrite using `[hj, hΦeq, applyAt0_monomial', applyAt0_monomial', taylor_comp_smul' D _ hdiff]`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)`. Introduce `τ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`. Establish `hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) = (δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)) ^ (k.sum fun _ n => n)`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`. Rewrite using `[hprod, mul_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fock_jets_eq_theta : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ δ : ℂ, Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ → δ ≠ 0 → ∀ f, IsVacO ψ θ S T sS sT (colLat frS : Set _) (colLat frT : Set _) f → ∃ Θ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ, Θ ∈ Formalism.MainNotions.TaylorLogMetric.Th D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.stdL D S.rank) (Formalism.MainNotions.StandardLatticesGL3.stdL D T.rank) ∧ Θ ≠ 0 ∧ ∀ k : FVar D T.rank S.rank →₀ ℕ, pureTensorO ψ θ S T sS sT (fun τ => frS.1.map (tauE D τ)) (fun τ => frT.1.map (tauE D τ)) f (MvPolynomial.monomial k 1) 0 = (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) * Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) Θ := by
   intro D ψ θ S T sS sT frS frT hS hT hcS hcT δ hC hδ f hf

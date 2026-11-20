@@ -9,14 +9,14 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Simplify using `only [lw]`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lw_nonneg' (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) : 0 ≤ lw K la := by
   simp only [lw]
   exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_of_support_subset nn hs (fun la v => v * WeightFamilies.lnN B la) (fun _ _ => zero_mul _), Finset.sum_div]`. Use `Finset.sum_congr rfl (fun la _ => ?_)` and prove the remaining obligations. Simplify using `only [lw, WeightFamilies.lnN, WeightFamilies.degO]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_mul_lw (B : WeightFamilies.Prov D) (nn : HeightOneSpectrum (𝓞 B.KO) →₀ ℝ) (s : Finset (HeightOneSpectrum (𝓞 B.KO)))
     (hs : nn.support ⊆ s) :
@@ -28,19 +28,17 @@ theorem sum_mul_lw (B : WeightFamilies.Prov D) (nn : HeightOneSpectrum (𝓞 B.K
   ring
 
 /- English proof (translation)
-Substitute `hrq` using the available equality. Take `⟨be, -, hbeS, hall⟩` from `hE`. Take `⟨nn, hnn, hnnS⟩` from `hall th hspan hsup`. Use `choose ℓ hℓeq hℓle using hnn`. Establish `hlw : ∀ la, 0 ≤ lw B.KO la` using `fun la => lw_nonneg' B.KO la`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : 0 ≤ (WeightFamilies.rhoP B CRm T c j ka : ℝ)` using `Nat.cast_nonneg _`. Establish `hg0 : ∀ la ∉ nn.support ∪ be.support, (nn la + (WeightFamilies.rhoP B CRm T c j ka : ℝ) * be la) * lw B.KO la = 0`. Introduce `la hla`. Establish `h1 : nn la = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hla (Finset.mem_union_left _ (Finsupp.mem_support_iff.mpr hne))`. Establish `h2 : be la = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hla (Finset.mem_union_right _ (Finsupp.mem_support_iff.mpr hne))`. Rewrite using `[h1, h2]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsg : Summable fun la => (nn la + (WeightFamilies.rhoP B CRm T c j ka : ℝ) * be la) * lw B.KO la` using `summable_of_ne_finset_zero hg0`. Establish `hle : ∀ la, (ℓ la : ℝ) * lw B.KO la ≤ (nn la + (WeightFamilies.rhoP B CRm T c j ka : ℝ) * be la) * lw B.KO la` using `fun la => mul_le_mul_of_nonneg_right (hℓle la) (hlw la)`. Establish `hsf : Summable fun la => (ℓ la : ℝ) * lw B.KO la` using `Summable.of_nonneg_of_le (fun la => mul_nonneg (Nat.cast_nonneg _) (hlw la)) hle hsg`. Use `⟨fun la => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hℓeq la]`. Conclude with `ENat.coe_ne_top _`. Simplify using `only [hℓeq, ENat.toNat_coe]`. Conclude with `hsf`. Simplify using `only [hℓeq, ENat.toNat_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub1 : nn.support ⊆ nn.support ∪ be.support` using `fun x hx => Finset.mem_union_left _ hx`. Establish `hsub2 : be.support ⊆ nn.support ∪ be.support` using `fun x hx => Finset.mem_union_right _ hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun la _ => by ring)`.
-
-Use `_ = (nn.sum fun la v => v * WeightFamilies.lnN B la) / WeightFamilies.degO B + (WeightFamilies.rhoP B CRm T c j ka : ℝ) * ((be.sum fun la v => v * WeightFamilies.lnN B la) / WeightFamilies.degO B) := by`. Rewrite using `[sum_mul_lw B nn _ hsub1, sum_mul_lw B be _ hsub2]`. Use `_ ≤ (WeightFamilies.rhoP B CRm T c j ka : ℝ) * WeightFamilies.PPv D large₂ Cq Aq * ka.size + (WeightFamilies.rhoP B CRm T c j ka : ℝ) * (WeightFamilies.PPv D large₂ Cq Aq * ka.size) := add_le_add hnnS (mul_le_mul_of_nonneg_left hbeS hρ0)`. Use `_ = 2 * (WeightFamilies.rhoP B CRm T c j ka : ℝ) * WeightFamilies.PPv D large₂ Cq Aq * ka.size := by ring`.
+A detailed English derivation is pending.
 -/
 theorem quotCoreE (large₂ : SizeData₂ D) {CRm Ch Ah Cq Aq : ℝ} (ka : WeightFamilies.Wt D j) (T c : ℝ)
     (hE : ∃ be : HeightOneSpectrum (𝓞 B.KO) →₀ ℝ, (∀ la, 0 ≤ be la) ∧
@@ -114,7 +112,7 @@ theorem quotCoreE (large₂ : SizeData₂ D) {CRm Ch Ah Cq Aq : ℝ} (ka : Weigh
       _ = 2 * (WeightFamilies.rhoP B CRm T c j ka : ℝ) * WeightFamilies.PPv D large₂ Cq Aq * ka.size := by ring
 
 /- English proof (translation)
-Simplify using `only [WeightFamilies.PointsLemma] at h7`. Conclude with `quotCoreE large₂ ka T c (h7 hCR hO j h1 hj ka hn hLP hsz T c hT hc hTc) rq hrq th hspan hsup`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotCore (large₂ : SizeData₂ D) {CRm Ck Ch Ah Cq Aq : ℝ} (h7 : WeightFamilies.PointsLemma large₂ B CRm Ck Ch Ah Cq Aq)
     (hCR : 0 ≤ CRm) (hO : WeightFamilies.Obound B large₂ Ch Ah) (h1 : 1 ≤ j) (hj : j < D.R.m) (ka : WeightFamilies.Wt D j)
@@ -136,7 +134,7 @@ theorem quotCore (large₂ : SizeData₂ D) {CRm Ck Ch Ah Cq Aq : ℝ} (h7 : Wei
   exact quotCoreE large₂ ka T c (h7 hCR hO j h1 hj ka hn hLP hsz T c hT hc hTc) rq hrq th hspan hsup
 
 /- English proof (translation)
-Simplify using `only [SetC] at h`. Take `⟨-, -, -, h4, -, h6, -⟩` from `h`. Establish `h6'` using `h6 τ i hi`. Establish `key : 2 * (T : ℝ) ^ 2 ≤ (ka.aP τ i : ℝ)` using `by linarith`. Conclude with `key` after adjusting the coercions.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_T_sq_le_last {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
     (h : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1)
@@ -148,9 +146,9 @@ theorem two_T_sq_le_last {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 :
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `hT : 0 < T`. Establish `h'` using `h`. Simplify using `only [SetC] at h'`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hT, -⟩` from `h'`. Conclude with `hT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [WeightFamilies.Wt.LastPos]`. Introduce `τ i hi`. Establish `h2` using `two_T_sq_le_last h τ i hi`. Establish `h3 : 1 ≤ T ^ 2` using `Nat.one_le_pow _ _ hT`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lastPos_of_SetC {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
     (h : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) : ka.LastPos := by
@@ -166,19 +164,19 @@ theorem lastPos_of_SetC {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : 
   linarith
 
 /- English proof (translation)
-Establish `hh` using `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hL, -, -, hT, -, h40, hnW, -⟩` from `hh`. Establish `hp : 0 < (D.R.sigW j).1`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `show 0 < D.R.k + j - 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hτ : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩` from `hτ`. Use `set i : Fin (D.R.sigW j).1 := ⟨(D.R.sigW j).1 - 1, by omega⟩ with hi`. Establish `hi1 : i.1 + 1 = (D.R.sigW j).1` using `by simp only [hi]; omega`. Establish `h2` using `two_T_sq_le_last h τ i hi1`. Establish `h3` using `hL.2.1 τ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ¬ i.1 + 1 < (D.R.sigW j).1` using `by omega`. Rewrite `h3` using `[if_neg hn]`. Unfold `gapZ at h3`. Rewrite `h3` using `[dif_neg hn]`. Establish `hTp : (0 : ℤ) < (Tp D j T : ℤ)` using `by unfold Tp; positivity`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Int.fdiv_eq_ediv_of_nonneg _ hTp.le]`. Establish `h4 : (1 : ℤ) ≤ ((ka.aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * nW - 2 * D.R.r) / (Tp D j T : ℤ)`. Rewrite using `[Int.le_ediv_iff_mul_le hTp, one_mul]`. Unfold `Tp`. Establish `e1 : (2 * (T : ℤ) ^ 2) ≤ (ka.aP τ i : ℤ)` using `by exact_mod_cast h2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r ≤ T` using `by exact_mod_cast hnW`. Establish `e3 : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ T` using `by exact_mod_cast h40`. Establish `e4 : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ)` using `Int.natCast_nonneg _`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : 1 ≤ wL.aP τ i`. Rewrite `h4` using `[← h3]`. Conclude with `h4` after adjusting the coercions. Unfold `DF degP`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem DF_pos_of_SetC {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
     (h : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) : 0 < DF wL := by
@@ -222,9 +220,9 @@ theorem DF_pos_of_SetC {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : �
         (Finset.mem_univ τ)
 
 /- English proof (translation)
-Simplify using `only [WeightFamilies.RRv]`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Simplify using `only [Formalism.BasicNotions.Host.rdE]`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero (K := D.host.E)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `abs_pos.mpr (Int.cast_ne_zero.mpr h)`.
+A detailed English derivation is pending.
 -/
 theorem RRv_pos' (D : D7) (CR : ℝ) : 0 < WeightFamilies.RRv D CR := by
   simp only [WeightFamilies.RRv]
@@ -235,7 +233,7 @@ theorem RRv_pos' (D : D7) (CR : ℝ) : 0 < WeightFamilies.RRv D CR := by
   exact abs_pos.mpr (Int.cast_ne_zero.mpr h)
 
 /- English proof (translation)
-Simplify using `only [PolyDom] at h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, h15, -, -, h18⟩` from `h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem PPv_pos_of_PolyDom {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd : ℝ} {ka : WeightFamilies.Wt D j}
     (h : PolyDom (j := j) D B large₂ K H C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd ka) : 0 < WeightFamilies.PPv D large₂ C2 A2 := by
@@ -244,7 +242,7 @@ theorem PPv_pos_of_PolyDom {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {C2 
   linarith
 
 /- English proof (translation)
-Simplify using `only [qq]`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1` using `(D.host.g_prime 1).pos`. Conclude with `Nat.cast_pos.mpr (lt_min h0 h1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modulus_pos_of_third_hypothesis {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR Bx : ℝ} {wL : WeightFamilies.Wt D j} {T : ℕ}
     (h : H3 large₂ H C2 A2 CR Bx wL T) : (0 : ℝ) < qq D := by
@@ -254,9 +252,9 @@ theorem modulus_pos_of_third_hypothesis {large₂ : SizeData₂ D} {H : KHyp} {C
   exact Nat.cast_pos.mpr (lt_min h0 h1)
 
 /- English proof (translation)
-Establish `hDF` using `DF_pos_of_SetC hS`. Establish `hRR` using `RRv_pos' D CR`. Establish `hPP` using `PPv_pos_of_PolyDom hP`. Establish `hq` using `modulus_pos_of_third_hypothesis h3`. Establish `hD : (0 : ℝ) < (DF wL : ℝ)` using `by exact_mod_cast hDF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cc]`. Conclude with `div_pos (mul_pos (mul_pos hRR hPP) (pow_pos hD 2)) hq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_pos_of {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H : KHyp}
     {C2 A2 CR Bx Ch Ah Cq Aq Gc PH Prw Pet Pd : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
@@ -271,15 +269,15 @@ theorem cc_pos_of {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H : KH
   exact div_pos (mul_pos (mul_pos hRR hPP) (pow_pos hD 2)) hq
 
 /- English proof (translation)
-Establish `hg : (1 : ℝ) ≤ g0 D`. Simplify using `only [g0]`. Establish `hm` using `D.R.two_le_m`. Establish `hr : 1 ≤ D.R.r`. Simplify using `only [Formalism.BasicNotions.Ranks.r]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h5 : (2 : ℕ) * 5 ^ 4 = 1250` using `by norm_num`. Establish `hr' : 1 ≤ 2 * 5 ^ 4 * D.R.r`. Rewrite using `[h5]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hr'` after adjusting the coercions. Establish `hq` using `modulus_pos_of_third_hypothesis h3`. Establish `hRR` using `RRv_pos' D CR`. Establish `hPP` using `PPv_pos_of_PolyDom hP`. Simplify using `only [H3] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2, -⟩` from `h3`. Simplify using `only [pow_zero, Real.rpow_zero, one_mul] at h2`. Establish `hA : 0 ≤ (T : ℝ) * WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2` using `mul_nonneg (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hRR.le) hPP.le) (sq_nonneg _)`. Establish `key : (T : ℝ) * WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2 ≤ (qq D : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [cc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem T_mul_cc_le_one {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp}
     {C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd : ℝ} {ka wL : WeightFamilies.Wt D j} {T : ℕ}
@@ -317,15 +315,15 @@ theorem T_mul_cc_le_one {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp}
     _ ≤ 1 := (div_le_one hq).mpr key
 
 /- English proof (translation)
-Establish `e : ∀ la, X.lN la = lw B.KO la`. Introduce `la`. Simplify using `only [PJ.lN, lw]`. Establish `hH'` using `hH`. Simplify using `only [Hyp] at hH'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨-, hS, -, -, -, h3, -⟩` from `hH'`. Establish `hP'` using `hP`. Simplify using `only [PolyDom] at hP'`. Take `⟨hCRm, -, -, -, -, hO, -⟩` from `hP'`. Establish `hS'` using `hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [SetC] at hS'`. Take `⟨hn, -, -, -, -, -, -, hsz, -, -, -, -, -, -, -, -, -, hT0, -⟩` from `hS'`. Simplify using `only [GlobalFamilyData.Tied] at hG`. Take `⟨-, -, -, -, -, -, -, -, -, hrq, -, hspan, hsup, -⟩` from `hG`. Establish `hT : (0 : ℝ) < (T : ℝ)` using `by exact_mod_cast hT0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `cc_pos_of hS h3 hP`. Establish `hTc` using `T_mul_cc_le_one h3 hP`. Establish `hLP` using `lastPos_of_SetC hS`. Simplify using `only [adm7] at h7`. Establish `key` using `quotCore large₂ h7 (by linarith) hO h1 hj ka hn hLP hsz (T : ℝ) (cc D large₂ C2 A2 CR wL) hT hc hTc G.rq hrq G.th hspan hsup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [e]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotSum {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR CT : ℝ} {S : Scal B}
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}

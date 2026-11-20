@@ -25,7 +25,7 @@ def SemiNeg (k : Type) [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] (F : C.
 def IsGen {K : Type} [Field K] {C : Scheme.{0}} (x : Sp K ⟶ C) : Prop := IsDominant x ∧ IsPreimmersion x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨show IsDominant (C.fromSpecStalk (genericPoint C)) from ⟨by refine Dense.mono (s₁ := {genericPoint C}) ?_ (dense_iff_closure_eq.2 (genericPoint_spec C).def) rintro _ rfl exact ⟨_, Scheme.fromSpecStalk_closedPoint⟩⟩, inferInstanceAs (IsPreimmersion (C.fromSpecStalk (genericPoint …`.
+Supply the required witnesses or components.
 -/
 theorem isGen_fromSpecStalk (C : Scheme.{0}) [IsIntegral C] :
     IsGen (K := C.functionField) (C.fromSpecStalk (genericPoint C)) :=

@@ -13,14 +13,14 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Simplify using `[HC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_one {dim : (E →+* ℂ) → ℕ} (v w : Vsp dim) :
     HC (n := 1) (fun _ => v) (fun _ => w) = Hf v w := by
   simp [HC]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Hf, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_self_re {ι : Type} [Fintype ι] (v : EuclideanSpace ℂ ι) : (Hf v v).re = ‖v‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq, Hf, Complex.re_sum]
@@ -42,9 +42,9 @@ def toGT : GT (Idx X.dim) where
 def col1 (s : (Fin 1 → Vsp X.dim) → ℂ) : Vsp X.dim → ℂ := fun v => s fun _ => v
 
 /- English proof (translation)
-Take `⟨hd, hf⟩` from `hs`. Use `(show Differentiable ℂ (X.col1 s) ∧ ∀ γ ∈ lat X.toGT.b, ∀ v, X.col1 s (v + γ) = X.toGT.ka γ * cexp (((1 : ℕ) : ℂ) * Real.pi * Hf v γ + ((1 : ℕ) : ℂ) * Real.pi * Hf γ γ / 2) * X.col1 s v from ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hd.comp (differentiable_pi.mpr fun _ => differentiable_id)`. Introduce `γ hγ v`. Establish `h` using `hf (fun _ => γ) (fun _ => hγ) (fun _ => v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [HC_one, Fin.prod_univ_one, pow_one] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem column_mem_sections {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) : X.col1 s ∈ X.toGT.Sec 1 := by
   obtain ⟨hd, hf⟩ := hs
@@ -58,20 +58,20 @@ theorem column_mem_sections {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Se
     exact h
 
 /- English proof (translation)
-Simplify using `only [PT.ptN2, GT.ptN2, PT.col1, HC_one, Hf_self_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointNormSq_column (s : (Fin 1 → Vsp X.dim) → ℂ) (a : Vsp X.dim) :
     X.ptN2 1 s (fun _ => a) = X.toGT.ptN2 1 (X.col1 s) a := by
   simp only [PT.ptN2, GT.ptN2, PT.col1, HC_one, Hf_self_re]
 
 /- English proof (translation)
-Establish `hfd : X.fd 1 = (MeasurableEquiv.funUnique (Fin 1) (Vsp X.dim)) ⁻¹' ZSpan.fundamentalDomain X.b`. Use extensionality with `v`. Simplify using `only [PT.fd, Set.mem_setOf_eq, Set.mem_preimage]`. Conclude with `⟨fun h => h default, fun h k => by rwa [Subsingleton.elim k default]⟩`. Establish `hf : ∀ v : Fin 1 → Vsp X.dim, X.ptN2 1 s v = X.toGT.ptN2 1 (X.col1 s) (MeasurableEquiv.funUnique (Fin 1) (Vsp X.dim) v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `v`. Establish `hv : v = fun _ => v default` using `funext fun k => by rw [Subsingleton.elim k default]`. Rewrite using `[hv, pointNormSq_column]`. Both sides reduce to the same expression. Establish `hmp` using `MeasureTheory.volume_preserving_funUnique (Fin 1) (Vsp X.dim)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `he` using `(MeasurableEquiv.funUnique (Fin 1) (Vsp X.dim)).measurableEmbedding`. Unfold `PT.l2 GT.l2`. Rewrite using `[MeasureTheory.setAverage_eq, MeasureTheory.setAverage_eq, hfd]`. Simplify using `only [MeasureTheory.measureReal_def]`. Use `erw [hmp.measure_preimage_emb he]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hf]`. Use `erw [hmp.setIntegral_preimage_emb he (X.toGT.ptN2 1 (X.col1 s))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem l2_one_eq_toGT_l2_col1 (s : (Fin 1 → Vsp X.dim) → ℂ) : X.l2 1 s = X.toGT.l2 1 (X.col1 s) := by
   have hfd : X.fd 1 = (MeasurableEquiv.funUnique (Fin 1) (Vsp X.dim)) ⁻¹'
@@ -96,11 +96,11 @@ theorem l2_one_eq_toGT_l2_col1 (s : (Fin 1 → Vsp X.dim) → ℂ) : X.l2 1 s = 
   rfl
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive (NumberField.ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ))` using `fun φ => RingHom.ext fun x => by simp [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hsum : ∑ τ, X.dim (NumberField.ComplexEmbedding.conjugate τ) = ∑ τ, X.dim τ` using `Equiv.sum_comp (Function.Involutive.toPerm _ hinv) X.dim`. Establish `h2 : 2 * ∑ τ, X.dim τ = Fintype.card (E →+* ℂ) * X.r`. Rewrite using `[two_mul]`. Use `nth_rewrite 2 [← hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.sum_congr rfl (fun τ _ => X.dim_conj τ), Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Use `haveI : NumberField.IsTotallyComplex E := NumberField.IsCMField.to_isTotallyComplex`. Rewrite `h2` using `[NumberField.Embeddings.card, NumberField.IsTotallyComplex.finrank]`. Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `PT.gA PT.f`. Rewrite using `[NumberField.IsTotallyComplex.finrank, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_idx [IsCMField E] : Fintype.card (Idx X.dim) = X.gA := by
   have hinv : Function.Involutive
@@ -129,7 +129,7 @@ theorem firstMinimum_toTorus : X.toGT.la1 = X.la1 := rfl
 end PT
 
 /- English proof (translation)
-Establish `h` using `P.hfr`. Break down `Nat.eq_zero_or_pos (PT.f E) with h0 | h0` into its components or cases. Rewrite `h` using `[h0, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem f_pos {X : PT E} {DF : ℕ} (P : Par X DF) : 1 ≤ PT.f E := by
   have h := P.hfr
@@ -139,7 +139,7 @@ theorem f_pos {X : PT E} {DF : ℕ} (P : Par X DF) : 1 ≤ PT.f E := by
   · exact h0
 
 /- English proof (translation)
-Rewrite using `[← X.firstMinimum_toTorus]`. Apply `firstMinimum_pos` to reduce the goal to its premises. Rewrite using `[X.card_idx]`. Establish `h` using `P.hfr`. Unfold `PT.gA`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -152,9 +152,9 @@ theorem firstMinimum_pos_bis [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) 
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hp : P.ph = 2 * PT.f E / (PT.rd E ^ 2 * X.la1 ^ 2)`. Simplify using `only [Par.ph, PT.ph, if_pos hlt]`. Rewrite `h0` using `[hp]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hla` using `firstMinimum_pos_bis P`. Establish `hf : (1 : ℝ) ≤ PT.f E` using `by exact_mod_cast f_pos P`. Establish `hrd : (16 : ℝ) ≤ PT.rd E` using `P.hrd`. Establish `hpos : 0 < 2 * (PT.f E : ℝ) / (PT.rd E ^ 2 * X.la1 ^ 2)` using `div_pos (by linarith) (mul_pos (pow_pos (by linarith) 2) (pow_pos hla 2))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem threshold_le_firstMinimum [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) (h0 : P.ph = 0) :
     th (E := E) P.q P.R0 ≤ X.la1 := by
@@ -171,13 +171,13 @@ theorem threshold_le_firstMinimum [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X
   linarith
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < P.q` using `by exact_mod_cast P.hq`. Establish `hf : (1 : ℝ) ≤ PT.f E` using `by exact_mod_cast f_pos P`. Establish `hR : (270 : ℝ) ≤ P.R0 ^ 2` using `P.hR0.1`. Establish `hrd : (16 : ℝ) ≤ PT.rd E` using `P.hrd`. Establish `hRR : 1 ≤ RR (E` using `E) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `RR`. Conclude with `one_le_pow₀ (by linarith)`. Establish `h3 : 1 ≤ RR (E` using `E) ^ 3 := one_le_pow₀ hRR`. Unfold `th`. Rewrite using `[← Real.sqrt_mul hq.le]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : (P.q : ℝ) * (PT.f E * P.R0 ^ 2 * RR (E` using `E) ^ 3 / P.q) = PT.f E * P.R0 ^ 2 * RR (E := E) ^ 3 := by`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hA, show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `h1 : (270 : ℝ) ≤ PT.f E * P.R0 ^ 2` using `by nlinarith`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem one_le_sqrt_q_th {X : PT E} {DF : ℕ} (P : Par X DF) :
     1 ≤ Real.sqrt P.q * th (E := E) P.q P.R0 := by
@@ -200,25 +200,23 @@ theorem one_le_sqrt_q_th {X : PT E} {DF : ℕ} (P : Par X DF) :
   nlinarith
 
 /- English proof (translation)
-Establish `hN : Fintype.card (Idx X.dim) = X.gA` using `X.card_idx`. Establish `hth` using `threshold_le_firstMinimum P h0`. Establish `hsq` using `one_le_sqrt_q_th P`. Establish `hla : 0 < X.la1` using `firstMinimum_pos_bis P`. Establish `hq : (0 : ℝ) < P.q` using `by exact_mod_cast P.hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsqrtq : 0 < Real.sqrt P.q` using `Real.sqrt_pos.mpr hq`. Establish `hB` using `hS (Idx X.dim) X.toGT 1 le_rfl (X.col1 s) (X.column_mem_sections hs) a`. Rewrite `hB` using `[← X.pointNormSq_column, ← X.l2_one_eq_toGT_l2_col1, X.firstMinimum_toTorus, hN]`. Simplify using `only [Nat.cast_one, one_pow, one_mul, mul_one] at hB`. Take `⟨C, hC⟩ : ∃ C : ℝ, C = 1 + 6 * Real.sqrt (X.gA * P.q)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hspi : 0 < Real.sqrt Real.pi` using `Real.sqrt_pos.mpr Real.pi_pos`. Establish `hspi1 : 1 ≤ Real.sqrt Real.pi`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Conclude with `Real.sqrt_le_sqrt (by linarith [Real.pi_gt_three])`. Establish `hs2 : Real.sqrt 2 ≤ 1.5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[Real.sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num), Real.sqrt_nonneg 2]`. Establish `h1 : 1 ≤ Real.sqrt P.q * X.la1` using `le_trans hsq (mul_le_mul_of_nonneg_left hth hsqrtq.le)`. Establish `hsN` using `Real.sqrt_nonneg (X.gA : ℝ)`. Establish `hterm : 4 * Real.sqrt (2 * X.gA) / (Real.sqrt Real.pi * X.la1) ≤ 6 * Real.sqrt (X.gA * P.q)`. Rewrite using `[div_le_iff₀ (mul_pos hspi hla), Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_mul (Nat.cast_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : 4 * (Real.sqrt 2 * Real.sqrt X.gA) ≤ Real.sqrt X.gA * (6 * Real.sqrt Real.pi)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : Real.sqrt X.gA * (6 * Real.sqrt Real.pi) ≤ Real.sqrt X.gA * (6 * Real.sqrt Real.pi) * (Real.sqrt P.q * X.la1)` using `le_mul_of_one_le_right (by positivity) h1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hBC : 1 + 4 * Real.sqrt (2 * X.gA) / (Real.sqrt Real.pi * X.la1) ≤ C`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB0 : 0 ≤ 1 + 4 * Real.sqrt (2 * X.gA) / (Real.sqrt Real.pi * X.la1)` using `by positivity`. Establish `hCpos : 0 < C` using `by rw [hC]; positivity`. Break down `le_or_gt (X.l2 1 s) 0 with hL | hL` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_eq_zero'.mpr hL, div_zero]`. Conclude with `(Real.exp_pos _).le`. Establish `hpow` using `pow_le_pow_left₀ hB0 hBC (2 * X.gA)`. Establish `hA : X.ptN2 1 s (fun _ => a) ≤ 2 * C ^ (2 * X.gA) * X.l2 1 s`. Use `hB.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `gcongr`. Establish `hexp : Real.exp P.p1 = Real.exp 1 * C ^ X.gA`. Unfold `Par.p1`. Rewrite using `[Real.exp_add, Real.exp_nat_mul, Real.exp_log (by rw [← hC]; exact hCpos), hC]`. Establish `he2 : Real.sqrt 2 ≤ Real.exp 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Real.add_one_le_exp 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ (Real.sqrt_pos.mpr hL), hexp]`. Establish `hsplit : Real.sqrt (2 * C ^ (2 * X.gA) * X.l2 1 s) = Real.sqrt 2 * C ^ X.gA * Real.sqrt (X.l2 1 s)`. Rewrite using `[Real.sqrt_mul (by positivity), Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), show C ^ (2 * X.gA) = (C ^ X.gA) ^ 2 by ring, Real.sqrt_sq (by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sup_ratio_le_of_phase_zero [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) (hS : GSupStatement)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) (h0 : P.ph = 0) (a : Vsp X.dim) :

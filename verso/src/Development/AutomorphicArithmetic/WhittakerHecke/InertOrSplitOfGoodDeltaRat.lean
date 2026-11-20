@@ -23,7 +23,7 @@ local notation "ι" => completionMap v w
 local notation "θw" => algebraMap E (Kv w) D.θ
 
 /- English proof (translation)
-Break down `lt_trichotomy x 1 with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (pow_lt_one' h1 hn).ne`. Conclude with `h1`. Conclude with `absurd h (one_lt_pow' h1 hn).ne'`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem pow1 {x : WithZero (Multiplicative ℤ)} {n : ℕ} (hn : n ≠ 0) (h : x ^ n = 1) : x = 1 := by
   rcases lt_trichotomy x 1 with h1 | h1 | h1
@@ -32,13 +32,13 @@ private theorem pow1 {x : WithZero (Multiplicative ℤ)} {n : ℕ} (hn : n ≠ 0
   · exact absurd h (one_lt_pow' h1 hn).ne'
 
 /- English proof (translation)
-The claim follows from `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 F)).ne'`.
+A detailed English derivation is pending.
 -/
 private theorem e_ne : w.asIdeal.ramificationIdx (𝓞 F) ≠ 0 :=
   (Ideal.ramificationIdx_pos w.asIdeal (𝓞 F)).ne'
 
 /- English proof (translation)
-Establish `h` using `congrArg Valued.v (UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.iota_delta D v w)`. Rewrite `h` using `[valued_completionMap, hd, one_pow, map_pow]`. Conclude with `pow1 two_ne_zero h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem theta_unit (hd : Valued.v (algebraMap F (Kv v) D.δ) = 1) : Valued.v θw = 1 := by
   have h := congrArg Valued.v (UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.iota_delta D v w)
@@ -46,13 +46,11 @@ private theorem theta_unit (hd : Valued.v (algebraMap F (Kv v) D.δ) = 1) : Valu
   exact pow1 two_ne_zero h.symm
 
 /- English proof (translation)
-Establish `hle : Valued.v (ι c + θw) ≤ 1` using `(Valuation.map_add _ _ _).trans (max_le hc hθ.le)`. Use `le_antisymm hle (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `hc1 : Valued.v (ι c) = 1`. Use `le_antisymm hc (not_lt.1 fun h => ?_)` and prove the remaining obligations. Establish `: Valued.v (ι c) < Valued.v θw` using `by rw [hθ]; exact h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hlt` using `[add_comm, Valuation.map_add_eq_of_lt_left _ this, hθ]`. Conclude with `lt_irrefl _ hlt`. Establish `hc2 : Valued.v c = 1`. Rewrite `hc1` using `[valued_completionMap]`. Conclude with `pow1 (e_ne (F := F) w) hc1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.notSq D v w hu (UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.sq_of_near v _ c h2 hc2 ?_)` and prove the remaining obligations. Establish `h3 : Valued.v (ι (algebraMap F (Kv v) D.δ - c ^ 2)) < 1`. Rewrite using `[map_sub, UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.iota_delta, map_pow, show θw ^ 2 - ι c ^ 2 = (ι c + θw) * (θw - ι c) by ring, map_mul]`. Use `mul_lt_one_of_lt_of_le hlt ?_` and prove the remaining obligations. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hθ.le hc)`.
-
-Rewrite `h3` using `[valued_completionMap]`. Assume the negation of the conclusion as `hn`. Conclude with `absurd h3 (not_lt.2 (one_le_pow_of_one_le' (not_lt.1 hn) _))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem c_add (h2 : Valued.v (2 : Kv v) = 1)
     (hθ : Valued.v θw = 1) (hu : ∀ w' : P E, w'.asIdeal.LiesOver v.asIdeal → w' = w)
@@ -79,13 +77,11 @@ private theorem c_add (h2 : Valued.v (2 : Kv v) = 1)
   exact absurd h3 (not_lt.2 (one_le_pow_of_one_le' (not_lt.1 hn) _))
 
 /- English proof (translation)
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `hut : Valued.v (ι u) ≤ Valued.v (ι t)`. Establish `h1 : Valued.v (ι (u / t)) ≤ 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_div₀]`. Conclude with `div_le_one_of_le₀ hut zero_le`. Establish `h3` using `c_add D v w h2 hθ hu (u / t) h1`. Establish `h4 : ι u + ι t * θw = ι t * (ι (u / t) + θw)`. Rewrite using `[mul_add, ← map_mul, show t * (u / t) = u by field_simp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, map_mul, h3, mul_one, max_eq_right hut]`. Establish `hlt : Valued.v (ι t) < Valued.v (ι u)` using `not_le.1 hut`. Establish `h5 : Valued.v (ι t * θw) < Valued.v (ι u)`. Rewrite using `[map_mul, hθ, mul_one]`. Conclude with `hlt`.
-
-Rewrite using `[Valuation.map_add_eq_of_lt_left _ h5, max_eq_left hlt.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord (h2 : Valued.v (2 : Kv v) = 1)
     (hθ : Valued.v θw = 1) (hu : ∀ w' : P E, w'.asIdeal.LiesOver v.asIdeal → w' = w)
@@ -105,19 +101,17 @@ private theorem coord (h2 : Valued.v (2 : Kv v) = 1)
     rw [Valuation.map_add_eq_of_lt_left _ h5, max_eq_left hlt.le]
 
 /- English proof (translation)
-Establish `hval` using `coord D v w h2 hθ hu`. Establish `hr : Module.finrank (Kv v) (Kv w) = 2`. Rewrite using `[finrank_eq_ramificationIdx_mul_inertiaDeg, hef]`. Use `haveI : Module.Finite (Kv v) (Kv w) := Module.finite_of_finrank_pos (by omega)`. Set `L : (Kv v × Kv v) →ₗ[Kv v] Kv w` to `{ toFun := fun p => ι p.1 + ι p.2 * θw map_add' := fun p q => by simp only [Prod.fst_add, Prod.snd_add, map_add]; ring map_smul' := fun c p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ι (c * p.1) + ι (c * p.2) * θw = c • (ι p.1 + ι p.2 * θw)`. Rewrite using `[Algebra.smul_def, algebraMap_completion_eq, map_mul, map_mul]`. Use `ring }`. Establish `hinj : Function.Injective L`. Use `(injective_iff_map_eq_zero L).2 fun p hp => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hval p.1 p.2`. Rewrite `h` using `[show ι p.1 + ι p.2 * θw = 0 from hp, map_zero]`. Establish `h1 : Valued.v (ι p.1) = 0` using `le_antisymm (h ▸ le_max_left _ _) zero_le`. Establish `h3 : Valued.v (ι p.2) = 0` using `le_antisymm (h ▸ le_max_right _ _) zero_le`. Conclude with `Prod.ext ((map_eq_zero ι).1 ((Valuation.zero_iff _).1 h1)) ((map_eq_zero ι).1 ((Valuation.zero_iff _).1 h3))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Rewrite using `[Module.finrank_prod, Module.finrank_self, hr])).1 hinj`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Take `⟨p, hp⟩` from `hsurj (algebraMap E (Kv w) π)`. Establish `h` using `hval p.1 p.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[show ι p.1 + ι p.2 * θw = algebraMap E (Kv w) π from hp, valued_algebraMap_field, hπ]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : Kv v, WithZero.exp (-1 : ℤ) = Valued.v (ι x) := by`. Break down `max_choice (Valued.v (ι p.1)) (Valued.v (ι p.2)) with h' | h'` into its components or cases. Conclude with `⟨_, h.trans h'⟩`. Conclude with `⟨_, h.trans h'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[valued_completionMap]`. Establish `he0` using `e_ne (F := F) w`. Establish `hx0 : Valued.v x ≠ 0` using `fun h0 => by`. Rewrite `hx` using `[h0, zero_pow he0]`. Conclude with `WithZero.exp_ne_zero hx`.
-
-Rewrite `hx` using `[← WithZero.exp_log hx0, ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`. Establish `hd : ((w.asIdeal.ramificationIdx (𝓞 F) : ℕ) : ℤ) ∣ ((1 : ℕ) : ℤ)` using `⟨-WithZero.log (Valued.v x), by rw [mul_neg, ← hx]; simp⟩`. Conclude with `Nat.dvd_one.1 (Int.natCast_dvd_natCast.1 hd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem e_one (h2 : Valued.v (2 : Kv v) = 1)
     (hθ : Valued.v θw = 1) (hu : ∀ w' : P E, w'.asIdeal.LiesOver v.asIdeal → w' = w)
@@ -165,28 +159,26 @@ private theorem e_one (h2 : Valued.v (2 : Kv v) = 1)
 
 omit hl in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨by rw [← h]; rfl⟩, fun h => HeightOneSpectrum.ext h.over.symm⟩`.
+Supply the required witnesses or components.
 -/
 private theorem under_iff : w.under (𝓞 F) = v ↔ w.asIdeal.LiesOver v.asIdeal :=
   ⟨fun h => ⟨by rw [← h]; rfl⟩, fun h => HeightOneSpectrum.ext h.over.symm⟩
 
 omit hl in
 /- English proof (translation)
-Establish `hs` using `sum_ramificationIdx_mul_inertiaDeg E v`. Rewrite `hs` using `[UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.finrank_two D]`. Use `set g : PlacesOver E v → ℕ := fun x => x.1.asIdeal.ramificationIdx (𝓞 F) * x.1.asIdeal.inertiaDeg (𝓞 F) with hg'`. Establish `hs' : ∑ x, g x = 2` using `hs`. Establish `hpos : ∀ x, 1 ≤ g x` using `fun x => Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nonempty (PlacesOver E v)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Simplify using `at hs'`. Take `⟨a⟩` from `hne`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : ∀ b : PlacesOver E v, b = a`. Use `left haveI := a.2`. Establish `h2 : g a = 2`. Rewrite using `[← hs', Finset.sum_eq_single a (fun b _ hb => absurd (hu b) hb) (fun h => absurd (Finset.mem_univ _) h)]`. Establish `hu' : ∀ w' : P E, w'.asIdeal.LiesOver v.asIdeal → w' = a.1` using `fun w' hw' => congrArg Subtype.val (hu ⟨w', hw'⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `theta_unit D v a.1 hg.del`. Establish `he` using `e_one D v a.1 hg.two hθ hu' h2`. Establish `hf : a.1.asIdeal.inertiaDeg (𝓞 F) = 2` using `by simpa only [hg', he, one_mul] using h2`. Conclude with `⟨a.1, (under_iff v a.1).2 a.2, UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.inert_of D v a.1 he hg.two hθ hu' hf⟩`. Use `right`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `not_forall.1 hu`. Establish `h1 : g b + g a ≤ 2`. Rewrite using `[← hs', ← Finset.sum_pair hb]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Establish `ha1` using `hpos a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hb1` using `hpos b`. Establish `hsp : ∀ x : PlacesOver E v, g x = 1 → SplitAt v x.1` using `fun x hx => by haveI := x.2`. Conclude with `UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.split_of v x.1 (Nat.eq_one_of_mul_eq_one_right hx) (Nat.eq_one_of_mul_eq_one_left hx)`. Use `⟨b.1, a.1, fun h => hb (Subtype.ext h), (under_iff v b.1).2 b.2, (under_iff v a.1).2 a.2, hsp b (by omega), hsp a (by omega), fun w'' hw => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[not_or]`. Set `c : PlacesOver E v` to `⟨w'', (under_iff v w'').1 hw⟩`. Establish `hcb : c ≠ b` using `fun h => hn.1 (congrArg Subtype.val h)`. Establish `hca : c ≠ a` using `fun h => hn.2 (congrArg Subtype.val h)`. Establish `h3 : g c + (g b + g a) ≤ 2`.
-
-Rewrite using `[← hs', ← Finset.sum_pair hb, ← Finset.sum_insert (by simp [hcb, hca])]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Use `hpos c` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem main (hg : Gd D.δ v) :
     (∃ w : P E, w.under (𝓞 F) = v ∧ Inert D v w) ∨
@@ -240,7 +232,7 @@ private theorem main (hg : Gd D.δ v) :
 end UpperTheory.PlacesAboveInertOrSplit
 
 /- English proof (translation)
-Introduce `E _ _ D v hg`. Conclude with `UpperTheory.PlacesAboveInertOrSplit.main D v hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.inert_or_split_of_good_delta_rat :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (v : H.P ℚ), H.Gd D.δ v →

@@ -19,7 +19,7 @@ def levRed (P : HeightOneSpectrum (𝓞 E)) (l : Lev (𝓞 E ⧸ P.asIdeal) K n)
   lam := l.lam.comp ((redGL n P).subgroupComap l.H)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levRed {P : HeightOneSpectrum (𝓞 E)} (l : Lev (𝓞 E ⧸ P.asIdeal) K n) (k : GLint E n P) :
     k ∈ (levRed P l).H ↔ redGL n P k ∈ l.H := Iff.rfl
@@ -36,7 +36,7 @@ instance levRed_finiteIndex (P : HeightOneSpectrum (𝓞 E)) (l : Lev (𝓞 E �
   exact Subgroup.finiteIndex_of_le (H := (redGL (E := E) n P).ker) (Subgroup.ker_le_comap _ _)
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Establish `h : ∀ a : l.H, l.lam a ^ Nat.card l.H = 1` using `fun a => by rw [← map_pow, pow_card_eq_one', map_one]`. Conclude with `⟨Nat.card l.H, Nat.card_pos, fun k => h ⟨redGL n P k.1, k.2⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levRed_root (P : HeightOneSpectrum (𝓞 E)) (l : Lev (𝓞 E ⧸ P.asIdeal) K n) :
     ∃ m : ℕ, 0 < m ∧ ∀ k, (levRed P l).lam k ^ m = 1 := by
@@ -49,7 +49,7 @@ variable {Q : Finset (HeightOneSpectrum (𝓞 E))}
 def levRedFam (Θ : LevFam E K n Q) : LevQFam E K n Q := fun P => levRed P.1 (Θ P)
 
 /- English proof (translation)
-Establish `hd` using `Deco.base_ok (E := E) (n := n) (ST := ∅) (SG := Q)`. Establish `hd' : ((Deco.base E n ∅ Q).act 1 h).Ok` using `hd.act (one_mem (UF E n)) h`. Conclude with `⟨_, redGL_passFr 1 h (liftFr_spec hd w) (liftFr_spec hd' w)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_redGL_eq [NeZero n] (h : GLG E n Q) (w : Q) : ∃ k : GLint E n w.1, redGL n w.1 k = h w := by
   have hd := Deco.base_ok (E := E) (n := n) (ST := ∅) (SG := Q)
@@ -57,9 +57,9 @@ theorem exists_redGL_eq [NeZero n] (h : GLG E n Q) (w : Q) : ∃ k : GLint E n w
   exact ⟨_, redGL_passFr 1 h (liftFr_spec hd w) (liftFr_spec hd' w)⟩
 
 /- English proof (translation)
-Introduce `A`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, Units.ext (Matrix.ext fun i _ => i.elim0)⟩`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨k, hk⟩` from `exists_redGL_eq (n := n) (Q := {P}) (Function.update 1 ⟨P, Finset.mem_singleton_self P⟩ A) ⟨P, Finset.mem_singleton_self P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Function.update_self]`. Conclude with `⟨k, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem redGL_surjective (P : HeightOneSpectrum (𝓞 E)) : Function.Surjective (redGL (E := E) n P) := by
   intro A
@@ -84,22 +84,22 @@ def frBe (P : HeightOneSpectrum (𝓞 E)) (f : Sp E n ≃ₗ[E] Sp E n) (x : Sp 
   if f.symm x ∈ stdAt E n P then redV P (f.symm x) else 0
 
 /- English proof (translation)
-Rewrite using `[frBe, LinearEquiv.symm_apply_apply, if_pos hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frBe_apply {P : HeightOneSpectrum (𝓞 E)} (f : Sp E n ≃ₗ[E] Sp E n) {x : Sp E n} (hx : x ∈ stdAt E n P) :
     frBe P f (f x) = redV P x := by
   rw [frBe, LinearEquiv.symm_apply_apply, if_pos hx]
 
 /- English proof (translation)
-The claim follows from `if_neg hx`.
+A detailed English derivation is pending.
 -/
 theorem frBe_off {P : HeightOneSpectrum (𝓞 E)} (f : Sp E n ≃ₗ[E] Sp E n) {x : Sp E n} (hx : f.symm x ∉ stdAt E n P) :
     frBe P f x = 0 := if_neg hx
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : f.symm x ∈ stdAt E n w.1`. Use `conv_lhs => rw [← f.apply_symm_apply x, hf.2 _ hx]`. Conclude with `(if_pos hx).symm`. Rewrite using `[frBe_off f hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `hd.be_off w x fun h => hx ((hf.1 _).1 ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem be_eq_frBe {d : Deco E n ST SG} (hd : d.Ok) {w : SG} {f : Sp E n ≃ₗ[E] Sp E n} (hf : IsLiftFr d w f) :
     d.be w = frBe w.1 f := by
@@ -112,9 +112,9 @@ theorem be_eq_frBe {d : Deco E n ST SG} (hd : d.Ok) {w : SG} {f : Sp E n ≃ₗ[
     rwa [LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `e : (γ * f * (c⁻¹).1).symm x = c.1 (f.symm (γ.symm x))` using `rfl`. Distinguish the cases in `hx : f.symm (γ.symm x) ∈ stdAt E n P`. Rewrite using `[frBe, frBe, e, if_pos hx, if_pos (glint_mem c hx), redV_redGL c hx]`. Rewrite using `[frBe_off f hx, frBe_off, Matrix.mulVec_zero]`. Rewrite using `[e, c.2]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem frBe_move {P : HeightOneSpectrum (𝓞 E)} (γ f : Sp E n ≃ₗ[E] Sp E n) (c : GLint E n P) (x : Sp E n) :
     frBe P (γ * f * (c⁻¹).1) x = (redGL n P c).1.mulVec (frBe P f (γ.symm x)) := by
@@ -139,27 +139,25 @@ def forgetDeco (p : DecoF E n ST SG Q) : Deco E n ST (uSG SG Q) where
   be w := if h : w.1 ∈ SG then p.deco.1.be ⟨w.1, h⟩ else frBe w.1 (p.fr (rightOf w h))
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem forgetDeco_be_of_mem (p : DecoF E n ST SG Q) (w : uSG SG Q) (h : w.1 ∈ SG) :
     (forgetDeco p).be w = p.deco.1.be ⟨w.1, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem forgetDeco_be_of_not (p : DecoF E n ST SG Q) (w : uSG SG Q) (h : w.1 ∉ SG) :
     (forgetDeco p).be w = frBe w.1 (p.fr (rightOf w h)) := dif_neg h
 
 /- English proof (translation)
-Take `⟨⟨⟨N, f, be⟩, hd⟩, hN, -, hbe⟩` from `GlobalTheory.FrameDeco.exists_deco_of_frames E n ST Q (p.deco.res (Finset.empty_subset _)) p.fr p.2`. Take `rfl : N = p.deco.1.N` from `hN`. Establish `e : ∀ P : Q, frBe P.1 (p.fr P) = be P` using `fun P => (be_eq_frBe hd ⟨p.2 P, hbe P⟩).symm`. Establish `hp` using `p.deco.2`. Apply the tactic sequence `refine ⟨hp.lat, hp.uni, hp.f_add, hp.f_smul, hp.f_off, hp.f_ne, fun w => ?_, fun w => ?_, fun w => ?_, fun w => ?_, fun w => ?_⟩ <;> by_cases h : w.1 ∈ SG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[forgetDeco_be_of_mem p w h]`. Conclude with `hp.be_add ⟨w.1, h⟩`. Rewrite using `[forgetDeco_be_of_not p w h, e (rightOf w h)]`. Conclude with `hd.be_add (rightOf w h)`. Rewrite using `[forgetDeco_be_of_mem p w h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp.be_smul ⟨w.1, h⟩`. Rewrite using `[forgetDeco_be_of_not p w h, e (rightOf w h)]`. Conclude with `hd.be_smul (rightOf w h)`. Rewrite using `[forgetDeco_be_of_mem p w h]`. Conclude with `hp.be_off ⟨w.1, h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[forgetDeco_be_of_not p w h, e (rightOf w h)]`. Conclude with `hd.be_off (rightOf w h)`. Rewrite using `[forgetDeco_be_of_mem p w h]`. Conclude with `hp.be_surj ⟨w.1, h⟩`. Rewrite using `[forgetDeco_be_of_not p w h, e (rightOf w h)]`.
-
-Conclude with `hd.be_surj (rightOf w h)`. Rewrite using `[forgetDeco_be_of_mem p w h]`. Conclude with `hp.be_ker ⟨w.1, h⟩`. Rewrite using `[forgetDeco_be_of_not p w h, e (rightOf w h)]`. Conclude with `hd.be_ker (rightOf w h)`.
+A detailed English derivation is pending.
 -/
 theorem forgetDeco_ok (p : DecoF E n ST SG Q) : (forgetDeco p).Ok := by
   obtain ⟨⟨⟨N, f, be⟩, hd⟩, hN, -, hbe⟩ := GlobalTheory.FrameDeco.exists_deco_of_frames E n ST Q
@@ -195,9 +193,7 @@ theorem forgetFr_f (p : DecoF E n ST SG Q) : (forgetFr p).1.f = p.deco.1.f := rf
 open Classical in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use function extensionality and compare the values at `w`.
-
-Conclude with `forgetDeco_be_of_mem p (inLeft Q w) w.2`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem forgetFr_res (p : DecoF E n ST SG Q) : (forgetFr p).res Finset.subset_union_left = p.deco := by
   apply Subtype.ext
@@ -208,7 +204,7 @@ theorem forgetFr_res (p : DecoF E n ST SG Q) : (forgetFr p).res Finset.subset_un
     exact forgetDeco_be_of_mem p (inLeft Q w) w.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p.2 (rightOf w h), fun _ hx => (congrFun (forgetDeco_be_of_not p w h) _).trans (frBe_apply _ hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLiftFr_forgetFr (p : DecoF E n ST SG Q) (w : uSG SG Q) (h : w.1 ∉ SG) :
     IsLiftFr (forgetFr p).1 w (p.fr (rightOf w h)) :=
@@ -217,9 +213,9 @@ theorem isLiftFr_forgetFr (p : DecoF E n ST SG Q) (w : uSG SG Q) (h : w.1 ∉ SG
 open Classical in
 
 /- English proof (translation)
-Introduce `d`. Use `⟨⟨(d.res Finset.subset_union_left, fun P => d.1.liftFr (inRight SG P)), fun P => (liftFr_spec d.2 (inRight SG P)).1⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 ∈ SG`. Conclude with `forgetDeco_be_of_mem _ w h`. Conclude with `(forgetDeco_be_of_not _ w h).trans (be_eq_frBe d.2 (liftFr_spec d.2 w)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem forgetFr_surjective : Function.Surjective (forgetFr : DecoF E n ST SG Q → DecoSet E n ST (uSG SG Q)) := by
   intro d
@@ -247,21 +243,21 @@ def redGQ : GLG E n SG × GLQ E n Q →* GLG E n (uSG SG Q) where
     by_cases h : w.1 ∈ SG <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem redGQ_of_mem (a : GLG E n SG × GLQ E n Q) (w : uSG SG Q) (h : w.1 ∈ SG) :
     redGQ E n SG Q a w = a.1 ⟨w.1, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem redGQ_of_not (a : GLG E n SG × GLQ E n Q) (w : uSG SG Q) (h : w.1 ∉ SG) :
     redGQ E n SG Q a w = redGL n w.1 (a.2 (rightOf w h)) := dif_neg h
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use function extensionality and compare the values at `w x show (forgetDeco (a • p)).be w x = (redGQ E n SG Q a.2 w).1.mulVec ((forgetDeco p).be w (a.1.1.symm x))`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : w.1 ∈ SG`. Rewrite using `[forgetDeco_be_of_mem _ w h, forgetDeco_be_of_mem _ w h, redGQ_of_mem _ w h]`. Both sides reduce to the same expression. Rewrite using `[forgetDeco_be_of_not _ w h, forgetDeco_be_of_not _ w h, redGQ_of_not _ w h]`. Conclude with `frBe_move _ _ _ x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forgetFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) :
     forgetFr (a • p) = (a.1, redGQ E n SG Q a.2) • forgetFr p := by
@@ -278,7 +274,7 @@ theorem forgetFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST 
       exact frBe_move _ _ _ x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 ∈ SG`. Conclude with `redGQ_of_mem (1, c) w h`. Conclude with `(redGQ_of_not (1, c) w h).trans (hc (rightOf w h))`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem redGQ_eq_one {c : GLQ E n Q} (hc : ∀ P : Q, redGL n P.1 (c P) = 1) : redGQ E n SG Q (1, c) = 1 := by
   funext w
@@ -287,7 +283,7 @@ theorem redGQ_eq_one {c : GLQ E n Q} (hc : ∀ P : Q, redGL n P.1 (c P) = 1) : r
   · exact (redGQ_of_not (1, c) w h).trans (hc (rightOf w h))
 
 /- English proof (translation)
-Establish `hn : (inRight SG P).1 ∉ SG` using `fun hP => Finset.disjoint_left.1 hd hP P.2`. Establish `hq` using `isLiftFr_forgetFr q (inRight SG P) hn`. Rewrite `hq` using `[← h]`. Establish `h3` using `exists_of_isLiftFr (isLiftFr_forgetFr p (inRight SG P) hn) hq`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_of_forgetFr_eq (hd : Disjoint SG Q) {p q : DecoF E n ST SG Q} (h : forgetFr p = forgetFr q) (P : Q) :
     ∃ κ : GLint E n P.1, redGL n P.1 κ = 1 ∧ p.fr P = q.fr P * κ.1 := by
@@ -298,11 +294,9 @@ theorem exists_of_forgetFr_eq (hd : Disjoint SG Q) {p q : DecoF E n ST SG Q} (h 
   exact h3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h choose c hc1 hc2 using exists_of_forgetFr_eq hd h`. Use `⟨c, hc1, Subtype.ext (Prod.ext ?_ ?_)⟩` and prove the remaining obligations. Establish `e : q.deco = p.deco` using `by rw [← forgetFr_res q, ← h, forgetFr_res]`. Conclude with `e.trans (one_smul (UF E n × GLG E n SG) p.deco).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `P show q.fr P = (1 : Sp E n ≃ₗ[E] Sp E n) * p.fr P * ((c P).1)⁻¹`. Rewrite using `[hc2 P, one_mul, mul_inv_cancel_right]`. Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite using `[forgetFr_smul]`. Use `show _ = ((1 : UF E n), redGQ E n SG Q (1, c)) • forgetFr p`.
-
-Rewrite using `[redGQ_eq_one hc]`. Conclude with `(one_smul (UF E n × GLG E n (uSG SG Q)) _).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forgetFr_eq_iff (hd : Disjoint SG Q) (p q : DecoF E n ST SG Q) :
     forgetFr p = forgetFr q ↔ ∃ c : GLQ E n Q, (∀ P : Q, redGL n P.1 (c P) = 1) ∧
@@ -323,9 +317,9 @@ theorem forgetFr_eq_iff (hd : Disjoint SG Q) (p q : DecoF E n ST SG Q) :
     exact (one_smul (UF E n × GLG E n (uSG SG Q)) _).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : w.1 ∈ SG`. Conclude with `forgetDeco_be_of_mem _ w h`. Conclude with `forgetDeco_be_of_not _ w h`.
+A detailed English derivation is pending.
 -/
 theorem forgetFr_base [NeZero n] : forgetFr (DecoF.base E n ST SG Q) = DecoSet.base E n ST (uSG SG Q) := by
   apply Subtype.ext
@@ -345,7 +339,7 @@ variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))
   (Λ : LevFam X.E X.K n SG) (Θ : LevFam X.E X.K n Q)
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.1 ∈ SG`. Rewrite using `[redGQ_of_mem _ w hw, LevFam.glue_of_mem _ _ w hw]`. Conclude with `h.2 ⟨w.1, hw⟩ (Set.mem_univ _)`. Rewrite using `[redGQ_of_not _ w hw, LevFam.glue_of_not _ _ w hw]`. Conclude with `c.2 (rightOf w hw) (Set.mem_univ _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redGQ_mem (h : Λ.grp) (c : (levRedFam Θ).grp) (w : uSG SG Q) :
     redGQ X.E n SG Q (h.1, c.1) w ∈ (Λ.glue Θ w).H := by
@@ -361,21 +355,19 @@ def redFG : FrmG Λ (levRedFam Θ) →* FormG (Λ.glue Θ).inv where
   map_mul' a b := Prod.ext rfl (Subtype.ext (map_mul (redGQ X.E n SG Q) (a.2.1.1, a.2.2.1) (b.2.1.1, b.2.2.1)))
 
 /- English proof (translation)
-The claim follows from `forgetFr_smul (FrmG.incl Λ _ g) p`.
+A detailed English derivation is pending.
 -/
 theorem forgetFr_frm_smul (g : FrmG Λ (levRedFam Θ)) (p : DecoF X.E n ST SG Q) :
     forgetFr (g • p) = redFG Λ Θ g • forgetFr p := forgetFr_smul (FrmG.incl Λ _ g) p
 
 /- English proof (translation)
-Introduce and unpack `⟨γ, a, ha⟩`. Establish `h1 : ∀ P : Q, ∃ c : GLint X.E n P.1, c ∈ (levRedFam Θ P).H ∧ (P.1 ∉ SG → redGL n P.1 c = a (inRight SG P))`. Introduce `P`. Distinguish the cases in `h : P.1 ∈ SG`. Conclude with `⟨1, one_mem _, fun h' => absurd h h'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `redGL_surjective P.1 (a (inRight SG P))`. Use `⟨c, ?_, fun _ => hc⟩` and prove the remaining obligations. Establish `h2 : a (inRight SG P) ∈ (Λ.glue Θ (inRight SG P)).H` using `ha (inRight SG P) (Set.mem_univ _)`. Rewrite `h2` using `[LevFam.glue_of_not _ _ _ h]`. Use `show redGL n P.1 c ∈ (Θ P).H`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `h2`. Use `choose c hc1 hc2 using h1`. Establish `h3 : ∀ w : SG, a (inLeft Q w) ∈ (Λ w).H` using `fun w => by`. Establish `h2 : a (inLeft Q w) ∈ (Λ.glue Θ (inLeft Q w)).H` using `ha (inLeft Q w) (Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h2` using `[LevFam.glue_of_mem _ _ _ w.2]`. Then use the resulting hypothesis. Use `⟨(γ, ⟨fun w => a (inLeft Q w), fun w _ => h3 w⟩, ⟨c, fun P _ => hc1 P⟩), Prod.ext rfl (Subtype.ext ?_)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 ∈ SG`. Conclude with `redGQ_of_mem _ w h`.
-
-Conclude with `(redGQ_of_not _ w h).trans (hc2 (rightOf w h) h)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem redFG_surjective : Function.Surjective (redFG Λ Θ) := by
   classical
@@ -402,7 +394,7 @@ theorem redFG_surjective : Function.Surjective (redFG Λ Θ) := by
   · exact (redGQ_of_not _ w h).trans (hc2 (rightOf w h) h)
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lev_lam_congr {κ K : Type} [CommRing κ] [Field K] {l l' : Lev κ K n} (e : l = l') {a a' : GL (Fin n) κ} (e' : a = a')
     (h : a ∈ l.H) (h' : a' ∈ l'.H) : l.lam ⟨a, h⟩ = l'.lam ⟨a', h'⟩ := by
@@ -410,16 +402,16 @@ theorem lev_lam_congr {κ K : Type} [CommRing κ] [Field K] {l l' : Lev κ K n} 
   rfl
 
 /- English proof (translation)
-The claim follows from `piChar_apply (fun P => (Θ P).H) (fun P => (Θ P).lam) c`.
+A detailed English derivation is pending.
 -/
 theorem levQ_chr_apply (Θ : LevQFam X.E X.K n Q) (c : Θ.grp) :
     Θ.chr c = ∏ P, (Θ P).lam ⟨c.1 P, c.2 P (Set.mem_univ P)⟩ :=
   piChar_apply (fun P => (Θ P).H) (fun P => (Θ P).lam) c
 
 /- English proof (translation)
-Establish `e : ((Λ.glue Θ).inv.chr (redFG Λ Θ g).2)⁻¹ = ∏ w : uSG SG Q, (Λ.glue Θ w).lam ⟨_, redGQ_mem Λ Θ g.2.1 g.2.2 w⟩`. Rewrite using `[LevFam.chr_apply, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => inv_inv _`. Rewrite using `[e, LevFam.chr_apply, levQ_chr_apply, ← Fintype.prod_equiv (Equiv.Finset.union SG Q hd) _ _ (fun _ => rfl), Fintype.prod_sum_type]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `(lev_lam_congr (LevFam.glue_of_mem Λ Θ (inLeft Q w) w.2) (redGQ_of_mem (g.2.1.1, g.2.2.1) (inLeft Q w) w.2) (redGQ_mem Λ Θ g.2.1 g.2.2 (inLeft Q w)) (g.2.1.2 w (Set.mem_univ _))).symm`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `h : (inRight SG P).1 ∉ SG` using `fun hP => Finset.disjoint_left.1 hd hP P.2`. Conclude with `(lev_lam_congr (LevFam.glue_of_not Λ Θ (inRight SG P) h) (redGQ_of_not (g.2.1.1, g.2.2.1) (inRight SG P) h) (redGQ_mem Λ Θ g.2.1 g.2.2 (inRight SG P)) (g.2.2.2 P (Set.mem_univ _))).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chr_redFG (hd : Disjoint SG Q) (g : FrmG Λ (levRedFam Θ)) :
     Λ.chr g.2.1 * (levRedFam Θ).chr g.2.2 = ((Λ.glue Θ).inv.chr (redFG Λ Θ g).2)⁻¹ := by
@@ -440,9 +432,9 @@ theorem chr_redFG (hd : Disjoint SG Q) (g : FrmG Λ (levRedFam Θ)) :
       (redGQ_mem Λ Θ g.2.1 g.2.2 (inRight SG P)) (g.2.2.2 P (Set.mem_univ _))).symm
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `redFG_surjective Λ Θ a`. Rewrite `h` using `[← forgetFr_frm_smul]`. Take `⟨c, hc, e⟩` from `(forgetFr_eq_iff hd _ _).1 h`. Establish `hm : c ∈ (levRedFam Θ).grp` using `fun P _ => by show redGL n P.1 (c P) ∈ (Θ P).H`. Rewrite using `[hc P]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Set `k : FrmG Λ (levRedFam Θ)` to `(1, 1, ⟨c, hm⟩)`. Establish `hk : redFG Λ Θ k = 1` using `Prod.ext rfl (Subtype.ext (redGQ_eq_one hc))`. Conclude with `⟨k * g, by rw [map_mul, hk, one_mul], by rw [mul_smul, e]; rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_redFG_smul (hd : Disjoint SG Q) (a : FormG (Λ.glue Θ).inv) (p q : DecoF X.E n ST SG Q)
     (h : a • forgetFr p = forgetFr q) : ∃ g : FrmG Λ (levRedFam Θ), redFG Λ Θ g = a ∧ g • p = q := by
@@ -458,9 +450,9 @@ theorem exists_redFG_smul (hd : Disjoint SG Q) (a : FormG (Λ.glue Θ).inv) (p q
   exact ⟨k * g, by rw [map_mul, hk, one_mul], by rw [mul_smul, e]; rfl⟩
 
 /- English proof (translation)
-Establish `h1 : (g'⁻¹ * g) • p = p` using `by rw [mul_smul, h, inv_smul_smul]`. Establish `e1 : redFG Λ Θ (g'⁻¹ * g) = 1` using `by rw [map_mul, map_inv, e, inv_mul_cancel]`. Establish `h2 : FrmG.incl Λ (levRedFam Θ) (g'⁻¹ * g) = FrmG.incl Λ (levRedFam Θ) 1`. Use `GlobalTheory.FramedForms.stab_inj p h1 (one_smul (FrmG Λ (levRedFam Θ)) p) (congrArg (fun x : FormG (Λ.glue Θ).inv => x.1) e1) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(redGQ_of_mem ((g'⁻¹ * g).2.1.1, (g'⁻¹ * g).2.2.1) (inLeft Q w) w.2).symm.trans (congrFun (congrArg (fun x => x.2.1) e1) (inLeft Q w))`. Conclude with `(inv_mul_eq_one.1 (GlobalTheory.FramedForms.incl_injective Λ _ h2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_redFG_eq {g g' : FrmG Λ (levRedFam Θ)} {p : DecoF X.E n ST SG Q} (h : g • p = g' • p)
     (e : redFG Λ Θ g = redFG Λ Θ g') : g = g' := by
@@ -474,7 +466,7 @@ theorem eq_of_redFG_eq {g g' : FrmG Λ (levRedFam Θ)} {p : DecoF X.E n ST SG Q}
   exact (inv_mul_eq_one.1 (GlobalTheory.FramedForms.incl_injective Λ _ h2)).symm
 
 /- English proof (translation)
-Use `Nat.card_eq_of_bijective (fun g => ⟨redFG Λ Θ g.1, ?_⟩) ⟨fun a b h => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, ← forgetFr_frm_smul, g.2]`. Conclude with `Subtype.ext (eq_of_redFG_eq Λ Θ (a.2.trans b.2.symm) (congrArg Subtype.val h))`. Take `⟨g, h1, h2⟩` from `exists_redFG_smul Λ Θ hd a.1 p p a.2`. Conclude with `⟨⟨g, h2⟩, Subtype.ext h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_stabilizer_forgetFr (hd : Disjoint SG Q) (p : DecoF X.E n ST SG Q) :
     Nat.card (MulAction.stabilizer (FrmG Λ (levRedFam Θ)) p) =
@@ -507,7 +499,7 @@ def unitOf (pi : 𝓞 E) : Eˣ := if h : (pi : E) = 0 then 1 else Units.mk0 _ h
 omit [StarRing E] in
 
 /- English proof (translation)
-Establish `h0 : (pi : E) ≠ 0` using `fun h0 => h (by`. Rewrite using `[RingOfIntegers.coe_eq_zero_iff.1 h0]`. Conclude with `zero_mem _)`. Rewrite using `[unitOf, dif_neg h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitOf_val {pi : 𝓞 E} {P : HeightOneSpectrum (𝓞 E)} (h : pi ∉ P.asIdeal) : (unitOf pi : E) = pi := by
   have h0 : (pi : E) ≠ 0 := fun h0 => h (by
@@ -529,9 +521,9 @@ variable (E Q) in
 def extQ : GLQ E n Q →* GLQ E N Q := MonoidHom.pi fun P => (extI hN P.1).comp (Pi.evalMonoidHom _ P)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `LinearEquiv.ext fun y => ?_` and prove the remaining obligations. Establish `e : prH E rfl (incl E n y) = y` using `initL_incl y`. Use `prH_sumE rfl g t (incl E n y)` as an intermediate fact. Rewrite `this` using `[h, prH_sumE, e]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem sumE_inj {g g' : Sp E n ≃ₗ[E] Sp E n} {t : Eˣ} (h : sumE hN g t = sumE hN g' t) : g = g' := by
   subst hN
@@ -542,7 +534,7 @@ theorem sumE_inj {g g' : Sp E n ≃ₗ[E] Sp E n} {t : Eˣ} (h : sumE hN g t = s
   exact this.symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `funext fun P => Subtype.ext (sumE_inj hN (congrArg Subtype.val (congrFun h P)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extQ_injective : Function.Injective (extQ E hN Q) := fun _ _ h =>
   funext fun P => Subtype.ext (sumE_inj hN (congrArg Subtype.val (congrFun h P)))
@@ -552,9 +544,9 @@ variable {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : 
 include hT in
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `e : (DecoSet.tilH (ST` using `ST) rfl pi d).1 = d.1.til pi := DecoSet.til_val d hT hG`. Establish `e' : (DecoSet.tilH (ST` using `ST) rfl pi d').1 = d'.1.til pi := DecoSet.til_val d' hT hG'`. Rewrite using `[e, e']`. Take `⟨⟨M, f, be⟩, hd⟩` from `d`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨M', f', be'⟩, hd'⟩` from `d'`. Take `rfl : M = M'` from `h`. Conclude with `⟨rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tilH_N_f {SG' : Finset (HeightOneSpectrum (𝓞 E))} (hG : ∀ w : SG, pi ∉ w.1.asIdeal) (hG' : ∀ w : SG', pi ∉ w.1.asIdeal)
     (d : DecoSet E n ∅ SG) (d' : DecoSet E n ∅ SG') (h : d.1.N = d'.1.N) :
@@ -572,7 +564,7 @@ theorem tilH_N_f {SG' : Finset (HeightOneSpectrum (𝓞 E))} (hG : ∀ w : SG, p
 include hT hG hQ
 
 /- English proof (translation)
-Take `⟨d, hN', -, hbe⟩` from `GlobalTheory.FrameDeco.exists_deco_of_frames E n ∅ Q (p.deco.res (Finset.empty_subset _)) p.fr p.2`. Establish `hd : IsLiftFr d.1 P (p.fr P)` using `⟨fun y => by rw [Deco.at, hN']; exact p.2 P y, hbe P⟩`. Establish `h1` using `(isLiftFr_tilH hN d hT hQ P hd (unitOf pi) (unitOf_val (hQ P))).1 x`. Rewrite `h1` using `[Deco.at, (tilH_N_f hN hT hQ hG d p.deco hN').1]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tilFr_fits (p : DecoF E n ∅ SG Q) (P : Q) (x : Sp E N) :
     sumE hN (p.fr P) (unitOf pi) x ∈ (DecoSet.tilH (ST := ST) hN pi p.deco).1.at P.1 ↔ x ∈ stdAt E N P.1 := by
@@ -582,28 +574,28 @@ theorem tilFr_fits (p : DecoF E n ∅ SG Q) (P : Q) (x : Sp E N) :
   rwa [Deco.at, (tilH_N_f hN hT hQ hG d p.deco hN').1] at h1
 
 /- English proof (translation)
-The claim follows from `dif_pos (tilFr_fits hN hT hG hQ p)`.
+A detailed English derivation is pending.
 -/
 theorem tilFr_eq (p : DecoF E n ∅ SG Q) : tilFr (ST := ST) hN pi p =
     (⟨(DecoSet.tilH hN pi p.deco, fun P => sumE hN (p.fr P) (unitOf pi)), tilFr_fits hN hT hG hQ p⟩ : DecoF E N ST SG Q) :=
   dif_pos (tilFr_fits hN hT hG hQ p)
 
 /- English proof (translation)
-Conclude with `congrArg DecoF.deco (tilFr_eq hN hT hG hQ p)`.
+A detailed English derivation is pending.
 -/
 theorem tilFr_deco (p : DecoF E n ∅ SG Q) : (tilFr (ST := ST) hN pi p).deco = DecoSet.tilH hN pi p.deco := by
   exact congrArg DecoF.deco (tilFr_eq hN hT hG hQ p)
 
 /- English proof (translation)
-Conclude with `congrArg (fun x => DecoF.fr x P) (tilFr_eq hN hT hG hQ p)`.
+A detailed English derivation is pending.
 -/
 theorem tilFr_fr (p : DecoF E n ∅ SG Q) (P : Q) : (tilFr (ST := ST) hN pi p).fr P = sumE hN (p.fr P) (unitOf pi) := by
   exact congrArg (fun x => DecoF.fr x P) (tilFr_eq hN hT hG hQ p)
 
 /- English proof (translation)
-Establish `h0 : ∀ t : E, prH E hN (Pi.single (Br.iL hN) t) = 0` using `fun t => funext fun i => by`. Establish `h : Br.iC hN i ≠ Br.iL hN` using `fun h => absurd (congrArg Fin.val h) i.2.ne`. Rewrite using `[prH_apply, Pi.single_eq_of_ne h]`. Both sides reduce to the same expression. Rewrite using `[tilFr_fr hN hT hG hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `ext_prH hN ?_ ?_` and prove the remaining obligations. Rewrite using `[prH_sumE, h0, h0, map_zero]`. Rewrite using `[sumE_last, unitOf_val (hQ P), Pi.single_eq_same, Pi.single_eq_same, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tilFr_fr_last (p : DecoF E n ∅ SG Q) (P : Q) :
     (tilFr (ST := ST) hN pi p).fr P (Pi.single (Br.iL hN) 1) = Pi.single (Br.iL hN) (pi : E) := by
@@ -617,9 +609,7 @@ theorem tilFr_fr_last (p : DecoF E n ∅ SG Q) (P : Q) :
   · rw [sumE_last, unitOf_val (hQ P), Pi.single_eq_same, Pi.single_eq_same, mul_one]
 
 /- English proof (translation)
-Use `Subtype.ext (Prod.ext ?_ (funext fun P => ?_))` and prove the remaining obligations. Use `show (tilFr hN pi (a • p)).deco = (extUH hN a.1, extGH hN a.2.1) • (tilFr hN pi p).deco`. Rewrite using `[tilFr_deco hN hT hG hQ, tilFr_deco hN hT hG hQ]`. Conclude with `DecoSet.tilH_smul hN (a.1, a.2.1) p.deco hT hG`. Use `show (tilFr hN pi (a • p)).fr P = (extUH hN a.1).1 * (tilFr hN pi p).fr P * ((extI hN P.1 (a.2.2 P))⁻¹).1`.
-
-Rewrite using `[tilFr_fr hN hT hG hQ, tilFr_fr hN hT hG hQ, ← map_inv, extI_val, extUH_val, ← sumE_mul, ← sumE_mul, one_mul, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tilFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ∅ SG Q) :
     tilFr (ST := ST) hN pi (a • p) =
@@ -633,11 +623,9 @@ theorem tilFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ∅ SG
     rfl
 
 /- English proof (translation)
-Introduce `p q h`. Use `Subtype.ext (Prod.ext ?_ (funext fun P => ?_))` and prove the remaining obligations. Establish `e` using `congrArg DecoF.deco h`. Rewrite `e` using `[tilFr_deco hN hT hG hQ, tilFr_deco hN hT hG hQ]`. Substitute `hN` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `e1 : (DecoSet.til (ST` using `ST) pi p.deco).1 = (DecoSet.til (ST := ST) pi q.deco).1 := congrArg Subtype.val e`. Rewrite `e1` using `[DecoSet.til_val _ hT hG, DecoSet.til_val _ hT hG]`. Conclude with `Subtype.ext (Deco.til_injective p.deco.2 q.deco.2 e1)`. Establish `e` using `congrArg (fun x => DecoF.fr x P) h`. Simplify using `only [tilFr_fr hN hT hG hQ] at e`.
-
-Conclude with `sumE_inj hN e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tilFr_injective : Function.Injective (tilFr hN pi : DecoF E n ∅ SG Q → DecoF E N ST SG Q) := by
   intro p q h
@@ -653,13 +641,11 @@ theorem tilFr_injective : Function.Injective (tilFr hN pi : DecoF E n ∅ SG Q �
     exact sumE_inj hN e
 
 /- English proof (translation)
-Establish `hU : ∀ w : uSG SG Q, pi ∉ w.1.asIdeal` using `fun w => by`. Distinguish the cases in `h : w.1 ∈ SG`. Use `exacts [hG ⟨w.1, h⟩, hQ (rightOf w h)]`. Establish `h1` using `tilH_N_f hN hT hG hU p.deco (forgetFr p) rfl`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `ext1`. Rewrite using `[forgetFr_N, tilFr_deco hN hT hG hQ, h1.1]`. Rewrite using `[forgetFr_f, tilFr_deco hN hT hG hQ, h1.2]`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 ∈ SG`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(forgetDeco_be_of_mem _ w h).trans ?_` and prove the remaining obligations. Rewrite using `[tilFr_deco hN hT hG hQ]`. Establish `hf` using `liftFr_spec p.deco.2 ⟨w.1, h⟩`. Establish `hf' : IsLiftFr (forgetFr p).1 w (p.deco.1.liftFr ⟨w.1, h⟩)` using `⟨hf.1, fun x hx => (congrFun (forgetDeco_be_of_mem p w h) _).trans (hf.2 x hx)⟩`. Conclude with `(be_eq_frBe (DecoSet.tilH hN pi p.deco).2 (isLiftFr_tilH hN _ hT hG ⟨w.1, h⟩ hf _ (unitOf_val (hU w)))).trans (be_eq_frBe (DecoSet.tilH hN pi (forgetFr p)).2 (isLiftFr_tilH hN _ hT hU w hf' _ (unitOf_val (hU w)))).symm`.
-
-Use `(forgetDeco_be_of_not _ w h).trans ?_` and prove the remaining obligations. Rewrite using `[tilFr_fr hN hT hG hQ]`. Conclude with `(be_eq_frBe (DecoSet.tilH hN pi (forgetFr p)).2 (isLiftFr_tilH hN _ hT hU w (isLiftFr_forgetFr p w h) _ (unitOf_val (hU w)))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forgetFr_tilFr (p : DecoF E n ∅ SG Q) :
     forgetFr (tilFr (ST := ST) hN pi p) = DecoSet.tilH hN pi (forgetFr p) := by
@@ -698,7 +684,7 @@ def levQX : LevQFam X.E X.K (R.N R.m - 1) (QE sel (mu : Chr X.F X.E X.K)) :=
   levRedFam (rowTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levQX (P : QE sel (mu : Chr X.F X.E X.K)) (k : GLint X.E (R.N R.m - 1) P.1) :
     k ∈ (levQX R sel mu P).H ↔
@@ -712,12 +698,12 @@ theorem levQX_lam (P : QE sel (mu : Chr X.F X.E X.K)) (k : (levQX R sel mu P).H)
       (rowTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)) P).lam ⟨redGL (R.N R.m - 1) P.1 k.1, k.2⟩ := rfl
 
 /- English proof (translation)
-The claim follows from `levRed_finiteIndex _ _`.
+A detailed English derivation is pending.
 -/
 theorem levQX_finiteIndex (P : QE sel (mu : Chr X.F X.E X.K)) : (levQX R sel mu P).H.FiniteIndex := levRed_finiteIndex _ _
 
 /- English proof (translation)
-The claim follows from `levRed_root _ _`.
+A detailed English derivation is pending.
 -/
 theorem levQX_root (P : QE sel (mu : Chr X.F X.E X.K)) : ∃ m : ℕ, 0 < m ∧ ∀ k, (levQX R sel mu P).lam k ^ m = 1 :=
   levRed_root _ _
@@ -742,12 +728,12 @@ Both sides reduce to the same expression.
 theorem toRow_N (p : XPt Pr R sel mu) : (toRow sel mu p).1.N = p.deco.1.N := rfl
 
 /- English proof (translation)
-The claim follows from `forgetFr_surjective`.
+A detailed English derivation is pending.
 -/
 theorem toRow_surjective : Function.Surjective (toRow (Pr := Pr) (R := R) sel mu) := forgetFr_surjective
 
 /- English proof (translation)
-The claim follows from `isLiftFr_forgetFr p w h`.
+A detailed English derivation is pending.
 -/
 theorem isLiftFr_toRow (p : XPt Pr R sel mu) (w : rowSG Pr sel mu) (h : w.1 ∉ Pr.vGs) :
     IsLiftFr (toRow sel mu p).1 w (p.fr (rightOf w h)) := isLiftFr_forgetFr p w h
@@ -755,13 +741,13 @@ theorem isLiftFr_toRow (p : XPt Pr R sel mu) (w : rowSG Pr sel mu) (h : w.1 ∉ 
 variable (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-The claim follows from `forgetFr_frm_smul _ _ g p`.
+A detailed English derivation is pending.
 -/
 theorem toRow_smul (g : FrmG (rowTyG Ch P) (levQX R sel mu)) (p : XPt Pr R sel mu) :
     toRow sel mu (g • p) = toRowG Ch sel mu P g • toRow sel mu p := forgetFr_frm_smul _ _ g p
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext rfl (Set.image_empty _))`.
+A detailed English derivation is pending.
 -/
 theorem stepX_smul_trivPt (g : FrmG (rowTyG Ch P) (levQX R sel mu)) (p : XPt Pr R sel mu) :
     (letI := (stepX Ch sel mu P).actD (); g • trivPt X _ _ _ _ p) = trivPt X _ _ _ _ (g • p) :=
@@ -773,13 +759,13 @@ variable (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K)))
 include hd
 
 /- English proof (translation)
-The claim follows from `chr_redFG _ _ hd g`.
+A detailed English derivation is pending.
 -/
 theorem chr_stepX (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     (stepX Ch sel mu P).chr () g = ((rowTy Ch sel mu P).inv.chr (toRowG Ch sel mu P g).2)⁻¹ := chr_redFG _ _ hd g
 
 /- English proof (translation)
-Rewrite using `[chr_stepX Ch sel mu P hd, inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mtilde_rho_toRowG (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     (mtildeGSD W Ch sel mu P).ρ (toRowG Ch sel mu P g) = ((((stepX Ch sel mu P).chr () g)⁻¹ : X.Kˣ) : X.K) •
@@ -788,13 +774,13 @@ theorem mtilde_rho_toRowG (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `exists_redFG_smul _ _ hd a p q h`.
+A detailed English derivation is pending.
 -/
 theorem exists_toRowG_smul (a : FormG (rowTy Ch sel mu P).inv) (p q : XPt Pr R sel mu) (h : a • toRow sel mu p = toRow sel mu q) :
     ∃ g : FrmG (rowTyG Ch P) (levQX R sel mu), toRowG Ch sel mu P g = a ∧ g • p = q := exists_redFG_smul _ _ hd a p q h
 
 /- English proof (translation)
-The claim follows from `card_stabilizer_forgetFr _ _ hd p`.
+A detailed English derivation is pending.
 -/
 theorem card_stabilizer_toRow (p : XPt Pr R sel mu) :
     Nat.card (MulAction.stabilizer (FrmG (rowTyG Ch P) (levQX R sel mu)) p) =
@@ -808,26 +794,26 @@ variable (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ P : QE sel (mu : Chr X.F X.E X.K)
 include hPr hQ
 
 /- English proof (translation)
-The claim follows from `tilFr_deco _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p`.
+A detailed English derivation is pending.
 -/
 theorem tilF_deco (p : XPt Pr R sel mu) : (tilF sel mu u p).deco = DecoSet.tilH (N_m_succ R) (Pr.piT u) p.deco :=
   tilFr_deco _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p
 
 /- English proof (translation)
-The claim follows from `tilFr_fr _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p P`.
+A detailed English derivation is pending.
 -/
 theorem tilF_fr (p : XPt Pr R sel mu) (P : QE sel (mu : Chr X.F X.E X.K)) :
     (tilF sel mu u p).fr P = sumE (N_m_succ R) (p.fr P) (unitOf (Pr.piT u)) :=
   tilFr_fr _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p P
 
 /- English proof (translation)
-The claim follows from `forgetFr_tilFr _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p`.
+A detailed English derivation is pending.
 -/
 theorem forgetFr_tilF (p : XPt Pr R sel mu) : forgetFr (tilF sel mu u p) = tilQ sel mu u (toRow sel mu p) :=
   forgetFr_tilFr _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p
 
 /- English proof (translation)
-The claim follows from `congrArg (fun d => d.1.N) (forgetFr_tilF sel mu hPr u hQ p)`.
+A detailed English derivation is pending.
 -/
 theorem tilF_N (p : XPt Pr R sel mu) : (tilF sel mu u p).deco.1.N = (tilQ sel mu u (toRow sel mu p)).1.N :=
   congrArg (fun d => d.1.N) (forgetFr_tilF sel mu hPr u hQ p)
@@ -835,7 +821,7 @@ theorem tilF_N (p : XPt Pr R sel mu) : (tilF sel mu u p).deco.1.N = (tilQ sel mu
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-The claim follows from `tilFr_smul _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ a p`.
+A detailed English derivation is pending.
 -/
 theorem tilF_smul (a : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) Pr.vGs × GLQ X.E (R.N R.m - 1) (QE sel (mu : Chr X.F X.E X.K)))
     (p : XPt Pr R sel mu) :
@@ -852,24 +838,24 @@ instance neZero_rankX (R : Ranks) : NeZero (R.N R.m - 1) := ⟨by
   omega⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivPt X _ _ _ _ (DecoF.base _ _ _ _ _)⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty ((stepX Ch sel mu P).D ()) := ⟨trivPt X _ _ _ _ (DecoF.base _ _ _ _ _)⟩
 
 /- English proof (translation)
-The claim follows from `forgetFr_base`.
+A detailed English derivation is pending.
 -/
 example : toRow sel mu (DecoF.base _ _ _ _ _ : XPt Pr R sel mu) = DecoSet.base _ _ _ _ := forgetFr_base
 
 /- English proof (translation)
-The claim follows from `inv_mul_cancel _`.
+A detailed English derivation is pending.
 -/
 example (Q : QE sel (mu : Chr X.F X.E X.K)) (k : (levQX R sel mu Q).H) :
     (levQX R sel mu Q).lam k * lamQP (mu : Chr X.F X.E X.K) Q.1 (R.N R.m - 1) R.r (R.m * R.t) ⟨redGL _ Q.1 k.1, k.2⟩ = 1 :=
   inv_mul_cancel _
 
 /- English proof (translation)
-The claim follows from `tilFr_fr_last _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p Q`.
+A detailed English derivation is pending.
 -/
 example (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ P : QE sel (mu : Chr X.F X.E X.K), Pr.piT u ∉ P.1.asIdeal) (p : XPt Pr R sel mu)
     (Q : QE sel (mu : Chr X.F X.E X.K)) :

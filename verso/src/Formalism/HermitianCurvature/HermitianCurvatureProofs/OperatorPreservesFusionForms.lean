@@ -15,99 +15,99 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnHermHaar
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnWCell
 
 /- English proof (translation)
-Conclude with `quantum_minor_border_es.1`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.border_first_expansion : Formalism.FourierDecayAlt.Q.BorderE := by
   exact quantum_minor_border_es.1
 
 /- English proof (translation)
-Conclude with `quantum_minor_border_es.2`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.border_last_expansion : Formalism.FourierDecayAlt.Q.BorderS := by
   exact quantum_minor_border_es.2
 
 /- English proof (translation)
-Conclude with `quantum_minor_border_full`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.border_full_expansion : Formalism.FourierDecayAlt.Q.BorderFull := by
   exact quantum_minor_border_full
 
 /- English proof (translation)
-Conclude with `quantum_minor_move.1`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.move_vector_identity : Formalism.FourierDecayAlt.Q.MoveVec := by
   exact quantum_minor_move.1
 
 /- English proof (translation)
-Conclude with `quantum_minor_move.2`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.move_covariance : Formalism.FourierDecayAlt.Q.MoveCov := by
   exact quantum_minor_move.2
 
 /- English proof (translation)
-Conclude with `rtt_sandwich'`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.rtt_sandwich : Formalism.FourierDecayAlt.Q.RTTSandwich := by
   exact rtt_sandwich'
 
 /- English proof (translation)
-Take `⟨hH, hU, -⟩` from `level_basics`. Conclude with `gl_level_image hH hU`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.level_group_image : Formalism.FourierDecayAlt.Q.GlevImage := by
   obtain ⟨hH, hU, -⟩ := level_basics
   exact gl_level_image hH hU
 
 /- English proof (translation)
-Conclude with `level_transfer_of_levHom level_basics.1`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.level_transfer : Formalism.FourierDecayAlt.Q.LevelTransfer := by
   exact level_transfer_of_levHom level_basics.1
 
 /- English proof (translation)
-Conclude with `qnRuleLeft`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.left_action_rule : Formalism.FourierDecayAlt.Q.RuleLeft := by
   exact qnRuleLeft
 
 /- English proof (translation)
-Conclude with `qnRuleTorus`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.torus_action_rule : Formalism.FourierDecayAlt.Q.RuleTorus := by
   exact qnRuleTorus
 
 /- English proof (translation)
-Conclude with `qnTInv`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.operator_invariance : Formalism.FourierDecayAlt.Q.TInvariant := by
   exact qnTInv
 
 /- English proof (translation)
-Conclude with `qnTPres`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms : Formalism.FourierDecayAlt.Q.TPreservesFF := by
   exact qnTPres
 
 /- English proof (translation)
-Conclude with `capelli_det_commute`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.capelli_commutation : Formalism.FourierDecayAlt.Q.CapCommute := by
   exact capelli_det_commute
 
 /- English proof (translation)
-Conclude with `qnHermHaar`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.hermitian_haar_invariance : Formalism.FourierDecayAlt.Q.HermHaar := by
   exact qnHermHaar
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _`. Conclude with `qnHermHaar`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.hermitian_from_algebra : Formalism.FourierDecayAlt.Q.HermFromSteps := by
   intro _ _ _ _ _ _ _ _
   exact qnHermHaar
 
 /- English proof (translation)
-Conclude with `quantum_w_big_cell`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.weyl_cell_big_cell : Formalism.FourierDecayAlt.Q.WCellBigCell := by
   exact quantum_w_big_cell

@@ -20,7 +20,7 @@ namespace FullLevel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨b, _, hb⟩ => ⟨b, by rw [← hb, Nat.cast_smul_eq_nsmul]⟩, fun ⟨b, hb⟩ => ⟨b, trivial, by rw [hb, Nat.cast_smul_eq_nsmul]⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_iff_modN (k : ℕ) (x : Dw.La) :
     x ∈ (Ideal.span {(k : 𝓞 E)} • ⊤ : Submodule (𝓞 E) Dw.La) ↔ Dw.ModN k x := by
@@ -29,14 +29,14 @@ theorem mem_iff_modN (k : ℕ) (x : Dw.La) :
     fun ⟨b, hb⟩ => ⟨b, trivial, by rw [hb, Nat.cast_smul_eq_nsmul]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, mem_iff_modN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq_iff (k : ℕ) (a b : Dw.La) :
     (Submodule.Quotient.mk a : LatMod Dw k) = Submodule.Quotient.mk b ↔ Dw.ModN k (a - b) := by
   rw [Submodule.Quotient.eq, mem_iff_modN]
 
 /- English proof (translation)
-Take `⟨J, _, π, r, hr, hπ⟩` from `LevelFlat.exists_finite_quotient Dw k hk`. Use `Finite.of_surjective (fun j => (Submodule.Quotient.mk (r j) : LatMod Dw k)) fun q => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `⟨π a, (mk_eq_iff k _ _).2 ((hπ _ _).1 (hr _))⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_latMod (k : ℕ) (hk : 0 < k) : Finite (LatMod Dw k) := by
   obtain ⟨J, _, π, r, hr, hπ⟩ := LevelFlat.exists_finite_quotient Dw k hk
@@ -45,7 +45,7 @@ theorem finite_latMod (k : ℕ) (hk : 0 < k) : Finite (LatMod Dw k) := by
   exact ⟨π a, (mk_eq_iff k _ _).2 ((hπ _ _).1 (hr _))⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, mem_iff_modN]`. Conclude with `⟨a, Nat.cast_smul_eq_nsmul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nsmul_latMod (k : ℕ) (q : LatMod Dw k) : k • q = 0 := by
   obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -55,11 +55,11 @@ theorem nsmul_latMod (k : ℕ) (q : LatMod Dw k) : k • q = 0 := by
 variable (Xo : Moduli Dw l)
 
 /- English proof (translation)
-Use `choose r hr using Submodule.Quotient.mk_surjective (Ideal.span {(k : 𝓞 E)} • ⊤ : Submodule (𝓞 E) Dw.La)`. Establish `h : ∀ a, ev (r (Submodule.Quotient.mk a)) = ev a` using `fun a => by`. Take `⟨b, hb⟩` from `(mk_eq_iff k _ _).1 (hr (Submodule.Quotient.mk a))`. Rewrite using `[sub_eq_iff_eq_add.1 hb, hadd, hker, _root_.one_mul]`. Use `⟨fun q => ev (r q), ⟨fun a b => ?_, fun o a => ?_, fun K _ χ a b hab => ?_⟩, h⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Use `beta_reduce`. Rewrite using `[← Submodule.Quotient.mk_add, h, h, h, hadd]`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a beta_reduce`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, h, h, hlin]`. Rewrite using `[← hr a, ← hr b]`. Conclude with `(mk_eq_iff k _ _).2 (hinj K χ _ _ hab)`.
+A detailed English derivation is pending.
 -/
 theorem exists_descend (k : ℕ) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X)
     (ev : Dw.La → (ptO Xo x0 ⟶ Xo.univ.t.G)) (hadd : ∀ a b, ev (a + b) = ev a * ev b)
@@ -84,7 +84,7 @@ theorem exists_descend (k : ℕ) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X)
     exact (mk_eq_iff k _ _).2 (hinj K χ _ _ hab)
 
 /- English proof (translation)
-Set `f : LatMod Dw k →+ Additive (ptO Xo x0 ⟶ Xo.univ.t.G)` to `AddMonoidHom.mk' (fun q => Additive.ofMul (ev q)) fun a b => congrArg Additive.ofMul (h.1 a b)`. Use `map_nsmul f k q` as an intermediate fact. Rewrite `this` using `[nsmul_latMod, map_zero]`. Conclude with `(congrArg Additive.toMul this).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one {k : ℕ} {S : Type} [CommRing S] {x0 : Sp S ⟶ Xo.X}
     {ev : LatMod Dw k → (ptO Xo x0 ⟶ Xo.univ.t.G)} (h : IsFullLev Xo k x0 ev) (q : LatMod Dw k) : ev q ^ k = 1 := by
@@ -95,9 +95,9 @@ theorem pow_eq_one {k : ℕ} {S : Type} [CommRing S] {x0 : Sp S ⟶ Xo.X}
   exact (congrArg Additive.toMul this).symm
 
 /- English proof (translation)
-Use `⟨fun a b => ?_, fun o a => ?_, fun K _ χ a b hab => hev.2.2 K (χ.comp ψ) a b ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hev.1, MonObj.comp_mul]`. Use `beta_reduce`. Rewrite using `[hev.2.1, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: spMap χ ≫ h.left ≫ (ev a).left = spMap χ ≫ h.left ≫ (ev b).left` using `hab`. Rewrite `this` using `[hh]`. Rewrite using `[spMap_comp, Category.assoc, Category.assoc]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange {k : ℕ} {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x0 : Sp S ⟶ Xo.X}
     {x1 : Sp T ⟶ Xo.X} (h : ptO Xo x1 ⟶ ptO Xo x0) (hh : h.left = spMap ψ)
@@ -114,9 +114,9 @@ theorem baseChange {k : ℕ} {S T : Type} [CommRing S] [CommRing T] (ψ : S →+
     exact this
 
 /- English proof (translation)
-Take `⟨e, he, He⟩` from `exists_isIdempotentElem_torsion_eq hL E H Dw l Xo S x0 k hk a b ha hb`. Establish `h1 : e = 1` using `(hχ e ((He T χ).2 hab)).mul_left_cancel (he.eq.trans (_root_.mul_one _).symm)`. Establish `h2` using `(He S (RingHom.id S)).1 h1`. Establish `h3 : spMap (RingHom.id S) = 𝟙 _` using `Spec.map_id (CommRingCat.of S)`. Rewrite `h2` using `[h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Over.OverMorphism.ext ((Category.id_comp _).symm.trans (h2.trans (Category.id_comp _)))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_agree (hL : Laws) {k : ℕ} (hk : 0 < k) {S T : Type} [CommRing S] [CommRing T] (χ : S →+* T)
     (hχ : ∀ e, χ e = 1 → IsUnit e) {x0 : Sp S ⟶ Xo.X} {a b : ptO Xo x0 ⟶ Xo.univ.t.G} (ha : a ^ k = 1)
@@ -129,9 +129,9 @@ theorem eq_of_agree (hL : Laws) {k : ℕ} (hk : 0 < k) {S T : Type} [CommRing S]
   exact Over.OverMorphism.ext ((Category.id_comp _).symm.trans (h2.trans (Category.id_comp _)))
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `Spec.map_surjective (x0 ≫ Xo.s)`. Take `⟨-, I, -⟩` from `Xo.univ.geom K x0 β.hom hβ.symm`. Take `⟨ev, hev, h⟩` from `exists_descend Xo k x0 (I.ev k) (I.add k) (I.lin k) (fun a => (I.ker k hk _).2 ⟨a, rfl⟩) fun K' _ χ a b hab => by`. Establish `h1 : I.ev k a = I.ev k b` using `eq_of_agree Xo hL hk χ (fun e he => isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at he) ((I.onto k hk _).2 ⟨_, rfl⟩) ((I.onto k hk _).2 ⟨_, rfl⟩) hab`. Establish `h2 : I.ev k a = I.ev k (a - b) * I.ev k b` using `by rw [← I.add, sub_add_cancel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, mul_eq_right, I.ker k hk]`. Conclude with `h1`. Use `⟨ev, hev, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(I.onto k hk p).1 hp`. Conclude with `⟨_, (h a).trans ha⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_geometric (hL : Laws) {k : ℕ} (hk : 0 < k) (K : Type) [Field K] [IsAlgClosed K] (x0 : Sp K ⟶ Xo.X) :
     ∃ ev, IsFullLev Xo k x0 ev ∧ ∀ p : ptO Xo x0 ⟶ Xo.univ.t.G, p ^ k = 1 → ∃ q, ev q = p := by
@@ -150,13 +150,11 @@ theorem exists_geometric (hL : Laws) {k : ℕ} (hk : 0 < k) (K : Type) [Field K]
   exact ⟨_, (h a).trans ha⟩
 
 /- English proof (translation)
-Use `haveI := finite_latMod (Dw := Dw) k hk`. Set `K` to `AlgebraicClosure (IsLocalRing.ResidueField T)`. Set `χ : T →+* K` to `(algebraMap (IsLocalRing.ResidueField T) K).comp (IsLocalRing.residue T)`. Establish `hχ : ∀ e, χ e = 1 → IsUnit e` using `fun e he => by`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Simplify using `[χ, h0] at he`. Set `h : ptO Xo (spMap χ ≫ x0) ⟶ ptO Xo x0` to `Over.homMk (spMap χ) rfl`. Take `⟨ev₀, -, h₀⟩` from `exists_geometric Xo hL hk K (spMap χ ≫ x0)`. Establish `hpow : ∀ a : ptO Xo x0 ⟶ Xo.univ.t.G, a ^ k = 1 → (h ≫ a) ^ k = 1` using `fun a ha => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonObj.comp_pow, ha, MonObj.comp_one]`. Use `choose f hf using fun q => h₀ (h ≫ ev q) (hpow _ (pow_eq_one Xo hev q))`. Establish `hinj : Function.Injective f` using `fun a b hab => hev.2.2 K χ a b (congrArg CommaMorphism.left ((hf a).symm.trans ((congrArg ev₀ hab).trans (hf b))))`. Take `⟨r, hr⟩` from `h₀ (h ≫ p) (hpow p hp)`. Take `⟨q, rfl⟩` from `Finite.surjective_of_injective hinj r`.
-
-Conclude with `⟨q, eq_of_agree Xo hL hk χ hχ (pow_eq_one Xo hev q) hp (congrArg CommaMorphism.left ((hf q).symm.trans hr))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onto_of_local (hL : Laws) {k : ℕ} (hk : 0 < k) {T : Type} [CommRing T] [IsLocalRing T] {x0 : Sp T ⟶ Xo.X}
     {ev : LatMod Dw k → (ptO Xo x0 ⟶ Xo.univ.t.G)} (hev : IsFullLev Xo k x0 ev) (p : ptO Xo x0 ⟶ Xo.univ.t.G)
@@ -181,16 +179,14 @@ theorem onto_of_local (hL : Laws) {k : ℕ} (hk : 0 < k) {T : Type} [CommRing T]
     (congrArg CommaMorphism.left ((hf q).symm.trans hr))⟩
 
 /- English proof (translation)
-Introduce `a b hab` and use `hev.2.2 _ (IsLocalRing.residue T) a b (by rw [hab])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem injective_of_local {k : ℕ} {T : Type} [CommRing T] [IsLocalRing T] {x0 : Sp T ⟶ Xo.X}
     {ev : LatMod Dw k → (ptO Xo x0 ⟶ Xo.univ.t.G)} (hev : IsFullLev Xo k x0 ev) : Function.Injective ev :=
   fun a b hab => hev.2.2 _ (IsLocalRing.residue T) a b (by rw [hab])
 
 /- English proof (translation)
-Use `haveI := finite_latMod (Dw := Dw) k hk`. Use `choose f hf using fun q => onto_of_local Xo hL hk hev (ev' q) (pow_eq_one Xo hev' q)`. Establish `hi` using `injective_of_local Xo hev`. Set `g : LatMod Dw k →ₗ[𝓞 E] LatMod Dw k` to `{ toFun := f map_add' := fun a b => hi (by rw [hev.1, hf, hf, hf, hev'.1]) map_smul' := fun o a => hi (by rw [RingHom.id_apply, hev.2.1, hf, hf, hev'.2.1]) }`. Establish `hg : Function.Injective g` using `fun a b hab => injective_of_local Xo hev' ((hf a).symm.trans ((congrArg ev hab).trans (hf b)))`.
-
-Conclude with `⟨LinearEquiv.ofBijective g ⟨hg, Finite.surjective_of_injective hg⟩, fun q => (hf q).symm⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levGrp (hL : Laws) {k : ℕ} (hk : 0 < k) {T : Type} [CommRing T] [IsLocalRing T] {x0 : Sp T ⟶ Xo.X}
     {ev ev' : LatMod Dw k → (ptO Xo x0 ⟶ Xo.univ.t.G)} (hev : IsFullLev Xo k x0 ev) (hev' : IsFullLev Xo k x0 ev') :
@@ -211,7 +207,7 @@ end FullLevel
 open FullLevel in
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo k hk`. Use `⟨fun S _ x0 => ?_, fun S T _ _ ψ x0 x1 h hh ev hev => ⟨baseChange Xo ψ h hh hev, pow_eq_one Xo hev⟩, fun T _ _ x0 ev hev => ⟨onto_of_local Xo hL hk hev, fun ev' hev' => exists_levGrp Xo hL hk hev hev'⟩, fun K _ _ x0 => (exists_geometric Xo hL hk K x0).imp fun _ h => h.1⟩` and prove the remaining obligations. Take `⟨B, _, φ, ev, hφ, h1, h2, h3, h4⟩` from `exists_faithfullyFlat_linear_level hL E H Dw l Xo S x0 k hk`. Take `⟨ev', hev', -⟩` from `exists_descend Xo k _ ev h1 h2 h3 h4`. Conclude with `⟨B, inferInstance, φ, ev', hφ, hev'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fullLevel_cover_baseChange_torsor :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (k : ℕ), 0 < k → (∀ (S : Type) [CommRing S] (x0 : Sp S ⟶ Xo.X), ∃ (B : Type) (_ : CommRing B) (φ : S →+* B) (ev : LatMod Dw k → (ptO Xo (spMap φ ≫ x0) ⟶ Xo.univ.t.G)), φ.FaithfullyFlat ∧ IsFullLev Xo k (spMap φ ≫ x0) ev) ∧ (∀ (S T : Type) [CommRing S] [CommRing T] (ψ : S →+* T) (x0 : Sp S ⟶ Xo.X) (x1 : Sp T ⟶ Xo.X) (h : ptO Xo x1 ⟶ ptO Xo x0), h.left = spMap ψ → ∀ ev, IsFullLev Xo k x0 ev → IsFullLev Xo k x1 (fun q => h ≫ ev q) ∧ ∀ q, ev q ^ k = 1) ∧ (∀ (T : Type) [CommRing T] [IsLocalRing T] (x0 : Sp T ⟶ Xo.X) (ev : LatMod Dw k → (ptO Xo x0 ⟶ Xo.univ.t.G)), IsFullLev Xo k x0 ev → (∀ p : ptO Xo x0 ⟶ Xo.univ.t.G, p ^ k = 1 → ∃ q, ev q = p) ∧ ∀ ev', IsFullLev Xo k x0 ev' → ∃ g : LevGrp Dw k, ∀ q, ev' q = ev (g q)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x0 : Sp K ⟶ Xo.X), ∃ ev, IsFullLev Xo k x0 ev := by

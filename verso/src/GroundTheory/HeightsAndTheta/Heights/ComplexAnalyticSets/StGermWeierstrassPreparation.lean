@@ -12,7 +12,7 @@ def weierstrassPolynomial {σ : Type} {d : ℕ} (c : Fin d → (σ → ℂ) → 
   x none ^ d + ∑ j : Fin d, c j (fun i => x (some i)) * x none ^ (j : ℕ)
 
 /- English proof (translation)
-Establish `h : (fun i => pointWithLast (0 : σ → ℂ) t (some i)) = 0` using `rfl`. Simplify using `only [weierstrassPolynomial, h, hc, zero_mul, Finset.sum_const_zero, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem weierstrassPolynomial_pointWithLast_zero {σ : Type} {d : ℕ} (c : Fin d → (σ → ℂ) → ℂ)
     (hc : ∀ j, c j 0 = 0) (t : ℂ) : weierstrassPolynomial c (pointWithLast 0 t) = t ^ d := by

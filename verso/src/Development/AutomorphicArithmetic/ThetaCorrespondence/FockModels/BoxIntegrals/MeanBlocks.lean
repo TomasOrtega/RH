@@ -15,14 +15,14 @@ variable {D : D7} {n ρ p : ℕ}
 abbrev ix (hn : ρ + p = n) : Fin ρ ⊕ Fin p ≃ Fin n := finSumFinEquiv.trans (finCongr hn)
 
 /- English proof (translation)
-Simplify using `only [bT, bl, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bT_apply (hn : ρ + p = n) (z : hermA D ρ) (x : Mx D ρ p) (y : hermA D p) (i j : Fin ρ ⊕ Fin p) :
     (bT hn z x y).1 (ix hn i) (ix hn j) = Matrix.fromBlocks z.1 x (adj x) y.1 i j := by
   simp only [bT, bl, Matrix.submatrix_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `congrFun (congrFun (show adj b.1 = b.1 from b.2) i) j`.
+A detailed English derivation is pending.
 -/
 theorem herm_apply (b : hermA D n) (i j : Fin n) : cA D (b.1 j i) = b.1 i j :=
   congrFun (congrFun (show adj b.1 = b.1 from b.2) i) j
@@ -83,7 +83,7 @@ def blk (hn : ρ + p = n) : (hermA D p × (Mx D ρ p × hermA D ρ)) ≃ₜ+ her
     · exact (continuous_subtype_val.matrix_submatrix _ _).subtype_mk _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨η, rfl⟩ i j`. Conclude with `⟨η i j, rfl⟩`. Introduce `h choose η hη using h`. Conclude with `⟨Matrix.of η, by ext i j; exact hη i j⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_rat_iff {a b : ℕ} (x : Mx D a b) : x ∈ ratMx D a b ↔ ∀ i j, ∃ c, incA D c = x i j := by
   constructor
@@ -94,15 +94,13 @@ theorem mem_rat_iff {a b : ℕ} (x : Mx D a b) : x ∈ ratMx D a b ↔ ∀ i j, 
     exact ⟨Matrix.of η, by ext i j; exact hη i j⟩
 
 /- English proof (translation)
-Use `show (bT hn u.2.2 u.2.1 u.1).1 ∈ ratMx D n n ↔ u.1.1 ∈ ratMx D p p ∧ u.2.1 ∈ ratMx D ρ p ∧ u.2.2.1 ∈ ratMx D ρ ρ`. Simplify using `only [mem_rat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h (ix hn (Sum.inr i)) (ix hn (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[bT_apply]`. Then use the resulting hypothesis. Use `h (ix hn (Sum.inl i)) (ix hn (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[bT_apply]`. Then use the resulting hypothesis. Use `h (ix hn (Sum.inl i)) (ix hn (Sum.inl j))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[bT_apply]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2, h3⟩ i j`. Take `⟨i, rfl⟩` from `(ix hn).surjective i`. Take `⟨j, rfl⟩` from `(ix hn).surjective j`. Rewrite using `[bT_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `h3 i j`. Conclude with `h2 i j`. Take `⟨c, hc⟩` from `h2 j i`. Use `⟨D.sp.cm.sig c, ?_⟩` and prove the remaining obligations.
-
-Use `show _ = cA D (u.2.1 j i)`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Conclude with `h1 i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_rat (hn : ρ + p = n) (u : hermA D p × (Mx D ρ p × hermA D ρ)) :
     blk hn u ∈ ratHerm D n ↔ u ∈ (ratHerm D p).prod ((ratMx D ρ p).prod (ratHerm D ρ)) := by
@@ -132,7 +130,7 @@ theorem blk_rat (hn : ρ + p = n) (u : hermA D p × (Mx D ρ p × hermA D ρ)) :
     · exact h1 i j
 
 /- English proof (translation)
-Use `setIntegral_prod f (Measure.integrableOn_of_bounded (M := C) ?_ hf.aestronglyMeasurable (.of_forall hC))` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hs, ht, one_mul]`. Conclude with `ENNReal.one_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_box {A B : Type} [TopologicalSpace A] [TopologicalSpace B] [MeasurableSpace A] [MeasurableSpace B]
     [BorelSpace A] [BorelSpace B] [SecondCountableTopology A] [SecondCountableTopology B]
@@ -149,19 +147,13 @@ open GlobalTheory.CompanionTheory.PcFc.MeanBlocks in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D n ρ p hn m lam 𝓖 hl lp 𝓖p hp Φ hΦ hper`. Take `⟨hl1, hl2, hl3⟩` from `hl`. Take `⟨hp1, hp2, hp3⟩` from `hp`. Take `⟨hz1, hz2, hz3⟩` from `m.hz`. Take `⟨hx1, hx2, hx3⟩` from `m.hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `lat` using `fun a b => (open GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf in lattice_Mx D a b)`. Use `haveI : ∀ a b, IsTopologicalAddGroup (Mx D a b) := fun a b => (lat a b).1`. Use `haveI : ∀ a b, LocallyCompactSpace (Mx D a b) := fun a b => (lat a b).2.1`. Use `haveI : ∀ a b, SecondCountableTopology (Mx D a b) := fun a b => (lat a b).2.2.1`. Use `haveI : ∀ a b, T2Space (Mx D a b) := fun a b => (lat a b).2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : ∀ a b, BorelSpace (Mx D a b) := fun a b => ⟨rfl⟩`. Use `haveI : ∀ r, IsTopologicalAddGroup (hermA D r) := fun r => inferInstance`. Use `haveI : ∀ r, BorelSpace (hermA D r) := fun r => Subtype.borelSpace _`. Use `haveI : ∀ r, SecondCountableTopology (hermA D r) := fun r => Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : ∀ r, T2Space (hermA D r) := fun r => Topology.IsEmbedding.subtypeVal.t2Space`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ∀ r, LocallyCompactSpace (hermA D r) := fun r => (GlobalTheory.CompanionTheory.HermVol.isClosed_hermA (D := D) (r := r)).locallyCompactSpace`. Establish `cH : ∀ r, Countable (ratHerm D r)` using `fun r => by haveI : DiscreteTopology (ratHerm D r) := (GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := r)).1 haveI : SecondCountableTopology (ratHerm D r) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := cH n`. Use `haveI : Countable ((ratHerm D p).prod ((ratMx D ρ p).prod (ratHerm D ρ))) := Function.Injective.countable (f := fun u => (⟨blk hn u.1, (blk_rat hn u.1).2 u.2⟩ : ratHerm D n)) fun u v h => Subtype.ext ((blk hn).injective (congrArg Subtype.val h))`.
-
-Take `⟨K, hK, hcov⟩` from `(GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := n)).2`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hΦ.continuousOn`. Establish `hb : ∀ b, ‖Φ b‖ ≤ C` using `fun b => by`. Take `⟨γ, hγ, hk⟩` from `hcov b`. Rewrite using `[← hper γ hγ b]`.
-
-Conclude with `hC _ hk`. Use `haveI : (m.μ.prod m.lz).IsAddHaarMeasure := inferInstance`. Use `haveI : (lp.prod (m.μ.prod m.lz)).IsAddHaarMeasure := inferInstance`. Establish `hin : m.μ.prod m.lz (m.𝓕 ×ˢ m.𝓖) = 1` using `by rw [Measure.prod_prod, hx3, hz3, one_mul]`. Establish `hc : Continuous fun u => Φ (blk hn u)` using `hΦ.comp (blk hn).continuous`.
-
-Establish `key` using `mean_transport _ (ratHerm D n) (blk hn) (blk_rat hn) (lp.prod (m.μ.prod m.lz)) lam (GlobalTheory.WeilSliceUnit.isAddFundamentalDomain_prod hp2 (GlobalTheory.WeilSliceUnit.isAddFundamentalDomain_prod hx2 hz2)) hl2 (by rw [Measure.prod_prod, hp3, hin, one_mul]) hl3 Φ hper`. Rewrite using `[← key, setIntegral_box lp _ hp3 hin _ hc fun u => hb _]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `setIntegral_box m.μ m.lz hx3 hz3 (fun v => Φ (blk hn (y, v))) (hc.comp (continuous_const.prodMk continuous_id)) fun u => hb _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.PcFc.mean_blocks : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (m : Meas D ρ p) {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)}, IsCovolOneH lam 𝓖 → ∀ {lp : Measure (hermA D p)} {𝓖p : Set (hermA D p)}, IsCovolOneH lp 𝓖p → ∀ Φ : hermA D n → ℂ, Continuous Φ → IsPer Φ → ∫ b in 𝓖, Φ b ∂lam = ∫ y in 𝓖p, ∫ x in m.𝓕, ∫ z in m.𝓖, Φ (bT hn z x y) ∂m.lz ∂m.μ ∂lp := by
   intro D n ρ p hn m lam 𝓖 hl lp 𝓖p hp Φ hΦ hper

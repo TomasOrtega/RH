@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.FlagCell2.Dim
 
 /- English proof (translation)
-Establish `h₁ : Fintype.card (Low s) = ∑ i : Fin s, (Finset.Ioi i).card`. Rewrite using `[← Finset.card_sigma, ← Finset.card_univ]`. Apply the tactic sequence `refine Finset.card_bij' (fun s _ => ⟨s.1.2, s.1.1⟩) (fun t ht => ⟨(t.2, t.1), by simpa using ht⟩) ?_ ?_ ?_ ?_ <;>`. Simplify using the standard rewrite rules. Rewrite using `[h₁, Nat.choose_two_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.card_Ioi]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => s - 1 - i), Finset.sum_range_reflect (fun i => i), Finset.sum_range_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_low (s : ℕ) : Fintype.card (Low s) = s.choose 2 := by
   have h₁ : Fintype.card (Low s) = ∑ i : Fin s, (Finset.Ioi i).card := by
@@ -37,11 +37,11 @@ theorem card_low (s : ℕ) : Fintype.card (Low s) = s.choose 2 := by
   rw [Fin.sum_univ_eq_sum_range (fun i => s - 1 - i), Finset.sum_range_reflect (fun i => i), Finset.sum_range_id]
 
 /- English proof (translation)
-Establish `R₁` using `hR.reps`. Establish `R₂` using `hR'.reps`. Take `⟨ψ, hψ, hG⟩` from `exists_fieldMap_coBear_generic F ι m X Y Y' E S φ f S' φ' f' R₁ R₂`. Take `⟨h, hh⟩` from `GlobalTheory.ZH.RatModel.exists_isHom_of_map_O F Y'.Fn (ratOf Y') Y.Fn (ratOf Y) ψ (dominates_O F ι m X Y Y' E S φ f S' φ' f' R₁ R₂ ψ hψ hG)`. Establish `hf : h ≫ f' = f`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `R₂.1.comp hh`. Rewrite `h1` using `[hψ]`. Conclude with `h1.unique R₁.1`. Establish `hb` using `CoBear₂ F ι m X Y Y' E S φ f S' φ' f' R₁ R₂ h hf (coBear_comp_of_isHom F ι m X Y Y' E S φ f S' φ' f' R₁ R₂ ψ hψ hG h hh)`. Express the relevant statement in the definitionally equal form `Y.X ⟶ Y'.X at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `: IsIso h` using `GlobalTheory.BijPointsIso.isIso_of_bijective_points F Y Y' h hh.inducedModelMorphism_comp_structureMap fun K _ _ => hb K`. Establish `hd : topologicalKrullDim Y.X = topologicalKrullDim Y'.X` using `IsHomeomorph.topologicalKrullDim_eq _ (Scheme.homeoOfIso (asIso h)).isHomeomorph`. Rewrite `hd` using `[Y.topologicalKrullDim_eq, Y'.topologicalKrullDim_eq]`. Conclude with `hd` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq_of_refines {F : Type} [Field F] [CharZero F] {X Y Y' : Var F} {ι : Type} [Fintype ι] {m : ι → ℕ}
     {E : Fr (ratOf X) m 0} {S : Fr (ratOf Y) m m} {φ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X}
@@ -66,7 +66,7 @@ theorem dim_eq_of_refines {F : Type} [Field F] [CharZero F] {X Y Y' : Var F} {ι
   exact_mod_cast hd
 
 /- English proof (translation)
-Introduce `F _ σ X Y ι _ m E E' φ f _ hR`. Establish `: CharZero F` using `σ.charZero`. Take `⟨Y', φ', f', S', hd, hR'⟩` from `tower _ (ratOf X) X.dim E (good_ratOf X) (fun _ => Nat.zero_le _) rfl`. Rewrite using `[dim_eq_of_refines hR hR', hd, Fintype.card_sigma]`. Simplify using `only [card_low, Pi.zero_apply, Nat.sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem main : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → Y.dim = X.dim + Fintype.card (Cell m) := by
   intro F _ σ X Y ι _ m E E' φ f _ hR

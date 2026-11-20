@@ -19,19 +19,17 @@ open Matrix
 namespace GlobalTheory.ConjFix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ n J hJ v τ x W hW u hu`. Use `set M₁ := (splitHom σ J τ x).1 with hM₁`. Use `set M₂ := (splitHom σ J (τ.comp σ) x).1 with hM₂`. Establish `hpair : ∀ z, (M₂ *ᵥ u) ⬝ᵥ J.map τ *ᵥ (M₁ *ᵥ z) = u ⬝ᵥ J.map τ *ᵥ z` using `fun z => pairing_splitHom τ x u z`. Establish `hfix : ∀ z, u ⬝ᵥ J.map τ *ᵥ (M₁ *ᵥ z) = u ⬝ᵥ J.map τ *ᵥ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `h0` using `hu _ (hW z)`. Establish `: M₁ *ᵥ z = z + (M₁ - 1) *ᵥ z`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.mulVec_add, dotProduct_add, h0, add_zero]`. Establish `h1 : ∀ z, (M₂ *ᵥ u - u) ⬝ᵥ J.map τ *ᵥ (M₁ *ᵥ z) = 0`. Introduce `z`. Rewrite using `[sub_dotProduct, hpair, hfix, sub_self]`. Establish `h2 : ∀ w, (M₂ *ᵥ u - u) ⬝ᵥ J.map τ *ᵥ w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `hw : M₁ *ᵥ ((splitHom σ J τ x)⁻¹.1 *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, hM₁, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use `h1 ((splitHom σ J τ x)⁻¹.1 *ᵥ w)` as an intermediate fact. Rewrite `this` using `[hw]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3 : Matrix.vecMul (M₂ *ᵥ u - u) (J.map τ) = 0`. Use function extensionality and compare the values at `i`. Use `h2 (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : M₂ *ᵥ u - u = 0`. Establish `hG : J.map τ * (splitGram hJ τ)⁻¹.1 = 1`. Rewrite using `[← splitGram_val hJ τ, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, Matrix.vecMul_one]`.
-
-Use `_ = 0 := by rw [← Matrix.vecMul_vecMul, h3, Matrix.zero_vecMul]`. Conclude with `sub_eq_zero.mp h4`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_fix : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E}, IsHermND σ J → ∀ {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v)

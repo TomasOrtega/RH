@@ -10,15 +10,15 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets
 
 /- English proof (translation)
-Introduce `n d J W u hJ hdim hu hW`. Establish `hWp : W.IsPrime` using `hW.1.1`. Take `⟨f₁, hf₁W, hf₁⟩` from `hR n d J W u hJ hdim hu hW`. Take `⟨f₂, hf₂W, hf₂⟩` from `hM n d J W u hJ hdim hu hW`. Establish `hf : f₁ * f₂ ∉ W` using `fun h => (hWp.mem_or_mem h).elim hf₁W hf₂W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUo : IsOpen {x : Fin n → ℂ | eval x (f₁ * f₂) ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval (p := f₁ * f₂)) continuous_const`. Use `⟨{x | eval x (f₁ * f₂) ≠ 0}, hUo, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hempty`. Rewrite `hempty` using `[Set.not_nonempty_iff_eq_empty]`. Apply `hf` to reduce the goal to its premises. Use `hV n W (f₁ * f₂) x hWp hx ?_` and prove the remaining obligations. Use `filter_upwards [ht] with y hyt hyW`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hy : y ∈ t ∩ (zeroSet W ∩ {x | eval x (f₁ * f₂) ≠ 0})` using `⟨hyt, hyW, hne⟩`. Rewrite `hy` using `[hempty]`. Conclude with `hy`. Introduce and unpack `q ⟨hqW, hqf⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hqf` using `[Set.mem_ofPred_eq, map_mul, mul_ne_zero_iff]`. Take `⟨O₁, hO₁o, hO₁d, hO₁⟩` from `hf₁ q hqW hqf.1`. Take `⟨O₂, -, hO₂d, hO₂⟩` from `hf₂ q hqW hqf.2`. Conclude with `(hO₁d.inter_of_isOpen_left hO₂d hO₁o).mono fun L hL => ⟨hO₁ L hL.1, hO₂ L hL.2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SliceLength.proof (hV : IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement)
     (hR : SliceReducedGeneral.Statement) (hM : SliceMultGeneral.Statement) :

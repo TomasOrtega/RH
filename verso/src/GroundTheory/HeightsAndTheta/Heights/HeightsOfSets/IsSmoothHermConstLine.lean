@@ -34,26 +34,26 @@ def powLine (A : Geo.HermLine ι) : ℕ → Geo.HermLine ι
   | m + 1 => (powLine A m).tensor A
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.inv hA fun z hz ↦ (A.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_invLine {A : Geo.HermLine ι} (hA : IsSmoothHerm A) : IsSmoothHerm (invLine A) :=
   ContDiffOn.inv hA fun z hz ↦ (A.pos z hz).ne'
 
 /- English proof (translation)
-The claim follows from `contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_constLine (M : ℝ) (hM : 0 < M) : IsSmoothHerm (constLine (ι := ι) M hM) :=
   contDiffOn_const
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.mul hA hB`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_tensor {A B : Geo.HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) :=
   ContDiffOn.mul hA hB
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact isSmoothHerm_constLine 1 one_pos`. Consider the case `succ m ih => exact isSmoothHerm_tensor ih hA`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isSmoothHerm_powLine {A : Geo.HermLine ι} (hA : IsSmoothHerm A) (m : ℕ) :
     IsSmoothHerm (powLine A m) := by
@@ -62,7 +62,7 @@ theorem isSmoothHerm_powLine {A : Geo.HermLine ι} (hA : IsSmoothHerm A) (m : �
   | succ m ih => exact isSmoothHerm_tensor ih hA
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [powLine, constLine]`. Consider the case `succ m ih`. Simplify using `only [powLine, Geo.HermLine.tensor, Pi.add_apply, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -75,7 +75,7 @@ theorem powLine_a (A : Geo.HermLine ι) (m : ℕ) (k : K) : (powLine A m).a k = 
     ring
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, hm₁, m₂, hm₂, rfl⟩` from `Finset.mem_add.mp (support_mul p q hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ hm₁ k, hq m₂ hm₂ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul {p q : MRing ι} {a b : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q b) : IsMultiHomog (p * q) (a + b) := by
@@ -85,7 +85,7 @@ theorem isMultiHomog_mul {p q : MRing ι} {a b : K → ℕ} (hp : IsMultiHomog p
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ hm₁ k, hq m₂ hm₂ k]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[← C_1, support_C, if_neg one_ne_zero, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
   intro m hm k
@@ -94,13 +94,13 @@ theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `⟨k₀, i₀⟩` from `p`. Distinguish the cases in `hk : k = k₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hi (eq_of_heq (Sigma.mk.inj_iff.mp h).2).symm`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hk]`. Use `Finset.sum_eq_zero fun i _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hk (Sigma.mk.inj_iff.mp h).1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι) (Pi.single p.1 1) := by
   classical
@@ -124,7 +124,7 @@ theorem isMultiHomog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MR
     exact hk (Sigma.mk.inj_iff.mp h).1.symm
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using isMultiHomog_one`. Consider the case `succ e ih => rw [pow_succ, succ_nsmul]`. Conclude with `isMultiHomog_mul ih hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_pow {p : MRing ι} {a : K → ℕ} (hp : IsMultiHomog p a) (e : ℕ) :
     IsMultiHomog (p ^ e) (e • a) := by
@@ -136,11 +136,11 @@ def chartMon (c : (k : K) → ι k) (d : K → ℕ) : MRing ι :=
   ∏ k, X ⟨k, c k⟩ ^ d k
 
 /- English proof (translation)
-Establish `h : ∀ S : Finset K, IsMultiHomog (∏ k ∈ S, (X ⟨k, c k⟩ : MRing ι) ^ d k) (∑ k ∈ S, d k • Pi.single k 1)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_one`. Consider the case `insert k S hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `isMultiHomog_mul (isMultiHomog_pow (isMultiHomog_X ⟨k, c k⟩) (d k)) ih`. Establish `e : (∑ k, d k • Pi.single k 1 : K → ℕ) = d`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_chartMon (c : (k : K) → ι k) (d : K → ℕ) :
     IsMultiHomog (chartMon c d) d := by
@@ -160,20 +160,20 @@ theorem isMultiHomog_chartMon (c : (k : K) → ι k) (d : K → ℕ) :
   rwa [e] at this
 
 /- English proof (translation)
-Simplify using `[chartMon]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMon_zero (c : (k : K) → ι k) : chartMon c 0 = (1 : MRing ι) := by
   simp [chartMon]
 
 /- English proof (translation)
-Simplify using `[chartMon, map_prod, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_chartMon (c : (k : K) → ι k) (d : K → ℕ) (z : (Σ k, ι k) → ℂ) :
     eval z (map (Int.castRingHom ℂ) (chartMon c d)) = ∏ k, z ⟨k, c k⟩ ^ d k := by
   simp [chartMon, map_prod, map_pow]
 
 /- English proof (translation)
-Establish `hprime : W.IsPrime` using `hW.2.1.1`. Establish `hrel` using `hW.2.1.2.2`. Use `⟨fun k ↦ (hrel k).choose, fun d h ↦ ?_⟩` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Conclude with `(hrel k).choose_spec (hprime.mem_of_pow_mem _ hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_chartMon_notMem {W : Ideal (MRing ι)} (hW : IsArithVar W 1) :
     ∃ c : (k : K) → ι k, ∀ d : K → ℕ, chartMon c d ∉ W := by
@@ -184,20 +184,20 @@ theorem exists_chartMon_notMem {W : Ideal (MRing ι)} (hW : IsArithVar W 1) :
   exact (hrel k).choose_spec (hprime.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Simplify using `[maDensity, mixedDisc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maDensity_fin_zero (φ : Fin 0 → (Fin 0 → ℂ) → ℝ) (y : Fin 0 → ℂ) : maDensity φ y = 1 := by
   simp [maDensity, mixedDisc]
 
 /- English proof (translation)
-Use `finsum_nonneg (f := fun a ↦ -f a) fun a ↦ neg_nonneg.mpr (h a)` as an intermediate fact. Rewrite `this` using `[finsum_neg_distrib, neg_nonneg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finsum_nonpos' {α : Sort*} {f : α → ℝ} (h : ∀ a, f a ≤ 0) : ∑ᶠ a, f a ≤ 0 := by
   have := finsum_nonneg (f := fun a ↦ -f a) fun a ↦ neg_nonneg.mpr (h a)
   rwa [finsum_neg_distrib, neg_nonneg] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[segre, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_torus_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (fun p ↦ c p.1 * z p) = (∏ k, c k) • segre z := by
@@ -205,9 +205,7 @@ theorem segre_torus_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
   simp [segre, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Unfold `ptsIntegral ptsIntegralAt`. Use `split_ifs with hΨ`. Use `integral_nonpos fun y ↦ finsum_nonpos' fun w ↦ finsum_nonpos' fun _ ↦ ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hγ`.
-
-Rewrite using `[maDensity_fin_zero, mul_one]`. Conclude with `hg _ hγ.choose_spec.2.self_of_nhds.2.1`. Conclude with `le_rfl`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_nonpos (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)
     {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : ∀ z ∈ mcPts P, g z ≤ 0) : ptsIntegral P φ g ≤ 0 := by
@@ -222,23 +220,21 @@ theorem ptsIntegral_nonpos (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι k) 
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `ptsIntegral ptsIntegralAt`. Use `split_ifs with hΨ`. Use `set Ψ := hΨ.choose`. Establish `hvol : (volume : Measure (Fin 0 → ℂ)) = Measure.dirac (fun i ↦ i.elim0)`. Rewrite using `[volume_pi]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Measure.pi_of_empty _`. Rewrite using `[hvol, integral_dirac]`. Use `set y₀ : Fin 0 → ℂ := fun i ↦ i.elim0`. Unfold `degC at hP ⊢`. Take `⟨-, hfinQ⟩` from `Nat.card_pos_iff.mp hP`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Set `r` to `fun z z' : mcPts P ↦ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (z' : (Σ k, ι k) → ℂ) = fun p ↦ c p.1 * (z : (Σ k, ι k) → ℂ) p`. Set `G : Quot r → (((k : K) → ι k) → ℂ)` to `Quot.lift (fun z : mcPts P ↦ (Ψ (segre (z : (Σ k, ι k) → ℂ)) 0)⁻¹ • segre (z : (Σ k, ι k) → ℂ)) (by`. Introduce and unpack `z z' ⟨c, hc, hz'⟩`. Rewrite using `[hz', segre_torus_smul, map_smul, Pi.smul_apply, smul_eq_mul, smul_smul, mul_inv]`. Establish `hμ : (∏ k, c k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ hc k`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use the proof step `field_simp)`. Set `F : fibre P Ψ y₀ → Quot r` to `fun w ↦ Quot.mk r ⟨w.2.choose, w.2.choose_spec.1⟩`. Establish `hGF : ∀ w, G (F w) = w`. Introduce `w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `w.2.choose_spec`. Use `show (Ψ (segre w.2.choose) 0)⁻¹ • segre w.2.choose = (w : ((k : K) → ι k) → ℂ)`. Rewrite using `[h2, h3]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective F` using `fun a b hab ↦ Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hGF a, ← hGF b, hab])`. Establish `: Finite (fibre P Ψ y₀)` using `Finite.of_injective F hinj`. Establish `hcard` using `Nat.card_le_card_of_injective F hinj`. Establish `hfin : (fibre P Ψ y₀).Finite` using `Set.toFinite _`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hterm : ∀ w ∈ hfin.toFinset, t ≤ sheetDensity P Ψ φ (fun _ ↦ t) y₀ w`. Introduce `w _`. Unfold `sheetDensity`. Use `split_ifs`. Rewrite using `[maDensity_fin_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `ht`. Establish `hsum` using `Finset.card_nsmul_le_sum _ _ t hterm`. Rewrite `hsum` using `[nsmul_eq_mul]`. Establish `hc : (hfin.toFinset.card : ℝ) ≤ Nat.card (Quot r)`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin, ← Nat.card_coe_set_eq]`.
-
-Conclude with `hcard` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Establish `: (0 : ℝ) ≤ degC P` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem ptsIntegral_const_ge (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ) {t : ℝ}
     (ht : t ≤ 0) (hP : 0 < degC P) : t * degC P ≤ ptsIntegral P φ (fun _ ↦ t) := by
@@ -294,7 +290,7 @@ theorem ptsIntegral_const_ge (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι k
 variable (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → Geo.HermLine ι) → ℝ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem snoc_elim0 (C : Geo.HermLine ι) :
     (Fin.snoc (Fin.elim0 : Fin 0 → Geo.HermLine ι) C : Fin 1 → _) = ![C] := by
@@ -303,16 +299,16 @@ theorem snoc_elim0 (C : Geo.HermLine ι) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[geoNum]`. Apply the tactic sequence `split_ifs <;> positivity`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem geoNum_zero_nonneg (V : Ideal (MRing ι)) (a : Fin 0 → K → ℤ) : 0 ≤ geoNum 0 V a := by
   rw [geoNum]
   split_ifs <;> positivity
 
 /- English proof (translation)
-Establish `h : divSupp P 1 = ∅`. Use extensionality with `V`. Simplify using `only [divSupp, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hV _`. Establish `hp : V.IsPrime` using `hV.1.1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : P ⊔ Ideal.span {1} ≤ V` using `hV.1.2`. Rewrite `hle` using `[Ideal.span_singleton_one, sup_top_eq, top_le_iff]`. Conclude with `hp.ne_top hle`. Unfold `recR`. Rewrite using `[h, finsum_mem_empty, zero_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recR_one (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → Geo.HermLine ι) (E : Geo.HermLine ι) :
     recR I P L E 1 = -arInt P 1 E L := by
@@ -328,7 +324,7 @@ theorem recR_one (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → Geo.HermLine ι
   rw [h, finsum_mem_empty, zero_sub]
 
 /- English proof (translation)
-Establish `h` using `hI.2.2 W 0 Fin.elim0 E s d hW (fun j ↦ j.elim0) hE hd hs hsW`. Rewrite `h` using `[snoc_elim0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inter_eq_recR (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : IsArithVar W 1)
     {E : Geo.HermLine ι} (hE : IsSmoothHerm E) {d : K → ℕ} (hd : ∀ k, E.a k = d k)
@@ -338,7 +334,7 @@ theorem inter_eq_recR (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW :
   rwa [snoc_elim0] at h
 
 /- English proof (translation)
-Establish `h` using `hI.2.1 W 0 Fin.elim0 A B hW (fun j ↦ j.elim0) hA hB`. Simplify `h` using `only [snoc_elim0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inter_tensor (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : IsArithVar W 1)
     {A B : Geo.HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
@@ -347,7 +343,7 @@ theorem inter_tensor (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : 
   simpa only [snoc_elim0] using h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_chartMon_notMem hW`. Rewrite using `[inter_eq_recR I hI hW hB hd (isMultiHomog_chartMon c d) (hc d), inter_eq_recR I hI hW hB' hd' (isMultiHomog_chartMon c d) (hc d)]`. Conclude with `recR_congr I W Fin.elim0 (chartMon c d) hh`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_congr (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : IsArithVar W 1)
     {B B' : Geo.HermLine ι} (hB : IsSmoothHerm B) (hB' : IsSmoothHerm B') {d : K → ℕ}
@@ -359,9 +355,9 @@ theorem inter_congr (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : I
   exact recR_congr I W Fin.elim0 (chartMon c d) hh
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_chartMon_notMem hW`. Rewrite using `[inter_eq_recR I hI hW (isSmoothHerm_constLine 1 one_pos) (d := 0) (fun k ↦ rfl) (isMultiHomog_chartMon c 0) (hc 0), chartMon_zero, recR_one, neg_eq_zero]`. Establish `h : logNorm (constLine (ι` using `ι) 1 one_pos) 1 = fun _ ↦ 0 := by`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, constLine]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `arInt`. Rewrite using `[h]`. Simplify using `[ptsIntegral, ptsIntegralAt, sheetDensity]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inter_constLine_one (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)}
     (hW : IsArithVar W 1) : I W 1 ![constLine 1 one_pos] = 0 := by
@@ -376,9 +372,9 @@ theorem inter_constLine_one (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)}
   simp [ptsIntegral, ptsIntegralAt, sheetDensity]
 
 /- English proof (translation)
-Establish `h1` using `inter_tensor I hI hW hA (isSmoothHerm_invLine hA)`. Establish `h2 : I W 1 ![A.tensor (invLine A)] = I W 1 ![constLine 1 one_pos]` using `inter_congr I hI hW (isSmoothHerm_tensor hA (isSmoothHerm_invLine hA)) (isSmoothHerm_constLine 1 one_pos) (d := 0) (fun k ↦ by simp [Geo.HermLine.tensor, invLine]) (fun k ↦ rfl) (fun z hz ↦ by`. Simplify using `only [Geo.HermLine.tensor, invLine, constLine]`. Conclude with `mul_inv_cancel₀ (A.pos z hz.1).ne')`. Rewrite `h2` using `[inter_constLine_one I hI hW]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem inter_invLine (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : IsArithVar W 1)
     {A : Geo.HermLine ι} (hA : IsSmoothHerm A) : I W 1 ![invLine A] = -I W 1 ![A] := by
@@ -394,7 +390,7 @@ theorem inter_invLine (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW :
   linarith
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa [powLine] using inter_constLine_one I hI hW`. Consider the case `succ m ih`. Rewrite using `[powLine, inter_tensor I hI hW (isSmoothHerm_powLine hA m) hA, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -409,9 +405,9 @@ theorem inter_powLine (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW :
     ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_chartMon_notMem hW`. Rewrite using `[inter_eq_recR I hI hW (isSmoothHerm_constLine M hM0) (d := 0) (fun k ↦ rfl) (isMultiHomog_chartMon c 0) (hc 0), chartMon_zero, recR_one]`. Establish `h : logNorm (constLine (ι` using `ι) M hM0) 1 = fun _ ↦ -Real.log M := by`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, constLine, Real.log_inv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `arInt`. Rewrite using `[h]`. Use `ptsIntegral_const_ge W (fun j z ↦ Real.log (((Fin.elim0 : Fin 0 → Geo.HermLine ι) j).h z)) (neg_nonpos.mpr (Real.log_nonneg hM)) hdeg` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inter_constLine_le (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)}
     (hW : IsArithVar W 1) {M : ℝ} (hM0 : 0 < M) (hM : 1 ≤ M) (hdeg : 0 < degC W) :
@@ -429,11 +425,9 @@ theorem inter_constLine_le (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)}
   linarith
 
 /- English proof (translation)
-Rewrite using `[inter_eq_recR I hI hW hE hd (isMultiHomog_chartMon c d) hc]`. Establish `h2 : arInt W (chartMon c d) E (Fin.elim0 : Fin 0 → Geo.HermLine ι) ≤ 0` using `ptsIntegral_nonpos _ _ fun z hz ↦ by`. Establish `hpos` using `E.pos z hz.1`. Unfold `logNorm`. Rewrite using `[eval_chartMon]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_nonpos (div_nonneg (norm_nonneg _) hpos.le) ((div_le_one hpos).mpr (hle z hz))`. Unfold `recR`. Rewrite using `[sub_nonneg]`. Use `le_trans h2 (finsum_nonneg fun V ↦ finsum_nonneg fun hV' ↦ ?_)` and prove the remaining obligations. Rewrite using `[if_neg (hV K ι W _ d hW (isMultiHomog_chartMon c d) hc V hV')]`.
-
-Conclude with `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Int.cast_nonneg (geoNum_zero_nonneg _ _)) (Real.log_natCast_nonneg _))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_nonneg (hV : CurveDivVertical.Statement) (hI : IsIntersectionFamily I)
     {W : Ideal (MRing ι)} (hW : IsArithVar W 1) {E : Geo.HermLine ι} (hE : IsSmoothHerm E)
@@ -455,31 +449,27 @@ theorem inter_nonneg (hV : CurveDivVertical.Statement) (hI : IsIntersectionFamil
     (mul_nonneg (Int.cast_nonneg (geoNum_zero_nonneg _ _)) (Real.log_natCast_nonneg _))
 
 /- English proof (translation)
-Use `set U : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `set S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∑ i, ‖z ⟨k, i⟩‖ ^ 2 = 1}`. Establish `hsq : ∀ (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k), ‖z ⟨k, i⟩‖ ^ 2 ≤ ∑ i', ‖z ⟨k, i'⟩‖ ^ 2` using `fun z k i ↦ Finset.single_le_sum (f := fun i' ↦ ‖z ⟨k, i'⟩‖ ^ 2) (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ i)`. Establish `hSU : S ⊆ U`. Introduce `z hz k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `hz k` as an intermediate fact. Simplify using `[h] at this`. Establish `hS_le : ∀ z ∈ S, ∀ p, ‖z p‖ ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `z hz p`. Establish `h1 : ‖z ⟨p.1, p.2⟩‖ ^ 2 ≤ 1` using `(hz p.1) ▸ hsq z p.1 p.2`. Use polynomial arithmetic with `[norm_nonneg (z p)]`. Establish `hSc : IsCompact S`. Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: S = ⋂ k, (fun z : (Σ k, ι k) → ℂ ↦ ∑ i, ‖z ⟨k, i⟩‖ ^ 2) ⁻¹' {1}`. Use extensionality with `z`. Simplify using `[S]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun k ↦ isClosed_singleton.preimage (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Metric.isBounded_closedBall (x := 0) (r := 1)).subset fun z hz ↦ ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).mpr (hS_le z hz)`. Establish `hcont : ContinuousOn (fun z ↦ (E.h z)⁻¹) S` using `(hE.continuousOn.mono hSU).inv₀ fun z hz ↦ (E.pos z (hSU hz)).ne'`. Take `⟨M₀, hM₀⟩` from `hSc.bddAbove_image hcont`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨max M₀ 1, le_max_right _ _, fun c z hz ↦ ?_⟩` and prove the remaining obligations. Use `set r : K → ℝ := fun k ↦ Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)`. Establish `hsum : ∀ k, 0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le (by positivity) (hsq z k i)`. Establish `hr : ∀ k, 0 < r k` using `fun k ↦ Real.sqrt_pos.mpr (hsum k)`. Use `set t : K → ℂ := fun k ↦ (((r k)⁻¹ : ℝ) : ℂ)`. Establish `hnt : ∀ k, ‖t k‖ = (r k)⁻¹` using `fun k ↦ by`. Simplify using `[t, abs_of_pos (hr k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ k, t k ≠ 0` using `fun k ↦ by`. Rewrite using `[← norm_ne_zero_iff, hnt]`. Conclude with `(inv_pos.mpr (hr k)).ne'`. Use `set w : (Σ k, ι k) → ℂ := fun p ↦ t p.1 * z p`. Establish `hw : w ∈ S`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `only [w, norm_mul, mul_pow, ← Finset.mul_sum, hnt, inv_pow]`. Rewrite using `[Real.sq_sqrt (hsum k).le]`. Conclude with `inv_mul_cancel₀ (hsum k).ne'`. Establish `hEw : E.h w = (∏ k, ‖t k‖ ^ d k) * E.h z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[E.smul t z ht]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hd k, zpow_natCast]`. Establish `hmon : ‖∏ k, w ⟨k, c k⟩ ^ d k‖ = (∏ k, ‖t k‖ ^ d k) * ‖∏ k, z ⟨k, c k⟩ ^ d k‖`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, mul_pow, Finset.prod_mul_distrib, norm_mul, norm_prod, norm_pow]`. Establish `hmon1 : ‖∏ k, w ⟨k, c k⟩ ^ d k‖ ≤ 1`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun k _ ↦ by`. Rewrite using `[norm_pow]`.
-
-Conclude with `pow_le_one₀ (norm_nonneg _) (hS_le w hw _)`. Establish `hEw1 : 1 ≤ max M₀ 1 * E.h w`. Establish `h1 : (E.h w)⁻¹ ≤ M₀` using `hM₀ (Set.mem_image_of_mem _ hw)`. Establish `hpos` using `E.pos w (hSU hw)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hT : 0 < ∏ k, ‖t k‖ ^ d k` using `Finset.prod_pos fun k _ ↦ pow_pos (norm_pos_iff.mpr (ht k)) _`. Establish `key : (∏ k, ‖t k‖ ^ d k) * ‖∏ k, z ⟨k, c k⟩ ^ d k‖ ≤ (∏ k, ‖t k‖ ^ d k) * (max M₀ 1 * E.h z)`. Rewrite using `[← hmon]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left key hT`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_chartMon_bound {E : Geo.HermLine ι} (hE : IsSmoothHerm E) {d : K → ℕ}
     (hd : ∀ k, E.a k = d k) :

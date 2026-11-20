@@ -13,13 +13,13 @@ noncomputable def boxPt {q : ℕ} (a : Fin d → Fin q) : Fin d →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm (fun i => (a i : ℕ))
 
 /- English proof (translation)
-Simplify using `[boxPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem boxPt_apply {q : ℕ} (a : Fin d → Fin q) (i : Fin d) : boxPt a i = a i := by
   simp [boxPt]
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `i`. Conclude with `Fin.ext (by simpa [boxPt_apply] using DFunLike.congr_fun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem boxPt_injective {q : ℕ} : Function.Injective (boxPt (d := d) (q := q)) := by
   intro a b h
@@ -27,7 +27,7 @@ theorem boxPt_injective {q : ℕ} : Function.Injective (boxPt (d := d) (q := q))
   exact Fin.ext (by simpa [boxPt_apply] using DFunLike.congr_fun h i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => ⟨β i, h i⟩, by ext i; simp [boxPt_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_boxPt {q : ℕ} (β : Fin d →₀ ℕ) (h : ∀ i, β i < q) :
     ∃ a : Fin d → Fin q, boxPt a = β :=
@@ -38,53 +38,47 @@ end GlobalTheory.BoxMonomials
 open GlobalTheory.BoxMonomials in
 
 /- English proof (translation)
-Introduce `K A _ _ _ _ d q x hx J hsurj hJ hdim f hf α hα`. Use `set E : MvPowerSeries (Fin d) K →ₐ[K] A ⧸ J := (Ideal.Quotient.mkₐ K J).comp (evA K x hx) with hE`. Establish `hEapp : ∀ y, E y = Ideal.Quotient.mk J (evA K x hx y)` using `fun y => rfl`. Establish `hEX : ∀ i, evA K x hx (X i) = x i` using `fun i => GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate K (Fin d) A x hx i`. Establish `hEXq : ∀ i g, E (X i ^ q * g) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i g`. Rewrite using `[hEapp, Ideal.Quotient.eq_zero_iff_mem, map_mul, map_pow, hEX]`. Conclude with `J.mul_mem_right _ (hJ i)`. Establish `hmono : ∀ β : Fin d →₀ ℕ, ∀ i, q ≤ β i → ∀ c : K, E (monomial β c) = 0`. Introduce `β i hi c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: monomial β c = X i ^ q * monomial (β - Finsupp.single i q) c`. Rewrite using `[X_pow_eq, monomial_mul_monomial, one_mul, add_tsub_cancel_of_le (Finsupp.single_le_iff.2 hi)]`. Rewrite using `[this]`. Conclude with `hEXq i _`. Use `set v : (Fin d → Fin q) → A ⧸ J := fun a => E (monomial (boxPt a) 1) with hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcoe : ∀ P : MvPolynomial (Fin d) K, Ideal.Quotient.mk J (MvPolynomial.aeval x P) = E (P : MvPowerSeries (Fin d) K)`. Introduce `P`. Establish `: (Ideal.Quotient.mkₐ K J).comp (MvPolynomial.aeval x) = E.comp (MvPolynomial.coeToMvPowerSeries.algHom K)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `[hEapp, hEX]`. Conclude with `DFunLike.congr_fun this P`. Establish `hspan : ⊤ ≤ Submodule.span K (Set.range v)`. Introduce and unpack `y -`. Take `⟨a', rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, rfl⟩` from `hsurj a'`. Rewrite using `[hcoe]`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial β c`. Rewrite using `[MvPolynomial.coe_monomial]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : ∀ i, β i < q`. Take `⟨a, rfl⟩` from `exists_boxPt β hb`. Establish `: monomial (boxPt a) c = c • monomial (boxPt a) (1 : K)`. Rewrite using `[← map_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `push_neg at hb`. Take `⟨i, hi⟩` from `hb`. Rewrite using `[hmono β i hi c]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Consider the case `add P Q hP hQ`. Rewrite using `[MvPolynomial.coe_add, map_add]`. Conclude with `Submodule.add_mem _ hP hQ`. Establish `hcard : Fintype.card (Fin d → Fin q) = Module.finrank K (A ⧸ J)`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hdim` using `[Fintype.card_fun]`. Establish `h1` using `finrank_range_le_card (R := K) v`. Establish `h2 : Set.finrank K (Set.range v) = Module.finrank K (A ⧸ J)`. Unfold `Set.finrank`. Rewrite using `[eq_top_iff.2 hspan, finrank_top]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hli` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan hcard`. Use `set P : MvPowerSeries (Fin d) K := ∑ a : Fin d → Fin q, coeff (boxPt a) f • monomial (boxPt a) (1 : K) with hP`. Establish `hPcoeff : ∀ a : Fin d → Fin q, coeff (boxPt a) P = coeff (boxPt a) f`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, map_sum, Finset.sum_eq_single a]`. Simplify using `[coeff_monomial]`. Introduce `b _ hb`. Simplify using `[coeff_monomial, boxPt_injective.ne (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set h : MvPowerSeries (Fin d) K := f - P with hh`. Set `hi : Fin d → MvPowerSeries (Fin d) K` to `fun i β => if q ≤ β i ∧ ∀ j < i, β j < q then coeff β h else 0`. Establish `hic : ∀ i β, coeff β (hi i) = if q ≤ β i ∧ ∀ j < i, β j < q then coeff β h else 0` using `fun i β => by rw [coeff_apply]`. Establish `hdiv : ∀ i, X i ^ q ∣ hi i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[hic, if_neg]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : h = ∑ i, hi i`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `β`. Rewrite using `[map_sum]`. Simplify using `only [hic]`. Distinguish the cases in `hb : ∀ i, β i < q`. Take `⟨a, rfl⟩` from `exists_boxPt β hb`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: coeff (boxPt a) h = 0` using `by rw [hh, map_sub, hPcoeff, sub_self]`. Rewrite using `[this]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Use `hb i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `push_neg at hb`. Take `⟨i0, hi0mem, hmin⟩` from `(Finset.univ.filter (fun i => q ≤ β i)).exists_min_image id (by obtain ⟨i, hi⟩ := hb; exact ⟨i, by simp [hi]⟩)`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, id] at hi0mem hmin`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos]`. Use `⟨hi0mem, fun j hj => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hmin j (by omega)) (not_le.2 hj)`. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hjq, hjlt⟩`. Break down `lt_or_gt_of_ne hj with hlt | hlt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hmin j hjq) (not_le.2 hlt)`. Use `hjlt i0 hlt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hEh : E h = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsum, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Take `⟨g, hg⟩` from `hdiv i`. Rewrite using `[hg]`.
-
-Conclude with `hEXq i g`. Establish `hEf : E f = 0` using `by rw [hEapp, hf, map_zero]`. Establish `hfP : f = P + h` using `by rw [hh]; ring`. Establish `hzero : ∑ a : Fin d → Fin q, coeff (boxPt a) f • v a = 0`. Establish `: E P = ∑ a : Fin d → Fin q, coeff (boxPt a) f • v a`.
-
-Rewrite using `[hP, map_sum]`. Simplify using `only [map_smul, hv]`. Rewrite using `[← this, ← hEf, hfP, map_add, hEh, add_zero]`. Establish `hall` using `Fintype.linearIndependent_iff.1 hli _ hzero`. Take `⟨a, rfl⟩` from `exists_boxPt α (fun i => lt_of_le_of_lt (Finsupp.le_degree i α) hα)`.
-
-Conclude with `hall a`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.coeff_eq_zero_of_evA_eq_zero_of_le_finrank :
     ∀ (K A : Type) [Field K] [CommRing A] [Algebra K A] [Module.Finite K A] (d q : ℕ)

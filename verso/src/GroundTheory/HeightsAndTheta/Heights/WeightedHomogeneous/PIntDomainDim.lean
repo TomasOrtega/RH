@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open Algebra
 
 /- English proof (translation)
-Introduce `A _ inst _ _ hinj`. Take `rfl : inst = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Establish `hfin : trdeg ℤ A < Cardinal.aleph0` using `trdeg_lt_aleph0_of_finiteType`. Take `⟨t, ht⟩` from `Cardinal.lt_aleph0.mp hfin`. Rewrite using `[ht, Cardinal.toENat_nat]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ringKrullDim_le_trdeg_add_one_int t A hinj ht`. Establish `h2` using `le_ringKrullDim_int A hinj t ht`. Move the coercions through the operations in `at h1 h2`. Conclude with `le_antisymm h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem IntDomainDim.proof : IntDomainDim.Statement := by
   intro A _ inst _ _ hinj

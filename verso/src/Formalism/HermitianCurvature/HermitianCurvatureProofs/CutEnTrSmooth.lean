@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.En
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Set `L : (W →L[ℂ] V) →ₗ[ℝ] PiLp 2 (fun _ : Fin (Module.finrank ℂ W) => V)` to `{ toFun := fun A => B.hsVec A map_add' := fun A A' => by ext i; simp [B.hsVec] map_smul' := fun c A => by ext i; simp [B.hsVec] }`. Use `haveI : FiniteDimensional ℝ (W →L[ℂ] V) := FiniteDimensional.complexToReal _`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hsVec_contDiff {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] :
@@ -26,9 +26,9 @@ theorem hsVec_contDiff {V W : Type} [NormedAddCommGroup V] [InnerProductSpace �
   exact (LinearMap.toContinuousLinearMap L).contDiff
 
 /- English proof (translation)
-Establish `hn : ContDiff ℝ ∞ (fun z : ℂ => Complex.normSq z)`. Repeatedly rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `contDiff_norm_sq ℝ`. Unfold `MA.wq`. Apply `ContDiff.mul` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `contDiff_prod` to reduce the goal to its premises. Introduce `l _`. Conclude with `(hn.comp ((contDiff_apply ℝ ℂ l).comp contDiff_fst)).pow _`. Conclude with `((hn.comp contDiff_snd).sub contDiff_const).pow _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wq_contDiff (k r : ℕ) (TT : ℝ) : ContDiff ℝ ∞ (fun x : MA.E r => MA.wq k x TT) := by
   have hn : ContDiff ℝ ∞ (fun z : ℂ => Complex.normSq z) := by
@@ -42,9 +42,9 @@ theorem wq_contDiff (k r : ℕ) (TT : ℝ) : ContDiff ℝ ∞ (fun x : MA.E r =>
   · exact ((hn.comp contDiff_snd).sub contDiff_const).pow _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hx`. Unfold `MA.wq`. Apply `mul_pos` to reduce the goal to its premises. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `l _`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_pos (Complex.normSq_pos.mpr (h1 l)) _`. Conclude with `pow_pos (by linarith) _`.
+A detailed English derivation is pending.
 -/
 theorem wq_pos {k r : ℕ} {TT : ℝ} {x : MA.E r} (hx : x ∈ MA.Qset r TT) : 0 < MA.wq k x TT := by
   obtain ⟨h1, h2⟩ := hx
@@ -56,17 +56,17 @@ theorem wq_pos {k r : ℕ} {TT : ℝ} {x : MA.E r} (hx : x ∈ MA.Qset r TT) : 0
   · exact pow_pos (by linarith) _
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v hIP e he J hJ ρ`. Take `⟨-, -, -, hTz, hTz', -, -⟩` from `hIP`. Establish `hsub : ∀ q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'`. Introduce `q hq`. Use `⟨hq.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (D.parOf S v).TT < Complex.normSq q.2` using `hq.2`. Establish `h3 : (D.parOf S v).TT = (D.parOf S v).T * (D.parOf S v).T'` using `rfl`. Rewrite `h2` using `[h3, ← hTz, ← hTz']`. Conclude with `h2`. Establish `hgq : ∀ q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, B.gq (T v).base q ∈ Q.Glev S.G.k S.G.r 0 ∩ OmP S T v` using `fun q hq => om_sub' (Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base (hsub q hq))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgqS : ContDiffOn ℝ ∞ (fun q => B.gq (T v).base q) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(contDiffOn_infty.mpr fun n => Formalism.FourierDecayAlt.P.BigCellOpenDomain.gq_contDiffOn (T v).base n).mono hsub`. Establish `hJq : ContDiffOn ℝ ∞ (fun q => B.hsVec (J (B.gq (T v).base q))) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)`. Introduce `x hx`. Take `⟨U, F, hU, hxU, hF, hJF⟩` from `hJ.1 _ (hgq x hx)`. Establish `hFat : ContDiffAt ℝ ∞ F (B.gq (T v).base x)` using `hF.contDiffAt (hU.mem_nhds hxU)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContDiffWithinAt ℝ ∞ (fun q => F (B.gq (T v).base q)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT) x` using `hFat.comp_contDiffWithinAt x (hgqS x hx)`. Establish `h2 : ContDiffWithinAt ℝ ∞ (fun q => B.hsVec (F (B.gq (T v).base q))) (MA.Qset (D.parOf S v).r (D.parOf S v).TT) x` using `(hsVec_contDiff (V := Wp (S.pl v)) (W := Wq (S.pl v))).contDiffAt.comp_contDiffWithinAt x h1`. Use `h2.congr_of_eventuallyEq ?_ ?_` and prove the remaining obligations. Establish `hpre` using `(hgqS x hx).continuousWithinAt.preimage_mem_nhdsWithin (hU.mem_nhds hxU) filter_upwards [hpre, self_mem_nhdsWithin] with y hyU hyQ`. Rewrite using `[hJF _ hyU (hgq y hyQ).1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJF _ hxU (hgq x hx).1]`. Establish `he2 : ContDiffOn ℝ ∞ (fun q : MA.E (D.parOf S v).r => B.hsVec (e ρ q.2)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(hsVec_contDiff (V := Wp (S.pl v)) (W := Wq (S.pl v))).comp_contDiffOn ((he.1 ρ).comp contDiff_snd.contDiffOn (fun q hq => hq.2))`. Establish `hw0 : ContDiffOn ℝ ∞ (fun q : MA.E (D.parOf S v).r => Real.sqrt (MA.wq S.G.k q (D.parOf S v).TT)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(wq_contDiff _ _ _).contDiffOn.sqrt fun q hq => (wq_pos hq).ne'`. Establish `hw : ContDiffOn ℝ ∞ (fun q : MA.E (D.parOf S v).r => ((Real.sqrt (MA.wq S.G.k q (D.parOf S v).TT) : ℝ) : ℂ)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hw0`. Establish `hF` using `hw.mul (ContDiffOn.inner ℂ he2 hJq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ContDiffOn ℝ MA.sm (MA.ext _) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)`. Use `hF.congr ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[MA.ext, dif_pos hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_smoothness : TrSmooth := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v hIP e he J hJ ρ

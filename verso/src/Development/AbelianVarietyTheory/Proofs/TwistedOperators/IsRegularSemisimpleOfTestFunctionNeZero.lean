@@ -20,7 +20,7 @@ open GlobalTheory.Orb
 namespace GlobalTheory.RegSupp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v g ∈ GlobalTheory.SmGL.iwahori (Fv F v) (Fin n) → g ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.iwahori (Fv F v) n := by letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v intro hg haveI hc : …`.
+A detailed English derivation is pending.
 -/
 theorem mem_iwahori_valued {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {n : ℕ}
     {g : GL (Fin n) (Fv F v)} :
@@ -57,17 +57,15 @@ end GlobalTheory.RegSupp
 namespace GlobalTheory.RegSupp
 
 /- English proof (translation)
-Introduce `hI D V T U μf ff hT fa δ x h`. Take `⟨-, -, ⟨t, ht, hfu⟩, -, hcof⟩` from `hT`. Establish `hfin : (Function.mulSupport fun v => ff v (proj D.sp.cm.sig V.gram v (x⁻¹ * rat V δ * x))).Finite` using `Filter.eventually_cofinite.1 ((hcof.and (eventually_proj_mem_stabLoc D.sp.cm.sig V.gram (frameLat V) (x⁻¹ * rat V δ * x))).mono fun v hv => by show ff v _ = 1`. Rewrite using `[hv.1, unitLoc, Set.indicator_of_mem hv.2, Pi.one_apply])`. Establish `hne : ff U.u (proj D.sp.cm.sig V.gram U.u (x⁻¹ * rat V δ * x)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `show (∏ w, fa w (projArch D.sp.cm.sig V.gram w _)) * ∏ᶠ v, ff v (proj D.sp.cm.sig V.gram v _) = 0`. Rewrite using `[finprod_eq_zero _ U.u h0 hfin, mul_zero]`. Rewrite `hne` using `[hfu]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem` using `Set.mem_of_indicator_ne_zero hne`. Take `⟨A, hA, rfl⟩` from `ht`. Take `⟨a, ha, b, hb, e⟩` from `U.frame.mem_iwahoriCoset.1 hmem`. Establish `key` using `(hI _ (U.ϖ : Fv _ U.u) U.unif _ A hA (U.frame.equiv (proj D.sp.cm.sig V.gram U.u (x⁻¹ * rat V δ * x))).1 ⟨a, mem_iwahori_valued U.u ha, b, mem_iwahori_valued U.u hb, by`. Rewrite using `[e, Units.val_mul, Units.val_mul, GlobalTheory.SmGL.val_diagT]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.diagPow`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Units.val_zpow_eq_zpow_val _ _⟩).2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : U.frame.equiv (proj D.sp.cm.sig V.gram U.u (x⁻¹ * rat V δ * x)) = (U.frame.equiv (proj D.sp.cm.sig V.gram U.u x))⁻¹ * U.frame.equiv (proj D.sp.cm.sig V.gram U.u (rat V δ)) * U.frame.equiv (proj D.sp.cm.sig V.gram U.u x)`. Simplify using `only [map_mul, map_inv]`. Rewrite `key` using `[e1, charpoly_conj_GL]`. Express the relevant statement in the definitionally equal form `(splitEquivIn _ _ U.frame.emb U.frame.basis _).1.charpoly.Separable at key`. Rewrite using `[splitEquivIn_apply, charpoly_conj_GL, splitHom_val, rat, proj_ratEmb, show (matHom _ D.sp.cm.sig V.gram (ratLoc D.sp.cm.sig V.gram U.u δ)).1 = δ.1.1.map (inclR _) from rfl, Matrix.map_map, show (splitProj U.frame.emb) ∘ (inclR (Fv _ U.u)) = (U.frame.emb : _ →+* Fv _ U.u) from`.
-
-Use function extensionality and compare the values at `(splitProj_inclR _), Matrix.charpoly_map] at key`. Conclude with `(Polynomial.separable_map _).1 key`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isRegSS_of_tensor_ne_zero : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues → ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestFin T U μf ff → ∀ (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (δ : GF V) (x : GA D V), tensor D.sp.cm.sig V.gram fa ff (x⁻¹ * rat V δ * x) ≠ 0 → IsRegSS δ.1.1 := by
   intro hI D V T U μf ff hT fa δ x h

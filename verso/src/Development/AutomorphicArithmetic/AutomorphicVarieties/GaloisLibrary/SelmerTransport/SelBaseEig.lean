@@ -19,9 +19,9 @@ private structure Coords (J : N →+ N') (C : ι → N' →+ N) : Prop where
 variable {b} {J : N →+ N'} {C : ι → N' →+ N}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h.sum y]`. Simplify using `only [map_sum, LinearMap.map_smul, ← hf, h.coord, Module.Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_eq_of_ne hk.symm, zero_smul]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem Coords.comm (h : Coords b J C) (f : N → N) (f' : N' →ₗ[O] N') (hf : ∀ x, J (f x) = f' (J x))
     (i : ι) (y : N') : C i (f' y) = f (C i y) := by
@@ -35,19 +35,17 @@ private theorem Coords.comm (h : Coords b J C) (f : N → N) (f' : N' →ₗ[O] 
     exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Use `haveI : Module.Free R O := Module.Free.of_basis b`. Set `F : O →+ N →+ N'` to `{ toFun := fun o => { toFun := fun x => o • J x map_zero' := by simp map_add' := fun x y => by simp [smul_add] } map_zero' := by ext; simp map_add' := fun o o' => by ext; simp [add_smul] }`. Establish `hF : ∀ (r : R) (o : O) (x : N), F (r • o) x = F o (r • x)`. Introduce `r o x`. Use `show (r • o) • J x = o • J (r • x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h.smul, smul_smul, Algebra.smul_def, mul_comm]`. Set `φ : O ⊗[R] N →+ N'` to `TensorProduct.liftAddHom F hF`. Establish `hφ : ∀ (o : O) (x : N), φ (o ⊗ₜ[R] x) = o • J x` using `fun o x => by`. Simplify using `[φ, F, TensorProduct.liftAddHom_tmul]`. Set `ψ : N' → O ⊗[R] N` to `fun y => ∑ i, b i ⊗ₜ[R] C i y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψφ : ∀ t, ψ (φ t) = t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [ψ]`. Consider the case `tmul o x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, hφ, h.coord]`. Simplify using `only [← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, b.sum_repr]`. Consider the case `add s t hs ht`. Simplify using `only [ψ, map_add, TensorProduct.tmul_add, Finset.sum_add_distrib] at hs ht ⊢`. Rewrite using `[hs, ht]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφψ : ∀ y, φ (ψ y) = y`. Introduce `y`. Simplify using `only [ψ, map_sum, hφ, h.sum]`. Establish `hφs : ∀ (o : O) t, φ (o • t) = o • φ t`. Introduce `o t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o' x => rw [TensorProduct.smul_tmul', hφ, hφ, smul_eq_mul, mul_smul]`. Consider the case `add s t hs ht => rw [smul_add, map_add, map_add, hs, ht, smul_add]`. Set `e : N' ≃ₗ[O] O ⊗[R] N` to `{ toFun := ψ invFun := φ left_inv := hφψ right_inv := hψφ map_add' := fun y y' => by simp [ψ, map_add, TensorProduct.tmul_add, Finset.sum_add_distrib] map_smul' := fun o y => by show ψ (o • y) = o • ψ y conv_lhs => rw [← hφψ y, ← hφs, hψφ] }`.
-
-Rewrite using `[e.length_eq, IsLocalRing.length_baseChange]`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Coords.length [IsLocalRing R] [IsLocalRing O] [IsLocalHom (algebraMap R O)] (h : Coords b J C) :
     Module.length O N' =
@@ -137,15 +135,15 @@ end Coh
 end UpperTheory.V.Base.SelmerBaseEigenCoordinates
 
 /- English proof (translation)
-Set `F : ι → O →+ M →+ M` to `fun i => { toFun := fun o => { toFun := fun x => b.repr o i • x map_zero' := by simp map_add' := fun x y => by simp [smul_add] } map_zero' := by ext; simp map_add' := fun o o' => by ext; simp [add_smul] }`. Establish `hF : ∀ i (r : R) (o : O) (x : M), F i (r • o) x = F i o (r • x)`. Introduce `i r o x`. Use `show b.repr (r • o) i • x = b.repr o i • r • x`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm, mul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFt : ∀ i (o : O) (x : M), TensorProduct.liftAddHom (F i) (hF i) (o ⊗ₜ[R] x) = b.repr o i • x` using `fun i o x => by simp [F, TensorProduct.liftAddHom_tmul]`. Use `⟨fun i => (TensorProduct.liftAddHom (F i) (hF i)).comp hj.equiv.symm.toLinearMap.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r x`. Simplify using `[algebraMap_smul]`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `hj.equiv.surjective y`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o x`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [hFt, IsBaseChange.equiv_tmul, map_smul]`. Simplify using `only [smul_comm (b _) (b.repr o _)]`. Simplify using `only [← smul_assoc, ← Finset.sum_smul, b.sum_repr]`. Consider the case `add s t hs ht`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, hs, ht]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i o x`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe]`. Rewrite using `[← IsBaseChange.equiv_tmul hj, LinearEquiv.symm_apply_apply, hFt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Base.exists_coords_of_isBaseChange {R O ι M M' : Type} [CommRing R] [CommRing O] [Algebra R O]
     [Fintype ι] (b : Module.Basis ι R O)
@@ -187,9 +185,9 @@ private theorem UpperTheory.V.Base.exists_coords_of_isBaseChange {R O ι M M' : 
     rw [← IsBaseChange.equiv_tmul hj, LinearEquiv.symm_apply_apply, hFt]
 
 /- English proof (translation)
-Use `⟨{ toFun := fun x => ⟨J x, hJ x x.2⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp }, fun i => { toFun := fun y => ⟨C i y, hC i y y.2⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp }, ⟨?_, ?_, ?_⟩, fun _ => rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `r x`. Use `ext`. Simplify using `[h.smul]`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext`. Simplify using `[Submodule.coe_sum, h.sum]`. Introduce `i o x`. Use `ext`. Simplify using `[h.coord]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Base.coords_restrict_to_submodules {R O ι : Type} [CommRing R] [CommRing O] [Algebra R O] [Fintype ι]
     {b : Module.Basis ι R O} {N N' : Type} [AddCommGroup N] [Module R N] [AddCommGroup N'] [Module O N']
@@ -214,19 +212,17 @@ private theorem UpperTheory.V.Base.coords_restrict_to_submodules {R O ι : Type}
     simp [h.coord]
 
 /- English proof (translation)
-Set `CZ : (V : Subgroup G) → ι → Z1U ρ' V →+ Z1U ρ V` to `fun V i => { toFun := fun f => ⟨fun g => C i (f.1 g), (continuous_of_discreteTopology (f := C i)).comp f.2.1, fun g g' => by show C i (f.1 (g * g')) = C i (f.1 g) + ρ g (C i (f.1 g'))`. Rewrite using `[f.2.2 g g', map_add]`. Conclude with `congrArg _ (hcomm i _ _)⟩`. Use the proof step `map_zero' := Subtype.ext (funext fun _ => map_zero (C i))`. Use the proof step `map_add' := fun f f' => Subtype.ext (funext fun g => map_add (C i) _ _) }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `CH : (V : Subgroup G) → ι → H1U ρ' V →+ H1U ρ V` to `fun V i => QuotientAddGroup.map (Submodule.toAddSubgroup _) (Submodule.toAddSubgroup _) (CZ V i) fun f hf => by`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hf`. Use `(mem_coboundaries1 _ _).2 ⟨C i m, fun g => ?_⟩` and prove the remaining obligations. Establish `e : f.1 g = ρ' g m - m` using `hm g`. Express the relevant statement in the definitionally equal form `C i (f.1 g) = ρ g (C i m) - C i m`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, map_sub, hcomm]`. Establish `hCH : ∀ V i (z : Z1U ρ' V), CH V i (Submodule.Quotient.mk z) = Submodule.Quotient.mk (CZ V i z)` using `fun _ _ _ => rfl`. Use `⟨CH, fun V => ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `r x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, UpperTheory.V.Base.SelmerBaseEigenCoordinates.hMap_mk, UpperTheory.V.Base.SelmerBaseEigenCoordinates.hMap_mk, ← Submodule.Quotient.mk_smul]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => h.smul r (z.1 g)))`. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `key : (∑ i, b i • UpperTheory.V.Base.SelmerBaseEigenCoordinates.zMap ρ ρ' u hu V (CZ V i z)) = z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Conclude with `h.sum (z.1 g)`. Use `conv_rhs => rw [← key]`. Simplify using `only [hCH, UpperTheory.V.Base.SelmerBaseEigenCoordinates.hMap_mk, ← Submodule.Quotient.mk_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `(map_sum (Submodule.mkQ _) _ _).symm`. Introduce `i o x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[UpperTheory.V.Base.SelmerBaseEigenCoordinates.hMap_mk, ← Submodule.Quotient.mk_smul, hCH, ← Submodule.Quotient.mk_smul]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => h.coord i o (z.1 g)))`.
-
-Introduce `V' V hV i y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Base.selBaseEig_lemma_3 {G : Type} [Group G] [TopologicalSpace G]
     {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
@@ -282,7 +278,7 @@ private theorem UpperTheory.V.Base.selBaseEig_lemma_3 {G : Type} [Group G] [Topo
     rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.V.Base.resU_hMap_comm {G : Type} [Group G] [TopologicalSpace G]
     {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
@@ -297,7 +293,7 @@ private theorem UpperTheory.V.Base.resU_hMap_comm {G : Type} [Group G] [Topologi
   rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun w => (hu _ _).symm))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Base.selBaseEig_lemma_5 {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
@@ -314,25 +310,25 @@ private theorem UpperTheory.V.Base.selBaseEig_lemma_5 {G : Type} [Group G] [Topo
 set_option maxHeartbeats 800000 in
 open UpperTheory.V.Base.SelmerBaseEigenCoordinates in
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ O M' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ρ' j hj hu U _ 𝒟 h𝒟`. Set `b` to `Module.Free.chooseBasis R O`. Take `⟨C, hC⟩` from `UpperTheory.V.Base.exists_coords_of_isBaseChange b j hj`. Establish `hu' : ∀ g m, j.toAddMonoidHom (ρ g m) = ρ' g (j.toAddMonoidHom m)` using `fun g m => hu g m`. Establish `hcomm : ∀ i g y, C i (ρ' g y) = ρ g (C i y)` using `fun i g y => Coords.comm hC (fun m => ρ g m) (ρ' g) (fun x => hu g x) i y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨CH, hCH, hres⟩` from `UpperTheory.V.Base.selBaseEig_lemma_3 ρ ρ' j.toAddMonoidHom hu' hC hcomm`. Establish `hLJ : ∀ x ∈ LocSel ρ U 𝒟, hMap ρ ρ' j.toAddMonoidHom hu' U x ∈ LocSel ρ' U 𝒟`. Introduce `x hx`. Simplify using `only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `D hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[UpperTheory.V.Base.resU_hMap_comm, hx D hD, map_zero]`. Establish `hLC : ∀ i, ∀ y ∈ LocSel ρ' U 𝒟, CH U i y ∈ LocSel ρ U 𝒟`. Introduce `i y hy`. Simplify using `only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`. Introduce `D hD`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hres, hy D hD, map_zero]`. Take `⟨JL, CL, hL, hJL, -⟩` from `UpperTheory.V.Base.coords_restrict_to_submodules (hCH U) _ _ hLJ hLC`. Establish `hJconj : ∀ g x, JL (selRep ρ U h𝒟 g x) = selRep ρ' U h𝒟 g (JL x)`. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hJL]`. Conclude with `(UpperTheory.V.Base.selBaseEig_lemma_5 ρ ρ' _ hu' U g x.1).symm.trans (congrArg _ (hJL x).symm)`. Establish `hCconj : ∀ i g y, CL i (selRep ρ' U h𝒟 g y) = selRep ρ U h𝒟 g (CL i y)` using `fun i g y => Coords.comm hL (fun x => selRep ρ U h𝒟 g x) (selRep ρ' U h𝒟 g) (hJconj g) i y`. Establish `hCs : ∀ i (s : R) y, CL i (algebraMap R O s • y) = s • CL i y` using `fun i s y => Coords.comm hL (fun x => s • x) (algebraMap R O s • LinearMap.id) (fun x => by simp [hL.smul]) i y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W ψ`. Establish `hEJ : ∀ x ∈ selEig ρ U h𝒟 W ψ, JL x ∈ selEig ρ' U h𝒟 W ((Units.map (algebraMap R O).toMonoidHom).comp ψ)`. Introduce `x hx`. Simplify using `only [selEig, eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, sub_eq_zero, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at hx ⊢`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hJconj, hx w, hL.smul]`. Establish `hEC : ∀ i, ∀ y ∈ selEig ρ' U h𝒟 W ((Units.map (algebraMap R O).toMonoidHom).comp ψ), CL i y ∈ selEig ρ U h𝒟 W ψ`. Introduce `i y hy`. Simplify using `only [selEig, eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, sub_eq_zero, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at hy ⊢`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hCconj, hy w, hCs]`. Take `⟨JE, CE, hE, -, -⟩` from `UpperTheory.V.Base.coords_restrict_to_submodules hL _ _ hEJ hEC`. Conclude with `Coords.length hE`. Introduce `g s`. Establish `hEJ : ∀ x ∈ Module.End.eigenspace (selRep ρ U h𝒟 g) s, JL x ∈ Module.End.eigenspace (selRep ρ' U h𝒟 g) (algebraMap R O s)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← hJconj, hx, hL.smul]`. Establish `hEC : ∀ i, ∀ y ∈ Module.End.eigenspace (selRep ρ' U h𝒟 g) (algebraMap R O s), CL i y ∈ Module.End.eigenspace (selRep ρ U h𝒟 g) s`. Introduce `i y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hy`, the goal using `[Module.End.mem_eigenspace_iff]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨JE, CE, hE, -, -⟩` from `UpperTheory.V.Base.coords_restrict_to_submodules hL (Module.End.eigenspace (selRep ρ U h𝒟 g) s) (Module.End.eigenspace (selRep ρ' U h𝒟 g) (algebraMap R O s)) hEJ hEC`. Conclude with `Coords.length hE`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selBaseEig :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

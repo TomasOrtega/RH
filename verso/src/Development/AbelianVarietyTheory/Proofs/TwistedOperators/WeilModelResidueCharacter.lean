@@ -20,15 +20,13 @@ open MeasureTheory
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n d X W M ψ χX χW om _ _ _ _ _ _ _ _ _ hW γ _ T hA μ hμ t f`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hg0⟩ : ∃ g : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ, g ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∧ g 0 ≠ 0 := by`. Use `⟨_, GlobalTheory.SchANonzero.indicator_intPts_mem_SB F _, ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchANonzero.intPts F (Fin n × Fin d)` using `fun i _ v => zero_mem (v.adicCompletionIntegers F)`. Rewrite using `[Set.indicator_of_mem h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Take `⟨μA, hμA, c, hc0, hct, hc⟩` from `exists_haar F _ μ g hg hg0`. Set `r : (Fin n × Fin d → AF F) → ℂ` to `fun x => g fun i => (x i).2`. Establish `hS : tens (evI F) f r ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hr : ∀ x z, At (evI F) z → r (x + z) = r x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x z hz`. Use `congrArg g (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[snd_eq_zero hz i, add_zero]`. Establish `hU` using `hW.1.1.unit μA hμA (γ (Multiplicative.ofAdd t)) (tens (evI F) f r) hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hAct : om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) f r) = tens (evI F) (T t f) r` using `hA t f r ⟨hr, hS⟩`. Express the relevant statement in the definitionally equal form `∫⁻ x, ‖om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) f r) x‖ₑ ^ 2 ∂μA = _ at hU`. Rewrite `hU` using `[hAct]`. Establish `h1` using `((hc (T t f)).symm.trans hU).trans (hc f)`. Use `haveI := opensMeasurable F (Fin n × Fin d)`.
-
-Rewrite using `[integral_sq_eq μ (T t f).continuous, integral_sq_eq μ f.continuous, (ENNReal.mul_right_inj hc0 hct).1 h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_eq_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

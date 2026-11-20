@@ -155,13 +155,13 @@ def ClsPinD {c : Comm D} {𝒯 : Type} (t : 𝒯 → Tup c) : Prop :=
 namespace Sized
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Simplify using `[inN]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inN_rank (θ : InfFam D) (V : HSp D) (B) (g : GA D V) : inN θ V B rfl g = inB θ V B g := by
   funext τ; ext i j; simp [inN]
 
 /- English proof (translation)
-Establish `: (fun v : FVar D q p => ((v.1, Fin.cast rfl v.2.1, Fin.cast rfl v.2.2) : FVar D q p)) = id` using `by funext v; rfl`. Unfold `castP`. Rewrite using `[this]`. Conclude with `MvPolynomial.rename_id_apply P`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castP_rank {p q : ℕ} (P : PolF D q p) : castP (D := D) (rfl : p = p) (rfl : q = q) P = P := by
   have : (fun v : FVar D q p => ((v.1, Fin.cast rfl v.2.1, Fin.cast rfl v.2.2) : FVar D q p)) = id := by funext v; rfl
@@ -169,7 +169,7 @@ theorem castP_rank {p q : ℕ} (P : PolF D q p) : castP (D := D) (rfl : p = p) (
   rw [this]; exact MvPolynomial.rename_id_apply P
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hq` using the available equality. Establish `: (castP (D` using `D) (rfl : p = p) (rfl : q = q) : _ → _) = id := funext castP_rank`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castP_bijective {p q a b : ℕ} (hp : p = a) (hq : q = b) : Function.Bijective (castP (D := D) hp hq) := by
   subst hp; subst hq
@@ -179,7 +179,7 @@ theorem castP_bijective {p q a b : ℕ} (hp : p = a) (hq : q = b) : Function.Bij
 end Sized
 
 /- English proof (translation)
-Unfold `castP`. Conclude with `MvPolynomial.rename_X _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example {p q a b : ℕ} (hp : p = a) (hq : q = b) (τ : D.what₂.Tau) (i : Fin q) (k : Fin p) :
     castP (D := D) hp hq (MvPolynomial.X (τ, i, k)) = MvPolynomial.X (τ, Fin.cast hq i, Fin.cast hp k) := by
@@ -189,17 +189,17 @@ def RealC.toD {c : Comm D} (ρ : RealC c) : RealD c :=
   ⟨fun j => (c.X j).rank, fun _ _ => rfl, c.T.rank, rfl, ρ.fr, ρ.lam, ρ.n, ρ.sS, ρ.sD, ρ.sc, ρ.BT, ρ.sg, ρ.J, ρ.low⟩
 
 /- English proof (translation)
-The claim follows from `Sized.inN_rank _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem RealC.toD_r {c : Comm D} (ρ : RealC c) (j hj g) : ρ.toD.r j hj g = c.r j g := Sized.inN_rank _ _ _ _
 
 /- English proof (translation)
-The claim follows from `Sized.inN_rank _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem RealC.toD_rT {c : Comm D} (ρ : RealC c) (g) : ρ.toD.rT g = inB c.θ c.T ρ.BT g := Sized.inN_rank _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [RealC.toD_r]; exact h.uni j hj uniT := by simp only [RealC.toD_rT]; exact h.uniT rk := h.rk sc := h.sc n := h.n J v := by simp only [RealC.toD_rT]; exact h.J v low n hn := by simp only [RealC.toD_rT, RealC.toD_r]; exact h.low n hn`.
+Simplify using the standard rewrite rules.
 -/
 theorem RealC.Is.toD {c : Comm D} {ρ : RealC c} (h : ρ.Is) : ρ.toD.Is where
   uni j hj := by simp only [RealC.toD_r]; exact h.uni j hj
@@ -215,13 +215,11 @@ def ClsDat.toK {c : Comm D} {t : Tup c} (A : ClsDat t) (ρ : RealC c) : ClsK ρ.
 def ClsDat.toT {c : Comm D} {t : Tup c} (A : ClsDat t) (ρ : RealC c) : ClsT ρ.toD t := ⟨A.clT, A.UT, A.hT, A.ell⟩
 
 /- English proof (translation)
-Use `⟨⟨hA.reps, hA.chi, hA.valC, ?_⟩, ?_, hA.lev, ?_, hA.kval⟩` and prove the remaining obligations. Introduce `j hj`. Simplify using `only [RealC.toD_r]`. Conclude with `hA.rd j hj`. Introduce `j hj α γ k hk k' hk' P P' hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `Sized.castP_rank (D := D) P`. Establish `e2` using `Sized.castP_rank (D := D) P'`. Establish `hP' : P' = mvZ (fun τ => (c.r j k τ)⁻¹) (c.r (j + 1) k') P`. Simplify using `only [RealC.toD_r] at hP`. Conclude with `e2.symm.trans (hP.trans (congrArg _ e1))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RealC.toD_r]`. Rewrite using `[hP']`. Conclude with `hA.real j hj α γ k hk k' hk' P`. Introduce `j hj α γ a a' P`. Establish `e1` using `Sized.castP_rank (D := D) P`.
-
-Conclude with `(hA.core j hj α γ a a' P).trans (congrArg (fun Q => t.cK j * A.abelian₂ j α γ a a' (mvZ (fun _ => 1) (fun τ => ρ.sc j τ • 1) Q)) e1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ClsDat.Is.toK {c : Comm D} {t : Tup c} {A : ClsDat t} {ρ : RealC c} (hA : A.Is ρ) : (A.toK ρ).Is := by
   refine ⟨⟨hA.reps, hA.chi, hA.valC, ?_⟩, ?_, hA.lev, ?_, hA.kval⟩
@@ -240,13 +238,13 @@ theorem ClsDat.Is.toK {c : Comm D} {t : Tup c} {A : ClsDat t} {ρ : RealC c} (hA
       (congrArg (fun Q => t.cK j * A.abelian₂ j α γ a a' (mvZ (fun _ => 1) (fun τ => ρ.sc j τ • 1) Q)) e1.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hA.repsT, hA.invT, hA.top, hA.tail⟩`.
+Supply the required witnesses or components.
 -/
 theorem ClsDat.Is.toT {c : Comm D} {t : Tup c} {A : ClsDat t} {ρ : RealC c} (hA : A.Is ρ) : (A.toT ρ).Is :=
   ⟨hA.repsT, hA.invT, hA.top, hA.tail⟩
 
 /- English proof (translation)
-Take `⟨ρ, hρ, H⟩` from `h`. Use `⟨ρ.toD, hρ.toD, fun s => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `H s`. Conclude with `⟨⟨_, hA.toK⟩, ⟨_, hA.toT⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ClsPin.toD {c : Comm D} {𝒯 : Type} {t : 𝒯 → Tup c} (h : ClsPin t) : ClsPinD t := by
   obtain ⟨ρ, hρ, H⟩ := h
@@ -292,26 +290,26 @@ section Frames
 variable {c : Comm D} {N : ℕ → ℕ} (fr : ∀ j, j ≤ D.R.m → (c.Fr j ≃ FrN D (N j)))
 
 /- English proof (translation)
-The claim follows from `dif_pos hj`.
+A detailed English derivation is pending.
 -/
 theorem Tup.onFrames_rd (t : Tup c) {j : ℕ} (hj : j ≤ D.R.m) (β ψ) (z : FrN D (N j)) :
     (t.onFrames fr).rd j β ψ z = t.rd j β ψ ((fr j hj).symm z) := dif_pos hj
 
 /- English proof (translation)
-Rewrite using `[t.onFrames_rd fr hj, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tup.onFrames_rd_apply (t : Tup c) {j : ℕ} (hj : j ≤ D.R.m) (β ψ) (y : c.Fr j) :
     (t.onFrames fr).rd j β ψ (fr j hj y) = t.rd j β ψ y := by
   rw [t.onFrames_rd fr hj, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9⟩, fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Comm.onFrames_is (N : ℕ → ℕ) : (c.onFrames N).Is ↔ c.Is :=
   ⟨fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9⟩, fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9, h.10, h.11, h.12, h.13, h.14⟩, fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9, h.10, h.11, h.12, h.13, h.14⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tup.onFrames_is (t : Tup c) : (t.onFrames fr).Is ↔ t.Is :=
   ⟨fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9, h.10, h.11, h.12, h.13, h.14⟩,
@@ -320,9 +318,9 @@ theorem Tup.onFrames_is (t : Tup c) : (t.onFrames fr).Is ↔ t.Is :=
 variable {𝒯 : Type} {t : 𝒯 → Tup c}
 
 /- English proof (translation)
-Introduce `j hj y P`. Take `⟨a, ha⟩` from `h j hj (fr j hj.le y) P`. Use `⟨a.equivMapDomain (fr (j + 1) hj).symm, fun s ψ hψ γ => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha s ψ hψ γ`. Simplify using `only [dif_pos hj.le, Equiv.symm_apply_apply] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h1.trans (congrArg _ ?_)` and prove the remaining obligations. Establish `h2` using `Finsupp.sum_equivMapDomain (fr (j + 1) hj).symm a fun y' x => x • (t s).rd (j + 1) γ ((t s).K j ψ) y'`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun z _ => congrArg _ ((t s).onFrames_rd fr hj γ _ z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem KerX.of_onFrames (h : KerX fun s => (t s).onFrames fr) : KerX t := by
   intro j hj y P
@@ -336,9 +334,9 @@ theorem KerX.of_onFrames (h : KerX fun s => (t s).onFrames fr) : KerX t := by
   exact Finset.sum_congr rfl fun z _ => congrArg _ ((t s).onFrames_rd fr hj γ _ z)
 
 /- English proof (translation)
-Introduce `n hn y v`. Take `⟨a, ha⟩` from `h n hn (fr n hn.le y) v`. Use `⟨a, fun s ψ hψ F => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha s ψ hψ F`. Simplify using `only [dif_pos hn.le, Equiv.symm_apply_apply] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem PerX.of_onFrames (h : PerX fun s => (t s).onFrames fr) : PerX t := by
   intro n hn y v
@@ -349,9 +347,9 @@ theorem PerX.of_onFrames (h : PerX fun s => (t s).onFrames fr) : PerX t := by
   exact h1
 
 /- English proof (translation)
-Introduce `j hj`. Take `⟨χ, hχ⟩` from `h j hj`. Use `⟨χ, fun s ψ hψ α y => ?_⟩` and prove the remaining obligations. Establish `h1` using `hχ s ψ hψ α (fr j hj y)`. Rewrite `h1` using `[(t s).onFrames_rd_apply fr hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem RdX.of_onFrames (h : RdX fun s => (t s).onFrames fr) : RdX t := by
   intro j hj
@@ -367,7 +365,7 @@ end Frames
   ⟨ρ.N, ρ.hN, ρ.NT, ρ.hT, fun _ => Equiv.refl _, ρ.lam, ρ.n, ρ.sS, ρ.sD, ρ.sc, ρ.BT, ρ.sg, ρ.J, ρ.low⟩
 
 /- English proof (translation)
-Take `⟨N, fr, h⟩` from `h`. Establish `h1` using `(Comm.onFrames_is N).2 hc`. Establish `h2` using `fun s => ((t s).onFrames_is fr).2 (ht s)`. Conclude with `⟨fun H => .of_onFrames fr (H _ _ h1 h2 h), fun H => .of_onFrames fr (H _ _ h1 h2 h), fun H => .of_onFrames fr (H _ _ h1 h2 h)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ClsPinF.laws {c : Comm D} {𝒯 : Type} {t : 𝒯 → Tup c} (hc : c.Is) (ht : ∀ s, (t s).Is) (h : ClsPinF t) :
     ((∀ (c : Comm D) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) → ClsPinD t → KerX t) → KerX t) ∧
@@ -408,19 +406,19 @@ theorem ClsPinF.laws {c : Comm D} {𝒯 : Type} {t : 𝒯 → Tup c} (hc : c.Is)
   cP := t.cP
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => absurd y.2 (Nat.not_succ_le_self _)⟩`.
+Supply the required witnesses or components.
 -/
 example (c : Comm D) : IsEmpty (c.cutFr.Fr (D.R.m + 1)) := ⟨fun y => absurd y.2 (Nat.not_succ_le_self _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨N, hN, c.T.rank, rfl, fun _ => Equiv.refl _, fun _ _ => ⟨0, fun _ _ _ => le_rfl⟩, 0, 0, 0, 1, 1, fun _ => ⟨0, fun _ _ _ => le_rfl⟩, 0, fun _ _ => 0⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (c : Comm D) (N : ℕ → ℕ) (hN : ∀ j, j ≤ D.R.m → (c.X j).rank = N j) : Nonempty (RealD (c.onFrames N)) :=
   ⟨⟨N, hN, c.T.rank, rfl, fun _ => Equiv.refl _, fun _ _ => ⟨0, fun _ _ _ => le_rfl⟩, 0, 0, 0, 1, 1,
     fun _ => ⟨0, fun _ _ _ => le_rfl⟩, 0, fun _ _ => 0⟩⟩
 
 /- English proof (translation)
-Take `⟨_, _, ρ, hρ, -⟩` from `h`. Take `⟨hN, -⟩` from `hρ.low _ rfl`. Conclude with `(ρ.hN _ le_rfl).trans (hN.trans (congrArg (· + 1) ρ.hT.symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example {c : Comm D} {𝒯 : Type} {t : 𝒯 → Tup c} (h : ClsPinF t) : (c.X D.R.m).rank = c.T.rank + 1 := by
   obtain ⟨_, _, ρ, hρ, -⟩ := h

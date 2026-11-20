@@ -19,18 +19,18 @@ def torusValue (q d e : ℕ) (z : ℂ) (n : ℕ) : ℂ :=
     ∑ i ∈ Finset.range e, z ^ (n * q ^ i)
 
 /- English proof (translation)
-Simplify using `[torusValue]`.
+Simplify using the standard rewrite rules.
 -/
 example (q n : ℕ) (z : ℂ) : torusValue q 1 1 z n = z ^ n := by simp [torusValue]
 
 /- English proof (translation)
-Simplify using `[torusValue]`.
+Simplify using the standard rewrite rules.
 -/
 example (q d : ℕ) (z : ℂ) : torusValue q d 1 z 0 = ∏ i ∈ Finset.Ico 1 d, ((q : ℂ) ^ i - 1) := by
   simp [torusValue]
 
 /- English proof (translation)
-Simplify using `[torusValue, Finset.sum_range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (q n : ℕ) (z : ℂ) : torusValue q 2 2 z n = -(z ^ n + z ^ (n * q)) := by
   simp [torusValue, Finset.sum_range_succ]
@@ -69,7 +69,7 @@ def IsCharLabel (ι : (Fbar g)ˣ →* ℂˣ) (θ : (ZMod g)ˣ → ℂ) (a : (ZMo
     θ y = ((ι (Units.map (algebraMap (ZMod g) (Fbar g) : ZMod g →* Fbar g) a) : ℂˣ) : ℂ) ^ m
 
 /- English proof (translation)
-Introduce `y m _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (ι : (Fbar g)ˣ →* ℂˣ) : IsCharLabel ι (fun _ => 1) 1 := by
   intro y m _; simp

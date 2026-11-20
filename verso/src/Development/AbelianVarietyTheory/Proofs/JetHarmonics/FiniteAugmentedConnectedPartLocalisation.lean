@@ -6,9 +6,9 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MonicSeparableProduct.main`. Consider the case `exact _root_.GlobalTheory.MonicSeparableProduct.main`. Consider the case `(apply _root_.GlobalTheory.MonicSeparableProduct.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MonicSeparableProduct.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MonicSeparableProduct.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MonicSeparableProduct.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finite_augmented_connected_part_localisation :
     ∀ (F : Type) [Field F] [IsAlgClosed F] (W : ValuationSubring F) (p : W), (∀ a : W, ¬ IsUnit a → ∃ n : ℕ, a ^ n ∈ Ideal.span {p}) → ∀ (A : Type) [CommRing A] [Algebra W A] [Module.Finite W A] (aug : A →ₐ[W] W), ∃ s : A, Function.Surjective (algebraMap A (Localization.Away s)) ∧ (∃ m : ℕ, ((RingHom.ker aug).map (algebraMap A (Localization.Away s))) ^ m ≤ Ideal.span {algebraMap W (Localization.Away s) p}) ∧ ∀ (R : Type) [CommRing R] [Algebra W R] (w : A →ₐ[W] R), (∀ t ∈ RingHom.ker aug, IsNilpotent (w t)) → IsUnit (w s) := by

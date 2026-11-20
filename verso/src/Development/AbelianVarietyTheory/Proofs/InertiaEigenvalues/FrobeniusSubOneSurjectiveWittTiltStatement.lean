@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TiltDivisibility
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ASSmall
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ASGlue
 /- English proof (translation)
-Introduce `l _ x` and use `PI.ArtSch.main_of witt_lift (tiltSurjectiveOfParts rootModP_holds tilt_divisibility smallSurjective) l x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.frobenius_sub_one_surjective_witt_tilt : Formalism.MainNotions.ElementDenominator.ArtinSchreierWittOnto := fun l _ x =>
   PI.ArtSch.main_of witt_lift (tiltSurjectiveOfParts rootModP_holds tilt_divisibility smallSurjective) l x

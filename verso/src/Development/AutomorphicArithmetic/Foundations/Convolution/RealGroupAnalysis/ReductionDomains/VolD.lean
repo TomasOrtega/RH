@@ -12,23 +12,23 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ _ M₀`. Take `⟨c, hc, hred⟩` from `UpperTheory.ConvolutionTheory.R2.red F`. Take `⟨C, ρ, hC, hρ, hcov⟩` from `M.ideleCover F c hc`. Take `⟨hSm, hfin⟩` from `M.siegJ F M₀ C ρ hC hρ`. Take `⟨⟨σ, hσ⟩, hcos⟩` from `M.rowCosets F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set S : Set (G1 F) := {g : G1 F | ∃ (b : A F) (n : ℕ), ∃ x ∈ C, ∃ k ∈ KK F, g = nU b * mD (ρ ^ n * x) * k} with hS`. Use `set u : G1 F → ℝ≥0∞ := Set.indicator S 1 with hu`. Establish `hum : Measurable u` using `measurable_one.indicator hSm`. Establish `hSinv : ∀ (b : A F) g, nU b * g ∈ S ↔ g ∈ S`. Establish `key : ∀ (b : A F) g, g ∈ S → nU b * g ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `b g ⟨b', n, x, hx, k, hk, rfl⟩`. Conclude with `⟨b + b', n, x, hx, k, hk, by rw [M.nU_add]; simp only [mul_assoc]⟩`. Use `fun b g => ⟨fun h => ?_, key b g⟩` and prove the remaining obligations. Use `key (-b) _ h` as an intermediate fact. Rewrite `this` using `[M.nU_neg, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huinv : ∀ (b : A F) g, u (nU b * g) = u g`. Introduce `b g`. Distinguish the cases in `h : g ∈ S`. Rewrite using `[hu, Set.indicator_of_mem h, Set.indicator_of_mem ((hSinv b g).2 h)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu, Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hSinv b g).1 h'))]`. Establish `hcover : ∀ g : G1 F, 1 ≤ ∑' r, u (ratS F (σ r) * g)`. Introduce `g`. Take `⟨γ, b, a, k, hk, heq, hle⟩` from `hred g`. Take `⟨t, n, x, hx, hta⟩` from `hcov a hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : mD (IdeleGroup.diagonal F t) * ratS F γ ∈ Gam F` using `(Gam F).mul_mem (M.mD_diag_mem t) ⟨γ, rfl⟩`. Take `⟨⟨r, ξ⟩, hp, -⟩` from `hcos σ hσ ⟨_, hmem⟩`. Establish `hp' : mD (IdeleGroup.diagonal F t) * ratS F γ = nU (rt ξ) * ratS F (σ r)` using `hp`. Establish `hin : nU (rt ξ) * (ratS F (σ r) * g) ∈ S`. Use `⟨((IdeleGroup.diagonal F t : (A F)ˣ) : A F) ^ 2 * b, n, x, hx, k, hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← hp', mul_assoc, heq, ← hta, M.mD_mul, ← mul_assoc, ← mul_assoc, M.mD_mul_nU]`. Simplify using `only [mul_assoc]`. Establish `hone : u (ratS F (σ r) * g) = 1`. Rewrite using `[← huinv (rt ξ), hu, Set.indicator_of_mem hin]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfs : ∀ g, ∫⁻ b in fundamentalSet F, u (nU b * g) ∂(adeleMeasure F) = u g`. Introduce `g`. Simplify using `only [huinv]`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, adeleMeasure_fundamentalSet, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[M.unfL F M₀ σ u hσ hum (fun ξ g => huinv _ g)]`. Simplify using `only [hfs]`. Use `_ < ⊤ := hfin`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.volD :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M₀ : Meas F), M₀.μ M₀.D < ⊤ := by

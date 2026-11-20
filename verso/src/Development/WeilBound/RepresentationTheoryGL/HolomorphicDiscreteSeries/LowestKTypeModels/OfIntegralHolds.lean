@@ -15,7 +15,7 @@ open Formalism.REAL Formalism.MainNotions.S PositivityTheory.UnitaryDecompositio
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hσ.2.2.2.2.2.1`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`. Establish `hle : S ≤ lowKSub ε lam σ` using `le_sSup hS`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, Submodule.smul_mem _ _ (hle hvS), ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hv0)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lowK_unit {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {K : Type} [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] {σ : Matrix (Fin m) (Fin m) ℂ → (K →L[ℂ] K)} (hσ : IsDS ε lam σ) :
@@ -27,9 +27,9 @@ theorem exists_lowK_unit {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {
   rw [norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hv0)]
 
 /- English proof (translation)
-Take `⟨-, hDec, hInt, -⟩` from `CompanionTheory.Lime.T3.analytic_estimates`. Establish `h1` using `hDec n (n + 1) ε' mu K σ (by omega) (by omega) hc hσ (by push_cast; exact hg) w hw hw1 1 _ le_rfl`. Establish `e1 : σ (um (1 : UJ ε')) w = w`. Rewrite using `[show um (1 : UJ ε') = 1 from rfl, hσ.2.2.1.1.1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[e1]`. Establish `hn2 : (2 : ℝ) ≤ n` using `by exact_mod_cast h2`. Establish `h2' : (n : ℝ) ^ 2 + 1 ≤ 6 * ((n + 1 : ℕ) : ℝ) ^ 2` using `by push_cast; nlinarith`. Conclude with `(hInt n ε' ν inferInstance (by omega) _ _ _ (continuous_const.inner ((uRep_self hσ.2.2.1).cont w)) h2' h1).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_int {ε' : Fin n → Bool} {mu : Fin n → ℝ} {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     [CompleteSpace K] {σ : Matrix (Fin n) (Fin n) ℂ → (K →L[ℂ] K)} (h2 : 2 ≤ n) (hc : Formalism.QuantumDeterminants.IsHCParam mu)
@@ -46,16 +46,16 @@ theorem coef_int {ε' : Fin n → Bool} {mu : Fin n → ℝ} {K : Type} [NormedA
   exact (hInt n ε' ν inferInstance (by omega) _ _ _ (continuous_const.inner ((uRep_self hσ.2.2.1).cont w)) h2' h1).1
 
 /- English proof (translation)
-Rewrite using `[Measure.isMulLeftInvariant_eq_smul ν (muG ε)]`. Conclude with `⟨by rw [Measure.inv, Measure.map_smul]; exact congrArg _ (Measure.inv_eq_self (muG ε))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem inv_inv_of_haar {m : ℕ} {ε : Fin m → Bool} (ν : Measure (UJ ε)) [ν.IsHaarMeasure] : ν.IsInvInvariant := by
   rw [Measure.isMulLeftInvariant_eq_smul ν (muG ε)]
   exact ⟨by rw [Measure.inv, Measure.map_smul]; exact congrArg _ (Measure.inv_eq_self (muG ε))⟩
 
 /- English proof (translation)
-Introduce `n ε lam ε' mu e hG H H' _ _ _ _ _ _ π σ ν hν hπ hσ w hw hw1 a b hI`. Use `haveI := hν`. Take `⟨κ, -, hS⟩` from `schur_haar hσ ν`. Establish `hm` using `coef_int hG.two hG.hc' hσ hG.gap' ν hw hw1`. Take `⟨j, hj1, hj2⟩` from `exists_intertwiner ν (uRep_emb hG.fits hπ.2.2.1) (uRep_self hσ.2.2.1) (irr_of hσ.2.2.2.1) κ (fun v w v' w' => (hS v w v' w').2) w (norm_ne_zero_iff.1 (by rw [hw1]; exact one_ne_zero)) hm a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j, fun h0 => hI ?_, hj1⟩` and prove the remaining obligations. Rewrite using `[← hj2 b, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_integral_holds : OfInt := by
   intro n ε lam ε' mu e hG H H' _ _ _ _ _ _ π σ ν hν hπ hσ w hw hw1 a b hI

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.ExtensionCharacter
 
 /- English proof (translation)
-Introduce `x`. Establish `hpos : 0 < n.natAbs` using `Int.natAbs_pos.mpr hn`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((x : F)) hpos`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hz` using `[zero_pow hpos.ne']`. Conclude with `x.ne_zero hz.symm`. Establish `hu : (Units.mk0 z hz0) ^ n.natAbs = x` using `by ext; simp [hz]`. Break down `Int.natAbs_eq n with h | h` into its components or cases. Use `⟨Units.mk0 z hz0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[h, zpow_natCast, hu]`. Use `⟨(Units.mk0 z hz0)⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h, inv_zpow', neg_neg, zpow_natCast, hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_zpow_surjective {F : Type} [Field F] [IsAlgClosed F] {n : ℤ} (hn : n ≠ 0) :
     Function.Surjective (fun u : Fˣ => u ^ n) := by
@@ -35,7 +35,7 @@ noncomputable instance divisibleUnits (F : Type) [Field F] [IsAlgClosed F] :
     exact ⟨Additive.ofMul y, by simpa [ofMul_zpow] using congrArg Additive.ofMul hy⟩
 
 /- English proof (translation)
-Introduce `H M F _ _ _ _ Φ hΦ χ`. Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive Fˣ)).extension_property_addMonoidHom (MonoidHom.toAdditive Φ) hΦ (MonoidHom.toAdditive χ)`. Use `⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hh (Additive.ofMul x)` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extension_character : ∀ {H M F : Type} [inst : CommGroup H] [inst_1 : CommGroup M]
     [inst_2 : Field F] [IsAlgClosed F] (Φ : H →* M), Function.Injective (⇑Φ : H → M) →

@@ -22,25 +22,23 @@ abbrev epsMap {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') : DualN
   extMap σ σ.toSemilinearMap
 
 /- English proof (translation)
-The claim follows from `add_zero _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem fst_epsMap {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') (a : DualNumber B) :
     (epsMap σ a).fst = σ a.fst := add_zero _
 
 /- English proof (translation)
-The claim follows from `zero_add _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem snd_epsMap {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') (a : DualNumber B) :
     (epsMap σ a).snd = σ a.snd := zero_add _
 
 /- English proof (translation)
-Establish `hm : ∀ a ∈ RingHom.ker (fstHom R R R).toRingHom, (epsMap σ a).fst = 0` using `fun a ha ↦ by`. Establish `ha' : a.fst = 0` using `ha`. Rewrite using `[fst_epsMap, ha', map_zero]`. Establish `hJ : ∀ a ∈ RingHom.ker (fstHom R R R).toRingHom, epsMap σ a ∈ J.comap (pr B B)` using `fun a ha ↦ by`. Express the relevant statement in the definitionally equal form `(epsMap σ a).fst ∈ J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hm a ha]`. Conclude with `J.zero_mem`. Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 hJ, fun n hn a ha ↦ ?_⟩` and prove the remaining obligations. Break down `n with _ | _ | n` into its components or cases. Conclude with `absurd rfl hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_add, (epsDP R).dpow_one ha, (extDP B δ).dpow_one (hJ a ha)]`. Establish `e : (epsDP R).dpow (n + 1 + 1) a = 0` using `squareZeroDividedPowers_dpow _ (by omega) a`. Rewrite using `[e, map_zero]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[fst_extDP, hm a ha, dpow_eval_zero _ (by omega)]; rfl`.
-
-Rewrite using `[snd_extDP, hm a ha, dpPred, dpow_eval_zero _ (by omega), zero_smul]; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDPMorphism_epsMap {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (σ : R →+* B) :
     IsDPMorphism (epsDP R) (extDP B δ) (epsMap σ) := by
@@ -109,15 +107,13 @@ def inlCoef (hs : s' = s ≫ DeRham.epsRed R) :
     exact e b
 
 /- English proof (translation)
-Set `n` to `CoefMap.restrict (O (epsDP R) s') (epsFunctor hs)`. Set `θ : (inlCoef hs).G ⟶ (m.coef.comp n).G` to `{ app := fun T ↦ { φ := { algebraMap T.B (DualNumber T.B) with commutes' := fun r ↦ TrivSqZeroExt.ext (fst_epsMap (algebraMap R T.B) (inl r)).symm ((map_zero (algebraMap R T.B)).symm.trans (snd_epsMap (algebraMap R T.B) (inl r)).symm) } φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp : …`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id T.B₀) ≫ T.x = T.x ≫ φ`. Rewrite using `[Cris.spMap_id, hφ]`. Simplify using `}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `naturality := fun T T' f ↦ Thick.hom_ext fun b ↦ (inlCoef hs).naturality f b }`. Establish `key : ∀ z, n.pull2 (m.pull2 z) = (inlCoef hs).pull2 z` using `fun z ↦ (m.coef.pullCohomologyTwo_comp n z).symm.trans ((inlCoef hs).pullCohomologyTwo_eq_of_natTrans (m.coef.comp n) θ (fun _ _ ↦ rfl) z).symm`. Establish `h1` using `congrArg n.pull2 h`. Rewrite `h1` using `[map_add, map_smul, key, key, map_zero]`. Take `⟨z₀, rfl⟩` from `H2.mk_surjective _ z₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₁, rfl⟩` from `H2.mk_surjective _ z₁`. Rewrite `h1` using `[CoefMap.pullCohomologyTwo_class, CoefMap.pullCohomologyTwo_class, ← map_smul, ← map_add, H2.mk_eq_zero]`. Take `⟨f, hf⟩` from `h1`. Establish `alg : ∀ {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') (τ : R →+* B') (u : DualNumber B) (v w : DualNumber B') (a b : B'), epsMap σ u - v + w = inl a + epsMap τ DualNumber.eps * inl b → σ u.fst - v.fst + w.fst = a ∧ σ u.snd - v.snd + w.snd = b` using `fun σ τ u v w a b e ↦ ⟨by simpa using congrArg TrivSqZeroExt.fst e, by simpa using congrArg TrivSqZeroExt.snd e⟩`. Establish `hv` using `fun (T T' T'' : Thick (dp0 R) s) (a : T ⟶ T') (b : T' ⟶ T'') ↦ alg (b.φ : T'.B →+* T''.B) (algebraMap R T''.B) (f T T' a) (f T T'' (a ≫ b)) (f T' T'' b) (z₀.1 T T' T'' a b) (z₁.1 T T' T'' a b) (congrFun (congrFun (congrFun (congrFun (congrFun hf T) T') T'') a) b)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `H2.mk_eq_zero.2 ⟨fun T T' a ↦ TrivSqZeroExt.fst (R := T'.B) (M := T'.B) (f T T' a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' a b`. Conclude with `(hv T T' T'' a b).1`. Use `H2.mk_eq_zero.2 ⟨fun T T' a ↦ TrivSqZeroExt.snd (R := T'.B) (M := T'.B) (f T T' a), ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `T T' T'' a b`. Conclude with `(hv T T' T'' a b).2`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pull2 (hs : s' = s ≫ DeRham.epsRed R) {φ : X ⟶ X} (hφ : φ = 𝟙 X)
     (m : IsMor (dp0 R) s (epsDP R) s' (algebraMap R (DualNumber R)) φ) (z₀ z₁ : SecondDeRham s)
@@ -162,11 +158,11 @@ theorem eq_zero_of_pull2 (hs : s' = s ≫ DeRham.epsRed R) {φ : X ⟶ X} (hφ :
 open GlobalTheory.Published
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `constMor_surjective P hA hg p`. Proceed by induction on `z with`. Consider the case `zero => exact ⟨0, 0, by simp only [map_zero, smul_zero, add_zero]⟩`. Consider the case `add x y hx hy`. Take `⟨u, v, e⟩` from `hx`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u', v', e'⟩` from `hy`. Use `⟨u + u', v + v', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, e, e', map_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `tmul r c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Use `⟨r.fst • c, r.snd • c, ?_⟩` and prove the remaining obligations. Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, smul_smul, ← add_smul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_const_add (P : AbelianDeRham) {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (p : prim (epsDP R) (DeRham.epsRed R) A) :
@@ -187,9 +183,9 @@ theorem exists_const_add (P : AbelianDeRham) {A : Over (Sp R)} [GrpObj A] {g : �
     ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨h0, -, -, -, e, he⟩` from `P R A g hA hg`. Set `o : primDR A ≃ₗ[R] FirstDeRham (A.hom ≫ 𝟙 _)` to `LinearEquiv.ofTop _ h0`. Set `x' : Module.Dual R (FirstDeRham (A.hom ≫ 𝟙 _))` to `x ∘ₗ o.symm.toLinearMap`. Set `y' : Module.Dual R (FirstDeRham (A.hom ≫ 𝟙 _))` to `y ∘ₗ o.symm.toLinearMap`. Establish `ex : ∀ c : primDR A, x' c.1 = x c` using `fun c => congrArg x (o.symm_apply_apply c)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ey : ∀ c : primDR A, y' c.1 = y c` using `fun c => congrArg y (o.symm_apply_apply c)`. Use `⟨exteriorPower.alternatingMapLinearEquiv (wedgeDual x' y') ∘ₗ e.symm.toLinearMap, fun c d ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← he, LinearMap.comp_apply, LinearEquiv.coe_coe, e.symm_apply_apply]`. Simplify using `[wedgeDual, ex, ey]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_wedge (P : AbelianDeRham.Free) {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (x y : HdR A) :
@@ -207,19 +203,19 @@ theorem exists_wedge (P : AbelianDeRham.Free) {A : Over (Sp R)} [GrpObj A] {g : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨N, a, b, hc, rfl⟩` from `hψ`. Take `⟨N', a', b', hc', rfl⟩` from `hψ'`. Establish `c₀` using `isChern_pull (constMor A).isMor hc`. Establish `c₁` using `isChern_pull (liftMor (epsDP R) h).isMor hc'`. Establish `hl` using `pull_isLB hL (i ≫ π')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iso` using `(isChern_existsUnique_and_iso _ _ (epsDP R) _ (A.hom ≫ DeRham.epsRed R)).2`. Establish `c₀'` using `iso _ _ (pull_isLB hl _) (pull_isLB hL (Over.Hom.left (𝟙 A) ≫ i ≫ π')) (LBIso.chartPull (Geo.Tor.chartPullPull (L.pull (i ≫ π')) _ _ rfl) (chartPullSame L _ _ _ _ fun _ => rfl) (ChernExists.lbIso_refl hl)) _ c₀`. Establish `c₁'` using `iso _ _ (pull_isLB (pull_isLB hL π') i) hl (LBIso.chartPull (Geo.Tor.chartPullPull (L.pull π') i i rfl) (chartPullSame L _ _ _ i fun _ => rfl) (ChernExists.lbIso_refl (pull_isLB hL π'))) _ c₁`. Rewrite `c₀'` using `[show Over.Hom.left (𝟙 A) ≫ i ≫ π' = i ≫ π' from Category.id_comp _]`. Establish `hz` using `((isChern_existsUnique_and_iso _ _ (epsDP R) _ _).1 _ hl).unique c₁' c₀'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose u v huv using fun j ↦ exists_const_add P hA hn ((liftMor (epsDP R) h).pull (a' j))`. Use `choose w x hwx using fun j ↦ exists_const_add P hA hn ((liftMor (epsDP R) h).pull (b' j))`. Establish `hz' : (constMor A).isMor.pull2 (∑ j, cup _ (u j).1 (w j).1 - ∑ j, cup _ (a j).1 (b j).1) + (DualNumber.eps : DualNumber R) • (constMor A).isMor.pull2 (∑ j, (cup _ (u j).1 (x j).1 + cup _ (v j).1 (w j).1)) = 0`. Rewrite using `[map_sub, ← hz, sub_add_eq_add_sub, sub_eq_zero, map_sum, map_sum, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : (liftMor (epsDP R) h).isMor.pull1 (a' j).1 = (constMor A).isMor.pull1 (u j).1 + (DualNumber.eps : DualNumber R) • (constMor A).isMor.pull1 (v j).1` using `congrArg Subtype.val (huv j)`. Establish `e₂ : (liftMor (epsDP R) h).isMor.pull1 (b' j).1 = (constMor A).isMor.pull1 (w j).1 + (DualNumber.eps : DualNumber R) • (constMor A).isMor.pull1 (x j).1` using `congrArg Subtype.val (hwx j)`. Simplify using `only [map_add, IsMor.pullCohomologyTwo_cup, e₁, e₂, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_add, smul_smul, DualNumber.eps_mul_eps, zero_smul, add_zero]`. Normalize the expressions using the abelian group laws. Take `⟨z₀, z₁⟩` from `eq_zero_of_pull2 (s := A.hom ≫ 𝟙 _) (by rw [Category.comp_id]) rfl (constMor A).isMor _ _ hz'`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ₁, e₁⟩` from `exists_wedge P.1 hA hn f k'`. Take `⟨Λ₂, e₂⟩` from `exists_wedge P.1 hA hn k g`. Take `⟨Λ₃, e₃⟩` from `exists_wedge P.1 hA hn f g`. Establish `t₁` using `congrArg Λ₁ (sub_eq_zero.1 z₀)`. Establish `t₂` using `congrArg Λ₂ (sub_eq_zero.1 z₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `t₃` using `congrArg Λ₃ z₁`. Simplify using `only [map_sum, map_add, map_zero, e₁, e₂, e₃] at t₁ t₂ t₃`. Rewrite using `[wedgeForm_apply, wedgeForm_apply, wedgeForm_apply, ← t₁, ← t₂, ← add_zero (_ + _ : R), ← t₃, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, snd_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [crysToDR_apply, huv, hwx, map_add, map_smul, ed, ed', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem snd_polForm (P : AbelianDeRham) {A : Over (Sp R)} [GrpObj A] {n : ℕ} (hA : IsAbelianScheme A)
     (hn : SmoothOfRelativeDimension n A.hom) {A' : Over (Sp (DualNumber R))} [GrpObj A'] {i : A.left ⟶ A'.left}
@@ -282,7 +278,7 @@ namespace GlobalTheory.KSSym
 open NumberField Formalism.L2.Pj MonObj
 
 /- English proof (translation)
-Introduce and unpack `Pr E _ _ _ H Dw l Xo K _ x x' A _ A' _ π π' i h ψ hπ hπ' rfl hψ f g k k' ⟨d, hd, ed⟩ ⟨d', hd', ed'⟩`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback (ObjDim.isAbelianScheme Xo.univ) hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 (ObjDim.smoothOfRelativeDimension Xo.univ)`. Take `⟨ψ', hψ', iso, -⟩` from `GlobalTheory.PolExistsRing.polForm_exists Pr.p5 Xo hπ'`. Rewrite using `[← snd_polForm Pr.p5 hA gA h Xo.univ.t.PP.isLB hψ hψ' ed ed', iso _ hd _ hd']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

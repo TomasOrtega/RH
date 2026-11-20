@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num.PlacesFlagM3
 
 /- English proof (translation)
-Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`. Assume the negation of the conclusion as `h`. Apply `hW` to reduce the goal to its premises. Unfold `divCycle`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg (fun h' => h h'.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divCycle_support_finite {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {O : Type} [CommRing O] [IsNoetherianRing O] (P : Ideal (MRing ι O)) (f : MRing ι O) :
@@ -24,7 +24,7 @@ theorem divCycle_support_finite {K : Type} [Fintype K] {ι : K → Type} [∀ k,
   rw [dif_neg (fun h' => h h'.1)]
 
 /- English proof (translation)
-Unfold `cycEval ratDiv`. Simplify using `only [sub_mul]`. Use `finsum_sub_distrib ?_ ?_` and prove the remaining obligations. Conclude with `(divCycle_support_finite P f).subset (Function.support_mul_subset_left _ _)`. Conclude with `(divCycle_support_finite P g).subset (Function.support_mul_subset_left _ _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cycEval_ratDiv {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {O : Type} [CommRing O] [IsNoetherianRing O] (n : Ideal (MRing ι O) → ℤ) (P : Ideal (MRing ι O))
@@ -41,9 +41,9 @@ section Numbers
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hint` using `fun Z hZ H => (cycNum_int_and_comb O K ι (Fin r ⊕ Fin r) (Sum.elim T.x T.x') Q).1 Z hZ H`. Unfold `LocPair.ck pairNum`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cycEval_ratDiv, hint _ (divCycle_support_finite P _), hint _ (divCycle_support_finite P _)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ck_cast {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r : ℕ}
     (T : LocPair ι O (Fin r)) (P : Ideal (MRing ι O)) (k : ℕ) (Q : List (K → ℤ)) :
@@ -63,7 +63,7 @@ theorem ck_cast {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h` using `hH (mem_support_iff.mp hμ)`. Unfold `classList`. Simplify using `[Finsupp.card_toMultiset]`. Rewrite using `[← h, Finsupp.weight_apply]`. Simplify using `[Finsupp.sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_classList {σ : Type} (cls : σ → K → ℤ) {H : MvPolynomial σ ℝ} {e : ℕ}
     (hH : H.IsHomogeneous e) {μ : σ →₀ ℕ} (hμ : μ ∈ H.support) : (classList cls μ).length = e := by
@@ -76,9 +76,9 @@ theorem length_classList {σ : Type} (cls : σ → K → ℤ) {H : MvPolynomial 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `cycNum`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[h _ (by rw [List.length_append, length_classList cls hH hμ, he])]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cycNum_transfer {O₀ : Type} [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀]
     {Λ : Type} [Fintype Λ] {O : Λ → Type} [∀ l, CommRing (O l)] [∀ l, IsDomain (O l)]
@@ -101,11 +101,11 @@ theorem cycNum_transfer {O₀ : Type} [CommRing O₀] [IsDomain O₀] [IsDiscret
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Unfold `bracket`. Establish `hl : ∀ τ' : Ψ ⊕ Ψ, (liePs (N` using `N) j (k - 1) τ').IsHomogeneous (k - 1) := by`. Introduce `τ'`. Consider the cases of `τ' with`. Consider the case `inl t`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (t, i)).pow (k - 1)`. Consider the case `inr t`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Use `((isHomogeneous_C (Ψ × Fin N) (-1 : ℝ)).mul (isHomogeneous_X ℝ (t, i))).pow (k - 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hs : (∑ τ', C (co φ p k (Sum.inl τ) τ') * liePs (N` using `N) j (k - 1) τ').IsHomogeneous (k - 1) := by`. Use `IsHomogeneous.sum _ _ _ fun τ' _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_C (Ψ × Fin N) _).mul (hl τ')`. Simplify using `using (isHomogeneous_C (Ψ × Fin N) (k : ℝ)).mul hs`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bracket_isHomogeneous (j : ℕ) (φ : Equiv.Perm (Ψ ⊕ Ψ)) (p k : ℕ) (τ : Ψ) :
     (bracket (N := N) j φ p k τ).IsHomogeneous (k - 1) := by
@@ -133,13 +133,13 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Introduce `τ k hk Q hQ`. Establish `hQ' : k - 1 + Q.length = D` using `by omega`. Establish `hloc'` using `fun l => hloc l τ k hk Q hQ`. Rewrite using `[cycNum_transfer _ _ fd D hp _ (bracket_isHomogeneous j φ p k τ) Q hQ', ck_cast]`. Establish `hG : ∀ i, (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion N k i)).IsHomogeneous (k - 1)` using `fun i => (isHomogeneous_psumExpansion N k i).map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ l, cycNum (divCycle (P l) (C (p : O l))) T₀.x (bracket j φ p k τ) Q = (((((T l).comp fun i : Fin N => (τ, i)).ck (P l) k Q : ℤ)) : ℝ)`. Introduce `l`. Rewrite using `[hloc' l, hx l]`. Simplify using `only [hterm, ck_cast, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e₁` using `cycNum_transfer _ _ fd D (hf (τ, i)) (Sum.elim (T₀.x ∘ fun i : Fin N => (τ, i)) (T₀.x' ∘ fun i : Fin N => (τ, i))) (hG i) Q hQ'`. Establish `e₂` using `cycNum_transfer _ _ fd D (hg (τ, i)) (Sum.elim (T₀.x ∘ fun i : Fin N => (τ, i)) (T₀.x' ∘ fun i : Fin N => (τ, i))) (hG i) Q hQ'`. Simplify using `only [LocPair.comp, Function.comp_apply, hx, hx']`. Rewrite using `[e₁, e₂, ← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flag_m3_of_places {O₀ : Type} [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀]
     {Λ : Type} [Fintype Λ] {O : Λ → Type} [∀ l, CommRing (O l)] [∀ l, IsDomain (O l)]
@@ -183,11 +183,11 @@ section Ring
 variable {A : Type} [CommRing A] [IsDedekindDomain A] [Module.Finite ℤ A]
 
 /- English proof (translation)
-Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {a})`. Use `Set.Finite.to_subtype (hfin.subset ?_)` and prove the remaining obligations. Introduce and unpack `n ⟨hn, han⟩`. Establish `hn0 : n ≠ ⊥` using `fun h => ha (by simpa [h] using han)`. Establish `hmax` using `Ring.DimensionLEOne.maximalOfPrime hn0 hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hn, (Ideal.span_singleton_le_iff_mem n).2 han⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨hq, hqa⟩ hqn`. Establish `hq0 : q ≠ ⊥` using `fun h => ha (by`. Establish `: a ∈ q` using `(Ideal.span_singleton_le_iff_mem q).1 hqa`. Simplify `this)` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Ring.DimensionLEOne.maximalOfPrime hq0 hq).eq_of_le hn.ne_top hqn |>.ge`.
+A detailed English derivation is pending.
 -/
 theorem finite_primes_containing {a : A} (ha : a ≠ 0) :
     Finite {n : Ideal A // n.IsPrime ∧ a ∈ n} := by
@@ -204,13 +204,11 @@ theorem finite_primes_containing {a : A} (ha : a ≠ 0) :
   exact (Ring.DimensionLEOne.maximalOfPrime hq0 hq).eq_of_le hn.ne_top hqn |>.ge
 
 /- English proof (translation)
-Establish `hn0 : n ≠ ⊥` using `fun h => hp (by simpa [h] using hpn)`. Use `haveI hmax : n.IsMaximal := Ring.DimensionLEOne.maximalOfPrime hn0 hn`. Use `haveI : Module.Finite ℤ (A ⧸ n) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℤ n).toLinearMap (Ideal.Quotient.mkₐ_surjective ℤ n)`. Establish `hz : (((p : ℕ) : A ⧸ n)) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hpn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `htor : Module.IsTorsion ℤ (A ⧸ n)`. Introduce `x`. Use `⟨⟨((p : ℕ) : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast p.2.ne_zero)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((p : ℕ) : ℤ) • x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zsmul_eq_mul]`. Simplify using `[hz]`. Use `haveI : Finite (A ⧸ n) := Module.finite_of_fg_torsion _ htor`. Use `letI : Field (A ⧸ n) := Ideal.Quotient.field n`. Use `haveI : CharP (A ⧸ n) (p : ℕ) := (CharP.charP_iff_prime_eq_zero p.2).2 hz`.
-
-Use `letI : Fintype (A ⧸ n) := Fintype.ofFinite _`. Take `⟨m, -, hm⟩` from `FiniteField.card (A ⧸ n) (p : ℕ)`. Conclude with `⟨m, by rw [Nat.card_eq_fintype_card, hm]⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_card_residue (p : Nat.Primes) (hp : ((p : ℕ) : A) ≠ 0) (n : Ideal A) [hn : n.IsPrime]
     (hpn : ((p : ℕ) : A) ∈ n) : ∃ f : ℕ, Nat.card (A ⧸ n) = (p : ℕ) ^ f := by
@@ -242,7 +240,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω}
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : ((p : ℕ) : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MvPolynomial (Σ k, ι k) ℤ)` using `h`. Establish `hb : (mCoordIdeal y).comap (C : ℤ →+* MvPolynomial (Σ k, ι k) ℤ) = ⊥` using `hh`. Rewrite `h'` using `[hb, Ideal.mem_bot]`. Conclude with `p.2.ne_zero (by exact_mod_cast h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_prime_notMem (hh : IsHorizontal (mCoordIdeal y)) (p : Nat.Primes) :
     (C ((p : ℕ) : ℤ) : MvPolynomial (Σ k, ι k) ℤ) ∉ mCoordIdeal y := by
@@ -253,9 +251,9 @@ theorem C_prime_notMem (hh : IsHorizontal (mCoordIdeal y)) (p : Nat.Primes) :
   exact p.2.ne_zero (by exact_mod_cast h')
 
 /- English proof (translation)
-Introduce `h`. Apply `C_prime_notMem hh p` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ∈ RingHom.ker _`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.mConeMap, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(map_natCast (C : Ω →+* MvPolynomial K Ω) (p : ℕ)).symm.trans (by rw [h, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem prime_ne_zero_field (hh : IsHorizontal (mCoordIdeal y)) (p : Nat.Primes) :
     ((p : ℕ) : Ω) ≠ 0 := by
@@ -269,13 +267,11 @@ theorem prime_ne_zero_field (hh : IsHorizontal (mCoordIdeal y)) (p : Nat.Primes)
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `hnum` using `GlobalTheory.T.finite_places_model_family K ι Ω y A hinj hc D hv p Λ m hm hcov O fd hfd`. Establish `hCp` using `C_prime_notMem hv.2.2.1 p`. Establish `hconst : ∀ (R : Type) [CommRing R], MvPolynomial.map (Int.castRingHom R) (C ((p : ℕ) : ℤ) : MvPolynomial (Σ k, ι k) ℤ) = C ((p : ℕ) : R)`. Introduce `R _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `flag_m3_of_places _ (fun l => pointIdeal (O l) y) fd D p j φ _ (fun l => T.map (Int.castRingHom (O l))) (fun _ => rfl) (fun _ => rfl) ?_ ?_ ?_ hloc` and prove the remaining obligations. Introduce `i L hL`. Take `⟨⟨bf, _, hbf, _, _⟩, hf, _, _⟩` from `hT i`. Conclude with `hnum bf (T.f i) hbf hf L hL`. Introduce `i L hL`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, bg, _, hbg, _⟩, _, hg, _⟩` from `hT i`. Conclude with `hnum bg (T.g i) hbg hg L hL`. Introduce `L hL`. Establish `h` using `hnum 0 (C ((p : ℕ) : ℤ)) (isWeightedHomogeneous_C _ _) hCp L hL`. Simplify using `only [hconst] at h`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flag_m3_padic_of_family {A : Type} [CommRing A] [Algebra A Ω] [IsDedekindDomain A] [Module.Finite ℤ A]
     (hinj : Function.Injective (algebraMap A Ω)) (hc : HasConstants ℤ A y) (D : ℕ)
@@ -308,15 +304,13 @@ theorem flag_m3_padic_of_family {A : Type} [CommRing A] [Algebra A Ω] [IsDedeki
     exact h
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y A _ _ _ _ hinj hc D hv p Ψ _ _ N j φ S T hT hpl`. Establish `hpΩ` using `prime_ne_zero_field hv.2.2.1 p`. Establish `hpA : ((p : ℕ) : A) ≠ 0` using `fun h => hpΩ (by`. Use `congrArg (algebraMap A Ω) h` as an intermediate fact. Simplify using `using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI hfin := finite_primes_containing hpA`. Use `letI : Fintype {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n} := Fintype.ofFinite _`. Use `haveI hpr : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, (l.1).IsPrime := fun l => l.2.1`. Establish `hne : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, l.1 ≠ ⊥` using `fun l h => hpA (by simpa [h] using l.2.2)`. Use `haveI hdom : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, IsDomain (Localization.AtPrime l.1) := fun l => IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors _)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI hdvr : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, IsDiscreteValuationRing (Localization.AtPrime l.1) := fun l => IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain A (hne l) _`. Establish `hunit : ∀ (l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}) (s : (l.1).primeCompl), IsUnit (algebraMap A Ω s)` using `fun l s => by`. Use `IsUnit.mk0 _ fun h => s.2 ?_` and prove the remaining obligations. Establish `: (s : A) = 0` using `hinj (by simpa using h)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI halg : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, Algebra (Localization.AtPrime l.1) Ω := fun l => (IsLocalization.lift (M := (l.1).primeCompl) (S := Localization.AtPrime l.1) (hunit l)).toAlgebra`. Use `haveI htow : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, IsScalarTower A (Localization.AtPrime l.1) Ω := fun l => IsScalarTower.of_algebraMap_eq fun a => (IsLocalization.lift_eq (hunit l) a).symm`. Use `choose fd hfd using fun l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n} => exists_card_residue p hpA l.1 l.2.2`. Establish `hloc : ∀ l : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n}, FlagChernComparison (pointIdeal (Localization.AtPrime l.1) y) D p j φ (T.map (Int.castRingHom (Localization.AtPrime l.1)))` using `fun l => hpl l.1 l.2.2 (Localization.AtPrime l.1)`. Establish `hcov : ∀ n : Ideal A, n.IsPrime → (((p : ℕ) : A) ∈ n ↔ n ∈ Set.range (Subtype.val : {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n} → Ideal A))`.
-
-Introduce `n hn`. Conclude with `⟨fun h => ⟨⟨n, hn, h⟩, rfl⟩, by rintro ⟨l, rfl⟩; exact l.2.2⟩`. Conclude with `flag_m3_padic_of_family hinj hc D hv p j φ S T hT {n : Ideal A // n.IsPrime ∧ ((p : ℕ) : A) ∈ n} Subtype.val Subtype.val_injective hcov (fun l => Localization.AtPrime l.1) fd hfd hloc`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flag_m3_padic : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (A : Type) [CommRing A] [Algebra A Ω] [IsDedekindDomain A] [Module.Finite ℤ A], Function.Injective (algebraMap A Ω) → HasConstants ℤ A y → ∀ D : ℕ, IsArithVar (mCoordIdeal y) (D + 1) → ∀ (p : Nat.Primes) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (φ : Equiv.Perm (Ψ ⊕ Ψ)) (S : Finset Nat.Primes) (T : LocPair ι ℤ (Ψ × Fin N)), T.IsVertOff (mCoordIdeal y) S → (AtPlacesOver A Ω p fun O _ _ _ _ => FlagChernComparison (pointIdeal O y) D p j φ (T.map (Int.castRingHom O))) → FlagChernComparison (extTo (ZP p) (mCoordIdeal y)) D p j φ (T.map (Int.castRingHom (ZP p))) := by
   intro K _ _ ι _ Ω _ y A _ _ _ _ hinj hc D hv p Ψ _ _ N j φ S T hT hpl

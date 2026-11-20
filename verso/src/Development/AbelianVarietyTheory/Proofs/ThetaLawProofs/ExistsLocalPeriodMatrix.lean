@@ -17,7 +17,7 @@ namespace GlobalTheory.PeriodLift
 open GlobalTheory.LocLift GlobalTheory.ThetaValueCont Filter Topology
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearMap.mk₂ ℤ (fun x y => omegaStd x y) (fun x x' y => by simp only [omegaStd, Pi.add_apply, ← Finset.sum_add_distrib] exact Finset.sum_congr rfl fun i _ => by ring) (fun c x y => by simp only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum] exact Finset.sum_congr rfl fu …`.
+Supply the required witnesses or components.
 -/
 theorem exists_bilin_omegaStd (g : ℕ) :
     ∃ EF : LinearMap.BilinForm ℤ (Fin g ⊕ Fin g → ℤ), ∀ a b, EF a b = omegaStd a b :=
@@ -36,9 +36,9 @@ theorem exists_bilin_omegaStd (g : ℕ) :
       exact Finset.sum_congr rfl fun i _ => by ring), fun _ _ => rfl⟩
 
 /- English proof (translation)
-Establish `h1 : (τ.map Complex.im).mulVec (fun i => (a (.inl i) : ℝ)) = 0`. Use function extensionality and compare the values at `i`. Use `congrArg Complex.im (congrFun h i)` as an intermediate fact. Simplify `this` using `[per, Matrix.mulVec, dotProduct]`. Establish `h2 : (fun i => (a (.inl i) : ℝ)) = 0` using `Matrix.mulVec_injective_iff_isUnit.2 hp.isUnit (h1.trans (Matrix.mulVec_zero _).symm)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ∀ i, a (.inl i) = 0` using `fun i => by simpa using congrFun h2 i`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `h3 i`. Simplify `congrFun h i` using `[per, h3, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_per_eq_zero {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.map Complex.im).PosDef)
     {a : Fin g ⊕ Fin g → ℤ} (h : per τ a = 0) : a = 0 := by
@@ -55,19 +55,19 @@ theorem eq_zero_of_per_eq_zero {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp :
   · simpa [per, h3, Matrix.mulVec, dotProduct] using congrFun h i
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨u, Hm, χ, Ef, hAH, -, -, -, -, -, hE, -, hW⟩` from `hT P rig hrig`. Take `⟨EF, hEF'⟩` from `exists_bilin_omegaStd P.g`. Take `⟨F, hF⟩` from `ThetaPoint.exists_linearEquiv_lift hmul P u e hadd hon hol ((Set.countable_range p).mono fun z hz => (hker z).1 hz)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hFΛ : ∀ z, F z ∈ u.Λ ↔ z ∈ p.range` using `fun z => by rw [← u.ker, hF, hker]`. Establish `hEF : ∀ a a₂, (hermForm Hm (F (p a)) (F (p a₂))).im = EF a a₂` using `fun a a₂ => by`. Use `(hE ⟨_, (hFΛ _).2 ⟨a, rfl⟩⟩ ⟨_, (hFΛ _).2 ⟨a₂, rfl⟩⟩).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[hEF']`. Use `int_eq_of_exp fun k hk => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k₁` using `hW k ⟨_, (hFΛ _).2 ⟨a, rfl⟩⟩ ⟨_, (hFΛ _).2 ⟨a₂, rfl⟩⟩ (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Establish `k₂` using `hweil k a a₂ (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Simplify using `only [← map_smul, hF] at k₁`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint _ P.A P.L P.isLB ℂ (𝟙 _) k _ _ _ _ k₁ k₂)`. Take `⟨Hm', h1, h2, h3⟩ : HasForm EF p` from `HasForm.of_comp F.toLinearMap F.injective ⟨Hm, hAH.1, hAH.2.1, hEF⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, τ, hh, hinv, hτ, hsy, hp, -, hper⟩` from `SiegelPeriod.exists_siegel_form _ EF _ (LinearEquiv.refl ℤ _) p Hm' hEF' ⟨hi, hd, hs, h1, h2, h3⟩`. Simplify using `only [LinearEquiv.refl_apply] at hinv hτ hper`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).1 hh`. Rewrite using `[← hinv, Matrix.nonsing_inv_nonsing_inv _ hdet, ← hτ]`. Use `⟨Matrix.isUnit_nonsing_inv_det _ hdet, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ψ : (Fin P.g → ℂ) ≃ₗ[ℂ] (Fin P.g → ℂ)` to `LinearEquiv.ofBijective h.mulVecLin ⟨Matrix.mulVec_injective_iff_isUnit.2 hh, Matrix.mulVec_surjective_iff_isUnit.2 hh⟩`. Establish `hψ : ∀ a, ψ.symm (per τ a) = p a` using `fun a => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(hper a).symm`. Take `⟨u', hex, hΛ, -⟩` from `exists_holUnif_reparam P.A P.L P.g u (ψ.symm.trans F) (fun _ => 1) (differentiable_const _) (fun _ => one_ne_zero) rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hex' : ∀ (c : ℂ) a, u'.ex (c • per τ a) = e (c • p a)` using `fun c a => by`. Rewrite using `[hex, LinearEquiv.trans_apply, hF, map_smul, hψ]`. Use `⟨rfl, hsy, hp, u', fun z => ?_, fun n a b c hn hc => ?_, fun a => (hex' _ a).symm⟩` and prove the remaining obligations. Rewrite using `[hΛ, LinearEquiv.trans_apply, hFΛ]`. Use `exists_congr fun a => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ, ψ.symm.injective.eq_iff, eq_comm]`. Rewrite using `[hex', hex']`. Conclude with `hweil n a b c hn hc`.
+A detailed English derivation is pending.
 -/
 theorem perLev_of_periods (hT : ThetaUnifAV) (hmul : Out.MulNSt) (P : Out.PolAV (Sp ℂ)) {g : ℕ} (hg : P.g = g) (k : ℕ)
     (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)) (hadd : ∀ z w, e (z + w) = e z * e w)
@@ -119,33 +119,29 @@ theorem perLev_of_periods (hT : ThetaUnifAV) (hmul : Out.MulNSt) (P : Out.PolAV 
     exact hweil n a b c hn hc
 
 /- English proof (translation)
-Introduce `hL hT K _ σ X s Q g k m l B y b₀ P₀ φ₀ τ₀ lev₀ hft hk hl0 hB hb₀ hyσ hy ⟨hφ₀, hg₀, hL₀⟩ ⟨hg, _, hp₀, u, hΛ, w₀, hlev₀⟩ hlev`. Substitute `hg` using the available equality. Use `haveI : CharZero K := σ.charZero`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Use `haveI := Q.isAb.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₀, hΦ₀, hΦW₀⟩` from `exists_push_iff Q P₀ hφ₀ hL₀`. Establish `he₀ : IsExp (y b₀) fun z => Φ₀ (u.ex z)`. Take `⟨rig, hrig⟩` from `P₀.rigid`. Take `⟨u₀, -, -, -, -, -, h₁, h₂, -⟩` from `hT P₀ rig hrig`. Take `⟨F, hF⟩` from `ThetaPoint.exists_linearEquiv_lift hL.mulN P₀ u₀ u.ex u.ex_add u.ex_onto (fun U f => by simpa using u.hol U f) ((Set.countable_range (per τ₀)).mono fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `(hΛ z).1 ((u.ker z).1 hz)`. Conclude with `⟨a, ha.symm⟩)`. Use `(PointUnif.isExp_push hφ₀ u₀ h₁ h₂ Φ₀ hΦ₀).comp_equiv F` as an intermediate fact. Simplify using `only [hF] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨B₁, e, r, hB₁, hb₁, hB₁B, he0, hr, hol, he, hl⟩` from `RelExp.exists_relative_exp K σ X s Q.A P₀.g m B y b₀ (fun z => Φ₀ (u.ex z)) hft Q.isAb (hg₀ ▸ Q.smoothDim) hB hb₀ hyσ hy he₀`. Express the relevant statement in the definitionally equal form `HasLifts B₁ y e at hl`. Express the relevant statement in the definitionally equal form `∀ b ∈ B₁, IsExp (y b) (e b) ∧ _ at he`. Establish `hy₁` using `isHolTo_mono hy hB₁ hB₁B`. Set `p₀ : (Fin P₀.g ⊕ Fin P₀.g → ℤ) →+ (Fin P₀.g → ℂ)` to `AddMonoidHom.mk' (per τ₀) (per_add τ₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : Set.range p₀ = u.Λ` using `Set.ext fun z => by`. Rewrite using `[SetLike.mem_coe, hΛ]`. Conclude with `exists_congr fun a => eq_comm`. Take `⟨P, hP₀, hP⟩` from `exists_periods latContinuation hB₁ hb₁ hy₁ hr hol he hl p₀ ((injective_iff_map_eq_zero p₀).2 fun a ha => eq_zero_of_per_eq_zero hp₀ ha) (hrange ▸ u.full) (fun z => by`. Rewrite using `[he0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_eq_one_iff Φ₀ Φ₀.injective).trans ((u.ker z).trans (Set.ext_iff.1 hrange z).symm))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hP.and (hB₁.mem_nhds hb₁))`. Use `set C := Metric.ball b₀ ε`. Establish `hCo : IsOpen C` using `Metric.isOpen_ball`. Establish `hCc : IsPreconnected C` using `(convex_ball b₀ ε).isPreconnected`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC₀ : b₀ ∈ C` using `Metric.mem_ball_self hε`. Establish `hC₁ : C ⊆ B₁` using `fun b hb => (hball b hb).2`. Establish `hPd : ∀ x, DifferentiableOn ℂ (fun b => P b x) C` using `fun x b hb => ((hball b hb).1.1 x).differentiableWithinAt`. Establish `hk1 : ∀ b ∈ C, ∀ x, e b (P b x) = 1` using `fun b hb x => ((hball b hb).1.2.1 _).2 ⟨x, rfl⟩`. Establish `htor : ∀ (k : ℕ) x, IsHolTo C (fun b => (e b ((k : ℂ)⁻¹ • P b x)).left)` using `fun k x => isHolTo_comp (β := fun b => (b, (k : ℂ)⁻¹ • P b x)) hol hCo (differentiableOn_id.prodMk ((hPd x).fun_const_smul _)) fun b hb => ⟨hC₁ hb, trivial⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpow : ∀ (k : ℕ), 0 < k → ∀ x, ∀ b ∈ C, e b ((k : ℂ)⁻¹ • P b x) ^ k = 1` using `fun k hk x b hb => by`. Rewrite using `[← hom_nsmul (he b (hC₁ hb)).1.1, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hk.ne'), hk1 b hb]`. Establish `hwe : ∀ b ∈ C, ∀ (k : ℕ) (a a₂ : Fin P₀.g ⊕ Fin P₀.g → ℤ) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (omegaStd a a₂ : ℂ) / k) → Out.WeilIs Q.A Q.L k (e b ((k : ℂ)⁻¹ • P b a)) (e b ((k : ℂ)⁻¹ • P b a₂)) (unitOn c)` using `fun b hb k a a₂ c hk hc => (torsion_eq_and_weilIs_of_isHolTo hL X Q m k C y (fun b => e b ((k : ℂ)⁻¹ • P b a)) (fun b => e b ((k : ℂ)⁻¹ • P b a₂)) c b₀ hk (isUnit_natCast_of_over s hk) hCo hCc hC₀ (htor k a) (htor k a₂) fun b hb => ⟨hpow k hk a b hb, hpow k hk a₂ b hb⟩).2 (by rw …`. Establish `hleft : ∀ a b, (toUnit (Over.mk (y b)) ≫ l a).left = y b ≫ (l a).left` using `fun a b => by`. Rewrite using `[Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hsec : ∀ a, ∀ b ∈ C, toUnit _ ≫ l a = e b ((k : ℂ)⁻¹ • P b a)` using `fun a => (torsion_eq_and_weilIs_of_isHolTo hL X Q m k C y (fun b => toUnit _ ≫ l a) (fun b => e b ((k : ℂ)⁻¹ • P b a)) 1 b₀ hk (isUnit_natCast_of_over s hk) hCo hCc hC₀ (isHolTo_congr (isHolTo_comp_hom (isHolTo_mono hy₁ hCo hC₁) (l a).left) fun b _ => hleft a b) (htor k a) fun b …`. Rewrite using `[hP₀, he0]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[hleft, ← hlev, hlev₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hΦ₀ _).symm)`. Establish `fib : ∀ b ∈ C, IsUnit (Matrix.of fun i j => P b (Pi.single (.inr j) 1) i).det ∧ ∃ (A : Out.PolAV (Sp ℂ)) (φ : A.A.left ⟶ Q.A.left) (lev : (Fin P₀.g ⊕ Fin P₀.g → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ A.A)), PolPB A Q (y b) φ ∧ PerLev A ((Matrix.of fun i j => P b (Pi.single (.inr j) 1) i)⁻¹ * M …` using `fun b hb => by`. Take `⟨A, φ, hφ, hgA, hm, t, ht⟩` from `hL.polBaseChange _ _ (y b) Q`. Establish `hgp : IsGrpPullback A.A Q.A (y b) φ` using `⟨hφ, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `rfl⟩`. Establish `hLA : LBIso A.L (Q.L.pull φ)` using `LBIso.symm ⟨t, ht⟩`. Take `⟨Φ, hΦ, hΦW⟩` from `exists_push_iff Q A hgp hLA`. Establish `h₁ : ∀ z, (Φ.symm (e b z)).left ≫ φ = (e b z).left` using `fun z => by rw [← hΦ, Φ.apply_symm_apply]`. Establish `hex` using `(he b (hC₁ hb)).1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨q1, q2⟩` from `perLev_of_periods hT hL.mulN A (hgA.trans hg₀.symm) k (fun z => Φ.symm (e b z)) (fun z w => by rw [hex.1, map_mul]) (Φ.symm.surjective.comp hex.2.1) (ThetaPoint.isHolTo_fibre hφ _ (fun z => Over.w (Φ.symm (e b z))) (by simpa only [h₁] using hex.2.2.1)) (P b) (fun z => (map_eq_one …`. Rewrite using `[hΦW, Φ.apply_symm_apply, Φ.apply_symm_apply]`. Conclude with `hwe b hb n a a₂ c hn hc`. Conclude with `⟨q1, A, φ, _, ⟨hgp, hgA, hLA⟩, q2, fun a => by rw [h₁, ← hsec a b hb, hleft]⟩`. Use `⟨C, fun b => (Matrix.of fun i j => P b (Pi.single (.inr j) 1) i)⁻¹ * Matrix.of fun i j => P b (Pi.single (.inl j) 1) i, hCo, hC₀, hC₁.trans hB₁B, ?_, fun i j => ?_, fun b hb => (fib b hb).2⟩` and prove the remaining obligations.
-
-Establish `e1 : (Matrix.of fun i j => P b₀ (Pi.single (.inr j) 1) i) = 1`. Use extensionality with `i j`. Simplify using `[hP₀, p₀, per, Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.one_apply]`. Use `beta_reduce`. Rewrite using `[e1, inv_one, Matrix.one_mul]`.
-
-Use extensionality with `i j`. Simplify using `[hP₀, p₀, per, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `dh : ∀ i j, DifferentiableOn ℂ (fun b => (Matrix.of fun i j => P b (Pi.single (.inr j) 1) i)⁻¹ i j) C` using `ThetaFamily.differentiableOn_left_inverse (fun i k => differentiableOn_pi.1 (hPd _) i) fun b hb => Matrix.nonsing_inv_mul _ (fib b hb).1`. Simplify using `only [Matrix.mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun l _ => (dh i l).fun_mul (differentiableOn_pi.1 (hPd _) l)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_local_period_matrix : Out.Laws → ThetaUnifAV → ∀ (K : Type) [Field K] (σ : K →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp K) (Q : Out.PolAV X) (g k m : ℕ) (l : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over X) ⟶ Q.A)) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (P₀ : Out.PolAV (Sp ℂ)) (φ₀ : P₀.A.left ⟶ Q.A.left) (τ₀ : Matrix (Fin g) (Fin g) ℂ) (lev₀ : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ P₀.A)), LocallyOfFiniteType s → 0 < k → (∀ a, l a ^ k = 1) → IsOpen B → b₀ ∈ B → (∀ b ∈ B, y b ≫ s = spMap σ) → IsHolTo B y → PolPB P₀ Q (y b₀) φ₀ → PerLev P₀ τ₀ k lev₀ → (∀ a, (lev₀ a).left ≫ φ₀ = y b₀ ≫ (l a).left) → ∃ (B' : Set (Fin m → ℂ)) (τ : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ), IsOpen B' ∧ b₀ ∈ B' ∧ B' ⊆ B ∧ τ b₀ = τ₀ ∧ (∀ i j, DifferentiableOn ℂ (fun b => τ b i j) B') ∧ ∀ b ∈ B', ∃ (P : Out.PolAV (Sp ℂ)) (φ : P.A.left ⟶ Q.A.left) (lev : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), PolPB P Q (y b) φ ∧ PerLev P (τ b) k lev ∧ ∀ a, (lev a).left ≫ φ = y b ≫ (l a).left := by
   intro hL hT K _ σ X s Q g k m l B y b₀ P₀ φ₀ τ₀ lev₀ hft hk hl0 hB hb₀ hyσ hy ⟨hφ₀, hg₀, hL₀⟩

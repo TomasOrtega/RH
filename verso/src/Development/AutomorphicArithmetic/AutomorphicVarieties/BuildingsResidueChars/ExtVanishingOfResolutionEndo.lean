@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open CategoryTheory Limits in
 /- English proof (translation)
-Establish `h1 : HomologicalComplex.cyclesMap Ψ q = 0`. Rewrite using `[← cancel_mono (L.iCycles q), zero_comp, HomologicalComplex.cyclesMap_i, h, comp_zero]`. Rewrite using `[← cancel_epi (K.homologyπ q), comp_zero, HomologicalComplex.homologyπ_naturality, h1, zero_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homologyMap_zero_of_f {C : Type*} [Category C] [Abelian C] {ι : Type*}
     {c : ComplexShape ι} {K L : HomologicalComplex C c} (Ψ : K ⟶ L) (q : ι) (h : Ψ.f q = 0) :
@@ -13,11 +13,11 @@ private theorem homologyMap_zero_of_f {C : Type*} [Category C] [Abelian C] {ι :
 
 open CategoryTheory Limits in
 /- English proof (translation)
-Set `F` to `((linearYoneda R C).obj Y).rightOp`. Establish `h1 : Homotopy e (𝟙 P.complex)` using `ProjectiveResolution.liftHomotopy (𝟙 X) e (𝟙 _) (by simpa using he) (by simp)`. Establish `h2` using `(F.mapHomotopy h1).unop`. Establish `h3` using `h2.homologyMap_eq q`. Establish `hz : ((HomologicalComplex.unopFunctor (ModuleCat R) (ComplexShape.down ℕ)).map ((F.mapHomologicalComplex (ComplexShape.down ℕ)).map e).op).f q = 0` using `by show (F.map (e.f q)).unop = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq, F.map_zero]`. Both sides reduce to the same expression. Rewrite `h3` using `[homologyMap_zero_of_f _ q hz]`. Simplify using `only [CategoryTheory.Functor.map_id, op_id, HomologicalComplex.homologyMap_id] at h3`. Rewrite using `[IsZero.iff_id_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.symm`.
+A detailed English derivation is pending.
 -/
 private theorem isZero_yoneda {R : Type*} [Ring R] {C : Type*} [Category C] [Abelian C]
     [Linear R C] {X : C} (Y : C) (P : ProjectiveResolution X) (e : P.complex ⟶ P.complex)
@@ -40,7 +40,7 @@ private theorem isZero_yoneda {R : Type*} [Ring R] {C : Type*} [Category C] [Abe
 
 open CategoryTheory Limits in
 /- English proof (translation)
-Introduce `Γ _ P e he q hq A`. Establish `h2 : IsZero (groupCohomology A q)` using `(isZero_yoneda (R := ℂ) A P e he q hq).of_iso (groupCohomologyIso A q P)`. Use `haveI := ModuleCat.subsingleton_of_isZero h2`. Conclude with `rank_subsingleton' ℂ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ext_vanishing_of_resolution_endo :
     UpperTheory.V.Af.BA.VanishOf := by

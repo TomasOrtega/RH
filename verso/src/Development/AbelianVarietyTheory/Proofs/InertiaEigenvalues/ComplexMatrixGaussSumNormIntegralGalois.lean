@@ -8,7 +8,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : (ξ g) ^ (Nat.card G) = 1` using `by rw [← map_pow, pow_card_eq_one']; exact map_one ξ`. Use `Complex.norm_eq_one_of_pow_eq_one (n := Nat.card G) ?_ Nat.card_pos.ne'` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_val_monoidHom_units_eq_one {G : Type} [Group G] [Finite G] (ξ : G →* ℂˣ) (g : G) :
     ‖((ξ g : ℂˣ) : ℂ)‖ = 1 := by
@@ -17,14 +17,14 @@ theorem norm_val_monoidHom_units_eq_one {G : Type} [Group G] [Finite G] (ξ : G 
   rw [← Units.val_pow_eq_pow_val, h, Units.val_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn.ne', by simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntegral_int_of_pow_eq_one {z : ℂ} {n : ℕ} (hn : 0 < n) (h : z ^ n = 1) :
     IsIntegral ℤ z :=
   ⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn.ne', by simp [h]⟩
 
 /- English proof (translation)
-Use `isIntegral_int_of_pow_eq_one (n := Nat.card G) Nat.card_pos ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegral_val_monoidHom_units {G : Type} [Group G] [Finite G] (ξ : G →* ℂˣ) (g : G) :
     IsIntegral ℤ ((ξ g : ℂˣ) : ℂ) := by
@@ -32,7 +32,7 @@ theorem isIntegral_val_monoidHom_units {G : Type} [Group G] [Finite G] (ξ : G �
   rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]
 
 /- English proof (translation)
-Use `isIntegral_int_of_pow_eq_one (n := Fintype.card k) Fintype.card_pos ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegral_addChar_apply {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (x : k) :
     IsIntegral ℤ (ψ x) := by
@@ -40,31 +40,27 @@ theorem isIntegral_addChar_apply {k : Type} [Field k] [Fintype k] (ψ : AddChar 
   rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ ψ ξ r hψ hξ S hS`. Establish `hN` using `GlobalTheory.T.matrixGaussSum_mul_dual_eq_card_pow_sq k ℂ ψ ξ r hψ hξ`. Simplify using `only [Matrix.one_mul] at hN`. Rewrite `hN` using `[← hS]`. Use `set D := ∑ x : GL (Fin r) k, (((ξ⁻¹ (Matrix.GeneralLinearGroup.det x))⁻¹ : ℂˣ) : ℂ) * ψ⁻¹ (Matrix.trace (x : Matrix (Fin r) (Fin r) k)) with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : D = starRingEnd ℂ S`. Rewrite using `[hS, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AddChar.inv_apply, AddChar.map_neg_eq_conj, MonoidHom.inv_apply, inv_inv, Units.val_inv_eq_inv_val, map_inv₀, ← Complex.inv_eq_conj (norm_val_monoidHom_units_eq_one ξ _), inv_inv]`. Establish `hDint : IsIntegral ℤ D`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.sum _ fun x _ => IsIntegral.mul ?_ (isIntegral_addChar_apply _ _)` and prove the remaining obligations. Conclude with `isIntegral_val_monoidHom_units _ _`. Establish `hSint : IsIntegral ℤ S`. Rewrite using `[hS]`. Use `IsIntegral.sum _ fun x _ => IsIntegral.mul ?_ (isIntegral_addChar_apply _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_inv]`. Conclude with `isIntegral_val_monoidHom_units _ _`. Establish `hq0 : (Fintype.card k : ℂ) ^ (r ^ 2) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr Fintype.card_ne_zero)`. Establish `hS0 : S ≠ 0`. Introduce and unpack `h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[h0, zero_mul]`. Conclude with `hq0 hN.symm`. Use `⟨?_, hSint, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hN` using `[hconj, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Conclude with `hN` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hN, mul_comm S D, mul_assoc, mul_inv_cancel₀ hS0, mul_one]`. Conclude with `hDint`. Introduce `τ ξ' hξ'`. Set `φ : AddChar k ℂ` to `(τ : ℂ →+* ℂ).toMonoidHom.compAddChar ψ`. Establish `hbij : Function.Bijective (fun b : k => ψ.mulShift b)` using `(Fintype.bijective_iff_injective_and_card _).mpr ⟨AddChar.to_mulShift_inj_of_isPrimitive hψ, AddChar.card_eq.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `hbij.2 φ`. Establish `hbφ : ∀ x, τ (ψ x) = ψ (b * x)` using `fun x => by`. Use `DFunLike.congr_fun hb x` as an intermediate fact. Simplify `this.symm` using `[φ, AddChar.mulShift_apply]`. Establish `hb0 : b ≠ 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Establish `h1 : ψ.mulShift 1 ≠ 1` using `hψ one_ne_zero`. Apply `h1` to reduce the goal to its premises. Use extensionality with `x`. Use `hbφ x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite `this` using `[zero_mul, AddChar.map_zero_eq_one, ← map_one τ]`. Rewrite using `[AddChar.mulShift_apply, one_mul, AddChar.one_apply]`. Conclude with `τ.injective this`. Establish `hξ'1 : ξ' ≠ 1`. Introduce `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `hξ` to reduce the goal to its premises. Use extensionality with `x`. Use `hξ' x` as an intermediate fact. Rewrite `this` using `[h1, MonoidHom.one_apply, Units.val_one, ← map_one τ]`. Conclude with `(τ.injective this).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Units.mk0 b hb0, fun x => hbφ x, ?_⟩` and prove the remaining obligations. Set `g : GL (Fin r) k` to `Units.map (Matrix.scalar (Fin r) : k →+* Matrix (Fin r) (Fin r) k).toMonoidHom (Units.mk0 b hb0)`. Establish `hg : (g : Matrix (Fin r) (Fin r) k) = Matrix.scalar (Fin r) b` using `rfl`. Establish `hdet : Matrix.GeneralLinearGroup.det g = (Units.mk0 b hb0) ^ r`. Use `ext`.
-
-Simplify using `[hg, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_diagonal]`. Establish `key` using `(GlobalTheory.matrixGaussSum_singular_and_invertible k ℂ ψ ξ' r hψ hξ'1).2 g`. Rewrite `key` using `[hdet, map_pow, Units.val_pow_eq_pow_val]`. Simplify using `only [Matrix.one_mul] at key`. Rewrite using `[← key, hS, map_sum]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hbφ, Units.val_inv_eq_inv_val, map_inv₀, ← hξ', ← Units.val_inv_eq_inv_val, hg, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, Matrix.trace_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complexMatrixGaussSum_norm_integral_galois :
     ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r : ℕ), ψ.IsPrimitive → ξ ≠ 1 → ∀ S : ℂ, S = (∑ x : GL (Fin r) k, (((ξ (Matrix.GeneralLinearGroup.det x))⁻¹ : ℂˣ) : ℂ) * ψ (Matrix.trace (x : Matrix (Fin r) (Fin r) k))) → ‖S‖ ^ 2 = (Fintype.card k : ℝ) ^ (r ^ 2) ∧ IsIntegral ℤ S ∧ IsIntegral ℤ ((Fintype.card k : ℂ) ^ (r ^ 2) * S⁻¹) ∧ ∀ (τ : ℂ ≃+* ℂ) (ξ' : kˣ →* ℂˣ), (∀ x, ((ξ' x : ℂˣ) : ℂ) = τ ((ξ x : ℂˣ) : ℂ)) → ∃ a : kˣ, (∀ x, τ (ψ x) = ψ ((a : k) * x)) ∧ τ S = ((ξ' a : ℂˣ) : ℂ) ^ r * ∑ x : GL (Fin r) k, (((ξ' (Matrix.GeneralLinearGroup.det x))⁻¹ : ℂˣ) : ℂ) * ψ (Matrix.trace (x : Matrix (Fin r) (Fin r) k)) := by

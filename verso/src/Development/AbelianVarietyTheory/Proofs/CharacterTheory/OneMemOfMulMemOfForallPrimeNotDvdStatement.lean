@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.OneMemOfMulMemOfF
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.one_mem_of_mul_mem_of_forall_prime_not_dvd` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FOneMemOfMulMemOfForallPrimeNotDvd.lean&line=5#L5)
 -/

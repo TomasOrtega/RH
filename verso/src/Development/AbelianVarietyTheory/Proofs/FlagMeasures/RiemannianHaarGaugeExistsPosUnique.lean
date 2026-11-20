@@ -6,7 +6,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.GaugeConst
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GaugeConst.exists_unique_isGauge`.
+A detailed English derivation is pending.
 -/
 theorem gauge_exists_pos_unique :
     ∀ (n : ℕ) (ε : Fin n → Bool), ∃ c : ℝ, 0 < c ∧ IsGauge ε c ∧ ∀ c', IsGauge ε c' → c' = c :=

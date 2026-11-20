@@ -30,7 +30,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Fin.add_def, Fin.ofNat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ofNat_succ_fin (n : ℕ) [NeZero n] (k : ℕ) :
     Fin.ofNat n (k + 1) = Fin.ofNat n k + 1 := by
@@ -38,11 +38,11 @@ private theorem ofNat_succ_fin (n : ℕ) [NeZero n] (k : ℕ) :
   simp [Fin.add_def, Fin.ofNat]
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg _`. Establish `sa` using `summable_geom_p (p := p) (fun n => (a n : ℝ)) (fun _ => Nat.cast_nonneg _) h (fun n => by exact_mod_cast (hab n ▸ Nat.le_add_right _ _ : a n ≤ h))`. Establish `sc` using `summable_geom_p (p := p) (fun n => (c n : ℝ)) (fun _ => Nat.cast_nonneg _) D (fun n => by exact_mod_cast hD n)`. Establish `sh` using `summable_geom_p (p := p) (fun _ => (h : ℝ)) (fun _ => Nat.cast_nonneg _) h (fun _ => le_rfl)`. Establish `e : (h : ℝ) / (p - 1) = ∑' n : ℕ, (p : ℝ) ^ (-((n : ℝ) + 1)) * (h : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tsum_mul_right, tsum_geom_p]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Summable.tsum_sub sh sa]`. Use `Summable.tsum_le_tsum (fun n => ?_) (sh.sub sa) sc` and prove the remaining obligations. Rewrite using `[← mul_sub]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg hp0 _)` and prove the remaining obligations. Establish `h1 : (a n : ℝ) + b n = h` using `by exact_mod_cast hab n`. Establish `h2 : (b n : ℝ) ≤ c n` using `by exact_mod_cast hbc n`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem exp_bound (p : ℕ) [Fact p.Prime] (h : ℕ) (a b c : ℕ → ℕ) (D : ℕ)
     (hab : ∀ n, a n + b n = h) (hbc : ∀ n, b n ≤ c n) (hD : ∀ n, c n ≤ D) :
@@ -66,7 +66,7 @@ private theorem exp_bound (p : ℕ) [Fact p.Prime] (h : ℕ) (a b c : ℕ → �
   linarith
 
 /- English proof (translation)
-Unfold `eigDim`. Simplify using `using Submodule.finrank_le (⨅ a : OE, Module.End.eigenspace (Matrix.toLin' ((ρ a).map (algebraMap O C))) (τ a))`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eigDim_le (C : Type) [Field C] {O OE : Type} [CommRing O] [Algebra O C] [CommRing OE]
     {d : ℕ} (ρ : OE → Matrix (Fin d) (Fin d) O) (τ : OE →+* C) : eigDim C ρ τ ≤ d := by
@@ -75,23 +75,23 @@ private theorem eigDim_le (C : Type) [Field C] {O OE : Type} [CommRing O] [Algeb
     (Matrix.toLin' ((ρ a).map (algebraMap O C))) (τ a))
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H d r m A B ρG N s hL _ hp2 hdisc w _ t ht rk W hW j`. Take `⟨U, τ, ε, hsg, hr, -, -, hcj, hφ⟩` from `GlobalTheory.ChF.exists_unramData p C v O hv OE cp hS g H hL.noPad.1 hL.noPad.2 hdisc`. Take `⟨hex, hmono, -⟩` from `GlobalTheory.ChF.hasLen_exists_mono_fp C v O hv`. Use `set ix : Fin w.n → Fin U.m := fun k => τ.symm ((t k : Emb (O := O) w.e) : OE →+* O) with hix`. Establish `hτ : ∀ k, τ (ix k) = ((t k : Emb (O` using `O) w.e) : OE →+* O) := fun k => τ.apply_symm_apply _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ1 : ∀ k, U.φ (ix k) = ix (k + 1)` using `fun k => hφ _ _ (fun a => by rw [hτ, hτ]; exact ht k a)`. Establish `hφn : ∀ n : ℕ, (U.φ ^ n) (ix j) = ix (j + Fin.ofNat w.n n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ', Equiv.Perm.mul_apply, ih, hφ1, ofNat_succ_fin, add_assoc]`. Take `⟨-, -, α, b, -⟩` from `GlobalTheory.PlaceMono.place_monogenic p OE w`. Take `⟨h, y, hy1, hy2⟩` from `GlobalTheory.LocalFactorFree.exists_free_generators p OE w b (Ix g) H.ρ`. Establish `hh : ∀ k, U.r (ix k) + U.r (U.cj (ix k)) = h`. Introduce `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.ChF.eigDim_eq_of_basis p C v O hv OE w b (Ix g) H.ρ h y hy1 hy2 _ (t k).2`. Establish `e2` using `GlobalTheory.ChF.eigDim_tate p C v O hv OE cp hS g H ((algebraMap O C).comp ((t k : Emb (O := O) w.e) : OE →+* O))`. Rewrite using `[hr, hr, hcj, hτ, ← e1, e2, RingHom.comp_assoc]`. Establish `hrk : ∀ σ : OE →+* O, eigDim C ρG ((algebraMap O C).comp σ) = rk σ` using `fun σ => (GlobalTheory.ChF.eigB_res_surjective C v O hv OE d (rk σ) ρG σ (W σ) (hW σ)).2.2`. Establish `hle : ∀ i, U.r i ≤ rk (τ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `e` using `(GlobalTheory.EigAdd.eigDim_add_transpose C O OE d r g A B hL.exact ρG ((Int.castRingHom O).mapMatrix.comp N) (H.ρL.comp (Algebra.TensorProduct.includeRight (R := ℤ) (A := ℤ_[p]) (B := OE)).toRingHom) hL.eqB hL.eqA ((algebraMap O C).comp (τ i))).1`. Rewrite using `[hr, ← hrk, e]`. Conclude with `Nat.le_add_left _ _`. Establish `hD : ∀ σ, rk σ ≤ d` using `fun σ => hrk σ ▸ eigDim_le C _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V1, hV1⟩` from `lenEx C v O hv g H.Ht (U.εL (ix j)) (U.εT (U.cj (ix j)))`. Take `⟨f, hf⟩` from `GlobalTheory.ChF.cokE_surj_res_quot p C v O hv OE cp hS g H d r m A B ρG N s hL U (ix j) ((t j : Emb (O := O) w.e) : OE →+* O) (fun x => by rw [hsg, hτ]) _ _ (hW _)`. Take `⟨xs, hxs⟩` from `hex ((Fin (rk ((t j : Emb (O := O) w.e) : OE →+* O)) → O) ⧸ Submodule.span O (Set.range fun k => Pdiv.ChartF.res (W ((t j : Emb (O := O) w.e) : OE →+* O)) (s k))) (Module.finitePresentation_of_surjective (Submodule.mkQ _) (Submodule.mkQ_surjective _) (by rw [Submodule.ker_mkQ]; e …`. Use `⟨xs, hxs, ?_⟩` and prove the remaining obligations. Establish `h1` using `hmono _ _ f V1 xs hf hV1 hxs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `up_full u7 p g C v O _ _ cp hp2 hS H U (ix j) _ (LinearEquiv.refl _ _) V1 hV1`. Use `le_trans ?_ h1` and prove the remaining obligations. Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_rpow]`. Use `le_trans ?_ h2` and prove the remaining obligations. Use `Real.rpow_le_rpow_of_exponent_ge ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pos_iff_ne_zero.2 hS.p_ne` after adjusting the coercions. Conclude with `hS.p_lt.le` after adjusting the coercions. Establish `e : ((U.r (ix j) : ℝ) + U.r (U.cj (ix j))) = h` using `by exact_mod_cast hh j`. Rewrite using `[e]`. Unfold `frobSum`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `exp_bound p h (fun n => U.r ((U.φ ^ (n + 1)) (ix j))) (fun n => U.r (U.cj (ix (j + Fin.ofNat w.n (n + 1))))) _ d (fun n => ?_) (fun n => ?_) (fun n => hD _)` and prove the remaining obligations. Rewrite using `[hφn]`. Conclude with `hh _`. Use `hle (U.cj (ix (j + Fin.ofNat w.n (n + 1))))` as an intermediate fact. Rewrite `this` using `[hcj, hτ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem linDat_unram_bound : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (d r m : ℕ) (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (ρG : OE →+* Matrix (Fin d) (Fin d) O) (N : OE →+* Matrix (Fin r) (Fin r) ℤ) (s : Fin m → Fin d → O), LinDat H A B ρG N s → ∀ [IsLocalRing O], p ≠ 2 → ¬ ((p : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ OE)) → ∀ (w : PlaceU p OE) [NeZero w.n] (t : Fin w.n ≃ Emb (O := O) w.e), (∀ (j : Fin w.n) (a : OE), ((t (j + 1) : Emb (O := O) w.e) : OE →+* O) a - (((t j : Emb (O := O) w.e) : OE →+* O) a) ^ p ∈ IsLocalRing.maximalIdeal O) → ∀ (rk : (OE →+* O) → ℕ) (W : ∀ τ : OE →+* O, Fin (rk τ) → Fin d → O), (∀ τ, EigB ρG τ (W τ)) → ∀ j : Fin w.n, ∃ xs : NNReal, HasLen v O ((Fin (rk ((t j : Emb (O := O) w.e) : OE →+* O)) → O) ⧸ Submodule.span O (Set.range fun k => Pdiv.ChartF.res (W ((t j : Emb (O := O) w.e) : OE →+* O)) (s k))) xs ∧ v (algebraMap O C (p : O)) ^ (∑' n : ℕ, ((p : ℝ) ^ (-((n : ℝ) + 1))) * (rk (((t (j + Fin.ofNat w.n (n + 1)) : Emb (O := O) w.e) : OE →+* O).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) : ℝ)) ≤ xs := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H d r m A B ρG N s hL _ hp2 hdisc w _ t ht

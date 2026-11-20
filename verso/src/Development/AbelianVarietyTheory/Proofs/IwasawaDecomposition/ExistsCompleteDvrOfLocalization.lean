@@ -8,15 +8,13 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.PrimeTrait
 
 /- English proof (translation)
-Introduce `R _ _ _ Q _ hV`. Use `set V := Localization.AtPrime Q`. Establish `hRV : Function.Injective (algebraMap R V)` using `IsLocalization.injective V Q.primeCompl_le_nonZeroDivisors`. Use `haveI : CharZero V := charZero_of_injective_algebraMap hRV`. Use `haveI : IsDomain V := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set W := AdicCompletion (maximalIdeal V) V`. Establish `hVW : Function.Injective (algebraMap V W)` using `GlobalTheory.algebraMap_adicCompletion_injective_of_dvr V`. Use `haveI : CharZero W := charZero_of_injective_algebraMap hVW`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨⟨a, s⟩, has⟩` from `IsLocalization.mk'_surjective Q.primeCompl p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hs : IsUnit (algebraMap R V s)` using `IsLocalization.map_units V s`. Establish `hap : algebraMap R V a = p * algebraMap R V s`. Rewrite using `[← has]`. Conclude with `(IsLocalization.mk'_spec V a s).symm`. Establish `haQ : a ∈ Q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `ha`. Establish `hu : IsUnit (algebraMap R V a)` using `IsLocalization.map_units V (⟨a, ha⟩ : Q.primeCompl)`. Rewrite `hu` using `[hap]`. Conclude with `hp.not_isUnit (isUnit_of_mul_isUnit_left hu)`. Use `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W p, (algebraMap V W).comp (algebraMap R V), ?_, GlobalTheory.irreducible_algebraMap_adicCompletion_of_dvr hp, hVW.comp hRV, ?_, a, haQ, ?_⟩` and prove the remaining obligations.
-
-Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`. Introduce `r hr`. Conclude with `(IsLocalization.map_units V (⟨r, hr⟩ : Q.primeCompl)).map (algebraMap V W)`. Use `Associated.symm ⟨(hs.map (algebraMap V W)).unit, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, IsUnit.unit_spec, hap, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_of_localization_atPrime :
     ∀ {R : Type} [CommRing R] [IsDomain R] [CharZero R] (Q : Ideal R) [Q.IsPrime], IsDiscreteValuationRing (Localization.AtPrime Q) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (ϖ : W) (g : R →+* W), CDvr W ∧ Irreducible ϖ ∧ Function.Injective g ∧ (∀ r, r ∉ Q → IsUnit (g r)) ∧ ∃ π ∈ Q, Associated (g π) ϖ := by

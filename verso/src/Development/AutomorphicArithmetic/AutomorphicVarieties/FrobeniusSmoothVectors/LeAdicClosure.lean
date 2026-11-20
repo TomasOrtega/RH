@@ -14,9 +14,9 @@ def ordProd {H K : Type} [CommRing K] {n : ℕ} (r : H → Matrix (Fin n) (Fin n
     Matrix (Fin n) (Fin n) K := (List.ofFn fun i => r (g i) - ψ i (g i) • (1 : Matrix (Fin n) (Fin n) K)).prod
 
 /- English proof (translation)
-Simplify using `only [ordProd, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_sub]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ordProd_map {H K K' : Type} [CommRing K] [CommRing K'] {n : ℕ} (f : K →+* K')
     (r : H → Matrix (Fin n) (Fin n) K) (ψ : Fin n → H → K) (g : Fin n → H) :
@@ -149,7 +149,7 @@ def adicClosure {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra 
   algebraMap_mem' c N := ⟨_, S.algebraMap_mem c, by simp⟩
 
 /- English proof (translation)
-Introduce `x hx _` and use `⟨x, hx, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_adicClosure {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] (S : Subalgebra O R) :
     S ≤ adicClosure S := fun x hx _ => ⟨x, hx, by simp⟩
@@ -193,23 +193,23 @@ def B : Subalgebra O S.R :=
 def A : Subalgebra O S.R := Algebra.adjoin O ((S.B : Set S.R) ∪ {x | ∃ g i j, x = S.ρ.r g i j})
 
 /- English proof (translation)
-Introduce `_ hx` and use `Algebra.subset_adjoin (Or.inl hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem B_le_A : S.B ≤ S.A := fun _ hx => Algebra.subset_adjoin (Or.inl hx)
 
 /- English proof (translation)
-The claim follows from `le_adicClosure _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem ψ_mem (v : F.V) (i : Fin n) (g : F.Gv v) : (S.ρ.ψ v i g : S.R) ∈ S.B :=
   le_adicClosure _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `le_adicClosure _ (Algebra.subset_adjoin (Or.inl hx))`.
+A detailed English derivation is pending.
 -/
 theorem mon_mem {x : S.R} (hx : x ∈ S.ρ.mon 0) : x ∈ S.B := le_adicClosure _ (Algebra.subset_adjoin (Or.inl hx))
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Or.inr ⟨g, i, j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem r_mem (g : F.G0) (i j : Fin n) : S.ρ.r g i j ∈ S.A := Algebra.subset_adjoin (Or.inr ⟨g, i, j, rfl⟩)
 

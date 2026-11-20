@@ -20,21 +20,19 @@ def chartExp (c : ∀ k, ι k) (d : K → ℕ) : (Σ k, ι k) →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun q => if q.2 = c q.1 then d q.1 else 0
 
 /- English proof (translation)
-Introduce `I`. Set `c : ∀ k, ι k` to `fun k => (I.2.1 k).choose`. Establish `hc : ∀ k, c k ∈ I.1 k` using `fun k => (I.2.1 k).choose_spec`. Set `p : MRingOver S ι` to `monomial (chartExp c d) 1`. Establish `hph : IsMultiHomog p d`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `GenTwistGenerated.isMultiHomog_monomial _ _ _ fun k => ?_` and prove the remaining obligations. Simplify using `[chartExp]`. Establish `hpm : p ∈ KH.cellMon S I.1`. Express the relevant statement in the definitionally equal form `monomial (chartExp c d) 1 ∈ _`. Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submonoid.prod_mem _ fun q hq => Submonoid.pow_mem _ (Submonoid.subset_closure ?_) _` and prove the remaining obligations. Establish `hq' : q.2 = c q.1`. Assume the negation of the conclusion as `h`. Simplify using `[chartExp, h] at hq`. Take `⟨k, i⟩` from `q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hq'`. Substitute `hq'` using the available equality. Conclude with `⟨k, c k, hc k, rfl⟩`. Establish `hpq : Ideal.Quotient.mk V p ∈ KH.quotPart S V (fun k => (d k : ℤ))` using `Submodule.subset_span ⟨p, ⟨fun k => Int.natCast_nonneg (d k), by simpa using hph⟩, rfl⟩`. Establish `h1q : (1 : MRingOver S ι ⧸ V) ∈ KH.quotPart S V 0` using `Submodule.subset_span ⟨1, ⟨fun _ => le_rfl, GenTwistGenerated.isMultiHomog_one _ fun _ => rfl⟩, map_one _⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨1, fun _ _ => LocalizedModule.mk (Ideal.Quotient.mk V p) 1, fun _ => LocalizedModule.mk 1 ⟨p, hpm⟩, fun _ => GenTwistGenerated.mem_cechZc_zero (fun J => ?_) (GenTwistGenerated.cechD_const _), fun _ => ?_, ?_⟩` and prove the remaining obligations. Use `GenTwistGenerated.mk_mem_locPart _ _ 0 (GenTwistGenerated.isMultiHomog_one _ fun _ => rfl) ?_` and prove the remaining obligations. Use `hpq using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `GenTwistGenerated.mk_mem_locPart _ _ d hph ?_` and prove the remaining obligations. Use `h1q using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `e : Ideal.Quotient.mk V p = (⟨p, hpm⟩ : KH.cellMon S I.1) • (1 : MRingOver S ι ⧸ V)` using `((Algebra.smul_def p (1 : MRingOver S ι ⧸ V)).trans (mul_one _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(Fin.sum_univ_one _).trans ?_` and prove the remaining obligations. Use `LocalizedModule.mk_mul_mk.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, mul_one, e]`. Use `_ = LocalizedModule.mk 1 1 := LocalizedModule.mk_cancel _ _`.
-
-Use `_ = 1 := OreLocalization.one_def.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generated_nonneg (d : K → ℕ) : KH.GeneratedV S V (fun k => (d k : ℤ)) := by
   classical
@@ -85,11 +83,11 @@ theorem generated_nonneg (d : K → ℕ) : KH.GeneratedV S V (fun k => (d k : �
 end SerreGen
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ V e _ _`. Use `⟨∑ k, (e k).natAbs, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h : (e + fun _ => (c : ℤ)) = fun k => (((e k + c).toNat : ℕ) : ℤ)`. Use function extensionality and compare the values at `k`. Establish `h₁ : (e k).natAbs ≤ ∑ k, (e k).natAbs` using `Finset.single_le_sum (f := fun k => (e k).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h₂ : -(e k) ≤ ((e k).natAbs : ℤ)`. Rewrite using `[← Int.natAbs_neg]`. Conclude with `Int.le_natAbs`. Establish `h₃ : 0 ≤ e k + c` using `by omega`. Simplify using `only [Pi.add_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Int.toNat_of_nonneg h₃).symm`. Rewrite using `[h]`. Conclude with `SerreGen.generated_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem SerreGen.proof : KH.SerreGenStatement := by
   intro S _ K _ _ ι _ _ V e _ _

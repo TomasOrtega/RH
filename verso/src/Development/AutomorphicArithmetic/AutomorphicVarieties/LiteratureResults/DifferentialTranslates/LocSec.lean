@@ -51,14 +51,14 @@ private theorem jorC_val (X Y : HV E a) :
 private def sq2 (X : HV E a) : HV E a := (1 / 2 : ℝ) • jorC X X
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 / 2 : ℝ) • Matrix.of (jorC X X).1 = _`. Rewrite using `[jorC_val, ← two_smul ℝ, smul_smul]`. Evaluate the numerical expressions.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem square_map_val (X : HV E a) : Matrix.of (sq2 X).1 = Matrix.of X.1 * Matrix.of X.1 := by
   change (1 / 2 : ℝ) • Matrix.of (jorC X X).1 = _
   rw [jorC_val, ← two_smul ℝ, smul_smul]; norm_num
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.of (sq2 (hOne E a)).1 = Matrix.of (hOne E a).1`. Rewrite using `[square_map_val, hOne_val, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem square_map_one : sq2 (hOne E a) = hOne E a := by
   apply Subtype.ext
@@ -66,7 +66,7 @@ private theorem square_map_one : sq2 (hOne E a) = hOne E a := by
   rw [square_map_val, hOne_val, mul_one]
 
 /- English proof (translation)
-The claim follows from `((jorC (E := E) (a := a)).contDiff.clm_apply contDiff_id).const_smul _`.
+A detailed English derivation is pending.
 -/
 private theorem square_map_contDiff : ContDiff ℝ ∞ (sq2 (E := E) (a := a)) :=
   ((jorC (E := E) (a := a)).contDiff.clm_apply contDiff_id).const_smul _
@@ -75,9 +75,9 @@ private def dbl : HV E a ≃L[ℝ] HV E a :=
   ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := HV E a) (Units.mk0 (2 : ℝ) two_ne_zero)
 
 /- English proof (translation)
-Establish `h` using `(((jorC (E := E) (a := a)).hasFDerivAt (x := hOne E a)).clm_apply (hasFDerivAt_id (hOne E a))).const_smul (1 / 2 : ℝ)`. Use `HasFDerivAt.congr_fderiv h ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun H => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 / 2 : ℝ) • (Matrix.of (jorC (hOne E a) H).1 + Matrix.of (jorC H (hOne E a)).1) = (2 : ℝ) • Matrix.of H.1`. Rewrite using `[jorC_val, jorC_val, hOne_val, mul_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 private theorem square_map_hasFDerivAt : HasFDerivAt (sq2 (E := E) (a := a)) (dbl (E := E) (a := a) : HV E a →L[ℝ] HV E a) (hOne E a) := by
   have h := (((jorC (E := E) (a := a)).hasFDerivAt (x := hOne E a)).clm_apply (hasFDerivAt_id (hOne E a))).const_smul (1 / 2 : ℝ)
@@ -88,9 +88,9 @@ private theorem square_map_hasFDerivAt : HasFDerivAt (sq2 (E := E) (a := a)) (db
   module
 
 /- English proof (translation)
-Establish `hc : ContDiffAt ℝ ∞ (sq2 (E` using `E) (a := a)) (hOne E a) := square_map_contDiff.contDiffAt`. Establish `hn : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`. Use `⟨hc.localInverse square_map_hasFDerivAt hn, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hc.to_localInverse square_map_hasFDerivAt hn` as an intermediate fact. Rewrite `this` using `[square_map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hc.localInverse_apply_image square_map_hasFDerivAt hn` as an intermediate fact. Rewrite `this` using `[square_map_one]`. Then use the resulting hypothesis. Use `(hc.hasStrictFDerivAt' square_map_hasFDerivAt hn).eventually_right_inverse` as an intermediate fact. Rewrite `this` using `[square_map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem exists_sqrt : ∃ σ : HV E a → HV E a, ContDiffAt ℝ ∞ σ (hOne E a) ∧ σ (hOne E a) = hOne E a ∧
     ∀ᶠ p in 𝓝 (hOne E a), sq2 (σ p) = p := by
@@ -105,9 +105,7 @@ private theorem exists_sqrt : ∃ σ : HV E a → HV E a, ContDiffAt ℝ ∞ σ 
     rwa [square_map_one] at this
 
 /- English proof (translation)
-Establish `hc : Continuous fun X : HV E a => (Matrix.of X.1).det` using `Continuous.matrix_det (A := fun X : HV E a => Matrix.of X.1) continuous_subtype_val`. Establish `h1 : (Matrix.of (hOne E a).1).det ∈ {x : Cinf E | IsUnit x}`. Rewrite using `[hOne_val, det_one]`. Conclude with `isUnit_one`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds (Units.isOpen.mem_nhds h1)] with X hX`.
-
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_unit : ∀ᶠ X in 𝓝 (hOne E a), IsUnit (Matrix.of X.1) := by
   have hc : Continuous fun X : HV E a => (Matrix.of X.1).det :=
@@ -129,17 +127,17 @@ private def lmul (g : Matrix (Fin a) (Fin a) (Cinf E)) : HV E a →L[ℝ] Lie E 
 
 open Classical in
 /- English proof (translation)
-Introduce and unpack `E _ _ a p₀ ⟨g, rfl⟩`. Take `⟨σ, hσ, hσ1, hσ2⟩` from `exists_sqrt (E := E) (a := a)`. Establish `h0 : sand g⁻¹ (sand g (hOne E a)) = hOne E a`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hq : Tendsto (sand g⁻¹) (𝓝 (sand g (hOne E a))) (𝓝 (hOne E a))`. Use `(sand g⁻¹).continuous.tendsto (sand g (hOne E a))` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Establish `hs : Tendsto σ (𝓝 (hOne E a)) (𝓝 (hOne E a))`. Use `hσ.continuousAt.tendsto` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hσ1]`. Then use the resulting hypothesis. Establish `hu` using `(hs.comp hq).eventually ev_unit`. Set `u : HV E a → GL (Fin a) (Cinf E)` to `fun X => if h : IsUnit (Matrix.of X.1) then h.unit else 1`. Establish `hval : ∀ X : HV E a, IsUnit (Matrix.of X.1) → (u X).val = Matrix.of X.1` using `fun X h => by`. Simplify using `only [u, dif_pos h, IsUnit.unit_spec]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun p => g * u (σ (sand g⁻¹ p)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ∞ (fun p => σ (sand g⁻¹ p)) (sand g (hOne E a))` using `ContDiffAt.comp (g := σ) _ (h0.symm ▸ hσ) (sand g⁻¹).contDiff.contDiffAt`. Use `((lmul g.val).contDiff.contDiffAt.comp _ h1).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hu] with p hp`. Rewrite using `[Units.val_mul, hval (σ (sand g⁻¹ p)) hp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `filter_upwards [hu, hq.eventually hσ2] with p hp hp2`. Establish `h2 : sand (u (σ (sand g⁻¹ p))) (hOne E a) = sand g⁻¹ p`. Rewrite using `[← hp2]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Matrix.of (sand _ _).1 = Matrix.of (sq2 _).1`. Establish `hX : star (Matrix.of (σ (sand g⁻¹ p)).1) = Matrix.of (σ (sand g⁻¹ p)).1` using `(σ (sand g⁻¹ p)).2`. Rewrite using `[sand_val, square_map_val, hOne_val, mul_one, hp2, hval (σ (sand g⁻¹ p)) hp, hX]`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, h2, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locSec : LocSec := by
   rintro E _ _ a p₀ ⟨g, rfl⟩

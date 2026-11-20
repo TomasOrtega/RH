@@ -14,19 +14,19 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Conclude with `Subring.subset_closure (Set.mem_singleton _)`.
+A detailed English derivation is pending.
 -/
 theorem zetaRoot_mem_cyclotomicSubring_self (m : ℕ) : zetaC m ∈ Rm m := by
   exact Subring.subset_closure (Set.mem_singleton _)
 
 /- English proof (translation)
-Conclude with `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem zetaRoot_ne_zero (e : ℕ) : zetaC e ≠ 0 := by
   exact Complex.exp_ne_zero _
 
 /- English proof (translation)
-Simplify using `only [Tm, Finset.mem_image, Finset.mem_sigma, Nat.mem_divisors, Finset.mem_range] at ht`. Take `⟨⟨a, b⟩, ⟨⟨hdvd, _⟩, _⟩, rfl⟩` from `ht`. Conclude with `⟨hdvd, Nat.pos_of_dvd_of_pos hdvd hm, rfl, Nat.mul_div_cancel' hdvd⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem dvd_and_eq_div_of_mem_Tm {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) :
     t.1 ∣ m ∧ 0 < t.1 ∧ t.2.2 = m / t.1 ∧ t.1 * t.2.2 = m := by
@@ -35,9 +35,9 @@ private theorem dvd_and_eq_div_of_mem_Tm {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ 
   exact ⟨hdvd, Nat.pos_of_dvd_of_pos hdvd hm, rfl, Nat.mul_div_cancel' hdvd⟩
 
 /- English proof (translation)
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha0`. Unfold `zetaC`. Rewrite using `[← Complex.exp_nat_mul, Nat.cast_div ha ha']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem zetaC_div_eq_pow_of_dvd {m a : ℕ} (hm : 0 < m) (ha : a ∣ m) : zetaC (m / a) = zetaC m ^ a := by
   have ha0 : a ≠ 0 := by
@@ -52,13 +52,11 @@ private theorem zetaC_div_eq_pow_of_dvd {m a : ℕ} (hm : 0 < m) (ha : a ∣ m) 
   field_simp
 
 /- English proof (translation)
-Take `⟨hdvd, _, he, _⟩` from `dvd_and_eq_div_of_mem_Tm hm ht`. Establish `hz : zetaC t.2.2 ^ t.2.1 = zetaC m ^ (t.1 * t.2.1)`. Rewrite using `[he, zetaC_div_eq_pow_of_dvd hm hdvd, pow_mul]`. Establish `hzm : zetaC m ^ m = 1`. Unfold `zetaC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.exp_nat_mul]`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[show (m : ℂ) * (2 * Real.pi * Complex.I / m) = 2 * Real.pi * Complex.I by field_simp]`. Conclude with `Complex.exp_two_pi_mul_I`. Establish `hinv : (zetaC m)⁻¹ = zetaC m ^ (m - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← pow_succ', Nat.sub_add_cancel hm, hzm]`. Rewrite using `[hz]`. Prove the components needed by the constructor for the conclusion. Conclude with `pow_mem (zetaRoot_mem_cyclotomicSubring_self m) _`.
-
-Rewrite using `[← inv_pow, hinv, ← pow_mul]`. Conclude with `pow_mem (zetaRoot_mem_cyclotomicSubring_self m) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zetaRoot_pow_mem_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) :
     zetaC t.2.2 ^ t.2.1 ∈ Rm m ∧ (zetaC t.2.2 ^ t.2.1)⁻¹ ∈ Rm m := by
@@ -81,7 +79,7 @@ theorem zetaRoot_pow_mem_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ �
     exact pow_mem (zetaRoot_mem_cyclotomicSubring_self m) _
 
 /- English proof (translation)
-Rewrite using `[norm_pow, zetaC, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_zetaRoot_pow_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) :
     ‖zetaC t.2.2 ^ t.2.1‖ = 1 := by
@@ -89,56 +87,56 @@ theorem norm_zetaRoot_pow_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ 
   simp
 
 /- English proof (translation)
-Rewrite using `[aC_eq]`. Conclude with `isMF_AA.conv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convergesOnDisk_eisensteinFourCubeSeries : Conv aC := by
   rw [aC_eq]
   exact isMF_AA.conv
 
 /- English proof (translation)
-Rewrite using `[dC_eq]`. Conclude with `isMF_DD.conv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convergesOnDisk_discriminantSeries : Conv dC := by
   rw [dC_eq]
   exact isMF_DD.conv
 
 /- English proof (translation)
-Rewrite using `[aC_eq]`. Conclude with `isMF_AA.ev_eq τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalSeries_eisensteinFourCubeSeries (τ : ℍ) : ev aC (qm 1 τ) = AA τ := by
   rw [aC_eq]
   exact isMF_AA.ev_eq τ
 
 /- English proof (translation)
-Rewrite using `[dC_eq]`. Conclude with `isMF_DD.ev_eq τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalSeries_discriminantSeries (τ : ℍ) : ev dC (qm 1 τ) = DD τ := by
   rw [dC_eq]
   exact isMF_DD.ev_eq τ
 
 /- English proof (translation)
-Rewrite using `[aC, PowerSeries.coeff_map, aZ, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, e4Z]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eisensteinFourCubeSeries_coeff_zero : PowerSeries.coeff 0 aC = 1 := by
   rw [aC, PowerSeries.coeff_map, aZ, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, e4Z]
   simp
 
 /- English proof (translation)
-Rewrite using `[dC, PowerSeries.coeff_map, dZ_coeff_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem discriminantSeries_coeff_zero : PowerSeries.coeff 0 dC = 0 := by
   rw [dC, PowerSeries.coeff_map, dZ_coeff_zero]
   simp
 
 /- English proof (translation)
-Rewrite using `[dC, PowerSeries.coeff_map, dZ_coeff_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem discriminantSeries_coeff_one : PowerSeries.coeff 1 dC = 1 := by
   rw [dC, PowerSeries.coeff_map, dZ_coeff_one]
   simp
 
 /- English proof (translation)
-Take `⟨hc, _⟩` from `zetaRoot_pow_mem_of_mem_hermiteTriples hm ht`. Establish `hA : CoeffIn (Rm m) aC` using `CoeffIn.map_int _ _`. Establish `hD : CoeffIn (Rm m) dC` using `CoeffIn.map_int _ _`. Unfold `facSer`. Conclude with `((hA.xp m).mul (hD.sub1 hc _)).sub ((hA.sub1 hc _).mul (hD.xp m))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem facSer_coeffIn {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) :
     CoeffIn (Rm m) (facSer m t) := by
@@ -149,7 +147,7 @@ theorem facSer_coeffIn {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t �
   exact ((hA.xp m).mul (hD.sub1 hc _)).sub ((hA.sub1 hc _).mul (hD.xp m))
 
 /- English proof (translation)
-Establish `hc : ‖zetaC t.2.2 ^ t.2.1‖ ≤ 1` using `(norm_zetaRoot_pow_of_mem_hermiteTriples hm ht).le`. Establish `hk : t.1 ^ 2 ≠ 0` using `pow_ne_zero _ (dvd_and_eq_div_of_mem_Tm hm ht).2.1.ne'`. Unfold `facSer`. Conclude with `((convergesOnDisk_eisensteinFourCubeSeries.xp hm.ne').mul (convergesOnDisk_discriminantSeries.sub1 hc hk)).sub ((convergesOnDisk_eisensteinFourCubeSeries.sub1 hc hk).mul (convergesOnDisk_discriminantSeries.xp hm.ne'))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem facSer_conv {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) : Conv (facSer m t) := by
   have hc : ‖zetaC t.2.2 ^ t.2.1‖ ≤ 1 := (norm_zetaRoot_pow_of_mem_hermiteTriples hm ht).le
@@ -159,11 +157,11 @@ theorem facSer_conv {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ T
     ((convergesOnDisk_eisensteinFourCubeSeries.sub1 hc hk).mul (convergesOnDisk_discriminantSeries.xp hm.ne'))
 
 /- English proof (translation)
-Take `⟨hdvd, ha0, he, hae⟩` from `dvd_and_eq_div_of_mem_Tm hm ht`. Establish `he0 : 0 < t.2.2`. Rewrite using `[he]`. Conclude with `Nat.div_pos (Nat.le_of_dvd hm hdvd) ha0`. Establish `hq` using `qm_norm_lt_one hm τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(norm_zetaRoot_pow_of_mem_hermiteTriples hm ht).le`. Establish `hk : t.1 ^ 2 ≠ 0` using `pow_ne_zero _ ha0.ne'`. Establish `hA` using `convergesOnDisk_eisensteinFourCubeSeries`. Establish `hD` using `convergesOnDisk_discriminantSeries`. Establish `hpt : zetaC t.2.2 ^ t.2.1 * qm m τ ^ (t.1 ^ 2) = qm 1 (pt t.1 t.2.1 t.2.2 τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qm_pt ha0 he0, hae]`. Unfold `facSer fac`. Rewrite using `[ev_sub ((hA.xp hm.ne').mul (hD.sub1 hc hk)) ((hA.sub1 hc hk).mul (hD.xp hm.ne')) hq, ev_mul (hA.xp hm.ne') (hD.sub1 hc hk) hq, ev_mul (hA.sub1 hc hk) (hD.xp hm.ne') hq, ev_xp _ hm.ne', ev_xp _ hm.ne', evalSeries_rescaleExpand _ _ hk, evalSeries_rescaleExpand _ _ hk, qm_pow hm, h …`. Simplify using `only [evalSeries_eisensteinFourCubeSeries, evalSeries_discriminantSeries]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem facSer_ev {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) (τ : ℍ) :
     ev (facSer m t) (qm m τ) = fac t τ := by
@@ -185,7 +183,7 @@ theorem facSer_ev {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm 
   simp only [evalSeries_eisensteinFourCubeSeries, evalSeries_discriminantSeries]
 
 /- English proof (translation)
-Take `⟨hu, hui, hu0, hlow, hval⟩` from `hf`. Take `⟨_, _, _, hglow, _⟩` from `hg`. Use `⟨hu, hui, hu0, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hlow k hk, hglow k (hk.trans h), sub_zero]`. Rewrite using `[map_sub, hval, hglow n h, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem LowUnit.facSub_left {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : ℕ} {u u' : ℂ}
     (hf : LowUnit R f n u) (hg : LowUnit R g n' u') (h : n < n') : LowUnit R (f - g) n u := by
@@ -196,7 +194,7 @@ theorem LowUnit.facSub_left {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : �
   · rw [map_sub, hval, hglow n h, sub_zero]
 
 /- English proof (translation)
-Take `⟨_, _, _, hflow, _⟩` from `hf`. Take `⟨hu, hui, hu0, hglow, hval⟩` from `hg`. Use `⟨neg_mem hu, by rw [inv_neg]; exact neg_mem hui, neg_ne_zero.2 hu0, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hflow k (hk.trans h), hglow k hk, sub_zero]`. Rewrite using `[map_sub, hflow n' h, hval, zero_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem LowUnit.facSub_right {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : ℕ} {u u' : ℂ}
     (hf : LowUnit R f n u) (hg : LowUnit R g n' u') (h : n' < n) : LowUnit R (f - g) n' (-u') := by
@@ -207,7 +205,7 @@ theorem LowUnit.facSub_right {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : �
   · rw [map_sub, hflow n' h, hval, zero_sub]
 
 /- English proof (translation)
-Use `⟨one_mem R, by rw [inv_one]; exact one_mem R, one_ne_zero, fun n hn => absurd hn (Nat.not_lt_zero n), ?_⟩` and prove the remaining obligations. Rewrite using `[sub1, coeff_xp, if_pos (dvd_zero k), Nat.zero_div, PowerSeries.coeff_rescale, pow_zero, one_mul, eisensteinFourCubeSeries_coeff_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasUnitLeadingCoeff_rescaleExpand_eisensteinFourCubeSeries (R : Subring ℂ) (c : ℂ) {k : ℕ} (hk : k ≠ 0) :
     LowUnit R (sub1 c k aC) 0 1 := by
@@ -217,9 +215,9 @@ theorem hasUnitLeadingCoeff_rescaleExpand_eisensteinFourCubeSeries (R : Subring 
     eisensteinFourCubeSeries_coeff_zero]
 
 /- English proof (translation)
-Use `⟨hc, hc', hc0, fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub1, coeff_xp] split_ifs with hd`. Establish `h0 : n = 0` using `Nat.eq_zero_of_dvd_of_lt hd hn`. Substitute `h0` using the available equality. Rewrite using `[Nat.zero_div, PowerSeries.coeff_rescale, discriminantSeries_coeff_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[sub1, coeff_xp, if_pos dvd_rfl, Nat.div_self (Nat.pos_of_ne_zero hk), PowerSeries.coeff_rescale, pow_one, discriminantSeries_coeff_one, mul_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasUnitLeadingCoeff_rescaleExpand_discriminantSeries {R : Subring ℂ} {c : ℂ} (hc : c ∈ R) (hc' : c⁻¹ ∈ R) (hc0 : c ≠ 0) {k : ℕ}
     (hk : k ≠ 0) : LowUnit R (sub1 c k dC) k c := by
@@ -234,19 +232,19 @@ theorem hasUnitLeadingCoeff_rescaleExpand_discriminantSeries {R : Subring ℂ} {
       pow_one, discriminantSeries_coeff_one, mul_one]
 
 /- English proof (translation)
-Simplify using `[sub1, PowerSeries.rescale_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rescaleExpand_one (k : ℕ) (f : PowerSeries ℂ) : sub1 1 k f = xp k f := by
   simp [sub1, PowerSeries.rescale_one]
 
 /- English proof (translation)
-Take `⟨hdvd, ha0, he, hae⟩` from `dvd_and_eq_div_of_mem_Tm hm ht`. Take `⟨hc, hci⟩` from `zetaRoot_pow_mem_of_mem_hermiteTriples hm ht`. Establish `hc0 : zetaC t.2.2 ^ t.2.1 ≠ 0` using `pow_ne_zero _ (zetaRoot_ne_zero _)`. Establish `hk : t.1 ^ 2 ≠ 0` using `pow_ne_zero _ ha0.ne'`. Establish `hxa : LowUnit (Rm m) (xp m aC) 0 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← rescaleExpand_one]`. Conclude with `hasUnitLeadingCoeff_rescaleExpand_eisensteinFourCubeSeries _ 1 hm.ne'`. Establish `hxd : LowUnit (Rm m) (xp m dC) m 1`. Rewrite using `[← rescaleExpand_one]`. Conclude with `hasUnitLeadingCoeff_rescaleExpand_discriminantSeries (one_mem _) (by rw [inv_one]; exact one_mem _) one_ne_zero hm.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hxa.mul (hasUnitLeadingCoeff_rescaleExpand_discriminantSeries hc hci hc0 hk)`. Establish `h2` using `(hasUnitLeadingCoeff_rescaleExpand_eisensteinFourCubeSeries (Rm m) (zetaC t.2.2 ^ t.2.1) hk).mul hxd`. Simplify using `only [zero_add, one_mul] at h1 h2`. Unfold `facSer`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, _, h1.facSub_left h2 (by rw [← hae]; nlinarith)⟩`. Conclude with `⟨_, _, h1.facSub_right h2 (by rw [← hae]; nlinarith)⟩`.
+A detailed English derivation is pending.
 -/
 theorem facSer_low {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) (hne : t.1 ≠ t.2.2) :
     ∃ n0 u, LowUnit (Rm m) (facSer m t) n0 u := by

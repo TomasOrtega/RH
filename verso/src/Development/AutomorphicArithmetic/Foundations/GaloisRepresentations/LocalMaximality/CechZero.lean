@@ -6,7 +6,7 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.productCup_of_system.PartialZeroIdentity
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[lft, uni]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem lft_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) :
     lft (uni I J) = I := by
@@ -14,7 +14,7 @@ private theorem lft_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : F
   simp [lft, uni]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[rgt, uni]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rgt_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) :
     rgt (uni I J) = J := by
@@ -22,7 +22,7 @@ private theorem rgt_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : F
   simp [rgt, uni]
 
 /- English proof (translation)
-Establish `h1 : y s ∈ (if s.Nonempty ∧ (s.card : ℤ) = n + 1 then G s else ⊥)` using `hy.1 s (Set.mem_univ s)`. Rewrite `h1` using `[if_neg (fun h' => h h'.2)]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cech_zero {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     {G : Finset ι → Submodule ℂ E} {n : ℤ} {y : Finset ι → E} (hy : y ∈ (cech G).Z n)
@@ -32,7 +32,7 @@ private theorem cech_zero {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Modul
   simpa using h1
 
 /- English proof (translation)
-Simplify using `[muP, resP, trF]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem res_mu {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K]
     [IsScalarTower ℂ F K] (τ : DR ℂ K →ₗ[K] K) (ρ : F →ₗ[ℂ] ℂ) (e f w : DR ℂ K) :
@@ -43,25 +43,25 @@ end UpperTheory.Gal.productCup_of_system.PartialZeroIdentity
 
 open UpperTheory.Gal.productCup_of_system.PartialZeroIdentity in
 /- English proof (translation)
-Introduce `hZA hRC hKD hSB hGZ F K _ _ _ _ _ _ d x hFC τ hT ρ hR a ha c hc hD`. Establish `htop : top c ∈ (sysZ K x a).mix.Z (d + 2)` using `(hSB d _ _ (sysZ K x a) (Mi d) n11 (sysZ K x a).mu (d + 2)).2.2.1 c hc`. Take `⟨m, p, e, f, hk, hB⟩` from `hKD (Fin (d + 1)) (DR ℂ K) (DR ℂ K) (fun s => omB ℂ K (rB ℂ K (xv x) s) (d - a)) (fun s => omB ℂ K (rB ℂ K (xv x) s) a) d (hGZ F K d x hFC (d - a)).2.2 (hGZ F K d x hFC a).2.2 (top c) htop`. Use `⟨m, p, e, f, hk, hB, ?_⟩` and prove the remaining obligations. Introduce `q α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hZA F K d x hFC τ hT ρ hR a q ha c hc hD α hα`. Establish `h2` using `hRC F K d x hFC τ hT ρ hR a q ha _ hB α hα`. Establish `hzero : ∀ k, p k ≠ q → pr K τ ρ (e k) α = 0`. Introduce `k hkq`. Simplify using `only [pr, cupPair, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply, LinearMap.mul_apply']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hc1 : ((Finset.univ.filter (· ≤ j)).card : ℤ) = (j : ℤ) + 1`. Rewrite using `[Finset.filter_ge_eq_Iic, Fin.card_Iic]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hc2 : ((Finset.univ.filter (j ≤ ·)).card : ℤ) = (d : ℤ) + 1 - j`. Rewrite using `[Finset.filter_le_eq_Ici, Fin.card_Ici]`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hA : ((Finset.univ.filter (· ≤ j)).card : ℤ) = ((d : ℤ) - p k) + 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Establish `: α (Finset.univ.filter (j ≤ ·)) = 0`. Use `cech_zero hα _ ?_` and prove the remaining obligations. Rewrite using `[hc2]`. Rewrite `hA` using `[hc1]`. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hkq` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Establish `: e k (Finset.univ.filter (· ≤ j)) = 0` using `cech_zero (hk k).2.1 _ hA`. Simplify using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ J, resP (DR ℂ K) ρ (∑ i, muP F K τ ((∑ k, join (TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K)) (e k) (f k)) (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·)))) = ∑ k ∈ Finset.univ.filter (fun k => p k = q), pr K τ ρ (e k) α • f k J`. Introduce `J`. Rewrite using `[Finset.sum_filter_of_ne (fun k _ hne => ?_)]`. Simplify using `only [Finset.sum_apply, join, lft_uni', rgt_uni', TensorProduct.mk_apply, map_sum, LinearMap.sum_apply, res_mu]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [pr, cupPair, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply, LinearMap.mul_apply', Finset.sum_smul]`. Assume the negation of the conclusion as `hpq`. Conclude with `hne (by rw [hzero k hpq, zero_smul])`. Establish `hfin` using `add_mem h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hfin using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `J`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[← key J]`. Simplify using `only [Finset.sum_apply, map_sub, LinearMap.sub_apply, Finset.sum_sub_distrib, map_sum, LinearMap.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.zId_of :
     ZAct → RCupTop → KunDec → SysBasic → GoodZ → ZId := by

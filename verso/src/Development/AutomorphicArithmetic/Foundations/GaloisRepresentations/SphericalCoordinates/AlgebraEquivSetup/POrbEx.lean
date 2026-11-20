@@ -5,17 +5,15 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ p _ Kq u τ₁ h₁`. Set `S` to `{τ : E →+* PadicAlgCl p // LiesOver Kq u τ}`. Set `R : Setoid S` to `{ r := fun a b => ∃ σ : Gal(PadicAlgCl p/ℚ_[p]), b.1 = ((σ.toRingEquiv : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p).comp a.1 iseqv := ⟨fun a => ⟨1, by ext x; simp⟩, fun {a b} ⟨σ, hσ⟩ => ⟨σ⁻¹, by rw [hσ]; ext x; simp⟩, fun {a b c} ⟨σ, hσ⟩ ⟨ρ, hρ⟩ => ⟨ρ * σ, by …`. Use `haveI : Finite (E →+* PadicAlgCl p) := inferInstance`. Use `haveI : Finite S := Subtype.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Finite (Quotient R) := Quotient.finite _`. Set `s₁ : S` to `⟨τ₁, h₁⟩`. Set `rep : Quotient R → S` to `fun q => if q = Quotient.mk R s₁ then s₁ else q.out`. Establish `hrep : ∀ q, Quotient.mk R (rep q) = q`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hq : q = Quotient.mk R s₁`. Simplify using `only [rep, if_pos hq]`. Conclude with `hq.symm`. Simplify using `only [rep, if_neg hq]`. Conclude with `Quotient.out_eq q`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `eq` to `Finite.equivFin (Quotient R)`. Use `⟨Nat.card (Quotient R), fun i => (rep (eq.symm i)).1, eq (Quotient.mk R s₁), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[rep, s₁]`. Introduce `i`. Conclude with `(rep _).2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `i j σ hij`. Apply `eq.symm.injective` to reduce the goal to its premises. Rewrite using `[← hrep (eq.symm i), ← hrep (eq.symm j)]`. Conclude with `Quotient.sound ⟨σ, hij.symm⟩`. Introduce `τ hτ`.
-
-Take `⟨σ, hσ⟩` from `Quotient.exact (hrep (Quotient.mk R ⟨τ, hτ⟩))`. Conclude with `⟨eq (Quotient.mk R ⟨τ, hτ⟩), σ, by simpa using hσ⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pOrbEx :
     OrbEx := by

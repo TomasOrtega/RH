@@ -13,13 +13,13 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCountG
 
 /- English proof (translation)
-Introduce `n E`. Take `⟨e, ρ', hc, hiso, hint⟩` from `GlobalTheory.T.unitary_euclidean_model E`. Take `⟨F, hgl, -, hder⟩` from `GlobalTheory.T.exists_compact_lie_action _ ρ' hc hiso`. Use `⟨fun a b => e.symm.toLinearMap ∘ₗ F a b ∘ₗ e.toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d ext1 ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `LinearMap.congr_fun (hgl a b c d) (e ξ)`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_sub] at h ⊢`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `X γ hX hγ ξ`. Set `eL : EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) →L[ℂ] (E.V →L[ℂ] ℂ)` to `LinearMap.toContinuousLinearMap e.symm.toLinearMap`. Establish `heL : ∀ w, eL w = e.symm w` using `fun _ => rfl`. Establish `h` using `(eL.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hder X γ hX hγ (e ξ))`. Establish `hf : (fun t : ℝ => ξ ∘L E.ρ (γ t)⁻¹) = (eL.restrictScalars ℝ) ∘ fun t : ℝ => ρ' (γ t) (e ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', heL, ← hint, LinearEquiv.symm_apply_apply]`. Rewrite using `[hf]`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_sum, map_smul, heL, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dualFam_exists : ∀ {n : ℕ} (E : KMod n), ∃ G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ), IsDualFam E G := by
   intro n E

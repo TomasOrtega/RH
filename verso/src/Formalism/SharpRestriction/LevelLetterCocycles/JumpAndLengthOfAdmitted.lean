@@ -21,11 +21,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [ContinuousConstSMul LL V] (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `h1` using `hBK hS V ρ hc hcr`. Rewrite `h1` using `[h0, finrank_bot]`. Establish `h2 : ∀ τ : K →ₐ[Qp] LL, (finrank LL ↥(DdRE PD ρ τ) : ℤ) - finrank LL ↥(FildR PD ρ τ 0) = (Formalism.RepresentationBoundsCohomology.negCount (S τ).val : ℤ)`. Introduce `τ`. Rewrite using `[hF τ (S τ) (fun a ha => by rw [hS1, if_neg ha])]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun a ha => by rw [hS1, if_pos (Finset.mem_filter.mp ha).1])]`. Simplify using `[Formalism.RepresentationBoundsCohomology.negCount, Finset.filter_val, Finset.card_def]`. Rewrite `h1` using `[Finset.sum_congr rfl (fun τ _ => h2 τ)]`. Establish `h3 : (finrank LL (FiniteCohomology PD ρ) : ℤ) = ((0 + ∑ τ, Formalism.RepresentationBoundsCohomology.negCount (S τ).val : ℕ) : ℤ)`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rank_eq_count (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     (hc : ∀ x, Continuous fun g => ρ g x) (hcr : IsCrys PD ρ) (h0 : H0V ρ = ⊥)
@@ -46,11 +46,11 @@ theorem rank_eq_count (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp :=
   exact_mod_cast h3
 
 /- English proof (translation)
-Use `choose C Lo hC hLo hm using hJ`. Establish `h` using `rank_eq_count PD ρ hBK hS hc hcr h0 hF (fun τ => C τ ∪ Lo τ) hm`. Establish `hS'` using `hS`. Take `⟨-, hcard⟩` from `hS'`. Establish `hb : ∀ τ, Formalism.RepresentationBoundsCohomology.negCount (C τ ∪ Lo τ).val ≤ m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Establish `hsub : (C τ ∪ Lo τ).filter (fun u => u < 0) ⊆ Lo τ`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_filter, Finset.mem_union]`. Take `⟨h1 | h1, h2⟩` from `ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Conclude with `absurd h2 (lt_asymm (hC τ a h1))`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rank_le_col (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     (hc : ∀ x, Continuous fun g => ρ g x) (hcr : IsCrys PD ρ) (h0 : H0V ρ = ⊥)
@@ -79,19 +79,19 @@ theorem rank_le_col (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Q
     _ = finrank Qp K * m := by rw [Finset.sum_const, Finset.card_univ, hcard, smul_eq_mul]
 
 /- English proof (translation)
-Use `choose C Lo hC hLo hm using hJ`. Establish `hmem : ∀ τ a, a ∈ (C τ ∪ Lo τ).image (fun b => -b - 1) ↔ -a - 1 ∈ C τ ∪ Lo τ`. Introduce `τ a`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Use `hb using 1` and compare the differences between its conclusion and the goal. Use `show -(-b - 1) - 1 = b`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨-a - 1, h, by show -(-a - 1) - 1 = a; ring⟩`. Establish `hS1 : ∀ τ a, multV PD ρ τ a = if a ∈ (C τ ∪ Lo τ).image (fun b => -b - 1) then 1 else 0`. Introduce `τ a`. Rewrite using `[hm τ a]`. Distinguish the cases in `h : -a - 1 ∈ C τ ∪ Lo τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_pos ((hmem τ a).mpr h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h ((hmem τ a).mp h'))]`. Establish `h` using `rank_eq_count PD ρ hBK hS hc hcr h0 hF (fun τ => (C τ ∪ Lo τ).image (fun b => -b - 1)) hS1`. Establish `hS'` using `hS`. Take `⟨-, hcard⟩` from `hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ τ, Formalism.RepresentationBoundsCohomology.negCount ((C τ ∪ Lo τ).image (fun b => -b - 1)).val ≤ m`. Introduce `τ`. Establish `hsub : ((C τ ∪ Lo τ).image (fun b => -b - 1)).filter (fun u => u < 0) ⊆ (Lo τ).image (fun b => -b - 1)`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ha1, ha2⟩` from `ha`. Establish `h1` using `(hmem τ a).mp ha1`. Rewrite `h1` using `[Finset.mem_union]`. Break down `h1 with h1 | h1` into its components or cases. Use `hC τ _ h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `Finset.mem_image.mpr ⟨-a - 1, h1, by show -(-a - 1) - 1 = a; ring⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rank_le_row (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     (hc : ∀ x, Continuous fun g => ρ g x) (hcr : IsCrys PD ρ) (h0 : H0V ρ = ⊥)
@@ -169,9 +169,7 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
 variable {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'}
 
 /- English proof (translation)
-Establish `hle : (powB PD L' e).comap (latticeFiniteCocycles PD L').subtype ≤ (F.ImF PD).comap (latticeFiniteCocycles PD L').subtype`. Apply `Submodule.comap_mono` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `h c hc`.
-
-Conclude with `Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem col_le_of_lift (F : LatHom L L') (e : ℕ) (h : F.LiftF PD e) :
     F.col PD ≤ lenModPow PD L' e := by
@@ -183,15 +181,15 @@ theorem col_le_of_lift (F : LatHom L L') (e : ℕ) (h : F.LiftF PD e) :
   exact Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)
 
 /- English proof (translation)
-Set `φ : ↥(latticeFiniteCocycles PD L) →ₗ[O] ↥(latticeFiniteCocycles PD L')` to `E.post.restrict fun c hc => E.post_Z1fT PD c hc`. Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨c, hc⟩`. Use `⟨⟨E'.post c, E'.post_Z1fT PD c hc⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Conclude with `hE (c g)`. Establish `hmap : (powB PD L n).comap (latticeFiniteCocycles PD L).subtype ≤ ((powB PD L' n).comap (latticeFiniteCocycles PD L').subtype).comap φ`. Introduce and unpack `⟨c, hc⟩ hmem`. Express the relevant statement in the definitionally equal form `E.post c ∈ powB PD L' n`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hmem' : c ∈ powB PD L n` using `hmem`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hmem'`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup ?_ (E.post_B1T b hb)` and prove the remaining obligations. Take `⟨a0, ha0, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E.post a0, E.post_Z1fT PD a0 ha0, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective (Submodule.mapQ _ _ φ hmap)`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hφ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Conclude with `Module.length_le_of_surjective (Submodule.mapQ _ _ φ hmap) hsurj`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lenModPow_le_of_retract (E : LatHom L L') (E' : LatHom L' L) (hE : ∀ x, E.f (E'.f x) = x)
     (n : ℕ) : lenModPow PD L' n ≤ lenModPow PD L n := by
@@ -223,13 +221,13 @@ theorem lenModPow_le_of_retract (E : LatHom L L') (E' : LatHom L' L) (hE : ∀ x
 end Two
 
 /- English proof (translation)
-Unfold `IsSubOfSums at h`. Unfold `IsSubquotOfSums`. Take `⟨m, xs, j, hj, hjρ⟩` from `h`. Establish `hker : LinearMap.ker j = ⊥` using `LinearMap.ker_eq_bot.mpr hj`. Take `⟨q, hq⟩` from `j.exists_leftInverse_of_injective hker`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hqj : ∀ v, q (j v) = v` using `fun v => by`. Use `LinearMap.congr_fun hq v` as an intermediate fact. Simplify using `using this`. Use `⟨m, xs, LinearMap.range j, q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hu`. Conclude with `LinearMap.mem_range.mpr ⟨ρ g v, hjρ g v⟩`. Introduce `v`. Conclude with `⟨j v, LinearMap.mem_range.mpr ⟨v, rfl⟩, hqj v⟩`. Introduce `g u hu`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hu`. Rewrite using `[← hjρ g v, hqj, hqj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subquot_of_sub {V : Type} [AddCommGroup V] [Module LL V] (ρ : Representation LL G V)
     {ι : Type} {k : ℕ} (Ms : ι → G → Matrix (Fin k) (Fin k) LL) (h : IsSubOfSums ρ Ms) :
@@ -253,13 +251,13 @@ theorem subquot_of_sub {V : Type} [AddCommGroup V] [Module LL V] (ρ : Represent
     rw [← hjρ g v, hqj, hqj]
 
 /- English proof (translation)
-Unfold `IsSubquotOfSums at h ⊢`. Take `⟨m, xs, U, q, hU, hs, hq⟩` from `h`. Use `first`. Consider the case `(refine ⟨m, xs, U, f.comp q, hU, ?_, ?_⟩`. Introduce `v'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hf v'`. Take `⟨u, hu, rfl⟩` from `hs v`. Conclude with `⟨u, hu, rfl⟩`. Introduce `g u hu`. Simplify using `only [LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq g u hu, hfg])`. Consider the case `(refine ⟨m, xs, U, fun u => f (q u), hU, ?_, ?_⟩`. Introduce `v'`. Take `⟨v, rfl⟩` from `hf v'`. Take `⟨u, hu, rfl⟩` from `hs v`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu, rfl⟩`. Introduce `g u hu show f (q _) = ρ' g (f (q u))`. Rewrite using `[hq g u hu, hfg])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subquot_of_quot {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V'] [Module LL V']
     (ρ : Representation LL G V) (ρ' : Representation LL G V')
@@ -287,23 +285,21 @@ theorem subquot_of_quot {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGro
        rw [hq g u hu, hfg])
 
 /- English proof (translation)
-Introduce `V2 _ _ _ _ _ _ _ _ _ _ _ ρ2 T2 hc2 hmat V1 _ _ _ _ _ _ _ _ _ _ _ ρ1 T1 hc1 hsub F hF`. Establish `hsq1` using `subquot_of_sub ρ1 Ms hsub`. Establish `hFs : Function.Surjective F.f`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← T2.span, Submodule.span_le]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, _, rfl⟩` from `hF y hy`. Conclude with `⟨x, rfl⟩`. Establish `hsq2` using `subquot_of_quot ρ1 ρ2 Ms hsq1 F.f hFs F.equiv`. Establish `hl` using `hLift V1 ρ1 T1 hc1 hsq1 V2 ρ2 T2 hc2 hsq2 F hF`. Establish `h1` using `col_le_of_lift PD F e' hl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, heg, heT⟩` from `hmat`. Establish `: ContinuousSMul LL V2` using `IsModuleTopology.toContinuousSMul LL V2`. Set `E : LatHom L2 T2` to `{ f := (e.symm : (Fin k2 → LL) →ₗ[LL] V2) equiv := by`. Introduce `g x`. Apply `e.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[heg]`. Simplify using `[matRep]`. Use `cont := IsModuleTopology.continuous_of_linearMap _`. Use `T_le := by`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[heT]`. Simplify using `using (hL2 x).mp hx }`. Set `E' : LatHom T2 L2` to `{ f := (e : V2 →ₗ[LL] (Fin k2 → LL)) equiv := by`. Introduce `g x`. Express the relevant statement in the definitionally equal form `e (ρ2 g x) = _`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heg]`. Simplify using `[matRep]`. Use `cont := IsModuleTopology.continuous_of_linearMap _`. Use `T_le := by`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hL2 _).mpr ((heT x).mp hx) }`. Establish `h2` using `lenModPow_le_of_retract PD E E' (fun x => by simp [E, E']) e'`. Take `⟨kO, hkO⟩` from `ENat.ne_top_iff_exists.mp hfin`. Establish `h3 : F.col PD ≤ ((e' * rk * kO + r * c0 * kO : ℕ) : ℕ∞)`. Use `(h1.trans h2).trans (hH1f.trans ?_)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hH0`, the goal using `[← hkO]`. Use `push_cast`. Conclude with `add_le_add le_rfl hH0`. Take `⟨mm, hmm, hle⟩` from `ENat.le_natCast_iff.mp h3`. Use `⟨mm, kO, hmm, hkO.symm, ?_⟩` and prove the remaining obligations.
-
-Establish `h4 : (mm : ℚ) ≤ ((e' * rk * kO + r * c0 * kO : ℕ) : ℚ)` using `by exact_mod_cast hle`. Establish `h5 : (rk : ℚ) ≤ (n : ℚ) * m` using `by exact_mod_cast hrk`. Move the coercions through the operations in `at h4`. Establish `h6 : (e' : ℚ) * rk * kO ≤ (e' : ℚ) * ((n : ℚ) * m) * kO` using `by gcongr`. Use polynomial arithmetic with `[h4, h6]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rowAt_of_lift {ι : Type} {k k2 : ℕ} (Ms : ι → G → Matrix (Fin k) (Fin k) LL)
     (M2 : G →* Matrix (Fin k2) (Fin k2) LL) (L2 : Lattice (O := O) (matRep M2))
@@ -377,17 +373,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O LL]
 
 /- English proof (translation)
-Set `a : LL →ₗ[O] Formalism.NG.KO O` to `(Submodule.mkQ (1 : Submodule O (FractionRing O))).comp (FractionRing.algEquiv O LL).symm.toLinearMap`. Establish `ha : ∀ x : LL, a x = 0 ↔ x ∈ Set.range (algebraMap O LL)`. Introduce `x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk ((FractionRing.algEquiv O LL).symm x) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `congrArg (FractionRing.algEquiv O LL) hy` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by simp⟩`. Set `ψ : (Fin k → LL) →ₗ[O] (Fin k → Formalism.NG.KO O)` to `a.compLeft (Fin k)`. Establish `hker : LinearMap.ker ψ = T`. Use extensionality with `v`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.mem_ker, hT, funext_iff]`. Conclude with `forall_congr' fun j => ha (v j)`. Set `Ψ : ((Fin k → LL) ⧸ T) →ₗ[O] (Fin k → Formalism.NG.KO O)` to `T.liftQ ψ hker.ge`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker.le`. Establish `h1` using `Formalism.RepresentationBoundsCohomology.submoduleLengthBound_statement O (Fin k) (N.map Ψ) PD.p c (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[← map_smul, hk x hx, map_zero])`. Rewrite `h1` using `[← (Submodule.equivMapOfInjective Ψ hΨ N).length_eq, Fintype.card_fin]`.
-
-Rewrite using `[mul_assoc]`. Conclude with `h1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_le_of_kill [IsFractionRing O LL] {k : ℕ} (T : Submodule O (Fin k → LL))
     (hT : ∀ v, v ∈ T ↔ ∀ j, v j ∈ Set.range (algebraMap O LL))
@@ -431,13 +425,13 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
 abbrev H1fQuotient (L : Lattice (O := O) ρ) : Type := ↥(latticeFiniteCocycles PD L) ⧸ (latticeCoboundaries L).comap (latticeFiniteCocycles PD L).subtype
 
 /- English proof (translation)
-Set `I : Submodule O (H1fQuotient PD L)` to `LinearMap.range ((((PD.p : ℕ) : O) ^ n) • (LinearMap.id : H1fQuotient PD L →ₗ[O] H1fQuotient PD L))`. Establish `h1` using `Formalism.RepresentationBoundsCohomology.rowColength O (H1fQuotient PD L) I PD.p n (fun m => ⟨m, rfl⟩)`. Establish `hle : (latticeCoboundaries L).comap (latticeFiniteCocycles PD L).subtype ≤ (powB PD L n).comap (latticeFiniteCocycles PD L).subtype` using `Submodule.comap_mono le_sup_right`. Establish `hI : I ≤ LinearMap.ker (Submodule.factor hle)`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.factor hle ((((PD.p : ℕ) : O) ^ n) • Submodule.Quotient.mk c) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk ((((PD.p : ℕ) : O) ^ n) • c) : ↥(latticeFiniteCocycles PD L) ⧸ (powB PD L n).comap (latticeFiniteCocycles PD L).subtype) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_left ⟨c.1, c.2, rfl⟩`. Establish `hs : Function.Surjective (I.liftQ (Submodule.factor hle) hI)`. Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.factor_surjective hle y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Use `(Module.length_le_of_surjective _ hs).trans (h1.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[lenOl]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lenModPow_le_of_fg (L : Lattice (O := O) ρ) [Module.Finite O (H1fQuotient PD L)] (n : ℕ) :
     lenModPow PD L n ≤ (n : ℕ∞) * (finrank O (H1fQuotient PD L) : ℕ∞) * lenOl PD (O := O) +
@@ -470,7 +464,7 @@ end Len
 section TypeU
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨f (x : E), (NumberField.RingOfIntegers.isIntegral_coe x).map f.toAlgHom.toRingHom.toIntAlgHom⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_ringOfIntegers_eq_algEquiv_apply {E : Type} [Field E] [NumberField E] (f : E ≃ₐ[ℚ] E)
     (x : NumberField.RingOfIntegers E) :
@@ -478,9 +472,9 @@ private theorem exists_ringOfIntegers_eq_algEquiv_apply {E : Type} [Field E] [Nu
   ⟨⟨f (x : E), (NumberField.RingOfIntegers.isIntegral_coe x).map f.toAlgHom.toRingHom.toIntAlgHom⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨hsurj, φ, hφb, hφ⟩` from `h1`. Take `⟨φ', hφ'b, hφ'⟩` from `h2`. Take `⟨y, hy⟩` from `hsurj (cj b)`. Establish `e : z = -z`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hz (by linear_combination e / 2)`.
+A detailed English derivation is pending.
 -/
 theorem not_typeU_conj {E Lc Kf : Type} [Field E] [Field Lc] [Field Kf] (cj : E →+* E) (b : E) (z : ℂ)
     (hz : z ≠ 0) (hzi : starRingEnd ℂ z = -z)
@@ -503,7 +497,7 @@ theorem not_typeU_conj {E Lc Kf : Type} [Field E] [Field Lc] [Field Kf] (cj : E 
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨x, hx⟩` from `exists_ringOfIntegers_eq_algEquiv_apply cj.symm y`. Establish `hx' : (y : E) = cj (x : E)` using `by rw [hx]; exact (cj.apply_symm_apply _).symm`. Conclude with `(h x y hx').symm.trans (h' x y hx')`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjPl_unique {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] E)
     (u v v' : HeightOneSpectrum (𝓞 E))
@@ -518,7 +512,7 @@ theorem conjPl_unique {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] E
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨y, hy⟩` from `exists_ringOfIntegers_eq_algEquiv_apply cj x`. Conclude with `(h x y hy).trans (h' x y hy).symm`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conjPl_unique' {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] E)
     (u u' v : HeightOneSpectrum (𝓞 E))
@@ -532,9 +526,9 @@ theorem conjPl_unique' {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] 
 open NumberField IsDedekindDomain Pointwise in
 
 /- English proof (translation)
-Establish `hw : w.asIdeal = cj • u.asIdeal`. Use extensionality with `y`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hy : (y : E) = cj ((cj⁻¹ • y : 𝓞 E) : E)`. Establish `: ((cj⁻¹ • y : 𝓞 E) : E) = cj⁻¹ (y : E)` using `rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(AlgEquiv.apply_symm_apply cj (y : E)).symm`. Conclude with `(h _ y hy).symm`. Rewrite using `[hw, Ideal.ramificationIdx_smul, Ideal.inertiaDeg_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ef_conj {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] E)
     (u w : HeightOneSpectrum (𝓞 E))
@@ -566,9 +560,9 @@ def Induces (sm : Set Kf) (v : HeightOneSpectrum (𝓞 E)) (σ : E →+* Kf) : P
   ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ σ (x : E) ∈ sm
 
 /- English proof (translation)
-Unfold `Induces at hσ ⊢`. Introduce `x`. Take `⟨y, hy⟩` from `exists_ringOfIntegers_eq_algEquiv_apply cj x`. Establish `e : (σ.comp (cj : E →+* E)) (x : E) = σ (y : E)` using `by show σ (cj (x : E)) = σ (y : E)`. Rewrite using `[hy]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h x y hy]`. Conclude with `hσ y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem induces_conj (sm : Set Kf) (cj : E ≃ₐ[ℚ] E) (u w : HeightOneSpectrum (𝓞 E))
     (h : ∀ x y : 𝓞 E, (y : E) = cj (x : E) → (x ∈ u.asIdeal ↔ y ∈ w.asIdeal)) (σ : E →+* Kf)
@@ -583,7 +577,7 @@ theorem induces_conj (sm : Set Kf) (cj : E ≃ₐ[ℚ] E) (u w : HeightOneSpectr
   exact hσ y
 
 /- English proof (translation)
-Introduce `hT`. Establish `hI` using `induces_conj sm cj u w h σ hσ`. Take `⟨_, hT2⟩` from `hU _ hI`. Conclude with `not_typeU_conj (cj : E →+* E) b z hz hzi hcj embK embC σ hT hT2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem typeD_of_conj (sm : Set Kf) (cj : E ≃ₐ[ℚ] E) (b : E) (z : ℂ) (hz : z ≠ 0)
     (hzi : starRingEnd ℂ z = -z)
@@ -602,9 +596,9 @@ end TypeD
 section Std
 
 /- English proof (translation)
-Unfold `stdG`. Rewrite using `[LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ j`. Conclude with `⟨x j, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `h choose x hx using h`. Conclude with `⟨x, funext hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_stdG_iff {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (k : ℕ) (v : Fin k → LL) :
     v ∈ stdG O LL k ↔ ∀ j, v j ∈ Set.range (algebraMap O LL) := by
@@ -618,7 +612,7 @@ theorem mem_stdG_iff {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (k : �
     exact ⟨x, funext hx⟩
 
 /- English proof (translation)
-Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]`. Conclude with `fun h => ha (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem length_quot_ne_top {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (a : O)
     (ha : a ≠ 0) : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤ := by
@@ -630,11 +624,11 @@ end Std
 section Arith
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_union hd, Finset.sum_add_distrib]`. Establish `h1 : ∑ v ∈ row, lenW v ≤ ∑ v ∈ row, rowB (back v)` using `Finset.sum_le_sum hrow`. Establish `h2 : ∑ u ∈ row.image back, rowB u = ∑ v ∈ row, rowB (back v)`. Apply `Finset.sum_image` to reduce the goal to its premises. Introduce `x hx y hy hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinj hx hy hxy`. Establish `h3 : ∑ u ∈ row.image back, rowB u ≤ ∑ u ∈ col, rowB u`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp hu`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hback v hv`. Introduce `u hu _`. Conclude with `hnn u hu`. Establish `h4 : ∑ u ∈ col, lenW u ≤ ∑ u ∈ col, colB u` using `Finset.sum_le_sum hcol`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_lenW_le {P : Type} [DecidableEq P] (row col : Finset P) (hd : Disjoint row col)
     (lenW colB rowB : P → ℚ) (back : P → P) (hback : ∀ v ∈ row, back v ∈ col)
@@ -658,7 +652,7 @@ theorem sum_lenW_le {P : Type} [DecidableEq P] (row col : Finset P) (hd : Disjoi
   linarith
 
 /- English proof (translation)
-Establish `hj' : (j : ℚ) ≤ (n : ℚ) * (m : ℚ)` using `by exact_mod_cast hj`. Establish `hpos : 0 ≤ (e' : ℚ) + vd` using `add_nonneg (Nat.cast_nonneg _) hvd`. Use `mul_le_mul_of_nonneg_right hj' hpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lenCol_le (e' j n m : ℕ) (vd h0 : ℚ) (hvd : 0 ≤ vd) (hj : j ≤ n * m) :
     (e' : ℚ) + (j : ℚ) * ((e' : ℚ) + vd) + 2 * vd + h0 ≤
@@ -669,7 +663,7 @@ theorem lenCol_le (e' j n m : ℕ) (vd h0 : ℚ) (hvd : 0 ≤ vd) (hj : j ≤ n 
   linarith
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h2 : (0 : ℚ) < ((sgn * a : ℤ) : ℚ)` using `lt_of_lt_of_le hs (h a ha)`. Conclude with `h2` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cloud_sign (sgn : ℤ) (C : Finset ℤ) (s : ℚ) (hs : 0 < s)
     (h : ∀ a ∈ C, s ≤ ((sgn * a : ℤ) : ℚ)) : ∀ a ∈ C, 0 < sgn * a := by
@@ -688,9 +682,9 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂
   (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E (N.l i))
 
 /- English proof (translation)
-Establish `h` using `rank_le_col (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) hBK hS hc hcr h0 hF m hJ`. Unfold `Br.DegW at hdeg`. Unfold `Br.jW`. Use `first`. Consider the case `(rw [← hdeg]; exact h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [hdeg] at h; exact h)`. Consider the case `(simpa [hdeg] using h)`. Consider the case `exact (0 : Nat)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jW_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
     (hS : Splits (Br.LL nbr i w hw) (K := Br.Kw nbr i w hw) (Qp := ℚ_[N.l i]))
@@ -715,11 +709,11 @@ theorem jW_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
   | exact (0 : Nat)
 
 /- English proof (translation)
-Establish `hJ' : ∀ τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw, ∃ C Lo : Finset ℤ, (∀ a ∈ C, a < 0) ∧ Lo.card ≤ m ∧ ∀ a, multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))) τ a = if -a - 1 ∈ C ∪ Lo then 1 else 0`. Introduce `τ`. Take `⟨C, Lo, hC, hLo, hmW⟩` from `hJ τ`. Conclude with `⟨C, Lo, hC, hLo, fun a => (hdual τ a).trans (hmW (-a - 1))⟩`. Establish `h` using `rank_le_row (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))) hBK hS hc hcr h0 hF m hJ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Unfold `Br.DegW at hdeg`. Use `first`. Consider the case `(rw [← hdeg]; exact h)`. Consider the case `(rw [hdeg] at h; exact h)`. Consider the case `(simpa [hdeg] using h)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd hdeg (0 : Nat)`.
+A detailed English derivation is pending.
 -/
 theorem rank_second_lattice_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
     (hS : Splits (Br.LL nbr i w hw) (K := Br.Kw nbr i w hw) (Qp := ℚ_[N.l i]))
@@ -754,9 +748,9 @@ theorem rank_second_lattice_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL n
   | exact absurd hdeg (0 : Nat)
 
 /- English proof (translation)
-Use `rowAt_of_lift (Br.PD L nbr i w hw) _ _ (Br.locLat nbr i w hw (T2O N i ρ π)) ?_ e' hLift _ n m R.r c0 lenH0 hH1f hrk hH0 hfin` and prove the remaining obligations. Introduce `v`. Use `first`. Consider the case `exact mem_stdG_iff _ v`. Consider the case `(unfold Br.locLat; exact mem_stdG_iff _ v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [Br.locLat]; exact mem_stdG_iff _ v)`.
+A detailed English derivation is pending.
 -/
 theorem rowAt_le (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (e' n m c0 : ℕ)
     (hLift : LiftAt (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw)
@@ -782,7 +776,7 @@ theorem rowAt_le (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (e' n m c0 : 
   | (simp only [Br.locLat]; exact mem_stdG_iff _ v)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ef_conj _ u w huw`. Consider the case `(unfold locDeg; exact ef_conj _ u w huw)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locDeg_conj {u : HeightOneSpectrum (𝓞 H.E)} (huw : IsConjPl H u w) :
     locDeg H.E w = locDeg H.E u := by
@@ -791,7 +785,7 @@ theorem locDeg_conj {u : HeightOneSpectrum (𝓞 H.E)} (huw : IsConjPl H u w) :
   | (unfold locDeg; exact ef_conj _ u w huw)
 
 /- English proof (translation)
-Establish `hrk` using `rank_second_lattice_le L nbr i ρ π w hw hBK hS hdeg hc hcr h0 hF m hdual hJ`. Rewrite `hrk` using `[locDeg_conj w huw]`. Conclude with `rowAt_le L nbr i ρ π w hw r e' (locDeg H.E u) m c0 hLift hrk lenH0 hH1f hH0 hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAt_conj_le (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (e' m c0 : ℕ)
     {u : HeightOneSpectrum (𝓞 H.E)} (huw : IsConjPl H u w)
@@ -841,7 +835,7 @@ def lenRowSplit (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ)
     (v : HeightOneSpectrum (𝓞 D.host.E)) : ℚ := rowNum e' c0 (backPl i dc v)
 
 /- English proof (translation)
-Establish `hex : ∃ u ∈ dc.col, IsConjPl D.host u v` using `⟨u, hu, huv⟩`. Unfold `backPl`. Rewrite using `[dif_pos hex]`. Take `⟨_, hc⟩` from `hex.choose_spec`. Conclude with `conjPl_unique' _ _ _ _ hc huv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem backPl_eq {u v : HeightOneSpectrum (𝓞 D.host.E)} (hu : u ∈ dc.col)
     (huv : IsConjPl D.host u v) : backPl i dc v = u := by
@@ -852,7 +846,7 @@ theorem backPl_eq {u v : HeightOneSpectrum (𝓞 D.host.E)} (hu : u ∈ dc.col)
   exact conjPl_unique' _ _ _ _ hc huv
 
 /- English proof (translation)
-Unfold `lenRowSplit`. Rewrite using `[backPl_eq i dc hu huv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenRowSplit_eq (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ)
     {u v : HeightOneSpectrum (𝓞 D.host.E)} (hu : u ∈ dc.col) (huv : IsConjPl D.host u v) :
@@ -861,7 +855,7 @@ theorem lenRowSplit_eq (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → �
   rw [backPl_eq i dc hu huv]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.NData.vdel`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `k _`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression.
 -/
 theorem vdel_nonneg : 0 ≤ D.nd.vdel i := by
   unfold Formalism.BasicNotions.NData.vdel
@@ -870,19 +864,17 @@ theorem vdel_nonneg : 0 ≤ D.nd.vdel i := by
   positivity
 
 /- English proof (translation)
-Establish `hback : ∀ v ∈ dc.row, backPl i dc v ∈ dc.col`. Introduce `v hv`. Take `⟨u, hu, huv⟩` from `(hdecl v).mp hv`. Rewrite using `[backPl_eq i dc hu huv]`. Conclude with `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (backPl i dc) dc.row`. Introduce `v1 hv1 v2 hv2 heq`. Take `⟨u1, hu1, huv1⟩` from `(hdecl v1).mp hv1`. Take `⟨u2, hu2, huv2⟩` from `(hdecl v2).mp hv2`. Rewrite `heq` using `[backPl_eq i dc hu1 huv1, backPl_eq i dc hu2 huv2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `heq` using the available equality. Conclude with `conjPl_unique _ _ _ _ huv1 huv2`. Establish `hcol : ∀ u ∈ dc.col, Formalism.MainNotions.TruncatedSeriesCountingIdentities.lenW i ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') u ≤ (e' : ℚ) + (locDeg D.host.E u : ℚ) * (D.R.m : ℚ) * ((e' : ℚ) + D.nd.vdel i) + 2 * D.nd.vdel i + Br.h0W i u ρ π`. Introduce `u hu`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingIdentities.lenW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hu]`. Unfold `Br.lenCol`. Use `first`. Consider the case `exact lenCol_le e' _ _ _ _ _ (vdel_nonneg i) (hJ u hu)`. Consider the case `exact (0 : Nat)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrow : ∀ v ∈ dc.row, Formalism.MainNotions.TruncatedSeriesCountingIdentities.lenW i ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') v ≤ rowNum e' c0 (backPl i dc v)`. Introduce `v hv`. Establish `hnc : v ∉ dc.col` using `Finset.disjoint_left.mp dc.disj hv`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingIdentities.lenW`. Rewrite using `[dif_neg hnc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `le_refl _`. Establish `hnn : ∀ u ∈ dc.col, 0 ≤ rowNum e' c0 u`. Introduce `u _`. Unfold `rowNum`. Check the signs of the components of the expression.
-
-Use `le_trans (sum_lenW_le dc.row dc.col dc.disj (fun w => Formalism.MainNotions.TruncatedSeriesCountingIdentities.lenW i ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') w) (fun u => (e' : ℚ) + (locDeg D.host.E u : ℚ) * (D.R.m : ℚ) * ((e' : ℚ) + D.nd.vdel i) + 2 * D.nd.vdel i + Br.h0W i …` and prove the remaining obligations. Use `beta_reduce`. Unfold `rowNum`. Expand and normalize the polynomial expressions, which then agree.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_lenW_split (hdecl : RowsAreConj i dc) (e' : ℕ)
     (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ)
@@ -939,7 +931,7 @@ theorem sum_lenW_split (hdecl : RowsAreConj i dc) (e' : ℕ)
   ring
 
 /- English proof (translation)
-Establish `h1` using `hthm hg0 hg1 hπ hs hsha`. Establish `h2` using `sum_lenW_split i ρ π dc hdecl e' c0 hJ`. Unfold `boundSplit`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem length_bound_of_theorem (hdecl : RowsAreConj i dc) (e' : ℕ)
     (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
@@ -956,7 +948,7 @@ theorem length_bound_of_theorem (hdecl : RowsAreConj i dc) (e' : ℕ)
   linarith
 
 /- English proof (translation)
-Introduce `w hw hwr C hC`. Take `⟨u, hu, huw⟩` from `(hdecl w).mp hwr`. Rewrite using `[lenRowSplit_eq i dc e' c0 hu huw]`. Conclude with `hrow u hu w hw huw C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_length_of_local (hdecl : RowsAreConj i dc) (e' : ℕ)
     (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ)
@@ -973,7 +965,7 @@ theorem admissible_length_of_local (hdecl : RowsAreConj i dc) (e' : ℕ)
   exact hrow u hu w hw huw C hC
 
 /- English proof (translation)
-Establish `hROW` using `admissible_length_of_local i r ρ π dc hdecl e' c0 hrow`. Conclude with `length_bound_of_theorem i ρ π dc hdecl e' c0 cB hJ (hN5 hROW hlift hTB) hg0 hg1 hπ hs hsha`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_bound_of_norm_bound (hdecl : RowsAreConj i dc) (e' : ℕ)
     (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
@@ -1011,7 +1003,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR)
 
 /- English proof (translation)
-Rewrite using `[lenOl, Module.length_ne_top_iff]`. Apply `isFiniteLength_quotient_span_singleton` to reduce the goal to its premises. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem lenOl_ne_top {O : Type} [CommRing O] [IsDedekindDomain O]
     (h : ((PD.p : ℕ) : O) ≠ 0) : lenOl PD (O := O) ≠ ⊤ := by
@@ -1020,9 +1012,9 @@ theorem lenOl_ne_top {O : Type} [CommRing O] [IsDedekindDomain O]
   rwa [mem_nonZeroDivisors_iff_ne_zero]
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: IsDedekindDomain ↥(OL LL)` using `integralClosure.isDedekindDomain ℤ_[l] ℚ_[l] ↥LL.1`. Apply `lenOl_ne_top` to reduce the goal to its premises. Rewrite using `[hp]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg (Subtype.val : ↥(OL LL) → ↥LL.1) h`. Establish `h3 : ((l : ℕ) : ↥LL.1) = 0` using `by simpa using h2`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lenOl_OL_ne_top {l : ℕ} [Fact l.Prime] (hp : PD.p = l) (LL : FinExt l) :
     lenOl PD (O := ↥(OL LL)) ≠ ⊤ := by
@@ -1038,25 +1030,23 @@ theorem lenOl_OL_ne_top {l : ℕ} [Fact l.Prime] (hp : PD.p = l) (LL : FinExt l)
 end PDgen
 
 /- English proof (translation)
-Unfold `ShapeJumps at hS`. Take `⟨-, -, -, -, hdC, hdL, -, -, hμ⟩` from `hS`. Establish `hsum : ∑ c ∈ Finset.Icc 1 t, μc c a = if a ∈ Finset.Ico (0 : ℤ) (t : ℤ) then 1 else 0`. Rewrite using `[Finset.sum_congr rfl (fun c hc' => hc c hc' a)]`. Distinguish the cases in `ha : a ∈ Finset.Ico (0 : ℤ) (t : ℤ)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ha]`. Rewrite `ha` using `[Finset.mem_Ico]`. Establish `e : (((a + 1).toNat : ℕ) : ℤ) = a + 1` using `Int.toNat_of_nonneg (by omega)`. Establish `hmem : (a + 1).toNat ∈ Finset.Icc 1 t`. Rewrite using `[Finset.mem_Icc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hzero : ∀ c ∈ Finset.Icc 1 t, c ≠ (a + 1).toNat → (if a = (c : ℤ) - 1 then (1 : ℤ) else 0) = 0`. Introduce `c _ hne`. Establish `hx : ¬ (a = (c : ℤ) - 1)` using `by omega`. Rewrite using `[if_neg hx]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem (a + 1).toNat hmem hzero]`. Establish `hx : a = (((a + 1).toNat : ℕ) : ℤ) - 1` using `by omega`. Rewrite using `[if_pos hx]`. Rewrite using `[if_neg ha]`. Rewrite `ha` using `[Finset.mem_Ico]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c hc'`. Rewrite `hc'` using `[Finset.mem_Icc]`. Establish `hx : ¬ (a = (c : ℤ) - 1)` using `by omega`. Rewrite using `[if_neg hx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hadd a`. Establish `h2` using `hμ a`. Rewrite `h1` using `[hsum]`. Distinguish the cases in `hCL : a ∈ Cl ∪ Lo`. Establish `hI : a ∉ Finset.Ico (0 : ℤ) (t : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Break down `Finset.mem_union.mp hCL with h | h` into its components or cases. Conclude with `Finset.disjoint_left.mp hdC h`. Conclude with `Finset.disjoint_left.mp hdL h`. Rewrite using `[if_pos hCL]`. Rewrite `h1` using `[if_neg hI]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[if_pos (Finset.mem_union_left _ hCL)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hCL]`. Distinguish the cases in `hI : a ∈ Finset.Ico (0 : ℤ) (t : ℤ)`. Rewrite `h1` using `[if_pos hI]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[if_pos (Finset.mem_union_right _ hI)]`. Use linear arithmetic over natural numbers and integers. Establish `hn : a ∉ Cl ∪ Lo ∪ Finset.Ico (0 : ℤ) (t : ℤ)` using `fun h => (Finset.mem_union.mp h).elim hCL hI`. Rewrite `h1` using `[if_neg hI]`. Rewrite `h2` using `[if_neg hn]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem multW_of_shape (k m t : ℕ) (sgn : ℤ) (Cl Lo : Finset ℤ) (μ μW : ℤ → ℤ) (μc : ℕ → ℤ → ℤ)
     (hS : ShapeJumps k m t sgn Cl Lo μ)
@@ -1121,7 +1111,7 @@ variable {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
   {hw : w ∈ placesOver D.host.E (D.nd.l i)}
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext g a b; rfl)`. Consider the case `(unfold locC; rfl)`. Consider the case `(unfold locC CoefExt.self; exact (0 : Nat))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locC_self {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) :
     locC (CoefExt.self i w hw) M = Br.loc D.nbr i w hw M := by
@@ -1139,7 +1129,7 @@ def incO : Br.OLL D.nbr i w hw →+* ↥(OL C.LL) :=
       ((IntermediateField.inclusion C.le).restrictScalars ℤ_[D.nd.l i]))
 
 /- English proof (translation)
-Establish `hM : mapM (algebraMap ↥(OL C.LL) ↥C.LL.1) (mapM (incO C) (Br.locO (D.nbr i w hw) (M.comp (decS D.nd w)))) = locC C M`. Use extensionality with `g a b`. Both sides reduce to the same expression. Rewrite using `[← hM]`. Conclude with `⟨stdLatG Subtype.val_injective _, fun v => mem_stdG_iff _ v⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_std {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) :
     ∃ L2 : Lattice (O := ↥(OL C.LL)) (matRep (locC C M)), IsStd C L2 := by
@@ -1156,7 +1146,7 @@ variable (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : Decl D i)
 
 /- English proof (translation)
-Take `⟨hadd, hc⟩` from `hBl hπ hg0 hg1 w hw C τ`. Conclude with `multW_of_shape D.R.k D.R.m D.R.t sgn Cl Lo _ _ _ hs hadd hc a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem multW_eq (hπ : π ∈ D.nd.Z i) (hg0 : D.nd.l i ≠ D.host.g 0) (hg1 : D.nd.l i ≠ D.host.g 1)
     (hBl : ambBlock i r ρ π) (w : HeightOneSpectrum (𝓞 D.host.E))
@@ -1174,13 +1164,13 @@ variable {ep : Bool}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hw` using `(dc.cover u).1 (Or.inr hu)`. Establish `hg0` using `hL.2.2.2.1`. Establish `hg1` using `hL.2.2.2.2`. Establish `hU : PlTypeUe i u hw ep` using `(hD.1 u hw).1 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `rank_le_col (Br.PD D.loc D.nbr i u hw) (matRep (locC (CoefExt.self i u hw) (WpO D.nd i ρ π))) (hBK.1 u hw (CoefExt.self i u hw)).2.1 (LargeLevelLemmas.splits_coef (CoefExt.self i u hw)) ((hCont u hw (CoefExt.self i u hw)).2 hπ).1 (hW hπ u hw hu (CoefExt.self i u hw)) (h56 hπ u hw …`. Take `⟨Cl, Lo, hsh⟩` from `(hG2 hg0 hg1 u hw (CoefExt.self i u hw)).2.2 τ`. Establish `hs` using `hsh π`. Establish `hE : EmbU (CoefExt.self i u hw) ep τ` using `⟨τ, hU τ, fun x => rfl⟩`. Rewrite `hs` using `[if_pos hE]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, S, η, hs0, -, -, hcl, -⟩` from `hs.1`. Use `⟨Cl, Lo, fun a ha => ?_, le_of_eq hs.2.2.1, multW_eq i r ρ π hπ hg0 hg1 hBl u hw _ τ 1 Cl Lo hs⟩` and prove the remaining obligations. Use `cloud_sign 1 Cl s hs0 (fun a ha => (hcl a ha).1) a ha` as an intermediate fact. Simplify using `using this)`. Rewrite `h` using `[locC_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdeg : finrank ℚ_[D.nd.l i] (Br.Kw D.nbr i u hw) = locDeg D.host.E u` using `(hTie u hw).2.2`. Rewrite `h` using `[hdeg]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jump_bound_of_admitted (hL : hypL i) (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i) (hG2 : admG2 i r ep)
     (hBl : ambBlock i r ρ π) (h56 : ColumnH0Vanishing i ρ π dc) (hBK : admBK i) (hTie : TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i)
@@ -1214,15 +1204,13 @@ theorem jump_bound_of_admitted (hL : hypL i) (hD : hypDecl i dc ep) (hπ : π �
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `u hu w hw huw C hC`. Establish `hwr : w ∈ dc.row` using `(hD.2 w).2 ⟨u, hu, huw⟩`. Establish `hu'` using `(dc.cover u).1 (Or.inr hu)`. Establish `hg0` using `hL.2.2.2.1`. Establish `hg1` using `hL.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : PlTypeUe i u hu' ep` using `(hD.1 u hu').1 hu`. Establish `hrk` using `rank_le_row (Br.PD D.loc D.nbr i w hw) (matRep (locC C (T2O D.nd i ρ π))) (hBK.1 w hw C).2.1 (LargeLevelLemmas.splits_coef C) ((hCont w hw C).2 hπ).2 (hT2 hπ w hw hwr C).1 (hT2 hπ w hw hwr C).2.2 ((hFil.2 hπ).2 w hw hwr C) D.R.m (fun τ => by`. Take `⟨Cl, Lo, hsh⟩` from `(hG2 hg0 hg1 w hw C).2.2 τ`. Establish `hs` using `hsh π`. Establish `hE : ¬ EmbU C ep τ` using `fun ⟨τ₀, h1, _⟩ => hTD u hu' hU w hw huw τ₀ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hs` using `[if_neg hE]`. Take `⟨s, S, η, hs0, -, -, hcl, -⟩` from `hs.1`. Use `⟨Cl, Lo, fun a ha => ?_, le_of_eq hs.2.2.1, fun a => ?_⟩` and prove the remaining obligations. Use `cloud_sign (-1) Cl s hs0 (fun a ha => (hcl a ha).1) a ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hDual hπ w hw hwr C τ a]`. Conclude with `multW_eq i r ρ π hπ hg0 hg1 hBl w hw C τ (-1) Cl Lo hs (-a - 1))`. Establish `hdeg : finrank ℚ_[D.nd.l i] (Br.Kw D.nbr i w hw) = locDeg D.host.E w` using `(hTie w hw).2.2`. Rewrite `hrk` using `[hdeg, locDeg_conj w huw]`. Take `⟨L2, hL2⟩` from `exists_std C (T2O D.nd i ρ π)`.
-
-Conclude with `rowAt_of_lift (Br.PD D.loc D.nbr i w hw) _ (locC C (T2O D.nd i ρ π)) L2 hL2 e' (hLift w hw hwr C hC) _ (locDeg D.host.E u) D.R.m D.R.r (c0 u) (lenInvD L2) (hH1f hπ w hw hwr C L2 hL2 e') hrk (hH0 hπ u hu w hw huw C hC L2 hL2) (lenOl_OL_ne_top _ (Br.PD_p D.loc D.nbr i w hw) C.LL)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem length_bound_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hL : hypL i)
     (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i) (hG2 : admG2 i r ep) (hBl : ambBlock i r ρ π)
@@ -1259,7 +1247,7 @@ theorem length_bound_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host
     (lenOl_OL_ne_top _ (Br.PD_p D.loc D.nbr i w hw) C.LL)
 
 /- English proof (translation)
-Introduce `hs hsha _`. Take `⟨-, -, -, hg0, hg1⟩` from `hL`. Take `⟨-, hdecl⟩` from `hD`. Conclude with `length_bound_of_norm_bound i r ρ π dc hdecl e' c0 cB hN5 hJ hRow hLift hTB hg0 hg1 hπ hs hsha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem shaBound_of_globalIndex_of_colength_of_lift (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) (hL : hypL i)
     (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i)
@@ -1272,7 +1260,7 @@ theorem shaBound_of_globalIndex_of_colength_of_lift (e' : ℕ) (c0 : HeightOneSp
   exact length_bound_of_norm_bound i r ρ π dc hdecl e' c0 cB hN5 hJ hRow hLift hTB hg0 hg1 hπ hs hsha
 
 /- English proof (translation)
-Take `⟨-, hG2, -, -, -, -, -, h56, -, -, -, hBK, -, hLiftRow, hH0, -, -, -, -, -, -, hTie, -, -, -, -, -, hBl, hDual, hT2, hW, hFil, hH1f, -, hCont, hTD⟩` from `hA`. Conclude with `⟨jump_bound_of_admitted i r ρ π dc hL hD hπ hG2 hBl h56 hBK hTie hW hFil hCont, length_bound_of_admitted i r ρ π dc e' c0 hL hD hπ hG2 hBl hBK hTie hLiftRow hH0 hDual hT2 hFil hH1f hCont hTD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jump_and_length_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
     (hA : admitted i r ρ π dc ep e' c0 cB) (hL : hypL i) (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i) :
@@ -1283,7 +1271,7 @@ theorem jump_and_length_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.h
     length_bound_of_admitted i r ρ π dc e' c0 hL hD hπ hG2 hBl hBK hTie hLiftRow hH0 hDual hT2 hFil hH1f hCont hTD⟩
 
 /- English proof (translation)
-Introduce `hL hD hπ`. Take `⟨hJ, hRow⟩` from `jump_and_length_of_admitted i r ρ π dc e' c0 cB hA hL hD hπ`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hLC, -⟩` from `hA`. Conclude with `⟨hJ, hRow, shaBound_of_globalIndex_of_colength_of_lift i r ρ π dc e' c0 cB hL hD hπ hN5 hTB hJ hRow hLC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bound_of_norm_estimate (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
     (hA : admitted i r ρ π dc ep e' c0 cB)

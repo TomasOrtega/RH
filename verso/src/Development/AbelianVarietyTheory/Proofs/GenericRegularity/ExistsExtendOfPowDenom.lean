@@ -9,17 +9,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Use `choose X T hXT using h`. Establish `hp : ∀ t : ℕ, φ (d ^ t) ≠ 0` using `fun t => by rw [map_pow]; exact pow_ne_zero _ hd`. Establish `key : ∀ (r : R) (x s : A), β r * algebraMap A _ s = algebraMap A _ x → φ (X r) / φ (d ^ T r) * φ s = φ x`. Introduce `r x s hx`. Establish `h1 : X r * s = x * d ^ T r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective A (FractionRing A)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hXT r, ← hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg φ h1`. Rewrite `h2` using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, h2, mul_div_assoc, div_self (hp _), _root_.mul_one]`. Use `⟨{ toFun := fun r => φ (X r) / φ (d ^ T r), map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, key⟩` and prove the remaining obligations. Use `key 1 1 1 (by simp)` as an intermediate fact. Simplify using `using this`. Introduce `r s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key (r * s) (X r * X s) (d ^ T r * d ^ T s) (by` as an intermediate fact. Rewrite using `[map_mul, map_mul, map_mul, ← hXT r, ← hXT s]`. Use the proof step `ring)`. Rewrite `this` using `[map_mul, map_mul]`. Rewrite using `[div_mul_div_comm, eq_div_iff (mul_ne_zero (hp _) (hp _))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this`. Use `key 0 0 1 (by simp)` as an intermediate fact. Simplify using `using this`. Introduce `r s`. Use `key (r + s) (X r * d ^ T s + d ^ T r * X s) (d ^ T r * d ^ T s) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, map_mul, map_mul, map_mul, ← hXT r, ← hXT s]`. Use the proof step `ring)`. Rewrite `this` using `[map_add, map_mul, map_mul, map_mul]`. Rewrite using `[div_add_div _ _ (hp _) (hp _), eq_div_iff (mul_ne_zero (hp _) (hp _))]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend_of_pow_denom {R A L : Type} [CommRing R] [CommRing A] [IsDomain A] [Field L]
     (β : R →+* FractionRing A) (d : A)
@@ -58,19 +58,19 @@ theorem exists_extend_of_pow_denom {R A L : Type} [CommRing R] [CommRing A] [IsD
     exact this
 
 /- English proof (translation)
-Introduce `K Ω O A _ _ _ _ _ _ _ _ _ io gens e α eb ϖ hϖ he heb hk hg`. Establish `h1 : ∀ r ∈ Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), ∃ (x : A) (t : ℕ), α r * algebraMap A _ ((algebraMap O A ϖ * eb) ^ t) = algebraMap A _ x`. Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `hx with rfl | hx` into its components or cases. Use `⟨algebraMap O A ϖ, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, map_mul, heb, _root_.mul_comm _ (α e), ← _root_.mul_assoc, ← map_mul, inv_mul_cancel₀ he, map_one, _root_.one_mul]`. Take `⟨y, hy⟩` from `hg x hx`. Conclude with `⟨y, 0, by simp [hy]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap k`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := O) (io k)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hb0 hϖ`. Establish `hb1 : algebraMap O (FractionRing O) b ≠ 0` using `by simpa using hb0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hk k (a * u) (ϖ ^ n) (by` as an intermediate fact. Rewrite using `[← hu, ← hab, map_mul, map_mul, ← _root_.mul_assoc, div_mul_cancel₀ _ hb1])`. Use `⟨algebraMap O A (a * u) * eb ^ n, n, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← map_pow, map_mul, ← _root_.mul_assoc, this, ← map_mul]`. Consider the case `add x y _ _ ihx ihy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨a, s, ha⟩` from `ihx`. Take `⟨b, t, hb⟩` from `ihy`. Use `⟨a * (algebraMap O A ϖ * eb) ^ t + b * (algebraMap O A ϖ * eb) ^ s, s + t, ?_⟩` and prove the remaining obligations. Generalize the expression as in `algebraMap O A ϖ * eb = d at *`. Rewrite using `[pow_add, map_add, map_add, map_mul, map_mul, map_mul, ← ha, ← hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ ihx ihy`. Take `⟨a, s, ha⟩` from `ihx`. Take `⟨b, t, hb⟩` from `ihy`. Use `⟨a * b, s + t, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `algebraMap O A ϖ * eb = d at *`. Rewrite using `[pow_add, map_mul, map_mul, map_mul, ← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨h1, fun L _ φ hφ => ?_⟩` and prove the remaining obligations. Conclude with `exists_extend_of_pow_denom (α.comp (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))).val.toRingHom) _ (fun r => h1 r r.2) φ hφ`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem openChart_regular_away :
     ∀ (K Ω O A : Type) [Field K] [Field Ω] [Algebra K Ω] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [IsDomain A] [Algebra O A] (io : K →+* FractionRing O) (gens : Finset Ω) (e : Ω) (α : Ω →+* FractionRing A) (eb : A) (ϖ : O), Irreducible ϖ → e ≠ 0 → algebraMap A (FractionRing A) eb = α e → (∀ (k : K) (a b : O), io k * algebraMap O _ b = algebraMap O _ a → α (algebraMap K Ω k) * algebraMap A _ (algebraMap O A b) = algebraMap A _ (algebraMap O A a)) → (∀ g ∈ gens, α g ∈ Set.range (algebraMap A (FractionRing A))) → (∀ r ∈ Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), ∃ (x : A) (t : ℕ), α r * algebraMap A _ ((algebraMap O A ϖ * eb) ^ t) = algebraMap A _ x) ∧ ∀ (L : Type) [Field L] (φ : A →+* L), φ (algebraMap O A ϖ * eb) ≠ 0 → ∃ ψ : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) →+* L, ∀ (r : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))) (x s : A), α r * algebraMap A _ s = algebraMap A _ x → ψ r * φ s = φ x := by

@@ -22,7 +22,7 @@ section Units
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 (Opposite.op U))).hom (x : Γ(X, U)) = _`. Rewrite using `[X.presheaf.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_self {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := by
   ext
@@ -31,7 +31,7 @@ lemma res_self {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := by
   rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma res_pullU_id {U W : X.Opens} (h : W ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (h' : W ≤ U) (x : Γ(X, U)ˣ) :
     res h (pullU (𝟙 X) U x) = res h' x := by
@@ -39,7 +39,7 @@ lemma res_pullU_id {U W : X.Opens} (h : W ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (h'
   rfl
 
 /- English proof (translation)
-Consider the cases of `s`. Consider the cases of `t`. Use `congr 1`. Conclude with `funext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma gen_ext {L : LB X} {s t : LB.Gen L} (h : ∀ i, s.s i = t.s i) : s = t := by
   cases s; cases t
@@ -47,7 +47,7 @@ lemma gen_ext {L : LB X} {s t : LB.Gen L} (h : ∀ i, s.s i = t.s i) : s = t := 
   exact funext h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma res_gen_congr {L : LB X} (s : LB.Gen L) {i j : L.ι} (e : i = j) {W : X.Opens}
     (h : W ≤ L.U i) (h' : W ≤ L.U j) : res h (s.s i) = res h' (s.s j) := by
@@ -63,7 +63,7 @@ variable {X T : Scheme.{0}} (L : LB X) (f : X ⟶ X)
 abbrev SymGen := LB.Gen (LB.LinComb L (K := Fin 2) ![f, 𝟙 X] ![1, -1])
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.trans (wchart_le L _ j 0), h.trans (wchart_le L _ j 1)⟩, fun h y hy => Set.mem_iInter.2 fun k => ?_⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `h.1 hy`. Conclude with `h.2 hy`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma le_two {W : X.Opens} (j : Fin 2 → L.ι) :
     W ≤ wchart L (K := Fin 2) ![f, 𝟙 X] j ↔ W ≤ f ⁻¹ᵁ L.U (j 0) ∧ W ≤ L.U (j 1) := by
@@ -74,14 +74,14 @@ lemma le_two {W : X.Opens} (j : Fin 2 → L.ι) :
   · exact h.2 hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.trans (wchart_le L _ a ⟨⟩), fun h _ hy => Set.mem_iInter.2 fun _ => h hy⟩`.
+Supply the required witnesses or components.
 -/
 lemma le_one {W : T.Opens} (e : T ⟶ X) (a : PUnit.{1} → L.ι) :
     W ≤ wchart L (fun _ : PUnit.{1} => e) a ↔ W ≤ e ⁻¹ᵁ L.U (a ⟨⟩) :=
   ⟨fun h => h.trans (wchart_le L _ a ⟨⟩), fun h _ hy => Set.mem_iInter.2 fun _ => h hy⟩
 
 /- English proof (translation)
-The claim follows from `(le_two L f _).2 ⟨(le_one L f _).1 inf_le_left, inf_le_right⟩`.
+A detailed English derivation is pending.
 -/
 lemma toIso_le (p : (PUnit.{1} → L.ι) × L.ι) :
     wchart L (fun _ : PUnit.{1} => f) p.1 ⊓ L.U p.2 ≤
@@ -89,7 +89,7 @@ lemma toIso_le (p : (PUnit.{1} → L.ι) × L.ι) :
   (le_two L f _).2 ⟨(le_one L f _).1 inf_le_left, inf_le_right⟩
 
 /- English proof (translation)
-The claim follows from `le_inf ((le_one L f _).2 ((le_two L f j).1 le_rfl).1) ((le_two L f j).1 le_rfl).2`.
+A detailed English derivation is pending.
 -/
 lemma ofIso_le (j : Fin 2 → L.ι) :
     wchart L (K := Fin 2) ![f, 𝟙 X] j ≤
@@ -106,7 +106,7 @@ def symEquiv : SymGen L f ≃ LB.Iso L (L.pull f) where
   right_inv w := gen_ext fun p => (res_res _ _ _).trans (res_self _ _)
 
 /- English proof (translation)
-The claim follows from `res_res (toIso_le L f p) h _`.
+A detailed English derivation is pending.
 -/
 lemma restrict_lineBundleSymmetryUnitsEquivIso_apply (sy : SymGen L f) (p : (PUnit.{1} → L.ι) × L.ι) {W : X.Opens}
     (h : W ≤ wchart L (fun _ : PUnit.{1} => f) p.1 ⊓ L.U p.2)
@@ -115,7 +115,7 @@ lemma restrict_lineBundleSymmetryUnitsEquivIso_apply (sy : SymGen L f) (p : (PUn
   res_res (toIso_le L f p) h _
 
 /- English proof (translation)
-Rewrite using `[res_lcg, Fin.prod_univ_two]`. Use `congrArg₂ (· * ·) (zpow_one _) ((zpow_neg_one _).trans (congrArg (·⁻¹) ?_))` and prove the remaining obligations. Conclude with `res_pullU_id _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma res_lcg_two (i j : Fin 2 → L.ι) {W : X.Opens}
     (h : W ≤ wchart L (K := Fin 2) ![f, 𝟙 X] i ⊓ wchart L (K := Fin 2) ![f, 𝟙 X] j)
@@ -127,7 +127,7 @@ lemma res_lcg_two (i j : Fin 2 → L.ι) {W : X.Opens}
   exact res_pullU_id _ _ _
 
 /- English proof (translation)
-Use `(res_dg (L.pull f) L p q h).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Conclude with `(congrArg (res _) (lcg_pull L f p.1 q.1)).trans (res_res _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma res_dg_pull (p q : (PUnit.{1} → L.ι) × L.ι) {W : X.Opens}
     (h : W ≤ wchart L (fun _ : PUnit.{1} => f) p.1 ⊓ L.U p.2 ⊓
@@ -146,11 +146,9 @@ def SymCompat (sy : SymGen L f) : Prop :=
       res h₁ (pullU f _ (L.g a a')) * (res h₂ (L.g b b'))⁻¹ * res h₄ (ts sy ![a', b'])
 
 /- English proof (translation)
-Rewrite using `[isGen_iff]`. Use `⟨fun H a b a' b' W h₁ h₂ h₃ h₄ => ?_, fun H i j => ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (res (le_inf h₃ h₄)) (H ![a, b] ![a', b'])`. Rewrite `key` using `[map_mul, res_res, res_res, res_lcg_two L f _ _ _ h₁ h₂]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `obtain ⟨a, b, rfl⟩ : ∃ a b, i = ![a, b] := ⟨i 0, i 1, by funext k; fin_cases k <;> rfl⟩`. Apply the tactic sequence `obtain ⟨a', b', rfl⟩ : ∃ a b, j = ![a, b] := ⟨j 0, j 1, by funext k; fin_cases k <;> rfl⟩`. Establish `h₁` using `wchart_inter_le L (K := Fin 2) ![f, 𝟙 X] ![a, b] ![a', b'] 0`. Establish `h₂` using `wchart_inter_le L (K := Fin 2) ![f, 𝟙 X] ![a, b] ![a', b'] 1`. Rewrite using `[← res_self le_rfl (lcg _ _ _ _ _), res_lcg_two L f _ _ _ h₁ h₂]`.
-
-Conclude with `H a b a' b' _ h₁ h₂ _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isGen_iff_symCompat (sy : SymGen L f) : sy.IsGen ↔ SymCompat L f sy := by
   rw [isGen_iff]
@@ -166,11 +164,11 @@ lemma isGen_iff_symCompat (sy : SymGen L f) : sy.IsGen ↔ SymCompat L f sy := b
     exact H a b a' b' _ h₁ h₂ _ _
 
 /- English proof (translation)
-Use `⟨fun H a b a' b' W h₁ h₂ h₃ h₄ => ?_, fun H p q => ?_⟩` and prove the remaining obligations. Establish `k₃` using `h₃.trans (ofIso_le L f _)`. Establish `k₄` using `h₄.trans (ofIso_le L f _)`. Establish `key` using `congrArg (res (le_inf k₃ k₄)) (H (fun _ => a, b) (fun _ => a', b'))`. Use `((restrict_lineBundleSymmetryUnitsEquivIso_apply L f sy (fun _ => a, b) k₃ h₃).symm.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((res_res _ _ _).symm.trans key).trans ((map_mul _ _ _).trans ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (res_dg_pull L f (fun _ => a, b) (fun _ => a', b') _ h₁ h₂) ?_` and prove the remaining obligations. Conclude with `(res_res _ _ _).trans (restrict_lineBundleSymmetryUnitsEquivIso_apply L f sy (fun _ => a', b') k₄ h₄)`. Establish `h₃` using `(inf_le_left (b := wchart L (fun _ : PUnit.{1} => f) q.1 ⊓ L.U q.2)).trans (toIso_le L f p)`. Establish `h₄` using `(inf_le_right (a := wchart L (fun _ : PUnit.{1} => f) p.1 ⊓ L.U p.2)).trans (toIso_le L f q)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(le_inf h₃ h₄).trans (wchart_inter_le L (K := Fin 2) ![f, 𝟙 X] _ _ 0)`. Establish `h₂` using `(le_inf h₃ h₄).trans (wchart_inter_le L (K := Fin 2) ![f, 𝟙 X] _ _ 1)`. Use `(restrict_lineBundleSymmetryUnitsEquivIso_apply L f sy p _ h₃).trans ((H _ _ _ _ _ h₁ h₂ h₃ h₄).trans ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ (restrict_lineBundleSymmetryUnitsEquivIso_apply L f sy q _ h₄).symm` and prove the remaining obligations. Conclude with `(res_dg_pull L f p q le_rfl h₁ h₂).symm.trans (res_self _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isGen_symEquiv_iff_symCompat (sy : SymGen L f) :
     (symEquiv L f sy).IsGen ↔ SymCompat L f sy := by
@@ -193,7 +191,7 @@ lemma isGen_symEquiv_iff_symCompat (sy : SymGen L f) :
     exact (res_dg_pull L f p q le_rfl h₁ h₂).symm.trans (res_self _ _)
 
 /- English proof (translation)
-The claim follows from `(isGen_symEquiv_iff_symCompat L f sy).trans (isGen_iff_symCompat L f sy).symm`.
+A detailed English derivation is pending.
 -/
 theorem isGen_symEquiv (sy : SymGen L f) : (symEquiv L f sy).IsGen ↔ sy.IsGen :=
   (isGen_symEquiv_iff_symCompat L f sy).trans (isGen_iff_symCompat L f sy).symm
@@ -215,11 +213,9 @@ def FixesRig (sy : SymGen L f) (r : LB.Gen (L.pull e)) : Prop :=
     res ha (ts r (fun _ => a)) = res h (pullU e _ (ts sy ![a, b])) * res hb (ts r (fun _ => b))
 
 /- English proof (translation)
-Use `⟨fun H a W h => ?_, fun H j j' hj _ _ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have key := H ![a, a] PEmpty.elim (fun k₁ k₂ _ => by fin_cases k₁ <;> fin_cases k₂ <;> rfl) (fun k => k.elim) (fun _ k => k.elim)`. Establish `hW : W ≤ wchart L (fun k => e ≫ (![f, 𝟙 X] : Fin 2 → (X ⟶ X)) k) ![a, a] ⊓ wchart L (Y` using `T) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim := fun y hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h hy) k, Set.mem_iInter.2 fun k => k.elim⟩`. Establish `key'` using `congrArg (res hW) key`. Use `((res_res _ _ _).trans (res_res _ _ _)).symm.trans (key'.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (res hW) (map_one _)).trans (map_one _)`. Establish `h01 : j 0 = j 1` using `hj 0 1 (he.trans (Category.comp_id e).symm)`. Take `⟨a, rfl⟩ : ∃ a, j = ![a, a]` from `⟨j 0, by`. Use function extensionality and compare the values at `k`. Use `fin_cases k`.
-
-Both sides reduce to the same expression. Conclude with `h01.symm⟩`. Conclude with `((res_res _ _ _).trans (H a _ _)).trans (map_one _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma corr_iff_diagOne (he : e ≫ f = e) (sy : SymGen L f) :
     LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ sy e) (LB.oneGen L) ↔ DiagOne L f e sy := by
@@ -243,13 +239,13 @@ lemma corr_iff_diagOne (he : e ≫ f = e) (sy : SymGen L f) :
     exact ((res_res _ _ _).trans (H a _ _)).trans (map_one _).symm
 
 /- English proof (translation)
-Use `⟨fun H a b W ha hb h => ?_, fun H a W h => ?_⟩` and prove the remaining obligations. Establish `hc` using `(isGen_iff_symCompat L f sy).1 hsy set V := wchart L (K := Fin 2) ![f, 𝟙 X] ![a, b] ⊓ L.U a with hV`. Establish `v₁ : V ≤ f ⁻¹ᵁ L.U a` using `((le_two L f ![a, b]).1 (inf_le_left : V ≤ _)).1`. Establish `v₂ : V ≤ L.U b` using `((le_two L f ![a, b]).1 (inf_le_left : V ≤ _)).2`. Establish `v₃ : V ≤ wchart L (K` using `Fin 2) ![f, 𝟙 X] ![a, a] := (le_two L f ![a, a]).2 ⟨v₁, inf_le_right⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWV : W ≤ e ⁻¹ᵁ V` using `fun y hy => ⟨h hy, (le_one L e _).1 ha hy⟩`. Establish `k` using `hc a b a a V (fun y hy => ⟨v₁ hy, v₁ hy⟩) (le_inf v₂ inf_le_right) inf_le_left v₃`. Rewrite `k` using `[pull_g_self hL f a (fun y hy => ⟨v₁ hy, v₁ hy⟩), _root_.one_mul]`. Establish `k'` using `congrArg (fun x => res hWV (pullU e V x)) k`. Simplify using `only [map_mul, map_inv, pullU_res, res_res] at k'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `k'` using `[H a W, _root_.mul_one]`. Establish `k₂` using `congrArg (res (le_inf hb ha)) ((isGen_iff L r).1 hr (fun _ => b) (fun _ => a))`. Rewrite `k₂` using `[map_mul, res_res, res_res, lcg_pull, res_res]`. Rewrite using `[k', k₂, inv_mul_cancel_left]`. Establish `ha : W ≤ wchart L (fun _ : PUnit.{1} => e) (fun _ => a)` using `(le_one L e _).2 (h.trans (e.preimage_mono ((le_two L f ![a, a]).1 le_rfl).2))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_right_cancel ((_root_.one_mul _).trans (H a a W ha ha h))).symm`.
+A detailed English derivation is pending.
 -/
 lemma diagOne_iff_fixesRig (hL : L.IsLB) (sy : SymGen L f) (hsy : sy.IsGen)
     (r : LB.Gen (L.pull e)) (hr : r.IsGen) : DiagOne L f e sy ↔ FixesRig L f e sy r := by
@@ -281,19 +277,17 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
 omit [GrpObj G] [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `Fintype.prod_unique g`.
+A detailed English derivation is pending.
 -/
 lemma prod_punit {M : Type} [CommMonoid M] (g : PUnit.{1} → M) : ∏ k, g k = g ⟨⟩ :=
   Fintype.prod_unique g
 
 /- English proof (translation)
-Establish `he : eSec G ≫ (ι[G]).left = eSec G` using `GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum.eSec_inv.trans (Category.id_comp _)`. Establish `main : ∀ (a b : L.ι) (W : (𝟙_ (Over S)).left.Opens) (hW : W ≤ wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) (fun _ _ => a) ⊓ wchart L (fun _ : PUnit.{1} => eSec G) (fun _ => b)) (h : W ≤ eSec G ⁻¹ᵁ wchart L (K` using `Fin 2) ![(ι[G]).left, 𝟙 _] ![a, b]), res hW ((LB.linCombIso (symEquiv L _ sy) (K := PUnit.{1}) (fun _ => eSec G) (fun _ => 1)).s (fun _ _ => a, fun _ => b)) = res h (pullU (eSec G) _ (ts sy ![a, b])) := by`. Introduce `a b W hW h`. Use `(congrArg (res hW) ((prod_punit _).trans (zpow_one _))).trans ?_` and prove the remaining obligations. Use `(res_res _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(res_pullU_eq (eSec G) (toIso_le L _ (fun _ => a, b)) h _ _).symm`. Establish `main₂ : ∀ (a : L.ι) (W : (𝟙_ (Over S)).left.Opens) (hW : W ≤ wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) (fun _ _ => a)) (ha : W ≤ wchart L (fun _ : PUnit.{1} => eSec G) (fun _ => a)), res hW ((rigPullOf (ι[G]).left (𝟙 _) GlobalTheory.IndefiniteRowSideFullHecke.Powe …` using `fun a W hW ha => (res_res _ _ _).trans (res_pullU_id _ _ _)`. Use `⟨fun H a b W ha hb h => ?_, fun H p => ?_⟩` and prove the remaining obligations. Establish `hW₁ : W ≤ wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) (fun _ _ => a)` using `fun y hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (h hy) 0`. Establish `key` using `congrArg (res (le_inf hW₁ hb)) (H (fun _ _ => a, fun _ => b))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(main₂ a W hW₁ ha).symm.trans ((res_res _ _ _).symm.trans (key.trans ?_))` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (main a b W _ h) (res_res _ _ _))`. Take `⟨a, b⟩` from `p`. Establish `ha : wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) a ⊓ wchart L (fun _ : PUnit.{1} => eSec G) b ≤ wchart L (fun _ : PUnit.{1} => eSec G) (fun _ => a ⟨⟩ ⟨⟩)` using `inf_le_left.trans (rigPull_le (ι[G]).left (𝟙 _) GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum.eSec_inv L a)`. Establish `h : wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) a ⊓ wchart L (fun _ : PUnit.{1} => eSec G) b ≤ eSec G ⁻¹ᵁ wchart L (K` using `Fin 2) ![(ι[G]).left, 𝟙 _] ![a ⟨⟩ ⟨⟩, b ⟨⟩] := fun y hy => toIso_le L _ (a ⟨⟩, b ⟨⟩) ⟨Set.mem_iInter.1 hy.1 ⟨⟩, Set.mem_iInter.1 hy.2 ⟨⟩⟩`.
-
-Use `(main₂ (a ⟨⟩ ⟨⟩) _ inf_le_left ha).trans ((H (a ⟨⟩ ⟨⟩) (b ⟨⟩) _ ha inf_le_right h).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((main (a ⟨⟩ ⟨⟩) (b ⟨⟩) _ le_rfl h).symm.trans (res_self _ _)) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma maps_iff_fixesRig (L : LB G.left) (r : LB.Gen (L.pull (eSec G)))
     (sy : SymGen L (ι[G]).left) :
@@ -344,7 +338,7 @@ def IsCanonSym (L : LB G.left) (sy : SymGen L (ι[G]).left) : Prop :=
   sy.IsGen ∧ LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ sy (eSec G)) (LB.oneGen L)
 
 /- English proof (translation)
-Establish `he : eSec G ≫ (ι[G]).left = eSec G` using `GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum.eSec_inv.trans (Category.id_comp _)`. Use `(and_congr (isGen_symEquiv L.L _ sy) (maps_iff_fixesRig L.L L.rig sy)).trans ?_` and prove the remaining obligations. Conclude with `and_congr_right fun hsy => ((corr_iff_diagOne L.L _ _ he sy).trans (diagOne_iff_fixesRig L.L _ _ L.isLB sy hsy L.rig L.rigGen)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isNormSymm_iff (L : RigLB G) (sy : SymGen L.L (ι[G]).left) :
     IsNormSymm L (symEquiv L.L _ sy) ↔ IsCanonSym L.L sy := by

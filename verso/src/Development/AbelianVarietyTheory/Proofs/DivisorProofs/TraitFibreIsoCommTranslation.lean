@@ -10,28 +10,28 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem tensorLeft_hom_ext {S : Scheme.{0}} {X Y : Over S} {Z : Scheme.{0}} {a b : Z ⟶ (X ⊗ Y).left}
     (h1 : a ≫ (fst X Y).left = b ≫ (fst X Y).left) (h2 : a ≫ (snd X Y).left = b ≫ (snd X Y).left) : a = b :=
   pullback.hom_ext h1 h2
 
 /- English proof (translation)
-Introduce `R _ _ _ D C W _ _ _ T F _ _ _ f hf1 hf2 x' x hx`. Establish `gT : IsGrpPullback T.A.A C.G (jK W ≫ T.ξ) (T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β)`. Use `(ThetaBaseChange.grp_generic T.U.toUnifPre).comp T.cart` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Establish `gC` using `C.α_cart`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hxx : x.left ≫ C.α = x'.left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β`. Establish `e1 : x.left = (ptSecT C.A.A x).left ≫ (snd (TFK (R` using `R) F) C.A.A).left := by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Establish `e2 : x'.left = (ptSecT T.A.A x').left ≫ (snd (TFK (R` using `W) F) T.A.A).left := by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← hx, Category.assoc, Category.assoc, hf2, ← Category.assoc, ← Category.assoc, ← e2]`. Simplify using `only [Category.assoc]`. Establish `hbase : f ≫ (TFK (R` using `R) F ⊗ C.A.A).hom ≫ C.gp = (TFK (R := W) F ⊗ T.A.A).hom ≫ jK W ≫ T.ξ := by`. Establish `a1 : (TFK (R` using `R) F ⊗ C.A.A).hom = (snd (TFK (R := R) F) C.A.A).left ≫ C.A.A.hom := (Over.w _).symm`. Establish `a2 : (TFK (R` using `W) F ⊗ T.A.A).hom = (snd (TFK (R := W) F) T.A.A).left ≫ T.A.A.hom := (Over.w _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w` using `gT.1.w`. Simplify using `only [Category.assoc] at w`. Rewrite using `[a1, a2, Category.assoc, Category.assoc, ← gC.1.w, reassoc_of% hf2, w]`. Apply `tensorLeft_hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, ← Over.comp_left, translT, lift_fst, hf1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, Category.assoc]`. Apply `gC.1.hom_ext` to reduce the goal to its premises. Establish `eL : (translT C.A.A x).left ≫ (snd (TFK (R` using `R) F) C.A.A).left ≫ C.α = ((pushPt gC.1.w (fst (TFK (R := R) F) C.A.A ≫ x)) * (pushPt gC.1.w (snd (TFK (R := R) F) C.A.A))).left := by`. Rewrite using `[gC.2 _ _ _ _ _ rfl rfl, ← Category.assoc, ← Over.comp_left, translT, lift_snd, translPt_eq]`. Establish `eR : (translT T.A.A x').left ≫ (snd (TFK (R` using `W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β = ((pushPt gT.1.w (fst (TFK (R := W) F) T.A.A ≫ x')) * (pushPt gT.1.w (snd (TFK (R := W) F) T.A.A))).left := by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gT.2 _ _ _ _ _ rfl rfl, ← Category.assoc, ← Over.comp_left, translT, lift_snd, translPt_eq]`. Set `ρ : Over.mk ((TFK (R` to `W) F ⊗ T.A.A).hom ≫ jK W ≫ T.ξ) ⟶ Over.mk ((TFK (R := R) F ⊗ C.A.A).hom ≫ C.gp) := Over.homMk f hbase`. Establish `e0 : ρ ≫ pushPt gC.1.w (fst (TFK (R` using `R) F) C.A.A ≫ x) = pushPt gT.1.w (fst (TFK (R := W) F) T.A.A ≫ x') := by`. Use `ext`. Use `show f ≫ (fst (TFK (R := R) F) C.A.A ≫ x).left ≫ C.α = (fst (TFK (R := W) F) T.A.A ≫ x').left ≫ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[hxx, reassoc_of% hf1]`. Establish `e1 : ρ ≫ pushPt gC.1.w (snd (TFK (R` using `R) F) C.A.A) = pushPt gT.1.w (snd (TFK (R := W) F) T.A.A) := by`. Use `ext`. Conclude with `hf2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[eL, hf2, eR, ← e0, ← e1, ← MonObj.comp_mul]`. Both sides reduce to the same expression. Simplify using `only [Category.assoc]`. Rewrite using `[Over.w (snd (TFK (R := R) F) C.A.A), Over.w (translT C.A.A x), ← Over.w (fst (TFK (R := R) F) C.A.A), reassoc_of% hf1, ← Category.assoc, ← Over.comp_left, translT, lift_fst]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trait_transl_comm : ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)} (C : LabCover D) {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F] (f : (TFK (R := W) F ⊗ T.A.A).left ⟶ (TFK (R := R) F ⊗ C.A.A).left) (hf1 : f ≫ (fst (TFK (R := R) F) C.A.A).left = (fst (TFK (R := W) F) T.A.A).left) (hf2 : f ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α = (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β) (x' : TFK (R := W) F ⟶ T.A.A) (x : TFK (R := R) F ⟶ C.A.A) (hx : (ptSecT T.A.A x').left ≫ f = (ptSecT C.A.A x).left), f ≫ (translT C.A.A x).left = (translT T.A.A x').left ≫ f := by
   intro R _ _ _ D C W _ _ _ T F _ _ _ f hf1 hf2 x' x hx

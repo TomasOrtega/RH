@@ -21,7 +21,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Take `⟨n, i, hi, hpi⟩` from `hproj`. Use `isProper_str F n` as an intermediate fact. Establish `: IsProper p` using `hpi ▸ inferInstance`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Conclude with `{}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNoetherian_of_locallyNoetherian_projOverField {F : Type} [Field F] {X : Scheme.{0}} [IsLocallyNoetherian X] {p : X ⟶ Sp F}
     (hproj : IsProjOver p) : AlgebraicGeometry.IsNoetherian X := by
@@ -32,24 +32,22 @@ theorem isNoetherian_of_locallyNoetherian_projOverField {F : Type} [Field F] {X 
   exact {}
 
 /- English proof (translation)
-Use `haveI : CharZero F := σ.charZero`. Conclude with `Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`.
+A detailed English derivation is pending.
 -/
 theorem infinite_of_ringHom_complex {F : Type} [Field F] (σ : F →+* ℂ) : Infinite F := by
   haveI : CharZero F := σ.charZero
   exact Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective
 
 /- English proof (translation)
-Use `haveI := isNoetherian_of_locallyNoetherian_projOverField hproj`. Use `haveI := infinite_of_ringHom_complex σ`. Set `S : Set X` to `{genericPoint X} ∪ {z | Order.coheight z = 1 ∧ z ∉ nonzeroLocus t}`. Establish `hS : S.Finite` using `(Set.finite_singleton _).union (GlobalTheory.T.finite_coheight_one_notMem_of_genericPoint_mem X (nonzeroLocus t) ht)`. Take `⟨A, hA, a, hAgen, hMAgen, haS⟩` from `GlobalTheory.T.exists_generated_twist_section_nonvanishing_finite_set F X p hproj M.B M.φ.isLB S hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨φ, hφ, -⟩` from `GlobalTheory.weight_cInf_semiPos_of_generated F X p σ A hA hAgen`. Set `A' : MLine p σ` to `⟨A, φ, hφ⟩`. Establish `ha : genericPoint X ∈ nonzeroLocus a` using `haS _ (Or.inl rfl)`. Establish `haz : ∀ z : X, Order.coheight z = 1 → z ∉ nonzeroLocus t → z ∈ nonzeroLocus a` using `fun z hz hzt => haS z (Or.inr ⟨hz, hzt⟩)`. Take `⟨s₁, h₁, hloc, hadd⟩` from `GlobalTheory.T.reciprocityDefect_add_bundleSection hP F X p σ e hproj hdim L M A' N s hs a ha t ht (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `z hz`. Distinguish the cases in `hzt : z ∈ nonzeroLocus t`. Conclude with `Or.inr hzt`. Conclude with `Or.inl ⟨(hcod z hz).resolve_right hzt, haz z hz hzt⟩)`. Establish `h0A` using `GlobalTheory.T.reciprocity_sections_generatedBundles hP F X p σ e hproj hdim L A' N a ha t ht (by`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `z hz`. Distinguish the cases in `hzt : z ∈ nonzeroLocus t`. Conclude with `Or.inr hzt`. Conclude with `Or.inl (haz z hz hzt)) hAgen hN`. Establish `h0MA` using `GlobalTheory.T.reciprocity_sections_generatedBundles hP F X p σ e hproj hdim L (M.tens A') N s₁ h₁ t ht (by`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `z hz`. Distinguish the cases in `hzt : z ∈ nonzeroLocus t`. Conclude with `Or.inr hzt`. Use `left`. Rewrite using `[hloc]`.
-
-Conclude with `⟨(hcod z hz).resolve_right hzt, haz z hz hzt⟩) hMAgen hN`. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem reciprocity_of_generated_right (hP : GlobalTheory.Published.Principalisation) (F : Type) [Field F] (X : Scheme.{0})
     [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ) (hproj : IsProjOver p)
@@ -89,17 +87,17 @@ theorem reciprocity_of_generated_right (hP : GlobalTheory.Published.Principalisa
   linarith
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hcod`. Use `haveI := isNoetherian_of_locallyNoetherian_projOverField hproj`. Use `haveI := infinite_of_ringHom_complex σ`. Set `S : Set X` to `{genericPoint X} ∪ {z | Order.coheight z = 1 ∧ z ∉ nonzeroLocus s}`. Establish `hS : S.Finite` using `(Set.finite_singleton _).union (GlobalTheory.T.finite_coheight_one_notMem_of_genericPoint_mem X (nonzeroLocus s) hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, a, hAgen, hNAgen, haS⟩` from `GlobalTheory.T.exists_generated_twist_section_nonvanishing_finite_set F X p hproj N.B N.φ.isLB S hS`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.weight_cInf_semiPos_of_generated F X p σ A hA hAgen`. Set `A' : MLine p σ` to `⟨A, φ, hφ⟩`. Establish `ha : genericPoint X ∈ nonzeroLocus a` using `haS _ (Or.inl rfl)`. Establish `haz : ∀ z : X, Order.coheight z = 1 → z ∉ nonzeroLocus s → z ∈ nonzeroLocus a` using `fun z hz hzs => haS z (Or.inr ⟨hz, hzs⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t₁, h₁, hloc, hadd⟩` from `GlobalTheory.T.reciprocityDefect_add_bundleSection hP F X p σ e hproj hdim L N A' M t ht a ha s hs (by`. Introduce `z hz`. Distinguish the cases in `hzs : z ∈ nonzeroLocus s`. Conclude with `Or.inr hzs`. Conclude with `Or.inl ⟨(hcod z hz).resolve_left hzs, haz z hz hzs⟩)`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0A` using `reciprocity_of_generated_right hP F X p σ e hproj hdim L M A' s hs a ha (by`. Introduce `z hz`. Distinguish the cases in `hzs : z ∈ nonzeroLocus s`. Conclude with `Or.inl hzs`. Conclude with `Or.inr (haz z hz hzs)) hAgen`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0NA` using `reciprocity_of_generated_right hP F X p σ e hproj hdim L M (N.tens A') s hs t₁ h₁ (by`. Introduce `z hz`. Distinguish the cases in `hzs : z ∈ nonzeroLocus s`. Conclude with `Or.inl hzs`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hloc]`. Conclude with `⟨(hcod z hz).resolve_left hzs, haz z hz hzs⟩) hNAgen`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem reciprocity_of_noCommonDivisor : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (M N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) = side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht) := by
   intro hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hcod

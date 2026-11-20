@@ -8,9 +8,9 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum.PtsMem
 
 /- English proof (translation)
-Use `haveI : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 ℚ)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField ℚ)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion ℚ) = 1` using `congrArg (fun x : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ => x v) h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h2`. Use `haveI : Nontrivial (AE D) := by`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AE D)` using `Algebra.TensorProduct.includeRight_injective (algebraMap ℚ D.host.E).injective`. Conclude with `hinj.nontrivial`. Conclude with `(inc D).injective`.
+A detailed English derivation is pending.
 -/
 theorem inc_injective (D : D7) : Function.Injective (inc D) := by
   haveI : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by
@@ -28,13 +28,13 @@ theorem inc_injective (D : D7) : Function.Injective (inc D) := by
   exact (inc D).injective
 
 /- English proof (translation)
-Simplify using `[sgA, inc, Formalism.UG.sigR, Formalism.UG.inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgA_inc (D : D7) (x : D.host.E) : sgA D (inc D x) = inc D (D.host.conj x) := by
   simp [sgA, inc, Formalism.UG.sigR, Formalism.UG.inclE]
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Express the relevant statement in the definitionally equal form `((g : Matrix (Fin N) (Fin N) (AE D)).map (sgA D)).transpose * (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D) * (g : Matrix (Fin N) (Fin N) (AE D)) = (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D) ↔ _`. Rewrite using `[h1, Matrix.mul_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_GA (D : D7) {N : ℕ} (g : GL (Fin N) (AE D)) :
     g ∈ GA D N ↔ ((g : Matrix (Fin N) (Fin N) (AE D)).map (sgA D)).transpose *
@@ -47,7 +47,7 @@ theorem mem_GA (D : D7) {N : ℕ} (g : GL (Fin N) (AE D)) :
   rw [h1, Matrix.mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[sgA_inc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_ct (D : D7) {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) :
     ((γ.map D.host.conj).transpose).map (inc D) = ((γ.map (inc D)).map (sgA D)).transpose := by
@@ -55,9 +55,9 @@ theorem map_ct (D : D7) {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) :
   simp [sgA_inc]
 
 /- English proof (translation)
-Establish `hg` using `(mem_GA D _).1 g.2`. Unfold `IsRat at h`. Rewrite `hg` using `[h, ← map_ct, ← Matrix.map_mul]`. Rewrite using `[mul_eq_one_comm]`. Apply `Matrix.map_injective (inc_injective D)` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only`. Rewrite using `[hg, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_of_isRat (D : D7) {N : ℕ} (g : GA D N) (γ : Matrix (Fin N) (Fin N) D.host.E)
     (h : IsRat D (g : GL (Fin N) (AE D)) γ) : γ * (γ.map D.host.conj).transpose = 1 := by
@@ -70,9 +70,9 @@ theorem unitary_of_isRat (D : D7) {N : ℕ} (g : GA D N) (γ : Matrix (Fin N) (F
   rw [hg, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `h' : (γ.map D.host.conj).transpose * γ = 1` using `mul_eq_one_comm.1 h`. Establish `a : γ.map (inc D) * ((γ.map D.host.conj).transpose).map (inc D) = 1`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `b : ((γ.map D.host.conj).transpose).map (inc D) * γ.map (inc D) = 1`. Rewrite using `[← Matrix.map_mul, h', Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨_, _, a, b⟩, (mem_GA D _).2 ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((γ.map (inc D)).map (sgA D)).transpose * γ.map (inc D) = 1`. Rewrite using `[← map_ct, b]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isRat (D : D7) {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (h : γ * (γ.map D.host.conj).transpose = 1) :
@@ -131,9 +131,9 @@ end GlobalTheory.NormSum.PtsMem
 open GlobalTheory.NormSum.PtsMem in
 
 /- English proof (translation)
-Introduce `D N`. Use `⟨fun g => ?_, fun k => ?_, exists_isRat D, unitary_of_isRat D, inc_injective D⟩` and prove the remaining obligations. Establish `: ratG D N = ratSub D N` using `Subgroup.closure_eq (ratSub D N)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: intG D N = intSub D N` using `Subgroup.closure_eq (intSub D N)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.NormSum.mem_ratG_intG : ∀ (D : D7) (N : ℕ), (∀ g : GA D N, g ∈ ratG D N ↔ ∃ γ, IsRat D (g : GL (Fin N) (AE D)) γ) ∧ (∀ k : GA D N, k ∈ intG D N ↔ IntG D (k : GL (Fin N) (AE D))) ∧ (∀ γ : Matrix (Fin N) (Fin N) D.host.E, γ * (γ.map D.host.conj).transpose = 1 → ∃ g : GA D N, IsRat D (g : GL (Fin N) (AE D)) γ) ∧ (∀ (g : GA D N) γ, IsRat D (g : GL (Fin N) (AE D)) γ → γ * (γ.map D.host.conj).transpose = 1) ∧ Function.Injective (inc D) := by
   intro D N

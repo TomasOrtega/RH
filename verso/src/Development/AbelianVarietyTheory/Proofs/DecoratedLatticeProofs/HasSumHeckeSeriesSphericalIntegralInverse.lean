@@ -17,11 +17,11 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Take `⟨hK, hB⟩` from `hφ`. Use `⟨fun g x hx => ?_, fun b hb t ht => ?_⟩` and prove the remaining obligations. Use `show φ (_root_.GlobalTheory.SatakeFlip.invRevT (g * x)) = φ (_root_.GlobalTheory.SatakeFlip.invRevT g)`. Rewrite using `[map_mul]`. Conclude with `hK _ _ (_root_.GlobalTheory.SatakeFlip.invRevT_mem_KO hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb'` using `_root_.GlobalTheory.SatakeFlip.invRevT_mem_borel hb show φ (_root_.GlobalTheory.SatakeFlip.invRevT b) = _`. Rewrite using `[hB _ hb' (fun i => (t i.rev)⁻¹) ?_]`. Use `Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.SatakeFlip.ord_inv_eq_neg, zpow_neg, inv_zpow]`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.SatakeFlip.invRevT_apply]`. Establish `hi` using `_root_.GlobalTheory.SatakeFlip.inv_diag_mul hb i.rev`. Rewrite `hi` using `[ht]`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `eq_inv_of_mul_eq_one_left hi`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isBorelSph_comp_invRevT {γ : Fin n → ℂ}
     {φ : GL (Fin n) k → ℂ} (hφ : _root_.GlobalTheory.SatakeBound.IsBorelSph k γ φ) :
@@ -48,7 +48,7 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `QuotientGroup.mk_out_eq_mul (_root_.GlobalTheory.SplitWeil.KO k (Fin n)) (_root_.GlobalTheory.SatakeFlip.invRevT c.out)`. Use `⟨x, x.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ← _root_.GlobalTheory.SatakeFlip.cosetMap_mk, QuotientGroup.out_eq']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_cosetMap_out_eq_invRevT_mul
     (c : GL (Fin n) k ⧸ _root_.GlobalTheory.SplitWeil.KO k (Fin n)) :
@@ -63,7 +63,7 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hg i l) (hh l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_entries_integral {g h : GL (Fin n) k}
     (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) k) i j ∈ 𝒪[k])
@@ -77,9 +77,9 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.SatakeFlip.invRevT_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Simplify using `using h j.rev i.rev`. Introduce `h i j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h _ _`.
+A detailed English derivation is pending.
 -/
 private lemma invRevT_entries_integral_iff_inv (g : GL (Fin n) k) :
     (∀ i j, ((_root_.GlobalTheory.SatakeFlip.invRevT g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j ∈
@@ -95,7 +95,7 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Use `show Matrix.det ((↑g⁻¹ : Matrix (Fin n) (Fin n) k).transpose.submatrix Fin.rev Fin.rev) = _`. Conclude with `(Matrix.det_submatrix_equiv_self Fin.revPerm _).trans (Matrix.det_transpose _)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_invRevT' (g : GL (Fin n) k) :
     Matrix.GeneralLinearGroup.det (_root_.GlobalTheory.SatakeFlip.invRevT g) =
@@ -110,9 +110,7 @@ open MeasureTheory ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} in
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.GLDoubling.nabs_det_of_mem_KO hx`. Rewrite `h` using `[_root_.GlobalTheory.LGrp.nabs_eq_zpow]`. Establish `hq : (1 : ℝ) < _root_.GlobalTheory.SplitWeil.resCard k`. Conclude with `_root_.GlobalTheory.SplitWeil.one_lt_resCard k` after adjusting the coercions. Use `zpow_right_injective₀ (by positivity) hq.ne' (h.trans (zpow_zero _).symm)` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma ord_det_eq_zero_of_mem_KO {x : GL (Fin n) k}
     (hx : x ∈ _root_.GlobalTheory.SplitWeil.KO k (Fin n)) :
@@ -129,17 +127,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : ℕ} in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n γ φ hφ _ X hX`. Establish `hrev : ∀ i : Fin n, (i.rev : ℕ) = n - 1 - i` using `fun i => by rw [Fin.val_rev]; omega`. Establish `hX' : ∀ i : Fin n, ‖(_root_.GlobalTheory.SplitWeil.resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * (γ i.rev)⁻¹ * X‖ < 1`. Introduce `i`. Establish `hi` using `hX i.rev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hi` using `[hrev]`. Then use the resulting hypothesis. Establish `H` using `_root_.GlobalTheory.HeckeSeries.hasSum_integral_cosets k n _ _ (isBorelSph_comp_invRevT hφ) X hX'`. Establish `hprod : ∏ i : Fin n, (1 - (_root_.GlobalTheory.SplitWeil.resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * (γ i.rev)⁻¹ * X)⁻¹ = ∏ i : Fin n, (1 - (_root_.GlobalTheory.SplitWeil.resCard k : ℂ) ^ (i : ℕ) * (γ i)⁻¹ * X)⁻¹` using `Fintype.prod_equiv Fin.revPerm _ _ fun i => by rw [Fin.revPerm_apply, hrev]`. Rewrite `H` using `[hprod]`. Set `e : {c : GL (Fin n) k ⧸ _root_.GlobalTheory.SplitWeil.KO k (Fin n) // (∀ i j, (c.out⁻¹ : GL (Fin n) k).1 i j ∈ 𝒪[k])} ≃ {c : GL (Fin n) k ⧸ _root_.GlobalTheory.SplitWeil.KO k (Fin n) // (∀ i j, (c.out : GL (Fin n) k).1 i j ∈ 𝒪[k])}` to `{ toFun := fun c => ⟨_root_.GlobalTheory.SatakeFlip.cosetMap c.1, by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨x, hx, hc⟩` from `exists_cosetMap_out_eq_invRevT_mul c.1`. Rewrite using `[hc]`. Conclude with `mul_entries_integral ((invRevT_entries_integral_iff_inv _).mpr c.2) ((_root_.GlobalTheory.SplitFlip.mem_KO_iff x).mp hx).1⟩`. Use `invFun := fun c => ⟨_root_.GlobalTheory.SatakeFlip.cosetMap c.1, by`. Take `⟨x, hx, hc⟩` from `exists_cosetMap_out_eq_invRevT_mul c.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, mul_inv_rev, ← map_inv]`. Use `mul_entries_integral ((_root_.GlobalTheory.SplitFlip.mem_KO_iff x).mp hx).2 ?_` and prove the remaining obligations. Use `(invRevT_entries_integral_iff_inv _).mpr ?_` and prove the remaining obligations. Simplify using `using c.2⟩`. Use `left_inv := fun c => Subtype.ext (_root_.GlobalTheory.SatakeFlip.cosetMap_cosetMap c.1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `right_inv := fun c => Subtype.ext (_root_.GlobalTheory.SatakeFlip.cosetMap_cosetMap c.1) }`. Use `e.hasSum_iff.mpr H using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Take `⟨x, hx, hc⟩` from `exists_cosetMap_out_eq_invRevT_mul c.1`. Use `show _ = X ^ (_root_.GlobalTheory.SmGL.ord k (Matrix.GeneralLinearGroup.det (_root_.GlobalTheory.SatakeFlip.cosetMap c.1).out)).toNat * φ (_root_.GlobalTheory.SatakeFlip.invRevT (_root_.GlobalTheory.SatakeFlip.cosetMap c.1).out)`.
-
-Rewrite using `[hc, map_mul _root_.GlobalTheory.SatakeFlip.invRevT, _root_.GlobalTheory.SatakeFlip.invRevT_invRevT, hφ.1 _ _ (_root_.GlobalTheory.SatakeFlip.invRevT_mem_KO hx), map_mul, _root_.GlobalTheory.SmGL.ord_mul, det_invRevT', _root_.GlobalTheory.SatakeFlip.ord_inv_eq_neg, ord_det_eq_zer …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckeDual.hasSum_dual : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (γ : Fin n → ℂ)

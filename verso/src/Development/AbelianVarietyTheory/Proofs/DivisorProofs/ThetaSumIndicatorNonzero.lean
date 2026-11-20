@@ -10,9 +10,7 @@ noncomputable section
 namespace GlobalTheory.ThetaScaledNe
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsReal`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isReal hw]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isComplex hc]`.
-
-Conclude with `(norm_le_pi_norm _ _).trans (norm_snd_le _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAtPlace_le_norm {F : Type} [Field F] [NumberField F] (w : InfinitePlace F)
     (y : mixedEmbedding.mixedSpace F) : mixedEmbedding.normAtPlace w y ≤ ‖y‖ := by
@@ -24,9 +22,9 @@ theorem normAtPlace_le_norm {F : Type} [Field F] [NumberField F] (w : InfinitePl
     exact (norm_le_pi_norm _ _).trans (norm_snd_le _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hlt : ∀ z : InfinitePlace F, z (y : F) < 1` using `fun z => by`. Use `normAtPlace_le_norm z (mixedEmbedding F (y : F))` as an intermediate fact. Rewrite `this` using `[mixedEmbedding.normAtPlace_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `this.trans_lt h`. Set `w : InfinitePlace F` to `Classical.arbitrary _`. Use `InfinitePlace.one_le_of_lt_one (w := w) hy (fun z _ => hlt z)` as an intermediate fact. Conclude with `absurd (hlt w) (not_lt.mpr this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_norm_mixedEmbedding {F : Type} [Field F] [NumberField F] {y : 𝓞 F} (hy : y ≠ 0) :
     1 ≤ ‖mixedEmbedding F (y : F)‖ := by
@@ -41,11 +39,11 @@ theorem one_le_norm_mixedEmbedding {F : Type} [Field F] [NumberField F] {y : �
   exact absurd (hlt w) (not_lt.mpr this)
 
 /- English proof (translation)
-Establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F (a⁻¹ * ξ i) ≤ 1` using `fun v => by`. Establish `h1` using `h i v`. Establish `e : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) v = algebraMap F (v.adicCompletion F) (ξ i)` using `rfl`. Rewrite `h1` using `[e, HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, map_inv₀]`. Rewrite using `[Valuation.map_mul, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Valued.v (algebraMap F (v.adicCompletion F) a) = v.valuation F a` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`. Establish `e2 : Valued.v (algebraMap F (v.adicCompletion F) (ξ i)) = v.valuation F (ξ i)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (ξ i)`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F _ hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hy' : (y : F) = a⁻¹ * ξ i` using `hy`. Rewrite using `[hy', mul_inv_cancel_left₀ ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_of_mem_scaledInt {F : Type} [Field F] [NumberField F] {κ : Type} {a : F} (ha : a ≠ 0)
     {ξ : κ → F} (h : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a)
@@ -67,27 +65,23 @@ theorem exists_int_of_mem_scaledInt {F : Type} [Field F] [NumberField F] {κ : T
   rw [hy', mul_inv_cancel_left₀ ha]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a ha`. Set `V` to `κ → mixedEmbedding.mixedSpace F`. Use `set c : mixedEmbedding.mixedSpace F := mixedEmbedding F a⁻¹ with hc`. Use `set ε : ℝ := 1 / (‖c‖ + 1) with hε`. Establish `hε0 : 0 < ε` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : ContDiffBump (0 : V)` to `⟨ε / 2, ε, half_pos hε0, half_lt_self hε0⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f : SchwartzMap V ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Establish `hf : ∀ x, f x = ((b x : ℝ) : ℂ)` using `fun x => rfl`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ := (GlobalTheory.EvAdm.scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)).indicator (fun _ => (1 : ℂ)) with hg`. Establish `hzero : ∀ ξ : κ → F, ξ ≠ 0 → pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) = 0`. Introduce `ξ hξ`. Rewrite using `[pureA_algebraMap]`. Distinguish the cases in `hm : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ξ i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hξ (funext h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `exists_int_of_mem_scaledInt ha hm i`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hi (by simpa using hy)`. Establish `hn1` using `one_le_norm_mixedEmbedding hy0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : mixedEmbedding F (y : F) = c * mixedEmbedding F (ξ i)`. Rewrite using `[hc, ← map_mul, hy, inv_mul_cancel_left₀ ha]`. Establish `h2 : ‖mixedEmbedding F (ξ i)‖ ≤ ‖(fun j => mixedEmbedding F (ξ j) : V)‖` using `norm_le_pi_norm (fun j => mixedEmbedding F (ξ j)) i`. Establish `h3 : 1 ≤ ‖c‖ * ‖(fun j => mixedEmbedding F (ξ j) : V)‖`. Rewrite `hn1` using `[e]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn1.trans ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left h2 (norm_nonneg _)))`. Rewrite using `[hf, b.zero_of_le_dist, Complex.ofReal_zero]`. Use `show ε ≤ dist (fun j => mixedEmbedding F (ξ j) : V) 0`. Rewrite using `[dist_zero_right, hε, div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg c, norm_nonneg (fun j => mixedEmbedding F (ξ j) : V)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `Set.indicator_of_notMem hm _`. Establish `h0 : pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((0 : κ → F) i)) = 1`. Rewrite using `[pureA_algebraMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : (fun i : κ => mixedEmbedding F ((0 : κ → F) i)) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Establish `hm : (fun i : κ => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((0 : κ → F) i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a`. Establish `e : (fun i : κ => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((0 : κ → F) i)) = 0`.
-
-Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Rewrite using `[e]`. Conclude with `zero_mem _`. Rewrite using `[hx, hf, b.one_of_mem_closedBall (Metric.mem_closedBall_self (half_pos hε0).le), hg, Set.indicator_of_mem hm]`.
-
-Simplify using the standard rewrite rules. Use `show (∑' ξ : κ → F, pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))) ≠ 0`. Rewrite using `[tsum_eq_single 0 hzero, h0]`. Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem exists_thetaSum_scaledInt_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∃ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,

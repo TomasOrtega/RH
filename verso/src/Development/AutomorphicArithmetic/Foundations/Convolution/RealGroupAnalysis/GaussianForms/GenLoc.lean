@@ -7,17 +7,15 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Introduce `R _ _ s hs hcard`. Set `f : R × R → IsLocalRing.ResidueField R` to `fun p => -(IsLocalRing.residue R p.1) / (IsLocalRing.residue R p.2)`. Establish `hex : ∃ u : IsLocalRing.ResidueField R, u ∉ s.image f`. Assume the negation of the conclusion as `hall`. Establish `hall' : ∀ u : IsLocalRing.ResidueField R, u ∈ s.image f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `u`. Assume the negation of the conclusion as `hu`. Conclude with `hall ⟨u, hu⟩`. Establish `hsub : (Set.univ : Set (IsLocalRing.ResidueField R)) ⊆ ((s.image f : Finset _) : Set _)` using `fun u _ => by simpa using hall' u`. Establish `h1 : ENat.card (IsLocalRing.ResidueField R) ≤ ((s.image f).card : ℕ∞)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Set.encard_le_encard hsub`. Rewrite `h2` using `[Set.encard_univ, Set.encard_coe_eq_coe_finsetCard]`. Then use the resulting hypothesis. Establish `h3 : ((s.image f).card : ℕ∞) ≤ (s.card : ℕ∞)`. Conclude with `Finset.card_image_le` after adjusting the coercions. Conclude with `absurd (lt_of_le_of_lt (h1.trans h3) hcard) (lt_irrefl _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `hex`. Take `⟨t, rfl⟩` from `IsLocalRing.residue_surjective u`. Use `⟨t, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_add, map_mul]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hb : IsLocalRing.residue R p.2 = 0`. Rewrite `h0` using `[hb, zero_mul, add_zero]`. Break down `hs p hp with h | h` into its components or cases. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 h h0`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 h hb`.
-
-Apply `hu` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨p, hp, ?_⟩` and prove the remaining obligations. Use `show -(IsLocalRing.residue R p.1) / (IsLocalRing.residue R p.2) = _`. Rewrite using `[div_eq_iff hb]`. Take the linear combination `-h0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.genLoc :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (s : Finset (R × R)), (∀ p ∈ s, IsUnit p.1 ∨ IsUnit p.2) →

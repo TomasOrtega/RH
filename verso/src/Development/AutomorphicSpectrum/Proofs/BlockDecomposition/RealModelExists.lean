@@ -39,9 +39,9 @@ namespace GlobalTheory.CompanionTheory.ModelS
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `e : kF F1 F2 a b * kF F1 F2 c d - kF F1 F2 c d * kF F1 F2 a b = (F1 a b * F1 c d - F1 c d * F1 a b) + (F2 a b * F2 c d - F2 c d * F2 a b) + (F1 a b * F2 c d - F2 c d * F1 a b) - (F1 c d * F2 a b - F2 a b * F1 c d)`. Simplify using `only [kF]`. Use `noncomm_ring`. Rewrite using `[e, g1 a b c d, g2 a b c d, cm a b c d, cm c d a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [kF, sub_self, add_zero, sub_zero]`. Apply the tactic sequence `split_ifs <;> first | abel | (simp; done) | (simp; abel)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem kF_gl {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {F1 F2 : Fin n → Fin n → Module.End ℂ V}
     (g1 : Formalism.REAL.GlRel F1) (g2 : Formalism.REAL.GlRel F2) (cm : ∀ a b c d, F1 a b * F2 c d = F2 c d * F1 a b) :
@@ -57,9 +57,9 @@ theorem kF_gl {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {F1 F2
   split_ifs <;> first | abel | (simp; done) | (simp; abel)
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h` using `g2 b a d c`. Simplify using `only [barF, neg_mul_neg]`. Rewrite using `[h]`. Simplify using `only [eq_comm (a := b) (b := c), eq_comm (a := d) (b := a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | abel | (simp; done) | (simp; abel)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem barF_gl {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {F2 : Fin n → Fin n → Module.End ℂ V}
     (g2 : Formalism.REAL.GlRel F2) : Formalism.REAL.GlRel (barF F2) := by
@@ -71,7 +71,7 @@ theorem barF_gl {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {F2 
   split_ifs <;> first | abel | (simp; done) | (simp; abel)
 
 /- English proof (translation)
-Simplify using `only [muZ, muQ, rhoU]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem muZ_cast (lam : Fin n → ℤ) (lev : Fin n → ℕ) (a : Fin n) : ((muZ lam lev a : ℤ) : ℝ) = muQ lam lev a := by
   simp only [muZ, muQ, rhoU]
@@ -79,33 +79,29 @@ theorem muZ_cast (lam : Fin n → ℤ) (lev : Fin n → ℕ) (a : Fin n) : ((muZ
   ring
 
 /- English proof (translation)
-Establish `gK` using `kF_gl gl1 gl2 cm`. Establish `gB` using `barF_gl gl2`. Establish `lf` using `GlobalTheory.T.exists_k_finite_submodule_containing n V F1 F2 gl1 gl2 cm f gen S₀ fd hf st`. Establish `hlow : ∀ a b : Fin n, b < a → lev b ≤ lev a ∧ a ≠ b` using `fun a b h => ⟨hlev.1 h.le, h.ne'⟩`. Use `⟨{ W := V, F1 := F1, F2 := F2, f := f, gl1 := gl1, gl2 := gl2, comm := cm, unitK := unitK, locFin := lf, hw := hw, ne := fun h => hev (by rw [h, map_zero]), ch1 := ?_, ch2 := ?_, cone := ?_ }⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m x`. Use `GlobalTheory.T.center_acts_by_scalar_on_cyclic n V F1 F2 lf (gelA F1 m) (fun a b => ⟨GlobalTheory.T.gelfand_invariant_commute_generator n V F1 gl1 m a b, GlobalTheory.T.gelfand_invariant_commute_of_commute n V F1 (F2 a b) (fun c d => (cm c d a b).symm) m⟩) ev _ (fun v => ?_) sep …` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.gelfand_invariant_eval_lowest n V F1 gl1 ev (fun a => (lam a : ℂ)) (fun a b hba v => e1l a b v (hlow a b hba).1 (hlow a b hba).2) e1d m v`. Rewrite using `[h]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Simplify using `[infOf]`. Introduce `m x`. Use `GlobalTheory.T.center_acts_by_scalar_on_cyclic n V F1 F2 lf (gelA (barF F2) m) (fun a b => ⟨?_, ?_⟩) ev _ (fun v => ?_) sep x` and prove the remaining obligations. Use `GlobalTheory.T.gelfand_invariant_commute_of_commute n V (barF F2) (F1 a b) (fun c d => ?_) m` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [barF, mul_neg, neg_mul, cm a b d c]`. Establish `h` using `GlobalTheory.T.gelfand_invariant_commute_generator n V (barF F2) gB m b a`. Simplify using `only [barF, mul_neg, neg_mul, neg_inj] at h`. Simplify `h` using `[barF]`. Establish `h` using `GlobalTheory.T.gelfand_invariant_eval_lowest n V (barF F2) gB ev (fun a => (yZ lam lev a : ℂ)) (fun a b hba v => e2l a b v (hlow a b hba).1 (hlow a b hba).2) e2d m v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[h]`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_perm_shifted_weight_eq_inf_char n lam lev hlev`. Establish `: (fun a : Fin n => (yZ lam lev a : ℂ) + ((n : ℂ) - 1) / 2 - ((a : ℕ) : ℂ)) = fun a => infOf lam false (σ a)` using `funext hσ`. Rewrite using `[this, GlobalTheory.T.gelfand_value_perm_invariant n (infOf lam false) σ m]`. Introduce `ν x hx hx0 set A := Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = kF F1 F2 a b} with hA`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.highest_weight_mem_cone n V (kF F1 F2) gK lev hlev.1 ev (muQ lam lev) ν x hx (fun a b v hl hne => ?_) (fun a v => ?_) ?_` and prove the remaining obligations. Establish `h1` using `e1l a b v hl.ge hne`. Establish `h2` using `e2l b a v hl.le hne.symm`. Simplify using `only [barF, LinearMap.neg_apply, map_neg, neg_eq_zero] at h2`. Simplify using `[kF, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1` using `e1d a v`. Establish `h2` using `e2d a v`. Simplify using `only [barF, LinearMap.neg_apply, map_neg] at h2`. Establish `hm : (muQ lam lev a : ℂ) = (lam a : ℂ) - (yZ lam lev a : ℂ)`. Rewrite using `[← muZ_cast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[yZ]`. Simplify using `only [kF, LinearMap.add_apply, map_add, h1, hm]`. Take the linear combination `-h2`. Assume the negation of the conclusion as `hcon push_neg at hcon`. Take `⟨S₁, fd₁, hx₁, st₁⟩` from `lf x`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hstab : ∀ T ∈ A, ∀ w ∈ S₁, T w ∈ S₁`. Introduce `T hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT => obtain ⟨a, b, rfl⟩ := hT`. Conclude with `st₁ a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => intro w hw`. Simplify `S₁.smul_mem r hw` using `[Module.algebraMap_end_apply]`. Consider the case `add T T' _ _ h h' => intro w hw`. Conclude with `S₁.add_mem (h w hw) (h' w hw)`. Consider the case `mul T T' _ _ h h' => intro w hw`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h _ (h' w hw)`. Set `S : Submodule ℂ V` to `A.toSubmodule.map (LinearMap.applyₗ x)`. Establish `hS : ∀ w, w ∈ S ↔ ∃ T ∈ A, T x = w`. Introduce `w`. Simplify using `[S, Submodule.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : S ≤ S₁`. Introduce `w hw`. Take `⟨T, hT, rfl⟩` from `(hS w).1 hw`. Conclude with `hstab T hT x hx₁`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hle`.
-
-Establish `h0` using `sep S inferInstance (fun a b w hw => ?_) (fun w hw => ?_) x ((hS x).2 ⟨1, A.one_mem, rfl⟩)`. Conclude with `hx0 h0`. Take `⟨T, hT, rfl⟩` from `(hS w).1 hw`. Conclude with `(hS _).2 ⟨kF F1 F2 a b * T, A.mul_mem (Algebra.subset_adjoin ⟨a, b, rfl⟩) hT, rfl⟩`. Take `⟨T, hT, rfl⟩` from `(hS w).1 hw`.
-
-Conclude with `hcon T hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem model_of_ops (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hlev : IsLev lam lev)
     {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F1 F2 : Fin n → Fin n → Module.End ℂ V) (f : V)
@@ -190,9 +186,9 @@ theorem model_of_ops (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hlev : IsLev l
         exact hcon T hT
 
 /- English proof (translation)
-Introduce `a b c d`. Use extensionality with `v`. Use `congrArg (fun F => F (v : M)) (h a b c d)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, LinearMap.restrict_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem res_gl {M : Type} [AddCommGroup M] [Module ℂ M] (V : Submodule ℂ M) (E : Fin n → Fin n → Module.End ℂ M)
     (hE : ∀ a b, ∀ v ∈ V, E a b v ∈ V) (h : Formalism.REAL.GlRel E) :
@@ -206,7 +202,7 @@ theorem res_gl {M : Type} [AddCommGroup M] [Module ℂ M] (V : Submodule ℂ M) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [e1, LinearMap.smul_apply, LinearMap.sub_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh) (Submodule.smul_mem _ _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_raising_mem_equivariant (lev : Fin n → ℕ) (φ : Mat n → ℂ) (a b : Fin n) {h : SmF n} (hh : h ∈ Eqv lev φ) :
     e1 DR a b h ∈ Eqv lev φ := by
@@ -215,7 +211,7 @@ theorem first_raising_mem_equivariant (lev : Fin n → ℕ) (φ : Mat n → ℂ)
     (Submodule.smul_mem _ _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh)))
 
 /- English proof (translation)
-Simplify using `only [f1, LinearMap.smul_apply, LinearMap.add_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh) (Submodule.smul_mem _ _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_lowering_mem_equivariant (lev : Fin n → ℕ) (φ : Mat n → ℂ) (a b : Fin n) {h : SmF n} (hh : h ∈ Eqv lev φ) :
     f1 DR a b h ∈ Eqv lev φ := by
@@ -224,11 +220,11 @@ theorem first_lowering_mem_equivariant (lev : Fin n → ℕ) (φ : Mat n → ℂ
     (Submodule.smul_mem _ _ (GlobalTheory.T.right_derivative_preserves_equivariant n lev φ _ h hh)))
 
 /- English proof (translation)
-Establish `hX : ∀ c : ℂ, ∀ a' b', lev a' < lev b' → (Matrix.single a b c : Mat n) a' b' = 0`. Introduce `c a' b' hlt`. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hlt (not_lt.2 hab)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `d1` using `GlobalTheory.T.right_derivative_lower_block_at_one n lev f h hf h1 hh _ (hX 1)`. Establish `d2` using `GlobalTheory.T.right_derivative_lower_block_at_one n lev f h hf h1 hh _ (hX Complex.I)`. Prove the components needed by the constructor for the conclusion. Simplify using `only [e1, LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, Pi.smul_apply, Pi.sub_apply, d1, d2, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [f1, LinearMap.smul_apply, LinearMap.add_apply, Submodule.coe_smul, Submodule.coe_add, Pi.smul_apply, Pi.add_apply, d1, d2, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evaluation_raising_lowering (lev : Fin n → ℕ) (f h : SmF n) (hf : f ∈ Eqv lev f.1) (h1 : f.1 1 = 1) (hh : h ∈ Eqv lev f.1)
     (a b : Fin n) (hab : lev b ≤ lev a) :
@@ -249,61 +245,51 @@ theorem evaluation_raising_lowering (lev : Fin n → ℕ) (f h : SmF n) (hf : f 
     ring
 
 /- English proof (translation)
-Introduce `n lam hlam lev hlev`. Use `letI : MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ) := borel _`. Use `haveI : BorelSpace (Matrix.unitaryGroup (Fin n) ℂ) := ⟨rfl⟩`. Take `⟨κ, hκ1, hκ2, hκ3⟩` from `GlobalTheory.T.exists_haar_unitary_group n`. Establish `hmem` using `GlobalTheory.T.inducedFunction_smooth n lam hlam lev hlev`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F : SmF n` to `⟨fRaw lam lev, hmem⟩`. Establish `hF : F.1 = fRaw lam lev` using `rfl`. Establish `hFe : F ∈ Eqv lev F.1` using `fun p hp g hg => GlobalTheory.T.inducedFunction_parabolic_equivariant n lam hlam lev hlev p hp g hg`. Establish `hF1 : F.1 1 = 1` using `GlobalTheory.T.inducedFunction_at_one n lam lev`. Set `A` to `Algebra.adjoin ℂ {T : Module.End ℂ (SmF n) | ∃ a b, T = e1 DR a b ∨ T = e2 DR a b}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcyc : ∀ w, w ∈ cyc F ↔ ∃ T ∈ A, T F = w`. Introduce `w`. Simplify using `[cyc, A, Submodule.mem_map]`. Establish `hEq : ∀ T ∈ A, ∀ h ∈ Eqv lev F.1, T h ∈ Eqv lev F.1`. Introduce `T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT`. Take `⟨a, b, rfl | rfl⟩` from `hT`. Conclude with `fun h hh => first_raising_mem_equivariant lev _ a b hh`. Introduce `h hh`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [e2, LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (first_lowering_mem_equivariant lev _ b a hh)`. Consider the case `algebraMap r => intro w hw`. Simplify `Submodule.smul_mem _ r hw` using `[Module.algebraMap_end_apply]`. Consider the case `add T T' _ _ h h' => intro w hw`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ (h w hw) (h' w hw)`. Consider the case `mul T T' _ _ h h' => intro w hw`. Conclude with `h _ (h' w hw)`. Establish `hWE : ∀ w ∈ cyc F, w ∈ Eqv lev F.1`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, rfl⟩` from `(hcyc w).1 hw`. Conclude with `hEq T hT F hFe`. Establish `st1 : ∀ a b, ∀ w ∈ cyc F, e1 DR a b w ∈ cyc F`. Introduce `a b w hw`. Take `⟨T, hT, rfl⟩` from `(hcyc w).1 hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hcyc _).2 ⟨e1 DR a b * T, A.mul_mem (Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩) hT, rfl⟩`. Establish `st2 : ∀ a b, ∀ w ∈ cyc F, e2 DR a b w ∈ cyc F`. Introduce `a b w hw`. Take `⟨T, hT, rfl⟩` from `(hcyc w).1 hw`. Conclude with `(hcyc _).2 ⟨e2 DR a b * T, A.mul_mem (Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩) hT, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨hsym, hnn, hadd, hsm, hdef⟩` from `GlobalTheory.T.l2_inner_product_hermitian_form n κ`. Establish `hzero : ∀ w ∈ cyc F, (∀ k : Matrix.unitaryGroup (Fin n) ℂ, w.1 k.1 = 0) → w = 0`. Introduce `w hw hk`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Distinguish the cases in `hg : g ∈ GLs n`. Take `⟨p, hp, k, rfl⟩` from `GlobalTheory.T.iwasawa_parabolic_unitary n lev hlev.1 g hg`. Use `hWE w hw p hp k.1 (GlobalTheory.CompanionTheory.ModelS.unit_mem k)` as an intermediate fact. Simplify using `[this, hk k]`. Conclude with `w.2.2 g hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `core : InnerProductSpace.Core ℂ (cyc F)` to `{ inner := fun x y => ipK κ x.1 y.1 conj_inner_symm := fun x y => hsym x.1 y.1 re_inner_nonneg := fun x => hnn x.1 add_left := fun x y z => hadd x.1 y.1 z.1 smul_left := fun x y c => hsm c x.1 y.1 definite := fun x hx => Subtype.ext (hzero x.1 x.2 (hdef x.1 hx)) }`. Use `letI : NormedAddCommGroup (cyc F) := @InnerProductSpace.Core.toNormedAddCommGroup ℂ _ _ _ _ core`. Use `letI : InnerProductSpace ℂ (cyc F) := InnerProductSpace.ofCore core.toCore`. Take `⟨g1, g2, cm⟩` from `GlobalTheory.CompanionTheory.GLK.Pair.gl_pair n (SmF n) DR (GlobalTheory.T.right_derivative_real_lie_hom n).1 (GlobalTheory.T.right_derivative_real_lie_hom n).2.1 (GlobalTheory.T.right_derivative_real_lie_hom n).2.2`. Set `F1 : Fin n → Fin n → Module.End ℂ (cyc F)` to `fun a b => (e1 DR a b).restrict (st1 a b)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `F2 : Fin n → Fin n → Module.End ℂ (cyc F)` to `fun a b => (e2 DR a b).restrict (st2 a b)`. Establish `hKc : ∀ a b (x : cyc F), ((kF F1 F2 a b x : cyc F) : SmF n) = Kf a b x.1` using `fun _ _ _ => rfl`. Set `f : cyc F` to `⟨F, (hcyc F).2 ⟨1, A.one_mem, rfl⟩⟩`. Set `ev : cyc F →ₗ[ℂ] ℂ` to `ev1.comp (cyc F).subtype`. Take `⟨S₁, fd₁, hf₁, st₁⟩` from `GlobalTheory.T.inducedFunction_k_finite n lam hlam lev hlev F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hh1, hh2⟩` from `GlobalTheory.T.inducedFunction_k_highest_weight n lam hlam lev hlev F hF`. Establish `hder` using `GlobalTheory.T.inducedFunction_derivative_at_one n lam hlam lev hlev F hF`. Use `model_of_ops lam lev hlev F1 F2 f ev (res_gl _ _ st1 g1) (res_gl _ _ st2 g2) ?_ ?_ ?_ (S₁.comap (cyc F).subtype) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b c d`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `congrArg (fun T => T w.1) (cm a b c d)`. Introduce `a b x y`. Conclude with `GlobalTheory.T.k_action_skew_adjoint_l2 n κ (GlobalTheory.T.integral_right_derivative_eq_zero n κ) a b x.1 y.1`. Introduce `x`. Establish `key : ∀ T ∈ A, ∃ T' ∈ alg F1 F2, ∀ w : cyc F, ((T' w : cyc F) : SmF n) = T w.1`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `T hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT`. Take `⟨a, b, rfl | rfl⟩` from `hT`. Conclude with `⟨F1 a b, Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F2 a b, Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩, fun _ => rfl⟩`. Consider the case `algebraMap r`. Conclude with `⟨algebraMap ℂ _ r, Subalgebra.algebraMap_mem _ r, fun w => by simp [Module.algebraMap_end_apply]⟩`. Consider the case `add T T' _ _ h h'`. Take `⟨P, hP, hP'⟩` from `h`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨Q, hQ, hQ'⟩` from `h'`. Conclude with `⟨P + Q, Subalgebra.add_mem _ hP hQ, fun w => by simp [hP', hQ']⟩`. Consider the case `mul T T' _ _ h h'`. Take `⟨P, hP, hP'⟩` from `h`. Take `⟨Q, hQ, hQ'⟩` from `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨P * Q, Subalgebra.mul_mem _ hP hQ, fun w => by simp [hP', hQ']⟩`. Take `⟨T, hT, hTx⟩` from `(hcyc x.1).1 x.2`. Take `⟨T', hT', hc⟩` from `key T hT`. Conclude with `⟨T', hT', Subtype.ext (by rw [hc f]; exact hTx)⟩`. Set `φ : ↥(S₁.comap (cyc F).subtype) →ₗ[ℂ] S₁` to `((cyc F).subtype ∘ₗ (S₁.comap (cyc F).subtype).subtype).codRestrict S₁ (fun x => x.2)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Finite.of_injective φ (fun x y h => Subtype.ext (Subtype.ext (congrArg (fun t : ↥S₁ => (t : SmF n)) h)))`. Conclude with `hf₁`. Introduce `a b w hw`. Conclude with `st₁ a b w.1 hw`. Use `⟨fun a => ?_, fun a b hab _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hKc]`. Use `hh2 a` as an intermediate fact. Rewrite using `[← muZ_cast]`. Simplify `this` using `[f]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hKc]`. Conclude with `hh1 a b hab`. Use `show F.1 1 ≠ 0`. Rewrite using `[hF1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Introduce `a b v hl hne`. Use `(evaluation_raising_lowering lev F v.1 hFe hF1 (hWE _ v.2) a b hl).1` as an intermediate fact. Establish `h0` using `(hder a b hl).1`. Use `show (e1 DR a b v.1).1 1 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, h0, if_neg hne, zero_mul]`. Introduce `a v`. Use `(evaluation_raising_lowering lev F v.1 hFe hF1 (hWE _ v.2) a a le_rfl).1` as an intermediate fact. Establish `h0` using `(hder a a le_rfl).1`. Use `show (e1 DR a a v.1).1 1 = _ * v.1.1 1`.
-
-Rewrite using `[this, h0, if_pos rfl]`. Introduce `a b v hl hne`. Use `(evaluation_raising_lowering lev F v.1 hFe hF1 (hWE _ v.2) a b hl).2` as an intermediate fact. Establish `h0` using `(hder a b hl).2`. Use `show (-(e2 DR b a v.1)).1 1 = 0`.
-
-Simplify using `only [e2, neg_neg, LinearMap.neg_apply]`. Rewrite using `[this, h0, if_neg hne, zero_mul]`. Introduce `a v`. Use `(evaluation_raising_lowering lev F v.1 hFe hF1 (hWE _ v.2) a a le_rfl).2` as an intermediate fact. Establish `h0` using `(hder a a le_rfl).2`.
-
-Use `show (-(e2 DR a a v.1)).1 1 = _ * v.1.1 1`. Simplify using `only [e2, neg_neg, LinearMap.neg_apply]`. Rewrite using `[this, h0, if_pos rfl]`. Introduce `S fdS stS ev0 w hw haveI := fdS`. Establish `hS` using `GlobalTheory.T.eq_zero_on_unitary_of_vanish_at_one n (S.map (cyc F).subtype) inferInstance (by`.
-
-Introduce `a b u hu`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hu`. Conclude with `Submodule.mem_map.2 ⟨kF F1 F2 a b v, stS a b v hv, rfl⟩) (by`. Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hu`.
-
-Conclude with `ev0 v hv) w.1 (Submodule.mem_map.2 ⟨w, hw, rfl⟩)`. Conclude with `Subtype.ext (hzero w.1 w.2 hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem modelEx_main : ModelEx := by
   intro n lam hlam lev hlev

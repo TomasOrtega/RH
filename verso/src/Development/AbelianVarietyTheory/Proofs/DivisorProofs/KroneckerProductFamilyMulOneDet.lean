@@ -13,7 +13,7 @@ variable {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t, Fintype
   {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use extensionality with `I I'`. Simplify using `only [kron, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Conclude with `Finset.sum_congr rfl fun K _ => (Finset.prod_mul_distrib).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kronFamily_mul (M M' : ∀ t, Matrix (J t) (J t) R) :
     kron M * kron M' = kron (fun t => M t * M' t) := by
@@ -23,7 +23,7 @@ theorem kronFamily_mul (M M' : ∀ t, Matrix (J t) (J t) R) :
   exact Finset.sum_congr rfl fun K _ => (Finset.prod_mul_distrib).symm
 
 /- English proof (translation)
-Use extensionality with `I I'`. Simplify using `only [kron, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using `[funext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kronFamily_one : kron (fun t => (1 : Matrix (J t) (J t) R)) = 1 := by
   ext I I'
@@ -32,11 +32,11 @@ theorem kronFamily_one : kron (fun t => (1 : Matrix (J t) (J t) R)) = 1 := by
   simp [funext_iff]
 
 /- English proof (translation)
-Establish `h : kron (Function.update (fun s => (1 : Matrix (J s) (J s) R)) t A) = (Matrix.blockDiagonal (fun _ : (∀ j : {j // j ≠ t}, J j) => A)).submatrix (Equiv.piSplitAt t J) (Equiv.piSplitAt t J)`. Use extensionality with `I I'`. Simplify using `only [kron, Matrix.of_apply, Matrix.submatrix_apply, Matrix.blockDiagonal_apply, Equiv.piSplitAt_apply]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ t), Function.update_self]`. Establish `h2 : ∏ s ∈ Finset.univ.erase t, Function.update (fun s => (1 : Matrix (J s) (J s) R)) t A s (I s) (I' s) = ∏ s ∈ Finset.univ.erase t, (if I s = I' s then (1 : R) else 0)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hs), Matrix.one_apply]`. Rewrite using `[h2, Finset.prod_ite_zero]`. Simplify using `[funext_iff]`. Rewrite using `[h, Matrix.det_submatrix_equiv_self, Matrix.det_blockDiagonal, Finset.prod_const, Finset.card_univ, Fintype.card_pi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(Finset.prod_subtype (Finset.univ.erase t) (p := fun j => j ≠ t) (by simp) (fun s => Fintype.card (J s))).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kronFamily_det_single (t : T) (A : Matrix (J t) (J t) R) :
     (kron (Function.update (fun s => (1 : Matrix (J s) (J s) R)) t A)).det
@@ -62,11 +62,11 @@ theorem kronFamily_det_single (t : T) (A : Matrix (J t) (J t) R) :
     (fun s => Fintype.card (J s))).symm
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset T, (kron (fun t => if t ∈ S then M t else 1)).det = ∏ t ∈ S, (M t).det ^ (∏ s ∈ Finset.univ.erase t, Fintype.card (J s))`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [kronFamily_one]`. Consider the case `insert a S ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, ← ih, ← kronFamily_det_single, ← Matrix.det_mul, kronFamily_mul]`. Use `congr 2`. Use function extensionality and compare the values at `s`. Distinguish the cases in `hs : s = a`. Substitute `hs` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ha]`. Simplify using `[hs]`. Simplify using `using key Finset.univ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kronFamily_det (M : ∀ t, Matrix (J t) (J t) R) :
     (kron M).det = ∏ t, (M t).det ^ (∏ s ∈ Finset.univ.erase t, Fintype.card (J s)) := by
@@ -88,7 +88,7 @@ theorem kronFamily_det (M : ∀ t, Matrix (J t) (J t) R) :
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ M M'` and use `⟨kronFamily_mul M M', kronFamily_one, kronFamily_det M⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kronFamily_mul_one_det :
     ∀ (T : Type) [Fintype T] [DecidableEq T] (J : T → Type) [∀ t, Fintype (J t)] [∀ t, DecidableEq (J t)]

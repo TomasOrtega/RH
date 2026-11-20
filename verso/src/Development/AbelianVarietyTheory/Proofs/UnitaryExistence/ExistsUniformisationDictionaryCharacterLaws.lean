@@ -30,13 +30,11 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC Kf hK χ hχ hχF`. Establish `hS` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hT` using `GlobalTheory.firstFiveLaws.2.1.secTwist`. Establish `hneg : GlobalTheory.FrameUnif.NegXi C.M` using `(GlobalTheory.T.exists_memberDictionaryContext_goodEmbedding D H Dw l Xo c σ V r C.hr C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC`. Take `⟨un, hun⟩` from `GlobalTheory.FrameUnif.exists_framesOK hS hT _ H Dw l Xo c σ C.g C.e C.F r C.M hC.good hC.base hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dict, hd⟩` from `GlobalTheory.T.exists_dictionary_by_marking_rule D H Dw l Xo c σ V r C hC`. Take `⟨mu, hval, hmul, hnorm, hrat, hcont⟩` from `GlobalTheory.T.exists_unitaryAdelicChar_of_heckeChar D V χ hχ hχF`. Establish `hU` using `GlobalTheory.FrameUnif.isUnf_built hS _ H Dw l Xo c σ C.g C.e C.F r C.M un hC.good hC.base hneg hun`. Use `haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)`. Use `⟨un, dict, mu, hd, hun, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ unf := (Formalism.L2.PjFree.isUnf_ofPj (C.unf un)).1 hU unTest := fun k x => GlobalTheory.Frames.allTest_of_secBaseChange hS _ H Dw l Xo c (CAt σ) (un k x) chi1 := hC.base.chi modelW := hC.modelW familyUniformisationBasePointOrthogonal := hC.orth muUnit := ⟨hmul, hnorm, hrat, ( …` and prove the remaining obligations. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun.1 k x`. Conclude with `⟨Pm, h1, h2, h3, h4⟩`. Take `⟨γ, ⟨h1, h2, h3⟩, h4⟩` from `hd.1 h`. Use `⟨γ, h1, h2, h3, fun τ => ?_⟩` and prove the remaining obligations.
-
-Conclude with `congrFun h4 τ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → (∀ a, χ (idF D a) = 1) → ∃ un dict mu, C.IsDict dict ∧ GlobalTheory.FrameUnif.FramesOK C.e C.F C.M un ∧ PkgLaws V C.hr C.ι Kf χ (C.unf un) dict mu C.x₀ := by
   intro D H Dw l Xo c σ V r C hC Kf hK χ hχ hχF

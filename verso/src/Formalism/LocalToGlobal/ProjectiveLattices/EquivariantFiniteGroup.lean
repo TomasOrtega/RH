@@ -26,13 +26,13 @@ def supE (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : ENN
 def supN (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : ℝ := (supE X la P).toReal
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem pnorm_fac_nonneg (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) :
     0 ≤ ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) := Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _
 
 /- English proof (translation)
-Simplify using `only [Data.pnorm, Pi.add_apply]`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (pnorm_fac_nonneg X la x)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_add_le (X : Data E r) (la : Wt X.Ψ r) (P Q : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la (P + Q) x ≤ X.pnorm la P x + X.pnorm la Q x := by
@@ -41,7 +41,7 @@ theorem pnorm_add_le (X : Data E r) (la : Wt X.Ψ r) (P Q : Frame X.Ψ r → ℂ
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (pnorm_fac_nonneg X la x)
 
 /- English proof (translation)
-Simplify using `only [Data.pnorm, Pi.smul_apply, smul_eq_mul, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pnorm_smul (X : Data E r) (la : Wt X.Ψ r) (a : ℂ) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la (a • P) x = ‖a‖ * X.pnorm la P x := by
@@ -49,7 +49,7 @@ theorem pnorm_smul (X : Data E r) (la : Wt X.Ψ r) (a : ℂ) (P : Frame X.Ψ r �
   ring
 
 /- English proof (translation)
-Simplify using `[Data.pnorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pnorm_zero (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) : X.pnorm la 0 x = 0 := by
   simp [Data.pnorm]
@@ -58,7 +58,7 @@ def holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) : Submodule ℂ (
   Submodule.span ℂ {P | IsHolCusp X la P}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span h`.
+A detailed English derivation is pending.
 -/
 theorem holCusp_mem_holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) {P : FDSec X}
     (h : IsHolCusp X la P) : P ∈ holSub X la := Submodule.subset_span h
@@ -66,7 +66,7 @@ theorem holCusp_mem_holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) {
 def dmet (n f r : ℕ) : ℝ := Real.exp ((n : ℝ) * f * r * (-(1 / 2) * Real.log (2 * Real.pi)) / 2)
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem supN_nonneg (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : 0 ≤ supN X la P := ENNReal.toReal_nonneg
 
@@ -116,7 +116,7 @@ def uniformisationL2 {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dic
     exact map_smulₛₗ _ a f
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨rd f, h1 f, h f, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem jL2_mem_span {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X)
     (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu)
@@ -132,13 +132,13 @@ def l2NormAlt {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA 
   ‖uniformisationL2 V σ rd dict mu h f‖
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem l2Norm_nonneg_bis {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu) (f : C) : 0 ≤ l2NormAlt V σ rd dict mu h f := norm_nonneg _
 
 /- English proof (translation)
-Simplify using `only [l2NormAlt, map_smulₛₗ, norm_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem l2Norm_smul_alt {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu) (a : K) (f : C) :
@@ -146,7 +146,7 @@ theorem l2Norm_smul_alt {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (
   simp only [l2NormAlt, map_smulₛₗ, norm_smul]
 
 /- English proof (translation)
-Simplify using `only [l2NormAlt, map_add]`. Conclude with `norm_add_le _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem L2Norm_add_le {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu) (f g : C) :
@@ -196,20 +196,20 @@ def MuUnit {X : Comp → Data E r} (dict : GA D V → Σ c, Frame (X c).Ψ r) (m
     ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1
 
 /- English proof (translation)
-Simplify using `[Data.pnorm, norm_div, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pnorm_eq_of_unit (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r)
     (h : ∀ τ i, ‖dmin X.Gm x τ i‖ = 1) : X.pnorm la P x = ‖P x‖ := by
   simp [Data.pnorm, norm_div, h]
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muQ1 V) := by`. Unfold `muQ1`. Use `split_ifs with hh`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hh.1 hh.2]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hC : 0 ≤ supN X la (rd f)` using `supN_nonneg X la (rd f)`. Establish `hb : ∀ᵐ q ∂(muQ1 V), ‖(uniformisationL2 V σ rd dict mu h f : AutQ V → ℂ) q‖ ≤ supN X la (rd f)` using `by filter_upwards [(h f).coeFn_toLp] with q hq`. Establish `hq' : (uniformisationL2 V σ rd dict mu h f : AutQ V → ℂ) q = jFn V σ rd dict mu f q` using `hq`. Rewrite using `[hq']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖mu q.out * rd f (dict q.out).1 (dict q.out).2‖ ≤ _`. Rewrite using `[norm_mul, hm.2.1, one_mul, ← pnorm_eq_of_unit (X (dict q.out).1) (la (dict q.out).1) (rd f (dict q.out).1) (dict q.out).2 (hm.2.2.2 q.out)]`. Establish `h1 : ENNReal.ofReal ((X (dict q.out).1).pnorm (la (dict q.out).1) (rd f (dict q.out).1) (dict q.out).2) ≤ supE X la (rd f)` using `le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (rd f p.1) p.2)) ⟨(dict q.out).1, ⟨(dict q.out).2, hd q.out⟩⟩`. Establish `h0 : 0 ≤ (X (dict q.out).1).pnorm (la (dict q.out).1) (rd f (dict q.out).1) (dict q.out).2`. Unfold `Data.pnorm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mul_nonneg (norm_nonneg _) (pnorm_fac_nonneg _ _ _)`. Establish `h2` using `ENNReal.toReal_mono hfin h1`. Rewrite `h2` using `[ENNReal.toReal_ofReal h0]`. Then use the resulting hypothesis. Use `Lp.norm_le_of_ae_bound hC hb` as an intermediate fact. Simplify `this` using `[l2NormAlt, measureUnivNNReal]`.
+A detailed English derivation is pending.
 -/
 theorem L2Norm_le_sup_norm {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X)
     (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu)

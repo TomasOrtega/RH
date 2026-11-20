@@ -8,39 +8,33 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `F _ _ _ κ _ _ G hG a Φ B hsupp hB`. Take `⟨C, A, hCA⟩` from `GlobalTheory.HilbertThetaSeries.GaussSum.gauss_sum_bound F κ G hG a`. Take `⟨hTP, -, hfin⟩` from `GlobalTheory.HilbertThetaSeries.qf_totPos_proper F κ G hG`. Take `⟨-, hsc, -, hint, -, haL, -⟩` from `GlobalTheory.HilbertThetaSeries.formLatticeProps F κ G hG`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : ∀ z (x : κ → F), ‖Φ x * ez (QF G x) z‖ ≤ B * ‖ez (QF G x) z‖` using `fun z x => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (norm_nonneg _)`. Establish `hsub : ∀ z, Summable fun x : aL κ a => ‖Φ x * ez (QF G (x : κ → F)) z‖` using `fun z => Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun x => hle z x) (((hCA z).1).mul_left B)`. Establish `hzero : ∀ x, x ∉ aL κ a → Φ x = 0` using `fun x hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (hsupp x h)`. Establish `hsumN : ∀ z, Summable fun x : κ → F => ‖Φ x * ez (QF G x) z‖`. Introduce `z`. Use `(Function.Injective.summable_iff (f := fun x : κ → F => ‖Φ x * ez (QF G x) z‖) (g := ((↑) : aL κ a → κ → F)) Subtype.val_injective ?_).1 (hsub z)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `: x ∉ aL κ a` using `fun h => hx ⟨⟨x, h⟩, rfl⟩`. Simplify using `[hzero x this]`. Establish `hsum : ∀ z, Summable fun x => Φ x * ez (QF G x) z` using `fun z => (hsumN z).of_norm`. Establish `hgr : Gr (th G Φ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨B * C, A, fun z => ?_⟩` and prove the remaining obligations. Establish `e1 : ‖th G Φ z‖ ≤ ∑' x, ‖Φ x * ez (QF G x) z‖` using `norm_tsum_le_tsum_norm (hsumN z)`. Establish `e2 : ∑' x, ‖Φ x * ez (QF G x) z‖ = ∑' x : aL κ a, ‖Φ x * ez (QF G (x : κ → F)) z‖`. Use `(tsum_subtype_eq_of_support_subset (s := (aL κ a : Set (κ → F))) ?_).symm` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [hzero x h])`. Establish `e3 : ∑' x : aL κ a, ‖Φ x * ez (QF G (x : κ → F)) z‖ ≤ ∑' x : aL κ a, B * ‖ez (QF G (x : κ → F)) z‖` using `Summable.tsum_le_tsum (fun x => hle z x) (hsub z) (((hCA z).1).mul_left B)`. Rewrite `e3` using `[tsum_mul_left]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hQ : HasQ (th G Φ) (fun ξ => ∑ᶠ x ∈ {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}, Φ x)`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, hy0, hy⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (.of_finite ℚ (a ^ 2))).exists_integral_multiple`. Establish `hya : IsIntegral ℤ ((y.natAbs : F) * a ^ 2)`. Establish `hy' : IsIntegral ℤ ((y : F) * a ^ 2)` using `by rwa [zsmul_eq_mul] at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hc : ((y.natAbs : ℕ) : F) = (((y.natAbs : ℕ) : ℤ) : F)` using `(Int.cast_natCast _).symm`. Rewrite using `[hc]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h' : ((y.natAbs : ℕ) : ℤ) = -y` using `by omega`. Rewrite using `[h', Int.cast_neg, neg_mul]`. Conclude with `hy'.neg`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, fun ξ hξ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, ⟨hxa, hxξ⟩, -⟩ : ∃ x ∈ {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}, Φ x ≠ 0 := by`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hξ` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin a ξ)]`.
+Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun x hx => h x ((hfin a ξ).mem_toFinset.1 hx)`. Take `⟨l, hl, rfl⟩` from `(haL a x).1 hxa`. Substitute `hxξ` using the available equality. Prove the components needed by the constructor for the conclusion. Distinguish the cases in `hx : a • l = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hx]`. Simplify using `[QF, BF]`. Use `right`. Conclude with `hTP _ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hsc a l l).2.1, ← mul_assoc]`. Conclude with `hya.mul (hint l hl).1`. Establish `hfib : ∀ ξ, HasSum (fun c : {x // QF G x = ξ} => Φ c * ez (QF G c) z) ((∑ᶠ x ∈ {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}, Φ x) * ez ξ z)`. Introduce `ξ`. Establish `e : (fun c : {x // QF G x = ξ} => Φ c * ez (QF G c) z) = fun c : {x // QF G x = ξ} => Φ c * ez ξ z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `c`. Rewrite using `[c.2]`. Rewrite using `[e]`. Use `HasSum.mul_right _ ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin a ξ)]`.
-
-Establish `h2 : HasSum (({x | QF G x = ξ} : Set (κ → F)).indicator Φ) (∑ x ∈ (hfin a ξ).toFinset, Φ x)`. Establish `h3 : ∑ x ∈ (hfin a ξ).toFinset, Φ x = ∑ x ∈ (hfin a ξ).toFinset, ({x | QF G x = ξ} : Set (κ → F)).indicator Φ x` using `Finset.sum_congr rfl fun x hx => (Set.indicator_of_mem (show x ∈ ({x | QF G x = ξ} : Set (κ → F)) from ((hfin a ξ).mem_toFinset.1 hx).2) _).symm`. Rewrite using `[h3]`. Use `hasSum_sum_of_ne_finset_zero fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hq : QF G x = ξ`.
-
-Rewrite using `[Set.indicator_of_mem (show x ∈ ({x | QF G x = ξ} : Set (κ → F)) from hq)]`. Use `hzero x fun hxa => hx ?_` and prove the remaining obligations. Conclude with `(hfin a ξ).mem_toFinset.2 ⟨hxa, hq⟩`. Conclude with `Set.indicator_of_notMem (show x ∉ ({x | QF G x = ξ} : Set (κ → F)) from hq) _`. Conclude with `(hasSum_subtype_iff_indicator (f := Φ) (s := {x | QF G x = ξ})).2 h2`.
-
-Establish `hall : HasSum (fun x => Φ x * ez (QF G x) z) (th G Φ z)` using `(hsum z).hasSum`. Rewrite `hall` using `[← (Equiv.sigmaFiberEquiv (QF G)).hasSum_iff]`. Conclude with `hall.sigma hfib`. Conclude with `⟨hsum, GlobalTheory.HilbertThetaSeries.QHol.hol F (th G Φ) _ hQ, hgr, hQ⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.th_expansion : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ (a : F) (Φ : (κ → F) → ℂ) (B : ℝ), (∀ x, Φ x ≠ 0 → x ∈ aL κ a) → (∀ x, ‖Φ x‖ ≤ B) → (∀ z, Summable fun x => Φ x * ez (QF G x) z) ∧ Hol (th G Φ) ∧ Gr (th G Φ) ∧ HasQ (th G Φ) (fun ξ => ∑ᶠ x ∈ {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}, Φ x) := by
   intro F _ _ _ κ _ _ G hG a Φ B hsupp hB
@@ -133,7 +127,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.th_expansion | exact GlobalTheory.HilbertThetaSeries.th_expansion | (intros; apply GlobalTheory.HilbertThetaSeries.th_expansion <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.thetaSeries_holomorphic_qExpansion_of_bounded_coeff : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ (a : F) (Φ : (κ → F) → ℂ) (B : ℝ), (∀ x, Φ x ≠ 0 → x ∈ aL κ a) → (∀ x, ‖Φ x‖ ≤ B) → (∀ z, Summable fun x => Φ x * ez (QF G x) z) ∧ Hol (th G Φ) ∧ Gr (th G Φ) ∧ HasQ (th G Φ) (fun ξ => ∑ᶠ x ∈ {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}, Φ x) := by
   first | exact @GlobalTheory.HilbertThetaSeries.th_expansion | exact GlobalTheory.HilbertThetaSeries.th_expansion | (intros; apply GlobalTheory.HilbertThetaSeries.th_expansion <;> assumption)

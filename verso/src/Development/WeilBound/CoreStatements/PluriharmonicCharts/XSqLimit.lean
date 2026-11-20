@@ -17,9 +17,9 @@ section Gen
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨j, hj⟩` from `A.cover x`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `(hf j).continuousOn.continuousAt (hO.mem_nhds hmem)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt (A.chart j) x` using `(A.chart j).continuousAt hj`. Establish `h3 : ContinuousAt (fun y => (f ∘ (A.chart j).symm) (A.chart j y)) x` using `h1.comp h2`. Use `(h3.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_smoothOn (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {f : X → ℝ}
     (hf : A.SmoothOn U f) : ContinuousOn f U := by
@@ -38,11 +38,11 @@ theorem continuousOn_of_smoothOn (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen 
   simp [(A.chart j).left_inv hy]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hO _ hmem`. Establish `hK : Metric.closedBall (A.chart j x) (r / 2) ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `Metric.tendstoUniformlyOn_iff.1 (hC2 j _ hK (isCompact_closedBall _ _)) δ hδ`. Use `⟨(A.chart j).source ∩ (A.chart j) ⁻¹' Metric.ball (A.chart j x) (r / 2), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Filter.inter_mem ((A.chart j).open_source.mem_nhds hj) ((A.chart j).continuousAt hj (Metric.ball_mem_nhds _ (by linarith)))`. Use `filter_upwards [hu] with t ht y hy`. Establish `h1` using `ht (A.chart j y) (Metric.ball_subset_closedBall hy.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Function.comp, (A.chart j).left_inv hy.1, Real.dist_eq] at h1`. Rewrite `h1` using `[abs_sub_comm]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem member_unif (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {ph : X → ℝ} {phT : ℝ → X → ℝ}
     (hC2 : ∀ j, ∀ K ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U, IsCompact K →
@@ -67,13 +67,11 @@ theorem member_unif (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {ph : X �
     rwa [abs_sub_comm] at h1
 
 /- English proof (translation)
-Rewrite using `[Metric.tendstoLocallyUniformlyOn_iff]`. Introduce `ε hε x hx`. Establish `hM0 : 0 ≤ ∑ i, |c i|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Establish `hδ : 0 < ε / (∑ i, |c i| + 1)` using `div_pos hε (by linarith)`. Use `choose V hV hev using fun i => member_unif A hU (hC2 i) hx hδ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⋂ i, V i, mem_nhdsWithin_of_mem_nhds (Filter.iInter_mem.2 hV), ?_⟩` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_all.2 hev, Ioc_mem_nhdsGT ht₀] with t ht htt y hy`. Rewrite using `[if_pos ⟨htt.1, htt.2⟩, Real.dist_eq]`. Establish `hy' : ∀ i, y ∈ V i` using `Set.mem_iInter.1 hy`. Establish `e1 : cst + ∑ i, c i * ph i y - (cst + ∑ i, c i * phT i t y) = ∑ i, c i * (ph i y - phT i t y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_add_left_eq_sub, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (by rw [abs_sub_comm]; exact (ht i y (hy' i)).le) (abs_nonneg _)`. Use `_ = (∑ i, |c i|) * (ε / (∑ i, |c i| + 1)) := by rw [Finset.sum_mul]`. Use `_ < ε := by`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_unif (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {ι : Type} [Fintype ι]
     (ph : ι → X → ℝ) (phT : ι → ℝ → X → ℝ) (c : ι → ℝ) (cst : ℝ)
@@ -107,7 +105,7 @@ theorem sum_unif (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {ι : Type} [
         nlinarith
 
 /- English proof (translation)
-The claim follows from `|cst + ∑ i, c i * f i| ≤ (|cst| + ∑ i, |c i| * B) * l := by have h1 : |cst + ∑ i, c i * f i| ≤ |cst| + ∑ i, |c i| * |f i| := by refine (abs_add_le _ _).trans (add_le_add le_rfl ?_) refine (Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq ?_) exact Finset.sum_congr rfl fun i _ => ab …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lin_le {ι : Type} [Fintype ι] (c : ι → ℝ) (cst : ℝ) (f : ι → ℝ) {B l : ℝ}
     (hf : ∀ i, |f i| ≤ B * l) (hl : 1 ≤ l) :
@@ -129,23 +127,21 @@ theorem abs_lin_le {ι : Type} [Fintype ι] (c : ι → ℝ) (cst : ℝ) (f : ι
 end Gen
 
 /- English proof (translation)
-Use `letI : MeasurableSpace S.X := borel S.X`. Use `haveI : BorelSpace S.X := ⟨rfl⟩`. Take `⟨hopen, -, -, -, hrW⟩` from `GlobalTheory.CompanionTheory.Ar.PB.anSys_open_basics e τ S`. Establish `hU : IsOpen (bdry S.s)ᶜ` using `hopen`. Establish `hl : ∀ y, y ∉ bdry S.s → 1 ≤ Real.log (rW S.L S.s y)` using `fun y hy => by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hrW y hy`. Establish `h1` using `Real.log_le_log (Real.exp_pos 1) h`. Rewrite `h1` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `hph : ∀ o y, y ∉ bdry S.s → |S.ph o y| ≤ (|S.C| + |S.C₅|) * Real.log (rW S.L S.s y)`. Introduce `o y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(S.sing o).2.2.2 y hy`. Use `hl y hy` as an intermediate fact. Apply the tactic sequence `refine abs_le.2 ⟨?_, ?_⟩ <;> nlinarith [abs_nonneg S.C, abs_nonneg S.C₅, le_abs_self S.C₅, neg_abs_le S.C₅, le_abs_self S.C]`. Establish `hphT : ∀ o t, 0 < t → t ≤ S.t₀ → ∀ y, y ∉ bdry S.s → |S.phT o t y| ≤ (|S.C| + |S.C₅|) * Real.log (rW S.L S.s y)`. Introduce `o t h0 h1 y hy`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hle, hge, -⟩` from `(S.reg o).2.2 t h0 h1`. Establish `a1` using `hle y`. Establish `a2` using `hge y hy`. Take `⟨b1, -⟩` from `(S.sing o).2.2.2 y hy`. Use `hl y hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine abs_le.2 ⟨?_, ?_⟩ <;> nlinarith [abs_nonneg S.C, abs_nonneg S.C₅, le_abs_self S.C₅, neg_abs_le S.C₅, le_abs_self S.C]`. Establish `hgc : ∀ t, ContinuousOn (fun x => if 0 < t ∧ t ≤ S.t₀ then cst + ∑ i, c i * S.phT (mm i) t x else cst + ∑ i, c i * S.ph (mm i) x) (bdry S.s)ᶜ`. Introduce `t`. Distinguish the cases in `ht : 0 < t ∧ t ≤ S.t₀`. Simplify using `only [ht, and_self, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousOn_const.add (continuousOn_finset_sum _ fun i _ => continuousOn_const.mul ?_)` and prove the remaining obligations. Conclude with `(continuousOn_of_smoothOn S.A isOpen_univ ((S.reg (mm i)).2.2 t ht.1 ht.2).1).mono (Set.subset_univ _)`. Simplify using `only [ht, if_false]`. Conclude with `continuousOn_const.add (continuousOn_finset_sum _ fun i _ => continuousOn_const.mul (continuousOn_of_smoothOn S.A hU (S.sing (mm i)).2.1))`. Establish `hgb : ∀ t y, y ∉ bdry S.s → |(fun x => if 0 < t ∧ t ≤ S.t₀ then cst + ∑ i, c i * S.phT (mm i) t x else cst + ∑ i, c i * S.ph (mm i) x) y| ≤ (|cst| + ∑ i, |c i| * (|S.C| + |S.C₅|)) * Real.log (rW S.L S.s y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `t y hy`. Distinguish the cases in `ht : 0 < t ∧ t ≤ S.t₀`. Simplify using `only [ht, and_self, if_true]`. Conclude with `abs_lin_le c cst _ (fun i => hphT (mm i) t ht.1 ht.2 y hy) (hl y hy)`. Simplify using `only [ht, if_false]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `abs_lin_le c cst _ (fun i => hph (mm i) y hy) (hl y hy)`. Establish `hlim` using `sum_unif S.A hU (fun i => S.ph (mm i)) (fun i => S.phT (mm i)) c cst (fun i j K hK hKc => ((S.c2 (mm i)) j K hK hKc).1) S.t₀ ht₀`. Establish `h` using `hC S.A S.Θ S.L S.s S.m S.W S.potΘ S.posΘ S.potL S.sec S.snc S.norm_le (fun r => S.th (w r)) (fun r => S.ph (w r)) (fun r => S.phT (w r)) S.C₅ S.C S.t₀ (fun r => S.sing (w r)) (fun r => S.reg (w r)) (fun r => S.c2 (w r)) (fun x => cst + ∑ i, c i * S.ph (mm i) x) _ _ hgc hgb hlim`. Use `⟨h.1, h.2.congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht`.
-
-Establish `e1 : (fun x => if 0 < t ∧ t ≤ S.t₀ then cst + ∑ i, c i * S.phT (mm i) t x else cst + ∑ i, c i * S.ph (mm i) x) = fun x => cst + ∑ i, c i * S.phT (mm i) t x`. Use function extensionality and compare the values at `x`. Rewrite using `[if_pos ⟨ht.1, ht.2⟩]`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem regular (hC : ConvergenceSignedStatement) {e : ℕ} {τ : Type} (S : AnSys e τ) (w : Fin e → τ)
     {ι : Type} [Fintype ι] (mm : ι → τ) (c : ι → ℝ) (cst : ℝ) (ht₀ : 0 < S.t₀) :
@@ -216,7 +212,7 @@ section Lin
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `j K hK hKc`. Use `((hf j K hK hKc).add (hg j K hK hKc)).congr_fun (fun y _ => ?_) hKc.measurableSet` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mIntegrable_add' (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {f g : X → ℝ}
     (hf : MIntegrable A Φ f) (hg : MIntegrable A Φ g) : MIntegrable A Φ (fun x => f x + g x) := by
@@ -226,9 +222,9 @@ theorem mIntegrable_add' (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {f g : 
   ring
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with h`. Unfold `integralWith`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add (ReciprocityTheory.AnForm.M.integrableOn_weight A h.some Φ f hf j) (ReciprocityTheory.AnForm.M.integrableOn_weight A h.some Φ g hg j)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_add' [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {f g : X → ℝ}
     (hf : MIntegrable A Φ f) (hg : MIntegrable A Φ g) :
@@ -246,7 +242,7 @@ theorem mInt_add' [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Φ : Fin e
   · simp
 
 /- English proof (translation)
-Introduce `j K hK hKc`. Conclude with `((hg.comp_continuousOn ((A.chart j).continuousOn_symm.mono hK)).mul ((ReciprocityTheory.AnForm.M.locDensCont A Φ hΦ j).mono hK)).integrableOn_compact hKc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mIntegrable_of_continuous (A : FinHolAtlas e X) (Φ : Fin e → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) {g : X → ℝ} (hg : Continuous g) : MIntegrable A Φ g := by

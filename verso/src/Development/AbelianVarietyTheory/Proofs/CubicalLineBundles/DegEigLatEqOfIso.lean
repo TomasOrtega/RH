@@ -18,7 +18,7 @@ namespace GlobalTheory.LamF
 open IntCoord in
 
 /- English proof (translation)
-Take `⟨u, hu, he⟩` from `((integral_tangent_coordinates K P F).2.2.2.2.2 O a τ c).1 hc`. Use `Submodule.subset_span ⟨u ≫ f, hM u c hu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[isLieComb_one_iff, Category.assoc, ← hf, ← Category.assoc, (isLieComb_one_iff _ _ _).1 (he x), Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem diff_mem_eigLat {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp (𝓞 K))} {F : GenFib P}
     {F' : GenFib P'} {O : Type} [CommRing O] {a : OAct O P.A} {a' : OAct O P'.A} {f : P.A ⟶ P'.A}
@@ -31,9 +31,9 @@ theorem diff_mem_eigLat {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (
     Category.assoc]
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun c hc => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `diff_mem_eigLat hf hM τ hc`. Establish `hf' : ∀ x, a'.act x ≫ e.inv = e.inv ≫ a.act x` using `fun x => by`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, hf, Iso.inv_hom_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M' c, diff_mem_eigLat hf' hM' τ hc, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, -⟩` from `((integral_tangent_coordinates K P' F').2.2.2.2.2 O a' τ c).1 hc`. Establish `h2` using `hM _ _ (hM' _ _ hu)`. Rewrite `h2` using `[Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `((integral_tangent_coordinates K P' F').1 u hu.1).unique h2 hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eigLat_of_iso {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp (𝓞 K))} {F : GenFib P}
     {F' : GenFib P'} {O : Type} [CommRing O] {a : OAct O P.A} {a' : OAct O P'.A} (e : P.A ≅ P'.A)
@@ -53,11 +53,11 @@ theorem map_eigLat_of_iso {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV
     exact ((integral_tangent_coordinates K P' F').1 u hu.1).unique h2 hu
 
 /- English proof (translation)
-Introduce `hT hL K _ _ P P' F F' h h' O _ a a' e hh hh' hlin hlam τ`. Establish `hm : IsMonHom e.hom` using `hlin.1`. Establish `hm' : IsMonHom e.inv` using `inferInstance`. Take `⟨M, hM, -⟩` from `(GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P' F' e.hom hm).1`. Take `⟨M', hM', -⟩` from `(GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P' F' P F e.inv hm').1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hid : F.IsDiffOf F (𝟙 P.A) LinearMap.id` using `fun u c hu => by simpa using hu`. Establish `hiso` using `GlobalTheory.T.hermitianMetric_differential_eq_of_pairing_relation hT hL K P F P' F' h h' e.hom (𝟙 P.A) M LinearMap.id hh hh' hm inferInstance hlam hM hid`. Establish `hle : F.eigLat a τ ≤ F.lieLat` using `Submodule.span_mono fun c ⟨u, hu, _⟩ => ⟨u, hu⟩`. Establish `hfg : (F.eigLat a τ).FG` using `(GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1.of_le hle`. Rewrite using `[← map_eigLat_of_iso e hlin.2 hM hM' τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact (deg_map_isometry K _ _ h h' M _ hfg hiso).symm`.
+A detailed English derivation is pending.
 -/
 theorem deg_eigLat_eq_of_iso : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P P' : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (F' : GenFib P') (h : HermFam K (Fin F.P₀.g → K)) (h' : HermFam K (Fin F'.P₀.g → K)) (O : Type) [CommRing O] (a : OAct O P.A) (a' : OAct O P'.A) (e : P.A ≅ P'.A), F.IsHerm h → F'.IsHerm h' → Serre.IsLinearHom a a' e.hom → LamEq P'.L e.hom e.hom P.L (𝟙 P.A) (𝟙 P.A) → ∀ τ : O →+* 𝓞 K, deg h (F.eigLat a τ) = deg h' (F'.eigLat a' τ) := by
   intro hT hL K _ _ P P' F F' h h' O _ a a' e hh hh' hlin hlam τ

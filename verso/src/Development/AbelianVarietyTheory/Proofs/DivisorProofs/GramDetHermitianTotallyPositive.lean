@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.UnitaryClasses
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramOn, hform, Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply, IsCMField.complexEmbedding_complexConj, mul_ite, ite_mul, Finset.sum_ite_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramOn_one_map_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (V : Submodule E (Fin n → E)) (τ : E →+* ℂ) :
@@ -22,9 +22,9 @@ theorem gramOn_one_map_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
     IsCMField.complexEmbedding_complexConj, mul_ite, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis`. Consider the case `exact _root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis`. Consider the case `(apply _root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gramOn_basis_mulVec_injective {E : Type} [Field E] {n : ℕ}
     (V : Submodule E (Fin n → E)) (τ : E →+* ℂ) :
@@ -39,13 +39,13 @@ theorem gramOn_basis_mulVec_injective {E : Type} [Field E] {n : ℕ}
   | (intros; exact _root_.GlobalTheory.BasisLeftInverse.injective_mulVec_map_basis ..)
 
 /- English proof (translation)
-Introduce `E _ _ _ n V`. Establish `key : ∀ τ : E →+* ℂ, 0 < τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det`. Introduce `τ`. Rewrite using `[RingHom.map_det]`. Establish `: τ.mapMatrix (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V) = (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).map τ` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, gramOn_one_map_eq]`. Conclude with `(Matrix.PosDef.conjTranspose_mul_self _ (gramOn_basis_mulVec_injective V τ)).det_pos`. Use `⟨fun h0 => ?_, fun τ => ?_⟩` and prove the remaining obligations. Establish `τ0` using `(Classical.arbitrary (NumberField.InfinitePlace E)).embedding`. Use `key τ0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Establish `h` using `Complex.lt_def.mp (key τ)`. Use `⟨(τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det).re, h.1, ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Simplify using `using h.2.symm`.
+A detailed English derivation is pending.
 -/
 theorem gramOn_one_det_totallyPositive : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (V : Submodule E (Fin n → E)), (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det ≠ 0 ∧ ∀ τ : E →+* ℂ, ∃ r : ℝ, 0 < r ∧ τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det = r := by
   intro E _ _ _ n V

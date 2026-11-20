@@ -25,21 +25,17 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ B f hf`. Use `haveI := B.ha`. Use `haveI := B.hb`. Use `haveI := B.hν`. Use `haveI : BorelSpace (G B.a) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (G B.b) := ⟨rfl⟩`. Use `haveI : BorelSpace (Hf E B.a B.b) := ⟨rfl⟩`. Use `⟨fun t t' ht ht' => ?_, fun ψ ψ' hψ hψ' => ?_⟩` and prove the remaining obligations. Establish `hT` using `PositivityTheory.Rg.BcB.F.Op.test B tensTest t ht`. Establish `hT'` using `PositivityTheory.Rg.BcB.F.Op.test B tensTest t' ht'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `(tensMul E B.a B.b B.D B.μa B.μb B.ν B.Ma B.Mb B.κ t.ka t'.ka t.kb t'.kb t.va t'.va t.vb t'.vb t.T t'.T t.ψ t'.ψ B.compat ht.ka ht.kb ht'.ka ht'.kb ht.ψ ht'.ψ).2`. Establish `e : (t.mul t').Φ = mulM B.D.μ t.Φ t'.Φ` using `hm.symm`. Rewrite using `[e]`. Conclude with `PositivityTheory.Rg.BcB.F.Rd.B.conv_mulM B.D t.Φ t'.Φ hT hT' f hf`. Establish `hcf : Continuous fun h : Hf E B.a B.b => finH h` using `((continuous_finGL' B.a).comp continuous_fst).prodMk ((continuous_finGL' B.b).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : ∀ i x, Continuous fun h => f i (x * finH h)` using `fun i x => (hf i).comp (continuous_const.mul hcf)`. Establish `hI : ∀ (φ : Matrix B.κ B.κ (Hf E B.a B.b → ℂ)), IsFinM φ → ∀ y z i x, Integrable (fun h => φ y z h * f i (x * finH h)) B.ν` using `fun φ hφ y z i x => ((hφ y z).1.mul (hF i x)).integrable_of_hasCompactSupport (hφ y z).2.mul_right`. Use `⟨PositivityTheory.Rg.BcB.F.R3.convF_mulF_eq_convF_convF B.ν ψ ψ' hψ hψ' f hF, ?_, fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i x`. Simplify using `only [convF, Pi.add_apply, Matrix.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Conclude with `integral_add (hI ψ hψ _ _ _ _) (hI ψ' hψ' _ _ _ _)`. Use function extensionality and compare the values at `i x`. Simplify using `only [convF, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Conclude with `integral_const_mul _ _`. Use function extensionality and compare the values at `i x`. Simplify using `only [convF, Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show ψ i.2 z h * (c * f (i.1, z) (x * finH h)) = c * (ψ i.2 z h * f (i.1, z) (x * finH h))`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem convMul : ConvMul := by
   intro E _ _ _ B f hf

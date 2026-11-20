@@ -9,7 +9,7 @@ namespace GlobalTheory.Col.Interp
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `: ((1 + X : PowerSeries R) ^ n) = (((1 + Polynomial.X : Polynomial R) ^ n : Polynomial R) : PowerSeries R)`. Simplify using the standard rewrite rules. Rewrite using `[this, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_one_add_X_pow (n k : ℕ) : coeff k ((1 + X : PowerSeries R) ^ n) = (n.choose k : R) := by
   have : ((1 + X : PowerSeries R) ^ n) = (((1 + Polynomial.X : Polynomial R) ^ n : Polynomial R) : PowerSeries R) := by
@@ -17,7 +17,7 @@ theorem coeff_one_add_X_pow (n k : ℕ) : coeff k ((1 + X : PowerSeries R) ^ n) 
   rw [this, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (coeff N) h` as an intermediate fact. Rewrite `this` using `[map_sub, coeff_one_add_X_pow, Nat.choose_self, coeff_one, if_neg (by omega)]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_add_X_pow_sub_one_ne_zero [Nontrivial R] (N : ℕ) (hN : 1 ≤ N) :
     ((1 + X : PowerSeries R) ^ N - 1) ≠ 0 := by
@@ -27,7 +27,7 @@ theorem one_add_X_pow_sub_one_ne_zero [Nontrivial R] (N : ℕ) (hN : 1 ≤ N) :
   simp at this
 
 /- English proof (translation)
-Unfold `cyc`. Rewrite using `[Polynomial.cyclotomic_prime_pow_eq_geom_sum hp]`. Simplify using `[Polynomial.eval₂_finset_sum, Polynomial.eval₂_pow, Polynomial.eval₂_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cyc_succ (p n : ℕ) (hp : p.Prime) :
     cyc R p (n + 1) = ∑ i ∈ Finset.range p, ((1 + X : PowerSeries R) ^ (p ^ n)) ^ i := by
@@ -36,16 +36,16 @@ theorem cyc_succ (p n : ℕ) (hp : p.Prime) :
   simp [Polynomial.eval₂_finset_sum, Polynomial.eval₂_pow, Polynomial.eval₂_X]
 
 /- English proof (translation)
-Rewrite using `[cyc_succ p n hp, geom_sum_mul, ← pow_mul, ← pow_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_succ (p n : ℕ) (hp : p.Prime) :
     (1 + X : PowerSeries R) ^ (p ^ (n + 1)) - 1 = cyc R p (n + 1) * ((1 + X : PowerSeries R) ^ (p ^ n) - 1) := by
   rw [cyc_succ p n hp, geom_sum_mul, ← pow_mul, ← pow_succ]
 
 /- English proof (translation)
-Use `⟨∑ i ∈ Finset.range p, ∑ l ∈ Finset.range i, ((1 + X : PowerSeries R) ^ (p ^ n)) ^ l, ?_⟩` and prove the remaining obligations. Rewrite using `[cyc_succ p n hp, Finset.sum_mul]`. Establish `: (p : PowerSeries R) = ∑ i ∈ Finset.range p, (1 : PowerSeries R)` using `by simp`. Rewrite using `[this, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[geom_sum_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_sub_p (p n : ℕ) (hp : p.Prime) :
     ∃ u : PowerSeries R, cyc R p (n + 1) - (p : PowerSeries R) = u * ((1 + X : PowerSeries R) ^ (p ^ n) - 1) := by
@@ -57,15 +57,13 @@ theorem cyc_sub_p (p n : ℕ) (hp : p.Prime) :
   rw [geom_sum_mul]
 
 /- English proof (translation)
-Use `haveI : (Ideal.span {q}).IsPrime := (Ideal.span_singleton_prime hq.ne_zero).2 hq`. Establish `hCq : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {q})) (C q) = 0`. Rewrite using `[PowerSeries.map_C, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self q), map_zero]`. Establish `ht : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {q})) t = 0`. Establish `h2 : f * t = C q * (B - C q ^ m * s)` using `by rw [mul_sub, ← mul_assoc, ← pow_succ', h]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (PowerSeries.map (Ideal.Quotient.mk (Ideal.span {q}))) h2`. Rewrite `h3` using `[map_mul, map_mul, hCq, zero_mul]`. Conclude with `(mul_eq_zero.1 h3).resolve_left hf`. Establish `hd : ∀ n, ∃ a, coeff n t = q * a`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (coeff n) ht` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose a ha using hd`. Establish `ht' : t = C q * PowerSeries.mk a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `n`. Rewrite using `[coeff_C_mul, coeff_mk, ha]`. Use `⟨PowerSeries.mk a, ?_⟩` and prove the remaining obligations. Establish `hq0 : (C q : PowerSeries R) ≠ 0`. Introduce `h0; exact hq.ne_zero (by simpa using congrArg (constantCoeff) h0)`.
-
-Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Rewrite using `[h, ht']`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cancel_prime [IsDomain R] {q : R} (hq : Prime q) {f : PowerSeries R}
     (hf : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {q})) f ≠ 0)
@@ -100,19 +98,19 @@ namespace GlobalTheory.Col
 open Interp in
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ _`. Use `Ideal.mem_span_pair.2 ⟨0, h, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_comm]`. Consider the case `succ n ih`. Introduce `hk hcn`. Take `⟨A, B, hAB⟩` from `Ideal.mem_span_pair.1 (ih (by omega) (by omega))`. Take `⟨y, hy⟩` from `hyp (n + 1) (by omega) hk`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hy)`. Take `⟨u, hu⟩` from `cyc_sub_p (R := R) p n hp.out`. Take `⟨m, rfl⟩ : ∃ m, c = m + 1 + n` from `⟨c - (n + 1), by omega⟩`. Establish `e1 : m + 1 + n - n = m + 1` using `by omega`. Establish `e2 : m + 1 + n - (n + 1) = m` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hAB` using `[e1]`. Rewrite using `[e2]`. Use `set P : PowerSeries R := (p : PowerSeries R) with hP`. Use `set om : PowerSeries R := (1 + X : PowerSeries R) ^ (p ^ n) - 1 with hom`. Establish `key : C (p : R) * B = C (p : R) ^ (m + 1) * (u * A - u * X * P ^ n * y) + cyc R p (n + 1) * (B - u * X * g)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_natCast]`. Take the linear combination `(-B) * hu - u * hAB + (u * X) * hg`. Establish `hf : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)})) (cyc R p (n + 1)) ≠ 0` using `by haveI : (Ideal.span {(p : R)}).IsPrime := (Ideal.span_singleton_prime hpR.ne_zero).2 hpR`. Introduce `h0`. Establish `h1` using `congrArg (PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)}))) (om_succ (R := R) p n hp.out)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[map_mul, h0, zero_mul]`. Use `one_add_X_pow_sub_one_ne_zero (R := R ⧸ Ideal.span {(p : R)}) (p ^ (n + 1)) (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ hp.out.ne_zero)) ?_` and prove the remaining obligations. Simplify using `using h1`. Take `⟨t', ht'⟩` from `cancel_prime hpR hf m key`. Rewrite `ht'` using `[map_natCast]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_span_pair.2 ⟨A * P + (u * A - u * X * P ^ n * y) * om, t', ?_⟩` and prove the remaining obligations. Rewrite using `[om_succ (R := R) p n hp.out]`. Take the linear combination `hAB - om * ht'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem X_mul_mem_span_of_levels (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] (hR : IsDomain R)
     (hpR : Prime (p : R)) (_hc : IsAdicComplete (Ideal.span {(p : R)}) R)

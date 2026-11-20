@@ -67,7 +67,7 @@ def Eventually (P : D7 → ℝ → ℝ → ℝ → Prop) : Prop :=
   ∀ Ch Cq : ℝ, ∃ Cg₀ : ℝ, ∀ Cg : ℝ, Cg₀ ≤ Cg → ∀ D : D7, P D Ch Cg Cq
 
 /- English proof (translation)
-Introduce `Ch Cq`. Take `⟨a, ha⟩` from `hP Ch Cq`. Take `⟨b, hb⟩` from `hQ Ch Cq`. Conclude with `⟨max a b, fun Cg h D => ⟨ha Cg (le_trans (le_max_left _ _) h) D, hb Cg (le_trans (le_max_right _ _) h) D⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eventually.and {P Q : D7 → ℝ → ℝ → ℝ → Prop} (hP : Eventually P) (hQ : Eventually Q) :
     Eventually (fun D Ch Cg Cq => P D Ch Cg Cq ∧ Q D Ch Cg Cq) := by
@@ -77,7 +77,7 @@ theorem Eventually.and {P Q : D7 → ℝ → ℝ → ℝ → Prop} (hP : Eventua
   exact ⟨max a b, fun Cg h D => ⟨ha Cg (le_trans (le_max_left _ _) h) D, hb Cg (le_trans (le_max_right _ _) h) D⟩⟩
 
 /- English proof (translation)
-Introduce `Ch Cq`. Take `⟨a, ha⟩` from `hP Ch Cq`. Conclude with `⟨a, fun Cg hc D => h _ _ _ _ (ha Cg hc D)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eventually.mono {P Q : D7 → ℝ → ℝ → ℝ → Prop} (hP : Eventually P)
     (h : ∀ D Ch Cg Cq, P D Ch Cg Cq → Q D Ch Cg Cq) : Eventually Q := by

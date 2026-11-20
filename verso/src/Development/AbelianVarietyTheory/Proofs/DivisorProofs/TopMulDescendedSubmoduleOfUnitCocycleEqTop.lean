@@ -4,29 +4,25 @@ open TensorProduct GlobalTheory.EtC
 namespace GlobalTheory.DescTop
 
 /- English proof (translation)
-Use `set F : B →ₗ[A] B ⊗[A] B := (LinearMap.mulLeft A (u : B ⊗[A] B)) ∘ₗ (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B).toLinearMap with hF`. Use `set G : B →ₗ[A] B ⊗[A] B := (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B).toLinearMap with hG`. Use `set f13 := Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B)`. Use `set f12 := Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B)`. Use `set f23 := (Algebra.TensorProduct.includeRight : B ⊗[A] B →ₐ[A] B ⊗[A] (B ⊗[A] B))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hD : descMod A B u = LinearMap.ker (F - G)`. Rewrite using `[← LinearMap.eqLocus_eq_ker_sub]`. Both sides reduce to the same expression. Establish `hLF : LinearMap.lTensor B F = (LinearMap.mulLeft A (f23 (u : B ⊗[A] B))) ∘ₗ f13.toLinearMap`. Apply `TensorProduct.ext'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c b`. Simplify using `[hF, f23, f13, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hLG : LinearMap.lTensor B G = f12.toLinearMap`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `c b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hG, f12]`. Establish `hinv : f23 (u : B ⊗[A] B) * f13 ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) = f12 ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B)`. Establish `h1 : f13 (u : B ⊗[A] B) * f13 ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2 : f12 (u : B ⊗[A] B) * f12 ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hc : f13 (u : B ⊗[A] B) = f12 (u : B ⊗[A] B) * f23 (u : B ⊗[A] B)` using `hu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `_ = f12 ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) := by rw [h1, one_mul]`. Establish `hex` using `Module.Flat.lTensor_exact B (LinearMap.exact_subtype_ker_map (F - G))`. Establish `hy : ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) ∈ LinearMap.range (LinearMap.lTensor B (LinearMap.ker (F - G)).subtype)`. Rewrite using `[← hex.linearMap_ker_eq, LinearMap.mem_ker, LinearMap.lTensor_sub, LinearMap.sub_apply, sub_eq_zero, hLF, hLG]`. Simplify using `using hinv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨z, hz⟩` from `hy`. Establish `hmem : ∀ w : B ⊗[A] LinearMap.ker (F - G), Algebra.TensorProduct.lmul' A (LinearMap.lTensor B (LinearMap.ker (F - G)).subtype w) ∈ (⊤ : Submodule A B) * descMod A B u`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `tmul c m`. Rewrite using `[LinearMap.lTensor_tmul, Algebra.TensorProduct.lmul'_apply_tmul]`. Conclude with `Submodule.mul_mem_mul Submodule.mem_top (by rw [hD]; exact m.2)`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `hv` using `hmem z`. Rewrite `hv` using `[hz]`. Use `set v := Algebra.TensorProduct.lmul' A (((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B)) with hvdef`. Establish `hvu : IsUnit v` using `(Units.isUnit (u⁻¹)).map (Algebra.TensorProduct.lmul' A (S := B))`. Take `⟨w, hw⟩` from `hvu.exists_left_inv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (⊤ : Submodule A B) * ((⊤ : Submodule A B) * descMod A B u) ≤ (⊤ : Submodule A B) * descMod A B u`. Rewrite using `[← mul_assoc]`. Use `first`. Consider the case `exact Submodule.mul_le_mul le_top le_rfl`. Consider the case `exact mul_le_mul_right' le_top _`.
-
-Consider the case `(gcongr; exact le_top)`. Rewrite using `[eq_top_iff]`. Introduce `b _`. Establish `: b = (b * w) * v` using `by rw [mul_assoc, hw, mul_one]`. Rewrite using `[this]`.
-
-Conclude with `hle (Submodule.mul_mem_mul Submodule.mem_top hv)`.
+A detailed English derivation is pending.
 -/
 theorem top_mul_descMod_eq_top (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Flat A B]
     (u : (B ⊗[A] B)ˣ) (hu : UCoc A B u) : (⊤ : Submodule A B) * descMod A B u = ⊤ := by

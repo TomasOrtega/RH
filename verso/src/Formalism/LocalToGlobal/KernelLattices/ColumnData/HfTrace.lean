@@ -15,9 +15,9 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 variable (D : Car)
 
 /- English proof (translation)
-Introduce `τ τ' h`. Establish `h2 : D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG) = D.host.sigmaOf ((D.eTau τ' : D.R.Psi) : D.R.GG)`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Conclude with `D.host.φ₀.injective (congrArg (fun f : D.host.E →+* ℂ => f x) h)`. Establish `h3` using `congrArg (D.host.galE) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[galE_sigmaOf, galE_sigmaOf]`. Conclude with `D.eTau.injective (Subtype.ext h3)`.
+A detailed English derivation is pending.
 -/
 theorem embT_inj : Function.Injective (embT D) := by
   intro τ τ' h
@@ -39,21 +39,21 @@ def embA (τ : D.what₂.Tau) : @AlgHom D.host.K D.host.E ℂ _ _ _ _ (algKC D) 
       exact embT_K D τ _ r.2 }
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin ℚ _ (Set.mem_singleton _)`.
+A detailed English derivation is pending.
 -/
 theorem bE_mem : D.host.sqd ∈ D.host.K :=
   IntermediateField.subset_adjoin ℚ _ (Set.mem_singleton _)
 
 /- English proof (translation)
-Use `letI := algKC D`. Prove the components needed by the constructor for the conclusion. Introduce `τ τ' h`. Apply `embT_inj D` to reduce the goal to its premises. Use extensionality with `x`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun f : D.host.E →ₐ[D.host.K] ℂ => f x) h`. Introduce `σ`. Take `⟨τ, hτ | hτ⟩` from `emb_cases D (σ : D.host.E →+* ℂ)`. Use `⟨τ, AlgHom.ext fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : D.host.E →+* ℂ => f x) hτ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. It suffices to derive a contradiction.
 
-Conclude with `this.symm`. It suffices to derive a contradiction. Establish `hb` using `bE_mem D`. Establish `h1 : σ (D.host.sqd) = D.host.φ₀ (D.host.sqd)` using `σ.commutes ⟨_, hb⟩`. Establish `h2` using `congrArg (fun f : D.host.E →+* ℂ => f (D.host.sqd)) hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [AlgHom.coe_toRingHom, RingHom.comp_apply] at h2`. Rewrite `h2` using `[embT_K D τ _ hb, h1]`. Establish `h0 : D.host.φ₀ (D.host.sqd) = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Rewrite `h2` using `[h0, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Establish `hs` using `Formalism.L2.Ker.Cd.IntegralLatticeDensity.IO.sqrt_d_pos D`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Real.sqrt D.host.d : ℂ) = 0`. Establish `h3 : 2 * Complex.I * (Real.sqrt D.host.d : ℂ) = 0` using `by linear_combination h2`. Simplify `h3` using `[Complex.I_ne_zero]`. Conclude with `hs.ne' (by exact_mod_cast this)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem embA_bij : letI := algKC D; Function.Bijective (embA D) := by
   letI := algKC D
@@ -84,7 +84,7 @@ theorem embA_bij : letI := algKC D; Function.Bijective (embA D) := by
       exact hs.ne' (by exact_mod_cast this)
 
 /- English proof (translation)
-Use `letI := algKC D`. Establish `h` using `_root_.trace_eq_sum_embeddings (K := D.host.K) (L := D.host.E) ℂ (x := z)`. Rewrite `h` using `[RingHom.algebraMap_toAlgebra, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = D.host.φ₀ (algebraMap D.host.K D.host.E _)`. Rewrite using `[h, ← (Equiv.ofBijective _ (embA_bij D)).sum_comp]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -111,14 +111,14 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 variable (D : Car)
 
 /- English proof (translation)
-Conclude with `D.host.conjE_apply φ x`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (D.host.conj x) = starRingEnd ℂ (φ x) := by
   exact D.host.conjE_apply φ x
 
 /- English proof (translation)
-Unfold `Hf hYY`. Use `congr 1`. Rewrite using `[← sum_tau_trace]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [embV, hT, map_sum, map_mul, emb_conj]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Hf_embV (T : Tor D) (hT : ∀ τ x, T.emb τ x = embT D τ x) {N N' : ℕ}
     (A B : Matrix (Fin N') (Fin N) D.host.E) :
@@ -150,7 +150,7 @@ def HfArithRec : Prop :=
           (D.host.φ₀ ((hYY D A B : D.host.K) : D.host.E) / (area (lamOf D cc δ) : ℂ)))
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'`. Rewrite using `[FL.Hf_embV D (tor0 D cc δ) (fun _ _ => rfl) A B]`. Conclude with `h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HfGenRec_of_arith (h : HfArithRec) : HfGenRec := by
   intro D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
@@ -158,7 +158,7 @@ theorem HfGenRec_of_arith (h : HfArithRec) : HfGenRec := by
   exact h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
 
 /- English proof (translation)
-The claim follows from `LinkThIndep_of_gen (HfGenRec_of_arith hA) hB`.
+A detailed English derivation is pending.
 -/
 theorem LinkThIndep_of_arith (hA : HfArithRec) (hB : SelfDualRec) : LinkThIndep :=
   LinkThIndep_of_gen (HfGenRec_of_arith hA) hB

@@ -16,13 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `p _ R _ N hN A _ hA G t`. Take `⟨L, hL⟩` from `GlobalTheory.PtExt.exists_canMap R A p G t hA`. Establish `hinj` using `GlobalTheory.PDivGroup.rigOfOmega_injective_of_pow p R N hN G`. Establish `hmem : ∀ c : PrimitiveSubmodule A, (L ∘ₗ (PrimitiveSubmodule A).subtype) c ∈ LinearMap.range G.rigOfOmega`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : c.1.1 ∈ F1 (A.hom ≫ 𝟙 _)` using `c.2`. Rewrite `hc` using `[hodgeFiltration_eq_range]`. Take `⟨β, hβ⟩` from `hc`. Establish `hβp : Form.cl _ β ∈ primDR A` using `hβ ▸ c.1.2`. Take `⟨w, -, hw⟩` from `GlobalTheory.PtExt.isCan_form R A p G t β hβp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcc : (⟨_, hβp⟩ : primDR A) = c.1` using `Subtype.ext hβ`. Rewrite `hw` using `[hcc]`. Conclude with `⟨w, ((hL _ _).1 hw).symm⟩`. Use `⟨(LinearEquiv.ofInjective G.rigOfOmega hinj).symm ∘ₗ (L ∘ₗ (PrimitiveSubmodule A).subtype).codRestrict (LinearMap.range G.rigOfOmega) hmem, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(LinearEquiv.ofInjective G.rigOfOmega hinj).apply_symm_apply ((L ∘ₗ (PrimitiveSubmodule A).subtype).codRestrict (LinearMap.range G.rigOfOmega) hmem c)` as an intermediate fact. Conclude with `(congrArg Subtype.val this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtExt.exists_hodge_to_omega : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 →
     ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (G : PDivGroup p R) (t : G.TorsionTower A),

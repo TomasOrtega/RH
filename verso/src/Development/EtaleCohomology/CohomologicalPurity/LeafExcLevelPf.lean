@@ -21,9 +21,9 @@ def LeafMLev : Prop := ∀ (P' P : Arrow Spc) (φ : P' ⟶ P) (n : SimplexCatego
     disc.map ((gM φ).app n) ≫ b.hom = a.hom ≫ gM ((lev n).map φ)
 
 /- English proof (translation)
-Introduce `a3 q P' P φ hl`. Apply `h1 q P' P φ` to reduce the goal to its premises. Introduce `i`. Apply `a3` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, w⟩` from `h3 P' P φ n`. Establish `e : disc.map ((gM φ).app n) = a.hom ≫ gM ((lev n).map φ) ≫ b.inv`. Rewrite using `[← Category.assoc, ← w, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[e]`. Conclude with `eqv_comp (eqv_iso _ _) (eqv_comp (h2 q _ _ _ (hl n) i) (eqv_iso _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafExcLevel_of (h1 : LeafExcOfEqv) (h2 : LeafEqvOfExc) (h3 : LeafMLev) : LeafExcLevel := by
   intro a3 q P' P φ hl

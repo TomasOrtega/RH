@@ -17,15 +17,15 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `h1 : ∀ u ∈ a, ∀ v ∈ closure (Submodule.span ℂ b : Set F), ⟪T u, S v⟫_ℂ = ⟪T' u, S' v⟫_ℂ`. Introduce `u hu v hv`. Establish `hc : IsClosed {v : F | ⟪T u, S v⟫_ℂ = ⟪T' u, S' v⟫_ℂ}` using `isClosed_eq (by fun_prop) (by fun_prop)`. Use `hc.closure_subset_iff.2 (fun w hw => ?_) hv` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `mem x hx => exact h u hu x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [mem_setOf_eq] at hx hy ⊢`. Rewrite using `[map_add, map_add, inner_add_right, inner_add_right, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Simplify using `only [mem_setOf_eq] at hx ⊢`. Rewrite using `[map_smul, map_smul, inner_smul_right, inner_smul_right, hx]`. Introduce `u hu v hv`. Establish `hc : IsClosed {u : E | ⟪T u, S v⟫_ℂ = ⟪T' u, S' v⟫_ℂ}` using `isClosed_eq (by fun_prop) (by fun_prop)`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hc.closure_subset_iff.2 (fun w hw => ?_) hu` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact h1 x hx v hv`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [mem_setOf_eq] at hx hy ⊢`. Rewrite using `[map_add, map_add, inner_add_left, inner_add_left, hx, hy]`. Consider the case `smul c x _ hx`. Simplify using `only [mem_setOf_eq] at hx ⊢`. Rewrite using `[map_smul, map_smul, inner_smul_left, inner_smul_left, hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ext_two {E F H : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T T' : E →L[ℂ] H) (S S' : F →L[ℂ] H) (a : Set E) (b : Set F)
@@ -59,11 +59,11 @@ private theorem ext_two {E F H : Type} [NormedAddCommGroup E] [NormedSpace ℂ E
     rw [map_smul, map_smul, inner_smul_left, inner_smul_left, hx]
 
 /- English proof (translation)
-Establish `hK : IsCompact (KG K (2 + 2) : Set (G1 K (2 + 2)))` using `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 hK`. Use `haveI : LocallyCompactSpace (KG K (2 + 2)) := hK.isClosed.locallyCompactSpace`. Take `⟨c, hc⟩` from `(unf μ μ₂ (Measure.haar : Measure (KG K (2 + 2)))).1`. Use `⟨c, Measure.haar, fun β β' e e' u v hβ hβc hβ' hβc' hu hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, hf⟩` from `(A.onto (A.sec e)).1 ⟨e, rfl⟩`. Take `⟨hs', hf'⟩` from `(A'.onto (A'.sec e')).1 ⟨e', rfl⟩`. Establish `hS` using `secFun μ₂ τ₁ τ₂ D hP.irr₁ hP.irr₂ _ hs hf`. Establish `hS'` using `secFun μ₂ τ₂ τ₁ D hP.irr₂ hP.irr₁ _ hs' hf'`. Establish `hl` using `((secCrit μ₂ τ₁ τ₂ D hP.irr₁ hP.irr₂ _ hf).1 hs).2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl'` using `((secCrit μ₂ τ₂ τ₁ D hP.irr₂ hP.irr₁ _ hf').1 hs').2.2.2.2`. Establish `h0 : ∀ x y, pm μ₂ (A.sec e) (A'.sec e') x y = 0` using `fun x y => ((pmLaws μ₂ (Measure.haar : Measure (KG K (2 + 2)))).1 τ₁ τ₂ τ₂ τ₁ _ _ hS hS' hl hl' x y).1 hP.orth`. Rewrite using `[pairF μ μ₂ Measure.haar c hc _ _ β β' hS hS' hβ hβc hβ' hβc' _ _ (A.spec β e u hβ hβc hu) (A'.spec β' e' v hβ' hβc' hv)]`. Simplify using `only [h0, integral_zero, mul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pure_pair {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2)))
     [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (hP : Pair μ₂ τ₁ τ₂)
@@ -92,7 +92,7 @@ private theorem pure_pair {K : Type} [Field K] [NumberField K] [IsTotallyComplex
   simp only [h0, integral_zero, mul_zero, zero_add]
 
 /- English proof (translation)
-Use `filter_upwards [UpperTheory.V.Z.IntegralApplyAeEq.sh_ae (Eu d) s u, (measurePreserving_add_right volume s).quasiMeasurePreserving.ae hu] with x h1 h2`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sh_pure {d : ℕ} (s : ℝ) (β : ℝ → ℂ) (e : Eu d) (u : L (Eu d)) (hu : ∀ᵐ x : ℝ, u x = β x • e) :
     ∀ᵐ x : ℝ, UpperTheory.V.Z.IntegralApplyAeEq.sh (Eu d) s u x = β (x + s) • e := by
@@ -101,17 +101,17 @@ private theorem sh_pure {d : ℕ} (s : ℝ) (β : ℝ → ℂ) (e : Eu d) (u : L
   rw [h1, h2]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP D d d' A A'`. Take `⟨c, κ, hpure⟩` from `pure_pair μ μ₂ τ₁ τ₂ hP D d d' A A'`. Use `⟨fun s u u' v v' hu hv => ?_, fun s u v hu hv => ?_⟩` and prove the remaining obligations. Establish `e1 : u' = UpperTheory.V.Z.IntegralApplyAeEq.sh (Eu d) s u` using `Lp.ext (by filter_upwards [hu, UpperTheory.V.Z.IntegralApplyAeEq.sh_ae (Eu d) s u] with x h1 h2`. Rewrite using `[h1, h2])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : v' = UpperTheory.V.Z.IntegralApplyAeEq.sh (Eu d') s v` using `Lp.ext (by filter_upwards [hv, UpperTheory.V.Z.IntegralApplyAeEq.sh_ae (Eu d') s v] with x h1 h2`. Rewrite using `[h1, h2])`. Substitute `e1 e2` using the available equality. Use `ext_two (A.J.toContinuousLinearMap ∘L UpperTheory.V.Z.IntegralApplyAeEq.sh (Eu d) s) A.J.toContinuousLinearMap A'.J.toContinuousLinearMap (A'.J.toContinuousLinearMap ∘L UpperTheory.V.Z.IntegralApplyAeEq.sh (Eu d') s) _ _ ?_ u ((denseCc d).1 u) v ((denseCc d').1 v)` and prove the remaining obligations. Introduce and unpack `p ⟨β, e, hβ, hβc, hp⟩ q ⟨β', e', hβ', hβc', hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `a1` using `hpure (fun x => β (x + s)) β' e e' _ q (by fun_prop) (hβc.comp_homeomorph (Homeomorph.addRight s)) hβ' hβc' (sh_pure s β e p hp) hq`. Establish `a2` using `hpure β (fun x => β' (x + s)) e e' p _ hβ hβc (by fun_prop) (hβc'.comp_homeomorph (Homeomorph.addRight s)) hp (sh_pure s β' e' q hq)`. Use `a1.trans (Eq.trans ?_ a2.symm)` and prove the remaining obligations. Use `congr 1`. Use `Eq.trans ?_ (integral_add_right_eq_self _ s)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `: ∀ h : ℝ, h - (t + s) + s = h - t` using `fun h => by ring`. Simplify using `only [this]`. Use `ext_two A.J.toContinuousLinearMap 0 A'.J.toContinuousLinearMap 0 _ _ ?_ u ((denseCc d).2.2 s u hu) v ((denseCc d').2.2 (2 * 0 - s) v hv)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `p ⟨β, e, hβ, hβc, hz, hp⟩ q ⟨β', e', hβ', hβc', hz', hq⟩`. Establish `a1` using `hpure β β' e e' p q hβ hβc hβ' hβc' hp hq`. Use `a1.trans ?_` and prove the remaining obligations. Establish `h0 : ∀ (t : ℝ) (k : KG K (2 + 2)) (X : UPos (2 + 2) 2 → 𝔸[K]), conj (β t) * β' (HH (w0 K * nn X * k.1) - t) = 0`. Introduce `t k X`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `le_or_gt t s with h | h` into its components or cases. Rewrite using `[hz t h, map_zero, zero_mul]`. Use `(longCell (K := K)).1 X k.1 k.2` as an intermediate fact. Rewrite using `[hz' _ (by linarith), mul_zero]`. Simplify using `only [h0, zero_mul, integral_zero, mul_zero, ContinuousLinearMap.zero_apply, inner_zero_left]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.pairFacts :
     UnipotentBlockPairs := by

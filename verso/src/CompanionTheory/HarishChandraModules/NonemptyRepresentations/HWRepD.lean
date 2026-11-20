@@ -14,7 +14,7 @@ def D (Y : Matrix (Fin k) (Fin k) ℂ) : Matrix R.I R.I ℂ :=
   Matrix.of fun i j => fderiv ℂ (fun B : Fin k → Fin k → ℂ => R.ρ (Matrix.of B) i j) (one' k) (fun a b => Y a b)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [D, Matrix.of_apply, Matrix.add_apply]`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem D_add (Y Z : Matrix (Fin k) (Fin k) ℂ) : R.D (Y + Z) = R.D Y + R.D Z := by
   ext i j
@@ -22,7 +22,7 @@ theorem D_add (Y Z : Matrix (Fin k) (Fin k) ℂ) : R.D (Y + Z) = R.D Y + R.D Z :
   rw [← map_add]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [D, Matrix.of_apply, Matrix.smul_apply]`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem D_smul (c : ℂ) (Y : Matrix (Fin k) (Fin k) ℂ) : R.D (c • Y) = c • R.D Y := by
   ext i j
@@ -30,11 +30,11 @@ theorem D_smul (c : ℂ) (Y : Matrix (Fin k) (Fin k) ℂ) : R.D (c • Y) = c �
   rw [← map_smul]; rfl
 
 /- English proof (translation)
-Establish `hγ' : HasDerivAt (fun t => (fun a b => γ t a b : Fin k → Fin k → ℂ)) (fun a b => Y a b) 0` using `hasDerivAt_pi.2 fun a => hasDerivAt_pi.2 fun b => hγ a b`. Use `hasDerivAt_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `HasDerivAt.fun_sum fun j _ => HasDerivAt.mul_const ?_ _` and prove the remaining obligations. Establish `hd` using `(R.diff (one' k) (by show (1 : Matrix (Fin k) (Fin k) ℂ).det ≠ 0; simp) i j).hasFDerivAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : one' k = (fun t => (fun a b => γ t a b : Fin k → Fin k → ℂ)) 0`. Use function extensionality and compare the values at `a b`. Simplify using `[h0, one']`. Establish `hd'` using `hd.restrictScalars ℝ`. Rewrite `hd'` using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hd'.comp_hasDerivAt (0 : ℝ) hγ'` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_curve (γ : ℝ → Matrix (Fin k) (Fin k) ℂ) (Y : Matrix (Fin k) (Fin k) ℂ) (h0 : γ 0 = 1)
     (hγ : ∀ a b, HasDerivAt (fun t => γ t a b) (Y a b) 0) (v : R.I → ℂ) :
@@ -54,7 +54,7 @@ theorem hasDerivAt_curve (γ : ℝ → Matrix (Fin k) (Fin k) ℂ) (Y : Matrix (
   exact this
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const ((Matrix.single a b (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ) c d)).const_add ((1 : Matrix (Fin k) (Fin k) ℂ) c d)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem curve_deriv (a b c d : Fin k) :
     HasDerivAt (fun t : ℝ => (1 + (t : ℂ) • Matrix.single a b (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ) c d)
@@ -64,7 +64,7 @@ theorem curve_deriv (a b c d : Fin k) :
     ((Matrix.single a b (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ) c d)).const_add ((1 : Matrix (Fin k) (Fin k) ℂ) c d)
 
 /- English proof (translation)
-Introduce `c d h`. Establish `h' : d < c` using `h`. Establish `: ¬(a = c ∧ b = d)` using `by rintro ⟨rfl, rfl⟩; exact absurd hab (not_le.2 h')`. Simplify using `[Matrix.one_apply, h'.ne', Matrix.single_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem curve_tri {a b : Fin k} (hab : a ≤ b) (t : ℂ) :
     (1 + t • Matrix.single a b (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ).BlockTriangular id := by
@@ -74,11 +74,11 @@ theorem curve_tri {a b : Fin k} (hab : a ≤ b) (t : ℂ) :
   simp [Matrix.one_apply, h'.ne', Matrix.single_apply, this]
 
 /- English proof (translation)
-Establish `h` using `R.hasDerivAt_curve (fun t : ℝ => 1 + (t : ℂ) • Matrix.single a b (1 : ℂ)) _ (by simp) (curve_deriv a b) R.v0`. Establish `hdiag : ∀ (t : ℂ) c, (1 + t • Matrix.single a b (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ) c c = 1`. Introduce `t c`. Establish `: ¬(a = c ∧ b = c)` using `by rintro ⟨rfl, rfl⟩; exact lt_irrefl _ hab`. Simplify using `[Matrix.single_apply, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (fun t : ℝ => R.ρ (1 + (t : ℂ) • Matrix.single a b (1 : ℂ)) *ᵥ R.v0) = fun _ => R.v0`. Use function extensionality and compare the values at `t`. Rewrite using `[R.hw _ (curve_tri hab.le _)]`. Simplify using `only [hdiag]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.det_of_upperTriangular (curve_tri hab.le _)]`. Simplify using `only [hdiag]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Conclude with `h.unique (hasDerivAt_const _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_upper {a b : Fin k} (hab : a < b) : R.D (Matrix.single a b 1) *ᵥ R.v0 = 0 := by
   have h := R.hasDerivAt_curve (fun t : ℝ => 1 + (t : ℂ) • Matrix.single a b (1 : ℂ)) _ (by simp)
@@ -97,15 +97,15 @@ theorem D_upper {a b : Fin k} (hab : a < b) : R.D (Matrix.single a b 1) *ᵥ R.v
   exact h.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-Establish `h` using `R.hasDerivAt_curve (fun t : ℝ => 1 + (t : ℂ) • Matrix.single a a (1 : ℂ)) _ (by simp) (curve_deriv a a) R.v0`. Establish `hdiag : ∀ (t : ℂ) c, (1 + t • Matrix.single a a (1 : ℂ) : Matrix (Fin k) (Fin k) ℂ) c c = if c = a then 1 + t else 1`. Introduce `t c`. Distinguish the cases in `hc : c = a`. Simplify using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, hc, Ne.symm hc]`. Establish `h1 : HasDerivAt (fun t : ℝ => (1 : ℂ) + t) 1 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).const_add (1 : ℂ)`. Establish `hne : ∀ᶠ t : ℝ in nhds 0, (1 : ℂ) + t ≠ 0` using `h1.continuousAt.eventually_ne (by simp)`. Establish `e : (fun t : ℝ => ((1 : ℂ) + t) ^ ν a • R.v0) =ᶠ[nhds 0] fun t : ℝ => R.ρ (1 + (t : ℂ) • Matrix.single a a (1 : ℂ)) *ᵥ R.v0` using `by filter_upwards [hne] with t ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[R.hw _ (curve_tri le_rfl _)]`. Use `congr 1`. Simplify using `only [hdiag]`. Apply the tactic sequence `rw [Finset.prod_eq_single a] <;> simp +contextual`. Rewrite using `[Matrix.det_of_upperTriangular (curve_tri le_rfl _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hdiag]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun c _ => by split_ifs <;> simp [ht]`. Establish `hz : HasDerivAt (fun x : ℂ => x ^ ν a) (ν a : ℂ) ((1 : ℂ) + ((0 : ℝ) : ℂ))`. Simplify using `using hasDerivAt_zpow (ν a) (1 : ℂ) (Or.inl one_ne_zero)`. Establish `h2 : HasDerivAt (fun t : ℝ => ((1 : ℂ) + t) ^ ν a) (ν a : ℂ) 0`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hz.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt (0 : ℝ) h1` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.toSpanSingleton_apply, one_smul, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply] at this`. Conclude with `this`. Conclude with `(h.congr_of_eventuallyEq e).unique (h2.smul_const R.v0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem D_diag (a : Fin k) : R.D (Matrix.single a a 1) *ᵥ R.v0 = (ν a : ℂ) • R.v0 := by
   have h := R.hasDerivAt_curve (fun t : ℝ => 1 + (t : ℂ) • Matrix.single a a (1 : ℂ)) _ (by simp)

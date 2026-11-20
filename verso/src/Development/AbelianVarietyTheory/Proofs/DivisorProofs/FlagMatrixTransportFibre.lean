@@ -19,7 +19,7 @@ open GlobalTheory.TangentOrigin
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Introduce `q _`. Rewrite using `[Subsingleton.elim q p]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem matIso_top_le (U : (Sp K).Opens) (p : Sp K) (hp : p ∈ U) : ⊤ ≤ U := by
   haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))
@@ -27,9 +27,9 @@ theorem matIso_top_le (U : (Sp K).Opens) (p : Sp K) (hp : p ∈ U) : ⊤ ≤ U :
   rwa [Subsingleton.elim q p]
 
 /- English proof (translation)
-Establish `hF : IsField Γ(Sp K, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)`. Use `letI := hF.toField`. Take `⟨U, e, hU, he⟩` from `hP (IsLocalRing.closedPoint K)`. Establish `hb` using `he.basis (matIso_top_le U _ hU)`. Use `haveI : FiniteDimensional Γ(Sp K, ⊤) (Submodule.span Γ(Sp K, ⊤) (Set.range v)) := FiniteDimensional.span_of_finite _ (Set.finite_range v)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.eq_of_le_of_finrank_le (K := Γ(Sp K, ⊤)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `h t`. Rewrite using `[LinearMap.finrank_range_of_inj (f := QCoh.appLinear u ⊤) (QCoh.injective_app_of_mono u ⊤), Module.finrank_eq_card_basis hb, Fintype.card_fin, ← hι]`. Conclude with `finrank_range_le_card v`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matIso_range_eq {P Q : (Sp K).Modules} (u : P ⟶ Q) [Mono u] {k : ℕ} (hP : IsVB P k) {ι : Type} [Fintype ι]
     (hι : Fintype.card ι = k) (v : ι → Γ(Q, ⊤))
@@ -50,9 +50,9 @@ theorem matIso_range_eq {P Q : (Sp K).Modules} (u : P ⟶ Q) [Mono u] {k : ℕ} 
     exact finrank_range_le_card v
 
 /- English proof (translation)
-Use `FlagLocal.same_of_range fun V => ?_` and prove the remaining obligations. Distinguish the cases in `hV : V = ⊥`. Substitute `hV haveI : Subsingleton Γ(Q, ⊥) := Module.subsingleton Γ(Sp K, ⊥) _` using the available equality. Use extensionality with `s`. Conclude with `⟨fun _ => ⟨0, Subsingleton.elim _ _⟩, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Take `⟨p, hp⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hV`. Take `rfl : V = ⊤` from `top_le_iff.1 (matIso_top_le V p hp)`. Conclude with `congrArg (fun S : Submodule Γ(Sp K, ⊤) Γ(Q, ⊤) => (S : Set Γ(Q, ⊤))) ((matIso_range_eq u hP hι v h).trans (matIso_range_eq u' hP' hι v h').symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matIso_same {P P' Q : (Sp K).Modules} (u : P ⟶ Q) [Mono u] (u' : P' ⟶ Q) [Mono u'] {k : ℕ} (hP : IsVB P k)
     (hP' : IsVB P' k) {ι : Type} [Fintype ι] (hι : Fintype.card ι = k) (v : ι → Γ(Q, ⊤))
@@ -70,11 +70,9 @@ theorem matIso_same {P P' Q : (Sp K).Modules} (u : P ⟶ Q) [Mono u] (u' : P' �
       ((matIso_range_eq u hP hι v h).trans (matIso_range_eq u' hP' hι v h').symm)
 
 /- English proof (translation)
-Establish `e1 (b : Fin r) : c b = ∑ l, φ.symm (cf l) * φ.symm (A l b)`. Apply `φ.injective` to reduce the goal to its premises. Simplify `congrFun hc b` using `[Matrix.vecMul, dotProduct]`. Simplify using `only [e1, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum]`. Break down `lt_or_ge (l : ℕ) k with hl | hl` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩)`. Rewrite using `[h0 l hl, map_zero, zero_smul]`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matIso_mem_span {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] (φ : R ≃+* K) {r : ℕ} (e : Fin r → N)
     (A : Matrix (Fin r) (Fin r) K) (k : ℕ) (c : Fin r → R) (cf : Fin r → K) (h0 : ∀ l : Fin r, k ≤ l → cf l = 0)
@@ -93,21 +91,17 @@ theorem matIso_mem_span {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] 
     exact zero_mem _
 
 /- English proof (translation)
-Introduce `B Y M r hM π fl V f hf K _ x hx fl' A hA' y w hA i`. Substitute `w` using the available equality. Use `haveI := hM.isQuasicoherent`. Use `haveI := (fl.isVB i).isQuasicoherent`. Use `haveI := (hM.pullback π).isQuasicoherent`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Mono ((Scheme.Modules.pullback y).map (fl.ι i)) := FlagPull.mono_pullback_map_f y (.mk (fl.ι i) (Limits.cokernel.π _) (Limits.cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } (fl.isVB_cokernel i)`. Set `φ : Γ(Sp K, ⊤) ≃+* K` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv`. Set `e : Fin r → Γ((Scheme.Modules.pullback (y ≫ π)).obj M, ⊤)` to `fun b => QCoh.pullbackSections (y ≫ π) M hx (f b)`. Set `c` to `(Scheme.Modules.pullbackComp y π).hom.app M ≫ (Scheme.Modules.pullbackCongr (rfl : y ≫ π = y ≫ π)).hom.app M`. Use `matIso_same ((Scheme.Modules.pullback y).map (fl.ι i) ≫ c) (fl'.ι i) ((fl.isVB i).pullback y) (fl'.isVB i) (Fintype.card_fin_lt_of_le (Nat.lt_succ_iff.1 i.2)) (fun l : {l : Fin r // (l : ℕ) < i} => ∑ b, φ.symm (A l b) • e b) (fun t => ?_) fun t => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p : Sp K` to `IsLocalRing.closedPoint K`. Take `⟨W, s, -, hpW, hWV, hs⟩` from `(fl.isVB i).exists_affine (V := π ⁻¹ᵁ V) (x := y p) (hx (Set.mem_univ p))`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ W` using `matIso_top_le _ p hpW`. Establish `hc (b : Fin r) : c.app ⊤ (QCoh.pullbackSections y _ hy (((hf.pullback π).basis hWV) b)) = e b`. Rewrite using `[IsFrame.basis_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [QCoh.res_pullbackSections]`. Rewrite using `[← Vert.DivPull.pullbackComp_inv_app y π M hWV hy hx, QCoh.app_app, Iso.inv_hom_id_app_assoc]`. Both sides reduce to the same expression. Rewrite using `[← ((hs.pullback y).basis hy).sum_repr t, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Scheme.Modules.Hom.app_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`. Use `erw [QCoh.res_pullbackSections]`. Rewrite using `[← QCoh.app_app, QCoh.pullback_map_app_pullbackSections, ← ((hf.pullback π).basis hWV).sum_repr ((fl.ι i).app W (s j))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, hc]`. Take `⟨cf, h0, h1⟩` from `hA.2 i W hWV (s j) hy`. Conclude with `matIso_mem_span φ e A i _ cf h0 h1`. Take `⟨cf, h0, h1⟩` from `hA'.2 i ⊤ hx t le_rfl`. Rewrite using `[← ((hf.pullback (y ≫ π)).basis hx).sum_repr ((fl'.ι i).app ⊤ t)]`.
-
-Establish `hc (b : Fin r) : ((hf.pullback (y ≫ π)).basis hx) b = e b`. Rewrite using `[IsFrame.basis_apply]`. Conclude with `QCoh.res_pullbackSections _ _ _ _ _`. Simplify using `only [hc]`. Use `matIso_mem_span φ e A i _ cf h0 (Eq.trans (funext fun b => ?_) h1)` and prove the remaining obligations.
-
-Simplify using `[coordAt, evalPt, φ, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepIso_of_flagMat : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (x : Sp K ⟶ B), ⊤ ≤ x ⁻¹ᵁ V → ∀ (fl' : Vert.Flag ((Scheme.Modules.pullback x).obj M) r) (A : Matrix (Fin r) (Fin r) K), FlagMat hM x fl' hf (𝟙 (Sp K)) A → ∀ (y : Sp K ⟶ Y) (w : y ≫ π = x), FlagMat hM π fl hf y A → StepIso π fl fl' y w := by
   intro B Y M r hM π fl V f hf K _ x hx fl' A hA' y w hA i

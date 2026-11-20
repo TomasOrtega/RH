@@ -17,27 +17,21 @@ namespace PositivityTheory.SiegelWeilFormula.Atop
 open PositivityTheory.SiegelWeilFormula.KMain
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hEA` using `_root_.PositivityTheory.SiegelWeilFormula.Atop.eisAll_of_k hSK hEW d`. Take `⟨hTB, -, -, hTT, hTA⟩` from `hT`. Take `⟨L, hL⟩` from `hLo F E σ d R w`. Take `⟨sL, ρ, p, q, e, -, hLD, hsL, hρ⟩` from `hLI F E σ d R w L hL`. Establish `hfock` using `(hFM F E σ d R).2.1 w Ψ hΨ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKF : ∀ P, d.KFin (φ P)` using `fun P => hPK F E σ d R (φ P) (hφ P).1 (by rw [(hφ P).2]; exact hfock.1 P)`. Establish `hom : ∀ k : GR d.n, InK (mR k) → ∀ P, d.om (R.ι w k) (φ P) = φ (ρ k P)`. Introduce `k hk P`. Establish `h1` using `(hL k (fP P) (isSw_fP P)).2 Ψ hfock.2 (φ P) (hφ P).1 (hφ P).2`. Rewrite `h1` using `[hρ k P hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : d.om (R.ι w k) (φ P) - φ (ρ k P) ∈ d.sch` using `d.sch.sub_mem (_root_.PositivityTheory.SiegelWeilFormula.KMain.om_mem_k d _ (hφ P).1) (hφ _).1`. Use `sub_eq_zero.mp ((hTB F E σ d).2.2 _ hmem ?_)` and prove the remaining obligations. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k, map_sub, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k, h1, (hφ _).2, sub_self]`. Set `Il : PX d.m d.n →ₗ[ℂ] (d.G → ℂ)` to `{ toFun := fun P => c • d.I (φ P) map_add' := fun P Q => by rw [map_add, _root_.PositivityTheory.SiegelWeilFormula.KMain.I_add_k d hTT hTA (hφ P).1 (hφ Q).1, smul_add] map_smul' := fun a P => by rw [map_smul, _root_.PositivityTheory.SiegelWeilFormula.KMain.I_smul_k d hTT a (hφ P) …`. Set `sl : PX d.m d.n →ₗ[ℂ] (d.G → ℂ)` to `(_root_.PositivityTheory.SiegelWeilFormula.KMain.secl_k d).comp φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨-, -, hTG, hLC, hT2, hSC⟩` from `hAux F E σ d`. Establish `hE1 : d.Eis (d.sec0 (φ 1)) (s0 d.m d.n)` using `hEA (φ 1) (hKF 1)`. Take `⟨U, pp, Ê, t, hUo, hRD, hs0, hp, hhol, hcont, hinv, hconv⟩` from `hE1 (s0 d.m d.n)`. Establish `hCore : AbsSt.GlobCore (fun _ => true) (2 * Real.pi) sL ρ d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht sl Il` using `{ ιcont := R.cont w split := by`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, y, c, r, hr, hg, hx⟩` from `hGS F E σ d R w L hL Ψ hΨ φ hφ g`. Use `⟨x, y, c, r, hr, hg, fun y' => ⟨(hx y').1, fun P => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsL]`. Conclude with `(hx y').2 P`. Use `Icont := by show Continuous (c • d.I (φ 1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hTA F E σ d).2.2 (φ 1) (hφ 1).1).2.1.const_smul c`. Use `Ileft := by`. Introduce `γ hγ g`. Use `show c * d.I (φ 1) (γ * g) = c * d.I (φ 1) g`. Rewrite using `[((hTA F E σ d).2.2 (φ 1) (hφ 1).1).2.2 γ hγ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Ik := by`. Introduce `P g k hk`. Use `show c * thetaMean d.om d.S d.μ d.D (φ P) (g * R.ι w k) = c * thetaMean d.om d.S d.μ d.D (φ (ρ k P)) g`. Unfold `thetaMean`. Simplify using `only [map_mul, Module.End.mul_apply, (hTT F E σ d (φ P) (hφ P).1).2, hom k hk P]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Iinv := by`. Introduce `g a b P`. Use `show c * d.I (φ (hOp (fun _ => true) (2 * Real.pi) a b P)) g = 0`. Rewrite using `[hGI F E σ d R w Ψ hΨ φ hφ g a b P, mul_zero]`. Use `Idil := by`.
-
-Introduce `g X a ha`. Take `⟨U, H, hU, hR, hc, hH⟩` from `hGD F E σ d R w Ψ hΨ φ hφ g X a ha`. Use `⟨U, fun y z => c * H y z, hU, hR, continuousOn_const.mul hc, fun y => ⟨(hH y).1.const_mul c, fun t => ?_, fun r => ?_⟩⟩` and prove the remaining obligations. Use `show c * H y t = c * d.I (φ 1) (g * R.ι w (y * a t))`. Rewrite using `[(hH y).2.1 t]`.
-
-Use `show iteratedDeriv r (fun z => c * H y z) 0 = c * d.I (φ ((dil (2 * Real.pi) X ^ r) 1)) (g * R.ι w y)`. Rewrite using `[iteratedDeriv_const_mul' c r (H y)]`. Use `show c * iteratedDeriv r (H y) 0 = _`. Rewrite using `[(hH y).2.2 r]`. Use `eis := ⟨U, pp, Ê, t, hUo, hRD, hs0, hp, hhol, hcont, hinv, hconv⟩ }`.
-
-Establish `hVac : AbsSt.VacData (par2 σ d.Y) (rat2 σ d.Y) (s0 d.m d.n) d.Ht sl Il`. Take `⟨r, Fv, hr, hFc, hFd, hF0, hFv⟩` from `vacData_of (fun z g => d.eis (d.sec0 (φ 1)) (s0 d.m d.n) z g) (s0 d.m d.n) (fun g => c * d.I (φ 1) g) U pp Ê t hUo hRD hs0 hp hhol hcont (fun z hz g => (hconv z hz).2 g) hvac`. Conclude with `⟨r, Fv, hr, hFc, hFd, hF0, hFv⟩`. Conclude with `hG d.m d.n (fun _ => true) (2 * Real.pi) (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) p q e sL ρ hLD d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht sl Il hCore hVac P x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genAt_k (hG : AbsSt.GenCore) (c : ℂ) (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hAux : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hFM : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hLo : _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k)
     (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) (hGS : _root_.PositivityTheory.SiegelWeilFormula.GSplit_k) (hGI : _root_.PositivityTheory.SiegelWeilFormula.GIinv_k) (hGD : _root_.PositivityTheory.SiegelWeilFormula.GIdil_k) (hPK : _root_.PositivityTheory.SiegelWeilFormula.PolyKFin_k) (hSK : _root_.PositivityTheory.SiegelWeilFormula.SecK_k) (hEW : _root_.PositivityTheory.SiegelWeilFormula.EisWk_k)

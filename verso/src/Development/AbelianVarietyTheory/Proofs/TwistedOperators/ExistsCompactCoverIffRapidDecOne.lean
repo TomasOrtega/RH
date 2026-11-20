@@ -18,7 +18,7 @@ section Height
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Use `(GlobalTheory.AdelicU.isCompact_height_le (F := D.host.F) D.sp.cm.sig V.gram C.toNNReal).of_isClosed_subset (isClosed_le (continuous_height V) continuous_const) fun g hg => ?_` and prove the remaining obligations. Conclude with `NNReal.le_toNNReal_of_coe_le hg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_height_le (C : ℝ) : IsCompact {g : GA D V | height V g ≤ C} := by
   refine (GlobalTheory.AdelicU.isCompact_height_le (F := D.host.F) D.sp.cm.sig V.gram C.toNNReal).of_isClosed_subset
@@ -38,7 +38,7 @@ variable {G : Type} [Group G] [MeasurableSpace G] [TopologicalSpace G] [IsTopolo
 end Quot
 
 /- English proof (translation)
-Rewrite using `[isQuotIntL1_bot]`. Use `⟨Integrable.of_finite, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_fintype]`. Simplify using the standard rewrite rules. Conclude with `Integrable.of_finite`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotientIntegral_trivial_count {G : Type} [Group G] [Fintype G] [MeasurableSpace G] [MeasurableSingletonClass G]
     (f : G → ℂ) : IsQuotIntL1 (R := ⊥) (Measure.dirac 1) Measure.count f (∑ g, f g) := by
@@ -49,7 +49,7 @@ theorem quotientIntegral_trivial_count {G : Type} [Group G] [Fintype G] [Measura
   · exact Integrable.of_finite
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (Multiplicative (ZMod 2))` to `⊤`. Establish `: MeasurableSingletonClass (Multiplicative (ZMod 2))` using `⟨fun _ => trivial⟩`. Use `quotientIntegral_trivial_count (G := Multiplicative (ZMod 2)) fun _ => (1 : ℂ)` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 example : let _ : MeasurableSpace (Multiplicative (ZMod 2)) := ⊤
     IsQuotIntL1 (R := (⊥ : Subgroup (Multiplicative (ZMod 2)))) (Measure.dirac 1) Measure.count (fun _ => (1 : ℂ)) 2 := by

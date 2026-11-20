@@ -5,21 +5,19 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ Λ E Λ' E' Y hs h1 h2 h3 h4 h5 h6 h7 h8 t1 t2 t3 t4`. Establish `key : ∀ A B Z : H →L[ℂ] H, A * A = A → B * B = B → A * B = 0 → B * A = 0 → IsTraceClass ((A + B) * Z * (A + B)) → IsTraceClass (A * Z * A) ∧ trace ((A + B) * Z * (A + B)) = trace (A * Z * A) + trace (B * Z * B)`. Introduce `A B Z a b ab ba h`. Establish `e1 : A * ((A + B) * Z * (A + B)) * A = A * Z * A`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_add A A, a, ab, add_zero, mul_assoc, add_mul, a, ba, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : B * ((A + B) * Z * (A + B)) * B = B * Z * B`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_add B A, b, ba, zero_add, mul_assoc, add_mul, b, ab, zero_add]`. Use `set Q := (A + B) * Z * (A + B) with hQ`. Establish `e3 : Q = A * Q + B * Q`. Rewrite using `[← add_mul, hQ, ← mul_assoc, ← mul_assoc, add_mul A B (A + B), mul_add A, mul_add B, a, b, ab, ba, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c : ∀ P : H →L[ℂ] H, P * P = P → trace (P * Q) = trace (P * Q * P)` using `fun P hP => by`. Use `trace_comp_comm (h.comp_left P) P` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (P * (P * Q)) = trace (P * Q * P) at this`. Rewrite `this` using `[← mul_assoc, hP]`. Then use the resulting hypothesis. Use `⟨e1 ▸ (h.comp_left A).comp_right A, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2, ← c A a, ← c B b]`. Use `conv_lhs => rw [e3]`. Conclude with `trace_add (h.comp_left A) (h.comp_left B)`. Establish `hT : IsTraceClass ((Λ + E) * Y * (Λ + E))`. Establish `: (Λ + E) * Y * (Λ + E) = Λ * (Y * Λ) + (Λ * (Y * E) + E * Y * (Λ + E))` using `by noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `t1.add ((t3.comp_left Λ).add (t2.comp_right (Λ + E)))`. Take `⟨-, k1⟩` from `key Λ E Y h1 h2 h5 h6 hT`. Rewrite `hT`, `k1` using `[hs]`. Take `⟨k2, k3⟩` from `key Λ' E' Y h3 h4 h7 h8 hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : trace (E * Y * E) = trace (E * Y)`. Use `trace_comp_comm t2 E` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (E * (E * Y)) = trace (E * Y * E) at this`. Rewrite using `[← this, ← mul_assoc]`. Conclude with `congrArg (fun Z => trace (Z * Y)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2 : trace (E' * Y * E') = trace (Y * E')`. Use `trace_comp_comm t4 E'` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (E' * (Y * E')) = trace (Y * E' * E') at this`. Rewrite using `[mul_assoc, this, mul_assoc]`. Conclude with `congrArg (fun Z => trace (Y * Z)) h4`.
-
-Use `⟨k2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `trace (Λ * (Y * Λ)) + trace (E * Y) = trace (Λ' * (Y * Λ')) + trace (Y * E')`. Rewrite using `[← mul_assoc, ← mul_assoc, ← c1, ← c2, ← k1, k3]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.twoProj :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (Λ E Λ' E' Y : H →L[ℂ] H), Λ + E = Λ' + E' → Λ ∘L Λ = Λ → E ∘L E = E → Λ' ∘L Λ' = Λ' → E' ∘L E' = E' →

@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.FlipRun
 
 /- English proof (translation)
-Proceed by induction on `l generalizing γ with`. Consider the case `nil => exact .nil _`. Consider the case `cons x l ih`. Consider the cases of `h with`. Consider the case `cons hp h' => exact .cons hp (ih h')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 -/
 theorem canFlip_of_append {γ : List GlobalTheory.SplitFlip.Edge} {l l' : List (ℕ × ℕ)} (h : GlobalTheory.SplitFlip.CanFlip γ (l ++ l')) :
     GlobalTheory.SplitFlip.CanFlip γ l := by
@@ -26,15 +26,13 @@ theorem canFlip_of_append {γ : List GlobalTheory.SplitFlip.Edge} {l l' : List (
     | cons hp h' => exact .cons hp (ih h')
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t Φ w hw k _`. Establish `hL` using `s.core.lev`. Establish `hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)`. Take `⟨⟨P, -, -⟩, -⟩` from `s.size`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host hpp (P.level_split p hp)`. Conclude with `⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩`. Establish `hg` using `(Good.locGrid_isGood hL ch.G ch.W t hde (hch.guard t)).1 w hw`. Establish `hadm` using `GivenAdm.givenStage_isAdmissible hL ch.S.B t Φ hw`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00` using `hg.square 0 hm 0 hm`. Establish `hν : ∀ x ∈ flipOrder D.R.m, GlobalTheory.SplitFlip.CondLE (unifAt w) (depthAt ch.G w) ((locGrid ch.G t w).nu x.1 x.2)`. Introduce `x hx`. Simplify using `only [flipOrder, List.mem_flatMap, List.mem_map, List.mem_range] at hx`. Take `⟨i, hi, j, hj, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← GlobalTheory.SplitFlip.Grid.alpha_div_beta]`. Conclude with `(hg.square i hi j hj).condν`. Establish `hcan : GlobalTheory.SplitFlip.CanFlip (GlobalTheory.SplitFlip.givenPath D.R.m) ((flipOrder D.R.m).take k)`. Establish `h` using `(canFlip_flipOrder D.R.m).1`. Rewrite `h` using `[← List.take_append_drop k (flipOrder D.R.m)]`.
-
-Conclude with `canFlip_of_append h`. Conclude with `isTensor_flips h00.unif h00.cond h00.one_le ((flipOrder D.R.m).take k) (givenStage t w ch.S.B Φ) (fun x hx => hν x (List.mem_of_mem_take hx)) hcan (fun X => GivenAdm.givenLevel_open hL hw X) hadm.tensor`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTensor_flips_take : GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (Φ : ch.G.Datum), ∀ w ∈ locPl ch.G t, ∀ k, k ≤ D.R.m ^ 2 → (locGrid ch.G t w).IsTensor (unifAt w) (depthAt ch.G w) ((givenStage t w ch.S.B Φ).flips .one (psiAt ch.W w) (unifAt w) (depthAt ch.G w) ((flipOrder D.R.m).take k)).path ((givenStage t w ch.S.B Φ).flips .one (psiAt ch.W w) (unifAt w) (depthAt ch.G w) ((flipOrder D.R.m).take k)).tensor := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

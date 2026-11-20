@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `g n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (n+1) => ℤ)).tsum_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∀ p : ℤ × (Fin n → ℤ), (∏ i : Fin (n+1), g ((Fin.consEquiv (fun _ : Fin (n+1) => ℤ)) p i)) = g p.1 * ∏ i : Fin n, g (p.2 i)`. Introduce `p`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[Fin.consEquiv]`. Repeatedly rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[ENNReal.tsum_prod (f := fun (a : ℤ) (b : Fin n → ℤ) => g a * ∏ i : Fin n, g (b i))]`. Repeatedly rewrite using `[ENNReal.tsum_mul_left, ih]`. Rewrite using `[ENNReal.tsum_mul_right, pow_succ']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Yvb3.main :
     ∀ (g : ℤ → ENNReal) (n : ℕ), ∑' (m : Fin n → ℤ), ∏ i : Fin n, g (m i) = (∑' (k : ℤ), g k) ^ n := by

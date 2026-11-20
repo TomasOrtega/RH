@@ -18,7 +18,7 @@ open Classical
 namespace GlobalTheory.QUnit
 
 /- English proof (translation)
-Unfold `ThetaSys.FF`. Use `finsum_induction (fun v => v ∈ S.R) (zero_mem _) (fun _ _ => add_mem) fun t => ?_` and prove the remaining obligations. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) (sum_mem fun i _ => mul_mem (Subalgebra.algebraMap_mem _ _) (S.ev_mem _ _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem FF_mem {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (k : S.J × (T → ZMod ((S.r * S.N) ^ 2))) : S.FF T c k ∈ S.R := by
   unfold ThetaSys.FF
@@ -26,47 +26,41 @@ theorem FF_mem {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSy
   exact mul_mem (Subalgebra.algebraMap_mem _ _) (sum_mem fun i _ => mul_mem (Subalgebra.algebraMap_mem _ _) (S.ev_mem _ _))
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ _ S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R _ _ _ j hB hj G _ _ gm hpb D A U hLB hPsi α₀`. Take `⟨hiso, hc⟩` from `GlobalTheory.T.thetaConstant_fourierParts_bounded_classMinima o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R j hB hj G gm hpb D A U hLB hPsi`. Take `⟨c', hc'⟩` from `hc α₀`. Establish `hO` using `hAdm.1`. Take `⟨x₀, hx₀⟩` from `hO.div x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hRU : ∀ v ∈ S.R, v ∈ M.ringOn (U₀ : Set M.Z)` using `fun v hv => hO.le hv`. Establish `hext : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ x y → ∃ ev : R →+* OO p, IsLocalHom ev ∧ spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y`. Introduce `p _ y hy`. Take `⟨V, _, _, _, ev₀, i, -, hl₀, hli, -, hev, -⟩` from `GlobalTheory.ClassicalPt.extend_completion o' Ω M x R j hj p y hy.1`. Use `haveI := hl₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI := hli`. Conclude with `⟨i.comp ev₀, RingHom.isLocalHom_comp _ _, hev⟩`. Take `⟨p₁, hp₁, y₁, hy₁⟩` from `GlobalTheory.Poinc.exists_cen_main o' Ω M x hx U₀ hO.ne`. Take `⟨ev₁, hl₁, hev₁⟩` from `hext p₁ y₁ hy₁`. Establish `hN0 : S.N ≠ 0` using `by have := S.N_ge; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFFne : S.FF (S.TT M x) c' ≠ 0`. Introduce `h0`. Take `⟨hlow, κ₂, hup⟩` from `hc' p₁ y₁ ev₁ hy₁ hev₁ x₀ hx₀`. Take `⟨α, s, hα, hs, -⟩` from `hlow κ₂`. Establish `h1` using `hup α s hα hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[show S.FF (S.TT M x) c' κ₂ = 0 from congrFun h0 κ₂, zero_div, RatModel.val_zero, norm_zero, zero_pow hN0]`. Conclude with `GlobalTheory.T.thetaTrivialisation_coordinate_ne_zero_classical o' Ω S ρ M U₀ EE FinalForm hO x R j D hPsi p₁ y₁ ev₁ hy₁ hev₁ α s hs (norm_le_zero_iff.1 h1)`. Take `⟨κ₁, hκ₁⟩` from `hAdm.2 (S.TT M x) c' hiso hFFne x`. Establish `he0 : S.FF (S.TT M x) c' κ₁ / S.th x₀ ≠ 0` using `div_ne_zero hκ₁.1 hx₀.1`. Establish `heU : S.FF (S.TT M x) c' κ₁ / S.th x₀ ∈ M.ringOn (U₀ : Set M.Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hRU _ (FF_mem S (S.TT M x) c' κ₁)) (hO.th_unit x₀ hx₀.1)`. Establish `heU' : (S.FF (S.TT M x) c' κ₁ / S.th x₀)⁻¹ ∈ M.ringOn (U₀ : Set M.Z)`. Rewrite using `[inv_div, div_eq_mul_inv]`. Conclude with `mul_mem (hRU _ (S.th_mem x₀)) (hO.FF_unit (S.TT M x) c' κ₁ hiso hκ₁.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (ev : R →+* OO p), M.Cen U₀ x y → spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → 0 < ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ₁ / S.th x₀)‖ ∧ ‖M.val (gPt p ≫ y) ((S.FF (S.TT M x) c' κ₁ / S.th x₀) ^ S.N)‖ = ‖M.val (gPt p ≫ y) ( …`. Introduce `p _ y ev hy hev`. Establish `hrange : Set.range (gPt p ≫ y) = {(gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p))}` using `RatModel.range_eq_singleton _ _`. Establish `hsp` using `RatModel.specializes_of_range_eq hrange`. Establish `hz'U : (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)) ∈ (U₀ : Set M.Z)` using `hy.2 ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'x` using `RatModel.gPt_specializes hy.1 (IsLocalRing.closedPoint (PadicAlgCl p))`. Establish `heO` using `RatModel.ringOn_le_O hz'U heU`. Establish `heO'` using `RatModel.ringOn_le_O hz'U heU'`. Establish `hpos : 0 < ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ₁ / S.th x₀)‖` using `norm_pos_iff.2 ((RatModel.val_ne_zero_iff hrange ⟨_, heO⟩).2 ((RatModel.isUnit_O_iff _).2 ⟨he0, heO'⟩))`. Establish `hpow : ‖M.val (gPt p ≫ y) ((S.FF (S.TT M x) c' κ₁ / S.th x₀) ^ S.N)‖ = ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ₁ / S.th x₀)‖ ^ S.N`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `map_pow (RatModel.valHomOf (gPt p ≫ y) _ hsp) ⟨_, heO⟩ S.N` as an intermediate fact. Rewrite `this` using `[RatModel.valHomOf_apply, RatModel.valHomOf_apply]`. Rewrite using `[← norm_pow, ← this]`. Both sides reduce to the same expression. Establish `hle : ∀ κ, ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ / S.th x₀)‖ ≤ ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ₁ / S.th x₀)‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `κ`. Establish `hq : S.FF (S.TT M x) c' κ / S.FF (S.TT M x) c' κ₁ ∈ M.O x` using `hκ₁.2 κ`. Establish `hq'` using `RatModel.O_le_of_specializes hz'x hq`. Establish `eq : S.FF (S.TT M x) c' κ / S.th x₀ = (S.FF (S.TT M x) c' κ / S.FF (S.TT M x) c' κ₁) * (S.FF (S.TT M x) c' κ₁ / S.th x₀)`. Use `hκ₁.1` as an intermediate fact.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[eq, RatModel.val_mul hsp hq' heO, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.norm_val_le_one hy.1 hq)`. Take `⟨hlow, κ₂, hup⟩` from `hc' p y ev hy hev x₀ hx₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hpos, hpow, fun α s hα hs => (hup α s hα hs).trans (pow_le_pow_left₀ (norm_nonneg _) (hle κ₂) _), ?_⟩` and prove the remaining obligations. Conclude with `hlow κ₁`. Establish `hmem : (S.FF (S.TT M x) c' κ₁ / S.th x₀) ^ S.N ∈ M.O x`. Use `GlobalTheory.T.mem_stalk_of_classicalValues_norm_le_one o' Ω M hO.normal U₀ hO.ne x hx _ (pow_mem heU _) fun p _ y hy => ?_` and prove the remaining obligations. Take `⟨ev, -, hev⟩` from `hext p y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hpow, -, mu, s, -, -, h⟩` from `hpt p y ev hy hev`. Rewrite using `[hpow]`. Conclude with `h.trans ((mem_OO_iff _).1 (ev s).2)`. Establish `hstalk : M.stalkHom x ((M.stalkEquiv x).symm ⟨_, hmem⟩) = (S.FF (S.TT M x) c' κ₁ / S.th x₀) ^ S.N`. Rewrite using `[← RatModel.coe_stalkEquiv, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ha0 : (M.stalkEquiv x).symm ⟨_, hmem⟩ ≠ 0`. Introduce `h0`. Rewrite `hstalk` using `[h0, map_zero]`. Conclude with `pow_ne_zero _ he0 hstalk.symm`. Establish `hva : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (ev : R →+* OO p), M.Cen U₀ x y → spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → ((ev (j ((M.stalkEquiv x).symm ⟨_, hmem⟩)) : OO p) : PadicAlgCl p) = M.val (gPt p ≫ y) ((S.FF (S.TT M x) c' κ₁ / S.th x₀) ^ S.N)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p _ y ev hy hev`. Establish `hφ : spMap (ev.comp j) ≫ M.Z.fromSpecStalk x = y`. Rewrite using `[← hev]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `GlobalTheory.CplDiv.val_stalkHom_eq o' Ω M x p y (ev.comp j) hy.1 hφ ((M.stalkEquiv x).symm ⟨_, hmem⟩)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hstalk]`. Conclude with `this.symm`. Establish `hdvd : ∀ α s, CongMod S.N α α₀ → PsiCoord D.toPre α s → j ((M.stalkEquiv x).symm ⟨_, hmem⟩) ∣ s`. Introduce `α s hα hs`. Use `GlobalTheory.CplDiv.dvd_of_norm_le_at_classical o' Ω M hO.normal U₀ hO.ne x hx R j hj _ s ha0 fun p _ y ev hy hev => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨-, hpow, hup, -⟩` from `hpt p y ev hy hev`. Rewrite using `[hva p y ev hy hev, hpow]`. Conclude with `hup α s hα hs`. Take `⟨hpos₁, hpow₁, -, mu, smu, hmu, hsmu, hlow₁⟩` from `hpt p₁ y₁ ev₁ hy₁ hev₁`. Take `⟨t, ht⟩` from `hdvd mu smu hmu hsmu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht1 : 1 ≤ ‖((ev₁ t : OO p₁) : PadicAlgCl p₁)‖`. Establish `h` using `hlow₁`. Rewrite `h` using `[ht, map_mul, MulMemClass.coe_mul, norm_mul, hva p₁ y₁ ev₁ hy₁ hev₁, hpow₁]`. Conclude with `(le_mul_iff_one_le_right (pow_pos hpos₁ _)).1 h`. Establish `htu : IsUnit t`.
-
-Establish `hu : IsUnit (ev₁ t)`. Assume the negation of the conclusion as `hn`. Conclude with `absurd ((not_isUnit_OO_iff _).1 hn) (not_lt.2 ht1)`. Conclude with `isUnit_of_map_unit ev₁ t hu`. Establish `hassoc : Associated (j ((M.stalkEquiv x).symm ⟨_, hmem⟩)) smu` using `⟨htu.unit, by rw [ht, IsUnit.unit_spec]⟩`.
-
-Use `⟨mu, hmu, fun α hα r s hr hs => ?_, _, _, he0, ⟨S.TT M x, c', κ₁, x₀, hiso, rfl⟩, hstalk, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hsmu hr`. Establish `: Associated (j ((M.stalkEquiv x).symm ⟨_, hmem⟩)) r` using `hassoc.trans ⟨u, by rw [hu, mul_comm]⟩`. Conclude with `this.symm.dvd.trans (hdvd α s hα hs)`. Take `⟨u, hu⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hsmu hr`.
-
-Conclude with `hassoc.trans ⟨u, by rw [hu, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real), S.Big → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), GlobalTheory.Mum.Base R → IsCpl j → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (gm : G.left ⟶ FinalForm.G.left), IsGrpPullback G FinalForm.G (spMap j ≫ M.Z.fromSpecStalk x) gm → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), LBIso U.LG.L (FinalForm.L.L.pull gm) → (∀ y, PsiUnitOn D.toPre y ((spMap j ≫ M.Z.fromSpecStalk x) ⁻¹' abLocus FinalForm.G)) → ∀ α₀ : D.toPre.X, ∃ mu : D.toPre.X, CongMod S.N mu α₀ ∧ (∀ α, CongMod S.N α α₀ → ∀ r s, PsiCoord D.toPre mu r → PsiCoord D.toPre α s → r ∣ s) ∧ ∃ (e : Ω) (a : M.Z.presheaf.stalk x), e ≠ 0 ∧ (∃ (T₀ : AddSubgroup S.Gam) (c' : T₀ →+ ZMod S.N) (κ : S.J × (T₀ → ZMod ((S.r * S.N) ^ 2))) (x₀ : S.Gam), S.IsoFree T₀ ∧ e = S.FF T₀ c' κ / S.th x₀) ∧ M.stalkHom x a = e ^ S.N ∧ ∀ r, PsiCoord D.toPre mu r → Associated (j a) r := by
   intro o' Ω _ _ _ _ S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R _ _ _ j hB hj G _ _ gm hpb D A U hLB hPsi α₀

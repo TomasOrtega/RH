@@ -13,25 +13,23 @@ noncomputable section
 namespace GlobalTheory.PolFan.FullCone
 
 /- English proof (translation)
-Introduce `E _ _ _ H q g φs 𝒩 φ X _ _ _ _ k γ hg hφs hR hX hγ be hbe hbp hbc`. Use `haveI : Module.Finite ℤ X := Module.Finite.trans (𝓞 E) X`. Establish `hP : IsPolFanOn H.bar φ X` using `hR.1 X hX`. Take `⟨Nmax, hN⟩` from `GlobalTheory.T.exists_integral_support_function _ H.bar φ X hP`. Set `P : ℕ → Prop` to `fun m => ∃ δ : Fin m → LinearMap.BilinForm ℤ X, IsCone H.bar φ δ ∧ GlobalTheory.ChartMono.InRealCone δ be`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `Module.finrank ℤ (balForms H.bar X)`. Establish `hB : ∀ m, P m → m ≤ B`. Introduce and unpack `m ⟨δ, hδ, -⟩`. Take `⟨n, b, -⟩` from `hδ.basis`. Use `Module.finrank_eq_card_basis b` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.card_sum, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨m0, δ0, c0, hδ0, hc0, he0⟩` from `hP.cover _ (toReal_mem_psdCone_of_nonneg E H X be hbe hbp)`. Establish `hP0 : P m0` using `⟨δ0, hδ0, c0, hc0, he0⟩`. Use `set ms := Nat.findGreatest P B with hms`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, hδ, hbδ⟩ : P ms` from `Nat.findGreatest_spec (hB m0 hP0) hP0`. Use `⟨ms, δ, hδ, hbδ, fun β hβ hβc => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hβp : ∀ y, 0 ≤ β y y` using `fun y => by`. Take `⟨c, hc, he⟩` from `hβc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `LinearMap.congr_fun₂ he y y`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at h1`. Establish `: (0 : ℝ) ≤ β y y` using `h1 ▸ Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hγ.nonneg i y)`. Conclude with `this` after adjusting the coercions. Take `⟨m', ε, hε, hδε, hwε⟩` from `GlobalTheory.T.uniform_bound_support_functions E H φ X hP Nmax hN ms δ hδ β hβ hβp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hlt` using `GlobalTheory.T.rank_increase_of_non_span X ms m' δ ε β hδ.linearIndependent hne (fun j => by`. Take `⟨k, c, hk, hc⟩` from `hδε j`. Conclude with `⟨k, fun i => c i, hk, by rw [natCast_zsmul, hc]; simp only [natCast_zsmul]⟩) hwε`. Establish `hPm' : P m'`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc, he⟩` from `hbδ`. Use `choose k d hk hd using hδε`. Use `⟨fun i => ∑ j, c j * (d j i : ℝ) / k j, fun i => Finset.sum_nonneg fun j _ => by` and prove the remaining obligations. Use `hc j` as an intermediate fact. Use the proof step `positivity, LinearMap.ext₂ fun a b => ?_⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `LinearMap.congr_fun₂ he a b`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at h1 ⊢`. Establish `h2 : ∀ j, (δ j a b : ℝ) = ∑ i, (d j i : ℝ) * (ε i a b : ℝ) / k j` using `fun j => by`. Use `LinearMap.congr_fun₂ (hd j) a b` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hk0 : (k j : ℝ) ≠ 0` using `by exact_mod_cast (hk j).ne'`. Rewrite using `[← Finset.sum_div, eq_div_iff hk0]`. Conclude with `(by rw [mul_comm]; exact this)` after adjusting the coercions. Rewrite using `[h1]`. Simplify using `only [h2, Finset.mul_sum, Finset.sum_mul]`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Use `Nat.le_findGreatest (hB m' hPm') hPm'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_cone_span_balanced : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (k : ℕ) (γ : Fin k → LinearMap.BilinForm ℤ X), Module.finrank ℚ E * q ≤ g → IsPolFan id g φs → Refines H q φs 𝒩 φ → Module.finrank (𝓞 E) X ≤ q → ConeZ E φs X k γ → ∀ be ∈ balForms H.bar X, (∀ y, 0 ≤ be y y) → GlobalTheory.ChartMono.InRealCone γ be → ∃ (k₁ : ℕ) (δ : Fin k₁ → LinearMap.BilinForm ℤ X), IsCone H.bar φ δ ∧ GlobalTheory.ChartMono.InRealCone δ be ∧ ∀ β ∈ balForms H.bar X, GlobalTheory.ChartMono.InRealCone γ β → ∃ (M : ℕ) (a : Fin k₁ → ℤ), 0 < M ∧ (M : ℤ) • β = ∑ i, a i • δ i := by
   intro E _ _ _ H q g φs 𝒩 φ X _ _ _ _ k γ hg hφs hR hX hγ be hbe hbp hbc

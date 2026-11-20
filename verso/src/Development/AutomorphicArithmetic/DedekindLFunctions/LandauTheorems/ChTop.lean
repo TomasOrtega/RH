@@ -9,13 +9,11 @@ namespace Deduction
 open Deduction.CH Formalism Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LErr Formalism.LFunctionChainParameters.LChain
 
 /- English proof (translation)
-Take `⟨ha, hw, hg, hL, -⟩` from `hId`. Establish `hf : (f : ℝ) = (#(PhiSet (H` using `H)) : ℝ) := by`. Use `Fintype.card_congr eP` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_coe] at this`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∀ g : E0 × H → ℝ, ∑ ρ : Fin f, g (eP ρ) = ∑ x ∈ PhiSet, g x`. Introduce `g`. Rewrite using `[← Finset.sum_coe_sort PhiSet]`. Conclude with `Equiv.sum_comp eP (fun x => g x)`. Unfold `Data.Main`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ha, hw, hg, hL, hsum, hf]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← Finset.sum_coe_sort TT]`. Rewrite using `[← Equiv.sum_comp eT]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Simplify using `[MAIN, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]`. Use `left`. Use `left`. Conclude with `hsum (fun x => Real.log (w (tr u0) j x))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ch_top_main_eq {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)]
@@ -44,17 +42,15 @@ lemma ch_top_main_eq {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0
   exact hsum (fun x => Real.log (w (tr u0) j x))
 
 /- English proof (translation)
-Establish `hmain` using `ch_top_main_eq Dd tr D N ell TT a w eT eP h1 u`. Establish `hask` using `h1.2.2.2.2 u`. Establish `hgap : gapA D N ell TT a w (tr u) = Dd.ASK u - Dd.Main u`. Rewrite using `[hask, hmain]`. Unfold `gapA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Take `⟨s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11⟩` from `h2`. Establish `hle` using `each_unit_bound_statement Dd C Xpp s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `herr` using `errX5at_le Dd C Xpp eK K h3 h5 u`. Establish `hnT : Dd.nT = (TT.card : ℝ)`. Unfold `Data.nT`. Use `Fintype.card_congr eT` as an intermediate fact. Rewrite `this` using `[Fintype.card_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `htext : ErrText Dd ≤ errorBracketSizeWindows Dd.x Dd.ε (Fintype.card H) TT.card T2.card m Dd.b Dd.k Dd.a`. Unfold `ErrText errorBracketSizeWindows`. Rewrite using `[hnT]`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Conclude with `h4.1`. Conclude with `h4.2`. Establish `hpow : 0 ≤ Dd.x ^ (CErr C * Dd.ε)` using `Real.rpow_nonneg s1.1.le _`. Rewrite using `[hgap]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ch_top {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)]
     {Top : Type} [Fintype Top] {m f : ℕ} (Dd : Data U0 W Top m f) (tr : U0 → H) (C : Consts) (Xpp eK K : ℝ)

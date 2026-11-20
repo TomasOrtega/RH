@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Simplify using `[powAt, Matrix.trace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem powAt_coe_eq_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (x : V n) (k : ℕ) :
     ((powAt G x k : Ev n) : Alt n) = ∑ i, (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n) := by
   simp [powAt, Matrix.trace]
 
 /- English proof (translation)
-Unfold `transAt`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_mul, Subalgebra.coe_mul, Subalgebra.coe_algebraMap, Algebra.smul_def, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem transAt_eq_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (x : V n) (k : ℕ) :
     transAt G G' x k = ∑ a, ∑ i ∈ Finset.range k, ∑ p, ∑ q,
@@ -35,11 +35,11 @@ theorem transAt_eq_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G G' : 
     Finset.sum_mul, Subalgebra.coe_mul, Subalgebra.coe_algebraMap, Algebra.smul_def, mul_assoc]
 
 /- English proof (translation)
-Introduce `n r _ _ G G' v hG hGu hG' hG'u k`. Take `⟨hconst, hsum, hsmul, hmul⟩` from `GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v`. Take `⟨_, hdsum, _, _, _⟩` from `GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v`. Establish `hpe : ∀ i, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n) S) v) ∧ dbarAt (fun x => (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n)) v = 0` using `fun i => GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G G' v hG hGu hG' hG'u k 0 i i`. Establish `hpf : (fun x => ((powAt G x k : Ev n) : Alt n)) = fun x => ∑ i ∈ Finset.univ, (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun x => powAt_coe_eq_sum G G' x k`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [powAt_coe_eq_sum G G']`. Conclude with `hsum r Finset.univ _ fun i _ => (hpe i).1`. Rewrite using `[hpf, hdsum r Finset.univ _ fun i _ S => ((hpe i).1 S).differentiableAt (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun i _ => (hpe i).2`. Establish `hη : ∀ a p q, ContDiffAt ℝ ∞ (fun x => (conn G x (coordVec a) - conn G' x (coordVec a)) p q) v` using `fun a p q => ((hG.conn hGu (j := ∞) (by simp) (coordVec a)).sub (hG'.conn hG'u (j := ∞) (by simp) (coordVec a))) p q`. Simplify using `only [transAt_eq_sum]`. Use `hsum _ Finset.univ _ fun a _ => hsum _ _ _ fun i _ => hsum _ Finset.univ _ fun p _ => hsum _ Finset.univ _ fun q _ => hsmul _ _ (hη a p q) ?_` and prove the remaining obligations. Conclude with `hmul _ _ (GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G' G v hG' hG'u hG hGu (k - 1 - i) i q p).1 (hconst (dz a))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem powAt_transAt_smooth : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → MContDiffAt ∞ G' v → IsUnit (G' v).det → ∀ k, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((powAt G x k : Alt n)) S) v) ∧ dbarAt (fun x => (powAt G x k : Alt n)) v = 0 ∧ (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (transAt G G' x k) S) v) := by
   intro n r _ _ G G' v hG hGu hG' hG'u k

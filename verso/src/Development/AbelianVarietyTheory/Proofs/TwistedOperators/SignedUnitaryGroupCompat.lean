@@ -16,7 +16,7 @@ namespace GlobalTheory.SgnIdent
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `g`. Use `show Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) A) * (-J) * (g : Matrix (Fin n) (Fin n) A) = -J ↔ Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) A) * J * (g : Matrix (Fin n) (Fin n) A) = J`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uj_neg_eq {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) :
     Formalism.UG.UJ σ (-J) = Formalism.UG.UJ σ J := by
@@ -26,22 +26,22 @@ theorem uj_neg_eq {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix
   rw [Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem uh_neg_eq {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) : Formalism.QuantumDeterminants.UH (-H) = Formalism.QuantumDeterminants.UH H := by
   ext g
   simp only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramAt, neg_gram]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramAt_neg_eq (V : HSp D) (τ : D.what₂.Tau) : gramAt D (neg V) τ = -gramAt D V τ := by
   ext i j; simp [gramAt, neg_gram]
 
 /- English proof (translation)
-Consider the cases of `ε`. Conclude with `Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Conclude with `⟨x, by rw [← uj_neg_eq]; exact hx, e⟩`.
+Split into cases according to the possible forms of the given data. Unfold both sides to obtain the same proposition, which implies itself. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, e⟩`. Conclude with `⟨x, by rw [← uj_neg_eq] at hx; exact hx, e⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_GQ_sgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : g ∈ GQ (sgn ε V) ↔ ofSgn ε V g ∈ GQ V := by
   cases ε
@@ -53,18 +53,18 @@ theorem mem_GQ_sgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : g ∈ GQ (sgn
       exact ⟨x, by rw [← uj_neg_eq] at hx; exact hx, e⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_GfC_sgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : g ∈ GfC (sgn ε V) ↔ ofSgn ε V g ∈ GfC V := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_GinfC_sgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : g ∈ GinfC (sgn ε V) ↔ ofSgn ε V g ∈ GinfC V :=
   Iff.rfl
 
 /- English proof (translation)
-Consider the cases of `ε`. Both sides reduce to the same expression. Rewrite using `[gramAt_neg_eq, uh_neg_eq]`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem uh_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.UH (gramAt D (sgn ε V) τ) = Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -73,7 +73,7 @@ theorem uh_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) :
   · rw [gramAt_neg_eq, uh_neg_eq]
 
 /- English proof (translation)
-Consider the cases of `ε`. Both sides reduce to the same expression. Use extensionality with `X show Xᴴ * gramAt D (neg V) τ + gramAt D (neg V) τ * X = 0 ↔ Xᴴ * gramAt D V τ + gramAt D V τ * X = 0`. Rewrite using `[gramAt_neg_eq, Matrix.mul_neg, Matrix.neg_mul, ← neg_add, neg_eq_zero]`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieAt_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) : lieAt (sgn ε V) τ = lieAt V τ := by
   cases ε
@@ -83,19 +83,19 @@ theorem lieAt_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) : lieAt (sgn ε V
     rw [gramAt_neg_eq, Matrix.mul_neg, Matrix.neg_mul, ← neg_add, neg_eq_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isAtTau_sgn (θ : InfFam D) (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (x : GA D (sgn ε V)) : IsAtTau θ (sgn ε V) τ g x ↔ IsAtTau θ V τ g (ofSgn ε V x) := Iff.rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ x, IsAtTau θ V τ g x`. Establish `h₁ : ∃ x, IsAtTau θ (sgn ε V) τ g x`. Take `⟨x, hx⟩` from `h`. Use `⟨(ofSgn ε V).symm x, (isAtTau_sgn θ ε V τ g _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.apply_symm_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `a : IsAtTau θ (sgn ε V) τ g (atTau θ (sgn ε V) τ g)`. Unfold `atTau`. Rewrite using `[dif_pos h₁]`. Conclude with `h₁.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `b : IsAtTau θ V τ g (atTau θ V τ g)`. Unfold `atTau`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Conclude with `GlobalTheory.Published.AutFin.Model.isAtTau_unique θ V hθ ((isAtTau_sgn θ ε V τ g _).1 a) b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : ¬ ∃ x, IsAtTau θ (sgn ε V) τ g x` using `fun ⟨x, hx⟩ => h ⟨_, (isAtTau_sgn θ ε V τ g x).1 hx⟩`. Establish `a : atTau θ (sgn ε V) τ g = 1` using `by unfold atTau; rw [dif_neg h₁]`. Establish `b : atTau θ V τ g = 1` using `by unfold atTau; rw [dif_neg h]`. Rewrite using `[a, b, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem atTau_sgn (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (V : HSp D) (τ : D.what₂.Tau)
     (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : ofSgn ε V (atTau θ (sgn ε V) τ g) = atTau θ V τ g := by
@@ -115,13 +115,13 @@ theorem atTau_sgn (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (V : HSp D) (�
     rw [a, b, map_one]
 
 /- English proof (translation)
-Take `⟨-, -, -, hb, hg, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨-, -, -, hb₁, hg₁, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (sgn ε V)`. Set `h : GA D (sgn ε V) ≃ₜ GA D V` to `{ toEquiv := (ofSgn ε V).toEquiv, continuous_toFun := continuous_ofSgn ε V, continuous_invFun := continuous_ofSgn_symm ε V }`. Establish `me : MeasurableEmbedding (ofSgn ε V)` using `h.toMeasurableEquiv.measurableEmbedding`. Establish `hm : Measurable (ofSgn ε V)` using `(continuous_ofSgn ε V).measurable`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : Measurable (ofSgn ε V).symm` using `(continuous_ofSgn_symm ε V).measurable`. Establish `mp : MeasurePreserving (ofSgn ε V) (ν.map (ofSgn ε V).symm) ν`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map hm hm']`. Establish `: (⇑(ofSgn ε V) ∘ ⇑(ofSgn ε V).symm) = id` using `funext fun x => (ofSgn ε V).apply_symm_apply x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Measure.map_id]`. Use `⟨ν.map (ofSgn ε V).symm, (ofSgn ε V).symm.isHaarMeasure_map ν (continuous_ofSgn_symm ε V) (continuous_ofSgn ε V), ?_, fun φ => ?_⟩` and prove the remaining obligations. Use `h𝓕.preimage_of_equiv mp.quasiMeasurePreserving (e := fun γ : GQ V => (⟨(ofSgn ε V).symm γ, (mem_GQ_sgn ε V _).2 (by rw [MulEquiv.apply_symm_apply]; exact γ.2)⟩ : GQ (sgn ε V))) ⟨fun a b hab => ?_, fun δ => ?_⟩ fun γ x => ?_` and prove the remaining obligations. Conclude with `Subtype.ext ((ofSgn ε V).symm.injective (congrArg Subtype.val hab))`. Conclude with `⟨⟨ofSgn ε V δ, (mem_GQ_sgn ε V δ).1 δ.2⟩, Subtype.ext ((ofSgn ε V).symm_apply_apply δ)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `show ofSgn ε V ((ofSgn ε V).symm (γ : GA D V) * x) = (γ : GA D V) * ofSgn ε V x`. Rewrite using `[map_mul, MulEquiv.apply_symm_apply]`. Conclude with `⟨mp.integrableOn_comp_preimage me, mp.setIntegral_preimage_emb me φ 𝓕⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem meas_sgn (ε : Bool) (V : HSp D) (ν : Measure (GA D V)) (𝓕 : Set (GA D V)) (hν : ν.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 ν) :
@@ -153,7 +153,7 @@ theorem meas_sgn (ε : Bool) (V : HSp D) (ν : Measure (GA D V)) (𝓕 : Set (GA
   · exact ⟨mp.integrableOn_comp_preimage me, mp.setIntegral_preimage_emb me φ 𝓕⟩
 
 /- English proof (translation)
-Introduce `_ θ hθ ε V` and use `⟨mem_GQ_sgn ε V, mem_GfC_sgn ε V, mem_GinfC_sgn ε V, uh_sgn ε V, lieAt_sgn ε V, fun τ g => atTau_sgn θ hθ ε V τ g, fun ν 𝓕 hν h𝓕 => meas_sgn ε V ν 𝓕 hν h𝓕⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sgnLaw_holds : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (V : HSp D), SgnLaw θ ε V :=
   fun _ θ hθ ε V => ⟨mem_GQ_sgn ε V, mem_GfC_sgn ε V, mem_GinfC_sgn ε V, uh_sgn ε V, lieAt_sgn ε V,

@@ -31,12 +31,12 @@ def RowComb (ψ : AddChar k Circle) (ν : Measure k) (P : ℕ) (Q : GlobalTheory
       GlobalTheory.PosOne.toOne ν σ P L (σ h v) = GlobalTheory.PosOne.comb e fun g => L (σ (g * h) v)
 
 /- English proof (translation)
-Simplify using `[volK]`.
+Simplify using the standard rewrite rules.
 -/
 example {a : Type} [Fintype a] [DecidableEq a] : volK (KO k a) = 1 := by simp [volK]
 
 /- English proof (translation)
-Introduce `A _ _ σ _ L _ v _` and use `by rw [GlobalTheory.PosOne.toOne_one, GlobalTheory.PosOne.comb, Finsupp.sum_single_index (by simp)] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (ψ : AddChar k Circle) (ν : Measure k) (Q : GlobalTheory.StepData.Level (GL (n ⊕ Fin c) k)) (h : GL (n ⊕ Fin c) k) :
     RowComb ψ ν 1 Q h (Finsupp.single 1 1) := fun A _ _ σ _ L _ v _ => by

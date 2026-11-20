@@ -13,9 +13,9 @@ open scoped ComplexConjugate
 namespace UpperTheory.ConvolutionTheory.T
 
 /- English proof (translation)
-Establish `hc` using `GLnLocal.isCompact_integralGL (x.adicCompletion K) n`. Establish `ho` using `GLnLocal.isOpen_integralGL (x.adicCompletion K) n`. Set `P : TopologicalSpace.PositiveCompacts (Gw n x)` to `⟨⟨_, hc⟩, by`. Express the relevant statement in the definitionally equal form `(interior (GLnLocal.integralGL (x.adicCompletion K) n : Set (Gw n x))).Nonempty`. Rewrite using `[ho.interior_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, one_mem _⟩⟩`. Conclude with `⟨Measure.haarMeasure P, inferInstance, Measure.haarMeasure_self⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem haar_norm (K : Type) [Field K] [NumberField K] (n : ℕ) (x : Pl K) [MeasurableSpace (Gw n x)] [BorelSpace (Gw n x)] :
     ∃ mm : Measure (Gw n x), mm.IsHaarMeasure ∧ mm (GLnLocal.integralGL (x.adicCompletion K) n) = 1 := by
@@ -27,51 +27,41 @@ theorem haar_norm (K : Type) [Field K] [NumberField K] (n : ℕ) (x : Pl K) [Mea
   exact ⟨Measure.haarMeasure P, inferInstance, Measure.haarMeasure_self⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ θ hθ V Λ t hV hVθ hAt hOffA v w hv τ' hτ'`. Take `⟨S, q, w₀, hvS, hqS, hq, hunr, hsph, hS'⟩` from `hPS F E σ hσ hp n hn μE V Λ t hV hAt v`. Establish `hne` using `(hPl F E hp).2.2.1`. Take `⟨T, hTS, hmk, htyped, hrank, c, f₀, UF, hUF, hL⟩` from `hTy F E σ hσ hp n hn μE V hV q w₀ hq S hqS hunr hsph (Function.update (fun u => (hne u).some) v w)`. Establish `hw : T.mk' v = w` using `by rw [hmk, Function.update_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `clear hmk`. Substitute `hw` using the available equality. Take `⟨u, hu, hu0⟩` from `(Submodule.ne_bot_iff _).1 htyped`. Take `⟨m, hm, D, s, hs, νE, iE, νF, iF, b, a, aE, aF, hposition, harch, hAE, hAF, hpair, hua⟩` from `hPI F E σ hσ hp n hn μE μF u hu0`. Use `letI : ∀ x : Pl E, MeasurableSpace (Gw n x) := fun _ => borel _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : ∀ x : Pl E, BorelSpace (Gw n x) := fun _ => ⟨rfl⟩`. Use `letI : ∀ x : Pl F, MeasurableSpace (Gw n x) := fun _ => borel _`. Use `haveI : ∀ x : Pl F, BorelSpace (Gw n x) := fun _ => ⟨rfl⟩`. Establish `hmE : ∀ x : Pl E, ∃ mm : Measure (Gw n x), mm.IsHaarMeasure` using `fun x => (haar_norm E n x).imp fun _ h => h.1`. Establish `hmF : ∀ x : Pl F, ∃ mm : Measure (Gw n x), mm.IsHaarMeasure ∧ mm (GLnLocal.integralGL (x.adicCompletion F) n) = 1` using `fun x => haar_norm F n x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose mE hmE using hmE`. Use `choose mF hmF using hmF`. Establish `hτ : ∀ x : Pl E, ∃ τ : SmIrr (Gw n x), Occurs μE V x τ` using `fun x => by haveI := hmE x`. Conclude with `(hOcc E n μE V x (mE x) hV).1`. Use `choose τ₁ hτ₁ using hτ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ, hτw⟩ : ∃ τ : ∀ x : Pl E, SmIrr (Gw n x), (∀ x, Occurs μE V x (τ x)) ∧ τ (T.mk' v).1 = τ' := by`. Use `⟨Function.update τ₁ (T.mk' v).1 τ', fun x => ?_, Function.update_self ..⟩` and prove the remaining obligations. Distinguish the cases in `h : x = (T.mk' v).1`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hτ'`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hτ₁ x`. Substitute `hτw` using the available equality. Take `⟨ν, hν⟩` from `hGood n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, cE, Z₀, hx, hcE, hZ₀, hZ0, hE⟩` from `hTE F E σ hσ hp n hn m hm μE θ hθ D s hs hposition νE νF b a aE aF harch q w₀ hq T V hV hVθ hrank ⟨u, hu, hua⟩ mE hmE τ hτ ν hν.1.antitone`. Take `⟨κ, hκ, hG⟩` from `hGM F E σ hσ hp n hn μE μF θ hθ q w₀ hq νE νF aE aF 1 one_pos hAE hAF hpair`. Use `set SF : Set (Pl F) := {y | y ∈ S ∨ y = q} with hSF`. Use `set SE : Set (Pl E) := {y | y.under (𝓞 F) ∈ SF} with hSE`. Take `⟨ι, _, V₀, τ₀, bF, Z, hι, hF⟩` from `hSum F E σ n (Module.finrank F E) hn μF νF mF hmF aF q w₀ S UF ν hν.1.antitone (fun V₀ => ∃ Λ' t', At μF SF V₀ Λ' t' ∧ Λ = bcInf Λ' ∧ ∀ y ∉ SE, t y = bcSat t' y) x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hvsp : v ∈ T.sp` using `Finset.mem_filter.2 ⟨hTS ▸ hvS, hv⟩`. Take `⟨τv, r, hr, hiso, htr, hlev⟩` from `hPull F E n v (T.mk' v) (hv _) (mF v) (mE _) (hmF v).1 (hmE _) (τ _)`. Take `⟨hCO, hfix, hφ⟩` from `hlev (T.J _) (UF v) (T.co _) (hUF v hvsp)`. Establish `hunit : ∀ y ∈ T.sp, _` using `fun y hy => hUnit E n μE V hV (T.mk' y).1 (mE _) (hmE _) (τ _) (T.J _) (hτ _) (T.co _) (by`. Use `(Submodule.ne_bot_iff _).2 ⟨u, ⟨hu.1, ?_⟩, hu0⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `h1 : u ∈ eigL μE (T.mk' y).1 (T.J _) (T.χ _)` using `(Submodule.mem_iInf _).1 hu.2 _`. Rewrite `h1` using `[T.triv y (Finset.mem_filter.1 hy).2 (T.mk' y)]`. Establish `h2` using `T.chr (T.mk' y).1`. Rewrite `h2` using `[T.triv y (Finset.mem_filter.1 hy).2 (T.mk' y)]`. Rewrite using `[(hEig E n μE _ _ _ (T.co _) h2).2.1] at h1)` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hsu : ∀ y : Pl F, ∃ z : ℂ, y ∈ T.sp → z ≠ 0 ∧ HasTrace (mE _) (τ (T.mk' y).1).ρ ((T.J (T.mk' y).1 : Set (Gw n (T.mk' y).1)).indicator 1) z` using `fun y => by`. Distinguish the cases in `hy : y ∈ T.sp`. Take `⟨z, hz⟩` from `(hunit y hy).2.2.2`. Conclude with `⟨z, fun _ => hz⟩`. Conclude with `⟨0, fun h => absurd h hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose su hsu using hsu`. Set `ψ₁ : ∀ y : Pl F, Gw n (T.mk' y).1 → ℂ` to `fun y => (T.J (T.mk' y).1 : Set (Gw n (T.mk' y).1)).indicator 1`. Take `⟨L₁, hfit₁, -, hL₁s, hL₁n⟩` from `hL ψ₁ fun y hy => ⟨(hunit y hy).2.1, (hunit y hy).2.2.1⟩`. Establish `hL₁S : L₁.S = S` using `hfit₁.S_eq.trans hTS`. Establish `hs₁ : ∀ i (y : Pl F), ∃ z : ℂ, y ∈ S → HasTrace (mF y) (τ₀ i y).ρ (L₁.f y) z` using `fun i y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ S`. Use `haveI := (hmF y).1`. Establish `ht` using `L₁.test y (hL₁S ▸ hy)`. Take `⟨z, hz⟩` from `(hOcc F n μF (V₀ i) y (mF y) (hι i).1).2.2 _ ((hι i).2.2.2 y) (L₁.f y) ⟨ht.2.2.1, ht.2.2.2⟩`. Conclude with `⟨z, fun _ => hz⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun h => absurd h hy⟩`. Use `choose s₁ hs₁ using hs₁`. Use `haveI := (hmF v).1`. Take `⟨i, hi⟩` from `hAbs F n v (mF v) (UF v) hCO ι (fun i => τ₀ i v) (fun i => (κ * ∏ y ∈ S, c y) * bF i * ∏ y ∈ S.erase v, s₁ i y) Z τv (cE * r * ∏ y ∈ T.sp.erase v, su y) Z₀ (mul_ne_zero (mul_ne_zero hcE hr) (Finset.prod_ne_zero_iff.2 fun y hy => (hsu y (Finset.mem_of_mem_erase hy)).1)) hZ₀ hZ0 (f …`. Introduce `φ s₀ sF hφt hφi hs₀ hsF`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψv, hψt, hψi, rfl⟩` from `hφ φ hφt hφi`. Take `⟨L, hfit, hLc, hLs, hLn⟩` from `hL (Function.update ψ₁ v ψv) fun y hy => by`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hψt, hψi⟩`. Rewrite using `[Function.update_of_ne h]`. Conclude with `⟨(hunit y hy).2.1, (hunit y hy).2.2.1⟩`. Establish `hLS : L.S = S` using `hfit.S_eq.trans hTS`. Take `⟨𝔢, 𝔣, h𝔢, h𝔣, hgeo⟩` from `hG L ν hν`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heS : 𝔢.S = SE` using `Set.ext fun y => by rw [h𝔢.2.2.1, hLS]; rfl`. Establish `hfS : 𝔣.S = SF` using `Set.ext fun y => by rw [h𝔣.2.2.1, hLS]; rfl`. Take `⟨hAt', hc1, hc2⟩` from `hS' 𝔢.S fun y => by rw [h𝔢.2.2.1, hLS]`. Establish `hoff : OffFam F n 𝔢.S 𝔣.S Λ t`. Rewrite using `[heS, hfS]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hOffA SF ((S.finite_toSet.union (Set.finite_singleton q)).subset fun y hy => hy)`. Use `filter_upwards [hCI F E n _ hn hp.pos μE μF θ 𝔢 𝔣 _ hgeo Λ t hc1 hc2 hoff x hx] with j hj`. Rewrite using `[hOne E n _ hn μE θ 𝔢 V Λ t hV hVθ hAt' x j, hE L _ hfit _ 𝔢 h𝔢 (Function.update su v (r * s₀)) (fun y hy => by`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_self, Function.update_self]`. Conclude with `htr _ _ hs₀`. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Conclude with `(hsu y hy).2) j, heS, hfS,`. Use `hF L 𝔣 hLS (fun y hy => (hLc y hy).2) h𝔣 (fun i => Function.update (s₁ i) v (sF i)) (fun i y hy => by`.
-
-Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, hLs y hvsp, Function.update_self]`. Conclude with `hsF i`. Rewrite using `[Function.update_of_ne h]`.
-
-Establish `e : L.f y = L₁.f y`. Distinguish the cases in `hy' : GM.Split E y`. Establish `hys : y ∈ T.sp` using `Finset.mem_filter.2 ⟨hTS ▸ hy, hy'⟩`. Rewrite using `[hLs y hys, hL₁s y hys, Function.update_of_ne h]`. Rewrite using `[hLn y hy hy', hL₁n y hy hy']`.
-
-Rewrite using `[e]`. Conclude with `hs₁ i y hy) j, hLS, Finset.prod_congr rfl fun y hy => (hLc y hy).1,`. Use the proof step `Finset.prod_update_of_mem hvsp, Finset.mul_sum] at hj`. Simplify using `only [Finset.prod_update_of_mem hvS, Finset.sdiff_singleton_eq_erase] at hj`. Combine the equalities or inequalities in the displayed calculation.
-
-Take `⟨Λ', t', hA, hΛ, ht⟩` from `(hι i).2.1`. Establish `hSFf : SF.Finite` using `(S.finite_toSet.union (Set.finite_singleton q)).subset fun y hy => hy`. Use `⟨V₀ i, Λ', t', (hι i).1, ⟨SF, hSFf, hA⟩, hΛ, ?_, τ₀ i v, (hι i).2.2.2 v, hiso _ hi⟩` and prove the remaining obligations. Take `⟨𝔢, -, h𝔢, -⟩` from `hG L₁ ν hν`. Establish `heS : 𝔢.S = SE` using `Set.ext fun y => by rw [h𝔢.2.2.1, hL₁S]; rfl`.
-
-Conclude with `Filter.mem_of_superset (heS ▸ 𝔢.finS : SE.Finite).compl_mem_cofinite fun y hy => ht y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coreDesc_of (hAbs : AbsLast) (hPull : PullBack) (hUnit : UnitTrace) (hOne : OneTerm) (hSum : SideSum) (hPS : PickS)
     (hPI : PickInf) (hTy : TyEx) (hTE : TermE) (hGood : GoodEx) (hPl : Places) (hOcc : OccursBasics)

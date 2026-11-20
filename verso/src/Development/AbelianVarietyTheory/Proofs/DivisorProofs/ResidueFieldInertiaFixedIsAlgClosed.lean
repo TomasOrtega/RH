@@ -25,13 +25,13 @@ theorem coe_toV (R K Ω : Type) [CommRing R] [Field K] [Algebra R K] [Field Ω] 
     ((toV R K Ω V hV r : V) : Ω) = algebraMap K Ω (algebraMap R K r) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r hr`. Take `⟨u, hu⟩` from `hr`. Establish `hx : algebraMap K Ω (algebraMap R K r) * ((u⁻¹ : Vˣ) : V) = 1`. Rewrite using `[← coe_toV R K Ω V hV r, ← hu]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val u.mul_inv`. Establish `hx0 : algebraMap R K r ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0, map_zero, zero_mul]`. Conclude with `zero_ne_one hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmem : (algebraMap R K r)⁻¹ ∈ V.toSubring.comap (algebraMap K Ω)`. Express the relevant statement in the definitionally equal form `algebraMap K Ω _ ∈ V`. Rewrite using `[map_inv₀, inv_eq_of_mul_eq_one_right hx]`. Conclude with `((u⁻¹ : Vˣ) : V).2`. Rewrite `hmem` using `[hV]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `hmem`. Establish `h1 : r * s = 1` using `IsFractionRing.injective R K (by rw [map_mul, hs, map_one, mul_inv_cancel₀ hx0])`. Conclude with `⟨⟨r, s, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_toV (R K Ω : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω) (hV : IsAbove R K V.toSubring) :
@@ -62,21 +62,19 @@ def resMap (R K Ω : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [
 open Polynomial
 
 /- English proof (translation)
-Use `haveI : IsLocalHom (toV R K Ω V hV) := isLocalHom_toV R K Ω V hV`. Use `letI := UniqueFactorizationMonoid.normalizationMonoid (α := R)`. Use `letI := UniqueFactorizationMonoid.toNormalizedGCDMonoid R`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨w, rfl⟩` from `residue_surjective a`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp0, hpw⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := K) ((w : V) : Ω)`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors R) p`. Use `set q := IsLocalization.integerNormalization (nonZeroDivisors R) p`. Establish `hφinj : Function.Injective (toV R K Ω V hV)` using `fun x y h => IsFractionRing.injective R K ((algebraMap K Ω).injective (by`. Use `congrArg Subtype.val h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[coe_toV, coe_toV] at this))` and apply the resulting hypothesis. Establish `hq0 : q ≠ 0`. Introduce `hq`. Rewrite `hb` using `[hq, Polynomial.map_zero]`. Establish `hb0 : (algebraMap R K (b : R)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[Algebra.smul_def, Polynomial.algebraMap_apply]`. Conclude with `hp0 ((mul_eq_zero.1 hb.symm).resolve_left (by simpa using hb0))`. Establish `hcomp : V.subtype.comp (toV R K Ω V hV) = (algebraMap K Ω).comp (algebraMap R K)` using `RingHom.ext fun r => coe_toV R K Ω V hV r`. Establish `hqw : Polynomial.eval₂ (toV R K Ω V hV) w q = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `V.subtype _ = V.subtype 0`. Rewrite using `[map_zero, Polynomial.hom_eval₂, hcomp, ← Polynomial.eval₂_map, hb, Algebra.smul_def, Polynomial.eval₂_mul]`. Establish `: Polynomial.eval₂ (algebraMap K Ω) (V.subtype w) p = 0` using `hpw`. Rewrite using `[this, mul_zero]`. Use `set pp := q.primPart`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpp : Polynomial.eval₂ (toV R K Ω V hV) w pp = 0`. Establish `hc : q.content ≠ 0` using `(Polynomial.content_eq_zero_iff).not.2 hq0`. Use `hqw` as an intermediate fact. Rewrite `this` using `[Polynomial.eq_C_content_mul_primPart q, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Conclude with `(mul_eq_zero.1 this).resolve_left (fun h0 => hc (hφinj (by rw [h0, map_zero])))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨pp.map (residue R), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hmem : pp ∈ RingHom.ker (Polynomial.mapRingHom (residue R))`. Simplify `h0` using `[RingHom.mem_ker]`. Rewrite `hmem` using `[Polynomial.ker_mapRingHom, ker_residue, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`.
-
-Conclude with `hϖ.not_isUnit (Polynomial.isPrimitive_primPart q ϖ hmem)`. Rewrite using `[Polynomial.eval₂_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ ((ResidueField.map (toV R K Ω V hV)).comp (residue R)) _ _ = 0`. Rewrite using `[ResidueField.map_comp_residue, ← Polynomial.hom_eval₂, hpp, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_algebraic (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (V : ValuationSubring Ω)
@@ -127,11 +125,9 @@ theorem residue_algebraic (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteV
     rw [ResidueField.map_comp_residue, ← Polynomial.hom_eval₂, hpp, map_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨q1, rfl⟩` from `Polynomial.dvd_iff_isRoot.2 hb`. Establish `hc1 : q1.IsRoot c`. Use `hc` as an intermediate fact. Rewrite `this` using `[IsRoot, eval_mul, eval_sub, eval_X, eval_C]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 (Ne.symm hne))`. Take `⟨q2, rfl⟩` from `Polynomial.dvd_iff_isRoot.2 hc1`. Rewrite `hs` using `[← _root_.mul_assoc, Polynomial.map_mul, Polynomial.map_mul]`. Establish `h2` using `hs.of_mul_left`. Simplify using `only [Polynomial.map_sub, map_X, map_C, h] at h2`.
-
-Conclude with `not_isUnit_X_sub_C _ (isCoprime_self.1 h2.isCoprime)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_residue_eq {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] (q : A[X])
     (hs : (q.map (residue A)).Separable) (b c : A) (hb : q.IsRoot b) (hc : q.IsRoot c)
@@ -149,51 +145,41 @@ theorem eq_of_residue_eq {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] (q
   exact not_isUnit_X_sub_C _ (isCoprime_self.1 h2.isCoprime)
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Use `haveI : Algebra.IsSeparable K Ω := IsSepClosure.separable`. Use `haveI : IsLocalHom (toV R K Ω V hV) := isLocalHom_toV R K Ω V hV`. Use `letI : Algebra (ResidueField R) (ResidueField V) := (resMap R K Ω V hV).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic (ResidueField R) (ResidueField V) := ⟨fun a => by`. Take `⟨p, hp, h⟩` from `residue_algebraic R K Ω V hV a`. Conclude with `⟨p, hp, h⟩⟩`. Use `haveI : PerfectField (ResidueField V) := Algebra.IsAlgebraic.perfectField (ResidueField R)`. Establish `hred : ∀ s : Multiset V, ((s.map fun b => X - C b).prod).map (residue V) = ((s.map (residue V)).map fun a => X - C a).prod`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Use `haveI : IsSepClosed (ResidueField V) := IsSepClosed.of_exists_root _ fun p hm hirr hsep => by`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).2 (Polynomial.map_surjective _ residue_surjective p)) hm`. Take `⟨s, hs⟩` from `GlobalTheory.T.monic_splits_valuationSubring_of_separable_reduction Ω V q hqm (by rw [hq]; exact hsep)`. Rewrite `hirr`, the goal using `[← hq, hs, hred]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, b ∈ s := by`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Rewrite `hirr` using `[Multiset.eq_zero_of_forall_notMem h0]`. Simplify using `at hirr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨residue V b, ?_⟩` and prove the remaining obligations. Establish `hr` using `Polynomial.roots_multiset_prod_X_sub_C (s.map (residue V))`. Establish `hmem : residue V b ∈ ((s.map (residue V)).map fun a => X - C a).prod.roots`. Rewrite using `[hr]`. Conclude with `Multiset.mem_map_of_mem _ hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Polynomial.mem_roots'.1 hmem).2`. Use `haveI : IsAlgClosed (ResidueField V) := inferInstance`. Use `set K' := IntermediateField.fixedField (inertia K V) with hK'`. Use `set V' := V.comap (algebraMap K' Ω) with hV'`. Set `jV : V' →+* V` to `((algebraMap K' Ω).comp V'.subtype).codRestrict V (fun x => x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsLocalHom jV := by`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Take `⟨u, hu⟩` from `hx`. Establish `hx1 : ((x : K') : Ω) * ((u⁻¹ : Vˣ) : V) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ((jV x : V) : Ω) = ((x : K') : Ω)` using `rfl`. Rewrite using `[← this, ← hu]`. Conclude with `congrArg Subtype.val u.mul_inv`. Establish `hx0 : (x : K') ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hx1` using `[h0]`. Simplify using `at hx1`. Establish `hmem : (x : K')⁻¹ ∈ V'`. Express the relevant statement in the definitionally equal form `((((x : K')⁻¹ : K')) : Ω) ∈ V`. Rewrite using `[IntermediateField.coe_inv, inv_eq_of_mul_eq_one_right hx1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((u⁻¹ : Vˣ) : V).2`. Use `isUnit_iff_exists_inv.2 ⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one]`. Conclude with `mul_inv_cancel₀ hx0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsSeparable (ResidueField R) (ResidueField V) := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Establish `hsurj : Function.Surjective (ResidueField.map jV)`. Introduce `a`. Establish `hsep : (minpoly (ResidueField R) a).Separable` using `Algebra.IsSeparable.isSeparable _ a`. Establish `hmon : (minpoly (ResidueField R) a).Monic` using `minpoly.monic (Algebra.IsIntegral.isIntegral a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, -, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts _).2 (Polynomial.map_surjective _ residue_surjective _)) hmon`. Use `set gV := g.map (toV R K Ω V hV) with hgV`. Establish `hgV' : gV.map (residue V) = (minpoly (ResidueField R) a).map (resMap R K Ω V hV)`. Rewrite using `[hgV, Polynomial.map_map, ← ResidueField.map_comp_residue, ← Polynomial.map_map, hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsepV : (gV.map (residue V)).Separable` using `by rw [hgV']; exact hsep.map`. Take `⟨s, hs⟩` from `GlobalTheory.T.monic_splits_valuationSubring_of_separable_reduction Ω V gV (hgm.map _) hsepV`. Establish `hroot : a ∈ (gV.map (residue V)).roots`. Rewrite using `[Polynomial.mem_roots ((hgm.map _).map _).ne_zero, hgV', IsRoot, Polynomial.eval_map]`. Conclude with `minpoly.aeval _ a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hroot` using `[hs, hred, Polynomial.roots_multiset_prod_X_sub_C]`. Take `⟨b, hbs, rfl⟩` from `Multiset.mem_map.1 hroot`. Establish `hbroot : gV.IsRoot b`. Establish `: b ∈ gV.roots` using `by rw [hs, Polynomial.roots_multiset_prod_X_sub_C]; exact hbs`. Conclude with `(Polynomial.mem_roots'.1 this).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hfix : ∀ σ ∈ inertia K V, σ (b : Ω) = b`. Introduce `σ hσ`. Take `⟨-, h2⟩` from `(mem_inertia_iff V σ).1 hσ`. Establish `hlt` using `h2 b b.2`. Establish `hd : σ (b : Ω) - b ∈ V` using `(V.valuation_le_one_iff _).1 hlt.le`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : σ (b : Ω) ∈ V` using `by simpa using add_mem hd b.2`. Use `set c : V := ⟨σ b, hmem⟩ with hc`. Establish `hres : residue V c = residue V b`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `hlt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcroot : gV.IsRoot c`. Establish `key : ∀ y : V, ((gV.eval y : V) : Ω) = g.eval₂ ((algebraMap K Ω).comp (algebraMap R K)) (y : Ω)`. Introduce `y`. Rewrite using `[hgV, Polynomial.eval_map]`. Express the relevant statement in the definitionally equal form `V.subtype _ = _`.
-
-Rewrite using `[Polynomial.hom_eval₂]`. Both sides reduce to the same expression. Establish `hb0` using `key b`. Rewrite `hb0` using `[hbroot.eq_zero]`. Establish `hcomm : (σ : Ω →+* Ω).comp ((algebraMap K Ω).comp (algebraMap R K)) = (algebraMap K Ω).comp (algebraMap R K)`.
-
-Use extensionality with `r`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key c, show ((c : V) : Ω) = (σ : Ω →+* Ω) b from rfl, ← hcomm, ← Polynomial.hom_eval₂, ← hb0]`. Simplify using the standard rewrite rules.
-
-Use `eq_of_residue_eq gV hsepV c b hcroot hbroot hres` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hbK : (b : Ω) ∈ K'`. Rewrite using `[hK', IntermediateField.mem_fixedField_iff]`. Conclude with `hfix`.
-
-Establish `hbV' : (⟨b, hbK⟩ : K') ∈ V'` using `b.2`. Use `⟨residue V' ⟨⟨b, hbK⟩, hbV'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue]`. Both sides reduce to the same expression. Set `e` to `RingEquiv.ofBijective (ResidueField.map jV) ⟨(ResidueField.map jV).injective, hsurj⟩`.
-
-Conclude with `IsAlgClosed.of_ringEquiv _ _ e.symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem residueField_inertiaFixed_isAlgClosed : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → IsAlgClosed (IsLocalRing.ResidueField (V.comap (algebraMap (IntermediateField.fixedField (inertia K V)) Ω))) := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV

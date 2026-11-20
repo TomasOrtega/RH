@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x _ r s r' s' m Q`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.homogeneous_span 𝒜 _ ?_` and prove the remaining obligations. Introduce and unpack `_ ((((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Use `exacts [⟨_, Q.hF i⟩, ⟨_, Q.hG i⟩, ⟨_, Q.hE i⟩, ⟨_, Q.hE' i⟩, ⟨_, (Q.hZ i).1⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.homogeneous_span 𝒜 _ ?_` and prove the remaining obligations. Introduce and unpack `_ ((((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Use `exacts [⟨_, sq_mem_neg 𝒜 (Q.hF i)⟩, ⟨_, Q.hG i⟩, ⟨_, sq_mem_pos 𝒜 (Q.hE i)⟩, ⟨_, Q.hE' i⟩, ⟨_, (Q.hZ i).1⟩]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ((((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩)`.
-
-Conclude with `Ideal.pow_mem_of_mem Q.ideal (Ideal.subset_span (Or.inl (Or.inl (Or.inl (Or.inl ⟨i, rfl⟩))))) 2 (by norm_num)`. Conclude with `Ideal.subset_span (Or.inl (Or.inl (Or.inl (Or.inr ⟨i, rfl⟩))))`. Conclude with `Ideal.pow_mem_of_mem Q.ideal (Ideal.subset_span (Or.inl (Or.inl (Or.inr ⟨i, rfl⟩)))) 2 (by norm_num)`. Conclude with `Ideal.subset_span (Or.inl (Or.inr ⟨i, rfl⟩))`. Conclude with `Ideal.subset_span (Or.inr ⟨i, rfl⟩)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.hom_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

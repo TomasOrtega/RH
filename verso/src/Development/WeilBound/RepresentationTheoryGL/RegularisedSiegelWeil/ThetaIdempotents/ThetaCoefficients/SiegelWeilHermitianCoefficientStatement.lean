@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped TensorProduct ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SiegelND.Coef.coefN_finset_sum_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FRepresentationTheoryGL%2FRegularisedSiegelWeil%2FThetaIdempotents%2FThetaCoefficients%2FSiegelWeilHermitianCoefficient.lean&line=13#L13)
 -/

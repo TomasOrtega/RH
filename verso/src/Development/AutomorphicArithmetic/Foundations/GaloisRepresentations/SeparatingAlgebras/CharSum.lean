@@ -7,25 +7,25 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `N _`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Take `⟨ζ, hζ⟩ : ∃ ζ : ℂ, IsPrimitiveRoot ζ N` from `⟨_, Complex.isPrimitiveRoot_exp N hN⟩`. Establish `hz0 : ζ ≠ 0` using `hζ.ne_zero hN`. Set `u : ℂˣ` to `Units.mk0 ζ hz0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `huN : u ^ N = 1`. Use `ext`. Simplify using `[u, hζ.pow_eq_one]`. Establish `hu : ∀ j : ℕ, (u ^ j) ^ N = 1`. Introduce `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pow_mul, mul_comm, pow_mul, huN, one_pow]`. Set `χ : Fin N → (Multiplicative (ZMod N) →* ℂˣ)` to `fun j => GlobalTheory.CongSc.zchar (u ^ (j : ℕ)) (hu j)`. Establish `hval : ∀ (j : Fin N) (x : Multiplicative (ZMod N)), ((χ j x : ℂˣ) : ℂ) = (ζ ^ (j : ℕ)) ^ (Multiplicative.toAdd x).val`. Introduce `j x`. Simplify using `[χ, GlobalTheory.CongSc.zchar_apply, u]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hone : ∀ j : Fin N, j ≠ 0 → ((χ j (Multiplicative.ofAdd 1) : ℂˣ) : ℂ) = ζ ^ (j : ℕ)`. Introduce `j hj`. Rewrite using `[hval]`. Establish `hj' : (j : ℕ) ≠ 0` using `fun h => hj (Fin.ext h)`. Establish `h1 : 1 < N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[toAdd_ofAdd, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt h1, pow_one]`. Use `⟨(Finset.univ.erase 0).image χ, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[Finset.mem_image]`. Take `⟨j, hj, rfl⟩` from `hc`. Establish `hj0 : j ≠ 0` using `Finset.ne_of_mem_erase hj`. Introduce `h`. Establish `h2 : ζ ^ (j : ℕ) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hone j hj0, h]`. Simplify using the standard rewrite rules. Establish `hd` using `(hζ.pow_eq_one_iff_dvd (j : ℕ)).mp h2`. Conclude with `hj0 (Fin.ext (Nat.eq_zero_of_dvd_of_lt hd j.isLt))`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_image (by`. Introduce `j hj k hk hjk`. Establish `hj0 : j ≠ 0` using `Finset.ne_of_mem_erase hj`. Establish `hk0 : k ≠ 0` using `Finset.ne_of_mem_erase hk`. Establish `h3` using `hone j hj0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hjk, hone k hk0]`. Conclude with `(Fin.ext (hζ.pow_inj k.isLt j.isLt h3)).symm)]`. Repeatedly rewrite using `[hval]`. Establish `key` using `GlobalTheory.CongSc.sum_roots hζ (Multiplicative.toAdd x).val (ZMod.val_lt _)`. Rewrite `key` using `[← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (0 : Fin N))]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Simplify using `only [Fin.val_zero, pow_zero, one_pow] at key`. Use `split_ifs at key`. Conclude with `Or.inr key`. Conclude with `Or.inl key`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.charSum_pf :
     UpperTheory.Gal.Gen.CharSum := by

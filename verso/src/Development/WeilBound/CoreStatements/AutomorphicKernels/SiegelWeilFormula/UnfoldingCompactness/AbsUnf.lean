@@ -8,49 +8,41 @@ open scoped ENNReal
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
 /- English proof (translation)
-Establish `hactneg : ∀ q ν, act (act q ν) (-ν) = q` using `fun q ν => by rw [hact, add_neg_cancel, hact0]`. Establish `hactneg' : ∀ q ν, act (act q (-ν)) ν = q` using `fun q ν => by rw [hact, neg_add_cancel, hact0]`. Set `e : Λ → Q ≃ Q` to `fun ν => ⟨fun q => act q ν, fun q => act q (-ν), fun q => hactneg q ν, fun q => hactneg' q ν⟩`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ β, ‖χ₀ β‖ ≤ M := by`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hχc.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨M, fun β => ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `hcov β`. Use `hM _ hν` as an intermediate fact. Rewrite `this` using `[hχadd, hχΛ, mul_one]`. Then use the resulting hypothesis. Establish `hu0 : ∀ q, 0 ≤ u q` using `fun q => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨ν, hν⟩` from `hcov 0`. Conclude with `(norm_nonneg _).trans (hAu q _ hν)`. Use `set S : V → ℝ≥0∞ := fun β => ∑' q, ‖A q β‖ₑ with hS`. Establish `hSper : ∀ (ν : Λ) β, S (β + ν) = S β` using `fun ν β => by`. Simplify using `only [hS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hSC : ∀ β ∈ C, S β ≤ ENNReal.ofReal (∑' q, u q)` using `fun β hβ => by`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg hu0 hu]`. Conclude with `ENNReal.tsum_le_tsum fun q => by`. Rewrite using `[← ofReal_norm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hAu q β hβ)`. Establish `hS𝓖 : ∫⁻ β in 𝓖, S β ∂lam < ∞`. Use `(lintegral_fd_le h𝓖 S hSper hcov).trans_lt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hmeasA : ∀ q, Measurable fun β => ‖A q β‖ₑ` using `fun q => (hA q).measurable.enorm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsumA : ∑' q, ∫⁻ β in 𝓖, ‖A q β‖ₑ ∂lam < ∞`. Rewrite using `[← lintegral_tsum fun q => (hmeasA q).aemeasurable]`. Conclude with `hS𝓖`. Establish `hsumAχ : ∑' q, ∫⁻ β in 𝓖, ‖A q β * χ₀ β‖ₑ ∂lam < ∞`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[enorm_mul, mul_comm]`. Use `mul_le_mul' ?_ le_rfl` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hM β)`. Use `_ = ENNReal.ofReal M * ∑' q, ∫⁻ β in 𝓖, ‖A q β‖ₑ ∂lam := by`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[lintegral_const_mul _ (hmeasA _)]`. Conclude with `ENNReal.tsum_mul_left`. Use `_ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hsumA`. Use `set J : Q → ℂ := fun q => ∫ β in 𝓖, A q β * χ₀ β ∂lam with hJ`. Establish `hmeasAχ : ∀ q, AEStronglyMeasurable (fun β => A q β * χ₀ β) (lam.restrict 𝓖)` using `fun q => ((hA q).mul hχc).aestronglyMeasurable`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hLHS : ∫ β in 𝓖, (∑' q, A q β) * χ₀ β ∂lam = ∑' q, J q`. Repeatedly rewrite using `[← tsum_mul_right]`. Conclude with `integral_tsum hmeasAχ hsumAχ.ne`. Establish `hJs : Summable fun q => ‖J q‖`. Use `Summable.of_nonneg_of_le (fun q => norm_nonneg _) (fun q => ?_) (ENNReal.summable_toReal hsumAχ.ne)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_integral_le_lintegral_norm _).trans_eq ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `lintegral_congr fun β => ofReal_norm _`. Establish `hJsum : Summable J` using `hJs.of_norm`. Establish `hint : Integrable (A q₀) lam`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `⟨(hA q₀).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, h𝓖.lintegral_eq_tsum'']`. Use `lt_of_le_of_lt ?_ hsumA` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAact, AddSubgroup.vadd_def, vadd_eq_add, add_comm]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ ∑' q, ∫⁻ β in 𝓖, ‖A q β‖ₑ ∂lam := ENNReal.tsum_comp_le_tsum_of_injective hinj (fun q => ∫⁻ β in 𝓖, ‖A q β‖ₑ ∂lam)`. Establish `hintχ : Integrable (fun β => A q₀ β * χ₀ β) lam`. Use `Integrable.mono' (hint.norm.const_mul M) ((hA q₀).mul hχc).aestronglyMeasurable (Filter.Eventually.of_forall fun β => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hM β) (norm_nonneg _)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hint, hintχ, ?_⟩` and prove the remaining obligations. Rewrite using `[hLHS]`. Use `letI s : Setoid Q := { r := fun q q' => ∃ ν, act q ν = q' iseqv := ⟨fun q => ⟨0, hact0 q⟩, fun ⟨ν, h⟩ => ⟨-ν, by rw [← h, hactneg]⟩, fun ⟨ν, h⟩ ⟨ν', h'⟩ => ⟨ν + ν', by rw [← hact, h, h']⟩⟩ }`. Establish `hmem : ∀ q q' : Q, (⟦q⟧ : Quotient s) = ⟦q'⟧ → ∃ ν, act q' ν = q` using `fun q q' h => by`. Take `⟨ν, hν⟩` from `Quotient.exact h`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨-ν, by rw [← hν, hactneg]⟩`. Establish `hdecomp : ∑' q, J q = ∑' c : Quotient s, ∑' x : {q // (⟦q⟧ : Quotient s) = c}, J x`. Rewrite using `[← (Equiv.sigmaFiberEquiv (fun q : Q => (⟦q⟧ : Quotient s))).tsum_eq]`. Conclude with `Summable.tsum_sigma' (fun c => hJsum.comp_injective Subtype.val_injective) ((Equiv.sigmaFiberEquiv _).summable_iff.2 hJsum)`. Establish `hbig : ∑' x : {q // (⟦q⟧ : Quotient s) = ⟦q₀⟧}, J x = ∫ β, A q₀ β * χ₀ β ∂lam`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `eb : Λ ≃ {q // (⟦q⟧ : Quotient s) = ⟦q₀⟧}` to `Equiv.ofBijective (fun ν => ⟨act q₀ ν, Quotient.sound (s := s) ⟨-ν, hactneg q₀ ν⟩⟩) ⟨fun ν ν' h => hinj (congrArg Subtype.val h), fun x => by`. Take `⟨ν, hν⟩` from `hmem x q₀ x.2`. Conclude with `⟨ν, Subtype.ext hν⟩⟩`. Rewrite using `[← eb.tsum_eq, h𝓖.integral_eq_tsum'' _ hintχ]`. Use `tsum_congr fun ν => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫ β in 𝓖, A (act q₀ ν) β * χ₀ β ∂lam = _`. Use `congr 1`. Use function extensionality and compare the values at `β`. Rewrite using `[hAact, AddSubgroup.vadd_def, vadd_eq_add, add_comm (ν : V) β, hχadd β ν, hχΛ, mul_one]`. Establish `hsmall0 : ∀ c : Quotient s, c ≠ ⟦q₀⟧ → ∑' x : {q // (⟦q⟧ : Quotient s) = c}, J x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Establish `hq₁c : (⟦c.out⟧ : Quotient s) = c` using `Quotient.out_eq c`. Establish `hnot : ∀ ν, act q₀ ν ≠ c.out` using `fun ν h => hc (by`. Rewrite using `[← hq₁c, ← h]`. Conclude with `Quotient.sound (s := s) ⟨-ν, hactneg q₀ ν⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β₀, hβ₀, hinv⟩` from `hsmall c.out hnot`. Establish `hmemc : ∀ x : {q // (⟦q⟧ : Quotient s) = c}, ∃ ν, act c.out ν = x` using `fun x => hmem x c.out (x.2.trans hq₁c.symm)`. Use `set H : V → ℂ := fun β => ∑' x : {q // (⟦q⟧ : Quotient s) = c}, A x β with hH`. Establish `hfib : ∑' x : {q // (⟦q⟧ : Quotient s) = c}, J x = ∫ β in 𝓖, H β * χ₀ β ∂lam`. Simplify using `only [hH, hJ]`.
-
-Repeatedly rewrite using `[← tsum_mul_right]`. Use `(integral_tsum (f := fun (x : {q // (⟦q⟧ : Quotient s) = c}) β => A x β * χ₀ β) (fun x => hmeasAχ x.1) ?_).symm` and prove the remaining obligations. Conclude with `ne_top_of_le_ne_top hsumAχ.ne (ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun q => ∫⁻ β in 𝓖, ‖A q β * χ₀ β‖ₑ ∂lam))`. Rewrite using `[hfib]`. Use `setIntegral_fd_eq_zero h𝓖 (fun β => H β * χ₀ β) (fun ν β => ?_) β₀ (χ₀ β₀) hβ₀ (fun β => ?_)` and prove the remaining obligations.
-
-Establish `hper : H (β + ν) = H β`. Set `ec : {q // (⟦q⟧ : Quotient s) = c} ≃ {q // (⟦q⟧ : Quotient s) = c}` to `⟨fun x => ⟨act x ν, (Quotient.sound (s := s) ⟨-ν, hactneg x ν⟩).trans x.2⟩, fun x => ⟨act x (-ν), (Quotient.sound (s := s) ⟨ν, hactneg' x ν⟩).trans x.2⟩, fun x => Subtype.ext (hactneg x ν), fun x => Subtype.ext (hactneg' x ν)⟩`. Simplify using `only [hH]`. Rewrite using `[← ec.tsum_eq (fun x => A x β)]`. Conclude with `tsum_congr fun x => (hAact x ν β).symm`.
-
-Use `show H (β + ν) * χ₀ (β + ν) = H β * χ₀ β`. Rewrite using `[hper, hχadd, hχΛ, mul_one]`. Establish `htr : H (β + β₀) = H β` using `tsum_congr fun x => by`. Take `⟨ν, hν⟩` from `hmemc x`. Rewrite using `[← hν]`.
-
-Conclude with `hinv ν β`. Use `show H (β + β₀) * χ₀ (β + β₀) = χ₀ β₀ * (H β * χ₀ β)`. Rewrite using `[htr, hχadd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdecomp, tsum_eq_single (⟦q₀⟧ : Quotient s) hsmall0, hbig]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_unfold {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] (lam : Measure V) [lam.IsAddHaarMeasure] (Λ : AddSubgroup V) [Countable Λ]

@@ -15,9 +15,9 @@ section Mat
 variable {A : Type} [CommRing A] (s : A →+* A)
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_mul_right {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a → Fin M → A)
     (C : Matrix (Fin a) (Fin a) A) (i j : Fin a) :
@@ -33,9 +33,9 @@ theorem hform_mul_right {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a �
   ring
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_mul_left {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a → Fin M → A)
     (C : Matrix (Fin a) (Fin a) A) (i j : Fin a) :
@@ -51,13 +51,13 @@ theorem hform_mul_left {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a �
   ring
 
 /- English proof (translation)
-Establish `hSm : (Smᵀ).map s = Sm`. Use extensionality with `i k`. Simplify using `[Matrix.map_apply, Matrix.transpose_apply, hS]`. Establish `h2 : ((h • (Tinv * Sm))ᵀ).map s = h • (Sm * (Tinv.map s)ᵀ)`. Use extensionality with `i k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, hS, hsh, map_sum]`. Establish `e1 : Tm * (Tinv * Sm) = Sm` using `by rw [← Matrix.mul_assoc, hTT, Matrix.one_mul]`. Establish `e2 : Sm * ((Tinv.map s)ᵀ * Tm) = Sm` using `by rw [hTs, Matrix.mul_one]`. Establish `key : ∀ X Y Z : Matrix (Fin a) (Fin a) A, h • (Z + πA • X) + (h • Z + πA • h • Y) = (h + h) • Z + πA • h • (X + Y)`. Introduce `X Y Z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [smul_add, add_smul]`. Rewrite using `[smul_comm h πA X]`. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.transpose_transpose, h2, hΓ]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, key, hh, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pol_solve {a : ℕ} (h πA : A) (hh : h + h = 1) (hsh : s h = h)
     (Γ Tm Tinv Sm E0 : Matrix (Fin a) (Fin a) A) (hΓ : Γ = Tm + πA • E0)
@@ -96,7 +96,7 @@ def intA (z : Fv F v ⊗[F] E) : Prop :=
 variable {b v}
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hz k) (hw k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intA_add {z w : Fv F v ⊗[F] E} (hz : intA b v z) (hw : intA b v w) : intA b v (z + w) := by
   intro k
@@ -104,7 +104,7 @@ theorem intA_add {z w : Fv F v ⊗[F] E} (hz : intA b v z) (hw : intA b v w) : i
   exact add_mem (hz k) (hw k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Conclude with `sum_mem fun i hi => hf i hi k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intA_sum {ι : Type} (t : Finset ι) (f : ι → Fv F v ⊗[F] E) (hf : ∀ i ∈ t, intA b v (f i)) :
     intA b v (∑ i ∈ t, f i) := by
@@ -114,7 +114,7 @@ theorem intA_sum {ι : Type} (t : Finset ι) (f : ι → Fv F v ⊗[F] E) (hf : 
   exact sum_mem fun i hi => hf i hi k
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hc (hz k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intA_smul {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {z : Fv F v ⊗[F] E}
     (hz : intA b v z) : intA b v (c • z) := by
@@ -123,7 +123,7 @@ theorem intA_smul {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {z : Fv F
   exact mul_mem hc (hz k)
 
 /- English proof (translation)
-Introduce `k`. Establish `he : inclR (Fv F v) e = (1 : Fv F v) ⊗ₜ[F] e` using `rfl`. Rewrite using `[he, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `using h k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intA_incl (e : E) (h : ∀ m, algebraMap F (Fv F v) (b.repr e m) ∈ v.adicCompletionIntegers F) :
     intA b v (inclR (Fv F v) e) := by
@@ -138,9 +138,9 @@ Both sides reduce to the same expression.
 theorem incl_eq_tmul (e : E) : inclR (Fv F v) e = (1 : Fv F v) ⊗ₜ[F] e := rfl
 
 /- English proof (translation)
-Establish `hB : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b) k = inclR (Fv F v) (b k)` using `fun k => by`. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr z, ← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr w, Finset.sum_mul_sum]`. Use `intA_sum _ _ fun k _ => intA_sum _ _ fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm, hB, hB, ← map_mul]`. Conclude with `intA_smul (mul_mem (hz k) (hw l)) (intA_incl _ (hg k l))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intA_mul (hg : ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈
       v.adicCompletionIntegers F)
@@ -156,7 +156,7 @@ theorem intA_mul (hg : ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) �
   exact intA_smul (mul_mem (hz k) (hw l)) (intA_incl _ (hg k l))
 
 /- English proof (translation)
-Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl (σ : E →ₐ[F] E) (e : E) :
     sigR (Fv F v) σ (inclR (Fv F v) e) = inclR (Fv F v) (σ e) := by
@@ -164,7 +164,7 @@ theorem sigR_incl (σ : E →ₐ[F] E) (e : E) :
   simp [sigR, inclR, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [sigR, TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (z : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • z) = c • sigR (Fv F v) σ z := by
@@ -175,7 +175,7 @@ theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (z : Fv F v ⊗[F] E) :
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Rewrite using `[← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr z, map_sum]`. Use `intA_sum _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sigR_smul, Algebra.TensorProduct.basis_apply, ← incl_eq_tmul, sigR_incl]`. Conclude with `intA_smul (hz k) (intA_incl _ (hg k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intA_sig (σ : E →ₐ[F] E)
     (hg : ∀ k m, algebraMap F (Fv F v) (b.repr (σ (b k)) m) ∈ v.adicCompletionIntegers F)
@@ -187,9 +187,9 @@ theorem intA_sig (σ : E →ₐ[F] E)
   exact intA_smul (hz k) (intA_incl _ (hg k))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (algebraMap F (FiniteAdeleRing (𝓞 F) F) x).2`. Consider the case `(rw [Filter.eventually_cofinite]`. Use `(HeightOneSpectrum.Support.finite (𝓞 F) x).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, HeightOneSpectrum.mem_adicCompletionIntegers, not_le] at hv`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv)` using `[HeightOneSpectrum.Support, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+A detailed English derivation is pending.
 -/
 theorem aaInt (x : F) : ∀ᶠ v in cofinite,
     algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
@@ -210,7 +210,7 @@ def GoodV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : 
   (∀ i j m, algebraMap F (Fv F v) (b.repr (Tinv i j) m) ∈ v.adicCompletionIntegers F)
 
 /- English proof (translation)
-Simplify using `only [GoodV, Filter.eventually_and, Filter.eventually_all]`. Conclude with `⟨fun k l m => aaInt _, fun k m => aaInt _, fun i j m => aaInt _, fun m => aaInt _, fun i j m => aaInt _⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem goodV_aa (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) {M a : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (Tinv : Matrix (Fin a) (Fin a) E) :
@@ -223,7 +223,7 @@ theorem goodV_aa (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) {M a : ℕ}
 end Int
 
 /- English proof (translation)
-Simplify using `only [smulSub, AddSubgroup.map_map]`. Use `congr 1`. Use extensionality with `w`. Simplify using `[hDs]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smulSub' {K V X : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup X]
     [Module K X] (D : V →+ X) (hDs : ∀ (t : K) w, D (t • w) = t • D w) (t : K)
@@ -235,67 +235,55 @@ theorem map_smulSub' {K V X : Type} [Field K] [AddCommGroup V] [Module K V] [Add
   simp [hDs]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a ha1 ha2 X0 hT hdet d b`. Establish `: FiniteDimensional F E` using `Module.Finite.of_basis b`. Establish `hσ` using `sigma_invol σ hCM.2.2.2`. Use `set TE := gramE σ J X0 with hTE`. Establish `hu : IsUnit TE.det` using `isUnit_iff_ne_zero.2 hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [goodV_aa b σ J TE⁻¹] with v hg`. Take `⟨g1, g2, g3, g4, g5⟩` from `hg`. Introduce `y hy hyT`. Use `locallyCompact_Fv F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: T2Space (Fv F v ⊗[F] E)`. Take `⟨ι, _, ⟨h⟩⟩` from `PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Fv F v)`. Conclude with `h.isEmbedding.t2Space`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hπ0, hπ, hπO⟩` from `unifV_spec v`. Use `set π := unifV v with hπdef`. Use `set s := sigR (Fv F v) σ with hsdef`. Use `set L := latSub b v a M with hLdef`. Establish `hLc : IsCompact (L : Set (Fin a → Fin M → Fv F v ⊗[F] E))` using `PositiveNearLattice.isCompact_latV b v a M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hπL : ∀ w ∈ L, π • w ∈ L` using `fun w hw => LatFactsW.smul_mem_latSub b v hπO hw`. Establish `hyL : ∀ i l, intA b v (y i l)` using `fun i l => hy i l`. Set `D : (Fin a → Fin M → Fv F v ⊗[F] E) →+ HermR (Fv F v) σ a` to `{ toFun := fun W => ⟨gramB (Fv F v) σ J y W, gramB_mem (Fv F v) σ hσ J hJ.1 y W⟩ map_zero' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[gramB, hR, Formalism.UG.hform]`. Use the proof step `map_add' := fun W W' => Subtype.ext (gramB_add_right (Fv F v) σ J y W W') }`. Establish `hDv : ∀ W, (D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = gramB (Fv F v) σ J y W` using `fun _ => rfl`. Establish `hDc : Continuous D` using `((continuous_gramB (Fv F v) σ J).comp (Continuous.prodMk continuous_const continuous_id)).subtype_mk _`. Establish `hDs : ∀ (t : Fv F v) W, D (t • W) = t • D W`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t W`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show gramB (Fv F v) σ J y (t • W) i j = t • gramB (Fv F v) σ J y W i j`. Simplify using `only [gramB, Pi.smul_apply, hR_smul_left, hR_smul_right, smul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJi : ∀ i j, intA b v (JR (Fv F v) J i j)` using `fun i j => intA_incl _ (g3 i j)`. Establish `hmul : ∀ {z w : Fv F v ⊗[F] E}, intA b v z → intA b v w → intA b v (z * w)` using `fun hz hw => intA_mul g1 hz hw`. Establish `hsig : ∀ {z : Fv F v ⊗[F] E}, intA b v z → intA b v (s z)` using `fun hz => intA_sig σ g2 hz`. Establish `hRi : ∀ x z : Fin M → Fv F v ⊗[F] E, (∀ l, intA b v (x l)) → (∀ l, intA b v (z l)) → intA b v (hR (Fv F v) σ J x z)`. Introduce `x z hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : hR (Fv F v) σ J x z = ∑ i, ∑ j, s (x i) * JR (Fv F v) J i j * z j` using `rfl`. Rewrite using `[e]`. Conclude with `intA_sum _ _ fun i _ => intA_sum _ _ fun j _ => hmul (hmul (hsig (hx i)) (hJi i j)) (hz j)`. Establish `hgB : ∀ u w, u ∈ L → w ∈ L → (⟨gramB (Fv F v) σ J u w, gramB_mem (Fv F v) σ hσ J hJ.1 u w⟩ : HermR (Fv F v) σ a) ∈ hermO b v σ a`. Introduce `u w hu' hw' i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `intA_add (hRi _ _ (hu' i) (hw' j)) (hRi _ _ (hw' i) (hu' j))`. Establish `hgR : ∀ w, w ∈ L → gramH (Fv F v) σ hσ J hJ.1 w ∈ hermO b v σ a`. Introduce `w hw' i j`. Conclude with `hRi _ _ (hw' i) (hw' j)`. Establish `hOsm : ∀ {c : Fv F v}, c ∈ v.adicCompletionIntegers F → ∀ S ∈ hermO b v σ a, c • S ∈ hermO b v σ a`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `c hc S hS i j`. Conclude with `intA_smul hc (hS i j)`. Use `set Tm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := TE.map (inclR (Fv F v)) with hTm`. Use `set Ti : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := TE⁻¹.map (inclR (Fv F v)) with hTi`. Establish `hTT : Tm * Ti = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTh : (TE.map (σ : E →+* E))ᵀ = TE`. Use extensionality with `i j`. Conclude with `hT i j`. Establish `hE1 : (TE⁻¹.map (σ : E →+* E))ᵀ * TE = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hTs : (Ti.map s)ᵀ * Tm = 1`. Establish `e : (Ti.map s)ᵀ = ((TE⁻¹.map (σ : E →+* E))ᵀ).map (inclR (Fv F v))`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hTi, hsdef, sigR_incl]`. Rewrite using `[e, hTm, ← Matrix.map_mul, hE1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTii : ∀ i j, intA b v (Ti i j)` using `fun i j => intA_incl _ (g5 i j)`. Use `set h : Fv F v ⊗[F] E := inclR (Fv F v) (1 / 2 : E) with hhdef`. Establish `hh : h + h = 1` using `by rw [hhdef, ← map_add, add_halves, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsh : s h = h`. Rewrite using `[hsdef, hhdef, sigR_incl]`. Use `congr 1`. Rewrite using `[map_div₀, map_one, map_ofNat]`. Establish `hhi : intA b v h` using `intA_incl _ g4`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hyT' : gramH (Fv F v) σ hσ J hJ.1 y - hermOf (Fv F v) σ TE hT ∈ smulSub π (hermO b v σ a)`. Use `hyT` as an intermediate fact. Simplify using `only [hF, zero_add, pow_one] at this`. Conclude with `this`. Take `⟨E0h, hE0, hE0eq⟩` from `(mem_smulSub _ _ _).1 hyT'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set πA : Fv F v ⊗[F] E := algebraMap (Fv F v) (Fv F v ⊗[F] E) π with hπA`. Establish `hΓ : gramR (Fv F v) σ J y = Tm + πA • (E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))`. Establish `e` using `congrArg Subtype.val hE0eq`. Establish `e2 : π • (E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = gramR (Fv F v) σ J y - Tm` using `e`. Rewrite using `[hπA, algebraMap_smul, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Establish `hbase : ∀ S ∈ hermO b v σ a, ∃ l ∈ L, S - D l ∈ smulSub π (hermO b v σ a)`. Introduce `S hS`. Use `set Sm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := S.1 with hSm`. Establish `hSh : ∀ i k, s (Sm k i) = Sm i k` using `fun i k => S.2 i k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set C : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := (h • (Ti * Sm))ᵀ with hC`. Use `set W : Fin a → Fin M → Fv F v ⊗[F] E := fun j l => ∑ k, C j k * y k l with hW`. Establish `hCi : ∀ j k, intA b v (C j k)`. Introduce `j k`. Simplify using `only [hC, Matrix.transpose_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul hhi (intA_sum _ _ fun m _ => hmul (hTii k m) (hS m j))`. Establish `hWL : W ∈ L` using `fun j l => intA_sum _ _ fun k _ => hmul (hCi j k) (hyL k l)`. Establish `hgW : gramB (Fv F v) σ J y W = gramR (Fv F v) σ J y * Cᵀ + C.map s * gramR (Fv F v) σ J y`. Use extensionality with `i j`. Simplify using `only [gramB, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show hR (Fv F v) σ J (y i) (W j) = ∑ k, hR (Fv F v) σ J (y i) (y k) * C j k from hform_mul_right s (JR (Fv F v) J) y C i j, show hR (Fv F v) σ J (W i) (y j) = ∑ k, s (C i k) * hR (Fv F v) σ J (y k) (y j) from hform_mul_left s (JR (Fv F v) J) y C i j]`. Both sides reduce to the same expression. Establish `hsol` using `pol_solve s h πA hh hsh (gramR (Fv F v) σ J y) Tm Ti Sm E0h hΓ hTT hTs hSh`. Use `set R : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := h • ((E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) * Ti * Sm + Sm * (Ti.map s)ᵀ * E0h) with hRdef`. Establish `hRi' : ∀ i j, intA b v (R i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Simplify using `only [hRdef, Matrix.smul_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, smul_eq_mul]`. Use `hmul hhi (intA_add (intA_sum _ _ fun k _ => hmul (intA_sum _ _ fun m _ => hmul (hE0 i m) (hTii m k)) (hS k j)) (intA_sum _ _ fun k _ => hmul (intA_sum _ _ fun m _ => hmul (hS i m) (hsig (hTii k m))) (hE0 k j)))` and prove the remaining obligations. Establish `hsol' : gramR (Fv F v) σ J y * Cᵀ + C.map s * gramR (Fv F v) σ J y = Sm + πA • R` using `hsol`. Establish `hDW : (D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = Sm + π • R`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hDv, hgW, hsol', hπA, algebraMap_smul]`. Use `set Rh : HermR (Fv F v) σ a := π⁻¹ • (D W - S) with hRh`. Establish `hRhv : (Rh : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = R` using `by show π⁻¹ • ((D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) - Sm) = R`. Rewrite using `[hDW, add_sub_cancel_left, inv_smul_smul₀ hπ0]`. Establish `hRhO : Rh ∈ hermO b v σ a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Use `show intA b v ((Rh : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j)`. Rewrite using `[hRhv]`. Conclude with `hRi' i j`. Use `⟨W, hWL, (mem_smulSub _ _ _).2 ⟨-Rh, (hermO b v σ a).neg_mem hRhO, ?_⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[hRh, smul_neg, smul_inv_smul₀ hπ0, neg_sub]`. Establish `hreach` using `reach_of_approx π hπ L hLc hπL D hDc hDs (hermO b v σ a) (LatFactsW.isCompact_hermO b v σ a) hbase`. Establish `hDL : L.map D = hermO b v σ a`. Use `le_antisymm ?_ fun p hp => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`.
-
-Conclude with `hgB y W hy hW`. Take `⟨l, hl, e⟩` from `hreach p hp`. Conclude with `AddSubgroup.mem_map.2 ⟨l, hl, e⟩`. Use `⟨D, fun n => ?_, fun n Z hZ W hW => ?_⟩` and prove the remaining obligations. Rewrite using `[lamF, hF, map_smulSub' D hDs, hDL]`.
-
-Take `⟨z, hz, rfl⟩` from `(mem_smulSub _ _ _).1 hZ`. Take `⟨w, hw, rfl⟩` from `(mem_smulSub _ _ _).1 hW`. Rewrite using `[hF, mem_smulSub]`. Establish `hB : (⟨gramB (Fv F v) σ J z w, gramB_mem (Fv F v) σ hσ J hJ.1 z w⟩ : HermR (Fv F v) σ a) ∈ hermO b v σ a` using `hgB z w hz hw`. Establish `hG : π ^ n • gramH (Fv F v) σ hσ J hJ.1 w ∈ hermO b v σ a` using `hOsm (pow_mem hπO n) _ (hgR w hw)`.
-
-Use `⟨_, (hermO b v σ a).add_mem hB hG, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show π ^ (n + 1 + 1) • (gramB (Fv F v) σ J z w + π ^ n • gramR (Fv F v) σ J w) = gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z + unifV v ^ (n + 1) • w) - gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z) - gramB (Fv F v) σ J y (unifV v ^ (n + 1) • w)`. Establish `e2 : gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z + unifV v ^ (n + 1) • w) - gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z) - gramB (Fv F v) σ J y (unifV v ^ (n + 1) • w) = gramB (Fv F v) σ J (unifV v ^ (0 + 1) • z) (unifV v ^ (n + 1) • w) + gramR (Fv F v) σ J (unifV v ^ (n + 1) …`. Use extensionality with `i j`.
-
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, gramB, gramR, Pi.add_apply, hR_add_left, hR_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `gBs : ∀ (t t' : Fv F v) (u u' : Fin a → Fin M → Fv F v ⊗[F] E), gramB (Fv F v) σ J (t • u) (t' • u') = (t * t') • gramB (Fv F v) σ J u u'`. Introduce `t t' u u'`. Use extensionality with `i j`.
-
-Simplify using `only [gramB, Pi.smul_apply, hR_smul_left, hR_smul_right, Matrix.smul_apply]`. Use `module`. Establish `gRs : ∀ (t : Fv F v) (u : Fin a → Fin M → Fv F v ⊗[F] E), gramR (Fv F v) σ J (t • u) = (t * t) • gramR (Fv F v) σ J u`. Introduce `t u`. Use extensionality with `i j`.
-
-Simplify using `only [gramR, Pi.smul_apply, hR_smul_left, hR_smul_right, Matrix.smul_apply]`. Use `module`. Rewrite using `[e2, gBs, gRs, ← hπdef]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hensAA_holds : HensAA := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a ha1 ha2 X0 hT hdet d b

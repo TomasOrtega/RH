@@ -19,7 +19,7 @@ def ProperOrb : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (
         ∀ b ∈ N, ∀ g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, g • rmulT X b (Y0 X u') ∈ K → g ∈ C
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)).mulVec (y a)`. Conclude with `(MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_smul_left {D : D7} (X : HidaSetting D) (y : TupI X) :
     Continuous (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => g • y) := by
@@ -31,7 +31,7 @@ theorem continuous_smul_left {D : D7} (X : HidaSetting D) (y : TupI X) :
   exact (MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec continuous_const
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Use `continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [rmulT]`. Conclude with `continuous_finsetSum _ fun c _ => (continuous_apply_apply c b).mul continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_rmulT {D : D7} (X : HidaSetting D) (Y : TupI X) : Continuous (fun b : MfI X => rmulT X b Y) := by
   have : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -40,23 +40,21 @@ theorem continuous_rmulT {D : D7} (X : HidaSetting D) (Y : TupI X) : Continuous 
   exact continuous_finsetSum _ fun c _ => (continuous_apply_apply c b).mul continuous_const
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hH a ha1 hac`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Establish `: X.measG.μGinf.IsHaarMeasure` using `X.measG_norm.2.1`. Establish `: BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (MfI X)` using `inferInstanceAs (SecondCountableTopology (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (HmI X)` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Establish `hY0` using `hY X u' ψ hT μinf νinf fibInf hH`. Take `⟨V, hVo, hYV, hVc, -⟩` from `exists_open_between_and_isCompact_closure isCompact_singleton (isOpen_IndI X) (Set.singleton_subset_iff.2 hY0)`. Take `⟨f, hf1, hf0, hfc, hfI⟩` from `exists_continuous_one_zero_of_isCompact isCompact_singleton hVo.isClosed_compl (Set.disjoint_compl_right_iff_subset.2 hYV)`. Establish `hsupp : Function.support f ⊆ V` using `fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hy (hf0 h)`. Establish `htsupp : tsupport f ⊆ IndI X` using `(closure_mono hsupp).trans hVc`. Establish `hfY : f (Y0 X u') = 1` using `hf1 (Set.mem_singleton _)`. Take `⟨N, hN, C, hC, hNC⟩` from `hPr X u' ψ hT μinf νinf fibInf hH (tsupport f) hfc.isCompact htsupp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbound : ∀ b ∈ N, ∀ g, ENNReal.ofReal (f (g • rmulT X b (Y0 X u'))) ≤ C.indicator 1 g`. Introduce `b hb g`. Distinguish the cases in `hg : f (g • rmulT X b (Y0 X u')) = 0`. Rewrite using `[hg, ENNReal.ofReal_zero]`. Conclude with `bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgC : g ∈ C` using `hNC b hb g (subset_tsupport _ hg)`. Rewrite using `[Set.indicator_of_mem hgC, Pi.one_apply]`. Conclude with `ENNReal.ofReal_le_one.2 (hfI _).2`. Establish `h1N : (1 : MfI X) ∈ N` using `mem_of_mem_nhds hN`. Establish `hCfin : ∫⁻ g, C.indicator 1 g ∂X.measG.μGinf < ⊤` using `lt_of_le_of_lt (lintegral_indicator_one_le C) hC.measure_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, f.continuous, f.continuous.measurable, hfc, htsupp, fun y => (hfI y).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : Measurable fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => ENNReal.ofReal (f (g • Y0 X u'))` using `ENNReal.measurable_ofReal.comp (f.continuous.comp (continuous_smul_left X (Y0 X u'))).measurable`. Rewrite using `[lintegral_pos_iff_support hm]`. Establish `hOo : IsOpen ((fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => g • Y0 X u') ⁻¹' {y | 0 < f y})` using `(isOpen_lt continuous_const f.continuous).preimage (continuous_smul_left X (Y0 X u'))`. Establish `h1O : (1 : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => g • Y0 X u') ⁻¹' {y | 0 < f y}` using `by show 0 < f ((1 : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) • Y0 X u')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_smul, hfY]`. Conclude with `one_pos`. Use `lt_of_lt_of_le (hOo.measure_pos _ ⟨1, h1O⟩) (measure_mono fun g hg => ?_)` and prove the remaining obligations. Conclude with `(ENNReal.ofReal_pos.2 hg).ne'`. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) hCfin` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hbound 1 h1N g` as an intermediate fact. Rewrite `this` using `[rmulT_one]`. Then use the resulting hypothesis. Establish `hev : ∀ᶠ T in 𝓝 (TI X u' hT), a T ∈ N` using `hac.preimage_mem_nhds (by rw [ha1]; exact hN)`. Use `tendsto_lintegral_filter_of_dominated_convergence (C.indicator 1) ?_ ?_ hCfin.ne ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun T => ENNReal.measurable_ofReal.comp (f.continuous.comp (continuous_smul_left X _)).measurable`.
-
-Conclude with `hev.mono fun T hT' => Eventually.of_forall fun g => hbound _ hT' g`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Conclude with `(ENNReal.continuous_ofReal.comp (f.continuous.comp ((continuous_smul_tupI X g).comp (continuous_rmulT X (Y0 X u'))))).continuousAt.comp hac`.
+A detailed English derivation is pending.
 -/
 theorem pushCont_of (hY : FrameIndependentAtInfinity) (hPr : ProperOrb) : PushCont := by
   intro D X u' ψ hT μinf νinf fibInf hH a ha1 hac
@@ -112,7 +110,7 @@ theorem pushCont_of (hY : FrameIndependentAtInfinity) (hPr : ProperOrb) : PushCo
         (continuous_rmulT X (Y0 X u'))))).continuousAt.comp hac
 
 /- English proof (translation)
-The claim follows from `constTest_of_polar hP (pushCont_of hY hPr)`.
+A detailed English derivation is pending.
 -/
 theorem constTest_of_polar_proper (hP : PolarLoc) (hY : FrameIndependentAtInfinity) (hPr : ProperOrb) : ConstTest :=
   constTest_of_polar hP (pushCont_of hY hPr)

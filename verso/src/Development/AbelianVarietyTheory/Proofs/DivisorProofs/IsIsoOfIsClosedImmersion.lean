@@ -13,11 +13,11 @@ namespace GlobalTheory.AbMonoIso
 open GlobalTheory.NearFibreIso
 
 /- English proof (translation)
-Establish `H₁` using `IsPullback.of_hasPullback f (pullback.fst s (spMap (algebraMap R K)))`. Establish `H₂` using `IsPullback.of_hasPullback s (spMap (algebraMap R K))`. Establish `H` using `H₁.paste_vert H₂`. Establish `h₁ : SmoothOfRelativeDimension g' (pullback.snd s (spMap (algebraMap R K)))` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback H₂ hg'`. Establish `h₂ : SmoothOfRelativeDimension g (pullback.snd f (pullback.fst s (spMap (algebraMap R K))) ≫ pullback.snd s (spMap (algebraMap R K)))` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback H hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective (pullback.snd f (pullback.fst s (spMap (algebraMap R K))) ≫ pullback.snd s (spMap (algebraMap R K)))` using `MorphismProperty.of_isPullback H ‹_›`. Establish `: Smooth s` using `hg'.smooth`. Establish `: AlgebraicGeometry.IsIntegral (Limits.pullback s (spMap (algebraMap R K)))` using `GlobalTheory.isIntegral_of_isPullback_of_smooth H₂`. Establish `: Smooth (pullback.snd f (pullback.fst s (spMap (algebraMap R K))) ≫ pullback.snd s (spMap (algebraMap R K)))` using `h₂.smooth`. Establish `: AlgebraicGeometry.IsReduced (Limits.pullback f (pullback.fst s (spMap (algebraMap R K))))` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd f (pullback.fst s (spMap (algebraMap R K))) ≫ pullback.snd s (spMap (algebraMap R K)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty ↥(Limits.pullback (C` using `Scheme.{0}) f (pullback.fst s (spMap (algebraMap R K)))) := by`. Take `⟨z, -⟩` from `(pullback.snd f (pullback.fst s (spMap (algebraMap R K))) ≫ pullback.snd s (spMap (algebraMap R K))).surjective (default : PrimeSpectrum K)`. Conclude with `⟨z⟩`. Conclude with `GlobalTheory.DivisiblePart.isIso_of_dim_le _ _ h₁ h₂ hle`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibre_isIso {R : Type} [CommRing R] {X Y : Scheme.{0}} (s : X ⟶ Sp R) (f : Y ⟶ X)
     [IsClosedImmersion f] [GeometricallyConnected s] [Surjective (f ≫ s)] {g g' : ℕ}
@@ -54,19 +54,17 @@ namespace GlobalTheory.AbMonoIso
 open GlobalTheory.NearFibreIso
 
 /- English proof (translation)
-Establish `: Smooth p` using `hg'.smooth`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `hn : ∀ y : X, Near f (MorphismProperty.isomorphisms _) y`. Introduce `y`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p y)) isOpen_univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `replace hU : IsAffineOpen U := hU`. Set `j : Sp Γ(S, U) ⟶ S` to `hU.fromSpec`. Take `⟨z, hz⟩ : p y ∈ Set.range j` from `by rw [hU.range_fromSpec]; exact hyU`. Set `gX` to `pullback.fst p j`. Set `s` to `pullback.snd p j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f'` to `pullback.snd f gX`. Establish `HX` using `IsPullback.of_hasPullback p j`. Establish `HY` using `IsPullback.of_hasPullback f gX`. Establish `HYS` using `HY.paste_vert HX`. Take `⟨y', hy', hy's⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := j) y z hz.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian (Limits.pullback p j)` using `isLocallyNoetherian_of_isOpenImmersion gX`. Establish `: Flat (f' ≫ s)` using `MorphismProperty.of_isPullback HYS ‹_›`. Establish `: Surjective (f' ≫ s)` using `MorphismProperty.of_isPullback HYS ‹_›`. Establish `h₁ : SmoothOfRelativeDimension g' s` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback HX hg'`. Establish `h₂ : SmoothOfRelativeDimension g (f' ≫ s)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback HYS hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper f'` using `MorphismProperty.of_isPullback HY (inferInstanceAs (IsProper f))`. Establish `: (s y').asIdeal.IsPrime` using `(s y').isPrime`. Use `fibre_isIso s f' h₁ h₂ hle (s y').asIdeal.ResidueField` as an intermediate fact. Establish `h` using `near_isIso_of_isProper s f' (s y').asIdeal.ResidueField y' (Ideal.ker_algebraMap_residueField (s y').asIdeal)`. Establish `h'` using `Near.of_pullback f HY.flip h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h'` using `[hy']`. Then use the resulting hypothesis. Establish `h` using `isIso_of_near f (𝟙 _) (fun y => by simpa using hn y)`. Establish `e : f = inv (pullback.fst f (𝟙 X)) ≫ pullback.snd f (𝟙 X)`. Rewrite using `[IsIso.eq_inv_comp, pullback.condition, Category.comp_id]`. Rewrite using `[e]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_isClosedImmersion {S X Y : Scheme.{0}} [IsLocallyNoetherian S] (p : X ⟶ S)
     (f : Y ⟶ X) [IsClosedImmersion f] [GeometricallyConnected p] [Surjective (f ≫ p)]
@@ -109,13 +107,13 @@ theorem isIso_of_isClosedImmersion {S X Y : Scheme.{0}} [IsLocallyNoetherian S] 
   infer_instance
 
 /- English proof (translation)
-Introduce `S _ B B' _ _ hB hB' g g' hg hg' hle x _ _`. Use `hB.proper` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hB'.proper` as an intermediate fact. Use `hB'.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono x.left` using `inferInstanceAs (Mono ((Over.forget S).map x))`. Establish `: IsProper (x.left ≫ B'.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper x.left` using `IsProper.of_comp x.left B'.hom`. Establish `: IsClosedImmersion x.left` using `(IsClosedImmersion.iff_isProper_and_mono _).2 ⟨‹_›, ‹_›⟩`. Establish `hs : Surjective B.hom` using `⟨fun t => ⟨(η[B] : 𝟙_ (Over S) ⟶ B).left t, by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Use the proof step `rfl⟩⟩`. Establish `: Surjective (x.left ≫ B'.hom)` using `by rw [Over.w]; exact hs`. Establish `: Flat (x.left ≫ B'.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsIso x.left` using `isIso_of_isClosedImmersion B'.hom x.left hg' (by rw [Over.w]; exact hg) hle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso ((Over.forget _).map x)` using `‹_›`. Conclude with `isIso_of_reflects_iso x (Over.forget _)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_mono : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (B B' : Over S) [GrpObj B] [GrpObj B'], IsAbelianScheme B → IsAbelianScheme B' → ∀ g g' : ℕ, SmoothOfRelativeDimension g B.hom → SmoothOfRelativeDimension g' B'.hom → g' ≤ g → ∀ x : B ⟶ B', IsMonHom x → Mono x → IsIso x := by
   intro S _ B B' _ _ hB hB' g g' hg hg' hle x _ _

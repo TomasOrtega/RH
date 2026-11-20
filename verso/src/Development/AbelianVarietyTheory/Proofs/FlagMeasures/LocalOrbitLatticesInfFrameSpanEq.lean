@@ -15,11 +15,11 @@ namespace GlobalTheory.FrameSpanLat
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx.2`. Consider the case `one => exact fun _ => ⟨rfl, rfl⟩`. Consider the case `mul x y _ _ hx hy`. Introduce `b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `x (y _) = _ ∧ x (y _) = _`. Rewrite using `[(hy b).1, (hy b).2]`. Conclude with `hx b`. Consider the case `inv x _ hx`. Introduce `b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, (hx b).1]`. Express the relevant statement in the definitionally equal form `x.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, (hx b).2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localComplementUnitary_fixes_both_frames {Z : LocDat D} {p : PlF D} (P : LocNG.FPair (locH Z p) D.R.rS)
     {g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p} (hg : g ∈ P.UW0) :
@@ -40,18 +40,16 @@ theorem localComplementUnitary_fixes_both_frames {Z : LocDat D} {p : PlF D} (P :
       rw [LinearEquiv.symm_apply_eq, (hx b).2]
 
 /- English proof (translation)
-Use `show LocFacts₂ Z.M p 0 y = 0`. Simplify using `[LocFacts₂]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_zero_left {Z : LocDat D} {p : PlF D} (y : Vp D p) : (locH Z p).h 0 y = 0 := by
   show LocFacts₂ Z.M p 0 y = 0
   simp [LocFacts₂]
 
 /- English proof (translation)
-Introduce `h0`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Establish `h1` using `Fr.h_zz`. Rewrite `h1` using `[h0, h_zero_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep Fr.T = 0` using `neg_eq_zero.mp h1.symm`. Conclude with `hT ((map_eq_zero_iff _ (RingHom.injective _)).mp h2)`. Consider the case `cast i`. Establish `h1` using `Fr.h_es i i`. Rewrite `h1` using `[h0, h_zero_left, if_pos rfl]`.
-
-Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_ne_zero {Z : LocDat D} {p : PlF D} (Fr : LocNG.FrameD (locH Z p) D.R.rS) (hT : Fr.T ≠ 0)
     (a : Fin (D.R.rS + 1)) : Fr.f a ≠ 0 := by
@@ -68,7 +66,7 @@ theorem frame_ne_zero {Z : LocDat D} {p : PlF D} (Fr : LocNG.FrameD (locH Z p) D
     exact zero_ne_one h1
 
 /- English proof (translation)
-Unfold `frFac at hv ⊢`. Distinguish the cases in `hu : IsUnit ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ (D.R.rS - a.val))`. Conclude with `isUnit_ringInverse.mpr hu`. Rewrite `hv` using `[Ring.inverse_non_unit _ hu, zero_smul]`. Conclude with `absurd rfl hv`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frFac_unit {p : PlF D} (δ : ∀ p, (D.s.atP p).Fp) (a : Fin (D.R.rS + 1)) (v : Vp D p)
     (hv : frFac δ p a • v ≠ 0) : IsUnit (frFac δ p a) := by
@@ -92,9 +90,9 @@ def fixSub (p : PlF D) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) : Submodule D.
     rw [baseChange_smul₂, map_smul, ha]
 
 /- English proof (translation)
-Use `show F.fl.X ⊔ Submodule.span _ {F.fl.z} ≤ S`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `h i.castSucc` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Use `h (Fin.last _)` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem xplus_le {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (S : Submodule D.host.E (VS D).V)
     (h : ∀ a, frame F a ∈ S) : Xplus F ≤ S := by
@@ -110,13 +108,11 @@ theorem xplus_le {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (S : Submodule D.hos
     simpa [frame, FlagG.fvec] using this
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hlat : Submodule.IsLattice D.host.E (Λ₂ ⊔ Submodule.span (𝓞 D.host.E) {x})`. Use `⟨h2.fg.sup (Submodule.fg_span_singleton x), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← h2.span_eq_top]`. Conclude with `Submodule.span_mono (by intro y hy; exact Submodule.mem_sup_left hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : ∀ p, lattice₂ D Z.M p (Λ₂ ⊔ Submodule.span (𝓞 D.host.E) {x}) = lattice₂ D Z.M p Λ₂`. Introduce `p`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hw`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.subset_span ⟨y, hy, rfl⟩) (hN _ (N.smul_mem c hx) p)`. Conclude with `Submodule.span_mono (Set.image_mono (by intro y hy; exact Submodule.mem_sup_left hy))`.
-
-Use `((GlobalTheory.Unfold.LatLoc.lattices_local_global D Z).1 _ Λ₂ hlat h2).2 heq` as an intermediate fact. Rewrite using `[← this]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_loc (Z : LocDat D) (Λ₂ : LV D) (h2 : Submodule.IsLattice D.host.E Λ₂) (N : LV D)
     (hN : ∀ z ∈ N, ∀ p, baseChange₂ D p z ∈ lattice₂ D Z.M p Λ₂) : N ≤ Λ₂ := by
@@ -140,13 +136,11 @@ theorem le_of_loc (Z : LocDat D) (Λ₂ : LV D) (h2 : Submodule.IsLattice D.host
   exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)
 
 /- English proof (translation)
-Establish `hN` using `(hR p).2.2.2.2.2.2`. Use `sup_le (xplus_le F _ fun a => ?_) (xplus_le F' _ fun a => ?_)` and prove the remaining obligations. Establish `hfa` using `(localComplementUnitary_fixes_both_frames (FP p) hg a).1`. Establish `hne` using `frame_ne_zero (FP p).A hN.2.1 a`. Rewrite `hfa`, `hne` using `[(hB p).1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `frFac_unit Z.δ a _ hne`. Use `show g (baseChange₂ D p (frame F a)) = baseChange₂ D p (frame F a)`. Rewrite `hfa` using `[map_smul]`. Conclude with `hu.smul_left_cancel.mp hfa`. Establish `hfa` using `(localComplementUnitary_fixes_both_frames (FP p) hg a).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne` using `frame_ne_zero (FP p).B hN.2.2.2.1 a`. Rewrite `hfa`, `hne` using `[(hB p).2.1]`. Establish `hu` using `frFac_unit Z.δ a _ hne`. Use `show g (baseChange₂ D p (frame F' a)) = baseChange₂ D p (frame F' a)`. Rewrite `hfa` using `[map_smul]`.
-
-Conclude with `hu.smul_left_cancel.mp hfa`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_span {u u' : D.what₂.Word}
     (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
@@ -172,13 +166,13 @@ theorem fix_span {u u' : D.what₂.Word}
     exact hu.smul_left_cancel.mp hfa
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w _ _ Z FP hB hR Λ₀ h0 Λ h1 hloc`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf (le_of_loc Z Λ₀ h0 _ fun z hz p => ?_) inf_le_right` and prove the remaining obligations. Take `⟨g, hg, himg⟩` from `hloc p`. Establish `hfix : g (baseChange₂ D p z) = baseChange₂ D p z` using `fix_span F F' Z FP hB hR p hg hz.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : baseChange₂ D p z ∈ lattice₂ D Z.M p Λ` using `Submodule.subset_span ⟨z, hz.1, rfl⟩`. Rewrite `hm` using `[← himg]`. Take `⟨y, hy, hyz⟩` from `Submodule.mem_map.1 hm`. Establish `: g y = g (baseChange₂ D p z)` using `by rw [hfix]; exact hyz`. Rewrite `hy` using `[g.injective this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy`. Use `le_inf (le_of_loc Z Λ h1 _ fun z hz p => ?_) inf_le_right` and prove the remaining obligations. Take `⟨g, hg, himg⟩` from `hloc p`. Establish `hfix : g (baseChange₂ D p z) = baseChange₂ D p z` using `fix_span F F' Z FP hB hR p hg hz.2`. Establish `hm : baseChange₂ D p z ∈ lattice₂ D Z.M p Λ₀` using `Submodule.subset_span ⟨z, hz.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← himg, ← hfix]`. Conclude with `Submodule.mem_map_of_mem hm`.
+A detailed English derivation is pending.
 -/
 theorem inf_span_eq : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ → ∀ Λ : LV D, Submodule.IsLattice D.host.E Λ → (∀ p, ∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λ) → Λ ⊓ toO (VS D) (Xplus F ⊔ Xplus F') = Λ₀ ⊓ toO (VS D) (Xplus F ⊔ Xplus F') := by
   intro D X Y u u' F F' w _ _ Z FP hB hR Λ₀ h0 Λ h1 hloc

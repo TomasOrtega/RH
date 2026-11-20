@@ -7,9 +7,9 @@ namespace PI.SSAscent.UnitaryGroupMassFormula
 open PI.SSAscent
 
 /- English proof (translation)
-Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨(ρ g : Matrix (Fin a) (Fin a) K), ⟨g, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨g, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_mapRep {Γ : Type} [Group Γ] {K L : Type} [Field K] [Field L] [Algebra K L] {a : ℕ}
     (ρ : Γ →* GL (Fin a) K) :
@@ -23,9 +23,9 @@ theorem range_mapRep {Γ : Type} [Group Γ] {K L : Type} [Field K] [Field L] [Al
     exact ⟨g, rfl⟩
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ Γ _ a ρ hρ`. Apply `hU L Γ a` to reduce the goal to its premises. Establish `h1 : TrNondeg (imAlg ρ)` using `hD K Γ a ρ hρ`. Establish `h2` using `hA K L a (Set.range fun g => (ρ g : Matrix (Fin a) (Fin a) K)) h1`. Establish `h3 : imAlg (mapRep (algebraMap K L) ρ) = Algebra.adjoin L ((algebraMap K L).mapMatrix '' Set.range fun g => (ρ g : Matrix (Fin a) (Fin a) K))` using `congrArg (Algebra.adjoin L) (range_mapRep (L := L) ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ssAscent_of (hD : DownStep) (hA : AscendStep) (hU : UpStep) : PI.SSAscent := by
   intro K L _ _ _ _ Γ _ a ρ hρ

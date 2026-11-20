@@ -20,11 +20,11 @@ namespace GlobalTheory.EtCoordBasis
 open KaehlerDifferential
 
 /- English proof (translation)
-Use `⟨?_, KaehlerDifferential.map_surjective ℤ (ZMod p) L⟩` and prove the remaining obligations. Establish `hsurj : Function.Surjective (algebraMap ℤ (ZMod p))`. Introduce `x`. Take `⟨m, rfl⟩` from `ZMod.intCast_surjective x`. Conclude with `⟨m, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hs : Subsingleton Ω[ZMod p⁄ℤ]` using `KaehlerDifferential.subsingleton_of_surjective ℤ (ZMod p) hsurj`. Establish `hex` using `KaehlerDifferential.exact_mapBaseChange_map ℤ (ZMod p) L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(hex x).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `clear hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Subsingleton.elim b 0]`. Consider the case `add y z hy hz => rw [map_add, hy, hz, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kaehler_map_bijective (p : ℕ) (L : Type) [CommRing L] [Algebra (ZMod p) L] :
     Function.Bijective (KaehlerDifferential.map ℤ (ZMod p) L L) := by
@@ -45,25 +45,21 @@ theorem kaehler_map_bijective (p : ℕ) (L : Type) [CommRing L] [Algebra (ZMod p
   | add y z hy hz => rw [map_add, hy, hz, add_zero]
 
 /- English proof (translation)
-Introduce `p _ A _ _ _ n t het L _ _ _ ht`. Set `P` to `MvPolynomial (Fin n) (ZMod p)`. Use `letI : Algebra P A := (MvPolynomial.aeval t).toRingHom.toAlgebra`. Use `haveI : IsScalarTower (ZMod p) P A := .of_algebraMap_eq fun r => ((MvPolynomial.aeval t).commutes r).symm`. Use `haveI : Algebra.Etale P A := het`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Algebra (ZMod p) L := ((algebraMap A L).comp (algebraMap (ZMod p) A)).toAlgebra`. Use `haveI : IsScalarTower (ZMod p) A L := .of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FormallyEtale A L := .of_isLocalization (nonZeroDivisors A)`. Set `bA : Module.Basis (Fin n) A Ω[A⁄ZMod p]` to `((mvPolynomialBasis (ZMod p) (Fin n)).baseChange A).map (tensorKaehlerEquivOfFormallyEtale (ZMod p) P A)`. Establish `hbA : ∀ j, bA j = D (ZMod p) A (t j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `j`. Simplify using `only [bA, Module.Basis.map_apply, Module.Basis.baseChange_apply, tensorKaehlerEquivOfFormallyEtale_apply, mapBaseChange_tmul, one_smul, mvPolynomialBasis_apply, map_D]`. Establish `h : algebraMap P A (MvPolynomial.X j) = t j`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval t (MvPolynomial.X j) = t j`. Conclude with `MvPolynomial.aeval_X t j`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, ← map_D (ZMod p) (ZMod p) P A]`. Conclude with `(mapBaseChange_tmul (ZMod p) P A 1 _).trans (one_smul _ _)`. Set `bL : Module.Basis (Fin n) L Ω[L⁄ZMod p]` to `(bA.baseChange L).map (tensorKaehlerEquivOfFormallyEtale (ZMod p) A L)`. Establish `hbL : ∀ j, bL j = D (ZMod p) L (algebraMap A L (t j))`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [bL, Module.Basis.map_apply, Module.Basis.baseChange_apply, tensorKaehlerEquivOfFormallyEtale_apply, mapBaseChange_tmul, one_smul, hbA, map_D]`. Set `e : Ω[L⁄ℤ] ≃ₗ[L] Ω[L⁄ZMod p]` to `LinearEquiv.ofBijective (KaehlerDifferential.map ℤ (ZMod p) L L) (kaehler_map_bijective p L)`. Establish `he : ∀ x : L, e.symm (D (ZMod p) L x) = D ℤ L x`. Introduce `x`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(KaehlerDifferential.map_D ℤ (ZMod p) L L x).symm`. Set `b : Module.Basis (Fin n) L Ω[L⁄ℤ]` to `bL.map e.symm`. Establish `hb : ∀ j, b j = D ℤ L (algebraMap A L (t j))`. Introduce `j`. Simplify using `only [b, Module.Basis.map_apply, hbL, he]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfun : (fun i => dK ((Units.mk0 (algebraMap A L (t i)) (ht i) : Lˣ) : L)) = ⇑b`. Use function extensionality and compare the values at `i`. Simplify using `[hb, dK]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `b.linearIndependent`. Rewrite using `[hfun]`. Conclude with `b.span_eq`. Introduce `f`. Use `⟨bA.repr (D (ZMod p) A f), ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `bA.sum_repr (D (ZMod p) A f)`. Rewrite using `[← he, ← map_D (ZMod p) (ZMod p) A L]`. Use `conv_lhs => rw [← h1]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.map_smul, hbA, map_D, ← algebraMap_smul L (bA.repr (D (ZMod p) A f) j), LinearEquiv.map_smul, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_coords_basis : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [IsDomain A] [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A), (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale → ∀ (L : Type) [Field L] [Algebra A L] [IsFractionRing A L] (ht : ∀ j, algebraMap A L (t j) ≠ 0), IsCoord (fun j => Units.mk0 (algebraMap A L (t j)) (ht j)) ∧ ∀ f : A, ∃ c : Fin n → A, KaehlerDifferential.D ℤ L (algebraMap A L f) = ∑ j, algebraMap A L (c j) • KaehlerDifferential.D ℤ L (algebraMap A L (t j)) := by
   intro p _ A _ _ _ n t het L _ _ _ ht

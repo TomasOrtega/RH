@@ -27,40 +27,36 @@ namespace GlobalTheory.RatioConst
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont Formalism.L2.Pj in
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.Core.Rk.IP.rcoef, petersson, pet, rTr, AutomorphicL2Unitary.descend, volQ, autMeasure, integral_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rcoef_one_const {D : D7} {A : HSp D} (m : Measure (GA D A)) (g : GA D A) :
     GlobalTheory.Core.Rk.IP.rcoef m (fun _ => (1 : ℂ)) (fun _ => 1) g = (volQ A m : ℂ) := by
   simp [GlobalTheory.Core.Rk.IP.rcoef, petersson, pet, rTr, AutomorphicL2Unitary.descend, volQ, autMeasure, integral_const]
 
 /- English proof (translation)
-Introduce `D cc δ t0 Q P X hX hL hint a ν 𝓕 ha Sf Φ c hc h0`. Establish `hF` using `hX.1`. Use `haveI := hF.haarA`. Use `set K : Set (GA D X.A) := openOff X.A (stdLat X.A) ∅ with hKdef`. Establish `hdec : ∀ g : GA D X.A, ∃ x k, k ∈ GinfC X.A ∧ g = X.ιA x * k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Take `⟨h, hh, k, hk, rfl⟩` from `Formalism.IndefR.TopMult.ga_decomp g`. Rewrite `hh` using `[← hF.rangeA]`. Take `⟨x, rfl⟩` from `hh`. Conclude with `⟨x, k, hk, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hproj : ∀ k ∈ GinfC X.A, ∀ v, GlobalTheory.AdelicU.proj D.sp.cm.sig X.A.gram v k = 1`. Introduce `k hk v`. Use `show GlobalTheory.AdelicU.proj D.sp.cm.sig X.A.gram v ((⟨k, hk⟩ : GinfC X.A) : GA D X.A) = 1`. Rewrite using `[← GlobalTheory.AutMult.toInf_coe (⟨k, hk⟩ : GinfC X.A)]`. Conclude with `GlobalTheory.AdelicU.proj_ofInf _ _ v _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ k ∈ GinfC X.A, Lev.finE X.A k = 1`. Introduce `k hk`. Simplify using `only [Lev.finE, MonoidHom.comp_apply]`. Rewrite using `[show finHom X.A k = 1 from hk, map_one]`. Establish `hmem : ∀ x k S, k ∈ GinfC X.A → (X.ιA x * k ∈ openOff X.A (stdLat X.A) S ↔ X.ιA x ∈ openOff X.A (stdLat X.A) S)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x k S hk`. Simplify using `only [GlobalTheory.Core.Rk.IP.openOff, Set.mem_setOf_eq, map_mul, hproj k hk, mul_one]`. Establish `hw : ∀ g ∈ openOff X.A (stdLat X.A) Sf, wcoef X.om ν 𝓕 Φ Φ g = K.indicator (fun _ => c) g`. Introduce `g hg`. Take `⟨x, k, hk, rfl⟩` from `hdec g`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ intG D P.a`. Rewrite using `[Set.indicator_of_mem ((hmem x k ∅ hk).2 ((hint x).1 hx)), hc x hx k hk]`. Rewrite using `[Set.indicator_of_notMem (fun h => hx ((hint x).2 ((hmem x k ∅ hk).1 h))), h0 x hx ((hmem x k Sf hk).1 hg) k hk]`. Establish `hKsub : K ⊆ openOff X.A (stdLat X.A) Sf` using `fun g hg v _ => hg v (Finset.notMem_empty v)`. Establish `hKm : MeasurableSet K` using `(GlobalTheory.Core.Rk.IP.isOpen_openOff X.A (stdLat X.A) hL ∅).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hSm : MeasurableSet (openOff X.A (stdLat X.A) Sf)` using `(GlobalTheory.Core.Rk.IP.isOpen_openOff X.A (stdLat X.A) hL Sf).measurableSet`. Establish `hKeq : K = ((X.KA.comap (Lev.finE X.A) : Subgroup (GA D X.A)) : Set (GA D X.A))`. Use extensionality with `g`. Take `⟨x, k, hk, rfl⟩` from `hdec g`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, map_mul, hfin k hk, mul_one, hF.levA_iff, hint, hKdef, hmem x k ∅ hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKvol : X.m K = 1`. Rewrite using `[hKeq]`. Conclude with `GlobalTheory.Mass.Levels.measure_comap_finE hF.measA.choose_spec.1`. Establish `hKc : IsCompact K`. Establish `hG : IsCompact (GinfC X.A : Set (GA D X.A))` using `GlobalTheory.GramOneCompact.isCompact_GinfC_of_gram_eq_one D X.A hF.gramA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hF.levA.2.mul hG).of_isClosed_subset ?_ ?_` and prove the remaining obligations. Rewrite using `[hKeq]`. Conclude with `Subgroup.isClosed_of_isOpen _ hF.levA.1`. Introduce `g hg`. Take `⟨x, k, hk, rfl⟩` from `hdec g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hg` using `[hKeq, SetLike.mem_coe, Subgroup.mem_comap, map_mul, hfin k hk, mul_one]`. Use `Set.mul_mem_mul ?_ hk` and prove the remaining obligations. Conclude with `Formalism.IndefR.Lev.mem_levA.2 ⟨hF.rangeA ▸ ⟨x, rfl⟩, hg⟩`. Take `⟨hcont, hpos, -⟩` from `GlobalTheory.Core.Rk.IP.hgtL_props D X.A (stdLat X.A) a hL ha`. Use `⟨fun s => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : GA D X.A → ℂ` to `fun g => c * GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL X.A (stdLat X.A) a g) (s - GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero X.A X.B) * (volQ X.A X.m : ℂ)`. Establish `hFc : Continuous F`. Use `(continuous_const.mul ?_).mul continuous_const` and prove the remaining obligations. Simplify using `only [GlobalTheory.Doubling.npow]`. Use `(Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp hcont)).cpow continuous_const fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.ofReal_mem_slitPlane.2 (by exact_mod_cast (hpos g).1)`. Establish `hI : Integrable (K.indicator F) X.m` using `(integrable_indicator_iff hKm).2 (hFc.continuousOn.integrableOn_compact' hKc hKm)`. Use `hI.integrableOn.congr_fun (fun g hg => ?_) hSm` and prove the remaining obligations. Establish `hr : GlobalTheory.Core.Rk.IP.rcoef X.m (fun _ : GA D X.A => (1 : ℂ)) (fun _ => 1) g = (volQ X.A X.m : ℂ)`. Conclude with `rcoef_one_const X.m g`.
-
-Simplify using `only [integrand, hr, hw g hg]`. Distinguish the cases in `hgK : g ∈ K`. Simplify using `[Set.indicator_of_mem hgK, F]`. Simplify using `[Set.indicator_of_notMem hgK]`. Rewrite using `[setIntegral_congr_fun hSm hw, integral_indicator hKm, Measure.restrict_restrict hKm, Set.inter_eq_left.2 hKsub, setIntegral_const, measureReal_def, hKvol]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_const_coef : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P), IsDict P X →
   IsSelfDualC X.A (stdLat X.A) → (∀ x, x ∈ intG D P.a ↔ X.ιA x ∈ openOff X.A (stdLat X.A) ∅) →

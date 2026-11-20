@@ -21,7 +21,7 @@ def P'm (β : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin 
 variable {F F' L}
 
 /- English proof (translation)
-Rewrite using `[Pm, Pm, Pm, ← Matrix.conjTranspose_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hL]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem Pm_mul (hL : IsUnit L.det) (β γ : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     Pm L γ * Pm L β = Pm L (β * γ) := by
@@ -30,7 +30,7 @@ theorem Pm_mul (hL : IsUnit L.det) (β γ : Matrix (Fin (r + 1)) (Fin (r + 1)) E
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hL]
 
 /- English proof (translation)
-Simplify using `only [P'm, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hZ, Matrix.nonsing_inv_mul_cancel_left _ _ hL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem P'm_mul (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det)
     {β γ : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hβ : IsUnit β.det) (hγ : IsUnit γ.det) :
@@ -39,13 +39,13 @@ theorem P'm_mul (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F
     Matrix.nonsing_inv_mul_cancel_left _ _ hL]
 
 /- English proof (translation)
-Rewrite using `[Pm, Matrix.mul_one, Matrix.mul_nonsing_inv _ hL, Matrix.conjTranspose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pm_one (hL : IsUnit L.det) : Pm L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) = 1 := by
   rw [Pm, Matrix.mul_one, Matrix.mul_nonsing_inv _ hL, Matrix.conjTranspose_one]
 
 /- English proof (translation)
-Rewrite using `[P'm, inv_one, Matrix.mul_one, Matrix.mul_nonsing_inv _ hL, Matrix.mul_one, Matrix.nonsing_inv_mul _ hZ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem P'm_one (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) :
     P'm F F' L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) = 1 := by
@@ -75,7 +75,7 @@ theorem tw_apply (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat 
     tw F F' L hL hZ hG β v = sL (gg F F') (UU (Pm L (β : Matrix _ _ E)) (P'm F F' L (β : Matrix _ _ E))) v := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[LinearEquiv.mul_apply, tw_apply, tw_apply, tw_apply, sL_comp _ hG, UU_mul, Pm_mul hL, P'm_mul hL hZ (Matrix.isUnits_det_units _) (Matrix.isUnits_det_units _), Units.val_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_mul (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) (hG : IsUnit (gramOf (gg F F')).det)
     (β γ : Matrix.GeneralLinearGroup (Fin (r + 1)) E) :
@@ -85,7 +85,7 @@ theorem tw_mul (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F 
     P'm_mul hL hZ (Matrix.isUnits_det_units _) (Matrix.isUnits_det_units _), Units.val_mul]
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[tw_apply, Units.val_one, Pm_one hL, P'm_one hL hZ, UU_one, sL_one]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tw_one (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) (hG : IsUnit (gramOf (gg F F')).det) :
     tw F F' L hL hZ hG 1 = 1 := by
@@ -101,14 +101,14 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
   {F : Formalism.MainNotions.S.FlagG S r T} {F' : Formalism.MainNotions.S.FlagG S r T'} {L : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
 
 /- English proof (translation)
-Conclude with `up_conjT (lo_mul (lo_mul hLl hβ) (lo_inv hLl))`.
+A detailed English derivation is pending.
 -/
 theorem Pm_up (hLl : Formalism.MainNotions.S.IsLoUni L) {β : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hβ : Formalism.MainNotions.S.IsLoUni β) :
     Formalism.MainNotions.S.IsUpUni (Pm L β) := by
   exact up_conjT (lo_mul (lo_mul hLl hβ) (lo_inv hLl))
 
 /- English proof (translation)
-Rewrite using `[Pm, Matrix.conjTranspose_conjTranspose, P'm]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hZ, Matrix.nonsing_inv_mul_cancel_left _ _ hL, Matrix.mul_nonsing_inv_cancel_left _ _ hβ, Matrix.mul_nonsing_inv_cancel_left _ _ hL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pm_Z (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det)
     {β : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hβ : IsUnit β.det) :
@@ -118,7 +118,7 @@ theorem Pm_Z (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F'
     Matrix.mul_nonsing_inv_cancel_left _ _ hβ, Matrix.mul_nonsing_inv_cancel_left _ _ hL]
 
 /- English proof (translation)
-Rewrite using `[tw_apply, tw_apply]`. Conclude with `sL_isom _ hG _ (UU_isom (F := F) (F' := F') (Pm_up hLl hβ) hP' (Pm_Z hL hZ (Matrix.isUnits_det_units β))) x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_isom (hLl : Formalism.MainNotions.S.IsLoUni L) (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det)
     (hG : IsUnit (gramOf (gg F F')).det) (β : Matrix.GeneralLinearGroup (Fin (r + 1)) E)
@@ -129,7 +129,7 @@ theorem tw_isom (hLl : Formalism.MainNotions.S.IsLoUni L) (hL : IsUnit L.det) (h
   exact sL_isom _ hG _ (UU_isom (F := F) (F' := F') (Pm_up hLl hβ) hP' (Pm_Z hL hZ (Matrix.isUnits_det_units β))) x y
 
 /- English proof (translation)
-Rewrite using `[tw_apply, sL_frame (hG := hG)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_frame (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) (hG : IsUnit (gramOf (gg F F')).det)
     (β : Matrix.GeneralLinearGroup (Fin (r + 1)) E) (b : Fin (r + 1)) :
@@ -137,7 +137,7 @@ theorem tw_frame (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat 
   rw [tw_apply, sL_frame (hG := hG)]
 
 /- English proof (translation)
-Rewrite using `[tw_apply, sL_frame' (hG := hG)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_frame' (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) (hG : IsUnit (gramOf (gg F F')).det)
     (β : Matrix.GeneralLinearGroup (Fin (r + 1)) E) (b : Fin (r + 1)) :
@@ -145,19 +145,19 @@ theorem tw_frame' (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat
   rw [tw_apply, sL_frame' (hG := hG)]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent E (gg F F')`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Establish `ha0 : a = 0`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hG.ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `l`. Establish `hl : S.hT (gg F F' l) (∑ m, a m • gg F F' m) = 0` using `by rw [ha, map_zero]`. Simplify using `only [map_sum, map_smul, smul_eq_mul] at hl`. Simplify using `only [Matrix.mulVec, dotProduct, gramOf, Pi.zero_apply]`. Rewrite using `[← hl]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun m _ => mul_comm _ _)`. Introduce `m`. Rewrite using `[ha0]`. Both sides reduce to the same expression. Establish `hliF : LinearIndependent E F.fvec` using `hli.comp Sum.inl Sum.inl_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Pm L (β : Matrix (Fin (r + 1)) (Fin (r + 1)) E) = 1`. Use extensionality with `c b`. Establish `hb` using `tw_frame hL hZ hG β b`. Rewrite `hb` using `[h]`. Express the relevant statement in the definitionally equal form `F.fvec b = _ at hb`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hsum : ∑ c, (Pm L (β : Matrix (Fin (r + 1)) (Fin (r + 1)) E) c b - (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) c b) • F.fvec c = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← hb, sub_self]`. Use `Fintype.linearIndependent_iff.1 hliF _ hsum c` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLβ : L * (β : Matrix (Fin (r + 1)) (Fin (r + 1)) E) * L⁻¹ = 1`. Use `congrArg Matrix.conjTranspose hP` as an intermediate fact. Rewrite `this` using `[Pm, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_one]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hL, Matrix.nonsing_inv_mul _ hL, Matrix.mul_one]`. Use `_ = 1 := by rw [hLβ, Matrix.mul_one, Matrix.nonsing_inv_mul _ hL]`.
+A detailed English derivation is pending.
 -/
 theorem tw_inj (hT : T ≠ 0) (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det)
     (hG : IsUnit (gramOf (gg F F')).det) {β : Matrix.GeneralLinearGroup (Fin (r + 1)) E}
@@ -203,7 +203,7 @@ theorem tw_inj (hT : T ≠ 0) (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNo
     _ = 1 := by rw [hLβ, Matrix.mul_one, Matrix.nonsing_inv_mul _ hL]
 
 /- English proof (translation)
-Simplify using `[sL, coordL, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sL_perp (hG : IsUnit (gramOf (gg F F')).det)
     (X : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E)
@@ -211,9 +211,9 @@ theorem sL_perp (hG : IsUnit (gramOf (gg F F')).det)
   simp [sL, coordL, hv]
 
 /- English proof (translation)
-Establish `ha : a = 0`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hG.ne_zero` to reduce the goal to its premises. Use extensionality with `l`. Establish `hl` using `h l`. Simplify using `only [map_sum, map_smul, smul_eq_mul] at hl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, gramOf, Pi.zero_apply]`. Rewrite using `[← hl]`. Conclude with `Finset.sum_congr rfl (fun m _ => mul_comm _ _)`. Rewrite using `[ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_perp_zero (hG : IsUnit (gramOf (gg F F')).det) (a : Fin (r + 1) ⊕ Fin (r + 1) → E)
     (h : ∀ l, S.hT (gg F F' l) (∑ m, a m • gg F F' m) = 0) : ∑ m, a m • gg F F' m = 0 := by
@@ -229,7 +229,7 @@ theorem span_perp_zero (hG : IsUnit (gramOf (gg F F')).det) (a : Fin (r + 1) ⊕
   simp
 
 /- English proof (translation)
-Rewrite using `[← sub_add_cancel (sL (gg F F') X v) v, sL_sub]`. Use `add_mem (add_mem (sum_mem fun b _ => ?_) (sum_mem fun b _ => ?_)) hv` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inl b, rfl⟩)`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sL_mem_span (X : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E) {v : S.V}
     (hv : v ∈ Submodule.span E (Set.range (gg F F'))) : sL (gg F F') X v ∈ Submodule.span E (Set.range (gg F F')) := by
@@ -239,9 +239,9 @@ theorem sL_mem_span (X : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ F
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩)
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`. Conclude with `hq l`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perp_span {q : S.V} (hq : ∀ l, S.hT (gg F F' l) q = 0) :
     ∀ y ∈ Submodule.span E (Set.range (gg F F')), S.hT y q = 0 := by
@@ -255,34 +255,30 @@ theorem perp_span {q : S.V} (hq : ∀ l, S.hT (gg F F' l) q = 0) :
   | smul a x _ hx => simp [hx]
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨Sum.inl i.castSucc, ?_⟩` and prove the remaining obligations. Simplify using `[gg, Formalism.MainNotions.S.FlagG.fvec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem e_mem_span (i : Fin r) : F.e i ∈ Submodule.span E (Set.range (gg F F')) := by
   refine Submodule.subset_span ⟨Sum.inl i.castSucc, ?_⟩
   simp [gg, Formalism.MainNotions.S.FlagG.fvec]
 
 /- English proof (translation)
-Use `set τ := tw F F' L hL hZ hG β with hτ`. Use `set Sg := Submodule.span E (Set.range (gg F F'))`. Establish `hg : ∀ m, s (gg F F' m) = τ (gg F F' m)`. Introduce and unpack `(b | b)`. Use `show s (F.fvec b) = τ (F.fvec b)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsf, hτ, tw_frame]`. Use `show s (F'.fvec b) = τ (F'.fvec b)`. Rewrite using `[hsf', hτ, tw_frame']`. Establish `hspan : ∀ y ∈ Sg, s y = τ y`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨m, rfl⟩ := hx`. Conclude with `hg m`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx => rw [map_smul, map_smul, hx]`. Establish `hτs : ∀ m, τ.symm (gg F F' m) ∈ Sg` using `fun m => sL_mem_span _ (Submodule.subset_span ⟨m, rfl⟩)`. Establish `hss : ∀ m, s.symm (gg F F' m) ∈ Sg`. Introduce `m`. Establish `: s.symm (gg F F' m) = τ.symm (gg F F' m)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `s.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, hspan _ (hτs m), LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `hτs m`. Apply `LinearEquiv.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `set p : S.V := ∑ k, cOf (gg F F') x k • gg F F' k with hp`. Use `set q : S.V := x - p with hq`. Establish `hpS : p ∈ Sg` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hqperp : ∀ l, S.hT (gg F F' l) q = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l`. Establish `h1` using `congrFun (gram_cOf (gg F F') hG x) l`. Rewrite using `[hq, hp, map_sub, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, gramOf]`. Rewrite using `[sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hτq : τ q = q` using `sL_perp hG _ hqperp`. Establish `hsq : s q = q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `hsX q fun i => perp_span hqperp _ (e_mem_span i)`. Establish `hdS : s q - q ∈ Sg` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact e_mem_span i) hd`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hdS`. Establish `hperp : ∀ l, S.hT (gg F F' l) (∑ m, a m • gg F F' m) = 0`. Introduce `l`.
-
-Rewrite using `[ha, map_sub, hqperp l, sub_zero]`. Establish `e : gg F F' l = s (s.symm (gg F F' l))` using `(LinearEquiv.apply_symm_apply s _).symm`. Rewrite using `[e, hs]`. Conclude with `perp_span hqperp _ (hss l)`. Establish `h0` using `span_perp_zero hG a hperp`.
-
-Rewrite `h0` using `[ha]`. Conclude with `sub_eq_zero.1 h0`. Establish `hx : x = p + q` using `by rw [hq]; abel`. Rewrite using `[hx, map_add, map_add, hspan p hpS, hsq, hτq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_eq_of (hL : IsUnit L.det) (hZ : IsUnit (Formalism.MainNotions.S.Zhat F F').det) (hG : IsUnit (gramOf (gg F F')).det)
     (β : Matrix.GeneralLinearGroup (Fin (r + 1)) E) (s : S.V ≃ₗ[E] S.V) (hs : ∀ x y, S.hT (s x) (s y) = S.hT x y)

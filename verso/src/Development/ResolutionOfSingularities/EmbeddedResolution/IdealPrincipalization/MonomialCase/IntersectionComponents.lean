@@ -23,7 +23,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun _ ht hst => h.2 ht hst⟩, fun h => ⟨h.1, fun t ht hst => h.2 t ht hst⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_irreducibleComponents_iff_isIrreducible_and_maximal {α : Type*}
     [TopologicalSpace α] (s : Set α) :
@@ -32,19 +32,17 @@ private theorem mem_irreducibleComponents_iff_isIrreducible_and_maximal {α : Ty
   ⟨fun h => ⟨h.1, fun _ ht hst => h.2 ht hst⟩, fun h => ⟨h.1, fun t ht hst => h.2 t ht hst⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hirr, hsub, hmax⟩`. Establish `hCr : C ⊆ Set.range f` using `by rw [hr]; exact hsub`. Establish `himg : f '' (f ⁻¹' C) = C` using `Set.image_preimage_eq_of_subset hCr`. Use `⟨f ⁻¹' C, (mem_irreducibleComponents_iff_isIrreducible_and_maximal _).mpr ⟨?_, ?_⟩, himg⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isIrreducible_preimage_of_isEmbedding hf.toIsEmbedding hirr hCr`. Introduce `t ht hDt x hx`. Establish `himgt : IsIrreducible (f '' t)` using `ht.image f hf.continuous.continuousOn`. Establish `hCt : C ⊆ f '' t`. Rewrite using `[← himg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.image_mono hDt`. Establish `htS : f '' t ⊆ S`. Rewrite using `[← hr]`. Conclude with `Set.image_subset_range _ _`. Establish `heq : f '' t = C` using `hmax _ himgt hCt htS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hmem : f x ∈ C`. Rewrite using `[← heq]`. Conclude with `⟨x, hx, rfl⟩`. Conclude with `hmem`. Introduce and unpack `⟨D, hD, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hDirr, hDmax⟩` from `(mem_irreducibleComponents_iff_isIrreducible_and_maximal _).mp hD`. Use `⟨hDirr.image f hf.continuous.continuousOn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Conclude with `Set.image_subset_range _ _`. Introduce `C' hC' hsub' hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC'r : C' ⊆ Set.range f` using `by rw [hr]; exact hS'`. Establish `hirr' : IsIrreducible (f ⁻¹' C')` using `isIrreducible_preimage_of_isEmbedding hf.toIsEmbedding hC' hC'r`. Establish `hDD : D ⊆ f ⁻¹' C'` using `fun x hx => hsub' ⟨x, hx, rfl⟩`. Establish `h1 : f ⁻¹' C' ⊆ D` using `hDmax _ hirr' hDD`. Establish `h2 : f '' (f ⁻¹' C') = C'` using `Set.image_preimage_eq_of_subset hC'r`.
-
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Rewrite using `[← h2]`. Conclude with `Set.image_mono h1`. Conclude with `hsub'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem maximal_irreducible_subset_range_iff {α β : Type*} [TopologicalSpace α]
     [TopologicalSpace β] {f : α → β} (hf : Topology.IsClosedEmbedding f) {S : Set β}
@@ -88,7 +86,7 @@ private theorem maximal_irreducible_subset_range_iff {α β : Type*} [Topologica
       · exact hsub'
 
 /- English proof (translation)
-Establish `hemb : Topology.IsClosedEmbedding ⇑(intersectionIdeal L J).subschemeι` using `Scheme.Hom.isClosedEmbedding (intersectionIdeal L J).subschemeι`. Establish `hrange : Set.range ⇑(intersectionIdeal L J).subschemeι = (↑(intersectionIdeal L J).support : Set ↥Y)` using `Scheme.IdealSheafData.range_subschemeι _`. Conclude with `maximal_irreducible_subset_range_iff hemb hrange C`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_intersectionComponents_iff_exists_irreducibleComponent {Y : Scheme.{u}}
     (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) (C : Set ↥Y) :
@@ -103,7 +101,7 @@ theorem mem_intersectionComponents_iff_exists_irreducibleComponent {Y : Scheme.{
   exact maximal_irreducible_subset_range_iff hemb hrange C
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `(mem_intersectionComponents_iff_exists_irreducibleComponent L J C).mp hC`. Conclude with `(Scheme.Hom.isClosedEmbedding (intersectionIdeal L J).subschemeι).isClosedMap _ (isClosed_of_mem_irreducibleComponents _ hD)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_of_mem_intersectionComponents {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (C : Set ↥Y) (hC : C ∈ intersectionComponents L J) : IsClosed C := by
@@ -112,9 +110,9 @@ theorem isClosed_of_mem_intersectionComponents {Y : Scheme.{u}} (L : List Y.Idea
     (isClosed_of_mem_irreducibleComponents _ hD)
 
 /- English proof (translation)
-Use `hT.isNoetherian` as an intermediate fact. Establish `: TopologicalSpace.NoetherianSpace ↥(intersectionIdeal T.boundary J).subscheme` using `inferInstance`. Establish `h : intersectionComponents T.boundary J = (fun D => ⇑(intersectionIdeal T.boundary J).subschemeι '' D) '' irreducibleComponents ↥(intersectionIdeal T.boundary J).subscheme`. Use extensionality with `C`. Rewrite using `[mem_intersectionComponents_iff_exists_irreducibleComponent]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Rewrite using `[h]`. Conclude with `Set.Finite.image _ (TopologicalSpace.NoetherianSpace.finite_irreducibleComponents ..)`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intersectionComponents_finite (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) : (intersectionComponents T.boundary J).Finite := by
@@ -130,7 +128,7 @@ theorem intersectionComponents_finite (T : MarkedIdealWithBoundary.{u}) (hT : T.
   exact Set.Finite.image _ (TopologicalSpace.NoetherianSpace.finite_irreducibleComponents ..)
 
 /- English proof (translation)
-Use `hsm` as an intermediate fact. Introduce and unpack `C₁ h₁ C₂ h₂ ⟨x, hx₁, hx₂⟩`. Conclude with `irreducibleComponents_eq_of_stalk_isDomain _ (fun z => isDomain_stalk_of_smooth ((intersectionIdeal T.boundary J).subschemeι ≫ T.structMap) z) h₁ h₂ hx₁ hx₂`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem irreducibleComponents_eq_of_inter_nonempty_of_smooth (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length))
@@ -145,9 +143,9 @@ private theorem irreducibleComponents_eq_of_inter_nonempty_of_smooth (T : Marked
     h₁ h₂ hx₁ hx₂
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `(mem_intersectionComponents_iff_exists_irreducibleComponent _ _ _).mp hC`. Take `⟨D', hD', rfl⟩` from `(mem_intersectionComponents_iff_exists_irreducibleComponent _ _ _).mp hC'`. Establish `hinj : Function.Injective ⇑(intersectionIdeal T.boundary J).subschemeι` using `(Scheme.Hom.isClosedEmbedding (intersectionIdeal T.boundary J).subschemeι).injective`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x ⟨d, hd, rfl⟩ ⟨d', hd', he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hdd : d' = d` using `hinj he`. Substitute `hdd` using the available equality. Establish `hDD : D = D'` using `irreducibleComponents_eq_of_inter_nonempty_of_smooth T J hsm D hD D' hD' ⟨d', hd, hd'⟩`. Conclude with `hne (by rw [hDD])`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intersectionComponents_disjoint_of_smooth (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length))
@@ -167,13 +165,13 @@ theorem intersectionComponents_disjoint_of_smooth (T : MarkedIdealWithBoundary.{
   exact hne (by rw [hDD])
 
 /- English proof (translation)
-Use `hT.isNoetherian` as an intermediate fact. Establish `: TopologicalSpace.NoetherianSpace ↥(intersectionIdeal T.boundary J).subscheme` using `inferInstance`. Establish `hinj : Function.Injective ⇑(intersectionIdeal T.boundary J).subschemeι` using `(Scheme.Hom.isClosedEmbedding (intersectionIdeal T.boundary J).subschemeι).injective`. Establish `key : ⇑(intersectionIdeal T.boundary J).subschemeι ⁻¹' ⋃₀ 𝒞 = ⋃₀ {D : Set ↥(intersectionIdeal T.boundary J).subscheme | D ∈ irreducibleComponents ↥(intersectionIdeal T.boundary J).subscheme ∧ ⇑(intersectionIdeal T.boundary J).subschemeι '' D ∈ 𝒞}`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `x hx`. Take `⟨C, hC𝒞, hxC⟩` from `hx`. Take `⟨D, hD, rfl⟩` from `(mem_intersectionComponents_iff_exists_irreducibleComponent _ _ _).mp (h𝒞 hC𝒞)`. Take `⟨d, hd, hde⟩` from `hxC`. Establish `hdx : d = x` using `hinj hde`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hdx` using the available equality. Conclude with `⟨D, ⟨hD, hC𝒞⟩, hd⟩`. Introduce and unpack `x ⟨D, ⟨hD, hD𝒞⟩, hxD⟩`. Conclude with `⟨⇑(intersectionIdeal T.boundary J).subschemeι '' D, hD𝒞, ⟨x, hxD, rfl⟩⟩`. Rewrite using `[key]`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_sUnion_of_subset_irreducibleComponents (irreducibleComponents_eq_of_inter_nonempty_of_smooth T J hsm) (fun D hD => hD.1)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_preimage_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length))
@@ -203,13 +201,13 @@ theorem isOpen_preimage_sUnion_intersectionComponents (T : MarkedIdealWithBounda
     (irreducibleComponents_eq_of_inter_nonempty_of_smooth T J hsm) (fun D hD => hD.1)
 
 /- English proof (translation)
-Use `hT.isNoetherian` as an intermediate fact. Establish `: TopologicalSpace.NoetherianSpace ↥(intersectionIdeal T.boundary J).subscheme` using `inferInstance`. Establish `hqc : QuasiCompact ((componentUnionOpens T.boundary J 𝒞 hop).ι ≫ (intersectionIdeal T.boundary J).subschemeι)` using `inferInstance`. Establish `hsub : ⋃₀ 𝒞 ⊆ Set.range ⇑(intersectionIdeal T.boundary J).subschemeι`. Introduce and unpack `x ⟨C, hC, hxC⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨D, hD, rfl⟩` from `(mem_intersectionComponents_iff_exists_irreducibleComponent _ _ _).mp (h𝒞 hC)`. Take `⟨d, hd, rfl⟩` from `hxC`. Conclude with `⟨d, rfl⟩`. Establish `h0 : ⇑((componentUnionOpens T.boundary J 𝒞 hop).ι ≫ (intersectionIdeal T.boundary J).subschemeι) = ⇑(intersectionIdeal T.boundary J).subschemeι ∘ ⇑(componentUnionOpens T.boundary J 𝒞 hop).ι` using `rfl`. Establish `hr2 : Set.range ⇑(componentUnionOpens T.boundary J 𝒞 hop).ι = ⇑(intersectionIdeal T.boundary J).subschemeι ⁻¹' ⋃₀ 𝒞` using `Scheme.Opens.range_ι _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : Set.range ⇑((componentUnionOpens T.boundary J 𝒞 hop).ι ≫ (intersectionIdeal T.boundary J).subschemeι) = ⋃₀ 𝒞`. Rewrite using `[h0, Set.range_comp, hr2]`. Conclude with `Set.image_preimage_eq_of_subset hsub`. Establish `hfin : 𝒞.Finite` using `(intersectionComponents_finite T hT J).subset h𝒞`. Establish `hclosed : IsClosed (⋃₀ 𝒞)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion (fun C hC => isClosed_of_mem_intersectionComponents T.boundary J C (h𝒞 hC))`. Establish `h1 : (↑(componentUnionIdeal T.boundary J 𝒞 hop).support : Set ↥T.scheme) = closure (Set.range ⇑((componentUnionOpens T.boundary J 𝒞 hop).ι ≫ (intersectionIdeal T.boundary J).subschemeι))` using `Scheme.Hom.support_ker _`. Rewrite using `[h1, hrange]`. Conclude with `hclosed.closure_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem componentUnionIdeal_support_eq_sUnion (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))

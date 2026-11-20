@@ -37,21 +37,21 @@ structure SES (A B C : Cx R) where
   surj : ∀ n, Function.Surjective (p.f n)
 
 /- English proof (translation)
-The claim follows from `injective_iff_map_eq_zero (A.d 0)`.
+A detailed English derivation is pending.
 -/
 theorem Cx.ex_zero_iff {A : Cx R} : A.Ex 0 ↔ ∀ x, A.d 0 x = 0 → x = 0 :=
   injective_iff_map_eq_zero (A.d 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h x hx ↦ (h x).1 hx, fun h x ↦ ⟨h x, fun ⟨y, e⟩ ↦ e ▸ A.d_d k y⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cx.ex_succ_iff {A : Cx R} {k : ℕ} : A.Ex (k + 1) ↔ ∀ x, A.d (k + 1) x = 0 → ∃ y, A.d k y = x :=
   ⟨fun h x hx ↦ (h x).1 hx, fun h x ↦ ⟨h x, fun ⟨y, e⟩ ↦ e ▸ A.d_d k y⟩⟩
 
 /- English proof (translation)
-Rewrite `hB`, the goal using `[Cx.ex_zero_iff]`. Introduce `x hx`. Apply `S.inj 0` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hB` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← S.i.f_d, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SES.ex_zero {A B C : Cx R} (S : SES A B C) (hB : B.Ex 0) : A.Ex 0 := by
   rw [Cx.ex_zero_iff] at hB ⊢
@@ -62,15 +62,15 @@ theorem SES.ex_zero {A B C : Cx R} (S : SES A B C) (hB : B.Ex 0) : A.Ex 0 := by
   rw [← S.i.f_d, hx, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Cx.ex_succ_iff]`. Introduce `x hx`. Take `⟨y, hy⟩` from `Cx.ex_succ_iff.1 (hB (k + 1)) (S.i.f (k + 1) x) (by`. Rewrite using `[← S.i.f_d, hx, map_zero])`. Establish `hpy : C.d k (S.p.f k y) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← S.p.f_d, hy]`. Conclude with `(S.ex (k + 1) _).2 ⟨x, rfl⟩`. It suffices to establish `h : ∃ y' : B.X k, B.d k y' = B.d k y ∧ S.p.f k y' = 0 by`. Take `⟨y', h1, h2⟩` from `h`. Take `⟨x', rfl⟩` from `(S.ex k y').1 h2`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x', S.inj (k + 1) ?_⟩` and prove the remaining obligations. Rewrite using `[S.i.f_d, h1, hy]`. Consider the cases of `k with`. Consider the case `zero`. Conclude with `⟨y, rfl, Cx.ex_zero_iff.1 hC _ hpy⟩`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `succ k`. Take `⟨z, hz⟩` from `Cx.ex_succ_iff.1 hC _ hpy`. Take `⟨y', rfl⟩` from `S.surj k z`. Use `⟨y - B.d k y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, B.d_d, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, S.p.f_d, hz, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem SES.ex_succ {A B C : Cx R} (S : SES A B C) (hB : ∀ k, B.Ex k) {k : ℕ} (hC : C.Ex k) :
     A.Ex (k + 1) := by
@@ -97,15 +97,15 @@ theorem SES.ex_succ {A B C : Cx R} (S : SES A B C) (hB : ∀ k, B.Ex k) {k : ℕ
     · rw [map_sub, S.p.f_d, hz, sub_self]
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (y : B.X k), C.d k (S.p.f k y) = 0 → ∃ x' : A.X k, B.d k (y - S.i.f k x') = 0`. Introduce `k y hy`. Take `⟨x, hx⟩` from `(S.ex (k + 1) (B.d k y)).1 (by rw [S.p.f_d, hy])`. Take `⟨x', rfl⟩` from `Cx.ex_succ_iff.1 (hA (k + 1)) x (S.inj (k + 2) (by`. Rewrite using `[S.i.f_d, hx, B.d_d, map_zero]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x', ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← S.i.f_d, hx, sub_self]`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[Cx.ex_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨y, rfl⟩` from `S.surj 0 z`. Take `⟨x', hx'⟩` from `key 0 y hz`. Use `Cx.ex_zero_iff.1 (hB 0) _ hx'` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(S.ex 0 _).2 ⟨x', rfl⟩`. Consider the case `succ k`. Rewrite using `[Cx.ex_succ_iff]`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `S.surj (k + 1) z`. Take `⟨x', hx'⟩` from `key (k + 1) y hz`. Take `⟨y', hy'⟩` from `Cx.ex_succ_iff.1 (hB (k + 1)) _ hx'`. Use `⟨S.p.f k y', ?_⟩` and prove the remaining obligations. Rewrite using `[← S.p.f_d, hy', map_sub, (S.ex (k + 1) _).2 ⟨x', rfl⟩, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SES.ex_quot {A B C : Cx R} (S : SES A B C) (hA : ∀ k, A.Ex k) (hB : ∀ k, B.Ex k) (k : ℕ) :
     C.Ex k := by
@@ -154,7 +154,7 @@ def cone {A B : Cx R} (f : Hm A B) : Cx R where
         rw [f.f_d, map_sub, B.d_d, sub_zero, sub_self])
 
 /- English proof (translation)
-Rewrite using `[Cx.ex_zero_iff]`. Conclude with `⟨fun h a h1 h2 ↦ h a (Prod.ext h1 h2), fun h a ha ↦ h a (congrArg Prod.fst ha) (congrArg Prod.snd ha)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cone_ex_zero {A B : Cx R} (f : Hm A B) :
     (cone f).Ex 0 ↔ ∀ a, A.d 0 a = 0 → f.f 0 a = 0 → a = 0 := by
@@ -162,9 +162,9 @@ theorem cone_ex_zero {A B : Cx R} (f : Hm A B) :
   exact ⟨fun h a h1 h2 ↦ h a (Prod.ext h1 h2), fun h a ha ↦ h a (congrArg Prod.fst ha) (congrArg Prod.snd ha)⟩
 
 /- English proof (translation)
-Rewrite using `[Cx.ex_succ_iff]`. Use `⟨fun h a b h1 h2 ↦ ?_, fun h x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h (a, b) (Prod.ext h1 (sub_eq_zero.2 h2))`. Conclude with `⟨y, congrArg Prod.fst hy, congrArg Prod.snd hy⟩`. Take `⟨y, h1, h2⟩` from `h x.1 x.2 (congrArg Prod.fst hx) (sub_eq_zero.1 (congrArg Prod.snd hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, Prod.ext h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem cone_ex_one {A B : Cx R} (f : Hm A B) :
     (cone f).Ex 1 ↔ ∀ (a : A.X 1) (b : B.X 0), A.d 1 a = 0 → f.f 1 a = B.d 0 b →
@@ -177,9 +177,9 @@ theorem cone_ex_one {A B : Cx R} (f : Hm A B) :
     exact ⟨y, Prod.ext h1 h2⟩
 
 /- English proof (translation)
-Rewrite using `[Cx.ex_succ_iff]`. Use `⟨fun h a b h1 h2 ↦ ?_, fun h x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h (a, b) (Prod.ext h1 (sub_eq_zero.2 h2))`. Conclude with `⟨y.1, y.2, congrArg Prod.fst hy, congrArg Prod.snd hy⟩`. Take `⟨y, z, h1, h2⟩` from `h x.1 x.2 (congrArg Prod.fst hx) (sub_eq_zero.1 (congrArg Prod.snd hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(y, z), Prod.ext h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem cone_ex_succ {A B : Cx R} (f : Hm A B) (k : ℕ) :
     (cone f).Ex (k + 2) ↔ ∀ (a : A.X (k + 2)) (b : B.X (k + 1)), A.d (k + 2) a = 0 →
@@ -193,11 +193,11 @@ theorem cone_ex_succ {A B : Cx R} (f : Hm A B) (k : ℕ) :
     exact ⟨(y, z), Prod.ext h1 h2⟩
 
 /- English proof (translation)
-Use `match k with`. Consider the case `0 => exact (cone_ex_zero f).2 h0`. Consider the case `1`. Use `(cone_ex_one f).2 fun a b ha hb ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Cx.ex_succ_iff.1 (hA 0) a ha`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', h2, h3⟩` from `h1 (b - f.f 0 y) (by rw [map_sub, ← hb, f.f_d, sub_self])`. Conclude with `⟨y + y', by rw [map_add, h2, add_zero], by rw [map_add, h3, add_sub_cancel]⟩`. Consider the case `k + 2`. Use `(cone_ex_succ f k).2 fun a b ha hb ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Cx.ex_succ_iff.1 (hA (k + 1)) a ha`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `Cx.ex_succ_iff.1 (hB k) (f.f (k + 1) y - b) (by`. Rewrite using `[map_sub, ← hb, f.f_d, sub_self])`. Conclude with `⟨y, z, rfl, by rw [hz, sub_sub_cancel]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cone_ex_of_acyclic {A B : Cx R} (f : Hm A B) (hA : ∀ k, A.Ex (k + 1)) (hB : ∀ k, B.Ex (k + 1))
     (h0 : ∀ a, A.d 0 a = 0 → f.f 0 a = 0 → a = 0)
@@ -276,7 +276,7 @@ theorem gp_apply (F : C ⥤ ModuleCat.{0} R) {m n : ℕ} (θ : Fin (m + 1) →o 
       F.map (c.map (homOfLE (Fin.le_last (θ (Fin.last m))))) (f (θ.monotone.functor ⋙ c)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `show (F.map (c.map (𝟙 (Fin.last n)))).hom (f c) = f c`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_id (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) : gp F OrderHom.id f = f := by
   funext c
@@ -284,9 +284,9 @@ theorem gp_id (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) : gp F OrderHo
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `A : η (θ (Fin.last l)) ≤ Fin.last n` using `Fin.le_last _`. Establish `B : η (θ (Fin.last l)) ≤ η (Fin.last m)` using `η.monotone (Fin.le_last _)`. Establish `D : η (Fin.last m) ≤ Fin.last n` using `Fin.le_last _`. Establish `key : c.map (homOfLE A) = c.map (homOfLE B) ≫ c.map (homOfLE D)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← c.map_comp]`. Both sides reduce to the same expression. Use `show (F.map (c.map (homOfLE A))).hom _ = (F.map (c.map (homOfLE D))).hom ((F.map (c.map (homOfLE B))).hom _)`. Rewrite using `[key, F.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gp_comp (F : C ⥤ ModuleCat.{0} R) {l m n : ℕ} (θ : Fin (l + 1) →o Fin (m + 1))
     (η : Fin (m + 1) →o Fin (n + 1)) (f : MCn F l) : gp F (η.comp θ) f = gp F η (gp F θ f) := by
@@ -310,7 +310,7 @@ def mdn (F : C ⥤ ModuleCat.{0} R) (n : ℕ) : MCn F n →ₗ[R] MCn F (n + 1) 
   ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) • gp F (Fin.succAboveOrderEmb i).toOrderHom
 
 /- English proof (translation)
-Simplify using `only [AlgebraicTopology.AlternatingCofaceMapComplex.objD, mdn, ModuleCat.hom_sum, LinearMap.sum_apply, ModuleCat.hom_zsmul, LinearMap.smul_apply]`. Use `(LinearMap.sum_apply _ _ _).trans (Finset.sum_congr rfl fun i _ ↦ ?_)` and prove the remaining obligations. Use `(LinearMap.smul_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul R]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -325,7 +325,7 @@ theorem objD_hom (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cosim F) n`. Establish `h2` using `congrArg (fun φ ↦ φ.hom f) h`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2`. Rewrite using `[← objD_hom, ← objD_hom]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdn_mdn (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) : mdn F (n + 1) (mdn F n f) = 0 := by
   have h := AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cosim F) n
@@ -357,7 +357,7 @@ theorem pb_apply (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleC
     (f : MCn F n) (c : Fin (n + 1) ⥤ C') : pb Φ α n f c = (α.app (c.obj (Fin.last n))).hom (f (c ⋙ Φ)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `h` using `α.naturality (c.map (homOfLE (Fin.le_last (θ (Fin.last m)))))`. Establish `h2` using `congrArg (fun φ ↦ φ.hom (f (θ.monotone.functor ⋙ c ⋙ Φ))) h`. Conclude with `h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pb_gp (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleCat.{0} R} (α : Φ ⋙ F ⟶ G) {m n : ℕ}
     (θ : Fin (m + 1) →o Fin (n + 1)) (f : MCn F m) : pb Φ α n (gp F θ f) = gp G θ (pb Φ α m f) := by
@@ -367,7 +367,7 @@ theorem pb_gp (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleCat.
   exact h2
 
 /- English proof (translation)
-Simplify using `only [mdn, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, pb_gp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_mdn (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleCat.{0} R} (α : Φ ⋙ F ⟶ G) (n : ℕ)
     (f : MCn F n) : pb Φ α (n + 1) (mdn F n f) = mdn G n (pb Φ α n f) := by
@@ -417,7 +417,7 @@ def cokerπ {F F' : C ⥤ ModuleCat.{0} R} (φ : F ⟶ F') : F' ⟶ coker φ whe
   naturality x y g := ModuleCat.hom_ext (LinearMap.ext fun v ↦ rfl)
 
 /- English proof (translation)
-The claim follows from `h ex x v := by show Submodule.mkQ _ v = 0 ↔ _ rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] rfl surj x := Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem ptSES_coker {F F' : C ⥤ ModuleCat.{0} R} {φ : F ⟶ F'} (h : ∀ x, Function.Injective (φ.app x).hom) :
     PtSES φ (cokerπ φ) where
@@ -438,7 +438,7 @@ abbrev fc {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ E) : Fin (n + 1) ⥤ 
   (Fin.succAboveOrderEmb i).toOrderHom.monotone.functor ⋙ c
 
 /- English proof (translation)
-Simplify using `only [mdn, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mdn_apply (H : E ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn H n) (c : Fin (n + 2) ⥤ E) :
     mdn H n f c = ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) •
@@ -451,11 +451,11 @@ abbrev pt (y : E) : Fin 1 ⥤ E := (Functor.const _).obj y
 variable [Quiver.IsThin E]
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact ⟨𝟙 _⟩`. Consider the case `cast i`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Conclude with `⟨c.map (homOfLE (Fin.le_last i)) ≫ f⟩`. Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact absurd h (not_le.2 (Fin.castSucc_lt_last j))`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `⟨c.map (homOfLE (Fin.castSucc_le_castSucc_iff.1 h))⟩`.
+Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem snoc_nonempty {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y) {i j : Fin (n + 2)}
     (h : i ≤ j) : Nonempty ((Fin.snoc (α := fun _ ↦ E) c.obj y i : E) ⟶ (Fin.snoc (α := fun _ ↦ E) c.obj y j : E)) := by
@@ -480,14 +480,14 @@ def snoc {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y
   map_comp _ _ := Subsingleton.elim _ _
 
 /- English proof (translation)
-Simplify using `[snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_obj_last {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y) :
     (snoc c y f).obj (Fin.last _) = y := by
   simp [snoc]
 
 /- English proof (translation)
-Simplify using `[snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_obj_castSucc {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y) (i : Fin (n + 1)) :
     (snoc c y f).obj i.castSucc = c.obj i := by
@@ -497,13 +497,13 @@ def lastH {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ 
     (snoc c y f).obj (Fin.last _) ⟶ y := eqToHom (snoc_obj_last c y f)
 
 /- English proof (translation)
-The claim follows from `CategoryTheory.Functor.ext h fun _ _ _ ↦ Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem chain_ext {n : ℕ} {c c' : Fin n ⥤ E} (h : ∀ i, c.obj i = c'.obj i) : c = c' :=
   CategoryTheory.Functor.ext h fun _ _ _ ↦ Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `chain_ext fun i ↦ by show (snoc c y f).obj ((Fin.last _).succAbove i) = _ rw [Fin.succAbove_last, snoc_obj_castSucc]`.
+A detailed English derivation is pending.
 -/
 theorem fc_last_snoc {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y) :
     fc (Fin.last _) (snoc c y f) = c := chain_ext fun i ↦ by
@@ -511,13 +511,13 @@ theorem fc_last_snoc {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.l
   rw [Fin.succAbove_last, snoc_obj_castSucc]
 
 /- English proof (translation)
-Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last i)), Fin.succ_last]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sa_last {n : ℕ} (i : Fin (n + 2)) : i.castSucc.succAbove (Fin.last n.succ) = Fin.last (n + 2) := by
   rw [Fin.succAbove_of_le_castSucc _ _ (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last i)), Fin.succ_last]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Fin.succAbove, Fin.lt_def]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sa_cast {n : ℕ} (i : Fin (n + 2)) (k : Fin (n + 1)) :
     i.castSucc.succAbove k.castSucc = (i.succAbove k).castSucc := by
@@ -526,7 +526,7 @@ theorem sa_cast {n : ℕ} (i : Fin (n + 2)) (k : Fin (n + 1)) :
   split_ifs <;> simp_all <;> omega
 
 /- English proof (translation)
-The claim follows from `chain_ext fun k ↦ by show (snoc c y f).obj (i.castSucc.succAbove k) = _ induction k using Fin.lastCases with | last => rw [snoc_obj_last, sa_last, snoc_obj_last] | cast k => rw [snoc_obj_castSucc, sa_cast, snoc_obj_castSucc] rfl`.
+A detailed English derivation is pending.
 -/
 theorem fc_castSucc_snoc {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ E) (y : E) (f : c.obj (Fin.last _) ⟶ y)
     (g : (fc i c).obj (Fin.last n) ⟶ y) : fc i.castSucc (snoc c y f) = snoc (fc i c) y g := chain_ext fun k ↦ by
@@ -539,7 +539,7 @@ theorem fc_castSucc_snoc {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ E) (y 
     rfl
 
 /- English proof (translation)
-The claim follows from `chain_ext fun k ↦ by show (snoc c y f).obj (Fin.succAbove 0 k) = y have : Fin.succAbove 0 k = Fin.last 1 := by rw [Fin.fin_one_eq_zero k]; rfl rw [this, snoc_obj_last]`.
+A detailed English derivation is pending.
 -/
 theorem fc_zero_snoc (c : Fin 1 ⥤ E) (y : E) (f : c.obj (Fin.last 0) ⟶ y) : fc 0 (snoc c y f) = pt y :=
   chain_ext fun k ↦ by
@@ -558,7 +558,7 @@ structure CoD (H : E ⥤ ModuleCat.{0} R) (B : E → ModuleCat.{0} R) where
 variable {H : E ⥤ ModuleCat.{0} R} {B : E → ModuleCat.{0} R}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Subsingleton.elim g g']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem CoD.ev_congr (A : CoD H B) {n : ℕ} (φ : MCn H n) {c c' : Fin (n + 1) ⥤ E} (h : c = c') {y : E}
     (g : c.obj (Fin.last n) ⟶ y) (g' : c'.obj (Fin.last n) ⟶ y) : A.ev g (φ c) = A.ev g' (φ c') := by
@@ -566,7 +566,7 @@ theorem CoD.ev_congr (A : CoD H B) {n : ℕ} (φ : MCn H n) {c c' : Fin (n + 1) 
   rw [Subsingleton.elim g g']
 
 /- English proof (translation)
-Rewrite using `[mdn_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Conclude with `A.ev_map _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem CoD.ev_mdn (A : CoD H B) {n : ℕ} (f : MCn H n) (c : Fin (n + 2) ⥤ E) {y : E}
     (g : c.obj (Fin.last _) ⟶ y) : A.ev g (mdn H n f c) = ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) •
@@ -578,9 +578,9 @@ theorem CoD.ev_mdn (A : CoD H B) {n : ℕ} (f : MCn H n) (c : Fin (n + 2) ⥤ E)
   exact A.ev_map _ _ _
 
 /- English proof (translation)
-Establish `h` using `A.ev_mdn a (snoc c y g) (lastH c y g)`. Rewrite `h` using `[ha, Fin.sum_univ_two]`. Establish `e1 : ∀ m : (fc 0 (snoc c y g)).obj (Fin.last 0) ⟶ y, A.ev m (a (fc 0 (snoc c y g))) = A.ev (𝟙 y) (a (pt y))` using `fun m ↦ A.ev_congr a (fc_zero_snoc c y g) m _`. Establish `e2 : ∀ m : (fc 1 (snoc c y g)).obj (Fin.last 0) ⟶ y, A.ev m (a (fc 1 (snoc c y g))) = A.ev g (a c)` using `fun m ↦ A.ev_congr a (fc_last_snoc c y g) m g`. Establish `h' : (0 : B y) = ((-1 : R) ^ ((0 : Fin 2) : ℕ)) • A.ev (𝟙 y) (a (pt y)) + ((-1 : R) ^ ((1 : Fin 2) : ℕ)) • A.ev g (a c)` using `(map_zero _).symm.trans (h.trans (congrArg₂ (· + ·) (congrArg _ (e1 _)) (congrArg _ (e2 _))))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul] at h'`. Conclude with `(sub_eq_zero.1 ((sub_eq_add_neg _ _).trans h'.symm)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoD.key (A : CoD H B) (a : MCn H 0) (ha : mdn H 0 a = 0) (c : Fin 1 ⥤ E) {y : E}
     (g : c.obj (Fin.last 0) ⟶ y) : A.ev g (a c) = A.ev (𝟙 y) (a (pt y)) := by
@@ -597,7 +597,7 @@ theorem CoD.key (A : CoD H B) (a : MCn H 0) (ha : mdn H 0 a = 0) (c : Fin 1 ⥤ 
   exact (sub_eq_zero.1 ((sub_eq_add_neg _ _).trans h'.symm)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `A.ext _ fun y f ↦ ?_` and prove the remaining obligations. Rewrite using `[A.key a ha c f, h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem CoD.zero_ext (A : CoD H B) (a : MCn H 0) (ha : mdn H 0 a = 0)
     (h0 : ∀ y, A.ev (𝟙 y) (a (pt y)) = 0) : a = 0 := by
@@ -606,7 +606,7 @@ theorem CoD.zero_ext (A : CoD H B) (a : MCn H 0) (ha : mdn H 0 a = 0)
   rw [A.key a ha c f, h0]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `A.zero_ext _ (by rw [map_sub, hp, hq, sub_self]) fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem CoD.uniq (A : CoD H B) (p q : MCn H 0) (hp : mdn H 0 p = 0) (hq : mdn H 0 q = 0)
     (h : ∀ y, A.ev (𝟙 y) (p (pt y)) = A.ev (𝟙 y) (q (pt y))) : p = q := by
@@ -615,9 +615,9 @@ theorem CoD.uniq (A : CoD H B) (p q : MCn H 0) (hp : mdn H 0 p = 0) (hq : mdn H 
   rw [Pi.sub_apply, map_sub, h, sub_self]
 
 /- English proof (translation)
-Establish `: ∀ c : Fin 1 ⥤ E, ∃ v : H.obj (c.obj (Fin.last 0)), ∀ (y : E) (f : c.obj (Fin.last 0) ⟶ y), A.ev f v = b y` using `fun c ↦ A.ex fun y _ ↦ b y`. Use `choose a ha using this`. Use `⟨a, ?_, fun y ↦ ha (pt y) y (𝟙 y)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Use `A.ext _ fun y f ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.ev_mdn, Fin.sum_univ_two]`. Establish `e : (0 : B y) = ((-1 : R) ^ ((0 : Fin 2) : ℕ)) • b y + ((-1 : R) ^ ((1 : Fin 2) : ℕ)) • b y` using `by simp`. Conclude with `(congrArg₂ (· + ·) (congrArg _ (ha (fc 0 c) y _)) (congrArg _ (ha (fc 1 c) y _))).trans e.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CoD.zero_ex (A : CoD H B) (b : ∀ y, B y) :
     ∃ a : MCn H 0, mdn H 0 a = 0 ∧ ∀ y, A.ev (𝟙 y) (a (pt y)) = b y := by
@@ -632,17 +632,15 @@ theorem CoD.zero_ex (A : CoD H B) (b : ∀ y, B y) :
   exact (congrArg₂ (· + ·) (congrArg _ (ha (fc 0 c) y _)) (congrArg _ (ha (fc 1 c) y _))).trans e.symm
 
 /- English proof (translation)
-Establish `: ∀ c : Fin (n + 1) ⥤ E, ∃ v : H.obj (c.obj (Fin.last n)), ∀ (y : E) (f : c.obj (Fin.last n) ⟶ y), A.ev f v = A.ev (lastH c y f) (φ (snoc c y f))` using `fun c ↦ A.ex _`. Use `choose ψ hψ using this`. Establish `main : ∀ (c : Fin (n + 2) ⥤ E) (y : E) (f : c.obj (Fin.last _) ⟶ y), A.ev f (mdn H n ψ c) + ((-1 : R) ^ (n + 2)) • A.ev f (φ c) = 0`. Introduce `c y f`. Establish `h` using `A.ev_mdn φ (snoc c y f) (lastH c y f)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hφ, Fin.sum_univ_castSucc]`. Establish `h0` using `(map_zero (A.ev (lastH c y f))).symm.trans h`. Rewrite using `[A.ev_mdn]`. Use `Eq.trans ?_ h0.symm` and prove the remaining obligations. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun i _ ↦ ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_castSucc]`. Use `congrArg _ ((hψ (fc i c) y _).trans ?_)` and prove the remaining obligations. Conclude with `(A.ev_congr φ (fc_castSucc_snoc i c y f _) _ _).symm`. Rewrite using `[Fin.val_last]`. Conclude with `congrArg _ (A.ev_congr φ (fc_last_snoc c y f) _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨(-((-1 : R) ^ (n + 2))) • ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Use function extensionality and compare the values at `c`. Rewrite using `[← sub_eq_zero]`. Use `A.ext _ fun y f ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : ((-1 : R) ^ (n + 2)) * ((-1 : R) ^ (n + 2)) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Use `main c y f` as an intermediate fact. Rewrite `this` using `[add_eq_zero_iff_eq_neg]`.
-
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, map_sub, map_neg, map_smul, this, smul_neg, neg_smul, neg_neg, smul_smul, hs, one_smul, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoD.exact (A : CoD H B) (n : ℕ) (φ : MCn H (n + 1)) (hφ : mdn H (n + 1) φ = 0) :
     ∃ ψ, mdn H n ψ = φ := by
@@ -710,7 +708,7 @@ def coindη {E : Type} [Category.{0} E] (G : E ⥤ ModuleCat.{0} R) : G ⟶ coin
     simp)
 
 /- English proof (translation)
-The claim follows from `fun v w h ↦ by have h2 : (G.map (𝟙 x)).hom v = (G.map (𝟙 x)).hom w := congrFun h ⟨x, 𝟙 x⟩ simpa using h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coindη_inj {E : Type} [Category.{0} E] (G : E ⥤ ModuleCat.{0} R) (x : E) :
     Function.Injective ((coindη G).app x).hom := fun v w h ↦ by
@@ -741,7 +739,7 @@ def fib (T : C) : τ.F.obj T →ₗ[R] MCn (τ.fibG T) 0 :=
   LinearMap.pi fun c ↦ (τ.α.app (T, c.obj (Fin.last 0))).hom
 
 /- English proof (translation)
-Establish `h : (τ.α.app (T, U')).hom ((τ.F.map (𝟙 T)).hom x) = ((τ.fibG T).map g).hom ((τ.α.app (T, U)).hom x)` using `congrArg (fun t ↦ t.hom x) (τ.α.naturality ((CategoryTheory.Prod.sectR T D).map g))`. Rewrite using `[← h, τ.F.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fib_nat (T : C) {U U' : D} (g : U ⟶ U') (x : τ.F.obj T) :
     ((τ.fibG T).map g).hom ((τ.α.app (T, U)).hom x) = (τ.α.app (T, U')).hom x := by
@@ -751,7 +749,7 @@ theorem fib_nat (T : C) {U U' : D} (g : U ⟶ U') (x : τ.F.obj T) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[mdn_apply, Fin.sum_univ_two]`. Conclude with `(congrArg₂ (· + ·) (congrArg _ (τ.fib_nat T _ x)) (congrArg _ (τ.fib_nat T _ x))).trans (alt2 _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_d (T : C) (x : τ.F.obj T) : mdn (τ.fibG T) 0 (τ.fib T x) = 0 := by
   funext c
@@ -795,7 +793,7 @@ def ηF : τ.F ⟶ τ.J where
 abbrev ηG : τ.G ⟶ τ.I := coindη τ.G
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h` using `congrArg (fun t ↦ t.hom v) (τ.α.naturality p.2)`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm (x : C × D) (v : τ.F.obj x.1) :
     (τ.up.α.app x).hom ((τ.ηF.app x.1).hom v) = (τ.ηG.app x).hom ((τ.α.app x).hom v) := by
@@ -823,7 +821,7 @@ section Main
 variable {C D : Type} [Category.{0} C] [Category.{0} D]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Conclude with `A.ext _ fun y f ↦ by rw [map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoD.ev_inj {E : Type} [Category.{0} E] {H : E ⥤ ModuleCat.{0} R} {B : E → ModuleCat.{0} R} (A : CoD H B)
     {x : E} {v w : H.obj x} (h : ∀ (y : E) (f : x ⟶ y), A.ev f v = A.ev f w) : v = w := by
@@ -856,11 +854,11 @@ def fibD [Quiver.IsThin C] [Quiver.IsThin D] (T : C) :
   ex {U} b := ⟨fun p ↦ b p.1.2 p.2.2 ⟨p.1.1, p.2.1⟩, fun _ _ ↦ rfl⟩
 
 /- English proof (translation)
-Use `match k with`. Consider the case `0`. Use `Cx.ex_zero_iff.2 fun j hj ↦ funext fun p ↦ funext fun U ↦ ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun hj (pt U)) ⟨(p.1, U), Prod.mkHom p.2 (𝟙 U)⟩`. Conclude with `h`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `1`. Use `Cx.ex_succ_iff.2 fun a ha ↦ ?_` and prove the remaining obligations. Use `⟨fun p U ↦ (τ.fibD T).ev (𝟙 U) ((a : MCn (τ.up.fibG T) 0) (pt U)) ⟨p.1, p.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Use `(τ.fibD T).ev_inj fun U' g ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(τ.fibD T).key a ha c g]`. Use `funext fun p ↦ ?_` and prove the remaining obligations. Both sides reduce to the same expression. Consider the case `k + 2 => exact Cx.ex_succ_iff.2 fun a ha ↦ (τ.fibD T).exact k a ha`.
+Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aug_up_ex [Quiver.IsThin C] [Quiver.IsThin D] (T : C) (k : ℕ) : (τ.up.aug T).Ex k := by
   match k with
@@ -879,11 +877,11 @@ theorem aug_up_ex [Quiver.IsThin C] [Quiver.IsThin D] (T : C) (k : ℕ) : (τ.up
   | k + 2 => exact Cx.ex_succ_iff.2 fun a ha ↦ (τ.fibD T).exact k a ha
 
 /- English proof (translation)
-Establish `hA : ∀ k, (cn τ.J).Ex (k + 1)` using `fun k ↦ Cx.ex_succ_iff.2 fun a ha ↦ (coindD fun T ↦ ModuleCat.of R (∀ U : D, τ.G.obj (T, U))).exact k a ha`. Establish `hB : ∀ k, (cn τ.I).Ex (k + 1)` using `fun k ↦ Cx.ex_succ_iff.2 fun a ha ↦ (coindD τ.G.obj).exact k a ha`. Use `cone_ex_of_acyclic (A := cn τ.J) (B := cn τ.I) τ.up.pull hA hB ?_ ?_ k` and prove the remaining obligations. Introduce `a ha h`. Use `(coindD fun T ↦ ModuleCat.of R (∀ U : D, τ.G.obj (T, U))).zero_ext a ha fun T' ↦ funext fun U ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrFun h (pt (T', U))) ⟨(T', U), 𝟙 _⟩`. Introduce `b hb`. Take `⟨a, ha, hab⟩` from `(coindD (fun T ↦ ModuleCat.of R (∀ U : D, τ.G.obj (T, U)))).zero_ex (fun T' U ↦ (coindD τ.G.obj).ev (𝟙 _) ((b : MCn τ.I 0) (pt (T', U))))`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `h1 : τ.up.pull.f 1 ((cn τ.J).d 0 a) = (cn τ.I).d 0 (τ.up.pull.f 0 a)` using `τ.up.pull.f_d 0 a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (cn τ.J).d 0 a = 0` using `ha`. Rewrite `h1` using `[h2, map_zero]`. Conclude with `(coindD τ.G.obj).uniq _ _ h1.symm hb fun y ↦ congrFun (hab y.1) y.2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_up [Quiver.IsThin C] [Quiver.IsThin D] (k : ℕ) : (cone τ.up.pull).Ex k := by
   have hA : ∀ k, (cn τ.J).Ex (k + 1) := fun k ↦ Cx.ex_succ_iff.2 fun a ha ↦
@@ -915,9 +913,9 @@ namespace Tr
 variable (τ : Tr R C D)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Apply `(injective_iff_map_eq_zero _).1 (h T)` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Establish `h1 : (τ.α.app (T, c.obj (Fin.last 0))).hom ((τ.F.map (𝟙 T)).hom v) = 0` using `congrFun (congrFun hv ⟨T, 𝟙 T⟩) (c.obj (Fin.last 0))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h1` using `[τ.F.map_id]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ηF_inj (h : ∀ T, Function.Injective (τ.fib T)) (T : C) : Function.Injective (τ.ηF.app T).hom := by
   rw [injective_iff_map_eq_zero]
@@ -930,13 +928,13 @@ theorem ηF_inj (h : ∀ T, Function.Injective (τ.fib T)) (T : C) : Function.In
   exact h1
 
 /- English proof (translation)
-The claim follows from `ptSES_coker (τ.ηF_inj h)`.
+A detailed English derivation is pending.
 -/
 theorem ηF_pt (h : ∀ T, Function.Injective (τ.fib T)) : PtSES τ.ηF (cokerπ τ.ηF) :=
   ptSES_coker (τ.ηF_inj h)
 
 /- English proof (translation)
-The claim follows from `ptSES_coker (coindη_inj τ.G)`.
+A detailed English derivation is pending.
 -/
 theorem ηG_pt : PtSES τ.ηG (cokerπ τ.ηG) := ptSES_coker (coindη_inj τ.G)
 
@@ -946,7 +944,7 @@ def coneSES (h : ∀ T, Function.Injective (τ.fib T)) :
     (fun n f ↦ funext fun c ↦ τ.comm _ _) (fun n f ↦ rfl)
 
 /- English proof (translation)
-The claim follows from `τ.ηG_pt.inj _ ex x := τ.ηG_pt.ex _ surj x := τ.ηG_pt.surj _`.
+A detailed English derivation is pending.
 -/
 theorem ptFib (T : C) : PtSES (Functor.whiskerLeft (CategoryTheory.Prod.sectR T D) τ.ηG)
     (Functor.whiskerLeft (CategoryTheory.Prod.sectR T D) (cokerπ τ.ηG)) where
@@ -982,9 +980,9 @@ def augSES (h : ∀ T, Function.Injective (τ.fib T)) (T : C) : SES (τ.aug T) (
 end Tr
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `τ h`. Conclude with `(τ.coneSES fun T ↦ h T 0).ex_zero (τ.cone_up 0)`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ h`. Establish `h0 : ∀ T, Function.Injective (τ.fib T)` using `fun T ↦ h T 0`. Use `(τ.coneSES h0).ex_succ τ.cone_up (ih τ.quo fun T j ↦ ?_)` and prove the remaining obligations. Conclude with `(τ.augSES h0 T).ex_quot (h T) (τ.aug_up_ex T) j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cone_ex [Quiver.IsThin C] [Quiver.IsThin D] (k : ℕ) :
     ∀ τ : Tr R C D, (∀ T j, (τ.aug T).Ex j) → (cone τ.pull).Ex k := by
@@ -1029,11 +1027,11 @@ end Bridge
 section Final
 
 /- English proof (translation)
-Use `⟨(cone_ex_zero f).1 (h 0), fun b hb ↦ ?_, fun n a ha b hb ↦ ?_, fun n z hz ↦ ?_⟩` and prove the remaining obligations. Conclude with `(cone_ex_one f).1 (h 1) 0 b (map_zero _) (by rw [map_zero, hb])`. Consider the cases of `n with`. Consider the case `zero`. Take `⟨y, h1, -⟩` from `(cone_ex_one f).1 (h 1) a b ha hb.symm`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, h1⟩`. Consider the case `succ k`. Take `⟨y, z, h1, -⟩` from `(cone_ex_succ f k).1 (h (k + 2)) a b ha hb.symm`. Conclude with `⟨y, h1⟩`. Take `⟨y, w, h1, h2⟩` from `(cone_ex_succ f n).1 (h (n + 2)) 0 z (map_zero _) (by rw [map_zero, hz])`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, w, h1, by rw [← h2]; abel⟩`.
+A detailed English derivation is pending.
 -/
 theorem qiso_of_cone {A B : Cx R} (f : Hm A B) (h : ∀ k, (cone f).Ex k) :
     (∀ a, A.d 0 a = 0 → f.f 0 a = 0 → a = 0) ∧
@@ -1055,13 +1053,13 @@ theorem qiso_of_cone {A B : Cx R} (f : Hm A B) (h : ∀ k, (cone f).Ex k) :
 open MainStatements.Hodge in
 
 /- English proof (translation)
-Introduce `_ R _ C _ F D _ _ _ G m h`. Establish `hτ : ∀ T j, ((trOf m).aug T).Ex j`. Introduce `T j`. Take `⟨h1, h2, h3⟩` from `h T`. Use `match j with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `0 => exact h1`. Consider the case `1 => exact h2`. Consider the case `k + 2 => exact h3 k`. Take `⟨q1, q2, q3, q4⟩` from `qiso_of_cone (trOf m).pull fun k ↦ cone_ex k (trOf m) hτ`. Use `⟨⟨fun x hx hy ↦ ?_, fun z hz ↦ ?_⟩, fun n ↦ ⟨fun x hx hy ↦ ?_, fun z hz ↦ ?_⟩⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hy`. Conclude with `⟨0, by`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `(q1 x hx hy.symm).symm⟩`. Take `⟨x, h1, h2⟩` from `q2 z hz`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, 0, h1, (sub_eq_zero.2 h2)⟩`. Take `⟨y, hy⟩` from `hy`. Conclude with `q3 n x hx y hy`. Conclude with `q4 n z hz`.
+A detailed English derivation is pending.
 -/
 theorem fubiniSt : CxSt → FubiniSt := by
   intro _ R _ C _ F D _ _ _ G m h

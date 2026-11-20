@@ -9,9 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Plug
 
 /- English proof (translation)
-Introduce `hR 𝒮 hcs K p`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `p.x.what₂.r.z.geo.fw.laws`. Conclude with `hcs K p.B p.f p.T p.w p.Z p.x.Wt p.O.p0 p.x.what₂ p.x.rx`. Conclude with `GlobalTheory.T.fieldTies_of_rayField_of_ksExact hR (p.w.st p.Z) p.f p.w.δ p.w.exact`.
-
-Use `show HalfAt (ofObj p.O).errX (Fr.at (p.w.st p.Z) p.f)`. Rewrite using `[p.x.errX]`. Conclude with `GlobalTheory.T.conjGenerators_mem_framePrimes_trueColumns p.B p.f p.T p.w p.Z p.x.col.toColT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tied_cfOf : GlobalTheory.NT.RayField → ∀ (𝒮 : Slots), CoreSlot 𝒮 → ∀ (K : Ctx) (p : WPt 𝒮 K), Tied p.O.ex.errX (cfOf p).J (cfOf p).C := by
   intro hR 𝒮 hcs K p

@@ -16,7 +16,7 @@ open GlobalTheory.ChartGlue
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn⟩`. Use `haveI : Nonempty (Fin n) := inferInstance`. Use `haveI : Nontrivial (V n) := inferInstance`. Conclude with `hS.measure_zero volume`.
+A detailed English derivation is pending.
 -/
 theorem volume_finite (hn : n ≠ 0) {S : Set (V n)} (hS : S.Finite) : volume S = 0 := by
   haveI : NeZero n := ⟨hn⟩
@@ -29,7 +29,7 @@ section Null
 variable {X ι : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Rewrite using `[chartMeas_apply e ρ hF.measurableSet]`. Conclude with `setLIntegral_measure_zero _ _ (volume_finite hn ((hF.inter_of_right _).image _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMeas_finite (hn : n ≠ 0) (e : OpenPartialHomeomorph X (V n)) (ρ : X → ℝ≥0∞)
     {F : Set X} (hF : F.Finite) : chartMeas e ρ F = 0 := by
@@ -37,11 +37,9 @@ theorem chartMeas_finite (hn : n ≠ 0) (e : OpenPartialHomeomorph X (V n)) (ρ 
   exact setLIntegral_measure_zero _ _ (volume_finite hn ((hF.inter_of_right _).image _))
 
 /- English proof (translation)
-Establish `hle : glueMeas e ρ ≤ (glueMeas e ρ).restrict Fᶜ`. Use `iSup_le fun i => Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hB]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h : y ∈ F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr h`. Conclude with `Or.inl ⟨hy, h⟩`. Use `_ ≤ chartMeas (e i) (ρ i) (B ∩ Fᶜ) + chartMeas (e i) (ρ i) F := measure_union_le _ _`. Use `_ = chartMeas (e i) (ρ i) (B ∩ Fᶜ) := by rw [chartMeas_finite hn _ _ hF, add_zero]`. Use `_ ≤ glueMeas e ρ (B ∩ Fᶜ) := Measure.le_iff'.1 (le_iSup (fun i => chartMeas (e i) (ρ i)) i) _`.
-
-Establish `h` using `Measure.le_iff'.1 hle F`. Rewrite `h` using `[Measure.restrict_apply hF.measurableSet, inter_compl_self, measure_empty]`. Conclude with `nonpos_iff_eq_zero.1 h`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueMeas_finite (hn : n ≠ 0) (e : ι → OpenPartialHomeomorph X (V n)) (ρ : ι → X → ℝ≥0∞)
     {F : Set X} (hF : F.Finite) : glueMeas e ρ F = 0 := by
@@ -83,21 +81,19 @@ variable {A B ι κ : Type} [TopologicalSpace A] [TopologicalSpace B] [T2Space A
 omit [T2Space A] [T2Space B] in
 
 /- English proof (translation)
-Take `⟨i, j, hzj, hzi, hcompat⟩` from `hch`. Establish `hMo : IsOpen (U ∩ (e' j).source ∩ m ⁻¹' (e i).source)` using `(hUo.inter (e' j).open_source).inter ((e i).open_source.preimage hm)`. Use `⟨U ∩ (e' j).source ∩ m ⁻¹' (e i).source, fun w hw => hw.1.1, hMo, ⟨⟨hzU, hzj⟩, hzi⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hm_eq : ∀ w ∈ U ∩ (e' j).source ∩ m ⁻¹' (e i).source, (e i).symm (e' j w) = m w`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hcompat w hw.1.2 hw.2).1, (e i).left_inv hw.2]`. Establish `himage : m '' (U ∩ (e' j).source ∩ m ⁻¹' (e i).source) = (e i).symm '' (e' j '' (U ∩ (e' j).source ∩ m ⁻¹' (e i).source))`. Rewrite using `[Set.image_image]`. Conclude with `(Set.image_congr hm_eq).symm`. Rewrite using `[himage]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : IsOpen (e' j '' (U ∩ (e' j).source ∩ m ⁻¹' (e i).source))` using `(e' j).isOpen_image_of_subset_source hMo (fun w hw => hw.1.2)`. Use `(e i).symm.isOpen_image_of_subset_source hS ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[OpenPartialHomeomorph.symm_source, (hcompat w hw.1.2 hw.2).1]`. Conclude with `(e i).map_source hw.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Q hQ hQM`. Establish `hQi : Q ⊆ (e i).source`. Introduce `q hq`. Take `⟨w, hw, rfl⟩` from `hQM hq`. Conclude with `hw.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPm : MeasurableSet (U ∩ (e' j).source ∩ m ⁻¹' (e i).source ∩ m ⁻¹' Q)` using `hMo.measurableSet.inter (hm.measurable hQ)`. Establish `hPj : U ∩ (e' j).source ∩ m ⁻¹' (e i).source ∩ m ⁻¹' Q ⊆ (e' j).source` using `fun w hw => hw.1.1.2`. Rewrite using `[_root_.GlobalTheory.ChartGlue.glueMeas_apply e' ρ' hd' hρ' j hPm hPj, _root_.GlobalTheory.ChartGlue.glueMeas_apply e ρ hd hρ i hQ hQi, _root_.GlobalTheory.ChartGlue.chartMeas_apply_of_subset _ _ hPm hPj, _root_.GlobalTheory.ChartGlue.chartMeas_apply_of_subset _ _ hQ hQi]`. Establish `himg : e' j '' (U ∩ (e' j).source ∩ m ⁻¹' (e i).source ∩ m ⁻¹' Q) = e i '' Q`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨m w, hw.2, ((hcompat w hw.1.1.2 hw.1.2).1).symm⟩`. Introduce and unpack `⟨q, hq, rfl⟩`. Take `⟨w, hw, rfl⟩` from `hQM hq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨w, ⟨hw, hq⟩, (hcompat w hw.1.2 hw.2).1⟩`. Rewrite using `[himg]`. Use `setLIntegral_congr_fun (_root_.GlobalTheory.ChartGlue.measurableSet_image _ hQ hQi) ?_` and prove the remaining obligations. Introduce and unpack `v ⟨q, hq, rfl⟩`. Take `⟨w, hw, rfl⟩` from `hQM hq`.
-
-Use `beta_reduce`. Rewrite using `[(e i).left_inv hw.2, ← (hcompat w hw.1.2 hw.2).1, (e' j).left_inv hw.1.2]`. Conclude with `(hcompat w hw.1.2 hw.2).2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GlueCover.exists_sheet
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (_root_.ReciprocityTheory.L2DbarEstimates.Y.ovl e i j))
@@ -163,23 +159,21 @@ theorem _root_.GlobalTheory.GlueCover.exists_sheet
     exact (hcompat w hw.1.2 hw.2).2
 
 /- English proof (translation)
-Establish `hfin : ∀ y ∉ T, (m ⁻¹' {y}).Finite` using `fun y hy => finite_of_encard_eq_coe (hfib y hy)`. Establish `hcard : ∀ y (hy : y ∉ T), (hfin y hy).toFinset.card = d` using `fun y hy => by`. Establish `h` using `hfib y hy`. Rewrite `h` using `[← (hfin y hy).coe_toFinset, encard_coe_eq_coe_finsetCard]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUd⟩` from `(hfin x hx).t2_separation`. Establish `hFc` using `hcard x hx`. Establish `hFm : ∀ z, z ∈ (hfin x hx).toFinset ↔ m z = x` using `fun z => by simp`. Generalize the expression as in `(hfin x hx).toFinset = F at hFc hFm`. Establish `hzF : ∀ z ∈ F, m z = x` using `fun z hz => (hFm z).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzT : ∀ z ∈ F, m z ∉ T` using `fun z hz => by rwa [hzF z hz]`. Establish `hsheet : ∀ z, z ∈ F → ∃ M : Set B, M ⊆ U z ∧ IsOpen M ∧ z ∈ M ∧ IsOpen (m '' M) ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ m '' M → glueMeas e' ρ' (M ∩ m ⁻¹' Q) = glueMeas e ρ Q` using `fun z hz => exists_sheet hd hρ hd' hρ' hm (hch z (hzT z hz)) (hU z).2 (hU z).1`. Use `choose! M hMU hMo hzM hMi hMQ using hsheet`. Use `⟨(⋂ z ∈ F, m '' M z) ∩ Tᶜ, (isOpen_biInter_finset hMi).inter hT.isClosed.isOpen_compl, ⟨mem_iInter₂.2 fun z hz => ⟨z, hzM z hz, hzF z hz⟩, hx⟩, fun Q hQ hQW => ?_⟩` and prove the remaining obligations. Establish `hdisj : ∀ z₁ ∈ F, ∀ z₂ ∈ F, z₁ ≠ z₂ → Disjoint (M z₁) (M z₂)` using `fun z₁ h₁ z₂ h₂ hne => Disjoint.mono (hMU z₁ h₁) (hMU z₂ h₂) (hUd (hzF z₁ h₁) (hzF z₂ h₂) hne)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : m ⁻¹' Q = ⋃ z ∈ F, (M z ∩ m ⁻¹' Q)`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hWx` using `hQW hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpre : ∀ z ∈ F, ∃ z', z' ∈ M z ∧ m z' = m w` using `fun z hz => by`. Take `⟨z', h₁, h₂⟩` from `mem_iInter₂.1 hWx.1 z hz`. Conclude with `⟨z', h₁, h₂⟩`. Use `haveI : Nonempty B := ⟨w⟩`. Use `choose! f hfM hfm using hpre`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj : InjOn f F` using `fun z₁ h₁ z₂ h₂ h12 => by`. Assume the negation of the conclusion as `hne`. Conclude with `disjoint_left.1 (hdisj z₁ h₁ z₂ h₂ hne) (hfM z₁ h₁) (h12 ▸ hfM z₂ h₂)`. Establish `hsub : F.image f ⊆ (hfin (m w) hWx.2).toFinset` using `fun v hv => by`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hv`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hfm z hz`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by`. Rewrite using `[Finset.card_image_of_injOn hinj, hcard _ hWx.2, hFc])`. Establish `hwm : w ∈ F.image f`. Rewrite using `[heq]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨z, hz, hzw⟩` from `Finset.mem_image.1 hwm`. Conclude with `mem_iUnion₂.2 ⟨z, hz, hzw ▸ hfM z hz, hw⟩`. Introduce `hw`. Take `⟨z, _, _, h⟩` from `mem_iUnion₂.1 hw`.
-
-Conclude with `h`. Rewrite using `[key, measure_biUnion_finset (fun z₁ h₁ z₂ h₂ hne => Disjoint.mono inter_subset_left inter_subset_left (hdisj z₁ h₁ z₂ h₂ hne)) (fun z hz => (hMo z hz).measurableSet.inter (hm.measurable hQ)), Finset.sum_congr rfl fun z hz => hMQ z hz Q hQ fun y hy => mem_iInter₂.1 (hQW hy).1 z h …`.
+A detailed English derivation is pending.
 -/
 theorem exists_evenly_covered
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ovl e i j))
@@ -251,15 +245,13 @@ theorem exists_evenly_covered
     Finset.sum_const, nsmul_eq_mul, hFc]
 
 /- English proof (translation)
-Establish `hW : ∀ x : {x // x ∉ T}, ∃ W : Set A, IsOpen W ∧ x.1 ∈ W ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ W → glueMeas e' ρ' (m ⁻¹' Q) = d * glueMeas e ρ Q` using `fun x => exists_evenly_covered hd hρ hd' hρ' hm hT hfib hch x.2`. Use `choose W hWo hxW hWQ using hW`. Take `⟨C, hC, hCW⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Use `haveI : Countable C := hC.to_subtype`. Use `Measure.ext_of_iUnion_eq_univ (s := fun o : Option C => o.elim T fun c => W c.1) ?_ fun o => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ T`. Conclude with `mem_iUnion.2 ⟨none, hx⟩`. Establish `hmem : x ∈ ⋃ i ∈ C, W i`. Rewrite using `[hCW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `mem_iUnion.2 ⟨⟨x, hx⟩, hxW _⟩`. Take `⟨c, hc, hxc⟩` from `mem_iUnion₂.1 hmem`. Conclude with `mem_iUnion.2 ⟨some ⟨c, hc⟩, hxc⟩`. Consider the cases of `o with`. Consider the case `none => show (Measure.map m (glueMeas e' ρ')).restrict T = ((d : ℝ≥0∞) • glueMeas e ρ).restrict T`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.restrict_eq_zero.2, Measure.restrict_eq_zero.2]`. Simplify using `[glueMeas_finite hn e ρ hT]`. Rewrite using `[Measure.map_apply hm.measurable hT.measurableSet]`. Conclude with `glueMeas_finite hn e' ρ' hT'`. Consider the case `some c => show (Measure.map m (glueMeas e' ρ')).restrict (W c.1) = ((d : ℝ≥0∞) • glueMeas e ρ).restrict (W c.1)`.
-
-Use extensionality with `Q hQ`. Establish `hQW` using `hQ.inter (hWo c.1).measurableSet`. Rewrite using `[Measure.restrict_apply hQ, Measure.restrict_apply hQ, Measure.map_apply hm.measurable hQW, hWQ c.1 _ hQW inter_subset_right]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_glueMeas (hn : n ≠ 0)
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ovl e i j))
@@ -309,7 +301,7 @@ theorem map_glueMeas (hn : n ≠ 0)
 end Cover
 
 /- English proof (translation)
-Introduce `n hn A B ι κ _ _ _ _ _ _ _ _ _ _ e ρ e' ρ' hd hρ hd' hρ' m hm T hT hT' d _ hfib hch`. Establish `h` using `map_glueMeas hn hd hρ hd' hρ' hm hT hT' hfib hch`. Establish `h'` using `congrArg (fun μ : Measure A => μ Set.univ) h`. Simplify `h'` using `[Measure.map_apply hm.measurable MeasurableSet.univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glueMeas_univ_of_cover : ∀ (n : ℕ), n ≠ 0 → ∀ (A B ι κ : Type) [TopologicalSpace A]
     [TopologicalSpace B] [T2Space A] [T2Space B] [SecondCountableTopology A]

@@ -9,11 +9,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Set `ψ : Ideal B → ℕ∞` to `fun P => if h : P.IsMaximal then (haveI := h.isPrime Ring.ord (Localization.AtPrime P) (algebraMap B (Localization.AtPrime P) θ) * Module.length O (B ⧸ P)) else 0`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun 𝔓 => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`. Use `split_ifs with h`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hu : IsUnit (algebraMap B (Localization.AtPrime 𝔓.asIdeal) θ)` using `IsLocalization.map_units (M := 𝔓.asIdeal.primeCompl) (Localization.AtPrime 𝔓.asIdeal) ⟨θ, h⟩`. Rewrite using `[Ring.ord_of_isUnit hu, zero_mul]`. Use `_ = ∑ᶠ P ∈ {P : Ideal B | P.IsMaximal ∧ θ ∈ P}, ψ P := finsum_mem_eq_of_bijOn MaximalSpectrum.asIdeal ⟨fun 𝔓 h => ⟨𝔓.isMaximal, h⟩, fun a _ b _ h => MaximalSpectrum.ext h, fun P hP => ⟨⟨P, hP.1⟩, hP.2, rfl⟩⟩ (fun 𝔓 _ => by simp only [ψ, dif_pos 𝔓.isMaximal])`. Use `_ = ∑ᶠ i ∈ (S : Set ι), ψ (c i) := (finsum_mem_eq_of_bijOn c hc fun _ _ => rfl).symm`.
-
-Use `_ = ∑ i ∈ S, ψ (c i) := finsum_mem_coe_finset _ _`. Use `_ = ∑ i ∈ S, m i := Finset.sum_congr rfl fun i hi => by`. Establish `hmax : (c i).IsMaximal` using `(hc.mapsTo (Finset.mem_coe.mpr hi)).1`. Simplify using `only [ψ, dif_pos hmax]`. Conclude with `hm i hi hmax.isPrime`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_maximalSpectrum_ord_eq_sum {O B ι : Type*} [CommRing O] [CommRing B] [Algebra O B] (θ : B)
     (S : Finset ι) (c : ι → Ideal B) (hc : Set.BijOn c ↑S {P | P.IsMaximal ∧ θ ∈ P}) (m : ι → ℕ∞)
@@ -52,17 +50,17 @@ theorem finsum_maximalSpectrum_ord_eq_sum {O B ι : Type*} [CommRing O] [CommRin
         exact hm i hi hmax.isPrime
 
 /- English proof (translation)
-Introduce `F _ _ n e I f t u q p _ hI hf hu hq hp hqt`. Establish `hpt : specFirst f t ∉ p`. Rewrite using `[hp, Ideal.mem_span_singleton]`. Conclude with `hqt`. Establish `: Module.Finite (Localization.AtPrime p) (ChartLoc I t e p)` using `h₃ F n e I f t p hI hf hpt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₄ (Localization.AtPrime p) (ChartLoc I t e p) (algebraMap (ChartInc I t e) (ChartLoc I t e p) (chartLin I t e u))]`. Use `finsum_maximalSpectrum_ord_eq_sum _ _ (chartIdeal I t e p) ?_ _ ?_` and prove the remaining obligations. Establish `h` using `h₅ F n e I f t u q p hI hf hu hq hp hqt`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `W`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `W hW _`. Take `⟨hWs, hWq⟩` from `Finset.mem_filter.mp hW`. Establish `hrel : W ∈ relComps (I ⊔ Ideal.span {linForm u})`. Rewrite `hWs` using `[Finsupp.mem_support_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hWs (by simp [divCycle, fundCycle, Finsupp.onFinset_apply, h])`. Establish `hqW : q ∈ incIdeal W e` using `hWq ▸ Ideal.mem_span_singleton_self q`. Establish `htW : linForm t ∉ W` using `fun h => by`. Establish `hIW : I ≤ W` using `le_trans le_sup_left hrel.1.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h₂ F n e I W f t hf hIW h` as an intermediate fact. Rewrite `this` using `[← hWq, Ideal.mem_span_singleton]`. Conclude with `hqt this`. Take `⟨_, hord⟩` from `h₆ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW`. Establish `hlen` using `h₇ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv : divCycle I u W = localMult (I ⊔ Ideal.span {linForm u}) W`. Simplify using `[divCycle, fundCycle, Finsupp.onFinset_apply, hrel]`. Rewrite using `[hlen, mul_one, hdiv]`. Conclude with `hord`.
+A detailed English derivation is pending.
 -/
 theorem ChartLength.proof (h₁ : IncIdealBelow.Statement) (h₂ : SpecFirstMemIncIdeal.Statement)
     (h₃ : ChartFinite.Statement) (h₄ : LengthFiniteAlgebra.Statement) (h₅ : ChartMaxIdeals.Statement)

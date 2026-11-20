@@ -13,7 +13,7 @@ namespace CompanionTheory.RgDs
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Take `⟨T⟩` from `HW.kType_exists ε lam hl`. Take `⟨μ, hμ⟩` from `S7.exists_mu hl`. Establish `hP : IsPsiFor ε lam T (S7.PsiM T μ)` using `⟨fun k₁ k₂ g hg => S7.psiM_equiv T μ k₁ k₂ hg, S7.psiM_one T μ, S7.psiM_smooth T μ hμ, fun g hg => S7.psiM_casimir T μ hμ hg, hL n ε lam T μ hl hμ⟩`. Conclude with `⟨_, inferInstance, inferInstance, _, hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem model_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (hl : Formalism.QuantumDeterminants.IsHCParam lam) :
@@ -28,7 +28,7 @@ theorem model_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) 
   exact ⟨_, inferInstance, inferInstance, _, hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)⟩
 
 /- English proof (translation)
-Introduce `n ε lam hl`. Take `⟨H, _, _, σ, h, -⟩` from `model_of hL hK hH ε lam hl`. Conclude with `⟨H, _, _, σ, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dsExists_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) : GlobalTheory.Dec.DSExists := by
   intro n ε lam hl
@@ -36,7 +36,7 @@ theorem dsExists_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hil
   exact ⟨H, _, _, σ, h⟩
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hl hσ μ S hS`. Take `⟨G, _, _, π, hπ, hc⟩` from `model_of hL hK hH ε lam hl`. Take `⟨S', hS'⟩` from `GlobalTheory.LowestKTypeDetermines.exists_ktype_of_uEquiv (CompanionTheory.DiscreteSeriesGap.GapInv.dsUnique_dec n ε lam H σ G π hl hσ hπ) ⟨S, hS⟩`. Conclude with `hc μ S' hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kTypesAbove_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) : GlobalTheory.Dec.KTypesAbove := by
   intro n ε lam H _ _ σ hl hσ μ S hS

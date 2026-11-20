@@ -16,7 +16,7 @@ abbrev coordReduce :
   CoordinateRing.map W (residue 𝒪)
 
 /- English proof (translation)
-Introduce `y`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective y`. Take `⟨q, hq⟩` from `Polynomial.map_surjective (mapRingHom (residue 𝒪)) (Polynomial.map_surjective (residue 𝒪) residue_surjective) p`. Conclude with `⟨CoordinateRing.mk W q, by rw [CoordinateRing.map_mk, ← hq]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coordReduce_surjective : Function.Surjective (coordReduce W) := by
   intro y
@@ -26,7 +26,7 @@ theorem coordReduce_surjective : Function.Surjective (coordReduce W) := by
   exact ⟨CoordinateRing.mk W q, by rw [CoordinateRing.map_mk, ← hq]⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← algebraMap_smul (A := 𝒪[X]) a (1 : W.toAffine.CoordinateRing), CoordinateRing.map_smul, map_one, ← algebraMap_smul (A := (ResidueField 𝒪)[X]) (residue 𝒪 a)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordReduce_algebraMap (a : 𝒪) :
     coordReduce W (algebraMap 𝒪 W.toAffine.CoordinateRing a) =
@@ -39,7 +39,7 @@ theorem coordReduce_algebraMap (a : 𝒪) :
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] in
 
 /- English proof (translation)
-Rewrite using `[mul_add, mul_smul, mul_smul, ← Polynomial.algebraMap_eq, algebraMap_smul, algebraMap_smul]`. Simplify using `only [Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_basis_mul (c : 𝒪) (p q : 𝒪[X]) :
     (C c * p) • (1 : W.toAffine.CoordinateRing) + (C c * q) • CoordinateRing.mk W Y =
@@ -53,15 +53,13 @@ def gaussPrime : Ideal W.toAffine.CoordinateRing := RingHom.ker (coordReduce W)
 instance : (gaussPrime W).IsPrime := RingHom.ker_isPrime _
 
 /- English proof (translation)
-Establish `hm : RingHom.ker (residue 𝒪) = Ideal.span {ϖ}`. Rewrite using `[ker_residue, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨p, q, rfl⟩` from `CoordinateRing.exists_smul_basis_eq y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hy' : coordReduce W (p • 1 + q • CoordinateRing.mk W Y) = 0` using `hy`. Rewrite `hy'` using `[map_add, CoordinateRing.map_smul, map_one, CoordinateRing.map_mk, Polynomial.map_X]`. Take `⟨hp, hq⟩` from `CoordinateRing.smul_basis_eq_zero hy'`. Establish `hker : ∀ r : 𝒪[X], r.map (residue 𝒪) = 0 → ∃ r' : 𝒪[X], r = C ϖ * r'`. Introduce `r hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: r ∈ RingHom.ker (mapRingHom (residue 𝒪))` using `hr`. Rewrite `this` using `[Polynomial.ker_mapRingHom, hm, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨r', hr'⟩` from `this`. Conclude with `⟨r', by rw [← hr', mul_comm]⟩`. Take `⟨p', rfl⟩` from `hker p hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨q', rfl⟩` from `hker q hq`. Rewrite using `[smul_basis_mul, mul_comm]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show coordReduce W _ = 0`. Rewrite using `[coordReduce_algebraMap, (residue_eq_zero_iff _).2, map_zero]`.
-
-Conclude with `(mem_maximalIdeal _).2 hϖ.not_isUnit`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussPrime_eq {ϖ : 𝒪} (hϖ : Irreducible ϖ) :
     gaussPrime W = Ideal.span {algebraMap 𝒪 W.toAffine.CoordinateRing ϖ} := by
@@ -94,14 +92,14 @@ abbrev gaussRing : Type _ := Localization.AtPrime (gaussPrime W)
 
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] in
 /- English proof (translation)
-The claim follows from `FaithfulSMul.algebraMap_injective _ _`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_coordinateRing_injective :
     Function.Injective (algebraMap 𝒪 W.toAffine.CoordinateRing) :=
   FaithfulSMul.algebraMap_injective _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ (Ideal.primeCompl_le_nonZeroDivisors (gaussPrime W))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_gaussRing_injective :
     Function.Injective (algebraMap W.toAffine.CoordinateRing (gaussRing W)) :=
@@ -130,7 +128,7 @@ variable (K : Type*) [Field K] [Algebra 𝒪 K] [IsFractionRing 𝒪 K]
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] in
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← algebraMap_smul (A := 𝒪[X]) a (1 : W.toAffine.CoordinateRing), CoordinateRing.map_smul, map_one, ← algebraMap_smul (A := S[X]) (f a)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordinateRing_map_algebraMap {S : Type*} [CommRing S] (f : 𝒪 →+* S) (a : 𝒪) :
     CoordinateRing.map W f (algebraMap 𝒪 W.toAffine.CoordinateRing a) =
@@ -145,7 +143,7 @@ abbrev coordBase : W.toAffine.CoordinateRing →+* (W.baseChange K).toAffine.Coo
 
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsFractionRing 𝒪 K] in
 /- English proof (translation)
-The claim follows from `(coordinateRing_map_algebraMap W (algebraMap 𝒪 K) a).trans (IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.CoordinateRing a).symm`.
+A detailed English derivation is pending.
 -/
 theorem coordBase_algebraMap (a : 𝒪) :
     coordBase W K (algebraMap 𝒪 W.toAffine.CoordinateRing a) =
@@ -167,7 +165,7 @@ theorem algebraMap_coordinateRing_functionField (a : W.toAffine.CoordinateRing) 
 
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] in
 /- English proof (translation)
-Introduce `a b h`. Rewrite `h` using `[algebraMap_coordinateRing_functionField, algebraMap_coordinateRing_functionField]`. Conclude with `CoordinateRing.map_injective (IsFractionRing.injective 𝒪 K) (IsFractionRing.injective (W.baseChange K).toAffine.CoordinateRing _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_coordinateRing_functionField_injective :
     Function.Injective
@@ -178,9 +176,9 @@ theorem algebraMap_coordinateRing_functionField_injective :
     (IsFractionRing.injective (W.baseChange K).toAffine.CoordinateRing _ h)
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `CoordinateRing.exists_smul_basis_eq α`. Take `⟨b, hb, hbp⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors 𝒪) p`. Take `⟨b', hb', hbq⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors 𝒪) q`. Use `⟨b * b', (b' • IsLocalization.integerNormalization (nonZeroDivisors 𝒪) p) • 1 + (b • IsLocalization.integerNormalization (nonZeroDivisors 𝒪) q) • CoordinateRing.mk W Y, mul_ne_zero (nonZeroDivisors.ne_zero hb) (nonZeroDivisors.ne_zero hb'), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CoordinateRing.map W (algebraMap 𝒪 K) _ = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, CoordinateRing.map_smul, CoordinateRing.map_smul, map_one, CoordinateRing.map_mk, Polynomial.map_X, Polynomial.map_smul, Polynomial.map_smul, hbp, hbq, smul_add]`. Simplify using `only [algebraMap_smul, smul_assoc, smul_smul, mul_comm b b']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem exists_map_eq_smul (α : (W.baseChange K).toAffine.CoordinateRing) :
     ∃ (c : 𝒪) (a : W.toAffine.CoordinateRing), c ≠ 0 ∧
@@ -234,7 +232,7 @@ instance : IsFractionRing W.toAffine.CoordinateRing (W.baseChange K).toAffine.Fu
     field_simp
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_units (W.baseChange K).toAffine.FunctionField (⟨y.1, Ideal.primeCompl_le_nonZeroDivisors (gaussPrime W) y.2⟩ : nonZeroDivisors W.toAffine.CoordinateRing)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_primeCompl (y : (gaussPrime W).primeCompl) :
     IsUnit (algebraMap W.toAffine.CoordinateRing (W.baseChange K).toAffine.FunctionField y) :=
@@ -271,7 +269,7 @@ def gaussResidue : ResidueField (gaussRing W) →+* (W.map (residue 𝒪)).toAff
     ((IsFractionRing.injective _ _).comp (RingHom.kerLift_injective _))
 
 /- English proof (translation)
-Establish `: residue (gaussRing W) (algebraMap _ (gaussRing W) a) = algebraMap (W.toAffine.CoordinateRing ⧸ gaussPrime W) (gaussPrime W).ResidueField (Ideal.Quotient.mk _ a)`. Rewrite using `[Ideal.algebraMap_quotient_residueField_mk, IsScalarTower.algebraMap_apply _ (Localization.AtPrime (gaussPrime W)) (gaussPrime W).ResidueField, IsLocalRing.ResidueField.algebraMap_eq]`. Rewrite using `[this, gaussResidue, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gaussResidue_residue (a : W.toAffine.CoordinateRing) :
     gaussResidue W (residue (gaussRing W) (algebraMap _ (gaussRing W) a)) =
@@ -286,7 +284,7 @@ theorem gaussResidue_residue (a : W.toAffine.CoordinateRing) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W), gaussResidue_residue, coordReduce_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussResidue_residue_algebraMap (c : 𝒪) :
     gaussResidue W (residue (gaussRing W) (algebraMap 𝒪 (gaussRing W) c)) =
@@ -305,7 +303,7 @@ def gaussX : gaussRing W := algebraMap W.toAffine.CoordinateRing _ (CoordinateRi
 def gaussY : gaussRing W := algebraMap W.toAffine.CoordinateRing _ (CoordinateRing.mk W Y)
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply, algebraMap_coordinateRing_functionField]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_gaussRing_functionField (a : W.toAffine.CoordinateRing) :
     algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField
@@ -314,7 +312,7 @@ theorem algebraMap_gaussRing_functionField (a : W.toAffine.CoordinateRing) :
   rw [← IsScalarTower.algebraMap_apply, algebraMap_coordinateRing_functionField]
 
 /- English proof (translation)
-Rewrite using `[gaussX, algebraMap_gaussRing_functionField, genX]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `CoordinateRing.map W (algebraMap 𝒪 K) _ = _`. Rewrite using `[CoordinateRing.map_mk, Polynomial.map_C, Polynomial.coe_mapRingHom, Polynomial.map_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_gaussX :
     algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField (gaussX W) =
@@ -326,7 +324,7 @@ theorem algebraMap_gaussX :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gaussY, algebraMap_gaussRing_functionField, genY]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `CoordinateRing.map W (algebraMap 𝒪 K) _ = _`. Rewrite using `[CoordinateRing.map_mk, Polynomial.map_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_gaussY :
     algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField (gaussY W) =
@@ -338,7 +336,7 @@ theorem algebraMap_gaussY :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gaussX, gaussResidue_residue, genX]`. Use `congr 1`. Rewrite using `[CoordinateRing.map_mk, Polynomial.map_C, Polynomial.coe_mapRingHom, Polynomial.map_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussResidue_gaussX :
     gaussResidue W (residue (gaussRing W) (gaussX W)) = genX (W.map (residue 𝒪)) := by
@@ -347,7 +345,7 @@ theorem gaussResidue_gaussX :
   rw [CoordinateRing.map_mk, Polynomial.map_C, Polynomial.coe_mapRingHom, Polynomial.map_X]
 
 /- English proof (translation)
-Rewrite using `[gaussY, gaussResidue_residue, genY]`. Use `congr 1`. Rewrite using `[CoordinateRing.map_mk, Polynomial.map_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussResidue_gaussY :
     gaussResidue W (residue (gaussRing W) (gaussY W)) = genY (W.map (residue 𝒪)) := by

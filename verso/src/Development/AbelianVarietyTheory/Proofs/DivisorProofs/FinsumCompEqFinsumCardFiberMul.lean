@@ -4,29 +4,27 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `hfin : (Function.support (h ∘ π)).Finite`. Use `set S := hfin.toFinset with hS`. Establish `hmemS : ∀ x, x ∈ S ↔ h (π x) ≠ 0`. Introduce `x`. Simplify using `[hS]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hL : ∑ᶠ x, h (π x) = ∑ x ∈ S, h (π x)`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(hmemS x).2 hx`. Establish `hR : ∑ᶠ y, (Nat.card (π ⁻¹' {y}) : ℂ) * h y = ∑ y ∈ S.image π, (Nat.card (π ⁻¹' {y}) : ℂ) * h y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Function.mem_support]`. Establish `h1 : h y ≠ 0` using `right_ne_zero_of_mul hy`. Establish `h2 : Nat.card (π ⁻¹' {y}) ≠ 0` using `by exact_mod_cast left_ne_zero_of_mul hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨x, hx⟩⟩` from `(Nat.card_ne_zero.mp h2).1`. Establish `hxy : π x = y` using `hx`. Rewrite using `[Finset.coe_image]`. Use `⟨x, ?_, hxy⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, hmemS, hxy]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Rewrite using `[hL, hR, ← Finset.sum_fiberwise_of_maps_to (g := π) (t := S.image π) (fun x hx => Finset.mem_image_of_mem π hx)]`. Use `Finset.sum_congr rfl (fun y hy => ?_)` and prove the remaining obligations. Take `⟨x₀, hx₀, rfl⟩` from `Finset.mem_image.mp hy`. Establish `hne : h (π x₀) ≠ 0` using `(hmemS x₀).1 hx₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hfib : π ⁻¹' {π x₀} = ↑(S.filter (fun x => π x = π x₀))`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Finset.coe_filter, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨?_, hx⟩` and prove the remaining obligations. Rewrite using `[hmemS, hx]`. Conclude with `hne`. Conclude with `fun hx => hx.2`. Rewrite using `[Finset.sum_congr rfl (fun x hx => by rw [(Finset.mem_filter.mp hx).2]), Finset.sum_const, nsmul_eq_mul, hfib, Nat.card_coe_set_eq, Set.ncard_coe_finset]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[finsum_of_infinite_support (f := fun x => h (π x)) hfin]`. Use `symm`. Break down `hf with hf | hf` into its components or cases. Apply `finsum_of_infinite_support` to reduce the goal to its premises. Introduce `hR`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hfin` to reduce the goal to its premises. Use `(hR.preimage' (f := π) ?_).subset ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hf y (right_ne_zero_of_mul hy)`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.mem_support, Function.comp_apply] at hx`. Simplify using `only [Set.mem_preimage, Function.mem_support]`. Establish `hfinx : Finite (π ⁻¹' {π x})` using `(hf (π x) hx).to_subtype`. Establish `hnx : Nonempty (π ⁻¹' {π x})` using `⟨⟨x, rfl⟩⟩`. Establish `hc : Nat.card (π ⁻¹' {π x}) ≠ 0` using `Nat.card_ne_zero.mpr ⟨hnx, hfinx⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (by exact_mod_cast hc) hx`. Establish `hz : (fun y => (Nat.card (π ⁻¹' {y}) : ℂ) * h y) = fun _ => 0`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : h y = 0`. Simplify using `[hy]`.
-
-Simplify using `[hf y hy]`. Rewrite using `[hz, finsum_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_comp_eq_finsum_natCard_fiber_mul {X Y : Type} (π : X → Y) (h : Y → ℂ)
     (hf : (∀ y, h y ≠ 0 → (π ⁻¹' {y}).Finite) ∨ (∀ y, h y ≠ 0 → Nat.card (π ⁻¹' {y}) = 0)) :

@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `G R _ _ m r c g h1 h2 h3`. Establish `hc : r c = SemidirectProduct.mk 1 (-1)`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Conclude with `Units.ext (by simpa [GG.mat] using h1)`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : r g = SemidirectProduct.mk (r g).left 1` using `SemidirectProduct.ext rfl h3`. Establish `hs : r (gstar c g) = r c * (r g)⁻¹ * r c`. Simplify using `only [gstar, map_mul, map_inv]`. Rewrite using `[hs, hc, hg]`. Simplify using `only [GG.mat, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, SemidirectProduct.inv_right, inv_one, map_one, mul_one, one_mul, MulAut.one_apply, map_inv, sgnAct_neg_one, theta_inv_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[map_one, theta_inv_val]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.mat_gstar :
     ∀ {G R : Type} [Group G] [CommRing R] {m : ℕ} (r : G →* GG m R) (c g : G), (r c).mat = 1 → (r c).right = -1 → (r g).right = 1 →

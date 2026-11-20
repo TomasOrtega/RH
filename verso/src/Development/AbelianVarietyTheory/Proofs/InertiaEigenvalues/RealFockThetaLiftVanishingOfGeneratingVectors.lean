@@ -26,21 +26,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Unfold `RealDat.ptP`. Conclude with `map_add _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensor_add (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (P Q : PolF D (Wc D i).rank (Vc D i).rank) :
     R.ptP i t (P + Q) = R.ptP i t P + R.ptP i t Q := by
   unfold RealDat.ptP; exact map_add _ _ _
 
 /- English proof (translation)
-Unfold `RealDat.ptP`. Conclude with `map_smul _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensor_smul (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (c : ℂ) (P : PolF D (Wc D i).rank (Vc D i).rank) :
     R.ptP i t (c • P) = c • R.ptP i t P := by
   unfold RealDat.ptP; exact map_smul _ _ _
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_add hf hf']`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_add, Pi.add_apply, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem downInt_add_f (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f f' : WO (Vc D i) (Wc D i) → ℂ)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i))
@@ -54,7 +54,7 @@ theorem downInt_add_f (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i 
   simp only [thetaKO, map_add, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem downInt_smul_f (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (c : ℂ)
     (f : WO (Vc D i) (Wc D i) → ℂ) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)) :
@@ -66,7 +66,7 @@ theorem downInt_smul_f (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i
   simp only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_add hf hf']`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [LinearMap.add_apply, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem downInt_add_l (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f : WO (Vc D i) (Wc D i) → ℂ)
     (l l' : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i))
@@ -80,7 +80,7 @@ theorem downInt_add_l (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i 
   simp only [LinearMap.add_apply, mul_add]
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -95,11 +95,11 @@ theorem downInt_smul_l (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i
   ring
 
 /- English proof (translation)
-Establish `hth` using `hG.core.thP.pt_theta i t`. Establish `hint` using `fun f l g hf => GlobalTheory.T.integrableOn_downwardThetaLift_integrand D G Pl0 T A Ks R F hG hP i t y f l g hf`. Use `⟨fun g => LinearMap.mk₂ ℂ (fun P l => downInt R i t y (R.ptP i t P) l g) ?_ ?_ ?_ ?_, fun g P l => rfl⟩` and prove the remaining obligations. Introduce `P Q l`. Rewrite using `[pureTensor_add, downInt_add_f _ _ _ _ _ _ _ _ (hint _ l g (hth P)) (hint _ l g (hth Q))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c P l`. Rewrite using `[pureTensor_smul, downInt_smul_f, smul_eq_mul]`. Introduce `P l l'`. Conclude with `downInt_add_l _ _ _ _ _ _ _ _ (hint _ l g (hth P)) (hint _ l' g (hth P))`. Introduce `c P l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[downInt_smul_l, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_bilin (R : RealDat D A Ks) (F : Face D A) (hG : GlobalTheory.LiftRows.Given R F) (hP : R.FullP)
     (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) :
@@ -118,13 +118,13 @@ theorem exists_bilin (R : RealDat D A Ks) (F : Face D A) (hG : GlobalTheory.Lift
     rw [downInt_smul_l, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hio P l g`. Take `⟨B, hB⟩` from `exists_bilin R F hG hP i t y`. Establish `hth` using `hG.core.thP.pt_theta i t`. Establish `key` using `(GlobalTheory.T.equivariant_bilinearForms_vanish_of_io_generation_real) D G Pl0 T A Ks R F hG hP i t (GA D (Wc D i)) B ?_ ?_ ?_ P g`. Rewrite using `[← hB, key, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j u hu P P' e l`. Rewrite using `[hB, hB, e]`. Conclude with `(GlobalTheory.T.downwardThetaLift_real_points_equivariant) D G Pl0 T A Ks R F hG hP i t y u hu _ (hth P) l j`. Introduce `τ Y hY P P' hd h0 j`. Use `LinearMap.ext fun l => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply, hB]`. Use `(GlobalTheory.T.thetaLift_vanishing_preserved_by_realLieDerivative) D G Pl0 T A Ks R F hG hP i t y τ Y hY P P' hd l (fun g' => ?_) j` and prove the remaining obligations. Rewrite using `[← hB, h0 g', LinearMap.zero_apply]`. Introduce `x w j`. Use `LinearMap.ext fun l => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply, hB]`. Conclude with `hio x w l j`.
+A detailed English derivation is pending.
 -/
 theorem gen : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H), (∀ (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y (R.ptP i t (R.ioP i x w)) l g = 0) → ∀ (P : PolF D (Wc D i).rank (Vc D i).rank) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y (R.ptP i t P) l g = 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hio P l g

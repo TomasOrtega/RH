@@ -16,7 +16,7 @@ open GlobalTheory.Core.Rk.SW
 namespace GlobalTheory.Core.Rk.SchwInj
 
 /- English proof (translation)
-The claim follows from `congrFun ((GlobalTheory.HeisMixSource.heis_mixS D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) ⟨ν, 𝓨, hν⟩ f hf).2.1 x y) 0`.
+A detailed English derivation is pending.
 -/
 theorem sch_heisO_extY {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (A B : HSp D)
     {ν : Measure (WO A B)} {𝓨 : Set (WO A B)} (hν : IsCovolOne (ratL B A) ν 𝓨) {f : WO (dblSp A) B → ℂ}
@@ -26,9 +26,9 @@ theorem sch_heisO_extY {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdCha
   congrFun ((GlobalTheory.HeisMixSource.heis_mixS D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) ⟨ν, 𝓨, hν⟩ f hf).2.1 x y) 0
 
 /- English proof (translation)
-Take `⟨⟨x, w₀, y⟩, rfl⟩` from `((dblDec A).coordS B).symm.surjective w`. Establish `hw : w₀ = 0` using `Matrix.ext fun _ j => Fin.elim0 j`. Substitute `hw` using the available equality. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Use `show (dblDec A).extX B x + (dblDec A).ext0 B 0 + (dblDec A).extY B y = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_extX_add_extY {D : D7} (A B : HSp D) (w : WO (dblSp A) B) :
     ∃ x y : Mx D B.rank A.rank, w = (dblDec A).extX B x + (dblDec A).extY B y := by
@@ -40,11 +40,11 @@ theorem exists_extX_add_extY {D : D7} (A B : HSp D) (w : WO (dblSp A) B) :
   rw [map_zero, add_zero]
 
 /- English proof (translation)
-Introduce `D ψ hψ A B ν 𝓨 hν f hf hs`. Use function extensionality and compare the values at `w`. Take `⟨x, y, rfl⟩` from `exists_extX_add_extY A B w`. Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf ((dblDec A).extY B y)`. Establish `hsum` using `(GlobalTheory.T.doubledTheta_eq_sum_schrodingerFunction_periodisation D ψ hψ A B ν 𝓨 hν _ hg x).2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sch_heisO_extY hψ A B hν hf, hs, Pi.zero_apply, mul_zero] at hsum`. Establish `h0 : ψ (symplOH (dblSp A) B ((dblDec A).extX B x) ((dblDec A).extY B y)) * f ((dblDec A).extX B x + (dblDec A).extY B y) = 0` using `hsum.unique hasSum_zero`. Use `(mul_eq_zero.1 h0).resolve_left fun h => ?_` and prove the remaining obligations. Establish `h1` using `ψ.map_add_eq_mul (symplOH (dblSp A) B ((dblDec A).extX B x) ((dblDec A).extY B y)) (-symplOH (dblSp A) B ((dblDec A).extX B x) ((dblDec A).extY B y))`. Rewrite `h1` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sch_eq_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → sch ψ A B ν 𝓨 f = 0 → f = 0 := by
   intro D ψ hψ A B ν 𝓨 hν f hf hs

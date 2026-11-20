@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `h` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd` using `congrArg Finsupp.degree h`. Rewrite `hd` using `[map_add, Finsupp.degree_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h1 : Finsupp.degree p.1 = 0`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).1 h1, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_mul]`. Establish `h2 : Finsupp.degree p.2 = 0` using `by omega`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).1 h2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nz_coeff_mul {τ E : Type} [CommRing E] (i : τ) (f g : MvPowerSeries τ E)
     (hf : MvPowerSeries.constantCoeff f = 0) (hg : MvPowerSeries.constantCoeff g = 0) :
@@ -22,9 +22,9 @@ private theorem nz_coeff_mul {τ E : Type} [CommRing E] (i : τ) (f g : MvPowerS
     rw [(Finsupp.degree_eq_zero_iff _).1 h2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, mul_zero]
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `h.onto i`. Rewrite `hf` using `[← DirectSum.sum_support_decompose 𝒜 f, map_sum, map_sum]`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hf`. Establish `hm` using `(DirectSum.decompose 𝒜 f j).2`. Establish `hw : wt i = j`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hj (h.graded j _ hm _ (by simpa [Finsupp.weight_single] using hne))`. Conclude with `⟨_, hw ▸ hm, hj⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nz_comp {O A τ : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O) (wt : τ → ℤ)
@@ -41,25 +41,23 @@ private theorem nz_comp {O A τ : Type} [CommRing O] [IsDomain O] [CommRing A] [
   exact ⟨_, hw ▸ hm, hj⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q τ _ wt φ hφ hn hp hS a ha`. Distinguish the cases in `h0 : φ a = 0`. Use `swap`. Conclude with `⟨a, ha, by simp, rfl, h0⟩`. Take `⟨⟨i, hi⟩⟩` from `(Nat.card_pos_iff.1 hn).1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨i', hi'⟩⟩` from `(Nat.card_pos_iff.1 hp).1`. Take `⟨f, hf, hf0⟩` from `nz_comp 𝒜 x wt φ hφ i`. Take `⟨g, hg, hg0⟩` from `nz_comp 𝒜 x wt φ hφ i'`. Rewrite `hf` using `[hi]`. Rewrite `hg` using `[hi']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg1 : φ g ≠ 0` using `fun h => hg0 (by rw [h, map_zero])`. Establish `hinj : ∀ c : O, c ≠ 0 → ∀ y : FractionRing O, c • y = 0 → y = 0` using `fun c hc y hy => by`. Rewrite `hy` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 hy).resolve_left fun h => hc (IsFractionRing.injective O _ (h.trans (map_zero _).symm))`. Establish `hF : ∃ k, φ (Q.F k) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Set `L : A →ₗ[O] FractionRing O` to `((MvPowerSeries.coeff (Finsupp.single i 1)).restrictScalars O) ∘ₗ φ.toLinearMap`. Establish `hL : ∀ y, L y = MvPowerSeries.coeff (Finsupp.single i 1) (φ y)` using `fun _ => rfl`. Establish `hsq : ∀ y ∈ RingHom.ker x ^ 2, L y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Rewrite `hy` using `[sq]`. Use `Submodule.mul_induction_on hy (fun u hu v hv => ?_) (fun u v hu hv => by rw [map_add, hu, hv, add_zero])` and prove the remaining obligations. Establish `hu' : x u = 0` using `hu`. Establish `hv' : x v = 0` using `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hL, map_mul]`. Conclude with `nz_coeff_mul _ _ _ (by rw [hφ.const, hu', map_zero]) (by rw [hφ.const, hv', map_zero])`. Establish `hk : satSq x ≤ LinearMap.ker L`. Introduce and unpack `y ⟨c, hc, hy⟩`. Use `hsq _ hy` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[map_smul]`. Conclude with `hinj c hc _ this`. Establish `hsp : cotSpan x Q.F ≤ LinearMap.ker ((satSq x).liftQ L hk)`. Rewrite using `[cotSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show L (Q.F k) = 0`. Rewrite using `[hL, hall k, map_zero]`. Take `⟨c, hc, hcf⟩` from `hS ((satSq x).mkQ f) ⟨f, ⟨hf, hW.fixed (-1) (by norm_num) f hf⟩, rfl⟩`. Use `hsp hcf` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf0 (hinj c hc _ this)`. Take `⟨k, hk⟩` from `hF`. Establish `hm : g * Q.F k ∈ 𝒜 0` using `by simpa using SetLike.GradedMul.mul_mem hg (Q.hF k)`. Use `⟨a + g * Q.F k, add_mem ha hm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`. Rewrite using `[map_add, map_mul, hW.fixed 1 one_ne_zero g hg, zero_mul, add_zero]`. Rewrite using `[map_add, h0, zero_add, map_mul]`. Conclude with `mul_ne_zero hg1 hk`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.nz_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

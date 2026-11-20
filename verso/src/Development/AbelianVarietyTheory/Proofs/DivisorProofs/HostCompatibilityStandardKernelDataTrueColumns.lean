@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.ColRows
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W Del h0 hS`. Take `⟨hX, hseam, hPr, -, -, -, -, -, -, -, -, -, -, -, -⟩` from `hS`. Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `rfl` from `eq_of_heq hPr`. Take `rfl` from `eq_of_heq hseam`. Conclude with `GlobalTheory.CoreHt.host_tie_trueCols I hOk l Z L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hostTie_stdKer : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (W : Formalism.L2.Col.Wts t.X t.Pr.Word (I.rec7 l Z).R) (Del h0 : ℕ), I.StdKer l Z t → GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds.HostTie (ofRecord (I.rec7 l Z) L Del h0) t.seam t.Pr := by
   intro B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W Del h0 hS

@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsTotallyComplex E] {
 omit [NumberField E] [NumberField.IsTotallyComplex E] in
 
 /- English proof (translation)
-Apply the tactic sequence `unfold atEmb; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atEmb_zero (τ : E →+* ℂ) : atEmb τ 0 = 0 := by
   classical
@@ -23,7 +23,7 @@ theorem atEmb_zero (τ : E →+* ℂ) : atEmb τ 0 = 0 := by
 omit [NumberField E] [NumberField.IsTotallyComplex E] in
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [atEmb_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_single_atEmb (τ : E →+* ℂ) (i k : Fin a) (z : ℂ) :
     (Matrix.single i k z).map (atEmb τ) = Matrix.single i k (atEmb τ z) := by

@@ -14,9 +14,9 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodSS
 
 /- English proof (translation)
-Establish `hpow : ∀ n : ℕ, ∀ x, e ((A ^ n) x) = (B ^ n) (e x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a => simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hpow]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_intertwine {K M N : Type} [Field K] [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     (e : M ≃ₗ[K] N) (A : Module.End K M) (B : Module.End K N) (h : ∀ x, e (A x) = B (e x)) (p : K[X]) (x : M) :
@@ -32,9 +32,9 @@ theorem aeval_intertwine {K M N : Type} [Field K] [AddCommGroup M] [Module K M] 
       map_smul, hpow]
 
 /- English proof (translation)
-Establish `h1` using `IsCoprime.map hp (Polynomial.compRingHom (Polynomial.C a * Polynomial.X))`. Rewrite `h1` using `[Polynomial.coe_compRingHom_apply, Polynomial.coe_compRingHom_apply]`. Establish `h2 : IsCoprime (p.comp (Polynomial.C a * Polynomial.X)) (Polynomial.C a)` using `⟨0, Polynomial.C a⁻¹, by rw [zero_mul, zero_add, ← Polynomial.C_mul, inv_mul_cancel₀ ha, Polynomial.C_1]⟩`. Establish `h3 : Polynomial.derivative (p.comp (Polynomial.C a * Polynomial.X)) = (Polynomial.derivative p).comp (Polynomial.C a * Polynomial.X) * Polynomial.C a`. Rewrite using `[Polynomial.derivative_comp, Polynomial.derivative_mul, Polynomial.derivative_C, Polynomial.derivative_X, zero_mul, zero_add, mul_one, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show IsCoprime _ _`. Rewrite using `[h3]`. Conclude with `h1.mul_right h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separable_comp_smul {K : Type} [Field K] {p : K[X]} (hp : p.Separable) {a : K} (ha : a ≠ 0) :
     (p.comp (Polynomial.C a * Polynomial.X)).Separable := by
@@ -51,7 +51,7 @@ theorem separable_comp_smul {K : Type} [Field K] {p : K[X]} (hp : p.Separable) {
   exact h1.mul_right h2
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_comp]`. Use `congr 2`. Rewrite using `[map_mul, Polynomial.aeval_C, Polynomial.aeval_X, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_smul_comp {K M : Type} [Field K] [AddCommGroup M] [Module K M] (B : Module.End K M) {c : K}
     (hc : c ≠ 0) (p : K[X]) (y : M) :
@@ -64,25 +64,19 @@ theorem aeval_smul_comp {K M : Type} [Field K] [AddCommGroup M] [Module K M] (B 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hG hC hX hR hU hI hS0c hS02 hS0b i hi j hj b k P hk`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨q, hqs, hq⟩` from `GlobalTheory.T.hecke_commutation_real_expansion Rl F cG S Y H hG hC hX hR hU hI hS0c hS02 hS0b i hi j h1 h2 b k P hk`. Use `set rd : ↥D.LL0 →+* KB S i b := readLL0 S i b with hrd`. Use `set hst := Y.rho j h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set hχ := Y.chi j h1 h2`. Use `set T0 := GlobalTheory.GoodSS.opK S j (H.hL j k P) (fun x hx => H.hs j h1 h2 k P x hx) with hT0`. Use `set s := (D.nexp.eAlg i b).coeff.support with hs`. Use `set a : G0g D.nd → ↥D.LL0 := fun g => D.nexp.eLL0 g * (chiL S j hχ (S.eG.symm g))⁻¹ with ha`. Use `set ρ : G0g D.nd → Module.End S.Ks (FmK S j) := fun g => rhoKG S j hst (S.eG.symm g) with hρ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoef : ∀ g, (D.nexp.eAlg i b).coeff g = rd (D.nexp.eLL0 g)` using `fun g => by`. Rewrite using `[D.nexp.eAlg_def]`. Both sides reduce to the same expression. Establish `hsupp : ∀ g, g ∉ s → D.nexp.eLL0 g = 0` using `fun g hg => by`. Establish `h0 : (D.nexp.eAlg i b).coeff g = 0` using `Finsupp.notMem_support_iff.1 hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hcoef]`. Conclude with `(map_eq_zero_iff rd rd.injective).1 h0`. Establish `hE' : GlobalTheory.GoodSS.goodProjectorBaseChangeForms S j hst hχ D.nexp.eLL0 = ∑ g ∈ s, a g • LinearMap.baseChange ↥D.LL0 (ρ g)`. Unfold `GlobalTheory.GoodSS.goodProjectorBaseChangeForms`. Use `finsum_eq_sum_of_support_subset _ fun g hg => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hgs`. Conclude with `hg (by simp only [hsupp g hgs, zero_mul, zero_smul])`. Establish `hdesc` using `GlobalTheory.T.baseChange_polynomial_annihilates_descent S.Ks ↥D.LL0 (KB S i b) (FmK S j) (G0g D.nd) rd (fun _ => rfl) T0 s ρ a q (fun z hz => hq z (hE' ▸ hz))`. Use `set c := H.cHk i b k P with hc`. Establish `hc0 : c ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, H.cHk_pow]`. Conclude with `pow_ne_zero _ (H.cHk_unit i b P).ne_zero`. Use `set B : Module.End (FractionRing (D.ntw.O i)) (Fm S i j b) := LinearMap.baseChange (KB S i b) T0 with hB`. Establish `hAB : ∀ x, Y.eF i j b h1 h2 (D.nexp.hkF i j b k P x) = (c • B) (Y.eF i j b h1 h2 x)` using `fun x => H.hkEq i j b h1 h2 k P x hk.2.2.2 hk.2.2.1 hk.2.1`. Establish `hE : ∀ x0, Y.eF i j b h1 h2 (eG D.nexp i j b x0) = (∑ g ∈ s, rd (a g) • LinearMap.baseChange (KB S i b) (ρ g)) (Y.eF i j b h1 h2 x0)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x0`. Establish `hact : ∀ g y, actG S i j b hst hχ g y = (rd (chiL S j hχ (S.eG.symm g)))⁻¹ • LinearMap.baseChange (KB S i b) (ρ g) y` using `fun _ _ => rfl`. Rewrite using `[eG, MonoidAlgebra.lift_apply, Finsupp.sum, LinearMap.sum_apply, map_sum]`. Use `(Finset.sum_congr rfl fun g _ => ?_).trans (LinearMap.sum_apply _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y.eF i j b h1 h2 ((D.nexp.eAlg i b).coeff g • D.nexp.actG i j b g x0) = rd (a g) • LinearMap.baseChange (KB S i b) (ρ g) (Y.eF i j b h1 h2 x0)`.
-
-Rewrite using `[map_smul, Y.act i j b h1 h2 g x0, hact, hcoef]`. Establish `hag : rd (a g) = rd (D.nexp.eLL0 g) * (rd (chiL S j hχ (S.eG.symm g)))⁻¹`. Simplify using `only [ha, map_mul, map_inv₀]`. Rewrite using `[hag]`. Conclude with `(mul_smul _ _ _).symm`.
-
-Use `⟨(q.map rd).comp (Polynomial.C c⁻¹ * Polynomial.X), ?_, ?_⟩` and prove the remaining obligations. Conclude with `separable_comp_smul ((Polynomial.separable_map rd).2 hqs) (inv_ne_zero hc0)`. Introduce and unpack `x ⟨x0, -, rfl⟩`. Apply `(Y.eF i j b h1 h2).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
-
-Use `(aeval_intertwine (Y.eF i j b h1 h2) _ (c • B) hAB _ _).trans ?_` and prove the remaining obligations. Use `(aeval_smul_comp B hc0 _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `hdesc _ ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkF_separable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]

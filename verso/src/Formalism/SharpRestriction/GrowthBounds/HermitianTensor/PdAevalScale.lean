@@ -13,14 +13,14 @@ def pdW : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) A) := fun i j =>
 def pdZ : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) A) := fun i j => (genY A r).adjugate j.rev i
 
 /- English proof (translation)
-Simplify using `[pdW, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_pdW_apply_eq_apply_rev (M : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) A)) (i j : Fin r) :
     (M * pdW A r) i j = M i j.rev := by
   simp [pdW, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_pdW_apply_eq_apply_rev]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pdZ_eq : pdZ A r = (genY A r).adjugate.transpose * pdW A r := by
   ext i j
@@ -28,9 +28,9 @@ theorem pdZ_eq : pdZ A r = (genY A r).adjugate.transpose * pdW A r := by
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, pdW]`. Distinguish the cases in `h : i = j.rev`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[h', Fin.rev_rev]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pdW_transpose : (pdW A r).transpose = pdW A r := by
   ext i j
@@ -44,7 +44,7 @@ theorem pdW_transpose : (pdW A r).transpose = pdW A r := by
     rw [h', Fin.rev_rev]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_pdW_apply_eq_apply_rev]`. Simplify using `[pdW, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pdW_sq : pdW A r * pdW A r = 1 := by
   ext i j
@@ -52,13 +52,13 @@ theorem pdW_sq : pdW A r * pdW A r = 1 := by
   simp [pdW, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_mul, pdW_sq, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pdW_det_sq : (pdW A r).det * (pdW A r).det = 1 := by
   rw [← Matrix.det_mul, pdW_sq, Matrix.det_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cofY, genY, pdZ, AlgHom.mapMatrix_apply, aeval_X]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cofY_mapMatrix : (cofY A r).mapMatrix (genY A r) = pdZ A r := by
   ext i j
@@ -70,7 +70,7 @@ Both sides reduce to the same expression.
 theorem detY_eq : detY A r = (genY A r).det := rfl
 
 /- English proof (translation)
-Rewrite using `[detY_eq]`. Establish `h1 : cofY A r (genY A r).det = ((cofY A r).mapMatrix (genY A r)).det` using `RingHom.map_det (cofY A r).toRingHom (genY A r)`. Rewrite using `[h1, cofY_mapMatrix, pdZ_eq, Matrix.det_mul, Matrix.det_transpose, Matrix.det_adjugate, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pd_cof_det : cofY A r (detY A r) = (pdW A r).det * detY A r ^ (r - 1) := by
   rw [detY_eq]
@@ -81,17 +81,17 @@ theorem pd_cof_det : cofY A r (detY A r) = (pdW A r).det * detY A r ^ (r - 1) :=
   ring
 
 /- English proof (translation)
-Establish `hWW` using `pdW_sq A r`. Establish `hWT` using `pdW_transpose A r`. Establish `hadjW : (pdW A r).adjugate = (pdW A r).det • pdW A r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hWW, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((pdW A r).adjugate * pdW A r) * pdW A r := by rw [Matrix.mul_assoc]`. Use `_ = (pdW A r).det • pdW A r := by rw [Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Establish `hmapW : (pdW A r).map (cofY A r) = pdW A r`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, pdW]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hmap : (cofY A r).mapMatrix (pdZ A r) = (pdZ A r).adjugate.transpose * pdW A r` using `by conv_lhs => rw [pdZ_eq]`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_mul, hmapW, Matrix.transpose_map]`. Establish `h1 : (genY A r).adjugate.map (cofY A r) = ((genY A r).map (cofY A r)).adjugate` using `RingHom.map_adjugate (cofY A r).toRingHom (genY A r)`. Rewrite using `[h1, ← AlgHom.mapMatrix_apply, cofY_mapMatrix]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hmap]`. Break down `Nat.lt_or_ge r 2 with hr | hr` into its components or cases. Use `interval_cases r`. Use extensionality with `i`. Conclude with `Fin.elim0 i`.
+By extensionality, compare the relevant components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j fin_cases i fin_cases j`. Simplify using `[pdZ, pdW, genY, Matrix.adjugate_fin_one, Matrix.det_fin_one, Matrix.mul_apply]`. Establish `hadjadj : (genY A r).adjugate.adjugate = (genY A r).det ^ (r - 2) • genY A r`. Rewrite using `[Matrix.adjugate_adjugate _ (by rw [Fintype.card_fin]; omega), Fintype.card_fin]`. Establish `hZ : (pdZ A r).adjugate = ((pdW A r).det * (genY A r).det ^ (r - 2)) • (pdW A r * (genY A r).transpose)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pdZ_eq, Matrix.adjugate_mul_distrib, hadjW, ← Matrix.adjugate_transpose, hadjadj, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Rewrite using `[hZ, Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, hWT, Matrix.smul_mul, Matrix.mul_assoc, hWW, Matrix.mul_one, smul_smul]`. Use `congr 1`. Rewrite using `[show r - 1 = (r - 2) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pd_ZZ : (genY A r).det • (cofY A r).mapMatrix (pdZ A r) =
     ((pdW A r).det * (genY A r).det ^ (r - 1)) • genY A r := by
@@ -134,9 +134,9 @@ theorem pd_ZZ : (genY A r).det • (cofY A r).mapMatrix (pdZ A r) =
     ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hd` using `hg (mem_support_iff.1 hs)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, mul_one] at hd`. Simplify using `only [aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[show ∑ i ∈ s.support, s i = d from by rw [← hd]; rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pd_aeval_scale {σ B : Type} [Fintype σ] [CommRing B] [Algebra A B] (c : B) (z : σ → B) (d : ℕ)
     (g : MvPolynomial σ A) (hg : g.IsHomogeneous d) : aeval (fun i => c * z i) g = c ^ d * aeval z g := by
@@ -152,11 +152,11 @@ theorem pd_aeval_scale {σ B : Type} [Fintype σ] [CommRing B] [Algebra A B] (c 
   ring
 
 /- English proof (translation)
-Establish `hcomp : cofY A r (cofY A r g) = aeval (fun v => cofY A r (pdZ A r v.1 v.2)) g`. Rewrite using `[← AlgHom.comp_apply]`. Unfold `cofY`. Rewrite using `[MvPolynomial.comp_aeval]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hz : (fun v : Fin r × Fin r => detY A r * cofY A r (pdZ A r v.1 v.2)) = fun v => ((pdW A r).det * detY A r ^ (r - 1)) * X v`. Use function extensionality and compare the values at `v`. Establish `h1` using `congrFun (congrFun (pd_ZZ A r) v.1) v.2`. Simplify using `only [Matrix.smul_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, smul_eq_mul, genY, Matrix.of_apply] at h1`. Rewrite using `[detY_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[hcomp, ← pd_aeval_scale A (detY A r) _ d g hg, hz, pd_aeval_scale A _ X d g hg, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pd_cofcof (d : ℕ) (g : MvPolynomial (Fin r × Fin r) A) (hg : g.IsHomogeneous d) :
     detY A r ^ d * cofY A r (cofY A r g) = ((pdW A r).det * detY A r ^ (r - 1)) ^ d * g := by

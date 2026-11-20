@@ -14,17 +14,15 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 namespace GlobalTheory.ThKAdd
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ Ψ hΨ`. Establish `hT` using `hM.triple`. Establish `hPair` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `hSoΦ : Φ ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΦ).2`. Establish `hSoΨ : Ψ ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΨ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSΦ : Φ ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ hSoΦ`. Establish `hSΨ : Ψ ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ hSoΨ`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`. Establish `hpres : ∀ x, ∀ Φ₀ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ₀ ∈ schA F (Fin a' × Fin (a + a'))` using `hT.weil'.isUSplitting.pres`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ Φ₀ ∈ G.M'.So B.ψ B.τ₁, ∀ h, IntegrableOn (fun g => theta om' Φ₀ g h) G.M'.dom G.M'.μ`. Introduce `Φ₀ hSo h`. Establish `hS : Φ₀ ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ hSo`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ₀ hS`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ₀ hSo 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.mono' (integrableOn_const (C := C * (ht h : ℝ) ^ k) hv.ne) ((hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable) (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Conclude with `h1`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ g, theta om' (Φ - Ψ) g h = theta om' Φ g h - theta om' Ψ g h`. Introduce `g`. Establish `hA` using `summable_of_mem_schA F (hpres (g, h) Φ hSΦ)`. Establish `hB'` using `summable_of_mem_schA F (hpres (g, h) Ψ hSΨ)`. Simplify using `only [theta, map_sub, thetaSum, Pi.sub_apply]`.
-
-Conclude with `hA.tsum_sub hB'`. Simplify using `only [Model.I, Pi.sub_apply, e]`. Conclude with `integral_sub (hint Φ hSoΦ h) (hint Ψ hSoΨ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_sub : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), G.M'.I om' (Φ - Ψ) = G.M'.I om' Φ - G.M'.I om' Ψ := by
   intro hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ Ψ hΨ

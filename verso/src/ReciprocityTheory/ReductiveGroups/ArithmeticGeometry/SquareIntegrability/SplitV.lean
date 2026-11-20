@@ -15,20 +15,20 @@ section SlopeTestRemainingChoices
 variable {dim : (E →+* ℂ) → ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[act, add_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_add_scalar (β β' : 𝓞 E) (v : Vsp dim) : act (β + β') v = act β v + act β' v := by
   ext i
   simp [act, add_mul]
 
 /- English proof (translation)
-Simplify using `[Hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_rightSquareIntegrability (x w w' : Vsp dim) : Hf x (w + w') = Hf x w + Hf x w' := by
   simp [Hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, act, PiLp.toLp_apply, IsCMField.coe_ringOfIntegersComplexConj, IsCMField.complexEmbedding_complexConj, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul_left_conj [IsCMField E] (α : 𝓞 E) (v w : Vsp dim) :
     Hf (act α v) w = Hf v (act (IsCMField.ringOfIntegersComplexConj E α) w) := by
@@ -39,49 +39,43 @@ theorem herm_smul_left_conj [IsCMField E] (α : 𝓞 E) (v w : Vsp dim) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hint : ∀ j (β : 𝓞 E), ∃ n : ℤ, (Hf (x j) (act β ξ)).im = n` using `fun j β => X.integral _ _ (hxu j).1 (hle (hst β ξ hξ))`. Set `φ : Fin k → 𝓞 E →+ ℤ` to `fun j => AddMonoidHom.mk' (fun β => (hint j β).choose) (by`. Introduce `β β'`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← (hint j (β + β')).choose_spec, ← (hint j β).choose_spec, ← (hint j β').choose_spec, smul_add_scalar, Hf_add_rightSquareIntegrability, Complex.add_im])`. Establish `hφ : ∀ j β, ((φ j β : ℤ) : ℝ) = (Hf (x j) (act β ξ)).im` using `fun j β => ((hint j β).choose_spec).symm`. Use `choose y hy using fun j => exists_dual (φ j)`. Establish `hyR : ∀ j (β : 𝓞 E), ((Algebra.trace ℚ E ((β : E) * y j) : ℚ) : ℝ) = (Hf (x j) (act β ξ)).im`. Introduce `j β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy j β, ← hφ j β]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hcs : ∀ j, 2 * ∑ σ : E →+* ℂ, ‖σ (y j)‖ ^ 2 ≤ ‖ξ‖ ^ 2 * ‖u j‖ ^ 2` using `fun j => cs_bound I hst hξ (x j) (u j) (hxu j).2 (y j) (hyR j)`. Use `set l : E := ∑ j, y j * IsCMField.complexConj E (y j) with hldef`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : (E →+* ℂ) → ℝ := fun σ => ∑ j, ‖σ (y j)‖ ^ 2 with hadef`. Establish `ha0 : ∀ σ, 0 ≤ a σ` using `fun σ => Finset.sum_nonneg fun _ _ => by positivity`. Establish `hσl : ∀ σ : E →+* ℂ, σ l = (a σ : ℂ)`. Introduce `σ`. Simplify using `only [hldef, hadef, map_sum, map_mul, IsCMField.complexEmbedding_complexConj]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj']`. Establish `hl : l ≠ 0`. Introduce `hl0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1 : a σ₀ = 0`. Use `hσl σ₀` as an intermediate fact. Rewrite `this` using `[hl0, map_zero]`. Conclude with `this.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : ∀ j, y j = 0`. Introduce `j`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => by positivity)).1 h1 j (Finset.mem_univ j)`. Establish `h3 : σ₀ (y j) = 0` using `by simpa using h2`. Conclude with `(map_eq_zero_iff σ₀ σ₀.injective).1 h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `horth : ∀ w ∈ IR I, inner ℝ w ξ = 0`. Introduce `w hw`. Rewrite `hw` using `[← hspan]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨j, α, hU⟩` from `hw`. Rewrite using `[hU.2 ξ (Submodule.subset_span hξ), herm_smul_left_conj, ← hyR, hy0 j, mul_zero, map_zero]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add w w' _ _ h h' => rw [inner_add_left, h, h', add_zero]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `smul r w _ h => rw [real_inner_smul_left, h, mul_zero]`. Establish `h4` using `horth ξ (Submodule.subset_span hξ)`. Rewrite `h4` using `[real_inner_self_eq_norm_sq]`. Establish `h5 : ‖ξ‖ = 0` using `(pow_eq_zero_iff two_ne_zero).1 h4`. Conclude with `hξ0 (norm_eq_zero.1 h5)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemD : ∀ j, y j ∈ Dual1 E` using `fun j => mem_dual_of (y j) fun β => ⟨φ j β, hy j β⟩`. Establish `htr : ∀ z : E, Algebra.trace ℚ E (IsCMField.complexConj E z) = Algebra.trace ℚ E z` using `fun z => Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) z`. Establish `hmemD' : ∀ j, IsCMField.complexConj E (y j) ∈ Dual1 E` using `fun j => mem_dual_of _ fun β => by`. Use `⟨φ j (IsCMField.ringOfIntegersComplexConj E β), ?_⟩` and prove the remaining obligations. Rewrite using `[← hy j, IsCMField.coe_ringOfIntegersComplexConj, ← htr, map_mul, IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hmem : l ∈ Dual1 E * Dual1 E`. Rewrite using `[hldef, ← FractionalIdeal.mem_coe]`. Conclude with `Submodule.sum_mem _ fun j _ => (FractionalIdeal.mem_coe).2 (FractionalIdeal.mul_mem_mul (hmemD j) (hmemD' j))`. Establish `hnorm` using `one_le_norm_mul l hl hmem`. Establish `hprodC : ((Algebra.norm ℚ l : ℚ) : ℂ) = ((∏ σ, a σ : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_prod_emb]`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun σ _ => hσl σ`. Establish `hprodR : ((Algebra.norm ℚ l : ℚ) : ℝ) = ∏ σ, a σ` using `by exact_mod_cast hprodC`. Establish `hP0 : 0 ≤ ∏ σ, a σ` using `Finset.prod_nonneg fun σ _ => ha0 σ`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set D : ℝ := ((NumberField.discr E).natAbs : ℝ) with hDdef`. Establish `hD : 0 < D`. Rewrite using `[hDdef]`. Conclude with `Int.natAbs_pos.2 (NumberField.discr_ne_zero E)` after adjusting the coercions. Establish `hprod : (D ^ 2)⁻¹ ≤ ∏ σ, a σ`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℚ l : ℚ) : ℝ)| * D ^ 2`. Establish `h1'` using `(Rat.cast_le (K := ℝ)).2 hnorm`. Move the coercions through the operations in `at h1'`. Rewrite using `[hDdef]`. Conclude with `h1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h1` using `[hprodR, abs_of_nonneg hP0]`. Rewrite using `[inv_le_iff_one_le_mul₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : Fintype.card (E →+* ℂ) = 2 * PT.f E`. Rewrite using `[NumberField.Embeddings.card, PT.f, IsTotallyComplex.finrank]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcpos : 0 < Fintype.card (E →+* ℂ)` using `Fintype.card_pos`. Establish `hsum` using `sum_ge_of_prod_ge a ha0 D hD hprod hcpos`. Establish `hrd : D ^ ((Fintype.card (E →+* ℂ) : ℝ)⁻¹) = PT.rd E`. Rewrite using `[PT.rd, NumberField.Embeddings.card, one_div, hDdef]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `congr 1`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Rewrite `hsum` using `[hrd, hcard]`. Move the coercions through the operations in `at hsum`. Establish `hξpos : 0 < ‖ξ‖ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `norm_pos_iff.2 hξ0` as an intermediate fact. Check the signs of the components of the expression. Establish `hj : ∀ j, (∑ σ : E →+* ℂ, ‖σ (y j)‖ ^ 2) / ‖ξ‖ ^ 2 ≤ ‖u j‖ ^ 2 / 2`. Introduce `j`. Rewrite using `[div_le_iff₀ hξpos]`.
-
-Combine the linear relations using `[hcs j]`. Establish `hsw : ∑ σ, a σ = ∑ j, ∑ σ : E →+* ℂ, ‖σ (y j)‖ ^ 2`. Rewrite using `[hadef]`. Conclude with `Finset.sum_comm`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[div_div]`. Use `_ ≤ (∑ σ, a σ) / ‖ξ‖ ^ 2 := by`. Apply `div_le_div_of_nonneg_right hsum hξpos.le` to reduce the goal to its premises. Use `_ = ∑ j, (∑ σ : E →+* ℂ, ‖σ (y j)‖ ^ 2) / ‖ξ‖ ^ 2 := by`. Rewrite using `[hsw, Finset.sum_div]`.
-
-Use `_ ≤ ∑ j, ‖u j‖ ^ 2 / 2 := Finset.sum_le_sum fun j _ => hj j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_norm_ge_of_span [IsCMField E] (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (hle : I ≤ X.L)
     (hst : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I) {ξ : Vsp X.dim} (hξ : ξ ∈ I) (hξ0 : ξ ≠ 0)

@@ -14,13 +14,11 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hK : ∀ x : S.topologicalClosure, ∃ w, R (x : H) w ∧ ‖w‖ ≤ C * ‖(x : H)‖` using `fun x => hex x x.2`. Use `choose l hl hb using hK`. Establish `hl0 : l 0 = 0`. Use `hb 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `L₀ : S.topologicalClosure →ₗ[ℂ] V` to `{ toFun := l map_add' := fun x y => by`. Use `hlin 1 x y (l x) (l y) (hl x) (hl y)` as an intermediate fact. Conclude with `huniq _ _ _ (hl (x + y)) (by simpa using this)`. Use the proof step `map_smul' := fun a x => by`. Use `hlin a x 0 (l x) (l 0) (hl x) (hl 0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `huniq _ _ _ (hl (a • x)) (by simpa [hl0] using this) }`. Set `L : S.topologicalClosure →L[ℂ] V` to `L₀.mkContinuous C (fun x => hb x)`. Use `⟨(ContinuousLinearMap.adjoint L v : S.topologicalClosure), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.adjoint L v).2`. Introduce `x hx w hw`.
-
-Establish `hxk : x ∈ S.topologicalClosure` using `S.le_topologicalClosure hx`. Establish `hw' : w = l ⟨x, hxk⟩` using `huniq x w _ hw (hl ⟨x, hxk⟩)`. Use `ContinuousLinearMap.adjoint_inner_left L (⟨x, hxk⟩ : S.topologicalClosure) v` as an intermediate fact. Rewrite using `[hw']`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riesz_of_relation {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (S : Submodule ℂ H) (R : H → V → Prop) (C : ℝ)
@@ -54,7 +52,7 @@ theorem riesz_of_relation {H V : Type} [NormedAddCommGroup H] [InnerProductSpace
     exact this
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Use function extensionality and compare the values at `g`. Simplify using `[Rw, ih, Rd]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Rw_zero {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (w : List (Bool × Fin n × Fin n)) : Rw w (0 : Mat n → V) = 0 := by
@@ -65,7 +63,7 @@ theorem Rw_zero {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     simp [Rw, ih, Rd]
 
 /- English proof (translation)
-Use `⟨contDiffOn_const, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Rw_zero]`. Conclude with `MemLp.zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sob_zero {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (V : Type)
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] : Sob μ (0 : Mat n → V) := by
@@ -74,19 +72,19 @@ theorem sob_zero {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (V : Typ
   exact MemLp.zero
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E _ Ω T F c hS h hh v`. Take `⟨hLg, hUn, hRC, hSob, hAlg, hWS, hWC, hCS, hSm, hPW, hM, hsym, hres, hinv, hOm, hbd⟩` from `hS`. Take `⟨C, hC⟩` from `hSm n μ E Ω T F hLg hUn hRC hSob hAlg hCS hOm h hh`. Take `⟨-, -, -, -, hCl, hOps, -⟩` from `hCS`. Take `⟨hc1, hc2, -⟩` from `hCl n μ E.V hUn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ {f : Mat n → E.V}, Sob μ f → MemLp (fun y : G n => f y.val) 2 μ` using `fun hf => hf.2 []`. Establish `hsum : ∀ (a : ℂ) (f f' : Mat n → E.V), Sob μ f → Sob μ f' → Sob μ (a • f + f')` using `fun a f f' hf hf' => ((hOps n μ E.V hLg hUn hRC f hf).2.2.2.1 a f' hf').1`. Establish `hsec : ∀ (a : ℂ) (f f' : Mat n → E.V), IsSec E f → IsSec E f' → IsSec E (a • f + f')`. Introduce `a f f' hf hf' g hg k`. Simplify using `[hf g hg k, hf' g hg k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h0 : cls μ (0 : Mat n → E.V) = 0`. Simplify using `using hc2 (-1) 0 0 (hmem (sob_zero μ E.V)) (hmem (sob_zero μ E.V))`. Set `S : Submodule ℂ (Lp E.V 2 μ)` to `{ carrier := secCls μ E zero_mem' := ⟨0, sob_zero μ E.V, fun g _ k => by simp, h0⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨f, hf, hs, rfl⟩ ⟨f', hf', hs', rfl⟩`. Conclude with `⟨1 • f + f', hsum 1 f f' hf hf', hsec 1 f f' hs hs', by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `using hc2 1 f f' (hmem hf) (hmem hf')⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a _ ⟨f, hf, hs, rfl⟩`. Use `⟨a • f + 0, hsum a f 0 hf (sob_zero μ E.V), hsec a f 0 hs (fun g _ k => by simp), ?_⟩` and prove the remaining obligations. Use `hc2 a f 0 (hmem hf) (hmem (sob_zero μ E.V))` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this }` using `[h0]`. Set `R : Lp E.V 2 μ → E.V → Prop` to `fun x w => ∃ f', Sob μ f' ∧ IsSec E f' ∧ cls μ f' = F.Φ h x ∧ f' 1 = w`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Take `⟨κ, hκ, hrep⟩` from `riesz_of_relation S R C (fun x hx => by`. Take `⟨f', a, b, d, e⟩` from `hC x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨f' 1, ⟨f', a, b, d, rfl⟩, e⟩)`. Use the proof step `(by`. Introduce and unpack `x _ _ ⟨f, hf, -, hcf, rfl⟩ ⟨f', hf', -, hcf', rfl⟩`. Conclude with `hc1 f f' hf.1.continuousOn hf'.1.continuousOn (hmem hf) (hmem hf') (hcf.trans hcf'.symm) 1 h1)`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a x y _ _ ⟨f, hf, hs, hcf, rfl⟩ ⟨f', hf', hs', hcf', rfl⟩`. Use `⟨a • f + f', hsum a f f' hf hf', hsec a f f' hs hs', ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hc2 a f f' (hmem hf) (hmem hf'), hcf, hcf', map_add, map_smul]) v`. Use `⟨κ, hκ, fun φ f' hφ hφs hf' hf's hcl => ?_⟩` and prove the remaining obligations. Conclude with `hrep (cls μ φ) ⟨φ, hφ, hφs, rfl⟩ (f' 1) ⟨f', hf', hf's, hcl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem evAdj : EvAdj := by
   intro n _ _ μ _ E _ Ω T F c hS h hh v

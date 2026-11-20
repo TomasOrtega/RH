@@ -10,13 +10,13 @@ open GlobalTheory
 namespace GlobalTheory.HSCore
 
 /- English proof (translation)
-Introduce `K _ _ X s hs δ Co a ha`. Establish `haT : a ≤ X.T` using `by omega`. Use `⟨Submodule.comap_mono (Vanishing.Fil_anti (Nat.le_succ a)), fun x => ?_⟩` and prove the remaining obligations. Establish `key : symV Co a x = 0 ↔ hs.sym (Nat.sub_add_cancel haT) (spaceV X s) ((X.V X.T).subtype.restrict (fun _ hx => hx) x) = 0`. Unfold `symV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos haT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `α`. Apply `(Co.ev (X.T - a)).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `p`. Use `congrFun h (α, p)` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use function extensionality and compare the values at `q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[h]`. Rewrite using `[key]`. Conclude with `Vanishing.sym_eq_zero_iff _ _ _ _ _ _ _ _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filV_symV_ker : ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K) (hs : X.IsGood s) (δ : ℕ) (Co : Coord X.toGeo hs δ), ∀ a < X.T - X.D, filV X s (a + 1) ≤ filV X s a ∧ ∀ x : filV X s a, symV Co a x = 0 ↔ x.1 ∈ filV X s (a + 1) := by
   intro K _ _ X s hs δ Co a ha

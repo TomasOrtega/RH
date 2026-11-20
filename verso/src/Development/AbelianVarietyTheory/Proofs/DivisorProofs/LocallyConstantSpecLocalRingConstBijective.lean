@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : (x : PrimeSpectrum A) ⤳ IsLocalRing.closedPoint A` using `(PrimeSpectrum.le_iff_specializes _ _).1 (IsLocalRing.le_maximalIdeal (x : PrimeSpectrum A).isPrime.ne_top)`. Establish `ho : IsOpen (f ⁻¹' {f (IsLocalRing.closedPoint A : PrimeSpectrum A)})` using `f.isLocallyConstant _`. Conclude with `hx.mem_open ho rfl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyConstant_spec_local_eq_closedPoint {R A : Type} [CommRing A] [IsLocalRing A]
     (f : LocallyConstant (Spec (CommRingCat.of A)) R) (x : Spec (CommRingCat.of A)) :
@@ -16,9 +16,9 @@ theorem locallyConstant_spec_local_eq_closedPoint {R A : Type} [CommRing A] [IsL
   exact hx.mem_open ho rfl
 
 /- English proof (translation)
-Introduce `R A _ _`. Use `⟨fun c d h => ?_, fun f => ⟨f (IsLocalRing.closedPoint A : PrimeSpectrum A), ?_⟩⟩` and prove the remaining obligations. Use `congrArg (fun g : LocallyConstant (Spec (CommRingCat.of A)) R => g (IsLocalRing.closedPoint A : PrimeSpectrum A)) h` as an intermediate fact. Conclude with `this`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LocallyConstant.coe_const, Function.const_apply]`. Conclude with `(locallyConstant_spec_local_eq_closedPoint f x).symm`.
+A detailed English derivation is pending.
 -/
 theorem locallyConstant_spec_local_bijective :
     ∀ (R : Type) (A : Type) [CommRing A] [IsLocalRing A],

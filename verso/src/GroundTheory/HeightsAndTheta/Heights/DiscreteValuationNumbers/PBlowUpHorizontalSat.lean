@@ -16,21 +16,19 @@ section Saturation
 variable {K : Type*} {ι : K → Type} {J : Type} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `set B' := blowUpOf P u ⊔ Ideal.map (liftForm (J := J) : MRing ι R →ₐ[R] MRing (extIdx ι J) R) W`. Set `π` to `Ideal.Quotient.mk B'`. Set `x₀` to `π (liftForm (a j₀))`. Set `L` to `Localization.Away x₀`. Set `q : MRing (extIdx ι J) R →+* L` to `(algebraMap _ L).comp π`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t : L` to `IsLocalization.Away.invSelf x₀`. Establish `hinv : q (liftForm (a j₀)) * t = 1` using `IsLocalization.Away.mul_invSelf x₀`. Set `ψ : Polynomial (MRing ι R) →+* L` to `Polynomial.eval₂RingHom (q.comp (liftForm (J := J) : MRing ι R →ₐ[R] _).toRingHom) (q (newVar j₀) * t)`. Establish `key : ψ.comp (aeval (R` using `R) (chartSubst a)).toRingHom = q := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[ψ]`. Introduce and unpack `⟨_ | k, i⟩`. Express the relevant statement in the definitionally equal form `J at i`. Establish `hm : π (newVar i * liftForm (a j₀) - newVar j₀ * liftForm (a i)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (hrel i))`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : q (newVar i * liftForm (a j₀) - newVar j₀ * liftForm (a i)) = 0` using `by show algebraMap _ L (π _) = 0`. Rewrite using `[hm, map_zero]`. Rewrite `h1` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Simplify using `only [ψ, chartSubst, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, aeval_X, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X]`. Express the relevant statement in the definitionally equal form `q (liftForm (a i)) * (q (newVar j₀) * t) = q (newVar i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-t) * h1 + q (newVar i) * hinv`. Simplify using `[ψ, chartSubst, liftForm]`. Establish `hle : Ideal.map (Polynomial.C : MRing ι R →+* Polynomial (MRing ι R)) W ≤ RingHom.ker ψ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Simplify using `only [ψ, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, q]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hp)), map_zero]`. Establish `h2` using `RingHom.mem_ker.mp (hle hF)`. Establish `h3` using `DFunLike.congr_fun key F`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom] at h3`. Rewrite `h2` using `[h3]`. Take `⟨⟨m, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers x₀) L (π F)).mp h2`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_pow, map_pow]`.
-
-Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_of_aeval_chartSubst_mem {P : Ideal (MRing ι R)} {u a : J → MRing ι R}
     {W : Ideal (MRing ι R)} (j₀ : J)
@@ -85,31 +83,25 @@ theorem exists_pow_mul_mem_of_aeval_chartSubst_mem {P : Ideal (MRing ι R)} {u a
 end Saturation
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW F`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hmin : W ∈ (blowUpOf P u ⊔ Ideal.span {liftForm x}).minimalPrimes`. Unfold `divCycle at hW`. Use `split_ifs at hW with h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `h.1`. Conclude with `absurd rfl hW`. Take `⟨hWp, hBW, hWrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Use `set W₀ := W.comap (liftForm (ι := ι) (J := J) (R := O)) with hW₀`. Take `⟨hW₀p, hPW₀, hrel₀, -⟩` from `comap_liftForm_facts hWp hBW hWrel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hϖW₀ : (C ϖ : MRing ι O) ∉ W₀` using `by rw [Ideal.mem_comap, liftForm_C]; exact hϖW`. Take `⟨j₀, hj₀⟩` from `hloc W₀ hW₀p hPW₀ hrel₀ hϖW₀`. Use `choose v w hv hvw using hj₀`. Establish `huj₀ : u j₀ ∉ P`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hex`. Establish `h1 : v j * u j ∈ P`. Use `P.add_mem (hvw j) (P.mul_mem_left (w j) h)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hj ((hPp.mem_or_mem h1).resolve_left fun h' => hv j (hPW₀ h'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u₀, a, hu₀W, hrelP⟩ : ∃ (u₀ : MRing ι O) (a : J → MRing ι O), u₀ ∉ W₀ ∧ ∀ j, u₀ * u j - u j₀ * a j ∈ P := by`. Use `hW₀p` as an intermediate fact. Use `⟨∏ j, v j, fun j => w j * ∏ j' ∈ Finset.univ.erase j, v j', fun h => W₀.primeCompl.prod_mem (fun j _ => hv j) h, fun j => ?_⟩` and prove the remaining obligations. Establish `e : (∏ j, v j) * u j - u j₀ * (w j * ∏ j' ∈ Finset.univ.erase j, v j') = (∏ j' ∈ Finset.univ.erase j, v j') * (v j * u j - w j * u j₀)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ v (Finset.mem_univ j)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.mul_mem_left _ (hvw j)`. Establish `hu₀P : u₀ ∉ P` using `fun h => hu₀W (hPW₀ h)`. Establish `ha₀ : a j₀ ∉ W₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : u j₀ * (u₀ - a j₀) ∈ P`. Use `hrelP j₀` as an intermediate fact. Rewrite `this` using `[show u₀ * u j₀ - u j₀ * a j₀ = u j₀ * (u₀ - a j₀) by ring]`. Then use the resulting hypothesis. Establish `h2 : u₀ - a j₀ ∈ W₀` using `hPW₀ ((hPp.mem_or_mem h1).resolve_left huj₀)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu₀W (by simpa using W₀.add_mem h2 h)`. Establish `hrelB : ∀ j, newVar j * liftForm (a j₀) - newVar j₀ * liftForm (a j) ∈ blowUpOf P u`. Introduce `j`. Apply `mem_blowUpOf_of_sub` to reduce the goal to its premises. Establish `e : u₀ * (u j * a j₀ - u j₀ * a j) = a j₀ * (u₀ * u j - u j₀ * a j) - a j * (u₀ * u j₀ - u j₀ * a j₀)` using `by ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : u₀ * (u j * a j₀ - u j₀ * a j) ∈ P`. Rewrite using `[e]`. Conclude with `P.sub_mem (P.mul_mem_left _ (hrelP j)) (P.mul_mem_left _ (hrelP j₀))`. Conclude with `(hPp.mem_or_mem h1).resolve_left hu₀P`. Use `hW₀p` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Q'` to `(Ideal.map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O)) W₀).comap (aeval (R := O) (chartSubst a))`. Establish `hQ'p : Q'.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hxW : liftForm x ∈ W` using `hmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hBQ' : blowUpOf P u ⊔ Ideal.span {liftForm x} ≤ Q'`. Use `sup_le (fun G hG => ?_) ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations.
-
-Conclude with `Ideal.map_mono hPW₀ (aeval_chartSubst_mem_of_mem_blowUpOf hPp huj₀ hrelP hG)`. Rewrite using `[Ideal.mem_comap, aeval_chartSubst_liftForm]`. Conclude with `Ideal.mem_map_of_mem _ hxW`. Establish `hQ'W : Q' ≤ W` using `fun G hG => mem_of_aeval_chartSubst_mem hWp le_rfl j₀ ha₀ (fun j => hBW (hrelB j)) hG`. Establish `hWQ' : W ≤ Q'` using `hmin.2 ⟨hQ'p, hBQ'⟩ hQ'W`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `hF`. Take `⟨m, hm⟩` from `exists_pow_mul_mem_of_aeval_chartSubst_mem j₀ hrelB (hWQ' hF)`. Conclude with `⟨a j₀ ^ m, fun h => ha₀ (hW₀p.mem_of_pow_mem _ h), hm⟩`. Introduce and unpack `⟨s, hs, hsF⟩`.
-
-Establish `h1 : liftForm s * F ∈ W` using `sup_le hBW Ideal.map_comap_le hsF`. Conclude with `(hWp.mem_or_mem h1).resolve_left hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BlowUpHorizontalSat.full : BlowUpHorizontalSat.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW F

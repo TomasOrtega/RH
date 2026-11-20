@@ -21,7 +21,7 @@ def IsEigBasis {S : Scheme.{0}} (t : SAB H S) {R : Type} [CommRing R] (φ : c.F 
 variable {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨g.tan τ, g.eig τ, g.basis τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem EigFrame.isEigBasis {Z : Model Xo c β} {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (g : EigFrame Z φ x) (τ : E →+* ℂ) : IsEigBasis Z.t φ x τ (g.v τ) :=
@@ -38,7 +38,7 @@ variable {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : S
   {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ S'} {τ : E →+* ℂ} {n : ℕ}
 
 /- English proof (translation)
-Establish `hv : ∀ i, v i ≫ t'.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x` using `fun i => (h.1 i).1`. Use `⟨fun i => (tan_iff m rfl (hv i)).2 (h.1 i), fun i a => (eig_iff m (hv i) a _).2 (h.2.1 i a), fun w hw he => ?_⟩` and prove the remaining obligations. Take `⟨w', hw1, rfl⟩` from `exists_lift m (spMap (algebraMap R (DualNumber R)) ≫ x) w (by rw [hw.1, Category.assoc])`. Establish `hb` using `h.2.2 w' ((tan_iff m rfl hw1).1 hw) fun a => (eig_iff m hw1 a _).1 (he a)`. Conclude with `(existsUnique_congr fun cf => comb_iff m rfl hv cf hw1).2 hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEigBasis_push {v : Fin n → (Sp (DualNumber R) ⟶ t'.G.left)} (h : IsEigBasis t' φ x τ v) :
     IsEigBasis t φ (x ≫ f) τ (fun i => v i ≫ m.φ) := by
@@ -50,9 +50,7 @@ theorem isEigBasis_push {v : Fin n → (Sp (DualNumber R) ⟶ t'.G.left)} (h : I
   exact (existsUnique_congr fun cf => comb_iff m rfl hv cf hw1).2 hb
 
 /- English proof (translation)
-Use `choose v' hv1 hv2 using fun i => exists_lift m (spMap (algebraMap R (DualNumber R)) ≫ x) (v i) (by rw [(h.1 i).1, Category.assoc])`. Establish `e : v = fun i => v' i ≫ m.φ` using `funext fun i => (hv2 i).symm`. Substitute `e` using the available equality. Use `⟨v', fun i => rfl, fun i => (tan_iff m rfl (hv1 i)).1 (h.1 i), fun i a => (eig_iff m (hv1 i) a _).1 (h.2.1 i a), fun w hw he => ?_⟩` and prove the remaining obligations. Establish `hb` using `h.2.2 (w ≫ m.φ) ((tan_iff m rfl hw.1).2 hw) fun a => (eig_iff m hw.1 a _).2 (he a)`.
-
-Conclude with `(existsUnique_congr fun cf => comb_iff m rfl hv1 cf hw.1).1 hb`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEigBasis_pull {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (h : IsEigBasis t φ (x ≫ f) τ v) :
     ∃ v' : Fin n → (Sp (DualNumber R) ⟶ t'.G.left), (∀ i, v' i ≫ m.φ = v i) ∧ IsEigBasis t' φ x τ v' := by

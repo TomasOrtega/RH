@@ -17,7 +17,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ}
 
 /- English proof (translation)
-Use `hε.add E w h ψ hc h1 (WD.lpZero h) (WD.lpZero h)` as an intermediate fact. Rewrite `this` using `[WD.lpSum_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.adicCompletion E) Circle)
     (hc : Continuous ψ) (h1 : ψ ≠ 1) : ε E w h ψ (WD.lpZero h) = 1 := by
@@ -26,11 +26,11 @@ theorem eps_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.adi
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.unr_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, H⟩ x hx`. Take `⟨σ, rfl⟩` from `ha.surj x`. Establish `h0 : deg σ = 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `ha.ord_eq σ` as an intermediate fact. Rewrite `this` using `[ord_eq_zero_iff.2 hx]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `congrFun (LinearMap.congr_fun (H ⟨_, deg_eq_zero_iff.mp h0⟩) fun _ => 1) 0`. Establish `h3 : χ (a (ineIncl h ⟨_, deg_eq_zero_iff.mp h0⟩)) = 1` using `by simpa using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Introduce `H`. Use `⟨rfl, fun σ => LinearMap.ext fun v => funext fun i => ?_⟩` and prove the remaining obligations. Establish `: χ (a (ineIncl h σ)) = 1` using `H _ (ord_eq_zero_iff.1 (by rw [ha.ord_eq]; simp))`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unr_lpOfChar_iff (ha : IsLocalArtin h a) {χ : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     (WD.lpOfChar h (χ.comp a) (ha.smooth hχ)).unr ↔ IsUnram χ := by
@@ -51,16 +51,16 @@ theorem unr_lpOfChar_iff (ha : IsLocalArtin h a) {χ : (w.adicCompletion E)ˣ �
     simp [this]
 
 /- English proof (translation)
-Simplify using `only [WD.lpOfChar, WDRep.diag, ha.unrChar_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lpOfChar_unrChar (ha : IsLocalArtin h a) (c : ℂˣ) (hc) :
     WD.lpOfChar h ((SmGL.unrChar (w.adicCompletion E) c).comp a) hc = WD.mk (WDRep.diag h fun _ : Fin 1 => c⁻¹) := by
   simp only [WD.lpOfChar, WDRep.diag, ha.unrChar_comp]
 
 /- English proof (translation)
-Establish `h1 : WD.lpSp h 1 = WD.lpOfChar h (WeilDeligne.unrChar h (qPow w 0)) (isSmooth_unrChar h _)`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[WDRep.spEig]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[shiftEnd_apply]`. Rewrite using `[h1, lpChar_lpOfChar]`. Conclude with `WD.lpTw_zero x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpChar_lpSp_one (x : WD h) : x.lpChar (WD.lpSp h 1) = x := by
   have h1 : WD.lpSp h 1 = WD.lpOfChar h (WeilDeligne.unrChar h (qPow w 0)) (isSmooth_unrChar h _) := by
@@ -73,9 +73,9 @@ theorem lpChar_lpSp_one (x : WD h) : x.lpChar (WD.lpSp h 1) = x := by
   exact WD.lpTw_zero x
 
 /- English proof (translation)
-Introduce and unpack `⟨n, b, hb, hi⟩`. Establish `hn : n = 0` using `by simpa [WD.lpZero] using congrArg WD.lpDim hb`. Substitute `hn` using the available equality. Establish `: Nontrivial (Subrepresentation b.ρ)` using `inferInstance`. Take `⟨S, T, hST⟩` from `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+A detailed English derivation is pending.
 -/
 theorem not_isIrrWD_zero : ¬ IsIrrWD (WD.lpZero h) := by
   rintro ⟨n, b, hb, hi⟩
@@ -86,7 +86,7 @@ theorem not_isIrrWD_zero : ¬ IsIrrWD (WD.lpZero h) := by
   exact hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `H.bij.2 (WD.lpSp h 2)`. Use `⟨x, by rw [← H.dim, hx]; simp, hx, fun hs => (sp_two_spec h).2.2.2 (hx ▸ (H.sph x).1 hs)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_steinberg {ha : IsLocalArtin h a} {ε : EpsFamily A} {rc : IrrGL (w.adicCompletion E) → WD h}
     (H : Laws a ha ε rc) : ∃ x : IrrGL (w.adicCompletion E), x.1 = 2 ∧ rc x = WD.lpSp h 2 ∧ ¬ IsSpherical x.rep := by

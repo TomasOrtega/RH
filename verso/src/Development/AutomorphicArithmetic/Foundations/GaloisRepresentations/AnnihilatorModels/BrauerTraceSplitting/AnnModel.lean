@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.BrauerTraceSplitting.AnnDrop
 
 /- English proof (translation)
-Introduce `hF l _ P AI hT K _ _ f hf hc ϖ hϖ M hM n j T hr hP A hA V₀ _ _ i ρ hρ T₀ hT₀`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Take `⟨B, e, heσ, heφ, hinj⟩` from `UpperTheory.Gal.crystallineComparison.Br.pBTied l P AI hT K`. Take `⟨N, hN⟩` from `hF l K.1 f hf hc ϖ hϖ M hM n j T hr hP A hA B`. Conclude with `UpperTheory.Gal.crystallineComparison.Br.annDrop ℚ_[l] _ _ _ (UpperTheory.Gal.crystallineComparison.σCr P K) P.φB B.σ B.φ e heσ heφ hinj (M.V j) V₀ i (fun g => M.act j g) ρ hρ f (l ^ f) n N A T₀ hT₀ hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Br.annModel :
     UpperTheory.Gal.crystallineComparison.Br.AnnModel := by

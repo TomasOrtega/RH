@@ -12,7 +12,7 @@ namespace GlobalTheory.HL.NmlCoset
 variable {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
 
 /- English proof (translation)
-Unfold `orth`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_iff (U : Submodule D.host.E (VS D).V) (y : (VS D).V) :
     y ∈ orth (VS D) U ↔ ∀ x ∈ U, (VS D).hT x y = 0 := by
@@ -20,11 +20,11 @@ theorem mem_orth_iff (U : Submodule D.host.E (VS D).V) (y : (VS D).V) :
   simp only [Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy => obtain ⟨b, rfl⟩ := hy`. Conclude with `F.fl.e_iso a b`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => simp [map_add, h1, h2]`. Consider the case `smul c y _ h => simp [map_smul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x x' _ _ h1 h2 => simp [map_add, h1, h2]`. Consider the case `smul c x _ h => simp [h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem X_iso : ∀ x ∈ Xsp F, ∀ y ∈ Xsp F, (VS D).hT x y = 0 := by
   intro x hx y hy
@@ -41,7 +41,7 @@ theorem X_iso : ∀ x ∈ Xsp F, ∀ y ∈ Xsp F, (VS D).hT x y = 0 := by
   | smul c x _ h => simp [h]
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[mem_orth_iff]`. Introduce `x hx`. Conclude with `X_iso F x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem X_le_orth : Xsp F ≤ orth (VS D) (Xsp F) := by
   intro y hy
@@ -50,7 +50,7 @@ theorem X_le_orth : Xsp F ≤ orth (VS D) (Xsp F) := by
   exact X_iso F x hx y hy
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Apply `Set.image_mono` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Set.mem_setOf_eq] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Xa_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
   apply Submodule.span_mono
@@ -63,7 +63,7 @@ instance Xa_fd (j : ℕ) : FiniteDimensional D.host.E (Xflag F j) :=
   FiniteDimensional.span_of_finite _ (Set.Finite.image _ (Set.toFinite _))
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `hn.2.1 j x hx`. Establish `: n x = (n x - x) + x` using `by abel`. Rewrite using `[this]`. Conclude with `(Xflag F (j + 1)).add_mem (Xa_mono F j h) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_Xa {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (j : ℕ) :
     ∀ x ∈ Xflag F (j + 1), n x ∈ Xflag F (j + 1) := by
@@ -74,7 +74,7 @@ theorem maps_Xa {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (j 
   exact (Xflag F (j + 1)).add_mem (Xa_mono F j h) hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `hn.2.2 x (X_le_orth F hx)`. Establish `: n x = (n x - x) + x` using `by abel`. Rewrite using `[this]`. Conclude with `(Xsp F).add_mem h hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_X {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) :
     ∀ x ∈ Xsp F, n x ∈ Xsp F := by
@@ -85,7 +85,7 @@ theorem maps_X {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) :
   exact (Xsp F).add_mem h hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `hn.2.2 x hx`. Establish `: n x = (n x - x) + x` using `by abel`. Rewrite using `[this]`. Conclude with `(orth (VS D) (Xsp F)).add_mem (X_le_orth F h) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_orth {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) :
     ∀ x ∈ orth (VS D) (Xsp F), n x ∈ orth (VS D) (Xsp F) := by
@@ -96,9 +96,9 @@ theorem maps_orth {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) :
   exact (orth (VS D) (Xsp F)).add_mem (X_le_orth F h) hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : (Xflag F (j + 1)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xflag F (j + 1)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `maps_Xa F hn j y hy`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq n _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[← heq]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `: n.symm x = y` using `by rw [← hyx]; simp`. Rewrite using `[this]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_Xa {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (j : ℕ) :
     ∀ x ∈ Xflag F (j + 1), n.symm x ∈ Xflag F (j + 1) := by
@@ -113,7 +113,7 @@ theorem symm_mem_Xa {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F)
   rw [this]; exact hy
 
 /- English proof (translation)
-Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, ?_, ?_⟩` and prove the remaining obligations. Introduce `j x _`. Simplify using the standard rewrite rules. Introduce `x _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem one_mem : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NRat F := by
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, ?_, ?_⟩
@@ -121,9 +121,9 @@ theorem one_mem : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NRat F := by
   · intro x _; simp
 
 /- English proof (translation)
-Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hn.1 hm.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx show n (m x) - x ∈ Xflag F j`. Establish `e : n (m x) - x = (n (m x) - m x) + (m x - x)` using `by abel`. Rewrite using `[e]`. Conclude with `(Xflag F j).add_mem (hn.2.1 j (m x) (maps_Xa F hm j x hx)) (hm.2.1 j x hx)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx show n (m x) - x ∈ Xsp F`. Establish `e : n (m x) - x = (n (m x) - m x) + (m x - x)` using `by abel`. Rewrite using `[e]`. Conclude with `(Xsp F).add_mem (hn.2.2 (m x) (maps_orth F hm x hx)) (hm.2.2 x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (hm : m ∈ NRat F) :
     n * m ∈ NRat F := by
@@ -140,15 +140,13 @@ theorem mul_mem {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (
     exact (Xsp F).add_mem (hn.2.2 (m x) (maps_orth F hm x hx)) (hm.2.2 x hx)
 
 /- English proof (translation)
-Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hn.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx show n.symm x - x ∈ Xflag F j`. Establish `hy` using `symm_mem_Xa F hn j x hx`. Establish `h` using `hn.2.1 j (n.symm x) hy`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : n.symm x - x = -(x - n.symm x)` using `by abel`. Rewrite using `[e]`. Conclude with `(Xflag F j).neg_mem h`. Introduce `x hx show n.symm x - x ∈ Xsp F`. Establish `hy : n.symm x ∈ orth (VS D) (Xsp F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[mem_orth_iff]`. Introduce `v hv`. Establish `hi` using `hn.1 v (n.symm x)`. Rewrite `hi` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx _ (maps_X F hn v hv)`. Establish `h` using `hn.2.2 (n.symm x) hy`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Establish `e : n.symm x - x = -(x - n.symm x)` using `by abel`. Rewrite using `[e]`.
-
-Conclude with `(Xsp F).neg_mem h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : n⁻¹ ∈ NRat F := by
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hn.1, ?_, ?_⟩
@@ -180,13 +178,13 @@ namespace GlobalTheory.HL
 open GlobalTheory.HL.NmlCoset in
 
 /- English proof (translation)
-Introduce `D X Y u u' _ t₀ t`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ht : t.lin ∈ nmlOf Y u u' t` using `⟨1, one_mem _, 1, one_mem _, by simp⟩`. Rewrite `ht` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn, n', hn', e⟩` from `ht`. Conclude with `⟨n⁻¹, n', inv_mem _ hn, hn', by simpa using e⟩`. Introduce and unpack `⟨n, m, hn, hm, e⟩`. Use extensionality with `δ`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a * n⁻¹, mul_mem _ ha (inv_mem _ hn), m * b, mul_mem _ hm hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `only [mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨a * n, mul_mem _ ha hn, m⁻¹ * b, mul_mem _ (inv_mem _ hm) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nmlOf_eq_iff_lin : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ t₀ t : TauC Y u u', nmlOf Y u u' t = nmlOf Y u u' t₀ ↔

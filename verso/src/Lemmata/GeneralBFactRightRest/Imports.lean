@@ -5,11 +5,11 @@ universe u_1 u_2
 namespace Bl.general_b_fact_right_rest
 
 /- English proof (translation)
-Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty`. Introduce `s hs`. Rewrite `hs` using `[Multiset.map_zero, Multiset.le_zero]`. Conclude with `⟨0, le_refl _, by rw [Multiset.map_zero, hs]⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `cons a t ih`. Introduce `s hs`. Rewrite `hs` using `[Multiset.map_cons]`. Distinguish the cases in `h : f a ∈ s`. Take `⟨s', rfl⟩` from `Multiset.exists_cons_of_mem h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[Multiset.cons_le_cons_iff]`. Take `⟨u, hu, hmap⟩` from `ih s' hs`. Conclude with `⟨a ::ₘ u, (Multiset.cons_le_cons_iff a).mpr hu, by rw [Multiset.map_cons, hmap]⟩`. Take `⟨u, hu, hmap⟩` from `ih s ((Multiset.le_cons_of_notMem h).mp hs)`. Conclude with `⟨u, hu.trans (Multiset.le_cons_self t a), hmap⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multiset α) :
     ∀ s : Multiset β, s ≤ t.map f → ∃ u : Multiset α, u ≤ t ∧ u.map f = s := by
@@ -30,7 +30,7 @@ private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multise
       exact ⟨u, hu.trans (Multiset.le_cons_self t a), hmap⟩
 
 /- English proof (translation)
-Introduce `α β _ f t s h`. Conclude with `aux f t s h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {α : Type u_1} {β : Type u_2} [DecidableEq.{u_2 + 1} β] (f : α → β) (t : Multiset.{u_1} α) (s : Multiset.{u_2} β),

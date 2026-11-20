@@ -13,27 +13,25 @@ def LeafPushoutFP : Prop := ∀ {DW DU DV S : Scheme.{0}} (φU : DW ⟶ DU) (φV
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `k _ Ω _ _ X f U V R hUV ⟨DU, DV, DW, qU, qV, qW, vU, vV, vW, φU, φV, hqU, hqV, hqW, hφU, hφV, eU, eV, pU, pV, pW, cU, cV⟩`. Establish `hc : ∀ x : X, x ∈ Set.range U.ι ∨ x ∈ Set.range V.ι`. Introduce `x`. Establish `hx : x ∈ (U ⊔ V : X.Opens)` using `by rw [hUV]; trivial`. Break down `hx with hx | hx` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (by simpa using hx)`. Conclude with `Or.inr (by simpa using hx)`. Establish `hsq : IsPullback (X.homOfLE inf_le_left) (X.homOfLE inf_le_right) U.ι V.ι` using `isPullback_opens_inf U V`. Establish `hab : X.homOfLE (inf_le_left : U ⊓ V ≤ U) ≫ vU ≫ pushout.inl φU φV = X.homOfLE (inf_le_right : U ⊓ V ≤ V) ≫ vV ≫ pushout.inr φU φV`. Rewrite using `[← Category.assoc, ← Category.assoc, ← cU, ← cV, Category.assoc, Category.assoc, pushout.condition]`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, h1, h2⟩` from `exists_glue hsq hc _ _ hab`. Establish `hh : φU ≫ qU = φV ≫ qV` using `eU.trans eV.symm`. Use `isOpenImmersion_inl φU φV` as an intermediate fact. Use `isOpenImmersion_inr φU φV` as an intermediate fact. Establish `HV : IsPullback vW (X.homOfLE (inf_le_right : U ⊓ V ≤ V)) φV vV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_bot ?_ cV pV` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.homOfLE_ι, eV]`. Conclude with `pW`. Establish `HU : IsPullback vW (X.homOfLE (inf_le_left : U ⊓ V ≤ U)) φU vU`. Use `IsPullback.of_bot ?_ cU pU` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, Scheme.homOfLE_ι, eU]`. Conclude with `pW`. Establish `e1 (x : U.toScheme) : v (U.ι x) = pushout.inl φU φV (vU x)` using `congrArg (fun g => g x) h1`. Establish `e2 (x : V.toScheme) : v (V.ι x) = pushout.inr φU φV (vV x)` using `congrArg (fun g => g x) h2`. Use `⟨pushout φU φV, pushout.desc qU qV hh, v, hF φU φV qU qV hh inferInstance hqU hqV (eU ▸ hqW), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `isPullback_of_two (pushout_cover φU φV) (u' := U.ι) (v' := V.ι) (aU := vU) (aV := vV) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `IsOpenImmersion.isPullback _ _ _ _ h1 ?_` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `hc x with hx | ⟨x, rfl⟩` into its components or cases. Conclude with `hx`. Take `⟨w, -, hw⟩` from `exists_of_inl_eq_inr _ _ (hy.trans (e2 x))`. Take `⟨z, -, rfl⟩` from `Scheme.exists_preimage_of_isPullback HV w x hw`. Use `⟨X.homOfLE inf_le_left z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun g => g z) hsq.w`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨vU y, (e1 y).symm⟩`. Use `IsOpenImmersion.isPullback _ _ _ _ h2 ?_` and prove the remaining obligations. Use extensionality with `x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Break down `hc x with ⟨x, rfl⟩ | hx` into its components or cases. Take `⟨w, hw, -⟩` from `exists_of_inl_eq_inr _ _ (hy.trans (e1 x)).symm`. Take `⟨z, -, rfl⟩` from `Scheme.exists_preimage_of_isPullback HU w x hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨X.homOfLE inf_le_right z, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun g => g z) hsq.w).symm`. Conclude with `hx`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨vV y, (e2 y).symm⟩`.
-
-Simplify `pU` using `only [pushout.inl_desc]`. Simplify `pV` using `only [pushout.inr_desc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LeafGlueTwo_of (hF : LeafPushoutFP) : LeafGlueTwo := by
   intro k _ Ω _ _ X f U V R hUV ⟨DU, DV, DW, qU, qV, qW, vU, vV, vW, φU, φV, hqU, hqV, hqW, hφU, hφV, eU, eV,

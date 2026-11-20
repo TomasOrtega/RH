@@ -13,13 +13,13 @@ namespace GlobalTheory.CompanionTheory.FineL
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[decWord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem length_decWord (Γ : Segment k) : (decWord Γ).length = Γ.len := by
   simp [decWord]
 
 /- English proof (translation)
-Establish `h : (a : ℕ) < (List.ofFn Γ.term).reverse.length` using `a.2`. Use `show (List.ofFn Γ.term).reverse[(a : ℕ)] = _`. Rewrite using `[List.getElem_reverse, List.getElem_ofFn]`. Simplify using `[Segment.term]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decWord_get (Γ : Segment k) (a : Fin (decWord Γ).length) :
     (decWord Γ).get a = Γ.first.nu ((Γ.len - 1 - (a : ℕ) : ℕ) : ℂ) := by
@@ -29,14 +29,14 @@ theorem decWord_get (Γ : Segment k) (a : Fin (decWord Γ).length) :
   simp [Segment.term]
 
 /- English proof (translation)
-Rewrite using `[decWord_get]`. Conclude with `Γ.isCusp_first.nu _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCusp_decWord_get (Γ : Segment k) (a : Fin (decWord Γ).length) : ((decWord Γ).get a).IsCusp := by
   rw [decWord_get]
   exact Γ.isCusp_first.nu _
 
 /- English proof (translation)
-Establish `h : ∀ a, ((decWord Γ).get a).1 = Γ.d` using `fun a => by rw [decWord_get]; rfl`. Simplify using `only [h, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, length_decWord]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_decWord (Γ : Segment k) : ∑ a, ((decWord Γ).get a).1 = Γ.deg := by
   have h : ∀ a, ((decWord Γ).get a).1 = Γ.d := fun a => by rw [decWord_get]; rfl
@@ -44,7 +44,7 @@ theorem sum_decWord (Γ : Segment k) : ∑ a, ((decWord Γ).get a).1 = Γ.deg :=
   rfl
 
 /- English proof (translation)
-Simplify using `only [below, h, Finset.sum_const, smul_eq_mul, mul_one]`. Rewrite using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem below_of_len_one {s : ℕ} (Γ : Fin s → Segment k) (h : ∀ a, (Γ a).len = 1) (a : Fin s) :
     below Γ a = s - 1 - (a : ℕ) := by
@@ -52,9 +52,9 @@ theorem below_of_len_one {s : ℕ} (Γ : Fin s → Segment k) (h : ∀ a, (Γ a)
   rw [Finset.filter_lt_eq_Ioi, Fin.card_Ioi]
 
 /- English proof (translation)
-Establish `hd : ∑ a, ((decWord Γ).get a).1 = N` using `(sum_decWord Γ).trans hΓ.deg_eq`. Rewrite using `[jmL, dif_pos hd]`. Use `(hJ Γ π hΓ _ (decWord Γ).get hd fun a => (isCusp_decWord_get Γ a).1).1 ⟨fun a => Segment.single _ (isCusp_decWord_get Γ a), ⟨?_, fun a => ?_⟩, fun a => (single_spec (isCusp_decWord_get Γ a)).2.1⟩` and prove the remaining obligations. Establish `h : ∀ a, (Segment.single _ (isCusp_decWord_get Γ a)).len = 1` using `fun _ => rfl`. Simplify using `only [h, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one, length_decWord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(decWord_get Γ a).trans ?_` and prove the remaining obligations. Establish `e : (decWord Γ).length - 1 - (a : ℕ) = Γ.len - 1 - (a : ℕ)`. Use `length_decWord Γ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[below_of_len_one _ (fun _ => rfl), e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem jmL_decWord (hJ : LSegJacquet k) (Γ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} (hΓ : IsLSeg Γ π) : jmL (decWord Γ) π = 1 := by
@@ -72,11 +72,11 @@ theorem jmL_decWord (hJ : LSegJacquet k) (Γ : Segment k) {N : ℕ} {V : Type} [
     rw [below_of_len_one _ (fun _ => rfl), e]
 
 /- English proof (translation)
-Establish `hd : ∑ a, ((decWord Δ).get a).1 = x.1` using `(sum_decWord Δ).trans h.deg_eq`. Establish `h1` using `jmL_decWord hJ Δ h`. Rewrite `h1` using `[jmL, dif_pos hd, jm]`. Establish `hsub : IsSubquotient (piTensor fun a => ((decWord Δ).get a).rep) (jac (stdBlocks (fun a => ((decWord Δ).get a).1) hd) x.rep)` using `jhMult_ne_zero_iff.1 (by rw [h1]; exact one_ne_zero)`. Establish `hu` using `GlobalTheory.SmGL.CuspRow.block_unique_of_isCuspidal k x.1 _ x.rep _ _ _ _ (fun a => ((decWord Δ).get a).rep) hx.2 (fun a => nontrivial_of_irreducible ((decWord Δ).get a).2.rep.irr) hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hl : 2 ≤ (decWord Δ).length`. Use `Δ.len_pos` as an intermediate fact. Rewrite using `[length_decWord]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `hu ⟨0, by omega⟩ ⟨1, by omega⟩ (isCusp_decWord_get Δ _).1 (isCusp_decWord_get Δ _).1` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem len_eq_one (hJ : LSegJacquet k) {Δ : Segment k} {x : IrrGL k} (hx : x.IsCusp) (h : IsLSeg Δ x.rep) :
     Δ.len = 1 := by
@@ -97,9 +97,9 @@ theorem len_eq_one (hJ : LSegJacquet k) {Δ : Segment k} {x : IrrGL k} (hx : x.I
   simp at this
 
 /- English proof (translation)
-Establish `hdeg : ρ.1 = x.1`. Use `h.deg_eq` as an intermediate fact. Simplify `this` using `[Segment.deg, Segment.single, Segment.ofFirst]`. Take `⟨n, c⟩` from `x`. Take `⟨m, r⟩` from `ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : m = n` from `hdeg`. Take `⟨φ⟩` from `(single_spec hρ).2.1.unique h`. Conclude with `(IrrGL.of_rep _).symm.trans ((IrrGL.of_eq_of.2 ⟨φ⟩).trans (IrrGL.of_rep _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_isLSeg_single {ρ : IrrGL k} (hρ : ρ.IsCusp) {x : IrrGL k} (h : IsLSeg (.single ρ hρ) x.rep) : x = ρ := by
   have hdeg : ρ.1 = x.1 := by
@@ -112,20 +112,20 @@ theorem eq_of_isLSeg_single {ρ : IrrGL k} (hρ : ρ.IsCusp) {x : IrrGL k} (h : 
   exact (IrrGL.of_rep _).symm.trans ((IrrGL.of_eq_of.2 ⟨φ⟩).trans (IrrGL.of_rep _))
 
 /- English proof (translation)
-Establish `e : Δ = .single Δ.first Δ.isCusp_first` using `Segment.ext_first rfl hl`. Conclude with `eq_of_isLSeg_single Δ.isCusp_first (e ▸ h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_first_of_len_one {Δ : Segment k} (hl : Δ.len = 1) {x : IrrGL k} (h : IsLSeg Δ x.rep) : x = Δ.first := by
   have e : Δ = .single Δ.first Δ.isCusp_first := Segment.ext_first rfl hl
   exact eq_of_isLSeg_single Δ.isCusp_first (e ▸ h)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ hJ Γ N V _ _ π hΓ W hW`. Use `⟨fun e => e ▸ jmL_decWord hJ Γ hΓ, fun hne => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : ∑ a, (W.get a).1 = N`. Rewrite using `[jmL, dif_pos hd]`. Use `(hJ Γ π hΓ _ W.get hd fun a => (hW _ (List.get_mem W a)).1).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨Γ', ⟨hs, hf⟩, hL⟩`. Establish `hl : ∀ a, (Γ' a).len = 1` using `fun a => len_eq_one hJ (hW _ (List.get_mem W a)) (hL a)`. Establish `hlen : W.length = Γ.len`. Simplify `hs` using `only [hl, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Use `hne (List.ext_get (hlen.trans (length_decWord Γ).symm) fun n h1 h2 => ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : W.get ⟨n, h1⟩ = Γ.first.nu ((W.length - 1 - n : ℕ) : ℂ)`. Establish `h4` using `eq_first_of_len_one (hl ⟨n, h1⟩) (hL ⟨n, h1⟩)`. Rewrite `h4` using `[hf, below_of_len_one Γ' hl]`. Conclude with `h4`. Rewrite using `[h3, decWord_get, hlen]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jmL, dif_neg hd]`.
+A detailed English derivation is pending.
 -/
 theorem jmL_cusp_word : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → LSegJacquet k → ∀ (Γ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V]

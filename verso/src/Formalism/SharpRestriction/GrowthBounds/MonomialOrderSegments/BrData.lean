@@ -16,7 +16,7 @@ variable {K : Type} [Field K] {σ τ : Type} (f : σ → τ) (hf : Function.Inje
 
 include hf in
 /- English proof (translation)
-Unfold `fact`. Conclude with `Finsupp.prod_mapDomain_index_inj hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fact_mapDomain (α : σ →₀ ℕ) : fact (α.mapDomain f) = fact α := by
   unfold fact
@@ -24,9 +24,9 @@ theorem fact_mapDomain (α : σ →₀ ℕ) : fact (α.mapDomain f) = fact α :=
 
 include hf in
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[support_rename_of_injective hf, Finset.sum_image]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain f hf, coeff_rename_mapDomain f hf, fact_mapDomain f hf]`. Introduce `a _ b _ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finsupp.mapDomain_injective hf h`.
+A detailed English derivation is pending.
 -/
 theorem fock_rename (F G : MvPolynomial σ K) : fock (rename f F) (rename f G) = fock F G := by
   classical
@@ -39,7 +39,7 @@ theorem fock_rename (F G : MvPolynomial σ K) : fock (rename f F) (rename f G) =
 
 include hf in
 /- English proof (translation)
-Unfold `vBB`. Rewrite using `[support_rename_of_injective hf, Finset.inf_image]`. Use `Finset.inf_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, coeff_rename_mapDomain f hf, fact_mapDomain f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem vBB_rename (v : AddValuation K (WithTop ℚ)) (F : MvPolynomial σ K) : vBB v (rename f F) = vBB v F := by
   classical
@@ -55,7 +55,7 @@ section Ren2
 variable {K : Type} [Field K] {L L' : Type} {r : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Prod.map g (id : Fin r → Fin r))` using `fun x y h => Prod.ext (hg (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)`. Conclude with `Finsupp.mapDomain_apply hinj α (i, a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapDomain_prod_apply (g : L → L') (hg : Function.Injective g) (α : L × Fin r →₀ ℕ) (i : L) (a : Fin r) :
     (α.mapDomain (Prod.map g (id : Fin r → Fin r))) (g i, a) = α (i, a) := by
@@ -63,9 +63,9 @@ theorem mapDomain_prod_apply (g : L → L') (hg : Function.Injective g) (α : L 
   exact Finsupp.mapDomain_apply hinj α (i, a)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Prod.map g (id : Fin r → Fin r))` using `fun x y h => Prod.ext (g.injective (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)`. Simplify using `only [PolK, mem_restrictSupport_iff, support_rename_of_injective hinj, Finset.coe_image, Set.image_subset_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h α hα i`. Use `h hα (g i)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[mapDomain_prod_apply _ g.injective]`. Introduce `h β hβ i'`. Take `⟨i, rfl⟩` from `g.surjective i'`. Use `h hβ i` as an intermediate fact. Simplify `this` using `[mapDomain_prod_apply _ g.injective]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PolK_rename (g : L ≃ L') (d' : L' → ℕ) (F : MvPolynomial (L × Fin r) K) :
     rename (Prod.map g (id : Fin r → Fin r)) F ∈ PolK K r d' ↔ F ∈ PolK K r (d' ∘ g) := by
@@ -83,9 +83,9 @@ theorem PolK_rename (g : L ≃ L') (d' : L' → ℕ) (F : MvPolynomial (L × Fin
     simpa [mapDomain_prod_apply _ g.injective] using this
 
 /- English proof (translation)
-Rewrite using `[valS_rename g hg, valS_eq]`. Establish `e1 : (⟨sg' ∘ g⟩ : G.Letters L) = LL`. Consider the cases of `LL`. Simplify using `only [G.Letters.mk.injEq]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(h1 i).symm`. Establish `e2 : (↑(S'.preimage g hg.injOn) : Set L) = S`. Use extensionality with `i`. Simplify using `[h2]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valS_transport [DecidableEq L'] [NeZero r] (g : L → L') (hg : Function.Injective g) (sg' : L' → Bool)
     (S' : Finset L') (LL : G.Letters L) (S : Set L) (h1 : ∀ i, LL.vec i = sg' (g i)) (h2 : ∀ i, i ∈ S ↔ g i ∈ S')
@@ -149,7 +149,7 @@ def fM : PlaneGramData.ML J Dt.nL r → (toData Dt).ML
   | PlaneGramData.ML.tp j m _ => Sum.inr (Sum.inr (Sum.inr ((zE J).symm j, m)))
 
 /- English proof (translation)
-Introduce `x y h`. Apply the tactic sequence `cases x <;> cases y <;> simp_all [fM]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fM_injective : Function.Injective (fM Dt) := by
   intro x y h
@@ -158,7 +158,7 @@ theorem fM_injective : Function.Injective (fM Dt) := by
 def gO : PlaneGramData.TL J Dt.nL r ≃ (toData Dt).OL := eO Dt
 
 /- English proof (translation)
-Establish `h : (toData Dt).nxt j = j + 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (j.val + 1) % J = _`. Rewrite using `[Fin.val_add, Fin.val_one', Nat.add_mod_mod]`. Rewrite using `[h, map_add, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zE_nxt (j : Fin J) : zE J ((toData Dt).nxt j) = zE J j + 1 := by
   have h : (toData Dt).nxt j = j + 1 := by
@@ -168,11 +168,11 @@ theorem zE_nxt (j : Fin J) : zE J ((toData Dt).nxt j) = zE J j + 1 := by
   rw [h, map_add, map_one]
 
 /- English proof (translation)
-Establish `h : (toData Dt).aux₃ j = j - 1`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.coe_sub, Fin.val_one']`. Use `show (j.val + J - 1) % J = (J - 1 % J + j.val) % J`. Break down `Nat.lt_or_ge 1 J with hJ | hJ` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mod_eq_of_lt hJ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h1 : J = 1` using `by have := NeZero.ne J; omega`. Substitute `h1` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h, map_sub, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zE_prv (j : Fin J) : zE J ((toData Dt).aux₃ j) = zE J j - 1 := by
   have h : (toData Dt).aux₃ j = j - 1 := by
@@ -189,35 +189,35 @@ theorem zE_prv (j : Fin J) : zE J ((toData Dt).aux₃ j) = zE J j - 1 := by
   rw [h, map_sub, map_one]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨j, l | m⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_O (x : PlaneGramData.TL J Dt.nL r) : Dt.trueLet.vec x = (toData Dt).osg (gO Dt x) := by
   rcases x with ⟨j, l | m⟩ <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_M (x : PlaneGramData.ML J Dt.nL r) : Dt.modelLet.vec x = (toData Dt).msg (fM Dt x) := by
   cases x <;> rfl
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `ll k l => show _ ↔ (Sum.inl ⟨k, l⟩ : (toData Dt).ML) ∈ (toData Dt).chainSet j i`. Simplify using `only [PlaneGramData.SignedChainData.chainML, TwistData.chainSet, TwistData.wSet, TwistData.mb, TwistData.mw, Set.mem_image, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y | y, hy, h⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h' : PlaneGramData.ML.ll (zE J j) y = PlaneGramData.ML.ll k l` using `h`. Take `⟨hk, hl⟩` from `PlaneGramData.ML.ll.inj h'`. Substitute `hk` using the available equality. Consider the cases of `hl`. Conclude with `Or.inl ⟨_, ⟨_, rfl, hy⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Split into cases according to the possible forms of the given data. Prove the first alternative.
 
-Simplify using `[PlaneGramData.SignedChainData.levToML] at h`. Introduce and unpack `(⟨b, ⟨l', hb, hl'⟩, h⟩ | ⟨a, h⟩)`. Substitute `hb` using the available equality. Establish `h2 : (⟨zE J j, l'⟩ : Σ k, Fin (Dt.nL k)) = ⟨k, l⟩` using `Sum.inl_injective h`. Consider the cases of `h2`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Substitute using the available equality. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Conclude with `⟨Sum.inl l', hl', rfl⟩`. Consider the cases of `h`. Consider the case `lab k m' => show _ ↔ (Sum.inr (Sum.inl ((zE J).symm k, m')) : (toData Dt).ML) ∈ (toData Dt).chainSet j i`. Simplify using `only [PlaneGramData.SignedChainData.chainML, TwistData.chainSet, TwistData.wSet, TwistData.mb, TwistData.mw, Set.mem_image, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply the tactic sequence `rintro ⟨y | y, hy, h⟩ <;> simp [PlaneGramData.SignedChainData.levToML] at h`. Apply the tactic sequence `rintro (⟨b, -, h⟩ | ⟨a, h⟩) <;> cases h`. Consider the case `wc k m' => show _ ↔ (Sum.inr (Sum.inr (Sum.inl ((zE J).symm k, m'))) : (toData Dt).ML) ∈ (toData Dt).chainSet j i`. Simplify using `only [PlaneGramData.SignedChainData.chainML, TwistData.chainSet, TwistData.wSet, TwistData.mb, TwistData.mw, Set.mem_image, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y | y, hy, h⟩`. Simplify using `[PlaneGramData.SignedChainData.levToML] at h`. Establish `h' : PlaneGramData.ML.wc (zE J j - 1) y = PlaneGramData.ML.wc k m'` using `h`. Take `⟨hk, rfl⟩` from `PlaneGramData.ML.wc.inj h'`. Use `Or.inr ⟨y, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hk, ← zE_prv Dt j, RingEquiv.symm_apply_apply]`. Introduce and unpack `(⟨b, -, h⟩ | ⟨a, h⟩)`. Consider the cases of `h`. Simplify using `only [Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq] at h`. Use `⟨Sum.inr m', Dt.chain_w _ _ m', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show PlaneGramData.ML.wc (zE J j - 1) m' = PlaneGramData.ML.wc k m'`. Rewrite using `[← zE_prv Dt j, h.1, RingEquiv.apply_symm_apply]`. Consider the case `tp k m' hm' => show _ ↔ (Sum.inr (Sum.inr (Sum.inr ((zE J).symm k, m'))) : (toData Dt).ML) ∈ (toData Dt).chainSet j i`. Simplify using `only [PlaneGramData.SignedChainData.chainML, TwistData.chainSet, TwistData.wSet, TwistData.mb, TwistData.mw, Set.mem_image, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro ⟨y | y, hy, h⟩ <;> simp [PlaneGramData.SignedChainData.levToML] at h`. Apply the tactic sequence `rintro (⟨b, -, h⟩ | ⟨a, h⟩) <;> cases h`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_chain (j : Fin J) (i : Fin (Dt.nch (zE J j))) (x : PlaneGramData.ML J Dt.nL r) :
     x ∈ Dt.chainML (zE J j) i ↔ fM Dt x ∈ (toData Dt).chainSet j i := by
@@ -273,21 +273,19 @@ theorem mem_chain (j : Fin J) (i : Fin (Dt.nch (zE J j))) (x : PlaneGramData.ML 
     · rintro (⟨b, -, h⟩ | ⟨a, h⟩) <;> cases h
 
 /- English proof (translation)
-Simplify using `only [PlaneGramData.SignedChainData.TSet, Set.mem_union, Set.mem_setOf_eq]`. Break down `x with ⟨k, l | m''⟩` into its components or cases. Use `show _ ↔ (Sum.inl ⟨k, l⟩ : (toData Dt).OL) ∈ (toData Dt).Tset j m`. Simplify using `only [TwistData.Tset, TwistData.LLj, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨l', h⟩ | ⟨m', -, h⟩)`. Establish `hk : k = zE J j` using `congrArg Sigma.fst h`. Use `Or.inl ⟨⟨k, l⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show (zE J).symm k = j`. Rewrite using `[hk, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `absurd (congrArg (fun s => s.2.isLeft) h) (by simp)`. Introduce and unpack `(⟨b, hb, hb'⟩ | ⟨m', -, hm'⟩)`. Establish `hb2 : b = ⟨k, l⟩` using `Sum.inl_injective hb'`. Substitute `hb2` using the available equality. Establish `hk : k = zE J j`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `: (zE J).symm k = j` using `hb`. Rewrite using `[← this, RingEquiv.apply_symm_apply]`. Substitute `hk` using the available equality. Conclude with `Or.inl ⟨l, rfl⟩`. Conclude with `absurd hm' (by simp)`.
+Prove the first alternative. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show _ ↔ (Sum.inr ((zE J).symm k, m'') : (toData Dt).OL) ∈ (toData Dt).Tset j m`. Simplify using `only [TwistData.Tset, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨l', h⟩ | ⟨m', hm, h⟩)`. Conclude with `absurd (congrArg (fun s => s.2.isLeft) h) (by simp)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `hk : k = zE J j` using `congrArg Sigma.fst h`. Substitute `hk` using the available equality. Establish `hm2 : m'' = m'`. Use `h` as an intermediate fact. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, Sum.inr.injEq, true_and] at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Substitute `hm2` using the available equality. Use `Or.inr ⟨m'', hm, ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_apply]`. Introduce and unpack `(⟨b, -, hb⟩ | ⟨m', hm, hm'⟩)`.
-
-Conclude with `absurd hb (by simp)`. Establish `h2 : j = (zE J).symm k ∧ m' = m''` using `by simpa using hm'`. Take `⟨rfl, rfl⟩` from `h2`. Use `Or.inr ⟨m', hm, ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_T (j : Fin J) (m : Fin r) (x : PlaneGramData.TL J Dt.nL r) :
     x ∈ Dt.TSet (zE J j) m ↔ gO Dt x ∈ (toData Dt).Tset j m := by
@@ -335,31 +333,31 @@ theorem mem_T (j : Fin J) (m : Fin r) (x : PlaneGramData.TL J Dt.nL r) :
         rw [RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `ll k l => show _ ↔ (Sum.inl ⟨k, l⟩ : (toData Dt).ML) ∈ (toData Dt).Yset j m`. Simplify using `only [TwistData.Yset, TwistData.wSet, TwistData.LLj, TwistData.mb, TwistData.mw, TwistData.mtp, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Simplify using `only [PlaneGramData.SignedChainData.linkML, Set.mem_union, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `((⟨m'', h⟩ | ⟨l', h⟩) | ⟨m1, h1, h2, h⟩)`. Consider the cases of `h`. Establish `hk : k = zE J j` using `(PlaneGramData.ML.ll.inj h).1`. Use `Or.inl (Or.inr ⟨⟨k, l⟩, ?_, rfl⟩)` and prove the remaining obligations. Use `show (zE J).symm k = j`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, RingEquiv.symm_apply_apply]`. Consider the cases of `h`. Introduce and unpack `((⟨a, h⟩ | ⟨b, hb, h⟩) | ⟨a, -, h⟩)`. Consider the cases of `h`. Establish `hb2 : b = ⟨k, l⟩` using `Sum.inl_injective h`.
+Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hb2` using the available equality. Establish `hk : k = zE J j`. Establish `: (zE J).symm k = j` using `hb`. Rewrite using `[← this, RingEquiv.apply_symm_apply]`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Prove the first alternative.
 
-Conclude with `Or.inl (Or.inr ⟨l, rfl⟩)`. Consider the cases of `h`. Consider the case `lab k m' => show _ ↔ (Sum.inr (Sum.inl ((zE J).symm k, m')) : (toData Dt).ML) ∈ (toData Dt).Yset j m`. Simplify using `only [TwistData.Yset, TwistData.wSet, TwistData.LLj, TwistData.mb, TwistData.mw, TwistData.mtp, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Simplify using `only [PlaneGramData.SignedChainData.linkML, Set.mem_union, Set.mem_setOf_eq]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ((⟨m'', h⟩ | ⟨l', h⟩) | ⟨m1, h1, h2, h⟩) <;> cases h`. Apply the tactic sequence `rintro ((⟨a, h⟩ | ⟨b, hb, h⟩) | ⟨a, -, h⟩) <;> cases h`. Consider the case `wc k m' => show _ ↔ (Sum.inr (Sum.inr (Sum.inl ((zE J).symm k, m'))) : (toData Dt).ML) ∈ (toData Dt).Yset j m`. Simplify using `only [TwistData.Yset, TwistData.wSet, TwistData.LLj, TwistData.mb, TwistData.mw, TwistData.mtp, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [PlaneGramData.SignedChainData.linkML, Set.mem_union, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `((⟨m'', h⟩ | ⟨l', h⟩) | ⟨m1, h1, h2, h⟩)`. Take `⟨hk, rfl⟩` from `PlaneGramData.ML.wc.inj h`. Use `Or.inl (Or.inl ⟨m', ?_⟩)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, ← zE_prv Dt j, RingEquiv.symm_apply_apply]`. Consider the cases of `h`. Consider the cases of `h`. Introduce and unpack `((⟨a, h⟩ | ⟨b, hb, h⟩) | ⟨a, -, h⟩)`. Simplify using `only [Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq] at h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl (Or.inl ⟨m', ?_⟩)` and prove the remaining obligations. Rewrite using `[← zE_prv Dt j, h.1, RingEquiv.apply_symm_apply]`. Consider the cases of `h`. Consider the cases of `h`. Consider the case `tp k m' hm' => show _ ↔ (Sum.inr (Sum.inr (Sum.inr ((zE J).symm k, m'))) : (toData Dt).ML) ∈ (toData Dt).Yset j m`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [TwistData.Yset, TwistData.wSet, TwistData.LLj, TwistData.mb, TwistData.mw, TwistData.mtp, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Simplify using `only [PlaneGramData.SignedChainData.linkML, Set.mem_union, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `((⟨m'', h⟩ | ⟨l', h⟩) | ⟨m1, h1, h2, h⟩)`. Consider the cases of `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h`. Take `⟨hk, rfl⟩` from `PlaneGramData.ML.tp.inj h`. Use `Or.inr ⟨m', h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, RingEquiv.symm_apply_apply]`. Introduce and unpack `((⟨a, h⟩ | ⟨b, hb, h⟩) | ⟨a, ha, h⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h`. Consider the cases of `h`. Simplify using `only [Sum.inr.injEq, Prod.mk.injEq] at h`. Take `⟨h1, rfl⟩` from `h`. Use `Or.inr ⟨a, hm', ha, ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, RingEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem mem_link (j : Fin J) (m : Fin r) (x : PlaneGramData.ML J Dt.nL r) :
     x ∈ Dt.linkML (zE J j) m ↔ fM Dt x ∈ (toData Dt).Yset j m := by
@@ -434,17 +432,17 @@ theorem mem_link (j : Fin J) (m : Fin r) (x : PlaneGramData.ML J Dt.nL r) :
         rw [h1, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `x y h` and use `Prod.ext ((gO Dt).injective (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gO_inj : Function.Injective (Prod.map (gO Dt) (id : Fin r → Fin r)) := fun x y h => Prod.ext ((gO Dt).injective (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)
 
 /- English proof (translation)
-Introduce `x y h` and use `Prod.ext (fM_injective Dt (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fM_inj : Function.Injective (Prod.map (fM Dt) (id : Fin r → Fin r)) := fun x y h => Prod.ext (fM_injective Dt (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Prod.map (gO Dt) (id : Fin r → Fin r))` using `gO_inj Dt`. Use `Finsupp.mapDomain_apply hinj mo ((gO Dt).symm y, a)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem md_apply (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) (y : (toData Dt).OL) (a : Fin r) :
     (mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))) (y, a) = mo ((gO Dt).symm y, a) := by
@@ -453,7 +451,7 @@ theorem md_apply (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) (y : (toD
   simpa using this
 
 /- English proof (translation)
-Establish `key : ((toData Dt).ph p).comp (rename (Prod.map (fM Dt) id)) = (rename (Prod.map (gO Dt) id)).comp Dt.ph`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x, a⟩`. Apply the tactic sequence `cases x <;> simp [TwistData.ph, PlaneGramData.SignedChainData.ph, fM, gO, eO, TwistData.P, PlaneGramData.SignedChainData.P]`. Conclude with `DFunLike.congr_fun key Gm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ph_comm (Gm : MvPolynomial (PlaneGramData.ML J Dt.nL r × Fin r) (G.KK O)) :
     (toData Dt).ph p (rename (Prod.map (fM Dt) id) Gm) = rename (Prod.map (gO Dt) id) (Dt.ph Gm) := by
@@ -465,9 +463,7 @@ theorem ph_comm (Gm : MvPolynomial (PlaneGramData.ML J Dt.nL r × Fin r) (G.KK O
   exact DFunLike.congr_fun key Gm
 
 /- English proof (translation)
-Use `show algebraMap O (G.KK O) (Dt.ga ((mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))).mapDomain (Prod.map (eO Dt).symm id))) = _`. Rewrite using `[← Finsupp.mapDomain_comp]`. Establish `hc : (Prod.map (eO Dt).symm (id : Fin r → Fin r)) ∘ (Prod.map (gO Dt) id) = id`. Use function extensionality and compare the values at `x`. Conclude with `Prod.ext ((eO Dt).symm_apply_apply x.1) rfl`.
-
-Rewrite using `[hc, Finsupp.mapDomain_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ga_md (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) :
     (toData Dt).ga (mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))) = algebraMap O (G.KK O) (Dt.ga mo) := by
@@ -480,7 +476,7 @@ theorem ga_md (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) :
   rw [hc, Finsupp.mapDomain_id]
 
 /- English proof (translation)
-Unfold `TwistData.gaAct`. Rewrite using `[support_rename_of_injective (gO_inj Dt), Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective (gO_inj Dt) h), map_sum]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[rename_monomial, ga_md, coeff_rename_mapDomain _ (gO_inj Dt)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaAct_comm (H : MvPolynomial (PlaneGramData.TL J Dt.nL r × Fin r) (G.KK O)) :
     (toData Dt).gaAct (rename (Prod.map (gO Dt) id) H) =
@@ -494,7 +490,7 @@ theorem gaAct_comm (H : MvPolynomial (PlaneGramData.TL J Dt.nL r × Fin r) (G.KK
   rw [rename_monomial, ga_md, coeff_rename_mapDomain _ (gO_inj Dt)]
 
 /- English proof (translation)
-Rewrite using `[gaAct_comm]`. Conclude with `fock_rename (Prod.map (gO Dt) id) (gO_inj Dt) F _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_rename_gaAct_rename_eq_Bform (F H : MvPolynomial (PlaneGramData.TL J Dt.nL r × Fin r) (G.KK O)) :
     fock (rename (Prod.map (gO Dt) id) F) ((toData Dt).gaAct (rename (Prod.map (gO Dt) id) H)) = Dt.Bform F H := by
@@ -502,9 +498,9 @@ theorem fock_rename_gaAct_rename_eq_Bform (F H : MvPolynomial (PlaneGramData.TL 
   exact fock_rename (Prod.map (gO Dt) id) (gO_inj Dt) F _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H j m a`. Take `⟨j0, rfl⟩` from `(zE J).surjective j`. Use `H (j0, m) a` as an intermediate fact. Rewrite `this` using `[md_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[gO, eO, TwistData.P, PlaneGramData.SignedChainData.P]`. Introduce and unpack `H ⟨j', m⟩ a`. Use `H (zE J j') m a` as an intermediate fact. Rewrite using `[md_apply]`. Simplify `this` using `[gO, eO, TwistData.P, PlaneGramData.SignedChainData.P]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inClass_iff (ρ : (toData Dt).Tau → Fin r → ℕ) (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) :
     (toData Dt).InClass p ρ (mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))) ↔
@@ -521,7 +517,7 @@ theorem inClass_iff (ρ : (toData Dt).Tau → Fin r → ℕ) (mo : PlaneGramData
     simpa [gO, eO, TwistData.P, PlaneGramData.SignedChainData.P] using this
 
 /- English proof (translation)
-Use `⟨fun v0 => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `[Finsupp.finset_sum_apply, Finsupp.single_apply, hu.eq_iff]`. Simplify using `only [Finsupp.finset_sum_apply, Finsupp.single_apply]`. Conclude with `Finset.sum_eq_zero fun v _ => if_neg fun h => hx ⟨v, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_single_inj {α β : Type} [DecidableEq α] (u : α → β) (hu : Function.Injective u) (s : Finset α) (e : α → ℕ) :
     (∀ v0, (∑ v ∈ s, Finsupp.single (u v) (e v)) (u v0) = if v0 ∈ s then e v0 else 0) ∧
@@ -533,9 +529,9 @@ theorem sum_single_inj {α β : Type} [DecidableEq α] (u : α → β) (hu : Fun
     exact Finset.sum_eq_zero fun v _ => if_neg fun h => hx ⟨v, h⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h`. Simplify using `only [PlaneGramData.SignedChainData.liftVar, Prod.mk.injEq, PlaneGramData.ML.ll.injEq] at h`. Take `⟨⟨rfl, h2⟩, rfl⟩` from `h`. Consider the cases of `h2`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Simplify using `[PlaneGramData.SignedChainData.liftVar] at h`. Simplify using `[PlaneGramData.SignedChainData.liftVar] at h`. Simplify using `only [PlaneGramData.SignedChainData.liftVar, Prod.mk.injEq, PlaneGramData.ML.wc.injEq] at h`. Take `⟨⟨rfl, rfl⟩, rfl⟩` from `h`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem liftVar_inj : Function.Injective Dt.liftVar := by
   rintro ⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h
@@ -550,21 +546,17 @@ theorem liftVar_inj : Function.Injective Dt.liftVar := by
     rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `sum_single_inj (fun v => Prod.map (fM Dt) (id : Fin r → Fin r) (Dt.liftVar v)) (fun x y h => liftVar_inj Dt (fM_inj Dt h)) mo.support (Dt.liftExp mo)`. Use `beta_reduce at h1 h2`. Rewrite using `[map_prod]`. Simplify using `only [map_pow, rename_X]`. Simplify using `only [X_pow_eq_monomial]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← monomial_sum_one]`. Use `congrArg (fun s => (monomial s) (1 : G.KK O)) ?_` and prove the remaining obligations. Use extensionality with `v`. Take `⟨x, a⟩` from `v`. Break down `x with b | t | t | t` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨j, l⟩` from `b`. Use `(h1 (⟨j, Sum.inl l⟩, a)).trans ?_` and prove the remaining obligations. Use `show _ = (mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))) (Sum.inl ⟨j, l⟩, a)`. Rewrite using `[md_apply]`. Use `show _ = mo (⟨j, Sum.inl l⟩, a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `split_ifs with hs`. Both sides reduce to the same expression. Conclude with `(by simpa using hs : mo (⟨j, Sum.inl l⟩, a) = 0).symm`. Establish `hx : ((Sum.inr (Sum.inl t) : (toData Dt).ML), a) ∉ Set.range (fun v => Prod.map (fM Dt) (id : Fin r → Fin r) (Dt.liftVar v))`. Apply the tactic sequence `rintro ⟨⟨⟨j, l | m⟩, b⟩, h⟩ <;> simp [PlaneGramData.SignedChainData.liftVar, fM] at h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 _ hx]`. Both sides reduce to the same expression. Take `⟨j, m⟩` from `t conv_lhs => rw [show ((Sum.inr (Sum.inr (Sum.inl (j, m))) : (toData Dt).ML), a) = Prod.map (fM Dt) (id : Fin r → Fin r) (Dt.liftVar (⟨zE J j, Sum.inr m⟩, a)) by`. Simplify using `[PlaneGramData.SignedChainData.liftVar, fM]]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show _ = (mo.mapDomain (Prod.map (gO Dt) (id : Fin r → Fin r))) (Sum.inr (j, m), a) / (toData Dt).P p (j, m)`. Rewrite using `[md_apply]`. Use `show _ = mo (⟨zE J j, Sum.inr m⟩, a) / p ^ Dt.gP (zE J j) m`. Use `split_ifs with hs`. Both sides reduce to the same expression.
-
-Rewrite using `[(by simpa using hs : mo (⟨zE J j, Sum.inr m⟩, a) = 0)]`. Simplify using the standard rewrite rules. Establish `hx : ((Sum.inr (Sum.inr (Sum.inr t)) : (toData Dt).ML), a) ∉ Set.range (fun v => Prod.map (fM Dt) (id : Fin r → Fin r) (Dt.liftVar v))`. Apply the tactic sequence `rintro ⟨⟨⟨j, l | m⟩, b⟩, h⟩ <;> simp [PlaneGramData.SignedChainData.liftVar, fM] at h`. Rewrite using `[h2 _ hx]`.
-
-Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_mono (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) :
     rename (Prod.map (fM Dt) id) (∏ v ∈ mo.support, X (Dt.liftVar v) ^ Dt.liftExp mo v) =
@@ -611,9 +603,9 @@ theorem lift_mono (mo : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) :
     rfl
 
 /- English proof (translation)
-Unfold `TwistData.digitPart PlaneGramData.SignedChainData.Fdig`. Rewrite using `[support_rename_of_injective (gO_inj Dt), Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective (gO_inj Dt) h), map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain _ (gO_inj Dt)]`. Distinguish the cases in `hd : Dt.digOK (fun x => ρ ((zE J).symm x.1.1, x.1.2) x.2) mo`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ((inClass_iff Dt ρ mo).2 hd), if_pos hd, map_mul, rename_C, lift_mono, C_mul_monomial, mul_one]`. Rewrite using `[if_neg (fun h => hd ((inClass_iff Dt ρ mo).1 h)), if_neg hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem digit_comm (ρ : (toData Dt).Tau → Fin r → ℕ) (F : MvPolynomial (PlaneGramData.TL J Dt.nL r × Fin r) (G.KK O)) :
     (toData Dt).digitPart p ρ (rename (Prod.map (gO Dt) id) F) =
@@ -631,7 +623,7 @@ theorem digit_comm (ρ : (toData Dt).Tau → Fin r → ℕ) (F : MvPolynomial (P
   · rw [if_neg (fun h => hd ((inClass_iff Dt ρ mo).1 h)), if_neg hd]
 
 /- English proof (translation)
-Break down `x with ⟨j, l | m⟩` into its components or cases. Both sides reduce to the same expression. Use `show Dt.d ⟨zE J ((zE J).symm j), Sum.inr m⟩ = Dt.d ⟨j, Sum.inr m⟩`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dO_gO (x : PlaneGramData.TL J Dt.nL r) : (toData Dt).dO (gO Dt x) = Dt.d x := by
   rcases x with ⟨j, l | m⟩
@@ -640,14 +632,14 @@ theorem dO_gO (x : PlaneGramData.TL J Dt.nL r) : (toData Dt).dO (gO Dt x) = Dt.d
     rw [RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Unfold `TwistData.totDeg`. Conclude with `(Fintype.sum_equiv (gO Dt) (fun x => Dt.d x) (toData Dt).dO (fun x => (dO_gO Dt x).symm)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem totDeg_eq : (toData Dt).totDeg = ∑ x, Dt.d x := by
   unfold TwistData.totDeg
   exact (Fintype.sum_equiv (gO Dt) (fun x => Dt.d x) (toData Dt).dO (fun x => (dO_gO Dt x).symm)).symm
 
 /- English proof (translation)
-Unfold `TwistData.eC PlaneGramData.SignedChainData.eP`. Rewrite using `[totDeg_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eC_eq (C0 : ℝ) : (toData Dt).eC p C0 = Dt.eP := by
   unfold TwistData.eC PlaneGramData.SignedChainData.eP
@@ -655,7 +647,7 @@ theorem eC_eq (C0 : ℝ) : (toData Dt).eC p C0 = Dt.eP := by
   rfl
 
 /- English proof (translation)
-Unfold `TwistData.Dm PlaneGramData.SignedChainData.Dm`. Rewrite using `[eC_eq, ← Finset.sum_mul, Nat.cast_sum]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (zE J).toEquiv _ _ (fun j => rfl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Dm_eq (C0 : ℝ) : (toData Dt).Dm p C0 = Dt.Dm := by
   unfold TwistData.Dm PlaneGramData.SignedChainData.Dm
@@ -664,14 +656,14 @@ theorem Dm_eq (C0 : ℝ) : (toData Dt).Dm p C0 = Dt.Dm := by
   exact Fintype.sum_equiv (zE J).toEquiv _ _ (fun j => rfl)
 
 /- English proof (translation)
-Unfold `TwistData.Dl PlaneGramData.SignedChainData.Dl`. Rewrite using `[eC_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dl_eq (C0 : ℝ) : (toData Dt).Dl p C0 = Dt.Dl := by
   unfold TwistData.Dl PlaneGramData.SignedChainData.Dl
   rw [eC_eq]
 
 /- English proof (translation)
-Unfold `TwistData.kapD PlaneGramData.SignedChainData.kp`. Conclude with `(Fintype.sum_equiv (gO Dt) (fun x => (r : ℝ) * lg p r (Dt.d x)) (fun y => (r : ℝ) * lg p r ((toData Dt).dO y)) (fun x => congrArg (fun n => (r : ℝ) * lg p r n) (dO_gO Dt x).symm)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kapD_eq : (toData Dt).kapD p = Dt.kp := by
   unfold TwistData.kapD PlaneGramData.SignedChainData.kp
@@ -680,7 +672,7 @@ theorem kapD_eq : (toData Dt).kapD p = Dt.kp := by
     (fun x => congrArg (fun n => (r : ℝ) * lg p r n) (dO_gO Dt x).symm)).symm
 
 /- English proof (translation)
-Unfold `TwistData.n0 PlaneGramData.SignedChainData.n0`. Establish `e : (∏ i : (toData Dt).OL, ((toData Dt).dO i).factorial) = ∏ x, (Dt.d x).factorial`. Rewrite using `[← Equiv.prod_comp (gO Dt)]`. Conclude with `Finset.prod_congr rfl fun x _ => by rw [dO_gO]`. Rewrite using `[e, vQ_nat hp S _ (Finset.prod_ne_zero_iff.mpr fun x _ => Nat.factorial_ne_zero _), WithTop.untopD_coe, Rat.cast_natCast]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normShift_eq (hp : p.Prime) (S : G.UniformizedDVR p O) : (toData Dt).n0 (vQ p S) = Dt.n0 := by
   unfold TwistData.n0 PlaneGramData.SignedChainData.n0
@@ -691,11 +683,11 @@ theorem normShift_eq (hp : p.Prime) (S : G.UniformizedDVR p O) : (toData Dt).n0 
     Rat.cast_natCast]
 
 /- English proof (translation)
-Unfold `TwistData.dLL TwistData.LLj PlaneGramData.SignedChainData.dLL`. Rewrite using `[Finset.sum_filter, Fintype.sum_sigma, Finset.sum_eq_single (zE J j)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos]`. Use `show (zE J).symm (zE J j) = j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingEquiv.symm_apply_apply _ _`. Introduce `k _ hk`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hk` to reduce the goal to its premises. Establish `h' : (zE J).symm k = j` using `h`. Rewrite using `[← h', RingEquiv.apply_symm_apply]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dLL_eq (j : Fin J) : (toData Dt).dLL j = Dt.dLL (zE J j) := by
   unfold TwistData.dLL TwistData.LLj PlaneGramData.SignedChainData.dLL
@@ -715,13 +707,13 @@ theorem dLL_eq (j : Fin J) : (toData Dt).dLL j = Dt.dLL (zE J j) := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hx : algebraMap O (G.KK O) u ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective O (G.KK O))]`. Conclude with `hu.ne_zero`. Establish `hs` using `Classical.choose_spec (IsLocalization.surj (nonZeroDivisors O) (algebraMap O (G.KK O) u))`. Rewrite `hs` using `[← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `IsFractionRing.injective O (G.KK O) hs`. Establish `key : G.ordW (algebraMap O (G.KK O) u) = 0`. Unfold `G.ordW`. Rewrite using `[if_neg hx]`. Simplify using `only`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, IsDiscreteValuationRing.addVal_mul, ← hu.unit_spec, IsDiscreteValuationRing.addVal_eq_zero_of_unit, zero_add, sub_self]`. Both sides reduce to the same expression. Unfold `vQ`. Rewrite using `[AddValuation.of_apply]`. Unfold `G.vK`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vQ_unit (S : G.UniformizedDVR p O) (u : O) (hu : IsUnit u) : vQ p S (algebraMap O (G.KK O) u) = 0 := by
   have hx : algebraMap O (G.KK O) u ≠ 0 := by
@@ -747,20 +739,20 @@ def eE : (PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) ≃ ((toData Dt).OL ×
   (Finsupp.domCongr (Equiv.prodCongr (gO Dt) (Equiv.refl (Fin r)))).toEquiv.trans Finsupp.equivFunOnFinite
 
 /- English proof (translation)
-Simplify using `[eE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eE_apply (m : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) (v : PlaneGramData.TL J Dt.nL r × Fin r) :
     eE Dt m (gO Dt v.1, v.2) = m v := by
   simp [eE]
 
 /- English proof (translation)
-Unfold `binomComb PlaneGramData.binomCombF`. Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_toEmbedding, Equiv.symm_apply_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hinj : Function.Injective (Prod.map (eO Dt).symm (id : Fin r → Fin r))` using `fun x y h => Prod.ext ((eO Dt).symm.injective (congrArg Prod.fst h)) (by have h2 := congrArg Prod.snd h; exact h2)`. Establish `hα : ∀ v : PlaneGramData.TL J Dt.nL r × Fin r, (α.mapDomain (Prod.map (eO Dt).symm id)) v = α (gO Dt v.1, v.2)`. Introduce `v`. Use `Finsupp.mapDomain_apply hinj α (gO Dt v.1, v.2)` as an intermediate fact. Simplify `this` using `[gO]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsub : ∏ v ∈ m.support, ((((α.mapDomain (Prod.map (eO Dt).symm id)) v).choose (m v) : ℕ) : G.KK O) = ∏ v, ((((α.mapDomain (Prod.map (eO Dt).symm id)) v).choose (m v) : ℕ) : G.KK O)` using `Finset.prod_subset (Finset.subset_univ _) (fun v _ hv => by`. Establish `h0 : m v = 0` using `by simpa using hv`. Rewrite using `[h0, Nat.choose_zero_right, Nat.cast_one])`. Rewrite using `[hsub]`. Use `(Fintype.prod_equiv (Equiv.prodCongr (gO Dt) (Equiv.refl (Fin r))) _ _ (fun v => ?_)).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hα]`. Use `show _ = (((α (gO Dt v.1, v.2)).choose (eE Dt m (gO Dt v.1, v.2)) : ℕ) : G.KK O)`. Rewrite using `[eE_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binom_comm (lam : (PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) →₀ O) (α : (toData Dt).OL × Fin r →₀ ℕ) :
     binomComb (lam.support.map (eE Dt).toEmbedding)
@@ -791,7 +783,7 @@ theorem binom_comm (lam : (PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) →�
   rw [eE_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `(Fintype.sum_equiv (Equiv.prodCongr (gO Dt) (Equiv.refl (Fin r))) (fun v => m v) (fun x => eE Dt m x) (fun v => (eE_apply Dt m v).symm)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eE (m : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) : ∑ x, eE Dt m x = m.sum fun _ e => e := by
   rw [Finsupp.sum_fintype _ _ (fun _ => rfl)]
@@ -799,13 +791,13 @@ theorem sum_eE (m : PlaneGramData.TL J Dt.nL r × Fin r →₀ ℕ) : ∑ x, eE 
     (fun x => eE Dt m x) (fun v => (eE_apply Dt m v).symm)).symm
 
 /- English proof (translation)
-Establish `hc1 : 1 ≤ ⌈Dt.c⌉₊` using `Nat.one_le_ceil_iff.mpr (lt_of_lt_of_le one_pos Dt.one_le_c)`. Use `⟨fun α => vQ_unit S _ (Dt.ga_unit _), ?_⟩` and prove the remaining obligations. Introduce `ε hε`. Take `⟨lam, hdeg, happ⟩` from `Dt.ga_dig ⌈Dt.c⌉₊ hc1 (decide (ε = 1))`. Use `⟨lam.support.map (eE Dt).toEmbedding, fun m' => algebraMap O (G.KK O) (lam ((eE Dt).symm m')), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m' hm'`. Take `⟨m, hm, rfl⟩` from `Finset.mem_map.mp hm'`. Use `⟨(vQ_nonneg_iff S _).mpr ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.coe_toEmbedding]`. Rewrite using `[sum_eE]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdeg m hm`. Introduce `α`. Rewrite using `[binom_comm]`. Use `(geQ_nat_iff S _ _).mp (happ (α.mapDomain (Prod.map (eO Dt).symm id)))` as an intermediate fact. Break down `hε with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gaOK_toData (S : G.UniformizedDVR p O) : (toData Dt).GaOK (vQ p S) p := by
   have hc1 : 1 ≤ ⌈Dt.c⌉₊ := Nat.one_le_ceil_iff.mpr (lt_of_lt_of_le one_pos Dt.one_le_c)
@@ -827,15 +819,15 @@ theorem gaOK_toData (S : G.UniformizedDVR p O) : (toData Dt).GaOK (vQ p S) p := 
     · simpa using this
 
 /- English proof (translation)
-Use `⟨Nat.pos_of_ne_zero (NeZero.ne r), Nat.pos_of_ne_zero (NeZero.ne J), Nat.ceil_pos.mpr (by linarith [Dt.one_le_c]), ?_, ?_, fun j m h => Dt.thL_pos (zE J j) m h, gaOK_toData Dt S⟩` and prove the remaining obligations. Introduce `j i b hb`. Simplify using `only [TwistData.LLj, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Take `⟨l, rfl, -⟩` from `hb`. Conclude with `RingEquiv.symm_apply_apply _ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i i' hii'`. Establish `hs` using `Dt.chain_mono (zE J j) hii'`. Establish `hsub : (toData Dt).chain j i ⊆ (toData Dt).chain j i'`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hbl, hl⟩` from `hb`. Conclude with `⟨l, hbl, hs.1 hl⟩`. Rewrite using `[Finset.ssubset_iff_of_subset hsub]`. Take `⟨x, hx', hx⟩` from `Set.exists_of_ssubset hs`. Break down `x with l | m` into its components or cases.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨zE J j, l⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨l, rfl, hx'⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce and unpack `⟨l', hl', hl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hh` using `(Sigma.mk.inj_iff.mp hl').2`. Consider the cases of `eq_of_heq hh`. Conclude with `hx hl`. Conclude with `absurd (Dt.chain_w _ _ m) hx`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem valid_toData [NeZero r] (S : G.UniformizedDVR p O) : (toData Dt).Valid (vQ p S) p := by
   refine ⟨Nat.pos_of_ne_zero (NeZero.ne r), Nat.pos_of_ne_zero (NeZero.ne J),
@@ -866,18 +858,18 @@ theorem valid_toData [NeZero r] (S : G.UniformizedDVR p O) : (toData Dt).Valid (
     · exact absurd (Dt.chain_w _ _ m) hx
 
 /- English proof (translation)
-Use `Nat.ceil_lt_add_one (by linarith : (0 : ℝ) ≤ x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem natCeil_le_two_mul_of_one_le (x : ℝ) (hx : 1 ≤ x) : ((⌈x⌉₊ : ℕ) : ℝ) ≤ 2 * x := by
   have := Nat.ceil_lt_add_one (by linarith : (0 : ℝ) ≤ x)
   linarith
 
 /- English proof (translation)
-Introduce `j m i`. Establish `key : ∀ (k : ZMod J) (_hk : k = zE J j + 1) (i : Fin (Dt.nch k)), (r : ℝ) * (Dt.dLL (zE J j) : ℝ) / (Dt.P (zE J j) m : ℝ) + 13 * (r : ℝ) * (⌈Dt.c⌉₊ : ℝ) ≤ Dt.sl k i`. Introduce and unpack `k rfl i`. Establish `h1` using `h (zE J j) m i`. Establish `hc` using `natCeil_le_two_mul_of_one_le Dt.c Dt.one_le_c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hc0 : (0 : ℝ) ≤ Dt.c` using `by linarith [Dt.one_le_c]`. Establish `e1 : (r : ℝ) * (⌈Dt.c⌉₊ : ℝ) ≤ r * (2 * Dt.c)` using `mul_le_mul_of_nonneg_left hc hr`. Establish `e2 : (26 : ℝ) * (r * Dt.c) ≤ CH * (r * Dt.c)` using `mul_le_mul_of_nonneg_right hCH (mul_nonneg hr hc0)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `key (zE J ((toData Dt).nxt j)) (zE_nxt Dt j) i` as an intermediate fact. Rewrite using `[dLL_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hypH_toData {CH : ℝ} (hCH : 26 ≤ CH) (h : Dt.Hyp CH) : (toData Dt).HypH p 13 := by
   intro j m i
@@ -896,7 +888,7 @@ theorem hypH_toData {CH : ℝ} (hCH : 26 ≤ CH) (h : Dt.Hyp CH) : (toData Dt).H
   exact this
 
 /- English proof (translation)
-Unfold `TwistData.Hc`. Rewrite using `[Dm_eq, Dl_eq, kapD_eq]`. Conclude with `lt_of_lt_of_le h (Nat.le_ceil _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hc_toData (h : 4 * (Dt.Dm + Dt.Dl + 3 * Dt.kp) < Dt.c) : (toData Dt).Hc p 1 := by
   unfold TwistData.Hc
@@ -904,13 +896,13 @@ theorem hc_toData (h : 4 * (Dt.Dm + Dt.Dl + 3 * Dt.kp) < Dt.c) : (toData Dt).Hc 
   exact lt_of_lt_of_le h (Nat.le_ceil _)
 
 /- English proof (translation)
-Take `⟨hP, hD, hT⟩` from `h`. Establish `hgeZ : ∀ (x : WithTop ℤ) (t : ℝ), PlaneGramData.geZ x t → ((t : ℝ) : WithTop ℝ) ≤ toR x`. Introduce `x t hx`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp [toR]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `coe k`. Use `hx k rfl` as an intermediate fact. Simplify using `only [toR, WithTop.map_coe]`. Conclude with `WithTop.coe_le_coe.mpr this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (toData Dt).dO ∘ (gO Dt) = Dt.d` using `funext (dO_gO Dt)`. Rewrite using `[PolK_rename (gO Dt) (toData Dt).dO F, e]`. Conclude with `hP`. Introduce `ρ j i`. Rewrite using `[digit_comm, valS_transport (fM Dt) (fM_injective Dt) (toData Dt).msg ((toData Dt).chainSet j i) Dt.modelLet (Dt.chainML (zE J j) i) (sg_M Dt) (fun x => mem_chain Dt j i x)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgeZ _ _ (hD _ (zE J j) i)`. Introduce `j m hm`. Rewrite using `[valS_transport (gO Dt) (gO Dt).injective (toData Dt).osg ((toData Dt).Tset j m) Dt.trueLet (Dt.TSet (zE J j) m) (sg_O Dt) (fun x => mem_T Dt j m x)]`. Conclude with `hgeZ _ _ (hT (zE J j) m hm)`.
+A detailed English derivation is pending.
 -/
 theorem inXX_toData [NeZero r] (F : MvPolynomial (PlaneGramData.TL J Dt.nL r × Fin r) (G.KK O)) (h : Dt.XX F) :
     (toData Dt).InXX p (rename (Prod.map (gO Dt) id) F) := by
@@ -937,11 +929,11 @@ theorem inXX_toData [NeZero r] (F : MvPolynomial (PlaneGramData.TL J Dt.nL r × 
     exact hgeZ _ _ (hT (zE J j) m hm)
 
 /- English proof (translation)
-Use `exists_rename_eq_of_vars_subset_range G' (Prod.map (fM Dt) id) (fM_inj Dt) ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_coe, mem_vars]`. Take `⟨α, hα, hvα⟩` from `hv`. Rewrite `hvα` using `[Finsupp.mem_support_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, a⟩` from `v`. Break down `x with ⟨k, l⟩ | ⟨j, m⟩ | ⟨j, m⟩ | ⟨j, m⟩` into its components or cases. Conclude with `⟨(PlaneGramData.ML.ll k l, a), rfl⟩`. Conclude with `⟨(PlaneGramData.ML.lab (zE J j) m, a), by simp [fM]⟩`. Conclude with `⟨(PlaneGramData.ML.wc (zE J j) m, a), by simp [fM]⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Distinguish the cases in `hm : 1 ≤ m.val`. Conclude with `⟨(PlaneGramData.ML.tp (zE J j) m hm, a), by simp [fM]⟩`. Conclude with `absurd (h α hα j m (by omega) a) hvα`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pre (G' : MvPolynomial ((toData Dt).ML × Fin r) (G.KK O)) (h : (toData Dt).RRvars G') :
     ∃ G0, rename (Prod.map (fM Dt) id) G0 = G' := by
@@ -961,11 +953,11 @@ theorem exists_pre (G' : MvPolynomial ((toData Dt).ML × Fin r) (G.KK O)) (h : (
     · exact absurd (h α hα j m (by omega) a) hvα
 
 /- English proof (translation)
-Establish `hs : mo.mapDomain (Prod.map (fM Dt) (id : Fin r → Fin r)) ∈ (rename (Prod.map (fM Dt) id) G0).support`. Rewrite using `[support_rename_of_injective (fM_inj Dt)]`. Conclude with `Finset.mem_image_of_mem _ hmo`. Take `⟨h1, h2⟩` from `h _ hs`. Establish `e : (toData Dt).dO ∘ (gO Dt) = Dt.d` using `funext (dO_gO Dt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, ← PolK_eq, ← PolK_rename (gO Dt), ← ph_comm, rename_monomial, TwistData.ph_monomial, mem_PolK_iff]`. Introduce `β hβ i`. Establish `hβ'` using `support_monomial_subset hβ`. Rewrite `hβ'` using `[Finset.mem_singleton]`. Substitute `hβ'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with b | t` into its components or cases. Simplify using `only [ldeg, TwistData.phE_apply_inl]`. Conclude with `h1 b`. Simplify using `only [ldeg, TwistData.phE_apply_inr]`. Conclude with `h2 t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phDeg_mem (G0 : MvPolynomial (PlaneGramData.ML J Dt.nL r × Fin r) (G.KK O))
     (h : (toData Dt).PhDeg p (rename (Prod.map (fM Dt) id) G0)) (mo) (hmo : mo ∈ G0.support) :
@@ -993,31 +985,29 @@ instance kkCharZero_data [CharZero O] : CharZero (G.KK O) :=
 end Data
 
 /- English proof (translation)
-Introduce `r _ J _ Dt hH hc F hXX hF0`. Establish `hp` using `hG.prime`. Establish `h0 : vBB (vQ p S) (rename (Prod.map (gO Dt) id) F) = 0`. Rewrite using `[vBB_rename _ (gO_inj Dt)]`. Conclude with `(vBB_zero_iff hp S F).mp hF0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨G', R', ⟨⟨hGi, hGv⟩, hGc, hGl⟩, -, hRv, -, hRc, hGd, hRd, hBB, hB⟩` from `hT (dvrHyp S hG) (toData Dt) (valid_toData Dt S) (hypH_toData Dt hCH hH) (hc_toData Dt hc) _ (inXX_toData Dt F hXX) h0`. Take `⟨G0, rfl⟩` from `exists_pre Dt G' hGv`. Take `⟨R0, rfl⟩` from `exists_pre Dt R' hRv`. Establish `h2c` using `natCeil_le_two_mul_of_one_le Dt.c Dt.one_le_c`. Establish `hcc : Dt.c ≤ ((⌈Dt.c⌉₊ : ℕ) : ℝ)` using `Nat.le_ceil _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : (toData Dt).E p 1 2 = Dt.EE 2`. Unfold `TwistData.E PlaneGramData.SignedChainData.EE`. Rewrite using `[Dm_eq, Dl_eq, kapD_eq]`. Rewrite `hBB`, `hB` using `[← map_add, ph_comm]`. Use `⟨G0, R0, ?_, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `mo`. Rewrite using `[geQ_iff S]`. Use `hGi (mo.mapDomain (Prod.map (fM Dt) id))` as an intermediate fact. Rewrite `this` using `[coeff_rename_mapDomain _ (fM_inj Dt)]`. Establish `h3` using `(geQ_nat_iff S (G0.coeff mo) 0).mpr (by simpa using this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[geQ_iff S]`. Simplify using `using h3`. Introduce `j i`. Take `⟨j, rfl⟩` from `(zE J).surjective j`. Use `hGc j i` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[valS_transport (fM Dt) (fM_injective Dt) _ _ Dt.modelLet (Dt.chainML (zE J j) i) (sg_M Dt) (mem_chain Dt j i), ← geZ_iff]`. Introduce `k hk`. Use `le_trans ?_ (this k hk)` and prove the remaining obligations. Use `show Dt.th (zE J j) i - Dt.sl (zE J j) i - 24 * Dt.c ≤ Dt.th (zE J j) i - Dt.sl (zE J j) i - 12 * ((⌈Dt.c⌉₊ : ℕ) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j m hm`. Take `⟨j, rfl⟩` from `(zE J).surjective j`. Use `hGl j m hm` as an intermediate fact. Rewrite `this` using `[valS_transport (fM Dt) (fM_injective Dt) _ _ Dt.modelLet (Dt.linkML (zE J j) m) (sg_M Dt) (mem_link Dt j m), ← geZ_iff]`. Introduce `k hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_trans ?_ (this k hk)` and prove the remaining obligations. Use `show Dt.thL (zE J j) m - 60 * Dt.c ≤ Dt.thL (zE J j) m - 30 * ((⌈Dt.c⌉₊ : ℕ) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `mo`. Rewrite using `[geQ_iff S]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hRc (mo.mapDomain (Prod.map (fM Dt) id))` as an intermediate fact. Rewrite `this` using `[coeff_rename_mapDomain _ (fM_inj Dt), hE]`. Use `le_trans (WithTop.coe_le_coe.mpr ?_) this` and prove the remaining obligations. Use `show Dt.c - Dt.EE 2 ≤ ((⌈Dt.c⌉₊ : ℕ) : ℝ) - Dt.EE 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `mo hmo`. Simplify using `only [Finset.mem_union] at hmo`. Break down `hmo with h | h` into its components or cases. Conclude with `phDeg_mem Dt G0 hGd mo h`. Conclude with `phDeg_mem Dt R0 hRd mo h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[geQ_vBB_iff hp S]`. Rewrite `hBB` using `[vBB_rename _ (gO_inj Dt), normShift_eq Dt hp S, kapD_eq]`. Conclude with `hBB`. Rewrite using `[leQ_iff S]`. Rewrite `hB` using `[fock_rename_gaAct_rename_eq_Bform, normShift_eq Dt hp S, kapD_eq, hE]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `htop : vR (vQ p S) (Dt.Bform F (Dt.ph (G0 + R0))) = ⊤`. Rewrite `hB` using `[htop, top_add]`. Conclude with `absurd hB (WithTop.not_top_le_coe _)`. Take `⟨x, hx⟩` from `WithTop.ne_top_iff_exists.mp htop`. Rewrite `hB`, the goal using `[← hx]`.
-
-Rewrite `hB` using `[← WithTop.coe_add, WithTop.coe_le_coe]`. Rewrite using `[WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem plane_gram_of_theorem_at {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (S : G.UniformizedDVR p O) {n' : ℕ} (hG : G.AdmissibleDVR p n' O) (hT : LiftBoundUniform (G.KK O) (vQ p S) p 1)

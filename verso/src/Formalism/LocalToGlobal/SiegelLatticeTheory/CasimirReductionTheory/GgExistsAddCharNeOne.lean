@@ -46,7 +46,7 @@ abbrev XiExists : Prop := Formalism.FourierDecayAlt.B.XiExists
 abbrev SiegelMassRatio : Prop := Formalism.HermitianLatticesTheory.SiegelMassRatio
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ _ hσ v hv`. Conclude with `h k r ε lam H σ hσ v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kFinSmooth_pi (h : KFinSmooth) : PI.KFinSmooth := by
   intro k r ε lam H _ _ _ σ _ hσ v hv
@@ -57,23 +57,23 @@ abbrev HCMultDS : Prop := Formalism.MainNotions.BridgeCPX.HCMultDS
 abbrev HCAdmDS : Prop := Formalism.MainNotions.BridgeCPX.HCAdmDS
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeCPX.HCMultDS_of_HCMult h`.
+A detailed English derivation is pending.
 -/
 theorem hcMultDS_of_hcMult (h : HCMult) : HCMultDS := Formalism.MainNotions.BridgeCPX.HCMultDS_of_HCMult h
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeCPX.HCAdmDS_of_mult h`.
+A detailed English derivation is pending.
 -/
 theorem hcAdmDS_of_hcMultDS (h : HCMultDS) : HCAdmDS := Formalism.MainNotions.BridgeCPX.HCAdmDS_of_mult h
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hσ _ hv` and use `Formalism.MainNotions.BridgeCPX.kfin_smoothVec (hcAdmDS_of_hcMultDS h) hσ hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kFinSmooth_of_hcMultDS (h : HCMultDS) : KFinSmooth :=
   fun _ _ _ _ _ _ _ _ _ hσ _ hv => Formalism.MainNotions.BridgeCPX.kfin_smoothVec (hcAdmDS_of_hcMultDS h) hσ hv
 
 /- English proof (translation)
-The claim follows from `kFinSmooth_of_hcMultDS (hcMultDS_of_hcMult h)`.
+A detailed English derivation is pending.
 -/
 theorem kFinSmooth_of_hcMult (h : HCMult) : KFinSmooth := kFinSmooth_of_hcMultDS (hcMultDS_of_hcMult h)
 
@@ -106,7 +106,7 @@ def actU {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [Inne
     fun (w : FreeMonoid (Fin n × Fin n)) (c : ℂ) => c • dsigCW ε σ (w.toList.map unitM) v
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDS_iff_pi {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
@@ -138,7 +138,7 @@ section BesselMultOne
 open Formalism.MainNotions.S
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.psi, psiGen, Formalism.QuantumDeterminants.ell, ellA, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem psi_eq_psiGen (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     Formalism.QuantumDeterminants.psi k r z c = psiGen k r z (fun _ => c) := by
@@ -157,7 +157,7 @@ def BesselMultOne : Prop :=
       ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ smoothVecs (k := k) (r := r) σ, a • B₁ v + b • B₂ v = 0
 
 /- English proof (translation)
-Introduce `k r L B₁ B₂ hc hB₁ hB₂`. Rewrite `hB₁`, `hB₂` using `[psi_eq_psiGen]`. Conclude with `h k r L.ε L.lam L.Hs L.σ L.z (fun _ => L.c) L.u L.Wp L.π L.hlam L.hσ L.hz.1 L.hz.2 (fun _ => hc) L.hπ B₁ B₂ hB₁ hB₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stJSZ_of_besselMultOne (h : BesselMultOne) : Formalism.MainNotions.S.UnitaryLevelOperators.stJSZ := by
   intro k r L B₁ B₂ hc hB₁ hB₂
@@ -189,7 +189,7 @@ def BorelClassFinite : Prop :=
 def BorelFinite : Prop := BorelFinVol ∧ BorelClassFinite
 
 /- English proof (translation)
-The claim follows from `h X.I X.μf hH X.fund hF`.
+A detailed English derivation is pending.
 -/
 theorem finVol_of_borel (h : BorelFinVol) (X : Formalism.MainNotions.BridgeLemma.CData) (hH : X.μf.IsHaarMeasure)
     (hF : X.I.IsFundDom (X.I.muA X.μf) X.fund) : X.FinVol :=
@@ -248,7 +248,7 @@ def LandherrLocal : Prop :=
 variable [Fact Formalism.HermitianLattices.Ext.L3.LandherrUnram] in
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.Ext.L3.landherrUnram`.
+A detailed English derivation is pending.
 -/
 theorem landherrDefiniteUnram : Formalism.HermitianLattices.Ext.L3.LandherrUnram := Formalism.HermitianLattices.Ext.L3.landherrUnram
 
@@ -261,7 +261,7 @@ open Finset Matrix MeasureTheory
 abbrev GelfandGraev : Prop := Formalism.L2.SG.GGMirabolic.GelfandGraevMultOne
 
 /- English proof (translation)
-Use `⟨AddChar.FiniteField.primitiveChar_to_Complex F, fun h => ?_⟩` and prove the remaining obligations. Establish `hp` using `AddChar.FiniteField.primitiveChar_to_Complex_isPrimitive F`. Establish `h1` using `hp (one_ne_zero : (1 : F) ≠ 0)`. Rewrite `h1` using `[AddChar.mulShift_one]`. Conclude with `h1 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gg_exists_addChar_ne_one (F : Type) [Field F] [Fintype F] : ∃ ψ : AddChar F ℂ, ψ ≠ 1 := by
   refine ⟨AddChar.FiniteField.primitiveChar_to_Complex F, fun h => ?_⟩
@@ -271,11 +271,11 @@ theorem gg_exists_addChar_ne_one (F : Type) [Field F] [Fintype F] : ∃ ψ : Add
   exact h1 h
 
 /- English proof (translation)
-Introduce `h`. Take `⟨ψ, hψ⟩` from `gg_exists_addChar_ne_one (ZMod 2)`. Establish `hW : ∀ ℓ : Module.Dual ℂ (Fin 2 → ℂ), Formalism.L2.SG.GGMirabolic.IsWhit ψ (Representation.trivial ℂ (GL (Fin 0) (ZMod 2)) (Fin 2 → ℂ)) ℓ`. Introduce `ℓ u _ v`. Simplify using `[Formalism.L2.SG.GGMirabolic.psiU, Formalism.L2.SG.GGMirabolic.superdiag]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `h (ZMod 2) 0 ψ hψ (Fin 2 → ℂ) (Representation.trivial ℂ _ _) (LinearMap.proj 0) (LinearMap.proj 1) (hW _) (hW _) (by`. Introduce `h0`. Use `LinearMap.congr_fun h0 (Pi.single 0 1)` as an intermediate fact. Simplify using `at this)`. Use `LinearMap.congr_fun hc (Pi.single 1 1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem gg_needs_irreducible :
     ¬ ∀ (F : Type) [Field F] [Fintype F] (k : ℕ) (ψ₀ : AddChar F ℂ), ψ₀ ≠ 1 →
@@ -298,9 +298,7 @@ theorem gg_needs_irreducible :
   simp at this
 
 /- English proof (translation)
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations. Establish `h1 : (1 : ℂ) ∈ (⊤ : Subrepresentation (Representation.trivial ℂ G ℂ))` using `trivial`. Rewrite `h1` using `[← h]`. Conclude with `one_ne_zero ((Submodule.mem_bot ℂ).1 h1)`. Break down `eq_bot_or_eq_top W.toSubmodule with h | h` into its components or cases.
-
-Use `left`. Conclude with `Subrepresentation.ext h`. Use `right`. Conclude with `Subrepresentation.ext h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gg_trivial_isIrreducible (G : Type) [Group G] : (Representation.trivial ℂ G ℂ).IsIrreducible := by
   refine { exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun W => ?_ }
@@ -388,12 +386,12 @@ def GapStatementAt (C : ℝ) : Prop :=
 def GapStatementAlt : Prop := GapStatementAt 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gapStatementAt_iff (D : Formalism.BasicNotions.D7) (C : ℝ) : GapStatementAt C ↔ Formalism.MainNotions.CayleySignature.Conclusion2 D C := Iff.rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, t, -, -, -, hg⟩` from `h`. Introduce `j hj`. Establish `h1` using `hg j hj`. Establish `h3 : (0 : ℝ) ≤ 2 * ((rk48 k r + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3` using `by positivity`. Rewrite using `[zero_mul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -407,7 +405,7 @@ theorem gapC_zero_of_setting {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {c : 
   linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h C k r z c u v b hS _`. Conclude with `h k r z c u v b hS (gapC_zero_of_setting hS)`. Introduce `h`. Conclude with `h 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gapStatement_iff_all : GapStatementAlt ↔ ∀ C : ℝ, GapStatementAt C := by
   constructor
@@ -417,21 +415,21 @@ theorem gapStatement_iff_all : GapStatementAlt ↔ ∀ C : ℝ, GapStatementAt C
     exact h 0
 
 /- English proof (translation)
-Use `⟨by norm_num, ⟨1, rfl⟩, ?_, ?_, fun a => a.elim0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[Formalism.QuantumDeterminants.Tz, Formalism.QuantumDeterminants.herm, Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.bvec, dotProduct, Matrix.mulVec, Fin.sum_univ_three, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> simp_all <;> norm_num`. Introduce `a fin_cases a`. Conclude with `⟨1, by norm_num⟩`. Conclude with `⟨-1, by norm_num⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> simp_all [lam48] <;> norm_num`. Introduce `a fin_cases a`. Conclude with `⟨0, by norm_num [lam48]⟩`. Conclude with `⟨-2, by norm_num [lam48]⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-100000000001, by norm_num [lam48]⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i fin_cases i`. Evaluate the numerical expressions. Introduce `_`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
 
-Evaluate the numerical expressions. Apply the tactic sequence `intro i s fin_cases i <;> fin_cases s`. Conclude with `⟨0, by norm_num [lam48]⟩`. Conclude with `⟨2, by norm_num [lam48]⟩`. Conclude with `⟨100000000001, by norm_num [lam48]⟩`.
+Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-2, by norm_num [lam48]⟩`. Conclude with `⟨0, by norm_num [lam48]⟩`. Conclude with `⟨99999999999, by norm_num [lam48]⟩`. Use `⟨1799, by decide, by norm_num [rk48], by norm_num [rk48], ?_⟩` and prove the remaining obligations. Introduce `j hj`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj0 : j = 0`. Use `ext`. Simplify using `at hj ⊢`. Use linear arithmetic over natural numbers and integers. Substitute `hj0` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Evaluate the numerical expressions using `[rk48]`.
+Evaluate the numerical expressions.
 -/
 theorem interlaceSetting_example :
     RealPlaceNumericalSetting 2 0 (Formalism.QuantumDeterminants.bvec (2 : Fin 3)) (fun i => i.elim0) ![3 / 2, -1 / 2] ![1] ![1, 100000000000] := by
@@ -508,7 +506,7 @@ def BesselNV : Prop :=
         π (Matrix.of p.1)⁻¹ ∂(μW.prod μN) ≠ 0
 
 /- English proof (translation)
-Take `⟨-, hE, hz, hT, hc, hu, hl, hI, hH, -⟩` from `interlaceSetting_example`. Conclude with `⟨le_refl 2, hE, hz, hT, hc, hu, hl, hI, hH⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem besselNV_numeric_example :
     2 ≤ 2 ∧ Even 2 ∧ Formalism.QuantumDeterminants.inWb 2 0 (Formalism.QuantumDeterminants.bvec (2 : Fin 3)) ∧ 0 < Formalism.QuantumDeterminants.Tz 2 0 (Formalism.QuantumDeterminants.bvec (2 : Fin 3)) ∧

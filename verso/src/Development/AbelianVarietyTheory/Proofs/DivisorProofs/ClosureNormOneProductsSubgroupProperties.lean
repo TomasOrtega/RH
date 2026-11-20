@@ -10,30 +10,28 @@ namespace GlobalTheory.QSA.Grp
 variable {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {a b : R}
 
 /- English proof (translation)
-The claim follows from `continuous_induced_dom`.
+A detailed English derivation is pending.
 -/
 theorem cont_coords : Continuous (coords : ℍ[R, a, b] → Fin 4 → R) := continuous_induced_dom
 /- English proof (translation)
-The claim follows from `(continuous_apply 0).comp cont_coords`.
+A detailed English derivation is pending.
 -/
 theorem cont_re : Continuous (fun x : ℍ[R, a, b] => x.re) := (continuous_apply 0).comp cont_coords
 /- English proof (translation)
-The claim follows from `(continuous_apply 1).comp cont_coords`.
+A detailed English derivation is pending.
 -/
 theorem cont_imI : Continuous (fun x : ℍ[R, a, b] => x.imI) := (continuous_apply 1).comp cont_coords
 /- English proof (translation)
-The claim follows from `(continuous_apply 2).comp cont_coords`.
+A detailed English derivation is pending.
 -/
 theorem cont_imJ : Continuous (fun x : ℍ[R, a, b] => x.imJ) := (continuous_apply 2).comp cont_coords
 /- English proof (translation)
-The claim follows from `(continuous_apply 3).comp cont_coords`.
+A detailed English derivation is pending.
 -/
 theorem cont_imK : Continuous (fun x : ℍ[R, a, b] => x.imK) := (continuous_apply 3).comp cont_coords
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Conclude with `h2`.
-
-Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_of {X : Type*} [TopologicalSpace X] {f : X → ℍ[R, a, b]}
     (h0 : Continuous fun x => (f x).re) (h1 : Continuous fun x => (f x).imI)
@@ -46,9 +44,9 @@ theorem cont_of {X : Type*} [TopologicalSpace X] {f : X → ℍ[R, a, b]}
   · exact h3
 
 /- English proof (translation)
-Establish `r1` using `(cont_re (a := a) (b := b)).comp (continuous_fst : Continuous (Prod.fst : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `i1` using `(cont_imI (a := a) (b := b)).comp (continuous_fst : Continuous (Prod.fst : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `j1` using `(cont_imJ (a := a) (b := b)).comp (continuous_fst : Continuous (Prod.fst : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `k1` using `(cont_imK (a := a) (b := b)).comp (continuous_fst : Continuous (Prod.fst : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `r2` using `(cont_re (a := a) (b := b)).comp (continuous_snd : Continuous (Prod.snd : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `(cont_imI (a := a) (b := b)).comp (continuous_snd : Continuous (Prod.snd : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `j2` using `(cont_imJ (a := a) (b := b)).comp (continuous_snd : Continuous (Prod.snd : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Establish `k2` using `(cont_imK (a := a) (b := b)).comp (continuous_snd : Continuous (Prod.snd : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))`. Simplify using `only [Function.comp_def] at r1 i1 j1 k1 r2 i2 j2 k2`. Apply the tactic sequence `apply cont_of <;> simp only [QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul] <;> fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_mul : Continuous (fun p : ℍ[R, a, b] × ℍ[R, a, b] => p.1 * p.2) := by
   have r1 := (cont_re (a := a) (b := b)).comp (continuous_fst : Continuous (Prod.fst : ℍ[R, a, b] × ℍ[R, a, b] → ℍ[R, a, b]))
@@ -64,7 +62,7 @@ theorem cont_mul : Continuous (fun p : ℍ[R, a, b] × ℍ[R, a, b] => p.1 * p.2
     QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul] <;> fun_prop
 
 /- English proof (translation)
-Establish `r1` using `cont_re (a := a) (b := b)`. Establish `i1` using `cont_imI (a := a) (b := b)`. Establish `j1` using `cont_imJ (a := a) (b := b)`. Establish `k1` using `cont_imK (a := a) (b := b)`. Apply the tactic sequence `apply cont_of <;> simp only [QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star] <;> fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_star : Continuous (fun x : ℍ[R, a, b] => star x) := by
   have r1 := cont_re (a := a) (b := b)
@@ -75,9 +73,9 @@ theorem cont_star : Continuous (fun x : ℍ[R, a, b] => star x) := by
     QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star] <;> fun_prop
 
 /- English proof (translation)
-Establish `r1` using `cont_re (a := a) (b := b)`. Establish `i1` using `cont_imI (a := a) (b := b)`. Establish `j1` using `cont_imJ (a := a) (b := b)`. Establish `k1` using `cont_imK (a := a) (b := b)`. Unfold `nrm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem cont_nrm : Continuous (nrm : ℍ[R, a, b] → R) := by
   have r1 := cont_re (a := a) (b := b)
@@ -88,7 +86,7 @@ theorem cont_nrm : Continuous (nrm : ℍ[R, a, b] → R) := by
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : ℍ[R, a, b] × ℍ[R, a, b] => p.1 * p.2` using `cont_mul`. Establish `hl : Continuous fun y : ℍ[R, a, b] => c * y` using `h1.comp (Continuous.prodMk (continuous_const : Continuous fun _ : ℍ[R, a, b] => c) continuous_id)`. Conclude with `h1.comp (Continuous.prodMk hl (continuous_const : Continuous fun _ : ℍ[R, a, b] => d))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_conj (c d : ℍ[R, a, b]) : Continuous fun y : ℍ[R, a, b] => c * y * d := by
   have h1 : Continuous fun p : ℍ[R, a, b] × ℍ[R, a, b] => p.1 * p.2 := cont_mul
@@ -98,21 +96,21 @@ theorem cont_conj (c d : ℍ[R, a, b]) : Continuous fun y : ℍ[R, a, b] => c * 
 
 omit [TopologicalSpace R] [IsTopologicalRing R] in
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_star (x : ℍ[R, a, b]) : nrm (star x) = nrm x := by
   simp [nrm]
 
 omit [TopologicalSpace R] [IsTopologicalRing R] in
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_mul_eq (x : ℍ[R, a, b]) : star x * x = algebraMap R ℍ[R, a, b] (nrm x) := by
   ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring
 
 omit [TopologicalSpace R] [IsTopologicalRing R] in
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_one' : nrm (1 : ℍ[R, a, b]) = 1 := by simp [nrm]
 
@@ -122,32 +120,32 @@ namespace GlobalTheory.QSA.Grp
 variable {F : Type} [Field F] [NumberField F] {a b : F}
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_mul (x y : ℍ[F, a, b]) : rat (x * y) = rat x * rat y := by
   ext <;> simp [rat, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul,
     QuaternionAlgebra.imK_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_one : rat (1 : ℍ[F, a, b]) = 1 := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_star (x : ℍ[F, a, b]) : rat (star x) = star (rat x) := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Rewrite using `[← smul_mul_assoc, ← mul_smul_comm, hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem supp {ε : AF F} (p q u : DA F a b) (hu : ε • u = u) : ε • (p * u * q) = p * u * q := by
   rw [← smul_mul_assoc, ← mul_smul_comm, hu]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← rat_mul, mul_star_eq, hγ, map_one, rat_one]`. Rewrite using `[← rat_mul, star_mul_eq, hγ, map_one, rat_one]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_inv {γ : ℍ[F, a, b]} (hγ : nrm γ = 1) :
     rat γ * rat (star γ) = 1 ∧ rat (star γ) * rat γ = 1 := by
@@ -156,18 +154,18 @@ theorem rat_inv {γ : ℍ[F, a, b]} (hγ : nrm γ = 1) :
   · rw [← rat_mul, star_mul_eq, hγ, map_one, rat_one]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, -, rfl⟩` from `hx`. Rewrite using `[nrm_mul, nrm_rat, hγ, hh, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_of_mem {ε : AF F} {x : DA F a b} (hx : x ∈ H0 ε) : nrm x = 1 := by
   obtain ⟨γ, hγ, h, hh, -, rfl⟩ := hx
   rw [nrm_mul, nrm_rat, hγ, hh, map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, hs, rfl⟩` from `hx`. Take `⟨γ', hγ', h', hh', hs', rfl⟩` from `hy`. Take `⟨e1, e2⟩` from `rat_inv hγ'`. Use `⟨γ * γ', by rw [nrm_mul, hγ, hγ', one_mul], rat (star γ') * h * rat γ' * h', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nrm_mul, nrm_mul, nrm_mul, hh, hh', nrm_rat, nrm_rat, nrm_star, hγ', map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: rat (star γ') * h * rat γ' * h' - 1 = rat (star γ') * (h - 1) * (rat γ' * h') + (h' - 1)`. Rewrite using `[show rat (star γ') * (h - 1) * (rat γ' * h') = rat (star γ') * h * rat γ' * h' - rat (star γ') * rat γ' * h' by noncomm_ring, e2, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_add, hs', supp _ _ _ hs]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rat_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (rat γ') (rat (star γ')), e1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem {ε : AF F} {x y : DA F a b} (hx : x ∈ H0 ε) (hy : y ∈ H0 ε) : x * y ∈ H0 ε := by
   obtain ⟨γ, hγ, h, hh, hs, rfl⟩ := hx
@@ -186,11 +184,11 @@ theorem mul_mem {ε : AF F} {x y : DA F a b} (hx : x ∈ H0 ε) (hy : y ∈ H0 �
     rw [← mul_assoc (rat γ') (rat (star γ')), e1, one_mul]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, hs, rfl⟩` from `hx`. Take `⟨e1, e2⟩` from `rat_inv hγ`. Use `⟨star γ, by rw [nrm_star, hγ], rat γ * star h * rat (star γ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nrm_mul, nrm_mul, nrm_star, hh, nrm_rat, nrm_rat, nrm_star, hγ, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hs1 : ε • star (h - 1) = star (h - 1)`. Rewrite using `[← QuaternionAlgebra.star_smul, hs]`. Establish `: rat γ * star h * rat (star γ) - 1 = rat γ * star (h - 1) * rat (star γ)`. Rewrite using `[star_sub, star_one, show rat γ * (star h - 1) * rat (star γ) = rat γ * star h * rat (star γ) - rat γ * rat (star γ) by noncomm_ring, e1]`. Rewrite using `[this, supp _ _ _ hs1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mul, ← rat_star]`. Simplify using `only [← mul_assoc]`. Rewrite using `[e2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem {ε : AF F} {x : DA F a b} (hx : x ∈ H0 ε) : star x ∈ H0 ε := by
   obtain ⟨γ, hγ, h, hh, hs, rfl⟩ := hx
@@ -208,9 +206,9 @@ theorem star_mem {ε : AF F} {x : DA F a b} (hx : x ∈ H0 ε) : star x ∈ H0 �
     rw [e2, one_mul]
 
 /- English proof (translation)
-Establish `hn : nrm δ' * nrm δ = 1` using `by rw [mul_comm, ← nrm_mul, h, nrm_one']`. Establish `e : star δ * δ * δ' * δ = star δ * δ` using `by rw [mul_assoc (star δ), h, mul_one]`. Rewrite `e` using `[star_mul_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [e, ← map_mul, hn, map_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_right {δ δ' : ℍ[F, a, b]} (h : δ * δ' = 1) : δ' * δ = 1 := by
   have hn : nrm δ' * nrm δ = 1 := by rw [mul_comm, ← nrm_mul, h, nrm_one']
@@ -222,11 +220,11 @@ theorem inv_right {δ δ' : ℍ[F, a, b]} (h : δ * δ' = 1) : δ' * δ = 1 := b
     _ = 1 := by rw [e, ← map_mul, hn, map_one]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, hs, rfl⟩` from `hx`. Establish `hδ2` using `inv_right hδ`. Establish `e1 : rat δ * rat δ' = 1` using `by rw [← rat_mul, hδ, rat_one]`. Establish `e2 : rat δ' * rat δ = 1` using `by rw [← rat_mul, hδ2, rat_one]`. Establish `hn : nrm δ * nrm δ' = 1` using `by rw [← nrm_mul, hδ, nrm_one']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨δ * γ * δ', by rw [nrm_mul, nrm_mul, hγ, mul_one, hn], rat δ * h * rat δ', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nrm_mul, nrm_mul, hh, nrm_rat, nrm_rat, mul_one, ← map_mul, hn, map_one]`. Establish `: rat δ * h * rat δ' - 1 = rat δ * (h - 1) * rat δ'`. Rewrite using `[show rat δ * (h - 1) * rat δ' = rat δ * h * rat δ' - rat δ * rat δ' by noncomm_ring, e1]`. Rewrite using `[this, supp _ _ _ hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rat_mul, rat_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (rat δ') (rat δ), e2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem {ε : AF F} {δ δ' : ℍ[F, a, b]} (hδ : δ * δ' = 1) {x : DA F a b} (hx : x ∈ H0 ε) :
     rat δ * x * rat δ' ∈ H0 ε := by
@@ -249,7 +247,7 @@ end GlobalTheory.QSA.Grp
 namespace GlobalTheory.QSA.Grp
 
 /- English proof (translation)
-The claim follows from `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite)) haveI : T2Space (InfiniteAdeleRing F) := inferInst …`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_adeleRing_numberField (F : Type) [Field F] [NumberField F] : T2Space (AF F) :=
   haveI : T2Space (FiniteAdeleRing (𝓞 F) F) :=
@@ -259,11 +257,9 @@ theorem t2Space_adeleRing_numberField (F : Type) [Field F] [NumberField F] : T2S
   inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-Introduce `F _ _ a b ε _`. Use `haveI := t2Space_adeleRing_numberField F`. Use `⟨fun x hx y hy => ?_, fun x hx => ?_, fun δ δ' hδ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `map_mem_closure₂ cont_mul hx hy fun u hu v hv => mul_mem hu hv`. Conclude with `map_mem_closure cont_star hx fun u hu => star_mem hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : DA F a b => rat δ * y * rat δ'` using `cont_conj (rat δ) (rat δ')`. Establish `hm : Set.MapsTo (fun y : DA F a b => rat δ * y * rat δ') (H0 ε) (H0 ε)` using `fun u hu => conj_mem hδ hu`. Establish `key` using `map_mem_closure (x := x) hc hx hm`. Conclude with `key`. Establish `hcl : IsClosed {y : DA F a b | nrm y = 1}` using `isClosed_eq cont_nrm continuous_const`.
-
-Conclude with `closure_minimal (fun y hy => nrm_of_mem hy) hcl hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closure_normOneProducts_subgroup_properties : ∀ (F : Type) [Field F] [NumberField F] (a b : F) (ε : AF F), ε * ε = ε →
     (∀ x ∈ closure (H0 (a := a) (b := b) ε), ∀ y ∈ closure (H0 (a := a) (b := b) ε),

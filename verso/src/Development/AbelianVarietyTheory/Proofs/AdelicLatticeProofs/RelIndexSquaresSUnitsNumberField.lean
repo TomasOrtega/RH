@@ -9,9 +9,9 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, Subgroup.mem_top _, Subtype.ext h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, -, h⟩`. Conclude with `⟨y.1, y.2, congrArg Subtype.val h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem sqs_subgroupOf_self {G : Type} [CommGroup G] (U : Subgroup G) :
     (sqs U).subgroupOf U = sqs (⊤ : Subgroup U) := by
@@ -24,13 +24,13 @@ theorem sqs_subgroupOf_self {G : Type} [CommGroup G] (U : Subgroup G) :
     exact ⟨y.1, y.2, congrArg Subtype.val h⟩
 
 /- English proof (translation)
-Establish `hm : (-1 : Fˣ) ∈ sUnits F S`. Rewrite using `[mem_sUnits]`. Introduce `v _`. Simplify using the standard rewrite rules. Rewrite using `[Nat.card_eq_two_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨1, by simp⟩, ⟨⟨-1, hm⟩, Subtype.ext (by simp)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `congrArg (fun a : {a : sUnits F S // a ^ 2 = 1} => ((a.1.1 : Fˣ) : F)) h`. Simplify using `only [OneMemClass.coe_one, Units.val_one, Units.val_neg] at h1`. Evaluate the numerical expressions using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Rewrite using `[Set.eq_univ_iff_forall]`. Introduce and unpack `⟨⟨a, ha⟩, h⟩`. Establish `h1 : (a : F) ^ 2 = 1`. Use `congrArg (fun a : sUnits F S => ((a.1 : Fˣ) : F)) h` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `sq_eq_one_iff.mp h1 with h2 | h2` into its components or cases. Use `left`. Conclude with `Subtype.ext (Subtype.ext (Units.ext h2))`. Use `right`. Conclude with `Subtype.ext (Subtype.ext (Units.ext h2))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem card_sq_eq_one_sUnits (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -55,7 +55,7 @@ theorem card_sq_eq_one_sUnits (F : Type) [Field F] [NumberField F]
       exact Subtype.ext (Subtype.ext (Units.ext h2))
 
 /- English proof (translation)
-Introduce `F _ _ S`. Use `haveI := GlobalTheory.T.sUnitsNumberField_fg F S`. Rewrite using `[Subgroup.relIndex, sqs_subgroupOf_self, GlobalTheory.T.index_sqs_of_fg, card_sq_eq_one_sUnits, ← GlobalTheory.T.finrank_sUnitsNumberField_add_one F S, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sqs_sUnits : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))), (sqs (sUnits F S)).relIndex (sUnits F S) = 2 ^ (S.card + Fintype.card (InfinitePlace F)) := by
   intro F _ _ S

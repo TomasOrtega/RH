@@ -31,9 +31,9 @@ theorem twist_apply (χ : G →* ℂ) (σ : Representation ℂ G W) (g : G) (w :
 end Twist
 
 /- English proof (translation)
-Introduce `v`. Establish `: (stabilizerOf (π.comp H.subtype) v : Set H) = Subtype.val ⁻¹' (stabilizerOf π v : Set G)`. Use extensionality with `h`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hπ v).preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_comp_subtype {G : Type*} [Group G] [TopologicalSpace G] {V : Type*}
     [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V} (hπ : IsSmooth π)
@@ -62,7 +62,7 @@ def invSqrtModular : blockUpper F n β →* ℂ where
 variable {F n β}
 
 /- English proof (translation)
-Establish `h : sqrtModular F n β p * sqrtModular F n β p⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Conclude with `mul_inv_cancel₀ (left_ne_zero_of_mul_eq_one h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrtModular_mul_invSqrtModular (p : blockUpper F n β) :
     sqrtModular F n β p * invSqrtModular F n β p = 1 := by
@@ -71,7 +71,7 @@ theorem sqrtModular_mul_invSqrtModular (p : blockUpper F n β) :
   exact mul_inv_cancel₀ (left_ne_zero_of_mul_eq_one h)
 
 /- English proof (translation)
-Use `show ((NNReal.sqrt (modularCharacter u) : ℝ) : ℂ) = 1`. Rewrite using `[modularCharacter_eq_one_of_mem u hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sqrtModular_of_mem (u : blockUpper F n β)
     (hu : (u : GL (Fin n) F) ∈ unipotentRadical F n β) : sqrtModular F n β u = 1 := by
@@ -80,7 +80,7 @@ theorem sqrtModular_of_mem (u : blockUpper F n β)
   simp
 
 /- English proof (translation)
-Establish `h` using `sqrtModular_of_mem _ (leviProj_inv_mul_mem p)`. Rewrite `h` using `[map_mul, map_inv]`. Conclude with `(inv_mul_eq_one₀ (left_ne_zero_of_mul_eq_one (sqrtModular_mul_invSqrtModular (leviIncl (leviProj F n β p))))).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrtModular_leviProj (p : blockUpper F n β) :
     sqrtModular F n β (leviIncl (leviProj F n β p)) = sqrtModular F n β p := by
@@ -117,7 +117,7 @@ abbrev parabolicInd (σ : Representation ℂ (levi F n β) W) :
   indRep (blockUpper F n β) (inflateTwist F n β σ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_parabolicIndSpace (σ : Representation ℂ (levi F n β) W) {f : GL (Fin n) F → W} :
     f ∈ parabolicIndSpace F n β σ ↔
@@ -127,7 +127,7 @@ theorem mem_parabolicIndSpace (σ : Representation ℂ (levi F n β) W) {f : GL 
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_indRep _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_parabolicInd (σ : Representation ℂ (levi F n β) W) :
     IsSmooth (parabolicInd F n β σ) :=
@@ -146,7 +146,7 @@ abbrev JacquetModule : Type _ :=
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Introduce `_ hu` and use `conj_mem_unipotentRadical (levi_le_blockUpper m.2) hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levi_conj_mem (m : levi F n β) :
     ∀ u ∈ unipotentRadical F n β,
@@ -183,7 +183,7 @@ theorem jacquetRep_mk (m : levi F n β) (v : V) :
       invSqrtModular F n β (leviIncl m) • Representation.Coinvariants.mk _ (π m v) := rfl
 
 /- English proof (translation)
-Use `show (sqrtModular F n β (leviIncl m))⁻¹ = 1`. Establish `: sqrtModular F n β (leviIncl m) = 1` using `by show ((NNReal.sqrt (modularCharacter (leviIncl m)) : ℝ) : ℂ) = 1`. Rewrite using `[Measures.modularCharacter_eq_one_of_mem_integralGL (leviIncl m) hm]`. Simplify using the standard rewrite rules. Rewrite using `[this, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invSqrtModular_leviIncl_of_mem (m : levi F n β)
     (hm : (m : GL (Fin n) F) ∈ integralGL F n) : invSqrtModular F n β (leviIncl m) = 1 := by
@@ -195,9 +195,9 @@ theorem invSqrtModular_leviIncl_of_mem (m : levi F n β)
   rw [this, inv_one]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ x`. Use `Subgroup.isOpen_mono (H₁ := (stabilizerOf π v ⊓ integralGL F n).subgroupOf (levi F n β)) (fun m hm => ?_) ?_` and prove the remaining obligations. Rewrite `hm` using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Rewrite using `[mem_stabilizerOf, jacquetRep_mk, mem_stabilizerOf.1 hm.1, invSqrtModular_leviIncl_of_mem m hm.2, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_subgroupOf, Subgroup.coe_inf]`. Conclude with `((hπ v).inter (isOpen_integralGL F n)).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_jacquetRep (hπ : IsSmooth π) : IsSmooth (jacquetRep F n β π) := by
   intro x
@@ -211,7 +211,7 @@ theorem isSmooth_jacquetRep (hπ : IsSmooth π) : IsSmooth (jacquetRep F n β π
     exact ((hπ v).inter (isOpen_integralGL F n)).preimage continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[jacquetRep_mk, smul_smul, sqrtModular_mul_invSqrtModular, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_apply_levi (m : levi F n β) (v : V) :
     Representation.Coinvariants.mk (π.comp (unipotentRadical F n β).subtype) (π m v) =
@@ -247,7 +247,7 @@ theorem jacquetMap_mk (f : Representation.IntertwiningMap π π') (v : V) :
       Representation.Coinvariants.mk _ (f v) := rfl
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (unipotentRadical F n β)` using `isClosed_unipotentRadical.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `exact_coinvariantsMap exists_compactOpen_unipotentRadical (isSmooth_comp_subtype hπ' _) (isSmooth_comp_subtype hπ'' _) (restrictN F n β f) (restrictN F n β g) hfg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exact_jacquetMap (hπ' : IsSmooth π') (hπ'' : IsSmooth π'')
     (f : Representation.IntertwiningMap π π') (g : Representation.IntertwiningMap π' π'')
@@ -316,7 +316,7 @@ def frobeniusParabolic (hπ : IsSmooth π) :
   (frobenius (blockUpper F n β) (inflateTwist F n β σ) hπ).trans (jacquetAdjunction F n β π σ)
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, rankTorus, coe_torusPow, diagonal_mul, mul_diagonal]`. Distinguish the cases in `h : β i = β j`. Rewrite using `[blockRank_eq h, mul_comm]`. Rewrite using `[mem_levi.1 hy i j h, mul_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rankTorus_commute (e : ℕ) {y : GL (Fin n) F}
     (hy : y ∈ levi F n β) : rankTorus F n β e * y = y * rankTorus F n β e := by
@@ -337,15 +337,13 @@ def jacquetFixedMap (K : Subgroup (GL (Fin n) F)) :
       rw [x.2 m (Subgroup.mem_subgroupOf.1 hm)]
 
 /- English proof (translation)
-Introduce and unpack `⟨y, hy⟩`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y`. Establish `hv : ∀ k ∈ K ⊓ levi F n β, Representation.Coinvariants.mk (π.comp (unipotentRadical F n β).subtype) (π k v) = Representation.Coinvariants.mk _ v` using `fun k hk => hy ⟨k, (Subgroup.mem_inf.1 hk).2⟩ (Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 hk).1)`. Take `⟨t₀, -, ht₀⟩` from `(hasBasis_nhds_one F n).mem_iff.1 (hKo.mem_nhds K.one_mem)`. Take `⟨m₀, hm₀⟩` from `exists_conj_mem_congruenceSubgroup (β := β) hKc t₀`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set c := m₀ + 1 with hc`. Use `set a := rankTorus F n β c with ha`. Establish `haP : a ∈ blockUpper F n β` using `rankTorus_mem_blockUpper c`. Establish `haN : ∀ u ∈ unipotentRadical F n β, a * u * a⁻¹ ∈ unipotentRadical F n β` using `fun u hu => conj_mem_unipotentRadical haP hu`. Establish `haN' : ∀ u ∈ unipotentRadical F n β, a⁻¹ * u * a ∈ unipotentRadical F n β` using `fun u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using conj_mem_unipotentRadical ((blockUpper F n β).inv_mem haP) hu`. Establish `haM : ∀ y ∈ K ⊓ levi F n β, a * y = y * a` using `fun y hy => rankTorus_commute c (Subgroup.mem_inf.1 hy).2`. Establish `haK : ∀ z ∈ K ⊓ oppositeUnipotentRadical F n β, a⁻¹ * z * a ∈ K` using `fun z hz => ht₀ (hm₀ c (by omega) z (Subgroup.mem_inf.1 hz).1 (Subgroup.mem_inf.1 hz).2 (K.inv_mem (Subgroup.mem_inf.1 hz).1))`. Establish `hlim : ∀ U ∈ 𝓝 (1 : GL (Fin n) F), ∃ m : ℕ, ∀ z ∈ K ⊓ oppositeUnipotentRadical F n β, (a ^ m)⁻¹ * z * a ^ m ∈ U`. Introduce `U hU`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -, ht⟩` from `(hasBasis_nhds_one F n).mem_iff.1 hU`. Take `⟨m₁, hm₁⟩` from `exists_conj_mem_congruenceSubgroup (β := β) hKc t`. Use `⟨m₁, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, rankTorus_pow]`. Conclude with `ht (hm₁ (c * m₁) (by nlinarith) z (Subgroup.mem_inf.1 hz).1 (Subgroup.mem_inf.1 hz).2 (K.inv_mem (Subgroup.mem_inf.1 hz).1))`.
-
-Take `⟨x, hx, hxq⟩` from `exists_fixedVectors_mk_eq hπ hKc hKo hfact a haN haN' haM haK hlim hv`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxq⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jacquetFixedMap_surjective (hπ : IsAdmissible π) {K : Subgroup (GL (Fin n) F)}
     (hKc : IsCompact (K : Set (GL (Fin n) F))) (hKo : IsOpen (K : Set (GL (Fin n) F)))

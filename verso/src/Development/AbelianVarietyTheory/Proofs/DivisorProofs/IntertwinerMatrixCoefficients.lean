@@ -5,7 +5,7 @@ open GlobalTheory.LocFinIso
 namespace GlobalTheory.IntwLeftMul
 
 /- English proof (translation)
-Unfold `leftMul`. Rewrite using `[Matrix.ofLp_toEuclideanCLM]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Rewrite using `[← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Simplify using `[Matrix.kroneckerMap_apply, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leftMul_coord {G : Type} {m : ℕ} (A : G → Matrix (Fin m) (Fin m) ℂ) (k : G)
     (v : EuclideanSpace ℂ (Fin (m * m))) (i j : Fin m) :
@@ -35,13 +35,13 @@ theorem colMap_val {V : Type} [AddCommGroup V] [Module ℂ V] (D : Submodule ℂ
     ((colMap D b hbD j v : D) : V) = ∑ i, v (finProdFinEquiv (i, j)) • b i := rfl
 
 /- English proof (translation)
-Introduce `hA hf`. Use `⟨∑ j, D.subtype ∘ₗ (f j) ∘ₗ colMap D b hbD j, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk v`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_subtype]`. Apply `hf j k hk` to reduce the goal to its premises. Rewrite using `[colMap_val, colMap_val]`. Simplify using `only [leftMul_coord, Finset.sum_smul, map_sum, map_smul, hA k hk, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `⟨WithLp.toLp 2 (fun x => if (finProdFinEquiv.symm x).1 = (finProdFinEquiv.symm x).2 then 1 else 0), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, Submodule.coe_subtype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `ext`. Rewrite using `[colMap_val]`. Simplify using `[Finset.sum_ite_eq']`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_intertwiner (G : Type) [Group G] (K : Set G) (V : Type) [AddCommGroup V] [Module ℂ V]
     (ρ : G →* Module.End ℂ V) (D : Submodule ℂ V) (m : ℕ) (b : Fin m → V)

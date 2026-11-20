@@ -10,19 +10,19 @@ open scoped Classical
 namespace GlobalTheory.Hk.LogDerivHalf
 
 /- English proof (translation)
-Combine the linear relations using `[𝓕.two_lt_ell t]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma one_le_ell (𝓕 : LFam) (t : ℝ) : 1 ≤ 𝓕.ell t := by
   linarith [𝓕.two_lt_ell t]
 
 /- English proof (translation)
-Establish `hB : (4 : ℝ) ≤ 𝓕.B` using `𝓕.B_ge`. Establish `h2` using `𝓕.two_lt_ell t`. Establish `hu : |u| ≤ |t| + 3 / 5`. Use `abs_sub_abs_le_abs_sub u t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `ht0` using `abs_nonneg t`. Establish `hpos : 0 < 𝓕.B * (|u| + 2)` using `by positivity`. Establish `hle : 𝓕.B * (|u| + 2) ≤ 𝓕.B * (|t| + 2) * (13 / 10)`. Establish `: |u| + 2 ≤ (|t| + 2) * (13 / 10)` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hlog : Real.log (𝓕.B * (|u| + 2)) ≤ Real.log (𝓕.B * (|t| + 2)) + Real.log (13 / 10)`. Rewrite using `[← Real.log_mul (by positivity) (by norm_num)]`. Conclude with `Real.log_le_log hpos hle`. Establish `h13 : Real.log (13 / 10 : ℝ) ≤ 3 / 10`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 13 / 10 by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `LFam.ell at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma ell_le (𝓕 : LFam) (t u : ℝ) (h : |u - t| ≤ 3 / 5) : 𝓕.ell u ≤ 4 / 3 * 𝓕.ell t := by
   have hB : (4 : ℝ) ≤ 𝓕.B := 𝓕.B_ge
@@ -45,14 +45,14 @@ lemma ell_le (𝓕 : LFam) (t u : ℝ) (h : |u - t| ≤ 3 / 5) : 𝓕.ell u ≤ 
   linarith
 
 /- English proof (translation)
-Simplify using `[analyticOrderNatAt, hf.analyticOrderAt_eq_one_of_zero_deriv_ne_zero h0 h1]`.
+Simplify using the standard rewrite rules.
 -/
 lemma order_eq_one {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z) (h0 : f z = 0) (h1 : deriv f z ≠ 0) :
     analyticOrderNatAt f z = 1 := by
   simp [analyticOrderNatAt, hf.analyticOrderAt_eq_one_of_zero_deriv_ne_zero h0 h1]
 
 /- English proof (translation)
-Unfold `LFam.lamChi`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, AddChar.norm_apply, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (𝓕.lam_nonneg g n)]`. Use `_ ≤ 2 * Λ n := 𝓕.lam_le n`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_lamChi_le (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (n : ℕ) : ‖𝓕.lamChi χ n‖ ≤ 2 * Λ n := by
   unfold LFam.lamChi
@@ -64,13 +64,13 @@ lemma norm_lamChi_le (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (n : ℕ) : ‖𝓕
     _ ≤ 2 * Λ n := 𝓕.lam_le n
 
 /- English proof (translation)
-Use `set s₀ : ℂ := ((7 / 4 : ℝ) : ℂ) with hs₀`. Establish `hs₀re : s₀.re = 7 / 4` using `by simp [hs₀]`. Establish `hΛ : Summable fun n => ‖LSeries.term (fun n => (Λ n : ℂ)) s₀ n‖` using `(ArithmeticFunction.LSeriesSummable_vonMangoldt (by rw [hs₀re]; norm_num)).norm`. Use `⟨2 * ∑' n, ‖LSeries.term (fun n => (Λ n : ℂ)) s₀ n‖, mul_nonneg (by norm_num) (tsum_nonneg fun _ => norm_nonneg _), ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `P : ∀ n, ‖LSeries.term (𝓕.lamChi χ) s n‖ ≤ 2 * ‖LSeries.term (fun n => (Λ n : ℂ)) s₀ n‖`. Introduce `n`. Combine the equalities or inequalities in the displayed calculation. Use `LSeries.norm_term_le _ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using norm_lamChi_le 𝓕 χ n`. Use `_ = 2 * ‖LSeries.term (fun n => (Λ n : ℂ)) s₀ n‖ := by`. Rewrite using `[LSeries.norm_term_eq, LSeries.norm_term_eq]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, mul_div_assoc]`. Evaluate the numerical expressions. Establish `hS : Summable fun n => ‖LSeries.term (𝓕.lamChi χ) s n‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) P (hΛ.mul_left 2)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma exists_bound_LSeries : ∃ K : ℝ, 0 ≤ K ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (s : ℂ), 7 / 4 ≤ s.re →
     ‖LSeries (𝓕.lamChi χ) s‖ ≤ K := by
@@ -104,14 +104,14 @@ lemma exists_bound_LSeries : ∃ K : ℝ, 0 ≤ K ∧ ∀ (𝓕 : LFam) (χ : Ad
     _ = 2 * ∑' n, ‖LSeries.term (fun n => (Λ n : ℂ)) s₀ n‖ := tsum_mul_left
 
 /- English proof (translation)
-Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le hr h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_one_div_le {z : ℂ} {r : ℝ} (hr : 0 < r) (h : r ≤ ‖z‖) : ‖1 / z‖ ≤ 1 / r := by
   rw [norm_div, norm_one]
   exact one_div_le_one_div_of_le hr h
 
 /- English proof (translation)
-Break down `Z.eq_empty_or_nonempty with hE | ⟨i, hi⟩` into its components or cases. Simplify `hM` using `[hE]`. Establish `hZi : Z = {i}` using `Finset.eq_singleton_iff_unique_mem.mpr ⟨hi, fun x hx => Finset.card_le_one.mp hZ x hx i hi⟩`. Rewrite using `[hZi, Finset.sum_singleton]`. Conclude with `h i hi`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_le_of_card_le_one {ι : Type*} {Z : Finset ι} (hZ : Z.card ≤ 1) {f : ι → ℂ} {M : ℝ} (hM : 0 ≤ M)
     (h : ∀ i ∈ Z, ‖f i‖ ≤ M) : ‖∑ i ∈ Z, f i‖ ≤ M := by
@@ -123,57 +123,53 @@ lemma sum_le_of_card_le_one {ι : Type*} {Z : Finset ι} (hZ : Z.card ≤ 1) {f 
     exact h i hi
 
 /- English proof (translation)
-Introduce `c₀ hc₀ hc₀'`. Take `⟨C₁, hC₁, hW⟩` from `GlobalTheory.T.rayClassLFunction_logDeriv_local_formula`. Take `⟨K, hK, hKb⟩` from `exists_bound_LSeries`. Use `⟨C₁ + 4 * C₁ / c₀ + 10 + K + 3, by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ Z hZ s hs1 hs3 hsZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hℓ` using `𝓕.two_lt_ell s.im`. Establish `hℓsq : 𝓕.ell s.im ≤ 𝓕.ell s.im ^ 2` using `by nlinarith`. Establish `hℓ1 : 1 ≤ 𝓕.ell s.im ^ 2` using `by nlinarith`. Establish `hfinal : ∀ x : ℝ, x ≤ 10 → C₁ * 𝓕.ell s.im + C₁ * 𝓕.ell s.im * (4 * 𝓕.ell s.im / c₀) + x ≤ (C₁ + 4 * C₁ / c₀ + 10 + K + 3) * 𝓕.ell s.im ^ 2`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : C₁ * 𝓕.ell s.im * (4 * 𝓕.ell s.im / c₀) = 4 * C₁ / c₀ * 𝓕.ell s.im ^ 2` using `by ring`. Establish `a1 : C₁ * 𝓕.ell s.im ≤ C₁ * 𝓕.ell s.im ^ 2` using `mul_le_mul_of_nonneg_left hℓsq hC₁.le`. Establish `a3 : 0 ≤ (K + 3) * 𝓕.ell s.im ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hreg : 1 - c₀ / 𝓕.ell s.im ≤ s.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: c₀ / 2 / 𝓕.ell s.im ≤ c₀ / 𝓕.ell s.im` using `div_le_div_of_nonneg_right (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFs : 𝓕.F χ s ≠ 0`. Introduce `h0`. Take `⟨β, hβ, hsβ⟩` from `hZ.2.2 s hreg h0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hsZ β hβ hsβ`. Establish `hsre : 3 / 4 ≤ s.re`. Establish `: c₀ / 2 / 𝓕.ell s.im ≤ 1 / 4`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hs74 : 7 / 4 ≤ s.re`. Take `⟨-, -, -, hL⟩` from `GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ s (by linarith)`. Establish `hdl : deriv (𝓕.F χ) s / 𝓕.F χ s = (if χ = 1 then 1 / (s - 1) else 0) - LSeries (𝓕.lamChi χ) s`. Rewrite using `[← hL]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpole : ‖(if χ = 1 then 1 / (s - 1) else 0 : ℂ)‖ ≤ 4 / 3` using `by split_ifs`. Establish `h` using `norm_one_div_le (z := s - 1) (r := 3 / 4) (by norm_num) (by have := Complex.re_le_norm (s - 1); rw [Complex.sub_re, Complex.one_re] at this; linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hexc : ‖∑ β ∈ Z, 1 / (s - (β : ℂ))‖ ≤ 4 / 3`. Use `sum_le_of_card_le_one hZ.1 (by norm_num) fun β hβ => ?_` and prove the remaining obligations. Establish `hβ1` using `(hZ.2.1 β hβ).2.1`. Establish `h` using `norm_one_div_le (z := s - (β : ℂ)) (r := 3 / 4) (by norm_num) (by have := Complex.re_le_norm (s - (β : ℂ)); rw [Complex.sub_re, Complex.ofReal_re] at this; linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hLb` using `hKb 𝓕 χ s hs74`. Rewrite using `[hdl]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : 0 ≤ C₁ + 4 * C₁ / c₀ + 10` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `push Not at hs74`. Establish `hdisk : ‖s - (5 / 4 + s.im * I)‖ ≤ 1 / 2`. Establish `e : s - (5 / 4 + s.im * I) = ((s.re - 5 / 4 : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, abs_le]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `constructor <;> linarith`. Take `⟨hfin, hsum, hbd⟩` from `hW 𝓕 χ s.im`. Establish `h1` using `hbd s hdisk hFs`. Rewrite `hsum`, `h1` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hterm : ∀ w ∈ hfin.toFinset, (¬ ∃ β ∈ Z, w = (β : ℂ)) → ‖(analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)‖ ≤ (analyticOrderNatAt (𝓕.F χ) w : ℝ) * (4 * 𝓕.ell s.im / c₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hwT hnz`. Establish `hw` using `hfin.mem_toFinset.mp hwT`. Establish `hnotreg : w.re < 1 - c₀ / 𝓕.ell w.im`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnz (hZ.2.2 w h hw.2)`. Establish `him : |w.im - s.im| ≤ 3 / 5`. Establish `h` using `Complex.abs_im_le_norm (w - (5 / 4 + s.im * I))`. Establish `e : (w - (5 / 4 + s.im * I)).im = w.im - s.im` using `by simp`. Rewrite `h` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.trans hw.1`. Establish `hℓw : 𝓕.ell w.im ≤ 4 / 3 * 𝓕.ell s.im` using `ell_le 𝓕 s.im w.im him`. Establish `hℓw2` using `𝓕.two_lt_ell w.im`. Establish `hgap : c₀ / (4 * 𝓕.ell s.im) ≤ (s - w).re`. Rewrite using `[Complex.sub_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h3 : 3 * c₀ / (4 * 𝓕.ell s.im) ≤ c₀ / 𝓕.ell w.im`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hℓw hc₀.le]`. Establish `e2 : c₀ / 2 / 𝓕.ell s.im = 2 * c₀ / (4 * 𝓕.ell s.im)`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3 : 3 * c₀ / (4 * 𝓕.ell s.im) - 2 * c₀ / (4 * 𝓕.ell s.im) = c₀ / (4 * 𝓕.ell s.im)`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1d` using `norm_one_div_le (by positivity) (hgap.trans (Complex.re_le_norm _))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1d` using `[one_div_div]`. Rewrite using `[show (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w) = (analyticOrderNatAt (𝓕.F χ) w : ℂ) * (1 / (s - w)) by ring, norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left h1d (Nat.cast_nonneg _)`. Establish `key : ∀ S ⊆ hfin.toFinset, (∀ w ∈ S, ¬ ∃ β ∈ Z, w = (β : ℂ)) → ‖∑ w ∈ S, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)‖ ≤ C₁ * 𝓕.ell s.im * (4 * 𝓕.ell s.im / c₀)`. Introduce `S hS hSZ`.
+Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hq : 0 ≤ 4 * 𝓕.ell s.im / c₀` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Break down `Z.eq_empty_or_nonempty with hE | ⟨β, hβZ⟩` into its components or cases. Rewrite using `[hE, Finset.sum_empty, sub_zero]`. Establish `hk` using `key hfin.toFinset subset_rfl (by rintro w - ⟨β, hβ, -⟩; simp [hE] at hβ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hZs : Z = {β}` using `Finset.eq_singleton_iff_unique_mem.mpr ⟨hβZ, fun x hx => Finset.card_le_one.mp hZ.1 x hx β hβZ⟩`. Establish `hβ` using `hZ.2.1 β hβZ`. Establish `notZ : ∀ w : ℂ, w ≠ (β : ℂ) → ¬ ∃ β' ∈ Z, w = (β' : ℂ)`. Introduce and unpack `w hw ⟨β', hβ', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hβ'` using `[hZs, Finset.mem_singleton]`. Conclude with `hw (by rw [hβ'])`. Rewrite using `[hZs, Finset.sum_singleton]`. Distinguish the cases in `hβT : (β : ℂ) ∈ hfin.toFinset`. Establish `hhalf : 1 / 2 < (β : ℂ).re` using `𝓕.half_lt_re_of_region (c := c₀) (by linarith) (s := (β : ℂ)) (by simpa using hβ.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hAn : AnalyticAt ℂ (𝓕.F χ) (β : ℂ)` using `(GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ).1 _ hhalf`. Establish `hord : analyticOrderNatAt (𝓕.F χ) (β : ℂ) = 1` using `order_eq_one hAn hβ.2.2.1 hβ.2.2.2`. Establish `hk` using `key (hfin.toFinset.erase (β : ℂ)) (Finset.erase_subset _ _) fun w hw => notZ w (Finset.ne_of_mem_erase hw)`. Establish `e : deriv (𝓕.F χ) s / 𝓕.F χ s - 1 / (s - (β : ℂ)) = (deriv (𝓕.F χ) s / 𝓕.F χ s - ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)) + ∑ w ∈ hfin.toFinset.erase (β : ℂ), (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)`. Rewrite using `[← Finset.add_sum_erase _ _ hβT, hord, Nat.cast_one]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `hk` using `key hfin.toFinset subset_rfl fun w hw => notZ w fun h => hβT (h ▸ hw)`. Establish `hβW : ¬ (‖(β : ℂ) - (5 / 4 + s.im * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ β = 0)` using `fun h => hβT (hfin.mem_toFinset.mpr h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hfar : 3 / 5 < ‖(β : ℂ) - (5 / 4 + s.im * I)‖`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hβW ⟨h, hβ.2.2.1⟩`. Establish `hsβ : 1 / 10 ≤ ‖s - (β : ℂ)‖`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `norm_sub_le_norm_sub_add_norm_sub (β : ℂ) s (5 / 4 + s.im * I)` as an intermediate fact. Rewrite `this` using `[norm_sub_rev (β : ℂ) s]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h10 : ‖1 / (s - (β : ℂ))‖ ≤ 10`. Use `norm_one_div_le (by norm_num) hsβ` as an intermediate fact.
-
-Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_cancel]`. Use `_ ≤ ‖deriv (𝓕.F χ) s / 𝓕.F χ s - ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)‖ + ‖∑ w ∈ hfin.toFinset, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)‖ + ‖1 / (s - (β : ℂ))‖ := (norm_sub_le _ _).trans (add_le_add_left (norm_add_le _ _) _)`.
-
-Use `_ ≤ C₁ * 𝓕.ell s.im + C₁ * 𝓕.ell s.im * (4 * 𝓕.ell s.im / c₀) + 10 := by linarith`. Use `_ ≤ _ := hfinal 10 le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem logDeriv_sub_exceptional_le : ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 20 → ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (Z : Finset ℝ), 𝓕.ExcZ χ c₀ Z → ∀ s : ℂ, 1 - c₀ / 2 / 𝓕.ell s.im ≤ s.re → s.re ≤ 3 → (∀ β ∈ Z, s ≠ (β : ℂ)) → ‖deriv (𝓕.F χ) s / 𝓕.F χ s - ∑ β ∈ Z, 1 / (s - (β : ℂ))‖ ≤ C * 𝓕.ell s.im ^ 2 := by
   intro c₀ hc₀ hc₀'

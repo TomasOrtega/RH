@@ -15,11 +15,11 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `f : H ⧸ U.subgroupOf H → G ⧸ U` to `fun q => Quotient.liftOn' q (fun y => ((y : G) : G ⧸ U)) (by`. Introduce `y z hyz`. Establish `hyz' : y⁻¹ * z ∈ U.subgroupOf H` using `QuotientGroup.leftRel_apply.1 hyz`. Conclude with `QuotientGroup.eq.2 (by simpa [Subgroup.mem_subgroupOf] using hyz'))`. Establish `hf : Function.Injective f`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q q'`. Proceed by induction on `q using QuotientGroup.induction_on with | _ y => ?_`. Proceed by induction on `q' using QuotientGroup.induction_on with | _ z => ?_`. Introduce `hyz`. Establish `hyz' : (y : G)⁻¹ * z ∈ U` using `QuotientGroup.eq.1 hyz`.
+Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `QuotientGroup.eq.2 (by simpa [Subgroup.mem_subgroupOf] using hyz')`. Use `Set.Finite.of_finite_image (f := f) (Set.Finite.subset h ?_) hf.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Conclude with `⟨⟨(u.1 : G), u.2⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem finOrb_sub {G : Type} [Group G] (U H : Subgroup G) (x : H)
     (h : UpperTheory.V.AlgebraTools.FinOrb U U (x : G)) : UpperTheory.V.AlgebraTools.FinOrb (U.subgroupOf H) (U.subgroupOf H) x := by
@@ -42,9 +42,9 @@ section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hext, hfi, -, -⟩` from `Br.uaFacts L 3`. Establish `hff : (f : UA L 3) = f'`. Use `hext _ _ (fun w => ?_) (fun τ => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (cLoc w) he`. Rewrite `h1` using `[map_mul, map_mul, ((hfi k).2.1 hk) w, ((hfi k').2.1 hk') w, mul_one, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[((hfi _).1.1 f.2) τ, ((hfi _).1.1 f'.2) τ]`. Use `⟨Subtype.ext hff, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hff]`. Conclude with `mul_left_cancel he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_uniq (f f' : finU L 3) (k k' : UA L 3) (hk : k ∈ infU L 3) (hk' : k' ∈ infU L 3)
     (he : (f : UA L 3) * k = (f' : UA L 3) * k') : f = f' ∧ k = k' := by
@@ -60,9 +60,9 @@ private theorem fin_uniq (f f' : finU L 3) (k k' : UA L 3) (hk : k ∈ infU L 3)
   exact mul_left_cancel he
 
 /- English proof (translation)
-Establish `hinf : infC L 3 k = Wt.infG (em B) 3 (Unitary.toUnits γ)`. Use function extensionality and compare the values at `v`. Use `Units.ext ?_` and prove the remaining obligations. Use `show (cEmb v.embedding k : Matrix (Fin 3) (Fin 3) ℂ) = _`. Rewrite using `[hτ v.embedding, B.rG_inf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hinf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem inf_eq (B : Bridge L) (j : ℕ) (γ : U3 B.Δ) (k : UA L 3)
     (hτ : ∀ τ, cEmb τ k = cEmb τ (B.rG γ : UA L 3)) :
@@ -77,9 +77,9 @@ private theorem inf_eq (B : Bridge L) (j : ℕ) (γ : U3 B.Δ) (k : UA L 3)
   rfl
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩ : ∃ γ : U3 B.Δ, (B.rG γ : UA L 3) = f * k` from `⟨B.rG.symm ⟨_, hfk⟩, by rw [MulEquiv.apply_symm_apply]⟩`. Take `⟨k', hk', he, hτ⟩` from `hB.finG γ (C.ι γ) (fun v => hBG.ι γ v)`. Take `⟨g0, hg0⟩ : ∃ g0, g0 = C.ι γ` from `⟨_, rfl⟩`. Rewrite `he` using `[← hg0]`. Take `⟨h1, h2⟩` from `fin_uniq f (B.bG g0) k k' hk hk' (hγ.symm.trans he)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `h2` using the available equality. Rewrite using `[h1, map_mul, MulEquiv.symm_apply_apply, hg0, hψ.1, hW, inf_eq B j γ k hτ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem left_step (B : Bridge L) (hB : B.Ok) (A : SD B.Δ) (j : ℕ) (ch : Lp L → ℂ)
     (C : Base (U3 B.Δ) (GA B.Δ) (Wt.VG (InfinitePlace L) j)) (s : C.Tw) (hBG : A.dat.IsBG ch C s)
@@ -96,9 +96,9 @@ private theorem left_step (B : Bridge L) (hB : B.Ok) (A : SD B.Δ) (j : ℕ) (ch
   rw [h1, map_mul, MulEquiv.symm_apply_apply, hg0, hψ.1, hW, inf_eq B j γ k hτ]
 
 /- English proof (translation)
-Establish `hm : B.bG.symm u ∈ C.U`. Rewrite using `[hBG.U, hlG, MulEquiv.apply_symm_apply]`. Conclude with `hu`. Establish `h1` using `hψ.2 (B.bG.symm g) ⟨_, hm⟩`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hBG.ω]`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem level_step (B : Bridge L) (A : SD B.Δ) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w))
     (hlG : ∀ g : GA B.Δ, g ∈ A.dat.UG ↔ (B.bG g : UA L 3) ∈ lev (Kall L 3) S VL) (j : ℕ) (ch : Lp L → ℂ)
@@ -122,7 +122,7 @@ private def ddf {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w) (d : Fi
     ParN (Lp L) 3 := Function.update 1 (un w) (pull T w h d)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Simplify using `[pull, iu]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem iu_pull {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w) (d : Fin 3 → (Kw w)ˣ) (i : Fin 3) :
     iu T w h (pull T w h d i) = d i := by
@@ -130,7 +130,7 @@ private theorem iu_pull {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w)
   simp [pull, iu]
 
 /- English proof (translation)
-Simplify using `[ddf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ddf_self {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w) (d : Fin 3 → (Kw w)ˣ) :
     ddf T w h d (un w) = pull T w h d := by
@@ -138,20 +138,20 @@ private theorem ddf_self {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w
 
 open Classical in
 /- English proof (translation)
-Simplify using `[ddf, Function.update_of_ne hv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ddf_ne {B : Bridge L} (T : Spl B) (w : Plc L) (h : IsSplitAt w) (d : Fin 3 → (Kw w)ˣ)
     {v : Pl (Lp L)} (hv : v ≠ un w) : ddf T w h d v = 1 := by
   simp [ddf, Function.update_of_ne hv]
 
 /- English proof (translation)
-Take `⟨hsec, -⟩` from `Br.uaFacts L 3`. Establish `hloc` using `(hsec w h).1 (Sig.dg d)`. Establish `hc` using `(hsec w h).2.1 (Sig.dg d)`. Rewrite `hloc`, `hc` using `[← hx]`. Establish `hoff : ∀ u, un u ≠ un w → cLoc u (x : UA L 3) = 1` using `fun u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hloc.2 u) hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hEl, MulEquiv.apply_symm_apply]`. Use `⟨⟨x.2, fun u hu => hoff u (hu w hw)⟩, fun w' hw' h' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hww : w' = w`. Substitute `hww` using the available equality. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun i => iu T w' h' (ddf T w' h d (un w') i)) = d`. Use function extensionality and compare the values at `fun i => by rw [ddf_self]; exact iu_pull T w' h d i`. Rewrite using `[e]`. Establish `hne : un w' ≠ un w` using `fun e => hww (hpl.inj (by exact_mod_cast hw') (by exact_mod_cast hw) e)`. Rewrite using `[hoff w' hne]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun i => iu T w' h' (ddf T w h d (un w') i)) = 1`. Use function extensionality and compare the values at `fun i => by rw [ddf_ne T w h d hne]; simp`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem is_el {B : Bridge L} (T : Spl B) (S : Finset (Plc L)) (A : SD B.Δ)
     (hEl : ∀ (g : GA B.Δ) d, A.IsElG g d ↔ OnS S (B.bG g : UA L 3) ∧ ∀ w ∈ S, ∀ h, cLoc w (B.bG g : UA L 3) = Sig.dg fun i => iu T w h (d (un w) i))
@@ -179,11 +179,11 @@ private theorem is_el {B : Bridge L} (T : Spl B) (S : Finset (Plc L)) (A : SD B.
     simp
 
 /- English proof (translation)
-Introduce `v _`. Distinguish the cases in `hv : v = un w`. Substitute `hv` using the available equality. Rewrite using `[ddf_self]`. Introduce `i k hik`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hik.lt_or_eq with h1 | rfl` into its components or cases. Use `((T w h).val_le _ _).1 ?_` and prove the remaining obligations. Establish `e : ∀ i, (T w h).i ((pull T w h d i : (Kv (un w))ˣ) : Kv (un w)) = (d i : Kw w)` using `fun i => congrArg Units.val (iu_pull T w h d i)`. Rewrite using `[e, e]`. Conclude with `(hd i k h1).le`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Rewrite using `[ddf_ne T w h d hv]`. Introduce `i k _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dom_ddf {B : Bridge L} (T : Spl B) (A : SD B.Δ) (w : Plc L) (h : IsSplitAt w) (d : Fin 3 → (Kw w)ˣ)
     (hd : Sig.SDom d) : A.DomS (ddf T w h d) := by
@@ -204,11 +204,11 @@ private theorem dom_ddf {B : Bridge L} (T : Spl B) (A : SD B.Δ) (w : Plc L) (h 
     simp
 
 /- English proof (translation)
-Establish `hmem : un w ∈ A.Sg` using `(hF.sg _).2 ⟨w, hw, rfl⟩`. Unfold `SD.exG`. Rewrite using `[Finset.prod_eq_single_of_mem (un w) hmem]`. Rewrite using `[ddf_self, hab w hw h]`. Establish `e1` using `hEx w h 3 ![a w, 1, (a w)⁻¹] (pull T w h d) (Or.inr rfl)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (fun i => iu T w h (pull T w h d i)) = d` using `funext (iu_pull T w h d)`. Rewrite `e1` using `[e2]`. Rewrite using `[e1]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Introduce `v _ hv`. Rewrite using `[ddf_ne T w h d hv]`. Conclude with `((So.expoEq (Kv v) (b v)).2.2 3 _).2.1`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ex_ddf {B : Bridge L} (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ)
     (hF : Fit T S VL A) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hab : FitCh T S a b)
@@ -232,9 +232,9 @@ private theorem ex_ddf {B : Bridge L} (T : Spl B) (S : Finset (Plc L)) (VL : ∀
     exact ((So.expoEq (Kv v) (b v)).2.2 3 _).2.1
 
 /- English proof (translation)
-Establish `t` using `(So.dcMap G G' V e.toMonoidHom e.bijective U' g g).2.2.2 hfo (ψ ∘ e.symm) hlev`. Establish `e1 : (ψ ∘ e.symm) ∘ e.toMonoidHom = ψ` using `funext fun y => by simp`. Rewrite `t` using `[e1, hU, h]`. Use function extensionality and compare the values at `y`. Use `congrFun t (e.symm y)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dc_step {G G' V : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] (e : G ≃* G')
     (U' : Subgroup G') (U : Subgroup G) (hU : U'.comap e.toMonoidHom = U) (ψ : G → V) (g : G) (c : ℂ)
@@ -248,21 +248,21 @@ private theorem dc_step {G G' V : Type} [Group G] [Group G'] [AddCommGroup V] [M
   simpa using this.symm
 
 /- English proof (translation)
-The claim follows from `(So.levG L B hB T S VL A hA hF).1`.
+A detailed English derivation is pending.
 -/
 private theorem lev_G (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ)
     (hA : A.Ok) (hF : Fit T S VL A) : ∀ g : GA B.Δ, g ∈ A.dat.UG ↔ (B.bG g : UA L 3) ∈ lev (Kall L 3) S VL :=
   (So.levG L B hB T S VL A hA hF).1
 
 /- English proof (translation)
-The claim follows from `(So.levG L B hB T S VL A hA hF).2.2.1`.
+A detailed English derivation is pending.
 -/
 private theorem lev_El (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ)
     (hA : A.Ok) (hF : Fit T S VL A) : ∀ (g : GA B.Δ) d, A.IsElG g d ↔ OnS S (B.bG g : UA L 3) ∧ ∀ w ∈ S, ∀ h, cLoc w (B.bG g : UA L 3) = Sig.dg fun i => iu T w h (d (un w) i) :=
   (So.levG L B hB T S VL A hA hF).2.2.1
 
 /- English proof (translation)
-The claim follows from `(So.levG L B hB T S VL A hA hF).2.2.2.2`.
+A detailed English derivation is pending.
 -/
 private theorem lev_Ex (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ)
     (hA : A.Ok) (hF : Fit T S VL A) : ∀ w (h : IsSplitAt w) (n : ℕ) (ψ : Fin n → (Kw w)ˣ →* ℂˣ) (d : Fin n → (Kv (un w))ˣ), n = 2 ∨ n = 3 →
@@ -270,11 +270,11 @@ private theorem lev_Ex (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L
   (So.levG L B hB T S VL A hA hF).2.2.2.2
 
 /- English proof (translation)
-Establish `hg` using `is_el T S A hEl hF.pl w hw h d x hx`. Establish `hcomap : ((lev (Kall L 3) S VL).subgroupOf (finU L 3)).comap B.bG.toMonoidHom = A.dat.UG`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf, hlG]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hE'` using `hE _ _ (dom_ddf T A w h d hd) hg`. Rewrite `hE'` using `[ex_ddf T S VL A hF a b hab hEx w hw h d]`. Establish `hfo2 : UpperTheory.V.AlgebraTools.FinOrb ((lev (Kall L 3) S VL).subgroupOf (finU L 3)) ((lev (Kall L 3) S VL).subgroupOf (finU L 3)) (B.bG (B.bG.symm x))`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hfo`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstep` using `dc_step B.bG ((lev (Kall L 3) S VL).subgroupOf (finU L 3)) A.dat.UG hcomap ψ (B.bG.symm x) _ hfo2 (fun u hu g => level_step B A S VL hlG j ch C s hBG ψ hψ u (Subgroup.mem_subgroupOf.1 hu) g) hE'`. Rewrite `hstep` using `[MulEquiv.apply_symm_apply]`. Conclude with `hstep`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eig_fin (B : Bridge L) (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ)
     (hF : Fit T S VL A)
@@ -308,15 +308,15 @@ private theorem eig_fin (B : Bridge L) (T : Spl B) (S : Finset (Plc L)) (VL : �
 end
 
 /- English proof (translation)
-Introduce `L _ _ _ B hB T S VL A hA hF j a b hab ch C s hBG hW ψ hψ hne hE`. Establish `hsec` using `(Br.uaFacts L 3).1`. Establish `hlG` using `lev_G B hB T S VL A hA hF`. Establish `hEl` using `lev_El B hB T S VL A hA hF`. Establish `hExpo` using `lev_Ex B hB T S VL A hA hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : lev (Kall L 3) S VL ≤ finU L 3` using `inf_le_left.trans inf_le_left`. Establish `hf` using `So.finToAF L 3 (Wt.VG (InfinitePlace L) j) (Wt.repG _ j) _ hU (fun x => ψ (B.bG.symm x)) (fun f k hk hfk g => left_step B hB A j ch C s hBG hW ψ hψ f k hk hfk g) (fun u hu g => level_step B A S VL hlG j ch C s hBG ψ hψ u hu g)`. Take `⟨φ, hAF, hφ, hdc⟩` from `hf`. Use `⟨φ, ?_, hAF, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hne (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hφ (B.bG g)`. Rewrite `h1` using `[h0]`. Simplify using `using h1.symm`. Introduce `w hw d hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hF.pl.split w hw`. Establish `hx0 : secW 3 w (Sig.dg d) ∈ finU L 3` using `((hsec w h).1 _).1`. Establish `hat` using `So.dcAt L 3 (Kall L 3) S VL hF.pl w hw ⟨le_rfl, fun _ _ => inf_le_right⟩ d`. Establish `hfo` using `hat.1`. Use `(hat.2 _ φ hAF.level _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hdc ⟨_, hx0⟩ _ hfo (eig_fin B T S VL A hF hlG hEl hExpo j ch C s hBG ψ hψ a b hab hE w hw h d hd ⟨_, hx0⟩ rfl (finOrb_sub _ _ (⟨_, hx0⟩ : finU L 3) hfo))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.outG :
     UpperTheory.V.Z.Sym.So.OutG := by

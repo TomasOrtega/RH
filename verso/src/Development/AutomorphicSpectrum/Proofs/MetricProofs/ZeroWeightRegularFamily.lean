@@ -13,31 +13,29 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Simplify using `[levi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_const_zero {D : ℕ} (y w : Fin D → ℂ) : levi (fun _ : Fin D → ℂ => (0 : ℝ)) y w = 0 := by
   simp [levi]
 
 /- English proof (translation)
-Introduce `e X _ A Θ L s C₅ C t₁ hΘ hpos hL hC₅ hC ht₁ hte`. Establish `hr : ∀ y, Real.exp 1 ≤ rW L s y` using `fun y => by`. Use `hL y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hlogr : ∀ y, 0 ≤ Real.log (rW L s y)` using `fun y => Real.log_nonneg (he1.trans (hr y))`. Establish `hε : ∀ t, 0 < t → t ≤ t₁ → 0 ≤ epsT C t`. Introduce `t ht htt`. Rewrite using `[epsT_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg hC (loglog_quot_nonneg ht (htt.trans hte))`. Establish `hll : ∀ t, 0 < t → t ≤ t₁ → 1 ≤ Real.log (Real.log (1 / t))` using `fun t ht htt => (log_inv_bounds ht (htt.trans hte)).2`. Establish `h0 : A.Smooth (0 : X → ℝ)` using `fun j => contDiffOn_const`. Establish `ht1 : t₁ < 1`. Conclude with `hte.trans_lt (Real.exp_lt_one_iff.2 (neg_lt_zero.2 (Real.exp_pos 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨isPotential_ofFun A 0 h0, fun j => contDiffOn_const, ?_, fun y _ => ⟨?_, hC₅⟩⟩, ⟨ht₁, ht1, fun t ht htt => ?_⟩, fun j K _ _ => ⟨fun u hu => Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu, fun u hu => Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu, fun u hu = …` and prove the remaining obligations. Introduce `x j y _ w show 0 ≤ levi (fun z => (0 : X → ℝ) ((A.chart j).symm z) + (0 : X → ℝ) ((A.chart j).symm z)) y w`. Simplify using `only [Pi.zero_apply, add_zero]`. Rewrite using `[levi_const_zero]`. Use `mul_nonneg hC₅ (hlogr y) show -C₅ * Real.log (rW L s y) ≤ 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hεt` using `hε t ht htt`. Establish `hr3 : 0 ≤ t ^ ((1 : ℝ) / 3)` using `Real.rpow_nonneg ht.le _`. Use `⟨h0, fun _ => hC, fun _ _ => le_refl _, fun _ => ?_, ?_, fun _ _ _ => ?_, fun y _ => ?_, fun t' htt' ht' _ => ?_⟩` and prove the remaining obligations. Use `mul_nonneg hC (le_trans zero_le_one (hll t ht htt)) show -C * Real.log (Real.log (1 / t)) ≤ 0` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x j y hy w`. Take `⟨hyt, hyU⟩` from `hy`. Establish `hU : (A.chart j).symm y ∈ (Set.univ ∩ Set.univ) ∩ Θ.U x` using `hyU`. Establish `hO2 : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (Θ.isOpen_U x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΘ2 : ContDiffAt ℝ 2 (Θ.φ x ∘ (A.chart j).symm) y` using `((hΘ.1 x j).contDiffAt (hO2.mem_nhds ⟨hyt, hU.2⟩)).of_le (by norm_cast)`. Establish `hΘl : 0 ≤ levi (Θ.φ x ∘ (A.chart j).symm) y w`. Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, levi_zero]`. Conclude with `(hpos x j y ⟨hyt, hU.2⟩ w hw).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hfun : (LocPot.ofFun 0 + LocPot.ofFun 0 + Θ.rsmul (epsT C t)).φ x ∘ (A.chart j).symm = fun z => (fun _ : Fin e → ℂ => (0 : ℝ)) z + epsT C t * (Θ.φ x ∘ (A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Use `show (0 : X → ℝ) _ + (0 : X → ℝ) _ + epsT C t * Θ.φ x _ = 0 + epsT C t * Θ.φ x _`. Simplify using the standard rewrite rules. Rewrite using `[hfun, levi_add_smul (epsT C t) contDiffAt_const hΘ2 w, levi_const_zero]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `add_nonneg le_rfl (mul_nonneg hεt hΘl)`. Use `show (0 : ℝ) ≤ 0 + t ^ ((1 : ℝ) / 3) + epsT C t`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_nonneg hεt (le_trans (Real.exp_pos 1).le (hr y)) show (0 : ℝ) ≤ 0 + t ^ ((1 : ℝ) / 3) + epsT C t * rW L s y` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `mul_nonneg hC (hε t' (ht.trans_le htt') ht') show (0 : ℝ) ≤ 0 + C * epsT C t'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zeroMember_isRegFamily : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) (C₅ C t₁ : ℝ), IsPotential A Θ → IsPosPot A Θ → (∀ y, logNormSec L s y ≤ 0) → 0 ≤ C₅ → 0 ≤ C → 0 < t₁ → t₁ ≤ Real.exp (-Real.exp 1) → IsSingWeight A L s (LocPot.ofFun 0) 0 C₅ ∧ IsRegFamily A Θ L s (LocPot.ofFun 0) 0 (fun _ => 0) C t₁ ∧ IsRegFamilyC2 A s 0 (fun _ => 0) := by
   intro e X _ A Θ L s C₅ C t₁ hΘ hpos hL hC₅ hC ht₁ hte

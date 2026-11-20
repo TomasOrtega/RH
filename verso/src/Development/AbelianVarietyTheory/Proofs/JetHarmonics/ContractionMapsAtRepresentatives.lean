@@ -18,9 +18,9 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Establish `hu : g ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)` using `hg`. Establish `hinv : g⁻¹ = _root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r` using `Matrix.inv_eq_right_inv (_root_.GlobalTheory.WigSh.OmgNorm.mul_adj hu)`. Establish `hω : _root_.GlobalTheory.WigSh.omg k r D.z D.z' g = _root_.Formalism.FourierDecayAlt.D.prW k r D.z' (g⁻¹ *ᵥ _root_.Formalism.FourierDecayAlt.D.cofL D g)`. Rewrite using `[hinv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `_root_.Formalism.FourierDecayAlt.D.IsDFrame at hd`. Take `⟨-, ⟨a, ha, hEq⟩, -⟩` from `hd`. Conclude with `⟨a, ha, hω.trans hEq⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_omg_eq_smul_of_isDFrame (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ)
     (m₀ g : _root_.Formalism.FourierDecayAlt.B.Mat k r) (hg : g ∈ _root_.Formalism.FourierDecayAlt.B.GV k r) (hd : _root_.Formalism.FourierDecayAlt.D.IsDFrame D ν' m₀ g) :
@@ -39,7 +39,7 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.WigSh.OmgNorm.form_smul_left, _root_.GlobalTheory.WigSh.OmgNorm.form_smul_right, ← mul_assoc, Complex.star_def, Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_mul, Complex.normSq_ofReal, Complex.normSq_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma herm_smul_self_re_eq (H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (a : ℝ) (d : ℂ) (ν : Fin (2 * r + k + 1) → ℂ) :
@@ -54,13 +54,13 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Take `⟨a₁, ha₁, e₁⟩` from `exists_omg_eq_smul_of_isDFrame D ν' m₀ g₁ h₁ d₁`. Take `⟨a₂, ha₂, e₂⟩` from `exists_omg_eq_smul_of_isDFrame D ν' m₀ g₂ h₂ d₂`. Establish `n₁` using `(_root_.GlobalTheory.WigSh.OmgNorm.omg_norm k r D.z D.z' g₁ D.z_mem D.T_pos D.z'_mem D.T'_pos h₁).2.2`. Establish `n₂` using `(_root_.GlobalTheory.WigSh.OmgNorm.omg_norm k r D.z D.z' g₂ D.z_mem D.T_pos D.z'_mem D.T'_pos h₂).2.2`. Rewrite `n₁` using `[e₁, herm_smul_self_re_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `n₂` using `[e₂, herm_smul_self_re_eq, ← hZ, ← hG]`. Use `set X := Complex.normSq (_root_.Formalism.QuantumDeterminants.Zhat k r D.z D.z' g₁).det * (_root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) ν' ν').re`. Establish `hT` using `D.T'_pos`. Establish `hX : X ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `n₁` using `[h0, mul_zero]`. Establish `: 0 < _root_.Formalism.QuantumDeterminants.Gf k r D.z D.z' g₁ / _root_.Formalism.QuantumDeterminants.Tz k r D.z'` using `div_pos hpos hT`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : a₁ ^ 2 = a₂ ^ 2` using `mul_right_cancel₀ hX (n₁.trans n₂.symm)`. Establish `ha : a₁ = a₂` using `by nlinarith [sq_nonneg (a₁ - a₂), sq_nonneg (a₁ + a₂)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂, ha, hZ]`.
+A detailed English derivation is pending.
 -/
 private lemma cofactor_eq_of_frames_lemma (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ)
     (m₀ g₁ g₂ : _root_.Formalism.FourierDecayAlt.B.Mat k r) (h₁ : g₁ ∈ _root_.Formalism.FourierDecayAlt.B.GV k r) (h₂ : g₂ ∈ _root_.Formalism.FourierDecayAlt.B.GV k r)
@@ -92,9 +92,9 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.B.RealPlaceData.inSS at hp`. Take `⟨h1, n1, h2, n2⟩` from `hp`. Establish `hn1 : (Matrix.of p.1.2)⁻¹ ∈ _root_.Formalism.QuantumDeterminants.Nset k r` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv n1`. Establish `u1 : (Matrix.of p.1.2)⁻¹ * g ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (_root_.Formalism.FourierDecayAlt.P.B6.Nset_sub k r hn1) hg`. Establish `u2 : (Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul u1 (_root_.Formalism.FourierDecayAlt.P.B6.Nset_sub k r n2)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Matrix.of p.1.2 * Matrix.of p.1.1)⁻¹ * g * (Matrix.of p.2.2 * Matrix.of p.2.1) = (Matrix.of p.1.1)⁻¹ * ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) * Matrix.of p.2.1`. Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[_root_.Formalism.FourierDecayAlt.P.B5.sgs_eq, e, _root_.GlobalTheory.WigSh.omg_equivariant k r D.z D.z' _ _ _ D.z_mem D.T_pos D.z'_mem D.T'_pos u2 h1 h2, _root_.GlobalTheory.WigSh.omg_mul_N k r D.z D.z' _ _ D.z_mem D.z'_mem u1 n2, _root_.GlobalTheory.WigSh.OmLeftN.omg_mul_left k …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma omg_sgs_eq_inv_mulVec (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (p : _root_.Formalism.FourierDecayAlt.B.SS k r) (hp : D.inSS p)
     (g : _root_.Formalism.FourierDecayAlt.B.Mat k r) (hg : g ∈ _root_.Formalism.FourierDecayAlt.B.GV k r) :
@@ -117,11 +117,11 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Establish `hp'` using `hp`. Unfold `_root_.Formalism.FourierDecayAlt.B.RealPlaceData.inSS at hp'`. Take `⟨h1, -, h2, -⟩` from `hp'`. Unfold `_root_.GlobalTheory.WigSh.WigMap at hA`. Establish `hint` using `hA.2.1 _ (_root_.GlobalTheory.WigSh.OmgEquiv.inv_mem h2) (_root_.GlobalTheory.WigSh.omg k r D.z D.z' g₀)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hRF : _root_.Formalism.FourierDecayAlt.B.xiTau D' (1, 1) p = _root_.Formalism.FourierDecayAlt.B.xiTau D (1, 1) p` using `by unfold _root_.Formalism.FourierDecayAlt.B.xiTau; rw [hz, hz']`. Unfold `_root_.Formalism.FourierDecayAlt.D.orbIntegrand _root_.Formalism.FourierDecayAlt.B.rho`. Use `beta_reduce`. Rewrite using `[hRF, hπ _ h1, omg_sgs_eq_inv_mulVec D p hp g₀ hg₀, ContinuousLinearMap.smul_comp]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_assoc, hint]`.
+A detailed English derivation is pending.
 -/
 private lemma integrand_comp_lemma_5 {Wq' : Type} [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq']
     (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (D' : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq') (hz : D'.z = D.z) (hz' : D'.z' = D.z')
@@ -147,15 +147,13 @@ open Matrix in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] in
 /- English proof (translation)
-Establish `indep` using `_root_.Formalism.FourierDecayAlt.P.orbital_integral_indep_choice`. Unfold `_root_.Formalism.FourierDecayAlt.D.OrbJIndep at indep`. Use `set L := A' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' g₀) with hL`. Use `set F' := fun g => (F g).comp (A' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' g)) with hF'`. Set `CL : (Wq →L[ℂ] Wp) →L[ℂ] (Wq' →L[ℂ] Wp)` to `(ContinuousLinearMap.compL ℂ Wq' Wq Wp).flip L`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCL : ∀ X, CL X = X.comp L` using `fun X => rfl`. Establish `hθ' : _root_.Formalism.FourierDecayAlt.D.IsNormCut D' g₀ μ θ`. Unfold `_root_.Formalism.FourierDecayAlt.D.IsNormCut _root_.Formalism.FourierDecayAlt.B.RealPlaceData.inSS at hθ ⊢`. Rewrite using `[hz, hz']`. Conclude with `hθ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p ∂D.μSS, θ p • _root_.Formalism.FourierDecayAlt.D.orbIntegrand D' g₀ F' p = CL (θ p • _root_.Formalism.FourierDecayAlt.D.orbIntegrand D g₀ F p)` using `by filter_upwards [_root_.Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`. Rewrite using `[ContinuousLinearMap.map_smul_of_tower, hCL, integrand_comp_lemma_5 D D' hz hz' hπ A' hA g₀ hg₀ F p hp]`. Establish `hint' : MeasureTheory.Integrable (fun p => θ p • _root_.Formalism.FourierDecayAlt.D.orbIntegrand D' g₀ F' p) D'.μSS`. Rewrite using `[hμ]`. Conclude with `(CL.integrable_comp hint).congr (hae.mono fun p hp => hp.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hval : ∫ p, θ p • _root_.Formalism.FourierDecayAlt.D.orbIntegrand D' g₀ F' p ∂D'.μSS = (∫ p, θ p • _root_.Formalism.FourierDecayAlt.D.orbIntegrand D g₀ F p ∂D.μSS).comp L`. Rewrite using `[hμ, ← hCL, ← ContinuousLinearMap.integral_comp_comm CL hint]`. Conclude with `MeasureTheory.integral_congr_ae hae`. Unfold `_root_.Formalism.FourierDecayAlt.D.orbJ`. Use `split_ifs with h₁ h₂ h₂`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(h₂ ⟨θ, hθ, hint⟩).elim`. Conclude with `(h₁ ⟨θ, hθ', hint'⟩).elim`. Conclude with `(h₁ ⟨θ, hθ', hint'⟩).elim`.
+A detailed English derivation is pending.
 -/
 private lemma orbital_comp_lemma_2 {Wq' : Type} [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq']
     [CompleteSpace Wp] (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (D' : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq') (hz : D'.z = D.z) (hz' : D'.z' = D.z')
@@ -199,47 +197,43 @@ private lemma orbital_comp_lemma_2 {Wq' : Type} [NormedAddCommGroup Wq'] [InnerP
 open Matrix in
 
 /- English proof (translation)
-Establish `hconv` using `_root_.Formalism.FourierDecayAlt.P.Dx3.d_orbJConv`. Unfold `_root_.Formalism.FourierDecayAlt.D.OrbJConv at hconv`. Take `⟨c₃, hc₃⟩` from `hconv`. Establish `hspec` using `_root_.Formalism.FourierDecayAlt.P.ptG_spec`. Unfold `_root_.Formalism.FourierDecayAlt.D.PtGSpec at hspec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `replace hspec := And.intro hspec trivial`. Establish `hexist` using `_root_.Formalism.FourierDecayAlt.P.exists_isotropic_frame`. Unfold `_root_.Formalism.FourierDecayAlt.D.DFrameExists at hexist`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `Wp _ _ _ Wq _ _ _ Wqp _ _ _ Wqm _ _ _ k r D Dp Dm ν' m₀ n₀ b Ap' Am' hpz hpz' hpπ hpμ hmz hmz' hmπ hmμ hbase hAp hAm hlow`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `Rep : _root_.Formalism.FourierDecayAlt.C.LPt → _root_.Formalism.FourierDecayAlt.B.Mat k r → Prop` to `fun γ g => g ∈ _root_.Formalism.FourierDecayAlt.B.GV k r ∧ _root_.Formalism.QuantumDeterminants.Zhat k r D.z D.z' g = _root_.Formalism.FourierDecayAlt.D.ptMatN γ (r + 1) ∧ _root_.Formalism.FourierDecayAlt.D.IsDFrame D ν' m₀ g`. Set `rep : _root_.Formalism.FourierDecayAlt.C.LPt → _root_.Formalism.FourierDecayAlt.B.Mat k r` to `fun γ => if h : ∃ g, Rep γ g then h.choose else 1`. Establish `rep_spec : ∀ γ, _root_.Formalism.FourierDecayAlt.D.IsLocPt γ (r + 1) → 0 < _root_.Formalism.FourierDecayAlt.D.ptG (_root_.Formalism.QuantumDeterminants.Tz k r D.z * _root_.Formalism.QuantumDeterminants.Tz k r D.z') r γ → Rep γ (rep γ)`. Introduce `γ hγ hpos`. Establish `hex : ∃ g, Rep γ g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hZ, hd⟩` from `hexist k r Wp Wq D ν' m₀ γ hbase hγ hpos`. Conclude with `⟨g, hg, hZ, hd⟩`. Simplify using `only [rep, dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `rep_eq : ∀ γ, _root_.Formalism.FourierDecayAlt.D.IsLocPt γ (r + 1) → 0 < _root_.Formalism.FourierDecayAlt.D.ptG (_root_.Formalism.QuantumDeterminants.Tz k r D.z * _root_.Formalism.QuantumDeterminants.Tz k r D.z') r γ → ∀ g, Rep γ g → _root_.GlobalTheory.WigSh.omg k r D.z D.z' (re …`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ hpos g ⟨hg, hZ, hd⟩`. Take `⟨h₀, hZ₀, hd₀⟩` from `rep_spec γ hγ hpos`. Establish `e₀` using `hspec.1 k r D.z D.z' γ (rep γ) hγ hZ₀`. Establish `e₁` using `hspec.1 k r D.z D.z' γ g hγ hZ`. Conclude with `cofactor_eq_of_frames_lemma D ν' m₀ _ _ h₀ hg hd₀ hd (hZ₀.trans hZ.symm) (e₀.symm.trans e₁) (e₀ ▸ hpos)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hApC` using `hAp`. Unfold `_root_.GlobalTheory.WigSh.WigMap at hApC`. Establish `hAmC` using `hAm`. Unfold `_root_.GlobalTheory.WigSh.WigMap at hAmC`. Use `⟨fun g => Ap' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' g), fun g => Am' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' g), fun γ => Ap' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' (rep γ)), fun γ => Am' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' (rep γ)), ?_, ?_, ?_, fun g => ⟨r …` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, c, L, hc, hL⟩` from `(_root_.GlobalTheory.WigSh.wigMap_omg Wq Wqp k r D.z D.z' D.π' Dp.π' n₀ Ap' D.z_mem D.T_pos D.z'_mem D.T'_pos hAp).1`. Conclude with `⟨t, c, L, hc, hL⟩`. Take `⟨t, c, L, hc, hL⟩` from `(_root_.GlobalTheory.WigSh.wigMap_omg Wq Wqm k r D.z D.z' D.π' Dm.π' n₀ Am' D.z_mem D.T_pos D.z'_mem D.T'_pos hAm).1`. Conclude with `⟨t, c, L, hc, hL⟩`. Introduce `γ hγ hpos g hg hZ hd`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `rep_eq γ hγ hpos g ⟨hg, hZ, hd⟩`. Conclude with `⟨congrArg Ap' e, congrArg Am' e⟩`. Introduce `A₀ f hA₀ hf`. Establish `haar` using `_root_.Formalism.FourierDecayAlt.P.radial_measure_is_haar`. Unfold `_root_.Formalism.FourierDecayAlt.D.MuRHaar at haar`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hrelv` using `_root_.Formalism.FourierDecayAlt.P.relevant_points_holds`. Unfold `_root_.Formalism.FourierDecayAlt.D.PtRelevant at hrelv`. Establish `hvi` using `_root_.Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep`. Unfold `_root_.Formalism.FourierDecayAlt.D.VecVIndep at hvi`. Establish `side : ∀ {Wq' : Type} [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (D' : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq') (A' : (Fin (2 * r + k + 1) → ℂ) → (Wq' →L[ℂ] Wq)), D'.z = D.z → D'.z' = D.z' → (∀ h ∈ _root_.Formalism.QuantumDeterminants.UWset k r D.z, D' …`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Wq' _ _ D' A' hz hz' hπ hμ hA γ hγ hpos`. Take `⟨h₀, hZ₀, hd₀⟩` from `rep_spec γ hγ hpos`. Establish `hbase' : _root_.Formalism.FourierDecayAlt.D.IsBaseFrame D' ν' m₀`. Unfold `_root_.Formalism.FourierDecayAlt.D.IsBaseFrame at hbase ⊢`. Rewrite using `[hz, hz']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbase`. Establish `hd' : _root_.Formalism.FourierDecayAlt.D.IsDFrame D' ν' m₀ (rep γ)`. Unfold `_root_.Formalism.FourierDecayAlt.D.IsDFrame _root_.Formalism.FourierDecayAlt.D.cofR _root_.Formalism.FourierDecayAlt.D.cofL at hd₀ ⊢`. Rewrite using `[hz, hz']`. Conclude with `hd₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos' : 0 < _root_.Formalism.FourierDecayAlt.D.ptG (_root_.Formalism.QuantumDeterminants.Tz k r D'.z * _root_.Formalism.QuantumDeterminants.Tz k r D'.z') r γ`. Rewrite using `[hz, hz']`. Conclude with `hpos`. Establish `hZ' : _root_.Formalism.QuantumDeterminants.Zhat k r D'.z D'.z' (rep γ) = _root_.Formalism.FourierDecayAlt.D.ptMatN γ (r + 1)`. Rewrite using `[hz, hz']`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hZ₀`. Establish `hN : ∀ w, _root_.Formalism.FourierDecayAlt.D.muR D' (rep γ) w = _root_.Formalism.FourierDecayAlt.D.muR D (rep γ) w`. Introduce `w`. Unfold `_root_.Formalism.FourierDecayAlt.D.muR _root_.Formalism.FourierDecayAlt.D.rhoOfU`. Rewrite using `[hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ'` using `hγ`. Unfold `_root_.Formalism.FourierDecayAlt.D.IsLocPt at hγ'`. Take `⟨hm, hne⟩` from `_root_.Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' γ (r + 1) hγ'.2 hγ'.1`. Establish `hGf` using `hspec.1 k r D.z D.z' γ (rep γ) hγ hZ₀`. Establish `hrel` using `hrelv k r Wp Wq D γ (rep γ) hγ h₀ hZ₀`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrel'` using `hrelv k r Wp Wq' D' γ (rep γ) hγ h₀ hZ'`. Establish `hH` using `haar k r Wp Wq D (rep γ) _ _ h₀ hne (hZ₀.trans hm)`. Take `⟨θ, hθ, hθi⟩` from `hc₃ k r Wp Wq D (rep γ) _ _ A₀ f h₀ hrel hne (hZ₀.trans hm) (by rw [← hGf]; exact hpos) hA₀ hf`. Rewrite using `[hvi k r Wp Wq D ν' m₀ f γ hγ (rep γ) hbase hpos h₀ hZ₀ hd₀, hvi k r Wp Wq' D' ν' m₀ _ γ hγ (rep γ) hbase' hpos' h₀ hZ' hd', hN]`. Conclude with `orbital_comp_lemma_2 D D' hz hz' hπ hμ A' hA (rep γ) h₀ _ hH hrel hrel' f θ hθ hθi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨side Dp Ap' hpz hpz' hpπ hpμ hAp, side Dm Am' hmz hmz' hmπ hmμ hAm⟩`. Introduce `γ hγ hpos v`. Take `⟨h₀, hZ₀, -⟩` from `rep_spec γ hγ hpos`. Establish `hG` using `hspec.1 k r D.z D.z' γ (rep γ) hγ hZ₀`. Establish `hmem` using `_root_.GlobalTheory.WigSh.OmgNorm.omg_norm k r D.z D.z' (rep γ) D.z_mem D.T_pos D.z'_mem D.T'_pos h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv` using `hlow _ hmem.1 hmem.2.1 v`. Rewrite `hv` using `[hmem.2.2]`. Rewrite `hpos`, the goal using `[hG]`. Establish `hX : 0 < _root_.Formalism.QuantumDeterminants.Gf k r D.z D.z' (rep γ) / _root_.Formalism.QuantumDeterminants.Tz k r D.z'` using `div_pos hpos D.T'_pos`. Establish `hXn` using `pow_pos hX n₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hXn.ne', one_mul]`. Use `_ ≤ ((_root_.Formalism.QuantumDeterminants.Gf k r D.z D.z' (rep γ) / _root_.Formalism.QuantumDeterminants.Tz k r D.z') ^ n₀)⁻¹ * ((3 * b) ^ (2 * n₀) * (‖ContinuousLinearMap.adjoint (Ap' (_root_.GlobalTheory.WigSh.omg k r D.z D.z' (rep γ))) v‖ ^ 2 + ‖ContinuousLinearMap.adjoint (A …`. Use `_ = _ := by rw [← inv_pow, inv_div]; ring`. Introduce `γ hγ hpos`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₀, hZ₀, -⟩` from `rep_spec γ hγ hpos`. Establish `hG` using `hspec.1 k r D.z D.z' γ (rep γ) hγ hZ₀`. Establish `hmem` using `_root_.GlobalTheory.WigSh.OmgNorm.omg_norm k r D.z D.z' (rep γ) D.z_mem D.T_pos D.z'_mem D.T'_pos h₀`. Establish `h` using `hApC.2.2.2 _ hmem.1 hmem.2.1`. Rewrite `h` using `[hmem.2.2]`.
-
-Rewrite using `[hG]`. Conclude with `h`. Introduce `γ hγ hpos`. Take `⟨h₀, hZ₀, -⟩` from `rep_spec γ hγ hpos`. Establish `hG` using `hspec.1 k r D.z D.z' γ (rep γ) hγ hZ₀`.
-
-Establish `hmem` using `_root_.GlobalTheory.WigSh.OmgNorm.omg_norm k r D.z D.z' (rep γ) D.z_mem D.T_pos D.z'_mem D.T'_pos h₀`. Establish `h` using `hAmC.2.2.2 _ hmem.1 hmem.2.1`. Rewrite `h` using `[hmem.2.2]`. Rewrite using `[hG]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WigSh.contraction_maps_at_representatives :
     ∃ c₃ : ℝ, ∀ (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ

@@ -5,17 +5,17 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h₀ : ∀ x, p₀ (s₀ x) = x` using `fun x => LinearMap.congr_fun h₀ x`. Establish `h₁ : ∀ x, p₁ (s₁ x) = x` using `fun x => LinearMap.congr_fun h₁ x`. Establish `hq₁ : ∀ x, q₁ (D₀ x) = s₁ (d₀ (p₀ x))` using `fun x => LinearMap.congr_fun hq₁ x`. Establish `hq₀ : ∀ x, q₀ (D₀ x) = x - s₀ (p₀ x)` using `fun x => LinearMap.congr_fun hq₀ x`. Establish `hi : ∀ x, i₁ (q₁ x) + i₀ (q₀ x) = x` using `fun x => LinearMap.congr_fun hi x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr₂ : ∀ x, r₂ (D₁ x) = d₁ (p₁ (q₁ x))` using `fun x => LinearMap.congr_fun hr₂ x`. Establish `hr₁ : ∀ x, r₁ (D₁ x) = q₁ x - s₁ (p₁ (q₁ x))` using `fun x => LinearMap.congr_fun hr₁ x`. Establish `hr₀ : ∀ x, r₀ (D₁ x) = p₀ (q₀ x)` using `fun x => LinearMap.congr_fun hr₀ x`. Establish `key : ∀ v, D₀ v = 0 → s₀ (p₀ v) = v` using `fun v hv => by`. Use `hq₀ v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hv, map_zero]`. Conclude with `(sub_eq_zero.mp this.symm).symm`. Use `⟨⟨fun v hv => ?_, fun v hv v' hv' h => ?_, fun x hx => ⟨s₀ x, ?_, h₀ x⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hv : D₀ v = 0` using `hv`. Use `congrArg p₁ (hq₁ v)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hv, map_zero, map_zero, h₁]`. Conclude with `this.symm`. Rewrite using `[← key v hv, ← key v' hv', h]`. Establish `hx : d₀ x = 0` using `hx show D₀ (s₀ x) = 0`. Rewrite using `[← hi (D₀ (s₀ x)), hq₁, hq₀, h₀, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `hex w hw`. Establish `e₂` using `hr₂ w`. Establish `e₁` using `hr₁ w`. Establish `e₀` using `hr₀ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e₂`, `e₁`, `e₀` using `[hw, map_zero]`. Take `⟨x, hx⟩` from `(hex _).mp e₂.symm`. Use `⟨s₀ x + q₀ w, ?_⟩` and prove the remaining obligations. Establish `hp : p₀ (s₀ x + q₀ w) = x` using `by rw [map_add, h₀, ← e₀, add_zero]`. Rewrite using `[← hi (D₀ _), hq₁, hq₀, hp, hx, ← sub_eq_zero.mp e₁.symm, add_sub_cancel_left, hi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projMatrix_abstract {S : Type} [CommRing S] {P₀ P₁ P₂ F₀ F₁ G₁ G₂ : Type}
     [AddCommGroup P₀] [Module S P₀] [AddCommGroup P₁] [Module S P₁] [AddCommGroup P₂] [Module S P₂]
@@ -65,9 +65,9 @@ theorem projMatrix_abstract {S : Type} [CommRing S] {P₀ P₁ P₂ F₀ F₁ G�
     rw [← hi (D₀ _), hq₁, hq₀, hp, hx, ← sub_eq_zero.mp e₁.symm, add_sub_cancel_left, hi]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Matrix.mulVec_add, hx, hy]`. Consider the case `tmul r y`. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Establish `hy : f y = (LinearMap.toMatrix' f).mulVec y`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Rewrite using `[LinearMap.baseChange_tmul, hy]`. Simplify using `only [TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_smul, Algebra.smul_def, map_mul, map_sum, Finset.sum_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projMatrix_mulVec {R : Type} [CommRing R] (R' : Type) [CommRing R'] [Algebra R R']
     {a b : ℕ} (f : (Fin a → R) →ₗ[R] (Fin b → R)) (x : R' ⊗[R] (Fin a → R)) :
@@ -87,11 +87,11 @@ theorem projMatrix_mulVec {R : Type} [CommRing R] (R' : Type) [CommRing R'] [Alg
       map_sum, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply, TensorProduct.add_tmul, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul r y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hy : p y = ∑ k, y k • p (Pi.single k 1)`. Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.baseChange_tmul, hy]`. Simplify using `only [TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, TensorProduct.tmul_sum, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projMatrix_sum {R : Type} [CommRing R] (R' : Type) [CommRing R'] [Algebra R R']
     {a : ℕ} {P : Type} [AddCommGroup P] [Module R P] (p : (Fin a → R) →ₗ[R] P)
@@ -113,29 +113,29 @@ theorem projMatrix_sum {R : Type} [CommRing R] (R' : Type) [CommRing R'] [Algebr
       TensorProduct.tmul_sum, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Introduce `R _ P₀ P₁ P₂ _ _ _ _ _ _ _ _ _ _ _ _ d₀ d₁ hd`. Take `⟨n₀, p₀, s₀, -, -, h₀⟩` from `Module.Finite.exists_comp_eq_id_of_projective R P₀`. Take `⟨n₁, p₁, s₁, -, -, h₁⟩` from `Module.Finite.exists_comp_eq_id_of_projective R P₁`. Take `⟨n₂, p₂, s₂, -, -, h₂⟩` from `Module.Finite.exists_comp_eq_id_of_projective R P₂`. Establish `hE : ∀ n m : ℕ, Nonempty ((Fin (n + m) → R) ≃ₗ[R] (Fin n → R) × (Fin m → R))` using `fun n m => ⟨(LinearEquiv.funCongrLeft R R finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ R R)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨E⟩` from `hE n₁ n₀`. Take `⟨E'⟩` from `hE n₂ (n₁ + n₀)`. Establish `h₀' : ∀ x, p₀ (s₀ x) = x` using `fun x => LinearMap.congr_fun h₀ x`. Establish `h₁' : ∀ x, p₁ (s₁ x) = x` using `fun x => LinearMap.congr_fun h₁ x`. Establish `h₂' : ∀ x, p₂ (s₂ x) = x` using `fun x => LinearMap.congr_fun h₂ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : ∀ x, d₁ (d₀ x) = 0` using `fun x => LinearMap.congr_fun hd x`. Set `q₁ : (Fin (n₁ + n₀) → R) →ₗ[R] (Fin n₁ → R)` to `LinearMap.fst R _ _ ∘ₗ E.toLinearMap`. Set `q₀ : (Fin (n₁ + n₀) → R) →ₗ[R] (Fin n₀ → R)` to `LinearMap.snd R _ _ ∘ₗ E.toLinearMap`. Set `i₁ : (Fin n₁ → R) →ₗ[R] (Fin (n₁ + n₀) → R)` to `E.symm.toLinearMap ∘ₗ LinearMap.inl R _ _`. Set `i₀ : (Fin n₀ → R) →ₗ[R] (Fin (n₁ + n₀) → R)` to `E.symm.toLinearMap ∘ₗ LinearMap.inr R _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f₀ : (Fin n₀ → R) →ₗ[R] (Fin (n₁ + n₀) → R)` to `E.symm.toLinearMap ∘ₗ LinearMap.prod (s₁ ∘ₗ d₀ ∘ₗ p₀) (LinearMap.id - s₀ ∘ₗ p₀)`. Set `f₁ : (Fin (n₁ + n₀) → R) →ₗ[R] (Fin (n₂ + (n₁ + n₀)) → R)` to `E'.symm.toLinearMap ∘ₗ LinearMap.prod (s₂ ∘ₗ d₁ ∘ₗ p₁ ∘ₗ q₁) (E.symm.toLinearMap ∘ₗ LinearMap.prod (q₁ - s₁ ∘ₗ p₁ ∘ₗ q₁) (s₀ ∘ₗ p₀ ∘ₗ q₀))`. Set `r₂ : (Fin (n₂ + (n₁ + n₀)) → R) →ₗ[R] P₂` to `p₂ ∘ₗ LinearMap.fst R _ _ ∘ₗ E'.toLinearMap`. Set `r₁ : (Fin (n₂ + (n₁ + n₀)) → R) →ₗ[R] (Fin n₁ → R)` to `q₁ ∘ₗ LinearMap.snd R _ _ ∘ₗ E'.toLinearMap`. Set `r₀ : (Fin (n₂ + (n₁ + n₀)) → R) →ₗ[R] P₀` to `p₀ ∘ₗ q₀ ∘ₗ LinearMap.snd R _ _ ∘ₗ E'.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hq₁ : q₁ ∘ₗ f₀ = s₁ ∘ₗ d₀ ∘ₗ p₀` using `LinearMap.ext fun x => by simp [q₁, f₀]`. Establish `hq₀ : q₀ ∘ₗ f₀ = LinearMap.id - s₀ ∘ₗ p₀` using `LinearMap.ext fun x => by simp [q₀, f₀]`. Establish `hi : i₁ ∘ₗ q₁ + i₀ ∘ₗ q₀ = LinearMap.id` using `LinearMap.ext fun x => by`. Simplify using `[q₀, q₁, i₀, i₁, ← map_add]`. Establish `hr₂ : r₂ ∘ₗ f₁ = d₁ ∘ₗ p₁ ∘ₗ q₁` using `LinearMap.ext fun x => by simp [r₂, f₁, h₂']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr₁ : r₁ ∘ₗ f₁ = q₁ - s₁ ∘ₗ p₁ ∘ₗ q₁` using `LinearMap.ext fun x => by simp [r₁, f₁, q₁]`. Establish `hr₀ : r₀ ∘ₗ f₁ = p₀ ∘ₗ q₀` using `LinearMap.ext fun x => by simp [r₀, f₁, q₀, h₀']`. Establish `hf : f₁ ∘ₗ f₀ = 0` using `LinearMap.ext fun x => by`. Establish `e₁ : q₁ (f₀ x) = s₁ (d₀ (p₀ x))` using `LinearMap.congr_fun hq₁ x`. Establish `e₀ : q₀ (f₀ x) = x - s₀ (p₀ x)` using `LinearMap.congr_fun hq₀ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[f₁, e₁, e₀, h₀', h₁', hd']`. Use `⟨n₀, n₁ + n₀, n₂ + (n₁ + n₀), LinearMap.toMatrix' f₀, LinearMap.toMatrix' f₁, fun k => p₀ (Pi.single k 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, hf, map_zero]`. Introduce `R' _ _`. Take `⟨hB, hX⟩` from `projMatrix_abstract (d₀.baseChange R') (d₁.baseChange R') (p₀.baseChange R') (s₀.baseChange R') (p₁.baseChange R') (s₁.baseChange R') (f₀.baseChange R') (f₁.baseChange R') (q₁.baseChange R') (q₀.baseChange R') (i₁.baseChange R') (i₀.baseChange R') (r₂.baseChange R') (r₁.baseChang …`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Set `e` to `TensorProduct.piScalarRight R R' R' (Fin n₀)`. Establish `hmem : ∀ x, (((LinearMap.toMatrix' f₀).map (algebraMap R R')).mulVec (e x) = 0) ↔ f₀.baseChange R' x = 0` using `fun x => by`. Rewrite using `[projMatrix_mulVec, LinearEquiv.map_eq_zero_iff]`. Use `⟨fun v hv => ?_, fun v hv v' hv' h => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `e.surjective v`. Use `hB.mapsTo ((hmem x).mp hv)` as an intermediate fact. Rewrite `this` using `[← projMatrix_sum]`. Then use the resulting hypothesis. Take `⟨x, rfl⟩` from `e.surjective v`. Take `⟨x', rfl⟩` from `e.surjective v'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `hB.injOn ((hmem x).mp hv) ((hmem x').mp hv') ?_` and prove the remaining obligations. Rewrite using `[← projMatrix_sum, ← projMatrix_sum]`. Conclude with `h`. Take `⟨x, hx, rfl⟩` from `hB.surjOn hy`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e x, (hmem x).mpr hx, projMatrix_sum R' p₀ x⟩`. Introduce `hex w hw`. Take `⟨x, rfl⟩` from `(TensorProduct.piScalarRight R R' R' (Fin (n₁ + n₀))).surjective w`. Rewrite `hw` using `[projMatrix_mulVec, LinearEquiv.map_eq_zero_iff]`. Take `⟨v, rfl⟩` from `hX hex x hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, projMatrix_mulVec R' f₀ v⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrices_of_projective_complex :
     ∀ (R : Type) [CommRing R] (P₀ P₁ P₂ : Type) [AddCommGroup P₀] [Module R P₀] [AddCommGroup P₁] [Module R P₁] [AddCommGroup P₂] [Module R P₂] [Module.Finite R P₀] [Module.Projective R P₀] [Module.Finite R P₁] [Module.Projective R P₁] [Module.Finite R P₂] [Module.Projective R P₂] (d₀ : P₀ →ₗ[R] P₁) (d₁ : P₁ →ₗ[R] P₂), d₁ ∘ₗ d₀ = 0 → ∃ (a b c : ℕ) (D₀ : Matrix (Fin b) (Fin a) R) (D₁ : Matrix (Fin c) (Fin b) R) (u : Fin a → P₀), D₁ * D₀ = 0 ∧ ∀ (R' : Type) [CommRing R'] [Algebra R R'], Set.BijOn (fun v : Fin a → R' => ∑ k, v k ⊗ₜ[R] u k) {v | (D₀.map (algebraMap R R')).mulVec v = 0} (LinearMap.ker (d₀.baseChange R')) ∧ (Function.Exact (d₀.baseChange R') (d₁.baseChange R') → ∀ w : Fin b → R', (D₁.map (algebraMap R R')).mulVec w = 0 → ∃ v, (D₀.map (algebraMap R R')).mulVec v = w) := by

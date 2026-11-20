@@ -8,9 +8,9 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory.ShXa
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x0, h⟩` from `GlobalTheory.ShNums.size_rel Fm`. Use `⟨x0, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, h4, -, -, hw, -⟩` from `h x hx hx1 i`. Establish `ha : 0 ≤ (Fm.L x i).sc.a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ (Fm.L x i).sc.x` using `by linarith`. Unfold `Scale.a Scale.b`. Check the signs of the components of the expression. Rewrite using `[Scale.X'']`. Conclude with `div_le_self ha hw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X''_le_a : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, (Fm.L x i).sc.X'' (Fm.D x i).R.n ≤ (Fm.L x i).sc.a := by
   intro eps Fm

@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Algebra.TensorProduct.lift (Algebra.ofId R₀ S) ψ.toIntAlgHom (fun _ _ => Commute.all _ _), fun a => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algHom_tensorInt_of_ringHom (R₀ : Type) {A S : Type} [CommRing R₀] [CommRing A] [CommRing S]
     [Algebra R₀ S] (ψ : A →+* S) :
@@ -18,15 +18,13 @@ theorem exists_algHom_tensorInt_of_ringHom (R₀ : Type) {A S : Type} [CommRing 
     fun a => by simp⟩
 
 /- English proof (translation)
-Establish `ho : IsOpen (X` using `PrimeSpectrum R) (b ⁻¹ᵁ W).carrier := (b ⁻¹ᵁ W).isOpen`. Take `⟨_, ⟨f, rfl⟩, hxf, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := x) hx ho`. Establish `hrange : Set.range (spMap (algebraMap R (Localization.Away f)) ≫ b) ⊆ Set.range hW.fromSpec`. Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hy : PrimeSpectrum.comap (algebraMap R (Localization.Away f)) y ∈ (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `⟨y, rfl⟩`. Conclude with `hle hy`. Set `l` to `IsOpenImmersion.lift hW.fromSpec _ hrange`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : l ≫ hW.fromSpec = _` using `IsOpenImmersion.lift_fac _ _ _`. Set `ψ : Γ(M, W) →+* Localization.Away f` to `(Spec.preimage l).hom`. Establish `hψ : spMap ψ = l` using `Spec.map_preimage l`. Take `⟨g, hg⟩` from `exists_algHom_tensorInt_of_ringHom R₀ ψ`. Use `⟨f, hxf, g, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl, ← hψ, coefSpecMap, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
-
-Conclude with `hg a`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_away_factor_coefSpecMap (M : Scheme.{0}) (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (b : Sp R ⟶ M)
     (W : M.Opens) (hW : IsAffineOpen W) (x : Sp R) (hx : b x ∈ W) :

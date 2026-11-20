@@ -32,7 +32,7 @@ def IsHeckeIdeal (𝔪 : Ideal (𝓞 E)) (inf : Eˣ →* ℂˣ) (fin : (𝓞 E �
     IsResMod 𝔪 (α : E) r → ψ ⟨_, hα⟩ * fin r * inf α = 1
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (𝔪 : Ideal (𝓞 E)) : IsHeckeIdeal 𝔪 1 1 1 := fun _ _ _ _ => by simp
 
@@ -94,7 +94,7 @@ structure IsHeckeIdele (𝔪 : Ideal (𝓞 E)) (inf : (InfiniteAdeleRing E)ˣ �
     χ x = inf (infPart E x) * fin r
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => rfl, fun _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (𝔪 : Ideal (𝓞 E)) : IsHeckeIdele 𝔪 1 1 1 :=
   ⟨continuous_const, fun _ => rfl, fun _ _ _ _ => by simp⟩

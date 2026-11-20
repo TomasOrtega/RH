@@ -9,7 +9,7 @@ section Basis
 variable {K L M G ι : Type*} [Field K] [Field L] [Algebra K L] [AddCommGroup M] [Module L M]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.linearCombination_repr w, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_sum]`. Simplify using `only [hφ, map_smul, Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finsupp.mem_support_iff]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[not_not.1 h, map_zero]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_apply_of_semilinear (s : L →+* L) (b : Basis ι L M) (φ : M →+ M)
     (hφ : ∀ a i, φ (a • b i) = s a • b i) (w : M) (i : ι) :
@@ -25,19 +25,15 @@ theorem repr_apply_of_semilinear (s : L →+* L) (b : Basis ι L M) (φ : M →+
   · rw [not_not.1 h, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `h : (b.repr w).support.card using Nat.strong_induction_on generalizing w with`. Consider the case `_ n ih`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, b.repr w i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h0 (b.repr.map_eq_zero_iff.1 (Finsupp.ext hcon))`. Use `set w' := (b.repr w i)⁻¹ • w with hw'`. Establish `hw'W : w' ∈ W` using `W.smul_mem _ hw`. Establish `hrep : ∀ j, b.repr w' j = (b.repr w i)⁻¹ * b.repr w j` using `fun j => by simp [hw']`. Establish `hi' : b.repr w' i = 1` using `by rw [hrep, inv_mul_cancel₀ hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : (b.repr w').support ⊆ (b.repr w).support` using `fun j hj => by`. Rewrite `hj`, the goal using `[Finsupp.mem_support_iff]`. Introduce `hj0`. Conclude with `hj (by rw [hrep, hj0, mul_zero])`. Distinguish the cases in `hfix : ∀ g, φ g w' = w'`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨w', hw'W, fun j => hs _ fun g => ?_, hsub, i, hi'⟩` and prove the remaining obligations. Rewrite using `[← repr_apply_of_semilinear (s g) b (φ g) (hφ g), hfix]`. Use `push Not at hfix`. Take `⟨g, hg⟩` from `hfix`. Establish `hd : (b.repr (φ g w' - w')).support ⊆ (b.repr w).support.erase i` using `fun j hj => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[Finsupp.mem_support_iff, map_sub, Finsupp.sub_apply, repr_apply_of_semilinear (s g) b (φ g) (hφ g)]`. Rewrite using `[Finset.mem_erase, Finsupp.mem_support_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `hj (by rw [hi', map_one, sub_self])`.
-
-Introduce `hj0`. Conclude with `hj (by rw [hrep, hj0, mul_zero, map_zero, sub_self])`. Establish `hlt : (b.repr (φ g w' - w')).support.card < n`. Rewrite using `[← h]`. Conclude with `(Finset.card_le_card hd).trans_lt (Finset.card_erase_lt_of_mem (Finsupp.mem_support_iff.2 hi))`.
-
-Take `⟨u, hu, hur, hus, hui⟩` from `ih _ hlt (φ g w' - w') (W.sub_mem (hW g _ hw'W) hw'W) (sub_ne_zero.2 hg) rfl`. Conclude with `⟨u, hu, hur, hus.trans (hd.trans (Finset.erase_subset _ _)), hui⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rational_support_subset (s : G → L →+* L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L))
@@ -83,15 +79,13 @@ theorem exists_rational_support_subset (s : G → L →+* L)
       exact ⟨u, hu, hur, hus.trans (hd.trans (Finset.erase_subset _ _)), hui⟩
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 fun u hu => hu.1) fun w hw => ?_` and prove the remaining obligations. Proceed by induction on `h : (b.repr w).support.card using Nat.strong_induction_on generalizing w with`. Consider the case `_ n ih`. Distinguish the cases in `h0 : w = 0`. Rewrite using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨u, hu, hur, hus, i, hi⟩` from `exists_rational_support_subset s hs b φ hφ W hW w hw h0`. Establish `hiw : i ∈ (b.repr w).support` using `hus (Finsupp.mem_support_iff.2 (by simp [hi]))`. Establish `hd : (b.repr (w - b.repr w i • u)).support ⊆ (b.repr w).support.erase i` using `fun j hj => by`. Rewrite `hj` using `[Finsupp.mem_support_iff, map_sub, Finsupp.sub_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `hj (by rw [hi, mul_one, sub_self])`. Assume the negation of the conclusion as `hj0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : b.repr u j = 0` using `Finsupp.notMem_support_iff.1 fun h => hj0 (hus h)`. Conclude with `hj (by rw [h1, Finsupp.notMem_support_iff.1 hj0, mul_zero, sub_self])`. Establish `hlt : (b.repr (w - b.repr w i • u)).support.card < n`. Rewrite using `[← h]`. Conclude with `(Finset.card_le_card hd).trans_lt (Finset.card_erase_lt_of_mem hiw)`.
-
-Establish `h1` using `ih _ hlt _ (W.sub_mem hw (W.smul_mem _ hu)) rfl`. Establish `h2` using `Submodule.add_mem _ h1 (Submodule.smul_mem _ (b.repr w i) (Submodule.subset_span (R := L) (s := {u | u ∈ W ∧ ∀ i, b.repr u i ∈ Set.range (algebraMap K L)}) ⟨hu, hur⟩))`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_rational_eq (s : G → L →+* L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L))
@@ -133,7 +127,7 @@ variable {K L V M G : Type*} [Field K] [Field L] [Algebra K L] [AddCommGroup V] 
   [AddCommGroup M] [Module K M] [Module L M] [IsScalarTower K L M] {f : V →ₗ[K] M}
 
 /- English proof (translation)
-Use `choose k hk using hu`. Rewrite using `[← (hf.basis b).linearCombination_repr u, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hk, algebraMap_smul, hf.basis_apply]`. Conclude with `Submodule.smul_mem _ _ ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_repr_mem_range (hf : IsBaseChange L f) {ι : Type*} (b : Basis ι K V) (u : M)
     (hu : ∀ i, (hf.basis b).repr u i ∈ Set.range (algebraMap K L)) : u ∈ LinearMap.range f := by
@@ -145,9 +139,9 @@ theorem mem_range_of_repr_mem_range (hf : IsBaseChange L f) {ι : Type*} (b : Ba
   exact Submodule.smul_mem _ _ ⟨_, rfl⟩
 
 /- English proof (translation)
-Set `b` to `Basis.ofVectorSpace K V`. Use `le_antisymm (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hv`. Use `conv_lhs => rw [← span_rational_eq s hs (hf.basis b) φ (fun g a i => by rw [hf.basis_apply, hφ]) W hW]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Submodule.span_mono fun u hu => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `mem_range_of_repr_mem_range hf b u hu.2`. Conclude with `⟨v, hu.1, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_image_comap_eq (hf : IsBaseChange L f) (s : G → L →+* L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L))
@@ -170,16 +164,16 @@ noncomputable def contract (hf : IsBaseChange L f) (l : L →ₗ[K] K) : M →�
 
 @[simp]
 /- English proof (translation)
-Simplify using `[contract, hf.equiv_symm_apply, smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem contract_smul (hf : IsBaseChange L f) (l : L →ₗ[K] K) (a : L) (v : V) :
     contract hf l (a • f v) = l a • v := by
   simp [contract, hf.equiv_symm_apply, smul_tmul']
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hf.equiv.surjective x`. Proceed by induction on `t with`. Consider the case `zero => rwa [map_zero]`. Consider the case `tmul a v => rw [hf.equiv_tmul]`. Conclude with `hs a v`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `ha _ _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem induction_smul (hf : IsBaseChange L f) {p : M → Prop} (x : M) (h0 : p 0)
     (hs : ∀ (a : L) (v : V), p (a • f v)) (ha : ∀ x y, p x → p y → p (x + y)) : p x := by
@@ -190,9 +184,9 @@ theorem induction_smul (hf : IsBaseChange L f) {p : M → Prop} (x : M) (h0 : p 
   | add x y hx hy => rw [map_add]; exact ha _ _ hx hy
 
 /- English proof (translation)
-Use `induction_smul hf (p := fun x => contract hf l (a • x) = contract hf (l ∘ₗ LinearMap.mulLeft K a) x) x (by simp) ?_ ?_` and prove the remaining obligations. Introduce `c v`. Rewrite using `[smul_smul, contract_smul, contract_smul]`. Both sides reduce to the same expression. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_add, map_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem contract_smul_left (hf : IsBaseChange L f) (l : L →ₗ[K] K) (a : L) (x : M) :
     contract hf l (a • x) = contract hf (l ∘ₗ LinearMap.mulLeft K a) x := by
@@ -205,11 +199,11 @@ theorem contract_smul_left (hf : IsBaseChange L f) (l : L →ₗ[K] K) (a : L) (
     rw [smul_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `induction_smul hf (p := fun x => ∃ c : ι →₀ V, (∀ i, c i = contract hf (e.coord i) x) ∧ x = c.sum fun i v => e i • f v) x ⟨0, by simp, by simp⟩ ?_ ?_` and prove the remaining obligations. Introduce `a v`. Use `⟨(e.repr a).mapRange (· • v) (zero_smul _ _), fun i => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_mapRange_index (by simp)]`. Use `conv_lhs => rw [← e.linearCombination_repr a, Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_smul, smul_assoc, smul_comm]`. Introduce and unpack `x y ⟨c, hc, hx⟩ ⟨d, hd, hy⟩`. Use `⟨c + d, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ← hc, ← hd, Finsupp.add_apply]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by simp), ← hx, ← hy]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finsupp_contract (hf : IsBaseChange L f) {ι : Type*} (e : Basis ι K L) (x : M) :
     ∃ c : ι →₀ V, (∀ i, c i = contract hf (e.coord i) x) ∧ x = c.sum fun i v => e i • f v := by
@@ -230,13 +224,13 @@ theorem exists_finsupp_contract (hf : IsBaseChange L f) {ι : Type*} (e : Basis 
     · rw [Finsupp.sum_add_index' (by simp) (by simp), ← hx, ← hy]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `l`. Rewrite using `[← one_smul L (f v), contract_smul]`. Conclude with `N.smul_mem _ hv`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => intro l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `N.add_mem (hx l) (hy l)`. Consider the case `smul a x _ hx => intro l`. Rewrite using `[contract_smul_left]`. Conclude with `hx _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Take `⟨c, hc, h⟩` from `exists_finsupp_contract hf (Basis.ofVectorSpace K L) x`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, by rw [hc]; exact hx _, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_image_iff (hf : IsBaseChange L f) (N : Submodule K V) (x : M) :
     x ∈ Submodule.span L (f '' N) ↔ ∀ l : L →ₗ[K] K, contract hf l x ∈ N := by
@@ -258,7 +252,7 @@ theorem mem_span_image_iff (hf : IsBaseChange L f) (N : Submodule K V) (x : M) :
       (Submodule.subset_span ⟨_, by rw [hc]; exact hx _, rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm (fun v hv => ?_) fun v hv => Submodule.subset_span ⟨v, hv, rfl⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one K (one_ne_zero (α := L))`. Use `(mem_span_image_iff hf N _).1 hv l` as an intermediate fact. Rewrite `this` using `[← one_smul L (f v), contract_smul, hl, one_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem comap_span_image (hf : IsBaseChange L f) (N : Submodule K V) :
     ((Submodule.span L (f '' N)).restrictScalars K).comap f = N := by
@@ -268,7 +262,7 @@ theorem comap_span_image (hf : IsBaseChange L f) (N : Submodule K V) :
   rwa [← one_smul L (f v), contract_smul, hl, one_smul] at this
 
 /- English proof (translation)
-Introduce `N N' h` and use `by rw [← comap_span_image hf N, ← comap_span_image hf N'] exact congrArg (fun W : Submodule L M => (W.restrictScalars K).comap f) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem span_image_injective (hf : IsBaseChange L f) :
     Function.Injective fun N : Submodule K V => Submodule.span L (f '' N) := fun N N' h => by
@@ -276,7 +270,7 @@ theorem span_image_injective (hf : IsBaseChange L f) :
   exact congrArg (fun W : Submodule L M => (W.restrictScalars K).comap f) h
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_span_image_iff hf, Submodule.mem_iInf]`. Conclude with `forall_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_image_iInf (hf : IsBaseChange L f) {J : Sort*} (N : J → Submodule K V) :
     Submodule.span L (f '' (⨅ j, N j : Submodule K V)) = ⨅ j, Submodule.span L (f '' N j) := by
@@ -290,7 +284,7 @@ variable {V' M' : Type*} [AddCommGroup V'] [Module K V']
   [AddCommGroup M'] [Module K M'] [Module L M'] [IsScalarTower K L M'] {f' : V' →ₗ[K] M'}
 
 /- English proof (translation)
-Use `induction_smul hf (p := fun x => contract hf' l (F x) = p (contract hf l x)) x (by simp) ?_ ?_` and prove the remaining obligations. Introduce `a v`. Rewrite using `[map_smul, hF, contract_smul, contract_smul, map_smul]`. Introduce `x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem contract_map (hf : IsBaseChange L f) (hf' : IsBaseChange L f') (p : V →ₗ[K] V')
     (F : M →ₗ[L] M') (hF : ∀ v, F (f v) = f' (p v)) (l : L →ₗ[K] K) (x : M) :
@@ -303,7 +297,7 @@ theorem contract_map (hf : IsBaseChange L f) (hf' : IsBaseChange L f') (p : V �
     simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_span_image_iff hf, Submodule.mem_comap, mem_span_image_iff hf', contract_map hf hf' p F hF]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_image_comap_map (hf : IsBaseChange L f) (hf' : IsBaseChange L f') (p : V →ₗ[K] V')
     (F : M →ₗ[L] M') (hF : ∀ v, F (f v) = f' (p v)) (N : Submodule K V') :
@@ -313,7 +307,7 @@ theorem span_image_comap_map (hf : IsBaseChange L f) (hf' : IsBaseChange L f') (
     contract_map hf hf' p F hF]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.comap_bot, span_image_comap_map hf hf' p F hF]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem span_image_ker (hf : IsBaseChange L f) (hf' : IsBaseChange L f') (p : V →ₗ[K] V')
     (F : M →ₗ[L] M') (hF : ∀ v, F (f v) = f' (p v)) :
@@ -336,13 +330,13 @@ def rationalPart (W : Submodule L (L ⊗[K] V)) : Submodule K V :=
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_rationalPart {W : Submodule L (L ⊗[K] V)} {v : V} :
     v ∈ rationalPart K W ↔ (1 : L) ⊗ₜ[K] v ∈ W := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.baseChange_eq_span L N @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_eq_span_image (N : Submodule K V) :
     N.baseChange L = Submodule.span L (TensorProduct.mk K L V 1 '' N) :=
@@ -350,14 +344,14 @@ theorem baseChange_eq_span_image (N : Submodule K V) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[baseChange_eq_span_image]`. Conclude with `comap_span_image (TensorProduct.isBaseChange K V L) N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rationalPart_baseChange (N : Submodule K V) : rationalPart K (N.baseChange L) = N := by
   rw [baseChange_eq_span_image]
   exact comap_span_image (TensorProduct.isBaseChange K V L) N
 
 /- English proof (translation)
-Rewrite using `[baseChange_eq_span_image]`. Conclude with `span_image_comap_eq (TensorProduct.isBaseChange K V L) (fun g => (s g).toRingHom) hs (fun g => ((s g).toLinearMap.rTensor V).toAddMonoidHom) (fun g a v => by simp [smul_tmul']) W hW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_rationalPart (s : G → L →ₐ[K] L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L))
@@ -369,9 +363,9 @@ theorem baseChange_rationalPart (s : G → L →ₐ[K] L)
     (fun g a v => by simp [smul_tmul']) W hW
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hW`. Use `⟨_, baseChange_rationalPart s hs W hW, fun N hN => ?_⟩` and prove the remaining obligations. Rewrite using `[← hN, rationalPart_baseChange]`. Introduce and unpack `⟨N, rfl, -⟩ g _ ⟨t, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(s g).toLinearMap.rTensor N t, (LinearMap.rTensor_baseChange (s g) t N.subtype).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem stable_iff_exists_baseChange (s : G → L →ₐ[K] L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L)) (W : Submodule L (L ⊗[K] V)) :

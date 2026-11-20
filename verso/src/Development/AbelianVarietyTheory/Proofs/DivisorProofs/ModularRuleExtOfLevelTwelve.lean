@@ -10,15 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 R₀ _ k s t H`. Apply `Rule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `R _ _ X h δ`. Establish `h2 : IsUnit ((2 : ℕ) : R)` using `isUnit_of_dvd_unit ⟨((3 : ℕ) : R), by rw [← Nat.cast_mul]⟩ h`. Establish `h12 : IsUnit ((12 : ℕ) : R)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((12 : ℕ) : R) = ((6 : ℕ) : R) * ((2 : ℕ) : R)` using `by rw [← Nat.cast_mul]`. Rewrite using `[this]`. Conclude with `h.mul h2`. Take `⟨R', _, σ, X', φ, hff, hpull, hlev⟩` from `GlobalTheory.RealMult.exists_faithfullyFlat_level F 𝔠 12 (by norm_num) R h12 X`. Use `letI : Algebra R₀ R' := (σ.comp (algebraMap R₀ R)).toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `σa : R →ₐ[R₀] R'` to `{ σ with commutes' := fun _ ↦ rfl }`. Establish `h' : IsUnit ((6 : ℕ) : R')`. Use `h.map σ` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨δ', hδ', -⟩` from `hpull.existsUnique_detGen σ δ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `s.baseChange R R' σa X h X' h' φ δ δ' hpull hδ'`. Establish `e2` using `t.baseChange R R' σa X h X' h' φ δ δ' hpull hδ'`. Establish `e3` using `H R' X' h' hlev δ'`. Apply `hff.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σa (s.val R X h δ) = σa (t.val R X h δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2, e3]`.
+A detailed English derivation is pending.
 -/
 theorem Rule.eq_of_eq_on_level_twelve : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k),

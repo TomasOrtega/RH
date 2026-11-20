@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Establish `key : ∀ {ι : Type} [Fintype ι] (M : Matrix ι μ ℂ), ((∑ i, ‖M.mulVec u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ (Mᴴ * M).mulVec u`. Introduce `ι _ M`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Use `push_cast`. Simplify using `only [dotProduct, Pi.star_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.star_def, Complex.conj_mul']`. Establish `h2 : (∑ i, ‖M.mulVec u i‖ ^ 2 : ℝ) = ∑ i, ‖N.mulVec u i‖ ^ 2`. Use `key M` as an intermediate fact. Rewrite `this` using `[h, ← key N]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Unfold `Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnorm_mulVec_eq_of_gram {ι κ μ : Type} [Fintype ι] [Fintype κ] [Fintype μ]
     (M : Matrix ι μ ℂ) (N : Matrix κ μ ℂ) (h : Mᴴ * M = Nᴴ * N) (u : μ → ℂ) :
@@ -38,17 +38,17 @@ theorem cnorm_mulVec_eq_of_gram {ι κ μ : Type} [Fintype ι] [Fintype κ] [Fin
   rw [h2]
 
 /- English proof (translation)
-Introduce `K _ _ _ A U _ hX`. Establish `: Module.Finite K A.V` using `Module.Finite.of_basis A.b`. Set `n` to `Module.finrank K U`. Set `b : Module.Basis (Fin n) K U` to `Module.finBasis K U`. Set `E : Matrix A.ι (Fin n) K` to `LinearMap.toMatrix b A.b U.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective U.subtype U.ker_subtype`. Establish `hLE : LinearMap.toMatrix A.b b g * E = 1`. Rewrite using `[← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]`. Set `M : InfinitePlace K → Matrix A.ι (Fin n) ℂ` to `fun v => (A.X v)⁻¹ * E.map v.embedding`. Establish `hM : ∀ v, Function.Injective (M v).mulVec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v x y hxy`. Establish `h1 : ((LinearMap.toMatrix A.b b g).map v.embedding * A.X v) * M v = 1`. Simplify using `only [M]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (A.X v), Matrix.mul_nonsing_inv _ (hX v), Matrix.one_mul, ← Matrix.map_mul, hLE, Formalism.L2.DIV.map_one']`. Use `congrArg ((LinearMap.toMatrix A.b b g).map v.embedding * A.X v).mulVec hxy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hP : ∀ v, ((M v)ᴴ * M v).PosDef` using `fun v => Matrix.PosDef.conjTranspose_mul_self _ (hM v)`. Use `⟨n, b, fun v => Formalism.L2.DIV.frameOf ((M v)ᴴ * M v), fun v => (Formalism.L2.DIV.frameOfSpec n _ (hP v)).1, fun v x => ?_⟩` and prove the remaining obligations. Establish `h2` using `(Formalism.L2.DIV.frameOfSpec n _ (hP v)).2`. Establish `h3 : Formalism.HermitianLatticesTheory.vecAt A.b v (x : A.V) = (E.map v.embedding).mulVec (Formalism.HermitianLatticesTheory.vecAt b v x)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `LinearMap.toMatrix_mulVec_repr b A.b U.subtype x`. Use function extensionality and compare the values at `i`. Establish `h5` using `congrFun h4 i`. Simplify using `only [Submodule.subtype_apply] at h5`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h5]`. Simplify using `[Matrix.mulVec, dotProduct, E, Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[h3, Matrix.mulVec_mulVec]`. Conclude with `cnorm_mulVec_eq_of_gram _ _ h2 _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_restricted_frames : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (A : HLat K)
     (U : Submodule K A.V) (L : Submodule (𝓞 K) U), (∀ v, IsUnit (A.X v).det) →

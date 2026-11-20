@@ -12,15 +12,13 @@ section Abstract
 variable {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
 
 /- English proof (translation)
-Establish `hlc : IsLocallyConstant F` using `hF.1`. Establish `hK : IsCompact (tsupport F)` using `hF.2`. Establish `hz : ∀ z, z ∉ tsupport F → F z = 0` using `fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `hz (subset_tsupport F h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `step : ∀ᶠ x in nhds (0 : G), ∀ y ∈ tsupport F, F (y - x) = F y`. Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hy` using `hlc.eventually_eq y`. Establish `h1 : Filter.Tendsto (fun p : G × G => p.2 - p.1) (nhds ((0 : G), y)) (nhds y)`. Simplify using `using (continuous_snd.tendsto ((0 : G), y)).sub (continuous_fst.tendsto ((0 : G), y))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : Filter.Tendsto (fun p : G × G => p.2) (nhds ((0 : G), y)) (nhds y)` using `continuous_snd.tendsto _`. Use `filter_upwards [h1.eventually hy, h2.eventually hy] with p hp1 hp2`. Conclude with `hp1.trans hp2.symm`. Establish `step' : ∀ᶠ x in nhds (0 : G), ∀ y ∈ tsupport F, F (y - -x) = F y` using `(continuous_neg.tendsto' (0 : G) 0 neg_zero).eventually step`. Use `filter_upwards [step, step'] with x hx hx' g`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hg : g ∈ tsupport F`. Conclude with `hx g hg`. Rewrite using `[hz g hg]`. Distinguish the cases in `hg' : g - x ∈ tsupport F`. Establish `h` using `hx' (g - x) hg'`.
-
-Rewrite `h` using `[sub_neg_eq_add, sub_add_cancel, hz g hg]`. Conclude with `h.symm`. Conclude with `hz _ hg'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_translate {F : G → ℂ} (hF : F ∈ SB G) :
     ∀ᶠ x in nhds (0 : G), ∀ g, F (g - x) = F g := by
@@ -55,9 +53,9 @@ def translate (Ψ : SB G) (y : G) : SB G :=
     Ψ.2.2.comp_homeomorph (Homeomorph.subRight y)⟩
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Establish `hmap : Filter.Tendsto (fun y' : G => y' - y) (nhds y) (nhds 0)`. Simplify using `using (continuous_id.tendsto y).sub_const y`. Use `filter_upwards [hmap.eventually (eventually_translate Ψ.2)] with y' hy'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show Ψ.1 (x - y') = Ψ.1 (x - y)`. Establish `h` using `hy' (x - y)`. Rewrite `h` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_translate (Ψ : SB G) : IsLocallyConstant (translate Ψ) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -72,11 +70,11 @@ theorem isLocallyConstant_translate (Ψ : SB G) : IsLocallyConstant (translate �
   rwa [sub_sub_sub_cancel_right] at h
 
 /- English proof (translation)
-Establish `hT : IsLocallyConstant (fun y => Φ.1 y • translate Ψ y)` using `IsLocallyConstant.comp₂ Φ.2.1 (isLocallyConstant_translate Ψ) (fun c f => c • f)`. Establish `hz : ∀ y, y ∉ tsupport Φ.1 → Φ.1 y • translate Ψ y = 0`. Introduce `y hy`. Establish `h0 : Φ.1 y = 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hy (subset_tsupport _ h)`. Rewrite using `[h0, zero_smul]`. Take `⟨w, hw⟩` from `GlobalTheory.exists_weakIntegral_of_isLocallyConstant_of_isCompact G μ (SB G) (fun y => Φ.1 y • translate Ψ y) hT (tsupport Φ.1) Φ.2.2.isCompact hz`. Use `⟨w, fun x => ?_, fun l => ?_⟩` and prove the remaining obligations. Conclude with `hw ((LinearMap.proj x).comp (SB G).subtype)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw l]`. Simplify using `only [map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conv [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [IsFiniteMeasureOnCompacts μ] (Φ Ψ : SB G) :
@@ -100,11 +98,11 @@ theorem exists_conv [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure
 end Abstract
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ ν _ Φ Ψ`. Establish `: SecondCountableTopology k` using `GlobalTheory.SplitWeil.secondCountable k`. Establish `: T2Space k` using `GlobalTheory.SplitWeil.t2Space k`. Establish `: ν.Regular` using `inferInstance`. Establish `: ν.IsNegInvariant` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw1, hw2⟩` from `exists_conv (Measure.pi fun _ : n => ν) Φ Ψ`. Use `⟨translate Ψ, w, fun y x => rfl, hw1, fun x => ?_, hw2⟩` and prove the remaining obligations. Rewrite using `[hw1 x]`. Establish `h` using `integral_sub_left_eq_self (fun y => Φ.1 (x - y) * Ψ.1 y) (Measure.pi fun _ : n => ν) x`. Simplify using `only [sub_sub_cancel] at h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_convolution : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (ν : Measure k) [ν.IsAddHaarMeasure] (Φ Ψ : SB (n → k)), ∃ (T : (n → k) → SB (n → k)) (w : SB (n → k)), (∀ y x, (T y).1 x = Ψ.1 (x - y)) ∧ (∀ x, w.1 x = ∫ y, Φ.1 y * Ψ.1 (x - y) ∂(Measure.pi fun _ => ν)) ∧ (∀ x, w.1 x = ∫ y, Ψ.1 y * Φ.1 (x - y) ∂(Measure.pi fun _ => ν)) ∧ ∀ l : SB (n → k) →ₗ[ℂ] ℂ, l w = ∫ y, Φ.1 y * l (T y) ∂(Measure.pi fun _ => ν) := by
   intro k _ _ _ _ _ _ n _ _ ν _ Φ Ψ

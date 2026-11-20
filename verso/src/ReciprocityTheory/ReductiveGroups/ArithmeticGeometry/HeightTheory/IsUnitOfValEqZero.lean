@@ -8,11 +8,11 @@ open NumberField IsLocalRing
 namespace ValuationResidueLemmas
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp at h`. Consider the case `coe x`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe y`. Establish `hx : (0 : ℤ) ≤ x` using `by exact_mod_cast ha`. Establish `hy : (0 : ℤ) ≤ y` using `by exact_mod_cast hb`. Establish `hxy : x + y = 0` using `by exact_mod_cast h`. Establish `hx0 : x = 0` using `by omega`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wt_add_eq_zero {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a + b = 0) : a = 0 := by
   induction a using WithTop.recTopCoe with
@@ -29,7 +29,7 @@ theorem wt_add_eq_zero {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a 
       rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Consider the case `exact add_le_add_right ha b`. Consider the case `exact add_le_add_left ha b`. Consider the case `gcongr`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem wt_pos {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 < b) : 0 < a + b := by
   calc (0 : WithTop ℤ) < b := hb
@@ -41,9 +41,9 @@ theorem wt_pos {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 < b) : 0 < a + b := by
         | gcongr
 
 /- English proof (translation)
-Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => exact absurd rfl hb`. Consider the case `coe y`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => exact le_top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe x`. Rewrite `hc` using `[← h]`. Establish `hyx : y ≤ x + y` using `by exact_mod_cast hc`. Establish `hx : (0 : ℤ) ≤ x` using `by omega`. Conclude with `hx` after adjusting the coercions.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wt_nonneg_of_add {a b c : WithTop ℤ} (hb : b ≠ ⊤) (h : a + b = c) (hc : b ≤ c) : 0 ≤ a := by
   induction b using WithTop.recTopCoe with
@@ -61,7 +61,7 @@ section
 variable {F : Type*} [Field F] (v : AddValuation F (WithTop ℤ))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact Valuation.mem_valuationSubring_iff _ _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma mem_iff_lemma (y : F) : y ∈ vRing v ↔ 0 ≤ v y := by
   first
@@ -69,9 +69,9 @@ private lemma mem_iff_lemma (y : F) : y ∈ vRing v ↔ 0 ≤ v y := by
     | exact Valuation.mem_valuationSubring_iff _ _
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `hxy : (x : F) * (y : F) = 1`. Establish `h1` using `congrArg (fun z : vRing v => (z : F)) hy`. Simplify using `using h1`. Establish `h1 : v ((x : F) * (y : F)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hxy, AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul]`. Conclude with `wt_add_eq_zero ((mem_iff_lemma v _).1 x.2) ((mem_iff_lemma v _).1 y.2) h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_zero_of_isUnit (x : vRing v) (hx : IsUnit x) : v (x : F) = 0 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
@@ -84,13 +84,11 @@ theorem val_eq_zero_of_isUnit (x : vRing v) (hx : IsUnit x) : v (x : F) = 0 := b
   exact wt_add_eq_zero ((mem_iff_lemma v _).1 x.2) ((mem_iff_lemma v _).1 y.2) h1
 
 /- English proof (translation)
-Establish `hx0 : (x : F) ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0, AddValuation.map_zero]`. Simplify using `at hx`. Establish `h2 : v ((x : F)⁻¹) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `AddValuation.map_mul v ((x : F)⁻¹) x`. Rewrite `h3` using `[inv_mul_cancel₀ hx0, AddValuation.map_one, hx, add_zero]`. Conclude with `h3.symm`. Establish `hinv : (x : F)⁻¹ ∈ vRing v` using `(mem_iff_lemma v _).2 (le_of_eq h2.symm)`. Establish `hmul : x * ⟨(x : F)⁻¹, hinv⟩ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : F) * (x : F)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hx0`. Use `first`. Consider the case `exact IsUnit.of_mul_eq_one _ hmul`.
-
-Consider the case `exact isUnit_of_mul_eq_one x _ hmul`. Consider the case `exact ⟨⟨x, _, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isUnit_of_val_eq_zero (x : vRing v) (hx : v (x : F) = 0) : IsUnit x := by
   have hx0 : (x : F) ≠ 0 := by
@@ -112,9 +110,9 @@ theorem isUnit_of_val_eq_zero (x : vRing v) (hx : v (x : F) = 0) : IsUnit x := b
     | exact ⟨⟨x, _, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `h0 : 0 ≤ v (x : F)` using `(mem_iff_lemma v _).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `lt_of_le_of_ne h0 (fun he => h (isUnit_of_val_eq_zero v x he.symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hu`. Conclude with `h.ne' (val_eq_zero_of_isUnit v x hu)`.
+A detailed English derivation is pending.
 -/
 theorem mem_max_iff (x : vRing v) : x ∈ maximalIdeal (vRing v) ↔ 0 < v (x : F) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -126,9 +124,9 @@ theorem mem_max_iff (x : vRing v) : x ∈ maximalIdeal (vRing v) ↔ 0 < v (x : 
     exact h.ne' (val_eq_zero_of_isUnit v x hu)
 
 /- English proof (translation)
-Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Establish `h0 : 0 ≤ v (x : F)` using `(mem_iff_lemma v _).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(eq_of_le_of_not_lt h0 h).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hlt`. Rewrite `hlt` using `[h]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_ne_zero_iff (x : vRing v) : residue (vRing v) x ≠ 0 ↔ v (x : F) = 0 := by
   rw [Ne, IsLocalRing.residue_eq_zero_iff, mem_max_iff]
@@ -146,23 +144,21 @@ end ValuationResidueLemmas
 namespace ValuationResidueLemmas
 
 /- English proof (translation)
-Use `letI := ReciprocityTheory.MultiplicativeHeights.residueAlgebra (vRing w) (algebraMap Ω U)`. Establish `hc : ∀ β, P.coeff β ∈ (vRing w).comap (algebraMap Ω U)` using `fun β => ValuationSubring.mem_comap.2 ((mem_iff_lemma w _).2 (hP β))`. Take `⟨P₀, hP₀⟩ : ∃ P₀ : MvPolynomial σ ((vRing w).comap (algebraMap Ω U)), MvPolynomial.map ((vRing w).comap (algebraMap Ω U)).subtype P₀ = P` from `by first`. Consider the case `(refine ⟨∑ β ∈ P.support, MvPolynomial.monomial β (⟨P.coeff β, hc β⟩ : (vRing w).comap (algebraMap Ω U)), ?_⟩`. Rewrite using `[map_sum]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.map_monomial]`. Use `conv_rhs => rw [P.as_sum]`. Use the proof step `rfl)`. Consider the case `exact MvPolynomial.mem_range_map_iff_coeffs_subset.2 (fun c hc' => by`. Take `⟨β, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.1 hc'`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, hc β⟩, rfl⟩)`. Establish `hQ1 : ((MvPolynomial.eval₂ (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) (fun s => (⟨t s, ht s⟩ : vRing w)) P₀ : vRing w) : U) = MvPolynomial.aeval t P`. Rewrite using `[← hP₀, MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Establish `h2` using `MvPolynomial.eval₂_comp_left (vRing w).subtype (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) (fun s => (⟨t s, ht s⟩ : vRing w)) P₀`. Use `first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact h2`. Consider the case `(rw [← h2]; rfl)`. Establish `hhom : (residue (vRing w)).comp (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) = (algebraMap (ResidueField ((vRing w).comap (algebraMap Ω U))) (ResidueField (vRing w))).comp (residue ((vRing w).comap (algebraMap Ω U)))`. Use extensionality with `x`. Use `first`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `rfl`. Consider the case `exact (IsLocalRing.ResidueField.map_residue _ _).symm`. Establish `hkey : MvPolynomial.aeval (fun s => residue (vRing w) ⟨t s, ht s⟩) (MvPolynomial.map (residue ((vRing w).comap (algebraMap Ω U))) P₀) = residue (vRing w) (MvPolynomial.eval₂ (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) (fun s => (⟨t s, ht s⟩ …`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_map, MvPolynomial.eval₂_comp_left, hhom]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hα : P₀.coeff α = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3` using `congrArg (MvPolynomial.coeff α) hP₀`. Rewrite `h3` using `[MvPolynomial.coeff_map, h1]`. Conclude with `h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne0 : MvPolynomial.map (residue ((vRing w).comap (algebraMap Ω U))) P₀ ≠ 0`. Introduce `h0`. Establish `h4` using `congrArg (MvPolynomial.coeff α) h0`. Rewrite `h4` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero, hα, map_one]`. Conclude with `one_ne_zero h4`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Establish `hne : residue (vRing w) (MvPolynomial.eval₂ (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) (fun s => (⟨t s, ht s⟩ : vRing w)) P₀) ≠ 0`. Rewrite using `[← hkey]`. Introduce `h0`. Apply `hne0` to reduce the goal to its premises. Use `first`.
-
-Consider the case `exact algebraicIndependent_iff.1 hind _ h0`. Consider the case `exact hind (by rw [h0, map_zero])`. Establish `h5` using `(residue_ne_zero_iff w _).1 hne`. Rewrite `h5` using `[hQ1]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eval_eq_zero {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     (w : AddValuation U (WithTop ℤ)) (t : σ → U) (ht : ∀ s, t s ∈ vRing w)
@@ -234,25 +230,23 @@ theorem val_eval_eq_zero {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
   exact h5
 
 /- English proof (translation)
-Establish `hsupp : P.support.Nonempty` using `by first`. Consider the case `exact Finsupp.support_nonempty_iff.2 hP`. Consider the case `(rw [Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]; exact hP)`. Take `⟨β₀, hβ₀, hmin⟩` from `Finset.exists_min_image P.support (fun β => w (algebraMap Ω U (P.coeff β))) hsupp`. Establish `hc0 : P.coeff β₀ ≠ 0` using `MvPolynomial.mem_support_iff.1 hβ₀`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨P.coeff β₀, hc0, ?_⟩` and prove the remaining obligations. Establish `hfc : w (algebraMap Ω U (P.coeff β₀)) ≠ ⊤`. Introduce `h`. Rewrite `h` using `[AddValuation.top_iff]`. Conclude with `hc0 ((algebraMap Ω U).injective (h.trans (map_zero _).symm))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : ∀ β, 0 ≤ w (algebraMap Ω U ((MvPolynomial.C (P.coeff β₀)⁻¹ * P).coeff β))`. Introduce `β`. Rewrite using `[MvPolynomial.coeff_C_mul]`. Distinguish the cases in `hβ : β ∈ P.support`. Establish `e : algebraMap Ω U ((P.coeff β₀)⁻¹ * P.coeff β) * algebraMap Ω U (P.coeff β₀) = algebraMap Ω U (P.coeff β)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Conclude with `wt_nonneg_of_add hfc (by rw [← AddValuation.map_mul, e]) (hmin β hβ)`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hβ, mul_zero, map_zero, AddValuation.map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Establish `hQ1 : (MvPolynomial.C (P.coeff β₀)⁻¹ * P).coeff β₀ = 1`. Rewrite using `[MvPolynomial.coeff_C_mul, inv_mul_cancel₀ hc0]`. Establish `h1` using `val_eval_eq_zero w t ht hind _ hQ β₀ hQ1`. Rewrite `h1` using `[map_mul, MvPolynomial.aeval_C, AddValuation.map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : w (algebraMap Ω U (P.coeff β₀)⁻¹) + w (algebraMap Ω U (P.coeff β₀)) = 0`. Rewrite using `[← AddValuation.map_mul, ← map_mul, inv_mul_cancel₀ hc0, map_one, AddValuation.map_one]`. Establish `ha : w (algebraMap Ω U (P.coeff β₀)⁻¹) ≠ ⊤`. Introduce `h`. Rewrite `h` using `[AddValuation.top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `(inv_ne_zero hc0) ((algebraMap Ω U).injective (h.trans (map_zero _).symm))`. Generalize the expression as in `w (algebraMap Ω U (P.coeff β₀)⁻¹) = a at ha h1 h2`. Generalize the expression as in `w (MvPolynomial.aeval t P) = X at h1 ⊢`. Generalize the expression as in `w (algebraMap Ω U (P.coeff β₀)) = Y at h2 ⊢`. Proceed by induction on `a using WithTop.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `top => exact absurd rfl ha`. Consider the case `coe a`. Proceed by induction on `X using WithTop.recTopCoe with`. Consider the case `top => simp at h1`. Consider the case `coe X`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `Y using WithTop.recTopCoe with`. Consider the case `top => simp at h2`. Consider the case `coe Y`. Establish `e1 : a + X = 0` using `by exact_mod_cast h1`. Establish `e2 : a + Y = 0` using `by exact_mod_cast h2`.
-
-Establish `e3 : X = Y` using `by omega`. Rewrite using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_val_coeff {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     (w : AddValuation U (WithTop ℤ)) (t : σ → U) (ht : ∀ s, t s ∈ vRing w)
@@ -320,17 +314,15 @@ end ValuationResidueLemmas
 namespace ValuationResidueLemmas
 
 /- English proof (translation)
-Introduce `z`. Take `⟨c, rfl⟩` from `residue_surjective z`. Establish `hc : 0 ≤ ν (c : K)` using `c.2`. Establish `hz : ∀ a : 𝓞 K, a ∉ la.asIdeal → ν (algebraMap (𝓞 K) K a) = 0` using `fun a ha => le_antisymm (not_lt.mp (fun h => ha ((hpos a).mp h))) (hnn a)`. Choose the witnesses or unpack the hypotheses as in `⟨n, d, hd, hnd⟩ : ∃ n d : 𝓞 K, d ∉ la.asIdeal ∧ (c : K) * algebraMap (𝓞 K) K d = algebraMap (𝓞 K) K n := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, d, h | h⟩` from `IsDedekindDomain.HeightOneSpectrum.exists_primeCompl_mul_eq_or_mul_eq la (c : K)`. Conclude with `⟨n, d, d.2, h⟩`. Use `⟨d, n, ?_, h⟩` and prove the remaining obligations. Introduce `hn`. Establish `h1 : ν ((c : K) * algebraMap (𝓞 K) K n) = ν (algebraMap (𝓞 K) K d)` using `by rw [h]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[AddValuation.map_mul, hz d d.2]`. Establish `h2` using `wt_pos hc ((hpos n).mpr hn)`. Rewrite `h2` using `[h1]`. Conclude with `lt_irrefl _ h2`. Take `⟨y, i, hi, hyi⟩` from `la.isMaximal.exists_inv hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n * y, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, eq_comm, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_max_iff]`. Establish `hval : ν ((c : K) - algebraMap (𝓞 K) K (n * y)) + ν (algebraMap (𝓞 K) K d) = ν (algebraMap (𝓞 K) K n) + ν (algebraMap (𝓞 K) K i)`. Rewrite using `[← AddValuation.map_mul, ← AddValuation.map_mul, ← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, hnd, ← map_mul, ← map_sub]`. Use `congr 1`. Take the linear combination `(-n) * hyi`. Rewrite `hval` using `[hz d hd, add_zero]`. Use `show 0 < ν ((c : K) - algebraMap (𝓞 K) K (n * y))`.
-
-Rewrite using `[hval]`. Conclude with `wt_pos (hnn n) ((hpos i).mpr hi)`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_res {K : Type} [Field K] [NumberField K] (ν : AddValuation K (WithTop ℤ))
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
@@ -370,23 +362,21 @@ theorem surj_res {K : Type} [Field K] [NumberField K] (ν : AddValuation K (With
   exact wt_pos (hnn n) ((hpos i).mpr hi)
 
 /- English proof (translation)
-Use `letI _iW := ReciprocityTheory.MultiplicativeHeights.residueAlgebra (vRing w) (algebraMap Ω U)`. Use `letI _io := ReciprocityTheory.MultiplicativeHeights.residueAlgebra ((vRing w).comap (algebraMap Ω U)) (algebraMap K Ω)`. Use `letI : Algebra (ResidueField (((vRing w).comap (algebraMap Ω U)).comap (algebraMap K Ω))) (ResidueField (vRing w)) := ((algebraMap _ (ResidueField (vRing w))).comp (algebraMap _ (ResidueField ((vRing w).comap (algebraMap Ω U))))).toAlgebra`. Set `ν : AddValuation K (WithTop ℤ)` to `(w.comap (algebraMap Ω U)).comap (algebraMap K Ω)`. Establish `hpos : ∀ a : 𝓞 K, 0 < ν (algebraMap (𝓞 K) K a) ↔ a ∈ la.asIdeal`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Use `h0 (MvPolynomial.C a)` as an intermediate fact. Simplify using `only [MvPolynomial.eval₂_C] at this`. Use `this.trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Simplify using `using h 0`. Apply the tactic sequence `intro h α; rw [MvPolynomial.coeff_C]; split_ifs <;> simp [h]`. Establish `h1' : ∀ a : 𝓞 K, algebraMap (𝓞 K) K a ∈ vRing ν` using `h1`. Establish `h1o : ∀ a : 𝓞 K, algebraMap (𝓞 K) K a ∈ ((vRing w).comap (algebraMap Ω U)).comap (algebraMap K Ω)` using `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective ((residue (((vRing w).comap (algebraMap Ω U)).comap (algebraMap K Ω))).comp ((algebraMap (𝓞 K) K).codRestrict _ h1o))` using `surj_res ν la h1' hpos`. Rewrite using `[algebraicIndependent_iff]`. Introduce `P hP`. Assume the negation of the conclusion as `hne`. Take `⟨P', rfl⟩` from `MvPolynomial.map_surjective _ hsurj P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α, P'.coeff α ∉ la.asIdeal := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hne` to reduce the goal to its premises. Use extensionality with `α`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero, RingHom.comp_apply, residue_eq_zero_iff]`. Conclude with `(mem_max_iff ν _).mpr ((hpos _).mpr (hall α))`. Establish `hw0 : ¬ 0 < w (MvPolynomial.eval₂ ((algebraMap Ω U).comp ((algebraMap K Ω).comp (algebraMap (𝓞 K) K))) (fun j => (u j : U)) P')`. Rewrite using `[h0]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hα (h α)`. Set `ψ : 𝓞 K →+* vRing w` to `((algebraMap Ω U).comp ((algebraMap K Ω).comp (algebraMap (𝓞 K) K))).codRestrict (vRing w) h1`. Set `y : vRing w` to `MvPolynomial.eval₂ ψ u P'`. Establish `hy : (y : U) = MvPolynomial.eval₂ ((algebraMap Ω U).comp ((algebraMap K Ω).comp (algebraMap (𝓞 K) K))) (fun j => (u j : U)) P'` using `MvPolynomial.eval₂_comp_left (vRing w).subtype ψ u P'`. Establish `hres : residue (vRing w) y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `MvPolynomial.eval₂_comp_left (residue (vRing w)) ψ u P'`. Rewrite `hP` using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Use `e.trans (Eq.trans ?_ hP)` and prove the remaining obligations. Use `congr 1`. Rewrite `hres` using `[residue_eq_zero_iff, mem_max_iff, hy]`.
-
-Conclude with `hw0 hres`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_u {K Ω U τ : Type} [Field K] [NumberField K] [Field Ω] [Field U] [Algebra K Ω]
     [Algebra Ω U] (w : AddValuation U (WithTop ℤ)) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))

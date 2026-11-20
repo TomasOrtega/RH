@@ -6,9 +6,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ Λ _ _ N h ψ e e' t t' X Y hψ ht ht' hXY v`. Take `⟨w, rfl⟩ : ∃ w : Fin N → RL p O Λ, (fun i => ψ (w i)) = v` from `⟨fun i => (hψ (v i)).choose, funext fun i => (hψ (v i)).choose_spec⟩`. Establish `hY : Y.map ψ *ᵥ (fun i => ψ (w i)) = fun i => ψ ((Y *ᵥ w) i)`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec ψ Y w i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY, ht, ht', ← hXY w]`. Use function extensionality and compare the values at `j`. Conclude with `(RingHom.map_mulVec (phiInv p O) X (e w) j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isMat_twist : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ) (ψ : RL p O Λ →+* RL p O Λ) (e e' t t' : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf p O)) (X : Matrix (Fin h) (Fin h) (Ainf p O)) (Y : Matrix (Fin N) (Fin N) (RL p O Λ)), Function.Surjective ψ → (∀ w, t (fun i => ψ (w i)) = fun j => phiInv p O (e w j)) → (∀ w, t' (fun i => ψ (w i)) = fun j => phiInv p O (e' w j)) → IsMat e e' X Y → IsMat t t' (X.map (phiInv p O)) (Y.map ψ) := by
   intro p _ O _ _ _ Λ _ _ N h ψ e e' t t' X Y hψ ht ht' hXY v

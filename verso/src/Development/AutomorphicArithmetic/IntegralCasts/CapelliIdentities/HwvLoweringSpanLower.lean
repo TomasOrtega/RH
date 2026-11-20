@@ -17,7 +17,7 @@ noncomputable def UpperTheory.Reformulated.B.Qk30.loweringMonoid.{u_1, u_2} :
       Submonoid.closure {g : Module.End K V | ∃ (c : Fin n), ∃ d < c, g = E c d}
 
 /- English proof (translation)
-Introduce `K V _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk30.aux3.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
@@ -59,13 +59,11 @@ noncomputable def UpperTheory.Reformulated.B.Qk30.hwvLoweringSpan.{u_1, u_2} :
         {x : V | ∃ u ∈ UpperTheory.Reformulated.B.Qk30.loweringMonoid E, ∃ (w : V), UpperTheory.Reformulated.B.Qk30.IsHWV E mu w ∧ x = (u : V → V) w}
 
 /- English proof (translation)
-Introduce `n K V _ _ _ E mu a b hab x hx`. Unfold `UpperTheory.Reformulated.B.Qk30.hwvLoweringSpan at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, hu, w, hw, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨E a b * u, ?_, w, hw, rfl⟩` and prove the remaining obligations. Conclude with `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨a, b, hab, rfl⟩) hu`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower.{u_1, u_2} :
     ∀ {n : ℕ} {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V]

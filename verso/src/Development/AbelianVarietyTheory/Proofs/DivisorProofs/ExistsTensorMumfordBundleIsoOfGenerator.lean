@@ -84,7 +84,7 @@ Both sides reduce to the same expression.
 theorem finFourEquivSubsetsFinTwo_down_eq (k : Fin 4) : (e4 k).down = (![{0, 1}, {0}, {1}, ∅] : Fin 4 → Finset (Fin 2)) k := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mumfordSign_finFourEquivSubsetsFinTwo (k : Fin 4) : Oε k = (-1) ^ (2 - (e4 k).down.card) := by
   fin_cases k <;> decide
@@ -94,7 +94,7 @@ end GlobalTheory.Mum.LamBridge
 namespace GlobalTheory.Mum.LamBridge
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, comp_psum]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [x2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_psum {S : Scheme.{0}} {B T : Over S} [GrpObj B] [IsCommMonObj B] (u v : T ⟶ B) (I : Finset (Fin 2)) :
     (lift u v).left ≫ (psum B (x2 B) I).left = (psum B ![u, v] I).left := by
@@ -104,9 +104,7 @@ theorem lift_psum {S : Scheme.{0}} {B T : Over S} [GrpObj B] [IsCommMonObj B] (u
   fin_cases k <;> simp [x2]
 
 /- English proof (translation)
-Rewrite using `[lift_psum]`. Use `fin_cases k`. Conclude with `congrArg Over.Hom.left (GlobalTheory.MumFam.psum_pair_01 B u v).symm`. Conclude with `congrArg Over.Hom.left (GlobalTheory.MumFam.psum_pair_0 B u v).symm`. Conclude with `congrArg Over.Hom.left (GlobalTheory.MumFam.psum_pair_1 B u v).symm`.
-
-Conclude with `congrArg Over.Hom.left (GlobalTheory.MumFam.psum_pair_e B u v).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mumfordBundleFourPoints_eq_lift_comp_partialSum {S : Scheme.{0}} {B T : Over S} [GrpObj B] [IsCommMonObj B] (u v : T ⟶ B) (k : Fin 4) :
     lamPts u v k = (lift u v).left ≫ (psum B (x2 B) (e4 k).down).left := by
@@ -122,26 +120,24 @@ end GlobalTheory.Mum.LamBridge
 namespace GlobalTheory.Mum.LamBridge
 
 /- English proof (translation)
-Rewrite using `[← finFourEquivSubsetsFinTwo_down_eq, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finFourEquivSubsetsFinTwo_symm_apply (I : ULift.{0} (Finset (Fin 2))) :
     (![{0, 1}, {0}, {1}, ∅] : Fin 4 → Finset (Fin 2)) (e4.symm I) = I.down := by
   rw [← finFourEquivSubsetsFinTwo_down_eq, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `S₀ S B₀ _ _ B _ _ L₀ M hL₀ hM β₂ wR hw r W Y x φ ε hφ hε`. Set `σ : Fin r × Fin r → (Y.left ⟶ (G2 B₀).left)` to `fun ab => (lift (x ab.1) (x ab.2)).left`. Set `e : Fin r × Fin r → ℤ` to `fun ab => W ab.1 ab.2`. Set `v₁` to `transIso (L := abelian₂ B M) (L' := abelian₂ B₀ L₀) (fun _ : PUnit => β₂) (fun _ => 1) wR σ e`. Establish `hv₁ : v₁.IsGen` using `isGen_transIso (L := abelian₂ B M) (L' := abelian₂ B₀ L₀) (fun _ : PUnit => β₂) (fun _ => 1) hw σ e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cA : ChartPull (LB.LinComb L₀ (tensφ x) (tensε W)) (LB.LinComb (abelian₂ B₀ L₀) σ e) (𝟙 Y.left)` to `cpTrans (cpEquiv L₀ (Equiv.prodCongr (Equiv.refl _) e4) (fun p : (Fin r × Fin r) × ULift.{0} (Finset (Fin 2)) => σ p.1 ≫ (psum B₀ (x2 B₀) p.2.down).left) (fun p => e p.1 * (-1) ^ (2 - p.2.down.card)) _ _ (fun k => mumfordBundleFourPoints_eq_lift_comp_partialSum (x k.1.1) (x k.1.2 …`. Rewrite using `[mumfordSign_finFourEquivSubsetsFinTwo]))`. Use the proof step `(cpFlat L₀ (fun I : ULift.{0} (Finset (Fin 2)) => (psum B₀ (x2 B₀) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) σ e)`. Set `cB : ChartPull ((LB.LinComb M φ ε).pull (𝟙 Y.left)) (LB.LinComb (abelian₂ B M) (fun p : (Fin r × Fin r) × PUnit => σ p.1 ≫ β₂) (fun p => e p.1 * 1)) (𝟙 Y.left)` to `cpTrans (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (LB.LinComb M φ ε) (𝟙 Y.left) (𝟙 Y.left) rfl) (cpTrans (cpEquiv M (Equiv.prodCongr (Equiv.prodPUnit _).symm e4) (fun q : ((Fin r × Fin r) × PUnit) × ULift.{0} (Finset (Fin 2)) => (σ q.1.1 ≫ β₂) ≫ (psum B (x2 B) q …`. Rewrite using `[hε k, mumfordSign_finFourEquivSubsetsFinTwo, _root_.mul_one]))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use the proof step `(cpFlat M (fun I : ULift.{0} (Finset (Fin 2)) => (psum B (x2 B) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) (fun p : (Fin r × Fin r) × PUnit => σ p.1 ≫ β₂) (fun p => e p.1 * 1)))`. Set `c` to `cpDiv cA cB`. Use `⟨cGen c v₁, cGen_isGen c hv₁, fun Z q z J J₀ hJ hJ₀ => ?_⟩` and prove the remaining obligations. Establish `hm : q z ∈ (LB.div ((LB.LinComb M φ ε).pull (𝟙 Y.left)) (LB.LinComb L₀ (tensφ x) (tensε W))).U (fun _ k => J (q ≫ 𝟙 Y.left ≫ φ k), fun k => J₀ (q ≫ tensφ x k))` using `⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => hJ (q ≫ 𝟙 Y.left ≫ φ k), Set.mem_iInter.2 fun k => hJ₀ (q ≫ tensφ x k)⟩`. Use `(gm_res q z _ hm _).trans ((gm_transIso (L := abelian₂ B M) (L' := abelian₂ B₀ L₀) (fun _ : PUnit => β₂) (fun _ => 1) wR σ e q z (c.idx _) (c.le _ hm)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => congrArg (· ^ W a b) ?_` and prove the remaining obligations. Unfold `GlobalTheory.PolDeg.lamVal`. Establish `key : ∀ P P', P = P' → gm (q ≫ σ (a, b)) z _ (wR.s P) = gm (q ≫ σ (a, b)) z _ (wR.s P')`. Introduce and unpack `_ _ rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `key _ _ (Prod.ext (funext fun _ => funext fun I => ?_) (funext fun I => ?_))` and prove the remaining obligations. Use `show J _ = J _`. Use `congr 1`. Use `show q ≫ 𝟙 Y.left ≫ φ ((a, b), e4.symm I) = _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Simplify using `only [finFourEquivSubsetsFinTwo_symm_apply, Category.assoc, Category.id_comp]`. Use `show J₀ _ = J₀ _`. Use `congr 1`. Use `show q ≫ lamPts (x a) (x b) (e4.symm I) = _`.
-
-Rewrite using `[mumfordBundleFourPoints_eq_lift_comp_partialSum, e4.apply_symm_apply, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_tens : ∀ {S₀ S : Scheme.{0}} (B₀ : Over S₀) [GrpObj B₀] [IsCommMonObj B₀] (B : Over S) [GrpObj B] [IsCommMonObj B] (L₀ : LB B₀.left) (M : LB B.left), L₀.IsLB → M.IsLB → ∀ (β₂ : (G2 B₀).left ⟶ (G2 B).left) (wR : LB.Iso (abelian₂ B₀ L₀) ((abelian₂ B M).pull β₂)), wR.IsGen → ∀ {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (Y : Over S₀) (x : Fin r → (Y ⟶ B₀)) (φ : (Fin r × Fin r) × Fin 4 → (Y.left ⟶ B.left)) (ε : (Fin r × Fin r) × Fin 4 → ℤ), (∀ k, φ k = (lift (x k.1.1) (x k.1.2)).left ≫ β₂ ≫ (psum B (x2 B) ((![{0, 1}, {0}, {1}, ∅] : Fin 4 → Finset (Fin 2)) k.2)).left) → (∀ k, ε k = W k.1.1 k.1.2 * Oε k.2) → ∃ v : LB.Iso (LB.LinComb L₀ (tensφ x) (tensε W)) ((LB.LinComb M φ ε).pull (𝟙 Y.left)), v.IsGen ∧ ∀ (Z : Scheme.{0}) (q : Z ⟶ Y.left) (z : Z) (J : (Z ⟶ B.left) → M.ι) (J₀ : (Z ⟶ B₀.left) → L₀.ι), Good M z J → Good L₀ z J₀ → GlobalTheory.Mum.Two.isoVal v q z J J₀ = ∏ a, ∏ b, lamVal wR (q ≫ (lift (x a) (x b)).left) z J J₀ ^ W a b := by
   intro S₀ S B₀ _ _ B _ _ L₀ M hL₀ hM β₂ wR hw r W Y x φ ε hφ hε

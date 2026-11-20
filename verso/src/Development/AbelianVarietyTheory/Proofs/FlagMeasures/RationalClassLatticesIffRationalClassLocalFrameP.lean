@@ -19,12 +19,12 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {T T' : D.host.E} {F : LFlag (VS D) D.R.rS T} {F' : LFlag (VS D) D.R.rS T'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.one_mem _, fun _ => rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem principalPolarisation_exists_unique_section : (1 : GV D) ∈ H0 F F' := ⟨Subgroup.one_mem _, fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨Subgroup.mul_mem _ hg.1 hh.1, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show g (h (frame F a)) = frame F a`. Rewrite using `[hh.2.1 a, hg.2.1 a]`. Use `show g (h (frame F' a)) = frame F' a`. Rewrite using `[hh.2.2 a, hg.2.2 a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_isometriesFixingBothFrames {g h : GV D} (hg : g ∈ H0 F F') (hh : h ∈ H0 F F') : g * h ∈ H0 F F' := by
   refine ⟨Subgroup.mul_mem _ hg.1 hh.1, fun a => ?_, fun a => ?_⟩
@@ -34,7 +34,7 @@ theorem mul_mem_isometriesFixingBothFrames {g h : GV D} (hg : g ∈ H0 F F') (hh
     rw [hh.2.2 a, hg.2.2 a]
 
 /- English proof (translation)
-Use `⟨Subgroup.inv_mem _ hh.1, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show h.symm (frame F a) = frame F a`. Rewrite using `[LinearEquiv.symm_apply_eq, hh.2.1 a]`. Use `show h.symm (frame F' a) = frame F' a`. Rewrite using `[LinearEquiv.symm_apply_eq, hh.2.2 a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_isometriesFixingBothFrames {h : GV D} (hh : h ∈ H0 F F') : h⁻¹ ∈ H0 F F' := by
   refine ⟨Subgroup.inv_mem _ hh.1, fun a => ?_, fun a => ?_⟩
@@ -44,12 +44,12 @@ theorem inv_mem_isometriesFixingBothFrames {h : GV D} (hh : h ∈ H0 F F') : h�
     rw [LinearEquiv.symm_apply_eq, hh.2.2 a]
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem ext_one (p : PlF D) : Ext p (1 : GV D) 1 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `x` and use `by show g' (h' (baseChange₂ D p x)) = baseChange₂ D p (g (h x)) rw [hh x, hg (h x)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_mul {p : PlF D} {g h : GV D} {g' h' : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p}
     (hg : Ext p g g') (hh : Ext p h h') : Ext p (g * h) (g' * h') := fun x => by
@@ -57,7 +57,7 @@ theorem ext_mul {p : PlF D} {g h : GV D} {g' h' : Vp D p ≃ₗ[(D.s.atP p).Ep] 
   rw [hh x, hg (h x)]
 
 /- English proof (translation)
-Introduce `x` and use `by show g'.symm (baseChange₂ D p x) = baseChange₂ D p (g.symm x) rw [LinearEquiv.symm_apply_eq, hg, LinearEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_inv {p : PlF D} {g : GV D} {g' : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p}
     (hg : Ext p g g') : Ext p g⁻¹ g'⁻¹ := fun x => by
@@ -70,35 +70,33 @@ open GlobalTheory.Unfold.RatCls in
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hZ hG Z FP hB hR`. Establish `hact : ∀ p, ∃ act : MulAction (FP p).UW0 (LocNG.Datum (FP p)), (∀ (g : (FP p).UW0) d d', LocNG.Datum.Moves g.1 d d' ↔ act.smul g d = d') ∧ ∀ d (g : (FP p).UW0), g.1 ∈ LocNG.Datum.Stab d ↔ act.smul g d = d`. Introduce `p`. Use `GlobalTheory.T.exists_complementUnitary_mulAction_localInnerDatum (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) ?_ (hR p)` and prove the remaining obligations. Rewrite using `[finrank_Vp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Use `show D.R.k + D.R.m - 1 = D.R.k + 2 * (D.R.m / 2 - 1) + 1`. Use linear arithmetic over natural numbers and integers. Use `choose act hmv _ using hact`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hu, hw, -, hlift⟩` from `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hZ hG Z FP hB hR`. Establish `hdict` using `GlobalTheory.T.globalInnerDatum_eq_iff_local_data_eq D X Y u u' F F' w hZ hG Z FP hB hR`. Establish `rm_fun : ∀ h ∈ H0 F F', ∀ y y₁ y₂ : Dat Z FP, RMoves h y y₁ → RMoves h y y₂ → y₁ = y₂`. Introduce `h hh y y₁ y₂ r₁ r₂`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, e₁, m₁⟩` from `r₁ p`. Take `⟨g₂, e₂, m₂⟩` from `r₂ p`. Take `rfl : g₁ = g₂` from `(hu h p).unique e₁ e₂`. Establish `hm` using `hw h hh p g₁ e₁`. Conclude with `((hmv p ⟨g₁, hm⟩ _ _).1 m₁).symm.trans ((hmv p ⟨g₁, hm⟩ _ _).1 m₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `rm_one : ∀ y : Dat Z FP, RMoves (1 : GV D) y y`. Introduce `y p`. Use `⟨1, ext_one p, (hmv p 1 _ _).2 ?_⟩` and prove the remaining obligations. Use `letI := act p`. Conclude with `one_smul _ _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `rm_mul : ∀ h₁ ∈ H0 F F', ∀ h₂ ∈ H0 F F', ∀ y y' y'' : Dat Z FP, RMoves h₁ y y' → RMoves h₂ y' y'' → RMoves (h₂ * h₁) y y''`. Introduce `h₁ hh₁ h₂ hh₂ y y' y'' r₁ r₂ p`. Take `⟨g₁, e₁, m₁⟩` from `r₁ p`. Take `⟨g₂, e₂, m₂⟩` from `r₂ p`. Set `a₁ : (FP p).UW0` to `⟨g₁, hw h₁ hh₁ p g₁ e₁⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `a₂ : (FP p).UW0` to `⟨g₂, hw h₂ hh₂ p g₂ e₂⟩`. Use `⟨g₂ * g₁, ext_mul e₂ e₁, (hmv p (a₂ * a₁) _ _).2 ?_⟩` and prove the remaining obligations. Use `letI := act p`. Establish `f₁ : a₁ • y p = y' p` using `(hmv p a₁ _ _).1 m₁`. Establish `f₂ : a₂ • y' p = y'' p` using `(hmv p a₂ _ _).1 m₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show (a₂ * a₁) • y p = y'' p`. Rewrite using `[mul_smul, f₁, f₂]`. Establish `rm_inv : ∀ h ∈ H0 F F', ∀ y y' : Dat Z FP, RMoves h y y' → RMoves h⁻¹ y' y`. Introduce `h hh y y' r p`. Take `⟨g, e, m⟩` from `r p`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `a : (FP p).UW0` to `⟨g, hw h hh p g e⟩`. Use `⟨g⁻¹, ext_inv e, (hmv p a⁻¹ _ _).2 ?_⟩` and prove the remaining obligations. Use `letI := act p`. Establish `f : a • y p = y' p` using `(hmv p a _ _).1 m`. Use `show a⁻¹ • y' p = y p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_smul_eq_iff, f]`. Establish `conj : ∀ h ∈ H0 F F', ∀ y y' : Dat Z FP, RMoves h y y' → ∀ k ∈ stabY F F' y, h * k * h⁻¹ ∈ stabY F F' y'`. Introduce `h hh y y' hm k hk`. Use `⟨mul_mem_isometriesFixingBothFrames (mul_mem_isometriesFixingBothFrames hh hk.1) (inv_mem_isometriesFixingBothFrames hh), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `rm_mul _ (mul_mem_isometriesFixingBothFrames hk.1 (inv_mem_isometriesFixingBothFrames hh)) h hh _ _ _ (rm_mul _ (inv_mem_isometriesFixingBothFrames hh) k hk.1 _ _ _ (rm_inv h hh y y' hm) hk.2) hm`. Use `⟨⟨fun y => ⟨1, principalPolarisation_exists_unique_section, rm_one y⟩, fun ⟨h, hh, hm⟩ => ⟨h⁻¹, inv_mem_isometriesFixingBothFrames hh, rm_inv h hh _ _ hm⟩, fun ⟨h₁, hh₁, m₁⟩ ⟨h₂, hh₂, m₂⟩ => ⟨h₂ * h₁, mul_mem_isometriesFixingBothFrames hh₂ hh₁, rm_mul h₁ hh₁ h₂ hh₂ _ _ _ m₁ m₂⟩⟩, …` and prove the remaining obligations. Introduce and unpack `y y' ⟨h, hh, hm⟩`. Establish `e : stabY F F' y' = (MulAut.conj h) '' stabY F F' y`. Use extensionality with `k`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hk`. Use `⟨h⁻¹ * k * h⁻¹⁻¹, conj h⁻¹ (inv_mem_isometriesFixingBothFrames hh) y' y (rm_inv h hh y y' hm) k hk, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `conj h hh y y' hm k hk`. Rewrite using `[e, (MulAut.conj h).injective.encard_image]`. Introduce `Λ₁ Λ₂ y₁ y₂ h₁ h₂`. Establish `key : ∀ h ∈ H0 F F', ∀ (Λ Λ' : LV D) (y y' : Dat Z FP), LocOver Λ y → LocOver Λ' y' → (gdat F F' (Formalism.HermitianLatticesTheory.gmap h Λ) = gdat F F' Λ' ↔ RMoves h y y')`. Introduce `h hh Λ Λ' y y' hl hl'`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Take `⟨y'', hl'', hm''⟩` from `hlift h hh Λ y hl`. Rewrite using `[hdict _ _ y'' y' hl'' hl']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `hm''`.
-
-Introduce `hm`. Conclude with `rm_fun h hh y y'' y' hm'' hm`. Use `⟨⟨fun ⟨h, hh, he⟩ => ⟨h, hh, (key h hh _ _ _ _ h₁ h₂).1 he⟩, fun ⟨h, hh, hm⟩ => ⟨h, hh, (key h hh _ _ _ _ h₁ h₂).2 hm⟩⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `h`. Conclude with `⟨fun ⟨hh, he⟩ => ⟨hh, (key h hh _ _ _ _ h₁ h₁).1 he⟩, fun ⟨hh, hm⟩ => ⟨hh, (key h hh _ _ _ _ h₁ h₁).2 hm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unfold.ratCls_agree : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → Equivalence (GRel (Z := Z) (FP := FP) F F') ∧ (∀ y y' : Dat Z FP, GRel F F' y y' → (stabY F F' y).encard = (stabY F F' y').encard) ∧ ∀ (Λ₁ Λ₂ : LV D) (y₁ y₂ : Dat Z FP), LocOver Λ₁ y₁ → LocOver Λ₂ y₂ → (LRel F F' Λ₁ Λ₂ ↔ GRel F F' y₁ y₂) ∧ stabL F F' Λ₁ = stabY F F' y₁ := by
   intro D X Y u u' F F' w hZ hG Z FP hB hR

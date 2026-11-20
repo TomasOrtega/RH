@@ -11,11 +11,11 @@ variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 omit [NumberField E] [Fintype I] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Establish `hj` using `InfinitePlace.mk_eq_iff.mp hij`. Take `⟨k, -, hk⟩` from `h (φ j)`. Establish `e1 : i = k` using `hk i (hj.elim (fun e => Or.inl e.symm) (fun e => Or.inr e.symm))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : j = k` using `hk j (Or.inl rfl)`. Rewrite using `[e1, e2]`. Introduce `w`. Take `⟨i, hi, -⟩` from `h w.embedding`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show InfinitePlace.mk (φ i) = w`. Break down `hi with hi | hi` into its components or cases. Rewrite using `[← hi, InfinitePlace.mk_embedding]`. Rewrite using `[← InfinitePlace.mk_conjugate_eq (φ i), ← hi, InfinitePlace.mk_embedding]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_mk {φ : I → E →+* ℂ} (h : IsCMType φ) :
     Function.Bijective (fun i => InfinitePlace.mk (φ i)) := by
@@ -35,7 +35,7 @@ theorem bijective_mk {φ : I → E →+* ℂ} (h : IsCMType φ) :
     · rw [← InfinitePlace.mk_conjugate_eq (φ i), ← hi, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsTotallyComplex.mult_eq, InfinitePlace.apply]`. Use `_ = _ := by rw [InfinitePlace.prod_eq_abs_norm]; push_cast; rfl`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_norm_sq [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (x : E) :
     ∏ i, ‖φ i x‖ ^ 2 = |(Algebra.norm ℚ x : ℝ)| := by
@@ -45,7 +45,7 @@ theorem prod_norm_sq [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (x
     _ = _ := by rw [InfinitePlace.prod_eq_abs_norm]; push_cast; rfl
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ih, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_cpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f j) (z : ℂ) :
     ∏ j ∈ t, ((f j : ℝ) : ℂ) ^ z = ((∏ j ∈ t, f j : ℝ) : ℂ) ^ z := by
@@ -57,19 +57,17 @@ theorem prod_cpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f
       Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j)]
 
 /- English proof (translation)
-Use `set x := algebraMap (OF E) E (u : OF E) with hxdef`. Establish `hxmem : x ∈ maximalRealSubfield E`. Rewrite using `[hxdef, IsScalarTower.algebraMap_apply (OF E) (maximalRealSubfield E) E]`. Conclude with `(algebraMap (OF E) (maximalRealSubfield E) u).2`. Establish `hreal : ∀ i, starRingEnd ℂ (φ i x) = φ i x` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[starRingEnd_apply]`. Conclude with `(mem_maximalRealSubfield_iff x).mp hxmem (φ i)`. Establish `hx0 : x ≠ 0` using `(u.isUnit.map (algebraMap (OF E) E)).ne_zero`. Establish `hN : |(Algebra.norm ℚ x : ℝ)| = 1`. Establish `hv` using `NumberField.isUnit_iff_norm.mp (u.isUnit.map (algebraMap (OF E) (𝓞 E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((algebraMap (OF E) (𝓞 E) u : 𝓞 E) : E) = x` using `(IsScalarTower.algebraMap_apply (OF E) (𝓞 E) E u).symm`. Rewrite `hv` using `[RingOfIntegers.coe_norm, hc]`. Conclude with `hv` after adjusting the coercions. Establish `hprod : ∏ i, ‖φ i x‖ = 1`. Establish `hsq : (∏ i, ‖φ i x‖) ^ 2 = 1` using `by rw [← Finset.prod_pow, prod_norm_sq h x, hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (Finset.prod_nonneg fun i _ => norm_nonneg _) two_ne_zero).mp hsq`. Establish `hfac : ∀ i, (φ i x)⁻¹ ^ (2 * s + κ i) * starRingEnd ℂ (φ i x) ^ κ i * ((‖φ i x‖ : ℝ) : ℂ) ^ (-2 * σ) = ((‖φ i x‖ : ℝ) : ℂ) ^ (-2 * ((s : ℂ) + σ))` using `fun i => by`. Establish `hr : φ i x ≠ 0` using `(map_ne_zero (φ i)).mpr hx0`. Establish `ha : ((‖φ i x‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr hr)`. Establish `hsq : ((‖φ i x‖ : ℝ) : ℂ) ^ 2 = φ i x ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm` using `Complex.mul_conj (φ i x)`. Rewrite `hm` using `[hreal, Complex.normSq_eq_norm_sq]`. Rewrite using `[sq (φ i x), hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show -2 * ((s : ℂ) + σ) = -((2 * s : ℕ) : ℂ) + -2 * σ by push_cast; ring, Complex.cpow_add _ _ ha, Complex.cpow_neg, Complex.cpow_natCast, hreal]`. Use `congr 1`. Rewrite using `[pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ hr, one_pow, mul_one, inv_pow, pow_mul, pow_mul, hsq]`. Simplify using `only [term]`. Rewrite using `[Finset.prod_congr rfl fun i _ => hfac i, prod_cpow _ _ (fun i => norm_nonneg _), hprod]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem term_unit [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (u : (OF E)ˣ) :
     term φ (2 * s) κ σ (algebraMap (OF E) E u) = 1 := by
@@ -109,9 +107,9 @@ theorem term_unit [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : 
   simp
 
 /- English proof (translation)
-Establish `hpos : ∀ i, 0 < ‖φ i x‖` using `fun i => norm_pos_iff.mpr ((map_ne_zero (φ i)).mpr hx)`. Rewrite using `[← prod_norm_sq h x, ← Real.finsetProd_rpow _ _ (fun i _ => by positivity)]`. Simplify using `only [term, norm_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `ha` using `hpos i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, norm_inv, Complex.norm_conj, Complex.norm_cpow_eq_rpow_re_of_pos ha, inv_pow, ← Real.rpow_natCast _ (2 * s + κ i), ← Real.rpow_natCast _ (κ i), ← Real.rpow_neg ha.le, ← Real.rpow_add ha, ← Real.rpow_add ha, ← Real.rpow_natCast _ 2, ← Real. …`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_term [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) {x : E} (hx : x ≠ 0) :
     ‖term φ (2 * s) κ σ x‖ = |(Algebra.norm ℚ x : ℝ)| ^ (-((s : ℝ) + σ.re)) := by
@@ -129,7 +127,7 @@ theorem norm_term [IsCMField E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : 
   ring
 
 /- English proof (translation)
-Simplify using `only [term, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, mul_inv, norm_mul, mul_pow]`. Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem term_mul' (φ : I → E →+* ℂ) (k : ℕ) (κ : I → ℕ) (σ : ℂ) (y x : E) :
     term φ k κ σ (y * x) = term φ k κ σ y * term φ k κ σ x := by
@@ -140,7 +138,7 @@ private theorem term_mul' (φ : I → E →+* ℂ) (k : ℕ) (κ : I → ℕ) (�
   ring
 
 /- English proof (translation)
-Use `⟨fun u => ?_, fun hx => norm_term h s κ σ hx⟩` and prove the remaining obligations. Rewrite using `[term_mul', term_unit h s κ σ u, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_unit_and_norm (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)
     (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (x : E) :

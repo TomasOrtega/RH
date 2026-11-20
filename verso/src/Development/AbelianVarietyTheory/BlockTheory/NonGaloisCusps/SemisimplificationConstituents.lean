@@ -33,7 +33,7 @@ def blockSum {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ : Fin t →
     refine LinearMap.ext fun u => Prod.ext ?_ (funext fun c => ?_) <;> simp [mul_assoc]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun c => ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem blockSum_apply {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ : Fin t → (Γ →* kˣ)) (g : Γ)
     (u : (Fin r → k) × (Fin t → k)) :
@@ -43,7 +43,7 @@ theorem blockSum_apply {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ :
   · rfl
 
 /- English proof (translation)
-Use `⟨h, 1, fun _ => ⊤, LinearEquiv.refl k V, fun _ _ _ _ => trivial, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Conclude with `⟨iSupIndep_subsingleton _, by simp⟩`. Introduce `j g v _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isSemisimplificationOf_self {V : Type} [AddCommGroup V] [Module k V] (ρ : Representation k Γ V)
     (h : IsSS ρ) : IsSemisimplificationOf ρ ρ := by

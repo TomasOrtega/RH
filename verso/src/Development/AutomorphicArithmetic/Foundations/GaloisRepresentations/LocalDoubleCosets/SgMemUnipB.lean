@@ -27,14 +27,14 @@ def indF (B : Subgroup G) (χ : B →* ℂˣ) : Submodule ℂ (G → ℂ) where
     exact ⟨fun b g => by simp [h b g, mul_left_comm], K, hK, fun k hk g => by simp [hf k hk g]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_indF {B : Subgroup G} {χ : B →* ℂˣ} {f : G → ℂ} :
     f ∈ indF B χ ↔ (∀ (b : B) (g : G), f (b * g) = (χ b : ℂ) * f g) ∧
       ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => by simp, ⊤, by simp, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : (fun _ => 1 : G → ℂ) ∈ indF ⊤ 1 := ⟨fun _ _ => by simp, ⊤, by simp, fun _ _ _ => rfl⟩
 
@@ -56,7 +56,7 @@ theorem sg_val (σ : E ≃+* E) (g : GL (Fin n) E) (i j : Fin n) :
     (sg σ g : Matrix (Fin n) (Fin n) E) i j = σ ((g : Matrix (Fin n) (Fin n) E) i j) := rfl
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_unipB]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[sg_val, hg.1 i j hij, map_zero]`. Rewrite using `[sg_val, hg.2 i, map_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_mem_unipB (σ : E ≃+* E) {g : GL (Fin n) E} (hg : g ∈ unipB E (Fin n)) : sg σ g ∈ unipB E (Fin n) := by
   rw [mem_unipB] at hg ⊢
@@ -68,7 +68,7 @@ def Semi (σ : E ≃+* E) (π : Representation ℂ (GL (Fin n) E) V) (A : V →�
   ∀ g v, A (π g v) = π (sg σ g) (A v)
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (π : Representation ℂ (GL (Fin n) E) V) : Semi (RingEquiv.refl E) π LinearMap.id := fun _ _ => rfl
 
@@ -89,7 +89,7 @@ theorem jacA_mk {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A :
 def Inv (σ : E ≃+* E) (ω : Eˣ →* ℂˣ) : Prop := ∀ x : Eˣ, ω (Units.map (σ : E →* E) x) = ω x
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (σ : E ≃+* E) : Inv σ 1 := fun _ => rfl
 

@@ -15,29 +15,27 @@ noncomputable def UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.StatOntoS
         Submodule.span O (Set.range (⇑ρ : G → Matrix n n O)) = ⊤
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `set A : Subalgebra k (Module.End k (n → k)) := (Algebra.adjoin k (Set.range ρ)).map (Matrix.toLinAlgEquiv' (R := k) (n := n)).toAlgHom with hA`. Establish `hmem : ∀ g, Matrix.toLin' (ρ g) ∈ A` using `fun g => ⟨ρ g, Algebra.subset_adjoin ⟨g, rfl⟩, rfl⟩`. Establish `hsm : ∀ (a : A) (v : n → k), a • v = (a : Module.End k (n → k)) v` using `fun _ _ => rfl`. Establish `hk : ∀ (c : k) (v : n → k), (algebraMap k A c) • v = c • v` using `fun c v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm]`. Simplify using the standard rewrite rules. Use `haveI : IsSemisimpleModule A (n → k) := by`. Rewrite using `[isSemisimpleModule_iff]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `W`. Set `W' : Submodule k (n → k)` to `{ carrier := W add_mem' := fun ha hb => W.add_mem ha hb zero_mem' := W.zero_mem smul_mem' := fun c v hv => by`. Rewrite using `[← hk]`. Conclude with `W.smul_mem _ hv }`. Establish `hW` using `h1 W' (fun g v hv => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `W.smul_mem (⟨_, hmem g⟩ : A) hv` as an intermediate fact. Rewrite `this` using `[hsm]`. Conclude with `this)`. Break down `hW with hW | hW` into its components or cases. Establish `: W = ⊥`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `v`. Establish `: v ∈ W' ↔ v ∈ (⊥ : Submodule k (n → k))` using `by rw [hW]`. Conclude with `this`. Conclude with `⟨⊤, this ▸ isCompl_bot_top⟩`. Establish `: W = ⊤`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `v`. Establish `: v ∈ W' ↔ v ∈ (⊤ : Submodule k (n → k))` using `by rw [hW]`. Conclude with `this`. Conclude with `⟨⊥, this ▸ isCompl_top_bot⟩`. Establish `hsc : ∀ φ : Module.End A (n → k), ∃ c : k, ∀ v, φ v = c • v`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `φ`. Set `ψ : Module.End k (n → k)` to `{ toFun := φ map_add' := φ.map_add map_smul' := fun c v => by`. Rewrite using `[← hk, φ.map_smul, hk]`. Use `rfl }`. Take `⟨c, hc⟩` from `h2 (LinearMap.toMatrix' ψ) (fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `φ.map_smul (⟨_, hmem g⟩ : A) v)`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ψ = Matrix.toLin' (c • (1 : Matrix n n k))`. Rewrite using `[← hc, Matrix.toLin'_toMatrix']`. Establish `h4 : φ v = ψ v` using `rfl`. Rewrite using `[h4, h3]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce `M _`. Set `f : Module.End (Module.End A (n → k)) (n → k)` to `{ toFun := Matrix.toLin' M map_add' := (Matrix.toLin' M).map_add map_smul' := fun φ v => by`. Take `⟨c, hc⟩` from `hsc φ`. Express the relevant statement in the definitionally equal form `Matrix.toLin' M (φ v) = φ (Matrix.toLin' M v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, hc, map_smul] }`. Take `⟨r, hr⟩` from `jacobson_density f (Finset.univ.image fun i : n => (Pi.single i 1 : n → k))`. Take `⟨r, N, hN, rfl⟩` from `r`. Establish `: M = N`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
-
-Apply `(Pi.basisFun k n).ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `hr _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Conclude with `this ▸ hN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.adjoin_top {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n]
     {G : Type} (ρ : G → Matrix n n k) (h : UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.AbsIrr ρ) :
@@ -115,25 +113,23 @@ private theorem UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.adjoin_top 
   exact this ▸ hN
 
 /- English proof (translation)
-Introduce `O _ _ n _ _ G _ ρ h`. Establish `h1` using `UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.adjoin_top _ h`. Set `π : Matrix n n O →+* Matrix n n (IsLocalRing.ResidueField O)` to `(IsLocalRing.residue O).mapMatrix`. Establish `h2 : Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => π (ρ g)) = ⊤`. Rewrite using `[← Algebra.adjoin_eq_span_of_subset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Subalgebra.toSubmodule h1).trans rfl`. Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `: x ∈ MonoidHom.mrange (π.toMonoidHom.comp ρ)` using `(Submonoid.closure_le (S := MonoidHom.mrange (π.toMonoidHom.comp ρ))).mpr (by rintro _ ⟨g, rfl⟩; exact ⟨g, rfl⟩) hx`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ X : Matrix n n (IsLocalRing.ResidueField O), ∃ Y ∈ Submodule.span O (Set.range (ρ : G → Matrix n n O)), π Y = X`. Introduce `X`. Establish `hX : X ∈ Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => π (ρ g))` using `h2 ▸ Submodule.mem_top`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, rfl⟩` from `hx`. Conclude with `⟨ρ g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, Submodule.add_mem _ ha hb, map_add _ _ _⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `IsLocalRing.residue_surjective c`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨d • a, Submodule.smul_mem _ _ ha, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[π]`. Rewrite using `[eq_top_iff]`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal O) Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `M _`. Take `⟨Y, hY, hYM⟩` from `h3 (π M)`. Establish `h4 : M - Y ∈ IsLocalRing.maximalIdeal O • (⊤ : Submodule O (Matrix n n O))`. Rewrite using `[Matrix.matrix_eq_sum_single (M - Y)]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (M - Y) i j ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Establish `h6 : π (M - Y) = 0` using `by rw [map_sub, hYM, sub_self]`. Conclude with `congrFun (congrFun h6 i) j`. Establish `h7 : Matrix.single i j ((M - Y) i j) = (M - Y) i j • Matrix.single i j (1 : O)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h7]`. Conclude with `Submodule.smul_mem_smul h5 Submodule.mem_top`. Establish `h8 : M = Y + (M - Y)` using `by abel`. Rewrite using `[h8]`.
-
-Conclude with `Submodule.add_mem_sup hY h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.ontoSpan :
     UpperTheory.Reformulated.B.AbsolutelyIrreducibleSpan.StatOntoSpan := by

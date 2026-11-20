@@ -14,20 +14,20 @@ noncomputable section
 namespace GlobalTheory.ShFam.Hor.LogCh
 
 /- English proof (translation)
-Rewrite using `[CxPts.ev_eq h, CxPts.evHom_eq_evalPt h, TangentOrigin.valAt'_eq_evalPt _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_eq_ev {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {U : Y.Opens}
     {x : CxPts p σ} (h : x ∈ CxPts.ptsIn p σ U) (f : Γ(Y, U)) : valAt' x.1 U f = CxPts.ev p σ U f x := by
   rw [CxPts.ev_eq h, CxPts.evHom_eq_evalPt h, TangentOrigin.valAt'_eq_evalPt _ _ h]
 
 /- English proof (translation)
-Introduce `k _ Y p n σ c ψ hψ hψs`. Use `⟨fun j V _ _ _ B x hB hx hm => ?_, fun U' f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hs : ∀ b ∈ B, x b ∈ c.e.source ∧ c.e (x b) ∈ ψ.source` using `fun b hb => by`. Simplify `hm hb` using `[OpenPartialHomeomorph.trans_source]`. Establish `hco : ∀ a, DifferentiableOn ℂ (fun b => c.e (x b) a) B` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `((hx c.U (c.x a)).2.mono fun b hb => ⟨hb, c.source_subset (hs b hb).1⟩).congr fun b hb => ?_` and prove the remaining obligations. Rewrite using `[c.apply_eq _ (hs b hb).1, valAt'_eq_ev (c.source_subset (hs b hb).1)]`. Establish `hce : DifferentiableOn ℂ (fun b => c.e (x b)) B` using `differentiableOn_euclidean.2 hco`. Establish `h2 : DifferentiableOn ℂ (fun b => ψ (c.e (x b))) B` using `hψ.comp hce fun b hb => (hs b hb).2`. Conclude with `differentiableOn_pi.1 h2 j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(c.e.trans ψ).continuousOn_symm.isOpen_inter_preimage (c.e.trans ψ).open_target (CxPts.isOpen_ptsIn U')`. Establish `hm : ∀ z ∈ {z ∈ (c.e.trans ψ).target | ⊤ ≤ ((c.e.trans ψ).symm z).1 ⁻¹ᵁ U'}, z ∈ ψ.target ∧ ψ.symm z ∈ c.e.target ∧ c.e.symm (ψ.symm z) ∈ CxPts.ptsIn p σ U'` using `fun z hz => by`. Establish `h1` using `hz.1`. Simplify using `only [OpenPartialHomeomorph.trans_target, Set.mem_inter_iff, Set.mem_preimage] at h1`. Conclude with `⟨h1.1, h1.2, hz.2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : DifferentiableOn ℂ (CxPts.ev p σ U' f ∘ c.e.symm ∘ ψ.symm) {z ∈ (c.e.trans ψ).target | ⊤ ≤ ((c.e.trans ψ).symm z).1 ⁻¹ᵁ U'}` using `(c.holo U' f).comp (hψs.mono fun z hz => (hm z hz).1) fun z hz => ⟨(hm z hz).2.1, (hm z hz).2.2⟩`. Use `h2.congr fun z hz => ?_` and prove the remaining obligations. Conclude with `valAt'_eq_ev (hm z hz).2.2 f`.
+A detailed English derivation is pending.
 -/
 theorem chart_change : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (n : ℕ) (σ : k →+* ℂ) (c : AlgChart p σ n) (ψ : OpenPartialHomeomorph (ReciprocityTheory.L2DbarEstimates.V n) (Fin n → ℂ)), DifferentiableOn ℂ ψ ψ.source → DifferentiableOn ℂ ψ.symm ψ.target → (∀ j, HolAlong (c.e.trans ψ).source fun x => (c.e.trans ψ) x j) ∧ IsHolTo (c.e.trans ψ).target (fun z => ((c.e.trans ψ).symm z).1) := by
   intro k _ Y p n σ c ψ hψ hψs

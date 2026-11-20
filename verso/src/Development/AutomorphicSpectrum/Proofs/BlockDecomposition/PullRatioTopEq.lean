@@ -18,7 +18,7 @@ open GlobalTheory
 namespace GlobalTheory.CompanionTheory.MPDict.Unique
 
 /- English proof (translation)
-Rewrite `e` using `[valR, valR, dif_pos h, dif_pos h']`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRatio_top_eq {N : ℕ} {x x' : Sp ℂ ⟶ PSpace ℤ N} (i j : Fin (N + 1))
     (h : ⊤ ≤ x ⁻¹ᵁ chart ℤ N i) (h' : ⊤ ≤ x' ⁻¹ᵁ chart ℤ N i)
@@ -28,7 +28,7 @@ theorem pullRatio_top_eq {N : ℕ} {x x' : Sp ℂ ⟶ PSpace ℤ N} (i j : Fin (
   exact (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 e
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ prB n k) ⁻¹ᵁ chart ℤ (n k) i` using `h`. Rewrite using `[valR, valR, dif_pos h, dif_pos h', pullRatio, ← Scheme.Hom.appLE_comp_appLE x (prB n k) (chart ℤ (n k) i) (blockChart n k i) ⊤ le_rfl h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_comp_prB {m : ℕ} {n : Fin (m + 1) → ℕ} (x : Sp ℂ ⟶ MP ℤ m n) {k : Fin (m + 1)} (i j : Bk n k)
     (h : ⊤ ≤ x ⁻¹ᵁ blockChart n k i) :
@@ -44,11 +44,11 @@ end GlobalTheory.CompanionTheory.MPDict.Unique
 open GlobalTheory.CompanionTheory.MPDict.Unique in
 
 /- English proof (translation)
-Introduce `m n z y y' h h'`. Use `Subtype.ext (GroundTheory.Arith.SchemeCoh.ProjSpace.hom_ext m n _ _ fun k => ?_)` and prove the remaining obligations. Establish `hy : y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (ptChart (y.1 (IsLocalRing.closedPoint ℂ)) k))` using `mem_ptsIn.2 (mem_ptChart _ k)`. Take `⟨i, hi⟩ : ∃ i, y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k i)` from `⟨_, hy⟩`. Establish `hz : z ⟨k, i⟩ ≠ 0` using `((h k i).1).1 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi' : y' ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k i)` using `((h' k i).1).2 hz`. Use `GlobalTheory.ProjSpace.hom_ext ?_ fun t => ⟨⊤, trivial, i, hi, hi', fun j => ?_⟩` and prove the remaining obligations. Establish `s : pr ℤ m n k ≫ PSpace.str ℤ (n k) = mpStr ℤ m n` using `pr_toSpecBase ℤ m n k`. Rewrite using `[Category.assoc, Category.assoc, s, y.2, y'.2]`. Establish `a : ⊤ ≤ y.1 ⁻¹ᵁ blockChart n k i` using `hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a' : ⊤ ≤ y'.1 ⁻¹ᵁ blockChart n k i` using `hi'`. Use `pullRatio_top_eq (x := y.1 ≫ prB n k) (x' := y'.1 ≫ prB n k) i j a a' ?_` and prove the remaining obligations. Rewrite using `[valR_comp_prB y.1 i j a, valR_comp_prB y'.1 i j a']`. Conclude with `((h k i).2 j hi).trans ((h' k i).2 j hi').symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.MPDict.isUnder_unique : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (z : (Σ k, Bk n k) → ℂ)
     (y y' : CxPts (mpStr ℤ m n) σ₀), IsUnder y z → IsUnder y' z → y = y' := by

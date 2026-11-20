@@ -31,11 +31,9 @@ def interSub (S : M →ₗ[ℂ] N) : Subalgebra ℂ (Module.End ℂ M × Module.
     simp [Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Use `set P : Fin n → Fin n → interSub S := fun i j => ⟨(D i j, E i j), fun m => h i j m⟩`. Establish `h1` using `PI.UnitaryGroupMassFormula.DSIC.qdet_map (interSub S).val P u`. Establish `h2` using `PI.UnitaryGroupMassFormula.DSIC.qdet_map (AlgHom.fst ℂ (Module.End ℂ M) (Module.End ℂ N)) (fun a b => (D a b, E a b)) u`. Establish `h3` using `PI.UnitaryGroupMassFormula.DSIC.qdet_map (AlgHom.snd ℂ (Module.End ℂ M) (Module.End ℂ N)) (fun a b => (D a b, E a b)) u`. Establish `hm` using `(Formalism.REAL.qdet P u).2 m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((Formalism.REAL.qdet P u : interSub S) : Module.End ℂ M × Module.End ℂ N) = Formalism.REAL.qdet (fun a b => (D a b, E a b)) u` using `h1`. Rewrite `hm` using `[e]`. Establish `e1 : (Formalism.REAL.qdet (fun a b => (D a b, E a b)) u).1 = Formalism.REAL.qdet D u` using `h2`. Establish `e2 : (Formalism.REAL.qdet (fun a b => (D a b, E a b)) u).2 = Formalism.REAL.qdet E u` using `h3`. Rewrite `hm` using `[e1, e2]`.
-
-Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdet_inter {n : ℕ} (S : M →ₗ[ℂ] N) (D : Fin n → Fin n → Module.End ℂ M) (E : Fin n → Fin n → Module.End ℂ N)
     (h : ∀ i j m, E i j (S m) = S (D i j m)) (u : ℂ) (m : M) :
@@ -60,7 +58,7 @@ section Bridge
 open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Unfold `TR.Eop`. Use `congr 3`. Use function extensionality and compare the values at `w`. Rewrite using `[Subsingleton.elim w v]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Eop_eq (v : InfinitePlace ℚ) (i j : Fin 3) :
     TR.Eop (E := ℚ) (a := 3) v i j = TR.lie ℚ 3 (TR.toL (Matrix.single i j 1)) := by
@@ -71,9 +69,9 @@ theorem Eop_eq (v : InfinitePlace ℚ) (i j : Fin 3) :
   simp
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Fb.coe_lieEq]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Fb.matEq_apply]`. Express the relevant statement in the definitionally equal form `Fb.mixEq ℚ ((Matrix.single i j (1 : TR.Rinf ℚ)) a b) = (Matrix.single i j (1 : mixedEmbedding.mixedSpace ℚ)) a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.single_apply]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieEq_single (i j : Fin 3) :
     Fb.lieEq ℚ 3 (TR.toL (Matrix.single i j 1)) =
@@ -90,7 +88,7 @@ theorem lieEq_single (i j : Fin 3) :
   · exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[lieEq_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem EA_eq (i j : Fin 3) :
     Ad3.EA i j = uAction (UniversalEnvelopingAlgebra.ι ℝ (Fb.lieEq ℚ 3 (TR.toL (Matrix.single i j 1)))) := by
@@ -98,14 +96,14 @@ theorem EA_eq (i j : Fin 3) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[EA_eq, Fb.uAction_ι_smEq, Eop_eq v]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smEq_Eop (v : InfinitePlace ℚ) (i j : Fin 3) (φ : TR.Sm ℚ 3) :
     Fb.smEq ℚ 3 (TR.Eop v i j φ) = Ad3.EA i j (Fb.smEq ℚ 3 φ) := by
   rw [EA_eq, Fb.uAction_ι_smEq, Eop_eq v]
 
 /- English proof (translation)
-Rewrite using `[TR.cap]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cap_eq (v : InfinitePlace ℚ) (u : ℂ) :
     TR.cap (E := ℚ) (a := 3) v u = Formalism.REAL.qdet (TR.Eop (E := ℚ) (a := 3) v) (u + 1) := by
@@ -113,7 +111,7 @@ theorem cap_eq (v : InfinitePlace ℚ) (u : ℂ) :
   norm_num
 
 /- English proof (translation)
-Establish `h : (1 : Matrix (Fin 3) (Fin 3) (TR.Rinf ℚ)) = ∑ i : Fin 3, Matrix.single i i 1`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Fin.sum_univ_three]`. Express the relevant statement in the definitionally equal form `TR.toL 1 = _`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -126,7 +124,7 @@ theorem oneL_eq : TR.oneL ℚ 3 = ∑ i : Fin 3, TR.toL (Matrix.single i i 1) :=
   rfl
 
 /- English proof (translation)
-Rewrite using `[oneL_eq, map_sum]`. Simplify using `only [Eop_eq v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lie_oneL (v : InfinitePlace ℚ) : TR.lie ℚ 3 (TR.oneL ℚ 3) = ∑ i : Fin 3, TR.Eop v i i := by
   rw [oneL_eq, map_sum]
@@ -140,7 +138,7 @@ def incl : V →ₗ[ℂ] archSmooth ℚ 3 where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `x y h` and use `by have h' : x.1 = y.1 := congrArg (fun f : archSmooth ℚ 3 => (f : Ad3.G3 → ℂ)) h exact Subtype.ext h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (incl hV) := fun x y h => by
   have h' : x.1 = y.1 := congrArg (fun f : archSmooth ℚ 3 => (f : Ad3.G3 → ℂ)) h
@@ -155,11 +153,11 @@ Both sides reduce to the same expression.
 theorem incl_DV (i j : Fin 3) (W : V) : incl hV (DV hV i j W) = Ad3.EA i j (incl hV W) := rfl
 
 /- English proof (translation)
-Use `set c : ℂ := (u + (k - 1)) * u * (u - (k - 1))`. Establish `h1 : Formalism.REAL.qdet (DV hV) (u + 1) W = c • W`. Use `incl_injective hV ?_` and prove the remaining obligations. Rewrite using `[← qdet_inter (incl hV) (DV hV) Ad3.EA (fun i j m => (incl_DV hV i j m).symm), map_smul]`. Conclude with `hcap W.1 W.2 u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Formalism.REAL.qdet Ad3.EA (u + 1) (U W) = c • U W`. Rewrite using `[qdet_inter U (DV hV) Ad3.EA (fun i j m => (hU m i j).symm), h1, map_smul]`. Use `(Fb.smEq ℚ 3).injective ?_` and prove the remaining obligations. Rewrite using `[cap_eq, map_smul, LinearEquiv.apply_symm_apply]`. Establish `h3` using `qdet_inter (Fb.smEq ℚ 3).toLinearMap (TR.Eop v) Ad3.EA (fun i j m => (smEq_Eop v i j m).symm) (u + 1) ((Fb.smEq ℚ 3).symm (U W))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h3`. Rewrite using `[← h3, h2]`.
+A detailed English derivation is pending.
 -/
 theorem cap_form (k : ℕ)
     (hcap : ∀ W (hW : W ∈ V) (u : ℂ), Formalism.REAL.qdet Ad3.EA (u + 1) ⟨W, hV.arch W hW⟩ =
@@ -182,11 +180,11 @@ theorem cap_form (k : ℕ)
   rw [← h3, h2]
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace ℚ)` from `inferInstance`. Establish `h1 : ∑ i, DV hV i i W = 0`. Use `incl_injective hV ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_zero]`. Simplify using `only [incl_DV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← LinearMap.sum_apply]`. Conclude with `htr W.1 W.2`. Use `(Fb.smEq ℚ 3).injective ?_` and prove the remaining obligations. Rewrite using `[lie_oneL v, LinearMap.sum_apply, map_sum, map_zero]`. Simplify using `only [smEq_Eop, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_congr rfl fun i _ => hU W i i, ← map_sum]`. Use `map_zero U` and compare the differences between its conclusion and the goal. Conclude with `h1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem trace_form (htr : ∀ W (hW : W ∈ V), (∑ i, Ad3.EA i i) ⟨W, hV.arch W hW⟩ = 0)
     (U : V →ₗ[ℂ] archSmooth ℚ 3) (hU : ∀ (W : V) i j, U ⟨_, hV.lie _ W.2 i j⟩ = Ad3.EA i j (U W)) (W : V) :
@@ -219,9 +217,9 @@ open scoped ValuativeRel
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[evalAt_esymmL, Multiset.map_map, Finset.esymm_map_val]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[monomialChar_apply]`. Simplify using `only [lamS, Function.comp_apply]`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ S) (fun i _ hi => by simp [hi])]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i hi => by simp [hi]`.
+A detailed English derivation is pending.
 -/
 private theorem esymm_eq (z : Fin n → ℂˣ) (r : ℕ) :
     evalAt z (esymmL n r) = ((Finset.univ.val.map z).map fun b : ℂˣ => (b : ℂ)).esymm r := by
@@ -236,9 +234,9 @@ variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Establish `hcs : HasCompactSupport fun x => (minusculeHecke μ r : HeckeAlgebra μ) x * f (g * x)`. Use `HasCompactSupport.intro (isCompact_minusculeSet r) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [minusculeHecke_apply, Set.indicator_of_notMem hx, zero_mul]`. Rewrite using `[integral_eq_smul_finsum_coset μ (integralOpen F n) (isCompact_integralGL F n) hcs (fun x k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ (minusculeHecke μ r) k hk x).2, ← mul_assoc, hf _ k hk]),`. Use the proof step `Complex.real_smul, evalAt_satakeTransform_minusculeHecke z hr, mul_assoc, mul_assoc] at h`. Establish `h2` using `mul_left_cancel₀ hK h`. Rewrite `h2` using `[← mul_assoc]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_of_integral (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) {r : ℕ} (hr : r ≤ n) (g : GL (Fin n) F)
@@ -271,7 +269,7 @@ private theorem psi_eq (w : Ad3.Pl) (x : Ad3.Qv w) :
     (Circle.coeHom.compAddChar (localAdelicChar ℚ w)) x = UpperTheory.V.Af.Smo.psiL w x := rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [psi_eq] exact hg.1 x ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hpsi0 (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.Af.Smo.psiL w)) :
     ∀ x ∈ 𝒪[Ad3.Qv w], (Circle.coeHom.compAddChar (localAdelicChar ℚ w)) x = 1 := fun x hx => by
@@ -279,7 +277,7 @@ private theorem hpsi0 (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperThe
   exact hg.1 x ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)
 
 /- English proof (translation)
-Establish `hK` using `(UpperTheory.V.Af.Smo.sphDict ℚ 3 w).1`. Rewrite `hk` using `[← hK]`. Conclude with `Spherical.sphericalWhittaker_mul_right (hpsi0 w hg) _ x hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph_inv (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.Af.Smo.psiL w)) (ν : (Ad3.Qv w)ˣ →* ℂˣ)
     (x : GL (Fin 3) (Ad3.Qv w)) {k : GL (Fin 3) (Ad3.Qv w)} (hk : k ∈ GlobalTheory.LFun.KGL w 3) :
@@ -289,11 +287,11 @@ theorem sph_inv (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.
   exact Spherical.sphericalWhittaker_mul_right (hpsi0 w hg) _ x hk
 
 /- English proof (translation)
-Take `⟨hK, hu, hq, -⟩` from `UpperTheory.V.Af.Smo.sphDict ℚ 3 w`. Use `set z : Fin 3 → ℂˣ := ![ν (unifUnit (Ad3.Qv w)), 1, (ν (unifUnit (Ad3.Qv w)))⁻¹] with hz`. Establish `hB : ({ν (unifUnit (Ad3.Qv w)), 1, (ν (unifUnit (Ad3.Qv w)))⁻¹} : Multiset ℂˣ) = Finset.univ.val.map z`. Rewrite using `[Fin.univ_val_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hψ₁ : ∃ y : Ad3.Qv w, (GLnLocal.uniformizer (Ad3.Qv w) : Ad3.Qv w) * y ∈ 𝒪[Ad3.Qv w] ∧ (Circle.coeHom.compAddChar (localAdelicChar ℚ w)) y ≠ 1`. Take `⟨y, hy, hy'⟩` from `hg.2 _ hu`. Conclude with `⟨y, (GroundTheory.Global.mem_valuationInteger_iff w _).2 hy, hy'⟩`. Use `borelize (GL (Fin 3) (Ad3.Qv w))`. Set `μ : MeasureTheory.Measure (GL (Fin 3) (Ad3.Qv w))` to `MeasureTheory.Measure.haar`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Spherical.integral_minusculeHecke_mul_sphericalWhittaker (μ := μ) (hpsi0 w hg) hψ₁ z hj x`. Establish `h2` using `finsum_of_integral (μ := μ) z (fun g k hk => Spherical.sphericalWhittaker_mul_right (hpsi0 w hg) z g hk) hj x h1`. Rewrite `h2` using `[hK, ← UpperTheory.V.Af.Smo.tjSet UpperTheory.V.Af.Smo.sphDict ℚ 3 w j hj, hq j hj, esymm_eq]`. Rewrite using `[hB, GlobalTheory.LFun.satEig]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph_eig (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.Af.Smo.psiL w)) (ν : (Ad3.Qv w)ˣ →* ℂˣ)
     (j : ℕ) (hj : j ≤ 3) (x : GL (Fin 3) (Ad3.Qv w)) :
@@ -327,9 +325,9 @@ open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic
 
 open GlobalTheory.CuspRep in
 /- English proof (translation)
-Establish `h` using `map_cornerGL_of_hom (sFin ℚ) (pFin ℚ) (RingHom.id _) (fun _ => rfl) (locGL ℚ 3 w y)`. Use `Matrix.GeneralLinearGroup.ext fun a b => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun M : GL (Fin 3) (Af ℚ) => (M : Matrix (Fin 3) (Fin 3) (Af ℚ)) a b) h`. Rewrite using `[Reduction.finAt_apply]`. Express the relevant statement in the definitionally equal form `(((finGL ℚ 3 (locGL ℚ 3 w y) : GL (Fin 3) (Ad ℚ)) : Matrix (Fin 3) (Fin 3) (Ad ℚ)) a b).2 v = pLoc ℚ v (((locGL ℚ 3 w y : GL (Fin 3) (Af ℚ)) : Matrix (Fin 3) (Fin 3) (Af ℚ)) a b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : (((finGL ℚ 3 (locGL ℚ 3 w y) : GL (Fin 3) (Ad ℚ)) : Matrix (Fin 3) (Fin 3) (Ad ℚ)) a b).2 = ((locGL ℚ 3 w y : GL (Fin 3) (Af ℚ)) : Matrix (Fin 3) (Fin 3) (Af ℚ)) a b` using `h2`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem finAt_finGL_locGL (w v : Ad3.Pl) (y : GL (Fin 3) (Ad3.Qv w)) :
     Reduction.finAt v (finGL ℚ 3 (locGL ℚ 3 w y)) = Matrix.GeneralLinearGroup.map (pLoc ℚ v) (locGL ℚ 3 w y) := by
@@ -346,9 +344,9 @@ private theorem finAt_finGL_locGL (w v : Ad3.Pl) (y : GL (Fin 3) (Ad3.Qv w)) :
 
 open GlobalTheory.CuspRep in
 /- English proof (translation)
-Establish `h` using `map_cornerGL_of_zero (sFin ℚ) (RingHom.fst (InfiniteAdeleRing ℚ) (Af ℚ)) (fun _ => rfl) k`. Rewrite using `[← Reduction.infAt_one (K := ℚ) (n := 3) v]`. Use `Matrix.GeneralLinearGroup.ext fun a b => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun M : GL (Fin 3) (InfiniteAdeleRing ℚ) => (M : Matrix (Fin 3) (Fin 3) (InfiniteAdeleRing ℚ)) a b) h`. Rewrite using `[Reduction.infAt_apply, Reduction.infAt_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (((finGL ℚ 3 k : GL (Fin 3) (Ad ℚ)) : Matrix (Fin 3) (Fin 3) (Ad ℚ)) a b).1 = ((1 : GL (Fin 3) (InfiniteAdeleRing ℚ)) : Matrix (Fin 3) (Fin 3) (InfiniteAdeleRing ℚ)) a b` using `h2`. Express the relevant statement in the definitionally equal form `(((finGL ℚ 3 k : GL (Fin 3) (Ad ℚ)) : Matrix (Fin 3) (Fin 3) (Ad ℚ)) a b).1 v = _`. Rewrite using `[h3]`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem infAt_finGL (v : InfinitePlace ℚ) (k : GL (Fin 3) (Af ℚ)) :
     Reduction.infAt v (finGL ℚ 3 k) = 1 := by
@@ -365,7 +363,7 @@ private theorem infAt_finGL (v : InfinitePlace ℚ) (k : GL (Fin 3) (Af ℚ)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(finAt_finGL_locGL w w y).trans (GlobalTheory.CuspRep.pLoc_locGL w y), fun v' hv => (finAt_finGL_locGL w v' y).trans (GlobalTheory.CuspRep.pLoc_locGL_of_ne hv y), fun v => infAt_finGL v _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLoc_locGL (w : Ad3.Pl) (y : GL (Fin 3) (Ad3.Qv w)) :
     Ad3.IsLoc w y (GlobalTheory.CuspRep.finGL ℚ 3 (GlobalTheory.CuspRep.locGL ℚ 3 w y)) :=
@@ -374,11 +372,11 @@ theorem isLoc_locGL (w : Ad3.Pl) (y : GL (Fin 3) (Ad3.Qv w)) :
     fun v => infAt_finGL v _⟩
 
 /- English proof (translation)
-Use `set x0 := Reduction.finAt w g`. Use `set e : Ad3.G3 := GlobalTheory.CuspRep.finGL ℚ 3 (GlobalTheory.CuspRep.locGL ℚ 3 w x0)`. Establish `he : Reduction.finAt w e = x0` using `(isLoc_locGL w x0).1`. Establish `hinv : Reduction.finAt w e⁻¹ = x0⁻¹`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← he, ← Reduction.finAt_mul, mul_inv_cancel, Reduction.finAt_one]`. Use `⟨g * e⁻¹, x0, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : Reduction.finAt w (g * e⁻¹) = 1`. Rewrite using `[Reduction.finAt_mul, hinv, mul_inv_cancel]`. Establish `h2 : g * GlobalTheory.CuspRep.finGL ℚ 3 (GlobalTheory.CuspRep.locGL ℚ 3 w y) = g * e⁻¹ * GlobalTheory.CuspRep.finGL ℚ 3 (GlobalTheory.CuspRep.locGL ℚ 3 w (x0 * y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[h2]`. Conclude with `hs _ h1 _ _ (isLoc_locGL w (x0 * y))`.
+A detailed English derivation is pending.
 -/
 theorem sph_transl (D : Ad3.Dat) (w : Ad3.Pl) (W : Ad3.G3 → ℂ) (hs : Ad3.SphAt D w W) (g : Ad3.G3) :
     ∃ (g1 : Ad3.G3) (x1 : GL (Fin 3) (Ad3.Qv w)), ∀ y : GL (Fin 3) (Ad3.Qv w),
@@ -410,20 +408,20 @@ section Proj
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
 /- English proof (translation)
-Introduce `o φ hφ` and use `by refine Submodule.mem_comap.1 ((iSup₂_le (a := Submodule.comap (TR.act o) _) fun π hπ x hx => ?_) hφ) exact Submodule.mem_iSup_of_mem π (Submodule.mem_iSup_of_mem hπ (π.stable o x hx))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem stable_iSup (S : Set (TR.CuspSub F a)) : TR.IsStable (⨆ π ∈ S, π.V) := fun o φ hφ => by
   refine Submodule.mem_comap.1 ((iSup₂_le (a := Submodule.comap (TR.act o) _) fun π hπ x hx => ?_) hφ)
   exact Submodule.mem_iSup_of_mem π (Submodule.mem_iSup_of_mem hπ (π.stable o x hx))
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `Submodule.mem_iSup_iff_exists_finset.1 h`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact absurd (by simpa using hS) h0`. Consider the case `insert π S hπ ih`. Rewrite `hS` using `[Finset.iSup_insert]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : TR.IsStable (⨆ π ∈ S, π.V)` using `stable_iSup (S : Set (TR.CuspSub F a))`. Break down `π.irred (π.V ⊓ ⨆ π ∈ S, π.V) inf_le_left (fun o x hx => ⟨π.stable o x hx.1, hs o x hx.2⟩) with e | e` into its components or cases. Take `⟨ψ, h1, ψ', h2, e2⟩` from `Submodule.mem_sup.1 hS`. Distinguish the cases in `h3 : ψ = 0`. Conclude with `ih (by rw [← e2, h3, zero_add]; exact h2)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨π, ψ, h1, h3, fun z hz c hc => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← e2, map_add, smul_add]`. Establish `h4 : z ψ - c • ψ ∈ π.V ⊓ ⨆ π ∈ S, π.V`. Use `⟨sub_mem (hz _ π.stable _ h1) (π.V.smul_mem c h1), ?_⟩` and prove the remaining obligations. Establish `: z ψ - c • ψ = c • ψ' - z ψ'` using `by linear_combination (norm := module) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `sub_mem (Submodule.smul_mem _ c h2) (hz _ hs _ h2)`. Rewrite `h4` using `[e, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 h4`. Conclude with `ih ((sup_le (inf_eq_left.1 e) le_rfl) hS)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem proj {φ : TR.Sm F a} (h0 : φ ≠ 0) (h : φ ∈ ⨆ π : TR.CuspSub F a, π.V) :
     ∃ (π : TR.CuspSub F a) (ψ : TR.Sm F a), ψ ∈ π.V ∧ ψ ≠ 0 ∧ ∀ z : Module.End ℂ (TR.Sm F a),
@@ -451,9 +449,9 @@ private theorem proj {φ : TR.Sm F a} (h0 : φ ≠ 0) (h : φ ∈ ⨆ π : TR.Cu
     · exact ih ((sup_le (inf_eq_left.1 e) le_rfl) hS)
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fderiv ℝ (TR.chart φ.1 (g * TR.infGL F a y)) (TR.oneL F a) (TR.toL X) = fderiv ℝ (TR.chart (fun x => φ.1 (x * TR.infGL F a y)) g) (TR.oneL F a) (TR.toL (y.val * X * (y⁻¹).val))`. Establish `hd : DifferentiableAt ℝ (TR.chart φ.1 g) (TR.toL y.val)` using `(TR.contDiffAt_chart φ.2 g (TR.val_mem_invSet y)).differentiableAt (by simp)`. Establish `e1 : TR.lmul (TR.toL y.val) (TR.oneL F a) = TR.toL y.val` using `mul_one y.val`. Establish `e2 : TR.rmul (TR.toL y.val) (TR.oneL F a) = TR.toL y.val` using `one_mul y.val`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[TR.chart_mul, TR.chart_rt_inf, fderiv_comp _ (by rw [e1]; exact hd) (TR.lmul (TR.toL y.val)).differentiableAt, fderiv_comp _ (by rw [e2]; exact hd) (TR.rmul (TR.toL y.val)).differentiableAt, e1, e2, ContinuousLinearMap.fderiv, ContinuousLinearMap.fderiv]`. Conclude with `congrArg (fun Z => fderiv ℝ (TR.chart φ.1 g) (TR.toL y.val) (TR.toL Z)) (Units.inv_mul_cancel_right (y.val * X) y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rt_lie (y : GL (Fin a) (TR.Rinf F)) (X : Matrix (Fin a) (Fin a) (TR.Rinf F)) :
     TR.rt F a (TR.infGL F a y) * TR.lie F a (TR.toL X) =
@@ -472,9 +470,9 @@ private theorem rt_lie (y : GL (Fin a) (TR.Rinf F)) (X : Matrix (Fin a) (Fin a) 
 
 open Classical in
 /- English proof (translation)
-Set `L : Matrix (Fin a) (Fin a) (TR.Rinf F) →ₗ[ℝ] Module.End ℂ (TR.Sm F a)` to `TR.lie F a`. Establish `e : X = ∑ v, ∑ i, ∑ j, X i j v • Matrix.single i j (Pi.single v 1 : TR.Rinf F)`. Use extensionality with `i j v`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, ite_and, Pi.single_apply, ite_apply]`. Express the relevant statement in the definitionally equal form `L X = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `conv_lhs => rw [e]`. Simplify using `only [map_sum, map_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lie_eq_sum (X : Matrix (Fin a) (Fin a) (TR.Rinf F)) :
     TR.lie F a (TR.toL X) = ∑ v, ∑ i, ∑ j, ((X i j v : ℝ) : ℂ) • TR.Eop v i j := by
@@ -488,7 +486,7 @@ private theorem lie_eq_sum (X : Matrix (Fin a) (Fin a) (TR.Rinf F)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[TR.Eop, rt_lie, lie_eq_sum, Finset.sum_eq_single v]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, ite_apply]`. Introduce `v' _ h`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, ite_apply, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rt_Eop (y : GL (Fin a) (TR.Rinf F)) (v : InfinitePlace F) (i j : Fin a) :
     TR.rt F a (TR.infGL F a y) * TR.Eop v i j =
@@ -501,13 +499,11 @@ private theorem rt_Eop (y : GL (Fin a) (TR.Rinf F)) (v : InfinitePlace F) (i j :
   · simp
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k => exact GlobalTheory.CapAdInv.qdet_semiconj _ _ _ (fun i j => (TR.lie_rt_fin _ k).symm) _`. Consider the case `cpt k => set y := Unitary.toUnits k`. Set `f : TR.Rinf F →+* ℂ` to `Complex.ofRealHom.comp (Pi.evalRingHom _ v)`. Establish `h` using `GlobalTheory.CapAdInv.qdet_semiconj _ _ _ (rt_Eop y v) (u + ((a : ℂ) - 1) / 2)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQP : ((y⁻¹).val.map f) * (y.val.map f) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Simplify using the standard rewrite rules. Conclude with `h.trans (congrArg (· * _) (GlobalTheory.CapAdInv.qdet_ad _ (TR.glRel_Eop v) _ _ hQP (u + ((a : ℂ) - 1) / 2)))`. Consider the case `lie X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : ∀ v' i j, Commute (TR.Eop (a` using `a) v' i j) (TR.cap v u) := fun v' i j => by`. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Conclude with `(TR.cap_comm _ _ _ _).symm`. Conclude with `GlobalTheory.CapAdInv.qdet_semiconj _ _ _ (fun k l => TR.Eop_comm e _ _ _ _) _`.
-
-Express the relevant statement in the definitionally equal form `Commute (TR.lie F a (TR.toL (Matrix.of X))) _`. Rewrite using `[lie_eq_sum]`. Conclude with `Commute.sum_left _ _ _ fun v' _ => Commute.sum_left _ _ _ fun i _ => Commute.sum_left _ _ _ fun j _ => (h v' i j).smul_left _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cap_act (v : InfinitePlace F) (u : ℂ) (o : TR.Op F a) : TR.act o * TR.cap v u = TR.cap v u * TR.act o := by
   cases o with
@@ -530,9 +526,9 @@ private theorem cap_act (v : InfinitePlace F) (u : ℂ) (o : TR.Op F a) : TR.act
       (h v' i j).smul_left _
 
 /- English proof (translation)
-Break down `π.irred (π.V ⊓ Module.End.eigenspace (TR.cap v u) c) inf_le_left (fun o x hx => ⟨π.stable o x hx.1, by` into its components or cases. Use `Module.End.mem_eigenspace_iff.1 hx.2` as an intermediate fact. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← cap_act, Module.End.mul_apply, this, map_smul]⟩) with e | e`. Conclude with `absurd (e.le ⟨h, Module.End.mem_eigenspace_iff.2 hc⟩) h0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x hx => Module.End.mem_eigenspace_iff.1 (e.ge hx).2`.
+A detailed English derivation is pending.
 -/
 private theorem cap_all (π : TR.CuspSub F a) {ψ : TR.Sm F a} (h : ψ ∈ π.V) (h0 : ψ ≠ 0) (v : InfinitePlace F) (u c : ℂ)
     (hc : TR.cap v u ψ = c • ψ) : ∀ x ∈ π.V, TR.cap v u x = c • x := by
@@ -544,9 +540,9 @@ private theorem cap_all (π : TR.CuspSub F a) {ψ : TR.Sm F a} (h : ψ ∈ π.V)
   · exact fun x hx => Module.End.mem_eigenspace_iff.1 (e.ge hx).2
 
 /- English proof (translation)
-Take `⟨⟨σ, hσ⟩, h2⟩` from `locCompR P F a π w`. Establish `hi` using `h2 σ hσ`. Take `⟨h3, h4⟩` from `satLoc P F a w σ`. Take `⟨x, hx0, hx⟩` from `h`. Take `⟨B, hB⟩` from `h3 (GlobalTheory.CuspRep.LocSph.exists_fixed_of_mem_iSup (π.locRep w) σ.ρ σ.irred (fun f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.finPart (locGL F a w g) (f v)} => f.1) (fun f => f.2) (GlobalTheory.LFun.KGL w a : Set _) x hx0 hx (hi.2 ▸ Submodule.mem_top))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, (h4 _ _ hi B).2 hB⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_sat (P : Af.Hypotheses₂) (π : TR.CuspSub F a) (w : HeightOneSpectrum (𝓞 F))
     (h : HasFixed (π.locRep w) (GlobalTheory.LFun.KGL w a)) : ∃ B, π.HasSat w B := by
@@ -569,17 +565,15 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheo
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
 /- English proof (translation)
-Use `⟨h.isLeftInvariant, ?_, ?_, (zfin_iff φ).2 h.isZFinite, fun g => ?_⟩` and prove the remaining obligations. Take `⟨U, -, hU⟩` from `exists_openSubgroup_rightInvariant h.isSmooth h.isKFinite`. Use `isOpen_iff_mem_nhds.2 fun k hk => ?_` and prove the remaining obligations. Establish `h1 : (fun x => k⁻¹ * x) ⁻¹' (U : Set _) ∈ nhds k` using `(U.isOpen.preimage (continuous_const.mul continuous_id)).mem_nhds (by simpa using U.one_mem)`. Use `filter_upwards [h1] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h2` using `hU (g * finGL F a k) _ hx`. Rewrite `h2` using `[finEmb_eq, mul_assoc, ← map_mul, mul_inv_cancel_left]`. Conclude with `h2.trans (congrFun (congrArg Subtype.val hk) g)`. Establish `hk : FiniteDimensional ℂ _` using `h.isKFinite`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `FiniteDimensional.of_injective ((TR.Sm F a).subtype.restrict (q := Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL F a)) => rightTranslate (k : AdelicGLn.AdelicGL F a) φ.1)) ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Use `Submodule.mem_comap.1 (Submodule.span_le.2 ?_ hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨⟨TR.infGL F a (Unitary.toUnits k), ?_⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← infEmb_grpEq]`. Conclude with `(UpperTheory.mem_archMaxCompact_iff_orthogonal_at_infinitePlaces F a _).2 k.2`. Introduce `x y hxy`. Establish `h2` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, N, hC⟩` from `h.hasModerateGrowth`. Take `⟨M, hM⟩` from `UpperTheory.adelicHeight_infGL_le_opNorm F a`. Use `⟨|C| * (heightConst F a * height g) ^ N, M * N, fun y => (hC _).trans ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ heightConst F a * height g` using `mul_nonneg (zero_le_one.trans one_le_heightConst) (height_pos g).le`. Rewrite using `[mul_assoc, pow_mul, ← mul_pow]`.
-
-Conclude with `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le ((height_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hM y) h0)) N) (pow_nonneg (height_pos _).le N) (abs_nonneg C)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aut_of (φ : TR.Sm F a) (h : IsAutomorphicForm φ.1) : TR.IsAutForm φ := by
   refine ⟨h.isLeftInvariant, ?_, ?_, (zfin_iff φ).2 h.isZFinite, fun g => ?_⟩
@@ -619,13 +613,11 @@ section Form
 open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `z φ ∈ Submodule.span ℂ {φ}`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨v, u, rfl⟩` from `hx`. Rewrite using `[h v u]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self φ)`. Consider the case `algebraMap c'`. Rewrite using `[Module.algebraMap_end_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self φ)`. Consider the case `add x y _ _ hx hy`. Rewrite using `[LinearMap.add_apply]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`.
-
-Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[Module.End.mul_apply, ← hd, map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zfin_of {φ : TR.Sm ℚ 3} (c : InfinitePlace ℚ → ℂ → ℂ) (h : ∀ v u, TR.cap v u φ = c v u • φ) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm ℚ 3) => z φ) '' TR.Zalg ℚ 3)) := by
@@ -651,7 +643,7 @@ theorem zfin_of {φ : TR.Sm ℚ 3} (c : InfinitePlace ℚ → ℂ → ℂ) (h : 
 variable {V : Submodule ℂ (Ad3.G3 → ℂ)} (hV : Ad3.WhA V)
 
 /- English proof (translation)
-The claim follows from `(hU1 W).1 isSmooth := ⟨(U W).2, fun g => by obtain ⟨O, hO⟩ := hV.level W.1 W.2 filter_upwards [O.isOpen.mem_nhds O.one_mem] with y hy have e : (⟨fun x => W.1 (x * finEmb ℚ 3 y), hV.stable _ W.2 _⟩ : V) = W := Subtype.ext (funext fun x => hO x y hy) rw [← hU2 W (finEmb ℚ 3 y) g, e …`.
+A detailed English derivation is pending.
 -/
 theorem isAut (U : V →ₗ[ℂ] archSmooth ℚ 3)
     (hU1 : ∀ W : V, IsLeftInvariant (U W : Ad3.G3 → ℂ) ∧ HasModerateGrowth (U W : Ad3.G3 → ℂ) ∧
@@ -679,7 +671,7 @@ theorem isAut (U : V →ₗ[ℂ] archSmooth ℚ 3)
   hasModerateGrowth := (hU1 W).2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun u => cap_all π₀ hψ h0 v u _ (by rw [hz _ (fun V hV => TR.Zalg_stable (fun X => hV (.lie X)) (Algebra.subset_adjoin ⟨v, u, rfl⟩)) _ (hcap v u)] congr 1 simp only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_single …`.
+Supply the required witnesses or components.
 -/
 theorem inf_char (π₀ : TR.CuspSub ℚ 3) {φ ψ : TR.Sm ℚ 3} (hψ : ψ ∈ π₀.V) (h0 : ψ ≠ 0)
     (hz : ∀ z : Module.End ℂ (TR.Sm ℚ 3), (∀ V, TR.IsStable V → ∀ x ∈ V, z x ∈ V) → ∀ c : ℂ, z φ = c • φ → z ψ = c • ψ)
@@ -702,19 +694,19 @@ open GlobalTheory.CuspRep (locGL finGL)
 abbrev uz (w : Ad3.Pl) : Ad3.Qv w := (GLnLocal.uniformizer (Ad3.Qv w) : Ad3.Qv w)
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.V.Af.Smo.sphDict ℚ 3 w).2.1`.
+A detailed English derivation is pending.
 -/
 theorem isUnif (w : Ad3.Pl) : Formalism.UG.IsUnifV ℚ w (uz w) := (UpperTheory.V.Af.Smo.sphDict ℚ 3 w).2.1
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.finite_support_cosets (Formalism.UG.Final.GLintComm ℚ w 3) (GlobalTheory.LFun.Tj_mem_hecke (isUnif w) j).2`.
+A detailed English derivation is pending.
 -/
 theorem tj_finite (w : Ad3.Pl) (j : ℕ) :
     {c : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3 | Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j c.out ≠ 0}.Finite :=
   Formalism.UG.P.finite_support_cosets (Formalism.UG.Final.GLintComm ℚ w 3) (GlobalTheory.LFun.Tj_mem_hecke (isUnif w) j).2
 
 /- English proof (translation)
-Use `finsum_eq_sum_of_support_subset _ fun c hc => ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Simplify using `only [h0, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem finsum_tj {M : Type*} [AddCommMonoid M] [Module ℂ M] (w : Ad3.Pl) (j : ℕ)
     (f : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3 → M) :
@@ -727,7 +719,7 @@ theorem finsum_tj {M : Type*} [AddCommMonoid M] [Module ℂ M] (w : Ad3.Pl) (j :
   simp only [h0, zero_smul]
 
 /- English proof (translation)
-Simplify `finsum_tj w j f` using `only [smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finsum_tj_mul (w : Ad3.Pl) (j : ℕ) (f : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3 → ℂ) :
     ∑ᶠ c, Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j c.out * f c =
@@ -735,21 +727,17 @@ theorem finsum_tj_mul (w : Ad3.Pl) (j : ℕ) (f : GL (Fin 3) (Ad3.Qv w) ⧸ Glob
   simpa only [smul_eq_mul] using finsum_tj w j f
 
 /- English proof (translation)
-Use `set x : π₀.V := ⟨ψ, hψ⟩`. Establish `hx0 : x ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hfix : ∀ k ∈ GlobalTheory.LFun.KGL w 3, π₀.locRep w k x = x` using `fun k hk => Subtype.ext (by`. Establish `h1 : TR.act (.fin (locGL ℚ 3 w k)) φ = (1 : ℂ) • φ` using `(Subtype.ext (funext fun g => hinv k hk g)).trans (one_smul _ _).symm`. Use `hz _ (fun V hV => hV (.fin _)) 1 h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[one_smul]`. Conclude with `this)`. Take `⟨B', hB'⟩` from `exists_sat PH.toClassicalTheorems π₀ w ⟨x, hx0, hfix⟩`. Establish `hs` using `hB'.2 x (GlobalTheory.LGrp.mem_fixed.2 hfix) hx0`. Establish `key : ∀ j ≤ 3, GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 B' j = GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 B j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Use `set T := (tj_finite w j).toFinset`. Use `set t : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3 → ℂ := fun c => Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j c.out`. Use `set z : Module.End ℂ (TR.Sm ℚ 3) := ∑ c ∈ T, t c • TR.act (.fin (locGL ℚ 3 w c.out))`. Establish `hzφ : z φ = GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 B j • φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `heig j hj g`. Rewrite `h1` using `[finsum_tj_mul w j (fun c => φ.1 (g * finGL ℚ 3 (locGL ℚ 3 w c.out)))]`. Express the relevant statement in the definitionally equal form `(z φ).1 g = (GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 B j • φ).1 g`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ← h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [z, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => rfl`. Establish `hzst : ∀ V, TR.IsStable V → ∀ y ∈ V, z y ∈ V` using `fun V hV y hy => by`. Simplify using `only [z, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hV (.fin _) y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzψ` using `hz z hzst _ hzφ`. Establish `h2` using `hs.2.2.2 (uz w) (isUnif w) j hj`. Establish `h3 : GlobalTheory.LFun.heckeVec (π₀.locRep w) (GlobalTheory.LFun.KGL w 3) (Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j) x = ∑ c ∈ T, t c • π₀.locRep w c.out x` using `finsum_tj w j (fun c => π₀.locRep w c.out x)`. Establish `h4 : ((∑ c ∈ T, t c • π₀.locRep w c.out x : π₀.V) : TR.Sm ℚ 3) = z ψ`. Simplify using `only [z, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`.
-
-Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Establish `h5` using `congrArg Subtype.val h2`. Rewrite `h5` using `[h4, hzψ, Submodule.coe_smul]`. Conclude with `(smul_left_injective ℂ h0 h5).symm`.
-
-Establish `hBB : B' = B` using `GlobalTheory.LFun.eq_of_satEig_eq (GlobalTheory.LFun.qV_ne_zero w) hs.2.2.1 hB key`. Rewrite using `[← hBB]`. Conclude with `hB'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_at (PH : UpperTheory.V.Af.HypothesesH) (π₀ : TR.CuspSub ℚ 3) {φ ψ : TR.Sm ℚ 3} (hψ : ψ ∈ π₀.V) (h0 : ψ ≠ 0)
     (hz : ∀ z : Module.End ℂ (TR.Sm ℚ 3), (∀ V, TR.IsStable V → ∀ x ∈ V, z x ∈ V) → ∀ c : ℂ, z φ = c • φ → z ψ = c • ψ)
@@ -804,21 +792,19 @@ theorem sat_at (PH : UpperTheory.V.Af.HypothesesH) (π₀ : TR.CuspSub ℚ 3) {�
 variable {V : Submodule ℂ (Ad3.G3 → ℂ)} (hV : Ad3.WhA V)
 
 /- English proof (translation)
-Use `set fg : GL (Fin 3) (Ad3.Qv w) → Ad3.G3 := fun y => finGL ℚ 3 (locGL ℚ 3 w y)`. Use `set rt : Ad3.G3 → V → V := fun h W => ⟨fun x => W.1 (x * h), hV.stable _ W.2 h⟩`. Establish `hWinv : ∀ k ∈ GlobalTheory.LFun.KGL w 3, ∀ g, W.1 (g * fg k) = W.1 g` using `fun k hk g => by`. Take `⟨g1, x1, h⟩` from `sph_transl D w W.1 hs g`. Establish `e1` using `h k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `h 1`. Simplify using `only [fg, map_one, mul_one] at e2`. Simplify using `only [fg] at e1 ⊢`. Rewrite using `[e1, e2, sph_inv w hg _ x1 hk]`. Establish `hWeig : ∀ j ≤ 3, ∀ g, ∑ᶠ c : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3, Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j c.out * W.1 (g * fg c.out) = GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 {D.ν w (unifUnit (Ad3.Qv w)), 1, (D.ν w (unifUnit (Ad3.Qv w)))⁻¹} j * W …` using `fun j hj g => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g1, x1, h⟩` from `sph_transl D w W.1 hs g`. Establish `e2` using `h 1`. Simplify using `only [map_one, mul_one] at e2`. Simplify using `only [fg, h]`. Rewrite using `[e2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e3` using `sph_eig w hg (D.ν w) j hj x1`. Rewrite `e3`, the goal using `[finsum_tj_mul w j]`. Rewrite using `[show ∀ a b c : ℂ, a * (b * c) = b * (a * c) from fun a b c => by ring, ← e3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun k hk g => ?_, fun j hj g => ?_⟩` and prove the remaining obligations. Establish `e : rt (fg k) W = W` using `Subtype.ext (funext fun x => hWinv k hk x)`. Rewrite using `[← hU2 W (fg k) g]`. Conclude with `congrArg (fun W' : V => (U W' : Ad3.G3 → ℂ) g) e`. Use `set T := (tj_finite w j).toFinset set t : GL (Fin 3) (Ad3.Qv w) ⧸ GlobalTheory.LFun.KGL w 3 → ℂ := fun c => Formalism.UG.Tj ℂ 3 (Formalism.UG.Ov ℚ w) (uz w) j c.out`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∑ c ∈ T, t c • rt (fg c.out) W = GlobalTheory.LFun.satEig (Formalism.UG.qV ℚ w) 3 {D.ν w (unifUnit (Ad3.Qv w)), 1, (D.ν w (unifUnit (Ad3.Qv w)))⁻¹} j • W`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `h1` using `hWeig j hj x`. Rewrite `h1` using `[finsum_tj_mul w j (fun c => W.1 (x * fg c.out))]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Establish `h2` using `congrArg (fun W' : V => (U W' : Ad3.G3 → ℂ) g) hsum`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[finsum_tj_mul w j (fun c => (U W : Ad3.G3 → ℂ) (g * fg c.out)), ← h2]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hU2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_loc (D : Ad3.Dat) (w : Ad3.Pl) (hg : UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.Af.Smo.psiL w))
     (U : V →ₗ[ℂ] archSmooth ℚ 3)
@@ -877,15 +863,15 @@ end Sat
 
 open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm in
 /- English proof (translation)
-Take `⟨-, hcap, htr, W0, hW0V, hW0, hKf, S, hsph⟩` from `hG`. Use `set W : V := ⟨W0, hW0V⟩`. Use `set φ : TR.Sm ℚ 3 := (Fb.smEq ℚ 3).symm (U W) with hφ`. Establish `hcapφ` using `cap_form hV D.k hcap U hU3 W`. Establish `hZ : IsZFinite (U W)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `(Fb.zfin_iff φ).1 (zfin_of _ hcapφ)`. Rewrite `h` using `[hφ, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hA` using `isAut hV U hU1 hU2 W hKf hZ`. Establish `hcusp : TR.IsCuspForm φ` using `⟨aut_of φ hA, UpperTheory.isCuspidal_of_constantTerm_eq_zero ℚ 3 _ hA.isLeftInvariant hA.continuous (hU1 W).2.2.1⟩`. Establish `hφ0 : φ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hW0` to reduce the goal to its premises. Establish `h1 : (U W : Ad3.G3 → ℂ) = 0` using `congrArg Subtype.val h`. Establish `h2` using `(hU1 W).2.2.2`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : W0 = FourierWhittaker.whittaker 0` using `h2.symm`. Rewrite using `[h3]`. Use function extensionality and compare the values at `g`. Simplify using `[FourierWhittaker.whittaker]`. Take `⟨π₀, ψ, hψ, h0, hz⟩` from `proj hφ0 (UpperTheory.V.Af.cuspSemisimpleReal_dB ℚ 3 φ hcusp ⟨0, by rw [trace_form hV htr U hU3 W, zero_smul]⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨π₀, fun v => inf_char π₀ hψ h0 hz D.k hcapφ v, ?_⟩` and prove the remaining obligations. Establish `hcof : ∀ᶠ w : Ad3.Pl in Filter.cofinite, w ∉ S ∧ UpperTheory.V.Af.Smo.GoodAt w (UpperTheory.V.Af.Smo.psiL w)` using `(S.finite_toSet.eventually_cofinite_notMem).and (UpperTheory.V.Af.Smo.psiLoc ℚ).2`. Use `filter_upwards [hcof] with w hw`. Take `⟨hinv, heig⟩` from `phi_loc hV D w hw.2 U hU2 W (hsph w hw.1)`. Conclude with `sat_at PH π₀ hψ h0 hz w _ rfl hinv heig`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main (PH : UpperTheory.V.Af.HypothesesH) (D : Ad3.Dat) (V : Submodule ℂ (Ad3.G3 → ℂ)) (hV : Ad3.WhA V)
     (hG : Ad3.Good D V hV) (U : V →ₗ[ℂ] archSmooth ℚ 3)

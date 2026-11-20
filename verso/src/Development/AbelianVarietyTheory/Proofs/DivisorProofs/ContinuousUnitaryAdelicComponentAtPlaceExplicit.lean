@@ -8,13 +8,11 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (R ⊗[ℚ] C) := moduleTopology R (R ⊗[ℚ] C)`. Use `letI : TopologicalSpace (R' ⊗[ℚ] C) := moduleTopology R' (R' ⊗[ℚ] C)`. Use `haveI : IsModuleTopology R (R ⊗[ℚ] C) := ⟨rfl⟩`. Use `haveI : IsModuleTopology R' (R' ⊗[ℚ] C) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (R' ⊗[ℚ] C) := IsModuleTopology.toContinuousAdd R' _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : ContinuousSMul R' (R' ⊗[ℚ] C) := IsModuleTopology.toContinuousSMul R' _`. Set `b` to `Module.finBasis ℚ C`. Set `bA` to `Algebra.TensorProduct.basis R b`. Set `bB` to `Algebra.TensorProduct.basis R' b`. Establish `key : ∀ x, Algebra.TensorProduct.map f (AlgHom.id ℚ C) x = ∑ i, f (bA.repr x i) • bB i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `x`. Use `conv_lhs => rw [← bA.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [bA, bB, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
-
-Establish `e : (⇑(Algebra.TensorProduct.map f (AlgHom.id ℚ C))) = fun x => ∑ i, f (bA.repr x i) • bB i` using `funext key`. Rewrite using `[e]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(hf.comp (IsModuleTopology.continuous_of_linearMap (bA.coord i))).smul continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_tensorMap {R R' : Type} [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R]
     [CommRing R'] [Algebra ℚ R'] [TopologicalSpace R'] [IsTopologicalRing R']
@@ -44,9 +42,9 @@ theorem continuous_tensorMap {R R' : Type} [CommRing R] [Algebra ℚ R] [Topolog
   exact (hf.comp (IsModuleTopology.continuous_of_linearMap (bA.coord i))).smul continuous_const
 
 /- English proof (translation)
-Introduce `p _ G v`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) _`. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) _`. Establish `hf : Continuous (AfP.eval v)` using `RestrictedProduct.continuous_eval v`. Establish `hφ` using `continuous_tensorMap (C := G.C) (AfP.eval v) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Units.continuous_map (f := (Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C)).toRingHom.toMonoidHom) hφ`. Establish `h2` using `Units.continuous_map (f := (AfP.eval v).toRingHom.toMonoidHom) hf`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `(h1.comp (continuous_fst.comp continuous_subtype_val)).prodMk (h2.comp (continuous_snd.comp continuous_subtype_val))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_piV : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p), Continuous (piV G v) := by
   intro p _ G v

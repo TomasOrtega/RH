@@ -23,21 +23,21 @@ def Lam1 (e0 : Mx k r → ℂ) (μp : Measure (Formalism.QuantumDeterminants.Mt 
   ∫⁻ p, ‖e0 ((Matrix.of x)⁻¹ * (Matrix.of p.1 * Matrix.of p.2) * Matrix.of y)‖ₑ ∂μp
 
 /- English proof (translation)
-The claim follows from `(B2x1.invM_meas (k := k) (r := r)).comp hf`.
+A detailed English derivation is pending.
 -/
 theorem meas_inv {α : Type*} [MeasurableSpace α] {f : α → Formalism.QuantumDeterminants.Mt k r} (hf : Measurable f) :
     Measurable (fun t => (fun i j => ((Matrix.of (f t))⁻¹ : Mx k r) i j : Formalism.QuantumDeterminants.Mt k r)) :=
   (B2x1.invM_meas (k := k) (r := r)).comp hf
 
 /- English proof (translation)
-The claim follows from `((he0.comp mt_cont).measurable.comp hf).enorm`.
+A detailed English derivation is pending.
 -/
 theorem measurable_enorm_composition {e0 : Mx k r → ℂ} (he0 : Continuous e0) {α : Type*} [MeasurableSpace α]
     {f : α → Formalism.QuantumDeterminants.Mt k r} (hf : Measurable f) : Measurable (fun t => ‖e0 (Matrix.of (f t))‖ₑ) :=
   ((he0.comp mt_cont).measurable.comp hf).enorm
 
 /- English proof (translation)
-The claim follows from `meas_matmul hf.fst hf.snd`.
+A detailed English derivation is pending.
 -/
 theorem meas_hn {α : Type*} [MeasurableSpace α] {f : α → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r}
     (hf : Measurable f) :
@@ -45,7 +45,7 @@ theorem meas_hn {α : Type*} [MeasurableSpace α] {f : α → Formalism.QuantumD
   meas_matmul hf.fst hf.snd
 
 /- English proof (translation)
-Establish `mγ : Measurable (fun _ : α => (Matrix.of.symm γ : Formalism.QuantumDeterminants.Mt k r))` using `measurable_const`. Establish `M` using `meas_matmul (meas_matmul (meas_matmul (meas_matmul (meas_inv hX) (meas_hn hP)) mγ) (meas_inv (meas_hn hQ))) hY`. Conclude with `measurable_enorm_composition he0 M`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_lam_int {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {α : Type*} [MeasurableSpace α]
     {X Y : α → Formalism.QuantumDeterminants.Mt k r} {P Q : α → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r}
@@ -58,7 +58,7 @@ theorem meas_lam_int {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {
   exact measurable_enorm_composition he0 M
 
 /- English proof (translation)
-Establish `M` using `meas_matmul (meas_matmul (meas_inv hX) (meas_hn hP)) hY`. Conclude with `measurable_enorm_composition he0 M`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_lambda_integrand {e0 : Mx k r → ℂ} (he0 : Continuous e0) {α : Type*} [MeasurableSpace α]
     {X Y : α → Formalism.QuantumDeterminants.Mt k r} {P : α → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r}
@@ -69,7 +69,7 @@ theorem measurable_lambda_integrand {e0 : Mx k r → ℂ} (he0 : Continuous e0) 
   exact measurable_enorm_composition he0 M
 
 /- English proof (translation)
-Unfold `abelian₂`. Establish `m4` using `meas_lam_int he0 γ (α := ((Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) (measurable_fs …`. Establish `m3` using `m4.lintegral_prod_right' (ν := μq)`. Conclude with `m3.lintegral_prod_right' (ν := μp)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_lam {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r)
     (μp μq : Measure (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) [SFinite μp] [SFinite μq] :
@@ -82,7 +82,7 @@ theorem meas_lam {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r)
   exact m3.lintegral_prod_right' (ν := μp)
 
 /- English proof (translation)
-Unfold `Lam1`. Establish `m3` using `measurable_lambda_integrand he0 (α := (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) (measurable_fst.fst) (measurable_fst.snd) measurable_snd`. Conclude with `m3.lintegral_prod_right' (ν := μp)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_lambda_integral {e0 : Mx k r → ℂ} (he0 : Continuous e0)
     (μp : Measure (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) [SFinite μp] :
@@ -93,19 +93,17 @@ theorem measurable_lambda_integral {e0 : Mx k r → ℂ} (he0 : Continuous e0)
   exact m3.lintegral_prod_right' (ν := μp)
 
 /- English proof (translation)
-The claim follows from `measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem meas_const_mt (c : Formalism.QuantumDeterminants.Mt k r) {α : Type*} [MeasurableSpace α] :
     Measurable (fun _ : α => c) := measurable_const
 
 /- English proof (translation)
-Establish `hS : h0 * n0 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hh0.1 hn0.1`. Take `⟨-, -, hSS⟩` from `MatrixMultiplicationContinuity.uh_inv hS`. Use `set x' : Formalism.QuantumDeterminants.Mt k r := fun i j => (h0 * n0 * Matrix.of x) i j with hx'`. Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun m => ∫⁻ q, ‖e0 ((Matrix.of x')⁻¹ * Matrix.of m * γ * (Matrix.of q.1 * Matrix.of q.2)⁻¹ * Matrix.of y)‖ₑ ∂μq with hF`. Establish `hFm : Measurable F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mγ : Measurable (fun _ : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) => (Matrix.of.symm γ : Formalism.QuantumDeterminants.Mt k r))` using `measurable_const`. Establish `M` using `meas_matmul (meas_matmul (meas_matmul (meas_matmul (meas_inv (meas_const_mt x')) measurable_fst) mγ) (meas_inv (meas_hn measurable_snd))) (meas_const_mt y)`. Conclude with `(measurable_enorm_composition he0 M).lintegral_prod_right'`. Establish `hpl` using `param_left hW hN hz hh0 hn0 hFm`. Unfold `abelian₂`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmat : ∀ P : Mx k r, (Matrix.of x')⁻¹ * Matrix.of (fun i j => (h0 * n0 * P) i j : Formalism.QuantumDeterminants.Mt k r) = (Matrix.of x)⁻¹ * P`. Introduce `P`. Use `show (h0 * n0 * Matrix.of x)⁻¹ * (h0 * n0 * P) = (Matrix.of x)⁻¹ * P`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc (h0 * n0)⁻¹, hSS, Matrix.one_mul]`.
-
-Simplify using `only [hF, hmat]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_left {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {z : Fin (2 * r + k + 1) → ℂ}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
@@ -139,13 +137,13 @@ theorem lam_left {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {z : 
         simp only [hF, hmat]
 
 /- English proof (translation)
-Establish `hS : h0 * n0 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hh0.1 hn0.1`. Take `⟨-, hSS, -⟩` from `MatrixMultiplicationContinuity.uh_inv hS`. Unfold `abelian₂`. Apply `lintegral_congr` to reduce the goal to its premises. Introduce `p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set y' : Formalism.QuantumDeterminants.Mt k r := fun i j => (h0 * n0 * Matrix.of y) i j with hy'`. Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun m => ‖e0 ((Matrix.of x)⁻¹ * (Matrix.of p.1 * Matrix.of p.2) * γ * (Matrix.of m)⁻¹ * Matrix.of y')‖ₑ with hF`. Establish `hFm : Measurable F`. Establish `mc : Measurable (fun _ : Formalism.QuantumDeterminants.Mt k r => (fun i j => ((Matrix.of x)⁻¹ * (Matrix.of p.1 * Matrix.of p.2) * γ) i j : Formalism.QuantumDeterminants.Mt k r))` using `measurable_const`. Establish `M` using `meas_matmul (meas_matmul mc (meas_inv measurable_id)) (meas_const_mt y')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `measurable_enorm_composition he0 M`. Establish `hpl` using `param_left hW hN hz hh0 hn0 hFm`. Combine the equalities or inequalities in the displayed calculation. Establish `hSS'` using `(MatrixMultiplicationContinuity.uh_inv hS).2.2`. Establish `hmat : ∀ (Z Q : Mx k r), Z * (Matrix.of (fun i j => (h0 * n0 * Q) i j : Formalism.QuantumDeterminants.Mt k r))⁻¹ * Matrix.of y' = Z * Q⁻¹ * Matrix.of y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `Z Q`. Use `show Z * (h0 * n0 * Q)⁻¹ * (h0 * n0 * Matrix.of y) = Z * Q⁻¹ * Matrix.of y`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (h0 * n0)⁻¹, hSS', Matrix.one_mul, ← Matrix.mul_assoc]`. Simplify using `only [hF, hmat]`.
+A detailed English derivation is pending.
 -/
 theorem lam_right {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {z : Fin (2 * r + k + 1) → ℂ}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
@@ -183,11 +181,11 @@ theorem lam_right {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r) {z :
         simp only [hF, hmat]
 
 /- English proof (translation)
-Establish `hS : h0 * n0 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hh0.1 hn0.1`. Take `⟨-, -, hSS⟩` from `MatrixMultiplicationContinuity.uh_inv hS`. Use `set x' : Formalism.QuantumDeterminants.Mt k r := fun i j => (h0 * n0 * Matrix.of x) i j with hx'`. Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun m => ‖e0 ((Matrix.of x')⁻¹ * Matrix.of m * Matrix.of y)‖ₑ with hF`. Establish `hFm : Measurable F` using `measurable_enorm_composition he0 (meas_matmul (meas_matmul (meas_inv (meas_const_mt x')) measurable_id) (meas_const_mt y))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hpl` using `param_left hW hN hz hh0 hn0 hFm`. Unfold `Lam1`. Combine the equalities or inequalities in the displayed calculation. Establish `hmat : ∀ P : Mx k r, (Matrix.of x')⁻¹ * Matrix.of (fun i j => (h0 * n0 * P) i j : Formalism.QuantumDeterminants.Mt k r) = (Matrix.of x)⁻¹ * P`. Introduce `P`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (h0 * n0 * Matrix.of x)⁻¹ * (h0 * n0 * P) = (Matrix.of x)⁻¹ * P`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc (h0 * n0)⁻¹, hSS, Matrix.one_mul]`. Simplify using `only [hF, hmat]`.
+A detailed English derivation is pending.
 -/
 theorem lambda_left_translation {e0 : Mx k r → ℂ} (he0 : Continuous e0) {z : Fin (2 * r + k + 1) → ℂ}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
@@ -215,11 +213,9 @@ theorem lambda_left_translation {e0 : Mx k r → ℂ} (he0 : Continuous e0) {z :
         simp only [hF, hmat]
 
 /- English proof (translation)
-Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun m => ‖e0 ((Matrix.of x)⁻¹ * Matrix.of m * Matrix.of y)‖ₑ with hF`. Establish `hFm : Measurable F` using `measurable_enorm_composition he0 (meas_matmul (meas_matmul (meas_inv (meas_const_mt x)) measurable_id) (meas_const_mt y))`. Establish `hpr` using `param_right hW hN hz hT hh0 hn0 hFm`. Unfold `Lam1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmat : ∀ P : Mx k r, (Matrix.of x)⁻¹ * P * Matrix.of (fun i j => (h0 * n0 * Matrix.of y) i j : Formalism.QuantumDeterminants.Mt k r) = (Matrix.of x)⁻¹ * Matrix.of (fun i j => (P * (h0 * n0)) i j : Formalism.QuantumDeterminants.Mt k r) * Matrix.of y`. Introduce `P`. Use `show (Matrix.of x)⁻¹ * P * (h0 * n0 * Matrix.of y) = (Matrix.of x)⁻¹ * (P * (h0 * n0)) * Matrix.of y`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [hF, hmat]`.
-
-Use `_ = ∫⁻ p, F (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) ∂(μW.prod μN) := hpr`. Use `_ = _ := rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lambda_right_translation {e0 : Mx k r → ℂ} (he0 : Continuous e0) {z : Fin (2 * r + k + 1) → ℂ}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hW : B.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)

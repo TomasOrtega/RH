@@ -5,11 +5,11 @@ universe u_3 u_4
 namespace Bl.general_b_fact_upper_variant
 
 /- English proof (translation)
-Introduce `LL M _ _ _ T a y h p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c`. Simplify using `only [Polynomial.aeval_C, Polynomial.eval_C, Module.algebraMap_end_apply]`. Consider the case `add p q hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add, LinearMap.add_apply, hp, hq, Polynomial.eval_add, add_smul]`. Consider the case `monomial n c ih`. Establish `e : (Polynomial.C c * Polynomial.X ^ (n + 1) : Polynomial LL) = (Polynomial.C c * Polynomial.X ^ n) * Polynomial.X` using `by ring`. Rewrite using `[e, map_mul, Polynomial.aeval_X, Module.End.mul_apply, h, map_smul, ih, smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Polynomial.eval_mul, Polynomial.eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem goal1 :
   ∀ {LL : Type u_3} {M : Type u_4} [inst : Field.{u_3} LL] [inst_1 : AddCommGroup.{u_4} M]

@@ -27,13 +27,13 @@ def IndIrredLt : Prop :=
       N = ⊥ ∨ N = indSp a a' α β
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' α β hα hβ sα sβ hlt N hN hr`. Distinguish the cases in `h0 : N = ⊥`. Conclude with `Or.inl h0`. Use `Or.inr (le_antisymm hN ?_)` and prove the remaining obligations. Take `⟨F, hFN, hF0⟩` from `(Submodule.ne_bot_iff N).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hI : (parInd (two (stdE a a')) (rhoD a a' α β)).IsIrreducible` using `NB k a a' α β sα sβ hα hβ (Or.inl hlt.ne')`. Set `S : Subrepresentation (parInd (two (stdE a a')) (rhoD a a' α β))` to `⟨N.comap (toFn a a' α β), fun g f hf => hr g _ hf⟩`. Break down `hI.eq_bot_or_eq_top S with e | e` into its components or cases. Take `⟨f, rfl⟩` from `exists_toFn (hN hFN)`. Establish `hf : f ∈ S.toSubmodule` using `hFN`.
+Establish an intermediate fact. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hf` using `[e]`. Establish `hf0 : f = 0` using `hf`. Conclude with `absurd (by rw [hf0, map_zero]) hF0`. Introduce `G hG`. Take `⟨f, rfl⟩` from `exists_toFn hG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : f ∈ S.toSubmodule` using `by rw [e]; trivial`. Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem indIrredLt_of (NB : NarrowBernstein) : IndIrredLt := by
   intro k _ _ _ _ a a' α β hα hβ sα sβ hlt N hN hr
@@ -60,15 +60,13 @@ section Onto
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h0 : p 0 = 0`. Use `hlin 0 (SB X).zero_mem 0 (SB X).zero_mem 1` as an intermediate fact. Simplify using `using this`. Set `N : Submodule ℂ (GL (Fin (a + a')) k → ℂ)` to `{ carrier := {F | ∃ Φ ∈ SB X, p Φ = F} add_mem' := by`. Introduce and unpack `_ _ ⟨Φ, hΦ, rfl⟩ ⟨Φ₁, hΦ₁, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Φ + (1 : ℂ) • Φ₁, (SB X).add_mem hΦ ((SB X).smul_mem _ hΦ₁), by rw [hlin _ hΦ _ hΦ₁, one_smul]⟩`. Use the proof step `zero_mem' := ⟨0, (SB X).zero_mem, h0⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨Φ, hΦ, rfl⟩`. Conclude with `⟨0 + c • Φ, (SB X).add_mem (SB X).zero_mem ((SB X).smul_mem _ hΦ), by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlin _ (SB X).zero_mem _ hΦ, h0, zero_add]⟩ }`. Establish `hle : N ≤ indSp a a' α β`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩`. Conclude with `hin Φ hΦ`. Establish `hst : ∀ h₁, ∀ F ∈ N, rtr h₁ F ∈ N`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `h₁ _ ⟨Φ, hΦ, rfl⟩`. Conclude with `heq Φ hΦ h₁`. Break down `hI k a a' α β hα hβ sα sβ hlt N hle hst with h | h` into its components or cases. Take `⟨Φ, hΦ, hne⟩` from `hne`. Establish `hm : p Φ ∈ N` using `⟨Φ, hΦ, rfl⟩`.
-
-Rewrite `hm` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hm) hne`. Introduce `F hF`. Rewrite `hF` using `[← h]`. Conclude with `hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_of_irredLt (hI : IndIrredLt) {a a' : ℕ} {α β : kˣ →* ℂˣ} (hα : ∀ x, ‖(α x : ℂ)‖ = 1)
     (hβ : ∀ x, ‖(β x : ℂ)‖ = 1) (sα : IsSmoothChar α) (sβ : IsSmoothChar β) (hlt : a' < a)
@@ -108,11 +106,11 @@ theorem onto_of_irredLt (hI : IndIrredLt) {a a' : ℕ} {α β : kˣ →* ℂˣ} 
 end Onto
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ a a' ϖ α β ν hS hα hβ`. Establish `hν` using `isUnram_nu hS hα hβ`. Establish `hp1` using `p_lin hS hν`. Establish `hp2` using `p'_lin hS hν`. Establish `hp3` using `p_mem hS hν hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp4` using `p'_mem hS hν hα`. Establish `hu` using `p_unit hS hν hβ`. Establish `hu'` using `p'_unit hS hν hα`. Establish `sα : IsSmoothChar α` using `isSmoothChar_of_isUnram hα`. Establish `sβ : IsSmoothChar β` using `isSmoothChar_of_isUnram hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hp1, hp2, hp3, hp4, p_inv hS hν, p'_inv hS hν, fun Φ _ h₁ => p_equiv Φ h₁, fun Ψ _ h₁ => p'_equiv Ψ h₁, ?_, ?_, hu, hu'⟩` and prove the remaining obligations. Use `onto_of_irredLt hI hS.unitα hS.unitβ sα sβ hS.lt _ hp1 hp3 (fun Φ hΦ h₁ => ⟨_, omA_mem_SB ν β 1 h₁ hΦ, p_equiv Φ h₁⟩) ⟨_, indicator_int_mem_SB, fun h0 => ?_⟩` and prove the remaining obligations. Simplify `congrFun h0 1` using `[hu 1 (one_mem _)]`. Use `onto_of_irredLt hI hS.unitα hS.unitβ sα sβ hS.lt _ hp2 hp4 (fun Ψ hΨ h₁ => ⟨_, omB_mem_SB ν α 1 h₁ hΨ, p'_equiv Ψ h₁⟩) ⟨_, indicator_int_mem_SB, fun h0 => ?_⟩` and prove the remaining obligations. Simplify `congrFun h0 1` using `[hu' 1 (one_mem _)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unrMaps_of_lt (hI : IndIrredLt) : UnrMaps := by
   intro k _ _ _ _ _ _ a a' ϖ α β ν hS hα hβ
@@ -146,29 +144,23 @@ local instance measFv {F : Type} [Field F] [NumberField F] (v : Pl F) : Measurab
 local instance borelFv {F : Type} [Field F] [NumberField F] (v : Pl F) : BorelSpace (Fv F v) := ⟨rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨hv, ⟨τ⟩⟩`. Take `⟨hα, hβ, hν, hcond, -, hunr⟩` from `hC F E B X a a' v τ hT.chars`. Take `⟨hαu, hβu⟩` from `hunr hv`. Establish `hS : HidaSetting a a' (unifAt v) (chrW X.α τ) (chrW X.β τ) (chrW X.ν τ)` using `⟨GlobalTheory.SplitFlip.exists_isUnif.choose_spec, hα, hβ, hν, hT.geo.lt, hT.geo.even, hcond⟩`. Take `⟨hlin, hlin', hmem, hmem', hinv, hinv', heq, heq', hon, hon', hsph, hsph'⟩` from `hU (Fv F v) a a' _ _ _ _ hS hαu hβu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, b', c, ι, ι', gl, gl', hl, hW, hB, -, hvac, hvac', hRg, hRh, hRg', hRh', hhl⟩` from `hD F E σ B a a' G X om om' hT v τ`. Establish `hind : ∀ m n : ℕ, (intInd v : Matrix (Fin m) (Fin n) (Fv F v) → ℂ) = Set.indicator {Y | ∀ i j, Y i j ∈ 𝒪[Fv F v]} 1`. Introduce `m n`. Unfold `intInd`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq, hZ F v]`. Establish `h1 : ∀ h ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin (a + a')), pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) h = 1` using `fun h hh => by rw [hind]; exact hsph h hh`. Establish `h1' : ∀ h ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin (a + a')), pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) h = 1` using `fun h hh => by rw [hind]; exact hsph' h hh`. Establish `hiSB : intInd v ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin a) (Fin (a + a')) (Fv F v))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hvac]`. Conclude with `hW.bij.mapsTo (hT.geo.hM.vac v).1`. Establish `hnz : pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) ≠ 0` using `fun h0 => by`. Use `h1 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one this`. Take `⟨p, p', hp, hp', hon1, hon1', hinv1, hinv1', heq1, hnt, hirr1⟩` from `core hAU v G om om' _ _ _ (indSp a a' _ _) (pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ)) (pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ)) (fun Φ h Φ₁ h₁ => hlin Φ h Φ₁ h₁) (fun Φ h Φ₁ h₁ => hlin' Φ h Φ₁ h₁) (fun Φ h => hmem Φ h) (fun Φ h => hmem' Φ h) (fun Φ h => hinv Φ h) (f …`. Use `⟨oneMaps v _ p p', ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[oneMaps_p]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hon1`. Rewrite using `[oneMaps_p']`. Conclude with `hon1'`. Rewrite using `[oneMaps_p]`. Conclude with `hinv1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneMaps_p']`. Conclude with `hinv1'`. Rewrite using `[oneMaps_p, oneMaps_p']`. Conclude with `heq1`. Conclude with `hnt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[oneMaps_p]`. Conclude with `hirr1`. Introduce `_`. Rewrite using `[oneMaps_p, oneMaps_p']`. Establish `e1` using `hp _ (hT.geo.hM.vac v).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `hp' _ (hT.geo.hM'.vac v).1`. Rewrite `e1` using `[hvac]`. Rewrite `e2` using `[hvac']`. Establish `hm1` using `hmem _ hiSB`. Establish `hm2 : pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) ∈ indSp a a' (chrW X.α τ) (chrW X.β τ)`.
-
-Rewrite using `[← e2]`. Conclude with `(p' (G.M'.vac v)).2`. Establish `hd : pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) - pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) = 0` using `hIw (Fv F v) a a' _ _ _ (Submodule.sub_mem _ hm1 hm2) fun h hh => by`. Simplify using `only [Pi.sub_apply, h1 h hh, h1' h hh, sub_self]`. Use `⟨Subtype.ext ?_, fun h0 => hnz ?_⟩` and prove the remaining obligations.
-
-Use `erw [e1, e2]`. Conclude with `sub_eq_zero.1 hd`. Use `congrArg Subtype.val h0 erw [e1] at this` as an intermediate fact. Conclude with `this`. Introduce `_ hvT`.
-
-Conclude with `absurd hvT hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finSplit_of_lt (hU : UnrMaps) (hI : IndIrredLt) (hIw : IndIwasawa) (hD : Dict) (hAU : ActsUniq) (hC : ChrFacts)
     (hZ : IntEq) : FinSplit := by
@@ -237,7 +229,7 @@ theorem finSplit_of_lt (hU : UnrMaps) (hI : IndIrredLt) (hIw : IndIwasawa) (hD :
   · intro _ hvT; exact absurd hvT hv
 
 /- English proof (translation)
-Introduce `NB` and use `finSplit_of_lt (unrMaps_of_lt (indIrredLt_of NB)) (indIrredLt_of NB) induced_vanish_of_vanish_on_integral split_place_dictionary PositivityTheory.KCo.action_uniqueness split_character_facts valuation_integers_eq_completion`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finSplit_of_narrow : (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → IsUnitaryChar χ₁ → IsUnitaryChar χ₂ →

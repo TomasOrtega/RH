@@ -18,7 +18,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SgAlg.form`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_smul_left' (c : E) (x y : Fin n → E) :
     _root_.GlobalTheory.SgAlg.form σ J (c • x) y = c * _root_.GlobalTheory.SgAlg.form σ J x y := by
@@ -29,7 +29,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.SgAlg.form, dotProduct, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_smul_right' (c : E) (x y : Fin n → E) :
     _root_.GlobalTheory.SgAlg.form σ J x (c • y) = σ c * _root_.GlobalTheory.SgAlg.form σ J x y := by
@@ -40,7 +40,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SgAlg.form`. Rewrite using `[Matrix.mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_sub_left' (x x' y : Fin n → E) :
     _root_.GlobalTheory.SgAlg.form σ J (x - x') y =
@@ -52,7 +52,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [_root_.GlobalTheory.SgAlg.form]`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Simplify using `[_root_.GlobalTheory.SgAlg.form, Matrix.mulVec_add, dotProduct_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_sum_left' {ι : Type} (S : Finset ι) (g : ι → Fin n → E)
     (y : Fin n → E) :
@@ -68,7 +68,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.SgAlg.form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_conj (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j)
     (x y : Fin n → E) :
@@ -82,7 +82,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.SgAlg.pairM, _root_.GlobalTheory.SgAlg.cT, _root_.GlobalTheory.SgAlg.form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.pairM_apply' {a b : Type} [Fintype a] [Fintype b]
     (P' : Matrix (Fin n) b E) (P : Matrix (Fin n) a E)
@@ -101,7 +101,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SnMass.VolN.projF`. Apply the tactic sequence `constructor <;>`. Simplify using `[_root_.GlobalTheory.SnMass.VolN.form_sub_left', _root_.GlobalTheory.SnMass.VolN.form_sum_left', _root_.GlobalTheory.SnMass.VolN.form_smul_left', hee, hgg, hge, heg]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.projF_orth {r : ℕ} (e g : Fin r → Fin n → E)
     (hee : ∀ c d, _root_.GlobalTheory.SgAlg.form σ J (e c) (e d) = 0)
@@ -127,9 +127,9 @@ open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Establish `h1` using `hΛ v hv _ (hg _ (hs y hy))`. Rewrite `h1` using `[_root_.GlobalTheory.SnMass.VolN.form_smul_right', hσ, RingHom.mem_range]`. Rewrite using `[FractionalIdeal.mem_one_iff, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.form_mem_inv (hσ : ∀ x, σ (σ x) = x)
     {Λ : Submodule (𝓞 E) (Fin n → E)}
@@ -148,9 +148,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SnMass.VolN.projF`. Use `Λ.sub_mem (Λ.sub_mem hv (Λ.sum_mem fun c _ => ?_)) (Λ.sum_mem fun c _ => ?_)` and prove the remaining obligations. Establish `h` using `_root_.GlobalTheory.SnMass.VolN.form_mem_inv σ J hσ hΛ (inv_ne_zero (h0 c)) (_root_.GlobalTheory.SnMass.FrameDual.Stab.inv hσ (hs c) (h0 c)) (hg c) hv`. Rewrite `h` using `[inv_inv]`. Conclude with `he c _ h`.
-
-Conclude with `hg c _ (_root_.GlobalTheory.SnMass.VolN.form_mem_inv σ J hσ hΛ (h0 c) (hs c) (he c) hv)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.projF_mem (hσ : ∀ x, σ (σ x) = x)
     {Λ : Submodule (𝓞 E) (Fin n → E)}
@@ -180,7 +178,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.QuantumDeterminants.herm`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.herm_model {H B M : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * H * B = M)
     (x y : Fin n → ℂ) :
@@ -193,7 +191,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.QuantumDeterminants.herm, star_smul, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.herm_smul_right' (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x y : Fin n → ℂ) :
     _root_.Formalism.QuantumDeterminants.herm H x (c • y) = star c * _root_.Formalism.QuantumDeterminants.herm H x y := by
@@ -203,7 +201,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 variable {E : Type} [Field E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.QuantumDeterminants.herm, _root_.Formalism.QuantumDeterminants.bvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.herm_bvec_right (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ)
     (i : Fin n) :
@@ -217,7 +215,7 @@ section Model
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 /- English proof (translation)
-Simplify using `only [_root_.Formalism.QuantumDeterminants.Hpk, _root_.Formalism.QuantumDeterminants.esI, _root_.Formalism.QuantumDeterminants.eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hpk_esI_applyFlagMeasures (k r : ℕ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     _root_.Formalism.QuantumDeterminants.Hpk k r (_root_.Formalism.QuantumDeterminants.esI k r a) j = if j = _root_.Formalism.QuantumDeterminants.eI k r a then 1 else 0 := by
@@ -227,7 +225,7 @@ private theorem Hpk_esI_applyFlagMeasures (k r : ℕ) (a : Fin r) (j : Fin (2 * 
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Hpk_esI_applyFlagMeasures, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.mulVec_esI (k r : ℕ) (a : Fin r)
     (x : Fin (2 * r + k + 1) → ℂ) :
@@ -247,55 +245,49 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV γ hγ a`. Take `⟨⟨-, -, -, hτ⟩, -, ⟨hJh, hJdet⟩, hSD, ⟨-, hPP⟩, ⟨hfP, hff⟩, hSpan, hModel, hs, hAd⟩` from `hV`. Take `⟨⟨hγiso, -, -⟩, hγΛ⟩` from `hγ`. Establish `hσ : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(Classical.arbitrary (InfinitePlace E)).embedding.injective` to reduce the goal to its premises. Simplify using `only [AlgHom.coe_toRingHom, hτ, star_star]`. Establish `hee : ∀ c d, _root_.GlobalTheory.SgAlg.form (σ : E →+* E) J (fun i => P i (Fin.castSucc c)) (fun i => P i (Fin.castSucc d)) = 0`. Introduce `c d`. Establish `h` using `congrFun (congrFun hPP d.castSucc) c.castSucc`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[_root_.GlobalTheory.SnMass.VolN.pairM_apply']`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.SgAlg.TF, Matrix.diagonal_apply, Fin.castSucc_ne_last]`. Establish `hgg : ∀ c d, _root_.GlobalTheory.SgAlg.form (σ : E →+* E) J (fun i => f i c) (fun i => f i d) = 0`. Introduce `c d`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrFun (congrFun hff d) c`. Rewrite `h` using `[_root_.GlobalTheory.SnMass.VolN.pairM_apply']`. Conclude with `h`. Establish `hge : ∀ c d, _root_.GlobalTheory.SgAlg.form (σ : E →+* E) J (fun i => f i c) (fun i => P i (Fin.castSucc d)) = if c = d then 1 else 0`. Introduce `c d`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hfP d.castSucc) c`. Rewrite `h` using `[_root_.GlobalTheory.SnMass.VolN.pairM_apply', Matrix.of_apply]`. Simplify using `only [Fin.castSucc_inj] at h`. Use `h.trans ?_` and prove the remaining obligations. Distinguish the cases in `hcd : c = d`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hcd` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hcd, Ne.symm hcd]`. Establish `heg : ∀ c d, _root_.GlobalTheory.SgAlg.form (σ : E →+* E) J (fun i => P i (Fin.castSucc c)) (fun i => f i d) = if c = d then 1 else 0`. Introduce `c d`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← _root_.GlobalTheory.SnMass.VolN.form_conj (σ : E →+* E) J hσ hJh, hge]`. Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hcd, Ne.symm hcd]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : IsUnit γ.det`. Use `isUnit_iff_ne_zero.mpr fun h0 => hJdet ?_` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det hγiso`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero, eq_comm]`. Then use the resulting hypothesis. Establish `hinvΛ : ∀ v ∈ Λ, γ⁻¹ *ᵥ v ∈ Λ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Unfold `_root_.GlobalTheory.SgGlob.latMap at hγΛ`. Rewrite `hv` using `[← hγΛ]`. Take `⟨u', hu', rfl⟩` from `hv`. Simplify `hu'` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul γ hdet]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hΛ : ∀ v ∈ Λ, ∀ w ∈ Λ, _root_.GlobalTheory.SgAlg.form (σ : E →+* E) J v w ∈ (algebraMap (𝓞 E) E).range` using `fun v hv => (hSD.2 v).1 hv`. Establish `he : ∀ c, ∀ x ∈ _root_.GlobalTheory.SgGlob.dInv E (r - c.val), x • (fun i => P i (Fin.castSucc c)) ∈ Λ`. Introduce `c x hx`. Apply `hSpan` to reduce the goal to its premises. Unfold `_root_.GlobalTheory.SnMass.tupLat`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨Fin.castAdd r c.castSucc, x, by rwa [_root_.GlobalTheory.SnMass.FrameDual.frameDualTupleIdeals_castAdd], ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[_root_.GlobalTheory.SnMass.sideM]`. Establish `hg : ∀ c, ∀ x ∈ (_root_.GlobalTheory.SgGlob.dInv E (r - c.val))⁻¹, x • (fun i => f i c) ∈ Λ`. Introduce `c x hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hSpan` to reduce the goal to its premises. Unfold `_root_.GlobalTheory.SnMass.tupLat`. Use `Submodule.subset_span ⟨Fin.natAdd (r + 1) c, x, by rwa [_root_.GlobalTheory.SnMass.FrameDual.frameDualTupleIdeals_natAdd], ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[_root_.GlobalTheory.SnMass.sideM]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set u : Fin (2 * r + k + 1) → E := γ⁻¹ *ᵥ (fun i => f i a) with hu`. Establish `hγu : γ *ᵥ u = fun i => f i a`. Rewrite using `[hu, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv γ hdet, Matrix.one_mulVec]`. Use `set t : Fin (2 * r + k + 1) → E := _root_.GlobalTheory.SnMass.VolN.projF (σ : E →+* E) J (fun c i => P i (Fin.castSucc c)) (fun c i => f i c) u with ht`. Unfold `_root_.GlobalTheory.SnMass.VolN.homLat _root_.GlobalTheory.SnMass.VolN.midLat`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq]`. Use `⟨t, ⟨fun b => _root_.GlobalTheory.SnMass.VolN.projF_orth _ J _ _ hee hgg hge heg u b, fun c hc => ?_⟩, fun w l => ?_⟩` and prove the remaining obligations. Establish `hsm : c • t = _root_.GlobalTheory.SnMass.VolN.projF (σ : E →+* E) J (fun c i => P i (Fin.castSucc c)) (fun c i => f i c) (c • u)`. Simplify using `only [ht, _root_.GlobalTheory.SnMass.VolN.projF, smul_sub, Finset.smul_sum, smul_smul, _root_.GlobalTheory.SnMass.VolN.form_smul_left']`. Rewrite using `[hsm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_root_.GlobalTheory.SnMass.VolN.projF_mem _ J hσ hΛ (fun c => _root_.GlobalTheory.SgGlob.dInv E (r - c.val)) (fun c => _root_.GlobalTheory.SnMass.FrameDual.dInv_ne_zero _) (fun c => _root_.GlobalTheory.SnMass.FrameDual.stab_dInv hσ _) _ _ he hg ?_` and prove the remaining obligations. Rewrite using `[hu, ← Matrix.mulVec_smul]`. Conclude with `hinvΛ _ (hg a c hc)`. Use `set τ := w.embedding with hτdef`. Establish `hAJ : (A w)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * A w = J.map τ` using `hModel w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hAdet : IsUnit (A w).det`. Use `isUnit_iff_ne_zero.mpr fun h0 => hJdet ?_` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det hAJ`. Rewrite `h` using `[Matrix.det_mul, h0, mul_zero, ← RingHom.mapMatrix_apply, ← RingHom.map_det, eq_comm, map_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγτ : (γ.map τ)ᴴ * J.map τ * γ.map τ = J.map τ`. Establish `hc : (γ.map τ)ᴴ = (_root_.GlobalTheory.SgAlg.cT (σ : E →+* E) γ).map τ`. Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SgAlg.cT, Matrix.conjTranspose_apply, hτ]`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hγiso]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτu : γ.map τ *ᵥ (fun i => τ (u i)) = fun i => τ (f i a)`. Use extensionality with `i`. Establish `h` using `RingHom.map_mulVec τ γ u i`. Rewrite `h` using `[hγu]`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsa : ((s a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hs a).ne'`. Establish `h1` using `fun c => (hAd w c).1`. Establish `h2` using `fun c => (hAd w c).2`. Simplify using `only [← hτdef] at h1 h2`. Establish `hz1 : ∀ c, _root_.Formalism.QuantumDeterminants.Hpk k r (_root_.Formalism.QuantumDeterminants.eI k r c) (_root_.Formalism.QuantumDeterminants.wI k r l) = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `c`. Simplify using `only [_root_.Formalism.QuantumDeterminants.Hpk, _root_.Formalism.QuantumDeterminants.eI, _root_.Formalism.QuantumDeterminants.wI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hz2 : ∀ c, _root_.Formalism.QuantumDeterminants.Hpk k r (_root_.Formalism.QuantumDeterminants.esI k r c) (_root_.Formalism.QuantumDeterminants.wI k r l) = 0`. Introduce `c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [_root_.Formalism.QuantumDeterminants.Hpk, _root_.Formalism.QuantumDeterminants.esI, _root_.Formalism.QuantumDeterminants.wI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hvec : (fun i => τ (t i)) = (fun i => τ (u i)) - ∑ c, τ (_root_.GlobalTheory.SgAlg.form (σ : E →+* E) J u (fun i => f i c)) • (fun i => τ (P i (Fin.castSucc c))) - ∑ c, τ (_root_.GlobalTheory.SgAlg.form (σ : E →+* E) J u (fun i => P i (Fin.castSucc c))) • (fun i => τ (f i c))`. Use extensionality with `i`. Simplify using `[ht, _root_.GlobalTheory.SnMass.VolN.projF, Finset.sum_apply, map_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hproj : _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)) (A w *ᵥ fun i => τ (u i)) = _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.Qua …`. Rewrite using `[hvec, Matrix.mulVec_sub, Matrix.mulVec_sub, Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, h1, h2]`. Simplify using `[_root_.Formalism.QuantumDeterminants.herm, _root_.Formalism.QuantumDeterminants.bvec, star_sub, sub_dotProduct, star_sum, sum_dotProduct, star_smul, smul_dotProduct, Matrix.mulVec_single_one, hz1, hz2]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `[_root_.GlobalTheory.SnMass.VolN.gM, _root_.Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one, τ]`. Use `_ = _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) ((A w * γ.map τ * (A w)⁻¹) *ᵥ _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)) (_root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.Quant …`. Conclude with `(_root_.GlobalTheory.SnMass.VolN.mulVec_esI k r a _).trans (_root_.GlobalTheory.SnMass.VolN.herm_bvec_right _ _ _).symm`. Use `_ = _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) (A w *ᵥ (γ.map τ *ᵥ ((A w)⁻¹ *ᵥ _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)))) (((s a : ℝ) : ℂ) • (A w *ᵥ fun i => τ (f i a))) := by`. Rewrite using `[h2, smul_smul, mul_inv_cancel₀ hsa, one_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
-
-Use `_ = ((s a : ℝ) : ℂ) * _root_.Formalism.QuantumDeterminants.herm (J.map τ) (γ.map τ *ᵥ ((A w)⁻¹ *ᵥ _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l))) (fun i => τ (f i a)) := by`. Rewrite using `[_root_.GlobalTheory.SnMass.VolN.herm_smul_right', _root_.GlobalTheory.SnMass.VolN.herm_model hAJ, Complex.star_def, Complex.conj_ofReal]`. Use `_ = ((s a : ℝ) : ℂ) * _root_.Formalism.QuantumDeterminants.herm (J.map τ) ((A w)⁻¹ *ᵥ _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)) (fun i => τ (u i)) := by`. Rewrite using `[← hτu, _root_.GlobalTheory.SnMass.VolN.herm_model hγτ]`. Use `_ = ((s a : ℝ) : ℂ) * _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)) (A w *ᵥ fun i => τ (u i)) := by`.
-
-Rewrite using `[← hAJ, ← _root_.GlobalTheory.SnMass.VolN.herm_model (H := _root_.Formalism.QuantumDeterminants.Hpk k r) (B := A w) rfl, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hAdet, Matrix.one_mulVec]`. Use `_ = ((s a : ℝ) : ℂ) * _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.wI k r l)) (A w *ᵥ fun i => τ (t i)) := by`. Rewrite using `[hproj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.row_mem_homLat : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ)

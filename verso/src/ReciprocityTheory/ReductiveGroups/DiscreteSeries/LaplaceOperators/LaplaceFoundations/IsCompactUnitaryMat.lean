@@ -11,7 +11,7 @@ open Formalism.QuantumDeterminants
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `congrFun h i` as an intermediate fact. Simplify `this` using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem col_of_fix {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {c : Fin (2 * r + k + 1)}
     (h : s *ᵥ bvec c = bvec c) (i : Fin (2 * r + k + 1)) : s i c = if i = c then 1 else 0 := by
@@ -19,11 +19,11 @@ theorem col_of_fix {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} 
   simpa [bvec, Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
 /- English proof (translation)
-Take `⟨-, hf, hz⟩` from `hs`. Unfold `bl at hc`. Break down `lt_trichotomy c.val (r + k) with h1 | h1 | h1` into its components or cases. Establish `hcr : c.val < r` using `by omega`. Establish `: c = eI k r ⟨c.val, hcr⟩` using `by ext; simp [eI]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `col_of_fix (hf _).1 i`. Establish `: c = wI k r (Fin.last k)` using `by ext; simp [wI, h1]`. Rewrite using `[this]`. Conclude with `col_of_fix hz i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2` using `c.isLt`. Establish `: c = esI k r ⟨2 * r + k - c.val, by omega⟩` using `by ext; simp [esI]; omega`. Rewrite using `[this]`. Conclude with `col_of_fix (hf _).2 i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_std {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ UWset k r (z0 k r))
     {c : Fin (2 * r + k + 1)} (hc : ¬ bl k r c) (i : Fin (2 * r + k + 1)) :
@@ -41,9 +41,9 @@ theorem col_std {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs
     rw [this]; exact col_of_fix (hf _).2 i
 
 /- English proof (translation)
-Establish `hU : sᴴ * Hpk k r * s = Hpk k r` using `hs.1`. Establish `e` using `congrFun (congrFun hU c) j`. Rewrite using `[← e, Matrix.mul_apply]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_apply]`. Apply the tactic sequence `have hst : ∀ x : Fin (2 * r + k + 1), star (if x = c then (1 : ℂ) else 0) = if x = c then 1 else 0 := fun x => by split_ifs <;> simp`. Simplify using `only [Matrix.conjTranspose_apply, col_std hs hc, hst, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem key {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ UWset k r (z0 k r))
     {c : Fin (2 * r + k + 1)} (hc : ¬ bl k r c) (j : Fin (2 * r + k + 1)) :
@@ -60,23 +60,23 @@ theorem key {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s
     zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hi'` using `hi`. Unfold `bl at hi'`. Establish `hi2` using `i.isLt`. Break down `lt_trichotomy i.val (r + k) with h1 | h1 | h1` into its components or cases. Establish `hir : i.val < r` using `by omega set c : Fin (2 * r + k + 1) := ⟨2 * r + k - i.val, by omega⟩ with hcdef`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hc : ¬ bl k r c` using `by simp only [bl, hcdef]; omega`. Establish `e` using `key hs hc j`. Rewrite `e` using `[H_blcol hj, if_neg (by rintro rfl; exact hc hj)]`. Rewrite `e` using `[Finset.sum_eq_single i]`. Rewrite `e` using `[H_hi (by simp only [hcdef]; omega), if_pos (by simp only [hcdef]; omega), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm`. Introduce `b _ hb`. Rewrite using `[H_hi (by simp only [hcdef]; omega), if_neg, zero_mul]`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `only [hcdef] at h`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hc : ¬ bl k r i` using `hi`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `key hs hc j`. Rewrite `e` using `[H_blcol hj, if_neg (by rintro rfl; exact hc hj)]`. Rewrite `e` using `[Finset.sum_eq_single i]`. Rewrite `e` using `[H_mid h1, if_pos rfl]`. Establish `: s i j = -(-1 * s i j)` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← e, neg_zero]`. Introduce `b _ hb`. Rewrite using `[H_mid h1, if_neg (Ne.symm hb), zero_mul]`. Simplify using the standard rewrite rules. Use `set c : Fin (2 * r + k + 1) := ⟨2 * r + k - i.val, by omega⟩ with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ¬ bl k r c` using `by simp only [bl, hcdef]; omega`. Establish `e` using `key hs hc j`. Rewrite `e` using `[H_blcol hj, if_neg (by rintro rfl; exact hc hj)]`. Rewrite `e` using `[Finset.sum_eq_single i]`. Rewrite `e` using `[H_lo (by simp only [hcdef]; omega), if_pos (by simp only [hcdef]; omega), one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`. Introduce `b _ hb`. Rewrite using `[H_lo (by simp only [hcdef]; omega), if_neg, zero_mul]`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `ext`. Simplify using `only [hcdef] at h`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_zero {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ UWset k r (z0 k r))
     {i j : Fin (2 * r + k + 1)} (hi : ¬ bl k r i) (hj : bl k r j) : s i j = 0 := by
@@ -123,11 +123,11 @@ def blk (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Matrix (F
   fun q q' => s (eB k r q) (eB k r q')
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `q q'`. Establish `hU : sᴴ * Hpk k r * s = Hpk k r` using `hs.1`. Establish `e` using `congrFun (congrFun hU (eB k r q)) (eB k r q')`. Rewrite `e` using `[H_blrow (bl_eB q), Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[sumB _ (fun p hp => by rw [row_zero hs hp (bl_eB q'), mul_zero])]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, H_blcol (bl_eB _), mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.star_apply, blk]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eB_inj.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_unitary {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UWset k r (z0 k r)) : blk s ∈ Matrix.unitaryGroup (Fin k) ℂ := by
@@ -145,9 +145,9 @@ theorem blk_unitary {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   simp [eB_inj.eq_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hj : bl k r j`. Distinguish the cases in `hi : bl k r i`. Take `⟨qi, rfl⟩` from `ex_eB hi`. Take `⟨qj, rfl⟩` from `ex_eB hj`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[bw_ee]`. Both sides reduce to the same expression. Rewrite using `[bw_off _ hi hj, row_zero hs hi hj]`. Rewrite using `[bw_col _ _ hj, col_std hs hj]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_blockW {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UWset k r (z0 k r)) : s = Formalism.MainNotions.S.blockW k r (blk s) := by
@@ -161,9 +161,9 @@ theorem eq_blockW {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   · rw [bw_col _ _ hj, col_std hs hj]
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.pi Set.univ (fun _ : Fin k => Set.pi Set.univ (fun _ : Fin k => Metric.closedBall (0 : ℂ) 1)) : Set (Matrix (Fin k) (Fin k) ℂ))` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall 0 1))`. Establish `hC : IsClosed (unitary (Matrix (Fin k) (Fin k) ℂ) : Set (Matrix (Fin k) (Fin k) ℂ))`. Establish `e : (unitary (Matrix (Fin k) (Fin k) ℂ) : Set (Matrix (Fin k) (Fin k) ℂ)) = {U : Matrix (Fin k) (Fin k) ℂ | Uᴴ * U = 1} ∩ {U | U * Uᴴ = 1}`. Use extensionality with `U`. Simplify using `[Unitary.mem_iff, Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.matrix_mul continuous_id.matrix_conjTranspose) continuous_const)`. Use `hK.of_isClosed_subset hC ?_` and prove the remaining obligations. Introduce `U hU i _ j _`. Simplify using `using entry_norm_bound_of_unitary (n := Fin k) (𝕜 := ℂ) hU i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCompact_unitary_mat :
     IsCompact (unitary (Matrix (Fin k) (Fin k) ℂ) : Set (Matrix (Fin k) (Fin k) ℂ)) := by
@@ -186,14 +186,14 @@ theorem isCompact_unitary_mat :
 attribute [local instance] measUG
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borelUG : BorelSpace (unitary (Matrix (Fin k) (Fin k) ℂ)) := ⟨rfl⟩
 
 attribute [local instance] borelUG
 
 /- English proof (translation)
-The claim follows from `isCompact_iff_compactSpace.mp isCompact_unitary_mat`.
+A detailed English derivation is pending.
 -/
 theorem compactUG : CompactSpace (unitary (Matrix (Fin k) (Fin k) ℂ)) :=
   isCompact_iff_compactSpace.mp isCompact_unitary_mat
@@ -204,7 +204,7 @@ def FW (k r : ℕ) (u : unitary (Matrix (Fin k) (Fin k) ℂ)) : Mt k r :=
   fun i j => Formalism.MainNotions.S.blockW k r u.1 i j
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [FW, Formalism.MainNotions.S.blockW]`. Use `split_ifs`. Apply the tactic sequence `all_goals first | exact continuous_subtype_val.matrix_elem _ _ | exact continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contFW : Continuous (FW k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -213,7 +213,7 @@ theorem contFW : Continuous (FW k r) := by
   all_goals first | exact continuous_subtype_val.matrix_elem _ _ | exact continuous_const
 
 /- English proof (translation)
-Establish `hc : Continuous (lmulM (k` using `k) (r := r) s) := by`. Unfold `lmulM`. Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `hc.measurable`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_lmulM' (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (lmulM (k := k) (r := r) s) := by
@@ -223,17 +223,15 @@ theorem measurable_lmulM' (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
   exact hc.measurable
 
 /- English proof (translation)
-Use `haveI : Nonempty (unitary (Matrix (Fin k) (Fin k) ℂ)) := ⟨1⟩`. Set `ν : Measure (unitary (Matrix (Fin k) (Fin k) ℂ))` to `Measure.haarMeasure ⊤`. Establish `hν : ν Set.univ = 1`. Use `Measure.haarMeasure_self (G := unitary (Matrix (Fin k) (Fin k) ℂ)) (K₀ := ⊤)` as an intermediate fact. Simplify `this` using `[TopologicalSpace.PositiveCompacts.coe_top]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hFm : Measurable (FW k r)` using `contFW.measurable`. Establish `huniv : ν.map (FW k r) Set.univ = 1`. Rewrite using `[Measure.map_apply hFm MeasurableSet.univ]`. Simplify using `using hν`. Use `haveI : IsProbabilityMeasure (ν.map (FW k r)) := ⟨huniv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ν.map (FW k r), ⟨inferInstance, ?_, ?_, ?_⟩, huniv⟩` and prove the remaining obligations. Introduce `h`. Rewrite `huniv` using `[h]`. Simplify using `at huniv`. Establish `hsub : {x : Mt k r | Matrix.of x ∉ UWset k r (z0 k r)} ⊆ (Set.range (FW k r))ᶜ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `x hx ⟨u, rfl⟩`. Conclude with `hx (mem_UW u.2)`. Establish `hmeas : MeasurableSet (Set.range (FW k r))ᶜ` using `(isCompact_range contFW).isClosed.measurableSet.compl`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs`. Set `u0 : unitary (Matrix (Fin k) (Fin k) ℂ)` to `⟨blk s, blk_unitary hs⟩`. Establish `hcomp : lmulM s ∘ FW k r = FW k r ∘ (fun u => u0 * u)`. Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `(s * Formalism.MainNotions.S.blockW k r u.1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = (Formalism.MainNotions.S.blockW k r (blk s * u.1) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`.
-
-Rewrite using `[blockW_mul, ← eq_blockW hs]`. Rewrite using `[Measure.map_map (measurable_lmulM' s) hFm, hcomp, ← Measure.map_map hFm (continuous_const_mul u0).measurable, map_mul_left_eq_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (k r : ℕ) : ∃ μW : Measure (Mt k r),
     Formalism.MainNotions.S.IsHaarOn (UWset k r (z0 k r)) μW ∧ μW Set.univ = 1 := by

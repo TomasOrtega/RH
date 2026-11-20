@@ -27,7 +27,7 @@ private noncomputable def glue {ι : Type} {R : ι → Type} [∀ i, CommRing (R
     rw [this]; split_ifs <;> rfl
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp (continuous_apply i)).matrix_elem a b`. Use `continuous_pi fun a => continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_coe_inv.comp (continuous_apply i)).matrix_elem a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem glue_cont {ι : Type} {R : ι → Type} [∀ i, CommRing (R i)] [∀ i, TopologicalSpace (R i)] {n : ℕ} :
     Continuous (glue : (∀ i, GL (Fin n) (R i)) → GL (Fin n) (∀ i, R i)) := by
@@ -38,9 +38,9 @@ private theorem glue_cont {ι : Type} {R : ι → Type} [∀ i, CommRing (R i)] 
     exact (Units.continuous_coe_inv.comp (continuous_apply i)).matrix_elem a b
 
 /- English proof (translation)
-Use `⟨fun a => if ha : ∃ i, wi i = a then ha.choose_spec ▸ ψ ha.choose else d a, fun i => ?_, fun a ha => dif_neg ha⟩` and prove the remaining obligations. Establish `key : ∀ j (hj : wi j = wi i), (hj ▸ ψ j : X (wi i)) = ψ i`. Introduce `j hj`. Take `rfl` from `hw hj`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Establish `ha : ∃ j, wi j = wi i` using `⟨i, rfl⟩`. Simplify using `only [dif_pos ha]`. Conclude with `key _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_ext {ι A : Type*} {X : A → Type*} (wi : ι → A) (hw : Function.Injective wi)
     (ψ : ∀ i, X (wi i)) (d : ∀ a, X a) :
@@ -56,9 +56,9 @@ private theorem exists_ext {ι A : Type*} {X : A → Type*} (wi : ι → A) (hw 
   exact key _ _
 
 /- English proof (translation)
-Establish `h` using `finprod_mem_inter_mul_diff' (f := X) (s := Set.univ) (Set.range wi) (hX.subset Set.inter_subset_right)`. Rewrite `h` using `[Set.univ_inter, finprod_mem_univ, finprod_mem_range hw, finprod_eq_prod_of_fintype]`. Rewrite using `[← h]`. Use `congr 1`. Use `finprod_congr fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_diff, Set.mem_univ, true_and]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem finprod_split {A M : Type*} [CommMonoid M] {r : ℕ} (wi : Fin r → A) (hw : Function.Injective wi)
     (X : A → M) (hX : (Function.mulSupport X).Finite) :
@@ -76,7 +76,7 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(continuous_apply w).comp (Units.continuous_val.matrix_elem a b)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(continuous_apply w).comp (Units.continuous_coe_inv.matrix_elem a b)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cmp_cont {v : Pl F} (w : PlacesOver E v) : Continuous (GM.cmp (n := n) w) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -86,18 +86,18 @@ private theorem cmp_cont {v : Pl F} (w : PlacesOver E v) : Continuous (GM.cmp (n
     exact (continuous_apply w).comp (Units.continuous_coe_inv.matrix_elem a b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem liesOver_under (w : Pl E) : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+A detailed English derivation is pending.
 -/
 private theorem under_eq {v : Pl F} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext w.2.over.symm
 
 /- English proof (translation)
-Use `(hS.biUnion fun v _ => Set.finite_range (Subtype.val : PlacesOver E v → Pl E)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `Set.mem_biUnion hw ⟨⟨w, liesOver_under w⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem finite_under (S : Set (Pl F)) (hS : S.Finite) :
     {w : Pl E | w.under (𝓞 F) ∈ S}.Finite := by
@@ -106,11 +106,11 @@ private theorem finite_under (S : Set (Pl F)) (hS : S.Finite) :
   exact Set.mem_biUnion hw ⟨⟨w, liesOver_under w⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hd : Cartan.diagPow (w.adicCompletion E) n (0 : Fin n → ℤ) = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Cartan.coe_diagPow]`. Simplify using the standard rewrite rules. Use extensionality with `g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[hd, mul_one]`. Conclude with `mul_mem ha hb`. Introduce `hg`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg, 1, one_mem _, by rw [hd, mul_one, mul_one]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem iwCoset_zero (w : Pl E) :
     GM.iwCoset w (0 : Fin n → ℤ) = (GLnLocal.iwahori (w.adicCompletion E) n : Set (Gw n w)) := by
@@ -127,9 +127,9 @@ private theorem iwCoset_zero (w : Pl E) :
     exact ⟨g, hg, 1, one_mem _, by rw [hd, mul_one, mul_one]⟩
 
 /- English proof (translation)
-Establish `ho` using `GLnLocal.isOpen_iwahori (w.adicCompletion E) n`. Establish `hc` using `GLnLocal.isCompact_iwahori (w.adicCompletion E) n`. Use `⟨?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ (GLnLocal.iwahori (w.adicCompletion E) n : Set (Gw n w))`. Conclude with `⟨_, ho, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]; rfl⟩`. Conclude with `⟨_, hc.isClosed.isOpen_compl, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iw_test (w : Pl E) :
     IsLocallyConstant (((GLnLocal.iwahori (w.adicCompletion E) n : Set (Gw n w))).indicator (1 : Gw n w → ℂ)) ∧
@@ -145,20 +145,18 @@ private theorem iw_test (w : Pl E) :
       rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩
 
 /- English proof (translation)
-The claim follows from `funext fun _ => finprod_eq_prod_of_fintype _`.
+A detailed English derivation is pending.
 -/
 private theorem prodFn_eq {v : Pl F} (h : ∀ w : PlacesOver E v, GL (Fin n) (w.1.adicCompletion E) → ℂ)
     [Fintype (PlacesOver E v)] : GM.prodFn h = fun g => ∏ w, h w (GM.cmp w g) :=
   funext fun _ => finprod_eq_prod_of_fintype _
 
 /- English proof (translation)
-Use `haveI : Fintype (PlacesOver E v) := Fintype.ofFinite _`. Rewrite using `[prodFn_eq]`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ T : Finset (PlacesOver E v), IsLocallyConstant fun g : GL (Fin n) (CompletionsOver E v) => ∏ w ∈ T, h w (GM.cmp w g)`. Introduce `T`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `IsLocallyConstant.const (1 : ℂ)`. Consider the case `insert a s ha ih`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.prod_insert ha]`. Conclude with `((hc a).1.comp_continuous (cmp_cont a)).mul ih`. Conclude with `key _`. Use `haveI : T2Space (CompletionsOver E v) := Pi.t2Space haveI : T2Space (GL (Fin n) (CompletionsOver E v)) := Units.instT2Space haveI : R1Space (GL (Fin n) (CompletionsOver E v)) := T2Space.r1Space`. Use `HasCompactSupport.intro ((isCompact_univ_pi fun w => (hc w).2.isCompact).image glue_cont) fun g hg => ?_` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hne`. Use `hg ⟨fun w => GM.cmp w g, fun w _ => subset_tsupport _ ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => hne (Finset.prod_eq_zero (Finset.mem_univ w) h0)`. Conclude with `Units.ext (Matrix.ext fun a b => rfl)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem prodFn_test {v : Pl F} (h : ∀ w : PlacesOver E v, GL (Fin n) (w.1.adicCompletion E) → ℂ)
     (hc : ∀ w, IsLocallyConstant (h w) ∧ HasCompactSupport (h w)) :
@@ -187,9 +185,9 @@ private theorem prodFn_test {v : Pl F} (h : ∀ w : PlacesOver E v, GL (Fin n) (
     · exact Units.ext (Matrix.ext fun a b => rfl)
 
 /- English proof (translation)
-Use `haveI : Fintype (PlacesOver E v) := Fintype.ofFinite _`. Use function extensionality and compare the values at `g`. Rewrite using `[GM.prodFn, finprod_eq_prod_of_fintype]`. Distinguish the cases in `hg : g ∈ unitSet E n v`. Rewrite using `[Set.indicator_of_mem hg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun w _ => Set.indicator_of_mem (hg w) _`. Rewrite using `[Set.indicator_of_notMem hg]`. Take `⟨w, hw⟩` from `not_forall.1 hg`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (Set.indicator_of_notMem hw _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem unit_prod (v : Pl F) :
     (GM.prodFn fun w : PlacesOver E v => (GLnLocal.integralGL (w.1.adicCompletion E) n : Set (GL (Fin n) (w.1.adicCompletion E))).indicator (1 : GL (Fin n) (w.1.adicCompletion E) → ℂ)) =
@@ -205,7 +203,7 @@ private theorem unit_prod (v : Pl F) :
     exact Finset.prod_eq_zero (Finset.mem_univ w) (Set.indicator_of_notMem hw _)
 
 /- English proof (translation)
-Use `prodFn_test _ fun w => ?_` and prove the remaining obligations. Rewrite using `[ite_self, iwCoset_zero]`. Conclude with `iw_test w.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwFn_test {q : Pl F} (w₀ : PlacesOver E q) :
     IsLocallyConstant (GM.iwFn w₀ (0 : Fin n → ℤ)) ∧ HasCompactSupport (GM.iwFn w₀ (0 : Fin n → ℤ)) := by
@@ -219,9 +217,9 @@ private noncomputable def dflt (T : Ty σ n q w₀) (w : Pl E) : Gw n w → ℂ 
   (T.J w : Set (Gw n w)).indicator fun x => conj (T.χ w x)
 
 /- English proof (translation)
-Unfold `dflt`. Rewrite using `[h]`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (T.J w : Set (Gw n w))`. Simplify using `[Set.indicator_of_mem hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dflt_of_triv (T : Ty σ n q w₀) (w : Pl E) (h : T.χ w = 1) :
     dflt T w = (T.J w : Set (Gw n w)).indicator 1 := by
@@ -233,25 +231,25 @@ private theorem dflt_of_triv (T : Ty σ n q w₀) (w : Pl E) (h : T.χ w = 1) :
   · simp [Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-The claim follows from `Finset.mem_filter.1 hv`.
+A detailed English derivation is pending.
 -/
 private theorem sp_split (T : Ty σ n q w₀) {v : Pl F} (hv : v ∈ T.sp) : v ∈ T.S ∧ GM.Split E v :=
   Finset.mem_filter.1 hv
 
 /- English proof (translation)
-Establish `hother : ∀ (u : PlacesOver E v), v ∉ T.sp → h u.1 = dflt T u.1` using `fun u hv => by`. Use `h2 u.1 fun v' hv' e => hv ?_` and prove the remaining obligations. Establish `: v' = v` using `by rw [← under_eq (T.mk' v'), ← e, under_eq u]`. Rewrite using `[← this]` and apply the resulting hypothesis. Distinguish the cases in `hsp : v ∈ T.sp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(hF.split v hsp).1]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = T.mk' v`. Substitute `hu` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Function.update_self, h1 v hsp]`. Rewrite using `[Function.update_of_ne hu, h2 u.1 fun v' hv' e => hu ?_, dflt_of_triv T u.1 (T.triv v (sp_split T hsp).2 u)]`. Establish `: v' = v` using `by rw [← under_eq (T.mk' v'), ← e, under_eq u]`. Substitute `this` using the available equality. Conclude with `Subtype.ext e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hS : v ∈ T.S`. Establish `hns : ¬ GM.Split E v` using `fun hs => hsp (Finset.mem_filter.2 ⟨hS, hs⟩)`. Rewrite using `[hF.nonsplit v hS hns]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hother u hsp]`. Both sides reduce to the same expression. Distinguish the cases in `hvq : v = q`. Substitute `hvq` using the available equality. Rewrite using `[L.at_q.1]`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `GM.iwFn`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[hother u hsp, dflt_of_triv T u.1 (T.triv v hq u), ite_self, iwCoset_zero, T.at_q u]`. Establish `hvS : v ∉ L.S` using `by rw [hF.S_eq]; exact hS`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(L.off v hvS hvq).1, ← unit_prod v]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `hu` using `T.off u.1 (by rw [under_eq]; exact hS) (by rw [under_eq]; exact hvq)`. Rewrite using `[hother u hsp, dflt_of_triv T u.1 hu.2, hu.1]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem phi_eq (T : Ty σ n q w₀) (L : GM.Loc σ n q w₀) (ψ : ∀ v : Pl F, Gw n (T.mk' v).1 → ℂ)
     (hF : T.Fits L ψ) (hq : GM.Split E q) (h : ∀ w : Pl E, Gw n w → ℂ)
@@ -301,29 +299,25 @@ end UpperTheory.FiniteProductSplitting
 
 open UpperTheory.FiniteProductSplitting in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n hn μ _ νE _ aE q w₀ hq T`. Establish `hfin : {w : Pl E | w.under (𝓞 F) ∈ ((insert q T.S : Finset (Pl F)) : Set (Pl F))}.Finite` using `finite_under _ (Finset.finite_toSet _)`. Establish `hcof : ∀ᶠ w : Pl E in Filter.cofinite, w.under (𝓞 F) ∉ T.S ∧ w.under (𝓞 F) ≠ q`. Use `Filter.eventually_cofinite.2 (hfin.subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_and_or, not_not] at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe]`. The claim follows by propositional logic. Take `⟨κ, hκ, H⟩` from `tensFactor E n hn μ νE T.J T.χ (fun w => ⟨T.co w, T.chr w⟩) (hcof.mono fun w hw => T.off w hw.1 hw.2)`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Introduce `L ψ hF r p hp hsp _ _ mm hmm B hB g hg`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpS : ∀ i, p i ∈ T.sp` using `fun i => (hsp _).2 ⟨i, rfl⟩`. Establish `hwi : Function.Injective fun i => (T.mk' (p i)).1` using `fun i j e => hp (by`. Establish `e' : (T.mk' (p i)).1 = (T.mk' (p j)).1` using `e`. Rewrite using `[← under_eq (T.mk' (p i)), e', under_eq])`. Take `⟨h, hh1, hh2⟩` from `exists_ext (X := fun w : Pl E => Gw n w → ℂ) (fun i => (T.mk' (p i)).1) hwi (fun i => ψ (p i)) (dflt T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ v ∈ T.sp, h (T.mk' v).1 = ψ v` using `fun v hv => by`. Take `⟨i, rfl⟩` from `(hsp v).1 hv`. Conclude with `hh1 i`. Establish `h2 : ∀ w : Pl E, (∀ v ∈ T.sp, w ≠ (T.mk' v).1) → h w = dflt T w` using `fun w hw => hh2 w fun ⟨i, e⟩ => hw _ (hpS i) e.symm`. Establish `hφ` using `phi_eq T L ψ hF hq h h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ᶠ w : Pl E in Filter.cofinite, h w = (GLnLocal.integralGL (w.adicCompletion E) n : Set (GL (Fin n) (w.adicCompletion E))).indicator 1`. Use `hcof.mono fun w hw => ?_` and prove the remaining obligations. Establish `hu` using `T.off w hw.1 hw.2`. Establish `hne : ∀ v ∈ T.sp, w ≠ (T.mk' v).1` using `fun v hv e => hw.1 (by`. Rewrite using `[e, under_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(sp_split T hv).1)`. Rewrite using `[h2 w hne, dflt_of_triv T w hu.2, hu.1]`. Take `⟨e, -, he, ht⟩` from `GM.avgE F E n hn (insert q L.S) aE L.φ (fun v hv => by`. Break down `Finset.mem_insert.1 hv with hvq | hv` into its components or cases. Rewrite using `[hvq, L.at_q.1]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `iwFn_test w₀`. Conclude with `⟨(L.test v hv).1, (L.test v hv).2.1⟩)`. Use the proof step `(fun v hv => (L.off v (fun h => hv (Finset.mem_insert_of_mem h)) (fun h => hv (by rw [h]; exact Finset.mem_insert_self _ _))).1)`. Establish `hgt : g = tens aE e`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hg, ht]`. Establish `heform : ∀ x, e x = (∏ i, ψ (p i) (finAt (T.mk' (p i)).1 (finEmb E n x))) * ∏ᶠ u ∉ Set.range (fun i => (T.mk' (p i)).1), (T.J u : Set (Gw n u)).indicator (fun g => conj (T.χ u g)) (finAt u (finEmb E n x))`. Introduce `x`. Establish `e1 : e x = ∏ᶠ w, h w (finAt w (finEmb E n x))`. Rewrite using `[he x, ← UpperTheory.ConvolutionTheory.Tf.tensEProd F E n h hint (finEmb E n x)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `finprod_congr fun v => by rw [hφ v]`. Establish `hsupp : (Function.mulSupport fun w : Pl E => h w (finAt w (finEmb E n x))).Finite`. Establish `hev : ∀ᶠ w : Pl E in Filter.cofinite, h w (finAt w (finEmb E n x)) = 1` using `by filter_upwards [hint, AdelicGLn.eventually_mem_integralGL E n (finEmb E n x)] with w a1 a2`. Rewrite using `[a1, Set.indicator_of_mem (by exact a2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Filter.eventually_cofinite.1 hev`. Rewrite using `[e1, finprod_split _ hwi _ hsupp]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hh1 i]`. Use `finprod_congr fun u => finprod_congr fun hu => ?_` and prove the remaining obligations.
-
-Rewrite using `[hh2 u hu]`. Both sides reduce to the same expression. Establish `main` using `H aE r (fun i => (T.mk' (p i)).1) hwi mm hmm (fun i => ψ (p i)) B (fun i => ⟨(hF.test _ (hpS i)).1, fun u hu g' => by`. Establish `hχ` using `T.triv (p i) (sp_split T (hpS i)).2 (T.mk' (p i))`. Rewrite using `[((hF.test _ (hpS i)).2 u hu g').2, hχ]`.
-
-Use the proof step `simp, hB i⟩) e heform`. Rewrite using `[hgt]`. Conclude with `main`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_pos_const_typed_test_function_bound :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n →

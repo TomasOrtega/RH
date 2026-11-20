@@ -7,7 +7,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGermLowGerm
 namespace Formalism.FourierDecayAlt.P.CutBP
 
 /- English proof (translation)
-The claim follows from `germDataLowAll_of_parts low_level_gram low_level_fibre low_level_continuity low_level_germ`.
+A detailed English derivation is pending.
 -/
 theorem germ_data_low_levels : GermDataLowAll :=
   germDataLowAll_of_parts low_level_gram low_level_fibre low_level_continuity low_level_germ

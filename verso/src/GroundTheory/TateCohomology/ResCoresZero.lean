@@ -26,7 +26,7 @@ lemma coe_invariantsRes (f : H →* G) {A : Rep.{u} k G} (x : A.ρ.invariants) :
 variable (S : Subgroup G) {A : Rep.{u} k G}
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `congrArg (A.ρ g) (y.2 ⟨s, hs⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ρ_mul_of_mem (y : (res S.subtype A).ρ.invariants) (g : G) {s : G} (hs : s ∈ S) :
     A.ρ (g * s) (y : A) = A.ρ g y := by
@@ -46,7 +46,7 @@ lemma cosetSMul_mk (y : (res S.subtype A).ρ.invariants) (g : G) :
     cosetSMul S y (g : G ⧸ S) = A.ρ g y := rfl
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with | H g =>`. Rewrite using `[MulAction.Quotient.smul_coe, smul_eq_mul, cosetSMul_mk, cosetSMul_mk, map_mul, Module.End.mul_apply]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities.
 -/
 lemma cosetSMul_smul (y : (res S.subtype A).ρ.invariants) (h : G) (q : G ⧸ S) :
     cosetSMul S y (h • q) = A.ρ h (cosetSMul S y q) := by
@@ -62,7 +62,7 @@ noncomputable def transferSum (y : (res S.subtype A).ρ.invariants) : A :=
   ∑ q : G ⧸ S, cosetSMul S y q
 
 /- English proof (translation)
-Introduce `h` and use `by classical simp only [transferSum, map_sum] rw [show (∑ q : G ⧸ S, A.ρ h (cosetSMul S y q)) = ∑ q : G ⧸ S, cosetSMul S y (h • q) from Finset.sum_congr rfl fun q _ => (cosetSMul_smul S y h q).symm] exact Fintype.sum_equiv (MulAction.toPerm h) _ _ fun _ => rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma transferSum_mem_invariants (y : (res S.subtype A).ρ.invariants) :
     transferSum S y ∈ A.ρ.invariants := fun h => by
@@ -103,7 +103,7 @@ lemma coindConst_apply (B : Rep.{u} k S) (y : B.ρ.invariants) (g : G) :
 variable [Fintype G] [Fintype S]
 
 /- English proof (translation)
-The claim follows from `homologyMap_tateZeroClass _ y _ (funext fun v => Subtype.ext (funext fun g => shapiroCochains_hom_f_zero_const S B y y.2 v g))`.
+A detailed English derivation is pending.
 -/
 lemma homologyMap_tateShapiroMap_tateZeroClass (B : Rep.{u} k S) (y : B.ρ.invariants) :
     (HomologicalComplex.homologyMap (tateShapiroMap S B) 0).hom (tateZeroClass B y) =
@@ -112,7 +112,7 @@ lemma homologyMap_tateShapiroMap_tateZeroClass (B : Rep.{u} k S) (y : B.ρ.invar
     shapiroCochains_hom_f_zero_const S B y y.2 v g))
 
 /- English proof (translation)
-Use `(cancel_mono (tateCoindIso S B n).hom).1 ?_` and prove the remaining obligations. Conclude with `(Iso.inv_hom_id _).trans (homologyMap_tateShapiroMap_comp_tateCoindIso_hom S B n).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma tateCoindIso_inv (B : Rep.{u} k S) (n : ℤ) :
     (tateCoindIso S B n).inv = HomologicalComplex.homologyMap (tateShapiroMap S B) n := by
@@ -120,7 +120,7 @@ lemma tateCoindIso_inv (B : Rep.{u} k S) (n : ℤ) :
   exact (Iso.inv_hom_id _).trans (homologyMap_tateShapiroMap_comp_tateCoindIso_hom S B n).symm
 
 /- English proof (translation)
-Rewrite using `[← homologyMap_tateShapiroMap_tateZeroClass, ← tateCoindIso_inv]`. Conclude with `Iso.inv_hom_id_apply (tateCoindIso S B 0) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCoindIso_hom_tateZeroClass (B : Rep.{u} k S) (y : B.ρ.invariants) :
     (tateCoindIso S B 0).hom.hom (tateZeroClass (coind S.subtype B) (coindConst S B y)) =
@@ -129,7 +129,7 @@ theorem tateCoindIso_hom_tateZeroClass (B : Rep.{u} k S) (y : B.ρ.invariants) :
   exact Iso.inv_hom_id_apply (tateCoindIso S B 0) _
 
 /- English proof (translation)
-Rewrite using `[tateCoindIso_inv]`. Conclude with `homologyMap_tateShapiroMap_tateZeroClass S B y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCoindIso_inv_tateZeroClass (B : Rep.{u} k S) (y : B.ρ.invariants) :
     (tateCoindIso S B 0).inv.hom (tateZeroClass B y) =
@@ -144,7 +144,7 @@ section ResCores
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G] (S : Subgroup G) [Fintype S]
 
 /- English proof (translation)
-Rewrite using `[tateRes_app, ModuleCat.hom_comp, LinearMap.comp_apply]`. Use `erw [tateCohomologyFunctor_map_tateZeroClass]`. Establish `h : ((Rep.invariantsFunctor k G).map ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.app A)).hom x = coindConst S (res S.subtype A) (invariantsRes S.subtype x)` using `Subtype.ext (Subtype.ext (funext fun g => x.2 g))`. Rewrite using `[h]`. Conclude with `tateCoindIso_hom_tateZeroClass S (res S.subtype A) (invariantsRes S.subtype x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateRes_tateZeroClass (A : Rep.{u} k G) (x : A.ρ.invariants) :
     ((tateRes S 0).app A).hom (tateZeroClass A x) =
@@ -161,9 +161,9 @@ theorem tateRes_tateZeroClass (A : Rep.{u} k G) (x : A.ρ.invariants) :
 omit [Fintype S] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((Rep.indResAdjunction k S.subtype).counit.app A).hom (coindToInd (res S.subtype A) (coindConst S (res S.subtype A) y)) = _`. Rewrite using `[coindToInd_apply, map_sum, transferSum]`. Use `(Finset.sum_congr (by convert rfl) fun x _ => ?_ : _ = ∑ x : Quotient (QuotientGroup.rightRel S), cosetSMul S y (QuotientGroup.quotientRightRelEquivQuotientLeftRel S x)).trans (Equiv.sum_comp _ _)` and prove the remaining obligations. Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Quotient.liftOn_mk, indResAdjunction_counit_app_hom_mk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma counit_indCoindIso_inv_coindConst [DecidableRel (QuotientGroup.rightRel S)]
     (A : Rep.{u} k G) (y : (res S.subtype A).ρ.invariants) :
@@ -182,7 +182,7 @@ lemma counit_indCoindIso_inv_coindConst [DecidableRel (QuotientGroup.rightRel S)
     rfl
 
 /- English proof (translation)
-Rewrite using `[tateCores_app, tateIndIso_inv_eq, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_comp, LinearMap.comp_apply, tateCoindIso_inv_tateZeroClass, tateCohomologyFunctor_map_tateZeroClass, tateCohomologyFunctor_map_tateZeroClass]`. Use `congr 1`. Conclude with `Subtype.ext (counit_indCoindIso_inv_coindConst S A y)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tateCores_tateZeroClass (A : Rep.{u} k G) (y : (res S.subtype A).ρ.invariants) :
     ((tateCores S 0).app A).hom (tateZeroClass (res S.subtype A) y) =

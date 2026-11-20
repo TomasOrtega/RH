@@ -10,9 +10,9 @@ namespace GlobalTheory.TypeAsm.HasLabelling
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp [frameExp]`. Consider the case `succ l ih`. Establish `h1 : frameExp r (l + 1) = frameExp r l + (r + 1 - (l + 1))`. Unfold `frameExp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `h2 : ((r + 1 - (l + 1) : ℕ) : ℤ) = (r : ℤ) - l` using `by omega`. Rewrite using `[h1, Nat.cast_add, ih (by omega), Finset.sum_range_succ, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frameExp_cast (r l : ℕ) (hl : l ≤ r + 1) :
     ((frameExp r l : ℕ) : ℤ) = ∑ a ∈ Finset.range l, ((r : ℤ) - a) := by
@@ -26,7 +26,7 @@ theorem frameExp_cast (r l : ℕ) (hl : l ≤ r + 1) :
     rw [h1, Nat.cast_add, ih (by omega), Finset.sum_range_succ, h2]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ x : ℚ) : ℝ)| * (Ideal.absNorm (dI D) : ℝ) ^ (-(2 * (frameExp r l : ℤ))) := by unfold Nloc rw [map_mul, FractionalIdeal.absNorm_span_singleton (𝓞 D.host.E), map_zpow₀, show ddS D = ((dI D : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.ho …`.
+A detailed English derivation is pending.
 -/
 theorem nloc_eq (D : D7) (r l : ℕ) (x : D.host.E) :
     ((Nloc (ddS D) r l x : ℚ) : ℝ) =
@@ -39,16 +39,14 @@ theorem nloc_eq (D : D7) (r l : ℕ) (x : D.host.E) :
   rfl
 
 /- English proof (translation)
-Use `Algebra.norm_eq_of_algEquiv ((starRingAut : D.host.E ≃+* D.host.E).toRatAlgEquiv) x` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_star (D : D7) (x : D.host.E) : Algebra.norm ℚ (star x) = Algebra.norm ℚ x := by
   have := Algebra.norm_eq_of_algEquiv ((starRingAut : D.host.E ≃+* D.host.E).toRatAlgEquiv) x
   simpa using this
 
 /- English proof (translation)
-Establish `hA : (Ideal.absNorm (dI D) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hd)` after adjusting the coercions. Rewrite using `[nloc_eq, mul_ne_zero_iff, abs_ne_zero, Rat.cast_ne_zero, Algebra.norm_ne_zero_iff]`. Simplify using `only [ne_eq, zpow_neg, inv_eq_zero, and_iff_left_iff_imp]`. Introduce `_`.
-
-Conclude with `zpow_ne_zero _ hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nloc_ne_zero (D : D7) (hd : dI D ≠ ⊥) (r l : ℕ) (x : D.host.E) :
     ((Nloc (ddS D) r l x : ℚ) : ℝ) ≠ 0 ↔ x ≠ 0 := by
@@ -60,13 +58,13 @@ theorem nloc_ne_zero (D : D7) (hd : dI D ≠ ⊥) (r l : ℕ) (x : D.host.E) :
   exact zpow_ne_zero _ hA
 
 /- English proof (translation)
-Establish `hX : ∀ w : V, (∀ a : Fin r, H.B (F.e a.castSucc) w = 0) → ∀ y ∈ F.X, H.B y w = 0`. Introduce `w hw y hy`. Establish `hle : F.X ≤ LinearMap.ker (H.B.flip w)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `using hw b`. Simplify using `using hle hy`. Use `set x := G.e (Fin.last r) - F.e (Fin.last r) with hxdef`. Establish `hxz : H.B x (F.e (Fin.last r)) = 0` using `hX _ F.zperp x h`. Establish `hzx : H.B (F.e (Fin.last r)) x = 0` using `by rw [← H.herm, hxz, star_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : H.B x x = 0`. Use `hX x (fun a => ?_) x h` and prove the remaining obligations. Use `hX (F.e a.castSucc) (fun b => F.iso b a) x h` as an intermediate fact. Rewrite using `[← H.herm, this, star_zero]`. Establish `hG : G.e (Fin.last r) = F.e (Fin.last r) + x` using `by rw [hxdef]; abel`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `G.zz`. Rewrite `h1` using `[hG]`. Simplify using `only [map_add, LinearMap.add_apply, hxz, hzx, hxx, F.zz, add_zero] at h1`. Conclude with `(neg_inj.1 h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_eq {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ}
     (F G : Formalism.HermitianLatticeCounting.S6.FlagD H r) (h : G.e (Fin.last r) - F.e (Fin.last r) ∈ F.X) : G.T = F.T := by
@@ -97,29 +95,27 @@ open GlobalTheory.TypeAsm.HasLabelling
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hS t N hN`. Establish `hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E`. Take `⟨C', Cl, Cg, cb, Cw, cT, CT, C0, hH⟩` from `hS`. Conclude with `hH.2.2.2.2.2.2.2`. Take `⟨-, -, -, -, hj, hDl, -, -, -⟩` from `GlobalTheory.DegAsm.adapt_invariants D.host.E (VS D).V (HV D) hK D.R.rS (F0 X u) (Ft t) (dI D) N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hII : Formalism.HermitianLatticeCounting.S6.II (F0 X u) (Ft t) = Isp (lf D (X.Fu u)).fl (frq X t.rep).fl` using `nf_II _ _ _ _`. Establish `hjT : N.j = jT t` using `by rw [hj, hII]; rfl`. Establish `hjle : jT t ≤ D.R.rS` using `by unfold jT; omega`. Establish `hnf : ∀ (l : ℕ) (hl : l ≤ D.R.rS + 1), Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l = star (Formalism.HermitianLatticeCounting.S6.Dl (F0 X u) (Ft t) l hl)` using `fun l hl => nf_Dl _ _ _ _ l hl`. Establish `hd : N.𝔡 = dI D` using `hN.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdne : dI D ≠ ⊥` using `hd ▸ N.𝔡_ne`. Establish `key : ∀ l, l ≤ jT t → N.nD l = ((Nloc (ddS D) D.R.rS l (labT t l) : ℚ) : ℝ)`. Introduce `l hl`. Establish `hl' : l ≤ D.R.rS + 1` using `by omega`. Establish `hlab : labT t l = star (Formalism.HermitianLatticeCounting.S6.Dl (F0 X u) (Ft t) l hl')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [labT, if_pos hl]`. Conclude with `hnf l hl'`. Unfold `GlobalTheory.DegCnt.NF.nD`. Rewrite using `[dif_pos hl', hDl l hl', nloc_eq, hlab, norm_star, hd, frameExp_cast _ _ hl']`. Use `⟨hjT, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : N.F.e (Fin.last D.R.rS) - (F0 X u).e (Fin.last D.R.rS) ∈ (F0 X u).X` using `hN.2.1 (Fin.last _)`. Establish `h1 : ((N.T : ℕ) : D.host.E) = ((Tu D u : ℕ) : D.host.E)`. Rewrite using `[← N.hT, T_eq (F0 X u) N.F hz]`. Both sides reduce to the same expression. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `GlobalTheory.DegCnt.NF.Del`. Rewrite using `[hjT, key _ le_rfl]`. Both sides reduce to the same expression. Unfold `GlobalTheory.DegCnt.NF.Db DbL`. Rewrite using `[hjT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hset : (Finset.Icc 1 (jT t)).filter (fun l => N.nD l ≠ 0) = k2ends D (jT t) (labT t)`. Use extensionality with `l`. Simplify using `only [k2ends, Finset.mem_filter, Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[key l h2]`. Conclude with `(nloc_ne_zero D hdne _ _ _).1 h3`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨⟨h1, h2⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[key l h2]`. Conclude with `(nloc_ne_zero D hdne _ _ _).2 h3`. Rewrite using `[hset]`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `h2 : l ≤ jT t`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [k2ends, Finset.mem_filter, Finset.mem_Icc] at hl`. Conclude with `hl.1.2`. Conclude with `key l h2`. Use function extensionality and compare the values at `l`. Unfold `GlobalTheory.DegAsm.lab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hl : l ≤ jT t`. Establish `hl' : l ≤ D.R.rS + 1` using `by omega`. Rewrite using `[dif_pos ⟨hl, hl'⟩]`. Simplify using `only [labT, if_pos hl]`. Rewrite using `[hnf l hl', star_star]`.
-
-Rewrite using `[dif_neg (fun h => hl h.1)]`. Simplify using `only [labT, if_neg hl, star_zero]`.
+A detailed English derivation is pending.
 -/
 theorem labC : LabC := by
   intro D large₂ X Y u hS t N hN

@@ -14,22 +14,22 @@ local notation "FI" => FractionalIdeal (nonZeroDivisors R) K
 abbrev mulR (a : K) : K →ₗ[R] K := (LinearMap.mulLeft K a).restrictScalars R
 
 /- English proof (translation)
-Introduce `x y h` and use `mul_left_cancel₀ ha h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulR_injective {a : K} (ha : a ≠ 0) : Function.Injective (mulR (R := R) a) :=
   fun x y h => mul_left_cancel₀ ha h
 
 /- English proof (translation)
-The claim follows from `sat_of_linear p (LinearMap.mulLeft K a) s y hs hy`.
+A detailed English derivation is pending.
 -/
 theorem mulR_sat (p : Ideal R) [p.IsPrime] (a : K) (s : R) (y : K) (hs : s ∈ p.primeCompl)
     (hy : s • y ∈ LinearMap.range (mulR (R := R) a)) : y ∈ LinearMap.range (mulR (R := R) a) :=
   sat_of_linear p (LinearMap.mulLeft K a) s y hs hy
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_map, FractionalIdeal.mem_coe, FractionalIdeal.mem_singleton_mul, LinearMap.coe_restrictScalars, LinearMap.mulLeft_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_mulR (a : K) (I : FI) :
     (I : Submodule R K).map (mulR a) = ((FractionalIdeal.spanSingleton _ a * I : FI) : Submodule R K) := by
@@ -41,7 +41,7 @@ theorem map_mulR (a : K) (I : FI) :
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← map_mulR, ← map_mulR]`. Conclude with `lidx_map P.asIdeal (mulR a) (mulR_injective ha) (mulR_sat P.asIdeal a) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lidx_mulR (P : HeightOneSpectrum R) {a : K} (ha : a ≠ 0) (I J : FI) :
     lidx P.asIdeal ((FractionalIdeal.spanSingleton _ a * I : FI) : Submodule R K)
@@ -51,7 +51,7 @@ theorem lidx_mulR (P : HeightOneSpectrum R) {a : K} (ha : a ≠ 0) (I J : FI) :
   exact lidx_map P.asIdeal (mulR a) (mulR_injective ha) (mulR_sat P.asIdeal a) _ _
 
 /- English proof (translation)
-Rewrite using `[← map_mulR, ← map_mulR]`. Conclude with `relativeLength_localized_map P.asIdeal (mulR a) (mulR_injective ha) (mulR_sat P.asIdeal a) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlen_mulR (P : HeightOneSpectrum R) {a : K} (ha : a ≠ 0) (I J : FI) :
     relative₂ (localization₂ P.asIdeal ((FractionalIdeal.spanSingleton _ a * I : FI) : Submodule R K))
@@ -61,7 +61,7 @@ theorem rlen_mulR (P : HeightOneSpectrum R) {a : K} (ha : a ≠ 0) (I J : FI) :
   exact relativeLength_localized_map P.asIdeal (mulR a) (mulR_injective ha) (mulR_sat P.asIdeal a) _ _
 
 /- English proof (translation)
-Use `relativeLength_localized_coeIdeal (K := K) P hJ` as an intermediate fact. Rewrite using `[FractionalIdeal.count_coe K P hJ, Int.toNat_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlen_coeIdeal (P : HeightOneSpectrum R) {J : Ideal R} (hJ : J ≠ 0) :
     relative₂ (localization₂ P.asIdeal ((J : FI) : Submodule R K)) (localization₂ P.asIdeal (1 : Submodule R K)) =
@@ -71,9 +71,9 @@ theorem rlen_coeIdeal (P : HeightOneSpectrum R) {J : Ideal R} (hJ : J ≠ 0) :
   exact this
 
 /- English proof (translation)
-Take `⟨a, J, ha, hIJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `ha' : algebraMap R K a ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `ha`. Use `⟨a, ha, J, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises. Rewrite using `[hIJ]`. Simplify using the standard rewrite rules. Rewrite using `[hIJ, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, mul_inv_cancel₀ ha', FractionalIdeal.spanSingleton_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral (I : FI) (hI : I ≠ 0) :
     ∃ a : R, a ≠ 0 ∧ ∃ J : Ideal R, J ≠ 0 ∧
@@ -89,21 +89,19 @@ theorem exists_integral (I : FI) (hI : I ≠ 0) :
       FractionalIdeal.spanSingleton_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `(FractionalIdeal.coe_le_coe.mpr h).trans_eq FractionalIdeal.coe_one`.
+A detailed English derivation is pending.
 -/
 theorem coe_le_one {I : FI} (h : I ≤ 1) : (I : Submodule R K) ≤ 1 :=
   (FractionalIdeal.coe_le_coe.mpr h).trans_eq FractionalIdeal.coe_one
 
 /- English proof (translation)
-Establish `hX : X ≠ 0` using `by rintro rfl; exact hD (le_bot_iff.mp hDX)`. Take `⟨a, ha, J, hJ, hXJ⟩` from `exists_integral X hX`. Establish `ha' : algebraMap R K a ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rlen_mulR P ha' D X, hXJ]`. Establish `hle : FractionalIdeal.spanSingleton _ (algebraMap R K a) * D ≤ (J : FI)` using `hXJ ▸ (by gcongr)`. Establish `hle1 : FractionalIdeal.spanSingleton _ (algebraMap R K a) * D ≤ 1` using `hle.trans (FractionalIdeal.coeIdeal_le_one)`. Take `⟨J', hJ'⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hle1`. Establish `hJ'0 : J' ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Establish `: FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K a) * D = 0`. Rewrite using `[← hJ']`. Simplify using the standard rewrite rules. Break down `mul_eq_zero.mp this with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha' (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)`. Conclude with `hD h`. Rewrite using `[← hJ']`. Establish `h1` using `rlen_mono (localization_mono P.asIdeal (le_refl ((J' : FI) : Submodule R K))) (localization_mono P.asIdeal (show ((J' : FI) : Submodule R K) ≤ ((J : FI) : Submodule R K) from by rw [hJ']; exact FractionalIdeal.coe_le_coe.mpr hle)) (localization_mono P.asIdeal (coe_le_one Fraction …`. Rewrite `h1` using `[rlen_coeIdeal P hJ'0]`.
-
-Conclude with `ne_top_of_le_ne_top (ENat.coe_ne_top _) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlen_ne_top (P : HeightOneSpectrum R) {D X : FI} (hD : D ≠ 0) (hDX : D ≤ X) :
     relative₂ (localization₂ P.asIdeal (D : Submodule R K)) (localization₂ P.asIdeal (X : Submodule R K)) ≠ ⊤ := by
@@ -133,7 +131,7 @@ theorem rlen_ne_top (P : HeightOneSpectrum R) {D X : FI} (hD : D ≠ 0) (hDX : D
   exact ne_top_of_le_ne_top (ENat.coe_ne_top _) h1
 
 /- English proof (translation)
-Establish `hle : ((J : FI) : Submodule R K) ≤ 1` using `coe_le_one FractionalIdeal.coeIdeal_le_one`. Establish `hne : (J : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hJ`. Rewrite using `[lidx_eq_of_le P.asIdeal (D := ((J : FI) : Submodule R K)) (le_inf hle le_rfl) (by rw [rlen_coeIdeal P hJ]; exact ENat.coe_ne_top _) (by rw [rlen_self]; exact ENat.zero_ne_top), rlen_coeIdeal P hJ, rlen_self]`. Simplify using `only [ENat.toNat_coe, ENat.toNat_zero, Nat.cast_zero, sub_zero]`. Conclude with `Int.toNat_of_nonneg (FractionalIdeal.count_coe_nonneg K P J)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lidx_one_coeIdeal (P : HeightOneSpectrum R) {J : Ideal R} (hJ : J ≠ 0) :
     lidx P.asIdeal (1 : Submodule R K) ((J : FI) : Submodule R K) = FractionalIdeal.count K P (J : FI) := by
@@ -146,22 +144,22 @@ theorem lidx_one_coeIdeal (P : HeightOneSpectrum R) {J : Ideal R} (hJ : J ≠ 0)
   exact Int.toNat_of_nonneg (FractionalIdeal.count_coe_nonneg K P J)
 
 /- English proof (translation)
-The claim follows from `(FractionalIdeal.coeIdeal_span_singleton a).symm`.
+A detailed English derivation is pending.
 -/
 theorem spanSingleton_algebraMap (a : R) :
     FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K a) = ((Ideal.span {a} : Ideal R) : FI) :=
   (FractionalIdeal.coeIdeal_span_singleton a).symm
 
 /- English proof (translation)
-Take `⟨a, ha, J, hJ, hIJ⟩` from `exists_integral I hI`. Establish `ha' : algebraMap R K a ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `ha`. Establish `hsa : Ideal.span {a} ≠ (0 : Ideal R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Establish `hsaJ : Ideal.span {a} * J ≠ 0` using `mul_ne_zero hsa hJ`. Rewrite using `[← FractionalIdeal.coe_one, ← lidx_mulR P ha' 1 I, mul_one, hIJ, spanSingleton_algebraMap]`. Establish `hD1 : (((Ideal.span {a} * J : Ideal R) : FI) : Submodule R K) ≤ ((Ideal.span {a} : Ideal R) : FI)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `FractionalIdeal.coe_le_coe.mpr` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.coeIdeal_mul]`. Conclude with `mul_le_of_le_one_right' FractionalIdeal.coeIdeal_le_one`. Establish `hD2 : (((Ideal.span {a} * J : Ideal R) : FI) : Submodule R K) ≤ ((J : FI) : Submodule R K)`. Apply `FractionalIdeal.coe_le_coe.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[FractionalIdeal.coeIdeal_mul]`. Conclude with `mul_le_of_le_one_left' FractionalIdeal.coeIdeal_le_one`. Establish `hD3 : (((Ideal.span {a} * J : Ideal R) : FI) : Submodule R K) ≤ ((1 : FI) : Submodule R K)` using `FractionalIdeal.coe_le_coe.mpr FractionalIdeal.coeIdeal_le_one`. Establish `hDne : ((Ideal.span {a} * J : Ideal R) : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hsaJ`. Rewrite using `[lidx_cocycle P.asIdeal (B := ((1 : FI) : Submodule R K)) hD1 hD3 hD2 (rlen_ne_top P hDne (FractionalIdeal.coe_le_coe.mp hD1)) (rlen_ne_top P hDne (FractionalIdeal.coe_le_coe.mp hD3)) (rlen_ne_top P hDne (FractionalIdeal.coe_le_coe.mp hD2))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[lidx_antisymm, FractionalIdeal.coe_one, lidx_one_coeIdeal P hsa, lidx_one_coeIdeal P hJ]`. Establish `hc` using `congrArg (FractionalIdeal.count K P) hIJ`. Rewrite `hc` using `[FractionalIdeal.count_mul K P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr ha') hI, spanSingleton_algebraMap]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lidx_one_left (P : HeightOneSpectrum R) {I : FI} (hI : I ≠ 0) :
     lidx P.asIdeal (1 : Submodule R K) (I : Submodule R K) = FractionalIdeal.count K P I := by
@@ -195,17 +193,15 @@ theorem lidx_one_left (P : HeightOneSpectrum R) {I : FI} (hI : I ≠ 0) :
   linarith
 
 /- English proof (translation)
-Take `⟨a, ha, J, hJ, hIJ⟩` from `exists_integral I hI`. Establish `ha' : algebraMap R K a ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `ha`. Take `⟨j, hjJ, hj0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * j, mul_ne_zero ha hj0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.spanSingleton_le_iff_mem]`. Establish `: algebraMap R K j ∈ FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K a) * I`. Rewrite using `[hIJ]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).mpr ⟨j, hjJ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hxe⟩` from `(FractionalIdeal.mem_singleton_mul).mp this`. Establish `e : algebraMap R K (a * j) = (a * a) • x`. Rewrite using `[map_mul, hxe, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.mem_coe.mp (Submodule.smul_mem _ _ (FractionalIdeal.mem_coe.mpr hx))`. Introduce `x hx`. Establish `hj' : algebraMap R K j ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hj0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hax : algebraMap R K a * x ∈ (J : FI)`. Rewrite using `[← hIJ]`. Conclude with `FractionalIdeal.mem_singleton_mul.mpr ⟨x, hx, rfl⟩`. Take `⟨z, -, hze⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hax`. Rewrite using `[FractionalIdeal.mem_spanSingleton]`.
-
-Use `⟨j * z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hze]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_sandwich (I : FI) (hI : I ≠ 0) :
     ∃ r : R, r ≠ 0 ∧ FractionalIdeal.spanSingleton _ (algebraMap R K r) ≤ I ∧
@@ -236,7 +232,7 @@ theorem exists_sandwich (I : FI) (hI : I ≠ 0) :
     field_simp
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.spanSingleton_le_iff_mem, FractionalIdeal.mem_spanSingleton]`. Conclude with `⟨y, by rw [Algebra.smul_def, map_mul, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem spanSingleton_mul_le (x y : R) :
     FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K (x * y)) ≤
@@ -245,18 +241,18 @@ theorem spanSingleton_mul_le (x y : R) :
   exact ⟨y, by rw [Algebra.smul_def, map_mul, mul_comm]⟩
 
 /- English proof (translation)
-Rewrite using `[spanSingleton_algebraMap]`. Conclude with `FractionalIdeal.coeIdeal_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanSingleton_le_one (x : R) :
     FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K x) ≤ 1 := by
   rw [spanSingleton_algebraMap]; exact FractionalIdeal.coeIdeal_le_one
 
 /- English proof (translation)
-Take `⟨a, ha, haI, -⟩` from `exists_sandwich I hI`. Take `⟨b, hb, hbJ, -⟩` from `exists_sandwich J hJ`. Use `set D := FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K (a * b)) with hD`. Establish `hD0 : D ≠ 0`. Rewrite using `[hD, ne_eq, FractionalIdeal.spanSingleton_eq_zero_iff, IsFractionRing.to_map_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero ha hb`. Establish `hDI : D ≤ I` using `(spanSingleton_mul_le a b).trans haI`. Establish `hDJ : D ≤ J` using `(by rw [hD, mul_comm]; exact spanSingleton_mul_le b a : D ≤ _).trans hbJ`. Establish `hD1 : D ≤ 1` using `spanSingleton_le_one _`. Rewrite using `[lidx_cocycle P.asIdeal (B := ((1 : FI) : Submodule R K)) (FractionalIdeal.coe_le_coe.mpr hDI) (FractionalIdeal.coe_le_coe.mpr hD1) (FractionalIdeal.coe_le_coe.mpr hDJ) (rlen_ne_top P hD0 hDI) (rlen_ne_top P hD0 hD1) (rlen_ne_top P hD0 hDJ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[lidx_antisymm P.asIdeal _ ((1 : FI) : Submodule R K), FractionalIdeal.coe_one, lidx_one_left P hI, lidx_one_left P hJ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lidx_frac (P : HeightOneSpectrum R) {I J : FI} (hI : I ≠ 0) (hJ : J ≠ 0) :
     lidx P.asIdeal (I : Submodule R K) (J : Submodule R K) =

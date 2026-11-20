@@ -116,7 +116,7 @@ Both sides reduce to the same expression.
 theorem cF_apply_eq_complexConj (D : D7) (x : D.host.E) : cF D x = IsCMField.complexConj D.host.E x := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show V.frame.equivFun.symm (V.frame.equivFun x) ∈ V.L0`. Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis. Introduce `hv`. Conclude with `⟨_, hv, V.frame.equivFun.apply_symm_apply v⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_latC_iff_symm_mem (V : HSp D) (v : Fin V.rank → D.host.E) :
     v ∈ latC V ↔ V.frame.equivFun.symm v ∈ V.L0 := by
@@ -128,7 +128,7 @@ theorem mem_latC_iff_symm_mem (V : HSp D) (v : Fin V.rank → D.host.E) :
     exact ⟨_, hv, V.frame.equivFun.apply_symm_apply v⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[SetLike.mem_coe, mem_latC_iff_symm_mem, Module.Basis.equivFun_symm_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_selfDualLatticeInFrameCoordinates_eq (V : HSp D) : (latC V : Set (Fin V.rank → D.host.E)) = Formalism.MainNotions.StandardLattice.L0c D V := by
   ext v
@@ -136,29 +136,29 @@ theorem coe_selfDualLatticeInFrameCoordinates_eq (V : HSp D) : (latC V : Set (Fi
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isLevelK_iff_finCong (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)) :
     IsLevelK V N Kf ↔ ∀ k, k ∈ Kf ↔ k ∈ GfC V ∧ FinCong V N k := Iff.rfl
 
 /- English proof (translation)
-Unfold `IsRat`. Rewrite using `[map_one, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRat_one_one (V : HSp D) : IsRat V 1 1 := by
   unfold IsRat
   rw [map_one, map_one]
 
 /- English proof (translation)
-Take `⟨γ', -, e⟩` from `h`. Conclude with `⟨γ', e.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isRat_of_mem_GQ (V : HSp D) {γ : GA D V} (h : γ ∈ GQ V) : ∃ γ', IsRat V γ γ' := by
   obtain ⟨γ', -, e⟩ := h
   exact ⟨γ', e.symm⟩
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `h : herm (GlobalTheory.RecDict.gmW V rfl) (u ∘ Fin.cast rfl) (v ∘ Fin.cast rfl) = -V.hT (V.frame.equivFun.symm v) (V.frame.equivFun.symm u)`. Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul, herm, smul_eq_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `show u a * (-V.gram b a) * cc (v b) = -(u a * (cc (v b) * V.gram b a))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, neg_neg, mul_neg, map_neg]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_model_eq_trace_hT (V : HSp D) {r : ℕ} (hr : V.rank = r) (u v : Fin V.rank → D.host.E) :
     Algebra.trace ℚ D.host.E (-(-D.host.xi0) *
@@ -177,11 +177,11 @@ theorem trace_model_eq_trace_hT (V : HSp D) {r : ℕ} (hr : V.rank = r) (u v : F
   rw [h, neg_neg, mul_neg, map_neg]
 
 /- English proof (translation)
-Establish `halt : ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = -((Dw.EF y x : ℤ) : ℚ)` using `fun x y => by`. Establish `h` using `Dw.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at h`. Establish `h' : Dw.EF x y = -Dw.EF y x` using `by linarith`. Rewrite using `[h', Int.cast_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [trace_model_eq_trace_hT]`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Rewrite using `[halt, h]`. Introduce `h x y`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[halt, h, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isom_iff_model (Dw : Datum H) (V : HSp D) {r : ℕ} (hr : V.rank = r)
     (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) :
@@ -206,7 +206,7 @@ namespace Ctx
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {V : HSp D} {r : ℕ} (C : Ctx Xo c σ V r)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨h.base, h.modelW, h.iota.emb, (isom_iff_model Dw V C.hr C.ι).1 h.iota.isom, fun _ τ => h.inf τ.1, h.orth⟩, h.iota.rt, h.iota.rt0, h.pos, h.lA, h.good, h.inf⟩`. Introduce and unpack `⟨⟨h1, h2, h3, h4, -, h6⟩, k1, k2, k3, k4, k5, k6⟩`. Conclude with `⟨⟨k1, k2, h3, (isom_iff_model Dw V C.hr C.ι).2 h4⟩, k3, k4, k5, h1, h2, k6, h6⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ok_iff_recOK : C.OK ↔ GlobalTheory.RecDict.RecOK C.M V C.hr C.ι C.th C.x₀ ∧
     (H.rt : D.host.E) = D.host.sqrtMinusD ∧ H.rt0 = D.host.φ₀ D.host.sqrtMinusD ∧ 1 ≤ Dw.p + Dw.q ∧ l.A = 1 ∧
@@ -219,7 +219,7 @@ theorem ok_iff_recOK : C.OK ↔ GlobalTheory.RecDict.RecOK C.M V C.hr C.ι C.th 
     exact ⟨⟨k1, k2, h3, (isom_iff_model Dw V C.hr C.ι).2 h4⟩, k3, k4, k5, h1, h2, k6, h6⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, h1, h2, h3, h4⟩`. Conclude with `⟨γ, ⟨h1, h2, h3⟩, funext h4⟩`. Introduce and unpack `⟨γ, ⟨h1, h2, h3⟩, h4⟩`. Conclude with `⟨γ, h1, h2, h3, fun τ => congrFun h4 τ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem markSpec_iff_mark (h : GA D V) (p : Σ k, Frame (C.M.X k).Ψ r) :
     GlobalTheory.RecDict.MarkSpec C.M V C.hr C.ι C.th C.x₀ h p ↔ ∃ γ, C.Mark h p.1 γ ∧ p.2 = C.fr (γ * h) p.1 := by
@@ -230,7 +230,7 @@ theorem markSpec_iff_mark (h : GA D V) (p : Σ k, Frame (C.M.X k).Ψ r) :
     exact ⟨γ, h1, h2, h3, fun τ => congrFun h4 τ⟩
 
 /- English proof (translation)
-Simplify using `only [IsDict, markSpec_iff_mark]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isDict_iff_markSpec (dict : GA D V → Σ k, Frame (C.M.X k).Ψ r) :
     C.IsDict dict ↔ (∀ h, GlobalTheory.RecDict.MarkSpec C.M V C.hr C.ι C.th C.x₀ h (dict h)) ∧
@@ -244,9 +244,9 @@ theorem unf_eq_toPj (un : ∀ k, (C.M.X k).dom → FrPt Xo c (CAt σ)) :
     C.unf un = (GlobalTheory.FrameUnif.unfOf C.e C.F C.M un).toPj := rfl
 
 /- English proof (translation)
-Establish `h : archM V (C.θ τ.1) 1 = 1`. Unfold `archM`. Rewrite using `[map_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `show Matrix.reindex (finCongr C.hr) (finCongr C.hr) (archM V (C.θ τ.1) 1) * C.x₀ τ.1 = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mat_fr_one (k : Fin C.F.n) (τ : (C.M.X k).Ψ) : mat (C.fr 1 k) τ = C.x₀ τ.1 := by
   have h : archM V (C.θ τ.1) 1 = 1 := by
@@ -260,17 +260,17 @@ theorem mat_fr_one (k : Fin C.F.n) (τ : (C.M.X k).Ψ) : mat (C.fr 1 k) τ = C.x
 end Ctx
 
 /- English proof (translation)
-Introduce `z _` and use `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (V : HSp D) (N : ℕ) : FinCong V N 1 := fun z _ => ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-The claim follows from `star_star x`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (x : D.host.E) : cF D (cF D x) = x := star_star x
 
 /- English proof (translation)
-Establish `hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[cF_apply_eq_complexConj, IsCMField.complexEmbedding_complexConj, map_neg, hφ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (D : D7) : cF D D.host.sqrtMinusD = -D.host.sqrtMinusD := by
   have hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem

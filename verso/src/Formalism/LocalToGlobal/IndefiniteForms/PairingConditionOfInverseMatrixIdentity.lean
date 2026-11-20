@@ -14,7 +14,7 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_inv (w : HeightOneSpectrum (𝓞 K)) (a : K) : vw w a⁻¹ = - vw w a := by
   unfold vw
@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 @[simp] theorem invZ_sE : C.invZ.sE = C.sE := rfl
 
 /- English proof (translation)
-Consider the cases of `C`. Simplify using `only [invZ, inv_inv]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem invZ_invZ : C.invZ.invZ = C := by
   cases C
@@ -58,9 +58,9 @@ def MatrixIdentityOffBase : Prop :=
   ∀ u w, vw w (C.ζ u (S.μ w)) = 0 ∧ vw (conjPl w) (C.ζ u (S.μ w)) = 0
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨fun u t φ F => ?_, fun u => ?_, fun u t => ?_, fun u w => ?_⟩` and prove the remaining obligations. Simplify using `only [invZ_ζ, invZ_B]`. Rewrite using `[← h1 u t φ F, ← mul_assoc, inv_mul_cancel₀ (h3 u t), one_mul]`. Simplify using `[h2 u]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using h3 u t`. Simplify using `only [invZ_ζ]`. Rewrite using `[vw_inv, (h4 u w).1, neg_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_condition_of_inverse_matrix_identity (h : C.MatrixIdentityOffBase) : C.invZ.PairingFactorsThroughPeriods := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -73,11 +73,11 @@ theorem pairing_condition_of_inverse_matrix_identity (h : C.MatrixIdentityOffBas
     rw [vw_inv, (h4 u w).1, neg_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨fun u t φ F => ?_, fun u => ?_, fun u t => ?_, fun u w => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [invZ_ζ, invZ_B]`. Rewrite using `[h1 u t φ F, ← mul_assoc, inv_mul_cancel₀ (h3 u t), one_mul]`. Simplify using `[h2 u]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using h3 u t`. Simplify using `only [invZ_ζ]`. Rewrite using `[vw_inv, h4 u w, neg_zero]`. Simplify using `only [invZ_ζ]`. Use `h4 u (conjPl w)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[h0.1 w]`. Rewrite using `[vw_inv, this, neg_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inverse_matrix_identity_of_pairing (h0 : S.H0) (h : C.PairingFactorsThroughPeriods) : C.invZ.MatrixIdentityOffBase := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -94,7 +94,7 @@ theorem inverse_matrix_identity_of_pairing (h0 : S.H0) (h : C.PairingFactorsThro
     rw [vw_inv, this, neg_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C.inverse_matrix_identity_of_pairing h0, fun h => by simpa only [invZ_invZ] using C.invZ.pairing_condition_of_inverse_matrix_identity h⟩`.
+Supply the required witnesses or components.
 -/
 theorem pairing_iff_inverse_matrix_identity (h0 : S.H0) : C.PairingFactorsThroughPeriods ↔ C.invZ.MatrixIdentityOffBase :=
   ⟨C.inverse_matrix_identity_of_pairing h0, fun h => by simpa only [invZ_invZ] using C.invZ.pairing_condition_of_inverse_matrix_identity h⟩
@@ -151,7 +151,7 @@ abbrev IndefPkg2.forget {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefF
   P.toIndefPkg
 
 /- English proof (translation)
-Introduce `h`. Conclude with `(InfinitePlace.isComplex_iff.1 hv) (ComplexEmbedding.isReal_iff.2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_ne_embedding (v : InfinitePlace K) (hv : v.IsComplex) :
     ComplexEmbedding.conjugate v.embedding ≠ v.embedding := by
@@ -167,7 +167,7 @@ def IndefLink2 (Ix : ℝ → Type) (F : ∀ x, Ix x → IndefFace2) (CH : ℝ)
   ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Ix x, ∃ P : IndefPkg2 (F x i).A (F x i).fc (F x i).cf C CH, Q x i C P.Zs P.core.base.μ
 
 /- English proof (translation)
-Take `⟨C, x0, hC⟩` from `h`. Conclude with `⟨C, x0, fun x hx i => by`. Take `⟨P, hP⟩` from `hC x hx i`. Conclude with `⟨P.forget, hP⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IndefLink2.forget {Ix : ℝ → Type} {F : ∀ x, Ix x → IndefFace2} {CH : ℝ}
     {Q : ∀ x (i : Ix x), ℝ → DefSub (F x i).A → (HeightOneSpectrum (𝓞 (F x i).K) → (F x i).Bs.Tup) → Prop}
@@ -183,13 +183,13 @@ variable {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} {cf : C
   (P : IndefPkg2 A fc cf C CH)
 
 /- English proof (translation)
-The claim follows from `P.core.cols.col.inverse_matrix_identity_of_pairing P.core.cols.h0 P.core.cols.l1b`.
+A detailed English derivation is pending.
 -/
 theorem mi0 : P.core.cols.col.invZ.MatrixIdentityOffBase :=
   P.core.cols.col.inverse_matrix_identity_of_pairing P.core.cols.h0 P.core.cols.l1b
 
 /- English proof (translation)
-Introduce `t`. Break down `P.conv.c2 t with h | ⟨w, hw⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨w, by rw [← P.core.extra.level.1]; exact hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem tuple_is_base_or_member : ∀ t : Bs.Tup, t = Bs.μ0 ∨ ∃ w, P.core.cols.μ w = t := by
   intro t
@@ -198,26 +198,26 @@ theorem tuple_is_base_or_member : ∀ t : Bs.Tup, t = Bs.μ0 ∨ ∃ w, P.core.c
   · exact Or.inr ⟨w, by rw [← P.core.extra.level.1]; exact hw⟩
 
 /- English proof (translation)
-The claim follows from `P.core.base_level_log_eigenvalue_bound`.
+A detailed English derivation is pending.
 -/
 theorem base_level_log_eigenvalue_bound : P.core.base.toIndefData.L6 ((fc P.Zs).Z.num C CH) := P.core.base_level_log_eigenvalue_bound
 
 /- English proof (translation)
-The claim follows from `P.core.fun1 hde hde3`.
+A detailed English derivation is pending.
 -/
 theorem fun1 (hde : 0 ≤ ((fc P.Zs).Z.num C CH).de) (hde3 : ((fc P.Zs).Z.num C CH).de ≤ 1 / 3) :
     P.core.cols.muMaxRR ≤ ((fc P.Zs).Z.num C CH).hh - meanLog P.core.cols.κ + 14 * ((fc P.Zs).Z.num C CH).la :=
   P.core.fun1 hde hde3
 
 /- English proof (translation)
-The claim follows from `P.core.cols.col.period_images_surjective P.core.cols.l1e (P.core.cols.frames.1 Bs.v0) hD z hz`.
+A detailed English derivation is pending.
 -/
 theorem period_images_surjective (hD : 0 < P.core.cols.D) (z : (fc P.Zs).Sp.HH) (hz : z ∈ (fc P.Zs).Sp.Rw) :
     ∃ y, P.core.cols.col.sE y = z :=
   P.core.cols.col.period_images_surjective P.core.cols.l1e (P.core.cols.frames.1 Bs.v0) hD z hz
 
 /- English proof (translation)
-The claim follows from `P.forget.core.divCore hM hS hR0 hG hRam hH wf0 wf1 hde hde3 eb heb Sy hSy hG0 LG E3 E2 gy ηy hi hLG hiv hE2 hE3 u hXc hne X0 hX0 pU hpU X hX`.
+A detailed English derivation is pending.
 -/
 theorem divCore [IsTotallyComplex K] (hM : Formalism.DivisorInequality.BoundsMu) (hS : SpecDet) (hR0 : GramDeterminantQuotientMetric)
     (hG : LatticeGlue) (hRam : RamBasic) (hH : HeightBoundConstant) [Nonempty Bs.Ix] (wf0 : (fc P.Zs).Df0.WF)
@@ -359,7 +359,7 @@ def IndefLinkR (Ix : ℝ → Type) (F : ∀ x, Ix x → IndefFace2) (CH : ℝ)
   ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Ix x, ∃ P : IndefPkgR (F x i).A (F x i).fc (F x i).cf C CH, Q x i C P.Zs P.core.base.μ
 
 /- English proof (translation)
-Take `⟨C, x0, hC⟩` from `h`. Conclude with `⟨C, x0, fun x hx i => by`. Take `⟨P, hP⟩` from `hC x hx i`. Conclude with `⟨P.toR, hP⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IndefLink2.toR {Ix : ℝ → Type} {F : ∀ x, Ix x → IndefFace2} {CH : ℝ}
     {Q : ∀ x (i : Ix x), ℝ → DefSub (F x i).A → (HeightOneSpectrum (𝓞 (F x i).K) → (F x i).Bs.Tup) → Prop}
@@ -375,33 +375,33 @@ variable {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {N 
   (S : IndefColsR Df Dc Sp N)
 
 /- English proof (translation)
-The claim follows from `dim_of_bij _ (S.l1c.1 t)`.
+A detailed English derivation is pending.
 -/
 theorem dQ_eq (t : Bs.Tup) : Df.dQ t = S.D := dim_of_bij _ (S.l1c.1 t)
 
 /- English proof (translation)
-Rewrite using `[IndefData.Qpart, ← S.l1a p]`. Conclude with `Submodule.comap_map_eq_of_injective (f := (S.ι Bs.μ0).mulVecLin) (S.l1c.1 _).1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Qpart_base (p : Bs.Ix) : S.Qpart Bs.μ0 p = Df.Qp Bs.μ0 p := by
   rw [IndefData.Qpart, ← S.l1a p]
   exact Submodule.comap_map_eq_of_injective (f := (S.ι Bs.μ0).mulVecLin) (S.l1c.1 _).1 _
 
 /- English proof (translation)
-The claim follows from `S.dQ_eq Bs.μ0 ▸ S.pos`.
+A detailed English derivation is pending.
 -/
 theorem D_pos : 0 < S.D := S.dQ_eq Bs.μ0 ▸ S.pos
 
 /- English proof (translation)
-The claim follows from `Finset.le_inf' _ _ fun p _ => Finset.sum_le_sum fun j _ => S.l6 j p v`.
+A detailed English derivation is pending.
 -/
 theorem log_eigenvalue_sum_le_min [Nonempty Bs.Ix] (v : InfinitePlace K) :
     ∑ j, N.l6 j ≤ minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v)) :=
   Finset.le_inf' _ _ fun p _ => Finset.sum_le_sum fun j _ => S.l6 j p v
 
 /- English proof (translation)
-Establish `hfin : {w | S.μ w ≠ Bs.μ0}.Finite` using `S.Tw.finite_toSet.subset fun w hw => (S.h0.2 w).2 hw`. Use `hG K S.D (matLat (S.ι Bs.μ0) (Df.abelian₂ Bs.μ0)) (fun w => matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) (matLat_lattice _ (S.l1c.1 _).2 _ (wf.Lam_lat _)) (fun w => matLat_lattice _ (S.l1c.1 _).2 _ (wf.Lam_lat _)) (hfin.subset fun w hw => ?_)` and prove the remaining obligations. Introduce `h`. Apply `hw` to reduce the goal to its premises. Use `show Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem RR_spec (hG : LatticeGlue) (wf : Df.WF) :
     Submodule.IsLattice K S.RR ∧ ∀ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal S.RR =
@@ -416,19 +416,17 @@ theorem RR_spec (hG : LatticeGlue) (wf : Df.WF) :
   rw [h]
 
 /- English proof (translation)
-Establish `hQ` using `S.dQ_eq`. Establish `hfr` using `S.frames`. Establish `hc` using `S.l1c`. Establish `hb` using `S.l1b`. Establish `hmin` using `S.log_eigenvalue_sum_le_min`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : ∀ v p, IsScalarOn (Df.XQ Bs.μ0) S.XE v (S.ι Bs.μ0) (Df.Qp Bs.μ0 p) (S.κ v * ∏ j, S.lam j Bs.μ0 p v)` using `fun v p => by`. Rewrite using `[← S.Qpart_base p]`. Conclude with `hc.2.2.2 Bs.μ0 v (Or.inl rfl) p`. Take `⟨⟨μ, Tw, D, XE, Ep, ι, dW, XW, Wp, M, θ, κ, lam, err0⟩, _p1, _g0, _g1, _g2, _g3, _g5, ⟨B, ζ, sE⟩, _g6, _g7⟩` from `S`. Take `⟨HH, nHH, iHH, Pu, Rw⟩` from `Sp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Mem, a, Xc, Pt⟩` from `Dc`. Take `⟨nV, HV, Mt, dQ, Pq, XQ, Qp, dZ, HT, XT, Tl, Zp⟩` from `Df`. Simplify using `only at hQ hfr hc hb hmin hsc hXc hne X0 hX0 hpU u`. Take `rfl : dQ = fun _ => D` from `funext hQ`. Establish `H` using `(hH K (nV Bs.μ0) D 0 (fun _ => a u) (fun _ => Xc u) (fun _ => hXc) (fun j => j.elim0) (HV Bs.μ0) X0 hX0 (Pq Bs.μ0) (wf.Pq_surj _) (XQ Bs.μ0) (wf.XQ_quot _) XE hfr (ι Bs.μ0) (isUnit_det_of_bij _ (hc.1 _)) Bs.Ix Bs.J (Qp Bs.μ0) wf.Qp_top κ (fun j p v => lam j Bs.μ0 p v) (fun j p v …`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hb.1 u Bs.μ0 φ F`. Rewrite `h1` using `[hb.2.1 u, one_mul]`. Rewrite using `[← h1]`. Use `show _ = Pt u Bs.μ0 ((1 : Matrix (Fin (a u)) (Fin (a u)) K).mulVec φ) F`. Rewrite using `[Matrix.one_mulVec])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hne pU (fun j => j.elim0) hpU (fun j => j.elim0)).2`. Establish `hn : (0 : ℝ) < (Formalism.HN.nPl K : ℝ)`. Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j, N.l6 j ≤ (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, minOver (fun p => ∑ j, Real.log (lam j Bs.μ0 p v))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ _v : InfinitePlace K, ∑ j, N.l6 j ≤ ∑ v, minOver (fun p => ∑ j, Real.log (lam j Bs.μ0 p v))` using `Finset.sum_le_sum fun v _ => hmin v`. Rewrite `h3` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[one_div, le_inv_mul_iff₀ hn]`. Conclude with `h3`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero] at H`.
-
-Combine the linear relations using `[H, h2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem height (hH : HeightBoundConstant) [Nonempty Bs.Ix] (wf : Df.WF) (u : Dc.Mem) (hXc : ∀ v, IsUnit (Dc.Xc u v).det)
     (hne : S.col.B u ≠ 0)
@@ -480,9 +478,7 @@ theorem height (hH : HeightBoundConstant) [Nonempty Bs.Ix] (wf : Df.WF) (u : Dc.
   linarith [H, h2]
 
 /- English proof (translation)
-Introduce `φ hφ x hx`. Use `hD K (Dc.a u) S.D S.RR (S.col.B u) (fun w => Df.nV (S.μ w)) (fun w => Df.Mt (S.μ w)) (fun w => S.ι (S.μ w) * Df.Pq (S.μ w)) (fun _ => 1) (fun w => Dc.Pt u (S.μ w)) (fun w => S.col.ζ u (S.μ w)) (fun w => S.l1b.2.2.1 u _) (fun w => S.l1b.2.2.2 u w) (fun w φ F => ?_) Nu Nu' σ τ hL2 …` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `S.l1b.1 u _ φ F`. Rewrite using `[matLat_one, matLat_mul]`.
-
-Conclude with `(S.RR_spec hG wf).2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intoDual (hD : DivIntoDualShift) (hG : LatticeGlue) (wf : Df.WF) (u : Dc.Mem)
     (Nu Nu' : Submodule (𝓞 K) (Fin (Dc.a u) → K)) (σ : HeightOneSpectrum (𝓞 K) → ℝ)
@@ -511,20 +507,20 @@ variable {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer D
 include P
 
 /- English proof (translation)
-Introduce `j p v` and use `by rw [P.extra.level.2.2]; exact P.cols.l6 j p v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_level_log_eigenvalue_bound : P.base.toIndefData.L6 N := fun j p v => by
   rw [P.extra.level.2.2]; exact P.cols.l6 j p v
 
 /- English proof (translation)
-Rewrite using `[← P.extra.level.2.1]`. Conclude with `(P.extra.passage hde hde3 _ P.extra.fun0).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fun1 (hde : 0 ≤ N.de) (hde3 : N.de ≤ 1 / 3) :
     P.cols.muMaxRR ≤ N.hh - meanLog P.cols.κ + 14 * N.la := by
   rw [← P.extra.level.2.1]; exact (P.extra.passage hde hde3 _ P.extra.fun0).1
 
 /- English proof (translation)
-Introduce `t`. Break down `h t with h | ⟨w, hw⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨w, by rw [← P.extra.level.1]; exact hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem tuple_is_base_or_member (h : ∀ t : Bs.Tup, t = Bs.μ0 ∨ ∃ w, P.base.μ w = t) : ∀ t : Bs.Tup, t = Bs.μ0 ∨ ∃ w, P.cols.μ w = t := by
   intro t
@@ -535,9 +531,9 @@ theorem tuple_is_base_or_member (h : ∀ t : Bs.Tup, t = Bs.μ0 ∨ ∃ w, P.bas
 end IndefCoreR
 
 /- English proof (translation)
-Establish `h0 : P.base.muCC ≤ _` using `P.base.boundsMu hM hS hR0 hG hRam wf0 P.extra.untw eb heb Sy hSy hG0 LG E3 E2 gy ηy hi hLG hiv hE2 hE3`. Establish `hp` using `(P.extra.passage hde hde3 _ P.extra.fun0).2`. Establish `hh` using `P.cols.height hH wf1 u hXc hne X0 hX0 pU hpU`. Establish `hκ : meanLog P.cols.κ = meanLog P.base.κ` using `by rw [P.extra.level.2.1]`. Rewrite `hh` using `[hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : P.base.muCC - meanLog P.base.κ ≤ X` using `by rw [hX]; linarith [h0]`. Establish `h2 : 3 * N.de * (P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la) ≤ 3 * N.de * (X + N.hh + 28 * N.la)` using `mul_le_mul_of_nonneg_left (by linarith [h1]) (by linarith [hde])`. Combine the linear relations using `[hp, hh, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IndefCoreR.divCore [IsTotallyComplex K] (hM : Formalism.DivisorInequality.BoundsMu) (hS : SpecDet) (hR0 : GramDeterminantQuotientMetric)
     (hG : LatticeGlue) (hRam : RamBasic) (hH : HeightBoundConstant) {Bs : DefBase K} {Df0 Df1 : DefSide Bs}
@@ -580,14 +576,14 @@ theorem IndefCoreR.divCore [IsTotallyComplex K] (hM : Formalism.DivisorInequalit
   linarith [hp, hh, h1, h2]
 
 /- English proof (translation)
-The claim follows from `S.col.period_images_surjective S.l1e (S.frames Bs.v0) S.D_pos z hz`.
+A detailed English derivation is pending.
 -/
 theorem IndefColsR.period_images_surjective {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs}
     (S : IndefColsR Df Dc Sp N) (z : Sp.HH) (hz : z ∈ Sp.Rw) : ∃ y, S.col.sE y = z :=
   S.col.period_images_surjective S.l1e (S.frames Bs.v0) S.D_pos z hz
 
 /- English proof (translation)
-The claim follows from `S.col.inverse_matrix_identity_of_pairing S.h0 S.l1b`.
+A detailed English derivation is pending.
 -/
 theorem IndefColsR.mi0 {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs}
     (S : IndefColsR Df Dc Sp N) : S.col.invZ.MatrixIdentityOffBase :=

@@ -65,13 +65,13 @@ def FormsEq : Prop :=
     IsCMPair F E → ∀ M : ℕ, 3 ≤ M → rText F E M = Formalism.HermitianLatticesTheory.massRatioRightSide E M
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hFE M hM`. Establish `hf : fF F = Formalism.HermitianLatticesTheory.fDeg E` using `hD F E hFE`. Establish `hd : |((discr E : ℤ) : ℝ)| = dF F ^ 2` using `hS F E hFE`. Establish `hl : lText F E M = Formalism.HermitianLatticesTheory.lValEta E M` using `hL F E hFE M hM`. Establish `h0 : (0 : ℝ) ≤ dF F` using `abs_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfpos : 0 < fF F` using `Module.finrank_pos`. Establish `hfR : (fF F : ℝ) ≠ 0` using `by exact_mod_cast hfpos.ne'`. Establish `hv : Formalism.HermitianLatticesTheory.vInv E = vF F`. Unfold `Formalism.HermitianLatticesTheory.vInv vF`. Rewrite using `[hd, ← hf, ← Real.rpow_natCast (dF F) 2, ← Real.rpow_mul h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h2v : (2 * vF F) ^ fF F = dF F`. Unfold `vF`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_div_cancel₀ _ (two_ne_zero), ← Real.rpow_natCast, ← Real.rpow_mul h0, one_div_mul_cancel hfR, Real.rpow_one]`. Unfold `rText Formalism.HermitianLatticesTheory.massRatioRightSide`. Rewrite using `[hv, ← hf, h2v, hl, Real.sqrt_eq_rpow, show (-(1 : ℝ) / 2) = -(1 / 2) by ring, Real.rpow_neg h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formsEq_of (hD : DegEq) (hS : DiscSq) (hL : EulerEq) : FormsEq := by
   intro F E _ _ _ _ _ _ hFE M hM
@@ -127,7 +127,7 @@ def fixFld (K : Type) [Field K] [NumberField K] [StarRing K] : IntermediateField
     rw [eq_ratCast, star_ratCast])
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hFE M hM V V' _ _ _ _ _ _ _ _ h h' L L' hh hh' hL hL'`. Rewrite using `[hE F E hFE M hM]`. Conclude with `hS E hFE.1 M hM V V' h h' L L' hh hh' hL hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massRatio_of_siegel (hE : FormsEq) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio) : MassRatio := by
   intro F E _ _ _ _ _ _ hFE M hM V V' _ _ _ _ _ _ _ _ h h' L L' hh hh' hL hL'

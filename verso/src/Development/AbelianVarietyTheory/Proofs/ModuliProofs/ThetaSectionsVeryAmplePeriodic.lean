@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.EmbVA
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Establish `hc` using `(hL S P k ho hu T x hx).2 θ θ' h h'`. Use `sec_ext_val P.isLB (s := s₁) (s' := s₂) (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e₁` using `GlobalTheory.ThetaPowOrder.act_sval a₁ (𝟙 _) y hJ`. Establish `e₂` using `GlobalTheory.ThetaPowOrder.act_sval a₂ (𝟙 _) y hJ`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `val_corr hJ hc (𝟙 _)`. Establish `e₄ : θ.pt = θ'.pt` using `h.pt_eq.trans h'.pt_eq.symm`. Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Conclude with `congrArg₂ (fun u (p : T ⟶ P.A) => Units.val u * sval (L := P.L) s (𝟙 _ ≫ (Out.translT P.A p).left) y J) e₃ e₄`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem act_unique (hL : Out.SymLiftSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : Out.PolAV S) (k : ℕ) (z : ℤ)
     (hz : z = k) (ho : Odd k) (hu : IsUnit (k : Γ(S, ⊤))) {T : Over S} (x : T ⟶ P.A) (hx : x ^ k = 1)
@@ -43,9 +43,9 @@ theorem act_unique (hL : Out.SymLiftSt) {S : Scheme.{0}} [IsLocallyNoetherian S]
   exact congrArg₂ (fun u (p : T ⟶ P.A) => Units.val u * sval (L := P.L) s (𝟙 _ ≫ (Out.translT P.A p).left) y J) e₃ e₄
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Use `LBIso.chartPull (h := f) (A := lbPow L n) (B := lbPow L n) ?_ (chartPullPull _ f f rfl) ⟨_, idIso_isGen (LB.isLB_linComb hL _ _)⟩` and prove the remaining obligations. Establish `le : ∀ j : Fin 1 → L.ι, LB.wchart L (fun _ : Fin 1 => f) j ≤ f ⁻¹ᵁ LB.wchart L (fun _ : PUnit => 𝟙 X) (fun _ => j 0)` using `fun j y hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`. Use `⟨fun j _ => j 0, le, fun y j j' hj hj' => ?_⟩` and prove the remaining obligations. Use `(gm_linComb L _ _ (𝟙 Y) y j j' hj hj').trans (Eq.trans ?_ (gm_linComb L (fun _ : PUnit => 𝟙 X) (fun _ => (n : ℤ)) f y _ _ (le j hj) (le j' hj')).symm)` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_one, Fintype.prod_unique, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_pow {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (n : ℕ) (z : ℤ) (hz : z = n) :
     LBIso (LB.LinComb L (K := Fin 1) (fun _ => f) (fun _ => z)) ((lbPow L n).pull f) := by
@@ -61,7 +61,7 @@ theorem lbIso_pow {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (n :
   rw [Fin.prod_univ_one, Fintype.prod_unique, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[Out.linComb, List.prod_ofFn, ← Finset.prod_pow]`. Simplify using `only [pow_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linComb_pow {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] {r : ℕ} (y : Fin r → (T ⟶ A))
     (a : Fin r → ℕ) (n : ℕ) : Out.linComb y a ^ n = ∏ i, y i ^ (a i * n) := by
@@ -75,23 +75,19 @@ namespace GlobalTheory
 open EmbVA in
 
 /- English proof (translation)
-Introduce `hL hL2 o _ g N' J b K _ _ β t m σ hN hm h2 hE`. Use `haveI := t.ab.comm`. Establish `hN0 : N' ≠ 0` using `by rintro rfl; simp at hN`. Use `haveI : NeZero (N' ^ 2) := ⟨pow_ne_zero _ hN0⟩`. Establish `hid : (Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ Out.baseOver (Sp K)) = 𝟙 _` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : ∀ y : Out.baseOver (Sp K) ⟶ t.A, y ^ (N' ^ 2) = 1 → ∃! c : Fin (2 * g) → ZMod (N' ^ 2), Out.linComb t.pt (fun i => (c i).val) = y` using `fun y hy => by`. Use `t.bij K (𝟙 _) y hy` as an intermediate fact. Simplify `this` using `only [hid, Category.id_comp]`. Use `⟨?_, LB.isLB_linComb t.isLB _ _, ?_, lbIso_pow t.isLB _ _ _ (by push_cast; rfl), ?_, ⟨Nat.pos_of_neZero _, t.torsion, hbij⟩, ?_⟩` and prove the remaining obligations. Use `show IsIso (pullback.snd (𝟙 (Sp K)) t.A.hom) infer_instance`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.isVeryAmpleSectionSystem_of_projectiveCoordinates K _ _ _ _ _ _ (GlobalTheory.T.projCoordRepresentation_geometric_fibre_spanning hL hL2 _ t.pol K (𝟙 _) _ _ σ (by nlinarith) ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.EmbSpan.emb_span_eq_top hL hL2 o g N' J b _ _ t m K (𝟙 _) σ hN hm h2 hE`. Introduce `a a' haa j`. Take `⟨th, s1, α, U, -, -, -, hU, hact⟩` from `hE`. Take `⟨c, rfl⟩` from `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : 0 < m` using `by omega`. Establish `hc : m * c / m = c` using `Nat.mul_div_cancel_left c hm0`. Establish `hlab : t.lab a ^ (c ^ 2) = t.lab a' ^ (c ^ 2)`. Rewrite using `[TObj.lab, TObj.lab, linComb_pow, linComb_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_eq_pow_of_modEq ?_ (t.torsion i)` and prove the remaining obligations. Conclude with `((haa i).mul_right' _).of_dvd (dvd_of_eq (mul_pow m c 2))`. Establish `htor : (t.lab a ^ (c ^ 2)) ^ (m ^ 2) = 1`. Rewrite using `[← pow_mul, TObj.lab, linComb_pow]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (a i).val * (c ^ 2 * m ^ 2) = (m * c) ^ 2 * (a i).val by ring, pow_mul, t.torsion, one_pow]`. Establish `hu : IsUnit ((m ^ 2 : ℕ) : Γ(Sp K, ⊤))`. Establish `h1` using `(b.unit.map β).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Rewrite `h1` using `[map_natCast, map_natCast, mul_pow, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `hU a`. Establish `h₂` using `hU a'`. Simplify using `only [Over.mk_hom, hid, Category.id_comp, hc] at h₁ h₂`. Rewrite `h₂` using `[← hlab]`. Conclude with `act_unique hL.symLift t.pol (m ^ 2) _ (by push_cast; rfl) (Odd.of_dvd_nat hN (Dvd.intro c rfl)).pow hu _ htor h₁ h₂ (hact a) (hact a') j`.
-
-Introduce `x hx`. Take `⟨h1, -, h3, -⟩` from `hL.mulN _ t.pol N' (Nat.pos_of_ne_zero hN0)`. Take `⟨d, hd⟩` from `TwistTranslate.exists_root t.pol (𝟙 (Sp K)) N' x`. Establish `hd' : (show Out.baseOver (Sp K) ⟶ t.A from d) ^ N' = x` using `hd`. Take `⟨h, hh, -⟩` from `hbij d ((congrArg (fun n => (show Out.baseOver (Sp K) ⟶ t.A from d) ^ n) (pow_two N')).trans (by rw [pow_mul, hd', hx]))`.
-
-Conclude with `⟨h, (congrArg (· ^ N') hh).trans hd'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem embSec_veryAmple_periodic : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (K : Type) [Field K] [IsAlgClosed K] (β : o →+* K) (t : TObj g (N' ^ 2) J b (spMap β)) (m : ℕ) σ, Odd N' → m ∣ N' → 2 ≤ m → t.Emb m (Over.mk (𝟙 (Sp K))) σ → IsIso (snd (Over.mk (𝟙 (Sp K))) t.A).left ∧ (Out.LPow t.A t.L ((m : ℤ) ^ 2) (Over.mk (𝟙 (Sp K)))).IsLB ∧ VAmp (fst (Over.mk (𝟙 (Sp K))) t.A).left _ σ ∧ LBIso (Out.LPow t.A t.L ((m : ℤ) ^ 2) (Over.mk (𝟙 (Sp K)))) ((lbPow t.L (m ^ 2)).pull (snd (Over.mk (𝟙 (Sp K))) t.A).left) ∧ (∀ a a' : Ix g (N' ^ 2), (∀ i, (a i).val ≡ (a' i).val [MOD m ^ 2]) → ∀ j, (σ a).f j = (σ a').f j) ∧ TorsBasis t.A (N' ^ 2) t.pt ∧ ∀ x : Out.baseOver (Sp K) ⟶ t.A, x ^ N' = 1 → ∃ h, t.lab h ^ N' = x := by
   intro hL hL2 o _ g N' J b K _ _ β t m σ hN hm h2 hE

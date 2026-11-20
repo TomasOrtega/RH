@@ -16,57 +16,49 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ s hs`. Use `set n := Fintype.card ι`. Use `set q1 : ℝ := (2:ℝ) ^ (-s) with hq1def`. Use `set q2 : ℝ := 2 * q1 with hq2def`. Establish `hq1 : 0 ≤ q1` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : 0 ≤ q2` using `by positivity`. Establish `hq1lt : q1 < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Establish `hq2lt : q2 < 1`. Establish `: q2 = (2:ℝ) ^ (1 + -s)`. Rewrite using `[Real.rpow_add (by norm_num), Real.rpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]; exact Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Use `set G1 : ℝ := (1 - q1)⁻¹`. Use `set G2 : ℝ := (1 - q2)⁻¹`. Establish `hG1 : 0 ≤ G1` using `inv_nonneg.2 (by linarith)`. Establish `hG2 : 0 ≤ G2` using `inv_nonneg.2 (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨2 ^ n * (G1 ^ n + G2 ^ n), ?_⟩` and prove the remaining obligations. Introduce `S f K A hf hK hA hbox`. Use `set P : ℝ := ∏ w, A w with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun w _ => hA w`. Use `set x : S → ι → ℝ := fun c w => f c w / A w with hxdef`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hx0 : ∀ c w, 0 ≤ x c w` using `fun c w => div_nonneg (hf c w) (hA w).le`. Use `set mc : S → ι → ℕ := fun c w => Nat.log 2 ⌊x c w⌋₊ with hmcdef`. Establish `hlow : ∀ c w, (2:ℝ) ^ (mc c w) ≤ 1 + x c w`. Introduce `c w`. Distinguish the cases in `h : ⌊x c w⌋₊ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [hmcdef, h, Nat.log_zero_right, pow_zero]`. Combine the linear relations using `[hx0 c w]`. Establish `h1 : 2 ^ (mc c w) ≤ ⌊x c w⌋₊` using `Nat.pow_log_le_self 2 h`. Establish `h2 : ((2 ^ (mc c w) : ℕ) : ℝ) ≤ (⌊x c w⌋₊ : ℝ)` using `by exact_mod_cast h1`. Establish `h3` using `Nat.floor_le (hx0 c w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup : ∀ c w, x c w ≤ 2 * 2 ^ (mc c w)`. Introduce `c w`. Establish `h1 : ⌊x c w⌋₊ < 2 ^ (mc c w).succ` using `Nat.lt_pow_succ_log_self (by norm_num) _`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ((⌊x c w⌋₊ + 1 : ℕ) : ℝ) ≤ ((2 ^ (mc c w).succ : ℕ) : ℝ)` using `by exact_mod_cast h1`. Establish `h3` using `Nat.lt_floor_add_one (x c w)`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set b : (ι → ℕ) → ℝ := fun m => P ^ (-s) * ∏ w, q1 ^ (m w) with hbdef`. Establish `hterm : ∀ c, ENNReal.ofReal ((∏ w, (A w + f c w)) ^ (-s)) ≤ ENNReal.ofReal (b (mc c))`. Introduce `c`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hle : ∏ w, (A w * 2 ^ (mc c w)) ≤ ∏ w, (A w + f c w)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_le_prod (fun w _ => by have := hA w; positivity)` to reduce the goal to its premises. Introduce `w _`. Establish `: A w + f c w = A w * (1 + x c w)`. Simplify using `only [hxdef]`. Clear denominators, using `[(hA w).ne']` for the nonvanishing conditions.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left (hlow c w) (hA w).le`. Establish `hpos : 0 < ∏ w, (A w * 2 ^ (mc c w))` using `Finset.prod_pos fun w _ => by have := hA w; positivity`. Use `(Real.rpow_le_rpow_of_nonpos hpos hle (by linarith)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Real.mul_rpow hP.le (by positivity)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hbdef]`. Use `congr 1`. Rewrite using `[← Real.finset_prod_rpow _ _ (fun w _ => by positivity)]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hq1def, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num), mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsplit : ∑' c, ENNReal.ofReal (b (mc c)) = ∑' m : ι → ℕ, ({c | mc c = m} : Set S).encard * ENNReal.ofReal (b m)`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[tsum_eq_single (mc c) (fun m hm => by simp [Ne.symm hm])]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∑' m : ι → ℕ, ∑' c, (if mc c = m then ENNReal.ofReal (b m) else 0) := ENNReal.tsum_comm`. Use `_ = _ := by`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_set_const, tsum_subtype {c | mc c = m} (fun _ => ENNReal.ofReal (b m))]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_apply]`. Use `set T : (ι → ℕ) → ι → ℝ := fun m w => A w * (2 * 2 ^ (m w)) with hTdef`. Establish `hcount : ∀ m : ι → ℕ, ({c | mc c = m} : Set S).encard ≤ ENNReal.ofReal (1 + K * ∏ w, T m w)`. Introduce `m`. Establish `hT : ∀ w, 0 ≤ T m w` using `fun w => by have := hA w; positivity`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfin, hnc⟩` from `hbox (T m) hT`. Establish `hsub : ({c | mc c = m} : Set S) ⊆ {c | ∀ w, f c w ≤ T m w}`. Introduce `c hc w`. Simplify using `only [Set.mem_setOf_eq] at hc`. Establish `h1` using `hup c w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hc]`. Establish `: f c w = A w * x c w` using `by simp only [hxdef]; field_simp [(hA w).ne']`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left h1 (hA w).le`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.encard_le_encard hsub` after adjusting the coercions. Use `_ = ((({c | ∀ w, f c w ≤ T m w} : Set S).ncard : ℕ) : ℝ≥0∞) := by`. Rewrite using `[← hfin.cast_ncard_eq]`. Both sides reduce to the same expression. Use `_ = ENNReal.ofReal (({c | ∀ w, f c w ≤ T m w} : Set S).ncard : ℝ) := (ENNReal.ofReal_natCast _).symm`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ _ := ENNReal.ofReal_le_ofReal hnc`. Establish `hp1 : ∀ m : ι → ℕ, 0 ≤ ∏ w, q1 ^ m w` using `fun m => Finset.prod_nonneg fun w _ => pow_nonneg hq1 _`. Establish `hp2 : ∀ m : ι → ℕ, 0 ≤ ∏ w, q2 ^ m w` using `fun m => Finset.prod_nonneg fun w _ => pow_nonneg hq2 _`. Establish `hPs : 0 ≤ P ^ (-s)` using `Real.rpow_nonneg hP.le _`. Establish `hKnP : 0 ≤ K * 2 ^ n * P` using `by positivity`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hshell : ∀ m : ι → ℕ, ENNReal.ofReal (1 + K * ∏ w, T m w) * ENNReal.ofReal (b m) = ENNReal.ofReal (P ^ (-s)) * (∏ w, ENNReal.ofReal q1 ^ m w + ENNReal.ofReal (K * 2 ^ n * P) * ∏ w, ENNReal.ofReal q2 ^ m w)`. Introduce `m`. Establish `e1 : ∏ w, T m w = P * (2 ^ n * ∏ w, (2:ℝ) ^ m w)`. Simplify using `only [hTdef, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hPdef, n]`. Establish `e2 : ∏ w, q2 ^ m w = (∏ w, (2:ℝ) ^ m w) * ∏ w, q1 ^ m w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]; exact Finset.prod_congr rfl fun w _ => by rw [hq2def, mul_pow]`. Establish `hreal : (1 + K * ∏ w, T m w) * b m = P ^ (-s) * (∏ w, q1 ^ m w + K * 2 ^ n * P * ∏ w, q2 ^ m w)`. Rewrite using `[e1, e2]`. Simplify using `only [hbdef]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hTn : 0 ≤ 1 + K * ∏ w, T m w`. Rewrite using `[e1]`. Use `Finset.prod_nonneg fun w (_ : w ∈ Finset.univ) => pow_nonneg (zero_le_two (α := ℝ)) (m w)` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[← ENNReal.ofReal_mul hTn, hreal, ENNReal.ofReal_mul hPs, ENNReal.ofReal_add (hp1 m) (mul_nonneg hKnP (hp2 m)), ENNReal.ofReal_mul hKnP, ENNReal.ofReal_prod_of_nonneg (fun w _ => pow_nonneg hq1 _), ENNReal.ofReal_prod_of_nonneg (fun w _ => pow_nonneg hq2 _)]`.
-
-Simplify using `only [ENNReal.ofReal_pow hq1, ENNReal.ofReal_pow hq2]`. Establish `hgeo : ∀ q : ℝ, 0 ≤ q → q < 1 → ∑' m : ι → ℕ, ∏ w, ENNReal.ofReal q ^ m w = ENNReal.ofReal ((1 - q)⁻¹) ^ n`. Introduce `q h0 h1`. Rewrite using `[GlobalTheory.HL.tsum_pi_prod_ennreal (X := fun _ => ℕ) (fun _ j => ENNReal.ofReal q ^ j), Finset.prod_const, Finset.card_univ, ENNReal.tsum_geometric, ← ENNReal.ofReal_one, ← ENNReal.ofReal_sub _ h0, ENNReal.ofReal_inv_of_pos (by linarith)]`. Establish `hfin : P ^ (-s) * (G1 ^ n + K * 2 ^ n * P * G2 ^ n) ≤ 2 ^ n * (G1 ^ n + G2 ^ n) * (1 + K * P) * P ^ (-s)`.
-
-Establish `h2n : (1:ℝ) ≤ 2 ^ n` using `one_le_pow₀ (by norm_num)`. Establish `hKP : 0 ≤ K * P` using `mul_nonneg hK hP.le`. Establish `ha` using `pow_nonneg hG1 n`. Establish `hb` using `pow_nonneg hG2 n`. Establish `h2 : (0:ℝ) ≤ 2 ^ n` using `by positivity`.
-
-Establish `key : G1 ^ n + K * 2 ^ n * P * G2 ^ n ≤ 2 ^ n * (G1 ^ n + G2 ^ n) * (1 + K * P)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h2n) ha, mul_nonneg h2 hb, mul_nonneg (mul_nonneg hKP h2) ha, mul_nonneg (mul_nonneg hKP h2) hb]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_add, ENNReal.tsum_mul_left, hgeo q1 hq1 hq1lt, hgeo q2 hq2 hq2lt]`.
-
-Use `_ = ENNReal.ofReal (P ^ (-s) * (G1 ^ n + K * 2 ^ n * P * G2 ^ n)) := by`. Rewrite using `[ENNReal.ofReal_mul hPs, ENNReal.ofReal_add (pow_nonneg hG1 n) (mul_nonneg hKnP (pow_nonneg hG2 n)), ENNReal.ofReal_mul hKnP, ENNReal.ofReal_pow hG1, ENNReal.ofReal_pow hG2]`. Use `_ ≤ _ := ENNReal.ofReal_le_ofReal hfin`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_rpow_prod_add_le_of_box_count : ∀ (ι : Type) [Fintype ι] (s : ℝ), 1 < s → ∃ C : ℝ, ∀ (S : Type) (f : S → ι → ℝ) (K : ℝ) (A : ι → ℝ),
     (∀ c w, 0 ≤ f c w) → 0 ≤ K → (∀ w, 0 < A w) →

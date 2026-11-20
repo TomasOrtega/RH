@@ -20,12 +20,12 @@ section Count
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ F).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_F : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable
 
 /- English proof (translation)
-Use `countable_F F` as an intermediate fact. Establish `: Countable (𝓞 F)` using `Subtype.countable`. Establish `h : Function.Surjective fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))` using `fun I => (IsNoetherian.noetherian I)`. Use `h.countable` as an intermediate fact. Conclude with `Function.Injective.countable (f := HeightOneSpectrum.asIdeal) fun _ _ e => HeightOneSpectrum.ext e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_primes : Countable (HeightOneSpectrum (𝓞 F)) := by
   have := countable_F F
@@ -36,7 +36,7 @@ theorem countable_primes : Countable (HeightOneSpectrum (𝓞 F)) := by
   exact Function.Injective.countable (f := HeightOneSpectrum.asIdeal) fun _ _ e => HeightOneSpectrum.ext e
 
 /- English proof (translation)
-Use `countable_F F` as an intermediate fact. Establish `: TopologicalSpace.SeparableSpace (v.adicCompletion F)` using `⟨_, Set.countable_range _, v.denseRange_algebraMap F⟩`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sc_Fv (v : HeightOneSpectrum (𝓞 F)) : SecondCountableTopology (v.adicCompletion F) := by
   have := countable_F F
@@ -45,11 +45,11 @@ theorem sc_Fv (v : HeightOneSpectrum (𝓞 F)) : SecondCountableTopology (v.adic
   infer_instance
 
 /- English proof (translation)
-Use `countable_primes F` as an intermediate fact. Use `sc_Fv F` as an intermediate fact. Establish `ho : ∀ v : HeightOneSpectrum (𝓞 F), IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F))` using `fun v => Valued.isOpen_valuationSubring _`. Establish `hS : ∀ T : Finset (HeightOneSpectrum (𝓞 F)), Filter.cofinite ≤ Filter.principal ((T : Set (HeightOneSpectrum (𝓞 F)))ᶜ)` using `fun T => Filter.le_principal_iff.2 T.finite_toSet.compl_mem_cofinite`. Establish `he` using `fun T : Finset (HeightOneSpectrum (𝓞 F)) => RestrictedProduct.isOpenEmbedding_inclusion_principal ho (hS T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ T : Finset (HeightOneSpectrum (𝓞 F)), SecondCountableTopology (Set.range (RestrictedProduct.inclusion (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set _)) (hS T)))` using `fun T => by`. Use `(RestrictedProduct.isEmbedding_coe_of_principal (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set _)) (S := (T : Set (HeightOneSpectrum (𝓞 F)))ᶜ)).secondCountableTopology` as an intermediate fact. Conclude with `(he T).isEmbedding.toHomeomorph.symm.secondCountableTopology`. Use `@TopologicalSpace.secondCountableTopology_of_countable_cover _ _ _ _ _ hU (fun T => (he T).isOpen_range) ?_` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx` using `Filter.eventually_cofinite.1 x.2`. Use `⟨hx.toFinset, ⟨x.1, Filter.eventually_principal.2 fun v hv => ?_⟩, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (by simpa using h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sc_Af : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := by
   have := countable_primes F

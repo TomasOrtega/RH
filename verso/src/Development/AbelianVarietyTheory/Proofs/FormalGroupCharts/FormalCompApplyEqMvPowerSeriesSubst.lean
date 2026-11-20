@@ -11,9 +11,9 @@ namespace GlobalTheory.ChartInv
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Unfold `comp1 ev`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨a, j⟩` from `p`. Use `fin_cases a`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem formalComp_apply_eq_mvPowerSeries_subst (φ ψ : Pt k 1 d) (i : Fin d) :
     comp1 φ ψ i = (φ i).subst (fun p : Fin 1 × Fin d => ψ p.2) := by
@@ -25,7 +25,7 @@ theorem formalComp_apply_eq_mvPowerSeries_subst (φ ψ : Pt k 1 d) (i : Fin d) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Take `rfl : b = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem linearPart_eq_submatrix (φ : Pt k 1 d) :
     GlobalTheory.FormalInv.linearPart (fun p : Fin 1 × Fin d => φ p.2) =
@@ -35,13 +35,11 @@ theorem linearPart_eq_submatrix (φ : Pt k 1 d) :
   rfl
 
 /- English proof (translation)
-Introduce `k _ d φ h0 hdet`. Establish `hu : ∀ p : Fin 1 × Fin d, constantCoeff ((fun p : Fin 1 × Fin d => φ p.2) p) = 0` using `fun p => h0 p.2`. Establish `hA : IsUnit (GlobalTheory.FormalInv.linearPart (fun p : Fin 1 × Fin d => φ p.2))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, linearPart_eq_submatrix, Matrix.det_submatrix_equiv_self]`. Conclude with `hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, h1, h2⟩` from `(GlobalTheory.FormalInv.exists_substInv_iff hu).2 hA`. Establish `hvv : (fun p : Fin 1 × Fin d => v (0, p.2)) = v`. Use function extensionality and compare the values at `⟨a, j⟩`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => v (0, i), h0, fun i => hv _, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[formalComp_apply_eq_mvPowerSeries_subst, hvv]`. Conclude with `h1 (0, i)`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[formalComp_apply_eq_mvPowerSeries_subst]`. Conclude with `h2 (0, i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isInvPair :
     ∀ (k : Type) [CommRing k] (d : ℕ) (φ : Pt k 1 d), (∀ i, constantCoeff (φ i) = 0) →

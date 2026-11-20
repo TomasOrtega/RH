@@ -11,7 +11,7 @@ set_option autoImplicit false in
 open KaehlerDifferential in
 
 /- English proof (translation)
-Introduce `k _ F _ _ d x hP i`. Use `⟨_root_.GlobalTheory.PD.Model.chartEquiv k x hP i, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.PD.Model.chartEquiv, _root_.GlobalTheory.PD.Model.yc, AlgebraicIndependent.aevalEquiv_apply_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.PD.rA_single_polyEquiv : ∀ (k : Type) [Field k] (F : Type) [Field F]
     [Algebra k F] (d : ℕ) (x : Fin (d + 1) → F), _root_.GlobalTheory.PD.IsPd k x →

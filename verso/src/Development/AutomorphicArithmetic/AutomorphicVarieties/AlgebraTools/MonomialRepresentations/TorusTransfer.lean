@@ -3,17 +3,15 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Use `set q := p.map (algebraMap L p.SplittingField) with hq`. Establish `hqm : q.Monic` using `hp.map _`. Establish `hqd : q.natDegree = n`. Rewrite using `[hq, hp.natDegree_map, hn]`. Establish `hspl : q.Splits` using `SplittingField.splits p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : q ≠ 0` using `hqm.ne_zero`. Establish `hdeg : (derivative q).natDegree ≤ n` using `(natDegree_derivative_le q).trans (by rw [hqd]; exact Nat.sub_le n 1)`. Establish `hres : algebraMap L p.SplittingField (p.resultant (derivative p) n n) = (q.roots.map fun x => (derivative q).eval x).prod`. Rewrite using `[← resultant_map_map, ← derivative_map, ← hq]`. Establish `h` using `resultant_eq_prod_eval q (derivative q) n hdeg hspl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hqd, hqm.leadingCoeff, one_pow, one_mul]`. Conclude with `h`. Rewrite using `[← separable_map (algebraMap L p.SplittingField), ← hq, ← nodup_roots_iff_of_splits hq0 hspl, ne_eq, ← map_eq_zero (algebraMap L p.SplittingField), hres, Multiset.prod_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hnd hz`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, hα, hα0⟩` from `Multiset.mem_map.1 hz`. Establish `hc` using `(Multiset.nodup_iff_count_le_one.1 hnd) α`. Rewrite `hc` using `[count_roots]`. Establish `hlt : 1 < rootMultiplicity α q` using `(one_lt_rootMultiplicity_iff_isRoot hq0).2 ⟨(mem_roots hq0).1 hα, hα0⟩`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hne`. Rewrite using `[Multiset.nodup_iff_count_le_one]`. Introduce `α`. Rewrite using `[count_roots]`. Assume the negation of the conclusion as `hlt`.
-
-Use `push_neg at hlt`. Take `⟨hr, hr'⟩` from `(one_lt_rootMultiplicity_iff_isRoot hq0).1 hlt`. Conclude with `hne (Multiset.mem_map.2 ⟨α, (mem_roots hq0).2 hr, hr'⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma torusTransfer_sep_iff {L : Type*} [Field L] (p : L[X]) (hp : p.Monic) (n : ℕ)
     (hn : p.natDegree = n) :
@@ -53,17 +51,15 @@ private lemma torusTransfer_sep_iff {L : Type*} [Field L] (p : L[X]) (hp : p.Mon
     exact hne (Multiset.mem_map.2 ⟨α, (mem_roots hq0).2 hr, hr'⟩)
 
 /- English proof (translation)
-Establish `hP : ∀ P : K[X], ∑ s ∈ S, c s * P.eval (v s) = 0`. Introduce `P`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Simplify using `only [eval_add, mul_add, Finset.sum_add_distrib, hp, hq, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `monomial n a`. Simplify using `only [eval_monomial]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+Treat this case separately. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = 0 := by rw [h n, mul_zero]`. Use `set P : K[X] := ∏ j' ∈ (S.image v).erase j, (X - C j') with hPdef`. Establish `hev : ∀ s ∈ S, P.eval (v s) = if v s = j then P.eval j else 0`. Introduce `s hs`. Use `split_ifs with hsj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsj]`. Rewrite using `[hPdef, eval_prod]`. Apply `Finset.prod_eq_zero (i := v s)` to reduce the goal to its premises. Conclude with `Finset.mem_erase.2 ⟨hsj, Finset.mem_image_of_mem v hs⟩`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPj : P.eval j ≠ 0`. Rewrite using `[hPdef, eval_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j' hj' => by`. Rewrite using `[eval_sub, eval_X, eval_C]`. Conclude with `sub_ne_zero.2 (Finset.ne_of_mem_erase hj').symm`.
-
-Establish `h0` using `hP P`. Establish `h1 : ∑ s ∈ S, c s * P.eval (v s) = ∑ s ∈ S, if v s = j then c s * P.eval j else 0` using `Finset.sum_congr rfl fun s hs => by rw [hev s hs, mul_ite, mul_zero]`. Rewrite `h0` using `[h1, ← Finset.sum_filter, ← Finset.sum_mul]`. Conclude with `(mul_eq_zero.1 h0).resolve_right hPj`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma torusTransfer_fiber {K : Type*} [Field K] {σ : Type*} [DecidableEq K]
     (S : Finset σ) (c : σ → K) (v : σ → K) (h : ∀ m : ℕ, ∑ s ∈ S, c s * v s ^ m = 0) (j : K) :
@@ -101,23 +97,21 @@ private lemma torusTransfer_fiber {K : Type*} [Field K] {σ : Type*} [DecidableE
   exact (mul_eq_zero.1 h0).resolve_right hPj
 
 /- English proof (translation)
-Use `set T : RatFunc K := RatFunc.X with hTdef`. Establish `hT : T ≠ 0` using `RatFunc.X_ne_zero`. Establish `hpow : ∀ μ : ι →₀ ℕ, ∏ i, (T ^ w i) ^ μ i = T ^ (∑ i, (μ i : ℤ) * w i)`. Introduce `μ`. Establish `key : ∀ s : Finset ι, ∏ i ∈ s, (T ^ w i) ^ μ i = T ^ (∑ i ∈ s, (μ i : ℤ) * w i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ hT, ih, ← zpow_natCast, ← _root_.zpow_mul, mul_comm (w i)]`. Conclude with `key _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib : ∀ j : K, ∑ μ ∈ F.support with (∏ i, (a i : K) ^ μ i) = j, F.coeff μ = 0`. Introduce `j`. Apply `torusTransfer_fiber F.support (fun μ => F.coeff μ) (fun μ => ∏ i, (a i : K) ^ μ i)` to reduce the goal to its premises. Introduce `m`. Establish `hm` using `h m`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[MvPolynomial.eval_eq']`. Rewrite using `[← hm]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by ring`. Establish `hterm : ∀ μ : ι →₀ ℕ, algebraMap K (RatFunc K) (F.coeff μ) * ∏ i, (T ^ w i) ^ μ i = algebraMap K (RatFunc K) (F.coeff μ) * T ^ (∑ i, (μ i : ℤ) * w i)` using `fun μ => by rw [hpow]`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq', Finset.sum_congr rfl fun μ _ => hterm μ, ← Finset.sum_fiberwise_of_maps_to (t := F.support.image fun μ => ∏ i, (a i : K) ^ μ i) (g := fun μ => ∏ i, (a i : K) ^ μ i) (fun μ hμ => Finset.mem_image_of_mem _ hμ) (fun μ => algebraMap …`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hne : (F.support.filter fun μ => ∏ i, (a i : K) ^ μ i = j).Nonempty`. Take `⟨μ0, hμ0⟩` from `hne`. Establish `hsame : ∀ μ ∈ F.support.filter (fun μ => ∏ i, (a i : K) ^ μ i = j), algebraMap K (RatFunc K) (F.coeff μ) * T ^ (∑ i, (μ i : ℤ) * w i) = algebraMap K (RatFunc K) (F.coeff μ) * T ^ (∑ i, (μ0 i : ℤ) * w i)`. Introduce `μ hμ`. Rewrite `hμ`, `hμ0` using `[Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : (∏ i, (a i : K) ^ μ i) = ∏ i, (a i : K) ^ μ0 i` using `hμ.2.trans hμ0.2.symm`. Establish `hvU : ∏ i, a i ^ μ i = ∏ i, a i ^ μ0 i`. Apply `Units.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hv`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∏ i, a i ^ ((μ i : ℤ) - μ0 i) = 1`. Simplify using `only [_root_.zpow_sub, zpow_natCast]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib, hvU, mul_inv_cancel]`. Establish `h2` using `hw _ h1`. Simplify using `only [sub_mul, Finset.sum_sub_distrib] at h2`.
-
-Rewrite using `[sub_eq_zero.1 h2]`. Rewrite using `[Finset.sum_congr rfl hsame, ← Finset.sum_mul, ← map_sum, hfib j, map_zero, zero_mul]`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.1 hne, Finset.sum_empty]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma torusTransfer_key {K : Type*} [Field K] {ι : Type*} [Fintype ι]
     (a : ι → Kˣ) (w : ι → ℤ)
@@ -179,7 +173,7 @@ private lemma torusTransfer_key {K : Type*} [Field K] {ι : Type*} [Fintype ι]
   · rw [Finset.not_nonempty_iff_eq_empty.1 hne, Finset.sum_empty]
 
 /- English proof (translation)
-Establish `hM : (x.map (MvPolynomial.C : K →+* MvPolynomial ι K) * diagonal MvPolynomial.X).map (MvPolynomial.eval₂Hom f t) = x.map f * diagonal t`. Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal]`. Rewrite using `[← resultant_map_map, ← derivative_map, ← charpoly_map, hM]`. Conclude with `torusTransfer_sep_iff _ (charpoly_monic _) _ (charpoly_natDegree_eq_dim _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma torusTransfer_spec {K : Type*} [Field K] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (x : Matrix ι ι K) {L : Type*} [Field L] (f : K →+* L) (t : ι → L) :
@@ -196,11 +190,11 @@ private lemma torusTransfer_spec {K : Type*} [Field K] {ι : Type*} [Fintype ι]
   exact torusTransfer_sep_iff _ (charpoly_monic _) _ (charpoly_natDegree_eq_dim _)
 
 /- English proof (translation)
-Introduce `K _ ι _ _ x a w hw hsep`. Establish `hne` using `(torusTransfer_spec x (algebraMap K (RatFunc K)) (fun i => (RatFunc.X : RatFunc K) ^ w i)).1 hsep`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `torusTransfer_key a w hw` to reduce the goal to its premises. Introduce `m`. Establish `hx : x.map (RingHom.id K) = x`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs` using `torusTransfer_spec x (RingHom.id K) (fun i => (a i : K) ^ m)`. Rewrite `hs` using `[hx]`. Conclude with `not_not.1 (mt hs.2 (hall m))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.torusTransfer :
     ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (x : Matrix ι ι K) (a : ι → Kˣ) (w : ι → ℤ),

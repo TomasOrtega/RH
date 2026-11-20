@@ -9,15 +9,13 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n`. Establish `hmk : ∀ X Y : (isExpLieAlgebra K n).lieSubalgebra, trForm K n X Y = Algebra.trace ℝ (NumberField.mixedEmbedding.mixedSpace K) (Matrix.trace (mat (X : ArchMatrix K n) * mat (Y : ArchMatrix K n)))` using `fun _ _ => rfl`. Set `B : LinearMap.BilinForm ℝ (isExpLieAlgebra K n).lieSubalgebra` to `LinearMap.mk₂ ℝ (fun X Y => trForm K n X Y) (fun X₁ X₂ Y => by`. Simplify using `only [hmk, mat_coe_add, Matrix.add_mul, Matrix.trace_add, map_add])`. Use the proof step `(fun r X Y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hmk, mat_coe_smul, Matrix.smul_mul, Matrix.trace_smul, map_smul])`. Use the proof step `(fun X Y₁ Y₂ => by`. Simplify using `only [hmk, mat_coe_add, Matrix.mul_add, Matrix.trace_add, map_add])`. Use the proof step `(fun r X Y => by`. Simplify using `only [hmk, mat_coe_smul, Matrix.mul_smul, Matrix.trace_smul, map_smul])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ X Y, B X Y = trForm K n X Y` using `fun _ _ => rfl`. Establish `hsymm : ∀ X Y, B X Y = B Y X`. Introduce `X Y`. Rewrite using `[hB, hB, hmk, hmk, Matrix.trace_mul_comm]`. Take `⟨h1, h2, h3⟩` from `UpperTheory.trForm_definite_on_archSkew_archHerm K n`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℝ (isExpLieAlgebra K n).lieSubalgebra := FiniteDimensional.finiteDimensional_submodule (isExpLieAlgebra K n).lieSubalgebra.toSubmodule`. Take `⟨d, b, ε, hε, horth, hk⟩` from `UpperTheory.exists_signed_orthonormal_basis_of_isCompl _ B (archSkew K n) (archHerm K n) isCompl_archSkew_archHerm hsymm h1 h2 h3`. Use `⟨B, hB, hsymm, d, b, ε, hε, horth, fun i hi t => expG_mem_archCompact_of_skew _ ?_⟩` and prove the remaining obligations. Establish `h` using `hk i hi`. Rewrite `h` using `[mem_archSkew]`.
-
-Use `show Matrix.conjTranspose (t • mat (b i : ArchMatrix K n)) = -(t • mat (b i : ArchMatrix K n))`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, h, smul_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_signed_basis_lieSubalgebra_exp_compact :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), ∃ B : LinearMap.BilinForm ℝ (isExpLieAlgebra K n).lieSubalgebra, (∀ X Y, B X Y = trForm K n X Y) ∧ (∀ X Y, B X Y = B Y X) ∧ ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).lieSubalgebra) (ε : Fin d → ℝ), (∀ i, ε i = 1 ∨ ε i = -1) ∧ (∀ i j, B (b i) (b j) = if i = j then ε i else 0) ∧ ∀ i, ε i = -1 → ∀ t : ℝ, (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie (b i)) ∈ archCompact K n := by

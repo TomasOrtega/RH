@@ -15,13 +15,13 @@ open PositivityTheory.Rg.BcB.F.U (lpow lone)
 def MatchBadIOf2 : Prop := M2 → LponeIdem → MatchBadI
 
 /- English proof (translation)
-Introduce `h2 hI E _ _ _ hU w hw n a b k hab hk K' hK hmem m`. Rewrite using `[hI E n w K' hK m]`. Establish `hM` using `h2 E hU w hw n a b k hab hk`. Establish `hf : lone K' = fun γ => ((K'.relIndex (KL n w) : ℕ) : ℂ) * (({γ : UL n w | γ.1 ∈ congK n w k} : Set (UL n w)).indicator 1 γ)`. Use function extensionality and compare the values at `γ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mb_lone_apply]`. Distinguish the cases in `h : γ ∈ K'`. Establish `h' : γ ∈ ({γ : UL n w | γ.1 ∈ congK n w k} : Set (UL n w))` using `(hmem γ).1 h`. Rewrite using `[if_pos h, Set.indicator_of_mem h', Pi.one_apply, mul_one]`. Establish `h' : γ ∉ ({γ : UL n w | γ.1 ∈ congK n w k} : Set (UL n w))` using `fun h' => h ((hmem γ).2 h')`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h, h']`. Rewrite using `[hf]`. Establish `hM' : Match n a b w 1 ({γ : UL n w | γ.1 ∈ congK n w k}.indicator 1) (pairIndicatorMatch n a b w k)`. Use `hM using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Unfold `pairIndicatorMatch congK`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `mb_match_smul _ hM'`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem matchBadIOf2 : MatchBadIOf2 := by
   intro h2 hI E _ _ _ hU w hw n a b k hab hk K' hK hmem m

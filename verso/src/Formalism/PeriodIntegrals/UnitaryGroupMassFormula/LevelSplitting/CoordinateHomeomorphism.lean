@@ -34,11 +34,9 @@ structure CoordHyp (N A N1 Z : Subgroup G) (Lev : G → G) (sH : Q → G) (yQ : 
 variable {N A N1 Z : Subgroup G} {Lev : G → G} {sH : Q → G} {yQ : N1 → Q}
 
 /- English proof (translation)
-Establish `hg : (u : G) * w ∈ N` using `N.mul_mem (H.hAN u.2) (H.coordinate_level_le hw)`. Use `set v := Lev ((u : G) * w) with hv`. Establish `h1 : v⁻¹ * (u : G) ∈ N1`. Establish `: v⁻¹ * (u : G) = (v⁻¹ * ((u : G) * w)) * w⁻¹` using `by group`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `N1.mul_mem (H.lev_rest _ hg) (N1.inv_mem hw)`. Establish `h2 : v⁻¹ * (u : G) ∈ A` using `A.mul_mem (A.inv_mem (H.lev_mem _ hg)) u.2`. Establish `h3` using `H.triv _ h2 h1`. Establish `: (u : G) = v`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lev_eq (H : CoordHyp N A N1 Z Lev sH yQ) (u : A) (w : G) (hw : w ∈ N1) :
     Lev ((u : G) * w) = u := by
@@ -66,13 +64,11 @@ def cinv (H : CoordHyp N A N1 Z Lev sH yQ) (n : N) : A × (Q × Z) :=
   (⟨Lev n, H.lev_mem n n.2⟩, yQ (cm H n), ⟨(sH (yQ (cm H n)))⁻¹ * (cm H n : G), H.dec _⟩)
 
 /- English proof (translation)
-Take `⟨u, y, z⟩` from `p`. Establish `hw : sH y * (z : G) ∈ N1` using `N1.mul_mem (H.sH_mem y) (H.hZN1 z.2)`. Establish `hL : Lev ((u : G) * sH y * (z : G)) = u`. Rewrite using `[mul_assoc]`. Conclude with `lev_eq H u _ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : cm H (cfun H (u, y, z)) = ⟨sH y * (z : G), hw⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cm, cfun]`. Rewrite using `[hL]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : yQ (cm H (cfun H (u, y, z))) = y`. Rewrite using `[hm]`. Conclude with `H.yQ_sH y z z.2`. Use `Prod.ext (Subtype.ext ?_) (Prod.ext hy (Subtype.ext ?_))` and prove the remaining obligations. Simplify using `only [cinv, cfun]`.
-
-Conclude with `hL`. Simplify using `only [cinv]`. Rewrite using `[hy, hm]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cinv_cfun (H : CoordHyp N A N1 Z Lev sH yQ) (p : A × (Q × Z)) :
     cinv H (cfun H p) = p := by
@@ -93,7 +89,7 @@ theorem cinv_cfun (H : CoordHyp N A N1 Z Lev sH yQ) (p : A × (Q × Z)) :
     group
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cfun, cinv, cm]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cfun_cinv (H : CoordHyp N A N1 Z Lev sH yQ) (n : N) : cfun H (cinv H n) = n := by
   apply Subtype.ext
@@ -101,7 +97,7 @@ theorem cfun_cinv (H : CoordHyp N A N1 Z Lev sH yQ) (n : N) : cfun H (cinv H n) 
   group
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk ((H.cLev.comp continuous_subtype_val).inv.mul continuous_subtype_val) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cm (H : CoordHyp N A N1 Z Lev sH yQ) : Continuous (cm H) :=
   Continuous.subtype_mk ((H.cLev.comp continuous_subtype_val).inv.mul continuous_subtype_val) _
@@ -128,19 +124,17 @@ theorem cHomeo_apply (H : CoordHyp N A N1 Z Lev sH yQ) (p : A × (Q × Z)) :
     ((cHomeo H p : N) : G) = (p.1 : G) * sH p.2.1 * (p.2.2 : G) := rfl
 
 /- English proof (translation)
-Use `set a0 : A := ⟨Lev n0, H.lev_mem n0 n0.2⟩`. Use `set n1 : G := (Lev n0)⁻¹ * (n0 : G) with hn1`. Establish `hn1m : n1 ∈ N1` using `H.lev_rest n0 n0.2`. Establish `hmf : ∀ u : A, (u : G)⁻¹ * n1 * u ∈ N1` using `fun u => by`. Use `H.norm1 ((u : G)⁻¹) (N.inv_mem (H.hAN u.2)) n1 hn1m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using this`. Set `mf : A → N1` to `fun u => ⟨(u : G)⁻¹ * n1 * u, hmf u⟩`. Establish `cmf : Continuous mf` using `Continuous.subtype_mk ((continuous_subtype_val.inv.mul continuous_const).mul continuous_subtype_val) _`. Set `t : A → Q` to `fun u => yQ (mf u)`. Establish `ct : Continuous t` using `H.cyQ.comp cmf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `zm : A → G` to `fun u => (sH (t u))⁻¹ * (mf u : G)`. Establish `hzm : ∀ u, zm u ∈ Z` using `fun u => H.dec (mf u)`. Set `k : A × Q → G` to `fun p => sH (t p.1) * sH p.2 * (sH (t p.1 + p.2))⁻¹`. Establish `hk : ∀ p, k p ∈ Z` using `fun p => H.mul _ _`. Set `c : A × Q → Z` to `fun p => ⟨k p * zm p.1, Z.mul_mem (hk p) (hzm p.1)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cc : Continuous c`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `ct1 : Continuous (fun p : A × Q => t p.1)` using `ct.comp continuous_fst`. Use `(((H.csH.comp ct1).mul (H.csH.comp continuous_snd)).mul (H.csH.comp (ct1.add continuous_snd)).inv).mul ?_` and prove the remaining obligations. Conclude with `(H.csH.comp ct1).inv.mul (continuous_subtype_val.comp (cmf.comp continuous_fst))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨a0, t, c, ct, cc, fun u y z => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (n0 : G) * ((u : G) * sH y * (z : G)) = (Lev n0 * u) * sH (y + t u) * (k (u, y) * zm u * z)`. Establish `e2 : (mf u : G) = sH (t u) * zm u` using `by show (mf u : G) = sH (t u) * ((sH (t u))⁻¹ * (mf u : G)); group`. Establish `e3 : zm u * sH y = sH y * zm u` using `H.cent _ (hzm u) _ (H.sH_mem y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e4 : sH (t u) * sH y = sH (t u + y) * k (u, y)`. Establish `h` using `H.cent _ (hk (u, y)) _ (H.sH_mem (t u + y))`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : (n0 : G) * ((u : G) * sH y * (z : G)) = Lev n0 * u * (mf u : G) * sH y * z` using `by show _ = Lev n0 * u * ((u : G)⁻¹ * ((Lev n0)⁻¹ * (n0 : G)) * u) * sH y * z group`. Rewrite using `[e1, e2, add_comm y (t u)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coord_skew (H : CoordHyp N A N1 Z Lev sH yQ) (n0 : N) :
     ∃ (a0 : A) (t : A → Q) (c : A × Q → Z), Continuous t ∧ Continuous c ∧

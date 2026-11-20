@@ -7,27 +7,23 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Introduce `T m K _ A M c u hin hli`. Establish `hg : ∀ z : Let m, ∃ a : Fin (m z.1) → K, ∑ i, a i • c ⟨z.1, i⟩ = u z` using `fun z => (Submodule.mem_span_range_iff_exists_fun K).1 (hin z)`. Use `choose a ha using hg`. Set `g : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) K` to `fun τ i j => a ⟨τ, j⟩ i`. Establish `hu : ∀ τ j, u ⟨τ, j⟩ = ∑ i, g τ i j • c ⟨τ, i⟩` using `fun τ j => (ha ⟨τ, j⟩).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgli : ∀ τ, LinearIndependent K (g τ).transpose`. Introduce `τ`. Use `Fintype.linearIndependent_iff.2 fun s hs => ?_` and prove the remaining obligations. Establish `hs' : ∀ i, ∑ j, s j * g τ i j = 0` using `fun i => by`. Use `congrFun hs i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Finset.sum_apply, Matrix.transpose_apply]`. Establish `h0 : ∑ j, s j • u ⟨τ, j⟩ = 0`. Repeatedly rewrite using `[hu, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hs']`. Conclude with `Fintype.linearIndependent_iff.1 (hli τ) s h0`. Establish `hdec` using `fun τ => GlobalTheory.exists_integral_pivot_decomposition K A _ _ (g τ) (hgli τ)`. Use `choose ι u0 b huA hu0 hu1 hbt hbd hgub using hdec`. Establish `hbij : ∀ τ, Function.Bijective (ι τ)` using `fun τ => Finite.injective_iff_bijective.1 (ι τ).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `w : Pm m` to `fun τ => Equiv.ofBijective _ (hbij τ)`. Set `x : CellVar m → K` to `fun v => u0 v.1 (ι v.1 v.2.1.1) v.2.1.2`. Use `⟨w, x, fun z => b z.1 z.2 z.2, fun v => huA _ _ _, fun z => hbd _ _, ?_⟩` and prove the remaining obligations. Establish `hcell : ∀ τ i j, cell x τ i j = u0 τ (ι τ i) j`. Introduce `τ i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Substitute using the available equality.
 
-Unfold `cell`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality. Conclude with `(hu1 τ i).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: i < j` using `lt_of_le_of_ne (not_lt.1 h1) h2`. Conclude with `(hu0 τ i j this).symm`. Establish `hv : ∀ τ j, cellVec c w x ⟨τ, j⟩ = ∑ k, u0 τ k j • c ⟨τ, k⟩`. Introduce `τ j`. Simplify using `only [cellVec, hcell]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Equiv.sum_comp (w τ) (fun k => u0 τ k j • c ⟨τ, k⟩)`. Establish `hexp : ∀ τ j, u ⟨τ, j⟩ = ∑ l, b τ l j • cellVec c w x ⟨τ, l⟩`. Introduce `τ j`. Rewrite using `[hu]`. Repeatedly rewrite using `[hv, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[show g τ i j = (u0 τ * b τ) i j from by rw [← hgub τ], Matrix.mul_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Introduce and unpack `⟨τ, j⟩`. Use `show u ⟨τ, j⟩ - b τ j j • cellVec c w x ⟨τ, j⟩ ∈ _`. Rewrite using `[hexp, ← Finset.add_sum_erase _ _ (Finset.mem_univ j), add_sub_cancel_left]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations.
-
-Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with h | h` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, h, rfl⟩)`. Rewrite using `[hbt τ h, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_cell : ∀ (T : Type) (m : T → ℕ) (K : Type) [Field K] (A : ValuationSubring K) (M : ℕ)
     (c u : Let m → Fin (M + 1) → K), InBlock c u → (∀ τ, LinearIndependent K fun j : Fin (m τ) => u ⟨τ, j⟩) →

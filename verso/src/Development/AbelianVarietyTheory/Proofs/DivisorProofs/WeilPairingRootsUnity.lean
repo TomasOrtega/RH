@@ -26,7 +26,7 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {P : LB (A �
 
 include hB in
 /- English proof (translation)
-Use `hB T 1 1 y` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pc_one_left {T : Over S} (y : T ⟶ A) : pc hP (1 : T ⟶ A) y = 0 := by
   have := hB T 1 1 y
@@ -34,7 +34,7 @@ theorem pc_one_left {T : Over S} (y : T ⟶ A) : pc hP (1 : T ⟶ A) y = 0 := by
 
 include hB' in
 /- English proof (translation)
-Use `hB' T x 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pc_one_right {T : Over S} (x : T ⟶ A) : pc hP x (1 : T ⟶ A) = 0 := by
   have := hB' T x 1 1
@@ -43,13 +43,13 @@ theorem pc_one_right {T : Over S} (x : T ⟶ A) : pc hP x (1 : T ⟶ A) = 0 := b
 include hB hB' in
 
 /- English proof (translation)
-Establish `e : ∀ g : T ⊗ G2 A ⟶ G2 A, pull g.left (cls P hP) = pc hP (g ≫ fst A A) (g ≫ snd A A)` using `fun g => by`. Unfold `pc`. Rewrite using `[← comp_lift, lift_fst_snd, Category.comp_id]`. Establish `tr : Out.translPt (G2 A) X = (fst T (G2 A) ≫ X) * snd T (G2 A)` using `rfl`. Establish `h₁ : (fst T (G2 A) ≫ X ≫ fst A A) ^ k = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← pow_comp, ← comp_pow, hX, MonObj.comp_one, MonObj.one_comp]`. Establish `h₂ : (fst T (G2 A) ≫ X ≫ snd A A) ^ k = 1`. Rewrite using `[← Category.assoc, ← pow_comp, ← comp_pow, hX, MonObj.comp_one, MonObj.one_comp]`. Establish `z₁ : ∀ y, k • pc hP (fst T (G2 A) ≫ X ≫ fst A A) y = 0` using `fun y => by`. Rewrite using `[← pc_pow_left hP hB, h₁, pc_one_left hP hB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z₂ : ∀ x, k • pc hP x (fst T (G2 A) ≫ X ≫ snd A A) = 0` using `fun x => by`. Rewrite using `[← pc_pow_right hP hB', h₂, pc_one_right hP hB']`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : LB.Gen (Out.thetaLB (G2 A) P k X), t.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hP, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (k : ℤ) • pull (snd T (G2 A)).left _ + (-(k : ℤ)) • pull (Out.translPt (G2 A) X).left _ = 0`. Rewrite using `[e, e, tr, mul_comp, mul_comp, Category.assoc, Category.assoc, hB, hB', hB']`. Simplify using `only [natCast_zsmul, neg_smul, smul_add, z₁, z₂]`. Normalize the expressions using the abelian group laws. Conclude with `⟨⟨X, t, ht⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta_prod {k : ℕ} {T : Over S} (X : T ⟶ G2 A) (hX : X ^ k = 1) :
     ∃ θ : Out.ThetaGrp (G2 A) P k T, θ.pt = X := by
@@ -77,21 +77,21 @@ theorem exists_theta_prod {k : ℕ} {T : Over S} (X : T ⟶ G2 A) (hX : X ^ k = 
 end Theta
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP rig₁ rig₂ hamp k hk T X Y hX hY`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y + pc hP x' y` using `fun T x x' y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP rig₁ rig₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), pc hP x (y * y') = pc hP x y + pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP rig₁ rig₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `lifts : ∀ Z : T ⟶ G2 A, Z ^ k = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp (G2 A) P k (Out.overRes V), θ.pt = Out.overResι V ≫ Z` using `fun Z hZ p => by`. Take `⟨θ, hθ⟩` from `exists_theta_prod hP hB hB' (k := k) (Out.overResι ⊤ ≫ Z) (by rw [← MonObj.comp_pow, hZ, MonObj.comp_one])`. Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG hAA hP (lifts X hX) (lifts Y hY)`. Take `⟨c₁, hc₁⟩` from `CommutatorPairing.exists_weilIs hG hAA hP (lifts 1 (one_pow k)) (lifts Y hY)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hAA hP hc₁ hc₁`. Rewrite `h11` using `[_root_.mul_one]`. Establish `e₁ : c₁ * c₁ = c₁` using `CommutatorPairing.weilIs_unique hG hAA hP h11 hc₁`. Establish `e₁' : c₁ = 1` using `mul_eq_left.1 e₁`. Establish `pw : ∀ m : ℕ, Out.WeilIs (G2 A) P k (X ^ (m + 1)) Y (c₀ ^ (m + 1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hc₀`. Consider the case `succ m ih`. Rewrite using `[pow_succ X (m + 1), pow_succ c₀ (m + 1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hAA hP ih hc₀`. Establish `hp` using `pw (k - 1)`. Rewrite `hp` using `[Nat.sub_add_cancel hk, hX]`. Conclude with `⟨c₀, CommutatorPairing.weilIs_unique hG hAA hP hp (e₁' ▸ hc₁), hc₀⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_weilIs_prod_root : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →

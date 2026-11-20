@@ -11,9 +11,9 @@ namespace Formalism.F
 universe u
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ L`. Rewrite using `[covol_eq_gram F M (Fin (Module.finrank ℤ L)) (b.map f), covol_eq_gram E L _ b]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.gram, Matrix.of_apply, Basis.map_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hf (b i) (b j)`.
+A detailed English derivation is pending.
 -/
 theorem covol_eq_of_linearEquiv_inner {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -30,31 +30,25 @@ theorem covol_eq_of_linearEquiv_inner {E F : Type*} [NormedAddCommGroup E] [Inne
   exact hf (b i) (b j)
 
 /- English proof (translation)
-Use `set n := finrank ℝ W with hn_def`. Set `b` to `Module.finBasis ℤ L`. Establish `hfund` using `ZLattice.isAddFundamentalDomain b MeasureTheory.volume`. Establish `hcov : ZLattice.covolume L = MeasureTheory.volume.real (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L))` using `ZLattice.covolume_eq_measure_fundamentalDomain L _ hfund`. Establish `hFfin : MeasureTheory.volume (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 < covol L`. Rewrite using `[hC W L]`. Conclude with `ZLattice.covolume_pos L _`. Establish `hF : MeasureTheory.volume (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L)) = ENNReal.ofReal (covol L)`. Rewrite using `[hC W L, hcov, MeasureTheory.measureReal_def, ENNReal.ofReal_toReal hFfin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := covol L ^ ((1 : ℝ) / (n : ℝ)) with ht_def`. Establish `ht : 0 ≤ t` using `Real.rpow_nonneg hc.le _`. Establish `htn : t ^ n = covol L`. Rewrite using `[ht_def, ← Real.rpow_natCast, ← Real.rpow_mul hc.le, one_div, inv_mul_cancel₀ (by exact_mod_cast hn.ne'), Real.rpow_one]`. Set `o` to `stdOrthonormalBasis ℝ W`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set S : Set W := {x | ∀ i, |o.repr x i| ≤ t} with hS`. Establish `hnorm : ∀ x ∈ S, ‖x‖ ≤ Real.sqrt (n : ℝ) * t`. Introduce `x hx`. Rewrite using `[← o.repr.norm_map x, EuclideanSpace.norm_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hx i) 2`. Use `_ = Real.sqrt (n : ℝ) * t := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq ht]`. Establish `hsymm : ∀ x ∈ S, -x ∈ S`. Introduce `x hx i`. Simplify `hx i` using `[map_neg]`. Establish `hconv : Convex ℝ S`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y hy a c ha hc hac i`. Simplify using `only [map_add, map_smul, PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg ha, abs_of_nonneg hc]`. Use `_ ≤ a * t + c * t := by gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx i`. Conclude with `hy i`. Use `_ = t := by rw [← add_mul, hac, one_mul]`. Establish `hclosed : IsClosed S`. Rewrite using `[hS, Set.setOf_forall]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `isClosed_iInter fun i => isClosed_le (by fun_prop) continuous_const`. Establish `hcpt : IsCompact S`. Use `Metric.isCompact_of_isClosed_isBounded hclosed ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : W)) (r := Real.sqrt (n : ℝ) * t)).subset ?_` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `hnorm x hx`. Establish `hSeq : S = (WithLp.ofLp ∘ o.measurableEquiv) ⁻¹' Set.Icc (fun _ => -t) (fun _ => t)`. Use extensionality with `x`. Simplify using `only [hS, Set.mem_setOf_eq, Set.mem_preimage, Function.comp_apply, Set.mem_Icc, Pi.le_def, abs_le, forall_and]`.
-
-Both sides reduce to the same expression. Establish `hvolS : MeasureTheory.volume S = ENNReal.ofReal (t - -t) ^ n`. Rewrite using `[hSeq, ((PiLp.volume_preserving_ofLp (Fin n)).comp o.measurePreserving_measurableEquiv).measure_preimage measurableSet_Icc.nullMeasurableSet, Real.volume_Icc_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hmeas : MeasureTheory.volume (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L)) * 2 ^ n ≤ MeasureTheory.volume S`. Rewrite using `[hF, hvolS, ← ENNReal.ofReal_pow (by linarith), show (2 : ENNReal) ^ n = ENNReal.ofReal (2 ^ n) by simp, ← ENNReal.ofReal_mul hc.le]`.
-
-Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Rewrite using `[show t - -t = 2 * t by ring, mul_pow, htn, mul_comm]`. Use `haveI : Nontrivial W := Module.nontrivial_of_finrank_pos hn`. Use `haveI hLc : Countable L := b.equivFun.injective.countable`.
-
-Use `haveI : Countable L.toAddSubgroup := hLc`. Take `⟨x, hx0, hxS⟩` from `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure (L := L.toAddSubgroup) hfund hsymm hconv hcpt hmeas`. Use `⟨(x : W), x.2, ?_, hnorm _ hxS⟩` and prove the remaining obligations. Introduce `h0`. Conclude with `hx0 (Subtype.ext h0)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_short_vector_of_isZLattice (hC : CovolEqCovolume.{u}) {W : Type u} [NormedAddCommGroup W]
     [InnerProductSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
@@ -147,19 +141,15 @@ theorem exists_short_vector_of_isZLattice (hC : CovolEqCovolume.{u}) {W : Type u
   exact hx0 (Subtype.ext h0)
 
 /- English proof (translation)
-Introduce `E _ _ _ L hL hne`. Use `haveI : DiscreteTopology L := hL`. Establish `hsub : ∀ x ∈ L, x ∈ Submodule.span ℝ (L : Set E)` using `fun x hx => Submodule.subset_span hx`. Set `L₀ : Submodule ℤ (Submodule.span ℝ (L : Set E))` to `L.comap ((Submodule.span ℝ (L : Set E)).subtype.restrictScalars ℤ)`. Set `e : L ≃ₗ[ℤ] L₀` to `{ toFun := fun y => ⟨⟨y, hsub y y.2⟩, y.2⟩ invFun := fun x => ⟨((x : Submodule.span ℝ (L : Set E)) : E), x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : DiscreteTopology L₀ := by`. Use `DiscreteTopology.of_continuous_injective (f := e.symm) ?_ e.symm.injective` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _`. Establish `himg : (Submodule.span ℝ (L : Set E)).subtype '' (L₀ : Set _) = (L : Set E)`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hsub x hx⟩, hx, rfl⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `haveI : IsZLattice ℝ L₀ := by`. Use `⟨?_⟩` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective (Submodule.span ℝ (L : Set E)).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, himg, Submodule.map_top, Submodule.range_subtype]`. Use `letI : MeasurableSpace (Submodule.span ℝ (L : Set E)) := borel _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace (Submodule.span ℝ (L : Set E)) := ⟨rfl⟩`. Establish `hcov : covol L₀ = covol L` using `covol_eq_of_linearEquiv_inner L L₀ e (fun _ _ => rfl)`. Establish `hrk : finrank ℝ (Submodule.span ℝ (L : Set E)) = rk L`. Rewrite using `[← ZLattice.rank ℝ L₀]`. Conclude with `e.finrank_eq.symm`.
-
-Use `haveI : Nontrivial L := Submodule.nontrivial_iff_ne_bot.mpr hne`. Establish `hpos : 0 < finrank ℝ (Submodule.span ℝ (L : Set E))`. Rewrite using `[hrk]`. Conclude with `Module.finrank_pos`. Take `⟨x, hx, hx0, hxn⟩` from `exists_short_vector_of_isZLattice hC L₀ hpos`.
-
-Use `⟨(x : E), hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Conclude with `hx0 (Subtype.ext h0)`. Rewrite `hxn` using `[hrk, hcov]`. Conclude with `hxn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortVector_of (hC : CovolEqCovolume.{u}) : ShortVector.{u} := by
   intro E _ _ _ L hL hne

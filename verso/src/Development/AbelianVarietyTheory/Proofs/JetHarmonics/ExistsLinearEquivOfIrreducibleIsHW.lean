@@ -6,21 +6,21 @@ open Formalism.REAL
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hK` using `h₁ ((S ⊓ LinearMap.ker q).map p) (by`. Introduce and unpack `a b _ ⟨x, ⟨hxS, hxq⟩, rfl⟩`. Use `⟨E a b x, ⟨hS a b x hxS, ?_⟩, hp a b x⟩` and prove the remaining obligations. Establish `hxq' : q x = 0` using `hxq`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show q (E a b x) = 0`. Rewrite using `[hq, hxq', map_zero])`. Break down `hK with hK | hK` into its components or cases. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : q x = 0` using `hx`. Establish `hm : p x ∈ (S ⊓ LinearMap.ker q).map p` using `⟨x, ⟨x.2, hx'⟩, rfl⟩`. Rewrite `hm` using `[hK, Submodule.mem_bot]`. Conclude with `Subtype.ext (hpq _ hm hx')`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : p v ∈ (S ⊓ LinearMap.ker q).map p` using `by rw [hK]; trivial`. Take `⟨x, ⟨hxS, hxq⟩, hxp⟩` from `hm`. Establish `hxq' : q x = 0` using `hxq`. Take `⟨c, hc⟩` from `htop x hxS (fun a => by`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hpq` to reduce the goal to its premises. Rewrite using `[map_sub, hp, map_smul, hxp, hw, sub_self]`. Rewrite using `[map_sub, hq, map_smul, hxq', map_zero, smul_zero, sub_self])`. Rewrite `hxq'` using `[hc, map_smul, smul_eq_zero]`. Break down `hxq' with h0 | h0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hv₁` to reduce the goal to its premises. Rewrite using `[← hxp, hc, h0, zero_smul, map_zero]`. Conclude with `hv₂ h0`. Establish `hK` using `h₂ (S.map q) (by`. Introduce and unpack `a b _ ⟨x, hxS, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `⟨E a b x, hS a b x hxS, hq a b x⟩)`. Break down `hK with hK | hK` into its components or cases. It suffices to derive a contradiction. Establish `hm : q v ∈ S.map q` using `⟨v, hvS, rfl⟩`. Rewrite `hm` using `[hK, Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hv₂ hm`. Introduce `y`. Establish `hm : y ∈ S.map q` using `by rw [hK]; trivial`. Take `⟨x, hxS, rfl⟩` from `hm`. Conclude with `⟨⟨x, hxS⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stable_submodule_proj_bijective {U V₁ V₂ : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂] {n : ℕ}
@@ -77,15 +77,15 @@ theorem stable_submodule_proj_bijective {U V₁ V₂ : Type} [AddCommGroup U] [M
       exact ⟨⟨x, hxS⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `V₁ _ _ V₂ _ _ n E₁ E₂ ν v₁ v₂ hE₁ hE₂ h₁ h₂ hw₁ hw₂ hv₁ hv₂`. Set `E : Fin n → Fin n → Module.End ℂ (V₁ × V₂)` to `fun a b => (E₁ a b).prodMap (E₂ a b)`. Establish `hEap : ∀ a b (x : V₁ × V₂), E a b x = (E₁ a b x.1, E₂ a b x.2)` using `fun _ _ _ => rfl`. Establish `hE : GlRel E`. Introduce `a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hEap]`. Rewrite using `[glRel_apply_comm hE₁ a b c d, glRel_apply_comm hE₂ a b c d]`. Apply the tactic sequence `split_ifs <;> simp [hEap]`. Apply the tactic sequence `all_goals (constructor <;> abel)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hw : IsHW E ν (v₁, v₂)`. Use `⟨fun a => ?_, fun a b h => ?_⟩` and prove the remaining obligations. Rewrite using `[hEap, hw₁.1, hw₂.1]`. Both sides reduce to the same expression. Rewrite using `[hEap, hw₁.2 a b h, hw₂.2 a b h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨S, hS, hvS, htop⟩` from `exists_stable_submodule_topWeight_line _ n E ν _ hE hw`. Establish `b₂` using `stable_submodule_proj_bijective E E₁ E₂ ν (v₁, v₂) (LinearMap.fst ℂ V₁ V₂) (LinearMap.snd ℂ V₁ V₂) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun x h h' => Prod.ext h h') h₁ h₂ hw₁.1 hv₁ hv₂ S hS hvS htop`. Establish `b₁` using `stable_submodule_proj_bijective E E₂ E₁ ν (v₁, v₂) (LinearMap.snd ℂ V₁ V₂) (LinearMap.fst ℂ V₁ V₂) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun x h h' => Prod.ext h' h) h₂ h₁ hw₂.1 hv₂ hv₁ S hS hvS htop`. Use `⟨(LinearEquiv.ofBijective _ b₁).symm.trans (LinearEquiv.ofBijective _ b₂), ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b x`. Take `⟨y, rfl⟩` from `(LinearEquiv.ofBijective _ b₁).surjective x`. Establish `h : E₁ a b (LinearEquiv.ofBijective _ b₁ y) = LinearEquiv.ofBijective _ b₁ ⟨E a b y, hS a b y y.2⟩` using `rfl`. Rewrite using `[h]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

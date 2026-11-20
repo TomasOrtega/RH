@@ -9,19 +9,17 @@ namespace PI.NGStepBBW
 open Formalism.MainNotions.S.Loc
 
 /- English proof (translation)
-Establish `_` using `L.top`. Establish `_` using `L.free`. Establish `_ : Module.Finite F E` using `Module.finite_of_finrank_eq_succ L.rank`. Establish `_ : ContinuousAdd E` using `IsModuleTopology.toContinuousAdd F E`. Establish `halg : ∀ x : E, IsAlgebraic 𝒪[F] x` using `fun x => (IsFractionRing.isAlgebraic_iff 𝒪[F] F E).mpr (Algebra.IsAlgebraic.isAlgebraic x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasisOfFinrankEq F E L.rank`. Establish `hc : ∀ i, ∃ c : 𝒪[F], c ≠ 0 ∧ IsIntegral 𝒪[F] (c • b i)` using `fun i => (halg (b i)).exists_integral_multiple`. Use `choose c hc0 hci using hc`. Establish `hcF : ∀ i, ((c i : 𝒪[F]) : F) ≠ 0` using `fun i h => hc0 i (Subtype.ext h)`. Set `b'` to `b.unitsSMul (fun i => Units.mk0 ((c i : F)) (hcF i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb'O : ∀ i, b' i ∈ L.O`. Introduce `i`. Rewrite using `[Module.Basis.unitsSMul_apply, L.O_def, Units.smul_def, Units.val_mk0]`. Conclude with `hci i`. Establish `hint : ∀ a ∈ 𝒪[F], algebraMap F E a ∈ L.O` using `fun a ha => (L.O_def _).2 (isIntegral_algebraMap (x := (⟨a, ha⟩ : 𝒪[F])))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Set E` to `b'.equivFun ⁻¹' (Set.pi Set.univ fun _ => (𝒪[F] : Set F))`. Establish `hSo : IsOpen S`. Use `IsOpen.preimage ?_ ?_` and prove the remaining obligations. Conclude with `IsModuleTopology.continuous_of_linearMap (b'.equivFun : E →ₗ[F] (Fin 2 → F))`. Conclude with `isOpen_set_pi Set.finite_univ fun i _ => Valuation.isOpen_integer (v := ValuativeRel.valuation F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSO : S ⊆ L.O`. Introduce `x hx`. Rewrite using `[← b'.sum_equivFun x]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `L.O.mul_mem (hint _ (hx i (Set.mem_univ i))) (hb'O i)`. Establish `h0 : (0 : E) ∈ S`. Introduce `i _`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `zero_mem _`.
-
-Establish `hnhds : ((L.O.toAddSubgroup : AddSubgroup E) : Set E) ∈ 𝓝 (0 : E)` using `Filter.mem_of_superset (hSo.mem_nhds h0) hSO`. Conclude with `AddSubgroup.isOpen_of_mem_nhds L.O.toAddSubgroup hnhds`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_locO {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]

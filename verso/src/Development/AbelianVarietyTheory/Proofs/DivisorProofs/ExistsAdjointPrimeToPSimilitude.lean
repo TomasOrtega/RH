@@ -6,25 +6,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.Hecke
 
 /- English proof (translation)
-Introduce `p _ D g c k hc hk hE himg hck`. Establish `hp1 : p ≠ 1` using `(Fact.out : p.Prime).ne_one`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp1 (by simpa using hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp1 (by simpa using hk)`. Establish `hcZ : (c : ℤ) ≠ 0` using `by exact_mod_cast hc0`. Establish `ginj : Function.Injective g`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `D.nondeg` to reduce the goal to its premises. Use extensionality with `y`. Establish `h` using `hE x y`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hx, map_zero, LinearMap.zero_apply]`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Break down `mul_eq_zero.mp h.symm with h' | h'` into its components or cases. Conclude with `absurd h' hcZ`. Conclude with `h'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose f hf using himg`. Establish `fadd : ∀ x y, f (x + y) = f x + f y` using `fun x y => ginj (by rw [map_add, hf, hf, hf, smul_add])`. Establish `fsmul : ∀ (b : D.O) x, f (b • x) = b • f x` using `fun b x => ginj (by`. Rewrite using `[map_smul, hf, hf, smul_comm])`. Set `g' : D.La →ₗ[D.O] D.La` to `{ toFun := f, map_add' := fadd, map_smul' := fsmul }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ x, g (g' x) = k • x` using `hf`. Establish `h2 : ∀ x, g' (g x) = k • x` using `fun x => ginj (by rw [h1, map_nsmul])`. Take `⟨q, hq⟩` from `hck`. Establish `hdiv : k ^ 2 / c = q` using `by rw [hq, Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hc0)]`. Use `⟨g', h1, h2, ?_, fun x => ⟨g x, h2 x⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Introduce `x y`. Establish `h` using `hE (g' x) (g' y)`. Rewrite `h` using `[h1, h1, map_nsmul, map_nsmul, LinearMap.smul_apply, smul_smul]`. Move the coercions through the operations in `[hdiv]`. Establish `hqZ : ((k : ℤ) ^ 2 / c) = q`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show (k : ℤ) ^ 2 = ((k ^ 2 : ℕ) : ℤ) by push_cast; ring, hq]`. Use `push_cast`. Conclude with `Int.mul_ediv_cancel_left _ hcZ`. Establish `hqI : (k : ℤ) ^ 2 = c * q` using `by exact_mod_cast hq`. Rewrite using `[hqZ]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hcZ` to reduce the goal to its premises. Rewrite using `[← h, nsmul_eq_mul]`. Use `push_cast`. Rewrite using `[← sq, hqI]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hdiv]`. Establish `: q ∣ k ^ 2` using `⟨c, by rw [hq, mul_comm]⟩`. Conclude with `Nat.Coprime.coprime_dvd_left this (Nat.Coprime.pow_left 2 hk)`. Rewrite using `[hdiv]; exact ⟨c, by rw [hq, mul_comm]⟩`. Rewrite using `[hdiv, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoint_similitude : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (g : D.La →ₗ[D.O] D.La) (c k : ℕ),
     c.Coprime p → k.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) →

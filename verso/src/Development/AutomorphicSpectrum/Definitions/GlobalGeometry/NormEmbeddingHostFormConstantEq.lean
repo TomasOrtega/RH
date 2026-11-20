@@ -18,9 +18,9 @@ open scoped Matrix TensorProduct Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `xiR`. Establish `hs : ∀ σ : D.host.E →+* ℂ, ‖σ D.host.sqrtMinusD‖ ^ 2 = ‖(D.host.d : ℂ)‖` using `fun σ => by`. Rewrite using `[← norm_pow, ← map_pow, D.host.sqrtMinusD_sq, map_neg, map_natCast, norm_neg]`. Establish `hn : ‖τ D.host.sqrtMinusD‖ = ‖D.host.φ₀ D.host.sqrtMinusD‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 ((hs τ).trans (hs _).symm)`. Rewrite using `[show D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) from rfl]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_embedding_hostFormConstant_eq (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host.xi0‖ = xiR D := by
   unfold xiR
@@ -32,15 +32,15 @@ theorem norm_embedding_hostFormConstant_eq (D : D7) (τ : D.host.E →+* ℂ) : 
   simp only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]
 
 /- English proof (translation)
-Take `⟨Kf, hK, -⟩` from `GlobalTheory.RecDict.exists_isLevelK D V l.M`. Establish `hgood : ∀ σ, GoodEmb c σ → ∃ (U : Unf Xo c σ D.R.r) (dict : GA D V → Σ k, Frame (U.X k).Ψ D.R.r) (mu : GA D V → ℂ) (x₀ : _) (ι' : _) (χ : _), PkgLaws V hr ι' Kf χ U dict mu x₀` using `fun σ hσ => by`. Take `⟨⟨C, hC, -⟩, -⟩` from `GlobalTheory.Member.exists_ctx D H Dw l Xo c σ V D.R.r hr ι hι hpq hA hσ`. Take `⟨un, dict, mu, -, -, h2⟩` from `GlobalTheory.Member.exists_pkgLaws D _ _ l Xo c σ _ _ C hC Kf hK 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Conclude with `⟨C.unf un, dict, mu, C.x₀, C.ι, _, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hall : ∀ σ : c.F →+* ℂ, ∃ (U : Unf Xo c σ D.R.r) (dict : GA D V → Σ k, Frame (U.X k).Ψ D.R.r), GoodEmb c σ → ∃ (mu : GA D V → ℂ) (x₀ : _) (ι' : _) (χ : _), PkgLaws V hr ι' Kf χ U dict mu x₀` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb c σ`. Take `⟨U, dict, h⟩` from `hgood σ hσ`. Conclude with `⟨U, dict, fun _ => h⟩`. Take `⟨U, dict, -⟩` from `hgood c.F.val.toRingHom rfl`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.firstFiveLaws.2.1.secTwist _ _ Dw _ Xo c hpq σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => U.X (dict 1).1, un := fun _ _ => y }, fun _ => ⟨(), fun _ => 0⟩, fun h => absurd h hσ⟩`. Use `choose U dict h using hall`. Use `⟨U, dict, hH, hA, hV, fun σ hσ => ?_, fun σ hσ a n _ k γ _ => ?_, fun σ hσ => ?_, fun σ hσ k τ => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, h⟩` from `h σ hσ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h.unf`. Take `⟨_, _, _, _, h⟩` from `h σ hσ`. Conclude with `h.chi1 _ _ _`. Take `⟨_, _, _, _, h⟩` from `h σ hσ`. Take `⟨_, _, _, _, _, th, h1, h2, -⟩` from `h.dictLaws`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Kf, th, hr, hK, h1, h2, h.muUnit.2.2.2⟩`. Take `⟨_, _, _, _, h⟩` from `h σ hσ`. Rewrite using `[(h.modelW k).2, map_neg, norm_neg]`. Conclude with `norm_embedding_hostFormConstant_eq D τ`.
+A detailed English derivation is pending.
 -/
 theorem exists_levelLaws (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (hH : H.d = D.host.d) (Dw : Datum H)
     (V : HSp D) (hV : V.SigOK) (hr : V.rank = D.R.r)
@@ -79,9 +79,9 @@ theorem exists_levelLaws (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.
     exact norm_embedding_hostFormConstant_eq D τ
 
 /- English proof (translation)
-Establish `hm` using `D.R.m_add_three_le_k`. Establish `hpq : 1 ≤ (datumW D j hj).p + (datumW D j hj).q` using `by show 1 ≤ (D.R.sigW j).1 + (D.R.sigW j).2`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Take `⟨Xo⟩` from `GlobalTheory.Moduli.moduli_scheme_exists D.host.E (hostOfRecord D) (datumW D j hj) l hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -⟩` from `GlobalTheory.exists_coeff_containing D.host.E (hostOfRecord D) l ∅ (by simp)`. Use `⟨by unfold Ranks.r; omega, Xo, c, exists_levelLaws D _ rfl _ _ (D.sp.W_sig j) (D.sp.W_rank j hj.1 hj.2) _ (GlobalTheory.Member.Inhab.iotaOK_at_lift D j hj) hpq l hA Xo c⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_levelLaws_at_lift (D : D7) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.m) (l : Level (hostOfRecord D)) (hA : l.A = 1) :
     3 ≤ D.R.r ∧ ∃ (Xo : Moduli (datumW D j hj) l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r)
@@ -98,11 +98,11 @@ theorem exists_levelLaws_at_lift (D : D7) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.
     (GlobalTheory.Member.Inhab.iotaOK_at_lift D j hj) hpq l hA Xo c⟩
 
 /- English proof (translation)
-Use `⟨h.pins.1.1, h.pins.2.1.2, D.sp.W_sig j, h.unf j hj, h.chiTriv j hj, fun σ hσ => ?_, h.xiAbs j hj⟩` and prove the remaining obligations. Take `⟨th, hr, h1, h2⟩` from `h.dictU j hj σ hσ`. Establish `h3` using `h.levelK j hj σ hσ`. Establish `h4` using `(h.muUnit j hj σ hσ).2.2.2`. Establish `h5` using `hd σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `h.spaceW j hj σ hσ`. Rewrite `h3` using `[← h.pins.2.1.1]`. Generalize the expression as in `dict σ = d at h5 ⊢`. Generalize the expression as in `T.dict j σ = d' at h2 h4 h5`. Generalize the expression as in `T.Kf j σ = Kf at h2 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `T.V j σ = V at *`. Substitute `e` using the available equality. Consider the cases of `h5`. Conclude with `⟨Kf, th, hr, h3, h1, h2, h4⟩`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem levelLaws_of_lawsM {D : D7} (T : Core D) (h : LawsM T) (j : ℕ) (hj : InR D j)
     (dict : ∀ σ : T.Q.c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((T.U j σ).X k).Ψ D.R.r)
@@ -126,14 +126,14 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FinalJoin2.volPairEx_and_finVol D V h.sig).2`.
+A detailed English derivation is pending.
 -/
 theorem finVol_of_levelLaws {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r} {V : HSp D}
     {dict : ∀ σ : c.F →+* ℂ, GA D V → Σ k, Frame ((U σ).X k).Ψ D.R.r} (h : LevelLaws U V dict) : FinVol V :=
   (GlobalTheory.FinalJoin2.volPairEx_and_finVol D V h.sig).2
 
 /- English proof (translation)
-Unfold `petProd`. Simplify using `only [map_smulₛₗ, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[mul_left_comm, ← integral_const_mul (starRingEnd ℂ (σ x) * σ y)]`. Use `congr 2`. Use function extensionality and compare the values at `q`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -148,9 +148,9 @@ theorem petProd_smul {σ : c.F →+* ℂ} (U : Unf Xo c σ D.R.r) (V : HSp D)
   ring
 
 /- English proof (translation)
-Unfold `petProd`. Establish `key : ∀ (s : ℝ) (F G : AutQ V → ℂ), starRingEnd ℂ ((s : ℂ) * ∫ q, starRingEnd ℂ (F q) * G q ∂(muQ1 V)) = (s : ℂ) * ∫ q, starRingEnd ℂ (G q) * F q ∂(muQ1 V)` using `fun s F G => by`. Rewrite using `[map_mul, Complex.conj_ofReal, ← integral_conj]`. Use `congrArg _ (congrArg _ (funext fun q => ?_))` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem petProd_conj {σ : c.F →+* ℂ} (U : Unf Xo c σ D.R.r) (V : HSp D)
     (dict : GA D V → Σ k, Frame (U.X k).Ψ D.R.r) (t : ℝ) (f g : Rul Xo c) :
@@ -165,9 +165,9 @@ theorem petProd_conj {σ : c.F →+* ℂ} (U : Unf Xo c σ D.R.r) (V : HSp D)
   exact key _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ (s : c.F →+* ℂ) (i j : Fin N), petProd (U s) V (dict s) t (b' i) (b' j) = starRingEnd ℂ (s (x i)) * s (x j) * petProd (U s) V (dict s) t (b i) (b j)` using `fun s i j => by`. Rewrite using `[hb i, hb j]`. Conclude with `petProd_smul (U s) V (dict s) t (x i) (x j) (b i) (b j)`. Distinguish the cases in `h : GoodEmb c σ`. Simplify using `only [gramAt, if_pos h, Matrix.of_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `key σ i j`. Simplify using `only [gramAt, if_neg h, Matrix.of_apply, Matrix.transpose_apply]`. Rewrite using `[key, RingHom.comp_apply, RingHom.comp_apply, Complex.conj_conj, mul_comm (σ (x j))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_smul (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (V : HSp D)
     (dict : ∀ σ : c.F →+* ℂ, GA D V → Σ k, Frame ((U σ).X k).Ψ D.R.r) (t : ℝ) {N : ℕ} (b : Fin N → Rul Xo c)
@@ -184,11 +184,11 @@ theorem gramAt_smul (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (V : HSp D)
     rw [key, RingHom.comp_apply, RingHom.comp_apply, Complex.conj_conj, mul_comm (σ (x j))]
 
 /- English proof (translation)
-Establish `hf' : (16 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Use `⟨2 + |Real.log D.R.r| + |Real.log D.R.f| + |Real.log (dE D.host.E)| + |Real.log (Ideal.absNorm D.host.ccK)| + |Real.log M| + |Real.log S|, ?_⟩` and prove the remaining obligations. Establish `a1` using `le_abs_self (Real.log D.R.r)`. Establish `a2` using `le_abs_self (Real.log D.R.f)`. Establish `a3` using `le_abs_self (Real.log (dE D.host.E))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4` using `le_abs_self (Real.log (Ideal.absNorm D.host.ccK))`. Establish `a5` using `le_abs_self (Real.log M)`. Establish `a6` using `le_abs_self (Real.log S)`. Establish `b1` using `abs_nonneg (Real.log D.R.r)`. Establish `b2` using `abs_nonneg (Real.log D.R.f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3` using `abs_nonneg (Real.log (dE D.host.E))`. Establish `b4` using `abs_nonneg (Real.log (Ideal.absNorm D.host.ccK))`. Establish `b5` using `abs_nonneg (Real.log M)`. Establish `b6` using `abs_nonneg (Real.log S)`. Use `⟨hf, by linarith, hS, by linarith, by linarith, ?_, by linarith, by linarith, by linarith⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

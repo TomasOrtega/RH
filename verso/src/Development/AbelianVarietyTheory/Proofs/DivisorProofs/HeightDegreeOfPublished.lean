@@ -20,9 +20,9 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.DegreeOnObjects
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t i`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Fintype.sum_eq_single (t, i)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨t', i'⟩ hne`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ht : t = t'`. Substitute `ht` using the available equality. Establish `hi : i ≠ i'` using `fun h => hne (by rw [h])`. Simplify using `[hi]`. Simplify using `[ht]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_single {τ : Type} [Fintype τ] [DecidableEq τ] {n : ℕ} (u : τ → Fin n → ℝ) :
     u = ∑ x : τ × Fin n, u x.1 x.2 • (Pi.single x.1 (Pi.single x.2 (1 : ℝ)) : τ → Fin n → ℝ) := by
@@ -38,31 +38,27 @@ theorem eq_sum_single {τ : Type} [Fintype τ] [DecidableEq τ] {n : ℕ} (u : �
     · simp [ht]
 
 /- English proof (translation)
-Introduce `hP hH D O hO _ A T H h B hB R hR u`. Establish `hO'` using `hO`. Take `⟨xa, P, hx⟩` from `hO'`. Establish `hR2 : (2 : ℝ) ≤ R`. Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant statement in the definitionally equal form `(arIn O.s O.Φ O.met.hm).arDeg (setB O.Y B) R (linRoot u ^ (dimY O.Y + 1)) = _`. Rewrite using `[ArIn.arDeg]`. Use `erw [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : O.met.hm = metsOf xa O.Φ` using `hx.hm_eq`. Use `set S := FlagAr.setB O.Y B with hS`. Use `set w : D.what₂.Tau × Fin O.N → Sym D.host.E →₀ ℤ := fun x => rootSym O.S.Dw (ArIn.ind S) (some R) (DV.tauEmb D x.1) x.2 with hw`. Establish `hsupp : ∀ x, ∀ a ∈ (w x).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R`. Introduce `x a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e : a.1 = ArIn.ind S ∧ a.2.1 = some R`. Simplify using `only [hw, rootSym] at ha`. Apply the tactic sequence `split_ifs at ha <;>`. Use `Finsupp.support_single_subset ha` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, rfl⟩`. Use `⟨?_, e.2⟩` and prove the remaining obligations. Rewrite using `[e.1]`. Simplify `S.finite_toSet` using `[ArIn.ind]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hfam⟩` from `GlobalTheory.ArTopTrue.arTop_true hP.p4 hH.deg GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s xa O.Φ c R hR2`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `hfam (D.what₂.Tau × Fin O.N) w hsupp`. Rewrite `hnum` using `[O.dim_eq c]`. Establish `hhom : (linRoot u ^ (dimY O.Y + 1)).IsHomogeneous (dimY O.Y + 1)`. Establish `h1 : (linRoot u).IsHomogeneous 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `linRoot`. Use `MvPolynomial.IsHomogeneous.neg ?_` and prove the remaining obligations. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ => MvPolynomial.isHomogeneous_C_mul_X _ _`. Simplify using `using h1.pow (dimY O.Y + 1)`. Establish `hL : (numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) ∘ₗ (MvPolynomial.rename fun x => (arIn O.s O.Φ O.met.hm).root (ArIn.ind S) R x c).toLinearMap) (linRoot u ^ (dimY O.Y + 1)) = Ψ (linRoot u ^ (dimY O.Y + 1)) / (((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show arIn O.s O.Φ O.met.hm = arIn O.s O.Φ (metsOf xa O.Φ) by rw [hm]]`. Conclude with `GlobalTheory.T.polynomial_numerator_linear_extension _ _ w Ψ _ (fun μ hμ => hnum μ hμ) _ hhom`. Use `set W := h.mdl S c with hWdef`. Take `⟨ε, π, hd⟩` from `W.V.exists_isDown (h.man c)`. Establish `hs` using `GlobalTheory.T.green_potential_smooth_pullback hP hH D O hO A T H h c R hR2 u W.V ε π hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `har : IsArithVar W.V.p (dimY O.Y)`. Use `W.V.ar` as an intermediate fact. Rewrite `this` using `[O.dim_eq c]`. Then use the resulting hypothesis. Take `⟨Φ, hΦ⟩` from `((hP.p4.arExists _ _ W.V.p (dimY O.Y) har).2 _ (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u)) hs.2.1 hs.2.2) (W.gens S))).1`. Establish `hN` using `h.num B hB c ε π hd ((T.F c).phR R u) hs.1 hs.2.1 hs.2.2 Φ hΦ (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim 1 fun o' => o'.elim 0 fun x => u x.1 x.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hI' : ∀ x, (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind S) (some R) (DV.tauEmb D x.1) x.2)).Induced M (L x) m 0`. Rewrite using `[hm]`. Conclude with `hI`. Establish `h3` using `GlobalTheory.T.degree_comparison_root_metrics hP hH D O hO A T H h B hB R hR c u M L m Ψ hI' hΨ ε π hd hs.2.1 hs.2.2 Φ hΦ`. Rewrite using `[hL]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[hN, mul_div_cancel_left₀ _ W.V.ν_pos.ne']`. Unfold `Real0.fR`. Use `congr 1`. Simplify using `only [Option.elim, one_smul, zero_smul, add_zero, Fintype.sum_option, Real0.gen]`.
-
-Use `congr 1`. Rewrite using `[zero_add]`. Establish `e` using `eq_sum_single (τ := D.what₂.Tau) (n := O.N) u`. Use `conv_rhs => rw [e]`. Use `erw [map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun x _ => (LinearMap.map_smul _ _ _).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tieDeg_onObj : Hypotheses2 → HypothesesH → OnObj fun _ _ _ T _ _ => TieDeg T := by
   intro hP hH D O hO _ A T H h B hB R hR u

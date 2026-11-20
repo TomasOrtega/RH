@@ -15,15 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H R _ _ t ⟨hp, hA, hK⟩`. Set `` to `H.starRing`. Take `⟨PP', cub, sym, adj, prim, m₁, hm₁⟩` from `sabPull CubePf.cubePull (jK R) t`. Set `t' : SAB H (Spec (CommRingCat.of (FractionRing R)))` to `⟨(Over.pullback (jK R)).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, Geo.Tor.OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩`. Set `m₀ : SABMap t' t (jK R)` to `m₁`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm₀ : m₀.cm.F = pullback.fst t.G.hom (jK R)` using `hm₁`. Take `⟨w, hw, -⟩` from `m₀.lin`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull (pullback.fst t.G.hom (jK R)))` using `hm₀ ▸ ⟨w, hw⟩`. Establish `hM` using `pull_isLB t.PP.isLB (pullback.fst t.G.hom (jK R))`. Establish `hL' : LBIso t'.PP.L ((t.PP.L.pull (pullback.fst t.G.hom (jK R))).pull (𝟙 t'.G.left))` using `LBIso.chartPull (Geo.Tor.chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hL'`. Establish `: IsMonHom (Iso.refl t'.G).hom` using `inferInstanceAs (IsMonHom (𝟙 t'.G))`. Establish `hid : IsGrpPullback t'.G t'.G (𝟙 _) (𝟙 t'.G.left)` using `isGrpPullback_of_iso (Iso.refl t'.G)`. Establish `hA' : RelAmple t'.G t'.PP.L` using `relAmple_pull hid.1 hM t'.PP.isLB ((isGen_iff v).1 hv) ⊤ (isAffineOpen_top _) (fun _ => trivial) hA`. Establish `hK' : KTriv t'.G t'.PP.L` using `kTriv_pull hid hM t'.PP.isLB ((isGen_iff v).1 hv) hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ↥t'.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t'.G.hom) (𝟙 _) (𝟙 _) t'.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected t'.G.hom (Classical.arbitrary _)`. Use `⟨GenericPol.toPolAV t' g hg hp hA' hK', ⟨t'.act.toRingAct, GenericPol.rosatiAdj t'⟩, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 t'.G)), ?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LBIso.chartPull (Geo.Tor.chartPullPull t'.PP.L (𝟙 _) (𝟙 _) rfl) (Geo.Tor.chartPullId _) hL`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LN.exists_polAV_of_polAt : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] (t : SAB H (Sp R)), PolAt t (jK R) → letI := H.starRing; ∃ (A : PolAV (Sp (FractionRing R))) (oA : A.OAct (𝓞 E)) (gen : (Over.pullback (jK R)).obj t.G ≅ A.A), IsMonHom gen.hom ∧ LBIso (A.L.pull gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK R))) ∧ ∀ x, (Over.pullback (jK R)).map (t.act.act x) ≫ gen.hom = gen.hom ≫ oA.act x := by
   intro _ _ E _ _ _ H R _ _ t ⟨hp, hA, hK⟩

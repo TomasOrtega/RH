@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `top3 hLF hAA (locInst_of_away hAA tensMem) hLC hDO hId hC`.
+A detailed English derivation is pending.
 -/
 theorem top5 (hLF : LocFact) (hAA : AwayAct) (hLC : LieComm) (hDO : DerivOne) (hId : GIdil) (hC : PositivityTheory.PfSWUS.CoefND) :
     ∀ D n V ψ χ θ μ ω H l s ν Φ, PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν Φ → PositivityTheory.PfSWUS.InRange V n → 1 ≤ n →

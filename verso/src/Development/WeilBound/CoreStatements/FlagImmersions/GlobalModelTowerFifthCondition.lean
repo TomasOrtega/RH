@@ -20,9 +20,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSett
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y _ T o II _ _ hII hp _`. Establish `hG'` using `hG`. Take `⟨-, -, -, -, hRes, -, hF, hGaga, -⟩` from `hG'`. Use `GlobalTheory.T.tower_intersection_of_sandwich_split hG (GlobalTheory.T.flat_zero_from_resolution_and_gaga hRes hGaga) E H D l (Xo l) c Y T o II hII.1 (splitComps_of_origin o.toTowerOrigin) fun B a p hpS => ?_` and prove the remaining obligations. Use `haveI : Fact p.Prime := ⟨(o.Or B a).𝔐.S_prime p hpS⟩`.
-
-Conclude with `GlobalTheory.T.exists_sandwich_of_hodge_tate_free hF E H D l (Xo l) c _ _ Y (o.S B) _ _ _ _ (o.Or B a).𝔐 p hpS (by omega) (o.omVB B a p hpS)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem global_model_tower_fifth_condition : Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → T.I5 II ∧ T.I6 II := by
   intro hG E _ _ _ _ H D Xo l c Y _ T o II _ _ hII hp _

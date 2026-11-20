@@ -3,13 +3,13 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.CyclicCharacterEigen.CoefZero
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `Nat.cast_pos.mpr (by omega)`. Establish `hr : (0 : ℝ) < (p : ℝ) ^ (1 - (k : ℝ) / 2)` using `Real.rpow_pos_of_pos hp0 _`. Rewrite `h` using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, mul_pow]`. Establish `hr2 : ((p : ℝ) ^ (1 - (k : ℝ) / 2)) ^ 2 = (p : ℝ) ^ (2 - (k : ℝ))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `he : (((k - 1 : ℕ) : ℝ)) + (2 - (k : ℝ)) = 1`. Rewrite using `[Nat.cast_sub (by omega)]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : (p : ℝ) ^ (k - 1) * (p : ℝ) ^ (2 - (k : ℝ)) = p`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hp0, he, Real.rpow_one]`. Establish `hne : (p : ℝ) ^ (2 - (k : ℝ)) ≠ 0` using `(Real.rpow_pos_of_pos hp0 _).ne'`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hr2]`. Conclude with `mul_right_cancel₀ hne (h.trans hkey.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_sq_of_scaled (k p : ℕ) (hk : 3 ≤ k) (hp : 2 ≤ p) (x : ℂ)
     (h : ‖x * (((p : ℝ) ^ (1 - (k : ℝ) / 2) : ℝ) : ℂ)‖ ^ 2 = (p : ℝ)) : ‖x‖ ^ 2 = (p : ℝ) ^ (k - 1) := by
@@ -32,15 +32,15 @@ private theorem norm_sq_of_scaled (k p : ℕ) (hk : 3 ≤ k) (hp : 2 ≤ p) (x :
   exact mul_right_cancel₀ hne (h.trans hkey.symm)
 
 /- English proof (translation)
-Introduce `k N _ hk χ hχ g p hp hpN`. Establish `b0 : Ad3.R.B0` using `@GlobalTheory.T.global_rankin_selberg_basic_facts`. Establish `c0 : Ad3.R.C0` using `@GlobalTheory.T.hecke_coset_representatives`. Establish `c1 : Ad3.R.C1` using `@GlobalTheory.T.congruence_subgroup_coset_decomposition`. Establish `u2 : Ad3.R.U2` using `@GlobalTheory.T.unramified_whittaker_newform`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0 : Ad3.R.G0` using `@GlobalTheory.T.fundamental_domain_invariance_of_description (@GlobalTheory.T.fundamental_domain_description)`. Establish `g1 : Ad3.R.G1` using `@GlobalTheory.T.central_character_integral_properties (@GlobalTheory.T.fundamental_domain_integral_central_invariance)`. Establish `f0 : Ad3.R.F0` using `@GlobalTheory.T.newform_lift_existence b0`. Establish `f0b : Ad3.R.F0b` using `@GlobalTheory.T.newform_lift_conductor b0`. Establish `f1 : Ad3.R.F1` using `@GlobalTheory.T.newform_lift_level b0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1b : Ad3.R.AutomorphicLevelEquivariance` using `@GlobalTheory.T.newform_lift_level_character b0`. Establish `f2 : Ad3.R.F2` using `@GlobalTheory.T.newform_lift_whittaker_expansion`. Establish `f3a : Ad3.R.HeckeSumLocalTranslates` using `@GlobalTheory.T.newform_lift_local_type b0`. Establish `f3 : Ad3.R.F3` using `@GlobalTheory.T.newform_lift_hecke_eigenvalues b0 c0 c1 f0b f1 f1b f3a`. Establish `f5 : Ad3.R.F5` using `@GlobalTheory.T.newform_lift_rapid_decay b0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4 : Ad3.R.F4` using `@GlobalTheory.T.newform_lift_fourier_coefficients b0 c1 u2 g0 g1 f0b f1 f2 f3 f5`. Take `⟨hform, heig⟩` from `Ad3P.sEig k N hk χ g`. Take `⟨ω, hω⟩` from `f0 N χ`. Take `⟨-, φ, hφ⟩` from `f1 k N χ _ _ hform g.one ω hω`. Take `⟨v, rfl⟩` from `b0.2.2.1 p hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `f4 k N hk χ hχ _ _ hform heig ω φ hω hφ v hpN`. Conclude with `norm_sq_of_scaled k _ hk hp.two_le _ h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Unl.badAbs :
     UpperTheory.V.Z.Sym.Unl.BadAbs := by

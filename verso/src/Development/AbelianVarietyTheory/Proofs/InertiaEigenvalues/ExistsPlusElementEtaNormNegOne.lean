@@ -13,9 +13,9 @@ namespace GlobalTheory.UnitLemma.Desc
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm`. Consider the case `exact _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm`. Consider the case `(apply _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_plus_eta_norm_neg_one : ∀ (K : UQ) (B : InvAlg K) (f : B.A), IsIdempotentElem f → f ≠ 0 →
     (∀ y, f * y ≠ 0 → ∃ z, f * y * z = f) → B.σ f = f →

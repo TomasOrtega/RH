@@ -69,23 +69,21 @@ section Decay
 open GlobalTheory.XTermDecay
 
 /- English proof (translation)
-Establish `hKeq : K = GlobalTheory.StabHaar.stabK (σ` using `σ) B X := Subgroup.ext fun g => (hK g).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B X g).symm`. Establish `hKc : IsCompact (K : Set (UA σ X.J))`. Establish `hX` using `hT.herm`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B n X _ _ hT.base hX`. Rewrite using `[hKeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.T.isClosed_adelic_lattice_closure F E n X hX.lat)) hsub`. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hT.weil`. Establish `hΦA : Φ ∈ schA F _` using `hΦ`. Take `⟨m, g, f, hg, hdec, hf⟩` from `exists_decomp (fun k : K => om (k.1, h) Φ) (fun k => hw.isUSplitting.pres (k.1, h) Φ hΦA) fun l hl => by`. Establish `hc` using `(hw.2.2 l hl Φ hΦA).comp (continuous_id.prodMk continuous_const : Continuous fun g : UA σ X.J => (g, h))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hc.continuousOn`. Conclude with `⟨C, fun k => hC k.1 k.2⟩`. Take `⟨t, ht⟩` from `GlobalTheory.T.symplectic_trace_basis_exists F E σ _ _ X.J W.J H₀.x H₀.y H'.x H'.y hxy (by`. Rewrite using `[form_swap hT.base.cm hT.skew.skew, hxy', map_one])`. Set `S` to `fun j => M.co.e (inclR (F := F) (AF F) (Module.finBasis F E j) • Matrix.vecMulVec (incV F H₀.x) (incV F H'.y))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U'` to `fun i => M.co.e (Matrix.vecMulVec (inclR (F := F) (AF F) (t i) • incV F H₀.y) (incV F H'.x))`. Establish `hp : Continuous ⇑(Finset.sup s (schwartzSeminormFamily ℂ (Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) ℂ))` using `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i`. Use `choose C hCb using fun j => slice_decay B.ψ hT.base.std S U' (fun i j => by rw [← M.co.form]; convert ht i j) (sliceL c ∘ₗ e) (exists_slice_clm hT.good he c) (fun i a Ψ hΨ => by`. Use `he.inv (Matrix.vecMulVec (a • inclR (F := F) (AF F) (t i) • incV F H₀.y) (incV F H'.x)) (Or.inl ⟨_, rfl⟩) Ψ hΨ` as an intermediate fact. Rewrite `this` using `[Matrix.smul_vecMulVec, Darboux.rho, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (sliceL c) this) (hg j) (f j) (hf j) hU _ hp N`. Use `⟨∑ j, C j, fun k hk l hl => ?_⟩` and prove the remaining obligations. Use `choose f₁ hf₁ hb₁ using fun j => hCb j ⟨k, hk⟩ (GlobalTheory.XTermMaj.crd F E (l : AE F E)) hl`. Establish `hS : M.co.e (shiftA H₀ H' l) = ∑ i, GlobalTheory.XTermMaj.crd F E (l : AE F E) i • S i`. Simplify using `only [S, ← map_smul, ← map_sum, ← smul_assoc, ← Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Rewrite using `[shiftA]`. Use `congr 1`. Use `((Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).sum_equivFun (l : AE F E)).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Use `⟨∑ j, f₁ j, fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hdec ⟨k, hk⟩`. Simplify using `only at h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Darboux.rho, hS]`. Express the relevant statement in the definitionally equal form `coeL (∑ j, f₁ j) y = (sliceL c ∘ₗ e) (schrL B.ψ _ _) y`. Rewrite using `[map_sum, map_sum, map_sum]`. Conclude with `congrFun (Finset.sum_congr rfl fun j _ => hf₁ j) y`. Rewrite using `[Finset.sum_mul]`.
-
-Conclude with `(Finset.le_sum_of_subadditive _ (map_zero _).le (map_add_le_add _) _ _).trans (Finset.sum_le_sum fun j _ => hb₁ j)`.
+A detailed English derivation is pending.
 -/
 theorem decay {B : Base F E} {n d n₁ d₁ r s' r' s'' : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} (hT : IsPair B M χX χW om r s' r' s'') {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {M₂ : Model σ X₁ W₁}

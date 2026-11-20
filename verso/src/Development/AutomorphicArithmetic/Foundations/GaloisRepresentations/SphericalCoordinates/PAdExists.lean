@@ -6,7 +6,7 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_star_mul_spherical_coordinates {g : ℕ} (A B : Matrix (Fin g) (Fin g) ℂ) :
     (A * B).map star = A.map star * B.map star := by
@@ -14,21 +14,21 @@ private theorem map_star_mul_spherical_coordinates {g : ℕ} (A B : Matrix (Fin 
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Conclude with `(RingHom.map_det (starRingEnd ℂ) A).symm`.
+A detailed English derivation is pending.
 -/
 private theorem det_map_star' {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) :
     (A.map star).det = star A.det := by
   exact (RingHom.map_det (starRingEnd ℂ) A).symm
 
 /- English proof (translation)
-Rewrite using `[PerCoordU.herm_mulVec_left, PerCoordU.herm_mulVec_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermForm_mulVec_mulVec {g : ℕ} (M H : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm M (H *ᵥ z) (H *ᵥ w) = hermForm (Hᵀ * M * H.map star) z w := by
   rw [PerCoordU.herm_mulVec_left, PerCoordU.herm_mulVec_right]
 
 /- English proof (translation)
-Establish `e` using `PerCoordU.ext_per hP (f := PeriodCoord.realMap A 0) (f' := PeriodCoord.realMap B 0) (fun x => by simp [PeriodCoord.realMap_apply, h])`. Conclude with `(PeriodCoord.realMap_inj e).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_of_mulVec_period_eq {O : Type} [Ring O] {bar : O → O} {D : PLat O bar} {g : ℕ}
     {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {P : D.La →+ Fin g → ℂ} (hP : PELU.IsPeriod D ρ P)
@@ -38,9 +38,9 @@ private theorem eq_of_mulVec_period_eq {O : Type} [Ring O] {bar : O → O} {D : 
   exact (PeriodCoord.realMap_inj e).1
 
 /- English proof (translation)
-Apply `PerCoordU.sesq_ext` to reduce the goal to its premises. Establish `h1 : PeriodCoord.imForm N = PeriodCoord.imForm N'`. Apply `PerCoordU.ext_per hP` to reduce the goal to its premises. Introduce `x`. Apply `PerCoordU.ext_per hP` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Simplify using `only [PeriodCoord.imForm_apply]`. Conclude with `h x y`. Introduce `z w`. Rewrite using `[← PeriodCoord.imForm_apply, ← PeriodCoord.imForm_apply, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_hermForm_im_eq_on_periods {O : Type} [Ring O] {bar : O → O} {D : PLat O bar} {g : ℕ}
     {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {P : D.La →+ Fin g → ℂ} (hP : PELU.IsPeriod D ρ P)
@@ -58,7 +58,7 @@ private theorem eq_of_hermForm_im_eq_on_periods {O : Type} [Ring O] {bar : O →
   rw [← PeriodCoord.imForm_apply, ← PeriodCoord.imForm_apply, h1]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem inv_mul_comm_of_mul_comm_of_det_unit {g : ℕ} (X N : Matrix (Fin g) (Fin g) ℂ) (hN : IsUnit N.det)
     (h : X * N = N * X) : N⁻¹ * X = X * N⁻¹ := by
@@ -68,31 +68,27 @@ private theorem inv_mul_comm_of_mul_comm_of_det_unit {g : ℕ} (X N : Matrix (Fi
     _ = X * N⁻¹ := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hN, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `O _ bar g ρ D P₀ M₀ hP hM ga H hF`. Take `⟨⟨m, hm, hEF⟩, hga⟩` from `hF`. Take `⟨_, hpos, hIm⟩` from `hM`. Establish `hform : Hᵀ * M₀ * H.map star = (m : ℂ) • M₀`. Apply `eq_of_hermForm_im_eq_on_periods hP` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y`. Establish `hs : hermForm ((m : ℂ) • M₀) (P₀ x) (P₀ y) = (m : ℂ) * hermForm M₀ (P₀ x) (P₀ y)`. Simplify using `[hermForm, Matrix.smul_mulVec, dotProduct_smul]`. Rewrite using `[← hermForm_mulVec_mulVec, ← hga x, ← hga y, hIm, hEF, hs, Complex.mul_im, hIm]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdM : M₀.det ≠ 0` using `PeriodCoord.det_ne_zero_of_pos hpos`. Establish `hdet : H.det ≠ 0`. Introduce `h0`. Establish `e` using `congrArg Matrix.det hform`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, det_map_star', Matrix.det_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hdM, hm.ne'] at e`. Establish `hcomm : ∀ a, ρ a * H = H * ρ a`. Introduce `a`. Apply `eq_of_mulVec_period_eq hP` to reduce the goal to its premises. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hga x, ← hP.1 a (ga x), ← hP.1 a x, ← hga (a • x), LinearMap.map_smul]`. Use `⟨hdet, hcomm, ?_⟩` and prove the remaining obligations. Introduce `C hC`. Use `set N := H.map star with hNdef`. Establish `hNu : IsUnit N.det`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNdef, det_map_star']`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hdet)`. Establish `hNtu : IsUnit Nᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `hc' : ∀ b, (ρ b).map star * N = N * (ρ b).map star`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hNdef, ← map_star_mul_spherical_coordinates, ← map_star_mul_spherical_coordinates, hcomm]`. Establish `hC' : (Cᵀ * M₀)ᵀ = Cᵀ * M₀ ∧ ∀ a, Cᵀ * M₀ * (ρ (bar a)).map star = (ρ a)ᴴ * (Cᵀ * M₀)` using `hC`. Take `⟨hS1, hS2⟩` from `hC'`. Establish `hHM : Hᵀ * M₀ = (m : ℂ) • (M₀ * N⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc (Hᵀ * M₀), Matrix.mul_nonsing_inv _ hNu, Matrix.mul_one]`. Use `_ = (m : ℂ) • (M₀ * N⁻¹) := by rw [hform, Matrix.smul_mul]`. Establish `hkey : (H * C * N⁻¹)ᵀ * M₀ = (m : ℂ) • (N⁻¹ᵀ * (Cᵀ * M₀) * N⁻¹)`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, hHM]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion.
 
-Use `show ((H * C * N⁻¹)ᵀ * M₀)ᵀ = (H * C * N⁻¹)ᵀ * M₀ ∧ ∀ a, (H * C * N⁻¹)ᵀ * M₀ * (ρ (bar a)).map star = (ρ a)ᴴ * ((H * C * N⁻¹)ᵀ * M₀)`. Rewrite using `[hkey]`. Generalize the expression as in `Cᵀ * M₀ = S at hS1 hS2 ⊢`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, hS1, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `c1 : N⁻¹ * (ρ (bar a)).map star = (ρ (bar a)).map star * N⁻¹` using `inv_mul_comm_of_mul_comm_of_det_unit _ N hNu (hc' (bar a))`. Establish `hX : (ρ a)ᴴ * Nᵀ = Nᵀ * (ρ a)ᴴ`. Rewrite using `[← PerCoordU.map_star_transpose, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hc' a]`. Establish `c2 : Nᵀ⁻¹ * (ρ a)ᴴ = (ρ a)ᴴ * Nᵀ⁻¹` using `inv_mul_comm_of_mul_comm_of_det_unit _ _ hNtu hX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = (m : ℂ) • (Nᵀ⁻¹ * (S * (ρ (bar a)).map star) * N⁻¹) := by`. Rewrite using `[c1]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (m : ℂ) • (Nᵀ⁻¹ * ((ρ a)ᴴ * S) * N⁻¹) := by rw [hS2 a]`. Use `_ = (m : ℂ) • (Nᵀ⁻¹ * (ρ a)ᴴ * S * N⁻¹) := by simp only [Matrix.mul_assoc]`. Use `_ = (ρ a)ᴴ * ((m : ℂ) • (Nᵀ⁻¹ * S * N⁻¹)) := by`. Rewrite using `[c2]`.
-
-Simplify using `only [Matrix.mul_smul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.adExists_of :
     UpperTheory.Gal.W2.AdExists := by

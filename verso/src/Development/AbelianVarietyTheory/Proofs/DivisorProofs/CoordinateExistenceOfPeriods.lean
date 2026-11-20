@@ -28,7 +28,7 @@ namespace GlobalTheory.LatJet.An
 namespace CoordProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lattice_deformation_multiplication`.
+A detailed English derivation is pending.
 -/
 theorem diag_coords : ∀ (Ω : Type) [NormedAddCommGroup Ω] [NormedSpace ℂ Ω] (g : ℕ) (K : Type) (ρ : K → Fin g → ℂ),
     (∀ a j, starRingEnd ℂ (ρ a j) = ρ a j) → (∀ j k, j ≠ k → ∃ a, ρ a j ≠ ρ a k) →
@@ -46,7 +46,7 @@ theorem diag_coords : ∀ (Ω : Type) [NormedAddCommGroup Ω] [NormedSpace ℂ �
         ∀ w, D z (M w) = fun j ↦ ρ a j * D z w j := GlobalTheory.T.lattice_deformation_multiplication
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.det_omega_eq_const_mul_det`.
+A detailed English derivation is pending.
 -/
 theorem exists_isDet : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ)) (L : LB X.A.left)
     (u : HolUnif X.A L (Module.finrank ℚ F)) (δ : X.DetOmega), ∃ C : ℂ,
@@ -54,13 +54,13 @@ theorem exists_isDet : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F
       (∀ j, u.IsDiff (W j) (v j).hom) → δ v = C * W.det := GlobalTheory.T.det_omega_eq_const_mul_det
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cm_type_separates_embeddings`.
+A detailed English derivation is pending.
 -/
 theorem cmType_sep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) (φ : I → E →+* ℂ), IsCMType φ →
     ∀ i k, i ≠ k → ∃ a : 𝓞 (FR E), φ i ((a : FR E) : E) ≠ φ k ((a : FR E) : E) := GlobalTheory.T.cm_type_separates_embeddings
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.1.hom_ext e (by rw [Over.w x, Over.w y])`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pull_ext {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) {T : Over S'} {x y : T ⟶ G'} (e : x.left ≫ φ = y.left ≫ φ) : x = y := by
@@ -68,16 +68,16 @@ theorem pull_ext {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [Gr
   exact h.1.hom_ext e (by rw [Over.w x, Over.w y])
 
 /- English proof (translation)
-Rewrite using `[J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jetRing_π_algebraMap {I : Type} [Fintype I] {n : ℕ} (J : JetRing ℂ I n) (a : ℂ) : J.π (algebraMap ℂ J.B a) = a := by
   rw [J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul]
   simp
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, ht, -⟩` from `hJ I n J`. Simplify using `only [jet, taylor, map_sum]`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using `[Algebra.smul_def, jetRing_π_algebraMap]`. Introduce `k _ hk`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_prod]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Rewrite using `[Fin.prod_univ_succ, ht, zero_mul, mul_zero]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem π_jet (hJ : JetCalc) {I : Type} [Fintype I] {n : ℕ} (J : JetRing ℂ I n) (f : (I → ℂ) → ℂ) : J.π (jet J f) = f 0 := by
   obtain ⟨-, -, -, -, -, ht, -⟩ := hJ I n J
@@ -96,47 +96,41 @@ end CoordProof
 open CoordProof in
 
 /- English proof (translation)
-Take `⟨ε, GM⟩` from `hGM`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ I _ 𝔠 φ c y hφ hc n T J Y G`. Use `haveI := G.smooth`. Establish `hX : ∀ z, ∃ (X' : Obj (FR E) 𝔠 (Sp ℂ)) (q : X'.A.left ⟶ G.X.A.left), X'.IsPullBy G.X (spMap (G.y z : G.B →+* ℂ)) q` using `fun z ↦ Obj.exists_isPullBy G.X _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose X q hq using hX`. Establish `hδ : ∀ z, ∃ δ : (X z).DetGen, Obj.DetCorr (G.y z : G.B →+* ℂ) (q z) G.δ.1 δ.1` using `fun z ↦ ((hq z).existsUnique_detGen _ G.δ).exists`. Use `choose δ hδ using hδ`. Set `mor : ∀ z, GrpMor (dp0 G.B) (𝟙 _) G.X.A (dp0 ℂ) (𝟙 _) (X z).A (G.y z : G.B →+* ℂ) (spMap (G.y z : G.B →+* ℂ)) (q z)` to `fun z ↦ GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) (hq z).grp`. Establish `hπj : J.π.comp (G.j : G.B →+* J.B) = (G.y 0 : G.B →+* ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, G.jet_eq, π_jet hJ]`. Establish `h₀ : T.X.IsPullBy G.X (spMap (G.y 0 : G.B →+* ℂ)) (Y.i ≫ G.q)`. Rewrite using `[← hπj, Cris.spMap_comp]`. Conclude with `Y.pull.comp G.pull`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, u, τ, P, P₀, hV, h0V, hVU, hper0, hper, -, hτ0, hτhol, hend, hPhol, hcrys⟩` from `GM G.B G.X.A _ G.X.ab G.X.dim I G.U G.y G.isOpen G.zero G.hol (fun z ↦ (X z).A) q (fun z ↦ (hq z).grp) mor (fun z ↦ (X z).diag T.U.c) (fun z ↦ LB.isLB_pull ((X z).isLB _) _) T.X.A (Y.i ≫ G.q) h₀.grp (T.X.diag T.U.c) (LB.isLB_pull (T.X.isLB _) _) T.U.u`. Set `ρ : 𝓞 (FR E) → Fin (Module.finrank ℚ (FR E)) → ℂ` to `fun a j ↦ φ (T.U.e j) ((a : FR E) : E)`. Establish `hreal : ∀ a j, starRingEnd ℂ (ρ a j) = ρ a j` using `fun a j ↦ (a : FR E).2 (φ (T.U.e j))`. Establish `hsep : ∀ j k, j ≠ k → ∃ a, ρ a j ≠ ρ a k` using `fun j k hjk ↦ cmType_sep E I φ hφ _ _ (T.U.e.injective.ne hjk)`. Set `dg : 𝓞 (FR E) → (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `fun a ↦ { toFun := fun w j ↦ ρ a j * w j map_add' := fun w w' ↦ funext fun j ↦ mul_add _ _ _ map_smul' := fun s w ↦ funext fun j ↦ by simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdg : ∀ a w, dg a w = fun j ↦ ρ a j * w j` using `fun _ _ ↦ rfl`. Establish `hact0 : ∀ a w, T.U.u.ex (dg a w) = T.U.u.ex w ≫ T.X.rm.act a` using `fun a w ↦ T.U.act a w`. Establish `hΛ : ∀ a, ∀ x ∈ T.U.u.Λ, (fun j ↦ ρ a j * x j) ∈ T.U.u.Λ` using `fun a x hx ↦ by haveI := T.X.rm.hom a`. Rewrite using `[← T.U.u.ker, ← hdg, hact0, (T.U.u.ker x).2 hx]`. Conclude with `H1.ClosedPointWeilPower.one_comp_hom _ inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM0 : ∀ a w, (T.U.u.ex (dg a w)).left ≫ (Y.i ≫ G.q) = (T.U.u.ex w).left ≫ (Y.i ≫ G.q) ≫ (G.X.rm.act a).left` using `fun a w ↦ by`. Rewrite using `[hact0, Over.comp_left, Category.assoc, h₀.act a]`. Establish `hend' : ∀ z ∈ V, ∀ a, ∃ M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ), (∀ w, ((u z).ex (M w)).left ≫ q z = ((u z).ex w).left ≫ q z ≫ (G.X.rm.act a).left) ∧ ∀ x x' : T.U.u.Λ, (x' : Fin (Module.finrank ℚ (FR E)) → ℂ) = dg a x → (τ z x' : Fin (Mod …` using `fun z hz a ↦ by haveI := G.X.rm.hom a`. Conclude with `hend (G.X.rm.act a) (dg a) (hM0 a) z hz`. Set `τ' : (I → ℂ) → T.U.u.Λ →+ (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `fun z ↦ ((u z).Λ.subtype.toAddMonoidHom).comp (τ z).toAddMonoidHom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hτ' : ∀ z x, τ' z x = (τ z x : Fin (Module.finrank ℚ (FR E)) → ℂ)` using `fun _ _ ↦ rfl`. Take `⟨V', D, ζ, hV', h0V', hV'V, hζ, hζ0, hζ1, hDτ, hDM⟩` from `diag_coords (I → ℂ) _ (𝓞 (FR E)) ρ hreal hsep T.U.u.Λ T.U.u.discrete T.U.u.full hΛ V τ' hV h0V (fun x ↦ hτ0 x) (fun x ↦ hτhol x) (fun z hz a ↦ (hend' z hz a).imp fun M hM ↦ fun x x' hx ↦ hM.2 x x' hx)`. Set `ζ' : (I → ℂ) → I → ℂ` to `fun z i ↦ ζ z (T.U.e.symm i)`. Establish `hdiff_ex : ∀ {A : Over (Sp ℂ)} [GrpObj A] {L₁ L₂ : LB A.left} {g : ℕ} (u₁ : HolUnif A L₁ g) (u₂ : HolUnif A L₂ g), u₁.ex = u₂.ex → ∀ w v, u₂.IsDiff w v → u₁.IsDiff w v`. Introduce `A _ L₁ L₂ g u₁ u₂ h w v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hv` using `only [HolUnif.IsDiff, h]`. Establish `hU : ∀ z ∈ V', ∃ U : Unif φ (lattice c y) (ζ' z) (X z), U.e = T.U.e ∧ U.c = T.U.c ∧ ∀ w v, (u z).IsDiff ((D z).symm w) v → U.u.IsDiff w v`. Introduce `z hz`. Establish `hzV` using `hV'V hz`. Establish `hrm : ∀ a, ∃ M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ), (∀ w, (u z).ex (M w) = (u z).ex w ≫ (X z).rm.act a) ∧ ∀ w, D z (M w) = fun j ↦ ρ a j * D z w j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨M, hM1, hM2⟩` from `hend' z hzV a`. Use `⟨M, fun w ↦ pull_ext (hq z).grp ?_, hDM z hz a M (fun x x' hx ↦ hM2 x x' hx)⟩` and prove the remaining obligations. Rewrite using `[hM1, Over.comp_left, Category.assoc, (hq z).act a]`. Take `⟨u1, hu1ex, hu1Λ, -, -, hu1d⟩` from `GlobalTheory.exists_holUnif_reparam (X z).A _ _ (u z) (D z).symm (fun _ ↦ 1) (differentiable_const 1) (fun _ ↦ one_ne_zero) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hact1 : ∀ (a : 𝓞 (FR E)) w, u1.ex (fun j ↦ φ (T.U.e j) ((a : FR E) : E) * w j) = u1.ex w ≫ (X z).rm.act a`. Introduce `a w`. Take `⟨M, hM1, hM2⟩` from `hrm a`. Establish `: (D z).symm (fun j ↦ φ (T.U.e j) ((a : FR E) : E) * w j) = M ((D z).symm w)`. Apply `(D z).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearEquiv.apply_symm_apply, hM2, LinearEquiv.apply_symm_apply]`. Rewrite using `[hu1ex, hu1ex, this, hM1]`. Take `⟨u2, hh, hex, χ, hAH⟩` from `hD (FR E) 𝔠 (X z) T.U.c T.U.pos u1 (fun j ↦ (φ (T.U.e j)).comp (algebraMap (FR E) E)) (fun j k hjk ↦ by`. Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩` from `cmType_sep E I φ hφ _ _ (T.U.e.injective.ne hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ha (RingHom.congr_fun hjk (a : FR E)))`. Use `hact1`. Use `⟨⟨T.U.e, T.U.c, T.U.pos, u2, fun w ↦ ?_, fun a w ↦ ?_, fun i ↦ hh (T.U.e.symm i), ?_⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `hmem : w ∈ u2.Λ ↔ (D z).symm w ∈ (u z).Λ`. Rewrite using `[← u2.ker w, hex, u1.ker w, hu1Λ w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨x₀, hx₀⟩ : ∃ x₀ : T.U.u.Λ, (τ z x₀ : Fin (Module.finrank ℚ (FR E)) → ℂ) = (D z).symm w` from `⟨(τ z).symm ⟨_, hw⟩, by simp⟩`. Take `⟨x, hxL, hx⟩` from `(T.U.lat x₀).1 x₀.2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨x, hxL, ?_⟩` and prove the remaining obligations. Establish `h1` using `hDτ z hz x₀`. Rewrite `h1` using `[hτ', hx₀, LinearEquiv.apply_symm_apply]`. Rewrite using `[h1]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[hx, defCoord, ζ']`. Introduce and unpack `⟨x, hxL, rfl⟩`. Establish `hx₀ : (fun j ↦ defCoord φ 0 x (T.U.e j)) ∈ T.U.u.Λ` using `(T.U.lat _).2 ⟨x, hxL, rfl⟩`. Establish `h1` using `hDτ z hz ⟨_, hx₀⟩`. Rewrite `h1` using `[hτ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `h2 : (fun j ↦ defCoord φ (ζ' z) x (T.U.e j)) = D z (τ z ⟨_, hx₀⟩)`. Rewrite using `[h1]`. Use function extensionality and compare the values at `j`. Simplify using `[defCoord, ζ']`. Rewrite using `[h2, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(τ z _).2`. Rewrite using `[hex]`. Conclude with `hact1 a w`. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `⟨χ, hAH⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `w v hv`. Conclude with `hdiff_ex u2 u1 hex w v (hu1d w v hv)`. Use `choose U hUe hUc hUd using hU`. Establish `hC : ∀ z (hz : z ∈ V'), ∃ C, (U z hz).IsDet (δ z).1 C` using `fun z hz ↦ exists_isDet (X z) _ (U z hz).u (δ z).1`. Take `⟨-, -, -, -, -, hJt, hJprod⟩` from `hJ I n J`.
-
-Use `⟨{ V := V' isOpen := hV' zero := h0V' sub := hV'V.trans hVU X := X q := q pull := hq mor := mor δ := δ corr := hδ ζ := ζ' ζ_hol := differentiableOn_pi.2 fun i ↦ differentiableOn_pi.1 hζ _ ζ_zero := by funext i; simp [ζ', hζ0] ζ_mem := fun z hz i ↦ hζ1 z hz _ U := U e_eq := hUe C …` and prove the remaining obligations. Take `⟨v, hv1, hv2⟩` from `(hper z (hV'V hz)).2.2.1 (τ z x)`. Use `⟨v, hv1, hUd z hz _ v ?_⟩` and prove the remaining obligations. Establish `h1 : (fun a ↦ x.1 a + ζ' z (T.U.e a) * starRingEnd ℂ (x.1 a)) = D z (τ z x)`. Rewrite using `[← hτ', hDτ z hz x]`.
-
-Use function extensionality and compare the values at `a`. Simplify using `[ζ']`. Rewrite using `[h1, LinearEquiv.symm_apply_apply]`. Conclude with `hv2`. Use `P_hol := fun x c ↦ (hPhol x c).mono hV'V`.
-
-Use `horiz := fun m' x d hd c ↦ hcrys J.B J.π J.κ J.nil (jetRing_π_algebraMap J) (n + 1) J.t hJt hJprod G.j G.jet_eq Y.X'.A G.q G.pull.grp m' Y.i Y.pull.grp rfl Y.mor x d hd c }⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordEx (hGM : GlobalTheory.Published.GaussManinPeriods) (hJ : JetCalc) (hD : DiagFrame) : CoordEx := by
   obtain ⟨ε, GM⟩ := hGM

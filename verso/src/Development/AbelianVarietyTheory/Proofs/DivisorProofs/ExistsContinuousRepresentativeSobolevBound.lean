@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjEq
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `GlobalTheory.ConjExt.exists_conjModel_ext D V S M v hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_conjModel_cast {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPar} (e : S' = fun τ => dualPar (S τ))
     (M : DSModel V S) (v : M.Vec) (hv : IsExtVec M v) :
@@ -22,11 +22,11 @@ theorem exists_conjModel_cast {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPa
   exact GlobalTheory.ConjExt.exists_conjModel_ext D V S M v hv
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hM hT i σ hσ`. Establish `hg : GoodEmb T.Q.c (res T ((starRingEnd ℂ).comp σ))` using `good_resC T hσ`. Take `⟨hs, -, w, hw⟩` from `GlobalTheory.HolDict.holShape_of_good D G Pl0 T0 A T R κ v₀ hT i _ hg`. Take `⟨M', c, v', hc, hv'⟩` from `exists_conjModel_cast (GlobalTheory.ConjReading.parAt_conj (Wc D i) σ) (R.MW i σ) (v₀ i σ) (hT.hv₀ i σ).1`. Take `⟨U, hU⟩` from `GlobalTheory.T.holomorphic_discrete_series_models_unitarily_equivalent D R.θ _ _ (R.MW i ((starRingEnd ℂ).comp σ)) M' w (v₀ i _) v' hM.inf hs hw (hT.hv₀ i _).1 hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun τ => (c τ).symm.trans (U τ), fun τ g hg y => ?_⟩` and prove the remaining obligations. Use `show U τ ((c τ).symm _) = (R.MW i ((starRingEnd ℂ).comp σ)).rep τ g (U τ ((c τ).symm y))`. Rewrite using `[← hU τ g hg]`. Use `congr 1`. Apply `(c τ).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc τ g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_equiv : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.IsModels → TieIn T R κ v₀ → ∀ i σ, ¬ GoodEmb T.Q.c (res T σ) → ∃ c : ∀ τ, (R.MW i σ).H τ ≃ₗᵢ⋆[ℂ] (R.MW i ((starRingEnd ℂ).comp σ)).H τ, ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (Wc D i) τ), ∀ y, c τ ((R.MW i σ).rep τ g y) = (R.MW i ((starRingEnd ℂ).comp σ)).rep τ g (c τ y) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hM hT i σ hσ

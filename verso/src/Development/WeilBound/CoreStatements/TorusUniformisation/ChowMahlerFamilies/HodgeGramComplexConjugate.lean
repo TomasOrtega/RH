@@ -17,7 +17,7 @@ namespace PositivityTheory.Xgn.HodgeGramConjugation
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.appLE_comp_appLE (spMap σ) x U ⊤ ⊤ h le_top`. Establish `e' : (spMap σ).appLE ⊤ ⊤ le_top = (spMap σ).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Rewrite using `[← e, e']`. Conclude with `congrArg (fun q => q.hom ((x.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_spMap {R R' : Type} [CommRing R] [CommRing R'] {X : Scheme.{0}} (σ : R →+* R') (x : Sp R ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap σ ≫ x) ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -30,7 +30,7 @@ theorem val_spMap {R R' : Type} [CommRing R] [CommRing R'] {X : Scheme.{0}} (σ 
     (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ))
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE x ψ U V ⊤ e h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_comp {T X Y : Scheme.{0}} (x : T ⟶ Y) (ψ : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (e : V ≤ ψ ⁻¹ᵁ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -39,7 +39,7 @@ theorem appLE_comp {T X Y : Scheme.{0}} (x : T ⟶ Y) (ψ : Y ⟶ X) (U : X.Open
   rfl
 
 /- English proof (translation)
-Establish `k : ∀ y : T ⟶ X, ⊤ ≤ y ⁻¹ᵁ U → ⊤ ≤ (c ≫ y) ⁻¹ᵁ U` using `fun y hy t _ => hy (show c t ∈ (⊤ : T.Opens) from trivial)`. Use `⟨fun h => ?_, k x⟩` and prove the remaining obligations. Use `k _ h` as an intermediate fact. Rewrite `this` using `[← Category.assoc, hc, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem top_le_invol {T X : Scheme.{0}} {c : T ⟶ T} (hc : c ≫ c = 𝟙 T) (x : T ⟶ X) (U : X.Opens) :
     ⊤ ≤ (c ≫ x) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
@@ -53,7 +53,7 @@ abbrev cj : Sp ℂ ⟶ Sp ℂ := spMap (starRingEnd ℂ)
 abbrev dj : Sp (DualNumber ℂ) ⟶ Sp (DualNumber ℂ) := spMap (dualMap (starRingEnd ℂ))
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj : cj ≫ cj = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
@@ -62,7 +62,7 @@ theorem cj_cj : cj ≫ cj = 𝟙 _ := by
   simp
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Use `show dualMap (starRingEnd ℂ) (dualMap (starRingEnd ℂ) z) = z`. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dj_dj : dj ≫ dj = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
@@ -72,7 +72,7 @@ theorem dj_dj : dj ≫ dj = 𝟙 _ := by
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Use `show dualMap (starRingEnd ℂ) (algebraMap ℂ (DualNumber ℂ) z) = algebraMap ℂ (DualNumber ℂ) (starRingEnd ℂ z)`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dj_eps : dj ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ cj := by
   rw [← Spec.map_comp, ← Spec.map_comp]
@@ -82,7 +82,7 @@ theorem dj_eps : dj ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = spMap (algebra
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Rewrite using `[dif_pos h, dif_pos ((top_le_invol cj_cj x U).2 h)]`. Conclude with `val_spMap _ x U h _ f`. Rewrite using `[dif_neg h, dif_neg (fun h' => h ((top_le_invol cj_cj x U).1 h')), star_zero]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt'_cj {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     valAt' (cj ≫ x) U f = star (valAt' x U f) := by
@@ -93,9 +93,9 @@ theorem valAt'_cj {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U
   · rw [dif_neg h, dif_neg (fun h' => h ((top_le_invol cj_cj x U).1 h')), star_zero]
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ (ψ ⁻¹ᵁ U)`. Rewrite using `[dif_pos h, dif_pos (show ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U from h)]`. Unfold `valAt`. Rewrite using `[appLE_comp x ψ U _ le_rfl h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg (show ¬ ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U from h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (ψ : Y ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     valAt' (x ≫ ψ) U f = valAt' x (ψ ⁻¹ᵁ U) ((ψ.appLE U _ le_rfl).hom f) := by
@@ -107,18 +107,18 @@ theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (ψ : Y ⟶ X) (U : X.
   · rw [dif_neg h, dif_neg (show ¬ ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U from h)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h t ht => (mem_pull (F := ψ) (x := x t)).1 (h ht), fun h t ht => (mem_pull (F := ψ) (x := x t)).2 (h ht)⟩`.
+Supply the required witnesses or components.
 -/
 theorem top_le_pull {T X Y : Scheme.{0}} (L : LB X) (x : T ⟶ Y) (ψ : Y ⟶ X) (J : PUnit → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull ψ).U J ↔ ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ L.U (J PUnit.unit) :=
   ⟨fun h t ht => (mem_pull (F := ψ) (x := x t)).1 (h ht), fun h t ht => (mem_pull (F := ψ) (x := x t)).2 (h ht)⟩
 
 /- English proof (translation)
-Establish `le : (L.pull ψ).U I ⊓ (L.pull ψ).U J ≤ ψ ⁻¹ᵁ (L.U (I PUnit.unit) ⊓ L.U (J PUnit.unit))` using `fun y hy => ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩`. Establish `h' : ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ (L.U (I PUnit.unit) ⊓ L.U (J PUnit.unit))` using `fun t ht => le (h ht)`. Unfold `valAt'`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `valAt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[appLE_comp x ψ _ _ le h h']`. Use `congr 2`. Establish `e : (L.pull ψ).g I J = res le (pullU ψ _ (L.g (I PUnit.unit) (J PUnit.unit)))`. Establish `k : ∀ {M : Type} [CommGroup M] (a : PUnit.{1} → M), ∏ i, a i ^ (1 : ℤ) = a PUnit.unit` using `fun a => by`. Rewrite using `[Fintype.prod_unique, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k (fun _ => res le (pullU ψ _ (L.g (I PUnit.unit) (J PUnit.unit))))`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valAt'_pull_g {X Y : Scheme.{0}} (L : LB X) (x : Sp ℂ ⟶ Y) (ψ : Y ⟶ X) (I J : PUnit → L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull ψ).U I ⊓ (L.pull ψ).U J)) :
@@ -140,7 +140,7 @@ theorem valAt'_pull_g {X Y : Scheme.{0}} (L : LB X) (x : Sp ℂ ⟶ Y) (ψ : Y �
   rfl
 
 /- English proof (translation)
-Introduce `z hz`. Use `(hF.differentiableAt (hs.mem_nhds hz)).star_star` as an intermediate fact. Rewrite `this` using `[star_star]`. Conclude with `this.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffOn_star {g : ℕ} {F : (Fin g → ℂ) → ℂ} {s : Set (Fin g → ℂ)} (hs : IsOpen s) (hF : DifferentiableOn ℂ F s) :
     DifferentiableOn ℂ (fun z => star (F (star z))) {z | star z ∈ s} := by
@@ -150,11 +150,11 @@ theorem diffOn_star {g : ℕ} {F : (Fin g → ℂ) → ℂ} {s : Set (Fin g → 
   exact this.differentiableWithinAt
 
 /- English proof (translation)
-Distinguish the cases in `h : DifferentiableAt ℂ F 0`. Use `h.hasFDerivAt.star_star` as an intermediate fact. Rewrite `this` using `[star_zero]`. Establish `e` using `this.fderiv`. Express the relevant statement in the definitionally equal form `fderiv ℂ (star ∘ F ∘ star) 0 (star w) = _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `h' : ¬ DifferentiableAt ℂ (fun z => star (F (star z))) (0 : Fin g → ℂ)` using `fun h' => h (by`. Use `h'.star_star` as an intermediate fact. Rewrite `this` using `[star_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (star ∘ (fun z => star (F (star z))) ∘ star) = F`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[e] at this)` and apply the resulting hypothesis. Rewrite using `[fderiv_zero_of_not_differentiableAt h, fderiv_zero_of_not_differentiableAt h']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -178,9 +178,9 @@ theorem fderiv_star_star {g : ℕ} (F : (Fin g → ℂ) → ℂ) (w : Fin g → 
     simp
 
 /- English proof (translation)
-Use `⟨⟨fun p => M.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div M M (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_)))` and prove the remaining obligations. Establish `e₁` using `gm_cocycle hM (𝟙 X) y (i := p.1) (j := q.1) (k := q.2) hy.1.1 hy.2.1 hy.2.2`. Establish `e₂` using `gm_cocycle hM (𝟙 X) y (i := p.1) (j := p.2) (k := q.2) hy.1.1 hy.1.2 hy.2.2`. Use `show gm (𝟙 X) y _ (M.g p.1 q.1) * (gm (𝟙 X) y _ (M.g p.2 q.2))⁻¹ * gm (𝟙 X) y _ (M.g q.1 q.2) = gm (𝟙 X) y _ (M.g p.1 p.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, e₁, ← e₂, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_refl {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) : LBIso M M := by
   refine ⟨⟨fun p => M.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
@@ -197,9 +197,9 @@ section Grp
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_inv (pushHom h A') (𝟙 A'))`. Establish `e₁ : (𝟙 A' : A' ⟶ A')⁻¹ = GrpObj.inv` using `by rw [Hom.inv_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.inv_def, Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_comm (h : IsGrpPullback A' A f φ) :
     (GrpObj.inv : A' ⟶ A').left ≫ φ = φ ≫ (GrpObj.inv : A ⟶ A).left := by
@@ -212,7 +212,7 @@ theorem inv_comm (h : IsGrpPullback A' A f φ) :
   rw [Category.id_comp]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hL`. Conclude with `gen_chartPull (chartPullLinComb L φ (fun _ : PUnit => eSec A') (fun _ => eSec A) (fun _ => 1) f fun _ => (cubeMapOf h).e_comm) t ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rigid_pull [IsCommMonObj A] [IsCommMonObj A'] (h : IsGrpPullback A' A f φ) {L : LB A.left} (hL : Out.Rigidified A L) :
     Out.Rigidified A' (L.pull φ) := by
@@ -221,9 +221,9 @@ theorem rigid_pull [IsCommMonObj A] [IsCommMonObj A'] (h : IsGrpPullback A' A f 
     fun _ => (cubeMapOf h).e_comm) t ht
 
 /- English proof (translation)
-Introduce `s`. Take `⟨U, hU, t, ht⟩` from `hL (f s)`. Use `⟨f ⁻¹ᵁ U, hU, ?_⟩` and prove the remaining obligations. Establish `le : A'.hom ⁻¹ᵁ (f ⁻¹ᵁ U) ≤ φ ⁻¹ᵁ (A.hom ⁻¹ᵁ U)` using `fun y hy => (congrArg (fun q => q y ∈ U) h.1.w).mpr hy`. Establish `hψ` using `Scheme.Hom.resLE_comp_ι φ le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gen_chartPull (chartPullLinComb L φ _ _ _ (φ.resLE _ _ le) fun k => ?_) t ht` and prove the remaining obligations. Use `fin_cases k`. Use `show (_ ≫ _) ≫ φ = _ ≫ _ ≫ _`. Rewrite using `[Category.assoc, inv_comm h, ← Category.assoc, ← hψ, Category.assoc]`. Conclude with `hψ.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_pull (h : IsGrpPullback A' A f φ) {L : LB A.left} (hL : Out.Sym A L) : Out.Sym A' (L.pull φ) := by
   intro s
@@ -259,7 +259,7 @@ section Conj
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left} [IsIso φ]
 
 /- English proof (translation)
-Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, h.1.w, Category.assoc, cj_cj, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_hom (h : IsGrpPullback A' A cj φ) : inv φ ≫ A'.hom = A.hom ≫ cj := by
   rw [IsIso.inv_comp_eq, ← Category.assoc, h.1.w, Category.assoc, cj_cj, Category.comp_id]
@@ -277,7 +277,7 @@ theorem twPt_left (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ 
     (twPt h y).left = cj ≫ y.left ≫ inv φ := rfl
 
 /- English proof (translation)
-Rewrite using `[twPt_left]`. Use `erw [Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twPt_comp (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     (twPt h y).left ≫ φ = cj ≫ y.left := by
@@ -285,7 +285,7 @@ theorem twPt_comp (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ 
   erw [Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Set `U : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ cj) ⟶ 𝟙_ (Over (Sp ℂ))` to `Over.homMk cj ((Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `e` using `h.2 _ (twPt h x) (twPt h y) (U ≫ x) (U ≫ y) (twPt_comp h x).symm (twPt_comp h y).symm`. Rewrite `e` using `[← MonObj.comp_mul]`. Use `Over.OverMorphism.ext ((cancel_mono φ).1 ?_)` and prove the remaining obligations. Conclude with `(twPt_comp h _).trans e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twPt_mul (h : IsGrpPullback A' A cj φ) (x y : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     twPt h (x * y) = twPt h x * twPt h y := by
@@ -297,7 +297,7 @@ theorem twPt_mul (h : IsGrpPullback A' A cj φ) (x y : 𝟙_ (Over (Sp ℂ)) ⟶
   exact (twPt_comp h _).trans e
 
 /- English proof (translation)
-Introduce `x y e`. Establish `e₁ : cj ≫ x.left = cj ≫ y.left` using `by rw [← twPt_comp h, ← twPt_comp h, e]`. Establish `e₂` using `congrArg (cj ≫ ·) e₁`. Simplify using `only [← Category.assoc, cj_cj, Category.id_comp] at e₂`. Conclude with `Over.OverMorphism.ext e₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twPt_inj (h : IsGrpPullback A' A cj φ) : Function.Injective (twPt h) := by
   intro x y e
@@ -307,9 +307,9 @@ theorem twPt_inj (h : IsGrpPullback A' A cj φ) : Function.Injective (twPt h) :=
   exact Over.OverMorphism.ext e₂
 
 /- English proof (translation)
-Introduce `y`. Establish `e : y.left ≫ A'.hom = 𝟙 _` using `Over.w y`. Use `⟨Over.homMk (cj ≫ y.left ≫ φ) ?_, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `show (cj ≫ y.left ≫ φ) ≫ A.hom = 𝟙 _`. Rewrite using `[Category.assoc, Category.assoc, h.1.w, reassoc_of% e, cj_cj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show cj ≫ (cj ≫ y.left ≫ φ) ≫ inv φ = y.left`. Rewrite using `[Category.assoc, Category.assoc, IsIso.hom_inv_id, Category.comp_id, ← Category.assoc, cj_cj, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem twPt_surj (h : IsGrpPullback A' A cj φ) : Function.Surjective (twPt h) := by
   intro y
@@ -321,7 +321,7 @@ theorem twPt_surj (h : IsGrpPullback A' A cj φ) : Function.Surjective (twPt h) 
     rw [Category.assoc, Category.assoc, IsIso.hom_inv_id, Category.comp_id, ← Category.assoc, cj_cj, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `map_eq_one_iff (MonoidHom.mk' (twPt h) (twPt_mul h)) (twPt_inj h)`.
+A detailed English derivation is pending.
 -/
 theorem twPt_eq_one (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) : twPt h y = 1 ↔ y = 1 :=
   map_eq_one_iff (MonoidHom.mk' (twPt h) (twPt_mul h)) (twPt_inj h)
@@ -339,21 +339,21 @@ def conjLat {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) : Submodule ℤ (Fin 
     rw [star_zsmul]; exact Λ.smul_mem c hz
 
 /- English proof (translation)
-The claim follows from `top_le_invol cj_cj (y.left ≫ inv φ) U`.
+A detailed English derivation is pending.
 -/
 theorem top_le_tw (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (U : A'.left.Opens) :
     ⊤ ≤ (twPt h y).left ⁻¹ᵁ U ↔ ⊤ ≤ y.left ⁻¹ᵁ (inv φ ⁻¹ᵁ U) :=
   top_le_invol cj_cj (y.left ≫ inv φ) U
 
 /- English proof (translation)
-The claim follows from `(valAt'_cj (y.left ≫ inv φ) U f).trans (congrArg star (valAt'_comp y.left (inv φ) U f))`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_tw (h : IsGrpPullback A' A cj φ) (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (U : A'.left.Opens) (f : Γ(A'.left, U)) :
     valAt' (twPt h y).left U f = star (valAt' y.left (inv φ ⁻¹ᵁ U) (((inv φ).appLE U _ le_rfl).hom f)) :=
   (valAt'_cj (y.left ≫ inv φ) U f).trans (congrArg star (valAt'_comp y.left (inv φ) U f))
 
 /- English proof (translation)
-Use `(top_le_pull L (twPt h y).left φ J).trans ?_` and prove the remaining obligations. Rewrite using `[twPt_comp]`. Conclude with `top_le_invol cj_cj y.left _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_tw_pull (h : IsGrpPullback A' A cj φ) (L : LB A.left) (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (J : PUnit → L.ι) :
     ⊤ ≤ (twPt h y).left ⁻¹ᵁ (L.pull φ).U J ↔ ⊤ ≤ y.left ⁻¹ᵁ L.U (J PUnit.unit) := by
@@ -404,16 +404,16 @@ def conjUnif (h : IsGrpPullback A' A cj φ) {L : LB A.left} {g : ℕ} (u : HolUn
     exact valAt'_cj _ _ _
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_star {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     z ⬝ᵥ (Hm.map star).mulVec (star w) = star (star z ⬝ᵥ Hm.mulVec (star (star w))) := by
   simp [dotProduct, Matrix.mulVec, Finset.mul_sum]
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, h₄⟩` from `H`. Use `⟨h₁.map _ (fun _ => rfl), fun z hz => ?_, fun l => by rw [norm_star, h₃], fun l J z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[form_star, Complex.star_def, Complex.conj_re]`. Conclude with `h₂ _ (star_ne_zero.2 hz)`. Establish `e` using `h₄ ⟨star l.1, l.2⟩ (J PUnit.unit) (star z) ((top_le_tw_pull h L _ J).1 hz) show star (u.fr _ (star z)) = _ * star (u.fr _ (star (z + l.1)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, form_star, form_star, star_add]`. Simplify using `only [Complex.star_def, map_mul, ← Complex.exp_conj, map_add, map_div₀, Complex.conj_ofReal, map_ofNat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_isAH (h : IsGrpPullback A' A cj φ) {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (H : u.IsAH Hm χ) :
@@ -434,18 +434,18 @@ def twVec (h : IsGrpPullback A' A cj φ) (v : epsR ℂ ⟶ A) : epsR ℂ ⟶ A' 
     rw [Category.assoc, Category.assoc, inv_hom h, reassoc_of% e, reassoc_of% dj_eps, cj_cj, Category.comp_id])
 
 /- English proof (translation)
-Use `show (dj ≫ v.left ≫ inv φ) ≫ φ = _`. Rewrite using `[Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twVec_comp (h : IsGrpPullback A' A cj φ) (v : epsR ℂ ⟶ A) : (twVec h v).left ≫ φ = dj ≫ v.left := by
   show (dj ≫ v.left ≫ inv φ) ≫ φ = _
   rw [Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Introduce `U hU f`. Establish `hU' : ⊤ ≤ (v.left ≫ inv φ) ⁻¹ᵁ U` using `(top_le_invol dj_dj (v.left ≫ inv φ) U).1 hU`. Establish `e` using `H (inv φ ⁻¹ᵁ U) hU' (((inv φ).appLE U _ le_rfl).hom f)`. Establish `e₁` using `val_spMap (dualMap (starRingEnd ℂ)) (v.left ≫ inv φ) U hU' hU f`. Establish `e₂` using `appLE_comp v.left (inv φ) U _ le_rfl hU' hU' f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : (fun z => valAt' ((conjUnif h u).ex z).left U f) = fun z => star (valAt' (u.ex (star z)).left (inv φ ⁻¹ᵁ U) (((inv φ).appLE U _ le_rfl).hom f))`. Use function extensionality and compare the values at `fun z => valAt'_tw h _ U f`. Rewrite using `[e₃]`. Use `Eq.trans ?_ ((congrArg star e).trans (fderiv_star_star _ w).symm)` and prove the remaining obligations. Use `(congrArg TrivSqZeroExt.snd e₁).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₂]`. Simplify using `[dualMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_isDiff (h : IsGrpPullback A' A cj φ) {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} (H : u.IsDiff w v) : (conjUnif h u).IsDiff (star w) (twVec h v) := by
@@ -471,11 +471,11 @@ end
 
 open PositivityTheory.Xgn.HodgeGramConjugation in
 /- English proof (translation)
-Introduce `S G _ L x x' k v v' Γ hx hv ⟨Q, ψ, t, u, Hm, χ, W, hψ, hL, hAH, ht, hΓ⟩`. Establish `: IsIso cj` using `⟨cj, cj_cj, cj_cj⟩`. Establish `h : IsGrpPullback (pullPol cj Q).A Q.A cj (pullback.fst Q.A.hom cj)` using `isGrpPullback_pullback Q.A cj`. Establish `: IsIso (X` using `(pullPol cj Q).A.left) (pullback.fst Q.A.hom cj) := inferInstanceAs (IsIso (pullback.fst Q.A.hom cj))`. Use `⟨pullPol cj Q, pullback.fst Q.A.hom cj ≫ ψ, fun i => twVec h (t i), conjUnif h u, Hm.map star, _, fun i => star (W i), (h.comp hψ).congr hx.symm rfl, ?_, conj_isAH h u hAH, fun i => ⟨?_, conj_isDiff h u (ht i).2⟩, fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hL.chartPull (chartPullSame L _ _ _ (pullback.fst Q.A.hom cj) fun _ => rfl) (chartPullPull Q.L _ _ rfl)`. Rewrite using `[hv, ← (ht i).1]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ ψ) (twVec_comp h (t i))).trans (Category.assoc _ _ _))`. Establish `e : hermForm (Hm.map star) (star (W i)) (star (W j)) = star (hermForm Hm (W i) (W j))`. Unfold `hermForm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[form_star]`. Simplify using `only [star_star]`. Use `Eq.trans ?_ (congrArg ((Real.pi : ℂ) * ·) e).symm` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, hΓ, star_mul', Complex.star_def, Complex.conj_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.hodge_gram_complex_conjugate_alt : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (x x' : Sp ℂ ⟶ S) (k : ℕ) (v : Fin k → (epsAt x ⟶ G)) (v' : Fin k → (epsAt x' ⟶ G)) (Γ : Matrix (Fin k) (Fin k) ℂ), x' = spMap (starRingEnd ℂ) ≫ x → (∀ a, (v' a).left = spMap (dualMap (starRingEnd ℂ)) ≫ (v a).left) → IsHodgeGram G L x v Γ → IsHodgeGram G L x' v' (Γ.map star) := by
   intro S G _ L x x' k v v' Γ hx hv ⟨Q, ψ, t, u, Hm, χ, W, hψ, hL, hAH, ht, hΓ⟩

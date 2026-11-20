@@ -11,15 +11,13 @@ namespace GlobalTheory.CompanionTheory.RgFubOf
 open CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.N.S
 
 /- English proof (translation)
-Introduce `h n ε A hA`. Take `⟨μN, μM, hN, hM, h0, hinv, hκ, hH⟩` from `h n ε A hA`. Use `⟨μN, μM, hN, hM, h0, hinv, hκ, ?_⟩` and prove the remaining obligations. Introduce and unpack `μ ⟨ν, rfl, hν⟩ E hE hnull`. Use `haveI := hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `haveI := hM`. Take `⟨c, -, -, hc⟩` from `hH ν hν`. Establish `hF` using `hc (E.indicator 1) (measurable_one.indicator hE)`. Establish `hI : muPar ε A ν E = ∫⁻ x, E.indicator 1 x ∂(muPar ε A ν)` using `(lintegral_indicator_one hE).symm`. Use `hI.trans (hF.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p ∂(μN.prod μM), p.1 * p.2 ∉ E` using `measure_eq_zero_iff_ae_notMem.1 hnull`. Establish `hae2` using `Measure.ae_ae_of_ae_prod hae`. Establish `hz : (∫⁻ u, ∫⁻ m, modA A m * E.indicator 1 (u * m) ∂μM ∂μN) = 0`. Establish `: (fun u => ∫⁻ m, modA A m * E.indicator 1 (u * m) ∂μM) =ᵐ[μN] fun _ => 0` using `by filter_upwards [hae2] with u hu`. Establish `: (fun m : Formalism.REAL.UJ ε => modA A m * E.indicator 1 (u * m)) =ᵐ[μM] fun _ => 0` using `by filter_upwards [hu] with m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_of_notMem hm]`. Rewrite using `[lintegral_congr_ae this]`. Simplify using the standard rewrite rules. Rewrite using `[lintegral_congr_ae this]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hz, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fubini_of_parabolic_multiple : CompanionTheory.RgExh.Dec.N.S.Fub2 → CompanionTheory.RgExh.Dec.N.S.Fub := by
   intro h n ε A hA

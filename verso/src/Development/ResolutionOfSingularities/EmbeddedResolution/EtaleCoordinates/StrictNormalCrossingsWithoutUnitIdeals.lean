@@ -21,21 +21,21 @@ Both sides reduce to the same expression.
 private theorem filterNeTop_nil : filterNeTop ([] : List X.IdealSheafData) = [] := rfl
 
 /- English proof (translation)
-Simplify using `[filterNeTop, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem filterNeTop_cons_of_ne_top (D : X.IdealSheafData) (T : List X.IdealSheafData)
     (h : D ≠ ⊤) : filterNeTop (D :: T) = D :: filterNeTop T := by
   simp [filterNeTop, h]
 
 /- English proof (translation)
-Simplify using `[filterNeTop]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem filterNeTop_cons_top (T : List X.IdealSheafData) :
     filterNeTop ((⊤ : X.IdealSheafData) :: T) = filterNeTop T := by
   simp [filterNeTop]
 
 /- English proof (translation)
-Simplify using `only [filterNeTop, List.mem_filter] at h`. Conclude with `h.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_of_mem_filterNeTop {D : X.IdealSheafData} {E : List X.IdealSheafData}
     (h : D ∈ filterNeTop E) : D ∈ E := by
@@ -43,7 +43,7 @@ private theorem mem_of_mem_filterNeTop {D : X.IdealSheafData} {E : List X.IdealS
   exact h.1
 
 /- English proof (translation)
-Simplify using `only [filterNeTop, List.mem_filter]`. Conclude with `⟨hD, by simpa using h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem mem_filterNeTop {D : X.IdealSheafData} {E : List X.IdealSheafData}
     (hD : D ∈ E) (h : D ≠ ⊤) : D ∈ filterNeTop E := by
@@ -59,49 +59,47 @@ private def shiftIndex (g₀ : ℕ → ℕ) : ℕ → ℕ
   | i + 1 => g₀ i + 1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E E' hlen _`. Establish `h0 : E'.length = 0` using `by omega`. Conclude with `⟨id, fun i hi _ => absurd hi (by omega), fun i j hi _ _ _ _ => absurd hi (by omega)⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `E E' hlen hfilt`. Consider the cases of `E' with`. Consider the case `nil`. Conclude with `⟨id, fun i hi _ => absurd hi (by simp), fun i j hi _ _ _ _ => absurd hi (by simp)⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `cons D T'`. Distinguish the cases in `hD : D = ⊤`. Substitute `hD` using the available equality. Rewrite `hfilt` using `[filterNeTop_cons_top]`. Establish `hlen' : E.length + T'.length ≤ n`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons] at hlen`. Use linear arithmetic over natural numbers and integers. Take `⟨g₀, h1, h2⟩` from `ih E T' hlen' hfilt`. Use `⟨unshiftIndex g₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hne`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `i with`. Consider the case `zero => simp at hne`. Consider the case `succ i`. Simplify using `only [List.getElem?_cons_succ] at hne`. Simplify using `only [List.length_cons] at hi`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [unshiftIndex, List.getElem?_cons_succ]`. Conclude with `h1 i (by omega) hne`. Introduce `i j hi hj hni hnj hgij`. Consider the cases of `i with`. Consider the case `zero => simp at hni`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i`. Consider the cases of `j with`. Consider the case `zero => simp at hnj`. Consider the case `succ j`. Establish `e1 : unshiftIndex g₀ (i + 1) = g₀ i` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : unshiftIndex g₀ (j + 1) = g₀ j` using `rfl`. Establish `hij : g₀ i = g₀ j` using `by omega`. Simplify using `only [List.getElem?_cons_succ] at hni hnj`. Simplify using `only [List.length_cons] at hi hj`. Use `h2 i j (by omega) (by omega) hni hnj hij` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hfilt` using `[filterNeTop_cons_of_ne_top D T' hD]`. Consider the cases of `E with`. Consider the case `nil`. Rewrite `hfilt` using `[filterNeTop_nil]`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `absurd hfilt (List.cons_ne_nil _ _)`. Consider the case `cons C T`. Distinguish the cases in `hC : C = ⊤`. Substitute `hC` using the available equality. Rewrite `hfilt` using `[filterNeTop_cons_top]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlen' : T.length + (D :: T').length ≤ n`. Simplify using `only [List.length_cons] at hlen ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hfilt' : filterNeTop (D :: T') = filterNeTop T`. Rewrite using `[filterNeTop_cons_of_ne_top D T' hD]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfilt`. Take `⟨g₀, h1, h2⟩` from `ih T (D :: T') hlen' hfilt'`. Use `⟨fun i => g₀ i + 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hne`. Take `⟨ha, hb⟩` from `h1 i hi hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨by simp only [List.length_cons]; omega, ?_⟩` and prove the remaining obligations. Simplify using `using hb`. Introduce `i j hi hj hni hnj hgij`. Establish `hgij' : g₀ i + 1 = g₀ j + 1` using `hgij`. Conclude with `h2 i j hi hj hni hnj (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hfilt` using `[filterNeTop_cons_of_ne_top C T hC]`. Simplify using `only [List.cons.injEq] at hfilt`. Take `⟨hcond, hTT⟩` from `hfilt`. Establish `hlen' : T.length + T'.length ≤ n`. Simplify using `only [List.length_cons] at hlen`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨g₀, h1, h2⟩` from `ih T T' hlen' hTT`. Use `⟨shiftIndex g₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hne`. Consider the cases of `i with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Simplify using `only [shiftIndex]`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Simplify using `[hcond]`. Consider the case `succ i`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.getElem?_cons_succ] at hne`. Simplify using `only [List.length_cons] at hi`. Take `⟨ha, hb⟩` from `h1 i (by omega) hne`. Simplify using `only [shiftIndex, List.getElem?_cons_succ]`. Conclude with `⟨by simp only [List.length_cons]; omega, hb⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Introduce `i j hi hj hni hnj hgij`. Consider the cases of `i with`. Consider the case `zero`. Consider the cases of `j with`. Consider the case `zero => rfl`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ j`. Establish `e1 : shiftIndex g₀ 0 = 0` using `rfl`. Establish `e2 : shiftIndex g₀ (j + 1) = g₀ j + 1` using `rfl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ i`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `j with`. Consider the case `zero`. Establish `e1 : shiftIndex g₀ 0 = 0` using `rfl`. Establish `e2 : shiftIndex g₀ (i + 1) = g₀ i + 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ j`. Establish `e1 : shiftIndex g₀ (i + 1) = g₀ i + 1` using `rfl`. Establish `e2 : shiftIndex g₀ (j + 1) = g₀ j + 1` using `rfl`. Establish `hij : g₀ i = g₀ j` using `by omega`. Simplify using `only [List.getElem?_cons_succ] at hni hnj`.
-
-Simplify using `only [List.length_cons] at hi hj`. Use `h2 i j (by omega) (by omega) hni hnj hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_index_map_of_filterNeTop_eq (n : ℕ) :
     ∀ (E E' : List X.IdealSheafData),
@@ -225,7 +223,7 @@ private def transportAssignment {m : ℕ} (E' : List X.IdealSheafData) (a : ℕ 
   fun i => if E'[i]? = some ⊤ then none else a (g i)
 
 /- English proof (translation)
-Simplify using `[transportAssignment, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem transportAssignment_of_eq_top {m : ℕ} (E' : List X.IdealSheafData)
     (a : ℕ → Option (Fin m)) (g : ℕ → ℕ) (i : ℕ) (h : E'[i]? = some ⊤) :
@@ -233,7 +231,7 @@ private theorem transportAssignment_of_eq_top {m : ℕ} (E' : List X.IdealSheafD
   simp [transportAssignment, h]
 
 /- English proof (translation)
-Simplify using `[transportAssignment, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem transportAssignment_of_ne_top {m : ℕ} (E' : List X.IdealSheafData)
     (a : ℕ → Option (Fin m)) (g : ℕ → ℕ) (i : ℕ) (h : E'[i]? ≠ some ⊤) :
@@ -241,23 +239,19 @@ private theorem transportAssignment_of_ne_top {m : ℕ} (E' : List X.IdealSheafD
   simp [transportAssignment, h]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`. Establish `hni : E'[i]? ≠ some ⊤`. Introduce `hc`. Rewrite `hti` using `[transportAssignment_of_eq_top E' a g i hc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hti`. Establish `hnj : E'[j]? ≠ some ⊤`. Introduce `hc`. Rewrite `htj` using `[transportAssignment_of_eq_top E' a g j hc]`. Simplify using `at htj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hti` using `[transportAssignment_of_ne_top E' a g i hni]`. Rewrite `htj` using `[transportAssignment_of_ne_top E' a g j hnj]`. Take `⟨hgi, -⟩` from `hg1 i hi hni`. Take `⟨hgj, -⟩` from `hg1 j hj hnj`. Conclude with `hg2 i j hi hj hni hnj (hinj (g i) hgi (g j) hgj t hti htj)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi hn`. Distinguish the cases in `hc : E'[i]? = some ⊤`. Establish `he : E'[i] = ⊤`. Rewrite `hc` using `[List.getElem?_eq_getElem hi]`. Conclude with `Option.some_inj.mp hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `Scheme.IdealSheafData.comap_top U.ι`. Rewrite `hn` using `[transportAssignment_of_ne_top E' a g i hc]`. Take `⟨hgi, hb⟩` from `hg1 i hi hc`. Establish `he : E[g i] = E'[i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hb` using `[List.getElem?_eq_getElem hgi, List.getElem?_eq_getElem hi]`. Conclude with `Option.some_inj.mp hb`. Rewrite using `[← he]`. Conclude with `hnone (g i) hgi hn`. Introduce `i hi t hti`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : E'[i]? ≠ some ⊤`. Introduce `hc`. Rewrite `hti` using `[transportAssignment_of_eq_top E' a g i hc]`. Simplify using `at hti`. Rewrite `hti` using `[transportAssignment_of_ne_top E' a g i hc]`.
-
-Take `⟨hgi, hb⟩` from `hg1 i hi hc`. Establish `he : E[g i] = E'[i]`. Rewrite `hb` using `[List.getElem?_eq_getElem hgi, List.getElem?_eq_getElem hi]`. Conclude with `Option.some_inj.mp hb`. Rewrite using `[← he]`.
-
-Conclude with `hsome (g i) hgi t hti`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transportAssignment_injective_and_coordIdeal {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (E E' : List X.IdealSheafData) (a : ℕ → Option (Fin m)) (g : ℕ → ℕ)
@@ -317,7 +311,7 @@ private theorem transportAssignment_injective_and_coordIdeal {p : X ⟶ Spec (Co
     exact hsome (g i) hgi t hti
 
 /- English proof (translation)
-Use `isSmoothDivisor_of_locally_coordIdeal (p := p) ⊤ ?_` and prove the remaining obligations. Introduce `x`. Take `⟨U, m, hxU, hU, ⟨c⟩⟩` from `exists_etaleChart p x`. Conclude with `⟨U, hxU, m, c, Or.inl (Scheme.IdealSheafData.comap_top U.ι)⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSmoothDivisor_top (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] :
@@ -328,7 +322,7 @@ theorem isSmoothDivisor_top (p : X ⟶ Spec (CommRingCat.of k))
   exact ⟨U, hxU, m, c, Or.inl (Scheme.IdealSheafData.comap_top U.ι)⟩
 
 /- English proof (translation)
-Take `⟨U, hxU, m, c, a, hinj, hnone, hsome⟩` from `hE.exists_etaleChart`. Take `⟨g, hg1, hg2⟩` from `exists_index_map_of_filterNeTop_eq (E.length + E'.length) E E' le_rfl h.symm`. Take `⟨k1, k2, k3⟩` from `transportAssignment_injective_and_coordIdeal c E E' a g hg1 hg2 hinj hnone hsome`. Conclude with `inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨U, hxU, m, c, transportAssignment E' a g, k1, k2, k3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPositionAt_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     (E E' : List X.IdealSheafData) (h : filterNeTop E = filterNeTop E') (x : X)
@@ -340,9 +334,9 @@ theorem inStrictNormalCrossingPositionAt_of_filterNeTop_eq (p : X ⟶ Spec (Comm
   exact inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨U, hxU, m, c, transportAssignment E' a g, k1, k2, k3⟩
 
 /- English proof (translation)
-Rewrite `hE`, the goal using `[inStrictNormalCrossingPosition_iff]`. Take `⟨hsm, hpos⟩` from `hE`. Use `⟨?_, fun x => inStrictNormalCrossingPositionAt_of_filterNeTop_eq p E E' h x (hpos x)⟩` and prove the remaining obligations. Introduce `D hD`. Distinguish the cases in `hDt : D = ⊤`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hDt]`. Conclude with `isSmoothDivisor_top p`. Establish `h1 : D ∈ filterNeTop E'` using `mem_filterNeTop hD hDt`. Rewrite `h1` using `[← h]`. Conclude with `hsm D (mem_of_mem_filterNeTop h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (E E' : List X.IdealSheafData)
@@ -360,9 +354,9 @@ theorem inStrictNormalCrossingPosition_of_filterNeTop_eq (p : X ⟶ Spec (CommRi
     exact hsm D (mem_of_mem_filterNeTop h1)
 
 /- English proof (translation)
-Take `⟨g, hg1, hg2⟩` from `exists_index_map_of_filterNeTop_eq (E.length + E'.length) E E' le_rfl h.symm`. Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hxU, m, c, a, S, hinj, hnone, hsome, hZ⟩` from `hE.exists_etaleChart hx`. Take `⟨k1, k2, k3⟩` from `transportAssignment_injective_and_coordIdeal c E E' a g hg1 hg2 hinj hnone hsome`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hxU, m, c, transportAssignment E' a g, S, k1, k2, k3, hZ⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasStrictNormalCrossingsWith_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     (Z : X.IdealSheafData) (E E' : List X.IdealSheafData)

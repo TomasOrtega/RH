@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Function.injective_id, Function.surjective_id, Function.surjective_id, fun _ _ γ h => absurd ⟨γ, rfl⟩ h⟩`.
+Supply the required witnesses or components.
 -/
 theorem live_id {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀) : A.Live (fun _ => id) :=
   ⟨fun _ => Function.injective_id, Function.surjective_id, Function.surjective_id,
@@ -26,9 +26,9 @@ def Reached {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀) : ∀ j, Ch₀ j 
   | j + 1, β => j + 1 = B.R.m ∨ ∃ (hj : j + 1 ≤ B.R.m) (α : Ch₀ j), ∃ z, A.xi j hj α β z ≠ 0
 
 /- English proof (translation)
-Use `⟨fun _ => Subtype.val_injective, fun β => ⟨⟨β, trivial⟩, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n, n = B.R.m → ∀ β : Ch₀ n, Reached A n β`. Introduce `n hn β`. Consider the cases of `n with`. Consider the case `zero => trivial`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n => exact Or.inl hn`. Conclude with `fun β => ⟨⟨β, key _ rfl β⟩, rfl⟩`. Introduce `j hj γ hγ α z`. Assume the negation of the conclusion as `h`. Conclude with `hγ ⟨⟨γ, Or.inr ⟨hj, α, z, h⟩⟩, rfl⟩`.
+Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem live_reached {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀) :
     A.Live (Ch := fun j => {β // Reached A j β}) (fun _ => Subtype.val) := by
@@ -44,7 +44,7 @@ theorem live_reached {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀) :
     exact hγ ⟨⟨γ, Or.inr ⟨hj, α, z, h⟩⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `| 0, β, _ => h.first β | j + 1, β, Or.inl e => by have key : ∀ n, B.R.m = n → Function.Surjective (ι n) := by rintro _ rfl; exact h.last exact key _ e.symm β | j + 1, β, Or.inr ⟨hj, α, z, hz⟩ => by by_contra hn exact hz (h.dead j hj β hn α z)`.
+A detailed English derivation is pending.
 -/
 theorem reached_mem {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : ∀ j, Ch j → Ch₀ j} (h : A.Live ι) :
     ∀ j (β : Ch₀ j), Reached A j β → β ∈ Set.range (ι j)
@@ -57,19 +57,19 @@ theorem reached_mem {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : 
       exact hz (h.dead j hj β hn α z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h' => ⟨h', fun _ hc => absurd (h.first _) hc⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ramL_first {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : ∀ j, Ch j → Ch₀ j} (h : A.Live ι) (φ) :
     A.RamL ι 0 φ ↔ RamT 0 φ := ⟨fun h => h.1, fun h' => ⟨h', fun _ hc => absurd (h.first _) hc⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h' => ⟨h', fun _ hc => absurd (h.last _) hc⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ramL_last {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : ∀ j, Ch j → Ch₀ j} (h : A.Live ι) (φ) :
     A.RamL ι B.R.m φ ↔ RamT B.R.m φ := ⟨fun h => h.1, fun h' => ⟨h', fun _ hc => absurd (h.last _) hc⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.is, hι, h.om, fun j hj _ _ => h.dat j hj _ _, fun j hj _ _ _ => h.cst j hj _ _, fun _ _ _ => Iff.rfl, fun j hj _ φ y => h.rdq j hj _ φ y⟩`.
+Supply the required witnesses or components.
 -/
 theorem pinColL_of_pinColT {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : ∀ j, Ch j → Ch₀ j} (hι : A.Live ι)
     {ψ θ x vac c₀ kom dd w Ram rd cK} (h : PinColT A ψ θ x vac c₀ kom dd w Ram rd cK) :
@@ -79,11 +79,11 @@ theorem pinColL_of_pinColT {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀}
     fun j hj _ φ y => h.rdq j hj _ φ y⟩
 
 /- English proof (translation)
-Establish `hd : ∀ j, j < B.R.m → ∀ α γ, (volLev (x j).vol (A.U j α) : ℂ) * c₀ j * (A.chr (j + 1) (A.xr j α) : ℂ) * (A.chr (j + 1) (A.xr (j + 1) γ) : ℂ)⁻¹ ≠ 0` using `fun j hj α γ => mul_ne_zero (mul_ne_zero (mul_ne_zero (by exact_mod_cast hv j hj α) (hc j hj)) (Circle.coe_ne_zero _)) (inv_ne_zero (Circle.coe_ne_zero _))`. Use `⟨fun j α γ => cK j / ((volLev (x j).vol (A.U j α) : ℂ) * c₀ j * (A.chr (j + 1) (A.xr j α) : ℂ) * (A.chr (j + 1) (A.xr (j + 1) γ) : ℂ)⁻¹), h.is, h.om, fun j hj α γ => ⟨(h.dat j hj α γ).1, ?_⟩, fun j hj α γ => ?_, fun j hj φ => (h.ram j hj φ).trans ⟨fun h => h.1, fun h' => ⟨h', fun …` and prove the remaining obligations. Establish `h2` using `(h.dat j hj α γ).2`. Use `h2 using 2 with z` and compare the differences between its conclusion and the goal. Distinguish the cases in `hz : A.xi j hj α γ z = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [id]`. Rewrite using `[hz, mul_zero, mul_zero]`. Establish `e` using `h.cst j hj α γ ⟨z, hz⟩`. Simplify using `only [id] at e ⊢`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[div_eq_iff (hd j hj α γ), e]`. Expand and normalize the polynomial expressions, which then agree. Use `hd j hj α γ` as an intermediate fact. Rewrite using `[show ∀ p q r s t : ℂ, p * q * r * s * t = q * (p * r * s * t) from fun _ _ _ _ _ => by ring, div_mul_cancel₀ _ this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem pinColT_of_pinColL {Ch₀ : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ψ θ x vac c₀ kom dd w Ram rd cK}
     (h : PinColL A (fun _ => id) ψ θ x vac c₀ kom dd w Ram rd cK) (hc : ∀ j, j < B.R.m → c₀ j ≠ 0)
@@ -108,7 +108,7 @@ theorem pinColT_of_pinColL {Ch₀ : ℕ → Type} {A : TwDat I l Z u a Ch₀} {�
     rw [show ∀ p q r s t : ℂ, p * q * r * s * t = q * (p * r * s * t) from fun _ _ _ _ _ => by ring, div_mul_cancel₀ _ this]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hK` to reduce the goal to its premises. Rewrite using `[h.cst j hj α γ hz, h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem w_ne_zero {Ch₀ Ch : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι : ∀ j, Ch j → Ch₀ j}
     {ψ θ x vac c₀ kom dd w Ram rd cK} (h : PinColL A ι ψ θ x vac c₀ kom dd w Ram rd cK) (j) (hj : j + 1 ≤ B.R.m)
@@ -128,7 +128,7 @@ def withTop (ε : ℂ) : ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u a) :=
   { k with eT := fun _ _ _ => Finsupp.single g.bT ε, cP := ε * (volLev g.volT (movedLev R g P t) : ℂ) }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun h => by show (MulAut.conj g.bT⁻¹) h ∈ levG _ R.βX (datXP R P t) ↔ _ rw [MulAut.conj_apply, inv_inv]; rfl, fun _ _ _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pinTopL_withTop (h : IsEmbTop (D := I.rec7 l Z) (TC.z0 X u) ((g.oT B.R.m rfl).emb.comp (MonoidHom.inl _ _))) (ε : ℂ) :
     PinTopL R g P (t := t) (withTop R g P t k ε) (movedLev R g P t) ε :=
@@ -137,13 +137,13 @@ theorem pinTopL_withTop (h : IsEmbTop (D := I.rec7 l Z) (TC.z0 X u) ((g.oT B.R.m
     rw [MulAut.conj_apply, inv_inv]; rfl, fun _ _ _ => rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem pinChL_withTop (ε : ℂ) {c₀} {Ch₀ : ℕ → Type} {A : TwDat I l Z u a Ch₀} {ι w} (h : PinChL R g k c₀ A ι w) :
     PinChL R g (withTop R g P t k ε) c₀ A ι w := h
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[h.lev]`. Use `show _ ↔ (MulAut.conj g.bT⁻¹) x ∈ levG _ R.βX (datXP R P t)`. Rewrite using `[MulAut.conj_apply, inv_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pinTopL_lev {UT ε} (h : PinTopL R g P (t := t) k UT ε) : UT = movedLev R g P t := by
   ext x
@@ -152,11 +152,11 @@ theorem pinTopL_lev {UT ε} (h : PinTopL R g P (t := t) k UT ε) : UT = movedLev
   rw [MulAut.conj_apply, inv_inv]; rfl
 
 /- English proof (translation)
-Establish `hr` using `h.reads _ le_rfl`. Take `⟨c, rfl⟩` from `hr.onto β`. Take `⟨c', rfl⟩` from `hr.onto β'`. Use `(hr.key c c').2 ⟨(Idx.eq_top c.1 le_rfl).trans (Idx.eq_top c'.1 le_rfl).symm, ?_⟩` and prove the remaining obligations. Establish `e : ∀ q : PtAt B.R I.sel (I.tup a) (I.cst a) u B.R.m, cosetIn q = fun _ => ∅` using `fun q => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `q.2`. Establish `h3 : q.1.2 = ∅`. Use `ysAt_ys_of_ne (R := B.R) I.sel (I.tup a) (I.cst a) (j := B.R.m) (Nat.succ_ne_self _) q.1.1.deco.1.N` as an intermediate fact. Conclude with `Set.mem_singleton_iff.1 (this ▸ h2)`. Use function extensionality and compare the values at `P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[cosetIn, h3]`. Conclude with `(e _).trans (e _).symm`.
+A detailed English derivation is pending.
 -/
 theorem top_subsingleton {Ch₀ : ℕ → Type} {A : TwDat I l Z u a Ch₀} (h : A.Is) (β β' : Ch₀ B.R.m) : β = β' := by
   have hr := h.reads _ le_rfl
@@ -177,9 +177,9 @@ open GlobalTheory.MixModel
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `(Examples₂.stdSpace_gram_apply hs n (fun _ => false) n 0 i j).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h; rw [Matrix.one_apply_eq]; exact (if_pos rfl).trans (by simp [Examples₂.sgn])` using the available equality. Rewrite using `[Matrix.one_apply_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem gram_pos {E : Type} [Field E] [NumberField E] [StarRing E] (hs : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (n : ℕ) :
     (Examples₂.posSpace hs n).gram = 1 := by
@@ -190,9 +190,9 @@ theorem gram_pos {E : Type} [Field E] [NumberField E] [StarRing E] (hs : ∀ x :
   · rw [Matrix.one_apply_ne h]; exact if_neg h
 
 /- English proof (translation)
-Establish `h1` using `rankP D`. Establish `h2` using `rankN D D.R.m le_rfl`. Establish `h3 : 0 < D.R.N D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Establish `h4 : D.R.m * (D.R.t + 1) = D.R.m * D.R.t + D.R.m` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ranks.N]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rk_top (D : D7) : D.sp.X'.rank + 1 = (D.sp.X D.R.m).rank := by
   have h1 := rankP D
@@ -242,11 +242,11 @@ def topDec (hG : (D.sp.X D.R.m).gram = 1) (hG' : D.sp.X'.gram = 1) :
   rank_add := rk_top D
 
 /- English proof (translation)
-Establish `h0` using `rk_top D`. Establish `h1` using `rankP D`. Establish `ha` using `a.2`. Establish `e : ((D.sp.X'.frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)).symm (Pi.single a 1)) = D.sp.X'.frame (Fin.cast h1.symm a)`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Finsupp.single_apply, Pi.single_apply, Fin.ext_iff, eq_comm]`. Rewrite using `[iXm, LinearMap.toMatrix'_apply, iXc]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e, hi _ ⟨a, by omega⟩ rfl]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, Fin.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iXm_eq (hi : ∀ (a : Fin D.sp.X'.rank) (b : Fin (D.sp.X D.R.m).rank), (a : ℕ) = b →
     D.sp.iX' (D.sp.X'.frame a) = (D.sp.X D.R.m).frame b) (b a) : iXm D b a = if (a : ℕ) = b then 1 else 0 := by
@@ -265,17 +265,17 @@ theorem iXm_eq (hi : ∀ (a : Fin D.sp.X'.rank) (b : Fin (D.sp.X D.R.m).rank), (
   simp [Finsupp.single_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `rk_top D`. Establish `h1` using `rankP D`. Establish `h2` using `rankN D D.R.m le_rfl`. Establish `eA : (iXm D).map (incA D) = ((topDec hG hG').jA).reindex (finCongr h2) (finCongr h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `b a`. Simplify using `[iXm_eq hi, OrthDec.jA, rat, topDec]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eA]`. Use `(topDec hG hG').emb_jA h 1` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Conclude with `congrArg (fun M => Matrix.submatrix M _ _) this`. Use `(topDec hG hG').emb_jB h 1` as an intermediate fact. Rewrite `this` using `[mt_one, Matrix.mul_one]`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun this (Fin.cast h2.symm b)) (0 : Fin 1)`. Establish `ez : (fun a : Fin (D.R.N D.R.m) => incA D (if a.1 + 1 = D.R.N D.R.m then c else 0)) = fun a => (topDec hG hG').jB (Fin.cast h2.symm a) (0 : Fin 1) * incA D c`. Use function extensionality and compare the values at `a`. Establish `: (a.1 + 1 = D.R.N D.R.m) ↔ D.sp.X'.rank = a` using `by omega`. Use `show _ = incA D (if D.sp.X'.rank = a then 1 else 0) * incA D c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← map_mul]`. Distinguish the cases in `ha : D.sp.X'.rank = a`. Rewrite using `[if_pos ha, if_pos (this.2 ha), one_mul]`. Rewrite using `[if_neg ha, if_neg (fun h => ha (this.1 h)), zero_mul]`. Establish `ez'` using `congrFun ez b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ez, ez', ← e]`. Use `Eq.trans ?_ (congrArg (· * incA D c) Matrix.mul_apply).symm` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.sum_mul _ _ _).symm` and prove the remaining obligations. Use `Fintype.sum_equiv (finCongr h2.symm) _ _ fun x => ?_` and prove the remaining obligations. Conclude with `(mul_assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isEmbTop_topDec (hG : (D.sp.X D.R.m).gram = 1) (hG' : D.sp.X'.gram = 1)
     (hi : ∀ (a : Fin D.sp.X'.rank) (b : Fin (D.sp.X D.R.m).rank), (a : ℕ) = b →
@@ -316,7 +316,7 @@ theorem isEmbTop_topDec (hG : (D.sp.X D.R.m).gram = 1) (hG' : D.sp.X'.gram = 1)
 end Emb
 
 /- English proof (translation)
-Take `⟨hs, h1, h2, -⟩` from `hI.spaces`. Establish `key : ∀ S : HSp (I.rec7 l Z), ∀ n, S = Examples₂.posSpace hs n → S.gram = 1` using `by rintro _ n rfl; exact gram_pos hs n`. Establish `gen : ∀ (D : D7) (hG : (D.sp.X D.R.m).gram = 1) (hG' : D.sp.X'.gram = 1) (hi : ∀ (a : Fin D.sp.X'.rank) (b : Fin (D.sp.X D.R.m).rank), (a : ℕ) = b → D.sp.iX' (D.sp.X'.frame a) = (D.sp.X D.R.m).frame b) (c : D.host.E), ∃ (Lz : HSp D) (oT : ∀ n, n = D.R.m → GlobalTheory.MixModel.Or …` using `D) (fun j => if j.1 + 1 = D.R.N D.R.m then c else 0) ((oT D.R.m rfl).emb.comp (MonoidHom.inl _ _)) := fun D hG hG' hi c => ⟨_, fun n h => Eq.rec (motive := fun n _ => GlobalTheory.MixModel.OrthDec (D.sp.X n) _ _) (topDec hG hG') h.symm, isEmbTop_topDec hG hG' hi c⟩`. Conclude with `gen (I.rec7 l Z) (key _ _ (h1 _)) (key _ _ h2) hP.iX _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_emb (hI : I.Ok) (hP : TC.Pins B X) :
     ∃ (Lz : HSp (I.rec7 l Z)) (oT : ∀ n, n = (I.rec7 l Z).R.m → GlobalTheory.MixModel.OrthDec ((I.rec7 l Z).sp.X n) (I.rec7 l Z).sp.X' Lz),
@@ -338,7 +338,7 @@ theorem exists_emb (hI : I.Ok) (hP : TC.Pins B X) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨Lz, oT, h⟩` from `exists_emb (l := l) (Z := Z) (u := u) hI hP`. Conclude with `⟨Lz, oT, pinTopL_withTop R (reTop g Lz oT) P t k h ε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pinTopL (hI : I.Ok) (hP : TC.Pins B X) {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL]

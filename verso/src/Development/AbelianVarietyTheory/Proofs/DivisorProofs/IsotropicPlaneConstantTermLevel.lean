@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 private abbrev phiInf : AE F E →+* Ainf F ⊗[F] E := (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Use `first`. Consider the case `exact congrArg Units.val hb`. Consider the case `exact congrArg (fun u => u.1.1) hb`. Consider the case `exact congrArg (fun u => u.1) hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mat_fin (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c : E} (hc : c ≠ 0) (b : UA σ J)
     (hb : toGAd hσ J hc b ∈ finPts σ (c • J.map σ)) : (mat b).map (phiInf (F := F) (E := E)) = 1 := by
@@ -28,20 +28,20 @@ private theorem mat_fin (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin 
   | exact congrArg (fun u => u.1) hb
 
 /- English proof (translation)
-The claim follows from `Units.ext hb`.
+A detailed English derivation is pending.
 -/
 private theorem fin_of_mat (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c : E} (hc : c ≠ 0) (b : UA σ J)
     (hb : (mat b).map (phiInf (F := F) (E := E)) = 1) : toGAd hσ J hc b ∈ finPts σ (c • J.map σ) :=
   Units.ext hb
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Take `⟨α, β, z, e⟩` from `h.decompA hσ hsk hd (Pi.single j 1)`. Take `⟨h1, h2, h3⟩` from `hm`. Simplify using `only [Units.val_one, one_smul, inv_one, map_one] at h1 h2`. Establish `hv : mat m *ᵥ (Pi.single j 1 : Fin n → AE F E) = Pi.single j 1 + incM F H.ι *ᵥ ((mat b - 1) *ᵥ z)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, h1, h2, h3, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws. Establish `hs : (Pi.single j (1 : Ainf F ⊗[F] E) : Fin n → Ainf F ⊗[F] E) = (phiInf (F` using `F) (E := E)) ∘ (Pi.single j (1 : AE F E)) := by`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Establish `hz : (phiInf (F` using `F) (E := E)) ∘ ((mat b - 1) *ᵥ z) = 0 := by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec, Matrix.map_sub _ (map_sub _), hb, Matrix.map_one _ (map_zero _) (map_one _), sub_self, Matrix.zero_mulVec]`. Rewrite using `[Matrix.one_mulVec, hs]`. Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_mulVec, hv, Pi.add_apply, map_add, RingHom.map_mulVec, hz, Matrix.mulVec_zero, Pi.zero_apply, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -76,9 +76,9 @@ private theorem levi_fin (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane 
   rfl
 
 /- English proof (translation)
-Introduce `hd`. Establish `h0 : (J.map e).det = 0` using `by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, hd, map_zero]`. Take `⟨z, hz0, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hx : star z ≠ 0` using `fun h' => hz0 (by simpa using congrArg star h')`. Use `h.2.2 (star z) hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star, Matrix.smul_mulVec, hz, smul_zero, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_ne_zero_of_cartan' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (e : E →+* ℂ) {θ : Matrix (Fin n) (Fin n) ℂ}
     (h : IsCartan (Complex.I • J.map e) θ) : J.det ≠ 0 := by
@@ -91,9 +91,9 @@ private theorem det_ne_zero_of_cartan' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `h1 : mat (1 : UA σ Y.J) = 1` using `rfl`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `show At (evI F) (mat (1 : UA σ Y.J) - 1)`. Rewrite using `[h1, sub_self]`. Unfold `At`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_KInf {n : ℕ} (Y : Spc F E n) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     (1 : UA σ Y.J) ∈ KInf σ Y τ := by
@@ -107,19 +107,17 @@ private theorem one_mem_KInf {n : ℕ} (Y : Spc F E n) (τ : ∀ w : InfinitePla
     exact Commute.one_left _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B _ n n₁ Y Y₁ P hsk hP c hc _ fa hfa h _ _ g hg`. Establish `hd : Y₁.J.det ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `det_ne_zero_of_cartan' _ (hP.2.2.2.2.2.2.2.cartan w)`. Establish `hH` using `GlobalTheory.ThK.GLTwo.IsIsoPlane.isHypPlane hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hMc, hM, -⟩` from `hH.exists_leviHom hσ hsk hd`. Establish `hA` using `hfa ⊥ fun x hx => by`. Rewrite using `[Subgroup.mem_bot.1 hx, map_one]`. Conclude with `one_mem_KInf Y B.emb`. Take `⟨U₀, hU₀, hl⟩` from `hA.level`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `toGAd hσ Y.J hc`. Set `e₁` to `toGAd hσ Y₁.J hc`. Establish `he` using `GlobalTheory.ThK.GLTwo.continuous_toGAd hσ Y.J hc`. Establish `he₁` using `GlobalTheory.ThK.GLTwo.continuous_toGAd hσ Y₁.J hc`. Set `ψ : GAd σ (c • Y₁.J.map σ) →* GAd σ (c • Y.J.map σ)` to `(MulAut.conj (e h)⁻¹).toMonoidHom.comp (e.toMonoidHom.comp (M.comp e₁.symm.toMonoidHom))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ k, ψ k = (e h)⁻¹ * e (M (e₁.symm k)) * (e h)⁻¹⁻¹` using `fun _ => rfl`. Establish `hψc : Continuous ψ` using `((continuous_const.mul (he.1.comp (hMc.comp he₁.2))).mul continuous_const).congr fun k => (hψ k).symm`. Use `⟨U₀.comap ψ, hU₀.preimage hψc, fun k hk hkf x => ?_⟩` and prove the remaining obligations. Establish `hfin : ψ k ∈ finPts σ (c • Y.J.map σ)`. Establish `hb : (mat (e₁.symm k)).map (phiInf (F` using `F) (E := E)) = 1 := mat_fin hσ Y₁.J hc _ (by simpa [e₁] using hkf)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0 : e (M (e₁.symm k)) ∈ finPts σ (c • Y.J.map σ)` using `fin_of_mat hσ Y.J hc _ (levi_fin hσ hH hsk hd (hM _) hb)`. Rewrite `h0`, the goal using `[mem_finPts]`. Rewrite using `[hψ, map_mul, map_mul, h0, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Establish `key` using `hl (ψ k) hk hfin (e (M (e₁.symm x) * h))`. Establish `e1 : e (M (e₁.symm x) * h) * ψ k = e (M (e₁.symm (x * k)) * h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ, map_mul e₁.symm, map_mul M]`. Simplify using `only [map_mul, inv_inv, mul_assoc, mul_inv_cancel_left]`. Rewrite `key` using `[e1]`. Simplify using `only [e, MulEquiv.symm_apply_apply] at key`. Use `show g (e₁.symm (x * k)) = g (e₁.symm x)`.
-
-Rewrite using `[hg _ _ (hM _), hg _ _ (hM _)]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →
@@ -172,7 +170,7 @@ end GlobalTheory.ThK.DescB.GenLevel
 end
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.DescB.GenLevel.main`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.isotropic_plane_constant_term_level : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →

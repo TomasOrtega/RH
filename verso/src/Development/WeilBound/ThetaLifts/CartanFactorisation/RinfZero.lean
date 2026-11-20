@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Use `⟨⟨fun i x hx y h h0 => by simpa using eqv i x hx 0 S'.zero_mem y 0 h (z' i) (by simpa using h0), fun N hN hs => irr _ ?_⟩, fun i x hx y h h0 => by simpa using (eqv i 0 S.zero_mem x hx 0 y (z i) h (by simpa using h0.symm)).symm, fun N hN hs => irr _ ?_⟩` and prove the remaining obligations. Introduce and unpack `i x hx y h ⟨w, hw, e⟩`. Take `⟨x', hx', e'⟩ : p x ∈ S'.map p'` from `on' ▸ Submodule.mem_top`. Take `⟨y', hy'⟩` from `ex' i x' hx'`. Take `⟨w₁, hw₁⟩` from `ex i w (hN hw)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w₁, hs i w hw w₁ hw₁, (eqv i w (hN hw) x' hx' w₁ y' hw₁ hy' (e.trans e'.symm)).trans (eqv i x hx x' hx' y y' h hy' e'.symm).symm⟩`. Introduce and unpack `i x hx y h ⟨w, hw, e⟩`. Take `⟨w₁, hw₁⟩` from `ex' i w (hN hw)`. Conclude with `⟨w₁, hs i w hw w₁ hw₁, (eqv i x hx w (hN hw) y w₁ h hw₁ e.symm).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem absMax {Q Q' P ι : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Q'] [Module ℂ Q'] [AddCommGroup P] [Module ℂ P]
     {p : Q →ₗ[ℂ] P} {p' : Q' →ₗ[ℂ] P} {S : Submodule ℂ Q} {S' : Submodule ℂ Q'} {R : ι → Q → Q → Prop} {R' : ι → Q' → Q' → Prop}
@@ -45,7 +45,7 @@ variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
   {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
 /- English proof (translation)
-Introduce `r _` and use `by have : tens ev 0 r = 0 := funext fun x => by simp [tens] rw [this, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acts_zero {R κ : Type} [Zero R] [Fintype κ] (ev : AF F → R) (T : Module.End ℂ ((κ → AF F) → ℂ)) : Acts ev T 0 0 :=
   fun r _ => by
@@ -53,7 +53,7 @@ theorem acts_zero {R κ : Type} [Zero R] [Fintype κ] (ev : AF F → R) (T : Mod
     rw [this, map_zero]
 
 /- English proof (translation)
-Introduce `r _ x` and use `by have : tens ev 0 r = 0 := funext fun x => by simp [tens] simp only [this, map_zero] exact hasDerivAt_const _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem actsD_zero {R κ : Type} [Zero R] [Fintype κ] (ev : AF F → R) (T : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) :
     ActsD ev (fun t => T t) 0 0 := fun r _ x => by
@@ -62,20 +62,20 @@ theorem actsD_zero {R κ : Type} [Zero R] [Fintype κ] (ev : AF F → R) (T : �
   exact hasDerivAt_const _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨g, -, x, hx, y, hy, -, rfl⟩ exact sub_mem hy hx)`.
+A detailed English derivation is pending.
 -/
 theorem augAt_le (v : Pl F) : augAt om v ≤ SB _ := Submodule.span_le.2 (by
   rintro _ ⟨g, -, x, hx, y, hy, -, rfl⟩
   exact sub_mem hy hx)
 
 /- English proof (translation)
-Introduce `u _` and use `by simp [mat]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_at' {m : ℕ} {Y : Spc F E m} {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ Y.J) ∈ UAt σ Y ev :=
   fun u _ => by simp [mat]
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨ω, ρ, hω⟩ := PositivityTheory.ThKH.Locrep.locRepEx F E σ n d B X W M om ⟨hp.base, ⟨_, _, hp.herm⟩, ⟨_, _, hp.skew⟩, hp.good, ⟨_, _, hp.weil⟩⟩ v exact ⟨_, hω.pres 1 (one_at' _) h h.2 x hx, (hω.acts 1 (one_at' _) h h.2 x hx _).2 rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ex_fin (hp : IsPair B M χX χW om r s r' s') (v : Pl F) (h : UAt σ W (evFin F v)) :
     ∀ x ∈ SB (Fin n × Fin d → Fv F v), ∃ y, y ∈ SB _ ∧ Acts (evFin F v) (om (1, h.1)) x y := fun x hx => by
@@ -88,7 +88,7 @@ def RInf (B : Base F E) (om : Rep σ X W) : Lines σ W ⊕ KInf σ W B.emb → S
   | .inr k, f, g => Acts (evI F) (om (1, k.1)) f g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_at' _, fun w => by have : (mat (1 : UA σ Y.J)).map (piInf (τ w)) = 1 := by simp [mat] rw [this]; exact Commute.one_left _⟩`.
+Supply the required witnesses or components.
 -/
 theorem kinf_one {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y τ :=
   ⟨one_at' _, fun w => by
@@ -96,7 +96,7 @@ theorem kinf_one {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y 
     rw [this]; exact Commute.one_left _⟩
 
 /- English proof (translation)
-Use `choose op hop _ using hO F E σ B n d X W M χX χW om r s r' s' hp`. Take `⟨g, h1, h2, -⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp γ hγ δ hδ (fun t => op _ (hγ.2 _) _ (hδ.2 _)) (fun t => hop _ _ _ _) f hf`. Conclude with `⟨g, h1, fun g' => ⟨fun h => (hQ F _ f g' g).2 _ h h2, fun h => h ▸ h2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pol_lie (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s') {γ δ} (hγ : γ ∈ Lines σ X)
     (hδ : δ ∈ Lines σ W) {f} (hf : f ∈ M.Pol B.ψ B.emb) :
@@ -108,7 +108,7 @@ theorem pol_lie (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χ
   exact ⟨g, h1, fun g' => ⟨fun h => (hQ F _ f g' g).2 _ h h2, fun h => h ▸ h2⟩⟩
 
 /- English proof (translation)
-Take `⟨T, h1, h2⟩` from `hO F E σ B n d X W M χX χW om r s r' s' hp k hk.1 k' hk'.1`. Conclude with `⟨T f, h2 hk hk' f hf, fun g' => ⟨fun h => (hQ F _ f g' _).1 _ h (h1.2 f), fun h => h ▸ h1.2 f⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pol_k (hO : ArchOp) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s') {k k'} (hk : k ∈ KInf σ X B.emb)
     (hk' : k' ∈ KInf σ W B.emb) {f} (hf : f ∈ M.Pol B.ψ B.emb) :
@@ -117,7 +117,7 @@ theorem pol_k (hO : ArchOp) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s
   exact ⟨T f, h2 hk hk' f hf, fun g' => ⟨fun h => (hQ F _ f g' _).1 _ h (h1.2 f), fun h => h ▸ h1.2 f⟩⟩
 
 /- English proof (translation)
-Break down `i with γ | k` into its components or cases. Conclude with `pol_lie hO hL hQ hp (γ := 1) ⟨continuous_const, fun _ => one_at' _⟩ γ.2 hf`. Conclude with `pol_k hO hQ hp (kinf_one _) k.2 hf`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rinf_ex (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s') (i) {f}
     (hf : f ∈ M.Pol B.ψ B.emb) : ∃ g ∈ M.Pol B.ψ B.emb, ∀ g', RInf B om i f g' ↔ g' = g := by
@@ -126,7 +126,7 @@ theorem rinf_ex (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χ
   · exact pol_k hO hQ hp (kinf_one _) k.2 hf
 
 /- English proof (translation)
-Break down `i with γ | k` into its components or cases. Conclude with `actsD_zero _ fun t => om (1, γ.1 (Multiplicative.ofAdd t))`. Conclude with `acts_zero _ _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rinf_zero (i) : RInf B om i 0 0 := by
   rcases i with γ | k
@@ -134,7 +134,7 @@ theorem rinf_zero (i) : RInf B om i 0 0 := by
   · exact acts_zero _ _
 
 /- English proof (translation)
-The claim follows from `maximal_of p _ _ on (fun _ h => h.2.1) ⟨le_inf inv (augAt_le v), inf_le_right, fun g hg x hx y hy e => ⟨h.1 ⟨g, hg⟩ x hx.2 y ⟨hy, e⟩ hx.1, hy⟩⟩ fun N hN => h.2 N hN.2.1 fun i x hx y hy => hN.2.2 i i.2 x hx y hy.1 hy.2`.
+A detailed English derivation is pending.
 -/
 theorem max_fin {P : Type} [AddCommGroup P] [Module ℂ P] [Nontrivial P] {v : Pl F} {p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P}
     (on : (SB _).map p = ⊤) (inv : augAt om v ≤ LinearMap.ker p)
@@ -147,9 +147,9 @@ theorem max_fin {P : Type} [AddCommGroup P] [Module ℂ P] [Nontrivial P] {v : P
     fun N hN => h.2 N hN.2.1 fun i x hx y hy => hN.2.2 i i.2 x hx y hy.1 hy.2
 
 /- English proof (translation)
-Establish `st : ∀ i, ∀ x ∈ LinearMap.ker p ⊓ M.Pol B.ψ B.emb, ∀ y, RInf B om i x y → y ∈ LinearMap.ker p ⊓ M.Pol B.ψ B.emb` using `fun i x hx y hy => by`. Take `⟨g, hg, e⟩` from `rinf_ex hO hL hQ hp i hx.2`. Conclude with `⟨h.1 i x hx.2 y hy hx.1, (e y).1 hy ▸ hg⟩`. Use `maximal_of p _ _ q.onto (fun _ h => h.1) ⟨inf_le_right, fun γ hγ f hf y hy => ⟨q.lie γ hγ f hf y hy, ?_⟩, fun k hk f hf y hy => ⟨show p (y - f) = 0 by rw [map_sub, q.cpt k hk f hf y hy, sub_self], ?_⟩, fun γ hγ f hf y hy => st (.inl ⟨γ, hγ⟩) f hf y hy, fun k hk f hf y hy => st (. …` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `pol_lie hO hL hQ hp hγ (δ := 1) ⟨continuous_const, fun _ => one_at' _⟩ hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(e y).1 hy ▸ hg`. Take `⟨g, hg, e⟩` from `pol_k hO hQ hp hk (kinf_one _) hf`. Conclude with `sub_mem ((e y).1 hy ▸ hg) hf`. Introduce and unpack `(γ | k) x hx y hy exacts [hN.2.2.2.1 γ γ.2 x hx y hy, hN.2.2.2.2 k k.2 x hx y hy]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem max_inf (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s') {P : Type} [AddCommGroup P]
     [Module ℂ P] [Nontrivial P] {p : SInf F (Fin n × Fin d) →ₗ[ℂ] P} (q : RealQuot B M om p)
@@ -177,7 +177,7 @@ variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
 /- English proof (translation)
-Use `haveI := m.fin.nontriv v`. Use `absMax (R := fun (i : UAt σ G.W (evFin F v)) x y => y ∈ SB _ ∧ Acts (evFin F v) (om (1, i.1)) x y) (R' := fun (i : UAt σ G.W (evFin F v)) x y => y ∈ SB _ ∧ Acts (evFin F v) (om' (1, i.1)) x y) (m.fin.onto v) (m.fin.onto' v) (ex_fin (PositivityTheory.ThKG.pairV m.triple) v) (ex_fi …` as an intermediate fact. Conclude with `⟨max_fin (m.fin.onto v) (m.fin.inv v) this.1, max_fin (m.fin.onto' v) (m.fin.inv' v) this.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem maxFinP (m : IsMatched B G X om om' R Rf) (v : Pl F) :
     Maximal (fun P => GlobalTheory.Published.ThetaSub om v P ∧ P ≠ SB _) (LinearMap.ker (Rf.p v) ⊓ SB _) ∧
@@ -192,9 +192,9 @@ theorem maxFinP (m : IsMatched B G X om om' R Rf) (v : Pl F) :
   exact ⟨max_fin (m.fin.onto v) (m.fin.inv v) this.1, max_fin (m.fin.onto' v) (m.fin.inv' v) this.2⟩
 
 /- English proof (translation)
-Use `haveI := m.real.nontriv`. Establish `p1` using `PositivityTheory.ThKG.pairV m.triple`. Establish `p2` using `PositivityTheory.ThKG.pairV' m.triple`. Use `absMax (R := RInf B om) (R' := RInf B om') m.real.quot.onto m.real.quot'.onto (fun i x hx => let ⟨g, _, e⟩ := rinf_ex hO hL hQ p1 i hx; ⟨g, (e g).2 rfl⟩) (fun i x hx => let ⟨g, _, e⟩ := rinf_ex hO hL hQ p2 i hx; ⟨g, (e g).2 rfl⟩) rinf_zero rinf_zero (by` as an intermediate fact. Introduce and unpack `(γ | k) x hx x' hx' y y' h h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `exacts [m.real.lie γ γ.2 x hx x' hx' y y' h h', m.real.cpt k k.2 x hx x' hx' y y' h h'])`. Use `fun N hN => m.real.irred N (fun γ hγ => hN (.inl ⟨γ, hγ⟩)) fun k hk => hN (.inr ⟨k, hk⟩)`. Conclude with `⟨max_inf hO hL hQ p1 m.real.quot this.1, max_inf hO hL hQ p2 m.real.quot' this.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem maxInfP (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (m : IsMatched B G X om om' R Rf) :
     Maximal (fun P => GlobalTheory.Published.ThetaSubInf G.M B.ψ B.emb om P ∧ P ≠ G.M.Pol B.ψ B.emb)

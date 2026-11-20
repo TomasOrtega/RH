@@ -12,9 +12,7 @@ namespace GlobalTheory.Mum.Conj
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap σ.toRingHom ≫ spMap τ.toRingHom = 𝟙 _`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e : σ.toRingHom.comp τ.toRingHom = RingHom.id _` using `congrArg AlgHom.toRingHom h`. Rewrite using `[e]`.
-
-Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twK_comp_eq_id {σ τ : Kb R →ₐ[FractionRing R] Kb R} (h : σ.comp τ = AlgHom.id _ _) :
     twK σ ≫ twK τ = 𝟙 _ := by
@@ -26,7 +24,7 @@ theorem twK_comp_eq_id {σ τ : Kb R →ₐ[FractionRing R] Kb R} (h : σ.comp �
   exact Spec.map_id _
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mTw_fst, ← Category.assoc, mTw_fst, Category.assoc, twK_comp_eq_id h, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, mTw_snd, mTw_snd, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mTw_comp_eq_id (A : PolAV (Sp (FractionRing R))) {σ τ : Kb R →ₐ[FractionRing R] Kb R}
     (h : σ.comp τ = AlgHom.id _ _) : mTw A σ ≫ mTw A τ = 𝟙 _ := by
@@ -36,9 +34,9 @@ theorem mTw_comp_eq_id (A : PolAV (Sp (FractionRing R))) {σ τ : Kb R →ₐ[Fr
   · rw [Category.assoc, mTw_snd, mTw_snd, Category.id_comp]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [translT]`. Rewrite using `[Category.assoc, Category.assoc, lift_fst, mTw_fst, ← Category.assoc, lift_fst]`. Simplify using `only [translT]`. Rewrite using `[Category.assoc, Category.assoc, lift_snd, mTw_snd, lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [translPt]`. Rewrite using `[← Category.assoc, comp_lift, ← Category.assoc (mTw A σ), mTw_fst, mTw_snd, Category.assoc, ← Category.assoc (twK σ), twK_comp_eq_id h, Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mTw_translT (A : PolAV (Sp (FractionRing R))) {σ τ : Kb R →ₐ[FractionRing R] Kb R}
     (h : σ.comp τ = AlgHom.id _ _) (x : TFK (R := R) (Kb R) ⟶ A.A) :
@@ -53,11 +51,11 @@ theorem mTw_translT (A : PolAV (Sp (FractionRing R))) {σ τ : Kb R →ₐ[Fract
       ← Category.assoc (twK σ), twK_comp_eq_id h, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R _ _ A N σ τ hστ θ a b H`. Use `twist_of_val A.isLB θ.isGen fun z J hJ => ?_` and prove the remaining obligations. Establish `e1 : (𝟙 _ ≫ (mTw A σ).left) ≫ (mTw A τ).left = 𝟙 _`. Rewrite using `[Category.id_comp, ← Over.comp_left, mTw_comp_eq_id A hστ, Over.id_left]`. Establish `e2 : (𝟙 _ ≫ (mTw A σ).left) ≫ (translT A.A (twK τ ≫ θ.pt)).left = (𝟙 _ ≫ (translT A.A θ.pt).left) ≫ (mTw A σ).left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp, ← Over.comp_left, mTw_translT A hστ]`. Establish `hv : val (thTw A N τ θ).φ (𝟙 _ ≫ (mTw A σ).left) z J = val θ.φ (𝟙 _) z J` using `(val_genCast _ _ _ z J).trans ((val_pull hJ _ _ _).trans (congrArg (fun r => val θ.φ r z J) e1))`. Establish `H'` using `twist_val H (𝟙 _ ≫ (mTw A σ).left) z hJ`. Rewrite `H'` using `[hv]`. Establish `hb : sval (secTw A N σ b) (𝟙 _) z J = sval b (𝟙 _ ≫ (mTw A σ).left) z J` using `GlobalTheory.FieldBaseChange.sval_pullOver _ _ b _ hJ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : sval (secTw A N σ a) (𝟙 _ ≫ (translT A.A θ.pt).left) z J = sval a ((𝟙 _ ≫ (translT A.A θ.pt).left) ≫ (mTw A σ).left) z J` using `GlobalTheory.FieldBaseChange.sval_pullOver _ _ a _ hJ`. Use `hb.trans (H'.trans ?_)` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `congrArg (fun r => (val θ.φ (𝟙 _) z J).val * sval a r z J) e2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isActOf_secTw : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ τ : Kb R →ₐ[FractionRing R] Kb R), σ.comp τ = AlgHom.id _ _ → ∀ (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) (Kb R))) (a b : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N), IsActOf A.A A.L N (thTw A N τ θ) a b → IsActOf A.A A.L N θ (secTw A N σ a) (secTw A N σ b) := by
   intro R _ _ A N σ τ hστ θ a b H

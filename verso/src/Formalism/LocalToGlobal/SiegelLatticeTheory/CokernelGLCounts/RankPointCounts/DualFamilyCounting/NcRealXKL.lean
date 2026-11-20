@@ -20,21 +20,19 @@ def mOf : {n r k : ℕ} → n = 2 * r + k + 1 → (ε : Fin n → Bool) → (Fin
 section Loc
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hFJ` using `isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Establish `hQz : Qm e f w (z0v T z) *ᵥ zBv k r T = z` using `Qm_zB hT z`. Establish `hz0 : ∃ t : ℂ, z0v T z = t • (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `⟨(((Real.sqrt T)⁻¹ : ℝ) : ℂ), by rw [hQz]; rfl⟩`. Establish `hmem : ∀ g : Formalism.REAL.UJ ε, g ∈ NLoc ε e z → mOf rfl ε e f w (z0v T z) g ∈ Nset k r` using `fun g hg => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : InN ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) (uMat g)` using `by rw [hQz]; exact hg`. Conclude with `conj_mem_Nset hFJ hz0 (uMat_mem g) hg'`. Establish `hcol : ∀ (g : Formalism.REAL.UJ ε) b j, hJ ε (f b) (uMat g *ᵥ colQ e f w (z0v T z) j) = mOf rfl ε e f w (z0v T z) g (eI k r b) j` using `fun g b j => hJ_f_col g b j`. Use `⟨fun g g' => ?_, hmem, fun g b a => ?_, fun g b j => ?_, fun g b => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `show Qi ε e f w (z0v T z) * uMat (g * g') * Qm e f w (z0v T z) = (Qi ε e f w (z0v T z) * uMat g * Qm e f w (z0v T z)) * (Qi ε e f w (z0v T z) * uMat g' * Qm e f w (z0v T z))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[uMat_mul]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi ε e f w (z0v T z) * uMat g) (Qm e f w (z0v T z)) (Qi ε e f w (z0v T z)), Qm_mul_Qi hFJ, Matrix.mul_one]`. Rewrite using `[← colQ_eI e f w (z0v T z) a, hcol]`. Establish `hw : colQ e f w (z0v T z) (wI k r (Fin.castSucc j)) = w j`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[colQ_wI _ _ _ _ _ (show (Fin.castSucc j).val < k from j.isLt)]`. Both sides reduce to the same expression. Rewrite using `[← hw, hcol]`. Establish `hz : z = (((Real.sqrt T : ℝ) : ℂ)) • colQ e f w (z0v T z) (wI k r (Fin.last k))` using `by conv_lhs => rw [← Qm_zB (e := e) (f := f) (wf := w) hT z]`. Rewrite using `[zBv, Matrix.mulVec_smul, Qm_mulVec_bvec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hz]`. Rewrite using `[Matrix.mulVec_smul, JL.hJ_smul_r, hcol]`. Establish `hN` using `hmem g hg set m := mOf rfl ε e f w (z0v T z) g with hm`. Establish `hx : xL ε e f g = WlocSk.NB.bA m`. Use function extensionality and compare the values at `b a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show hJ ε (f b) (uMat g *ᵥ e a) = m (eI k r b) (eI k r a)`. Rewrite using `[← colQ_eI e f w (z0v T z) a, hcol]`. Establish `ha : aL ε f g = WlocSk.NB.bC m`. Use function extensionality and compare the values at `b a`. Use `show hJ ε (f b) (uMat g *ᵥ f a) = m (eI k r b) (esI k r a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← colQ_esI e f w (z0v T z) a, hcol]`. Establish `hc` using `WlocSk.NB.colB_of_mem hN`. Establish `hdet : (WlocSk.NB.bA m).det = 1` using `WlocSk.NB.det_of_lowId (WlocSk.NB.lowId_bA hc)`. Establish `hinv : (WlocSk.NB.bA m)⁻¹ = (WlocSk.NB.bF m)ᴴ`. Rewrite using `[Matrix.inv_def, hdet, Ring.inverse_one, one_smul, WlocSk.NB.adj_eq hc hN.1]`.
-
-Rewrite using `[mL, hx, ha, hinv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mOf_facts {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (w : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
@@ -105,7 +103,7 @@ variable {ι : Type} {r k : ℕ}
 def sclT (T : ℝ) (j : Fin (k + 1)) : ℂ := if j.val < k then 1 else ((Real.sqrt T : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `sclT`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hT).ne'`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sclT_ne {T : ℝ} (hT : 0 < T) (j : Fin (k + 1)) : sclT T j ≠ 0 := by
   unfold sclT
@@ -141,9 +139,9 @@ def blkOf (T : ℝ) (M : ι → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
   | Sum.inr (Sum.inr a) => fun v => WlocSk.NB.psiR (M v) a
 
 /- English proof (translation)
-Use `Prod.ext (funext fun c => ?_) rfl` and prove the remaining obligations. Break down `c with p | ⟨b, j⟩ | p` into its components or cases. Both sides reduce to the same expression. Use `show sclT T j * WlocSk.NB.psiC (M v) (Sum.inr (Sum.inl (b, j))) / sclT T j = _`. Rewrite using `[mul_div_cancel_left₀ _ (sclT_ne hT j)]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chAt_blkOf {T : ℝ} (hT : 0 < T) (M : ι → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (v : ι) :
     chAt T (blkOf T M) v = (WlocSk.NB.psiC (M v), WlocSk.NB.psiR (M v)) := by
@@ -155,15 +153,15 @@ theorem chAt_blkOf {T : ℝ} (hT : 0 < T) (M : ι → Matrix (Fin (2 * r + k + 1
   · rfl
 
 /- English proof (translation)
-Establish `key : ∀ v, WlocSk.NB.psiC (M v * M' v) = WlocSk.NB.psiC (M' v) + WlocSk.NB.shG (M v) (WlocSk.NB.psiC (M' v)) ∧ WlocSk.NB.psiR (M v * M' v) = WlocSk.NB.psiR (M' v) + WlocSk.NB.shH (M v) (WlocSk.NB.psiC (M' v))` using `fun v => by`. Establish `h` using `WlocSk.NB.lmul_coord (hM v) (WlocSk.NB.psiC (M' v)) (WlocSk.NB.psiR (M' v))`. Rewrite `h` using `[WlocSk.NB.nilpotent_chart_left_inverse (hM' v)]`. Then use the resulting hypothesis. Establish `hph : ∀ v, ph0 (chAt T (blkOf T M) v) = M v` using `fun v => by`. Rewrite using `[chAt_blkOf hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WlocSk.NB.nilpotent_chart_left_inverse (hM v)`. Use function extensionality and compare the values at `p`. Break down `p with ((p | b) | (p | a))` into its components or cases. Use function extensionality and compare the values at `v show WlocSk.NB.psiC (M v * M' v) (Sum.inl p) = WlocSk.NB.psiC (M v) (Sum.inl p) + WlocSk.NB.psiC (M' v) (Sum.inl p) + (WlocSk.NB.shG (ph0 (chAt T (blkOf T M) v)) (chAt T (blkOf T M') v).1 (Sum.inl p) - WlocSk.NB.psiC (M v) (Sum.inl p))`. Rewrite using `[hph, chAt_blkOf hT, (key v).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `v j show sclT T j * WlocSk.NB.psiC (M v * M' v) (Sum.inr (Sum.inl (b, j))) = sclT T j * WlocSk.NB.psiC (M v) (Sum.inr (Sum.inl (b, j))) + sclT T j * WlocSk.NB.psiC (M' v) (Sum.inr (Sum.inl (b, j))) + (sclT T j * WlocSk.NB.shG (ph0 (chAt T (blkOf T M) v)) (chAt T (blkOf T M') v).1 …`. Rewrite using `[hph, chAt_blkOf hT, (key v).1]`. Simplify using `only [Pi.add_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `v show WlocSk.NB.psiC (M v * M' v) (Sum.inr (Sum.inr p)) = WlocSk.NB.psiC (M v) (Sum.inr (Sum.inr p)) + WlocSk.NB.psiC (M' v) (Sum.inr (Sum.inr p)) + (WlocSk.NB.shG (ph0 (chAt T (blkOf T M) v)) (chAt T (blkOf T M') v).1 (Sum.inr (Sum.inr p)) - WlocSk.NB.psiC (M v) (Sum.inr (Sum.i …`. Rewrite using `[hph, chAt_blkOf hT, (key v).1]`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v show WlocSk.NB.psiR (M v * M' v) a = WlocSk.NB.psiR (M v) a + WlocSk.NB.psiR (M' v) a + (WlocSk.NB.shH (ph0 (chAt T (blkOf T M) v)) (chAt T (blkOf T M') v).1 a - WlocSk.NB.psiR (M v) a)`. Rewrite using `[hph, chAt_blkOf hT, (key v).2]`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem law_blkOf {T : ℝ} (hT : 0 < T) (M M' : ι → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hM : ∀ v, M v ∈ Nset k r) (hM' : ∀ v, M' v ∈ Nset k r) :
@@ -208,15 +206,15 @@ section Tri
 variable {r k : ℕ}
 
 /- English proof (translation)
-Establish `hT : A.BlockTriangular id` using `fun i j hji => by`. Establish `hji' : j < i` using `hji`. Rewrite using `[hA i j hji'.le, if_neg (ne_of_gt hji')]`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun i _ => by rw [hA i i le_rfl, if_pos rfl]`. Establish `hadj : A.adjugate = A⁻¹`. Rewrite using `[Matrix.inv_def, hdet, Ring.inverse_one, one_smul]`. Establish `hU : IsUnit A.det` using `by rw [hdet]; exact isUnit_one`. Use `haveI : Invertible A := Matrix.invertibleOfIsUnitDet A hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinvT : (A⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hT`. Use `⟨fun a d hda => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hadj]`. Conclude with `hinvT hda`. Rewrite using `[hadj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (A⁻¹ * A) a a = 1` using `by rw [Matrix.nonsing_inv_mul _ hU, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite `h1` using `[hA a a le_rfl, if_pos rfl, mul_one]`. Conclude with `h1`. Introduce `c _ hca`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hca with hlt | hgt` into its components or cases. Rewrite using `[hinvT hlt, zero_mul]`. Rewrite using `[hA c a hgt.le, if_neg hca, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 theorem adj_lowId {A : Matrix (Fin r) (Fin r) ℂ} (hA : WlocSk.NB.LowId A) :
     (∀ a d : Fin r, d < a → A.adjugate a d = 0) ∧ ∀ a, A.adjugate a a = 1 := by
@@ -247,7 +245,7 @@ theorem adj_lowId {A : Matrix (Fin r) (Fin r) ℂ} (hA : WlocSk.NB.LowId A) :
       exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `adj_lowId (WlocSk.NB.lowId_cA c)`. Use `⟨fun d a hda => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[WlocSk.NB.cF, conjTranspose_apply, h1 a d hda, star_zero]`. Rewrite using `[WlocSk.NB.cF, conjTranspose_apply, h2 a, star_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cF_low (c : WlocSk.NB.CI k r → ℂ) :
     (∀ d a : Fin r, d < a → WlocSk.NB.cF c d a = 0) ∧ ∀ a, WlocSk.NB.cF c a a = 1 := by
@@ -257,15 +255,13 @@ theorem cF_low (c : WlocSk.NB.CI k r → ℂ) :
   · rw [WlocSk.NB.cF, conjTranspose_apply, h2 a, star_one]
 
 /- English proof (translation)
-Establish `hFz : ∀ c, c < b → star (F c b) = 0` using `fun c hc => by rw [hF c b hc, star_zero]`. Establish `hrow : ∀ d, a ≤ d → (Fᴴ * Δ) b d = if d = a then Δ b a else 0`. Introduce `d hd`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b]`. Rewrite using `[conjTranspose_apply, hF1, star_one, one_mul] split_ifs with hda`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hda]`. Conclude with `hΔ b d le_rfl hd (fun h => hda (Prod.ext_iff.1 h).2)`. Introduce `c _ hcb`. Rewrite using `[conjTranspose_apply]`. Break down `lt_or_gt_of_ne hcb with hlt | hgt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFz c hlt, zero_mul]`. Rewrite using `[hΔ c d hgt.le hd (fun h => hcb (Prod.ext_iff.1 h).1), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrow a le_rfl, if_pos rfl, hF1, mul_one]`. Introduce `d _ hda`. Break down `lt_or_gt_of_ne hda with hlt | hgt` into its components or cases. Rewrite using `[hF d a hlt, mul_zero]`. Rewrite using `[hrow d hgt.le, if_neg hda, zero_mul]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_conj (F Δ : Matrix (Fin r) (Fin r) ℂ) (hF : ∀ d a, d < a → F d a = 0) (hF1 : ∀ a, F a a = 1)
     (b a : Fin r) (hΔ : ∀ c d : Fin r, b ≤ c → a ≤ d → (c, d) ≠ (b, a) → Δ c d = 0) :
@@ -295,7 +291,7 @@ theorem tri_conj (F Δ : Matrix (Fin r) (Fin r) ℂ) (hF : ∀ d a, d < a → F 
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Unfold `WlocSk.NB.cK`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[h, not_lt.2 h.le]`. Simplify using the standard rewrite rules. Simplify using `[h, not_lt.2 h.le]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cK_skew (c : WlocSk.NB.CI k r → ℂ) (s : Fin r → ℝ) (i j : Fin r) :
     star (WlocSk.NB.cK c s j i) = -WlocSk.NB.cK c s i j := by
@@ -306,9 +302,9 @@ theorem cK_skew (c : WlocSk.NB.CI k r → ℂ) (s : Fin r → ℝ) (i j : Fin r)
   · simp [h, not_lt.2 h.le]
 
 /- English proof (translation)
-Establish `hD : Δᴴ = -Δ`. Use extensionality with `i j`. Rewrite using `[conjTranspose_apply, hΔ, neg_apply]`. Establish `hM : (Fᴴ * Δ * F)ᴴ = -(Fᴴ * Δ * F)`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hD]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]`. Establish `h2` using `congrArg (fun M => M b a) hM`. Simplify using `only [conjTranspose_apply, neg_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skew_conj (F Δ : Matrix (Fin r) (Fin r) ℂ) (hΔ : ∀ i j, star (Δ j i) = -Δ i j) (b a : Fin r) :
     star ((Fᴴ * Δ * F) a b) = -(Fᴴ * Δ * F) b a := by
@@ -329,9 +325,9 @@ section TriBk
 variable {ι : Type} {r k : ℕ}
 
 /- English proof (translation)
-Unfold `WlocSk.NB.dlt WlocSk.NB.phi0`. Rewrite using `[WlocSk.NB.bF_mk, WlocSk.NB.bB_mk, WlocSk.NB.bC_mk]`. Establish `e : (WlocSk.NB.cF cx)ᴴ * (WlocSk.NB.cC cx sx * WlocSk.NB.cF cy) = WlocSk.NB.cM cx sx * WlocSk.NB.cF cy`. Unfold `WlocSk.NB.cC`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, WlocSk.NB.cF_cA, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add (WlocSk.NB.cF cx)ᴴ, e, Matrix.mul_add, Matrix.mul_assoc (WlocSk.NB.cF cy)ᴴ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_difference_formula (cx cy : WlocSk.NB.CI k r → ℂ) (sx : Fin r → ℝ) :
     WlocSk.NB.dlt (WlocSk.NB.phi0 cx sx) cy =
@@ -345,13 +341,13 @@ theorem chart_difference_formula (cx cy : WlocSk.NB.CI k r → ℂ) (sx : Fin r 
   rw [Matrix.mul_add (WlocSk.NB.cF cx)ᴴ, e, Matrix.mul_add, Matrix.mul_assoc (WlocSk.NB.cF cy)ᴴ]
 
 /- English proof (translation)
-Establish `hFx : WlocSk.NB.cF cx = WlocSk.NB.cF cx'` using `by unfold WlocSk.NB.cF; rw [hAx]`. Establish `hFy : WlocSk.NB.cF cy = WlocSk.NB.cF cy'` using `by unfold WlocSk.NB.cF; rw [hAy]`. Establish `hEx : WlocSk.NB.cE cx = WlocSk.NB.cE cx'` using `by unfold WlocSk.NB.cE; rw [hBx, hFx]`. Establish `hEy : WlocSk.NB.cE cy = WlocSk.NB.cE cy'` using `by unfold WlocSk.NB.cE; rw [hBy, hFy]`. Establish `hM : WlocSk.NB.cM cx sx = WlocSk.NB.cM cx' sx' + (WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `WlocSk.NB.cM`. Rewrite using `[hEx]`. Normalize the expressions using the abelian group laws. Establish `hskew : ∀ i j, star ((WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') j i) = -(WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') i j` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, star_sub, cK_skew, cK_skew, neg_sub_neg, neg_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain : WlocSk.NB.dlt (WlocSk.NB.phi0 cx sx) cy = WlocSk.NB.dlt (WlocSk.NB.phi0 cx' sx') cy' + (WlocSk.NB.cF cy)ᴴ * (WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') * WlocSk.NB.cF cy`. Rewrite using `[chart_difference_formula, chart_difference_formula, hM, ← hFx, ← hBx, ← hFy, ← hEy, Matrix.mul_add, Matrix.add_mul, add_assoc]`. Establish `htri : ((WlocSk.NB.cF cy)ᴴ * (WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') * WlocSk.NB.cF cy) b a = WlocSk.NB.cK cx sx b a - WlocSk.NB.cK cx' sx' b a`. Take `⟨hF0, hF1⟩` from `cF_low (k := k) cy`. Use `tri_conj _ _ hF0 hF1 b a fun c d hbc had hne => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `hΔ c d hbc had hne`. Conclude with `⟨hmain, htri, fun i j => skew_conj (WlocSk.NB.cF cy) (WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') hskew i j⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kcore0 (cx cx' cy cy' : WlocSk.NB.CI k r → ℂ) (sx sx' : Fin r → ℝ) (b a : Fin r)
     (hAx : WlocSk.NB.cA cx = WlocSk.NB.cA cx') (hBx : WlocSk.NB.cB cx = WlocSk.NB.cB cx')
@@ -384,13 +380,11 @@ theorem kcore0 (cx cx' cy cy' : WlocSk.NB.CI k r → ℂ) (sx sx' : Fin r → �
   exact ⟨hmain, htri, fun i j => skew_conj (WlocSk.NB.cF cy) (WlocSk.NB.cK cx sx - WlocSk.NB.cK cx' sx') hskew i j⟩
 
 /- English proof (translation)
-Establish `hlt : b.val + a.val < c.val + d.val`. Establish `h1 : b.val ≤ c.val` using `hbc`. Establish `h2 : a.val ≤ d.val` using `had`. Assume the negation of the conclusion as `hcon`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : c = b` using `Fin.ext (by omega)`. Establish `e2 : d = a` using `Fin.ext (by omega)`. Rewrite using `[e1, e2]`. Simplify using `only [WlocSk.NB.cK]`. Use `split_ifs with h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (hK ⟨(c, d), h1⟩ hlt) v`. Use `show -star ((x (Sum.inr (Sum.inl ⟨(d, c), h2⟩)) : ι → ℂ) v) = -star ((x' (Sum.inr (Sum.inl ⟨(d, c), h2⟩)) : ι → ℂ) v)`. Rewrite using `[hK ⟨(d, c), h2⟩ (by show b.val + a.val < d.val + c.val; omega)]`. Establish `hcd : c = d` using `le_antisymm (not_lt.1 h2) (not_lt.1 h1)`. Substitute `hcd` using the available equality.
-
-Use `show (((x (Sum.inr (Sum.inr c)) : ι → ℝ) v : ℝ) : ℂ) * Complex.I = (((x' (Sum.inr (Sum.inr c)) : ι → ℝ) v : ℝ) : ℂ) * Complex.I`. Rewrite using `[hD c (by omega)]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cK_agree (T : ℝ) (x x' : ∀ q : CBlk r, CSpc ι k q) (v : ι) (b a : Fin r)
     (hK : ∀ q : LsNc5.LtPair r, b.val + a.val < q.1.1.val + q.1.2.val → x (Sum.inr (Sum.inl q)) = x' (Sum.inr (Sum.inl q)))
@@ -416,9 +410,9 @@ theorem cK_agree (T : ℝ) (x x' : ∀ q : CBlk r, CSpc ι k q) (v : ι) (b a : 
     rw [hD c (by omega)]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i l`. Simplify using `only [WlocSk.NB.cA]`. Use `split_ifs with h1 h2`. Conclude with `congrFun (hX ⟨(i, l), h1⟩) v`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Use function extensionality and compare the values at `i l show (x (Sum.inl (Sum.inr i)) : ι → Fin (k + 1) → ℂ) v l / sclT T l = (x' (Sum.inl (Sum.inr i)) : ι → Fin (k + 1) → ℂ) v l / sclT T l`. Rewrite using `[hR i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cAB_agree (T : ℝ) (x x' : ∀ q : CBlk r, CSpc ι k q) (v : ι)
     (hX : ∀ q : LsNc5.LtPair r, x (Sum.inl (Sum.inl q)) = x' (Sum.inl (Sum.inl q)))
@@ -436,41 +430,35 @@ theorem cAB_agree (T : ℝ) (x x' : ∀ q : CBlk r, CSpc ι k q) (v : ι)
     rw [hR i]
 
 /- English proof (translation)
-Establish `ag : ∀ q, cHgt q < cHgt p → x q = x' q` using `fun q h => (hxy q h).1`. Establish `ag' : ∀ q, cHgt q < cHgt p → y q = y' q` using `fun q h => (hxy q h).2`. Break down `p with ((p | b) | (p | a))` into its components or cases. Take `⟨⟨b, a⟩, hba⟩` from `p`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show WlocSk.NB.shG (ph0 (chAt T x v)) (chAt T y v).1 (Sum.inl ⟨(b, a), hba⟩) - x (Sum.inl (Sum.inl ⟨(b, a), hba⟩)) v = WlocSk.NB.shG (ph0 (chAt T x' v)) (chAt T y' v).1 (Sum.inl ⟨(b, a), hba⟩) - x' (Sum.inl (Sum.inl ⟨(b, a), hba⟩)) v`. Simplify using `only [WlocSk.NB.shG, ph0, WlocSk.NB.phi0, WlocSk.NB.bA_mk]`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub, ← Finset.sum_sub_distrib, Finset.sum_eq_single a]`. Simplify using `only [if_pos hba, WlocSk.NB.cA, dif_pos hba, dif_neg (lt_irrefl a), if_pos rfl, ite_true, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hca`. Distinguish the cases in `hbc : b < c`. Simplify using `only [if_pos hbc]`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases. Establish `e1 : x (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) = x' (Sum.inl (Sum.inl ⟨(b, c), hbc⟩))` using `ag _ (by show c.val - b.val < a.val - b.val; omega)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : y (Sum.inl (Sum.inl ⟨(c, a), h⟩)) = y' (Sum.inl (Sum.inl ⟨(c, a), h⟩))` using `ag' _ (by show a.val - c.val < a.val - b.val; omega)`. Simplify using `only [WlocSk.NB.cA, dif_pos hbc, dif_pos h]`. Use `show x (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) v * y (Sum.inl (Sum.inl ⟨(c, a), h⟩)) v - x' (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) v * y' (Sum.inl (Sum.inl ⟨(c, a), h⟩)) v = 0`. Rewrite using `[e1, e2, sub_self]`. Simplify using `only [WlocSk.NB.cA, dif_neg (not_lt.2 h.le), if_neg (ne_of_gt h), mul_zero, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_neg hbc, sub_self]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Use function extensionality and compare the values at `v j`. Establish `hsc` using `sclT_ne hT (k := k) j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hS : ∀ xx yy : ∀ q : CBlk r, CSpc ι k q, Bk T (Sum.inl (Sum.inr b)) xx yy v j = sclT T j * ∑ c, (if b < c then WlocSk.NB.cA (chAt T xx v).1 b c * WlocSk.NB.cB (chAt T yy v).1 c j else 0)`. Introduce `xx yy`. Use `show sclT T j * WlocSk.NB.shG (ph0 (chAt T xx v)) (chAt T yy v).1 (Sum.inr (Sum.inl (b, j))) - xx (Sum.inl (Sum.inr b)) v j = _`. Simplify using `only [WlocSk.NB.shG, ph0, WlocSk.NB.phi0, WlocSk.NB.bA_mk, WlocSk.NB.bB_mk]`. Establish `e : sclT T j * WlocSk.NB.cB (chAt T xx v).1 b j = xx (Sum.inl (Sum.inr b)) v j` using `by show sclT T j * (xx (Sum.inl (Sum.inr b)) v j / sclT T j) = _`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_add, e, add_sub_cancel_right]`. Rewrite using `[hS, hS]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hbc : b < c`. Establish `e1 : x (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) = x' (Sum.inl (Sum.inl ⟨(b, c), hbc⟩))` using `ag _ (by show c.val - b.val < r + (r - b.val); have := c.isLt; omega)`. Establish `e2 : y (Sum.inl (Sum.inr c)) = y' (Sum.inl (Sum.inr c))` using `ag' _ (by show r + (r - c.val) < r + (r - b.val); have := c.isLt; omega)`. Simplify using `only [if_pos hbc, WlocSk.NB.cA, dif_pos hbc, WlocSk.NB.cB]`. Use `show x (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) v * (y (Sum.inl (Sum.inr c)) v j / sclT T j) = x' (Sum.inl (Sum.inl ⟨(b, c), hbc⟩)) v * (y' (Sum.inl (Sum.inr c)) v j / sclT T j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Simplify using `only [if_neg hbc]`. Take `⟨⟨b, a⟩, hba⟩` from `p`. Use function extensionality and compare the values at `v`. Establish `hX : ∀ q : LsNc5.LtPair r, x (Sum.inl (Sum.inl q)) = x' (Sum.inl (Sum.inl q)) ∧ y (Sum.inl (Sum.inl q)) = y' (Sum.inl (Sum.inl q))` using `fun q => hxy _ (by show q.1.2.val - q.1.1.val < 2 * r + 1 + (2 * r - (b.val + a.val)); have := q.1.2.isLt; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ c : Fin r, x (Sum.inl (Sum.inr c)) = x' (Sum.inl (Sum.inr c)) ∧ y (Sum.inl (Sum.inr c)) = y' (Sum.inl (Sum.inr c))` using `fun c => hxy _ (by show r + (r - c.val) < 2 * r + 1 + (2 * r - (b.val + a.val)); omega)`. Establish `hK : ∀ q : LsNc5.LtPair r, b.val + a.val < q.1.1.val + q.1.2.val → x (Sum.inr (Sum.inl q)) = x' (Sum.inr (Sum.inl q))` using `fun q hq => ag _ (by show 2 * r + 1 + (2 * r - (q.1.1.val + q.1.2.val)) < 2 * r + 1 + (2 * r - (b.val + a.val))`. Use `q.1.1.isLt` as an intermediate fact. Use `q.1.2.isLt` as an intermediate fact. Use the proof step `omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hD : ∀ c : Fin r, b.val + a.val < 2 * c.val → x (Sum.inr (Sum.inr c)) = x' (Sum.inr (Sum.inr c))` using `fun c hc => ag _ (by show 2 * r + 1 + (2 * r - 2 * c.val) < 2 * r + 1 + (2 * r - (b.val + a.val))`. Use `c.isLt` as an intermediate fact. Use the proof step `omega)`. Take `⟨hAx, hBx⟩` from `cAB_agree T x x' v (fun q => (hX q).1) (fun c => (hR c).1)`. Take `⟨hAy, hBy⟩` from `cAB_agree T y y' v (fun q => (hX q).2) (fun c => (hR c).2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `kcore0 _ _ _ _ _ _ b a hAx hBx hAy hBy (cK_agree T x x' v b a hK hD)`. Use `show (WlocSk.NB.dlt (ph0 (chAt T x v)) (chAt T y v).1 b a - star (WlocSk.NB.dlt (ph0 (chAt T x v)) (chAt T y v).1 a b)) / 2 - x (Sum.inr (Sum.inl ⟨(b, a), hba⟩)) v = (WlocSk.NB.dlt (ph0 (chAt T x' v)) (chAt T y' v).1 b a - star (WlocSk.NB.dlt (ph0 (chAt T x' v)) (chAt T y' v).1 a …`. Simplify using `only [ph0] at *`. Rewrite using `[h1, Matrix.add_apply, Matrix.add_apply, star_add, h3 b a, h2]`. Establish `e1 : WlocSk.NB.cK (chAt T x v).1 (chAt T x v).2 b a = x (Sum.inr (Sum.inl ⟨(b, a), hba⟩)) v`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [WlocSk.NB.cK, dif_pos hba]`. Both sides reduce to the same expression. Establish `e2 : WlocSk.NB.cK (chAt T x' v).1 (chAt T x' v).2 b a = x' (Sum.inr (Sum.inl ⟨(b, a), hba⟩)) v`. Simplify using `only [WlocSk.NB.cK, dif_pos hba]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `v`. Establish `hX : ∀ q : LsNc5.LtPair r, x (Sum.inl (Sum.inl q)) = x' (Sum.inl (Sum.inl q)) ∧ y (Sum.inl (Sum.inl q)) = y' (Sum.inl (Sum.inl q))` using `fun q => hxy _ (by show q.1.2.val - q.1.1.val < 2 * r + 1 + (2 * r - 2 * a.val); have := q.1.2.isLt; omega)`. Establish `hR : ∀ c : Fin r, x (Sum.inl (Sum.inr c)) = x' (Sum.inl (Sum.inr c)) ∧ y (Sum.inl (Sum.inr c)) = y' (Sum.inl (Sum.inr c))` using `fun c => hxy _ (by show r + (r - c.val) < 2 * r + 1 + (2 * r - 2 * a.val); omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK : ∀ q : LsNc5.LtPair r, a.val + a.val < q.1.1.val + q.1.2.val → x (Sum.inr (Sum.inl q)) = x' (Sum.inr (Sum.inl q))` using `fun q hq => ag _ (by show 2 * r + 1 + (2 * r - (q.1.1.val + q.1.2.val)) < 2 * r + 1 + (2 * r - 2 * a.val)`. Use `q.1.1.isLt` as an intermediate fact. Use `q.1.2.isLt` as an intermediate fact. Use the proof step `omega)`. Establish `hD : ∀ c : Fin r, a.val + a.val < 2 * c.val → x (Sum.inr (Sum.inr c)) = x' (Sum.inr (Sum.inr c))` using `fun c hc => ag _ (by show 2 * r + 1 + (2 * r - 2 * c.val) < 2 * r + 1 + (2 * r - 2 * a.val)`.
-
-Use `c.isLt` as an intermediate fact. Use the proof step `omega)`. Take `⟨hAx, hBx⟩` from `cAB_agree T x x' v (fun q => (hX q).1) (fun c => (hR c).1)`. Take `⟨hAy, hBy⟩` from `cAB_agree T y y' v (fun q => (hX q).2) (fun c => (hR c).2)`. Take `⟨h1, h2, -⟩` from `kcore0 _ _ _ _ _ _ a a hAx hBx hAy hBy (cK_agree T x x' v a a hK hD)`.
-
-Use `show (WlocSk.NB.dlt (ph0 (chAt T x v)) (chAt T y v).1 a a).im - x (Sum.inr (Sum.inr a)) v = (WlocSk.NB.dlt (ph0 (chAt T x' v)) (chAt T y' v).1 a a).im - x' (Sum.inr (Sum.inr a)) v`. Simplify using `only [ph0] at *`. Rewrite using `[h1, Matrix.add_apply, Complex.add_im, h2]`. Simplify using `only [WlocSk.NB.cK, lt_irrefl, dif_neg, not_false_eq_true, Complex.sub_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_one, mul_zero, add_zero]`. Use `show _ + ((x (Sum.inr (Sum.inr a)) v) - (x' (Sum.inr (Sum.inr a)) v)) - x (Sum.inr (Sum.inr a)) v = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bk_tri {T : ℝ} (hT : 0 < T) (p : CBlk r) (x x' y y' : ∀ q : CBlk r, CSpc ι k q)
     (hxy : ∀ q, cHgt q < cHgt p → x q = x' q ∧ y q = y' q) : Bk T p x y = Bk T p x' y' := by
@@ -590,7 +578,7 @@ end TriBk
 section Assemble
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hFJ` using `isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Use `show Qi ε e f w (z0v T z) * uMat 1 * Qm e f w (z0v T z) = 1`. Rewrite using `[uMat_one, Matrix.mul_one, Qi_mul_Qm hFJ]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mOf_one {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (w : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
@@ -606,19 +594,19 @@ theorem mOf_one {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e 
   rw [uMat_one, Matrix.mul_one, Qi_mul_Qm hFJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Break down `p with ((⟨⟨b, a⟩, hba⟩ | b) | (⟨⟨b, a⟩, hba⟩ | a))` into its components or cases. Use function extensionality and compare the values at `v show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r b) (eI k r a) = 0`. Rewrite using `[Matrix.one_apply, if_neg]`. Introduce `h; exact (ne_of_lt hba) (by have := congrArg Fin.val h; simp [eI] at this; exact Fin.ext this)`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `v j show sclT T j * (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r b) (wI k r j) = 0`. Rewrite using `[Matrix.one_apply, if_neg, mul_zero]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI, wI] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `v show WlocSk.NB.kof 1 b a = 0`. Establish `hm : WlocSk.NB.mof (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = 0`. Use function extensionality and compare the values at `i l`. Simplify using `only [WlocSk.NB.mof, WlocSk.NB.bF, WlocSk.NB.bC, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply, Matrix.zero_apply]`.
+Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `hne : eI k r c ≠ esI k r l`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI, esI] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, mul_zero]`. Simplify using `[WlocSk.NB.kof, hm]`. Use function extensionality and compare the values at `v show (WlocSk.NB.mof (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) a a).im = 0`. Establish `hm : WlocSk.NB.mof (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) a a = 0`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [WlocSk.NB.mof, WlocSk.NB.bF, WlocSk.NB.bC, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `hne : eI k r c ≠ esI k r a`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[eI, esI] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, mul_zero]`. Rewrite using `[hm, Complex.zero_im]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkOf_one {ι : Type} {r k : ℕ} (T : ℝ) :
     blkOf (ι := ι) (r := r) (k := k) T (fun _ => 1) = 0 := by
@@ -661,17 +649,15 @@ def mX (u : D.what₂.Word) (s : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
   mOf (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (z0v (Tw u) (ProductExactness.zV X u v)) (s v)
 
 /- English proof (translation)
-Establish `mX_facts : ∀ (u : D.what₂.Word) (v : InfinitePlace X.B.I.F), _` using `fun u v => mOf_facts (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_z_z_eq_neg X u v) ( …`. Use function extensionality and compare the values at `p`. Break down `p with ((⟨⟨b, a⟩, hba⟩ | b) | (⟨⟨b, a⟩, hba⟩ | a))` into its components or cases. Use function extensionality and compare the values at `v`. Conclude with `(mX_facts u v).2.2.1 (s v) b a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v j`. Take `⟨-, -, -, hw, hz, -⟩` from `mX_facts u v`. Use `show (if h : j.val < D.R.k then LsNc5.phiMat X u v s b ⟨j.val, h⟩ else LsNc5.yVec X u v s b) = sclT (Tw u) j * mX X u s v (eI D.R.k D.R.rS b) (wI D.R.k D.R.rS j)`. Distinguish the cases in `h : j.val < D.R.k`. Rewrite using `[dif_pos h, sclT, if_pos h, one_mul]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hw (s v) b ⟨j.val, h⟩` as an intermediate fact. Establish `e : Fin.castSucc (⟨j.val, h⟩ : Fin D.R.k) = j` using `Fin.ext rfl`. Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[dif_neg h, sclT, if_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : j = Fin.last D.R.k` using `Fin.ext (by have := j.isLt; simp only [Fin.val_last]; omega)`. Substitute `e` using the available equality. Conclude with `hz (s v) b`. Use function extensionality and compare the values at `v`. Take `⟨-, -, -, -, -, hM⟩` from `mX_facts u v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (LsNc5.mMat X v s b a - star (LsNc5.mMat X v s a b)) / 2 = WlocSk.NB.kof (mX X u s v) b a`. Establish `e : LsNc5.mMat X v s = WlocSk.NB.mof (mX X u s v)` using `hM (s v) (hs v)`. Rewrite using `[e]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `v`.
-
-Take `⟨-, -, -, -, -, hM⟩` from `mX_facts u v`. Use `show (LsNc5.mMat X v s a a).im = WlocSk.NB.psiR (mX X u s v) a`. Establish `e : LsNc5.mMat X v s = WlocSk.NB.mof (mX X u s v)` using `hM (s v) (hs v)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_eq (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.NinfU u) :
     blk X u s = blkOf (Tw u) (mX X u s) := by
@@ -714,9 +700,9 @@ section Meas
 variable {r k : ℕ}
 
 /- English proof (translation)
-Establish `hent : ∀ i j : Fin (2 * r + k + 1), Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => mc.1 i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp continuous_fst)`. Establish `hbB : Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.bB mc.1` using `continuous_pi fun a => continuous_pi fun j => hent _ _`. Establish `hbC : Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.bC mc.1` using `continuous_pi fun a => continuous_pi fun j => hent _ _`. Establish `hbF : Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.bF mc.1` using `continuous_pi fun a => continuous_pi fun j => hent _ _`. Establish `hcE` using `WlocSk.NB.continuous_cE.comp (continuous_snd (X := Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (Y := WlocSk.NB.CI k r → ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcF` using `WlocSk.NB.continuous_cF.comp (continuous_snd (X := Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (Y := WlocSk.NB.CI k r → ℂ))`. Unfold `WlocSk.NB.dlt`. Conclude with `hcF.matrix_conjTranspose.matrix_mul (hbF.matrix_conjTranspose.matrix_mul ((hbB.matrix_mul hcE).add (hbC.matrix_mul hcF)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_dlt : Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) =>
     WlocSk.NB.dlt mc.1 mc.2 := by
@@ -738,15 +724,11 @@ theorem cont_dlt : Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r 
     ((hbB.matrix_mul hcE).add (hbC.matrix_mul hcF)))
 
 /- English proof (translation)
-Establish `hent : ∀ i j : Fin (2 * r + k + 1), Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => mc.1 i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp continuous_fst)`. Establish `hcA : ∀ a b, Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.cA mc.2 a b` using `fun a b => (continuous_apply b).comp ((continuous_apply a).comp (WlocSk.NB.continuous_cA.comp continuous_snd))`. Establish `hcB : ∀ a j, Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.cB mc.2 a j` using `fun a j => (continuous_apply _).comp continuous_snd`. Break down `i with p | q | p` into its components or cases. Use `show Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => ∑ c, if p.1.1 < c then WlocSk.NB.bA mc.1 p.1.1 c * WlocSk.NB.cA mc.2 c p.1.2 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : p.1.1 < c`. Simplify using `only [if_pos h]`. Conclude with `(hent _ _).mul (hcA _ _)`. Simplify using `only [if_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `continuous_const`. Use `show Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => (∑ c, if q.1 < c then WlocSk.NB.bA mc.1 q.1 c * WlocSk.NB.cB mc.2 c q.2 else 0) + WlocSk.NB.bB mc.1 q.1 q.2`. Use `(continuous_finset_sum _ fun c _ => ?_).add (hent _ _)` and prove the remaining obligations. Distinguish the cases in `h : q.1 < c`. Simplify using `only [if_pos h]`.
-
-Conclude with `(hent _ _).mul (hcB _ _)`. Simplify using `only [if_neg h]`. Conclude with `continuous_const`. Use `show Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => (WlocSk.NB.dlt mc.1 mc.2 p.1.1 p.1.2 - star (WlocSk.NB.dlt mc.1 mc.2 p.1.2 p.1.1)) / 2`. Establish `h1 : ∀ a b : Fin r, Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) => WlocSk.NB.dlt mc.1 mc.2 a b` using `fun a b => (continuous_apply b).comp ((continuous_apply a).comp cont_dlt)`.
-
-Conclude with `((h1 _ _).sub (h1 _ _).star).div_const 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_shG (i : WlocSk.NB.CI k r) :
     Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) =>
@@ -780,7 +762,7 @@ theorem cont_shG (i : WlocSk.NB.CI k r) :
     exact ((h1 _ _).sub (h1 _ _).star).div_const 2
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_im.comp ((continuous_apply a).comp ((continuous_apply a).comp cont_dlt))`.
+A detailed English derivation is pending.
 -/
 theorem cont_shH (a : Fin r) :
     Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) =>
@@ -790,9 +772,7 @@ theorem cont_shH (a : Fin r) :
 variable {ι : Type}
 
 /- English proof (translation)
-Use `Measurable.prodMk (measurable_pi_lambda _ fun c => ?_) (measurable_pi_lambda _ fun a => ?_)` and prove the remaining obligations. Break down `c with p | ⟨b, j⟩ | p` into its components or cases. Conclude with `(measurable_pi_apply v).comp (measurable_pi_apply (Sum.inl (Sum.inl p) : CBlk r))`. Conclude with `((measurable_pi_apply j).comp ((measurable_pi_apply v).comp (measurable_pi_apply (Sum.inl (Sum.inr b) : CBlk r)))).div_const _`. Conclude with `(measurable_pi_apply v).comp (measurable_pi_apply (Sum.inr (Sum.inl p) : CBlk r))`.
-
-Conclude with `(measurable_pi_apply v).comp (measurable_pi_apply (Sum.inr (Sum.inr a) : CBlk r))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem meas_chAt (T : ℝ) (v : ι) : Measurable (fun x : (∀ q : CBlk r, CSpc ι k q) => chAt T x v) := by
   refine Measurable.prodMk (measurable_pi_lambda _ fun c => ?_) (measurable_pi_lambda _ fun a => ?_)
@@ -805,21 +785,17 @@ theorem meas_chAt (T : ℝ) (v : ι) : Measurable (fun x : (∀ q : CBlk r, CSpc
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `haveI : SecondCountableTopology ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) := inferInstance`. Use `haveI : OpensMeasurableSpace (((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))) := inferInstance`. Establish `hφ : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => ((WlocSk.NB.phi0 cc.1.1 cc.1.2 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), cc.2.1)` using `(WlocSk.NB.continuous_nilpotent_chart.comp continuous_fst).prodMk (continuous_fst.comp continuous_snd)`. Establish `hmc : ∀ v : ι, Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (chAt T z.1 v, chAt T z.2 v)` using `fun v => ((meas_chAt T v).comp measurable_fst).prodMk ((meas_chAt T v).comp measurable_snd)`. Establish `hG : ∀ (i : WlocSk.NB.CI k r) (v : ι), Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => WlocSk.NB.shG (ph0 (chAt T z.1 v)) (chAt T z.2 v).1 i` using `fun i v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.shG (ph0 cc.1) cc.2.1 i` using `(cont_shG i).comp hφ`. Conclude with `Measurable.comp (g := fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.shG (ph0 cc.1) cc.2.1 i) (f := fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (chAt T z.1 v, chAt T z.2 v)) hc.measurable (hmc v)`. Establish `hH : ∀ (a : Fin r) (v : ι), Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => WlocSk.NB.shH (ph0 (chAt T z.1 v)) (chAt T z.2 v).1 a` using `fun a v => by`. Establish `hcM : Continuous fun t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ) => WlocSk.NB.cM t.1 t.2`. Establish `hE` using `WlocSk.NB.continuous_cE.comp (continuous_fst (X := WlocSk.NB.CI k r → ℂ) (Y := Fin r → ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `WlocSk.NB.continuous_cK.sub (((hE.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hE).const_smul (1 / 2 : ℂ))`. Establish `hd : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.dlt (ph0 cc.1) cc.2.1`. Establish `e : (fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.dlt (ph0 cc.1) cc.2.1) = fun cc => (WlocSk.NB.cF cc.2.1)ᴴ * ((WlocSk.NB.cF cc.1.1)ᴴ * (WlocSk.NB.cB cc.1.1 * WlocSk.NB.cE cc.2.1)) + (WlocSk.NB.cF cc.2.1)ᴴ * WlocSk.NB.cM cc …`. Use function extensionality and compare the values at `fun cc => chart_difference_formula cc.1.1 cc.2.1 cc.1.2`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => cc.2.1` using `continuous_fst.comp continuous_snd`. Establish `hx : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => cc.1.1` using `continuous_fst.comp continuous_fst`. Establish `hFy` using `WlocSk.NB.continuous_cF.comp' hy`. Establish `hFx` using `WlocSk.NB.continuous_cF.comp' hx`. Establish `hBx` using `WlocSk.NB.continuous_cB.comp' hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hEy` using `WlocSk.NB.continuous_cE.comp' hy`. Establish `hMx` using `hcM.comp' (continuous_fst (X := (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) (Y := (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)))`. Conclude with `(hFy.matrix_conjTranspose.matrix_mul (hFx.matrix_conjTranspose.matrix_mul (hBx.matrix_mul hEy))).add ((hFy.matrix_conjTranspose.matrix_mul hMx).matrix_mul hFy)`. Establish `hc : Continuous fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.shH (ph0 cc.1) cc.2.1 a` using `Complex.continuous_im.comp' (hd.matrix_elem a a)`. Conclude with `Measurable.comp (g := fun cc : ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) × ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) => WlocSk.NB.shH (ph0 cc.1) cc.2.1 a) (f := fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (chAt T z.1 v, chAt T z.2 v)) hc.measurable (hmc v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `p with ((p | b) | (p | a))` into its components or cases. Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations. Establish `h2 : Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (z.1 (Sum.inl (Sum.inl p)) : ι → ℂ) v` using `(measurable_pi_apply v).comp ((measurable_pi_apply (Sum.inl (Sum.inl p) : CBlk r)).comp measurable_fst)`. Conclude with `(hG _ v).sub h2`. Use `measurable_pi_lambda _ fun v => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations.
-
-Establish `h2 : Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (z.1 (Sum.inl (Sum.inr b)) : ι → Fin (k + 1) → ℂ) v j` using `(measurable_pi_apply j).comp ((measurable_pi_apply v).comp ((measurable_pi_apply (Sum.inl (Sum.inr b) : CBlk r)).comp measurable_fst))`. Conclude with `(measurable_const.mul (hG _ v)).sub h2`. Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations. Establish `h2 : Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (z.1 (Sum.inr (Sum.inl p)) : ι → ℂ) v` using `(measurable_pi_apply v).comp ((measurable_pi_apply (Sum.inr (Sum.inl p) : CBlk r)).comp measurable_fst)`. Conclude with `(hG _ v).sub h2`.
-
-Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations. Establish `h2 : Measurable fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => (z.1 (Sum.inr (Sum.inr a)) : ι → ℝ) v` using `(measurable_pi_apply v).comp ((measurable_pi_apply (Sum.inr (Sum.inr a) : CBlk r)).comp measurable_fst)`. Conclude with `(hH a v).sub h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_Bk (T : ℝ) (p : CBlk r) :
     Measurable (fun z : (∀ q : CBlk r, CSpc ι k q) × (∀ q : CBlk r, CSpc ι k q) => Bk T p z.1 z.2) := by
@@ -897,17 +873,17 @@ theorem meas_Bk (T : ℝ) (p : CBlk r) :
 end Meas
 
 /- English proof (translation)
-Introduce `D X u`. Establish `hT` using `ProductExactness.Tw_pos (D := D) u`. Establish `hco : X.NinfU u = (ProductExactness.NinfG X u : Set X.B.I.Ginf)` using `(ProductExactness.NinfG_coe X u).symm`. Establish `hmulN : ∀ s ∈ X.NinfU u, ∀ s' ∈ X.NinfU u, s * s' ∈ X.NinfU u`. Introduce `s hs s' hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs`, `hs'`, the goal using `[hco]`. Conclude with `(ProductExactness.NinfG X u).mul_mem hs hs'`. Establish `hone : (1 : X.B.I.Ginf) ∈ X.NinfU u` using `by rw [hco]; exact (ProductExactness.NinfG X u).one_mem`. Establish `mX_facts : ∀ v : InfinitePlace X.B.I.F, _` using `fun v => mOf_facts (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_z_z_eq_neg X u v) (fX …`. Establish `hlaw : ∀ s ∈ X.NinfU u, ∀ s' ∈ X.NinfU u, blk X u (s * s') = Formalism.L2.SG.NGCut.SplitEmbedding.mlaw (Bk (Tw u)) (blk X u s) (blk X u s')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs s' hs'`. Rewrite using `[blk_eq X u _ (hmulN s hs s' hs'), blk_eq X u s hs, blk_eq X u s' hs']`. Establish `e : mX X u (s * s') = fun v => mX X u s v * mX X u s' v`. Use function extensionality and compare the values at `fun v => (mX_facts v).1 (s v) (s' v)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `law_blkOf hT _ _ (fun v => (mX_facts v).2.1 (s v) (hs v)) (fun v => (mX_facts v).2.1 (s' v) (hs' v))`. Use `⟨Bk (Tw u), meas_Bk (Tw u), fun p x x' y y' h => bk_tri hT p x x' y y' h, fun p x => ?_, hlaw⟩` and prove the remaining obligations. Take `⟨σ, -, hσ⟩` from `kapSurj_holds X u`. Take `⟨hσN, hσb⟩` from `hσ x`. Establish `h1` using `hlaw (σ x) hσN 1 hone`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_one, hσb]`. Establish `h0 : blk X u 1 = 0`. Rewrite using `[blk_eq X u 1 hone]`. Establish `e : mX X u 1 = fun _ => 1` using `funext fun v => mOf_one (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_z_z_eq_neg X u v …`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `blkOf_one _`. Rewrite `h1` using `[h0]`. Establish `h2` using `congrFun h1 p`. Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.mlaw, Pi.zero_apply, add_zero] at h2`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem kapLaw_holds : KapLaw := by
   intro D X u

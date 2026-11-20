@@ -14,15 +14,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI hR : (muPolar ε).IsMulRightInvariant := ⟨fun g => muPolar_mul_right ε g⟩`. Establish `hinv : (muPolar ε).inv = muPolar ε` using `muPolar_inv ε`. Use `haveI hL : (muPolar ε).IsMulLeftInvariant := by`. Rewrite using `[← hinv]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (fdphPhi ε)`. Introduce `g`. Establish `hg : toM g ∈ UJset ε` using `g.2`. Use `⟨polarInv ε ⟨toM g, hg⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `fdph_toM_phi ε (polarInv ε ⟨toM g, hg⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[polarM_polarInv]`. Conclude with `Subtype.ext (Units.ext h)`. Use `haveI hF : IsFiniteMeasureOnCompacts (muPolar ε) := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`.
-
-Rewrite using `[fdph_apply ε hKm, ← fdph_preimage]`. Conclude with `((polarM_isClosedEmbedding ε).isCompact_preimage (hK.image (by fun_prop))).measure_lt_top`. Use `haveI hO : (muPolar ε).IsOpenPosMeasure := by`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[fdph_apply ε hU.measurableSet]`.
-
-Conclude with `((hU.preimage (fdph_phi_continuous ε)).measure_ne_zero _ (hne.preimage hsurj))`. Conclude with `{}`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muPolar_isHaar (ε : Fin n → Bool) : (muPolar ε).IsHaarMeasure := by
   haveI hR : (muPolar ε).IsMulRightInvariant := ⟨fun g => muPolar_mul_right ε g⟩

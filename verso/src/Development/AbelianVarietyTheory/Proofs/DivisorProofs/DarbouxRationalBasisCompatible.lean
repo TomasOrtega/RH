@@ -7,31 +7,29 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.RatDarboux
 
 /- English proof (translation)
-Establish `hφ : Function.Injective (algebraMap F R)` using `(algebraMap F R).injective`. Establish `hvec : ∀ a b : ι → F, (fun i => algebraMap F R (a i)) = (fun i => algebraMap F R (b i)) → a = b`. Introduce `a b h`. Use function extensionality and compare the values at `i`. Conclude with `hφ (congrFun h i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `lin : ∀ (e : W ≃ₗ[R] (ι → R)) (u : V → ι → F), (∀ x, e (j x) = fun i => algebraMap F R (u x i)) → ∃ U : V →ₗ[F] (ι → F), ∀ x, U x = u x`. Introduce `e u hu`. Use `⟨{ toFun := u, map_add' := ?_, map_smul' := ?_ }, fun x => rfl⟩` and prove the remaining obligations. Introduce `x y`. Apply `hvec` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, map_add, map_add, hu, hu]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `c x`. Apply `hvec` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, hj, map_smul, hu]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `choose u₀ hu₀ using h₀`. Use `choose u₂ hu₂ using h₂`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U₀, hU₀⟩` from `lin e₀ u₀ hu₀`. Take `⟨U₂, hU₂⟩` from `lin e₂ u₂ hu₂`. Establish `inj : Function.Injective U₀`. Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `e₀.injective` to reduce the goal to its premises. Rewrite using `[hu₀, hu₀, ← hU₀, ← hU₀, hxy]`. Establish `surj : Function.Surjective U₀`. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]` and apply the resulting hypothesis. Rewrite using `[hc, Module.finrank_fintype_fun_eq_card]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `E₀ : V ≃ₗ[F] (ι → F)` to `LinearEquiv.ofBijective U₀ ⟨inj, surj⟩`. Use `⟨LinearMap.toMatrix' (U₂ ∘ₗ E₀.symm.toLinearMap), ?_⟩` and prove the remaining obligations. Use `set g := LinearMap.toMatrix' (U₂ ∘ₗ E₀.symm.toLinearMap) with hg`. Establish `onForm : ∀ x, e₂ (j x) = g.map (algebraMap F R) *ᵥ e₀ (j x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : g *ᵥ U₀ x = U₂ x`. Rewrite using `[hg, LinearMap.toMatrix'_mulVec]`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Use `congr 1`. Conclude with `E₀.symm_apply_apply x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hu₂, hu₀, ← hU₂, ← h1, ← hU₀]`. Conclude with `RingHom.map_mulVec (algebraMap F R) g (U₀ x) i`. Establish `onBasis : ∀ i, e₂ (e₀.symm (Pi.single i 1)) = g.map (algebraMap F R) *ᵥ Pi.single i 1`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨x, hx⟩` from `surj (Pi.single i 1)`. Establish `hs : e₀ (j x) = Pi.single i 1`. Rewrite using `[hu₀, ← hU₀, hx]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Rewrite using `[← hs, LinearEquiv.symm_apply_apply, onForm]`. Establish `hL : (e₂.toLinearMap ∘ₗ e₀.symm.toLinearMap) = Matrix.mulVecLin (g.map (algebraMap F R))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `(Pi.basisFun R ι).ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Pi.basisFun_apply, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, Matrix.mulVecLin_apply]`. Conclude with `onBasis i`. Introduce `w`.
-
-Use `LinearMap.congr_fun hL (e₀ w)` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_matrix {F R V W ι : Type} [Field F] [CommRing R] [Nontrivial R] [Algebra F R] [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] [AddCommGroup W] [Module R W] [Fintype ι] [DecidableEq ι]
@@ -110,7 +108,7 @@ theorem exists_rat_matrix {F R V W ι : Type} [Field F] [CommRing R] [Nontrivial
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Use `conv_lhs => rw [← Sum.elim_comp_inl_inr a]`. Rewrite using `[sumElim_dotProduct_sumElim]`. Simplify using `only [Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, add_zero, Matrix.neg_mulVec, dotProduct_comm (a ∘ Sum.inr)]`. Simplify using `only [neg_dotProduct, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem std_form {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (a b : κ ⊕ κ → R) :
     a ⬝ᵥ ((Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) *ᵥ b) =
@@ -123,31 +121,29 @@ theorem std_form {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (a b :
   simp only [neg_dotProduct, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hφ : Function.Injective (algebraMap F R)` using `(algebraMap F R).injective`. Set `j : Matrix α β E →+ Matrix α β (R ⊗[F] E)` to `{ toFun := inc map_zero' := by`. Use extensionality with `a b`. Simplify using `[hinc]`. Use the proof step `map_add' := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Use extensionality with `a b`. Simplify using `[hinc, TensorProduct.tmul_add] }`. Establish `hj : ∀ (c : F) x, j (c • x) = algebraMap F R c • j x`. Introduce `c x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `only [j, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hinc, Matrix.smul_apply]`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using `[Algebra.smul_def]`. Establish `hinj : Function.Injective j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun hxy a) b`. Simplify using `only [j, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hinc] at h`. Apply `Algebra.TensorProduct.includeRight_injective (A := R) (B := E) hφ` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Algebra.TensorProduct.includeRight_apply]`. Set `σ` to `(LinearEquiv.sumArrowLequivProdArrow κ κ R R).symm`. Establish `hσ : ∀ p : (κ → R) × (κ → R), σ p = Sum.elim p.1 p.2` using `fun p => rfl`. Establish `hcard : Module.finrank F (Matrix α β E) = Fintype.card (κ ⊕ κ)`. Rewrite using `[Module.finrank_matrix, Fintype.card_sum, ← hc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `rat : ∀ (d : Darboux Bf κ), (∀ x : Matrix α β E, ∃ u v : κ → F, d.e (inc x) = (fun i => algebraMap F R (u i), fun i => algebraMap F R (v i))) → ∀ x, ∃ u : κ ⊕ κ → F, (d.e.trans σ) (j x) = fun i => algebraMap F R (u i)`. Introduce `d hd x`. Take `⟨u, v, huv⟩` from `hd x`. Use `⟨Sum.elim u v, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply, j, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hσ, huv]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`. Take `⟨g, hg⟩` from `GlobalTheory.RatDarboux.exists_rat_matrix j hj hinj hcard (d₀.e.trans σ) (d₂.e.trans σ) (rat d₀ h₀) (rat d₂ h₂)`. Simplify using `only [LinearEquiv.trans_apply, hσ] at hg`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set G := g.map (algebraMap F R) with hG`. Use `set JR : Matrix (κ ⊕ κ) (κ ⊕ κ) R := Matrix.fromBlocks 0 1 (-1) 0 with hJR`. Establish `form : ∀ (d : Darboux Bf κ) w w', Bf w w' = Sum.elim (d.e w).1 (d.e w).2 ⬝ᵥ (JR *ᵥ Sum.elim (d.e w').1 (d.e w').2)`. Introduce `d w w'`. Rewrite using `[hJR, GlobalTheory.RatDarboux.std_form, d.form]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `pres : ∀ y y' : κ ⊕ κ → R, y ⬝ᵥ (JR *ᵥ y') = y ⬝ᵥ ((Gᵀ * JR * G) *ᵥ y')`. Introduce `y y'`. Take `⟨w, hw⟩` from `(d₀.e.trans σ).surjective y`. Take `⟨w', hw'⟩` from `(d₀.e.trans σ).surjective y'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearEquiv.trans_apply, hσ] at hw hw'`. Establish `h` using `(form d₀ w w').symm.trans (form d₂ w w')`. Rewrite `h` using `[hg, hg, hw, hw']`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose G y, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mul_assoc]`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hJmap : (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) F).map (algebraMap F R) = JR`. Use extensionality with `i k`. Apply the tactic sequence `rcases i with i | i <;> rcases k with k | k <;>`. Simplify using `[hJR, Matrix.one_apply, apply_ite (algebraMap F R)]`. Establish `key : (gᵀ * Matrix.fromBlocks 0 1 (-1) 0 * g).map (algebraMap F R) = (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) F).map (algebraMap F R)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJmap, ← hG]`. Use extensionality with `i k`. Establish `h` using `pres (Pi.single i 1) (Pi.single k 1)`. Simplify using `only [single_dotProduct, one_mul, Matrix.mulVec_single_one] at h`. Conclude with `h.symm`.
-
-Conclude with `Matrix.map_injective hφ key`. Introduce `w`. Unfold `GlobalTheory.AdelicSvN.act`. Rewrite using `[← hG, ← hg w]`. Conclude with `Prod.ext (Sum.elim_comp_inl (d₂.e w).1 (d₂.e w).2).symm (Sum.elim_comp_inr (d₂.e w).1 (d₂.e w).2).symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_symplectic_gen {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [CommRing R]
     [Nontrivial R] [Algebra F R] {α β κ : Type} [Fintype α] [Fintype β] [Fintype κ] [DecidableEq κ]
@@ -240,7 +236,7 @@ theorem exists_rat_symplectic_gen {F E R : Type} [Field F] [Field E] [Algebra F 
     exact Prod.ext (Sum.elim_comp_inl (d₂.e w).1 (d₂.e w).2).symm (Sum.elim_comp_inr (d₂.e w).1 (d₂.e w).2).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ α β κ _ _ _ _ Bf d₀ d₂ hc h₀ h₂`. Establish `: Nontrivial (AF F)` using `(NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Conclude with `exists_rat_symplectic_gen (R := AF F) d₀ d₂ (incM F) (fun x a b => rfl) hc h₀ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rat_symplectic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (α β κ : Type) [Fintype α] [Fintype β]
   [Fintype κ] [DecidableEq κ] (Bf : Matrix α β (AE F E) → Matrix α β (AE F E) → AF F) (d₀ d₂ : Darboux Bf κ),

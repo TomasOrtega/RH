@@ -13,11 +13,9 @@ open MvPolynomial MeasureTheory Filter Topology Metric ReciprocityTheory.ChartRe
 namespace ProjRegularNull
 
 /- English proof (translation)
-Establish `he : ∀ i k : Fin n, AnalyticAt ℂ (fun v => fderiv ℂ q v (Pi.single k 1) i) u`. Introduce `i k`. Set `L : ((Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) →L[ℂ] ℂ` to `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) i).comp (ContinuousLinearMap.apply ℂ (Fin n → ℂ) (Pi.single k 1))`. Conclude with `(L.analyticAt _).comp hq.fderiv`. Establish `hm : (fun v => LinearMap.det (fderiv ℂ q v : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))) = fun v => Matrix.det (Matrix.of fun i k => fderiv ℂ q v (Pi.single k 1) i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[← LinearMap.det_toMatrix']`. Use `congr 1`. Rewrite using `[hm]`. Simplify using `only [Matrix.det_apply, Matrix.of_apply, Units.smul_def, zsmul_eq_mul]`.
-
-Conclude with `Finset.univ.analyticAt_fun_sum fun σ _ => analyticAt_const.mul (Finset.univ.analyticAt_fun_prod fun i _ => he _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_det_fderiv {n : ℕ} {q : (Fin n → ℂ) → Fin n → ℂ} {u : Fin n → ℂ}
     (hq : AnalyticAt ℂ q u) :
@@ -42,21 +40,21 @@ theorem analyticAt_det_fderiv {n : ℕ} {q : (Fin n → ℂ) → Fin n → ℂ} 
 end ProjRegularNull
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hB _ _ j`. Use `set T := (BV.chart j).target ∩ (BV.chart j).symm ⁻¹' (interior (closure (projRegular R Ψ BV)) \ projRegular R Ψ BV) with hT`. Establish `hreg : ∀ z ∈ T, ∀ r > 0, ball z r ⊆ (BV.chart j).target → ∃ w ∈ ball z r, (BV.chart j).symm w ∈ projRegular R Ψ BV`. Introduce `z hz r hr hWt`. Take `⟨y, ⟨w, hw, rfl⟩, hyr⟩` from `mem_closure_iff.1 (interior_subset hz.2.1) _ ((BV.chart j).isOpen_image_symm_of_subset_target isOpen_ball hWt) ⟨z, mem_ball_self hr, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w, hw, hyr⟩`. Set `Z : Set (Fin n → ℂ)` to `{u | Ψ (segre (R.lift ((BV.chart j).symm u).1 ((BV.chart j).symm u).1)) 0 = 0}`. Establish `hA : volume (T ∩ Z) = 0`. Use `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set _ fun z hz => ?_` and prove the remaining obligations. Use `set x0 := (BV.chart j).symm z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x0 ∈ (BV.chart j).source` using `(BV.chart j).map_target hz.1.1`. Establish `hz0 : BV.chart j x0 = z` using `(BV.chart j).right_inv hz.1.1`. Establish `hF` using `analyticAt_pi_iff.1 (ProjRegular.proj_analyticAt Ψ hB x0 hx0) 0`. Establish `hU` using `(ProjRegular.lift_analyticAt hB x0 hx0).2`. Rewrite `hF`, `hU` using `[hz0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hP⟩` from `Metric.eventually_nhds_iff_ball.1 (hF.eventually_analyticAt.and (hU.and ((BV.chart j).open_target.mem_nhds hz.1.1)))`. Take `⟨w, hw, hwr⟩` from `hreg z hz.1 r hr fun u hu => (hP u hu).2.2`. Use `⟨ball z r, isOpen_ball, mem_ball_self hr, (convex_ball z r).isPreconnected, _, fun u hu => (hP u hu).1, ⟨w, hw, ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `(ProjRegular.proj_ne_zero_iff Ψ (hP w hw).2.1).1 hwr.1`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(ProjRegular.proj_ne_zero_iff Ψ (hP u hu.2).2.1).2 h hu.1.2`. Establish `hB' : volume (T ∩ Zᶜ) = 0`. Use `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set _ fun z hz => ?_` and prove the remaining obligations. Use `set x0 := (BV.chart j).symm z`. Establish `hx0 : x0 ∈ (BV.chart j).source` using `(BV.chart j).map_target hz.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz0 : BV.chart j x0 = z` using `(BV.chart j).right_inv hz.1.1`. Establish `hq` using `ProjRegular.analyticAt_chart Ψ hB x0 hz.2 j hx0`. Rewrite `hq` using `[hz0]`. Take `⟨r, hr, hP⟩` from `Metric.eventually_nhds_iff_ball.1 (hq.eventually_analyticAt.and ((BV.chart j).open_target.mem_nhds hz.1.1))`. Take `⟨w, hw, hwr⟩` from `hreg z hz.1 r hr fun u hu => (hP u hu).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ball z r, isOpen_ball, mem_ball_self hr, (convex_ball z r).isPreconnected, _, fun u hu => ProjRegularNull.analyticAt_det_fderiv (hP u hu).1, ⟨w, hw, ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h` using `hwr.2 j ((BV.chart j).map_target (hP w hw).2)`. Rewrite `h` using `[(BV.chart j).right_inv (hP w hw).2]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hd`. Use `hu.1.1.2.2 ⟨hu.1.2, fun k hk => ProjRegular.det_ne_zero_of_chart Ψ hB _ hu.1.2 hk ((BV.chart j).map_target hu.1.1.1) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Rewrite using `[(BV.chart j).right_inv hu.1.1.1]` and apply the resulting hypothesis. Use `measure_mono_null (fun u hu => ?_) (measure_union_null hA hB')` and prove the remaining obligations. Distinguish the cases in `h : u ∈ Z`. Conclude with `Or.inl ⟨hu, h⟩`. Conclude with `Or.inr ⟨hu, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem ProjRegularNull.proof : ProjRegularNull.Statement := by
   intro K _ ι _ P J n R Ψ V BV hB _ _ j

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TraceDef
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 /- English proof (citation)
-Apply `GlobalTheory.LKDef.FinPairs.finite_classes_irr_term_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHaarConjugateSubgroupIndexRatio.lean&line=10#L10)
 -/

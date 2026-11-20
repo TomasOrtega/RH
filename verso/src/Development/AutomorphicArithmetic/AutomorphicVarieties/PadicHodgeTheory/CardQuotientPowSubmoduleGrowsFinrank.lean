@@ -10,7 +10,7 @@ private noncomputable def redMap {l : ℕ} [Fact l.Prime] {X Y : Type} [AddCommG
     exact mem_lSub.2 ⟨f y, (map_smul _ _ _).symm⟩
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hs : Function.Surjective (PadicInt.toZModPow (p` using `l) k) := fun z => by`. Take `⟨a, rfl⟩` from `ZMod.natCast_zmod_surjective z`. Conclude with `⟨a, map_natCast _ a⟩`. Rewrite using `[← PadicInt.ker_toZModPow, Nat.card_congr (RingHom.quotientKerEquivOfSurjective hs).toEquiv, Nat.card_zmod]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_quotient_eq_card_of_isReps (l : ℕ) [Fact l.Prime] (k : ℕ) :
     Nat.card (ℤ_[l] ⧸ Ideal.span {(l : ℤ_[l]) ^ k}) = l ^ k := by
@@ -22,9 +22,9 @@ private theorem card_quotient_eq_card_of_isReps (l : ℕ) [Fact l.Prime] (k : �
     Nat.card_zmod]
 
 /- English proof (translation)
-Establish `h : Ideal.span {q} = Ideal.span {(l : ℤ_[l]) ^ q.valuation}`. Rewrite using `[Ideal.span_singleton_eq_span_singleton]`. Use `Associated.symm ⟨PadicInt.unitCoeff hq, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `(PadicInt.unitCoeff_spec hq).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[card_quotient_eq_card_of_isReps]`. Conclude with `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_padicInt_quot_span_of_ne_zero (l : ℕ) [Fact l.Prime] {q : ℤ_[l]} (hq : q ≠ 0) :
     Finite (ℤ_[l] ⧸ Ideal.span {q}) := by
@@ -39,15 +39,15 @@ private theorem finite_padicInt_quot_span_of_ne_zero (l : ℕ) [Fact l.Prime] {q
   exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero
 
 /- English proof (translation)
-Set `I : Ideal ℤ_[l]` to `Ideal.span {(l : ℤ_[l]) ^ m}`. Set `φ : (Fin n → ℤ_[l]) →ₗ[ℤ_[l]] (Fin n → ℤ_[l] ⧸ I)` to `LinearMap.pi (fun i => (Submodule.mkQ I) ∘ₗ LinearMap.proj i)`. Establish `hsurj : Function.Surjective φ`. Introduce `g`. Use `choose y hy using fun i => Submodule.Quotient.mk_surjective I (g i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨y, funext fun i => hy i⟩`. Establish `hker : LinearMap.ker φ = lSub l (Fin n → ℤ_[l]) m`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, mem_lSub]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `h2 : ∀ i, ∃ y, (l : ℤ_[l]) ^ m * y = x i` using `fun i => by`. Establish `h1 : (Submodule.Quotient.mk (x i) : ℤ_[l] ⧸ I) = 0` using `congrFun hx i`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, by rw [mul_comm]; exact ha⟩`. Use `choose y hy using h2`. Conclude with `⟨y, funext fun i => by simp [hy]⟩`. Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `i`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `show (Submodule.Quotient.mk _ : ℤ_[l] ⧸ I) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton']`. Conclude with `⟨y i, by simp [mul_comm]⟩`. Rewrite using `[← hker, Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv, Nat.card_fun, card_quotient_eq_card_of_isReps, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_pi_padicInt_quot_lSub (l : ℕ) [Fact l.Prime] (n m : ℕ) :
     Nat.card ((Fin n → ℤ_[l]) ⧸ lSub l (Fin n → ℤ_[l]) m) = l ^ (m * n) := by
@@ -79,25 +79,21 @@ private theorem card_pi_padicInt_quot_lSub (l : ℕ) [Fact l.Prime] (n m : ℕ) 
     card_quotient_eq_card_of_isReps, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]
 
 /- English proof (translation)
-Introduce `l _ N _ _ _`. Take `⟨n, ι, _, p, hp, e, ⟨f⟩⟩` from `Module.equiv_free_prod_directSum ℤ_[l] N`. Use `set D := DirectSum ι fun i => ℤ_[l] ⧸ ℤ_[l] ∙ p i ^ e i with hD`. Set `g : N ≃ₗ[ℤ_[l]] (Fin n → ℤ_[l]) × D` to `f.trans (LinearEquiv.prodCongr (Finsupp.linearEquivFunOnFinite ℤ_[l] ℤ_[l] (Fin n)) (LinearEquiv.refl _ _))`. Use `haveI : Finite D := by haveI : ∀ i, Finite (ℤ_[l] ⧸ ℤ_[l] ∙ p i ^ e i) := fun i => finite_padicInt_quot_span_of_ne_zero l (pow_ne_zero _ (hp i).ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finite.of_injective _ (DirectSum.linearEquivFunOnFintype ℤ_[l] ι _).injective`. Establish `hrank : finrank ℤ_[l] N = n`. Apply `Module.finrank_eq_of_rank_eq` to reduce the goal to its premises. Establish `h0 : Module.rank ℤ_[l] D = 0`. Rewrite using `[rank_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `⟨(Nat.card D : ℤ_[l]), Nat.cast_ne_zero.2 Nat.card_pos.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `card_nsmul_eq_zero'`. Rewrite using `[g.rank_eq, ← LinearMap.rank_range_add_rank_ker (LinearMap.fst ℤ_[l] (Fin n → ℤ_[l]) D), LinearMap.range_eq_top.2 LinearMap.fst_surjective, rank_top, LinearMap.ker_fst, rank_range_of_injective _ LinearMap.inr_injective, h0, add_zero, rank_fun', Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hrank]`. Use `⟨Nat.card D, fun m _ => ?_⟩` and prove the remaining obligations. Set `f1 : N →ₗ[ℤ_[l]] (Fin n → ℤ_[l])` to `LinearMap.fst _ _ _ ∘ₗ g.toLinearMap`. Set `f2 : N →ₗ[ℤ_[l]] D` to `LinearMap.snd _ _ _ ∘ₗ g.toLinearMap`. Set `Ψ` to `LinearMap.prod (redMap f1 m) (redMap f2 m)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `q hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `e1 : (Submodule.Quotient.mk (f1 x) : (Fin n → ℤ_[l]) ⧸ lSub l _ m) = 0` using `congrArg Prod.fst hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2 : (Submodule.Quotient.mk (f2 x) : D ⧸ lSub l D m) = 0` using `congrArg Prod.snd hq`. Rewrite `e1`, `e2` using `[Submodule.Quotient.mk_eq_zero, mem_lSub]`. Take `⟨y1, hy1⟩` from `e1`. Take `⟨y2, hy2⟩` from `e2`. Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_lSub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨g.symm (y1, y2), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Prod.smul_mk, hy1, hy2]`. Simplify using `[f1, f2]`. Establish `hF` using `card_pi_padicInt_quot_lSub l n m`. Use `haveI : Finite ((Fin n → ℤ_[l]) ⧸ lSub l (Fin n → ℤ_[l]) m) := Nat.finite_of_card_ne_zero (by rw [hF]; exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI : Finite (D ⧸ lSub l D m) := Finite.of_surjective _ (Submodule.Quotient.mk_surjective _)`. Use `haveI : Finite (N ⧸ lSub l N m) := Finite.of_injective _ hinj`. Establish `hsurj : Function.Surjective (redMap f1 m)`. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
-
-Use `⟨Submodule.Quotient.mk (g.symm (y, 0)), ?_⟩` and prove the remaining obligations. Simplify using `[redMap, f1]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hF]`. Conclude with `Nat.card_le_card_of_surjective _ hsurj`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.card_quotient_powSubmodule_grows_finrank :
     ∀ (l : ℕ) [Fact l.Prime] (N : Type) [AddCommGroup N] [Module ℤ_[l] N] [Module.Finite ℤ_[l] N], Grows l (fun m => Nat.card (N ⧸ lSub l N m)) (finrank ℤ_[l] N) := by

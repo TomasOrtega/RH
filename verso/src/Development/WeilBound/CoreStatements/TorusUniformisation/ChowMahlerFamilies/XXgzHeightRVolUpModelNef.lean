@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ZH GlobalTheory.ZH.RatModel
 
 /- English proof (translation)
-The claim follows from `hs vertical := GlobalTheory.TrueGeo.OfLattice.nefFib_of_isGenerated hX L (isGenerated_of_finite u hg) horizontal Z i _ _ _ hc hd := by have hZ : IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc hd have hm : i (genericPoint Z) ∈ ⨆ a, nonzeroLocus (u a) := by rw [hg]; trivial o …`.
+A detailed English derivation is pending.
 -/
 theorem isNef_of_small {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D)
     (L : HermLB p) (hs : L.SemiPos D) {ι : Type} [Finite ι] (u : ι → L.B.Sec) (hu : ∀ i, u i ∈ L.smallSec)
@@ -47,13 +47,13 @@ variable {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   {M : RatModel (𝓞 K) Ω}
 
 /- English proof (translation)
-Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hr` using `range_eq_singleton y (IsLocalRing.closedPoint ℂ)`. Establish `hq0 : algebraMap (𝓞 K) K q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`. Establish `hσq : σ (algebraMap (𝓞 K) K q) ≠ 0` using `(map_ne_zero σ).2 hq0`. Establish `hv` using `fun c => val_algebraMap hy c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (⟨algebraMap (𝓞 K) Ω q, Subalgebra.algebraMap_mem _ q⟩ : M.O (y (IsLocalRing.closedPoint ℂ)))` using `(val_ne_zero_iff hr _).1 (by rw [hv]; exact hσq)`. Take `⟨h0, hi⟩` from `(isUnit_O_iff _).1 hu`. Simplify using `only at h0 hi`. Establish `e : algebraMap K Ω (algebraMap (𝓞 K) K p / algebraMap (𝓞 K) K q) = algebraMap (𝓞 K) Ω p * (algebraMap (𝓞 K) Ω q)⁻¹`. Rewrite using `[map_div₀, div_eq_mul_inv, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : algebraMap (𝓞 K) Ω p * (algebraMap (𝓞 K) Ω q)⁻¹ ∈ M.O (y (IsLocalRing.closedPoint ℂ))` using `mul_mem (Subalgebra.algebraMap_mem _ p) hi`. Rewrite using `[e]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `val_mul (specializes_of_range_eq hr) hm (Subalgebra.algebraMap_mem _ q)`. Rewrite `h1` using `[inv_mul_cancel_right₀ h0, hv, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_div₀, eq_div_iff hσq]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_val {σ : K →+* ℂ} {y : Sp ℂ ⟶ M.Z} (hy : y ≫ M.s = spMap (σ.comp (algebraMap (𝓞 K) K))) (a : K) :
     algebraMap K Ω a ∈ M.O (y (IsLocalRing.closedPoint ℂ)) ∧ M.val y (algebraMap K Ω a) = σ a := by
@@ -79,15 +79,13 @@ theorem const_val {σ : K →+* ℂ} {y : Sp ℂ ⟶ M.Z} (hy : y ≫ M.s = spMa
   exact h1.symm
 
 /- English proof (translation)
-Establish `hr` using `specializes_of_range_eq (range_eq_singleton y (IsLocalRing.closedPoint ℂ))`. Establish `hsm : ∀ (a : K) v, ev (a • v) / c = algebraMap K Ω a * (ev v / c)` using `fun a v => by`. Rewrite using `[map_smul, Algebra.smul_def, mul_div_assoc]`. Establish `hall : ∀ v, ev v / c ∈ M.O (y (IsLocalRing.closedPoint ℂ))` using `fun v => by`. Establish `hv : v ∈ Submodule.span K S` using `hS ▸ trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem _ h => exact hc _ h`. Consider the case `zero => rw [map_zero, zero_div]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, add_div]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a v _ hv => rw [hsm]`. Conclude with `mul_mem (const_val hy a).1 hv`. Set `ℓ : V →+ ℂ` to `{ toFun := fun v => M.val y (ev v / c) map_zero' := by rw [map_zero, zero_div]; exact val_zero y map_add' := fun a b => by rw [map_add, add_div]; exact val_add hr (hall a) (hall b) }`. Use `⟨fun j => ℓ (b j), fun v => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ℓ v = _`. Use `conv_lhs => rw [← b.sum_repr v, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.val y _ = _`. Rewrite using `[hsm, val_mul hr (const_val hy _).1 (hall _), (const_val hy _).2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_coord {σ : K →+* ℂ} {y : Sp ℂ ⟶ M.Z} (hy : y ≫ M.s = spMap (σ.comp (algebraMap (𝓞 K) K)))
     (ev : V →ₗ[K] Ω) (c : Ω) {N : ℕ} (b : Module.Basis (Fin N) K V) {S : Set V} (hS : Submodule.span K S = ⊤)
@@ -118,9 +116,9 @@ theorem exists_coord {σ : K →+* ℂ} {y : Sp ℂ ⟶ M.Z} (hy : y ≫ M.s = s
 omit [NumberField K] in
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem _ h => exact hc _ h`. Consider the case `zero => rw [map_zero, zero_div]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, add_div]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a v _ hv`. Rewrite using `[← algebraMap_smul K a v, map_smul, Algebra.smul_def, mul_div_assoc, ← IsScalarTower.algebraMap_apply]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ a) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_O_of_span [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (ev : V →ₗ[K] Ω) (c : Ω) {z : M.Z} {S : Set V}
     (hc : ∀ v ∈ S, ev v / c ∈ M.O z) {v : V} (hv : v ∈ Submodule.span (𝓞 K) S) : ev v / c ∈ M.O z := by
@@ -135,13 +133,13 @@ theorem mem_O_of_span [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (ev : V �
 omit [NumberField K] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `key : ∃ a ∈ IsLocalRing.maximalIdeal (M.O z), (a : Ω) = ev v / c` using `by clear hu h`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨i, rfl⟩ := h`. Conclude with `⟨⟨_, hc i⟩, fun h => hn ⟨i, h⟩, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', ha, ea⟩` from `ha`. Take `⟨b', hb, eb⟩` from `hb`. Conclude with `⟨a' + b', add_mem ha hb, by rw [map_add, add_div, ← ea, ← eb]; rfl⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul n a _ ha`. Take `⟨a', ha, ea⟩` from `ha`. Use `⟨n • a', zsmul_mem ha n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, zsmul_eq_mul, mul_div_assoc, ← ea]`. Simplify using the standard rewrite rules.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha, ea⟩` from `key`. Take `rfl : a = ⟨_, h⟩` from `Subtype.ext ea`. Conclude with `ha hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isUnit (ev : V →ₗ[K] Ω) (c : Ω) {z : M.Z} {ι : Type} (w : ι → V)
     (hc : ∀ i, ev (w i) / c ∈ M.O z) {v : V} (hv : v ∈ Submodule.span ℤ (Set.range w)) (h : ev v / c ∈ M.O z)
@@ -171,29 +169,27 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 
 /- English proof (translation)
-Introduce `_ K V Ω _ _ _ _ _ _ _ _ _ Nm L ev d N m b g A n w abelian₂ t hF hW _ ht M _ _ hX H hH e he s hv hs Mt hdet hc hMt`. Establish `hreg : ∀ l, ∀ z ∈ H.U l, ∀ v ∈ L, ev v / e l ∈ M.O z` using `fun l z hz v hvL => by`. Use `PositivityTheory.Xgn.A_xgz_height_r_vol_up_model_nef.mem_O_of_span ev _ ?_ (hF.span ▸ hvL)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[← hv k l ⟨z, hz⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ZH.RatModel.valF_mem_O hz _`. Establish `hwL : ∀ i, w i ∈ L` using `fun i => (hW.gen _).2 (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hcL : ∀ k, (∑ j, g j k • b j) ∈ L` using `fun k => hF.span ▸ Submodule.subset_span ⟨k, rfl⟩`. Use `choose u hu using fun i => he.exists_sec_hasVal (ev (w i)) fun l z hz => hreg l z hz _ (hwL i)`. Use `PositivityTheory.Xgn.A_xgz_height_r_vol_up_model_nef.isNef_of_small hX _ ((GlobalTheory.HermLB.semiPos_fs hH s hs Mt hdet hc).shift _ _) u (fun i σ' y => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, rfl⟩ : ∃ σ : K →+* ℂ, σ.comp (algebraMap (𝓞 K) K) = σ'` from `⟨_, GlobalTheory.TrueGeo.OfLattice.extEmb_comp σ'⟩`. Establish `hl` using `GlobalTheory.CxPts.mem_pick hH y`. Generalize the expression as in `GlobalTheory.CxPts.pick hH y = l at hl`. Establish `hz` using `GlobalTheory.CxPts.mem_ptsIn.1 hl`. Establish `hspan : Submodule.span K (L : Set V) = ⊤`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (Submodule.map b.equivFun.symm.toLinearMap) hF.full`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`. Use `eq_top_iff.2 (h2.ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `b.equivFun.symm (g.col k) ∈ L`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `hcL k`. Take `⟨x, hx⟩` from `PositivityTheory.Xgn.A_xgz_height_r_vol_up_model_nef.exists_coord y.2 ev (e l) b hspan (hreg l _ hz)`. Establish `hr : Set.range y.1 ⊆ H.U l` using `(GlobalTheory.ZH.top_le_preimage_iff _ _).1 hl`. Establish `hval : ∀ (a : H.Sec) v, M.HasVal e a (ev v) → valR y.1 (H.U l) (a.f l) = ∑ j, σ (b.repr v j) * x j` using `fun a v ha => (GlobalTheory.ZH.RatModel.val_eq hr (ha l ⟨_, hz⟩)).symm.trans (hx v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsk : ∀ k, valR y.1 (H.U l) ((s k).f l) = ∑ j, σ (g j k) * x j` using `fun k => by`. Rewrite using `[hval _ _ (hv k)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[b.repr_sum_self]`. Establish `hpos` using `(GlobalTheory.Weight.noCommonZero_combVal (p := M.s) (σ := σ.comp (algebraMap (𝓞 K) K)) hs (hdet (σ.comp (algebraMap (𝓞 K) K)))).sum_pos hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : ∑ a, ‖∑ k, Mt (σ.comp (algebraMap (𝓞 K) K)) k a * valR y.1 (H.U l) ((s k).f l)‖ ^ 2 = GlobalTheory.Adelic.archSize (A σ) x ^ 2`. Simplify using `only [hsk]`. Conclude with `hMt σ x`. Establish `hpos' : 0 < GlobalTheory.Adelic.archSize (A σ) x ^ 2`. Rewrite using `[← hφ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.Weight.combVal, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hpos`. Conclude with `hpos`. Establish `hle` using `GlobalTheory.Adelic.norm_pairing_le (hF.herm σ) (fun j => σ (b.repr (w i) j)) x`. Rewrite `hle` using `[hF.norm, ← hval _ _ (hu i)]`. Establish `hS : 0 ≤ GlobalTheory.Adelic.archSize (A σ) x` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLam : abelian₂ ≤ Real.exp t` using `(Real.log_le_iff_le_exp (lt_of_lt_of_le one_pos hW.one_le)).1 ht`. Establish `hle2` using `hle.trans (mul_le_mul_of_nonneg_right ((hW.le i σ).trans hLam) hS)`. Use `le_of_eq_of_le (((GlobalTheory.HermLB.fs M.s hH s hs Mt hdet hc).nsq_shift (fun _ => t) (fun _ => rfl) _ y).trans (congrArg (· * _) (GlobalTheory.Weight.nsq_eq _ (GlobalTheory.CxPts.secVal_mem (u i)) hl))) ?_` and prove the remaining obligations. Establish `e1 : ((GlobalTheory.HermLB.fs M.s hH s hs Mt hdet hc).φ (σ.comp (algebraMap (𝓞 K) K))).φ l y = Real.log (GlobalTheory.Adelic.archSize (A σ) x ^ 2)`. Rewrite using `[← hφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Weight.fsBasis_φ hH s hs _ (hdet _) l y`. Rewrite using `[e1, Real.exp_neg, Real.exp_log hpos', Real.exp_neg, mul_assoc, ← mul_inv, ← div_eq_mul_inv, div_le_one (by positivity), two_mul, Real.exp_add, ← sq, ← mul_pow, mul_comm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hle2 2`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `hm : z ∈ ⨆ k, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s k)` using `by rw [hs]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hk`. Establish `hz : z ∈ H.U l` using `M.Z.basicOpen_le _ hl`. Establish `h1` using `(GlobalTheory.ZH.RatModel.isUnit_valF_iff hz _).2 hl`. Take `⟨i, hi⟩` from `PositivityTheory.Xgn.A_xgz_height_r_vol_up_model_nef.exists_isUnit ev (e l) w (fun i => hreg l z hz _ (hwL i)) ((hW.gen _).1 (hcL k)) (hreg l z hz _ (hcL k)) (by convert h1 using 2; exact (hv k l ⟨z, hz⟩).symm)`.
-
-Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, TopologicalSpace.Opens.mem_iSup.2 ⟨l, (GlobalTheory.ZH.RatModel.isUnit_valF_iff hz _).1 ?_⟩⟩` and prove the remaining obligations. Use `hi using 2` and compare the differences between its conclusion and the goal. Conclude with `hu i l ⟨z, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_xgz_height_r_vol_up_model_nef : Hypotheses2 → ∀ (K V Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (L : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (d N m : ℕ) (b : Module.Basis (Fin N) K V) (g : Matrix (Fin N) (Fin m) K) (A : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (n : ℕ) (w : Fin n → V) (abelian₂ t : ℝ), IsFrame Nm L b g A → IsShortGen Nm L w abelian₂ → GlobalTheory.DegVal.GenRatios ev → Real.log abelian₂ ≤ t → ∀ (M : GlobalTheory.ZH.RatModel (𝓞 K) Ω), M.IsNm (fun k => ev (∑ j, g j k • b j)) → IsProjOver M.s → GlobalTheory.IsArithVar M.s d → ∀ (H : ReciprocityTheory.ChartRestriction.G.Semi.LB M.Z) (hH : H.IsLB) (e : H.ι → Ω), M.GenTriv H e → ∀ (s : Fin m → H.Sec), (∀ k, M.HasVal e (s k) (ev (∑ j, g j k • b j))) → ∀ (hs : ⨆ k, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s k) = ⊤) (Mt : (𝓞 K →+* ℂ) → Matrix (Fin m) (Fin m) ℂ) (hdet : ∀ σ, (Mt σ).det ≠ 0) (hc : ∀ σ, ∃ U ∈ Matrix.unitaryGroup (Fin m) ℂ, Mt ((starRingEnd ℂ).comp σ) = (Mt σ).map (starRingEnd ℂ) * U), (∀ (σ : K →+* ℂ) (x : Fin N → ℂ), ∑ a, ‖∑ k, Mt (σ.comp (algebraMap (𝓞 K) K)) k a * ∑ j, σ (g j k) * x j‖ ^ 2 = GlobalTheory.Adelic.archSize (A σ) x ^ 2) → ((GlobalTheory.HermLB.fs M.s hH s hs Mt hdet hc).shift (fun _ => t) (fun _ => rfl)).IsNef d := by
   intro _ K V Ω _ _ _ _ _ _ _ _ _ Nm L ev d N m b g A n w abelian₂ t hF hW _ ht M _ _ hX H hH e he s hv hs Mt hdet hc hMt

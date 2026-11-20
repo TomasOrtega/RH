@@ -20,13 +20,13 @@ namespace GlobalTheory.InertHomIdx
 open GlobalTheory.FinWeilO
 
 /- English proof (translation)
-Establish `e1 : (A.map M).map m = (A.map φ).map M`. Rewrite using `[AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Conclude with `AddMonoidHom.ext fun x => (hM x).symm`. Rewrite using `[e1, ← AddSubgroup.relIndex_comap (H := A.map M) M (A.map φ), ← AddSubgroup.inf_relIndex_right A, ← AddSubgroup.inf_relIndex_right ((A.map M).comap M)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_comap]`. Use `⟨fun h => ⟨⟨x, h.1, rfl⟩, h.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, ha, hax⟩, hx⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hx⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hx`. Establish `h1 : P (a - φ y) = 0` using `hK _ (by rw [map_sub, hax, sub_self])`. Establish `h2 : P (φ y) = P a` using `by rw [map_sub, sub_eq_zero] at h1; exact h1.symm`. Establish `h3 : φ y = (y - P y) + P a` using `by rw [← hφ y hy, h2]; abel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `add_mem (sub_mem hy (hPA y hy)) (hPA a ha)`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_map_of_proj {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (A : AddSubgroup X) (φ P : X →+ X) (M : X →+ Y)
     (m : Y →+ Y) (hM : ∀ x, M (φ x) = m (M x)) (hK : ∀ x, M x = 0 → P x = 0) (hPA : ∀ a ∈ A, P a ∈ A)
@@ -56,19 +56,17 @@ end GlobalTheory.InertHomIdx
 open GlobalTheory.FinWeilO in
 
 /- English proof (translation)
-Introduce `D S T v w h hi g`. Take `⟨ε, hns, hp⟩` from `GlobalTheory.WeilAtPlace.exists_nonSplit_of_inert hi h`. Establish `hε : IsPlaceIdem D v ε` using `hns.1`. Establish `hη : IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1))` using `⟨_, rfl, GlobalTheory.SplitIdem.evalV_singleV_same _ _ _, fun _ hw => GlobalTheory.SplitIdem.evalV_singleV_ne _ _ _ hw⟩`. Establish `hk : GlobalTheory.WeilParts.SuppPl ε T (embV T v g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.PlaceDatum.placeIdem_eq hε hη]`. Conclude with `GlobalTheory.PlaceTensor.suppPl_emb T v g`. Establish `hg : GlobalTheory.WeilParts.SuppPl ε S (1 : GA D S)` using `fun i j => by rw [mt_one, sub_self]; simp`. Establish `hoff` using `smul_actO (off_smul_mt_place hg) (off_smul_mt_place hk)`. Establish `hmat : (mt T (embV T v g)).map (GlobalTheory.InertHomIdx.compW D w) = (locMat D.sp.cm.sig T.gram h g).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `finMat_map_compAt D.sp.cm.sig T.gram h (embV T v g)`. Rewrite `e` using `[proj_emb_self]`. Conclude with `e`. Use `GlobalTheory.InertHomIdx.relIndex_map_of_proj (latF S T (frameLat S) (frameLat T)).toAddSubgroup (rhoF S T (1, embV T v g)).toAddMonoidHom (mulF S T (algebraMap (AF D.host.F) (AE D) ε)).toAddMonoidHom (GlobalTheory.InertHomIdx.matW S T w) (GlobalTheory.InertHomIdx.lmul (locMat D. …` and prove the remaining obligations. Introduce `x show (actO S T 1 (embV T v g) x).map (GlobalTheory.InertHomIdx.compW D w) = (locMat D.sp.cm.sig T.gram h g).1 * (x : WO S T).map (GlobalTheory.InertHomIdx.compW D w)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[actO, inv_one, mt_one, Matrix.mul_one, Matrix.map_mul, hmat]`. Introduce `x hx`. Use `XF.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h0 : GlobalTheory.InertHomIdx.compW D w ((x : WO S T) i j) = 0` using `congrFun (congrFun hx i) j`. Use `show algebraMap (AF D.host.F) (AE D) ε * (x : WO S T) i j = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.PlaceIdem.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, GlobalTheory.WeilAtPlace.isPrimeIdem_infPart hp, zero_mul, RingHom.map_zero]`. Rewrite using `[RingHom.map_mul, finPart_of_isPrimeIdem hp, singleAt_mul, RingHom.map_zero]`. Establish `h1 : compAt D.host.F w (finPart D ((x : WO S T) i j)) = 0` using `h0`. Rewrite using `[h1, mul_zero, ← singleAt_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Conclude with `GlobalTheory.PlaceModel.latO_le_top _ (GlobalTheory.PlaceModel.placeIdem_smul_mem hε ha)`. Introduce `a _`. Use `XF.ext ?_` and prove the remaining obligations. Use `hoff (a : WO S T)` as an intermediate fact.
-
-Rewrite `this` using `[sub_smul, sub_smul, one_smul, one_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertHomIdx.idx_latF_moved : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → ∀ g : Gv T v, GlobalTheory.FinWeil.idx (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)) ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, embV T v g))) = ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup.map (GlobalTheory.InertHomIdx.matW S T w)).relIndex (((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup.map (GlobalTheory.InertHomIdx.matW S T w)).map (GlobalTheory.InertHomIdx.lmul (locMat D.sp.cm.sig T.gram h g).1)) := by
   intro D S T v w h hi g

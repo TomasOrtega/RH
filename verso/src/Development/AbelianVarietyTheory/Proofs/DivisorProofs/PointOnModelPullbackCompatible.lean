@@ -16,18 +16,16 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel.LiftW
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_left_eq {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] :
     (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
 
 /- English proof (translation)
-Establish `hw : ((1 : T ⟶ G').left ≫ φ) ≫ G.hom = (Over.mk (T.hom ≫ f)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `x₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) hw`. Establish `e` using `h.2 T 1 1 x₀ x₀ rfl rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `e` using `[_root_.mul_one]`. Establish `hxx : x₀ * x₀ = x₀`. Use `ext`. Conclude with `e`. Establish `h1 : x₀ = 1` using `mul_eq_right.mp hxx`.
-
-Conclude with `congrArg Over.Hom.left h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_left_comp_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
@@ -45,21 +43,21 @@ theorem one_left_comp_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} [GrpOb
   exact congrArg Over.Hom.left h1
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ _ yb yy P π ψ hP X u0 hI`. Take `⟨xG, hC, hπ⟩` from `hI`. Take `⟨-, -, -, hψ, hφ, -⟩` from `hP`. Establish `w0 : (spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ xG.1.left) ≫ P.G.hom = spMap (algebraMap ℂ_[p] (DualNumber ℂ_[p])) ≫ spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])`. Rewrite using `[Category.assoc, Over.w xG.1, spMap_spMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(spMap_spMap _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Set `u' : specO ℂ_[p] (DualNumber ℂ_[p]) ⟶ P.A.A` to `Over.homMk (P.gen_pull.1.lift _ _ w0) (P.gen_pull.1.lift_snd _ _ w0)`. Establish `hfst : u'.left ≫ P.gen = spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ xG.1.left` using `P.gen_pull.1.lift_fst _ _ w0`. Establish `hsnd : u'.left ≫ P.A.A.hom = spMap (algebraMap ℂ_[p] (DualNumber ℂ_[p]))` using `P.gen_pull.1.lift_snd _ _ w0`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨u'.left ≫ ψ, ?_, ?_, ?_, ⟨xG, u', hC, rfl, hfst⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, ← Category.assoc, hfst, Category.assoc, hπ]`. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, hsnd]`. Establish `hA : spMap (TrivSqZeroExt.fstHom ℂ_[p] ℂ_[p] ℂ_[p]).toRingHom ≫ u'.left = (1 : Over.mk (𝟙 _) ⟶ P.A.A).left`. Use `P.gen_pull.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hfst, one_left_comp_of_isGrpPullback P.gen_pull, one_left_eq, ← Category.assoc, spMap_spMap]`. Establish `h2 : spMap (TrivSqZeroExt.fstHom 𝓞_ℂ_[p] 𝓞_ℂ_[p] 𝓞_ℂ_[p]).toRingHom ≫ xG.1.left = (specO 𝓞_ℂ_[p] 𝓞_ℂ_[p]).hom ≫ η[P.G].left`. Use `congrArg Over.Hom.left xG.2` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.comp_left, Over.toUnit_left]`. Then use the resulting hypothesis. Establish `e1 : (TrivSqZeroExt.fstHom ℂ_[p] ℂ_[p] ℂ_[p]).toRingHom.comp (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (TrivSqZeroExt.fstHom 𝓞_ℂ_[p] 𝓞_ℂ_[p] 𝓞_ℂ_[p]).toRingHom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e2 : spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ (specO 𝓞_ℂ_[p] 𝓞_ℂ_[p]).hom = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])`. Use `(spMap_spMap _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Use extensionality with `s`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, ← spMap_spMap, Category.assoc, h2, ← Category.assoc, e2]`. Simplify using `only [Over.mk_hom]`. Apply the tactic sequence `first | (erw [Category.id_comp]) | (simp only [Category.id_comp]) | (exact congrArg (· ≫ _) (Category.id_comp _)) | (congr 1; exact Category.id_comp _) | rfl`. Rewrite using `[Category.assoc, hsnd, Over.w, spMap_spMap] dsimp only [Over.mk_hom]`. Establish `e3 : (TrivSqZeroExt.fstHom ℂ_[p] ℂ_[p] ℂ_[p]).toRingHom.comp (algebraMap ℂ_[p] (DualNumber ℂ_[p])) = RingHom.id _`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Use extensionality with `s`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e3]`. Conclude with `Spec.map_id _`. Rewrite using `[← Category.assoc, hA, one_left_comp_of_isGrpPullback hψ, one_left_eq, one_left_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only [Over.mk_hom]`. Apply the tactic sequence `first | (erw [Category.id_comp]) | (simp only [Category.id_comp]) | (exact congrArg (· ≫ _) (Category.id_comp _)) | (congr 1; exact Category.id_comp _) | rfl`.
+A detailed English derivation is pending.
 -/
 theorem liftW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype)

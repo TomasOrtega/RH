@@ -39,7 +39,7 @@ section Assembly
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `setSheetDensity`. Use `split_ifs with hγ`. Rewrite using `[hg _ hγ.choose_spec.2.self_of_nhds.2.1, zero_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem setSheetDensity_eq_zero {e : ℕ} {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -51,7 +51,7 @@ theorem setSheetDensity_eq_zero {e : ℕ} {S : Set ((Σ k, ι k) → ℂ)}
   · rfl
 
 /- English proof (translation)
-Unfold `setSheetDensity`. Use `split_ifs with hγ`. Rewrite using `[Finset.sum_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setSheetDensity_sum {e : ℕ} {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -64,7 +64,7 @@ theorem setSheetDensity_sum {e : ℕ} {S : Set ((Σ k, ι k) → ℂ)}
   · simp
 
 /- English proof (translation)
-Use `choose i1 _ using hz`. Establish `: Nonempty ((k : K) → ι k)` using `⟨i1⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun i' : (k : K) → ι k => ‖segre z i'‖`. Conclude with `⟨i, hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_domCell [DecidableEq K] {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0) :
     ∃ i, z ∈ domCell i := by
@@ -74,9 +74,7 @@ theorem exists_mem_domCell [DecidableEq K] {z : (Σ k, ι k) → ℂ} (hz : ∀ 
   exact ⟨i, hi⟩
 
 /- English proof (translation)
-Use `choose i1 hi1 using hz`. Establish `h1 : segre z i1 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hi1 k`. Introduce `h0`. Use `hi i1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
-
-Conclude with `h1 (norm_le_zero_iff.1 this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_ne_zero_of_mem_domCell {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0)
     {i : (k : K) → ι k} (hi : z ∈ domCell i) : segre z i ≠ 0 := by
@@ -90,15 +88,13 @@ theorem segre_ne_zero_of_mem_domCell {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃
 end Assembly
 
 /- English proof (translation)
-Use `set σ : Fin (Fintype.card ((k : K) → ι k)) ≃ ((k : K) → ι k) := (Fintype.equivFin _).symm with hσ`. Use `set G := (domCell i).indicator (absLogNorm A s) with hG`. Take `⟨hGm, hGi⟩` from `GlobalTheory.T.domCell_logNorm_measurable_invariant K ι A s a i hA hAa hs`. Establish `hzero` using `GlobalTheory.T.zeroSet_chartIdeal_eq_chartSet K ι Q _ σ i hQ.2.1.2.1`. Establish `hdim` using `GlobalTheory.T.ringKrullDim_chartComponents K ι Q e _ σ i hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.T.chartComponents_finite_projection K ι Q e _ σ i Ψ hQ hΨ hΨ0 hdim`. Establish `hfs` using `GlobalTheory.T.chart_density_integrable K ι Q e _ σ i N G Ψ hQ hN hGi hΨ0 (GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ) hzero hdim hfin`. Establish `hsm : ∀ j, ∀ J ∈ chartComponents (conePts Q) σ i, GroundTheory.Heights₂.Heights.SmoothNear (GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J) (chartPot σ i N j)` using `fun j J hJ => GroundTheory.Heights₂.Heights.smoothNear_chartPot σ i hN (fun x hx => by`. Establish `hx' : x ∈ chartSet (conePts Q) σ i`. Rewrite using `[← hzero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `fun q hq => hx q ((mem_chartComponents.1 hJ).1.2 hq)`. Take `⟨z, -, hzi, rfl⟩` from `hx'`. Simplify using `using hzi) j`. Establish `hint : Integrable (fun y => ∑ J ∈ chartComponents (conePts Q) σ i, chartAbsDens J (chartProjMatrix σ Ψ) (chartWeight σ i G) (chartPot σ i N) y)` using `integrable_finset_sum _ fun J hJ => GlobalTheory.T.integrable_domCell_logNorm_chart K ι Q e _ σ i Ψ N A s a J hA hAa hs hGm hzero hJ (hfin J hJ) fun R C => GlobalTheory.T.integrable_chartAbsDensity _ e J _ _ _ R C (mem_chartComponents.1 hJ).1.1 (hdim J hJ) (hfin J hJ) (GlobalTheo …`. Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hint.lintegral_lt_top` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hfs] with y hy`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hpos : cxPosDens (conePts Q) Ψ (pot N) G y = ∑ᶠ w ∈ setFibre (conePts Q) Ψ y, setSheetDensity (conePts Q) Ψ (pot N) G y w`. Unfold `cxPosDens`. Conclude with `finsum_congr fun w => finsum_congr fun _ => max_eq_left (hnn y w)`.
-
-Rewrite using `[hpos, hy]`. Conclude with `Finset.sum_le_sum fun J _ => GroundTheory.Heights₂.Heights.PtsSemiPosMassFinite.chartDens_le_chartAbsDens _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_mass_lt_top {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Q : Ideal (MRingOver ℂ ι)} {e : ℕ} {i : (k : K) → ι k}
@@ -147,23 +143,21 @@ end GlobalTheory.CompanionTheory.Ar.Pub.CxChart
 open GlobalTheory.CompanionTheory.Ar.Pub.CxChart in
 
 /- English proof (translation)
-Introduce `K _ ι _ Q e Ψ L A s a hQ hΨ hL hA hAa hs hsQ`. Take `⟨N, hN, hTw⟩` from `GlobalTheory.T.exists_smooth_metrics_nonneg_density K ι e L hL`. Take `⟨hnn, hbd⟩` from `hTw (conePts Q) Ψ fun z hz => hz.1`. Use `set G : ((k : K) → ι k) → ((Σ k, ι k) → ℂ) → ℝ := fun i => (domCell i).indicator (absLogNorm A s) with hG`. Establish `hG0 : ∀ i z, 0 ≤ G i z` using `fun i z => Set.indicator_nonneg (fun z _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `absLogNorm`. Use `split_ifs`. Conclude with `abs_nonneg _`. Conclude with `le_rfl) z`. Establish `hWm` using `fun i => GlobalTheory.T.domCell_logNorm_measurable_invariant K ι A s a i hA hAa hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hcell : ∀ i, ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ (pot N) (G i) y) < ⊤`. Introduce `i`. Distinguish the cases in `hi : ∃ z ∈ conePts Q, segre z i ≠ 0`. Take `⟨Ψ', hΨ', hΨ0⟩` from `GlobalTheory.T.exists_goodProj_first_coordinate K ι Q e i hQ hi`. Rewrite using `[GlobalTheory.T.integral_density_independent_projection K ι Q e Ψ Ψ' N (G i) hQ hΨ hΨ' hN (hWm i).1 (hWm i).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `cell_mass_lt_top hQ hΨ' hΨ0 hN hA hAa hs hsQ fun y w => (hTw (conePts Q) Ψ' fun z hz => hz.1).1 _ y w (hG0 i)`. Establish `h0 : ∀ z ∈ conePts Q, G i z = 0` using `fun z hz => Set.indicator_of_notMem (fun hzi => hi ⟨z, hz, segre_ne_zero_of_mem_domCell hz.1 hzi⟩) _`. Establish `: ∀ y, cxPosDens (conePts Q) Ψ (pot N) (G i) y = 0` using `fun y => by`. Unfold `cxPosDens`. Simplify using `[setSheetDensity_eq_zero (pot N) h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[this]`. Establish `hfib` using `GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ`. Establish `hcov : ∀ z ∈ conePts Q, |logNormC A s z| ≤ ∑ i, G i z`. Introduce `z hz`. Take `⟨i, hi⟩` from `exists_mem_domCell hz.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: |logNormC A s z| = G i z`. Simplify using `only [hG, Set.indicator_of_mem hi, absLogNorm, if_pos hz.1]`. Rewrite using `[this]`. Conclude with `Finset.single_le_sum (f := fun i => G i z) (fun i _ => hG0 i z) (Finset.mem_univ i)`. Establish `hpt : ∀ y, ENNReal.ofReal (∑ᶠ w ∈ setFibre (conePts Q) Ψ y, |setSheetDensity (conePts Q) Ψ (pot L) (logNormC A s) y w|) ≤ ENNReal.ofReal (3 ^ e) * ∑ i, ENNReal.ofReal (cxPosDens (conePts Q) Ψ (pot N) (G i) y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Introduce `y`. Establish `hnnd : ∀ i, 0 ≤ cxPosDens (conePts Q) Ψ (pot N) (G i) y` using `fun i => finsum_nonneg fun w => finsum_nonneg fun _ => le_max_right _ _`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun i _ => hnnd i, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Unfold `cxPosDens`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ (hfib y)]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Use `(hbd _ (fun z => ∑ i, G i z) y w hcov).trans ?_` and prove the remaining obligations. Rewrite using `[setSheetDensity_sum]`.
-
-Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => le_max_left _ _) (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finset_sum' _ fun i _ => (GlobalTheory.T.aemeasurable_cxPosDensity K ι Q e Ψ N (G i) hQ hΨ hN (hWm i).1 (hWm i).2).ennreal_ofReal]`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 fun i _ => hcell i)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))

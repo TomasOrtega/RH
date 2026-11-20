@@ -18,7 +18,7 @@ def CoeffIn (W : Submodule R B) (m : ℕ) (p : MvPolynomial (Fin (D + 2) × Fin 
 variable (W : Submodule R B)
 
 /- English proof (translation)
-Introduce `β` and use `by rw [coeff_add] exact Submodule.add_mem _ (hp β) (hq β)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_add {m : ℕ} {p q : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
     (hp : CoeffIn W m p) (hq : CoeffIn W m q) : CoeffIn W m (p + q) := fun β => by
@@ -26,7 +26,7 @@ theorem coeffIn_add {m : ℕ} {p q : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B
   exact Submodule.add_mem _ (hp β) (hq β)
 
 /- English proof (translation)
-Introduce `β` and use `by rw [coeff_mul, pow_add] exact Submodule.sum_mem _ fun x _ => Submodule.mul_mem_mul (hp _) (hq _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_mul {m m' : ℕ} {p q : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
     (hp : CoeffIn W m p) (hq : CoeffIn W m' q) : CoeffIn W (m + m') (p * q) := fun β => by
@@ -34,7 +34,7 @@ theorem coeffIn_mul {m m' : ℕ} {p q : MvPolynomial (Fin (D + 2) × Fin (N + 1)
   exact Submodule.sum_mem _ fun x _ => Submodule.mul_mem_mul (hp _) (hq _)
 
 /- English proof (translation)
-Introduce `β` and use `by rw [pow_zero, coeff_one] split_ifs · exact Submodule.mem_one.2 ⟨1, map_one _⟩ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_one : CoeffIn W 0 (1 : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B) := fun β => by
   rw [pow_zero, coeff_one]
@@ -43,7 +43,7 @@ theorem coeffIn_one : CoeffIn W 0 (1 : MvPolynomial (Fin (D + 2) × Fin (N + 1))
   · exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using coeffIn_one W`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `coeffIn_mul W ih hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffIn_pow {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
     (hp : CoeffIn W m p) (k : ℕ) : CoeffIn W (m * k) (p ^ k) := by
@@ -54,7 +54,7 @@ theorem coeffIn_pow {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
     exact coeffIn_mul W ih hp
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using coeffIn_one W) ?_` and prove the remaining obligations. Introduce `a s ha ih h`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `coeffIn_mul W (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffIn_prod {ι : Type*} (s : Finset ι) (p : ι → MvPolynomial (Fin (D + 2) × Fin (N + 1)) B)
     (m : ι → ℕ) (h : ∀ i ∈ s, CoeffIn W (m i) (p i)) : CoeffIn W (∑ i ∈ s, m i) (∏ i ∈ s, p i) := by
@@ -66,7 +66,7 @@ theorem coeffIn_prod {ι : Type*} (s : Finset ι) (p : ι → MvPolynomial (Fin 
   exact coeffIn_mul W (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `β` and use `by rw [coeff_C_mul, ← Algebra.smul_def] exact Submodule.smul_mem _ r (hp β)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_smul {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
     (hp : CoeffIn W m p) (r : R) : CoeffIn W m (C (algebraMap R B r) * p) := fun β => by
@@ -74,7 +74,7 @@ theorem coeffIn_smul {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
   exact Submodule.smul_mem _ r (hp β)
 
 /- English proof (translation)
-Introduce `β` and use `by rw [pow_zero, coeff_X'] split_ifs · exact Submodule.mem_one.2 ⟨1, map_one _⟩ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_X (u : Fin (D + 2) × Fin (N + 1)) : CoeffIn W 0 (X u : MvPolynomial _ B) := fun β => by
   rw [pow_zero, coeff_X']
@@ -83,7 +83,7 @@ theorem coeffIn_X (u : Fin (D + 2) × Fin (N + 1)) : CoeffIn W 0 (X u : MvPolyno
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `β` and use `by rw [coeff_sum, pow_one] refine Submodule.sum_mem _ fun j _ => ?_ rw [mul_comm, coeff_C_mul, coeff_X'] split_ifs · rw [mul_one] exact hw j · rw [mul_zero] exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIn_lin (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) (i : Fin (D + 2)) :
     CoeffIn W 1 (∑ j, X (i, j) * C (w j) : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B) := fun β => by
@@ -97,9 +97,9 @@ theorem coeffIn_lin (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) (i : Fin (D 
     exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[xDeg, Finset.sum_subset (Finset.subset_univ _), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules. Introduce `x _ hx`. Consider the cases of `x with`. Consider the case `inl p => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr i => simpa using hx`.
+Treat this case separately.
 -/
 private theorem sum_support_inr_eq_xDeg {D N : ℕ} (s : UXVar D N →₀ ℕ) :
     ∑ x ∈ s.support, Sum.elim (fun _ => 0) (fun i => s (Sum.inr i)) x = xDeg s := by
@@ -111,11 +111,11 @@ private theorem sum_support_inr_eq_xDeg {D N : ℕ} (s : UXVar D N →₀ ℕ) :
     | inr i => simpa using hx
 
 /- English proof (translation)
-Introduce `β`. Rewrite using `[Q.as_sum, map_sum, coeff_sum]`. Use `Submodule.sum_mem _ fun s hs => ?_` and prove the remaining obligations. Establish `hterm : CoeffIn W n (evW w (monomial s (coeff s Q)))`. Rewrite using `[evW, aeval_monomial, MvPolynomial.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `coeffIn_smul` to reduce the goal to its premises. Rewrite using `[Finsupp.prod, ← hx s hs, ← sum_support_inr_eq_xDeg s]`. Use `coeffIn_prod W s.support _ _ fun x _ => ?_` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl p => simpa using coeffIn_pow W (coeffIn_X W p) (s (Sum.inl p))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr i => simpa using coeffIn_pow W (coeffIn_lin W w hw i) (s (Sum.inr i))`. Conclude with `hterm β`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeffIn_evW (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) {n : ℕ}
     (Q : MvPolynomial (UXVar D N) R) (hx : XHom n Q) : CoeffIn W n (evW w Q) := by
@@ -133,11 +133,9 @@ theorem coeffIn_evW (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) {n : ℕ}
   exact hterm β
 
 /- English proof (translation)
-Establish `h` using `coeffIn_evW (Submodule.span R (Set.range w)) w (fun j => Submodule.subset_span ⟨j, rfl⟩) Q hx β`. Rewrite `h` using `[Submodule.span_pow]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Set.mem_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨f, rfl⟩` from `ha`. Use `choose s hs using fun k => (f k).2`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `show ∏ k, w (s k) = _`. Rewrite using `[List.prod_ofFn]`.
-
-Conclude with `Finset.prod_congr rfl fun k _ => hs k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_evW_mem (w : Fin (N + 1) → B) {n : ℕ} (Q : MvPolynomial (UXVar D N) R)
     (hx : XHom n Q) (β : Fin (D + 2) × Fin (N + 1) →₀ ℕ) :
@@ -158,11 +156,11 @@ theorem coeff_evW_mem (w : Fin (N + 1) → B) {n : ℕ} (Q : MvPolynomial (UXVar
 end
 
 /- English proof (translation)
-Rewrite using `[Q.as_sum, map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Simplify using `only [evW, aeval_monomial, MvPolynomial.algebraMap_apply, map_mul, map_C, Finsupp.prod, map_prod, map_pow]`. Rewrite using `[← IsScalarTower.algebraMap_apply, mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hx s hs, ← sum_support_inr_eq_xDeg s]`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl p => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr i`. Simplify using `only [Sum.elim_inr, map_sum, map_mul, map_X, map_C]`. Rewrite using `[← mul_pow, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -190,9 +188,9 @@ theorem evW_factor {R S B : Type*} [CommRing R] [CommRing S] [CommRing B] [Algeb
     ring
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map P).comp (evW (R` using `K) (D := D) y).toRingHom = (Ey (D := D) (fun j => P (y j))).toRingHom.comp (MvPolynomial.map sg) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[evW, Ey, ← hP]`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `cases i <;> simp [evW, Ey]`. Conclude with `RingHom.congr_fun h R`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_evW_eq {K S : Type*} [Field K] [CommRing S] [Algebra K S] {D N : ℕ} (P : S →+* ℂ)
     (sg : K →+* ℂ) (hP : P.comp (algebraMap K S) = sg) (y : Fin (N + 1) → S)

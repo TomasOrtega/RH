@@ -27,7 +27,7 @@ namespace GlobalTheory.Mum.ThetaImm
 open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs
 
 /- English proof (translation)
-Use `(X.toRingedSpace.isUnit_res_basicOpen r).map (resG X h)` as an intermediate fact. Conclude with `(congrArg IsUnit (resG_resG (X.basicOpen_le r) h r)).mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_resG_of_le {X : Scheme.{0}} {U V : X.Opens} (r : Γ(X, U)) (h : V ≤ X.basicOpen r) :
     IsUnit (resG X (h.trans (X.basicOpen_le r)) r) := by
@@ -35,75 +35,63 @@ theorem isUnit_resG_of_le {X : Scheme.{0}} {U V : X.Opens} (r : Γ(X, U)) (h : V
   exact (congrArg IsUnit (resG_resG (X.basicOpen_le r) h r)).mp this
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D Y`. Establish `: IsNoetherianRing R` using `hR.1.1`. Take `⟨-, hqa, -, -, hterm⟩` from `GlobalTheory.Mum.ext_smooth_affine_surj_terms R D.toPre Y`. Take `⟨i, hi₁, hi₂, hi₃⟩` from `GlobalTheory.Mum.ext_torus R D.toPre Y`. Set `bs` to `Module.Free.chooseBasis ℤ D.toPre.X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose k₀ hk₀ using fun c => GlobalTheory.Mum.exists_secB_generating R D.toPre (bs c)`. Use `⟨insert 0 (Finset.univ.image bs), max 4 (Finset.univ.sup k₀), fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨m, s, hs⟩` from `GlobalTheory.Mum.WeightZero.exists_veryAmpleBy_secB_zero R D.toPre k (le_of_max_le_left hk)`. Use `choose n bb hbb using fun c => hk₀ c k ((Finset.le_sup (Finset.mem_univ c)).trans (le_of_max_le_right hk))`. Set `J` to `Fin (m + 1) ⊕ Σ c, Fin (n c)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `αJ : J → D.toPre.X` to `Sum.elim (fun _ => 0) (fun p => bs p.1)`. Set `bJ : ∀ j : J, D.toPre.SecB k (αJ j)` to `fun j => match j with`. Consider the case `.inl a => s a`. Consider the case `.inr p => bb p.1 p.2`. Use `choose τJ hτJ using fun j : J => hterm k (αJ j) (bJ j)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card J = (Fintype.card J - 1) + 1` using `(Nat.succ_pred_eq_of_pos (Fintype.card_pos_iff.2 ⟨.inl 0⟩)).symm`. Set `e : Fin (Fintype.card J - 1 + 1) ≃ J` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `ht₀ : ∀ a, IsTermOf Y (s a) (τJ (e (e.symm (.inl a))))` using `fun a => by`. Rewrite using `[e.apply_symm_apply]`. Conclude with `hτJ (.inl a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htc : ∀ c l, IsTermOf Y (bb c l) (τJ (e (e.symm (.inr ⟨c, l⟩))))` using `fun c l => by`. Rewrite using `[e.apply_symm_apply]`. Conclude with `hτJ (.inr ⟨c, l⟩)`. Take `⟨hs₁, hsc⟩` from `(veryAmpleBy_iff _ s).1 hs`. Establish `hsi` using `(isClosedImmersion_toProj_iff _ s hs₁).1 hsc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ : ⨆ i, nonzeroLocus (τJ (e i)) = ⊤` using `top_le_iff.1 fun y _ => by`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs₁.ge (Set.mem_univ (Y.q.left y)))`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨e.symm (.inl a), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Mum.TermLocus.nonzeroLocus_eq R D.toPre Y k 0 _ _ (ht₀ a)]`. Conclude with `ha`.
+Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨_, fun i => αJ (e i), fun i => bJ (e i), fun i => τJ (e i), hτ, fun i => ⟨?_, hτJ (e i)⟩, ?_⟩` and prove the remaining obligations. Use `show αJ (e i) ∈ _`. Generalize the expression as in `e i = j`. Break down `j with a | p` into its components or cases. Conclude with `Finset.mem_insert_self _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.mem_insert_of_mem (Finset.mem_image_of_mem bs (Finset.mem_univ p.1))`. Use `GlobalTheory.isImmersion_of_forall_affine_surjective_appLE _ _ _ fun y => ?_` and prove the remaining obligations. Use `set φ := toProj Y.H.hom (fun i => τJ (e i)) hτ with hφ`. Set `q` to `Y.q.left`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs₁.ge (Set.mem_univ (q y)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose l hl using fun c => TopologicalSpace.Opens.mem_iSup.1 ((hbb c).ge (Set.mem_univ (q y)))`. Set `V₀` to `nonzeroLocus (s a)`. Establish `hV₀ : IsAffineOpen V₀` using `(hsi a).1`. Set `O : D.toPre.P.A.left.Opens` to `V₀ ⊓ Finset.univ.inf fun c => nonzeroLocus (bb c (l c))`. Establish `hyO : q y ∈ O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨ha, ?_⟩` and prove the remaining obligations. Use `show q y ∈ ((Finset.univ.inf fun c => nonzeroLocus (bb c (l c)) : D.toPre.P.A.left.Opens) : Set _)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `only [Finset.inf_eq_iInf, Finset.mem_univ, iInf_true, Set.iInf_eq_iInter, Set.mem_iInter, Function.comp_apply]`. Conclude with `fun c => hl c`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨f, hfO, hyf⟩` from `hV₀.exists_basicOpen_le (V := O) ⟨q y, hyO⟩ ha`. Set `V` to `D.toPre.P.A.left.basicOpen f`. Establish `hV : IsAffineOpen V` using `hV₀.basicOpen f`. Establish `hVV₀ : V ≤ V₀` using `D.toPre.P.A.left.basicOpen_le f`. Establish `hVc : ∀ c, V ≤ nonzeroLocus (bb c (l c))` using `fun c x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(hfO hx).2`. Express the relevant statement in the definitionally equal form `x ∈ ((Finset.univ.inf fun c => nonzeroLocus (bb c (l c)) : D.toPre.P.A.left.Opens) : Set _) at h`. Rewrite `h` using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `only [Finset.inf_eq_iInf, Finset.mem_univ, iInf_true, Set.iInf_eq_iInter, Set.mem_iInter, Function.comp_apply] at h`. Conclude with `h c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `i₀` to `e.symm (.inl a)`. Set `iκ` to `fun c => e.symm (.inr ⟨c, l c⟩)`. Establish `hloc₀ : nonzeroLocus (τJ (e i₀)) = q ⁻¹ᵁ V₀` using `GlobalTheory.Mum.TermLocus.nonzeroLocus_eq R D.toPre Y k 0 _ _ (ht₀ a)`. Establish `hlocc : ∀ c, nonzeroLocus (τJ (e (iκ c))) = q ⁻¹ᵁ nonzeroLocus (bb c (l c))` using `fun c => GlobalTheory.Mum.TermLocus.nonzeroLocus_eq R D.toPre Y k _ _ _ (htc c (l c))`. Establish `hch₀ : φ ⁻¹ᵁ chart R _ i₀ = q ⁻¹ᵁ V₀` using `(toProj_preimage_chart _ _ hτ i₀).trans hloc₀`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `base` to `(baseRingHom (PSpace.str R _) (chart R _ i₀)).hom`. Set `rat : Fin (m + 1) → Γ(PSpace R _, chart R _ i₀)` to `fun j => ratio R _ i₀ (e.symm (.inl j))`. Establish `hW₀ : ∀ {W' : Y.H.left.Opens}, W' ≤ q ⁻¹ᵁ V₀ → W' ≤ φ ⁻¹ᵁ chart R _ i₀` using `fun h => h.trans hch₀.ge`. Establish `hpoly : ∀ (W' : Y.H.left.Opens) (hq : W' ≤ q ⁻¹ᵁ V₀) (P : MvPolynomial (Fin (m + 1)) R), (φ.appLE (chart R _ i₀) W' (hW₀ hq)).hom (MvPolynomial.eval₂Hom base rat P) = (q.appLE V₀ W' hq).hom (MvPolynomial.eval₂Hom (baseRingHom D.toPre.P.A.hom V₀).hom (fun j => secRatio (s a) (s j) …`. Introduce `W' hq P`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : (φ.appLE (chart R _ i₀) W' (hW₀ hq)).hom.comp (MvPolynomial.eval₂Hom base rat) = (q.appLE V₀ W' hq).hom.comp (MvPolynomial.eval₂Hom (baseRingHom D.toPre.P.A.hom V₀).hom (fun j => secRatio (s a) (s j)))`. Rewrite using `[MvPolynomial.comp_eval₂Hom, MvPolynomial.comp_eval₂Hom]`. Use `congr 1`. Rewrite using `[← CommRingCat.hom_comp, ← CommRingCat.hom_comp, baseRingHom_appLE, baseRingHom_appLE, toProj_str]`. Conclude with `congrArg (fun g => (baseRingHom g W').hom) (Over.w Y.q).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j show pullRatio φ W' i₀ _ _ = _`. Rewrite using `[pullRatio_toProj_on]`. Conclude with `(GlobalTheory.Mum.secRatio_isTermOf_zero R D.toPre Y k (s a) (s j) _ _ (ht₀ a) (ht₀ j) W' hq _).symm`. Conclude with `RingHom.congr_fun e1 P`. Set `W` to `q ⁻¹ᵁ V`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWV₀ : W ≤ q ⁻¹ᵁ V₀` using `q.preimage_mono hVV₀`. Take `⟨p, hp⟩` from `(hsi a).2 f`. Set `F₀` to `MvPolynomial.eval₂Hom base rat p`. Set `G` to `F₀ * ∏ c, ratio R _ i₀ (iκ c)`. Set `U` to `(PSpace R _).basicOpen G`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : IsAffineOpen U` using `(isAffineOpen_chart R _ i₀).basicOpen G`. Establish `hUc : U ≤ chart R _ i₀` using `(PSpace R _).basicOpen_le G`. Establish `hF : ∀ (W' : Y.H.left.Opens) (hq : W' ≤ q ⁻¹ᵁ V₀), (φ.appLE (chart R _ i₀) W' (hW₀ hq)).hom F₀ = (q.appLE V₀ W' hq).hom f` using `fun W' hq => by`. Rewrite using `[hpoly W' hq p, hp]`. Establish `hUW : φ ⁻¹ᵁ U ≤ W`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hx₀ : x ∈ q ⁻¹ᵁ V₀` using `hch₀.le (φ.preimage_mono hUc hx)`. Establish `h1 : x ∈ Y.H.left.basicOpen ((φ.appLE (chart R _ i₀) (q ⁻¹ᵁ V₀) (hW₀ le_rfl)).hom G)`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨hx₀, hx⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, Scheme.basicOpen_mul, hF _ le_rfl, Scheme.basicOpen_appLE]`. Conclude with `h1.1.2`. Establish `hWU : W ≤ φ ⁻¹ᵁ U`. Introduce `x hx`. Establish `hx₀ : x ∈ q ⁻¹ᵁ V₀` using `hWV₀ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : x ∈ Y.H.left.basicOpen ((φ.appLE (chart R _ i₀) (q ⁻¹ᵁ V₀) (hW₀ le_rfl)).hom G)`. Rewrite using `[map_mul, Scheme.basicOpen_mul, hF _ le_rfl, Scheme.basicOpen_appLE, map_prod]`. Use `⟨⟨hx₀, hx⟩, ?_⟩` and prove the remaining obligations. Use `Finset.prod_induction _ (fun r => x ∈ Y.H.left.basicOpen r) (fun r r' h h' => by rw [Scheme.basicOpen_mul]; exact ⟨h, h'⟩) (by rw [Scheme.basicOpen_of_isUnit _ isUnit_one]; trivial) fun c _ => ?_` and prove the remaining obligations. Use `show x ∈ Y.H.left.basicOpen (pullRatio φ _ i₀ _ (iκ c))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[basicOpen_pullRatio, toProj_preimage_chart]`. Use `⟨hx₀, ?_⟩` and prove the remaining obligations. Use `show x ∈ nonzeroLocus (τJ (e (iκ c)))`. Rewrite using `[hlocc c]`. Conclude with `hVc c hx`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Scheme.basicOpen_appLE]`. Conclude with `h1.2`. Use `haveI := hqa`. Use `⟨U, W, hWU, hU, hWU hyf, hUW, hV.preimage q, ?_⟩` and prove the remaining obligations. Set `S` to `(φ.appLE U W hWU).hom.range`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS_chart : ∀ r : Γ(PSpace R _, chart R _ i₀), (φ.appLE (chart R _ i₀) W (hW₀ hWV₀)).hom r ∈ S` using `fun r => ⟨resG _ hUc r, appLE_resG φ hUc hWU r⟩`. Establish `hS_unit : ∀ r : Γ(PSpace R _, chart R _ i₀), U ≤ (PSpace R _).basicOpen r → ∃ w ∈ S, (φ.appLE (chart R _ i₀) W (hW₀ hWV₀)).hom r * w = 1`. Introduce `r hr`. Take `⟨v, hv⟩` from `isUnit_resG_of_le r hr`. Use `⟨(φ.appLE U W hWU).hom ↑v⁻¹, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← appLE_resG φ hUc hWU r, ← map_mul]`. Establish `: resG _ hUc r = ↑v` using `hv.symm`. Rewrite using `[this, Units.mul_inv, map_one]`. Establish `hUF : U ≤ (PSpace R _).basicOpen F₀` using `fun x hx => by`. Use `hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `x ∈ (PSpace R _).basicOpen G at this`. Rewrite `this` using `[Scheme.basicOpen_mul]`. Conclude with `this.1`. Establish `hUr : ∀ c, U ≤ (PSpace R _).basicOpen (ratio R _ i₀ (iκ c))` using `fun c x hx => by`. Use `hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `x ∈ (PSpace R _).basicOpen G at this`. Rewrite `this` using `[Scheme.basicOpen_mul, ← Finset.mul_prod_erase _ _ (Finset.mem_univ c), Scheme.basicOpen_mul]`. Conclude with `this.2.1`. Establish `hS_q : ∀ x : Γ(D.toPre.P.A.left, V₀), (q.appLE V₀ W hWV₀).hom x ∈ S` using `fun x => by`. Take `⟨P, rfl⟩` from `(hsi a).2 x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpoly W hWV₀ P]`. Conclude with `hS_chart _`. Establish `hWτ₀ : W ≤ nonzeroLocus (τJ (e i₀))` using `hWV₀.trans hloc₀.ge`. Establish `hWb : ∀ c, W ≤ Y.H.left.basicOpen (secRatio (τJ (e i₀)) (τJ (e (iκ c))))` using `fun c x hx => by`. Rewrite using `[basicOpen_secRatio]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hWτ₀ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hlocc c]`. Conclude with `hVc c hx`. Set `u : _ → Γ(Y.H.left, W)ˣ` to `fun c => (isUnit_resG_of_le _ (hWb c)).unit`. Establish `hu : ∀ c, (u c).val = resG _ hWτ₀ (secRatio (τJ (e i₀)) (τJ (e (iκ c))))` using `fun c => (isUnit_resG_of_le _ (hWb c)).unit_spec`.
-
-Establish `hupr : ∀ c, (u c).val = (φ.appLE (chart R _ i₀) W (hW₀ hWV₀)).hom (ratio R _ i₀ (iκ c))` using `fun c => by`. Rewrite using `[hu c]`. Conclude with `(pullRatio_toProj_on _ _ hτ i₀ (iκ c) (hW₀ hWV₀)).symm`. Establish `hSt : S = ⊤`. Use `GlobalTheory.Mum.subring_eq_top_of_weight_units R D.toPre Y i hi₁ hi₂ bs V hV u (fun c => ?_) S (fun c => ?_) (fun c => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hu c]`. Conclude with `(GlobalTheory.Mum.TermWeight.isWt_secRatio R D.toPre Y i hi₃ hi₂ k (bs c) (s a) (bb c (l c)) _ _ (ht₀ a) (htc c (l c))).res hWτ₀`. Use `hV₀.isLocalization_basicOpen f` as an intermediate fact. Take `⟨⟨a', _, n', rfl⟩, ha'⟩` from `IsLocalization.surj (Submonoid.powers f) c`. Establish `ha'' : c * resG _ hVV₀ (f ^ n') = resG _ hVV₀ a'` using `ha'`.
-
-Establish `happ : ∀ x : Γ(D.toPre.P.A.left, V₀), (q.app V).hom (resG _ hVV₀ x) = (q.appLE V₀ W hWV₀).hom x` using `fun x => by`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `appLE_resG q hVV₀ le_rfl x`. Take `⟨w, hw, hfw⟩` from `hS_unit F₀ hUF`. Rewrite `hfw` using `[hF W hWV₀]`.
-
-Establish `key` using `congrArg (q.app V).hom ha''`. Rewrite `key` using `[map_mul, happ, happ, map_pow]`. Establish `: (q.app V).hom c = (q.appLE V₀ W hWV₀).hom a' * w ^ n'`. Rewrite using `[← key, _root_.mul_assoc, ← mul_pow, hfw, one_pow, _root_.mul_one]`. Rewrite using `[this]`.
-
-Conclude with `S.mul_mem (hS_q a') (S.pow_mem hw n')`. Use `⟨(hupr c).symm ▸ hS_chart _, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hrw⟩` from `hS_unit _ (hUr c)`. Rewrite `hrw` using `[← hupr c]`. Rewrite using `[Units.mul_eq_one_iff_inv_eq.1 hrw]`.
-
-Conclude with `hw`. Introduce `x`. Establish `hx : x ∈ S` using `hSt ▸ Subring.mem_top x`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_immersion : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (Y : Ext D.toPre), ∃ (S : Finset D.toPre.X) (k₁ : ℕ), ∀ k ≥ k₁, ∃ (N : ℕ) (α : Fin (N + 1) → D.toPre.X) (b : ∀ i, D.toPre.SecB k (α i)) (τ : Fin (N + 1) → SecK D.toPre.P.L Y.q.left k) (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤), (∀ i, α i ∈ S ∧ IsTermOf Y (b i) (τ i)) ∧ IsImmersion (GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ) := by
   intro R _ _ _ hR D Y

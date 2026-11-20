@@ -14,9 +14,9 @@ variable {F : Type u} [Field F] {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.I
 omit [E.IsElliptic] in
 
 /- English proof (translation)
-Establish `hroot : ∀ z : L, ∃ w : L, w ^ p = z` using `fun z => ⟨(frobeniusEquiv L p).symm z, by rw [← frobenius_def, frobenius_apply_frobeniusEquiv_symm]⟩`. Break down `P with (_ | ⟨u, v, h⟩)` into its components or cases. Conclude with `⟨0, rfl⟩`. Take `⟨u', rfl⟩` from `hroot u`. Take `⟨v', rfl⟩` from `hroot v`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨.some u' v' ((nonsingular_pow_iff E p).mp h), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_frobeniusPoint_eq {L : Type*} [Field L] [Algebra F L] [CharP L p] [PerfectRing L p]
     (P : ((frobeniusTwist E p).baseChange L).toAffine.Point) :
@@ -32,7 +32,7 @@ theorem exists_frobeniusPoint_eq {L : Type*} [Field L] [Algebra F L] [CharP L p]
 variable [PerfectRing F p]
 
 /- English proof (translation)
-Use `φ.finiteDimensional` as an intermediate fact. Apply `le_powField_of_finSepDegree_lt E p` to reduce the goal to its premises. Conclude with `lt_of_le_of_ne (Field.finSepDegree_le_finrank _ _) fun h => hφ ((Field.finSepDegree_eq_finrank_iff _ _).mp h)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fieldRange_le_powField_of_not_isSeparable (φ : Isogeny E E') (hφ : ¬ φ.IsSeparable) :
     φ.comap.fieldRange ≤ powField E p := by
@@ -42,21 +42,19 @@ theorem fieldRange_le_powField_of_not_isSeparable (φ : Isogeny E E') (hφ : ¬ 
     fun h => hφ ((Field.finSepDegree_eq_finrank_iff _ _).mp h)
 
 /- English proof (translation)
-Establish `hle` using `fieldRange_le_powField_of_not_isSeparable p φ hφ`. Rewrite `hle` using `[← fieldRange_comap_frobeniusIsogeny E p]`. Take `⟨a, ha⟩` from `AlgHom.mem_fieldRange.mp (hle (AlgHom.mem_fieldRange.mpr ⟨genX E', φ.comap_genX⟩))`. Take `⟨b, hb⟩` from `AlgHom.mem_fieldRange.mp (hle (AlgHom.mem_fieldRange.mpr ⟨genY E', φ.comap_genY⟩))`. Establish `hns : (E'.baseChange (frobeniusTwist E p).toAffine.FunctionField).toAffine.Nonsingular a b` using `(E'.toAffine.baseChange_nonsingular (frobeniusIsogeny E p).comap.toRingHom.injective a b).mp (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha, hb]`. Conclude with `φ.nonsingular)`. Establish `ht : Transcendental F a` using `fun h => φ.transcendental_alt (by rw [← ha]; exact h.algHom (frobeniusIsogeny E p).comap)`. Use `set Q : (E'.baseChange (frobeniusTwist E p).toAffine.FunctionField).toAffine.Point := .some a b hns with hQdef`. Establish `hQ : Point.map (frobeniusIsogeny E p).comap Q = φ.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[φ.val_eq_some_x_y, hQdef, Point.map_some]`. Simplify using `only [Point.some.injEq]`. Conclude with `⟨ha, hb⟩`. Establish `key : ∀ {L : Type u} [Field L] [Algebra F L] [CharP L p] [DecidableEq L] (R : (E.baseChange L).toAffine.Point) (hR : IsGenPt E R) (h' : IsGenPt (frobeniusTwist E p) (frobeniusPoint E p L R)), Point.map (genEval _ (frobeniusPoint E p L R) h') Q = φ.app R hR`. Introduce `L _ _ _ _ R hR h'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[genEval_congr _ (frobeniusIsogeny_app E p R hR).symm h' ((frobeniusIsogeny E p).isGenPt_app R hR), Isogeny.genEval_app, ← Point.map_map, hQ]`. Both sides reduce to the same expression. Establish `hresp : RespectsAdd (frobeniusTwist E p) E' Q`. Rewrite using `[respectsAdd_iff]`. Introduce `L _ _ _ P₁ P₂ h₁ h₂ h₃`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharP L p` using `charP_of_injective_algebraMap (algebraMap F L).injective p`. Establish `: CharP (AlgebraicClosure L) p` using `charP_of_injective_algebraMap (algebraMap F (AlgebraicClosure L)).injective p`. Set `σ : L →ₐ[F] AlgebraicClosure L` to `IsScalarTower.toAlgHom F L (AlgebraicClosure L)`. Take `⟨R₁, e₁⟩` from `exists_frobeniusPoint_eq (E := E) p (Point.map σ P₁)`. Take `⟨R₂, e₂⟩` from `exists_frobeniusPoint_eq (E := E) p (Point.map σ P₂)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : frobeniusPoint E p _ (R₁ + R₂) = Point.map σ (P₁ + P₂)`. Rewrite using `[frobeniusPoint_add, e₁, e₂, map_add]`. Establish `gen : ∀ {R P} (hP : IsGenPt (frobeniusTwist E p) P) (e : frobeniusPoint E p (AlgebraicClosure L) R = Point.map σ P), IsGenPt E R` using `fun hP e => (isGenPt_frobeniusPoint_iff E p _).mp (e ▸ isGenPt_map _ σ hP)`. Establish `step : ∀ (P : ((frobeniusTwist E p).baseChange L).toAffine.Point) (hP : IsGenPt (frobeniusTwist E p) P) (R : (E.baseChange (AlgebraicClosure L)).toAffine.Point) (e : frobeniusPoint E p _ R = Point.map σ P), Point.map σ (Point.map (genEval _ P hP) Q) = φ.app R (gen hP e)`. Introduce `P hP R e`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Point.map_map, ← genEval_map, genEval_congr _ e.symm _ ((isGenPt_frobeniusPoint_iff E p R).mpr (gen hP e))]`. Conclude with `key R _ _`. Apply `Point.map_injective (W' := E') σ` to reduce the goal to its premises. Rewrite using `[map_add, step _ h₁ R₁ e₁, step _ h₂ R₂ e₂, step _ h₃ _ e₃]`. Conclude with `φ.app_add (gen h₁ e₁) (gen h₂ e₂) (gen h₃ e₃)`.
-
-Use `⟨⟨Q, (isIsogeny_iff _).mpr ⟨ht, hresp⟩⟩, Isogeny.ext' ?_⟩` and prove the remaining obligations. Conclude with `(Isogeny.comp_val _ _).trans hQ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_comp_frobeniusIsogeny_eq (φ : Isogeny E E') (hφ : ¬ φ.IsSeparable) :
     ∃ ψ : Isogeny (frobeniusTwist E p) E', ψ.comp (frobeniusIsogeny E p) = φ := by
@@ -114,7 +112,7 @@ theorem exists_comp_frobeniusIsogeny_eq (φ : Isogeny E E') (hφ : ¬ φ.IsSepar
   exact (Isogeny.comp_val _ _).trans hQ
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_comp_frobeniusIsogeny_eq p φ fun h => (isSeparable_iff_isogenyPullback_ne_zero φ).mp h hφ`. Establish `hd : φ.degree = ψ.degree * p`. Rewrite using `[← hψ, Isogeny.degree_comp, degree_frobeniusIsogeny]`. Conclude with `⟨ψ, hψ.symm, hd, by rw [hd, Nat.mul_div_cancel _ hp.out.pos]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_eq_comp_frobeniusIsogeny (φ : Isogeny E E')
     (hφ : isogenyPullback φ (invariantDifferential E') = 0) :
@@ -129,7 +127,7 @@ theorem exists_eq_comp_frobeniusIsogeny (φ : Isogeny E E')
 omit [E.IsElliptic] [CharP F p] [PerfectRing F p] hp in
 
 /- English proof (translation)
-Use `⟨ψ.comap.toRingHom.injective, fun z => ?_⟩` and prove the remaining obligations. Establish `htop : (⊤ : IntermediateField F E₁.toAffine.FunctionField) ≤ ψ.comap.fieldRange`. Rewrite using `[← relfinrank_eq_one_iff, relfinrank_top_right]`. Conclude with `h`. Conclude with `AlgHom.mem_fieldRange.mp (htop trivial)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Isogeny.comap_bijective_of_degree_eq_one {E₁ E₂ : WeierstrassCurve F} [E₁.IsElliptic]
     [E₂.IsElliptic] (ψ : Isogeny E₁ E₂) (h : ψ.degree = 1) : Function.Bijective ψ.comap := by
@@ -140,11 +138,11 @@ theorem Isogeny.comap_bijective_of_degree_eq_one {E₁ E₂ : WeierstrassCurve F
   exact AlgHom.mem_fieldRange.mp (htop trivial)
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hd, -⟩` from `exists_eq_comp_frobeniusIsogeny p φ hφ`. Establish `h1 : ψ.degree = 1`. Rewrite `hd` using `[hdeg]`. Conclude with `(Nat.mul_eq_right hp.out.ne_zero).mp hd.symm`. Use `⟨ψ, hψ, h1, Isogeny.comap_bijective_of_degree_eq_one ψ h1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dualOver_comp]`. Use `congr 1`. Simplify using `[h1]`. Rewrite using `[comp_dualOver]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isomorphism_of_degree_eq (φ : Isogeny E E')
     (hφ : isogenyPullback φ (invariantDifferential E') = 0) (hdeg : φ.degree = p) :

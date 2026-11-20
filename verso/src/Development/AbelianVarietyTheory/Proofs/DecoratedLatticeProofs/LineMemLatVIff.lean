@@ -25,21 +25,21 @@ Both sides reduce to the same expression.
 theorem pr_ofSplit (q : SplitPt D k) (x : D.host.E) : (ofSplit q).pr x = q.pr (incA D x) := rfl
 
 /- English proof (translation)
-Rewrite using `[q.sec_pr, q.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff q a).1 ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sec_add_cA (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.v)) :
     a = q.sec (q.pr a) + cA D (q.sec (q.pr (cA D a))) := by
   rw [q.sec_pr, q.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff q a).1 ha]
 
 /- English proof (translation)
-Rewrite using `[q.int_iff, q.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt q).2 ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_mem_of_int (q : SplitPt D k) {a : AE D} (ha : finPart D a ∈ intAE D) : q.pr a ∈ 𝒪[k] := by
   rw [q.int_iff, q.sec_pr, RingHom.map_mul]
   exact mul_mem_intAE (e_mem_intAt q).2 ha
 
 /- English proof (translation)
-Use `⟨fun h => ⟨pr_mem_of_int q h.2, pr_mem_of_int q ((cA_int_iff a).2 h.2)⟩, fun h => ⟨ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_sec_add_cA q ha, RingHom.map_add]`. Conclude with `add_mem ((q.int_iff _).1 h.1) ((cA_int_iff _).2 ((q.int_iff _).1 h.2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intAt_iff_pr (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.v)) :
     a ∈ intAt D (· = q.v) ↔ q.pr a ∈ 𝒪[k] ∧ q.pr (cA D a) ∈ 𝒪[k] := by
@@ -48,9 +48,7 @@ theorem mem_intAt_iff_pr (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q
   exact add_mem ((q.int_iff _).1 h.1) ((cA_int_iff _).2 ((q.int_iff _).1 h.2))
 
 /- English proof (translation)
-Distinguish the cases in `hi : i = m₁`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hi]`.
-
-Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_int {Y' : Type} [DecidableEq Y'] (m₁ : Y') (i : Y') : (Pi.single m₁ (1 : k) : Y' → k) i ∈ 𝒪[k] := by
   by_cases hi : i = m₁
@@ -60,13 +58,13 @@ theorem single_int {Y' : Type} [DecidableEq Y'] (m₁ : Y') (i : Y') : (Pi.singl
 variable {Y : Type} [Fintype Y] [DecidableEq Y]
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0` using `by rintro rfl; rw [map_zero] at hc; exact zero_ne_one hc`. Establish `e : (fun r => q.sec (x * (ofSplit q).pr (u r))) = fun r => q.sec ((F.β *ᵥ Pi.single m₀ (x / c)) r)`. Use function extensionality and compare the values at `r`. Use `congr 1`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single m₀ (fun b _ hb => by rw [Pi.single_eq_of_ne hb, mul_zero]) (fun h => absurd (Finset.mem_univ _) h), Pi.single_eq_same, ← hu r]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← hI (Pi.single m₀ (x / c))]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `h m₀`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Pi.single_eq_same, Valuation.mem_integer_iff, map_div₀, hc, div_one]`. Conclude with `(Valuation.mem_integer_iff _ _).2 h1`. Introduce `h i`. Distinguish the cases in `hi : i = m₀`. Substitute `hi` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same, Valuation.mem_integer_iff, map_div₀, hc, div_one]`. Conclude with `(Valuation.mem_integer_iff _ _).1 h`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpart {q : SplitPt D k} {S : HSp D} {L : Lat S} {F : Frame k S.rank Y} {u : Fin S.rank → D.host.E} {c : k} {m₀ : Y}
     (hI : IntIn q S F L) (hc : valuation k c = 1) (hu : ∀ r, c * (ofSplit q).pr (u r) = F.β r m₀) (x : k) :
@@ -93,19 +91,17 @@ theorem wpart {q : SplitPt D k} {S : HSp D} {L : Lat S} {F : Frame k S.rank Y} {
     · rw [Pi.single_eq_of_ne hi]; exact zero_mem _
 
 /- English proof (translation)
-Establish `ht : ∀ i, (ofSplit q).pr (star ((S.gram *ᵥ u) i)) = ∑ j, q.pr (cA D (incA D (S.gram i j))) * (ofSplit q).pr (star (u j))`. Introduce `i`. Simplify using `only [pr_ofSplit, Matrix.mulVec, dotProduct, star_sum, star_mul', map_sum, map_mul, cA_incA]`. Establish `hsum : ∀ x : Fin S.rank → k, ∑ i, ∑ j, x i * q.pr (cA D (incA D (S.gram i j))) * (A * (ofSplit q).pr (star (u j))) = A * ∑ m, (F.γ *ᵥ x) m * ∑ r, F.β r m * (ofSplit q).pr (star ((S.gram *ᵥ u) r))`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∑ i, ∑ j, x i * q.pr (cA D (incA D (S.gram i j))) * (A * (ofSplit q).pr (star (u j))) = A * ∑ i, x i * (ofSplit q).pr (star ((S.gram *ᵥ u) i))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ht i, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `congr 1`. Establish `hx : x = F.β *ᵥ (F.γ *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`. Generalize the expression as in `F.γ *ᵥ x = y at hx ⊢`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hx` using the available equality. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_comm.trans (Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[csec_mem_iff hL]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hsum]`. Take `⟨m₁, hm₁⟩` from `hb1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hx : (fun i => q.sec ((F.β *ᵥ Pi.single m₁ (1 : k)) i)) ∈ latV S L (· = q.v)` using `(hI _).1 (single_int (k := k) m₁)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `h _ hx`. Rewrite `h2` using `[Matrix.mulVec_mulVec, F.γβ, Matrix.one_mulVec, Finset.sum_eq_single m₁ (fun b _ hb => by rw [Pi.single_eq_of_ne hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), Pi.single_eq_same, one_mul, Valuation.mem_integer_iff, map_mul, hm₁, mul_one]`. Conclude with `(Valuation.mem_integer_iff _ _).2 h2`. Introduce `hA x hx`. Establish `hy` using `(hI (F.γ *ᵥ x)).2 (by rwa [Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec])`.
-
-Conclude with `mul_mem hA (sum_mem fun m _ => mul_mem (hy m) (hb m))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wbar {q : SplitPt D k} {S : HSp D} {L : Lat S} {F : Frame k S.rank Y} {u : Fin S.rank → D.host.E}
     (hL : IsSelfDualC S L) (hI : IntIn q S F L)
@@ -153,11 +149,11 @@ theorem wbar {q : SplitPt D k} {S : HSp D} {L : Lat S} {F : Frame k S.rank Y} {u
     exact mul_mem hA (sum_mem fun m _ => mul_mem (hy m) (hb m))
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S L Y _ _ F u c m₀ hL hI hc hu hb hb1 a ha`. Establish `hy : (fun r => a * incA D (u r)) = (fun r => q.sec (q.pr a * (ofSplit q).pr (u r))) + (fun r => cA D (q.sec (q.pr (cA D a) * (ofSplit q).pr (star (u r)))))`. Use function extensionality and compare the values at `r`. Rewrite using `[Pi.add_apply]`. Use `conv_lhs => rw [eq_sec_add_cA q ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, sec_mul_right]`. Use `congr 1`. Establish `e : incA D (u r) = cA D (incA D (star (u r)))` using `by rw [cA_incA, star_star]`. Rewrite using `[e, ← RingHom.map_mul, sec_mul_right]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Use `(decomp hL (fun r => q.pr a * (ofSplit q).pr (u r)) (fun r => q.pr (cA D a) * (ofSplit q).pr (star (u r)))).trans ?_` and prove the remaining obligations. Rewrite using `[mem_intAt_iff_pr q ha]`. Conclude with `and_congr (wpart hI hc hu _) (wbar hL hI hb hb1 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_mem_latV_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (Y : Type) [Fintype Y] [DecidableEq Y]

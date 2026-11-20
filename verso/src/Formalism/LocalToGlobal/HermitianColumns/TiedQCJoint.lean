@@ -25,7 +25,7 @@ def yCast (D : D7) (u : D.what₂.Word) (i : ℕ) : (D.mem u).C.Y i ≃ (D.chTw 
   Equiv.cast (congrArg (fun C => C.Y i) (D.memberColumns_twistedChain_base u).symm)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hfg]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heq_apply {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc} (h : C' = C) (j : ℕ)
     (f : C'.cls j → C'.Y j → ℂ) (g : C.cls j → C.Y j → ℂ) (hfg : HEq f g) (c : C.cls j) (y : C.Y j) :

@@ -11,7 +11,7 @@ open ValuativeRel IsDedekindDomain NumberField Formalism.MainNotions.S.Loc
 namespace PI.LocLatEq.W
 
 /- English proof (translation)
-Establish `: IsNoetherian R N` using `isNoetherian_of_fg_of_noetherian N hN`. Establish `h1 : (P.comap N.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map N.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.2 h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem core_fg_of_le {R M : Type*} [CommRing R] [IsNoetherianRing R] [AddCommGroup M]
     [Module R M] {N P : Submodule R M} (hN : N.FG) (h : P ≤ N) : P.FG := by
@@ -24,14 +24,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
     {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Rewrite using `[A.O_def]`. Conclude with `((RingOfIntegers.isIntegral_coe r).map A.ιE.toIntAlgHom).tower_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_int_mem (A : LocAt F E sig p) (r : 𝓞 E) : A.ιE (r : E) ∈ A.O := by
   rw [A.O_def]
   exact ((RingOfIntegers.isIntegral_coe r).map A.ιE.toIntAlgHom).tower_top
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `: Subsingleton A.Ep` using `not_nontrivial_iff_subsingleton.1 h`. Establish `h2` using `A.rank`. Rewrite `h2` using `[Module.finrank_zero_of_subsingleton]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem core_nontriv (A : LocAt F E sig p) : Nontrivial A.Ep := by
   by_contra h
@@ -41,7 +41,7 @@ theorem core_nontriv (A : LocAt F E sig p) : Nontrivial A.Ep := by
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_sub A.ιE (x i) (y i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem core_bc_sub (A : LocAt F E sig p) {n : ℕ} (x y : Fin n → E) :
     bc A (x - y) = bc A x - bc A y := by
@@ -49,14 +49,14 @@ theorem core_bc_sub (A : LocAt F E sig p) {n : ℕ} (x y : Fin n → E) :
   exact map_sub A.ιE (x i) (y i)
 
 /- English proof (translation)
-The claim follows from `S.smul_mem (⟨o, ho⟩ : A.O) hx`.
+A detailed English derivation is pending.
 -/
 theorem core_smem (A : LocAt F E sig p) {n : ℕ} (S : Submodule A.O (Fin n → A.Ep)) {o : A.Ep}
     (ho : o ∈ A.O) {x : Fin n → A.Ep} (hx : x ∈ S) : o • x ∈ S :=
   S.smul_mem (⟨o, ho⟩ : A.O) hx
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def r x`.
+A detailed English derivation is pending.
 -/
 private theorem ringOfIntegers_smul_eq_coe_mul (r : 𝓞 E) (x : E) : r • x = (r : E) * x :=
   Algebra.smul_def r x
@@ -68,7 +68,7 @@ private theorem locLatEq_bc_apply (A : Formalism.MainNotions.S.Loc.LocAt F E sig
     (i : Fin n) : PI.LocLatEq.bc A x i = A.ιE (x i) := rfl
 
 /- English proof (translation)
-Unfold `PI.LocLatEq.latL`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem locLatEq_bc_mem_latL_of_mem (A : Formalism.MainNotions.S.Loc.LocAt F E sig p) {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) {x : Fin n → E} (hx : x ∈ Λ) :
@@ -77,13 +77,13 @@ private theorem locLatEq_bc_mem_latL_of_mem (A : Formalism.MainNotions.S.Loc.Loc
   exact Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `h` and use `(p.isPrime.mem_or_mem h).elim hd hd'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mul_not_mem_asIdeal_of_not_mem {d d' : 𝓞 F} (hd : d ∉ p.asIdeal) (hd' : d' ∉ p.asIdeal) :
     d * d' ∉ p.asIdeal := fun h => (p.isPrime.mem_or_mem h).elim hd hd'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun v => (Fin.cons (0 : M) v : Fin (n + 1) → M) map_add' := fun v w => by funext i cases i using Fin.cases <;> simp map_smul' := fun c v => by funext i cases i using Fin.cases <;> simp }, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_linearMap_eq_cons_zero (R M : Type*) [Semiring R] [AddCommMonoid M] [Module R M]
     (n : ℕ) : ∃ L : (Fin n → M) →ₗ[R] (Fin (n + 1) → M),
@@ -99,55 +99,51 @@ private theorem exists_linearMap_eq_cons_zero (R M : Type*) [Semiring R] [AddCom
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `core_nontriv A` as an intermediate fact. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Λ _ y _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1, fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Establish `hy0 : y = 0` using `funext fun i => i.elim0`. Rewrite using `[hy0, smul_zero]`. Conclude with `Λ.zero_mem`. Consider the case `succ n ih`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Λ hΛ y hy`. Take `⟨L, hL⟩` from `exists_linearMap_eq_cons_zero (𝓞 E) E n`. Establish `hinj : Function.Injective L` using `fun v w h => funext fun j => by`. Simplify `congrFun h j.succ` using `[hL]`. Establish `hmapFG : (Submodule.map L (Λ.comap L)).FG` using `core_fg_of_le hΛ (Submodule.map_comap_le L Λ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFG : (Λ.comap L).FG` using `Submodule.fg_of_fg_map_injective L hinj hmapFG`. Take `⟨a, haI, hgen⟩` from `core_gen hA p (Λ.map (LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin (n + 1) => E) 0)) (hΛ.map _)`. Establish `hx0 : ∀ x ∈ Λ, x 0 ∈ Λ.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin (n + 1) => E) 0) := fun x hx => Submodule.mem_map.2 ⟨x, hx, rfl⟩`. Take `⟨l1, hl1, hl1a⟩` from `Submodule.mem_map.1 haI`. Choose the witnesses or unpack the hypotheses as in `⟨l0, hl0, hl0a, hl0z⟩ : ∃ l0 ∈ Λ, l0 0 = a ∧ (a = 0 → l0 = 0) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨0, Λ.zero_mem, by simp [ha0], fun _ => rfl⟩`. Conclude with `⟨l1, hl1, hl1a, fun h => absurd h ha0⟩`. Establish `hdec : ∀ v ∈ PI.LocLatEq.latL A Λ, ∃ c ∈ A.O, ∃ w ∈ PI.LocLatEq.latL A (Λ.comap L), v = c • PI.LocLatEq.bc A l0 + (Fin.cons (0 : A.Ep) w : Fin (n + 1) → A.Ep)`. Introduce `v hv`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `PI.LocLatEq.latL at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Take `⟨d, hd, r, hr⟩` from `hgen (l 0) (hx0 l hl)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hud⟩` from `hU F E sig p A d hd`. Take `⟨m, hm⟩ : ∃ m : Fin (n + 1) → E, m = algebraMap (𝓞 F) (𝓞 E) d • l - r • l0` from `⟨_, rfl⟩`. Establish `hm0 : m 0 = 0`. Rewrite using `[hm, Pi.sub_apply, Pi.smul_apply, Pi.smul_apply, hl0a, hr, sub_self]`. Establish `hmc : (Fin.cons (0 : E) (Fin.tail m) : Fin (n + 1) → E) = m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm0, Fin.cons_self_tail]`. Establish `hmt : Fin.tail m ∈ Λ.comap L`. Rewrite using `[Submodule.mem_comap, hL, hmc, hm]`. Conclude with `Λ.sub_mem (Λ.smul_mem _ hl) (Λ.smul_mem _ hl0)`. Establish `hr' : ((algebraMap (𝓞 F) (𝓞 E) d : 𝓞 E) : E) * l 0 = (r : E) * a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hr` using `only [ringOfIntegers_smul_eq_coe_mul]`. Use `⟨u * A.ιE (r : E), A.O.mul_mem hu (core_int_mem A r), u • PI.LocLatEq.bc A (Fin.tail m), core_smem A (PI.LocLatEq.latL A (Λ.comap L)) hu (locLatEq_bc_mem_latL_of_mem A _ hmt), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [locLatEq_bc_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Fin.cons_zero, add_zero, hl0a]`. Establish `h1` using `congrArg A.ιE hr'`. Rewrite `h1` using `[map_mul, map_mul]`. Take the linear combination `(-(A.ιE (l 0))) * hud + u * h1`. Consider the case `succ j`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [locLatEq_bc_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, Fin.tail, hm, Pi.sub_apply, ringOfIntegers_smul_eq_coe_mul, map_sub, map_mul]`. Take the linear combination `(-(A.ιE (l j.succ))) * hud`. Consider the case `zero`. Use `⟨0, A.O.zero_mem, 0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Apply the tactic sequence `cases i using Fin.cases <;> simp`. Consider the case `add x y _ _ hx hy`. Take `⟨c1, hc1, w1, hw1, rfl⟩` from `hx`. Take `⟨c2, hc2, w2, hw2, rfl⟩` from `hy`. Use `⟨c1 + c2, A.O.add_mem hc1 hc2, w1 + w2, Submodule.add_mem _ hw1 hw2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i using Fin.cases <;>`. Apply the tactic sequence `simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Fin.cons_zero, Fin.cons_succ, add_zero] <;> ring`. Consider the case `smul o x _ hx`. Take `⟨c, hc, w, hw, rfl⟩` from `hx`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨(o : A.Ep) * c, A.O.mul_mem o.2 hc, o • w, Submodule.smul_mem _ o hw, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i using Fin.cases <;>`. Apply the tactic sequence `simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Subring.smul_def, Fin.cons_zero, Fin.cons_succ, add_zero] <;> ring`. Establish `htail : ∀ v ∈ PI.LocLatEq.latL A Λ, v 0 = 0 → Fin.tail v ∈ PI.LocLatEq.latL A (Λ.comap L)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v hv hv0`. Take `⟨c, hc, w, hw, rfl⟩` from `hdec v hv`. Establish `hca : c * A.ιE a = 0`. Establish `h0` using `hv0`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Fin.cons_zero, add_zero, locLatEq_bc_apply, hl0a] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `h0`. Establish `hzero : c • PI.LocLatEq.bc A l0 = 0`. Distinguish the cases in `ha0 : a = 0`. Rewrite using `[hl0z ha0]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[locLatEq_bc_apply]`. Establish `hc0 : c = c * A.ιE a * A.ιE a⁻¹`. Rewrite using `[mul_assoc, ← map_mul, mul_inv_cancel₀ ha0, map_one, mul_one]`. Rewrite `hc0` using `[hca, zero_mul]`. Rewrite using `[hc0, zero_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hzero, zero_add, Fin.tail_cons]`. Conclude with `hw`. Take `⟨c, hc, w, hw, hyd⟩` from `hdec _ hy`. Establish `hy0 : A.ιE (y 0) = c * A.ιE a`. Establish `h0` using `congrFun hyd 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [locLatEq_bc_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Fin.cons_zero, add_zero, hl0a] at h0`. Conclude with `h0`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, hta⟩ : ∃ t : E, A.ιE t ∈ A.O ∧ y 0 = t * a := by`. Distinguish the cases in `ha0 : a = 0`. Use `⟨0, by rw [map_zero]; exact A.O.zero_mem, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy0` using `[ha0, map_zero, mul_zero]`. Rewrite using `[zero_mul]`. Conclude with `A.ιE.injective (by rw [hy0, map_zero])`. Use `⟨y 0 * a⁻¹, ?_, by rw [mul_assoc, inv_mul_cancel₀ ha0, mul_one]⟩` and prove the remaining obligations. Rewrite using `[map_mul, hy0, mul_assoc, ← map_mul, mul_inv_cancel₀ ha0, map_one, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `hc`. Take `⟨d1, hd1, b, hb⟩` from `hI F E h2 sig p A t ht`. Take `⟨z, hz⟩ : ∃ z : Fin (n + 1) → E, z = algebraMap (𝓞 F) (𝓞 E) d1 • y - b • l0` from `⟨_, rfl⟩`. Establish `hz0 : z 0 = 0`. Rewrite using `[hz, Pi.sub_apply, Pi.smul_apply, Pi.smul_apply, ringOfIntegers_smul_eq_coe_mul, ringOfIntegers_smul_eq_coe_mul, hl0a, hta]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `a * hb`. Establish `hzL : PI.LocLatEq.bc A z ∈ PI.LocLatEq.latL A Λ`. Rewrite using `[hz, core_bc_sub, bc_smul, bc_smul]`. Conclude with `Submodule.sub_mem _ (core_smem A (PI.LocLatEq.latL A Λ) (core_int_mem A _) hy) (core_smem A (PI.LocLatEq.latL A Λ) (core_int_mem A b) (locLatEq_bc_mem_latL_of_mem A Λ hl0))`. Establish `ht' : PI.LocLatEq.bc A (Fin.tail z) ∈ PI.LocLatEq.latL A (Λ.comap L)` using `htail _ hzL (by rw [locLatEq_bc_apply, hz0, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d2, hd2, hd2z⟩` from `ih (Λ.comap L) hFG (Fin.tail z) ht'`. Establish `hzc : (Fin.cons (0 : E) (Fin.tail z) : Fin (n + 1) → E) = z`. Rewrite using `[← hz0, Fin.cons_self_tail]`. Establish `hz2 : algebraMap (𝓞 F) (𝓞 E) d2 • z ∈ Λ`. Establish `h` using `Submodule.mem_comap.1 hd2z`.
-
-Rewrite `h` using `[map_smul, hL, hzc]`. Then use the resulting hypothesis. Establish `hy' : algebraMap (𝓞 F) (𝓞 E) d1 • y = z + b • l0`. Rewrite using `[hz, sub_add_cancel]`. Use `⟨d2 * d1, mul_not_mem_asIdeal_of_not_mem hd2 hd1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, hy', smul_add, smul_smul]`.
-
-Conclude with `Λ.add_mem hz2 (Λ.smul_mem _ hl0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_ind (hU : UnitP) (hA : AvoidP) (hI : IntP) (h2 : Module.finrank F E = 2)
     (A : LocAt F E sig p) : ∀ (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Λ.FG →
@@ -298,7 +294,7 @@ theorem core_ind (hU : UnitP) (hA : AvoidP) (hI : IntP) (h2 : Module.finrank F E
     exact Λ.add_mem hz2 (Λ.smul_mem _ hl0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h2 sig p A n Λ hΛ y hy`. Conclude with `core_ind hU hA hI h2 A n Λ hΛ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coreP_of_unitP_avoidP_intP (hU : UnitP) (hA : AvoidP) (hI : IntP) : CoreP := by
   intro F E _ _ _ _ _ h2 sig p A n Λ hΛ y hy

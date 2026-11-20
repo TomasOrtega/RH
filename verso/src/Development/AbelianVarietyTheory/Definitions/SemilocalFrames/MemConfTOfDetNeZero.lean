@@ -18,7 +18,7 @@ def hOf {a : ℕ} (t : HCo a) : Matrix (Fin a) (Fin a) ℂ := fun i j =>
   if h : i < j then t.2 ⟨(i, j), h⟩ else if h' : j < i then star (t.2 ⟨(j, i), h'⟩) else (t.1 i : ℂ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[hOf, Matrix.conjTranspose_apply, h, h.not_gt]`. Simplify using `[hOf, Matrix.conjTranspose_apply]`. Simplify using `[hOf, Matrix.conjTranspose_apply, h, h.not_gt]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hOf_isHermitian {a : ℕ} (t : HCo a) : (hOf t).IsHermitian := by
   ext i j
@@ -84,13 +84,13 @@ def dualM (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)�
     form σ T x y ∈ (algebraMap (𝓞 E) E).range}
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun hx => Submodule.subset_span hx⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => intro y _`. Simplify using `[form]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x x' _ _ h h'`. Introduce `y hy`. Establish `: form σ T (x + x') y = form σ T x y + form σ T x' y`. Simplify using `[form, Matrix.mulVec_add]`. Rewrite using `[this]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (h y hy) (h' y hy)`. Consider the case `smul c x _ h`. Introduce `y hy`. Establish `: form σ T (c • x) y = algebraMap (𝓞 E) E c * form σ T x y`. Rewrite using `[← algebraMap_smul E c x, form, form, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem ⟨c, rfl⟩ (h y hy)`.
+A detailed English derivation is pending.
 -/
 theorem mem_dualM (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)⁰ E)
     (T : Matrix (Fin a) (Fin a) E) (x : Fin a → E) :
@@ -112,7 +112,7 @@ theorem mem_dualM (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (
     rw [this]; exact mul_mem ⟨c, rfl⟩ (h y hy)
 
 /- English proof (translation)
-Simplify using `[mem_dualM, form]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dualM_iff_mulVec (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)⁰ E)
     (T : Matrix (Fin a) (Fin a) E) (x : Fin a → E) :
@@ -120,9 +120,9 @@ theorem mem_dualM_iff_mulVec (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → Fracti
   simp [mem_dualM, form]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(mem_dualM_iff_mulVec σ 𝔞 T y).1 hy`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : T *ᵥ (T⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit hT), Matrix.one_mulVec]`. Conclude with `⟨T⁻¹ *ᵥ x, (mem_dualM_iff_mulVec σ 𝔞 T _).2 (e.symm ▸ hx), e⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latMap_dualM (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)⁰ E)
     {T : Matrix (Fin a) (Fin a) E} (hT : T.det ≠ 0) : latMap T (dualM σ 𝔞 T) = dualM σ 𝔞 1 := by
@@ -145,7 +145,7 @@ def cork (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)�
         (dualM σ 𝔞 1).toAddSubgroup)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_map_map_of_injective (f := f.toAddMonoidHom) A.toAddSubgroup B.toAddSubgroup hf`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_map_submodule {R M N : Type} [Ring R] [AddCommGroup M] [AddCommGroup N] [Module R M]
     [Module R N] (f : M →ₗ[R] N) (hf : Function.Injective f) (A B : Submodule R M) :
@@ -153,9 +153,9 @@ theorem relIndex_map_submodule {R M N : Type} [Ring R] [AddCommGroup M] [AddComm
   AddSubgroup.relIndex_map_map_of_injective (f := f.toAddMonoidHom) A.toAddSubgroup B.toAddSubgroup hf
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (T.mulVecLin.restrictScalars (𝓞 E))` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det T).2 (Ne.isUnit hT))`. Establish `key : ∀ (I : Ideal (𝓞 E)) (M D D' : Submodule (𝓞 E) (Fin a → E)), latMap T D = D' → (latMap T M ⊔ I • D').toAddSubgroup.relIndex D'.toAddSubgroup = (M ⊔ I • D).toAddSubgroup.relIndex D.toAddSubgroup`. Introduce and unpack `I M D _ rfl`. Rewrite using `[← relIndex_map_submodule _ hinj (M ⊔ I • D) D, Submodule.map_sup, Submodule.map_smul'']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `congrArg _ (key _ _ _ _ (latMap_dualM σ 𝔞 hT))`.
+A detailed English derivation is pending.
 -/
 theorem cork_eq_of_det_ne_zero (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)⁰ E)
     {T : Matrix (Fin a) (Fin a) E} (hT : T.det ≠ 0) (v : HeightOneSpectrum (𝓞 F)) :
@@ -174,13 +174,13 @@ theorem cork_eq_of_det_ne_zero (σ : E →+* E) {a : ℕ} (𝔞 : Fin a → Frac
   exact congrArg _ (key _ _ _ _ (latMap_dualM σ 𝔞 hT))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, c, hc, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hc`. Introduce `i`. Apply the tactic sequence `by_cases h : i = b <;> simp [Matrix.one_apply, h]`. Consider the case `zero => simp`. Consider the case `add x y _ _ h h' => exact fun i => add_mem (h i) (h' i)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ h => exact fun i => mul_mem ⟨c, rfl⟩ (h i)`. Introduce `hx`. Establish `: x = ∑ b, x b • fun i => (1 : Matrix (Fin a) (Fin a) E) i b`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Matrix.one_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.subset_span ⟨b, x b, (FractionalIdeal.mem_one_iff _).2 (hx b), rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tupLat_one {a : ℕ} (x : Fin a → E) :
     x ∈ tupLat (fun _ : Fin a => (1 : FractionalIdeal (𝓞 E)⁰ E)) (1 : Matrix (Fin a) (Fin a) E) ↔
@@ -204,11 +204,11 @@ theorem mem_tupLat_one {a : ℕ} (x : Fin a → E) :
       Submodule.subset_span ⟨b, x b, (FractionalIdeal.mem_one_iff _).2 (hx b), rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_dualM, mem_tupLat_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `h (Pi.single i 1) ((mem_tupLat_one _).2 fun j => by` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hj : j = i <;> simp [Pi.single_apply, hj])`. Simplify `this` using `[form, dotProduct, Pi.single_apply, apply_ite σ]`. Introduce `h y hy`. Rewrite `hy` using `[mem_tupLat_one]`. Simplify using `only [form, Matrix.one_mulVec, dotProduct]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `sum_mem fun i _ => mul_mem ?_ (h i)` and prove the remaining obligations. Take `⟨d, hd⟩` from `hy i`. Conclude with `⟨RingOfIntegers.mapRingHom σ d, by rw [← hd]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dualM_one_one (σ : E →+* E) {a : ℕ} :
     dualM σ (fun _ : Fin a => (1 : FractionalIdeal (𝓞 E)⁰ E)) 1 =
@@ -228,7 +228,7 @@ theorem dualM_one_one (σ : E →+* E) {a : ℕ} :
     exact ⟨RingOfIntegers.mapRingHom σ d, by rw [← hd]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[cork_eq_of_det_ne_zero σ _ (by simp), dualM_one_one, AddSubgroup.relIndex_eq_one.2 (fun x hx => Submodule.mem_sup_left hx), Nat.log_one_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cork_one_one (σ : E →+* E) {a : ℕ} (v : HeightOneSpectrum (𝓞 F)) :
     cork σ (fun _ : Fin a => (1 : FractionalIdeal (𝓞 E)⁰ E)) 1 v = 0 := by
@@ -236,21 +236,21 @@ theorem cork_one_one (σ : E →+* E) {a : ℕ} (v : HeightOneSpectrum (𝓞 F))
     AddSubgroup.relIndex_eq_one.2 (fun x hx => Submodule.mem_sup_left hx), Nat.log_one_right]
 
 /- English proof (translation)
-Use `set I := v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) with hI`. Set `φ : (Fin a → 𝓞 E) →ₗ[𝓞 E] (Fin a → E)` to `(Algebra.linearMap (𝓞 E) E).compLeft (Fin a)`. Establish `hφ : Function.Injective φ.toAddMonoidHom` using `fun x y h =>`. Use function extensionality and compare the values at `fun i => RingOfIntegers.coe_injective (congrFun h i)`. Establish `h1 : tupLat (fun _ : Fin a => (1 : FractionalIdeal (𝓞 E)⁰ E)) (1 : Matrix (Fin a) (Fin a) E) = (⊤ : Submodule (𝓞 E) (Fin a → 𝓞 E)).map φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[mem_tupLat_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose y hy using h`. Conclude with `⟨y, trivial, funext hy⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, -, rfl⟩ i`. Conclude with `⟨y i, rfl⟩`. Establish `h3 : (I • (⊤ : Submodule (𝓞 E) (Fin a → 𝓞 E))).toAddSubgroup = AddSubgroup.pi Set.univ fun _ => I.toAddSubgroup`. Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_pi, Set.mem_univ, true_imp_iff]`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Use `Submodule.smul_induction_on hx (fun r hr y _ => I.mul_mem_right _ hr) ?_` and prove the remaining obligations. Conclude with `fun y z hy hz => I.add_mem hy hz`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = ∑ b, x b • (Pi.single b 1 : Fin a → 𝓞 E)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem_smul (hx b) trivial`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : I.toAddSubgroup.index = Ideal.absNorm v.asIdeal ^ 2`. Rewrite using `[← h2, IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E, ← Ideal.absNorm_algebraMap, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `h5 : latMap (0 : Matrix (Fin a) (Fin a) E) ((⊤ : Submodule (𝓞 E) (Fin a → 𝓞 E)).map φ) = ⊥`. Simplify using `[latMap]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : 1 < Ideal.absNorm v.asIdeal ^ 2` using `Nat.one_lt_pow two_ne_zero (NumberField.HeightOneSpectrum.one_lt_absNorm v)`. Rewrite using `[cork, dualM_one_one, h1, h5, bot_sup_eq, ← hI, ← Submodule.map_smul'']`. Use `AddSubgroup.relIndex_map_map_of_injective (I • (⊤ : Submodule (𝓞 E) (Fin a → 𝓞 E))).toAddSubgroup ⊤ hφ` as an intermediate fact. Rewrite `this` using `[AddSubgroup.relIndex_top_right, h3, AddSubgroup.index_pi]`. Simplify using `only [h4, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← h3]`. Use `Eq.trans ?_ (Nat.log_pow hq a)` and prove the remaining obligations. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cork_one_zero (σ : E →+* E) (h2 : Module.finrank F E = 2) {a : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -310,7 +310,7 @@ def densV (σ : E →+* E) (n : ℕ) {a : ℕ} (𝔞 : Fin a → FractionalIdeal
   GlobalTheory.SgDen.densF (Ideal.absNorm v.asIdeal) (eta₃ E v) n a (cork σ 𝔞 T v)
 
 /- English proof (translation)
-Rewrite using `[densV, cork_one_zero σ h2, GlobalTheory.SgDen.densF]`. Conclude with `Finset.prod_eq_zero (i := 0) (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (σ : E →+* E) (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) :
     densV σ 1 (fun _ : Fin 1 => (1 : FractionalIdeal (𝓞 E)⁰ E)) 0 v = 0 := by
@@ -318,7 +318,7 @@ example (σ : E →+* E) (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (�
   exact Finset.prod_eq_zero (i := 0) (by simp) (by simp)
 
 /- English proof (translation)
-Rewrite using `[densV, cork_one_one, GlobalTheory.SgDen.densF]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (σ : E →+* E) (v : HeightOneSpectrum (𝓞 F)) :
     densV σ 1 (fun _ : Fin 1 => (1 : FractionalIdeal (𝓞 E)⁰ E)) 1 v =

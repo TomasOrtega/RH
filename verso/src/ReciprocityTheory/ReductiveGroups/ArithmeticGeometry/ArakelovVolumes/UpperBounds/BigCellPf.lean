@@ -7,23 +7,21 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x0 hx0 la P hP hvan x hx`. Take `⟨Δ, zOf, bOf, -, hdense, -, -, hdec, -⟩` from `hLU r X x0 hx0`. Establish `hgood : ∀ y ∈ X.dom, Δ y ≠ 0 → P y = 0`. Introduce `y hy hΔ`. Take `⟨hz, hb, hyeq⟩` from `hdec y hy hΔ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : P (rmul (cpt X x0 (zOf y)) (bOf y)) = bchar la (bOf y) * P (cpt X x0 (zOf y))` using `hP.2 (cpt X x0 (zOf y)) hz (bOf y) hb`. Establish `h2 : P (cpt X x0 (zOf y)) = 0` using `hvan (zOf y) hz`. Rewrite using `[hyeq, h1, h2, mul_zero]`. Establish `hopen : IsOpen X.dom`. Establish `hmat : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => mat x τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Use `first`. Consider the case `exact continuous_apply τ`. Consider the case `(unfold mat; exact continuous_apply τ)`. Consider the case `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `continuity`. Establish `hgram : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => gram τ.1 X.Gm (mat x τ)`. Introduce `τ`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [gram, hermC, col, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hmat τ`. Use `first`. Consider the case `fun_prop`. Consider the case `continuity`. Establish `hdet : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => (mat x τ).det` using `fun τ => (hmat τ).matrix_det`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmin : ∀ τ : X.Ψ, ∀ i : Fin (r + 1), Continuous fun x : Frame X.Ψ r => (dmin X.Gm x τ i).re`. Introduce `τ i`. Unfold `dmin lminor`. Conclude with `Complex.continuous_re.comp ((hgram τ).matrix_submatrix _ _).matrix_det`. Use `show IsOpen (GG X.Ψ X.Gm X.p0)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : GG X.Ψ X.Gm X.p0 = ⋂ τ : X.Ψ, ({x | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `only [GG, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`. Rewrite using `[hset]`. Conclude with `isOpen_iInter_of_finite fun τ => (isOpen_ne_fun (hdet τ) continuous_const).inter (isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_const.mul (hmin τ i)))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousOn P X.dom` using `hP.1.continuousOn`. Assume the negation of the conclusion as `hne`. Establish `hU : IsOpen (X.dom ∩ P ⁻¹' {0}ᶜ)` using `hcont.isOpen_inter_preimage hopen isOpen_compl_singleton`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU x ⟨hx, hne⟩`. Take `⟨y, hy, hΔ⟩` from `hdense x hx ε hε`.
-
-Establish `hy'` using `hball hy`. Establish `h0` using `hgood y hy'.1 hΔ`. Conclude with `hy'.2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bigCell_of (hLU : LUStatement (E := E)) : BigCellStatement (E := E) := by
   intro r X x0 hx0 la P hP hvan x hx

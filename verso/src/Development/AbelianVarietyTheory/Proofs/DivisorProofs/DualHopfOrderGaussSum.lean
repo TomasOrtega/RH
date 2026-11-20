@@ -4,9 +4,7 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.EtaleSpreadReg
 
 /- English proof (translation)
-Establish `hic : IsIntegrallyClosed (Localization.AtPrime p)` using `isIntegrallyClosed_of_isLocalization _ p.primeCompl p.primeCompl_le_nonZeroDivisors`. Establish `hd : Ring.KrullDimLE 1 (Localization.AtPrime p)`. Rewrite using `[Ring.krullDimLE_iff, IsLocalization.AtPrime.ringKrullDim_eq_height p]`. Conclude with `hp` after adjusting the coercions. Establish `: Ring.DimensionLEOne (Localization.AtPrime p)` using `⟨fun {P} hP hPp => Ring.krullDimLE_one_iff_of_isPrime_bot.mp hd P hP hPp⟩`.
-
-Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDedekindDomain_atPrime (A : Type*) [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] (p : Ideal A) [p.IsPrime] (hp : p.height ≤ 1) :
@@ -21,15 +19,13 @@ theorem isDedekindDomain_atPrime (A : Type*) [CommRing A] [IsDomain A] [IsNoethe
   exact {}
 
 /- English proof (translation)
-Use `set p : Ideal A := Q₀.under A with hpdef`. Set `Ap` to `Localization.AtPrime p`. Use `letI : Algebra A[X] Ap[X] := Polynomial.algebra A Ap`. Set `M : Submonoid A[X]` to `Submonoid.map C p.primeCompl`. Use `haveI : IsLocalization M Ap[X] := Polynomial.isLocalization p.primeCompl Ap`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdisj : Disjoint (M : Set A[X]) (Q₀ : Set A[X])`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ haQ`. Conclude with `ha haQ`. Set `Q' : Ideal Ap[X]` to `Q₀.map (algebraMap A[X] Ap[X])`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hQ' : Q'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint M Ap[X] Q₀ inferInstance hdisj`. Establish `hc : Q'.comap (algebraMap A[X] Ap[X]) = Q₀` using `IsLocalization.comap_map_of_isPrime_disjoint M Ap[X] inferInstance hdisj`. Establish `h` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime Q') Q'`. Establish `e : (Q'.comap (algebraMap A[X] Ap[X])).primeCompl = Q₀.primeCompl`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Ideal.mem_primeCompl_iff, hc]`. Establish `h2 : IsLocalization Q₀.primeCompl (Localization.AtPrime Q')`. Rewrite using `[← e]`. Conclude with `h`. Establish `hreg : IsRegularLocalRing (Localization.AtPrime Q')` using `isRegularRing_iff.mp inferInstance Q'`.
-
-Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv Q₀.primeCompl (Localization.AtPrime Q') (Localization.AtPrime Q₀)).toRingEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_polynomial_atPrime (A : Type*) [CommRing A] (Q₀ : Ideal A[X])
     [Q₀.IsPrime] [IsRegularRing (Localization.AtPrime (Q₀.under A))] :
@@ -58,13 +54,13 @@ theorem isRegularLocalRing_polynomial_atPrime (A : Type*) [CommRing A] (Q₀ : I
     (IsLocalization.algEquiv Q₀.primeCompl (Localization.AtPrime Q') (Localization.AtPrime Q₀)).toRingEquiv
 
 /- English proof (translation)
-Establish `: IsNoetherianRing T` using `Algebra.FiniteType.isNoetherianRing S T`. Set `p : Ideal S` to `q.under S`. Set `` to `Localization.AtPrime.algebraOfLiesOver p q`. Establish `hun : Algebra.IsUnramifiedAt S q` using `inferInstance`. Establish `hm` using `((Algebra.isUnramifiedAt_iff_map_eq S p q).mp hun).2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (IsLocalRing.maximalIdeal (Localization.AtPrime p)).map (algebraMap (Localization.AtPrime p) (Localization.AtPrime q)) = IsLocalRing.maximalIdeal (Localization.AtPrime q)`. Rewrite using `[← hm, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Establish `h1` using `Ideal.spanFinrank_map_le_of_fg (algebraMap (Localization.AtPrime p) (Localization.AtPrime q)) (IsLocalRing.maximalIdeal (Localization.AtPrime p)).fg_of_isNoetherianRing`. Rewrite `h1` using `[hm']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : p.height ≤ q.height`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p q]`. Conclude with `le_self_add`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)]`. Use `le_trans ?_ (WithBot.coe_le_coe.mpr h2)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height p (Localization.AtPrime p), ← hreg.spanFinrank_maximalIdeal]`. Conclude with `h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_atPrime_of_etale (S T : Type*) [CommRing S] [IsNoetherianRing S]
     [CommRing T] [Algebra S T] [Algebra.Etale S T] (q : Ideal T) [q.IsPrime]
@@ -95,11 +91,9 @@ theorem isRegularLocalRing_atPrime_of_etale (S T : Type*) [CommRing S] [IsNoethe
   exact_mod_cast h1
 
 /- English proof (translation)
-Introduce `A _ _ _ _ EA _ _ _ _ _ QA _ P _ hP`. Set `Q : Ideal EA` to `P.comap (algebraMap EA (Localization.AtPrime QA))`. Use `haveI hLoc : IsLocalization.AtPrime (Localization.AtPrime P) Q := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization QA.primeCompl (Localization.AtPrime P) P`. Establish `hpe : (Q.under (Polynomial A)).under A = P.comap (algebraMap A (Localization.AtPrime QA))`. Rewrite using `[Ideal.under_under]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.comap (algebraMap A EA) (Ideal.comap (algebraMap EA (Localization.AtPrime QA)) P) = _`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`. Use `haveI : IsDedekindDomain (Localization.AtPrime ((Q.under (Polynomial A)).under A)) := isDedekindDomain_atPrime A _ (hpe ▸ hP)`. Establish `h0` using `isRegularLocalRing_polynomial_atPrime A (Q.under (Polynomial A))`. Establish `h1` using `isRegularLocalRing_atPrime_of_etale (Polynomial A) EA Q h0`.
-
-Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv Q.primeCompl (Localization.AtPrime Q) (Localization.AtPrime P)).toRingEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_atPrime :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]

@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 variable {D : D7} {T : Type}
 
 /- English proof (translation)
-Proceed by induction on `hz using Subgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, x, rfl⟩` from `hz`. Use `⟨?_, hL w x⟩` and prove the remaining obligations. Establish `: ((L.xiH t) ^ n).loc w x = 1` using `by rw [show (L.xiH t) ^ n = 1 from hn]; rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Consider the case `one => exact ⟨one_pow _, 1, by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨x, hx⟩` from `ha.2`. Take `⟨y, hy⟩` from `hb.2`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [mul_pow, ha.1, hb.1, one_mul], x * y, by simp [hx, hy]⟩`. Consider the case `inv a _ ha`. Take `⟨x, hx⟩` from `ha.2`. Conclude with `⟨by rw [inv_pow, ha.1, inv_one], x⁻¹, by simp [hx]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_xiVals {L : LevCh D T} {t : T} {n : ℕ} (hn : (L.xiH t).OrderDvd n) (hL : LocIn D.what₂.embLL (L.xiH t))
     {z : ℂˣ} (hz : z ∈ xiVals L t) : z ^ n = 1 ∧ (z : ℂ) ∈ Set.range D.what₂.embLL := by
@@ -39,14 +39,14 @@ theorem mem_xiVals {L : LevCh D T} {t : T} {n : ℕ} (hn : (L.xiH t).OrderDvd n)
     exact ⟨by rw [inv_pow, ha.1, inv_one], x⁻¹, by simp [hx]⟩
 
 /- English proof (translation)
-Simplify using `using Bplus_smul W M 1 c φ F`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bplus_smul_form {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (c : ℂ) (φ : Fn G (.top 0))
     (F : Fn G (.grid D.R.m 0)) : Bplus W M φ (c • F) = c * Bplus W M φ F := by
   simpa using Bplus_smul W M 1 c φ F
 
 /- English proof (translation)
-Substitute `he h1 h2 h3 h4` using the available equality. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Clear the denominators using the available nonvanishing facts.
 -/
 theorem scalar_calc {e z z' c p b s u κ v w : ℂ} (he : e = z * z') (hz : z ≠ 0) (hz' : z' ≠ 0) (hc : c ≠ 0)
     (h1 : p = (z * c)⁻¹ * b) (h2 : b = z'⁻¹ * s * u) (h3 : u = κ * v) (h4 : w = s * v) : e * c * p = κ * w := by
@@ -59,17 +59,15 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D.what₂.L
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨τi, z, hF⟩` from `hF`. Take `⟨σ, z', hU⟩` from `hU τi`. Take `⟨hM, hJ⟩` from `hJ`. Take `⟨κ, hJ⟩` from `hJ σ`. Establish `key : ∀ t, ∃ e : D.what₂.LL, D.what₂.embLL e = (z t : ℂ) * z' t ∧ ∃ n : ℕ, 0 < n ∧ e ^ n = 1` using `fun t => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Take `⟨h1, e, he⟩` from `mem_xiVals ho (hK.chars.xi t) (mul_mem (hF t).1 (hU t).1)`. Use `⟨e, he, n, hn, D.what₂.embLL.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, he, map_one, ← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Use `choose ze hze hzn using key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, ze, hzn, fun t x hx a => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ, hfl⟩` from `(hF t).2 (ch.Phi a)`. Take `⟨M, hMt⟩` from `exists_vol ch.G hL t`. Use `choose Mβ hMβ using hM t (ch.Phi a)`. Establish `hex : ∀ β ∈ ch.S.supp t (ch.Phi a), ch.S.IsExpansion t (ch.Phi a) β (Classical.epsilon (ch.S.IsExpansion t (ch.Phi a) β))` using `fun β hβ => Classical.epsilon_spec ((hS t a).ex β hβ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : psiK ch a (R.Th t (R.jX t x)) = Bplus ch.W ch.M (colFn ch a) (thetaChi ch.W ch.M ch.ρ (ch.Phi a) (ch.cv.lift t (R.jX t x)))`. Conclude with `congrArg (fun u => Bplus ch.W ch.M (colFn ch a) (thetaChi ch.W ch.M ch.ρ (ch.Phi a) u)) ((form_Th ch hC t _).trans (hP t x hx))`. Establish `e2` using `(hU t).2 a τ hτ M hMt Mβ (fun β => Classical.epsilon (ch.S.IsExpansion t (ch.Phi a) β)) (fun β hβ => ⟨hMβ β, hex β hβ⟩) (R.jX t x)`. Establish `e3 : (∑ᶠ β ∈ ch.S.supp t (ch.Phi a), (∏ w, ((ch.S.term t (ch.Phi a) β w).coef : ℂ)) * defTot t ch.S.toGridChoice (Mβ β) σ (Classical.epsilon (ch.S.IsExpansion t (ch.Phi a) β)) (colFn ch a) (formTop ch t (R.jX t x))) = κ * ch.S.vCore t (ch.Phi a) (psiC (ch.Psi a)) (ch.S.formC t (R …`. Rewrite using `[(hS t a).vCore_eq _ hex, finsum_mem_eq_finite_toFinset_sum _ (hS t a).fin, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Establish `hβ'` using `(Set.Finite.mem_toFinset _).1 hβ`. Conclude with `(congrArg (HMul.hMul _) (hJ t a β hβ' (Mβ β) _ (hMβ β) (hex β hβ') (R.jX t x))).trans (mul_left_comm _ _ _)`. Establish `e4 : vK ch t x a = ch.S.sAA * ch.S.vCore t (ch.Phi a) (psiC (ch.Psi a)) (ch.S.formC t (R.jX t x))` using `rfl`. Establish `hct : cTot ch t ≠ 0` using `(cTot_ne_zero_iff ch t).2 fun i j => hc i j t`.
-
-Establish `e5` using `congrArg (Bplus ch.W ch.M (colFn ch a)) (hfl M hMt (R.jX t x)).2`. Conclude with `scalar_calc (hze t) (z t).ne_zero (z' t).ne_zero hct (e1.trans (e5.trans (Bplus_smul_form _ _ _ _ _))) e2 e3 e4`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formulaAt_steps (hL : R.toLevCh.Is A.μ0) (hC : R.IsChain) (ch : Choice R) (hP : ProjAt ch) (hF : FlipAt ch)
     (hU : UnfoldAt ch) (hJ : JetsAt ch) (hc : ∀ i j t, ch.c i j t ≠ 0) (hS : ∀ t a, ch.S.SumOK t (ch.Phi a))
@@ -109,9 +107,9 @@ theorem formulaAt_steps (hL : R.toLevCh.Is A.μ0) (hC : R.IsChain) (ch : Choice 
   exact scalar_calc (hze t) (z t).ne_zero (z' t).ne_zero hct (e1.trans (e5.trans (Bplus_smul_form _ _ _ _ _))) e2 e3 e4
 
 /- English proof (translation)
-Take `⟨C0, H⟩` from `((((hP.and hF).and hU).and hJ).and hc).and hS`. Use `⟨C0, fun ε CF h => ?_⟩` and prove the remaining obligations. Take `⟨x₀, H⟩` from `H ε CF h`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j hK => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨a, b⟩, c⟩, d⟩, f⟩, g⟩` from `H D large₂ e hx Γ Pl0 T A Ks R F s ch i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `formulaAt_steps s.core.lev s.core.chain ch a b c d (fun i j t => (f i j t).2) g hK`.
+A detailed English derivation is pending.
 -/
 theorem formula2K (hP : StepProj) (hF : StepFlip) (hU : StepUnfold) (hJ : StepJets) (hc : ConstK) (hS : SumOKK) :
     Formula2K := by
@@ -123,7 +121,7 @@ theorem formula2K (hP : StepProj) (hF : StepFlip) (hU : StepUnfold) (hJ : StepJe
   exact formulaAt_steps s.core.lev s.core.chain ch a b c d (fun i j t => (f i j t).2) g hK
 
 /- English proof (translation)
-The claim follows from `formula2K`.
+A detailed English derivation is pending.
 -/
 example : StepProj → StepFlip → StepUnfold → StepJets → ConstK → SumOKK → Formula2K := formula2K
 

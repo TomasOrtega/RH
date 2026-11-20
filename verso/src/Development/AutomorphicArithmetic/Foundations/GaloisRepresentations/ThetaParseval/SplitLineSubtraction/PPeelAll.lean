@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Rewrite using `[Fin.univ_castSuccEmb]`. Simplify using `[Finset.map_val, Multiset.map_map, add_comm, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem univ_map_snoc {α : Type*} {t : ℕ} (f : Fin (t + 1) → α) :
     Finset.univ.val.map f =
@@ -18,17 +18,17 @@ private theorem univ_map_snoc {α : Type*} {t : ℕ} (f : Fin (t + 1) → α) :
   simp [Finset.map_val, Multiset.map_map, add_comm, Function.comp_def]
 
 /- English proof (translation)
-Introduce `hP hC hJ hS E Ω _ _ _ _ _ l _ ι n m' t' r' a' hr' t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `r a hc hss _ _ _`. Use `⟨r, hc, hss, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w S c J m _ h`. Simplify using `using h`. Consider the case `succ t ih`. Introduce `r a hc hss ha hne hid`. Take `⟨s₁, hs₁, hiso, hid₁⟩` from `hP (G E Ω) (Qbar l) (n + t) m' t t' r r' a a' hss hr' hne hid`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hC'` using `hC (G E Ω) (Qbar l) (n + t) 1`. Establish `hC1` using `hC (G E Ω) (Qbar l) (n + t + 1) 1`. Establish `hcl : Continuous (sumRep s₁ (rk1 (a (Fin.last t))))` using `hC1.2.1 _ _ hiso hc`. Establish `hcs₁ : Continuous s₁` using `hC'.1 _ _ hcl`. Take `⟨s, hsc, hss', hcl'⟩` from `ih s₁ (fun i => a i.castSucc) hcs₁ hs₁ (fun i => ha _) (fun i j => hne _ _) hid₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hsc, hss', ?_⟩` and prove the remaining obligations. Introduce `w S c J m hcl0 h`. Establish `h2` using `hJ E Ω l ι _ r _ hc hiso w _ _ h`. Use `hcl' w S (fun i => c i.castSucc) J (fun i => m i.castSucc) (fun i => hcl0 _) ?_` and prove the remaining obligations. Use `hS E Ω l ι _ s₁ (a (Fin.last t)) hcs₁ (ha _) w _ (c (Fin.last t)) _ (m (Fin.last t)) (hcl0 _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : S + Finset.univ.val.map c = S + Finset.univ.val.map (fun i : Fin t => c i.castSucc) + {c (Fin.last t)}`. Rewrite using `[univ_map_snoc c, add_assoc]`. Establish `e2 : (fun τ => J τ + Finset.univ.val.map fun i => m i τ) = fun τ => J τ + Finset.univ.val.map (fun i : Fin t => m i.castSucc τ) + {m (Fin.last t) τ}`. Use function extensionality and compare the values at `τ`. Rewrite using `[univ_map_snoc (fun i => m i τ), add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[e1, e2]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.peelAll_holds :
     PeelOne → ContLeft → ClConj → ClSub → PeelAll := by

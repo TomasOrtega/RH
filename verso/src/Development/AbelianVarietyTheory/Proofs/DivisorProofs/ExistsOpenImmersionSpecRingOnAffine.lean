@@ -16,9 +16,9 @@ namespace GlobalTheory.Div.AffChart
 open GlobalTheory.Points
 
 /- English proof (translation)
-Set `φ : Γ(M.Z, W) ⟶ CommRingCat.of (M.ringOn W)` to `(M.sectionsEquiv W hne).toCommRingCatIso.hom`. Use `haveI : IsIso φ := inferInstanceAs (IsIso (M.sectionsEquiv W hne).toCommRingCatIso.hom)`. Use `⟨Spec.map φ ≫ hW.fromSpec, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso, hW.opensRange_fromSpec]`. Establish `hp` using `M.top_le_preimage_pt hne`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : φ ≫ CommRingCat.ofHom (algebraMap (M.ringOn W) Ω) = valMap M.pt W hp`. Use extensionality with `f`. Conclude with `(M.coe_sectionsEquiv W hne f).trans (M.res_apply W hne f).symm`. Rewrite using `[spMap, ← Category.assoc, ← Spec.map_comp, e, specMap_valMap_fromSpec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_openImm_spec_ringOn (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω)
     (W : M.Z.Opens) (hW : IsAffineOpen W) (hne : (W : Set M.Z).Nonempty) :

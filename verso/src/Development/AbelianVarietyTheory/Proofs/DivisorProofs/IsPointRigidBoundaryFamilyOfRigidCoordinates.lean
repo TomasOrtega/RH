@@ -14,25 +14,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtRigid
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ C hC`. Take `⟨N, s, ε, τ₀, hs, hε, hu, hτ, hPR⟩` from `hC`. Introduce `K _ _ ev k₀ hk hemb hsep`. Apply `hPR K ev k₀ hk hemb` to reduce the goal to its premises. Take `⟨h0, B₀, i₁, i₂, M₀, c₀, B', i₃, π₁, π₀, w, c', α, hB, hM, hp₁, hp₀, hw, hc, hrel⟩` from `hsep`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => by rw [hs]; exact h0 i, ⟨B₀, i₁, i₂, M₀, c₀, B', i₃, π₁, π₀, w, c', hB, hM, hp₁, hp₀, hw, hc⟩, ?_⟩` and prove the remaining obligations. Introduce `W₀ _ ιb hFB hιb j`. Set `u : Fin N → Rˣ` to `fun k => (hu k).unit`. Establish `hu' : ∀ k, (u k : R) = s (.inr k)` using `fun k => (hu k).unit_spec`. Set `t : Fin C.m ⊕ Fin N → Kˣ` to `Sum.elim (fun i => (α i)⁻¹) (fun k => Units.map ev.toMonoidHom (u k))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : ∀ a b : C.P.D.toPre.X, ((∏ k, t k ^ ((l.M' : ℤ) * (ε k : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b) : Kˣ) : K) ∈ k₀`. Introduce `a b`. Establish `hτ'` using `GlobalTheory.T.isUnitTau_scaledGenerator_torusMonomial Xo c φ R C N s ε τ₀ hs hε hτ u hu' a b`. Take `⟨τ₁, hτ₁, hv⟩` from `hrel a b _ hτ'`. Take `⟨x, hx⟩` from `GlobalTheory.T.periodGenerators_agree_over_algClosedSubfield R C.P.D.toPre τ₀ K ev k₀ hk W₀ ιb hFB hιb B₀ M₀ c₀ B' π₁ π₀ w c' hB hM hp₁ hp₀ hw hc a b τ₁ hτ₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `z : Sp K` to `IsLocalRing.closedPoint K`. Use `choose J hJ using fun χ : Sp K ⟶ C.P.D.toPre.P.A.left => exists_chart C.P.D.toPre.P.isLB (χ z)`. Use `choose J₀ hJ₀ using fun χ : Sp K ⟶ B₀.left => exists_chart hM (χ z)`. Establish `gJ : Good C.P.D.toPre.P.L z J` using `hJ`. Establish `gJ₀ : Good M₀ z J₀` using `hJ₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `hv z J J₀ gJ gJ₀`. Establish `e₂` using `hx z J J₀ gJ gJ₀`. Establish `vs : ∀ (cc : Γ(Sp R, ⊤)ˣ), val (ReciprocityTheory.ChartRestriction.G.DVR.scaleGen cc (τ₀ a b)) (spMap ev) z J = gm (spMap ev) z ⊤ cc * val (τ₀ a b) (spMap ev) z J` using `fun cc => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ z le_top (gJ.mem _ _) cc) rfl)`. Rewrite `e₁` using `[vs, GlobalTheory.UChart.SepBModel.gm_spMap, e₂]`. Use `set U' := Units.map ev.toMonoidHom (∏ k, u k ^ ((l.M' : ℤ) * (ε (.inr k) : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x' := Units.map k₀.subtype.toMonoidHom x`. Use `set A := ∏ i, α i ^ (((l.M' : ℤ) • C.δ i) a b)`. Use `set L := lamUnit w c' a b z J J₀`. Use `set V := val τ₁ (spMap k₀.subtype) z J₀`. Establish `e₃ : gm (𝟙 (Sp K)) z ⊤ (unitOn U') * gm (𝟙 (Sp K)) z ⊤ (unitOn x') = gm (𝟙 (Sp K)) z ⊤ (unitOn A)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : gm (𝟙 (Sp K)) z ⊤ (unitOn U') * (L * gm (𝟙 (Sp K)) z ⊤ (unitOn x') * V) = (L * V) * (gm (𝟙 (Sp K)) z ⊤ (unitOn U') * gm (𝟙 (Sp K)) z ⊤ (unitOn x'))` using `by ac_rfl`. Establish `h₂ : L * gm (𝟙 (Sp K)) z ⊤ (unitOn A) * V = (L * V) * gm (𝟙 (Sp K)) z ⊤ (unitOn A)` using `by ac_rfl`. Rewrite `e₁` using `[h₁, h₂]`. Conclude with `mul_left_cancel e₁`. Establish `e₄ : U' * x' = A` using `GlobalTheory.UChart.SepBModel.gm_unitOn_inj z (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show unitOn (U' * x') = unitOn U' * unitOn x' from map_mul _ _ _, map_mul]`. Conclude with `e₃)`. Establish `e₅ : (∏ k, t k ^ ((l.M' : ℤ) * (ε k : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b)) = x'⁻¹`. Rewrite using `[Fintype.prod_sum_type]`. Establish `hA : (∏ i, t (.inl i) ^ ((l.M' : ℤ) * (ε (.inl i) : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b)) = A⁻¹`.
-
-Simplify using `only [t, Sum.elim_inl, hε, A, inv_zpow, Finset.prod_inv_distrib, LinearMap.smul_apply, smul_eq_mul]`. Establish `hU : (∏ k, t (.inr k) ^ ((l.M' : ℤ) * (ε (.inr k) : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b)) = U'`. Simplify using `only [t, Sum.elim_inr, U', map_prod, map_zpow]`. Rewrite using `[hA, hU, ← e₄, mul_inv_rev, inv_mul_cancel_right]`. Rewrite using `[e₅]`.
-
-Conclude with `(x⁻¹ : k₀ˣ).val.2`. Use `GlobalTheory.T.mem_subfield_of_bilinForm_basis_monomials C.P.D.toPre.X (balForms H.bar C.P.D.toPre.X) (Fin C.m ⊕ Fin N) ε K k₀ hk (l.M') (by exact_mod_cast (level_pos l).ne') t key (.inr j)` as an intermediate fact. Simplify `this` using `[t, u]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pointRigid_of_hasRigidCoords : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (C : MonoFam Xo c φ R), HasRigidCoords C → PointRigid C := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ C hC

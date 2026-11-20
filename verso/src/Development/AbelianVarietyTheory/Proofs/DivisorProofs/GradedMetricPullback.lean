@@ -20,15 +20,15 @@ namespace GlobalTheory.OrthFilt
 open GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.HermFrame Matrix
 
 /- English proof (translation)
-Establish `h₀` using `h.isVB.mem_pick (PtsOver.map π w _ z)`. Establish `h₁` using `hA.mem_pick (PtsOver.map π w _ z)`. Establish `h₂` using `hB.mem_pick (PtsOver.map π w _ z)`. Generalize the expression as in `h.isVB.pick (PtsOver.map π w _ z) = c₀ at h₀`. Generalize the expression as in `hA.pick (PtsOver.map π w _ z) = c₁ at h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hB.pick (PtsOver.map π w _ z) = c₂ at h₂`. Rewrite using `[(h.pull π w).form_eq (c₀.pull h.isVB π) h₀ _ _ hz, Chart.crd_app _ (c₁.pull hA π) _ s hz h₁, Chart.crd_app _ (c₂.pull hB π) _ t hz h₂, HermFrame.form_mulVec, (h.pull_G π w c₀ h₀)]`. Establish `e₁ (i : Fin a) : (c₀.pull h.isVB π).crd q σ (((Scheme.Modules.pullback π).map u).app (c₁.pull hA π).U ((c₁.pull hA π).e i)) z = c₀.crd p σ (u.app (c₁.U ⊓ c₂.U) (Twist.resM A inf_le_left (c₁.e i))) (PtsOver.map π w _ z)`. Rewrite using `[Twist.app_resM, c₀.crd_resM _ _ (mem_ptsIn_inf.2 ⟨h₁, h₂⟩), ← c₀.crd_pull h.isVB π w _ le_rfl h₁ h₀, ← QCoh.pullback_map_app_pullbackSections]`. Both sides reduce to the same expression.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₂ (i : Fin b) : (c₀.pull h.isVB π).crd q σ (((Scheme.Modules.pullback π).map v).app (c₂.pull hB π).U ((c₂.pull hB π).e i)) z = c₀.crd p σ (v.app (c₁.U ⊓ c₂.U) (Twist.resM B inf_le_right (c₂.e i))) (PtsOver.map π w _ z)`. Rewrite using `[Twist.app_resM, c₀.crd_resM _ _ (mem_ptsIn_inf.2 ⟨h₁, h₂⟩), ← c₀.crd_pull h.isVB π w _ le_rfl h₂ h₀, ← QCoh.pullback_map_app_pullbackSections]`. Both sides reduce to the same expression. Simplify using `only [e₁, e₂]`. Establish `key (M : Matrix (Fin g) (Fin a) ℂ) (N : Matrix (Fin g) (Fin b) ℂ) (K : Matrix (Fin g) (Fin g) ℂ) (e : ∀ i j, HermFrame.form K (fun l => M l i) (fun l => N l j) = 0) : Mᵀ * K * Nᴴᵀ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `HermFrame.form_mulVec K M N (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[mulVec_single_one, mulVec_single_one]`. Establish `e'` using `(this.symm.trans (e i j))`. Simplify `e'` using `[← Pi.single_star]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[key, zero_mulVec, dotProduct_zero]`. Introduce `i j`. Establish `hW` using `mem_ptsIn_inf.2 ⟨h₁, h₂⟩`. Conclude with `(h.form_eq c₀ h₀ _ _ hW).symm.trans (H _ _ _ _ hW)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_pull_eq_zero {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
     (π : Y ⟶ X) (w : π ≫ p = q) {L A B : X.Modules} {g a b : ℕ} (h : Met p σ L g) (hA : IsVB A a) (hB : IsVB B b)
@@ -71,9 +71,9 @@ theorem form_pull_eq_zero {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ 
   exact (h.form_eq c₀ h₀ _ _ hW).symm.trans (H _ _ _ _ hW)
 
 /- English proof (translation)
-Use `⟨fun a σ V s t z hz => ?_, fun a b hab σ V s t z hz => form_pull_eq_zero π w (hL.met σ) (h a).isVB (h b).isVB _ _ (H.2 a b hab σ) V s t z hz⟩` and prove the remaining obligations. Establish `hc` using `((h a).met σ).isVB.mem_pick (PtsOver.map π w _ z)`. Use `form_app_of_gram (Chart.pull _ ((h a).met σ).isVB π) hc ?_ s t hz` and prove the remaining obligations. Use `Eq.trans ?_ (((h a).met σ).pull_G π w _ hc).symm` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[← ((h a).met σ).form_frame _ hc, ← H.1 a σ _ _ _ _ hc, ← (hL.met σ).form_pull π w _ _ le_rfl hc, ← QCoh.pullback_map_app_pullbackSections, ← QCoh.pullback_map_app_pullbackSections]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem OrthEmb.pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} (π : Y ⟶ X)
     (w : π ≫ p = q) {ι : Type} {L : X.Modules} {g : ℕ} {hL : VMetric p L g} {E : ι → X.Modules} {r : ι → ℕ}
@@ -90,11 +90,11 @@ theorem OrthEmb.pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k}
   rfl
 
 /- English proof (translation)
-Introduce `k _ X Y p q π w ι L g hL E E' r h u m o hE' ⟨F, j, s, κ, t, z, hj, h0, hl, hs, hS, ht, hO⟩`. Use `⟨fun i => (Scheme.Modules.pullback π).obj (F i), fun i => (Scheme.Modules.pullback π).map (j i), fun i => (Scheme.Modules.pullback π).map (s i), fun a => (Scheme.Modules.pullback π).map (κ a), fun a => (Scheme.Modules.pullback π).map (t a), fun a => ((ShortComplex.mk _ _ (z a)).m …` and prove the remaining obligations. Take `⟨h₁, n, h₂⟩` from `hj i`. Conclude with `⟨SubPull.isSubbundle_pullback X Y π _ _ _ n h₂ h₁, n, h₂.pullback π⟩`. Rewrite using `[← Functor.map_comp, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, n, h₁⟩` from `hj (o a).castSucc`. Take `⟨-, n', h₂⟩` from `hj (o a).succ`. Use `(hS a).epi_g` as an intermediate fact. Use `haveI : (ShortComplex.mk _ _ (z a)).X₁.IsQuasicoherent := h₁.isQuasicoherent`. Use `haveI : (ShortComplex.mk _ _ (z a)).X₂.IsQuasicoherent := h₂.isQuasicoherent`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `ShortComplex.ShortExact.mk' (S := (ShortComplex.mk _ _ (z a)).map (Scheme.Modules.pullback π)) (QCoh.exact_map_pullback π (hS a).exact).1 (FlagPull.mono_pullback_map_f π _ (hS a) (hE' a)) (QCoh.exact_map_pullback π (hS a).exact).2`. Rewrite using `[← Functor.map_comp, ht]`. Simplify `hO.pull π w` using `only [Functor.map_comp]`.
+A detailed English derivation is pending.
 -/
 theorem isGraded_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (π : Y ⟶ X) (w : π ≫ p = q) (ι : Type) (L : X.Modules) (g : ℕ) (hL : VMetric p L g) (E E' : ι → X.Modules) (r : ι → ℕ) (h : ∀ a, VMetric p (E a) (r a)) (u : ∀ a, E a ⟶ E' a) (m : ℕ) (o : ι ≃ Fin m), (∀ a, IsVB (E' a) (r a)) → IsGraded hL o h u → IsGraded (E' := fun a => (Scheme.Modules.pullback π).obj (E' a)) (hL.pull π w) o (fun a => (h a).pull π w) fun a => (Scheme.Modules.pullback π).map (u a) := by
   intro k _ X Y p q π w ι L g hL E E' r h u m o hE' ⟨F, j, s, κ, t, z, hj, h0, hl, hs, hS, ht, hO⟩

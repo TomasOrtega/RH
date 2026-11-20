@@ -25,13 +25,13 @@ noncomputable section
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k`. Take `⟨-, hs, -, hsm, -⟩` from `hθ G`. Use `haveI := T.base.finite G trivial`. Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule (WittVector p k) (T.M G)).FG)`. Use `⟨⟨S.image (θ G), ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.coe_image, eq_top_iff]`. Introduce and unpack `y -`. Take `⟨m, rfl⟩` from `hs y`. Establish `hm : m ∈ Submodule.span (WittVector p k) (S : Set (T.M G))` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hm using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩ : ∃ b, WittVector.frobenius b = a` from `⟨(WittVector.frobeniusEquiv p k).symm a, (WittVector.frobeniusEquiv p k).apply_symm_apply a⟩`. Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem omega_finite_of_theory (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (G : PDivGroup p k) : Module.Finite k G.omega := by
@@ -56,9 +56,9 @@ theorem omega_finite_of_theory (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k`. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨m, rfl⟩` from `(hθ H).2.1 v`. Take `⟨m', hm'⟩` from `h ⟨m, rfl⟩`. Use `⟨θ Q m', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hθ G).2.2.2.2 Q q m', ← (hθ G).2.2.2.2 H f m, hm']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_omegaMap_le_of_range_map_le (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] {G Q H : PDivGroup p k} (q : G ⟶ Q) (f : G ⟶ H)
@@ -72,27 +72,27 @@ theorem range_omegaMap_le_of_range_map_le (p : ℕ) [Fact p.Prime] (T : Theory p
   rw [← (hθ G).2.2.2.2 Q q m', ← (hθ G).2.2.2.2 H f m, hm']
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `G Q H q f hG hq hn hfq`. Establish `hω` using `range_omegaMap_le_of_range_map_le p T k q f hfq`. Distinguish the cases in `hsurj : Function.Surjective (omegaMap G Q q)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hs` using `GlobalTheory.T.app_surjective_of_omegaMap_surjective_connected p k G Q q hG hsurj`. Take `⟨m, q', h1, h2⟩` from `hq`. Use `GlobalTheory.T.pDivisibleGroup_exists_factor_through_isogeny p k G Q H m q q' f h1 h2 ?_` and prove the remaining obligations. Rewrite using `[kerIdeal_of_surjective (hs m)]`. Conclude with `(kerIdeal_le_ker_iff _ _).2 fun c => by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, i1, i2, i3, i4, π, hπs, hker, hnil, hfrob⟩` from `GlobalTheory.T.exists_quotient_kernel_sup_frobeniusKernel p k G Q q`. Take `⟨Q₁, q₁, q₁', e1, e2, hk1⟩` from `GlobalTheory.T.exists_quotient_pDivGroup_closedSubgroup_pTorsion p k G C π hπs`. Establish `hqπ : kerIdeal (q.app 1) ≤ RingHom.ker π` using `hker ▸ le_sup_left`. Establish `hcq` using `GlobalTheory.T.cotangent_kernel_eq_coker_omegaMap p k G Q q C π hπs`. Establish `hcq₁` using `GlobalTheory.T.cotangent_kernel_eq_coker_omegaMap p k G Q₁ q₁ C π hπs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcotf : cotMap (π.comp (f.app 1)) = 0` using `hcq.2.2 H f fun w hw => hcq.1 hqπ w (hω hw)`. Establish `htriv` using `GlobalTheory.T.eq_counit_of_heightOne_cotangentPullback_zero p k C (H.A 1) (π.comp (f.app 1)) hnil hcotf`. Establish `hfπ : kerIdeal (f.app 1) ≤ RingHom.ker π` using `(kerIdeal_le_ker_iff (f.app 1) (π : G.A 1 →ₐ[k] C)).2 htriv`. Establish `e1' : q₁ ≫ q₁' = (p : ℤ_[p]) ^ 1 • 𝟙 G` using `by rw [pow_one]; exact e1`. Establish `e2' : q₁' ≫ q₁ = (p : ℤ_[p]) ^ 1 • 𝟙 Q₁` using `by rw [pow_one]; exact e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf'⟩` from `GlobalTheory.T.pDivisibleGroup_exists_factor_through_isogeny p k G Q₁ H 1 q₁ q₁' f e1' e2' (hk1 ▸ hfπ)`. Take `⟨r, hr⟩` from `GlobalTheory.T.pDivisibleGroup_exists_factor_through_isogeny p k G Q₁ Q 1 q₁ q₁' q e1' e2' (hk1 ▸ hqπ)`. Establish `hq₁ : IsIsog q₁` using `⟨1, q₁', e1', e2'⟩`. Establish `hr' : IsIsog r` using `(GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).2.2.1 Q₁ Q q₁ r hq₁ (hr ▸ hq)`. Establish `hG₁ : Q₁.IsConn` using `GlobalTheory.T.pDivGroup_isConn_of_isogeny p k G Q₁ q₁ hq₁ hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun` using `GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G Q₁ Q trivial trivial trivial`. Establish `hfun'` using `GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G Q₁ H trivial trivial trivial`. Establish `hmq : T.map q = T.map q₁ ∘ₗ T.map r` using `by rw [← hr]; exact hfun.2.1 q₁ r`. Establish `hmf : T.map f = T.map q₁ ∘ₗ T.map f'` using `by rw [← hf']; exact hfun'.2.1 q₁ f'`. Establish `hinj` using `(GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G Q₁ q₁ hq₁).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : LinearMap.range (T.map f') ≤ LinearMap.range (T.map r)`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, hz⟩` from `hfq ⟨y, rfl⟩`. Use `⟨z, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← hmq, hz, hmf, LinearMap.comp_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := omega_finite_of_theory p T k G`. Establish `hCq : Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G Q q)) = Module.finrank k (Cot k C)` using `hcq.2.1 (hker ▸ sup_le_sup_left hfrob _) hqπ`. Establish `hCq₁ : Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G Q₁ q₁)) = Module.finrank k (Cot k C)` using `hcq₁.2.1 (hk1 ▸ le_sup_left) hk1.le`. Establish `hpos : 0 < Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G Q q))` using `by haveI : Nontrivial (G.omega ⧸ LinearMap.range (omegaMap G Q q)) := Submodule.Quotient.nontrivial_iff.2 fun h => hsurj (LinearMap.range_eq_top.1 h)`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : ℕ∞) ≤ Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q₁))`. Use `le_trans ?_ (GlobalTheory.T.finrank_quot_range_le_length_quot_range_map p T k G Q₁ q₁).1` and prove the remaining obligations. Rewrite using `[hCq₁, ← hCq]`. Conclude with `hpos` after adjusting the coercions. Establish `hadd` using `(GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M Q₁) (T.M Q)).1 (T.map q₁) (T.map r) hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hadd` using `[← hmq, hn]`. Take `⟨a, ha⟩` from `ENat.ne_top_iff_exists.1 (show Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q₁)) ≠ ⊤ from fun h => by simp [h] at hadd)`. Take `⟨b, hb⟩` from `ENat.ne_top_iff_exists.1 (show Module.length (WittVector p k) (T.M Q₁ ⧸ LinearMap.range (T.map r)) ≠ ⊤ from fun h => by simp [h] at hadd)`. Rewrite `hadd` using `[← ha, ← hb]`. Rewrite `h1` using `[← ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hab : n = a + b` using `by exact_mod_cast hadd`. Establish `ha1 : 1 ≤ a` using `by exact_mod_cast h1`. Take `⟨g, hg⟩` from `ih b (by omega) Q₁ Q H r f' hG₁ hr' hb.symm hfr`. Conclude with `⟨g, by rw [← hr, Category.assoc, hg, hf']⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_comp_eq_of_colength (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (n : ℕ) : ∀ (G Q H : PDivGroup p k) (q : G ⟶ Q) (f : G ⟶ H),
@@ -164,7 +164,7 @@ theorem exists_comp_eq_of_colength (p : ℕ) [Fact p.Prime] (T : Theory p) (k : 
   exact ⟨g, by rw [← hr, Category.assoc, hg, hf']⟩
 
 /- English proof (translation)
-Introduce `p _ T k _ _ _ G Q H q f hG hq hfq`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G Q q hq).2.1`. Conclude with `exists_comp_eq_of_colength p T k n G Q H q f hG hq hn.symm hfq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_comp_eq_of_range_map_le : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (G Q H : PDivGroup p k) (q : G ⟶ Q) (f : G ⟶ H), G.IsConn →

@@ -23,7 +23,7 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε l
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Take `⟨α, ⟨hsmooth, hcpt, hsupp, hinv⟩, hfix⟩` from `exists_cvA_idA (sigLam_isURepOn hgap hP hv₀) (sigLam_admissible hgap hP hv₀) W hWf hWsum hU h1`. Conclude with `⟨α, hsmooth, hcpt, hsupp, fun k hk g => hinv k hk g, hfix⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sigLam_le_of_kTypes (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (W : Submodule ℂ (Hlam ε Ψ v₀)) (hWf : FiniteDimensional ℂ W)
     (hWfull : ∀ (μ : Fin n → ℝ) (S : Submodule ℂ (Hlam ε Ψ v₀)),

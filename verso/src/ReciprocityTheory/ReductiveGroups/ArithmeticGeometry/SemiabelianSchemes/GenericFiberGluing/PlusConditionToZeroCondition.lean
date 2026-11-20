@@ -23,7 +23,7 @@ def SemistableReductionZero : Prop :=
       Nonempty (TorusExt (specialFibre V' G))
 
 /- English proof (translation)
-Introduce `V _ _ _ _ K _ _ _ _ A _ hA`. Take `⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, h1, h2, h3, G, i10, h4, h5, h6, h7, h8, h9, -⟩` from `h V K A hA`. Conclude with `⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, h1, h2, h3, G, i10, h4, h5, h6, h7, h8, h9⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SemistableReductionPlus.plusCondition_to_zeroCondition (h : SemistableReductionPlus) : SemistableReductionZero := by
   intro V _ _ _ _ K _ _ _ _ A _ hA

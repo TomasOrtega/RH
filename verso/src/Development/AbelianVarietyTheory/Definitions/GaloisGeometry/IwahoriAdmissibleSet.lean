@@ -37,12 +37,12 @@ def sList (S : Finset (Fin a)) : List (Fin a) := (List.finRange a).filter (· �
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `(List.nodup_finRange a).filter _`.
+A detailed English derivation is pending.
 -/
 theorem nodup_sList (S : Finset (Fin a)) : (sList S).Nodup := (List.nodup_finRange a).filter _
 
 /- English proof (translation)
-Simplify using `[sList]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sList {S : Finset (Fin a)} {c : Fin a} : c ∈ sList S ↔ c ∈ S := by
   simp [sList]
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
 theorem phiS_toFun (ϖ : kˣ) (S : Finset (Fin a)) : (phiS k ϖ S).toFun = dcFn (iwahori k (Fin a)) (wS k ϖ S) := rfl
 
 /- English proof (translation)
-The claim follows from `dcFn_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiS_self (ϖ : kˣ) (S : Finset (Fin a)) : (phiS k ϖ S).toFun (wS k ϖ S) = 1 := dcFn_self _ _
 
@@ -106,7 +106,7 @@ def stratOf (ϖ : kˣ) (g : GL (Fin a) k) : Set (Fin a) :=
   {c | ∀ v ∈ chainLat (a := a) k ϖ ((c : ℕ) + 1), (g : Matrix (Fin a) (Fin a) k) *ᵥ v ∈ chainLat k ϖ c}
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[val_wS, cyc, sList, dEnt, Equiv.Perm.permMatrix, List.finRange, PEquiv.toMatrix]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (ϖ : kˣ) : (wS k ϖ ({0} : Finset (Fin 1)) : Matrix (Fin 1) (Fin 1) k) = !![(ϖ : k)] := by
   ext i j
@@ -114,7 +114,7 @@ example (ϖ : kˣ) : (wS k ϖ ({0} : Finset (Fin 1)) : Matrix (Fin 1) (Fin 1) k)
   simp [val_wS, cyc, sList, dEnt, Equiv.Perm.permMatrix, List.finRange, PEquiv.toMatrix]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[val_wS, cyc, sList, dEnt, Equiv.Perm.permMatrix, List.finRange, PEquiv.toMatrix, List.formPerm_pair]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example (ϖ : kˣ) : (wS k ϖ ({0, 1} : Finset (Fin 2)) : Matrix (Fin 2) (Fin 2) k) = !![0, 1; (ϖ : k), 0] := by
   ext i j
@@ -122,12 +122,12 @@ example (ϖ : kˣ) : (wS k ϖ ({0, 1} : Finset (Fin 2)) : Matrix (Fin 2) (Fin 2)
     simp [val_wS, cyc, sList, dEnt, Equiv.Perm.permMatrix, List.finRange, PEquiv.toMatrix, List.formPerm_pair]
 
 /- English proof (translation)
-The claim follows from `phiS_self k ϖ _`.
+A detailed English derivation is pending.
 -/
 example (ϖ : kˣ) : (phiS k ϖ ({1} : Finset (Fin 2))).toFun (wS k ϖ {1}) = 1 := phiS_self k ϖ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[kot_apply, show (Finset.univ.filter fun S : Finset (Fin 1) => S.Nonempty) = {{0}} from by decide]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (ϖ : kˣ) : (kot (a := 1) k ϖ).toFun = (phiS k ϖ {0}).toFun := by
   funext g
@@ -135,7 +135,7 @@ example (ϖ : kˣ) : (kot (a := 1) k ϖ).toFun = (phiS k ϖ {0}).toFun := by
   simp
 
 /- English proof (translation)
-Rewrite using `[kot_apply, show (Finset.univ.filter fun S : Finset (Fin 2) => S.Nonempty) = {{0}, {1}, {0, 1}} from by decide]`. Rewrite using `[Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Simplify using `[add_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (ϖ : kˣ) (g : GL (Fin 2) k) : (kot (a := 2) k ϖ).toFun g = (phiS k ϖ {0}).toFun g + (phiS k ϖ {1}).toFun g +
     (1 - (Nat.card 𝓀[k] : ℂ)) * (phiS k ϖ {0, 1}).toFun g := by

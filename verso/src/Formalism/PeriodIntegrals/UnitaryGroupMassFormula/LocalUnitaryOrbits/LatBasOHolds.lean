@@ -14,17 +14,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Use `set M := latLoc (E := E) v (L : Set (Fin n → E)) with hM`. Establish `: Module.Finite (v.adicCompletionIntegers F) M` using `Module.Finite.iff_fg.2 (basLat_fg v L hLat)`. Establish `: Module.IsTorsionFree (v.adicCompletionIntegers F) (Fin n → Fv F v ⊗[F] E)` using `Module.IsTorsionFree.of_smul_eq_zero fun r x h => by`. Establish `h' : (r : Fv F v) • x = 0` using `h`. Break down `smul_eq_zero.1 h' with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl (Subtype.ext h0)`. Conclude with `Or.inr h0`. Establish `: Module.Free (v.adicCompletionIntegers F) M` using `Module.free_of_finite_type_torsion_free'`. Set `bM` to `Module.finBasis (v.adicCompletionIntegers F) M`. Set `b0 : Fin (Module.finrank (v.adicCompletionIntegers F) M) → Fin n → Fv F v ⊗[F] E` to `fun i => (bM i : _)`.
+Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli0 : LinearIndependent (v.adicCompletionIntegers F) b0` using `bM.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `hli : LinearIndependent (Fv F v) b0` using `(LinearIndependent.iff_fractionRing (v.adicCompletionIntegers F) (Fv F v)).1 hli0`. Establish `hmem : ∀ x, x ∈ M ↔ ∃ c : Fin (Module.finrank (v.adicCompletionIntegers F) M) → v.adicCompletionIntegers F, x = ∑ i, (c i : Fv F v) • b0 i`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `⟨fun i => bM.repr ⟨x, hx⟩ i, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (bM.sum_repr ⟨x, hx⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Conclude with `h.symm.trans (Finset.sum_congr rfl fun i _ => rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem M (c i) (bM i).2`. Use `⟨_, b0, hli, hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[← basSpan_top v L hLat, Submodule.span_le]`. Introduce `x hx`.
-
-Take `⟨c, rfl⟩` from `(hmem x).1 hx`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_basO (L : Submodule (𝓞 E) (Fin n → E)) (hLat : Submodule.IsLattice E L) :
     ∃ (m : ℕ) (b : Fin m → Fin n → Fv F v ⊗[F] E), LinearIndependent (Fv F v) b ∧
@@ -65,11 +63,11 @@ theorem exists_basO (L : Submodule (𝓞 E) (Fin n → E)) (hLat : Submodule.IsL
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨hCM, -⟩, ⟨L, hLat, rfl⟩, -⟩`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h2 : Module.finrank F E = 2` using `hCM.2.2.1`. Take `⟨m, b, hli, hmem, hsp⟩` from `exists_basO v L hLat`. Establish `hm : m = 2 * n`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)`. Rewrite `h1` using `[Fintype.card_fin]`. Rewrite using `[← h1, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_baseChange, h2, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `hm` using the available equality. Conclude with `⟨b, hli, hmem⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem latBasO_holds (a : ℕ) (Y : TupV (E := E) v n a) : LatBasO σ J ψ v Λ a Y := by
   classical
@@ -87,7 +85,7 @@ theorem latBasO_holds (a : ℕ) (Y : TupV (E := E) v n a) : LatBasO σ J ψ v Λ
   exact ⟨b, hli, hmem⟩
 
 /- English proof (translation)
-The claim follows from `resIdx_holds v`.
+A detailed English derivation is pending.
 -/
 theorem resIdx_holds' : ResIdx v := resIdx_holds v
 

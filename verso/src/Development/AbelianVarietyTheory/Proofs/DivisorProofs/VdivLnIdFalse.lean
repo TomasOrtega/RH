@@ -37,18 +37,18 @@ def lnId (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) : ∀ l : Ln Dw, Pad.Gen
   | (true, st) => NModel.GenIso.dual (z.genId hp hW (Option.some_get st.2).symm)
 
 /- English proof (translation)
-The claim follows from `(z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem lnLB_false (b : Bool) (st) : lnLB z b (false, st) = z.stepLB b st.1 := (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-The claim follows from `congrArg FinLB.dual (z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem lnLB_true (b : Bool) (st) : lnLB z b (true, st) = (z.stepLB b st.1).dual :=
   congrArg FinLB.dual (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-Take `rfl : (letterOf Dw st.1).get st.2 = x` from `Option.some.inj ((Option.some_get st.2).trans h)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem vdiv_lnId_false (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (d : ℕ) (st) {x : Letter Dw}
     (h : letterOf Dw st.1 = some x) :
@@ -57,7 +57,7 @@ theorem vdiv_lnId_false (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (d : ℕ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← vdiv_lnId_false z hp hW d st h]`. Conclude with `vdiv_dual hp hW d _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdiv_lnId_true (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (d : ℕ) (st) {x : Letter Dw}
     (h : letterOf Dw st.1 = some x) :

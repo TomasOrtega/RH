@@ -5,31 +5,31 @@ open IsLocalRing
 namespace GlobalTheory.CompleteNakayamaLocal
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `(Module.Finite.fg_top (R := B) (M := R ⧸ maximalIdeal R))`. Use `choose lift hlift using fun x : R ⧸ maximalIdeal R => Ideal.Quotient.mk_surjective x`. Establish `hTop : Submodule.span B (lift '' (T : Set _)) ⊔ (maximalIdeal R).restrictScalars B = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `r _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr : Ideal.Quotient.mk (maximalIdeal R) r ∈ Submodule.span B (T : Set _)`. Rewrite using `[hT]`. Discharge the goal by the elementary cases of `trivial`. Establish `hmap : Submodule.span B (T : Set (R ⧸ maximalIdeal R)) = (Submodule.span B (lift '' (T : Set _))).map (Ideal.Quotient.mkₐ B (maximalIdeal R)).toLinearMap`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[hlift]`. Rewrite `hr` using `[hmap]`. Take `⟨t, ht, hte⟩` from `hr`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : r - t ∈ maximalIdeal R`. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `using hte.symm`. Rewrite using `[Submodule.mem_sup]`. Conclude with `⟨t, ht, r - t, hu, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨⊥, Submodule.fg_bot, by simp⟩`. Consider the case `succ n ih`. Take `⟨P, hP, hPtop⟩` from `ih`. Take `⟨gens, hgens⟩` from `(IsNoetherian.noetherian (maximalIdeal R ^ n) : (maximalIdeal R ^ n).FG)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G : Set R` to `Set.image2 (· * ·) (lift '' (T : Set _)) (gens : Set R)`. Establish `hGf : G.Finite` using `((T.finite_toSet.image _).image2 _ gens.finite_toSet)`. Use `⟨P ⊔ Submodule.span B G, hP.sup (Submodule.fg_def.2 ⟨G, hGf, rfl⟩), ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ maximalIdeal R ^ n, ∀ r : R, r * y ∈ Submodule.span B G ⊔ (maximalIdeal R ^ (n + 1)).restrictScalars B`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← hgens]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `r`. Establish `hr : r ∈ (⊤ : Submodule B R)` using `trivial`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[← hTop, Submodule.mem_sup]`. Take `⟨t, ht, u, hu, rfl⟩` from `hr`. Rewrite using `[add_mul]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Establish `: t * g ∈ (Submodule.span B (lift '' (T : Set _))).map (LinearMap.mulRight B g)` using `⟨t, ht, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, g, hg, rfl⟩`. Use `show u * g ∈ maximalIdeal R ^ (n + 1)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul hu (hgens ▸ Submodule.subset_span hg)`. Consider the case `zero => intro r`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb => intro r`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ (ha r) (hb r)`. Consider the case `smul s a _ ha => intro r`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `ha (r * s)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ (⊤ : Submodule B R)` using `trivial`. Rewrite `hx` using `[← hPtop, Submodule.mem_sup]`. Take `⟨p, hp, y, hy, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy'` using `key y hy 1`. Rewrite `hy'` using `[one_mul, Submodule.mem_sup]`. Take `⟨a, ha, c, hc, rfl⟩` from `hy'`. Rewrite using `[Submodule.mem_sup]`. Use `⟨p + a, Submodule.add_mem_sup hp ha, c, hc, by ring⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_sup_pow_eq_top {B R : Type} [CommRing B] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [Algebra B R]
@@ -102,17 +102,15 @@ theorem exists_fg_sup_pow_eq_top {B R : Type} [CommRing B] [CommRing R] [IsLocal
     refine ⟨p + a, Submodule.add_mem_sup hp ha, c, hc, by ring⟩
 
 /- English proof (translation)
-Introduce `B R _ _ _ _ _ _ ψ hB hψ hrad hres`. Use `letI : Algebra B R := ψ.toAlgebra`. Use `set J : Ideal R := (maximalIdeal B).map (algebraMap B R) with hJdef`. Establish `hJm : J ≤ maximalIdeal R`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => (mem_maximalIdeal x).1 hx (isUnit_of_map_unit ψ x h)`. Use `haveI : IsHausdorff J R := ⟨fun x hx => IsHausdorff.haus (I := maximalIdeal R) inferInstance x fun n => (hx n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJm n))⟩`. Take `⟨e, he⟩ : ∃ e, maximalIdeal R ^ e ≤ J` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Establish `hres' : Module.Finite B (R ⧸ maximalIdeal R)` using `hres`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP, hPtop⟩` from `exists_fg_sup_pow_eq_top hres' e`. Use `haveI : Module.Finite B (R ⧸ J) := by`. Use `⟨?_⟩` and prove the remaining obligations. Establish `: (⊤ : Submodule B (R ⧸ J)) = P.map (Ideal.Quotient.mkₐ B J).toLinearMap`. Use `le_antisymm ?_ le_top` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `z -`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `hx : x ∈ (⊤ : Submodule B R)` using `trivial`. Rewrite `hx` using `[← hPtop, Submodule.mem_sup]`. Take `⟨p, hp, y, hy, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk J p = Ideal.Quotient.mk J (p + y)`. Rewrite using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 (he hy), add_zero]`. Rewrite using `[this]`. Conclude with `hP.map _`.
-
-Conclude with `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal B)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_maximalIdeal_le_radical : ∀ (B R : Type) [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (ψ : B →+* R),
@@ -149,7 +147,7 @@ theorem finite_of_maximalIdeal_le_radical : ∀ (B R : Type) [CommRing B] [IsLoc
   exact GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal B)
 
 /- English proof (translation)
-The claim follows from `finite_of_maximalIdeal_le_radical`.
+A detailed English derivation is pending.
 -/
 example : ∀ (B R : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (ψ : B →+* R), IsAdicComplete (maximalIdeal B) B → IsLocalHom ψ → maximalIdeal R ≤ ((maximalIdeal B).map ψ).radical → ((residue R).comp ψ).Finite → ψ.Finite := finite_of_maximalIdeal_le_radical
 

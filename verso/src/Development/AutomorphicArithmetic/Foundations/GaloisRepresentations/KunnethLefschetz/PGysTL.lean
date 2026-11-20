@@ -19,17 +19,15 @@ private def pairSP {k : Type} [Field k] {d e : ℕ} {Z X : Scheme.{0}} {p : X �
     cl := h.cl, smX := h.big, smZ := h.small, hU := rfl }
 
 /- English proof (translation)
-Unfold `GysTL`. Introduce `hI hO k _`. Establish `hg : ∀ d, LateralTheory.CohomologicalPurity.Gysin d` using `hI.gys`. Unfold `LateralTheory.CohomologicalPurity.Gysin at hg`. Use `choose gys rs H using hg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun q d e Z X p ι h n m i j hn hi => (castHom hn hi).comp (gys d q (pairSP h) n i), ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `q _ hq d e Z X p ι h n m i j hn hi U hU`. Substitute `hn hi` using the available equality. Take `rfl : U = (pairSP h).U` from `TopologicalSpace.Opens.ext hU`. Conclude with `((H d q (pairSP h) (LPdCut.unit_of p hq)).1 n i).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `q _ hq d e Z X p ι h n m i j hn hi U hU hs`. Substitute `hn hi` using the available equality. Take `rfl : U = (pairSP h).U` from `TopologicalSpace.Opens.ext hU`. Establish `hx` using `((H d q (pairSP h) (LPdCut.unit_of p hq)).1 n i).2.1`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, rfl⟩` from `(hx a).1 ha`. Rewrite using `[hs.elim u 0]`. Conclude with `map_zero (rs d q (pairSP h) n i)`. Introduce `q _ hq d e' e Z' X' Z X p' ι' p ι h' h f u hpb n m i j hn hi a`. Substitute `hn hi` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hoff : Off ι' (f ⁻¹ᵁ (pairSP h).U)` using `hO.2 ι' ι f u hpb (pairSP h).U rfl`. Establish `hle : (pairSP h').U ≤ f ⁻¹ᵁ (pairSP h).U` using `(TopologicalSpace.Opens.ext hoff.symm : (pairSP h').U = f ⁻¹ᵁ (pairSP h).U).le`. Conclude with `(((H d q (pairSP h) (LPdCut.unit_of p hq)).2.1 (pairSP h') ⟨f, u, hpb, hle⟩ n i).1 a)`. Introduce `q _ hq d e Z X p ι h n m r s t i j i' j' w h1 h2 h3 h4 k1 k2 k3 k4 a b`. Substitute `h1 h2 h3 k1 k2 k3` using the available equality.
-
-Conclude with `(H d q (pairSP h) (LPdCut.unit_of p hq)).2.2.1 n m i j a b`. Introduce `q r _ hq hr d e Z X p ι h n m i j hn hi a`. Substitute `hn hi` using the available equality. Conclude with `(((H d q (pairSP h) (LPdCut.unit_of p hq)).2.2.2 r hr n i).1 a).symm`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.gysTL_holds :
     UpperTheory.Gal.KunnethLefschetz.GysTL := by

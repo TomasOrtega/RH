@@ -19,49 +19,43 @@ namespace MainStatements.Tam.T2
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `δ hg k k' y hy hgy`. Take `⟨δ0, hδU, hδeq⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hg)`. Establish `hmat : matHom V δ = Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) δ0` using `hδeq.symm`. Establish `h1 : (matHom V δ).1 = (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F))` using `by rw [hmat]; rfl`. Establish `hinf : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) δ = (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ρ`. Establish `hinc : ((δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Ainf D.host.F))).map (θ ρ) = (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D ρ)`. Use extensionality with `a b`. Conclude with `(hθ ρ).1 _`. Rewrite using `[← hinc, ← GlobalTheory.UnitaryGlue.map_map_inclR (fstA D.host.F), ← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hfin : (finHom V δ).1 = (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F))`. Rewrite using `[← GlobalTheory.UnitaryGlue.map_map_inclR (sndA D.host.F), ← h1]`. Both sides reduce to the same expression. Establish `hfinv : (finHom V δ⁻¹).1 = ((δ0⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hfin, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hU : ((δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map cc)ᵀ * V.gram * δ0.1 = V.gram`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ δ0.1 * V.gram * δ0.1 = V.gram at hδU`. Use `hδU using 3` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmatG : δ0.1ᵀ * -(V.gram)ᵀ * δ0.1.map cc = -(V.gram)ᵀ`. Use `congrArg (fun A => -Aᵀ) hU` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]`. Establish `hherm` using `GlobalTheory.MsRepsFwd.herm_mulVec _ _ hmatG`. Establish `hmulKM : ∀ a b, a ∈ KM V M → b ∈ KM V M → a * b ∈ KM V M` using `fun a b ha hb => by show IsKM _ _ _ _ ((finHom V (a * b)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Units.val_mul]`. Conclude with `GlobalTheory.UCls.isKM_mul ha hb`. Establish `hinvKM : ∀ a, a ∈ KM V M → a⁻¹ ∈ KM V M` using `fun a ha => by show IsKM _ _ _ _ ((finHom V a⁻¹).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E))`. Rewrite using `[map_inv, Matrix.coe_units_inv]`. Conclude with `GlobalTheory.UCls.isKM_inv ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ : (g k')⁻¹ * δ * g k ∈ KM V M`. Establish `e : (g k')⁻¹ * δ * g k = ((g k')⁻¹ * (δ * y)) * ((g k)⁻¹ * y)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `hmulKM _ _ hgy.1 (hinvKM _ hy.1)`. Establish `hκ' : (g k)⁻¹ * δ⁻¹ * g k' ∈ KM V M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (g k)⁻¹ * δ⁻¹ * g k' = ((g k)⁻¹ * y) * ((g k')⁻¹ * (δ * y))⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `hmulKM _ _ hy.1 (hinvKM _ hgy.1)`. Establish `hUA : IsUA (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) (ratM (maximalRealSubfield D.host.E) δ0.1)` using `GlobalTheory.T.isInvertibleUnitaryAdelicMatrix_of_rational_unitary D.host.E V.rank _ δ0.1 (Matrix.isUnits_det_units δ0).ne_zero hherm`. Establish `hratM : ratM (maximalRealSubfield D.host.E) δ0.1 = δ0.1.map (inclR (Af D.host.F))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkk : k = k'` using `hdist k k' ⟨δ0.1, hUA, (finHom V ((g k)⁻¹ * δ⁻¹ * g k')).1, hκ', by`. Rewrite using `[hratM, ← hfin, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Use the proof step `group⟩`. Consider the cases of `hkk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Nontrivial (Af D.host.F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Conclude with `(Formalism.UG.evalV D.host.F ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField D.host.F)⟩).toRingHom.domain_nontrivial`. Use `haveI : Nontrivial (Af D.host.F ⊗[D.host.F] D.host.E) := (Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := Af D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective).nontrivial`. Establish `hinj : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) := (inclR (F := D.host.F) (E := D.host.E) (Af D.host.F)).injective`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he1 : δ0.1.map (inclR (F` using `D.host.F) (Af D.host.F)) * (finHom V (g k)).1 = (finHom V (g k)).1 * (finHom V ((g k)⁻¹ * δ * g k)).1 := by`. Rewrite using `[← hfin, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Establish `he2 : (δ0⁻¹ : GL (Fin V.rank) D.host.E).1.map (inclR (F` using `D.host.F) (Af D.host.F)) * (finHom V (g k)).1 = (finHom V (g k)).1 * (finHom V ((g k)⁻¹ * δ⁻¹ * g k)).1 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← hfinv, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Establish `C1` using `GlobalTheory.MsRepsFwd.latOf_congr D.host.F D.host.E V.rank M (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) (finHom V (g k)).1 (finHom V ((g k)⁻¹ * δ * g k)).1 δ0.1 hinj hκ.2.1 he1`. Establish `C2` using `GlobalTheory.MsRepsFwd.latOf_congr D.host.F D.host.E V.rank M (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) (finHom V (g k)).1 (finHom V ((g k)⁻¹ * δ⁻¹ * g k)).1 (δ0⁻¹ : GL (Fin V.rank) D.host.E).1 hinj hκ'.2.1 he2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : ∀ x, x ∈ (X k).Λ ↔ x ∈ GlobalTheory.AdLat.latOf D.host.F (finHom V (g k)).1 (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`. Introduce `x`. Rewrite using `[← SetLike.mem_coe, hXΛ k]`. Establish `hcong : ∀ x ∈ (X k).Λ, ∃ y ∈ (X k).Λ, δ0.1 *ᵥ x - x = M • y`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y, hy, e⟩` from `C1 x ((hmem x).1 hx)`. Conclude with `⟨y, (hmem y).2 hy, e⟩`. Establish `hcong' : ∀ x ∈ (X k).Λ, ∃ y ∈ (X k).Λ, (δ0⁻¹ : GL (Fin V.rank) D.host.E).1 *ᵥ x - x = M • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `C2 x ((hmem x).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨y, (hmem y).2 hy, e⟩`. Establish `hstab : ∀ x, x ∈ (X k).Λ ↔ δ0.1 *ᵥ x ∈ (X k).Λ`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, e⟩` from `hcong x hx`. Rewrite using `[show δ0.1 *ᵥ x = x + M • y by rw [← e]; abel]`. Conclude with `(X k).Λ.add_mem hx (nsmul_mem hy M)`. Introduce `hx`. Take `⟨y, hy, e⟩` from `hcong' _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[show x = δ0.1 *ᵥ x + M • y by rw [← e]; abel]`. Conclude with `(X k).Λ.add_mem hx (nsmul_mem hy M)`. Establish `hΓ : δ0 ∈ (X k).Γ` using `(hXΓ k δ0).2 ⟨⟨by rw [hXG k]; exact hherm, hstab⟩, hcong⟩`. Establish `hd1 : (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det = 1` using `GlobalTheory.T.det_eq_one_unitary_principal_congruence_level_three D.host.E V.rank M (X k) hM (hXΓ k) δ0 hΓ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemSU : embGL Ψ V.rank δ0 ∈ realSU Ψ Gm` using `embGL_mem_realSU Ψ Gm δ0 hd1 (by rw [hGm]; exact hherm)`. Establish `hin : (⟨embGL Ψ V.rank δ0, hmemSU⟩ : realSU Ψ Gm) ∈ inReal Ψ Gm (X k).Γ` using `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨δ0, hΓ, rfl⟩)`. Establish `heqv` using `heq ⟨embGL Ψ V.rank δ0, hmemSU⟩ (rp δ) (fun ρ => by`. Rewrite using `[hrp δ ρ, hinf ρ]`. Use `show _ = A ρ * (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ).1`.
-
-Rewrite using `[hσ ρ]) (rp y)`. Establish `hs1` using `hF k _ hin (π (rp y)) hy.2 (by rw [← heqv, ← map_mul]; exact hgy.2)`. Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Choose the witnesses or unpack the hypotheses as in `⟨ρ₀⟩ : Nonempty D.what₂.Tau := by`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hδ1 : δ0 = 1`. Establish `h5` using `congrArg (fun s : realSU Ψ Gm => ((s.1 (σ ρ₀) : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)) hs1`. Establish `h6 : (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1 = (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `h5`. Conclude with `Units.ext (Matrix.map_injective (σ ρ₀).1.injective h6)`. Use `⟨Subtype.ext ?_, rfl⟩` and prove the remaining obligations. Rewrite `hmat` using `[hδ1, map_one]`. Conclude with `hmat`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tube_disj (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ))
     (Ψ : Finset (D.host.E →+* ℂ)) (Gm : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (σ : D.what₂.Tau ≃ Ψ)

@@ -21,11 +21,11 @@ section Abstract
 variable {G R : Type} [AddCommGroup G] [NormedAddCommGroup R] [NormedSpace ℝ R]
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ (fun x : R => f (w + ι x)) ((0 : ℝ) • u)` using `((hf w).differentiable (by simp)).differentiableAt`. Establish `hl : HasDerivAt (fun t : ℝ => t • u) u 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const u`. Establish `h2 : HasDerivAt (fun t : ℝ => f (w + ι (t • u))) (fderiv ℝ (fun x : R => f (w + ι x)) 0 u) 0`. Use `hd.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul]`. Conclude with `this`. Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ) * c) c 0`. Simplify using `using (HasDerivAt.ofReal_comp (hasDerivAt_id (0 : ℝ))).mul_const c`. Establish `h3` using `h0.cexp.mul h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasDerivAt.congr_deriv h3 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_mul (ι : R →+ G) (c : ℂ) (f : G → ℂ) (hf : Sm ι f) (u : R) (w : G) :
     HasDerivAt (fun t : ℝ => Complex.exp (t * c) * f (w + ι (t • u)))
@@ -46,17 +46,17 @@ theorem hasDerivAt_exp_mul (ι : R →+ G) (c : ℂ) (f : G → ℂ) (hf : Sm ι
   simp
 
 /- English proof (translation)
-The claim follows from `(φ.toRealLinearMap h).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_additive [FiniteDimensional ℝ R] (φ : R →+ ℂ) (h : Continuous φ) : ContDiff ℝ ∞ φ :=
   (φ.toRealLinearMap h).contDiff
 
 /- English proof (translation)
-Introduce `w`. Establish `e : (fun x : R => φ (w + ι x) * f (w + ι x) + fderiv ℝ (fun y : R => f (w + ι x + ι y)) 0 u) = fun x : R => (φ w + φ (ι x)) * f (w + ι x) + fderiv ℝ (fun y : R => f (w + ι y)) x u`. Use function extensionality and compare the values at `x`. Rewrite using `[map_add φ]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `fderiv_comp_add_left (𝕜 := ℝ) (f := fun y : R => f (w + ι y)) (x := 0) x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_add, add_assoc]`. Use `show ContDiff ℝ ∞ fun x : R => φ (w + ι x) * f (w + ι x) + fderiv ℝ (fun y : R => f (w + ι x + ι y)) 0 u`. Rewrite using `[e]`. Use `ContDiff.add (ContDiff.mul (contDiff_const.add hφ) (hf w)) ?_` and prove the remaining obligations. Conclude with `((hf w).fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sm_deriv (ι : R →+ G) (φ : G →+ ℂ) (hφ : ContDiff ℝ ∞ fun x => φ (ι x)) (f : G → ℂ) (hf : Sm ι f) (u : R) :
     Sm ι fun w => φ w * f w + fderiv ℝ (fun x : R => f (w + ι x)) 0 u := by
@@ -78,9 +78,9 @@ theorem sm_deriv (ι : R →+ G) (φ : G →+ ℂ) (hφ : ContDiff ℝ ∞ fun x
   exact ((hf w).fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const
 
 /- English proof (translation)
-Introduce `w`. Establish `e : (fun x : R => Complex.exp (φ (w + ι x)) * f (w + ι x + v)) = fun x : R => Complex.exp (φ w + φ (ι x)) * f (w + v + ι x)`. Use function extensionality and compare the values at `x`. Rewrite using `[map_add φ, add_right_comm]`. Use `show ContDiff ℝ ∞ fun x : R => Complex.exp (φ (w + ι x)) * f (w + ι x + v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(contDiff_const.add hφ).cexp.mul (hf _)`.
+A detailed English derivation is pending.
 -/
 theorem sm_translate (ι : R →+ G) (φ : G →+ ℂ) (hφ : ContDiff ℝ ∞ fun x => φ (ι x)) (f : G → ℂ) (hf : Sm ι f) (v : G) :
     Sm ι fun w => Complex.exp (φ w) * f (w + v) := by
@@ -98,7 +98,7 @@ end Abstract
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `symplOH symplO hO`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplOH_add_left (S T : HSp D) (x x' y : WO S T) :
     symplOH S T (x + x') y = symplOH S T x y + symplOH S T x' y := by
@@ -106,7 +106,7 @@ theorem symplOH_add_left (S T : HSp D) (x x' y : WO S T) :
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Unfold `symplOH symplO hO`. Simplify using `only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplOH_add_right (S T : HSp D) (x y y' : WO S T) :
     symplOH S T x (y + y') = symplOH S T x y + symplOH S T x y' := by
@@ -114,7 +114,7 @@ theorem symplOH_add_right (S T : HSp D) (x y y' : WO S T) :
   simp only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Use `symplOH_add_left S T 0 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
   have := symplOH_add_left S T 0 0 y
@@ -122,7 +122,7 @@ theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Use `symplOH_add_right S T y 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_zero_right (S T : HSp D) (y : WO S T) : symplOH S T y 0 = 0 := by
   have := symplOH_add_right S T y 0 0
@@ -130,7 +130,7 @@ theorem symplOH_zero_right (S T : HSp D) (y : WO S T) : symplOH S T y 0 = 0 := b
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Establish `h : V.gram.IsHermitian` using `Matrix.ext fun i j => GlobalTheory.DualPairCheck.gram_star V j i`. Conclude with `congrFun (congrFun h.inv j) i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_inv_star (V : HSp D) (i j) : star (V.gram⁻¹ i j) = V.gram⁻¹ j i := by
   have h : V.gram.IsHermitian :=
@@ -138,7 +138,7 @@ theorem gram_inv_star (V : HSp D) (i j) : star (V.gram⁻¹ i j) = V.gram⁻¹ j
   exact congrFun (congrFun h.inv j) i
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_mul, hσ, hP, hQ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_sum {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (P : Fin m → Fin m → A)
     (Q : Fin n → Fin n → A) (hP : ∀ i k, σ (P i k) = P k i) (hQ : ∀ i k, σ (Q i k) = Q k i)
@@ -152,7 +152,7 @@ theorem herm_sum {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (hσ : ∀
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-The claim follows from `herm_sum (cA D) GlobalTheory.DualPairCheck.cA_cA (fun i k => incA D (S.gram⁻¹ i k)) (fun i k => incA D (T.gram i k)) (fun i k => by rw [GlobalTheory.DualPairCheck.cA_incA, gram_inv_star]) (fun i k => by rw [GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star] …`.
+A detailed English derivation is pending.
 -/
 theorem hO_herm (S T : HSp D) (x y : WO S T) : cA D (hO S T x y) = hO S T y x :=
   herm_sum (cA D) GlobalTheory.DualPairCheck.cA_cA (fun i k => incA D (S.gram⁻¹ i k)) (fun i k => incA D (T.gram i k))
@@ -160,7 +160,7 @@ theorem hO_herm (S T : HSp D) (x y : WO S T) : cA D (hO S T x y) = hO S T y x :=
     (fun i k => by rw [GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]) x y
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[← GlobalTheory.DualPairCheck.trace_cA, map_mul, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, hO_herm, map_neg, neg_mul, map_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_skew (S T : HSp D) (x y : WO S T) : symplO S T y x = -symplO S T x y := by
   unfold symplO
@@ -168,14 +168,14 @@ theorem symplO_skew (S T : HSp D) (x y : WO S T) : symplO S T y x = -symplO S T 
     neg_mul, map_neg]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_skew, mul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_skew (S T : HSp D) (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   unfold symplOH
   rw [symplO_skew, mul_neg]
 
 /- English proof (translation)
-Establish `hy' : ∀ i j, Continuous fun t => cA D (y t i j)` using `fun i j => ThetaCont.continuous_conj.comp ((continuous_apply j).comp ((continuous_apply i).comp hy))`. Establish `hx' : ∀ i j, Continuous fun t => x t i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp hx)`. Establish `hh : Continuous fun t => hO S T (x t) (y t)` using `continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => ((continuous_const.mul (hy' _ _)).mul continuous_const).mul (hx' _ _)`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `continuous_const.mul (ht.comp (continuous_const.mul hh))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symplOH (S T : HSp D) {X : Type} [TopologicalSpace X] {x y : X → WO S T} (hx : Continuous x)
     (hy : Continuous y) : Continuous fun t => symplOH S T (x t) (y t) := by
@@ -190,9 +190,9 @@ theorem continuous_symplOH (S T : HSp D) {X : Type} [TopologicalSpace X] {x y : 
   exact continuous_const.mul (ht.comp (continuous_const.mul hh))
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by`. Simplify using `only [Matrix.transpose_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_reorder {A : Type} [CommRing A] {m n : ℕ} (σ : A → A) (P : Fin m → Fin m → A)
     (Q : Fin n → Fin n → A) (x y : Matrix (Fin n) (Fin m) A) :
@@ -205,9 +205,9 @@ theorem sum_reorder {A : Type} [CommRing A] {m n : ℕ} (σ : A → A) (P : Fin 
     simp only [Matrix.transpose_apply]; ring
 
 /- English proof (translation)
-Establish `h1 : p (symplO S T x y) = 0`. Unfold `symplO hO`. Rewrite using `[sum_reorder (cA D) (fun k i => incA D (S.gram⁻¹ k i)) (fun j l => incA D (T.gram j l)) x y]`. Apply the tactic sequence `refine map_trace_sesq_eq_zero p D.sp.cm.sig _ (fun k i => incA D (S.gram⁻¹ k i)) (fun j l => incA D (T.gram j l)) xᵀ yᵀ (h.imp (fun h => ?_) fun h => ?_) <;>`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun h j) i`. Unfold `symplOH`. Rewrite using `[map_mul, h1, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_symplOH_eq_zero {B : Type} [CommRing B] [Algebra D.host.F B] (p : AF D.host.F →ₐ[D.host.F] B)
     (S T : HSp D) (x y : WO S T)
@@ -225,19 +225,19 @@ theorem map_symplOH_eq_zero {B : Type} [CommRing B] [Algebra D.host.F B] (p : AF
   rw [map_mul, h1, mul_zero]
 
 /- English proof (translation)
-The claim follows from `map_symplOH_eq_zero (sndA D.host.F) S T x y h`.
+A detailed English derivation is pending.
 -/
 theorem snd_symplOH (S T : HSp D) (x y : WO S T) (h : x.map (finPart D) = 0 ∨ y.map (finPart D) = 0) :
     sndA D.host.F (symplOH S T x y) = 0 := map_symplOH_eq_zero (sndA D.host.F) S T x y h
 
 /- English proof (translation)
-The claim follows from `map_symplOH_eq_zero (fstA D.host.F) S T x y h`.
+A detailed English derivation is pending.
 -/
 theorem fst_symplOH (S T : HSp D) (x y : WO S T) (h : x.map (infPart D) = 0 ∨ y.map (infPart D) = 0) :
     fstA D.host.F (symplOH S T x y) = 0 := map_symplOH_eq_zero (fstA D.host.F) S T x y h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Prod.ext (fst_symplOH S T u v (Or.inl hu)) (snd_symplOH S T u v (Or.inr hv)), Prod.ext (fst_symplOH S T v u (Or.inr hu)) (snd_symplOH S T v u (Or.inl hv))⟩`.
+Supply the required witnesses or components.
 -/
 theorem symplOH_fin_real (S T : HSp D) (u v : WO S T) (hu : u.map (infPart D) = 0) (hv : v.map (finPart D) = 0) :
     symplOH S T u v = 0 ∧ symplOH S T v u = 0 :=
@@ -245,9 +245,9 @@ theorem symplOH_fin_real (S T : HSp D) (u v : WO S T) (hu : u.map (infPart D) = 
     Prod.ext (fst_symplOH S T v u (Or.inr hu)) (snd_symplOH S T v u (Or.inl hv))⟩
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `hψ.2.1`. Set `lam : AF D.host.F →+ ℂ` to `{ toFun := fun a => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (fstA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)) map_zero' := by simp only [map_zero, TensorProduct.zero_tmul, Finset.sum_const_zero, mul_zero] map_add' := fun a b => by`. Simplify using `only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, mul_add] }`. Use `⟨lam, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.mul (continuous_finset_sum _ fun ρ _ => (hθ ρ).2.comp continuous_fst)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `hψ.2.2 θ hθ (fstA D.host.F a)`. Establish `e : pairA D.host.F (fstA D.host.F a) 0 = a` using `Prod.ext rfl ha.symm`. Rewrite `hc` using `[psiInf, e]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_log {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
     ∃ lam : AF D.host.F →+ ℂ, Continuous lam ∧ ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a) := by
@@ -268,7 +268,7 @@ theorem exists_log {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul, symplOH_add_left, symplOH_add_right, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_heisO (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w w' : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w (heisO ψ S T w' f) = ψ (symplOH S T w w') • heisO ψ S T (w + w') f := by
@@ -277,14 +277,14 @@ theorem heisO_heisO (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w w' : WO S 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Rewrite using `[heisO, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext u
   rw [heisO, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]
 
 /- English proof (translation)
-Simplify using `only [heisO]`. Rewrite using `[add_assoc, hf, symplOH_add_left, symplOH_add_right, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_quasi (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ : WO S T) (f : WO S T → ℂ)
     (hf : ∀ γ w, f (ratW T S γ + w) = ψ (-(symplOH S T (ratW T S γ) w)) * f w) (γ w) :
@@ -296,7 +296,7 @@ theorem heisO_quasi (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ : WO S 
   ring
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hf]`. Rewrite using `[heisO_heisO, heisO_heisO, (symplOH_fin_real S T u v hu hv).1, (symplOH_fin_real S T u v hu hv).2, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_fix_of_real (u v : WO S T) (hu : u.map (infPart D) = 0) (hv : v.map (finPart D) = 0)
     (f : WO S T → ℂ) (hf : heisO ψ S T u f = f) : heisO ψ S T u (heisO ψ S T v f) = heisO ψ S T v f := by
@@ -304,7 +304,7 @@ theorem heisO_fix_of_real (u v : WO S T) (hu : u.map (infPart D) = 0) (hv : v.ma
   rw [heisO_heisO, heisO_heisO, (symplOH_fin_real S T u v hu hv).1, (symplOH_fin_real S T u v hu hv).2, add_comm]
 
 /- English proof (translation)
-Simplify using `only [Pi.zero_apply, mul_zero] level := ⟨⊤, isOpen_univ, fun u _ _ => by funext w; simp only [heisO, Pi.zero_apply, mul_zero]⟩ cont := continuous_const smooth k L _ _ w := contDiff_const`.
+Simplify using the standard rewrite rules.
 -/
 theorem isTheta_zero : IsThetaFunO ψ S T 0 where
   quasi γ w := by simp only [Pi.zero_apply, mul_zero]
@@ -313,11 +313,9 @@ theorem isTheta_zero : IsThetaFunO ψ S T 0 where
   smooth k L _ _ w := contDiff_const
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, hf.quasi, hg.quasi, mul_add] level := by`. Take `⟨U, hU, h1⟩` from `hf.level`. Take `⟨U', hU', h2⟩` from `hg.level`. Use `⟨U ⊓ U', hU.inter hU', fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1` using `congrFun (h1 u hu.1 h0) w`. Establish `e2` using `congrFun (h2 u hu.2 h0) w`. Unfold `heisO at e1 e2 ⊢`. Rewrite using `[Pi.add_apply, Pi.add_apply, mul_add, e1, e2]`. Use `cont := hf.cont.add hg.cont`.
-
-Use `smooth k L h1 h2 w := (hf.smooth k L h1 h2 w).add (hg.smooth k L h1 h2 w)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_add {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (f + g) where
@@ -335,9 +333,9 @@ theorem isTheta_add {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsT
   smooth k L h1 h2 w := (hf.smooth k L h1 h2 w).add (hg.smooth k L h1 h2 w)
 
 /- English proof (translation)
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, hf.quasi, smul_eq_mul, smul_eq_mul, mul_left_comm]`. Use `level := by`. Take `⟨U, hU, h1⟩` from `hf.level`. Use `⟨U, hU, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e1` using `congrFun (h1 u hu h0) w`. Unfold `heisO at e1 ⊢`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]`. Use `cont := hf.cont.const_smul c`. Use `smooth k L h1 h2 w := contDiff_const.mul (hf.smooth k L h1 h2 w)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_smul (c : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T (c • f) where
@@ -354,7 +352,7 @@ theorem isTheta_smul (c : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) 
   smooth k L h1 h2 w := contDiff_const.mul (hf.smooth k L h1 h2 w)
 
 /- English proof (translation)
-Use `isTheta_add hf (isTheta_smul (-1) hg)` as an intermediate fact. Rewrite `this` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isTheta_sub {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (f - g) := by
@@ -364,17 +362,15 @@ theorem isTheta_sub {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsT
 variable {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩` from `hU`. Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WA T S) := Pi.topologicalAddGroup`. Use `haveI : ContinuousSub (WA T S) := IsTopologicalAddGroup.to_continuousSub`. Use `continuous_iff_continuousAt.2 fun w => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : WA T S → RW T S` to `fun w' => piW θ T S (w' - w)`. Set `a : WA T S → WA T S` to `fun w' => w + iotaW σ T S (x w')`. Set `u : WA T S → WA T S` to `fun w' => w' - a w'`. Establish `hx : Continuous x` using `(continuous_pi' h.inf T S).comp (continuous_id.sub continuous_const)`. Establish `ha : Continuous a` using `continuous_const.add ((h.continuous_iota T S).comp hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : Continuous u` using `continuous_id.sub ha`. Establish `huw : u w = 0` using `by show w - (w + iotaW σ T S (piW θ T S (w - w))) = 0`. Rewrite using `[sub_self, AddMonoidHom.map_zero, AddMonoidHom.map_zero, add_zero, sub_self]`. Establish `hinf : ∀ w', (u w').map (infPart D) = 0`. Introduce `w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hp : piW θ T S (u w') = 0` using `by show piW θ T S (w' - (w + iotaW σ T S (piW θ T S (w' - w)))) = 0`. Rewrite using `[← sub_sub, AddMonoidHom.map_sub, h.pi_iota, sub_self]`. Use extensionality with `i j`. Conclude with `ThetaCont.infPart_eq_zero h _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`. Establish `hg : Continuous fun w' => ψ (-symplOH S T (a w') (u w')) * f (a w')` using `(hψ.comp (continuous_symplOH S T ha hu).neg).mul ((hs w).continuous.comp hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ w' in 𝓝 w, u w' ∈ U` using `hu.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by rw [huw]; exact U.zero_mem))`. Use `hg.continuousAt.congr (hev.mono fun w' hw' => ?_)` and prove the remaining obligations. Establish `e` using `congrFun (hU _ hw' (hinf w')) (a w')`. Establish `e2 : a w' + u w' = w'` using `add_sub_cancel _ _`. Use `show ψ (-symplOH S T (a w') (u w')) * f (a w') = f w'`.
-
-Rewrite using `[← e]`. Use `show _ * (ψ (symplOH S T (a w') (u w')) * f (a w' + u w')) = _`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_level (h : Chart θ σ) (hψ : Continuous ψ) (f : WO S T → ℂ)
     (hU : ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧
@@ -419,7 +415,7 @@ def phase (lam : AF D.host.F →+ ℂ) (S T : HSp D) (v : WO S T) : WO S T →+ 
   map_add' x y := by rw [symplOH_add_left, map_add]
 
 /- English proof (translation)
-The claim follows from `contDiff_additive ((phase lam S T v).comp (iotaW σ T S)) (hl.comp (continuous_symplOH S T (h.continuous_iota T S) continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_phase (h : Chart θ σ) {lam : AF D.host.F →+ ℂ} (hl : Continuous lam) (v : WO S T) :
     ContDiff ℝ ∞ fun x => phase lam S T v (iotaW σ T S x) :=
@@ -427,11 +423,11 @@ theorem contDiff_phase (h : Chart θ σ) {lam : AF D.host.F →+ ℂ} (hl : Cont
     (hl.comp (continuous_symplOH S T (h.continuous_iota T S) continuous_const))
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hsm` using `(smooth_iff_sm_and_real_lines D θ σ h T S).1`. Establish `hs : Sm (iotaW σ T S) (heisO ψ S T v f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : heisO ψ S T v f = fun w => Complex.exp (phase lam S T v w) * f (w + v)`. Use function extensionality and compare the values at `w`. Rewrite using `[heisO, hlam _ (snd_symplOH S T w v (Or.inr hv))]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sm_translate _ _ (contDiff_phase h hl v) f ((hsm f).1 hf.smooth) v`. Establish `hlev : ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u (heisO ψ S T v f) = heisO ψ S T v f`. Take `⟨U, hU, h1⟩` from `hf.level`. Conclude with `⟨U, hU, fun u hu h0 => heisO_fix_of_real u v h0 hv f (h1 u hu h0)⟩`. Conclude with `⟨heisO_quasi ψ S T v f hf.quasi, hlev, continuous_of_level h hψ.1.1 _ hlev hs, (hsm _).2 hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTheta_heisO_real (hψ : IsStdChar D ψ (-1)) {v : WO S T} (hv : v.map (finPart D) = 0) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (heisO ψ S T v f) := by
@@ -456,7 +452,7 @@ def dLine (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (L : ℝ →+ WO S T) (
   fun x => deriv (fun t : ℝ => heisO ψ S T (L t) f x) 0
 
 /- English proof (translation)
-Use `(φ.toRealLinearMap h).map_smul t 1` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem additive_real (φ : ℝ →+ ℂ) (h : Continuous φ) (t : ℝ) : φ t = t * φ 1 := by
   have := (φ.toRealLinearMap h).map_smul t 1
@@ -464,7 +460,7 @@ theorem additive_real (φ : ℝ →+ ℂ) (h : Continuous φ) (t : ℝ) : φ t =
   exact this
 
 /- English proof (translation)
-Rewrite using `[hlam _ (snd_symplOH S T w _ (Or.inr (hL0 t)))]`. Use `congr 1`. Set `φ : ℝ →+ ℂ` to `{ toFun := fun t => lam (symplOH S T w (L t)) map_zero' := by rw [map_zero L, symplOH_zero_right, map_zero] map_add' := fun x y => by rw [map_add L, symplOH_add_right, map_add] }`. Conclude with `additive_real φ (hl.comp (continuous_symplOH S T continuous_const hL)) t`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem psi_sympl_line {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
     (hlam : ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a)) {L : ℝ →+ WO S T} (hL : Continuous L)
@@ -479,19 +475,19 @@ theorem psi_sympl_line {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
   exact additive_real φ (hl.comp (continuous_symplOH S T continuous_const hL)) t
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hsm` using `(smooth_iff_sm_and_real_lines D θ σ h T S).1`. Establish `hline` using `(smooth_iff_sm_and_real_lines D θ σ h T S).2.1 L ⟨hL, hL0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs` using `(hsm f).1 hf.smooth`. Establish `hd : ∀ w, HasDerivAt (fun t : ℝ => heisO ψ S T (L t) f w) (phase lam S T (L 1) w * f w + fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0 (piW θ T S (L 1))) 0`. Introduce `w`. Establish `e : (fun t : ℝ => heisO ψ S T (L t) f w) = fun t : ℝ => Complex.exp (t * phase lam S T (L 1) w) * f (w + iotaW σ T S (t • piW θ T S (L 1)))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[heisO, psi_sympl_line hl hlam hL hL0, ← hline t]`. Rewrite using `[e]`. Conclude with `hasDerivAt_exp_mul _ _ f hfs _ w`. Establish `hs : Sm (iotaW σ T S) (dLine ψ S T L f)`. Establish `e : dLine ψ S T L f = fun w => phase lam S T (L 1) w * f w + fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0 (piW θ T S (L 1))` using `funext fun w => (hd w).deriv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sm_deriv _ _ (contDiff_phase h hl _) f hfs _`. Establish `hlev : ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u (dLine ψ S T L f) = dLine ψ S T L f`. Take `⟨U, hU, h1⟩` from `hf.level`. Use `⟨U, hU, fun u hu h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Establish `: (fun t => heisO ψ S T (L t) f w) = fun t => heisO ψ S T u (heisO ψ S T (L t) f) w`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_fix_of_real u _ h0 (hL0 t) f (h1 u hu h0)]`. Use `conv_rhs => unfold dLine`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Unfold `dLine`. Rewrite using `[heisO, ← deriv_const_mul_field]`. Both sides reduce to the same expression. Use `⟨fun w => (hd w).differentiableAt.hasDerivAt, fun γ w => ?_, hlev, continuous_of_level h hψ.1.1 _ hlev hs, (hsm _).2 hs⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `dLine`. Rewrite using `[← deriv_const_mul_field]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `heisO_quasi ψ S T (L t) f hf.quasi γ w`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_zero_and_isTheta (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : Continuous L)
     (hL0 : ∀ t, (L t).map (finPart D) = 0) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -537,9 +533,9 @@ theorem hasDerivAt_zero_and_isTheta (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO
   exact heisO_quasi ψ S T (L t) f hf.quasi γ w
 
 /- English proof (translation)
-Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `h1 : phase lam S T (L 1) (L 1) = 0`. Establish `: phase lam S T (L 1) (L 1) = -phase lam S T (L 1) (L 1)` using `(congrArg lam (symplOH_skew S T (L 1) (L 1))).trans (map_neg lam _)`. Conclude with `self_eq_neg.1 this`. Establish `h2 : phase lam S T (L 1) (L s) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `additive_real ((phase lam S T (L 1)).comp L) (hl.comp (continuous_symplOH S T hL continuous_const)) s` as an intermediate fact. Conclude with `this.trans (mul_eq_zero_of_right _ h1)`. Rewrite using `[heisO_heisO, psi_sympl_line hl hlam hL hL0, h2, mul_zero, Complex.exp_zero, one_smul, map_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_line_add (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : Continuous L)
     (hL0 : ∀ t, (L t).map (finPart D) = 0) (s t : ℝ) (f : WO S T → ℂ) :
@@ -556,9 +552,9 @@ theorem heisO_line_add (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : C
   rw [heisO_heisO, psi_sympl_line hl hlam hL hL0, h2, mul_zero, Complex.exp_zero, one_smul, map_add]
 
 /- English proof (translation)
-Establish `h1` using `((hasDerivAt_zero_and_isTheta hψ hL hL0 hf).1 (w + L s)).const_mul (ψ (symplOH S T w (L s)))`. Establish `h2 : HasDerivAt (fun t : ℝ => heisO ψ S T (L (s + t)) f w) (heisO ψ S T (L s) (dLine ψ S T L f) w) 0`. Use `HasDerivAt.congr_of_eventuallyEq h1 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `(congrFun (heisO_line_add hψ hL hL0 s t f) w).symm`. Establish `h3` using `HasDerivAt.comp_sub_const s s (by rwa [sub_self] : HasDerivAt (fun t : ℝ => heisO ψ S T (L (s + t)) f w) (heisO ψ S T (L s) (dLine ψ S T L f) w) (s - s))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3` using `only [add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : Continuous L)
     (hL0 : ∀ t, (L t).map (finPart D) = 0) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T) (s : ℝ) :
@@ -572,14 +568,14 @@ theorem hasDerivAt_line (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : 
   simpa only [add_sub_cancel] using h3
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)`.
+A detailed English derivation is pending.
 -/
 theorem isLineAt_lineAt (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) :
     IsLineAt θ τ z (lineAt θ τ z) :=
   Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_zero_and_isTheta hψ (isLineAt_lineAt hθ τ z).1 (isLineAt_lineAt hθ τ z).2.1 hf).2`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_dRho (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :

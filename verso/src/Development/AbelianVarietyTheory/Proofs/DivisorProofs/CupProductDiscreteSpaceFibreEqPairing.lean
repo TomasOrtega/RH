@@ -11,7 +11,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.DiscCup
 
 /- English proof (translation)
-Establish `: SimplexCategory.subinterval 0 N h = 𝟙 _`. Use extensionality with `i`. Simplify using `[SimplexCategory.subinterval]`. Simplify using `[Sx.sub, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sub_zero_full {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (h : 0 + N ≤ N) : x.sub 0 N h = x := by
   have : SimplexCategory.subinterval 0 N h = 𝟙 _ := by
@@ -19,7 +19,7 @@ theorem sub_zero_full {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (h : 0
   simp [Sx.sub, this]
 
 /- English proof (translation)
-Unfold `Sx.map Sx.sub`. Establish `h1` using `(prod.fst : disc.obj F ⨯ E' ⟶ _).naturality (SimplexCategory.subinterval 0 l h).op`. Establish `h2` using `congrArg (fun φ => φ.app (op U)) h1`. Simplify using `only [NatTrans.comp_app] at h2`. Conclude with `(congrFun (congrArg (fun φ => (ConcreteCategory.hom φ : _ → _)) h2) w)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_fst_sub {F : PSh} {E' : Spc} {N : ℕ} {U : Scheme.{0}} (w : Sx (disc.obj F ⨯ E') N U) (l : ℕ) (h : 0 + l ≤ N) :
     (show F.obj (op U) from Sx.map (prod.fst : disc.obj F ⨯ E' ⟶ _) (w.sub 0 l h)) =
@@ -31,7 +31,7 @@ theorem map_fst_sub {F : PSh} {E' : Spc} {N : ℕ} {U : Scheme.{0}} (w : Sx (dis
   exact (congrFun (congrArg (fun φ => (ConcreteCategory.hom φ : _ → _)) h2) w)
 
 /- English proof (translation)
-Rewrite using `[CupSpec.ev_def, hv, comp_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_vanish {E : Spc} {R : Type} [CommRing R] {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (hv : α.v (-(p : ℤ)) s h = 0) (U : Scheme.{0}) (x : Sx E p U) : ev α p s h U x = 0 := by
@@ -43,9 +43,9 @@ end GlobalTheory.EtC.DiscCup
 namespace GlobalTheory.EtC.DiscCup
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `e0` using `h0 rfl`. Establish `e1` using `h1 rfl`. Substitute `e0 e1` using the available equality. Take `rfl : s₁ = n` from `by omega`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `ht₁` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem term_zero {q : ℕ} {E₁ E₂ : Spc} {i₁ i₂ n m s : ℤ} (k : ℕ)
     (a : Cochain ((chains (ZMod q)).obj E₁) (res (ZMod q) (tw q i₁)) n)
@@ -67,13 +67,13 @@ end GlobalTheory.EtC.DiscCup
 
 open GlobalTheory.EtC.DiscCup in
 /- English proof (translation)
-Introduce `q N F n m i₁ i₂ α z hα`. Set `α'` to `zcomp (Cocycle.ofHom ((chains (ZMod q)).map (prod.fst : disc.obj F ⨯ fibQ q N ⟶ _))) α (zero_add n)`. Set `z'` to `zcomp (Cocycle.ofHom ((chains (ZMod q)).map (prod.snd : disc.obj F ⨯ fibQ q N ⟶ _))) z (zero_add m)`. Take `⟨γ, hγ⟩` from `(twPair q i₁ i₂).aw_exists (disc.obj F ⨯ fibQ q N) rfl α' z'`. Use `⟨γ, ((twPair q i₁ i₂).cup_spec _ rfl α' z' γ hγ).symm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k s hs V w`. Rewrite using `[hγ k s hs V w, Fin.sum_univ_succ, Finset.sum_eq_zero, add_zero]`. Establish `e1 : ((m * (((0 : Fin (k + 1)) : ℕ) : ℤ)).negOnePow) = 1` using `by simp`. Rewrite using `[e1, one_smul]`. Express the relevant statement in the definitionally equal form `(twPair q i₁ i₂).mul V _ _ s _ (ev ((Cochain.ofHom _).comp α.1 (zero_add n)) _ _ rfl V _) (ev ((Cochain.ofHom _).comp z.1 (zero_add m)) _ _ rfl V _) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[CupSpec.ev_pull, CupSpec.ev_pull]`. Apply `term_zero k α.1 z.1 V _ (by simp)` to reduce the goal to its premises. Introduce `e`. Conclude with `map_fst_sub w _ _`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (Sx.map prod.snd) (sub_zero_full w _)`. Introduce `i _`. Express the relevant statement in the definitionally equal form `_ • (twPair q i₁ i₂).mul V _ _ s _ (ev ((Cochain.ofHom _).comp α.1 (zero_add n)) _ _ rfl V _) _ = 0`. Rewrite using `[CupSpec.ev_pull, ev_vanish α.1 (i.succ : ℕ) _ _ (hα _ (by simp) _ _), map_zero, LinearMap.zero_apply, smul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.disc_cup_fibre : ∀ (q N : ℕ) (F : PSh) {n m i₁ i₂ : ℤ} (α : Cocycle ((chains (ZMod q)).obj (disc.obj F)) (res (ZMod q) (tw q i₁)) n) (z : Cocycle ((chains (ZMod q)).obj (fibQ q N)) (res (ZMod q) (tw q i₂)) m), (∀ (p : ℕ), 0 < p → ∀ (s : ℤ) (h : -(p : ℤ) + n = s), α.1.v (-(p : ℤ)) s h = 0) → ∃ γ : Cocycle ((chains (ZMod q)).obj (disc.obj F ⨯ fibQ q N)) (res (ZMod q) (tw q (i₁ + i₂))) (n + m), CohomologyClass.mk γ = cup q (pull _ (prod.fst : disc.obj F ⨯ fibQ q N ⟶ _) _ _ (CohomologyClass.mk α)) (pull _ (prod.snd : disc.obj F ⨯ fibQ q N ⟶ _) _ _ (CohomologyClass.mk z)) ∧ ∀ (k : ℕ) (s : ℤ) (hs : -(k : ℤ) + (n + m) = s) (V : Scheme.{0}) (w : Sx (disc.obj F ⨯ fibQ q N) k V), ev γ.1 k s hs V w = (twPair q i₁ i₂).mul V n (-(k : ℤ) + m) s (by omega) (ev α.1 0 n (by simp) V (show Sx (disc.obj F) 0 V from Sx.map (p := k) (prod.fst : disc.obj F ⨯ fibQ q N ⟶ _) w)) (ev z.1 k (-(k : ℤ) + m) rfl V (Sx.map prod.snd w)) := by
   intro q N F n m i₁ i₂ α z hα

@@ -1,15 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O Ω V _ _ _ _ _ R A B c hB v`. Set `f : V →+ V` to `DistribSMul.toAddMonoidHom V c`. Establish `hS : {v : V | ∃ a ∈ R, ∃ e ∈ B, v = a • e} = f '' {v : V | ∃ a ∈ R, ∃ e ∈ A, v = a • e}`. Use extensionality with `w`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e, he, rfl⟩`. Take `⟨e', he', rfl⟩` from `(hB e).1 he`. Use `⟨a • e', ⟨a, ha, e', he', rfl⟩, ?_⟩` and prove the remaining obligations. Use `show c • a • e' = a • c • e'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, mul_comm]`. Introduce and unpack `⟨x, ⟨a, ha, e, he, rfl⟩, rfl⟩`. Use `⟨a, ha, c • e, (hB _).2 ⟨e, he, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show c • a • e = a • c • e`. Rewrite using `[smul_smul, smul_smul, mul_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hS, ← AddMonoidHom.map_closure, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
-
-Conclude with `⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ydb6.main :
     ∀ {O Ω V : Type} [inst : CommRing O] [inst_1 : Field Ω] [inst_2 : Algebra O Ω] [inst_3 : AddCommGroup V]

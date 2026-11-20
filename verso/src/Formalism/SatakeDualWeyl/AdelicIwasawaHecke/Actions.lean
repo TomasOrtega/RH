@@ -5,9 +5,9 @@ namespace Formalism.UG.P
 open Matrix MvPolynomial
 
 /- English proof (translation)
-Introduce `O _ n _ _ g h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.stdAct`. Rewrite using `[Units.val_mul, Matrix.mulVecLin_mul]`. Unfold `Formalism.UG.stdAct`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Units.val_one, Matrix.mulVecLin_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem standard_action_mul_holds : Formalism.UG.StdActMul := by
   intro O _ n _ _ g h
@@ -18,11 +18,11 @@ theorem standard_action_mul_holds : Formalism.UG.StdActMul := by
     rw [Units.val_one, Matrix.mulVecLin_one]
 
 /- English proof (translation)
-Introduce `O _ n _ _ k g h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.tensAct`. Rewrite using `[← PiTensorProduct.map_comp]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `(standard_action_mul_holds O n g h).1`. Unfold `Formalism.UG.tensAct`. Establish `: (fun _ : Fin k => Formalism.UG.stdAct O n 1) = fun _ => LinearMap.id`. Use function extensionality and compare the values at `fun _ => (standard_action_mul_holds O n 1 1).2`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, PiTensorProduct.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_action_mul_holds : Formalism.UG.TensActMul := by
   intro O _ n _ _ k g h
@@ -38,9 +38,9 @@ theorem tensor_action_mul_holds : Formalism.UG.TensActMul := by
     rw [this, PiTensorProduct.map_id]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Formalism.UG.linSubst, AlgHom.comp_apply, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply]`. Simplify using `only [Finset.mul_sum, ← mul_assoc, ← MvPolynomial.C_mul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linSubst_comp (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n]
     (M N : Matrix n n O) :
@@ -54,7 +54,7 @@ theorem linSubst_comp (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableE
   simp only [Finset.sum_mul]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[Formalism.UG.linSubst, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem linSubst_one (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] :
     Formalism.UG.linSubst O n 1 = AlgHom.id O _ := by
@@ -63,9 +63,9 @@ theorem linSubst_one (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq
   simp [Formalism.UG.linSubst, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `O _ n _ _ g h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.polyAct`. Rewrite using `[linSubst_comp, _root_.mul_inv_rev, Units.val_mul]`. Unfold `Formalism.UG.polyAct`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[inv_one, Units.val_one, linSubst_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polynomial_action_mul_holds : Formalism.UG.PolyActMul := by
   intro O _ n _ _ g h

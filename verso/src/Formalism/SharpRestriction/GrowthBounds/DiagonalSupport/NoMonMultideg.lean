@@ -13,19 +13,19 @@ section Fock
 variable {R : Type} [CommRing R] {σ : Type}
 
 /- English proof (translation)
-Simplify using `only [fock, coeff_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockR_add (G T₁ T₂ : MvPolynomial σ R) : fock G (T₁ + T₂) = fock G T₁ + fock G T₂ := by
   simp only [fock, coeff_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[fock]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockR_zero (G : MvPolynomial σ R) : fock G 0 = 0 := by
   simp [fock]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fockR_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fockR_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fockR_sum {ι : Type} (G : MvPolynomial σ R) (s : Finset ι) (f : ι → MvPolynomial σ R) :
     fock G (∑ i ∈ s, f i) = ∑ i ∈ s, fock G (f i) := by
@@ -34,9 +34,9 @@ theorem fockR_sum {ι : Type} (G : MvPolynomial σ R) (s : Finset ι) (f : ι �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fockR_add, ih]
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[Finset.sum_eq_single mo]`. Simplify using `[coeff_monomial]`. Introduce `b _ hb`. Simplify using `[coeff_monomial, Ne.symm hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Simplify using `[MvPolynomial.notMem_support_iff.1 h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem fockR_monomial (G : MvPolynomial σ R) (mo : σ →₀ ℕ) (c : R) :
     fock G (monomial mo c) = G.coeff mo * c * (expFact mo : R) := by
@@ -55,7 +55,7 @@ section Split
 variable {T : Type} [Fintype T] {r K : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type, Fintype.sum_prod_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Conclude with `Fin.sum_univ_add _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_split {M : Type} [AddCommMonoid M] (f : T × Fin (r + K) → M) :
     ∑ v, f v = (∑ v : T × Fin r, f (v.1, Fin.castAdd K v.2)) + ∑ v : T × Fin K, f (v.1, Fin.natAdd r v.2) := by
@@ -64,7 +64,7 @@ theorem sum_split {M : Type} [AddCommMonoid M] (f : T × Fin (r + K) → M) :
   exact Fin.sum_univ_add _
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type, Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Conclude with `Fin.prod_univ_add _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_split {M : Type} [CommMonoid M] (f : T × Fin (r + K) → M) :
     ∏ v, f v = (∏ v : T × Fin r, f (v.1, Fin.castAdd K v.2)) * ∏ v : T × Fin K, f (v.1, Fin.natAdd r v.2) := by
@@ -95,14 +95,14 @@ def joinE (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ �
   fun v => Fin.addCases (fun a => bp (v.1, a)) (fun b => bn (v.1, b)) v.2
 
 /- English proof (translation)
-Simplify using `[joinE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem joinE_left (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ) (x : TL J nL r) (a : Fin r) :
     joinE nL bp bn (x, Fin.castAdd K a) = bp (x, a) := by
   simp [joinE]
 
 /- English proof (translation)
-Simplify using `[joinE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem joinE_right (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ) (x : TL J nL r) (b : Fin K) :
     joinE nL bp bn (x, Fin.natAdd r b) = bn (x, b) := by
@@ -123,7 +123,7 @@ def mNo (bn : TL J nL r × Fin K →₀ ℕ) : TV n' (m + 1) →₀ ℕ :=
   ∑ v : TL J nL r × Fin K, Finsupp.single (noVar Fr hk nL v.1 v.2) (lowP Fr p v.1 * bn v)
 
 /- English proof (translation)
-Rewrite using `[labMon, sum_split, Fintype.sum_prod_type, Fintype.sum_prod_type, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem labMon_eq (rho : TL J nL r × Fin (r + K) → ℕ) :
     labMon Fr hk nL rho = ∑ v : TL J nL r × Fin (r + K), Finsupp.single (tvar Fr hk nL v) (rho v) := by
@@ -131,9 +131,9 @@ theorem labMon_eq (rho : TL J nL r × Fin (r + K) → ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `hmd : bigM Fr p hk nL rho bp bn = ∑ v : TL J nL r × Fin (r + K), Finsupp.single (tvar Fr hk nL v) (bigE Fr p nL rho bp bn v)`. Rewrite using `[bigM, Finsupp.mapDomain, Finsupp.sum_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Rewrite using `[hmd, labMon_eq]`. Simplify using `only [bigE, Finsupp.single_add, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_assoc]`. Use `congr 1`. Rewrite using `[sum_split]`. Simplify using `only [joinE_left, joinE_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem bigM_eq (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ) :
     labMon Fr hk nL rho + mPl Fr p hk nL bp + mNo Fr p hk nL bn = bigM Fr p hk nL rho bp bn := by
@@ -152,7 +152,7 @@ theorem bigM_eq (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin 
 variable {Fr p hk nL}
 
 /- English proof (translation)
-Introduce `v w h`. Simplify using `only [tvar, Prod.mk.injEq] at h`. Conclude with `Prod.ext (hinj h.1) (Fin.cast_injective _ h.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tvar_inj (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x)) :
     Function.Injective (tvar Fr hk nL) := by
@@ -161,7 +161,7 @@ theorem tvar_inj (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL
   exact Prod.ext (hinj h.1) (Fin.cast_injective _ h.2)
 
 /- English proof (translation)
-Rewrite using `[bigM, Finsupp.mapDomain_apply (tvar_inj hinj)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bigM_apply (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ)
@@ -170,7 +170,7 @@ theorem bigM_apply (hinj : Function.Injective fun x : TL J nL r => posOf n' (pos
   rfl
 
 /- English proof (translation)
-Rewrite using `[plVar_eq, bigM_apply hinj]`. Simplify using `only [bigE, joinE_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bigM_pl (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ)
@@ -180,7 +180,7 @@ theorem bigM_pl (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL 
   simp only [bigE, joinE_left]
 
 /- English proof (translation)
-Rewrite using `[noVar_eq, bigM_apply hinj]`. Simplify using `only [bigE, joinE_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bigM_no (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ)
@@ -190,7 +190,7 @@ theorem bigM_no (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL 
   simp only [bigE, joinE_right]
 
 /- English proof (translation)
-Rewrite using `[bigM]`. Conclude with `Finsupp.mapDomain_notin_range _ _ hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigM_notin (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ)
     (w : TV n' (m + 1)) (hw : w ∉ Set.range (tvar Fr hk nL)) : bigM Fr p hk nL rho bp bn w = 0 := by
@@ -198,11 +198,11 @@ theorem bigM_notin (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × F
   exact Finsupp.mapDomain_notin_range _ _ hw
 
 /- English proof (translation)
-Use extensionality with `w`. Distinguish the cases in `hw : w ∈ Set.range (tvar Fr hk nL)`. Take `⟨⟨x, c⟩, rfl⟩` from `hw`. Rewrite using `[bigM_apply hinj]`. Proceed by induction on `c using Fin.addCases with`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `left a`. Simplify using `only [bigE, joinE_left, plMon, Finsupp.coe_equivFunOnFinite_symm, ← hlow.1 x a]`. Conclude with `(Nat.mod_add_div _ _).symm`. Consider the case `right b`. Simplify using `only [bigE, joinE_right, noMon, Finsupp.coe_equivFunOnFinite_symm, ← hlow.2 x b]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.mod_add_div _ _).symm`. Rewrite using `[bigM_notin _ _ _ _ hw, hz w hw]`.
+A detailed English derivation is pending.
 -/
 theorem eq_bigM (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (mo : TV n' (m + 1) →₀ ℕ)
@@ -222,14 +222,14 @@ theorem eq_bigM (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL 
   · rw [bigM_notin _ _ _ _ hw, hz w hw]
 
 /- English proof (translation)
-Unfold `lowP`. Conclude with `pow_pos hp _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lowP_pos (hp : 0 < p) (x : TL J nL r) : 0 < lowP Fr p x := by
   unfold lowP
   exact pow_pos hp _
 
 /- English proof (translation)
-Use `⟨fun x a => ?_, fun x b => ?_⟩` and prove the remaining obligations. Rewrite using `[bigM_pl hinj, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hrho _ _)]`. Rewrite using `[bigM_no hinj, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hrho _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigM_inLow (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (hrho : ∀ x c, rho (x, c) < lowP Fr p x)
@@ -240,7 +240,7 @@ theorem bigM_inLow (hinj : Function.Injective fun x : TL J nL r => posOf n' (pos
   · rw [bigM_no hinj, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hrho _ _)]
 
 /- English proof (translation)
-Use extensionality with `⟨x, a⟩`. Simplify using `only [plMon, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[bigM_pl hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigM_plMon (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (hrho : ∀ x c, rho (x, c) < lowP Fr p x)
@@ -251,7 +251,7 @@ theorem bigM_plMon (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => 
   rw [bigM_pl hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]
 
 /- English proof (translation)
-Use extensionality with `⟨x, b⟩`. Simplify using `only [noMon, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[bigM_no hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigM_noMon (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (hrho : ∀ x c, rho (x, c) < lowP Fr p x)
@@ -274,9 +274,9 @@ theorem noMon_multideg (mo : TV n' (m + 1) →₀ ℕ) (x : TL J nL r) :
     multideg (noMon Fr p hk nL mo) x = ∑ b : Fin K, mo (noVar Fr hk nL x b) / lowP Fr p x := rfl
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h1 x]`. Unfold `multideg`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[bigM_pl hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2 x]`. Unfold `multideg`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[bigM_no hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigM_inBlock (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (hrho : ∀ x c, rho (x, c) < lowP Fr p x)

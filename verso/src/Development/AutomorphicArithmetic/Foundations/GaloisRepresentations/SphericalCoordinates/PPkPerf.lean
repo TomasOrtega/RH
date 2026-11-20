@@ -17,64 +17,64 @@ private def mv (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (z : L
   fun w => h w *ᵥ z w
 
 /- English proof (translation)
-Simplify using `only [pairL, Pi.add_apply, add_dotProduct, map_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairL_add_left (a a' b : Loc G) : pairL (a + a') b = pairL a b + pairL a' b := by
   simp only [pairL, Pi.add_apply, add_dotProduct, map_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pairL, dotProduct_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairL_comm (a b : Loc G) : pairL a b = pairL b a := by
   simp only [pairL, dotProduct_comm]
 
 /- English proof (translation)
-Rewrite using `[pairL_comm, pairL_add_left, pairL_comm b, pairL_comm b']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pairL_add_right (a b b' : Loc G) : pairL a (b + b') = pairL a b + pairL a b' := by
   rw [pairL_comm, pairL_add_left, pairL_comm b, pairL_comm b']
 
 /- English proof (translation)
-Simplify using `only [pairL, Pi.smul_apply, smul_dotProduct, map_smul, smul_eq_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairL_smul_left (c : ℚ_[p]) (a b : Loc G) : pairL (c • a) b = c * pairL a b := by
   simp only [pairL, Pi.smul_apply, smul_dotProduct, map_smul, smul_eq_mul, Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[← pairL_smul_left, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pairL_nsmul_left (n : ℕ) (a b : Loc G) : pairL (n • a) b = (n : ℚ_[p]) * pairL a b := by
   rw [← pairL_smul_left, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Rewrite using `[pairL_comm, pairL_nsmul_left, pairL_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pairL_nsmul_right (n : ℕ) (a b : Loc G) : pairL a (n • b) = (n : ℚ_[p]) * pairL a b := by
   rw [pairL_comm, pairL_nsmul_left, pairL_comm]
 
 /- English proof (translation)
-Simplify using `only [pairL, mv, Matrix.mulVec_transpose, Matrix.dotProduct_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairL_tr (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (a b : Loc G) :
     pairL (mv (fun w => (h w)ᵀ) a) b = pairL a (mv h b) := by
   simp only [pairL, mv, Matrix.mulVec_transpose, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Simplify using `only [pairL, smul_dotProduct, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairL_fw (e : ∀ w : Fin G.m, G.Fw w) (a b : Loc G) :
     pairL (fun w => e w • a w) b = pairL a (fun w => e w • b w) := by
   simp only [pairL, smul_dotProduct, dotProduct_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [mv, Pi.add_apply, Matrix.mulVec_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma mv_add (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (a b : Loc G) :
     mv h (a + b) = mv h a + mv h b := by
   funext w; simp only [mv, Pi.add_apply, Matrix.mulVec_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [mv, Pi.smul_apply]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (G.Fw w), Matrix.mulVec_smul, Nat.cast_smul_eq_nsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mv_nsmul (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (n : ℕ) (a : Loc G) :
     mv h (n • a) = n • mv h a := by
@@ -83,7 +83,7 @@ private lemma mv_nsmul (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)
   rw [← Nat.cast_smul_eq_nsmul (G.Fw w), Matrix.mulVec_smul, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Establish `e : ((n • x : G.Fw w) : PadicAlgCl p) = (n : ℚ_[p]) • (x : PadicAlgCl p)`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression. Rewrite using `[e, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private lemma norm_nsmul_fw (n : ℕ) (w : Fin G.m) (x : G.Fw w) :
     ‖((n • x : G.Fw w) : PadicAlgCl p)‖ = ‖(n : ℚ_[p])‖ * ‖(x : PadicAlgCl p)‖ := by
@@ -92,7 +92,7 @@ private lemma norm_nsmul_fw (n : ℕ) (w : Fin G.m) (x : G.Fw w) :
   rw [e, norm_smul]
 
 /- English proof (translation)
-Introduce `w i` and use `by have e : (((a + b) w i : G.Fw w) : PadicAlgCl p) = (a w i : PadicAlgCl p) + (b w i : PadicAlgCl p) := rfl rw [e] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha w i) (hb w i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma int_add {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a + b) := fun w i => by
   have e : (((a + b) w i : G.Fw w) : PadicAlgCl p) = (a w i : PadicAlgCl p) + (b w i : PadicAlgCl p) := rfl
@@ -100,9 +100,9 @@ private lemma int_add {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a + b) :
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha w i) (hb w i))
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `h0 : Filter.Tendsto (fun k : ℕ => ((p : ℝ)⁻¹) ^ k * C) Filter.atTop (nhds (0 * C))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hp)).mul_const C`. Rewrite `h0` using `[zero_mul]`. Use `filter_upwards [h0.eventually (gt_mem_nhds (zero_lt_one))] with k hk`. Establish `e : ‖((p ^ k : ℕ) : ℚ_[p])‖ = ((p : ℝ)⁻¹) ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_pow, norm_pow, Padic.norm_p]`. Rewrite using `[e]`. Conclude with `hk.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma small (C : ℝ) : ∀ᶠ k : ℕ in Filter.atTop, ‖((p ^ k : ℕ) : ℚ_[p])‖ * C ≤ 1 := by
   have hp : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
@@ -115,7 +115,7 @@ private lemma small (C : ℝ) : ∀ᶠ k : ℕ in Filter.atTop, ‖((p ^ k : ℕ
   rw [e]; exact hk.le
 
 /- English proof (translation)
-Establish `h : ∀ᶠ k : ℕ in Filter.atTop, ∀ w i, ‖((p ^ k : ℕ) : ℚ_[p])‖ * ‖(v w i : PadicAlgCl p)‖ ≤ 1` using `Filter.eventually_all.2 fun w => Filter.eventually_all.2 fun i => small _`. Use `filter_upwards [h] with k hk w i`. Establish `e : (((p ^ k) • v) w i : G.Fw w) = (p ^ k) • (v w i)` using `rfl`. Rewrite using `[e, norm_nsmul_fw]`. Conclude with `hk w i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma int_vec (v : Loc G) : ∀ᶠ k : ℕ in Filter.atTop, IntL ((p ^ k) • v) := by
   have h : ∀ᶠ k : ℕ in Filter.atTop, ∀ w i, ‖((p ^ k : ℕ) : ℚ_[p])‖ * ‖(v w i : PadicAlgCl p)‖ ≤ 1 :=
@@ -126,9 +126,9 @@ private lemma int_vec (v : Loc G) : ∀ᶠ k : ℕ in Filter.atTop, IntL ((p ^ k
   exact hk w i
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ k : ℕ in Filter.atTop, ∀ w i j, ‖((p ^ k : ℕ) : ℚ_[p])‖ * ‖(h w i j : PadicAlgCl p)‖ ≤ 1` using `Filter.eventually_all.2 fun w => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => small _`. Use `filter_upwards [h1] with k hk a ha w i`. Establish `e : ((mv h ((p ^ k) • a) w i : G.Fw w) : PadicAlgCl p) = ∑ j, (h w i j : PadicAlgCl p) * (((p ^ k) • a w j : G.Fw w) : PadicAlgCl p)`. Simplify using `only [mv, Matrix.mulVec, dotProduct, Pi.smul_apply, IntermediateField.coe_sum, MulMemClass.coe_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_nsmul_fw]`. Establish `h2` using `hk w i j`. Establish `h3` using `ha w j`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma int_mat (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) :
     ∀ᶠ k : ℕ in Filter.atTop, ∀ a : Loc G, IntL a → IntL (mv h ((p ^ k) • a)) := by
@@ -149,29 +149,29 @@ private lemma int_mat (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w))
     _ = 1 := one_mul 1
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+A detailed English derivation is pending.
 -/
 private lemma nm_add {x y : ℚ_[p]} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤ 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]; exact nm_add hx (by rwa [norm_neg])`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma nm_sub {x y : ℚ_[p]} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]; exact nm_add hx (by rwa [norm_neg])
 
 /- English proof (translation)
-Conclude with `pow_ne_zero k (Fact.out : p.Prime).ne_zero` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private lemma pk_ne (k : ℕ) : ((p ^ k : ℕ) : ℚ_[p]) ≠ 0 := by
   exact_mod_cast pow_ne_zero k (Fact.out : p.Prime).ne_zero
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(int_mat (G := G) (fun w => d w • (1 : Matrix (Fin G.n) (Fin G.n) (G.Fw w)))).exists`. Use `⟨‖((p ^ k : ℕ) : ℚ_[p])‖⁻¹, fun a b ha hb => ?_⟩` and prove the remaining obligations. Establish `h1 : IntL (fun w => d w • ((p ^ k) • a) w)`. Establish `e : mv (fun w => d w • (1 : Matrix (Fin G.n) (Fin G.n) (G.Fw w))) ((p ^ k) • a) = fun w => d w • ((p ^ k) • a) w`. Use function extensionality and compare the values at `w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [mv, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[← e]`. Conclude with `hk a ha`. Establish `h2` using `(hdual _).2 h1 b hb`. Rewrite `h2` using `[pairL_nsmul_left, norm_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 0 < ‖((p ^ k : ℕ) : ℚ_[p])‖` using `norm_pos_iff.2 (pk_ne k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ h3.ne']`. Use `_ ≤ ‖((p ^ k : ℕ) : ℚ_[p])‖⁻¹ * 1 := by gcongr`. Use `_ = _ := mul_one _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pair_unif (d : ∀ w : Fin G.m, G.Fw w)
     (hdual : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖pairL a z‖ ≤ 1) ↔ IntL (fun w => d w • a w)) :
@@ -193,9 +193,9 @@ private lemma pair_unif (d : ∀ w : Fin G.m, G.Fw w)
     _ = _ := mul_one _
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(int_vec v).exists`. Use `⟨‖((p ^ k : ℕ) : ℚ_[p])‖⁻¹ * C, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h2` using `hC _ _ ha hk`. Rewrite `h2` using `[pairL_nsmul_right, norm_mul]`. Establish `h3 : 0 < ‖((p ^ k : ℕ) : ℚ_[p])‖` using `norm_pos_iff.2 (pk_ne k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ h3.ne']`. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pair_vec {C : ℝ} (hC : ∀ a b : Loc G, IntL a → IntL b → ‖pairL a b‖ ≤ C) (v : Loc G) :
     ∃ C' : ℝ, ∀ a : Loc G, IntL a → ‖pairL a v‖ ≤ C' := by
@@ -209,9 +209,9 @@ private lemma pair_vec {C : ℝ} (hC : ∀ a b : Loc G, IntL a → IntL b → �
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(int_mat h).exists`. Use `⟨‖((p ^ k : ℕ) : ℚ_[p])‖⁻¹ * C, fun a z ha hz => ?_⟩` and prove the remaining obligations. Establish `h2` using `hC _ _ ha (hk z hz)`. Rewrite `h2` using `[mv_nsmul, pairL_nsmul_right, norm_mul]`. Establish `h3 : 0 < ‖((p ^ k : ℕ) : ℚ_[p])‖` using `norm_pos_iff.2 (pk_ne k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ h3.ne']`. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pair_mat {C : ℝ} (hC : ∀ a b : Loc G, IntL a → IntL b → ‖pairL a b‖ ≤ C)
     (h : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) :
@@ -226,7 +226,7 @@ private lemma pair_mat {C : ℝ} (hC : ∀ a b : Loc G, IntL a → IntL b → �
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma err {ci x : ℚ_[p]} {C : ℝ} {k : ℕ} (hs : ‖((p ^ k : ℕ) : ℚ_[p])‖ * (‖ci‖ * C) ≤ 1) (hx : ‖x‖ ≤ C) :
     ‖ci * (((p ^ k : ℕ) : ℚ_[p]) * x)‖ ≤ 1 := by
@@ -236,7 +236,7 @@ private lemma err {ci x : ℚ_[p]} {C : ℝ} {k : ℕ} (hs : ‖((p ^ k : ℕ) :
     _ ≤ 1 := hs
 
 /- English proof (translation)
-Rewrite using `[Padic.norm_rat_le_one_iff_padicValuation_le_one, Rat.padicValuation_le_one_iff, Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd Fact.out]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma den_iff (q : ℚ) : q.den.Coprime p ↔ ‖(q : ℚ_[p])‖ ≤ 1 := by
   rw [Padic.norm_rat_le_one_iff_padicValuation_le_one, Rat.padicValuation_le_one_iff,
@@ -245,37 +245,33 @@ private lemma den_iff (q : ℚ) : q.den.Coprime p ↔ ‖(q : ℚ_[p])‖ ≤ 1 
 variable {D : Datum p} {L : Link D G} {β : G.Cˣ}
 
 /- English proof (translation)
-Use `set ci : ℚ_[p] := ((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) with hci`. Establish `hci0 : ci ≠ 0` using `(g.1⁻¹).ne_zero`. Set `gm : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => (g.2 w : Matrix (Fin G.n) (Fin G.n) (G.Fw w))`. Set `gi : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => (((g.2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))`. Establish `hgg : ∀ z, mv gi (mv gm z) = z` using `fun z => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [mv, gi, gm, Matrix.mulVec_mulVec]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hgg' : ∀ z, mv gm (mv gi z) = z` using `fun z => by`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [mv, gi, gm, Matrix.mulVec_mulVec]`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hmem : ∀ u, A.Mem g u ↔ IntL (mv gi (A.T u)) ∧ ∀ z : Loc G, IntL z → ‖ci * pairL (A.T' u) (mv gm z)‖ ≤ 1` using `fun u => Iff.rfl`. Simplify using `only [hmem]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩ u ⟨u1, u2⟩`. Establish `t1` using `u2 _ h1`. Establish `t2` using `h2 _ u1`. Rewrite `t1`, `t2` using `[hgg']`. Rewrite using `[mul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `nm_sub t1 t2`. Introduce `H`. Take `⟨C, hC⟩` from `pair_unif d hdual`. Take `⟨Cg, hCg⟩` from `pair_mat hC gm`. Take `⟨C1, hC1⟩` from `pair_vec hC (A.T x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, hC2⟩` from `pair_vec hC (A.T' x)`. Take `⟨k, hk0, hk1, hk2, hk3⟩` from `((int_mat gi).and ((small (p := p) (‖ci‖ * Cg)).and ((small (p := p) (‖ci‖ * C1)).and (small (p := p) (‖ci‖ * C2))))).exists`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : IntL (fun w => d w • (fun w => (d w)⁻¹ • mv gi (A.T x) w) w)`. Use `(hdual _).1 fun z hz => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : Loc G` to `fun w => (d w)⁻¹ • z w`. Establish `hy : ∀ z', IntL z' → ‖pairL y z'‖ ≤ 1`. Use `(hdual y).2 ?_` and prove the remaining obligations. Establish `e : (fun w => d w • y w) = z`. Use function extensionality and compare the values at `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [y, smul_smul, mul_inv_cancel₀ (hd0 w), one_smul]`. Rewrite using `[e]`. Conclude with `hz`. Take `⟨u, a', b', ha', hb', hTu, hTu'⟩` from `A.dense 0 (ci⁻¹ • mv (fun w => (gi w)ᵀ) y) k`. Establish `hu : IntL (mv gi (A.T u)) ∧ ∀ z : Loc G, IntL z → ‖ci * pairL (A.T' u) (mv gm z)‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun z' hz' => ?_⟩` and prove the remaining obligations. Rewrite using `[hTu, zero_add]`. Conclude with `hk0 a' ha'`. Rewrite using `[hTu', pairL_add_left, pairL_smul_left, pairL_tr, hgg, pairL_nsmul_left, mul_add, ← _root_.mul_assoc, mul_inv_cancel₀ hci0, _root_.one_mul]`. Conclude with `nm_add (hy _ hz') (err hk1 (hCg _ _ hb' hz'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh` using `H u hu`. Rewrite `hh` using `[hTu', hTu, zero_add, pairL_add_left, pairL_smul_left, pairL_tr, pairL_nsmul_left, pairL_nsmul_right]`. Establish `e : pairL (fun w => (d w)⁻¹ • mv gi (A.T x) w) z = ci * (ci⁻¹ * pairL y (mv gi (A.T x)) + ((p ^ k : ℕ) : ℚ_[p]) * pairL b' (A.T x) - ((p ^ k : ℕ) : ℚ_[p]) * pairL (A.T' x) a') - ci * (((p ^ k : ℕ) : ℚ_[p]) * pairL b' (A.T x)) + ci * (((p ^ k : ℕ) : ℚ_[p]) * pairL (A.T' x) a')`. Establish `e0 : pairL (fun w => (d w)⁻¹ • mv gi (A.T x) w) z = pairL y (mv gi (A.T x))` using `(pairL_fw _ _ _).trans (pairL_comm _ _)`. Rewrite using `[e0]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `nm_add (nm_sub hh (err hk2 (hC1 _ hb'))) (err hk3 ?_)` and prove the remaining obligations. Rewrite using `[pairL_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hC2 _ ha'`. Establish `e : (fun w => d w • (fun w => (d w)⁻¹ • mv gi (A.T x) w) w) = mv gi (A.T x)`. Use function extensionality and compare the values at `w`. Simplify using `only [smul_smul, mul_inv_cancel₀ (hd0 w), one_smul]`. Rewrite `key` using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`. Introduce `z hz`. Take `⟨u, a', b', ha', hb', hTu, hTu'⟩` from `A.dense (mv gm z) 0 k`. Establish `hu : IntL (mv gi (A.T u)) ∧ ∀ z : Loc G, IntL z → ‖ci * pairL (A.T' u) (mv gm z)‖ ≤ 1`. Use `⟨?_, fun z' hz' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTu, mv_add, hgg]`. Conclude with `int_add hz (hk0 a' ha')`. Rewrite using `[hTu', zero_add, pairL_nsmul_left]`. Conclude with `err hk1 (hCg _ _ hb' hz')`. Establish `hh` using `H u hu`.
-
-Rewrite `hh` using `[hTu', hTu, zero_add, pairL_nsmul_left, pairL_add_right, pairL_nsmul_right]`. Establish `e : ci * pairL (A.T' x) (mv gm z) = ci * (((p ^ k : ℕ) : ℚ_[p]) * pairL b' (A.T x)) - ci * (((p ^ k : ℕ) : ℚ_[p]) * pairL (A.T' x) a') - ci * (((p ^ k : ℕ) : ℚ_[p]) * pairL b' (A.T x) - (pairL (A.T' x) (mv gm z) + ((p ^ k : ℕ) : ℚ_[p]) * pairL (A.T' x) a'))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `nm_sub (nm_sub (err hk2 (hC1 _ hb')) (err hk3 ?_)) hh` and prove the remaining obligations.
-
-Rewrite using `[pairL_comm]`. Conclude with `hC2 _ ha'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma perf_core (A : PFrame L β) (g : Gp G) (d : ∀ w : Fin G.m, G.Fw w) (hd0 : ∀ w, d w ≠ 0)
     (hdual : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖pairL a z‖ ≤ 1) ↔ IntL (fun w => d w • a w)) (x : VQ D) :
@@ -373,11 +369,11 @@ end SlopeTestRemainingChoices
 end UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hMD p _ D G L β A g s hs M hM x`. Take `⟨d, hd0, hdual⟩` from `hMD p G`. Establish `hn : ‖(s : ℚ_[p])‖ = ‖((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p])‖`. Establish `h1 : ‖(g.1 : ℚ_[p])‖ ≠ 0` using `norm_ne_zero_iff.2 g.1.ne_zero`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[norm_mul]`. Conclude with `eq_inv_of_mul_eq_one_left hs`. Rewrite using `[hM x, perf_core A g d hd0 hdual x]`. Use `forall_congr' fun u => ?_` and prove the remaining obligations. Rewrite using `[hM u]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[den_iff, Rat.cast_mul, A.form, norm_mul, norm_mul, hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.pkPerf_of :
     UpperTheory.Gal.W2.MemDual → UpperTheory.Gal.W2.PkPerf := by

@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HomDescentQb
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Take `⟨H, m, s, hH, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple ℂ A hA`. Establish `hamp : Out.RelAmple A H` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A hH).2 (GlobalTheory.isAmpleLB_of_veryAmpleBy hs)`. Conclude with `⟨_, GlobalTheory.RealMultChart.exists_holUnif_of_compact A g hg (GlobalTheory.RealMultChart.compactSpace_points A H hamp) (fun a n hn => GlobalTheory.RealMultChart.exists_pow_eq A hA a n hn)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_holUnif (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) : ∃ L : LB A.left, Nonempty (HolUnif A L g) := by
@@ -30,9 +30,9 @@ theorem exists_holUnif (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (hA : IsAbelianS
     (fun a n hn => GlobalTheory.RealMultChart.exists_pow_eq A hA a n hn)⟩
 
 /- English proof (translation)
-Introduce `A₀ B₀ _ _ A B _ _ p q g g' hA₀ hgA₀ hB₀ hgB₀ hp hq α hα`. Use `haveI : Countable Qb := (Algebraic.countable ℚ ℂ).mono (fun z hz => mem_algebraicClosure_iff.1 hz) |>.to_subtype`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA₀ hp`. Establish `hB : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB₀ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgA : SmoothOfRelativeDimension g A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hp.1 hgA₀`. Establish `hgB : SmoothOfRelativeDimension g' B.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback hq.1 hgB₀`. Take `⟨L, ⟨u⟩⟩` from `exists_holUnif A g hA hgA`. Take `⟨L', ⟨u'⟩⟩` from `exists_holUnif B g' hB hgB`. Conclude with `GlobalTheory.CMLiePeriod.descend hA₀ hB₀ hA hB hgA hgB u u' hp hq α`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hom_descends : ∀ (A₀ B₀ : Over (Sp Qb)) [GrpObj A₀] [GrpObj B₀] (A B : Over (Sp ℂ)) [GrpObj A] [GrpObj B]
     (p : A.left ⟶ A₀.left) (q : B.left ⟶ B₀.left) (g g' : ℕ), IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom →

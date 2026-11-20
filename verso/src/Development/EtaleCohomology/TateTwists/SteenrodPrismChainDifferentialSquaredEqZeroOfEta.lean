@@ -5,7 +5,7 @@ open CategoryTheory GlobalTheory.EtC
 namespace LateralTheory.EtaleFoundations.SteenPf
 
 /- English proof (translation)
-Take `⟨p, r, a, b⟩` from `z`. Consider the cases of `p with`. Consider the case `zero => simp [Pr.d₁]`. Consider the case `succ p`. Simplify using `only [Pr.d₁, map_sum, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Category.assoc]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma push_d₁ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) :
     Pr.push θ z.d₁ = Pr.d₁ (N := M) ⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ := by
@@ -16,7 +16,7 @@ lemma push_d₁ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M)
     simp only [Pr.d₁, map_sum, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Category.assoc]
 
 /- English proof (translation)
-Take `⟨p, r, a, b⟩` from `z`. Consider the cases of `r with`. Consider the case `zero => simp [Pr.d₂]`. Consider the case `succ r`. Simplify using `only [Pr.d₂, map_sum, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Category.assoc]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma push_d₂ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) :
     Pr.push θ z.d₂ = Pr.d₂ (N := M) ⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ := by
@@ -27,14 +27,14 @@ lemma push_d₂ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M)
     simp only [Pr.d₂, map_sum, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Category.assoc]
 
 /- English proof (translation)
-Simplify using `[Pr.push]`.
+Simplify using the standard rewrite rules.
 -/
 lemma push_single {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) (n : ℤ) :
     Pr.push θ (Finsupp.single z n) = Finsupp.single ⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ n := by
   simp [Pr.push]
 
 /- English proof (translation)
-Establish `: (Pr.d M).comp (Pr.push θ) = (Pr.push θ).comp (Pr.d N)`. Use `Finsupp.lhom_ext fun z n => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, push_single, Pr.d, Finsupp.linearCombination_single, map_smul, map_add, push_d₁, push_d₂]`. Conclude with `LinearMap.congr_fun this c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma d_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (c : Pr N →₀ ℤ) :
     Pr.d M (Pr.push θ c) = Pr.push θ (Pr.d N c) := by
@@ -45,7 +45,7 @@ lemma d_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (c
   exact LinearMap.congr_fun this c
 
 /- English proof (translation)
-Introduce `N c`. Unfold `Pr.bd`. Simplify using `only [map_sum, map_zsmul, d_push]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem steenrod_prism_chain_differential_squared_eq_zero_of_etale : leaf_dbd := by
   intro N c

@@ -7,19 +7,19 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Vol
 
 /- English proof (translation)
-Establish `hk : R.m + 3 ≤ R.k` using `R.m_add_three_le_k`. Establish `hm : 2 ≤ R.m` using `R.two_le_m`. Establish `hjr : j.val < R.k + R.m - 1` using `j.isLt`. Establish `hu : ∀ a b : Fin R.k, a.val = b.val → P.u a = P.u b` using `fun a b h => by rw [Fin.ext h]`. Establish `hb : ∀ a b : Fin R.m, a.val = b.val → P.b a = P.b b` using `fun a b h => by rw [Fin.ext h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.S.lamS`. Distinguish the cases in `hj : j.val < R.k - 1`. Establish `hi : i.val < R.k - 1` using `by omega`. Rewrite using `[dif_pos hj, dif_pos hi]`. Establish `key : P.v ⟨j.val, hj⟩ < P.v ⟨i.val, hi⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `key` after adjusting the coercions. Distinguish the cases in `hi : i.val < R.k - 1`. Establish `hj0 : j.val - (R.k - 1) < R.m` using `by omega`. Rewrite using `[dif_neg hj, dif_pos hj0, dif_pos hi]`.
+Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : -P.b ⟨j.val - (R.k - 1), hj0⟩ < P.v ⟨i.val, hi⟩`. Combine the equalities or inequalities in the displayed calculation. Use `(Rat.cast_lt (K := ℝ)).mpr key` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj0 : j.val - (R.k - 1) < R.m` using `by omega`. Establish `hi0 : i.val - (R.k - 1) < R.m` using `by omega`. Establish `hi1 : i.val - (R.k - 1) + 1 < R.m` using `by omega`. Rewrite using `[dif_neg hj, dif_pos hj0, dif_neg hi, dif_pos hi0]`. Establish `h1` using `P.gap_be ⟨i.val - (R.k - 1), hi0⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `P.gap_eb ⟨i.val - (R.k - 1), hi0⟩ hi1`. Establish `h3 : P.b ⟨i.val - (R.k - 1) + 1, hi1⟩ = P.b ⟨j.val - (R.k - 1), hj0⟩` using `hb _ _ (by simp; omega)`. Establish `ht : (0 : ℚ) ≤ R.t` using `Nat.cast_nonneg _`. Establish `key : P.b ⟨i.val - (R.k - 1), hi0⟩ < P.b ⟨j.val - (R.k - 1), hj0⟩`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(Rat.cast_lt (K := ℝ)).mpr key` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lamS_succ_lt (R : Ranks) (P : HCParam R) (i j : Fin R.r) (hij : j.val = i.val + 1) :
     lamS R P j < lamS R P i := by
@@ -63,9 +63,9 @@ theorem lamS_succ_lt (R : Ranks) (P : HCParam R) (i j : Fin R.r) (hij : j.val = 
       linarith
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lamS`. Use `split_ifs with h h'`. Take `⟨z, hz⟩` from `P.v_int ⟨i.val, h⟩`. Conclude with `⟨z, by rw [hz, Rat.cast_intCast]⟩`. Take `⟨z, hz⟩` from `P.b_int ⟨i.val - (R.k - 1), h'⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-z, by rw [hz, Rat.cast_intCast]; push_cast; ring⟩`. Conclude with `⟨0, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lamS_int (R : Ranks) (P : HCParam R) (i : Fin R.r) : ∃ z : ℤ, lamS R P i = (z : ℝ) := by
   unfold Formalism.MainNotions.S.lamS
@@ -77,11 +77,11 @@ theorem lamS_int (R : Ranks) (P : HCParam R) (i : Fin R.r) : ∃ z : ℤ, lamS R
   · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`. Conclude with `lamS_succ_lt R P (Fin.cast (Formalism.MainNotions.S.dimS_eq R) (Fin.castSucc i)) (Fin.cast (Formalism.MainNotions.S.dimS_eq R) i.succ) (by simp)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `lamS_int R P (Fin.cast (Formalism.MainNotions.S.dimS_eq R) a)`. Take `⟨w, hw⟩` from `R.k_even`. Establish `hk : (R.k : ℝ) = 2 * w` using `by rw [hw]; push_cast; ring`. Use `⟨z - R.rS - w, ?_⟩` and prove the remaining obligations. Use `show lamS R P (Fin.cast (Formalism.MainNotions.S.dimS_eq R) a) - _ = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hz]`. Use `push_cast`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamSH_isHCParam (R : Ranks) (P : HCParam R) : Formalism.QuantumDeterminants.IsHCParam (lamSH R P) := by
   refine ⟨?_, ?_⟩
@@ -101,13 +101,13 @@ theorem lamSH_isHCParam (R : Ranks) (P : HCParam R) : Formalism.QuantumDetermina
     ring
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.fdegHC`. Apply `div_pos` to reduce the goal to its premises. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.prod_pos` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Conclude with `abs_pos.mpr (sub_ne_zero.mpr fun h => hb.2.ne (hlam h))`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Establish `h1 : (a : ℕ) < b` using `hb.2`. Establish `h2 : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem fdegHC_pos_of_injective {n : ℕ} (lam : Fin n → ℝ) (hlam : Function.Injective lam) :
     0 < Formalism.QuantumDeterminants.fdegHC lam := by
@@ -129,7 +129,7 @@ theorem fdegHC_pos_of_injective {n : ℕ} (lam : Fin n → ℝ) (hlam : Function
     linarith
 
 /- English proof (translation)
-Introduce `R P`. Use `⟨lamSH_isHCParam R P, ?_⟩` and prove the remaining obligations. Conclude with `fdegHC_pos_of_injective _ (lamSH_isHCParam R P).1.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lamSH_isHCParam_and_trueDsig_pos :
     ∀ (R : Ranks) (P : HCParam R), Formalism.QuantumDeterminants.IsHCParam (lamSH R P) ∧ 0 < trueDsig R P := by

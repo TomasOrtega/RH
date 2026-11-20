@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CorankOneNonGenericR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h hB hT`. Use `GlobalTheory.T.corankOneNonGenericRowBound_closed (GlobalTheory.St.swxs_of_siegelWeil h) hB GlobalTheory.stepPinExists_and_formNGC.1 GlobalTheory.stepPinExists_and_formNGC.2 ?_` and prove the remaining obligations. Introduce `Cg cb Cw cT CT C0 _ _ A`. Take `⟨CB, h0, a, b, H⟩` from `hT Cg cb Cw cT CT C0 A`. Conclude with `⟨CB, h0, a, b, fun C' Cl h1 h2 D large₂ X Y u u' _ => H C' Cl h1 h2 D large₂ X Y u u'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowNGP_of_siegelWeil_of_stepChoice :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → Formalism.L2.SG.NGAnalytic.StepChoiceConstantsC →

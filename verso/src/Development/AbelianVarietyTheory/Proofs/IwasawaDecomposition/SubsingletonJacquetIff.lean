@@ -6,9 +6,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL ValuativeRel
 namespace GlobalTheory.CuspEntries
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(stdSum h).surjective a`. Break down `a with a | a` into its components or cases. Rewrite using `[← two_false, blk_apply, two_false]`. Simplify using `[stdSum]`. Rewrite using `[← two_true, blk_apply, two_true]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_two_stdSum {r t N : ℕ} (h : r + t = N) (a : Fin N) :
     blk (two (stdSum h)) a = decide (r ≤ (a : ℕ)) := by
@@ -20,7 +20,7 @@ theorem blk_two_stdSum {r t N : ℕ} (h : r + t = N) (a : Fin N) :
     simp [stdSum]
 
 /- English proof (translation)
-Rewrite using `[CuspMax.mem_unipRad_iff_entries]`. Use `forall₂_congr fun a b => imp_congr_left (not_congr ?_)` and prove the remaining obligations. Rewrite using `[blk_two_stdSum, blk_two_stdSum]`. Apply the tactic sequence `by_cases h1 : r ≤ (a : ℕ) <;> by_cases h2 : r ≤ (b : ℕ) <;> simp [h1, h2] <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_unipRad_two_stdSum {R : Type} [CommRing R] {r t N : ℕ} (h : r + t = N) (u : GL (Fin N) R) :
     u ∈ unipRad R (two (stdSum h)) ↔ ∀ a b : Fin N, ¬ ((a : ℕ) < r ∧ r ≤ (b : ℕ)) →

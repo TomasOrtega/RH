@@ -15,11 +15,11 @@ section Alg
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hl` using `(mem_Mir_iff k h).1 hh`. Use extensionality with `i j`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Proceed by induction on `i using Fin.lastCases with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Proceed by induction.
 
-Consider the case `last`. Establish `e : ∀ l : Fin n, (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.castSucc l) = 0`. Introduce `l`. Rewrite using `[hl]`. Simplify using `[eLast, Pi.single_apply, Fin.castSucc_ne_last]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[colMat, mul_apply, Fin.sum_univ_castSucc, e]`. Consider the case `cast i`. Simplify using `[colMat, mul_apply, Fin.sum_univ_castSucc, mulVec, dotProduct, blockMat]`. Simplify using `[colMat, mul_apply, hj]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_colMat_of_mem {n : ℕ} (h : GL (Fin (n + 1)) k) (hh : h ∈ Mir k n) (v : Fin n → k) :
     (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * colMat k n v =
@@ -40,11 +40,11 @@ theorem mul_colMat_of_mem {n : ℕ} (h : GL (Fin (n + 1)) k) (hh : h ∈ Mir k n
   · simp [colMat, mul_apply, hj]
 
 /- English proof (translation)
-Establish `hl` using `(mem_Mir_iff k h).1 hh`. Use extensionality with `i j`. Establish `e : (colMat k n w * (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) i j = colMat k n w i (Fin.last n) * (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j`. Rewrite using `[mul_apply, Finset.sum_eq_single (Fin.last n)]`. Introduce `l _ hlne`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[colMat, hlne]`. Simplify using the standard rewrite rules. Rewrite using `[e, hl]`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[colMat, eLast]`. Simplify using `[colMat, eLast, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colMat_mul_of_mem {n : ℕ} (h : GL (Fin (n + 1)) k) (hh : h ∈ Mir k n) (w : Fin n → k) :
     colMat k n w * (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = colMat k n w := by
@@ -63,11 +63,9 @@ theorem colMat_mul_of_mem {n : ℕ} (h : GL (Fin (n + 1)) k) (hh : h ∈ Mir k n
   · simp [colMat, eLast, hj]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Establish `hv' : ((u : Mir k n) : GL (Fin (n + 1)) k) = unip k n v` using `hv.symm`. Use `show (h : GL (Fin (n + 1)) k) * ((u : Mir k n) : GL (Fin (n + 1)) k) * (h : GL (Fin (n + 1)) k)⁻¹ ∈ MirU k n`. Rewrite using `[hv']`. Use `⟨Multiplicative.ofAdd ((blockMat k n ((h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)).mulVec v.toAdd), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq]`. Use `ext1`. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (1 + colMat k n _) * _ = _ * (1 + colMat k n v.toAdd)`. Rewrite using `[add_mul, mul_add, one_mul, mul_one, colMat_mul_of_mem _ h.2, mul_colMat_of_mem _ h.2]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_MirUin {n : ℕ} (h : Mir k n) (u : MirUin k n) : h * (u : Mir k n) * h⁻¹ ∈ MirUin k n := by
   obtain ⟨v, hv⟩ := (u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)
@@ -90,7 +88,7 @@ section Seq
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (Subtype.ext (funext h)))`.
+A detailed English derivation is pending.
 -/
 theorem cInd_ext {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     {H : Subgroup G} {σ : Representation ℂ H W} {F F' : cIndSpace H σ} (h : ∀ g, F.1.1.1 g = F'.1.1.1 g) : F = F' :=
@@ -102,14 +100,14 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] (ψ : AddChar k Circle) {n :
   (τ : Representation ℂ (Mir k (n + 1)) V)
 
 /- English proof (translation)
-Simplify using `only [betaFun, map_add, Submodule.Quotient.mk_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaFun_add (a b : V) (g : Mir k (n + 1)) :
     betaFun ψ τ (a + b) g = betaFun ψ τ a g + betaFun ψ τ b g := by
   simp only [betaFun, map_add, Submodule.Quotient.mk_add]
 
 /- English proof (translation)
-Simplify using `only [betaFun, map_smul, Submodule.Quotient.mk_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaFun_smul (c : ℂ) (a : V) (g : Mir k (n + 1)) :
     betaFun ψ τ (c • a) g = c • betaFun ψ τ a g := by
@@ -121,9 +119,7 @@ variable (hI : BetaInd k) (hS : BetaSmooth k) (hC : BetaCompact k)
 
 include hI hS in
 /- English proof (translation)
-Establish `e : {g : Mir k (n + 1) | ind (Q k n) (qRep k ψ (phiMinus k ψ τ)) g ⟨betaFun ψ τ v, hI ψ n V τ v⟩ = ⟨betaFun ψ τ v, hI ψ n V τ v⟩} = {g | ∀ x, betaFun ψ τ v (x * g) = betaFun ψ τ v x}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff.trans funext_iff`. Use `show IsOpen {g : Mir k (n + 1) | ind (Q k n) (qRep k ψ (phiMinus k ψ τ)) g ⟨betaFun ψ τ v, hI ψ n V τ v⟩ = ⟨betaFun ψ τ v, hI ψ n V τ v⟩}`. Rewrite using `[e]`.
-
-Conclude with `hS ψ n V τ hτ v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaFun_mem_smooth (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (Mir k (n + 1)) V) (hτ : IsSmooth τ) (v : V) :

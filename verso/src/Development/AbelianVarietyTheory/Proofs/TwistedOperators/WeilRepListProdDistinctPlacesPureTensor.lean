@@ -17,21 +17,21 @@ open scoped Classical
 namespace GlobalTheory.PureListAct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d Y Wd om hv φ φ₁ hφ hφ₁ hact hstd l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ f`. Establish `h1 : om (1, (([] : List (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)).map hv).prod) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[List.map_nil, List.prod_nil, Prod.mk_one_one, map_one]`. Rewrite using `[h1, Module.End.one_apply]`. Use `congr 1`. Consider the case `cons a t ih`. Introduce `hl f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hl` using `[List.nodup_cons]`. Establish `hsplit : om (1, ((a :: t).map hv).prod) = om (1, hv a) * om (1, (t.map hv).prod)`. Rewrite using `[List.map_cons, List.prod_cons, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[hsplit, Module.End.mul_apply, ih hl.2 f]`. Use `set φ' : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin d → Fv F v) → ℂ := fun v => if v ∈ t then φ₁ v else φ v with hφ'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstd' : ∀ᶠ v in Filter.cofinite, φ' v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hstd, (List.finite_toSet t).compl_mem_cofinite] with v hv1 hv2`. Establish `hvt : v ∉ t` using `hv2`. Simplify using `only [hφ', if_neg hvt]`. Conclude with `hv1`. Establish `hSB' : ∀ v, φ' v ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v`. Distinguish the cases in `h : v ∈ t`. Simplify using `only [hφ', if_pos h]`. Conclude with `hφ₁ v`. Simplify using `only [hφ', if_neg h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hφ v`. Establish `hat : φ' a = φ a` using `by simp only [hφ', if_neg hl.1]`. Take `⟨r, hr, htens⟩` from `GlobalTheory.PureFactor.exists_rest_factor a f φ' hstd'`. Establish `hfac : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ' = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.AdelicU.evFin F a) (φ a) r`. Rewrite using `[htens, ← hat, Function.update_eq_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hrest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.AdelicU.evFin F a) (φ a) r` using `⟨hr, hfac ▸ GlobalTheory.TensUniq.pure_mem_schA f φ' hSB' hstd'⟩`. Rewrite using `[hfac, hact a r hrest, htens]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `h : v = a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Simplify using `[hφ', h]`.
+A detailed English derivation is pending.
 -/
 theorem om_list_prod_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd)

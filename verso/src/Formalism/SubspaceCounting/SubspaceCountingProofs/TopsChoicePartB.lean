@@ -54,7 +54,7 @@ section arith
 variable {L₂ : ℕ} {δ : ℝ}
 
 /- English proof (translation)
-Establish `: (1 : ℝ) ≤ L₂` using `by exact_mod_cast hL`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma d_le_one (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) : δ ≤ 1 := by
   have : (1 : ℝ) ≤ L₂ := by exact_mod_cast hL
@@ -66,13 +66,13 @@ Combine the linear equalities and inequalities to obtain the conclusion.
 lemma two_sub_pos (h1 : δ ≤ 1) : 0 < 2 - δ := by linarith
 
 /- English proof (translation)
-Unfold `aF`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma aF_nonneg (hLδ : (L₂ : ℝ) * δ ≤ 1) : 0 ≤ aF L₂ δ := by
   unfold aF; nlinarith
 
 /- English proof (translation)
-Unfold `aF`. Establish `: (0 : ℝ) ≤ L₂ * δ` using `mul_nonneg (Nat.cast_nonneg _) h0`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma aF_le (h0 : 0 ≤ δ) : aF L₂ δ ≤ 1 / 2 := by
   unfold aF
@@ -80,7 +80,7 @@ lemma aF_le (h0 : 0 ≤ δ) : aF L₂ δ ≤ 1 / 2 := by
   nlinarith
 
 /- English proof (translation)
-Establish `h2` using `two_sub_pos h1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma key_id (h1 : δ ≤ 1) : δ * 1 + (1 - δ) * ((1 - δ) / (2 - δ)) = 1 / (2 - δ) := by
   have h2 := two_sub_pos h1
@@ -88,28 +88,28 @@ lemma key_id (h1 : δ ≤ 1) : δ * 1 + (1 - δ) * ((1 - δ) / (2 - δ)) = 1 / (
   ring
 
 /- English proof (translation)
-Establish `h2` using `two_sub_pos h1`. Conclude with `div_le_div_of_nonneg_right (by linarith) h2.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lo_le_hi (h0 : 0 ≤ δ) (h1 : δ ≤ 1) : (1 - δ) / (2 - δ) ≤ 1 / (2 - δ) := by
   have h2 := two_sub_pos h1
   exact div_le_div_of_nonneg_right (by linarith) h2.le
 
 /- English proof (translation)
-Establish `h2` using `two_sub_pos h1`. Rewrite using `[div_le_one h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma hi_le_one (h0 : 0 ≤ δ) (h1 : δ ≤ 1) : 1 / (2 - δ) ≤ 1 := by
   have h2 := two_sub_pos h1
   rw [div_le_one h2]; linarith
 
 /- English proof (translation)
-Establish `h2` using `two_sub_pos h1`. Conclude with `div_nonneg (by linarith) h2.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lo_nonneg (h1 : δ ≤ 1) : 0 ≤ (1 - δ) / (2 - δ) := by
   have h2 := two_sub_pos h1
   exact div_nonneg (by linarith) h2.le
 
 /- English proof (translation)
-Unfold `eF`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `lo_le_hi h0 h1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma eF_lb (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (d : ℕ) : (1 - δ) / (2 - δ) ≤ eF δ d := by
   unfold eF; split_ifs
@@ -117,7 +117,7 @@ lemma eF_lb (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (d : ℕ) : (1 - δ) / (2 - δ) ≤ 
   · exact lo_le_hi h0 h1
 
 /- English proof (translation)
-Unfold `eF`. Use `split_ifs`. Conclude with `lo_le_hi h0 h1`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma eF_ub (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (d : ℕ) : eF δ d ≤ 1 / (2 - δ) := by
   unfold eF; split_ifs
@@ -125,7 +125,7 @@ lemma eF_ub (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (d : ℕ) : eF δ d ≤ 1 / (2 - δ)
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `gF`. Use `split_ifs`. Conclude with `lo_nonneg h1`. Conclude with `(lo_nonneg h1).trans (lo_le_hi h0 h1)`. Conclude with `mul_nonneg (pow_nonneg (by linarith) _) ((lo_nonneg h1).trans (eF_lb h0 h1 _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma gF_nonneg (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (j d : ℕ) (ev : Bool) : 0 ≤ gF L₂ δ j d ev := by
   unfold gF
@@ -135,9 +135,9 @@ lemma gF_nonneg (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (j d : ℕ) (ev : Bool) : 0 ≤ 
   · exact mul_nonneg (pow_nonneg (by linarith) _) ((lo_nonneg h1).trans (eF_lb h0 h1 _))
 
 /- English proof (translation)
-Unfold `gF`. Use `split_ifs`. Conclude with `(lo_le_hi h0 h1).trans (hi_le_one h0 h1)`. Conclude with `hi_le_one h0 h1`. Establish `hp : (1 - δ) ^ (L₂ / 2 - d) ≤ 1` using `pow_le_one₀ (by linarith) (by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `he` using `(eF_ub h0 h1 (max d (L₂ / 2))).trans (hi_le_one h0 h1)`. Establish `he0` using `(lo_nonneg h1).trans (eF_lb h0 h1 (max d (L₂ / 2)))`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma gF_le_one (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (j d : ℕ) (ev : Bool) : gF L₂ δ j d ev ≤ 1 := by
   unfold gF
@@ -152,17 +152,17 @@ lemma gF_le_one (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (j d : ℕ) (ev : Bool) : gF L�
       _ = 1 := by ring
 
 /- English proof (translation)
-Establish `h1` using `d_le_one h0 hL hLδ`. Establish `h2` using `two_sub_pos h1`. Establish `hLr : (1 : ℝ) ≤ L₂` using `by exact_mod_cast hL`. Establish `hbase : aF L₂ δ ≤ (1 - δ) / (2 - δ)`. Unfold `aF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[le_div_iff₀ h2]`. Use the polynomial consequences of the given equalities and inequalities. Unfold `gF`. Use `split_ifs with hj`. Conclude with `hbase`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hbase.trans (lo_le_hi h0 h1)`. Establish `hh : L₂ / 2 + 1 ≤ L₂` using `by omega`. Establish `hbern : 1 - ((L₂ / 2 + 1 : ℕ) : ℝ) * δ ≤ (1 - δ) ^ (L₂ / 2 + 1)`. Use `one_add_mul_le_pow (a := -δ) (by linarith) (L₂ / 2 + 1)` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg, mul_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : ((L₂ / 2 + 1 : ℕ) : ℝ) ≤ L₂` using `by exact_mod_cast hh`. Establish `he` using `eF_lb h0 h1 (max 0 (L₂ / 2))`. Establish `hp0 : 0 ≤ (1 - δ) ^ (L₂ / 2)` using `pow_nonneg (by linarith) _`. Establish `hstep : (1 - δ) ^ (L₂ / 2) * ((1 - δ) / (2 - δ)) ≤ (1 - δ) ^ (L₂ / 2 - 0) * eF δ (max 0 (L₂ / 2))`. Simplify using `only [Nat.sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left he hp0`. Use `le_trans ?_ hstep` and prove the remaining obligations. Establish `hq : (1 - δ) ^ (L₂ / 2) * ((1 - δ) / (2 - δ)) = (1 - δ) ^ (L₂ / 2 + 1) / (2 - δ)`. Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq, le_div_iff₀ h2]`. Unfold `aF`. Establish `hpow1 : (1 - δ) ^ (L₂ / 2 + 1) ≤ 1` using `pow_le_one₀ (by linarith) (by linarith)`. Establish `hpow0 : 0 ≤ (1 - δ) ^ (L₂ / 2 + 1)` using `pow_nonneg (by linarith) _`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma gF_lb (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (j : ℕ) (ev : Bool) :
     aF L₂ δ ≤ gF L₂ δ j 0 ev := by
@@ -200,23 +200,23 @@ lemma gF_lb (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (
     nlinarith
 
 /- English proof (translation)
-Establish `h2` using `two_sub_pos h1`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Consider the cases of `ev`. Simplify using `only [okG, gF, if_true, Bool.not_false]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `k` using `key_id h1`. Rewrite `k` using `[one_div, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [okG, gF, if_true, Bool.not_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[div_eq_mul_inv]`. Distinguish the cases in `hd : d < L₂ / 2`. Establish `hok : okG L₂ j d ev = false`. Simplify using `only [okG, hj, if_false]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ¬ L₂ < 2 * (d + 1)` using `by omega`. Simplify using `[this]`. Rewrite using `[hok]`. Simplify using `only [gF, hj, if_false]`. Establish `hm1 : max d (L₂ / 2) = L₂ / 2` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm2 : max (d + 1) (L₂ / 2) = L₂ / 2` using `by omega`. Establish `hs : L₂ / 2 - d = (L₂ / 2 - (d + 1)) + 1` using `by omega`. Rewrite using `[hm1, hm2, hs, pow_succ]`. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Conclude with `le_rfl`. Establish `hm1 : max d (L₂ / 2) = d` using `by omega`. Establish `hm2 : max (d + 1) (L₂ / 2) = d + 1` using `by omega`. Establish `hs1 : L₂ / 2 - d = 0` using `by omega`. Establish `hs2 : L₂ / 2 - (d + 1) = 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : L₂ < 2 * (d + 1)` using `by omega`. Simplify using `only [gF, hj, if_false, hm1, hm2, hs1, hs2, pow_zero, one_mul]`. Break down `Nat.mod_two_eq_zero_or_one d with hp | hp` into its components or cases. Establish `hq : (d + 1) % 2 ≠ 0` using `by omega`. Establish `hok : okG L₂ j d ev = false` using `by simp [okG, hj, hq]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hok]`. Simplify using `only [eF, hp, hq, if_true, if_false]`. Simplify using the standard rewrite rules. Rewrite using `[div_eq_mul_inv]`. Establish `hq : (d + 1) % 2 = 0` using `by omega`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : d % 2 ≠ 0` using `by omega`. Establish `hok : okG L₂ j d ev = true` using `by simp [okG, hj, hq, hlt]`. Rewrite using `[hok]`. Simplify using `only [eF, hp', hq, if_true, if_false]`. Rewrite using `[key_id h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gF_step (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (j d : ℕ) (ev : Bool) :
     gF L₂ δ j d ev ≤ δ * (if okG L₂ j d ev = true then 1 else 0) + (1 - δ) * gF L₂ δ j (d + 1) (!ev) := by
@@ -276,19 +276,19 @@ section pot
 variable {R L₂ : ℕ} {δ : ℝ}
 
 /- English proof (translation)
-The claim follows from `pow_le_one₀ (aF_nonneg hLδ) ((aF_le h0).trans (by norm_num))`.
+A detailed English derivation is pending.
 -/
 lemma aFpow_le (h0 : 0 ≤ δ) (hLδ : (L₂ : ℝ) * δ ≤ 1) (k : ℕ) : aF L₂ δ ^ k ≤ 1 :=
   pow_le_one₀ (aF_nonneg hLδ) ((aF_le h0).trans (by norm_num))
 
 /- English proof (translation)
-Combine the linear relations using `[aFpow_le h0 hLδ R]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma c_nonneg (h0 : 0 ≤ δ) (hLδ : (L₂ : ℝ) * δ ≤ 1) : 0 ≤ 1 - aF L₂ δ ^ R := by
   linarith [aFpow_le h0 hLδ R]
 
 /- English proof (translation)
-Establish `h1` using `d_le_one h0 hL hLδ`. Unfold `GF`. Use `split_ifs`. Conclude with `mul_le_one₀ (aFpow_le h0 hLδ _) (gF_nonneg h0 h1 _ _ _) (gF_le_one h0 h1 _ _ _)`. Evaluate the numerical expressions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma GF_le_one (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (j d : ℕ) (al ev : Bool) :
     GF R L₂ δ j d al ev ≤ 1 := by
@@ -298,9 +298,9 @@ lemma GF_le_one (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 
   · norm_num
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `bad => simp [Phi]`. Consider the case `good => simp [Phi]`. Consider the case `run K j d al ev`. Simplify using `only [Phi]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `mul_nonneg (pow_nonneg (c_nonneg h0 hLδ) _) (by linarith [GF_le_one (R := R) h0 hL hLδ j d al ev])`.
+A detailed English derivation is pending.
 -/
 lemma Phi_nonneg (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (s : St) :
     0 ≤ Phi R L₂ δ s := by
@@ -312,11 +312,11 @@ lemma Phi_nonneg (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤
     exact mul_nonneg (pow_nonneg (c_nonneg h0 hLδ) _) (by linarith [GF_le_one (R := R) h0 hL hLδ j d al ev])
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `bad => cases b <;> trivial`. Consider the case `good => cases b <;> trivial`. Consider the case `run K j d al ev`. Simplify using `only [WF] at hs`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the cases of `b`. Simplify `hs` using `[step, WF]`. Simplify using `only [step] split_ifs with h1 h2 h3`. Discharge the goal by the elementary cases of `trivial`. Discharge the goal by the elementary cases of `trivial`.
+Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Check the elementary cases of the proposition. Check the elementary cases of the proposition.
 
-Simplify using `only [WF]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [WF]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma WF_step (hR : 1 ≤ R) (s : St) (hs : WF R s) (b : Bool) : WF R (step R L₂ s b) := by
   cases s with
@@ -334,9 +334,9 @@ lemma WF_step (hR : 1 ≤ R) (s : St) (hs : WF R s) (b : Bool) : WF R (step R L�
       · simp only [WF]; omega
 
 /- English proof (translation)
-Simplify using `only [Phi, GF, if_true, Nat.sub_zero]`. Establish `hg` using `gF_lb h0 hL hLδ 0 ev`. Establish `hle : aF L₂ δ ^ R ≤ aF L₂ δ ^ (R - 1) * gF L₂ δ 0 0 ev`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_succ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hg (pow_nonneg (aF_nonneg hLδ) _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma Phi_init (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (hR : 1 ≤ R)
     {K : ℕ} (hK : 1 ≤ K) (ev : Bool) :
@@ -353,17 +353,17 @@ lemma Phi_init (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1
     _ = (1 - aF L₂ δ ^ R) ^ K := by rw [← pow_succ, Nat.sub_add_cancel hK]
 
 /- English proof (translation)
-Establish `hC : 0 ≤ (1 - aF L₂ δ ^ R) ^ (K - 1)` using `pow_nonneg (c_nonneg h0 hLδ) _`. Simplify using `only [step]`. Distinguish the cases in `hjR : j + 1 = R`. Rewrite using `[if_pos hjR]`. Establish `hA : aF L₂ δ ^ (R - 1 - j) = 1` using `by rw [show R - 1 - j = 0 by omega, pow_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hg : (al && okG L₂ j d ev) = true`. Rewrite using `[if_pos hg, if_pos hg, hA]`. Simplify using `[Phi]`. Rewrite using `[if_neg hg, if_neg hg]`. Distinguish the cases in `hK : K ≤ 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hK]; simp only [Phi]; rw [show K - 1 = 0 by omega]; simp`. Rewrite using `[if_neg hK, sub_zero, mul_one]`. Establish `h` using `Phi_init (R := R) h0 hL hLδ hR (K := K - 1) (by omega) (!ev)`. Conclude with `h`. Rewrite using `[if_neg hjR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Phi]`. Apply `mul_le_mul_of_nonneg_left _ hC` to reduce the goal to its premises. Unfold `GF`. Distinguish the cases in `hg : (al && okG L₂ j d ev) = true`. Rewrite using `[if_pos hg, if_pos hg]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: aF L₂ δ ^ (R - 1 - j) ≤ aF L₂ δ ^ (R - 1 - (j + 1)) * gF L₂ δ (j + 1) 0 (!ev)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ ≤ _ := mul_le_mul_of_nonneg_left (gF_lb h0 hL hLδ _ _) (pow_nonneg (aF_nonneg hLδ) _)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hg, if_neg hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma phi_true (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (hR : 1 ≤ R)
     (K j d : ℕ) (al ev : Bool) (hj : j < R) :
@@ -397,17 +397,17 @@ lemma phi_true (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1
     · rw [if_neg hg, if_neg hg]
 
 /- English proof (translation)
-Establish `h1` using `d_le_one h0 hL hLδ`. Consider the cases of `s with`. Consider the case `bad => simp only [step, Phi]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `good => simp only [step, Phi]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `run K j d al ev`. Simplify using `only [WF] at hs`. Establish `ht` using `phi_true h0 hL hLδ hR K j d al ev hs`. Establish `hf : Phi R L₂ δ (step R L₂ (.run K j d al ev) false) = (1 - aF L₂ δ ^ R) ^ (K - 1) * (1 - GF R L₂ δ j (d + 1) al (!ev))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [step, Phi]`. Rewrite using `[hf]`. Use `show _ ≤ (1 - aF L₂ δ ^ R) ^ (K - 1) * (1 - GF R L₂ δ j d al ev)`. Establish `hC : 0 ≤ (1 - aF L₂ δ ^ R) ^ (K - 1)` using `pow_nonneg (c_nonneg h0 hLδ) _`. Establish `hA : 0 ≤ aF L₂ δ ^ (R - 1 - j)` using `pow_nonneg (aF_nonneg hLδ) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `al`. Simplify using `only [GF, Bool.false_and, Bool.false_eq_true, if_false] at ht ⊢`. Establish `e1` using `mul_le_mul_of_nonneg_left ht h0`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [GF, Bool.true_and, if_true] at ht ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg` using `gF_step (L₂ := L₂) h0 h1 j d ev`. Apply the tactic sequence `have ho : (if okG L₂ j d ev = true then aF L₂ δ ^ (R - 1 - j) else 0) = aF L₂ δ ^ (R - 1 - j) * (if okG L₂ j d ev = true then (1 : ℝ) else 0) := by split_ifs <;> simp`. Rewrite `ht` using `[ho]`. Establish `e1` using `mul_le_mul_of_nonneg_left ht h0`. Establish `e2` using `mul_le_mul_of_nonneg_left hg (mul_nonneg hC hA)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 lemma phi_step (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (hR : 1 ≤ R)
     (s : St) (hs : WF R s) :
@@ -441,11 +441,11 @@ lemma phi_step (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1
       nlinarith [e1, e2]
 
 /- English proof (translation)
-Establish `h1` using `d_le_one h0 hL hLδ`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `s hs`. Simplify using `only [Wt]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Phi]`. Conclude with `Phi_nonneg h0 hL hLδ s`. Consider the case `succ m ih`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s hs`. Simplify using `only [Wt]`. Establish `a1` using `ih _ (WF_step (L₂ := L₂) hR s hs true)`. Establish `a2` using `ih _ (WF_step (L₂ := L₂) hR s hs false)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma Wt_le (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1) (hR : 1 ≤ R) (m : ℕ) :
     ∀ s, WF R s → Wt R L₂ δ m s ≤ Phi R L₂ δ s := by
@@ -488,16 +488,16 @@ lemma runS_cons (s : St) (b : Bool) (bs : List Bool) :
     runS R L₂ s (b :: bs) = runS R L₂ (step R L₂ s b) bs := rfl
 
 /- English proof (translation)
-Simplify using `[runS, List.foldl_append]`.
+Simplify using the standard rewrite rules.
 -/
 lemma runS_append (s : St) (l₁ l₂ : List Bool) :
     runS R L₂ s (l₁ ++ l₂) = runS R L₂ (runS R L₂ s l₁) l₂ := by
   simp [runS, List.foldl_append]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Rewrite using `[runS_cons]`. Apply the tactic sequence `have : step R L₂ .bad b = .bad := by cases b <;> rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma runS_bad (bs : List Bool) : runS R L₂ .bad bs = .bad := by
   induction bs with
@@ -508,19 +508,19 @@ lemma runS_bad (bs : List Bool) : runS R L₂ .bad bs = .bad := by
     rw [this, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro s`. Simplify using `[Wt, runS]`. Consider the case `cons p l ih`. Introduce `s`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hl` using `[List.nodup_cons]`. Take `⟨hp, hl'⟩` from `hl`. Establish `hp' : p ∉ l.toFinset` using `by simpa using hp`. Rewrite using `[List.toFinset_cons, Finset.sum_powerset_insert hp']`. Establish `e1 : ∀ U ∈ l.toFinset.powerset, (if runS R L₂ s ((p :: l).map (fun q => decide (q ∈ U))) = .bad then ∏ q ∈ insert p l.toFinset, wP δ U q else 0) = (1 - δ) * (if runS R L₂ (step R L₂ s false) (l.map (fun q => decide (q ∈ U))) = .bad then ∏ q ∈ l.toFinset, wP δ U q else 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `U hU`. Establish `hpU : p ∉ U` using `fun h => hp' (Finset.mem_powerset.1 hU h)`. Establish `hw : wP δ U p = 1 - δ` using `by simp [wP, hpU]`. Rewrite using `[Finset.prod_insert hp', hw, List.map_cons, runS_cons, decide_eq_false hpU]`. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : ∀ U ∈ l.toFinset.powerset, (if runS R L₂ s ((p :: l).map (fun q => decide (q ∈ insert p U))) = .bad then ∏ q ∈ insert p l.toFinset, wP δ (insert p U) q else 0) = δ * (if runS R L₂ (step R L₂ s true) (l.map (fun q => decide (q ∈ U))) = .bad then ∏ q ∈ l.toFinset, wP δ U q els …`. Introduce `U _`. Establish `hmap : l.map (fun q => decide (q ∈ insert p U)) = l.map (fun q => decide (q ∈ U))`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: q ≠ p` using `fun h => hp (h ▸ hq)`. Simplify using `[Finset.mem_insert, this]`. Establish `hprod : ∏ q ∈ l.toFinset, wP δ (insert p U) q = ∏ q ∈ l.toFinset, wP δ U q`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `q hq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: q ≠ p` using `fun h => hp' (h ▸ hq)`. Simplify using `[wP, Finset.mem_insert, this]`. Establish `hw : wP δ (insert p U) p = δ` using `by simp [wP]`. Rewrite using `[Finset.prod_insert hp', hw, List.map_cons, runS_cons, hmap, hprod, decide_eq_true (Finset.mem_insert_self p U)]`. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, ← Finset.mul_sum, ← Finset.mul_sum, ih hl', ih hl']`. Simplify using `only [List.length_cons, Wt]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_list (l : List ℕ) (hl : l.Nodup) : ∀ s : St,
     ∑ U ∈ l.toFinset.powerset,
@@ -570,9 +570,9 @@ lemma sum_list (l : List ℕ) (hl : l.Nodup) : ∀ s : St,
     ring
 
 /- English proof (translation)
-Unfold `wP`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const]`. Establish `h1 : (Finset.range n).filter (fun x => x ∈ T) = T`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨Finset.mem_range.1 (hT h), h⟩⟩`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := Finset.range n) (fun x => x ∈ T)`. Rewrite `h2` using `[h1, Finset.card_range]`. Rewrite using `[h1, show ((Finset.range n).filter (fun x => ¬ x ∈ T)).card = n - T.card by omega]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_wP (n : ℕ) (T : Finset ℕ) (hT : T ⊆ Finset.range n) :
     ∏ p ∈ Finset.range n, wP δ T p = δ ^ T.card * (1 - δ) ^ (n - T.card) := by
@@ -589,14 +589,14 @@ lemma prod_wP (n : ℕ) (T : Finset ℕ) (hT : T ⊆ Finset.range n) :
 def Lst (n i : ℕ) : List ℕ := (List.range (n - 1)).map (fun t => (i + t + 1) % n)
 
 /- English proof (translation)
-Establish `h' : x % n = y % n` using `Nat.ModEq.add_left_cancel' i h`. Rewrite `h'` using `[Nat.mod_eq_of_lt hx, Nat.mod_eq_of_lt hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma mod_inj {n i x y : ℕ} (hx : x < n) (hy : y < n) (h : (i + x) % n = (i + y) % n) : x = y := by
   have h' : x % n = y % n := Nat.ModEq.add_left_cancel' i h
   rwa [Nat.mod_eq_of_lt hx, Nat.mod_eq_of_lt hy] at h'
 
 /- English proof (translation)
-Unfold `Lst`. Apply `List.Nodup.map_on _ List.nodup_range` to reduce the goal to its premises. Introduce `x hx y hy h`. Rewrite `hx`, `hy` using `[List.mem_range]`. Establish `: x + 1 = y + 1` using `mod_inj (n := n) (i := i) (x := x + 1) (y := y + 1) (by omega) (by omega) (by simpa [add_assoc] using h)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -609,17 +609,17 @@ lemma Lst_nodup (n i : ℕ) : (Lst n i).Nodup := by
   omega
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_erase, Finset.mem_range]`. Rewrite using `[List.mem_toFinset]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `Lst`. Rewrite using `[List.mem_map]`. Use `⟨(x + n - i) % n - 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.mem_range]`. Use `Nat.mod_lt (x + n - i) (by omega : 0 < n)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne : (x + n - i) % n ≠ 0`. Introduce `h0`. Establish `h1 : (x + n - i) % n = (i + n - i) % n` using `by rw [h0]; simp`. Distinguish the cases in `hxi : i ≤ x`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: x - i < n` using `by omega`. Establish `e1 : (x + n - i) % n = (x - i) % n`. Rewrite using `[show x + n - i = (x - i) + n by omega, Nat.add_mod_right]`. Rewrite `h0` using `[e1, Nat.mod_eq_of_lt this]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `: x + n - i < n` using `by omega`. Rewrite `h0` using `[Nat.mod_eq_of_lt this]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[add_assoc, Nat.sub_add_cancel (Nat.pos_of_ne_zero hne)]`. Rewrite using `[Nat.add_mod_mod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show i + (x + n - i) = x + n by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hx.2]`. Rewrite using `[List.toFinset_card_of_nodup (Lst_nodup n i), Finset.card_erase_of_mem (Finset.mem_range.2 hi)]`. Simplify using `[Lst]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Lst_toFinset {n i : ℕ} (hi : i < n) : (Lst n i).toFinset = (Finset.range n).erase i := by
   symm
@@ -653,17 +653,17 @@ lemma Lst_toFinset {n i : ℕ} (hi : i < n) : (Lst n i).toFinset = (Finset.range
     simp [Lst]
 
 /- English proof (translation)
-Establish `hS` using `Lst_toFinset hi`. Establish `hr : Finset.range n = insert i ((Finset.range n).erase i)` using `(Finset.insert_erase (Finset.mem_range.2 hi)).symm`. Establish `hiS : i ∉ (Finset.range n).erase i` using `Finset.notMem_erase i _`. Rewrite using `[hr, Finset.sum_powerset_insert hiS]`. Establish `z1 : ∑ U ∈ ((Finset.range n).erase i).powerset, (if i ∈ U ∧ runS R L₂ s ((Lst n i).map (fun p => decide (p ∈ U))) = .bad then ∏ p ∈ insert i ((Finset.range n).erase i), wP δ U p else 0) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `U hU`. Establish `: i ∉ U` using `fun h => hiS (Finset.mem_powerset.1 hU h)`. Simplify using `[this]`. Rewrite using `[z1, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ U ∈ ((Finset.range n).erase i).powerset, (if i ∈ insert i U ∧ runS R L₂ s ((Lst n i).map (fun p => decide (p ∈ insert i U))) = .bad then ∏ p ∈ insert i ((Finset.range n).erase i), wP δ (insert i U) p else 0) = δ * (if runS R L₂ s ((Lst n i).map (fun p => decide (p ∈ U))) = …`. Introduce `U _`. Establish `hmap : (Lst n i).map (fun q => decide (q ∈ insert i U)) = (Lst n i).map (fun q => decide (q ∈ U))`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq' : q ∈ (Finset.range n).erase i` using `by rw [← hS, List.mem_toFinset]; exact hq`. Establish `: q ≠ i` using `Finset.ne_of_mem_erase hq'`. Simplify using `[Finset.mem_insert, this]`. Establish `hprod : ∏ q ∈ (Finset.range n).erase i, wP δ (insert i U) q = ∏ q ∈ (Lst n i).toFinset, wP δ U q`. Rewrite using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `q hq`. Establish `: q ≠ i` using `Finset.ne_of_mem_erase hq`. Simplify using `[wP, Finset.mem_insert, this]`. Establish `hw : wP δ (insert i U) i = δ` using `by simp [wP]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert hiS, hw, hmap, hprod]`. Simplify using `only [Finset.mem_insert_self, true_and]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[Finset.sum_congr rfl e2, ← Finset.mul_sum, ← hS, sum_list _ (Lst_nodup n i)]`. Simplify using `[Lst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sum_event {n i : ℕ} (hi : i < n) (s : St) :
     ∑ T ∈ (Finset.range n).powerset,
@@ -745,27 +745,27 @@ def snocF {j : ℕ} (u : Fin j → ℕ) (v : ℕ) : Fin (j + 1) → ℕ :=
   fun l => if h : l.val < j then u ⟨l.val, h⟩ else v
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 lemma snocF_lt {j : ℕ} (u : Fin j → ℕ) (v : ℕ) (l : Fin (j + 1)) (h : l.val < j) :
     snocF u v l = u ⟨l.val, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 lemma snocF_last {j : ℕ} (u : Fin j → ℕ) (v : ℕ) (l : Fin (j + 1)) (h : ¬ l.val < j) :
     snocF u v l = v := dif_neg h
 
 /- English proof (translation)
-Rewrite using `[Nat.even_iff, Nat.even_iff, Nat.mod_mod_of_dvd _ (even_iff_two_dvd.1 hn)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma even_mod {n : ℕ} (hn : Even n) (x : ℕ) : Even (x % n) ↔ Even x := by
   rw [Nat.even_iff, Nat.even_iff, Nat.mod_mod_of_dvd _ (even_iff_two_dvd.1 hn)]
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[Finset.range_add_one (n := t + 1), Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma cnt_succ (n : ℕ) (T : Finset ℕ) (b t : ℕ) :
     cnt n T b (t + 1) = cnt n T b t + (if (b + (t + 1)) % n ∈ T then 1 else 0) := by
@@ -777,38 +777,36 @@ lemma cnt_succ (n : ℕ) (T : Finset ℕ) (b t : ℕ) :
   · rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => a.elim0, fun l => l.elim0, fun l => l.elim0, fun l => l.elim0, fun l => l.elim0, fun h => absurd h (lt_irrefl 0)⟩`.
+Supply the required witnesses or components.
 -/
 lemma PRun_zero (n : ℕ) (T : Finset ℕ) (L₂ b t d : ℕ) (u : Fin 0 → ℕ) : PRun n T L₂ b 0 t d u :=
   ⟨fun a => a.elim0, fun l => l.elim0, fun l => l.elim0, fun l => l.elim0, fun l => l.elim0,
     fun h => absurd h (lt_irrefl 0)⟩
 
 /- English proof (translation)
-Take `⟨hmono, hle, htop, hevu, hgap, hlast⟩` from `hu`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c hac`. Establish `hac' : a.val < c.val` using `hac`. Distinguish the cases in `ha : a.val < j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[snocF_lt u _ a ha]`. Distinguish the cases in `hc : c.val < j`. Rewrite using `[snocF_lt u _ c hc]`. Conclude with `hmono (show (⟨a.val, ha⟩ : Fin j) < ⟨c.val, hc⟩ from hac')`. Rewrite using `[snocF_last u _ c hc]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hle ⟨a.val, ha⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Use `c.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Distinguish the cases in `hl : l.val < j`. Rewrite using `[snocF_lt u _ l hl]`. Conclude with `(hle _).trans (Nat.le_succ _)`. Rewrite using `[snocF_last u _ l hl]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `l`. Distinguish the cases in `hl : l.val < j`. Rewrite using `[snocF_lt u _ l hl]`. Conclude with `htop _`. Rewrite using `[snocF_last u _ l hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT`. Introduce `l`. Distinguish the cases in `hl : l.val < j`. Rewrite using `[snocF_lt u _ l hl]`. Conclude with `hevu _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[snocF_last u _ l hl, even_mod hn]`. Distinguish the cases in `hj : j = 0`. Establish `hev' : ev = false` using `by simpa [okG, hj] using hok`. Rewrite `hev` using `[hev']`. Establish `hne : ¬ Even (b + t)` using `by simpa using hev.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← add_assoc, Nat.even_add_one]`. Conclude with `hne`. Establish `hok' : (d + 1) % 2 = 0 ∧ L₂ < 2 * (d + 1)` using `by simpa [okG, hj] using hok`. Establish `hprev` using `hevu ⟨j - 1, by omega⟩`. Rewrite `hprev` using `[hlast (by omega), even_mod hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdd : Even (d + 1)` using `Nat.even_iff.2 hok'.1`. Establish `: b + (t + 1) = (b + (t - d)) + (d + 1)` using `by omega`. Rewrite using `[this]`. Conclude with `hprev.add hdd`. Introduce `l hl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : l.val < j` using `by omega`. Rewrite using `[snocF_lt u _ l hl0]`. Distinguish the cases in `hl1 : l.val + 1 < j`. Rewrite using `[snocF_lt u _ ⟨l.val + 1, hl⟩ hl1]`. Conclude with `hgap ⟨l.val, hl0⟩ hl1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[snocF_last u _ ⟨l.val + 1, hl⟩ hl1]`. Establish `hj : j ≠ 0` using `by omega`. Establish `hok' : (d + 1) % 2 = 0 ∧ L₂ < 2 * (d + 1)` using `by simpa [okG, hj] using hok`. Establish `hul : u ⟨l.val, hl0⟩ = t - d`. Use `hlast (by omega)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : (⟨l.val, hl0⟩ : Fin j) = ⟨j - 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[e]`. Conclude with `this`. Rewrite using `[hul]`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
-
-Introduce `x h1 h2`. Conclude with `hnone x h1 (by omega)`. Introduce `_`. Rewrite using `[snocF_last u _ _ (by simp)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma PRun_ext {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ b j t d : ℕ} {ev : Bool} {u : Fin j → ℕ}
     (hu : PRun n T L₂ b j t d u) (hd : d ≤ t) (hev : ev = decide (Even (b + t)))
@@ -877,29 +875,27 @@ lemma PRun_ext {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ b j t d : ℕ} {ev
     rfl
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `bad`. Establish `: step R L₂ .bad (decide ((b + (t + 1)) % n ∈ T)) = .bad`. Apply the tactic sequence `cases decide ((b + (t + 1)) % n ∈ T) <;> rfl`. Rewrite using `[this]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `True.intro`. Consider the case `good`. Establish `: step R L₂ .good (decide ((b + (t + 1)) % n ∈ T)) = .good`. Apply the tactic sequence `cases decide ((b + (t + 1)) % n ∈ T) <;> rfl`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, h1, h2, h3, h4, h5⟩` from `hs`. Conclude with `⟨u, h1, fun l => (h2 l).trans (Nat.le_succ _), h3, h4, h5⟩`. Consider the case `run K j d al ev`. Take `⟨hK1, hK2, hj, hd, hev, htop, hnone, hcnt, hal⟩` from `hs`. Establish `hev' : (!ev) = decide (Even (b + (t + 1)))`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev, ← add_assoc]`. Distinguish the cases in `he : Even (b + t)`. Simplify using `[he, Nat.even_add_one]`. Simplify using `[he, Nat.even_add_one]`. Distinguish the cases in `hT : (b + (t + 1)) % n ∈ T`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[decide_eq_true hT]`. Establish `hext : (al && okG L₂ j d ev) = true → ∃ u : Fin (j + 1) → ℕ, PRun n T L₂ b (j + 1) (t + 1) 0 u`. Introduce `hg`. Rewrite `hg` using `[Bool.and_eq_true]`. Take `⟨u, hu⟩` from `hal hg.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, PRun_ext hn hu hd hev hnone hT hg.2⟩`. Establish `hc1 : cnt n T b (t + 1) = cnt n T b t + 1` using `by rw [cnt_succ, if_pos hT]`. Simplify using `only [step]`. Use `split_ifs with hjR hg hK`. Take `⟨u, hu⟩` from `hext hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hjR` using the available equality. Conclude with `⟨u, hu.1, hu.2.1, hu.2.2.1, hu.2.2.2.1, hu.2.2.2.2.1⟩`. Conclude with `True.intro`. Use `⟨by omega, by omega, by omega, by omega, hev', by simpa using hT, fun x h1 h2 => by omega, ?_, fun _ => ⟨Fin.elim0, PRun_zero _ _ _ _ _ _ _⟩⟩` and prove the remaining obligations. Rewrite using `[hc1, hcnt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `e : K₀ - (K - 1) = (K₀ - K) + 1` using `by omega`. Rewrite using `[e, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Use `⟨hK1, hK2, by omega, by omega, hev', by simpa using hT, fun x h1 h2 => by omega, ?_, hext⟩` and prove the remaining obligations. Rewrite using `[hc1, hcnt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[decide_eq_false hT]`. Simplify using `only [step]`. Use `⟨hK1, hK2, hj, by omega, hev', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show t + 1 - (d + 1) = t - d by omega]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `x h1 h2`. Break down `Nat.lt_or_ge x (t + 1) with h | h` into its components or cases. Conclude with `hnone x (by omega) (by omega)`. Establish `: x = t + 1` using `by omega`. Substitute `this` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hT`. Rewrite using `[cnt_succ, if_neg hT, hcnt, add_zero]`. Introduce `ha`. Take `⟨u, hmono, hle, htopu, hevu, hgap, hlast⟩` from `hal ha`. Use `⟨u, hmono, fun l => (hle l).trans (Nat.le_succ _), htopu, hevu, hgap, ?_⟩` and prove the remaining obligations.
-
-Introduce `h`. Rewrite using `[hlast h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma inv_step {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ R b K₀ : ℕ} (hR : 1 ≤ R) (t : ℕ) (s : St)
     (hs : Inv n T L₂ R b K₀ t s) :
@@ -965,9 +961,9 @@ lemma inv_step {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ R b K₀ : ℕ} (h
         omega
 
 /- English proof (translation)
-Unfold `Ls`. Rewrite using `[List.range_succ_eq_map, List.map_cons, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `x _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[show t + 1 + (x + 1) = t + 1 + 1 + x by omega]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma Ls_succ (n : ℕ) (T : Finset ℕ) (b t m : ℕ) :
     Ls n T b t (m + 1) = decide ((b + (t + 1)) % n ∈ T) :: Ls n T b (t + 1) m := by
@@ -980,9 +976,9 @@ lemma Ls_succ (n : ℕ) (T : Finset ℕ) (b t m : ℕ) :
   rw [show t + 1 + (x + 1) = t + 1 + 1 + x by omega]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro t s hs`. Simplify `hs` using `[Ls, runS]`. Consider the case `succ m ih`. Introduce `t s hs`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ls_succ, runS_cons]`. Use `ih (t + 1) _ (inv_step hn hR t s hs)` as an intermediate fact. Rewrite `this` using `[show t + 1 + m = t + (m + 1) by omega]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma inv_iter {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ R b K₀ : ℕ} (hR : 1 ≤ R) (m : ℕ) :
     ∀ t s, Inv n T L₂ R b K₀ t s → Inv n T L₂ R b K₀ (t + m) (runS R L₂ s (Ls n T b t m)) := by
@@ -995,7 +991,7 @@ lemma inv_iter {n : ℕ} (hn : Even n) {T : Finset ℕ} {L₂ R b K₀ : ℕ} (h
     rwa [show t + 1 + m = t + (m + 1) by omega] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, by unfold Ls; rw [List.range_add, List.map_append]⟩`.
+Supply the required witnesses or components.
 -/
 lemma Ls_add (n : ℕ) (T : Finset ℕ) (b t p q : ℕ) :
     ∃ rest, Ls n T b t (p + q) = Ls n T b t p ++ rest :=
@@ -1004,29 +1000,27 @@ lemma Ls_add (n : ℕ) (T : Finset ℕ) (b t p q : ℕ) :
 def init (K : ℕ) (ev : Bool) : St := if K = 0 then .bad else .run K 0 0 true ev
 
 /- English proof (translation)
-Unfold `CondB at h`. Use `push_neg at h`. Take `⟨b, e, hb, he, hcount, hno⟩` from `h`. Establish `hex : ∃ d, d ≤ e ∧ (b + d) % n ∈ T`. Establish `hpos : 0 < ((Finset.range (e + 1)).filter fun d => (b + d) % n ∈ T).card` using `by omega`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `Finset.card_pos.1 hpos`. Rewrite `hd` using `[Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨d, by omega, hd.2⟩`. Set `d₀` to `Nat.find hex`. Establish `hd₀ : d₀ ≤ e ∧ (b + d₀) % n ∈ T` using `Nat.find_spec hex`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ d < d₀, (b + d) % n ∉ T`. Introduce `d hd hdT`. Conclude with `Nat.find_min hex hd ⟨by omega, hdT⟩`. Establish `hi : (b + d₀) % n < n` using `Nat.mod_lt _ (by omega)`. Use `⟨(b + d₀) % n, hi, hd₀.2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hevi : decide (Even ((b + d₀) % n)) = decide (Even (b + d₀))`. Simplify using `only [even_mod hn]`. Distinguish the cases in `hK0 : K₀ = 0`. Simplify using `only [init, hK0, if_true]`. Conclude with `runS_bad _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[init, if_neg hK0, hevi]`. Establish `hR : 1 ≤ 3 * r` using `by omega`. Establish `hinit : Inv n T L₂ (3 * r) b K₀ d₀ (.run K₀ 0 0 true (decide (Even (b + d₀))))`. Use `⟨by omega, le_rfl, by omega, Nat.zero_le _, rfl, by simpa using hd₀.2, fun x h1 h2 => by omega, ?_, fun _ => ⟨Fin.elim0, PRun_zero _ _ _ _ _ _ _⟩⟩` and prove the remaining obligations. Establish `: (Finset.range (d₀ + 1)).filter (fun d => (b + d) % n ∈ T) = {d₀}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Assume the negation of the conclusion as `hne`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmin x (by omega) h2`. Introduce and unpack `rfl; exact ⟨by omega, hd₀.2⟩`. Unfold `cnt`. Rewrite using `[this, Finset.card_singleton]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hI` using `inv_iter hn hR (e - d₀) d₀ _ hinit`. Rewrite `hI` using `[show d₀ + (e - d₀) = e by omega]`. Establish `hL : (Lst n ((b + d₀) % n)).map (fun p => decide (p ∈ T)) = Ls n T b d₀ (n - 1)`. Unfold `Lst Ls`. Rewrite using `[List.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [Function.comp_apply]`. Rewrite using `[add_assoc, Nat.mod_add_mod, show b + d₀ + (x + 1) = b + (d₀ + 1 + x) by omega]`. Rewrite using `[hL, show n - 1 = (e - d₀) + (n - 1 - (e - d₀)) by omega]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Take `⟨rest, hrest⟩` from `Ls_add n T b d₀ (e - d₀) (n - 1 - (e - d₀))`. Rewrite using `[hrest, runS_append]`. Generalize the expression as in `runS (3 * r) L₂ (St.run K₀ 0 0 true (decide (Even (b + d₀)))) (Ls n T b d₀ (e - d₀)) = st at hI ⊢`. Consider the cases of `st with`. Consider the case `bad => exact runS_bad _`.
+Treat this case separately. Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Consider the case `good => exact absurd hI hno`. Consider the case `run K j d al ev`. It suffices to derive a contradiction. Take `⟨hK1, hK2, hj, -, -, -, -, hc, -⟩` from `hI`. Establish `hce : N₁ ≤ cnt n T b e` using `hcount`.
-
-Establish `hm : 3 * r * (K₀ - K) + 3 * r ≤ 3 * r * K₀`. Rewrite using `[← mul_add_one]; exact Nat.mul_le_mul_left _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem comb {n : ℕ} (hn2 : 2 ≤ n) (hn : Even n) {L₂ r N₁ : ℕ} (hr : 1 ≤ r) (K₀ : ℕ)
     (hK : 1 + 3 * r * K₀ ≤ N₁) (T : Finset ℕ) (h : ¬ CondB n T L₂ r N₁) :
@@ -1100,7 +1094,7 @@ open scoped BigOperators
 namespace Formalism.G0.TopsWeightFunctionBounds
 
 /- English proof (translation)
-Unfold `init`. Use `split_ifs`. Conclude with `True.intro`. Use `show 0 < R`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma WF_init {R : ℕ} (hR : 1 ≤ R) (K : ℕ) (ev : Bool) : WF R (init K ev) := by
   unfold init
@@ -1109,7 +1103,7 @@ lemma WF_init {R : ℕ} (hR : 1 ≤ R) (K : ℕ) (ev : Bool) : WF R (init K ev) 
   · show 0 < R; omega
 
 /- English proof (translation)
-Unfold `init`. Use `split_ifs with hK`. Substitute `hK` using the available equality. Simplify using `[Phi]`. Conclude with `Phi_init h0 hL hLδ hR (by omega) ev`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Phi_init' {R L₂ : ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hLδ : (L₂ : ℝ) * δ ≤ 1)
     (hR : 1 ≤ R) (K : ℕ) (ev : Bool) :
@@ -1120,7 +1114,7 @@ lemma Phi_init' {R L₂ : ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (hL : 1 ≤ L₂) (hL�
   · exact Phi_init h0 hL hLδ hR (by omega) ev
 
 /- English proof (translation)
-Use `split_ifs`. Apply the tactic sequence `exact Finset.prod_nonneg (fun p _ => by unfold wP; split_ifs <;> linarith)`. Conclude with `le_rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma term_nonneg {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (P : Prop) [Decidable P] (T : Finset ℕ) (n : ℕ) :
     0 ≤ (if P then ∏ p ∈ Finset.range n, wP δ T p else 0) := by
@@ -1129,29 +1123,27 @@ lemma term_nonneg {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (P : Prop) [Decidab
   · exact le_rfl
 
 /- English proof (translation)
-Introduce `n δ L₂ r N₁ hn hev hδ hL hLδ hr hN`. Establish `h1` using `d_le_one hδ hL hLδ`. Establish `hR : 1 ≤ 3 * r` using `by omega`. Establish `hk1 : 0 < N₁ / (3 * r)` using `Nat.div_pos hN (by omega)`. Establish `hK : 1 + 3 * r * (N₁ / (3 * r) - 1) ≤ N₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : 3 * r * (N₁ / (3 * r)) ≤ N₁` using `Nat.mul_div_le N₁ (3 * r)`. Establish `a2 : 3 * r * (N₁ / (3 * r) - 1) + 3 * r = 3 * r * (N₁ / (3 * r))`. Rewrite using `[← mul_add_one]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Generalize the expression as in `3 * r * (N₁ / (3 * r) - 1) = X at a2 ⊢`. Generalize the expression as in `3 * r * (N₁ / (3 * r)) = Y at a1 a2`. Use linear arithmetic over natural numbers and integers. Establish `hq : (1 - (1 / 2 : ℝ) ^ (3 * r) * (1 - L₂ * δ) ^ (3 * r)) = 1 - aF L₂ δ ^ (3 * r)`. Unfold `aF`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_pow]`. Rewrite using `[hq]`. Establish `hc0 : 0 ≤ 1 - aF L₂ δ ^ (3 * r)` using `c_nonneg hδ hLδ`. Break down `hδ.eq_or_lt with hδ0 | hδpos` into its components or cases. Establish `hz : condProb n δ (fun T => ¬ CondB n T L₂ r N₁ ∧ N₁ ≤ T.card) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Unfold `condProb`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `T _`. Use `split_ifs with h`. Establish `: 2 ≤ T.card` using `by have := h.2.2; omega`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hδ0, zero_pow (by omega), zero_mul]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hc0 _)`. Apply `le_of_mul_le_mul_left _ hδpos set K := N₁ / (3 * r) - 1 with hKdef` to reduce the goal to its premises.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `step1 : δ * condProb n δ (fun T => ¬ CondB n T L₂ r N₁ ∧ N₁ ≤ T.card) ≤ ∑ i ∈ Finset.range n, ∑ T ∈ (Finset.range n).powerset, (if i ∈ T ∧ runS (3 * r) L₂ (init K (decide (Even i))) ((Lst n i).map (fun p => decide (p ∈ T))) = .bad then ∏ p ∈ Finset.range n, wP δ T p else 0)`. Rewrite using `[Finset.sum_comm]`. Unfold `condProb`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `T hT`. Use `split_ifs with hA`. Take `⟨i, hi, hiT, hrun⟩` from `comb (by omega) hev hr K hK T hA.2.1`. Establish `hprod` using `prod_wP (δ := δ) n T (Finset.mem_powerset.1 hT)`. Establish `hc : 1 ≤ T.card` using `Finset.card_pos.2 ⟨0, hA.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : (if i ∈ T ∧ runS (3 * r) L₂ (init K (decide (Even i))) ((Lst n i).map (fun p => decide (p ∈ T))) = .bad then ∏ p ∈ Finset.range n, wP δ T p else 0) ≤ ∑ j ∈ Finset.range n, (if j ∈ T ∧ runS (3 * r) L₂ (init K (decide (Even j))) ((Lst n j).map (fun p => decide (p ∈ T))) = .ba …` using `Finset.single_le_sum (f := fun j => if j ∈ T ∧ runS (3 * r) L₂ (init K (decide (Even j))) ((Lst n j).map (fun p => decide (p ∈ T))) = .bad then ∏ p ∈ Finset.range n, wP δ T p else 0) (fun j _ => term_nonneg hδ h1 _ T n) (Finset.mem_range.2 hi)`. Rewrite `hle` using `[if_pos ⟨hiT, hrun⟩]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, ← mul_assoc, ← pow_succ', Nat.sub_add_cancel hc]`. Use `_ ≤ _ := hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_zero]`. Conclude with `Finset.sum_nonneg (fun j _ => term_nonneg hδ h1 _ T n)`. Establish `step2 : ∑ i ∈ Finset.range n, ∑ T ∈ (Finset.range n).powerset, (if i ∈ T ∧ runS (3 * r) L₂ (init K (decide (Even i))) ((Lst n i).map (fun p => decide (p ∈ T))) = .bad then ∏ p ∈ Finset.range n, wP δ T p else 0) ≤ ∑ i ∈ Finset.range n, δ * (1 - aF L₂ δ ^ (3 * r)) ^ K`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[sum_event (Finset.mem_range.1 hi)]`. Apply `mul_le_mul_of_nonneg_left _ hδ` to reduce the goal to its premises. Conclude with `(Wt_le hδ hL hLδ hR (n - 1) _ (WF_init hR K _)).trans (Phi_init' hδ hL hLδ hR K _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : TopsChoiceSecondBound := by
   intro n δ L₂ r N₁ hn hev hδ hL hLδ hr hN
@@ -1233,7 +1225,7 @@ end Formalism.G0.TopsWeightFunctionBounds
 namespace Formalism.G0
 
 /- English proof (translation)
-The claim follows from `TopsWeightFunctionBounds.main`.
+A detailed English derivation is pending.
 -/
 theorem tops_choice_part_b : TopsChoiceSecondBound := TopsWeightFunctionBounds.main
 

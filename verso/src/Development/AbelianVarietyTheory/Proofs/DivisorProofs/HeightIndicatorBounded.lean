@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.RefFlatHt
 
 /- English proof (translation)
-Introduce `D O hC c W τ`. Take `⟨r, hr, hu⟩` from `GlobalTheory.T.root_combination_rational_section_units D O hC c W τ`. Conclude with `GlobalTheory.T.exists_sections_nonvanishing_closed_points W.V _ r hr hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_secs : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (W : O.LatModel ∅ c) (τ : D.what₂.Tau), ∃ (s : (GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.Sec) (s' : (GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).dual.B.Sec), ∀ w : W.V.G, IsClosed ({w} : Set W.V.G) → W.V.j w ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s ∧ W.V.j w ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s' := by
   intro D O hC c W τ
@@ -33,9 +33,9 @@ theorem exists_secs : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) 
   exact GlobalTheory.T.exists_sections_nonvanishing_closed_points W.V _ r hr hu
 
 /- English proof (translation)
-Establish `hx : ∀ i : Fin O.N, IsAlgPt (W.V.j w) ∧ IsPtHt (W.root ∅ (τ, i)) (W.V.j w) ((1 : ℕ) * (((O.root0 c ∅ (τ, i)).n : ℕ) : ℝ) * (O.root0 c ∅ (τ, i)).ht (W.V.π w))` using `fun i => GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ 1 w hw (Setup.induces_root0 D O hC.dualRef ∅ c W ∅ subset_rfl (τ, i))`. Establish `hn : ∀ i : Fin O.N, (((O.root0 c ∅ (τ, i)).n : ℕ) : ℝ) = 1` using `fun i => by`. Simplify using `[Setup.root0, Setup.adl0, adlOf]`. Establish `halg : IsAlgPt (W.V.j w)` using `(hx ⟨0, by have := O.S.two_le; omega⟩).1`. Establish `hI` using `GlobalTheory.T.point_height_dual_and_linear_comb hE _ W.V.X W.V.p _ W.V.ar (W.V.j w) halg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hI.2 (Fin O.N) (fun i => W.root ∅ (τ, i)) (fun i => (O.root0 c ∅ (τ, i)).ht (W.V.π w)) (fun i => by simpa [hn i] using (hx i).2) (fun _ => 1)`. Simplify using `only [Int.cast_one, one_mul] at hc`. Conclude with `⟨halg, hc, hI.1 _ _ hc⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ptHt_comb (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D) (hC : O.Core) (c : O.s.Comp) (W : O.LatModel ∅ c)
     (τ : D.what₂.Tau) (w : W.V.G) (hw : IsClosed ({w} : Set W.V.G)) :
@@ -58,7 +58,7 @@ theorem ptHt_comb (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D) 
   exact ⟨halg, hc, hI.1 _ _ hc⟩
 
 /- English proof (translation)
-The claim follows from `|∑ i : Fin O.N, (O.root0 c ∅ (τ, i)).ht b| ≤ C := by obtain ⟨s, s', hs⟩ := exists_secs D O hC c W τ obtain ⟨c₁, h₁⟩ := GlobalTheory.T.height_bounded_below_off_zero_locus _ W.V.X W.V.p _ W.V.ar _ s obtain ⟨c₂, h₂⟩ := GlobalTheory.T.height_bounded_below_off_zero_locus _ W.V.X W.V.p …`.
+A detailed English derivation is pending.
 -/
 theorem sum_ht_bdd (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D) (hC : O.Core) (c : O.s.Comp) (W : O.LatModel ∅ c)
     (τ : D.what₂.Tau) : ∃ C : ℝ, ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) →
@@ -75,9 +75,9 @@ theorem sum_ht_bdd (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D)
   constructor <;> linarith [le_abs_self c₁, le_abs_self c₂, neg_abs_le c₁, neg_abs_le c₂]
 
 /- English proof (translation)
-Rewrite using `[hH.h0]`. Unfold `Setup.htWt`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [ite_mul, one_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem height_indicator_eq_neg_root_heights {D : D7} {O : Setup D} {H : Ht O.Y} (hH : O.HtIs H) (τ : D.what₂.Tau) (y : Pt O.s) :
     H.h0 (fun τ' _ => if τ' = τ then 1 else 0) y =
@@ -91,9 +91,9 @@ theorem height_indicator_eq_neg_root_heights {D : D7} {O : Setup D} {H : Ht O.Y}
   simp
 
 /- English proof (translation)
-Introduce `p2 _ _ D O hC _ A T H h`. Establish `hE : GlobalTheory.Published.ArExists` using `p2.p4.arExists`. Use `choose C hC' using fun (c : O.s.Comp) (τ : D.what₂.Tau) => sum_ht_bdd hE O hC c (h.mdl ∅ c) τ`. Use `⟨∑ c, ∑ τ, |C c τ|, fun τ y => ?_⟩` and prove the remaining obligations. Rewrite using `[height_indicator_eq_neg_root_heights h.ht τ y, abs_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hC' _ τ _ (HtTieRead.isClosed_basePt O y)).trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Use `(Finset.single_le_sum (f := fun τ' => |C (compPt O.s y) τ'|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ)).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun c => ∑ τ', |C c τ'|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ (compPt O.s y))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem refHt : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ (τ : D.what₂.Tau) (y : Pt O.s), |H.h0 (fun τ' _ => if τ' = τ then 1 else 0) y| ≤ C := by
   intro p2 _ _ D O hC _ A T H h

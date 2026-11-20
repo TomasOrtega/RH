@@ -23,7 +23,7 @@ def stackRows {a k : ℕ} (X Y : Matrix (Fin a) (Fin k) D.host.E) : Matrix (Fin 
   (Matrix.fromRows X Y).submatrix finSumFinEquiv.symm id
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.gram_hdbl, GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.blkMat, stackRows, stackRows, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, submatrix_id_id, conjTranspose_fromRows_eq_fromCols_conjTranspose, fromCols_mul_fromBlocks, from …`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stackRows_gram (A : HSp D) {k l : ℕ} (X Y : Matrix (Fin A.rank) (Fin k) D.host.E)
     (P Q : Matrix (Fin A.rank) (Fin l) D.host.E) :
@@ -51,7 +51,7 @@ def dblDec (A : HSp D) : HypDec (dblSp A) (zeroSp D) A.rank where
   rank_add := by show 0 + 2 * A.rank = A.rank + A.rank; omega
 
 /- English proof (translation)
-Establish `hG : IsUnit A.gram.det` using `(gram_det_ne A).isUnit`. Rewrite using `[HypDec.qY]`. Use `show (stackRows A.gram⁻¹ A.gram⁻¹)ᴴ * (dblSp A).gram = _`. Rewrite using `[GlobalTheory.Doubling.gram_hdbl, GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.blkMat, stackRows, conjTranspose_submatrix, submatrix_mul_equiv, conjTranspose_fromRows_eq_fromCols_conjTranspose, fromCols_mul_fromBlocks, conjTranspose_nonsing_inv, gram_conjTranspose, nonsin …`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, nonsing_inv_mul _ hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dblDec_qY (A : HSp D) :
     (dblDec A).qY = (Matrix.fromCols (1 : Matrix (Fin A.rank) (Fin A.rank) D.host.E) (-1)).submatrix id
@@ -65,9 +65,9 @@ theorem dblDec_qY (A : HSp D) :
   simp only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, nonsing_inv_mul _ hG]
 
 /- English proof (translation)
-Rewrite using `[HypDec.extY_apply, HypDec.pY, dblDec_qY]`. Use extensionality with `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr, rat, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply]`. Break down `s with k | k` into its components or cases.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem extY_dblDec (A B : HSp D) (w : Mx D B.rank A.rank) : (dblDec A).extY B w = GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr A B w := by
   rw [HypDec.extY_apply, HypDec.pY, dblDec_qY]
@@ -80,9 +80,9 @@ theorem extY_dblDec (A B : HSp D) (w : Mx D B.rank A.rank) : (dblDec A).extY B w
   · simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hw : w₀ = 0` using `Matrix.ext fun _ j => Fin.elim0 j`. Substitute `hw` using the available equality. Establish `hz : ∀ y : WO (dblSp A) B, symplOH (dblSp A) B y 0 = 0` using `fun y => by`. Establish `h` using `GlobalTheory.OrientedHeis.symplOH_add_right (S := dblSp A) (T := B) y 0 0`. Rewrite `h` using `[add_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 h`. Unfold `HypDec.mixS GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[HypDec.integrandS_eq, map_zero, map_zero, hz, AddChar.map_zero_eq_one, one_mul, add_zero, add_zero, extY_dblDec]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixS_dblDec_zero (A B : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (ν : Measure (WO A B)) (𝓕 : Set (WO A B))
     (f : WO (dblSp A) B → ℂ) (w₀ : WO (zeroSp D) B) :

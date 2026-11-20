@@ -17,7 +17,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup]`. Conclude with `sup_le (sup_le hN (Ideal.mul_le_inf.trans inf_le_right)) (sup_le (Ideal.mul_le_inf.trans inf_le_left) (Ideal.mul_le_inf.trans inf_le_left))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Models.sup_mul_sup_eq_of_coprime {R : Type} [CommRing R] {I J N : Ideal R}
     (h : I ⊔ J = ⊤) (hN : I * J ≤ N) : (I ⊔ N) * (J ⊔ N) = N := by
@@ -60,7 +60,7 @@ def divisorLevel (l : Level H) (m : ℕ) (hm : m ∣ l.M) (h3 : 3 ≤ m) : Level
   A_pos := one_pos
 
 /- English proof (translation)
-Consider the cases of `l`. Consider the cases of `l'`. Simplify using `only at h₁ h₂ h₃`. Substitute `h₁ h₂ h₃` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem level_ext {l l' : Level H} (h₁ : l.M = l'.M) (h₂ : l.Mb = l'.Mb) (h₃ : l.A = l'.A) : l = l' := by
   cases l
@@ -73,7 +73,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in
 /- English proof (translation)
-Consider the cases of `a`. Consider the cases of `b`. Simplify using `only at hM hMb hA`. Substitute `hM hMb hA` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem level_ext' {a b : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (hM : a.M = b.M) (hMb : a.Mb = b.Mb)
     (hA : a.A = b.A) : a = b := by
@@ -88,15 +88,15 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in
 
 /- English proof (translation)
-Introduce `E _ _ _ H p hp`. Use `⟨fun l hl => ?_, fun l l₀ h₀ => ?_, fun l l' l₀ l₀' h₀ h₀' hd => ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.GoodAt at hl`. Conclude with `⟨_root_.GlobalTheory.Models.divisorLevel l _ (Nat.ordCompl_dvd _ _) hl, rfl, rfl, rfl⟩`. Unfold `_root_.GlobalTheory.Models.IsPrimeToPart at h₀ ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Take `⟨hA, hM, hMb⟩` from `h₀`. Establish `hl : l.M ≠ 0` using `by have := l.three_le; omega`. Use `⟨?_, ?_, fun l₀' ⟨hA', hM', hMb'⟩ => ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd`. Use `⟨hM ▸ Nat.ordCompl_dvd _ _, hMb ▸ le_sup_left, hA ▸ one_dvd _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM]`. Conclude with `(Nat.coprime_ordCompl hp hl).symm`. Establish `e : l₀'.M = l₀.M` using `hM'.trans hM.symm`. Conclude with `level_ext' e (by rw [hMb', hMb, e]) (hA'.trans hA.symm)`. Unfold `_root_.GlobalTheory.Models.IsPrimeToPart at h₀ h₀'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd at hd ⊢`. Take `⟨hA, hM, hMb⟩` from `h₀`. Take `⟨hA', hM', hMb'⟩` from `h₀'`. Take `⟨hdM, hdMb, -⟩` from `hd`. Establish `hmd : l₀.M ∣ l₀'.M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM, hM']`. Conclude with `Nat.ordCompl_dvd_ordCompl_of_dvd hdM p`. Use `⟨hmd, ?_, by rw [hA]; exact one_dvd _⟩` and prove the remaining obligations. Rewrite using `[hMb, hMb']`. Conclude with `sup_le (hdMb.trans le_sup_left) (le_sup_of_le_right (Ideal.span_singleton_le_span_singleton.mpr (Nat.cast_dvd_cast hmd)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Models.primeToPart_spec : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p : ℕ), p.Prime →

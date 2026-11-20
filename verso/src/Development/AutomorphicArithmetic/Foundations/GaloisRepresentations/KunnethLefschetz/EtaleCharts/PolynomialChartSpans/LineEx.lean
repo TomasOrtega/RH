@@ -10,9 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry CrystallineSemistableComparison Top
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Use `algebraize [φ]`. Establish `hr` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := B) ha`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Apply `hr` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `a • y = a • 0`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_zero, mul_comm]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma flat_nzd {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (h : φ.Flat) {a : A}
     (ha : a ∈ nonZeroDivisors A) : φ a ∈ nonZeroDivisors B := by
@@ -29,7 +29,7 @@ private def Reg {X : Scheme.{0}} (b : Γ(X, ⊤)) : Prop :=
   ∀ x : X, (X.presheaf.germ ⊤ x trivial).hom b ∈ nonZeroDivisors (X.presheaf.stalk x)
 
 /- English proof (translation)
-Introduce `x`. Establish `h` using `flat_nzd (φ.stalkMap x).hom (Flat.stalkMap φ x) (hb (φ x))`. Establish `e` using `Scheme.Hom.germ_stalkMap_apply φ ⊤ x trivial b`. Rewrite `h` using `[e]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma reg_flat {X Z : Scheme.{0}} (φ : X ⟶ Z) [Flat φ] {b : Γ(Z, ⊤)} (hb : Reg b) :
     Reg (φ.appTop.hom b) := by
@@ -40,9 +40,9 @@ private lemma reg_flat {X Z : Scheme.{0}} (φ : X ⟶ Z) [Flat φ] {b : Γ(Z, �
   exact h
 
 /- English proof (translation)
-Introduce `x`. Establish `hU : IsAffineOpen (⊤ : X.Opens)` using `isAffineOpen_top X`. Set `x' : (⊤ : X.Opens)` to `⟨x, trivial⟩`. Set `_` to `X.presheaf.algebra_section_stalk x'`. Establish `hl` using `hU.isLocalization_stalk x'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : (X.presheaf.germ ⊤ x trivial).hom.Flat` using `IsLocalization.flat (X.presheaf.stalk x'.1) (hU.primeIdealOf x').asIdeal.primeCompl`. Conclude with `flat_nzd _ hf hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma reg_of_affine {X : Scheme.{0}} [IsAffine X] {b : Γ(X, ⊤)} (hb : b ∈ nonZeroDivisors Γ(X, ⊤)) :
     Reg b := by
@@ -56,9 +56,9 @@ private lemma reg_of_affine {X : Scheme.{0}} [IsAffine X] {b : Γ(X, ⊤)} (hb :
   exact flat_nzd _ hf hb
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf O z 0 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (X.presheaf.germ O x hx).hom h`. Rewrite `h1` using `[map_mul, map_zero]`. Establish `h2 : (X.presheaf.germ O x hx).hom ((X.presheaf.map (homOfLE le_top : O ⟶ ⊤).op).hom b) = (X.presheaf.germ ⊤ x trivial).hom b` using `X.presheaf.germ_res_apply _ _ _ _`. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `(mem_nonZeroDivisors_iff_right.1 (hb x)) _ h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma reg_cancel {X : Scheme.{0}} {b : Γ(X, ⊤)} (hb : Reg b) (O : X.Opens) (z : Γ(X, O))
     (h : z * (X.presheaf.map (homOfLE le_top : O ⟶ ⊤).op).hom b = 0) : z = 0 := by
@@ -72,17 +72,15 @@ private lemma reg_cancel {X : Scheme.{0}} {b : Γ(X, ⊤)} (hb : Reg b) (O : X.O
   exact (mem_nonZeroDivisors_iff_right.1 (hb x)) _ h1
 
 /- English proof (translation)
-Use `choose O w hx hw using h`. Establish `res' (U : X.Opens) : U.ι.appTop ≫ U.topIso.hom = X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op` using `(X.presheaf.map_comp _ _).symm.trans rfl`. Establish `res (U : X.Opens) (c : Γ(X, ⊤)) : U.topIso.hom.hom (U.ι.appTop.hom c) = (X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op).hom c` using `congrArg (fun f => f.hom c) (res' U)`. Set `W (x : X) : Γ(X, O x)` to `(O x).topIso.hom.hom (w x)`. Establish `hW (x : X) : (X.presheaf.map (homOfLE le_top : O x ⟶ ⊤).op).hom a = W x * (X.presheaf.map (homOfLE le_top : O x ⟶ ⊤).op).hom b`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← res, ← res, hw, map_mul]`. Establish `rr {A B C : X.Opens} (h₁ : C ≤ B) (h₂ : B ≤ A) (t : Γ(X, A)) : (X.presheaf.map (homOfLE h₁).op).hom ((X.presheaf.map (homOfLE h₂).op).hom t) = (X.presheaf.map (homOfLE (h₁.trans h₂)).op).hom t`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `hcomp (x y : X) : (X.presheaf.map (homOfLE inf_le_left : O x ⊓ O y ⟶ O x).op).hom (W x) = (X.presheaf.map (homOfLE inf_le_right : O x ⊓ O y ⟶ O y).op).hom (W y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_eq_zero.1 (reg_cancel hb (O x ⊓ O y) _ ?_)` and prove the remaining obligations. Establish `e1` using `congrArg (X.presheaf.map (homOfLE inf_le_left : O x ⊓ O y ⟶ O x).op).hom (hW x)`. Establish `e2` using `congrArg (X.presheaf.map (homOfLE inf_le_right : O x ⊓ O y ⟶ O y).op).hom (hW y)`. Rewrite `e1`, `e2` using `[map_mul, rr]`. Rewrite `e1`, `e2` using `[rr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, ← e1, ← e2, sub_self]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : Γ(X, ⊤), ∀ x, (X.presheaf.map (homOfLE le_top : O x ⟶ ⊤).op).hom c = W x := by`. Take `⟨c, hc, -⟩` from `X.sheaf.existsUnique_gluing' O ⊤ (fun x => homOfLE le_top) (fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩) W hcomp`. Conclude with `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `TopCat.Presheaf.section_ext X.sheaf ⊤ _ _ fun x _ => ?_` and prove the remaining obligations. Establish `h1` using `hW x`. Rewrite `h1` using `[← hc x, ← map_mul]`. Establish `h2` using `congrArg (X.presheaf.germ (O x) x (hx x)).hom h1`. Rewrite `h2` using `[X.presheaf.germ_res_apply, X.presheaf.germ_res_apply]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma glue_div {X : Scheme.{0}} (a b : Γ(X, ⊤)) (hb : Reg b)
     (h : ∀ x : X, ∃ (O : X.Opens) (w : Γ(O, ⊤)), x ∈ O ∧ O.ι.appTop.hom a = w * O.ι.appTop.hom b) :
@@ -119,7 +117,7 @@ private lemma glue_div {X : Scheme.{0}} (a b : Γ(X, ⊤)) (hb : Reg b)
   exact h2
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma appTop_comp {X Y Z : Scheme.{0}} (g : X ⟶ Y) (a : Y ⟶ Z) (s : Γ(Z, ⊤)) :
     (g ≫ a).appTop.hom s = g.appTop.hom (a.appTop.hom s) := by
@@ -127,7 +125,7 @@ private lemma appTop_comp {X Y Z : Scheme.{0}} (g : X ⟶ Y) (a : Y ⟶ Z) (s : 
   rfl
 
 /- English proof (translation)
-Establish `e : U.topIso.inv ≫ (Y.homOfLE h).appTop = Y.presheaf.map (homOfLE h).op ≫ W.topIso.inv`. Rewrite using `[Scheme.homOfLE_appTop]`. Conclude with `(Y.presheaf.map_comp _ _).symm.trans (Eq.trans rfl (Y.presheaf.map_comp (homOfLE h).op (eqToIso W.ι_image_top.symm).op.inv))`. Conclude with `congrArg (fun t => t.hom s) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma topIso_res {Y : Scheme.{0}} {W U : Y.Opens} (h : W ≤ U) (s : Γ(Y, U)) :
     (Y.homOfLE h).appTop.hom (U.topIso.inv.hom s) = W.topIso.inv.hom ((Y.presheaf.map (homOfLE h).op).hom s) := by
@@ -137,11 +135,11 @@ private lemma topIso_res {Y : Scheme.{0}} {W U : Y.Opens} (h : W ≤ U) (s : Γ(
   exact congrArg (fun t => t.hom s) e
 
 /- English proof (translation)
-Set `R : CommRingCat.{0}` to `CommRingCat.of (Polynomial ℤ)`. Set `φ (i : I) : R ⟶ Γ(V i, ⊤)` to `CommRingCat.ofHom (Polynomial.eval₂RingHom (Int.castRingHom _) (s i))`. Set `m (i : I) : V i ⟶ Spec R` to `(V i).toSpecΓ ≫ Spec.map (φ i)`. Use `⟨(Sigma.desc m).appTop.hom ((Scheme.ΓSpecIso R).inv.hom Polynomial.X), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← appTop_comp, Sigma.ι_desc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : m i = (V i).toSpecΓ ≫ Spec.map (φ i)` using `rfl`. Rewrite using `[e, appTop_comp]`. Establish `h1 : (Spec.map (φ i)).appTop.hom ((Scheme.ΓSpecIso R).inv.hom Polynomial.X) = (Scheme.ΓSpecIso _).inv.hom ((φ i).hom Polynomial.X)` using `(congrArg (fun t => t.hom Polynomial.X) (Scheme.ΓSpecIso_inv_naturality (φ i))).symm`. Rewrite using `[h1, Scheme.toSpecΓ_appTop]`. Establish `h2 : (φ i).hom Polynomial.X = s i` using `Polynomial.eval₂_X _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `congrArg (fun t => t.hom (s i)) (Scheme.ΓSpecIso _).inv_hom_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sigma_section {I : Type} (V : I → Scheme.{0}) (s : ∀ i, Γ(V i, ⊤)) :
     ∃ s0 : Γ(∐ V, ⊤), ∀ i, (Sigma.ι V i).appTop.hom s0 = s i := by
@@ -160,11 +158,11 @@ private lemma sigma_section {I : Type} (V : I → Scheme.{0}) (s : ∀ i, Γ(V i
   exact congrArg (fun t => t.hom (s i)) (Scheme.ΓSpecIso _).inv_hom_id
 
 /- English proof (translation)
-Introduce `x`. Take `⟨⟨i, p⟩, rfl⟩` from `(sigmaMk V).surjective x`. Rewrite using `[sigmaMk_mk]`. Establish `hi` using `h i p`. Establish `e` using `Scheme.Hom.germ_stalkMap_apply (Sigma.ι V i) ⊤ p trivial s0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Establish `h1` using `congrArg ((Sigma.ι V i).stalkMap p).hom hy`. Rewrite `h1` using `[map_mul, map_zero]`. Establish `h2 : ((Sigma.ι V i).stalkMap p).hom y * (V i).presheaf.germ ⊤ p trivial ((Sigma.ι V i).appTop.hom s0) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use `congr 1`. Conclude with `e.symm`. Establish `h3` using `mem_nonZeroDivisors_iff_right.1 hi _ h2`. Conclude with `(ConcreteCategory.bijective_of_isIso ((Sigma.ι V i).stalkMap p)).1 (h3.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma reg_sigma {I : Type} (V : I → Scheme.{0}) (s0 : Γ(∐ V, ⊤))
     (h : ∀ i, Reg ((Sigma.ι V i).appTop.hom s0)) : Reg s0 := by
@@ -185,25 +183,23 @@ private lemma reg_sigma {I : Type} (V : I → Scheme.{0}) (s0 : Γ(∐ V, ⊤))
   exact (ConcreteCategory.bijective_of_isIso ((Sigma.ι V i).stalkMap p)).1 (h3.trans (map_zero _).symm)
 
 /- English proof (translation)
-Set `F : (∐ fun i => (U i : Scheme.{0})) ⟶ Y` to `Sigma.desc (fun i => (U i).ι)`. Establish `hF (i) : Sigma.ι (fun i => (U i : Scheme.{0})) i ≫ F = (U i).ι` using `Sigma.ι_desc _ _`. Take `⟨⟨i, p⟩, hp⟩` from `(sigmaMk fun i => (U i : Scheme.{0})).surjective (a x)`. Take `⟨⟨i', p'⟩, hp'⟩` from `(sigmaMk fun i => (U i : Scheme.{0})).surjective (b x)`. Rewrite `hp`, `hp'` using `[sigmaMk_mk]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : (a ≫ F) x = p.1`. Rewrite using `[Scheme.Hom.comp_apply, ← hp, ← Scheme.Hom.comp_apply, hF]`. Both sides reduce to the same expression. Establish `hy' : (a ≫ F) x = p'.1`. Establish `: a ≫ F = b ≫ F` using `hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Scheme.Hom.comp_apply, ← hp', ← Scheme.Hom.comp_apply, hF]`. Both sides reduce to the same expression. Take `⟨W, h, h', c, hyW, hc⟩` from `hdiv i i' ((a ≫ F) x) (hy ▸ p.2) (hy' ▸ p'.2)`. Set `ρ : (W : Scheme.{0}) ⟶ _` to `Y.homOfLE h ≫ Sigma.ι (fun i => (U i : Scheme.{0})) i`. Set `ρ' : (W : Scheme.{0}) ⟶ _` to `Y.homOfLE h' ≫ Sigma.ι (fun i => (U i : Scheme.{0})) i'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hρ : ρ ≫ F = W.ι` using `by simp only [ρ, Category.assoc, hF, Scheme.homOfLE_ι]`. Establish `hρ' : ρ' ≫ F = W.ι` using `by simp only [ρ', Category.assoc, hF, Scheme.homOfLE_ι]`. Establish `hq : Y.homOfLE h ⟨_, hyW⟩ = p` using `Subtype.ext ((Scheme.homOfLE_apply h ⟨_, hyW⟩).trans hy)`. Establish `hq' : Y.homOfLE h' ⟨_, hyW⟩ = p'` using `Subtype.ext ((Scheme.homOfLE_apply h' ⟨_, hyW⟩).trans hy')`. Establish `hr : a x ∈ Set.range ρ` using `⟨⟨_, hyW⟩, (Scheme.Hom.comp_apply _ _ _).trans ((congrArg _ hq).trans hp)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : b x ∈ Set.range ρ'` using `⟨⟨_, hyW⟩, (Scheme.Hom.comp_apply _ _ _).trans ((congrArg _ hq').trans hp')⟩`. Set `O : X.Opens` to `a ⁻¹ᵁ ρ.opensRange ⊓ b ⁻¹ᵁ ρ'.opensRange`. Establish `e1 : Set.range (O.ι ≫ a) ⊆ Set.range ρ`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `t.2.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e2 : Set.range (O.ι ≫ b) ⊆ Set.range ρ'`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `t.2.2`. Set `m` to `IsOpenImmersion.lift ρ (O.ι ≫ a) e1`. Set `m'` to `IsOpenImmersion.lift ρ' (O.ι ≫ b) e2`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m ≫ ρ = O.ι ≫ a` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hm' : m' ≫ ρ' = O.ι ≫ b` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hmm : m = m'`. Establish `e3 : m ≫ W.ι = m' ≫ W.ι` using `calc m ≫ W.ι = (m ≫ ρ) ≫ F := by rw [Category.assoc, hρ] _ = (m' ≫ ρ') ≫ F := by`. Rewrite using `[hm, hm', Category.assoc, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (O.ι ≫ ·) hab`. Use `_ = m' ≫ W.ι := by rw [Category.assoc, hρ']`. Conclude with `(cancel_mono W.ι).1 e3`. Establish `t1 : ρ.appTop.hom s0 = W.topIso.inv.hom ((Y.presheaf.map (homOfLE h).op).hom (s i))`. Rewrite using `[appTop_comp, hs0, topIso_res]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t2 : ρ'.appTop.hom s0 = W.topIso.inv.hom ((Y.presheaf.map (homOfLE h').op).hom (s i'))`. Rewrite using `[appTop_comp, hs0, topIso_res]`. Use `⟨O, m.appTop.hom (W.topIso.inv.hom c), ⟨hr, hr'⟩, ?_⟩` and prove the remaining obligations. Establish `u1 : O.ι.appTop.hom (a.appTop.hom s0) = m.appTop.hom (ρ.appTop.hom s0)`. Rewrite using `[← appTop_comp, ← appTop_comp, hm]`.
-
-Establish `u2 : O.ι.appTop.hom (b.appTop.hom s0) = m.appTop.hom (ρ'.appTop.hom s0)`. Rewrite using `[hmm, ← appTop_comp, ← appTop_comp, hm']`. Rewrite using `[u1, u2, t1, t2, hc, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma local_div {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀ i, Γ(Y, U i))
     (hdiv : ∀ i i' y, y ∈ U i → y ∈ U i' → ∃ (W : Y.Opens) (h : W ≤ U i) (h' : W ≤ U i') (c : Γ(Y, W)), y ∈ W ∧
@@ -265,7 +261,7 @@ private lemma local_div {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀
   rw [u1, u2, t1, t2, hc, map_mul, map_mul]
 
 /- English proof (translation)
-Use `reg_cancel hb ⊤ z ?_` and prove the remaining obligations. Establish `e : X.presheaf.map (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤).op = 𝟙 _` using `X.presheaf.map_id _`. Rewrite using `[e]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma reg_cancel_top {X : Scheme.{0}} {b : Γ(X, ⊤)} (hb : Reg b) (z : Γ(X, ⊤)) (h : z * b = 0) : z = 0 := by
   refine reg_cancel hb ⊤ z ?_
@@ -274,9 +270,9 @@ private lemma reg_cancel_top {X : Scheme.{0}} {b : Γ(X, ⊤)} (hb : Reg b) (z :
   exact h
 
 /- English proof (translation)
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Establish `h1` using `congrArg V.topIso.hom.hom hy`. Rewrite `h1` using `[map_mul, map_zero]`. Establish `h2 : V.topIso.hom.hom (V.topIso.inv.hom s) = s` using `congrArg (fun t => t.hom s) V.topIso.inv_hom_id`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `mem_nonZeroDivisors_iff_right.1 hs _ h1`. Establish `h4 : V.topIso.inv.hom (V.topIso.hom.hom y) = y` using `congrArg (fun t => t.hom y) V.topIso.hom_inv_id`. Rewrite using `[← h4, h3, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma nzd_topIso {Y : Scheme.{0}} {V : Y.Opens} {s : Γ(Y, V)} (hs : s ∈ nonZeroDivisors Γ(Y, V)) :
     V.topIso.inv.hom s ∈ nonZeroDivisors Γ(V, ⊤) := by
@@ -291,11 +287,11 @@ private lemma nzd_topIso {Y : Scheme.{0}} {V : Y.Opens} {s : Γ(Y, V)} (hs : s �
   rw [← h4, h3, map_zero]
 
 /- English proof (translation)
-Take `⟨W, hWa, hyW, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (U := V ⊓ V') (x := y) ⟨hy, hy'⟩`. Establish `h : W ≤ V` using `fun x hx => (hle hx).1`. Establish `h' : W ≤ V'` using `fun x hx => (hle hx).2`. Establish `m1` using `j.ker.map_ideal (U := ⟨W, hWa⟩) (V := ⟨V, hV⟩) h`. Establish `m2` using `j.ker.map_ideal (U := ⟨W, hWa⟩) (V := ⟨V', hV'⟩) h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `m1` using `[Scheme.Hom.ker_apply, hk, Ideal.map_span, Set.image_singleton]`. Rewrite `m2` using `[Scheme.Hom.ker_apply, hk', Ideal.map_span, Set.image_singleton]`. Establish `m3` using `m1.trans m2.symm`. Establish `m4 : (Y.presheaf.map (homOfLE h).op).hom s ∈ Ideal.span {(Y.presheaf.map (homOfLE h').op).hom s'}`. Establish `: (Y.presheaf.map (homOfLE h).op).hom s ∈ Ideal.span {(Y.presheaf.map (homOfLE h).op).hom s}` using `Ideal.subset_span rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `m3 ▸ this`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 m4`. Conclude with `⟨W, h, h', c, hyW, hc.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma ker_div {Y T : Scheme.{0}} (j : T ⟶ Y) [IsClosedImmersion j] {V V' : Y.Opens} {s : Γ(Y, V)} {s' : Γ(Y, V')}
     (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (hk : RingHom.ker (j.app V).hom = Ideal.span {s})
@@ -318,11 +314,11 @@ private lemma ker_div {Y T : Scheme.{0}} (j : T ⟶ Y) [IsClosedImmersion j] {V 
   exact ⟨W, h, h', c, hyW, hc.symm⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hns`. Apply `hj` to reduce the goal to its premises. Establish `h1 : y ∈ j.ker.support`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hy, Scheme.mem_zeroLocus_iff]`. Introduce `g hg hgy`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hg` using `[Scheme.Hom.ker_apply]`. Establish `hg' : g ∈ RingHom.ker (j.app V).hom` using `hg`. Rewrite `hg'` using `[hk]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hg'`. Rewrite `hgy` using `[Scheme.basicOpen_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hns hgy.2`. Establish `h2 : y ∈ (j.ker.support : Set Y)` using `h1`. Rewrite `h2` using `[Scheme.Hom.support_ker, j.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma off_image {Y T : Scheme.{0}} (j : T ⟶ Y) [IsClosedImmersion j] {V : Y.Opens} {s : Γ(Y, V)}
     (hV : IsAffineOpen V) (hk : RingHom.ker (j.app V).hom = Ideal.span {s}) (y : Y) (hy : y ∈ V)
@@ -343,43 +339,41 @@ private lemma off_image {Y T : Scheme.{0}} (j : T ⟶ Y) [IsClosedImmersion j] {
   exact h2
 
 /- English proof (translation)
-Set `C : Scheme.{0}` to `∐ fun i => (U i : Scheme.{0})`. Set `F : C ⟶ Y` to `Sigma.desc fun i => (U i).ι`. Establish `hF (i) : Sigma.ι (fun i => (U i : Scheme.{0})) i ≫ F = (U i).ι` using `Sigma.ι_desc _ _`. Establish `hEt : Etale F` using `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`. Establish `hFl : Flat F` using `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : Smooth F` using `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`. Establish `hSu : Surjective F` using `⟨fun y => by`. Take `⟨i, hi⟩` from `hcov y`. Establish `e : (Sigma.ι (fun i => (U i : Scheme.{0})) i ≫ F) ⟨y, hi⟩ = y`. Rewrite using `[hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm.trans e⟩⟩`. Take `⟨s0, hs0⟩` from `sigma_section (fun i => (U i : Scheme.{0})) fun i => (U i).topIso.inv.hom (s i)`. Establish `hreg : Reg s0` using `reg_sigma _ _ fun i => by`. Rewrite using `[hs0]`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsAffine (U i : Scheme.{0})` using `haff i`. Conclude with `reg_of_affine (nzd_topIso (hnz i))`. Establish `hd {X : Scheme.{0}} (a b : X ⟶ C) (h : a ≫ F = b ≫ F) (hb : Reg (b.appTop.hom s0)) : ∃ w : Γ(X, ⊤), a.appTop.hom s0 = w * b.appTop.hom s0` using `glue_div _ _ hb (local_div U s hdiv hs0 a b h)`. Take `⟨w, hw⟩` from `hd (pullback.fst F F) (pullback.snd F F) pullback.condition (reg_flat _ hreg)`. Take `⟨w', hw'⟩` from `hd (pullback.snd F F) (pullback.fst F F) pullback.condition.symm (reg_flat _ hreg)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hww : w * w' = 1`. Use `sub_eq_zero.1 (reg_cancel_top (reg_flat (pullback.fst F F) hreg) _ ?_)` and prove the remaining obligations. Rewrite using `[sub_mul, mul_assoc, ← hw', ← hw, one_mul, sub_self]`. Set `wu : (Γ(pullback F F, ⊤))ˣ` to `⟨w, w', hww, by rw [mul_comm]; exact hww⟩`. Set `u : ∀ {V : Scheme.{0}} (a b : V ⟶ C), a ≫ F = b ≫ F → (Γ(V, ⊤))ˣ` to `fun a b h => Units.map (pullback.lift a b h).appTop.hom.toMonoidHom wu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu {V : Scheme.{0}} (a b : V ⟶ C) (h : a ≫ F = b ≫ F) : a.appTop.hom s0 = (u a b h : Γ(V, ⊤)) * b.appTop.hom s0`. Establish `e1` using `congrArg (pullback.lift a b h).appTop.hom hw`. Rewrite `e1` using `[map_mul, ← appTop_comp, ← appTop_comp, pullback.lift_fst, pullback.lift_snd]`. Conclude with `e1`. Establish `unat {V' V : Scheme.{0}} (g : V' ⟶ V) (a b : V ⟶ C) (h : a ≫ F = b ≫ F) : u (g ≫ a) (g ≫ b) (by rw [Category.assoc, h, Category.assoc]) = Units.map g.appTop.hom.toMonoidHom (u a b h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `e : pullback.lift (g ≫ a) (g ≫ b) (by rw [Category.assoc, h, Category.assoc]) = g ≫ pullback.lift a b h`. Conclude with `pullback.hom_ext (by rw [pullback.lift_fst, Category.assoc, pullback.lift_fst]) (by rw [pullback.lift_snd, Category.assoc, pullback.lift_snd])`. Express the relevant statement in the definitionally equal form `(pullback.lift (g ≫ a) (g ≫ b) _).appTop.hom w = g.appTop.hom ((pullback.lift a b h).appTop.hom w)`. Rewrite using `[e, appTop_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ukey {V : Scheme.{0}} (a b c : V ⟶ C) (h : a ≫ F = b ≫ F) (h' : b ≫ F = c ≫ F) (hc : Reg (c.appTop.hom s0)) : u a b h * u b c h' = u a c (h.trans h')`. Apply `Units.ext` to reduce the goal to its premises. Use `sub_eq_zero.1 (reg_cancel_top hc _ ?_)` and prove the remaining obligations. Rewrite using `[sub_mul, Units.val_mul, mul_assoc, ← hu, ← hu, ← hu, sub_self]`. Establish `ucoc {V : Scheme.{0}} (a b c : V ⟶ C) (h : a ≫ F = b ≫ F) (h' : b ≫ F = c ≫ F) : u a b h * u b c h' = u a c (h.trans h')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q` to `pullback (pullback.snd F F) (pullback.fst F F)`. Set `q1 : Q ⟶ C` to `pullback.fst _ _ ≫ pullback.fst F F`. Set `q2 : Q ⟶ C` to `pullback.fst _ _ ≫ pullback.snd F F`. Set `q3 : Q ⟶ C` to `pullback.snd _ _ ≫ pullback.snd F F`. Establish `hq : pullback.fst (pullback.snd F F) (pullback.fst F F) ≫ pullback.snd F F = pullback.snd (pullback.snd F F) (pullback.fst F F) ≫ pullback.fst F F` using `pullback.condition`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k1 : q1 ≫ F = q2 ≫ F`. Simplify using `only [q1, q2, Category.assoc]`. Rewrite using `[pullback.condition (f := F) (g := F)]`. Establish `k2 : q2 ≫ F = q3 ≫ F`. Simplify using `only [q2, q3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hq, Category.assoc, Category.assoc, pullback.condition (f := F) (g := F)]`. Establish `hk` using `ukey q1 q2 q3 k1 k2 (reg_flat _ hreg)`. Set `l : V ⟶ Q` to `pullback.lift (pullback.lift a b h) (pullback.lift b c h') (by rw [pullback.lift_snd, pullback.lift_fst])`. Establish `hl1 : l ≫ pullback.fst _ _ = pullback.lift a b h` using `pullback.lift_fst _ _ _`. Establish `hl2 : l ≫ pullback.snd _ _ = pullback.lift b c h'` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `l1 : l ≫ q1 = a`. Simplify using `only [q1]`. Rewrite using `[← Category.assoc, hl1, pullback.lift_fst]`. Establish `l2 : l ≫ q2 = b`. Simplify using `only [q2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hl1, pullback.lift_snd]`. Establish `l3 : l ≫ q3 = c`. Simplify using `only [q3]`. Rewrite using `[← Category.assoc, hl2, pullback.lift_snd]`. Establish `ucg {a a' b b' : V ⟶ C} (e : a = a') (e' : b = b') (h) (h') : u a b h = u a' b' h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Substitute `e e'` using the available equality. Both sides reduce to the same expression. Establish `hk'` using `congrArg (Units.map l.appTop.hom.toMonoidHom) hk`. Rewrite `hk'` using `[map_mul, ← unat, ← unat, ← unat]`. Rewrite using `[ucg l1.symm l2.symm h (by simp only [Category.assoc, k1]), ucg l2.symm l3.symm h' (by simp only [Category.assoc, k2]), ucg l1.symm l3.symm (h.trans h') (by simp only [Category.assoc, k1, k2])]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hk'`. Use `⟨{ Y := C, f := F, sm := hSm, surj := hSu, u := u, nat := unat, coc := ucoc }, fun a => a.appTop.hom s0, hEt, fun g a => appTop_comp g a s0, hu, ?_, fun i => ⟨Sigma.ι (fun i => (U i : Scheme.{0})) i, hF i, hs0 i⟩⟩` and prove the remaining obligations. Introduce `V a ha`. Use `V.toRingedSpace.isUnit_of_isUnit_germ ⊤ _ fun v hv => (V.mem_basicOpen _ v hv).1 ?_` and prove the remaining obligations. Establish `e1 : a v ∈ C.basicOpen s0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨i, p⟩, hp⟩` from `(sigmaMk fun i => (U i : Scheme.{0})).surjective (a v)`. Rewrite `hp` using `[sigmaMk_mk]`. Establish `hy : (a ≫ F) v = p.1`. Rewrite using `[Scheme.Hom.comp_apply, ← hp, ← Scheme.Hom.comp_apply, hF]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ha v i (hy ▸ p.2)`. Rewrite `h1` using `[hy, ← Scheme.Opens.ι_image_basicOpen_topIso_inv]`. Take `⟨q, hq, hqp⟩` from `h1`. Establish `hqp' : q = p` using `(U i).ι.isOpenEmbedding.injective hqp`. Substitute `hqp'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : q ∈ Sigma.ι (fun i => (U i : Scheme.{0})) i ⁻¹ᵁ C.basicOpen s0`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `(hs0 i).symm ▸ hq`. Conclude with `hp ▸ h2`. Establish `e2 : v ∈ a ⁻¹ᵁ C.basicOpen s0` using `e1`.
-
-Rewrite `e2` using `[Scheme.preimage_basicOpen]`. Conclude with `e2`.
+A detailed English derivation is pending.
 -/
 private lemma line_core {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀ i, Γ(Y, U i))
     (haff : ∀ i, IsAffineOpen (U i)) (hnz : ∀ i, s i ∈ nonZeroDivisors Γ(Y, U i)) (hcov : ∀ y : Y, ∃ i, y ∈ U i)
@@ -496,11 +490,11 @@ private lemma line_core {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀
   exact e2
 
 /- English proof (translation)
-Introduce `Y T j _ hc`. Set `I` to `{p : (Σ V : Y.Opens, Γ(Y, V)) // IsAffineOpen p.1 ∧ p.2 ∈ nonZeroDivisors Γ(Y, p.1) ∧ RingHom.ker (j.app p.1).hom = Ideal.span {p.2}}`. Take `⟨D, f, hEt, h1, h2, h3, h4⟩` from `line_core (I := I) (fun i => i.1.1) (fun i => i.1.2) (fun i => i.2.1) (fun i => i.2.2.1) (fun y => by`. Take `⟨V, s, hy, ha, hn, hk⟩` from `hc y`. Conclude with `⟨⟨⟨V, s⟩, ha, hn, hk⟩, hy⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun i i' y hy hy' => ker_div j i.2.1 i'.2.1 i.2.2.2 i'.2.2.2 y hy hy')`. Use `⟨D, f, h1, h2, fun a ha => h3 a fun v i hv => off_image j i.2.1 i.2.2.2 _ hv (ha v), ?_, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨V, s, hy, ha, hn, hk⟩` from `hc y`. Take `⟨σ, hσ, -⟩` from `h4 ⟨⟨V, s⟩, ha, hn, hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Opens.mem_sSup.2 ⟨V, ⟨σ, hσ⟩, hy⟩`. Conclude with `⟨hEt, fun V s ha hn hk => h4 ⟨⟨V, s⟩, ha, hn, hk⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem lineEx : LineEx := by
   intro Y T j _ hc

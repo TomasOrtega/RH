@@ -15,13 +15,13 @@ def piece (R : ι → Subalgebra K F) (γ : ι → F) (e : ℕ) : Submodule K F 
   smul_mem' c a ha i := by rw [smul_mul_assoc]; exact (R i).smul_mem (ha i) c
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_piece {R : ι → Subalgebra K F} {γ : ι → F} {e : ℕ} {f : F} :
     f ∈ piece R γ e ↔ ∀ i, f * γ i ^ e ∈ R i := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `mem_piece.2 fun i => by have hab := (R i).mul_mem (mem_piece.1 ha i) (mem_piece.1 hb i) rw [pow_add] convert hab using 1 ring`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_piece {R : ι → Subalgebra K F} {γ : ι → F} {e e' : ℕ} {a b : F}
     (ha : a ∈ piece R γ e) (hb : b ∈ piece R γ e') : a * b ∈ piece R γ (e + e') := mem_piece.2 fun i => by
@@ -34,11 +34,11 @@ def Den (R : ι → Subalgebra K F) (γ : ι → F) : Prop :=
   ∀ u : F, ∃ c, ∃ q ∈ piece R γ c, q ≠ 0 ∧ q * u ∈ piece R γ c
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, 1, mem_piece.2 fun i => by simp, one_ne_zero, by simp⟩`. Consider the case `insert u s hu ih`. Take `⟨c, q, hq, hq0, hs⟩` from `ih`. Take `⟨c', q', hq', hq'0, hu'⟩` from `h u`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c + c', q * q', mul_mem_piece hq hq', mul_ne_zero hq0 hq'0, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[mul_assoc]`. Conclude with `mul_mem_piece hq hu'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm]`. Conclude with `mul_mem_piece (hs v hv) hq'`.
+A detailed English derivation is pending.
 -/
 theorem Den.finset {R : ι → Subalgebra K F} {γ : ι → F} (h : Den R γ) (s : Finset F) :
     ∃ c, ∃ q ∈ piece R γ c, q ≠ 0 ∧ ∀ u ∈ s, q * u ∈ piece R γ c := by
@@ -57,7 +57,7 @@ theorem Den.finset {R : ι → Subalgebra K F} {γ : ι → F} (h : Den R γ) (s
       exact mul_mem_piece (hs v hv) hq'
 
 /- English proof (translation)
-Use `Fintype.ofFinite κ` as an intermediate fact. Take `⟨c, q, hq, hq0, hs⟩` from `h.finset (Finset.univ.image u)`. Conclude with `⟨c, q, hq, hq0, fun k => hs _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Den.family {R : ι → Subalgebra K F} {γ : ι → F} (h : Den R γ) {κ : Type} [Finite κ]
     (u : κ → F) : ∃ c, ∃ q ∈ piece R γ c, q ≠ 0 ∧ ∀ k, q * u k ∈ piece R γ c := by
@@ -69,23 +69,21 @@ theorem Den.family {R : ι → Subalgebra K F} {γ : ι → F} (h : Den R γ) {�
 variable [Algebra F F'] [IsScalarTower K F F'] [Module.Finite F F'] [Finite ι]
 
 /- English proof (translation)
-Use `choose n g hg using hG`. Establish `b : Basis (Fin (finrank F F')) F F'` using `Module.finBasis F F'`. Take `⟨c, q, -, hq0, hu⟩` from `h.family (κ := Σ i : ι, Fin (n i) × Fin (finrank F F')) (fun k => b.repr (g k.1 k.2.1) k.2.2)`. Use `⟨c, fun e => ?_⟩` and prove the remaining obligations. Use `hfin (e + c)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ f ∈ piece R' (fun i => algebraMap F F' (γ i)) e, ∀ j, q * b.repr f j ∈ piece R γ (e + c)`. Introduce `f hf j`. Use `mem_piece.2 fun i => ?_` and prove the remaining obligations. Take `⟨w, hw, hfw⟩` from `hg i _ (mem_piece.1 hf i)`. Establish `hfw' : (γ i ^ e) • f = ∑ l, w l • g i l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_pow, mul_comm]`. Conclude with `hfw`. Establish `h1 : γ i ^ e * b.repr f j = ∑ l, w l * b.repr (g i l) j`. Use `congrArg (fun x => b.repr x j) hfw'` as an intermediate fact. Simplify `this` using `[map_sum, Finsupp.finsetSum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2 : q * b.repr f j * γ i ^ (e + c) = ∑ l, w l * (q * b.repr (g i l) j * γ i ^ c)`. Rewrite using `[pow_add, show q * b.repr f j * (γ i ^ e * γ i ^ c) = (γ i ^ e * b.repr f j) * (q * γ i ^ c) by ring, h1, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[h2]`. Conclude with `Subalgebra.sum_mem _ fun l _ => (R i).mul_mem (hw l) (mem_piece.1 (hu ⟨i, l, j⟩) i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Set `Φ : piece R' (fun i => algebraMap F F' (γ i)) e →ₗ[K] (Fin (finrank F F') → piece R γ (e + c))` to `{ toFun := fun f j => ⟨q * b.repr f j, key f f.2 j⟩ map_add' := fun f f' => by`. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun a f => by`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SetLike.val_smul, RingHom.id_apply, Pi.smul_apply]`. Rewrite using `[← algebraMap_smul F a (f : F'), map_smul, Finsupp.smul_apply, smul_eq_mul, Algebra.smul_def]`. Use `ring }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hinj : Function.Injective Φ`. Introduce `f f' hff`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `congrArg (fun x => ((x j : piece R γ (e + c)) : F)) hff` as an intermediate fact. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at this`. Conclude with `mul_left_cancel₀ hq0 this`. Establish `: Module.Finite K (piece R' (fun i => algebraMap F F' (γ i)) e)` using `Module.Finite.of_injective Φ hinj`. Use `⟨this, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `[Module.finrank_pi_fintype]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upper {R : ι → Subalgebra K F} {γ : ι → F} {R' : ι → Subalgebra K F'} (h : Den R γ)
     (hG : ∀ i, ∃ (n : ℕ) (g : Fin n → F'), ∀ t ∈ R' i, ∃ w : Fin n → F,
@@ -150,9 +148,9 @@ theorem upper {R : ι → Subalgebra K F} {γ : ι → F} {R' : ι → Subalgebr
 
 omit [IsScalarTower K F F'] [Module.Finite F F'] in
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hb0, htb⟩` from `hS t`. Establish `hsub : ((Submonoid.closure (S : Set F') : Submonoid F') : Set F') ⊆ (Submodule.span F (S : Set F') : Set F')`. Introduce `x hx`. Establish `hx' : x ∈ S.toSubmonoid` using `(Submonoid.closure_le (S := S.toSubmonoid)).2 (fun y hy => hy) hx`. Conclude with `Submodule.subset_span hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Algebra.adjoin_eq_span_of_subset F hsub, Subalgebra.mem_toSubmodule]`. Establish `hbinv : b⁻¹ ∈ Algebra.adjoin F (S : Set F')` using `Algebra.adjoin_mono (Set.singleton_subset_iff.2 hb) (halg b hb).isIntegral.inv_mem_adjoin`. Establish `ht : t = a * b⁻¹` using `by rw [← htb, mul_assoc, mul_inv_cancel₀ hb0, mul_one]`. Rewrite using `[ht]`. Conclude with `Subalgebra.mul_mem _ (Algebra.subset_adjoin ha) hbinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_frac (S : Subalgebra K F') (hS : ∀ t : F', ∃ a ∈ S, ∃ b ∈ S, b ≠ 0 ∧ t * b = a)
     (halg : ∀ b ∈ S, IsAlgebraic F b) (t : F') : t ∈ Submodule.span F (S : Set F') := by
@@ -172,13 +170,11 @@ theorem mem_span_of_frac (S : Subalgebra K F') (hS : ∀ t : F', ∃ a ∈ S, �
 
 omit [IsScalarTower K F F'] [Module.Finite F F'] in
 /- English proof (translation)
-Establish `hle : Submodule.span F (S : Set F') ≤ Submodule.span F (Set.range g)`. Rewrite using `[Submodule.span_le]`. Introduce `t ht`. Take `⟨w, rfl⟩` from `hg t ht`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub : ((Submonoid.closure (S : Set F') : Submonoid F') : Set F') ⊆ (Submodule.span F (S : Set F') : Set F')`. Introduce `x hx`. Establish `hx' : x ∈ S.toSubmonoid` using `(Submonoid.closure_le (S := S.toSubmonoid)).2 (fun y hy => hy) hx`. Conclude with `Submodule.subset_span hx'`. Establish `: FiniteDimensional F (Submodule.span F (Set.range g))` using `FiniteDimensional.span_of_finite F (Set.finite_range g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional F (Submodule.span F (S : Set F'))` using `Submodule.finiteDimensional_of_le hle`. Establish `halg : ∀ b ∈ S, IsAlgebraic F b`. Introduce `b hb`. Use `(IsIntegral.of_mem_of_fg (Algebra.adjoin F (S : Set F')) ?_ b (Algebra.subset_adjoin hb)).isAlgebraic` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_eq_span_of_subset F hsub]`.
-
-Conclude with `Module.Finite.iff_fg.1 inferInstance`. Establish `htop : Submodule.span F (Set.range g) = ⊤` using `eq_top_iff.2 fun t _ => hle (mem_span_of_frac S hS halg t)`. Conclude with `Module.finite_def.2 (Submodule.fg_def.2 ⟨_, Set.finite_range g, htop⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_frac (S : Subalgebra K F') (hS : ∀ t : F', ∃ a ∈ S, ∃ b ∈ S, b ≠ 0 ∧ t * b = a)
     {n : ℕ} (g : Fin n → F') (hg : ∀ t ∈ S, ∃ w : Fin n → F, t = ∑ l, w l • g l) :
@@ -209,25 +205,23 @@ theorem finite_of_frac (S : Subalgebra K F') (hS : ∀ t : F', ∃ a ∈ S, ∃ 
   exact Module.finite_def.2 (Submodule.fg_def.2 ⟨_, Set.finite_range g, htop⟩)
 
 /- English proof (translation)
-Establish `b : Basis (Fin (finrank F F')) F F'` using `Module.finBasis F F'`. Establish `hspan : ∀ i, ∀ t : F', t ∈ Submodule.span F (R' i : Set F')` using `fun i t => mem_span_of_frac (R' i) (hS i) (fun x _ => (IsIntegral.of_finite F x).isAlgebraic) t`. Use `choose n f s hfs using fun p : ι × Fin (finrank F F') => Submodule.mem_span_set'.1 (hspan p.1 (b p.2))`. Take `⟨c, q, -, hq0, hu⟩` from `h.family (κ := Σ p : ι × Fin (finrank F F'), Fin (n p)) (fun k => f k.1 k.2)`. Set `v : Fin (finrank F F') → F'` to `fun j => q • b j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : ∀ j, v j ∈ piece R' (fun i => algebraMap F F' (γ i)) c`. Introduce `j`. Use `mem_piece.2 fun i => ?_` and prove the remaining obligations. Establish `hvj : v j * algebraMap F F' (γ i) ^ c = ∑ l, algebraMap F F' (q * f (i, j) l * γ i ^ c) * (s (i, j) l : F')`. Simplify using `only [v]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show b j = _ from (hfs (i, j)).symm, Finset.smul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hvj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subalgebra.sum_mem _ fun l _ => (R' i).mul_mem (hR i _ (mem_piece.1 (hu ⟨(i, j), l⟩) i)) (s (i, j) l).2`. Use `⟨c, fun e hP => ?_⟩` and prove the remaining obligations. Use `hP` as an intermediate fact. Use `hfin (e + c)` as an intermediate fact. Establish `key : ∀ x : Fin (finrank F F') → piece R γ e, ∑ j, (x j : F) • v j ∈ piece R' (fun i => algebraMap F F' (γ i)) (e + c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `mem_piece.2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Subalgebra.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hxj : (x j : F) • v j * algebraMap F F' (γ i) ^ (e + c) = algebraMap F F' ((x j : F) * γ i ^ e) * (v j * algebraMap F F' (γ i) ^ c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Algebra.smul_def, map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hxj]`. Conclude with `(R' i).mul_mem (hR i _ (mem_piece.1 (x j).2 i)) (mem_piece.1 (hv j) i)`. Set `Φ : (Fin (finrank F F') → piece R γ e) →ₗ[K] piece R' (fun i => algebraMap F F' (γ i)) (e + c)` to `{ toFun := fun x => ⟨∑ j, (x j : F) • v j, key x⟩ map_add' := fun x y => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun a x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.smul_sum, smul_assoc] }`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h0 : ∑ j, ((x j : F) * q) • b j = 0`. Use `congrArg Subtype.val hx` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify `this` using `[Φ, v, smul_smul]`. Use function extensionality and compare the values at `j`. Establish `hj` using `(Fintype.linearIndependent_iff.1 b.linearIndependent) _ h0 j`. Conclude with `Subtype.ext (by simpa using (mul_eq_zero.1 hj).resolve_right hq0)`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `[Module.finrank_pi_fintype]`. Use `_ ≤ _ := LinearMap.finrank_le_finrank_of_injective hinj`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower {R : ι → Subalgebra K F} {γ : ι → F} {R' : ι → Subalgebra K F'} (h : Den R γ)
     (hR : ∀ i, ∀ a ∈ R i, algebraMap F F' a ∈ R' i)
@@ -298,19 +292,19 @@ theorem lower {R : ι → Subalgebra K F} {γ : ι → F} {R' : ι → Subalgebr
 end Alg
 
 /- English proof (translation)
-Establish `hr : ∀ k : ℕ, Tendsto (fun e : ℕ => (((e + k : ℕ) : ℝ) / (e : ℝ)) ^ g) atTop (𝓝 1)`. Introduce `k`. Establish `h2` using `((tendsto_natCast_div_add_atTop (k : ℝ)).inv₀ one_ne_zero).pow g`. Rewrite `h2` using `[inv_one, one_pow]`. Use `h2.congr fun e => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_div, Nat.cast_add]`. Use `(tendsto_add_atTop_iff_nat c).1 ?_` and prove the remaining obligations. Establish `hL : Tendsto (fun e : ℕ => (D : ℝ) * ((h e : ℝ) / (e : ℝ) ^ g) / (((e + c : ℕ) : ℝ) / (e : ℝ)) ^ g) atTop (𝓝 (D * δ))`. Use `(hh.const_mul (D : ℝ)).div (hr c) one_ne_zero` as an intermediate fact. Rewrite `this` using `[div_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hU : Tendsto (fun e : ℕ => (D : ℝ) * ((h (e + (c + c')) : ℝ) / ((e + (c + c') : ℕ) : ℝ) ^ g) * ((((e + c) + c' : ℕ) : ℝ) / ((e + c : ℕ) : ℝ)) ^ g) atTop (𝓝 (D * δ))`. Use `((hh.comp (tendsto_add_atTop_nat (c + c'))).const_mul (D : ℝ)).mul ((hr c').comp (tendsto_add_atTop_nat c))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hL hU ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_ge_atTop 1] with e he`. Establish `he0 : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `hcast : ((D * h e : ℕ) : ℝ) ≤ (h' (e + c) : ℝ)` using `by exact_mod_cast lo e`. Move the coercions through the operations in `at hcast ⊢`. Establish `hc0 : (0 : ℝ) < (e : ℝ) + c` using `by positivity`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `heq : (D : ℝ) * ((h e : ℝ) / (e : ℝ) ^ g) / (((e : ℝ) + c) ^ g / (e : ℝ) ^ g) = (D : ℝ) * (h e : ℝ) / ((e : ℝ) + c) ^ g`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, heq]`. Use `gcongr`. Use `filter_upwards [eventually_ge_atTop 1] with e he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `he0 : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `hcast : (h' (e + c) : ℝ) ≤ ((D * h (e + c + c') : ℕ) : ℝ)` using `by exact_mod_cast up (e + c)`. Rewrite using `[show e + (c + c') = e + c + c' from (add_assoc _ _ _).symm]`. Move the coercions through the operations in `at hcast ⊢`. Establish `hc0 : (0 : ℝ) < (e : ℝ) + c` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hcc0 : (0 : ℝ) < (e : ℝ) + c + c'` using `by positivity`. Establish `heq : (D : ℝ) * ((h (e + c + c') : ℝ) / ((e : ℝ) + c + c') ^ g) * (((e : ℝ) + c + c') ^ g / ((e : ℝ) + c) ^ g) = (D : ℝ) * (h (e + c + c') : ℝ) / ((e : ℝ) + c) ^ g`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, heq]`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_of_sandwich (h h' : ℕ → ℕ) (D g c c' : ℕ) (δ : ℝ)
     (hh : Tendsto (fun e : ℕ => (h e : ℝ) / (e : ℝ) ^ g) atTop (𝓝 δ))

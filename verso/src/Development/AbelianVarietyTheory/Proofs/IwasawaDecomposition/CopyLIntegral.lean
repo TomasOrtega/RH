@@ -36,35 +36,35 @@ def twiceY : type_of% R.ioY := kc% (twice b R).ioY
 def twiceX : type_of% R.ioX := kc% (twice b R).ioX
 
 /- English proof (translation)
-The claim follows from `eq_of_heq ((by with_unfolding_all exact ((HEq.trans (real_ioY b R.toRealDat) (kc% (real_ioY (a := b) a (iK := alg b iK) (real b R.toRealDat))) : HEq _ (twiceY b R)) :)))`.
+A detailed English derivation is pending.
 -/
 theorem twiceY_eq : R.ioY = twiceY b R :=
   eq_of_heq ((by with_unfolding_all exact ((HEq.trans (real_ioY b R.toRealDat) (kc% (real_ioY (a := b) a (iK := alg b iK) (real b R.toRealDat))) :
     HEq _ (twiceY b R)) :)))
 
 /- English proof (translation)
-The claim follows from `eq_of_heq ((by with_unfolding_all exact ((HEq.trans (real_ioX b R.toRealDat) (kc% (real_ioX (a := b) a (iK := alg b iK) (real b R.toRealDat))) : HEq _ (twiceX b R)) :)))`.
+A detailed English derivation is pending.
 -/
 theorem twiceX_eq : R.ioX = twiceX b R :=
   eq_of_heq ((by with_unfolding_all exact ((HEq.trans (real_ioX b R.toRealDat) (kc% (real_ioX (a := b) a (iK := alg b iK) (real b R.toRealDat))) :
     HEq _ (twiceX b R)) :)))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrArg₂ (setIo R) (twiceY_eq b R) (twiceX_eq b R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem twice_eq : R = twice b R := (by with_unfolding_all exact ((congrArg₂ (setIo R) (twiceY_eq b R) (twiceX_eq b R)) :))
 
 variable {R}
 
 /- English proof (translation)
-Establish `h2` using `holds_tr (a := b) a (iK := alg b iK) h`. Conclude with `(by with_unfolding_all exact ((cast (congrArg (fun R' : RealDat3 a.D A Ks => Holds R' F) (twice_eq b R).symm) ((h2))) : _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holds_back (h : letI := alg b iK; Holds (real3 b R) (face3 b F)) : Holds R F := by
   have h2 := holds_tr (a := b) a (iK := alg b iK) h
   exact (by with_unfolding_all exact ((cast (congrArg (fun R' : RealDat3 a.D A Ks => Holds R' F) (twice_eq b R).symm) ((h2))) : _))
 
 /- English proof (translation)
-Use `tr_via (fun X : Cx.CxData A.fam3.amb3 => Rat.RowTest X) (toCx3_eq b R F) h`.
+A detailed English derivation is pending.
 -/
 theorem rowTest_tr (h : Rat.RowTest (R.toCx3 F)) : letI := alg b iK; Rat.RowTest ((real3 b R).toCx3 (face3 b F)) := by
   tr_via (fun X : Cx.CxData A.fam3.amb3 => Rat.RowTest X) (toCx3_eq b R F) h
@@ -72,7 +72,7 @@ theorem rowTest_tr (h : Rat.RowTest (R.toCx3 F)) : letI := alg b iK; Rat.RowTest
 end Three
 
 /- English proof (translation)
-Introduce `i M₀ j Φ hI W _ _ σ h1 h2 h3`. Establish `key` using `h ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact ((ds a M₀) :))) ((by with_unfolding_all exact (j :))) ((by with_unfolding_all exact (Φ :))) ⟨(by with_unfolding_all exact (hI.isom :)), (by with_unfolding_all exact (hI.conj :)), (by with_unfolding_all exact (h …`. Use `delta GlobalTheory.CuspMult.cuspMult GlobalTheory.CuspMult.allMaps`. Use `rewrite [mult_eq a b]`. Conclude with `(by with_unfolding_all exact (key :))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multEq_tr {A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m} {R : RealDat a.D A Ks} (h : GlobalTheory.CuspMult.MultEq R) :
     letI := alg b iK; GlobalTheory.CuspMult.MultEq (real b R) := by
@@ -104,34 +104,34 @@ def copy (s : SameGrp a b) (z : Dat a.st I hX Tw Wt) : Dat b.st I hX Tw Wt :=
 variable (s : SameGrp a b) {z : Dat a.st I hX Tw Wt}
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((exAt_tr b (iK := z.alg) h) :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_exAt (h : z.R.toRealDat.ExAt) : (copy b s z).R.toRealDat.ExAt := (by with_unfolding_all exact ((exAt_tr b (iK := z.alg) h) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (h :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_lUnif (h : z.R.toRealDat.LUnif) : (copy b s z).R.toRealDat.LUnif := (by with_unfolding_all exact (h :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (h :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_lIntegral (h : z.R.toRealDat.LIntegral) : (copy b s z).R.toRealDat.LIntegral := (by with_unfolding_all exact (h :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((multEq_tr b (iK := z.alg) h) :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_multEq (h : GlobalTheory.CuspMult.MultEq z.R.toRealDat) : GlobalTheory.CuspMult.MultEq (copy b s z).R.toRealDat :=
   (by with_unfolding_all exact ((multEq_tr b (iK := z.alg) h) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((rowTest_tr b (iK := z.alg) h) :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_rowTest (h : Rat.RowTest (z.R.toCx3 z.F)) : Rat.RowTest ((copy b s z).R.toCx3 (copy b s z).F) :=
   (by with_unfolding_all exact ((rowTest_tr b (iK := z.alg) h) :))
 
 /- English proof (translation)
-The claim follows from `holds_back b (iK := z.alg) ((by with_unfolding_all exact (h :)))`.
+A detailed English derivation is pending.
 -/
 theorem holds_of_copy (h : Holds (copy b s z).R (copy b s z).F) : Holds z.R z.F := holds_back b (iK := z.alg) ((by with_unfolding_all exact (h :)))
 

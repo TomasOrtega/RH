@@ -21,14 +21,14 @@ def IsHK (H : Subgroup G) (E : Set G) : Prop :=
     ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ g, ∀ x ∈ K, g * x ∈ E ↔ g ∈ E
 
 /- English proof (translation)
-Take `⟨h1, K, hK, h2⟩` from `hE`. Conclude with `⟨fun h hh g => not_congr (h1 h hh g), K, hK, fun g x hx => not_congr (h2 g x hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsHK.compl {H : Subgroup G} {E : Set G} (hE : IsHK H E) : IsHK H Eᶜ := by
   obtain ⟨h1, K, hK, h2⟩ := hE
   exact ⟨fun h hh g => not_congr (h1 h hh g), K, hK, fun g x hx => not_congr (h2 g x hx)⟩
 
 /- English proof (translation)
-Take `⟨h1, K, hK, h2⟩` from `hE`. Take `⟨h1', K', hK', h2'⟩` from `hE'`. Use `⟨fun h hh g => and_congr (h1 h hh g) (h1' h hh g), K ⊓ K', ?_, fun g x hx => and_congr (h2 g x hx.1) (h2' g x hx.2)⟩` and prove the remaining obligations. Conclude with `hK.inter hK'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsHK.inter {H : Subgroup G} {E E' : Set G} (hE : IsHK H E) (hE' : IsHK H E') : IsHK H (E ∩ E') := by
   obtain ⟨h1, K, hK, h2⟩ := hE
@@ -38,16 +38,16 @@ theorem IsHK.inter {H : Subgroup G} {E E' : Set G} (hE : IsHK H E) (hE' : IsHK H
   exact hK.inter hK'
 
 /- English proof (translation)
-Use `(hE.compl.inter hE'.compl).compl` as an intermediate fact. Rewrite `this` using `[Set.compl_inter, compl_compl, compl_compl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsHK.union {H : Subgroup G} {E E' : Set G} (hE : IsHK H E) (hE' : IsHK H E') : IsHK H (E ∪ E') := by
   have := (hE.compl.inter hE'.compl).compl
   rwa [Set.compl_inter, compl_compl, compl_compl] at this
 
 /- English proof (translation)
-Take `⟨-, K, hK, h2⟩` from `hE`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g hg`. Establish `hn : (fun y => g⁻¹ * y) ⁻¹' (K : Set G) ∈ 𝓝 g` using `(hK.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [one_mem])`. Use `filter_upwards [hn] with y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : y = g * (g⁻¹ * y)` using `by group`. Rewrite using `[e]`. Conclude with `(h2 g _ hy).2 hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHK.isOpen {H : Subgroup G} {E : Set G} (hE : IsHK H E) : IsOpen E := by
   obtain ⟨-, K, hK, h2⟩ := hE
@@ -61,11 +61,11 @@ theorem IsHK.isOpen {H : Subgroup G} {E : Set G} (hE : IsHK H E) : IsOpen E := b
   exact (h2 g _ hy).2 hg
 
 /- English proof (translation)
-Use `⟨fun h hh g => ⟨?_, ?_⟩, K, hK, fun g y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha, x, hx, e⟩`. Conclude with `⟨h⁻¹ * a, mul_mem (inv_mem hh) ha, x, hx, by`. Establish `e2 : g = h⁻¹ * (h * g)` using `by group`. Rewrite using `[e2, e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `group⟩`. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨h * a, mul_mem hh ha, x, hx, by group⟩`. Introduce and unpack `⟨a, ha, x, hx, e⟩`. Conclude with `⟨a, ha, x * y⁻¹, mul_mem hx (inv_mem hy), by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← e]`. Use the proof step `group⟩`. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, x * y, mul_mem hx hy, by group⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHK_doubleCoset (H K : Subgroup G) (hK : IsOpen (K : Set G)) (c : G) :
     IsHK H {g | ∃ a ∈ H, ∃ x ∈ K, g = a * c * x} := by
@@ -96,7 +96,7 @@ def stabSub {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ 
     rw [← Module.End.mul_apply, ← map_mul]; simp
 
 /- English proof (translation)
-Use `⟨stabSub (ind H σ) f.1.1, f.1.2, fun g x hx => ?_⟩` and prove the remaining obligations. Establish `h : ind H σ x f.1.1 = f.1.1` using `hx`. Conclude with `congrArg (fun v : indSpace H σ => v.1 g) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cInd_right_inv (H : Subgroup G) (σ : Representation ℂ H W) (f : cIndSpace H σ) :
     ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ g, ∀ x ∈ K, f.1.1.1 (g * x) = f.1.1.1 g := by
@@ -105,19 +105,17 @@ theorem cInd_right_inv (H : Subgroup G) (σ : Representation ℂ H W) (f : cIndS
   exact congrArg (fun v : indSpace H σ => v.1 g) h
 
 /- English proof (translation)
-Take `⟨h1, K, hK, h2⟩` from `hE`. Take `⟨L, hL, hLi⟩` from `cInd_right_inv H σ f`. Set `b : G → W` to `fun g => if g ∈ E then f.1.1.1 g else 0`. Establish `hind : b ∈ indSpace H σ`. Introduce `h g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : f.1.1.1 ((h : G) * g) = σ h (f.1.1.1 g)` using `f.1.1.2 h g`. Distinguish the cases in `hg : g ∈ E`. Establish `hg' : (h : G) * g ∈ E` using `(h1 h h.2 g).2 hg`. Simplify using `only [b, if_pos hg, if_pos hg', e]`. Establish `hg' : (h : G) * g ∉ E` using `fun c => hg ((h1 h h.2 g).1 c)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [b, if_neg hg, if_neg hg', map_zero]`. Establish `hsm : (⟨b, hind⟩ : indSpace H σ) ∈ smoothPart (ind H σ)`. Use `GlobalTheory.CompanionTheory.BZMirOnto.isOpen_fixed_of_subgroup (ind H σ) (K ⊓ L) (hK.inter hL) _ fun x hx => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show b (g * x) = b g`. Distinguish the cases in `hg : g ∈ E`. Establish `hg' : g * x ∈ E` using `(h2 g x hx.1).2 hg`. Simplify using `only [b, if_pos hg, if_pos hg', hLi g x hx.2]`. Establish `hg' : g * x ∉ E` using `fun c => hg ((h2 g x hx.1).1 c)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, if_neg hg, if_neg hg']`. Establish `hc : (⟨⟨b, hind⟩, hsm⟩ : smoothPart (ind H σ)) ∈ cIndSpace H σ`. Take `⟨C, hC, hf⟩` from `f.2`. Use `⟨C, hC, fun g hg => hf g ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Use `show b g = 0`. Distinguish the cases in `hgE : g ∈ E`. Simplify using `only [b, if_pos hgE]`. Conclude with `h0`.
-
-Simplify using `only [b, if_neg hgE]`. Conclude with `⟨⟨⟨⟨b, hind⟩, hsm⟩, hc⟩, fun g hg => if_pos hg, fun g hg => if_neg hg⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_indicator (H : Subgroup G) (σ : Representation ℂ H W) {E : Set G} (hE : IsHK H E)
     (f : cIndSpace H σ) :
@@ -156,11 +154,11 @@ theorem exists_indicator (H : Subgroup G) (σ : Representation ℂ H W) {E : Set
   exact ⟨⟨⟨⟨b, hind⟩, hsm⟩, hc⟩, fun g hg => if_pos hg, fun g hg => if_neg hg⟩
 
 /- English proof (translation)
-Take `⟨O, hO, hOe⟩` from `isOpen_induced_iff.1 (hσ w)`. Establish `h1O : (1 : G) ∈ O`. Establish `: (1 : H) ∈ (Subtype.val ⁻¹' O : Set H)` using `by rw [hOe]; simp`. Conclude with `this`. Establish `hn : (fun x => c * x * c⁻¹) ⁻¹' O ∈ 𝓝 (1 : G)` using `(hO.preimage (by fun_prop)).mem_nhds (by simpa using h1O)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hKo, hKc, hKO⟩` from `hbase _ hn`. Take `⟨B, hB, -⟩` from `GlobalTheory.CompanionTheory.BZMirOnto.exists_bump H σ K hKo hKc c w (by`. Introduce `a x hx e`. Establish `hax : (a : G) ∈ O` using `by rw [e]; exact hKO hx`. Establish `: a ∈ (Subtype.val ⁻¹' O : Set H)` using `hax`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hOe]`. Conclude with `this)`. Use `⟨B, ?_⟩` and prove the remaining obligations. Establish `h` using `hB 1 1 (one_mem K)`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_cInd_value (H : Subgroup G) (σ : Representation ℂ H W) (hσ : IsSmooth σ)
     (hbase : ∀ O ∈ 𝓝 (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ O)
@@ -191,21 +189,21 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 abbrev embedding₂ (n : ℕ) : Mir k n →* Mir k (n + 1) := (levi k (n + 1)).comp (Mir k n).subtype
 
 /- English proof (translation)
-Simplify using `[eGP, stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockIndex_false_val (m j : ℕ) (a : Fin m) : ((eGP m j ⟨false, a⟩ : Fin (m + j + 1)) : ℕ) = a := by
   simp [eGP, stdSum]
 
 /- English proof (translation)
-Simplify using `[eGP, stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockIndex_true_val (m j : ℕ) (b : Fin (j + 1)) : ((eGP m j ⟨true, b⟩ : Fin (m + j + 1)) : ℕ) = m + b := by
   simp [eGP, stdSum]
 
 /- English proof (translation)
-Use `show (g : GL (Fin (m + j + 1)) k) ∈ parab k (eGP m j) ↔ _`. Rewrite using `[mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h b a`. Conclude with `h true false b a (by decide)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h x y i l hxy`. Apply the tactic sequence `cases x <;> cases y <;> first | exact absurd hxy (by decide) | exact h i l`.
+A detailed English derivation is pending.
 -/
 theorem mem_mirabolicParabolic_iff (m j : ℕ) (g : Mir k (m + j)) :
     g ∈ MirabolicParabolic k m j ↔ ∀ (b : Fin (j + 1)) (a : Fin m),
@@ -220,14 +218,14 @@ theorem mem_mirabolicParabolic_iff (m j : ℕ) (g : Mir k (m + j)) :
     cases x <;> cases y <;> first | exact absurd hxy (by decide) | exact h i l
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[dpow, Complex.ofReal_add, absPow_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dpow_add (n : ℕ) (s t : ℝ) : dpow (k := k) n (s + t) = dpow n s * dpow n t := by
   ext g
   simp [dpow, Complex.ofReal_add, absPow_add]
 
 /- English proof (translation)
-The claim follows from `IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow (s : ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_dpow (n : ℕ) (s : ℝ) :
     IsOpen (((dpow (k := k) n s).ker : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) :=

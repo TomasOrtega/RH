@@ -47,13 +47,13 @@ variable {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Ho
   {dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TransferCompare.evalWD_framed Xo c`.
+A detailed English derivation is pending.
 -/
 theorem Laws.evalWD (_ : Laws D j Xo c U dict) : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) :=
   GlobalTheory.TransferCompare.evalWD_framed Xo c
 
 /- English proof (translation)
-Introduce `σ _ k x` and use `haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ) GlobalTheory.TransferCompare.allTest_framed Xo c (CAt σ) ((U σ).un k x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Laws.unTest (_ : Laws D j Xo c U dict) : ∀ σ, GoodEmb c σ → ∀ k x,
     FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((U σ).un k x) := fun σ _ k x =>
@@ -61,7 +61,7 @@ theorem Laws.unTest (_ : Laws D j Xo c U dict) : ∀ σ, GoodEmb c σ → ∀ k 
   GlobalTheory.TransferCompare.allTest_framed Xo c (CAt σ) ((U σ).un k x)
 
 /- English proof (translation)
-Introduce `σ hσ k τ`. Take `⟨hr, hm⟩` from `h.modelW σ hσ`. Rewrite using `[(hm k).2, map_neg, norm_neg]`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatB.norm_embedding_hostFormConstant_eq D τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Laws.xiAbs (h : Laws D j Xo c U dict) : ∀ σ, GoodEmb c σ → ∀ k (τ : D.host.E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = xiR D := by
   intro σ hσ k τ
@@ -75,7 +75,7 @@ def coreDict {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (g : GA D 
   open Classical in if h : T.V j σ = D.sp.W j then T.dict j σ (h ▸ g) else T.dict j σ 1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨th, hr, h1, h2⟩` from `hd`. Conclude with `⟨Kf, th, hr, hK, h1, h2, hu⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unif_of_space_eq {D : D7} {r : ℕ} {C : Type} {X : C → Data D.host.E r} (V W : HSp D) (h : V = W)
     (dict : GA D V → Σ k, Frame (X k).Ψ r) (M : ℕ) (Kf : Subgroup (GA D V)) (hK : IsLevelK V M Kf)
@@ -89,7 +89,7 @@ theorem unif_of_space_eq {D : D7} {r : ℕ} {C : Type} {X : C → Data D.host.E 
   exact ⟨Kf, th, hr, hK, h1, h2, hu⟩
 
 /- English proof (translation)
-The claim follows from `hj host := h.pins.1 dat := h.pins.2.2.2 j hj levA := h.pins.2.1.2 unf := h.unf j hj chiTriv := h.chiTriv j hj dictU := fun σ hσ => by have hV := h.spaceW j hj σ hσ have e : coreDict T.toCore j σ = fun g => T.dict j σ (hV ▸ g) := by funext g; simp only [coreDict, dif_pos hV] rw [e …`.
+A detailed English derivation is pending.
 -/
 theorem laws_core (D : D7) (T : CoreJ D) (j : ℕ) (h : LawsJ T) (hj : InR D j) :
     Laws D j (T.Q.Xo j) T.Q.c (T.U j) (coreDict T.toCore j) where
@@ -140,7 +140,7 @@ def lamSup (q d M : ℕ) (Om s t : ℝ) : ℝ :=
 def lamPet (q d M : ℕ) (Om s t : ℝ) : ℝ := lamSup E r q d M Om s t + 1 / 2 * Real.log (supConst E r d M (s + t + 1))
 
 /- English proof (translation)
-Unfold `multBd`. Use `one_le_pow₀ (le_add_of_nonneg_right ?_)` and prove the remaining obligations. Establish `: 0 ≤ dE E` using `abs_nonneg _`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem one_le_multBd {ε : ℝ} (hε : 0 < ε) : 1 ≤ multBd E r ε := by
   unfold multBd
@@ -149,17 +149,17 @@ theorem one_le_multBd {ε : ℝ} (hε : 0 < ε) : 1 ≤ multBd E r ε := by
   positivity
 
 /- English proof (translation)
-Simplify using `[dimFl]`.
+Simplify using the standard rewrite rules.
 -/
 example : dimFl E 1 = 0 := by simp [dimFl]
 
 /- English proof (translation)
-Simplify using `[dimFl]`.
+Simplify using the standard rewrite rules.
 -/
 example : dimFl E 2 = fdeg E := by simp [dimFl]
 
 /- English proof (translation)
-The claim follows from `min_le_left _ _`.
+A detailed English derivation is pending.
 -/
 example (d M : ℕ) (w : ℝ) : epsLev E d M w ≤ 1 := min_le_left _ _
 

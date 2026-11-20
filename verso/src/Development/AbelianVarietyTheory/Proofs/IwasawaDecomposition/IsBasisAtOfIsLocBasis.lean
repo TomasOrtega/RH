@@ -17,7 +17,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `hc : IsCoprime (T : 𝓞 E) (s : 𝓞 E)` using `((Nat.Prime.coprime_iff_not_dvd hT).2 hs).cast`. Take `⟨a, b, e⟩` from `hc`. Conclude with `one_notMem Q (e ▸ add_mem (Q.asIdeal.mul_mem_left a hQ) (Q.asIdeal.mul_mem_left b h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem natCast_notMem {T : ℕ} (hT : T.Prime) (Q : HeightOneSpectrum (𝓞 E)) (hQ : (T : 𝓞 E) ∈ Q.asIdeal) {s : ℕ}
     (hs : ¬ T ∣ s) : (s : 𝓞 E) ∉ Q.asIdeal := by
@@ -27,15 +27,15 @@ theorem natCast_notMem {T : ℕ} (hT : T.Prime) (Q : HeightOneSpectrum (𝓞 E))
   exact one_notMem Q (e ▸ add_mem (Q.asIdeal.mul_mem_left a hQ) (Q.asIdeal.mul_mem_left b h))
 
 /- English proof (translation)
-Unfold `IsBasisAt`. Use extensionality with `x`. Rewrite using `[mem_localized_columnLattice_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx a`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht, hx⟩` from `(mem_locP Q _ _).1 hx`. Take `⟨s, hs, h2⟩` from `(h (t • x)).1 ⟨1, hT.not_dvd_one, by simpa using hx⟩`. Use `(mem_locP Q _ _).2 ⟨(s : 𝓞 E) * t, fun hm => (Q.isPrime.mem_or_mem hm).elim (natCast_notMem hT Q hQ hs) ht, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `h2 a`. Use `Submodule.mem_one.2 ⟨r, hr.trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← algebraMap_smul E t x, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul, map_natCast, mul_assoc]`. Introduce `hx choose t ht hx using fun a => (mem_locP Q _ _).1 (hx a)`. Establish `ht' : ∏ a, t a ∉ Q.asIdeal` using `fun hm => by`. Take `⟨a, -, ha⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := Q.isPrime)).1 hm`. Conclude with `ht a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, h2⟩` from `(h ((∏ a, t a) • x)).2 ⟨1, hT.not_dvd_one, fun a => by`. Establish `h3` using `Submodule.smul_mem _ (∏ b ∈ Finset.univ.erase a, t b) (hx a)`. Rewrite `h3` using `[smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ a)]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h3`. Use `⟨r, hr.trans ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E _ x, Matrix.mulVec_smul, Algebra.smul_def, Nat.cast_one, one_mul]`. Use the proof step `rfl⟩`. Use `(mem_locP Q _ _).2 ⟨(s : 𝓞 E) * ∏ a, t a, fun hm => (Q.isPrime.mem_or_mem hm).elim (natCast_notMem hT Q hQ hs) ht', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul]`. Rewrite `h2` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isBasisAt_of_isLocBasis {T : ℕ} (hT : T.Prime) (Q : HeightOneSpectrum (𝓞 E)) (hQ : (T : 𝓞 E) ∈ Q.asIdeal)
     {L : Submodule (𝓞 E) (Fin n → E)} {B : GL (Fin n) E} (h : IsLocBasis T (L : Set (Fin n → E)) B) : IsBasisAt Q L B := by
@@ -71,11 +71,11 @@ theorem isBasisAt_of_isLocBasis {T : ℕ} (hT : T.Prime) (Q : HeightOneSpectrum 
 variable {K ι : Type} [Field K] [NumberField K] [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[mem_localization_delAtr emb lam w hL (fun τ => inside₂ K n (Formalism.UG.bc (emb τ) (B τ))) (fun τ => pb_isBasisAt_dualFr w _ (tauLatLattice E K ι n emb τ L hL).fg _ (bc_isBasisAt (emb τ) w (hB τ)))]`. Use `exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h` using `evFr_actP (gramC (1 : Matrix (Fin n) (Fin n) E) (embAt σ emb)) σ lam (fun τ => inside₂ K n (Formalism.UG.bc (emb τ) (B τ))) z`. Establish `e : (fun τ => (((inside₂ K n (Formalism.UG.bc (emb τ) (B τ)) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).map σ)ᵀ) = fun τ => atInf (embAt σ emb) (((B τ)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `a b`. Simplify using `only [inside₂, atInf, embAt, Formalism.UG.bc, transpose_apply, map_apply, RingHom.comp_apply, ← map_inv]`. Both sides reduce to the same expression. Rewrite `h` using `[e]`. Rewrite using `[← h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h' => by rw [← h']; rfl, fun h' => evFr_injective _ _ σ (stdFrC _) h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_localization_delAtr_fn (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K))
     {L : Submodule (𝓞 E) (Fin n → E)} (hL : Submodule.IsLattice E L) (B : ι → GL (Fin n) E)
@@ -101,9 +101,9 @@ theorem mem_localization_delAtr_fn (emb : ι → E →+* K) (σ : K →+* ℂ) (
 variable {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `localization_le_of_le_localization _ fun x hx => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(hd.mem_LshKer ha P x).1 hx`. Conclude with `localization_mono _ le_sup_left ((hd.mem_locP_L P x).2 ⟨hd.Lsh_le_at ha P h1, h2⟩)`. Use `localization_mono _ (sup_le (fun x hx => (hd.mem_LshKer ha P x).2 ⟨hd.L_le_Lsh hx, ((hd.mem_L x).1 hx).2 P⟩) ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_le.2 fun p hp x hx => (hd.mem_LshKer ha P _).2 ⟨Submodule.smul_mem _ p hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P p x (hd.Lsh_le_at ha P hx), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_LshKer_eq_localization_sup {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E} (ha : SepElt ST a) (P : ST) :
     localization₂ P.1.asIdeal (d.LshKer P) = localization₂ P.1.asIdeal (d.L ⊔ P.1.asIdeal • d.Lsh) := by
@@ -116,7 +116,7 @@ theorem localization_LshKer_eq_localization_sup {d : Deco E n ST SG} (hd : d.Ok)
     rw [hd.f_smul P p x (hd.Lsh_le_at ha P hx), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]
 
 /- English proof (translation)
-The claim follows from `lattice_between hd.L_lattice hd.Lsh_lattice le_sup_left (sup_le hd.L_le_Lsh Submodule.smul_le_right)`.
+A detailed English derivation is pending.
 -/
 theorem lattice_sup_smul {d : Deco E n ST SG} (hd : d.Ok) (I : Ideal (𝓞 E)) :
     Submodule.IsLattice E (d.L ⊔ I • d.Lsh : Submodule (𝓞 E) (Sp E n)) :=
@@ -125,11 +125,11 @@ theorem lattice_sup_smul {d : Deco E n ST SG} (hd : d.Ok) (I : Ideal (𝓞 E)) :
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[mem_localization_delAtr_fn emb σ lam w (hd.LshKer_lattice ha P) (fun τ => if τ = e P then B' else B)]`. Establish `e1 : (fun τ => atInf (embAt σ emb) (((if τ = e P then B' else B)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ) = fun τ => if τ = e P then atInf (embAt σ emb) ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ else atInf (embAt σ emb) ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (F …`. Use function extensionality and compare the values at `τ`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Take `⟨Q, rfl⟩` from `e.surjective τ`. Rewrite using `[he]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl]`. Conclude with `(localization_LshKer_eq_localization_sup hd ha Q).trans (isBasisAt_of_isLocBasis hT Q.1 (hST Q) hB')`. Rewrite using `[if_neg fun h => hQ (e.injective h)]`. Conclude with `(hd.locP_LshKer_ne ha hQ).trans (isBasisAt_of_isLocBasis hT Q.1 (hST Q) hB)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_ker (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K))
     {T : ℕ} (hT : T.Prime) (hST : ∀ P : ST, (T : 𝓞 E) ∈ P.1.asIdeal) (e : ST ≃ ι) (he : ∀ P, bcBelow (emb (e P)) w = P.1)
@@ -159,9 +159,9 @@ theorem mem_localization_ker (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : 
       exact (hd.locP_LshKer_ne ha hQ).trans (isBasisAt_of_isLocBasis hT Q.1 (hST Q) hB)
 
 /- English proof (translation)
-Establish `e : dualSet s (1 : Matrix (Fin n) (Fin n) E) L = (dual (hStd E n) L : Set (Sp E n))`. Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `: Formalism.UG.hform s (1 : Matrix (Fin n) (Fin n) E) x y = hStd E n x y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Formalism.UG.hform, hStd_apply, Matrix.one_apply, hs]`. Rewrite using `[this, Submodule.mem_one]`. Both sides reduce to the same expression. Rewrite using `[dualL, e, Submodule.span_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualL_std (s : E →+* E) (hs : ∀ x, s x = star x) (L : Submodule (𝓞 E) (Sp E n)) :
     dualL s (1 : Matrix (Fin n) (Fin n) E) L = dual (hStd E n) L := by
@@ -176,9 +176,9 @@ theorem dualL_std (s : E →+* E) (hs : ∀ x, s x = star x) (L : Submodule (�
   rw [dualL, e, Submodule.span_eq]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩ c`. Conclude with `(mem_locP w _ _).2 ⟨s, hs, hx c⟩`. Introduce `hx haveI := Fintype.ofFinite S.Cl choose t ht hx using fun c => (mem_locP w _ _).1 (hx c)`. Use `⟨∏ c, t c, fun hm => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, ha⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := w.isPrime)).1 hm`. Conclude with `ht a ha`. Establish `h3` using `Submodule.smul_mem _ (∏ b ∈ Finset.univ.erase c, t b) (hx c)`. Rewrite `h3` using `[smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ c)]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_latticeOf [StarRing K] (S : GStep E K n) [Finite S.Cl] (emb : ι → E →+* K) (lam : ι → DomWeight n)
     (h : (S.fam emb lam).Ok) (M : S.Cl → Submodule (𝓞 K) (Formalism.L2.DIV.VV K lam)) (w : HeightOneSpectrum (𝓞 K))
@@ -199,7 +199,7 @@ theorem mem_localization_latticeOf [StarRing K] (S : GStep E K n) [Finite S.Cl] 
       exact h3
 
 /- English proof (translation)
-Take `rfl : M = M'` from `funext hM`. Substitute `hs` using the available equality. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, h]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem fnOf_eq {G G' : ι → Matrix (Fin n) (Fin n) ℂ} {s s' : ι → ℤ} {M M' : ι → Matrix (Fin n) (Fin n) ℂ} (hs : s = s')
     (hM : ∀ τ, M τ = M' τ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (y : Frames G) (y' : Frames G') (h : y.1 = y'.1) :
@@ -209,7 +209,7 @@ theorem fnOf_eq {G G' : ι → Matrix (Fin n) (Fin n) ℂ} {s s' : ι → ℤ} {
   simp only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, h]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Reduce the equality to equality of the corresponding arguments.
+Substitute using the available equality. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem ite_atInf {p : Prop} (d d' : Decidable p) {e e' : ι → E →+* ℂ} (h : e = e') (A B : Matrix (Fin n) (Fin n) E) (τ : ι) :
     @ite _ p d (atInf e A τ) (atInf e B τ) = @ite _ p d' (atInf e' A τ) (atInf e' B τ) := by
@@ -230,33 +230,29 @@ open GlobalTheory.Mem.Col2.BwLat GlobalTheory.LvT.Built.ValLat Formalism.Hermiti
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi eY hY w hw hs v x`. Use `revert hw hs`. Express the relevant statement in the definitionally equal form `HeightOneSpectrum (𝓞 B.fields.K) at w`. Introduce `hw hs`. Take `⟨hG, -, hc⟩` from `(spaces_in_coordinates I hI hP l Z).2.2.2 i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `(hc u a).1`. Establish `hX` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1`. Establish `hs' : seenC (B.primes X) u w` using `@of_decide_eq_true _ (Classical.propDecidable _) hs`. Establish `hT : (B.T u).Prime` using `l.pr.T_prime u`. Use `haveI : Fact (B.T u).Prime := ⟨hT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ∀ c, LdG (I.rec7 l Z) i hi (latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) = ((I.stp u a i).rep c).1.1.deco.1.Lsh`. Introduce `c`. Establish `h1` using `dualL_std (E := B.host.E) (sigD (I.rec7 l Z)).toRingHom (fun x => rfl) ((I.stp u a i).rep c).1.1.deco.1.L`. Conclude with `(congrArg₂ (dualL _) hG (hL c)).trans h1`. Establish `hk : ∀ c, LkG (I.rec7 l Z) i hi (PvG (D` using `I.rec7 l Z) (I.resT l u a) v) (latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) = ((I.stp u a i).rep c).1.1.deco.1.L ⊔ v.1.asIdeal • ((I.stp u a i).rep c).1.1.deco.1.Lsh := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Establish `e : PvG (D` using `I.rec7 l Z) (I.resT l u a) v = v.1.asIdeal := Ideal.mk_ker (I := (v.1.asIdeal : Ideal (𝓞 B.host.E)))`. Conclude with `congrArg₂ (· ⊔ ·) (hL c) (congrArg₂ (· • ·) e (hd c))`. Establish `hlam : lamTG (D` using `I.rec7 l Z) (I.fm l u a) i = GlobalTheory.Mem.Col2.lamT (B.hcW u) i := by`. Use function extensionality and compare the values at `τ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show Formalism.L2.Forms.shW (Examples₂.lamOf (B.hcW u τ) i) ((i * (B.R.t + 1) / 2 : ℕ) : ℤ) = GlobalTheory.Mem.Col2.shW (Examples₂.lamOf (B.hcW u τ) i) (-((i : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`. Take `⟨k, hk⟩` from `B.R.t_odd`. Establish `e1 : (B.R.t + 1) / 2 = k + 1` using `by omega`. Establish `e2 : i * (B.R.t + 1) / 2 = i * (k + 1)`. Rewrite using `[show B.R.t + 1 = (k + 1) * 2 by omega, ← mul_assoc, Nat.mul_div_cancel _ two_pos]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Forms.shW GlobalTheory.Mem.Col2.shW`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[e1, e2, Nat.cast_mul, sub_eq_add_neg]`. Establish `hemb : Formalism.L2.Forms.embT (I.rec7 l Z) = embAt B.embLL B.fields.emb`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Use extensionality with `y`. Use `show B.host.φ₀ _ = _`. Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ P, P ∈ IntSpan (I.rec7 l Z) w ((I.fm l u a).lam i) ↔ ∃ z₀ ∈ localization₂ w.asIdeal (delStd B.LL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i)), P = MvPolynomial.map B.embLL z₀`. Introduce `P`. Establish `h` using `mem_closure_iff (I.rec7 l Z).what₂.embLL ((I.rec7 l Z).plEq w) (intW (I.rec7 l Z).what₂.places w) ((I.rec7 l Z).val_nonneg_iff w) (lamTG (D := I.rec7 l Z) (I.fm l u a) i) P`. Simplify using `only [lamTG, delSq_shW] at h`. Rewrite using `[← hlam]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `hfin : Finite (I.stp u a i).Cl` using `by haveI := ((l.ch u a).step i).fin_orb`. Conclude with `Finite.instSigma`. Establish `h1 : x ∈ (I.fm l u a).Bw i w v ↔ ∀ c, x.1 c ∈ localization₂ w.asIdeal (delAtr B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) (((I.stp u a i).rep c).1.1.deco.1.LshKer v))` using `((I.rec7 l Z).mem_locW_iff w _ x).trans (mem_localization_latticeOf (I.stp u a i) B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ((l.fmL u a).fam i) _ w x)`. Use `h1.trans (forall_congr' fun c => ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ Bm Bm' : GL (Fin (B.R.N i)) B.host.E, IsLocBasis (B.T u) (((I.stp u a i).rep c).1.1.deco.1.Lsh : Set _) Bm → IsLocBasis (B.T u) ((((I.stp u a i).rep c).1.1.deco.1.L ⊔ v.1.asIdeal • ((I.stp u a i).rep c).1.1.deco.1.Lsh : Submodule (𝓞 B.host.E) _) : Set _) Bm' → (x.1 c ∈ lo …` using `I.rec7 l Z) (I.fm l u a) i)) (fun τ => @ite _ (τ = (I.fm l u a).tauOf w v) (Classical.propDecidable _) (atInf (Formalism.L2.Forms.embT (I.rec7 l Z)) (Bm'⁻¹ : GL (Fin (B.R.N i)) B.host.E).1 τ) (atInf (Formalism.L2.Forms.embT (I.rec7 l Z)) (Bm⁻¹ : GL (Fin (B.R.N i)) B.host.E).1 τ)) …`. Introduce `Bm Bm' hB hB'`. Use `(mem_localization_ker B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) w hT (T_mem_vT l.pr u) (tauAt l.pr u w) (fun P => seesP_tauAt l.pr u hX hs' P) ((I.stp u a i).rep c).1.1.deco.2 (sepElt_of_ok l.pr u) v hB hB' (x.1 c)).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, (hint _).2 ⟨z, hz, rfl⟩, fun y => (congrFun e y).trans ?_⟩` and prove the remaining obligations. Conclude with `fnOf_eq (congrArg shiftOf hlam.symm) (fun τ => ite_atInf _ _ hemb.symm _ _ τ) _ _ _ (hY y).symm`. Introduce and unpack `⟨P, hP, e⟩`. Take `⟨z, hz, rfl⟩` from `(hint P).1 hP`. Use `⟨z, hz, funext fun y => (e y).trans ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `fnOf_eq (congrArg shiftOf hlam) (fun τ => ite_atInf _ _ hemb _ _ τ) _ _ _ (hY y)`. Prove the components needed by the constructor for the conclusion. Introduce `h Bm Bm' hB hB'`. Rewrite `hB` using `[hd c]`. Rewrite `hB'` using `[hk c]`.
-
-Conclude with `(key Bm Bm' hB hB').1 h`. Introduce `h`. Establish `l1` using `((I.stp u a i).rep c).1.1.deco.2.Lsh_lattice`. Establish `l2` using `lattice_sup_smul ((I.stp u a i).rep c).1.1.deco.2 v.1.asIdeal`. Take `⟨Bm, hB⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis (B.T u) B.host.E _ l1.fg l1.span_eq_top`.
-
-Take `⟨Bm', hB'⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis (B.T u) B.host.E _ l2.fg l2.span_eq_top`. Conclude with `(key Bm Bm' hB hB').2 (h Bm Bm' (by rw [hd c]; exact hB) (by rw [hk c]; exact hB'))`.
+A detailed English derivation is pending.
 -/
 theorem bw_tie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi), I.IdY l Z u a i hi eY → BwTieG (D := (I.rec7 l Z)) (I.fm l u a) (B.T u) (I.resT l u a) eY (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) := by
   intro B X I hI hP l Z u a i hi eY hY w hw hs v x

@@ -23,15 +23,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace PositivityTheory.Xgn.TorsionFieldOfDefinition
 
 /- English proof (translation)
-Establish `hint : ∀ c : C, IsIntegral ℚ c` using `fun c => Algebra.IsIntegral.isIntegral c`. Set `bs` to `Module.finBasis ℚ C`. Set `S : Finset ℂ` to `Finset.univ.biUnion (fun i => ((minpoly ℚ (bs i)).aroots ℂ).toFinset)`. Establish `hroot : ∀ (ψ : C →+* ℂ) i, ψ (bs i) ∈ S`. Introduce `ψ i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, Finset.mem_biUnion, Finset.mem_univ, true_and, Multiset.mem_toFinset]`. Use `⟨i, Polynomial.mem_aroots.mpr ⟨minpoly.ne_zero (hint _), ?_⟩⟩` and prove the remaining obligations. Establish `h` using `Polynomial.aeval_algHom_apply ψ.toRatAlgHom (bs i) (minpoly ℚ (bs i))`. Rewrite `h` using `[minpoly.aeval, map_zero]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IntermediateField.adjoin ℚ (S : Set ℂ), ?_, ?_⟩` and prove the remaining obligations. Apply `IntermediateField.finiteDimensional_adjoin` to reduce the goal to its premises. Introduce `z hz`. Establish `hz' : z ∈ S` using `hz`. Simplify using `only [S, Finset.mem_biUnion, Finset.mem_univ, true_and, Multiset.mem_toFinset] at hz'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hzi⟩` from `hz'`. Take `⟨-, hz0⟩` from `Polynomial.mem_aroots.mp hzi`. Conclude with `⟨minpoly ℚ (bs i), minpoly.monic (hint _), by rwa [← Polynomial.aeval_def]⟩`. Introduce `ψ c`. Rewrite using `[← bs.sum_repr c, map_sum]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_rat_smul]`. Conclude with `IntermediateField.smul_mem _ (IntermediateField.subset_adjoin ℚ _ (hroot ψ i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_alg (C : Type) [CommRing C] [Algebra ℚ C] [Module.Finite ℚ C] :
     ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ ∀ (ψ : C →+* ℂ) (c : C), ψ c ∈ F := by
@@ -61,9 +61,9 @@ theorem exists_field_alg (C : Type) [CommRing C] [Algebra ℚ C] [Module.Finite 
     exact IntermediateField.smul_mem _ (IntermediateField.subset_adjoin ℚ _ (hroot ψ i))
 
 /- English proof (translation)
-Use `letI : Algebra L B := φ.toAlgebra`. Use `letI : Algebra ℚ B := (φ.comp (algebraMap ℚ L)).toAlgebra`. Use `haveI : IsScalarTower ℚ L B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Module.Finite L B := hφ`. Use `haveI : Module.Finite ℚ B := Module.Finite.trans L B`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨F₁, hF₁, h₁⟩` from `exists_field_alg L`. Take `⟨F₂, hF₂, h₂⟩` from `exists_field_alg B`. Use `haveI := hF₁`. Use `haveI := hF₂`. Conclude with `⟨F₁ ⊔ F₂, inferInstance, fun σ c => le_sup_left (a := F₁) (h₁ σ c), fun ψ c => le_sup_right (a := F₁) (h₂ ψ c)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_field_ring (L : Type) [Field L] [NumberField L] (B : Type) [CommRing B]
     (φ : L →+* B) (hφ : φ.Finite) :
@@ -82,17 +82,15 @@ theorem exists_field_ring (L : Type) [Field L] [NumberField L] (B : Type) [CommR
     fun ψ c => le_sup_right (a := F₁) (h₂ ψ c)⟩
 
 /- English proof (translation)
-Use `haveI : IsAffine W := isAffine_of_isAffineHom p`. Take `⟨q, hq⟩ : ∃ q : CommRingCat.of L ⟶ Γ(W, ⊤), Spec.map q = W.isoSpec.inv ≫ p` from `⟨_, Spec.map_preimage _⟩`. Establish `hfin : q.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hq]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF, hσF, hψF⟩` from `exists_field_ring L Γ(W, ⊤) q.hom hfin`. Use `⟨F, hF, σ.codRestrict F (hσF σ), fun x => rfl, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩ : ∃ g : Γ(W, ⊤) ⟶ CommRingCat.of ℂ, Spec.map g = w ≫ W.isoSpec.hom` from `⟨_, Spec.map_preimage _⟩`. Set `gF : Γ(W, ⊤) →+* F` to `g.hom.codRestrict F (hψF g.hom)`. Use `⟨Spec.map (CommRingCat.ofHom gF) ≫ W.isoSpec.inv, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hqg : q ≫ g = CommRingCat.ofHom σ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hg, hq]`. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [spMap]`. Rewrite using `[Category.assoc, ← hq, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `congrArg (fun f : CommRingCat.of L ⟶ CommRingCat.of ℂ => f.hom x) hqg`.
+By extensionality, compare the relevant components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [spMap]`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `hc : CommRingCat.ofHom gF ≫ CommRingCat.ofHom (algebraMap F ℂ) = g`. Use extensionality with `x`. Both sides reduce to the same expression.
-
-Rewrite using `[hc, hg, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_scheme (L : Type) [Field L] [NumberField L] (σ : L →+* ℂ) (W : Scheme.{0})
     (p : W ⟶ Sp L) [IsFinite p] :
@@ -131,9 +129,9 @@ theorem exists_field_scheme (L : Type) [Field L] [NumberField L] (σ : L →+* �
 end PositivityTheory.Xgn.TorsionFieldOfDefinition
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Hom.one_def]`. Use `show x ≫ (toUnit G ≫ η) = _`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_toUnit]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, Hom.mul_def, ← ih]`. Use `show x ≫ (CartesianMonoidalCategory.lift (mulN G k) (𝟙 G) ≫ μ) = _`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_lift, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_mulN_lemma {S : Scheme} {G : Over S} [GrpObj G] {X : Over S} (x : X ⟶ G) (n : ℕ) :
     x ≫ mulN G n = x ^ n := by
@@ -148,13 +146,13 @@ private theorem comp_mulN_lemma {S : Scheme} {G : Over S} [GrpObj G] {X : Over S
     rw [← Category.assoc, CartesianMonoidalCategory.comp_lift, Category.comp_id]
 
 /- English proof (translation)
-Introduce `L _ _ σ P n hn`. Use `haveI := P.isAb.comm`. Use `haveI := P.isAb.smooth`. Use `haveI := P.isAb.proper`. Establish `hu : IsUnit ((n : ℕ) : Γ(Sp L, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : IsUnit ((n : ℕ) : L)` using `(Nat.cast_ne_zero.mpr hn.ne').isUnit`. Establish `h1` using `h0.map (Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI hfin : IsFinite (torsion P.A n).hom := GlobalTheory.GrpTangent.isFinite_torsion P.A hu`. Take `⟨F, hF, e, he, hlift⟩` from `PositivityTheory.Xgn.TorsionFieldOfDefinition.exists_field_scheme L σ (torsion P.A n).left (torsion P.A n).hom`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨F, hF, e, he, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : x ≫ mulN P.A n = (toUnit _ ≫ η : Over.mk (spMap σ) ⟶ P.A)`. Rewrite using `[comp_mulN_lemma, hx, Hom.one_def]`. Set `t : Over.mk (spMap σ) ⟶ torsion P.A n` to `pullback.lift x (toUnit _) hx'`. Take `⟨y, hy1, hy2⟩` from `hlift t.left (Over.w t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨y ≫ (torsion.ι P.A n).left, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w (torsion.ι P.A n), hy1]`. Rewrite using `[← Category.assoc, hy2, ← Over.comp_left]`. Use `congr 1`. Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.torsion_field_of_definition : ∀ (L : Type) [Field L] [NumberField L] (σ : L →+* ℂ) (P : Out.PolAV (Sp L)) (n : ℕ), 0 < n → ∃ (F : IntermediateField ℚ ℂ) (_ : FiniteDimensional ℚ F) (e : L →+* F), (∀ x, ((e x : F) : ℂ) = σ x) ∧ ∀ x : Over.mk (spMap σ) ⟶ P.A, x ^ n = 1 → ∃ y : Sp F ⟶ P.A.left, y ≫ P.A.hom = spMap e ∧ spMap (algebraMap F ℂ) ≫ y = x.left := by
   intro L _ _ σ P n hn

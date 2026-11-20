@@ -17,14 +17,14 @@ open GlobalTheory.SeeSaw.SplitLat
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_eq_dot {n : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (x y : Fin n → D.host.E) :
     ∑ i, ∑ j, star (x i) * G i j * y j = star x ⬝ᵥ (G *ᵥ y) := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `hG : S.gram * d.i₀ = d.q0ᴴ * S₀.gram`. Rewrite using `[gram_eq d]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, qX_i₀, qY_i₀, wittDecomposition_coreProj_mul_core_eq_one, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add]`. Rewrite using `[pair_eq_dot, pair_eq_dot, Matrix.mulVec_mulVec, hG, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_i₀ {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x : Fin S.rank → D.host.E) (y : Fin S₀.rank → D.host.E) :
     ∑ i, ∑ j, star (x i) * S.gram i j * (d.i₀ *ᵥ y) j = ∑ i, ∑ j, star ((d.q0 *ᵥ x) i) * S₀.gram i j * y j := by
@@ -36,7 +36,7 @@ theorem pair_i₀ {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x : Fin S.
     Matrix.star_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_eq_sum_cols {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (w : Fin n → D.host.E) :
     M *ᵥ w = ∑ i, fun r => w i * M r i := by
@@ -44,7 +44,7 @@ theorem mulVec_eq_sum_cols {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (w 
   simp only [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colProj, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colProj_mulVec' {S : HSp D} {ρ m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E)
     (f : Matrix (Fin S.rank) (Fin ρ) D.host.E) (i : Fin ρ) (x : Fin m → D.host.E) :
@@ -54,33 +54,29 @@ theorem colProj_mulVec' {S : HSp D} {ρ m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.
   exact Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Establish `hcore : ∀ y ∈ L, d.q0 *ᵥ y ∈ coreLat d L`. Introduce `y hy`. Rewrite using `[mem_coreLat]`. Establish `hdec : y = d.e *ᵥ (d.qX *ᵥ y) + d.i₀ *ᵥ (d.q0 *ᵥ y) + d.e' *ᵥ (d.qY *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec, d.sum_eq_one_rat, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : d.e *ᵥ (d.qX *ᵥ y) ∈ L`. Rewrite using `[mulVec_eq_sum_cols]`. Conclude with `sum_mem fun i _ => (hcol y hy i).1`. Establish `hY : d.e' *ᵥ (d.qY *ᵥ y) ∈ L`. Rewrite using `[mulVec_eq_sum_cols]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sum_mem fun i _ => (hcol y hy i).2`. Establish `key : ∀ a b c z : Fin S.rank → D.host.E, z = a + b + c → b = z - a - c`. Introduce `a b c z hz`. Rewrite using `[hz]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : d.i₀ *ᵥ (d.q0 *ᵥ y) = y - d.e *ᵥ (d.qX *ᵥ y) - d.e' *ᵥ (d.qY *ᵥ y)` using `key _ _ _ _ hdec`. Rewrite using `[h]`. Conclude with `sub_mem (sub_mem hy hX) hY`. Establish `hinj : Function.Injective ((Matrix.mulVecLin d.i₀).restrictScalars (𝓞 D.host.E))`. Introduce `x x' hxx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (fun z => d.q0 *ᵥ z) hxx`. Simplify `h` using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, wittDecomposition_coreProj_mul_core_eq_one, Matrix.one_mulVec]`. Use `⟨⟨⟨?_, ?_⟩, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩, fun v => ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective _ hinj ?_` and prove the remaining obligations. Establish `hLfg : L.FG` using `hL.1.fg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherian (𝓞 D.host.E) L := isNoetherian_of_fg_of_noetherian L hLfg`. Establish `hle : (coreLat d L).map ((Matrix.mulVecLin d.i₀).restrictScalars (𝓞 D.host.E)) ≤ L` using `Submodule.map_comap_le _ _`. Establish `h1 : (((coreLat d L).map ((Matrix.mulVecLin d.i₀).restrictScalars (𝓞 D.host.E))).comap L.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map L.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hle]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : d.i₀ *ᵥ x ∈ Submodule.span D.host.E (L : Set (Fin S.rank → D.host.E))`. Rewrite using `[hL.1.span_eq_top]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `Submodule.mem_map_of_mem (f := Matrix.mulVecLin d.q0) hx`. Rewrite `hm` using `[Submodule.map_span, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, wittDecomposition_coreProj_mul_core_eq_one, Matrix.one_mulVec]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hcore z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `(hL.2 (d.i₀ *ᵥ y)).1 hy (d.i₀ *ᵥ x) hx`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, pair_i₀, Matrix.mulVec_mulVec, wittDecomposition_coreProj_mul_core_eq_one, Matrix.one_mulVec]`. Rewrite using `[mem_coreLat]`. Use `(hL.2 (d.i₀ *ᵥ y)).2 fun x hx => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `h (d.q0 *ᵥ x) (hcore x hx)`. Conclude with `⟨b, hb.trans (pair_i₀ d x y).symm⟩`. Establish `hX : ∀ i : Fin ρ, ∀ x ∈ L, colProj d.qX d.e i *ᵥ x ∈ L` using `fun i x hx => by`. Rewrite using `[colProj_mulVec']`. Conclude with `(hcol x hx i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hY : ∀ i : Fin ρ, ∀ x ∈ L, colProj d.qY d.e' i *ᵥ x ∈ L` using `fun i x hx => by`. Rewrite using `[colProj_mulVec']`. Conclude with `(hcol x hx i).2`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `hy`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `colMul (rat d.e) i ((rat d.qX *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`. Conclude with `rat_mulVec_mem_latV _ (hX i) _ hy`.
-
-Express the relevant statement in the definitionally equal form `colMul (rat d.e') i ((rat d.qY *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`. Conclude with `rat_mulVec_mem_latV _ (hY i) _ hy`. Conclude with `rat_mulVec_mem_latV d.q0 hcore _ hy`. Introduce and unpack `⟨h1, h3, h2⟩`.
-
-Establish `e : y = d.jX *ᵥ (d.pX *ᵥ y) + d.j0 *ᵥ (d.p0 *ᵥ y) + d.jY *ᵥ (d.pY *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec, d.sum_eq_one, Matrix.one_mulVec]`. Rewrite using `[e, mulVec_eq_sum_colMul d.jX, mulVec_eq_sum_colMul d.jY]`. Use `add_mem (add_mem (sum_mem fun i _ => h1 i) ?_) (sum_mem fun i _ => h3 i)` and prove the remaining obligations. Conclude with `rat_mulVec_mem_latV d.i₀ (fun x hx => hx) _ h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem selfDual_core_monoAt (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L : Lat S) (hL : IsSelfDualC S L)
     (hcol : ∀ y ∈ L, ∀ i, (fun r => (d.qX *ᵥ y) i * d.e r i) ∈ L ∧ (fun r => (d.qY *ᵥ y) i * d.e' r i) ∈ L) :

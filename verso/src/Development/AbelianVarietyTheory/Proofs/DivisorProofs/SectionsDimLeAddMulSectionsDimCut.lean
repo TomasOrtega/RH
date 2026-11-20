@@ -17,11 +17,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory.SiuChain
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `M' hM' h`. Rewrite `h` using `[zero_nsmul, add_zero]`. Take `⟨e⟩` from `nonempty_twist_iso_of_cls_eq G hM hM' h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hdim_congr k 0 e).ge`. Consider the case `succ j ih`. Introduce `M' hM' h`. Establish `h1` using `cls_tens hM' hB (isLB_tens hM' hB)`. Establish `h2` using `ih _ (isLB_tens hM' hB) (by rw [h1, h, succ_nsmul']; abel)`.
-
-Conclude with `((GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hX G B _ M' hB _ hM' t ht h1).2.2).trans h2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hdim_le_of_cls_eq_add_nsmul (k : Type) [Field k] [Infinite k] (X : Scheme.{0})
     [Algebra k Γ(X, ⊤)]
@@ -42,13 +40,13 @@ theorem hdim_le_of_cls_eq_add_nsmul (k : Type) [Field k] [Infinite k] (X : Schem
     exact ((GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hX G B _ M' hB _ hM' t ht h1).2.2).trans h2
 
 /- English proof (translation)
-Introduce `k _ _ X _ hX F _ B M hB hM s t hs ht j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `M' hM' h`. Rewrite `h` using `[zero_nsmul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e⟩` from `nonempty_twist_iso_of_cls_eq F hM hM' h`. Rewrite using `[hdim_congr k 0 e]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ j ih`. Introduce `M' hM' h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `cls_tens hM' hB (isLB_tens hM' hB)`. Establish `h0 : cls M hM = cls (tens M' B) (isLB_tens hM' hB) + j • cls B hB`. Rewrite using `[h1, h, succ_nsmul']`. Normalize the expressions using the abelian group laws. Establish `h2` using `ih _ (isLB_tens hM' hB) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hX F B _ M' hB _ hM' s hs h1).1 0`. Establish `h4` using `hdim_le_of_cls_eq_add_nsmul k X hX (cut F hB s) B M hB hM t ht j _ (isLB_tens hM' hB) h0`. Rewrite using `[Nat.succ_mul]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hdim_le_add_mul_hdim_cut : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (F : X.Modules) [IsFiniteQC F], ∀ (B M : LB X) (hB : B.IsLB) (hM : M.IsLB) (s t : B.Sec), Mono (cutHom F hB s) → Mono (cutHom (cut F hB s) hB t) → ∀ (j : ℕ) (M' : LB X) (hM' : M'.IsLB), cls M hM = cls M' hM' + j • cls B hB → hdim k (twist F M) 0 ≤ hdim k (twist F M') 0 + j * hdim k (twist (cut F hB s) M) 0 := by
   intro k _ _ X _ hX F _ B M hB hM s t hs ht j

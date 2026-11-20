@@ -11,15 +11,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hk0 : 0 < k` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hk`. Establish `hl : 0 ≤ Real.log x` using `Real.log_nonneg hx.le`. Establish `hxe : 0 < x ^ e` using `Real.rpow_pos_of_pos hx0 _`. Establish `e1 : x ^ (2 + 10 * e) = x ^ (2 + 8 * e) * x ^ e * x ^ e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : x ^ (5 / 2 + 10 * e) = x ^ (-2 : ℝ) * x ^ (9 / 2 + 10 * e)`. Rewrite using `[← Real.rpow_add hx0]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hnd : n * d ≤ 2 * x ^ (2 + 8 * e)` using `le_trans (mul_le_of_le_one_right hn0 hd) hn`. Establish `t1 : 4 * (2 * n * d) * x ^ e * La ≤ x ^ (5 / 2 + 10 * e) / 2`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `t2 : c * Real.log x * La ≤ x ^ (5 / 2 + 10 * e) / 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_abs_self c`. Use `_ = 4 * |c| * B * x ^ e * Real.log x ^ 3 / 2 := by ring`. Use `_ ≤ _ := by linarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_div, div_le_iff₀ hk0]`. Establish `t3 : x ^ (5 / 2 + 10 * e) ≤ x ^ (-2 : ℝ) * k`. Rewrite using `[e2]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bandWidth_le_inv_sq_of_rank_bounds (x e n k d La B c : ℝ) (hx : 1 < x) (hd0 : 0 ≤ d) (hd : d ≤ 1) (hn0 : 0 ≤ n)
     (hn : n ≤ 2 * x ^ (2 + 8 * e)) (hk : x ^ (9 / 2 + 10 * e) ≤ k) (hLa0 : 0 ≤ La)
@@ -53,31 +53,29 @@ theorem bandWidth_le_inv_sq_of_rank_bounds (x e n k d La B c : ℝ) (hx : 1 < x)
   linarith
 
 /- English proof (translation)
-Introduce `eps he0 he1 C hC`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hpde, -, hmid, -⟩` from `hC`. Establish `hKLa : 1 ≤ C.GK.La` using `hmid _ (by simp [FC.cMid])`. Take `⟨CN, x1, h1⟩` from `GlobalTheory.topCount_and_lambda_bounds eps he0 he1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, h2⟩` from `GlobalTheory.EX.hostBounds eps C.P.Cpde he0 he1 hpde`. Take `⟨x3, h3⟩` from `GlobalTheory.scale_poly_comparison eps 41 1 he0 one_pos`. Take `⟨x4, h4⟩` from `GlobalTheory.scale_poly_comparison eps (2 * C.P.Cpde) 1 he0 one_pos`. Take `⟨x5, h5⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow (2 + 10 * eps) (5 / 2 + 10 * eps) (64 * (C.GK.La * CN ^ 2)) 2 (by linarith)`. Take `⟨x6, h6⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow eps (5 / 2 + 10 * eps) (4 * |C.GK.rho * C.GK.CN| * (C.GK.La * CN ^ 2)) 3 (by linarith)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max (max (max x1 x2) (max x3 x4)) (max (max x5 x6) 512), fun D L he hx hV => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨hx1, hx2⟩, hx3, hx4⟩, ⟨hx5, hx6⟩, hx7⟩` from `hx`. Establish `hx1'` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hLa⟩` from `h1 L.sc he hx1`. Take `⟨hLa1, hLa2⟩` from `hLa C.GK hKLa`. Take `⟨-, -, -, -, -, -, -, -, hp1, hp2⟩` from `h2 L.sc D.R D.host he hx2 hV.ranks hV.host`. Take `⟨-, -, hb, -⟩` from `h3 L.sc he hx3`. Take `⟨-, -, -, -, -, -, hX⟩` from `h4 L.sc he hx4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : 0 < L.sc.x ^ (L.sc.eps / 100)` using `Real.rpow_pos_of_pos hx0 _`. Establish `hn : (D.R.n : ℝ) / L.sc.x ^ (L.sc.eps / 100) ≤ 2 * L.sc.x ^ (2 + 8 * L.sc.eps)`. Rewrite using `[div_le_iff₀ hy0, mul_assoc, ← Real.rpow_add hx0]`. Conclude with `hV.ranks.n_le`. Establish `hd : L.sc.delta1 * L.sc.x ^ (L.sc.eps / 100) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Scale.delta1`. Rewrite using `[← Real.rpow_add hx0]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hx1'.le (by have := L.sc.eps_pos; linarith)`. Establish `hd0 : 0 ≤ L.sc.delta1` using `Real.rpow_nonneg hx0.le _`. Establish `hnd : 2 * (D.R.n : ℝ) * L.sc.delta1 = 2 * ((D.R.n : ℝ) / L.sc.x ^ (L.sc.eps / 100)) * (L.sc.delta1 * L.sc.x ^ (L.sc.eps / 100))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨-, -, ⟨hk1, hk2⟩, -⟩` from `hV.ranks`. Take `⟨-, hTT, -, -, hg, -⟩` from `hV.host`. Rewrite `hb`, `hX` using `[Real.rpow_one]`. Establish `hp : ∀ y : ℝ, Real.log y ≤ 2 * C.P.Cpde * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2 → y < L.sc.X'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `a1 : y ≤ Real.exp (2 * C.P.Cpde * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2)` using `(Real.le_exp_log y).trans (Real.exp_le_exp.2 hy)`. Establish `a2 : 1 < L.sc.x ^ (2 * C.P.Cpde)` using `Real.one_lt_rpow hx1' (by linarith)`. Conclude with `lt_of_le_of_lt a1 (lt_of_lt_of_le (lt_mul_of_one_lt_right (Real.exp_pos _) a2) hX)`. Use `⟨?_, hV.La_eq ▸ hLa1, fun j => ?_, hp _ hp1, hp _ hp2, hTT, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `G.rhoB G.Nstar`. Rewrite using `[hnd]`. Use `bandWidth_le_inv_sq_of_rank_bounds L.sc.x L.sc.eps _ _ _ _ (C.GK.La * CN ^ 2) _ hx1' (mul_nonneg hd0 hy0.le) hd (div_nonneg (Nat.cast_nonneg _) hy0.le) hn hk1 ((Real.rpow_nonneg hx0.le _).trans hLa1) hLa2 ?_ ?_` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `h5 _ hx5`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `h6 _ hx6`. Establish `hk5 : (D.R.k : ℝ) ≤ 2 * L.sc.x ^ (5 : ℝ)`. Use `hk2.trans ?_` and prove the remaining obligations. Establish `: L.sc.x ^ (9 / 2 + 10 * L.sc.eps) ≤ L.sc.x ^ (5 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1'.le (by rw [he]; linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX1 : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `h41 : L.sc.x ^ (41 : ℕ) ≤ L.sc.b`. Establish `: L.sc.x ^ (41 : ℝ) ≤ L.sc.b` using `(le_mul_of_one_le_right (Real.rpow_nonneg hx0.le _) hX1).trans hb`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `this` after adjusting the coercions. Establish `hk5' : (D.R.k : ℝ) ≤ 2 * L.sc.x ^ (5 : ℕ)` using `by exact_mod_cast hk5`. Establish `e9 : Real.exp (9 * L.sc.L) = L.sc.b ^ 9`. Unfold `Scale.b`. Rewrite using `[← Real.exp_nat_mul]`.
-
-Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Unfold `ChCode_at`. Rewrite using `[hV.words]`. Conclude with `Nat.le_ceil _`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szRow_band_lambda_primes :
     SzRow (fun C D L => G.rhoB D C.GK L.sc ≤ L.sc.x ^ (-2 : ℝ) ∧ L.sc.x ^ L.sc.eps ≤ L.LaG ∧

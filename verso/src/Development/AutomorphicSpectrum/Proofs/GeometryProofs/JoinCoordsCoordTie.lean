@@ -21,9 +21,9 @@ section Transport
 variable {X Y : Scheme.{0}} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `h1` using `h.map (inv f).continuous`. Establish `e : ∀ z : Y, (inv f) (f z) = z` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Establish `e2 : genPt (η ≫ f) = f (genPt η)` using `Scheme.Hom.comp_apply _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[e2, e, e]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specializes_of_iso (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso f] {y : Y}
     (h : genPt (η ≫ f) ⤳ f y) : genPt η ⤳ y := by
@@ -35,7 +35,7 @@ theorem specializes_of_iso (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [
   exact h1
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `q`. Take `⟨y, rfl⟩ : ∃ y, f y = q` from `⟨(inv f) q, by`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.inv_hom_id]`. Use the proof step `rfl⟩`. Conclude with `⟨⟨y, specializes_of_iso η f hq⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso f] (q : Cpt (η ≫ f)) :
     ∃ p : Cpt η, push η f p = q := by
@@ -45,7 +45,7 @@ theorem exists_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso f
   exact ⟨⟨y, specializes_of_iso η f hq⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `InChart`. Rewrite using `[regAt_push]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inChart_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso f] {κ : Type} (x : κ → Ω) (c : κ)
     (p : Cpt η) : InChart (η ≫ f) x c (push η f p) ↔ InChart η x c p := by
@@ -53,19 +53,19 @@ theorem inChart_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso 
   rw [regAt_push]
 
 /- English proof (translation)
-Use `⟨⟨?_, fun q => ?_⟩, fun q => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.stalkClosedPointTo_comp η f]`. Establish `hb : Function.Bijective (f.stalkMap (η (IsLocalRing.closedPoint Ω))).hom` using `ConcreteCategory.bijective_of_isIso _`. Conclude with `h.gen.bij.comp hb`. Take `⟨p, rfl⟩` from `exists_push η f q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `genMap_push_injective η f p (h.gen.inj p)`. Take `⟨p, rfl⟩` from `exists_push η f q`. Take `⟨c, hc⟩` from `h.cover p`. Conclude with `⟨c, (inChart_push η f x c p).2 hc⟩`. Take `⟨U, hU, hq⟩` from `h.affine c hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(inv f) ⁻¹ᵁ U, hU.preimage (inv f), fun q => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩ : ∃ y, f y = q` from `⟨(inv f) q, by`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.inv_hom_id]`. Use the proof step `rfl⟩`. Establish `e : (inv f) (f y) = y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Establish `e1 : f y ∈ (inv f) ⁻¹ᵁ U ↔ y ∈ U`. Express the relevant statement in the definitionally equal form `(inv f) (f y) ∈ U ↔ _`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e1, hq y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(push η f ⟨y, h1⟩).2, (inChart_push η f x c ⟨y, h1⟩).2 h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨specializes_of_iso η f h1, (inChart_push η f x c ⟨y, specializes_of_iso η f h1⟩).1 h2⟩`. Rewrite using `[h.ring c hc a]`. Prove the components needed by the constructor for the conclusion. Introduce `H q hq`. Take `⟨p, rfl⟩` from `exists_push η f q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[regAt_push]`. Conclude with `H p ((inChart_push η f x c p).1 hq)`. Introduce `H p hp`. Use `H (push η f p) ((inChart_push η f x c p).2 hp)` as an intermediate fact. Rewrite `this` using `[regAt_push]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coordTie_comp_iso {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsIso f] (h : CoordTie o η x) :
@@ -108,7 +108,7 @@ theorem coordTie_comp_iso {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x 
 end Transport
 
 /- English proof (translation)
-Unfold `Dominates`. Rewrite using `[show CommRingCat.ofHom (RingHom.id Ω) = 𝟙 (CommRingCat.of Ω) from rfl, Spec.map_id, Category.id_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dominates_id_iff {X Y : Scheme.{0}} {Ω : Type} [Field Ω] {ξ' : Spec (CommRingCat.of Ω) ⟶ Y}
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {f : Y ⟶ X} : Dominates ξ' ξ f (RingHom.id Ω) ↔ ξ' ≫ f = ξ := by
@@ -116,7 +116,7 @@ theorem dominates_id_iff {X Y : Scheme.{0}} {Ω : Type} [Field Ω] {ξ' : Spec (
   rw [show CommRingCat.ofHom (RingHom.id Ω) = 𝟙 (CommRingCat.of Ω) from rfl, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `M.tie.cover p`. Conclude with `⟨c, hc.1, fun a ha => (GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).1 a ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_ctrSet_self {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ]
     {x : κ → Ω} (M : PModel o x) (p : Cpt M.ξ) : p ∈ ctrSet o x (RingHom.id Ω) M.ξ := by
@@ -124,13 +124,11 @@ theorem mem_ctrSet_self {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra 
   exact ⟨c, hc.1, fun a ha => (GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).1 a ha⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `M.tie.cover p`. Take `⟨l, hl⟩` from `hw`. Use `⟨(c, l), mul_ne_zero hc.1 hl.1, fun a ha => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a ∈ regAt M.ξ p`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨⟨j, m⟩, rfl⟩` from `hy`. Establish `e : joinCo (RingHom.id Ω) x w (j, m) / joinCo (RingHom.id Ω) x w (c, l) = (x j / x c) * (w m / w l)`. Simplify using `only [joinCo, RingHom.id_apply]`. Rewrite using `[mul_div_mul_comm]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[e]`. Conclude with `mul_mem (hc.2 j) (hl.2 m)`. Consider the case `algebraMap r`. Conclude with `(GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).1 _ (Subalgebra.algebraMap_mem _ r)`.
-
-Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact mul_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_ctrSet_join {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ]
     {x : κ → Ω} (M : PModel o x) {κ' : Type} {w : κ' → Ω} (p : Cpt M.ξ) (hw : ∃ l, InChart M.ξ w l p) :
@@ -155,11 +153,11 @@ theorem mem_ctrSet_join {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra 
   | mul y z _ _ hy hz => exact mul_mem hy hz
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M κ' _ w hw`. Establish `hl : ∃ l, w l ≠ 0`. Take `⟨l, h⟩` from `hw ⟨genPt M.ξ, specializes_rfl⟩`. Conclude with `⟨l, h.1⟩`. Take `⟨M', f, hf⟩` from `GlobalTheory.T.exists_join_model_dominates o Ω κ x M Ω (RingHom.id Ω) κ' w (fun _ => rfl) hl (eq_top_iff.2 fun a _ => Subfield.subset_closure (Or.inl ⟨a, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, -⟩` from `GlobalTheory.T.existsUnique_dominating_map o Ω (κ × κ') _ M' o Ω κ x M (RingHom.id Ω) (fun p => mem_ctrSet_join M p (hw p))`. Rewrite `hf`, `hg` using `[dominates_id_iff]`. Establish `u1` using `GlobalTheory.T.existsUnique_dominating_map o Ω κ x M o Ω κ x M (RingHom.id Ω) (mem_ctrSet_self M)`. Establish `u2` using `GlobalTheory.T.existsUnique_dominating_map o Ω (κ × κ') _ M' o Ω (κ × κ') _ M' (RingHom.id Ω) (mem_ctrSet_self M')`. Establish `e1 : g ≫ f = 𝟙 _` using `u1.unique (dominates_id_iff.2 (by rw [← Category.assoc, hg, hf])) (dominates_id_iff.2 (Category.comp_id _))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : f ≫ g = 𝟙 _` using `u2.unique (dominates_id_iff.2 (by rw [← Category.assoc, hf, hg])) (dominates_id_iff.2 (Category.comp_id _))`. Use `haveI : IsIso f := ⟨g, e2, e1⟩`. Use `coordTie_comp_iso M'.ξ f M'.tie` as an intermediate fact. Rewrite `this` using `[hf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coordTie_join_of_charts : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ]
     (x : κ → Ω) (M : PModel o x) (κ' : Type) [Finite κ'] (w : κ' → Ω),

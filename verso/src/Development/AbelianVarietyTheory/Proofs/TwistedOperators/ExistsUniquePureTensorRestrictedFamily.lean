@@ -15,29 +15,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PureTensorExists
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC x hx`. Establish `hstd : IsStdChar D ψ (-1)` using `GlobalTheory.PlaceTensor.base_std hB`. Establish `hf0 : IsThetaFunO ψ S T f₀` using `GlobalTheory.PlaceTensor.base_theta hB`. Establish `build : ∀ (s : Finset (Place D)) (y : Place D → WO S T → ℂ), IsRestricted ψ θ S T sS sT ΛS ΛT f₀ y → (∀ p, y p ≠ f₀ → p ∈ s) → ∃ f, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ y f`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `y _ hy`. Establish `hconst : y = fun _ => f₀`. Use function extensionality and compare the values at `p`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd (hy p hne) (by simp)`. Substitute `hconst` using the available equality. Conclude with `⟨f₀, (GlobalTheory.T.isPureTensor_base_vector_and_local_factor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC).1⟩`. Introduce `q s _ ih y hyR hy`. Establish `hres : IsRestricted ψ θ S T sS sT ΛS ΛT f₀ (Function.update y q f₀)`.
+Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `using GlobalTheory.PlaceTensor.base_isLocal hB p`. Simplify `hyR.1 p` using `[Function.update_apply, hpq]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `hyR.2.subset fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `at hp`. Simplify `hp` using `[Function.update_apply, hpq]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsub : ∀ p, Function.update y q f₀ p ≠ f₀ → p ∈ s`. Introduce `p hp`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `at hp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp' : y p ≠ f₀` using `by simpa [Function.update_apply, hpq] using hp`. Break down `Finset.mem_insert.1 (hy p hp') with h | h` into its components or cases. Conclude with `absurd h hpq`. Conclude with `h`. Take `⟨f, hf⟩` from `ih (Function.update y q f₀) hres hsub`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf', -⟩` from `GlobalTheory.T.pureTensor_update_factor_from_base_vector D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC (Function.update y q f₀) y f q hf (by simp) (fun p hp => (Function.update_of_ne hp f₀ y).symm) (hyR.1 q)`. Conclude with `⟨f', hf'⟩`. Take `⟨f, hf⟩` from `build hx.2.toFinset x hx (fun p hp => by simpa using hp)`. Use `⟨f, hf, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨hHaar, hFD, -⟩` from `id hC`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfT : IsThetaFunO ψ S T f` using `hf.2.1`. Establish `hgT : IsThetaFunO ψ S T g` using `hg.2.1`. Establish `hIP` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hstd hC`. Establish `hd : IsThetaFunO ψ S T (g - f)` using `GlobalTheory.WeilVacMove.isTheta_sub hgT hfT`. Establish `hz : g - f = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.HeisTotal.eq_zero_of_orthogonal_translates D ψ hstd S T f₀ (g - f) hf0 (GlobalTheory.PlaceTensor.base_ne_zero hB) hd μ 𝓕 hHaar hFD fun w => ?_` and prove the remaining obligations. Establish `hw : IsThetaFunO ψ S T (heisO ψ S T w f₀)` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hstd S T).1 w f₀ hf0`. Establish `e1 : ipO μ 𝓕 g (heisO ψ S T w f₀) = ipO μ 𝓕 f (heisO ψ S T w f₀)`. Rewrite using `[(hg.2.2 w).2, (hf.2.2 w).2]`. Establish `e2 : ipO μ 𝓕 (heisO ψ S T w f₀) g = ipO μ 𝓕 (heisO ψ S T w f₀) f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(hIP g _ hgT hw).2.1, (hIP f _ hfT hw).2.1, e1]`. Establish `e3` using `((hIP (g - f) _ hd hw).2.2.2.1 f hfT).2`. Rewrite `e3` using `[sub_add_cancel]`. Establish `e4 : ipO μ 𝓕 (heisO ψ S T w f₀) (g - f) = 0`. Take the linear combination `e2 - e3`.
-
-Conclude with `e4`. Conclude with `sub_eq_zero.1 hz`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem existsUnique_isPure : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x : Place D → WO S T → ℂ), IsRestricted ψ θ S T sS sT ΛS ΛT f₀ x → ∃! f, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC x hx

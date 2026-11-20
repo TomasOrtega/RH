@@ -32,21 +32,21 @@ def schrLin [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (�
     simp only [schr, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
 /- English proof (translation)
-Introduce `g hg`. Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `e.toRingHom.comp p1`. Set `h : AdeleRing (𝓞 F) F` to `⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)`. Set `c : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.2 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.1 i)`. Set `k : ℝ` to `Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (q h)`. Set `d : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.2 i)`. Set `s : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.1 i)`. Take `⟨T, hT⟩` from `hl _ (finS_mem ψ hψ.1 hg d s (p2 h))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨T.comp ((SchwartzMap.smulLeftCLM ℂ (fun y : κ → mixedEmbedding.mixedSpace F => eChar ((-trL c) y + -k))).comp (SchwartzMap.compSubConstCLM ℂ (-t) : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] _)), fun f => ?_⟩` and prove the remaining obligations. Establish `key : schr ψ w (pureA F f g) = pureA F (archS f c t k) (finS ψ g d s (p2 h))`. Use function extensionality and compare the values at `x`. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`. Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : (fun i => q ((x + w.1) i)) = y + t` using `funext fun i => map_add q (x i) (w.1 i)`. Establish `h2 : (fun i => p2 ((x + w.1) i)) = z + s` using `funext fun i => map_add p2 (x i) (w.1 i)`. Establish `h3 : ψ (x ⬝ᵥ w.2 + h) = eChar ((-trL c) y + -k) * finChar ψ (z ⬝ᵥ d + p2 h)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (mk (p1 (x ⬝ᵥ w.2 + h)) 0) = y ⬝ᵥ c + q h`. Express the relevant statement in the definitionally equal form `q (x ⬝ᵥ w.2 + h) = _`. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Rewrite using `[e1, map_add, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `ψ (x ⬝ᵥ w.2 + h) * (f (fun i => q ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = archS f c t k y * (finChar ψ (z ⬝ᵥ d + p2 h) * g (z + s))`. Rewrite using `[h1, h2, h3, archS_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `l (schr ψ w (pureA F f g)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[key, hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem schrLin_comp_mem_adm [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : IsStd ψ)
     (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) (l : ((κ → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ℂ)
@@ -94,7 +94,7 @@ theorem schrLin_comp_mem_adm [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddCh
 end Heis
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hφ, hvac, rfl⟩`. Conclude with `GlobalTheory.BigNZ.Fam.mem hM ⟨hφ, hvac⟩ f`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem polData_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W) (hM : M.IsGood B.ψ) :
@@ -104,11 +104,11 @@ theorem polData_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   exact GlobalTheory.BigNZ.Fam.mem hM ⟨hφ, hvac⟩ f
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin b × Fin (b + a'))`. Establish `hl₁` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B _ _ _ _ G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι _ e hT.geo.hM hT₁.geo.hM he l₀ hl₀`. Establish `hl₂` using `schrLin_comp_mem_adm B.ψ hT.base.std (G.M.co.e (shiftA H H' 1)) _ hl₁`. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦA : Φ ∈ schA F _` using `polData_le B G.M hT.geo.hM hΦ`. Establish `hc` using `(hw.2.2 _ hl₂ Φ hΦA).comp (continuous_id.prodMk continuous_const : Continuous fun g : UA σ G.V.J => (g, h))`. Use `hc.congr fun g => ?_` and prove the remaining obligations. Establish `h1` using `hw.isUSplitting.pres (g, h) Φ hΦA`. Establish `h2` using `GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hT.base.std (shiftA H H' 1) _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hl₀eq _ (he.maps _ h2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem continuous_shift_term : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

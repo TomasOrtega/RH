@@ -11,25 +11,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `R O _ _ J _ b M _ _ _ _ K _ _ hfrac N _ _ _ _ e he hinv`. Use `letI : Module (K ⊗[ℤ] O) N := TensorProduct.Algebra.module`. Set `B` to `Algebra.TensorProduct.basis K b`. Use `haveI : Module.Finite K (K ⊗[ℤ] O) := Module.Finite.of_basis B`. Use `haveI : IsArtinianRing (K ⊗[ℤ] O) := IsArtinianRing.of_finite K _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Finite (MaximalSpectrum (K ⊗[ℤ] O)) := IsArtinianRing.instFiniteMaximalSpectrum _`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.exists_bijective_toSpanSingleton_of_finite_maximalSpectrum (K ⊗[ℤ] O) N`. Establish `hsc : ∀ (r : R) (m : M), algebraMap R K r • ((1 : K) ⊗ₜ[R] m) = (1 : K) ⊗ₜ[R] (r • m)`. Introduce `r m`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ θ : K ⊗[R] M, ∃ s : R, algebraMap R K s ≠ 0 ∧ ∃ m : M, algebraMap R K s • θ = (1 : K) ⊗ₜ[R] m`. Introduce `θ`. Proceed by induction on `θ using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, by simp, 0, by simp⟩`. Consider the case `tmul k m`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, s, hs, hk⟩` from `hfrac k`. Use `⟨s, hs, a • m, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, hk, ← hsc, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Consider the case `add x y hx hy`. Take `⟨s, hs, m, hm⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, m', hm'⟩` from `hy`. Use `⟨s * t, by rw [map_mul]; exact mul_ne_zero hs ht, t • m + s • m', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, map_mul, mul_comm, mul_smul, hm, mul_comm, mul_smul, hm', hsc, hsc, TensorProduct.tmul_add]`. Take `⟨s, hs, m, hm⟩` from `key (e.symm n₀)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set k : K := algebraMap R K s with hk`. Establish `hn : e ((1 : K) ⊗ₜ[R] m) = (k ⊗ₜ[ℤ] (1 : O)) • n₀`. Rewrite using `[← hm, map_smul, e.apply_symm_apply, TensorProduct.Algebra.smul_def, one_smul]`. Establish `hu : IsUnit (k ⊗ₜ[ℤ] (1 : O))`. Apply the tactic sequence `refine ⟨⟨k ⊗ₜ[ℤ] (1 : O), k⁻¹ ⊗ₜ[ℤ] (1 : O), ?_, ?_⟩, rfl⟩ <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, hs, Algebra.TensorProduct.one_def]`. Use `set n := e ((1 : K) ⊗ₜ[R] m) with hndef`. Establish `hcomp : ∀ c : J →₀ K, e (Finsupp.linearCombination K (fun i => (1 : K) ⊗ₜ[R] (b i • m)) c) = (B.repr.symm c) • n`. Introduce `c`. Proceed by induction on `c using Finsupp.induction_linear with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add c d hc hd => rw [map_add, map_add, hc, hd, map_add, add_smul]`. Consider the case `single i a`. Rewrite using `[Finsupp.linearCombination_single, map_smul, he, B.repr_symm_single, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one, TensorProduct.Algebra.smul_def]`. Establish `hfun : ⇑(Finsupp.linearCombination K (fun i => (1 : K) ⊗ₜ[R] (b i • m))) = e.symm ∘ (fun x : K ⊗[ℤ] O => x • n) ∘ B.repr.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Simplify using `only [Function.comp_apply, ← hcomp c, e.symm_apply_apply]`. Establish `hg : Function.Bijective (fun x : K ⊗[ℤ] O => x • n)`. Establish `h1 : (fun x : K ⊗[ℤ] O => x • n) = (LinearMap.toSpanSingleton (K ⊗[ℤ] O) N n₀) ∘ (fun x => x * hu.unit)`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[hn, mul_smul]`. Rewrite using `[h1]`. Conclude with `hn₀.comp (Units.mulRight hu.unit).bijective`. Rewrite using `[hfun]`. Conclude with `e.symm.bijective.comp (hg.comp B.repr.symm.bijective)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_fibre_generator_basis : ∀ (R O : Type) [CommRing R] [CommRing O] (J : Type) [Fintype J] (b : Module.Basis J ℤ O)
     (M : Type) [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M]

@@ -14,13 +14,13 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Take `⟨⟨-, hgen⟩, hx, hc⟩` from `hΛ`. Use `haveI := h𝔭`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) (𝓞 K))` using `by first`. Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective (𝓞 F) (𝓞 K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intro a b hab`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `(algebraMap F K).injective` to reduce the goal to its premises. Use `congrArg (fun z : 𝓞 K => (z : K)) hab` as an intermediate fact. Simplify using `using this)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral 𝔭 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]; exact bot_le)`. Use `⟨locF_idem 𝔭 Λ, ?_, le_locF 𝔭 Λ hx, ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `hgen P hP`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPc, locF_eq_loc hK hF hP, locF_eq_loc hK hF hP]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Rewrite using `[cut_locF, hc]`.
+A detailed English derivation is pending.
 -/
 theorem locF_mem_fibSet (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (S : VecSplit h h')
     {L Λ : Submodule (𝓞 K) V} {Λ' : Submodule (𝓞 K) V'} (hΛ : Λ ∈ fibG S L Λ') {𝔭 : Ideal (𝓞 F)}
@@ -46,9 +46,7 @@ theorem locF_mem_fibSet (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF
   · rw [cut_locF, hc]
 
 /- English proof (translation)
-Take `⟨-, -, hx, hc⟩` from `hΛ`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hx`. Rewrite using `[Submodule.map_le_iff_le_comap]`.
-
-Conclude with `(LocF.le_locF 𝔭 Λ').trans hc.symm.le`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_le_of_mem_fibSet (S : VecSplit h h') {L Λ : Submodule (𝓞 K) V}
     {Λ' : Submodule (𝓞 K) V'} {𝔭 : Ideal (𝓞 F)} (hΛ : Λ ∈ fibSet S L 𝔭 Λ') : S.adjoin Λ' ≤ Λ := by
@@ -60,9 +58,9 @@ theorem adjoin_le_of_mem_fibSet (S : VecSplit h h') {L Λ : Submodule (𝓞 K) V
     exact (LocF.le_locF 𝔭 Λ').trans hc.symm.le
 
 /- English proof (translation)
-Rewrite using `[hF]`. Use `⟨(t : F), ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use `first`. Consider the case `rw [IsScalarTower.algebraMap_apply (𝓞 F) F K]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `simp`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem star_algebraMap_of_fixed_field_eq (hF : IsFixF K F) (t : 𝓞 F) :
     star (algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t)) =
@@ -75,15 +73,15 @@ private theorem star_algebraMap_of_fixed_field_eq (hF : IsFixF K F) (t : 𝓞 F)
   | simp
 
 /- English proof (translation)
-Introduce `x hx y hy`. Rewrite using `[← LocF.iInf_locF (F := F) (1 : Submodule (𝓞 K) K), Submodule.mem_iInf]`. Introduce `𝔭`. Take `⟨Λ, hΛ⟩` from `H 𝔭`. Establish `hle` using `adjoin_le_of_mem_fibSet S hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, ⟨g, hg, hgΛ⟩, -, -⟩` from `hΛ`. Establish `hp : 𝔭.1.IsPrime` using `𝔭.2.isPrime`. Rewrite `hle` using `[← hgΛ]`. Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.1 (hle hx)`. Take `⟨y', hy', rfl⟩` from `Submodule.mem_map.1 (hle hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx'`, `hy'` using `[LocF.mem_locF_iff hp]`. Rewrite using `[LocF.mem_locF_iff hp]`. Take `⟨t, ht, htx⟩` from `hx'`. Take `⟨s, hs, hsy⟩` from `hy'`. Use `⟨t * s, fun hts => (hp.mem_or_mem hts).elim ht hs, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `hLi _ htx _ hsy`. Establish `e1 : h (g x') (g y') = h x' y'` using `hg x' y'`. Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Rewrite using `[e1]`. Rewrite `key` using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) x', ← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) s) y']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.map_smul, starRingEnd_apply, star_algebraMap_of_fixed_field_eq hF] at key`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Algebra.smul_def, map_mul, map_mul, smul_eq_mul, smul_eq_mul]`. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adjoin_integral_of_nonempty (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V} (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L)
@@ -119,7 +117,7 @@ theorem adjoin_integral_of_nonempty (hK : Formalism.HermitianLatticesTheory.IsCM
   ring
 
 /- English proof (translation)
-Take `⟨hfg, hspan⟩` from `hL`. Use `⟨hfg.map _, ?_⟩` and prove the remaining obligations. Use `show Submodule.span K ((L.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) : Set V)) = ⊤`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLattice_gmap_of_isLattice (g : V ≃ₗ[K] V) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) : Submodule.IsLattice K (Formalism.HermitianLatticesTheory.gmap g L) := by
@@ -130,7 +128,7 @@ private theorem isLattice_gmap_of_isLattice (g : V ≃ₗ[K] V) {L : Submodule (
     Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Use `haveI := hP`. Use `first`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P`. Consider the case `exact inferInstance`. Consider the case `exact Ideal.IsMaximal.under (𝓞 F) P`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem comap_algebraMap_isMaximal_of_isMaximal (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     (P.comap (algebraMap (𝓞 F) (𝓞 K))).IsMaximal := by
@@ -141,35 +139,29 @@ private theorem comap_algebraMap_isMaximal_of_isMaximal (P : Ideal (𝓞 K)) (hP
   | exact Ideal.IsMaximal.under (𝓞 F) P
 
 /- English proof (translation)
-Establish `hN : Submodule.IsLattice K (S.adjoin Λ')` using `(VecSplit.isLattice_adjoin_iff' (S := S) Λ').2 hΛ'`. Establish `hsing : ∀ 𝔭 ∉ s, locF 𝔭.1 (S.adjoin Λ') ∈ fibSet S L 𝔭.1 Λ'` using `fun 𝔭 h𝔭 => by`. Rewrite using `[hs1 𝔭 h𝔭]`. Both sides reduce to the same expression. Set `Φ : fibG S L Λ' → ∀ 𝔭 : s, fibSet S L 𝔭.1.1 Λ'` to `fun Λ 𝔭 => ⟨locF 𝔭.1.1 Λ.1, locF_mem_fibSet hK hF S Λ.2 𝔭.1.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hloc : ∀ (Λ : fibG S L Λ') (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}), 𝔭 ∉ s → locF 𝔭.1 Λ.1 = locF 𝔭.1 (S.adjoin Λ')`. Introduce `Λ 𝔭 h𝔭`. Use `locF_mem_fibSet hK hF S Λ.2 𝔭.2` as an intermediate fact. Rewrite `this` using `[hs1 𝔭 h𝔭]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective Φ`. Introduce `Λ₁ Λ₂ e`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← LocF.iInf_locF (F := F) Λ₁.1, ← LocF.iInf_locF (F := F) Λ₂.1]`. Use `iInf_congr fun 𝔭 => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h𝔭 : 𝔭 ∈ s`. Conclude with `congrArg (fun φ => (φ ⟨𝔭, h𝔭⟩).1) e`. Rewrite using `[hloc Λ₁ 𝔭 h𝔭, hloc Λ₂ 𝔭 h𝔭]`. Establish `hsurj : Function.Surjective Φ`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ 𝔭 : s, ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, Formalism.HermitianLatticesTheory.gmap g (locF 𝔭.1.1 L) = (f 𝔭).1`. Introduce `𝔭`. Take `⟨-, hex, -, -⟩` from `(f 𝔭).2`. Conclude with `hex`. Use `choose g hgi hgf using hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Set `B : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} → Submodule (𝓞 K) V` to `fun 𝔭 => if h𝔭 : 𝔭 ∈ s then Formalism.HermitianLatticesTheory.gmap (g ⟨𝔭, h𝔭⟩) L else S.adjoin Λ'`. Establish `hBlat : ∀ 𝔭, Submodule.IsLattice K (B 𝔭)`. Introduce `𝔭`. Distinguish the cases in `h𝔭 : 𝔭 ∈ s`. Simplify using `only [B, dif_pos h𝔭]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isLattice_gmap_of_isLattice _ hL`. Simplify using `only [B, dif_neg h𝔭]`. Conclude with `hN`. Establish `hBs : ∀ 𝔭 ∉ s, B 𝔭 = S.adjoin Λ'` using `fun 𝔭 h𝔭 => by simp only [B, dif_neg h𝔭]`. Take `⟨hMlat, hMloc⟩` from `LocF.patch hN s B hBlat hBs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBf : ∀ 𝔭 (h𝔭 : 𝔭 ∈ s), locF 𝔭.1 (B 𝔭) = (f ⟨𝔭, h𝔭⟩).1`. Introduce `𝔭 h𝔭`. Simplify using `only [B, dif_pos h𝔭]`. Rewrite using `[← gmap_locF]`. Conclude with `hgf ⟨𝔭, h𝔭⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBmem : ∀ 𝔭, locF 𝔭.1 (B 𝔭) ∈ fibSet S L 𝔭.1 Λ'`. Introduce `𝔭`. Distinguish the cases in `h𝔭 : 𝔭 ∈ s`. Rewrite using `[hBf 𝔭 h𝔭]`. Conclude with `(f ⟨𝔭, h𝔭⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBs 𝔭 h𝔭]`. Conclude with `hsing 𝔭 h𝔭`. Establish `hMmem : (⨅ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, locF 𝔭.1 (B 𝔭)) ∈ fibG S L Λ'`. Use `⟨⟨hMlat, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h𝔭 : (P.comap (algebraMap (𝓞 F) (𝓞 K))).IsMaximal` using `comap_algebraMap_isMaximal_of_isMaximal P hP`. Take `⟨-, ⟨g', hg', e'⟩, -, -⟩` from `hBmem ⟨_, h𝔭⟩`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Rewrite using `[← locF_eq_loc hK hF hP, ← locF_eq_loc hK hF hP]`. Rewrite using `[hMloc ⟨_, h𝔭⟩]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `e'`. Rewrite using `[Submodule.mem_iInf]`. Introduce `𝔭`. Take `⟨-, -, hx, -⟩` from `hBmem 𝔭`. Conclude with `hx`.
-
-Use `show Submodule.comap _ _ = Λ'`. Rewrite using `[Submodule.comap_iInf]`. Use `conv_rhs => rw [← LocF.iInf_locF (F := F) Λ']`. Use `iInf_congr fun 𝔭 => ?_` and prove the remaining obligations. Take `⟨-, -, -, hc⟩` from `hBmem 𝔭`.
-
-Conclude with `hc`. Use `⟨⟨_, hMmem⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `𝔭`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show locF 𝔭.1.1 (⨅ 𝔮 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, locF 𝔮.1 (B 𝔮)) = (f 𝔭).1`.
-
-Rewrite using `[hMloc 𝔭.1]`. Conclude with `hBf 𝔭.1 𝔭.2`. Conclude with `Nat.card_congr (Equiv.ofBijective Φ ⟨hinj, hsurj⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fibG_eq_card_pi (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (S : VecSplit h h')
     {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) {Λ' : Submodule (𝓞 K) V'}

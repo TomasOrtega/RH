@@ -13,21 +13,21 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver chartR
 open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod d`. Take `⟨hnz, hsame⟩` from `hmod`. Use `choose c hc using hnz`. Take `⟨c', hc', htr⟩` from `exists_trdeg_chartRing_eq y _ hsame c hc`. Establish `hy` using `trdeg_quotient_mIdealOver (F := F) y c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `trdeg_quotient_mIdealOver (F := F) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c' hc'`. Rewrite `hx` using `[← htr, Fintype.card_unit]`. Establish `_ : (mIdealOver F y).IsPrime` using `RingHom.ker_isPrime _`. Establish `_ : (mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))).IsPrime` using `RingHom.ker_isPrime _`. Establish `hfin` using `trdeg_lt_aleph0_of_finiteType (R := F) (S := MvPolynomial (Σ k, ι k) F ⧸ mIdealOver F y)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfin` using `[hy]`. Take `⟨t, ht⟩` from `Cardinal.lt_aleph0.1 (lt_of_le_of_lt le_self_add hfin)`. Establish `dimy : ringKrullDim (MvPolynomial (Σ k, ι k) F ⧸ mIdealOver F y) = ((t + Fintype.card K : ℕ) : ℕ∞)`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, hy, ht]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `dimx : ringKrullDim (Kleiman.Poly F N ⧸ Kleiman.primeOf (S` using `F) (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm)) = ((t + 1 : ℕ) : WithBot ℕ∞) := by`. Rewrite using `[← ReindexDim.proof F (ι k₀) Ω (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) N e, GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, hx, ht]`. Simplify using the standard rewrite rules. Establish `hrel : relDim (mIdealOver F y) = ((t : ℕ) : WithBot (WithTop ℤ))`. Unfold `relDim`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dimy]`. Establish `e₁ : WithBot.map (fun d : ℕ∞ => WithTop.map (fun e : ℕ => (e : ℤ) - Fintype.card K) d) ((((t + Fintype.card K : ℕ) : ℕ∞)) : WithBot ℕ∞) = (((((t + Fintype.card K : ℕ) : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))` using `rfl`. Rewrite using `[e₁, Nat.cast_add, add_sub_cancel_right]`. Both sides reduce to the same expression. Rewrite using `[hrel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `h.dim`. Rewrite `h'` using `[dimx]`. Establish `htd : t + 1 = d + 1` using `by exact_mod_cast h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show t = d by omega]`. Introduce `h`. Establish `htd : t = d` using `by exact_mod_cast h`. Use `⟨inferInstance, fun p hp n => Kleiman.homogeneousComponent_mem_primeOf _ hp n, le_rfl, ⟨e (c k₀), ?_⟩, by rw [dimx, htd]⟩` and prove the remaining obligations. Rewrite using `[Kleiman.mem_primeOf_of_isHomogeneous _ (isHomogeneous_X F _), aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hc k₀` using `[IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+A detailed English derivation is pending.
 -/
 theorem ModelDimEq.full : ModelDimEq.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e hmod d

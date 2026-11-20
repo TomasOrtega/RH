@@ -42,21 +42,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (alpha beta spV 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨A₁, hA₁⟩` from `exists_isGridFr W (X := .grid i j) ⟨i.2.le, j.2.le⟩`. Establish `hD` using `fun t => dict hL W t i j A A₁ AV AV₁ hA hA₁ hV hV₁`. Establish `hT` using `fun t => (hD t).1 (hst t) _ (exists_vol G hL t).choose_spec`. Use `choose a b ha hb _ using (hT μ₀).gap`. Take `⟨Pr, q, H⟩` from `_root_.GlobalTheory.T.thetaIntegral_factors_through_kType hP hK hLM D W.ψ W.θ W.ψ_std W.θ_is _ _ _ A A₁ (frSum AV AV₁) a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `replace H := fun t => H _ _ (hT t) fun τ => ⟨GlobalTheory.SquareRel.hasInfExp_alpha G i j hL μ₀ t τ (ha τ), hb τ⟩`. Use `choose ωA ωB hωA hωB using fun t => _root_.GlobalTheory.T.weilRepresentation_square_comm hP D W.ψ W.ψ_std _ _ _ _ _ (hT t)`. Establish `hbig : Node.InRange D.R.m (.grid (i + 1) (j + 1))` using `⟨i.2, j.2⟩`. Establish `form : ∀ B (ρ : RealMatch W) t (M : Vol G), M.Is t → ∀ n Φ τ τ', (∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) → HasFlip B t ρ i j n Φ τ τ' → ∃ (Pf : ModuleCat.{0} ℂ) (y : Pf) (J : Pr ⊗[ℂ] Pf →ₗ[ℂ] (GA D (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i …`. Introduce `B ρ t M hM n Φ τ τ' hn hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, _, -, hc⟩` from `_root_.GlobalTheory.SquareIdent.square_identity_reduction hP.howeDualityReal hP hLM hL W i j A A₁ AV AV₁ hA hA₁ hV hV₁ t B ρ M (hst t) hM (hT t) _ _ (hωA t) (hωB t)`. Take `⟨_, hc⟩` from `hc 0`. Take `⟨Pf, y, J, h1, h2⟩` from `H t _ _ (hM.vtx _ hbig).haar_fund _ (hωA t) _ (hc n Φ τ τ' hn hF).1`. Take `⟨κ, hκ⟩` from `(hD t).2 _ _ (hωA t) (hωB t)`. Use `⟨Pf, y, J, κ, h1, h2, fun g g₁ a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', hb'⟩` from `ρ.onto_big i j (toTens a)`. Take `⟨b, rfl⟩` from `toTens_surjective b'`. Rewrite using `[(hκ B ρ _ _ ⟨a, b, τ, τ', n, Φ, hb', hn, hF, rfl, rfl⟩).2.2.2.2.1 M g g₁, hι t B ρ n Φ τ τ' hF, h2]`. Use `⟨LinearMap.ker (q ∘ₗ ι), fun B ρ t x => ⟨fun h0 => ?_, fun hx M hM a ha n Φ τ τ' hn hF g g₁ => ?_⟩, fun x hx t ν 𝓕 hν ω hω f hf => ?_, fun B ρ t M hM n Φ τ τ' hn hF g g₁ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `toTens_surjective x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨M, hM, a₀, τ, τ', n, Φ, hn, hF, g, g₁, hne⟩` from `exists_integral_ne_zero hP.strongApproxSU hK hLM hL W B ρ t i j (hst t)`. Take `⟨Pf, y, J, κ, h1, h2, h3⟩` from `form B ρ t M hM n Φ τ τ' hn hF`. Rewrite `hne` using `[h3]`. Establish `hy : y ≠ 0` using `by rintro rfl; simp at hne`. Establish `hJ : Function.Injective J` using `h1.resolve_left (by rintro rfl; simp at hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `thetaInt_eq_zero hP.strongApproxSU hK hLM hL W B ρ t i j (hst t) hA hA₁ hV hV₁ (hωA t) (fun n Φ τ τ' hF => hι t B ρ n Φ τ τ' hF a) h0 hM hn hF`. Rewrite `h4` using `[h2, ← map_zero J]`. Take `⟨c, hc⟩` from `exists_scalar (Q := Pr) hy 0`. Establish `h5` using `congrArg (TensorProduct.comm ℂ Pr Pf) (hJ h4)`. Rewrite `h5` using `[TensorProduct.comm_tmul, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hc _ 0 (h5.trans (TensorProduct.zero_tmul _ _).symm)).trans (smul_zero c)`. Take `⟨Pf, y, J, κ, -, -, h3⟩` from `form B ρ t M hM n Φ τ τ' hn hF`. Rewrite using `[h3, ha, show q (ι x) = 0 from hx, TensorProduct.zero_tmul, map_zero, Pi.zero_apply, mul_zero]`. Take `⟨Pf, y, J, -, h2⟩` from `H t ν 𝓕 hν ω hω f hf`. Rewrite using `[h2, show q (ι x) = 0 from hx, TensorProduct.zero_tmul, map_zero]`.
-
-Take `⟨Pf, y, J, κ, -, -, h3⟩` from `form B ρ t M hM n Φ τ τ' hn hF`. Conclude with `⟨κ (g, g₁) • (LinearMap.proj (blk _ _ (g, g₁)) ∘ₗ J ∘ₗ (TensorProduct.mk ℂ Pr Pf).flip y ∘ₗ q ∘ₗ ι), fun a => h3 g g₁ a⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nullSpace_realPlace (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hLM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (hst : ∀ t, SquareStanding G t)
@@ -122,25 +120,23 @@ theorem exists_nullSpace_realPlace (hP : _root_.GlobalTheory.FunPr.ThetaLocalInp
   · obtain ⟨Pf, y, J, κ, -, -, h3⟩ := form B ρ t M hM n Φ τ τ' hn hF
     exact ⟨κ (g, g₁) • (LinearMap.proj (blk _ _ (g, g₁)) ∘ₗ J ∘ₗ (TensorProduct.mk ℂ Pr Pf).flip y ∘ₗ q ∘ₗ ι), fun a => h3 g g₁ a⟩
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_isGridFr W (X := .grid (i + 1) (j + 1)) ⟨i.2, j.2⟩`. Take `⟨AV, hV⟩` from `exists_isGridFr W (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩`. Take `⟨AV₁, hV₁⟩` from `exists_isGridFr W (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩`. Take `⟨ι, -, hι⟩` from `realA hL W i j A AV AV₁ hA hV hV₁`. Take `⟨K, hN, -, hl⟩` from `_root_.GlobalTheory.RealSep.exists_nullSpace_realPlace hP hK hLM hL W hst i j hA hV hV₁ ι hι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_not_isNull hP.strongApproxSU hK hLM hL W B ρ μ₀ i j (hst μ₀)`. Rewrite `hx` using `[hN]`. Establish `key : ∀ t c' c₀, IsSquareConst W B ρ t i j c' → GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ → ∀ a a₀ b, (a, b) ∈ ρ.rel i j → (a₀, b) ∈ ρ₀.rel i j → (c₀ • a - c' • a₀ ∈ K) ∧ (c' = 0 → a ∈ K) ∧ (c₀ = 0 → a₀ ∈ K)`. Introduce `t c' c₀ hc hc₀ a a₀ b hab hab₀`. Take `⟨a, rfl⟩` from `toTens_surjective a`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, rfl⟩` from `toTens_surjective a₀`. Take `⟨b, rfl⟩` from `toTens_surjective b`. Establish `H : ∀ M : Vol G, M.Is t → ∀ n Φ τ τ', (∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) → HasFlip B t ρ i j n Φ τ τ' → ∀ g g₁, ∃ (l : PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) →ₗ[ℂ] ℂ) (r : ℂ), (∀ a, ∫ u in M.fd _, kerBig W (ten …`. Introduce `M hM n Φ τ τ' hn hF g g₁`. Take `⟨l, e⟩` from `hl B ρ t M hM n Φ τ τ' hn hF g g₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hΘ : IsMatched B t ρ i j (tensT W a τ) (tensT W b τ')` using `⟨a, b, τ, τ', n, Φ, hab, hn, hF, rfl, rfl⟩`. Take `⟨z, z0, z1, z2⟩` from `hc₀ M hM _ _ ⟨a₀, b, τ, τ', n, Φ, hab₀, hn, hasFlip_congr h1 h2 hF, rfl, rfl⟩ g g₁`. Establish `z3` using `hc M hM _ _ hΘ z g g₁ ⟨GlobalTheory.T.bigRoute_kernel_integrableOn_unitary_quotient (_root_.GlobalTheory.T.twisted_theta_integral_converges hP.siegelSetUnitary hP) hL W B ρ t i j (GlobalTheory.T.squareThetaTripleHypotheses_of_standing hL W t i j (hst t)) M hM _ _ hΘ g₁ g, z1.2⟩`. Use `replace z2 := (congrArg (zdeg z * ·) (e a₀)).symm.trans z2`. Use `replace z3 := (congrArg (zdeg z * ·) (e a)).symm.trans z3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨l, _ / zdeg z, e, by rw [← mul_div_assoc, ← z3, mul_div_cancel_left₀ _ z0], by rw [← mul_div_assoc, ← z2, mul_div_cancel_left₀ _ z0]⟩`. Apply the tactic sequence `refine ⟨(hN B ρ t _).1 ?_, fun h => (hN B ρ t _).1 ?_, fun h => (hN B ρ t _).1 ?_⟩ <;>`. Introduce `M hM a' ha' n Φ τ τ' hn hF g g₁`. Take `⟨l, r, e1, e2, e3⟩` from `H M hM n Φ τ τ' hn hF g g₁`. Rewrite using `[e1, ha']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Use `first`. Consider the case `rw [map_sub, map_smul, map_smul, e2, e3, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `rw [e2, h, zero_mul]`. Consider the case `rw [e3, h, zero_mul]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `ρ.onto_big i j x`. Take `⟨x₀, hx₀⟩` from `ρ₀.onto_small i j b`. Take `⟨b₁, hb₁⟩` from `ρ₀.onto_big i j x`. Take `⟨x₁, hx₁⟩` from `ρ.onto_small i j b₁`. Distinguish the cases in `hex : ∃ t c' c₀, IsSquareConst W B ρ t i j c' ∧ GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `swap`. Conclude with `⟨1, one_ne_zero, fun t c' c₀ h h₀ => absurd ⟨t, c', c₀, h, h₀⟩ hex⟩`. Take `⟨s, d', d₀, hd, hd₀⟩` from `hex`. Establish `n₀ : ∀ t c' c₀, IsSquareConst W B ρ t i j c' → GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ → c₀ ≠ 0` using `fun t c' c₀ h h₀ e => hx ((key t c' c₀ h h₀ _ _ _ hx₁ hb₁).2.2 e)`. Establish `k : ∀ a a₀ b, (a, b) ∈ ρ.rel i j → (a₀, b) ∈ ρ₀.rel i j → a - (d' / d₀) • a₀ ∈ K` using `fun a a₀ b h h₀ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `K.smul_mem d₀⁻¹ (key s d' d₀ hd hd₀ a a₀ b h h₀).1` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_smul, smul_smul, inv_mul_cancel₀ (n₀ _ _ _ hd hd₀), one_smul, ← div_eq_inv_mul]`. Then use the resulting hypothesis. Use `⟨d' / d₀, div_ne_zero (fun e => hx ((key s d' d₀ hd hd₀ _ _ _ hb hx₀).2.1 e)) (n₀ _ _ _ hd hd₀), fun t c' c₀ h h₀ => ⟨n₀ t c' c₀ h h₀, ?_, fun a a₀ b h h₀ t' => (hN B ρ t' _).2 (k a a₀ b h h₀)⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `e` using `K.sub_mem (key t c' c₀ h h₀ _ _ _ hx₁ hb₁).1 (K.smul_mem c₀ (k _ _ _ hx₁ hb₁))`.
-
-Rewrite `e` using `[smul_sub, sub_sub_sub_cancel_left, smul_smul, ← sub_smul]`. Conclude with `hx ((K.smul_mem_iff (sub_ne_zero.2 fun e => hne (by rw [← e, mul_comm]))).1 e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_realStandingData (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hLM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (hst : ∀ t, SquareStanding G t)
@@ -208,7 +204,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareIdent GlobalTheory.SquareDict Gl
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (alpha beta spV spW spW₁ spV₁)
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 /- English proof (translation)
-Introduce `hP hK hLM`. Use `⟨0, fun ε CF _ => ⟨0, (12 : ℝ) ^ (5 / ε), fun C _ D large₂ he hx hR T Lc μ₀ hL G W B ρ ρ₀ h1 h2 i j => ?_⟩⟩` and prove the remaining obligations. Establish `hst` using `standing hR.size hL hR.size.2.1.eleven_le G`. Take `⟨lam, h0, H⟩` from `_root_.GlobalTheory.RealSep.exists_scalar_of_realStandingData hP hK hLM hL W hst B ρ ρ₀ h1 h2 i j`. Conclude with `⟨lam, h0, fun t c' c₀ hc hc₀ => ⟨(H t c' c₀ hc hc₀).1, (H t c' c₀ hc hc₀).2.1⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem realPlace_theta_matching : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (B : Frames G) (ρ ρ₀ : RealMatch W), ρ₀.vX = ρ.vX → ρ₀.vT = ρ.vT →
@@ -232,7 +228,7 @@ open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealSep.realPlace_theta_matching | exact _root_.GlobalTheory.RealSep.realPlace_theta_matching | (intros; apply _root_.GlobalTheory.RealSep.realPlace_theta_matching <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_real_places_separation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (B : Frames G) (ρ ρ₀ : RealMatch W), ρ₀.vX = ρ.vX → ρ₀.vT = ρ.vT →

@@ -12,17 +12,15 @@ namespace GlobalTheory.DGamPrimeToLevel
 open Formalism.BasicNotions Formalism.MainNotions NumberField GlobalTheory.IndefiniteRowSideFullHecke.LatticeAutomorphismLcm
 
 /- English proof (translation)
-Introduce `H hH`. Set `e : Matrix.GeneralLinearGroup (Fin n) ℚ ≃* ((Fin n → ℚ) ≃ₗ[ℚ] (Fin n → ℚ))` to `Matrix.GeneralLinearGroup.toLin.trans (LinearMap.GeneralLinearGroup.generalLinearEquiv ℚ (Fin n → ℚ))`. Set `G : Subgroup ((Fin n → ℚ) ≃ₗ[ℚ] (Fin n → ℚ))` to `H.map e.toMonoidHom`. Establish `e' : H ≃* G` using `e.subgroupMap H`. Establish `hG : Finite G` using `Finite.of_equiv _ e'.toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `v : G × Fin n → (Fin n → ℚ)` to `fun p => p.1.1 (Pi.basisFun ℚ (Fin n) p.2)`. Set `Λ : Submodule (𝓞 ℚ) (Fin n → ℚ)` to `Submodule.span (𝓞 ℚ) (Set.range v)`. Establish `hfg : Λ.FG` using `Submodule.fg_span (Set.finite_range v)`. Establish `hsp : Submodule.span ℚ (Λ : Set (Fin n → ℚ)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun ℚ (Fin n)).span_eq]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨(1, i), rfl⟩`. Establish `hst : ∀ g ∈ G, ∀ x ∈ Λ, g x ∈ Λ`. Introduce `g hg x hx`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨h, i⟩, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(⟨g, hg⟩ * h, i), rfl⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Λ.add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul ℚ a x, map_smul, algebraMap_smul]`. Conclude with `Λ.smul_mem a hx`.
-
-Establish `h` using `GlobalTheory.AutLattice.card_dvd_minkM hM ℚ (Fin n → ℚ) Λ hfg hsp G hG hst`. Rewrite using `[Nat.card_congr e'.toEquiv]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem minkMult_minkM (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound) (n : ℕ) : MinkMult n (minkM n) := by
   intro H hH
@@ -59,9 +57,9 @@ def PrimesLarge (D : D7) : Prop :=
     minkRank D + 1 < D.host.q ∧ minkRank D + 1 < D.host.d
 
 /- English proof (translation)
-Establish `hp : ∀ p : ℕ, p.Prime → p ∣ n → p ≤ minkRank D + 1` using `fun p hp hpn => GlobalTheory.prime_le_succ_of_dvd_minkM _ p hp (hpn.trans hn)`. Establish `key : ∀ p : ℕ, p.Prime → minkRank D + 1 < p → Nat.Coprime n p`. Introduce `p hpp hlt`. Use `((Nat.Prime.coprime_iff_not_dvd hpp).2 fun h => ?_).symm` and prove the remaining obligations. Use `hp p hpp h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨g1, g2, g3, g4⟩` from `h`. Conclude with `⟨hn, hp, key _ D.host.hyp.1 g3, key _ D.host.hyp.2.1 g4, fun a => key _ (D.host.g_prime a) (g2 a), fun u => key _ (D.mem u).A.T_prime (g1 u)⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem primeToLevel_of_dvd {D : D7} (h : PrimesLarge D) {n : ℕ} (hn : n ∣ minkM (minkRank D)) :
     PrimeToLevel D n := by
@@ -77,13 +75,13 @@ theorem primeToLevel_of_dvd {D : D7} (h : PrimesLarge D) {n : ℕ} (hn : n ∣ m
     fun a => key _ (D.host.g_prime a) (g2 a), fun u => key _ (D.mem u).A.T_prime (g1 u)⟩
 
 /- English proof (translation)
-Establish `hf : D.R.f ≤ D.R.N D.R.m` using `le_trans (show D.R.f ≤ D.R.k from D.R.f_le_k) (Nat.le_add_right _ _)`. Establish `h1 : 1 ≤ D.R.N D.R.m`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf' : (D.R.f : ℝ) ≤ D.R.N D.R.m` using `by exact_mod_cast hf`. Establish `h1' : (1 : ℝ) ≤ D.R.N D.R.m` using `by exact_mod_cast h1`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `e : L.sc.x ^ (2 * L.Ct + 5) = (L.sc.x ^ (L.Ct + 1)) ^ 2 * L.sc.x ^ 3`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h8 : (2 : ℝ) ^ 3 ≤ L.sc.x ^ 3` using `by gcongr`. Establish `h2 : (D.R.N D.R.m : ℝ) ^ 2 ≤ (L.sc.x ^ (L.Ct + 1)) ^ 2` using `by gcongr`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (D.R.N D.R.m : ℝ) ^ 2 * 2 ^ 3 ≤ (L.sc.x ^ (L.Ct + 1)) ^ 2 * L.sc.x ^ 3` using `by gcongr`. Rewrite using `[e]`. Unfold `minkRank`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem minkRank_le {D : D7} (L : SizeData₂ D) (hN : (D.R.N D.R.m : ℝ) ≤ L.sc.x ^ (L.Ct + 1))
     (hx : 2 ≤ L.sc.x) : ((minkRank D + 1 : ℕ) : ℝ) ≤ L.sc.x ^ (2 * L.Ct + 5) := by
@@ -109,19 +107,19 @@ theorem minkRank_le {D : D7} (L : SizeData₂ D) (hN : (D.R.N D.R.m : ℝ) ≤ L
   nlinarith
 
 /- English proof (translation)
-Take `⟨⟨P⟩, hN, hT, hx⟩` from `h`. Establish `h0` using `minkRank_le L hN hx`. Establish `hq : minkRank D + 1 < D.host.q` using `by exact_mod_cast h0.trans_lt P.qd_pow.1`. Establish `hd : minkRank D + 1 < D.host.d` using `by exact_mod_cast h0.trans_lt P.qd_pow.2`. Establish `hC : SizeCond L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.condE_le` as an intermediate fact. Unfold `SizeCond szCond`. Rewrite using `[Real.sqrt_eq_rpow]`. Unfold `LevelStarExponents.condE at this`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `hs` using `GlobalTheory.DGamCoprime.q_le_sqrt_b L hC (by omega) (by omega)`. Establish `hb` using `GlobalTheory.DGamCoprime.one_le_b L`. Establish `hsb : Real.sqrt L.sc.b ≤ L.sc.b`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqb : (D.host.q : ℝ) ≤ L.sc.b` using `hs.trans hsb`. Use `⟨fun u => ?_, fun a => ?_, hq, hd⟩` and prove the remaining obligations. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `h1 : L.sc.b ^ (1 : ℝ) ≤ L.sc.b ^ ((D.R.m : ℝ) / 2)` using `Real.rpow_le_rpow_of_exponent_le hb (by linarith)`. Rewrite `h1` using `[Real.rpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (D.host.q : ℝ) ≤ ((D.mem u).A.T : ℝ)` using `hqb.trans (h1.trans (hT u))`. Establish `: D.host.q ≤ (D.mem u).A.T` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Take `⟨Y, hY, -, -, hg⟩` from `P.g_Y`. Establish `hk : (1 : ℝ) ≤ D.R.k`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Establish `h1 : L.sc.b ≤ (D.R.k : ℝ) * L.sc.b` using `by nlinarith`. Establish `h2 : (D.R.k : ℝ) * L.sc.b ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `le_self_pow₀ (hb.trans h1) (by norm_num)`. Establish `: (D.host.q : ℝ) ≤ (D.host.g a : ℝ)` using `hqb.trans (h1.trans (h2.trans (hY.trans (hg a).1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: D.host.q ≤ D.host.g a` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem primesLarge_of_sizesUsed {D : D7} (L : SizeData₂ D) (h : SizesUsed L) : PrimesLarge D := by
   obtain ⟨⟨P⟩, hN, hT, hx⟩ := h
@@ -159,7 +157,7 @@ theorem primesLarge_of_sizesUsed {D : D7} (L : SizeData₂ D) (h : SizesUsed L) 
     omega
 
 /- English proof (translation)
-Introduce `u μ`. Rewrite using `[hD.one u u μ]`. Conclude with `primeToLevel_of_dvd h (hC _ (minkMult_minkM hM _) u)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeToLevelAt_of (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound) {D : D7} (h : PrimesLarge D) (hD : DGamDef D)
     (hC : DGamChoice_at D) : PrimeToLevelAt D := by
@@ -168,7 +166,7 @@ theorem primeToLevelAt_of (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiB
   exact primeToLevel_of_dvd h (hC _ (minkMult_minkM hM _) u)
 
 /- English proof (translation)
-Take `⟨x0, hT⟩` from `hT`. Use `⟨max x0 (Fm.x1 + 1), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `by linarith [(le_max_right _ _).trans hx]`. Conclude with `⟨hx1, fun i => GlobalTheory.DGamCoprime.primes_gt (Fm.L x i) (Fm.sizes x hx1 i) (hT x ((le_max_left _ _).trans hx) i).1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem primesLarge_family {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x ∧ ∀ i : Fm.Ix x, PrimesLarge (Fm.D x i) := by
@@ -179,9 +177,9 @@ theorem primesLarge_family {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) :
     (hT x ((le_max_left _ _).trans hx) i).1⟩
 
 /- English proof (translation)
-Use `⟨fun D L hS hD hC => primeToLevelAt_of hM (primesLarge_of_sizesUsed L hS) hD hC, fun eps Fm hC hT => ?_⟩` and prove the remaining obligations. Take `⟨x0, hP⟩` from `primesLarge_family Fm hT`. Take `⟨x0', hC⟩` from `hC`. Use `⟨max x0 x0', fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨hx1, hP⟩` from `hP x ((le_max_left _ _).trans hx)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `primeToLevelAt_of hM (hP i) (Fm.ex x hx1 i).err.dgam (hC x ((le_max_right _ _).trans hx) i)`.
+A detailed English derivation is pending.
 -/
 theorem row_of_minkowski (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound) : Row := by
   refine ⟨fun D L hS hD hC => primeToLevelAt_of hM (primesLarge_of_sizesUsed L hS) hD hC,
@@ -193,7 +191,7 @@ theorem row_of_minkowski (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBo
   exact primeToLevelAt_of hM (hP i) (Fm.ex x hx1 i).err.dgam (hC x ((le_max_right _ _).trans hx) i)
 
 /- English proof (translation)
-The claim follows from `row_of_minkowski GlobalTheory.MinkowskiExact.minkowskiBound`.
+A detailed English derivation is pending.
 -/
 theorem row : Row := row_of_minkowski GlobalTheory.MinkowskiExact.minkowskiBound
 

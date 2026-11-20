@@ -11,7 +11,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar g q hred hg X _ _ _ _ hX`. Take `⟨hhom, hsup⟩` from `vorFun_homog_superadd O bar g X`. Take `⟨hint, hpos⟩` from `GlobalTheory.T.voronoi_function_integral_positive O bar g q X hg hX`. Conclude with `{ homog := hhom superadd := hsup integral := fun β _ h => hint β h pos := fun β hβ h h0 => hpos β hβ.1 h h0 finite := GlobalTheory.T.psd_cone_finitely_many_orbits O bar g hred X }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vorFun_isPolyFan : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (g q : ℕ),
     (∀ (Y : Type) [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [Module.Projective O Y], HasRedCover bar Y) →

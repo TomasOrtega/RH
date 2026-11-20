@@ -36,7 +36,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LowerCx
 
 /- English proof (translation)
-Establish `key : ψx * be = ψe * bu` using `mul_left_cancel₀ hlam (by linear_combination be * hX - bu * hE)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `Dc * key`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem numeric_product_inequality (Dc ψe ψx lam n' bu be : ℂ) (hlam : lam ≠ 0) (hψe : ψe ≠ 0) (hbe : be ≠ 0)
     (hX : lam * ψx = n' * bu) (hE : lam * ψe = n' * be) : Dc / ψe * ψx = Dc * (bu / be) := by
@@ -46,7 +46,7 @@ theorem numeric_product_inequality (Dc ψe ψx lam n' bu be : ℂ) (hlam : lam �
   linear_combination Dc * key
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK, LinearMap.BilinForm.baseChange_tmul, Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseChange_inK {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K] {H : Type} [AddCommGroup H]
     [Module R H] (B : LinearMap.BilinForm R H) (u v : H) :
@@ -54,11 +54,11 @@ theorem baseChange_inK {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K
   simp [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK, LinearMap.BilinForm.baseChange_tmul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Take `⟨ψ', ⟨n, a, b, hch, he⟩, h'⟩` from `IsPolForm.pull_comp m (X.isLB c) (π := (lift (𝟙 X.A) (𝟙 X.A)).left) (L := X.P c) hψ`. Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`. Conclude with `⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem polForm_bc' {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {p : X'.A.left ⟶ X.A.left}
@@ -85,7 +85,7 @@ theorem polForm_bc' {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R'
     (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩
 
 /- English proof (translation)
-Introduce `hADR E _ _ _ 𝔠 R X₀ X p hpull m c₀ c₁ hc₁ ψ₀ ψ hψ₀ hψ`. Take `⟨ψ₀', hψ₀', hcorr⟩` from `polForm_bc' (algebraMap R ℂ) hpull m c₀ hψ₀`. Take `⟨n', t, hn', ht⟩` from `GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq hADR (FR E) 𝔠 ℂ X c₀ c₁ hc₁ ψ₀' ψ hψ₀' hψ`. Conclude with `⟨n', t, hn', fun x₀ y₀ x y hx hy ↦ by rw [← ht, hcorr x₀ x y₀ y hx hy]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem formRel : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (𝔠 : FracId (FR E))
     (R : Subring ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (p : X.A.left ⟶ X₀.A.left),
@@ -103,35 +103,31 @@ theorem formRel : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hPC hADR hADC E _ _ _ I _ φ c y 𝔠 R _ X₀ X U p cm hpull hcm hα j hj φK hφK n eH c₀ ψ₀ hc₀ hψ₀ hlat hcmt D hD e' f' hgens N M hlow hscal m hbc ψ hψ yv ev hyv hev i`. Use `set ρ := eH.conjRingEquiv.toRingHom.comp (act (dp0 R) (𝟙 _) cm) with hρ`. Use `set B := (ψ₀.compl₁₂ eH.symm.toLinearMap eH.symm.toLinearMap : LinearMap.BilinForm R (Fin n → R)) with hB`. Establish `hc : c ≠ ⊥` using `GlobalTheory.Div.ConjugateOrderConductor.main E c R (FractionRing R) (Fin n → R) I _ ρ _ B e' f' (N i) i hlat hgens (hlow i)`. Establish `hcard : 2 * Fintype.card I = Module.finrank ℚ E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_congr U.e, Fintype.card_fin, ← Module.finrank_mul_finrank ℚ (FR E) E, Algebra.IsQuadraticExtension.finrank_eq_two (FR E) E, mul_comm]`. Establish `hint` using `GlobalTheory.EigLineSumCM.eigK_isInternal_of_cmType E c hc R (FractionRing R) (Fin n → R) I _ ρ _ B hlat hcmt hcard`. Establish `horth` using `GlobalTheory.Div.PairingEigenspaceOrthogonal.pairing_eig_orth E c hc R (FractionRing R) (Fin n → R) I _ ρ _ B hlat`. Take `⟨hBef, hN⟩` from `GlobalTheory.Div.LowerPairFormula.lower_pair_formula E c R (FractionRing R) (Fin n → R) I _ ρ _ B e' f' (N i) i hlat hint horth hgens (hlow i)`. Establish `hU : ((U.c : FR E)) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace (FR E)))`. Establish `hw : w.IsReal` using `NumberField.IsTotallyReal.isReal w`. Use `U.pos (NumberField.InfinitePlace.embedding_of_isReal hw)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `lt_irrefl _ this`. Choose the witnesses or unpack the hypotheses as in `⟨n', t, hn', hrel⟩ : ∃ (n' : ℕ) (t : 𝓞 (FR E)), n' ≠ 0 ∧ ∀ x₀ y₀ x y, m.Corr x₀ x → m.Corr y₀ y → ψ x (act (dp0 ℂ) (𝟙 _) X.rm t y) = n' * algebraMap R ℂ (ψ₀ x₀ y₀) := by`. Take `⟨n₁, t, hn₁, h⟩` from `formRel hADR E 𝔠 R X₀ X p hpull m c₀ U.c hU _ ψ hψ₀ hψ`. Use `⟨n₁ * 2, t, mul_ne_zero hn₁ two_ne_zero, fun x₀ y₀ x y hx hy ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[h x₀ y₀ x y hx hy, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set a : orderC c := GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ofF c t`. Establish `hact : ∀ y₀ y', m.Corr y₀ y' → m.Corr (act (dp0 R) (𝟙 _) X₀.rm t y₀) (act (dp0 ℂ) (𝟙 _) X.rm t y')`. Introduce `y₀ y' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := X₀.rm.hom t`. Use `haveI := X.rm.hom t`. Conclude with `GrpMor.Corr.push m (X₀.rm.act t) (X.rm.act t) (hpull.act t).symm h`. Establish `hcmt' : act (dp0 R) (𝟙 _) X₀.rm t = act (dp0 R) (𝟙 _) cm a` using `by haveI := X₀.rm.hom t haveI := cm.hom a`. Rewrite using `[act_apply, act_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `push_congr _ _ (hcm t).symm`. Establish `hρa : ∀ v, eH.symm (ρ a v) = act (dp0 R) (𝟙 _) cm a (eH.symm v)`. Introduce `v`. Simplify using `[hρ, LinearEquiv.conjRingEquiv]`. Establish `hfmem : f' i ∈ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigLat (K` using `FractionRing R) ρ (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i))) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hgens i).2]`. Conclude with `Submodule.mem_span_singleton_self _`. Establish `hinKa : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK (O` using `R) (FractionRing R) (Fin n → R) (ρ a (f' i)) = (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i))) (a : E) • GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuatio …`. Rewrite using `[GlobalTheory.EigenLattice.inK_apply_map]`. Conclude with `GlobalTheory.LowerOps.act_of_mem_eigK hfmem a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set lam := j ((GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i))) (a : E))`. Establish `hty : act (dp0 ℂ) (𝟙 _) X.rm t (yv i) = lam • yv i`. Use `GlobalTheory.Div.CorrespondenceTransfer.transfer R j hj X₀.A X.A p m hbc n eH (ρ a (f' i)) (f' i) _ hinKa _ _ ?_ (hyv i)` and prove the remaining obligations. Rewrite using `[hρa, ← hcmt']`. Conclude with `hact _ _ (hyv i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel' : ∀ x₀ x, m.Corr x₀ x → lam * ψ x (yv i) = n' * algebraMap R ℂ (ψ₀ x₀ (eH.symm (f' i)))`. Introduce `x₀ x hx`. Rewrite using `[← hrel x₀ _ x (yv i) hx (hyv i), hty, map_smul, smul_eq_mul]`. Establish `hE` using `hrel' _ _ (hev i)`. Establish `hσB : ∀ u, algebraMap R ℂ (ψ₀ (eH.symm u) (eH.symm (f' i))) = j (algebraMap R (FractionRing R) (B u (f' i)))` using `fun u ↦ (hj _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBne : j (algebraMap R (FractionRing R) (B (e' i) (f' i))) ≠ 0`. Rewrite using `[hj]`. Introduce `h0`. Conclude with `hBef (Subtype.ext (by simpa using h0))`. Establish `hne : (n' : ℂ) * algebraMap R ℂ (ψ₀ (eH.symm (e' i)) (eH.symm (f' i))) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 hn') (by rw [hσB]; exact hBne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hne` using `[← hE]`. Establish `hlam : lam ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hψne : ψ (ev i) (yv i) ≠ 0` using `right_ne_zero_of_mul hne`. Use `⟨hψne, fun x₀ x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hx₀ : x₀ = eH.symm (eH x₀)` using `(eH.symm_apply_apply x₀).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hX` using `hrel' x₀ x hx`. Rewrite `hX` using `[hx₀, hσB]`. Rewrite `hE` using `[hσB]`. Establish `hMK : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK (O` using `R) (FractionRing R) (Fin n → R) (M i (eH x₀)) = (algebraMap R (FractionRing R) D * (algebraMap R (FractionRing R) (B (eH x₀) (f' i)) / algebraMap R (FractionRing R) (B (e' i) (f' i)))) • GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK (O := R) (FractionRi …`. Rewrite using `[hscal i (eH x₀), hN, smul_smul]`.
-
-Rewrite using `[baseChange_inK]`. Take `⟨Z, hZ⟩` from `hbc.exists (eH.symm (M i (eH x₀)))`. Establish `hZ'` using `GlobalTheory.Div.CorrespondenceTransfer.transfer R j hj X₀.A X.A p m hbc n eH (M i (eH x₀)) (f' i) _ hMK Z (yv i) hZ (hyv i)`. Establish `hL : eH.symm.conjRingEquiv (M i) x₀ = eH.symm (M i (eH x₀))`. Simplify using `[LinearEquiv.conjRingEquiv]`.
-
-Rewrite using `[hL]`. Use `hZ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hZ', LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.BilinForm.flip_apply, smul_smul, map_mul, map_div₀, hj D]`. Use `congr 1`. Conclude with `numeric_product_inequality _ _ _ _ _ _ _ hlam hψne hBne hX hE`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lower_cx : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E))
     (y : (Af E)ˣ) (𝔠 : FracId (FR E)) (R : Subring ℂ) [IsDiscreteValuationRing R]

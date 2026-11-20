@@ -18,7 +18,7 @@ namespace GlobalTheory.HolFibre
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `U f`. Use `hc (ψ ⁻¹ᵁ U) ((ψ.app U).hom f)` as an intermediate fact. Simplify using `only [valAt'_comp, ← top_le_preimage_comp] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_comp {W : Set E} {X Y : Scheme.{0}} {c : E → (Sp ℂ ⟶ X)} (hc : IsHolTo W c) (ψ : X ⟶ Y) :
     IsHolTo W (fun w => c w ≫ ψ) := by
@@ -28,9 +28,9 @@ theorem isHolTo_comp {W : Set E} {X Y : Scheme.{0}} {c : E → (Sp ℂ ⟶ X)} (
   exact this
 
 /- English proof (translation)
-Introduce `U f`. Use `⟨?_, differentiableOn_const _⟩` and prove the remaining obligations. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [h, and_true]`. Conclude with `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, and_false, Set.setOf_false, isOpen_empty]`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_const {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) :
     IsHolTo W (fun _ => x) := by
@@ -42,23 +42,21 @@ theorem isHolTo_const {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (x : Sp ℂ �
   · simp only [h, and_false, Set.setOf_false, isOpen_empty]
 
 /- English proof (translation)
-Introduce `U f`. Use `holFamily_of_affine valAt'_rules W Z c (fun w₀ hw₀ => ?_) U f` and prove the remaining obligations. Take `⟨_, ⟨U₀, hU₀, rfl⟩, hx₀, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ((c w₀ ≫ p ≫ s) (default : PrimeSpectrum ℂ))) isOpen_univ`. Establish `hm₁ : (c w₀ ≫ p) (default : PrimeSpectrum ℂ) ∈ s ⁻¹ᵁ U₀`. Rewrite using `[← top_le_preimage_iff_mem, ← top_le_preimage_comp, Category.assoc, top_le_preimage_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx₀`. Establish `hm₂ : (c w₀ ≫ q) (default : PrimeSpectrum ℂ) ∈ t ⁻¹ᵁ U₀`. Rewrite using `[← top_le_preimage_iff_mem, ← top_le_preimage_comp, Category.assoc, ← H.w, top_le_preimage_iff_mem]`. Conclude with `hx₀`. Take `⟨_, ⟨U₁, hU₁, rfl⟩, hx₁, hl₁⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hm₁ (s ⁻¹ᵁ U₀).isOpen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, ⟨U₂, hU₂, rfl⟩, hx₂, hl₂⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hm₂ (t ⁻¹ᵁ U₀).isOpen`. Establish `hU₀ : IsAffineOpen U₀` using `hU₀`. Establish `hU₁ : IsAffineOpen U₁` using `hU₁`. Establish `hU₂ : IsAffineOpen U₂` using `hU₂`. Establish `hl₁ : U₁ ≤ s ⁻¹ᵁ U₀` using `hl₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl₂ : U₂ ≤ t ⁻¹ᵁ U₀` using `hl₂`. Use `set V : Z.Opens := p ⁻¹ᵁ U₁ ⊓ q ⁻¹ᵁ U₂ with hVdef`. Establish `hiff : ∀ w, ⊤ ≤ c w ⁻¹ᵁ V ↔ ⊤ ≤ (c w ≫ p) ⁻¹ᵁ U₁ ∧ ⊤ ≤ (c w ≫ q) ⁻¹ᵁ U₂` using `fun w => by`. Rewrite using `[hVdef, Scheme.Hom.preimage_inf, le_inf_iff, Scheme.Hom.comp_preimage, Scheme.Hom.comp_preimage]`. Establish `hV : IsAffineOpen V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine _` using `hU₀`. Establish `: IsAffine _` using `hU₁`. Establish `: IsAffine _` using `hU₂`. Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := U₀) (UT := U₂) (UX := U₁) hl₂ hl₁ hVdef).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := U₀) (UT := U₂) (UX := U₁) hl₂ hl₁ hVdef).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ hU₀ hU₂ hU₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Establish `hgen` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Use `⟨V, hV, (hiff w₀).2 ⟨(top_le_preimage_iff_mem _ _).2 hx₁, (top_le_preimage_iff_mem _ _).2 hx₂⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `(ha U₁ 0).1.inter (hb U₂ 0).1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, hiff]`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-The claim follows by propositional logic. Establish `hg : g ∈ Subring.closure _` using `hgen.ge (Subring.mem_top g)`. Proceed by induction on `hg using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `((ha U₁ y).2.mono fun w hw => ⟨hw.1, ((hiff w).1 hw.2).1⟩).congr fun w hw => valAt'_appLE (c w) p U₁ V _ y hw.2`. Conclude with `((hb U₂ y).2.mono fun w hw => ⟨hw.1, ((hiff w).1 hw.2).2⟩).congr fun w hw => valAt'_appLE (c w) q U₂ V _ y hw.2`. Consider the case `zero => exact (differentiableOn_const (0 : ℂ)).congr fun w _ => valAt'_zero _ _`. Consider the case `one => exact (differentiableOn_const (1 : ℂ)).congr fun w hw => valAt'_one _ hw.2`. Consider the case `add x y _ _ hx hy => exact (hx.add hy).congr fun w _ => valAt'_add _ _ _ _`.
-
-Consider the case `neg x _ hx => exact hx.neg.congr fun w _ => valAt'_neg _ _ _`. Consider the case `mul x y _ _ hx hy => exact (hx.mul hy).congr fun w _ => valAt'_mul _ _ _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isHolTo_of_isPullback {W : Set E} {S X Y Z : Scheme.{0}}
     {p : Z ⟶ X} {q : Z ⟶ Y} {s : X ⟶ S} {t : Y ⟶ S} (H : IsPullback p q s t) {c : E → (Sp ℂ ⟶ Z)}
@@ -115,7 +113,7 @@ theorem isHolTo_of_isPullback {W : Set E} {S X Y Z : Scheme.{0}}
     | mul x y _ _ hx hy => exact (hx.mul hy).congr fun w _ => valAt'_mul _ _ _ _
 
 /- English proof (translation)
-Use `isHolTo_of_isPullback (IsPullback.of_hasPullback G.hom y) ?_ ?_` and prove the remaining obligations. Simplify using `only [fibPt, pullback.lift_fst]`. Conclude with `he`. Simplify using `only [fibPt, pullback.lift_snd]`. Conclude with `isHolTo_const hW _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_fibPt {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (G : Over X) (y : Sp ℂ ⟶ X)
     (e : E → (Over.mk y ⟶ G)) (he : IsHolTo W (fun z => (e z).left)) :
@@ -127,7 +125,7 @@ theorem isHolTo_fibPt {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (G : Over X) 
     exact isHolTo_const hW _
 
 /- English proof (translation)
-Introduce `_ G y _ e he` and use `⟨isHolTo_fibPt isOpen_univ G y e he, fun _ ψ => isHolTo_comp (isHolTo_fibPt isOpen_univ G y e he) ψ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isHolTo_fibPt_and_comp :
     ∀ (X : Scheme.{0}) (G : Over X) (y : Sp ℂ ⟶ X) (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsHolTo Set.univ (fun z => (e z).left) → IsHolTo Set.univ (fun z => fibPt G (e z)) ∧ ∀ (Y : Scheme.{0}) (ψ : pullback G.hom y ⟶ Y), IsHolTo Set.univ (fun z => fibPt G (e z) ≫ ψ) :=

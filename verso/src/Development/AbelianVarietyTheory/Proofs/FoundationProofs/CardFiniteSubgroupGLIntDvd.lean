@@ -6,19 +6,19 @@ namespace GlobalTheory
 namespace MinkowskiOrder
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Set `f : G →* GL (Fin n) (ZMod l)` to `(Matrix.GeneralLinearGroup.map (Int.castRingHom (ZMod l))).comp G.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : 0 < orderOf g` using `orderOf_pos g`. Establish `hpow : ((g : GL (Fin n) ℤ) : Matrix (Fin n) (Fin n) ℤ) ^ orderOf g = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Subgroup.coe_pow, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Establish `hent : ∀ i j, (l : ℤ) ∣ (((g : GL (Fin n) ℤ) : Matrix (Fin n) (Fin n) ℤ) - 1) i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `h1` using `congrArg (fun u : GL (Fin n) (ZMod l) => (u : Matrix (Fin n) (Fin n) (ZMod l)) i j) hg`. Establish `h2 : ((((g : GL (Fin n) ℤ) : Matrix (Fin n) (Fin n) ℤ) i j : ℤ) : ZMod l) = (1 : Matrix (Fin n) (Fin n) (ZMod l)) i j` using `h1`. Rewrite using `[Matrix.sub_apply, Int.cast_sub, h2, Matrix.one_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `choose B hB using hent`. Establish `key` using `end_eq_one_of_pow_eq_one_of_congr (Fin n → ℤ) (Matrix.toLin' ((g : GL (Fin n) ℤ) : Matrix (Fin n) (Fin n) ℤ)) (orderOf g) l hm (by rw [← Matrix.toLin'_pow, hpow, Matrix.toLin'_one]; rfl) h3 (by`. Introduce `y`. Use `⟨(Matrix.of B).mulVec y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : ((g : GL (Fin n) ℤ) : Matrix (Fin n) (Fin n) ℤ) = 1 + l • Matrix.of B`. Use extensionality with `i j`. Use `hB i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, nsmul_eq_mul, ← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.toLin'_apply, e, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec])`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `Matrix.toLin'_one.symm`. Establish `h` using `Subgroup.card_dvd_of_injective f hf`. Rewrite `h` using `[Matrix.card_GL_field, ZMod.card]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem card_dvd_prod (n : ℕ) (G : Subgroup (GL (Fin n) ℤ)) [Finite G] (l : ℕ) (hl : l.Prime)
     (h3 : 3 ≤ l) : Nat.card G ∣ ∏ i : Fin n, (l ^ n - l ^ (i : ℕ)) := by
@@ -62,11 +62,11 @@ theorem card_dvd_prod (n : ℕ) (G : Subgroup (GL (Fin n) ℤ)) [Finite G] (l : 
   rwa [Matrix.card_GL_field, ZMod.card] at h
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Use `haveI := Fact.mk hl`. Establish `hne0 : ∀ i, i < n → l ^ n - l ^ i ≠ 0` using `fun i hi => Nat.sub_ne_zero_of_lt (Nat.pow_lt_pow_right hl.one_lt hi)`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => l ^ n - l ^ i) n, Nat.factorization_prod (fun i hi => hne0 i (Finset.mem_range.mp hi)), Finsupp.finset_sum_apply, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi'` using `Finset.mem_range.mp hi`. Establish `e : l ^ n - l ^ (n - 1 - i) = l ^ (n - 1 - i) * (l ^ (i + 1) - 1)`. Rewrite using `[Nat.mul_sub, ← pow_add, mul_one]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : l ^ (i + 1) - 1 ≠ 0` using `Nat.sub_ne_zero_of_lt (Nat.one_lt_pow (by omega) hl.one_lt)`. Rewrite using `[e, Nat.factorization_def _ hp, padicValNat.mul (pow_ne_zero _ hl.ne_zero) h1, padicValNat_prime_prime_pow _ hne, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem val_prod (n p l : ℕ) (hp : p.Prime) (hl : l.Prime) (hne : p ≠ l) :
     (∏ i : Fin n, (l ^ n - l ^ (i : ℕ))).factorization p
@@ -90,11 +90,11 @@ theorem val_prod (n p l : ℕ) (hp : p.Prime) (hl : l.Prime) (hne : p ≠ l) :
     padicValNat_prime_prime_pow _ hne, zero_add]
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ 2) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Use `haveI := ZMod.isCyclic_units_of_prime_pow p hp h2 2`. Take `⟨g, hg⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (p ^ 2))ˣ)`. Take `⟨l, hlp, hl, hlg⟩` from `Nat.forall_exists_prime_gt_and_eq_mod g.isUnit p`. Use `⟨l, hl, hlp, fun i hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hg` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow hp (by norm_num)]`. Establish `: g ^ i = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, ← hlg, Units.val_one]`. Establish `h0` using `(ZMod.natCast_eq_zero_iff _ _).mpr hi`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[Nat.cast_sub (Nat.one_le_pow _ _ hl.pos), Nat.cast_pow, Nat.cast_one, sub_eq_zero]`. Conclude with `h0`. Use `orderOf_dvd_of_pow_eq_one this` as an intermediate fact. Rewrite `this` using `[hg]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_prime_gen (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) :
     ∃ l : ℕ, l.Prime ∧ p < l ∧ ∀ i, p ^ 2 ∣ l ^ i - 1 → p * (p - 1) ∣ i := by
@@ -115,25 +115,23 @@ theorem exists_prime_gen (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) :
   simpa using this
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hp2` using `hp.two_le`. Establish `hodd : Odd p` using `hp.odd_of_ne_two h2`. Establish `hnd : ∀ k, ¬ p ∣ l ^ k` using `fun k hk => by`. Use `(Nat.prime_dvd_prime_iff_eq hp hl).mp (hp.dvd_of_dvd_pow hk)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlte : ∀ k m, k ≠ 0 → m ≠ 0 → p ∣ l ^ k - 1 → padicValNat p (l ^ (k * m) - 1) = padicValNat p (l ^ k - 1) + padicValNat p m`. Introduce `k m hk hm hd`. Use `padicValNat.pow_sub_pow (p := p) (x := l ^ k) (y := 1) hodd (Nat.one_lt_pow hk hl.one_lt) hd (hnd k) hm` as an intermediate fact. Rewrite `this` using `[one_pow, ← pow_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hne : ∀ k, k ≠ 0 → l ^ k - 1 ≠ 0` using `fun k hk => Nat.sub_ne_zero_of_lt (Nat.one_lt_pow hk hl.one_lt)`. Establish `hferm : p ∣ l ^ (p - 1) - 1`. Establish `hc : l.Coprime p` using `(Nat.coprime_primes hl hp).mpr (by omega)`. Use `Nat.ModEq.pow_totient hc` as an intermediate fact. Rewrite `this` using `[Nat.totient_prime hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ hl.pos)).mp this.symm`. Establish `hone : padicValNat p (l ^ (p - 1) - 1) ≤ 1`. Assume the negation of the conclusion as `hc`. Establish `h0` using `h (p - 1) ((padicValNat_dvd_iff_le (hne (p - 1) (by omega))).mpr (by omega))`. Use `Nat.le_of_dvd (by omega) h0` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : 2 * (p - 1) ≤ p * (p - 1)` using `Nat.mul_le_mul_right _ hp2`. Use linear arithmetic over natural numbers and integers. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_succ, Nat.succ_div]`. Use `split_ifs with hd`. Establish `e : n + 1 = (p - 1) * (n / (p - 1) + 1)`. Use `Nat.succ_div_of_dvd hd` as an intermediate fact. Rewrite using `[← this, Nat.mul_div_cancel' hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero _) (Nat.factorial_ne_zero _)]`. Use `hlte (p - 1) (n / (p - 1) + 1) (by omega) (Nat.succ_ne_zero _) hferm` as an intermediate fact. Rewrite `this` using `[← e]`. Simplify using `only [Nat.succ_eq_add_one]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: padicValNat p (l ^ (n + 1) - 1) = 0`. Apply `padicValNat.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hd'`. Establish `h1` using `hlte (n + 1) p (by omega) (by omega) hd'`. Establish `h3` using `one_le_padicValNat_of_dvd (hne (n + 1) (by omega)) hd'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[padicValNat_self]`. Establish `h4` using `h _ ((padicValNat_dvd_iff_le (hne ((n + 1) * p) (Nat.mul_ne_zero (by omega) (by omega)))).mpr (by omega : 2 ≤ _))`. Rewrite `h4` using `[mul_comm (n + 1)]`. Conclude with `hd (Nat.dvd_of_mul_dvd_mul_left hp.pos h4)`. Simplify using `only [add_zero]`.
-
-Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_odd (p l : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (hl : l.Prime) (hpl : p < l)
     (h : ∀ i, p ^ 2 ∣ l ^ i - 1 → p * (p - 1) ∣ i) (n : ℕ) :
@@ -194,7 +192,7 @@ end MinkowskiOrder
 
 open Matrix in
 /- English proof (translation)
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Use `Nat.pow_lt_pow_right hq i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem prod_pow_sub_pow_pos (q n : ℕ) (hq : 2 ≤ q) :
     0 < ∏ i : Fin n, (q ^ n - q ^ (i : ℕ)) := by
@@ -205,9 +203,9 @@ private theorem prod_pow_sub_pow_pos (q n : ℕ) (hq : 2 ≤ q) :
 
 open Matrix in
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, Fin.val_succ]`. Use `congr 1`. Establish `h : ∀ i : Fin n, q ^ (n + 1) - q ^ ((i : ℕ) + 1) = q * (q ^ n - q ^ (i : ℕ))`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', pow_succ', Nat.mul_sub]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => h i), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_pow_sub_pow_succ (q n : ℕ) :
     ∏ i : Fin (n + 1), (q ^ (n + 1) - q ^ (i : ℕ)) =
@@ -223,7 +221,7 @@ private theorem prod_pow_sub_pow_succ (q n : ℕ) :
 
 open Matrix in
 /- English proof (translation)
-The claim follows from `(padicValNat_dvd_iff_le hb).mp (pow_padicValNat_dvd.trans h)`.
+A detailed English derivation is pending.
 -/
 private theorem padicValNat_le_padicValNat_of_dvd {p a b : ℕ} [Fact p.Prime] (hb : b ≠ 0) (h : a ∣ b) :
     padicValNat p a ≤ padicValNat p b :=
@@ -231,11 +229,11 @@ private theorem padicValNat_le_padicValNat_of_dvd {p a b : ℕ} [Fact p.Prime] (
 
 open Matrix in
 /- English proof (translation)
-Establish `hlte` using `padicValNat.pow_two_sub_pow (x := 3) (y := 1) (by norm_num) (by norm_num) (by norm_num) (n := 2 * k) (by omega) (even_two_mul k)`. Establish `h4 : padicValNat 2 (3 + 1) = 2`. Rewrite using `[show 3 + 1 = 2 ^ 2 by norm_num, padicValNat.prime_pow]`. Rewrite `hlte` using `[h4, show 3 - 1 = 2 by norm_num, padicValNat_self, padicValNat.mul (by norm_num) hk.ne', padicValNat_self, one_pow]`. Establish `hne : 3 ^ (2 * k) - 1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.one_lt_pow (n := 2 * k) (by omega) (by norm_num : 1 < 3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hdvd : 3 ^ k - 1 ∣ 3 ^ (2 * k) - 1`. Establish `h1 : 1 ≤ 3 ^ k` using `Nat.one_le_pow _ _ (by norm_num)`. Establish `h2 : 1 ≤ 3 ^ (2 * k)` using `Nat.one_le_pow _ _ (by norm_num)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨3 ^ k + 1, ?_⟩` and prove the remaining obligations. Use `zify [h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `padicValNat_le_padicValNat_of_dvd (p := 2) hne hdvd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem padicValNat_two_three_pow_sub_one_le (k : ℕ) (hk : 0 < k) :
     padicValNat 2 (3 ^ k - 1) ≤ 3 + padicValNat 2 k := by
@@ -259,11 +257,11 @@ private theorem padicValNat_two_three_pow_sub_one_le (k : ℕ) (hk : 0 < k) :
 
 open Matrix in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hqn : 0 < 3 ^ (n + 1) - 1`. Use `Nat.one_lt_pow (n := n + 1) (by omega) (by norm_num : 1 < 3)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpow : padicValNat 2 (3 ^ n) = 0` using `padicValNat.eq_zero_of_not_dvd fun h => by`. Use `Nat.prime_two.dvd_of_dvd_pow h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hq0 : 3 ^ n ≠ 0` using `by positivity`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hP` using `(prod_pow_sub_pow_pos 3 n (by norm_num)).ne'`. Rewrite using `[prod_pow_sub_pow_succ, padicValNat.mul hqn.ne' (Nat.mul_ne_zero hq0 hP), padicValNat.mul hq0 hP, hpow, zero_add, Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero _)]`. Use `padicValNat_two_three_pow_sub_one_le (n + 1) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem padicValNat_two_prod_three_pow_sub_le (n : ℕ) :
     padicValNat 2 (∏ i : Fin n, (3 ^ n - 3 ^ (i : ℕ))) ≤ 3 * n + padicValNat 2 n.factorial := by
@@ -287,7 +285,7 @@ private theorem padicValNat_two_prod_three_pow_sub_le (n : ℕ) :
 
 open Matrix in
 /- English proof (translation)
-Rewrite using `[padicValNat.mul (by positivity) (Nat.factorial_ne_zero _), show 8 ^ n = 2 ^ (3 * n) by rw [pow_mul]; norm_num, padicValNat.prime_pow]`. Establish `h1` using `padicValNat_two_prod_three_pow_sub_le n`. Establish `h2` using `padicValNat_le_padicValNat_of_dvd (p := 2) (Nat.factorial_ne_zero (2 * n)) (Nat.factorial_dvd_factorial (by omega : n ≤ 2 * n))`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem padicValNat_two_prod_three_pow_sub_le_eight_pow_factorial (n : ℕ) :
     padicValNat 2 (∏ i : Fin n, (3 ^ n - 3 ^ (i : ℕ))) ≤
@@ -301,27 +299,25 @@ private theorem padicValNat_two_prod_three_pow_sub_le_eight_pow_factorial (n : �
 
 open Matrix in
 /- English proof (translation)
-Establish `hp'` using `hp.out`. Establish `hp1 : 0 < p - 1` using `by have := hp'.two_le; omega`. Use `haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp'.ne_zero⟩`. Use `haveI := ZMod.isCyclic_units_of_prime_pow p hp' hp2 2`. Take `⟨u, hu⟩` from `IsCyclic.exists_generator (α := (ZMod (p ^ 2))ˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hord : orderOf u = p * (p - 1)`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hu, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow hp' (by norm_num), pow_one]`. Take `⟨q, hqgt, hq, hqu⟩` from `Nat.forall_exists_prime_gt_and_eq_mod u.isUnit p`. Establish `hq1 : 1 < q` using `hq.one_lt`. Establish `hpq : ¬ p ∣ q` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `(Nat.prime_dvd_prime_iff_eq hp' hq).mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ m, p ^ 2 ∣ q ^ m - 1 ↔ p * (p - 1) ∣ m`. Introduce `m`. Rewrite using `[← hord, orderOf_dvd_iff_pow_eq_one, ← ZMod.natCast_eq_zero_iff, Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), sub_eq_zero, Nat.cast_pow, hqu, Nat.cast_one, ← Units.val_pow_eq_pow_val, Units.val_eq_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hodd : Odd p` using `hp'.odd_of_ne_two hp2`. Use `⟨q, hq, hqgt, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk hdvd`. Establish `hqk : 1 < q ^ k` using `Nat.one_lt_pow hk.ne' hq1`. Establish `hnd : ¬ p ∣ q ^ k` using `fun h => hpq (hp'.dvd_of_dvd_pow h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlte` using `padicValNat.pow_sub_pow (p := p) (y := 1) hodd hqk (by simpa using hdvd) hnd (n := p) hp'.ne_zero`. Rewrite `hlte` using `[one_pow, ← pow_mul, padicValNat_self]`. Establish `h1 : 1 ≤ padicValNat p (q ^ k - 1)` using `one_le_padicValNat_of_dvd (by omega) hdvd`. Establish `hne : q ^ (k * p) - 1 ≠ 0`. Use `Nat.one_lt_pow (Nat.mul_ne_zero hk.ne' hp'.ne_zero) hq1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : p ^ 2 ∣ q ^ (k * p) - 1` using `(padicValNat_dvd_iff_le hne).mpr (by omega)`. Rewrite `h2` using `[key, mul_comm k p]`. Conclude with `Nat.dvd_of_mul_dvd_mul_left hp'.pos h2`. Introduce `j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime q p` using `(Nat.coprime_primes hq hp').mpr (by omega)`. Establish `hferm : p ∣ q ^ (p - 1) - 1`. Use `Nat.ModEq.pow_totient hcop` as an intermediate fact. Rewrite `this` using `[Nat.totient_prime hp']`. Conclude with `(Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ (by omega))).mp this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqp1 : 1 < q ^ (p - 1)` using `Nat.one_lt_pow hp1.ne' hq1`. Establish `hne : q ^ (p - 1) - 1 ≠ 0` using `by omega`. Establish `hv1 : padicValNat p (q ^ (p - 1) - 1) = 1`. Establish `h1 : 1 ≤ padicValNat p (q ^ (p - 1) - 1)` using `one_le_padicValNat_of_dvd hne hferm`. Assume the negation of the conclusion as `hne1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p ^ 2 ∣ q ^ (p - 1) - 1` using `(padicValNat_dvd_iff_le hne).mpr (by omega)`. Rewrite `h2` using `[key]`. Use `Nat.le_of_dvd hp1 h2` as an intermediate fact. Establish `: p - 1 < p * (p - 1)`. Use `hp'.two_le` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Establish `hnd : ¬ p ∣ q ^ (p - 1)` using `fun h => hpq (hp'.dvd_of_dvd_pow h)`. Establish `hlte` using `padicValNat.pow_sub_pow (p := p) (y := 1) hodd hqp1 (by simpa using hferm) hnd (n := j) hj.ne'`. Rewrite `hlte` using `[one_pow, ← pow_mul, hv1]`.
-
-Conclude with `hlte`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_prime_gt_order_padicValNat_pow_sub_one (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) :
     ∃ q, q.Prime ∧ p < q ∧ (∀ k, 0 < k → p ∣ q ^ k - 1 → (p - 1) ∣ k) ∧
@@ -385,15 +381,15 @@ private theorem exists_prime_gt_order_padicValNat_pow_sub_one (p : ℕ) [hp : Fa
 
 open Matrix in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hqn : 0 < q ^ (n + 1) - 1`. Use `Nat.one_lt_pow (n := n + 1) (by omega) (by omega : 1 < q)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpow : padicValNat p (q ^ n) = 0` using `padicValNat.eq_zero_of_not_dvd fun h => hqp (hp.out.dvd_of_dvd_pow h)`. Establish `hq0 : q ^ n ≠ 0` using `by positivity`. Establish `hP` using `(prod_pow_sub_pow_pos q n hq).ne'`. Rewrite using `[prod_pow_sub_pow_succ, padicValNat.mul hqn.ne' (Nat.mul_ne_zero hq0 hP), padicValNat.mul hq0 hP, hpow, zero_add, ih, Nat.succ_div]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp1 : 0 < p - 1` using `by have := hp.out.two_le; omega`. Distinguish the cases in `hd : (p - 1) ∣ n + 1`. Take `⟨j, hj⟩` from `hd`. Establish `hj0 : 0 < j`. Break down `Nat.eq_zero_or_pos j with h | h` into its components or cases.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h] at hj`. Conclude with `h`. Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Establish `hdiv' : (n + 1) / (p - 1) = m + 1` using `by rw [hj, Nat.mul_div_cancel_left _ hp1]`. Establish `hn : n / (p - 1) = m`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdiv'` using `[Nat.succ_div, if_pos ⟨_, hj⟩]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos ⟨_, hj⟩, hn, hj, hval _ hj0, padicValNat_factorial_mul, padicValNat_factorial_mul, Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hd, add_zero, padicValNat.eq_zero_of_not_dvd (fun h => hd (hdiv _ (by omega) h)), zero_add]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem padicValNat_prod_pow_sub_pow_eq_padicValNat_factorial (p q : ℕ) [hp : Fact p.Prime] (hq : 2 ≤ q)
     (hqp : ¬ p ∣ q) (hdiv : ∀ k, 0 < k → p ∣ q ^ k - 1 → (p - 1) ∣ k)
@@ -432,9 +428,9 @@ private theorem padicValNat_prod_pow_sub_pow_eq_padicValNat_factorial (p q : ℕ
 
 open Matrix in
 /- English proof (translation)
-Establish `h2` using `hp.out.two_le`. Establish `hle : p * (n / (p - 1)) ≤ 2 * n`. Use `Nat.mul_div_le n (p - 1)` as an intermediate fact. Establish `hp' : p ≤ 2 * (p - 1)` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `padicValNat_le_padicValNat_of_dvd (by positivity) ((Nat.factorial_dvd_factorial hle).trans (Dvd.intro_left _ rfl))`.
+A detailed English derivation is pending.
 -/
 private theorem padicValNat_factorial_le_padicValNat_eight_pow_mul_factorial (p n : ℕ) [hp : Fact p.Prime] :
     padicValNat p (p * (n / (p - 1))).factorial ≤ padicValNat p (8 ^ n * (2 * n).factorial) := by
@@ -450,11 +446,11 @@ private theorem padicValNat_factorial_le_padicValNat_eight_pow_mul_factorial (p 
 
 open Matrix in
 /- English proof (translation)
-Use `choose C hC using hcong`. Establish `hg : (g : Matrix (Fin n) (Fin n) ℤ) = 1 + (q : ℤ) • Matrix.of C`. Use extensionality with `i j`. Use `hC i j` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `_root_.GlobalTheory.end_eq_one_of_pow_eq_one_of_congr (Fin n → ℤ) (Matrix.toLinAlgEquiv' (g : Matrix (Fin n) (Fin n) ℤ)) k q hk ?_ hq ?_`. Establish `h1 : (g : Matrix (Fin n) (Fin n) ℤ) = 1`. Apply `Matrix.toLinAlgEquiv'.injective` to reduce the goal to its premises. Rewrite using `[key, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext h1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hgk, Units.val_one, map_one]`. Introduce `y`. Use `⟨Matrix.of C *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLinAlgEquiv'_apply, hg, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, ← Nat.cast_smul_eq_nsmul ℤ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_pow_eq_one_of_congr_one_mod {n : ℕ} (g : GL (Fin n) ℤ) (k : ℕ) (hk : 0 < k)
     (hgk : g ^ k = 1) (q : ℕ) (hq : 3 ≤ q)
@@ -480,13 +476,13 @@ private theorem eq_one_of_pow_eq_one_of_congr_one_mod {n : ℕ} (g : GL (Fin n) 
 
 open Matrix in
 /- English proof (translation)
-Establish `hcard` using `Matrix.card_GL_field (𝔽 := ZMod q) n`. Rewrite `hcard` using `[ZMod.card]`. Rewrite using `[← hcard]`. Use `Subgroup.card_dvd_of_injective ((Matrix.GeneralLinearGroup.map (Int.castRingHom (ZMod q))).comp G.subtype) ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.ker_eq_bot_iff, eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Rewrite `hg` using `[MonoidHom.mem_ker]`. Rewrite using `[Subgroup.mem_bot]`. Take `⟨k, hk, hgk⟩` from `(isOfFinOrder_of_finite g).exists_pow_eq_one`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `eq_one_of_pow_eq_one_of_congr_one_mod (g : GL (Fin n) ℤ) k hk ?_ q hq ?_` and prove the remaining obligations. Rewrite using `[← Subgroup.coe_pow, hgk]`. Both sides reduce to the same expression. Introduce `i j`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun h : GL (Fin n) (ZMod q) => (h : Matrix _ _ (ZMod q)) i j) hg` as an intermediate fact. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify `this` using `[sub_eq_zero, Matrix.one_apply, Matrix.GeneralLinearGroup.map]`. Simplify `this` using `[sub_eq_zero, Matrix.one_apply, hij, Matrix.GeneralLinearGroup.map]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem card_finite_subgroup_dvd_prod_pow_sub_pow {n : ℕ} (G : Subgroup (GL (Fin n) ℤ)) [Finite G]
     (q : ℕ) [Fact q.Prime] (hq : 3 ≤ q) :
@@ -514,15 +510,13 @@ private theorem card_finite_subgroup_dvd_prod_pow_sub_pow {n : ℕ} (G : Subgrou
 open Matrix in
 
 /- English proof (translation)
-Introduce `n G hG`. Establish `hB : 8 ^ n * (2 * n).factorial ≠ 0` using `by positivity`. Establish `hG0 : Nat.card G ≠ 0` using `Nat.card_pos.ne'`. Rewrite using `[← Nat.factorization_prime_le_iff_dvd hG0 hB]`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := Fact.mk hp`. Rewrite using `[Nat.factorization_def _ hp, Nat.factorization_def _ hp]`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hq3, hbound⟩ : ∃ q, q.Prime ∧ 3 ≤ q ∧ padicValNat p (∏ i : Fin n, (q ^ n - q ^ (i : ℕ))) ≤ padicValNat p (8 ^ n * (2 * n).factorial) := by`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨3, Nat.prime_three, le_rfl, padicValNat_two_prod_three_pow_sub_le_eight_pow_factorial n⟩`. Take `⟨q, hq, hpq, hdiv, hval⟩` from `exists_prime_gt_order_padicValNat_pow_sub_one p hp2`. Establish `h2` using `hp.two_le`. Use `⟨q, hq, by omega, ?_⟩` and prove the remaining obligations. Establish `hnd : ¬ p ∣ q` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.prime_dvd_prime_iff_eq hp hq).mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[padicValNat_prod_pow_sub_pow_eq_padicValNat_factorial p q hq.two_le hnd hdiv hval n]`. Conclude with `padicValNat_factorial_le_padicValNat_eight_pow_mul_factorial p n`. Use `haveI := Fact.mk hq`.
-
-Use `haveI := hG`. Conclude with `(padicValNat_le_padicValNat_of_dvd (prod_pow_sub_pow_pos q n hq.two_le).ne' (card_finite_subgroup_dvd_prod_pow_sub_pow G q hq3)).trans hbound`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.card_finite_subgroup_GL_int_dvd :
     ∀ (n : ℕ) (G : Subgroup (GL (Fin n) ℤ)), Finite G → Nat.card G ∣ 8 ^ n * (2 * n).factorial := by

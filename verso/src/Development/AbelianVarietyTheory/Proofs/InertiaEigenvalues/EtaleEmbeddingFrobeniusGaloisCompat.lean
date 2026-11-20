@@ -27,7 +27,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (E : EtTie W RA RW inclR φR gR πA)
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.TorsionBoundCompare.ioE_γ E hO g e, hg, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ioE_fixed_of_resΓ_eq_one (hO : Function.Injective (algebraMap O LL)) (g : G)
     (hg : W.resΓ g = 1) (e : W.EE) : gR g (E.ioE e) = E.ioE e := by
@@ -35,15 +35,15 @@ theorem ioE_fixed_of_resΓ_eq_one (hO : Function.Injective (algebraMap O LL)) (g
   rfl
 
 /- English proof (translation)
-Rewrite using `[E.ioE_ext, E.io_π]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ioE_letπ : E.ioE (algebraMap (LetA O n) W.EE letπ) = inclR πA := by
   rw [E.ioE_ext, E.io_π]
 
 /- English proof (translation)
-Take `⟨a, m, h⟩` from `W.EE_dense e 1`. Rewrite `h` using `[pow_one, Ideal.mem_span_singleton, hp]`. Take `⟨r, hr⟩` from `h`. Establish `h1` using `congrArg E.ioE hr`. Rewrite `h1` using `[map_sub, map_mul, map_mul, map_natCast, map_pow, map_pow, ioE_letπ, E.ioE_ext]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m, E.io a, E.ioE r, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, ← h1]`. Express the relevant statement in the definitionally equal form `_ = inclR (E.io a) + _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ioE_bounded_pole {p : ℕ} (hp : PD.p = p) (e : W.EE) :
     ∃ c : ℕ, Near (inclR : RA →+* RW) p (inclR πA) 0 (inclR πA ^ c * E.ioE e) := by
@@ -60,7 +60,7 @@ theorem ioE_bounded_pole {p : ℕ} (hp : PD.p = p) (e : W.EE) :
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h W E`. Establish `hO : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Conclude with `⟨fun e => GlobalTheory.TorsionBoundCompare.ioE_φ E.tie hO e, fun g hg e => ioE_fixed_of_resΓ_eq_one E.tie hO g hg e, ioE_letπ E.tie, fun e => ioE_bounded_pole E.tie (P.PD_p K) e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ioE_compat : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL) (E : EtSit P AI K s LL h W), (∀ e, E.tie.ioE (W.φE e) = φRW LL (E.tie.ioE e)) ∧ (∀ g : ↥(GK K), W.resΓ g = 1 → ∀ e, AI.gRW LL (g : GQ l) (E.tie.ioE e) = E.tie.ioE e) ∧ E.tie.ioE (algebraMap (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) W.EE letπ) = piR AI LL s ∧ (∀ e, ∃ c : ℕ, NearPi AI LL s 0 (piR AI LL s ^ c * E.tie.ioE e)) := by
   intro l _ P AI K s LL h W E

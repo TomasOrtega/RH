@@ -16,18 +16,18 @@ def theta (M : Module.End K (T.W s)) : MonoidAlgebra K G :=
     LinearMap.trace K (T.W s) (T.tau s y⁻¹ * M)) • MonoidAlgebra.of K G y
 
 /- English proof (translation)
-Simplify using `[theta, eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_one : theta T s 1 = eS T s := by simp [theta, eS]
 
 /- English proof (translation)
-Simplify using `[theta, mul_add, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_add (M N : Module.End K (T.W s)) : theta T s (M + N) = theta T s M + theta T s N := by
   simp [theta, mul_add, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [theta, Finset.smul_sum, smul_smul, mul_smul_comm, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Put the polynomial expressions in normal form.
 -/
 theorem theta_smul (c : K) (M : Module.End K (T.W s)) : theta T s (c • M) = c • theta T s M := by
   simp only [theta, Finset.smul_sum, smul_smul, mul_smul_comm, map_smul, smul_eq_mul]
@@ -35,12 +35,12 @@ theorem theta_smul (c : K) (M : Module.End K (T.W s)) : theta T s (c • M) = c 
   ring_nf
 
 /- English proof (translation)
-Simplify using `[theta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_zero : theta T s 0 = 0 := by simp [theta]
 
 /- English proof (translation)
-Simplify using `only [theta, LinearMap.trace_mul_comm K (T.tau s _) M]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_eq' (M : Module.End K (T.W s)) : theta T s M =
     ∑ y : G, (((Module.finrank K (T.W s) : ℕ) : K) / ((Fintype.card G : ℕ) : K) *
@@ -48,9 +48,9 @@ theorem theta_eq' (M : Module.End K (T.W s)) : theta T s M =
   simp only [theta, LinearMap.trace_mul_comm K (T.tau s _) M]
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [theta_zero]`. Consider the case `add x y hx hy => rw [add_mul, hx, hy, map_add, theta_add]`. Consider the case `single g r`. Rewrite using `[Representation.asAlgebraHom_single, theta_smul, eS, Finset.mul_sum, theta, Finset.smul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, mul_smul_comm, MonoidAlgebra.of_apply, MonoidAlgebra.single_mul_single, mul_one, smul_smul]`. Rewrite using `[← map_mul, mul_inv_rev, inv_mul_cancel_right, MonoidAlgebra.smul_single', MonoidAlgebra.smul_single', mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_eS (z : MonoidAlgebra K G) : z * eS T s = theta T s ((T.tau s).asAlgebraHom z) := by
   induction z using MonoidAlgebra.induction_linear with
@@ -66,11 +66,11 @@ theorem mul_eS (z : MonoidAlgebra K G) : z * eS T s = theta T s ((T.tau s).asAlg
     ring
 
 /- English proof (translation)
-Rewrite using `[theta_eq']`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[mul_add, hx, hy, map_add]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [add_mul, map_add, mul_add, add_smul, Finset.sum_add_distrib]`. Consider the case `single g r`. Rewrite using `[Representation.asAlgebraHom_single, eS, Finset.sum_mul]`. Use `Fintype.sum_equiv (Equiv.mulRight g) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, smul_mul_assoc, MonoidAlgebra.of_apply, MonoidAlgebra.single_mul_single, one_mul, smul_smul, smul_mul_assoc, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, mul_inv_rev, mul_inv_cancel_left, MonoidAlgebra.smul_single', MonoidAlgebra.smul_single', mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eS_mul (z : MonoidAlgebra K G) : eS T s * z = theta T s ((T.tau s).asAlgebraHom z) := by
   rw [theta_eq']
@@ -89,22 +89,22 @@ theorem eS_mul (z : MonoidAlgebra K G) : eS T s * z = theta T s ((T.tau s).asAlg
     ring
 
 /- English proof (translation)
-Rewrite using `[eS_mul, mul_eS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eS_central (z : MonoidAlgebra K G) : eS T s * z = z * eS T s := by
   rw [eS_mul, mul_eS]
 
 /- English proof (translation)
-Rewrite using `[mul_eS, mul_eS, hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eS_eq (z z' : MonoidAlgebra K G)
     (hz : (T.tau s).asAlgebraHom z = (T.tau s).asAlgebraHom z') : z * eS T s = z' * eS T s := by
   rw [mul_eS, mul_eS, hz]
 
 /- English proof (translation)
-Establish `hmem : (T.tau s).asAlgebraHom c ∈ Subalgebra.center K (Module.End K (T.W s))`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `M`. Take `⟨z, rfl⟩` from `T.irr s M`. Rewrite using `[← map_mul, ← map_mul, hc z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem` using `[Algebra.IsCentral.center_eq_bot, Algebra.mem_bot]`. Take `⟨μ, hμ⟩` from `hmem`. Conclude with `⟨μ, by rw [← hμ, Algebra.algebraMap_eq_smul_one]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tau_central_scalar (c : MonoidAlgebra K G) (hc : ∀ z, c * z = z * c) :
     ∃ μ : K, (T.tau s).asAlgebraHom c = μ • 1 := by
@@ -118,19 +118,17 @@ theorem tau_central_scalar (c : MonoidAlgebra K G) (hc : ∀ z, c * z = z * c) :
   exact ⟨μ, by rw [← hμ, Algebra.algebraMap_eq_smul_one]⟩
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `tau_central_scalar T s (eS T s) (eS_central T s)`. Use `set d := Module.finrank K (T.W s) with hd`. Establish `hd0 : (d : K) ≠ 0`. Establish `: 0 < d` using `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG0 : ((Fintype.card G : ℕ) : K) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `set Ξ : Module.End K (Module.End K (T.W s)) := ∑ y : G, (((d : K) / ((Fintype.card G : ℕ) : K)) • ((LinearMap.trace K (T.W s)) ∘ₗ LinearMap.mulLeft K (T.tau s y⁻¹))).smulRight (T.tau s y) with hΞ`. Establish `hΞapp : ∀ M, Ξ M = (T.tau s).asAlgebraHom (theta T s M)`. Introduce `M`. Rewrite using `[hΞ, theta, map_sum, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Representation.asAlgebraHom_of, LinearMap.smulRight_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, smul_eq_mul]`. Establish `hΞμ : Ξ = μ • LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `M`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨z, rfl⟩` from `T.irr s M`. Rewrite using `[hΞapp, ← mul_eS, map_mul, hμ]`. Simplify using the standard rewrite rules. Establish `htr` using `congrArg (LinearMap.trace K _) hΞμ`. Rewrite `htr` using `[hΞ, map_sum, map_smul, LinearMap.trace_id, Module.finrank_linearMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.trace_smulRight, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, ← map_mul, inv_mul_cancel, map_one, LinearMap.trace_one, smul_eq_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at htr`. Establish `: μ = 1`. Rewrite `htr` using `[← hd]`. Move the coercions through the operations in `at htr`. Clear denominators, using `at htr` for the nonvanishing conditions.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact htr.symm`. Consider the case `exact htr`. Consider the case `(have h2 : (d : K) * d ≠ 0 := mul_ne_zero hd0 hd0`. Apply `mul_right_cancel₀ h2` to reduce the goal to its premises.
-
-Take the linear combination `-htr)`. Rewrite using `[hμ, this, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_eS [CharZero K] : (T.tau s).asAlgebraHom (eS T s) = 1 := by
   obtain ⟨μ, hμ⟩ := tau_central_scalar T s (eS T s) (eS_central T s)
@@ -172,7 +170,7 @@ theorem tau_eS [CharZero K] : (T.tau s).asAlgebraHom (eS T s) = 1 := by
   rw [hμ, this, one_smul]
 
 /- English proof (translation)
-Rewrite using `[mul_eS, tau_eS, theta_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eS_idem [CharZero K] : eS T s * eS T s = eS T s := by
   rw [mul_eS, tau_eS, theta_one]

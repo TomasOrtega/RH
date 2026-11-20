@@ -7,7 +7,7 @@ open Matrix
 variable {A R Λ : Type} [CommRing A] [CommRing R] [CommRing Λ] [Algebra A R]
 
 /- English proof (translation)
-Set `S : Submodule A R` to `{ carrier := {r | p r} add_mem' := fun {x y} hx hy => hadd x y hx hy zero_mem' := h0 smul_mem' := fun a x hx => hsmul a x hx }`. Establish `hle : Submodule.span A (Set.range ι) ≤ S` using `Submodule.span_le.mpr (by rintro _ ⟨a, rfl⟩; exact hι a)`. Conclude with `hle (hspan ▸ Submodule.mem_top)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_ind (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) {p : R → Prop}
     (h0 : p 0) (hadd : ∀ x y, p x → p y → p (x + y)) (hsmul : ∀ (a : A) x, p x → p (a • x))
@@ -22,7 +22,7 @@ theorem span_ind (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = �
   exact hle (hspan ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Use `span_ind ι hspan (p := fun r => F (r • x) = r • F x) (by simp) ?_ ?_ (fun a => hF a x) r` and prove the remaining obligations. Introduce `u v hu hv`. Simplify using `[add_smul, hu, hv]`. Introduce `a u hu`. Simplify using `only [smul_assoc, map_smul, hu]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_of_iota (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤)
     {X Y : Type} [AddCommGroup X] [Module A X] [Module R X] [IsScalarTower A R X]
@@ -34,9 +34,9 @@ theorem map_smul_of_iota (ι : Λ →+* R) (hspan : Submodule.span A (Set.range 
   · intro a u hu; simp only [smul_assoc, map_smul, hu]
 
 /- English proof (translation)
-Use `span_ind ι hspan (p := fun r => cR (cR r) = r) (by simp) ?_ ?_ ?_ r` and prove the remaining obligations. Introduce `u v hu hv`. Simplify using `[hu, hv]`. Introduce `a u hu`. Simplify using `[hu]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `[hc, hcc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem invol (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) (c : Λ →+* Λ)
     (cR : R →ₐ[A] R) (hc : ∀ a, cR (ι a) = ι (c a)) (hcc : ∀ a, c (c a) = a) (r : R) :
@@ -47,9 +47,9 @@ theorem invol (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) 
   · intro a; simp [hc, hcc]
 
 /- English proof (translation)
-Use `span_ind ι hspan (p := fun r => e (f (r • x)) (f y) = e (f x) (f (cR r • y))) (by simp) ?_ ?_ ?_ r` and prove the remaining obligations. Introduce `u v hu hv`. Simplify using `[add_smul, hu, hv]`. Introduce `a u hu`. Simplify using `[smul_assoc, hu]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Rewrite using `[hf, hadj, hc, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) (c : Λ →+* Λ)
     (cR : R →ₐ[A] R) (hc : ∀ a, cR (ι a) = ι (c a))
@@ -64,7 +64,7 @@ theorem adj (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) (c
   · intro a; rw [hf, hadj, hc, hf]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Consider the cases of `u`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem unit_vec (x : Unit → R) : x = x () • (1 : Unit → R) := by
   funext u; cases u; simp
@@ -97,7 +97,7 @@ variable (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤) (c : 
 include hspan hc hcc hadj₁ hf₁
 
 /- English proof (translation)
-Rewrite using `[lam_apply, ← smul_smul, adj ι hspan c cR hc ρ₁ e₁ hadj₁ f₁ hf₁ (cR s) (t • 1) 1, invol ι hspan c cR hc hcc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_pair (t s : R) :
     e₁ (f₁ (t • (1 : Unit → R))) (f₁ (s • 1)) = lam e₁ f₁ (cR s * t) := by
@@ -105,9 +105,9 @@ theorem lam_pair (t s : R) :
 
 include he₁ in
 /- English proof (translation)
-Establish `h0 : e₁ (f₁ (t • (1 : Unit → R))) = 0`. Use extensionality with `z`. Rewrite using `[← f₁.apply_symm_apply z, unit_vec (f₁.symm z), lam_pair ι hspan c cR hc hcc ρ₁ e₁ hadj₁ f₁ hf₁, h]`. Simplify using the standard rewrite rules. Establish `h1 : f₁ (t • (1 : Unit → R)) = 0` using `he₁.1 (by rw [h0, map_zero])`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : t • (1 : Unit → R) = 0` using `by simpa using h1`. Simplify using `using congrFun h2 ()`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lam_inj (t : R) (h : ∀ r, lam e₁ f₁ (r * t) = 0) : t = 0 := by
   have h0 : e₁ (f₁ (t • (1 : Unit → R))) = 0 := by
@@ -120,9 +120,9 @@ theorem lam_inj (t : R) (h : ∀ r, lam e₁ f₁ (r * t) = 0) : t = 0 := by
 
 include he₁ in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `he₁.2 ((g.comp cR.toLinearMap).comp ((LinearMap.proj () : (Unit → R) →ₗ[A] R).comp f₁.symm.toLinearMap))`. Use `⟨f₁.symm x (), fun r => ?_⟩` and prove the remaining obligations. Establish `hx' : x = f₁ (f₁.symm x () • (1 : Unit → R))`. Rewrite using `[← unit_vec, f₁.apply_symm_apply]`. Use `LinearMap.congr_fun hx (f₁ (cR r • (1 : Unit → R)))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hx', lam_pair ι hspan c cR hc hcc ρ₁ e₁ hadj₁ f₁ hf₁, invol ι hspan c cR hc hcc]`. Simplify `this.symm` using `[invol ι hspan c cR hc hcc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lam_onto (g : R →ₗ[A] A) : ∃ t, ∀ r, g r = lam e₁ f₁ (r * t) := by
   obtain ⟨x, hx⟩ := he₁.2 ((g.comp cR.toLinearMap).comp
@@ -142,23 +142,23 @@ namespace GlobalTheory.CMNorm
 variable {A R Λ : Type} [CommRing A] [CommRing R] [CommRing Λ] [Algebra A R]
 
 /- English proof (translation)
-Establish `hex : ∀ i j : κ, ∃ t, ∀ r : R, e (f (r • Pi.single i (1 : R))) (f (Pi.single j 1)) = l (r * t)` using `fun i j => honto { toFun := fun r => e (f (r • Pi.single i (1 : R))) (f (Pi.single j 1)) map_add' := fun x y => by simp [add_smul] map_smul' := fun a x => by simp [smul_assoc] }`. Use `choose H hH using hex`. Establish `hvec : ∀ x : κ → R, x = ∑ i, x i • (Pi.single i (1 : R) : κ → R)`. Introduce `x`. Use extensionality with `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hform : ∀ (r : R) x y, e (f (r • x)) (f y) = l (r * ∑ i, ∑ j, x i * H i j * cR (y j))`. Introduce `r x y`. Use `conv_lhs => rw [hvec (r • x), hvec y]`. Simplify using `only [map_sum, LinearMap.sum_apply, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hcc (y j), ← hadj, smul_smul, hH, hcc]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨Matrix.of H, ?_, hform⟩` and prove the remaining obligations. Establish `hX : ∀ k : κ, ∃ x : κ → R, ∀ y, e (f x) (f y) = l (cR (y k))`. Introduce `k`. Take `⟨z, hz⟩` from `he ((l.comp cR.toLinearMap).comp ((LinearMap.proj k : (κ → R) →ₗ[A] R).comp f.symm.toLinearMap))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨f.symm z, fun y => by simp [hz]⟩`. Use `choose X hX using hX`. Use `Matrix.isUnit_det_of_left_inverse (B := Matrix.of X) ?_` and prove the remaining obligations. Use extensionality with `k j`. Rewrite using `[← sub_eq_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hinj _ fun s => ?_` and prove the remaining obligations. Establish `h1` using `hform 1 (X k) (Pi.single j (cR s))`. Rewrite `h1` using `[one_smul, hX, one_mul]`. Rewrite using `[mul_sub, map_sub, sub_eq_zero]`. Establish `h2 : ∑ i, ∑ j', X k i * H i j' * cR ((Pi.single j (cR s) : κ → R) j') = s * (Matrix.of X * Matrix.of H) k j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[hcc, mul_comm]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[← h2, ← h1]`. Use `congr 1`. Distinguish the cases in `hkj : k = j`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hkj` using the available equality. Simplify using `[hcc]`. Simplify using `[hkj]`.
+A detailed English derivation is pending.
 -/
 theorem exists_gram (cR : R →ₐ[A] R) (hcc : ∀ r, cR (cR r) = r) (l : R →ₗ[A] A)
     (hinj : ∀ t, (∀ r, l (r * t) = 0) → t = 0)
@@ -222,7 +222,7 @@ namespace GlobalTheory.CMNorm
 open Matrix
 
 /- English proof (translation)
-Establish `h` using `map_smul_of_iota ι hspan (f.symm.toLinearMap ∘ₗ φ ∘ₗ f₁.toLinearMap) (fun a x => f.injective (by simp [hf, hf₁, hφ])) r 1`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at h`. Rewrite `h` using `[← hv, f.symm_apply_apply]`. Rewrite using `[← h, f.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_row {A R Λ : Type} [CommRing A] [CommRing R] [CommRing Λ] [Algebra A R]
     (ι : Λ →+* R) (hspan : Submodule.span A (Set.range ι) = ⊤)
@@ -239,23 +239,23 @@ theorem frame_row {A R Λ : Type} [CommRing A] [CommRing R] [CommRing Λ] [Algeb
   rw [← h, f.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `A R Λ _ _ _ _ ι hspan c cR hc hcc T₁ T₂ T _ _ _ _ _ _ ρ₁ ρ₂ ρ e₁ e₂ e he₁ he₂ he ha₁ ha₂ ha m n _ _ _ _ φ₁ φ₂ g₁ g₂ hφ₁ hφ₂ hg₁ hg₂ h12 h21 f₁ f₂ f hf₁ hf₂ hf M hM₁ hM₂`. Establish `hinv` using `invol ι hspan c cR hc hcc`. Establish `hinj` using `lam_inj ι hspan c cR hc hcc ρ₁ e₁ he₁ ha₁ f₁ hf₁`. Establish `honto` using `lam_onto ι hspan c cR hc hcc ρ₁ e₁ he₁ ha₁ f₁ hf₁`. Take `⟨H, hH, hHf⟩` from `exists_gram cR hinv _ hinj honto e he.2 f (adj ι hspan c cR hc ρ e ha f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hWf⟩` from `exists_gram cR hinv _ hinj honto e₂ he₂.2 f₂ (adj ι hspan c cR hc ρ₂ e₂ ha₂ f₂ hf₂)`. Rewrite `hW` using `[Matrix.det_unique]`. Establish `hr₁` using `fun k => frame_row ι hspan ρ₁ ρ (φ₁ k) (hφ₁ k) f₁ f hf₁ hf _ (hM₁ k)`. Establish `hr₂` using `fun k => frame_row ι hspan ρ₂ ρ (φ₂ k) (hφ₂ k) f₂ f hf₂ hf _ (hM₂ k)`. Establish `hent : ∀ i j (b : R), (∀ r : R, e (f (r • M i)) (f (M j)) = lam e₁ f₁ (r * b)) → (M * H * (M.map cR)ᵀ) i j = b`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j b hb`. Rewrite using `[← sub_eq_zero]`. Use `hinj _ fun r => ?_` and prove the remaining obligations. Rewrite using `[mul_sub, map_sub, sub_eq_zero, ← hb, hHf]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hmat : M * H * (M.map cR)ᵀ = Matrix.fromBlocks (g₁.map ι) 0 0 (W default default • g₂.map ι)`. Use extensionality with `i j`. Use `hent i j _ fun r => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Rewrite using `[hr₁, hM₁, hg₁, ← hf₁, smul_smul, lam_apply]`. Simplify using `[mul_comm]`. Rewrite using `[hr₁, hM₂, h12]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr₂, hM₁, h21]`. Simplify using the standard rewrite rules. Rewrite using `[hr₂, hM₂, hg₂, ← hf₂, smul_smul, hWf]`. Use `congr 1`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Pi.one_apply, map_one, Matrix.fromBlocks_apply₂₂, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdet` using `congrArg Matrix.det hmat`. Establish `hc' : (M.map cR).det = cR M.det` using `(AlgHom.map_det cR M).symm`. Establish `hi₁ : (g₁.map ι).det = ι g₁.det` using `(RingHom.map_det ι g₁).symm`. Establish `hi₂ : (g₂.map ι).det = ι g₂.det` using `(RingHom.map_det ι g₂).symm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_fromBlocks_zero₂₁, Matrix.det_smul, hc', hi₁, hi₂]`. Establish `hfin : M.det * cR M.det * H.det = ι (g₁.det * g₂.det) * W default default ^ Fintype.card n`. Rewrite using `[map_mul]`. Take the linear combination `hdet`. Use `(associated_mul_unit_right _ _ hH).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfin]`. Conclude with `associated_mul_unit_left _ _ (hW.pow _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_det_mul_conj : ∀ (A R Λ : Type) [CommRing A] [CommRing R] [CommRing Λ] [Algebra A R] (ι : Λ →+* R),
     Submodule.span A (Set.range ι) = ⊤ → ∀ (c : Λ →+* Λ) (cR : R →ₐ[A] R), (∀ a, cR (ι a) = ι (c a)) →

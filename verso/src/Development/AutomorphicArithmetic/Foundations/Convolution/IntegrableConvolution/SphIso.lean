@@ -21,13 +21,13 @@ def intEquiv (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) :
   map_add' x y := Subtype.ext (by simp)
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (intEquiv c hv)).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem qF_eq_of_iso (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) : qF F' = qF F :=
   (Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (intEquiv c hv)).toEquiv).symm
 
 /- English proof (translation)
-Establish `h1 : Irreducible (intEquiv c hv (uniformizer F))` using `(MulEquiv.irreducible_iff (intEquiv c hv)).2 (irreducible_uniformizer F)`. Take `⟨u, hu⟩` from `IsDiscreteValuationRing.associated_of_irreducible _ (irreducible_uniformizer F') h1`. Conclude with `⟨u, (congrArg Subtype.val hu).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit_uniformizer (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) :
     ∃ u : (𝒪[F'])ˣ, c (uniformizer F : F) = (uniformizer F' : F') * ((u : 𝒪[F']) : F') := by
@@ -42,7 +42,7 @@ abbrev mapIso (c : F ≃+* F') (n : ℕ) : GL (Fin n) F →* GL (Fin n) F' :=
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c ((g : Matrix (Fin n) (Fin n) F) i j) = 0`. Rewrite using `[hg.1 hij, map_zero]`. Express the relevant statement in the definitionally equal form `c (g i i) = 1`. Rewrite using `[hg.2 i, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapIso_mem_unipotent (c : F ≃+* F') {g : GL (Fin n) F} (hg : g ∈ unipotent F n) :
     mapIso c n g ∈ unipotent F' n := by
@@ -53,7 +53,7 @@ theorem mapIso_mem_unipotent (c : F ≃+* F') {g : GL (Fin n) F} (hg : g ∈ uni
     rw [hg.2 i, map_one]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_integralGL_iff]`. Use `⟨fun i j => (hv _).2 (hg.1 i j), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(hv _).2 (hg.2 i j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapIso_mem_integralGL (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) {g : GL (Fin n) F}
     (hg : g ∈ integralGL F n) : mapIso c n g ∈ integralGL F' n := by
@@ -63,9 +63,9 @@ theorem mapIso_mem_integralGL (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔
   exact (hv _).2 (hg.2 i j)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_uniformizer c hv`. Use `⟨diagGL F' n fun i => Units.map (𝒪[F']).subtype.toMonoidHom (u ^ l i), diagGL_map_mem_integralGL F' n _, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c (((torusPow F n l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j) = _`. Rewrite using `[Units.val_mul, coe_torusPow, coe_torusPow, coe_diagGL, Matrix.diagonal_mul_diagonal]`. Distinguish the cases in `hij : i = j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq, map_zpow₀, RingEquiv.coe_toRingHom]`. Rewrite using `[hu, mul_zpow]`. Simplify using `[Units.val_zpow_eq_zpow_val]`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mapIso_torusPow (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) (l : Fin n → ℤ) :
     ∃ k ∈ integralGL F' n, mapIso c n (torusPow F n l) = torusPow F' n l * k := by
@@ -82,7 +82,7 @@ theorem mapIso_torusPow (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈
   · simp [Matrix.diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, h⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `set l := iwasawaExponent F n g`. Take `⟨k', hk', ht⟩` from `mapIso_torusPow c hv l`. Rewrite using `[h, map_mul, map_mul, ht, show mapIso c n u * (torusPow F' n l * k') * mapIso c n k = mapIso c n u * torusPow F' n l * (k' * mapIso c n k) by group]`. Conclude with `iwasawaExponent_eq F' n (mapIso_mem_unipotent c hu) ((integralGL F' n).mul_mem hk' (mapIso_mem_integralGL c hv hk))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaExponent_mapIso (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] ↔ x ∈ 𝒪[F]) (g : GL (Fin n) F) :
     iwasawaExponent F' n (mapIso c n g) = iwasawaExponent F n g := by
@@ -95,7 +95,7 @@ theorem iwasawaExponent_mapIso (c : F ≃+* F') (hv : ∀ x, c x ∈ 𝒪[F'] �
     ((integralGL F' n).mul_mem hk' (mapIso_mem_integralGL c hv hk))
 
 /- English proof (translation)
-Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `l`. Rewrite using `[coeff_normalize, coeff_normalize, halfModulus_eq, halfModulus_eq, sqrtQ, sqrtQ, hq]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem normalize_congr (hq : qF F' = qF F) (p : LaurentRing n) : normalize F' n p = normalize F n p := by
   apply AddMonoidAlgebra.coeff_injective
@@ -113,7 +113,7 @@ private def cosetMap (e : GL (Fin n) F ≃* GL (Fin n) F') (y : GL (Fin n) F' �
   QuotientGroup.mk (e.symm y.out)
 
 /- English proof (translation)
-Introduce `y y' h`. Establish `h1` using `QuotientGroup.eq.1 h`. Rewrite `h1` using `[← hK, map_mul, map_inv, e.apply_symm_apply, e.apply_symm_apply]`. Rewrite using `[← QuotientGroup.out_eq' y, ← QuotientGroup.out_eq' y']`. Conclude with `QuotientGroup.eq.2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cosetMap_injective (e : GL (Fin n) F ≃* GL (Fin n) F')
     (hK : ∀ g, e g ∈ integralGL F' n ↔ g ∈ integralGL F n) : Function.Injective (cosetMap e) := by
@@ -124,7 +124,7 @@ private theorem cosetMap_injective (e : GL (Fin n) F ≃* GL (Fin n) F')
   exact QuotientGroup.eq.2 h1
 
 /- English proof (translation)
-Introduce `x`. Use `⟨QuotientGroup.mk (e x.out), ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (integralGL F' n) (e x.out)`. Establish `hk2 : e.symm (k : GL (Fin n) F') ∈ integralGL F n` using `(hK _).1 (by simpa using k.2)`. Rewrite using `[cosetMap, hk, map_mul, e.symm_apply_apply, QuotientGroup.mk_mul_of_mem _ hk2, QuotientGroup.out_eq']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cosetMap_surjective (e : GL (Fin n) F ≃* GL (Fin n) F')
     (hK : ∀ g, e g ∈ integralGL F' n ↔ g ∈ integralGL F n) : Function.Surjective (cosetMap e) := by
@@ -135,11 +135,11 @@ private theorem cosetMap_surjective (e : GL (Fin n) F ≃* GL (Fin n) F')
   rw [cosetMap, hk, map_mul, e.symm_apply_apply, QuotientGroup.mk_mul_of_mem _ hk2, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Establish `key : ∀ y : GL (Fin n) F' ⧸ integralGL F' n, ∃ k ∈ integralGL F n, (cosetMap e y).out = e.symm y.out * k` using `fun y => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (integralGL F n) (e.symm y.out)`. Conclude with `⟨k, k.2, hk⟩`. Establish `hval : ∀ y, (H : HeckeAlgebra m) (cosetMap e y).out = (H' : HeckeAlgebra m') y.out` using `fun y => by`. Take `⟨k, hk, h⟩` from `key y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h, (HeckeAlgebraLevel.val_mem _ _ H k hk _).2, hH, e.apply_symm_apply]`. Establish `hexp : ∀ y, iwasawaExponent F n (cosetMap e y).out = iwasawaExponent F' n y.out` using `fun y => by`. Take `⟨k, hk, h⟩` from `key y`. Rewrite using `[h, iwasawaExponent_mul_of_mem_integralGL F n _ hk, ← hl, e.apply_symm_apply]`. Rewrite using `[satake_eq_sum H ((cosetSupport H').image (cosetMap e)) ?_, satake, hm, Finset.sum_image (cosetMap_injective e hK).injOn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hval, hexp]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `cosetMap_surjective e hK x`. Rewrite using `[hval]`. Conclude with `apply_out_eq_zero fun hy => hx (Finset.mem_image_of_mem _ hy)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_transport (e : GL (Fin n) F ≃* GL (Fin n) F')
     (hK : ∀ g, e g ∈ integralGL F' n ↔ g ∈ integralGL F n)
@@ -167,7 +167,7 @@ theorem satake_transport (e : GL (Fin n) F ≃* GL (Fin n) F')
     exact apply_out_eq_zero fun hy => hx (Finset.mem_image_of_mem _ hy)
 
 /- English proof (translation)
-Rewrite using `[satakeTransform_apply, satakeTransform_apply, satake_transport e hK hl hm H H' hH, normalize_congr hq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeTransform_transport (e : GL (Fin n) F ≃* GL (Fin n) F')
     (hK : ∀ g, e g ∈ integralGL F' n ↔ g ∈ integralGL F n)
@@ -181,15 +181,13 @@ theorem satakeTransform_transport (e : GL (Fin n) F ≃* GL (Fin n) F')
 end Transport
 
 /- English proof (translation)
-Use `borelize (GL (Fin n) F)`. Set `m : Measure (GL (Fin n) F)` to `Measure.map e.symm m'`. Use `haveI hm : m.IsHaarMeasure := (e.symm.toMulEquiv).isHaarMeasure_map m' e.symm.continuous e.continuous`. Establish `hset : (e.symm ⁻¹' (integralGL F n : Set (GL (Fin n) F))) = (integralGL F' n : Set (GL (Fin n) F'))`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[← hK, e.apply_symm_apply]`. Establish `hmK : m (integralGL F n : Set (GL (Fin n) F)) = m' (integralGL F' n : Set (GL (Fin n) F'))`. Express the relevant statement in the definitionally equal form `Measure.map e.symm m' _ = _`. Rewrite using `[Measure.map_apply (map_continuous e.symm).measurable (isOpen_integralGL F n).measurableSet, hset]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : HeckeAlgebra m` to `HeckeAlgebra.mk m (fun x => (H' : HeckeAlgebra m') (e x)) ⟨(H' : HeckeAlgebra m').mem.1.comp_continuous e.continuous, (H' : HeckeAlgebra m').mem.2.comp_homeomorph e.toHomeomorph⟩`. Establish `hf : f ∈ biInvariant m (integralGL F n)` using `fun k hk x => by`. Establish `hk'` using `(hK k).2 hk`. Conclude with `⟨by`. Express the relevant statement in the definitionally equal form `(H' : HeckeAlgebra m') (e (k * x)) = (H' : HeckeAlgebra m') (e x)`.
+Establish an intermediate fact. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul]`. Conclude with `(HeckeAlgebraLevel.val_mem _ _ H' _ hk' _).1, by`. Express the relevant statement in the definitionally equal form `(H' : HeckeAlgebra m') (e (x * k)) = (H' : HeckeAlgebra m') (e x)`. Rewrite using `[map_mul]`. Conclude with `(HeckeAlgebraLevel.val_mem _ _ H' _ hk' _).2⟩`.
-
-Use `⟨_, inferInstance, m, hm, hmK.trans h1, HeckeAlgebraLevel.mk _ _ f hf, fun _ => rfl, ?_⟩` and prove the remaining obligations. Conclude with `satakeTransform_transport e.toMulEquiv hK hl hq (by simp [Measure.real, hmK]) _ H' fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_transport [MeasurableSpace (GL (Fin n) F')] [BorelSpace (GL (Fin n) F')]
     {m' : Measure (GL (Fin n) F')} [m'.IsHaarMeasure] (e : GL (Fin n) F ≃ₜ* GL (Fin n) F')

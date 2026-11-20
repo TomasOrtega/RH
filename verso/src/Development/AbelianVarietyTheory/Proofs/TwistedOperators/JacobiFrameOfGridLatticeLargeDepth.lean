@@ -13,7 +13,7 @@ namespace GlobalTheory.FlatPlace
 namespace NormalJac
 
 /- English proof (translation)
-Establish `h1 : ((-1 : K) ^ k) ^ 2 = 1` using `by rw [← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]`. Rewrite using `[neg_pow X, neg_pow X, div_pow]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(X * X ^ i * X ^ k * (-1) ^ i) * h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem jacobiDualColumn_scalar_identity {K : Type} [Field K] (X : K) (hX : X ≠ 0) (i k : ℕ) :
     (X ^ (i + 1 + k))⁻¹ * (-((-X) ^ (i + 1 + k) * X ^ (i + 1 + k)) / X) * (-1 / X) ^ k = (-X) ^ i := by
@@ -23,14 +23,14 @@ theorem jacobiDualColumn_scalar_identity {K : Type} [Field K] (X : K) (hX : X �
   linear_combination (X * X ^ i * X ^ k * (-1) ^ i) * h1
 
 /- English proof (translation)
-Simplify using `only [mul_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_col_eq {ι' ι κ μ K : Type} [Fintype ι] [Field K] (P : Matrix ι' ι K) (Y : Matrix ι κ K) (Z : Matrix ι μ K)
     (c : κ) (c' : μ) (h : ∀ l, Y l c = Z l c') (r : ι') : (P * Y) r c = (P * Z) r c' := by
   simp only [mul_apply, h]
 
 /- English proof (translation)
-Simplify using `only [Place.hz, besAt, dotProduct, mulVec]`. Use `show p.pr (∑ i : Fin 1, star (fun _ : Fin 1 => D.host.xi0 ^ σ) i * ∑ i_1 : Fin 1, (GlobalTheory.SeeSaw.Model.nLine D).gram i i_1 * D.host.xi0 ^ σ) = _`. Simplify using `only [Fin.sum_univ_one, nLine_gram, Pi.star_apply, star_pow, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Place.xi, Place.pr, map_mul, map_neg, map_pow, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hz_besAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {t : T} {M : Vol G} (hM : M.Is t)
     (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (vN : GlobalTheory.Unf.VolN (besDecAt G j σ hj)) {k : Type} [Field k] [ValuativeRel k]
@@ -42,20 +42,20 @@ theorem hz_besAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData
   ring
 
 /- English proof (translation)
-The claim follows from `map_mul (p.π.comp (incA D)) x y`.
+A detailed English derivation is pending.
 -/
 theorem pr_mul' {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
     (x y : D.host.E) : p.pr (x * y) = p.pr x * p.pr y := map_mul (p.π.comp (incA D)) x y
 
 /- English proof (translation)
-The claim follows from `(map_pow (p.π.comp (incA D)) _ n).trans (congrArg (· ^ n) (map_neg (p.π.comp (incA D)) _))`.
+A detailed English derivation is pending.
 -/
 theorem place_proj_neg_xi_pow {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (n : ℕ) : p.pr ((-D.host.xi0) ^ n) = (-p.xi) ^ n :=
   (map_pow (p.π.comp (incA D)) _ n).trans (congrArg (· ^ n) (map_neg (p.π.comp (incA D)) _))
 
 /- English proof (translation)
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neg_mul_neg_one_eq_of_eq {K : Type} [Field K] (y a S : K) (h : S = a) : -(y * a) * -1 = S * y := by rw [h]; ring
 
@@ -65,47 +65,43 @@ open NormalJac in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc => ?_⟩⟩` and prove the remaining obligations. Use `clear hε hx hsc hch s`. Introduce `t w hw p hp M hM j σ hj vN a ha c hc`. Establish `h1` using `ch.S.row t trivial w hw (j + 1) (by omega)`. Establish `hm : (locGrid ch.G t w).m = D.R.m` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : c = 2 * σ := by`. Establish `h2` using `topRank_add (G := locGrid ch.G t w) one_le_sLen (j + 1)`. Rewrite `h2` using `[hm]`. Use linear arithmetic over natural numbers and integers. Establish `hpr : ∀ x, p.pr x = algebraMap D.host.E (Kw w) x` using `fun x => (hp.2.1 _).trans (Comparison₂.cpt_tmul w x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : p.xi ≠ 0`. Rewrite using `[Place.xi, hpr]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)`. Establish `hE : (epsV ch.G t w (D.R.m, j + 1)).val = diagonal fun q => if topRank (locGrid ch.G t w) (j + 1) + σ ≤ q.val then -1 else 1`. Distinguish the cases in `hσ : σ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hσ` using the available equality. Rewrite using `[epsV_eq_one _ _ (by omega), Units.val_one]`. Use extensionality with `q q'`. Rewrite using `[Matrix.one_apply, diagonal_apply, if_neg (show ¬ (topRank (locGrid ch.G t w) (j + 1) + 0 ≤ q.val) by have := q.2; omega)]`. Establish `hodd : Odd (j + 1)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `D.R.m_even`. Conclude with `⟨j / 2, by omega⟩`. Rewrite using `[epsV_apply, if_pos (mem_idx.2 ⟨by omega, by omega⟩), sgnAt, GlobalTheory.SplitFlip.diagGL_val]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (D.R.m - 1 - (j + 1)) / 2 = σ` using `by omega`. Simplify using `only [e, hodd, true_and]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h₁ : j + 1 < D.R.m` using `by omega`. Establish `h₂ : D.R.m - 1 - (j + 1) = 2 * σ` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨T0, T1, T2⟩ : (mt _ a).map p.π * (rowJac ch.G (j + 1) h₁ σ h₂).i₀.map p.pr = (rowJac ch.G (j + 1) h₁ σ h₂).i₀.map p.pr ∧ (mt _ a).map p.π * (rowJac ch.G (j + 1) h₁ σ h₂).e.map p.pr = ((rowJac ch.G (j + 1) h₁ σ h₂).e * diagonal fun a : Fin σ => (D.host.xi0 ^ a.1)⁻¹).map p.pr ∧ (m …`. Break down `ha with ⟨rfl, rfl⟩ | ⟨δ, hδ, hδa⟩` into its components or cases. Use `⟨?_, Subsingleton.elim _ _, Subsingleton.elim _ _⟩` and prove the remaining obligations. Rewrite using `[show mt (ch.G.V (Node.grid D.R.m (j + 1))) 1 = 1 by simp [Formalism.L2.Theta.mt], Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Take `⟨e0, e1, e2⟩` from `hδ.2.2 σ h₁ h₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ {n : ℕ} (X Y : Matrix (Fin (ch.G.V (Node.grid D.R.m (j + 1))).rank) (Fin n) D.host.E), HMul.hMul (mt _ δ) (X.map (incA D)) = Y.map (incA D) → (mt _ a).map p.π * X.map p.pr = Y.map p.pr`. Introduce `n X Y h`. Use `congrArg (fun Z => Z.map p.π) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_map] at this`. Rewrite using `[hδa]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `⟨key _ _ e0, key _ _ e1, key _ _ e2⟩`. Establish `hfl : ∀ {a c b : ℕ} (h : a + c = b) (x : Fin a), ((frame h (Sum.inl x)) : ℕ) = x` using `by intros; simp [frame]`. Establish `hfr : ∀ {a c b : ℕ} (h : a + c = b) (q : Fin c), ((frame h (Sum.inr q)) : ℕ) = a + q` using `by intros; simp [frame]`. Use `clear ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `T0' : ∀ {n : Type} [Fintype n] (Z : Matrix (Fin (ch.G.V (Node.top (j + 1))).rank) n (Kw w)), (mt _ a).map p.π * ((rowJac ch.G (j + 1) h₁ σ h₂).i₀.map p.pr * Z) = (rowJac ch.G (j + 1) h₁ σ h₂).i₀.map p.pr * Z`. Introduce `n _ Z`. Rewrite using `[← Matrix.mul_assoc, T0]`. Simplify using `only [Place.IsJacFrame, jacAt]`. Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r x`. Simplify using `only [mvFr, frRow, frOf, frTop, submatrix_apply, id, hE, mul_diagonal]`. Rewrite using `[if_neg (by rw [hfl]; omega), mul_one]`. Use `(mul_col_eq _ _ ((rowJac ch.G (j + 1) h₁ σ h₂).i₀.map p.pr * (loc w (ch.S.βp (j + 1))).val.submatrix id (Fin.cast (topRank_eq ch.G t w h₁.le))) _ x (fun l => ?_) r).trans (congrFun (congrFun (T0' _) r) x)` and prove the remaining obligations. Establish `e1` using `congrFun (congrFun h1 l) (Sum.inl (Fin.cast (topRank_eq ch.G t w h₁.le) x))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [submatrix_apply, id, fromCols_apply_inl, mul_apply, Matrix.map_apply] at e1`. Simplify using `only [submatrix_apply, id, mul_apply, Matrix.map_apply, hpr]`. Use `(congrArg _ (Fin.ext ?_)).trans e1` and prove the remaining obligations. Simplify using `[frame]`. Introduce `i jj hij r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mvFr, frRow, frOf, submatrix_apply, id, hE, mul_diagonal]`. Rewrite using `[if_neg (by rw [hfr]; omega), mul_one]`. Use `(mul_col_eq _ _ ((rowJac ch.G (j + 1) h₁ σ h₂).e.map p.pr) _ i (fun l => ?_) r).trans ?_` and prove the remaining obligations. Use `rotate_left`. Rewrite using `[T1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ x : D.host.E, p.π (incA D x⁻¹) = (p.π (incA D x))⁻¹` using `fun x => map_inv₀ (p.π.comp (incA D)) x`. Simplify using `only [Matrix.map_apply, mul_diagonal, Place.pr, Place.xi, map_mul, hinv, map_pow]`. Establish `hx : p.π (incA D D.host.xi0) ≠ 0` using `hxi`. Establish `e : p.π (incA D D.host.xi0) ^ σ = p.π (incA D D.host.xi0) ^ (σ - i.val) * p.π (incA D D.host.xi0) ^ i.val`. Rewrite using `[← pow_add]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Establish `e1` using `congrFun (congrFun h1 l) (Sum.inr (Fin.cast h₂.symm jj))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [submatrix_apply, id, fromCols_apply_inr, mul_diagonal, Matrix.map_apply] at e1`. Rewrite `e1` using `[if_neg (Nat.succ_ne_zero j), pow_zero, mul_one, frameSign, if_neg (by simp only [Fin.val_cast]; omega), mul_one]`. Simplify using `only [submatrix_apply, id, Matrix.map_apply, hpr]`. Use `(congrArg _ (Fin.ext ?_)).trans (e1.trans ?_)` and prove the remaining obligations. Simplify using `[frame, topRank_eq ch.G t w h₁.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (rowJac ch.G (j + 1) h₁ σ h₂).e l i = (ch.G.rowDec (j + 1) h₁).a l (Fin.castLE (by omega) i)` using `rfl`. Rewrite using `[he]`. Conclude with `congrArg _ (congrArg _ (Fin.ext (by simp; omega)))`. Introduce `i jj hij r`. Simplify using `only [mvFr, frRow, frOf, submatrix_apply, id, hE, mul_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos (by rw [hfr]; omega)]`. Use `(congrArg (· * (-1)) (mul_col_eq _ _ (-((rowJac ch.G (j + 1) h₁ σ h₂).e'.map p.pr)) _ i (fun l => ?_) r)).trans ?_` and prove the remaining obligations. Use `rotate_left`. Rewrite using `[Matrix.mul_neg, Matrix.neg_apply, T2, hz_besAt]`. Simplify using `only [Matrix.neg_apply, Matrix.map_apply, mul_diagonal, pr_mul', star_pow, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, place_proj_neg_xi_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `jacobiDualColumn_scalar_identity p.xi hxi i (σ - 1 - i)`. Rewrite `key` using `[show (i : ℕ) + 1 + (σ - 1 - i) = σ by omega]`. Conclude with `neg_mul_neg_one_eq_of_eq _ _ _ key`. Establish `e1` using `congrFun (congrFun h1 l) (Sum.inr (Fin.cast h₂.symm jj))`. Simplify using `only [submatrix_apply, id, fromCols_apply_inr, mul_diagonal, Matrix.map_apply] at e1`.
-
-Rewrite `e1` using `[if_neg (Nat.succ_ne_zero j), pow_zero, mul_one, frameSign, if_pos (by simp only [Fin.val_cast]; omega), mul_neg_one]`. Simplify using `only [submatrix_apply, id, Matrix.neg_apply, Matrix.map_apply, hpr]`. Use `(congrArg _ (Fin.ext ?_)).trans (e1.trans ?_)` and prove the remaining obligations. Simplify using `[frame, topRank_eq ch.G t w h₁.le]`. Simplify using `only [rowJac, jacDec, submatrix_apply, id]`.
-
-Conclude with `congrArg _ (congrArg _ (congrArg _ (Fin.ext (by simp; omega))))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem big_jacP : Big fun ch => JacP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc => ?_⟩⟩

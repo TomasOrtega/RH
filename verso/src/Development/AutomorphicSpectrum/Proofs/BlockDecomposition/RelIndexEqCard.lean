@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HeckeAct
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[hint]`. Establish `hS : rStab (fun z => v z * c) = rStab v`. Use extensionality with `k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hk z`. Conclude with `mul_right_cancel₀ hc (hk z)`. Introduce `hk z show v (z * k) * c = v z * c`. Rewrite using `[hk z]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `hint`. Rewrite using `[hS, mul_assoc]`. Use `congr 1`. Establish `e` using `smul_finsum c (fun q : H ⧸ rStab v ⊓ K => v q.out)`. Simplify using `only [smul_eq_mul] at e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, e]`. Conclude with `finsum_congr fun q => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem hint_mul_const {H : Type} [Group H] (K : Subgroup H) (v : H → ℂ) (c : ℂ) :
     hint K (fun z => v z * c) = hint K v * c := by
@@ -47,11 +47,11 @@ theorem hint_mul_const {H : Type} [Group H] (K : Subgroup H) (v : H → ℂ) (c 
   exact finsum_congr fun q => mul_comm _ _
 
 /- English proof (translation)
-Set `φ : {x // x ∈ X} → K ⧸ K'.subgroupOf K` to `fun x => ((⟨x.1, hXK _ x.2⟩ : K) : K ⧸ K'.subgroupOf K)`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1 : (x.1)⁻¹ * y.1 ∈ K'` using `Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 hxy)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((hX y.1 (hXK _ y.2)).unique ⟨x.2, h1⟩ ⟨y.2, by simp [K'.one_mem]⟩)`. Introduce `q`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨x, ⟨hxX, hxk⟩, -⟩` from `hX k.1 k.2`. Conclude with `⟨⟨x, hxX⟩, QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 hxk)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `show Nat.card (K ⧸ K'.subgroupOf K) = _`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective φ hφ), Nat.card_eq_fintype_card, Fintype.card_coe]`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_eq_card {G : Type} [Group G] (K K' : Subgroup G) (X : Finset G) (hXK : ∀ x ∈ X, x ∈ K)
     (hX : ∀ k ∈ K, ∃! x ∈ X, x⁻¹ * k ∈ K') : K'.relIndex K = X.card := by
@@ -69,9 +69,9 @@ theorem relIndex_eq_card {G : Type} [Group G] (K K' : Subgroup G) (X : Finset G)
   rw [← Nat.card_congr (Equiv.ofBijective φ hφ), Nat.card_eq_fintype_card, Fintype.card_coe]
 
 /- English proof (translation)
-Use `Eq.trans ?_ (finsum_comp_equiv (MulAction.toPerm x : Equiv.Perm (G ⧸ K')))` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `e : (MulAction.toPerm x : Equiv.Perm (G ⧸ K')) q = ((x * q.out : G) : G ⧸ K')` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul K' (x * q.out)`. Use `show φ (x * q.out) = φ ((x * q.out : G) : G ⧸ K').out`. Rewrite using `[hs, hφ _ _ s.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_left {G : Type} [Group G] (K' : Subgroup G) (φ : G → ℂ) (hφ : ∀ g, ∀ k ∈ K', φ (g * k) = φ g) (x : G) :
     ∑ᶠ q : G ⧸ K', φ (x * q.out) = ∑ᶠ q : G ⧸ K', φ q.out := by
@@ -88,9 +88,9 @@ theorem finsum_left {G : Type} [Group G] (K' : Subgroup G) (φ : G → ℂ) (hφ
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hl : GlobalTheory.SmGL.leviProj (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h)) ⟨blk h w m Y, GlobalTheory.LeviFubini.blk_mem h w m Y⟩ = GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b) m`. Use `congrArg (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b)) (GlobalTheory.LeviFubini.levH_blk h w m Y)` as an intermediate fact. Simplify `this` using `[GlobalTheory.LeviFubini.levH]`. Use `GlobalTheory.SmGL.parInd_law _ _ u ⟨blk h w m Y, GlobalTheory.LeviFubini.blk_mem h w m Y⟩ g` as an intermediate fact. Rewrite `this` using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.AbsHalfLevi.absHalf_det_div_eq_deltaHalf E a b w m]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ind_blk {a b n : ℕ} (h : a + b = n) (w : Pl E) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (GLw a w × GLw b w) W)
@@ -108,25 +108,23 @@ theorem ind_blk {a b n : ℕ} (h : a + b = n) (w : Pl E) {W : Type} [AddCommGrou
   simpa using this
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b h w K' hopen hle hnorm X hXK hX W _ _ ρ f hf u hu x hx lw`. Establish `hfr : ∀ g, ∀ k ∈ K', f (g * k) = f g` using `fun g k hk => by`. Simplify using `using hf.2.2.2 1 K'.one_mem k hk g`. Establish `hur : ∀ g, ∀ k ∈ K', u.1.1 (g * k) = u.1.1 g` using `fun g k hk => by`. Establish `h1 : GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ k u = u` using `(hu ⟨k, hk⟩).trans (one_smul ℂ u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun v : GlobalTheory.SmGL.IndSp _ _ => v.1.1 g) h1`. Use `set φ : GLw n w → ℂ := fun g => f (x⁻¹ * g) * lw (u.1.1 g) with hφdef`. Establish `hφr : ∀ g, ∀ k ∈ K', φ (g * k) = φ g` using `fun g k hk => by`. Simplify using `only [hφdef]`. Rewrite using `[← mul_assoc, hfr _ k hk, hur g k hk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : HasCompactSupport φ`. Establish `h1 : HasCompactSupport fun g => f (x⁻¹ * g)` using `hf.2.2.1.comp_homeomorph (Homeomorph.mulLeft x⁻¹)`. Conclude with `h1.mul_right`. Establish `hcard : K'.relIndex (GlobalTheory.LFun.KGL w n) = X.card` using `relIndex_eq_card _ K' X hXK hX`. Establish `hX0 : X.card ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨z, ⟨hz, -⟩, -⟩` from `hX 1 (GlobalTheory.LFun.KGL w n).one_mem`. Conclude with `(Finset.card_pos.2 ⟨z, hz⟩).ne'`. Establish `hX0' : (X.card : ℂ) ≠ 0` using `by exact_mod_cast hX0`. Set `Ψ : GlobalTheory.SmGL.IndSp (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h)) (ρ.comp (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm.toMonoidHom) →ₗ[ℂ] ℂ` to `{ toFun := fun v => lw (v.1.1 x) map_add' := fun v v' => map_add lw _ _ map_smul' := fun c v => map_smul lw c _ }`. Establish `hfin` using `GlobalTheory.CompanionTheory.DiagAvg.finite_cosets K' hopen f hf.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : lw ((hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' f u).1.1 x) = ∑ᶠ q : GLw n w ⧸ K', φ (x * q.out)` using `by show Ψ (hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' f u) = _`. Unfold `hk`. Use `(Ψ.toAddMonoidHom.map_finsum (hfin.subset fun q hq h0 => hq (by` and prove the remaining obligations. Establish `h0' : f q.out = 0` using `h0`. Use `show f q.out • GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ q.out u = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[h0', zero_smul]))).trans ?_`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Use `show Ψ (f q.out • GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ q.out u) = _`. Rewrite using `[map_smul]`. Simplify using `only [hφdef, inv_mul_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2` using `GlobalTheory.CompanionTheory.HintSmaller.hint_eq_of_le (GlobalTheory.LFun.KGL w n) K' φ hle (fun k hk g => hφr g k hk) (by rw [hcard]; exact hX0) (GlobalTheory.CompanionTheory.DiagAvg.finite_cosets K' hopen φ hφc)`. Establish `e3` using `GlobalTheory.T.hecke_coset_sum_compact E n a b h w K' hopen hle hnorm X hXK hX φ hφr hφc`. Rewrite `e2` using `[hcard]`. Establish `e4 : ∑ᶠ q : GLw n w ⧸ K', φ q.out = ∑ y ∈ X, hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) fun m => hint (intMat a b w) fun Y => φ (blk h w m (Multiplicative.toAdd Y) * y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `e2.symm.trans e3` as an intermediate fact. Conclude with `mul_left_cancel₀ (inv_ne_zero hX0') this`. Rewrite using `[e1, finsum_left K' φ hφr x, e4]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `m`. Establish `e5 : (fun Y : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => φ (blk h w m (Multiplicative.toAdd Y) * y)) = fun Y => f (x⁻¹ * blk h w m (Multiplicative.toAdd Y) * y) * (absHalf w (m.1.val.det ^ b / m.2.val.det ^ a) * lw (ρ m (u.1.1 y)))`. Use function extensionality and compare the values at `Y`. Simplify using `only [hφdef]`. Rewrite using `[ind_blk h w ρ u m _ y, map_smul, smul_eq_mul, mul_assoc]`.
-
-Rewrite using `[e5, hint_mul_const]`. Unfold `phi3`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hk_ind_apply : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w)), IsOpen (K' : Set (GLw n w)) → K' ≤ GlobalTheory.LFun.KGL w n → (∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K') → ∀ X : Finset (GLw n w), (∀ x ∈ X, x ∈ GlobalTheory.LFun.KGL w n) → (∀ k ∈ GlobalTheory.LFun.KGL w n, ∃! x ∈ X, x⁻¹ * k ∈ K') → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GLw a w × GLw b w) W), ∀ (f : GLw n w → ℂ), IsHk K' f → ∀ u ∈ fixed (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K', ∀ x ∈ X, ∀ lw : W →ₗ[ℂ] ℂ, lw ((hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' f u).1.1 x) = ∑ y ∈ X, hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) fun m => phi3 h w f x y m * lw (ρ m (u.1.1 y)) := by
   intro E _ _ _ n a b h w K' hopen hle hnorm X hXK hX W _ _ ρ f hf u hu x hx lw

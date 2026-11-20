@@ -11,7 +11,7 @@ namespace GlobalTheory.EtC.GmStep.LevelOne
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_iso_bijective' {E E' : Spc} (e : E ≅ E') (F : Shv R) (n : ℤ) :
     Function.Bijective (pull R e.hom F n) := by
@@ -20,16 +20,16 @@ theorem pull_iso_bijective' {E E' : Spc} (e : E ≅ E') (F : Shv R) (n : ℤ) :
   · rw [← pull_comp, e.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_cast {q : ℕ} {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast (q := q) hn hi (pull _ f _ _ x) := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [laurentVar, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Establish `h` using `congrArg (fun g => g.hom (LaurentPolynomial.T 1 : LaurentPolynomial B)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (laurentMap f)))`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at h`. Rewrite `h` using `[laurentMap_T]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem laurentVar_map {B C : Type} [CommRing B] [CommRing C] (f : B →+* C) :
     Units.map (Spec.map (CommRingCat.ofHom (laurentMap f))).appTop.hom.toMonoidHom (laurentVar B) = laurentVar C := by
@@ -46,19 +46,17 @@ end GlobalTheory.EtC.GmStep.LevelOne
 namespace GlobalTheory.EtC.GmStep.LevelOne
 
 /- English proof (translation)
-Introduce `q _ A _ hA hq A' _ _ hfin k i`. Take `⟨e0, e, h1, h2⟩` from `GlobalTheory.T.laurentCechNerve_level_spec_tensorPower A A' k`. Use `haveI := hfin`. Establish `hT : Module.Finite A (PiTensorProduct A (fun _ : Fin (k + 1) => A'))` using `inferInstance`. Establish `hr1` using `GlobalTheory.T.laurentKummerCupProductMap_bijective_finite_strictHenselian q A hA hq (PiTensorProduct A (fun _ : Fin (k + 1) => A')) hT i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap1` using `congrArg (fun f => disc.map f) h1`. Establish `hmap2` using `congrArg (fun f => disc.map f) h2`. Simplify using `only [Functor.map_comp] at hmap1 hmap2`. Establish `hqL : IsUnit (q : Γ(Spec (CommRingCat.of (LaurentPolynomial A)), ⊤))`. Use `hq.map ((Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial A))).inv.hom.comp (LaurentPolynomial.C : A →+* LaurentPolynomial A))` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hkum : pull _ (disc.map e.hom) (tw q 1) 1 (pull _ (augK A A' k) (tw q 1) 1 (kum q (laurentVar A))) = kum q (laurentVar (PiTensorProduct A (fun _ : Fin (k + 1) => A')))`. Rewrite using `[← pull_comp, augK]`. Use `erw [hmap2]`. Use `(GlobalTheory.EtC.a6nat_holds q).2.2.2 (Spec.map (CommRingCat.ofHom (laurentMap (algebraMap A (PiTensorProduct A (fun _ : Fin (k + 1) => A')))))) (laurentVar A) hqL` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[laurentVar_map]`. Conclude with `this`. Establish `hcst : ∀ a, pull _ (disc.map e.hom) (tw q (i - 1)) 0 (pull _ (disc.map ((cechC A A').app (op ⦋k⦌))) (tw q (i - 1)) 0 a) = pull _ (spMap (LaurentPolynomial.C : PiTensorProduct A (fun _ : Fin (k + 1) => A') →+* LaurentPolynomial (PiTensorProduct A (fun _ : Fin (k + 1) => A')))) (tw …`. Introduce `a`. Rewrite using `[← pull_comp, hmap1, pull_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `heq : ∀ a, pull _ (disc.map e.hom : sp (LaurentPolynomial (PiTensorProduct A (fun _ : Fin (k + 1) => A'))) ⟶ _) (tw q i) 1 (rowOne A A' q i k a) = gmPhi q (PiTensorProduct A (fun _ : Fin (k + 1) => A')) i (pull _ (disc.map e0.hom : sp (PiTensorProduct A (fun _ : Fin (k + 1) => A' …`. Introduce `a`. Simplify using `only [rowOne, gmPhi, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[pull_cast, (GlobalTheory.EtC.a6nat_holds q).1, hcst, hkum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `hcomp : (pull _ (disc.map e.hom : sp (LaurentPolynomial (PiTensorProduct A (fun _ : Fin (k + 1) => A'))) ⟶ _) (tw q i) 1) ∘ (rowOne A A' q i k) = (gmPhi q (PiTensorProduct A (fun _ : Fin (k + 1) => A')) i) ∘ (pull _ (disc.map e0.hom : sp (PiTensorProduct A (fun _ : Fin (k + 1) => …`. Use function extensionality and compare the values at `heq`. Establish `he : Function.Bijective (pull _ (disc.map e.hom : sp (LaurentPolynomial (PiTensorProduct A (fun _ : Fin (k + 1) => A'))) ⟶ _) (tw q i) 1)` using `pull_iso_bijective' (disc.mapIso e) (tw q i) 1`. Establish `he0 : Function.Bijective (pull _ (disc.map e0.hom : sp (PiTensorProduct A (fun _ : Fin (k + 1) => A')) ⟶ _) (tw q (i - 1)) 0)` using `pull_iso_bijective' (disc.mapIso e0) (tw q (i - 1)) 0`.
-
-Rewrite using `[← Function.Bijective.of_comp_iff' he, hcomp]`. Conclude with `hr1.comp he0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOne_bijective : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → IsUnit (q : A) →
     ∀ (A' : Type) [CommRing A'] [Algebra A A'], Module.Finite A A' → ∀ (k : ℕ) (i : ℤ),

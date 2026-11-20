@@ -13,23 +13,23 @@ noncomputable section
 namespace GlobalTheory.AscFin
 
 /- English proof (translation)
-Establish `hform : ∀ x y : Fin S.rank → D.host.E, ∑ i, ∑ j, star (x i) * HSpace.gram S i j * y j = star x ⬝ᵥ (HSpace.gram S *ᵥ y)`. Introduce `x y`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Establish `hne : ζ ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hζ`. Use `haveI : Subsingleton (Fin S.rank) := by rw [hS]; infer_instance`. Take `⟨i₀, hi₀⟩ : ∃ i, ζ i ≠ 0` from `Function.ne_iff.mp hne`. Establish `hall : ∀ y : Fin S.rank → D.host.E, ∃ c : D.host.E, y = c • ζ`. Introduce `y`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y i₀ / ζ i₀, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i i₀, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hi₀]`. Establish `hpair : ∀ a c : D.host.E, star (a • ζ) ⬝ᵥ (HSpace.gram S *ᵥ (c • ζ)) = -(star a * c)`. Introduce `a c`. Rewrite using `[star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, hζ, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hstar : ∀ a : 𝓞 D.host.E, IsIntegral ℤ (star (a : D.host.E))` using `fun a => (map_isIntegral_int (starRingEnd D.host.E) a.2 : )`. Use `⟨⟨Submodule.fg_span_singleton _, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hall y`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.mem_span_singleton_self _))`. Take `⟨c, rfl⟩` from `hall y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[← hb, hform]`. Use `⟨-(⟨_, hstar a⟩ * b), ?_⟩` and prove the remaining obligations. Use `hpair a b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← algebraMap_smul D.host.E a, ← algebraMap_smul D.host.E b]`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `h`. Take `⟨b, hb⟩` from `h ζ (Submodule.mem_span_singleton_self _)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hpair 1 c`. Rewrite `h1` using `[one_smul, star_one, one_mul]`. Rewrite `hb` using `[hform, h1]`. Use `Submodule.mem_span_singleton.mpr ⟨-b, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E (-b)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_neg]`. Conclude with `neg_eq_iff_eq_neg.mpr hb`.
+A detailed English derivation is pending.
 -/
 theorem isSelfDualC_span_of_norm {D : D7} (S : HSp D) (hS : S.rank = 1) (ζ : Fin S.rank → D.host.E)
     (hζ : star ζ ⬝ᵥ (HSpace.gram S *ᵥ ζ) = -1) :
@@ -81,9 +81,9 @@ theorem isSelfDualC_span_of_norm {D : D7} (S : HSp D) (hS : S.rank = 1) (ζ : Fi
       exact neg_eq_iff_eq_neg.mpr hb
 
 /- English proof (translation)
-Introduce `D T L sc G F hF`. Use `isSelfDualC_span_of_norm (negSp F.Lz) F.rk (F.ζ 0) ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun G.sp.dec0.gram 0) 0`. Establish `h2 : star (fun i => G.sp.dec0.a i 0) ⬝ᵥ (HSpace.gram (G.V (Node.core 0)) *ᵥ (fun i => G.sp.dec0.a i 0)) = 1`. Establish `h3 : antiDiagonalSignGramMatrix 1 (1 : D.host.E) 0 0 = 1` using `by simp [antiDiagonalSignGramMatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h3, Matrix.mul_assoc]`. Conclude with `h1`. Rewrite `h2` using `[← hF.zB, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, F.oz.isoB]`. Rewrite using `[negSp_gram, neg_mulVec, dotProduct_neg]`. Conclude with `congrArg Neg.neg h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_line : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Frames G), Std F → IsSelfDualC (negSp F.Lz) (Submodule.span (𝓞 D.host.E) {F.ζ 0}) := by
   intro D T L sc G F hF

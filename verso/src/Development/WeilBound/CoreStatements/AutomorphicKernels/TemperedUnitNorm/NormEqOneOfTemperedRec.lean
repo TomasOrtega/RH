@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.TempSatGal
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `IsCMField.complexEmbedding_complexConj (K := E) (ι.toRingHom.comp τ) x` as an intermediate fact. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_complexConj {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (τ : E →+* Qbar l) :
@@ -29,7 +29,7 @@ theorem comp_complexConj {E : Type} [Field E] [NumberField E] [IsCMField E] {l :
   exact this
 
 /- English proof (translation)
-Proceed by induction on `M using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b M ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, ih, Multiset.card_cons, Multiset.sum_cons]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

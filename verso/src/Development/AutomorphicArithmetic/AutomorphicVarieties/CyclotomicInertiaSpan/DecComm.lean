@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CyclotomicInertiaS
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.B1
 
 /- English proof (translation)
-Establish `hy : IsIntegral (ZMod p) y` using `(Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Set `L` to `IntermediateField.adjoin (ZMod p) ({y} : Set k)`. Use `haveI : FiniteDimensional (ZMod p) L := IntermediateField.adjoin.finiteDimensional hy`. Use `haveI : Finite L := Module.finite_of_finite (ZMod p)`. Use `letI : Fintype L := Fintype.ofFinite L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Normal (ZMod p) L := inferInstance`. Set `ψ' : k ≃ₐ[ZMod p] k` to `AlgEquiv.ofRingEquiv (f := ψ) (fun x => by`. Establish `h` using `congrArg (fun g : ZMod p →+* k => g x) (Subsingleton.elim (ψ.toRingHom.comp (algebraMap (ZMod p) k)) (algebraMap (ZMod p) k))`. Simplify using `using h)`. Take `⟨i, hi⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod p) L).2 (ψ'.restrictNormal L)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨i.1, ?_⟩` and prove the remaining obligations. Establish `hyL : y ∈ L` using `IntermediateField.mem_adjoin_simple_self _ _`. Establish `h1` using `AlgEquiv.restrictNormal_commutes ψ' L ⟨y, hyL⟩`. Rewrite `h1` using `[← hi]`. Simplify using `only [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate, ZMod.card] at h1`.
-
-Simplify using `at h1`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ringEquiv_eq_frobenius_pow_of_algebraic_over_zmod {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) k]
     [Algebra.IsAlgebraic (ZMod p) k] (ψ : k ≃+* k) (y : k) : ∃ n : ℕ, ψ y = y ^ (p ^ n) := by
@@ -33,7 +31,7 @@ private theorem ringEquiv_eq_frobenius_pow_of_algebraic_over_zmod {k : Type} [Fi
   exact h1.symm
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ringEquiv_eq_frobenius_pow_of_algebraic_over_zmod p ψ y`. Take `⟨b, hb⟩` from `ringEquiv_eq_frobenius_pow_of_algebraic_over_zmod p χ y`. Rewrite using `[ha, hb, map_pow, map_pow, ha, hb, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ringEquiv_comm_of_algebraic_over_zmod {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) k]
     [Algebra.IsAlgebraic (ZMod p) k] (ψ χ : k ≃+* k) (y : k) : ψ (χ y) = χ (ψ y) := by
@@ -42,35 +40,33 @@ private theorem ringEquiv_comm_of_algebraic_over_zmod {k : Type} [Field k] (p : 
   rw [ha, hb, map_pow, map_pow, ha, hb, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ p _ B hp`. Rewrite using `[Subgroup.commutator_le]`. Introduce `σ hσ τ hτ`. Set `D` to `ValuationSubring.decompositionSubgroup F B`. Set `k` to `IsLocalRing.ResidueField B`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpk : ((p : ℕ) : k) = 0`. Establish `: ((p : B) : Ω) = (p : Ω)` using `by simp`. Establish `hm : (p : B) ∈ IsLocalRing.maximalIdeal B`. Rewrite using `[ValuationSubring.valuation_lt_one_iff, this]`. Conclude with `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(IsLocalRing.residue_eq_zero_iff (p : B)).2 hm` as an intermediate fact. Simplify using `using this`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 hpk`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`. Use `haveI : Algebra.IsAlgebraic (ZMod p) k := by haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ F Ω`.
+Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨xb, rfl⟩` from `IsLocalRing.residue_surjective y`. Establish `hZ : IsAlgebraic ℤ (xb : Ω)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨P, hP0, hPx⟩` from `hZ`. Establish `hQ : P.primPart.IsPrimitive` using `P.isPrimitive_primPart`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hQx : Polynomial.aeval (xb : Ω) P.primPart = 0`. Establish `hc : P.content ≠ 0`. Rewrite using `[Ne, Polynomial.content_eq_zero_iff]` and apply the resulting hypothesis. Establish `h2` using `hPx`. Rewrite `h2` using `[Polynomial.eq_C_content_mul_primPart P, map_mul, Polynomial.aeval_C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. It suffices to derive a contradiction. Simplify using `at h3`. Conclude with `hc h3`. Conclude with `h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQmap : P.primPart.map (Int.castRingHom (ZMod p)) ≠ 0`. Introduce `h0`. Establish `hd : Polynomial.C (p : ℤ) ∣ P.primPart`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun f => f.coeff i) h0`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero, eq_intCast] at h4`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 h4`. Establish `hu` using `hQ (p : ℤ) hd`. Rewrite `hu` using `[Int.isUnit_iff]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Fact.out : p.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨P.primPart.map (Int.castRingHom (ZMod p)), hQmap, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Establish `e1 : (algebraMap (ZMod p) k).comp (Int.castRingHom (ZMod p)) = (IsLocalRing.residue B).comp (Int.castRingHom B)` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, ← Polynomial.hom_eval₂]`. Establish `e2 : P.primPart.eval₂ (Int.castRingHom B) xb = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `e3` using `Polynomial.hom_eval₂ P.primPart (Int.castRingHom B) B.subtype xb`. Establish `e4 : B.subtype.comp (Int.castRingHom B) = algebraMap ℤ Ω` using `Subsingleton.elim _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e3` using `[e4]`. Express the relevant statement in the definitionally equal form `B.subtype _ = _`. Rewrite using `[e3]`. Simplify `hQx` using `[Polynomial.aeval_def]`. Rewrite using `[e2, map_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : ∀ (g h : D) (y : k), g • h • y = h • g • y` using `fun g h y => ringEquiv_comm_of_algebraic_over_zmod p (MulSemiringAction.toRingEquiv D k g) (MulSemiringAction.toRingEquiv D k h) y`. Set `g : D` to `⟨σ, hσ⟩`. Set `h : D` to `⟨τ, hτ⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[commutatorElement_def]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `D.mul_mem (D.mul_mem (D.mul_mem hσ hτ) (D.inv_mem hσ)) (D.inv_mem hτ)`. Introduce `x hx`. Establish `hxB : x ∈ B` using `(ValuationSubring.valuation_le_one_iff B x).1 hx`. Set `xb : B` to `⟨x, hxB⟩`. Establish `key : IsLocalRing.residue B ((g * h * g⁻¹ * h⁻¹) • xb) = IsLocalRing.residue B xb`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[IsLocalRing.ResidueField.residue_smul, mul_smul, mul_smul, mul_smul, hcomm g h, smul_inv_smul, smul_inv_smul]`. Establish `hmem : (g * h * g⁻¹ * h⁻¹) • xb - xb ∈ IsLocalRing.maximalIdeal B`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]` and apply the resulting hypothesis. Rewrite `hmem` using `[ValuationSubring.valuation_lt_one_iff]`. Use `hmem using 2` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[commutatorElement_def]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.B1.decComm :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (p : ℕ) [Fact p.Prime] (B : ValuationSubring Ω), B.valuation (p : Ω) < 1 →

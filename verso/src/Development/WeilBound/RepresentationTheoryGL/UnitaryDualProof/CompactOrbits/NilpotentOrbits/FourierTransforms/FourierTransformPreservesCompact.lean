@@ -13,13 +13,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `E_mem Z _`.
+A detailed English derivation is pending.
 -/
 theorem Pr_mem (x : Matrix (Fin n) (Fin n) k) : Pr Z x ∈ B0 Z := E_mem Z _
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `LinearMap.mem_ker.1 hw.2`.
+A detailed English derivation is pending.
 -/
 theorem quadratic_form_vanishes_nilpotent {w : Matrix (Fin n) (Fin n) k} (hw : w ∈ B0 Z) : qL Z w = 0 := LinearMap.mem_ker.1 hw.2
 
@@ -29,13 +29,13 @@ variable [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measur
 include hZ h
 
 /- English proof (translation)
-Rewrite using `[characteristic_function_integral_apply]`. Establish `hz : ∀ u, f (p.1 - Pr Z p.1 + E Z u, p.2) = 0`. Introduce `u`. Apply `hf0` to reduce the goal to its premises. Take `⟨⟨hB, hq⟩, -⟩` from `hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `hw : E Z u - Pr Z p.1 ∈ B0 Z` using `Submodule.sub_mem _ (E_mem Z u) (Pr_mem _)`. Establish `hw1 : E Z u - Pr Z p.1 ∈ BzL Z` using `(Submodule.mem_inf.mp hw).1`. Establish `hw2 : qL Z (E Z u - Pr Z p.1) = 0` using `quadratic_form_vanishes_nilpotent hw`. Establish `heq : p.1 - Pr Z p.1 + E Z u = p.1 + (E Z u - Pr Z p.1)` using `by abel`. Use `⟨⟨?_, ?_⟩, Set.mem_univ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show p.1 - Pr Z p.1 + E Z u ∈ BzL Z`. Rewrite using `[heq]`. Conclude with `(BzL Z).add_mem hB hw1`. Establish `hadd` using `(qL Z).map_add p.1 (E Z u - Pr Z p.1)`. Rewrite `hadd` using `[hw2, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show qZ Z (p.1 - Pr Z p.1 + E Z u) = y`. Rewrite using `[heq]`. Conclude with `hadd.trans hq`. Simplify using `[hz]`.
+A detailed English derivation is pending.
 -/
 theorem fourier_transform_vanishes_on_fibre (f : Sp k n → ℂ) {y : Fin (Module.finrank k Z) → k} (hf0 : ∀ q ∈ Fib Z y, f q = 0) {p : Sp k n}
     (hp : p ∈ Fib Z y) : phi0 ψ ν hZ h f p = 0 := by
@@ -60,15 +60,13 @@ theorem fourier_transform_vanishes_on_fibre (f : Sp k n → ℂ) {y : Fin (Modul
   simp [hz]
 
 /- English proof (translation)
-Establish `hdet : (adM hg).det ≠ 0`. Introduce `h0`. Use `det_adM_sq hZ h hg` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hU : IsUnit (adM hg).det` using `isUnit_iff_ne_zero.mpr hdet`. Set `e : (Fin (d Z) → k) ≃ᵐ (Fin (d Z) → k)` to `{ toFun := fun u => adM hg *ᵥ u invFun := fun u => (adM hg)⁻¹ *ᵥ u left_inv := fun u => by simp [mulVec_mulVec, nonsing_inv_mul _ hU] right_inv := fun u => by simp [mulVec_mulVec, mul_nonsing_inv _ hU] measurable_toFun := (continuous_const.matrix_mulVec continuous_id).measurable …`. Establish `hmap : Measure.map e (Measure.pi fun _ : Fin (d Z) => ν) = Measure.pi fun _ => ν`. Use `GlobalTheory.WeilM.smul_map_mulVec_pi ν (adM hg) (GeneralLinearGroup.det (adU hZ h hg)) rfl` as an intermediate fact. Rewrite `this` using `[distribHaarChar_adU]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Measure.map (fun u => adM hg *ᵥ u) _ = _`. Simplify using `using this`. Rewrite using `[characteristic_function_integral_apply, characteristic_function_integral_apply]`. Use `conv_rhs => rw [← hmap, e.measurableEmbedding.integral_map]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Establish `he : e u = adL hg u` using `adM_mulVec hg u`. Simplify using `only [act]`. Rewrite using `[he, E_adL, Pr_conj hZ h hg, dot_conj]`. Use `congr 3`.
-
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_transform_equivariant {g : GL (Fin n) k} (hg : g ∈ Gz Z) (f : Sp k n → ℂ) (p : Sp k n) :
     phi0 ψ ν hZ h (fun q => f (act g q)) p = phi0 ψ ν hZ h f (act g p) := by
@@ -101,11 +99,11 @@ theorem fourier_transform_equivariant {g : GL (Fin n) k} (hg : g ∈ Gz Z) (f : 
   simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]
 
 /- English proof (translation)
-Establish `hm` using `test_vector_mem_schwartz_bruhat ψ ν hZ h hc (f := f) ⟨hf.1, Set.subset_univ _⟩`. Use `⟨hm.1, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hp2`. Apply `hp` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : p.2 = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hp2 hne`. Rewrite using `[characteristic_function_integral_apply]`. Establish `hz : ∀ u, f (p.1 - Pr Z p.1 + E Z u, p.2) = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Assume the negation of the conclusion as `hne`. Conclude with `hf.2 hne h0`. Simplify using `[hz]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_transform_preserves_compact {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) :
     phi0 ψ ν hZ h f ∈ supportedIn (UU : Set (Sp k n)) := by
@@ -128,9 +126,9 @@ def Refl (p : Sp k n) : Sp k n := (p.1 - (2 : k) • Pr Z p.1, p.2)
 
 omit [MeasurableSpace k] [BorelSpace k] [ν.IsAddHaarMeasure] in
 /- English proof (translation)
-Establish `hPP : Pr Z (Pr Z p.1) = Pr Z p.1` using `Pr_E hZ h _`. Establish `hP : Pr Z (p.1 - (2 : k) • Pr Z p.1) = - Pr Z p.1`. Rewrite using `[sub_eq_add_neg, Pr_add, ← neg_smul, Pr_smul, hPP]`. Use `module`. Take `⟨x, v⟩` from `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Refl] at hP ⊢`. Rewrite using `[hP]`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Refl_Refl (p : Sp k n) : Refl (Z := Z) (Refl (Z := Z) p) = p := by
   have hPP : Pr Z (Pr Z p.1) = Pr Z p.1 := Pr_E hZ h _
@@ -143,7 +141,7 @@ theorem Refl_Refl (p : Sp k n) : Refl (Z := Z) (Refl (Z := Z) p) = p := by
   ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [F1, Homeomorph.trans_apply, Homeomorph.apply_symm_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem partial_fourier_first_coordinates (q : TT Z × (Fin (d Z) → k)) : Hb hZ h (F1 hZ h q) = (q.1, G Z *ᵥ q.2) := by
   simp only [F1, Homeomorph.trans_apply, Homeomorph.apply_symm_apply]
@@ -152,15 +150,13 @@ theorem partial_fourier_first_coordinates (q : TT Z × (Fin (d Z) → k)) : Hb h
 def Gu : GL (Fin (d Z)) k := Matrix.nonsingInvUnit (G Z) (Ne.isUnit (G_det hZ h))
 
 /- English proof (translation)
-Establish `hU : IsUnit (G Z).det` using `isUnit_iff_ne_zero.mpr (G_det hZ h)`. Use `set c := distribHaarChar k (Matrix.GeneralLinearGroup.det (Gu hZ h)) with hcdef`. Establish `hc : c ≠ 0`. Introduce `h0`. Use `map_mul (distribHaarChar k) (Matrix.GeneralLinearGroup.det (Gu hZ h)) (Matrix.GeneralLinearGroup.det (Gu hZ h))⁻¹` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_inv_cancel, map_one, ← hcdef, h0, zero_mul]`. Conclude with `zero_ne_one this.symm`. Set `e : (Fin (d Z) → k) ≃ᵐ (Fin (d Z) → k)` to `{ toFun := fun u => G Z *ᵥ u invFun := fun u => (G Z)⁻¹ *ᵥ u left_inv := fun u => by simp [mulVec_mulVec, nonsing_inv_mul _ hU] right_inv := fun u => by simp [mulVec_mulVec, mul_nonsing_inv _ hU] measurable_toFun := (continuous_const.matrix_mulVec continuous_id).measurable measur …`. Establish `hsm` using `GlobalTheory.WeilM.smul_map_mulVec_pi ν (G Z) (Matrix.GeneralLinearGroup.det (Gu hZ h)) rfl`. Rewrite `hsm` using `[← hcdef]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (c : ENNReal) ≠ 0` using `ENNReal.coe_ne_zero.mpr hc`. Establish `hct : (c : ENNReal) ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hmap : Measure.map e (Measure.pi fun _ : Fin (d Z) => ν) = (c : ENNReal)⁻¹ • Measure.pi fun _ => ν` using `by show Measure.map (G Z).mulVec _ = _ conv_rhs => rw [← hsm]`. Rewrite using `[smul_smul, ENNReal.inv_mul_cancel hc0 hct, one_smul]`. Set `H : (Fin (d Z) → k) → ℂ` to `fun x => F (z.1, x) * (ψ (x ⬝ᵥ (G Z)⁻¹ *ᵥ z.2) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : ∀ u, F (z.1, G Z *ᵥ u) * (ψ (u ⬝ᵥ z.2) : ℂ) = H (e u)`. Introduce `u`. Use `show _ = F (z.1, G Z *ᵥ u) * (ψ ((G Z *ᵥ u) ⬝ᵥ (G Z)⁻¹ *ᵥ z.2) : ℂ)`. Rewrite using `[dotProduct_mulVec, vecMul_mulVec, ← Matrix.mulVec_transpose, G_symm, mul_nonsing_inv _ hU, transpose_one, one_mulVec]`. Rewrite using `[integral_congr_ae (ae_of_all _ hH), ← e.measurableEmbedding.integral_map, hmap, integral_smul_measure]`.
-
-Simplify using `[GlobalTheory.SplitDict.pf, H]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pf_G (F : TT Z × (Fin (d Z) → k) → ℂ) (z : TT Z × (Fin (d Z) → k)) :
     ∫ u, F (z.1, G Z *ᵥ u) * (ψ (u ⬝ᵥ z.2) : ℂ) ∂(Measure.pi fun _ => ν) =

@@ -6,21 +6,19 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R S T _ _ _ _ _ _ _ hS hT`. Take `⟨κ, _, _, _, Tj, hmono, hcov, hpc⟩` from `hT`. Establish `hK : ∀ j, ∃ (μ : Type) (_ : Preorder μ) (_ : IsDirected μ (· ≤ ·)) (_ : Nonempty μ) (V : μ → Subalgebra R T), Monotone V ∧ (∀ m, V m ≤ (Tj j).restrictScalars R) ∧ (∀ x ∈ Tj j, ∃ m, x ∈ V m) ∧ (∀ m, ∀ x ∈ V m, ∀ y ∈ Tj j, x * y = 1 → ∃ z ∈ V m, x * z = 1) ∧ ∀ m, (∃ (A : Type) (_ : …`. Introduce `j`. Take `⟨B, _, _, _, Q, _, ⟨e⟩⟩` from `hpc j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.localRing_etale_over_indEtale_directedUnion R S T hS (Tj j) B Q ⟨e⟩`. Use `choose μ pre dir ne V hVmono hVle hVcov hVloc hVee using hK`. Set `P : Subalgebra R T → Prop` to `fun W => ∃ (j : κ) (m : μ j), V j m = W`. Establish `key : ∀ (j₁ : κ) (m₁ : μ j₁) (j : κ), j₁ ≤ j → ∃ m : μ j, V j₁ m₁ ≤ V j m`. Introduce `j₁ m₁ j hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := pre j`. Use `haveI := dir j`. Use `haveI := ne j`. Use `GlobalTheory.T.exists_le_of_essEtaleLocal_directed R T ((Tj j).restrictScalars R) (μ j) (V j) (hVmono j) ?_ ?_ (V j₁ m₁) ?_ (hVee j₁ m₁)` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hVcov j x hx`. Introduce `m x hx y hy hxy`. Conclude with `hVloc j m x hx y hy hxy`. Introduce `x hx`. Use `hVle j₁ m₁ hx` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Conclude with `hmono hj this`. Use `⟨{W : Subalgebra R T // P W}, inferInstance, ⟨?_⟩, ?_, Subtype.val, fun a b h => h, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨W₁, j₁, m₁, rfl⟩ ⟨W₂, j₂, m₂, rfl⟩`. Take `⟨j, h₁, h₂⟩` from `directed_of (· ≤ ·) j₁ j₂`. Take `⟨a, ha⟩` from `key j₁ m₁ j h₁`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `key j₂ m₂ j h₂`. Use `letI := pre j`. Use `haveI := dir j`. Take `⟨c, hac, hbc⟩` from `directed_of (· ≤ ·) a b`. Conclude with `⟨⟨V j c, j, c, rfl⟩, ha.trans (hVmono j hac), hb.trans (hVmono j hbc)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨j⟩` from `(inferInstance : Nonempty κ)`. Take `⟨m⟩` from `ne j`. Conclude with `⟨⟨V j m, j, m, rfl⟩⟩`. Introduce `t`. Take `⟨j, hj⟩` from `hcov t`.
-
-Take `⟨m, hm⟩` from `hVcov j t hj`. Conclude with `⟨⟨V j m, j, m, rfl⟩, hm⟩`. Introduce and unpack `⟨W, j, m, rfl⟩`. Conclude with `hVee j m`.
+A detailed English derivation is pending.
 -/
 theorem indEtale_localPieces_trans : ∀ (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra S T] [Algebra R T] [IsScalarTower R S T], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra S T), Monotone Si ∧ (∀ s : T, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra S A) (_ : Algebra.Etale S A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[S] Si i)) → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R T), Monotone Si ∧ (∀ s : T, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) := by
   intro R S T _ _ _ _ _ _ _ hS hT

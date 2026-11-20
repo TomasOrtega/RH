@@ -8,9 +8,9 @@ open Polynomial Matrix GlobalTheory.LatOrb
 namespace GlobalTheory.LatOrb
 
 /- English proof (translation)
-Establish `hs' : (Matrix.toLin' γ).charpoly.Separable` using `by rwa [Matrix.charpoly_toLin']`. Take `⟨e, he⟩` from `Formalism.IrreducibleCountingLemmas.Z.base_change_cyclic_vector K (Fin n → K) (Matrix.toLin' γ) hs'`. Use `⟨e, fun u => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `he u`. Use `⟨p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hp]`. Establish `h : aeval (Matrix.toLin' γ) p = Matrix.toLin' (aeval γ p)`. Use `(aeval_algHom_apply (Matrix.toLinAlgEquiv' (R := K) (n := Fin n)).toAlgHom γ p).symm` as an intermediate fact. Conclude with `this.symm`. Rewrite using `[h, Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cyclicVector_of_separable_charpoly {K : Type} [Field K] (n : ℕ)
     (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Separable) :

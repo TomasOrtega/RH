@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections
 namespace ShortClause
 
 /- English proof (translation)
-Unfold `vLa`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_mul {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     vLa la (a * b) = vLa la a + vLa la b := by
@@ -22,7 +22,7 @@ theorem val_mul {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (�
   ring
 
 /- English proof (translation)
-Unfold `vLa`. Rewrite using `[map_pow, WithZero.log_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_pow {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (a : K) (n : ℕ) :
     vLa la (a ^ n) = n * vLa la a := by
@@ -31,9 +31,9 @@ theorem val_pow {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (�
   simp
 
 /- English proof (translation)
-Unfold `vLa`. Establish `h1 : la.valuation K (p : K) ≤ 1`. Use `la.valuation_le_one (K := K) (p : 𝓞 K)` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `h0 : la.valuation K (p : K) = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `(WithZero.log_le_log h0 one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_nat_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) :
     0 ≤ vLa la (p : K) := by
@@ -48,9 +48,9 @@ theorem val_nat_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpect
     omega
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨F1, hF1, rfl⟩` from `Submodule.mem_map.mp hF`. Take `⟨G, hG, rfl⟩` from `Submodule.mem_map.mp hF1`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul]`. Rewrite using `[hsc, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(B.Mlat j w).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem thc_le_of_eq_zero {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (s : 𝓞 B.KO)
     (w : WeightFamilies.Wt D j)
@@ -68,19 +68,19 @@ end ShortClause
 open ShortClause in
 
 /- English proof (translation)
-Introduce `hSB D T h hs j hj hinj EX hO w a b s ha hb hsE`. Distinguish the cases in `hsc : s * ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 T.Q.c.F) ^ (D.R.f * D.R.r * w.n) = 0`. Conclude with `thc_le_of_eq_zero (recPJ h j hj) s w hsc`. Use `Pf.Thc_le_Mlat (recPJ h j hj) s w ?_` and prove the remaining obligations. Introduce `G hG la y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hG' : G.1 ∈ Submodule.span (𝓞 T.Q.c.F) (T.sh j w)` using `hG`. Establish `key` using `Pf.le_val_of_mem_span (isVal_vAt (y : T.PtA j la)) (fun g hg => hSB D T h hs j hj hinj EX hO w g hg la y) _ hG'`. Use `le_trans ?_ (key.trans (recPJ_vAt_inc h j hj la y w G).ge)` and prove the remaining obligations. Rewrite using `[EReal.coe_le_coe_iff, neg_le_neg_iff]`. Use `set nn : 𝓞 T.Q.c.F := nnW (recB h.toLawsCore) hinj EX w with hnn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((s * ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 T.Q.c.F) ^ (D.R.f * D.R.r * w.n) : 𝓞 T.Q.c.F) : T.Q.c.F) = (((T.dδ j w.n).pd : ℕ) : T.Q.c.F) ^ (DF w + 2 * D.R.f * D.R.r * w.n) * (nn : T.Q.c.F) * ((pPow D a b b : ℕ) : T.Q.c.F) * ((D.host.g 0 * D.host.g 1 : ℕ) : T.Q.c.F) ^ (D.R.f * D. …`. Rewrite using `[hsE, zOwnP]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : (((T.dδ j w.n).pd : ℕ) : T.Q.c.F) ^ (DF w + 2 * D.R.f * D.R.r * w.n) * (nn : T.Q.c.F) * ((pPow D a b b : ℕ) : T.Q.c.F) * ((D.host.g 0 * D.host.g 1 : ℕ) : T.Q.c.F) ^ (D.R.f * D.R.r * w.n) ≠ 0`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[← e]`. Conclude with `fun h0 => hsc (RingOfIntegers.coe_eq_zero_iff.1 h0)`. Establish `h4` using `right_ne_zero_of_mul hne`. Establish `h123` using `left_ne_zero_of_mul hne`. Establish `h3` using `right_ne_zero_of_mul h123`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12` using `left_ne_zero_of_mul h123`. Establish `h2` using `right_ne_zero_of_mul h12`. Establish `h1` using `left_ne_zero_of_mul h12`. Establish `hv : vLa (la : HeightOneSpectrum (𝓞 T.Q.c.F)) ((s * ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 T.Q.c.F) ^ (D.R.f * D.R.r * w.n) : 𝓞 T.Q.c.F) : T.Q.c.F) = ((DF w + 2 * D.R.f * D.R.r * w.n : ℕ) : ℤ) * vLa la (((T.dδ j w.n).pd : ℕ) : T.Q.c.F) + vLa la (nn : T.Q.c.F) + vLa la ((pPow D a b b …`. Rewrite using `[e, val_mul _ h123 h4, val_mul _ h12 h3, val_mul _ h1 h2, val_pow, val_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.ramified_prime_loss_le_valuation_prime_power D T.Q.c.F la j w a b ha hb`. Establish `hp : (0 : ℝ) ≤ ((vLa (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (((T.dδ j w.n).pd : ℕ) : T.Q.c.F) : ℤ) : ℝ)`. Conclude with `val_nat_nonneg _ _` after adjusting the coercions. Establish `hk : (0 : ℝ) ≤ ((vLa (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (((T.dδ j w.n).pd : ℕ) : T.Q.c.F) : ℤ) : ℝ) * ((D.R.f : ℝ) * D.R.r * w.n)` using `mul_nonneg hp (by positivity)`. Use `le_trans ?_ (le_of_eq (congrArg (fun z : ℤ => (z : ℝ)) hv).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast]`. Generalize the expression as in `((vLa (la : HeightOneSpectrum (𝓞 T.Q.c.F)) ((D.host.g 0 * D.host.g 1 : ℕ) : T.Q.c.F) : ℤ) : ℝ) = x`. Use `push_cast`. Use polynomial arithmetic with `[hr, hk]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem thc_le_of_shortBound : ShortBoundSt → ∀ (D : D7) (T : Top D) (h : LawsP T) (_hs : LawsSh T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D), Oriented T EX → ∀ (w : WeightFamilies.Wt D j) (a b : ℕ) (s : 𝓞 T.Q.c.F), c2 D w ≤ a → Formalism.MainNotions.DIV.Cons.cHalf w ≤ b → s = (zOwnP D (T.dδ j w.n).pd w : 𝓞 T.Q.c.F) * nnW (recB h.toLawsCore) hinj EX w * (pPow D a b b : 𝓞 T.Q.c.F) → (recPJ h j hj).Thc s w ≤ (recB h.toLawsCore).Mlat j w := by
   intro hSB D T h hs j hj hinj EX hO w a b s ha hb hsE

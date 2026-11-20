@@ -7,21 +7,21 @@ open Matrix
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-Introduce and unpack `R _ g d P hP ⟨e⟩`. Set `L : (Fin g → R) →ₗ[R] (Fin d → R)` to `e.toLinearMap ∘ₗ (mulVecLin P).rangeRestrict`. Set `T : (Fin d → R) →ₗ[R] (Fin g → R)` to `(LinearMap.range (mulVecLin P)).subtype ∘ₗ e.symm.toLinearMap`. Take `⟨M, hLM⟩ : ∃ M : Matrix (Fin d) (Fin g) R, Matrix.toLin' M = L` from `⟨_, Matrix.toLin'_toMatrix' L⟩`. Take `⟨N, hTN⟩ : ∃ N : Matrix (Fin g) (Fin d) R, Matrix.toLin' N = T` from `⟨_, Matrix.toLin'_toMatrix' T⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hPNM : P = N * M`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hLM, hTN]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[L, T, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hMP : M * P = M`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hLM]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, L, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Matrix.mulVec_mulVec, hP]`. Establish `hrow : ∀ i, Pᵀ *ᵥ M i = M i`. Introduce `i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Establish `h` using `congrFun (congrFun hMP i) j`. Simplify using `only [Matrix.mul_apply] at h`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply]`. Rewrite using `[← h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Use `⟨fun i => ⟨M i, LinearMap.mem_range.mpr ⟨M i, by rw [Matrix.mulVecLin_apply]; exact hrow i⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨w, hw⟩ -`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : mulVecLin Pᵀ v = ∑ i, (Nᵀ *ᵥ v) i • M i`. Rewrite using `[Matrix.mulVecLin_apply, hPNM, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(Submodule.mem_span_range_iff_exists_fun R).mpr ⟨fun i => (Nᵀ *ᵥ v) i, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idemGen : IdemGenStatement := by
   rintro R _ g d P hP ⟨e⟩

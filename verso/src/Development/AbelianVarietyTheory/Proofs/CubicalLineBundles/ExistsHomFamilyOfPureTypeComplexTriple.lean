@@ -23,29 +23,25 @@ open GlobalTheory.PointUnif GlobalTheory.PureType
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨Ef, hE, hbij, -, h1, h2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT T.pol _ u Hm χ hAH`. Establish `hid : IsGrpPullback T.t.G T.t.G (𝟙 _) (𝟙 T.t.G.left)` using `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl T.t.G) (inferInstanceAs (IsMonHom (𝟙 T.t.G)))`. Establish `he₀ : PointUnif.IsExp (y` using `𝟙 (Sp ℂ)) (G := T.t.G) u.ex := isExp_push hid u h1 h2 (MulEquiv.refl _) fun x => (Category.comp_id _).symm`. Take `⟨ρ, hρ⟩` from `he₀.exists_rep T.t.act u.Λ u.discrete u.ker fun a => by`. Take `⟨F, hF, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom T.t.G T.t.G T.ab T.ab _ _ _ _ u u h1 h2 (T.t.act.act a) (T.t.act.hom a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, hF⟩`. Take `⟨h, hh⟩` from `exists_equiv_of_finrank_eq (isSplitting_embeddings (E := E)) (diagRep ty) ρ fun φ => by`. Rewrite using `[finrank_eigenSub_diagRep]`. Distinguish the cases in `hφ : φ (H.rt : E) = H.rt0`. Rewrite using `[(hty φ).1 hφ, he₀.finrank_eigenSub _ ρ hρ ((hdet _).1 hφ)]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hty φ).2 hφ, he₀.finrank_eigenSub _ ρ hρ ((hdet _).2 hφ)]`. Establish `hst : ∀ a, ∀ x ∈ u.Λ, ρ a x ∈ u.Λ` using `fun a x hx => HermWeil.map_mem u u (hρ a) ⟨x, hx⟩`. Establish `hadj : ∀ a z w, hermForm Hm (ρ a z) w = hermForm Hm z (ρ (H.bar a) w)` using `fun a => (weilEq_iff_hermForm_eq hT hL T.pol T.pol T.pol T.pol u u u u Hm Hm χ χ hAH hAH (T.t.act.act a) (𝟙 _) (𝟙 _) (T.t.act.act (H.bar a)) (ρ a) LinearMap.id LinearMap.id (ρ (H.bar a)) (hρ a) (fun _ => (Category.comp_id _).symm) (fun _ => (Category.comp_id _).symm) (hρ _)).1 (w …`. Unfold `LamEq`. Rewrite using `[Category.comp_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.t.adj a))`. Use `letI : SMul (𝓞 E) u.Λ := ⟨fun a x => ⟨ρ a x, hst a x x.2⟩⟩`. Establish `hsm : ∀ (a : 𝓞 E) (x : u.Λ), ((a • x : u.Λ) : _ → ℂ) = ρ a x` using `fun _ _ => rfl`. Use `letI : Module (𝓞 E) u.Λ := Module.ofMinimalAxioms (fun a x y => Subtype.ext (by simp [hsm])) (fun a b x => Subtype.ext (by simp [hsm])) (fun a b x => Subtype.ext (by simp [hsm])) (fun x => Subtype.ext (by simp [hsm]))`. Set `P : u.Λ →+ (Fin g → ℂ)` to `h.symm.toLinearMap.toAddMonoidHom.comp u.Λ.subtype.toAddMonoidHom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP : ∀ x, h (P x) = x` using `fun x => h.apply_symm_apply _`. Establish `hrange : ∀ z, z ∈ P.range ↔ h z ∈ u.Λ` using `fun z => ⟨by rintro ⟨x, rfl⟩; rw [hP]; exact x.2, fun hz => ⟨⟨_, hz⟩, h.symm_apply_apply z⟩⟩`. Establish `hPs : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i` using `fun a x => congrFun (h.injective (by`. Rewrite using `[hP, hsm, ← diagRep_apply, hh, hP]))`. Establish `hPi : Function.Injective P` using `h.symm.injective.comp Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd : DiscreteTopology P.range`. Use `u.discrete` as an intermediate fact. Use `DiscreteTopology.of_continuous_injective (f := fun z : P.range => (⟨h z, (hrange _).1 z.2⟩ : u.Λ)) ((h.toLinearMap.continuous_of_finiteDimensional.comp continuous_subtype_val).subtype_mk _) fun z w hzw => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (h.injective (congrArg Subtype.val hzw))`. Establish `hPf : Submodule.span ℝ (Set.range P) = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : Set.range P = (h.symm.toLinearMap.restrictScalars ℝ) '' u.Λ`. Use extensionality with `z`. Conclude with `⟨by rintro ⟨x, rfl⟩; exact ⟨x, x.2, rfl⟩, by rintro ⟨x, hx, rfl⟩; exact ⟨⟨x, hx⟩, rfl⟩⟩`. Rewrite using `[e, ← Submodule.map_span, u.full, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `h.symm.surjective`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Hm', hH', hH''⟩` from `exists_hermForm_comp Hm hAH.1 h.toLinearMap`. Establish `hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm' z z).re` using `fun z hz => by`. Rewrite using `[hH'']`. Conclude with `hAH.2.1 _ (h.map_ne_zero_iff.2 hz)`. Establish `him : ∀ x x', (hermForm Hm' (P x) (P x')).im = Ef x x'` using `fun x x' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hH'', hE]`. Conclude with `congrArg₂ (fun a b => (hermForm Hm a b).im) (hP x) (hP x')`. Take `⟨D, ε, hp, hq, hε⟩` from `PeriodDatum.exists_datum E H u.Λ Ef p q g ty P Hm' hty hbij (fun a x y => by`. Establish `: ((Ef (a • x) y : ℤ) : ℝ) = (Ef x (H.bar a • y) : ℤ)` using `by rw [hE, hE, hsm, hsm, hadj]`. Conclude with `this) hPs hPi hPd hPf hH' hpos him` after adjusting the coercions.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `P' : D.La →+ (Fin g → ℂ)` to `P.comp ε.toLinearMap.toAddMonoidHom`. Establish `hr' : P'.range = P.range`. Use extensionality with `z`. Conclude with `⟨by rintro ⟨x, rfl⟩; exact ⟨ε x, rfl⟩, by rintro ⟨x, rfl⟩; exact ⟨ε.symm x, congrArg P (ε.apply_symm_apply x)⟩⟩`. Use `⟨D, P', h, hp, hq, ⟨fun a x i => ?_, hPi.comp ε.injective, hr' ▸ hPd, ?_, Hm', hH', hpos, fun x x' => ?_⟩, fun z => by rw [hr', hrange], fun a b => ?_, fun s z => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrArg (fun x => P x i) (map_smul ε a x)).trans (hPs a _ i)`. Rewrite using `[← AddMonoidHom.coe_range, hr', AddMonoidHom.coe_range, hPf]`. Rewrite using `[hε]`. Conclude with `him _ _`. Rewrite using `[hε, ← him, hH'']`.
-
-Both sides reduce to the same expression. Rewrite using `[← diagRep_apply, hh]`. Conclude with `hρ s _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_datum_period (hT : ThetaUnifAV) (hL : Out.Laws) (T : PAT H (Sp ℂ)) {p q g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H p q ty)
@@ -129,25 +125,25 @@ theorem exists_datum_period (hT : ThetaUnifAV) (hL : Out.Laws) (T : PAT H (Sp �
   · rw [← diagRep_apply, hh]; exact hρ s _
 
 /- English proof (translation)
-Take `⟨Hm₀, χ₀, Ef, hAH₀, hD₀, -, hθ₀, hE₀, hb⟩` from `hu`. Set `i₀ : Fin PC.g` to `⟨0, by omega⟩`. Set `G : L → (Fin PC.g → ℂ) →ₗ[ℂ] (Fin T.pol.g → ℂ)` to `fun a => F.toLinearMap ∘ₗ LinearMap.toSpanSingleton ℂ _ (Pe a) ∘ₗ (c⁻¹ • LinearMap.proj i₀)`. Establish `hG : ∀ a z, G a (fun _ => c * z) = F (z • Pe a)` using `fun a z => by`. Simplify using `[G, inv_mul_cancel_left₀ hc]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hall : ∀ x : Fin PC.g → ℂ, ∃ z, x = fun _ => c * z` using `fun x => ⟨c⁻¹ * x i₀, by rw [mul_inv_cancel_left₀ hc]; exact eq_const hg x i₀⟩`. Establish `hline` using `fun a : L => hermForm_line hP F hAH.1 hAH.2.1 hE hρ ⟨a, hLρ a⟩`. Establish `hGΛ : ∀ a, ∀ x ∈ u₀.Λ, G a x ∈ u.Λ` using `fun a x hx => by`. Take `⟨p, q, rfl⟩` from `(hΛ x).1 hx`. Rewrite using `[hG, hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hline a).1 p q`. Establish `hGH : ∀ a x y, hermForm Hm (G a x) (G a y) = ((D.EF (H.w0 • (a : D.La)) a).natAbs : ℂ) * hermForm Hm₀ x y` using `fun a x y => by`. Take `⟨z, rfl⟩` from `hall x`. Take `⟨w, rfl⟩` from `hall y`. Rewrite using `[hG, hG, (hline a).2, hermForm_of_isQuadLattice hg H.d_prime.pos hc hΛ hAH₀.1 hAH₀.2.1 hE₀ hb.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose φ hφ hφe using fun a => exists_hom_of_linear_scaling_hermForm PC T.pol u₀ u Hm₀ χ₀ Hm χ hAH₀ hAH (fun k => (hθ₀ k).2) hθ (G a) _ (hGΛ a) (hGH a)`. Establish `hφz : ∀ a z, (u₀.ex fun _ => c * z) ≫ φ a = u.ex (F (z • Pe a))` using `fun a z => by rw [← hφe, hG]`. Establish `ext : ∀ f f' : PC.A ⟶ T.pol.A, (∀ z, (u₀.ex fun _ => c * z) ≫ f = (u₀.ex fun _ => c * z) ≫ f') → f = f'`. Introduce `f f' h`. Establish `hs : Smooth PC.A.hom` using `PC.isAb.smooth`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsProper T.pol.A.hom` using `T.pol.isAb.proper`. Establish `hr : IsReduced PC.A.left` using `isReduced_of_smooth_complex _ PC.A.hom hs`. Use `ComplexPoints.over_hom_ext_of_complexPoints fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `u₀.ex_onto x`. Take `⟨z, rfl⟩` from `hall x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h z`. Establish `hlin : ∀ (s : 𝓞 E) a, φ (s • a) = φ a ≫ T.t.act.act s` using `fun s a => ext _ _ fun z => by`. Rewrite using `[← Category.assoc, hφz, hφz, ← hact]`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, hP.1, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨φ, fun v hv => ⟨hφ, fun a b => ext _ _ fun z => ?_, hlin, fun a => ?_, fun a _ => ?_⟩, hφz⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, hφz, hφz, hφz, ← u.ex_add, ← map_add, ← smul_add, ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `hD₀ v hv`. Use `hφ a` as an intermediate fact. Use `hφ (H.rt • a)` as an intermediate fact. Establish `h₁` using `HomLinear.isDiff_comp u₀ u (φ a) (G a) (hφe a) hv hw`. Establish `h₂` using `HomLinear.isDiff_comp u₀ u (φ (H.rt • a)) (G _) (hφe _) hv hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : G (H.rt • a) w = ρ • G a w`. Take `⟨z, rfl⟩` from `hall w`. Rewrite using `[hG, hG, ← map_smul F ρ, smul_comm ρ z, ← period_rt_smul hP (hLρ a)]`. Both sides reduce to the same expression. Rewrite `h₂` using `[e]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨![CMCurveTest.scaleVec ρ (v ≫ φ a)], fun j => by fin_cases j; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlin]`. Simplify using `using (hD _).unique ⟨HomLinear.isTangent_comp _ hv, h₂⟩ ⟨isTangent_scaleVec ρ (HomLinear.isTangent_comp _ hv), CMCurveTest.isDiff_scaleVec u h₁ ρ⟩`. Conclude with `lbIso_pow_of_hermForm_pull_eq PC T.pol u₀ u Hm₀ χ₀ Hm χ hAH₀ hAH (fun k => (hθ₀ k).2) hθ (G a) _ (hGΛ a) (hGH a) (φ a) (hφe a)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isHomFamily (T : PAT H (Sp ℂ)) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (u : HolUnif T.pol.A T.pol.L T.pol.g) {Hm : Matrix (Fin T.pol.g) (Fin T.pol.g) ℂ} {χ : u.Λ → ℂ}
@@ -218,11 +214,11 @@ theorem exists_isHomFamily (T : PAT H (Sp ℂ)) {g : ℕ} {ty : Fin g → (E →
       (G a) _ (hGΛ a) (hGH a) (φ a) (hφe a)
 
 /- English proof (translation)
-Introduce `y`. Take `⟨w, rfl⟩` from `u.ex_onto y`. Take `⟨n, f, t, rfl⟩` from `Submodule.mem_span_set'.1 (hv ▸ Submodule.mem_top : w ∈ Submodule.span ℂ (Set.range v))`. Use `choose i hi using fun m => (t m).2`. Use `⟨n, i, fun m => x (f m), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ (m : ℕ) (w : Fin m → Fin g → ℂ), u.ex (∑ j, w j) = (List.ofFn fun j => u.ex (w j)).prod`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro w`. Simplify using `[HermWeil.ex_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih => intro w`. Rewrite using `[List.ofFn_succ, List.prod_cons, ← ih, Fin.sum_univ_succ, u.ex_add]`. Use `(key _ _).trans ?_` and prove the remaining obligations. Simplify using `only [← hi, ← h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ontoAt_of_span {A B : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {I : Type}
     (φ : I → (B ⟶ A)) (v : I → Fin g → ℂ) (hv : Submodule.span ℂ (Set.range v) = ⊤)
@@ -248,27 +244,25 @@ namespace GlobalTheory.CM
 open PureTriple PureType
 
 /- English proof (translation)
-Introduce `hT hL E _ _ _ H ω C T r hC hT₀`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `Spec.map_id _`. Establish `hdet` using `hT₀ ℂ (RingHom.id ℂ) Function.injective_id`. Rewrite `hdet`, the goal using `[hid]`. Take `⟨τ, hτ, -⟩` from `LieChar.ell_char E H ℂ ω C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hρ : (2 * ω - 1) ^ 2 = -(H.d : ℂ)` using `hτ ▸ two_mul_sub_one_sq_of_ringHom τ`. Establish `hsq : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ^ 2 = -(H.d : ℂ)` using `fun τ => by`. Rewrite using `[← map_pow, H.rt_sq, map_neg, map_natCast]`. Establish `hd : (H.d : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 H.d_prime.pos.ne'`. Choose the witnesses or unpack the hypotheses as in `⟨p, q, hpq, hdet', hpure⟩ : ∃ p q : ℕ, p + q = r ∧ (∀ τ : 𝓞 E →+* ℂ, (τ H.rt = H.rt0 → LieMult T.t.act (𝟙 (Sp ℂ)) τ p) ∧ (τ H.rt ≠ H.rt0 → LieMult T.t.act (𝟙 (Sp ℂ)) τ q)) ∧ ∀ τ : E →+* ℂ, τ (H.rt : E) ≠ 2 * ω - 1 → (τ (H.rt : E) = H.rt0 → p = 0) ∧ (τ (H.rt : E) ≠ H.rt0 → q = 0) …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : 2 * ω - 1 = H.rt0`. Conclude with `⟨r, 0, rfl, h0 ▸ hdet, fun τ h => ⟨fun h' => absurd (h'.trans h0.symm) h, fun _ => rfl⟩⟩`. Establish `h1` using `(sq_eq_sq_iff_eq_or_eq_neg.1 (hρ.trans H.sqrt_neg_disc_sq.symm)).resolve_left h0`. Establish `h2 : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ≠ H.rt0 → τ H.rt = 2 * ω - 1` using `fun τ h => ((sq_eq_sq_iff_eq_or_eq_neg.1 ((hsq τ).trans H.sqrt_neg_disc_sq.symm)).resolve_left h).trans h1.symm`. Conclude with `⟨0, r, zero_add r, fun τ => ⟨fun h => (hdet τ).2 fun h' => h0 (h'.symm.trans h), fun h => (hdet τ).1 (h2 τ h)⟩, fun τ h => ⟨fun _ => rfl, fun h' => absurd (h2 (τ.comp (algebraMap (𝓞 E) E)) h') h⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨g, ty, hty⟩` from `AllClasses.exists_isTypeFn H p q`. Take `⟨u, Hm, χ, -, hAH, -, hD, hθ, -⟩` from `exists_isThetaUnif hT T.pol`. Take `⟨D, Pe, F, hp, hq, hP, hF, hE, hact⟩` from `exists_datum_period hT hL T hty hdet' u hAH`. Establish `hlat : ∀ a : D.La, a ∈ lat hP (2 * ω - 1)` using `fun a j hj => by`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. It suffices to derive a contradiction.
 
-Establish `: Nonempty {i // ty i = ty j}` using `⟨⟨j, rfl⟩⟩`. Distinguish the cases in `h : ty j (H.rt : E) = H.rt0`. Conclude with `Nat.card_pos.ne' (((hty _).1 h).trans ((hpure _ hj).1 h))`. Conclude with `Nat.card_pos.ne' (((hty _).2 h).trans ((hpure _ hj).2 h))`. Take `⟨u₀, hu₀⟩` from `exists_isThetaUnif hT C.P`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hΛ⟩` from `hC C.P (𝟙 _) (polFibre_id_comp_cancel.1 ℂ C.P C.v).1 u₀`. Take `⟨φ, hφ, hφe⟩` from `exists_isHomFamily T u hAH hD (fun k => (hθ k).1) F hP hF hE hact u₀ C.dim hu₀ hc hΛ hρ ⊤ fun a => hlat a`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε⟩ : ∃ ε : ℤˣ, 0 < ((ε : ℤ) : ℝ) * ω.im := by`. Establish `him : ω.im ≠ 0` using `fun h => by`. Establish `e` using `congrArg Complex.re hρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Simplify using `[pow_two, h] at e`. Use polynomial arithmetic with `[mul_self_nonneg (2 * ω.re - 1)]`. Break down `lt_or_gt_of_ne him with h | h` into its components or cases. Conclude with `⟨-1, by simpa using h⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨1, by simpa using h⟩`. Establish `hpos : ∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x` using `fun x h0 => by`. Take `⟨s, hs, e⟩` from `exists_hermitianPairing_eq_im_mul_pureType hP (hlat x) h0`. Establish `: (0 : ℝ) < ((ε : ℤ) : ℝ) * (D.EF (H.w0 • x) x : ℤ)`. Rewrite using `[e, ← _root_.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mul_pos hε hs`. Conclude with `this` after adjusting the coercions. Set `h : D.La → D.La → OK H` to `fun x y => (((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H`. Establish `hh : IsKForm D ε h` using `fun x y => by`. Simplify using `only [h, wK, Subalgebra.coe_add, Subalgebra.coe_mul, SubringClass.coe_intCast]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨D, ε, h, φ, by rw [hp, hq, hpq], hh, hpos, GlobalTheory.T.isCMPairingFamily_of_polarisationDiagonal_complex hT hL E H ω C D ε h T ⊤ φ hh (fun x _ => hpos x) (hφ _ (C.basis.1 0)), ?_⟩` and prove the remaining obligations. Use `ontoAt_of_span u φ (fun a => F (Pe a)) ?_ (fun z => u₀.ex fun _ => c * z) fun a z => by rw [hφe, map_smul]` and prove the remaining obligations. Establish `e : (Set.range fun a : (⊤ : Submodule (𝓞 E) D.La) => F (Pe a)) = F.toLinearMap '' Set.range Pe`. Use extensionality with `z`. Conclude with `⟨by rintro ⟨a, rfl⟩; exact ⟨_, ⟨a, rfl⟩, rfl⟩, by rintro ⟨_, ⟨a, rfl⟩, rfl⟩; exact ⟨⟨a, trivial⟩, rfl⟩⟩`.
-
-Establish `e' : Submodule.span ℂ (Set.range Pe) = ⊤` using `top_le_iff.1 fun z _ => Submodule.span_subset_span ℝ ℂ _ (hP.2.2.2.1 ▸ Submodule.mem_top : z ∈ Submodule.span ℝ _)`. Rewrite using `[e, ← Submodule.map_span, e', Submodule.map_top, LinearEquiv.range]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFam_of_pureType : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ω : ℂ) (C : Ell H ℂ ω) (T : PAT H (Sp ℂ)) (r : ℕ), C.IsPrincipalAt (RingHom.id ℂ) → HasType H T.t.act (2 * ω - 1) r 0 → ∃ (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H) (ψ : (⊤ : Submodule (𝓞 E) D.La) → (C.P.A ⟶ T.t.G)), D.p + D.q = r ∧ IsKForm D ε h ∧ (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) ∧ IsFam C T h ⊤ ψ ∧ OntoAt ψ (spMap (RingHom.id ℂ)) := by
   intro hT hL E _ _ _ H ω C T r hC hT₀

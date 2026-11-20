@@ -14,9 +14,9 @@ section Lattice
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Establish `hk' : (k : ℝ) ≠ 0` using `by exact_mod_cast hk.ne'`. Use `⟨fun i => (c i : ℝ) / k, fun i => by positivity, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : (k : ℤ) * β a b = ∑ i, (c i : ℤ) * γ i a b`. Simplify `LinearMap.congr_fun₂ h a b` using `[LinearMap.sum_apply]`. Establish `h2 : (k : ℝ) * β a b = ∑ i, (c i : ℝ) * γ i a b` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_right_inj' hk', h2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by field_simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inRCone_of_nsmul_eq {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {β : LinearMap.BilinForm ℤ X} {k : ℕ}
     {c : Fin m → ℕ} (hk : 0 < k) (h : k • β = ∑ i, c i • γ i) : InRCone γ β := by
@@ -30,11 +30,11 @@ theorem inRCone_of_nsmul_eq {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
   exact Finset.sum_congr rfl fun i _ => by field_simp
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hβ`. Establish `e1` using `apply_eq_of_toReal_eq e h`. Rewrite `e1` using `[h0, Int.cast_zero]`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_nonneg (hc j) (show (0 : ℝ) ≤ h (γ j) by exact_mod_cast hcut.1 j)).1 e1.symm`. Establish `hc0 : ∀ j, j ∉ Set.range s → c j = 0` using `fun j hj => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (h (γ j) : ℝ) ≠ 0` using `fun h0 => hj ((hcut.2 j).1 (by exact_mod_cast h0))`. Conclude with `(mul_eq_zero.1 (hz j (Finset.mem_univ _))).resolve_right hne`. Use `⟨fun i => c (s i), fun i => hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Rewrite using `[← Finset.sum_map Finset.univ s (fun j => c j • toReal (γ j))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => ?_).symm` and prove the remaining obligations. Rewrite using `[hc0 j fun ⟨i, hi⟩ => hj (by simp [← hi]), zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inRCone_face {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s : Fin m' ↪ Fin m}
     {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (hcut : IsFaceCut γ s h) {β : LinearMap.BilinForm ℤ X} (hβ : InRCone γ β)
@@ -55,13 +55,11 @@ theorem inRCone_face {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s 
   rw [hc0 j fun ⟨i, hi⟩ => hj (by simp [← hi]), zero_smul]
 
 /- English proof (translation)
-Unfold `genRank at hr`. Use `set B := Submodule.span ℤ (Set.range γ) with hB`. Use `set A := Submodule.span ℤ (Set.range fun j => γ (s j)) with hA`. Use `haveI : Module.Finite ℤ B := Module.Finite.span_of_finite ℤ (Set.finite_range γ)`. Establish `hAB : A ≤ B` using `Submodule.span_mono (by rintro _ ⟨j, rfl⟩; exact ⟨s j, rfl⟩)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAk : A ≤ LinearMap.ker h` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact h0 j)`. Use `set K : Submodule ℤ B := LinearMap.ker (h.domRestrict B) with hK`. Establish `h1 : Module.finrank ℤ A ≤ Module.finrank ℤ K`. Rewrite using `[← (Submodule.comapSubtypeEquivOfLe hAB).finrank_eq]`. Conclude with `Submodule.finrank_mono fun y hy => hAk hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.finrank_quotient_add_finrank K`. Establish `h3 : Module.finrank ℤ (B ⧸ K) = 0` using `by omega`. Take `⟨a, ha, e⟩` from `Module.finrank_eq_zero_iff.1 h3 (Submodule.Quotient.mk ⟨γ j, Submodule.subset_span ⟨j, rfl⟩⟩)`. Rewrite `e` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `e' : a * h (γ j) = 0` using `by simpa [hK] using e`.
-
-Conclude with `(mul_eq_zero.1 e').resolve_left ha`.
+A detailed English derivation is pending.
 -/
 theorem apply_eq_zero_of_genRank_le {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s : Fin m' → Fin m}
     {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (h0 : ∀ j, h (γ (s j)) = 0) (hr : genRank γ ≤ genRank fun j => γ (s j))
@@ -87,7 +85,7 @@ theorem apply_eq_zero_of_genRank_le {m m' : ℕ} {γ : Fin m → LinearMap.Bilin
 end Lattice
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hβ`. Rewrite using `[apply_eq_of_toReal_eq e ℓ, ← evalR_toReal, e, (linearOn_iff ψ γ).1 hγ c hc, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1]; ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_inRCone {O : Type} [CommRing O] {ψ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : ψ.LinearOn γ) {N : ℕ}
@@ -98,31 +96,27 @@ theorem apply_eq_of_inRCone {O : Type} [CommRing O] {ψ : InvFun O} {X : Type} [
   exact Finset.sum_congr rfl fun i _ => by rw [h1]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ lab hψ hlab X _ _ _ _ hX hD m v hv β hβ hβp hvβ x hx hxp hadd hl`. Establish `hs : β + x ∈ balForms H.bar X` using `Submodule.add_mem _ hβ hx`. Establish `hsp : ∀ y, 0 ≤ (β + x) y y` using `fun y => add_nonneg (hβp y) (hxp y)`. Establish `hne : {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ (β + x) ∧ genRank γ = k}.Nonempty`. Establish `hR : toReal (β + x) ∈ psdCone H.bar X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hsp) (by simp)` using `using GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone (𝓞 E) H.bar X 1 ![β + x] ![1] (by simp [hs]) (by simpa`. Take `⟨S, -, hcov⟩` from `(hψ X hX).finite`. Take `⟨e, mm, γ, c, hγ, -, hc, hsum⟩` from `hcov _ hR`. Use `⟨_, mm, fun i => pull e.symm.toLinearMap (γ i), CarDim.isCell_pull_equiv hγ e.symm, ⟨c, hc, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `LinearMap.ext₂ fun a b => by`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun₂ hsum (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Take `⟨n, γ, hγ, hγs, hrk⟩` from `Nat.sInf_mem hne`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`. Take `⟨N', ℓ', hN', h1', h2', h3'⟩` from `hv.strict`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hN'r : (0 : ℝ) < N'` using `by exact_mod_cast hN'`. Establish `e0` using `apply_eq_of_inRCone hγ.linear h1 hγs`. Rewrite `e0` using `[map_add, Int.cast_add, hadd, mul_add]`. Establish `eβ : (N : ℝ) * ψ.evalZ β = ℓ β` using `by linarith [h2 β hβ hβp, h2 x hx hxp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : (N : ℝ) * ψ.evalZ x = ℓ x` using `by linarith [h2 β hβ hβp, h2 x hx hxp]`. Establish `hγβ : InRCone γ β`. Take `⟨k, c, hk, hc⟩` from `h3 β hβ hβp eβ`. Conclude with `inRCone_of_nsmul_eq hk hc`. Choose the witnesses or unpack the hypotheses as in `⟨cx, -, hcx⟩ : InRCone γ x := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, c, hk, hc⟩` from `h3 x hx hxp ex`. Conclude with `inRCone_of_nsmul_eq hk hc`. Use `set h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ := (N : ℤ) • ℓ' - (N' : ℤ) • ℓ with hh`. Establish `happ : ∀ u, (h u : ℝ) = N * ℓ' u - N' * ℓ u` using `fun u => by simp [hh]`. Set `Z : Finset (Fin n)` to `Finset.univ.filter fun j => h (γ j) = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `s : Fin Z.card ↪ Fin n` to `(Z.orderEmbOfFin rfl).toEmbedding`. Establish `hcut : IsFaceCut γ s h`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ h (γ j)`. Rewrite using `[happ, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left (h2' _ (hγ.mem j) (hγ.nonneg j)) hNr.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `: Set.range s = Z` using `Z.range_orderEmbOfFin rfl`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Z]`. Establish `hface` using `isCell_face_of_isFaceCut E H q ψ hψ X hX hD n γ hγ _ s h hcut`. Establish `hβ0 : h β = 0`. Establish `: (h β : ℝ) = 0`. Rewrite using `[happ, apply_eq_of_inRCone hv.linear h1' hvβ, ← eβ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hle : genRank γ ≤ genRank fun j => γ (s j)`. Rewrite `hl` using `[hlab X hX _ hs hsp, hlab X hX _ hβ hβp, Nat.cast_inj]`. Rewrite using `[hrk, hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.sInf_le ⟨_, _, hface, inRCone_face hcut hγβ hβ0, rfl⟩`. Establish `hall` using `apply_eq_zero_of_genRank_le (h := h) (fun j => (hcut.2 _).2 ⟨j, rfl⟩) hle`. Establish `hx0 : (h x : ℝ) = 0`. Rewrite using `[apply_eq_of_toReal_eq hcx h]`. Simplify using `[hall]`.
-
-Rewrite `hx0` using `[happ, ← ex]`. Establish `ex' : (N' : ℝ) * ψ.evalZ x = ℓ' x`. Establish `: (N : ℝ) * (N' * ψ.evalZ x - ℓ' x) = 0` using `by linarith`. Combine the linear relations using `[(mul_eq_zero.1 this).resolve_left hNr.ne']`. Take `⟨k, c, hk, hc⟩` from `h3' x hx hxp ex'`.
-
-Conclude with `inRCone_of_nsmul_eq hk hc`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inRCone_of_add : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ lab : InvFun (𝓞 E)), IsPolyFan H.bar q ψ → IsCarrierDim H.bar q ψ lab → ∀ (X : Type) [AddCommGroup X]

@@ -12,9 +12,9 @@ set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D HW l _ K s LL h W T₁ T₂ π hπ h₁ h₂ κ₂ hκ₂`. Use `(Submodule.mem_map.1 hκ₂).elim fun c₂ hc => ?_` and prove the remaining obligations. Establish `hf : ((c₂ : _) : ↥W.GKs → T₂.V) ∈ BlochKatoCocyclesSubgroup ((D.loc l).PD K) W.GKs T₂` using `hc.1.2`. Use `hf.2.elim fun x hx => ?_` and prove the remaining obligations. Use `(lift_cocycle (D.loc l) (D.locA l) (D.locT l) h.2.2.1 W ((HW l).W_s K s LL h) T₁ T₂ π hπ h₁ h₂ c₂ κ₂ hc.2 x hx).elim fun n hn => hn.elim fun c₁ hn => hn.elim fun κ₁ hn => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, κ₁, Submodule.mem_map.2 ⟨c₁, ⟨c₁.2, ?_⟩, hn.1⟩, hn.2.2⟩` and prove the remaining obligations. Conclude with `⟨mem_continuousCocycles_restrictLattice T₁ W.GKs c₁, hn.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem h1fKs_onto_up_to_pow : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ (T₁ T₂ : Lt K LL) (π : LatHom T₁.L T₂.L), Function.Surjective π.f → IsCrys ((D.loc l).PD K) T₁.ρ → IsCrys ((D.loc l).PD K) T₂.ρ → ∀ κ₂ ∈ H1fIntegralCyclotomicLayer W T₂, ∃ (c : ℕ), ∃ κ₁ ∈ H1fIntegralCyclotomicLayer W T₁, (resHom π W.GKs).H1map κ₁ = (l ^ c : ℕ) • κ₂ := by
   intro D HW l _ K s LL h W T₁ T₂ π hπ h₁ h₂ κ₂ hκ₂

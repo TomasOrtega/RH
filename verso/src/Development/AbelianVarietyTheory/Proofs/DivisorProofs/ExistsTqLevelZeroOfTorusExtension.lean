@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.Raynaud
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ hT`. Take `⟨E, ⟨d⟩⟩` from `exists_splitExt_isGt_of_torusExtension (ResidueField R) _ hT`. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Use `⟨E.X, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q₁, -⟩` from `exists_tq_of_gtDatum _ E _ d`. Set `r : Sp (R ⧸ maximalIdeal R ^ (0 + 1)) ⟶ Sp (ResidueField R)` to `spMap (Ideal.Quotient.factor (show maximalIdeal R ≤ maximalIdeal R ^ (0 + 1) by simp))`. Establish `hr : r ≫ spMap (residue R) = thick R (maximalIdeal R) 0`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `F : (thickObj R (maximalIdeal R) 0 G).left ⟶ ((Over.pullback (spMap (residue R))).obj G).left` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ r) (by rw [Category.assoc, hr]; exact pullback.condition)`. Take `⟨Q₀, -⟩` from `exists_tq_baseChange _ _ r E.X _ _ F ((isGrpPullback_pullback G _).cancel ((isGrpPullback_pullback G (thick R (maximalIdeal R) 0)).congr hr.symm (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)) Q₁`. Conclude with `⟨Q₀⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tq_level_zero_of_torusExtension : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G], Nonempty (TorusExtension ((Over.pullback (spMap (residue R))).obj G)) →
@@ -50,7 +50,7 @@ theorem exists_tq_level_zero_of_torusExtension : ∀ (R : Type) [CommRing R] [Is
   exact ⟨Q₀⟩
 
 /- English proof (translation)
-The claim follows from `exists_tq_level_zero_of_torusExtension`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Nonempty (TorusExtension ((Over.pullback (spMap (residue R))).obj G)) → ∃ (X : Type) (_ : AddCommGroup X) (_ : Module.Free ℤ X) (_ : Module.Finite ℤ X), Nonempty (TQ (thickObj R (maximalIdeal R) 0 G) X) :=
   exists_tq_level_zero_of_torusExtension

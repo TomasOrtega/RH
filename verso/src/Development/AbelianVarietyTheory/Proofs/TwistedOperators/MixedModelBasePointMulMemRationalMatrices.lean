@@ -21,7 +21,7 @@ namespace GlobalTheory.Asc.HeisL
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[HypDec.incX_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add, GlobalTheory.Unf.FB.zEll_mul_eq, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, OrthDec.jB, ← ratV_mulVec]`. Use extensionality with `k j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_castSucc, xLast, vecMulVec_apply, vecB]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mixedModelBasePointWithLast_mul {σ : ℕ} (B : BesL D σ) (S : HSp D) (b : Mx D (σ + 1) S.rank) :
     xLast B.d (vecB B.o B.ζ) ⬝ b = B.d.incX S (Matrix.of fun i j => b (Fin.castSucc i) j) +
@@ -32,7 +32,7 @@ theorem mixedModelBasePointWithLast_mul {σ : ℕ} (B : BesL D σ) (S : HSp D) (
   simp [Matrix.mul_apply, Fin.sum_univ_castSucc, xLast, vecMulVec_apply, vecB]
 
 /- English proof (translation)
-Rewrite using `[mixedModelBasePointWithLast_mul, mixedModelBasePointWithLast_mul]`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.symplOH_incX_incX, HypDec.wittDecomp_sympl_inclIsotropic_inclAnisotropic, HypDec.wittDecomp_sympl_inclAnisotropic_inclAnisotropic, zero_add]`. Rewrite using `[symplOH_skew S B.V (B.d.incX S _) (B.d.inc0 S _), HypDec.wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero, zero_add, OrthDec.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_x0L {σ : ℕ} (B : BesL D σ) (S : HSp D) (b b' : Mx D (σ + 1) S.rank) :
     symplOH S B.V (xLast B.d (vecB B.o B.ζ) ⬝ b) (xLast B.d (vecB B.o B.ζ) ⬝ b') =
@@ -44,9 +44,9 @@ theorem symplOH_x0L {σ : ℕ} (B : BesL D σ) (S : HSp D) (b b' : Mx D (σ + 1)
     OrthDec.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]
 
 /- English proof (translation)
-Use `⟨vecMulVec B.ζ (fun i : Fin (σ + 1) => if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0), ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun k i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `incA D (B.ζ k * (if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0)) = incA D (B.ζ k) * (if i.1 + 1 = σ + 1 then (1 : AE D) else 0)`. Use `split_ifs`. Rewrite using `[mul_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero, mul_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem zlL_mem_ratMx {σ : ℕ} (B : BesL D σ) : zEll B.L (σ + 1) B.ζ ∈ ratMx D B.L.rank (σ + 1) := by
   refine ⟨vecMulVec B.ζ (fun i : Fin (σ + 1) => if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0), ?_⟩
@@ -58,7 +58,7 @@ theorem zlL_mem_ratMx {σ : ℕ} (B : BesL D σ) : zEll B.L (σ + 1) B.ζ ∈ ra
   · rw [mul_zero, mul_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[mixedModelBasePointWithLast_mul]`. Take `⟨g, rfl⟩` from `hγ`. Use `add_mem (ratMx_mul (rat_mem _) ⟨Matrix.of fun i j => g (Fin.castSucc i) j, rfl⟩) (ratMx_mul (rat_mem _) ?_)` and prove the remaining obligations. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul (zlL_mem_ratMx B) (rat_mem _))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedModelBasePoint_mul_mem_rationalMatrices {σ : ℕ} (B : BesL D σ) (S : HSp D) {γ : Mx D (σ + 1) S.rank} (hγ : γ ∈ ratMx D (σ + 1) S.rank) :
     xLast B.d (vecB B.o B.ζ) ⬝ γ ∈ ratMx D B.V.rank S.rank := by
@@ -78,59 +78,47 @@ open GlobalTheory.Asc.HeisL GlobalTheory.Unf.FB
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ σ S B vB vT vL f y hf hy`. Establish `hψn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Establish `hL1 : B.L.rank = 1` using `B.line.1`. Set `i₀ : Fin B.L.rank` to `⟨0, by omega⟩`. Establish `h1 : ∀ i : Fin B.L.rank, i = i₀` using `fun i => Fin.ext (by have := i.2; simp only [i₀]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : B.ζ i₀ ≠ 0`. Introduce `h`. Apply `B.line.2` to reduce the goal to its premises. Establish `: B.ζ = 0` using `funext fun i => by rw [h1 i, h]; rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `set e := splitLine (σ := σ) (n := S.rank) B.L B.ζ i₀ h1 h0 with he_def`. Take `⟨he, hes⟩` from `continuous_splitLine (σ := σ) (n := S.rank) B.L B.ζ i₀ h1 h0`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D (σ + 1) S.rank`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D σ S.rank`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2, k3, k4, k5, -⟩` from `lattice_Mx D B.L.rank S.rank`. Use `haveI : BorelSpace (Mx D (σ + 1) S.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D σ S.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D B.L.rank S.rank) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D (σ + 1) S.rank) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := vT.covol.1`. Use `haveI := vL.covol.1`. Use `haveI := vB.covol.1`. Establish `hx : ∀ b : Mx D (σ + 1) S.rank, xLast B.d (vecB B.o B.ζ) ⬝ b = B.d.incX S (e b).1 + B.d.inc0 S ((B.o.resT S).symm (0, (e b).2))` using `fun b => mixedModelBasePointWithLast_mul B S b`. Use `set P := vT.μ.prod vL.μ with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Set `me : Mx D (σ + 1) S.rank ≃ᵐ Mx D σ S.rank × Mx D B.L.rank S.rank` to `{ toEquiv := e.toEquiv measurable_toFun := he.measurable measurable_invFun := hes.measurable }`. Establish `hmp : MeasurePreserving me (P.map e.symm) P` using `MeasurePreserving.symm me.symm ⟨me.symm.measurable, rfl⟩`. Establish `hmp' : MeasurePreserving e (P.map e.symm) P` using `hmp`. Establish `hν : (P.map e.symm).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map P e.symm hes (by simpa using he)`. Establish `hPF : IsAddFundamentalDomain ((ratMx D σ S.rank).prod (ratMx D B.L.rank S.rank)) (vT.𝓕 ×ˢ vL.𝓕) P` using `GlobalTheory.CoordUnfold.isAddFundamentalDomain_prod vT.covol.2.1 vL.covol.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF' : IsAddFundamentalDomain (ratMx D (σ + 1) S.rank) (e ⁻¹' (vT.𝓕 ×ˢ vL.𝓕)) (P.map e.symm)`. Set `g : (ratMx D σ S.rank).prod (ratMx D B.L.rank S.rank) → ratMx D (σ + 1) S.rank` to `fun p => ⟨e.symm p, splitLine_symm_mem B.L B.ζ i₀ h1 h0 p.2⟩`. Establish `hg : Function.Bijective g`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hab))`. Introduce `x`. Conclude with `⟨⟨e x, splitLine_mem B.L B.ζ i₀ h1 h0 x.2⟩, Subtype.ext (by simp [g])⟩`. Use `hPF.preimage_of_equiv hmp'.quasiMeasurePreserving hg ?_` and prove the remaining obligations. Introduce `p x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[g, AddSubgroup.vadd_def]`. Establish `hv : (P.map e.symm) (e ⁻¹' (vT.𝓕 ×ˢ vL.𝓕)) = 1`. Use `(hmp.measure_preimage_equiv _).trans ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, vT.covol.2.2, vL.covol.2.2, one_mul]`. Establish `hcov : IsCovolOne (ratMx D (σ + 1) S.rank) (P.map e.symm) (e ⁻¹' (vT.𝓕 ×ˢ vL.𝓕))` using `⟨hν, hF', hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hμeq : P.map e.symm = vB.μ` using `covolOne_measure_eq vB.covol hcov`. Establish `hfx : ∀ γ ∈ ratMx D (σ + 1) S.rank, ∀ b, f (xLast B.d (vecB B.o B.ζ) ⬝ (γ + b)) = ψ (-(symplOH S B.V (xLast B.d (vecB B.o B.ζ) ⬝ γ) (xLast B.d (vecB B.o B.ζ) ⬝ b))) * f (xLast B.d (vecB B.o B.ζ) ⬝ b)`. Introduce `γ hγ b`. Take `⟨δ, hδ⟩` from `mixedModelBasePoint_mul_mem_rationalMatrices B S hγ`. Establish `e1` using `hf.1 δ (xLast B.d (vecB B.o B.ζ) ⬝ b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[show ratW B.V S δ = xLast B.d (vecB B.o B.ζ) ⬝ γ from hδ]`. Rewrite using `[Matrix.mul_add, e1]`. Establish `hyz : ∀ γ ∈ ratMx D (σ + 1) S.rank, ∀ b, y (zEll B.L (σ + 1) B.ζ ⬝ (γ + b)) = ψ (-(symplOH S B.L (zEll B.L (σ + 1) B.ζ ⬝ γ) (zEll B.L (σ + 1) B.ζ ⬝ b))) * y (zEll B.L (σ + 1) B.ζ ⬝ b)`. Introduce `γ hγ b`. Take `⟨δ, hδ⟩` from `ratMx_mul (zlL_mem_ratMx B) hγ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hy.1 δ (zEll B.L (σ + 1) B.ζ ⬝ b)`. Rewrite `e1` using `[show ratW B.L S δ = zEll B.L (σ + 1) B.ζ ⬝ γ from hδ]`. Rewrite using `[Matrix.mul_add, e1]`. Establish `hunit : ∀ a, ψ a * star (ψ a) = 1` using `fun a => by`. Rewrite using `[← starRingEnd_apply, RCLike.mul_conj, hψn]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `set s := vT.𝓕 ×ˢ vL.𝓕 with hs`. Use `set G : Mx D (σ + 1) S.rank → ℂ := fun b => f (xLast B.d (vecB B.o B.ζ) ⬝ b) * star (y (zEll B.L (σ + 1) B.ζ ⬝ b)) with hG`. Establish `hGper : ∀ γ ∈ ratMx D (σ + 1) S.rank, ∀ b, G (γ + b) = G b`. Introduce `γ hγ b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [hG]`. Rewrite using `[hfx γ hγ b, hyz γ hγ b, symplOH_x0L, star_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hx0c : Continuous fun b : Mx D (σ + 1) S.rank => xLast B.d (vecB B.o B.ζ) ⬝ b` using `continuous_const.matrix_mul continuous_id`. Establish `hzlc : Continuous fun b : Mx D (σ + 1) S.rank => zEll B.L (σ + 1) B.ζ ⬝ b` using `continuous_const.matrix_mul continuous_id`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hGc : Continuous G` using `(hf.2.comp hx0c).mul (continuous_star.comp (hy.2.comp hzlc))`. Use `set H : Mx D σ S.rank × Mx D B.L.rank S.rank → ℂ := fun p => f (B.d.incX S p.1 + B.d.inc0 S ((B.o.resT S).symm (0, p.2))) * star (y p.2) with hH`. Establish `hGH : ∀ p, G (e.symm p) = H p`. Introduce `p`. Simplify using `only [hG, hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx (e.symm p), AddEquiv.apply_symm_apply]`. Use `congr 3`. Conclude with `congrArg Prod.snd (e.apply_symm_apply p)`. Establish `hmix : ∀ w₀, B.d.mixT S ψ vT.μ vT.𝓕 f 0 w₀ = ∫ ξ in vT.𝓕, f (B.d.incX S ξ + B.d.inc0 S w₀) ∂vT.μ`. Introduce `w₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∫ ξ in vT.𝓕, heisO ψ S B.V (B.d.incX S ξ) (heisO ψ S B.V (B.d.incAdj S 0) (heisO ψ S B.V (B.d.inc0 S w₀) f)) 0 ∂vT.μ = _`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Rewrite using `[HypDec.integrandT_eq, map_zero, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`. Establish `hGi : IntegrableOn G (e ⁻¹' s) (P.map e.symm)` using `covolOne_integrableOn hcov G hGc hGper`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hHi : Integrable H ((vT.μ.restrict vT.𝓕).prod (vL.μ.restrict vL.𝓕))`. Rewrite using `[Measure.prod_restrict]`. Establish `h2` using `(hmp.integrableOn_comp_preimage me.measurableEmbedding (f := H) (s := s)).1 (by`. Establish `: H ∘ me = G` using `funext fun b => by`. Rewrite using `[Function.comp_apply, ← hGH]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg G (e.symm_apply_apply b)`. Rewrite using `[this]`. Conclude with `hGi)`. Conclude with `h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hmp.setIntegral_preimage_emb me.measurableEmbedding H s`. Rewrite using `[← h3]`. Use `congrArg (fun F : Mx D (σ + 1) S.rank → ℂ => ∫ b in e ⁻¹' s, F b ∂(P.map e.symm)) (funext fun b => ?_)` and prove the remaining obligations. Rewrite using `[← hGH]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg G (e.symm_apply_apply b)).symm`. Use `_ = ∫ v in vL.𝓕, ∫ ξ in vT.𝓕, H (ξ, v) ∂vT.μ ∂vL.μ := by`. Rewrite using `[hP, ← Measure.prod_restrict]`. Conclude with `integral_prod_symm H hHi`. Use `_ = _ := by`.
-
-Express the relevant statement in the definitionally equal form `_ = ∫ v in vL.𝓕, B.d.mixT S ψ vT.μ vT.𝓕 f 0 ((B.o.resT S).symm (0, v)) * star (y v) ∂vL.μ`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[hmix, ← integral_mul_const]`. Establish `hψe : ∀ a, ‖ψ a‖ₑ = 1` using `fun a => by rw [← ofReal_norm_eq_enorm, hψn, ENNReal.ofReal_one] set K : Mx D σ S.rank × Mx D B.L.rank S.rank → ENNReal := fun p => ‖f (B.d.incX S p.1 + B.d.inc0 S ((B.o.resT S).symm (0, p.2)))‖ₑ with hK`.
-
-Establish `hKc : Continuous K`. Use `(hf.2.comp ?_).enorm` and prove the remaining obligations. Simplify using `only [HypDec.incX_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, OrthDec.resT_symm_apply]`. Conclude with `(continuous_const.matrix_mul continuous_fst).add (continuous_const.matrix_mul (continuous_const.add (continuous_const.matrix_mul continuous_snd)))`. Establish `hKe : ∀ b, K (e b) = ‖f (xLast B.d (vecB B.o B.ζ) ⬝ b)‖ₑ` using `fun b => by rw [hK, hx b]`.
-
-Establish `hper' : ∀ (γ : ratMx D (σ + 1) S.rank) (b : Mx D (σ + 1) S.rank), ‖f (xLast B.d (vecB B.o B.ζ) ⬝ (γ +ᵥ b))‖ₑ = ‖f (xLast B.d (vecB B.o B.ζ) ⬝ b)‖ₑ`. Introduce `γ b`. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, hfx γ γ.2 b, enorm_mul, hψe, one_mul]`. Establish `hF'' : IsAddFundamentalDomain (ratMx D (σ + 1) S.rank) (e ⁻¹' s) vB.μ` using `hμeq ▸ hF'`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `lintegral_mono fun v => ?_` and prove the remaining obligations. Rewrite using `[hmix]`. Conclude with `enorm_integral_le_lintegral_enorm _`. Use `_ = ∫⁻ p in s, K p ∂P := by`. Rewrite using `[hP, ← Measure.prod_restrict, lintegral_prod_symm _ hKc.measurable.aemeasurable]`.
-
-Use `_ = ∫⁻ b in e ⁻¹' s, K (e b) ∂(P.map e.symm) := (hmp'.setLIntegral_comp_preimage_emb me.measurableEmbedding K s).symm`. Use `_ = ∫⁻ b in e ⁻¹' s, ‖f (xLast B.d (vecB B.o B.ζ) ⬝ b)‖ₑ ∂vB.μ := by`. Rewrite using `[hμeq]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
-
-Conclude with `hKe b`. Use `_ = ∫⁻ b in vB.𝓕, ‖f (xLast B.d (vecB B.o B.ζ) ⬝ b)‖ₑ ∂vB.μ := hF''.setLIntegral_eq vB.covol.2.1 _ hper'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem heis_baseL : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : HSp D) (B : BesL D σ) (vB : VolM D (σ + 1) S.rank) (vT : VolM D σ S.rank) (vL : VolM D B.L.rank S.rank) (f : WO S B.V → ℂ) (y : WO S B.L → ℂ), GlobalTheory.Unf.FB.Quasi ψ S B.V f → GlobalTheory.Unf.FB.Quasi ψ S B.L y → (∫ b in vB.𝓕, f (xLast B.d (vecB B.o B.ζ) ⬝ b) * star (y (zEll B.L (σ + 1) B.ζ ⬝ b)) ∂vB.μ = contractT B.o S vL.μ vL.𝓕 (B.d.mixT S ψ vT.μ vT.𝓕 f 0) y 0) ∧ ∫⁻ v in vL.𝓕, ‖B.d.mixT S ψ vT.μ vT.𝓕 f 0 ((B.o.resT S).symm (0, v))‖ₑ ∂vL.μ ≤ ∫⁻ b in vB.𝓕, ‖f (xLast B.d (vecB B.o B.ζ) ⬝ b)‖ₑ ∂vB.μ := by
   intro D ψ hψ σ S B vB vT vL f y hf hy

@@ -4,27 +4,21 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `f : NumberField.RingOfIntegers F →ₐ[ℤ] B` to `((algebraMap F B).comp (algebraMap (NumberField.RingOfIntegers F) F)).toIntAlgHom`. Set `g : OB →ₐ[ℤ] B` to `OB.subtype.toIntAlgHom`. Establish `hc : ∀ a b, Commute (f a) (g b)` using `fun a b => Algebra.commutes _ _`. Set `L` to `Algebra.TensorProduct.lift f g hc`. Establish `hL : ∀ a b, L (a ⊗ₜ b) = f a * g b` using `fun a b => Algebra.TensorProduct.lift_tmul f g hc a b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (NumberField.RingOfIntegers F)).FG)`. Use `choose m hm0 hm using fun a : NumberField.RingOfIntegers F => hsat (f a)`. Set `N : ℕ` to `∏ a ∈ s, m a`. Establish `hN0 : 0 < N` using `Finset.prod_pos fun a _ => hm0 a`. Establish `hnat : ∀ (k : ℕ) (y : B), y ∈ OB → (k : B) * y ∈ OB` using `fun k y hy => OB.mul_mem (natCast_mem OB k) hy`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : Submodule ℤ (NumberField.RingOfIntegers F)` to `{ carrier := {a | (N : B) * f a ∈ OB} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_add, mul_add] at *`. Conclude with `OB.add_mem ha hb`. Use the proof step `zero_mem' := by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `n a ha`. Simplify using `only [Set.mem_setOf_eq, map_zsmul, mul_smul_comm] at *`. Conclude with `OB.zsmul_mem ha n }`. Establish `hsP : (s : Set (NumberField.RingOfIntegers F)) ⊆ SetLike.coe P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m ha`. Use `show (N : B) * f a ∈ OB`. Establish `: (N : B) = (k : B) * (m a : B)`. Rewrite using `[show N = m a * k from hk, Nat.cast_mul, (Nat.cast_commute _ _).eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, mul_assoc]`. Conclude with `hnat k _ (hm a)`. Establish `hP : ∀ a, (N : B) * f a ∈ OB`. Introduce `a`. Establish `: a ∈ Submodule.span ℤ (s : Set _)` using `by rw [hs]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.span_le.mpr hsP) this`. Use `⟨L.toRingHom.range, ?_, ?_, ?_, N, hN0, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Use `⟨1 ⊗ₜ ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Use `show L _ = b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hL]`. Simplify using `[f, g]`. Introduce `a`. Use `⟨a ⊗ₜ 1, ?_⟩` and prove the remaining obligations. Use `show L _ = _`.
-
-Rewrite using `[hL]`. Simplify using `[f, g]`. Use `haveI : Module.Finite ℤ OB := hfin haveI : Module.Finite ℤ (NumberField.RingOfIntegers F ⊗[ℤ] OB) := Module.Finite.tensorProduct _ _ _`. Conclude with `Module.Finite.of_surjective (L.toRingHom.rangeRestrict.toIntAlgHom.toLinearMap) (RingHom.rangeRestrict_surjective _)`. Introduce and unpack `x ⟨t, rfl⟩ show (N : B) * L t ∈ OB`.
-
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[hL, ← mul_assoc]`. Conclude with `OB.mul_mem (hP a) b.2`.
-
-Consider the case `add t u ht hu`. Rewrite using `[map_add, mul_add]`. Conclude with `OB.add_mem ht hu`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_order_integers_mul_finite_index (F B : Type) [Field F] [NumberField F] [Ring B]
     [Algebra F B] [Algebra ℚ B] [IsScalarTower ℚ F B] (OB : Subring B) (hfin : Module.Finite ℤ OB)

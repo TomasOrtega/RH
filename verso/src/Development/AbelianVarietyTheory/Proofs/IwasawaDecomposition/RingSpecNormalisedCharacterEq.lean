@@ -24,7 +24,7 @@ structure CopyAll (D D' : D7) (ι : D.what₂.LL →+* D'.what₂.LL) (e : ↥D'
   pl : HEq D.naut.plGw D'.naut.plGw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CopyTw.refl D, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem CopyAll.refl (D : D7) : CopyAll D D (RingHom.id _) (RingEquiv.refl _) :=
   ⟨CopyTw.refl D, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩
@@ -36,7 +36,7 @@ structure SameFrame {D D' : D7} (cf : CharFrame D) (cf' : CharFrame D') : Prop w
   del' : HEq cf.del' cf'.del'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameFrame.refl {D : D7} (cf : CharFrame D) : SameFrame cf cf := ⟨.rfl, .rfl, .rfl, .rfl⟩
 
@@ -101,7 +101,7 @@ set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
 /- English proof (translation)
-Use `copy_cases h D D'`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem sigSpan_copy {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyAll D D' ι e)
     (hs : D.ntw.SigSpan) : D'.ntw.SigSpan := by

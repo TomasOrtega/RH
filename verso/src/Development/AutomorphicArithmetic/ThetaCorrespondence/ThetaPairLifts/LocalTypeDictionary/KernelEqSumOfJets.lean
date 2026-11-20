@@ -25,13 +25,13 @@ variable (hcS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hcT : ∀ τ, IsCa
 include hcS hcT hW
 end Gen
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t x hx h hh`. Establish `hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' t)` using `hX.is.weil' t`. Establish `hv : IsVacO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.Λ X.rW.Λ X.vac'` using `hX.is.isVac'`. Establish `hθ : IsInfFam W.θ` using `hv.2.inf`. Establish `hS : IsSelfDualC A' X.rA'.Λ` using `hX.is.rigA'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsSelfDualC WW X.rW.Λ` using `hX.is.rigW.1`. Establish `hf` using `GlobalTheory.T.finiteDatum_isAlgebraicCombination_definiteBottom hX t`. Take `⟨k, c, w, hc, hw, e⟩` from `om_alg hv hS hT hW (om_vac_algComb hv hS hT (fun τ => (hX.is.rigA'.2.2 τ).1) (fun τ => (hX.is.rigW.2.2 τ).1) hW hx hh) hf`. Use `⟨k, c, w, hc, hw, fun l => GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS.1 hT.1 _ (hw l), fun P => ?_⟩` and prove the remaining obligations. Establish `e1` using `(GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ A' WW _ _ (X.ω' t) hW hθ X.rA'.s X.rA'.s X.rA'.B X.rA'.B X.rW.s X.rW.s X.rW.B X.rW.B x h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hx, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.Finit …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ A' WW hv.1 hθ X.rA'.s X.rW.s X.rA'.B X.rW.B X.vac' hv.2.theta k c w hw P).1`. Establish `ft` using `(GlobalTheory.FinTranslate.finite_translate D W.ψ W.θ A' WW hv.1 hθ X.vac' hv.2.theta).2`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker' thetaKO`. Rewrite using `[e1, e, ← e2, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(ft (w l) (hw l)).2, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_eq_sum_of_jets : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X →

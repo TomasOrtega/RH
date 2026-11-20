@@ -22,7 +22,7 @@ namespace ChowFormHeightComparison₂.CF.V
 open GroundTheory.Heights₂.Heights.ObjectsChow (ChowDegreeSection.Statement ChowDegreeClosedPoint.Statement)
 
 /- English proof (translation)
-The claim follows from `topologicalKrullDim_add_one_le isClosed_closure isClosed_closure fun x hx => ⟨z', subset_closure rfl, fun h' => hne (h.antisymm (specializes_iff_mem_closure.2 h')).eq.symm, h.trans (specializes_iff_mem_closure.2 hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem dim_closure_add_one_le {Z : Scheme.{0}} {z z' : Z} (h : z' ⤳ z) (hne : z ≠ z') :
     topologicalKrullDim (closure {z} : Set Z) + 1 ≤ topologicalKrullDim (closure {z'} : Set Z) :=
@@ -31,7 +31,7 @@ theorem dim_closure_add_one_le {Z : Scheme.{0}} {z z' : Z} (h : z' ⤳ z) (hne :
       h.trans (specializes_iff_mem_closure.2 hx)⟩
 
 /- English proof (translation)
-Establish `h₁` using `(genericPoint_spec Y).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding h₁.def.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_closure_eq {Y Z : Scheme.{0}} [IsIntegral Y] (i : Y ⟶ Z) [IsClosedImmersion i] :
     topologicalKrullDim (closure {i (genericPoint Y)} : Set Z) = topologicalKrullDim Y := by
@@ -40,7 +40,7 @@ theorem dim_closure_eq {Y Z : Scheme.{0}} [IsIntegral Y] (i : Y ⟶ Z) [IsClosed
   exact topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding h₁.def.symm
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `LB.mem_of_cover hB z`. Take `⟨q⟩` from `CutDegree.nonempty_stalk_cut_equiv (GlobalTheory.structureModule Z) hB s i hi`. Rewrite using `[mult_divOfSec (CartierDiv.coheight_eq_one_of_mult_ne_zero hz) hi, ← q.length_eq]`. Use `congrArg (fun n : ℕ∞ => (n.toNat : ℤ)) (Submodule.Quotient.equiv _ _ (QCoh.structureModuleStalkEquiv z) ?_).length_eq` and prove the remaining obligations. Rewrite using `[Submodule.map_pointwise_smul, Submodule.map_top, LinearEquiv.range, ← Submodule.ideal_span_singleton_smul, smul_eq_mul, Ideal.mul_top]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_cut {Z : Scheme.{0}} [IsIntegral Z] [IsLocallyNoetherian Z] {B : LB Z} (hB : B.IsLB) (s : B.Sec)
     (hs : genericPoint Z ∈ nonzeroLocus s) {z : Z} (hz : (divOfSec hB s hs).mult z ≠ 0) :
@@ -56,11 +56,11 @@ theorem length_cut {Z : Scheme.{0}} [IsIntegral Z] [IsLocallyNoetherian Z] {B : 
 variable {κ : Type} [Field κ] {m : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hX : ∀ j, X j ∈ W` using `fun j => by_contra fun hj => h ⟨j, hj⟩`. Establish `key (g : MvPolynomial (Fin m) κ) : g - C (constantCoeff g) ∈ W`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb`. Use `W.add_mem ha hb` as an intermediate fact. Rewrite `this` using `[sub_add_sub_comm, ← map_add, ← map_add]`. Then use the resulting hypothesis. Consider the case `mul_X a j _ => simpa using W.mul_mem_left a (hX j)`. Establish `e : W = RingHom.ker (constantCoeff : MvPolynomial (Fin m) κ →+* κ)` using `le_antisymm hW fun g hg => by`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact.
 
-Use `key g` as an intermediate fact. Rewrite `this` using `[(RingHom.mem_ker).1 hg, map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `: W.IsMaximal` using `e ▸ RingHom.ker_isMaximal_of_surjective _ fun a => ⟨C a, by simp⟩`. Conclude with `hd (ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient W).1 this))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRelevant_of_dim {W : Ideal (MvPolynomial (Fin m) κ)}
     (hW : W ≤ RingHom.ker (constantCoeff : MvPolynomial (Fin m) κ →+* κ))
@@ -81,41 +81,39 @@ theorem isRelevant_of_dim {W : Ideal (MvPolynomial (Fin m) κ)}
   exact hd (ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient W).1 this))
 
 /- English proof (translation)
-Establish `hC` using `GroundTheory.Heights₂.Heights.ConeDimComponent.proof_closed`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `Z _ _ B s hp hE hd`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, b, c, d⟩` from `h1 κ Z _ B m s hE`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hE.cover.ge (Opens.mem_top (genericPoint Z)))`. Establish `hX` using `(d _ _ (isComb_single _ s k) _).1 hk`. Rewrite `hX` using `[linForm_single]`. Establish `h0 : topologicalKrullDim Z ≤ 0` using `ENat.WithBot.add_le_add_one_right_iff.1 ((dim_add_one_le h1 hE).trans (hd.trans (by simp)).le)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nonempty (IrreducibleCloseds Z)` using `⟨⟨Set.univ, IrreducibleSpace.isIrreducible_univ Z, isClosed_univ⟩⟩`. Use `⟨le_antisymm h0 Order.krullDim_nonneg, ?_⟩` and prove the remaining obligations. Rewrite using `[hP κ m _ k (a _) hd hX, finrank_eq_of_dim_zero hE h0 hk, topSelf_def, interNum_of_isEmpty, chi_eq_hdim_zero_of_suppDim_le_zero κ (QCoh.suppDim_structureModule.trans_le h0), ← ((coh.zeroUnitEquiv Z).restrictScalars κ).finrank_eq]`. Both sides reduce to the same expression. Consider the case `succ e ih`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `Z _ _ B s hp hE hd`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Take `⟨a, b, c, d⟩` from `h1 κ Z _ B m s hE`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hE.cover.ge (Opens.mem_top (genericPoint Z)))`. Establish `hu` using `isComb_single (strHom κ Z) s k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX` using `(d _ _ hu _).1 hk`. Take `⟨d₁, d₂⟩` from `h3 κ Z _ B m s hE _ _ hu hk`. Establish `hsec` using `hS κ m e _ _ (a _) hd hX`. Establish `hcomp` using `fun W => hC κ m (e + 1) _ W _ (a _) hd hX`. Generalize the expression as in `(Pi.single k 1 : Fin m → κ) = u at *`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `set P := ptIdeal (strHom κ Z) s with hPdef`. Use `set J := P (genericPoint Z) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm u} with hJ`. Set `T` to `(divOfSec hE.isLB (s k) hk).finite_support_mult.toFinset`. Establish `hT (z : Z) : z ∈ T ↔ (divOfSec hE.isLB (s k) hk).mult z ≠ 0` using `Set.Finite.mem_toFinset _`. Establish `inj {z z' : Z} (h : P z = P z') : z = z'` using `(((b _ _).2 h.le).antisymm ((b _ _).2 h.ge)).eq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hex (W) (hW : W ∈ relComps J) : ∃ z ∈ T, P z = W`. Take `⟨z, rfl⟩` from `c W (hcomp W hW).1 (le_sup_left.trans hW.1.1.2)`. Conclude with `⟨z, (hT z).2 ((d₁ z).2 hW), rfl⟩`. Establish `key : ∀ (Y : Scheme.{0}) (i : Y ⟶ Z) [IsClosedImmersion i] [IsIntegral Y] [Algebra κ Γ(Y, ⊤)], (∀ r : κ, i.appTop (algebraMap κ Γ(Z, ⊤) r) = algebraMap κ Γ(Y, ⊤) r) → i (genericPoint Y) ∈ T → topologicalKrullDim Y = e ∧ topSelfIntersection κ (B.pull i) e = chowDegree (P (i (gener …`. Introduce `Y i _ _ _ hi hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨E', pt', -⟩` from `h2 κ Z Y _ B m s i hE`. Establish `hp'` using `ProjSpace.isProjOver_comp_of_isClosedImmersion i hp`. Rewrite `E'`, `pt'`, `hp'` using `[comp_strHom hi]`. Use `ih Y _ _ hp' E' (by rw [pt']; exact (hcomp _ ((d₁ _).1 ((hT _).1 hz))).2)` as an intermediate fact. Rewrite `this` using `[pt']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTd : ∀ z ∈ T, topologicalKrullDim (closure {z} : Set Z) = e` using `fun z hz => by`. Take `⟨Y, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Use `letI := algebraΓAlong κ i`. Conclude with `(dim_closure_eq i).trans (key Y i (appTop_algebraMap_along κ i) hz).1`. Establish `hmem (z : Z) (hz : z ∉ nonzeroLocus (s k)) : J ≤ P z` using `sup_le ((b _ _).1 (genericPoint_specializes z)) ((Ideal.span_singleton_le_iff_mem _).2 (by_contra fun h => hz ((d _ _ hu z).2 h)))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hSd : ∀ z ∈ ((nonzeroLocus (s k) : Set Z)ᶜ), z ∉ T → topologicalKrullDim (closure {z} : Set Z) < e`. Introduce `z hz hzT`. Use `(a z).isPrime` as an intermediate fact. Take `⟨W, hW, hle⟩` from `Ideal.exists_minimalPrimes_le (hmem z hz)`. Take `⟨j, hj⟩` from `(a z).isRelevant`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z', hz', rfl⟩` from `hex W ⟨hW, j, fun h => hj (hle h)⟩`. Establish `h4` using `dim_closure_add_one_le ((b _ _).2 hle) fun h => hzT (h ▸ hz')`. Rewrite `h4` using `[hTd z' hz']`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : e + 1 ≤ e` using `by exact_mod_cast (add_le_add_left hc 1).trans h4`. Use linear arithmetic over natural numbers and integers. Use `⟨le_antisymm (ENat.WithBot.add_le_add_one_right_iff.1 ((dim_add_one_le h1 hE).trans (hd.trans (Nat.cast_succ _)).le)) ?_, ?_⟩` and prove the remaining obligations. Establish `hm : J ≤ RingHom.ker (constantCoeff : MvPolynomial (Fin m) κ →+* κ)` using `sup_le (le_ker_constantCoeff (a _)) ((Ideal.span_singleton_le_iff_mem _).2 (by`. Simplify using `[RingHom.mem_ker, GroundTheory.Heights₂.Heights.linForm]))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `RingHom.ker_isPrime (constantCoeff : MvPolynomial (Fin m) κ →+* κ)` as an intermediate fact. Use `(a (genericPoint Z)).isPrime` as an intermediate fact. Take `⟨W, hW, hle⟩` from `Ideal.exists_minimalPrimes_le hm`. Establish `h4` using `ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup κ hX hW`. Take `⟨z, hz, rfl⟩` from `hex W ⟨hW, isRelevant_of_dim hle fun h0 => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h0, hd]`. Establish `h5 : 0 + 1 = e + 1 + 1` using `by exact_mod_cast h4`. Use the proof step `omega⟩`. Establish `h5` using `dim_closure_add_one_le (genericPoint_specializes z) fun h => hX (h ▸ hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Rewrite `h5` using `[hTd z hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(Nat.cast_succ e).le.trans (h5.trans (topologicalKrullDim_subspace_le Z _))`. Establish `hf` using `algebraMap_eq_strHom κ Z`. Use `(mono_cutHom_structureModule_iff hE.isLB (s k)).2 hk` as an intermediate fact. Establish `e₁ : (fun _ : Fin (e + 1) => B) = (Fin.cons B (fun _ => B) : Fin (e + 1) → LB Z)`. Use function extensionality and compare the values at `(Fin.cases rfl fun _ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂` using `(interNum_eq_sum hp (P := fun _ : Fin e => B) (fun _ => hE.isLB) _ T (fun z => chowDegree (P z) (e + 1)) hTd hSd (fun Y i _ _ _ hi hz => (key Y i hi hz).2) (cut (GlobalTheory.structureModule Z) hE.isLB (s k)) inferInstance (by rw [support_cut]; exact fun x hx => hx.2)).2`. Rewrite using `[topSelf_def, e₁, interNum_cons_eq_interNum_cut hE.isLB (s k) (fun _ => hE.isLB) (finiteCohTwists_of_isProjOver hf _ hp), e₂]`. Use `show _ = ((chowDegree _ (e + 2) : ℕ) : ℤ)`. Rewrite using `[hsec, Finsupp.sum, Nat.cast_sum]`. Establish `hval (z : Z) (hz : z ∈ T) : ((divCycle (P (genericPoint Z)) u (P z) : ℕ) : ℤ) = (divOfSec hE.isLB (s k) hk).mult z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[d₂ z ((hT z).1 hz), divCycle, GroundTheory.Heights₂.Heights.fundCycle, Finsupp.onFinset_apply, if_pos ((d₁ z).1 ((hT z).1 hz))]`. Use `Finset.sum_bij (fun z _ => P z) (fun z hz => ?_) (fun _ _ _ _ h => inj h) (fun W hW => ?_) fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff, ← Nat.cast_ne_zero (R := ℤ), hval z hz]`. Conclude with `(hT z).1 hz`. Take `⟨z, hz, rfl⟩` from `hex W (by`.
-
-Assume the negation of the conclusion as `h`. Rewrite `hW` using `[Finsupp.mem_support_iff, divCycle, GroundTheory.Heights₂.Heights.fundCycle, Finsupp.onFinset_apply, if_neg h]`. Conclude with `hW rfl)`. Conclude with `⟨z, hz, rfl⟩`. Rewrite using `[length_cut hE.isLB (s k) hk ((hT z).1 hz), Nat.cast_mul, hval z hz]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_case (h1 : StPts) (h2 : StPull) (h3 : StDiv) (hS : ChowDegreeSection.Statement)
     (hP : ChowDegreeClosedPoint.Statement) [PerfectField κ] (e : ℕ) :

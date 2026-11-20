@@ -14,19 +14,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatXi
 
 /- English proof (translation)
-Establish `hcoe : embOf s (H.rt : E) = s H.rt` using `IsFractionRing.lift_algebraMap (intEmb_injective s) H.rt`. Establish `hw : (s H.rt) ^ 2 = -(H.d : ℂ)`. Establish `h` using `congrArg s H.rt_sq`. Simplify `h` using `[map_pow, map_neg, map_natCast]`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hr0 : 0 < Real.sqrt H.d` using `Real.sqrt_pos.2 hd`. Establish `hrC : ((Real.sqrt H.d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr0.ne'`. Establish `hmC : (m : ℂ) ≠ 0` using `by exact_mod_cast hm`. Establish `hr2 : ((Real.sqrt H.d : ℝ) : ℂ) ^ 2 = (H.d : ℂ)`. Establish `h` using `Real.sq_sqrt hd.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hfac : (s H.rt - Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)) * (s H.rt + Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)) = 0`. Establish `: (s H.rt - Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)) * (s H.rt + Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)) = (s H.rt) ^ 2 - Complex.I ^ 2 * ((Real.sqrt H.d : ℝ) : ℂ) ^ 2` using `by ring`. Rewrite using `[this, hw, hr2, Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hval : embOf s (((m : E) * (H.rt : E))⁻¹) = ((m : ℂ) * s H.rt)⁻¹`. Rewrite using `[map_inv₀, map_mul, map_natCast, hcoe]`. Break down `mul_eq_zero.1 hfac with h | h` into its components or cases. Use `⟨-1, by norm_num, ?_⟩` and prove the remaining obligations. Establish `hw' : s H.rt = Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)` using `sub_eq_zero.1 h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, hw']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`. Evaluate the numerical expressions.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, by norm_num, ?_⟩` and prove the remaining obligations. Establish `hw' : s H.rt = -(Complex.I * ((Real.sqrt H.d : ℝ) : ℂ))` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[hval, hw']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.I_sq]`.
+A detailed English derivation is pending.
 -/
 theorem conj_inv_mul_rt (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (s : 𝓞 E →+* ℂ) (m : ℕ)
     (hm : m ≠ 0) : ∃ ε : ℝ, ε ^ 2 = 1 ∧ embOf s (((m : E) * (H.rt : E))⁻¹) =

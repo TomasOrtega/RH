@@ -23,7 +23,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `(Scheme.IdealSheafData.map_gc f).l_iSup₂`.
+A detailed English derivation is pending.
 -/
 private theorem comap_biSup_finset_fin {X Y : Scheme.{u}} (f : X ⟶ Y) {n : ℕ}
     (s : Finset (Fin n)) (F : Fin n → Y.IdealSheafData) :
@@ -31,7 +31,7 @@ private theorem comap_biSup_finset_fin {X Y : Scheme.{u}} (f : X ⟶ Y) {n : ℕ
   (Scheme.IdealSheafData.map_gc f).l_iSup₂
 
 /- English proof (translation)
-Establish `h : (T.pullbackOverField Y k' q g).boundary.get (pullbackOverFieldIndex T Y k' q g j) = (T.boundary.map fun D => D.comap g).get (Fin.cast (MarkedIdealWithBoundary.pullbackOverField_boundary_length T Y k' q g).symm j)` using `rfl`. Rewrite using `[h]`. Simplify using `only [List.get_eq_getElem, List.getElem_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem pullbackOverField_boundary_get (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -46,9 +46,9 @@ private theorem pullbackOverField_boundary_get (T : MarkedIdealWithBoundary.{u})
   rfl
 
 /- English proof (translation)
-Rewrite using `[intersectionIdeal_eq_iSup, intersectionIdeal_eq_iSup, comap_biSup_finset_fin]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `iSup_le fun j' => iSup_le fun hj' => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.mp hj'`. Rewrite using `[pullbackOverField_boundary_get]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iSup_of_le j (le_iSup_of_le hj le_rfl)`. Use `iSup_le fun j => iSup_le fun hj => ?_` and prove the remaining obligations. Rewrite using `[← pullbackOverField_boundary_get T Y k' q g j]`. Conclude with `le_iSup_of_le (pullbackOverFieldIndex T Y k' q g j) (le_iSup_of_le (Finset.mem_image_of_mem _ hj) le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -67,7 +67,7 @@ theorem intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y
       (le_iSup_of_le (Finset.mem_image_of_mem _ hj) le_rfl)
 
 /- English proof (translation)
-Establish `h : intersectionIdeal (T.pullbackOverField Y k' q g).boundary (J.image (pullbackOverFieldIndex T Y k' q g)) = (intersectionIdeal T.boundary J).comap g` using `intersectionIdeal_pullbackOverField T Y k' q g J`. Establish `h2 : (↑((intersectionIdeal T.boundary J).comap g).support : Set ↥Y) = ⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)` using `support_comap g (intersectionIdeal T.boundary J)`. Rewrite using `[h]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -85,7 +85,7 @@ theorem support_intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary
   exact h2
 
 /- English proof (translation)
-Establish `h1` using `mem_intersectionComponents_iff (T.pullbackOverField Y k' q g).boundary (J.image (pullbackOverFieldIndex T Y k' q g)) C'`. Rewrite `h1` using `[support_intersectionIdeal_pullbackOverField T Y k' q g J]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -98,7 +98,7 @@ theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBou
   exact h1
 
 /- English proof (translation)
-Take `⟨hirr, hsub, hmax⟩` from `h`. Establish `hcl : closure C = C` using `hmax (closure C) hirr.closure subset_closure (hS.closure_subset_iff.mpr hsub)`. Establish `hCclosed : IsClosed C` using `closure_eq_iff_isClosed.mp hcl`. Conclude with `QuasiSober.sober hirr hCclosed`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsIrreducibleComponentOf.exists_isGenericPoint {Y : Scheme.{u}} {C S : Set ↥Y}
     (h : IsIrreducibleComponentOf C S) (hS : IsClosed S) :
@@ -110,11 +110,11 @@ theorem IsIrreducibleComponentOf.exists_isGenericPoint {Y : Scheme.{u}} {C S : S
   exact QuasiSober.sober hirr hCclosed
 
 /- English proof (translation)
-Introduce `u v hu hv hxne hyne`. Take `⟨x, hxU, hxu⟩` from `hxne`. Take `⟨y, hyU, hyv⟩` from `hyne`. Take `⟨t₁, ht₁c, hxt₁⟩` from `Set.mem_sUnion.mp hxU`. Take `⟨t₂, ht₂c, hyt₂⟩` from `Set.mem_sUnion.mp hyU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `eq_or_ne t₁ t₂ with rfl | hne` into its components or cases. Take `⟨z, hzt, hzuv⟩` from `hirr t₁ ht₁c u v hu hv ⟨x, hxt₁, hxu⟩ ⟨y, hyt₂, hyv⟩`. Conclude with `⟨z, Set.mem_sUnion.mpr ⟨t₁, ht₁c, hzt⟩, hzuv⟩`. Break down `hcc ht₁c ht₂c hne with h | h` into its components or cases. Take `⟨z, hzt, hzuv⟩` from `hirr t₂ ht₂c u v hu hv ⟨x, h hxt₁, hxu⟩ ⟨y, hyt₂, hyv⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, Set.mem_sUnion.mpr ⟨t₂, ht₂c, hzt⟩, hzuv⟩`. Take `⟨z, hzt, hzuv⟩` from `hirr t₁ ht₁c u v hu hv ⟨x, hxt₁, hxu⟩ ⟨y, h hyt₂, hyv⟩`. Conclude with `⟨z, Set.mem_sUnion.mpr ⟨t₁, ht₁c, hzt⟩, hzuv⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isPreirreducible_sUnion_of_isChain {α : Type u} [TopologicalSpace α]
     (c : Set (Set α)) (hcc : IsChain (· ⊆ ·) c)
@@ -134,11 +134,11 @@ private theorem isPreirreducible_sUnion_of_isChain {α : Type u} [TopologicalSpa
       exact ⟨z, Set.mem_sUnion.mpr ⟨t₁, ht₁c, hzt⟩, hzuv⟩
 
 /- English proof (translation)
-Establish `hchain : ∀ c ⊆ {C : Set ↥Y | IsIrreducible C ∧ C ⊆ S}, IsChain (· ⊆ ·) c → c.Nonempty → ∃ ub ∈ {C : Set ↥Y | IsIrreducible C ∧ C ⊆ S}, ∀ s ∈ c, s ⊆ ub`. Introduce `c hcS hcc hcn`. Take `⟨t, htc⟩` from `hcn`. Establish `hne : (⋃₀ c).Nonempty`. Take `⟨x, hx⟩` from `(hcS htc).1.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, Set.mem_sUnion.mpr ⟨t, htc, hx⟩⟩`. Use `⟨⋃₀ c, ⟨⟨hne, isPreirreducible_sUnion_of_isChain c hcc fun s hs => (hcS hs).1.2⟩, Set.sUnion_subset fun s hs => (hcS hs).2⟩, fun s hs => Set.subset_sUnion_of_mem hs⟩` and prove the remaining obligations. Take `⟨C, hAC, hmax⟩` from `zorn_subset_nonempty {C : Set ↥Y | IsIrreducible C ∧ C ⊆ S} hchain A ⟨hA, hAS⟩`. Establish `hmem : IsIrreducible C ∧ C ⊆ S` using `hmax.1`. Use `⟨C, ⟨hmem.1, hmem.2, ?_⟩, hAC⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `C' hC' hCle hC'S`. Conclude with `subset_antisymm (hmax.2 ⟨hC', hC'S⟩ hCle) hCle`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isIrreducibleComponentOf {Y : Scheme.{u}} (S A : Set ↥Y) (hA : IsIrreducible A)
     (hAS : A ⊆ S) :
@@ -161,27 +161,25 @@ theorem exists_isIrreducibleComponentOf {Y : Scheme.{u}} (S A : Set ↥Y) (hA : 
   exact subset_antisymm (hmax.2 ⟨hC', hC'S⟩ hCle) hCle
 
 /- English proof (translation)
-Establish `hC'unf : IsIrreducible C' ∧ C' ⊆ ⇑g ⁻¹' S ∧ ∀ D : Set ↥Y, IsIrreducible D → C' ⊆ D → D ⊆ ⇑g ⁻¹' S → D = C'` using `hC'`. Take `⟨-, hsub, hmax⟩` from `hC'unf`. Establish `hξ'eq : closure ({ξ'} : Set ↥Y) = C'` using `hξ'`. Establish `hcont : Continuous (fun y : ↥Y => g y)` using `g.continuous`. Establish `himg : ∀ z w : ↥Y, z ∈ closure ({w} : Set ↥Y) → g z ∈ closure ({g w} : Set ↥X)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z w hz`. Establish `h2 : (fun y : ↥Y => g y) '' closure ({w} : Set ↥Y) ⊆ closure ((fun y : ↥Y => g y) '' ({w} : Set ↥Y))` using `image_closure_subset_closure_image hcont`. Establish `h3 : g z ∈ closure ((fun y : ↥Y => g y) '' ({w} : Set ↥Y))` using `h2 ⟨z, hz, rfl⟩`. Rewrite `h3` using `[Set.image_singleton]`. Then use the resulting hypothesis. Establish `hξ'mem : ξ' ∈ C'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← hξ'eq]`. Conclude with `subset_closure rfl`. Establish `hgS : g ξ' ∈ S` using `hsub hξ'mem`. Establish `hDsub : closure ({g ξ'} : Set ↥X) ⊆ S` using `hS.closure_subset_iff.mpr (Set.singleton_subset_iff.mpr hgS)`. Establish `hDirr : IsIrreducible (closure ({g ξ'} : Set ↥X))` using `isIrreducible_singleton.closure`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo (⇑g) C' (closure ({g ξ'} : Set ↥X))`. Introduce `y hy`. Use `himg y ξ' ?_` and prove the remaining obligations. Rewrite using `[hξ'eq]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hirred : IsIrreducible (closure ({g ξ'} : Set ↥X)) ∧ closure ({g ξ'} : Set ↥X) ⊆ S ∧ ∀ E : Set ↥X, IsIrreducible E → closure ({g ξ'} : Set ↥X) ⊆ E → E ⊆ S → E = closure ({g ξ'} : Set ↥X)`. Use `⟨hDirr, hDsub, ?_⟩` and prove the remaining obligations. Introduce `E hE hsubE hES`. Take `⟨η, hη⟩` from `QuasiSober.sober hE.closure (isClosed_closure (s := E))`. Establish `hηeq : closure ({η} : Set ↥X) = closure E` using `hη`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgξ'E : g ξ' ∈ E` using `hsubE (subset_closure rfl)`. Establish `hspec0 : (η : ↥X) ⤳ g ξ'`. Use `specializes_iff_mem_closure.mpr ?_` and prove the remaining obligations. Rewrite using `[hηeq]`. Conclude with `subset_closure hgξ'E`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ξ'', hspec, hgη⟩` from `hg hspec0`. Establish `hgη' : g ξ'' = η` using `hgη`. Establish `hspec' : ξ' ∈ closure ({ξ''} : Set ↥Y)` using `specializes_iff_mem_closure.mp hspec`. Establish `hclE : closure E ⊆ S` using `hS.closure_subset_iff.mpr hES`. Establish `hsub2 : closure ({ξ''} : Set ↥Y) ⊆ ⇑g ⁻¹' S`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `h3 : g z ∈ closure ({g ξ''} : Set ↥X)` using `himg z ξ'' hz`. Rewrite `h3` using `[hgη', hηeq]`. Conclude with `hclE h3`. Establish `hsub3 : C' ⊆ closure ({ξ''} : Set ↥Y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hξ'eq]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hspec') isClosed_closure`. Establish `heq : closure ({ξ''} : Set ↥Y) = C'` using `hmax (closure ({ξ''} : Set ↥Y)) isIrreducible_singleton.closure hsub3 hsub2`. Establish `hξ''mem : ξ'' ∈ C'`. Rewrite using `[← heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `subset_closure rfl`. Establish `hηmem : η ∈ closure ({g ξ'} : Set ↥X)`. Establish `h4` using `hmaps hξ''mem`. Rewrite `h4` using `[hgη']`. Then use the resulting hypothesis. Establish `hZsub : closure E ⊆ closure ({g ξ'} : Set ↥X)`.
-
-Rewrite using `[← hηeq]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hηmem) isClosed_closure`. Conclude with `Set.Subset.antisymm (Set.Subset.trans subset_closure hZsub) hsubE`. Conclude with `⟨hirred, hmaps⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsIrreducibleComponentOf.closure_image_genericPoint {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hg : GeneralizingMap (fun y : ↥Y => g y)) {S : Set ↥X} (hS : IsClosed S) {C' : Set ↥Y}
@@ -251,27 +249,23 @@ theorem IsIrreducibleComponentOf.closure_image_genericPoint {X Y : Scheme.{u}} (
   exact ⟨hirred, hmaps⟩
 
 /- English proof (translation)
-Establish `hcont : Continuous (⇑g : ↥Y → ↥X)` using `g.continuous`. Establish `hSY : IsClosed (⇑g ⁻¹' S)` using `IsClosed.preimage hcont hS`. Take `⟨ξ, hξ⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint hC hS`. Establish `hξeq : closure ({ξ} : Set ↥X) = C` using `hξ`. Take `⟨-, hCS, hCmax⟩` from `hC`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmemC : g y ∈ closure ({ξ} : Set ↥X)`. Rewrite using `[hξeq]`. Conclude with `hy`. Establish `hspec : ξ ⤳ g y` using `specializes_iff_mem_closure.mpr hmemC`. Take `⟨y₀, hy₀spec, hy₀eq⟩` from `hg hspec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgy₀ : g y₀ = ξ` using `hy₀eq`. Establish `hymem : y ∈ closure ({y₀} : Set ↥Y)` using `specializes_iff_mem_closure.mp hy₀spec`. Establish `hξC : ξ ∈ C`. Establish `h0 : ξ ∈ ({ξ} : Set ↥X)` using `Set.mem_singleton_iff.mpr rfl`. Establish `h1` using `subset_closure h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[hξeq]`. Then use the resulting hypothesis. Establish `hy₀S : y₀ ∈ ⇑g ⁻¹' S`. Establish `h2 : g y₀ ∈ S` using `by rw [hgy₀]; exact hCS hξC`. Conclude with `h2`. Establish `hsub : closure ({y₀} : Set ↥Y) ⊆ ⇑g ⁻¹' S` using `closure_minimal (Set.singleton_subset_iff.mpr hy₀S) hSY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C', hC', hAC'⟩` from `exists_isIrreducibleComponentOf (⇑g ⁻¹' S) (closure ({y₀} : Set ↥Y)) (IsIrreducible.closure isIrreducible_singleton) hsub`. Establish `hy₀C' : y₀ ∈ C'`. Establish `h3 : y₀ ∈ ({y₀} : Set ↥Y)` using `Set.mem_singleton_iff.mpr rfl`. Conclude with `hAC' (subset_closure h3)`. Establish `key : ∀ ζ : ↥Y, IsGenericPoint ζ C' → closure ({g ζ} : Set ↥X) = C`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `ζ hζ`. Take `⟨hcomp, -⟩` from `IsIrreducibleComponentOf.closure_image_genericPoint g hg hS hC' hζ`. Take `⟨hirr2, hsub2, -⟩` from `hcomp`. Establish `hζeq : closure ({ζ} : Set ↥Y) = C'` using `hζ`. Establish `h4 : y₀ ∈ closure ({ζ} : Set ↥Y)` using `by rw [hζeq]; exact hy₀C'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6` using `image_closure_subset_closure_image hcont (Set.mem_image_of_mem (⇑g) h4)`. Rewrite `h6` using `[Set.image_singleton]`. Rewrite `h6` using `[hgy₀]`. Establish `hCsub : C ⊆ closure ({g ζ} : Set ↥X)`. Rewrite using `[← hξeq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `closure_minimal (Set.singleton_subset_iff.mpr h6) isClosed_closure`. Conclude with `hCmax (closure ({g ζ} : Set ↥X)) hirr2 hCsub hsub2`. Take `⟨ζ₀, hζ₀⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint hC' hSY`. Establish `hmapsC : Set.MapsTo (⇑g) C' C`. Establish `h7` using `(IsIrreducibleComponentOf.closure_image_genericPoint g hg hS hC' hζ₀).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h7` using `[key ζ₀ hζ₀]`. Then use the resulting hypothesis. Use `⟨C', hC', hAC' hymem, hmapsC, ?_⟩` and prove the remaining obligations. Introduce `ζ ξ₂ hgen1 hgen2`. Establish `h8 : closure ({g ζ} : Set ↥X) = C` using `key ζ hgen1`. Establish `h9 : closure ({ξ₂} : Set ↥X) = C` using `hgen2`.
-
-Establish `hm1 : g ζ ∈ closure ({ξ₂} : Set ↥X)`. Rewrite using `[h9, ← h8]`. Conclude with `subset_closure (Set.mem_singleton_iff.mpr rfl)`. Establish `hm2 : ξ₂ ∈ closure ({g ζ} : Set ↥X)`. Rewrite using `[h8, ← h9]`.
-
-Conclude with `subset_closure (Set.mem_singleton_iff.mpr rfl)`. Conclude with `((specializes_iff_mem_closure.mpr hm2).antisymm (specializes_iff_mem_closure.mpr hm1)).eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIrreducibleComponentOf_preimage {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hg : GeneralizingMap (fun y : ↥Y => g y)) {S : Set ↥X} (hS : IsClosed S) {C : Set ↥X}
@@ -336,9 +330,9 @@ theorem exists_isIrreducibleComponentOf_preimage {X Y : Scheme.{u}} (g : Y ⟶ X
     (specializes_iff_mem_closure.mpr hm1)).eq
 
 /- English proof (translation)
-Take `⟨e, he⟩ : ∃ e : (W.comap g).subscheme ≅ Limits.pullback g W.subschemeι, e.hom ≫ Limits.pullback.fst g W.subschemeι = (W.comap g).subschemeι` from `⟨W.comapIso g, W.comapIso_hom_fst g⟩`. Use `⟨e.hom ≫ Limits.pullback.snd g W.subschemeι, ?_⟩` and prove the remaining obligations. Establish `hsq : (W.comap g).subschemeι ≫ g = (e.hom ≫ Limits.pullback.snd g W.subschemeι) ≫ W.subschemeι`. Rewrite using `[← he]`. Simplify using `only [Category.assoc, Limits.pullback.condition]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(IsPullback.of_iso_pullback ⟨hsq⟩ e he rfl).flip`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isPullback_comapSubscheme {X Y : Scheme.{u}} (W : X.IdealSheafData)
     (g : Y ⟶ X) :
@@ -359,25 +353,25 @@ def comapSubschemeHom {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
   (exists_isPullback_comapSubscheme W g).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isPullback_comapSubscheme W g).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_comapSubschemeHom {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
     IsPullback (comapSubschemeHom W g) (W.comap g).subschemeι W.subschemeι g :=
   (exists_isPullback_comapSubscheme W g).choose_spec
 
 /- English proof (translation)
-The claim follows from `(isPullback_comapSubschemeHom W g).w`.
+A detailed English derivation is pending.
 -/
 theorem comapSubschemeHom_comp_subschemeι {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
     comapSubschemeHom W g ≫ W.subschemeι = (W.comap g).subschemeι ≫ g :=
   (isPullback_comapSubschemeHom W g).w
 
 /- English proof (translation)
-Establish `hg : GeneralizingMap (fun y : ↥Y => g y)` using `AlgebraicGeometry.Flat.generalizingMap (f := g)`. Establish `hS : IsClosed (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)` using `(intersectionIdeal T.boundary J).support.2`. Establish `hcomp : IsIrreducibleComponentOf C' (⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme))` using `(mem_intersectionComponents_pullbackOverField_iff T Y k' q g J C').mp hC'`. Establish `hS' : IsClosed (⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme))` using `hS.preimage g.continuous`. Take `⟨ξ₀, hξ₀⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint hcomp hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hCmem, hmaps⟩` from `IsIrreducibleComponentOf.closure_image_genericPoint g hg hS hcomp hξ₀`. Use `⟨closure ({g ξ₀} : Set ↥T.scheme), (mem_intersectionComponents_iff T.boundary J (closure ({g ξ₀} : Set ↥T.scheme))).mpr hCmem, hmaps, ?_⟩` and prove the remaining obligations. Introduce `ξ' ξ hξ' hξ`. Establish `h1 : ξ' = ξ₀` using `hξ'.eq hξ₀`. Establish `h2 : IsGenericPoint (g ξ₀) (closure ({g ξ₀} : Set ↥T.scheme))` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `h2.eq hξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intersectionComponents_mapsTo_of_flat (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -409,9 +403,9 @@ theorem exists_intersectionComponents_mapsTo_of_flat (T : MarkedIdealWithBoundar
   exact h2.eq hξ
 
 /- English proof (translation)
-Establish `hg : GeneralizingMap (fun z : ↥Y => g z)`. Apply `AlgebraicGeometry.Flat.generalizingMap` to reduce the goal to its premises. Establish `hS : IsClosed (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)` using `(intersectionIdeal T.boundary J).support.2`. Establish `hC0 : IsIrreducibleComponentOf C (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)` using `(mem_intersectionComponents_iff T.boundary J C).mp hC`. Take `⟨C', hC'comp, hyC', _, hgen⟩` from `exists_isIrreducibleComponentOf_preimage g hg hS hC0 y hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C', (mem_intersectionComponents_pullbackOverField_iff T Y k' q g J C').mpr hC'comp, hyC', hgen⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mem_intersectionComponents_pullbackOverField_of_flat (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -439,7 +433,7 @@ private def subschemePreimageOpens {X : Scheme.{u}} (W : X.IdealSheafData) (A : 
   ⟨⇑W.subschemeι ⁻¹' A, h⟩
 
 /- English proof (translation)
-The claim follows from `haveI := h haveI : TopologicalSpace.NoetherianSpace ↥Z₁ := (((AlgebraicGeometry.Scheme.Hom.isClosedEmbedding b).toIsEmbedding.toIsInducing).comp a.isOpenEmbedding.toIsEmbedding.toIsInducing).noetherianSpace ⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩`.
+A detailed English derivation is pending.
 -/
 private theorem quasiCompact_comp_of_noetherianSpace {Z₁ Z₂ Z₃ : Scheme.{u}} (a : Z₁ ⟶ Z₂)
     (b : Z₂ ⟶ Z₃) [AlgebraicGeometry.IsOpenImmersion a] [AlgebraicGeometry.IsClosedImmersion b]
@@ -452,15 +446,13 @@ private theorem quasiCompact_comp_of_noetherianSpace {Z₁ Z₂ Z₃ : Scheme.{u
   ⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Substitute `hA'` using the available equality. Use `hqc` as an intermediate fact. Establish `hbase : ∀ x : ↥(W.comap g).subscheme, W.subschemeι (comapSubschemeHom W g x) = g ((W.comap g).subschemeι x)`. Introduce `x`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun m : (W.comap g).subscheme ⟶ X => m x) (comapSubschemeHom_comp_subschemeι W g)`. Establish `hset : ⇑(W.comap g).subschemeι ⁻¹' (⇑g ⁻¹' A) = ⇑(comapSubschemeHom W g) ⁻¹' (⇑W.subschemeι ⁻¹' A)`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[hbase x]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hopen : IsOpen (⇑(W.comap g).subschemeι ⁻¹' (⇑g ⁻¹' A))`. Rewrite using `[hset]`. Conclude with `hA.preimage (comapSubschemeHom W g).continuous`. Use `⟨hopen, ?_⟩` and prove the remaining obligations. Establish `hV : subschemePreimageOpens (W.comap g) (⇑g ⁻¹' A) hopen = comapSubschemeHom W g ⁻¹ᵁ subschemePreimageOpens W A hA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Conclude with `hset`. Rewrite using `[hV]`. Establish `hsq2` using `(AlgebraicGeometry.isPullback_morphismRestrict (comapSubschemeHom W g) (subschemePreimageOpens W A hA)).paste_vert (isPullback_comapSubschemeHom W g)`. Use `quasiCompact_of_isPullback hsq2` as an intermediate fact.
-
-Conclude with `(ker_eq_comap_ker_of_isPullback_of_flat hsq2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_comap_ker_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g]
@@ -498,17 +490,17 @@ private theorem exists_isOpen_comap_ker_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
   exact (ker_eq_comap_ker_of_isPullback_of_flat hsq2).symm
 
 /- English proof (translation)
-Use `hT.isNoetherian` as an intermediate fact. Establish `hns : TopologicalSpace.NoetherianSpace ↥T.scheme` using `inferInstance`. Establish `hSclosed : IsClosed (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)` using `(intersectionIdeal T.boundary J).support.2`. Establish `hSclosed' : IsClosed (⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme))` using `hSclosed.preimage g.continuous`. Establish `hU : (⋃₀ {C' : Set ↥Y | C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary (J.image (pullbackOverFieldIndex T Y k' q g)) ∧ ∃ C ∈ 𝒞, Set.MapsTo (⇑g) C' C}) = ⇑g ⁻¹' ⋃₀ 𝒞`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_sUnion, Set.mem_ofPred_eq, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C', ⟨-, C, hC𝒞, hmaps⟩, hyC'⟩`. Conclude with `⟨C, hC𝒞, hmaps hyC'⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨C, hC𝒞, hyC⟩`. Take `⟨C', hC'mem, hyC', hgen⟩` from `exists_mem_intersectionComponents_pullbackOverField_of_flat T hT Y k' q g hT' J C (h𝒞 hC𝒞) y hyC`. Take `⟨C₀, hC₀mem, hmaps0, hgen0⟩` from `exists_intersectionComponents_mapsTo_of_flat T hT Y k' q g hT' J C' hC'mem`. Take `⟨ξ', hξ'⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint ((mem_intersectionComponents_pullbackOverField_iff T Y k' q g J C').mp hC'mem) hSclosed'`. Take `⟨ξ, hξ⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint ((mem_intersectionComponents_iff T.boundary J C).mp (h𝒞 hC𝒞)) hSclosed`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ₀, hξ₀⟩` from `IsIrreducibleComponentOf.exists_isGenericPoint ((mem_intersectionComponents_iff T.boundary J C₀).mp hC₀mem) hSclosed`. Establish `h1 : g ξ' = ξ` using `hgen ξ' ξ hξ' hξ`. Establish `h2 : g ξ' = ξ₀` using `hgen0 ξ' ξ₀ hξ' hξ₀`. Establish `hξe : closure ({ξ} : Set ↥T.scheme) = C` using `hξ`. Establish `hξ0e : closure ({ξ₀} : Set ↥T.scheme) = C₀` using `hξ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : C₀ = C` using `by rw [← hξ0e, ← hξe, ← h1, ← h2]`. Use `⟨C', ⟨hC'mem, C, hC𝒞, ?_⟩, hyC'⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `hmaps0`. Establish `hqc` using `quasiCompact_comp_of_noetherianSpace (subschemePreimageOpens (intersectionIdeal T.boundary J) (⋃₀ 𝒞) hop).ι (intersectionIdeal T.boundary J).subschemeι hns`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hker⟩` from `exists_isOpen_comap_ker_of_flat g (intersectionIdeal T.boundary J) (intersectionIdeal (T.pullbackOverField Y k' q g).boundary (J.image (pullbackOverFieldIndex T Y k' q g))) (intersectionIdeal_pullbackOverField T Y k' q g J) (⋃₀ 𝒞) (⋃₀ {C' : Set ↥Y | C' ∈ intersectionComponents (T …`. Conclude with `⟨h', hker⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_componentUnionIdeal_of_flat (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))

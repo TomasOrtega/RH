@@ -6,15 +6,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k L _ _ _ C X _ _ c u x hpb _ hc φ hφ`. Set `F : CommRingCat.of L ⟶ X.functionField` to `(Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ x.appTop ≫ X.presheaf.germ ⊤ (genericPoint X) trivial`. Establish `hx : X.fromSpecStalk (genericPoint X) ≫ x = Spec.map F`. Establish `h1` using `Scheme.toSpecΓ_naturality x`. Establish `h2 : x = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ x.appTop)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, ← Category.assoc, ← h1, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Rewrite using `[h2, ← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]`. Simplify using `only [F, Category.assoc]`. Establish `key : ∀ (V : X.Opens) (hV : genericPoint X ∈ V), x.appLE ⊤ V le_top ≫ X.presheaf.germ V (genericPoint X) hV = x.appTop ≫ X.presheaf.germ ⊤ (genericPoint X) trivial`. Introduce `V hV`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← x.appLE_map (V := ⊤) (V' := V) le_top (homOfLE le_top).op, Category.assoc, X.presheaf.germ_res, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Use `⟨F.hom, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Establish `hsq : Spec.map (CommRingCat.ofHom (algebraMap k C.functionField) ≫ CommRingCat.ofHom φ) = Spec.map (CommRingCat.ofHom (algebraMap k L) ≫ F)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Spec.map_comp, hc, ← Category.assoc, hφ, Category.assoc, hpb.w, ← Category.assoc, hx]`. Use `congrArg (fun g => g.hom r) (Spec.map_injective hsq)` as an intermediate fact. Simplify using `using this.symm`. Introduce `V _ l`. Establish `hV : genericPoint X ∈ V` using `((genericPoint_spec X).mem_open_set_iff V.isOpen).mpr (by simpa using ‹Nonempty V›)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom l)) (key V hV)` as an intermediate fact. Simplify `this` using `[F]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.baseChange_functionField_hom_genericPoint_comp :
     ∀ (k L : Type) [Field k] [Field L] [Algebra k L] {C X : Scheme.{0}} [IsIntegral C] [IsIntegral X] (c : C ⟶ Sp k) (u : X ⟶ C) (x : X ⟶ Sp L), IsPullback u x c (Spec.map (CommRingCat.ofHom (algebraMap k L))) → ∀ [Algebra k C.functionField], Spec.map (CommRingCat.ofHom (algebraMap k C.functionField)) = (C.fromSpecStalk (genericPoint C)) ≫ c → ∀ φ : C.functionField →+* X.functionField, Spec.map (CommRingCat.ofHom φ) ≫ C.fromSpecStalk (genericPoint C) = X.fromSpecStalk (genericPoint X) ≫ u → ∃ f : L →+* X.functionField, (∀ r : k, f (algebraMap k L r) = φ (algebraMap k C.functionField r)) ∧ ∀ (V : X.Opens) [Nonempty V] (l : L), X.germToFunctionField V (x.appLE ⊤ V le_top ((Scheme.ΓSpecIso (CommRingCat.of L)).inv l)) = f l := by

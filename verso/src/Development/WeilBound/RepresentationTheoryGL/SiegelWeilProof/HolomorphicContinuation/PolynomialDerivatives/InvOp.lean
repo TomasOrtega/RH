@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.LC
 
 /- English proof (translation)
-The claim follows from `B3.invOp_of compSt fftSym`.
+A detailed English derivation is pending.
 -/
 theorem invOp : InvOp := B3.invOp_of compSt fftSym
 

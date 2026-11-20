@@ -5,7 +5,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.InHHClassFin
 
 /- English proof (translation)
-Introduce `I τ`. Use extensionality with `a`. Use `show τ (star a) = starRingEnd ℂ (τ a)`. Conclude with `I.cm.cmUnram.2.1 τ a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sigConj : SigConj := by
   intro I τ

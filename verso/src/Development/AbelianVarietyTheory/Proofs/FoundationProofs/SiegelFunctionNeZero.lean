@@ -9,7 +9,7 @@ open GlobalTheory.Sieg GlobalTheory.QFam
 namespace GlobalTheory.Sieg
 
 /- English proof (translation)
-Introduce `_ _ τ h` and use `(GlobalTheory.Sieg.Model.multipliable_and_sg_ne_zero h τ).2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sg_ne_zero : ∀ (c : ℕ) (x : Fin 2 → ℚ) (τ : ℍ), admitted c x → sg c x τ ≠ 0 :=
   fun _ _ τ h => (GlobalTheory.Sieg.Model.multipliable_and_sg_ne_zero h τ).2.2

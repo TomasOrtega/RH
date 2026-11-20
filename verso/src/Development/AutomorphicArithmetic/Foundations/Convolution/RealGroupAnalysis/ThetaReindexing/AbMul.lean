@@ -8,17 +8,15 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 
 /- English proof (translation)
-Establish `hmem : ∀ (g : G) (f : S), (fun v => c g * f.1 (a g⁻¹ v)) ∈ S` using `fun g f => S.smul_mem (c g) (hm g f.1 f.2)`. Set `T : G → Module.End ℂ S` to `fun g => { toFun := fun f => ⟨_, hmem g f⟩ map_add' := by`. Introduce `f f'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_add]`. Use the proof step `map_smul' := by`. Introduce `k f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Use `⟨{ toFun := T, map_one' := ?_, map_mul' := ?_ }, fun g f v => rfl⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show c 1 * f.1 (a 1⁻¹ v) = f.1 v`. Rewrite using `[c1, one_mul, inv_one, a1]`. Introduce `g h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show c (g * h) * f.1 (a (g * h)⁻¹ v) = c g * (c h * f.1 (a h⁻¹ (a g⁻¹ v)))`.
-
-Rewrite using `[cm, am, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exHom {G V : Type} [Group G] (S : Submodule ℂ (V → ℂ)) (c : G → ℂ) (a : G → V → V)
     (c1 : c 1 = 1) (cm : ∀ g h, c (g * h) = c g * c h) (a1 : ∀ v, a 1 v = v)
@@ -56,43 +54,41 @@ private theorem exHom {G V : Type} [Group G] (S : Submodule ℂ (V → ℂ)) (c 
     rw [cm, am, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [ab, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem abMul {F : Type} [Field F] [NumberField F] (s t : (A F)ˣ) : ab (s * t) = ab s * ab t := by
   simp only [ab, map_mul]
   rfl
 
 /- English proof (translation)
-Simplify using `only [ab, map_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem abOne {F : Type} [Field F] [NumberField F] : ab (1 : (A F)ˣ) = 1 := by
   simp only [ab, map_one]
   rfl
 
 /- English proof (translation)
-Simplify using `only [nu, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nuMul (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (g h : GL (Fin 2) (A E)) : nu F (g * h) = nu F g * nu F h := by
   simp only [nu, map_mul]
 
 /- English proof (translation)
-Simplify using `only [nu, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nuOne (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     nu F (1 : GL (Fin 2) (A E)) = 1 := by
   simp only [nu, map_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D`. Take `⟨ρ, hρ, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Use `exHom (schwartzBruhatPi F (Fin 4)) (fun h => (((ab (nu F h))⁻¹ : ℝ) : ℂ)) D.act ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `show (((ab (nu F (1 : GL (Fin 2) (A E))))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[nuOne, abOne]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `g h show (((ab (nu F (g * h)))⁻¹ : ℝ) : ℂ) = (((ab (nu F g))⁻¹ : ℝ) : ℂ) * (((ab (nu F h))⁻¹ : ℝ) : ℂ)`. Rewrite using `[nuMul, abMul, mul_inv]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[hρ, map_one]`. Conclude with `Matrix.one_mulVec v`. Introduce `g h v`. Rewrite using `[hρ, hρ, hρ, _root_.mul_inv_rev, map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Matrix.mulVec_mulVec v _ _).symm`. Introduce `g f hf`. Establish `h1` using `UpperTheory.ConvolutionTheory.R2.D.sClos F (Fin 4) (ρ g⁻¹) f hf`. Establish `h2 : (fun v => f (D.act g⁻¹ v)) = fun v => f ((ρ g⁻¹).val *ᵥ v)`. Use function extensionality and compare the values at `v`.
-
-Rewrite using `[hρ]`. Rewrite using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.lEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E), ∃ L : GL (Fin 2) (A E) →* Module.End ℂ (S4 F),

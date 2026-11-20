@@ -33,9 +33,9 @@ section Dat
 variable {k r : ℕ} {κ τ : ℝ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `L.hz`. Unfold `inWb Tz at *`. Use `⟨fun i hi => by simp [h1 i hi], ?_⟩` and prove the remaining obligations. Unfold `herm at *`. Establish `e : star ((τ : ℂ) • L.z) ⬝ᵥ Hpk k r *ᵥ ((τ : ℂ) • L.z) = ((τ : ℂ) * τ) * (star L.z ⬝ᵥ Hpk k r *ᵥ L.z)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Establish `hp : 0 < τ * τ` using `mul_pos hτ hτ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -54,9 +54,9 @@ theorem hzTr (L : LocBessel k r) (hτ : 0 < τ) : inWb k r ((τ : ℂ) • L.z) 
   nlinarith
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `L.hz'`. Unfold `inWb Tz at *`. Use `⟨fun i hi => by simp [h1 i hi], ?_⟩` and prove the remaining obligations. Unfold `herm at *`. Establish `e : star ((τ : ℂ) • L.z') ⬝ᵥ Hpk k r *ᵥ ((τ : ℂ) • L.z') = ((τ : ℂ) * τ) * (star L.z' ⬝ᵥ Hpk k r *ᵥ L.z')`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Establish `hp : 0 < τ * τ` using `mul_pos hτ hτ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -81,20 +81,20 @@ abbrev trDat (L : LocBessel k r) (κ τ : ℝ) (hκ : 0 < κ) (hτ : 0 < τ) : L
     ⟨isHaarOn_map_cjT hκ hτ L.hz'.1 L.hμW'.1, by rw [map_cjT_univ]; exact L.hμW'.2⟩
 
 /- English proof (translation)
-Unfold `alphaPt tF`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem alphaPt_pos (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) : 0 < alphaPt κ τ γ := by
   unfold alphaPt tF
   positivity
 
 /- English proof (translation)
-Unfold `IsPtRep`. Apply `and_congr (cj_mem_UH_iff hκ hτ g)` to reduce the goal to its premises. Use `show Zhat k r ((τ : ℂ) • L.z) ((τ : ℂ) • L.z') (cj k r κ τ g) = ptMat (ptTr κ τ hκ hτ γ) ↔ Zhat k r L.z L.z' g = ptMat γ`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `h1 : Zhat k r ((τ : ℂ) • L.z) ((τ : ℂ) • L.z') (cj k r κ τ g) a b = ptMat (ptTr κ τ hκ hτ γ) a b`. Rewrite using `[h]`. Rewrite `h1` using `[Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ]`. Establish `hne : ((tF r κ τ a * tF r κ τ b : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 < tF r κ τ a * tF r κ τ b`. Unfold `tF`. Check the signs of the components of the expression. Conclude with `hp.ne'` after adjusting the coercions. Conclude with `mul_left_cancel₀ hne h1`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use extensionality with `a b`. Rewrite using `[Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ, h]`.
+A detailed English derivation is pending.
 -/
 theorem isPtRep_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (γ : Point ℂ (r + 1)) (g : Mx k r) :
     IsPtRep (trDat L κ τ hκ hτ) (ptTr κ τ hκ hτ γ) (cj k r κ τ g) ↔ IsPtRep L γ g := by
@@ -119,19 +119,17 @@ theorem isPtRep_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (γ : Po
     rw [Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ, h]
 
 /- English proof (translation)
-Establish `hα` using `alphaPt_pos hκ hτ γ`. Use `set α := alphaPt κ τ γ with hαdef`. Establish `hpat : rootPat (ptTr κ τ hκ hτ γ) = rootPat γ` using `rootPat_ptTr hκ hτ γ`. Establish `hrel : ∀ g, IsRelStab (trDat L κ τ hκ hτ) (cj k r κ τ g) ↔ IsRelStab L g` using `fun g => isRelStab_iff hκ hτ L (trDat L κ τ hκ hτ) L.hz.1 L.hz'.1 rfl rfl rfl g`. Establish `hroot : ∀ g μR, IsRootMeas (trDat L κ τ hκ hτ) (ptTr κ τ hκ hτ γ) (cj k r κ τ g) (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) ↔ IsRootMeas L γ g μR` using `fun g μR => IsRootMeas_trD_iff hκ hτ L _ _ _ _ _ _ _ hpat g μR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hquot : ∀ g μR ν, IsOrbQuot (trDat L κ τ hκ hτ) (cj k r κ τ g) (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν) ↔ IsOrbQuot L g μR ν` using `fun g μR ν => IsOrbQuot_trD_iff hκ hτ L _ _ _ _ _ _ g μR ν hα`. Establish `key : ∀ g μR ν, IsPtRep L γ g → IsRelStab L g → IsRootMeas L γ g μR → IsOrbQuot L g μR ν → ENNReal.ofReal (hsNormSq (OrbInt (trDat L κ τ hκ hτ) F₁ (cj k r κ τ g) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν))) = ENNReal.ofReal (α⁻¹ ^ 2 * ‖C‖ ^ 2) * ENNReal.ofReal (hsNormS …`. Introduce `g μR ν h1 h2 h3 h4`. Use `show ENNReal.ofReal (@hsNormSq L.Wp L.Wq _ _ _ _ _ (OrbInt (trDat L κ τ hκ hτ) F₁ (cj k r κ τ g) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν))) = _`. Rewrite using `[OrbInt_trD hκ hτ L _ _ _ _ _ _ _ F₁ g _ ν, hO g μR ν h1 h2 h3 h4, smul_smul, hsNormSq_smul, ENNReal.toReal_inv, ENNReal.toReal_ofReal hα.le, ← ENNReal.ofReal_mul (by positivity)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hα, mul_pow]`. Unfold `orbSq`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun g₁ => iSup_le fun μR₁ => iSup_le fun ν₁ => iSup_le fun h => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩ : ∃ g, g₁ = cj k r κ τ g` from `⟨cjI k r κ τ g₁, (cj_cjI hκ hτ g₁).symm⟩`. Take `⟨μR, rfl⟩ : ∃ μR, μR₁ = ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR` from `⟨_, (map_cjT_cjIT_smul hκ hτ hα μR₁).symm⟩`. Take `⟨ν, rfl⟩ : ∃ ν, ν₁ = (ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν` from `⟨_, (use₉ hκ hτ hα ν₁).symm⟩`. Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `h1'` using `(isPtRep_trDat hκ hτ L γ g).mp h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2'` using `(hrel g).mp h2`. Establish `h3'` using `(hroot g μR).mp h3`. Establish `h4'` using `(hquot g μR ν).mp h4`. Rewrite using `[key g μR ν h1' h2' h3' h4']`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `le_iSup_of_le g (le_iSup_of_le μR (le_iSup_of_le ν (le_iSup_of_le ⟨h1', h2', h3', h4'⟩ le_rfl)))`. Repeatedly rewrite using `[ENNReal.mul_iSup]`. Use `iSup_le fun g => iSup_le fun μR => iSup_le fun ν => iSup_le fun h => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h`. Rewrite using `[← key g μR ν h1 h2 h3 h4]`.
-
-Conclude with `le_iSup_of_le (cj k r κ τ g) (le_iSup_of_le (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) (le_iSup_of_le ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν) (le_iSup_of_le ⟨(isPtRep_trDat hκ hτ L γ g).mpr h1, (hrel g).mpr h2, (hroot g μR).mpr h3, (hquot g μR ν).mpr h4⟩ le_r …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbSq_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (F F₁ : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (γ : Point ℂ (r + 1)) (C : ℂ)
@@ -188,17 +186,17 @@ theorem orbSq_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (F F₁ : 
           (hquot g μR ν).mpr h4⟩ le_rfl)))
 
 /- English proof (translation)
-Unfold `jacBig tF`. Establish `key : ∀ n : ℕ, 2 * ∑ i ∈ Finset.range n, (n - i) = n * (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `h2 : ∑ i ∈ Finset.range n, (n + 1 - i) = ∑ i ∈ Finset.range n, ((n - i) + 1)` using `Finset.sum_congr rfl fun i hi => by`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[h2, Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]`. Establish `h3 : n + 1 - n = 1` using `by omega`. Rewrite using `[h3]`. Use polynomial arithmetic with `[ih]`. Establish `hsum : ∑ a : Fin r, 4 * (r - (a : ℕ)) = 2 * r * (r + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_sum, Fin.sum_univ_eq_sum_range (fun i => r - i) r]`. Use `key r` as an intermediate fact. Use polynomial arithmetic with `[this]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm (r - (a : ℕ)) 4]`. Use `_ = τ ^ (4 * r) * κ ^ (∑ a : Fin r, 4 * (r - (a : ℕ))) * τ ^ 4 := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, Finset.prod_pow_eq_pow_sum]`. Use `_ = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem jacBig_eq (r : ℕ) (κ τ : ℝ) : jacBig r κ τ = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by
   unfold jacBig tF
@@ -233,9 +231,9 @@ theorem jacBig_eq (r : ℕ) (κ τ : ℝ) : jacBig r κ τ = τ ^ (4 * (r + 1)) 
         ring
 
 /- English proof (translation)
-Unfold `wBig Wbig Mdim`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.coe_castSucc, ← pow_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_last, tF, Nat.sub_self, pow_zero, mul_one, Nat.mul_zero, zero_add]`. Rewrite using `[← pow_mul]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wBig_eq_Wbig (hk : 1 ≤ k) (r : ℕ) (κ τ : ℝ) : wBig k r κ τ = Wbig k r κ τ := by
   unfold wBig Wbig Mdim

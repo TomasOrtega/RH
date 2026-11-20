@@ -29,7 +29,7 @@ def Reframes (φ : K →ₐ[c.F] S) (y : FrPt Xo c K) (t : Ix Dw → Sˣ) (z : F
   ∃ w, FrMap φ y w ∧ FrBor t w z
 
 /- English proof (translation)
-Take `⟨w, h₁, h₂⟩` from `h`. Rewrite using `[val_frBor hs φ h₂, val_frMap hs (φ := AlgHom.id c.F K) (fun _ => rfl) h₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Reframes.val_eq [IsLocalRing S] {φ : K →ₐ[c.F] S} {y : FrPt Xo c K} {t : Ix Dw → Sˣ} {z : FrPt Xo c S}
     (h : Reframes φ y t z) {e : Ix Dw → ℤ} {s : RulK Xo c K} (hs : s ∈ secK Xo c K e) :
@@ -38,7 +38,7 @@ theorem Reframes.val_eq [IsLocalRing S] {φ : K →ₐ[c.F] S} {y : FrPt Xo c K}
   rw [val_frBor hs φ h₂, val_frMap hs (φ := AlgHom.id c.F K) (fun _ => rfl) h₁]
 
 /- English proof (translation)
-Take `⟨w, h₁, h₂⟩` from `h`. Rewrite using `[evR_frBor hf h₂, evR_frMap hf.1 h₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Reframes.evR_eq [IsLocalRing S] {φ : K →ₐ[c.F] S} {y : FrPt Xo c K} {t : Ix Dw → Sˣ} {z : FrPt Xo c S}
     (h : Reframes φ y t z) {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) :
@@ -47,7 +47,7 @@ theorem Reframes.evR_eq [IsLocalRing S] {φ : K →ₐ[c.F] S} {y : FrPt Xo c K}
   rw [evR_frBor hf h₂, evR_frMap hf.1 h₁]
 
 /- English proof (translation)
-Introduce `s` and use `by obtain ⟨w, h₁, h₂⟩ := h have e : ptF z = CategoryTheory.CategoryStruct.comp (spMap φ.toRingHom) (ptF y) := by apply CategoryTheory.Limits.pullback.hom_ext · simp only [ptF, CategoryTheory.Category.assoc, CategoryTheory.Limits.pullback.lift_fst] exact h₂.1.trans h₁.1 · simp onl …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Reframes.liesOn {φ : K →ₐ[c.F] S} {y : FrPt Xo c K} {t : Ix Dw → Sˣ} {z : FrPt Xo c S}
     (h : Reframes φ y t z) {Z : Comp Xo c} (hy : LiesOn Z y) : LiesOn Z z := fun s => by
@@ -71,7 +71,7 @@ variable {K : Type} [Field K] [NumberField K] [Algebra c.F K]
 omit [Algebra c.F K] in
 
 /- English proof (translation)
-Simplify using `only [nrmOf]`. Use `split_ifs`. Use `exacts [le_rfl, by positivity]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrmOf_nonneg (la : HeightOneSpectrum (𝓞 K)) (w : EReal) : 0 ≤ nrmOf la w := by
   simp only [nrmOf]
@@ -81,7 +81,7 @@ theorem nrmOf_nonneg (la : HeightOneSpectrum (𝓞 K)) (w : EReal) : 0 ≤ nrmOf
 omit [Algebra c.F K] in
 
 /- English proof (translation)
-Distinguish the cases in `ht : w' = ⊤`. Rewrite using `[ht, nrmOf, if_pos rfl]`. Conclude with `nrmOf_nonneg _ _`. Rewrite using `[nrmOf, nrmOf, if_neg ht, if_neg (ne_top_of_le_ne_top ht h)]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hw ht))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmOf_anti (la : HeightOneSpectrum (𝓞 K)) {w w' : EReal} (hw : w ≠ ⊥) (h : w ≤ w') :
     nrmOf la w' ≤ nrmOf la w := by
@@ -159,7 +159,7 @@ Both sides reduce to the same expression.
 theorem abs_apply (a : F.T.Fr) : F.abs a = nrmOf v.maximalIdeal (nval F.T.V F.e a) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `h` using `nrmOf_smul v.maximalIdeal ha (nval_ne_bot (V := F.T.V) F.e (1 : F.T.Fr))`. Rewrite `h` using `[← nval_smul F.lies ha, mul_one, FinitePlace.mk_maximalIdeal, ← abs_apply, ← abs_apply, map_one, mul_one]`. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_φ (a : K) : F.abs (F.φ a) = v a := by
   by_cases ha : a = 0
@@ -169,23 +169,23 @@ theorem abs_φ (a : K) : F.abs (F.φ a) = v a := by
   exact h
 
 /- English proof (translation)
-The claim follows from `le_max_iff.2 ((min_le_iff.1 (nval_add (V := F.T.V) F.e a b)).imp (nrmOf_anti _ (nval_ne_bot _ _)) (nrmOf_anti _ (nval_ne_bot _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem abs_add_le_max (a b : F.T.Fr) : F.abs (a + b) ≤ max (F.abs a) (F.abs b) :=
   le_max_iff.2 ((min_le_iff.1 (nval_add (V := F.T.V) F.e a b)).imp (nrmOf_anti _ (nval_ne_bot _ _))
     (nrmOf_anti _ (nval_ne_bot _ _)))
 
 /- English proof (translation)
-Rewrite using `[F.abs_φ, ← v.norm_embedding_eq]`. Conclude with `FinitePlace.norm_le_one _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_φ_le_one (a : 𝓞 K) : F.abs (F.φ a) ≤ 1 := by
   rw [F.abs_φ, ← v.norm_embedding_eq]
   exact FinitePlace.norm_le_one _ _ _
 
 /- English proof (translation)
-Establish `h1` using `one_lt_absNorm_real v.maximalIdeal`. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, map_zero, nval_zero, normOfOrd, EReal.top_mul_coe_of_pos (Real.log_pos h1)]`. Simplify using the standard rewrite rules. Rewrite using `[abs_apply, nval_of_ne ha, normOfOrd, ← EReal.coe_mul, ← EReal.coe_neg, EReal.exp_coe]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nrmOf, EReal.coe_ne_top, if_false, EReal.toReal_coe]`. Rewrite using `[Real.rpow_def_of_pos (by linarith)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ofReal_abs (a : F.T.Fr) :
     ENNReal.ofReal (F.abs a) = normOfOrd (Ideal.absNorm v.maximalIdeal.asIdeal) (nval F.T.V F.e a) := by
@@ -204,42 +204,42 @@ def nrm (f : Rul Xo c) : ℝ := F.abs (evI F.pt f)
 def fac (e : Ix Dw → ℤ) : ℝ := F.abs ((∏ i, F.t i ^ e i : F.T.Frˣ) : F.T.Fr)
 
 /- English proof (translation)
-The claim follows from `F.abs.nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (f : Rul Xo c) : 0 ≤ F.nrm f := F.abs.nonneg _
 
 /- English proof (translation)
-Rewrite using `[nrm, evI_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nrm_mul (f g : Rul Xo c) : F.nrm (f * g) = F.nrm f * F.nrm g := by rw [nrm, evI_mul, map_mul]; rfl
 
 /- English proof (translation)
-The claim follows from `F.abs.pos (Units.ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem fac_pos (e : Ix Dw → ℤ) : 0 < F.fac e := F.abs.pos (Units.ne_zero _)
 
 /- English proof (translation)
-Simplify using `only [fac, Pi.add_apply, zpow_add, Finset.prod_mul_distrib, Units.val_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fac_add (e e' : Ix Dw → ℤ) : F.fac (e + e') = F.fac e * F.fac e' := by
   simp only [fac, Pi.add_apply, zpow_add, Finset.prod_mul_distrib, Units.val_mul, map_mul]
 
 /- English proof (translation)
-Simplify using `[fac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fac_zero : F.fac 0 = 1 := by simp [fac]
 
 /- English proof (translation)
-Rewrite using `[← F.abs_φ, fac, ← map_mul, ← F.tri.evR_eq hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nrm_eq {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) : F.nrm f = F.fac e * v (evR Xo c f y) := by
   rw [← F.abs_φ, fac, ← map_mul, ← F.tri.evR_eq hf]
   rfl
 
 /- English proof (translation)
-Set `w` to `v.maximalIdeal`. Establish `: w.asIdeal.LiesOver (w.under (𝓞 c.F)).asIdeal` using `⟨rfl⟩`. Establish `ho : OverLa (w.under (𝓞 c.F)) F.T.V F.io (F.e * (w.under (𝓞 c.F)).asIdeal.ramificationIdx' w.asIdeal)`. Use `⟨Nat.mul_pos F.lies.1 (Nat.pos_of_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under (𝓞 c.F)).ne_bot)), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[show F.io a = F.φ.toRingHom (algebraMap c.F K a) from (F.φ.commutes a).symm, F.lies.2, vLa, vLa, ← HeightOneSpectrum.valuation_liesOver K (w.under (𝓞 c.F)) w a, WithZero.log_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Conclude with `⟨_, _, ho, PtV.mk _ ho F.pt F.fin () trivial, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_mem_valSet : ∃ (la : HeightOneSpectrum (𝓞 c.F)) (e' : ℕ), OverLa la F.T.V F.io e' ∧
     (fun f => nval F.T.V e' (evI F.pt f)) ∈ valSet Xo c (algCls Xo c) la := by
@@ -254,9 +254,9 @@ theorem exists_mem_valSet : ∃ (la : HeightOneSpectrum (𝓞 c.F)) (e' : ℕ), 
   exact ⟨_, _, ho, PtV.mk _ ho F.pt F.fin () trivial, rfl⟩
 
 /- English proof (translation)
-Take `⟨la, e', ho, h⟩` from `F.exists_mem_valSet`. Establish `h0 : 0 ≤ nval F.T.V e' (evI F.pt f)` using `hf la _ h`. Use `(nrmOf_le_one_iff _ (nval_ne_bot _ _)).2 ?_` and prove the remaining obligations. Distinguish the cases in `hz : evI F.pt f = 0`. Rewrite using `[hz, nval_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Rewrite `h0`, the goal using `[nval_of_ne hz, EReal.coe_nonneg]`. Use `(le_div_iff₀ (by exact_mod_cast ho.1)).1 h0` as an intermediate fact. Conclude with `div_nonneg (by simpa using this) (Nat.cast_nonneg _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrm_le_one {C : Submodule c.F (Rul Xo c)} {f : C} (hf : f ∈ supLat C) : F.nrm f ≤ 1 := by
   obtain ⟨la, e', ho, h⟩ := F.exists_mem_valSet
@@ -271,31 +271,31 @@ theorem nrm_le_one {C : Submodule c.F (Rul Xo c)} {f : C} (hf : f ∈ supLat C) 
 def latMax (C : Submodule c.F (Rul Xo c)) : ℝ := ⨆ w : supLat C, F.nrm w.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rintro _ ⟨w, rfl⟩; exact F.nrm_le_one w.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem bddAbove_nrm (C : Submodule c.F (Rul Xo c)) : BddAbove (Set.range fun w : supLat C => F.nrm w.1) :=
   ⟨1, by rintro _ ⟨w, rfl⟩; exact F.nrm_le_one w.2⟩
 
 /- English proof (translation)
-The claim follows from `le_ciSup (F.bddAbove_nrm C) ⟨f, hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le_latMax {C : Submodule c.F (Rul Xo c)} {f : C} (hf : f ∈ supLat C) : F.nrm f ≤ F.latMax C :=
   le_ciSup (F.bddAbove_nrm C) ⟨f, hf⟩
 
 /- English proof (translation)
-The claim follows from `(ciSup_le_iff (F.bddAbove_nrm C)).trans Subtype.forall`.
+A detailed English derivation is pending.
 -/
 theorem latMax_le_iff {C : Submodule c.F (Rul Xo c)} {B : ℝ} : F.latMax C ≤ B ↔ ∀ f ∈ supLat C, F.nrm f.1 ≤ B :=
   (ciSup_le_iff (F.bddAbove_nrm C)).trans Subtype.forall
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(F.nrm_nonneg _).trans (F.nrm_le_latMax (zero_mem _)), F.latMax_le_iff.2 fun _ => F.nrm_le_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem latMax_mem (C : Submodule c.F (Rul Xo c)) : 0 ≤ F.latMax C ∧ F.latMax C ≤ 1 :=
   ⟨(F.nrm_nonneg _).trans (F.nrm_le_latMax (zero_mem _)), F.latMax_le_iff.2 fun _ => F.nrm_le_one⟩
 
 /- English proof (translation)
-The claim follows from `F.latMax_le_iff.2 fun f hf => by replace hf := hg hf induction hf using Submodule.span_induction with | mem _ e => obtain ⟨k, rfl⟩ := e; exact h k | zero => exact (congrArg F.abs ((isEval_evI F.pt).zero ())).le.trans (by simpa using hB) | add a b _ _ ha hb => exact (congrArg F.ab …`.
+A detailed English derivation is pending.
 -/
 theorem latMax_le_of_span {C : Submodule c.F (Rul Xo c)} {κ : Type} {g : κ → C}
     (hg : supLat C ≤ Submodule.span (𝓞 c.F) (Set.range g)) {B : ℝ} (hB : 0 ≤ B) (h : ∀ k, F.nrm (g k) ≤ B) :
@@ -316,7 +316,7 @@ def wedgeNrm (s : ι → RulK Xo c K) : ℝ≥0∞ :=
   normOfOrd (Ideal.absNorm v.maximalIdeal.asIdeal) (wedgeOrd (psiSet H) F.e F.φ F.pt s)
 
 /- English proof (translation)
-Establish `hb : wedgeOrd (psiSet H) F.e F.φ F.pt s ≠ ⊥` using `fun e => h (by`. Rewrite using `[wedgeNrm, e, normOfOrd, EReal.bot_mul_coe_of_pos (Real.log_pos (one_lt_absNorm_real _))]`. Use the proof step `simp)`. Take `⟨w, ⟨o, d, hd, -⟩, -⟩` from `wedgeOrd_ne_bot_iff.1 hb`. Conclude with `⟨⟨o, d, hd⟩, fun o d hd => by rw [wedgeNrm, wedgeOrd_eq hb ⟨o, d, hd, rfl⟩, ofReal_abs]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wedgeNrm_spec {s : ι → RulK Xo c K} (h : F.wedgeNrm s ≠ ⊤) :
     (∃ o d, IsWedgeVal (psiSet H) o F.φ F.pt.1 s d) ∧
@@ -328,7 +328,7 @@ theorem wedgeNrm_spec {s : ι → RulK Xo c K} (h : F.wedgeNrm s ≠ ⊤) :
   exact ⟨⟨o, d, hd⟩, fun o d hd => by rw [wedgeNrm, wedgeOrd_eq hb ⟨o, d, hd, rfl⟩, ofReal_abs]⟩
 
 /- English proof (translation)
-Rewrite using `[wedgeNrm, h.wedgeOrd_eq F.e hs hd, ofReal_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wedgeNrm_eq (h : KSIso (psiSet H) F.pt.1) {e : Ix Dw → ℤ} {s : ι → RulK Xo c K}
     (hs : ∀ i, s i ∈ secK Xo c K e) {o : ι ≃ TIx Dw (psiSet H)} {d : F.T.Fr}
@@ -336,9 +336,7 @@ theorem wedgeNrm_eq (h : KSIso (psiSet H) F.pt.1) {e : Ix Dw → ℤ} {s : ι �
   rw [wedgeNrm, h.wedgeOrd_eq F.e hs hd, ofReal_abs]
 
 /- English proof (translation)
-Use `haveI := isEmpty_HIx (Dw := Dw) (psiSet H) (Or.inr hq)`. Establish `h` using `existsUnique_isWedgeVal_of_isEmpty (Φ := psiSet H) (tanOrd Dw) F.φ (y := F.pt.1) (s := s) fun i => by`. Rewrite using `[F.tri.val_eq (hs i), h0, map_zero, mul_zero]`. Take `⟨d, hd⟩` from `h.exists`. Rewrite using `[wedgeNrm, wedgeOrd_eq_of_unique F.e h hd, ← ofReal_abs]`.
-
-Conclude with `ENNReal.ofReal_ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (hq : Dw.q = 0) {e : Ix Dw → ℤ} {s : Fin (dimFlag Dw) → RulK Xo c K} (hs : ∀ i, s i ∈ secK Xo c K e)
     (h0 : ∀ i, val (AlgHom.id c.F K) y (s i) = 0) : F.wedgeNrm s ≠ ⊤ := by
@@ -360,13 +358,13 @@ variable {K : Type} [Field K] [NumberField K]
 def primeWt (S : Finset ℕ) (b : ℕ → ℝ) (v : FinitePlace K) : ℝ := ∑ p ∈ S, b p * -Real.log (v (p : K))
 
 /- English proof (translation)
-The claim follows from `(FinitePlace.hasFiniteMulSupport ha).subset fun v hv h => hv (by simp only at h ⊢; rw [h, Real.log_one])`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_log {a : K} (ha : a ≠ 0) : (Function.support fun v : FinitePlace K => Real.log (v a)).Finite :=
   (FinitePlace.hasFiniteMulSupport ha).subset fun v hv h => hv (by simp only at h ⊢; rw [h, Real.log_one])
 
 /- English proof (translation)
-Establish `h0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Rewrite using `[← Real.log_finprod fun v : FinitePlace K => FinitePlace.pos_iff.2 h0, FinitePlace.prod_eq_inv_abs_norm h0, show (p : K) = algebraMap ℚ K p from (map_natCast _ p).symm, Algebra.norm_algebraMap]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finsum_log_natCast {p : ℕ} (hp : p ≠ 0) :
     ∑ᶠ v : FinitePlace K, Real.log (v (p : K)) = -(Module.finrank ℚ K * Real.log p) := by
@@ -376,7 +374,7 @@ theorem finsum_log_natCast {p : ℕ} (hp : p ≠ 0) :
   simp
 
 /- English proof (translation)
-Use `(S.finite_toSet.biUnion fun p hp => finite_support_log (K := K) (a := p) (Nat.cast_ne_zero.2 fun e => hS (e ▸ hp))).subset fun v hv => ?_` and prove the remaining obligations. Take `⟨p, hp, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hv`. Conclude with `Set.mem_biUnion hp fun e => h (by simp only at e; rw [e, neg_zero, mul_zero])`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_support_primeWt {S : Finset ℕ} (hS : 0 ∉ S) (b : ℕ → ℝ) :
     (Function.support (primeWt (K := K) S b)).Finite := by
@@ -386,9 +384,9 @@ theorem finite_support_primeWt {S : Finset ℕ} (hS : 0 ∉ S) (b : ℕ → ℝ)
   exact Set.mem_biUnion hp fun e => h (by simp only at e; rw [e, neg_zero, mul_zero])
 
 /- English proof (translation)
-Establish `h0 : ∀ p ∈ S, p ≠ 0` using `fun p hp e => hS (e ▸ hp)`. Establish `hn : (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Unfold `primeWt`. Rewrite using `[finsum_sum_comm S (fun v p => b p * -Real.log (v (p : K))) fun p hp => (finite_support_log (K := K) (a := p) (Nat.cast_ne_zero.2 (h0 p hp))).subset fun v hv e => hv (by simp only at e ⊢; rw [e, neg_zero, mul_zero]), Finset.sum_div]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_finsum, finsum_neg_distrib, finsum_log_natCast (h0 p hp)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem finsum_primeWt {S : Finset ℕ} (hS : 0 ∉ S) (b : ℕ → ℝ) :
     (∑ᶠ v, primeWt (K := K) S b v) / (Module.finrank ℚ K : ℝ) = ∑ p ∈ S, b p * Real.log p := by
@@ -402,7 +400,7 @@ theorem finsum_primeWt {S : Finset ℕ} (hS : 0 ∉ S) (b : ℕ → ℝ) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[primeWt, Finset.sum_eq_single_of_mem p hp fun q hq e => by simp [h q hq e], Real.rpow_def_of_pos (FinitePlace.pos_iff.2 (Nat.cast_ne_zero.2 h0))]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_primeWt {S : Finset ℕ} (b : ℕ → ℝ) (v : FinitePlace K) {p : ℕ} (hp : p ∈ S) (h0 : p ≠ 0)
     (h : ∀ q ∈ S, q ≠ p → v (q : K) = 1) : Real.exp (primeWt S b v) = v (p : K) ^ (-b p) := by
@@ -412,13 +410,13 @@ theorem exp_primeWt {S : Finset ℕ} (b : ℕ → ℝ) (v : FinitePlace K) {p : 
   ring
 
 /- English proof (translation)
-The claim follows from `Finset.sum_eq_zero fun q hq => by simp [h q hq]`.
+A detailed English derivation is pending.
 -/
 theorem primeWt_eq_zero {S : Finset ℕ} (b : ℕ → ℝ) (v : FinitePlace K) (h : ∀ q ∈ S, v (q : K) = 1) :
     primeWt S b v = 0 := Finset.sum_eq_zero fun q hq => by simp [h q hq]
 
 /- English proof (translation)
-Rewrite using `[finsum_primeWt (by simp)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 example : (∑ᶠ v, primeWt (K := K) {2} (fun _ => 3) v) / (Module.finrank ℚ K : ℝ) = 3 * Real.log 2 := by
   rw [finsum_primeWt (by simp)]; simp
@@ -428,11 +426,11 @@ variable [Algebra c.F K] {y : FrPt Xo c K} {v : FinitePlace K} (F : FinFr y v)
 namespace FinFr
 
 /- English proof (translation)
-Establish `h1` using `one_lt_absNorm_real v.maximalIdeal`. Take `⟨hr, hv⟩` from `ramIdx_spec hp h`. Establish `hr' : (0 : ℝ) < ramIdx F.T p` using `by exact_mod_cast hr`. Establish `he : (0 : ℝ) < F.e` using `by exact_mod_cast F.lies.1`. Establish `ha : a ≠ 0` using `fun e => by rw [e, nval_zero] at hw; exact EReal.top_ne_coe _ hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (p : F.T.Fr) ≠ 0` using `fun e => by rw [e, nval_zero] at hv; exact EReal.top_ne_coe 1 hv`. Rewrite `hv` using `[nval_of_ne h0]`. Rewrite `hw` using `[nval_of_ne ha]`. Use `replace hv : (vV F.T.V (p : F.T.Fr) : ℝ) = ramIdx F.T p := (div_eq_one_iff_eq hr'.ne').1 (EReal.coe_injective hv)`. Rewrite using `[← F.abs_φ, map_natCast, abs_apply, abs_apply, nval_of_ne ha, nval_of_ne h0, ← EReal.coe_injective hw, hv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [nrmOf, EReal.coe_ne_top, if_false, EReal.toReal_coe]`. Use `⟨?_, Real.rpow_lt_one_of_one_lt_of_neg h1 (neg_lt_zero.2 (div_pos hr' he))⟩` and prove the remaining obligations. Rewrite using `[← Real.rpow_mul (by linarith)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem abs_eq_rpow {p : ℕ} (hp : p ≠ 0) (h : (p : F.T.V) ∈ IsLocalRing.maximalIdeal F.T.V) {a : F.T.Fr} {w : ℝ}
     (hw : nval F.T.V (ramIdx F.T p) a = w) : F.abs a = v (p : K) ^ w ∧ v (p : K) < 1 := by
@@ -453,11 +451,11 @@ theorem abs_eq_rpow {p : ℕ} (hp : p ≠ 0) (h : (p : F.T.V) ∈ IsLocalRing.ma
   field_simp
 
 /- English proof (translation)
-Use `haveI : Finite (IsLocalRing.ResidueField F.T.V) := F.fin`. Take `⟨p, hc⟩` from `CharP.exists (IsLocalRing.ResidueField F.T.V)`. Establish `hp : p.Prime` using `CharP.char_is_prime (IsLocalRing.ResidueField F.T.V) p`. Use `⟨p, hp, (IsLocalRing.residue_eq_zero_iff _).1 (by simp), fun q hq e => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (q : F.T.V)` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, Ne, CharP.cast_eq_zero_iff (IsLocalRing.ResidueField F.T.V) p]`. Conclude with `fun h => e ((Nat.prime_dvd_prime_iff_eq hp hq).1 h).symm)`. Establish `h1` using `GlobalTheory.PlaceCompletion.valV_algebraMap_of_isUnit (K' := F.T.Fr) hu`. Rewrite `h1` using `[map_natCast]`. Establish `h0 : (q : F.T.Fr) ≠ 0` using `fun e => by rw [e, map_zero] at h1; exact zero_ne_one h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← F.abs_φ, map_natCast, abs_apply, nval_of_ne h0, vV, h1]`. Simplify using `[nrmOf]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_prime : ∃ p : ℕ, p.Prime ∧ (p : F.T.V) ∈ IsLocalRing.maximalIdeal F.T.V ∧
     ∀ q : ℕ, q.Prime → q ≠ p → v (q : K) = 1 := by
@@ -475,15 +473,15 @@ theorem exists_prime : ∃ p : ℕ, p.Prime ∧ (p : F.T.V) ∈ IsLocalRing.maxi
   simp [nrmOf]
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `by omega`. Rewrite `hb` using `[wedgeNorm_le_iff hp, wedgeOrd_vp]`. Establish `hne` using `((EReal.bot_lt_coe _).trans_le hb).ne'`. Take `⟨w, ⟨o, d, hd, -⟩, -⟩` from `wedgeOrd_ne_bot_iff.1 hne`. Establish `key : ∀ o d, IsWedgeVal (psiSet H) o F.φ F.pt.1 s d → _ = nval F.T.V (ramIdx F.T p) d` using `fun o d hd => wedgeOrd_eq hne ⟨o, d, hd, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ((ramIdx F.T p : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (ramIdx_spec hp0 h).1.ne'`. Establish `hu : ∃! w, IsWedgeOrd (psiSet H) F.e F.φ F.pt s w` using `⟨_, ⟨o, d, hd, rfl⟩, by`. Introduce and unpack `_ ⟨o', d', hd', rfl⟩`. Establish `e` using `(key o' d' hd').symm.trans (key o d hd)`. Unfold `nval at e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at e ⊢ with h₁ h₂ h₂`. Both sides reduce to the same expression. Conclude with `absurd e (EReal.top_ne_coe _)`. Conclude with `absurd e (EReal.coe_ne_top _)`. Rewrite using `[(div_left_inj' hr).1 (EReal.coe_injective e)]⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[wedgeNrm, wedgeOrd_eq (wedgeOrd_ne_bot_iff.2 hu) ⟨o, d, hd, rfl⟩, ← ofReal_abs]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Distinguish the cases in `h0 : d = 0`. Rewrite using `[h0, map_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb` using `[key o d hd, nval_of_ne h0]`. Take `⟨e₁, e₂⟩` from `F.abs_eq_rpow hp0 h (nval_of_ne h0)`. Rewrite using `[e₁]`. Conclude with `Real.rpow_le_rpow_of_exponent_ge (FinitePlace.pos_iff.2 (Nat.cast_ne_zero.2 hp0)) e₂.le (EReal.coe_le_coe_iff.1 hb)`.
+A detailed English derivation is pending.
 -/
 theorem wedgeNrm_le_of_wedgeNorm_le {ι : Type} [Fintype ι] {s : ι → RulK Xo c K} {p : ℕ} (hp : 1 < p)
     (h : (p : F.T.V) ∈ IsLocalRing.maximalIdeal F.T.V) {b : ℝ}
@@ -535,7 +533,7 @@ def goodHom (τ : K →+* ℂ) : K →ₐ[c.F] CAt (baseEmb c τ) :=
   else ⟨(starRingEnd ℂ).comp τ, fun a => (DFunLike.congr_fun (if_neg h : baseEmb c τ = _) a).symm⟩
 
 /- English proof (translation)
-Unfold `goodHom`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `Complex.norm_conj _`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_goodHom (τ : K →+* ℂ) (a : K) : ‖toC (goodHom c τ a)‖ = ‖τ a‖ := by
   unfold goodHom
@@ -556,7 +554,7 @@ structure InfFr (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (y : FrPt Xo c K) (�
 variable {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {y : FrPt Xo c K} {τ : K →+* ℂ}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_frMap (goodHom c τ) y`. Take `⟨k, z, t, h⟩` from `(hU _ (goodEmb_goodOf c _)).2.2.1 w`. Conclude with `⟨⟨k, z, t⁻¹, w, hw, (GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c _).2.2.1 _ _ _ h⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InfFr.nonempty (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (y : FrPt Xo c K) (τ : K →+* ℂ) :
     Nonempty (InfFr U y τ) := by
@@ -571,7 +569,7 @@ variable (F : InfFr U y τ) (x : ℝ)
 abbrev pt : Σ k, FD.Frame ((U (baseEmb c τ)).X k).Ψ r := ⟨F.k, F.z.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F.z.2, F.tri.liesOn hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_framesOn {Z : Comp Xo c} (hy : LiesOn Z y) : F.pt ∈ framesOn (U (baseEmb c τ)) Z :=
   ⟨F.z.2, F.tri.liesOn hy⟩
@@ -583,19 +581,19 @@ def fac (G : WTZ E) : ℝ :=
     ‖toC ((∏ i, F.t i ^ exZ Dw G i : (CAt (baseEmb c τ))ˣ) : CAt (baseEmb c τ))‖
 
 /- English proof (translation)
-The claim follows from `homN_nonneg _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (G : WTZ E) (f : Rul Xo c) : 0 ≤ F.nrm x G f := homN_nonneg _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `mul_pos (mul_pos (lieFacZ_pos _ _) (FD.BoundedSectionAlgebra.nfac_pos _ F.z.2 _)) (norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) _))`.
+A detailed English derivation is pending.
 -/
 theorem fac_pos (G : WTZ E) : 0 < F.fac x G :=
   mul_pos (mul_pos (lieFacZ_pos _ _) (FD.BoundedSectionAlgebra.nfac_pos _ F.z.2 _))
     (norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) _))
 
 /- English proof (translation)
-Establish `e : ∀ a b : CAt (baseEmb c τ), ‖toC (a * b)‖ = ‖toC a‖ * ‖toC b‖` using `fun a b => norm_mul (toC a) (toC b)`. Simplify using `only [fac, lieFacZ_add, modelWt_add _ hG hG', FD.BoundedSectionAlgebra.nfac_add _ F.z.2, exZ_add, zpow_add, Finset.prod_mul_distrib, Units.val_mul, e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fac_add {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) : F.fac x (G + G') = F.fac x G * F.fac x G' := by
   have e : ∀ a b : CAt (baseEmb c τ), ‖toC (a * b)‖ = ‖toC a‖ * ‖toC b‖ := fun a b => norm_mul (toC a) (toC b)
@@ -604,9 +602,7 @@ theorem fac_add {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) : F.fac x (G + 
   ring
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (CAt (baseEmb c τ)) := inferInstanceAs (IsLocalRing ℂ)`. Establish `e : rdU (U (baseEmb c τ)) f F.k F.z.1 = toC (evR Xo c f ((U (baseEmb c τ)).un F.k F.z))` using `dif_pos F.z.2`. Establish `e' : ∀ a b : CAt (baseEmb c τ), ‖toC (a * b)‖ = ‖toC a‖ * ‖toC b‖` using `fun a b => norm_mul (toC a) (toC b)`. Use `show _ * (‖rdU (U (baseEmb c τ)) f F.k F.z.1‖ * FD.Data.nfac _ _ _) = _`. Rewrite using `[e, F.tri.evR_eq hf, e', norm_goodHom, fac]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nrm_eq {G : WTZ E} {f : Rul Xo c} (hf : f ∈ secZ Xo c (exZ Dw G)) :
     F.nrm x G f = F.fac x G * ‖τ (evR Xo c f y)‖ := by
@@ -632,7 +628,7 @@ def bergCusp (G : WTZ E) (σ : c.F →+* ℂ) (z : Σ k, FD.Frame ((U (goodOf c 
 variable {U x V dict Z}
 
 /- English proof (translation)
-Simplify using `only [bergCusp, iSup_le_iff]`. Use `forall₂_congr fun f _ => ?_` and prove the remaining obligations. Establish `hp : 0 ≤ petOn U x V dict Z G σ f` using `petAt_nonneg _ _ _ _ _ _ _`. Rewrite using `[ENNReal.div_le_iff_le_mul (Or.inr ENNReal.ofReal_ne_top) (Or.inl (ENNReal.pow_ne_top ENNReal.ofReal_ne_top)), ← ENNReal.ofReal_pow (homN_nonneg _ _ _ _ _), ← ENNReal.ofReal_pow hp, ← ENNReal.ofReal_mul hB, ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem bergCusp_le_iff {G : WTZ E} {σ : c.F →+* ℂ} {z : Σ k, FD.Frame ((U (goodOf c σ)).X k).Ψ r} {B : ℝ}
     (hB : 0 ≤ B) : bergCusp U x V dict Z G σ z ≤ ENNReal.ofReal B ↔
@@ -645,7 +641,7 @@ theorem bergCusp_le_iff {G : WTZ E} {σ : c.F →+* ℂ} {z : Σ k, FD.Frame ((U
     ENNReal.ofReal_le_ofReal_iff (by positivity)]
 
 /- English proof (translation)
-Distinguish the cases in `h : bergOn (U (goodOf c σ)) (V (goodOf c σ)) (dict (goodOf c σ)) Z G z = ⊤`. Conclude with `h ▸ le_top`. Rewrite using `[← ENNReal.ofReal_toReal h, bergCusp_le_iff ENNReal.toReal_nonneg]`. Conclude with `fun f hf => homN_sq_le _ x _ _ _ (muPart_univ_le _ _ _) hd z ENNReal.toReal_nonneg (ENNReal.ofReal_toReal h).ge ((mem_cuspW.1 hf.1).2 _ (goodEmb_goodOf c σ))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem bergCusp_le_bergOn {G : WTZ E} {σ : c.F →+* ℂ}
     (hd : ∀ g, (dict (goodOf c σ) g).2 ∈ ((U (goodOf c σ)).X (dict (goodOf c σ) g).1).dom)
@@ -670,7 +666,7 @@ def latExt (K : Type) [Field K] [Algebra c.F K] (la : AllWt.Weight Dw) : Submodu
 variable {U Z} in
 
 /- English proof (translation)
-The claim follows from `(Submodule.span_le (p := (secK Xo c K (exOf Dw la 0)).restrictScalars (𝓞 K))).2 (by rintro _ ⟨w, rfl⟩; exact tmul_mem_secK (cusp_le_secZ Z U la w.1.2) 1) hs`.
+A detailed English derivation is pending.
 -/
 theorem latExt_le_secK {K : Type} [Field K] [Algebra c.F K] {la : AllWt.Weight Dw} {s : RulK Xo c K}
     (hs : s ∈ latExt U Z K la) : s ∈ secK Xo c K (exOf Dw la 0) :=
@@ -680,11 +676,11 @@ theorem latExt_le_secK {K : Type} [Field K] [Algebra c.F K] {la : AllWt.Weight D
 variable {U Z} in
 
 /- English proof (translation)
-Establish `key : ∀ a : F.T.Fr, F.abs a ≤ 1 ↔ 0 ≤ nval F.T.V F.e a` using `fun a => nrmOf_le_one_iff _ (nval_ne_bot _ _)`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨w, rfl⟩` from `h`. Rewrite using `[val_tmul, map_one, one_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F.nrm_le_one w.2`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, key]`. Conclude with `(le_min ((key _).1 ha) ((key _).1 hb)).trans (nval_add _ _ _)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a s _ hs`. Rewrite using `[show a • s = (a : K) • s from (algebraMap_smul K a s).symm, val_smul, map_mul]`. Conclude with `mul_le_one₀ (F.abs_φ_le_one a) (F.abs.nonneg _) hs`.
+A detailed English derivation is pending.
 -/
 theorem FinFr.abs_val_le_one {K : Type} [Field K] [NumberField K] [Algebra c.F K] {y : FrPt Xo c K} {v : FinitePlace K}
     (F : FinFr y v) {la : AllWt.Weight Dw} {s : RulK Xo c K} (hs : s ∈ latExt U Z K la) :
@@ -706,7 +702,7 @@ theorem FinFr.abs_val_le_one {K : Type} [Field K] [NumberField K] [Algebra c.F K
 def WtPar.tauWt : AllWt.Weight Dw := (dimFlag Dw + 3) • P.u₁ - P.uc
 
 /- English proof (translation)
-Rewrite using `[WtPar.tauWt, WtPar.uc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem WtPar.kap_add_tauWt :
     (kap Dw + dimFlag Dw • P.u₁) + P.u₂ + P.tauWt = (dimFlag Dw + 3) • P.u₁ := by
@@ -737,20 +733,20 @@ def TauPtAt (X : ℝ) : Prop :=
 variable {U x V dict Z P y}
 
 /- English proof (translation)
-Introduce `s hs h0` and use `(h s hs h0).imp fun _ k => ⟨k.1, k.2.1, k.2.2.trans e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem JacFinAt.mono {X X' : ℝ} (h : JacFinAt U Z P y X) (e : X ≤ X') : JacFinAt U Z P y X' :=
   fun s hs h0 => (h s hs h0).imp fun _ k => ⟨k.1, k.2.1, k.2.2.trans e⟩
 
 /- English proof (translation)
-Take `⟨m, τ, t, A, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `h`. Conclude with `⟨m, τ, t, A, h₁, h₂, h₃, h₄, h₅, h₆, h₇.trans (mul_le_mul_of_nonneg_left e m.cast_nonneg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TauPtAt.mono {X X' : ℝ} (h : TauPtAt U x V dict Z P y X) (e : X ≤ X') : TauPtAt U x V dict Z P y X' := by
   obtain ⟨m, τ, t, A, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩ := h
   exact ⟨m, τ, t, A, h₁, h₂, h₃, h₄, h₅, h₆, h₇.trans (mul_le_mul_of_nonneg_left e m.cast_nonneg)⟩
 
 /- English proof (translation)
-Introduce `s hs h0` and use `by have hS0 : 0 ∉ S := fun e => Nat.not_prime_zero (hS 0 e) refine ⟨primeWt S b, finite_support_primeWt hS0 b, fun v F => ?_, (finsum_primeWt hS0 b).le⟩ obtain ⟨p, hp, hm, hq⟩ := F.exists_prime refine (F.wedgeNrm_le_of_wedgeNorm_le hp.one_lt hm (h s hs h0 v F p hp hm)).trans (le_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem JacFinAt.of_primes (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) (b : ℕ → ℝ)
     (h : ∀ s : Fin (dimFlag Dw) → RulK Xo c K, (∀ i, s i ∈ latExt U Z K P.u₁) →
@@ -768,7 +764,7 @@ theorem JacFinAt.of_primes (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) (b : ℕ
     simp
 
 /- English proof (translation)
-Take `⟨m, τ, t, A, h₁, h₂, h₃, -, -, h₆, -⟩` from `h`. Use `(F.latMax_mem _).1.lt_of_ne fun e => ?_` and prove the remaining obligations. Use `h₆.1 v F` as an intermediate fact. Rewrite `this` using `[← e, zero_pow (by positivity), mul_zero, F.nrm_eq h₂]`. Conclude with `this.not_gt (mul_pos (F.fac_pos _) (FinitePlace.pos_iff.2 h₃))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TauPtAt.latMax_pos {X : ℝ} (h : TauPtAt U x V dict Z P y X) {v : FinitePlace K} (F : FinFr y v) :
     0 < F.latMax (Cusp Z U P.u₁) := by
@@ -779,7 +775,7 @@ theorem TauPtAt.latMax_pos {X : ℝ} (h : TauPtAt U x V dict Z P y X) {v : Finit
   exact this.not_gt (mul_pos (F.fac_pos _) (FinitePlace.pos_iff.2 h₃))
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨F⟩ := FinFr.nonempty y v exact (k.latMax_pos F).not_ge (F.latMax_le_iff.2 fun f _ => by rw [F.nrm_eq (cusp_le_secZ Z U _ f.2), h _ f.2]; simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : ∀ f ∈ Cusp Z U P.u₁, evR Xo c f y = 0) (v : FinitePlace K) (X : ℝ) : ¬ TauPtAt U x V dict Z P y X :=
   fun k => by
@@ -804,44 +800,44 @@ def SupBd (β : ℝ) : Prop := SupBdWt U x V dict Z P.uc β
 variable {U x V dict Z P}
 
 /- English proof (translation)
-Introduce `K _ _ _ y hy` and use `(h K y hy).mono e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem JacFin.mono {X X' : ℝ} (h : JacFin U Z P X) (e : X ≤ X') : JacFin U Z P X' :=
   fun K _ _ _ y hy => (h K y hy).mono e
 
 /- English proof (translation)
-Introduce `K _ _ _ y hy` and use `(h K y hy).mono e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TauPt.mono {X X' : ℝ} (h : TauPt U x V dict Z P X) (e : X ≤ X') : TauPt U x V dict Z P X' :=
   fun K _ _ _ y hy => (h K y hy).mono e
 
 /- English proof (translation)
-Introduce `σ z hz f hf` and use `(h σ z hz f hf).trans (mul_le_mul_of_nonneg_right e (sq_nonneg _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SupBdWt.mono {la : AllWt.Weight Dw} {β β' : ℝ} (h : SupBdWt U x V dict Z la β) (e : β ≤ β') :
     SupBdWt U x V dict Z la β' :=
   fun σ z hz f hf => (h σ z hz f hf).trans (mul_le_mul_of_nonneg_right e (sq_nonneg _))
 
 /- English proof (translation)
-The claim follows from `SupBdWt.mono h e`.
+A detailed English derivation is pending.
 -/
 theorem SupBd.mono {β β' : ℝ} (h : SupBd U x V dict Z P β) (e : β ≤ β') : SupBd U x V dict Z P β' := SupBdWt.mono h e
 
 /- English proof (translation)
-Rewrite using `[SupBd, WtPar.wt, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem supBd_iff_wt_zero {β : ℝ} : SupBd U x V dict Z P β ↔ SupBdWt U x V dict Z (P.wt 0) β := by
   rw [SupBd, WtPar.wt, zero_smul, add_zero]
 
 /- English proof (translation)
-The claim follows from `forall₃_congr fun _ _ _ => (bergCusp_le_iff hβ).symm`.
+A detailed English derivation is pending.
 -/
 theorem supBdWt_iff {la : AllWt.Weight Dw} {β : ℝ} (hβ : 0 ≤ β) : SupBdWt U x V dict Z la β ↔
     ∀ σ, ∀ z ∈ framesOn (U (goodOf c σ)) Z, bergCusp U x V dict Z (wtOf Dw la 0) σ z ≤ ENNReal.ofReal β :=
   forall₃_congr fun _ _ _ => (bergCusp_le_iff hβ).symm
 
 /- English proof (translation)
-The claim follows from `(supBdWt_iff hβ).2 fun σ z hz => (bergCusp_le_bergOn (hd _ (goodEmb_goodOf c σ)) ⟨z.1, z.2, hz.1⟩).trans (h _ (goodEmb_goodOf c σ) ⟨z.1, z.2, hz.1⟩ hz)`.
+A detailed English derivation is pending.
 -/
 theorem SupBdWt.of_bergOn {la : AllWt.Weight Dw} {β : ℝ} (hβ : 0 ≤ β)
     (hd : ∀ σ, GoodEmb c σ → ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom)
@@ -851,7 +847,7 @@ theorem SupBdWt.of_bergOn {la : AllWt.Weight Dw} {β : ℝ} (hβ : 0 ≤ β)
     (h _ (goodEmb_goodOf c σ) ⟨z.1, z.2, hz.1⟩ hz)
 
 /- English proof (translation)
-The claim follows from `h _ _ (F.mem_framesOn hy) f hf`.
+A detailed English derivation is pending.
 -/
 theorem SupBdWt.nrm_sq_le {la : AllWt.Weight Dw} {β : ℝ} (h : SupBdWt U x V dict Z la β) {K : Type} [Field K]
     [Algebra c.F K] {y : FrPt Xo c K} (hy : LiesOn Z y) {ρ : K →+* ℂ} (F : InfFr U y ρ) {f : Rul Xo c}

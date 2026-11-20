@@ -11,9 +11,9 @@ section Var
 variable {S : Type} [CommRing S] {l : ℕ} [Fact l.Prime] {ϖ x : S}
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial S with h | h` into its components or cases. Rewrite using `[Subsingleton.elim (x ^ l ^ m - 1) 0]`. Conclude with `zero_mem _`. Use `haveI : CharP S l := (CharP.charP_iff_prime_eq_zero Fact.out).2 hl haveI : ExpChar S l := ExpChar.prime Fact.out`. Establish `e : x ^ l ^ m - 1 = (x - 1) ^ l ^ m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_pow_char_pow, one_pow]`. Rewrite using `[e, ← Ideal.span_singleton_pow]`. Conclude with `Ideal.pow_mem_pow hx _`.
+A detailed English derivation is pending.
 -/
 theorem pow_sub_one_mem (hl : (l : S) = 0) (hx : x - 1 ∈ Ideal.span {ϖ}) (m : ℕ) :
     x ^ l ^ m - 1 ∈ Ideal.span {ϖ ^ l ^ m} := by
@@ -28,11 +28,11 @@ theorem pow_sub_one_mem (hl : (l : S) = 0) (hx : x - 1 ∈ Ideal.span {ϖ}) (m :
     exact Ideal.pow_mem_pow hx _
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℕ, a ≤ b → a ≡ b [MOD l ^ m] → x ^ b - x ^ a ∈ Ideal.span {ϖ ^ l ^ m}`. Introduce `a b hab h`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' hab).1 h`. Establish `hb : b = a + l ^ m * c` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : x ^ l ^ m - 1 ∣ (x ^ l ^ m) ^ c - 1 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using sub_dvd_pow_sub_pow (x ^ l ^ m) 1 c`. Establish `e : x ^ b - x ^ a = (x ^ l ^ m - 1) * (d * x ^ a)`. Rewrite using `[hb, pow_add, pow_mul]`. Take the linear combination `x ^ a * hd`. Rewrite using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (pow_sub_one_mem hl hx m)`. Break down `le_total a b with hab | hab` into its components or cases. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (key a b hab h)`. Conclude with `key b a hab h.symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_sub_pow_mem (hl : (l : S) = 0) (hx : x - 1 ∈ Ideal.span {ϖ}) {a b m : ℕ}
     (h : a ≡ b [MOD l ^ m]) : x ^ a - x ^ b ∈ Ideal.span {ϖ ^ l ^ m} := by
@@ -53,20 +53,20 @@ theorem pow_sub_pow_mem (hl : (l : S) = 0) (hx : x - 1 ∈ Ideal.span {ϖ}) {a b
   · exact key b a hab h.symm
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ h)`.
+A detailed English derivation is pending.
 -/
 theorem span_pow_le {k n : ℕ} (h : k ≤ n) : Ideal.span {ϖ ^ n} ≤ Ideal.span {ϖ ^ k} :=
   Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ h)
 
 /- English proof (translation)
-The claim follows from `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`.
+A detailed English derivation is pending.
 -/
 theorem le_pow (k : ℕ) : k ≤ l ^ k := (Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_tends (ϖ := ϖ) (fun m => x ^ a m) fun k => ⟨k, fun m hm => span_pow_le (le_pow (l := l) k) (pow_sub_pow_mem hl hx (ha k m hm))⟩`. Use `⟨L, fun m => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hL (l ^ m)`. Establish `h1` using `hM (max M m) (le_max_left _ _)`. Establish `h2` using `pow_sub_pow_mem (ϖ := ϖ) hl hx (ha m (max M m) (le_max_right _ _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_mem h2 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_lim [IsAdicComplete (Ideal.span {ϖ}) S] (hl : (l : S) = 0)
     (hx : x - 1 ∈ Ideal.span {ϖ}) (a : ℕ → ℕ) (ha : ∀ m m', m ≤ m' → a m' ≡ a m [MOD l ^ m]) :
@@ -82,7 +82,7 @@ theorem exists_lim [IsAdicComplete (Ideal.span {ϖ}) S] (hl : (l : S) = 0)
   ring
 
 /- English proof (translation)
-The claim follows from `Tends.unique (ϖ := ϖ) (x := fun _ => a) (tends_const a) fun k => ⟨0, fun _ _ => span_pow_le (le_pow (l := l) k) (h k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_mem [IsHausdorff (Ideal.span {ϖ}) S] {a b : S}
     (h : ∀ m, a - b ∈ Ideal.span {ϖ ^ l ^ m}) : a = b :=
@@ -94,7 +94,7 @@ end Var
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_val, ZMod.natCast_zmod_val, PadicInt.cast_toZModPow _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_modEq {m m' : ℕ} (h : m ≤ m') (z : ℤ_[l]) :
     (PadicInt.toZModPow m' z).val ≡ (PadicInt.toZModPow m z).val [MOD l ^ m] := by
@@ -102,7 +102,7 @@ theorem val_modEq {m m' : ℕ} (h : m ≤ m') (z : ℤ_[l]) :
     PadicInt.cast_toZModPow _ _ h]
 
 /- English proof (translation)
-Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_add, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, map_add, map_one, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_add_one (m : ℕ) (z : ℤ_[l]) :
     (PadicInt.toZModPow m (z + 1)).val ≡ (PadicInt.toZModPow m z).val + 1 [MOD l ^ m] := by
@@ -110,13 +110,11 @@ theorem val_add_one (m : ℕ) (z : ℤ_[l]) :
     map_add, map_one, Nat.cast_one]
 
 /- English proof (translation)
-Use `haveI hc : IsAdicComplete (Ideal.span {A.pi}) A.A := A.compl`. Establish `hl : (l : A.A) = 0` using `A.natCast_l`. Use `choose L hL using fun z : ℤ_[l] => exists_lim (ϖ := A.pi) hl hx (fun m => (PadicInt.toZModPow m z).val) (fun m m' h => val_modEq h z)`. Use `⟨⟨L, fun k => ?_⟩, fun m z => hL z m, fun z => ?_⟩` and prove the remaining obligations. Establish `e : (Ideal.Quotient.mk (Ideal.span {A.pi ^ k})) ∘ L = (fun c : ZMod (l ^ k) => Ideal.Quotient.mk (Ideal.span {A.pi ^ k}) (x ^ c.val)) ∘ PadicInt.toZModPow k` using `funext fun z => Ideal.Quotient.eq.2 (span_pow_le (le_pow (l := l) k) (hL z k))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : IsLocallyConstant ((Ideal.Quotient.mk (Ideal.span {A.pi ^ k})) ∘ L)`. Rewrite using `[e]`. Conclude with `(GlobalTheory.CompanionTheory.PadicShift.isLocallyConstant_toZModPow l k).comp _`. Conclude with `h`. Use `eq_of_forall_mem (ϖ := A.pi) (l := l) fun m => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hL (z + 1) m`. Establish `h2` using `Ideal.mul_mem_left _ x (hL z m)`. Establish `h3` using `pow_sub_pow_mem (ϖ := A.pi) hl hx (val_add_one m z)`. Use `add_mem h1 (sub_mem h3 h2)` as an intermediate fact. Express the relevant statement in the definitionally equal form `L (z + 1) - x * L z ∈ _`.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_fn (A : PAlg l) (x : A.A) (hx : x - 1 ∈ Ideal.span {A.pi}) :
     ∃ η : (A.cont ℤ_[l]).A,
@@ -146,9 +144,9 @@ theorem exists_fn (A : PAlg l) (x : A.A) (hx : x - 1 ∈ Ideal.span {A.pi}) :
     ring
 
 /- English proof (translation)
-Establish `hx : (base l).s (ε.e 0) - 1 ∈ Ideal.span {(base l).pi}` using `((RL.sharp_cong (base l)).2.1 _ 1).1 (by`. Rewrite using `[ε.sharp_e (base l), map_one, sub_self]`. Conclude with `zero_mem _)`. Take `⟨η, h1, h2⟩` from `exists_fn (base l) _ hx`. Use `⟨η, h1, cont_ext fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Hom.f ((base l).evCont z) (((base l).cont ℤ_[l]).s (ε.e 0)) = (base l).s (ε.e 0)` using `RingHom.congr_fun (Hom.comm ((base l).evCont z)) _`. Rewrite using `[map_mul, e]`. Conclude with `h2 z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eta (ε : Eps l) : ∃ η : ((base l).cont ℤ_[l]).A,
     (∀ (m : ℕ) (z : ℤ_[l]), Hom.f ((base l).evCont z) η - (base l).s (ε.e 0) ^ (PadicInt.toZModPow m z).val ∈ Ideal.span {(base l).pi ^ (l ^ m)}) ∧

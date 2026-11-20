@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefLift
 
 /- English proof (translation)
-Introduce `D V S M h τ`. Take `⟨h1, h2, -, -, -, h3, -⟩` from `GlobalTheory.CompactModel.model_allPos D V S M τ (funext fun a => h τ a)`. Conclude with `⟨h1, h2, fun U hU => h3 U le_top fun g hg => hU ⟨g, hg.1⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AllPlus.finite_smooth_irreducible : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), AllPlus M → ∀ τ, FiniteDimensional ℂ (M.H τ) ∧ M.sm τ = ⊤ ∧ ∀ U : Submodule ℂ (M.H τ), (∀ u : Matrix.unitaryGroup (Fin V.rank) ℂ, ∀ x ∈ U, M.σ τ u x ∈ U) → U = ⊥ ∨ U = ⊤ := by
   intro D V S M h τ

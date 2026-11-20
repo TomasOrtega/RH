@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 open _root_.GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.AddBlockData
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P D`. Take `⟨d₀, hd₀⟩` from `hA ι n P (toObjects D)`. Use `⟨d₀, fun d hd ↦ ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hd₀ d hd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hGd, -⟩` from `(exists_chartForms_iff_isFormSystem D d g).2 hg`. Conclude with `⟨G, hGd⟩`. Introduce `hB ι _ _ n P D`. Take `⟨d₀, hd₀⟩` from `hB ι n P (ofObjects D)`. Use `⟨d₀, fun d hd ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨G, hGd⟩` from `hd₀ d hd`. Conclude with `⟨G.g, (isFormSystem_iff_exists_chartForms D d G.g).2 ⟨G, hGd, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChartFormsAlt.equiv :
     _root_.GroundTheory.Heights₂.Heights.ChartFormsAlt.Statement ↔

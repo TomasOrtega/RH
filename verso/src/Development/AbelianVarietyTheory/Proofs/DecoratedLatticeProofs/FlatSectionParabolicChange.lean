@@ -12,17 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn
 
 /- English proof (translation)
-Introduce `D A μ hμ κ hκ a p hp χ s₁ φ hφ`. Take `⟨hlaw, hcont, hK⟩` from `(mem_degPS A a).1 hφ`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `q hq a' ha' g`. Establish `hs : κ.symm q ∈ siegel A` using `(mem_siegel_iff_chart_mem_P D A μ hμ κ hκ _).2 (by simpa using hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdet` using `chart_aP_eq_det D A μ hμ κ hκ ⟨_, hs⟩ a' (by simpa using ha')`. Establish `h1` using `hlaw ⟨_, hs⟩ (κ.symm g * (p : GA D (dblSp A))⁻¹)`. Rewrite `h1` using `[hdet]`. Use `show φ (κ.symm (q * g) * (p : GA D (dblSp A))⁻¹) = _`. Rewrite using `[map_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Conclude with `hcont.comp (((GlobalTheory.T.continuous_standardUnitaryChart_and_symm D A μ hμ κ hκ).2).mul continuous_const)`. Take `⟨W, hW, hWk⟩` from `isKFinite_iff.1 hK`. Use `isKFinite_iff.2 ⟨W.map (LinearMap.funLeft ℂ ℂ (fun x => κ.symm x * (p : GA D (dblSp A))⁻¹)), inferInstance, fun k hk => ⟨_, hWk ((p : GA D (dblSp A)) * κ.symm k * (p : GA D (dblSp A))⁻¹) ?_, funext fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify `hk` using `[mul_assoc]`. Express the relevant statement in the definitionally equal form `φ ((κ.symm x * (p : GA D (dblSp A))⁻¹) * ((p : GA D (dblSp A)) * κ.symm k * (p : GA D (dblSp A))⁻¹)) = φ (κ.symm (x * k) * (p : GA D (dblSp A))⁻¹)`. Simplify using `[mul_assoc]`. Introduce `s g`. Establish `hr : 0 < absA D (aP A p)` using `hom_pos _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : npow (absA D (aP A p)) (s₁ - s) * npow (absA D (aP A p)) (s - s₁) = 1`. Rewrite using `[← npow_add hr]`. Simplify using the standard rewrite rules. Simplify using `only [stdSec, hgtStd, map_mul, MulEquiv.symm_apply_apply, mul_inv_cancel_right, Doubling.npow_mul]`. Use `show φ g * npow (hgt A a g) (s - s₁) = _`.
-
-Take the linear combination `(-(φ g * npow (hgt A a g) (s - s₁))) * e1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem degPS_chart_isSection : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ (a : GL (Fin A.rank) (AE D)) (p : siegel A), IsConj A a κ p → ∀ (χ : (AE D)ˣ →* Circle) (s₁ : ℂ), ∀ φ ∈ degPS A a χ s₁, IsSection χ s₁ (fun x => φ (κ.symm x * (p : GA D (dblSp A))⁻¹)) ∧ ∀ (s : ℂ) (g : GA D (dblSp A)), flat A a φ s₁ s g = npow (absA D (aP A p)) (s₁ - s) * stdSec (hgtStd A a κ p) (fun x => φ (κ.symm x * (p : GA D (dblSp A))⁻¹)) s₁ s (κ (g * p)) := by
   intro D A μ hμ κ hκ a p hp χ s₁ φ hφ

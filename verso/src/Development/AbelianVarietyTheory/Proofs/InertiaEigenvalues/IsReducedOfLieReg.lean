@@ -8,7 +8,7 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Introduce `_ B h` and use `GlobalTheory.SepGen.isReduced B.g h.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InvAlg.isReduced_of_lieReg : ∀ (K : UQ) (B : InvAlg K), B.LieReg → IsReduced B.A :=
   fun _ B h => GlobalTheory.SepGen.isReduced B.g h.2

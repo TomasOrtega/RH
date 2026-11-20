@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory.BirationalBig
 
 /- English proof (translation)
-Introduce `Q F _ _ S hV hb hB`. Establish `hstr : strHom F S.Y = S.str` using `strHom_eq fun _ => rfl`. Establish `hproj : IsProjOver (strHom F S.Y)` using `hstr ▸ hV.proj`. Establish `hnef : IsNef F S.L` using `IsGenerated.isNef_of_isProjOver ⟨S.N, S.b, hb⟩ hV.proj`. Conclude with `⟨hnef, (Q.nef.2.2.isBig_iff hproj (GlobalTheory.ImageDegree.topologicalKrullDim_eq S hV) hnef).2 (GlobalTheory.ImageDegree.degree_image_eq_topSelf Q F S hV hb hB).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isNef_and_isBig : Quoted → ∀ (F : Type) [Field F] [NumberField F] (S : LinSys F), S.IsVariety → S.BasePointFree → S.Birational → IsNef F S.L ∧ IsBig F S.L := by
   intro Q F _ _ S hV hb hB

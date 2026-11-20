@@ -15,11 +15,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL]
 
 /- English proof (translation)
-Use `IsModuleTopology.toContinuousSMul LL A.V` as an intermediate fact. Set `b` to `Module.finBasis LL A.V`. Establish `e : (fun p : G × A.V => A.ρ p.1 p.2) = fun p => ∑ i, (b.repr p.2 i) • A.ρ p.1 (b i)`. Use function extensionality and compare the values at `p`. Establish `h` using `congrArg (A.ρ p.1) (b.sum_repr p.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul] at h`. Conclude with `h.symm`. Rewrite using `[e]`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun v : A.V => b.coord i v` using `IsModuleTopology.continuous_of_linearMap (b.coord i)`. Conclude with `(h1.comp continuous_snd).smul ((A.cont (b i)).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_act (A : GRep G Qp LL O) : Continuous fun p : G × A.V => A.ρ p.1 p.2 := by
   have := IsModuleTopology.toContinuousSMul LL A.V
@@ -38,7 +38,7 @@ theorem continuous_act (A : GRep G Qp LL O) : Continuous fun p : G × A.V => A.�
   exact (h1.comp continuous_snd).smul ((A.cont (b i)).comp continuous_fst)
 
 /- English proof (translation)
-Use `IsModuleTopology.toContinuousSMul LL A'.V` as an intermediate fact. Conclude with `IsModuleTopology.continuous_bilinear_of_finite_left P`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pair (A A' : GRep G Qp LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL) :
     Continuous fun p : A.V × A'.V => P p.1 p.2 := by
@@ -46,7 +46,7 @@ theorem continuous_pair (A A' : GRep G Qp LL O) (P : A.V →ₗ[LL] A'.V →ₗ[
   exact IsModuleTopology.continuous_bilinear_of_finite_left P
 
 /- English proof (translation)
-The claim follows from `(continuous_pair A A' P).comp ((ha.comp continuous_fst).prodMk ((continuous_act A').comp (continuous_fst.prodMk (hb.comp continuous_snd))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cup (A A' : GRep G Qp LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL) {a : G → A.V}
     {b : G → A'.V} (ha : Continuous a) (hb : Continuous b) : Continuous (cupL A'.ρ P a b) :=
@@ -70,7 +70,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 omit [TopologicalSpace G] in
 
 /- English proof (translation)
-Rewrite using `[hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem char_pair (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y)
     (g : G) (x : V) (y : V') : charRep (cycLL PD LL) g (P x y) = P (ρ g x) (ρ' g y) := by
@@ -78,7 +78,7 @@ theorem char_pair (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨g, h, k⟩`. Use `show charRep (cycLL PD LL) g (P (a h) (ρ' h (b k))) - P (a (g * h)) (ρ' (g * h) (b k)) + P (a g) (ρ' g (b (h * k))) - P (a g) (ρ' g (b h)) = 0`. Rewrite using `[char_pair PD hd, ha, hb, map_mul, Module.End.mul_apply]`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem d2_cup (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y)
     {a : G → V} {b : G → V'} (ha : ∀ g h, a (g * h) = a g + ρ g (a h))
@@ -92,7 +92,7 @@ theorem d2_cup (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨g, h⟩`. Use `show charRep (cycLL PD LL) g (P (a h) (b h)) - P (a (g * h)) (b (g * h)) + P (a g) (b g) = -P (a g) (ρ' g (b h)) - P (ρ g (a h)) (b g)`. Rewrite using `[char_pair PD hd, ha, hb]`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem d1_pair (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y)
     {a : G → V} {b : G → V'} (ha : ∀ g h, a (g * h) = a g + ρ g (a h))
@@ -109,7 +109,7 @@ theorem d1_pair (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) 
 variable [TopologicalSpace LL]
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `h`. Use `⟨-u - fun g => P (a g) (b g), hu.neg.sub hc, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_neg, e, d1_pair PD hd ha hb]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cob_of_flip [IsTopologicalRing LL]
     (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y)
@@ -122,9 +122,9 @@ theorem cob_of_flip [IsTopologicalRing LL]
   abel
 
 /- English proof (translation)
-Use `⟨fun g => P x (b g), hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Use `show charRep (cycLL PD LL) g (P x (b h)) - P x (b (g * h)) + P x (b g) = P (a g) (ρ' g (b h))`. Rewrite using `[char_pair PD hd, ha, hb]`. Simplify using `only [map_add, map_sub, LinearMap.sub_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cob_of_left (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y)
     {a : G → V} {b : G → V'} {x : V} (ha : ∀ g, a g = ρ g x - x)
@@ -141,13 +141,13 @@ theorem cob_of_left (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LL
 end Cup
 
 /- English proof (translation)
-Introduce `D l _ K LL _ _ _ O _ _ hO A A' P hP`. Establish `: IsTopologicalRing LL` using `hO.2.2.2.1`. Establish `hd` using `hP.1`. Establish `hdf : ∀ g y x, P.flip (A'.ρ g y) (A.ρ g x) = ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL) * P.flip y x` using `fun g y x => hd g x y`. Use `⟨⟨hdf, hP.2.2.1, hP.2.1, hP.2.2.2.symm⟩, fun a ha b hb => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hac, hacoc⟩` from `ha`. Take `⟨hbc, hbcoc⟩` from `hb`. Establish `hc : Continuous fun g => P (a g) (b g)` using `(continuous_pair A A' P).comp (hac.prodMk hbc)`. Establish `hflip : CobL ((D.loc l).PD K) (cupL A.ρ P.flip b a) → CobL ((D.loc l).PD K) (cupL A'.ρ P a b)` using `cob_of_flip _ hd hacoc hbcoc hc`. Use `⟨continuous_cup A A' P hac hbc, d2_cup _ hd hacoc hbcoc, ⟨fun h => ?_, hflip⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cob_of_flip _ (P := P.flip) hdf hbcoc hacoc hc ?_` and prove the remaining obligations. Rewrite using `[LinearMap.flip_flip]` and apply the resulting hypothesis. Introduce and unpack `(h | h)`. Take `⟨x, hx⟩` from `LinearMap.mem_range.1 h`. Conclude with `cob_of_left _ hd (x := x) (fun g => by rw [← hx]; rfl) hbcoc ((continuous_pair A A' P).comp (continuous_const.prodMk hbc))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `LinearMap.mem_range.1 h`. Conclude with `hflip (cob_of_left _ (P := P.flip) hdf (x := y) (fun g => by rw [← hy]; rfl) hacoc ((continuous_pair A' A P.flip).comp (continuous_const.prodMk hac)))`.
+A detailed English derivation is pending.
 -/
 theorem cup_flip : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 ((D.loc l).PD K) A.ρ A'.ρ P → IsDual1 ((D.loc l).PD K) A'.ρ A.ρ P.flip ∧ ∀ a ∈ continuousCocycles A.ρ, ∀ b ∈ continuousCocycles A'.ρ, Continuous (cupL A'.ρ P a b) ∧ ReciprocityTheory.Def.d2 (charRep (cycLL ((D.loc l).PD K) LL)) (cupL A'.ρ P a b) = 0 ∧ (CobL ((D.loc l).PD K) (cupL A'.ρ P a b) ↔ CobL ((D.loc l).PD K) (cupL A.ρ P.flip b a)) ∧ ((a ∈ B1 A.ρ ∨ b ∈ B1 A'.ρ) → CobL ((D.loc l).PD K) (cupL A'.ρ P a b)) := by
   intro D l _ K LL _ _ _ O _ _ hO A A' P hP

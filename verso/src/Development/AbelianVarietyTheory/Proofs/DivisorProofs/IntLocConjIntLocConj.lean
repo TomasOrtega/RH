@@ -55,7 +55,7 @@ abbrev extIdeal (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) : Ideal (
   v.asIdeal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))
 
 /- English proof (translation)
-The claim follows from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E _).2 ⟨s, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem conj_algebraMap (s : 𝓞 (maximalRealSubfield E)) :
     IsCMField.ringOfIntegersComplexConj E (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s) =
@@ -63,9 +63,9 @@ theorem conj_algebraMap (s : 𝓞 (maximalRealSubfield E)) :
   (IsCMField.ringOfIntegersComplexConj_eq_self_iff E _).2 ⟨s, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `IsCMField.ringOfIntegersComplexConj E (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s) ∈ _`. Rewrite using `[conj_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hs`.
+A detailed English derivation is pending.
 -/
 theorem extIdeal_le_comap (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
     extIdeal v ≤ (extIdeal v).comap (IsCMField.ringOfIntegersComplexConj E : 𝓞 E →+* 𝓞 E) := by
@@ -99,7 +99,7 @@ theorem coe_intLocConj (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (z
       Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv (maximalRealSubfield E) v) (cj E) z := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_intLocConj, coe_intLocIncl, coe_intLocIncl, IsCMField.coe_ringOfIntegersComplexConj]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem intLocConj_intLocIncl (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (x : 𝓞 E) :
     intLocConj v (intLocIncl v x) = intLocIncl v (IsCMField.ringOfIntegersComplexConj E x) := by
@@ -108,9 +108,9 @@ theorem intLocConj_intLocIncl (v : HeightOneSpectrum (𝓞 (maximalRealSubfield 
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_intLocConj, coe_intLocConj]`. Proceed by induction on `(z : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem intLocConj_intLocConj (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (z : intLoc (maximalRealSubfield E) E v) : intLocConj v (intLocConj v z) = z := by

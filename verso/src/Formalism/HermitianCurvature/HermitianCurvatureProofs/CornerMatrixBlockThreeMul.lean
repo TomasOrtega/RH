@@ -15,11 +15,11 @@ section what₂
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k p ρ).sum_comp]`. Rewrite using `[Finset.sum_eq_single (Sum.inr a)]`. Rewrite using `[Ux3.block3_apply]`. Simplify using the standard rewrite rules. Introduce `q _ hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ux3.block3_apply]`. Break down `q with (q | q) | q` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `: q ≠ a` using `fun h => hq (by rw [h])`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply, this.symm]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem block_three_mul_apply_last (A11 : Matrix (Fin p) (Fin p) ℂ) (A12 : Matrix (Fin p) (Fin (2 * ρ + k + 1)) ℂ)
     (A13 : Matrix (Fin p) (Fin p) ℂ) (A21 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ) (A22 : B.Mat k ρ)
@@ -38,14 +38,14 @@ theorem block_three_mul_apply_last (A11 : Matrix (Fin p) (Fin p) ℂ) (A12 : Mat
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Ux3.block_index_last_val]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zh_row (a : Fin p) : (⟨2 * (p + ρ) + k - a.val, by omega⟩ : Fin (2 * (p + ρ) + k + 1)) =
     U.eB k p ρ (Sum.inr ⟨p - 1 - a.val, by omega⟩) := by
   ext; rw [Ux3.block_index_last_val]; simp; omega
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [U.Zh]`. Rewrite using `[zh_row, block_three_mul_apply_last]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_matrix_block_three_mul (A11 : Matrix (Fin p) (Fin p) ℂ) (A12 : Matrix (Fin p) (Fin (2 * ρ + k + 1)) ℂ)
     (A13 : Matrix (Fin p) (Fin p) ℂ) (A21 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ) (A22 : B.Mat k ρ)
@@ -56,13 +56,13 @@ theorem corner_matrix_block_three_mul (A11 : Matrix (Fin p) (Fin p) ℂ) (A12 : 
   rw [zh_row, block_three_mul_apply_last]
 
 /- English proof (translation)
-Rewrite using `[Ux3.rn_eq]`. Conclude with `corner_matrix_block_three_mul _ _ _ _ _ _ g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zh_rn_mul (x : U.RC k p ρ) (g : B.Mat k (p + ρ)) : U.Zh k p ρ (U.Rn k p ρ x * g) = U.Zh k p ρ g := by
   rw [Ux3.rn_eq]; exact corner_matrix_block_three_mul _ _ _ _ _ _ g
 
 /- English proof (translation)
-Unfold `U.embG`. Conclude with `corner_matrix_block_three_mul _ _ _ _ _ _ g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zh_embG_mul (y : B.Mat k ρ) (g : B.Mat k (p + ρ)) : U.Zh k p ρ (U.embG k p ρ y * g) = U.Zh k p ρ g := by
   unfold U.embG; exact corner_matrix_block_three_mul _ _ _ _ _ _ g
@@ -75,7 +75,7 @@ variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpac
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `sP`. Use `split_ifs`. Rewrite using `[Matrix.mul_assoc, zh_rn_mul, zh_embG_mul]`. Rewrite using `[Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zh_sP_mul (Bj : B.RealPlaceData k ρ Wp Wq) (x : XP k p ρ) (g : B.Mat k (p + ρ)) :
     U.Zh k p ρ (sP Bj x * g) = U.Zh k p ρ g := by
@@ -85,13 +85,13 @@ theorem zh_sP_mul (Bj : B.RealPlaceData k ρ Wp Wq) (x : XP k p ρ) (g : B.Mat k
   · rw [Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [U.Zh, Matrix.mul_apply]`. Establish `hcol : ∀ c : Fin (2 * (p + ρ) + k + 1), h c ⟨b.val, by omega⟩ = if c.val = b.val then 1 else 0`. Introduce `c`. Establish `h1` using `congrFun (hh.2.1 ⟨b.val, by omega⟩).1 c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : eI k (p + ρ) ⟨b.val, by omega⟩ = ⟨b.val, by omega⟩` using `rfl`. Rewrite `h1` using `[e]`. Rewrite using `[← Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply h ⟨b.val, by omega⟩ c, h1]`. Unfold `bvec`. Distinguish the cases in `hcb : c.val = b.val`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hcb, Pi.single_apply, if_pos (Fin.ext hcb)]`. Rewrite using `[if_neg hcb, Pi.single_apply, if_neg (fun h' => hcb (congrArg Fin.val h'))]`. Rewrite using `[Finset.sum_eq_single ⟨b.val, by omega⟩]`. Rewrite using `[hcol, if_pos rfl, mul_one]`. Introduce `c _ hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcol, if_neg (fun h' => hc (Fin.ext h')), mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem zh_mul_UW (z : Fin (2 * (p + ρ) + k + 1) → ℂ) (g h : B.Mat k (p + ρ)) (hh : h ∈ UWset k (p + ρ) z) :
     U.Zh k p ρ (g * h) = U.Zh k p ρ g := by
@@ -114,9 +114,9 @@ theorem zh_mul_UW (z : Fin (2 * (p + ρ) + k + 1) → ℂ) (g h : B.Mat k (p + �
   · intro h'; exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Use extensionality with `c b`. Simplify using `only [Matrix.of_apply, G.upper, G.strictUpper, Matrix.add_apply, Matrix.one_apply]`. Break down `lt_trichotomy c b with hcb | rfl | hcb` into its components or cases. Rewrite using `[if_neg (ne_of_lt hcb), dif_pos hcb, zero_add]`. Rewrite using `[LeftFubiniLemmas.n_col nn hn c _ le_rfl, if_pos rfl, if_pos rfl, dif_neg (lt_irrefl _), add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LeftFubiniLemmas.n_col nn hn b _ (le_of_lt hcb), if_neg (by simp only; omega), if_neg (ne_of_gt hcb), dif_neg (not_lt.mpr (le_of_lt hcb)), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nblk_upper (nn : B.Mat k (p + ρ)) (hn : nn ∈ Nset k (p + ρ)) :
     Matrix.of (fun c b : Fin p => nn ⟨c.val, by omega⟩ ⟨b.val, by omega⟩) =
@@ -137,27 +137,23 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨C2, hC2⟩` from `Formalism.FourierDecayAlt.P.aux_statement_17 p 0 σ d hd`. Establish `hcont : Continuous (fun c : B.Mat k (p + ρ) => U.mx (U.Zh k p ρ c))`. Establish `e1 : (fun c : B.Mat k (p + ρ) => U.mx (U.Zh k p ρ c)) = fun c => ‖(fun a b => c ⟨2 * (p + ρ) + k - a.val, by omega⟩ ⟨b.val, by omega⟩ : Fin p → Fin p → ℂ)‖` using `rfl`. Rewrite using `[e1]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_norm.comp ?_` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (⟨b.val, by omega⟩ : Fin (2 * (p + ρ) + k + 1))).comp (continuous_apply (⟨2 * (p + ρ) + k - a.val, by omega⟩ : Fin (2 * (p + ρ) + k + 1)))`. Take `⟨M, hM⟩` from `hCs.exists_bound_of_continuousOn hcont.continuousOn`. Use `set M0 : ℝ := max M 0 with hM0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set C0 : ℝ := max C2 0 with hC0`. Use `⟨C0 * M0 ^ p, fun v hv g hg hZ => ?_⟩` and prove the remaining obligations. Rewrite `hZ` using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Unfold `pbF`. Rewrite using `[← integral_zero (XP k p ρ) (Wq →L[ℂ] Wp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_goodP Bj] with x hx`. Use `show pbI Bj B0 rfl H g x = 0`. Unfold `pbI`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK : PBG.Kr B0 H (sP Bj x * g) = 0`. Unfold `PBG.Kr`. Rewrite using `[← integral_zero (Mt k (p + ρ) × Mt k (p + ρ)) (Wq →L[ℂ] Wp)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR B0] with ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = 0`. Establish `hc : sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1 ∉ Cs`. Introduce `hcC`. Establish `hZc : U.Zh k p ρ (sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1) = U.headH σ d v (fun q : G.UT p => (Matrix.of ξ.2 : B.Mat k (p + ρ)) ⟨q.1.1.val, by omega⟩ ⟨q.1.2.val, by omega⟩)`. Rewrite using `[zh_mul_UW _ _ _ hξ.1, LeftFubiniLemmas.zh_mul_N _ _ hξ.2, zh_sP_mul, hZ, nblk_upper _ hξ.2, (LeftFubiniLemmas.head_hermitian_eq p σ d v _).1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set η : U.XiH p 0 σ := ((fun i => i.elim0, fun _ i => i.elim0), (v, fun q : G.UT p => (Matrix.of ξ.2 : B.Mat k (p + ρ)) ⟨q.1.1.val, by omega⟩ ⟨q.1.2.val, by omega⟩)) with hη`. Establish `hZj : U.ZjH σ d η (fun i => i.elim0) = U.Zh k p ρ (sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1)`. Rewrite using `[hZc, LeftFubiniLemmas.lower_corner_hermitian_zero]`. Establish `hb` using `(hC2 η (fun i => i.elim0)).2.2.1`. Rewrite `hb` using `[hZj]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hM _ hcC`. Rewrite `hm` using `[Real.norm_eq_abs, abs_le]`. Establish `hmx0 : 0 ≤ U.mx (U.Zh k p ρ (sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1))` using `norm_nonneg _`. Establish `h1 : U.mx (U.Zh k p ρ (sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1)) ≤ M0` using `hm.2.trans (le_max_left _ _)`. Establish `h2 : ‖v‖ ≤ C0 * M0 ^ p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hb.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ hmx0 h1 p) (pow_nonneg hmx0 _) (le_max_right _ _)`. Conclude with `absurd hv (not_lt.mpr h2)`. Establish `hGV : sP Bj x * g * Matrix.of ξ.2 * Matrix.of ξ.1 ∈ B.GV k (p + ρ)`. Establish `hs : sP Bj x ∈ B.GV k (p + ρ)`.
-
-Unfold `sP`. Rewrite using `[if_pos hx]`. Use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (LeftFubiniLemmas.rn_nset _).1 ?_` and prove the remaining obligations. Rewrite using `[← Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Tower.lev_GV p ρ _ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.1.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.2.1))`.
-
-Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hs hg) hξ.2.1) hξ.1.1`. Rewrite using `[hH _ hGV hc, ContinuousLinearMap.zero_comp, smul_zero]`. Rewrite using `[hK, ContinuousLinearMap.comp_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_head_support (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)

@@ -20,42 +20,42 @@ variable {K : Type*} [Field K] [NumberField K]
 def infC (a : 𝔸[K]) : mixedSpace K := homeomorphMixedSpace K a.1
 
 /- English proof (translation)
-The claim follows from `homeomorphMixedSpace_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem infC_mul (a b : 𝔸[K]) : infC (a * b) = infC a * infC b :=
   homeomorphMixedSpace_mul _ _
 
 /- English proof (translation)
-Simplify using `only [infC, homeomorphMixedSpace_apply]`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace K) a.1 b.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infC_add (a b : 𝔸[K]) : infC (a + b) = infC a + infC b := by
   simp only [infC, homeomorphMixedSpace_apply]
   exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace K) a.1 b.1
 
 /- English proof (translation)
-Simplify using `only [infC, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infC_algebraMap (x : K) : infC (algebraMap K 𝔸[K] x) = mixedEmbedding K x := by
   simp only [infC, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]
 
 /- English proof (translation)
-The claim follows from `(homeomorphMixedSpace K).continuous.comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infC : Continuous (infC (K := K)) :=
   (homeomorphMixedSpace K).continuous.comp continuous_fst
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact hS`. Use `set dK := algebraMap (𝓞 K) K d`. Establish `hdK : dK ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0`. Establish `hNd : ((Algebra.norm ℚ dK : ℚ) : ℝ) ≠ 0`. Rewrite using `[Rat.cast_ne_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Algebra.norm_ne_zero_iff).2 hdK`. Use `⟨Units.mk0 (FractionalIdeal.spanSingleton (𝓞 K)⁰ dK⁻¹) ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr (inv_ne_zero hdK)), |((Algebra.norm ℚ dK : ℚ) : ℝ)|⁻¹, inv_pos.2 (abs_pos.2 hNd), ?_, ?_⟩` and prove the remaining obligations. Introduce `ξ hmem`. Establish `h1` using `hd _ hmem`. Rewrite `h1` using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : dK * ξ ∈ ((1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[← algebraMap_mem_idealFiniteAdeles_iff, ← SetLike.mem_coe, idealFiniteAdeles_one]`. Conclude with `h1`. Rewrite `h2` using `[Units.val_one]`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(FractionalIdeal.mem_spanSingleton _).mpr ⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hr, mul_comm dK, mul_assoc, mul_inv_cancel₀ hdK, mul_one]`. Introduce `ξ hξ hξ0`. Take `⟨r', hr'⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hξ`. Establish `hr'0 : r' ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hr'` using `[zero_smul]`. Conclude with `hξ0 hr'.symm`. Establish `hmul : Algebra.norm ℚ dK * Algebra.norm ℚ ξ = Algebra.norm ℚ (r' : K)`. Rewrite using `[← map_mul, ← hr', Algebra.smul_def, mul_left_comm, mul_inv_cancel₀ hdK, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hξN : ((Algebra.norm ℚ ξ : ℚ) : ℝ) = ((Algebra.norm ℚ (r' : K) : ℚ) : ℝ) * ((Algebra.norm ℚ dK : ℚ) : ℝ)⁻¹`. Rewrite using `[← hmul, Rat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mixedEmbedding.norm_eq_norm, Rat.cast_abs, hξN, abs_mul, abs_inv]`. Conclude with `le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hr'0)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ideal_of_isCompact {S : Set 𝔸ᶠ[K]} (hS : IsCompact S) :
     ∃ (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (κ₀ : ℝ), 0 < κ₀ ∧
@@ -97,11 +97,11 @@ theorem exists_ideal_of_isCompact {S : Set 𝔸ᶠ[K]} (hS : IsCompact S) :
     exact le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hr'0)
 
 /- English proof (translation)
-Establish `hY₀ : 0 < X₀ / B` using `div_pos hX₀ hB`. Establish `hY₁ : 0 < X₁ / B` using `div_pos hX₁ hB`. Establish `htκ : 0 < t * κ` using `mul_pos ht hκ`. Establish `g₀ : (Z ^ k)⁻¹ ≤ ((X₀ / B) ^ k)⁻¹` using `inv_anti₀ (pow_pos hY₀ k) (pow_le_pow_left₀ hY₀.le h₀ k)`. Establish `g₁ : (Z ^ k)⁻¹ ≤ ((X₁ / B) ^ k)⁻¹` using `inv_anti₀ (pow_pos hY₁ k) (pow_le_pow_left₀ hY₁.le h₁ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₂ : ((Z ^ n) ^ r)⁻¹ ≤ ((t * κ) ^ r)⁻¹` using `inv_anti₀ (pow_pos htκ r) (pow_le_pow_left₀ htκ.le h₂ r)`. Establish `hZ : 0 < Z` using `hY₀.trans_le h₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, pow_add, pow_mul, mul_inv, mul_inv]`. Use `_ ≤ A * (((X₀ / B) ^ k)⁻¹ * ((X₁ / B) ^ k)⁻¹ * ((t * κ) ^ r)⁻¹) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ hA` and prove the remaining obligations. Conclude with `mul_le_mul (mul_le_mul g₀ g₁ (by positivity) (by positivity)) g₂ (by positivity) (by positivity)`. Use `_ = (t ^ r)⁻¹ * (A * B ^ (k + k) * (κ ^ r)⁻¹ * ((X₀ ^ k)⁻¹ * (X₁ ^ k)⁻¹)) := by`. Rewrite using `[div_pow, div_pow, inv_div, inv_div, mul_pow, mul_inv, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem decay_real_bound {A B Z X₀ X₁ t κ : ℝ} {k n r : ℕ} (hA : 0 ≤ A) (hB : 0 < B) (hX₀ : 0 < X₀)
     (hX₁ : 0 < X₁) (ht : 0 < t) (hκ : 0 < κ) (h₀ : X₀ / B ≤ Z) (h₁ : X₁ / B ≤ Z)
@@ -127,11 +127,11 @@ theorem decay_real_bound {A B Z X₀ X₁ t κ : ℝ} {k n r : ℕ} (hA : 0 ≤ 
         field_simp
 
 /- English proof (translation)
-Use `set e := infC ((moduleSection w t : IdeleGroup K) : 𝔸[K])`. Use `set e' := infC ((moduleSection w t⁻¹ : IdeleGroup K) : 𝔸[K])`. Establish `hee : e' * e = 1`. Rewrite using `[← infC_mul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Simplify using `only [infC, homeomorphMixedSpace_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_one (InfiniteAdeleRing.ringEquiv_mixedSpace K)`. Establish `he' : ∀ v, normAtPlace v e' ≤ 1`. Introduce `v`. Simplify using `only [e', infC]`. Rewrite using `[normAtPlace_homeomorphMixedSpace]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Use `norm_moduleSection_apply_le_one w ?_ v` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t : ℝ)⁻¹ ≤ 1`. Conclude with `inv_le_one_of_one_le₀ ht`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_le_norm_infC_moduleSection_mul (w : InfinitePlace K) {t : {x : ℝ // 0 < x}}
     (ht : 1 ≤ (t : ℝ)) (x : mixedSpace K) :
@@ -153,7 +153,7 @@ theorem norm_le_norm_infC_moduleSection_mul (w : InfinitePlace K) {t : {x : ℝ 
     _ ≤ ‖e * x‖ := norm_mul_le_of_normAtPlace_le_one he' _
 
 /- English proof (translation)
-Establish `h` using `mixedEmbedding_norm_toInfinite (moduleSection w t)`. Rewrite `h` using `[infiniteModule_moduleSection]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_infC_moduleSection (w : InfinitePlace K) (t : {x : ℝ // 0 < x}) :
     mixedEmbedding.norm (infC ((moduleSection w t : IdeleGroup K) : 𝔸[K])) = t := by

@@ -29,11 +29,11 @@ theorem kogTo_mk (k : ℕ) (v : Fin k → FractionRing O) :
     kogTo k (Submodule.Quotient.mk v : KOG O k) = fun a => (Submodule.Quotient.mk (v a) : KO O) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hxy` using `[kogTo_mk, kogTo_mk]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Establish `h : ∀ a, v a - w a ∈ (1 : Submodule O (FractionRing O))` using `fun a => (Submodule.Quotient.eq _).1 (congrFun hxy a)`. Use `choose u hu using fun a => Submodule.mem_one.1 (h a)`. Conclude with `⟨u, funext fun a => hu a⟩`. Introduce `f choose c hc using fun a => Submodule.Quotient.mk_surjective (1 : Submodule O (FractionRing O)) (f a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations. Rewrite using `[kogTo_mk]`. Use function extensionality and compare the values at `a`. Conclude with `hc a`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem kogTo_bijective (k : ℕ) : Function.Bijective (kogTo (O := O) k) := by
   constructor
@@ -61,11 +61,11 @@ Both sides reduce to the same expression.
 theorem kogEq_apply (k : ℕ) (x : KOG O k) : kogEq k x = kogTo k x := rfl
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[show WKG M g (Submodule.Quotient.mk v : KOG O k) = Submodule.Quotient.mk _ from rfl]`. Simplify using `only [kogEq_apply, kogTo_mk]`. Rewrite using `[← Submodule.mkQ_apply]`. Use `trans Submodule.mkQ (1 : Submodule O (FractionRing O)) (∑ b, M g a b • v b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [LinearMap.restrictScalars_apply]`. Unfold `matRep mapM`. Simplify using `[Matrix.toLinAlgEquiv'_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Submodule.mkQ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem kogEq_WKG {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) O) (g : Γ) (x : KOG O k) (a : Fin k) :
     kogEq k (WKG M g x) a = ∑ b, M g a b • kogEq k x b := by
@@ -94,7 +94,7 @@ structure FinCore : Prop where
 def e0 {D : D7} : Fin D.R.r ≃ {a // RepresentationBoundsCohomology.blk D.R a = 0} := RepresentationBoundsCohomology.blockZeroEquiv D.R.r D.R.t
 
 /- English proof (translation)
-Set `φ : S →ₗ[O] ↥(Representation.invariants ρ')` to `LinearMap.codRestrict (Representation.invariants ρ') (f ∘ₗ S.subtype) (fun m => (Representation.mem_invariants ρ' _).2 fun g => h m m.2 g)`. Conclude with `Module.length_le_of_injective φ (fun a b hab => Subtype.ext (hf (congrArg Subtype.val hab)))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem length_ker_le {O G M M' : Type} [CommRing O] [Group G] [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     (S : Submodule O M) (ρ' : Representation O G M') (f : M →ₗ[O] M') (hf : Function.Injective f)
@@ -119,7 +119,7 @@ def toKOG : blockRestrictedRepresentationType (RepresentationBoundsCohomology.bl
   map_smul' c a := by rw [RingHom.id_apply, ← map_smul]; rfl
 
 /- English proof (translation)
-Introduce `m m' hm`. Establish `h' : (fun a => m (e0 a)) = (fun a => m' (e0 a))` using `(kogEq D.R.r).symm.injective hm`. Use function extensionality and compare the values at `j`. Take `⟨a, rfl⟩` from `(e0 (D := D)).surjective j`. Conclude with `congrFun h' a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toKOG_injective : Function.Injective (toKOG i Dd) := by
   intro m m' hm
@@ -130,9 +130,9 @@ theorem toKOG_injective : Function.Injective (toKOG i Dd) := by
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 /- English proof (translation)
-Establish `hE` using `ShaT.evS_of hD`. Rewrite using `[← hE.ρk_eval]`. Use `show Dd.ρπ (uElt Dd.r Dd.χ g) (Fin.castAdd D.R.t a) (Fin.castAdd D.R.t b) = _`. Apply `IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))` to reduce the goal to its premises. Establish `h` using `congrFun (congrFun (hE.ρπ_eval (uElt Dd.r Dd.χ g)) (Fin.castAdd D.R.t a)) (Fin.castAdd D.R.t b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans h ?_` and prove the remaining obligations. Rewrite using `[uElt, hE.smul_eval, hE.r_eval, hE.pπ, ← map_inv, hE.chi_eval, map_inv]`. Use `show algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) _ * algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (rO D.nd i r π g (Fin.castAdd D.R.t a) (Fin.castAdd D.R.t b)) = _`. Rewrite using `[hN.2.2 g a b, ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unipotent_block_zero_entry (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (g : GE D.nd) (a b : Fin D.R.r) :
@@ -153,9 +153,9 @@ variable [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationTy
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 /- English proof (translation)
-Apply `(kogEq D.R.r).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Simplify using `only [toKOG, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.apply_symm_apply]`. Unfold `Br.WKO`. Rewrite using `[kogEq_WKG]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `simp only [LinearEquiv.apply_symm_apply, ← unipotent_block_zero_entry hD hN]`. Establish `hs` using `Equiv.sum_comp (e0 (D := D)) (fun j => Dd.ρk 0 (uElt Dd.r Dd.χ g) (e0 a) j • m j)`. Rewrite using `[hs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toKOG_equiv (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (g : GE D.nd) (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) :
@@ -175,11 +175,11 @@ def h0d (w : ℕ) : ℕ∞ :=
     ((decs D.host.E (Aw i dc)) w)))
 
 /- English proof (translation)
-Unfold `LeTwistInvariantsAtColumns`. Introduce `n hn`. Unfold `twistInvariantsLength h0d`. Use `length_ker_le _ _ (toKOG i Dd) (toKOG_injective i Dd) ?_` and prove the remaining obligations. Introduce `m hm g`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.comp_apply, ← toKOG_equiv hD hN]`. Use `congr 1`. Rewrite `hm` using `[LinearMap.mem_ker]`. Unfold `colDO at hm`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk] at hm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 (congrFun hm g)`.
+A detailed English derivation is pending.
 -/
 theorem invariants_display_match (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) : LeTwistInvariantsAtColumns i ρ π dc (h0d i dc Dd) := by
@@ -197,13 +197,13 @@ theorem invariants_display_match (hD : RingDef (D.nd.O i) (D.nd.T i) (Representa
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 /- English proof (translation)
-Introduce `w hw`. Rewrite `hw` using `[cols_eq]`. Establish `hk : (c : ℕ) - 1 ∈ Finset.Ioo 0 D.R.t` using `Finset.mem_Ioo.2 ⟨by omega, by have := c.2; omega⟩`. Use `le_H0N i dc hw hk ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `ShaT.blkTw_of_def hD hN c (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `κ : KO (D.nd.O i) ≃ₗ[D.nd.O i] KmodO (D.nd.O i)` to `Submodule.quotEquivOfEq _ _ Submodule.one_eq_range`. Use `length_ker_le _ _ ((φ.trans κ).toLinearMap) (φ.trans κ).injective (fun m hm g => ?_)` and prove the remaining obligations. Establish `h1 : uElt Dd.r Dd.χ g.1 • m - m = 0` using `congrFun (LinearMap.mem_ker.1 hm) g`. Establish `h3 : uRep (D.nd.O i) (M` using `blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c) Dd.r Dd.χ g.1 m = m := sub_eq_zero.1 h1`. Establish `h2` using `hφ g.1 m`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3]`. Use `show ((((Formalism.MainNotions.N.Glob.epsO D.nd i) ^ (-((((c : ℕ) - 1 : ℕ)) : ℤ))) g.1 : (D.nd.O i)ˣ) : D.nd.O i) • κ (φ m) = κ (φ m)`. Rewrite using `[← map_smul]`. Use `congr 1`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = ((((Units.map (algebraMap ℤ_[D.nd.l i] (D.nd.O i)).toMonoidHom).comp (ShaT.cycE i ^ (-((((c : ℕ) - 1 : ℕ)) : ℤ)))) g.1 : (D.nd.O i)ˣ) : D.nd.O i) • φ m`. Use `congr 2`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.zpow_apply, map_zpow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kernel_length_higher_columns [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)] (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -235,7 +235,7 @@ theorem kernel_length_higher_columns [∀ k, IsScalarTower Dd.T' Dd.R' (blockRes
 end Rec
 
 /- English proof (translation)
-The claim follows from `theorem_of_display i ρ π dc lenRow e' cB hD (fun w hw => hFin.out.w D i r ρ π g2 w ((dc.cover w).1 (Or.inr hw))) (fun w hw e he => hFin.out.e D i w ((dc.cover w).1 (Or.inr hw)) e (Finset.mem_Ioo.1 he).1) g5x`.
+A detailed English derivation is pending.
 -/
 theorem theorem_of_display_and_g2 [hFin : Fact FinCore] {D : D7} (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

@@ -96,21 +96,21 @@ def shP (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) 
     (LinearMap.toContinuousLinearMap ((LinearMap.proj ((1 : Hinf X u), h)).comp T))
 
 /- English proof (translation)
-Simplify using `only [shP, LinearMap.comp_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rieszVector_add (T T' : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) :
     shP X u (T + T') h = shP X u T h + shP X u T' h := by
   simp only [shP, LinearMap.comp_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [shP, LinearMap.comp_smul, map_smul, map_smulₛₗ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rieszVector_smul (c : ℂ) (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) :
     shP X u (c • T) h = (starRingEnd ℂ c) • shP X u T h := by
   simp only [shP, LinearMap.comp_smul, map_smul, map_smulₛₗ]
 
 /- English proof (translation)
-Simplify using `[shP, InnerProductSpace.toDual_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_shP (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) (ξ : X.Vpi u) :
     ⟪shP X u T h, ξ⟫_ℂ = T ξ (1, h) := by
@@ -232,7 +232,7 @@ section Checks
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u}
 
 /- English proof (translation)
-Introduce `ξ η hJ`. Use `ext_inner_left ℂ fun ζ => ?_` and prove the remaining obligations. Rewrite using `[← Tr.J_isom c ξ ζ, ← Tr.J_isom c η ζ, hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Transport.J_injective (Tr : Transport X u F) (c : (D.mem u).C.cls 0) : Function.Injective Tr.J := by
   intro ξ η hJ

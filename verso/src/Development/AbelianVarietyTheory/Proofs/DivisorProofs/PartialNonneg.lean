@@ -14,38 +14,38 @@ def tri (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) (a j :
   else (τ : ℂ) * Y a * E j * star (Y j) / ((ρ a : ℂ) * ρ (a + 1))
 
 /- English proof (translation)
-Unfold `tri`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_eq_zero_of_gt (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) {a j : ℕ} (h : j < a) :
     tri E Y τ ρ a j = 0 := by
   unfold tri; rw [if_pos h]
 
 /- English proof (translation)
-Unfold `tri`. Rewrite using `[if_neg (lt_irrefl a), if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_self (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) (a : ℕ) :
     tri E Y τ ρ a a = (ρ (a + 1) : ℂ) / ρ a := by
   unfold tri; rw [if_neg (lt_irrefl a), if_pos rfl]
 
 /- English proof (translation)
-Unfold `tri; rw [if_neg (show ¬ j < a by omega), if_neg (show ¬ j = a by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 private theorem tri_of_lt (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) {a j : ℕ} (h : a < j) :
     tri E Y τ ρ a j = (τ : ℂ) * Y a * E j * star (Y j) / ((ρ a : ℂ) * ρ (a + 1)) := by
   unfold tri; rw [if_neg (show ¬ j < a by omega), if_neg (show ¬ j = a by omega)]
 
 /- English proof (translation)
-Establish `hr : ∀ a, (ρ a : ℂ) * (ρ a : ℂ)⁻¹ = 1` using `fun a => mul_inv_cancel₀ (by exact_mod_cast hρ a)`. Proceed by induction on `k with`. Consider the case `zero => simp [h0]`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `hs k`. Establish `hrk` using `hr k`. Establish `hrk1` using `hr (k + 1)`. Break down `lt_trichotomy i k with hi | hi | hi` into its components or cases. Rewrite using `[tri_eq_zero_of_gt E Y τ ρ hi, if_neg (show ¬(k ≤ i ∧ k ≤ j) from fun h => by omega), if_neg (show ¬(k + 1 ≤ i ∧ k + 1 ≤ j) from fun h => by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hi]`. Break down `lt_trichotomy j k with hj | hj | hj` into its components or cases. Rewrite using `[tri_eq_zero_of_gt E Y τ ρ hj, if_neg (show ¬(k ≤ k ∧ k ≤ j) from fun h => by omega), if_neg (show ¬(k + 1 ≤ k ∧ k + 1 ≤ j) from fun h => by omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hj, tri_self, if_pos (show k ≤ k ∧ k ≤ k from ⟨le_rfl, le_rfl⟩), if_neg (show ¬(k + 1 ≤ k ∧ k + 1 ≤ k) from fun h => by omega), if_pos (rfl : k = k)]`. Simplify using `only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢`. Take the linear combination `((E k : ℂ) * ((ρ k : ℂ) * (ρ k : ℂ)⁻¹ + 1)) * hrk + ((ρ k : ℂ)⁻¹ ^ 2 * (E k : ℂ)) * hk`. Rewrite using `[tri_self, tri_of_lt E Y τ ρ hj, if_pos (show k ≤ k ∧ k ≤ j from ⟨le_rfl, hj.le⟩), if_neg (show ¬(k + 1 ≤ k ∧ k + 1 ≤ j) from fun h => by omega), if_neg (show ¬(k = j) from by omega)]`. Simplify using `only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `((τ : ℂ) * (E k : ℂ) * Y k * (E j : ℂ) * (starRingEnd ℂ) (Y j) * (ρ k : ℂ)⁻¹ ^ 2) * hrk1`. Break down `lt_trichotomy j k with hj | hj | hj` into its components or cases. Rewrite using `[tri_eq_zero_of_gt E Y τ ρ hj, if_neg (show ¬(k ≤ i ∧ k ≤ j) from fun h => by omega), if_neg (show ¬(k + 1 ≤ i ∧ k + 1 ≤ j) from fun h => by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[hj, tri_self, tri_of_lt E Y τ ρ hi, if_pos (show k ≤ i ∧ k ≤ k from ⟨hi.le, le_rfl⟩), if_neg (show ¬(k + 1 ≤ i ∧ k + 1 ≤ k) from fun h => by omega), if_neg (show ¬(i = k) from by omega)]`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢`. Take the linear combination `((τ : ℂ) * (E i : ℂ) * Y i * (E k : ℂ) * (starRingEnd ℂ) (Y k) * (ρ k : ℂ)⁻¹ ^ 2) * hrk1`. Rewrite using `[tri_of_lt E Y τ ρ hi, tri_of_lt E Y τ ρ hj, if_pos (show k ≤ i ∧ k ≤ j from ⟨hi.le, hj.le⟩), if_pos (show k + 1 ≤ i ∧ k + 1 ≤ j from ⟨hi, hj⟩)]`. Simplify using `only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢`. Take the linear combination `((τ : ℂ) * ((E i : ℂ) * Y i) * ((E j : ℂ) * (starRingEnd ℂ) (Y j))) * (-((ρ k : ℂ)⁻¹ ^ 2 * (ρ (k + 1) : ℂ)⁻¹ ^ 2) * hk - (ρ (k + 1) : ℂ)⁻¹ ^ 2 * ((ρ k : ℂ) * (ρ k : ℂ)⁻¹ + 1) * hrk + (ρ k : ℂ)⁻¹ ^ 2 * ((ρ (k + 1) : ℂ) * (ρ (k + 1) : ℂ)⁻¹ + 1) * hrk1)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tri_gram (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) (hE : ∀ a, E a * E a = 1) (hρ : ∀ a, ρ a ≠ 0)
     (h0 : ρ 0 = 1) (hs : ∀ a, (ρ (a + 1) : ℂ) ^ 2 = (ρ a : ℂ) ^ 2 + τ * E a * (Y a * star (Y a))) (i j k : ℕ) :
@@ -94,11 +94,11 @@ theorem tri_gram (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → �
             + (ρ k : ℂ)⁻¹ ^ 2 * ((ρ (k + 1) : ℂ) * (ρ (k + 1) : ℂ)⁻¹ + 1) * hrk1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Break down `lt_trichotomy k a with hk | hk | hk` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[tri_eq_zero_of_gt E Y τ ρ hk, if_pos hk.le, if_pos (show k + 1 ≤ a from hk)]`. Simplify using the standard rewrite rules. Rewrite using `[hk, tri_self, if_pos le_rfl, if_neg (show ¬(a + 1 ≤ a) from by omega)]`. Establish `h1 : (ρ (a + 1) : ℂ) * (ρ (a + 1) : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ (by exact_mod_cast hρ (a + 1))`. Take the linear combination `(-((ρ (a + 1) : ℂ) * (ρ a : ℂ)⁻¹ * Y a)) * h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[tri_of_lt E Y τ ρ hk, if_neg (show ¬(k ≤ a) from by omega), if_neg (show ¬(k + 1 ≤ a) from by omega)]`. Take the linear combination `(-(Y a * (ρ a : ℂ)⁻¹ * (ρ (a + 1) : ℂ)⁻¹)) * hs k`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tri_vec (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ) (hρ : ∀ a, ρ a ≠ 0)
     (hs : ∀ a, (ρ (a + 1) : ℂ) ^ 2 = (ρ a : ℂ) ^ 2 + τ * E a * (Y a * star (Y a))) (a k : ℕ) :
@@ -118,15 +118,15 @@ theorem tri_vec (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → ℝ
       linear_combination (-(Y a * (ρ a : ℂ)⁻¹ * (ρ (a + 1) : ℂ)⁻¹)) * hs k
 
 /- English proof (translation)
-Distinguish the cases in `hkq : k ≤ q`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `a ha`. Establish `: a < q` using `by rw [Finset.mem_range] at ha; omega`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.sgn, if_pos this, one_mul]`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hg a`. Use `push_neg at hkq`. Establish `hmn : ∑ a ∈ Finset.range (max k n), ReciprocityTheory.ChartRestriction.G.FD.sgn q a * g a = 0`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ (le_max_right k n), hn, zero_add]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite using `[hz a (Finset.mem_Ico.mp ha).1, mul_zero]`. Rewrite `hmn` using `[← Finset.sum_range_add_sum_Ico _ (le_max_left k n)]`. Establish `hneg : ∑ a ∈ Finset.Ico k (max k n), ReciprocityTheory.ChartRestriction.G.FD.sgn q a * g a = -∑ a ∈ Finset.Ico k (max k n), g a`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a ha`. Establish `: ¬ a < q` using `by have := (Finset.mem_Ico.mp ha).1; omega`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.sgn, if_neg this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmn` using `[hneg]`. Establish `: 0 ≤ ∑ a ∈ Finset.Ico k (max k n), g a` using `Finset.sum_nonneg fun a _ => hg a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem partial_nonneg (q n : ℕ) (g : ℕ → ℝ) (hg : ∀ a, 0 ≤ g a) (hz : ∀ a, n ≤ a → g a = 0)
     (hn : ∑ a ∈ Finset.range n, ReciprocityTheory.ChartRestriction.G.FD.sgn q a * g a = 0) (k : ℕ) :
@@ -157,11 +157,9 @@ theorem partial_nonneg (q n : ℕ) (g : ℕ → ℝ) (hg : ∀ a, 0 ≤ g a) (hz
     linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Establish `h1 : ReciprocityTheory.ChartRestriction.G.FD.sgn q a ≤ 1`. Apply the tactic sequence `unfold ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use polynomial arithmetic with `[hg a]`. Use `_ ≤ ∑ a ∈ Finset.range (max k n), g a := Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (le_max_left k n)) (fun a _ _ => hg a)`. Use `_ = ∑ a ∈ Finset.range n, g a := by`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ (le_max_right k n)]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.Ico n (max k n)), add_zero]`.
-
-Introduce `a ha`. Conclude with `hz a (Finset.mem_Ico.mp ha).1`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem partial_le (q n : ℕ) (g : ℕ → ℝ) (hg : ∀ a, 0 ≤ g a) (hz : ∀ a, n ≤ a → g a = 0) (k : ℕ) :
     ∑ a ∈ Finset.range k, ReciprocityTheory.ChartRestriction.G.FD.sgn q a * g a ≤ ∑ a ∈ Finset.range n, g a := by
@@ -182,47 +180,47 @@ theorem partial_le (q n : ℕ) (g : ℕ → ℝ) (hg : ∀ a, 0 ≤ g a) (hz : �
 def sgnM (n q : ℕ) : Mt n := diagonal fun a : Fin n => ((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Take `⟨Y, hYd⟩ : ∃ Y : ℕ → ℂ, ∀ c, Y c = if h : c < n then y ⟨c, h⟩ else 0` from `⟨_, fun _ => rfl⟩`. Establish `hY : ∀ i : Fin n, Y i = y i` using `fun i => by rw [hYd, dif_pos i.isLt]`. Establish `hYz : ∀ c, n ≤ c → Y c = 0` using `fun c hc => by rw [hYd, dif_neg (show ¬ c < n by omega)]`. Take `⟨g, hgd⟩ : ∃ g : ℕ → ℝ, ∀ c, g c = ‖Y c‖ ^ 2` from `⟨_, fun _ => rfl⟩`. Establish `hgnn : ∀ c, 0 ≤ g c` using `fun c => by rw [hgd]; positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgz : ∀ c, n ≤ c → g c = 0` using `fun c hc => by rw [hgd, hYz c hc]; simp`. Establish `hPn : ∑ c ∈ Finset.range n, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c = 0`. Establish `h1 : ((∑ c ∈ Finset.range n, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c : ℝ) : ℂ) = star y ⬝ᵥ (sgnM n q).mulVec y`. Rewrite using `[Finset.sum_range]`. Simplify using `only [hgd, hY, dotProduct, sgnM, Matrix.mulVec_diagonal, Pi.star_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Use `Complex.conj_mul' (y i)` as an intermediate fact. Rewrite using `[Complex.star_def]`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-((ReciprocityTheory.ChartRestriction.G.FD.sgn q i : ℝ) : ℂ)) * this`. Establish `h2` using `h1.trans hy`. Conclude with `h2` after adjusting the coercions. Establish `hPnn : ∀ k, 0 ≤ ∑ c ∈ Finset.range k, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c` using `fun k => partial_nonneg q n g hgnn hgz hPn k`. Establish `hPle : ∀ k, ∑ c ∈ Finset.range k, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c ≤ ∑ c ∈ Finset.range n, g c` using `fun k => partial_le q n g hgnn hgz k`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρd⟩ : ∃ ρ : ℕ → ℝ, ∀ k, ρ k = Real.sqrt (1 + 2 * t * ∑ c ∈ Finset.range k, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c)` from `⟨_, fun _ => rfl⟩`. Establish `hρsq : ∀ k, ρ k ^ 2 = 1 + 2 * t * ∑ c ∈ Finset.range k, ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c` using `fun k => by`. Rewrite using `[hρd, Real.sq_sqrt]`. Use polynomial arithmetic with `[hPnn k, mul_nonneg ht (hPnn k)]`. Establish `hρnn : ∀ k, 0 ≤ ρ k` using `fun k => by rw [hρd]; exact Real.sqrt_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : ∀ k, 1 ≤ ρ k` using `fun k => by nlinarith [hρsq k, hρnn k, hPnn k, mul_nonneg ht (hPnn k)]`. Establish `hρ0 : ∀ k, ρ k ≠ 0` using `fun k => (lt_of_lt_of_le one_pos (hρ1 k)).ne'`. Establish `h0 : ρ 0 = 1` using `by rw [hρd]; simp`. Establish `hE : ∀ a, ReciprocityTheory.ChartRestriction.G.FD.sgn q a * ReciprocityTheory.ChartRestriction.G.FD.sgn q a = 1` using `fun a => by`. Apply the tactic sequence `unfold ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hs : ∀ a, (ρ (a + 1) : ℂ) ^ 2 = (ρ a : ℂ) ^ 2 + ((2 * t : ℝ) : ℂ) * ((ReciprocityTheory.ChartRestriction.G.FD.sgn q a : ℝ) : ℂ) * (Y a * star (Y a))`. Introduce `a`. Establish `hr : ρ (a + 1) ^ 2 = ρ a ^ 2 + 2 * t * ReciprocityTheory.ChartRestriction.G.FD.sgn q a * ‖Y a‖ ^ 2`. Rewrite using `[hρsq, hρsq, Finset.sum_range_succ, hgd]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (fun x : ℝ => (x : ℂ)) hr`. Rewrite using `[Complex.star_def, Complex.mul_conj']`. Move the coercions through the operations in `at hc ⊢`. Take the linear combination `hc`. Establish `hlow : ∀ a c : Fin n, c < a → tri (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ a c = 0` using `fun a c h => tri_eq_zero_of_gt _ _ _ _ (Fin.lt_iff_val_lt_val.mp h)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun a j : Fin n => tri (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ a j, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `UpT`. Use `⟨?_, fun a c h => by simpa using hlow a c h⟩` and prove the remaining obligations. Establish `hUT : (Matrix.of fun a j : Fin n => tri (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ a j).IsUpperTriangular` using `fun i j h => by simpa using hlow i j h`. Rewrite using `[Matrix.det_of_isUpperTriangular hUT, Finset.prod_ne_zero_iff]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[tri_self]`. Conclude with `div_ne_zero (by exact_mod_cast hρ0 _) (by exact_mod_cast hρ0 _)`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `tri_gram (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ hE hρ0 h0 hs i j n`. Rewrite `key` using `[if_neg (show ¬ (n ≤ (i : ℕ) ∧ n ≤ (j : ℕ)) from fun h => by have := i.isLt; omega), Finset.sum_range]`. Simplify using `only [hY] at key`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [sgnM, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.add_apply, Matrix.diagonal_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.mulVec_diagonal, Matrix.vecMul_diagonal, Pi.star_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [eq_self_iff_true, if_true] at key ⊢`. Take the linear combination `key`. Establish `hij' : (i : ℕ) ≠ j` using `fun h => hij (Fin.ext h)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hij, hij', if_false] at key ⊢`. Take the linear combination `key`. Establish `hG : ∑ c, ‖y c‖ ^ 2 = ∑ c ∈ Finset.range n, g c`. Rewrite using `[Finset.sum_range]`. Simplify using `only [hgd, hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGnn : 0 ≤ ∑ c ∈ Finset.range n, g c` using `Finset.sum_nonneg fun c _ => hgnn c`. Establish `hρle : ∀ k, ρ k ≤ 1 + 2 * t * ∑ c ∈ Finset.range n, g c` using `fun k => by`. Use polynomial arithmetic with `[hρsq k, hρ1 k, hPle k, mul_le_mul_of_nonneg_left (hPle k) ht]`. Establish `hM : 1 + 2 * t * ∑ c ∈ Finset.range n, g c ≤ (1 + 2 * ∑ c ∈ Finset.range n, g c) * (1 + t)`. Use polynomial arithmetic with `[mul_nonneg ht hGnn]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[tri_self, hG, ← Complex.ofReal_div, Complex.norm_of_nonneg (div_nonneg (hρnn _) (hρnn _)), inv_div]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `a`. Establish `key` using `tri_vec (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ hρ0 hs a n`. Rewrite `key` using `[if_neg (show ¬ (n ≤ (a : ℕ)) from by have := a.isLt; omega), Finset.sum_range]`. Simplify using `only [hY] at key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρn : (ρ n : ℂ) ^ 2 = 1`. Establish `: ρ n ^ 2 = 1` using `by rw [hρsq, hPn]; ring`. Conclude with `this` after adjusting the coercions. Rewrite `key` using `[hρn, mul_one]`. Establish `hv : (Matrix.of fun a j : Fin n => tri (ReciprocityTheory.ChartRestriction.G.FD.sgn q) Y (2 * t) ρ a j).mulVec y a = y a / ((ρ a * ρ ((a : ℕ) + 1) : ℝ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[key, Complex.ofReal_mul]`. Establish `hsg : ReciprocityTheory.ChartRestriction.G.FD.sgn q a = 1 ∨ ReciprocityTheory.ChartRestriction.G.FD.sgn q a = -1`. Apply the tactic sequence `unfold ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> simp`. Establish `hPs : ∑ c ∈ Finset.range ((a : ℕ) + 1), ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c = ∑ c ∈ Finset.range (a : ℕ), ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c + ReciprocityTheory.ChartRestriction.G.FD.sgn q a * ‖y a‖ ^ 2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_succ, hgd, hY]`. Establish `hA` using `hPnn a`. Establish `hB` using `hPnn ((a : ℕ) + 1)`. Establish `hz : 0 ≤ ‖y a‖ ^ 2` using `by positivity`. Establish `hAB : 1 + 2 * t * ‖y a‖ ^ 2 ≤ (1 + 2 * t * ∑ c ∈ Finset.range (a : ℕ), ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c) * (1 + 2 * t * ∑ c ∈ Finset.range ((a : ℕ) + 1), ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hB`, the goal using `[hPs]`. Break down `hsg with h | h` into its components or cases. Rewrite `hB`, the goal using `[h]`. Use polynomial arithmetic with `[mul_nonneg ht hA, mul_nonneg ht hz, sq_nonneg (t * ∑ c ∈ Finset.range (a : ℕ), ReciprocityTheory.ChartRestriction.G.FD.sgn q c * g c), mul_nonneg (mul_nonneg ht hA) (mul_nonneg ht hz)]`. Rewrite `hB`, the goal using `[h]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg ht hB, mul_nonneg ht hz, mul_nonneg (mul_nonneg ht hB) (mul_nonneg ht hB), mul_nonneg (mul_nonneg ht hz) (mul_nonneg ht hB), mul_nonneg ht hA]`. Rewrite using `[hv, norm_div, Complex.norm_of_nonneg (mul_nonneg (hρnn _) (hρnn _)), div_pow, mul_pow, hρsq, hρsq, div_mul_eq_mul_div, div_le_iff₀ (by nlinarith [mul_nonneg ht hA, mul_nonneg ht hB, mul_nonneg (mul_nonneg ht hA) (mul_nonneg ht hB)])]`. Use polynomial arithmetic with `[hAB, mul_le_mul_of_nonneg_left hAB (by positivity : (0 : ℝ) ≤ ‖y a‖ ^ 2 + 1), mul_nonneg ht hz, mul_nonneg (mul_nonneg ht hz) hz]`.
+A detailed English derivation is pending.
 -/
 theorem core (n q : ℕ) (y : Fin n → ℂ) (hy : star y ⬝ᵥ (sgnM n q).mulVec y = 0) (t : ℝ) (ht : 0 ≤ t) :
     ∃ b : Mt n, UpT b ∧
@@ -351,11 +349,9 @@ theorem core (n q : ℕ) (y : Fin n → ℂ) (hy : star y ⬝ᵥ (sgnM n q).mulV
       mul_nonneg (mul_nonneg ht hz) hz]
 
 /- English proof (translation)
-Rewrite using `[norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_le_prod (fun a _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `a _`. Take `⟨h1, h2⟩` from `h a`. Rewrite using `[norm_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.natAbs_eq (w a) with hw | hw` into its components or cases. Use `conv_lhs => rw [hw]`. Rewrite using `[zpow_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 _`. Use `conv_lhs => rw [hw]`.
-
-Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.mpr (norm_nonneg _)) h2 _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_zpow_le {n : ℕ} (v : Fin n → ℂ) (w : Fin n → ℤ) (M : ℝ) (h : ∀ a, ‖v a‖ ≤ M ∧ ‖v a‖⁻¹ ≤ M) :
     ‖∏ a, v a ^ w a‖ ≤ M ^ (∑ a, (w a).natAbs) := by
@@ -373,14 +369,14 @@ theorem prod_zpow_le {n : ℕ} (v : Fin n → ℂ) (w : Fin n → ℤ) (M : ℝ)
     exact pow_le_pow_left₀ (inv_nonneg.mpr (norm_nonneg _)) h2 _
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+A detailed English derivation is pending.
 -/
 private theorem star_mulVec_dotProduct_mulVec_eq_conjTranspose {n : ℕ} (M N : Mt n) (v : Fin n → ℂ) :
     star (M *ᵥ v) ⬝ᵥ (N *ᵥ (M *ᵥ v)) = star v ⬝ᵥ ((Mᴴ * N * M) *ᵥ v) := by
   conv_rhs => rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.mpr fun h0 => hH ?_` and prove the remaining obligations. Rewrite using `[← h1, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unit_lemma_5 {n : ℕ} {Hm v : Mt n} (h : vᴴ * Hm * v = Hm) (hH : Hm.det ≠ 0) : IsUnit v.det := by
   have h1 := congrArg Matrix.det h
@@ -389,61 +385,57 @@ private theorem unit_lemma_5 {n : ℕ} {Hm v : Mt n} (h : vᴴ * Hm * v = Hm) (h
   rw [← h1, h0, mul_zero]
 
 /- English proof (translation)
-Introduce `n Hm q x₀ hx w e he u hu`. Take `⟨_, hX⟩` from `hx`. Establish `hS : x₀ᴴ * Hm * x₀ = -sgnM n q`. Rewrite using `[hX, sgnM, Matrix.diagonal_neg]`. Establish `hSdet : (sgnM n q).det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sgnM, Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `a _`. Use `show ((ReciprocityTheory.ChartRestriction.G.FD.sgn q a : ℝ) : ℂ) ≠ 0`. Apply the tactic sequence `unfold ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`. Establish `hd : (x₀ᴴ * Hm * x₀).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, Matrix.det_neg]; exact mul_ne_zero (pow_ne_zero _ (by norm_num)) hSdet`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hxu : IsUnit x₀.det` using `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hd)`. Establish `hHdet : Hm.det ≠ 0` using `right_ne_zero_of_mul (left_ne_zero_of_mul hd)`. Establish `hxHu : IsUnit x₀ᴴ.det`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hxu.star`. Establish `hXu : IsUnit x₀` using `(Matrix.isUnit_iff_isUnit_det x₀).mpr hxu`. Establish `hXHu : IsUnit x₀ᴴ` using `(Matrix.isUnit_iff_isUnit_det _).mpr hxHu`. Establish `hSH : (sgnM n q)ᴴ = sgnM n q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[sgnM, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `first`. Consider the case `exact Complex.conj_ofReal _`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `simp only [Pi.star_apply, Complex.star_def, Complex.conj_ofReal]`. Establish `hHH : Hmᴴ = Hm`. Establish `h1 : x₀ᴴ * Hmᴴ * x₀ = x₀ᴴ * Hm * x₀`. Establish `h2` using `congrArg Matrix.conjTranspose hS`. Rewrite `h2` using `[Matrix.conjTranspose_neg, hSH, ← hS]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Conclude with `hXHu.mul_left_cancel (hXu.mul_right_cancel h1)`. Establish `hu' : uᴴ * Hm * u = Hm` using `hu`. Establish `huu : IsUnit u.det` using `unit_lemma_5 hu' hHdet`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf⟩ : ∃ f : Fin n → ℂ, f = u⁻¹ *ᵥ e` from `⟨_, rfl⟩`. Take `⟨y, hyd⟩ : ∃ y : Fin n → ℂ, y = x₀⁻¹ *ᵥ f` from `⟨_, rfl⟩`. Establish `huf : u *ᵥ f = e` using `by rw [hf, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ huu, Matrix.one_mulVec]`. Establish `hxy : x₀ *ᵥ y = f` using `by rw [hyd, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hxu, Matrix.one_mulVec]`. Establish `hSy : star y ⬝ᵥ (sgnM n q).mulVec y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS' : sgnM n q = -(x₀ᴴ * Hm * x₀)` using `by rw [hS, neg_neg]`. Rewrite using `[hS', Matrix.neg_mulVec, dotProduct_neg, ← star_mulVec_dotProduct_mulVec_eq_conjTranspose, hxy, ← hu', ← star_mulVec_dotProduct_mulVec_eq_conjTranspose, huf, he, neg_zero]`. Take `⟨M, hM⟩ : ∃ M : Mt n, M = u * x₀` from `⟨_, rfl⟩`. Establish `hMM : Mᴴ * (Hm * M) = -sgnM n q`. Establish `h0 : x₀ᴴ * (uᴴ * Hm * u) * x₀ = -sgnM n q` using `by rw [hu', hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, ← h0]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hMMl : Mᴴ * Hm * M = -sgnM n q` using `by rw [Matrix.mul_assoc]; exact hMM`. Establish `hMy : M *ᵥ y = e` using `by rw [hM, ← Matrix.mulVec_mulVec, hxy, huf]`. Establish `he' : (star e ᵥ* Hm) ⬝ᵥ e = 0` using `by rw [← Matrix.dotProduct_mulVec]; exact he`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVe : vecMulVec e (star e ᵥ* Hm) *ᵥ e = 0`. Rewrite using `[Matrix.vecMulVec_mulVec, he', MulOpposite.op_zero, zero_smul]`. Establish `hVH : (vecMulVec e (star e ᵥ* Hm))ᴴ = vecMulVec (Hm *ᵥ e) (star e)`. Rewrite using `[Matrix.conjTranspose_vecMulVec, Matrix.star_vecMul, star_star, hHH]`. Establish `h1 : (vecMulVec e (star e ᵥ* Hm))ᴴ * Hm = vecMulVec (Hm *ᵥ e) (star e ᵥ* Hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hVH, Matrix.vecMulVec_mul]`. Establish `h2 : Hm * vecMulVec e (star e ᵥ* Hm) = vecMulVec (Hm *ᵥ e) (star e ᵥ* Hm)` using `Matrix.mul_vecMulVec _ _ _`. Establish `h3 : (vecMulVec e (star e ᵥ* Hm))ᴴ * (Hm * vecMulVec e (star e ᵥ* Hm)) = 0`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.mul_vecMulVec, Matrix.vecMulVec_mulVec, he', MulOpposite.op_zero, zero_smul, Matrix.zero_vecMulVec]`. Establish `expand : ∀ (c : ℂ) (P Q : Mt n), (1 - c • P) * Hm * (1 - c • Q) = Hm - c • (Hm * Q) - c • (P * Hm) + (c * c) • (P * (Hm * Q))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `c P Q`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `ha : Mᴴ *ᵥ (Hm *ᵥ e) = -(sgnM n q *ᵥ y)`. Rewrite using `[← hMy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[hMM, Matrix.neg_mulVec]`. Establish `hb : star e ᵥ* Hm ᵥ* M = -(star y ᵥ* sgnM n q)`. Rewrite using `[← hMy, Matrix.star_mulVec]`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hMM, Matrix.vecMul_neg]`. Establish `hMW : Mᴴ * vecMulVec (Hm *ᵥ e) (star e ᵥ* Hm) * M = vecMulVec (-(sgnM n q *ᵥ y)) (-(star y ᵥ* sgnM n q))`. Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, ha, hb]`. Use `⟨(1 + 2 * ∑ c, ‖y c‖ ^ 2) ^ (∑ a, (w a).natAbs) + ∑ i, (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1), ∑ a, (w a).natAbs, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbU, hbS, hbd, hby⟩` from `core n q y hSy t ht`. Establish `hbdet : b.det ≠ 0` using `by unfold UpT at hbU; exact hbU.1`. Establish `hbu : IsUnit b.det` using `isUnit_iff_ne_zero.mpr hbdet`. Take `⟨Z, hZ⟩ : ∃ Z : Mt n, Z = x₀ * b` from `⟨_, rfl⟩`. Establish `hZu : IsUnit Z.det` using `by rw [hZ, Matrix.det_mul]; exact hxu.mul hbu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZHu : IsUnit Zᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hZu.star`. Take `⟨G, hGd⟩ : ∃ G : Mt n, G = 1 - (t : ℂ) • vecMulVec e (star e ᵥ* Hm)` from `⟨_, rfl⟩`. Establish `hct : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Establish `hGe : G *ᵥ e = e`. Rewrite using `[hGd, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hVe, smul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2t : ((2 * t : ℝ) : ℂ) = (t : ℂ) + (t : ℂ)` using `by push_cast; ring`. Establish `hGHG : Gᴴ * Hm * G = Hm - ((2 * t : ℝ) : ℂ) • vecMulVec (Hm *ᵥ e) (star e ᵥ* Hm)`. Rewrite using `[hGd, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_smul, hct, expand, h3, smul_zero, add_zero, h2, h1, h2t, add_smul, sub_sub]`. Establish `hKK : (G * M)ᴴ * Hm * (G * M) = -(sgnM n q + ((2 * t : ℝ) : ℂ) • vecMulVec (sgnM n q *ᵥ y) (star y ᵥ* sgnM n q))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Mᴴ * Hm * M - ((2 * t : ℝ) : ℂ) • (Mᴴ * vecMulVec (Hm *ᵥ e) (star e ᵥ* Hm) * M) := by`. Rewrite using `[hGHG, mul_sub, sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = _ := by`. Rewrite using `[hMMl, hMW, Matrix.neg_vecMulVec, Matrix.vecMulVec_neg, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `hZZ : Zᴴ * Hm * Z = -(sgnM n q + ((2 * t : ℝ) : ℂ) • vecMulVec (sgnM n q *ᵥ y) (star y ᵥ* sgnM n q))`. Rewrite using `[← hbS]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hZ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hS, mul_neg, neg_mul]`. Establish `hKZ : (G * M)ᴴ * Hm * (G * M) = Zᴴ * Hm * Z` using `hKK.trans hZZ.symm`. Take `⟨U, hUd⟩ : ∃ U : Mt n, U = G * M * Z⁻¹` from `⟨_, rfl⟩`. Establish `hUH : Uᴴ * Hm * U = Hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hUd]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Z⁻¹ᴴ * (Zᴴ * Hm * Z) * Z⁻¹ := by rw [hKZ]`. Use `_ = Hm := by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hZu, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hZHu]`. Establish `hUu : IsUnit U.det` using `unit_lemma_5 hUH hHdet`. Establish `hUxb : U * x₀ * b = G * M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hUd, Matrix.mul_assoc (G * M * Z⁻¹) x₀ b, ← hZ, Matrix.nonsing_inv_mul_cancel_right _ _ hZu]`. Take `⟨v, hvd⟩ : ∃ v : Fin n → ℂ, v = x₀ *ᵥ (b *ᵥ y)` from `⟨_, rfl⟩`. Establish `hUv : U *ᵥ v = e`. Rewrite using `[hvd, Matrix.mulVec_mulVec y x₀ b, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hUxb, ← Matrix.mulVec_mulVec, hMy, hGe]`. Establish `hinv : U⁻¹ *ᵥ e = v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hUv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hUu, Matrix.one_mulVec]`. Establish `hC2 : 0 ≤ ∑ i, (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1)` using `by positivity`. Establish `hC1 : 0 ≤ (1 + 2 * ∑ c, ‖y c‖ ^ 2) ^ (∑ a, (w a).natAbs)` using `by positivity`. Use `⟨U, hUH, b, hbU, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hGd, hUxb, hM, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(prod_zpow_le (fun a => b a a) w ((1 + 2 * ∑ c, ‖y c‖ ^ 2) * (1 + t)) hbd).trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Conclude with `mul_le_mul_of_nonneg_right (le_add_of_nonneg_right hC2) (pow_nonneg (by linarith) _)`. Introduce `i`. Rewrite using `[hinv]`.
-
-Establish `hvi : v i = ∑ j, x₀ i j * (b *ᵥ y) j` using `by rw [hvd]; rfl`. Establish `hn1 : ‖v i‖ ≤ ∑ j, ‖x₀ i j‖ * ‖(b *ᵥ y) j‖`. Rewrite using `[hvi]; exact (norm_sum_le _ _).trans (le_of_eq (by simp only [norm_mul]))`. Establish `hn2 : ‖v i‖ ^ 2 ≤ (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, ‖(b *ᵥ y) j‖ ^ 2` using `(pow_le_pow_left₀ (norm_nonneg _) hn1 2).trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)`. Establish `hn3 : (∑ j, ‖(b *ᵥ y) j‖ ^ 2) * (1 + t) ≤ ∑ j, (‖y j‖ ^ 2 + 1)`.
-
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun j _ => hby j`. Establish `hn4 : (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1) ≤ ∑ i, (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1)` using `Finset.single_le_sum (f := fun i => (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1)) (fun i _ => show (0 : ℝ) ≤ (∑ j, ‖x₀ i j‖ ^ 2) * ∑ j, (‖y j‖ ^ 2 + 1) by positivity) (Finset.mem_univ i)`. Establish `hX0 : 0 ≤ ∑ j, ‖x₀ i j‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem flowGS : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n), OrthFr Hm q x₀ → ∀ (w : Fin n → ℤ) (e : Fin n → ℂ), star e ⬝ᵥ Hm.mulVec e = 0 → ∀ u ∈ Formalism.QuantumDeterminants.UH Hm, ∃ (C : ℝ) (A : ℕ), ∀ t : ℝ, 0 ≤ t → ∃ u' ∈ Formalism.QuantumDeterminants.UH Hm, ∃ b, UpT b ∧ (1 - (t : ℂ) • vecMulVec e (star e ᵥ* Hm)) * u * x₀ = u' * x₀ * b ∧ ‖∏ a, b a a ^ w a‖ ≤ C * (1 + t) ^ A ∧ ∀ i, ‖(u'⁻¹.mulVec e) i‖ ^ 2 * (1 + t) ≤ C := by
   intro n Hm q x₀ hx w e he u hu

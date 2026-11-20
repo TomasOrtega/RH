@@ -4,23 +4,23 @@ open AlgebraicGeometry CategoryTheory
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `O F L _ _ _ β θ hcl hu hz`. Use `set R : Subring F := β.range with hR`. Establish `hk : ∀ a ∈ RingHom.ker β, θ a = 0` using `fun a ha => hz a ((RingHom.mem_ker).mp ha)`. Set `θR : R →+* L` to `(Ideal.Quotient.lift (RingHom.ker β) θ hk).comp (RingHom.quotientKerEquivRange β).symm.toRingHom`. Establish `hθR : ∀ o : O, θR ⟨β o, o, rfl⟩ = θ o`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o`. Establish `h : (RingHom.quotientKerEquivRange β).symm ⟨β o, o, rfl⟩ = Ideal.Quotient.mk _ o`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [θR, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, h, Ideal.Quotient.lift_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hunit : ∀ r : nonZeroDivisors R, IsUnit (θR r)`. Introduce `r`. Take `⟨b, hb⟩` from `(r : R).2`. Establish `hne : (r : R) ≠ 0` using `nonZeroDivisors.ne_zero r.2`. Establish `hr : (r : R) = ⟨β b, b, rfl⟩` using `Subtype.ext hb.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, hθR]`. Apply `hu` to reduce the goal to its premises. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hr]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.ext h0`. Establish `hinj : Function.Injective R.subtype` using `Subtype.val_injective`. Set `ι : FractionRing R →+* F` to `IsFractionRing.lift hinj`. Establish `hsurj : Function.Surjective ι`. Establish `h` using `IsFractionRing.lift_fieldRange (K := FractionRing R) hinj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcl' : Subfield.closure (R : Set F) = ⊤` using `by rw [hR, RingHom.coe_range]; exact hcl`. Rewrite `h` using `[Subring.range_subtype, hcl']`. Introduce `x`. Establish `hx : x ∈ ι.fieldRange`. Express the relevant statement in the definitionally equal form `x ∈ (IsFractionRing.lift hinj : FractionRing R →+* F).fieldRange`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy⟩` from `RingHom.mem_fieldRange.mp hx`. Conclude with `⟨y, hy⟩`. Set `e : FractionRing R ≃+* F` to `RingEquiv.ofBijective ι ⟨ι.injective, hsurj⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨(IsLocalization.lift (M := nonZeroDivisors R) (S := FractionRing R) hunit).comp e.symm.toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `o`. Establish `he : e.symm (β o) = algebraMap R (FractionRing R) ⟨β o, o, rfl⟩`. Rewrite using `[RingEquiv.symm_apply_eq]`. Use `show β o = ι (algebraMap R (FractionRing R) ⟨β o, o, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, he, IsLocalization.lift_eq, hθR]`.
+A detailed English derivation is pending.
 -/
 theorem extends_to_fraction_field : ∀ (O F L : Type) [CommRing O] [Field F] [CommRing L] (β : O →+* F) (θ : O →+* L), Subfield.closure (Set.range β) = ⊤ → (∀ b, β b ≠ 0 → IsUnit (θ b)) → (∀ a, β a = 0 → θ a = 0) → ∃ χ : F →+* L, χ.comp β = θ := by
   intro O F L _ _ _ β θ hcl hu hz

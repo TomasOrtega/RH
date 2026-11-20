@@ -14,7 +14,7 @@ def adeleJoin (x : κ → mixedEmbedding.mixedSpace F) (y : κ → FiniteAdeleRi
   fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), y i)
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.WeilM.pureA, adeleJoin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pureA_adeleJoin (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (x : κ → mixedEmbedding.mixedSpace F) (y : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -22,11 +22,11 @@ theorem pureA_adeleJoin (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : 
   simp [GlobalTheory.WeilM.pureA, adeleJoin]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.schA at hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, -, rfl⟩` from `h`. Conclude with `⟨g y • f, fun x => by rw [smul_apply, pureA_adeleJoin, smul_eq_mul, mul_comm]⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, fun x => by simp⟩`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨s1, hs1⟩` from `h1`. Take `⟨s2, hs2⟩` from `h2`. Conclude with `⟨s1 + s2, fun x => by rw [add_apply, hs1, hs2]; rfl⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c Φ _ h`. Take `⟨s, hs⟩` from `h`. Conclude with `⟨c • s, fun x => by rw [smul_apply, hs]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_slice [Fintype κ] {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ)
     (y : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -46,15 +46,13 @@ theorem exists_slice [Fintype κ] {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (
     exact ⟨c • s, fun x => by rw [smul_apply, hs]; rfl⟩
 
 /- English proof (translation)
-Introduce `l hl φ hφ`. Express the relevant statement in the definitionally equal form `φ ∈ GlobalTheory.WeilM.schA F κ at hφ`. Express the relevant statement in the definitionally equal form `∀ g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F), ∃ T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, l (GlobalTheory.WeilM.pureA F f g) = T f at hl`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `p0`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hN, m, g, y, hgSB, hgy, hrep⟩` from `hfin φ hφ p0`. Use `choose T hT using fun i => hl (g i) (hgSB i)`. Use `choose s hs hsx using fun j => hsl φ hφ (y j)`. Establish `hcont : Continuous fun p => ∑ i, T i (s i p)` using `continuous_finsetSum _ (fun i _ => (T i).continuous.comp (hs i))`. Use `hcont.continuousAt.congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hN] with p hp`. Take `⟨f, hf⟩` from `hrep p hp`. Establish `hfs : ∀ j, f j = s j p`. Introduce `j`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsx, hf, Finset.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[pureA_adeleJoin, hgy j j, if_pos rfl, mul_one]`. Introduce `i _ hij`. Rewrite using `[pureA_adeleJoin, hgy i j, if_neg hij, mul_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[hf, map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hT, hfs])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isContOn_of_local [Fintype κ] [LocallyCompactSpace (AdeleRing (𝓞 F) F)] {G : Type} [Group G] [TopologicalSpace G]
     {om : G →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ)}

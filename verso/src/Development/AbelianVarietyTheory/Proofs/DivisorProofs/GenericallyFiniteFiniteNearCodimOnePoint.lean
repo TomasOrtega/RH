@@ -15,14 +15,14 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.PushFinite
 
 /- English proof (translation)
-The claim follows from `Order.coheight_eq_zero.2 fun b _ => genericPoint_specializes b`.
+A detailed English derivation is pending.
 -/
 theorem coheight_genericPoint (X : Scheme.{0}) [IsIntegral X] :
     Order.coheight (genericPoint X) = 0 :=
   Order.coheight_eq_zero.2 fun b _ => genericPoint_specializes b
 
 /- English proof (translation)
-Use `topologicalKrullDim_add_one_le isClosed_closure isClosed_closure fun x hx => ⟨b, subset_closure rfl, fun hb => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hab.not_ge (specializes_iff_mem_closure.2 hb)`. Establish `h1 : b ⤳ a` using `hab.le`. Establish `h2 : a ⤳ x` using `specializes_iff_mem_closure.2 hx`. Conclude with `h1.trans h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_closure_add_one_le {X : Scheme.{0}} {a b : X} (hab : a < b) :
     topologicalKrullDim (closure ({a} : Set X)) + 1 ≤ topologicalKrullDim (closure ({b} : Set X)) := by
@@ -34,11 +34,11 @@ theorem dim_closure_add_one_le {X : Scheme.{0}} {a b : X} (hab : a < b) :
     exact h1.trans h2
 
 /- English proof (translation)
-Take `⟨S, hS, hcl, hirr, hun⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible U.isOpen.isClosed_compl`. Establish `hg : genericPoint X ∈ U` using `(genericPoint_specializes hU.some).mem_open U.isOpen hU.some_mem`. Use `(hS.biUnion (t := fun C => {κ | IsGenericPoint κ C}) fun C _ => Set.Subsingleton.finite fun _ h _ h' => h.eq h').subset ?_` and prove the remaining obligations. Introduce and unpack `ξ ⟨hξ, h1⟩`. Take `⟨C, hC, hξC⟩ : ξ ∈ ⋃₀ S` from `hun ▸ hξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `QuasiSober.sober (hirr C hC) (hcl C hC)`. Establish `hκU : κ ∈ (U : Set X)ᶜ` using `hun ▸ ⟨C, hC, hκ.mem⟩`. Use `Set.mem_biUnion hC ?_` and prove the remaining obligations. Distinguish the cases in `h : ξ ⤳ κ`. Rewrite using `[(h.antisymm (hκ.specializes hξC)).eq]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hlt : ξ < κ` using `lt_of_le_not_ge (hκ.specializes hξC) h`. Establish `hlt' : κ < genericPoint X` using `lt_of_le_not_ge (genericPoint_specializes κ) fun h' => hκU (((genericPoint_specializes κ).antisymm h').eq ▸ hg)`. Establish `h2` using `(add_le_add_left (le_add_self.trans (Order.coheight_add_one_le hlt')) 1).trans ((Order.coheight_add_one_le hlt).trans h1)`. Conclude with `absurd h2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_notMem_coheight_le_one {X : Scheme.{0}} [IsIntegral X] [IsNoetherian X] (U : X.Opens)
     (hU : (U : Set X).Nonempty) : {ξ : X | ξ ∉ U ∧ Order.coheight ξ ≤ 1}.Finite := by
@@ -62,9 +62,9 @@ theorem finite_notMem_coheight_le_one {X : Scheme.{0}} [IsIntegral X] [IsNoether
     exact absurd h2 (by decide)
 
 /- English proof (translation)
-Establish `e : U.ι ''ᵁ (U.ι ⁻¹ᵁ V) = V`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 hVU`. Establish `h1 : IsFinite ((g ∣_ U) ∣_ (U.ι ⁻¹ᵁ V))` using `inferInstance`. Use `haveI : MorphismProperty.RespectsIso (@IsFinite : MorphismProperty Scheme.{0}) := MorphismProperty.RespectsIso.of_respects_arrow_iso _ fun f g e hf => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsFinite g.hom`. Rewrite using `[← Arrow.inv_left_hom_right e.hom]`. Use `infer_instance`. Conclude with `this`. Conclude with `(MorphismProperty.arrow_mk_iso_iff @IsFinite (morphismRestrictRestrict g U (U.ι ⁻¹ᵁ V) ≪≫ morphismRestrictEq g e)).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_restrict_of_le {X Y : Scheme.{0}} (g : Y ⟶ X) {U V : X.Opens} (hVU : V ≤ U)
     [IsFinite (g ∣_ U)] : IsFinite (g ∣_ V) := by
@@ -82,29 +82,27 @@ theorem isFinite_restrict_of_le {X Y : Scheme.{0}} (g : Y ⟶ X) {U V : X.Opens}
     (morphismRestrictRestrict g U (U.ι ⁻¹ᵁ V) ≪≫ morphismRestrictEq g e)).1 h1
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ _ _ p q hp hq g hg hη hd z hz`. Take `⟨hbX1, -, hbX3, -, -, hbX6⟩` from `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp`. Take `⟨hbY1, -, -, -, -, hbY6⟩` from `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq`. Take `⟨mX, hmX⟩` from `hbX1`. Take `⟨mY, hmY⟩` from `hbY1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, -, hnY⟩` from `hmY (genericPoint Y)`. Take `⟨nX, -, hnX⟩` from `hmX (genericPoint X)`. Establish `hnn : n = nX` using `((GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg (genericPoint Y) n nX hnY (hη ▸ hnX)).2).1 hd`. Substitute `hnn` using the available equality. Establish `hzne : z ≠ genericPoint X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hz` using `[coheight_genericPoint]`. Conclude with `zero_ne_one hz`. Choose the witnesses or unpack the hypotheses as in `⟨e, rfl⟩ : ∃ e, n = e + 1 := by`. Break down `n with _ | e` into its components or cases.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hcl` using `(hbX3 (genericPoint X)).1 hnX`. Establish `huniv : closure ({genericPoint X} : Set X) = Set.univ` using `genericPoint_spec X`. Rewrite `huniv` using `[hcl.closure_eq]`. Establish `: z ∈ ({genericPoint X} : Set X)` using `huniv ▸ Set.mem_univ z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `hzne this`. Conclude with `⟨e, rfl⟩`. Establish `hXd : topologicalKrullDim X = ((e + 1 : ℕ) : WithBot ℕ∞)` using `(hbX6 X (e + 1)).1 hnX`. Establish `hYd : topologicalKrullDim Y = ((e + 1 : ℕ) : WithBot ℕ∞)` using `(hbY6 Y (e + 1)).1 hnY`. Take `⟨hoX, -⟩` from `GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k X p hp e hXd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hoY, -⟩` from `GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hYd`. Establish `hze : HasDim z e` using `(hoX z).1 hz`. Establish `hw : ∀ w : Y, g w = z → Order.coheight w = 1`. Introduce `w hwz`. Rewrite using `[hoY]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨dw, -, hdw⟩` from `hmY w`. Establish `h1 : e ≤ dw` using `(GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg w dw e hdw (hwz ▸ hze)).1`. Establish `hwne : w ≠ genericPoint Y`. Introduce and unpack `rfl`. Conclude with `hzne (hwz.symm.trans hη)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt` using `dim_closure_add_one_le (lt_of_le_not_ge (genericPoint_specializes w) fun h' => hwne ((genericPoint_specializes w).antisymm h').eq.symm)`. Unfold `HasDim at hdw hnY`. Rewrite `hlt` using `[hdw, hnY]`. Establish `h2 : dw + 1 ≤ e + 1` using `by exact_mod_cast hlt`. Establish `: dw = e` using `le_antisymm (by omega) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Substitute `this` using the available equality. Conclude with `hdw`. Establish `hfin : (g ⁻¹' {z}).Finite` using `by haveI := hq.isNoetherian`. Set `U : Y.Opens` to `g ⁻¹ᵁ ⟨(closure ({z} : Set X))ᶜ, isClosed_closure.isOpen_compl⟩`. Establish `hU : genericPoint Y ∈ U` using `by show g (genericPoint Y) ∈ (closure ({z} : Set X))ᶜ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hη]`. Introduce `hc`. Conclude with `hzne ((specializes_iff_mem_closure.2 hc).antisymm (genericPoint_specializes z)).eq`. Use `(finite_notMem_coheight_le_one U ⟨_, hU⟩).subset fun w hwz => ⟨fun hwU => ?_, (hw w hwz).le⟩` and prove the remaining obligations. Establish `hwU' : g w ∈ (closure ({z} : Set X))ᶜ` using `hwU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hwU' (by rw [show g w = z from hwz]; exact subset_closure rfl)`. Use `GlobalTheory.SchemeWords.isProper_of_isProjOver hp.isProjOver` as an intermediate fact. Establish `: IsProper (g ≫ p)` using `hg ▸ GlobalTheory.SchemeWords.isProper_of_isProjOver hq.isProjOver`. Establish `: IsProper g` using `IsProper.of_comp g p`. Take `⟨V₀, hzV₀, hV₀⟩` from `exists_isFinite_morphismRestrict_of_finite_preimage_singleton g z hfin`.
-
-Take `⟨V, hV, hzV, hle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hzV₀`. Conclude with `⟨hfin, hw, V, hV, hzV, isFinite_restrict_of_le g hle⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_near_coheight_one : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), g.residueDegree (genericPoint Y) ≠ 0 → ∀ z : X, Order.coheight z = 1 → (g ⁻¹' {z}).Finite ∧ (∀ w : Y, g w = z → Order.coheight w = 1) ∧ ∃ V : X.Opens, IsAffineOpen V ∧ z ∈ V ∧ IsFinite (g ∣_ V) := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη hd z hz

@@ -15,7 +15,7 @@ namespace RationalIdeles
 open IdeleGroup
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim w Rat.infinitePlace]`. Conclude with `Rat.isReal_infinitePlace`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReal_infinitePlace (w : InfinitePlace ℚ) : w.IsReal := by
   rw [Subsingleton.elim w Rat.infinitePlace]
@@ -34,14 +34,14 @@ theorem realEquiv_apply (x : InfiniteAdeleRing ℚ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).continuous.comp (continuous_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realEquiv : Continuous realEquiv :=
   (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).continuous.comp
     (continuous_apply _)
 
 /- English proof (translation)
-Conclude with `continuous_equiv_symm_of_eq realEquiv.toEquiv ((Homeomorph.piUnique fun w : InfinitePlace ℚ ↦ w.Completion).trans (InfinitePlace.Completion.isometryEquivRealOfIsReal (isReal_infinitePlace default)).toHomeomorph) fun _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realEquiv_symm : Continuous realEquiv.symm := by
   exact continuous_equiv_symm_of_eq realEquiv.toEquiv
@@ -63,14 +63,14 @@ theorem coe_realPart (x : IdeleGroup ℚ) : (realPart x : ℝ) = realEquiv (x : 
   rfl
 
 /- English proof (translation)
-The claim follows from `realUnitsEquiv.continuous.comp (continuous_toInfinite ℚ) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realPart : Continuous realPart :=
   realUnitsEquiv.continuous.comp (continuous_toInfinite ℚ)
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[coe_realPart, coe_diagonal]`. Conclude with `eq_ratCast (realEquiv.toRingHom.comp (algebraMap ℚ (InfiniteAdeleRing ℚ))) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realPart_diagonal (a : ℚˣ) : (realPart (diagonal ℚ a) : ℝ) = a := by
   rw [coe_realPart, coe_diagonal]
@@ -88,14 +88,14 @@ def positiveSubgroup : Subgroup (IdeleGroup ℚ) :=
   standardOpenSubgroup ℚ ⊓ (Units.posSubgroup ℝ).comap realPart
 
 /- English proof (translation)
-Rewrite using `[positiveSubgroup, Subgroup.mem_inf, Subgroup.mem_comap, Units.mem_posSubgroup]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_positiveSubgroup {x : IdeleGroup ℚ} :
     x ∈ positiveSubgroup ↔ x ∈ standardOpenSubgroup ℚ ∧ 0 < (realPart x : ℝ) := by
   rw [positiveSubgroup, Subgroup.mem_inf, Subgroup.mem_comap, Units.mem_posSubgroup]
 
 /- English proof (translation)
-Establish `h : (positiveSubgroup : Set (IdeleGroup ℚ)) = (standardOpenSubgroup ℚ : Set (IdeleGroup ℚ)) ∩ {x | 0 < (realPart x : ℝ)}`. Use extensionality with `x`. Conclude with `mem_positiveSubgroup`. Rewrite using `[h]`. Conclude with `(isOpen_standardOpenSubgroup ℚ).inter (isOpen_lt continuous_const (Units.continuous_val.comp continuous_realPart))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_positiveSubgroup : IsOpen (positiveSubgroup : Set (IdeleGroup ℚ)) := by
   have h : (positiveSubgroup : Set (IdeleGroup ℚ)) =
@@ -107,11 +107,11 @@ theorem isOpen_positiveSubgroup : IsOpen (positiveSubgroup : Set (IdeleGroup ℚ
     (isOpen_lt continuous_const (Units.continuous_val.comp continuous_realPart))
 
 /- English proof (translation)
-Rewrite using `[← ker_toFractionalIdeal, MonoidHom.mem_ker, toFractionalIdeal_diagonal, toPrincipalIdeal_eq_iff, Units.val_one, ← FractionalIdeal.spanSingleton_one, FractionalIdeal.spanSingleton_eq_spanSingleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hz' : ((z : 𝓞 ℚ) : ℚ) * a = 1`. Rewrite `hz` using `[Units.smul_def, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hz`. Break down `Rat.RingOfIntegers.isUnit_iff.1 z.isUnit with h | h` into its components or cases. Use `left`. Rewrite `hz'` using `[h, one_mul]`. Then use the resulting hypothesis. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `hz'` using `[h, neg_one_mul, neg_eq_iff_eq_neg]`. Then use the resulting hypothesis. Introduce and unpack `(h | h)`. Conclude with `⟨1, by rw [one_smul, h]⟩`. Conclude with `⟨-1, by rw [Units.neg_smul, one_smul, h, neg_neg]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem diagonal_mem_standardOpenSubgroup_iff (a : ℚˣ) :
     diagonal ℚ a ∈ standardOpenSubgroup ℚ ↔ (a : ℚ) = 1 ∨ (a : ℚ) = -1 := by
@@ -133,9 +133,9 @@ theorem diagonal_mem_standardOpenSubgroup_iff (a : ℚˣ) :
     · exact ⟨-1, by rw [Units.neg_smul, one_smul, h, neg_neg]⟩
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx, a, rfl⟩`. Take `⟨h1, h2⟩` from `mem_positiveSubgroup.1 hx`. Rewrite `h2` using `[realPart_diagonal]`. Rewrite using `[Subgroup.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `(diagonal_mem_standardOpenSubgroup_iff a).1 h1 with h | h` into its components or cases. Rewrite using `[show a = 1 from Units.ext h, map_one]`. Rewrite `h2` using `[h]`. Evaluate the numerical expressions using `at h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem positiveSubgroup_inf_diagonal_range : positiveSubgroup ⊓ (diagonal ℚ).range = ⊥ := by
   rw [eq_bot_iff]
@@ -149,7 +149,7 @@ theorem positiveSubgroup_inf_diagonal_range : positiveSubgroup ⊓ (diagonal ℚ
     norm_num at h2
 
 /- English proof (translation)
-Establish `h` using `Rat.classNumber_eq`. Rewrite `h` using `[NumberField.classNumber]`. Conclude with `Fintype.card_le_one_iff_subsingleton.1 h.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_classGroup : Subsingleton (ClassGroup (𝓞 ℚ)) := by
   have h := Rat.classNumber_eq
@@ -157,13 +157,13 @@ theorem subsingleton_classGroup : Subsingleton (ClassGroup (𝓞 ℚ)) := by
   exact Fintype.card_le_one_iff_subsingleton.1 h.le
 
 /- English proof (translation)
-Establish `htop : (diagonal ℚ).range ⊔ standardOpenSubgroup ℚ = ⊤`. Rewrite using `[← IdeleGroup.ker_toClassGroup, eq_top_iff]`. Introduce `x _`. Use `subsingleton_classGroup` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ (diagonal ℚ).range ⊔ standardOpenSubgroup ℚ` using `htop ▸ Subgroup.mem_top x`. Take `⟨_, ⟨a, rfl⟩, u, hu, rfl⟩` from `Subgroup.mem_sup.1 hx`. Break down `lt_or_gt_of_ne (realPart u).ne_zero with hneg | hpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hm : diagonal ℚ (-1) ∈ standardOpenSubgroup ℚ` using `(diagonal_mem_standardOpenSubgroup_iff (-1)).2 (Or.inr (by simp))`. Establish `hp : diagonal ℚ (-1) * u ∈ positiveSubgroup`. Use `mem_positiveSubgroup.2 ⟨mul_mem hm hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, realPart_diagonal]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `Subgroup.mem_sup.2 ⟨_, hp, diagonal ℚ (-a), ⟨-a, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← map_mul, neg_one_mul, neg_neg]`. Conclude with `Subgroup.mem_sup.2 ⟨u, mem_positiveSubgroup.2 ⟨hu, hpos⟩, diagonal ℚ a, ⟨a, rfl⟩, mul_comm _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem positiveSubgroup_sup_diagonal_range : positiveSubgroup ⊔ (diagonal ℚ).range = ⊤ := by
   have htop : (diagonal ℚ).range ⊔ standardOpenSubgroup ℚ = ⊤ := by
@@ -230,7 +230,7 @@ def positiveSubgroupEquiv : positiveSubgroup ≃ₜ* Units.posSubgroup ℝ ×
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_positiveSubgroupEquiv_apply_fst (x : positiveSubgroup) :
     ((positiveSubgroupEquiv x).1 : ℝˣ) = realPart x :=
@@ -238,7 +238,7 @@ theorem coe_positiveSubgroupEquiv_apply_fst (x : positiveSubgroup) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_positiveSubgroupEquiv_apply_snd (x : positiveSubgroup) (v : HeightOneSpectrum (𝓞 ℚ)) :
     (((positiveSubgroupEquiv x).2 v : v.adicCompletionIntegers ℚ) : v.adicCompletion ℚ) =
@@ -247,7 +247,7 @@ theorem coe_positiveSubgroupEquiv_apply_snd (x : positiveSubgroup) (v : HeightOn
 
 @[simp]
 /- English proof (translation)
-The claim follows from `congrArg (fun q ↦ (q.1 : ℝˣ)) (positiveSubgroupEquiv.apply_symm_apply p) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem realPart_positiveSubgroupEquiv_symm_apply (p : Units.posSubgroup ℝ ×
     Π v : HeightOneSpectrum (𝓞 ℚ), (v.adicCompletionIntegers ℚ)ˣ) :
@@ -284,13 +284,13 @@ theorem integersRingEquiv_eq_integersHomeomorph (x : Π v : HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-The claim follows from `integersHomeomorph.continuous.congr fun x ↦ (integersRingEquiv_eq_integersHomeomorph x).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_integersRingEquiv : Continuous integersRingEquiv :=
   integersHomeomorph.continuous.congr fun x ↦ (integersRingEquiv_eq_integersHomeomorph x).symm
 
 /- English proof (translation)
-Conclude with `continuous_equiv_symm_of_eq integersRingEquiv.toEquiv integersHomeomorph integersRingEquiv_eq_integersHomeomorph`.
+A detailed English derivation is pending.
 -/
 theorem continuous_integersRingEquiv_symm : Continuous integersRingEquiv.symm := by
   exact continuous_equiv_symm_of_eq integersRingEquiv.toEquiv integersHomeomorph
@@ -319,11 +319,11 @@ theorem mulMap_apply (p : ℚˣ × positiveSubgroup) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨a, u⟩ h`. Establish `h' : diagonal ℚ a * (u : IdeleGroup ℚ) = 1` using `h`. Establish `hu : (u : IdeleGroup ℚ)⁻¹ ∈ positiveSubgroup ⊓ (diagonal ℚ).range` using `⟨positiveSubgroup.inv_mem u.2, a, eq_inv_of_mul_eq_one_left h'⟩`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[positiveSubgroup_inf_diagonal_range, Subgroup.mem_bot, inv_eq_one]`. Establish `ha : diagonal ℚ a = 1` using `by rwa [hu, mul_one] at h'`. Conclude with `Prod.ext (diagonal_injective ℚ (ha.trans (map_one _).symm)) (Subtype.ext hu)`. Introduce `x`. Establish `hx : x ∈ positiveSubgroup ⊔ (diagonal ℚ).range` using `positiveSubgroup_sup_diagonal_range ▸ Subgroup.mem_top x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, _, ⟨a, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 hx`. Conclude with `⟨(a, ⟨u, hu⟩), mul_comm _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mulMap_bijective : Function.Bijective mulMap := by
   constructor
@@ -355,7 +355,7 @@ def ideleClassGroupEquivPi : IdeleClassGroup ℚ ≃ₜ* Units.posSubgroup ℝ �
     (continuousMulEquivProdCongr (ContinuousMulEquiv.refl _) integerUnitsEquivPi))
 
 /- English proof (translation)
-Simplify using `only [ideleClassGroupEquiv, ContinuousMulEquiv.trans_apply]`. Rewrite using `[← positiveSubgroupEquivIdeleClassGroup_apply, ContinuousMulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ideleClassGroupEquiv_mk (x : positiveSubgroup) :
     ideleClassGroupEquiv (IdeleClassGroup.mk ℚ x) =

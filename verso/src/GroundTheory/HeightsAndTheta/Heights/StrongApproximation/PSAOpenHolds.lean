@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.StrongApprox
 open Matrix NumberField IsDedekindDomain TensorProduct Topology ReciprocityTheory.ChartRestriction.G.SA
 
 /- English proof (translation)
-Take `⟨hdet, hform⟩` from `hγ`. Establish `hsig : ∀ y : E, sigA c (inclA F E y) = inclA F E (c y)`. Introduce `y`. Simplify using `[sigA, inclA, Algebra.TensorProduct.map_tmul]`. Establish `hmap : (γ.map (inclA F E)).map (sigA c) = (γ.map c.toRingHom).map (inclA F E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[hsig]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (γ.map (inclA F E)).det = inclA F E γ.det from (RingHom.map_det _ _).symm, hdet, map_one]`. Rewrite using `[hmap, ← transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hform]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inclA_mem_SU {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (c : E ≃ₐ[F] E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) {γ : Matrix (Fin N) (Fin N) E}
@@ -29,15 +29,15 @@ theorem map_inclA_mem_SU {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
   · rw [hmap, ← transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hform]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c h2 hc N J hJ hdet hiso _ _ Kg hKsub h1 _ hinv hO x hx`. Take `⟨O, hOopen, hOK⟩` from `hO`. Establish `hxdet : IsUnit x.det` using `by rw [hx.1]; exact isUnit_one`. Establish `hcont : Continuous (fun g : Matrix (Fin N) (Fin N) (AE F E) => x⁻¹ * g)` using `((hTop F E c h2 hc).2.2.2 N (J.map (inclA F E))).1.comp (continuous_const.prodMk continuous_id)`. Establish `hUopen : IsOpen ((fun g : Matrix (Fin N) (Fin N) (AE F E) => x⁻¹ * g) ⁻¹' O)` using `hOopen.preimage hcont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1O : (1 : Matrix (Fin N) (Fin N) (AE F E)) ∈ O`. Rewrite `h1` using `[← hOK]`. Conclude with `h1.1`. Establish `hxU : x ∈ (fun g : Matrix (Fin N) (Fin N) (AE F E) => x⁻¹ * g) ⁻¹' O`. Express the relevant statement in the definitionally equal form `x⁻¹ * x ∈ O`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nonsing_inv_mul x hxdet]`. Conclude with `h1O`. Establish `hcl` using `hSA F E c h2 hc N J hJ hdet hiso hx`. Take `⟨_, hyU, ⟨γ, hγ, rfl⟩⟩` from `mem_closure_iff.1 hcl _ hUopen hxU`. Establish `hγA` using `map_inclA_mem_SU c J hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k := x⁻¹ * γ.map (inclA F E) with hk`. Establish `hkSU : k ∈ SU (sigA c) (J.map (inclA F E))` using `mul_mem_SU (inv_mem_SU _ _ hx) hγA`. Establish `hkK : k ∈ Kg` using `by rw [← hOK]; exact ⟨hyU, hkSU⟩`. Establish `hkdet : IsUnit k.det` using `by rw [hkSU.1]; exact isUnit_one`. Use `⟨γ, hγ, k⁻¹, hinv k hkK, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk : x * k = γ.map (inclA F E)`. Rewrite using `[hk, ← Matrix.mul_assoc, mul_nonsing_inv x hxdet, Matrix.one_mul]`. Rewrite using `[← hxk, Matrix.mul_assoc, mul_nonsing_inv k hkdet, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem SAOpenHolds.proof (hSA : SAHolds.Statement) (hTop : AETopologicalRing.Statement) :
     SAOpenHolds.Statement := by

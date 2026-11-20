@@ -22,14 +22,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `((hU.2.1 k).2 _).2 (((GlobalTheory.Relab.relab_good E H l c σ hσ).2.1 τ.1).2 τ.2)`.
+A detailed English derivation is pending.
 -/
 theorem relab_mem {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U)
     (k : U.Comp) (τ : GlobalTheory.AllWt.Psi H) : Formalism.L2.PjFree.relab c σ τ.1 ∈ (U.X k).Ψ :=
   ((hU.2.1 k).2 _).2 (((GlobalTheory.Relab.relab_good E H l c σ hσ).2.1 τ.1).2 τ.2)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.orthonormalFrames_lie_coordinates_unitary hσ hU k x x₁ hx hx₁ e τ T hT`.
+A detailed English derivation is pending.
 -/
 theorem comb_unitary {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U)
     (k : U.Comp) (x x₁ : (U.X k).dom) (hx : IsOrth (U.X k) x.1) (hx₁ : IsOrth (U.X k) x₁.1)
@@ -40,7 +40,7 @@ theorem comb_unitary {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2
   GlobalTheory.T.orthonormalFrames_lie_coordinates_unitary hσ hU k x x₁ hx hx₁ e τ T hT
 
 /- English proof (translation)
-Take `⟨b, -, -, hb, t, ht⟩` from `GlobalTheory.PointOfFrames.exists_frBor U hU hσ k x (U.un k' x') h`. Take `⟨g0, -, b', -, e⟩` from `(hU.2.2.2.1 k k' ⟨_, hb⟩ x').1 ⟨t, ht⟩`. Conclude with `congrArg Sigma.fst e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem uniformisation_component_eq_of_same_modulusPoint {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U)
     {k k' : U.Comp} (x : (U.X k).dom) (x' : (U.X k').dom) (h : (U.un k x).x = (U.un k' x').x) : k' = k := by
@@ -49,13 +49,13 @@ theorem uniformisation_component_eq_of_same_modulusPoint {U : Formalism.L2.PjFre
   exact congrArg Sigma.fst e
 
 /- English proof (translation)
-Take `⟨ψ, σ', k, x, h1, h2, h3, h4, h5, h6⟩` from `hf`. Take `⟨ψ₁, σ₁, k₁, x₁, g1, g2, g3, g4, g5, g6⟩` from `hg`. Establish `e1 : σ = σ'` using `by_contra fun h => (hE σ' (Ne.symm h)).false k`. Establish `e2 : σ = σ₁` using `by_contra fun h => (hE σ₁ (Ne.symm h)).false k₁`. Substitute `e1 e2` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hid : ∀ {ψ : ℂ →+* ℂ}, (ψ = RingHom.id ℂ ∨ ψ = starRingEnd ℂ) → σ = ψ.comp σ → ψ = RingHom.id ℂ`. Introduce `ψ h h'`. Break down `h with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `(not_good_conj c (σ := σ) hσ (h' ▸ hσ)).elim`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hid h1 h2`. Take `rfl` from `hid g1 g2`. Establish `hx : (cxPt Z ((Uf σ).un k x)).1 ≫ genι Z = spMap (RingHom.id ℂ) ≫ y.1 ≫ genι Z` using `by rw [h5, Category.assoc]`. Take `⟨g', hg'⟩` from `g.exists_isMap (RingHom.id ℂ) h2 hx`. Establish `e` using `x_eq_of_cxPt (g5.trans h5.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : k = k₁` from `(uniformisation_component_eq_of_same_modulusPoint hσ hU x x₁ e.symm).symm`. Establish `key` using `comb_unitary hσ hU k x x₁ h4 g4 e τ _ (isCombAt_co e (fun τ i => (hg' τ i).trans (g6 τ i).symm) τ)`. Rewrite `key` using `[h6.co τ hg' hx]`. Apply the tactic sequence `convert key using 2 <;> ext <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unitary_of_single {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ' r}
     (hE : ∀ σ', σ' ≠ σ → IsEmpty (Uf σ').Comp) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf (Uf σ))
@@ -83,7 +83,7 @@ theorem unitary_of_single {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf
   convert key using 2 <;> ext <;> simp
 
 /- English proof (translation)
-Establish `h : ∃ f, IsHodgeFrame Uf y f` using `⟨f, hf⟩`. Use `(dif_pos h).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← h.choose.co_mul f g, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ (f.co g τ), unitary_of_single hE hσ hU h.choose_spec hf, Matrix.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq_of_single {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ' r}
     (hE : ∀ σ', σ' ≠ σ → IsEmpty (Uf σ').Comp) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf (Uf σ))
@@ -96,7 +96,7 @@ theorem gram_eq_of_single {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf
     unitary_of_single hE hσ hU h.choose_spec hf, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `unfFam`. Rewrite using `[dif_neg (Ne.symm h)]`. Conclude with `inferInstanceAs (IsEmpty Empty)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfFam_empty (U : Formalism.L2.PjFree.Unf Xo c σ r) (σ' : c.F →+* ℂ) (h : σ' ≠ σ) :
     IsEmpty (unfFam U σ').Comp := by
@@ -105,12 +105,12 @@ theorem unfFam_empty (U : Formalism.L2.PjFree.Unf Xo c σ r) (σ' : c.F →+* �
   exact inferInstanceAs (IsEmpty Empty)
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem unfFam_self (U : Formalism.L2.PjFree.Unf Xo c σ r) : unfFam U σ = U := dif_pos rfl
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Conclude with `isHodgeFrame_cxFrame hσ hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isHodgeFrame_of_eq {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ' r} {U : Formalism.L2.PjFree.Unf Xo c σ r}
     (hq : Uf σ = U) (hσ : Formalism.L2.PjFree.GoodEmb c σ) {k : U.Comp} {x : (U.X k).dom} (hx : IsOrth (U.X k) x.1) :
@@ -121,7 +121,7 @@ theorem isHodgeFrame_of_eq {Uf : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Un
 variable (Z) in
 
 /- English proof (translation)
-Rewrite using `[hodgeMet, gram_eq_of_single (unfFam_empty U) hσ ((unfFam_self U).symm ▸ hU) (isHodgeFrame_of_eq (unfFam_self U) hσ hx), EigFrame.co_self, conjTranspose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hodgeMet_gram_orth {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) {k : U.Comp} {x : (U.X k).dom} (hx : IsOrth (U.X k) x.1) (τ : E →+* ℂ) :
@@ -142,22 +142,22 @@ def letter {U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)} (hσ : Formalism.
   ⟨Formalism.L2.PjFree.relab c σ τ.1, relab_mem hσ hU k τ⟩
 
 /- English proof (translation)
-The claim follows from `if_pos τ.2`.
+A detailed English derivation is pending.
 -/
 theorem mult_psi (τ : GlobalTheory.AllWt.Psi H) : Dw.mult τ.1 = Dw.p := if_pos τ.2
 
 variable (Z) in
 
 /- English proof (translation)
-Establish `hp : (U.X k).p0 = Dw.p + Dw.q - Dw.p` using `by rw [(hU.2.1 k).1]; omega`. Take `⟨x1, h1, b, hb, ef⟩` from `ortho_holds (Dw.p + Dw.q) (U.X k) f.1 f.2`. Set `f' : (U.X k).dom` to `⟨x1, KU.orth_dom _ h1⟩`. Establish `hz : domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) f.1 = domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) f'.1` using `by show domPt _ _ _ f.1 = domPt _ _ _ x1`. Rewrite using `[ef, domPt_rmul _ _ _ hb]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmo : ∀ ρ : (U.X k).Ψ, moeb (frameCo (U.X k) hj f.1 ρ) 0 = moeb (frameCo (U.X k) hj f'.1 ρ) 0` using `fun ρ => congrFun hz ρ`. Establish `h1'` using `fun ρ => PointWell.block_of_moeb_eq _ hj hp f.2 f'.2 ρ (hmo ρ)`. Establish `h2'` using `fun ρ => PointWell.block_of_moeb_eq _ hj hp f'.2 f.2 ρ (hmo ρ).symm`. Establish `hx : (U.un k f).x = (U.un k f').x` using `PointWell.pt_eq_of_block hU hσ k f f' h1' h2'`. Establish `hg : (hodgeMet Z U).gram (cxPt Z (U.un k f)) (cxFrame Z (U.un k f)) τ.1 = (Matrix.of fun b i : Fin (Dw.mult τ.1) => coef (U.X k) f.1 f'.1 (Formalism.L2.PjFree.relab c σ τ.1) b i)ᴴ * (hodgeMet Z U).gram (cxPt Z (U.un k f')) (cxFrame Z (U.un k f')) τ.1 * Matrix.of fun b i : Fin (Dw …` using `eigGram_of_comb (hodgeMet Z U) _ _ hx τ.1 _ (fun i => lie_comb_of_block hU hσ k f f' h1' h2' τ.1 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg, hodgeMet_gram_orth Z hσ hU (x := f') h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, smul_submatrix_sq]`. Use `set e := Fin.cast (mult_psi τ).symm`. Establish `he : Function.Bijective e` using `(finCongr (mult_psi τ).symm).bijective`. Rewrite using `[Matrix.submatrix_mul _ _ _ _ _ he, ← conjTranspose_submatrix]`. Establish `hKe : (Matrix.of fun b i : Fin (Dw.mult τ.1) => coef (U.X k) f.1 f'.1 (Formalism.L2.PjFree.relab c σ τ.1) b i).submatrix e e = Matrix.of fun b i : Fin Dw.p => coef (U.X k) f.1 f'.1 τ'.1 b i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b i`. Rewrite using `[hτ]`. Both sides reduce to the same expression. Take `⟨hco1, -⟩` from `hodge_co (U.X k) hj hp h1 τ'`. Rewrite using `[hKe, coef_eq_coW_change (U.X k) hj hp f.2 f'.2 τ' (hmo τ'), hmo τ', eq_of_conj_eq_one (isUnit_coW _ _ hp f'.2 _) hco1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hodgeMet_gram_frame {U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) (f : (U.X k).dom) (τ : GlobalTheory.AllWt.Psi H) (τ' : (U.X k).Ψ)

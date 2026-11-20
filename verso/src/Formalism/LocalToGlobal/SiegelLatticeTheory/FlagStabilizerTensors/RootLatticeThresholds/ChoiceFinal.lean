@@ -11,14 +11,14 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.WuBL.wuBesselOfLoc Formalism.L2.SG.Pf.WuBL.reproduction_translation Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm Formalism.L2.SG.Pf.WuBL.parameter_gap_of_hypothesis C`.
+A detailed English derivation is pending.
 -/
 theorem wuBesselOfLoc_all {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) : WuBesselOfLoc C :=
   Formalism.L2.SG.Pf.WuBL.wuBesselOfLoc Formalism.L2.SG.Pf.WuBL.reproduction_translation Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm
     Formalism.L2.SG.Pf.WuBL.parameter_gap_of_hypothesis C
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.GoodS.goodSRest_of hB u u' τ hsm (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u τ) (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u' τ) hT`.
+A detailed English derivation is pending.
 -/
 theorem goodSRest_of_loc {D : D7} {X : HidaSetting D} {θ : ℝ} {C : Choice X θ} (hLF : LocFactor C) (hB : WuBessel C)
     (u u' : D.what₂.Word) (τ : D.what₂.Tau)

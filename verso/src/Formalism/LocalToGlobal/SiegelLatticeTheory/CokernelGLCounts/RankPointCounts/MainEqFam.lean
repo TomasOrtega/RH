@@ -18,17 +18,17 @@ def ampG {Cl Nu : Type} (L : PN.LocalNG Cl Nu) (d : ∀ p, L.D p) : ℂ := ∏ p
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `γ hγ S`. Take `⟨Fm, hR, hex, hOm, hD, hn, hV0, hrw, hM, hU, ha, hH, hpos, hle⟩` from `h γ hγ S`. Establish `hrank : ∀ p : PlF D, Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1`. Introduce `p`. Rewrite using `[finrank_Vp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `D.R.r_eq`. Establish `h2 : 2 * D.R.rS + 2 = D.R.m`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Simplify using `only [Formalism.BasicNotions.Ranks.rS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hNG : ∀ p ∈ Fm.P, LocNG.NGAt D.R.k (Fm.FP p) (C1 : ℝ)` using `fun p hp => hQ (D.s.atP p).Fp (D.s.atP p).Ep (Z.M p) (Z.agree p).1 (Vp D p) (locH Z p) (hrank p) (Fm.FP p) (hR p hp)`. Establish `hq2 : ∀ p ∈ Fm.P, 2 ≤ LocNG.qF (D.s.atP p).Fp` using `fun p hp => Formalism.MainNotions.KappaEndpoints.two_le_residue_card (Z.agree p).1`. Establish `hqH : ∀ p ∈ Fm.P, ¬ (Fm.FP p).PrimeTo → (LocNG.qF (D.s.atP p).Fp : ℝ) ≤ (Fm.FP p).Hp` using `fun p hp hpr => Formalism.L2.SG.Pf.residue_le_height_nonprime (Z.agree p).1 (hR p hp) (hex p hp) hpr`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1 : ∀ p ∈ Fm.P, 1 ≤ (Fm.FP p).Hp`. Introduce `p hp`. Distinguish the cases in `hpr : (Fm.FP p).PrimeTo`. Conclude with `le_of_eq ((hNG p hp (Fm.R p) (Fm.d0 p)).2.2.2 hpr).1.symm`. Establish `h2 : (2 : ℝ) ≤ (LocNG.qF (D.s.atP p).Fp : ℝ)` using `by exact_mod_cast hq2 p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hqH p hp hpr]`. Establish `hHp : ∀ p ∈ Fm.P, 0 ≤ (Fm.FP p).Hp` using `fun p hp => le_trans zero_le_one (hH1 p hp)`. Establish `hB : Fm.toL.Basic`. Use `⟨fun p d => ?_, fun p => hH1 p.1 p.2, fun p => hq2 p.1 p.2, fun p hp => hqH p.1 p.2 ((hOm p).1 hp), fun p => ENNReal.toReal_nonneg, hV0, hrw⟩` and prove the remaining obligations. Use `show 0 ≤ LocNG.Datum.wt (Fm.d0 p.1) d.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Unfold `LocNG.Datum.wt LocNG.volRel`. Check the signs of the components of the expression. Conclude with `⟨Fm.toL, hB, (ngAt_toL Fm C1 hk hNG hD hn hHp).2, hM, hU, ha, hH, hpos, hle⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localLeG_of_fam {Z : LocDat D} {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁) {Cl Nu : Type}
@@ -96,13 +96,13 @@ namespace Formalism.L2.SG.Pf
 open Formalism.L2.SG.Pf.MainEqFam
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C0n, CSt, hCSt, a₀, b₀, h2⟩` from `hF Cg cb Cw cT CT C0`. Use `⟨39, C0n, CSt, hCSt, a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν => ?_⟩` and prove the remaining obligations. Take `⟨s, hs1, hs0, hsb, hL⟩` from `h2 C' Cl e1 e2 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν`. Establish `hk4 : 4 * D.R.rS + 7 ≤ D.R.k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨hH, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH`. Simplify using `only at hH`. Take `⟨-, -, h3, h4, -⟩` from `hH`. Establish `hm2` using `D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : 2 * D.R.rS + 2 = D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.rS]; omega`. Establish `: 2 * D.R.m + 3 ≤ D.R.m ^ 4` using `by nlinarith [Nat.pow_le_pow_left hm2 3]`. Use linear arithmetic over natural numbers and integers. Establish `hQ : Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound D.R.k D.R.rS ((39 : ℕ) : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `hQ5 D hk4` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `⟨s, hs1, hs0, hsb, localLeG_of_fam _ _ 39 C0n _ (by omega) hQ hL⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepLocPinnedG_of_fam (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39) (hF : StepFamG) : StepLocPinnedG := by
   intro Cg cb Cw cT CT C0

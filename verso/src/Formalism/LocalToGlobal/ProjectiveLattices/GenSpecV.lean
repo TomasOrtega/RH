@@ -22,11 +22,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 instance gsvActHom (a : 𝓞 E) : IsMonHom (Xo.univ.t.act.act a) := Xo.univ.t.act.hom a
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Set `e : Over.mk (T.hom ≫ 𝟙 Xo.X) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `h1 : x₀ = e ≫ x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hx` using `[e]`. Establish `h2 : y₀ = e ≫ y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify `hy` using `[e]`. Substitute `h1 h2` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Rewrite using `[← comp_mul]`. Simplify using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gsv_hcId : IsGrpPullback Xo.univ.t.G Xo.univ.t.G (𝟙 Xo.X) (𝟙 Xo.univ.t.G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩
@@ -53,7 +53,7 @@ variable {L : Type} [CommRing L] {x : Sp L ⟶ Xo.X} {n : ℕ}
   {xc : ∀ m : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := L) (JetR L (Fin n) m) ⟶ (Over.pullback x).obj Xo.univ.t.G}
 
 /- English proof (translation)
-Establish `h1` using `Over.w (tvec (x := xc) cc)`. Rewrite using `[gsvVec, Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ x) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsvVec_w (cc : Fin n → L) :
     gsvVec x xc cc ≫ Xo.univ.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ x := by
@@ -67,7 +67,7 @@ def gsvW (cc : Fin n → L) : tEps x ⟶ Xo.univ.t.G := Over.homMk (gsvVec x xc 
 
 variable (xc) in
 /- English proof (translation)
-Use `show (gsvW xc cc).left ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gsv_rel (cc : Fin n → L) :
     Rel (F := 𝟙 Xo.univ.t.G.left) x x
@@ -77,11 +77,11 @@ theorem gsv_rel (cc : Fin n → L) :
   rfl
 
 /- English proof (translation)
-Use `⟨gsvVec_w cc, ?_⟩` and prove the remaining obligations. Establish `hc` using `gsv_hcId (Xo := Xo)`. Establish `htk : x ≫ 𝟙 Xo.X = x` using `Category.comp_id x`. Establish `ht : ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L) ≫ tvec (x` using `xc) cc = 1 := ReciprocityTheory.ChartRestriction.G.Chart.isTan_tvec hx cc`. Establish `hr` using `Formalism.L2.Pj.GSR.rel_pre (ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L)) (gsv_rel xc cc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[ht]`. Establish `h1 : Formalism.L2.Pj.GSR.liftT x (ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L)) ≫ gsvW xc cc = 1` using `by first`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_w hc htk hr (Formalism.L2.Pj.GSR.rel_one hc htk)`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_w hc hr (Formalism.L2.Pj.GSR.rel_one hc htk)`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_w hr (Formalism.L2.Pj.GSR.rel_one hc htk)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Set `e : viaT x (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `L) L) ⟶ Over.mk x := Over.homMk (𝟙 _) (by simp [ReciprocityTheory.ChartRestriction.G.Chart.sp])`. Rewrite using `[← comp_one e]`. Simplify using `only [e, Over.comp_left, Over.homMk_left, Category.id_comp]`. Apply the tactic sequence `try rfl`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gsv_tan (hx : IsUnivChart _ n xc) (cc : Fin n → L) : IsTanAt x (gsvVec x xc cc) := by
   refine ⟨gsvVec_w cc, ?_⟩
@@ -110,17 +110,15 @@ theorem gsv_tan (hx : IsUnivChart _ n xc) (cc : Fin n → L) : IsTanAt x (gsvVec
       try rfl
 
 /- English proof (translation)
-Establish `hc` using `gsv_hcId (Xo := Xo)`. Establish `htk : x ≫ 𝟙 Xo.X = x` using `Category.comp_id x`. Set `W : viaT x (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `L) (DualNumber L)) ⟶ Xo.univ.t.G := Over.homMk w hw.1`. Take `⟨v, hv⟩ : ∃ v, Formalism.L2.Pj.GSR.Rel (F` from `𝟙 Xo.univ.t.G.left) x x W v := by first`. Consider the case `exact Formalism.L2.Pj.GSR.rel_exists_v hc htk W`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `exact Formalism.L2.Pj.GSR.rel_exists_v hc htk`. Consider the case `exact Formalism.L2.Pj.GSR.rel_exists_v hc W`. Consider the case `exact Formalism.L2.Pj.GSR.rel_exists_v W`. Establish `hone : Formalism.L2.Pj.GSR.liftT x (ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L)) ≫ W = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `e : viaT x (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `L) L) ⟶ Over.mk x := Over.homMk (𝟙 _) (by simp [ReciprocityTheory.ChartRestriction.G.Chart.sp])`. Rewrite using `[← comp_one e]`. Simplify using `only [e, W, Formalism.L2.Pj.GSR.liftT, Over.comp_left, Over.homMk_left, Category.id_comp]`. Conclude with `hw.2`. Establish `hv1` using `Formalism.L2.Pj.GSR.rel_pre (ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L)) hv`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv1` using `[hone]`. Establish `htan : ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.fstD L) ≫ v = 1` using `by first`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_v hc htk hv1 (Formalism.L2.Pj.GSR.rel_one hc htk)`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_v hc hv1 (Formalism.L2.Pj.GSR.rel_one hc htk)`. Consider the case `exact Formalism.L2.Pj.GSR.rel_uniq_v hv1 (Formalism.L2.Pj.GSR.rel_one hc htk)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ReciprocityTheory.ChartRestriction.G.Chart.tcoord hx v htan, ?_⟩` and prove the remaining obligations. Establish `hs` using `ReciprocityTheory.ChartRestriction.G.Chart.tcoord_spec hx v htan`. Establish `hv' : w ≫ 𝟙 _ = v.left ≫ pullback.fst Xo.univ.t.G.hom x` using `hv`. Rewrite `hv'` using `[Category.comp_id]`. Rewrite using `[hv']`.
-
-Conclude with `congrArg (fun f => f.left ≫ pullback.fst Xo.univ.t.G.hom x) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsv_exists (hx : IsUnivChart _ n xc) (w : Sp (DualNumber L) ⟶ Xo.univ.t.G.left) (hw : IsTanAt x w) :
     ∃ cc, w = gsvVec x xc cc := by
@@ -155,9 +153,9 @@ theorem gsv_exists (hx : IsUnivChart _ n xc) (w : Sp (DualNumber L) ⟶ Xo.univ.
   exact congrArg (fun f => f.left ≫ pullback.fst Xo.univ.t.G.hom x) hs
 
 /- English proof (translation)
-Establish `ht : tvec (x` using `xc) c₁ = tvec (x := xc) c₂ := by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h`. Conclude with `(Over.w (tvec (x := xc) c₁)).trans (Over.w (tvec (x := xc) c₂)).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_inj ht`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_inj hx ht`.
+A detailed English derivation is pending.
 -/
 theorem gsv_inj (hx : IsUnivChart _ n xc) {c₁ c₂ : Fin n → L} (h : gsvVec x xc c₁ = gsvVec x xc c₂) : c₁ = c₂ := by
   have ht : tvec (x := xc) c₁ = tvec (x := xc) c₂ := by
@@ -170,17 +168,15 @@ theorem gsv_inj (hx : IsUnivChart _ n xc) {c₁ c₂ : Fin n → L} (h : gsvVec 
   | exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_inj hx ht
 
 /- English proof (translation)
-Establish `e1 : ∀ a : 𝓞 E, ((Over.pullback x).map (Xo.univ.t.act.act a)).left ≫ pullback.fst Xo.univ.t.G.hom x = pullback.fst Xo.univ.t.G.hom x ≫ (Xo.univ.t.act.act a).left`. Introduce `a`. Simplify using the standard rewrite rules. Use `first`. Consider the case `exact pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `erw [pullback.lift_fst]`. Consider the case `(rw [limit.lift_π]; rfl)`. Establish `key : ∀ a : 𝓞 E, (gsvVec x xc cc ≫ (Xo.univ.t.act.act a).left = spMap (epsMul (algebraMap c.F L (embK c τ a))) ≫ gsvVec x xc cc) ↔ (tvec (x` using `xc) cc ≫ (Over.pullback x).map (Xo.univ.t.act.act a) = ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (algebraMap c.F L (embK c τ a))) ≫ tvec (x := xc) cc) := by`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, e1]`. Simplify using `only [gsvVec] at h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, h]`. Both sides reduce to the same expression. Conclude with `(Over.w _).trans (Over.w _).symm`. Introduce `h`. Establish `h'` using `congrArg (fun f => f.left ≫ pullback.fst Xo.univ.t.G.hom x) h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Category.assoc, e1] at h'`. Simplify using `only [gsvVec, Category.assoc]`. Conclude with `h'`. Simplify using `only [IsEigAt, key, eigLat, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
-
-Conclude with `ReciprocityTheory.ChartRestriction.G.Chart.tvec_eig_iff ..`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsv_eig_iff [Algebra c.F L] (hx : IsUnivChart _ n xc) (τ : E →+* ℂ) (cc : Fin n → L) :
     IsEigAt c τ (gsvVec x xc cc) ↔
@@ -218,9 +214,9 @@ theorem gsv_eig_iff [Algebra c.F L] (hx : IsUnivChart _ n xc) (τ : E →+* ℂ)
   exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_eig_iff ..
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [Fin.sum_univ_zero, List.ofFn_zero, List.prod_nil]`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.Chart.tvec_add hx (0 : Fin n → L) 0`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Consider the case `succ m ih`. Rewrite using `[Fin.sum_univ_succ, ReciprocityTheory.ChartRestriction.G.Chart.tvec_add hx, ReciprocityTheory.ChartRestriction.G.Chart.tvec_smul hx, List.ofFn_succ, List.prod_cons, ih (fun j => a j.succ) (fun j => e j.succ)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsv_tvec_sum (hx : IsUnivChart _ n xc) {m : ℕ} (a : Fin m → L) (e : Fin m → Fin n → L) :
     tvec (x := xc) (∑ j, a j • e j) =
@@ -236,17 +232,15 @@ theorem gsv_tvec_sum (hx : IsUnivChart _ n xc) {m : ℕ} (a : Fin m → L) (e : 
       List.ofFn_succ, List.prod_cons, ih (fun j => a j.succ) (fun j => e j.succ)]
 
 /- English proof (translation)
-Establish `hc` using `gsv_hcId (Xo := Xo)`. Establish `htk : x ≫ 𝟙 Xo.X = x` using `Category.comp_id x`. Set `u0 : Fin m → (viaT x (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `L) (DualNumber L)) ⟶ Xo.univ.t.G) := fun j => Formalism.L2.Pj.GSR.liftT x (ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (a j))) ≫ gsvW xc (e j)`. Establish `hrel : ∀ j, Formalism.L2.Pj.GSR.Rel (F` using `𝟙 Xo.univ.t.G.left) x x (u0 j) (ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (a j)) ≫ tvec (x := xc) (e j)) := fun j => Formalism.L2.Pj.GSR.rel_pre _ (gsv_rel xc (e j))`. Establish `hprod : Formalism.L2.Pj.GSR.Rel (F` using `𝟙 Xo.univ.t.G.left) x x (List.ofFn u0).prod (tvec (x := xc) (∑ j, a j • e j)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gsv_tvec_sum hx]`. Use `first`. Consider the case `exact Formalism.L2.Pj.GSR.rel_prod hc htk u0 _ hrel`. Consider the case `exact Formalism.L2.Pj.GSR.rel_prod hc u0 _ hrel`. Consider the case `exact Formalism.L2.Pj.GSR.rel_prod u0 _ hrel`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hleft : ((List.ofFn u0).prod).left = gsvVec x xc (∑ j, a j • e j)`. Establish `h : ((List.ofFn u0).prod).left ≫ 𝟙 _ = (tvec (x` using `xc) (∑ j, a j • e j)).left ≫ pullback.fst Xo.univ.t.G.hom x := hprod`. Rewrite `h` using `[Category.comp_id]`. Conclude with `h`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨u, hu, hprodu⟩`. Establish `hue : u = u0`. Use function extensionality and compare the values at `j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu j]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality.
 
-Both sides reduce to the same expression. Substitute `hue` using the available equality. Conclude with `gsv_inj hx (hprodu.symm.trans hleft)`. Introduce `h`. Substitute `h` using the available equality.
-
-Conclude with `⟨u0, fun j => rfl, hleft⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gsv_comb_iff (hx : IsUnivChart _ n xc) {m : ℕ} (e : Fin m → Fin n → L) (a : Fin m → L) (cc : Fin n → L) :
     IsCombAt x (fun j => gsvVec x xc (e j)) a (gsvVec x xc cc) ↔ cc = ∑ j, a j • e j := by

@@ -5,7 +5,7 @@ open scoped Classical
 namespace GlobalTheory.JSW
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.rename_esymm (Fin n) ℤ j σ]`. Simplify using `only [MvPolynomial.esymm, map_sum, map_prod, MvPolynomial.rename_X, Finset.powersetCard_eq_filter, Finset.powerset_univ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem esymm_eq_sum_filter_perm (n j : ℕ) (σ : Equiv.Perm (Fin n)) :
     MvPolynomial.esymm (Fin n) ℤ j =
@@ -16,9 +16,9 @@ theorem esymm_eq_sum_filter_perm (n j : ℕ) (σ : Equiv.Perm (Fin n)) :
     Finset.powersetCard_eq_filter, Finset.powerset_univ]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[esymm_eq_sum_filter_perm n j σ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul_comm]`. Use `congr 1`. Simplify using `only [pow_add, Finset.prod_mul_distrib, pow_ite, pow_one, pow_zero, Finset.prod_ite_mem, Finset.univ_inter]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem esymm_mul_alternant (n : ℕ) (m : Fin n → ℕ) (j : ℕ) :
     MvPolynomial.esymm (Fin n) ℤ j *

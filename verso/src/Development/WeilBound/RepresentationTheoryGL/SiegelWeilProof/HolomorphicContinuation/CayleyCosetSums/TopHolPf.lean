@@ -18,9 +18,9 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `h : IsUnit (mR w) ∧ InG (mR w)` using `⟨⟨w.1, rfl⟩, w.2⟩`. Unfold `lift`. Rewrite using `[dif_pos h]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[mR]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem lift_mR (φ : GR n → ℂ) (w : GR n) : lift φ (mR w) = φ w := by
   have h : IsUnit (mR w) ∧ InG (mR w) := ⟨⟨w.1, rfl⟩, w.2⟩
@@ -42,11 +42,11 @@ Both sides reduce to the same expression.
 theorem mR_mul' (g h : GR n) : mR (g * h) = mR g * mR h := rfl
 
 /- English proof (translation)
-Unfold `tOp resG`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Use `congr 1`. Establish `e1 : mR y * ιK n k * a * nU (herm t) * b = mR (y * ((k : GR n) * LocOpA.mkG a ha * LocOpA.nbEl t * LocOpA.mkG b hb))`. Simplify using `only [mR_mul', ιK_apply, LocOpA.mR_mkG, LocOpA.nbEl, Matrix.mul_assoc]`. Rewrite using `[e1, lift_mR, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tOp_resG {G : Type} [Group G] (ι : GR n →* G) [MeasurableSpace (KR n)] (μ : Measure (KR n)) (ρ : KR n → ℂ)
     (ψ : (Fin n → Fin n → ℝ) → ℂ) {a b : M2 n} (ha : InG a) (hb : InG b) (F : G → ℂ) (g : G) (y : GR n) :
@@ -67,25 +67,23 @@ theorem tOp_resG {G : Type} [Group G] (ι : GR n →* G) [MeasurableSpace (KR n)
   simp only [mul_assoc]
 
 /- English proof (translation)
-Use `set C := tsupport ψ`. Establish `hC : IsCompact C` using `hψs`. Use `haveI : IsFiniteMeasure (volume.restrict C) := ⟨by rw [Measure.restrict_apply_univ]; exact hC.measure_lt_top⟩`. Establish `hCc : (volume.restrict C) Cᶜ = 0`. Rewrite using `[Measure.restrict_apply (isClosed_tsupport ψ).isOpen_compl.measurableSet, Set.compl_inter_self, measure_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnb` using `LocOpA.continuous_nbEl (n := n)`. Establish `hj : ContinuousOn (fun y : (KR n × (Fin n → Fin n → ℝ)) × ℂ => E y.2 (g * ι ((y.1.1 : GR n) * a * LocOpA.nbEl y.1.2 * b)) * ψ y.1.2) (univ ×ˢ U)`. Use `ContinuousOn.mul ?_ (hψc.comp (continuous_snd.comp continuous_fst)).continuousOn` and prove the remaining obligations. Use `hEc.comp (Continuous.continuousOn (continuous_snd.prodMk ((Vac.continuous_arg hιc hnb g).comp continuous_fst))) ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hy.2, trivial⟩`. Establish `e1 : ∀ (k : KR n) (h : ℂ → G → ℂ) (z : ℂ), (∫ x in C, h z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x) = ∫ x, h z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x` using `fun k h z => setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by rw [image_eq_zero_of_notMem_tsupport hx, mul_zero]`. Establish `hinner : ∀ k : KR n, ContinuousOn (fun y : (Fin n → Fin n → ℝ) × ℂ => E y.2 (g * ι ((k : GR n) * a * LocOpA.nbEl y.1 * b)) * ψ y.1) (C ×ˢ U)`. Introduce `k`. Use `hj.comp (Continuous.continuousOn ((Continuous.prodMk_right k).prodMap continuous_id)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `y hy`. Conclude with `⟨trivial, hy.2⟩`. Establish `hind : ∀ k : KR n, ∀ x ∈ C, DifferentiableOn ℂ (fun z => E z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x) U` using `fun k x _ => (hEh _).mul_const _`. Establish `hin : ∀ k : KR n, DifferentiableOn ℂ (fun z => ∫ x in C, E z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x) U` using `fun k => (holParam (Fin n → Fin n → ℝ) (volume.restrict C) C hC hCc U _ hU (hinner k) (hind k)).1`. Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcont : Continuous (fun y : KR n × U => ∫ x in C, E (y.2 : ℂ) (g * ι ((y.1 : GR n) * a * LocOpA.nbEl x * b)) * ψ x)`. Use `continuous_parametric_integral_of_continuous (f := fun (y : KR n × U) x => E (y.2 : ℂ) (g * ι ((y.1 : GR n) * a * LocOpA.nbEl x * b)) * ψ x) ?_ hC` and prove the remaining obligations. Establish `: Continuous (fun w : (KR n × U) × (Fin n → Fin n → ℝ) => (((w.1.1, w.2), (w.1.2 : ℂ)) : (KR n × (Fin n → Fin n → ℝ)) × ℂ))` using `((continuous_fst.comp continuous_fst).prodMk continuous_snd).prodMk (continuous_subtype_val.comp (continuous_snd.comp continuous_fst))`. Conclude with `hj.comp_continuous this fun w => ⟨trivial, w.1.2.2⟩`. Establish `hcon : ContinuousOn (fun y : KR n × ℂ => ρ y.1 * ∫ x in C, E y.2 (g * ι ((y.1 : GR n) * a * LocOpA.nbEl x * b)) * ψ x) (univ ×ˢ U)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hρ.comp continuous_fst).continuousOn.mul ?_` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: (univ ×ˢ U).domRestrict (fun y : KR n × ℂ => ∫ x in C, E y.2 (g * ι ((y.1 : GR n) * a * LocOpA.nbEl x * b)) * ψ x) = (fun y : KR n × U => ∫ x in C, E (y.2 : ℂ) (g * ι ((y.1 : GR n) * a * LocOpA.nbEl x * b)) * ψ x) ∘ (fun w : (univ ×ˢ U : Set (KR n × ℂ)) => ((w.1.1, ⟨w.1.2, w.2. …`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `hcont.comp ((continuous_fst.comp continuous_subtype_val).prodMk ((continuous_snd.comp continuous_subtype_val).subtype_mk _))`. Establish `hP` using `holParam (KR n) μ univ isCompact_univ (by simp) U (fun k z => ρ k * ∫ x in C, E z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x) hU hcon (fun k _ => (hin k).const_mul _)`. Establish `e2 : (fun z => ∫ k, ρ k * (∫ t : Fin n → Fin n → ℝ, E z (g * ι ((k : GR n) * a * LocOpA.nbEl t * b)) * ψ t) ∂μ) = fun z => ∫ k, ρ k * (∫ x in C, E z (g * ι ((k : GR n) * a * LocOpA.nbEl x * b)) * ψ x) ∂μ`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[e1 k E z]`. Rewrite using `[e2]`. Use `⟨hP.1, fun z hz r => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hP.2 z hz r]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[iteratedDeriv_const_mul_field]`. Use `congr 1`.
-
-Rewrite using `[(holParam (Fin n → Fin n → ℝ) (volume.restrict C) C hC hCc U _ hU (hinner k) (hind k)).2 z hz r]`. Repeatedly rewrite using `[iteratedDeriv_mul_const_field]`. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by rw [image_eq_zero_of_notMem_tsupport hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hol_int {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {ι : GR n →* G} (hιc : Continuous ι)
     [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n)) [IsFiniteMeasure μ]
@@ -164,9 +162,9 @@ theorem hol_int {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   exact setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by rw [image_eq_zero_of_notMem_tsupport hx, mul_zero]
 
 /- English proof (translation)
-Introduce `m n e _ _ G _ _ _ _ _ _ Pp Γ ι s₀ Ht f U d Ê t hD _ _ μ _ _ ρ ψ a b hρ hψc hψs ha hb g y`. Use `haveI : CompactSpace (KR n) := kRCpt n`. Establish `hfun : ∀ F : ℂ → G → ℂ, (fun z => tOp μ (ιK n) ρ ψ a b (resG ι (F z) g) (mR y)) = fun z => ∫ k, ρ k * (∫ t : Fin n → Fin n → ℝ, F z ((g * ι y) * ι ((k : GR n) * LocOpA.mkG a ha * LocOpA.nbEl t * LocOpA.mkG b hb)) * ψ t) ∂μ` using `fun F => funext fun z => tOp_resG ι μ ρ ψ ha hb (F z) g y`. Establish `H` using `hol_int hD.ιc μ (a := LocOpA.mkG a ha) (b := LocOpA.mkG b hb) hρ hψc hψs hD.hU Ê hD.cont hD.hol (g * ι y)`. Use `⟨?_, fun r => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun Ê]`. Conclude with `H.1`. Rewrite using `[hfun Ê, H.2 s₀ hD.hs r, tOp_resG ι μ ρ ψ ha hb _ g y]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topHol : TopHol := by
   intro m n e _ _ G _ _ _ _ _ _ Pp Γ ι s₀ Ht f U d Ê t hD _ _ μ _ _ ρ ψ a b hρ hψc hψs ha hb g y
@@ -181,7 +179,7 @@ theorem topHol : TopHol := by
   · rw [hfun Ê, H.2 s₀ hD.hs r, tOp_resG ι μ ρ ψ ha hb _ g y]
 
 /- English proof (translation)
-Unfold `JJ`. Rewrite using `[fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, zero_add, add_zero, Matrix.mul_neg, Matrix.mul_one]`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem JJ_mul_self : JJ n * JJ n = -1 := by
   unfold JJ
@@ -191,14 +189,14 @@ theorem JJ_mul_self : JJ n * JJ n = -1 := by
   simp
 
 /- English proof (translation)
-Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_neg, JJ_mul_self, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem JJ_inv : (JJ n)⁻¹ = -JJ n := by
   refine Matrix.inv_eq_right_inv ?_
   rw [Matrix.mul_neg, JJ_mul_self, neg_neg]
 
 /- English proof (translation)
-Unfold `JJ`. Rewrite using `[fromBlocks_conjTranspose, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem JJ_conjTranspose : (JJ n)ᴴ = -JJ n := by
   unfold JJ
@@ -206,7 +204,7 @@ theorem JJ_conjTranspose : (JJ n)ᴴ = -JJ n := by
   simp
 
 /- English proof (translation)
-Unfold `sig`. Rewrite using `[JJ_inv]`. Simplify using `[Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sig_eq (X : M2 n) : sig X = JJ n * Xᴴ * JJ n := by
   unfold sig
@@ -214,7 +212,7 @@ theorem sig_eq (X : M2 n) : sig X = JJ n * Xᴴ * JJ n := by
   simp [Matrix.neg_mul]
 
 /- English proof (translation)
-Rewrite using `[sig_eq]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, JJ_conjTranspose, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sig_conjTranspose (X : M2 n) : (sig X)ᴴ = JJ n * X * JJ n := by
   rw [sig_eq]
@@ -222,9 +220,9 @@ theorem sig_conjTranspose (X : M2 n) : (sig X)ᴴ = JJ n * X * JJ n := by
     Matrix.mul_neg, neg_neg, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `JJ_mul_self (n := n)`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, sig_conjTranspose, Complex.star_def, Complex.conj_ofReal, map_div₀, map_one, map_ofNat]`. Rewrite using `[sig_eq]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, h]`. Rewrite using `[← Matrix.mul_assoc (JJ n) (JJ n), h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, Matrix.one_mul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_half1 (Z : M2 n) (t : ℝ) :
     ((t : ℂ) • ((1 / 2 : ℂ) • (Z + sig Z)))ᴴ * JJ n + JJ n * ((t : ℂ) • ((1 / 2 : ℂ) • (Z + sig Z))) = 0 := by
@@ -238,9 +236,9 @@ theorem lie_half1 (Z : M2 n) (t : ℝ) :
   module
 
 /- English proof (translation)
-Establish `h` using `JJ_mul_self (n := n)`. Establish `hI : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Rewrite using `[star_div₀, star_one, star_mul', Complex.star_def, Complex.conj_I]`. Simplify using `[Complex.conj_ofNat]`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, sig_conjTranspose, hI, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[sig_eq]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, h]`. Rewrite using `[← Matrix.mul_assoc (JJ n) (JJ n), h]`. Simplify using `only [Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, Matrix.one_mul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_half2 (Z : M2 n) (t : ℝ) :
     ((t : ℂ) • ((1 / (2 * Complex.I)) • (Z - sig Z)))ᴴ * JJ n +
@@ -258,11 +256,11 @@ theorem lie_half2 (Z : M2 n) (t : ℝ) :
   module
 
 /- English proof (translation)
-Unfold `InG`. Establish `hJu : IsUnit (JJ n)`. Use `(Matrix.isUnit_iff_isUnit_det _).2 ?_` and prove the remaining obligations. Use `congrArg Matrix.det (JJ_mul_self (n := n))` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_neg]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `this` using `[h0, mul_zero]`. Simplify using `at this`. Establish `hXh : Xᴴ = JJ n * (-X) * (JJ n)⁻¹`. Establish `h1 : Xᴴ * JJ n = -(JJ n * X)` using `eq_neg_of_add_eq_zero_left hX`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.exp_conjTranspose, hXh, Matrix.exp_conj _ _ hJu, Matrix.exp_neg]`. Establish `hE : IsUnit (NormedSpace.exp X)` using `Matrix.isUnit_exp X`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (JJ n)⁻¹ (JJ n), Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hJu), Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hE), Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_exp_of_lie {X : M2 n} (hX : Xᴴ * JJ n + JJ n * X = 0) : InG (NormedSpace.exp X) := by
   unfold InG
@@ -284,9 +282,9 @@ theorem inG_exp_of_lie {X : M2 n} (hX : Xᴴ * JJ n + JJ n * X = 0) : InG (Norme
     Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hE), Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hmul : ∀ {a b : M2 n}, InG a → InG b → InG (a * b)` using `fun {a b} ha hb => by`. Unfold `InG at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = JJ n := by rw [ha, hb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hmul hx (inG_exp_of_lie (lie_half1 Z t)), hmul hx (inG_exp_of_lie (lie_half2 Z t))⟩`.
+A detailed English derivation is pending.
 -/
 theorem expLie (x Z : M2 n) (t : ℝ) (hx : InG x) :
     InG (x * NormedSpace.exp ((t : ℂ) • ((1 / 2 : ℂ) • (Z + sig Z)))) ∧
@@ -299,7 +297,7 @@ theorem expLie (x Z : M2 n) (t : ℝ) (hx : InG x) :
   exact ⟨hmul hx (inG_exp_of_lie (lie_half1 Z t)), hmul hx (inG_exp_of_lie (lie_half2 Z t))⟩
 
 /- English proof (translation)
-Introduce `n F F' Z x _ h h1 h2`. Unfold `rC`. Establish `e1 : (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • ((1 / 2 : ℂ) • (Z + sig Z))))) = fun t : ℝ => F' (x * NormedSpace.exp ((t : ℂ) • ((1 / 2 : ℂ) • (Z + sig Z))))` using `funext fun t => h _ (h1 t)`. Establish `e2 : (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • ((1 / (2 * Complex.I)) • (Z - sig Z))))) = fun t : ℝ => F' (x * NormedSpace.exp ((t : ℂ) • ((1 / (2 * Complex.I)) • (Z - sig Z))))` using `funext fun t => h _ (h2 t)`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rcCongr : RcCongr := by
   intro n F F' Z x _ h h1 h2

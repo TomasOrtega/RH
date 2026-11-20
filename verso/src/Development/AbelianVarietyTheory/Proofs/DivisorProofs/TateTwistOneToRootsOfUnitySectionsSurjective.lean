@@ -10,14 +10,14 @@ noncomputable section
 namespace GlobalTheory.EtC.MuTw
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_comp_apply' {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Γ(U, ⊤)) :
     (k ≫ g).appTop.hom a = k.appTop.hom (g.appTop.hom a) := by
   rw [Scheme.Hom.comp_appTop]; rfl
 
 /- English proof (translation)
-Use `hq.map g.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast_of_hom {V U : Scheme.{0}} (g : V ⟶ U) (q : ℕ) (hq : IsUnit (q : Γ(U, ⊤))) :
     IsUnit (q : Γ(V, ⊤)) := by
@@ -25,7 +25,7 @@ theorem isUnit_natCast_of_hom {V U : Scheme.{0}} (g : V ⟶ U) (q : ℕ) (hq : I
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Establish `hr` using `(mem_rootsOfUnity q _).1 (Additive.toMul (ULift.down (α := Additive (rootsOfUnity q Γ(U, ⊤))) y)).2`. Express the relevant statement in the definitionally equal form `(( _ : Γ(U, ⊤)ˣ) : Γ(U, ⊤)) ^ q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hr, Units.val_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem muVal_pow (q : ℕ) [NeZero q] {U : Scheme.{0}} (y : Sec (muS q) U) : muVal q y ^ q = 1 := by
   have hr := (mem_rootsOfUnity q _).1 (Additive.toMul (ULift.down (α := Additive (rootsOfUnity q Γ(U, ⊤))) y)).2
@@ -33,9 +33,9 @@ theorem muVal_pow (q : ℕ) [NeZero q] {U : Scheme.{0}} (y : Sec (muS q) U) : mu
   rw [← Units.val_pow_eq_pow_val, hr, Units.val_one]
 
 /- English proof (translation)
-Use `(etaS_sec q V _).trans ((eta_mk q Γ(V, ⊤) ζ _).trans ?_)` and prove the remaining obligations. Apply `muVal_injective q V` to reduce the goal to its premises. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(((Additive.toMul (((a : ZMod q)) • Additive.ofMul (root q ζ)) : rootsOfUnity q Γ(V, ⊤)) : Γ(V, ⊤)ˣ) : Γ(V, ⊤)) = _`. Rewrite using `[smul_eq, toMul_nsmul, toMul_ofMul, root_pow_coe, ZMod.val_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_eq_pow_mod a (prim_pow q ζ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem etaS_lift_pow (q : ℕ) [NeZero q] (V : Scheme.{0}) (ζ : Prim q Γ(V, ⊤)) (z : Sec (muS q) V) (a : ℕ)
     (h : muVal q z = ζ.1 ^ a) :
@@ -54,19 +54,19 @@ end GlobalTheory.EtC.MuTw
 namespace GlobalTheory.EtC.MuTw
 
 /- English proof (translation)
-Introduce `q _ U hq y`. Establish `hloc : Loc U fun V g => ∃ s : Sec (tw q 1) V, Sec.map (etaS q) s = Sec.res g y`. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.2.2.2.1 U _ ?_` and prove the remaining obligations. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).1 hq) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨ζ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 V _ _ ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q V).2.2.1 ζ (muVal q (Sec.res g y)) (muVal_pow q _)) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨a, ha⟩`. Use `⟨_, etaS_lift_pow q W (Prim.map k.appTop.hom ζ) (Sec.res (k ≫ g) y) a ?_⟩` and prove the remaining obligations. Rewrite using `[muVal_res, appTop_comp_apply', ← muVal_res, ha]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨S, hS, hSy⟩` from `hloc`. Use `choose s hs using hSy`. Establish `hsh` using `(tw q 1).cond`. Rewrite `hsh` using `[Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} (ZMod q)))), isSheaf_iff_isSheaf_of_type]`. Set `fam : Presieve.FamilyOfElements ((tw q 1).obj ⋙ forget (ModuleCat.{1} (ULift.{1} (ZMod q)))) S.arrows` to `fun V g hg => s V g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfam : fam.Compatible`. Introduce `Y₁ Y₂ Z g₁ g₂ f₁ f₂ h₁ h₂ e`. Apply `GlobalTheory.T.tateTwistOneToRootsOfUnity_sections_injective q Z (isUnit_natCast_of_hom (g₁ ≫ f₁) q hq)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Sec.map (etaS q) (Sec.res g₁ (s _ f₁ h₁)) = Sec.map (etaS q) (Sec.res g₂ (s _ f₂ h₂))`. Rewrite using `[etaS_res, etaS_res, hs, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `muVal_injective q Z` to reduce the goal to its premises. Simplify using `only [muVal_res]`. Rewrite using `[← appTop_comp_apply', ← appTop_comp_apply', e]`. Take `⟨x, hx, -⟩` from `hsh S hS fam hfam`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsep` using `(muS q).cond`. Rewrite `hsep` using `[Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} (ZMod q)))), isSheaf_iff_isSheaf_of_type]`. Use `(hsep S hS).isSeparatedFor.ext (fun V g hg => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.res g (Sec.map (etaS q) x) = Sec.res g y`. Rewrite using `[← etaS_res]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Sec.res g x = s V g hg` using `hx g hg`. Rewrite using `[h1, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaS_surjective : ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) →
     Function.Surjective ((etaS q).hom.app (op U)).hom := by

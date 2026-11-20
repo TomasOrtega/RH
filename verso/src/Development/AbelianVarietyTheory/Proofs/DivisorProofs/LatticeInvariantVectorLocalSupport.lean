@@ -12,17 +12,17 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.LatSelfDualCo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW co v w hw`. Use `set p : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F) := (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k)) with hp`. Use `set z := co.e.symm p with hz`. Establish `hez : co.e z = p` using `by rw [hz]; exact co.e.apply_symm_apply p`. Establish `hzat : At (evFin F v) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hpu : u • p = 0`. Use extensionality with `k`. Conclude with `GlobalTheory.LatVac.at_liftV v (w.1 k) u hu`. Conclude with `GlobalTheory.LatVac.at_liftV v (w.2 k) u hu`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, ← LinearEquiv.map_smul, hpu, map_zero]`. Establish `hloc : GlobalTheory.LatVac.locCo co v z = w`. Use extensionality with `k`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hez, hp, GlobalTheory.LatVac.evFin_liftV]`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hez, hp, GlobalTheory.LatVac.evFin_liftV]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨z, ?_, hloc⟩` and prove the remaining obligations. Use `(GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X W r s r' s' hB hX hW v z hzat).2 ?_` and prove the remaining obligations. Introduce `γ hγ`. Establish `hat : At (evFin F v) (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) z γ) := by`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.LatVac.symp_smul_smul σ (incM F X.J) (incM F W.J) (-1) u 1 z γ` as an intermediate fact. Rewrite `this` using `[hzat u hu, one_smul, mul_one, GlobalTheory.LatVacArith.symp_zero_left]`. Conclude with `this.symm`. Rewrite using `[GlobalTheory.VacIndic.psi_of_at _ hat, co.form, hez]`. Establish `h` using `hw (-γ) (neg_mem hγ)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Rewrite `h` using `[GlobalTheory.LatVac.psiAt_apply]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hp, dotProduct, map_sub, map_sum, map_mul, GlobalTheory.LatVac.evFin_liftV, map_neg, Pi.neg_apply, Prod.fst_neg, Prod.snd_neg]`. Simplify using `only [neg_mul, mul_neg, Finset.sum_neg_distrib]`. Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem latAtV_selfDual_locCo : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

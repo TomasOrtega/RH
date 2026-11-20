@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SJ
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `IsTotallyComplex.complexEmbedding_not_isReal σ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `a`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.2 (h a)`.
+A detailed English derivation is pending.
 -/
 theorem colNorm_exists_im_ne_zero {K : Type} [Field K] [IsTotallyComplex K] (σ : K →+* ℂ) :
     ∃ a, (σ a).im ≠ 0 := by
@@ -23,7 +23,7 @@ theorem colNorm_exists_im_ne_zero {K : Type} [Field K] [IsTotallyComplex K] (σ 
   exact Complex.conj_eq_iff_im.2 (h a)
 
 /- English proof (translation)
-Rewrite using `[D.nuIn_norm, normAt_sq_eq_majAt_re, (D.fm u).emb_norm, ← D.nuIn_jN, norm_eq_sqrt_re_inner (𝕜 := ℂ), D.eMu_isom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colNorm_normAt_column (D : D7) (u : D.what₂.Word) (x : (D.div.Nu u).V) :
     Formalism.HermitianLatticesTheory.normAt (D.div.Nu u).b (D.div.Nu u).X (InfinitePlace.mk D.what₂.embLL) x = ‖D.jN u x‖ := by
@@ -31,9 +31,9 @@ theorem colNorm_normAt_column (D : D7) (u : D.what₂.Word) (x : (D.div.Nu u).V)
   rfl
 
 /- English proof (translation)
-Introduce `D Bs A X fc s R cr M h u`. Take `⟨L, hL⟩` from `h u`. Use `⟨1, one_pos, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Establish `htw : ∀ a, (InfinitePlace.mk D.what₂.embLL).embedding a = cj s (D.what₂.embLL a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← R.v0]`. Conclude with `R.twist`. Use `fnorm_cjv_eq_norm D.what₂.LL D.what₂.embLL s htw (colNorm_exists_im_ne_zero _) (D.div.Nu u) _ L _ (R.eNu u) hL (D.what₂.Mu u) (D.jN u) (M.cφ u) (colNorm_normAt_column D u) (M.cφ_eq u) φ` as an intermediate fact. Rewrite `this` using `[← R.v0]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colNorm_of_nuTie : ∀ (D : D7) (Bs : DefBase D.what₂.LL) (A : DefAmb Bs) (X : CxData A) (fc : DefSub A → DefFace Bs) (s : Bool) (R : Read D X fc s) (cr : Crd A fc) (M : Seam R cr), R.NuTie → M.ColNorm := by
   intro D Bs A X fc s R cr M h u

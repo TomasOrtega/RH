@@ -27,13 +27,11 @@ namespace GlobalTheory.CechKS
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨J, W, c, y, hW, hc, hl, hn, hd⟩` from `GlobalTheory.T.exists_lifts_of_cechKodairaSpencerDeformation K A A' i L n u θ hu H`. Take `⟨G, hG⟩` from `GlobalTheory.T.epsilonPart_deformationForm_class_eq_coboundary_of_lifts K A A' i h ω' _ b e`. Set `J' : Type` to `{p : J × A'.left.affineOpens × A.left.affineOpens // p.2.2.1 ≤ W p.1 ⊓ i ⁻¹ᵁ p.2.1.1}`. Use `⟨J', fun j ↦ j.1.2.2, fun j ↦ c j.1.1, ?_, fun j ↦ (j.2.trans inf_le_left).trans (hc _), ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun p _ ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hW.ge (Set.mem_univ p))`. Take `⟨_, ⟨U, hU, rfl⟩, hpU, -⟩` from `A'.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (i p)) isOpen_univ`. Take `⟨_, ⟨V, hV, rfl⟩, hpV, hle⟩` from `A.left.isBasis_affineOpens.exists_subset_of_mem_open (show p ∈ W k ⊓ i ⁻¹ᵁ U from ⟨hk, hpU⟩) (W k ⊓ i ⁻¹ᵁ U).isOpen`. Conclude with `Opens.mem_iSup.2 ⟨⟨(k, ⟨U, hU⟩, ⟨V, hV⟩), hle⟩, hpV⟩`. Establish `hin : ∀ (j : J') (P : GPt A), P.In j.1.2.2.1 → P.In (W j.1.1)` using `fun j P hP ↦ hP.mono (j.2.trans inf_le_left)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j P ↦ if hP : P.In (W j.1.1) then (liftVal h ω'.1 (hl _ P hP)).snd + G P else 0, fun j P Q φ hP ↦ ?_, fun j j' P hj hj' ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos (hin j P hP), dif_pos (hin j Q (hP.map φ))]`. Conclude with `hG P Q φ _ _ _ _ (hn _ P Q φ (hin j P hP))`. Simplify using `only [dif_pos (hin j P hj), dif_pos (hin j' P hj')]`. Establish `hU : P.In (i ⁻¹ᵁ j.1.2.1.1)` using `hj.mono (j.2.trans inf_le_right)`.
-
-Rewrite using `[add_sub_add_right_eq_sub, ← TrivSqZeroExt.snd_sub]`. Conclude with `GlobalTheory.T.firstOrderDeformation_form_lift_values_sub K A A' i h hA ω' _ j.1.2.1.2 P hU _ _ _ _ n u _ hu fun f ↦ hd _ _ P _ f (hin j P hj) (hin j' P hj') hU`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRep_eps {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' : Over (Sp (DualNumber K))}
     [GrpObj A'] {i : A.left ⟶ A'.left} (h : IsGrpPullback A A' (DeRham.epsRed K) i) (hA : IsAbelianScheme A)
@@ -71,9 +69,9 @@ theorem exists_isRep_eps {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' :
         fun f ↦ hd _ _ P _ f (hin j P hj) (hin j' P hj') hU
 
 /- English proof (translation)
-Establish `e3` using `congrArg TrivSqZeroExt.snd e2`. Establish `e6 : ∀ b, ∑ k, t b k * f (c k) = p b` using `fun b ↦ (Finset.sum_congr rfl fun k _ ↦ mul_comm _ _).trans (e5 b).symm`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, e6] at e1`. Simplify using `only [LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, e4, Finset.sum_mul]`. Simplify using `at e3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e7 : ∑ a, ∑ b, θ a b * p b * α a = ∑ a, ∑ b, θ a b * α a * p b` using `Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring`. Rewrite using `[e7]`. Take the linear combination `e3 - e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eval_eq_zero {K M I : Type*} [Field K] [AddCommGroup M] [Module K M] [Fintype I] {n : ℕ}
     (f k : Module.Dual K M) (b x : M) (c : I → M) (θ : Matrix (Fin n) (Fin n) K) (hb : Fin n → Module.Dual K M)
@@ -96,23 +94,21 @@ theorem eval_eq_zero {K M I : Type*} [Field K] [AddCommGroup M] [Module K M] [Fi
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨v, k, ⟨d, hd, hdk⟩, -⟩` from `IsKSValue.exists_of_isAbelianScheme P h hA' hg' hf`. Take `⟨I, _, c, ω, hω, hch, hψf⟩` from `GlobalTheory.T.firstChern_eq_sum_cup_invariantForms P K A g hA hg L hL ψ hψ`. Use `choose z hz using fun k ↦ H1.mk_surjective _ (c k).1`. Establish `key : k - ∑ a, (∑ b, θ a b * ψ f (hb b)) • hb a ∈ Fil A`. Use `letI : Algebra (DualNumber K) K := (TrivSqZeroExt.fstHom K K K).toRingHom.toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hF⟩` from `P.2.2.1 (DualNumber K) A' g hA' hg' K A i h`. Rewrite using `[Fil, hF, Submodule.mem_dualAnnihilator]`. Introduce `x hx`. Use `(Submodule.span_le (p := LinearMap.ker (k - ∑ a, (∑ b, θ a b * ψ f (hb b)) • hb a))).2 (fun x hx ↦ ?_) hx` and prove the remaining obligations. Take `⟨⟨x, hx'⟩, hx, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0` using `hx`. Express the relevant statement in the definitionally equal form `x ∈ F1 _ at hx`. Rewrite `hx` using `[hodgeFiltration_eq_range]`. Take `⟨ω', rfl⟩` from `hx`. Take `⟨b, hbe⟩` from `GlobalTheory.T.deformation_class_pullback_eq_constant_add_eps P K A A' i h g hA' hg' ⟨_, hx'⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨zb, hzb⟩` from `H1.mk_surjective _ b.1`. Set `ω₀` to `(fibMor h).isMor.pullForm ω'`. Establish `hω₀ : Form.cl _ ω₀ ∈ primDR A` using `(fibMor h).pullback_mem_primitive hx'`. Take `⟨J, V, τ, hV, hτ, hrep⟩` from `exists_isRep_eps h hA L u θ hu H ω' zb (by`. Rewrite using `[hzb]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val hbe)`. Establish `hch' : IsChern (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L (∑ k, cup _ (H1.mk _ (z k)) (Form.cl _ (ω k)))`. Simplify `hch` using `only [hz]`. Establish `hr` using `fun a ↦ GlobalTheory.T.isCechRepresentative_chernClass_tangentValue K A hA L hL I z ω hch' (u a) (hu a) J V τ hτ`. Establish `hsum` using `hrep.add (IsRep.sum Finset.univ fun a _ ↦ IsRep.sum Finset.univ fun b _ ↦ (hr b).smul (θ a b * tanVal (u a) ω₀))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hF1` using `GlobalTheory.T.crystallineClass_mem_hodgeFiltration_of_cechRep_zero K _ _ J _ hV _ (hsum.congr (F' := 0) fun j j' Q _ _ ↦ by`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, Pi.zero_apply, Algebra.smul_def, map_mul, Finset.sum_mul]`. Rewrite using `[neg_add_eq_zero]`. Conclude with `Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ mul_right_comm _ _ _)`. Establish `hmem : b + ∑ a, ∑ b, (θ a b * tanVal (u a) ω₀) • ∑ k, tanVal (u b) (ω k) • c k ∈ PrimitiveSubmodule A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Simplify using `only [map_add, map_sum, map_smul, hz, hzb] at hF1`. Simplify using `only [map_add, map_sum, map_smul]`. Conclude with `hF1`. Establish `e1` using `(Submodule.mem_dualAnnihilator _).1 hf _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : d ((liftMor (epsDP K) h).pull ⟨_, hx'⟩) = 0` using `(Submodule.mem_dualAnnihilator _).1 hd _ hx0`. Rewrite `e2` using `[hbe, map_add, map_smul, hdk, hdk]`. Establish `e4 : ∀ a, hb a ⟨_, hω₀⟩ = tanVal (u a) ω₀` using `fun a ↦ (hhb a).2 ω₀ hω₀`. Establish `e5 : ∀ b, ψ f (hb b) = ∑ k, f (c k) * tanVal (u b) (ω k)` using `fun b ↦ (hψf f hf (hb b)).trans (Finset.sum_congr rfl fun k _ ↦ congrArg (f (c k) * ·) ((hhb b).2 (ω k) (hω k)))`. Conclude with `eval_eq_zero f k b ⟨_, hω₀⟩ c θ hb _ _ _ e4 e5 e1 e2`.
-
-Use `⟨k, ⟨d, hd, hdk⟩, ?_⟩` and prove the remaining obligations. Use `(FlagTan.isLieImage_lieComb (fun a ↦ ∑ b, θ a b * ψ f (hb b)) hhb).add (isLieImage_one_iff.2 key)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, _root_.mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isKSValue_of_isCechKS (P : GlobalTheory.Published.AbelianDeRham) {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A]
     {A' : Over (Sp (DualNumber K))} [GrpObj A'] {i : A.left ⟶ A'.left} (h : IsGrpPullback A A' (DeRham.epsRed K) i)
@@ -187,11 +183,11 @@ open GlobalTheory.LogPole
 open scoped Classical
 
 /- English proof (translation)
-Introduce `P`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `K _ _ A _ A' _ i h g hA hg hA' hg' L hL ψ hψ n u θ hu H hb hhb f hf w hw`. Take `⟨u', hu', rfl⟩` from `hw`. Use `GlobalTheory.CechKS.isKSValue_of_isCechKS P.p5 h hA hg hA' hg' L hL ψ hψ u θ hu H hb hhb hf` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[GlobalTheory.FlagTan.lieComb]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Use `Over.OverMorphism.ext ((hu' a).trans ?_)` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Rat.cast_one, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.CechKS.exists_const_isKSValue : GlobalTheory.CovTop.Hypotheses₂ → ∃ s : ℚ, s ≠ 0 ∧ ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left) (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i) (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm K (GlobalTheory.DeRham.HdR A), GlobalTheory.DeRham.IsPolForm (GlobalTheory.Cris.dp0 K) (𝟙 _) A L ψ → ∀ (n : ℕ) (u : Fin n → (epsR K ⟶ A)) (θ : Matrix (Fin n) (Fin n) K), (∀ a, IsTangent (u a)) → GlobalTheory.CechKS.IsCechKS A A' i L u θ → ∀ (hb : Fin n → GlobalTheory.DeRham.HdR A), (∀ b, GlobalTheory.DeRham.IsLieImage (hb b) (u b)) → ∀ f ∈ GlobalTheory.DeRham.Fil A, ∀ w : epsR K ⟶ A, IsLieComb (fun a => (s : K) * ∑ b, θ a b * ψ f (hb b)) u w → GlobalTheory.DeRham.IsKSValue h f w := by
   intro P

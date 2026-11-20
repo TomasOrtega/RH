@@ -11,7 +11,7 @@ open GlobalTheory.DegVol.RefCov
 namespace GlobalTheory.DegVol.RefCovTop
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : a < b`. Simplify using `[upperIn, upper, h, ne_of_lt h]`. Simplify using `[upperIn, upper, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upperIn_of_zero {r : ℕ} (β : Fin r → ℕ) : upperIn β 0 = 1 := by
   ext a b
@@ -20,7 +20,7 @@ theorem upperIn_of_zero {r : ℕ} (β : Fin r → ℕ) : upperIn β 0 = 1 := by
   · simp [upperIn, upper, h, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `uEmb`. Simplify using `only [inv_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem uEmb_one' (k r : ℕ) : uEmb k r (1 : Matrix (Fin r) (Fin r) ℂ) = 1 := by
   ext i j
@@ -30,23 +30,23 @@ private theorem uEmb_one' (k r : ℕ) : uEmb k r (1 : Matrix (Fin r) (Fin r) ℂ
   omega
 
 /- English proof (translation)
-Rewrite using `[crd, h, upperIn_of_zero, uEmb_one', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_of_zero {k r j : ℕ} (β : Fin r → ℕ) (q : (UTin β → ℂ) × PTop k r j) (h : q.1 = 0) :
     crd k r j β q = pTop k r j q.2 := by
   rw [crd, h, upperIn_of_zero, uEmb_one', Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mulVec_bvec_lemma_2 {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (M *ᵥ bvec j) i = M i j := by
   simp [Matrix.mulVec, dotProduct, bvec, Pi.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Conclude with `Fin.ext h'`. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem eI_inj' {k r : ℕ} (a c : Fin r) : eI k r a = eI k r c ↔ a = c := by
   constructor
@@ -57,9 +57,9 @@ private theorem eI_inj' {k r : ℕ} (a c : Fin r) : eI k r a = eI k r c ↔ a = 
     rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `congrArg Fin.val h`. Establish `h1 : (wI k r l).val = r + l.val` using `rfl`. Establish `h2 : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Use `l.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem wI_ne_esI' {k r : ℕ} (l : Fin (k + 1)) (b : Fin r) : wI k r l ≠ esI k r b := by
   intro h
@@ -71,9 +71,9 @@ private theorem wI_ne_esI' {k r : ℕ} (l : Fin (k + 1)) (b : Fin r) : wI k r l 
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single i]`. Simplify using `[pTop, pOf, pEl]`. Introduce `m _ hmi`. Distinguish the cases in `hm : r ≤ m.val`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hw m hm]`. Establish `hz : pTop k r j q i m = 0`. Unfold `pTop pOf pEl`. Rewrite using `[if_neg (Ne.symm hmi), dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`. Simplify using `[hz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -92,13 +92,11 @@ private theorem pTop_mulVec_eq_of_vanishing {k r j : ℕ} (q : PTop k r j) (w : 
   · simp
 
 /- English proof (translation)
-Establish `h1 : (wI k r l).val = r + l.val` using `rfl`. Establish `h2 : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Use `l.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Unfold `pTop pOf pEl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (wI_ne_esI' l b), dif_neg (by omega), dif_pos (by omega)]`. Establish `e1 : (⟨2 * r + k - (esI k r b).val, by omega⟩ : Fin r) = b`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - b.val) = b.val`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e2 : (⟨(wI k r l).val - r, by omega⟩ : Fin (k + 1)) = l`. Apply `Fin.ext` to reduce the goal to its premises. Use `show r + l.val - r = l.val`. Use linear arithmetic over natural numbers and integers. Establish `hb' : j ≤ 2 * r + k - (esI k r b).val` using `by omega`.
-
-Simplify using `only [e1, e2, dif_pos hb']`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pTop_wI_esI_eq {k r j : ℕ} (q : PTop k r j) (b : Fin r) (hb : j ≤ b.val) (l : Fin (k + 1)) :
     pTop k r j q (wI k r l) (esI k r b) = q.1 ⟨b, hb⟩ l := by
@@ -120,13 +118,13 @@ private theorem pTop_wI_esI_eq {k r j : ℕ} (q : PTop k r j) (b : Fin r) (hb : 
   simp only [e1, e2, dif_pos hb']
 
 /- English proof (translation)
-Establish `ha : (eI k r a).val = a.val` using `rfl`. Establish `hb : (eI k r b).val = b.val` using `rfl`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Rewrite using `[crd, ← Matrix.mulVec_mulVec, pTop_mulVec_eq_of_vanishing, mulVec_bvec_lemma_2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `uEmb`. Rewrite using `[dif_pos (by omega)]`. Both sides reduce to the same expression. Introduce `m hm`. Rewrite using `[mulVec_bvec_lemma_2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `uEmb`. Establish `hne : m ≠ eI k r b`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dif_neg (by omega), dif_neg (by omega), if_neg hne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem crd_mulVec_bvec_eI_eq_upperIn {k r j : ℕ} (β : Fin r → ℕ) (q : (UTin β → ℂ) × PTop k r j) (a b : Fin r) :
     (crd k r j β q *ᵥ bvec (eI k r b)) (eI k r a) = upperIn β q.1 a b := by
@@ -148,23 +146,25 @@ private theorem crd_mulVec_bvec_eI_eq_upperIn {k r j : ℕ} (β : Fin r → ℕ)
     rw [dif_neg (by omega), dif_neg (by omega), if_neg hne]
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF s q hq`. Take `⟨hR, -, -, -, -, hE, hI, -, -⟩` from `hF`. Take `⟨hadd, hsmul, -, -⟩` from `id hR`. Establish `hv : ∀ a : Fin r, Φ (N.F.e a.castSucc) = ((ρ ^ (r - a.val) : ℝ) : ℂ) • bvec (eI k r a)` using `fun a => (hE a).1`. Establish `hρc : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨⟨a, b⟩, hab⟩, hβ⟩ u hsu dsimp only at hab hβ hsu ⊢`. Establish `hab' : a.val < b.val` using `hab`. Establish `hcol : upperIn β q.1 a b = q.1 ⟨⟨(a, b), hab⟩, hβ⟩`. Simplify using `[upperIn, upper, hab, hβ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `congrFun (hq (N.F.e b.castSucc)) (eI k r a)`. Rewrite `key` using `[hsu, hadd, RealMat.phi_sum hR, hv b, Matrix.mulVec_smul, Pi.smul_apply, crd_mulVec_bvec_eI_eq_upperIn, hcol]`. Simplify using `only [hsmul, hv, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply, eI_inj', hab.ne, if_false, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, zero_add, Complex.ofReal_pow] at key`. Establish `hne : (ρ : ℂ) ^ (r - b.val) ≠ 0` using `pow_ne_zero _ hρc`. Establish `hpow : (ρ : ℂ) ^ (r - a.val) = (ρ : ℂ) ^ (r - b.val) * (ρ : ℂ) ^ (b.val - a.val)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `key + σ (u a) * hpow`. Introduce `h0 a`. Apply `RealMat.phi_inj hR` to reduce the goal to its premises. Rewrite using `[← hq, crd_of_zero β q h0, hv a, Matrix.mulVec_smul, pTop_mulVec_eq_of_vanishing]`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m hm`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`. Introduce `h`. Establish `h1` using `congrArg Fin.val h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (eI k r a).val = a.val` using `rfl`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `h0 ⟨b, hb⟩ y hy dsimp only at hy ⊢`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Establish `hw : s (N.ist b) - N.ist b - y ∈ N.F.Xa r` using `(Submodule.mem_inf.mp hy).1`. Establish `hz` using `RealMat.coord_of_mem_Xa hR (fun a => (hE a).1) hw (wI k r l) (by have : (wI k r l).val = r + l.val := rfl; omega)`. Establish `key` using `congrFun (hq (N.ist b)) (wI k r l)`. Establish `hsplit : s (N.ist b) = N.ist b + y + (s (N.ist b) - N.ist b - y)` using `by abel`. Rewrite `key` using `[hsplit, hadd, hadd, hI b hb, crd_of_zero β q h0, Matrix.mulVec_smul, Pi.smul_apply, mulVec_bvec_lemma_2, pTop_wI_esI_eq q.2 b hb l]`.
+Simplify by unfolding definitions. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, hz, add_zero, Pi.smul_apply, bvec, Pi.single_apply, wI_ne_esI' l b, if_false, smul_eq_mul, mul_zero, zero_add, Complex.ofReal_inv, Complex.ofReal_pow] at key`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Complex.ofReal_pow]`. Establish `hne : (ρ : ℂ) ^ (r - b.val) ≠ 0` using `pow_ne_zero _ hρc`. Rewrite using `[← key, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
+
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_top : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V) (r : ℕ) (N : NF H r) (k : ℕ) (σ : K →+* ℂ) (ρ : ℝ) (β : Fin r → ℕ) (Φ : V → Fin (2 * r + k + 1) → ℂ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r), 0 < ρ → IsFrameOf N k σ ρ β Φ z z' g → ∀ (s : V ≃ₗ[K] V) (q : (UTin β → ℂ) × PTop k r N.j), (∀ x, crd k r N.j β q *ᵥ Φ x = Φ (s x)) → (∀ (i : UTin β) (u : Fin r → K), s (N.F.e i.1.1.2.castSucc) = N.F.e i.1.1.2.castSucc + ∑ c, u c • N.F.e c.castSucc → q.1 i = ((ρ ^ (i.1.1.2.val - i.1.1.1.val) : ℝ) : ℂ) * σ (u i.1.1.1)) ∧ (q.1 = 0 → ∀ a : Fin r, s (N.F.e a.castSucc) = N.F.e a.castSucc) ∧ (q.1 = 0 → ∀ (b : {a : Fin r // N.j ≤ a.val}) (y : V), s (N.ist b.1) - N.ist b.1 - y ∈ II N.F N.F' → q.2.1 b = ((ρ ^ (r - b.1.val) : ℝ) : ℂ) • fun l => Φ y (wI k r l)) := by
   intro K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF s q hq

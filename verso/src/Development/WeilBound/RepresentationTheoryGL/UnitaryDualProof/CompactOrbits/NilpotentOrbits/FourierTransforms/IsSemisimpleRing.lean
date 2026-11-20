@@ -11,11 +11,11 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_isCompl (LinearMap.ker f)`. Take `⟨D, hD⟩` from `exists_isCompl (LinearMap.range f)`. Set `e : C ≃ₗ[R] LinearMap.range f` to `(Submodule.quotientEquivOfIsCompl _ C hC).symm.trans f.quotKerEquivRange`. Use `⟨C.subtype ∘ₗ e.symm.toLinearMap ∘ₗ Submodule.projectionOnto _ D hD, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[Submodule.projectionOnto_apply_of_mem_left hD (LinearMap.mem_range_self f x)]`. Establish `h2` using `e.apply_symm_apply ⟨f x, LinearMap.mem_range_self f x⟩`. Establish `h3 : ∀ c : C, (e c : M) = f c`. Introduce `c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e]`. Establish `h4` using `congrArg Subtype.val h2`. Rewrite `h4` using `[h3]`. Simplify using `using h4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_reg {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] [IsSemisimpleModule R M]
     (f : M →ₗ[R] M) : ∃ g : M →ₗ[R] M, f ∘ₗ g ∘ₗ f = f := by
@@ -50,7 +50,7 @@ abbrev zComm (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) : CommRin
   { (inferInstance : Ring Z) with mul_comm := fun a b => Subtype.ext (hZ.1 _ a.2 _ b.2) }
 
 /- English proof (translation)
-Use `letI := zComm Z hZ`. Use `haveI : IsReduced Z := hZ.2`. Use `haveI : IsArtinianRing Z := IsArtinianRing.of_finite k Z`. Conclude with `IsArtinianRing.isSemisimpleRing_of_isReduced Z`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isSemisimpleRing (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) : IsSemisimpleRing Z := by
   letI := zComm Z hZ
@@ -59,9 +59,9 @@ theorem isSemisimpleRing (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR 
   exact IsArtinianRing.isSemisimpleRing_of_isReduced Z
 
 /- English proof (translation)
-Establish `hi : IsIdempotentElem (Matrix.toLin' e)`. Unfold `IsIdempotentElem`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, he]`. Establish `htr : LinearMap.trace k (Fin n → k) (Matrix.toLin' e) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace k (Pi.basisFun k (Fin n)), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Establish `h0 : Matrix.toLin' e = 0` using `(LinearMap.IsIdempotentElem.trace_eq_zero_iff hi).mp htr`. Use `congrArg LinearMap.toMatrix' h0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem idem_trace [CharZero k] {e : Matrix (Fin n) (Fin n) k} (he : e * e = e) (ht : trace e = 0) : e = 0 := by
   have hi : IsIdempotentElem (Matrix.toLin' e) := by
@@ -76,21 +76,19 @@ theorem idem_trace [CharZero k] {e : Matrix (Fin n) (Fin n) k} (he : e * e = e) 
   simpa using this
 
 /- English proof (translation)
-Use `haveI : IsSemisimpleRing Z := isSemisimpleRing Z hZ`. Establish `hw' : ∀ a ∈ Z, a * w = w * a` using `hw`. Establish `mext : ∀ A B : Matrix (Fin n) (Fin n) k, (∀ v, A *ᵥ v = B *ᵥ v) → A = B` using `fun A B h => Matrix.toLin'.injective (LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using h v)`. Set `f : ZV Z →ₗ[Z] ZV Z` to `{ toFun := fun v => w *ᵥ (v : Fin n → k) map_add' := fun u v => Matrix.mulVec_add _ _ _ map_smul' := fun z v => by show w *ᵥ ((z : Matrix (Fin n) (Fin n) k) *ᵥ (v : Fin n → k)) = (z : Matrix (Fin n) (Fin n) k) *ᵥ (w *ᵥ (v : Fin n → k))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hw' _ z.2] }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `exists_reg f`. Establish `sm_eq : ∀ (z : Z) (u : ZV Z), z • u = (z : Matrix (Fin n) (Fin n) k) *ᵥ (u : Fin n → k)` using `fun z u => rfl`. Establish `gsmul : ∀ (c : k) (v : Fin n → k), g (c • v) = c • g v`. Introduce `c v`. Establish `e1 : ∀ u : ZV Z, (algebraMap k Z c) • u = c • (u : Fin n → k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[sm_eq]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]`. Establish `h` using `g.map_smul (algebraMap k Z c) v`. Rewrite `h` using `[e1, e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `gl : (Fin n → k) →ₗ[k] (Fin n → k)` to `{ toFun := fun v => g v, map_add' := fun u v => g.map_add u v, map_smul' := gsmul }`. Use `set G := LinearMap.toMatrix' gl with hGdef`. Establish `hG : ∀ v, G *ᵥ v = g v` using `fun v => LinearMap.toMatrix'_mulVec gl v`. Establish `hGB : G ∈ Bz Z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Apply `mext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hG, hG]`. Establish `h` using `g.map_smul (⟨a, ha⟩ : Z) v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[sm_eq, sm_eq]`. Conclude with `h.symm`. Establish `hwgw : w * G * w = w`. Apply `mext` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `LinearMap.congr_fun hg v`. Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hG]`. Conclude with `h`. Establish `hidem : G * w * (G * w) = G * w`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `h0 : G * w = 0` using `idem_trace hidem (h G hGB)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem trB_nondeg [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z)
     {w : Matrix (Fin n) (Fin n) k} (hw : w ∈ Bz Z) (h : ∀ b ∈ Bz Z, trace (b * w) = 0) : w = 0 := by
@@ -145,11 +143,11 @@ theorem trB_nondeg [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (h
     _ = 0 := by rw [h0, Matrix.mul_zero]
 
 /- English proof (translation)
-Use `haveI : IsSemisimpleRing Z := isSemisimpleRing Z hZ`. Use `set c' : Z := ⟨c, hc⟩ with hc'`. Take `⟨g, hg⟩` from `exists_reg (R := Z) (M := Z) (LinearMap.mulRight Z c')`. Establish `h1` using `LinearMap.congr_fun hg 1`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, one_mul] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : g c' = c' * g 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[h2]`. Establish `h3 : c * (g 1 : Matrix (Fin n) (Fin n) k) * c = c` using `congrArg Subtype.val h1`. Use `set d : Matrix (Fin n) (Fin n) k := (g 1 : Matrix (Fin n) (Fin n) k) with hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hidem : d * c * (d * c) = d * c`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : d * c = 0` using `idem_trace hidem (h d (g 1).2)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem trZ_nondeg [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z)
     {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (h : ∀ b ∈ Z, trace (b * c) = 0) : c = 0 := by

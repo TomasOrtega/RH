@@ -13,13 +13,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelTor
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b N M e hN hNp hM hMo hMp hep _ hdual hSD`. Take `⟨X, s, u, hku, -, hqs, huniv⟩` from `hSD`. Establish `hMR : IsUnit ((M : ℕ) : R)` using `b.unit M hMp`. Establish `hqP : IsQProjOver (𝟙 _ ≫ pullback.snd (s ≫ spMap (Int.castRingHom (cycAway M))) (spMap (Int.castRingHom R)))` using `GlobalTheory.T.isQuasiProjective_of_finite_over_cyclotomicAway_pullback M R hMR X s hqs _ (𝟙 _) inferInstance`. Rewrite `hqP` using `[Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hLN` using `GlobalTheory.T.isLocallyNoetherian_of_isQProjOver_noetherian R _ _ hqP`. Take `⟨Z, π, v, lev, hlev, hfin, hfwd, hback⟩` from `GlobalTheory.T.harrisTaylor_structures_representable_siegel_baseChange p D R b N (Module.finrank ℤ D.La / 2) M e hN hNp hM hMo hMp hep X s u hku hLN`. Use `⟨Z, π ≫ pullback.snd _ _, π ≫ pullback.fst _ _ ≫ s, v, lev, hlev, GlobalTheory.T.isQuasiProjective_of_finite_over_cyclotomicAway_pullback M R hMR X s hqs Z π hfin, ?_⟩` and prove the remaining obligations. Introduce `S t t₁ o l hl`. Establish `heS : IsUnit ((e : ℕ) : Γ(S, ⊤))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(b.unit e hep).map ((t.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Simplify using `using h`. Take `⟨f₀, ⟨hf₀s, hf₀pb⟩, hf₀u⟩` from `huniv S t₁ (o.toSieg hl) heS (GlobalTheory.T.harrisTaylor_siegelObject_polarisationKernel_killed p D R b N S t o _ M t₁ l hl e hep hdual)`. Take `⟨g, ⟨hg₁, hg₂, hgm⟩, hgu⟩` from `hback S f₀ t t₁ o l hl hf₀pb`. Use `⟨g, ⟨hg₂, ?_, hgm⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hf₀s, ← hg₁]`. Simplify using `only [Category.assoc]`. Introduce and unpack `g' ⟨hg's, hg's₁, hg'm⟩`. Establish `hfst : g' ≫ π ≫ pullback.fst _ _ = f₀` using `hf₀u _ ⟨by simpa only [Category.assoc] using hg's₁, hfwd S g' t t₁ o l hl hg'm⟩`. Conclude with `hgu g' ⟨hfst, hg's, hg'm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem harrisTaylorModuli_symplecticLevel_representable : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N M e : ℕ), 3 ≤ N → N.Coprime p → 3 ≤ M → Odd M → M.Coprime p → e.Coprime p → M.Coprime e → (∀ f : D.La →ₗ[ℤ] ℤ, ∃ x, D.EF x = e • f) → SDRep (Module.finrank ℤ D.La / 2) M e → HasLevelStructureOfLevel b N (Module.finrank ℤ D.La / 2) M := by
   intro p _ D R _ _ b N M e hN hNp hM hMo hMp hep _ hdual hSD

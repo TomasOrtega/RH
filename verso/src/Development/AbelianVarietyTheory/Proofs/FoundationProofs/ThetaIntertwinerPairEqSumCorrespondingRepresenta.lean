@@ -10,7 +10,7 @@ open scoped BigOperators
 namespace GlobalTheory.ThetaConj.IopRepr
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_eq_iff {V : Type*} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) (a b : A₂) :
     (QuotientAddGroup.mk a : A₂ ⧸ A₁.addSubgroupOf A₂) = QuotientAddGroup.mk b ↔
@@ -19,11 +19,11 @@ theorem mk_eq_iff {V : Type*} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) (a b 
   rfl
 
 /- English proof (translation)
-Set `e` to `Equiv.ofBijective _ hx`. Use `letI : Fintype (A₂ ⧸ A₁.addSubgroupOf A₂) := Fintype.ofEquiv _ e`. Establish `hn : (A₁.addSubgroupOf A₂).index = n`. Rewrite using `[AddSubgroup.index, ← Nat.card_congr e]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Unfold `Iop`. Rewrite using `[hn, finsum_eq_sum_of_fintype, ← e.sum_comp]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ((Quotient.out (e i) : A₂) : VC D N N') - x i ∈ A₁`. Rewrite using `[← mk_eq_iff]`. Conclude with `Quotient.out_eq (e i)`. Conclude with `congrFun (hF _ (Quotient.out (e i) : A₂).2 _ (x i).2 h) z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iop_eq_sum (D : D7) (T : Tor D) {N N' : ℕ} (A₁ A₂ : AddSubgroup (VC D N N'))
     (F : VC D N N' → ℂ) (hF : RepInd D T A₁ A₂ F) {n : ℕ} (x : Fin n → A₂)
@@ -46,15 +46,15 @@ theorem iop_eq_sum (D : D7) (T : Tor D) {N N' : ℕ} (A₁ A₂ : AddSubgroup (V
   exact congrFun (hF _ (Quotient.out (e i) : A₂).2 _ (x i).2 h) z
 
 /- English proof (translation)
-Introduce `D T T' N N' A₁ A₂ A₁' A₂' F F' R hfin hF hF' h1 h2 h3`. Use `haveI : Finite (A₂ ⧸ A₁.addSubgroupOf A₂) := AddSubgroup.finite_quotient_of_finiteIndex`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin (A₂ ⧸ A₁.addSubgroupOf A₂)`. Set `x : Fin n → A₂` to `fun i => Quotient.out (e.symm i)`. Establish `hxe : ∀ i, (QuotientAddGroup.mk (x i) : A₂ ⧸ A₁.addSubgroupOf A₂) = e.symm i` using `fun i => Quotient.out_eq _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : Function.Bijective (fun i => (QuotientAddGroup.mk (x i) : A₂ ⧸ A₁.addSubgroupOf A₂))`. Establish `: (fun i => (QuotientAddGroup.mk (x i) : A₂ ⧸ A₁.addSubgroupOf A₂)) = e.symm`. Use function extensionality and compare the values at `hxe`. Rewrite using `[this]`. Conclude with `e.symm.bijective`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose y hy hR using fun i => h1 (x i) (x i).2`. Set `x' : Fin n → A₂'` to `fun i => ⟨y i, hy i⟩`. Establish `hx' : Function.Bijective (fun i => (QuotientAddGroup.mk (x' i) : A₂' ⧸ A₁'.addSubgroupOf A₂'))`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx.1` to reduce the goal to its premises. Use `(mk_eq_iff _ _ _ _).1 hij` as an intermediate fact. Conclude with `(mk_eq_iff _ _ _ _).2 ((h3 _ _ _ _ (hR i) (hR j)).2 this)`. Introduce `q`. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Take `⟨a, ha, hab⟩` from `h2 b b.2`. Take `⟨i, hi⟩` from `hx.2 (QuotientAddGroup.mk ⟨a, ha⟩)`. Use `⟨i, (mk_eq_iff _ _ _ _).2 ?_⟩` and prove the remaining obligations. Conclude with `(h3 _ _ _ _ (hR i) hab).1 ((mk_eq_iff _ _ _ _).1 hi)`. Conclude with `⟨n, fun i => x i, y, fun i => ⟨(x i).2, hy i, hR i⟩, iop_eq_sum D T A₁ A₂ F hF x hx, iop_eq_sum D T' A₁' A₂' F' hF' x' hx'⟩`.
+A detailed English derivation is pending.
 -/
 theorem iop_pair : ∀ (D : D7) (T T' : Tor D) (N N' : ℕ) (A₁ A₂ A₁' A₂' : AddSubgroup (VC D N N')) (F F' : VC D N N' → ℂ) (R : VC D N N' → VC D N N' → Prop), (A₁.addSubgroupOf A₂).FiniteIndex → RepInd D T A₁ A₂ F → RepInd D T' A₁' A₂' F' → (∀ x ∈ A₂, ∃ x' ∈ A₂', R x x') → (∀ x' ∈ A₂', ∃ x ∈ A₂, R x x') → (∀ x x' y y', R x x' → R y y' → (x - y ∈ A₁ ↔ x' - y' ∈ A₁')) → ∃ (n : ℕ) (x x' : Fin n → VC D N N'), (∀ i, x i ∈ A₂ ∧ x' i ∈ A₂' ∧ R (x i) (x' i)) ∧ Iop D T A₁ A₂ F = (fun z => ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ * ∑ i, aU D T (x i) F z) ∧ Iop D T' A₁' A₂' F' = (fun z => ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ * ∑ i, aU D T' (x' i) F' z) := by
   intro D T T' N N' A₁ A₂ A₁' A₂' F F' R hfin hF hF' h1 h2 h3

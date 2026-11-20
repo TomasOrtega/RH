@@ -17,7 +17,7 @@ namespace GlobalTheory.CovTop.MeasUp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Break down `hy.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `(Real.exp_pos L).le`. Conclude with `(Real.log_le_iff_le_exp h0).1 h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_exp_of_log_le {y L : ℝ} (hy : 0 ≤ y) (h : Real.log y ≤ L) : y ≤ Real.exp L := by
   rcases hy.eq_or_lt with h0 | h0
@@ -25,11 +25,11 @@ theorem le_exp_of_log_le {y L : ℝ} (hy : 0 ≤ y) (h : Real.log y ≤ L) : y �
   · exact (Real.log_le_iff_le_exp h0).1 h
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hi` using `i.2`. Establish `ha` using `a.2`. Establish `e0 : Formalism.L2.NTheta.lamAt (D.hc t) a = DV.sigPar D t a` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.NTheta.kapQ GlobalTheory.CovTop.WtShape.ent`. Simplify using `only [Sum.elim_inl]`. Rewrite using `[if_pos (by omega), e0]`. Substitute `hp hq` using the available equality. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hr, Nat.cast_sub (by omega : 1 ≤ D.R.k + D.R.m), Nat.cast_sub (by omega : (i : ℕ) + 1 ≤ D.R.m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kapQ_inl (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp : p = D.R.k + i)
     (hq : q = D.R.m - ((i : ℕ) + 1)) (a : Fin p) :
@@ -49,11 +49,11 @@ theorem kapQ_inl (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp : 
   ring
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hi` using `i.2`. Establish `hc` using `c.2`. Establish `e0 : Formalism.L2.NTheta.lamAt (D.hc t) (p + c) = DV.sigPar D t (p + c)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.NTheta.kapQ GlobalTheory.CovTop.WtShape.ent`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[if_neg (by omega), e0]`. Substitute `hp hq` using the available equality. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hr, Nat.cast_sub (by omega : 1 ≤ D.R.k + D.R.m), Nat.cast_sub (by omega : (i : ℕ) + 1 ≤ D.R.m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kapQ_inr (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp : p = D.R.k + i)
     (hq : q = D.R.m - ((i : ℕ) + 1)) (c : Fin q) :
@@ -73,7 +73,7 @@ theorem kapQ_inr (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp : 
   ring
 
 /- English proof (translation)
-The claim follows from `|((Formalism.L2.NTheta.kapW (D.hc t) p q a : ℤ) : ℝ) + (((D.hc t).e i : ℚ) : ℝ)| ≤ B + 1 := by have hk := D.R.m_add_three_le_k have hm := D.R.two_le_m have hi := i.2 have hr : D.R.r = D.R.k + D.R.m - 1 := rfl obtain ⟨n, hn, hx⟩ : ∃ n, n < D.R.r ∧ Formalism.L2.NTheta.kapQ (D.hc t) …`.
+A detailed English derivation is pending.
 -/
 theorem abs_wt_le (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp : p = D.R.k + i)
     (hq : q = D.R.m - ((i : ℕ) + 1)) {B : ℝ}
@@ -108,11 +108,11 @@ theorem abs_wt_le (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) {p q : ℕ} (hp :
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hi` using `i.2`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.wtSize`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hs : (Wc D i).sig (TH.tauE D τ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _`. Establish `s1 : ((Wc D i).sig (TH.tauE D τ)).1 = D.R.k + i` using `by rw [hs]; rfl`. Establish `s2 : ((Wc D i).sig (TH.tauE D τ)).2 = D.R.m - ((i : ℕ) + 1)` using `by rw [hs]; rfl`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, nsmul_eq_mul, s1, s2]`. Use `congr 1`. Rewrite using `[hr]; push_cast [show (i : ℕ) + 1 ≤ D.R.m by omega, show 1 ≤ D.R.k + D.R.m by omega]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem wtSize_le (D : D7) (i : Fin D.R.m) {B : ℝ}
     (hB : ∀ t n, n < D.R.r → |((GlobalTheory.CovTop.WtShape.ent D i t n : ℚ) : ℝ)| ≤ B) :
@@ -144,7 +144,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-The claim follows from `|((GlobalTheory.CovTop.WtShape.ent D i t n : ℚ) : ℝ)| ≤ 4 * L.sc.b := by have hp := p.fw.laws.pins.1 let τ : Psi p.T.Q.H := ⟨DV.tauEmb D t, hp.2.2.2 t⟩ let k : Fin ((dat p i).p + (dat p i).q) := ⟨n, by rw [GlobalTheory.CovTop.WtShape.dat_rank p i]; exact hn⟩ have e := GlobalTheor …`.
+A detailed English derivation is pending.
 -/
 theorem abs_ent_le {PP : ℝ} (hW : WtNum p i PP) (t : D.what₂.Tau) (n : ℕ) (hn : n < D.R.r) :
     |((GlobalTheory.CovTop.WtShape.ent D i t n : ℚ) : ℝ)| ≤ 4 * L.sc.b := by
@@ -157,19 +157,19 @@ theorem abs_ent_le {PP : ℝ} (hW : WtNum p i PP) (t : D.what₂.Tau) (n : ℕ) 
   exact h
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Establish `hrR : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr1`. Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hH.f8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnV : (0 : ℝ) ≤ D.R.nV` using `Nat.cast_nonneg _`. Take `⟨hL10, -⟩` from `hH.big.2`. Take `⟨hlfr, hlnV⟩` from `hH.logfr`. Use `set Lc := L.sc.L with hLc`. Establish `hb : L.sc.b = Real.exp Lc` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : (D.R.f : ℝ) * D.R.r ≤ Real.exp Lc` using `le_exp_of_log_le (by positivity) hlfr`. Establish `hnVe : (D.R.nV : ℝ) ≤ Real.exp Lc` using `le_exp_of_log_le hnV hlnV`. Establish `hE0 : 0 < Real.exp Lc` using `Real.exp_pos _`. Establish `hE1 : Lc + 1 ≤ Real.exp Lc` using `Real.add_one_le_exp _`. Establish `e2 : Real.exp (2 * Lc) = Real.exp Lc * Real.exp Lc` using `by rw [two_mul, Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun j => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `mul_le_mul hfr hnVe hnV hE0.le`. Establish `hw` using `wtSize_le D j (abs_ent_le p j (hW j))`. Rewrite using `[e2, ← hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hE1`, `hfr` using `[← hb]`. Establish `h1 : (D.R.f : ℝ) * D.R.r * (4 * L.sc.b + 1) ≤ L.sc.b * (5 * L.sc.b)` using `mul_le_mul hfr (by linarith) (by linarith) (by linarith)`. Establish `h5 : 5 ≤ L.sc.b * L.sc.b` using `by nlinarith`. Establish `h6 : L.sc.b * (5 * L.sc.b) ≤ (L.sc.b * L.sc.b) ^ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0 : (0 : ℝ) < (D.host.g 0 : ℝ)` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `g1 : (0 : ℝ) < (D.host.g 1 : ℝ)` using `by exact_mod_cast (D.host.g_prime 1).pos`. Rewrite using `[Real.log_mul g0.ne' g1.ne']`. Combine the linear relations using `[hH.logg 0, hH.logg 1]`. Establish `h1` using `Formalism.BasicNotions.log_rdE_le_scL P`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : |dlogL D 1| ≤ Lc`. Rewrite using `[← L.logDerivative_at_one_eq]`. Conclude with `P.logDerivative_le_power`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sizes_two {PP A PP' : ℝ} (P : ParameterChoice' D L) (hH : HostNum D L PP A 2) (hW : ∀ j, WtNum p j PP') :
     GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.Sizes D (2 * L.sc.L) := by
@@ -209,23 +209,23 @@ theorem sizes_two {PP A PP' : ℝ} (P : ParameterChoice' D L) (hH : HostNum D L 
     linarith
 
 /- English proof (translation)
-Take `⟨-, hd, h2⟩` from `hOM D _ p.R.toLevCh _ p.charW.base.lev i p.R.triv`. Take `⟨h0, ht, -, hb⟩` from `h2 _ _ (p.charW.base.models.νW i)`. Establish `hr : 0 < ratAt p i` using `mul_pos (ENNReal.toReal_pos h0 ht) (Finset.prod_pos fun τ _ => zero_lt_one.trans_le (hd τ))`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Establish `hB` using `(hb _ (sizes_two p P hH hW)).2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Establish `hrR : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr1`. Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hH.f8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmR : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm`. Establish `hnV1 : (1 : ℝ) ≤ D.R.nV`. Establish `: 1 ≤ D.R.nV` using `by unfold Ranks.nV; omega`. Conclude with `this` after adjusting the coercions. Take `⟨-, hL10, -, hll⟩` from `hH.big`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hpoly⟩` from `hH.poly`. Establish `hroom` using `hH.room`. Rewrite `hroom` using `[Real.rpow_two]`. Establish `hr_le : (D.R.r : ℝ) ≤ L.sc.x ^ A`. Use `le_trans ?_ hpoly` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1 : (D.R.r : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `le_mul_of_one_le_left (by linarith) (by linarith)`. Establish `a2 : (D.R.f : ℝ) * D.R.r ≤ (D.R.f : ℝ) * D.R.r * D.R.nV` using `le_mul_of_one_le_right (by positivity) hnV1`. Establish `a3 : (D.R.f : ℝ) * D.R.r * D.R.nV ≤ (D.R.f : ℝ) * D.R.r * D.R.nV * L.sc.L` using `le_mul_of_one_le_right (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr2 : (D.R.r : ℝ) ^ 2 ≤ L.sc.b` using `(pow_le_pow_left₀ (by linarith) hr_le 2).trans hroom`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : unitE p = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (Real.log L.sc.x)` using `(hW i).unit`. Rewrite using `[hu]`. Establish `hL0 : 0 ≤ L.sc.L` using `by linarith`. Establish `hfL : 0 ≤ (D.R.f : ℝ) * L.sc.L` using `by positivity`. Establish `c1 : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L ≤ (D.R.f : ℝ) * L.sc.b * L.sc.L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hr2 hfL` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hb1 : 0 ≤ (D.R.f : ℝ) * L.sc.b * L.sc.L`. Establish `: 0 < L.sc.b` using `Real.exp_pos _`. Check the signs of the components of the expression.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `c2 : (D.R.f : ℝ) * L.sc.b * L.sc.L ≤ (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (Real.log L.sc.x)`. Establish `h1 : (1 : ℝ) ≤ D.R.m * Real.log (Real.log L.sc.x)` using `by nlinarith`. Use `mul_le_mul_of_nonneg_left h1 hb1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : (122 : ℝ) * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * (2 * L.sc.L)) = 244 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e4 : ratAt p i = GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.ratio D i (p.R.νW i) (p.R.fdW i)` using `rfl`. Rewrite using `[e4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ratAt_pos_le (hOM : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D) {PP A PP' : ℝ} (P : ParameterChoice' D L)
     (hH : HostNum D L PP A 2) (hW : ∀ j, WtNum p j PP') :
@@ -283,9 +283,9 @@ end GlobalTheory.CovTop.MeasUp
 namespace GlobalTheory.CovTop.MeasRd
 
 /- English proof (translation)
-Introduce `hOM`. Use `Closed.imp (Closed.and (GlobalTheory.CovTop.Sizes.hostN 2) GlobalTheory.CovTop.WtShape.wtN) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨A, -, hA⟩, ⟨C, -, hC⟩⟩` from `h`. Take `⟨x0, hx⟩` from `EvTied.and hA hC`. Use `⟨244, by norm_num, x0, fun x hx' hle ι p hp i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hx x hx' hle ι p hp`. Conclude with `GlobalTheory.CovTop.MeasUp.ratAt_pos_le p i hOM (Fm.params x hx' ι) (h1 i) h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ratAt_upper : (∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D) → Closed FamHyp fun Fm _ =>
     ∃ K : ℝ, 0 ≤ K ∧ EvTied Fm fun _ _ _ p => ∀ i, 0 < ratAt p i ∧ Real.log (ratAt p i) ≤ K * unitE p := by

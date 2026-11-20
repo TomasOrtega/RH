@@ -18,13 +18,13 @@ open scoped Classical
 namespace GlobalTheory.PlacePureFin
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.FinDecomp
 /- English proof (translation)
-Introduce `hP D W W₁ X e Bs Γ Xc om om' R Rf hM hJ g hg`. Establish `hT` using `hM.triple`. Set `h : UA D.sp.cm.sig Γ.W.J` to `GlobalTheory.TripleRead.toUX X e hJ g`. Establish `harch : ∀ u : AF D.host.F, At (evI D.host.F) u → u • (mat h - 1) = 0` using `GlobalTheory.T.finiteUnitaryPoint_darboux_trivial_archimedean D X e hJ g hg`. Take `⟨S₀, hS₀⟩` from `_root_.GlobalTheory.T.spherical_vector_fixes_vacua hP _ _ _ Bs _ _ Γ Xc om om' hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.idempotentCut_unitaryPoint_stabilizes_lattices _ _ _ Bs _ _ Γ hT.geo h`. Establish `hfixB : ∀ (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F)) (e : AF D.host.F) (he : e * e = e), S₀ ∪ S₁ ⊆ S → (∀ w ∈ S, ∀ u : AF D.host.F, At (evFin D.host.F w) u → u * e = 0) → (∀ w ∉ S, ∀ u : AF D.host.F, At (evFin D.host.F w) u → u * e = 0 ∨ u …`. Introduce `S e he hS hin hout`. Take `⟨hl, hl'⟩` from `hS₁ S e he (Finset.subset_union_right.trans hS) hout`. Use `hS₀ S (Finset.subset_union_left.trans hS) (loc e he h) ?_ ?_ hl hl'` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Rewrite using `[mat_loc, phi_sub_one, smul_comm, harch u hu, smul_zero]`. Introduce `w hw u hu`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, hin w hw u hu, zero_smul]`. Use `⟨fun v => loc (idem _ v) (idem_mul_self v) h, fun v u hu => ?_, fun f φ hSB hvac => ?_, fun f φ hSB hvac => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show u • (mat (loc (idem _ v) (idem_mul_self v) h) - 1) = 0`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, mul_idem_of_evFin hu, zero_smul]`. Conclude with `side Γ.M Bs.ψ hT.geo.hM om h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ) (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).1) f φ hSB hvac`. Conclude with `side Γ.M' Bs.ψ hT.geo.hM' om' h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ) (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).2) f φ hSB hvac`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placewise_pure_tensor_finite_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (W W₁ X : HSp D) (e : Fin (W.rank + W₁.rank) ≃ Fin X.rank) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank) (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E)
@@ -88,7 +88,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlacePureFin.placewise_pure_tensor_finite_places | exact _root_.GlobalTheory.PlacePureFin.placewise_pure_tensor_finite_places | (intros; apply _root_.GlobalTheory.PlacePureFin.placewise_pure_tensor_finite_places <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_pure_tensor_placewise_finite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (W W₁ X : HSp D) (e : Fin (W.rank + W₁.rank) ≃ Fin X.rank) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank) (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E)

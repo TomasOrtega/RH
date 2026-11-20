@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.TypePlaceResidue
 
 /- English proof (translation)
-Introduce `D kv s hs`. Establish `hp` using `D.host.g_prime kv.1`. Use `haveI : Fact (D.host.g kv.1).Prime := ⟨hp⟩`. Establish `hN` using `GlobalTheory.TameLabels.normV_eq_of_split hp (D.nd.g_split kv.1) (D.naut.plGw_over kv.1 kv.2)`. Establish `hc : Nat.card (IsLocalRing.ResidueField (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E))) = D.host.g kv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue, ← s.card_quot, hs]`. Rewrite using `[← hN]`. Both sides reduce to the same expression. Use `haveI : Finite (IsLocalRing.ResidueField (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E))) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hp.ne_zero)`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hcF : Fintype.card (IsLocalRing.ResidueField (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E))) = D.host.g kv.1` using `by rw [Fintype.card_eq_nat_card]; exact hc`. Use `haveI := charP_of_card_eq_prime hcF`. Conclude with `⟨(ZMod.ringEquiv _ hcF).symm.toRingHom.comp (IsLocalRing.residue _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem residueHom_zmod : ∀ (D : D7) (kv : Σ k : Fin 2, D.nd.PlG k) (s : SplitPlace D.host.E), s.w = NX.pG D kv →
     Nonempty (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1)) := by

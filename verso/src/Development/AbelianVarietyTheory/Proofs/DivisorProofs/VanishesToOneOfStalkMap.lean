@@ -19,23 +19,19 @@ namespace GlobalTheory.HSResOnto
 open GlobalTheory.HSCore.VanishNumberField
 
 /- English proof (translation)
-Introduce `Q K _ _ G B₀ hB₀ hnef hbig j hj q hq`. Use `lift j to ℕ using hj`. Set `Ω` to `AlgebraicClosure K`. Set `S` to `G.toLinSys`. Establish `hV : S.IsVariety` using `G.geom.alg.variety`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV'` using `hV.baseChange Ω`. Establish `hH` using `S.isPullback_baseChange Ω`. Use `haveI : IsIntegral (S.baseChange Ω).Y := hV'.isIntegral`. Use `haveI : SmoothOfRelativeDimension G.D (S.baseChange Ω).str := hV'.smooth`. Take `⟨hprop, A₀, hA₀⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hV.proj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hprop`. Establish `hstr : strHom K G.Y = G.str` using `strHom_eq fun _ => rfl`. Establish `hproj : IsProjOver (strHom K G.Y)` using `hstr ▸ hV.proj`. Use `haveI : IsProper (strHom K G.Y) := hstr ▸ hprop`. Establish `hLnef : IsNef K G.L` using `IsGenerated.isNef_of_isProjOver (L := G.L) ⟨G.N, G.b, G.geom.alg.bpf⟩ hV.proj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLj : IsNef K (lbPow G.L j)` using `hLnef.pow hA₀ j`. Establish `hNnef : IsNef K (tens B₀ (lbPow G.L j))` using `hnef.tens_of_isProjOver hLj hV.proj`. Establish `hNbig : IsBig K (tens B₀ (lbPow G.L j))` using `hbig.tens_nef Q.nef hproj hnef hLj`. Use `haveI : IsIntegralHom (spMap (algebraMap K Ω)) := IsIntegralHom.SpecMap_iff.2 fun x => Algebra.IsIntegral.isIntegral x`. Use `haveI : IsIntegralHom (S.bcFst Ω) := MorphismProperty.of_isPullback (P := @IsIntegralHom) hH.flip ‹_›`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `π` to `S.bcFst Ω`. Establish `hN'nef : IsNef Ω ((tens B₀ (lbPow G.L j)).pull π)` using `PosBaseChange.isNef_pull hNnef hA₀ (hA₀.pull_of_isAffineHom π) π π.isClosedMap`. Establish `hN'big : IsBig Ω ((tens B₀ (lbPow G.L j)).pull π)`. Take `⟨D₀, hD₀, c, hc, hm⟩` from `hNbig.3`. Establish `hD : topologicalKrullDim G.Y = G.D` using `topologicalKrullDim_eq_of_smooth G.str G.D hV.smooth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : D₀ = G.D` from `by exact_mod_cast hD₀.symm.trans hD`. Establish `hL` using `LB.isLB_pull hNbig.1 π`. Use `(isBig_iff (f := (S.baseChange Ω).str) (fun _ => rfl) hV'.proj (topologicalKrullDim_eq_of_smooth _ G.D hV'.smooth)).2 ⟨hL, c, hc, hm.mono fun m hm => hm.trans_eq (congrArg _ ?_)⟩` and prove the remaining obligations. Rewrite using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow hL m) (LB.isLB_pull (isLB_lbPow hNbig.1 m) π) (by rw [cls_lbPow hL, cls_pull hNbig.1, cls_pull (isLB_lbPow hNbig.1 m), cls_lbPow hNbig.1, map_nsmul])]`. Conclude with `(FieldChangeInter.hdim_pull hH (isLB_lbPow hNbig.1 m) 0).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM'` using `LB.isLB_pull (isLB_tw (isLB_tens G.K.isLB hB₀) G.isLB j) π`. Establish `hKV : Subsingleton (coh (twist (structureModule (S.baseChange Ω).Y) ((tw (tens G.K.bundle B₀) G.L j).pull π)) q)` using `Q.kv.twist (k := Ω) (p := (S.baseChange Ω).str) (fun _ => rfl) hV'.proj (G.K.baseChange hH) hN'nef hN'big hM' (by`. Rewrite using `[cls_pull (isLB_tw (isLB_tens G.K.isLB hB₀) G.isLB j) π]`. Use `erw [cls_pull G.K.isLB π, cls_pull hNnef.isLB π]`. Rewrite using `[← map_add]`.
-
-Use `congr 1`. Use `erw [cls_tens (isLB_tens G.K.isLB hB₀) (Twist.isLB_lbZPow G.isLB j), cls_tens G.K.isLB hB₀, cls_tens hB₀ (isLB_lbPow G.isLB j)]`. Conclude with `add_assoc _ _ _) hq`. Establish `hY : Subsingleton (coh (twist (structureModule G.Y) (tw (tens G.K.bundle B₀) G.L j)) q)` using `subsingleton_coh_of_pull (f := G.str) (f' := (S.baseChange Ω).str) hH (isLB_tw (isLB_tens G.K.isLB hB₀) G.isLB j) q hKV`. Establish `hB : (tens G.K.bundle B₀).IsLB` using `isLB_tens G.K.isLB hB₀`.
-
-Take `⟨i⟩` from `nonempty_twist_twist_iso_of_cls_eq (structureModule G.Y) hB (Twist.isLB_lbZPow G.isLB j) (isLB_tw (isLB_tens G.K.isLB hB₀) G.isLB j) rfl`. Conclude with `(cohOn.mapIso Γ(G.Y, ⊤) ⊤ q ((twistFunctor (lbZPow G.L j)).mapIso (Twist.unitTwistIso (tens G.K.bundle B₀)).symm ≪≫ i)).toEquiv.subsingleton_congr.2 hY`.
+A detailed English derivation is pending.
 -/
 theorem vanishFrom_adj_of_nef_big : Quoted → ∀ (K : Type) [Field K] [NumberField K] (G : Geo K) (B₀ : LB G.Y), B₀.IsLB →
     IsNef K B₀ → IsBig K B₀ → VanishFrom G.L (GlobalTheory.LB.toMod (tens G.K.bundle B₀)) 0 := by
@@ -102,7 +98,7 @@ section Comb
 variable {K : Type} [Field K] [NumberField K] (G : Geo K)
 
 /- English proof (translation)
-Establish `key (v : Fin G.N → K) : H0.ofSec G.str ⊤ (G.comb v) = Fintype.linearCombination K (fun c => H0.ofSec G.str ⊤ (G.b c)) v` using `G.ofSec_comb ⊤ v`. Rewrite using `[← H0.germ_ofSec (p := G.str) j y (TopologicalSpace.Opens.mem_top y) hj, key, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, H0.germ_smul, ← key, H0.germ_ofSec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ger_comb_sum {ι : Type} [Fintype ι] (a : ι → K) (u : ι → Fin G.N → K) (j : G.L.ι) (y : G.Y) (hj : y ∈ G.L.U j) :
     ger y hj ((G.comb (∑ i, a i • u i)).f j) = ∑ i, H0.const G.str y (a i) * ger y hj ((G.comb (u i)).f j) := by
@@ -113,7 +109,7 @@ theorem ger_comb_sum {ι : Type} [Fintype ι] (a : ι → K) (u : ι → Fin G.N
   rw [map_smul, H0.germ_smul, ← key, H0.germ_ofSec]
 
 /- English proof (translation)
-Introduce `y _ hy c hc` and use `by have h := vanishesTo_iff_forall.1 hf y hy c hc obtain ⟨j, hj⟩ := exists_chart G.isLB y rw [pow_one, stalkId_cutIdeal G.isLB _ j y hj] at h ⊢ refine Ideal.span_le.2 (Set.range_subset_iff.2 fun a => ?_) h have e : s a = ∑ i, g⁻¹ a i • ∑ j, g i j • s j := by simp only [Finset.smu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vanishesTo_of_isUnit (s : Fin G.D → Fin G.N → K) (g : Matrix (Fin G.D) (Fin G.D) K) (hg : IsUnit g.det)
     {B : LB G.Y} {O : G.Y.Opens} {f : Vanishing.H0 G.str B O} (hf : VanishesTo (G.ideal s) 1 f) :
@@ -137,7 +133,7 @@ section Germs
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} {I : Y.IdealSheafData}
 
 /- English proof (translation)
-Introduce `y hs hy i hi`. Take `⟨z, rfl⟩` from `exists_ι_eq hs`. Rewrite using `[pow_one, ← ker_stalkMap]`. Conclude with `RingHom.mem_ker.2 (h z hy (fun _ => i) (mem_pull.2 hi))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishesTo_one_of_stalkMap {f : Vanishing.H0 p B O}
     (h : ∀ (z : I.subscheme) (hz : I.subschemeι z ∈ O) (j : (B.pull I.subschemeι).ι)
@@ -150,7 +146,7 @@ theorem vanishesTo_one_of_stalkMap {f : Vanishing.H0 p B O}
   exact RingHom.mem_ker.2 (h z hy (fun _ => i) (mem_pull.2 hi))
 
 /- English proof (translation)
-Use `hf _ (ι_mem_support I z) hz i hi` as an intermediate fact. Rewrite `this` using `[pow_one, ← ker_stalkMap]`. Conclude with `RingHom.mem_ker.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_germ_eq_zero {f : Vanishing.H0 p B O} (hf : VanishesTo I 1 f) (z : I.subscheme)
     (hz : I.subschemeι z ∈ O) (i : B.ι) (hi : I.subschemeι z ∈ B.U i) :
@@ -162,21 +158,19 @@ theorem stalkMap_germ_eq_zero {f : Vanishing.H0 p B O} (hf : VanishesTo I 1 f) (
 end Germs
 
 /- English proof (translation)
-Introduce `Q K _ _ G hnef hbig s hs`. Establish `hB : (tens G.K.bundle G.L₂).IsLB` using `isLB_tens G.K.isLB G.isLB₂`. Establish `hB' : (G.adj₂ 0).IsLB` using `isLB_tw hB G.isLB _`. Take `⟨g, hg, hreg⟩` from `GlobalTheory.T.exists_basis_regular_sequence_of_common_zeros K G s hs _ hB`. Establish `hproj : IsProjOver (GlobalTheory.strHom K G.Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.strHom_eq (f := G.str) fun _ => rfl]`. Conclude with `G.geom.alg.variety.proj`. Establish `hinv : ∀ {O : G.Y.Opens} {f : Vanishing.H0 G.str (G.adj₂ 0) O}, VanishesTo (G.ideal fun i => ∑ j, g i j • s j) 1 f → VanishesTo (G.ideal s) 1 f`. Introduce `O f hf`. Establish `e : (fun a => ∑ i, g⁻¹ a i • ∑ j, g i j • s j) = s` using `funext fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, Matrix.nonsing_inv_mul g hg, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `h` using `vanishesTo_of_isUnit G (fun i => ∑ j, g i j • s j) g⁻¹ (Matrix.isUnit_nonsing_inv_det g hg) hf`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `key : ∀ y₀ : sectionsOnClosedSubscheme G.str (G.adj₂ 0) (G.ideal s), ∃ f, resTo suppIn_top f = y₀`. Introduce `y₀`. Use `choose W hW b hb using fun y => GlobalTheory.T.exists_local_lift_sectionsOnClosedSubscheme K G.Y G.str (G.adj₂ 0) hB' (G.ideal s) y₀ y`. Establish `hcomp : ∀ y z, VanishesTo (G.ideal s) 1 (Vanishing.H0.restr inf_le_left (b y) - Vanishing.H0.restr inf_le_right (b z) : Vanishing.H0 G.str (G.adj₂ 0) (W y ⊓ W z))`. Introduce `y z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `vanishesTo_one_of_stalkMap fun z' hz' j hj => ?_` and prove the remaining obligations. Rewrite using `[map_sub, Vanishing.H0.germ_restr, Vanishing.H0.germ_restr, map_sub, ← hb y z' hz'.1 j hj, ← hb z z' hz'.2 j hj, sub_self]`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_lift_sections_zeroScheme_regularSequence_lineBundle K G.Y hproj G.str _ G.L hB G.isLB G.D _ _ hreg (vanishFrom_adj_of_nef_big Q K G G.L₂ G.isLB₂ hnef hbig) (by simp) W b hW fun y z => vanishesTo_of_isUnit G s g hg (hcomp y z)`. Use `⟨σ, Vanishing.H0.ext_germ fun z _ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_chart hB' ((G.ideal s).subschemeι z)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun _ => c, mem_pull.2 hc, ?_⟩` and prove the remaining obligations. Establish `h₁` using `stalkMap_germ_eq_zero (hinv (hσ ((G.ideal s).subschemeι z))) z (hW _) c hc`. Rewrite `h₁` using `[map_sub, Vanishing.H0.germ_restr, map_sub, sub_eq_zero]`. Use `(germ_resTo suppIn_top (fun _ => c) z (mem_pull.2 hc) σ).trans ?_` and prove the remaining obligations. Rewrite using `[hb _ z (hW _) (fun _ => c) (mem_pull.2 hc)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h₁`. Introduce `y₀`. Take `⟨f, hf⟩` from `key (Vanishing.mulDs G.K G.isLB G.isLB₂ (G.sec s) hs.etale rfl y₀)`. Use `⟨f, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hs.res 0 (G.mulE 0 f) = y₀`.
-
-Rewrite using `[hs.res_mulE]`. Conclude with `(Vanishing.resDs_eq_iff G.K G.isLB G.isLB₂ (G.sec s) hs.etale suppIn_top rfl f y₀).2 hf`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_onto : Quoted → ∀ (K : Type) [Field K] [NumberField K] (G : Geo K), IsNef K G.L₂ → IsBig K G.L₂ →
     ∀ (s : Fin G.D → Fin G.N → K) (hs : G.IsGood s), Function.Surjective fun f => hs.res 0 (G.mulE 0 f) := by

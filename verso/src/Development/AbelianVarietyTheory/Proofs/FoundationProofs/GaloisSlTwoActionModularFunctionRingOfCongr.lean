@@ -18,21 +18,19 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T a N w hN hLv s d hs γ γ' hC`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_complex_ringEquiv_extending_subfield_aut Ω ε s.toRingEquiv`. Establish `hg' : ∀ x, g (ε x) = ε (s x)` using `hg`. Take `⟨u, hu, hZ⟩` from `(GlobalTheory.T.galois_exponent_rootOfUnity_expTwoPiI Ω ε s N hN).2 d hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : ∀ x ∈ ε.range, g x ∈ ε.range`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨s y, (hg' y).symm⟩`. Take `⟨f', hf'L, hf'C⟩` from `GlobalTheory.T.levelN_function_galois_conj_qExpansion g ε.range N u w (a : ℍ → ℂ) hE (hZ g hg') hLv`. Set `a' : GlobalTheory.FN.ring ε.range` to `⟨f', mem_ring_of_inR ⟨N, w, hN, hf'L⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hext, hcmp, hexpinj, -⟩` from `GlobalTheory.T.fractionField_ext_closure_injective Ω ε T`. Take `⟨-, -, hSL, -⟩` from `GlobalTheory.T.cmp_mul_ofSL_and_up_cmp_eq_up_mob`. Establish `key : ∀ γ γ' : SL(2, ℤ), dg u * redGL N γ' = redGL N γ * dg u → T.gal s (T.sl (ofSL γ) (T.io a)) = T.sl (ofSL γ') (T.io a')`. Introduce `γ γ' hM`. Take `⟨b, hb, hbio⟩` from `hcmp (ofSL γ) a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb', hb'io⟩` from `hcmp (ofSL γ') a'`. Rewrite using `[hbio, hb'io]`. Apply `hexpinj` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[T.gal_exp]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb1 : (b : ℍ → ℂ) = fun τ => (a : ℍ → ℂ) (γ • τ)` using `by rw [hb, hSL]`. Establish `hb2 : (b' : ℍ → ℂ) = fun τ => f' (γ' • τ)` using `by rw [hb', hSL]`. Use `Eq.symm ?_` and prove the remaining obligations. Use `GlobalTheory.T.cuspExpansion_coeff_conj_of_qExpansion_conj Ω ε s.toRingEquiv.toRingHom g N w b b' _ _ hg' hN ?_ ?_ (T.exp_io b) (T.exp_io b') r` and prove the remaining obligations. Rewrite using `[hb1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hLv.2 γ`. Rewrite using `[hb1, hb2]`. Conclude with `hf'C γ γ' hM`. Establish `h1 : T.gal s (T.io a) = T.io a'`. Establish `hM1 : dg u * redGL N 1 = redGL N 1 * dg u` using `by simp [redGL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `key 1 1 hM1` as an intermediate fact. Take `⟨c, hc, hcio⟩` from `hcmp (ofSL 1) a`. Take `⟨c', hc', hc'io⟩` from `hcmp (ofSL 1) a'`. Establish `e1 : c = a` using `Subtype.ext (by rw [hc, hSL]; funext τ; simp)`. Establish `e2 : c' = a'` using `Subtype.ext (by rw [hc', hSL]; funext τ; simp [a'])`.
-
-Rewrite `this` using `[hcio, hc'io, e1, e2]`. Conclude with `this`. Rewrite using `[h1]`. Conclude with `key γ γ' ((GlobalTheory.T.slTwoDiagConjCongruence_iff_diagOneUnit_matrix_eq N d u hu γ γ').mp hC)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_sl_io_of_cong :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (a : GlobalTheory.FN.ring ε.range) (N w : ℕ), 0 < N → Lv ε.range N w a → ∀ (s : Ω ≃ₐ[ℚ] Ω) (d : ℤ), s (eOm ε (1 / N)) = eOm ε (1 / N) ^ d → ∀ γ γ' : SL(2, ℤ), Cong N d γ γ' → T.gal s (T.sl (ofSL γ) (T.io a)) = T.sl (ofSL γ') (T.gal s (T.io a)) := by

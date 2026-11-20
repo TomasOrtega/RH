@@ -22,63 +22,57 @@ open GroundTheory.Heights₂.Heights.Regular (RegChartData PotentialCharts)
 noncomputable section
 
 /- English proof (translation)
-Establish `hTc : ContinuousOn T O` using `hTO.continuousOn`. Take `⟨δ, hδ, hδO⟩` from `hL.exists_cthickening_subset_open hO hLO`. Establish `hKc : IsCompact (cthickening (δ / 2) L)` using `hL.cthickening`. Establish `hKcO : cthickening (δ / 2) L ⊆ O` using `(cthickening_mono (by linarith) L).trans hδO`. Establish `hLU : L ⊆ thickening (δ / 2) L` using `self_subset_thickening (by linarith) L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUK : thickening (δ / 2) L ⊆ cthickening (δ / 2) L` using `thickening_subset_cthickening _ _`. Establish `hK' : IsCompact (T '' cthickening (δ / 2) L)` using `hKc.image_of_continuousOn (hTc.mono hKcO)`. Establish `hK'P : T '' cthickening (δ / 2) L ⊆ P`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hTP (hKcO hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨δ', hδ', hδ'P⟩` from `hK'.exists_cthickening_subset_open hP hK'P`. Take `⟨Q, hQ_def⟩ : ∃ Q, Q = cthickening δ' (T '' cthickening (δ / 2) L)` from `⟨_, rfl⟩`. Take `⟨P', hP'_def⟩ : ∃ P', P' = thickening δ' (T '' cthickening (δ / 2) L)` from `⟨_, rfl⟩`. Establish `hQc : IsCompact Q` using `hQ_def ▸ hK'.cthickening`. Establish `hQP : Q ⊆ P` using `hQ_def ▸ hδ'P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : IsOpen P'` using `hP'_def ▸ isOpen_thickening`. Establish `hP'Q : P' ⊆ Q`. Rewrite using `[hP'_def, hQ_def]`. Conclude with `thickening_subset_cthickening _ _`. Establish `hK'P' : T '' cthickening (δ / 2) L ⊆ P'` using `hP'_def ▸ self_subset_thickening hδ' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : ContDiffOn ℝ ∞ u P'` using `hu.mono (hP'Q.trans hQP)`. Establish `hle : ∀ m : ℕ, (m : WithTop ℕ∞) ≤ ∞` using `fun m => by exact_mod_cast le_top`. Establish `h3 : (3 : WithTop ℕ∞) ≤ ∞` using `hle 3`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `hle 2`. Take `⟨C₀, ε₀, hε₀, hmol⟩` from `ReciprocityTheory.AnForm.A.mollification_second_order D ρ P' (T '' cthickening (δ / 2) L) u hP' (hu'.of_le h3) hK' hK'P'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨BT, hBT⟩` from `ArgumentConvergenceLemmas.exists_bound_iteratedFDeriv hO (hTO.of_le h2) hL hLO`. Take `⟨BH, hBH⟩` from `ArgumentConvergenceLemmas.exists_bound_iteratedFDeriv hO (hH.of_le h2) hL hLO`. Take `⟨d, hd_def⟩ : ∃ d : ℝ, d = max 1 BT` from `⟨_, rfl⟩`. Establish `hd1 : 1 ≤ d` using `hd_def ▸ le_max_left _ _`. Establish `hdBT : BT ≤ d` using `hd_def ▸ le_max_right _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C₁, hC₁_def⟩ : ∃ C₁ : ℝ, C₁ = max C₀ 0` from `⟨_, rfl⟩`. Establish `hC₁ : 0 ≤ C₁` using `hC₁_def ▸ le_max_right _ _`. Establish `hC₀₁ : C₀ ≤ C₁` using `hC₁_def ▸ le_max_left _ _`. Take `⟨B₁, hB₁_def⟩ : ∃ B₁ : ℝ, B₁ = max BH 0` from `⟨_, rfl⟩`. Establish `hB₁ : 0 ≤ B₁` using `hB₁_def ▸ le_max_right _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBH₁ : BH ≤ B₁` using `hB₁_def ▸ le_max_left _ _`. Take `⟨M, hM_def⟩ : ∃ M : ℝ, M = 2 * C₁ * d ^ 2 + 4 * B₁` from `⟨_, rfl⟩`. Take `⟨Fm, hFm⟩ : ∃ Fm : ℝ → (Fin D → ℂ) → ℝ, Fm = fun t y => molli ρ t u (T y) - g y + 4 * e t * H y` from `⟨_, rfl⟩`. Establish `key : ∀ t ∈ Ioo 0 ε₀, ContDiffOn ℝ 2 (Fm t) (thickening (δ / 2) L) ∧ ∀ y ∈ L, ∀ n : ℕ, n ≤ 2 → ‖iteratedFDeriv ℝ n (fun y => Fm t y - f y) y‖ ≤ M * (t + e t)`. Introduce and unpack `t ⟨ht0, htε⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : 0 < e t` using `ht0.trans_le (het t ht0)`. Establish `hShr : IsOpen (shrink P' t)` using `ReciprocityTheory.AnForm.A.isOpen_shrink hP' ht0`. Establish `hShrP : shrink P' t ⊆ P'` using `fun z hz => hz (mem_closedBall_self ht0.le)`. Establish `hm : ContDiffOn ℝ ∞ (molli ρ t u) (shrink P' t)` using `fun z hz => (ArgumentConvergenceLemmas.molli_contDiffAt ρ hP' hu'.continuousOn ht0 hz).contDiffWithinAt`. Establish `hK'S : ∀ y ∈ cthickening (δ / 2) L, T y ∈ shrink P' t` using `fun y hy => (hmol t ht0 htε (T y) ⟨y, hy, rfl⟩).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs_def⟩ : ∃ s, s = O ∩ T ⁻¹' shrink P' t` from `⟨_, rfl⟩`. Establish `hs : IsOpen s` using `hs_def ▸ hTc.isOpen_inter_preimage hO hShr`. Establish `hsO : s ⊆ O` using `hs_def ▸ inter_subset_left`. Establish `hsT : MapsTo T s (shrink P' t)`. Rewrite using `[hs_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun y hy => hy.2`. Establish `hKs : cthickening (δ / 2) L ⊆ s` using `fun y hy => by`. Rewrite using `[hs_def]`. Conclude with `⟨hKcO hy, hK'S y hy⟩`. Establish `hTs : ContDiffOn ℝ ∞ T s` using `hTO.mono hsO`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmT : ContDiffOn ℝ ∞ (fun y => molli ρ t u (T y)) s` using `hm.comp hTs hsT`. Establish `hFs : ContDiffOn ℝ ∞ (Fm t) s`. Rewrite using `[hFm]`. Conclude with `(hmT.sub (hg.mono hsO)).add (contDiffOn_const.mul (hH.mono hsO))`. Use `⟨(hFs.of_le h2).mono (hUK.trans hKs), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hyL n hn`. Establish `hyO : y ∈ O` using `hLO hyL`. Establish `hyK : y ∈ cthickening (δ / 2) L` using `self_subset_cthickening L hyL`. Establish `hys : y ∈ s` using `hKs hyK`. Take `⟨G, hG_def⟩ : ∃ G : (Fin D → ℂ) → ℝ, G = fun z => molli ρ t u z - u z` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGs : ContDiffOn ℝ ∞ G (shrink P' t)`. Rewrite using `[hG_def]`. Conclude with `hm.sub (hu'.mono hShrP)`. Establish `heq : (fun y => Fm t y - f y) =ᶠ[𝓝 y] (G ∘ T) + (4 * e t) • H` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`. Simplify using `only [Pi.add_apply, Function.comp, Pi.smul_apply, smul_eq_mul, hG_def, hFm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfeq y' hy']`. Expand and normalize the polynomial expressions, which then agree. Establish `hn' : (n : WithTop ℕ∞) ≤ ∞` using `by exact_mod_cast le_top`. Establish `hGT : ContDiffAt ℝ n (G ∘ T) y` using `((hGs.comp hTs hsT).contDiffAt (hs.mem_nhds hys)).of_le hn'`. Establish `hHy : ContDiffAt ℝ n H y` using `(hH.contDiffAt (hO.mem_nhds hyO)).of_le hn'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcH : ContDiffAt ℝ n ((4 * e t) • H) y` using `hHy.const_smul (4 * e t)`. Rewrite using `[(heq.iteratedFDeriv ℝ n).eq_of_nhds, iteratedFDeriv_add_apply hGT hcH, iteratedFDeriv_const_smul_apply hHy]`. Establish `hmb` using `hmol t ht0 htε (T y) ⟨y, hyK, rfl⟩`. Establish `hGC : ∀ i : ℕ, i ≤ 2 → ‖iteratedFDeriv ℝ i G (T y)‖ ≤ C₁ * t`. Establish `hCt : C₀ * t ≤ C₁ * t` using `mul_le_mul_of_nonneg_right hC₀₁ ht0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hGe : G = fun z => molli ρ t u z - u z` using `hG_def`. Take `⟨e0, e1, e2⟩` from `ArgumentConvergenceLemmas.norm_iteratedFDeriv_sub_eq hShr (hm.of_le h2) ((hu'.mono hShrP).of_le h2) (hK'S y hyK)`. Rewrite `e0`, `e1`, `e2` using `[← hGe]`. Introduce `i hi`. Use `interval_cases i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e0, Real.norm_eq_abs]`. Conclude with `hmb.2.1.trans hCt`. Rewrite using `[e1]`. Conclude with `hmb.2.2.1.trans hCt`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmb.2.2.2.trans hCt`. Establish `hTd : ∀ i : ℕ, 1 ≤ i → i ≤ 2 → ‖iteratedFDeriv ℝ i T y‖ ≤ d ^ i`. Introduce `i hi1 hi2`. Use `interval_cases i`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hBT 1 (by norm_num) y hyL).trans hdBT`. Conclude with `(hBT 2 le_rfl y hyL).trans (hdBT.trans (le_self_pow₀ hd1 (by norm_num)))`. Establish `hGb : ‖iteratedFDeriv ℝ n (G ∘ T) y‖ ≤ n.factorial * (C₁ * t) * d ^ n` using `ArgumentConvergenceLemmas.norm_iteratedFDeriv_comp_le_of_isOpen hs hShr (hGs.of_le h2) (hTs.of_le h2) hsT hys hn hGC hTd`. Apply the tactic sequence `have hfac : (n.factorial : ℝ) ≤ 2 := by interval_cases n <;> norm_num [Nat.factorial]`. Establish `hpow : d ^ n ≤ d ^ 2` using `pow_le_pow_right₀ hd1 hn`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGb' : ‖iteratedFDeriv ℝ n (G ∘ T) y‖ ≤ 2 * C₁ * d ^ 2 * t`. Establish `hCt0 : 0 ≤ C₁ * t` using `mul_nonneg hC₁ ht0.le`. Combine the equalities or inequalities in the displayed calculation. Establish `hHb : ‖(4 * e t) • iteratedFDeriv ℝ n H y‖ ≤ 4 * B₁ * e t`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hBH n hn y hyL).trans hBH₁` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum` using `norm_add_le (iteratedFDeriv ℝ n (G ∘ T) y) ((4 * e t) • iteratedFDeriv ℝ n H y)`. Establish `hx1 : 0 ≤ 2 * C₁ * d ^ 2 * e t` using `by positivity`. Establish `hx2 : 0 ≤ 4 * B₁ * t` using `by positivity`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp : M * (t + e t) = 2 * C₁ * d ^ 2 * t + 2 * C₁ * d ^ 2 * e t + 4 * B₁ * t + 4 * B₁ * e t`. Rewrite using `[hM_def]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), t ∈ Ioo 0 ε₀` using `Ioo_mem_nhdsGT hε₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ : Tendsto (fun t => M * (t + e t)) (𝓝[>] 0) (𝓝 0)`. Establish `h` using `((tendsto_id.mono_left nhdsWithin_le_nhds).add he).const_mul M`. Simplify using `using h`. Establish `hfU : ContDiffOn ℝ 2 f (thickening (δ / 2) L)` using `(hf.of_le h2).mono (hUK.trans hKcO)`. Establish `three : ∀ t ∈ Ioo 0 ε₀, ∀ y ∈ L, ‖Fm t y - f y‖ ≤ M * (t + e t) ∧ ‖fderiv ℝ (Fm t) y - fderiv ℝ f y‖ ≤ M * (t + e t) ∧ ‖fderiv ℝ (fderiv ℝ (Fm t)) y - fderiv ℝ (fderiv ℝ f) y‖ ≤ M * (t + e t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht y hy`. Take `⟨e0, e1, e2⟩` from `ArgumentConvergenceLemmas.norm_iteratedFDeriv_sub_eq isOpen_thickening (key t ht).1 hfU (hLU hy)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e0]; exact (key t ht).2 y hy 0 (by norm_num)`. Rewrite using `[← e1]; exact (key t ht).2 y hy 1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e2]`. Conclude with `(key t ht).2 y hy 2 le_rfl`. Establish `hmodel : TendstoC2On Fm f L`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `ArgumentConvergenceLemmas.tendstoUniformlyOn_of_norm_le hβ ?_ filter_upwards [hev] with t ht y hy using (three t ht y hy).1` and prove the remaining obligations.
-
-Use `ArgumentConvergenceLemmas.tendstoUniformlyOn_of_norm_le (α := (Fin D → ℂ) →L[ℝ] ℝ) hβ ?_ filter_upwards [hev] with t ht y hy using (three t ht y hy).2.1` and prove the remaining obligations. Use `ArgumentConvergenceLemmas.tendstoUniformlyOn_of_norm_le (α := (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) hβ ?_ filter_upwards [hev] with t ht y hy using (three t ht y hy).2.2` and prove the remaining obligations. Establish `hagree : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ y ∈ thickening (δ / 2) L, molli ρ t (w t) (T y) - g y + 4 * e t * H y = Fm t y` using `by filter_upwards [hev, hw Q hQP hQc] with t ht hwt y hy`. Establish `hsub : closedBall (T y) t ⊆ P'` using `(hmol t ht.1 ht.2 (T y) ⟨y, hUK hy, rfl⟩).1`. Establish `hc : molli ρ t (w t) (T y) = molli ρ t u (T y)` using `ReciprocityTheory.AnForm.A.molli_congr ρ ht.1 (U := Q) (hsub.trans hP'Q) hwt`.
-
-Rewrite using `[hFm]`. Simplify using `only [hc]`. Use `⟨thickening (δ / 2) L, isOpen_thickening, hLU, hfU, ?_, ?_, M, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, hagree] with t ht ha`. Conclude with `(key t ht).1.congr fun y hy => ha y hy`.
-
-Conclude with `TendstoC2On.congr_open isOpen_thickening hLU hagree hmodel`. Use `filter_upwards [hev, hagree] with t ht ha y hy`. Establish `hE : (fun y' => molli ρ t (w t) (T y') - g y' + 4 * e t * H y') =ᶠ[𝓝 y] Fm t` using `Filter.eventually_of_mem (isOpen_thickening.mem_nhds (hLU hy)) ha`. Rewrite using `[hE.fderiv_eq]`. Conclude with `(three t ht y hy).2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arg_C2_through_chart {D : ℕ} (ρ : Mollifier D) {O P L : Set (Fin D → ℂ)}
     (hO : IsOpen O) (hP : IsOpen P) (hL : IsCompact L) (hLO : L ⊆ O)
@@ -276,23 +270,21 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
 open Classical in
 
 /- English proof (translation)
-Use `choose L hLc hLsub hL using hcut.eq_neg_one`. Take `⟨N, hN⟩ : ∃ N : Set X, N = ⋂ j, (if x₀ ∈ R.mid j then R.mid j else (L j ∪ closure (R.inner j))ᶜ)` from `⟨_, rfl⟩`. Establish `hNo : IsOpen N`. Rewrite using `[hN]`. Use `isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `R.isOpen_mid j`. Conclude with `((hLc j).union isClosed_closure).isOpen_compl`. Establish `hx₀ : x₀ ∈ N`. Rewrite using `[hN]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_iInter.2 fun j => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `h`. Introduce and unpack `(h1 | h1)`. Conclude with `h (hLsub j h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h (R.closure_inner j h1)`. Establish `hyN : ∀ y ∈ N, ∀ j, (x₀ ∈ R.mid j → y ∈ R.mid j) ∧ (x₀ ∉ R.mid j → y ∉ L j ∧ y ∉ closure (R.inner j))`. Introduce `y hy j`. Rewrite `hy` using `[hN]`. Use `mem_iInter.1 hy j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `this` using `[if_pos h]`. Then use the resulting hypothesis. Introduce `h`. Rewrite `this` using `[if_neg h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `only [mem_compl_iff, mem_union, not_or]`. Use `⟨N, hNo, hx₀, fun j hj y hy => (hyN y hy j).1 hj, ?_⟩` and prove the remaining obligations. Introduce `ρ K t ε hε hcmp y hyy`. Establish `hy` using `hyN y hyy`. Simplify using `only [RegChartData.regularised, PotentialCharts.glue]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (· + ε / 2) ?_` and prove the remaining obligations. Use `GroundTheory.Heights₂.Heights.Regular.regMax_of_injective (fun j : {j // x₀ ∈ R.mid j} => (⟨j.1, (hy j.1).1 j.2⟩ : {j // y ∈ R.mid j})) (fun a b hab => Subtype.ext (by simpa using congrArg Subtype.val hab)) hε _ ?_` and prove the remaining obligations. Introduce `i hi`. Take `⟨k, hk⟩` from `R.cover y`. Establish `hk0 : x₀ ∈ R.mid k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `h`. Conclude with `((hy k).2 h).2 (subset_closure hk)`. Use `⟨⟨k, hk0⟩, ?_⟩` and prove the remaining obligations. Establish `hi0 : x₀ ∉ R.mid i` using `fun h => hi ⟨i.1, h⟩ rfl`. Establish `hiL : η i y = -1` using `hL i y ⟨i.2, ((hy i).2 hi0).1⟩`.
-
-Establish `hk1 : η k y = 0` using `hcut.eq_zero k y hk`. Establish `hc` using `(abs_le.1 (hcmp i k y ⟨i.2, R.inner_subset_mid k hk⟩)).2`. Simplify using `only [hiL, hk1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem regularised_eq_regMax_near (R : RegChartData A) {η : Fin R.N → X → ℝ} {Cη : ℝ}
     (hcut : R.IsCutoffFamily η Cη) (x₀ : X) :
@@ -351,9 +343,7 @@ theorem regularised_eq_regMax_near (R : RegChartData A) {η : Fin R.N → X → 
   linarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(hQc.image_of_continuousOn ((R.continuousOn_u i).mono hQ)).bddBelow`. Use `filter_upwards [hK.eventually_ge_atTop (-B)] with t ht y hy`. Establish `h1 : B ≤ R.u i y` using `hB ⟨y, hy, rfl⟩`. Establish `hyn : y ∉ coordDiv (R.S i)` using `(hQ hy).2`. Simplify using `only [RegChartData.trunc, limsupExt, if_neg hyn]`.
-
-Conclude with `max_eq_left (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_trunc_eq (R : RegChartData A) {Kt : ℝ → ℝ} (hK : Tendsto Kt (𝓝[>] 0) atTop)
     (i : Fin R.N) {Q : Set (Fin D → ℂ)} (hQ : Q ⊆ (R.chart i).target \ coordDiv (R.S i))
@@ -366,15 +356,15 @@ theorem eventually_trunc_eq (R : RegChartData A) {Kt : ℝ → ℝ} (hK : Tendst
   exact max_eq_left (by linarith)
 
 /- English proof (translation)
-Establish `hO : IsOpen ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i))` using `(A.chart a).isOpen_inter_preimage_symm (R.isOpen_Yo.inter (R.isOpen_mid i))`. Establish `hP : IsOpen ((R.chart i).target \ coordDiv (R.S i))` using `(R.chart i).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _)`. Establish `hsrc : ∀ y ∈ (A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i), (A.chart a).symm y ∈ (R.chart i).source` using `fun y hy => R.mid_subset_source i hy.2.2`. Establish `hTO : ContDiffOn ℝ ∞ (fun y => R.chart i ((A.chart a).symm y)) ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i))` using `fun y hy => by`. Establish `h` using `(((R.compat i) a).1 y ⟨hy.1, hsrc y hy⟩).restrictScalars (𝕜 := ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.contDiffAt.contDiffWithinAt`. Establish `hTP : MapsTo (fun y => R.chart i ((A.chart a).symm y)) ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i)) ((R.chart i).target \ coordDiv (R.S i))` using `fun y hy => ⟨(R.chart i).map_source (hsrc y hy), (R.mem_Yo i _ (hsrc y hy)).1 hy.2.1⟩`. Establish `hu : ContDiffOn ℝ ∞ (R.u i) ((R.chart i).target \ coordDiv (R.S i))`. Introduce `z hz`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzs : (R.chart i).symm z ∈ (R.chart i).source` using `(R.chart i).map_target hz.1`. Establish `h1` using `GroundTheory.Heights₂.Heights.Regular.contDiffAt_comp_symm_of_smoothOn (R.compat i) R.isOpen_Yo R.ph_smooth (R.symm_mem_Yo i hz.1 hz.2) hzs`. Rewrite `h1` using `[(R.chart i).right_inv hz.1]`. Conclude with `((R.q_smooth i).contDiffAt ((R.chart i).open_target.mem_nhds hz.1)).add h1`. Establish `hf : ContDiffOn ℝ ∞ (fun y => R.ph ((A.chart a).symm y)) ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i))` using `(R.ph_smooth a).mono fun y hy => ⟨hy.1, hy.2.1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ContDiffOn ℝ ∞ (fun y => R.q i (R.chart i ((A.chart a).symm y))) ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i))` using `(R.q_smooth i).comp hTO fun y hy => (hTP hy).1`. Establish `hH : ContDiffOn ℝ ∞ (fun y => η i ((A.chart a).symm y)) ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i))` using `(hcut.smooth i a).mono fun y hy => ⟨hy.1, hy.2.2⟩`. Establish `hfeq : ∀ y ∈ (A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ R.mid i), R.ph ((A.chart a).symm y) = R.u i (R.chart i ((A.chart a).symm y)) - R.q i (R.chart i ((A.chart a).symm y))`. Introduce `y hy`. Simplify using `only [RegChartData.u, PotentialCharts.chartFun]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(R.chart i).left_inv (hsrc y hy)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `arg_C2_through_chart ρ hO hP hL hLs hTO hTP hu hf hg hH hfeq (w := fun t => R.trunc (Kt t) i) (fun Q hQ hQc => eventually_trunc_eq R hK i hQ hQc) he het`.
+A detailed English derivation is pending.
 -/
 theorem arg_C2_on_compact (R : RegChartData A) (ρ : Mollifier D) {η : Fin R.N → X → ℝ} {Cη : ℝ}
     (hcut : R.IsCutoffFamily η Cη) {Kt e : ℝ → ℝ} (hK : Tendsto Kt (𝓝[>] 0) atTop)
@@ -433,25 +423,23 @@ theorem arg_C2_on_compact (R : RegChartData A) (ρ : Mollifier D) {η : Fin R.N 
     (w := fun t => R.trunc (Kt t) i) (fun Q hQ hQc => eventually_trunc_eq R hK i hQ hQc) he het
 
 /- English proof (translation)
-Establish `hpos : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ 0 < e t` using `by filter_upwards [self_mem_nhdsWithin] with t (ht : 0 < t)`. Conclude with `⟨ht, ht.trans_le (het t ht)⟩`. Establish `hloc : ∀ y₀ ∈ C, ∃ r > 0, TendstoC2On (fun t y => R.regularised ρ (Kt t) t (e t) η ((A.chart a).symm y)) (fun y => R.ph ((A.chart a).symm y)) (closedBall y₀ r)`. Introduce `y₀ hy₀`. Take `⟨N, hNo, hx₀, hNmid, hglue⟩` from `regularised_eq_regMax_near R hcut ((A.chart a).symm y₀)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hO : IsOpen ((A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ N))` using `(A.chart a).isOpen_inter_preimage_symm (R.isOpen_Yo.inter hNo)`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hO y₀ ⟨(hCs hy₀).1, (hCs hy₀).2, hx₀⟩`. Establish `hLO : closedBall y₀ (r / 2) ⊆ (A.chart a).target ∩ (A.chart a).symm ⁻¹' (R.Yo ∩ N)` using `(closedBall_subset_ball (by linarith)).trans hball`. Use `⟨r / 2, by positivity, ?_⟩` and prove the remaining obligations. Establish `hdata` using `fun i : {j // (A.chart a).symm y₀ ∈ R.mid j} => arg_C2_on_compact R ρ hcut hK he het i.1 a (isCompact_closedBall y₀ (r / 2)) (fun y hy => ⟨(hLO hy).1, (hLO hy).2.1, hNmid i.1 i.2 (hLO hy).2.2⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose Uj hUo hLU hfC hargC hT M hM using hdata`. Take `⟨U, hU⟩ : ∃ U : Set (Fin D → ℂ), U = ((A.chart a).target ∩ (A.chart a).symm ⁻¹' N) ∩ ⋂ i, Uj i` from `⟨_, rfl⟩`. Establish `hUo' : IsOpen U` using `hU ▸ ((A.chart a).isOpen_inter_preimage_symm hNo).inter (isOpen_iInter_of_finite hUo)`. Establish `hLU' : closedBall y₀ (r / 2) ⊆ U` using `fun y hy => by`. Rewrite using `[hU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(hLO hy).1, (hLO hy).2.2⟩, mem_iInter.2 fun i => hLU i hy⟩`. Establish `hUj : ∀ i, U ⊆ Uj i` using `fun i y hy => by`. Rewrite `hy` using `[hU]`. Conclude with `mem_iInter.1 hy.2 i`. Establish `hUN : ∀ y ∈ U, (A.chart a).symm y ∈ N` using `fun y hy => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[hU]`. Conclude with `hy.1.2`. Take `⟨Mt, hMt⟩ : ∃ Mt : ℝ, Mt = ∑ i, |M i|` from `⟨_, rfl⟩`. Establish `hc : Nonempty {j // (A.chart a).symm y₀ ∈ R.mid j}` using `inferInstance`. Establish `H` using `RegularizedMaxConvergenceC2.proof {j // (A.chart a).symm y₀ ∈ R.mid j} U (closedBall y₀ (r / 2)) (fun y => R.ph ((A.chart a).symm y)) (fun t i y => R.phReg ρ (Kt t) t i.1 ((A.chart a).symm y) + 4 * e t * η i.1 ((A.chart a).symm y)) e (fun t => Mt * (t + e t)) hUo' hLU' ((hfC hc.s …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Supply the required witnesses or components.
 
-Use `TendstoC2On.congr_open hUo' hLU' ?_ H filter_upwards [hpos, hcmp] with t ht hct y hy` and prove the remaining obligations. Conclude with `hglue ρ (Kt t) t (e t) ht.2.le hct _ (hUN y hy)`. Use `case ev => filter_upwards [hpos, eventually_all.2 fun i => hargC i] with t ht hcd`. Conclude with `⟨ht.2, fun i => (hcd i).mono (hUj i)⟩`. Use `case grad => filter_upwards [hpos, eventually_all.2 fun i => hM i] with t ht hMj i y hy`.
+Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hnn : 0 ≤ t + e t` using `by linarith [ht.1, ht.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMt]`. Conclude with `Finset.single_le_sum (f := fun i => |M i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)) hnn`. Use `case ratio =>`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : Tendsto (fun t => 4 * Mt ^ 2 * e t) (𝓝[>] 0) (𝓝 0)`. Simplify using `using he.const_mul (4 * Mt ^ 2)`. Use `squeeze_zero' ?_ ?_ hK0` and prove the remaining obligations. Use `filter_upwards [hpos] with t ht`. Conclude with `div_nonneg (sq_nonneg _) ht.2.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hpos] with t ht`. Take `⟨ht0, hε⟩` from `ht`. Rewrite using `[div_le_iff₀ hε]`. Establish `h1 : t ≤ e t` using `het t ht0`. Establish `h2 : 0 ≤ t + e t` using `by linarith`.
-
-Establish `h3 : t + e t ≤ 2 * e t` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `choose! r hr hTr using hloc`. Take `⟨T, hTC, hcov⟩` from `hC.elim_nhds_subcover (fun y => closedBall y (r y)) fun y hy => closedBall_mem_nhds y (hr y hy)`. Conclude with `⟨(tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTC y hy)).1).mono hcov, (tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTC y hy)).2.1).mono hcov, (tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTC y hy)).2.2).mono hcov⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regularised_C2 (R : RegChartData A) (ρ : Mollifier D) {η : Fin R.N → X → ℝ} {Cη : ℝ}
     (hcut : R.IsCutoffFamily η Cη) {Kt e : ℝ → ℝ} (hK : Tendsto Kt (𝓝[>] 0) atTop)
@@ -539,7 +527,7 @@ theorem regularised_C2 (R : RegChartData A) (ρ : Mollifier D) {η : Fin R.N →
     (tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTC y hy)).2.2).mono hcov⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ P n M Xo B S hS j K' hK's hK'c`. Establish `h` using `regularised_C2 S.R S.ρ S.cutoff hS.K_tendsto hS.e1_tendsto_zero S.e1_ge hS.compare j hK'c hK's`. Conclude with `⟨h.1, h.2.1, h.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem regWeight_tendsto_C2_of_tied :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ) (M : CxModel P n) (Xo : Set ((Σ k, ι k) → ℂ)) (B : HermLine ι) (S : LogLogRegularisationSetting M Xo B), S.IsTied → ∀ j, ∀ K' ⊆ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' S.R.Yo, IsCompact K' → TendstoUniformlyOn (fun t => S.regWeight t ∘ (M.atlas.chart j).symm) (S.R.ph ∘ (M.atlas.chart j).symm) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (S.regWeight t ∘ (M.atlas.chart j).symm)) (fderiv ℝ (S.R.ph ∘ (M.atlas.chart j).symm)) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (S.regWeight t ∘ (M.atlas.chart j).symm))) (fderiv ℝ (fderiv ℝ (S.R.ph ∘ (M.atlas.chart j).symm))) (𝓝[>] 0) K' := by

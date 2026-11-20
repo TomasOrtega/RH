@@ -9,17 +9,15 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.ArchMatCoords
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β _ _ τ hCM M`. Establish `hex` using `fun i j => GlobalTheory.ThK.exists_at_evI_piInf_eq F E σ hCM τ (fun w => M w i j)`. Use `choose z hzA hz using hex`. Use `⟨Matrix.of fun i j => z i j, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `hzA i j a ha`. Introduce `w`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `hz i j w`. Introduce and unpack `v ⟨hvA, hvM⟩`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : v i j - z i j = 0`. Use `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hCM τ _ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : (a • v) i j = 0` using `by rw [hvA a ha]; rfl`. Rewrite `h1` using `[Matrix.smul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[smul_sub, h1, hzA i j a ha, sub_zero]`. Introduce `w`. Establish `h2` using `congrFun (congrFun (hvM w) i) j`. Rewrite `h2` using `[Matrix.map_apply]`. Rewrite using `[map_sub, h2, hz i j w, sub_self]`.
-
-Conclude with `sub_eq_zero.1 hd`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_at_map_piInf :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {α β : Type}

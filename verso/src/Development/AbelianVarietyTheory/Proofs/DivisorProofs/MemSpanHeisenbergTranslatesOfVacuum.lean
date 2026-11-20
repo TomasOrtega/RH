@@ -5,73 +5,67 @@ open scoped ComplexOrder
 namespace GlobalTheory.HeisVacuum
 
 /- English proof (translation)
-Take `⟨N, hN, hv⟩` from `hv`. Establish `hsym : ∀ x y, β x y * β y x = 1`. Introduce `x y`. Use `hd (x + y)` as an intermediate fact. Rewrite `this` using `[hl, hr, hr, hd, hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hne : ∀ x y, β x y ≠ 0` using `fun x y => left_ne_zero_of_mul_eq_one (hsym x y)`. Establish `hz1 : ∀ y, β 0 y = 1`. Introduce `y`. Use `hl 0 0 y` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left₀ (hne 0 y)).1 this.symm`. Establish `hz2 : ∀ y, β y 0 = 1`. Introduce `y`. Use `hsym y 0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hz1, mul_one]`. Then use the resulting hypothesis. Establish `hp1 : ∀ (n : ℕ) x y, β (n • x) y = β x y ^ n`. Introduce `n x y`. Proceed by induction on `n with`. Consider the case `zero => simp [hz1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [succ_nsmul, hl, ih, pow_succ]`. Establish `hp2 : ∀ (n : ℕ) x y, β x (n • y) = β x y ^ n`. Introduce `n x y`. Proceed by induction on `n with`. Consider the case `zero => simp [hz2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [succ_nsmul, hr, ih, pow_succ]`. Establish `hcomm : ∀ x y w, ρ x (ρ y w) = β x y ^ 2 • ρ y (ρ x w)`. Introduce `x y w`. Rewrite using `[hρ, hρ, smul_smul, add_comm y x, pow_two, mul_assoc, hsym, mul_one]`. Establish `hinv : ∀ t w, ρ t (ρ (-t) w) = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t w`. Use `hr t t (-t)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, hz2, hd, one_mul]`. Rewrite using `[hρ, add_neg_cancel, h0, ← this, one_smul]`. Use `choose! ε hε using hε`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huniq : ∀ u ∈ Λ, ∀ c : ℂ, ρ u e = c • e → c = ε u`. Introduce `u hu c hc`. Rewrite `hc` using `[hε u hu]`. Conclude with `(smul_left_injective ℂ he hc).symm`. Establish `hεne : ∀ u ∈ Λ, ε u ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `u hu h`. Use `hinv (-u) e` as an intermediate fact. Rewrite `this` using `[neg_neg, hε u hu, h, zero_smul, map_zero]`. Conclude with `he this.symm`. Establish `hεmul : ∀ u ∈ Λ, ∀ u' ∈ Λ, ε u * ε u' = β u u' * ε (u + u')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `u hu u' hu'`. Use `hρ u u' e` as an intermediate fact. Rewrite `this` using `[hε u' hu', map_smul, hε u hu, hε _ (Λ.add_mem hu hu'), smul_smul, smul_smul, mul_comm]`. Conclude with `smul_left_injective ℂ he this`. Set `A : Λ → M → M` to `fun u w => (ε u)⁻¹ • ρ u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hA : ∀ (u u' : Λ) w, A u (A u' w) = A (u + u') w`. Introduce `u u' w`. Simplify using `only [A, map_smul, hρ, smul_smul, AddSubgroup.coe_add]`. Use `congr 1`. Establish `h1` using `hεmul u u.2 u' u'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hεne u u.2`. Establish `h4` using `hεne u' u'.2`. Establish `h5` using `hεne _ (Λ.add_mem u.2 u'.2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA0 : ∀ w, A 0 w = w`. Introduce `w`. Establish `: (1 : ℂ) = ε 0` using `huniq 0 Λ.zero_mem 1 (by rw [h0, one_smul])`. Simplify using `[A, h0, ← this]`. Use `set K : ℕ := 2 * N with hK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKpos : 0 < K` using `by omega`. Establish `hεK : ∀ u ∈ Λ, ε (K • u) = 1`. Introduce `u hu`. Use `(huniq _ (Λ.nsmul_mem hu K) 1 ?_).symm` and prove the remaining obligations. Rewrite using `[one_smul, hK, mul_comm, mul_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h2 _ (Λ.nsmul_mem hu N)`. Establish `hvK : ∀ u ∈ Λ, ρ (K • u) v = v`. Introduce `u hu`. Rewrite using `[hK, mul_nsmul]`. Conclude with `hv _ (Λ.nsmul_mem hu 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `H : AddSubgroup Λ` to `(nsmulAddMonoidHom K : Λ →+ Λ).range`. Establish `hQ : Finite (Λ ⧸ H)`. Take `⟨R, hR, hR'⟩` from `hfin K hKpos`. Establish `: Finite {x : Λ // (x : X) ∈ R}`. Establish `: Finite R` using `hR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finite.of_injective (fun x : {x : Λ // (x : X) ∈ R} => (⟨x.1, x.2⟩ : R)) (fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z : R => (z : X)) h)))`. Use `Finite.of_surjective (fun x : {x : Λ // (x : X) ∈ R} => (QuotientAddGroup.mk x.1 : Λ ⧸ H)) ?_` and prove the remaining obligations. Introduce `q`. Take `⟨t, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨r, hr, u, hu, htu⟩` from `hR' t t.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrΛ : r ∈ Λ`. Establish `: r = t - K • u` using `by rw [htu]; abel`. Rewrite using `[this]`. Conclude with `Λ.sub_mem t.2 (Λ.nsmul_mem hu K)`. Use `⟨⟨⟨r, hrΛ⟩, hr⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `QuotientAddGroup.eq.2 ⟨⟨u, hu⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[htu]`. Use `Fintype.ofFinite (Λ ⧸ H)` as an intermediate fact. Establish `hwell : ∀ w, (∀ u ∈ Λ, ρ (K • u) w = w) → ∀ x y : Λ, (QuotientAddGroup.mk x : Λ ⧸ H) = QuotientAddGroup.mk y → A x w = A y w`. Introduce `w hw x y hxy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `QuotientAddGroup.eq.1 hxy`. Establish `h1 : y = x + K • u`. Establish `: K • u = -x + y` using `hu`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : A (K • u) w = w`. Simplify using `only [A, AddSubgroup.coe_nsmul, hεK u u.2, hw u u.2, inv_one, one_smul]`. Rewrite using `[h1, ← hA, h3]`. Establish `hAsum : ∀ (u : Λ) (f : Λ ⧸ H → M), A u (∑ q, f q) = ∑ q, A u (f q)`. Introduce `u f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [A, map_sum, Finset.smul_sum]`. Establish `hP : ∀ w, (∀ u ∈ Λ, ρ (K • u) w = w) → ∃ c : ℂ, (∑ q : Λ ⧸ H, A q.out w) = c • e`. Introduce `w hw`. Apply `hvac` to reduce the goal to its premises. Introduce `u hu c hc`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[huniq u hu c hc]`. Establish `h1 : A ⟨u, hu⟩ (∑ q : Λ ⧸ H, A q.out w) = ∑ q : Λ ⧸ H, A q.out w`. Rewrite using `[hAsum]`. Use `Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk ⟨u, hu⟩ : Λ ⧸ H)) _ _ ?_` and prove the remaining obligations. Introduce `q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hA]`. Apply `hwell w hw` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `conv_rhs => rw [← h1]`. Simplify using `only [A, smul_smul, mul_inv_cancel₀ (hεne u hu), one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `Tg : AddSubgroup X` to `Λ.comap (nsmulAddMonoidHom K : X →+ X)`. Establish `hTg : ∀ t, t ∈ Tg ↔ K • t ∈ Λ` using `fun t => Iff.rfl`. Set `S` to `Submodule.span ℂ (Set.range fun x => ρ x e)`. Establish `hmem : ∀ t ∈ Tg, (∑ q : Λ ⧸ H, β t (q.out : Λ) ^ 2 • A q.out v) ∈ S`. Introduce `t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨c, hc⟩` from `hP (ρ (-t) v) (by`. Introduce `u hu`. Rewrite using `[hcomm, hvK u hu, hp1, ← hp2, (hΛ u).1 hu _ ((hTg _).1 (Tg.neg_mem ht)), one_smul])`. Establish `h1` using `congrArg (ρ t) hc`. Rewrite `h1` using `[map_sum, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : c • ρ t e ∈ S` using `S.smul_mem c (Submodule.subset_span ⟨t, rfl⟩)`. Rewrite `h3` using `[← h1]`. Use `h3 using 2 with q` and compare the differences between its conclusion and the goal. Simplify using `only [A, map_smul]`. Rewrite using `[hcomm t, hinv, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χ : Λ ⧸ H → (Multiplicative Tg →* ℂ)` to `fun q => { toFun := fun t => β (t.toAdd : Tg) (q.out : Λ) ^ 2 map_one' := by simp [hz1] map_mul' := by intro a b; simp [hl, mul_pow] }`. Establish `hχ : Function.Injective χ`. Introduce `q q' h`. Establish `h1 : ∀ t ∈ Tg, β t (q.out : Λ) ^ 2 = β t (q'.out : Λ) ^ 2` using `fun t ht => DFunLike.congr_fun h (Multiplicative.ofAdd ⟨t, ht⟩)`. Take `⟨y, hy⟩` from `hdiv K hKpos (-((q.out : Λ) : X) + (q'.out : Λ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hyΛ : y ∈ Λ`. Rewrite using `[hΛ]`. Introduce `a ha`. Take `⟨t, rfl⟩` from `hdiv K hKpos a`. Establish `h3` using `h1 t ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h4 : ((q'.out : Λ) : X) = (q.out : Λ) + K • y` using `by rw [hy]; abel`. Rewrite `h3` using `[h4, hr, mul_pow, hp2, ← hp1 K]`. Establish `h5 : β (K • t) y ^ 2 = 1` using `(mul_eq_left₀ (pow_ne_zero 2 (hne _ _))).1 h3.symm`. Establish `h6` using `congrArg (· ^ 2) (hsym y (K • t))`. Simplify `h6` using `[mul_pow, h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q']`. Conclude with `QuotientAddGroup.eq.2 ⟨⟨y, hyΛ⟩, Subtype.ext (by simpa using hy)⟩`. Establish `hli : LinearIndependent ℂ (fun q => (χ q : Multiplicative Tg → ℂ))` using `(linearIndependent_monoidHom (Multiplicative Tg) ℂ).comp χ hχ`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`.
-
-Establish `h1` using `Fintype.linearIndependent_iff.1 hli (fun q => φ (S.mkQ (A q.out v))) (by`. Use function extensionality and compare the values at `t`. Establish `h3` using `(Submodule.Quotient.mk_eq_zero S).2 (hmem _ (t.toAdd).2)`. Establish `h4` using `congrArg φ h3`. Rewrite `h4` using `[← Submodule.mkQ_apply, map_sum, map_sum, map_zero]`.
-
-Simplify using `only [map_smul, smul_eq_mul] at h4`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← h4]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_comm _ _) 0`. Establish `h3 : A (0 : Λ ⧸ H).out v = v`.
-
-Rewrite using `[hwell v hvK _ 0 (by simp), hA0]`. Simplify `h1` using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_span_translates_vacuum (X M : Type) [AddCommGroup X] [AddCommGroup M] [Module ℂ M]
     (β : X → X → ℂ) (ρ : X → M →ₗ[ℂ] M) (Λ : AddSubgroup X) (e : M)

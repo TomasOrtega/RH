@@ -20,7 +20,7 @@ namespace GlobalTheory.ThetaTransl.CubeSer
 open PowerSeries
 
 /- English proof (translation)
-Simplify using `only [coef1]`. Rewrite using `[← iteratedDeriv_succ', Nat.factorial_succ]`. Use `push_cast`. Establish `h : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Establish `h' : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast n.succ_ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -33,7 +33,7 @@ theorem taylorCoeffAtZero_deriv (F : ℂ → ℂ) (n : ℕ) : coef1 (deriv F) n 
   field_simp
 
 /- English proof (translation)
-Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `(hF.1.contDiff (n := 2)).differentiable_iteratedDeriv 1 (by norm_num)`. Simplify `h` using `[iteratedDeriv_one]`. Rewrite using `[taylorCoeffAtZero_deriv]`. Conclude with `mul_mem (add_mem (natCast_mem _ n) (one_mem _)) (hF.2 _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algEnt_deriv {F : ℂ → ℂ} (hF : AlgEnt F) : AlgEnt (deriv F) := by
   refine ⟨?_, fun n => ?_⟩
@@ -45,9 +45,9 @@ theorem algEnt_deriv {F : ℂ → ℂ} (hF : AlgEnt F) : AlgEnt (deriv F) := by
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_derivative, GlobalTheory.SerTransport.coeff_padicTransportSeries, GlobalTheory.SerTransport.coeff_padicTransportSeries, taylorCoeffAtZero_deriv]`. Take `⟨a, ha⟩` from `GlobalTheory.SerTransport.exists_coef hF`. Rewrite using `[ha]`. Establish `e : ((n : ℂ) + 1) * (a (n + 1) : ℂ) = ((((n : Qbar) + 1) * a (n + 1) : Qbar) : ℂ)` using `by push_cast; rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, GlobalTheory.SerTransport.lamC_coe, GlobalTheory.SerTransport.lamC_coe, map_mul, map_add, map_natCast, map_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem padicTaylorSeries_deriv_eq_derivative (lam : Qbar →+* ℂ_[p]) {F : ℂ → ℂ} (hF : AlgEnt F) :
     GL3Theta.ser1 lam (deriv F) = derivative ℂ_[p] (GL3Theta.ser1 lam F) := by
@@ -61,7 +61,7 @@ theorem padicTaylorSeries_deriv_eq_derivative (lam : Qbar →+* ℂ_[p]) {F : �
     mul_comm]
 
 /- English proof (translation)
-Establish `hs` using `HasSubst.of_constantCoeff_zero' (GlobalTheory.SerTransport.const_Cl g ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))`. Rewrite using `[GlobalTheory.SerTransport.atU_eq, GlobalTheory.SerTransport.atU_eq, derivative_subst hs, padicTaylorSeries_deriv_eq_derivative g.lam hF, Derivation.leibniz, derivative_C, smul_zero, add_zero, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem atU_deriv (g : GL3Theta.G1 p) {F : ℂ → ℂ} (hF : AlgEnt F) :
     derivative ℂ_[p] (g.atU F) =
@@ -71,9 +71,7 @@ theorem atU_deriv (g : GL3Theta.G1 p) {F : ℂ → ℂ} (hF : AlgEnt F) :
     Derivation.leibniz, derivative_C, smul_zero, add_zero, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hf`. Use `⟨B, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_derivative, norm_mul]`. Establish `h1 : ‖((n : ℂ_[p]) + 1)‖ ≤ 1`. Conclude with `IsUltrametricDist.norm_natCast_le_one ℂ_[p] (n + 1)` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bddSer_derivative {f : PowerSeries ℂ_[p]} (hf : BddSer f) : BddSer (derivative ℂ_[p] f) := by
   obtain ⟨B, hB⟩ := hf
@@ -91,35 +89,29 @@ namespace GlobalTheory.ThetaTransl.CubeSer
 open PowerSeries
 
 /- English proof (translation)
-Introduce `p _ g hOk hL h2 h3 hd hσ v hv hw`. Take `⟨-, hwi, -, -, hA⟩` from `GlobalTheory.EvenTheta.DatumBasic.datum_basic p g hOk hL h2 h3 hd`. Establish `hq : IsWq g.W g.wq` using `hOk.2.1`. Take `⟨hS, hB⟩` from `GlobalTheory.EvenTheta.Param.sqTh_atU p g hq hL h2 h3 hσ v hv hw`. Take `⟨hmul, hconst, -, -⟩` from `GlobalTheory.SerTransport.transport p g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, i2, i3, i4, i6, -⟩` from `hOk.1`. Take `⟨vI, hvI, hvl⟩` from `PI.JetsPhW.Inv.inverse_omega_holds p g.W g.wq i1 i2 i3 i4 i6 hq`. Rewrite `hvl` using `[PI.JetsPhW.Inv.dX_eq_derivative]`. Express the relevant statement in the definitionally equal form `vI * derivative ℂ_[p] g.l = 1 at hvl`. Establish `hσd` using `algEnt_deriv hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hSd` using `algEnt_deriv hS`. Establish `hm2 : (((-2 : Qbar)) : ℂ) = -2` using `by push_cast; rfl`. Establish `hc` using `hconst (((-2 : Qbar)) : ℂ) (-2 : Qbar).2`. Establish `hl2 : lamC g.lam (((-2 : Qbar)) : ℂ) = -2`. Rewrite using `[GlobalTheory.SerTransport.lamC_coe, map_neg, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k1` using `(hmul (sgStar g.abelian₂) (deriv (sqTh g.abelian₂ v)) hσ hSd).1`. Establish `k2` using `(hmul (deriv (sgStar g.abelian₂)) (sqTh g.abelian₂ v) hσd hS).1`. Establish `k3` using `(hmul (fun _ => (((-2 : Qbar)) : ℂ)) (fun z => deriv (sgStar g.abelian₂) z * sqTh g.abelian₂ v z) hc.1 k2.1).1`. Establish `k4` using `(hmul (fun z => sgStar g.abelian₂ z * deriv (sqTh g.abelian₂ v) z) (fun z => (((-2 : Qbar)) : ℂ) * (deriv (sgStar g.abelian₂) z * sqTh g.abelian₂ v z)) k1.1 k3.1).2`. Establish `hT : sqThD g.abelian₂ v = fun z => sgStar g.abelian₂ z * deriv (sqTh g.abelian₂ v) z + (((-2 : Qbar)) : ℂ) * (deriv (sgStar g.abelian₂) z * sqTh g.abelian₂ v z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[hm2]`. Simplify using `only [sqThD]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hT ▸ k4.1, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `set ε : ℂ_[p] := ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hε`. Use `set e := ePhi1 g.lam g.abelian₂ g.C g.wq with he`. Use `set L := lineSer g.wq⁻¹ (xAt g v) with hL'`. Take `⟨-, hbdd, hCb, hX, -⟩` from `SerRing.series_ring_laws p`. Use `⟨vI * (X * derivative ℂ_[p] L - 2 * L), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX2 : BddSer (X ^ 2 : PowerSeries ℂ_[p])`. Rewrite using `[pow_two]`. Conclude with `(hbdd _ _ ⟨1, hX⟩ ⟨1, hX⟩).2.2`. Establish `hLb : BddSer L`. Rewrite using `[hL', lineSer]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hbdd _ _ ⟨1, hwi⟩ (hbdd _ _ (hCb _).1 hX2).2.2).2.1`. Establish `h2b : BddSer (2 : PowerSeries ℂ_[p])`. Rewrite using `[show (2 : PowerSeries ℂ_[p]) = C 2 from (map_ofNat C 2).symm]`. Conclude with `(hCb 2).1`. Use `(hbdd _ _ ⟨1, fun n => hvI n⟩ (hbdd _ _ ((hbdd _ _ ⟨1, hX⟩ (bddSer_derivative hLb)).2.2) ((hbdd _ _ h2b hLb).2.2)).2.1).2.2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `dA` using `atU_deriv g hσ`. Establish `dB` using `atU_deriv g hS`. Rewrite `dA` using `[hA]`. Rewrite `dB` using `[hB]`. Establish `hDA : derivative ℂ_[p] (C ε * X * e) = C ε * (e + X * derivative ℂ_[p] e)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Derivation.leibniz, derivative_C, derivative_X, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDB : derivative ℂ_[p] (e ^ 2 * L) = 2 * e * derivative ℂ_[p] e * L + e ^ 2 * derivative ℂ_[p] L`. Simplify using `only [Derivation.leibniz, Derivation.leibniz_pow, smul_eq_mul, nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `dA` using `[hDA]`. Rewrite `dB` using `[hDB]`. Establish `F4 : C ε * C ε⁻¹ = (1 : PowerSeries ℂ_[p])`. Rewrite using `[← map_mul, mul_inv_cancel₀ (Units.ne_zero _), map_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a1 := g.atU (deriv (sgStar g.abelian₂))`. Use `set b1 := g.atU (deriv (sqTh g.abelian₂ v))`. Use `set x := C ε`. Use `set y := C ε⁻¹`. Use `set l' := derivative ℂ_[p] g.l`.
-
-Use `set E' := derivative ℂ_[p] e`. Use `set L'' := derivative ℂ_[p] L`. Establish `ha1 : a1 = (e + X * E') * vI`. Take the linear combination `(-a1) * F4 + (-a1 * x * y) * hvl + (-y * vI) * dA + ((e + X * E') * vI) * F4`. Establish `hb1 : b1 = y * (2 * e * E' * L + e ^ 2 * L'') * vI`.
-
-Take the linear combination `(-b1) * F4 + (-b1 * x * y) * hvl + (-y * vI) * dB`. Establish `hT' : g.atU (sqThD g.abelian₂ v) = x * X * e * b1 + C (-2) * (a1 * (e ^ 2 * L))`. Rewrite using `[← hA, ← hB, ← hl2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT', show (C (-2) : PowerSeries ℂ_[p]) = -2 by rw [map_neg, map_ofNat]]`.
-
-Take the linear combination `(x * X * e) * hb1 - (2 * e ^ 2 * L) * ha1 + (X * e * (2 * e * E' * L + e ^ 2 * L'') * vI) * F4`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sqThD_atU : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), g.Ok → IsLat g.abelian₂ → g2 g.abelian₂ ∈ Qbar →
     g3 g.abelian₂ ∈ Qbar → TaylorLogMetric.discr g.abelian₂ = 1 → AlgEnt (sgStar g.abelian₂) → ∀ v, v ∉ g.abelian₂ → wpF g.abelian₂ v ∈ Qbar →

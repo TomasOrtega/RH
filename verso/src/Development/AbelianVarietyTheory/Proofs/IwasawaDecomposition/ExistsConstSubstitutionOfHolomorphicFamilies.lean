@@ -4,11 +4,11 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set T := {w | w ∈ U ∧ f w = f' w} with hT`. Establish `key : ∀ x ∈ T, ({x} : Set ℂ) ∈ 𝓝[T] x`. Introduce `x hx`. Establish `h1 : ¬ ∃ᶠ z in 𝓝[≠] x, f z = f' z` using `fun h => hne ((hf.analyticOnNhd hU).eqOn_of_preconnected_of_frequently_eq (hf'.analyticOnNhd hU) hc hx.1 h)`. Rewrite `h1` using `[Filter.not_frequently, eventually_nhdsWithin_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_nhdsWithin_iff_eventually]`. Use `filter_upwards [h1] with z hz hzT`. Assume the negation of the conclusion as `hzx`. Conclude with `hz hzx hzT.2`. Take `⟨t, -, ht, hcov⟩` from `TopologicalSpace.countable_cover_nhdsWithin key`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `ht.mono fun x hx => ?_` and prove the remaining obligations. Use `hcov hx` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem countable_eq_of_differentiableOn_of_ne {g : ℕ} {U : Set ℂ} {f f' : ℂ → Fin g → ℂ}
     (hU : IsOpen U) (hc : IsPreconnected U) (hf : DifferentiableOn ℂ f U)
@@ -31,11 +31,9 @@ theorem countable_eq_of_differentiableOn_of_ne {g : ℕ} {U : Set ℂ} {f f' : �
   simpa using this
 
 /- English proof (translation)
-Introduce `L D _ g act U s s' hU hc hne hs hs' h`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `choose w hw a ha using hcon`. Establish `hcount : ∀ δ, {z | z ∈ U ∧ s' z (a δ) = s z (act δ (a δ))}.Countable` using `fun δ => countable_eq_of_differentiableOn_of_ne hU hc (hs' (a δ)) (hs (act δ (a δ))) (fun hE => ha δ (hE (hw δ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hUc : U.Countable`. Use `(Set.countable_iUnion hcount).mono fun z hz => ?_` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `h z hz`. Conclude with `Set.mem_iUnion.2 ⟨δ, hz, hδ _⟩`. Establish `hd : Dense Uᶜ` using `hUc.dense_compl ℝ`.
-
-Take `⟨x, hx1, hx2⟩` from `hd.inter_open_nonempty U hU hne`. Conclude with `hx2 hx1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_const_substitution_of_holomorphic_families :
     ∀ (L D : Type) [Countable D] (g : ℕ) (act : D → L → L) (U : Set ℂ) (s s' : ℂ → L → Fin g → ℂ), IsOpen U → IsPreconnected U → U.Nonempty → (∀ a, DifferentiableOn ℂ (fun w => s w a) U) → (∀ a, DifferentiableOn ℂ (fun w => s' w a) U) → (∀ w ∈ U, ∃ δ, ∀ a, s' w a = s w (act δ a)) → ∃ δ, ∀ w ∈ U, ∀ a, s' w a = s w (act δ a) := by

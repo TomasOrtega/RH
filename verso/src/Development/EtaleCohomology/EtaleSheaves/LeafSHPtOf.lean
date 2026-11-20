@@ -9,15 +9,15 @@ open LateralTheory.E.E4 LateralTheory.E.LeafDegCut LateralTheory.E.LeafSHPtPf
 set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `B U x J _ _ D c V a e t ht hcof`. Take `⟨j0⟩` from `(inferInstance : Nonempty J)`. Prove the components needed by the constructor for the conclusion. Introduce `O hxO`. Establish `hU : Etale U.hom` using `U.prop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `U' : B.Etale` to `MorphismProperty.Over.mk ⊤ (O.ι ≫ U.hom) (by`. Express the relevant statement in the definitionally equal form `Etale (O.ι ≫ U.hom)`. Use the proof step `infer_instance)`. Set `b : U' ⟶ U` to `MorphismProperty.Over.homMk (A := U') (B := U) O.ι rfl`. Take `⟨j, g, hg⟩` from `hcof U' b ⟨x, hxO⟩ rfl`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[← ht j, ← hg]`. Establish `: Set.range (O.ι) ⊆ (O : Set U.left)` using `by rw [Scheme.Opens.range_ι]`. Apply `this` to reduce the goal to its premises. Conclude with `⟨(Spec.map (CommRingCat.ofHom (c.ι.app j).hom) ≫ e j ≫ g) z, by rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS`. Take `⟨𝒰, _, h, hU⟩` from `(Scheme.mem_smallGrothendieckTopology _ _).1 hS`. Take `⟨i, ⟨u, hu⟩⟩` from `((Scheme.ofArrows_mem_precoverage_iff _).1 𝒰.mem₀).1 x`. Set `fi : (𝒰.X i).asOverProp B (h i) ⟶ U` to `(𝒰.f i).asOverProp B`. Use `⟨_, fi, hU _ _ ⟨i⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, g, hg⟩` from `hcof _ fi u hu`. Conclude with `⟨Spec.map (CommRingCat.ofHom (c.ι.app j).hom) ≫ e j ≫ g, by`. Rewrite using `[Category.assoc, Category.assoc, hg, ht j]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafSHTop : LeafSHTop := by
   intro B U x J _ _ D c V a e t ht hcof
@@ -45,7 +45,7 @@ theorem leafSHTop : LeafSHTop := by
       rw [Category.assoc, Category.assoc, hg, ht j]⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafSHPtPf.LeafSHPt_of hN leafSHTop`.
+A detailed English derivation is pending.
 -/
 theorem LeafSHPt_of (hN : LateralTheory.E.LeafSHPtPf.LeafSHNb) : LateralTheory.E.LeafInj0VPf.LeafSHPt :=
   LateralTheory.E.LeafSHPtPf.LeafSHPt_of hN leafSHTop

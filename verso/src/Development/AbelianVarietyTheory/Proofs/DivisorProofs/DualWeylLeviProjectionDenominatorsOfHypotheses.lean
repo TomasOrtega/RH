@@ -27,16 +27,16 @@ def lpTen (p q : ℕ) : LinearMap.BilinMap ℚ (MvPolynomial (Fin p × Fin p) �
   (lpFock (Fin p × Fin p)).tmul (lpFock (Fin q × Fin q))
 
 /- English proof (translation)
-Simplify using `[lpTen, lpFock_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lpTen_tmul (p q : ℕ) (a a' : MvPolynomial (Fin p × Fin p) ℚ) (b b' : MvPolynomial (Fin q × Fin q) ℚ) :
     lpTen p q (a ⊗ₜ b) (a' ⊗ₜ b') = fockQ a a' * fockQ b b' := by
   simp [lpTen, lpFock_apply, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul a b`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a' b' => simp only [LinearMap.rTensor_tmul, lpTen_tmul, hD]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lpTen_rTensor (p q : ℕ) (D D' : Module.End ℚ (MvPolynomial (Fin p × Fin p) ℚ))
     (hD : ∀ f g, fockQ (D f) g = fockQ f (D' g)) (u v : MvPolynomial (Fin p × Fin p) ℚ ⊗[ℚ] MvPolynomial (Fin q × Fin q) ℚ) :
@@ -51,9 +51,9 @@ theorem lpTen_rTensor (p q : ℕ) (D D' : Module.End ℚ (MvPolynomial (Fin p ×
     | tmul a' b' => simp only [LinearMap.rTensor_tmul, lpTen_tmul, hD]
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul a b`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a' b' => simp only [LinearMap.lTensor_tmul, lpTen_tmul, hD]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lpTen_lTensor (p q : ℕ) (D D' : Module.End ℚ (MvPolynomial (Fin q × Fin q) ℚ))
     (hD : ∀ f g, fockQ (D f) g = fockQ f (D' g)) (u v : MvPolynomial (Fin p × Fin p) ℚ ⊗[ℚ] MvPolynomial (Fin q × Fin q) ℚ) :
@@ -77,7 +77,7 @@ theorem lpF_apply (N : ℕ) (ν : Fin N → ℕ) (x y : dualWeyl ℚ N N ν) :
     lpF N ν x y = fockQ (x : MvPolynomial (Fin N × Fin N) ℚ) y := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `hz' : (z : MvPolynomial (Fin N × Fin N) ℚ) ≠ 0` using `fun h0 => hz (Subtype.ext h0)`. Conclude with `absurd (h z) (ne_of_gt ((fockQPos _ (z : MvPolynomial (Fin N × Fin N) ℚ) z).2 hz'))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lpF_eq_zero {N : ℕ} {ν : Fin N → ℕ} (z : dualWeyl ℚ N N ν)
     (h : ∀ x : dualWeyl ℚ N N ν, fockQ (x : MvPolynomial (Fin N × Fin N) ℚ) z = 0) : z = 0 := by
@@ -86,7 +86,7 @@ theorem lpF_eq_zero {N : ℕ} {ν : Fin N → ℕ} (z : dualWeyl ℚ N N ν)
   exact absurd (h z) (ne_of_gt ((fockQPos _ (z : MvPolynomial (Fin N × Fin N) ℚ) z).2 hz'))
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `lpF_eq_zero x fun z => ?_` and prove the remaining obligations. Rewrite using `[Formalism.CohomologicalDescent.LR.fock_symm]`. Conclude with `hx z`. Conclude with `lpF_eq_zero y fun z => hy z`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpF_nondeg (N : ℕ) (ν : Fin N → ℕ) : (lpF N ν).Nondegenerate := by
   refine ⟨fun x hx => ?_, fun y hy => ?_⟩
@@ -117,7 +117,7 @@ def lpT (p q : ℕ) (ν : Fin (p + q) → ℕ) : Module.End ℚ (dualWeyl ℚ (p
   ((lpF (p + q) ν).toDual (lpF_nondeg (p + q) ν)).symm.toLinearMap ∘ₗ (lpBeta p q ν).flip
 
 /- English proof (translation)
-Rewrite using `[Formalism.CohomologicalDescent.LR.fock_symm, ← lpF_apply]`. Simplify using `[lpT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lpT_spec (p q : ℕ) (ν : Fin (p + q) → ℕ) (x y : dualWeyl ℚ (p + q) (p + q) ν) :
     fockQ (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) (lpT p q ν y) = lpBeta p q ν x y := by
@@ -125,13 +125,13 @@ theorem lpT_spec (p q : ℕ) (ν : Fin (p + q) → ℕ) (x y : dualWeyl ℚ (p +
   simp [lpT]
 
 /- English proof (translation)
-The claim follows from `(fockQPos _ (hw ℚ le_rfl μ) (hw ℚ le_rfl μ)).2 (hwNe ℚ r r le_rfl μ)`.
+A detailed English derivation is pending.
 -/
 theorem lpHw_pos {r : ℕ} (μ : Fin r → ℕ) : 0 < fockQ (hw ℚ le_rfl μ) (hw ℚ le_rfl μ) :=
   (fockQPos _ (hw ℚ le_rfl μ) (hw ℚ le_rfl μ)).2 (hwNe ℚ r r le_rfl μ)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `lpF_eq_zero _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← lpF_apply, map_sub, lpF_apply, lpF_apply, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lp_ext {N : ℕ} {ν : Fin N → ℕ} {a b : dualWeyl ℚ N N ν}
     (h : ∀ x : dualWeyl ℚ N N ν, fockQ (x : MvPolynomial (Fin N × Fin N) ℚ) a = fockQ (x : MvPolynomial (Fin N × Fin N) ℚ) b) :
@@ -141,7 +141,7 @@ theorem lp_ext {N : ℕ} {ν : Fin N → ℕ} {a b : dualWeyl ℚ N N ν}
   rw [← lpF_apply, map_sub, lpF_apply, lpF_apply, h, sub_self]
 
 /- English proof (translation)
-Rewrite using `[eV, dif_pos ⟨ha, hb⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eV_val {N : ℕ} (ν : Fin N → ℕ) {a b : ℕ} (ha : a < N) (hb : b < N) (x : dualWeyl ℚ N N ν) :
     ((eV N ν a b x : dualWeyl ℚ N N ν) : MvPolynomial (Fin N × Fin N) ℚ) =
@@ -150,9 +150,9 @@ theorem eV_val {N : ℕ} (ν : Fin N → ℕ) {a b : ℕ} (ha : a < N) (hb : b <
   rfl
 
 /- English proof (translation)
-Establish `h` using `lpT_spec p q ν ⟨hw ℚ le_rfl ν, hwMem ℚ (p + q) (p + q) le_rfl ν hν⟩ ⟨hw ℚ le_rfl ν, hwMem ℚ (p + q) (p + q) le_rfl ν hν⟩`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[lpBeta_apply]`. Use `show lpK p q ν * lpTen p q (resT ℚ p q (hw ℚ le_rfl ν)) (resT ℚ p q (hw ℚ le_rfl ν)) = _`. Rewrite using `[hHw p q ν hν, lpTen_tmul, lpK]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(lpHw_pos (fun i => ν (Fin.castAdd q i))).ne'`. Establish `h2` using `(lpHw_pos (fun j => ν (Fin.natAdd p j))).ne'`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lp_hw (hHw : ResHw) (p q : ℕ) (ν : Fin (p + q) → ℕ) (hν : Antitone ν) :
     fockQ (hw ℚ le_rfl ν) (lpT p q ν ⟨hw ℚ le_rfl ν, hwMem ℚ (p + q) (p + q) le_rfl ν hν⟩ :
@@ -168,15 +168,15 @@ theorem lp_hw (hHw : ResHw) (p q : ℕ) (ν : Fin (p + q) → ℕ) (hν : Antito
   field_simp
 
 /- English proof (translation)
-Establish `hres : resT ℚ p q (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = 0`. Use `(hDer p q x).2.2 ν ((∑ c ∈ Finset.range p, μ c : ℤ) : ℚ) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp x.2).1`. Use `push_cast`. Rewrite using `[Finset.sum_smul, ← Fin.sum_univ_eq_sum_range (fun c => (μ c : ℚ) • (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hc : (c : ℕ) < p + q` using `by omega`. Establish `e` using `congrArg Subtype.val (hx c hc)`. Rewrite `e` using `[eV_val ν hc hc]`. Rewrite `e` using `[Submodule.coe_smul_of_tower]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e`. Establish `e : ∑ c : Fin p, (ν (Fin.castAdd q c) : ℚ) = ((∑ c ∈ Finset.range p, wtZ ν c : ℤ) : ℚ)`. Use `push_cast`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun c => (wtZ ν c : ℚ))]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (c : ℕ) < p + q` using `by omega`. Rewrite using `[wtZ, dif_pos hc]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hlt.ne` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `lpF_eq_zero` to reduce the goal to its premises. Introduce `y`. Rewrite using `[lpT_spec, lpBeta_apply, hres, map_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem lp_vanish (hDer : ResDer) (p q : ℕ) (ν : Fin (p + q) → ℕ) (μ : ℕ → ℤ) (x : dualWeyl ℚ (p + q) (p + q) ν)
     (hx : IsWt (p + q) (eV (p + q) ν) μ x)
@@ -206,15 +206,13 @@ theorem lp_vanish (hDer : ResDer) (p q : ℕ) (ν : Fin (p + q) → ℕ) (μ : �
   rw [lpT_spec, lpBeta_apply, hres, map_zero, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.addCases with`. Consider the case `left a₁`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b₁`. Rewrite using `[(hDer p q f).1 b₁ a₁, (hDer p q g).1 a₁ b₁]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lpTen_rTensor p q _ _ (fun f g => Formalism.CohomologicalDescent.LR.fock_der b₁ a₁ f g) _ _`. Consider the case `right b₂`. It suffices to derive a contradiction. Establish `h1 : ((Fin.castAdd q a₁ : Fin (p + q)) : ℕ) < p` using `by simp`. Establish `h2 : ¬ ((Fin.natAdd p b₂ : Fin (p + q)) : ℕ) < p` using `by simp`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `h2 (hab.mp h1)`. Consider the case `right a₂`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b₁`. It suffices to derive a contradiction.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ¬ ((Fin.natAdd p a₂ : Fin (p + q)) : ℕ) < p` using `by simp`. Establish `h2 : ((Fin.castAdd q b₁ : Fin (p + q)) : ℕ) < p` using `by simp`. Conclude with `h1 (hab.mpr h2)`. Consider the case `right b₂`. Rewrite using `[(hDer p q f).2.1 b₂ a₂, (hDer p q g).2.1 a₂ b₂]`.
-
-Conclude with `lpTen_lTensor p q _ _ (fun f g => Formalism.CohomologicalDescent.LR.fock_der b₂ a₂ f g) _ _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lp_comm_fin (hDer : ResDer) (p q : ℕ) (a b : Fin (p + q)) (hab : (a : ℕ) < p ↔ (b : ℕ) < p)
     (f g : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) :
@@ -243,7 +241,7 @@ theorem lp_comm_fin (hDer : ResDer) (p q : ℕ) (a b : Fin (p + q)) (hab : (a : 
       exact lpTen_lTensor p q _ _ (fun f g => Formalism.CohomologicalDescent.LR.fock_der b₂ a₂ f g) _ _
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => lp_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, eV_val ν hc hd, ← Formalism.CohomologicalDescent.LR.fock_der, ← eV_val ν hd hc x, lpT_spec, lpT_spec, lpBeta_apply, lpBeta_apply, eV_val ν hd hc x, eV_val ν hc hd y]`. Use `congr 1`. Conclude with `lp_comm_fin hDer p q ⟨c, hc⟩ ⟨d, hd⟩ hcd _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lp_comm (hDer : ResDer) (p q : ℕ) (ν : Fin (p + q) → ℕ) (c d : ℕ) (hc : c < p + q) (hd : d < p + q)
     (hcd : c < p ↔ d < p) : eV (p + q) ν c d * lpT p q ν = lpT p q ν * eV (p + q) ν c d := by
@@ -254,9 +252,9 @@ theorem lp_comm (hDer : ResDer) (p q : ℕ) (ν : Fin (p + q) → ℕ) (c d : �
   exact lp_comm_fin hDer p q ⟨c, hc⟩ ⟨d, hd⟩ hcd _ _
 
 /- English proof (translation)
-Establish `h1 : intQ r r ((c : ℤ) • g) ∈ (weyl ℤ r r le_rfl μ).map (intQ r r)` using `Submodule.mem_map_of_mem (hc g hg)`. Rewrite `h1` using `[GlobalTheory.StdDual.weylEqDualNabla r r le_rfl μ hμ]`. Take `⟨z, hz⟩` from `h1.2 (intQ r r f) (Submodule.mem_map_of_mem hf)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, map_zsmul, ← Int.cast_smul_eq_zsmul ℚ, Formalism.CohomologicalDescent.LR.fock_smul_left, Formalism.CohomologicalDescent.LR.fock_symm (intQ r r g)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem lp_blk (r : ℕ) (μ : Fin r → ℕ) (hμ : Antitone μ) (c : ℕ)
     (hc : ∀ x ∈ dualWeyl ℤ r r μ, (c : ℤ) • x ∈ weyl ℤ r r le_rfl μ) (f g : MvPolynomial (Fin r × Fin r) ℤ)
@@ -270,19 +268,19 @@ theorem lp_blk (r : ℕ) (μ : Fin r → ℕ) (hμ : Antitone μ) (c : ℕ)
   norm_cast
 
 /- English proof (translation)
-Establish `hν₁ : Antitone (fun i => ν (Fin.castAdd q i))` using `fun i j hij => hν (show Fin.castAdd q i ≤ Fin.castAdd q j from hij)`. Establish `hν₂ : Antitone (fun j => ν (Fin.natAdd p j))` using `fun i j hij => hν (show Fin.natAdd p i ≤ Fin.natAdd p j from Fin.le_def.mpr (by simp [Fin.le_def.mp hij]))`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨f₁, hf₁, f₂, hf₂, rfl⟩` from `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨g₁, hg₁, g₂, hg₂, rfl⟩` from `hv`. Take `⟨z₁, hz₁⟩` from `lp_blk p _ hν₁ c₁ hc₁ f₁ g₁ hf₁ hg₁`. Take `⟨z₂, hz₂⟩` from `lp_blk q _ hν₂ c₂ hc₂ f₂ g₂ hf₂ hg₂`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z₁ * z₂, ?_⟩` and prove the remaining obligations. Rewrite using `[lpTen_tmul]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, mul_add, ha, hb]; push_cast; ring⟩`. Consider the case `smul n x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hx`. Use `⟨n * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_left_comm, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, LinearMap.add_apply, mul_add, ha, hb]; push_cast; ring⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul n x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨n * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply, zsmul_eq_mul, mul_left_comm, ha]`. Use `push_cast`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -338,15 +336,15 @@ theorem lp_ten_int (p q : ℕ) (ν : Fin (p + q) → ℕ) (hν : Antitone ν) (c
     push_cast; ring
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[latV, Submodule.mem_comap]`. Take `⟨f, hf, hfx⟩` from `hx`. Rewrite using `[GlobalTheory.StdDual.weylEqDualNabla (p + q) (p + q) le_rfl ν hν]`. Use `⟨(((c₁ * c₂ : ℕ) : ℤ) • lpT p q ν x).2, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `hQ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hgQ : intQ (p + q) (p + q) g ∈ dualWeyl ℚ (p + q) (p + q) ν` using `dualWeylMap ℤ ℚ (Int.castRingHom ℚ) (p + q) (p + q) ν g hg`. Take `⟨z, hz⟩` from `lp_ten_int p q ν hν c₁ c₂ hc₁ hc₂ _ _ (hLat p q ν g hg) (hLat p q ν f hf)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hK : lpK p q ν * (fockQ (hw ℚ le_rfl (fun i => ν (Fin.castAdd q i))) (hw ℚ le_rfl (fun i => ν (Fin.castAdd q i))) * fockQ (hw ℚ le_rfl (fun j => ν (Fin.natAdd p j))) (hw ℚ le_rfl (fun j => ν (Fin.natAdd p j)))) = fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν)`. Establish `h1` using `(lpHw_pos (fun i => ν (Fin.castAdd q i))).ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(lpHw_pos (fun j => ν (Fin.natAdd p j))).ne'`. Rewrite using `[lpK]`. Clear the denominators using the available nonvanishing facts. Establish `hs` using `lpT_spec p q ν ⟨intQ (p + q) (p + q) g, hgQ⟩ x`. Rewrite `hs` using `[lpBeta_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fockQ (intQ (p + q) (p + q) g) (lpT p q ν x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = lpK p q ν * lpTen p q (resT ℚ p q (intQ (p + q) (p + q) g)) (resT ℚ p q (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ)) at hs`. Simplify using `only [LinearMap.coe_restrictScalars, Submodule.coe_subtype] at hfx`. Rewrite `hs` using `[← hfx]`. Simplify using `only [LinearMap.coe_restrictScalars, Submodule.coe_subtype, Submodule.coe_smul_of_tower]`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, Formalism.CohomologicalDescent.LR.fock_smul_left, Formalism.CohomologicalDescent.LR.fock_symm, hs, ← hK]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lp_lat (hLat : ResLat) (p q : ℕ) (ν : Fin (p + q) → ℕ) (hν : Antitone ν) (c₁ c₂ : ℕ)
     (hc₁ : ∀ x ∈ dualWeyl ℤ p p (fun i => ν (Fin.castAdd q i)), (c₁ : ℤ) • x ∈ weyl ℤ p p le_rfl (fun i => ν (Fin.castAdd q i)))
@@ -383,7 +381,7 @@ theorem lp_lat (hLat : ResLat) (p q : ℕ) (ν : Fin (p + q) → ℕ) (hν : Ant
     _ = _ := by rw [hz]; ring
 
 /- English proof (translation)
-Introduce `hLat hHw hDer p q ν hν c₁ c₂ hc₁ hc₂`. Conclude with `⟨lpT p q ν, fun c hc d hd hcd => lp_comm hDer p q ν c d hc hd hcd, lp_lat hLat p q ν hν c₁ c₂ hc₁ hc₂, fun μ x hx hlt => lp_vanish hDer p q ν μ x hx hlt, lp_hw hHw p q ν hν⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem leviProj_of : ResLat → ResHw → ResDer → LeviProj := by
   intro hLat hHw hDer p q ν hν c₁ c₂ hc₁ hc₂

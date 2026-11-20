@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `(Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral n (fun _ => false) n 0 i j).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if i = j then (Examples₂.sgn false : D.host.E) else 0) = if i = j then 1 else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Examples₂.sgn]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_posSp_one (D : D7) (n : ℕ) : (GlobalTheory.Size.posSp D n).gram = 1 := by
   funext i j
@@ -29,7 +29,7 @@ theorem gram_posSp_one (D : D7) (n : ℕ) : (GlobalTheory.Size.posSp D n).gram =
   by_cases h : i = j <;> simp [h, Examples₂.sgn]
 
 /- English proof (translation)
-Rewrite using `[giA, gram_posSp_one, inv_one]`. Unfold `rat`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem giA_posSp (D : D7) (n : ℕ) : giA (GlobalTheory.Size.posSp D n) = 1 := by
   rw [giA, gram_posSp_one, inv_one]
@@ -37,7 +37,7 @@ theorem giA_posSp (D : D7) (n : ℕ) : giA (GlobalTheory.Size.posSp D n) = 1 := 
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use `(hO_eq_trace (GlobalTheory.Size.posSp D ρ) T x y).trans ?_` and prove the remaining obligations. Establish `h1` using `giA_posSp D ρ`. Unfold `pairS`. Use `erw [h1, Matrix.one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hO_posSp (D : D7) (T : HSp D) (ρ : ℕ) (x y : Mx D T.rank ρ) :
     hO (GlobalTheory.Size.posSp D ρ) T x y = pairS T x y := by
@@ -48,7 +48,7 @@ theorem hO_posSp (D : D7) (T : HSp D) (ρ : ℕ) (x y : Mx D T.rank ρ) :
   rfl
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem symplO_eq_two_half {D : D7} (S T : HSp D) (x y : WO S T) :
     symplO S T x y = symplOH S T x y + symplOH S T x y := by
@@ -57,7 +57,7 @@ theorem symplO_eq_two_half {D : D7} (S T : HSp D) (x y : WO S T) :
   norm_num
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.hermAt`. Establish `hg : (gramAt D (GlobalTheory.Size.posSp D ρ) τ)⁻¹ = 1` using `by rw [GlobalTheory.Size.gramAt_posSp, inv_one]`. Simplify using `only [hg, Matrix.one_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem symplAt_posSp (D : D7) (T : HSp D) (ρ : ℕ) (τ : D.what₂.Tau) (z X : Matrix (Fin T.rank) (Fin ρ) ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z X = 2 * (tauE D τ D.host.xi0 * (Xᴴ * gramAt D T τ * z).trace).re := by
@@ -71,31 +71,27 @@ end GlobalTheory.Unf
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S S₀ T ρ d v τ z`. Use `⟨z * compAt θ τ d.pY, ?_⟩` and prove the remaining obligations. Introduce `f hf x w`. Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt (m := T.rank) (n := ρ) hθ τ z`. Establish `hL' : IsLineAt θ τ (z * compAt θ τ d.pY) ((d.extY T).comp (lineAt θ τ z))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Conclude with `hL.1.matrix_mul continuous_const`. Use `show ((lineAt θ τ z t) * d.pY).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, hL.2.1 t, Matrix.zero_mul]`. Use `show compAt θ τ' ((lineAt θ τ z t) * d.pY) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.OrientedHeis.compAt_mul, hL.2.2 t τ']`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.smul_mul]`. Rewrite using `[Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hline` using `GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ hL' (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ _)`. Establish `hline' : ∀ t, d.extY T (lineAt θ τ z t) = lineAt θ τ (z * compAt θ τ d.pY) t` using `fun t => by`. Rewrite using `[← hline]`. Both sides reduce to the same expression. Establish `hder` using `GlobalTheory.T.hasDerivAt_mixedModelSource_dualLine_linearForm D ψ hψ θ hθ S S₀ T ρ d v f hf (lineAt θ τ z) hL.1 hL.2.1 x w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hfun : (fun p => deriv (fun t : ℝ => heisO ψ S T (d.extY T (lineAt θ τ z t)) f p) 0) = dRho (heisO ψ S T) θ τ (z * compAt θ τ d.pY) f`. Use function extensionality and compare the values at `p`. Simplify using `only [hline']`. Both sides reduce to the same expression. Rewrite `hder` using `[hfun]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphase : ∀ t : ℝ, ψ (symplO S T (d.extX T x) (d.extY T (lineAt θ τ z t))) = Complex.exp ((2 * Real.pi * Complex.I * (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) : ℂ)) * t)`. Introduce `t`. Establish `e` using `GlobalTheory.ThetaDecay.psi_symplOH_lineAt hψ hθ (GlobalTheory.Size.posSp D ρ) T x τ z t`. Establish `e2 : symplOH S T (d.extX T x) (d.extY T (lineAt θ τ z t)) = symplOH (GlobalTheory.Size.posSp D ρ) T x (lineAt θ τ z t)`. Rewrite using `[d.symplOH_extX_extY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(congrArg (trHalf D) (hO_posSp D T ρ x _)).symm`. Establish `e3 : ψ (symplOH S T (d.extX T x) (d.extY T (lineAt θ τ z t))) = Complex.exp ((Real.pi * Complex.I) * ((t * GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) : ℝ) : ℂ))`. Rewrite using `[e2]`. Conclude with `e`. Rewrite using `[symplO_eq_two_half, AddChar.map_add_eq_mul, e3, ← Complex.exp_add]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfun2 : (fun t : ℝ => ψ (symplO S T (d.extX T x) (d.extY T (lineAt θ τ z t))) * d.mixS T ψ v.μ v.𝓕 f x w) = fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I * (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt …`. Use function extensionality and compare the values at `fun t => by rw [hphase]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `hder` using `[hfun2]`. Use `set a : ℝ := GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) with ha_def`. Use `set M := d.mixS T ψ v.μ v.𝓕 f x w with hM`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * t) * M) ((2 * Real.pi * Complex.I * (a : ℂ)) * M) 0`. Establish `h2 : HasDerivAt (fun u : ℂ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * u) * M) (Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * ((0:ℝ):ℂ)) * ((2 * Real.pi * Complex.I * (a : ℂ)) * 1) * M) ((0:ℝ):ℂ)` using `(((hasDerivAt_id _).const_mul (2 * Real.pi * Complex.I * (a : ℂ))).cexp).mul_const M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `h2.comp_ofReal`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `heq` using `hder.unique hexp`. Rewrite using `[heq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : 2 * (tauE D τ D.host.xi0 * ((compAt θ τ x)ᴴ * gramAt D T τ * z).trace).re = a`. Rewrite using `[ha_def]`. Conclude with `(symplAt_posSp D T ρ τ z (compAt θ τ x)).symm`. Rewrite using `[ha, norm_mul]`. Establish `hn : ‖2 * (Real.pi : ℂ) * Complex.I * (a : ℂ)‖ = 2 * Real.pi * |a|`.
-
-Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, Complex.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn]`. Establish `h1 : (1 : ℝ) ≤ 2 * Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `h0 : 0 ≤ |a| * ‖M‖` using `by positivity`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_mixS_dRho_ge : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin ρ) ℂ), ∃ Z : Matrix (Fin T.rank) (Fin S.rank) ℂ, ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ x w, |2 * (tauE D τ D.host.xi0 * ((compAt θ τ x)ᴴ * gramAt D T τ * z).trace).re| * ‖d.mixS T ψ v.μ v.𝓕 f x w‖ ≤ ‖d.mixS T ψ v.μ v.𝓕 (dRho (heisO ψ S T) θ τ Z f) x w‖ := by
   intro D ψ hψ θ hθ S S₀ T ρ d v τ z

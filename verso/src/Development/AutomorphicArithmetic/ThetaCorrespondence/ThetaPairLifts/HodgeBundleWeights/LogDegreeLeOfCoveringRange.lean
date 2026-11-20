@@ -23,15 +23,13 @@ namespace GlobalTheory.CovTop.DgLog
 end GlobalTheory.CovTop.DgLog
 namespace GlobalTheory.CovTop.DgLog
 /- English proof (translation)
-Introduce `hX hP hG hQ hSg hFan hSA hDG hSz hFD`. Use `Closed.imp (Closed.and (Closed.and (_root_.GlobalTheory.T.binomial_flag_dimension_degree_bound_alt hX hP hG hQ hSg hFan hSA hDG hSz hFD) (_root_.GlobalTheory.T.log_top_dimension_bound_covering hP hSz)) hSz) ?_` and prove the remaining obligations. Introduce `eps Fm CH heps hh`. Take `⟨⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩, ⟨C3, -, x3, h3⟩⟩` from `hh`. Use `⟨0, le_rfl, max (max x1 x2) x3, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx hle ι p hp i hi Y hY Z`. Establish `hA` using `h1 x hx ((le_max_left _ _).trans ((le_max_left _ _).trans hle)) ι p hp i hi Y hY Z`. Establish `hB` using `h2 x hx ((le_max_right _ _).trans ((le_max_left _ _).trans hle)) ι p hp i hi Y hY Z`. Establish `hz` using `h3 x hx ((le_max_right _ _).trans hle) ι p hp i`. Use `set PP := (Fm.parT x hx ι).PP with hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨u1, hu1⟩, hqq⟩` from `hz.2.2.2.2.2.2 hi`. Establish `hT` using `(hqq _ hu1).1`. Establish `hbin : 1 ≤ (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i))` using `Nat.choose_pos (by omega)`. Establish `hle' : GlobalTheory.CompHt.compDeg Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ 0) ≤ Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT …` using `(Nat.le_mul_of_pos_left _ hbin).trans hA`. Establish `hdg0 : (0 : ℝ) ≤ Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hdg0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `(Real.log_natCast_nonneg _).trans hB`. Establish `h1 : Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z ≤ (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0 …`. Conclude with `hle'` after adjusting the coercions.
-
-Conclude with `(Real.log_le_log h0 h1).trans hB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem log_degree_le_of_covering_range : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) ≤ PP := by
   intro hX hP hG hQ hSg hFan hSA hDG hSz hFD
@@ -73,7 +71,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range | exact _root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range | (intros; apply _root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.log_degree_bound_hilbertSamuel : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) ≤ PP := by
   first | exact @_root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range | exact _root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range | (intros; apply _root_.GlobalTheory.CovTop.DgLog.log_degree_le_of_covering_range <;> assumption)

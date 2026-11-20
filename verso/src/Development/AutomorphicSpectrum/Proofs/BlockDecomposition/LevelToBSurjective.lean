@@ -6,7 +6,7 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatLevels
 
 /- English proof (translation)
-Introduce `x`. Use `⟨(algebraMap (BdRp l) (BdR l)).rangeRestrict x, ?_⟩` and prove the remaining obligations. Unfold `pInv`. Conclude with `(RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm_apply_apply x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pInv_surjective (l : ℕ) [Fact l.Prime] : Function.Surjective (pInv l) := by
   intro x
@@ -17,7 +17,7 @@ theorem pInv_surjective (l : ℕ) [Fact l.Prime] : Function.Surjective (pInv l) 
       (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm_apply_apply x
 
 /- English proof (translation)
-Establish `h1 : Function.Surjective ((pk l k).comp (pInv l))`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(Ideal.Quotient.mk_surjective).comp (pInv_surjective l)`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toB_surjective {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
     (h : LevHyp l K M) (k : ℕ) : Function.Surjective (lev h k).toB := by

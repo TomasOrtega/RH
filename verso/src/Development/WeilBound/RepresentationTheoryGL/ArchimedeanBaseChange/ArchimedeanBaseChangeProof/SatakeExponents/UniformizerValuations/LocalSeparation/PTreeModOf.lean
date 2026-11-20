@@ -15,9 +15,9 @@ namespace PositivityTheory.Rg.BcB.F.RS
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `tw`. Establish `h : GlobalTheory.CuspRep.Model.absC E 0 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[GlobalTheory.CuspRep.Model.absC, GlobalTheory.Mem.Chr.CharModel.absHom]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Use `Submodule.map_id V` and compare the differences between its conclusion and the goal. Use extensionality with `φ x`. Simplify using `[mulChi, chiDet]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tw_zero' {N : ℕ} (V : Submodule ℂ (Sm E N)) : tw V 0 = V := by
   unfold tw
@@ -30,9 +30,9 @@ theorem tw_zero' {N : ℕ} (V : Submodule ℂ (Sm E N)) : tw V 0 = V := by
   simp [mulChi, chiDet]
 
 /- English proof (translation)
-Take `⟨M, V⟩` from `x`. Simplify using `only [twPart]`. Use `congr 1`. Use `Submodule.map_id V` and compare the differences between its conclusion and the goal. Use extensionality with `φ x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[mulChi, chiDet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twPart_one (x : Σ M : ℕ, Submodule ℂ (Sm E M)) : twPart 1 x = x := by
   obtain ⟨M, V⟩ := x
@@ -43,7 +43,7 @@ theorem twPart_one (x : Σ M : ℕ, Submodule ℂ (Sm E M)) : twPart 1 x = x := 
   simp [mulChi, chiDet]
 
 /- English proof (translation)
-Use extensionality with `g x`. Simplify using `[twRep_apply, hχ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twRep_of_one {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (χ : G →* ℂˣ)
     (hχ : ∀ g, χ g = 1) : twRep ρ χ = ρ := by
@@ -51,7 +51,7 @@ theorem twRep_of_one {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ 
   simp [twRep_apply, hχ]
 
 /- English proof (translation)
-Take `⟨hS, J, L, hL, hinj⟩` from `h`. Use `⟨hS, J, fun j => e.toLinearMap ∘ₗ L j, fun j g x hx hs => ?_, fun x hx hs h0 => hinj x hx hs fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hL j g x hx hs]`. Conclude with `LinearMap.congr_fun (e.isIntertwining' g) (L j x)`. Conclude with `e.toLinearEquiv.injective ((h0 j).trans (map_zero _).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Sep.equiv {G V X Y : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] {_ : AddCommGroup X}
     {_ : Module ℂ X} {_ : AddCommGroup Y} {_ : Module ℂ Y} {ρ : Representation ℂ G V} {S : Submodule ℂ V}
@@ -63,7 +63,7 @@ theorem Sep.equiv {G V X Y : Type} [Group G] [TopologicalSpace G] [AddCommGroup 
   · exact e.toLinearEquiv.injective ((h0 j).trans (map_zero _).symm)
 
 /- English proof (translation)
-The claim follows from `h.equiv e.symm`.
+A detailed English derivation is pending.
 -/
 theorem Sep.equiv_symm {G V X Y : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] {_ : AddCommGroup X}
     {_ : Module ℂ X} {_ : AddCommGroup Y} {_ : Module ℂ Y} {ρ : Representation ℂ G V} {S : Submodule ℂ V}
@@ -71,7 +71,7 @@ theorem Sep.equiv_symm {G V X Y : Type} [Group G] [TopologicalSpace G] [AddCommG
   h.equiv e.symm
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : X)`. Use `⟨fun g x hx => by rw [hG g, map_one]; exact hx, Unit, fun _ => ℓ.smulRight v, fun _ g x _ _ => by rw [hG g, map_one, map_one]; rfl, fun x hx _ h0 => hℓ x hx ((smul_eq_zero.1 (h0 ())).resolve_right hv)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sep_of_subsingleton {G V X : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] [AddCommGroup X]
     [Module ℂ X] (ρ : Representation ℂ G V) (S : Submodule ℂ V) (τ : Representation ℂ G X) (hG : ∀ g : G, g = 1)
@@ -82,7 +82,7 @@ theorem sep_of_subsingleton {G V X : Type} [Group G] [TopologicalSpace G] [AddCo
     fun x hx _ h0 => hℓ x hx ((smul_eq_zero.1 (h0 ())).resolve_right hv)⟩
 
 /- English proof (translation)
-Rewrite `e` using `[twRep_of_one π₁ χ₁ h₁, twRep_of_one π₂ χ₂ h₂]`. Conclude with `⟨e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem equiv_untwist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n a b : Type} [Fintype n] [DecidableEq n] [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (f : a ⊕ b ≃ n)
@@ -95,9 +95,9 @@ theorem equiv_untwist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   exact ⟨e⟩
 
 /- English proof (translation)
-Use `sep_of_subsingleton _ _ _ (fun g => Units.ext (Subsingleton.elim _ _)) (GlobalTheory.PfBCI.nontrivial_locProd P.h w (P.σ · w)) ((LinearMap.proj 1).comp (Sm E 0).subtype) ?_` and prove the remaining obligations. Introduce `x _ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `rfl : g = 1` from `Units.ext (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem sep_rank0 (w : Pl E) (S : Submodule ℂ (Sm E 0)) (P : Pre E 0) :
     Sep ((finRep E 0).comp (locGL E 0 w)) S (lp P w) := by
@@ -109,11 +109,11 @@ theorem sep_rank0 (w : Pl E) (S : Submodule ℂ (Sm E 0)) (P : Pre E 0) :
   exact h
 
 /- English proof (translation)
-Take `⟨c, N, h, V', σ, m, pos, disc, loc, inf⟩` from `P`. Establish `hp' : List.ofFn (fun i => (⟨N i, V' i⟩ : Σ M, Submodule ℂ (Sm E M))) = [⟨M, V⟩]`. Unfold `TreeParts at hp`. Rewrite using `[hp]`. Simplify using `[Tr.leafList, hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : c = 1` using `by simpa using congrArg List.length hp'`. Substitute `hc` using the available equality. Take `⟨d, rfl⟩ : ∃ d, N = fun _ => d` from `⟨N 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨s, rfl⟩ : ∃ s, σ = fun _ => s` from `⟨σ 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `h0 : (⟨d, V' 0⟩ : Σ M, Submodule ℂ (Sm E M)) = ⟨M, V⟩` using `by simpa using hp'`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rfl, hVV⟩` from `Sigma.mk.inj_iff.1 h0`. Take `rfl` from `eq_of_heq hVV`. Take `⟨e⟩` from `GlobalTheory.LocGL.nonempty_equiv_multiProd_one (s w).smooth (GlobalTheory.SmGL.stdBlocks (fun _ => d) h) (fun a i => Fin.ext (by rw [GlobalTheory.SmGL.stdBlocks_val, Subsingleton.elim a 0]; simp))`. Conclude with `Sep.equiv (hL E d (V' 0) w (s w) (disc 0) (loc 0 w)) e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sep_leaf_pos (hL : LeafMod) (w : Pl E) {M : ℕ} (V : Submodule ℂ (Sm E M)) (hV : IsDiscrete V) (hM : 0 < M)
     (P : Pre E M) (hp : TreeParts (Tr.leaf V 0) P) : Sep ((finRep E M).comp (locGL E M w)) V (lp P w) := by
@@ -134,7 +134,7 @@ theorem sep_leaf_pos (hL : LeafMod) (w : Pl E) {M : ℕ} (V : Submodule ℂ (Sm 
   exact Sep.equiv (hL E d (V' 0) w (s w) (disc 0) (loc 0 w)) e
 
 /- English proof (translation)
-The claim follows from `| M, .leaf V z => by rcases Nat.eq_zero_or_pos M with h | h · subst h; simp [Tr.leafList] · simp [Tr.leafList, h] | _, .node t₁ t₂ => by simp [Tr.leafList, List.filter_append, sum_leafList t₁, sum_leafList t₂]`.
+A detailed English derivation is pending.
 -/
 theorem sum_leafList : ∀ {N : ℕ} (t : Tr E N), ((t.leafList.filter fun x => 0 < x.1).map (·.1)).sum = N
   | M, .leaf V z => by
@@ -156,17 +156,17 @@ def Pre.restr {n : ℕ} (P : Pre E n) {k r : ℕ} (ι : Fin k → Fin P.c) (h : 
   inf i := P.inf _
 
 /- English proof (translation)
-Establish `hlen : P.c = A.length + B.length` using `by simpa [parts] using congrArg List.length hAB`. Establish `key : ∀ k (hk : k < P.c), (⟨P.N ⟨k, hk⟩, P.V ⟨k, hk⟩⟩ : Σ M, Submodule ℂ (Sm E M)) = (A ++ B)[k]'(by simp; omega)` using `fun k hk => by`. Use `List.getElem_of_eq hAB (i := k) (by simp [parts]; exact hk)` as an intermediate fact. Simplify `this` using `[parts]`. Set `ι₁ : Fin A.length → Fin P.c` to `fun i => ⟨i, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `ι₂ : Fin B.length → Fin P.c` to `fun j => ⟨A.length + j, by omega⟩`. Establish `e₁ : List.ofFn (fun i => (⟨P.N (ι₁ i), P.V (ι₁ i)⟩ : Σ M, Submodule ℂ (Sm E M))) = A`. Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `k hk1 hk2`. Rewrite using `[List.getElem_ofFn]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key k _).trans (List.getElem_append_left hk2)`. Establish `e₂ : List.ofFn (fun i => (⟨P.N (ι₂ i), P.V (ι₂ i)⟩ : Σ M, Submodule ℂ (Sm E M))) = B`. Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `k hk1 hk2`. Rewrite using `[List.getElem_ofFn]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key _ _).trans ?_` and prove the remaining obligations. Rewrite using `[List.getElem_append_right (by omega)]`. Simplify using the standard rewrite rules. Establish `s₁ : ∑ i, P.N (ι₁ i) = r`. Use `congrArg (fun l => (l.map (·.1)).sum) e₁` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_ofFn, List.sum_ofFn] at this`. Rewrite using `[← hA, ← this]`. Both sides reduce to the same expression. Establish `s₂ : ∑ i, P.N (ι₂ i) = s`. Use `congrArg (fun l => (l.map (·.1)).sum) e₂` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_ofFn, List.sum_ofFn] at this`. Rewrite using `[← hB, ← this]`. Both sides reduce to the same expression. Conclude with `⟨Pre.restr P ι₁ s₁, Pre.restr P ι₂ s₂, e₁, e₂⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_split {n r s : ℕ} (P : Pre E n) (A B : List (Σ M : ℕ, Submodule ℂ (Sm E M))) (hAB : parts P = A ++ B)
     (hA : (A.map (·.1)).sum = r) (hB : (B.map (·.1)).sum = s) :
@@ -201,17 +201,15 @@ theorem exists_split {n r s : ℕ} (P : Pre E n) (A B : List (Σ M : ℕ, Submod
   exact ⟨Pre.restr P ι₁ s₁, Pre.restr P ι₂ s₂, e₁, e₂⟩
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z`. Introduce `P hg hu hp`. Establish `hz : z = 0` using `hu z (by simp [Tr.twists])`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hz` using the available equality. Use `show Sep _ (tw V 0) _`. Rewrite using `[tw_zero']`. Break down `hg with ⟨hM, -, -⟩ | ⟨hM, hV, -⟩` into its components or cases. Substitute `hM` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Treat this case separately.
 
-Conclude with `sep_rank0 w V P`. Conclude with `sep_leaf_pos hL w V hV hM P hp`. Consider the case `node t₁ t₂ ih₁ ih₂`. Introduce `P hg hu hp`. Take `⟨g₁, g₂⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₁ : t₁.Untw` using `fun z hz => hu z (List.mem_append_left _ hz)`. Establish `u₂ : t₂.Untw` using `fun z hz => hu z (List.mem_append_right _ hz)`. Establish `hp' : parts P = (t₁.leafList.filter fun x => 0 < x.1) ++ (t₂.leafList.filter fun x => 0 < x.1)`. Rewrite using `[← List.filter_append]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P₁, P₂, h₁, h₂⟩` from `exists_split P _ _ hp' (sum_leafList t₁) (sum_leafList t₂)`. Establish `hj : IsJoin 1 1 P₁ P₂ P`. Unfold `IsJoin`. Rewrite using `[hp', h₁, h₂]`. Establish `: twPart (E` using `E) 1 = id := funext twPart_one`.
-
-Rewrite using `[this, List.map_id, List.map_id]`. Take `⟨e⟩` from `equiv_untwist (e := (hJ E _ _ _ rfl 1 1 P₁ P₂ P w hj).some) (h₁ := fun _ => by simp only [MonoidHom.comp_apply, HChar.loc_one]) (h₂ := fun _ => by simp only [MonoidHom.comp_apply, HChar.loc_one])`. Conclude with `Sep.equiv_symm (hN E _ _ t₁ t₂ w _ _ _ _ (ih₁ P₁ g₁ u₁ h₁) (ih₂ P₂ g₂ u₂ h₂)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tree_module_separation (hL : LeafMod) (hN : NodeMod) (hJ : JoinMod) (w : Pl E) :
     ∀ {N : ℕ} (t : Tr E N) (P : Pre E N), t.Good → t.Untw → TreeParts t P →
@@ -246,7 +244,7 @@ theorem tree_module_separation (hL : LeafMod) (hN : NodeMod) (hJ : JoinMod) (w :
     exact Sep.equiv_symm (hN E _ _ t₁ t₂ w _ _ _ _ (ih₁ P₁ g₁ u₁ h₁) (ih₂ P₂ g₂ u₂ h₂)) e
 
 /- English proof (translation)
-Introduce `hL hN hJ _ _ _ _ _ t P w hg hu hp` and use `tree_module_separation hL hN hJ w t P hg hu hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem treeModOf_holds : TreeModOf :=
   fun hL hN hJ _ _ _ _ _ t P w hg hu hp => tree_module_separation hL hN hJ w t P hg hu hp

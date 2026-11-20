@@ -15,7 +15,7 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CharDegree.char_chPart_tdPart_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharClassGradedDegree.lean&line=65#L65)
 -/

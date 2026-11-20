@@ -25,17 +25,17 @@ noncomputable section
 namespace GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `D h1 h2 h3 h4 h5 h6 h7 h8`. Introduce `hG c w hw k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' m X hX mR hmR φ v hv H₀ hH₀ hκ B hB u₁ hu hq`. Take `⟨H, -, hH, -, hL, hol⟩` from `h7 c hw.com B hB k hk`. Take `⟨r1, -, r2, r3⟩` from `h8 hG c w hw k hk s s' hs hs' p hp`. Establish `hinv` using `GlobalTheory.ChainTw.invFam_bounded D c w hw k hk.le s hs u₁ B hu hB`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hns` using `GlobalTheory.T.chain_each_step_splitPlace_without_excludedParams D c hw.com c.S subset_rfl B hB hinv k hk`. Establish `hKF : PiTensorProduct.tprod ℂ v ∈ s.KF` using `Submodule.subset_span ⟨v, hv.1, rfl⟩`. Establish `ex` using `fun u₂ => h6 hG c w hw k hk s s' hs hs' p hp ipD ip hM m X hX mR hmR φ v hv u₁ u₂ _ hu hq hns _ hol`. Simplify using `only [GlobalTheory.ChainTw.Check.const_eq w k p m X mR φ v _ H H₀ (r1 H H₀ hH hH₀) r2 r3] at ex`. Establish `hne : p.up φ (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `ex u₁`. Rewrite `e` using `[h0]`. Establish `z : s'.pet 0 0 = 0` using `by simp [PiLocalization₂.pet, Lift.pet]`. Rewrite `e` using `[z]`. Break down `mul_eq_zero.1 e.symm with e | e` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mul_ne_zero hκ hL ((map_eq_zero _).1 e)`. Use `hM.pos u₁ hu.1` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `at this`. Take `⟨v1, v2⟩` from `h5 hG c w hw k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' φ _ hKF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀, hw0, hadj⟩` from `v1 ⟨u₁, hne⟩`. Use `⟨w₀, hw0, hadj, fun x₁ hx₁ => ?_⟩` and prove the remaining obligations. Establish `e1` using `v2 w₀ hadj u₁ x₁ hx₁`. Use `⟨?_, ?_, fun u₂ x₂ hx₂ => ?_⟩` and prove the remaining obligations. Conclude with `(h1 c w hw (k + 1) hk s' hs').2.2.2 x₁ w₀ _ (e1 ▸ hne) (e1 ▸ h2 hG c w hw k hk s s' hs hs' p hp u₁ _ φ hu _ hKF hne)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(h4 c w hw (k + 1) hk s' hs').1 x₁ w₀ (e1 ▸ hne) (e1 ▸ h3 hG c w hw k hk s s' hs hs' p hp u₁ φ hq _ hKF)`. Establish `e` using `ex u₂`. Rewrite `e` using `[e1, v2 w₀ hadj u₂ x₂ hx₂]`. Rewrite using `[← e]`. Conclude with `(hM'.schur x₁ x₂ w₀ w₀).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepLam_of_ns : ∀ D : D7, SoftQ D → UpParQ D → UpQ D → QOfVal D → UpVal D → StepExactNS D → LFull D → Restore D → StepLam D := by
   intro D h1 h2 h3 h4 h5 h6 h7 h8

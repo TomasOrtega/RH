@@ -22,21 +22,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ R₀ X p _ x y hp hR`. Set `l : Sp R₀ ⟶ pullback p p` to `pullback.lift x y hp`. Set `c : pullback (pullback.diagonal p) l ⟶ Sp R₀` to `pullback.snd _ _`. Use `haveI : IsClosedImmersion c := inferInstance`. Establish `e1 : l ≫ pullback.fst p p = x` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : l ≫ pullback.snd p p = y` using `pullback.lift_snd _ _ _`. Establish `hc : c ≫ x = c ≫ y`. Establish `h1 : c ≫ l ≫ pullback.fst p p = c ≫ l ≫ pullback.snd p p`. Rewrite using `[← Category.assoc c l, ← Category.assoc c l]`. Express the relevant statement in the definitionally equal form `(pullback.snd (pullback.diagonal p) l ≫ l) ≫ _ = (pullback.snd (pullback.diagonal p) l ≫ l) ≫ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pullback.condition, Category.assoc, Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd]`. Rewrite `h1` using `[e1, e2]`. Then use the resulting hypothesis. Set `k : Sp R ⟶ pullback (pullback.diagonal p) l` to `pullback.lift (spMap R₀.subtype ≫ x) (spMap R₀.subtype) (by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.diagonal_fst, Category.comp_id, Category.assoc, e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, pullback.diagonal_snd, Category.comp_id, Category.assoc, e2, hR])`. Establish `hk : k ≫ c = spMap R₀.subtype` using `pullback.lift_snd _ _ _`. Take `⟨hZ, hsurj⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine c`. Establish `hinj0 : Function.Injective (spMap R₀.subtype).appTop`. Establish `e` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom R₀.subtype)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (spMap R₀.subtype).appTop = (Scheme.ΓSpecIso (CommRingCat.of R₀)).hom ≫ CommRingCat.ofHom R₀.subtype ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).inv`. Rewrite using `[← Category.assoc, ← e]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Introduce `a b hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at hab`. Use `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.injective hab` as an intermediate fact. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R₀)).commRingCatIsoToRingEquiv.injective (Subtype.val_injective this)`. Establish `hinj : Function.Injective c.appTop`. Rewrite `hinj0` using `[← hk, Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp] at hinj0`. Conclude with `hinj0.of_comp`. Use `haveI : IsIso c.appTop := (ConcreteCategory.isIso_iff_bijective _).mpr ⟨hinj, hsurj⟩`. Use `haveI : IsIso c := (MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms _) (arrowIsoSpecΓOfIsAffine c)).mpr (inferInstanceAs (IsIso (Spec.map c.appTop)))`. Rewrite using `[← cancel_epi c]`.
-
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem sections_eq_of_spMap_subtype_comp_eq : ∀ (R : Type) [CommRing R] (R₀ : Subring R) (X : Scheme.{0})
     (p : X ⟶ Sp R₀) [IsSeparated p] (x y : Sp R₀ ⟶ X), x ≫ p = y ≫ p →

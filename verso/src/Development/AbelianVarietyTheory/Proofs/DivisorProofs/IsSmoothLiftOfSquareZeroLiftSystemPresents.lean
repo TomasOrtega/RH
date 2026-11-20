@@ -16,19 +16,17 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
   {s₀ : X₀ ⟶ Sp R₀}
 
 /- English proof (translation)
-Establish `hc : ∀ r : R, S.p U (algebraMap R (S.F.obj U) r) = algebraMap R₀ (Sec s₀ U.unop.1) (π r)` using `fun r ↦ (S.semi U).map_algebraMap r`. Establish `hz : ∀ a ∈ I, π a = 0` using `fun a ha ↦ RingHom.mem_ker.1 (hk ▸ ha)`. Establish `key : ∀ (t : Limits.PushoutCocone (CommRingCat.ofHom (algebraMap R (S.F.obj U))) (CommRingCat.ofHom π)) (b : S.F.obj U), S.p U b = 0 → t.inl.hom b = 0`. Introduce `t b hb`. Establish `hle : I.map (algebraMap R (S.F.obj U)) ≤ RingHom.ker t.inl.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Establish `e : t.inl.hom (algebraMap R (S.F.obj U) a) = t.inr.hom (π a)` using `congr($(t.condition) a)`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, e, hz a ha, map_zero]`. Conclude with `hle ((S.ker U b).1 hb)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `desc : ∀ t : Limits.PushoutCocone (CommRingCat.ofHom (algebraMap R (S.F.obj U))) (CommRingCat.ofHom π), Sec s₀ U.unop.1 →+* t.pt` to `fun t ↦ (Ideal.Quotient.lift (RingHom.ker (S.p U)) t.inl.hom fun b hb ↦ key t b (RingHom.mem_ker.1 hb)).comp (RingHom.quotientKerEquivOfSurjective (S.surj U)).symm.toRingHom`. Establish `hdesc : ∀ t b, desc t (S.p U b) = t.inl.hom b`. Introduce `t b`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.lift _ t.inl.hom (fun b hb ↦ key t b (RingHom.mem_ker.1 hb)) ((RingHom.quotientKerEquivOfSurjective (S.surj U)).symm (S.p U b)) = _`. Rewrite using `[show (RingHom.quotientKerEquivOfSurjective (S.surj U)).symm (S.p U b) = Ideal.Quotient.mk _ b by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Use the proof step `rfl]`. Both sides reduce to the same expression. Use `⟨⟨by ext r; exact hc r⟩, ⟨Limits.PushoutCocone.IsColimit.mk _ (fun t ↦ CommRingCat.ofHom (desc t)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `t`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Conclude with `hdesc t b`. Introduce `t`. Use extensionality with `r`. Take `⟨a, rfl⟩` from `hπ r`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `desc t (algebraMap R₀ (Sec s₀ U.unop.1) (π a)) = t.inr.hom (π a)`. Rewrite using `[← hc, hdesc]`. Conclude with `congr($(t.condition) a)`. Introduce `t m h₁ _`. Use extensionality with `c`.
-
-Take `⟨b, rfl⟩` from `S.surj U c`. Express the relevant statement in the definitionally equal form `m.hom (S.p U b) = desc t (S.p U b)`. Rewrite using `[hdesc]`. Conclude with `congr($h₁ b)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPushout_chart (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (S : Sys I π s₀) (U : AffOp X₀) :
     IsPushout (CommRingCat.ofHom (algebraMap R (S.F.obj U))) (CommRingCat.ofHom π)
@@ -74,11 +72,11 @@ theorem isPushout_chart (hπ : Function.Surjective π) (hk : RingHom.ker π = I)
     exact congr($h₁ b)
 
 /- English proof (translation)
-Introduce `x`. Establish `hx : x ∈ Set.range (PrimeSpectrum.comap (S.p U))`. Rewrite using `[range_comap_of_surjective (f := S.p U) (hf := S.surj U)]`. Introduce `b hb`. Establish `hb' : b ∈ I.map (algebraMap R (S.F.obj U))` using `(S.ker U b).1 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : b * b ∈ I.map (algebraMap R (S.F.obj U)) ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul hb' hb'`. Rewrite `h2` using `[map_sq hI]`. Establish `h0 : b * b ∈ (x : PrimeSpectrum (S.F.obj U)).asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show b * b = 0 from h2]`. Conclude with `zero_mem _`. Conclude with `(Ideal.IsPrime.mem_or_mem (PrimeSpectrum.isPrime (x : PrimeSpectrum (S.F.obj U))) h0).elim id id`. Take `⟨z, hz⟩` from `hx`. Conclude with `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spMap_p_surjective (hI : I ^ 2 = 0) (S : Sys I π s₀) (U : AffOp X₀) :
     Function.Surjective (spMap (S.p U)) := by
@@ -104,7 +102,7 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
   {s₀ : X₀ ⟶ Sp R₀}
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun f : Sp (Sec s₀ U.unop.1) ⟶ X ↦ f z) (P.red U)`. Simplify `e` using `only [Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Presents.apply_red {S : Sys I π s₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X} (P : S.Presents s i)
     (U : AffOp X₀) (z : Sp (Sec s₀ U.unop.1)) : P.y U (spMap (S.p U) z) = i (affPt s₀ U.unop z) := by
@@ -115,9 +113,9 @@ instance isOpenImmersion_affPt (U : X₀.affineOpens) : IsOpenImmersion (affPt s
   IsAffineOpen.isOpenImmersion_fromSpec U.2
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Scheme.Hom.mem_preimage, Scheme.Hom.coe_opensRange, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Take `⟨z, rfl⟩` from `spMap_p_surjective hI S U w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨z, i.isClosedEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← P.apply_red, hw]`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨_, P.apply_red U z⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Presents.preimage_eq (hI : I ^ 2 = 0) {S : Sys I π s₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
     (hc : IsClosedImmersion i) (P : S.Presents s i) [∀ U, IsOpenImmersion (P.y U)] (U : AffOp X₀) :
@@ -137,17 +135,15 @@ end GlobalTheory.LiftSys.Sys
 open GlobalTheory.LiftSys.Sys in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i hc hsurj P`. Use `haveI : ∀ U, IsOpenImmersion (P.y U) := P.isOpen`. Establish `hv : ∀ y : X, ∃ (U : AffOp X₀) (z : Sp (S.F.obj U)), P.y U z = y`. Introduce `y`. Take `⟨x, rfl⟩` from `i.surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `X₀.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hx' : x ∈ Set.range (affPt s₀ ⟨V, hV⟩)`. Establish `e : Set.range (affPt s₀ ⟨V, hV⟩) = V` using `(show IsAffineOpen V from hV).range_fromSpec`. Rewrite using `[e]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, rfl⟩` from `hx'`. Conclude with `⟨Opposite.op ⟨V, hV⟩, spMap (S.p _) z, P.apply_red _ z⟩`. Prove the components needed by the constructor for the conclusion. Use `Scheme.isPullback_of_openCover _ _ _ _ (Scheme.Cover.mkOfCovers (AffOp X₀) _ P.y hv) fun (U : AffOp X₀) ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsPullback (Limits.pullback.snd i (P.y U)) (Limits.pullback.fst i (P.y U) ≫ s₀) (P.y U ≫ s) (spMap π)`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `IsOpenImmersion.isPullback (spMap (S.p U)) (affPt s₀ U.unop) (P.y U) i (P.red U).symm (P.preimage_eq hI hc U)`. Establish `h' : IsPullback (spMap (S.p U)) (affPt s₀ U.unop ≫ s₀) (P.y U ≫ s) (spMap π)`. Rewrite using `[affPt_w, P.base]`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_chart hπ hk S U)`. Apply the tactic sequence `refine h'.of_iso h.flip.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: IsZariskiLocalAtSource @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) (Scheme.Cover.mkOfCovers (AffOp X₀) _ P.y hv) fun (U : AffOp X₀) ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Smooth (P.y U ≫ s)`. Rewrite using `[P.base, HasRingHomProperty.Spec_iff (P := @Smooth)]`. Use `haveI := S.smooth U`.
-
-Conclude with `RingHom.smooth_algebraMap.2 inferInstance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftSys.presents_isLift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (S : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X), IsClosedImmersion i → Surjective i → S.Presents s i → IsPullback i s₀ s (spMap π) ∧ Smooth s := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i hc hsurj P

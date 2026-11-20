@@ -10,35 +10,31 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `v hv`. Set `A` to `chartRing o x i`. Set `J : Ideal A` to `{ carrier := {a | (a : Ω) • v ∈ B'.lat i} add_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `((a + b : A) : Ω) • v ∈ B'.lat i`. Rewrite using `[Subalgebra.coe_add, add_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `((0 : A) : Ω) • v ∈ B'.lat i`. Rewrite using `[Subalgebra.coe_zero, zero_smul]`. Conclude with `zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := fun c a ha => by`. Express the relevant statement in the definitionally equal form `((c * a : A) : Ω) • v ∈ B'.lat i`. Rewrite using `[Subalgebra.coe_mul, mul_smul]`. Conclude with `B'.stable i c c.2 _ ha }`. Establish `hJ : ∀ a : A, a ∈ J ↔ (a : Ω) • v ∈ B'.lat i` using `fun _ => Iff.rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, f, c, hf, hc, hsum, hb⟩` from `B'.frame i hi`. Establish `hfJ : ∀ l, (⟨f l, hf l⟩ : A) ∈ J.radical`. Introduce `l`. Take `⟨b, hli, hsp, hiff⟩` from `hb l`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, f l ^ n • v ∈ B'.lat i := by`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Distinguish the cases in `hf0 : f l = 0`. Conclude with `⟨1, by rw [hf0, pow_one, zero_smul]; exact zero_mem _⟩`. Set `bs` to `Module.Basis.mk hli (by rw [hsp])`. Establish `hbs : ∀ q, bs q = b q` using `fun q => Module.Basis.mk_apply hli _ q`. Set `a` to `bs.equivFun v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `coord : ∀ t : A, (t : Ω) • v ∈ B'.lat i → ∀ q, ∃ n : ℕ, f l ^ n * ((t : Ω) * a q) ∈ A`. Introduce `t ht q`. Take `⟨a', ha', he⟩` from `(hiff ((t : Ω) • v)).1 ⟨0, by rw [pow_zero, one_smul]; exact ht⟩`. Establish `e1 : bs.equivFun ((t : Ω) • v) = a'`. Rewrite using `[he]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Repeatedly rewrite using `[← hbs]`. Rewrite using `[← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `e2 : a' q = (t : Ω) * a q`. Rewrite using `[← e1, LinearEquiv.map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e2]`. Conclude with `ha' q`. Use `(hiff v).2 ⟨a, fun q => ?_, ?_⟩` and prove the remaining obligations. Establish `hh : (⟨f l, hf l⟩ : A) ≠ 0` using `fun e => hf0 (congrArg Subtype.val e)`. Take `⟨m, g, hg⟩` from `mem_away_of_heightOne hHOI A Ω Subtype.val_injective ⟨f l, hf l⟩ hh (a q) (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs0, hs⟩` from `h1 v hv`. Take `⟨n, hn⟩` from `coord s hs q`. Use `⟨s, hs0, n, ⟨_, hn⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f l ^ n * (s : Ω) * a q = f l ^ n * ((s : Ω) * a q)`. Use the proof step `ring)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun P hP hP1 _ => by`. Establish `hv1 : ∃ s : A, s ∉ P ∧ (s : Ω) • v ∈ B.lat i` using `⟨1, fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h), by`. Rewrite using `[OneMemClass.coe_one, one_smul]`. Conclude with `hv⟩`. Take `⟨t, htP, ht⟩` from `hq P hP hP1 v hv1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨n, hn⟩` from `coord t ht q`. Use `⟨t, htP, n, ⟨_, hn⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f l ^ n * (t : Ω) * a q = f l ^ n * ((t : Ω) * a q)`. Use the proof step `ring)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : f l ^ m * a q = (g : Ω)` using `hg`. Rewrite using `[hg']`. Conclude with `g.2`. Rewrite using `[← bs.sum_equivFun v]`. Repeatedly rewrite using `[hbs]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `⟨n, (hJ _).2 (by rw [SubmonoidClass.coe_pow]; exact hn)⟩`. Establish `h1J : (1 : A) ∈ J.radical`. Establish `e : (1 : A) = ∑ l, (⟨c l, hc l⟩ : A) * ⟨f l, hf l⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[OneMemClass.coe_one, ← hsum, AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hfJ l)`. Establish `hJtop : J = ⊤` using `Ideal.radical_eq_top.1 ((Ideal.eq_top_iff_one _).2 h1J)`.
-
-Establish `h1 : (1 : A) ∈ J` using `hJtop ▸ Submodule.mem_top`. Establish `h1'` using `(hJ 1).1 h1`. Rewrite `h1'` using `[OneMemClass.coe_one, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ChartBundlesAgree.lat_le (hHOI : HeightOneIntersection.Statement)
     {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {τ : Type} {x : τ → Ω} {r : ℕ}
@@ -130,7 +126,7 @@ theorem ChartBundlesAgree.lat_le (hHOI : HeightOneIntersection.Statement)
   rwa [OneMemClass.coe_one, one_smul] at h1'
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ τ x r E _ _ B B' i hi hN hIC h1 h2 hq`. Conclude with `le_antisymm (ChartBundlesAgree.lat_le hHOI B B' i hi hN hIC h1 fun q hq' hq1 v => (hq q hq' hq1 v).1) (ChartBundlesAgree.lat_le hHOI B' B i hi hN hIC h2 fun q hq' hq1 v => (hq q hq' hq1 v).2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ChartBundlesAgree.proof (hHOI : HeightOneIntersection.Statement) :
     ChartBundlesAgree.Statement := by

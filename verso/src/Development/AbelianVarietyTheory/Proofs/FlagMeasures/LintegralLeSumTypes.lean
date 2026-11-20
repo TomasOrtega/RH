@@ -10,7 +10,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.TypeDecomp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert b s hb ih`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert hb]`. Conclude with `(lintegral_union_le _ _ _).trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_biUnion_le {α ι : Type*} [MeasurableSpace α] (μ : Measure α) (s : Finset ι)
     (A : ι → Set α) (f : α → ENNReal) :
@@ -23,7 +23,7 @@ theorem lintegral_biUnion_le {α ι : Type*} [MeasurableSpace α] (μ : Measure 
     exact (lintegral_union_le _ _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨τ, H⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem hasType_cast (I : AutInst) (x : I.GA) {a a' : ℕ} (h : a' = a) (j : Fin a → ℕ) (τ : Fin a → ℝ)
     (H : HasType I x j τ) : ∃ τ', HasType I x (fun i : Fin a' => j (Fin.cast h i)) τ' := by
@@ -31,9 +31,9 @@ theorem hasType_cast (I : AutInst) (x : I.GA) {a a' : ℕ} (h : a' = a) (j : Fin
   exact ⟨τ, H⟩
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Establish `key` using `ih (fun i => r i.castSucc) (fun i => j i.castSucc) (fun i => by`. Use `h i.castSucc` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fin.succ_castSucc] at this)` and apply the resulting hypothesis. Establish `hl` using `h (Fin.last a)`. Rewrite `hl` using `[Fin.succ_last]`. Simplify using `only [Fin.castSucc_zero] at key`. Rewrite using `[Fin.sum_univ_castSucc, hl, key]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -52,23 +52,21 @@ theorem sum_diff (a : ℕ) (r : Fin (a + 1) → ℕ) (j : Fin a → ℕ)
     ring
 
 /- English proof (translation)
-Take `⟨⟨a, S, τ, hF⟩, -, hprop⟩` from `GlobalTheory.PointFlag.flag_spec B.I x`. Take `⟨hsteps, hlast⟩` from `hprop a S τ hF`. Establish `hlt : ∀ i : Fin a, Formalism.HN.rkK (S i.castSucc) < Formalism.HN.rkK (S i.succ)` using `fun i => (hsteps i).2.1`. Use `set j : Fin a → ℕ := fun i => Formalism.HN.rkK (S i.succ) - Formalism.HN.rkK (S i.castSucc) with hj`. Establish `hstep : ∀ i, Formalism.HN.rkK (S i.succ) = Formalism.HN.rkK (S i.castSucc) + j i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hlt i` as an intermediate fact. Simplify using `only [hj]`. Use linear arithmetic over natural numbers and integers. Establish `hjpos : ∀ i, 0 < j i` using `fun i => by`. Use `hlt i` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hj]`. Use linear arithmetic over natural numbers and integers. Establish `hT : HasType B.I x j τ` using `⟨S, hF, hstep⟩`. Establish `hsum : Formalism.HN.rkK (S (Fin.last a)) = Formalism.HN.rkK (S 0) + ∑ i, j i` using `GlobalTheory.TypeDecomp.sum_diff a (fun i => Formalism.HN.rkK (S i)) j hstep`. Establish `ha : a ≠ 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `(hlast hn).1.mp h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨v⟩ : Nonempty (InfinitePlace B.I.F)` from `inferInstance`. Establish `hiso : Formalism.HN.rkK (stepLt B.I x (1 / 2)) ≤ rkR (B.I.ε v)` using `(GlobalTheory.FlagIso.flag_isotropic B.I x).2.1 v`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : rkR (B.I.ε v) ≤ q` using `(min_le_right _ _).trans (hs v).2.le`. Establish `hSl : S (Fin.last a) = stepLt B.I x (1 / 2)` using `hF.2.2.1`. Establish `h1 : 1 ≤ ∑ i, j i`. Use `Finset.single_le_sum (f := j) (fun i _ => Nat.zero_le _) (Finset.mem_univ ⟨0, Nat.pos_of_ne_zero ha⟩)` as an intermediate fact. Use `hjpos ⟨0, Nat.pos_of_ne_zero ha⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : ∑ i, j i ≤ q`. Rewrite `hsum` using `[hSl]`. Use linear arithmetic over natural numbers and integers. Set `c : Composition (∑ i, j i)` to `⟨List.ofFn j, fun {b} hb => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_ofFn, Set.mem_range] at hb`. Take `⟨k, rfl⟩` from `hb`. Conclude with `hjpos k, by simp [List.sum_ofFn]⟩`. Establish `hlen : c.length = a` using `by simp [c, Composition.length]`. Establish `hc : c.blocksFun = fun i => j (Fin.cast hlen i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Use `show (List.ofFn j).get i = j (Fin.cast hlen i)`. Use `first`. Consider the case `rw [List.get_ofFn]`. Consider the case `simp [List.get_eq_getElem, Fin.cast]`.
-
-Take `⟨τ', h'⟩` from `GlobalTheory.TypeDecomp.hasType_cast B.I x hlen j τ hT`. Use `⟨∑ i, j i, Finset.mem_Icc.mpr ⟨h1, h2⟩, c, τ', ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `h'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_type (B : RowsAut) (p q : ℕ) (hs : SigIs B p q) (hn : 1 ≤ B.I.n) (x : B.I.GA)
     (hx : least B.I x < 1 / 2) :
@@ -121,17 +119,15 @@ theorem exists_type (B : RowsAut) (p q : ℕ) (hs : SigIs B p q) (hn : 1 ≤ B.I
   exact h'
 
 /- English proof (translation)
-Introduce `B p q hs hn Φ hΦ`. Establish `hT : ∀ (J : ℕ) (c : Composition J), MeasurableSet {x : B.I.GA | ∃ τ, HasType B.I x c.blocksFun τ}` using `fun J c => by`. Take `⟨s, -, h, -⟩` from `GlobalTheory.FlagMeas.type_measurable B.I c.length c.blocksFun`. Conclude with `h`. Use `set P : Set B.I.GA := ⋃ J ∈ Finset.Icc 1 q, ⋃ c ∈ (Finset.univ : Finset (Composition J)), {x : B.I.GA | ∃ τ, HasType B.I x c.blocksFun τ} with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U : Set B.I.GA := ⋃ J ∈ Finset.Icc 1 q, ⋃ c ∈ (Finset.univ : Finset (Composition J)), {x : B.I.GA | ∃ τ, HasType B.I x c.blocksFun τ} ∩ B.fund with hU`. Establish `hPm : MeasurableSet P` using `Finset.measurableSet_biUnion _ fun J _ => Finset.measurableSet_biUnion _ fun c _ => hT J c`. Establish `hcover : B.fund ⊆ U ∪ Pᶜ`. Introduce `x hx`. Distinguish the cases in `hxP : x ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `left`. Simplify using `only [hP, hU, Set.mem_iUnion, Set.mem_inter_iff] at hxP ⊢`. Take `⟨J, hJ, c, hc, hxc⟩` from `hxP`. Conclude with `⟨J, hJ, c, hc, hxc, hx⟩`. Conclude with `Or.inr hxP`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzero : ∫⁻ x in Pᶜ, Φ x ∂(B.I.muA B.μf) = 0`. Establish `hae : ∀ᵐ x ∂((B.I.muA B.μf).restrict Pᶜ), Φ x = 0`. Rewrite using `[ae_restrict_iff' hPm.compl]`. Use `ae_of_all _ fun x hx => hΦ x ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `push_neg at hlt`. Take `⟨J, hJ, c, τ, hτ⟩` from `GlobalTheory.TypeDecomp.exists_type B p q hs hn x hlt`. Apply `hx` to reduce the goal to its premises. Simplify using `only [hP, Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨J, hJ, c, Finset.mem_univ c, τ, hτ⟩`.
-
-Rewrite using `[lintegral_congr_ae hae, lintegral_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_le_sum_types : ∀ (B : RowsAut) (p q : ℕ), SigIs B p q → 1 ≤ B.I.n → ∀ Φ : B.I.GA → ENNReal, (∀ x, 1 / 2 ≤ least B.I x → Φ x = 0) → ∫⁻ x in B.fund, Φ x ∂(B.I.muA B.μf) ≤ ∑ J ∈ Finset.Icc 1 q, ∑ c : Composition J, ∫⁻ x in {x | ∃ τ, HasType B.I x c.blocksFun τ} ∩ B.fund, Φ x ∂(B.I.muA B.μf) := by
   intro B p q hs hn Φ hΦ

@@ -13,22 +13,20 @@ namespace GlobalTheory.ConjResidueSurj
 open GlobalTheory.IdemSupport
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Formalism.L2.SG.Pf.unitaryCongruence.sigA_inclE (instOf D) (a : D.host.E))`.
+A detailed English derivation is pending.
 -/
 theorem sigInt_oToS {D : D7} (a : 𝓞 D.host.E) :
     sigInt (instOf D) (oToS D.host.F D.host.E a) = oToS D.host.F D.host.E (cO D a) :=
   Subtype.ext (Formalism.L2.SG.Pf.unitaryCongruence.sigA_inclE (instOf D) (a : D.host.E))
 
 /- English proof (translation)
-Use `choose a ha using fun PP : Pl D.host.E => Ideal.Quotient.mk_surjective (I := PP.asIdeal) (u PP)`. Use `choose a' ha' using fun PP : Pl D.host.E => Ideal.Quotient.mk_surjective (I := PP.asIdeal) (u' PP)`. Establish `hout : ∀ PP ∈ Pg, cP PP ∉ Pg` using `fun PP hPP h' => h PP hPP _ h' ((isConjPl_iff _ _).2 rfl)`. Set `T : Finset (Pl D.host.E)` to `Pg ∪ Pg.image cP`. Set `x : Pl D.host.E → 𝓞 D.host.E` to `fun Q => if Q ∈ Pg then a Q else cO D (a' (cP Q))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := T) (fun Q : Pl D.host.E => Q.asIdeal) (fun _ => 1) (fun Q _ => Q.prime) (fun Q _ Q' _ hne e => hne (HeightOneSpectrum.ext e)) (fun Q => x Q.1)`. Use `⟨oToS D.host.F D.host.E y, fun PP hPP => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hy PP (Finset.mem_union_left _ hPP)`. Rewrite `h1` using `[pow_one]`. Establish `h2 : x PP = a PP` using `if_pos hPP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[resS_oToS, ← ha PP, ← h2]`. Conclude with `Ideal.Quotient.eq.2 h1`. Establish `h1` using `hy (cP PP) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hPP))`. Rewrite `h1` using `[pow_one]`. Establish `h2 : x (cP PP) = cO D (a' PP)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: x (cP PP) = cO D (a' (cP (cP PP)))` using `if_neg (hout PP hPP)`. Rewrite using `[this, GlobalTheory.StdFrames.cP_cP]`. Establish `h3 : y - cO D (a' PP) ∈ (cP PP).asIdeal` using `h2 ▸ h1`. Rewrite `h3` using `[mem_cP, map_sub, cO_cO]`. Rewrite using `[sigInt_oToS, resS_oToS, ← ha' PP]`.
-
-Conclude with `Ideal.Quotient.eq.2 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res_and_conj (D : D7) (Pg : Finset (Pl D.host.E))
     (h : ∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ Formalism.IndefR.Lev.IsConjPl (D := D) PP PP')

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep.Transport
 
 /- English proof (translation)
-Rewrite using `[flagStep, flagStep, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flagStep_equiv {Ω F F' : Type} [Field Ω] [AddCommGroup F] [Module Ω F] [AddCommGroup F'] [Module Ω F']
     (Φ : F ≃ₗ[Ω] F') {r : ℕ} (b : Fin r → F) (i : ℕ) :
@@ -20,17 +20,15 @@ theorem flagStep_equiv {Ω F F' : Type} [Field Ω] [AddCommGroup F] [Module Ω F
   rfl
 
 /- English proof (translation)
-Introduce `Ω₀ Ω _ _ _ E₀ E F F' _ _ _ _ _ _ _ _ a j Φ S r V V₀ b d hV hG`. Take `⟨c, u, hc, hjlin, hjc, hb, hu1, hu0, hflag, halg, hd, hrank⟩` from `hG`. Use `⟨fun σ k => a.symm (c σ k), u, fun σ => ⟨?_, ?_⟩, ?_, fun σ => ?_, fun σ => ?_, hu1, hu0, fun σ i => ?_, halg, hd, hrank⟩` and prove the remaining obligations. Conclude with `(hc σ).1.map' a.symm.toLinearMap a.symm.ker`. Establish `h1 : Submodule.span Ω₀ (Set.range fun k => a.symm (c σ k)) = (Submodule.span Ω₀ (Set.range (c σ))).map a.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, (hc σ).2]`. Use extensionality with `e`. Rewrite using `[hV σ e, Submodule.mem_map_equiv, LinearEquiv.symm_symm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x e show Φ (j (a (x • e))) = algebraMap Ω₀ Ω x • Φ (j (a e))`. Rewrite using `[map_smul, hjlin, map_smul]`. Establish `hfe : (fun k => ((Φ.toLinearMap.toAddMonoidHom.comp j).comp a.toLinearMap.toAddMonoidHom) (a.symm (c σ k))) = ⇑Φ.toLinearMap ∘ fun k => j (c σ k)`. Use function extensionality and compare the values at `k`. Use `show Φ (j (a (a.symm (c σ k)))) = Φ (j (c σ k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `h3 : LinearIndependent Ω (fun k => ((Φ.toLinearMap.toAddMonoidHom.comp j).comp a.toLinearMap.toAddMonoidHom) (a.symm (c σ k)))`. Rewrite using `[hfe]`. Conclude with `(hjc σ).map' Φ.toLinearMap Φ.ker`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hb σ).map' Φ.toLinearMap Φ.ker`. Establish `hfun : (fun k => ∑ l, u σ l k • ((Φ.toLinearMap.toAddMonoidHom.comp j).comp a.toLinearMap.toAddMonoidHom) (a.symm (c σ l))) = fun k => Φ (∑ l, u σ l k • j (c σ l))`. Use function extensionality and compare the values at `k`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul]`. Use `show u σ l k • Φ (j (a (a.symm (c σ l)))) = u σ l k • Φ (j (c σ l))`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericFlag_transport : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (E₀ E F F' : Type)
     [AddCommGroup E₀] [Module Ω₀ E₀] [AddCommGroup E] [Module Ω₀ E] [AddCommGroup F] [Module Ω F]

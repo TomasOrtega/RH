@@ -25,15 +25,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EvenOnto
 
 /- English proof (translation)
-Introduce `hM c hc j hj s hs x w hw hx`. Take `⟨ipD, ip, hm⟩` from `hM c hc j hj s hs`. Establish `h1` using `hm.schur x x w w`. Establish `h0 : Lift.pet s.ν s.fd ((x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w) ((x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w) = 0`. Establish `hx' : (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w = 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx']`. Simplify using `[Lift.pet]`. Rewrite `h1` using `[h0]`. Establish `hD : ipD w w ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hm.posD w hw` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Establish `hip : ip x x = 0`. Break down `mul_eq_zero.mp h1.symm with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h hD`. Assume the negation of the conclusion as `hne`. Use `hm.pos x hne` as an intermediate fact. Rewrite `this` using `[hip]`.
-
-Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_eq_zero_imp (D : D7) : MetEx D → ForStage D fun c _ s => ∀ (x : s.CC c) w, w ≠ 0 → PiLocalization₂.val x w = 0 → x = 0 := by
   intro hM c hc j hj s hs x w hw hx
@@ -61,21 +59,19 @@ theorem val_eq_zero_imp (D : D7) : MetEx D → ForStage D fun c _ s => ∀ (x : 
 open GlobalTheory.LFun.ParLin in
 
 /- English proof (translation)
-Introduce `D c s`. Establish `cne : ∀ f : GA D s.V → ℂ, f ≠ 0 → (fun g => conj (f g)) ≠ 0` using `fun f hf h0 => hf (funext fun g => by simpa using congrFun h0 g)`. Use `⟨fun u u' B B' a hu hu' hB h0 => ⟨h0, fun v hv => ?_⟩, fun u B a hu ha => ⟨smul_ne_zero ha hu.1, fun v hv => ?_⟩⟩` and prove the remaining obligations. Establish `hval : PiLocalization₂.val (u + a • u') v = PiLocalization₂.val u v + a • PiLocalization₂.val u' v` using `by simp [PiLocalization₂.val]`. Establish `hc : (fun g => conj (PiLocalization₂.val (u + a • u') v g)) = (fun g => conj (PiLocalization₂.val u v g)) + (conj a) • (fun g => conj (PiLocalization₂.val u' v g))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[hval]`. Unfold `ParFun`. Rewrite using `[hc]`. Distinguish the cases in `h1 : PiLocalization₂.val u v = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : a • PiLocalization₂.val u' v ≠ 0` using `by rw [hval, h1, zero_add] at hv; exact hv`. Establish `ha : a ≠ 0` using `fun e => h2 (by simp [e])`. Establish `hu'v : PiLocalization₂.val u' v ≠ 0` using `fun e => h2 (by simp [e])`. Establish `hz : (fun g => conj (PiLocalization₂.val u v g)) = 0` using `by funext g; simp [h1]`. Rewrite using `[hz, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `paramFun_smul (paramFun_of_agree (hu'.2 v hu'v) hB) (by simpa using ha)`. Distinguish the cases in `h2 : a • PiLocalization₂.val u' v = 0`. Establish `hz : (conj a) • (fun g => conj (PiLocalization₂.val u' v g)) = 0`. Use function extensionality and compare the values at `g`. Use `congrFun h2 g` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Rewrite using `[← map_mul, this, map_zero]`. Rewrite using `[hz, add_zero]`. Conclude with `hu.2 v h1`. Establish `ha : a ≠ 0` using `fun e => h2 (by simp [e])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu'v : PiLocalization₂.val u' v ≠ 0` using `fun e => h2 (by simp [e])`. Use `paramFun_add (hu.2 v h1) (paramFun_smul (paramFun_of_agree (hu'.2 v hu'v) hB) (by simpa using ha)) ?_` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `cne _ hv`. Establish `hval : PiLocalization₂.val (a • u) v = a • PiLocalization₂.val u v` using `by simp [PiLocalization₂.val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu0 : PiLocalization₂.val u v ≠ 0` using `fun e => hv (by rw [hval, e, smul_zero])`. Establish `hc : (fun g => conj (PiLocalization₂.val (a • u) v g)) = (conj a) • (fun g => conj (PiLocalization₂.val u v g))`. Use function extensionality and compare the values at `g`. Simplify using `[hval]`. Unfold `ParFun`.
-
-Rewrite using `[hc]`. Conclude with `paramFun_smul (hu.2 v hu0) (by simpa using ha)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPar_add_smul : ∀ (D : D7) (c : Com D) (s : PiLocalization₂ D), (∀ (u u' : s.CC c) B B' (a : ℂ), IsPar u B → IsPar u' B' →
     (∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), B w = B' w) →
@@ -119,7 +115,7 @@ theorem isPar_add_smul : ∀ (D : D7) (c : Com D) (s : PiLocalization₂ D), (�
     exact paramFun_smul (hu.2 v hu0) (by simpa using ha)
 
 /- English proof (translation)
-Introduce `D hM` and use `⟨val_eq_zero_imp D hM, isPar_add_smul D⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem vanish_and_parLin : ∀ D : D7, MetEx D → (ForStage D fun c _ s => ∀ (x : s.CC c) w, w ≠ 0 → PiLocalization₂.val x w = 0 → x = 0) ∧ ∀ (c : Com D) (s : PiLocalization₂ D), (∀ (u u' : s.CC c) B B' (a : ℂ), IsPar u B → IsPar u' B' → (∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), B w = B' w) → u + a • u' ≠ 0 → IsPar (u + a • u') B) ∧ ∀ (u : s.CC c) B (a : ℂ), IsPar u B → a ≠ 0 → IsPar (a • u) B :=
   fun D hM => ⟨val_eq_zero_imp D hM, isPar_add_smul D⟩

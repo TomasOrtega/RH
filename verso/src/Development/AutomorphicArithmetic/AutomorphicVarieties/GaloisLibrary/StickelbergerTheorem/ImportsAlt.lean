@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ c`. Establish `h` using `combFloor M _ _ (carryAll M K c)`. Conclude with `⟨h, comb M _ _ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Stick.coef :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (c : ClassGroup (𝓞 K)),

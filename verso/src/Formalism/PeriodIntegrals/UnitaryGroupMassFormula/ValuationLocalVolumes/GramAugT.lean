@@ -22,14 +22,14 @@ def bordM {a : ℕ} (G : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (z : Fin a) :
     (Fin.snoc (α := fun _ => Fv F v ⊗[F] E) (fun j => if j = z then 1 else 0) 0)
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hAddR (x y y' : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (y + y') = hR (Fv F v) σ J x y + hR (Fv F v) σ J x y' := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hSmulR (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (c • y) = c * hR (Fv F v) σ J x y := by
@@ -37,23 +37,23 @@ theorem hSmulR (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hAddL (x x' y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (x + x') y = hR (Fv F v) σ J x y + hR (Fv F v) σ J x' y := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hSmulL (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (c • x) y = sigR (Fv F v) σ c * hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [gramR, augT, bordM, h3]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp [gramR, augT, bordM, h2]`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [gramR, augT, bordM, h1]`. Consider the case `cast j => simp [gramR, augT, bordM]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem gram_augT {a : ℕ} (X : TupV (E := E) v n a) (w : Fin n → Fv F v ⊗[F] E) (z : Fin a)
     (h1 : ∀ i, hR (Fv F v) σ J (X i) w = if i = z then 1 else 0)

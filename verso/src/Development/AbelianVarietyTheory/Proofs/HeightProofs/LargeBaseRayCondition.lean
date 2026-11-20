@@ -17,7 +17,7 @@ def raySet (hR : GlobalTheory.NT.RayField) (P : Pre) (M : ℕ) : Finset ℂ :=
   if h : M ≠ 0 then Classical.choose (GlobalTheory.RayOnto.exists_finset_containsRayField hR P M h) else ∅
 
 /- English proof (translation)
-Unfold `raySet`. Use `split_ifs with h`. Conclude with `(Classical.choose_spec (GlobalTheory.RayOnto.exists_finset_containsRayField hR P M h)).1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem raySet_alg (hR : GlobalTheory.NT.RayField) (P : Pre) (M : ℕ) : ∀ z ∈ raySet hR P M, IsAlgebraic ℚ z := by
   unfold raySet
@@ -32,7 +32,7 @@ def raySets (hR : GlobalTheory.NT.RayField) (P : Pre) (f : Fr P) (Ξ : Set (HCha
   (levels P f Ξ).biUnion (raySet hR P)
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨M, -, hz⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `raySet_alg hR P M z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem raySets_alg (hR : GlobalTheory.NT.RayField) (P : Pre) (f : Fr P) (Ξ : Set (HChar P.host.E)) :
     ∀ z ∈ raySets hR P f Ξ, IsAlgebraic ℚ z := by
@@ -41,13 +41,13 @@ theorem raySets_alg (hR : GlobalTheory.NT.RayField) (P : Pre) (f : Fr P) (Ξ : S
   exact raySet_alg hR P M z hz
 
 /- English proof (translation)
-Introduce `w Sp hSp`. Establish `hspec` using `Classical.choose_spec (GlobalTheory.Plug.TwistLevels.levels_bounded X.B.toPre f (T.set f))`. Establish `hM : X.B.host.g 0 * X.B.host.g 1 * ∏ q ∈ Sp.image (fun Q => Nat.card (kP Q)), q ∈ levels X.B.toPre f (T.set f)`. Use `hspec.2 X.B rfl T HEq.rfl w Sp ?_` and prove the remaining obligations. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hSp P hP with ⟨h1, -⟩ | ⟨hmu, hmem⟩` into its components or cases. Conclude with `Or.inl h1`. Use `right`. Establish `hw : w ∈ c.Wt` using `by_contra fun h => hmu (c.mu.off w h)`. Rewrite using `[← (c.nch_Q w hw).1]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hM0` using `hspec.1 _ hM`. Establish `hrs` using `(Classical.choose_spec (GlobalTheory.RayOnto.exists_finset_containsRayField hR X.B.toPre _ hM0)).2`. Use `hrs X.B.LL X.B.embLL (GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.embK X.toD7) ?_ ?_` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `DFunLike.congr_fun X.B.embE_φ₀ _`. Introduce `z hz`. Use `hH z (Finset.mem_biUnion.2 ⟨_, hM, ?_⟩)` and prove the remaining obligations. Rewrite using `[raySet, dif_pos hM0]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rayRec_of_has (hR : GlobalTheory.NT.RayField) {K : Ctx} (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : V4.Core K X f T)
     (hH : ∀ z ∈ raySets hR X.B.toPre f (T.set f), ∃ x : X.B.LL, X.B.embLL x = z) : RayRec X.toD7 c.O.nch := by
@@ -77,7 +77,7 @@ end GlobalTheory.Plug.RayLarge
 open GlobalTheory.Plug.RayLarge in
 
 /- English proof (translation)
-Introduce `hR KP Q`. Conclude with `⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B f _ _ Ξ => raySets hR B f Ξ, by simp, fun B f _ _ Ξ => raySets_alg hR B f Ξ, …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Plug.largeBaseProperty_rayProperty : GlobalTheory.NT.RayField → ∀ (KP : ∀ B : Base, Fr B.toPre → Prop) (Q : V4.Slot), LargeBaseCondition KP Q RayPosition := by
   intro hR KP Q

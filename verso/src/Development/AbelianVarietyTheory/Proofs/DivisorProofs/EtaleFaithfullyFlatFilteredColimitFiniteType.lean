@@ -18,13 +18,13 @@ def pmap {k k' : Under j} (φ : k ⟶ k') : pushout g' (D0.map k.hom) ⟶ pushou
     (by rw [pushout.condition, ← Category.assoc, ← D0.map_comp, Under.w φ])
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] lemma inl_pmap {k k' : Under j} (φ : k ⟶ k') :
     pushout.inl _ _ ≫ pmap D0 j g' φ = pushout.inl _ _ := pushout.inl_desc _ _ _
 
 /- English proof (translation)
-The claim follows from `pushout.inr_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] lemma inr_pmap {k k' : Under j} (φ : k ⟶ k') :
     pushout.inr _ _ ≫ pmap D0 j g' φ = D0.map φ.right ≫ pushout.inr _ _ := pushout.inr_desc _ _ _
@@ -97,11 +97,11 @@ Both sides reduce to the same expression.
 lemma snd_coc (k : Under j) : (Comma.snd (𝟭 _) (𝟭 _)).map ((coc D0 j g' ι0 g h hnat).app k) = pdesc D0 j g' ι0 g h hnat k := rfl
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] lemma inl_pdesc (k : Under j) : pushout.inl _ _ ≫ pdesc D0 j g' ι0 g h hnat k = h := pushout.inl_desc _ _ _
 /- English proof (translation)
-The claim follows from `pushout.inr_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] lemma inr_pdesc (k : Under j) : pushout.inr _ _ ≫ pdesc D0 j g' ι0 g h hnat k = ι0.app k.right ≫ g := pushout.inr_desc _ _ _
 
@@ -159,11 +159,11 @@ end GlobalTheory.EtFFApprox
 open GlobalTheory.EtFFApprox in
 
 /- English proof (translation)
-Introduce `A B g hg`. Take `⟨J, _, _, D0, ι0, ⟨hc⟩, hft⟩` from `GlobalTheory.FiniteTypeColimit.exists_filtered_colimit_finiteType A`. Take `⟨j, B', g', h, hg', hP⟩` from `GlobalTheory.T.etaleFaithfullyFlat_descends_of_isColimit J D0 (Cocone.mk A ι0) hc B g hg`. Establish `hb` using `GlobalTheory.EtC.etFF_basic`. Use `haveI := hb.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : IsPushout g' (ι0.app j) h g` using `hP`. Establish `hL : IsColimit ((Cocone.mk A ι0).whisker (Under.forget j))` using `(Functor.Final.isColimitWhiskerEquiv (Under.forget j) _).symm hc`. Establish `hnat : ∀ (k : Under j), g' ≫ h = D0.map k.hom ≫ ι0.app k.right ≫ g`. Introduce `k`. Rewrite using `[← Category.assoc, ι0.naturality k.hom]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hP'.w`. Use `⟨Under j, inferInstance, inferInstance, arrF D0 j g', coc D0 j g' ι0 g h hnat, ⟨?_⟩, fun k => ?_⟩` and prove the remaining obligations. Conclude with `Comma.fstSndJointlyReflectColimit hL (rightIsColimit D0 j g' ι0 g h hnat hP' hL)`. Establish `hk : EtFF (pushout.inr g' (D0.map k.hom))` using `MorphismProperty.IsStableUnderCobaseChange.of_isPushout (IsPushout.of_hasPushout g' (D0.map k.hom)).flip hg'`. Conclude with `⟨hk, hft k.right, hb.2.2 _ _ _ hk (hft k.right)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.etFF_filtered_colimit_finiteType : ∀ (A B : CommRingCat.{0}) (g : A ⟶ B), EtFF g → ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ Arrow CommRingCat.{0}) (ι : D ⟶ (Functor.const J).obj (Arrow.mk g)), Nonempty (IsColimit (Cocone.mk (Arrow.mk g) ι)) ∧ ∀ j, EtFF (D.obj j).hom ∧ Algebra.FiniteType ℤ (D.obj j).left ∧ Algebra.FiniteType ℤ (D.obj j).right := by
   intro A B g hg

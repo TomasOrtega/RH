@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ ∃ (Lv : G.Levels (Fl u v hg)) (clsS : ∀ j, Lv.compS j → ((Fl u v hg).Pj (j + 1)).Tup → ((w.D Z).chTw u ((w.D Z).what₂.muAt v)).cls (j + 1)) (up : Formalism.L2.G.Cmp.CmpUp t.cmp (w.tw Z) u v hg Lv), (∀ j, j + 1 ≤ (w.D Z).R.m → ∀ (a a' : Lv.co …`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.served_place_levels_classes_comparison_maps : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

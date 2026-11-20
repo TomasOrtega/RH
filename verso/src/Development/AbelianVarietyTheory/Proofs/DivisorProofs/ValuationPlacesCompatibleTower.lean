@@ -13,7 +13,7 @@ namespace GlobalTheory.LocalDegreeOne
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `hL; haveI := hL'; haveI : NumberField L := NumberField.of_module_finite E L haveI : NumberField L' := NumberField.of_module_finite E L' ∀ (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 L)) (v' : HeightOneSpectrum (𝓞 L')), IsPlaceOver A v → IsPlaceOver A v' → (∀ σ : Ω ≃ₐ[E] Ω, …`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (L L' : IntermediateField E Ω) (hL : FiniteDimensional E L) (hL' : FiniteDimensional E L'), L ≤ L' →

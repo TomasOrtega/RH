@@ -10,33 +10,29 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ a ρ L hρ hL`. Take `⟨t₀, ht₀⟩` from `zl_span_image_finite l Γ a ρ hρ`. Set `e : Matrix (Fin a) (Fin a) L.1 →ₗ[ℚ_[l]] Matrix (Fin a) (Fin a) (Om l)` to `LinearMap.mapMatrix L.1.val.toLinearMap`. Use `haveI : FiniteDimensional ℚ_[l] L.1 := L.2`. Set `bM` to `Module.finBasis ℚ_[l] (Matrix (Fin a) (Fin a) L.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Finset (Matrix (Fin a) (Fin a) (Om l))` to `insert 1 (Finset.univ.image (fun k => e (bM k)))`. Set `t₁ : Finset Γ` to `insert 1 t₀`. Set `t : Finset (Matrix (Fin a) (Fin a) (Om l))` to `(t₁ ×ˢ B).image (fun p => (ρ p.1).val * p.2)`. Establish `hBL : ∀ b ∈ B, ∀ i j, b i j ∈ L.1`. Introduce `b hb i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.mp hb with rfl | hb` into its components or cases. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, rfl⟩` from `Finset.mem_image.mp hb`. Conclude with `(bM k i j).2`. Establish `hmemt : ∀ h ∈ t₁, ∀ b ∈ B, (ρ h).val * b ∈ t` using `fun h hh b hb => Finset.mem_image.mpr ⟨(h, b), Finset.mem_product.mpr ⟨hh, hb⟩, rfl⟩`. Establish `hBt : ∀ b ∈ B, b ∈ t` using `fun b hb => by`. Use `hmemt 1 (Finset.mem_insert_self _ _) b hb` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `⟨t, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx i j`. Take `⟨⟨h, b⟩, hp, rfl⟩` from `Finset.mem_image.mp hx`. Establish `hb` using `(Finset.mem_product.mp hp).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_apply]`. Conclude with `L.1.sum_mem fun k _ => L.1.mul_mem (hL h i k) (hBL b hb k j)`. Introduce `x hx`. Establish `hxe : x = e (fun i j => ⟨x i j, hx i j⟩)` using `by ext i j; rfl`. Establish `hsp : (fun i j => (⟨x i j, hx i j⟩ : L.1)) ∈ Submodule.span ℚ_[l] (Set.range bM)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Rewrite using `[bM.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2 : e (fun i j => ⟨x i j, hx i j⟩) ∈ Submodule.span ℚ_[l] (e '' Set.range bM)`. Rewrite using `[Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem hsp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxe]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `y ⟨z, ⟨k, rfl⟩, rfl⟩`. Conclude with `hBt _ (Finset.mem_insert_of_mem (Finset.mem_image.mpr ⟨k, Finset.mem_univ _, rfl⟩))`. Use `⟨fun y => if y = 1 then 1 else 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single (1 : Matrix (Fin a) (Fin a) (Om l))]`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[hy]`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd (hBt 1 (Finset.mem_insert_self _ _)) h1`. Introduce `g x hx`. Take `⟨⟨h, b⟩, hp, rfl⟩` from `Finset.mem_image.mp hx`. Establish `hb` using `(Finset.mem_product.mp hp).2`. Take `⟨f', hf'sup, hf'⟩` from `ht₀ (Finsupp.single (g * h) 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hgh : ((ρ (g * h) : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) = f'.sum fun k c => ((algebraMap ℚ_[l] (PadicAlgCl l)) (c : ℚ_[l])) • ((ρ k : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))`. Rewrite using `[← hf', Finsupp.sum_single_index (by simp)]`. Simplify using the standard rewrite rules. Use `⟨fun y => ∑ k ∈ f'.support with (ρ k).val * b = y, f' k, ?_⟩` and prove the remaining obligations. Establish `hmaps : ∀ k ∈ f'.support, (ρ k).val * b ∈ t` using `fun k hk => hmemt k (Finset.mem_insert_of_mem (hf'sup hk)) b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgh, Finsupp.sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul]`. Both sides reduce to the same expression.
-
-Use `_ = ∑ y ∈ t, ∑ k ∈ f'.support with (ρ k).val * b = y, zOm l (f' k) • ((ρ k).val * b) := (Finset.sum_fiberwise_of_maps_to hmaps _).symm`. Use `_ = ∑ y ∈ t, zOm l (∑ k ∈ f'.support with (ρ k).val * b = y, f' k) • y := by`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
-
-Rewrite using `[(Finset.mem_filter.mp hk).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stable_spanning_finset : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (a : ℕ) (ρ : Γ →* GL (Fin a) (Om l)) (L : FinExt l), Continuous ρ → (∀ g i j, (ρ g).val i j ∈ L.1) → ∃ t : Finset (Matrix (Fin a) (Fin a) (Om l)), (∀ x ∈ t, ∀ i j, x i j ∈ L.1) ∧ (∀ x : Matrix (Fin a) (Fin a) (Om l), (∀ i j, x i j ∈ L.1) → x ∈ Submodule.span ℚ_[l] (t : Set (Matrix (Fin a) (Fin a) (Om l)))) ∧ (∃ c : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ∑ y ∈ t, zOm l (c y) • y = 1) ∧ ∀ g, ∀ x ∈ t, ∃ c : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], (ρ g).val * x = ∑ y ∈ t, zOm l (c y) • y := by
   intro l _ Γ _ _ _ _ a ρ L hρ hL

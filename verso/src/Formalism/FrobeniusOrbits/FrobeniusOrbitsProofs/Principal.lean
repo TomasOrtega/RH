@@ -18,7 +18,7 @@ namespace Principal
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IntermediateField.mem_adjoin_simple_self ℚ (bE ζ a b)`. Consider the case `(unfold KinE; exact IntermediateField.mem_adjoin_simple_self ℚ _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bE_mem_KinE (ζ a b : L) : bE ζ a b ∈ KinE ζ a b := by
   first
@@ -26,7 +26,7 @@ theorem bE_mem_KinE (ζ a b : L) : bE ζ a b ∈ KinE ζ a b := by
   | (unfold KinE; exact IntermediateField.mem_adjoin_simple_self ℚ _)
 
 /- English proof (translation)
-Establish `h1 : (σ.restrictScalars ℚ) (bE ζ a b) = bE ζ a b` using `by first`. Consider the case `exact σ.commutes ⟨bE ζ a b, bE_mem_KinE ζ a b⟩`. Consider the case `simpa using σ.commutes ⟨bE ζ a b, bE_mem_KinE ζ a b⟩`. Rewrite using `[Psi, MonoidHom.mem_ker]`. Simplify using `[chD, galE, sgn, h1]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem galE_restrict_mem_Psi (σ : hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b) :
     galE e ζ a b (σ.restrictScalars ℚ) ∈ Psi e := by
@@ -38,15 +38,13 @@ theorem galE_restrict_mem_Psi (σ : hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a 
   simp [chD, galE, sgn, h1]
 
 /- English proof (translation)
-Establish `hqd` using `hH.toHypOdd`. Use `set σ' : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b := σ.restrictScalars ℚ with hσ'`. Establish `hin : ∀ x : 𝓞 (hostE ζ a b), σ' • x - x ∈ P` using `hσ`. It suffices to establish `hs : σ' = 1 from AlgEquiv.ext fun x => DFunLike.congr_fun hs x`. Take `⟨p, hp, hPp⟩` from `(Ideal.isPrime_int_iff.mp (Ideal.IsPrime.under ℤ P)).resolve_left (Ideal.under_ne_bot ℤ hP0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlo : P.LiesOver (span {(p : ℤ)})` using `⟨hPp.symm⟩`. Establish `hpmem : ((p : ℤ) : 𝓞 (hostE ζ a b)) ∈ P`. Establish `: (p : ℤ) ∈ P.under ℤ` using `by rw [hPp]; exact mem_span_singleton_self _`. Simplify `this` using `[Ideal.under_def]`. Establish `hp2 : p ≠ 2` using `by rintro rfl; exact h2 (by exact_mod_cast hpmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpq : p ≠ q` using `by rintro rfl; exact hq hpmem`. Distinguish the cases in `hpd : p = d`. Substitute `hpd` using the available equality. Break down `((hostInertia e q p hH L ζ a b h σ').2.2 P).mp hin with h1 | h1` into its components or cases. Conclude with `(galE_eq_one_iff hqd h σ').mp h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hm` using `galE_restrict_mem_Psi (e := e) σ`. Rewrite `hm` using `[mem_Psi_iff]`. Rewrite `hm` using `[← hσ', h1]`. Conclude with `Inertia.neg_one_ne_one' hm`.
-
-Establish `: Fact p.Prime` using `⟨hp⟩`. Conclude with `((hostFrob_of hostGalois hostGalSpec e q d hqd L ζ a b h p hp2 hpq hpd P).2.2 σ').mp hin`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inertia_trivial (hH : HostHyp q d) (h : IsLayer (e + 2) q d ζ a b)
     (P : Ideal (𝓞 (hostE ζ a b))) [P.IsPrime] (hP0 : P ≠ ⊥)
@@ -84,15 +82,13 @@ open Principal
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
 /- English proof (translation)
-Introduce `e q d hH L _ _ ζ a b h P hP hdvd`. Establish `hqd` using `hH.toHypOdd`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨h2, hq⟩` from `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Use `differentIdeal_ne_bot (A := 𝓞 (KinE ζ a b)) (B := 𝓞 (hostE ζ a b))` as an intermediate fact. Conclude with `this (by rwa [← Ideal.zero_eq_bot, zero_dvd_iff] at hdvd)`. Establish `hEgal : IsGalois ℚ (hostE ζ a b)` using `hostE_isGalois hqd h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKgal : IsGalois (KinE ζ a b) (hostE ζ a b)` using `IsGalois.tower_top_of_isGalois ℚ _ _`. Establish `: IsGaloisGroup (hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b) (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b))` using `IsGaloisGroup.of_isFractionRing _ _ _ (KinE ζ a b) (hostE ζ a b)`. Establish `hpr : (P.under (𝓞 (KinE ζ a b))).IsPrime` using `Ideal.IsPrime.under _ P`. Establish `hcard` using `card_inertia_eq_ramificationIdxIn (G := hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b) (P.under (𝓞 (KinE ζ a b))) P`. Rewrite `hcard` using `[ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 (KinE ζ a b))) P (hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Nat.card (P.inertia (hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b)) = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun x y => Subtype.ext ?_⟩, ⟨⟨1, one_mem _⟩⟩⟩` and prove the remaining obligations. Rewrite using `[inertia_trivial hH h P hP0 h2 hq x.1 (AddSubgroup.mem_inertia.mp x.2), inertia_trivial hH h P hP0 h2 hq y.1 (AddSubgroup.mem_inertia.mp y.2)]`. Rewrite `hcard` using `[h1]`.
-
-Conclude with `(dvd_differentIdeal_iff.mp hdvd) ((Ideal.ramificationIdx_eq_one_iff).mp hcard.symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostDiffSupport : HostDiffSupport := by
   intro e q d hH L _ _ ζ a b h P hP hdvd
@@ -128,9 +124,9 @@ section Invariance
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-Establish `hc : σ * τ.restrictScalars ℚ = τ.restrictScalars ℚ * σ`. Apply `galE_injective hqd h` to reduce the goal to its premises. Rewrite using `[galE_mul hqd h, galE_mul hqd h, mul_comm]`. Establish `h1` using `congrArg (fun φ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b) => φ x) hc`. Use `first`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact h1`. Consider the case `simpa using h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comm_of (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)) : σ (τ x) = τ (σ x) := by
@@ -143,7 +139,7 @@ theorem comm_of (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE
   | simpa using h1
 
 /- English proof (translation)
-Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.apply_symm_apply, hc, AlgEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_symm (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x))
@@ -152,7 +148,7 @@ theorem comm_symm (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
   rw [AlgEquiv.apply_symm_apply, hc, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => hc τ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_comm (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x)) (w : (hostE ζ a b)) :
@@ -161,22 +157,20 @@ theorem sum_comm (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
   exact Finset.sum_congr rfl fun τ _ => hc τ w
 
 /- English proof (translation)
-The claim follows from `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem one_ne (ζ a b : L) : (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) ≠ 0 := one_ne_zero
 
 /- English proof (translation)
-Use `haveI := hostE_isGalois hqd h`. Use `haveI : IsGalois (KinE ζ a b) (hostE ζ a b) := IsGalois.tower_top_of_isGalois ℚ (KinE ζ a b) (hostE ζ a b)`. Establish `htr : ∀ w : hostE ζ a b, algebraMap (KinE ζ a b) (hostE ζ a b) (Algebra.trace (KinE ζ a b) (hostE ζ a b) w) = ∑ τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b), τ w` using `fun w => by first`. Consider the case `exact trace_eq_sum_automorphisms w`. Consider the case `exact Algebra.trace_eq_sum_automorphisms w`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact IsGalois.trace_eq_sum_automorphisms w`. Establish `hint : ∀ t : KinE ζ a b, IsIntegral ℤ (algebraMap (KinE ζ a b) (hostE ζ a b) t) ↔ t ∈ (algebraMap (𝓞 (KinE ζ a b)) (KinE ζ a b)).range`. Introduce `t`. Rewrite using `[isIntegral_algebraMap_iff (algebraMap (KinE ζ a b) (hostE ζ a b)).injective]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `ht`. Conclude with `⟨⟨t, ht⟩, rfl⟩`. Introduce and unpack `⟨s, rfl⟩`. Conclude with `s.isIntegral_coe`. Rewrite using `[FractionalIdeal.mem_dual (one_ne ζ a b)]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x`. Establish `hx : ((x : hostE ζ a b)) ∈ (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b))`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hy _ hx`. Rewrite `h2` using `[Algebra.traceForm_apply, ← hint, htr]`. Conclude with `h2`. Introduce `hy w hw`. Rewrite `hw` using `[FractionalIdeal.mem_one_iff]`.
-
-Take `⟨x, rfl⟩` from `hw`. Rewrite using `[Algebra.traceForm_apply, ← hint, htr]`. Conclude with `hy x`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dual_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (y : (hostE ζ a b)) :
     y ∈ FractionalIdeal.dual (𝓞 (KinE ζ a b)) (KinE ζ a b) (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) ↔
@@ -219,17 +213,17 @@ theorem mem_dual_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (y : (h
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
 /- English proof (translation)
-Establish `key : ∀ w : hostE ζ a b, w ∈ (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) ↔ IsIntegral ℤ w`. Introduce `w`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `w'.isIntegral_coe`. Introduce `hw`. Conclude with `⟨⟨w, hw⟩, rfl⟩`. Establish `hz : z ∈ differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) ↔ (z : hostE ζ a b) ∈ ((differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)))`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z', hz', he⟩`. Establish `he' : z' = z` using `IsFractionRing.injective (𝓞 (hostE ζ a b)) (hostE ζ a b) he`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hz'` using `[he']`. Then use the resulting hypothesis. Establish `hd0 : FractionalIdeal.dual (𝓞 (KinE ζ a b)) (KinE ζ a b) (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) ≠ 0` using `by first`. Consider the case `exact FractionalIdeal.dual_ne_zero (one_ne ζ a b)`. Consider the case `exact FractionalIdeal.dual_ne_zero _ _ (one_ne ζ a b)`. Rewrite using `[hz]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `rw [coeIdeal_differentIdeal (𝓞 (KinE ζ a b)) (KinE ζ a b) (hostE ζ a b) (𝓞 (hostE ζ a b))]`. Consider the case `rw [coeIdeal_differentIdeal (𝓞 (KinE ζ a b)) (KinE ζ a b)]`. Consider the case `rw [coeIdeal_differentIdeal]`. Rewrite using `[FractionalIdeal.mem_inv_iff hd0]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hmem y hy`. Conclude with `(key _).mp (hmem y ((mem_dual_iff hqd h y).mpr hy))`. Introduce `hmem y hy`. Conclude with `(key _).mpr (hmem y ((mem_dual_iff hqd h y).mp hy))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_diff_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (z : 𝓞 (hostE ζ a b)) :
     z ∈ differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) ↔
@@ -272,7 +266,7 @@ theorem mem_diff_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (z : �
     exact (key _).mpr (hmem y ((mem_dual_iff hqd h y).mp hy))
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem coe_powerSeries_smul_eq_smul (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b)) (z : 𝓞 (hostE ζ a b)) :
     ((σ • z : 𝓞 (hostE ζ a b)) : hostE ζ a b) = σ (z : hostE ζ a b) := by
@@ -281,7 +275,7 @@ private theorem coe_powerSeries_smul_eq_smul (σ : (hostE ζ a b) ≃ₐ[ℚ] (h
   | simp
 
 /- English proof (translation)
-Introduce `x`. Establish `key : (∑ τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b), τ (σ y * x)) = σ (∑ τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b), τ (y * ((σ⁻¹ • x : 𝓞 (hostE ζ a b)) : hostE ζ a b)))`. Rewrite using `[sum_comm σ hc, map_mul, coe_powerSeries_smul_eq_smul, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Rewrite using `[key]`. Conclude with `(hy (σ⁻¹ • x)).map ((σ : (hostE ζ a b) →+* (hostE ζ a b)).toIntAlgHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_smul (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x)) (y : (hostE ζ a b))
@@ -296,9 +290,9 @@ theorem dual_smul (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
   exact (hy (σ⁻¹ • x)).map ((σ : (hostE ζ a b) →+* (hostE ζ a b)).toIntAlgHom)
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[mem_diff_iff hqd h]`. Introduce `y hy`. Establish `h1` using `(hz _ (dual_smul σ.symm (comm_symm σ hc) y hy)).map ((σ : (hostE ζ a b) →+* (hostE ζ a b)).toIntAlgHom)`. Establish `e : σ (z : hostE ζ a b) * y = σ ((z : hostE ζ a b) * σ.symm y)`. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_powerSeries_smul_eq_smul, e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff_smul_mem (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x)) (z : 𝓞 (hostE ζ a b))
@@ -313,7 +307,7 @@ theorem diff_smul_mem (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : 
   exact h1
 
 /- English proof (translation)
-Rewrite using `[Ideal.pointwise_smul_def]`. Conclude with `Ideal.map_le_of_le_comap fun z hz => diff_smul_mem hqd h σ hc z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff_smul_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x)) :
@@ -322,7 +316,7 @@ theorem diff_smul_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (
   exact Ideal.map_le_of_le_comap fun z hz => diff_smul_mem hqd h σ hc z hz
 
 /- English proof (translation)
-Use `le_antisymm (diff_smul_le hqd h σ (comm_of hqd h σ)) ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h2` using `Ideal.smul_mem_pointwise_smul σ _ _ (diff_smul_mem hqd h σ⁻¹ (comm_of hqd h σ⁻¹) z hz)`. Rewrite `h2` using `[smul_inv_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem diff_smul_eq (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b)) :
     σ • differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) = differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) := by
@@ -335,35 +329,29 @@ theorem diff_smul_eq (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (
 end Invariance
 
 /- English proof (translation)
-Set `r : Ideal S → Ideal S → Prop` to `WellOrderingRel`. Use `set F := UniqueFactorizationMonoid.normalizedFactors D with hF`. Establish `hprime : ∀ P ∈ F, Prime P` using `fun P hP => UniqueFactorizationMonoid.prime_of_normalized_factor P hP`. Establish `hprod : F.prod = D` using `associated_iff_eq.mp (UniqueFactorizationMonoid.prod_normalizedFactors hD0)`. Establish `hprimeMap : ∀ P ∈ F.map f, Prime P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Take `⟨P', hP', rfl⟩` from `Multiset.mem_map.mp hP`. Use `first`. Consider the case `exact (MulEquiv.prime_iff f).mpr (hprime P' hP')`. Consider the case `exact (hprime P' hP').map_mulEquiv f`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapF : F.map f = F`. Establish `h1 : (F.map f).prod = D` using `by rw [← map_multiset_prod, hprod, hfD]`. Establish `h2` using `UniqueFactorizationMonoid.normalizedFactors_prod_of_prime hprimeMap`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : Ideal S → Prop` to `fun P => r P (f P)`. Set `G` to `F.filter p`. Establish `hq : F.filter (fun Q => r (f Q) Q) = G.map f`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Multiset.filter_congr` to reduce the goal to its premises. Introduce `P _`. Simplify using `only [Function.comp_apply, hff, p]`. Establish `hnot : F.filter (fun Q => r (f Q) Q) = F.filter (fun P => ¬ p P)`. Apply `Multiset.filter_congr` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `P hP`. Establish `hne : P ≠ f P` using `fun h => hfix P hP h.symm`. Prove the components needed by the constructor for the conclusion. Introduce `h1 h2`. Conclude with `asymm h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Break down `trichotomous_of r P (f P) with h | h | h` into its components or cases. Conclude with `absurd h h1`. Conclude with `absurd h hne`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsplit : F = G + G.map f`. Rewrite using `[← hq, hnot]`. Conclude with `(Multiset.filter_add_not p F).symm`. Use `⟨G.prod, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_multiset_prod, ← Multiset.prod_add, ← hsplit, hprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hB : G.prod ≤ M` using `le_trans le_sup_left hle`. Establish `hfB : (G.map f).prod ≤ M`. Rewrite using `[← map_multiset_prod]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `le_trans le_sup_right hle`. Establish `hmaxOf : ∀ P ∈ F, P ≤ M → P = M`. Introduce `P hPF hPM`. Establish `hP` using `hprime P hPF`. Establish `hPp : P.IsPrime` using `Ideal.isPrime_of_prime hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hPp.isMaximal hP.ne_zero).eq_of_le hM.ne_top hPM`. Take `⟨P, hPG, hPM⟩` from `(Ideal.IsPrime.multiset_prod_le hM.isPrime).mp hB`. Take `⟨Q, hQG, hQM⟩` from `(Ideal.IsPrime.multiset_prod_le hM.isPrime).mp hfB`. Take `⟨P', hP'G, rfl⟩` from `Multiset.mem_map.mp hQG`. Establish `hPF` using `(Multiset.mem_filter.mp hPG).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpP : p P` using `(Multiset.mem_filter.mp hPG).2`. Establish `hP'F` using `(Multiset.mem_filter.mp hP'G).1`. Establish `hpP' : p P'` using `(Multiset.mem_filter.mp hP'G).2`. Establish `hfP'F : f P' ∈ F`. Rewrite using `[← hmapF]`.
-
-Conclude with `Multiset.mem_map_of_mem f hP'F`. Establish `e : f P' = P` using `(hmaxOf _ hfP'F hQM).trans (hmaxOf P hPF hPM).symm`. Establish `h1 : r P' P`. Use `hpP'` as an intermediate fact. Simplify using `only [p, e] at this`.
-
-Conclude with `this`. Establish `h2 : r P P'`. Use `hpP` as an intermediate fact. Simplify using `only [p, ← e, hff] at this`. Rewrite using `[← e]`.
-
-Conclude with `this`. Conclude with `asymm h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing {S : Type*} [CommRing S] [IsDedekindDomain S] (D : Ideal S) (hD0 : D ≠ ⊥)
     (f : Ideal S ≃* Ideal S) (hfD : f D = D) (hff : ∀ I, f (f I) = I)
@@ -450,7 +438,7 @@ theorem pairing {S : Type*} [CommRing S] [IsDedekindDomain S] (D : Ideal S) (hD0
 end Principal
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hle : span {(p : ℤ)} ≤ P.under ℤ`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_comap.mpr (by simpa using hm)`. Conclude with `⟨(Int.ideal_span_isMaximal_of_prime p).eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liesOver_span_of_natCast_mem_frobenius_orbits {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)) [P.IsPrime]
     (p : ℕ) (hp : p.Prime) (hm : ((p : ℤ) : 𝓞 M) ∈ P) : P.LiesOver (span {(p : ℤ)}) := by
@@ -461,17 +449,15 @@ theorem liesOver_span_of_natCast_mem_frobenius_orbits {M : Type} [Field M] [Numb
   exact ⟨(Int.ideal_span_isMaximal_of_prime p).eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle⟩
 
 /- English proof (translation)
-Introduce `e q d hH L _ _ ζ a b h σ hσ`. Establish `hqd` using `hH.toHypOdd`. Set `f` to `MulSemiringAction.toRingEquiv (hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (Ideal (𝓞 (hostE ζ a b))) σ`. Establish `hf : ∀ I, f I = σ • I` using `fun I => rfl`. Establish `hσσ : σ * σ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `galE_injective (e := e) hqd h` to reduce the goal to its premises. Rewrite using `[galE_mul hqd h, hσ, galE_one hqd h]`. Conclude with `Prod.ext (show c0 * c0 = (1 : G0) by decide) (mul_one _)`. Establish `hD0 : differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) ≠ ⊥`. Use `differentIdeal_ne_bot (A := 𝓞 (KinE ζ a b)) (B := 𝓞 (hostE ζ a b))` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨B, hB1, hB2⟩` from `Principal.pairing _ hD0 f.toMulEquiv (by show f _ = _; rw [hf]; exact Principal.diff_smul_eq hqd h σ) (fun I => by show f (f I) = I; rw [hf, hf, smul_smul, hσσ, one_smul]) (by`. Introduce `P hP`. Use `show f P ≠ P`. Rewrite using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hP` using `[Ideal.mem_normalizedFactors_iff hD0]`. Take `⟨hPp, hle⟩` from `hP`. Establish `hdvd : P ∣ differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b))` using `Ideal.dvd_iff_le.mpr hle`. Introduce `hfix`. Establish `hst : σ ∈ MulAction.stabilizer _ P` using `hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hostDiffSupport e q d hH L ζ a b h P hPp hdvd with h2 | hq` into its components or cases. Establish `: P.LiesOver (span {((2 : ℕ) : ℤ)})` using `liesOver_span_of_natCast_mem_frobenius_orbits P 2 Nat.prime_two (by exact_mod_cast h2)`. Conclude with `hostDecompConj e q d hH L ζ a b h σ hσ 2 (Or.inl rfl) P hst`. Establish `: P.LiesOver (span {(q : ℤ)})` using `liesOver_span_of_natCast_mem_frobenius_orbits P q hH.1 hq`. Conclude with `hostDecompConj e q d hH L ζ a b h σ hσ q (Or.inr (Or.inl rfl)) P hst)`.
-
-Conclude with `⟨B, hB1, hB2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hostPrincipal : HostPrincipal := by
   intro e q d hH L _ _ ζ a b h σ hσ
@@ -507,7 +493,7 @@ theorem hostPrincipal : HostPrincipal := by
   exact ⟨B, hB1, hB2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hostDiffSupport, hostPrincipal⟩`.
+Supply the required witnesses or components.
 -/
 theorem hostPrincipalBoth : HostDiffSupport ∧ HostPrincipal := ⟨hostDiffSupport, hostPrincipal⟩
 

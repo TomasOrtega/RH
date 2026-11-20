@@ -14,9 +14,9 @@ section SlopeTestRemainingChoices
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Establish `h : ((u.1 * a : G) : G ⧸ U) = g` using `by rw [← hu]; rfl`. Rewrite `h` using `[QuotientGroup.eq]`. Conclude with `⟨u.1, u.2, (u.1 * a)⁻¹ * g, h, by group⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, u', hu', rfl⟩`. Use `⟨⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Use `show ((u * a : G) : G ⧸ U) = ((u * a * u' : G) : G ⧸ U)`. Rewrite using `[QuotientGroup.eq, show (u * a)⁻¹ * (u * a * u') = u' by group]`. Conclude with `hu'`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coe_mem_orbit (U : Subgroup G) (a g : G) :
     (g : G ⧸ U) ∈ MulAction.orbit U (a : G ⧸ U) ↔ g ∈ DC U a := by
@@ -32,16 +32,14 @@ private theorem coe_mem_orbit (U : Subgroup G) (a g : G) :
     exact hu'
 
 /- English proof (translation)
-Rewrite using `[← coe_mem_orbit, QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem out_mem_orbit (U : Subgroup G) (a : G) (y : G ⧸ U) :
     y ∈ MulAction.orbit U (a : G ⧸ U) ↔ y.out ∈ DC U a := by
   rw [← coe_mem_orbit, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Establish `hm : y⁻¹ * q.out ∈ U`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `h`. Establish `e` using `hφ _ hm (g * y)`. Rewrite `e` using `[show g * y * (y⁻¹ * q.out) = g * q.out by group]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_out (U : Subgroup G) {φ : G → V} (hφ : ∀ u ∈ U, ∀ g, φ (g * u) = φ g)
     (g y : G) (q : G ⧸ U) (h : (y : G ⧸ U) = q) : φ (g * q.out) = φ (g * y) := by
@@ -53,7 +51,7 @@ private theorem val_out (U : Subgroup G) {φ : G → V} (hφ : ∀ u ∈ U, ∀ 
   exact e
 
 /- English proof (translation)
-Use `show (∑ᶠ q : ↑(MulAction.orbit U (a : G ⧸ U)), rightReg ℂ G V (Quotient.out (q : G ⧸ U))) φ = _`. Rewrite using `[finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ U => rightReg ℂ G V q.out)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dcF_eq_mem (U : Subgroup G) (a : G) (φ : G → V) :
     dcF U a φ = (∑ᶠ q ∈ MulAction.orbit U (a : G ⧸ U), rightReg ℂ G V q.out) φ := by
@@ -61,7 +59,7 @@ private theorem dcF_eq_mem (U : Subgroup G) (a : G) (φ : G → V) :
   rw [finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ U => rightReg ℂ G V q.out)]
 
 /- English proof (translation)
-Rewrite using `[dcF_eq_mem, finsum_mem_eq_finite_toFinset_sum _ h]`. Simplify using `[LinearMap.sum_apply, Finset.sum_apply, rightReg, LinearMap.funLeft]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dcF_apply (U : Subgroup G) (a : G) (h : (MulAction.orbit U (a : G ⧸ U)).Finite)
     (φ : G → V) (g : G) :
@@ -74,31 +72,27 @@ end SlopeTestRemainingChoices
 end UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Introduce `G V _ _ _ U a hfin0 φ hφ`. Establish `hfin : (MulAction.orbit U (a : G ⧸ U)).Finite` using `hfin0`. Establish `hO : ∀ (v : U) (y : G ⧸ U), y ∈ MulAction.orbit U (a : G ⧸ U) → v • y ∈ MulAction.orbit U (a : G ⧸ U)`. Introduce and unpack `v y ⟨w, rfl⟩`. Conclude with `⟨v * w, mul_smul v w _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h5 : ∀ (R : Finset G), (∀ y ∈ R, y ∈ DC U a) → (∀ y ∈ DC U a, ∃! r, r ∈ R ∧ r⁻¹ * y ∈ U) → ∀ g, dcF U a φ g = ∑ r ∈ R, φ (g * r)`. Introduce `R hR hu g`. Rewrite using `[dcF_apply U a hfin φ g]`. Use `symm`. Use `Finset.sum_bij (fun r _ => (r : G ⧸ U)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `(coe_mem_orbit U a r).mpr (hR r hr)`. Introduce `r1 hr1 r2 hr2 he`. Establish `h12 : r1⁻¹ * r2 ∈ U` using `QuotientGroup.eq.mp he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h22 : r2⁻¹ * r2 ∈ U` using `by rw [inv_mul_cancel]; exact U.one_mem`. Conclude with `(hu r2 (hR r2 hr2)).unique ⟨hr1, h12⟩ ⟨hr2, h22⟩`. Introduce `y hy`. Rewrite `hy` using `[Set.Finite.mem_toFinset]`. Take `⟨r, ⟨hr, hry⟩, -⟩` from `hu _ ((out_mem_orbit U a y).mp hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Use `show (r : G ⧸ U) = y`. Rewrite using `[← QuotientGroup.out_eq' y, QuotientGroup.eq]`. Conclude with `hry`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(val_out U hφ g r (r : G ⧸ U) rfl).symm`. Use `⟨?_, ?_, ?_, ?_, h5⟩` and prove the remaining obligations. Introduce `u hu g`. Rewrite using `[dcF_apply U a hfin φ, dcF_apply U a hfin φ]`. Set `u' : U` to `⟨u, hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_nbij' (fun y => u' • y) (fun y => u'⁻¹ • y) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset] at hy ⊢`. Conclude with `hO u' y hy`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset] at hy ⊢`. Conclude with `hO u'⁻¹ y hy`. Introduce `y _`. Conclude with `inv_smul_smul u' y`. Introduce `y _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smul_inv_smul u' y`. Introduce `y _`. Establish `hq : ((u * y.out : G) : G ⧸ U) = u' • y` using `by conv_rhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(val_out U hφ g (u * y.out) (u' • y) hq).symm`. Introduce `g`. Rewrite using `[dcF_apply U a hfin φ g, ← finsum_mem_eq_finite_toFinset_sum _ hfin]`. Simplify using `only [out_mem_orbit]`. Introduce `b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dcF_eq_mem, dcF_eq_mem, MulAction.orbit_eq_iff.mpr ((coe_mem_orbit U a b).mpr hb)]`. Introduce `ha`. Use function extensionality and compare the values at `g`. Rewrite using `[h5 {1} ?_ ?_ g, Finset.sum_singleton, mul_one]`. Introduce `y hy`.
-
-Rewrite `hy` using `[Finset.mem_singleton]`. Substitute `hy` using the available equality. Conclude with `⟨a⁻¹, U.inv_mem ha, 1, U.one_mem, by group⟩`. Introduce and unpack `y ⟨v, hv, v', hv', rfl⟩`. Use `⟨1, ⟨Finset.mem_singleton_self _, ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[inv_one, one_mul]`. Conclude with `U.mul_mem (U.mul_mem hv ha) hv'`. Introduce and unpack `r ⟨hr, -⟩`. Conclude with `Finset.mem_singleton.mp hr`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.dcBasic :
     UpperTheory.V.Z.Sym.So.DcBasic := by

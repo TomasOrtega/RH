@@ -12,11 +12,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Establish `hd : 0 < ∏ v, d v` using `Finset.prod_pos fun v _ => (hF v).1`. Take `⟨hi, hs, hdense⟩` from `B.tens_spec`. Use `isFdegG_of_total B.I.Ginf (muInf B.I) B.Hs B.σs (∏ v, d v) (Set.range B.tens) (GlobalTheory.HilbTensorUnitary.isURep_rows B hU) hd hdense ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩ _ ⟨x', rfl⟩ _ ⟨y', rfl⟩`. Establish `hfun : (fun g : B.I.Ginf => ⟪B.tens y, B.σs g (B.tens x)⟫_ℂ * star ⟪B.tens y', B.σs g (B.tens x')⟫_ℂ) = fun g => ∏ v, (coefOn (B.σ v) (x v) (y v) (g v) * star (coefOn (B.σ v) (x' v) (y' v) (g v)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hs, hs, hi, hi, star_prod, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `hloc` using `fun v => (hF v).2 (x v) (y v) (x' v) (y' v)`. Rewrite using `[hfun]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `muInf`. Use `⟨Integrable.fintype_prod_dep fun v => (hloc v).1, ?_⟩` and prove the remaining obligations. Use `(integral_fintype_prod_eq_prod (μ := fun v => muG (B.I.ε v)) (fun v g => coefOn (B.σ v) (x v) (y v) g * star (coefOn (B.σ v) (x' v) (y' v) g))).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl fun v _ => (hloc v).2, hi, hi, Finset.prod_div_distrib, Finset.prod_mul_distrib]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -45,13 +45,13 @@ theorem isFdegG_tensor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ)
   rfl
 
 /- English proof (translation)
-Introduce `B d hB`. Establish `hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)` using `fun v => (hB v).2.1.2.2.1`. Establish `hF : ∀ v, IsFdeg (muG (B.I.ε v)) (B.σ v) (d v)` using `fun v => (hB v).2.2.2`. Establish `hG` using `isFdegG_tensor B d hU hF`. Take `⟨hi, hs, -⟩` from `B.tens_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨GlobalTheory.HilbTensorUnitary.isURep_rows B hU, (isIrr_and_dense_of_isFdegG _ _ _ _ _ hG).1, hG, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ⟪B.tens B.w, B.tens B.w⟫_ℂ = 1`. Rewrite using `[hi]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (hB v).2.2.1.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : ‖B.tens B.w‖ ^ 2 = 1`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), h1]`. Simplify using the standard rewrite rules. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[hs, hi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tensorRep : TensorRep := by
   intro B d hB

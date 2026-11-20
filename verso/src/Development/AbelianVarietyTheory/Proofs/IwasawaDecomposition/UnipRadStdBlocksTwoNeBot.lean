@@ -10,31 +10,27 @@ namespace GlobalTheory
 open GlobalTheory.SmGL in
 
 /- English proof (translation)
-Introduce `R _ _ n a b h ha hb`. Use `set e := stdBlocks ![a, b] h with he`. Set `i : Fin n` to `e ⟨0, ⟨0, by simpa using ha⟩⟩`. Set `j : Fin n` to `e ⟨1, ⟨0, by simpa using hb⟩⟩`. Establish `hij : i ≠ j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hh`. Use `congrArg Sigma.fst (e.injective hh)` as an intermediate fact. Simplify using `at this`. Set `g : GL (Fin n) R` to `⟨Matrix.transvection i j 1, Matrix.transvection i j (-1), by show Matrix.transvection i j (1 : R) * Matrix.transvection i j (-1) = 1`. Rewrite using `[Matrix.transvection_mul_transvection_same i j hij]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp,`. Use `by show Matrix.transvection i j (-1 : R) * Matrix.transvection i j 1 = 1`. Rewrite using `[Matrix.transvection_mul_transvection_same i j hij]`. Use the proof step `simp⟩`. Establish `hg : (g : Matrix (Fin n) (Fin n) R) = 1 + Matrix.single i j 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : g ∈ unipRad R e`. Rewrite using `[mem_unipRad]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_parab]`. Introduce `p q hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hne : p ≠ q` using `by rintro rfl; exact lt_irrefl _ hpq`. Rewrite using `[hg, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add]`. Distinguish the cases in `hp : p = i`. Distinguish the cases in `hq : q = j`. Substitute `hp` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Substitute `hq` using the available equality. Rewrite `hpq` using `[blk_apply, blk_apply]`. Conclude with `absurd hpq (by decide)`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨_, h'⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hq h'.symm`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h', _⟩`. Conclude with `hp h'.symm`. Introduce `c x y`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg, Matrix.add_apply]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) R) (e ⟨c, x⟩) (e ⟨c, y⟩) = (1 : Matrix _ _ R) x y`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne, Matrix.one_apply_ne hxy]`. Introduce `hh`. Use `e.injective hh` as an intermediate fact. Simplify using `at this`. Conclude with `hxy this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Establish `h2 : Matrix.single i j (1 : R) (e ⟨c, x⟩) (e ⟨c, y⟩) = 0`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with hh`. Take `⟨h3, h4⟩` from `hh`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3` using `congrArg Sigma.fst (e.injective h3)`. Establish `e4` using `congrArg Sigma.fst (e.injective h4)`. Simplify using `only at e3 e4`. Rewrite `e4` using `[← e3]`. Conclude with `absurd e4 (by decide)`.
-
-Both sides reduce to the same expression. Rewrite using `[h2, add_zero]`. Introduce `hbot`. Rewrite `hmem` using `[hbot, Subgroup.mem_bot]`. Use `congrArg (fun u : GL (Fin n) R => (u : Matrix (Fin n) (Fin n) R) i j) hmem` as an intermediate fact.
-
-Simplify using `[hg, Matrix.one_apply_ne hij] at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unipRad_stdBlocks_two_ne_bot : ∀ (R : Type) [CommRing R] [Nontrivial R] (n a b : ℕ) (h : ∑ i, ![a, b] i = n), 0 < a → 0 < b → unipRad R (stdBlocks ![a, b] h) ≠ ⊥ := by
   intro R _ _ n a b h ha hb

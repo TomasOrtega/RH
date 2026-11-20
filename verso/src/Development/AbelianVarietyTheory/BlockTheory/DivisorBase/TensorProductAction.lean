@@ -102,7 +102,7 @@ def FreenessLemma : Prop :=
               exteriorPower.ιMulti _ N (fun i => eigenProj C τ H (h i))
 
 /- English proof (translation)
-Use `⟨inferInstance, fun x => ⟨WittVector.teichmuller l x, by simp⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (WittVector.p_nonzero l k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k l] :
     IsLocalRing (WittVector l k) ∧

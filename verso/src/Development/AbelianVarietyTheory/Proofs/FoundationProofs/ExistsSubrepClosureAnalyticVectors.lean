@@ -25,11 +25,11 @@ def restrictRep (πU : URep T) (K : Submodule ℂ πU.H) (hK : IsClosed (K : Set
     cont := fun x => (πU.cont x).subtype_mk _ }
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.FactorialJet.eq_zero_of_factorial_bound ℂ (fun k t => inner ℂ w (πU.π (T.expt (t • Y)) (E ((A ^ k) y)))) (‖w‖ * C) ρ (mul_nonneg (norm_nonneg _) hC) hρ ?_ ?_ ?_ 0 t`. Simplify using `using key`. Introduce `k s`. Establish `h1` using `hasDerivAt_orbit πU hY (hd ((A ^ k) y)) s`. Establish `h2` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `h2`. Introduce `k s`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[πU.isom, mul_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `hb k`. Introduce `k`. Simplify using `[T.expt_zero, hw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_orbit_eq_zero (πU : URep T) {V : Type} [AddCommGroup V] [Module ℂ V]
     (A : Module.End ℂ V) (E : V →ₗ[ℂ] πU.H) {Y : Mat p q} (hY : Y ∈ upq p q)
@@ -57,11 +57,9 @@ theorem inner_orbit_eq_zero (πU : URep T) {V : Type} [AddCommGroup V] [Module �
     simp [T.expt_zero, hw]
 
 /- English proof (translation)
-Establish `h0 : ∀ y, πU.π (T.expt (t • Y)) (E y) ∈ (LinearMap.range E).topologicalClosure`. Introduce `y`. Take `⟨C, ρ, hC, hρ, h⟩` from `hb y`. Rewrite using `[← Submodule.orthogonal_orthogonal_eq_closure, Submodule.mem_orthogonal]`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `inner_orbit_eq_zero πU A E hY hd y hC hρ h w (fun v => ?_) t` and prove the remaining obligations. Conclude with `(Submodule.mem_orthogonal' _ _).1 hw _ (LinearMap.mem_range_self _ v)`. Establish `hcl : IsClosed ((πU.π (T.expt (t • Y))) ⁻¹' ((LinearMap.range E).topologicalClosure : Set πU.H))` using `(Submodule.isClosed_topologicalClosure _).preimage (ContinuousLinearMap.continuous _)`. Establish `hsub : ((LinearMap.range E : Submodule ℂ πU.H) : Set πU.H) ⊆ (πU.π (T.expt (t • Y))) ⁻¹' ((LinearMap.range E).topologicalClosure : Set πU.H)`. Introduce and unpack `_ ⟨y, rfl⟩`.
-
-Conclude with `h0 y`. Conclude with `closure_minimal hsub hcl hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem orbit_mem_closure (πU : URep T) {V : Type} [AddCommGroup V] [Module ℂ V]
     (A : Module.End ℂ V) (E : V →ₗ[ℂ] πU.H) {Y : Mat p q} (hY : Y ∈ upq p q)
@@ -87,21 +85,19 @@ theorem orbit_mem_closure (πU : URep T) {V : Type} [AddCommGroup V] [Module ℂ
   exact closure_minimal hsub hcl hx
 
 /- English proof (translation)
-Introduce `p q T hgen πU V _ _ act E hd hb`. Establish `hinv : ∀ g : T.G, ∀ x ∈ (LinearMap.range E).topologicalClosure, πU.π g x ∈ (LinearMap.range E).topologicalClosure`. Introduce `g`. Establish `hg : g ∈ Subgroup.closure (T.expt '' upq p q)` using `by rw [hgen]; trivial`. Proceed by induction on `hg using Subgroup.closure_induction'' with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem g hg`. Take `⟨Y, hY, rfl⟩` from `hg`. Introduce `x hx`. Simplify using `using orbit_mem_closure πU (act Y) E hY (hd Y hY) (hb Y hY) 1 x hx`. Consider the case `inv_mem g hg`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨Y, hY, rfl⟩` from `hg`. Introduce `x hx`. Establish `he : (T.expt Y)⁻¹ = T.expt ((-1 : ℝ) • Y)`. Use `T.expt_add Y hY 1 (-1)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, zero_smul, one_smul, T.expt_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inv_eq_of_mul_eq_one_right this.symm`. Rewrite using `[he]`. Conclude with `orbit_mem_closure πU (act Y) E hY (hd Y hY) (hb Y hY) (-1) x hx`. Consider the case `one => intro x hx`. Simplify using `using hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul a b _ _ ha hb'`. Introduce `x hx`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply]`. Conclude with `ha _ (hb' x hx)`. Use `set K := (LinearMap.range E).topologicalClosure with hKdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : IsClosed (K : Set πU.H)` using `Submodule.isClosed_topologicalClosure _`. Establish `hmem : ∀ x, E x ∈ K` using `fun x => Submodule.le_topologicalClosure _ (LinearMap.mem_range_self _ x)`. Use `⟨restrictRep πU K hK hinv, E.codRestrict K hmem, K.subtypeₗᵢ, ?_, fun x => rfl, fun g y => rfl, ?_⟩` and prove the remaining obligations. Use `show Dense (Set.range (E.codRestrict K hmem : V → K))`. Rewrite using `[Subtype.dense_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `: (Subtype.val '' Set.range (E.codRestrict K hmem : V → K)) = ((LinearMap.range E : Submodule ℂ πU.H) : Set πU.H)`. Rewrite using `[← Set.range_comp, LinearMap.coe_range]`. Both sides reduce to the same expression. Conclude with `this ▸ (hx : x ∈ closure ((LinearMap.range E : Submodule ℂ πU.H) : Set πU.H))`.
-
-Introduce `Y hY x`. Establish `h` using `hd Y hY x`. Rewrite `h`, the goal using `[hasDerivAt_iff_isLittleO_nhds_zero, ← Asymptotics.isLittleO_norm_left]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subrep_closure : ∀ (p q : ℕ) (T : GrpData p q), Subgroup.closure (T.expt '' upq p q) = ⊤ → ∀ (πU : URep T) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (E : V →ₗ[ℂ] πU.H), (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => πU.π (T.expt (t • Y)) (E x)) (E (act Y x)) 0) → (∀ Y ∈ upq p q, ∀ y, ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧ ∀ k : ℕ, ‖E ((act Y ^ k) y)‖ ≤ C * ρ ^ k * (k.factorial : ℝ)) → ∃ (σ : URep T) (j : V →ₗ[ℂ] σ.H) (J : σ.H →ₗᵢ[ℂ] πU.H), Dense (Set.range j) ∧ (∀ x, J (j x) = E x) ∧ (∀ g y, J (σ.π g y) = πU.π g (J y)) ∧ (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => σ.π (T.expt (t • Y)) (j x)) (j (act Y x)) 0) := by
   intro p q T hgen πU V _ _ act E hd hb

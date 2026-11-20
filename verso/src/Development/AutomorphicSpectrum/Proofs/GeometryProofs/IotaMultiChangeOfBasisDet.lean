@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Ar.Lat
 
 /- English proof (translation)
-Set `L : (Fin n → Ω) →ₗ[Ω] V` to `(Pi.basisFun Ω (Fin n)).constr Ω e`. Establish `hL : ∀ c : Fin n → Ω, L c = ∑ j, c j • e j` using `fun c => by`. Simplify using `[L, Module.Basis.constr_apply_fintype]`. Establish `hLe : (fun i => L (Pi.basisFun Ω (Fin n) i)) = e` using `funext fun i => by simp [L]`. Rewrite using `[← sub_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Module.forall_dual_apply_eq_zero_iff Ω _).1 fun f => ?_` and prove the remaining obligations. Set `A : (Fin n → Ω) [⋀^Fin n]→ₗ[Ω] Ω` to `(f.compAlternatingMap (exteriorPower.ιMulti Ω n (M := V))).compLinearMap L`. Establish `h` using `congrArg (fun g => g (fun i => P i)) (AlternatingMap.eq_smul_basis_det (Pi.basisFun Ω (Fin n)) A)`. Simplify using `only [AlternatingMap.smul_apply, Pi.basisFun_det_apply, smul_eq_mul] at h`. Establish `h1 : A (fun i => P i) = f (exteriorPower.ιMulti Ω n (fun i => ∑ j, P i j • e j))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [A, AlternatingMap.compLinearMap_apply, LinearMap.compAlternatingMap_apply]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hL _`. Establish `h2 : A (Pi.basisFun Ω (Fin n)) = f (exteriorPower.ιMulti Ω n e)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [A, AlternatingMap.compLinearMap_apply, LinearMap.compAlternatingMap_apply]`. Use `congr 2`. Establish `h3 : (Matrix.of fun i => P i) = P` using `rfl`. Rewrite `h` using `[h1, h2, h3]`. Rewrite using `[map_sub, map_smul, h, smul_eq_mul, mul_comm, sub_self]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_matrix_mul_family (Ω V : Type) [Field Ω] [AddCommGroup V] [Module Ω V] (n : ℕ)
     (e : Fin n → V) (P : Matrix (Fin n) (Fin n) Ω) :

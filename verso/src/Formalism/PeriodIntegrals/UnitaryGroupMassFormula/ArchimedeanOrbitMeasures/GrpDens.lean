@@ -25,23 +25,21 @@ def GinfDens : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) hb
         Formalism.L2.SG.ProjRows.muInf X.B.I (phi0 X L L₁ '' A) = ∫⁻ p in A, ENNReal.ofReal (d p)
 
 /- English proof (translation)
-Introduce `D X u' hb c S ι η _ _ L L₁ ctx`. Take `⟨ψ, hT, μinf, νinf, fibInf, hP⟩` from `ctx.1`. Take `⟨hb', FdN, FdN', u, hX⟩` from `hP.1`. Establish `hGt : X.measG.μGinf = (Formalism.L2.SG.ProjRows.muInf X.B.I).map (X.toInf hb)` using `hX.1.2.1`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `PI.AprimeInfT.secondCountable_HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J`. Establish `: X.measG.μGinf.IsHaarMeasure` using `X.measG_norm.2.1`. Establish `: PolishSpace X.B.I.Ginf` using `PI.AprimeInfA.polish_of_lcsc _`. Establish `hemb : MeasurableEmbedding (X.toInf hb)` using `(MassDataMassesW.continuous_toInf X hb).measurableEmbedding (toInf_injective X hb)`. Take `⟨r, hr, d, hdc, hd0, hd⟩` from `hG X u' hb c S L L₁ ctx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr, d, hdc, hd0, fun A hA hAm => ?_⟩` and prove the remaining obligations. Take `⟨hmeas, heq⟩` from `hd A hA hAm`. Use `set k := X.toInf hb c with hk`. Use `set B' := X.toInf hb '' (phi0 X L L₁ '' A) with hB'`. Establish `hB'm : MeasurableSet B'` using `hemb.measurableSet_image.2 hmeas`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η, kap0 X hb c L p.1 * chiOf X hb c L₁ p.2 = k * X.toInf hb (phi0 X L L₁ p) * k⁻¹`. Introduce `p`. Unfold `kap0 chiOf phi0`. Express the relevant statement in the definitionally equal form `toInfHom X hb _ * toInfHom X hb _ = toInfHom X hb c * toInfHom X hb _ * (toInfHom X hb c)⁻¹`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, ← map_mul]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `group`. Establish `himg : (fun p => kap0 X hb c L p.1 * chiOf X hb c L₁ p.2) '' A = (fun g => k⁻¹ * g * k) ⁻¹' B'`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, hp, rfl⟩ show k⁻¹ * (kap0 X hb c L p.1 * chiOf X hb c L₁ p.2) * k ∈ B'`. Rewrite using `[hpt p]`. Conclude with `⟨phi0 X L L₁ p, ⟨p, hp, rfl⟩, by group⟩`. Introduce and unpack `⟨y, ⟨p, hp, rfl⟩, hy⟩`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show kap0 X hb c L p.1 * chiOf X hb c L₁ p.2 = g`. Rewrite using `[hpt p, hy]`. Use `group`. Establish `hinv : X.measG.μGinf ((fun g => k⁻¹ * g * k) ⁻¹' B') = X.measG.μGinf B'`. Establish `hpm : MeasurableSet ((fun g => k⁻¹ * g * k) ⁻¹' B')` using `((continuous_const.mul continuous_id).mul continuous_const).measurable hB'm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator_one hpm]`. Both sides reduce to the same expression. Use `_ = ∫⁻ g, B'.indicator 1 (k⁻¹ * g) ∂X.measG.μGinf := by`. Use `hU X u' ψ hT μinf νinf fibInf hP (fun x => B'.indicator 1 (k⁻¹ * x)) k` as an intermediate fact.
-
-Simplify `this` using `[mul_assoc]`. Use `_ = ∫⁻ g, B'.indicator 1 g ∂X.measG.μGinf := lintegral_mul_left_eq_self (fun g => B'.indicator (1 : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J → ENNReal) g) k⁻¹`. Use `_ = X.measG.μGinf B' := lintegral_indicator_one hB'm`. Rewrite using `[himg, hinv, hGt, hemb.map_apply, hB', (toInf_injective X hb).preimage_image, heq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpDens_of (hG : GinfDens) (hU : UnimodInf) : GrpDens := by
   intro D X u' hb c S ι η _ _ L L₁ ctx
@@ -117,15 +115,13 @@ def PlaceCharts : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
       ∏ v, Dv v (T 0 v) = Formalism.MainNotions.S.AutInst.gaugeU X.B.I
 
 /- English proof (translation)
-Introduce `D X u' hb c S ι η _ _ L L₁ ctx`. Take `⟨α, β, hα, hβ, Φ, Dv, U, T, r, hUm, hΦc, hΦi, hDm, hD0, hdens, hT, hTc, hr, hTU, hphi, hcont, hval⟩` from `h X u' hb c S L L₁ ctx`. Establish `: PolishSpace X.B.I.Ginf` using `PI.AprimeInfA.polish_of_lcsc _`. Use `⟨r, hr, fun p => ∏ v, Dv v (T p v), ?_, hval, fun A hA hAm => ?_⟩` and prove the remaining obligations. Conclude with `ContinuousAt.comp (g := fun z : ∀ v, EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v) => ∏ v, Dv v (z v)) hcont hTc.continuousAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `himg : phi0 X L L₁ '' A = (fun z v => Φ v (z v)) '' (T '' A)`. Rewrite using `[Set.image_image]`. Conclude with `Set.image_congr fun p hp => hphi p (hA hp)`. Establish `hTA : MeasurableSet (T '' A)` using `T.measurableSet_image.2 hAm`. Establish `hTAU : T '' A ⊆ Set.univ.pi U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `hTU p (hA hp)`. Establish `hinj : Set.InjOn (fun z : ∀ v, EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) (Set.univ.pi U)`. Introduce `z hz z' hz' he`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hΦi v (hz v (Set.mem_univ v)) (hz' v (Set.mem_univ v)) (congr_fun he v)`. Establish `hcΦ : Continuous (fun z : ∀ v, EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v) => fun v => Φ v (z v))` using `continuous_pi fun v => (hΦc v).comp (continuous_apply v)`. Establish `hmeas : MeasurableSet ((fun z : ∀ v, EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) '' (T '' A))` using `hTA.image_of_continuousOn_injOn hcΦ.continuousOn (hinj.mono hTAU)`. Use `⟨himg ▸ hmeas, ?_⟩` and prove the remaining obligations. Rewrite using `[himg, Formalism.L2.SG.ProjRows.muInf, PI.AprimeInfG.pi_chart_dens (fun v => Formalism.REAL.muG (X.B.I.ε v)) (fun _ => volume) Φ (fun v => (hΦc v).measurable) U hUm hΦi Dv hDm hdens (T '' A) hTAU hTA hmeas, ← hT.setLIntegral_comp_emb T.measurableEmbedding]`.
-
-Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun v _ => hD0 v _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ginfDens_of (h : PlaceCharts) : GinfDens := by
   intro D X u' hb c S ι η _ _ L L₁ ctx

@@ -17,9 +17,9 @@ section
 variable (I : AutInst) (w : IsDedekindDomain.HeightOneSpectrum (𝓞 I.E))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, y, hy, rfl⟩`. Apply the tactic sequence `have e : ((a : 𝓞 I.E) : I.E) • y = a • y := by first | rfl | (ext i; simp [Algebra.smul_def])`. Rewrite using `[SetLike.mem_coe, e]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul ha hy`. Use `Submodule.smul_le.2 ?_` and prove the remaining obligations. Introduce `a ha y hy`. Apply the tactic sequence `have e : ((a : 𝓞 I.E) : I.E) • y = a • y := by first | rfl | (ext i; simp [Algebra.smul_def])`. Conclude with `Submodule.subset_span ⟨a, ha, y, hy, e.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wLat0_eq : wLat0 I w = w.asIdeal • I.L := by
   apply le_antisymm
@@ -34,7 +34,7 @@ theorem wLat0_eq : wLat0 I w = w.asIdeal • I.L := by
     exact Submodule.subset_span ⟨a, ha, y, hy, e.symm⟩
 
 /- English proof (translation)
-Rewrite using `[wLat0_eq]`. Conclude with `Submodule.smul_le_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wLat0_le : wLat0 I w ≤ I.L := by
   rw [wLat0_eq]
@@ -43,18 +43,16 @@ theorem wLat0_le : wLat0 I w ≤ I.L := by
 abbrev Lw : Submodule (IntAf I.F I.E) (Fin I.n → I.E ⊗[I.F] Af I.F) := lamAf (F := I.F) (wLat0 I w)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem iv_mem_Lw {l : Fin I.n → I.E} (hl : l ∈ wLat0 I w) : iv I l ∈ Lw I w := Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite `hy` using `[DictGen.lf_eq]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨l, hl⟩, rfl⟩` from `hx`. Establish `e : Formalism.UG.inclE (F` using `I.F) (Af I.F) (a : I.E) • iv I l = iv I ((a : I.E) • l) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[iv, Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `iv_mem_Lw I w (Submodule.subset_span ⟨a, ha, l, hl, rfl⟩)`. Consider the case `zero => rw [smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `(Lw I w).zero_mem`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `(Lw I w).add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def, smul_comm, ← Subring.smul_def]`.
-
-Conclude with `(Lw I w).smul_mem r hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_Lw {a : 𝓞 I.E} (ha : a ∈ w.asIdeal) {y : Fin I.n → I.E ⊗[I.F] Af I.F} (hy : y ∈ I.Lf) :
     Formalism.UG.inclE (F := I.F) (Af I.F) (a : I.E) • y ∈ Lw I w := by
@@ -73,15 +71,15 @@ theorem smul_mem_Lw {a : 𝓞 I.E} (ha : a ∈ w.asIdeal) {y : Fin I.n → I.E �
     exact (Lw I w).smul_mem r hx
 
 /- English proof (translation)
-Establish `hz' : z ∈ Submodule.span (IntAf I.F I.E) (Set.range fun x : wLat0 I w => iv I (x : Fin I.n → I.E))` using `hz`. Use `clear hz`. Proceed by induction on `hz' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨l, hl⟩, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l, hl, 0, I.Lf.zero_mem, by rw [smul_zero, add_zero]⟩`. Consider the case `zero => exact ⟨0, (wLat0 I w).zero_mem, 0, I.Lf.zero_mem, by rw [DictLat.iv_zero, smul_zero, add_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨l, hl, a, ha, rfl⟩` from `hx`. Take `⟨m, hm, b, hb, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l + m, (wLat0 I w).add_mem hl hm, a + b, I.Lf.add_mem ha hb, by rw [DictLat.iv_add, smul_add]; abel⟩`. Consider the case `smul r x _ hx`. Take `⟨l, hl, a, ha, rfl⟩` from `hx`. Take `⟨c, r', hr', hr⟩` from `dual_dense I.F I.E p hp0 r.1 r.2`. Establish `hlL : iv I l ∈ I.Lf` using `DictGen.iv_mem I (wLat0_le I w hl)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c • l, (wLat0 I w).smul_mem c hl, (⟨r', hr'⟩ : IntAf I.F I.E) • iv I l + r • a, I.Lf.add_mem (I.Lf.smul_mem _ hlL) (I.Lf.smul_mem r ha), ?_⟩` and prove the remaining obligations. Establish `e1 : iv I (c • l) = Formalism.UG.inclE (F` using `I.F) (Af I.F) (c : I.E) • iv I l := by`. Use function extensionality and compare the values at `i`. Simplify using `[iv, Algebra.smul_def]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subring.smul_def]`. Rewrite using `[hr]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Lw_decomp (p : ℕ) (hp0 : 0 < p) {z : Fin I.n → I.E ⊗[I.F] Af I.F} (hz : z ∈ Lw I w) :
     ∃ l ∈ wLat0 I w, ∃ y ∈ I.Lf, z = iv I l + (p : I.E ⊗[I.F] Af I.F) • y := by
@@ -114,15 +112,15 @@ theorem Lw_decomp (p : ℕ) (hp0 : 0 < p) {z : Fin I.n → I.E ⊗[I.F] Af I.F} 
     ring
 
 /- English proof (translation)
-Take `⟨l, hl, y', hy', he⟩` from `Lw_decomp I w p hp0 hy`. Establish `hpE : (p : I.E) ≠ 0` using `by exact_mod_cast hp0.ne'`. Establish `hsub : iv I (y - l) = (p : I.E ⊗[I.F] Af I.F) • y'`. Establish `e : iv I (y - l) = iv I y - iv I l` using `by funext i; simp [iv]`. Rewrite using `[e, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hu : iv I ((p : I.E)⁻¹ • (y - l)) = y'`. Establish `e : iv I ((p : I.E)⁻¹ • (y - l)) = Formalism.UG.inclE (F` using `I.F) (Af I.F) ((p : I.E)⁻¹) • iv I (y - l) := by`. Use function extensionality and compare the values at `i`. Simplify using `[iv, Algebra.smul_def]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hsub, smul_smul]`. Establish `e2 : Formalism.UG.inclE (F` using `I.F) (Af I.F) ((p : I.E)⁻¹) * (p : I.E ⊗[I.F] Af I.F) = 1 := by`. Rewrite using `[← map_natCast (Formalism.UG.inclE (F := I.F) (Af I.F)) p, ← map_mul, inv_mul_cancel₀ hpE, map_one]`. Rewrite using `[e2, one_smul]`. Establish `huL : (p : I.E)⁻¹ • (y - l) ∈ I.L` using `lattice_intersection' I _ (hu ▸ hy')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyl : y - l ∈ wLat0 I w`. Establish `e : y - l = ((p : 𝓞 I.E) : I.E) • ((p : I.E)⁻¹ • (y - l))`. Rewrite using `[smul_smul]`. Use `push_cast`. Rewrite using `[mul_inv_cancel₀ hpE, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨p, hpw, _, huL, rfl⟩`. Establish `e : y = l + (y - l)` using `by abel`. Rewrite using `[e]`. Conclude with `(wLat0 I w).add_mem hl hyl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_wLat0_of_iv (p : ℕ) (hp0 : 0 < p) (hpw : (p : 𝓞 I.E) ∈ w.asIdeal) (y : Fin I.n → I.E)
     (hy : iv I y ∈ Lw I w) : y ∈ wLat0 I w := by
@@ -150,7 +148,7 @@ theorem mem_wLat0_of_iv (p : ℕ) (hp0 : 0 < p) (hpw : (p : 𝓞 I.E) ∈ w.asId
   exact (wLat0 I w).add_mem hl hyl
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : Finite (𝓞 I.E ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)`. Use `haveI := Fintype.ofFinite (𝓞 I.E ⧸ w.asIdeal)`. Conclude with `charP_of_card_eq_prime (by rw [← Nat.card_eq_fintype_card, hcard])`.
+A detailed English derivation is pending.
 -/
 theorem charP_res (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) :
     CharP (𝓞 I.E ⧸ w.asIdeal) p := by
@@ -160,7 +158,7 @@ theorem charP_res (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asI
   exact charP_of_card_eq_prime (by rw [← Nat.card_eq_fintype_card, hcard])
 
 /- English proof (translation)
-Use `haveI := charP_res I w p hp hcard`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_mem (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) :
     (p : 𝓞 I.E) ∈ w.asIdeal := by
@@ -169,7 +167,7 @@ theorem p_mem (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal
   exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-Use `haveI := charP_res I w p hp hcard`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_intCast]`. Conclude with `CharP.intCast_eq_zero_iff _ p z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mem_iff (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (z : ℤ) :
     (z : 𝓞 I.E) ∈ w.asIdeal ↔ (p : ℤ) ∣ z := by
@@ -178,11 +176,11 @@ theorem int_mem_iff (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.a
   exact CharP.intCast_eq_zero_iff _ p z
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨c, hc⟩` from `hb.2 y hy`. Rewrite using `[← wLat0_eq]`. Establish `hS : ∑ i, (c i : I.E) • b i ∈ Submodule.span (𝓞 I.E) (Set.range b)`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (c i : I.E) • b i = (c i : 𝓞 I.E) • b i`. Use extensionality with `j`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : y = ∑ i, (c i : I.E) • b i + (y - ∑ i, (c i : I.E) • b i)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup hS hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_red {m : ℕ} {b : Fin m → (Fin I.n → I.E)} (hb : IsRedBasis0 I w b) :
     I.L ≤ Submodule.span (𝓞 I.E) (Set.range b) ⊔ w.asIdeal • I.L := by
@@ -200,27 +198,25 @@ theorem span_of_red {m : ℕ} {b : Fin m → (Fin I.n → I.E)} (hb : IsRedBasis
   exact Submodule.add_mem_sup hS hc
 
 /- English proof (translation)
-Apply the tactic sequence `have hsm : ∀ (a : 𝓞 I.E) (v : Fin I.n → I.E), a • v = (a : I.E) • v := fun a v => by first | rfl | (ext i; simp [Algebra.smul_def])`. Take `⟨r, hr1, hr⟩ : ∃ r : 𝓞 I.E, r - 1 ∈ w.asIdeal ∧ ∀ x ∈ I.L, r • x ∈ Submodule.span (𝓞 I.E) (Set.range b)` from `by set S := Submodule.span (𝓞 I.E) (Set.range b) with hS`. Establish `hfg : (I.L.map S.mkQ).FG` using `I.L_fg.map _`. Establish `hle : I.L.map S.mkQ ≤ w.asIdeal • I.L.map S.mkQ`. Rewrite using `[← Submodule.map_smul'']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hq`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 (hsp hx)`. Use `Submodule.mem_map.2 ⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show t - (s + t) = -s by abel]`. Conclude with `S.neg_mem hs`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul w.asIdeal _ hfg hle`. Use `⟨r, hr1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hr _ (Submodule.mem_map_of_mem (f := S.mkQ) hx)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Establish `hrw : r ∉ w.asIdeal`. Introduce `h`. Establish `h1 : (1 : 𝓞 I.E) ∈ w.asIdeal`. Use `w.asIdeal.sub_mem h hr1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hr0 : (r : I.E) ≠ 0`. Introduce `h`. Apply `hrw` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: r = 0` using `RingOfIntegers.ext (by simpa using h)`. Rewrite using `[this]`. Conclude with `w.asIdeal.zero_mem`. Establish `hspan : ⊤ ≤ Submodule.span I.E (Set.range b)`. Rewrite using `[← I.L_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : r • x ∈ Submodule.span I.E (Set.range b)` using `Submodule.span_le_restrictScalars (𝓞 I.E) I.E (Set.range b) (hr x hx)`. Establish `e : x = (r : I.E)⁻¹ • (r • x)`. Rewrite using `[hsm, smul_smul, inv_mul_cancel₀ hr0, one_smul]`. Rewrite using `[SetLike.mem_coe, e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ _ h1`. Establish `hli : LinearIndependent I.E b` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan (by simp)`. Establish `hmap : (I.L).map (r • LinearMap.id) ≤ Submodule.span (𝓞 I.E) (Set.range b)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hr x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrel : r • ∑ j, c j • b j ∈ w.asIdeal • Submodule.span (𝓞 I.E) (Set.range b)`. Establish `h : r • ∑ j, c j • b j ∈ (w.asIdeal • I.L).map (r • LinearMap.id)` using `⟨_, hc, rfl⟩`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl hmap h`. Take `⟨d, hd, hdx⟩` from `(Submodule.mem_ideal_smul_span_iff_exists_sum w.asIdeal b _).1 hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hdx` using `[Finsupp.sum_fintype _ _ (by simp)]`. Establish `hsum : ∑ i, ((r * c i - d i : 𝓞 I.E) : I.E) • b i = 0`. Establish `e : ∑ i, ((r * c i - d i : 𝓞 I.E) : I.E) • b i = ∑ i, (r * c i - d i) • b i`. Repeatedly rewrite using `[hsm]`. Rewrite using `[e]`.
-
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, ← Finset.smul_sum, hdx, sub_self]`. Establish `key` using `Fintype.linearIndependent_iff.1 hli (fun i => ((r * c i - d i : 𝓞 I.E) : I.E)) hsum j0`. Establish `h0 : r * c j0 - d j0 = 0` using `RingOfIntegers.ext (by simpa using key)`. Establish `hmem : r * c j0 ∈ w.asIdeal` using `by rw [sub_eq_zero.1 h0]; exact hd j0`. Conclude with `(w.isPrime.mem_or_mem hmem).resolve_left hrw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem indep {b : Fin I.n → (Fin I.n → I.E)} (hb : ∀ i, b i ∈ I.L)
     (hsp : I.L ≤ Submodule.span (𝓞 I.E) (Set.range b) ⊔ w.asIdeal • I.L)
@@ -289,11 +285,9 @@ theorem indep {b : Fin I.n → (Fin I.n → I.E)} (hb : ∀ i, b i ∈ I.L)
   exact (w.isPrime.mem_or_mem hmem).resolve_left hrw
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hsp` using `span_of_red I w hb`. Establish `hc : ∑ j, (z j : 𝓞 I.E) • b j ∈ w.asIdeal • I.L`. Rewrite using `[← wLat0_eq]`. Use `hz using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Algebra.smul_def, zsmul_eq_mul]`. Establish `h` using `indep I w hb.1 hsp (fun j => (z j : 𝓞 I.E)) hc l`. Rewrite `h` using `[int_mem_iff I w p hp hcard]`.
-
-Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zcoef (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
     {b : Fin I.n → (Fin I.n → I.E)} (hb : IsRedBasis0 I w b) (z : Fin I.n → ℤ)
@@ -312,7 +306,7 @@ theorem zcoef (p : ℕ) (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal
 end
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb {G : Type*} [AddCommGroup G] {n : ℕ} (β : Fin n → G) (X Y : Matrix (Fin n) (Fin n) ℤ)
     (i : Fin n) : ∑ k, Y k i • ∑ l, X l k • β l = ∑ l, (X * Y) l i • β l := by

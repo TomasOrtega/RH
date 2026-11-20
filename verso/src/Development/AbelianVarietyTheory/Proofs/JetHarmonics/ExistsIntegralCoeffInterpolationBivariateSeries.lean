@@ -7,9 +7,9 @@ open GlobalTheory.ConvSer Polynomial
 namespace GlobalTheory.ConvSer
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RootProductCoeffBound.main`. Consider the case `exact _root_.GlobalTheory.RootProductCoeffBound.main`. Consider the case `(apply _root_.GlobalTheory.RootProductCoeffBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RootProductCoeffBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RootProductCoeffBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootProductCoeffBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_coeff_prod_X_sub_C_le_pow {K : Type} [NormedField K] [IsUltrametricDist K]
     (θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) (S : Finset K) (hS : ∀ x ∈ S, ‖x‖ ≤ θ) (a : ℕ) :
@@ -23,21 +23,21 @@ theorem norm_coeff_prod_X_sub_C_le_pow {K : Type} [NormedField K] [IsUltrametric
   | (intros; exact _root_.GlobalTheory.RootProductCoeffBound.main ..)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨1, fun a ha => ?_, fun a => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[coeff_one, if_neg (by omega)]`. Apply the tactic sequence `rw [coeff_one]; split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ k ih`. Take `⟨Q, hQ0, hQ1, hQ2⟩` from `ih`. Take `⟨n, hn⟩ : ∃ n, S.card = n + 1` from `⟨S.card - 1, by omega⟩`. Use `set P : K[X] := ∏ x ∈ S, (X - C x) with hP`. Establish `hPm : P.Monic` using `monic_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd : P.natDegree = n + 1`. Rewrite using `[hP, natDegree_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)]`. Simplify using `[hn]`. Use `⟨X * Q - C (Q.coeff n) * P, fun a ha => ?_, fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_sub, coeff_X_mul, coeff_C_mul]`. Break down `(show n = b ∨ n < b by omega) with rfl | h` into its components or cases. Establish `: P.coeff (n + 1) = 1` using `by rw [← hPd]; exact hPm.coeff_natDegree`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ0 b (by omega), coeff_eq_zero_of_natDegree_lt (p := P) (by omega)]; simp`. Distinguish the cases in `ha : n + 1 < a`. Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by omega⟩`. Rewrite using `[coeff_sub, coeff_X_mul, coeff_C_mul, hQ0 b (by omega), coeff_eq_zero_of_natDegree_lt (p := P) (by omega)]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Rewrite using `[coeff_sub, coeff_C_mul, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Consider the cases of `a with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Consider the case `succ a`. Rewrite using `[coeff_X_mul]`. Simplify using `using hQ1 a`. Rewrite using `[norm_neg, norm_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: P.eval x = 0`. Rewrite using `[hP, eval_prod]`. Conclude with `Finset.prod_eq_zero hx (by simp)`. Simplify using `[this, hQ2 x hx, pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_interpolation {K : Type} [NormedField K] [IsUltrametricDist K]
     (θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) (S : Finset K) (hS : ∀ x ∈ S, ‖x‖ ≤ θ)
@@ -88,27 +88,25 @@ theorem exists_pow_eq_interpolation {K : Type} [NormedField K] [IsUltrametricDis
       simp [this, hQ2 x hx, pow_succ']
 
 /- English proof (translation)
-Introduce `K _ _ _ S H hS hH`. Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨fun _ _ => 0, by simp, by simp⟩`. Take `⟨x0, hx0, hmax⟩` from `S.exists_max_image (fun x => ‖x‖) hne`. Use `set θ := ‖x0‖`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ θ` using `norm_nonneg _`. Establish `h1 : θ < 1` using `hS x0 hx0`. Use `choose Q hQ0 hQ1 hQ2 using exists_pow_eq_interpolation θ h0 h1.le S hmax hne.card_pos`. Establish `hev : ∀ k, ∀ x ∈ S, x ^ k = ∑ a : Fin S.card, (Q k).coeff a * x ^ (a : ℕ)`. Introduce `k x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hQ2 k x hx, Fin.sum_univ_eq_sum_range (fun a => (Q k).coeff a * x ^ a)]`. Apply `eval_eq_sum_range'` to reduce the goal to its premises. Use `hne.card_pos` as an intermediate fact. Establish `h : (Q k).natDegree ≤ S.card - 1` using `natDegree_le_iff_coeff_eq_zero.2 (fun a ha => hQ0 k a (by omega))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ a : ℕ, Summable (fun k : ℕ => θ ^ (k - a))`. Introduce `a`. Rewrite using `[← summable_nat_add_iff a]`. Simplify using `using summable_geometric_of_lt_one h0 h1`. Set `T : ℕ → ℕ → (Fin 2 →₀ ℕ) → K` to `fun a b ν => MvPowerSeries.coeff ν H * (Q (ν 0)).coeff a * (Q (ν 1)).coeff b`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ a b ν, ‖T a b ν‖ ≤ θ ^ (ν 0 - a) * θ ^ (ν 1 - b)`. Introduce `a b ν`. Simplify using `only [T, norm_mul]`. Use `mul_le_mul ?_ (hQ1 _ _) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hH ν)).trans (hQ1 _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∀ a b, Summable (T a b)`. Introduce `a b`. Use `Summable.of_norm_bounded ?_ (hT a b)` and prove the remaining obligations. Establish `h : Summable (fun p : ℕ × ℕ => θ ^ (p.1 - a) * θ ^ (p.2 - b))` using `Summable.mul_of_nonneg (f := fun k : ℕ => θ ^ (k - a)) (g := fun k : ℕ => θ ^ (k - b)) (hg a) (hg b) (fun _ => pow_nonneg h0 _) (fun _ => pow_nonneg h0 _)`. Establish `hinj : Function.Injective (fun ν : Fin 2 →₀ ℕ => (ν 0, ν 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Introduce `ν μ h`. Simplify using `only [Prod.mk.injEq] at h`. Use extensionality with `i`. Use `fin_cases i`. Conclude with `h.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h.2`. Establish `h'` using `h.comp_injective hinj`. Simplify `h'` using `only [Function.comp_def]`. Use `⟨fun a b => ∑' ν, T a b ν, fun a b => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg zero_le_one (fun ν => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hT a b ν).trans (mul_le_one₀ (pow_le_one₀ h0 h1.le) (by positivity) (pow_le_one₀ h0 h1.le))`. Establish `h : HasSum (fun ν => ∑ a : Fin S.card, ∑ b : Fin S.card, T a b ν * x ^ (a : ℕ) * y ^ (b : ℕ)) (∑ a : Fin S.card, ∑ b : Fin S.card, (∑' ν, T a b ν) * x ^ (a : ℕ) * y ^ (b : ℕ))` using `hasSum_sum fun a _ => hasSum_sum fun b _ => ((hsum a b).hasSum.mul_right _).mul_right _`. Rewrite using `[← h.tsum_eq, ev]`. Use `congr 1`. Use function extensionality and compare the values at `ν`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[hev (ν 0) x hx, hev (ν 1) y hy, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [T]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_integral_interpolation_two :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (S : Finset K)

@@ -13,9 +13,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `heI : ∀ (a : Fin r) (h : (a : ℕ) + 1 < r), eI k r a ≠ eI k r ⟨a + 1, h⟩`. Introduce `a h he`. Use `congrArg Fin.val he` as an intermediate fact. Simplify using `[eI] at this`. Establish `hz' : ∀ a : Fin r, z (eI k r a) = 0` using `fun a => hz _ (Or.inl (by simp [eI]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[psi, ell, Matrix.one_apply_ne, heI, hz']`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) : psi k r z c 1 = 1 := by
   have heI : ∀ (a : Fin r) (h : (a : ℕ) + 1 < r), eI k r a ≠ eI k r ⟨a + 1, h⟩ := by
@@ -34,17 +34,15 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hW hCVR hCVU hGq hCI hNE hUE k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hThr hF _hCVF`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Establish `hCkn : CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (GV k r) F` using `B5.ckOn_mono (by exact_mod_cast hnm) hCk`. Establish `hThr' : TransportedAlt k r A m` using `hThr`. Use `B5.haar_sigmaFinite D.haarW` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `B5.haar_sigmaFinite D.haarN` as an intermediate fact. Use `B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `hN` using `hNE Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc (fun n₀ h => D.haarN.left n₀ h)`. Use `⟨JF D F, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F', hU, hgU, hc, he⟩` from `(hW k r Wp Wq D A m F hThr' hF).1 g₀ hg₀`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast hnm), he⟩`. Introduce `g _ n hn`. Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, BesselCapelliCommutation.psi_one D.z'_mem, mul_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Introduce `g _ n hn`. Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`. Rewrite `e` using `[Matrix.one_mul, BesselCapelliCommutation.psi_one D.z_mem, one_mul]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g _ h hh h' hh'`. Conclude with `hUE Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc D.haarW.conc D.haarW'.conc (fun h₀ hh₀ => D.haarW.left h₀ hh₀) (fun h₀ hh₀ => D.haarW'.left h₀ hh₀) (hCI k r Wp Wq D) D.π_rep D.π'_rep g h hh h' hh'`. Conclude with `Filter.Eventually.of_forall fun q => rfl`. Use `filter_upwards [hGq k r Wp Wq D] with q hq`. Rewrite using `[hCVU k r Wp Wq D A m F Y hnm hThr' hF (gq D q) hq]`.
-
-Use `show _ = ∫ p, xiP D p • rho D p (Q.CV k r Y F) (gq D q) ∂D.μSS`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [B5.ae_inSS D] with p hp`. Rewrite using `[hCVR k r Wp Wq D Y F p hp hCkn (gq D q) hq.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bessel_capelli_commute_of_parts : Formalism.FourierDecayAlt.JF.BesselCommutesOfParts := by
   intro hW hCVR hCVU hGq hCI hNE hUE k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hThr hF _hCVF

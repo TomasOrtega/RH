@@ -4,13 +4,11 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B _ _ g hg P _`. Use `letI := g.toAlgebra`. Establish `hE : Algebra.Etale A B` using `RingHom.etale_algebraMap.mp hg`. Use `haveI : P.LiesOver (P.comap g) := ⟨rfl⟩`. Use `letI := Localization.AtPrime.algebraOfLiesOver (P.comap g) P`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Localization.AtPrime.IsLiesOverAlgebra (P.comap g) P := ⟨rfl⟩`. Use `haveI : Algebra.EssFiniteType A B := inferInstance`. Use `haveI : Algebra.IsUnramifiedAt A P := inferInstance`. Establish `hsep : Algebra.IsSeparable (P.comap g).ResidueField P.ResidueField` using `inferInstance`. Establish `halg` using `hsep.isAlgebraic`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `halg using 1` and compare the differences between its conclusion and the goal. Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`. Proceed by induction on `y using Localization.induction_on with`.
-
-Consider the case `H y`. Take `⟨a, s⟩` from `y`. Simplify using `[Ideal.ResidueField.map, RingHom.algebraMap_toAlgebra, Localization.AtPrime.algebraOfLiesOver, Localization.mk_eq_mk']`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem residueField_isAlgebraic_of_etale :
     ∀ {A B : Type} [CommRing A] [CommRing B] (g : A →+* B), g.Etale →

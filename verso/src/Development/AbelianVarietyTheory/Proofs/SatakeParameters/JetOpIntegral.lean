@@ -132,7 +132,7 @@ def NabLeDel : Prop :=
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.Ranks.N`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ColPeriod.N_lt_succ (R : _root_.Formalism.BasicNotions.Ranks) (j : ℕ) : R.N j < R.N (j + 1) := by
   unfold _root_.Formalism.BasicNotions.Ranks.N

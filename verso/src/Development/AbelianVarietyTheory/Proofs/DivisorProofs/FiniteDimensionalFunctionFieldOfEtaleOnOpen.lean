@@ -11,13 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.FunctionFieldEtale
 
 /- English proof (translation)
-Use `letI : Algebra K L := ψ.toAlgebra`. Use `letI : Algebra R S := φ.toAlgebra`. Use `haveI : Algebra.Etale R S := hφ`. Use `letI : Algebra R L := (ψ.comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R S L := IsScalarTower.of_algebraMap_eq (fun r => h r)`. Use `haveI : Module.Finite K (K ⊗[R] S) := Algebra.FormallyUnramified.finite_of_free K (K ⊗[R] S)`. Set `g : K ⊗[R] S →ₐ[K] L` to `Algebra.TensorProduct.lift (Algebra.ofId K L) (IsScalarTower.toAlgHom R S L) (fun _ _ => Commute.all _ _)`. Use `haveI : Module.Finite K g.range := Module.Finite.of_surjective g.rangeRestrict.toLinearMap g.rangeRestrict_surjective`. Establish `hS : ∀ s : S, algebraMap S L s ∈ g.range` using `fun s => ⟨1 ⊗ₜ s, by simp [g]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ x ∈ g.range, x⁻¹ ∈ g.range` using `fun x hx => Subalgebra.inv_mem_of_algebraic (A := g.range) (x := ⟨x, hx⟩) ((Algebra.IsAlgebraic.isAlgebraic (R := K) (⟨x, hx⟩ : g.range)).algHom g.range.val)`. Establish `hsurj : Function.Surjective g`. Introduce `y`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := S) y`. Rewrite using `[div_eq_mul_inv]`.
-
-Conclude with `Subalgebra.mul_mem _ (hS a) (hinv _ (hS b))`. Conclude with `Module.Finite.of_surjective g.toLinearMap hsurj`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fractionRing_of_etale {R S K L : Type} [CommRing R] [IsDomain R]
     [CommRing S] [IsDomain S] [Field K] [Field L] [Algebra R K] [IsFractionRing R K]
@@ -47,21 +45,17 @@ theorem finiteDimensional_fractionRing_of_etale {R S K L : Type} [CommRing R] [I
   exact Module.Finite.of_surjective g.toLinearMap hsurj
 
 /- English proof (translation)
-Introduce `M W _ _ f _ U hf hU`. Establish `hξU : genericPoint M ∈ U` using `((genericPoint_spec M).mem_open_set_iff U.isOpen).mpr (by simpa using hU)`. Take `⟨V, hV, hfξV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := f (genericPoint M)) (U := ⊤) trivial`. Set `x : U` to `⟨genericPoint M, hξU⟩`. Establish `hx : x ∈ (U.ι ≫ f) ⁻¹ᵁ V` using `hfξV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨V', hV', hxV', hV'sub⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hle : V' ≤ (U.ι ≫ f) ⁻¹ᵁ V` using `fun _ h => hV'sub h`. Set `U' : M.Opens` to `U.ι ''ᵁ V'`. Establish `hU' : IsAffineOpen U'` using `hV'.image_of_isOpenImmersion U.ι`. Establish `hξU' : genericPoint M ∈ U'` using `⟨x, hxV', rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : U' ≤ f ⁻¹ᵁ V`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hV'sub hy`. Use `haveI : Nonempty V := ⟨⟨_, hfξV⟩⟩`. Use `haveI : Nonempty U' := ⟨⟨_, hξU'⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `het0` using `HasRingHomProperty.appLE (P := @Etale) (f := U.ι ≫ f) hf ⟨V, hV⟩ ⟨V', hV'⟩ hle`. Establish `key : (U.ι ≫ f).appLE V V' hle = f.appLE V U' e'`. Rewrite using `[Scheme.Hom.comp_appLE]`. Use `erw [Scheme.Opens.ι_appLE]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `het : (f.appLE V U' e').hom.Etale`. Rewrite using `[← key]`. Conclude with `het0`. Use `haveI := functionField_isFractionRing_of_isAffineOpen W V hV`. Use `haveI := functionField_isFractionRing_of_isAffineOpen M U' hU'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finiteDimensional_fractionRing_of_etale (f.appLE V U' e').hom het (functionFieldMap f) ?_` and prove the remaining obligations. Introduce `r`. Use `functionFieldMap_algebraMap f (genericPoint M) (W.presheaf.germ V _ hfξV r)` as an intermediate fact. Rewrite `this` using `[Scheme.algebraMap_germ_eq_germToFunctionField]`. Rewrite using `[RingHom.algebraMap_toAlgebra, RingHom.algebraMap_toAlgebra]`.
-
-Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Use `haveI : Nonempty (f ⁻¹ᵁ V) := ⟨⟨_, hfξV⟩⟩`. Use `erw [Scheme.algebraMap_germ_eq_germToFunctionField]`. Use `show M.presheaf.germ _ _ _ (f.app V r) = M.presheaf.germ U' _ hξU' (M.presheaf.map (homOfLE e').op (f.app V r))`.
-
-Rewrite using `[TopCat.Presheaf.germ_res_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_functionField_of_etale_on_open : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W]
     (f : M ⟶ W) [IsDominant f] (U : M.Opens), Etale (U.ι ≫ f) → (U : Set M).Nonempty →

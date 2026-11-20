@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Use `set e : (E →L[ℝ] ℝ) ≃L[ℝ] (E →L[ℝ] ℝ) := c.symm.arrowCongr (ContinuousLinearEquiv.refl ℝ ℝ) with he`. Establish `h1 : fderiv ℝ (φ ∘ c) = e ∘ fderiv ℝ φ ∘ c`. Use function extensionality and compare the values at `z`. Rewrite using `[c.comp_right_fderiv]`. Use extensionality with `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[he]`. Rewrite using `[h1, e.comp_fderiv, c.comp_right_fderiv]`. Simplify using `[he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem madens_hess {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (c : E ≃L[ℝ] E) (φ : E → ℝ) (y u v : E) :
     fderiv ℝ (fderiv ℝ (φ ∘ c)) y u v = fderiv ℝ (fderiv ℝ φ) (c y) (c u) (c v) := by
@@ -24,17 +24,17 @@ theorem madens_hess {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (c : E
   simp [he]
 
 /- English proof (translation)
-Set `c : (Fin D → ℂ) ≃L[ℝ] (Fin D → ℂ)` to `ContinuousLinearEquiv.piCongrRight (fun _ => Complex.conjCLE)`. Establish `hc : ∀ z, c z = fun i => starRingEnd ℂ (z i)` using `fun z => rfl`. Establish `hf : (fun y' : Fin D → ℂ => φ (fun i => starRingEnd ℂ (y' i))) = φ ∘ c`. Use function extensionality and compare the values at `z`. Simplify using `[hc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ i : Fin D, c (Pi.single i 1) = Pi.single i 1`. Introduce `i`. Use function extensionality and compare the values at `k`. Rewrite using `[hc]`. Distinguish the cases in `h : k = i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `h2 : ∀ i : Fin D, c (Complex.I • Pi.single i 1) = -(Complex.I • Pi.single i 1)`. Introduce `i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hc]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Use extensionality with `i j`. Simplify using `only [cxHessian, Matrix.map_apply, hf, madens_hess, h1, h2, map_neg, ContinuousLinearMap.neg_apply, neg_neg]`. Rewrite using `[hc y]`. Generalize the expression as in `fderiv ℝ (fderiv ℝ φ) (fun i => starRingEnd ℂ (y i)) = H`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [map_div₀, map_add, map_sub, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat, sub_neg_eq_add, Complex.ofReal_add, Complex.ofReal_sub, Complex.ofReal_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem madens_cx (D : ℕ) (φ : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ) :
     cxHessian (fun y' => φ (fun i => starRingEnd ℂ (y' i))) y =
@@ -59,11 +59,11 @@ theorem madens_cx (D : ℕ) (φ : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `D φ y`. Establish `key : ∀ A : Fin D → Matrix (Fin D) (Fin D) ℂ, mixedDisc (fun k => (A k).map (starRingEnd ℂ)) = starRingEnd ℂ (mixedDisc A)`. Introduce `A`. Simplify using `only [mixedDisc, map_mul, map_div₀, map_one, map_natCast, map_sum, map_pow, map_neg]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.sum_apply]`. Simplify using `only [maDensity, madens_cx, key, Complex.conj_re]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem c_madens : ∀ (D : ℕ) (φ : Fin D → (Fin D → ℂ) → ℝ) (y : Fin D → ℂ), maDensity (fun j y' => φ j (fun i => starRingEnd ℂ (y' i))) y = maDensity φ (fun i => starRingEnd ℂ (y i)) := by
   intro D φ y

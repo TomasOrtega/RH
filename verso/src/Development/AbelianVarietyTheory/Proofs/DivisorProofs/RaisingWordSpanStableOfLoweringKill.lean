@@ -10,33 +10,27 @@ open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hG L hK hL`. Use `set S := Submodule.span ℂ {y : V | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ L, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} with hS`. Establish `gen : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) → ∀ x ∈ L, (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x ∈ S` using `fun l hl x hx => Submodule.subset_span ⟨l, hl, x, hx, rfl⟩`. Establish `pre : ∀ c d, ε c = true → ε d = false → ∀ y ∈ S, E c d y ∈ S`. Introduce `c d hc hd y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, x, hx, rfl⟩` from `hz`. Establish `h1` using `gen ((c, d) :: l) (by`. Introduce `p hp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases. Conclude with `⟨hc, hd⟩`. Conclude with `hl p hp) x hx`. Simplify `h1` using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Consider the case `zero => rw [map_zero]`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `S.zero_mem`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `S.add_mem hu hv`. Consider the case `smul r u _ hu => rw [map_smul]`. Conclude with `S.smul_mem r hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) → ∀ x ∈ L, ∀ a b, E a b ((l.map fun p : Fin n × Fin n => E p.1 p.2).prod x) ∈ S`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ x hx a b`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.map_nil, List.prod_nil, Module.End.one_apply]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b`. Establish `h1` using `gen [] (by simp) _ (hK a b (ha.trans hb.symm) x hx)`. Simplify `h1` using `only [List.map_nil, List.prod_nil, Module.End.one_apply]`. Rewrite using `[hL b a hb ha x hx]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Conclude with `S.zero_mem`. Establish `h1` using `gen [(a, b)] (by simp [ha, hb]) x hx`. Simplify `h1` using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`. Establish `h1` using `gen [] (by simp) _ (hK a b (ha.trans hb.symm) x hx)`. Simplify `h1` using `only [List.map_nil, List.prod_nil, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `cons q l ih`. Take `⟨c, d⟩` from `q`. Introduce `hl x hx a b`. Establish `hl' : ∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false` using `fun p hp => hl p (List.mem_cons_of_mem _ hp)`. Establish `hcd : ε c = true ∧ ε d = false` using `hl (c, d) (by simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `ih'` using `ih hl' x hx`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Use `set z := (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x`. Establish `key : E a b (E c d z) = E c d (E a b z) + ((if b = c then E a d else 0) - (if d = a then E c b else 0)) z`. Rewrite using `[← hG a b c d, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[key, LinearMap.sub_apply]`. Use `S.add_mem (pre c d hcd.1 hcd.2 _ (ih' a b)) (S.sub_mem ?_ ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `ih' a d`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `S.zero_mem`. Use `split_ifs`. Conclude with `ih' c b`. Rewrite using `[LinearMap.zero_apply]`.
-
-Conclude with `S.zero_mem`. Introduce `a b y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, x, hx, rfl⟩` from `hz`.
-
-Conclude with `main l hl x hx a b`. Consider the case `zero => rw [map_zero]`. Conclude with `S.zero_mem`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `S.add_mem hu hv`.
-
-Consider the case `smul r u _ hu => rw [map_smul]`. Conclude with `S.smul_mem r hu`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HolDS.raisingSpan_stable : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V), GlRel E → ∀ L : Submodule ℂ V, KStab ε E L → (∀ a b : Fin n, ε a = true → ε b = false → ∀ x ∈ L, E b a x = 0) → ∀ (a b : Fin n), ∀ y ∈ Submodule.span ℂ {y : V | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ L, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x}, E a b y ∈ Submodule.span ℂ {y : V | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ L, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} := by
   intro n ε V _ _ E hG L hK hL

@@ -16,23 +16,23 @@ namespace GlobalTheory.HSNef.Den
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Introduce `x i j _ _`. Conclude with `⟨1, by simp [Pair.loc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem one_mem_H (P : Pair p) : (1 : X.functionField) ∈ P.H 0 0 := by
   intro x i j _ _
   exact ⟨1, by simp [Pair.loc]⟩
 
 /- English proof (translation)
-The claim follows from `(NuMul.mul_mem_H_and_nu_mul k X p P a b a' b' f g hf hg).1`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_H {P : Pair p} {a b a' b' : ℤ} {f g : X.functionField} (hf : f ∈ P.H a b) (hg : g ∈ P.H a' b') :
     f * g ∈ P.H (a + a') (b + b') :=
   (NuMul.mul_mem_H_and_nu_mul k X p P a b a' b' f g hf hg).1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using one_mem_H P`. Consider the case `insert l s hl ih`. Rewrite using `[Finset.prod_insert hl, Finset.sum_insert hl]`. Use `mul_mem_H (hg l (Finset.mem_insert_self l s)) (ih fun j hj => hg j (Finset.mem_insert_of_mem hj))` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_mem_H {P : Pair p} {J : Type} (s : Finset J) (c : J → ℕ) (g : J → X.functionField)
     (hg : ∀ j ∈ s, g j ∈ P.H 0 (c j)) : (∏ j ∈ s, g j) ∈ P.H 0 ((∑ j ∈ s, c j : ℕ) : ℤ) := by
@@ -45,11 +45,11 @@ theorem prod_mem_H {P : Pair p} {J : Type} (s : Finset J) (c : J → ℕ) (g : J
     simpa using this
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P hA a J _ f`. Use `Fintype.ofFinite J` as an intermediate fact. Use `choose c g hc hg0 hg hgf using fun j => GlobalTheory.T.exists_ampleSection_clearing_rationalFunction_denominator k X p D hX P hA (f j)`. Take `⟨c', h, hc', h0, hh⟩` from `GlobalTheory.T.exists_pos_nonzero_pairSection_of_ample k X p D hX P hA a`. Use `⟨c' + ∑ j, c j, h * ∏ j, g j, by omega, mul_ne_zero h0 (Finset.prod_ne_zero_iff.2 fun j _ => hg0 j), ?_, fun j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_mem_H hh (prod_mem_H Finset.univ c g fun j _ => hg j)` as an intermediate fact. Simplify using `using this`. Establish `e : h * (∏ l, g l) * f j = h * ((g j * f j) * ∏ l ∈ Finset.univ.erase j, g l)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ j)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `es : ∑ l, c l = c j + ∑ l ∈ Finset.univ.erase j, c l` using `(Finset.add_sum_erase _ _ (Finset.mem_univ j)).symm`. Rewrite using `[e, es]`. Use `mul_mem_H hh (mul_mem_H (hgf j) (prod_mem_H (Finset.univ.erase j) c g fun l _ => hg l))` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_clear_denominators : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.A.B → ∀ (a : ℤ) (J : Type) [Finite J] (f : J → X.functionField), ∃ (c : ℕ) (g : X.functionField), 0 < c ∧ g ≠ 0 ∧ g ∈ P.H a c ∧ ∀ j, g * f j ∈ P.H a c := by
   intro k _ X _ p D hX P hA a J _ f

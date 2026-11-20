@@ -27,7 +27,7 @@ def HasDens (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (φ :
     ∫ v in f ⁻¹' (ι '' S), φ v ∂μ = ∫ b in S, g b ∂ν
 
 /- English proof (translation)
-Take `⟨i1, c1, e1⟩` from `h₁`. Take `⟨i2, c2, e2⟩` from `h₂`. Use `⟨i1.sub i2, c1.sub c2, fun S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_sub i1.integrableOn i2.integrableOn, integral_sub (c1.continuousOn.integrableOn_compact hS) (c2.continuousOn.integrableOn_compact hS), e1 S hS, e2 S hS]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDens.sub [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g₁ g₂ : X → ℝ}
     (h₁ : HasDens μ f ι ν φ₁ g₁) (h₂ : HasDens μ f ι ν φ₂ g₂) :
@@ -40,7 +40,7 @@ theorem HasDens.sub [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g�
     e1 S hS, e2 S hS]
 
 /- English proof (translation)
-Take `⟨hi, hc, he⟩` from `h`. Use `⟨hi.const_mul c, continuous_const.mul hc, fun S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, he S hS]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDens.const_mul (c : ℝ) {φ : V → ℝ} {g : X → ℝ} (h : HasDens μ f ι ν φ g) :
     HasDens μ f ι ν (fun v => c * φ v) (fun b => c * g b) := by
@@ -49,11 +49,11 @@ theorem HasDens.const_mul (c : ℝ) {φ : V → ℝ} {g : X → ℝ} (h : HasDen
   rw [integral_const_mul, integral_const_mul, he S hS]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `hU : {b | D b < D b0 / 2} ∈ 𝓝 b0` using `(isOpen_lt hD continuous_const).mem_nhds (by show D b0 < D b0 / 2; linarith)`. Take `⟨K, hKn, hKU, hKc⟩` from `local_compact_nhds hU`. Establish `hpos : 0 < ν K` using `ν.measure_pos_of_mem_nhds hKn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ν K < ⊤` using `hKc.measure_lt_top`. Establish `h1 : ∫ b in K, D b ∂ν ≤ ∫ b in K, D b0 / 2 ∂ν` using `setIntegral_mono_on (hD.continuousOn.integrableOn_compact hKc) (continuousOn_const.integrableOn_compact hKc) hKc.measurableSet (fun x hx => le_of_lt (hKU hx))`. Rewrite `h1` using `[setIntegral_const, smul_eq_mul]`. Apply the tactic sequence `try simp only [Measure.real] at h1`. Establish `h2 : 0 < (ν K).toReal` using `ENNReal.toReal_pos hpos.ne' hfin.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3` using `h0 K hKc`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem nonneg_of_setIntegral [LocallyCompactSpace X] [IsFiniteMeasureOnCompacts ν]
     [ν.IsOpenPosMeasure] (D : X → ℝ) (hD : Continuous D)
@@ -76,9 +76,9 @@ theorem nonneg_of_setIntegral [LocallyCompactSpace X] [IsFiniteMeasureOnCompacts
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `h₂.sub h₁`. Establish `hS : ∀ S, IsCompact S → 0 ≤ ∫ x in S, g₂ x - g₁ x ∂ν`. Introduce `S hS`. Rewrite using `[← h.2.2 S hS]`. Conclude with `integral_nonneg fun v => sub_nonneg.mpr (hle v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : 0 ≤ g₂ b - g₁ b` using `nonneg_of_setIntegral (fun x => g₂ x - g₁ x) h.2.1 hS b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem HasDens.le [LocallyCompactSpace X] [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure]
     {φ₁ φ₂ : V → ℝ} {g₁ g₂ : X → ℝ}
@@ -99,9 +99,9 @@ section Approx
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
 
 /- English proof (translation)
-Use `AddSubgroup.isOpen_of_mem_nhds _ (g := (0 : V)) ?_` and prove the remaining obligations. Establish `h1 : (Λ₀ : Set V) ∈ 𝓝 (0 : V)` using `h₀o.mem_nhds Λ₀.zero_mem`. Establish `h2 : (⋂ i ∈ t, (L i : Set V)) ∈ 𝓝 (0 : V)` using `(Filter.biInter_finset_mem t).2 fun i _ => (hLo i).mem_nhds (L i).zero_mem`. Use `filter_upwards [h1, h2] with x hx1 hx2`. Simplify using `only [Set.mem_iInter, SetLike.mem_coe] at hx1 hx2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_inf, AddSubgroup.mem_iInf]`. Conclude with `⟨hx1, fun i hi => hx2 i hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_inf_iInf (Λ₀ : AddSubgroup V) (h₀o : IsOpen (Λ₀ : Set V)) {ι : Type}
     (t : Finset ι) (L : ι → AddSubgroup V) (hLo : ∀ i, IsOpen (L i : Set V)) :
@@ -116,27 +116,23 @@ theorem isOpen_inf_iInf (Λ₀ : AddSubgroup V) (h₀o : IsOpen (Λ₀ : Set V))
   exact ⟨hx1, fun i hi => hx2 i hi⟩
 
 /- English proof (translation)
-Establish `hloc : ∀ x : V, ∃ W : AddSubgroup V, IsOpen (W : Set V) ∧ ∀ w ∈ W, |φ (x + w) - φ x| < ε / 2`. Introduce `x`. Establish `hcx : ContinuousAt (fun w => φ (x + w)) 0` using `(hc.comp (continuous_const.add continuous_id)).continuousAt`. Establish `hN : {w | |φ (x + w) - φ x| < ε / 2} ∈ 𝓝 (0 : V)`. Establish `h1` using `hcx.preimage_mem_nhds (Metric.ball_mem_nhds _ (half_pos hε))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1] with w hw`. Simplify `hw` using `[Real.dist_eq]`. Take `⟨W, hWo, -, hWN⟩` from `hNA _ hN`. Conclude with `⟨W, hWo, fun w hw => hWN hw⟩`. Use `choose W hWo hW using hloc`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : ∀ i, IsOpen ((fun y => -i + y) ⁻¹' (W i : Set V))` using `fun i => (hWo i).preimage (continuous_const.add continuous_id)`. Establish `hcov : tsupport φ ⊆ ⋃ i, (fun y => -i + y) ⁻¹' (W i : Set V)`. Introduce `y _`. Use `Set.mem_iUnion.mpr ⟨y, ?_⟩` and prove the remaining obligations. Use `show -y + y ∈ W y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `hs.elim_finite_subcover (fun i => (fun y => -i + y) ⁻¹' (W i : Set V)) hUo hcov`. Establish `hΛo` using `isOpen_inf_iInf Λ₀ h₀o t W hWo`. Use `⟨Λ₀ ⊓ ⨅ i ∈ t, W i, hΛo, h₀c.of_isClosed_subset (AddSubgroup.isClosed_of_isOpen _ hΛo) (SetLike.coe_subset_coe.mpr inf_le_left), inf_le_left, ?_⟩` and prove the remaining obligations. Introduce `x z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz'` using `hz`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_iInf] at hz'`. Establish `hzW : ∀ i ∈ t, z ∈ W i` using `hz'.2`. Establish `hzero : ∀ y, y ∉ tsupport φ → φ y = 0` using `fun y hy => by`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hy (subset_tsupport φ (Function.mem_support.mpr hne))`. Distinguish the cases in `hx : x ∈ ⋃ i ∈ t, (fun y => -i + y) ⁻¹' (W i : Set V)`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨i, hi, hxi⟩` from `hx`. Establish `hxi' : -i + x ∈ W i` using `hxi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hW i (-i + x) hxi'`. Establish `h2` using `hW i (-i + (x + z)) (by`. Establish `e : -i + (x + z) = (-i + x) + z` using `by abel`. Rewrite using `[e]`. Conclude with `(W i).add_mem hxi' (hzW i hi))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [add_neg_cancel_left] at h1 h2`. Rewrite `h1`, `h2`, the goal using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`. Establish `hxz : x + z ∉ ⋃ i ∈ t, (fun y => -i + y) ⁻¹' (W i : Set V)`. Introduce `hc'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion] at hc' ⊢`. Take `⟨i, hi, hxi⟩` from `hc'`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Establish `hxi' : -i + (x + z) ∈ W i` using `hxi`.
-
-Use `show -i + x ∈ W i`. Establish `e : -i + x = (-i + (x + z)) + -z` using `by abel`. Rewrite using `[e]`. Conclude with `(W i).add_mem hxi' ((W i).neg_mem (hzW i hi))`. Rewrite using `[hzero x (fun h => hx (ht h)), hzero (x + z) (fun h => hxz (ht h))]`.
-
-Simplify using `using hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sub_osc (hNA : HasCOSub V) {φ : V → ℝ} (hc : Continuous φ)
     (hs : HasCompactSupport φ) {ε : ℝ} (hε : 0 < ε) (Λ₀ : AddSubgroup V)
@@ -214,7 +210,7 @@ def cosApx (Λ : AddSubgroup V) (φ : V → ℝ) (x : V) : ℝ := φ ((x : V ⧸
 omit [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V] [OpensMeasurableSpace V]
   in
 /- English proof (translation)
-Establish `h : ((((x : V ⧸ Λ).out : V) : V ⧸ Λ)) = (x : V ⧸ Λ)` using `Quotient.out_eq _`. Conclude with `QuotientAddGroup.eq.mp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cosApx_sub_mem (Λ : AddSubgroup V) (x : V) : -((x : V ⧸ Λ).out) + x ∈ Λ := by
   have h : ((((x : V ⧸ Λ).out : V) : V ⧸ Λ)) = (x : V ⧸ Λ) := Quotient.out_eq _
@@ -223,7 +219,7 @@ theorem cosApx_sub_mem (Λ : AddSubgroup V) (x : V) : -((x : V ⧸ Λ).out) + x 
 omit [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V] [OpensMeasurableSpace V]
   in
 /- English proof (translation)
-Establish `e : (y : V ⧸ Λ) = (x : V ⧸ Λ)` using `(QuotientAddGroup.eq.mpr h).symm`. Use `show φ ((y : V ⧸ Λ).out) = φ ((x : V ⧸ Λ).out)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosApx_eq (Λ : AddSubgroup V) (φ : V → ℝ) {x y : V} (h : -x + y ∈ Λ) :
     cosApx Λ φ y = cosApx Λ φ x := by
@@ -233,9 +229,7 @@ theorem cosApx_eq (Λ : AddSubgroup V) (φ : V → ℝ) {x y : V} (h : -x + y �
 
 omit [MeasurableSpace V] [OpensMeasurableSpace V] in
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Continuous fun y : V => -x + y` using `continuous_const.add continuous_id`. Establish `hm : (fun y : V => -x + y) ⁻¹' (Λ : Set V) ∈ 𝓝 x` using `(hΛ.preimage hc).mem_nhds (by show -x + x ∈ Λ; simp)`. Use `filter_upwards [hm] with y hy`.
-
-Conclude with `cosApx_eq Λ φ hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cosApx_lc (Λ : AddSubgroup V) (hΛ : IsOpen (Λ : Set V)) (φ : V → ℝ) :
     IsLocallyConstant (cosApx Λ φ) := by
@@ -248,65 +242,59 @@ theorem cosApx_lc (Λ : AddSubgroup V) (hΛ : IsOpen (Λ : Set V)) (φ : V → �
   exact cosApx_eq Λ φ hy
 
 /- English proof (translation)
-Introduce `hLC φ hφ`. Take `⟨hc, hs, hsU⟩` from `hφ`. Take `⟨W, hW, hKW⟩` from `compact_open_separated_add_right hs.isCompact hU hsU`. Take `⟨Λ₀, h₀o, h₀c, h₀W⟩` from `hNA W hW`. Use `set K' : Set V := tsupport φ + (Λ₀ : Set V) with hK'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcos : ∀ x y, -x + y ∈ Λ₀ → y ∈ K' → x ∈ K'`. Introduce `x y h hy`. Take `⟨k, hk, l, hl, rfl⟩` from `hy`. Conclude with `⟨k, hk, l - (-x + (k + l)), Λ₀.sub_mem hl h, by abel⟩`. Establish `hcos' : ∀ x y, -x + y ∈ Λ₀ → (y ∈ K' ↔ x ∈ K')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y h`. Use `⟨hcos x y h, hcos y x ?_⟩` and prove the remaining obligations. Use `Λ₀.neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_add_rev, neg_neg]`. Then use the resulting hypothesis. Establish `hnb : ∀ x : V, {y | -x + y ∈ Λ₀} ∈ 𝓝 x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `(h₀o.preimage (continuous_const.add continuous_id)).mem_nhds ?_` and prove the remaining obligations. Use `show -x + x ∈ Λ₀`. Rewrite using `[neg_add_cancel]`. Conclude with `Λ₀.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK'cl : IsClosed K'`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Conclude with `Filter.mem_of_superset (hnb x) fun y hy hyK => hx (hcos x y hy hyK)`. Establish `hK'c : IsCompact K'` using `hs.isCompact.add h₀c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'U : K' ⊆ U` using `(Set.add_subset_add subset_rfl h₀W).trans hKW`. Establish `hKK' : tsupport φ ⊆ K'` using `fun x hx => ⟨x, hx, 0, Λ₀.zero_mem, add_zero x⟩`. Establish `hlcc : ∀ ψ : V → ℝ, IsLocallyConstant ψ → Function.support ψ ⊆ K' → IsLCcOn U ψ` using `fun ψ h1 h2 => ⟨h1, hK'c.of_isClosed_subset isClosed_closure (closure_minimal h2 hK'cl), (closure_minimal h2 hK'cl).trans hK'U⟩`. Establish `hdens : ∀ ψ, IsLCcOn U ψ → ∃ g, HasDens μ f ι ν ψ g` using `fun ψ h => by`. Take `⟨g, hg, hS⟩` from `hLC ψ h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨g, h.1.continuous.integrable_of_hasCompactSupport h.2.1, hg, hS⟩`. Use `set ind : V → ℝ := K'.indicator fun _ => 1 with hind_def`. Establish `hind : IsLCcOn U ind`. Use `hlcc ind ?_ Set.support_indicator_subset` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `x`. Use `⟨{y | -x + y ∈ Λ₀}, h₀o.preimage (continuous_const.add continuous_id), mem_of_mem_nhds (hnb x), fun y hy => ?_⟩` and prove the remaining obligations. Use `hcos' x y hy` as an intermediate fact. Rewrite using `[hind_def]`. Distinguish the cases in `hx : x ∈ K'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (this.2 hx)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem fun h => hx (this.1 h)]`. Take `⟨g0, hg0⟩` from `hdens ind hind`. Establish `hε : ∀ n : ℕ, (0 : ℝ) < 1 / ((n : ℝ) + 1)` using `fun n => by positivity`. Use `choose Λ hΛo hΛc hΛ0 hosc using fun n : ℕ => exists_sub_osc hNA hc hs (hε n) Λ₀ h₀o h₀c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set φn : ℕ → V → ℝ := fun n => cosApx (Λ n) φ with hφn_def`. Establish `hφn_close : ∀ n x, |φn n x - φ x| < 1 / ((n : ℝ) + 1)`. Introduce `n x`. Use `hosc n ((x : V ⧸ Λ n).out) _ (cosApx_sub_mem (Λ n) x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[abs_sub_comm]`. Conclude with `this`. Establish `hφn_supp : ∀ n, Function.support (φn n) ⊆ K'`. Introduce `n x hx`. Conclude with `⟨_, subset_tsupport φ hx, _, hΛ0 n (cosApx_sub_mem (Λ n) x), add_neg_cancel_left _ x⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hφn : ∀ n, IsLCcOn U (φn n)` using `fun n => hlcc _ (cosApx_lc _ (hΛo n) φ) (hφn_supp n)`. Use `choose g hg using fun n => hdens (φn n) (hφn n)`. Establish `hbd : ∀ n x, |φn n x - φ x| ≤ 1 / ((n : ℝ) + 1) * ind x`. Introduce `n x`. Distinguish the cases in `hx : x ∈ K'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hind_def, Set.indicator_of_mem hx, mul_one]`. Conclude with `(hφn_close n x).le`. Establish `h1 : φn n x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx (hφn_supp n h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : φ x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hKK' h)`. Rewrite using `[hind_def, Set.indicator_of_notMem hx, h1, h2]`. Simplify using the standard rewrite rules. Establish `hgg : ∀ n m b, |g n b - g m b| ≤ (1 / ((n : ℝ) + 1) + 1 / ((m : ℝ) + 1)) * g0 b`. Introduce `n m b`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA` using `hg0.const_mul (1 / ((n : ℝ) + 1) + 1 / ((m : ℝ) + 1))`. Establish `hle : ∀ n m x, φn n x - φn m x ≤ (1 / ((n : ℝ) + 1) + 1 / ((m : ℝ) + 1)) * ind x`. Introduce `n m x`. Establish `h1` using `abs_le.1 (hbd n x)`. Establish `h2` using `abs_le.1 (hbd m x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_mul]`. Combine the linear relations using `[h1.1, h1.2, h2.1, h2.2]`. Establish `u1` using `((hg n).sub (hg m)).le hA (hle n m) b`. Establish `hA'` using `hg0.const_mul (1 / ((m : ℝ) + 1) + 1 / ((n : ℝ) + 1))`. Establish `u2` using `((hg m).sub (hg n)).le hA' (hle m n) b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `abs_le.2 ⟨?_, u1⟩` and prove the remaining obligations. Establish `: (1 / ((m : ℝ) + 1) + 1 / ((n : ℝ) + 1)) = (1 / ((n : ℝ) + 1) + 1 / ((m : ℝ) + 1))` using `add_comm _ _`. Rewrite `u2` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcauchy : ∀ b, CauchySeq fun n => g n b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `b`. Use `cauchySeq_of_le_tendsto_0 (fun N : ℕ => 2 * (1 / ((N : ℝ) + 1)) * |g0 b|) (fun n m N hn hm => ?_) ?_` and prove the remaining obligations. Rewrite using `[Real.dist_eq]`. Establish `hN : (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hM : (N : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 / ((n : ℝ) + 1) ≤ 1 / ((N : ℝ) + 1)` using `one_div_le_one_div_of_le (by positivity) (by linarith)`. Establish `h2 : 1 / ((m : ℝ) + 1) ≤ 1 / ((N : ℝ) + 1)` using `one_div_le_one_div_of_le (by positivity) (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `(tendsto_one_div_add_atTop_nhds_zero_nat.const_mul (2 : ℝ)).mul_const |g0 b|` as an intermediate fact. Rewrite `this` using `[mul_zero, zero_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set G : X → ℝ := fun b => limUnder atTop fun n => g n b with hG_def`. Establish `hlim : ∀ b, Tendsto (fun n => g n b) atTop (𝓝 (G b))` using `fun b => (hcauchy b).tendsto_limUnder`. Establish `hGn : ∀ n b, |G b - g n b| ≤ 1 / ((n : ℝ) + 1) * g0 b`. Introduce `n b`. Establish `ht : Tendsto (fun m => |g m b - g n b|) atTop (𝓝 |G b - g n b|)` using `((hlim b).sub_const _).abs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `ht2 : Tendsto (fun m : ℕ => (1 / ((n : ℝ) + 1) + 1 / ((m : ℝ) + 1)) * g0 b) atTop (𝓝 ((1 / ((n : ℝ) + 1) + 0) * g0 b))` using `(tendsto_const_nhds.add tendsto_one_div_add_atTop_nhds_zero_nat).mul_const _`. Use `le_of_tendsto_of_tendsto' ht ht2 fun m => by` as an intermediate fact. Rewrite using `[abs_sub_comm]`. Conclude with `hgg n m b`. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGc : Continuous G`. Use `TendstoLocallyUniformly.continuous (F := g) (p := atTop) ?_ (Eventually.of_forall fun n => (hg n).2.1).frequently` and prove the remaining obligations. Rewrite using `[Metric.tendstoLocallyUniformly_iff]`. Introduce `ε hεp x`. Use `⟨{y | g0 y < g0 x + 1}, (isOpen_lt hg0.2.1 continuous_const).mem_nhds (by simp), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1) * (|g0 x| + 1)) atTop (𝓝 0)`. Use `tendsto_one_div_add_atTop_nhds_zero_nat.mul_const (|g0 x| + 1)` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually (Iio_mem_nhds hεp)] with n hn y hy`. Establish `hy' : g0 y < g0 x + 1` using `hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `le_abs_self (g0 x)`. Rewrite using `[Real.dist_eq]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨G, hGc, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hφi : Integrable φ μ` using `hc.integrable_of_hasCompactSupport hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC : ∀ n : ℕ, |∫ v in f ⁻¹' (ι '' S), φ v ∂μ - ∫ b in S, G b ∂ν| ≤ 2 * (1 / ((n : ℝ) + 1)) * |∫ b in S, g0 b ∂ν|`. Introduce `n`. Establish `e1 : |∫ v in f ⁻¹' (ι '' S), φ v ∂μ - ∫ v in f ⁻¹' (ι '' S), φn n v ∂μ| ≤ ∫ v in f ⁻¹' (ι '' S), 1 / ((n : ℝ) + 1) * ind v ∂μ`. Rewrite using `[← integral_sub hφi.integrableOn (hg n).1.integrableOn, ← Real.norm_eq_abs]`. Use `norm_integral_le_of_norm_le (g := fun v => 1 / ((n : ℝ) + 1) * ind v) (hg0.1.const_mul _).integrableOn (ae_of_all _ ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `x`. Rewrite using `[Real.norm_eq_abs, abs_sub_comm]`. Conclude with `hbd n x`. Establish `e2 : |∫ b in S, g n b ∂ν - ∫ b in S, G b ∂ν| ≤ ∫ b in S, 1 / ((n : ℝ) + 1) * g0 b ∂ν`. Rewrite using `[← integral_sub ((hg n).2.1.continuousOn.integrableOn_compact hS) (hGc.continuousOn.integrableOn_compact hS), ← Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `norm_integral_le_of_norm_le (g := fun b => 1 / ((n : ℝ) + 1) * g0 b) ((continuous_const.mul hg0.2.1).continuousOn.integrableOn_compact hS) (ae_of_all _ ?_)` and prove the remaining obligations. Introduce `b`. Rewrite using `[Real.norm_eq_abs, abs_sub_comm]`. Conclude with `hGn n b`. Rewrite `e1` using `[integral_const_mul, hg0.2.2 S hS]`.
-
-Rewrite `e2` using `[integral_const_mul]`. Rewrite `e1` using `[(hg n).2.2 S hS]`. Establish `h3` using `abs_sub_le (∫ v in f ⁻¹' (ι '' S), φ v ∂μ) (∫ b in S, g n b ∂ν) (∫ b in S, G b ∂ν)`. Establish `h4 : 1 / ((n : ℝ) + 1) * ∫ b in S, g0 b ∂ν ≤ 1 / ((n : ℝ) + 1) * |∫ b in S, g0 b ∂ν|` using `mul_le_mul_of_nonneg_left (le_abs_self _) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < |∫ v in f ⁻¹' (ι '' S), φ v ∂μ - ∫ b in S, G b ∂ν|` using `abs_pos.2 (sub_ne_zero.2 hne)`. Establish `ht : Tendsto (fun n : ℕ => 2 * (1 / ((n : ℝ) + 1)) * |∫ b in S, g0 b ∂ν|) atTop (𝓝 0)`. Use `(tendsto_one_div_add_atTop_nhds_zero_nat.const_mul (2 : ℝ)).mul_const |∫ b in S, g0 b ∂ν|` as an intermediate fact. Rewrite `this` using `[mul_zero, zero_mul]`. Then use the resulting hypothesis.
-
-Take `⟨n, hn⟩` from `(ht.eventually (Iio_mem_nhds hpos)).exists`. Conclude with `absurd (hC n) (not_le.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem densApprox_lc (μ : Measure V) [IsFiniteMeasureOnCompacts μ] (f : V → Y) (ι : X → Y)
     (ν : Measure X) [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure] (U : Set V)

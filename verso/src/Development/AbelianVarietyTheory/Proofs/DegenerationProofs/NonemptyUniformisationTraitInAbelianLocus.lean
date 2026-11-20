@@ -14,11 +14,11 @@ open GlobalTheory.Ex.OneGen GlobalTheory.UT
 namespace GlobalTheory.AbelianTrait
 
 /- English proof (translation)
-Set `K'` to `AlgebraicClosure K`. Set `u : Sp K' ⟶ Sp K` to `spMap (algebraMap K K')`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `q : Sp K'` using `(default : PrimeSpectrum K')`. Establish `e : (u ≫ t) q = t p` using `congrArg (fun z => t z) (Subsingleton.elim (u q) p)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `hp K' (u ≫ t) ⟨q, e⟩`. Establish `P` using `(IsPullback.of_hasPullback (pullback.snd G.hom t) u).paste_horiz (IsPullback.of_hasPullback G.hom t)`. Establish `h₃ : UniversallyClosed (pullback.snd (pullback.snd G.hom t) u)`. Rewrite using `[← P.isoPullback_hom_snd]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nonempty (Sp K')` using `⟨q⟩`. Establish `hu : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) u` using `⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Establish `: UniversallyClosed (pullback.snd G.hom t)` using `MorphismProperty.of_pullback_snd_of_descendsAlong (P := @UniversallyClosed) hu h₃`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_snd_of_mem_abLocus {S : Scheme.{0}} (G : Over S) [IsSeparated G.hom] [LocallyOfFiniteType G.hom]
     {K : Type} [Field K] (t : Sp K ⟶ S) (p : Sp K) (hp : t p ∈ abLocus G) : IsProper (pullback.snd G.hom t) := by
@@ -40,11 +40,11 @@ theorem isProper_snd_of_mem_abLocus {S : Scheme.{0}} (G : Over S) [IsSeparated G
   exact ⟨⟩
 
 /- English proof (translation)
-Introduce `hU E _ _ _ H S t W _ _ _ hW χ t' m hpol hr`. Establish `hG` using `t'.semi`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Set `r : Sp (W ⧸ maximalIdeal W) ⟶ Sp W` to `spMap (Ideal.Quotient.mk (maximalIdeal W))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `p : Sp (W ⧸ maximalIdeal W)` using `(default : PrimeSpectrum (ResidueField W))`. Establish `h₀ : r p ∈ abLocus t'.G` using `(abLocus_pullback abLocusOne t.semi m.cart.1 (r p)).1 (hr ⟨_, rfl⟩)`. Establish `h₁ : IsProper (pullback.snd t'.G.hom r)` using `isProper_snd_of_mem_abLocus t'.G (K := ResidueField W) r p h₀`. Establish `h₂` using `IsSemiAbelian.pullback r t'.G hG`. Take `⟨P, -⟩` from `hU E H W hW t' hpol ⟨_, ZJ.isGt_splitExtOfAbelian _ ⟨h₂.comm, h₂.smooth, h₁, h₂.geomConnected⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_pelUnif_of_abLocus : GlobalTheory.LN.UDvrSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (χ : Sp W ⟶ S) (t' : SAB H (Sp W)) (_ : SABMap t' t χ), GlobalTheory.LN.PolAt t' (jK W) → Set.range χ ⊆ abLocus t.G → Nonempty (PELUnif (maximalIdeal W) t') := by
   intro hU E _ _ _ H S t W _ _ _ hW χ t' m hpol hr

@@ -21,15 +21,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsTotallyComplex E]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 /- English proof (translation)
-Establish `e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w)`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ ord (w.adicCompletion E) x)⁻¹)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, SphCompletion.ord_completion]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Establish `e2 : _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ) h = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Rewrite using `[_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity, H.one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `ha.smooth (ParLaws.isSmoothChar_loc χ w)`. Establish `: ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : WeilDeligne.IsSmooth (ξ.comp a)), ξ = SmGL.unrChar (w.adicCompletion E) (χ.val w) → WD.lpOfChar h (ξ.comp a) hξ = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Introduce and unpack `ξ hξ rfl`. Conclude with `Test.lpOfChar_unrChar ha _ _`. Conclude with `this _ _ e`.
-
-Rewrite using `[e2, WD.frobEig_diag]`. Conclude with `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locPar_ofChar_unr_and_frobEig (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) (h : IsPlaceOver A w) (hu : χ.UnrAt w) :
     (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ) h).unr ∧

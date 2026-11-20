@@ -13,17 +13,17 @@ section Complete
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Rewrite using `[hsymm]`. Use `Finset.sum_bij' (fun s _ => Multiset.toFinsupp s.1) (fun l hl => (⟨Finsupp.toMultiset l, ?_⟩ : Sym σ n)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite `hl` using `[mem_finsuppAntidiag]`. Rewrite using `[Finsupp.card_toMultiset, Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `hl.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s _`. Rewrite using `[mem_finsuppAntidiag]`. Use `⟨?_, subset_univ _⟩` and prove the remaining obligations. Use `Multiset.toFinsupp_sum_eq s.1` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [id] at this`. Express the relevant statement in the definitionally equal form `∑ i, (Multiset.toFinsupp s.1) i = n`. Rewrite using `[this]`. Conclude with `s.2`. Introduce `s _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mem_univ _`. Introduce `s _`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `l _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `s _`. Rewrite using `[Finset.prod_multiset_map_count]`. Rewrite using `[Finset.prod_subset (subset_univ _)]`. Simplify using `[Multiset.toFinsupp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Rewrite `hi` using `[Multiset.mem_toFinset]`. Rewrite using `[Multiset.count_eq_zero.mpr hi, pow_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hsymm_eq_sum_finsuppAntidiag (n : ℕ) :
     hsymm σ ℚ n = ∑ l ∈ finsuppAntidiag (univ : Finset σ) n, ∏ i, (X i : MvPolynomial σ ℚ) ^ l i := by
@@ -64,9 +64,9 @@ variable {R : Type*} [CommRing R]
 def geomSeries (a : R) : PowerSeries R := PowerSeries.mk fun n => a ^ n
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[mul_sub, mul_one, map_sub, ← mul_assoc, mul_comm (geomSeries a) (PowerSeries.C a)]`. Break down `n with _ | n` into its components or cases. Simplify using `[geomSeries]`. Rewrite using `[PowerSeries.coeff_succ_mul_X, PowerSeries.coeff_C_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[geomSeries, pow_succ, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem geomSeries_mul (a : R) :
     geomSeries a * (1 - PowerSeries.C a * PowerSeries.X) = 1 := by
@@ -78,11 +78,11 @@ theorem geomSeries_mul (a : R) :
     simp [geomSeries, pow_succ, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `c hc`. Simplify using `only [prod_empty, PowerSeries.coeff_one]`. Simplify using `at hc`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Nat.pos_iff_ne_zero.mp hc]`. Consider the case `insert j s hj ih`. Introduce `c hc`. Rewrite `hc` using `[card_insert_of_notMem hj]`. Rewrite using `[prod_insert hj, sub_mul, one_mul, map_sub, ih c (by omega)]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by omega⟩`. Rewrite using `[mul_assoc, mul_comm PowerSeries.X, PowerSeries.coeff_C_mul, PowerSeries.coeff_succ_mul_X, ih c (by omega)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_prod_one_sub_eq_zero {ι : Type*} [DecidableEq ι] (a : ι → R) (s : Finset ι) :
     ∀ c : ℕ, s.card < c →
@@ -108,7 +108,7 @@ section Generating
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_prod, hsymm_eq_sum_finsuppAntidiag]`. Simplify using `[geomSeries, PowerSeries.coeff_mk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_prod_geomSeries (n : ℕ) :
     PowerSeries.coeff n (∏ i : σ, geomSeries (X i : MvPolynomial σ ℚ)) = hsymm σ ℚ n := by
@@ -119,7 +119,7 @@ def omitProduct (j : σ) : PowerSeries (MvPolynomial σ ℚ) :=
   ∏ i ∈ univ.erase j, (1 - PowerSeries.C (X i) * PowerSeries.X)
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ j), omitProduct, mul_left_comm, ← prod_mul_distrib, prod_eq_one, mul_one]`. Introduce `i _`. Rewrite using `[mul_comm, geomSeries_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem omitProduct_mul_prod_geomSeries (j : σ) :
     omitProduct j * ∏ i : σ, geomSeries (X i : MvPolynomial σ ℚ) = geomSeries (X j) := by
@@ -129,7 +129,7 @@ theorem omitProduct_mul_prod_geomSeries (j : σ) :
   rw [mul_comm, geomSeries_mul]
 
 /- English proof (translation)
-Apply `coeff_prod_one_sub_eq_zero` to reduce the goal to its premises. Rewrite using `[card_erase_of_mem (mem_univ j), card_univ]`. Establish `: 0 < Fintype.card σ` using `Fintype.card_pos_iff.mpr ⟨j⟩`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_omitProduct_eq_zero (j : σ) (c : ℕ) (hc : Fintype.card σ ≤ c) :
     PowerSeries.coeff c (omitProduct j) = 0 := by
@@ -139,17 +139,17 @@ theorem coeff_omitProduct_eq_zero (j : σ) (c : ℕ) (hc : Fintype.card σ ≤ c
   omega
 
 /- English proof (translation)
-Establish `key` using `congrArg (PowerSeries.coeff α) (omitProduct_mul_prod_geomSeries j)`. Rewrite `key` using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun a b => PowerSeries.coeff a (omitProduct j) * PowerSeries.coeff b (∏ i : σ, geomSeries (X i : MvPolynomial σ ℚ)))]`. Simplify using `only [coeff_prod_geomSeries] at key`. Rewrite `key` using `[geomSeries, PowerSeries.coeff_mk]`. Rewrite using `[← key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hbig : ∀ s : Finset ℕ, ∀ f : ℕ → MvPolynomial σ ℚ, ∑ c ∈ s, PowerSeries.coeff c (omitProduct j) * f c = ∑ c ∈ s.filter (· < Fintype.card σ), PowerSeries.coeff c (omitProduct j) * f c`. Introduce `s f`. Rewrite using `[sum_filter]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `c _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[coeff_omitProduct_eq_zero j c (by omega), zero_mul]`. Rewrite using `[hbig, hbig (range (α + 1))]`. Rewrite using `[sum_filter, sum_filter]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∑ c ∈ range (Fintype.card σ), (if c < Fintype.card σ then PowerSeries.coeff c (omitProduct j) * (if c ≤ α then hsymm σ ℚ (α - c) else 0) else 0) = ∑ c ∈ range (α + 1 + Fintype.card σ), (if c < Fintype.card σ then PowerSeries.coeff c (omitProduct j) * (if c ≤ α then hsymm σ ℚ …`. Apply `sum_subset (range_subset_range.mpr (by omega))` to reduce the goal to its premises. Introduce `c _ hc`. Simplify using `at hc`. Simplify using `[show ¬ c < Fintype.card σ by omega]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∑ c ∈ range (α + 1), (if c < Fintype.card σ then PowerSeries.coeff c (omitProduct j) * hsymm σ ℚ (α - c) else 0) = ∑ c ∈ range (α + 1 + Fintype.card σ), (if c < Fintype.card σ then PowerSeries.coeff c (omitProduct j) * (if c ≤ α then hsymm σ ℚ (α - c) else 0) else 0)`. Rewrite using `[← sum_subset (range_subset_range.mpr (show α + 1 ≤ α + 1 + Fintype.card σ by omega))]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `c hc`. Simplify using `at hc`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[show c ≤ α by omega]`. Introduce `c _ hc`. Simplify using `at hc`. Simplify using `[show ¬ c ≤ α by omega]`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_hsymm_mul_coeff_omitProduct (j : σ) (α : ℕ) :
     ∑ c ∈ range (Fintype.card σ), PowerSeries.coeff c (omitProduct j) *
@@ -202,9 +202,9 @@ section Bialternant
 variable {m : ℕ}
 
 /- English proof (translation)
-Unfold `completeSymmetric`. Use `split_ifs with h1 h2 h2`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem completeSymmetric_natSub (σ : Type*) [Fintype σ] [DecidableEq σ] (a c : ℕ) :
     completeSymmetric σ ((a : ℤ) - (c : ℤ)) = if c ≤ a then hsymm σ ℚ (a - c) else 0 := by
@@ -222,11 +222,11 @@ def hMatrix (α : Fin m → ℕ) : Matrix (Fin m) (Fin m) (MvPolynomial (Fin m) 
   Matrix.of fun i c => completeSymmetric (Fin m) ((α i : ℤ) - ((m - 1 - (c : ℕ) : ℕ) : ℤ))
 
 /- English proof (translation)
-Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`. Simplify using `only [hMatrix, omitProductCoeffMatrix, Matrix.of_apply, completeSymmetric_natSub]`. Rewrite using `[← sum_hsymm_mul_coeff_omitProduct j (α i), Fintype.card_fin]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun c => (if m - 1 - c ≤ α i then hsymm (Fin m) ℚ (α i - (m - 1 - c)) else 0) * PowerSeries.coeff (m - 1 - c) (omitProduct j)) m]`. Rewrite using `[← sum_range_reflect]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[mem_range]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powMatrix_eq_mul (α : Fin m → ℕ) :
     (Matrix.of fun i j : Fin m => (X j : MvPolynomial (Fin m) ℚ) ^ α i) =
@@ -245,11 +245,11 @@ theorem powMatrix_eq_mul (α : Fin m → ℕ) :
   rw [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular]`. Apply `prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Use `i.isLt` as an intermediate fact. Simplify using `only [hMatrix, Matrix.of_apply, completeSymmetric_natSub]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos (by omega), show m - 1 - (i : ℕ) - (m - 1 - (i : ℕ)) = 0 by omega, hsymm_zero]`. Introduce `i c hci`. Simplify using `only [hMatrix, Matrix.of_apply, completeSymmetric_natSub]`. Rewrite using `[if_neg]`. Use `c.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (c : ℕ) < i` using `hci`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem det_hMatrix_staircase :
     (hMatrix (fun i : Fin m => m - 1 - (i : ℕ))).det = 1 := by
@@ -267,9 +267,9 @@ theorem det_hMatrix_staircase :
     omega
 
 /- English proof (translation)
-Rewrite using `[powMatrix_eq_mul, powMatrix_eq_mul (fun i : Fin m => m - 1 - (i : ℕ)), Matrix.det_mul, Matrix.det_mul, det_hMatrix_staircase, one_mul]`. Rewrite using `[schur]`. Use `congr 2`. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hMatrix, Matrix.of_apply]`. Use `congr 1`. Use `i.isLt` as an intermediate fact. Use `c.isLt` as an intermediate fact. Move the coercions through the operations in `[Nat.sub_sub, Nat.cast_sub (show 1 + (c : ℕ) ≤ m by omega), Nat.cast_sub (show 1 + (i : ℕ) ≤ m by omega)]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -292,17 +292,17 @@ theorem det_pow_add_staircase (lam : Fin m → ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Establish `h1 : (Matrix.of fun i j : Fin m => v j ^ (m - 1 - (i : ℕ))).transpose = (Matrix.vandermonde (v ∘ Fin.rev)).submatrix Fin.revPerm Fin.revPerm`. Use extensionality with `a b`. Simplify using `[Matrix.vandermonde, Fin.val_rev]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_vandermonde, vandermondeOf]`. Establish `h2 : ∀ g : Fin m → Fin m → R, ∏ i : Fin m, ∏ j ∈ Ioi i, g i j = ∏ i : Fin m, ∏ j : Fin m, if i < j then g i j else 1`. Introduce `g`. Apply `prod_congr rfl` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Rewrite using `[← prod_filter]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, h2]`. Establish `h3 : (∏ i : Fin m, ∏ j : Fin m, if i < j then (v ∘ Fin.rev) j - (v ∘ Fin.rev) i else 1) = ∏ a : Fin m, ∏ b : Fin m, if b < a then v b - v a else 1`. Rewrite using `[← Fintype.prod_equiv Fin.revPerm (fun a => ∏ j : Fin m, if Fin.rev a < j then (v ∘ Fin.rev) j - (v ∘ Fin.rev) (Fin.rev a) else 1)]`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Fintype.prod_equiv Fin.revPerm (fun b => if Fin.rev a < Fin.rev b then (v ∘ Fin.rev) (Fin.rev b) - (v ∘ Fin.rev) (Fin.rev a) else 1)]`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `b _`. Simplify using `[Fin.rev_lt_rev]`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `a`. Both sides reduce to the same expression. Rewrite using `[h3, prod_comm]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_pow_staircase_eq_vandermondeOf {R : Type*} [CommRing R] (v : Fin m → R) :
     (Matrix.of fun i j : Fin m => v j ^ (m - 1 - (i : ℕ))).det = vandermondeOf v := by
@@ -348,11 +348,11 @@ def padPartition {r : ℕ} (n : ℕ) (lam : Fin r → ℕ) : Fin n → ℕ :=
   fun i => if h : (i : ℕ) < r then lam ⟨i, h⟩ else 0
 
 /- English proof (translation)
-Unfold `schur`. Rewrite using `[Matrix.det_succ_row _ (Fin.last n)]`. Rewrite using `[Fintype.sum_eq_single (Fin.last n)]`. Simplify using `only [Matrix.of_apply, h, Fin.val_last, Fin.succAbove_last]`. Rewrite using `[show ((0 : ℕ) : ℤ) - (n : ℤ) + (n : ℤ) = 0 by ring]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[completeSymmetric, ← two_mul]`. Both sides reduce to the same expression. Introduce `j hj`. Establish `hj' : (j : ℕ) < n`. Use `j.isLt` as an intermediate fact.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (j : ℕ) ≠ n` using `fun e => hj (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.of_apply, h, Fin.val_last]`. Rewrite using `[show completeSymmetric σ (((0 : ℕ) : ℤ) - (n : ℤ) + ((j : ℕ) : ℤ)) = 0 by`. Unfold `completeSymmetric; rw [if_neg (by omega)]]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Simplify using the standard rewrite rules.
 -/
@@ -376,11 +376,11 @@ theorem schur_eq_of_last_eq_zero {n : ℕ} (lam : Fin (n + 1) → ℕ) (h : lam 
     simp
 
 /- English proof (translation)
-Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[padPartition]`. Consider the case `succ n hrn ih`. Rewrite using `[schur_eq_of_last_eq_zero]`. Rewrite using `[← ih]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[padPartition]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem schur_padPartition {r : ℕ} (lam : Fin r → ℕ) :
     ∀ n : ℕ, r ≤ n → schur σ (padPartition n lam) = schur σ lam := by
@@ -404,7 +404,7 @@ section Symmetric
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Unfold `completeSymmetric`. Use `split_ifs`. Conclude with `hsymm_isSymmetric (σ := σ) (R := ℚ) _ e`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_completeSymmetric (e : Equiv.Perm σ) (d : ℤ) :
     rename e (completeSymmetric σ d) = completeSymmetric σ d := by
@@ -414,9 +414,9 @@ theorem rename_completeSymmetric (e : Equiv.Perm σ) (d : ℤ) :
   · simp
 
 /- English proof (translation)
-Introduce `e`. Unfold `schur`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Apply `Matrix.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j`. Simplify using `[rename_completeSymmetric]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem schur_isSymmetric {r : ℕ} (lam : Fin r → ℕ) : (schur σ lam).IsSymmetric := by
   intro e
@@ -430,7 +430,7 @@ theorem schur_isSymmetric {r : ℕ} (lam : Fin r → ℕ) : (schur σ lam).IsSym
 end Symmetric
 
 /- English proof (translation)
-Rewrite using `[det_pow_add_staircase, det_pow_staircase_eq_vandermondeOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_pow_add_staircase_eq {m : ℕ} (lam : Fin m → ℕ) :
     (Matrix.of fun i j : Fin m => (X j : MvPolynomial (Fin m) ℚ) ^ (lam i + (m - 1 - (i : ℕ)))).det =

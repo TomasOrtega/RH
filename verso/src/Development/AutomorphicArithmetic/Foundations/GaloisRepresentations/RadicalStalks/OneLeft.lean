@@ -9,14 +9,14 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sp {X Y Z : Type} [CommRing X] [CommRing Y] [CommRing Z] (f : X →+* Y) (g : Y →+* Z) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem one_left' {S : Scheme.{0}} {A : Over S} [GrpObj A] (T : Over S) :
     (1 : T ⟶ A).left = T.hom ≫ η[A].left := by
@@ -24,13 +24,13 @@ private theorem one_left' {S : Scheme.{0}} {A : Over S} [GrpObj A] (T : Over S) 
   congr 1
 
 /- English proof (translation)
-Set `T : Over (Sp k)` to `𝟙_ (Over (Sp k))`. Set `x₀ : Over.mk (T.hom ≫ spMap σ) ⟶ A` to `Over.homMk (η[A].left ≫ ψ) (by`. Establish `h1` using `Over.w η[A]`. Establish `h2` using `hψ.w`. Simplify using `only [Category.assoc, h2]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, h1]`. Use the proof step `rfl)`. Establish `h` using `hψ.mul T (1 : T ⟶ A) (1 : T ⟶ A) x₀ x₀ (by simp [x₀, one_left'] ; rfl) (by simp [x₀, one_left']; rfl)`. Establish `h1 : x₀ * x₀ = x₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, _root_.mul_one]`. Simplify using `[x₀, one_left']`. Both sides reduce to the same expression. Establish `h2 : x₀ = 1` using `by simpa using h1`. Establish `h3` using `congrArg Over.Hom.left h2`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[one_left']`. Establish `h4 : T.hom = 𝟙 _` using `rfl`. Simplify `h3` using `[x₀, h4]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eta_comp {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] {σ : k →+* k} {ψ : A.left ⟶ A.left}
     (hψ : SMor A σ ψ) : η[A].left ≫ ψ = spMap σ ≫ η[A].left := by
@@ -54,7 +54,7 @@ private theorem eta_comp {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] {σ :
   simpa [x₀, h4] using h3
 
 /- English proof (translation)
-Establish `h0` using `congrArg Over.Hom.left ((GlobalTheory.GrpTangent.isTangent_iff w).1 hw)`. Rewrite `h0` using `[Over.comp_left, one_left']`. Establish `h1 : (GlobalTheory.GrpTangent.epsZero k).left ≫ w.left = η[A].left` using `by simpa using h0`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tan_left {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] {w : epsR k ⟶ A} (hw : IsTangent w) :
     spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ w.left = η[A].left := by
@@ -64,33 +64,33 @@ private theorem tan_left {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] {w : 
   exact h1
 
 /- English proof (translation)
-Introduce `k _ A _ hA σ ψ hψ hs v hv`. Set `e : k ≃+* k` to `RingEquiv.ofBijective σ ⟨σ.injective, hs⟩`. Set `τ : k →+* k` to `(e.symm : k →+* k)`. Establish `τσ : τ.comp σ = RingHom.id k` using `RingHom.ext fun x ↦ e.symm_apply_apply x`. Establish `στ : σ.comp τ = RingHom.id k` using `RingHom.ext fun x ↦ e.apply_symm_apply x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `d` to `Chart.dualMapR τ`. Set `u` to `Chart.dualMapR σ`. Set `fst : DualNumber k →+* k` to `(TrivSqZeroExt.fstHom k k k).toRingHom`. Set `alg` to `algebraMap k (DualNumber k)`. Establish `ud : u.comp d = RingHom.id _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [d, u, Chart.dualMapR, ← RingHom.comp_apply, στ]`. Establish `fd : fst.comp d = τ.comp fst`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Simplify using `[d, fst, Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `dalg : d.comp (alg.comp σ) = alg`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [d, alg, Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl, ← RingHom.comp_apply, τσ]`. Establish `dc : d.comp (alg.comp fst) = (alg.comp fst).comp d`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [d, alg, fst, Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `cu : (alg.comp fst).comp (u.comp alg) = u.comp alg`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [u, alg, fst, Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `v' : epsR k ⟶ A` to `Over.homMk (spMap d ≫ v.left ≫ ψ) (by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hv0` using `Over.w v`. Establish `h2` using `hψ.w`. Express the relevant statement in the definitionally equal form `(spMap d ≫ v.left ≫ ψ) ≫ A.hom = spMap alg`. Rewrite using `[Category.assoc, Category.assoc, h2, ← Category.assoc v.left, hv0]`. Express the relevant statement in the definitionally equal form `spMap d ≫ spMap alg ≫ spMap σ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[sp, sp, dalg])`. Establish `e1 : v.left ≫ ψ = spMap u ≫ v'.left`. Express the relevant statement in the definitionally equal form `_ = spMap u ≫ spMap d ≫ v.left ≫ ψ`. Rewrite using `[← Category.assoc, sp, ud, spMap_id, Category.id_comp]`. Establish `hval` using `fun f ↦ GlobalTheory.LieDual.tanVal_pullForm_baseChange (v := v') (v' := v) hψ.isMor e1 f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htan : IsTangent v'`. Rewrite using `[GlobalTheory.GrpTangent.isTangent_iff]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, one_left']`. Express the relevant statement in the definitionally equal form `spMap fst ≫ spMap d ≫ v.left ≫ ψ = 𝟙 _ ≫ η[A].left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h00 : spMap fst ≫ v.left = η[A].left` using `tan_left hv`. Combine the equalities or inequalities in the displayed calculation. Take `⟨g, hg⟩` from `GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme k A hA`. Establish `L : LieExact A` using `(GlobalTheory.abelianDeRham.2.1 k A g hA hg).1`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h0 : ∀ f : Form (A.hom ≫ 𝟙 _), Form.cl _ f ∈ primDR A → tanVal v' f = 0` using `fun f hf ↦ (map_eq_zero σ).1 ((hval f).symm.trans (h f hf))`. Take `⟨H, hH⟩` from `L.2 v' htan`. Establish `hF : H ∈ Fil A` using `mem_Fil.2 fun f hf ↦ by rw [hH.2, h0 f hf]`. Establish `h1 : v' = 1` using `(L.1 H).unique hH (isLieImage_one_iff.2 hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v'.left = spMap alg ≫ η[A].left` using `by rw [h1, one_left']; rfl`. Establish `h3 : spMap (alg.comp fst) ≫ spMap u ≫ spMap alg = spMap u ≫ spMap alg`. Rewrite using `[sp, sp, cu]`. Express the relevant statement in the definitionally equal form `spMap (alg.comp fst) ≫ v.left ≫ ψ = v.left ≫ ψ`. Rewrite using `[e1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify `h3 =≫ η[A].left` using `only [Category.assoc]`. Introduce `h f hf`. Establish `h' : spMap (alg.comp fst) ≫ v.left ≫ ψ = v.left ≫ ψ` using `h`. Establish `h1 : v'.left = spMap (alg.comp fst) ≫ v'.left`. Express the relevant statement in the definitionally equal form `spMap d ≫ v.left ≫ ψ = spMap (alg.comp fst) ≫ spMap d ≫ v.left ≫ ψ`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : v' = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[one_left', h1, ← sp, Category.assoc, tan_left htan]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hval, h2, tanVal_one, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.Ord.tan :
     ∀ (k : Type) [Field k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A →

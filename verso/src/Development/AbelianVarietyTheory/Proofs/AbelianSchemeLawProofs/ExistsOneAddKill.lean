@@ -28,37 +28,35 @@ def Gen (D : Z.Opens) (S : Set (Fn Z)) : Prop :=
   ∀ F ∈ Reg D, ∃ b ∈ Subring.closure S, ∀ z ∈ D, F z = b z
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.section_ext Z.sheaf V a b h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {V : Z.Opens} {a b : Γ(Z, V)}
     (h : ∀ z (hz : z ∈ V), (Z.presheaf.germ V z hz).hom a = (Z.presheaf.germ V z hz).hom b) : a = b :=
   TopCat.Presheaf.section_ext Z.sheaf V a b h
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply Z.presheaf _ z hz a`.
+A detailed English derivation is pending.
 -/
 theorem germ_res' {V W : Z.Opens} (h : V ≤ W) (a : Γ(Z, W)) (z : Z) (hz : z ∈ V) :
     (Z.presheaf.germ V z hz).hom ((Z.presheaf.map (homOfLE h).op).hom a) = (Z.presheaf.germ W z (h hz)).hom a :=
   TopCat.Presheaf.germ_res_apply Z.presheaf _ z hz a
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF`. Conclude with `⟨_, fun z hz => (germ_res' h a z hz).trans (ha z _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reg_mono {V W : Z.Opens} (h : V ≤ W) {F : Fn Z} (hF : F ∈ Reg W) : F ∈ Reg V := by
   obtain ⟨a, ha⟩ := hF
   exact ⟨_, fun z hz => (germ_res' h a z hz).trans (ha z _)⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF`. Conclude with `⟨a, fun z hz => (ha z hz).trans (h z hz)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reg_congr {V : Z.Opens} {F G : Fn Z} (hF : F ∈ Reg V) (h : ∀ z ∈ V, F z = G z) : G ∈ Reg V := by
   obtain ⟨a, ha⟩ := hF
   exact ⟨a, fun z hz => (ha z hz).trans (h z hz)⟩
 
 /- English proof (translation)
-Use `choose O hO hF using h`. Set `W : V → Z.Opens` to `fun z => O z.1 z.2 ⊓ V`. Use `choose a ha using fun z : V => reg_mono (inf_le_left : W z ≤ _) (hF z.1 z.2)`. Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' W V (fun i => homOfLE inf_le_right) (fun z hz => Opens.mem_iSup.2 ⟨⟨z, hz⟩, hO z hz, hz⟩) a (fun i j => sec_ext (V := W i ⊓ W j) fun z hz => ((germ_res' inf_le_left _ z hz).trans (ha i z _)).trans ((germ_res' inf_le_right _ z hz).trans (ha j z _)).sym …`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Establish `hm : z ∈ W ⟨z, hz⟩` using `⟨hO z hz, hz⟩`. Conclude with `(germ_res' inf_le_right s z hm).symm.trans ((congrArg (Z.presheaf.germ _ z hm).hom (hs ⟨z, hz⟩)).trans (ha _ z hm))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reg_glue {V : Z.Opens} {F : Fn Z} (h : ∀ z ∈ V, ∃ O : Z.Opens, z ∈ O ∧ F ∈ Reg O) : F ∈ Reg V := by
   choose O hO hF using h
@@ -74,9 +72,9 @@ theorem reg_glue {V : Z.Opens} {F : Fn Z} (h : ∀ z ∈ V, ∃ O : Z.Opens, z �
     ((congrArg (Z.presheaf.germ _ z hm).hom (hs ⟨z, hz⟩)).trans (ha _ z hm))
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF`. Establish `: IsUnit a` using `Z.toRingedSpace.isUnit_of_isUnit_germ _ _ fun z hz => by`. Use `hu z hz` as an intermediate fact. Rewrite `this` using `[← ha z hz]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `this.exists_right_inv`. Use `⟨b, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (Z.presheaf.germ V z hz).hom hb`. Rewrite `e` using `[map_mul, map_one, ha]`. Conclude with `((Ring.eq_mul_inverse_iff_mul_eq _ _ _ (hu z hz)).2 (by rw [mul_comm, e])).trans (one_mul _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_inv {V : Z.Opens} {F : Fn Z} (hF : F ∈ Reg V) (hu : ∀ z ∈ V, IsUnit (F z)) : inv F ∈ Reg V := by
   obtain ⟨a, ha⟩ := hF
@@ -91,17 +89,17 @@ theorem reg_inv {V : Z.Opens} {F : Fn Z} (hF : F ∈ Reg V) (hu : ∀ z ∈ V, I
   exact ((Ring.eq_mul_inverse_iff_mul_eq _ _ _ (hu z hz)).2 (by rw [mul_comm, e])).trans (one_mul _)
 
 /- English proof (translation)
-Introduce `z hz` and use `((h z).1 hz).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsLoc.le {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) : D ≤ W := fun z hz => ((h z).1 hz).1
 
 /- English proof (translation)
-The claim follows from `((h z).1 hz).2`.
+A detailed English derivation is pending.
 -/
 theorem IsLoc.unit {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) {z : Z} (hz : z ∈ D) : IsUnit (F z) := ((h z).1 hz).2
 
 /- English proof (translation)
-Use extensionality with `z`. Use `(h z).trans ⟨fun ⟨hz, hu⟩ => (Z.mem_basicOpen a z hz).2 (by rw [← ha z hz] at hu; exact hu), fun hz => ?_⟩` and prove the remaining obligations. Establish `hw` using `Z.basicOpen_le a hz`. Conclude with `⟨hw, by rw [← ha z hw]; exact (Z.mem_basicOpen a z hw).1 hz⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsLoc.eq_basicOpen {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) {a : Γ(Z, W)}
     (ha : ∀ z (hz : z ∈ W), (Z.presheaf.germ W z hz).hom a = F z) : D = Z.basicOpen a := by
@@ -111,7 +109,7 @@ theorem IsLoc.eq_basicOpen {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) {a : Γ(
   exact ⟨hw, by rw [← ha z hw]; exact (Z.mem_basicOpen a z hw).1 hz⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF`. Use `⟨Z.basicOpen a, fun z => ⟨fun hz => ?_, fun ⟨hz, hu⟩ => (Z.mem_basicOpen a z hz).2 (by rw [← ha z hz] at hu; exact hu)⟩⟩` and prove the remaining obligations. Establish `hw` using `Z.basicOpen_le a hz`. Conclude with `⟨hw, by rw [← ha z hw]; exact (Z.mem_basicOpen a z hw).1 hz⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_loc {W : Z.Opens} {F : Fn Z} (hF : F ∈ Reg W) : ∃ D, IsLoc D W F := by
   obtain ⟨a, ha⟩ := hF
@@ -121,7 +119,7 @@ theorem exists_loc {W : Z.Opens} {F : Fn Z} (hF : F ∈ Reg W) : ∃ D, IsLoc D 
   exact ⟨hw, by rw [← ha z hw]; exact (Z.mem_basicOpen a z hw).1 hz⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF`. Rewrite using `[h.eq_basicOpen ha]`. Conclude with `hW.basicOpen a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLoc.affine {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) (hF : F ∈ Reg W) (hW : IsAffineOpen W) :
     IsAffineOpen D := by
@@ -130,9 +128,9 @@ theorem IsLoc.affine {D W : Z.Opens} {F : Fn Z} (h : IsLoc D W F) (hF : F ∈ Re
   exact hW.basicOpen a
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hw`. Take `⟨x, hx⟩` from `hF`. Take `rfl` from `h.eq_basicOpen ha`. Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact Z hW x a (sec_ext fun z hz => (germ_res' (Z.basicOpen_le a) x z hz).trans (by rw [hx, h0 z hz, map_zero]))`. Use `⟨n, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (Z.presheaf.germ W z hz).hom hn`. Rewrite `e` using `[map_mul, map_pow, map_zero, ha, hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kill {D W : Z.Opens} {w F : Fn Z} (hW : IsCompact (W : Set Z)) (h : IsLoc D W w) (hw : w ∈ Reg W)
     (hF : F ∈ Reg W) (h0 : ∀ z ∈ D, F z = 0) : ∃ n : ℕ, ∀ z ∈ W, w z ^ n * F z = 0 := by
@@ -146,9 +144,9 @@ theorem kill {D W : Z.Opens} {w F : Fn Z} (hW : IsCompact (W : Set Z)) (h : IsLo
   rwa [map_mul, map_pow, map_zero, ha, hx] at e
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hw`. Take `⟨x, hx⟩` from `hF`. Take `rfl` from `h.eq_basicOpen ha`. Take `⟨n, y, hn⟩` from `exists_eq_pow_mul_of_isAffineOpen Z W hW a x`. Use `⟨n, fun z => if hz : z ∈ W then (Z.presheaf.germ W z hz).hom y else 0, ⟨y, fun z hz => by beta_reduce; rw [dif_pos hz]⟩, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw` using `Z.basicOpen_le a hz`. Establish `e` using `congrArg (Z.presheaf.germ _ z hz).hom hn`. Rewrite `e` using `[map_mul, map_pow, hx]`. Conclude with `((dif_pos hw).trans ((germ_res' (Z.basicOpen_le a) y z hz).symm.trans (e.trans (congrArg (· ^ n * F z) ((germ_res' (Z.basicOpen_le a) a z hz).trans (ha z hw)))))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac {D W : Z.Opens} {w F : Fn Z} (hW : IsAffineOpen W) (h : IsLoc D W w) (hw : w ∈ Reg W)
     (hF : F ∈ Reg D) : ∃ n : ℕ, ∃ G ∈ Reg W, ∀ z ∈ D, w z ^ n * F z = G z := by
@@ -166,15 +164,15 @@ theorem frac {D W : Z.Opens} {w F : Fn Z} (hW : IsAffineOpen W) (h : IsLoc D W w
     ((germ_res' (Z.basicOpen_le a) a z hz).trans (ha z hw)))))).symm
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨b, hb, e⟩` from `h F hF`. It suffices to establish `∃ b' ∈ Subring.closure S', ∀ z ∈ D, b z = b' z by`. Take `⟨b', hb', e'⟩` from `this`. Conclude with `⟨b', hb', fun z hz => (e z hz).trans (e' z hz)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `clear e`. Proceed by induction on `hb using Subring.closure_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ _ => rfl⟩`. Consider the case `one => exact ⟨1, one_mem _, fun _ _ => rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, e⟩` from `hx`. Take `⟨b, hb, e'⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, fun z hz => congrArg₂ (· + ·) (e z hz) (e' z hz)⟩`. Consider the case `neg x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, fun z hz => congrArg (- ·) (e z hz)⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, e⟩` from `hx`. Take `⟨b, hb, e'⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a * b, mul_mem ha hb, fun z hz => congrArg₂ (· * ·) (e z hz) (e' z hz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Gen.mono {D : Z.Opens} {S S' : Set (Fn Z)} (h : Gen D S)
     (hS : ∀ x ∈ S, ∃ b ∈ Subring.closure S', ∀ z ∈ D, x z = b z) : Gen D S' := by
@@ -201,9 +199,9 @@ theorem Gen.mono {D : Z.Opens} {S S' : Set (Fn Z)} (h : Gen D S)
     exact ⟨a * b, mul_mem ha hb, fun z hz => congrArg₂ (· * ·) (e z hz) (e' z hz)⟩
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨n, G, hG, e⟩` from `frac hW h hw hF`. Take `⟨b, hb, e'⟩` from `hS G hG`. Use `⟨inv w ^ n * b, mul_mem (pow_mem (Subring.subset_closure (Set.mem_insert _ _)) _) (Subring.closure_mono (Set.subset_insert _ _) hb), fun z hz => ?_⟩` and prove the remaining obligations. Use `show F z = Ring.inverse (w z) ^ n * b z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e' z (h.le hz), ← e z hz, ← mul_assoc, ← mul_pow, Ring.inverse_mul_cancel _ (h.unit hz), one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem Gen.loc {D W : Z.Opens} {w : Fn Z} {S : Set (Fn Z)} (hW : IsAffineOpen W) (h : IsLoc D W w) (hw : w ∈ Reg W)
     (hS : Gen W S) : Gen D (insert (inv w) S) := by
@@ -226,29 +224,27 @@ def van (B : Subring (Fn Z)) (W : Z.Opens) : Ideal B where
     rw [ha z hz, mul_zero]
 
 /- English proof (translation)
-Use `choose r hr using fun b : B => hB b.2`. Set `ρ : B →+* Γ(Z, W)` to `{ toFun := r map_one' := sec_ext fun z hz => by rw [hr, map_one]; rfl map_mul' := fun a b => sec_ext fun z hz => by rw [map_mul, hr, hr, hr]; rfl map_zero' := sec_ext fun z hz => by rw [hr, map_zero]; rfl map_add' := fun a b => sec_ext fun z hz => by rw [map_add, hr, hr, hr]; rfl …`. Establish `hW : IsAffineOpen W`. Use `isAffineOpen_of_isAffineOpen_basicOpen W (Set.range fun t => ρ (w t)) ?_ ?_` and prove the remaining obligations. Use `congrArg (Ideal.map ρ) hw` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Ideal.map_sup, Ideal.map_top, Ideal.map_span, ← Set.range_comp, (Ideal.map_eq_bot_iff_le_ker ρ).2 (fun b hb => sec_ext fun z hz => (hr b z hz).trans ((hb z hz).trans (map_zero _).symm)), bot_sup_eq]`. Conclude with `this`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `haff t` as an intermediate fact. Rewrite `this` using `[(hO t).eq_basicOpen (hr (w t))]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨hW, fun F hF => ?_⟩` and prove the remaining obligations. Set `J : Ideal B` to `{ carrier := {b | ∃ b' : B, ∀ z ∈ W, b.1 z * F z = b'.1 z} add_mem' := fun {a b} ⟨a', ha⟩ ⟨b', hb⟩ => ⟨a' + b', fun z hz => by show (a.1 z + b.1 z) * F z = a'.1 z + b'.1 z`. Rewrite using `[add_mul, ha z hz, hb z hz]⟩`. Use the proof step `zero_mem' := ⟨0, fun z _ => zero_mul _⟩`. Use the proof step `smul_mem' := fun c a ⟨a', ha⟩ => ⟨c * a', fun z hz => by show (c.1 z * a.1 z) * F z = c.1 z * a'.1 z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ha z hz]⟩ }`. Establish `hJ : J.radical = ⊤`. Rewrite using `[eq_top_iff, ← hw, sup_le_iff, Ideal.span_le]`. Use `⟨fun b hb => Ideal.le_radical ⟨0, fun z hz => by rw [hb z hz, zero_mul]; rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb, e⟩` from `hgen t F (reg_mono (hO t).le hF)`. Take `⟨n, b', e'⟩ : ∃ n : ℕ, ∃ b' : B, ∀ z ∈ O t, (w t).1 z ^ n * b z = b'.1 z` from `by clear e`. Proceed by induction on `hb using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | hx` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨1, 1, fun z hz => by rw [pow_one]; exact Ring.mul_inverse_cancel _ ((hO t).unit hz)⟩`. Conclude with `⟨0, ⟨x, hx⟩, fun z hz => by rw [pow_zero, one_mul]⟩`. Consider the case `zero => exact ⟨0, 0, fun _ _ => mul_zero _⟩`. Consider the case `one => exact ⟨0, 1, fun _ _ => by rw [pow_zero, one_mul]; rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, a, e⟩` from `hx`. Take `⟨m, b, e'⟩` from `hy`. Use `⟨n + m, w t ^ m * a + w t ^ n * b, fun z hz => ?_⟩` and prove the remaining obligations. Use `show (w t).1 z ^ (n + m) * (x z + y z) = (w t).1 z ^ m * a.1 z + (w t).1 z ^ n * b.1 z`. Rewrite using `[← e z hz, ← e' z hz]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨n, a, e⟩` from `hx`. Use `⟨n, -a, fun z hz => ?_⟩` and prove the remaining obligations. Use `show (w t).1 z ^ n * (-x z) = -a.1 z`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e z hz]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨n, a, e⟩` from `hx`. Take `⟨m, b, e'⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + m, a * b, fun z hz => ?_⟩` and prove the remaining obligations. Use `show (w t).1 z ^ (n + m) * (x z * y z) = a.1 z * b.1 z`. Rewrite using `[← e z hz, ← e' z hz]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `kill hW.isCompact (hO t) (hB (w t).2) (sub_mem (mul_mem (pow_mem (hB (w t).2) n) hF) (hB b'.2)) (fun z hz => by show (w t).1 z ^ n * F z - b'.1 z = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e z hz, e' z hz, sub_self])`. Use `⟨m + n, w t ^ m * b', fun z hz => ?_⟩` and prove the remaining obligations. Use `hm z hz` as an intermediate fact. Use `show (w t).1 z ^ (m + n) * F z = (w t).1 z ^ m * b'.1 z`. Express the relevant statement in the definitionally equal form `(w t).1 z ^ m * ((w t).1 z ^ n * F z - b'.1 z) = 0 at this`.
-
-Take the linear combination `this`. Rewrite `hJ` using `[Ideal.radical_eq_top, Ideal.eq_top_iff_one]`. Take `⟨b, hb⟩` from `hJ`. Conclude with `⟨b.1, Subring.subset_closure b.2, fun z hz => (one_mul _).symm.trans (hb z hz)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_global {W : Z.Opens} (B : Subring (Fn Z)) (hB : B ≤ Reg W) {T : Type} (w : T → B)
     (hw : van B W ⊔ Ideal.span (Set.range w) = ⊤) (O : T → Z.Opens) (hO : ∀ t, IsLoc (O t) W (w t).1)
@@ -326,19 +322,19 @@ theorem local_global {W : Z.Opens} (B : Subring (Fn Z)) (hB : B ≤ Reg W) {T : 
   exact ⟨b.1, Subring.subset_closure b.2, fun z hz => (one_mul _).symm.trans (hb z hz)⟩
 
 /- English proof (translation)
-Use `set I := Ideal.span (Set.range u) with hI`. Establish `step : ∀ J ≤ I, ∀ J' ≤ I, ∀ d k m : ℕ, J ^ d ≤ K ⊔ I ^ (d + 1) → d ≤ k → J ^ k * J' ^ m ≤ K ⊔ I ^ (k + m + 1)`. Introduce `J hJ J' hJ' d k m hd hk`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.sup_mul]`. Conclude with `sup_le_sup Ideal.mul_le_left (le_of_eq (by ring))`. Establish `key : ∀ s : Finset T, ∃ d : ℕ, Ideal.span (u '' s) ^ d ≤ K ⊔ I ^ (d + 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => exact ⟨1, by simp⟩`. Consider the case `insert t s _ ih`. Take `⟨d, hd⟩` from `ih`. Take `⟨e, he⟩` from `h t`. Establish `h₁ : Ideal.span {u t} ≤ I` using `Ideal.span_mono (by simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₂ : Ideal.span (u '' s) ≤ I` using `Ideal.span_mono (Set.image_subset_range _ _)`. Use `⟨e + d, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert, ← Ideal.add_eq_sup, add_pow, Ideal.sum_eq_sup, Finset.sup_le_iff]`. Introduce `k hk`. Establish `hk' : k ≤ e + d` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Ideal.mul_le_left.trans ?_` and prove the remaining obligations. Distinguish the cases in `hke : e ≤ k`. Use `step _ h₁ _ h₂ e k (e + d - k) (by` as an intermediate fact. Rewrite using `[Ideal.span_singleton_pow, Ideal.span_singleton_le_iff_mem]`. Conclude with `he) hke`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Nat.add_sub_cancel' hk']`. Then use the resulting hypothesis. Use `step _ h₂ _ h₁ d (e + d - k) k hd (by omega)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hk', mul_comm]`. Then use the resulting hypothesis. Use `Fintype.ofFinite T` as an intermediate fact. Take `⟨d, hd⟩` from `key Finset.univ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[Finset.coe_univ, Set.image_univ, ← hI]`. Take `⟨c, hc, hle⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (I := I) (N := K) (N' := I ^ d) (P := I ^ d) (Submodule.FG.pow (Submodule.fg_span (Set.finite_range u)) d) le_rfl (by`. Rewrite using `[Ideal.smul_eq_mul, ← pow_succ']`. Conclude with `hd)`. Conclude with `⟨c, hc, d, fun t => hle (Submodule.smul_mem_pointwise_smul _ c _ (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self t)) d))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one_add_kill {B : Type} [CommRing B] {T : Type} [Finite T] (u : T → B) (K : Ideal B)
     (h : ∀ t, ∃ e : ℕ, u t ^ e ∈ K ⊔ Ideal.span (Set.range u) ^ (e + 1)) :
@@ -392,26 +388,26 @@ section Bundle
 variable {ι : Type} {U : ι → Z.Opens} {G : ι → Fn Z}
 
 /- English proof (translation)
-Introduce `i` and use `reg_mono (inf_le_inf_right _ hle) (h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.mono {V W : Z.Opens} {n : ℕ} {F : Fn Z} (h : Sc U G W n F) (hle : V ≤ W) : Sc U G V n F :=
   fun i => reg_mono (inf_le_inf_right _ hle) (h i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [pow_add, mul_mul_mul_comm]; exact mul_mem (h i) (h' i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.mul {W : Z.Opens} {n m : ℕ} {F F' : Fn Z} (h : Sc U G W n F) (h' : Sc U G W m F') :
     Sc U G W (n + m) (F * F') := fun i => by
   rw [pow_add, mul_mul_mul_comm]; exact mul_mem (h i) (h' i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [pow_mul, ← mul_pow]; exact pow_mem (h i) d`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.pow {W : Z.Opens} {n : ℕ} {F : Fn Z} (h : Sc U G W n F) (d : ℕ) : Sc U G W (n * d) (F ^ d) := fun i => by
   rw [pow_mul, ← mul_pow]; exact pow_mem (h i) d
 
 /- English proof (translation)
-Introduce `i` and use `by rw [mul_zero]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.zero (W : Z.Opens) (n : ℕ) : Sc U G W n 0 := fun i => by rw [mul_zero]; exact zero_mem _
 
@@ -419,7 +415,7 @@ variable (hU : ∀ z, ∃ i, z ∈ U i) (hG : ∀ i z, IsUnit (G i z))
 include hU hG
 
 /- English proof (translation)
-Use `choose D hD using fun i => AmpleLocal.exists_loc (h i)`. Use `⟨⨆ i, D i, fun z => Opens.mem_iSup.trans ⟨fun ⟨i, hi⟩ => ?_, fun ⟨hz, hu⟩ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨((hD i).le hi).1, isUnit_of_mul_isUnit_right ((hD i).unit hi)⟩`. Take `⟨i, hi⟩` from `hU z`. Conclude with `⟨i, (hD i z).2 ⟨⟨hz, hi⟩, ((hG i z).pow n).mul hu⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Sc.exists_loc {W : Z.Opens} {n : ℕ} {F : Fn Z} (h : Sc U G W n F) : ∃ D, IsLoc D W F := by
   choose D hD using fun i => AmpleLocal.exists_loc (h i)
@@ -429,9 +425,9 @@ theorem Sc.exists_loc {W : Z.Opens} {n : ℕ} {F : Fn Z} (h : Sc U G W n F) : �
     exact ⟨i, (hD i z).2 ⟨⟨hz, hi⟩, ((hG i z).pow n).mul hu⟩⟩
 
 /- English proof (translation)
-Use `reg_glue fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hU z`. Establish `le : D ⊓ U i ≤ W ⊓ U i` using `inf_le_inf_right _ hD.le`. Use `⟨D ⊓ U i, ⟨hz, hi⟩, reg_congr (mul_mem (reg_mono le (h i)) (reg_inv (reg_mono le (hσ i)) fun y hy => ((hG i y).pow n).mul (hD.unit hy.1))) fun y _ => ?_⟩` and prove the remaining obligations. Use `show G i y ^ n * F y * Ring.inverse (G i y ^ n * σ y) = F y * Ring.inverse (σ y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ring.mul_inverse_cancel _ ((hG i y).pow n)` as an intermediate fact. Rewrite using `[Ring.mul_inverse_rev]`. Take the linear combination `(F y * Ring.inverse (σ y)) * this`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Sc.ratio {D W : Z.Opens} {n : ℕ} {F σ : Fn Z} (h : Sc U G W n F) (hσ : Sc U G W n σ) (hD : IsLoc D W σ) :
     F * inv σ ∈ Reg D := by
@@ -446,25 +442,21 @@ theorem Sc.ratio {D W : Z.Opens} {n : ℕ} {F σ : Fn Z} (h : Sc U G W n F) (hσ
   linear_combination (F y * Ring.inverse (σ y)) * this
 
 /- English proof (translation)
-Use `choose c hc using hU`. Use `choose V₀ hV₀ hm hle using fun z => exists_isAffineOpen_mem_and_subset (X := Z) (U := U (c z)) (x := z) (hc z)`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun z => (V₀ z : Set Z)) (fun z => (V₀ z).isOpen) (fun z _ => Set.mem_iUnion.2 ⟨z, hm z⟩)`. Set `V : s → Z.Opens` to `fun α => V₀ α.1`. Establish `hV : ∀ α, IsAffineOpen (V α)` using `fun α => hV₀ α.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : s → ι` to `fun α => c α.1`. Establish `he : ∀ α, V α ≤ U (e α)` using `fun α => hle α.1`. Establish `cov : ∀ z, ∃ α, z ∈ V α` using `fun z => by`. Take `⟨α, hα, h⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ z))`. Conclude with `⟨⟨α, hα⟩, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `loc : ∀ O : Z.Opens, IsLoc (W ⊓ O) O f` using `fun O z => ⟨fun hz => ⟨hz.2, hW.unit hz.1⟩, fun hz => ⟨(hW z).2 ⟨trivial, hz.2⟩, hz.1⟩⟩`. Establish `cancel : ∀ i z, Ring.inverse (G i z) ^ n * G i z ^ n = 1` using `fun i z => by`. Rewrite using `[← mul_pow, Ring.inverse_mul_cancel _ (hG i z), one_pow]`. Use `choose p H hH eH using fun α => frac (hV α) (loc (V α)) (reg_mono le_top hf) (reg_mono (inf_le_inf_left _ (he α)) (h (e α)))`. Take `⟨k, hk⟩` from `(Set.finite_range p).bddAbove`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `t : s → Fn Z` to `fun α => f ^ (k - p α) * H α * inv (G (e α)) ^ n`. Establish `ht : ∀ α i, G i ^ n * t α ∈ Reg (U i ⊓ V α)` using `fun α i => by`. Establish `: G i ^ n * t α = (G i * inv (G (e α))) ^ n * (f ^ (k - p α) * H α)` using `by simp only [t]; ring`. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (reg_mono (inf_le_inf_left _ (he α)) (hT _ _)) _) (mul_mem (pow_mem (reg_mono le_top hf) _) (reg_mono inf_le_right (hH α)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `et : ∀ α, ∀ z ∈ W ⊓ V α, t α z = f z ^ k * F z` using `fun α z hz => by`. Take `⟨q, hq⟩` from `Nat.exists_eq_add_of_le (hk ⟨α, rfl⟩)`. Use `show f z ^ (k - p α) * H α z * Ring.inverse (G (e α) z) ^ n = _`. Rewrite using `[← eH α z hz, hq, Nat.add_sub_cancel_left]`. Use `show f z ^ q * (f z ^ p α * (G (e α) z ^ n * F z)) * _ = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(f z ^ (p α + q) * F z) * cancel (e α) z`. Establish `hk2 : ∀ q : s × s, ∃ m : ℕ, ∀ z ∈ V q.1 ⊓ V q.2, f z ^ m * t q.1 z = f z ^ m * t q.2 z` using `fun ⟨α, β⟩ => by`. Take `⟨m, hm⟩` from `kill (W := V α ⊓ V β) (QuasiSeparatedSpace.inter_isCompact _ _ (V α).isOpen (hV α).isCompact (V β).isOpen (hV β).isCompact) (loc _) (reg_mono le_top hf) (sub_mem (reg_mono (le_inf (inf_le_left.trans (he α)) inf_le_left) (ht α (e α))) (reg_mono (le_inf (inf_le_left.trans (he α)) i …`. Rewrite using `[et α z ⟨hz.1, hz.2.1⟩, et β z ⟨hz.1, hz.2.2⟩, sub_self])`. Use `⟨m, fun z hz => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `hm z hz`. Express the relevant statement in the definitionally equal form `f z ^ m * (G (e α) z ^ n * t α z - G (e α) z ^ n * t β z) = 0 at h₁`. Use `show f z ^ m * t α z = f z ^ m * t β z`. Take the linear combination `Ring.inverse (G (e α) z) ^ n * h₁ - (f z ^ m * t α z - f z ^ m * t β z) * cancel (e α) z`. Use `choose m hm using hk2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `(Set.finite_range m).bddAbove`. Establish `agree : ∀ α β, ∀ z ∈ V α ⊓ V β, f z ^ r * t α z = f z ^ r * t β z` using `fun α β z hz => by`. Take `⟨q, hq⟩` from `Nat.exists_eq_add_of_le (hr ⟨(α, β), rfl⟩)`. Rewrite using `[hq]`. Take the linear combination `f z ^ q * hm (α, β) z hz`.
-
-Use `choose a ha using cov`. Use `⟨r + k, fun z => f z ^ r * t (a z) z, fun i => reg_glue fun z hz => ⟨U i ⊓ V (a z), ⟨hz.2, ha z⟩, ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Use `reg_congr (mul_mem (pow_mem (reg_mono le_top hf) r) (ht (a z) i)) fun y hy => ?_ show f y ^ r * (G i y ^ n * t (a z) y) = G i y ^ n * (f y ^ r * t (a y) y)` and prove the remaining obligations. Rewrite using `[← agree (a z) (a y) y ⟨hy.2, ha y⟩]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show f z ^ r * t (a z) z = _`. Rewrite using `[et _ z ⟨hz, ha z⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Sc.extend [CompactSpace Z] [QuasiSeparatedSpace Z] (hT : ∀ i j, G i * inv (G j) ∈ Reg (U i ⊓ U j))
     {W : Z.Opens} {f : Fn Z} (hf : f ∈ Reg ⊤) (hW : IsLoc W ⊤ f) {n : ℕ} {F : Fn Z} (h : Sc U G W n F) :
@@ -528,45 +520,39 @@ theorem Sc.extend [CompactSpace Z] [QuasiSeparatedSpace Z] (hT : ∀ i j, G i * 
     rw [et _ z ⟨hz, ha z⟩]; ring
 
 /- English proof (translation)
-Use `set u₀ : T × T → Fn Z := fun p => s p.2 * s p.1 ^ d * inv τ with hu₀`. Set `B` to `Subring.closure (S₀ ∪ Set.range u₀)`. Set `u : T × T → B` to `fun p => ⟨u₀ p, Subring.subset_closure (Or.inr ⟨p, rfl⟩)⟩`. Establish `hB : B ≤ Reg W` using `Subring.closure_le.2 (by`. Introduce and unpack `x (hx | ⟨p, rfl⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `reg_mono hW.le (hS₀ x hx)`. Use `Sc.ratio hU hG ?_ hτ hW` and prove the remaining obligations. Rewrite using `[mul_add, mul_one, add_comm]`. Conclude with `(hs _).mul ((hs _).pow d))`. Set `v : T → Fn Z` to `fun j => τ * inv (s j ^ (d + 1))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ j, v j ∈ Reg (D j)` using `fun j => Sc.ratio hU hG hτ ((hs j).pow _) fun z => (hD j z).trans (and_congr_right' (isUnit_pow_iff d.succ_ne_zero).symm)`. Establish `vu : ∀ j, ∀ z ∈ D j ⊓ W, v j z * u₀ (j, j) z = 1` using `fun j z hz => by`. Establish `h₁` using `Ring.mul_inverse_cancel _ (((hD j).unit hz.1).pow (d + 1))`. Establish `h₂` using `Ring.mul_inverse_cancel _ (hW.unit hz.2)`. Use `show τ z * Ring.inverse (s j z ^ (d + 1)) * (s j z * s j z ^ d * Ring.inverse (τ z)) = 1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(τ z * Ring.inverse (τ z)) * h₁ + h₂`. Establish `l₁ : ∀ j, IsLoc (D j ⊓ W) (D j) (v j)` using `fun j z => ⟨fun hz => ⟨hz.1, IsUnit.of_mul_eq_one _ (vu j z hz)⟩, fun hz => ⟨hz.1, (hW z).2 ⟨(hD j).le hz.1, isUnit_of_mul_isUnit_left hz.2⟩⟩⟩`. Establish `l₂ : ∀ j, IsLoc (D j ⊓ W) W (u₀ (j, j))` using `fun j z => ⟨fun hz => ⟨hz.2, IsUnit.of_mul_eq_one_right _ (vu j z hz)⟩, fun hz => ⟨(hD j z).2 ⟨hW.le hz.1, isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hz.2)⟩, hz.1⟩⟩`. Establish `aff' : ∀ j, IsAffineOpen (D j ⊓ W)` using `fun j => (l₁ j).affine (hv j) (aff j)`. Establish `rat : ∀ j m, ∀ z ∈ D j ⊓ W, u₀ (j, j) z * (s m z * Ring.inverse (s j z)) = u₀ (j, m) z` using `fun j m z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `Ring.mul_inverse_cancel _ ((hD j).unit hz.1)`. Use `show s j z * s j z ^ d * Ring.inverse (τ z) * _ = s m z * s j z ^ d * Ring.inverse (τ z)`. Take the linear combination `(s m z * s j z ^ d * Ring.inverse (τ z)) * h₁`. Establish `cpt : IsCompact (W : Set Z)`. Establish `: (W : Set Z) = ⋃ j, ((D j ⊓ W : Z.Opens) : Set Z)` using `Set.ext fun z => ⟨fun hz => (cov z (hW.le hz)).elim fun j hj => Set.mem_iUnion.2 ⟨j, hj, hz⟩, fun hz => (Set.mem_iUnion.1 hz).elim fun j hj => hj.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `isCompact_iUnion fun j => (aff' j).isCompact`. Use `set I := Ideal.span (Set.range u) with hI`. Establish `uI : ∀ p, u p ∈ I` using `fun p => Ideal.subset_span (Set.mem_range_self p)`. Establish `deep : ∀ j, ∃ e : ℕ, u (j, j) ^ e ∈ van B W ⊔ I ^ (e + 1)` using `fun j => by`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨b, hb, eb⟩` from `gen j _ (hv j)`. Take `⟨e, x, hx, ex⟩ : ∃ e : ℕ, ∃ x ∈ I ^ e, ∀ z ∈ D j ⊓ W, u₀ (j, j) z ^ e * b z = x.1 z` from `by clear eb`. Proceed by induction on `hb using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | ⟨m, rfl⟩` into its components or cases.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, ⟨x, Subring.subset_closure (Or.inl hx)⟩, by simp, fun z _ => by rw [pow_zero, one_mul]⟩`. Conclude with `⟨1, u (j, m), by rw [pow_one]; exact uI _, fun z hz => by rw [pow_one]; exact rat j m z hz⟩`. Consider the case `zero => exact ⟨0, 0, zero_mem _, fun _ _ => mul_zero _⟩`. Consider the case `one => exact ⟨0, 1, by simp, fun _ _ => by rw [pow_zero, one_mul]; rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨n, a, ha, e⟩` from `hx`. Take `⟨m, b, hb, e'⟩` from `hy`. Use `⟨n + m, a * u (j, j) ^ m + u (j, j) ^ n * b, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add]`. Conclude with `add_mem (Ideal.mul_mem_mul ha (Ideal.pow_mem_pow (uI _) _)) (Ideal.mul_mem_mul (Ideal.pow_mem_pow (uI _) _) hb)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `show u₀ (j, j) z ^ (n + m) * (x z + y z) = a.1 z * u₀ (j, j) z ^ m + u₀ (j, j) z ^ n * b.1 z`. Rewrite using `[← e z hz, ← e' z hz]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨n, a, ha, e⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨n, -a, neg_mem ha, fun z hz => ?_⟩` and prove the remaining obligations. Use `show u₀ (j, j) z ^ n * (-x z) = -a.1 z`. Rewrite using `[← e z hz]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, a, ha, e⟩` from `hx`. Take `⟨m, b, hb, e'⟩` from `hy`. Use `⟨n + m, a * b, by rw [pow_add]; exact Ideal.mul_mem_mul ha hb, fun z hz => ?_⟩` and prove the remaining obligations. Use `show u₀ (j, j) z ^ (n + m) * (x z * y z) = a.1 z * b.1 z`. Rewrite using `[← e z hz, ← e' z hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `kill cpt (l₂ j) (hB (u (j, j)).2) (hB (u (j, j) ^ e - u (j, j) * x).2) (fun z hz => by show u₀ (j, j) z ^ e - u₀ (j, j) z * x.1 z = 0`. Rewrite using `[← ex z hz, ← eb z hz.1]`. Take the linear combination `(-u₀ (j, j) z ^ e) * vu j z hz)`. Use `⟨m + e, Submodule.mem_sup.2 ⟨u (j, j) ^ m * (u (j, j) ^ e - u (j, j) * x), hm, u (j, j) ^ (m + 1) * x, ?_, by ring⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show m + e + 1 = (m + 1) + e by ring, pow_add]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow (uI _) _) hx`. Establish `upow : ∀ i j, u (i, j) ^ (d + 1) = u (j, j) * u (i, i) ^ d` using `fun i j => Subtype.ext (by show u₀ (i, j) ^ (d + 1) = u₀ (j, j) * u₀ (i, i) ^ d`. Simplify using `only [hu₀]`. Use the proof step `ring)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, q, hq⟩` from `exists_one_add_kill u (van B W) (fun ⟨i, j⟩ => by`. Take `⟨e, he⟩` from `deep j`. Use `⟨(d + 1) * e, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, upow, mul_pow, ← pow_mul]`. Use `Ideal.mul_mem_mul he (Ideal.pow_mem_pow (uI (i, i)) (d * e))` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Ideal.sup_mul]`. Establish `hle : van B W * I ^ (d * e) ⊔ I ^ (e + 1) * I ^ (d * e) ≤ van B W ⊔ I ^ ((d + 1) * e + 1)` using `sup_le_sup Ideal.mul_le_left (le_of_eq (by ring))`. Conclude with `hle this)`. Establish `hc0 : c ∈ van B W` using `fun z hz => by`. Take `⟨j, hj⟩` from `cov z (hW.le hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `(((l₂ j).unit ⟨hj, hz⟩).pow q).mul_left_eq_zero.1 (hq (j, j) z hz)`. Establish `top : van B W ⊔ Ideal.span (Set.range fun j => u (j, j)) = ⊤`. Rewrite using `[← Ideal.radical_eq_top, Ideal.eq_top_iff_one]`. Establish `hle : I ≤ (van B W ⊔ Ideal.span (Set.range fun j => u (j, j))).radical`. Rewrite using `[hI, Ideal.span_le]`.
-
-Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`. Conclude with `⟨d + 1, by`. Rewrite using `[upow]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩))⟩`. Use `sub_mem (Ideal.le_radical (Ideal.mem_sup_left hc0)) (hle hc)` as an intermediate fact.
-
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨h₁, h₂⟩` from `local_global B hB (fun j => u (j, j)) top (fun j => D j ⊓ W) l₂ aff' fun j => by`. Use `(Gen.loc (aff j) (l₁ j) (hv j) (gen j)).mono ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | hx | ⟨m, rfl⟩)`. Use `⟨u₀ (j, j), Subring.subset_closure (Or.inr (u (j, j)).2), fun z hz => ?_⟩` and prove the remaining obligations.
-
-Conclude with `((Ring.eq_mul_inverse_iff_mul_eq _ _ _ ((l₁ j).unit hz)).2 ((mul_comm _ _).trans (vu j z hz))).trans (one_mul _) |>.symm`. Conclude with `⟨x, Subring.subset_closure (Or.inr (Subring.subset_closure (Or.inl hx))), fun _ _ => rfl⟩`. Use `⟨inv (u₀ (j, j)) * u₀ (j, m), mul_mem (Subring.subset_closure (Or.inl rfl)) (Subring.subset_closure (Or.inr (u (j, m)).2)), fun z hz => ?_⟩ show s m z * Ring.inverse (s j z) = Ring.inverse (u₀ (j, j) z) * u₀ (j, m) z` and prove the remaining obligations. Rewrite using `[← rat j m z hz, ← mul_assoc, Ring.inverse_mul_cancel _ ((l₂ j).unit hz), one_mul]`. Conclude with `⟨h₁, h₂.mono fun x hx => ⟨x, hx, fun _ _ => rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extra_section {T : Type} [Finite T] {W₀ : Z.Opens} {N d : ℕ} {s : T → Fn Z} (hs : ∀ j, Sc U G W₀ N (s j))
     {D : T → Z.Opens} (hD : ∀ j, IsLoc (D j) W₀ (s j)) (cov : ∀ z ∈ W₀, ∃ j, z ∈ D j) (aff : ∀ j, IsAffineOpen (D j))

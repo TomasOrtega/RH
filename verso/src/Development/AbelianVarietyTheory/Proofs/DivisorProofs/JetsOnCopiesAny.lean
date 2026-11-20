@@ -41,13 +41,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.JetsLevelZero
 
 /- English proof (translation)
-Take `⟨L1, L2, -, L4, -⟩` from `GlobalTheory.firstFiveLaws`. Establish `TB` using `GlobalTheory.twistBaseChange_and_valuation_statements.1`. Introduce `E _ _ _ H Dw l Xo c inst hstar`. Take `rfl : inst = H.starRing` from `starSt E H inst hstar`. Use `letI := H.starRing`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Introduce `T io y C htr P ϖ hϖ Q hQ Φ M0 r b hΦ0 hΦ hM n _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ _ v hv q D hq hD f hf`. Use `choose f₀ hf₀ using hf`. Take `⟨τ, hτ, htrunc, hgerm⟩` from `frameNSt_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Establish `hu` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n (chD C.ch) pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`. Take `⟨r', b', h1, h2⟩` from `GlobalTheory.PowJets.exists_basis_bounds pD.xe Q (Q_zero hϖ P.D hQ) (RoundingSumAlt.Q_nonneg hϖ hQ) Φ M0 b hΦ hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD' : (D : ℝ) * max M0 0 < q`. Break down `le_total M0 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, mul_zero]`. Conclude with `(by omega : 0 < q)` after adjusting the coercions. Rewrite using `[max_eq_left h]` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, σ', g, lam, a1, a2, a3, a4, a5, a6⟩` from `GlobalTheory.UnifJets.jets L1 L2 L4 TB T.V ϖ hϖ D' A' G' U' (Fin n × Fin (chD C.ch)) (zV pG C.xT) hu τ hτ (htrunc htr) (sumQ pD.xe Q) (GlobalTheory.QBox.main T.V ϖ hϖ n P.D D' pD Q hQ) Φ (max M0 0) r' b' hΦ0 (le_max_right _ _) h1 h2 F v hv q D hq hD' (fun e => f₀ e)`. Use `⟨s, σ', g, lam, a1, a2, (hgerm F q σ' g).2 a3, a4, a5, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[a6 e he, map_smul, MvPowerSeries.coeff_map, ← hf₀ e, smul_eq_mul, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jets_on_copies_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)
     (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) →
@@ -94,19 +94,19 @@ theorem jets_on_copies_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Establish `hT` using `GlobalTheory.twistBaseChange_and_valuation_statements.1`. Introduce `E _ _ _ H Dw l Xo c`. Set `_` to `H.starRing`. Introduce `T io y C hFT P hP ϖ hϖ Q hQ F _ _ _ _ _ _ v hv I Φ M0 r b hΦ hb hbw n D' A' G' _ _ pD pA pG U' PU _ oD' hx hoD hn α N Dg hα hcop hu hN hM θ θα hθ hθF hθα J _ Pi a ha hdeg f hf gm hval`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `_` to `io.toAlgebra`. Establish `hN1 : 1 ≤ 1 * N` using `by omega`. Take `⟨s, σ', g, lam, hs, hσ', hg, -, ⟨ρl, hlam, hρl⟩, hjet⟩` from `jets_on_copies_any E H Dw l Xo c (fun _ => rfl) T io y C hFT P ϖ hϖ Q hQ Φ M0 r b hΦ hb hbw n hn D' A' G' pD pA pG U' PU F v hv (1 * N) Dg (by omega) (by rwa [Nat.one_mul]) f hf`. Take `⟨m, p, x, w, ζ, t, cf, e1, e2, e3, e4, e5, e6⟩` from `GlobalTheory.SmallTranslate.span_pow h1 h2 h3 h4 h5 hT T.V E H C.I.G P Dw ϖ hϖ Q hQ F v hv I n D' A' G' pD pA pG U' PU oD' hx hoD α N (by omega) hα hcop hu θ θα hθ hθF hθα s hs`. Take `⟨τ, hτ, hτT, hiff⟩` from `GlobalTheory.PowGerm.frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`. Take `⟨huniq, hlin, hex⟩` from `GlobalTheory.GermBasic.main T.V D' A' G' U' _ _ hz τ hτ F (1 * N)`. Establish `hbij` using `(GlobalTheory.expandsG_bijective_of_dvr h1 h2 h4 hT T.V D' A' G' U' F (1 * N) hN1).2`. Use `choose σ hσ using fun j => (hbij (t j)).exists`. Use `choose h hh using fun j => hex (hτT hFT) (σ j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsum : g = ∑ j, cf j • h j`. Set `σ₀ : U'.toUnifPre.SecGF F (1 * N)` to `GlobalTheory.ExpansionLinear.secComb (fun j => Out.scal (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj G')).left (cf j)) σ`. Establish `k1` using `GlobalTheory.GroupExpansionLinear.expandsG_sum T.V D' A' G' U' F (1 * N) m cf σ t σ₀ hσ (fun _ => rfl)`. Rewrite `k1` using `[← e6]`. Establish `k2 : σ' = σ₀` using `(hbij s).unique hσ' k1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `huniq σ' _ _ ((hiff F _ σ' g).1 hg) (hlin m cf σ h σ' hh (fun _ => by rw [k2]; rfl))`. Take `⟨n1, n2, n3⟩` from `GlobalTheory.PowGerm.nabJet _ _ _ C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 (1 * N) n (LtN Dw n) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i))`. Establish `k1` using `n1 (∑ i, a i • Pi i) _ _ (fun e he => hjet e (he.trans hdeg))`. Establish `k2` using `n2 (∑ i, a i • Pi i) Unit (fun _ => lam) (fun _ => MvPowerSeries.map (algebraMap T.Fr F) f)`. Rewrite `k2` using `[Finset.univ_unique, Finset.sum_singleton, Finset.sum_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k3` using `n2 (∑ i, a i • Pi i) (Fin m) cf h`. Rewrite `k3` using `[← hsum, k1, k2, Finset.sum_congr rfl fun j _ => congrArg (cf j * ·) (n3 (h j) J a Pi)]`. Establish `k4` using `congrArg v k3`. Rewrite `k4` using `[v.map_mul, hlam]`. Take `⟨i, j, ρ, hρ, hle⟩` from `GlobalTheory.SmallTranslate.exists_term_le v a cf _ ha e5 (ρl + gm) (k4.symm.trans (by rw [WithTop.coe_add]; exact congrArg _ hval))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t₀, ht₀, ht⟩` from `e4 j`. Use `⟨i, p j, w j, ζ j, x j, t₀, t j, σ j, h j, ρ, (e3 j).1, (e3 j).2.1, (e3 j).2.2, e1 j, e2 j, ht₀, ht, hσ j, (hiff F _ _ _).2 (hh j), hρ, ?_⟩` and prove the remaining obligations. Rewrite `hρl` using `[Nat.one_mul]`. Establish `: (ρ : ℝ) ≤ ρl + gm` using `by exact_mod_cast hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rPoint_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
   letI := H.starRing

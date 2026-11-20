@@ -7,13 +7,13 @@ namespace Bl.SecondBlockLemmaE
 variable {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d₁, hd₁, h₁⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d₂, hd₂, h₂⟩` from `hy`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e1 : (d₁ * d₂) • x = d₂ • (d₁ • x)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d₁ * d₂) • y = d₁ • (d₂ • y)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.add_mem (Λ.smul_mem _ h₁) (Λ.smul_mem _ h₂)`. Consider the case `smul a x _ hx`. Take `⟨d, hd, h⟩` from `hx`. Take `⟨⟨n, m⟩, hnm⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) a`. Use `⟨(m : 𝓞 E) * d, mul_ne_zero (nonZeroDivisors.ne_zero m.2) hd, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : (m : 𝓞 E) • (a • x) = n • x`. Rewrite using `[← smul_assoc, Algebra.smul_def, mul_comm]`. Rewrite using `[hnm, algebraMap_smul]`. Rewrite using `[mul_comm, mul_smul, key, smul_comm d n x]`. Conclude with `Λ.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 {Λ : Submodule (𝓞 E) V} {v : V}
     (hv : v ∈ Submodule.span E (Λ : Set V)) : ∃ d : 𝓞 E, d ≠ 0 ∧ d • v ∈ Λ := by

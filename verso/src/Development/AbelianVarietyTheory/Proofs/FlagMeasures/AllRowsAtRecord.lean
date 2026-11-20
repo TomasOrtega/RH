@@ -26,9 +26,7 @@ def stdChar (D : D7) (k : Fin 2) : AddChar (ZMod (D.host.g k)) ℂ :=
   ZMod.stdAddChar
 
 /- English proof (translation)
-Introduce `hk`. Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Use `haveI : Fact (1 < D.host.g k) := ⟨(D.host.g_prime k).one_lt⟩`. Express the relevant statement in the definitionally equal form `(ZMod.stdAddChar : AddChar (ZMod (D.host.g k)) ℂ) = 1 at hk`. Establish `h1 : (ZMod.stdAddChar : AddChar (ZMod (D.host.g k)) ℂ) 1 = (ZMod.stdAddChar : AddChar (ZMod (D.host.g k)) ℂ) 0`.
-
-Rewrite using `[hk, AddChar.one_apply, AddChar.map_zero_eq_one]`. Conclude with `one_ne_zero (ZMod.injective_stdAddChar h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdChar_ne (D : D7) (k : Fin 2) : stdChar D k ≠ 1 := by
   intro hk
@@ -40,15 +38,15 @@ theorem stdChar_ne (D : D7) (k : Fin 2) : stdChar D k ≠ 1 := by
   exact one_ne_zero (ZMod.injective_stdAddChar h1)
 
 /- English proof (translation)
-Establish `hL : 0 < Real.log (D.R.r : ℝ)` using `Real.log_pos (by exact_mod_cast hN)`. Establish `hN0 : (0 : ℝ) < D.R.r` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) hN)`. Establish `hf0 : (0 : ℝ) < D.R.f` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) hf)`. Establish `hP : 0 < (D.R.r : ℝ) * D.R.f * Real.log D.R.r` using `by positivity`. Use `⟨(Real.exp_pos _).le, ?_, hpos, fun k S => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `epsC`. Establish `h0 : 0 < c * (D.R.r : ℝ) * D.R.f * Real.log D.R.r`. Use `mul_pos hc hP` as an intermediate fact. Combine the linear relations using `[this, show c * ((D.R.r : ℝ) * D.R.f * Real.log D.R.r) = c * (D.R.r : ℝ) * D.R.f * Real.log D.R.r by ring]`. Establish `h1` using `Real.exp_lt_exp.mpr (show -(c * (D.R.r : ℝ) * D.R.f * Real.log D.R.r) < 0 by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.exp_zero]`. Then use the resulting hypothesis. Establish `h` using `hC k S`. Express the relevant statement in the definitionally equal form `|((A.dimT (cyl D k S) : ℕ) : ℝ) - DstarE A (A.eT (cyl D k S))| ≤ Real.exp (-c₃ * (A.B.I.n : ℝ) * (A.B.I.f : ℝ) * Real.log (A.B.I.n : ℝ)) * DstarE A (A.eT (cyl D k S)) at h`. Rewrite `h` using `[A.n_eq, A.f_eq]`. Establish `hDs : 0 ≤ DstarE A (A.eT (cyl D k S))` using `(mul_nonneg_iff_of_pos_left (Real.exp_pos _)).mp (le_trans (abs_nonneg _) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hexp : Real.exp (-c₃ * (D.R.r : ℝ) * (D.R.f : ℝ) * Real.log (D.R.r : ℝ)) ≤ epsC c D.R.r D.R.f`. Unfold `epsC`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `e1 : -c₃ * (D.R.r : ℝ) * (D.R.f : ℝ) * Real.log (D.R.r : ℝ) = -(c₃ * ((D.R.r : ℝ) * D.R.f * Real.log D.R.r))` using `by ring`. Establish `e2 : -(c * (D.R.r : ℝ) * (D.R.f : ℝ) * Real.log (D.R.r : ℝ)) = -(c * ((D.R.r : ℝ) * D.R.f * Real.log D.R.r))` using `by ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Use `mul_le_mul_of_nonneg_right hcc hP.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_trans h (mul_le_mul_of_nonneg_right hexp hDs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem countAllRows_of {D : D7} (A : AllRows D) {c c₃ : ℝ} (hc : 0 < c) (hcc : c ≤ c₃) (hN : 2 ≤ D.R.r)
     (hf : 1 ≤ D.R.f) (hC : Formalism.MainNotions.N.CylinderCountFamily.CountCylAt D A.toAt c₃) (hpos : 0 < DstarE A A.B.e) :
@@ -81,13 +79,11 @@ theorem countAllRows_of {D : D7} (A : AllRows D) {c c₃ : ℝ} (hc : 0 < c) (hc
     exact le_trans h (mul_le_mul_of_nonneg_right hexp hDs)
 
 /- English proof (translation)
-Introduce `hRF D large₂ X G ι n₀ Alev C₃ c₃ cb c hc hcc hG hAut hT hLab hCnt hp hg1`. Establish `hL : RowsLab X` using `Formalism.L2.SG.Pf.AllRowsLab.rowsLab_holds X hRF hG G ι hT hLab hAut`. Establish `hψ : ∀ k, stdChar D k ≠ 1` using `stdChar_ne D`. Establish `hB : CountBase X n₀ Alev C₃ cb` using `Formalism.L2.SG.Pf.AllRowsCountBase.countBase_of X hAut hp hg1`. Use `⟨Formalism.L2.SG.Pf.AllRowsClosed.allRowsOfL X (stdChar D) hψ hL, ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `thirdTie_allRows (hI := etInt_holds X)`. Use `⟨⟨X.pl, hAut⟩, fun v => Formalism.L2.SG.Pf.AllRowsCountBase.hc_X X hAut v, fun _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.S.SplitsCompl X.B.I.E X.B.g₀`. Rewrite using `[X.g0_eq]`. Conclude with `Formalism.L2.SG.Pf.AllRowsCountBase.splits_X X 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨stdChar D, hψ, fun _ _ => rfl⟩`. Establish `hN : 2 ≤ D.R.r` using `le_trans (by norm_num) hG.1`. Establish `hf : 1 ≤ D.R.f` using `by exact_mod_cast Formalism.MainNotions.S.one_le_f (D := D)`. Establish `hTC` using `tieCountAt_allRowsOf (X := X) (ψ₀ := stdChar D) (hJ := ejIdem_holds D (stdChar D)) (hU := etUniv_of X (redKer_of X (redKerOne_of X (Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X 0) (Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X 1)))) (hO := Formalism.L2.SG.Pf.AllRowsClosed. …`. Establish `hC : Formalism.MainNotions.N.CylinderCountFamily.CountCylAt D (Formalism.L2.SG.Pf.AllRowsClosed.allRowsOfL X (stdChar D) hψ hL).toAt c₃` using `Formalism.MainNotions.N.CylinderCountFamily.countCylAt_of D _ (hCnt Formalism.MainNotions.S.CountE.PCount) hTC (Formalism.L2.SG.Pf.AllRowsPCount.pCountTie_holds X (stdChar D) hψ hL)`.
-
-Take `⟨-, -, -, -, -, -, -, hpos⟩` from `hB`. Conclude with `countAllRows_of _ hc hcc hN hf hC hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem allRows_at_record : Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (G : GoodOp X)
     (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) (n₀ : ℕ) (Alev C₃ c₃ cb c : ℝ), 0 < c → c ≤ c₃ → Formalism.L2.SG.ConcreteSettingExists.GapHyp D →

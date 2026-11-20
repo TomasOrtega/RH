@@ -52,7 +52,7 @@ def bMod {m : ℕ} (c : Matrix (Fin m) (Fin m) E) (w : Fin m → E) : Submodule 
   1 ⊔ (kcSub c).map (pair w)
 
 /- English proof (translation)
-Use `Submodule.FG.sup ?_ (Submodule.FG.map _ (IsNoetherian.noetherian _))` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bMod_fg {m : ℕ} (c : Matrix (Fin m) (Fin m) E) (w : Fin m → E) : (bMod c w).FG := by
   refine Submodule.FG.sup ?_ (Submodule.FG.map _ (IsNoetherian.noetherian _))
@@ -62,27 +62,27 @@ theorem bMod_fg {m : ℕ} (c : Matrix (Fin m) (Fin m) E) (w : Fin m → E) : (bM
 variable {F : Type} [Field F] [Algebra F E]
 
 /- English proof (translation)
-Establish `hmem : (sO σ a) • u ∈ lam c`. Use `GlobalTheory.T.mem_lattice_of_dual_pairing E m (lam c) (GlobalTheory.T.lam_is_lattice E m c) _ ?_` and prove the remaining obligations. Introduce `a' hL`. Establish `hstd : ∀ j, (Pi.single j (1 : E) : Fin m → E) ∈ intVec E m`. Introduce `j i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`. Establish `hent : ∀ j, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = a' j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hL _ (Submodule.mem_sup_left (hstd j) : _ ∈ lam c)`. Rewrite `h1` using `[Submodule.mem_one]`. Take `⟨o, ho⟩` from `h1`. Conclude with `⟨o, by rw [ho]; simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose o ho using hent`. Establish `hcol : ∀ i, ∃ p : 𝓞 E, algebraMap (𝓞 E) E p = ∑ j, a' j * c j i`. Introduce `i`. Establish `hx : c *ᵥ (Pi.single i (1 : E) : Fin m → E) ∈ lam c` using `Submodule.mem_sup_right (Submodule.mem_map_of_mem (f := c.mulVecLin.restrictScalars (𝓞 E)) (hstd i))`. Establish `h1` using `hL _ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Submodule.mem_one]`. Take `⟨p, hp⟩` from `h1`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Simplify using `[dotProduct, Matrix.mulVec_single_one, Matrix.col_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : (fun j => sO σ (o j)) ∈ Kc c`. Introduce `i`. Take `⟨p, hp⟩` from `hcol i`. Use `⟨sO σ p, ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (𝓞 E) E (sO σ p) = σ (algebraMap (𝓞 E) E p)` using `hsO p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hp, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e2 : algebraMap (𝓞 E) E (sO σ (o j)) = σ (a' j)`. Rewrite using `[← ho j]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsO (o j)`. Rewrite using `[e2, map_mul, hc i j, mul_comm]`. Establish `h2` using `ha _ hy`. Rewrite `h2`, the goal using `[Submodule.mem_one]`. Take `⟨q, hq⟩` from `h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨sO σ q, ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (𝓞 E) E (sO σ q) = σ (algebraMap (𝓞 E) E q)` using `hsO q`. Rewrite using `[e1, hq, map_mul, map_sum]`. Simplify using `only [dotProduct, Finset.mul_sum, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((sO σ (o j) : 𝓞 E) : E) = σ (a' j)`. Rewrite using `[hsO, ← ho j]`. Simplify using `only [e3, map_mul, hinv, Algebra.smul_def]`. Establish `e4 : algebraMap (𝓞 E) E (sO σ a) = σ (a : E)` using `hsO a`. Rewrite using `[e4]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[tor, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem sO_mem_tor (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x)
     (hsO : ∀ o : 𝓞 E, ((sO σ o : 𝓞 E) : E) = σ (o : E)) {m : ℕ}
@@ -149,25 +149,23 @@ end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.DualCover
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.DualCover in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm m c hc u b hb`. Take `⟨hinv, -, hsO, -⟩` from `GlobalTheory.T.cm_conjugation_properties F E σ hcm`. Use `set w : Fin m → E := fun j => σ (u j) with hw`. Set `B : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨bMod c w, FractionalIdeal.isFractional_of_fg (bMod_fg c w)⟩`. Establish `hB1 : (1 : E) ∈ B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(1 : E) ∈ bMod c w`. Conclude with `Submodule.mem_sup_left (Submodule.one_le.mp le_rfl)`. Establish `hB0 : B ≠ 0`. Introduce `h`. Rewrite `hB1` using `[h, FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero hB1`. Establish `hBi : B⁻¹ ≠ 0` using `inv_ne_zero hB0`. Establish `hbB : b ∈ B`. Establish `hbi : b ∈ (B⁻¹)⁻¹`. Rewrite using `[FractionalIdeal.mem_inv_iff hBi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[FractionalIdeal.mem_inv_iff hB0]`. Establish `hx1` using `hx 1 hB1`. Rewrite `hx1` using `[mul_one, FractionalIdeal.mem_one_iff]`. Take `⟨a, rfl⟩` from `hx1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht : sO σ a ∈ tor c u`. Use `sO_mem_tor σ hinv hsO c hc u a ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hyB : ∑ j, σ (u j) * (y j : E) ∈ B`. Express the relevant statement in the definitionally equal form `_ ∈ bMod c w`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup_right (Submodule.mem_map_of_mem (f := pair w) (show y ∈ kcSub c from hy))`. Use `hx _ hyB` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.mem_one_iff]`. Take `⟨q, hq⟩` from `this`. Rewrite using `[Submodule.mem_one]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨q, hq⟩`. Establish `h` using `hb _ ht`. Rewrite `h` using `[hsO, hinv]`. Rewrite `h` using `[Submodule.mem_one]`. Take `⟨q, hq⟩` from `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `hq`. Rewrite `hbi` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbB' : b ∈ bMod c w` using `hbB`. Take `⟨p, hp, z, hz, hpz⟩` from `Submodule.mem_sup.mp hbB'`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hz`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `: b - ∑ j, σ (u j) * (y j : E) = p`.
-
-Rewrite using `[← hpz]`. Express the relevant statement in the definitionally equal form `p + ∑ j, σ (u j) * (y j : E) - _ = p`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.dual_cover : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (m : ℕ) (c : Matrix (Fin m) (Fin m) E), (∀ a b, σ (c b a) = c a b) → ∀ (u : Fin m → E) (b : E), (∀ t ∈ tor c u, σ (t : E) * b ∈ (1 : Submodule (𝓞 E) E)) → ∃ y : Fin m → 𝓞 E, y ∈ Kc c ∧ b - ∑ j, σ (u j) * (y j : E) ∈ (1 : Submodule (𝓞 E) E) := by
   intro F E _ _ _ _ _ σ hcm m c hc u b hb

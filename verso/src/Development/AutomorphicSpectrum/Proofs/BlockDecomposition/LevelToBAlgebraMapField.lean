@@ -4,11 +4,9 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatC
 
 /- English proof (translation)
-Introduce `l _ K M h k a y hy`. Establish `hinj : Function.Injective (algebraMap (BdRp l) (BdR l))` using `fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) h`. Establish `key : pInv l y = kP l K a`. Apply `hinj` to reduce the goal to its premises. Establish `h1 : algebraMap (BdRp l) (BdR l) (pInv l y) = y.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).apply_symm_apply y` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Rewrite using `[h1]`. Conclude with `hy`. Use `show pk l k (pInv l y) = pk l k (kP l K a)`.
-
-Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toB_on_K : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ), ∀ (a : K) (y : (per l K).P), (y : (per l K).B) = (per l K).o a → (lev h k).toB y = algebraMap K (lev h k).B a := by
   intro l _ K M h k a y hy

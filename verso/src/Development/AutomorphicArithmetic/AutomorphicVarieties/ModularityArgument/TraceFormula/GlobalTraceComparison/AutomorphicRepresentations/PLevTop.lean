@@ -5,27 +5,25 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteRestricti
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.Desc
 
 /- English proof (translation)
-Introduce `hS E _ _ _ n S Z N hSec hZ hG`. Take `⟨hinv, -, hloc, -, -, hinert, hK⟩` from `hS E n S hSec`. Establish `mem : ∀ (M : ∀ w : GlobalTheory.BCT.Pl E, Subgroup (GlobalTheory.BCT.GLw n w)) (x : GF E n), x ∈ Lev S M ↔ ∀ i : GlobalTheory.BCT.Pl E × Bool, Sl S i → qw n i.1 i.2 x ∈ M i.1`. Introduce `M x`. Simplify using `only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hKq : ∀ k ∈ PositivityTheory.Rg.BcB.G8.Kf E n, ∀ i : GlobalTheory.BCT.Pl E × Bool, Sl S i → qw n i.1 i.2 k ∈ GlobalTheory.LFun.KGL i.1 n` using `fun k hk => (mem _ k).1 ((hK k).2 hk)`. Establish `hsub : (Lev S N : Set (GF E n)) ⊆ (PositivityTheory.Rg.BcB.G8.Kf E n : Set (GF E n))`. Introduce `x hx`. Conclude with `(hK x).1 ((mem _ x).2 fun i hi => (hG i.1).2.1 ((mem N x).1 hx i hi))`. Establish `hset : (Lev S N : Set (GF E n)) = (PositivityTheory.Rg.BcB.G8.Kf E n : Set (GF E n)) ∩ ⋂ i ∈ {i : GlobalTheory.BCT.Pl E × Bool | i.1 ∈ Z ∧ Sl S i}, (qw n i.1 i.2) ⁻¹' (N i.1 : Set (GlobalTheory.BCT.GLw n i.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨hsub hx, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i hi => (mem N x).1 hx i hi.2`. Introduce and unpack `⟨hx, hx'⟩`. Simplify using `only [Set.mem_iInter] at hx'`. Use `(mem N x).2 fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hz : i.1 ∈ Z`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx' i ⟨hz, hi⟩`. Rewrite using `[(hG i.1).2.2.2 hz]`. Conclude with `hKq x hx i hi`. Establish `hfinZ : {i : GlobalTheory.BCT.Pl E × Bool | i.1 ∈ Z ∧ Sl S i}.Finite` using `((Z.finite_toSet).prod (Set.finite_univ (α := Bool))).subset fun i hi => ⟨hi.1, trivial⟩`. Establish `hopen : IsOpen (Lev S N : Set (GF E n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hset]`. Use `GlobalTheory.CompanionTheory.EulerV.isOpen_Kf.inter (hfinZ.isOpen_biInter fun i _ => ?_)` and prove the remaining obligations. Conclude with `((hG i.1).1).preimage (hloc i.1 i.2).2.1`. Use `⟨hopen, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.EulerV.isCompact_Kf.of_isClosed_subset (Subgroup.isClosed_of_isOpen (Lev S N) hopen) hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `k hk`. Establish `hq0 : ∀ w, qw n w false (GlobalTheory.BCT.thF E n k) = qw n w true k` using `fun w => rfl`. Establish `hq1 : ∀ w, qw n w true (GlobalTheory.BCT.thF E n k) = qw n w false k`. Introduce `w`. Express the relevant statement in the definitionally equal form `qw n w false (GlobalTheory.BCT.thF E n (GlobalTheory.BCT.thF E n k)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[hinv]`. Use `(mem N _).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨w, b⟩ ⟨hw, hb⟩`. Consider the cases of `b with`. Consider the case `true`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(hq1 w).symm ▸ (mem N k).1 hk (w, false) ⟨hw, by simp⟩`. Consider the case `false`. Express the relevant statement in the definitionally equal form `qw n w false (GlobalTheory.BCT.thF E n k) ∈ N w`. Rewrite using `[hq0]`. Distinguish the cases in `hs : GlobalTheory.UnitaryBC.IsSplitAt w`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem N k).1 hk (w, true) ⟨hw, fun _ => hs⟩`. Establish `hz : w ∉ Z` using `fun h => hs (hZ w h).2`. Establish `h0 : qw n w false k ∈ N w` using `(mem N k).1 hk (w, false) ⟨hw, by simp⟩`. Rewrite `h0`, the goal using `[(hG w).2.2.2 hz]`. Conclude with `(hinert w hs k).2 h0`.
-
-Introduce `k hk x hx`. Use `(mem N _).2 fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `(hG i.1).2.2.1 _ (hKq k hk i hi) _ ((mem N x).1 hx i hi)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.levTop_pf :
     SlotBasic → LevTop := by

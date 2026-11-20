@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CharDec
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV]`. Conclude with `FDRep.char_conj V x y`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
   obtain ⟨V, hV⟩ := h
@@ -20,37 +20,37 @@ theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) 
   exact FDRep.char_conj V x y
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ip_add_left {G : Type} [Group G] [Fintype G] (α β γ : G → ℂ) : ip (α + β) γ = ip α γ + ip β γ := by
   unfold ip; simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ip_add_right {G : Type} [Group G] [Fintype G] (α β γ : G → ℂ) : ip α (β + γ) = ip α β + ip α γ := by
   unfold ip; simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `ip`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_left {G : Type} [Group G] [Fintype G] (γ : G → ℂ) : ip 0 γ = 0 := by
   unfold ip; simp
 
 /- English proof (translation)
-Unfold `ip`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_right {G : Type} [Group G] [Fintype G] (γ : G → ℂ) : ip γ 0 = 0 := by
   unfold ip; simp
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, mul_sub]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ip_sub_left {G : Type} [Group G] [Fintype G] (α β γ : G → ℂ) : ip (α - β) γ = ip α γ - ip β γ := by
   unfold ip; simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, mul_sub]
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun x _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ip_finset_sum_left {G : Type} [Group G] [Fintype G] {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → G → ℂ) (γ : G → ℂ) : ip (∑ i ∈ s, c i • f i) γ = ∑ i ∈ s, c i * ip (f i) γ := by
@@ -60,7 +60,7 @@ theorem ip_finset_sum_left {G : Type} [Group G] [Fintype G] {ι : Type} (s : Fin
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun x _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [ip_zero_left]`. Consider the case `cons a L ih => simp [ip_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ip_list_sum_left {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) (γ : G → ℂ) :
     ip L.sum γ = (L.map fun a => ip a γ).sum := by
@@ -69,7 +69,7 @@ theorem ip_list_sum_left {G : Type} [Group G] [Fintype G] (L : List (G → ℂ))
   | cons a L ih => simp [ip_add_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [ip_zero_right]`. Consider the case `cons a L ih => simp [ip_add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ip_list_sum_right {G : Type} [Group G] [Fintype G] (γ : G → ℂ) (L : List (G → ℂ)) :
     ip γ L.sum = (L.map fun a => ip γ a).sum := by
@@ -78,11 +78,9 @@ theorem ip_list_sum_right {G : Type} [Group G] [Fintype G] (γ : G → ℂ) (L :
   | cons a L ih => simp [ip_add_right, ih]
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `hχ`. Take `⟨W, hW⟩` from `hρ`. Use `haveI : Invertible ((Nat.card G : ℕ) : ℂ) := invertibleOfNonzero (by`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `Fintype.card_ne_zero)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Module.finrank ℂ (W ⟶ V), ?_⟩` and prove the remaining obligations. Rewrite using `[← FDRep.scalar_product_char_eq_finrank_equivariant W V]`. Unfold `ip`. Rewrite using `[Nat.card_eq_fintype_card]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun x _ => by rw [hV, hW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ip_char_nat {G : Type} [Group G] [Fintype G] {χ ρ : G → ℂ} (hχ : IsChar χ) (hρ : IsChar ρ) :
     ∃ n : ℕ, ip χ ρ = n := by
@@ -98,11 +96,11 @@ theorem ip_char_nat {G : Type} [Group G] [Fintype G] {χ ρ : G → ℂ} (hχ : 
   exact Finset.sum_congr rfl fun x _ => by rw [hV, hW]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Use `⟨FDRep.of (Representation.trivial ℂ G PUnit), fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ PUnit ((Representation.trivial ℂ G PUnit) x) = 0`. Rewrite using `[Subsingleton.elim ((Representation.trivial ℂ G PUnit) x) 0, map_zero]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons a L ih`. Take `⟨V, hV⟩` from `hL a (by simp)`. Take `⟨W, hW⟩` from `ih (fun ρ h => hL ρ (by simp [h]))`. Use `⟨FDRep.of (Representation.prod V.ρ W.ρ), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[List.sum_cons, Pi.add_apply, ← hV, ← hW]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ (V × W) ((Representation.prod V.ρ W.ρ) x) = LinearMap.trace ℂ V (V.ρ x) + LinearMap.trace ℂ W (W.ρ x)`. Use `show LinearMap.trace ℂ (V × W) ((V.ρ x).prodMap (W.ρ x)) = _`. Conclude with `LinearMap.trace_prodMap' _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isChar_list_sum {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) (hL : ∀ ρ ∈ L, IsChar ρ) :
     IsChar L.sum := by
@@ -121,37 +119,31 @@ theorem isChar_list_sum {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) 
     exact LinearMap.trace_prodMap' _ _
 
 /- English proof (translation)
-Establish `hG : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hA : ∀ ρ, IsIrr ρ → ∀ y, ∑ x, f x * ρ (x⁻¹ * y) = 0`. Introduce `ρ hρ y`. Establish `hρ'` using `hρ`. Take `⟨V, hS, hV⟩` from `hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `T : V →ₗ[ℂ] V` to `∑ x, f x • V.ρ x⁻¹`. Establish `hcomm : ∀ h : G, ∀ v : V, T (V.ρ h v) = V.ρ h (T v)`. Introduce `h v`. Simplify using `only [T, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Establish `e1 : ∀ x, V.ρ x⁻¹ (V.ρ h v) = V.ρ (x⁻¹ * h) v` using `fun x => by rw [map_mul, Module.End.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∀ x, V.ρ h (V.ρ x⁻¹ v) = V.ρ (h * x⁻¹) v` using `fun x => by rw [map_mul, Module.End.mul_apply]`. Simplify using `only [e1, e2]`. Rewrite using `[← (MulAut.conj h).toEquiv.sum_comp]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf w h]`. Use `congr 3`. Use `group`. Use `haveI := hS`. Set `f' : V ⟶ V` to `⟨FGModuleCat.ofHom T, fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `v`. Conclude with `hcomm g v⟩`. Take `⟨c, hc⟩` from `CategoryTheory.endomorphism_simple_eq_smul_id ℂ f'`. Establish `hTc : ∀ v, T v = c • v` using `fun v => by`. Use `congrArg (fun φ : V ⟶ V => φ.hom.hom v) hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `this.symm`. Establish `htr : LinearMap.trace ℂ V T = 0`. Establish `h1` using `h0 ρ hρ'`. Unfold `ip at h1`. Establish `h2 : ∑ x, f x * ρ x⁻¹ = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h (inv_ne_zero hG)`. Conclude with `h`. Simplify using `only [T, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← hV x⁻¹]`. Both sides reduce to the same expression. Establish `hT0 : T = 0`. Establish `hT : T = c • LinearMap.id` using `LinearMap.ext hTc`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `htr` using `[hT, map_smul, LinearMap.trace_id, smul_eq_mul]`. Break down `mul_eq_zero.1 htr with hc0 | hd` into its components or cases. Rewrite using `[hT, hc0, zero_smul]`. Use `haveI : Subsingleton V := Module.finrank_zero_iff.1 (by exact_mod_cast hd)`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hy : LinearMap.trace ℂ V (T ∘ₗ V.ρ y) = ∑ x, f x * ρ (x⁻¹ * y)`. Establish `hS' : T ∘ₗ V.ρ y = ∑ x, f x • (V.ρ x⁻¹ ∘ₗ V.ρ y)` using `LinearMap.ext fun v => by`. Simplify using `only [T, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[hS']`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← hV]`. Use `congr 1`. Use `show _ = LinearMap.trace ℂ V (V.ρ (x⁻¹ * y))`. Rewrite using `[map_mul, Module.End.mul_eq_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hy, hT0, LinearMap.zero_comp, map_zero]`. Take `⟨hS, hsum⟩` from `GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G`. Rewrite `hsum` using `[finsum_mem_eq_finite_toFinset_sum _ hS]`. Establish `hB : ∀ w : G, ∑ ρ ∈ hS.toFinset, ρ 1 / (Fintype.card G : ℂ) * ρ w⁻¹ = if w = 1 then 1 else 0`. Introduce `w`.
+Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun a : MonoidAlgebra ℂ G => a.coeff w) hsum` as an intermediate fact. Simplify using `only [MonoidAlgebra.coeff_sum, zOf, Finsupp.finset_sum_apply, MonoidAlgebra.coeff_single, Finsupp.single_apply, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[this, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Simplify using `[eq_comm]`. Use function extensionality and compare the values at `z`.
-
-Use `show f z = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[inv_mul_eq_one]`. Use `_ = ∑ x, f x * ∑ ρ ∈ hS.toFinset, ρ 1 / (Fintype.card G : ℂ) * ρ (x⁻¹ * z) := by`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hB]`. Simplify using `[mul_inv_rev]`. Use `_ = ∑ ρ ∈ hS.toFinset, ρ 1 / (Fintype.card G : ℂ) * ∑ x, f x * ρ (x⁻¹ * z) := by`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = 0 := Finset.sum_eq_zero fun ρ hρ => by`. Rewrite using `[hA ρ (by simpa using hρ) z, mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_eq_zero_of_orth {G : Type} [Group G] [Fintype G] (f : G → ℂ) (hf : IsClass f)
     (h0 : ∀ ρ : G → ℂ, IsIrr ρ → ip f ρ = 0) : f = 0 := by
@@ -236,22 +228,20 @@ theorem class_eq_zero_of_orth {G : Type} [Group G] [Fintype G] (f : G → ℂ) (
         rw [hA ρ (by simpa using hρ) z, mul_zero]
 
 /- English proof (translation)
-Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isChar_of_isIrr {G : Type} [Group G] {ρ : G → ℂ} (h : IsIrr ρ) : IsChar ρ := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
 
 /- English proof (translation)
-Establish `hS` using `(GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G).1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS]`. Use `set F := hS.toFinset with hF`. Establish `hmem : ∀ ρ, ρ ∈ F ↔ IsIrr ρ` using `fun ρ => by simp [F]`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `class_eq_zero_of_orth` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hχ x y]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[isClass_of_isChar (isChar_of_isIrr ((hmem ρ).1 hρ)) x y]`. Introduce `ρ' hρ'`. Rewrite using `[ip_sub_left, ip_finset_sum_left]`. Establish `: ∀ ρ ∈ F, ip χ ρ * ip ρ ρ' = if ρ = ρ' then ip χ ρ' else 0` using `fun ρ hρ => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G ρ ρ' ((hmem ρ).1 hρ) hρ').2.2)]`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq' F ρ', if_pos ((hmem ρ').2 hρ'), sub_self]`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_expand {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsClass χ) :
     χ = ∑ᶠ ρ ∈ {ρ : G → ℂ | IsIrr ρ}, ip χ ρ • ρ := by
@@ -277,7 +267,7 @@ theorem class_expand {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : Is
     rw [Finset.sum_congr rfl this, Finset.sum_ite_eq' F ρ', if_pos ((hmem ρ').2 hρ'), sub_self]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.flatMap_cons, List.sum_append, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_sum_flatMap {α M : Type} [AddCommMonoid M] (l : List α) (f : α → List M) :
     (l.flatMap f).sum = (l.map fun a => (f a).sum).sum := by
@@ -286,15 +276,13 @@ theorem list_sum_flatMap {α M : Type} [AddCommMonoid M] (l : List α) (f : α �
   | cons a l ih => simp [List.flatMap_cons, List.sum_append, ih]
 
 /- English proof (translation)
-Establish `hS` using `(GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G).1`. Establish `hE` using `class_expand χ (isClass_of_isChar hχ)`. Rewrite `hE` using `[finsum_mem_eq_finite_toFinset_sum _ hS]`. Use `set F := hS.toFinset with hF`. Establish `hmem : ∀ ρ, ρ ∈ F ↔ IsIrr ρ` using `fun ρ => by simp [F]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ ρ : G → ℂ, ∃ n : ℕ, IsIrr ρ → ip χ ρ = n` using `fun ρ => by`. Distinguish the cases in `h : IsIrr ρ`. Take `⟨n, hn⟩` from `ip_char_nat hχ (isChar_of_isIrr h)`. Conclude with `⟨n, fun _ => hn⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose n hn using hn`. Use `⟨F.toList.flatMap fun ρ => List.replicate (n ρ) ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ`. Simplify using `only [List.mem_flatMap, List.mem_replicate, Finset.mem_toList] at hρ`. Take `⟨a, ha, -, e⟩` from `hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hmem a).1 ha`. Rewrite using `[list_sum_flatMap]`. Simplify using `only [List.sum_replicate]`. Rewrite using `[Finset.sum_map_toList]`.
-
-Use `conv_lhs => rw [hE]`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[hn ρ ((hmem ρ).1 hρ), Nat.cast_smul_eq_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_decomp {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsChar χ) :
     ∃ L : List (G → ℂ), (∀ ρ ∈ L, IsIrr ρ) ∧ χ = L.sum := by
@@ -322,15 +310,15 @@ theorem char_decomp {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsC
     rw [hn ρ ((hmem ρ).1 hρ), Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `char_decomp χ hχ`. Establish `hip : ∀ a ∈ L, ∀ b ∈ L, ip a b = ((if a = b then 1 else 0 : ℕ) : ℂ)` using `fun a ha b hb => by`. Apply the tactic sequence `rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G a b (hL a ha) (hL b hb)).2.2]; split_ifs <;> simp`. Establish `key : ip L.sum L.sum = ((L.map fun a => (L.map fun b => if a = b then 1 else 0).sum).sum : ℕ)`. Rewrite using `[ip_list_sum_left, Nat.cast_list_sum, List.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg List.sum (List.map_congr_left fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, ip_list_sum_right, Nat.cast_list_sum, List.map_map]`. Conclude with `congrArg List.sum (List.map_congr_left fun b hb => hip a ha b hb)`. Establish `inner : ∀ a ∈ L, 1 ≤ (L.map fun b => if a = b then 1 else 0).sum` using `fun a ha => by`. Establish `: (if a = a then 1 else 0) ∈ L.map (fun b => if a = b then 1 else 0)` using `List.mem_map_of_mem ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using List.le_sum_of_mem this`. Use `match L, hL, hip, key, inner with`. Consider the case `[], _, _, key, _ => simp [ip_zero_left] at h1`. Consider the case `[a], hL, _, _, _ => simpa using hL a (by simp)`. Consider the case `a :: b :: r, _, _, key, inner`.
+Treat this case separately. Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Rewrite `h1` using `[key]`. Establish `h2 : 2 ≤ ((a :: b :: r).map fun a' => ((a :: b :: r).map fun b' => if a' = b' then 1 else 0).sum).sum`. Establish `ha` using `inner a (by simp)`. Establish `hb` using `inner b (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [List.map_cons, List.sum_cons] at ha hb ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h3 : ((a :: b :: r).map fun a' => ((a :: b :: r).map fun b' => if a' = b' then (1 : ℕ) else 0).sum).sum = 1`. Conclude with `h1` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem char_norm_one {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsChar χ) (h1 : ip χ χ = 1) :
     IsIrr χ := by
@@ -365,7 +353,7 @@ end GlobalTheory.CharDec
 open GlobalTheory.CharDec in
 
 /- English proof (translation)
-Introduce `G _ _ χ`. Conclude with `⟨char_decomp χ, class_expand χ, fun h => isClass_of_isChar h, char_norm_one χ, isChar_list_sum⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.charDec : ∀ (G : Type) [Group G] [Fintype G] (χ : G → ℂ), (IsChar χ → ∃ L : List (G → ℂ), (∀ ρ ∈ L, IsIrr ρ) ∧ χ = L.sum) ∧ (IsClass χ → χ = ∑ᶠ ρ ∈ {ρ : G → ℂ | IsIrr ρ}, ip χ ρ • ρ) ∧ (IsChar χ → IsClass χ) ∧ (IsChar χ → ip χ χ = 1 → IsIrr χ) ∧ (∀ L : List (G → ℂ), (∀ ρ ∈ L, IsChar ρ) → IsChar L.sum) := by
   intro G _ _ χ

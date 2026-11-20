@@ -19,13 +19,9 @@ namespace GlobalTheory
 
 open Formalism.L2.SG.Pf.BunEx.Unip Formalism.L2.SG.Pf.unitaryCongruence in
 /- English proof (translation)
-Introduce `I g r k e0 f0 z0 bw bwd ew h v hv Se Sb hf he hz hbd hb`. Establish `hm` using `h.mem`. Use `mem_Mo_of (exp h v hv) ?_` and prove the remaining obligations. Unfold `Rc`. Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ Se`. Conclude with `span_Mo (smul_span I (Formalism.L2.SG.Pf.unitaryCongruence.hA_int I (hm.1 a).2 hv) (Or.inl ⟨a, ha, rfl⟩))`. Conclude with `mL_Mo I (Zv I g (hf a ha) (hm.1 a).1)`. Conclude with `mL_Mo I (sumZ I g _ _ _ (fun a _ => he a) (fun a _ => (hm.1 a).2))`.
-
-Conclude with `mL_Mo I (Zv I g hz hm.2.1)`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ Sb`. Conclude with `span_Mo (smul_span I (Formalism.L2.SG.Pf.unitaryCongruence.hA_int I (hm.2.2 i).2 hv) (Or.inr ⟨i, hi, rfl⟩))`. Conclude with `mL_Mo I (Zv I g (hbd i hi) (hm.2.2 i).1)`.
-
-Conclude with `mL_Mo I (sumZ I g _ _ _ (fun i _ => hb i) (fun i _ => (hm.2.2 i).2))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem mo_of_coef_mod : ∀ (I : AutInst) (g : ℕ) {r k : ℕ} (e0 f0 : Fin r → VA I) (z0 : VA I) (bw bwd : Fin k → VA I) (ew : I.E ⊗[I.F] Af I.F), Formalism.L2.SG.Pf.BunEx.Unip.FH I g e0 f0 z0 bw bwd ew → ∀ v ∈ I.Lf, ∀ (Se : Set (Fin r)) (Sb : Set (Fin k)), (∀ a, a ∉ Se → ZMod' I g (hA I (f0 a) v)) → (∀ a, ZMod' I g (hA I (e0 a) v)) → ZMod' I g (hA I z0 v) → (∀ i, i ∉ Sb → ZMod' I g (hA I (bwd i) v)) → (∀ i, ZMod' I g (hA I (bw i) v)) → v ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo I g (e0 '' Se ∪ bw '' Sb) := by
   intro I g r k e0 f0 z0 bw bwd ew h v hv Se Sb hf he hz hbd hb

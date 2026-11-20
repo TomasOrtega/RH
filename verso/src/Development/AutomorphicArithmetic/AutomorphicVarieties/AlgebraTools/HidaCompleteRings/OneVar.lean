@@ -2,15 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ ι hι g Z hZ h`. Assume the negation of the conclusion as `hg`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, P, U, -, hP, -, hU, hfac⟩` from `UpperTheory.V.abelian₂.weier O ϖ hϖ g hg`. Establish `hmon : (P.map ι).Monic` using `hP.monic.map ι`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖ0 : ι ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hι (by rw [h0, map_zero]))`. Use `hmon.ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ (hZ.mono ?_))` and prove the remaining obligations. Introduce `z hz`. Take `⟨y, hyC, hyX, hy0⟩` from `h z hz`. Establish `hyP : y (P : PowerSeries O) = (P.map ι).eval z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : y.comp Polynomial.coeToPowerSeries.ringHom = Polynomial.eval₂RingHom ι z`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[hyC]`. Simplify using `[hyX]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `RingHom.congr_fun e P` as an intermediate fact. Simplify `this` using `[Polynomial.eval_map]`. Rewrite `hy0` using `[hfac, map_mul, map_mul, map_pow, hyC, hyP]`. Establish `hyU : y U ≠ 0` using `(hU.map y).ne_zero`. Use `show (P.map ι).IsRoot z`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 hy0 with h1 | h1` into its components or cases. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (pow_ne_zero m hϖ0)`. Conclude with `h2`. Conclude with `absurd h1 hyU`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.oneVar :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [Field K] (ι : O →+* K), Function.Injective ι → ∀ (g : PowerSeries O) (Z : Set K), Z.Infinite → (∀ z ∈ Z, ∃ y : PowerSeries O →+* K, (∀ a, y (PowerSeries.C a) = ι a) ∧ y PowerSeries.X = z ∧ y g = 0) → g = 0 := by

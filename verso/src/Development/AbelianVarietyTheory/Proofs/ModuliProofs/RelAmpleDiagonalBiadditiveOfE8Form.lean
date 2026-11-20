@@ -18,7 +18,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.PowerForm
 
 /- English proof (translation)
-Establish `h₁` using `h.1.diag_pos (i := u)`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.transpose_apply, Int.cast_pos] at h₁`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem diag_pos {W : Matrix (Fin 8) (Fin 8) ℤ} (h : IsE8 W) (u : Fin 8) : 0 < W u u := by
   have h₁ := h.1.diag_pos (i := u)
@@ -26,9 +26,9 @@ theorem diag_pos {W : Matrix (Fin 8) (Fin 8) ℤ} (h : IsE8 W) (u : Fin 8) : 0 <
   omega
 
 /- English proof (translation)
-Establish `z₁ : ∀ y, B 1 y = 0` using `fun y => by simpa using h₁ 1 1 y`. Establish `z₂ : ∀ y, B y 1 = 0` using `fun y => by simpa using h₂ 1 1 y`. Rewrite using `[Finset.sum_eq_single (0, 0) (fun b _ hb => ?_) (by simp)]`. Simplify using the standard rewrite rules. Distinguish the cases in `a₁ : b.1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `a₂ : b.2 ≠ 0` using `fun a₂ => hb (Prod.ext a₁ a₂)`. Rewrite using `[if_neg a₂, z₂, smul_zero]`. Rewrite using `[if_neg a₁, z₁, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_single {G M : Type*} [Group G] [AddCommGroup M] (B : G → G → M)
     (h₁ : ∀ x x' y, B (x * x') y = B x y + B x' y) (h₂ : ∀ x x' y, B y (x * x') = B y x + B y x')
@@ -47,15 +47,15 @@ theorem sum_single {G M : Type*} [Group G] [AddCommGroup M] (B : G → G → M)
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `W S _ G A _ _ _ _ pr L P hW hG hA _ hpr hL hP hbi hiso hamp`. Take `⟨j, hj, -⟩` from `hpr A fun v => if v = 0 then 𝟙 A else 1`. Use `hG.proper` as an intermediate fact. Establish `hcl : IsClosedImmersion j.left` using `GlobalTheory.Retract.isClosedImmersion_section (r := (pr 0).left) (by rw [← Over.comp_left, hj, if_pos rfl, Over.id_left]) (Over.w (pr 0))`. Establish `hpos` using `diag_pos hW 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 0 < (W 0 0).toNat` using `by omega`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hfin : IsFinite (𝟙 A : A ⟶ A).left` using `by rw [Over.id_left]; infer_instance`. Establish `c₁` using `(relAmple_finite_pow_iso S A G j L 1 one_pos hA hG hL inferInstance).1 hamp`. Use `(relAmple_finite_pow_iso S A A (𝟙 A) _ _ hn hA hA hD hfin).2.1.1 ((relAmple_finite_pow_iso S A A (𝟙 A) _ 1 one_pos hA hA (pull_isLB hL _) hfin).2.2.2 _ (LB.isLB_linComb hD _ _) ?_ c₁)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cls_eq_iff (pull_isLB hL _) (LB.isLB_linComb hD _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hD, cls_pull hL, (cls_eq_iff hL (LB.isLB_linComb hP _ _)).2 hiso, cls_linComb hP, map_sum, cls_pull hP, ← natCast_zsmul, Int.toNat_of_nonneg hpos.le]`. Use `Eq.trans (Finset.sum_congr rfl fun uv _ => ?_) (sum_single (G := A ⟶ A) (fun a b => pull (lift a b).left (cls P hP)) (fun a a' b => ?_) (fun a a' b => ?_) W (𝟙 A))` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left, comp_lift, hj, hj]`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (hbi A a a' b).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (hbi A a a' b).2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem relAmple_diag : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (S : Scheme.{0}) [IsLocallyNoetherian S] (G A : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A] (pr : Fin 8 → (G ⟶ A)) (L : LB G.left) (P : LB (G2 A).left), IsE8 W → IsAbelianScheme G → IsAbelianScheme A → (∀ u, IsMonHom (pr u)) → (∀ (T : Over S) (y : Fin 8 → (T ⟶ A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u) → L.IsLB → P.IsLB → (∀ (T : Over S) (x x' y : T ⟶ A), (∃ t : (LB.LinComb P (K := Fin 3) ![(lift (x * x') y).left, (lift x y).left, (lift x' y).left] ![1, -1, -1]).Gen, t.IsGen) ∧ ∃ t : (LB.LinComb P (K := Fin 3) ![(lift y (x * x')).left, (lift y x).left, (lift y x').left] ![1, -1, -1]).Gen, t.IsGen) → LBIso L (LB.LinComb P (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)) → Out.RelAmple G L → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) := by
   intro W S _ G A _ _ _ _ pr L P hW hG hA _ hpr hL hP hbi hiso hamp

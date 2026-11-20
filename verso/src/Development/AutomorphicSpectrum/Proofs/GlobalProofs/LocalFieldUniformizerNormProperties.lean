@@ -8,13 +8,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}
 
 /- English proof (translation)
-Conclude with `(h.lt_one ϖ).2 ⟨1, O.one_mem, (mul_one ϖ).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem val_pi_lt_one (h : LF O ϖ nrm q) : ValuativeRel.valuation F ϖ < 1 := by
   exact (h.lt_one ϖ).2 ⟨1, O.one_mem, (mul_one ϖ).symm⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Valuation.pos_iff _).2 h.ne`. Consider the case `exact zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 h.ne)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_pi_pos (h : LF O ϖ nrm q) : 0 < ValuativeRel.valuation F ϖ := by
   first
@@ -22,18 +22,18 @@ theorem val_pi_pos (h : LF O ϖ nrm q) : 0 < ValuativeRel.valuation F ϖ := by
     | exact zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 h.ne)
 
 /- English proof (translation)
-Rewrite using `[h.O_eq]`. Conclude with `Valuation.mem_integer_iff _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_val_le (h : LF O ϖ nrm q) (x : F) : x ∈ O ↔ ValuativeRel.valuation F x ≤ 1 := by
   rw [h.O_eq]
   exact Valuation.mem_integer_iff _ _
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0`. Introduce `hq`. Establish `hp` using `h.nrm_pi`. Rewrite `hp` using `[hq, Nat.cast_zero, _root_.inv_zero]`. Conclude with `h.ne ((AbsoluteValue.eq_zero nrm).1 hp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq1 : q ≠ 1`. Introduce `hq`. Establish `hc` using `h.card`. Rewrite `hc` using `[hq]`. Establish `hs` using `(Nat.card_eq_one_iff_unique.1 hc.symm).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `not_subsingleton (IsLocalRing.ResidueField ↥(ValuativeRel.valuation F).integer) hs`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem one_lt_q (h : LF O ϖ nrm q) : 1 < q := by
   have hq0 : q ≠ 0 := by
@@ -50,7 +50,7 @@ theorem one_lt_q (h : LF O ϖ nrm q) : 1 < q := by
   omega
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Valuation.integer.integers _).isUnit_iff_valuation_eq_one`. Consider the case `simpa using (Valuation.integer.integers (ValuativeRel.valuation F)).isUnit_iff_valuation_eq_one (x := y)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isUnit_iff_valuation_eq_one' (y : 𝒪[F]) : IsUnit y ↔ ValuativeRel.valuation F (y : F) = 1 := by
   first
@@ -58,15 +58,11 @@ private theorem isUnit_iff_valuation_eq_one' (y : 𝒪[F]) : IsUnit y ↔ Valuat
     | simpa using (Valuation.integer.integers (ValuativeRel.valuation F)).isUnit_iff_valuation_eq_one (x := y)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_valuation_eq_one']`. Conclude with `(val_pi_lt_one h).ne`. Introduce `a b hab`. Distinguish the cases in `ha : ValuativeRel.valuation F (a : F) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `left`. Conclude with `(isUnit_iff_valuation_eq_one' a).2 ha`. Use `right`. Establish `ha1 : ValuativeRel.valuation F (a : F) < 1` using `lt_of_le_of_ne ((Valuation.mem_integer_iff _ _).1 a.2) ha`. Take `⟨o, hoO, hao⟩` from `(h.lt_one a).1 ha1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab' : (ϖ : F) = (a : F) * (b : F)` using `congrArg Subtype.val hab`. Establish `hoI : o ∈ 𝒪[F]`. Rewrite using `[← h.O_eq]`. Conclude with `hoO`. Establish `hob : (⟨o, hoI⟩ : 𝒪[F]) * b = 1`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show o * (b : F) = 1`. Establish `hh : ϖ * 1 = ϖ * (o * (b : F))`. Rewrite using `[mul_one, ← mul_assoc, ← hao, ← hab']`. Conclude with `(mul_left_cancel₀ h.ne hh).symm`.
-
-Conclude with `⟨⟨b, ⟨o, hoI⟩, (mul_comm _ _).trans hob, hob⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem irreducible_pi (h : LF O ϖ nrm q) :
     Irreducible (⟨ϖ, (Valuation.mem_integer_iff _ _).2 (val_pi_lt_one h).le⟩ : 𝒪[F]) := by
@@ -94,9 +90,9 @@ theorem irreducible_pi (h : LF O ϖ nrm q) :
       exact ⟨⟨b, ⟨o, hoI⟩, (mul_comm _ _).trans hob, hob⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hxI : x ∈ 𝒪[F]` using `(Valuation.mem_integer_iff _ _).2 hxO`. Establish `hx' : (⟨x, hxI⟩ : 𝒪[F]) ≠ 0`. Introduce `h0`. Conclude with `hx (congrArg Subtype.val h0)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx' (irreducible_pi h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hv` using `congrArg (fun y : 𝒪[F] => ValuativeRel.valuation F (y : F)) hu`. Establish `hu1 : ValuativeRel.valuation F ((u : 𝒪[F]) : F) = 1` using `(isUnit_iff_valuation_eq_one' _).1 u.isUnit`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, hu1, one_mul] at hv`. Conclude with `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_eq_pow_of_int (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0)
     (hxO : ValuativeRel.valuation F x ≤ 1) :
@@ -113,9 +109,9 @@ theorem val_eq_pow_of_int (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0)
   exact hv
 
 /- English proof (translation)
-Distinguish the cases in `hle : ValuativeRel.valuation F x ≤ 1`. Take `⟨n, hn⟩` from `val_eq_pow_of_int h hx hle`. Conclude with `⟨n, by rw [hn, _root_.zpow_natCast]⟩`. Establish `hlt : 1 < ValuativeRel.valuation F x` using `lt_of_not_ge hle`. Establish `hinv : ValuativeRel.valuation F x⁻¹ ≤ 1` using `((Valuation.one_lt_val_iff _ hx).1 hlt).le`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `val_eq_pow_of_int h (inv_ne_zero hx) hinv`. Use `⟨-(n : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, _root_.zpow_natCast, ← hn, map_inv₀, _root_.inv_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_eq_zpow (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0) :
     ∃ e : ℤ, ValuativeRel.valuation F x = ValuativeRel.valuation F ϖ ^ e := by
@@ -129,7 +125,7 @@ theorem val_eq_zpow (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0) :
     rw [_root_.zpow_neg, _root_.zpow_natCast, ← hn, map_inv₀, _root_.inv_inv]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_zpow₀, he, ← zpow_add₀ (val_pi_pos h).ne']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_mul_zpow (h : LF O ϖ nrm q) {x : F} {e : ℤ}
     (he : ValuativeRel.valuation F x = ValuativeRel.valuation F ϖ ^ e) :
@@ -138,9 +134,9 @@ theorem val_mul_zpow (h : LF O ϖ nrm q) {x : F} {e : ℤ}
   simp
 
 /- English proof (translation)
-Establish `h1 : nrm (x * ϖ ^ (-e)) = 1` using `h.nrm_unit _ (val_mul_zpow h he)`. Establish `hdecomp : x = x * ϖ ^ (-e) * ϖ ^ e`. Rewrite using `[mul_assoc, ← zpow_add₀ h.ne, neg_add_cancel, _root_.zpow_zero, mul_one]`. Establish `hz : nrm (ϖ ^ e) = nrm ϖ ^ e` using `by first`. Consider the case `exact map_zpow₀ nrm ϖ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact map_zpow₀ nrm.toMonoidWithZeroHom ϖ e`. Use `conv_lhs => rw [hdecomp]`. Rewrite using `[map_mul, h1, one_mul, hz, h.nrm_pi, _root_.inv_zpow']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_eq_zpow (h : LF O ϖ nrm q) {x : F} {e : ℤ}
     (he : ValuativeRel.valuation F x = ValuativeRel.valuation F ϖ ^ e) :
@@ -156,9 +152,9 @@ theorem nrm_eq_zpow (h : LF O ϖ nrm q) {x : F} {e : ℤ}
   rw [map_mul, h1, one_mul, hz, h.nrm_pi, _root_.inv_zpow']
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Take `⟨n, hn⟩` from `val_eq_pow_of_int h h0 hx`. Rewrite using `[nrm_eq_zpow h (e := (n : ℤ)) (by rw [hn, _root_.zpow_natCast]), _root_.zpow_neg, _root_.zpow_natCast]`. Establish `hq : (1 : ℝ) ≤ (q : ℝ)` using `by exact_mod_cast (one_lt_q h).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ hq)`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_le_one_of_valuation_le_one (h : LF O ϖ nrm q) (x : F) (hx : ValuativeRel.valuation F x ≤ 1) :
     nrm x ≤ 1 := by
@@ -170,7 +166,7 @@ private theorem nrm_le_one_of_valuation_le_one (h : LF O ϖ nrm q) (x : F) (hx :
     exact inv_le_one_of_one_le₀ (one_le_pow₀ hq)
 
 /- English proof (translation)
-Take `⟨o, hoO, rfl⟩` from `(h.lt_one x).1 hx`. Rewrite using `[map_mul, h.nrm_pi]`. Establish `ho : nrm o ≤ 1` using `nrm_le_one_of_valuation_le_one h o ((mem_iff_val_le h o).1 hoO)`. Establish `hq : (0 : ℝ) ≤ (q : ℝ)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem nrm_le_inv_q_of_valuation_lt_one (h : LF O ϖ nrm q) (x : F) (hx : ValuativeRel.valuation F x < 1) :
     nrm x ≤ (q : ℝ)⁻¹ := by
@@ -182,13 +178,13 @@ private theorem nrm_le_inv_q_of_valuation_lt_one (h : LF O ϖ nrm q) (x : F) (hx
     _ = (q : ℝ)⁻¹ := mul_one _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hn`. Assume the negation of the conclusion as `hv`. Establish `hlt : 1 < ValuativeRel.valuation F x` using `lt_of_not_ge hv`. Establish `hx : x ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hlt`. Establish `hi : ValuativeRel.valuation F x⁻¹ < 1` using `(Valuation.one_lt_val_iff _ hx).1 hlt`. Establish `h2 : nrm x⁻¹ ≤ (q : ℝ)⁻¹` using `nrm_le_inv_q_of_valuation_lt_one h _ hi`. Establish `hq : (q : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast one_lt_q h)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀]`. Establish `hpos : 0 < nrm x` using `nrm.pos hx`. Establish `h3 : (nrm x)⁻¹ < 1` using `lt_of_le_of_lt h2 hq`. Establish `h4 : 1 < nrm x` using `(inv_lt_one₀ hpos).1 h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `nrm_le_one_of_valuation_le_one h x`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le_one_iff (h : LF O ϖ nrm q) (x : F) :
     nrm x ≤ 1 ↔ ValuativeRel.valuation F x ≤ 1 := by
@@ -210,9 +206,9 @@ theorem nrm_le_one_iff (h : LF O ϖ nrm q) (x : F) :
   · exact nrm_le_one_of_valuation_le_one h x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hn`. Assume the negation of the conclusion as `hv`. Establish `h1 : 1 ≤ ValuativeRel.valuation F x` using `not_lt.1 hv`. Break down `h1.lt_or_eq with hlt | heq` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd ((nrm_le_one_iff h x).1 hn.le) (not_le.2 hlt)`. Establish `hu` using `h.nrm_unit x heq.symm`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hv`. Conclude with `lt_of_le_of_lt (nrm_le_inv_q_of_valuation_lt_one h x hv) (inv_lt_one_of_one_lt₀ (by exact_mod_cast one_lt_q h))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nrm_lt_one_iff (h : LF O ϖ nrm q) (x : F) :
     nrm x < 1 ↔ ValuativeRel.valuation F x < 1 := by
@@ -228,11 +224,11 @@ theorem nrm_lt_one_iff (h : LF O ϖ nrm q) (x : F) :
     exact lt_of_le_of_lt (nrm_le_inv_q_of_valuation_lt_one h x hv) (inv_lt_one_of_one_lt₀ (by exact_mod_cast one_lt_q h))
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Establish `hv0 : ValuativeRel.valuation F x = 0`. Rewrite `hxy` using `[hy, map_zero]`. Conclude with `le_antisymm hxy zero_le`. Establish `hx : x = 0` using `(Valuation.zero_iff _).1 hv0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hx]`. Establish `hyv : ValuativeRel.valuation F y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Establish `hq : ValuativeRel.valuation F (x * y⁻¹) ≤ 1`. Rewrite using `[map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1` using `(nrm_le_one_iff h _).2 hq`. Rewrite `h1` using `[map_mul, map_inv₀]`. Establish `hpos : 0 < nrm y` using `nrm.pos hy`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nrm_le_of_val_le (h : LF O ϖ nrm q) {x y : F}
     (hxy : ValuativeRel.valuation F x ≤ ValuativeRel.valuation F y) : nrm x ≤ nrm y := by
@@ -256,13 +252,13 @@ theorem nrm_le_of_val_le (h : LF O ϖ nrm q) {x y : F}
       _ = nrm y := one_mul _
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q h`. Use `⟨one_lt_q h, (mem_iff_val_le h ϖ).2 (val_pi_lt_one h).le, fun x => (nrm_le_one_iff h x).trans (mem_iff_val_le h x).symm, fun x => (nrm_lt_one_iff h x).trans (h.lt_one x), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨e, he⟩` from `val_eq_zpow h hx`. Conclude with `⟨e, nrm_eq_zpow h he, h.nrm_unit _ (val_mul_zpow h he)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x y`. Break down `le_total (ValuativeRel.valuation F x) (ValuativeRel.valuation F y) with hxy | hxy` into its components or cases. Establish `hs : ValuativeRel.valuation F (x + y) ≤ ValuativeRel.valuation F y` using `le_trans (Valuation.map_add _ x y) (max_le hxy le_rfl)`. Conclude with `le_trans (nrm_le_of_val_le h hs) (le_max_right _ _)`. Establish `hs : ValuativeRel.valuation F (x + y) ≤ ValuativeRel.valuation F x` using `le_trans (Valuation.map_add _ x y) (max_le le_rfl hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_trans (nrm_le_of_val_le h hs) (le_max_left _ _)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hn`. Establish `h1` using `(nrm_le_one_iff h x).1 hn.le`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ¬ ValuativeRel.valuation F x < 1` using `fun hlt => by`. Use `(nrm_lt_one_iff h x).2 hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_antisymm h1 (not_lt.1 h2)`. Conclude with `h.nrm_unit x`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → 1 < q ∧ ϖ ∈ O ∧ (∀ x : F, nrm x ≤ 1 ↔ x ∈ O) ∧ (∀ x : F, nrm x < 1 ↔ ∃ o ∈ O, x = ϖ * o) ∧ (∀ x : F, x ≠ 0 → ∃ e : ℤ, nrm x = (q : ℝ) ^ (-e) ∧ nrm (x * ϖ ^ (-e)) = 1) ∧ (∀ x y : F, nrm (x + y) ≤ max (nrm x) (nrm y)) ∧ (∀ x : F, nrm x = 1 ↔ ValuativeRel.valuation F x = 1) := by
   intro F _ _ _ _ O ϖ nrm q h

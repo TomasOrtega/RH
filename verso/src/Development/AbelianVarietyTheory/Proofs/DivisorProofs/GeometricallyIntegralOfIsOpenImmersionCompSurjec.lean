@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O Z T j f _ _ hs`. Use `⟨fun {K} _ y P fst snd h => ?_⟩` and prove the remaining obligations. Establish `hZf : IsIntegral (pullback f y)` using `GeometricallyIntegral.geometrically_isIntegral (f := f) y _ _ (IsPullback.of_hasPullback f y)`. Set `fst' : P ⟶ pullback f y` to `pullback.lift (fst ≫ j) snd (by rw [Category.assoc]; exact h.w)`. Establish `sq : IsPullback fst fst' j (pullback.fst f y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `IsPullback.of_bot (v₂₁ := pullback.snd f y) (v₂₂ := f) (h₃₁ := y) ?_ (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback f y)` and prove the remaining obligations. Establish `e : fst' ≫ pullback.snd f y = snd` using `pullback.lift_snd _ _ _`. Rewrite using `[e]`. Conclude with `h`. Establish `: IsOpenImmersion fst'` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) sq inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsn : Surjective snd` using `MorphismProperty.of_isPullback (P := @Surjective) h hs`. Establish `: Nonempty P`. Take `⟨z, -⟩` from `snd.surjective (Nonempty.some inferInstance : Spec (.of K))`. Conclude with `⟨z⟩`. Conclude with `isIntegral_of_isOpenImmersion fst'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_isOpenImmersion_comp_surjective :
     ∀ (O Z T : Scheme.{0}) (j : O ⟶ Z) (f : Z ⟶ T) [IsOpenImmersion j] [GeometricallyIntegral f], Surjective (j ≫ f) → GeometricallyIntegral (j ≫ f) := by

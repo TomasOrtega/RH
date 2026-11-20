@@ -8,15 +8,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.HeckeAvg
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N J hJ V _ _ π hπ g T hT r x hr hx hy v`. Take `⟨E, hE1, -, hE3, -, hE5⟩` from `GlobalTheory.T.compact_fixed_vector_projection (GL (Fin N) k) J hJ V π hπ`. Establish `hv : ∀ j ∈ J, π j (v : V) = v` using `fun j hj => by`. Use `v.2 ⟨j, hj⟩` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu : ∀ h ∈ J ⊓ J.map (MulAut.conj g).toMonoidHom, π h (π g (v : V)) = π g (v : V)`. Introduce `h hh`. Take `⟨j, hj, rfl⟩` from `Subgroup.mem_map.mp hh.2`. Establish `e : (MulAut.conj g).toMonoidHom j * g = g * j` using `by simp`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hv j hj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEu` using `hE5 (π g (v : V)) (J ⊓ J.map (MulAut.conj g).toMonoidHom) inf_le_left hu r x hr hx hy`. Establish `hsum : ∑ i, π (x i) (π g (v : V)) = ∑ i, π (x i * g) (v : V)` using `Finset.sum_congr rfl fun i _ => by rw [map_mul, Module.End.mul_apply]`. Rewrite using `[← hsum, ← hEu]`. Establish `hw : ((T v : fixed π J) : V) - E (π g (v : V)) ∈ fixed π J` using `Submodule.sub_mem _ (T v).2 (hE1 _)`. Establish `h0` using `GlobalTheory.T.fixed_vector_zero_of_dual (GL (Fin N) k) J hJ V π hπ _ hw (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `h1 : l (E (π g (v : V))) = l (π g (v : V))`. Use `hE3 l hl` as an intermediate fact. Conclude with `LinearMap.congr_fun this _`. Rewrite using `[map_sub, h1, hT v l hl, sub_self])`.
-
-Conclude with `sub_eq_zero.mp h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_eq_average : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (J : Subgroup (GL (Fin N) k)), IsCompact (J : Set (GL (Fin N) k)) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → ∀ (g : GL (Fin N) k) (T : Module.End ℂ (fixed π J)), IsHeckeOp π J g T → ∀ (r : ℕ) (x : Fin r → GL (Fin N) k), 0 < r → (∀ i, x i ∈ J) → (∀ y ∈ J, ∃! i, (x i)⁻¹ * y ∈ J ⊓ J.map (MulAut.conj g).toMonoidHom) → ∀ v : fixed π J, ((T v : fixed π J) : V) = ((r : ℂ)⁻¹) • ∑ i, π (x i * g) (v : V) := by
   intro k _ _ _ _ N J hJ V _ _ π hπ g T hT r x hr hx hy v

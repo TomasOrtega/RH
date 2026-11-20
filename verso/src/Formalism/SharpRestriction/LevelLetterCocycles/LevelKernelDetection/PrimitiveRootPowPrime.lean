@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.N.Ln03.Pf
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions.WachCoordinates Formalism.MainNotions.WachCoordinates.Br Formalism.ExponentWindows Formalism.ExponentWindows.G Formalism.MainNotions.N.Ln03 TensorProduct
 
 /- English proof (translation)
-Unfold `ConvolutionAlt.cv`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[PowerSeries.coeff_one, if_neg hj, zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem convolution_one {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (g : ℤ → M) (k : ℤ) :
     ConvolutionAlt.cv (1 : PowerSeries R) g k = g k := by
@@ -35,9 +35,9 @@ def phiIt (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (m : ℕ) (x : W.DD T
 variable {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hζ`. Break down `j with _ | j` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite `hj`, the goal using `[pow_zero, IsPrimitiveRoot.one_right_iff]`. Rewrite using `[hj, one_pow]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨j, hj.pow (pow_pos (Fact.out : PD.p.Prime).pos _) ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem primitive_root_pow_prime {ζ : LL} (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     ∃ j : ℕ, IsPrimitiveRoot (ζ ^ PD.p) (PD.p ^ j) := by
@@ -50,25 +50,23 @@ theorem primitive_root_pow_prime {ζ : LL} (hζ : ∃ j : ℕ, IsPrimitiveRoot �
     rw [pow_succ']
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `hN ζ _ k`. Rewrite using `[Finset.prod_range_zero, map_one, convolution_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_zero, add_zero, zero_mul, zpow_zero, one_smul, Function.iterate_zero, id, pow_zero, pow_one]`. Both sides reduce to the same expression. Consider the case `succ i ih`. Introduce `hN ζ hζ k`. Establish `hNi : ∀ r ≤ i, phiIt W T m x r ∈ W.N T` using `fun r hr => hN r (Nat.le_succ_of_le hr)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hζp` using `primitive_root_pow_prime (PD := PD) hζ`. Establish `hstep` using `levB_φ (a + ((i + 1 : ℕ) : ZMod n)) ζ hζ ⟨phiIt W T m x i, hNi i le_rfl⟩ m (hN (i + 1) le_rfl) k`. Establish `hlet : a + ((i + 1 : ℕ) : ZMod n) - 1 = a + (i : ZMod n)` using `by push_cast; ring`. Rewrite `hstep` using `[hlet]`. Establish `e0 : (⟨phiIt W T m x (i + 1), hN (i + 1) le_rfl⟩ : ↥(W.N T)) = ⟨W.Q ^ m • W.φD T ((⟨phiIt W T m x i, hNi i le_rfl⟩ : ↥(W.N T)) : W.DD T), hN (i + 1) le_rfl⟩` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e0, hstep]`. Use `set L := W.lev (a + ((i + 1 : ℕ) : ZMod n)) ζ (W.Q ^ m) with hL`. Use `set F := W.lev (a + (i : ZMod n)) (ζ ^ PD.p) (∏ r ∈ Finset.range i, W.φA^[r] (W.Q ^ m)) with hF`. Use `set φ := φVB PD (LL := LL) (V := T.V) with hφ`. Use `set g0 : ℤ → T.V ⊗[Qp] B := fun k => Lb.levB T a ((ζ ^ PD.p) ^ PD.p ^ i) ⟨x, hN 0 (Nat.zero_le _)⟩ k with hg0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set h : ℤ → T.V ⊗[Qp] B := fun k => ((PD.p : LL) ^ ((i : ℤ) * k)) • φ^[i] (g0 k) with hh`. Take `⟨m0, hm0⟩` from `Lb.supp T a ((ζ ^ PD.p) ^ PD.p ^ i) ⟨x, hN 0 (Nat.zero_le _)⟩`. Establish `hh0 : ∀ k < m0, h k = 0` using `fun k hk => by`. Simplify using `only [hh, hg0, hm0 k hk, Function.iterate_fixed (map_zero φ) i, smul_zero]`. Establish `hh1 : ∀ k < m0, (fun k => (PD.p : LL) ^ k • φ (h k)) k = 0` using `fun k hk => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hh0 k hk, map_zero, smul_zero]`. Establish `hfun : (fun k => (PD.p : LL) ^ k • φ (Lb.levB T (a + (i : ZMod n)) (ζ ^ PD.p) ⟨phiIt W T m x i, hNi i le_rfl⟩ k)) = fun k => ConvolutionAlt.cv (PowerSeries.rescale (PD.p : LL) F) (fun k => (PD.p : LL) ^ k • φ (h k)) k`. Use function extensionality and compare the values at `k'`. Rewrite using `[ih hNi (ζ ^ PD.p) hζp k']`. Conclude with `ConvolutionAlt.cv_twist φ (PD.p : LL) hp0 F h m0 hh0 k'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ConvolutionAlt.cv L (fun k => (PD.p : LL) ^ k • φ (Lb.levB T (a + (i : ZMod n)) (ζ ^ PD.p) ⟨phiIt W T m x i, hNi i le_rfl⟩ k)) k = _`. Rewrite using `[hfun, ← ConvolutionAlt.cv_mul L (PowerSeries.rescale (PD.p : LL) F) _ m0 hh1 k]`. Establish `hser : L * PowerSeries.rescale (PD.p : LL) F = W.lev (a + ((i + 1 : ℕ) : ZMod n)) ζ (∏ r ∈ Finset.range (i + 1), W.φA^[r] (W.Q ^ m))`. Rewrite using `[hF, ← hlet, ← lev_φ _ ζ hζ, hL, ← map_mul, Finset.prod_range_succ', map_prod]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply']`. Establish `hfn : (fun k => (PD.p : LL) ^ k • φ (h k)) = fun k => ((PD.p : LL) ^ (((i + 1 : ℕ) : ℤ) * k)) • φ^[i + 1] (Lb.levB T a (ζ ^ PD.p ^ (i + 1)) ⟨x, hN 0 (Nat.zero_le _)⟩ k)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k'`. Simplify using `only [hh, hg0]`. Rewrite using `[map_smul, smul_smul, ← zpow_add₀ hp0, Function.iterate_succ_apply', ← pow_mul, ← pow_succ']`. Use `congr 2`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hser, hfn]`.
+A detailed English derivation is pending.
 -/
 theorem phiIt_levB_gen (Lb : LevB W) (T : LocLat G Qp LL O)
     (levB_φ : ∀ (i : ZMod n) (ζ : LL), (∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) → ∀ (x : ↥(W.N T)) (m : ℕ)
@@ -142,7 +140,7 @@ theorem phiIt_levB_gen (Lb : LevB W) (T : LocLat G Qp LL O)
     rw [hser, hfn]
 
 /- English proof (translation)
-Establish `h` using `phiIt_levB_gen Lb T levB_φ lev_φ hp0 m (c - ell) x ell hN ζ ⟨s + 1, hζ⟩ k`. Establish `h1 : ζ ^ PD.p ^ ell = 1` using `(hζ.pow_eq_one_iff_dvd _).2 (pow_dvd_pow _ hs)`. Rewrite `h` using `[h1, sub_add_cancel]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiIt_levB (Lb : LevB W) (T : LocLat G Qp LL O)
     (levB_φ : ∀ (i : ZMod n) (ζ : LL), (∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) → ∀ (x : ↥(W.N T)) (m : ℕ)

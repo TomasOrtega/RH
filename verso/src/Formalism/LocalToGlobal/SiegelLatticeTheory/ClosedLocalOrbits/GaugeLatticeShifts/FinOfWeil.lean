@@ -18,19 +18,19 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hν : ν ≠ 0`. Introduce and unpack `rfl`. Apply `hμ` to reduce the goal to its premises. Use `hW (fun _ => 1) measurable_const` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC, hνC⟩ : ∃ C : Set G, IsCompact C ∧ ν C ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hν` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: ν Set.univ = 0`. Rewrite using `[← iUnion_compactCovering G]`. Conclude with `measure_iUnion_null fun n => hcon _ (isCompact_compactCovering G n)`. Conclude with `Measure.measure_univ_eq_zero.mp this`. Establish `hWc : IsCompact (K * C)` using `hK.mul hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWm : MeasurableSet (K * C)` using `hWc.isClosed.measurableSet`. Establish `hf` using `hW ((K * C).indicator 1) (measurable_one.indicator hWm)`. Rewrite `hf` using `[lintegral_indicator_one hWm]`. Establish `hinner : ∀ x, ∫⁻ s, (K * C).indicator 1 (s * x) ∂μS = μS ((· * x) ⁻¹' (K * C))` using `fun x => by`. Rewrite using `[← lintegral_indicator_one ((measurable_mul_const x) hWm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hf` using `[hinner]`. Establish `hbound : μS K * ν C ≤ μ (K * C)`. Rewrite using `[hf, ← lintegral_indicator_const hC.isClosed.measurableSet]`. Apply `lintegral_mono` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ C`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `measure_mono fun k hk => Set.mul_mem_mul hk hx`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hμW : μ (K * C) < ⊤` using `hWc.measure_lt_top`. Assume the negation of the conclusion as `htop`. Rewrite `htop` using `[not_lt, top_le_iff]`. Rewrite `hbound` using `[htop, ENNReal.top_mul hνC]`. Conclude with `absurd (lt_of_le_of_lt hbound hμW) (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem fin_of_weil (μ μS ν : Measure G) [IsFiniteMeasureOnCompacts μ] (hμ : μ ≠ 0)
     (hW : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μ = ∫⁻ x, ∫⁻ s, f (s * x) ∂μS ∂ν) :
@@ -76,13 +76,11 @@ end Gen
 variable {D : D7}
 
 /- English proof (translation)
-Use `set s : X.B.I.Ginf := Function.update 1 v x with hsdef`. Establish `hs : s ∈ X.SinfU u`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsdef, Function.update_self]`. Conclude with `hx`. Rewrite using `[hsdef, Function.update_of_ne hw]`. Conclude with `Formalism.L2.SG.Pf.WuDec.one_mem_Sloc X u w`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hdec⟩` from `Formalism.L2.S.Pv.HaarSubS.sDecomp_holds D X u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn, h, hh, he⟩` from `hdec s hs`. Establish `hxv : x = n v * h v`. Use `congrFun he v` as an intermediate fact. Rewrite `this` using `[hsdef, Function.update_self]`. Conclude with `this`.
-
-Conclude with `⟨n v, hn v, h v, hh v, hxv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sloc_sub_NH (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) {x : Formalism.REAL.UJ (X.B.I.ε v)}
     (hx : x ∈ Formalism.L2.SG.Pf.WuDec.Sloc X u v) : x ∈ Formalism.L2.SG.Pf.WuDec.NHloc X u v := by

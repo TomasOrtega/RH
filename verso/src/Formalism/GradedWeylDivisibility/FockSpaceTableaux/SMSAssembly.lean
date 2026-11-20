@@ -9,19 +9,17 @@ namespace Formalism.GradedWeylDivisibility
 open scoped MonomialOrder
 
 /- English proof (translation)
-Introduce `hCL hCS hSS hLI B _ _ r n ν`. Apply `le_antisymm` to reduce the goal to its premises. Establish `key : ∀ d : (colLex r n).syn, ∀ f ∈ dualWeyl B r n ν, (colLex r n).toSyn ((colLex r n).degree f) = d → f ∈ Submodule.span B {f | ∃ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r), shapeDeg sz = ν ∧ f = bideterminant B sz hsz I}`. Introduce `d`. Proceed by induction on `d using WellFoundedLT.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ d ih`. Introduce `f hf hd`. Distinguish the cases in `hf0 : f = 0`. Rewrite using `[hf0]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm` using `(colLex r n).degree_mem_support hf0`. Take `⟨K, sz, hsz, I, hsh, hmono, hexp⟩` from `hSS r n ν _ (hCS B r n ν f hf _ hm) (hLI B r n ν f hf hf0)`. Take `⟨hdeg, hlc⟩` from `hCL B r n K sz hsz I hmono`. Establish `hg : bideterminant B sz hsz I ∈ dualWeyl B r n ν`. Rewrite using `[← hsh]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bidetMem B r n K sz hsz I`. Establish `hgS : bideterminant B sz hsz I ∈ Submodule.span B {f | ∃ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r), shapeDeg sz = ν ∧ f = bideterminant B sz hsz I}` using `Submodule.subset_span ⟨K, sz, hsz, I, hsh, rfl⟩`. Establish `hf' : f - (colLex r n).leadingCoeff f • bideterminant B sz hsz I ∈ dualWeyl B r n ν` using `Submodule.sub_mem _ hf (Submodule.smul_mem _ _ hg)`. Establish `h1 : f - (colLex r n).leadingCoeff f • bideterminant B sz hsz I ∈ Submodule.span B {f | ∃ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r), shapeDeg sz = ν ∧ f = bideterminant B sz hsz I}`. Distinguish the cases in `hne : f - (colLex r n).leadingCoeff f • bideterminant B sz hsz I = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hne]`. Conclude with `Submodule.zero_mem _`. Establish `hlt` using `lcassem_sub_lt (colLex r n) (hdeg.trans hexp) hlc hne`. Conclude with `ih _ (by rw [← hd]; exact hlt) _ hf' rfl`. Establish `h2` using `Submodule.add_mem _ h1 (Submodule.smul_mem _ ((colLex r n).leadingCoeff f) hgS)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `fun f hf => key _ f hf rfl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨K, sz, hsz, I, hsh, rfl⟩`. Rewrite using `[← hsh]`.
-
-Conclude with `bidetMem B r n K sz hsz I`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semistandard_module_assembly : SMSAssembly := by
   intro hCL hCS hSS hLI B _ _ r n ν

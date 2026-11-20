@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.LogPf
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt k (n := n) d j i) = 0 := by
   simp [pt]
@@ -23,14 +23,14 @@ theorem cc_zero {n : ℕ} (i : Fin d) : constantCoeff ((0 : Pt k n d) i) = 0 := 
   simp
 
 /- English proof (translation)
-Introduce `j`. Conclude with `j.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem CZ.nil {n : ℕ} : CZ (![] : Fin 0 → Pt k n d) := by
   intro j
   exact j.elim0
 
 /- English proof (translation)
-Introduce `j`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using hp`. Consider the case `succ j => simpa using ha j`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem CZ.cons {m n : ℕ} {p : Pt k n d} {a : Fin m → Pt k n d} (hp : ∀ i, constantCoeff (p i) = 0) (ha : CZ a) :
     CZ (Matrix.vecCons p a) := by
@@ -47,14 +47,14 @@ theorem pt_apply {n : ℕ} (j : Fin n) (i : Fin d) : pt k (n := n) d j i = (X (j
 variable (G : FGLaw k d)
 
 /- English proof (translation)
-The claim follows from `G.const`.
+A detailed English derivation is pending.
 -/
 theorem cz_F : ∀ i, constantCoeff (G.F i) = 0 := G.const
 
 /- English proof (translation)
-Establish `ha : CZ (![pt k (n` using `1) d 0, 0] : Fin 2 → Pt k 1 d) := CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil)`. Establish `hb : CZ (![pt k (n` using `2) d 1, pt k d 0] : Fin 2 → Pt k 2 d) := CZ.cons (cc_pt _) (CZ.cons (cc_pt _) CZ.nil)`. Rewrite using `[← G.comm i, ev_ev ha hb]`. Establish `e : (fun j l => ev (n` using `1) (![pt k d 0, 0] : Fin 2 → Pt k 1 d) ((![pt k (n := 2) d 1, pt k d 0] : Fin 2 → Pt k 2 d) j l)) = (![0, pt k d 0] : Fin 2 → Pt k 1 d) := by`. Use function extensionality and compare the values at `j l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X ha]`. Rewrite using `[e]`. Conclude with `G.unit i`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalGroupLaw_ev_x_zero (i : Fin d) : ev (n := 1) ![pt k d 0, 0] (G.F i) = (X ((0 : Fin 1), i) : PS k 1 d) := by
   have ha : CZ (![pt k (n := 1) d 0, 0] : Fin 2 → Pt k 1 d) := CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil)
@@ -69,7 +69,7 @@ theorem formalGroupLaw_ev_x_zero (i : Fin d) : ev (n := 1) ![pt k d 0, 0] (G.F i
   exact G.unit i
 
 /- English proof (translation)
-Rewrite using `[pderiv_ev ha]`. Conclude with `Finset.sum_eq_zero (fun p _ => by rw [h p.1 p.2, mul_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_ev_zero {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) (v : Fin n × Fin d)
     (h : ∀ j i, pderiv k v (a j i) = 0) : pderiv k v (ev a f) = 0 := by
@@ -77,7 +77,7 @@ theorem pderiv_ev_zero {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : PS 
   exact Finset.sum_eq_zero (fun p _ => by rw [h p.1 p.2, mul_zero])
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [pt_apply, MvPowerSeries.pderiv_X, Pi.single_apply]`. Consider the case `(rw [pt_apply, MvPowerSeries.pderiv_X]; simp [Pi.single_apply])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pderiv_pt {n : ℕ} (v : Fin n × Fin d) (j : Fin n) (i : Fin d) :
     pderiv k v (pt k (n := n) d j i) = if (j, i) = v then 1 else 0 := by
@@ -92,43 +92,43 @@ def Ar : Fin d → Fin d → PS k 2 d := fun i b => pderiv k ((1 : Fin 2), b) (G
 section Fams
 
 /- English proof (translation)
-The claim follows from `CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil)`.
+A detailed English derivation is pending.
 -/
 theorem cz1 : CZ (![pt k (n := 1) d 0, 0] : Fin 2 → Pt k 1 d) := CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil)
 /- English proof (translation)
-The claim follows from `CZ.cons (cc_pt _) CZ.nil`.
+A detailed English derivation is pending.
 -/
 theorem czY : CZ (![pt k (n := 2) d 1] : Fin 1 → Pt k 2 d) := CZ.cons (cc_pt _) CZ.nil
 /- English proof (translation)
-The claim follows from `CZ.cons (cc_pt _) (CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil))`.
+A detailed English derivation is pending.
 -/
 theorem czZ : CZ (![pt k (n := 2) d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d) :=
   CZ.cons (cc_pt _) (CZ.cons (cc_pt _) (CZ.cons cc_zero CZ.nil))
 /- English proof (translation)
-The claim follows from `CZ.cons (cz_F G) CZ.nil`.
+A detailed English derivation is pending.
 -/
 theorem czFF : CZ (![G.F] : Fin 1 → Pt k 2 d) := CZ.cons (cz_F G) CZ.nil
 /- English proof (translation)
-The claim follows from `CZ.cons (cc_pt _) (CZ.cons (cc_pt _) CZ.nil)`.
+A detailed English derivation is pending.
 -/
 theorem cz01 : CZ (![pt k (n := 3) d 0, pt k d 1] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt _) (CZ.cons (cc_pt _) CZ.nil)
 /- English proof (translation)
-The claim follows from `CZ.cons (cc_pt _) (CZ.cons (cc_pt _) CZ.nil)`.
+A detailed English derivation is pending.
 -/
 theorem cz12 : CZ (![pt k (n := 3) d 1, pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt _) (CZ.cons (cc_pt _) CZ.nil)
 
 end Fams
 
 /- English proof (translation)
-Simplify using `using ev_sub ha (0 : PS k m d) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_zero_of_CZ {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) : ev a (0 : PS k m d) = 0 := by
   simpa using ev_sub ha (0 : PS k m d) 0
 
 /- English proof (translation)
-Rewrite using `[ev_ev czY cz1]`. Use `congr 1`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X czY]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[ev_zero_of_CZ czY]`.
+A detailed English derivation is pending.
 -/
 theorem formal_ev_second_point_of_x_zero (g : PS k 2 d) :
     ev (n := 2) ![pt k d 1] (ev (n := 1) ![pt k d 0, 0] g) = ev (n := 2) ![pt k d 1, 0] g := by
@@ -140,7 +140,7 @@ theorem formal_ev_second_point_of_x_zero (g : PS k 2 d) :
   · simp [ev_zero_of_CZ czY]
 
 /- English proof (translation)
-Rewrite using `[ev_ev czZ cz12]`. Use `congr 1`. Use function extensionality and compare the values at `j l`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X czZ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ev_z_yz (g : PS k 2 d) :
     ev (n := 2) ![pt k d 0, pt k d 1, 0] (ev (n := 3) ![pt k d 1, pt k d 2] g) = ev (n := 2) ![pt k d 1, 0] g := by
@@ -150,14 +150,14 @@ theorem ev_z_yz (g : PS k 2 d) :
   fin_cases j <;> simp [pt_apply, ev_X czZ]
 
 /- English proof (translation)
-Rewrite using `[← formal_ev_second_point_of_x_zero, formalGroupLaw_ev_x_zero, ev_X czY]`. Simplify using `[pt_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem formalGroupLaw_ev_y_zero (c : Fin d) : ev (n := 2) ![pt k d 1, 0] (G.F c) = (X ((1 : Fin 2), c) : PS k 2 d) := by
   rw [← formal_ev_second_point_of_x_zero, formalGroupLaw_ev_x_zero, ev_X czY]
   simp [pt_apply]
 
 /- English proof (translation)
-Establish `h : (![pt k (n` using `2) d 0, pt k d 1] : Fin 2 → Pt k 2 d) = fun j => pt k d j := by`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[h, ev_pt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_two_identity (f : PS k 2 d) : ev (n := 2) ![pt k d 0, pt k d 1] f = f := by
   have h : (![pt k (n := 2) d 0, pt k d 1] : Fin 2 → Pt k 2 d) = fun j => pt k d j := by
@@ -166,14 +166,14 @@ private theorem ev_two_identity (f : PS k 2 d) : ev (n := 2) ![pt k d 0, pt k d 
   rw [h, ev_pt]
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (ev a) (ev_add ha)) f Finset.univ`.
+A detailed English derivation is pending.
 -/
 private theorem ev_finset_sum_of_CZ {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : Fin d → PS k m d) :
     ev a (∑ c, f c) = ∑ c, ev a (f c) :=
   map_sum (AddMonoidHom.mk' (ev a) (ev_add ha)) f Finset.univ
 
 /- English proof (translation)
-Rewrite using `[ev_ev czZ cz01]`. Establish `e : (fun j l => ev (n` using `2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d) ((![pt k (n := 3) d 0, pt k d 1] : Fin 2 → Pt k 3 d) j l)) = (![pt k d 0, pt k d 1] : Fin 2 → Pt k 2 d) := by`. Use function extensionality and compare the values at `j l`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X czZ]`. Rewrite using `[e, ev_two_identity]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_zero_one_identity (g : PS k 2 d) :
     ev (n := 2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d) (ev (n := 3) ![pt k d 0, pt k d 1] g) = g := by
@@ -185,7 +185,7 @@ private theorem ev_zero_one_identity (g : PS k 2 d) :
   rw [e, ev_two_identity]
 
 /- English proof (translation)
-Rewrite using `[pderiv_ev cz12, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pderiv_pt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pderiv_two_ev (b : Fin d) (g : PS k 2 d) :
     pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 1, pt k d 2] g) =
@@ -194,13 +194,13 @@ private theorem pderiv_two_ev (b : Fin d) (g : PS k 2 d) :
   simp [pderiv_pt]
 
 /- English proof (translation)
-Establish `hA : CZ (![fun l => ev (n` using `3) ![pt k d 0, pt k d 1] (G.F l), pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (fun l => constantCoeff_ev cz01 (cz_F G l)) (CZ.cons (cc_pt _) CZ.nil)`. Apply the tactic sequence `have h0 : ∀ l, pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 0, pt k d 1] (G.F l)) = 0 := fun l => pderiv_ev_zero cz01 _ _ (fun j i => by fin_cases j <;> simp [pderiv_pt])`. Establish `hs : pderiv k ((2 : Fin 3), b) (ev (n` using `3) ![fun l => ev (n := 3) ![pt k d 0, pt k d 1] (G.F l), pt k d 2] (G.F i)) = ev (n := 3) ![fun l => ev (n := 3) ![pt k d 0, pt k d 1] (G.F l), pt k d 2] (pderiv k ((1 : Fin 2), b) (G.F i)) := by`. Rewrite using `[pderiv_ev hA, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[h0, pderiv_pt]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : (fun j l => ev (n` using `2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d) ((![fun l => ev (n := 3) ![pt k d 0, pt k d 1] (G.F l), pt k d 2] : Fin 2 → Pt k 3 d) j l)) = (![G.F, 0] : Fin 2 → Pt k 2 d) := by`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Simplify using `[ev_zero_one_identity]`. Simplify using `[pt_apply, ev_X czZ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (fun j l => ev (n` using `2) (![G.F] : Fin 1 → Pt k 2 d) ((![pt k d 0, 0] : Fin 2 → Pt k 1 d) j l)) = (![G.F, 0] : Fin 2 → Pt k 2 d) := by`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X (czFF G)]`. Simplify using `[ev_zero_of_CZ (czFF G)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, ev_ev czZ hA, e1]`. Simplify using `only [Jac]`. Rewrite using `[ev_ev (czFF G) cz1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_jacobian_left (i b : Fin d) :
     ev (n := 2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d)
@@ -235,11 +235,11 @@ private theorem ev_jacobian_left (i b : Fin d) :
   rw [ev_ev (czFF G) cz1, e2]
 
 /- English proof (translation)
-Establish `hB : CZ (![pt k d 0, fun l => ev (n` using `3) ![pt k d 1, pt k d 2] (G.F l)] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt _) (CZ.cons (fun l => constantCoeff_ev cz12 (cz_F G l)) CZ.nil)`. Establish `hs : pderiv k ((2 : Fin 3), b) (ev (n` using `3) ![pt k d 0, fun l => ev (n := 3) ![pt k d 1, pt k d 2] (G.F l)] (G.F i)) = ∑ c, ev (n := 3) ![pt k d 0, fun l => ev (n := 3) ![pt k d 1, pt k d 2] (G.F l)] (pderiv k ((1 : Fin 2), c) (G.F i)) * ev (n := 3) ![pt k d 1, pt k d 2] (pderiv k ((1 : Fin 2), b) (G.F c)) := by`. Rewrite using `[pderiv_ev hB, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pderiv_pt, pderiv_two_ev]`. Establish `e1 : (fun j l => ev (n` using `2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d) ((![pt k d 0, fun l => ev (n := 3) ![pt k d 1, pt k d 2] (G.F l)] : Fin 2 → Pt k 3 d) j l)) = (![pt k d 0, pt k d 1] : Fin 2 → Pt k 2 d) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X czZ]`. Simplify using `[ev_z_yz, formalGroupLaw_ev_y_zero, pt_apply]`. Rewrite using `[hs, ev_finset_sum_of_CZ czZ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[ev_mul czZ, ev_ev czZ hB, e1, ev_two_identity, ev_z_yz]`. Simplify using `only [Ar, Jac, formal_ev_second_point_of_x_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ev_jacobian_right (i b : Fin d) :
     ev (n := 2) (![pt k d 0, pt k d 1, 0] : Fin 3 → Pt k 2 d)
@@ -268,7 +268,7 @@ private theorem ev_jacobian_right (i b : Fin d) :
   simp only [Ar, Jac, formal_ev_second_point_of_x_zero]
 
 /- English proof (translation)
-Rewrite using `[← ev_jacobian_left, ← ev_jacobian_right, G.assoc i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jac_F (i b : Fin d) :
     ev (n := 2) ![G.F] (Jac G i b) = ∑ c, Ar G i c * ev (n := 2) ![pt k d 1] (Jac G c b) := by

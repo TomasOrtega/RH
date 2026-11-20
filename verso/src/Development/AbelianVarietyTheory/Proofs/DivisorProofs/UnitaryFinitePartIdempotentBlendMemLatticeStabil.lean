@@ -18,7 +18,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.StabMove
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem R fun k _ => R.mul_mem (hM i k) (hN k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entries_mem {A : Type} [CommRing A] (R : Subring A) {n : ℕ}
     (M N : Matrix (Fin n) (Fin n) A) (hM : ∀ i j, M i j ∈ R) (hN : ∀ i j, N i j ∈ R) :
@@ -32,7 +32,7 @@ def lift {A : Type} [CommRing A] (R : Subring A) {n : ℕ}
   fun i j => ⟨M i j, hM i j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem lift_map {A : Type} [CommRing A] (R : Subring A) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) A) (hM : ∀ i j, M i j ∈ R) :
@@ -55,7 +55,7 @@ def liftGL {A : Type} [CommRing A] (R : Subring A) {n : ℕ} (u : GL (Fin n) A)
     exact u.inv_mul
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem liftGL_map {A : Type} [CommRing A] (R : Subring A) {n : ℕ} (u : GL (Fin n) A)
     (hu : ∀ i j, u.val i j ∈ R) (hu' : ∀ i j, (u⁻¹).val i j ∈ R) :
@@ -66,23 +66,19 @@ end GlobalTheory.StabMove
 
 open GlobalTheory.StabMove in
 /- English proof (translation)
-Introduce `D V g β₀ β₁ h₀ h₁ ε φ hε hφ hg hg'`. Use `set R := Formalism.L2.Herm.intAf D.host.F D.host.E with hR`. Establish `hcF : ∀ M : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D), (∀ i j, M i j ∈ R) → ∀ i j, ((M.map (GlobalTheory.AdelicLatMove.cF D)).transpose) i j ∈ R`. Introduce `M hM i j`. Conclude with `GlobalTheory.LevSplit.sigR_int (hM j i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hshape : ∀ (a b : GL (Fin V.rank) (Lev.EAf D)), (∀ i j, a.val i j ∈ R ∧ (a⁻¹).val i j ∈ R) → (∀ i j, b.val i j ∈ R ∧ (b⁻¹).val i j ∈ R) → ∀ i j, ((1 - ε - φ) • (1 : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) + ε • (a * b⁻¹).val + φ • ((b * a⁻¹).val.map (GlobalTheory.AdelicLatM …`. Introduce `a b ha hb i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `R.add_mem (R.add_mem (R.mul_mem ?_ ?_) (R.mul_mem hε ?_)) (R.mul_mem hφ ?_)` and prove the remaining obligations. Conclude with `R.sub_mem (R.sub_mem R.one_mem hε) hφ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Rewrite using `[Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_entries_mem R _ _ (fun i j => (ha i j).1) (fun i j => (hb i j).2) i j`. Apply `hcF` to reduce the goal to its premises. Rewrite using `[Units.val_mul]`. Conclude with `mul_entries_mem R _ _ (fun i j => (hb i j).1) (fun i j => (ha i j).2)`. Establish `hE : ∀ i j, (Formalism.IndefR.Lev.finE V g).val i j ∈ R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Formalism.IndefR.Lev.finE V g).val = (Formalism.L2.Theta.mt V g).map (toEAf D)` using `rfl`. Rewrite using `[this, hg]`. Conclude with `hshape β₁ β₀ h₁ h₀`. Establish `hE' : ∀ i j, ((Formalism.IndefR.Lev.finE V g)⁻¹).val i j ∈ R`. Establish `: ((Formalism.IndefR.Lev.finE V g)⁻¹).val = (Formalism.L2.Theta.mt V g⁻¹).map (toEAf D)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this, hg']`. Conclude with `hshape β₀ β₁ h₀ h₁`. Use `set u := β₁⁻¹ * Formalism.IndefR.Lev.finE V g * β₁ with hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : ∀ i j, u.val i j ∈ R`. Introduce `i j`. Simplify using `only [hu, Units.val_mul]`. Conclude with `mul_entries_mem R _ _ (mul_entries_mem R _ _ (fun i j => (h₁ i j).2) hE) (fun i j => (h₁ i j).1) i j`. Establish `hu2 : ∀ i j, (u⁻¹).val i j ∈ R`.
-
-Introduce `i j`. Establish `: u⁻¹ = β₁⁻¹ * (Formalism.IndefR.Lev.finE V g)⁻¹ * β₁`. Simplify using `only [hu, mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[this]`. Simplify using `only [Units.val_mul]`.
-
-Conclude with `mul_entries_mem R _ _ (mul_entries_mem R _ _ (fun i j => (h₁ i j).2) hE') (fun i j => (h₁ i j).1) i j`. Use `⟨liftGL R u hu1 hu2, ?_⟩` and prove the remaining obligations. Use `show MulAut.conj β₁ (Formalism.UG.bc R.subtype (liftGL R u hu1 hu2)) = _`. Rewrite using `[liftGL_map, MulAut.conj_apply, hu]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StabMove.finE_mem_St : ∀ {D : D7} (V : HSp D) (g : GA D V) (β₀ β₁ : GL (Fin V.rank) (Lev.EAf D)),
     (∀ i j, β₀.val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ (β₀⁻¹).val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) →

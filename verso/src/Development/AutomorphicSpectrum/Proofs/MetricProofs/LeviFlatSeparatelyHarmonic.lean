@@ -8,23 +8,21 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Metric
 
 /- English proof (translation)
-Introduce `n φ O hO hφ hl z hz i`. Use `set e : Fin n → ℂ := Pi.single i 1 with he`. Set `L : ℂ →L[ℝ] (Fin n → ℂ)` to `((ContinuousLinearMap.id ℂ ℂ).smulRight e).restrictScalars ℝ`. Establish `hLw : ∀ w : ℂ, L w = w • e` using `fun _ => rfl`. Use `set z0 : Fin n → ℂ := Function.update z i 0 with hz0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hupd : ∀ t : ℂ, Function.update z i t = z0 + t • e`. Introduce `t`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hz0, he]`. Simplify using `[hz0, he, h]`. Establish `hline : ∀ t : ℂ, HasFDerivAt (fun w : ℂ => z0 + w • e) L t` using `fun t => L.hasFDerivAt.const_add z0`. Establish `hcont : Continuous (fun t : ℂ => z0 + t • e)` using `by fun_prop`. Establish `hU : IsOpen ((fun t : ℂ => z0 + t • e) ⁻¹' O)` using `hO.preimage hcont`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzU : z i ∈ (fun t : ℂ => z0 + t • e) ⁻¹' O` using `by show z0 + z i • e ∈ O`. Rewrite using `[← hupd]`. Simplify using `using hz`. Apply the tactic sequence `have hφ2 : ∀ y ∈ O, ContDiffAt ℝ 2 φ y := fun y hy => ((hφ y hy).contDiffAt (hO.mem_nhds hy)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp)`. Establish `hlap : ∀ t ∈ (fun t : ℂ => z0 + t • e) ⁻¹' O, Laplacian.laplacian (fun t : ℂ => φ (z0 + t • e)) t = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `hy : z0 + t • e ∈ O` using `ht`. Establish `h1 : fderiv ℝ (fun w : ℂ => φ (z0 + w • e)) =ᶠ[𝓝 t] fun w : ℂ => (fderiv ℝ φ (z0 + w • e)).comp L` using `by filter_upwards [hU.mem_nhds ht] with w hw`. Conclude with `(((hφ2 _ hw).differentiableAt (by simp)).hasFDerivAt.comp w (hline w)).fderiv`. Establish `hD : HasFDerivAt (fderiv ℝ φ) (fderiv ℝ (fderiv ℝ φ) (z0 + t • e)) (z0 + t • e)` using `(((hφ2 _ hy).fderiv_right (m := 1) (by norm_num)).differentiableAt (by simp)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `((hD.comp t (hline t)).clm_comp (hasFDerivAt_const L t)).fderiv`. Simplify using `only [Function.comp_def] at h2`. Establish `hle` using `hl _ hy e`. Unfold `levi at hle`. Rewrite using `[InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [iteratedFDeriv_two_apply]`. Rewrite using `[h1.fderiv_eq, h2]`. Simplify using `[hLw]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[show (fun t : ℂ => φ (Function.update z i t)) = fun t : ℂ => φ (z0 + t • e) from`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun t => by rw [hupd]]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hA : ContDiffAt ℝ 2 (fun t : ℂ => z0 + t • e) (z i)`. Establish `: ContDiff ℝ 2 (fun t : ℂ => z0 + L t)` using `contDiff_const.add L.contDiff`. Conclude with `this.contDiffAt`.
-
-Conclude with `(hφ2 _ hzU).comp (z i) hA`. Use `filter_upwards [hU.mem_nhds hzU] with t ht`. Simplify using `using hlap t ht`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem harmonicAt_update_of_levi_eq_zero :
     ∀ (n : ℕ) (φ : (Fin n → ℂ) → ℝ) (O : Set (Fin n → ℂ)), IsOpen O → ContDiffOn ℝ ∞ φ O →

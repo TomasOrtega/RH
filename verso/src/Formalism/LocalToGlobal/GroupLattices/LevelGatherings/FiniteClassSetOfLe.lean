@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace Formalism.L2.G
 
 /- English proof (translation)
-Use `Finite.of_surjective (fun q : ClassSet Γ K => Quotient.liftOn' q (fun g => (Quotient.mk'' g : ClassSet Γ K')) (fun a b hab => ?_)) ?_` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `(DoubleCoset.rel_iff).mp hab`. Conclude with `Quotient.sound' ((DoubleCoset.rel_iff).mpr ⟨x, hx, y, h hy, rfl⟩)`. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `h g => exact ⟨Quotient.mk'' g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_classSet_of_le {G : Type} [Group G] (Γ K K' : Subgroup G) (h : K ≤ K') [Finite (ClassSet Γ K)] :
     Finite (ClassSet Γ K') := by
@@ -28,7 +28,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨h1, h2⟩` from `(L.U_eq x).mp hx`. Simplify using `only [Formalism.L2.Herm.awayFrom₂, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `⟨h1, fun v _ => h2 v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem U_le_awayP (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) : L.U ≤ Formalism.L2.Herm.awayFrom₂ L p := by
   intro x hx
@@ -37,7 +37,7 @@ theorem U_le_awayP (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) : L.U ≤ For
   exact ⟨h1, fun v _ => h2 v⟩
 
 /- English proof (translation)
-Use `haveI := C.clsFin 0`. Conclude with `Finite.of_surjective _ L.y_bij.2`.
+A detailed English derivation is pending.
 -/
 theorem finite_classSet_U (L : ColLevel R F E sp gp C A clsLat) :
     Finite (ClassSet ((ratPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)).subgroupOf

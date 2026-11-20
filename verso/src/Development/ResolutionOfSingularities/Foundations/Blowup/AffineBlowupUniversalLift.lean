@@ -19,7 +19,7 @@ def polynomialEvalInvSelf (φ : R →+* S) (s : S) : Polynomial R →+* Localiza
     (Localization.Away.invSelf s)
 
 /- English proof (translation)
-Simplify using `[polynomialEvalInvSelf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polynomialEvalInvSelf_monomial (φ : R →+* S) (s : S) (n : ℕ) (r : R) :
     polynomialEvalInvSelf φ s (Polynomial.monomial n r) =
@@ -27,7 +27,7 @@ theorem polynomialEvalInvSelf_monomial (φ : R →+* S) (s : S) (n : ℕ) (r : R
   simp [polynomialEvalInvSelf]
 
 /- English proof (translation)
-Establish `hmem : φ r ∈ Ideal.span {s ^ n}`. Establish `h1 : φ r ∈ Ideal.map φ (I ^ n)` using `Ideal.mem_map_of_mem φ hr`. Rewrite `h1` using `[Ideal.map_pow, hI, Ideal.span_singleton_pow]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp hmem`. Conclude with `⟨c, by rw [hc, mul_comm]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_pow_of_mem_pow (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (n : ℕ) (r : R) (hr : r ∈ I ^ n) :
@@ -39,7 +39,7 @@ theorem exists_mul_pow_of_mem_pow (I : Ideal R) (φ : R →+* S) (s : S)
   exact ⟨c, by rw [hc, mul_comm]⟩
 
 /- English proof (translation)
-Establish `h : Localization.Away.invSelf t = Localization.mk 1 ⟨t, Submonoid.mem_powers t⟩` using `rfl`. Rewrite using `[h, Localization.mk_eq_mk', mul_comm, IsLocalization.mk'_spec, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem algebraMap_mul_invSelf {T : Type v} [CommRing T] (t : T) :
     algebraMap T (Localization.Away t) t * Localization.Away.invSelf t = 1 := by
@@ -48,11 +48,9 @@ private theorem algebraMap_mul_invSelf {T : Type v} [CommRing T] (t : T) :
   rw [h, Localization.mk_eq_mk', mul_comm, IsLocalization.mk'_spec, map_one]
 
 /- English proof (translation)
-Establish `hmem : ∀ i : ℕ, (p : Polynomial R).coeff i ∈ I ^ i`. Establish `hp` using `p.2`. Rewrite `hp` using `[mem_reesAlgebra_iff]`. Conclude with `hp`. Establish `key : ∀ i : ℕ, ∃ c : S, φ ((p : Polynomial R).coeff i) = c * s ^ i` using `fun i => exists_mul_pow_of_mem_pow I φ s hI i ((p : Polynomial R).coeff i) (hmem i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc using key`. Use `⟨∑ i ∈ Finset.range ((p : Polynomial R).natDegree + 1), c i, ?_⟩` and prove the remaining obligations. Establish `hEval : polynomialEvalInvSelf φ s (p : Polynomial R) = Polynomial.eval₂ (((algebraMap S (Localization.Away s)) : S →+* Localization.Away s).comp φ) (Localization.Away.invSelf s) (p : Polynomial R)` using `rfl`. Rewrite using `[map_sum, hEval, Polynomial.eval₂_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[RingHom.comp_apply, hc i, map_mul, map_pow, mul_assoc, ← mul_pow, algebraMap_mul_invSelf s, one_pow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_eq_polynomialEvalInvSelf (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (p : ↥(reesAlgebra I)) :
@@ -80,7 +78,7 @@ def reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
   (exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose
 
 /- English proof (translation)
-The claim follows from `(exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
@@ -90,7 +88,7 @@ theorem algebraMap_reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
   (exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose_spec
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[algebraMap_reesAlgebraLiftFun I φ s hI hs 1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem reesAlgebraLiftFun_one (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) :
@@ -102,9 +100,9 @@ private theorem reesAlgebraLiftFun_one (I : Ideal R) (φ : R →+* S) (s : S)
   simp
 
 /- English proof (translation)
-Establish `hM : Submonoid.powers s ≤ nonZeroDivisors S`. Introduce `x hx`. Take `⟨n, rfl⟩` from `hx`. Conclude with `pow_mem hs n`. Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (S := Localization.Away s) (M := Submonoid.powers s) hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Establish `hcoe : ((p * q : ↥(reesAlgebra I)) : Polynomial R) = (p : Polynomial R) * (q : Polynomial R)` using `rfl`. Rewrite using `[map_mul, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reesAlgebraLiftFun_mul (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
@@ -122,7 +120,7 @@ private theorem reesAlgebraLiftFun_mul (I : Ideal R) (φ : R →+* S) (s : S)
   rw [map_mul, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_mul]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[algebraMap_reesAlgebraLiftFun I φ s hI hs 0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem reesAlgebraLiftFun_zero (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) :
@@ -134,9 +132,9 @@ private theorem reesAlgebraLiftFun_zero (I : Ideal R) (φ : R →+* S) (s : S)
   simp
 
 /- English proof (translation)
-Establish `hM : Submonoid.powers s ≤ nonZeroDivisors S`. Introduce `x hx`. Take `⟨n, rfl⟩` from `hx`. Conclude with `pow_mem hs n`. Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (S := Localization.Away s) (M := Submonoid.powers s) hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Establish `hcoe : ((p + q : ↥(reesAlgebra I)) : Polynomial R) = (p : Polynomial R) + (q : Polynomial R)` using `rfl`. Rewrite using `[map_add, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reesAlgebraLiftFun_add (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
@@ -171,9 +169,9 @@ theorem reesAlgebraLift_apply (I : Ideal R) (φ : R →+* S) (s : S)
     reesAlgebraLift I φ s hI hs p = reesAlgebraLiftFun I φ s hI hs p := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[reesAlgebraLift_apply, algebraMap_reesAlgebraLiftFun I φ s hI hs]`. Establish `hcoe : ((algebraMap R ↥(reesAlgebra I) r : ↥(reesAlgebra I)) : Polynomial R) = Polynomial.C r` using `rfl`. Rewrite using `[hcoe]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[polynomialEvalInvSelf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reesAlgebraLift_algebraMap (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) (r : R) :
@@ -188,7 +186,7 @@ theorem reesAlgebraLift_algebraMap (I : Ideal R) (φ : R →+* S) (s : S)
   simp [polynomialEvalInvSelf]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[reesAlgebraLift_apply, algebraMap_reesAlgebraLiftFun I φ s hI hs, reesGenerator_coe, polynomialEvalInvSelf_monomial, ha, pow_one, algebraMap_mul_invSelf, map_one (algebraMap S (Localization.Away s))]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reesAlgebraLift_reesGenerator (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
@@ -233,7 +231,7 @@ private theorem homogeneousLocalizationAwayVal_apply {B : Type u} [CommRing B] (
     homogeneousLocalizationAwayVal J a p = HomogeneousLocalization.val p := rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨n, hn⟩` from `y.2`. Establish `hy : (y : ↥(reesAlgebra J)) = reesGenerator J a ^ n` using `hn.symm`. Rewrite using `[hy, map_pow, reesAlgebraLift_reesGenerator J φ (φ (a : B)) hgen hnzd a rfl, one_pow]`. Conclude with `isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_reesAlgebraLift_powers {B : Type u} [CommRing B] (J : Ideal B)
     {T : Type v} [CommRing T] (φ : B →+* T) (a : ↥J)
@@ -258,9 +256,9 @@ private def homogeneousAwayLift {B : Type u} [CommRing B] (J : Ideal B)
     (homogeneousLocalizationAwayVal J a)
 
 /- English proof (translation)
-Establish `hcoe : ((algebraMap B ↥(reesAlgebra J) r : ↥(reesAlgebra J)) : Polynomial B) = Polynomial.C r` using `rfl`. Establish `h1 : ((reesDegreeZeroEquiv J r : ↥(reesGrading J 0)) : ↥(reesAlgebra J)) = algebraMap B ↥(reesAlgebra J) r`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[reesDegreeZeroEquiv_coe_coe, hcoe]`. Establish `hz : HomogeneousLocalization.val (HomogeneousLocalization.fromZeroRingHom (reesGrading J) (Submonoid.powers (reesGenerator J a)) (reesDegreeZeroEquiv J r)) = Localization.mk ((reesDegreeZeroEquiv J r : ↥(reesGrading J 0)) : ↥(reesAlgebra J)) 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : HomogeneousLocalization.val (chartRingHom J a r) = algebraMap ↥(reesAlgebra J) (Localization.Away (reesGenerator J a)) (algebraMap B ↥(reesAlgebra J) r)`. Rewrite using `[chartRingHom_apply, hz, h1, Localization.mk_one_eq_algebraMap]`. Unfold `homogeneousAwayLift`. Rewrite using `[RingHom.comp_apply, homogeneousLocalizationAwayVal_apply, hval, IsLocalization.lift_eq, reesAlgebraLift_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homogeneousAwayLift_chartRingHom {B : Type u} [CommRing B] (J : Ideal B)
     {T : Type v} [CommRing T] (φ : B →+* T) (a : ↥J)
@@ -286,11 +284,11 @@ private theorem homogeneousAwayLift_chartRingHom {B : Type u} [CommRing B] (J : 
     reesAlgebraLift_algebraMap]
 
 /- English proof (translation)
-Use `⟨W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd)) ≫ affineBlowupChart I a, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : affineBlowupChart I a ≫ AffineBlowup.toSpec I = Spec.map (CommRingCat.ofHom (chartRingHom I a))`. Rewrite using `[affineBlowupChart_comp_toSpec, algebraMap_chart_eq_chartRingHom]`. Establish `h3 : CommRingCat.ofHom (chartRingHom I a) ≫ CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd) = CommRingCat.ofHom (globalSectionsRingHom g)`. Rewrite using `[← CommRingCat.ofHom_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg CommRingCat.ofHom (RingHom.ext fun r => homogeneousAwayLift_chartRingHom I (globalSectionsRingHom g) a hgen hnzd r)`. Establish `nat : W.toSpecΓ ≫ Spec.map g.appTop = g ≫ (Spec (CommRingCat.of R)).toSpecΓ`. Rewrite using `[Scheme.toSpecΓ_naturality]`. Establish `tri : (Spec (CommRingCat.of R)).toSpecΓ ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv = 𝟙 (Spec (CommRingCat.of R))`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, h2, ← Spec.map_comp, h3, globalSectionsRingHom_eq, CommRingCat.ofHom_hom, Spec.map_comp, ← Category.assoc, nat, Category.assoc, tri, Category.comp_id]`. Introduce and unpack `x ⟨w, rfl⟩`. Conclude with `⟨(W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd))).base w, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_affineBlowup (I : Ideal R) {W : Scheme.{u}} [IsAffine W]
     (g : W ⟶ Spec (CommRingCat.of R)) (a : ↥I)

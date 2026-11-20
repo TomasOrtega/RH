@@ -7,19 +7,17 @@ namespace PI.FglPhSplit.Wk
 open PI.FglPhSplit
 
 /- English proof (translation)
-Introduce `K _ l ex hex hinv`. Establish `hsub : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `hl0 : PowerSeries.constantCoeff l = 0`. Establish `hsplit : l = PowerSeries.C (PowerSeries.constantCoeff l) + (l - PowerSeries.C (PowerSeries.constantCoeff l))` using `by ring`. Establish `h0 : MvPowerSeries.constantCoeff (PowerSeries.subst ex (l - PowerSeries.C (PowerSeries.constantCoeff l))) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hex _ (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : MvPowerSeries.constantCoeff (PowerSeries.subst ex l) = PowerSeries.constantCoeff l` using `by conv_lhs => rw [hsplit]`. Rewrite using `[PowerSeries.subst_add hsub, map_add, h0, PowerSeries.subst_C]`. Simplify using the standard rewrite rules. Rewrite `key` using `[hinv]`. Rewrite using `[← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PowerSeries.constantCoeff_X`. Establish `hu : IsUnit (PowerSeries.coeff 1 ex)`. Use `Ne.isUnit fun h1 => ?_` and prove the remaining obligations. Establish `h2 : (2 : ℕ∞) ≤ ex.order`. Use `PowerSeries.le_order ex 2 fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi' : i < 2` using `by exact_mod_cast hi`. Use `interval_cases i`. Simplify using `using hex`. Conclude with `h1`. Establish `h3` using `PowerSeries.le_order_subst_right' (φ := l) hex hl0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Rewrite `h3` using `[hinv, PowerSeries.order_X]`. Use `h2.trans h3` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hQ` using `PowerSeries.HasSubst.substInvOfIsUnit ex hu`. Establish `hexQ` using `PowerSeries.subst_substInvOfIsUnit_right ex hex hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hlQ : l = PowerSeries.substInvOfIsUnit ex hu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hexQ]`. Use `_ = PowerSeries.subst (PowerSeries.substInvOfIsUnit ex hu) (PowerSeries.subst ex l) := (PowerSeries.subst_comp_subst_apply hsub hQ l).symm`. Use `_ = PowerSeries.subst (PowerSeries.substInvOfIsUnit ex hu) (PowerSeries.X : PowerSeries K) := by`.
-
-Rewrite using `[hinv]`. Use `_ = PowerSeries.substInvOfIsUnit ex hu := PowerSeries.subst_X hQ`. Use `⟨hl0, ?_⟩` and prove the remaining obligations. Rewrite using `[hlQ]`. Conclude with `hexQ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compositionalInverseSymm : S1 := by
   intro K _ l ex hex hinv
@@ -67,7 +65,7 @@ theorem compositionalInverseSymm : S1 := by
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_zero_eq_C_constantCoeff, hf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_zero_of {τ : Type} (f : PowerSeries K) (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.subst (0 : MvPowerSeries τ K) f = 0 := by
@@ -75,7 +73,7 @@ theorem subst_zero_of {τ : Type} (f : PowerSeries K) (hf : PowerSeries.constant
   simp
 
 /- English proof (translation)
-Establish `hy' : PowerSeries.HasSubst y` using `PowerSeries.HasSubst.of_constantCoeff_zero hy`. Simplify using `only [Dat.pt, Dat.lg]`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl0) hy', hinv, PowerSeries.subst_X (R := K) hy']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_lg (g : Dat K) {τ : Type} (hl0 : PowerSeries.constantCoeff g.l = 0)
     (hinv : PowerSeries.subst g.l g.ex = PowerSeries.X) {y : MvPowerSeries τ K}
@@ -86,9 +84,9 @@ theorem pt_lg (g : Dat K) {τ : Type} (hl0 : PowerSeries.constantCoeff g.l = 0)
     PowerSeries.subst_X (R := K) hy']
 
 /- English proof (translation)
-Establish `hm : g.mulBy 0 x = 0`. Simplify using `only [Dat.mulBy, map_zero, zero_mul, Dat.pt]`. Conclude with `subst_zero_of g.ex hex0`. Establish `hlg0 : g.lg (0 : MvPowerSeries τ K) = 0` using `subst_zero_of g.l hl0`. Establish `hadd : g.add 0 y = y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dat.add, hlg0, zero_add]`. Conclude with `pt_lg g hl0 hinv hy`. Establish `hph : g.phAt (0 : MvPowerSeries τ K) = 0` using `subst_zero_of g.ph hph0`. Simplify using `only [Dat.be, hm, hadd, hph, sub_zero, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem be_mulBy_zero (g : Dat K) {τ : Type} (hex0 : PowerSeries.constantCoeff g.ex = 0)
     (hph0 : PowerSeries.constantCoeff g.ph = 0) (hl0 : PowerSeries.constantCoeff g.l = 0)
@@ -106,9 +104,9 @@ theorem be_mulBy_zero (g : Dat K) {τ : Type} (hex0 : PowerSeries.constantCoeff 
   simp only [Dat.be, hm, hadd, hph, sub_zero, sub_self]
 
 /- English proof (translation)
-Introduce `K _ g hex hinv0 hph κ ι ι' _ _ _ a a' ha`. Take `⟨hl0, hinv⟩` from `compositionalInverseSymm K g.l g.ex hex hinv0`. Simplify using `only [Dat.sdR]`. Use `Finset.sum_eq_zero fun f _ => Finset.sum_eq_zero fun f' _ => ?_` and prove the remaining obligations. Simplify using `only [ha f f', Prod.fst_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `be_mulBy_zero g hex hph hl0 hinv _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem orthogonalSplitPolarizationVanishes : S2 := by
   intro K _ g hex hinv0 hph κ ι ι' _ _ _ a a' ha

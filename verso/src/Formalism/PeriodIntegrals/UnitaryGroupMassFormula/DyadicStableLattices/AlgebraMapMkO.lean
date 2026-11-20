@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
     algebraMap (𝓞 (Kq m)) (Kq m) (mkO m x y) = ⟨x, y⟩ := rfl
 
 /- English proof (translation)
-Establish `h'` using `congrArg (algebraMap (𝓞 (Kq m)) (Kq m)) h`. Simplify using `only [algebraMap_mkO] at h'`. Take `⟨h1, h2⟩` from `QuadraticAlgebra.mk.inj h'`. Conclude with `⟨by exact_mod_cast h1, by exact_mod_cast h2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mkO_inj {a b c e : ℤ} (h : mkO m a b = mkO m c e) : a = c ∧ b = e := by
   have h' := congrArg (algebraMap (𝓞 (Kq m)) (Kq m)) h
@@ -28,7 +28,7 @@ theorem mkO_inj {a b c e : ℤ} (h : mkO m a b = mkO m c e) : a = c ∧ b = e :=
   exact ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)` to reduce the goal to its premises. Rewrite using `[map_mul, algebraMap_mkO, algebraMap_mkO, algebraMap_mkO]`. Apply the tactic sequence `ext <;> simp <;> push_cast <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mkO_mul (a b c e : ℤ) :
     mkO m a b * mkO m c e = mkO m (a * c - m * b * e) (a * e + b * c + b * e) := by
@@ -37,7 +37,7 @@ theorem mkO_mul (a b c e : ℤ) :
   ext <;> simp <;> push_cast <;> ring
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)` to reduce the goal to its premises. Rewrite using `[map_add, algebraMap_mkO, algebraMap_mkO, algebraMap_mkO]`. Apply the tactic sequence `ext <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mkO_add (a b c e : ℤ) : mkO m a b + mkO m c e = mkO m (a + c) (b + e) := by
   apply FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)
@@ -45,7 +45,7 @@ theorem mkO_add (a b c e : ℤ) : mkO m a b + mkO m c e = mkO m (a + c) (b + e) 
   ext <;> simp
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)` to reduce the goal to its premises. Rewrite using `[map_sub, algebraMap_mkO, algebraMap_mkO, algebraMap_mkO]`. Apply the tactic sequence `ext <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mkO_sub (a b c e : ℤ) : mkO m a b - mkO m c e = mkO m (a - c) (b - e) := by
   apply FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)
@@ -53,7 +53,7 @@ theorem mkO_sub (a b c e : ℤ) : mkO m a b - mkO m c e = mkO m (a - c) (b - e) 
   ext <;> simp
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)` to reduce the goal to its premises. Rewrite using `[map_one, algebraMap_mkO]`. Apply the tactic sequence `ext <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_O : (1 : 𝓞 (Kq m)) = mkO m 1 0 := by
   apply FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)
@@ -61,14 +61,14 @@ theorem one_O : (1 : 𝓞 (Kq m)) = mkO m 1 0 := by
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[show (2 : 𝓞 (Kq m)) = 1 + 1 by norm_num, one_O, mkO_add]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem two_O : (2 : 𝓞 (Kq m)) = mkO m 2 0 := by
   rw [show (2 : 𝓞 (Kq m)) = 1 + 1 by norm_num, one_O, mkO_add]
   norm_num
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `zero => simp [one_O]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, two_O, mkO_mul]`. Apply the tactic sequence `congr 1 <;> ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pow_two_O (h : ℕ) : (2 : 𝓞 (Kq m)) ^ h = mkO m (2 ^ h) 0 := by
   induction h with
@@ -78,7 +78,7 @@ theorem pow_two_O (h : ℕ) : (2 : 𝓞 (Kq m)) ^ h = mkO m (2 ^ h) 0 := by
     congr 1 <;> ring
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m)` to reduce the goal to its premises. Use `show (starRingEnd (Kq m)) (algebraMap (𝓞 (Kq m)) (Kq m) (mkO m x y)) = _`. Rewrite using `[algebraMap_mkO, algebraMap_mkO, starRingEnd_apply, QuadraticAlgebra.star_mk]`. Apply the tactic sequence `ext <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem star_O (x y : ℤ) :
     RingOfIntegers.mapRingHom (starRingEnd (Kq m)) (mkO m x y) = mkO m (x + y) (-y) := by
@@ -88,7 +88,7 @@ theorem star_O (x y : ℤ) :
   ext <;> simp
 
 /- English proof (translation)
-Take `⟨x, y, h⟩` from `repr_int m d hd hdm _ (RingOfIntegers.isIntegral_coe α)`. Conclude with `⟨x, y, FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m) (by rw [algebraMap_mkO]; exact h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repr_O (d : ℕ) (hd : Squarefree d) (hdm : d + 1 = 4 * m) (α : 𝓞 (Kq m)) :
     ∃ x y : ℤ, α = mkO m x y := by
@@ -96,7 +96,7 @@ theorem repr_O (d : ℕ) (hd : Squarefree d) (hdm : d + 1 = 4 * m) (α : 𝓞 (K
   exact ⟨x, y, FaithfulSMul.algebraMap_injective (𝓞 (Kq m)) (Kq m) (by rw [algebraMap_mkO]; exact h)⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `h`. Take `⟨x, y, rfl⟩` from `repr_O m d hd hdm γ`. Rewrite `hγ` using `[mkO_mul]`. Take `⟨h1, -⟩` from `mkO_inj m hγ`. Conclude with `⟨x, by rw [h1]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_dvd (d : ℕ) (hd : Squarefree d) (hdm : d + 1 = 4 * m) {a b : ℤ}
     (h : mkO m a 0 ∣ mkO m b 0) : a ∣ b := by

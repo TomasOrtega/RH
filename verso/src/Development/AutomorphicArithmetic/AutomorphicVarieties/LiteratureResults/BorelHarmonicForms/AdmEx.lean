@@ -6,9 +6,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ`. Take `⟨R, D, hRD, hD⟩` from `cxExt E a Ξ`. Take `⟨G, hG, hadj⟩` from `admissible_abs_bound (E →+* ℂ) a Ξ.d R D hRD`. Use `⟨G, hG, fun X => ?_⟩` and prove the remaining obligations. Establish `hs : (star X).map (emb E) = star (X.map (emb E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j τ`. Conclude with `UpperTheory.V.FieldIso.coord_star τ (X j i)`. Rewrite using `[← hD, ← hD, hs]`. Conclude with `hadj _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.admEx :
     UpperTheory.V.Lit.Bor.AdmEx := by

@@ -7,25 +7,25 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `a ha`. Use `⟨(2 + 2 * |Real.log a|) / a ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `x y hx hy`. Establish `hx0 : 0 < x` using `lt_of_lt_of_le ha hx`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le ha hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩ : ∃ d : ℝ, d = Real.log y - Real.log x` from `⟨_, rfl⟩`. Establish `hlogy : Real.log y = Real.log x + d` using `by rw [hd]; ring`. Establish `hup : d ≤ (y - x) / x`. Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hy0 hx0)`. Rewrite `h` using `[Real.log_div hy0.ne' hx0.ne']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : y / x - 1 = (y - x) / x` using `by field_simp`. Rewrite using `[hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : (y - x) / y ≤ d`. Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hx0 hy0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.log_div hx0.ne' hy0.ne']`. Establish `e : (y - x) / y = 1 - x / y` using `by field_simp`. Rewrite using `[hd, e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxy : a ^ 2 ≤ x * y` using `by nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hxx : a ^ 2 ≤ x ^ 2` using `by nlinarith`. Establish `hyy : a ^ 2 ≤ y ^ 2` using `by nlinarith`. Establish `ha2 : 0 < a ^ 2` using `by positivity`. Establish `hK0 : 0 ≤ (y - x) ^ 2 / a ^ 2` using `by positivity`. Establish `hgap : (y - x) / x - d ≤ (y - x) ^ 2 / a ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (y - x) / x - (y - x) / y = (y - x) ^ 2 / (x * y)`. Clear the denominators using the available nonvanishing facts. Establish `h : (y - x) ^ 2 / (x * y) ≤ (y - x) ^ 2 / a ^ 2` using `div_le_div_of_nonneg_left (sq_nonneg _) ha2 hxy`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq2 : ((y - x) / x) ^ 2 ≤ (y - x) ^ 2 / a ^ 2`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[div_pow]`. Conclude with `div_le_div_of_nonneg_left (sq_nonneg _) ha2 hxx`. Establish `hp2 : ((y - x) / y) ^ 2 ≤ (y - x) ^ 2 / a ^ 2`. Rewrite using `[div_pow]`. Conclude with `div_le_div_of_nonneg_left (sq_nonneg _) ha2 hyy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hd2 : d ^ 2 ≤ 2 * ((y - x) ^ 2 / a ^ 2)`. Break down `le_total 0 d with h | h` into its components or cases. Use polynomial arithmetic with `[sq_nonneg ((y - x) / y)]`. Use polynomial arithmetic with `[sq_nonneg ((y - x) / x)]`. Establish `hu : -Real.log x ≤ |Real.log a|`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_log ha hx` as an intermediate fact. Use `neg_le_abs (Real.log a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ |Real.log a|` using `abs_nonneg _`. Establish `he0 : 0 ≤ (y - x) / x - d` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : -Real.log x * ((y - x) / x - d) ≤ |Real.log a| * ((y - x) ^ 2 / a ^ 2)` using `le_trans (mul_le_mul_of_nonneg_right hu he0) (mul_le_mul_of_nonneg_left hgap hL0)`. Establish `e1 : 2 * Real.log x / x * (y - x) = 2 * Real.log x * ((y - x) / x)` using `by ring`. Establish `e2 : (2 + 2 * |Real.log a|) / a ^ 2 * (y - x) ^ 2 = (2 + 2 * |Real.log a|) * ((y - x) ^ 2 / a ^ 2)` using `by ring`. Rewrite using `[hlogy, e1, e2]`. Use polynomial arithmetic with `[h3, hd2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem log_sq_le_tangent_add_sq :
     ∀ a : ℝ, 0 < a → ∃ C : ℝ, 0 ≤ C ∧ ∀ x y : ℝ, a ≤ x → a ≤ y →

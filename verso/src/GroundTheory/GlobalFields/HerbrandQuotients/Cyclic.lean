@@ -24,7 +24,7 @@ def HasCyclicHerbrand [Fintype G] (ρ : Representation ℤ G M) (σ : G) : Prop 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cycSub_apply (ρ : Representation ℤ G M) (σ : G) (x : M) :
     cycSub ρ σ x = ρ σ x - x :=
@@ -32,14 +32,14 @@ theorem cycSub_apply (ρ : Representation ℤ G M) (σ : G) (x : M) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `[normHom, Representation.norm, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normHom_apply [Fintype G] (ρ : Representation ℤ G M) (x : M) :
     normHom ρ x = ∑ g : G, ρ g x := by
   simp [normHom, Representation.norm, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [normHom, cycSub, LinearMap.toAddMonoidHom_coe, LinearMap.sub_apply, LinearMap.id_apply, map_sub, Representation.norm_self_apply, sub_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normHom_cycSub [Fintype G] (ρ : Representation ℤ G M) (σ : G) (x : M) :
     normHom ρ (cycSub ρ σ x) = 0 := by
@@ -47,7 +47,7 @@ theorem normHom_cycSub [Fintype G] (ρ : Representation ℤ G M) (σ : G) (x : M
     LinearMap.id_apply, map_sub, Representation.norm_self_apply, sub_self]
 
 /- English proof (translation)
-Simplify using `only [normHom, cycSub, LinearMap.toAddMonoidHom_coe, LinearMap.sub_apply, LinearMap.id_apply, Representation.self_norm_apply, sub_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycSub_normHom [Fintype G] (ρ : Representation ℤ G M) (σ : G) (x : M) :
     cycSub ρ σ (normHom ρ x) = 0 := by
@@ -61,11 +61,11 @@ section Generator
 variable {G M : Type*} [Group G] [AddCommGroup M] (ρ : Representation ℤ G M) {σ : G}
 
 /- English proof (translation)
-Set `S : Subgroup G` to `{ carrier := {g | ∀ x, ρ g x - x ∈ (cycSub ρ σ).range} one_mem' := fun x => by simp mul_mem' := fun {a b} ha hb x => by`. Establish `: ρ (a * b) x - x = (ρ a (ρ b x) - ρ b x) + (ρ b x - x)`. Rewrite using `[map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (ha _) (hb _)`. Use the proof step `inv_mem' := fun {a} ha x => by`. Establish `: ρ a⁻¹ x - x = -(ρ a (ρ a⁻¹ x) - ρ a⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `neg_mem (ha _) }`. Establish `hσS : σ ∈ S` using `fun x => ⟨x, rfl⟩`. Establish `: Subgroup.zpowers σ ≤ S` using `(Subgroup.zpowers_le).2 hσS`. Conclude with `this (hσ g) x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_mem_range_cycSub (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (g : G) (x : M) :
     ρ g x - x ∈ (cycSub ρ σ).range := by
@@ -88,7 +88,7 @@ theorem sub_mem_range_cycSub (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (g : G) (x
   exact this (hσ g) x
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.CyclicSubtraction.apply_eq_of_cycSub_eq_zero <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem apply_eq_of_cycSub_eq_zero (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : M}
     (hx : cycSub ρ σ x = 0) (g : G) : ρ g x = x :=
@@ -97,7 +97,7 @@ theorem apply_eq_of_cycSub_eq_zero (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x :
 variable [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[normHom_apply, Finset.sum_congr rfl fun g _ => apply_eq_of_cycSub_eq_zero ρ hσ hx g, Finset.sum_const, Finset.card_univ, natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normHom_eq_card_smul (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : M}
     (hx : cycSub ρ σ x = 0) : normHom ρ x = (Fintype.card G : ℤ) • x := by
@@ -105,7 +105,7 @@ theorem normHom_eq_card_smul (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : M}
     Finset.sum_const, Finset.card_univ, natCast_zsmul]
 
 /- English proof (translation)
-Establish `: (Fintype.card G : ℤ) • x - normHom ρ x = -∑ g : G, (ρ g x - x)`. Rewrite using `[normHom_apply, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, natCast_zsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `neg_mem (AddSubgroup.sum_mem _ fun g _ => sub_mem_range_cycSub ρ hσ g x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_smul_sub_normHom_mem (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (x : M) :
     (Fintype.card G : ℤ) • x - normHom ρ x ∈ (cycSub ρ σ).range := by
@@ -121,11 +121,9 @@ end Generator
 section Finiteness
 
 /- English proof (translation)
-Establish `hfin : Module.Finite ℤ f.ker`. Establish `: Module.Finite ℤ (LinearMap.ker f.toIntLinearMap)` using `inferInstance`. Conclude with `Module.Finite.equiv (R := ℤ) ((LinearEquiv.refl ℤ (LinearMap.ker f.toIntLinearMap)) : _ ≃ₗ[ℤ] f.ker)`. Establish `hq : Module.Finite ℤ (KerModRange f g)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' (g.range.addSubgroupOf f.ker)).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk'_surjective (g.range.addSubgroupOf f.ker) y`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations. Use `show n • (QuotientAddGroup.mk' _ x : KerModRange f g) = 0`. Rewrite using `[← map_zsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_zsmul]`.
-
-Conclude with `h x x.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_kerModRange_of_smul_mem {A : Type*} [AddCommGroup A] [Module.Finite ℤ A]
     (f g : A →+ A) {n : ℤ} (hn : n ≠ 0) (h : ∀ x ∈ f.ker, n • x ∈ g.range) :
@@ -150,9 +148,9 @@ theorem finite_kerModRange_of_smul_mem {A : Type*} [AddCommGroup A] [Module.Fini
 variable {G M : Type*} [Group G] [Fintype G] [AddCommGroup M] [Module.Finite ℤ M]
 
 /- English proof (translation)
-Establish `hn : (Fintype.card G : ℤ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `⟨finite_kerModRange_of_smul_mem _ _ hn fun x hx => ?_, finite_kerModRange_of_smul_mem _ _ hn fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← normHom_eq_card_smul ρ hσ hx]`. Conclude with `⟨x, rfl⟩`. Use `card_smul_sub_normHom_mem ρ hσ x` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[AddMonoidHom.mem_ker.1 hx, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasCyclicHerbrand_of_finite (ρ : Representation ℤ G M) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) : HasCyclicHerbrand ρ σ := by
@@ -171,19 +169,17 @@ section Trivial
 variable {G : Type*} [Group G] [Fintype G]
 
 /- English proof (translation)
-Use `set ρ := Representation.trivial ℤ G ℤ`. Establish `hf : cycSub ρ σ = 0`. Use `ext`. Simplify using `[ρ]`. Establish `hg : normHom ρ = (Fintype.card G : ℤ) • AddMonoidHom.id ℤ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[ρ, normHom_apply]`. Establish `hn : (Fintype.card G : ℤ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `h1 : Nat.card (KerModRange (cycSub ρ σ) (normHom ρ)) = Fintype.card G` using `by show (normHom ρ).range.relIndex (cycSub ρ σ).ker = _`. Establish `hr : (normHom ρ).range = AddSubgroup.zmultiples (Fintype.card G : ℤ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [hg, AddMonoidHom.mem_range, AddMonoidHom.smul_apply, AddMonoidHom.id_apply, AddSubgroup.mem_zmultiples_iff, smul_eq_mul]`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨x, by rw [← hx, mul_comm]⟩, fun ⟨x, hx⟩ => ⟨x, by rw [← hx, mul_comm]⟩⟩`. Rewrite using `[hf, AddMonoidHom.ker_zero, AddSubgroup.relIndex_top_right, hr, Int.index_zmultiples, Int.natAbs_natCast]`. Establish `h2 : Nat.card (KerModRange (normHom ρ) (cycSub ρ σ)) = 1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Subsingleton (normHom ρ).ker`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `ha`, `hb` using `[AddMonoidHom.mem_ker, hg]`. Simplify using `only [AddMonoidHom.smul_apply, AddMonoidHom.id_apply, smul_eq_mul, mul_eq_zero, hn, false_or] at ha hb`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression. Establish `: Subsingleton (KerModRange (normHom ρ) (cycSub ρ σ))`. Prove the components needed by the constructor for the conclusion. Introduce `a b`.
+Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `a using QuotientAddGroup.induction_on`. Proceed by induction on `b using QuotientAddGroup.induction_on`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Conclude with `Nat.card_of_subsingleton 0`.
-
-Rewrite using `[cyclicHerbrand, herbrandQuotient, h1, h2, Nat.cast_one, div_one]`.
+Proceed by induction. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicHerbrand_trivial_int (σ : G) :
     cyclicHerbrand (Representation.trivial ℤ G ℤ) σ = Fintype.card G := by

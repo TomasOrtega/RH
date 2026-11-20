@@ -19,7 +19,7 @@ def infIdele (w : InfinitePlace K) : (w.Completion)ˣ →* Ideles K :=
       map_mul' := fun x y => Prod.ext (Pi.mulSingle_mul w x y) (mul_one 1).symm }
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_same (M := fun v : InfinitePlace K => v.Completion) w (x : w.Completion)`.
+A detailed English derivation is pending.
 -/
 theorem infIdele_fst_self (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     (infIdele K w x : AdeleRing (𝓞 K) K).1 w = x := by
@@ -27,7 +27,7 @@ theorem infIdele_fst_self (w : InfinitePlace K) (x : (w.Completion)ˣ) :
   exact Pi.mulSingle_eq_same (M := fun v : InfinitePlace K => v.Completion) w (x : w.Completion)
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_of_ne (M := fun v : InfinitePlace K => v.Completion) h (x : w.Completion)`.
+A detailed English derivation is pending.
 -/
 theorem infIdele_fst_ne (w w' : InfinitePlace K) (h : w' ≠ w) (x : (w.Completion)ˣ) :
     (infIdele K w x : AdeleRing (𝓞 K) K).1 w' = 1 := by
@@ -41,7 +41,7 @@ theorem infIdele_snd (w : InfinitePlace K) (x : (w.Completion)ˣ) (v : HeightOne
     (infIdele K w x : AdeleRing (𝓞 K) K).2 v = 1 := rfl
 
 /- English proof (translation)
-Use `⟨fun w' hw' => by simp at hw', fun v => ⟨?_, 0, Submodule.mem_top, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[infIdele_snd]`. Conclude with `map_one _`. Rewrite using `[infIdele_snd, sub_self]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infIdele_mem_rayUnits (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     infIdele K w x ∈ rayUnits K ⊤ ∅ := by
@@ -52,15 +52,13 @@ theorem infIdele_mem_rayUnits (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     simp
 
 /- English proof (translation)
-Use `haveI := h.finiteDimensional`. Use `haveI := h.isGalois`. Establish `hk : ∀ g' : Field.absoluteGaloisGroup K, abRestrict K E h (QuotientGroup.mk g') = AlgEquiv.restrictNormalHom E g'` using `fun g' => abRestrict_mk K E h g'`. Establish `hS : ((abRestrict K E h).ker : Set (Field.absoluteGaloisGroupAbelianization K)) = (QuotientGroup.mk : Field.absoluteGaloisGroup K → Field.absoluteGaloisGroupAbelianization K) '' (SetLike.coe E.fixingSubgroup)`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : g ∈ (AlgEquiv.restrictNormalHom E).ker` using `MonoidHom.mem_ker.mpr ((hk g).symm.trans hy)`. Rewrite `hg` using `[IntermediateField.restrictNormalHom_ker E]`. Conclude with `hg`. Introduce and unpack `⟨g', hg', he⟩`. Rewrite using `[← he, hk]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : g' ∈ (AlgEquiv.restrictNormalHom E).ker`. Rewrite using `[IntermediateField.restrictNormalHom_ker E]`. Conclude with `hg'`. Conclude with `MonoidHom.mem_ker.mp hg`. Establish `hopen : IsOpen ((abRestrict K E h).ker : Set (Field.absoluteGaloisGroupAbelianization K))`.
-
-Rewrite using `[hS]`. Conclude with `QuotientGroup.isOpenMap_coe _ (IntermediateField.fixingSubgroup_isOpen E)`. Conclude with `hopen.preimage (hc.comp continuous_quot_mk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker (Art : IdeleClassGroup K →* Field.absoluteGaloisGroupAbelianization K)
     (hc : Continuous Art) (E : IntermediateField K (AlgebraicClosure K)) (h : IsFiniteAbelian K E) :
@@ -106,7 +104,7 @@ def finPart : AdeleRing (𝓞 K) K →* AdeleRing (𝓞 K) K where
   map_mul' x y := Prod.ext (mul_one 1).symm rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun z : AdeleRing (𝓞 K) K => z.1 w) a.mul_inv`. Express the relevant statement in the definitionally equal form `(a : AdeleRing (𝓞 K) K).1 w * ((a⁻¹ : Ideles K) : AdeleRing (𝓞 K) K).1 w = 1 at h`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem inf_comp_ne_zero (a : Ideles K) (w : InfinitePlace K) : (a : AdeleRing (𝓞 K) K).1 w ≠ 0 := by
   have h := congrArg (fun z : AdeleRing (𝓞 K) K => z.1 w) a.mul_inv
@@ -114,23 +112,21 @@ theorem inf_comp_ne_zero (a : Ideles K) (w : InfinitePlace K) : (a : AdeleRing (
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-Establish `key : ∀ z : (w.Completion)ˣ, infIdele K w (z ^ m) ∈ N` using `fun z => by`. Rewrite using `[map_pow]`. Conclude with `hpow _`. Break down `InfinitePlace.isReal_or_isComplex w with hw | hw` into its components or cases. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : e (y : w.Completion) ≠ 0` using `(map_ne_zero e).2 y.ne_zero`. Establish `hs : (|e (y : w.Completion)| ^ ((m : ℝ)⁻¹)) ^ m = |e (y : w.Completion)|` using `Real.rpow_inv_natCast_pow (abs_nonneg _) hm.ne'`. Establish `hs0 : e.symm (|e (y : w.Completion)| ^ ((m : ℝ)⁻¹)) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ e.symm.injective]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[h0, zero_pow hm.ne']`. Conclude with `hr (abs_eq_zero.1 hs.symm)`. Set `z : (w.Completion)ˣ` to `Units.mk0 _ hs0`. Break down `lt_or_gt_of_ne hr with hneg' | hpos` into its components or cases. Establish `hy : y = -1 * z ^ m`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [z, Units.val_mul, Units.val_neg, Units.val_one, Units.val_pow_eq_pow_val, Units.val_mk0, map_mul, map_neg, map_one, map_pow, RingEquiv.apply_symm_apply]`. Rewrite using `[hs, abs_of_neg hneg']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, map_mul]`. Conclude with `N.mul_mem (hneg w hw) (key z)`. Establish `hy : y = z ^ m`. Apply `Units.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [z, Units.val_pow_eq_pow_val, Units.val_mk0, map_pow, RingEquiv.apply_symm_apply]`. Rewrite using `[hs, abs_of_pos hpos]`. Rewrite using `[hy]`. Conclude with `key z`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq (e (y : w.Completion)) hm`. Establish `hc0 : e.symm c ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ e.symm.injective]`. Introduce and unpack `rfl`. Rewrite `hc` using `[zero_pow hm.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(map_ne_zero e).2 y.ne_zero hc.symm`. Set `z : (w.Completion)ˣ` to `Units.mk0 _ hc0`. Establish `hy : y = z ^ m`. Apply `Units.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises.
-
-Simplify using `only [z, Units.val_pow_eq_pow_val, Units.val_mk0, map_pow, RingEquiv.apply_symm_apply, hc]`. Rewrite using `[hy]`. Conclude with `key z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infIdele_mem (N : Subgroup (Ideles K)) (m : ℕ) (hm : 0 < m) (hpow : ∀ x : Ideles K, x ^ m ∈ N)
     (hneg : ∀ w : InfinitePlace K, w.IsReal → infIdele K w (-1) ∈ N) (w : InfinitePlace K)
@@ -190,13 +186,11 @@ def sndU : Ideles K →* FiniteAdeleRing (𝓞 K) K :=
   (MonoidHom.snd (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)).comp (Units.coeHom (AdeleRing (𝓞 K) K))
 
 /- English proof (translation)
-Set `x : ∀ w : InfinitePlace K, (w.Completion)ˣ` to `fun w => Units.mk0 ((a : AdeleRing (𝓞 K) K).1 w) (inf_comp_ne_zero K a w)`. Establish `hext : ∀ b c : Ideles K, fstU K b = fstU K c → sndU K b = sndU K c → b = c` using `fun b c h1 h2 => Units.ext (Prod.ext h1 h2)`. Establish `ha' : a = ∏ w, infIdele K w (x w)`. Apply `hext` to reduce the goal to its premises. Rewrite using `[map_prod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w'`. Establish `hpa : (∏ i, (fstU K (infIdele K i (x i)) : (v : InfinitePlace K) → v.Completion)) w' = ∏ i, (fstU K (infIdele K i (x i)) : (v : InfinitePlace K) → v.Completion) w'` using `Finset.prod_apply _ _ _`. Use `Eq.trans ?_ hpa.symm` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single w']`. Conclude with `(infIdele_fst_self K w' (x w')).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _ hw`. Conclude with `infIdele_fst_ne K w w' (Ne.symm hw) (x w)`. Introduce `hw'`. Conclude with `absurd (Finset.mem_univ _) hw'`. Rewrite using `[map_prod] show (a : AdeleRing (𝓞 K) K).2 = ∏ w, sndU K (infIdele K w (x w))`.
-
-Rewrite using `[ha]`. Conclude with `(Finset.prod_eq_one fun w _ => rfl).symm`. Rewrite using `[ha']`. Conclude with `Subgroup.prod_mem _ fun w _ => infIdele_mem K N m hm hpow hneg w (x w)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow (N : Subgroup (Ideles K)) (m : ℕ) (hm : 0 < m) (hpow : ∀ x : Ideles K, x ^ m ∈ N)
     (hneg : ∀ w : InfinitePlace K, w.IsReal → infIdele K w (-1) ∈ N)

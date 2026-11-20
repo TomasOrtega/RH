@@ -30,15 +30,15 @@ theorem conjSchwartz_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     conjSchwartz f x = starRingEnd ℂ (f x) := rfl
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, g, hg, rfl⟩` from `hΨ`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨conjSchwartz f, fun y => starRingEnd ℂ (g y), ⟨hg.1.comp _, hg.2.comp_left (map_zero _)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[pureA, conjSchwartz_apply, map_mul]`. Consider the case `zero`. Use `(schA F κ).zero_mem using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Ψ₁ Ψ₂ _ _ h₁ h₂`. Use `(schA F κ).add_mem h₁ h₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `smul c Ψ _ h`. Use `(schA F κ).smul_mem (starRingEnd ℂ c) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ schA F κ, (fun x => starRingEnd ℂ (Φ x)) ∈ schA F κ := by
   intro F _ _ κ _ Φ hΦ

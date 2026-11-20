@@ -6,7 +6,7 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton
 
 /- English proof (translation)
-Introduce `_ h _ _ _ hne` and use `fsLog_le h hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fsLog_pointOf_le_log_norm : ∀ (n : ℕ) (h : HermNorm n) (u : Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)), y ≠ 0 →
   ∑ j, u j * h.pointOf y j ≠ 0 → fsLog h u (h.pointOf y) ≤ Real.log (h.norm u) :=

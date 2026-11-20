@@ -15,9 +15,9 @@ open GlobalTheory.CompanionTheory.FourierN
 open Pointwise in
 
 /- English proof (translation)
-Establish `hFD' : IsAddFundamentalDomain L (b +ᵥ 𝓖) lam` using `hFD.vadd_of_comm b`. Establish `hpre : (fun x : A => x + b) ⁻¹' (b +ᵥ 𝓖) = 𝓖`. Use extensionality with `x`. Rewrite using `[Set.mem_preimage, Set.mem_vadd_set_iff_neg_vadd_mem]`. Simplify using `[add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(measurePreserving_add_right lam b).setIntegral_preimage_emb (MeasurableEquiv.addRight b).measurableEmbedding φ (b +ᵥ 𝓖)`. Rewrite `h` using `[hpre]`. Conclude with `h.trans (hFD'.setIntegral_eq hFD fun γ x => hper γ.1 γ.2 x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_add_right {A : Type*} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd A] (L : AddSubgroup A)
     [Countable L] (lam : Measure A) [lam.IsAddLeftInvariant] {𝓖 : Set A} (hFD : IsAddFundamentalDomain L 𝓖 lam)
@@ -37,17 +37,13 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hnb, hlam, hFD, -⟩` from `hC`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D p p`. Use `haveI : BorelSpace (Mx D p p) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D p) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (hermA D p) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : DiscreteTopology (ratHerm D p) := discrete_ratHerm`. Use `haveI : Countable (ratHerm D p) := countable_of_Lindelof_of_discrete`. Establish `hone : ∀ h : G D p, fc ψ lam 𝓖 nb F β h = ∫ x in 𝓖, F (nb x * h) ∂lam`. Introduce `h`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (HMul.hMul (β.1.map (incA D)) x.1 : Mx D p p) = 0`. Rewrite using `[hβ, Matrix.map_zero _ (map_zero _)]`. Conclude with `Matrix.zero_mul _`. Use `show F (nb x * h) * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) x.1 : Mx D p p))) = F (nb x * h)`. Rewrite using `[e, Matrix.trace_zero, halfTr_zero, neg_zero, AddChar.map_zero_eq_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hper : ∀ γ ∈ ratHerm D p, ∀ x : hermA D p, F (nb (γ + x) * g) = F (nb x * g)`. Introduce `γ hγ x`. Rewrite using `[nb_add hnb, mul_assoc]`. Conclude with `hinv _ (nb_rat hnb γ hγ) _`. Establish `e1 : F g = ∫ x in 𝓖, F (nb x * g) ∂lam` using `(hfc g).symm.trans (hone g)`.
-
-Establish `e2 : F (nb b * g) = ∫ x in 𝓖, F (nb (x + b) * g) ∂lam`. Use `(hfc _).symm.trans ((hone _).trans (integral_congr_ae (.of_forall fun x => ?_)))` and prove the remaining obligations. Use `show F (nb x * (nb b * g)) = F (nb (x + b) * g)`. Rewrite using `[nb_add hnb, mul_assoc]`. Rewrite using `[e2, e1]`.
-
-Conclude with `setIntegral_add_right (ratHerm D p) lam hFD (fun y => F (nb y * g)) hper b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_inv_of_const (D : D7) (p : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (nb : hermA D p → G D p)
     (lam : Measure (hermA D p)) (𝓖 : Set (hermA D p)) (hC : CoefData (D := D) (n := p) nb lam 𝓖)

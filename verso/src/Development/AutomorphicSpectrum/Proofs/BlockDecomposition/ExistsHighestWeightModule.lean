@@ -16,9 +16,9 @@ def permM (w : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i j => if i = w j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [permM, Matrix.conjTranspose_apply, Matrix.of_apply]`. Distinguish the cases in `h : j = w i`. Establish `h2 : i = w⁻¹ j` using `by subst h; simp`. Rewrite using `[if_pos h, if_pos h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : ¬ i = w⁻¹ j` using `fun e => h (by rw [e]; simp)`. Rewrite using `[if_neg h, if_neg h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem permM_conjTranspose (w : Equiv.Perm (Fin n)) : (permM w)ᴴ = permM w⁻¹ := by
   ext i j
@@ -30,9 +30,9 @@ theorem permM_conjTranspose (w : Equiv.Perm (Fin n)) : (permM w)ᴴ = permM w⁻
     rw [if_neg h, if_neg h2]; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, permM, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single c]`. Apply the tactic sequence `by_cases h1 : i = w c <;> by_cases h2 : d = j`. Simplify using `[h1, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Simplify using `[h2, h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,11 +51,11 @@ theorem permM_mul_single (w : Equiv.Perm (Fin n)) (c d : Fin n) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, permM, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single d]`. Distinguish the cases in `h1 : c = i`. Distinguish the cases in `h2 : d = v j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Substitute `h1 h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Establish `h3 : ¬ v.symm d = j` using `fun e => h2 (by rw [← e]; simp)`. Simplify using `[h2, h3]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Introduce `b _ hb`. Rewrite using `[if_neg (fun q => hb q.2.symm)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_mul_permM (v : Equiv.Perm (Fin n)) (c d : Fin n) :
     Matrix.single c d (1 : ℂ) * permM v = Matrix.single c (v⁻¹ d) 1 := by
@@ -74,16 +74,16 @@ theorem single_mul_permM (v : Equiv.Perm (Fin n)) (c d : Fin n) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[permM_conjTranspose, permM_mul_single, single_mul_permM, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem permM_single (w : Equiv.Perm (Fin n)) (c d : Fin n) :
     permM w * Matrix.single c d (1 : ℂ) * (permM w)ᴴ = Matrix.single (w c) (w d) 1 := by
   rw [permM_conjTranspose, permM_mul_single, single_mul_permM, inv_inv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, permM, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (v j)]`. Establish `e : (w * v) j = w (v j)` using `rfl`. Distinguish the cases in `h : i = w (v j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos rfl, if_pos (h.trans e.symm)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul, if_neg (fun q => h (q.trans e))]`. Introduce `b _ hb`. Rewrite using `[if_neg hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
@@ -100,9 +100,9 @@ theorem permM_mul (w v : Equiv.Perm (Fin n)) : permM w * permM v = permM (w * v)
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [permM, Matrix.of_apply, Matrix.one_apply]`. Establish `e : (1 : Equiv.Perm (Fin n)) j = j` using `rfl`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos (h.trans e.symm), if_pos h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun q => h (q.trans e)), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem permM_one : permM (1 : Equiv.Perm (Fin n)) = 1 := by
   ext i j
@@ -113,7 +113,7 @@ theorem permM_one : permM (1 : Equiv.Perm (Fin n)) = 1 := by
   · rw [if_neg (fun q => h (q.trans e)), if_neg h]
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.ChartRestriction.DS.Jm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_true : ReciprocityTheory.ChartRestriction.DS.Jm (fun _ : Fin n => true) = 1 := by
   simp [ReciprocityTheory.ChartRestriction.DS.Jm]
@@ -125,7 +125,7 @@ def permU (w : Equiv.Perm (Fin n)) : (Matrix (Fin n) (Fin n) ℂ)ˣ where
   inv_val := by rw [permM_mul, inv_mul_cancel, permM_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, permM_conjTranspose, permM_mul, mul_inv_cancel, permM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem permM_unitary (w : Equiv.Perm (Fin n)) : permM w ∈ Matrix.unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, permM_conjTranspose, permM_mul,
@@ -146,7 +146,7 @@ Both sides reduce to the same expression.
 theorem toMK_permK (w : Equiv.Perm (Fin n)) : ReciprocityTheory.ChartRestriction.DS.S7.toMK (permK w) = permM w := rfl
 
 /- English proof (translation)
-Establish `h1` using `ReciprocityTheory.ChartRestriction.DS.HW.KType.conj_dτ T k (ReciprocityTheory.ChartRestriction.DS.HW.inK_hermitian_unit h)`. Establish `h2` using `ReciprocityTheory.ChartRestriction.DS.HW.KType.conj_dτ T k (ReciprocityTheory.ChartRestriction.DS.HW.inK_skew_hermitian_unit h)`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.HW.single_eq_kp c d, map_add, map_smul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, h1, h2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, map_add, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_single {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : ReciprocityTheory.ChartRestriction.DS.S7.KType ε Λ)
     (k : ReciprocityTheory.ChartRestriction.DS.S7.KG ε) {c d : Fin n} (h : ε c = ε d) :
@@ -158,9 +158,9 @@ theorem conj_single {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : ReciprocityT
     h1, h2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, map_add, map_smul]
 
 /- English proof (translation)
-Establish `h` using `conj_single T (permK w) (c := c) (d := d) rfl`. Rewrite `h` using `[toMK_permK, Matrix.star_eq_conjTranspose, permM_single]`. Rewrite using `[← h]`. Establish `hu : star (T.op (permK w)) * T.op (permK w) = 1` using `Unitary.coe_star_mul_self _`. Establish `e : T.op (permK w) * T.dτ (Matrix.single c d 1) * star (T.op (permK w)) * T.op (permK w) = T.op (permK w) * T.dτ (Matrix.single c d 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc _ (star _), hu, mul_one]`. Conclude with `congrArg (fun F : T.V →L[ℂ] T.V => F v) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_translate {Λ : Fin n → ℝ} (T : ReciprocityTheory.ChartRestriction.DS.S7.KType (fun _ : Fin n => true) Λ)
     (w : Equiv.Perm (Fin n)) (c d : Fin n) (v : T.V) :
@@ -175,23 +175,21 @@ theorem unit_translate {Λ : Fin n → ℝ} (T : ReciprocityTheory.ChartRestrict
   exact congrArg (fun F : T.V →L[ℂ] T.V => F v) e
 
 /- English proof (translation)
-Introduce `n κ hκ s hs w`. Take `⟨T⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.kType_exists_of_dom (fun _ : Fin n => true) (fun a => κ a - s) hs (fun a b hab _ => sub_le_sub_right (hκ hab.le) s)`. Use `set F := ReciprocityTheory.ChartRestriction.DS.HW.kunits T with hF`. Use `set E := ReciprocityTheory.ChartRestriction.DS.HW.endomorphismFamilyShift F (fun _ => s) with hE`. Establish `hEval : ∀ x y (f : T.V), E x y f = T.dτ (Matrix.single x y 1) f + (if x = y then ((s : ℝ) : ℂ) else 0) • f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x y f`. Simplify using `only [hE, hF, ReciprocityTheory.ChartRestriction.DS.HW.endomorphismFamilyShift, ReciprocityTheory.ChartRestriction.DS.HW.kunits, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, ContinuousLinearMap.coe_coe]`. Establish `hrel : Formalism.REAL.KRel (fun _ : Fin n => true) E` using `ReciprocityTheory.ChartRestriction.DS.HW.ext1Shift_kRel (ReciprocityTheory.ChartRestriction.DS.HW.KType.kRel T) (fun _ _ _ => rfl)`. Establish `huni : Formalism.REAL.KUnit (fun _ : Fin n => true) E` using `ReciprocityTheory.ChartRestriction.DS.HW.ext1Shift_kUnit (ReciprocityTheory.ChartRestriction.DS.HW.KType.kUnit T) _`. Establish `hhigh : Formalism.REAL.KHighest (fun _ => true) E κ T.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `ReciprocityTheory.ChartRestriction.DS.HW.ext1Shift_kHighest (t := fun _ => s) (ReciprocityTheory.ChartRestriction.DS.HW.KType.kHighest_w T)`. Establish `e : (fun a => κ a - s) + (fun _ => s) = κ`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw0` using `ReciprocityTheory.ChartRestriction.DS.HW.KType.w_ne_zero T`. Use `set k := permK w with hk`. Use `⟨T.V, inferInstance, inferInstance, inferInstance, E, T.w, T.op k T.w, fun a b c d => hrel a b c d rfl rfl, fun x y => huni x y rfl, hw0, hhigh, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW hu`. Establish `hW' : ∀ a b, (fun _ : Fin n => true) a = (fun _ : Fin n => true) b → ∀ v ∈ W, T.dτ (Matrix.single a b 1) v ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b _ v hv`. Establish `h1` using `hW a b v hv`. Rewrite `h1` using `[hEval]`. Conclude with `(W.add_mem_iff_left (W.smul_mem _ hv)).1 h1`. Break down `ReciprocityTheory.ChartRestriction.DS.HW.KType.dτ_irred T W hW' with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[h, Submodule.mem_bot]`. Conclude with `absurd hu hw0`. Conclude with `h`. Introduce `h0`. Establish `hu : star (T.op k) * T.op k = 1` using `Unitary.coe_star_mul_self _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congrArg (fun G : T.V →L[ℂ] T.V => G T.w) hu` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, h0, map_zero] at this`. Conclude with `hw0 this.symm`. Introduce `x`. Rewrite using `[hEval, unit_translate, T.w_wt x, if_pos rfl, map_smul, ← add_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hxy`. Establish `hne : w x ≠ w y` using `fun e => (ne_of_lt hxy) (w.injective e)`.
-
-Rewrite using `[hEval, unit_translate, T.w_hw x y hxy rfl, if_neg hne]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem extremal_module : ∀ {n : ℕ} (κ : Fin n → ℝ), Antitone κ → ∀ s : ℝ, (∀ a, ∃ m : ℤ, κ a - s = m) →
     ∀ w : Equiv.Perm (Fin n),

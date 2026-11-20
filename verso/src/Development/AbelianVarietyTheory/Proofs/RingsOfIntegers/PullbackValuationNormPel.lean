@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PullbackValuation.main GlobalTheory.allSixLaws.1 GlobalTheory.twistBaseChange`.
+A detailed English derivation is pending.
 -/
 theorem pullbackValuation_norm_pel : DVR.PullbackValuationInvariance :=
   GlobalTheory.PullbackValuation.main GlobalTheory.allSixLaws.1 GlobalTheory.twistBaseChange

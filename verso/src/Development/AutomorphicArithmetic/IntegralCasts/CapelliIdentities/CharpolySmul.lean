@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k ι _ _ _ M c hc`. Establish `h1 : M.charpoly.comp (Polynomial.C c⁻¹ * Polynomial.X) = ((Polynomial.compRingHom (Polynomial.C c⁻¹ * Polynomial.X)).mapMatrix M.charmatrix).det`. Rewrite using `[← RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : (Polynomial.C c : Polynomial k) * Polynomial.C c⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.C_mul, mul_inv_cancel₀ hc, Polynomial.C_1]`. Rewrite using `[h1, Polynomial.C_pow, ← Matrix.det_smul, Matrix.charpoly]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.charmatrix_apply_eq, smul_eq_mul, Polynomial.coe_compRingHom_apply, Polynomial.sub_comp, Polynomial.X_comp, Polynomial.C_comp, Polynomial.C_mul]`. Rewrite using `[mul_sub, ← mul_assoc, h2, one_mul]`. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.charmatrix_apply_ne _ _ _ hij, smul_eq_mul, Polynomial.coe_compRingHom_apply, Polynomial.neg_comp, Polynomial.C_comp, Polynomial.C_mul, mul_neg]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Qh50.charpoly_smul_alt.{u_1, u_2} :
     ∀ {k : Type u_1} {ι : Type u_2} [inst : Field k] [inst_1 : Fintype ι] [inst_2 : DecidableEq ι]

@@ -8,15 +8,15 @@ namespace GlobalTheory.CompanionTheory.Rigid
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Take `⟨hle, t, ht⟩` from `h`. Establish `hd : d = m + 2 * t` using `by omega`. Establish `hdR : (d : ℝ) = m + 2 * t` using `by exact_mod_cast hd`. Establish `htd : t < d` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_eq_one]`. Use `⟨⟨t, htd⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[Finset.mem_filter, Finset.mem_singleton]`. Simplify using `only [Finset.mem_univ, true_and, spehExp]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hk`. Apply `Fin.ext` to reduce the goal to its premises. Establish `: ((k : ℕ) : ℝ) = t` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce and unpack `rfl show ((m : ℝ) - 1) / 2 = ((d : ℝ) - 1) / 2 - (t : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `k _ hk`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [spehExp] at hk`. Establish `h1 : (d : ℝ) = m + 2 * ((k : ℕ) : ℝ)` using `by linarith`. Establish `h2 : d = m + 2 * (k : ℕ)` using `by exact_mod_cast h1`. Conclude with `⟨by omega, (k : ℕ), by omega⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_spehExp_eq (d m : ℕ) (hm : 1 ≤ m) :
     ((Finset.univ : Finset (Fin d)).filter (fun k => ((m : ℝ) - 1) / 2 = spehExp d k)).card =
@@ -50,11 +50,11 @@ theorem card_spehExp_eq (d m : ℕ) (hm : 1 ≤ m) :
 open Classical in
 
 /- English proof (translation)
-Unfold `GlobalTheory.Rigid.strings`. Rewrite using `[Multiset.count_sum', Finset.card_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.count_map]`. Distinguish the cases in `hx : p i = x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h` using `card_spehExp_eq (d i) m hm`. Simplify using `only [hx, true_and, Prod.mk.injEq]`. Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `hx' : ¬ x = p i` using `fun e => hx e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[hx, hx']`.
+Simplify using the standard rewrite rules.
 -/
 theorem count_strings {X ι : Type} [Fintype ι] (p : ι → X) (d : ι → ℕ) (x : X) (m : ℕ) (hm : 1 ≤ m) :
     (GlobalTheory.Rigid.strings p d).count (x, ((m : ℝ) - 1) / 2) =
@@ -74,7 +74,7 @@ theorem count_strings {X ι : Type} [Fintype ι] (p : ι → X) (d : ι → ℕ)
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [Finset.card_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : p i = x`. Apply the tactic sequence `simp only [hx, true_and, Nat.even_iff] split_ifs <;> omega`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem card_fibre_add {ι : Type} {X : Type} [Fintype ι] (p : ι → X) (d : ι → ℕ) (x : X) (m : ℕ) :
     (Finset.univ.filter fun i => p i = x ∧ d i = m).card +
@@ -90,11 +90,11 @@ theorem card_fibre_add {ι : Type} {X : Type} [Fintype ι] (p : ι → X) (d : �
 open Classical in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Establish `h1 : (Finset.univ.filter fun i => p i = x ∧ d i = 0) = ∅` using `Finset.filter_eq_empty_iff.2 fun i _ hi => by have := hd i; omega`. Establish `h2 : (Finset.univ.filter fun j => p' j = x ∧ d' j = 0) = ∅` using `Finset.filter_eq_empty_iff.2 fun j _ hj => by have := hd' j; omega`. Rewrite using `[h1, h2, Finset.card_empty, Finset.card_empty]`. Establish `a1` using `card_fibre_add p d x m`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `card_fibre_add p' d' x m`. Establish `c1` using `count_strings p d x m hm`. Establish `c2` using `count_strings p' d' x m hm`. Establish `e1` using `count_strings p d x (m + 2) (by omega)`. Establish `e2` using `count_strings p' d' x (m + 2) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c1`, `e1` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_fibre_eq {X ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → X) (d : ι → ℕ) (p' : κ → X)
     (d' : κ → ℕ) (hd : ∀ i, 1 ≤ d i) (hd' : ∀ j, 1 ≤ d' j)
@@ -117,9 +117,9 @@ theorem card_fibre_eq {X ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → X) 
     omega
 
 /- English proof (translation)
-Establish `hc : ∀ c : X × ℕ, Fintype.card {i // (p i, d i) = c} = Fintype.card {j // (p' j, d' j) = c}`. Introduce and unpack `⟨x, m⟩`. Use `card_fibre_eq p d p' d' hd hd' h x m` as an intermediate fact. Simplify using `only [Fintype.card_subtype, Prod.mk.injEq]`. Use `this` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `e : ∀ c : X × ℕ, {i // (p i, d i) = c} ≃ {j // (p' j, d' j) = c}` to `fun c => Fintype.equivOfCardEq (hc c)`. Use `⟨Equiv.ofFiberEquiv e, fun i => ?_⟩` and prove the remaining obligations. Use `Equiv.ofFiberEquiv_map e i` as an intermediate fact. Conclude with `⟨(congrArg Prod.fst this).symm, (congrArg Prod.snd this).symm⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem strings_rigid {X ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → X) (d : ι → ℕ) (p' : κ → X)
     (d' : κ → ℕ) (hd : ∀ i, 1 ≤ d i) (hd' : ∀ j, 1 ≤ d' j)

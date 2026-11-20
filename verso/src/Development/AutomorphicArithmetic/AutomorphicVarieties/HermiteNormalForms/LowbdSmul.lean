@@ -4,9 +4,9 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Unfold `qR mat`. Simplify using `only [dotProduct, mulVec, Matrix.of_apply, Pi.star_apply]`. Establish `hv : Continuous fun p : HS L N × VR L N => (p.1 : InfinitePlace L → Fin N → Fin N → ℂ)` using `continuous_subtype_val.comp continuous_fst`. Establish `hz : Continuous fun p : HS L N × VR L N => (p.2 : InfinitePlace L → Fin N → ℂ)` using `continuous_snd`. Use `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Use `(continuous_star.comp ((continuous_apply i).comp ((continuous_apply w).comp hz))).mul ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp ((continuous_apply w).comp hv))).mul ((continuous_apply j).comp ((continuous_apply w).comp hz))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem lowbd_cont (L : Type) [Field L] [NumberField L] (N : ℕ) :
     Continuous (fun p : HS L N × VR L N => qR p.1 p.2) := by
@@ -23,7 +23,7 @@ private theorem lowbd_cont (L : Type) [Field L] [NumberField L] (N : ℕ) :
     ((continuous_apply j).comp ((continuous_apply w).comp hz))
 
 /- English proof (translation)
-Unfold `qR`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, star_smul, star_trivial, mulVec_smul, dotProduct_smul, smul_dotProduct, Complex.smul_re, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lowbd_smul {L : Type} [Field L] [NumberField L] {N : ℕ} (k : HS L N) (r : ℝ)
     (z : VR L N) : qR k (r • z) = r ^ 2 * qR k z := by
@@ -35,11 +35,11 @@ private theorem lowbd_smul {L : Type} [Field L] [NumberField L] {N : ℕ} (k : H
   ring
 
 /- English proof (translation)
-Establish `hne : ∃ w, z w ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hz (funext hc)`. Take `⟨w0, hw0⟩` from `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hp : ∀ w, (mat h w).PosDef` using `hh`. Unfold `qR`. Apply `Finset.sum_pos'` to reduce the goal to its premises. Introduce `w _`. Distinguish the cases in `hw : z w = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `[hw]`. Conclude with `le_of_lt (Complex.pos_iff.mp ((hp w).dotProduct_mulVec_pos hw)).1`. Conclude with `⟨w0, Finset.mem_univ _, (Complex.pos_iff.mp ((hp w0).dotProduct_mulVec_pos hw0)).1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem lowbd_pos {L : Type} [Field L] [NumberField L] {N : ℕ} {h : HS L N}
     (hh : h ∈ Pos L N) {z : VR L N} (hz : z ≠ 0) : 0 < qR h z := by
@@ -58,17 +58,17 @@ private theorem lowbd_pos {L : Type} [Field L] [NumberField L] {N : ℕ} {h : HS
   · exact ⟨w0, Finset.mem_univ _, (Complex.pos_iff.mp ((hp w0).dotProduct_mulVec_pos hw0)).1⟩
 
 /- English proof (translation)
-Introduce `L _ _ N h hh`. Establish `hK : IsCompact (Metric.sphere (0 : VR L N) 1)` using `isCompact_sphere 0 1`. Establish `hcont` using `lowbd_cont L N`. Establish `hsec : Continuous fun z : VR L N => (h, z)` using `by fun_prop`. Take `⟨m, hm, hmle⟩` from `hK.exists_forall_le' (f := fun z => qR h z) (hcont.comp hsec).continuousOn (a := 0) (fun z hz => lowbd_pos hh (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Rewrite `hz` using `[h0]`. Simplify using `at hz))`. Use `⟨m / 2, by positivity, ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ k in nhds h, ∀ z ∈ Metric.sphere (0 : VR L N) 1, m / 2 < qR k z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `z hz`. Establish `hlt : m / 2 < qR h z` using `by linarith [hmle z hz]`. Conclude with `(hcont.tendsto (h, z)).eventually (lt_mem_nhds hlt)`. Use `filter_upwards [hev] with k hk z`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Establish `h0 : qR k (0 : VR L N) = 0` using `by simpa using lowbd_smul k 0 (0 : VR L N)`. Simplify using `[h0]`. Establish `hn : 0 < ‖z‖` using `norm_pos_iff.mpr hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu : ‖z‖⁻¹ • z ∈ Metric.sphere (0 : VR L N) 1`. Simplify using `[norm_smul, hn.ne']`. Establish `hzu : ‖z‖ • (‖z‖⁻¹ • z) = z`. Rewrite using `[smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Establish `hlt` using `hk _ hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left hlt.le (by positivity)`. Use `_ = qR k (‖z‖ • (‖z‖⁻¹ • z)) := (lowbd_smul k ‖z‖ _).symm`. Use `_ = qR k z := by rw [hzu]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.lowbd :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (h : HS L N), h ∈ Pos L N →

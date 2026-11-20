@@ -31,7 +31,7 @@ def DivPushForward.Statement : Prop :=
 open Classical in
 
 /- English proof (translation)
-The claim follows from `h.1; (relDeg (Function.Embedding.some : Unit ↪ Option Unit) W' : ℤ) * N (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W') else 0 IsMultiProjPrime P' ∧ relDim P' = ((0 + 1 : ℕ) : WithBot (WithTop ℤ)) ∧ relDim (contractPrime (Function.Embedding.some : Unit ↪ Option …`.
+A detailed English derivation is pending.
 -/
 theorem DivPushForward.hypotheses_example :
     let P' : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ) := ⊥

@@ -10,7 +10,7 @@ open Formalism.MainNotions Formalism.L2.PairingIndexBounds.Eq Formalism.L2.Th1.H
 variable {D : D7}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_three_comm {a b c : ℕ} (F : Fin a → Fin b → Fin c → ℂ) :
     ∑ i, ∑ j, ∑ k, F i j k = ∑ k, ∑ j, ∑ i, F i j k := by
@@ -19,9 +19,9 @@ theorem sum_three_comm {a b c : ℕ} (F : Fin a → Fin b → Fin c → ℂ) :
     _ = ∑ k, ∑ j, ∑ i, F i j k := Finset.sum_congr rfl fun k _ => Finset.sum_comm
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Simplify using `only [Ker.formV, LinearMap.mk₂'ₛₗ_apply, phi_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, map_sum, map_mul, Finset.mul_sum, conjTranspose_apply, embT_star']`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_three_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formV_phi {N N' : ℕ} (A : ℝ) (M : Matrix (Fin N') (Fin N') D.host.E) (x y : TaylorLogMetric.VC D N N') :
     Ker.formV A D.what₂.Tau N N' (phi M x) y =
@@ -52,7 +52,7 @@ def Good (x y : TaylorLogMetric.VC D N N') : Prop := ∃ k : ℤ, bet D cc δ N 
 variable {D cc δ N N'}
 
 /- English proof (translation)
-Simplify using `only [qq, cp, map_add, LinearMap.add_apply, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qq_add (x y : TaylorLogMetric.VC D N N') :
     qq D cc δ N N' (x + y) = qq D cc δ N N' x + qq D cc δ N N' y + cp D cc δ N N' x y := by
@@ -60,7 +60,7 @@ theorem qq_add (x y : TaylorLogMetric.VC D N N') :
   ring
 
 /- English proof (translation)
-Simplify using `only [bet, cp, map_add, LinearMap.add_apply, Complex.add_re, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bet_add_left (x x' y : TaylorLogMetric.VC D N N') :
     bet D cc δ N N' (x + x') y = bet D cc δ N N' x y + bet D cc δ N N' x' y := by
@@ -68,7 +68,7 @@ theorem bet_add_left (x x' y : TaylorLogMetric.VC D N N') :
   ring
 
 /- English proof (translation)
-Simplify using `only [bet, cp, map_add, LinearMap.add_apply, Complex.add_re, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bet_add_right (x y y' : TaylorLogMetric.VC D N N') :
     bet D cc δ N N' x (y + y') = bet D cc δ N N' x y + bet D cc δ N N' x y' := by
@@ -76,7 +76,7 @@ theorem bet_add_right (x y y' : TaylorLogMetric.VC D N N') :
   ring
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `ha`. Take `⟨m', hm'⟩` from `hb`. Use `⟨m + m', ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm']`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -89,9 +89,9 @@ theorem good_add {a b : ℝ} (ha : ∃ k : ℤ, a = 2 * k) (hb : ∃ k : ℤ, b 
   ring
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `h1 : HH D cc δ N N' (phi e x) (phi e y) = HH D cc δ N N' x (phi (eᴴ * e) y)`. Unfold `HH`. Rewrite using `[formV_phi, phi_mul]`. Establish `h2 : HH D cc δ N N' (phi e y) (phi e x) = HH D cc δ N N' (phi (eᴴ * e) y) x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `HH`. Rewrite using `[formV_phi, formV_phi, ← phi_mul, conjTranspose_mul, conjTranspose_conjTranspose]`. Unfold `bet cp`. Rewrite using `[h1, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bet_phi (e : Matrix (Fin N') (Fin N') D.host.E) (x y : TaylorLogMetric.VC D N N') :
     bet D cc δ N N' (phi e x) (phi e y) = bet D cc δ N N' x (phi (letI := D.host.cmStar; eᴴ * e) y) := by
@@ -106,25 +106,25 @@ theorem bet_phi (e : Matrix (Fin N') (Fin N') D.host.E) (x y : TaylorLogMetric.V
   rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[show (Real.pi : ℂ) * Complex.I * (b : ℂ) = (b : ℂ) * ((Real.pi : ℂ) * Complex.I) by ring, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem negpow (b : ℤ) : ((-1 : ℂ) ^ b) = Complex.exp ((Real.pi : ℂ) * Complex.I * (b : ℂ)) := by
   rw [show (Real.pi : ℂ) * Complex.I * (b : ℂ) = (b : ℂ) * ((Real.pi : ℂ) * Complex.I) by ring,
     Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
 /- English proof (translation)
-Use `show (-1 : ℂ) ^ (round (qq D cc δ N N' z)) = _`. Rewrite using `[h, round_intCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem al_of_q {z : TaylorLogMetric.VC D N N'} {m : ℤ} (h : qq D cc δ N N' z = m) : TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ) z = (-1 : ℂ) ^ m := by
   show (-1 : ℂ) ^ (round (qq D cc δ N N' z)) = _
   rw [h, round_intCast]
 
 /- English proof (translation)
-Rewrite `hlaw` using `[al_of_q hxy, al_of_q hx, al_of_q hy, negpow, negpow, negpow, ← Complex.exp_add, ← Complex.exp_add]`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.mp hlaw`. Establish `hq` using `qq_add (D := D) (cc := cc) (δ := δ) x y`. Rewrite `hq` using `[hx, hy, hxy]`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpi : (Real.pi : ℂ) * Complex.I ≠ 0` using `mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) Complex.I_ne_zero`. Establish `h2 : (mxy : ℂ) = mx + my + (altE (HH D cc δ N N') x y : ℂ) + 2 * n`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Take the linear combination `hn`. Establish `h3 : (mxy : ℝ) = mx + my + altE (HH D cc δ N N') x y + 2 * n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions. Simplify using `only [bet, altE] at h3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem good_of_law {x y : TaylorLogMetric.VC D N N'} {mx my mxy : ℤ} (hx : qq D cc δ N N' x = mx) (hy : qq D cc δ N N' y = my)
     (hxy : qq D cc δ N N' (x + y) = mxy)
@@ -148,11 +148,11 @@ theorem good_of_law {x y : TaylorLogMetric.VC D N N'} {mx my mxy : ℤ} (hx : qq
   linarith
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hg`. Rewrite using `[al_of_q hxy, al_of_q hx, al_of_q hy, negpow, negpow, negpow, ← Complex.exp_add, ← Complex.exp_add]`. Apply `Complex.exp_eq_exp_iff_exists_int.mpr` to reduce the goal to its premises. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hq` using `qq_add (D := D) (cc := cc) (δ := δ) x y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hq` using `[hx, hy, hxy]`. Simplify using `only [bet] at hk`. Establish `h4 : (mxy : ℝ) = mx + my + altE (HH D cc δ N N') x y + 2 * k`. Simplify using `only [altE]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : (mxy : ℂ) = mx + my + (altE (HH D cc δ N N') x y : ℂ) + 2 * k`. Conclude with `h4` after adjusting the coercions. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem law_of_good {x y : TaylorLogMetric.VC D N N'} {mx my mxy : ℤ} (hx : qq D cc δ N N' x = mx) (hy : qq D cc δ N N' y = my)
     (hxy : qq D cc δ N N' (x + y) = mxy) (hg : Good D cc δ N N' x y) :
@@ -175,7 +175,7 @@ theorem law_of_good {x y : TaylorLogMetric.VC D N N'} {mx my mxy : ℤ} (hx : qq
   ring
 
 /- English proof (translation)
-Take `⟨mx, hmx⟩` from `hq x hx`. Take `⟨my, hmy⟩` from `hq y hy`. Take `⟨mxy, hmxy⟩` from `hq (x + y) (Y.add_mem hx hy)`. Conclude with `good_of_law hmx hmy hmxy (hsc.2 x hx y hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_lat {Y : AddSubgroup (TaylorLogMetric.VC D N N')} (hsc : IsSemiChar (HH D cc δ N N') Y (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)))
     (hq : ∀ z ∈ Y, ∃ m : ℤ, qq D cc δ N N' z = m) {x y : TaylorLogMetric.VC D N N'} (hx : x ∈ Y) (hy : y ∈ Y) :

@@ -15,7 +15,7 @@ universe u
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Complex.ofRealCLM.contDiff.contDiffAt.comp x hf`. Consider the case `exact (Complex.ofRealCLM.contDiff.contDiffAt.comp x hf).congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => by simp)`. Consider the case `fun_prop`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem contDiffAt_ofReal_comp' {f : V n → ℝ} {x : V n} {m : WithTop ℕ∞} (hf : ContDiffAt ℝ m f x) :
     ContDiffAt ℝ m (fun v => ((f v : ℝ) : ℂ)) x := by
@@ -26,11 +26,9 @@ private theorem contDiffAt_ofReal_comp' {f : V n → ℝ} {x : V n} {m : WithTop
   | fun_prop
 
 /- English proof (translation)
-Establish `h3` using `((hlin (bas n k)).add ((hlin (Complex.I • bas n k)).const_mul Complex.I)).mul_const ((2 : ℂ)⁻¹)`. Establish `hw : wdb n k g = fun y => (fderiv ℝ g y (bas n k) + Complex.I * fderiv ℝ g y (Complex.I • bas n k)) * (2 : ℂ)⁻¹`. Use function extensionality and compare the values at `y`. Simplify using `only [wdb]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hw]`. Use `first`. Consider the case `rw [(show HasFDerivAt (𝕜 := ℝ) (fun y => (fderiv ℝ g y (bas n k) + Complex.I * fderiv ℝ g y (Complex.I • bas n k)) * (2 : ℂ)⁻¹) _ x from h3).fderiv]`. Consider the case `erw [h3.fderiv]`. Simplify using `[div_eq_mul_inv]`.
-
-Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fderiv_wdb_apply_of_hasFDerivAt_flip {g : V n → ℂ} {x : V n} (k : Fin n)
     (hlin : ∀ v : V n, HasFDerivAt (fun y => fderiv ℝ g y v) ((fderiv ℝ (fderiv ℝ g) x).flip v) x)
@@ -53,35 +51,33 @@ private theorem fderiv_wdb_apply_of_hasFDerivAt_flip {g : V n → ℂ} {x : V n}
   try ring
 
 /- English proof (translation)
-Use `set g : V n → ℂ := fun v => ((f v : ℝ) : ℂ) with hgeq`. Establish `hg2 : ContDiffAt ℝ 2 g x` using `contDiffAt_ofReal_comp' hf`. Apply the tactic sequence `have hD : DifferentiableAt ℝ (fderiv ℝ g) x := (hg2.fderiv_right (m := 1) (by first | exact one_add_one_eq_two.le | norm_num)).differentiableAt (by first | exact one_ne_zero | exact le_rfl)`. Establish `hsym : ∀ u v : V n, fderiv ℝ (fderiv ℝ g) x u v = fderiv ℝ (fderiv ℝ g) x v u`. Establish `hs : IsSymmSndFDerivAt ℝ g x` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact hg2.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Consider the case `exact hg2.isSymmSndFDerivAt (by simp [minSmoothness])`. Consider the case `exact hg2.isSymmSndFDerivAt le_rfl`. Conclude with `fun u v => hs u v`. Establish `hlin : ∀ v : V n, HasFDerivAt (fun y => fderiv ℝ g y v) ((fderiv ℝ (fderiv ℝ g) x).flip v) x`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `h` using `hD.hasFDerivAt.clm_apply (hasFDerivAt_const v x)`. Use `first`. Consider the case `simpa using h`. Consider the case `(convert h using 1; simp)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ u v : V n, fderiv ℝ (fun y => fderiv ℝ g y v) x u = fderiv ℝ (fderiv ℝ g) x u v`. Introduce `u v`. Rewrite using `[(hlin v).fderiv, ContinuousLinearMap.flip_apply]`. Establish `hc1 : ∀ y v : V n, (starRingEnd ℂ) (fderiv ℝ g y v) = fderiv ℝ g y v`. Introduce `y v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : fderiv ℝ ((Complex.conjCLE : ℂ → ℂ) ∘ g) y = (Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (fderiv ℝ g y)` using `Complex.conjCLE.comp_fderiv`. Establish `hg' : (Complex.conjCLE : ℂ → ℂ) ∘ g = g`. Use function extensionality and compare the values at `z`. Simplify using `[hgeq]`. Rewrite `e` using `[hg']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun L : V n →L[ℝ] ℂ => L v) e` as an intermediate fact. Simplify using `using this.symm`. Establish `hc2 : ∀ u v : V n, (starRingEnd ℂ) (fderiv ℝ (fderiv ℝ g) x u v) = fderiv ℝ (fderiv ℝ g) x u v`. Introduce `u v`. Establish `e : fderiv ℝ ((Complex.conjCLE : ℂ → ℂ) ∘ fun y => fderiv ℝ g y v) x = (Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (fderiv ℝ (fun y => fderiv ℝ g y v) x)` using `Complex.conjCLE.comp_fderiv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hh : (Complex.conjCLE : ℂ → ℂ) ∘ (fun y => fderiv ℝ g y v) = fun y => fderiv ℝ g y v`. Use function extensionality and compare the values at `z`. Simplify using `using hc1 z v`. Rewrite `e` using `[hh]`. Use `congrArg (fun L : V n →L[ℝ] ℂ => L u) e` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hval u v]`. Simplify using `using this.symm`. Establish `key : ∀ (k : Fin n) (u : V n), fderiv ℝ (wdb n k g) x u = (fderiv ℝ (fderiv ℝ g) x u (bas n k) + Complex.I * fderiv ℝ (fderiv ℝ g) x u (Complex.I • bas n k)) / 2` using `fun k u => fderiv_wdb_apply_of_hasFDerivAt_flip k hlin u`. Establish `hH : ∀ j k : Fin n, cHess n g x j k = (fderiv ℝ (fderiv ℝ g) x (bas n j) (bas n k) + fderiv ℝ (fderiv ℝ g) x (Complex.I • bas n j) (Complex.I • bas n k) + Complex.I * (fderiv ℝ (fderiv ℝ g) x (bas n j) (Complex.I • bas n k) - fderiv ℝ (fderiv ℝ g) x (Complex.I • bas n j) (bas n k …`. Introduce `j k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [cHess, Matrix.of_apply, wd, key]`. Take the linear combination `(-(fderiv ℝ (fderiv ℝ g) x (Complex.I • bas n j) (Complex.I • bas n k)) / 4) * Complex.I_sq`. Establish `hHerm : (cHess n g x).IsHermitian`. Use `Matrix.IsHermitian.ext fun j k => ?_` and prove the remaining obligations. Use `show (starRingEnd ℂ) (cHess n g x k j) = cHess n g x j k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hH k j, hH j k]`. Simplify using `only [map_div₀, map_add, map_sub, map_mul, Complex.conj_I, hc2, map_ofNat]`. Take the linear combination `(1 / 4 : ℂ) * hsym (bas n k) (bas n j) + (1 / 4 : ℂ) * hsym (Complex.I • bas n k) (Complex.I • bas n j) - (Complex.I / 4) * hsym (bas n k) (Complex.I • bas n j) + (Complex.I / 4) * hsym (Complex.I • bas n k) (bas n j)`. Establish `hq : ∀ v : Fin n → ℂ, dotProduct (star v) (Matrix.mulVec (cHess n g x) v) = leviV n g x (star v)`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [dotProduct, Matrix.mulVec, leviV, cHess, Matrix.of_apply, Finset.mul_sum, Pi.star_apply, starRingEnd_apply, star_star]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : ∀ v : Fin n → ℂ, 0 ≤ dotProduct (star v) (Matrix.mulVec (cHess n g x) v)`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `him : (dotProduct (star v) (Matrix.mulVec (cHess n g x) v)).im = 0` using `by first`. Consider the case `simpa using hHerm.im_star_dotProduct_mulVec_self v`. Consider the case `exact hHerm.im_star_dotProduct_mulVec_self v`. Establish `hre : 0 ≤ (dotProduct (star v) (Matrix.mulVec (cHess n g x) v)).re`. Rewrite using `[hq v]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Conclude with `hL (star v)`. Conclude with `Complex.le_def.2 ⟨by simpa using hre, by simpa using him.symm⟩`. Establish `hPSD : (cHess n g x).PosSemidef` using `by first`. Consider the case `exact ⟨hHerm, hnn⟩`. Consider the case `exact ⟨hHerm, fun v => hnn v⟩`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `refine ⟨hHerm, fun v => ?_⟩`. Establish `h` using `hnn ⇑v`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[Finsupp.sum_fintype, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hdet` using `hPSD.det_nonneg`.
-
-Simplify using `using (Complex.le_def.1 hdet).1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cmpb_det_nonneg {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ 2 f x)
     (hL : ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun v => ((f v : ℝ) : ℂ)) x ξ).re) :
@@ -177,7 +173,7 @@ theorem cmpb_det_nonneg {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ 2 f x)
   simpa using (Complex.le_def.1 hdet).1
 
 /- English proof (translation)
-Establish `h : ∀ k, wdb n k (fun _ : V n => ((c : ℝ) : ℂ)) = fun _ => 0`. Introduce `k`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`. Simplify using `[leviV, h, wd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cmpb_leviV_const (c : ℝ) (x : V n) (ξ : Fin n → ℂ) :
     leviV n (fun _ => ((c : ℝ) : ℂ)) x ξ = 0 := by
@@ -186,9 +182,9 @@ theorem cmpb_leviV_const (c : ℝ) (x : V n) (ξ : Fin n → ℂ) :
   simp [leviV, h, wd]
 
 /- English proof (translation)
-Establish `hw : ∀ k, wdb n k g₁ =ᶠ[𝓝 x] wdb n k g₂`. Introduce `k`. Establish `hn : ∀ᶠ y in 𝓝 x, g₁ =ᶠ[𝓝 y] g₂` using `by first`. Consider the case `exact h.eventuallyEq_nhds`. Consider the case `exact h.eventually_nhds`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `filter_upwards [hn] with y hy`. Simplify using `only [wdb, hy.fderiv_eq]`. Use extensionality with `j k`. Simplify using `only [cHess, Matrix.of_apply, wd, (hw k).fderiv_eq]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmpb_cHess_congr {g₁ g₂ : V n → ℂ} {x : V n} (h : g₁ =ᶠ[𝓝 x] g₂) :
     cHess n g₁ x = cHess n g₂ x := by
@@ -204,9 +200,9 @@ theorem cmpb_cHess_congr {g₁ g₂ : V n → ℂ} {x : V n} (h : g₁ =ᶠ[𝓝
   simp only [cHess, Matrix.of_apply, wd, (hw k).fderiv_eq]
 
 /- English proof (translation)
-Establish `h : ∀ k, wdb n k (fun v => g v + c) = wdb n k g`. Introduce `k`. Use function extensionality and compare the values at `y`. Simplify using `only [wdb, fderiv_add_const]`. Use extensionality with `j k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [cHess, Matrix.of_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cmpb_cHess_add_const (g : V n → ℂ) (c : ℂ) (x : V n) :
     cHess n (fun v => g v + c) x = cHess n g x := by

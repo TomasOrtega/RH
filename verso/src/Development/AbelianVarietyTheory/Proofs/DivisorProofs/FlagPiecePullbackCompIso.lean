@@ -12,13 +12,13 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 namespace GlobalTheory.FlagLiftComp
 
 /- English proof (translation)
-Introduce `B T Y₁ Y₂ g π₁ π₂ E F' F₁ F₂ ι' ι₁ ι₂ g₁ g₂ w₁ w₂ w e₁ h₁ e₂ h₂`. Substitute `w₂` using the available equality. Substitute `w₁` using the available equality. Establish `hc : ∀ {X Y : Scheme.{0}} {f : X ⟶ Y} (h : f = f) (M : Y.Modules), (Scheme.Modules.pullbackCongr h).hom.app M = 𝟙 _` using `fun _ _ => rfl`. Rewrite `h₁`, `h₂` using `[hc, Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(Scheme.Modules.pullbackComp g₁ g₂).symm.app F₂ ≪≫ (Scheme.Modules.pullback g₁).mapIso e₂ ≪≫ e₁, ?_⟩` and prove the remaining obligations. Establish `hA` using `congrArg (fun α => NatTrans.app α E) (Scheme.Modules.pseudofunctor_associativity g₁ g₂ π₂)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at hA`. Establish `hB : (Scheme.Modules.pullbackComp g₁ g₂).hom.app ((Scheme.Modules.pullback π₂).obj E) ≫ (Scheme.Modules.pullbackComp (g₁ ≫ g₂) π₂).hom.app E = (Scheme.Modules.pullback g₁).map ((Scheme.Modules.pullbackComp g₂ π₂).hom.app E) ≫ (Scheme.Modules.pullbackComp g₁ (g₂ ≫ π₂)).hom.app E ≫ …`. Rewrite using `[← hA]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.hom_inv_id_app, CategoryTheory.Functor.map_id, Category.id_comp]`. Establish `hN` using `(Scheme.Modules.pullbackComp g₁ g₂).inv.naturality ι₂`. Simplify using `only [Functor.comp_map] at hN`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc, h₁]`. Rewrite using `[← Functor.map_comp_assoc, h₂, Functor.map_comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← reassoc_of% hN]`. Use `congr 1`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp g₁ g₂).hom.app ((Scheme.Modules.pullback π₂).obj E)), Iso.hom_inv_id_app_assoc, reassoc_of% hB]`. Simplify using `only [Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app, eqToHom_trans, eqToHom_refl, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem liftComp : ∀ {B T Y₁ Y₂ : Scheme.{0}} (g : T ⟶ B) (π₁ : Y₁ ⟶ B) (π₂ : Y₂ ⟶ B) (E : B.Modules)
     (F' : T.Modules) (F₁ : Y₁.Modules) (F₂ : Y₂.Modules) (ι' : F' ⟶ (Scheme.Modules.pullback g).obj E)

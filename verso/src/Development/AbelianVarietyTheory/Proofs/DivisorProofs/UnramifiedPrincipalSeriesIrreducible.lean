@@ -17,15 +17,13 @@ namespace GlobalTheory.JSPrinBound
 open GlobalTheory.SmGL GlobalTheory.CuspRep
 
 /- English proof (translation)
-Take `⟨S, g, hg⟩` from `hQ`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, f y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (DFunLike.ext _ _ fun y => by simpa using h y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `hg y`. Establish `hS : S = ⊤`. Break down `eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Substitute `h` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : x = 0` using `Subtype.ext ((Submodule.mem_bot ℂ).1 x.2)`. Rewrite `hy` using `[hx, map_zero, map_zero]`. Conclude with `hy rfl`. Conclude with `h`. Establish `hmem : ∀ v, v ∈ S.toSubmodule` using `fun v => by rw [hS]; trivial`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `P : V →ₗ[ℂ] S.toSubmodule` to `LinearMap.id.codRestrict S.toSubmodule hmem`. Establish `hP : ∀ a v, P (ρ a v) = S.toRepresentation a (P v)` using `fun a v => Subtype.ext rfl`. Establish `hPx : P x.1 = x` using `Subtype.ext rfl`. Use `⟨f.toLinearMap ∘ₗ g.toLinearMap ∘ₗ P, fun h => hy ?_, fun a v => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h x.1`.
-
-Simplify using `only [LinearMap.comp_apply, hPx, LinearMap.zero_apply] at h1`. Conclude with `h1`. Simplify using `only [LinearMap.comp_apply, hP]`. Conclude with `(congrArg f (g.isIntertwining _ _ a (P v))).trans (f.isIntertwining _ _ a _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_map_of_subquotient {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup U] [Module ℂ U] {ρ : Representation ℂ G V} {Q : Representation ℂ G W}
@@ -57,29 +55,25 @@ theorem exists_map_of_subquotient {G V W U : Type} [Group G] [AddCommGroup V] [M
     exact (congrArg f (g.isIntertwining _ _ a (P v))).trans (f.isIntertwining _ _ a _)
 
 /- English proof (translation)
-Introduce `E _ _ _ τ w χ₁ χ₂ s₁ s₂ hJS hu₁ hu₂ hn₁ hn₂ hs V _ _ Q hQ f hf`. Use `set k := w.adicCompletion E`. Use `set ϖ : kˣ := Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w) with hϖdef`. Use `set q : ℝ := (Ideal.absNorm w.asIdeal : ℝ) with hqdef`. Establish `hq1 : 1 < q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `HeightOneSpectrum.one_lt_absNorm w` as an intermediate fact. Rewrite using `[hqdef]`. Conclude with `this` after adjusting the coercions. Establish `hq0 : 0 < q` using `zero_lt_one.trans hq1`. Establish `hnabs : GlobalTheory.SplitWeil.nabs k ϖ = q⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.SmGL.SphCompletion.ord_completion, GlobalTheory.LocLanglands.resCard_eq_normV]`. Establish `h` using `Formalism.L2.Host.unif_spec w`. Unfold `Formalism.L2.Host.IsUnifAt at h`. Rewrite using `[h]`. Simplify using `[q, Formalism.ConjugateSelfDual.normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : ∀ (χ : kˣ →* ℂˣ) (s : ℝ), (∀ u, ‖(χ u : ℂ)‖ = 1) → ‖(((χ * absPow k (s : ℂ)) ϖ : ℂˣ) : ℂ)‖ = q ^ (-s)`. Introduce `χ s hχ`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hχ, one_mul, val_absPow_ofReal, hnabs, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity), Real.inv_rpow hq0.le, Real.rpow_neg hq0.le]`. Establish `hne : ∀ {χ χ' : kˣ →* ℂˣ} {s s' : ℝ}, (∀ u, ‖(χ u : ℂ)‖ = 1) → (∀ u, ‖(χ' u : ℂ)‖ = 1) → χ * absPow k (s : ℂ) = χ' * absPow k (s' : ℂ) * absPow k 1 → s = s' + 1`. Introduce `χ χ' s s' h h' e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `e2 : χ' * absPow k (s' : ℂ) * absPow k 1 = χ' * absPow k ((s' + 1 : ℝ) : ℂ)`. Rewrite using `[mul_assoc, ← absPow_add]`. Use `push_cast`. Both sides reduce to the same expression. Use `congrArg (fun m : kˣ →* ℂˣ => ‖((m ϖ : ℂˣ) : ℂ)‖) (e.trans e2)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[hnorm χ s h, hnorm χ' _ h']`. Use `(Real.rpow_right_inj hq0 hq1.ne').1 this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set μ₁ := χ₁ * absPow k (s₁ : ℂ) with hμ₁`. Use `set μ₂ := χ₂ * absPow k (s₂ : ℂ) with hμ₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ {χ : kˣ →* ℂˣ} (s : ℝ), GlobalTheory.SplitWeil.IsUnram χ → GlobalTheory.SplitWeil.IsUnram (χ * absPow k (s : ℂ))` using `fun s h x hx => by rw [MonoidHom.mul_apply, h x hx, isUnram_absPow k _ x hx, mul_one]`. Establish `hirr` using `GlobalTheory.T.principal_series_irreducible_unram k μ₁ μ₂ (hU s₁ hu₁) (hU s₂ hu₂) (fun e => by have := hne hn₁ hn₂ e; rw [this] at hs; norm_num at hs) (fun e => by have := hne hn₂ hn₁ e; rw [this, show s₁ - (s₁ + 1) = -1 by ring] at hs; norm_num at hs)`. Use `set ρ := GlobalTheory.SmGL.prod₂ (GlobalTheory.SmGL.detRep (Fin 1) μ₁) (GlobalTheory.SmGL.detRep (Fin 1) μ₂) with hρ`. Take `⟨F, hF0, hFi⟩` from `exists_map_of_subquotient hirr hQ f hf`. Set `σ : GlobalTheory.CuspRep.SmIrr (GL (Fin (1 + 1)) k)` to `⟨_, ρ, GlobalTheory.SmGL.isSmooth_prod₂ _ _, hirr⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : τ.IsLocComp w σ` using `⟨F, hF0, hFi⟩`. Establish `hB` using `GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hσ (GlobalTheory.T.principal_series_satake_parameters E w μ₁ μ₂ (hU s₁ hu₁) (hU s₂ hu₂))`. Take `⟨ν, hνu, hνU⟩` from `GlobalTheory.T.cusp_rep_unitary_twist_exists E (1 + 1) (GlobalTheory.CuspRep.CG.mk τ) (by norm_num)`. Establish `hB'` using `GlobalTheory.SphGal.hasSatGL_twist E _ τ ν w _ (hνu w) hB`. Establish `hJ` using `hJS E (1 + 1) ((GlobalTheory.CuspRep.CG.mk τ).twist ν) hνU w _ hB'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : 0 < ‖((ν.val w : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `key : ∀ (χ : kˣ →* ℂˣ) (s : ℝ), (∀ u, ‖(χ u : ℂ)‖ = 1) → (χ * absPow k (s : ℂ)) ϖ ∈ ({μ₁ ϖ, μ₂ ϖ} : Multiset ℂˣ) → -(1 / 2) * Real.log q < -s * Real.log q + Real.log ‖((ν.val w : ℂˣ) : ℂ)‖ ∧ -s * Real.log q + Real.log ‖((ν.val w : ℂˣ) : ℂ)‖ < 1 / 2 * Real.log q`. Introduce `χ s hχ hm`. Establish `h` using `hJ _ (Multiset.mem_map.2 ⟨_, hm, rfl⟩)`. Rewrite `h` using `[Units.val_mul, norm_mul, hnorm χ s hχ]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : Real.log (q ^ (-s) * ‖((ν.val w : ℂˣ) : ℂ)‖) = -s * Real.log q + Real.log ‖((ν.val w : ℂˣ) : ℂ)‖`. Rewrite using `[Real.log_mul (by positivity) hc.ne', Real.log_rpow hq0]`. Prove the components needed by the constructor for the conclusion. Use `Real.log_lt_log (by positivity) h.1` as an intermediate fact. Rewrite `this` using `[Real.log_rpow hq0, e]`. Then use the resulting hypothesis.
-
-Use `Real.log_lt_log (by positivity) h.2` as an intermediate fact. Rewrite `this` using `[Real.log_rpow hq0, e]`. Then use the resulting hypothesis. Establish `k₁` using `key χ₁ s₁ hn₁ (Multiset.mem_cons_self _ _)`. Establish `k₂` using `key χ₂ s₂ hn₂ (Multiset.mem_cons_of_mem (Multiset.mem_singleton_self _))`. Establish `hL : 0 < Real.log q` using `Real.log_pos hq1`.
-
-Apply the tactic sequence `rcases lt_abs.1 hs with h | h <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jsBound_no_map : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (τ : GlobalTheory.CuspRep.CuspSub E (1 + 1))
     (w : HeightOneSpectrum (𝓞 E)) (χ₁ χ₂ : (w.adicCompletion E)ˣ →* ℂˣ) (s₁ s₂ : ℝ), GlobalTheory.Published.JacquetShalikaBound →

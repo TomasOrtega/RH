@@ -6,19 +6,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ Q c hc hQ b k B`. Set `Qc : V →L[ℝ] V →L[ℝ] ℂ` to `-LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℂ) ≃ₗ[ℝ] (V →L[ℝ] ℂ)).toLinearMap ∘ₗ Q)`. Establish `hQc : ∀ y, Qc y y = -(Q y y)` using `fun y => rfl`. Establish `hfun : (fun y => Complex.exp (-(Q y y))) = fun y => Complex.exp (Qc y y)`. Use function extensionality and compare the values at `y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hQc]`. Establish `hB' : ∀ x, (Qc x x).re ≤ -(c * ‖x‖ ^ 2)`. Introduce `x`. Rewrite using `[hQc, Complex.neg_re]`. Combine the linear relations using `[hQ x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨C0, hC0⟩` from `GaussExpSeries.exists_bound_poly_mul_exp (c / 2) (by positivity) (k + 2 * b)`. Use `⟨(b ! * (2 * (‖Qc‖ + 1)) ^ b) * Real.exp (B ^ 2 / (2 * c)) * C0, fun x => ?_⟩` and prove the remaining obligations. Establish `hr0 : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `hD` using `GaussExpSeries.norm_iteratedFDeriv_gauss_le Qc c hB' b x`. Rewrite using `[hfun]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : ‖x‖ ^ k * (1 + ‖x‖) ^ (2 * b) ≤ (1 + ‖x‖) ^ (k + 2 * b)`. Rewrite using `[pow_add]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : Real.exp (B * ‖x‖) * Real.exp (-(c * ‖x‖ ^ 2)) ≤ Real.exp (B ^ 2 / (2 * c)) * Real.exp (-(c / 2 * ‖x‖ ^ 2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1 : B ^ 2 / (2 * c) + -(c / 2 * ‖x‖ ^ 2) - (B * ‖x‖ + -(c * ‖x‖ ^ 2)) = (c * ‖x‖ - B) ^ 2 / (2 * c)` using `by field_simp; ring`. Establish `h2 : 0 ≤ (c * ‖x‖ - B) ^ 2 / (2 * c)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hC0'` using `hC0 ‖x‖ hr0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (b ! * (2 * (‖Qc‖ + 1)) ^ b) * ((1 + ‖x‖) ^ (k + 2 * b) * (Real.exp (B ^ 2 / (2 * c)) * Real.exp (-(c / 2 * ‖x‖ ^ 2)))) := by gcongr`.
-
-Use `_ = (b ! * (2 * (‖Qc‖ + 1)) ^ b) * Real.exp (B ^ 2 / (2 * c)) * ((1 + ‖x‖) ^ (k + 2 * b) * Real.exp (-(c / 2 * ‖x‖ ^ 2))) := by ring`. Use `_ ≤ (b ! * (2 * (‖Qc‖ + 1)) ^ b) * Real.exp (B ^ 2 / (2 * c)) * C0 := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_weighted_iteratedFDeriv_bounded : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V]

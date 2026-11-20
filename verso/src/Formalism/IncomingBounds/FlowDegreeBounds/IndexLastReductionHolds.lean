@@ -15,9 +15,9 @@ variable {O K X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
   [IsScalarTower O K X]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hx, hW⟩`. Conclude with `⟨⟨x, hW⟩, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_comap_sub (W : Submodule K X) (A : Submodule O X) :
     (A.comap ((W.subtype).restrictScalars O)).map ((W.subtype).restrictScalars O) =
@@ -31,13 +31,13 @@ theorem map_comap_sub (W : Submodule K X) (A : Submodule O X) :
     exact ⟨⟨x, hW⟩, hx, rfl⟩
 
 /- English proof (translation)
-Unfold `qlen`. Establish `hinj : Function.Injective ((W.subtype).restrictScalars O)` using `fun a b h => Subtype.ext h`. Set `e : ↥(A.comap ((W.subtype).restrictScalars O)) ≃ₗ[O] ↥(A ⊓ W.restrictScalars O)` to `(Submodule.equivMapOfInjective _ hinj _).trans (LinearEquiv.ofEq _ _ (map_comap_sub W A))`. Use `LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ e ?_)` and prove the remaining obligations. Use extensionality with `z`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_map_equiv]`. Establish `key : (((e.symm z : ↥(A.comap ((W.subtype).restrictScalars O))) : W) : X) = (z : X)` using `congrArg Subtype.val (e.apply_symm_apply z)`. Establish `hzW : (z : X) ∈ W` using `(Submodule.mem_inf.mp z.2).2`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (((e.symm z : ↥(A.comap ((W.subtype).restrictScalars O))) : W) : X) ∈ B` using `h`. Rewrite `h'` using `[key]`. Use `show (z : X) ∈ B ⊓ W.restrictScalars O`. Conclude with `Submodule.mem_inf.mpr ⟨h', hzW⟩`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (z : X) ∈ B ⊓ W.restrictScalars O` using `h`. Establish `h' : (z : X) ∈ B` using `(Submodule.mem_inf.mp h2).1`. Rewrite `h'` using `[← key]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qlen_comap (W : Submodule K X) (A B : Submodule O X) :
     qlen O W (A.comap ((W.subtype).restrictScalars O)) (B.comap ((W.subtype).restrictScalars O)) =
@@ -65,7 +65,7 @@ theorem qlen_comap (W : Submodule K X) (A B : Submodule O X) :
     exact h'
 
 /- English proof (translation)
-Unfold `idx`. Rewrite using `[qlen_comap W A B, qlen_comap W B A]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem idx_comap (W : Submodule K X) (A B : Submodule O X) :
     idx O W (A.comap ((W.subtype).restrictScalars O)) (B.comap ((W.subtype).restrictScalars O)) =
@@ -76,9 +76,9 @@ theorem idx_comap (W : Submodule K X) (A B : Submodule O X) :
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Unfold `IsLat at hA ⊢`. Use `⟨hA.1.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hA.2, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `x`. Use `⟨c⁻¹ • x, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[smul_smul, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isLat_scale {Y : Type} [AddCommGroup Y] [Module K Y] [Module O Y] [IsScalarTower O K Y]
     (c : K) (hc : c ≠ 0) (A : Submodule O Y) (hA : IsLat O K Y A) :
@@ -93,7 +93,7 @@ theorem isLat_scale {Y : Type} [AddCommGroup Y] [Module K Y] [Module O Y] [IsSca
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 /- English proof (translation)
-Unfold `IsLat at hB ⊢`. Use `⟨hA.sup hB.1, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hB.2]`. Conclude with `Submodule.span_mono (fun x hx => Submodule.mem_sup_right hx)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_sup {Y : Type} [AddCommGroup Y] [Module K Y] [Module O Y] [IsScalarTower O K Y]
     (A B : Submodule O Y) (hA : A.FG) (hB : IsLat O K Y B) : IsLat O K Y (A ⊔ B) := by
@@ -109,23 +109,23 @@ namespace Formalism.IncomingBounds
 open Formalism.LatticeIndexTer LatticeIndexAlt
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ e M Θ hM hΘ W`. Rewrite using `[← idx_comap W M Θ]`. Establish `hc : (algebraMap O K ϖ) ^ e ≠ 0` using `zpow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hϖ.ne_zero)`. Establish `hNl` using `isLat_sup (K := K) (M.map ((((algebraMap O K ϖ) ^ e) • LinearMap.id : X →ₗ[K] X).restrictScalars O)) Θ (hM.1.map _) hΘ`. Generalize the expression as in `hN : M.map ((((algebraMap O K ϖ) ^ e) • LinearMap.id : X →ₗ[K] X).restrictScalars O) ⊔ Θ = N at hNl ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hMN : ∀ x ∈ M, (algebraMap O K ϖ) ^ e • x ∈ N`. Introduce `x hx`. Rewrite using `[← hN]`. Conclude with `Submodule.mem_sup_left ⟨x, hx, by simp⟩`. Establish `hΘN : Θ ≤ N` using `hN ▸ le_sup_right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ι : W →ₗ[O] X` to `(W.subtype).restrictScalars O`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Set `fW : W →ₗ[O] W` to `((((algebraMap O K ϖ) ^ e) • LinearMap.id : W →ₗ[K] W).restrictScalars O)`. Establish `hA₀ : IsLat O K W (M.comap ι)` using `LatticeIndexValuation.isLat_comap M hM W`. Establish `hB₀ : IsLat O K W (Θ.comap ι)` using `LatticeIndexValuation.isLat_comap Θ hΘ W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN₀ : IsLat O K W (N.comap ι)` using `LatticeIndexValuation.isLat_comap N hNl W`. Establish `hS₀ : IsLat O K W ((M.comap ι).map fW)` using `isLat_scale _ hc _ hA₀`. Establish `hadd1` using `lattice_index_add O K W (M.comap ι) ((M.comap ι).map fW) (Θ.comap ι) hA₀ hS₀ hB₀`. Establish `hadd2` using `lattice_index_add O K W ((M.comap ι).map fW) (N.comap ι) (Θ.comap ι) hS₀ hN₀ hB₀`. Establish `h1 : idx O W (M.comap ι) ((M.comap ι).map fW) = e * (finrank K W : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `lattice_index_scale O K W ϖ hϖ (-e) (M.comap ι) hA₀`. Rewrite `hs` using `[neg_neg]`. Conclude with `hs`. Establish `hSN : (M.comap ι).map fW ≤ N.comap ι`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hMN _ hy` as an intermediate fact. Simplify `this` using `[ι, fW]`. Establish `h2 : idx O W ((M.comap ι).map fW) (N.comap ι) ≤ 0`. Unfold `idx`. Rewrite using `[subgroupData.qlen_eq_zero hSN]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hle : qlen O W (N.comap ι) (Θ.comap ι) ≤ qlen O X N Θ`. Unfold `qlen`. Rewrite using `[LatticeIndexValuation.length_map_inj ι hι]`. Use `subgroupData.length_le_of_le (Submodule.map_comap_le ι N) (Submodule.map_comap_le ι Θ) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨⟨w, -, rfl⟩, hxΘ⟩` from `Submodule.mem_inf.mp hx`. Conclude with `⟨w, hxΘ, rfl⟩`. Establish `h3 : idx O W (N.comap ι) (Θ.comap ι) ≤ ((qlen O X N Θ).toNat : ℤ)`. Establish `h4 : (qlen O W (N.comap ι) (Θ.comap ι)).toNat ≤ (qlen O X N Θ).toNat` using `ENat.toNat_le_toNat hle (lattice_quotient_finite O K X N Θ hNl hΘ)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `idx`. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem index_last_reduction_holds : IndexLastStep := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ e M Θ hM hΘ W

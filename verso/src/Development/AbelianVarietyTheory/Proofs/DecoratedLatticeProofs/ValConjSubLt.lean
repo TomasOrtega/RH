@@ -26,9 +26,9 @@ variable {D : D7} {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [Is
 include h
 
 /- English proof (translation)
-Take `⟨r, d, e⟩` from `PP.exists_primeCompl_mul_eq_of_integer y hy.le`. Establish `hd : valuation K (q.pr (incA D ((d : 𝓞 D.host.E) : D.host.E))) = 1` using `le_antisymm (LevelTest.val_le_one q _) (not_lt.1 fun h' => d.2 ((LevelTest.val_lt_one_iff q h _).1 h'))`. Establish `hr : r ∈ PP.asIdeal`. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.E) PP r).1 ?_` and prove the remaining obligations. Use `show PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E r) < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, map_mul]`. Conclude with `(mul_le_of_le_one_right' (PP.valuation_le_one _)).trans_lt hy`. Use `(LevelTest.val_lt_one_iff q h r).2 hr` as an intermediate fact. Rewrite `this` using `[show (r : D.host.E) = y * ((d : 𝓞 D.host.E) : D.host.E) from e.symm, map_mul, map_mul, map_mul, hd, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_rat_lt {y : D.host.E} (hy : PP.valuation D.host.E y < 1) : valuation K (q.pr (incA D y)) < 1 := by
   obtain ⟨r, d, e⟩ := PP.exists_primeCompl_mul_eq_of_integer y hy.le
@@ -45,15 +45,13 @@ theorem val_rat_lt {y : D.host.E} (hy : PP.valuation D.host.E y < 1) : valuation
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨y, N, r, hr, hN, e⟩` from `exists_approx_small (F := D.host.F) (toEAf D z) {PP} (γ := 1) one_ne_zero`. Establish `hN'` using `hN PP (Finset.mem_singleton_self PP)`. Establish `h1 : PP.valuation D.host.E y < 1`. Rewrite using `[← valued_algebraMap, ← adAt_inclE D.host.F, ← sub_eq_iff_eq_add.2 e, map_sub]`. Conclude with `Valuation.map_sub_lt _ hz (valued_nat_mul_lt hr hN')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnat : ∀ M : ℕ, (M : 𝓞 D.host.E) ∈ PP.asIdeal → valuation K (M : K) < 1` using `fun M hM => by`. Simplify using `using (LevelTest.val_lt_one_iff q h _).2 hM`. Set `sw` to `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E)`. Establish `hf : finPart D (z - incA D y) = (N : Af D.host.F ⊗[D.host.F] D.host.E) * sw.symm r`. Apply `sw.injective` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_natCast, AlgEquiv.apply_symm_apply]`. Use `show toEAf D (z - incA D y) = _`. Rewrite using `[RingHom.map_sub, e]`. Conclude with `add_sub_cancel_left _ _`. Establish `h2 : valuation K (q.pr (z - incA D y)) < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos N with rfl | hpos` into its components or cases. Use `(GlobalTheory.FinPl.SplitApprox.val_le q (Ideal.absNorm PP.asIdeal) (Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact PP.ne_bot)) _ 0 (zero_mem _) ?_).trans_lt (hnat _ (Ideal.absNorm_mem _))` and prove the remaining obligations. Rewrite using `[hf, Nat.cast_zero, zero_mul, mul_zero]`. Use `(GlobalTheory.FinPl.SplitApprox.val_le q N hpos _ _ ((GlobalTheory.IdemSupport.mem_intAE_iff _).2 ?_) hf).trans_lt (hnat _ ?_)` and prove the remaining obligations. Conclude with `(show Lev.swapAE D (sw.symm r) = r from sw.apply_symm_apply r).symm ▸ hr`.
-
-Rewrite `hN'` using `[LevRead.valued_natCast]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.E) PP _).1 hN'`. Establish `h3` using `(valuation K).map_add_lt h2 (val_rat_lt q h h1)`. Rewrite `h3` using `[← map_add, sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_pr_lt {z : AE D} (hz : Valued.v (adAt D.host.F PP (toEAf D z)) < 1) : valuation K (q.pr z) < 1 := by
   obtain ⟨y, N, r, hr, hN, e⟩ := exists_approx_small (F := D.host.F) (toEAf D z) {PP} (γ := 1) one_ne_zero

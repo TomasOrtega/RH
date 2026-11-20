@@ -72,7 +72,7 @@ def PtLaws : Prop :=
       ∀ w : HeightOneSpectrum (𝓞 T.L), ((l : ℕ) : 𝓞 T.L) ∈ w.asIdeal → Unl1 (r.toHomUnits.comp (resQ T.L)) w
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T hD ho hL c' h X y hw r hr`. Establish `f` using `h1 D T c' h X y hw r hr`. Conclude with `⟨h8 h7 D T hD c' h X y hw r hr, h6 h2 h5 D T hD r f, h4 D T hD ho r fun A hA => (f A hA).imp fun κ hκ => ⟨hκ, h3 h2 D T hD ho hL r A hA κ hκ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ptLaws_of (h1 : FlagF) (h2 : InfCyc) (h3 : UnlF) (h4 : UnlL) (h5 : UpTri) (h6 : FlagQ) (h7 : IneOf) (h8 : IneQ) : PtLaws := by
   intro Ω _ _ _ l _ c D T hD ho hL c' h X y hw r hr

@@ -8,9 +8,9 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `E _ _ _ n P hP`. Establish `hcsr` using `GlobalTheory.CompanionTheory.EllLoc.csr_global hP`. Use `⟨fun h0 => ?_, hcsr⟩` and prove the remaining obligations. Rewrite `hcsr` using `[h0, map_zero, C_0, zero_mul]`. Establish `hm : (P.map (IsCMField.complexConj E).toRingEquiv.toRingHom).Monic` using `hP.1.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm.ne_zero (Polynomial.reverse_eq_zero.mp hcsr.symm)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.elliptic_charpoly_self_reciprocal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]), P ∈ Ell E n → P.coeff 0 ≠ 0 ∧ C (IsCMField.complexConj E (P.coeff 0)) * P = (P.map (IsCMField.complexConj E).toRingEquiv.toRingHom).reverse := by
   intro E _ _ _ n P hP

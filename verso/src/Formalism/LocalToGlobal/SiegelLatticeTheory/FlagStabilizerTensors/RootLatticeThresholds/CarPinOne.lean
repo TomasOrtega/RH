@@ -29,7 +29,7 @@ def ccOne (hJ : PI.BesselMapUniq.BesselMapUniq) (large₂ : SizeData₂ D) {C' C
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.BaseOf in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 /- English proof (translation)
-Take `⟨h0, h1, -⟩` from `(muN_eq_haarLie D.R.k D.R.rS).choose_spec`. Conclude with `lamPl_ne _ _ _ D θ _ hcO hscl (ampVec_carrier hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose_spec.1 h0 h1 (Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ccOne_ne (hJ : PI.BesselMapUniq.BesselMapUniq) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
@@ -46,13 +46,13 @@ open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.B
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-Use `set cc := ccOne C hB hJ large₂ hCl hH0 u u' τ hTT hW hA hT hT' a b ξ ξ' hpin1 hscl with hcc`. Establish `hc0 : cc ≠ 0` using `ccOne_ne C hB hJ large₂ hCl hH0 u u' τ hTT hW hA hT hT' a b ξ ξ' hpin1 hscl hcO`. Establish `hκ` using `(ampVec_carrier hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose_spec`. Take `⟨h0, h1, hN⟩` from `(muN_eq_haarLie D.R.k D.R.rS).choose_spec`. Establish `hCut` using `cutAt_holds C u u' τ a b ξ ξ' cc A₀ hA₀ hCC`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hGv, hMono, hRel, hH, hQ⟩` from `id hP`. Establish `hLz` using `(toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz`. Establish `hLz'` using `(toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz'`. Establish `hWc` using `muWc_eq C u τ hLz.1 hLz.2`. Establish `hWc'` using `muWc_eq C u' τ hLz'.1 hLz'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH'` using `haarTr_holds C u u' τ γ μRv hH`. Take `⟨νB, hq⟩` from `orbQuot_exists (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (gB_mem C u τ γ) hH'`. Establish `hcell : Formalism.MainNotions.S.Pv.AmpDD.CellData (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (locW C u u' τ).μG (gB C τ γ) (muRB C τ μRv) (ν.map (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ)) νB` using `⟨gB_mem C u τ γ, gf_B C u u' τ γ hGv, mono_B C u u' τ γ hMono, relStab_of_relevant C hB u u' τ hW hA hT hT' γ hRel, hH', hq, quotTr_holds C u u' τ γ μRv ν hH hQ⟩`. Establish `hpinAt` using `pinAt C hB u u' τ hW hA hT hT' a b ξ ξ' cc hc0 _ hκ.1 hκ.2 _ h0 h1 hN hWc hWc' hcO hscl γ μRv ν νB hcell (Formalism.L2.SG.Pf.LocJEq.integrand_aesm C hB u u' τ γ ν) (hCut γ μRv ν hP)`. Rewrite using `[hpinAt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : lamPl (cOf hB u τ) (sclOf hB u u' τ) (ampVec_carrier hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose D θ (muN_eq_haarLie D.R.k D.R.rS).choose * cc⁻¹ = 1`. Rewrite using `[hcc]`. Conclude with `mul_inv_cancel₀ hc0`. Rewrite using `[e, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pinAt_one (hJ : PI.BesselMapUniq.BesselMapUniq) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u u' : D.what₂.Word) (τ : D.what₂.Tau)

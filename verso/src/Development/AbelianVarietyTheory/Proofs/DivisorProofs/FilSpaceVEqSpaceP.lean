@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.HSCore
 
 /- English proof (translation)
-Unfold `spaceP`. Use `iSup_le fun α => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, -, rfl⟩`. Conclude with `vanishesTo_mulMono _ _ _ α _ m`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spaceP_le_filTop {K : Type} [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K) :
     spaceP X s ≤ filTop X.str (X.adj X.T) X.U (X.ideal s) (X.T - X.D) := by
@@ -24,13 +24,11 @@ theorem spaceP_le_filTop {K : Type} [Field K] [NumberField K] (X : Data K) (s : 
   exact vanishesTo_mulMono _ _ _ α _ m
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `f ⟨hfV, hfv⟩`. Take `⟨g, hg, p, hp, rfl⟩` from `Submodule.mem_sup.1 hfV`. Establish `hpv : VanishesTo (X.ideal s) (X.T - X.D) p` using `spaceP_le_filTop X s hp`. Establish `hgv : VanishesTo (X.ideal s) (X.T - X.D) g`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g = (g + p) - p` using `by abel`. Rewrite using `[this]`. Conclude with `(filTop X.str (X.adj X.T) X.U (X.ideal s) (X.T - X.D)).sub_mem hfv hpv`. Take `⟨m, hm, hgm⟩` from `hF K X.toGeo hn hb s hs (X.T - X.D) X.D X.T (add_sub_D X) (Nat.le_refl _) g ⟨hg, hgv⟩`. Use `(spaceP X s).add_mem ?_ hp` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgm]`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Unfold `spaceP`. Conclude with `Submodule.mem_iSup_of_mem α ⟨m α, X.global_le X.D (by have := X.le_T; omega) (hm α), rfl⟩`. Introduce `f hf`.
-
-Conclude with `⟨Submodule.mem_sup_right hf, spaceP_le_filTop X s hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fil_spaceV_eq_spaceP (hF : FilMono) (K : Type) [Field K] [NumberField K] (X : Data K)
     (s : Fin X.D → Fin X.N → K) (hs : X.IsGood s) (hn : IsNef K X.LA) (hb : IsBig K X.LA) :
@@ -53,7 +51,7 @@ theorem fil_spaceV_eq_spaceP (hF : FilMono) (K : Type) [Field K] [NumberField K]
     exact ⟨Submodule.mem_sup_right hf, spaceP_le_filTop X s hf⟩
 
 /- English proof (translation)
-Introduce `hF K _ _ X s hs hn hb` and use `fil_spaceV_eq_spaceP hF K X s hs hn hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filP : FilMono → ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K),
     X.IsGood s → IsNef K X.LA → IsBig K X.LA → Fil (X.ideal s) (X.T - X.D) (spaceV X s) = spaceP X s :=

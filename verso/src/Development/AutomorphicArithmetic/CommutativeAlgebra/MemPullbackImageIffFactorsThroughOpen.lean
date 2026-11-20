@@ -7,11 +7,11 @@ private noncomputable abbrev evF (p : ℕ) (W : Scheme.{0}) : Spc ⥤ Type :=
     ((evaluation Scheme.{0}ᵒᵖ Type).obj (op W))
 
 /- English proof (translation)
-Introduce `X U E π p W z`. Establish `hpb : IsPullback ((evF p W).map (pullback.fst π (sch.map U.ι))) ((evF p W).map (pullback.snd π (sch.map U.ι))) ((evF p W).map π) ((evF p W).map (sch.map U.ι))` using `(IsPullback.of_hasPullback π (sch.map U.ι)).map (evF p W)`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Use `⟨(evF p W).map (pullback.snd π (sch.map U.ι)) y, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ConcreteCategory.congr_hom hpb.w y).symm`. Introduce and unpack `⟨w, hw⟩`. Take `⟨y, hy, -⟩` from `Types.exists_of_isPullback hpb z (show Sx (sch.obj U.toScheme) p W from w) hw.symm`. Conclude with `⟨y, hy⟩`. Introduce `V g`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ConcreteCategory.congr_hom ((π.app (op (SimplexCategory.mk p))).naturality g.op) z`. Introduce `r θ`. Conclude with `congrFun (congrArg (fun t => t.app (op W)) (π.naturality θ.op)) z`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.mem_pullbackImage_iff_factors_through_open :
     ∀ {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) (p : ℕ) (W : Scheme.{0}) (z : Sx E p W), ((Sub.img (E := E) (pullback.fst π (sch.map U.ι))).mem p W z ↔ ∃ w : W ⟶ U.toScheme, w ≫ U.ι = under π z) ∧ (∀ (V : Scheme.{0}) (g : V ⟶ W), under π (z.res g) = g ≫ under π z) ∧ ∀ (r : ℕ) (θ : SimplexCategory.mk r ⟶ SimplexCategory.mk p), under π (z.along θ) = under π z := by

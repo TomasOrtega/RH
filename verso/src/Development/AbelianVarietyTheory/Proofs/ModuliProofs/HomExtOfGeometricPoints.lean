@@ -11,9 +11,9 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkFam
 
 /- English proof (translation)
-Establish `hs : Surjective (equalizer.ι f g)` using `⟨fun s => by`. Set `k` to `AlgebraicClosure (S.residueField s)`. Set `x : Sp k ⟶ S` to `Spec.map (CommRingCat.ofHom (algebraMap (S.residueField s) k)) ≫ S.fromSpecResidueField s`. Establish `hx` using `h k x`. Set `p : Sp k` to `IsLocalRing.closedPoint k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨equalizer.lift x hx p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, equalizer.lift_ι]`. Simplify using `only [x, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _⟩`. Conclude with `ext_of_isDominant_of_isSeparated q hq (equalizer.ι f g) (equalizer.condition _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_geometric_points (S X Z : Scheme.{0}) [IsReduced S] (q : X ⟶ Z)
     [IsSeparated q] (f g : S ⟶ X) (hq : f ≫ q = g ≫ q)

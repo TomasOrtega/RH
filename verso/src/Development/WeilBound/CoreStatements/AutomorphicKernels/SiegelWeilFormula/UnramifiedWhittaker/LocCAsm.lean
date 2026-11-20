@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem coe_pS : ((hG.pS : S) : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h1` using `congrFun (congrFun hX a) b`. Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul] at h1 ⊢`. Establish `h2 : σS hG.pS = hG.pS` using `hG.quad.fix_ϖ`. Rewrite using `[h2, h1]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_smul_pS (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : PositivityTheory.PfSWUS.Loc.cT σS X = X) :
     PositivityTheory.PfSWUS.Loc.cT σS (hG.pS • X) = hG.pS • X := by
@@ -37,7 +37,7 @@ theorem cT_smul_pS (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : PositivityTheo
   rw [h2, h1]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`. Use `show (ϖ ^ (k + 1))⁻¹ • (((hG.pS • X) a b : S) : Fv F v ⊗[F] E) = (ϖ ^ k)⁻¹ • ((X a b : S) : Fv F v ⊗[F] E)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Subring.coe_mul, coe_pS, ← Algebra.smul_def, smul_smul, pow_succ, mul_inv, mul_assoc, inv_mul_cancel₀ hG.unif_ne, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermLev_succ (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : PositivityTheory.PfSWUS.Loc.cT σS X = X) :
     hG.hermLev (k + 1) (hG.pS • X) (hG.cT_smul_pS k X hX) = hG.hermLev k X hX := by
@@ -50,13 +50,13 @@ theorem hermLev_succ (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : PositivityTh
 def liftH {k : ℕ} (B : hermMod σS hG.pS n k) : Matrix (Fin n) (Fin n) S := Classical.choose B.2
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec B.2).1`.
+A detailed English derivation is pending.
 -/
 theorem liftH_herm {k : ℕ} (B : hermMod σS hG.pS n k) : PositivityTheory.PfSWUS.Loc.cT σS (hG.liftH B) = hG.liftH B :=
   (Classical.choose_spec B.2).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec B.2).2`.
+A detailed English derivation is pending.
 -/
 theorem red_liftH {k : ℕ} (B : hermMod σS hG.pS n k) : red hG.pS k (hG.liftH B) = B.1 :=
   (Classical.choose_spec B.2).2
@@ -65,7 +65,7 @@ def iota (k : ℕ) (B : hermMod σS hG.pS n k) : HermR (Fv F v) σ n ⧸ H0 S σ
   QuotientAddGroup.mk (hG.hermLev k (hG.liftH B) (hG.liftH_herm B))
 
 /- English proof (translation)
-Unfold `iota`. Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `(hCL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG k X (hG.liftH B) hX (hG.liftH_herm B)).2 (by rw [hB, hG.red_liftH])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_eq (hCL : ClassLev) (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : PositivityTheory.PfSWUS.Loc.cT σS X = X)
     (B : hermMod σS hG.pS n k) (hB : red hG.pS k X = B.1) :
@@ -75,9 +75,9 @@ theorem iota_eq (hCL : ClassLev) (k : ℕ) (X : Matrix (Fin n) (Fin n) S) (hX : 
   exact (hCL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG k X (hG.liftH B) hX (hG.liftH_herm B)).2 (by rw [hB, hG.red_liftH])
 
 /- English proof (translation)
-Introduce `B B' h`. Unfold `iota at h`. Rewrite `h` using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Use `(hCL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG k (hG.liftH B') (hG.liftH B) (hG.liftH_herm B') (hG.liftH_herm B)).1 h` as an intermediate fact. Rewrite `this` using `[hG.red_liftH, hG.red_liftH]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext this.symm`.
+A detailed English derivation is pending.
 -/
 theorem iota_inj (hCL : ClassLev) (k : ℕ) : Function.Injective (hG.iota k) := by
   intro B B' h
@@ -88,7 +88,7 @@ theorem iota_inj (hCL : ClassLev) (k : ℕ) : Function.Injective (hG.iota k) := 
   exact Subtype.ext this.symm
 
 /- English proof (translation)
-Use `⟨⟨red hG.pS (k + 1) (hG.pS • hG.liftH B), hG.pS • hG.liftH B, hG.cT_smul_pS k _ (hG.liftH_herm B), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hG.iota_eq hCL (k + 1) (hG.pS • hG.liftH B) (hG.cT_smul_pS k _ (hG.liftH_herm B)) _ rfl, hG.hermLev_succ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_succ (hCL : ClassLev) (k : ℕ) (B : hermMod σS hG.pS n k) :
     ∃ B' : hermMod σS hG.pS n (k + 1), hG.iota (k + 1) B' = hG.iota k B := by
@@ -97,7 +97,7 @@ theorem iota_succ (hCL : ClassLev) (k : ℕ) (B : hermMod σS hG.pS n k) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H b`. Take `⟨k, X, hX, rfl⟩` from `hEx _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG b`. Conclude with `⟨k, ⟨red hG.pS k X, X, hX, rfl⟩, hG.iota_eq hCL k X hX _ rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iota_surj (hCL : ClassLev) (hEx : Exhaust) (c : HermR (Fv F v) σ n ⧸ H0 S σ n) :
     ∃ k B, hG.iota k B = c := by
@@ -107,15 +107,15 @@ theorem iota_surj (hCL : ClassLev) (hEx : Exhaust) (c : HermR (Fv F v) σ n ⧸ 
     exact ⟨k, ⟨red hG.pS k X, X, hX, rfl⟩, hG.iota_eq hCL k X hX _ rfl⟩
 
 /- English proof (translation)
-Establish `e1` using `hNL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG lam L hlam hL k (hG.liftH B) (hG.liftH_herm B)`. Establish `e2` using `hJ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG μv hμ k (hG.liftH B) (hG.liftH_herm B)`. Establish `e3` using `hPL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG hT k (hG.liftH B) (hG.liftH_herm B)`. Rewrite `e1`, `e2`, `e3` using `[hG.red_liftH]`. Establish `e4 : nuAt hG.pS B.1 = (Ideal.absNorm v.asIdeal ^ 2) ^ Nat.log (Ideal.absNorm v.asIdeal ^ 2) (nuAt hG.pS B.1)` using `hNP S σS hG.pS _ ε hG.quad n k B.1 B.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : (Ideal.absNorm v.asIdeal : ℂ) ≠ 0`. Use `hG.quad.one_lt` as an intermediate fact. Conclude with `(by omega : Ideal.absNorm v.asIdeal ≠ 0)` after adjusting the coercions. Simplify using `only [whI]`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `set D := Nat.log (Ideal.absNorm v.asIdeal ^ 2) (nuAt hG.pS B.1)`. Use `set q := Ideal.absNorm v.asIdeal`. Rewrite using `[e4]`. Establish `h5 : ((((q ^ 2) ^ D : ℕ) : ℝ) : ℂ) = ((q : ℂ) ^ (2 * D : ℕ))` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5, ← Complex.natCast_cpow_natCast_mul]`. Establish `h6 : ((2 * D : ℕ) : ℂ) * -(z - ((M : ℂ) - n) / 2) = (D : ℂ) * (2 * -(z - ((M : ℂ) - n) / 2))` using `by push_cast; ring`. Rewrite using `[h6, Complex.cpow_nat_mul, ← mul_pow]`. Use `congr 1`. Rewrite using `[← Complex.cpow_intCast, mul_left_comm, ← Complex.cpow_add _ _ hq0]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem f_lev (hNP : NuPow) (hJ : JtLev) (hNL : NuLev) (hPL : PsiLev) (hT : ∀ a b, σ (T b a) = T a b)
     (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (hμ : SdW F E σ M J (Fv F v) ψv n μv)

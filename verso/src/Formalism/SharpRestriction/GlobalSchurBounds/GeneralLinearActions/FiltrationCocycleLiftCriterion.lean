@@ -87,11 +87,11 @@ def TailSum {N : ℕ} (χ : DirichletCharacter ℂ N) (z : ℝ) (S : ℂ) : Prop
     Filter.atTop (nhds S)
 
 /- English proof (translation)
-Unfold `G Gfun`. Establish `hs : (∑ n ∈ Finset.Icc 1 ⌊y⌋₊, abelian₂ n * max (y / n - 1) 0) = ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (ArithmeticFunction.vonMangoldt n : ℝ) * (y / n - 1)`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Take `⟨hn1, hny⟩` from `Finset.mem_Icc.mp hn`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : (n : ℝ) ≤ y` using `(Nat.le_floor_iff' (by omega)).mp hny`. Establish `h0 : 0 ≤ y / n - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hnpos, one_mul]`. Conclude with `hle`. Rewrite using `[max_eq_left h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem G_eq_Gfun (y : ℝ) : G y = Gfun y := by
   unfold G Gfun

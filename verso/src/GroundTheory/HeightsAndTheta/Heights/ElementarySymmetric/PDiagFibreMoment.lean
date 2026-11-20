@@ -13,9 +13,9 @@ noncomputable section
 namespace DiagFibreMoment
 
 /- English proof (translation)
-Rewrite using `[momentPoly, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.1 h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_momentPoly {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (w : Ω → ℝ)
     (Q : MvPolynomial (Fin 3) (Ω → ℝ)) (m : Fin 3 →₀ ℕ) :
@@ -29,7 +29,7 @@ theorem coeff_momentPoly {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (w 
     simp
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_momentPoly, coeff_sum, coeff_sum]`. Simplify using `only [coeff_momentPoly, Finset.sum_apply, Finset.mul_sum]`. Conclude with `integral_finsetSum s fun i hi => hQ i hi m`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem momentPoly_sum {Ω ι : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (w : Ω → ℝ) (s : Finset ι)
     (Q : ι → MvPolynomial (Fin 3) (Ω → ℝ)) (hQ : ∀ i ∈ s, ∀ m, Integrable (fun p => w p * coeff m (Q i) p) μ) :
@@ -40,11 +40,9 @@ theorem momentPoly_sum {Ω ι : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (w
   exact integral_finsetSum s fun i hi => hQ i hi m
 
 /- English proof (translation)
-Use `set φ : C(S2 × S2, ℝ) →ₐ[ℝ] (S2 × S2 → ℝ) := ContinuousMap.coeFnAlgHom (α := S2 × S2) (A := ℝ) ℝ`. Use `set v : Fin 2 → MvPolynomial (Fin 3) C(S2 × S2, ℝ) := ![∑ i, X i * C ((FibreLocal.coordS i).comp ContinuousMap.fst), ∑ i, X i * C ((FibreLocal.coordS i).comp ContinuousMap.snd)]`. Establish `hv : ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] = fun r => mapAlgHom φ (v r)`. Use function extensionality and compare the values at `r`. Use `fin_cases r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Matrix.cons_val_zero, v, dotPoly, mapAlgHom_apply, map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, v, dotPoly, mapAlgHom_apply, map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression. Rewrite using `[hv, ← comp_aeval, AlgHom.comp_apply, mapAlgHom_apply, coeff_map]`.
-
-Conclude with `(coeff m (aeval v Q)).continuous`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_aeval (Q : MvPolynomial (Fin 2) ℝ) (m : Fin 3 →₀ ℕ) :
     Continuous (coeff m (aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] Q)) := by
@@ -64,7 +62,7 @@ theorem continuous_coeff_aeval (Q : MvPolynomial (Fin 2) ℝ) (m : Fin 3 →₀ 
   exact (coeff m (aeval v Q)).continuous
 
 /- English proof (translation)
-Rewrite using `[FibreLocal.gPoly_eq, FlagBundles.gKernel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hik` using `Finset.mem_range.1 hi`. Rewrite using `[show 2 * k - 2 * i = (2 * k - 1 - 2 * i) + 1 by omega, pow_succ, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_words (k : ℕ) :
     ∑ i ∈ Finset.range k, ((X 0 - X 1) * X 0 ^ (2 * i) * X 1 ^ (2 * k - 1 - 2 * i) : MvPolynomial (Fin 2) ℝ) =
@@ -76,7 +74,7 @@ theorem sum_words (k : ℕ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [diagWordMomentPoly]`. Rewrite using `[← momentPoly_sum _ _ _ _ fun i _ m => FibreLocal.integrable_mul _ (continuous_coeff_aeval _ m)]`. Rewrite using `[← map_sum, ← map_sum, ← map_sum, sum_words]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_diagWordMomentPoly (k : ℕ) :
     ∑ i ∈ Finset.range k, diagWordMomentPoly k i = fibreMomentPoly k := by
@@ -87,7 +85,7 @@ theorem sum_diagWordMomentPoly (k : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `FibreLocal.proof.2.1 k (MvPolynomial (Fin 3) ℝ) X`. Rewrite `h` using `[aeval_X_left_apply, MvPolynomial.algebraMap_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fibreMomentPoly_eq (k : ℕ) :
     fibreMomentPoly k = C (-kappa k) * (∑ i, X i ^ 2) ^ (k - 1) := by
@@ -95,7 +93,7 @@ theorem fibreMomentPoly_eq (k : ℕ) :
   rwa [aeval_X_left_apply, MvPolynomial.algebraMap_eq] at h
 
 /- English proof (translation)
-Introduce `D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD`. Take `⟨Λ, hw, hp⟩` from `h D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD`. Rewrite using `[Finset.sum_congr rfl fun i hi => hw i (Finset.mem_range.1 hi), ← Finset.mul_sum, ← map_sum, sum_diagWordMomentPoly, fibreMomentPoly_eq, hp, FibreLocal.pushMomentPoly_eq k hk, C_mul', map_smul, map_neg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem proof (h : DiagFibreFubini.Statement) : DiagFibreMoment.Statement := by
   intro D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD

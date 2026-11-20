@@ -9,9 +9,9 @@ variable {L M : Type} [Field L] [AddCommGroup M] [Module L M]
 def conv (g : PowerSeries L) (f : ℤ → M) (k : ℤ) : M := ∑ᶠ j : ℕ, PowerSeries.coeff j g • f (k - j)
 
 /- English proof (translation)
-Unfold `conv`. Rewrite `hg` using `[PowerSeries.X_pow_dvd_iff]`. Establish `hz : ∀ j : ℕ, PowerSeries.coeff j g • f (k - j) = 0`. Introduce `j`. Distinguish the cases in `hj : j < e`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hg j hj, zero_smul]`. Rewrite using `[hf _ (by omega), smul_zero]`. Conclude with `(finsum_congr hz).trans finsum_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_vanish (g : PowerSeries L) (f : ℤ → M) (m : ℤ) (hf : ∀ k < m, f k = 0) (e : ℕ)
     (hg : (PowerSeries.X : PowerSeries L) ^ e ∣ g) (k : ℤ) (hk : k < m + e) : conv g f k = 0 := by
@@ -25,9 +25,9 @@ theorem conv_vanish (g : PowerSeries L) (f : ℤ → M) (m : ℤ) (hf : ∀ k < 
   exact (finsum_congr hz).trans finsum_zero
 
 /- English proof (translation)
-Unfold `conv`. Rewrite using `[finsum_eq_single _ e]`. Rewrite using `[add_sub_cancel_right]`. Introduce `j hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hg j h, zero_smul]`. Rewrite using `[hf _ (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_lead (g : PowerSeries L) (f : ℤ → M) (m : ℤ) (hf : ∀ k < m, f k = 0) (e : ℕ)
     (hg : ∀ j < e, PowerSeries.coeff j g = 0) :
@@ -41,11 +41,11 @@ theorem conv_lead (g : PowerSeries L) (f : ℤ → M) (m : ℤ) (hf : ∀ k < m,
     · rw [hf _ (by omega), smul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, n < b → ∀ a, PowerSeries.coeff n (g a) = 0`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∑ a, PowerSeries.coeff n (g a) • D a m = 0`. Establish `hs` using `hsum (m + n) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Fintype.linearIndependent_iff.mp hind (fun a => PowerSeries.coeff n (g a)) h1`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `n hn`. Conclude with `key n hn a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem triangular {ι : Type} [Fintype ι] (D : ι → ℤ → M) (m : ℤ) (hD : ∀ a, ∀ k < m, D a k = 0)
     (hind : LinearIndependent L (fun a => D a m)) (g : ι → PowerSeries L) (b : ℕ)

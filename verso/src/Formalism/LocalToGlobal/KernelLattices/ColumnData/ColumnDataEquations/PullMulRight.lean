@@ -29,9 +29,9 @@ def J2at (B : Cd.Base D cc δ) (N N' : ℕ)
         (B.thZero N N')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull, TaylorLogMetric.tor0, Matrix.map_one _ (map_zero _) (map_one _), Matrix.conjTranspose_one, Matrix.one_mul, Matrix.of_apply]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[Matrix.map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.mul_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_mul_left {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N) (Fin N) D.host.E) (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) (γ₁ * γ₂) (1 : Matrix (Fin N') (Fin N') D.host.E) G =
@@ -44,7 +44,7 @@ theorem pull_mul_left {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N) (Fin N) D.host.
   exact (Matrix.mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull, TaylorLogMetric.tor0, Matrix.map_one _ (map_zero _) (map_one _), Matrix.conjTranspose_one, Matrix.mul_one, Matrix.of_apply]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[Matrix.map_mul, Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -61,13 +61,13 @@ theorem pull_mul_right {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N') (Fin N') D.ho
 variable {B : Cd.Base D cc δ}
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `γ₁ γ₂ h1 h2`. Establish `hθ : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `mem_ThSp_of' D B.tor _ _ h0`. Establish `hsd2 : SD D (SDLat.smulLat (γ₂ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N))` using `smulSD D N _ γ₂ (sd0 N)`. Take `⟨-, hI⟩` from `pullIop_of hL N N' (StandardLatticesGL3.stdL D N) (SDLat.smulLat (γ₂ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (StandardLatticesGL3.stdL D N') (StandardLatticesGL3.stdL D N') γ₁ 1 hN hN' (sd0 N) hsd2 (sd0 N') (sd0 N') _ hθ`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `hTL N N' (SDLat.smulLat (γ₁ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (SDLat.smulLat ((γ₁ * γ₂ : Matrix.unitaryGroup (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) hN hN' (smulSD D N _ γ₁ (sd0 N)) (smulSD D N _ (γ₁ * …`. Simplify using `only [OneMemClass.coe_one, Examples₂.smulLat_one] at hI`. Unfold `J1at at h1 h2 ⊢`. Unfold `Base.thHalf at h1 h2 ⊢`. Rewrite `hT`, the goal using `[Submonoid.coe_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hT` using `[Examples₂.smulLat_mul]`. Rewrite using `[pull_mul_left, h2, pull_smul, hI, h1, Iop_smulF, hT, smul_smul, Examples₂.smulLat_mul]`. Use `congr 1`. Rewrite using `[← mul_pow, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, star_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem J1at_mul (hL : B.LatAll) (hTL : Tr0L D B.tor) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') :
@@ -98,13 +98,13 @@ theorem J1at_mul (hL : B.LatAll) (hTL : Tr0L D B.tor) {N N' : ℕ} (hN : Even N)
   rw [Matrix.det_mul, star_mul, map_mul]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `γ₁ γ₂ h1 h2`. Establish `hθ : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `mem_ThSp_of' D B.tor _ _ h0`. Establish `hsd2 : SD D (SDLat.smulLat (γ₂ : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N'))` using `smulSD D N' _ γ₂ (sd0 N')`. Take `⟨-, hI⟩` from `pullIop_of hL N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') (SDLat.smulLat (γ₂ : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N')) 1 γ₁ hN hN' (sd0 N) (sd0 N) (sd0 N') hsd2 _ hθ`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `hTR N N' (SDLat.smulLat (γ₁ : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N')) (SDLat.smulLat ((γ₁ * γ₂ : Matrix.unitaryGroup (Fin N') D.host.E) : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N')) hN hN' (smulSD D N' _ γ₁ (sd0 N')) (smulSD D N …`. Simplify using `only [OneMemClass.coe_one, Examples₂.smulLat_one] at hI`. Unfold `J2at at h1 h2 ⊢`. Rewrite `hT`, the goal using `[Submonoid.coe_mul]`. Rewrite `hT` using `[Examples₂.smulLat_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pull_mul_right, h2, pull_smul, hI, h1, Iop_smulF, hT, smul_smul, Examples₂.smulLat_mul]`. Use `congr 1`. Rewrite using `[← mul_pow, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_mul, map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J2at_mul (hL : B.LatAll) (hTR : Tr0R D B.tor) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') :

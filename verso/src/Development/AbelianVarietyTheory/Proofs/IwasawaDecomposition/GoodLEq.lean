@@ -52,7 +52,7 @@ def stA {hL : GlobalTheory.Published.LocalLanglandsGL} {cf : CharFrame D} {rep :
   omax := a.omax
 
 /- English proof (translation)
-Establish `h : N.ex.eLL0 = D.nexp.eLL0` using `funext fun g => Subtype.ext (D.what₂.embLL.injective ((N.h0 g).trans (D.nStage_trivialCharacter_coeff_eq g).symm))`. Conclude with `congrArg (fun e : G0g D.nd → ↥D.LL0 => Module.End.eigenspace (∑ᶠ g : G0g D.nd, ((e g : ↥D.LL0) : D.what₂.LL) • actL D S j g) 1 ⊓ ⨅ u : Formalism.IndefR.NX.U D.nd, Module.End.eigenspace (actL D S j u) (((psiUOf D.nd (NX.xiRed D) θ u : (↥D.LL0)ˣ) : ↥D.LL0) : D.what₂.LL)) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goodL_eq (S : RatDat D.ntw) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (j : ℕ) :
     goodL N.toD7 (N.rat S) θ j = goodL D S θ j := by
@@ -80,12 +80,12 @@ def ratIn {S : RatDat D.ntw} (I : RatIn D S) : RatIn N.toD7 (N.rat S) where
   hL_int := fun j k P h1 h2 => by rw [goodL_eq N S I.θ j]; exact I.hL_int j k P h1 h2
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem cusp {Rw : RowSide D} (h : RowCusp D Rw) : RowCusp N.toD7 (N.row Rw) := h
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem mtIn {M tup Q} (h : MtInput D M tup Q) : MtInput N.toD7 (N.mt M) tup Q := { h with }
 

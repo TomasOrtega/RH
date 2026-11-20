@@ -16,7 +16,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p
   [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Unfold `xi nu`. Establish `h : (p : Ainf p O) = ∑ i ∈ Finset.range p, (1 : Ainf p O)` using `by simp`. Rewrite using `[h, ← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `using sub_dvd_pow_sub_pow (teichmuller p (root ε)) 1 i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nu_dvd_xi_sub (ε : PreTilt O p) : nu ε ∣ xi ε - p := by
   unfold xi nu
@@ -35,14 +35,14 @@ variable {ε : PreTilt O p}
 
 include hker in
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `subset_span rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_xi : fontaineTheta O p (xi ε) = 0 := by
   rw [← RingHom.mem_ker, hker]; exact subset_span rfl
 
 include hker in
 /- English proof (translation)
-Rewrite using `[← xi_mul_nu, map_mul, theta_xi hker, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_mu : fontaineTheta O p (mu ε) = 0 := by
   rw [← xi_mul_nu, map_mul, theta_xi hker, zero_mul]
@@ -50,7 +50,7 @@ theorem theta_mu : fontaineTheta O p (mu ε) = 0 := by
 include hker in
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `nu_dvd_xi_sub ε`. Establish `h` using `congrArg (fontaineTheta O p) hc`. Rewrite `h` using `[map_sub, map_natCast, map_mul, theta_xi hker]`. Conclude with `⟨-fontaineTheta O p c, by linear_combination -h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem theta_nu_dvd : fontaineTheta O p (nu ε) ∣ (p : O) := by
   obtain ⟨c, hc⟩ := nu_dvd_xi_sub ε
@@ -61,11 +61,11 @@ theorem theta_nu_dvd : fontaineTheta O p (nu ε) ∣ (p : O) := by
 include hker hsurj in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, d, rfl⟩` from `mem_span_pair.1 hx`. Use `⟨fontaineTheta O p c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_natCast, theta_xi hker]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨o, ho⟩`. Take `⟨z, rfl⟩` from `hsurj o`. Establish `h : x - p * z ∈ RingHom.ker (fontaineTheta O p)`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_natCast, ho, sub_self]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hker, mem_span_singleton']`. Take `⟨w, hw⟩` from `h`. Conclude with `mem_span_pair.2 ⟨z, w, by linear_combination hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_X (x : Ainf p O) :
     x ∈ span {(p : Ainf p O), xi ε} ↔ (p : O) ∣ fontaineTheta O p x := by
@@ -86,15 +86,15 @@ theorem mem_X (x : Ainf p O) :
 include hker hsurj hnzd hsat in
 
 /- English proof (translation)
-Take `⟨c0, hc0⟩` from `nu_dvd_xi_sub ε`. Establish `hmu` using `xi_mul_nu ε`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, d, hcd⟩` from `mem_span_pair.1 hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg (fontaineTheta O p) hcd`. Rewrite `h1` using `[map_add, map_mul, map_mul, map_mul, map_natCast, theta_xi hker, theta_mu hker]`. Establish `hc : fontaineTheta O p c = 0` using `hsat _ (by linear_combination h1)`. Rewrite `hc` using `[← RingHom.mem_ker, hker, mem_span_singleton']`. Take `⟨c', hc'⟩` from `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hnzd (x - nu ε * d - p * c') (by linear_combination -hcd - (p : Ainf p O) * hc' - d * hmu)`. Establish `h3` using `congrArg (fontaineTheta O p) hc0`. Rewrite `h3` using `[map_sub, map_natCast, map_mul, theta_xi hker]`. Use `⟨fontaineTheta O p d - fontaineTheta O p c0 * fontaineTheta O p c', ?_⟩` and prove the remaining obligations. Establish `hx' : x = nu ε * d + p * c'` using `by linear_combination h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hx', map_add, map_mul, map_mul, map_natCast]`. Take the linear combination `(-fontaineTheta O p c') * h3`. Introduce and unpack `⟨o, ho⟩`. Take `⟨z, rfl⟩` from `hsurj o`. Establish `h : x - nu ε * z ∈ RingHom.ker (fontaineTheta O p)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_mul, ho, sub_self]`. Rewrite `h` using `[hker, mem_span_singleton']`. Take `⟨w, hw⟩` from `h`. Conclude with `mem_span_pair.2 ⟨w * xi ε, z + w * c0, by`. Take the linear combination `(-(z + w * c0)) * hmu + xi ε * hw - (w * xi ε) * hc0⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_xi_mem (x : Ainf p O) :
     x * xi ε ∈ span {(p : Ainf p O), mu ε} ↔
@@ -146,9 +146,9 @@ def lay (I J : Ideal (Ainf p O)) (h : I ≤ J) : Ideal F.B where
     linear_combination (F.a w * F.a y) * F.τ_sq
 
 /- English proof (translation)
-Establish `h1 : F.τ ∣ F.a (x - x')` using `⟨F.a (y' - y), by rw [map_sub, map_sub]; linear_combination h⟩`. Take `⟨w, hw⟩` from `(F.a_dvd _).1 h1`. Use `⟨mem_span_singleton'.2 ⟨w, by rw [hw, mul_comm]⟩, ?_⟩` and prove the remaining obligations. Establish `hw' : F.a x - F.a x' = (p : F.B) * F.τ * F.a w`. Rewrite using `[← map_sub, hw, map_mul, ← F.p_τ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : F.τ * F.a (y' - y - p * w) = 0`. Rewrite using `[map_sub, map_sub, map_mul, map_natCast]`. Take the linear combination `-h + hw'`. Take `⟨z, hz⟩` from `(F.τ_mul _).1 h2`. Conclude with `mem_span_pair.2 ⟨-w, -z, by linear_combination hz⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_rep {x y x' y' : Ainf p O} (h : F.a x + F.τ * F.a y = F.a x' + F.τ * F.a y') :
     x - x' ∈ span {mu ε} ∧ y - y' ∈ span {(p : Ainf p O), mu ε} := by
@@ -164,9 +164,9 @@ theorem eq_rep {x y x' y' : Ainf p O} (h : F.a x + F.τ * F.a y = F.a x' + F.τ 
   exact mem_span_pair.2 ⟨-w, -z, by linear_combination hz⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', y', hy', e⟩`. Take `⟨h1, h2⟩` from `eq_rep F e`. Establish `h1' : x - x' ∈ I` using `hI (span_mono (Set.subset_insert _ _) h1)`. Use `⟨by simpa using I.add_mem hx' h1', by simpa using J.add_mem hy' (h (hI h2))⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hx, hy⟩`. Conclude with `⟨x, hx, y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_lay {I J : Ideal (Ainf p O)} (h : I ≤ J) (hI : span {(p : Ainf p O), mu ε} ≤ I)
     (x y : Ainf p O) : F.a x + F.τ * F.a y ∈ lay F I J h ↔ x ∈ I ∧ y ∈ J := by
@@ -198,21 +198,21 @@ variable {ε : PreTilt O p} (F : BFrame ε)
 
 include hμ in
 /- English proof (translation)
-The claim follows from `F.frame.sat _ (by rw [← map_natCast F.θ, ← map_mul, F.p_τ, F.θ_a, hμ])`.
+A detailed English derivation is pending.
 -/
 theorem theta_tau : F.θ F.τ = 0 :=
   F.frame.sat _ (by rw [← map_natCast F.θ, ← map_mul, F.p_τ, F.θ_a, hμ])
 
 include hμ in
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, theta_tau F hμ, zero_mul, add_zero, F.θ_a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_rep (x y : Ainf p O) : F.θ (F.a x + F.τ * F.a y) = fontaineTheta O p x := by
   rw [map_add, map_mul, theta_tau F hμ, zero_mul, add_zero, F.θ_a]
 
 include F hμ in
 /- English proof (translation)
-Introduce `o` and use `by obtain ⟨b, rfl⟩ := F.frame.surj o obtain ⟨x, y, rfl⟩ := F.gen b exact ⟨x, (theta_rep F hμ x y).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_surj : Function.Surjective (fontaineTheta O p) := fun o => by
   obtain ⟨b, rfl⟩ := F.frame.surj o
@@ -220,7 +220,7 @@ theorem theta_surj : Function.Surjective (fontaineTheta O p) := fun o => by
   exact ⟨x, (theta_rep F hμ x y).symm⟩
 
 /- English proof (translation)
-Rewrite using `[span_le]`. Introduce and unpack `z (rfl | rfl)`. Conclude with `subset_span (Set.mem_insert _ _)`. Conclude with `mem_span_pair.2 ⟨0, nu ε, by rw [← xi_mul_nu]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem P_le_X : span {(p : Ainf p O), mu ε} ≤ span {(p : Ainf p O), xi ε} := by
   rw [span_le]
@@ -229,11 +229,11 @@ theorem P_le_X : span {(p : Ainf p O), mu ε} ≤ span {(p : Ainf p O), xi ε} :
   · exact mem_span_pair.2 ⟨0, nu ε, by rw [← xi_mul_nu]; ring⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ (span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Take `⟨c, d, rfl⟩` from `mem_span_pair.1 hx`. Take `⟨c', d', rfl⟩` from `mem_span_pair.1 hy`. Establish `h0` using `(F.τ_mul (d' * mu ε)).2 (dvd_mul_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `F.p_τ`. Use `mem_span_singleton.2 ⟨F.a c + F.τ * F.a d + F.τ * F.a c', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_natCast] at h0 ⊢`. Take the linear combination `h0 - F.a d * h1`. Introduce and unpack `_ rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨p, subset_span (Set.mem_insert _ _), 0, zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem lay_P_P : lay F (span {(p : Ainf p O), mu ε}) _ le_rfl = span {(p : F.B)} := by
   refine le_antisymm ?_ (span_le.2 ?_)
@@ -250,33 +250,31 @@ theorem lay_P_P : lay F (span {(p : Ainf p O), mu ε}) _ le_rfl = span {(p : F.B
 
 include hker hnzd hμ in
 /- English proof (translation)
-Establish `hsurj` using `theta_surj F hμ`. Establish `hsat` using `F.frame.sat`. Use `set P := span {(p : Ainf p O), mu ε} with hP`. Use `set X := span {(p : Ainf p O), xi ε} with hX`. Establish `hPX : P ≤ X` using `P_le_X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXmem : xi ε ∈ X` using `subset_span (Set.mem_insert_of_mem _ rfl)`. Rewrite using `[← lay_P_P F]`. Use `Relation.ReflTransGen.head (b := lay F X ⊤ le_top) ⟨1, p, dvd_rfl, ?_, fun b => ?_⟩ ?_` and prove the remaining obligations. Rewrite using `[span_singleton_one, sup_top_eq]`. Take `⟨x, y, rfl⟩` from `F.gen b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_one, mem_lay F le_top hPX, theta_rep F hμ, ← mem_X hker hsurj]`. Simplify using `[hX]`. Use `Relation.ReflTransGen.head (b := lay F P ⊤ le_top) ⟨F.a (xi ε), fontaineTheta O p (nu ε), theta_nu_dvd hker, ?_, fun b => ?_⟩ ?_` and prove the remaining obligations. Use `le_antisymm ?_ (sup_le ?_ (span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, -, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, d, rfl⟩` from `mem_span_pair.1 hx`. Establish `e : F.a (c * p + d * xi ε) + F.τ * F.a y = (F.a (c * p) + F.τ * F.a y) + F.a d * F.a (xi ε)`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `add_mem (mem_sup_left ⟨c * p, ?_, y, trivial, rfl⟩) (mem_sup_right (mem_span_singleton.2 (dvd_mul_left _ _)))` and prove the remaining obligations. Conclude with `mul_mem_left _ _ (subset_span (Set.mem_insert _ _))`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨x, hPX hx, y, hy, rfl⟩`. Introduce and unpack `_ rfl`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨xi ε, hXmem, 0, trivial, by simp⟩`. Take `⟨x, y, rfl⟩` from `F.gen b`. Establish `e : (F.a x + F.τ * F.a y) * F.a (xi ε) = F.a (x * xi ε) + F.τ * F.a (y * xi ε)`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, mem_lay F le_top le_rfl, theta_rep F hμ, ← mul_xi_mem hker hsurj hnzd hsat]`. Simplify using the standard rewrite rules. Use `Relation.ReflTransGen.head (b := lay F P X hPX) ⟨F.τ, p, dvd_rfl, ?_, fun b => ?_⟩ ?_` and prove the remaining obligations. Use `le_antisymm ?_ (sup_le ?_ (span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, -, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `add_mem (mem_sup_left ⟨x, hx, 0, zero_mem _, by simp⟩) (mem_sup_right (mem_span_singleton.2 (dvd_mul_right _ _)))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨x, hx, y, trivial, rfl⟩`. Introduce and unpack `_ rfl`. Conclude with `⟨0, zero_mem _, 1, trivial, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, y, rfl⟩` from `F.gen b`. Establish `e : (F.a x + F.τ * F.a y) * F.τ = F.a 0 + F.τ * F.a x`. Rewrite using `[map_zero]`. Take the linear combination `F.a y * F.τ_sq`. Rewrite using `[e, mem_lay F hPX le_rfl, theta_rep F hμ, ← mem_X hker hsurj]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hX]`. Use `Relation.ReflTransGen.single ⟨F.τ * F.a (xi ε), fontaineTheta O p (nu ε), theta_nu_dvd hker, ?_, fun b => ?_⟩` and prove the remaining obligations. Use `le_antisymm ?_ (sup_le ?_ (span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Take `⟨c, d, rfl⟩` from `mem_span_pair.1 hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : F.a x + F.τ * F.a (c * p + d * xi ε) = (F.a x + F.τ * F.a (c * p)) + F.a d * (F.τ * F.a (xi ε))`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `add_mem (mem_sup_left ⟨x, hx, c * p, ?_, rfl⟩) (mem_sup_right (mem_span_singleton.2 (dvd_mul_left _ _)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `mul_mem_left _ _ (subset_span (Set.mem_insert _ _))`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨x, hx, y, hPX hy, rfl⟩`. Introduce and unpack `_ rfl`. Conclude with `⟨0, zero_mem _, xi ε, hXmem, by simp⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨x, y, rfl⟩` from `F.gen b`. Establish `e : (F.a x + F.τ * F.a y) * (F.τ * F.a (xi ε)) = F.a 0 + F.τ * F.a (x * xi ε)`. Rewrite using `[map_zero, map_mul]`. Take the linear combination `(F.a y * F.a (xi ε)) * F.τ_sq`. Rewrite using `[e, mem_lay F le_rfl le_rfl, theta_rep F hμ, ← mul_xi_mem hker hsurj hnzd hsat]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain : Relation.ReflTransGen (fun N N' : Ideal F.B => IsStep p F.θ N' N) ⊤
     (span {(p : F.B)}) := by
@@ -360,9 +358,7 @@ end GlobalTheory.BChain
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F`. Establish `hε1 : IsPrimitiveRoot (root ε).untilt p` using `by simpa [zeta] using hε 1`. Establish `hμ : WittVector.fontaineTheta O p (Sandwich.mu ε) = 0`. Rewrite using `[Sandwich.mu, map_sub, WittVector.fontaineTheta_teichmuller, map_one, sub_eq_zero]`. Conclude with `hε.zeta_zero`.
-
-Conclude with `GlobalTheory.BChain.chain F (GlobalTheory.AinfXi.ker_theta hv ε hε1) (fun y hy => GlobalTheory.AinfXi.xi_nzd hv ε hε1 y hy) hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BChain.reflTransGen_isStep : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, Relation.ReflTransGen (fun N N' : Ideal F.B => IsStep p F.θ N' N) ⊤ (Ideal.span {(p : F.B)}) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F

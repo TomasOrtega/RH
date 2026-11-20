@@ -11,13 +11,13 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `SLF.sliceVan_of_frob' PositivityTheory.PfBern.Frob.frobeniusReciprocity SLF.Un2.unimod`.
+A detailed English derivation is pending.
 -/
 theorem sliceVan [CharZero k] : SliceVan (k := k) :=
   SLF.sliceVan_of_frob' PositivityTheory.PfBern.Frob.frobeniusReciprocity SLF.Un2.unimod
 
 /- English proof (translation)
-The claim follows from `Asm.descA_of JC.jcPoly (sliceVan k)`.
+A detailed English derivation is pending.
 -/
 theorem descA [CharZero k] : DescA (k := k) := Asm.descA_of JC.jcPoly (sliceVan k)
 

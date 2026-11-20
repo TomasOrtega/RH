@@ -18,14 +18,14 @@ section Dual
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsScaleR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsScaleR_eq (c : R) : epsScaleR c = epsHom (RingHom.id R) c := by
   refine RingHom.ext fun x => ?_
   ext <;> simp [epsScaleR]
 
 /- English proof (translation)
-Rewrite using `[epsScaleR_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem epsScale_left (c : R) : (epsScale c).left = spMap (epsScaleR c) := by
   rw [epsScaleR_eq]; rfl
@@ -37,9 +37,7 @@ section Lie
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ↔ epsZero R ≫ v = η[G]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext1`. Conclude with `h`.
-
-Introduce `h`. Conclude with `congrArg CommaMorphism.left h`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ v ∈ lieSub G := by
   change _ ↔ epsZero R ≫ v = η[G]
@@ -48,7 +46,7 @@ theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ v ∈ lieSub G := by
   · intro h; exact congrArg CommaMorphism.left h
 
 /- English proof (translation)
-Rewrite using `[linComb, Subgroup.val_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linComb_val {n : ℕ} (c : Fin n → R) (v : Fin n → Tan G) :
     (linComb c v).1 = (List.ofFn fun i => epsScale (c i) ≫ (v i).1).prod := by
@@ -56,9 +54,9 @@ theorem linComb_val {n : ℕ} (c : Fin n → R) (v : Fin n → Tan G) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => epsScale (c i) ≫ v i`. Use function extensionality and compare the values at `i`. Use `ext1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, Over.comp_left, epsScale_left]`. Rewrite using `[this]`. Introduce and unpack `rfl`. Conclude with `⟨_, fun i => by rw [Over.comp_left, epsScale_left], rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLieComb_iff_prod {n : ℕ} (c : Fin n → R) (v : Fin n → (epsR R ⟶ G)) (w : epsR R ⟶ G) :
     IsLieComb c v w ↔ w = (List.ofFn fun i => epsScale (c i) ≫ v i).prod := by
@@ -71,18 +69,18 @@ theorem isLieComb_iff_prod {n : ℕ} (c : Fin n → R) (v : Fin n → (epsR R �
     exact ⟨_, fun i => by rw [Over.comp_left, epsScale_left], rfl⟩
 
 /- English proof (translation)
-Rewrite using `[isLieComb_iff_prod, linComb_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieComb_iff {n : ℕ} (c : Fin n → R) (v : Fin n → Tan G) (w : epsR R ⟶ G) :
     IsLieComb c (fun i => (v i).1) w ↔ w = (linComb c v).1 := by
   rw [isLieComb_iff_prod, linComb_val]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.PolarizationCorrespondence.IsLieBasis, Function.bijective_iff_existsUnique]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ w`. Use `h w.1 ((isTangent_iff _).2 w.2)` as an intermediate fact. Simplify using `only [isLieComb_iff] at this`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `only [Subtype.ext_iff, eq_comm (b := w.1)]`. Introduce `h`. Use `⟨fun i => (isTangent_iff _).2 (v i).2, fun w hw => ?_⟩` and prove the remaining obligations. Use `h ⟨w, (isTangent_iff _).1 hw⟩` as an intermediate fact. Simplify using `only [isLieComb_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `only [Subtype.ext_iff, eq_comm (b := w)]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLieBasis_val_iff {n : ℕ} (v : Fin n → Tan G) :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsLieBasis (fun i => (v i).1) ↔ GlobalTheory.IndefiniteRowSideFullHecke.PolarizationCorrespondence.IsLieBasis v := by

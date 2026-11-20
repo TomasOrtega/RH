@@ -21,7 +21,7 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.ExpoModels
 
 /- English proof (translation)
-Establish `hri : ∀ v, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hli : ∀ v, ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `⟨{ toFun := fun v => ⟨(γ : Matrix (Fin r) (Fin r) E) *ᵥ (v : Fin r → E), (h.2 _).1 v.2⟩ invFun := fun v => ⟨((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ (v : Fin r → E), (h.2 _).2 (by rw [hri]; exact v.2)⟩ map_add' := fun x y => Subtype.ext (by simp [Matrix.mulVec_add]) m …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_equiv_of_stab {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (γ : GL (Fin r) E)
@@ -40,19 +40,17 @@ theorem exists_equiv_of_stab {E : Type} [Field E] [NumberField E] [IsCMField E] 
             right_inv := fun v => Subtype.ext (hri _) }, fun v => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[hM.gam k γ]`. Use `and_congr_right fun hs => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `exists_equiv_of_stab _ _ γ hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩ v hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Set `gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k).La` to `(M.φ k).trans (e.trans (M.φ k).symm)`. Establish `hg : ∀ a, (M.φ k (gam a) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k a : Fin r → E)`. Introduce `a`. Simplify using `only [gam, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, he]`. Establish `key` using `GlobalTheory.LevelHalf.trivial_mod_of_trivial_on_half E H (F.Di k) l gam (fun a b => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `hM.ef k (gam a) (gam b)`. Rewrite `h2` using `[hg, hg, hs.1, ← hM.ef k a b]`. Conclude with `h2)` after adjusting the coercions. Use the proof step `(fun a ha => by`. Take `⟨b, hb⟩` from `h1 a ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, (M.φ k).injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hg, hb, map_add, map_nsmul]`. Use the proof step `rfl)`. Take `⟨b, hb⟩` from `key ((M.φ k).symm ⟨v, hv⟩)`. Use `⟨M.φ k b, (M.φ k b).2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `hg ((M.φ k).symm ⟨v, hv⟩)`. Rewrite `h3` using `[hb, map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Conclude with `h3.symm`. Introduce `h`. Use `⟨fun a _ => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw, h2⟩` from `h _ (M.φ k a).2`. Use `⟨(M.φ k).symm ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `h2`. Use `⟨(M.φ k).symm (e (M.φ k a) - M.φ k a), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearEquiv.apply_symm_apply, hA, one_smul, ← he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_gamma_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -95,13 +93,11 @@ theorem mem_gamma_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
       simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo σ' g ty F r M ρ hM hA cu₀`. Take `⟨k, cu₀⟩` from `cu₀`. Take `⟨cu, P, cc', hP, hPe, hne, hΛ⟩` from `GlobalTheory.T.exists_cusp_pseudoBasis_adapted_lattice E r ρ (M.X k) cu₀`. Use `GlobalTheory.T.exponentMatching_independent_of_cuspBasis E r ρ l.M (M.X k) cu₀ cu P hP hPe ?_` and prove the remaining obligations. Introduce `χ hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : (F.Di k).La →ₗ[𝓞 E] (Fin r → E)` to `(M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap`. Establish `hr : LinearMap.range φ = (M.X k).Λ`. Simplify using `only [φ, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Establish `hz` using `GlobalTheory.T.mem_principalCongruence_inter_cuspCentre_iff E H r ρ (M.X k) l.M (F.Di k) φ cu cc' hr ⟨Subtype.val_injective.comp (M.φ k).injective, by rw [← LinearMap.coe_range, hr]; exact (M.X k).Λ_span, (M.X k).Gm_herm, (M.X k).Gm_det, hM.ef k⟩ (mem_gamma_iff hM hA k) hΛ`. Establish `hd` using `GlobalTheory.T.mem_dual_cuspCharacterLattice_iff_adapted_basis E r ρ (M.X k) cu cc' hΛ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `GlobalTheory.T.cuspPairing_int_iff_hermitianExponent_integral E H r ρ (M.X k) l.M cc' χ (by have := l.three_le; omega) hne hχ`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu m hm`. Conclude with `ht.1 (fun β h1 h2 => h β ((hz β).2 ⟨h1, h2⟩)) u m ((hd u).1 hu) ((hd m).1 hm)`. Introduce `h β hβ`.
-
-Conclude with `ht.2 (fun u m hu hm => h u ((hd u).2 hu) m ((hd m).2 hm)) β ((hz β).1 hβ).1 ((hz β).1 hβ).2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem expoMatch_models : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (r : ℕ) (M : ModelsOf F r) (ρ : ℕ), ModelBase M → l.A = 1 → FJ.ExpoMatch M.X 1 ρ l.M := by
   intro E _ _ _ H Dw l Xo σ' g ty F r M ρ hM hA cu₀

@@ -17,7 +17,7 @@ def HeckeRoots : Prop :=
     (∀ j ≤ n, θ j = u * t ^ (j * (n - j)) * β.esymm j) → heckePol q n θ = Polynomial.C u * rootPol (β.map fun b => t ^ (n - 1) * b)
 
 /- English proof (translation)
-Simplify using `[heckePol, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckePol_map {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') (q n : ℕ) (θ : ℕ → K) :
     (heckePol q n θ).map f = heckePol q n fun j => f (θ j) := by
@@ -65,9 +65,9 @@ def JoinSt : Prop :=
       NilD (σSt P K) (ψSt P f) ρW (heckePol q n θ)
 
 /- English proof (translation)
-Introduce `l _ P K V _ _ ρ h`. Establish `e : Dinv (σCr P K) ρ = Dcris (P.PD K) ρ`. Unfold `Dinv Dcris actVB σCr`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Use `congr 3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `b`. Simplify using `[P.PD_actB]`. Unfold `admitted`. Rewrite using `[e]`. Conclude with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_of_crystalline : AdmOfCrys := by
   intro l _ P K V _ _ ρ h
@@ -82,7 +82,7 @@ theorem admissible_of_crystalline : AdmOfCrys := by
   exact h
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL c hc V _ _ a b ρ f q n T hcr hann U _ _ ρU i TU θ a1 a2 a3 a4 a5 a6 W _ _ _ _ ρW I _ C _ _ ρC e b1 b2 b3`. Use `haveI : Module.Finite ℚ_[l] V := Module.Finite.of_basis b`. Take `⟨hB, hcm⟩` from `h2 l P AI hT K LL`. Take `⟨hA, hD⟩` from `h3 l P AI hT K V ρ (admissible_of_crystalline l P K V ρ hcr)`. Conclude with `h1 ℚ_[l] _ _ (σSt P K) (ψSt P f) (hcm f) ↥LL.1 _ hB V ρ q n T hA (hD f q n T (h4 l P AI hT K c hc V a b ρ f q n T hann)) U ρU i TU θ a1 a2 a3 a4 a5 a6 W ρW I C ρC e b1 b2 b3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem joinSt_of (h1 : JoinAbs) (h2 : BoundSt) (h3 : StOfCr) (h4 : AnnTied) : JoinSt := by
   intro l _ P AI hT K LL c hc V _ _ a b ρ f q n T hcr hann U _ _ ρU i TU θ a1 a2 a3 a4 a5 a6 W _ _ _ _ ρW I _ C _ _ ρC e b1 b2 b3

@@ -14,17 +14,17 @@ def jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableT
   fderiv ℂ (A.zLoc w0 s i) (A.chart i y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hH i v hv set m : A.Mset w0 s De := ⟨(A.chart i).symm v, hv.2⟩`. Establish `hmi : (m : Y) ∈ (A.chart i).source` using `(A.chart i).map_target hv.1`. Establish `hcm : A.chart i m = v` using `(A.chart i).right_inv hv.1`. Take `⟨e, he, hme⟩` from `exists_chart n (flatStein A hD hF).z (flatStein A hD hF).isLocalHomeomorph m`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfw` using `fc_chart_fwd A hD e he m hme i hmi`. Rewrite `hfw` using `[hcm]`. Establish `hZ` using `fc_zLoc_chart A hD e he m hme i hmi`. Rewrite `hZ` using `[hcm]`. Establish `hd1 : DifferentiableAt ℂ ((fun y : A.Mset w0 s De => u y) ∘ e.symm) (A.zLoc w0 s i v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ]`. Conclude with `(hH e he).differentiableAt (e.open_target.mem_nhds (e.map_source hme))`. Establish `hd2 : DifferentiableAt ℂ (A.zLoc w0 s i) v` using `((fc_zLoc_contDiffOn A hD i).differentiableOn (by simp)).differentiableAt ((fc_isOpen_O A hD i).mem_nhds hv)`. Use `((hd1.comp v hd2).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hfw] with v' hv'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hv']`. Introduce `hd e he w hw`. Establish `hme : e.symm w ∈ e.source` using `e.map_target hw`. Establish `hem : e (e.symm w) = w` using `e.right_inv hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmi : ((e.symm w : A.Mset w0 s De) : Y) ∈ (A.chart (A.pick (e.symm w : Y))).source` using `A.mem_pick _`. Take `⟨G, hG, hGx, hGe⟩` from `fc_chart_inv A hD hF e he _ hme _ hmi`. Rewrite `hG`, `hGx`, `hGe` using `[hem]`. Establish `hd1 : DifferentiableAt ℂ (u ∘ (A.chart (A.pick (e.symm w : Y))).symm) (G w)`. Rewrite using `[hGx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hd _).differentiableAt ((fc_isOpen_O A hD _).mem_nhds (fc_mem_O A _ _ hmi))`. Use `((hd1.comp w (hG.differentiableAt (by simp))).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hGe] with w' hw'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hw']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holo_flat_iff {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (u : Y → ℂ) :
     Holo n (flatStein A hD hF).z (fun y : A.Mset w0 s De => u y) ↔
@@ -68,13 +68,13 @@ theorem holo_flat_iff {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [S
     rw [hw']
 
 /- English proof (translation)
-Establish `hMm : MeasurableSet (A.Mset w0 s De)` using `(isOpen_Mset A hD).measurableSet`. Establish `hz` using `(flatStein A hD hF).isLocalHomeomorph`. Establish `hρ : Measurable fun m => ENNReal.ofReal ((fun x : A.Mset w0 s De => Real.exp (A.ph A.kap (A.pick x) x) / ‖(fderiv ℂ (A.zLoc w0 s (A.pick x)) (A.chart (A.pick x) x)).det‖ ^ 2) m)` using `ENNReal.measurable_ofReal.comp (fc_rho_continuous A hD hF).measurable`. Establish `hmeas : A.mu.comap Subtype.val = (vol n (flatStein A hD hF).z).withDensity fun m => ENNReal.ofReal ((fun x : A.Mset w0 s De => Real.exp (A.ph A.kap (A.pick x) x) / ‖(fderiv ℂ (A.zLoc w0 s (A.pick x)) (A.chart (A.pick x) x)).det‖ ^ 2) m)` using `by choose e he hxe using fun x : A.Mset w0 s De => exists_chart n _ hz x`. Set `U : A.Mset w0 s De → Set (A.Mset w0 s De)` to `fun x => (e x).source ∩ Subtype.val ⁻¹' (A.chart (A.pick x)).source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hUo : ∀ x, IsOpen (U x)` using `fun x => (e x).open_source.inter ((A.chart _).open_source.preimage continuous_subtype_val)`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable U hUo`. Establish `huniv : ⋃ t : T, U t = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ ⋃ i ∈ T, U i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxe x, A.mem_pick _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t, ht, hxt⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `Set.mem_iUnion.2 ⟨⟨t, ht⟩, hxt⟩`. Use `haveI := hTc.to_subtype`. Use `Measure.ext_of_iUnion_eq_univ huniv fun t => ?_` and prove the remaining obligations. Use extensionality with `B hB`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_apply hB, Measure.restrict_apply hB, withDensity_apply _ (hB.inter (hUo t).measurableSet)]`. Conclude with `fc_mu_piece A hD hF (e t) (he t) (A.pick (t : Y)) (B ∩ U t) (hB.inter (hUo t).measurableSet) (fun m hm => hm.2.1) (fun m hm => hm.2.2)`. Rewrite using `[← lintegral_subtype_comap hMm, hmeas]`. Conclude with `(lintegral_withDensity_eq_lintegral_mul _ hρ (hφ.comp measurable_subtype_coe)).trans (lintegral_congr fun x => mul_comm _ _)`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (φ : Y → ℝ≥0∞) (hφ : Measurable φ) :

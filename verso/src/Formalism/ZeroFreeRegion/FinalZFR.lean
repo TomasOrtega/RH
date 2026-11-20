@@ -13,12 +13,12 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-The claim follows from `localZeroExpansionOfFactorization zeroFactorization logDerivBoundOnBall`.
+A detailed English derivation is pending.
 -/
 theorem landauLocal : LandauLocal := localZeroExpansionOfFactorization zeroFactorization logDerivBoundOnBall
 
 /- English proof (translation)
-The claim follows from `classicalZeroFreeRegionOfBounds mertensInequality logDerivBoundRightHalfPlane growthBound zetaInvBound_statement zeroFreeBoundedHeight landauLocal`.
+A detailed English derivation is pending.
 -/
 theorem zeroFreeRegion : ZeroFreeRegion :=
   classicalZeroFreeRegionOfBounds mertensInequality logDerivBoundRightHalfPlane growthBound zetaInvBound_statement

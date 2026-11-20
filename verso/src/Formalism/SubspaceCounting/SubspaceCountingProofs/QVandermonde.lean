@@ -5,7 +5,7 @@ namespace Formalism.G0
 namespace QVandermondeP
 
 /- English proof (translation)
-Apply the tactic sequence `cases n <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gb_zero_right (q n : ℕ) : gaussBinom q n 0 = 1 := by
   cases n <;> rfl
@@ -23,7 +23,7 @@ theorem gb_succ_succ (q n k : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0, 0, h => absurd h (lt_irrefl 0) | 0, _ + 1, _ => rfl | _ + 1, 0, h => absurd h (Nat.not_lt_zero _) | n + 1, k + 1, h => by rw [gb_succ_succ, gb_eq_zero q n k (by omega), gb_eq_zero q n (k + 1) (by omega)] simp`.
+A detailed English derivation is pending.
 -/
 theorem gb_eq_zero (q : ℕ) : ∀ n k : ℕ, n < k → gaussBinom q n k = 0
   | 0, 0, h => absurd h (lt_irrefl 0)
@@ -34,19 +34,19 @@ theorem gb_eq_zero (q : ℕ) : ∀ n k : ℕ, n < k → gaussBinom q n k = 0
     simp
 
 /- English proof (translation)
-Introduce `g`. Proceed by induction on `g with`. Consider the case `zero`. Introduce `n`. Rewrite using `[Finset.sum_range_succ']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gb_zero_succ, gb_zero_right]`. Consider the case `succ g ih`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero => simp [gb_zero_right]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ k => show gaussBinom q ((m + g) + 1) (k + 1) = _`. Rewrite using `[gb_succ_succ, ih k, ih (k + 1)]`. Rewrite using `[Finset.sum_range_succ' _ (k + 1), Finset.sum_range_succ' _ (k + 1)]`. Establish `h1 : ∀ l ∈ Finset.range (k + 1), q ^ ((k + 1 - (l + 1)) * (g + 1 - (l + 1))) * gaussBinom q m (k + 1 - (l + 1)) * gaussBinom q (g + 1) (l + 1) = q ^ ((k - l) * (g - l)) * gaussBinom q m (k - l) * gaussBinom q g l + q ^ (k + 1) * (q ^ ((k + 1 - (l + 1)) * (g - (l + 1))) * gaussBin …`. Introduce `l hl`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : l ≤ k`. Use `Finset.mem_range.mp hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[gb_succ_succ]`. Simplify using `only [Nat.add_sub_add_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.lt_or_ge g (l + 1) with h | h` into its components or cases. Rewrite using `[gb_eq_zero q g (l + 1) h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, rfl⟩ : ∃ a, k = l + a` from `⟨k - l, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b, g = l + 1 + b` from `⟨g - (l + 1), by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : l + a - l = a` using `by omega`. Establish `e2 : l + 1 + b - l = b + 1` using `by omega`. Establish `e3 : l + 1 + b - (l + 1) = b` using `by omega`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_add_distrib, mul_add, Finset.mul_sum]`. Simplify using `only [Nat.sub_zero, gb_zero_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form2 (q m : ℕ) : ∀ g n : ℕ, gaussBinom q (m + g) n =
     ∑ l ∈ Finset.range (n + 1),
@@ -92,11 +92,11 @@ theorem form2 (q m : ℕ) : ∀ g n : ℕ, gaussBinom q (m + g) n =
       ring
 
 /- English proof (translation)
-Rewrite using `[Nat.add_comm m g, form2 q g m n]`. Use `(Finset.sum_range_reflect _ _).symm.trans ?_` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l hl`. Establish `hl' : l ≤ n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.mem_range.mp hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e1 : n + 1 - 1 - l = n - l` using `by omega`. Establish `e2 : n - (n - l) = l` using `by omega`. Establish `e3 : m - (n - l) = m + l - n` using `by omega`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form1 (q m g n : ℕ) : gaussBinom q (m + g) n =
     ∑ l ∈ Finset.range (n + 1),
@@ -117,7 +117,7 @@ theorem form1 (q m g n : ℕ) : gaussBinom q (m + g) n =
 end QVandermondeP
 
 /- English proof (translation)
-Introduce `q m g n` and use `⟨QVandermondeP.form1 q m g n, QVandermondeP.form2 q m g n⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem qVandermondeIdentity : QVandermonde := fun q m g n =>
   ⟨QVandermondeP.form1 q m g n, QVandermondeP.form2 q m g n⟩

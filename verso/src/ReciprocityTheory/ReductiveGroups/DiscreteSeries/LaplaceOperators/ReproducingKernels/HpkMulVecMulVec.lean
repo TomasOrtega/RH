@@ -15,7 +15,7 @@ section hpk
 variable (k r : ℕ)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
@@ -26,7 +26,7 @@ theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
@@ -37,13 +37,13 @@ theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `key : ∀ (c : ℕ) (hc : c < 2 * r + k + 1) (a : ℂ), ∑ j : Fin (2 * r + k + 1), (if j.val = c then a else 0) * v j = a * v ⟨c, hc⟩`. Introduce `c hc a`. Rewrite using `[Finset.sum_eq_single ⟨c, hc⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbc : b.val ≠ c` using `fun h => hb (Fin.ext h)`. Simplify using `[hbc]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hi` using `i.isLt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h]`. Simplify using `only [hpk_out k r h]`. Rewrite using `[key _ (by omega), one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Simplify using `only [hpk_mid k r h]`. Rewrite using `[key i.val hi]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = if i.val < r ∨ r + k < i.val then v ⟨2 * r + k - i.val, by omega⟩
@@ -70,9 +70,9 @@ theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Establish `h' : (2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val)` using `by omega`. Rewrite using `[hpk_mulVec, if_pos h, hpk_mulVec, if_pos h']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `rw [hpk_mulVec, if_neg h, hpk_mulVec, if_neg h] split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   funext i
@@ -88,7 +88,7 @@ theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
     split_ifs <;> simp
 
 /- English proof (translation)
-Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   apply Matrix.ext_of_mulVec_single
@@ -98,7 +98,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
 end hpk
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r * Hpk k r := by rw [hg']`. Use `_ = 1 := hpk_sq k r`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mul_UH (k r : ℕ) {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
     Hpk k r * gᴴ * Hpk k r * g = 1 := by
@@ -109,16 +109,16 @@ theorem inv_mul_UH (k r : ℕ) {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
     _ = 1 := hpk_sq k r
 
 /- English proof (translation)
-Establish `h` using `inv_mul_UH k r hg`. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_inv_UH (k r : ℕ) {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := by
   have h := inv_mul_UH k r hg
   exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse h)
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hx' : xᴴ * Hpk k r * x = Hpk k r` using `hx`. Use `show (g * x)ᴴ * Hpk k r * (g * x) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hg', hx']`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_UH (k r : ℕ) {g x : Mat k r} (hg : g ∈ UH (Hpk k r)) (hx : x ∈ UH (Hpk k r)) :
     g * x ∈ UH (Hpk k r) := by
@@ -131,16 +131,16 @@ theorem mul_mem_UH (k r : ℕ) {g x : Mat k r} (hg : g ∈ UH (Hpk k r)) (hx : x
     _ = Hpk k r := by rw [hg', hx']
 
 /- English proof (translation)
-Use `show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_UH (k r : ℕ) : (1 : Mat k r) ∈ UH (Hpk k r) := by
   show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r
   simp
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `e` using `mul_inv_UH k r hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [e]; simp`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_UH (k r : ℕ) (g : Mat k r) (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -153,7 +153,7 @@ theorem inv_mem_UH (k r : ℕ) (g : Mat k r) (hg : g ∈ UH (Hpk k r)) : g⁻¹ 
     _ = Hpk k r := by rw [e]; simp
 
 /- English proof (translation)
-The claim follows from `mul_mem_UH k r (inv_mem_UH k r x₀ hx₀) (mul_mem_UH k r (mul_mem_UH k r hh.1 hm.1) hx)`.
+A detailed English derivation is pending.
 -/
 theorem shift_mem_UH (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (x₀ h m x : Mat k r)
     (hx₀ : x₀ ∈ UH (Hpk k r)) (hh : h ∈ UWset k r z) (hm : m ∈ Nset k r) (hx : x ∈ UH (Hpk k r)) :
@@ -161,11 +161,11 @@ theorem shift_mem_UH (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (x₀ h m x :
   mul_mem_UH k r (inv_mem_UH k r x₀ hx₀) (mul_mem_UH k r (mul_mem_UH k r hh.1 hm.1) hx)
 
 /- English proof (translation)
-Establish `hyi` using `inv_mem_UH k r y hy`. Establish `hmul` using `hσ.1.2`. Establish `h1 : σ y (σ y⁻¹ w) = w`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul y hy y⁻¹ hyi, mul_inv_UH k r hy, hσ.1.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ y).toLinearMap, hσ.2.1 y hy⟩`. Establish `hL` using `L.inner_map_map (σ y⁻¹ w) (σ g w)`. Rewrite using `[hmul y hy g hg, ContinuousLinearMap.comp_apply]`. Establish `e : ⟪w, σ y (σ g w)⟫_ℂ = ⟪σ y (σ y⁻¹ w), σ y (σ g w)⟫_ℂ` using `by rw [h1]`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL`.
+A detailed English derivation is pending.
 -/
 theorem coef_mul (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (hσ : Formalism.MainNotions.S.IsURepOn (UH (Hpk k r)) σ)
@@ -184,21 +184,21 @@ theorem coef_mul (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpac
   exact hL
 
 /- English proof (translation)
-Establish `hGae : ∀ᵐ g ∂μG, Matrix.of g ∈ UH (Hpk k r)` using `ae_iff.2 hG.2.2.1`. Take `⟨hd, hS⟩` from `hF`. Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hnorm : ⟪w, w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsq : ∫ g, ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 ∂μG = 1 / d`. Establish `h1` using `(hS w w w w).2`. Establish `e : (fun g : Mt k r => ⟪w, σ (Matrix.of g) w⟫_ℂ * star ⟪w, σ (Matrix.of g) w⟫_ℂ) = fun g => ((‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h1` using `[e, integral_complex_ofReal, hnorm]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfd : Formalism.MainNotions.S.fdegH μG σ w = d`. Unfold `Formalism.MainNotions.S.fdegH`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hsq, hw]`. Clear the denominators using the available nonvanishing facts. Establish `hpt : ∀ᵐ g ∂μG, Formalism.MainNotions.S.eFun μG σ w (Matrix.of g) * ⟪w, σ (y * Matrix.of g) w⟫_ℂ = (d : ℂ) * (⟪σ y⁻¹ w, σ (Matrix.of g) w⟫_ℂ * star ⟪w, σ (Matrix.of g) w⟫_ℂ)` using `hGae.mono fun g hg => by`. Rewrite using `[coef_mul k r H σ w hσ y (Matrix.of g) hy hg]`. Unfold `Formalism.MainNotions.S.eFun`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hfd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint` using `hS w (σ y⁻¹ w) w w`. Use `⟨(hint.1.const_mul (d : ℂ)).congr (hpt.mono fun g h => h.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae hpt, integral_const_mul, hint.2, hnorm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `coef_mul k r H σ w hσ y 1 hy (one_mem_UH k r)`. Rewrite `hc` using `[mul_one, hσ.1.1]`. Establish `hc' : ⟪σ y⁻¹ w, w⟫_ℂ = ⟪w, σ y w⟫_ℂ`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem schur_shift (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (d : ℝ) (μG : Measure (Mt k r))
@@ -248,13 +248,13 @@ theorem schur_shift (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductS
   field_simp
 
 /- English proof (translation)
-Unfold `ReproCoreStatement`. Introduce `k r H _ _ _ σ w d Vp _ _ _ ψ π z μG μW μN x₀ x ξ hσ hw hF hG hW hN hx₀ hx hI`. Unfold `Formalism.MainNotions.S.rconv sInt`. Use `hG.1` as an intermediate fact. Use `hW.1` as an intermediate fact.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN.1` as an intermediate fact. Establish `hpW : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.2 hW.2.2.1)`. Establish `hpN : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.2 hN.2.2.1)`. Repeatedly rewrite using `[← integral_smul]`. Rewrite using `[integral_integral_swap hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae ((hpW.and hpN).mono fun p hp => ?_)` and prove the remaining obligations. Establish `hy` using `shift_mem_UH k r z x₀ (Matrix.of p.1) (Matrix.of p.2) x hx₀ hp.1 hp.2 hx`. Repeatedly rewrite using `[smul_smul]`. Rewrite using `[integral_smul_const]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : ∀ g : Mt k r, x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * (x * Matrix.of g)) = x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x) * Matrix.of g`. Introduce `g`. Simplify using `only [Matrix.mul_assoc]`. Repeatedly rewrite using `[e]`. Conclude with `(schur_shift k r H σ w d μG hσ hw hF hG _ hy).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repro_core : ReproCoreStatement := by
   unfold ReproCoreStatement

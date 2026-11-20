@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Lat
 
 /- English proof (translation)
-Distinguish the cases in `h1 : ∀ g, a g = 1`. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, sub_zero, ← Module.forall_dual_apply_eq_zero_iff k₀]`. Introduce `φ`. Take `⟨m, hm⟩` from `h φ`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, h1, one_mul, sub_self]`. Take `⟨g₀, hg₀⟩` from `not_forall.mp h1`. Establish `hne : a g₀ - 1 ≠ 0` using `sub_ne_zero.mpr hg₀`. Use `⟨(a g₀ - 1)⁻¹ • z g₀, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff k₀]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Take `⟨m, hm⟩` from `h φ`. Simplify using `only [map_sub, map_smul, hm, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lvk_coord {H k₀ k : Type} [Field k₀] [Field k] [Algebra k₀ k] (a : H → k₀) (z : H → k)
     (h : ∀ φ : k →ₗ[k₀] k₀, ∃ m, ∀ g, φ (z g) = a g * m - m) :
@@ -33,9 +33,9 @@ private theorem lvk_coord {H k₀ k : Type} [Field k₀] [Field k] [Algebra k₀
     ring
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD hP k _ red hred γ hγ p hp z hlc hco`. Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Set `f : ResidueField c.O →+* k` to `Ideal.Quotient.lift (maximalIdeal c.O) red hred`. Use `letI : Algebra (ResidueField c.O) k := f.toAlgebra`. Establish `hf : ∀ a : c.O, algebraMap (ResidueField c.O) k (residue c.O a) = red a` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ (a : c.O) (x : k), red a * x = residue c.O a • x` using `fun a x => by`. Rewrite using `[Algebra.smul_def, hf]`. Establish `key` using `lvk_coord (fun g : D.Gp p => residue c.O (γ g : c.O)) z fun φ => UpperTheory.V.GradeZeroInterpolatingElement.locVanP D hD hP (ResidueField c.O) (residue c.O) (fun a ha => (residue_eq_zero_iff a).2 ha) γ hγ p hp (fun g => φ (z g)) (hlc.comp φ) fun g h => by`. Simplify using `only [hco, hs, map_add, map_smul, smul_eq_mul]`. Simplify `key` using `only [hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lat.locVanK :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → UpperTheory.V.Loc.LocalPublishedTheorems → ∀ (k : Type) [Field k] (red : c.O →+* k), (∀ a ∈ maximalIdeal c.O, red a = 0) →

@@ -27,7 +27,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegVol.RefCov
 
 /- English proof (translation)
-Use `choose b hb hu using fun i => h i (a i)`. Conclude with `⟨b, ⟨fun i _ => (hb i).1, fun i _ => (hb i).2⟩, fun c hc => funext fun i => hu i _ ⟨hc.1 i trivial, hc.2 i trivial⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exu_pi {J A : Type} [AddCommGroup A] {Λ F : J → Set A} (h : ∀ i a, ∃! b, b ∈ Λ i ∧ b + a ∈ F i) (a : J → A) :
     ∃! b, b ∈ Set.pi Set.univ Λ ∧ b + a ∈ Set.pi Set.univ F := by
@@ -35,7 +35,7 @@ theorem exu_pi {J A : Type} [AddCommGroup A] {Λ F : J → Set A} (h : ∀ i a, 
   exact ⟨b, ⟨fun i _ => (hb i).1, fun i _ => (hb i).2⟩, fun c hc => funext fun i => hu i _ ⟨hc.1 i trivial, hc.2 i trivial⟩⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hu⟩` from `h a.1`. Take `⟨b', hb', hu'⟩` from `h' a.2`. Conclude with `⟨(b, b'), ⟨⟨hb.1, hb'.1⟩, hb.2, hb'.2⟩, fun c hc => Prod.ext (hu _ ⟨hc.1.1, hc.2.1⟩) (hu' _ ⟨hc.1.2, hc.2.2⟩)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exu_prod {A B : Type} [AddCommGroup A] [AddCommGroup B] {Λ F : Set A} {Λ' F' : Set B}
     (h : ∀ a, ∃! b, b ∈ Λ ∧ b + a ∈ F) (h' : ∀ a, ∃! b, b ∈ Λ' ∧ b + a ∈ F') (a : A × B) :
@@ -45,7 +45,7 @@ theorem exu_prod {A B : Type} [AddCommGroup A] [AddCommGroup B] {Λ F : Set A} {
   exact ⟨(b, b'), ⟨⟨hb.1, hb'.1⟩, hb.2, hb'.2⟩, fun c hc => Prod.ext (hu _ ⟨hc.1.1, hc.2.1⟩) (hu' _ ⟨hc.1.2, hc.2.2⟩)⟩
 
 /- English proof (translation)
-Take `⟨t, ht, hu⟩` from `h a`. Use `⟨f t, ⟨⟨t, ht.1, rfl⟩, ht.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨t', ht', rfl⟩, h2⟩`. Rewrite using `[hu t' ⟨ht', h2⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exu_image {T A : Type} [AddCommGroup A] {P : T → Prop} {f : T → A} {F : Set A}
     (h : ∀ a, ∃! t, P t ∧ f t + a ∈ F) (a : A) : ∃! b, b ∈ f '' {t | P t} ∧ b + a ∈ F := by
@@ -55,7 +55,7 @@ theorem exu_image {T A : Type} [AddCommGroup A] {P : T → Prop} {f : T → A} {
   rw [hu t' ⟨ht', h2⟩]
 
 /- English proof (translation)
-Establish `h1 : Fintype.card {b : Fin r // b.val < j} = min r j`. Rewrite using `[Fintype.card_subtype, Fin.card_filter_val_lt]`. Establish `h2` using `Fintype.card_subtype_compl fun b : Fin r => b.val < j`. Rewrite `h2` using `[h1, Fintype.card_fin]`. Rewrite using `[Fintype.card_congr (Equiv.subtypeEquivRight fun b : Fin r => (not_lt (a := b.val) (b := j)).symm), h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -68,7 +68,7 @@ theorem card_top (r j : ℕ) : Fintype.card {a : Fin r // j ≤ a.val} = r - j :
   omega
 
 /- English proof (translation)
-Use `(Fintype.card_le_of_injective (fun p : Subtype P => p.1.1) fun p q h => Subtype.ext (Subtype.ext h)).trans ?_` and prove the remaining obligations. Simplify using `[sq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem card_UT (r : ℕ) (P : UT r → Prop) [Fintype (Subtype P)] : Fintype.card (Subtype P) ≤ r ^ 2 := by
   refine (Fintype.card_le_of_injective (fun p : Subtype P => p.1.1) fun p q h => Subtype.ext (Subtype.ext h)).trans ?_
@@ -81,7 +81,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Take `⟨-, h1, h2, h3, ⟨c, hc⟩, -⟩` from `hF v`. Take `⟨a1, a2⟩` from `rset_normal0 k r N.j N.j_le _ _ _ β c h1 h2 h3 hc`. Take `⟨-, b1, b2, -⟩` from `Swap.range_eq_and_injective_parabolic_unipotent_product k r N.j β hc.2.2.2.1 hc.2.2.2.2.1`. Conclude with `⟨a1.trans b1, a2, b2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rset_eq (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g v)) (v : ι) :
     Rset k r (g v) = Set.range (crd k r N.j β) ∧ IsClosedSub k r (Rset k r (g v)) ∧ Function.Injective (crd k r N.j β) := by
@@ -92,7 +92,7 @@ theorem rset_eq (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g v
 
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Use `choose q hq using fun v => (rset_eq hF v).1 ▸ hm v`. Take `⟨p, rfl⟩` from `usage₂.2 q`. Conclude with `⟨p, funext hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_CC (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g v)) (m : ι → Mat k r)
     (hm : ∀ v, m v ∈ Rset k r (g v)) : ∃ p : Crd ι k r N.j β, CC p = m := by
@@ -102,11 +102,9 @@ theorem exists_CC (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g
 
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_CC hF (CC p * CC q) fun v => (rset_eq hF v).2.1.2.2.2.1 _ ((rset_eq hF v).1 ▸ ⟨_, rfl⟩) _ ((rset_eq hF v).1 ▸ ⟨_, rfl⟩)`. Establish `h` using `fun v => (GlobalTheory.T.commonStabilizerFromCoordinates_product_law k r N.j β).2 (atP p v) (atP q v) (atP w v) (congrFun hw v).symm`. Use `⟨w, hw.symm, fun i hi => funext fun v => (h v).1 i fun l hl => congrFun (hi l hl) v, fun h1 => ?_, fun h1 h2 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a v`. Conclude with `congrFun ((h v).2.1 (funext fun i => congrFun (congrFun h1 i) v)) a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3` using `fun v => (h v).2.2 (funext fun i => congrFun (congrFun h1 i) v) (funext fun i => congrFun (congrFun h2 i) v)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a v`. Conclude with `congrFun (congrArg Prod.fst (h3 v)) a`. Use function extensionality and compare the values at `a v`.
-
-Conclude with `congrFun (congrArg Prod.snd (h3 v)) a`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem CC_law (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g v)) (p q : Crd ι k r N.j β) :
     ∃ w, CC p * CC q = CC w ∧
@@ -127,75 +125,67 @@ theorem CC_law (hF : ∀ v, IsFrameOf N k (σ v) ρ β (Φ v) (z v) (z' v) (g v)
       exact congrFun (congrArg Prod.snd (h3 v)) a
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g hσ hd hF hN hv L hL hz`. Use `set ρ : ℝ := 2 * Formalism.HermitianLatticesTheory.vInv K with hρ`. Establish `hρ0 : 0 < ρ` using `by rw [hρ]; linarith`. Take `⟨w₀⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Take `⟨v₀, -⟩` from `hσ.2 w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀⟩` from `(hF v₀).2.2.2.2.1`. Take `⟨m1, -, m3, -⟩` from `RealMat.real_points K V H hK r N k ι σ β Φ z z' g hσ hd hF`. Take `⟨t1, t2⟩` from `TopLayer.top_layer K V H hK r N k ι σ β Φ z z' g hσ hd hF L hL hz`. Take `⟨d1, d2, d3, d4⟩` from `GlobalTheory.T.refLatticeStabilizer_middle_bottom_layers K V H hK r N L hL hz`. Take `⟨HW, hB, hdW, hU⟩` from `GlobalTheory.T.exists_unimodular_trace_on_middleSpace_lift K V H hK r N L hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop` using `fun v => GlobalTheory.T.realFrame_automorphism_unitriangular_rows_coords K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)`. Establish `hskew` using `fun v => GlobalTheory.T.besselModelMatrix_skew_coordinates_rational_aut K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)`. Establish `hne : ∀ n : ℕ, ∀ v : ι, ((ρ ^ n : ℝ) : ℂ) ≠ 0` using `fun n _ => by exact_mod_cast (pow_pos hρ0 n).ne'`. Use `choose F₁ hF₁m hF₁ hF₁v using fun i : UTin β => IdealFund.exists_fund_ipow K hK ι σ hσ N.𝔡 ((i.1.1.1.val : ℤ) - i.1.1.2.val) (fun _ => ((ρ ^ (i.1.1.2.val - i.1.1.1.val) : ℝ) : ℂ)) N.𝔡_ne (hne _)`. Use `choose F₂ hF₂m hF₂ hF₂v using fun b : {a : Fin r // N.j ≤ a.val} => GlobalTheory.T.exists_fundamental_set_rows_middleSpace K V H hK N.Wn HW k r ι σ Φ hB hσ (by omega) (fun v => (hF v).1) (fun v => GlobalTheory.T.realisation_mem_standard_middle_space K V H r N k (σ v) ρ β (Φ v) (z …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose F₃ hF₃m hF₃ hF₃v using fun p : {p : UT r // N.j ≤ p.1.1.val} => IdealFund.exists_fund_ipow K hK ι σ hσ N.𝔡 (-((r : ℤ) - p.1.1.1.val) - ((r : ℤ) - p.1.1.2.val)) (fun _ => ((ρ ^ ((r - p.1.1.1.val) + (r - p.1.1.2.val)) : ℝ) : ℂ)) N.𝔡_ne (hne _)`. Use `choose F₄ hF₄m hF₄ hF₄l hF₄u using fun a : {a : Fin r // N.j ≤ a.val} => SkewFund.exists_fund_skew K hK ι σ hσ N.𝔡 (r - a.1.val) N.𝔡_ne N.𝔡_star hN hv`. Take `⟨hΩm, hΩv⟩` from `GlobalTheory.T.measure_commonStabilizerCoords_box_image ι k r N.j β hc₀.2.2.2.1 hc₀.2.2.2.2.1 (GlobalTheory.T.measurePreserving_commonStabilizerCoordinatesAtPlace ι k r N.j β) F₁ F₂ F₃ F₄ hF₁m hF₂m hF₃m hF₄m _ rfl`. Use `⟨_, ⟨hΩm, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `exists_CC hF x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hex : ∀ s ∈ N.Gam (N.Ref L), ∃ p : Crd ι k r N.j β, ∀ v x, crd k r N.j β (atP p v) *ᵥ Φ v x = Φ v (s x)`. Introduce `s hs`. Take `⟨m, hm, -⟩` from `m1 s`. Take `⟨p, rfl⟩` from `exists_CC hF m (m3 ⟨s, hs.1, hm⟩)`. Conclude with `⟨p, hm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu0 : ∀ (s : V ≃ₗ[K] V) (p : Crd ι k r N.j β), (∀ v x, crd k r N.j β (atP p v) *ᵥ Φ v x = Φ v (s x)) → (∀ a : Fin r, s (N.F.e a.castSucc) = N.F.e a.castSucc) → p.1 = 0`. Introduce `s p hp he`. Use function extensionality and compare the values at `i v`. Use `(htop v s _ (hp v)).1 i 0 (by simp [he])` as an intermediate fact. Simplify `this` using `[atP]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h10 : ∀ (p : Crd ι k r N.j β), p.1 = 0 → ∀ v, (atP p v).1 = 0` using `fun p h v =>`. Use function extensionality and compare the values at `fun i => congrFun (congrFun h i) v`. Establish `h20 : ∀ (p : Crd ι k r N.j β), p.2.1 = 0 → ∀ v, (atP p v).2.1 = 0` using `fun p h v =>`. Use function extensionality and compare the values at `fun i => congrFun (congrFun h i) v`. Establish `hcast : ∀ a : Fin r, -(2 * ((r - a.val : ℕ) : ℤ)) = -((r : ℤ) - a.val) - ((r : ℤ) - a.val)` using `fun a => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.T.existsUnique_mul_mem_box_triangular_layers (ι → Mat k r) (UTin β) _ _ _ (fun l => l.1.1.2.val - l.1.1.1.val) CC (realPts Φ (N.Gam (N.Ref L) : Set (V ≃ₗ[K] V))) _ F₁ _ (Set.pi Set.univ F₂) _ (Set.pi Set.univ F₃ ×ˢ Set.pi Set.univ F₄) ?_ ?_ (CC_law hF) ?_ ?_ ?_ ?_ ?_ …` and prove the remaining obligations. Conclude with `fun p p' h => usage₂.1 (funext fun v => (rset_eq hF v).2.2 (congrFun h v))`. Conclude with `funext fun v => (GlobalTheory.T.commonStabilizerFromCoordinates_product_law k r N.j β).1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `m ⟨s, hs, hm⟩`. Conclude with `exists_CC hF m (m3 ⟨s, hs.1, hm⟩)`. Conclude with `⟨1, one_mem _, fun v x => Matrix.one_mulVec _⟩`. Introduce and unpack `a ⟨s, hs, ha⟩ b ⟨t, ht, hb⟩`. Use `⟨s * t, mul_mem hs ht, fun v x => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Matrix.mulVec_mulVec (Φ v x) (Matrix.of (a v)) (Matrix.of (b v))).symm` as an intermediate fact. Rewrite `this` using `[hb, ha]`. Conclude with `this`. Introduce and unpack `a ⟨s, hs, ha⟩`. Take `⟨b, hb, -⟩` from `m1 s⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨b, ⟨s⁻¹, inv_mem hs, hb⟩, funext fun v => RealMat.mat_unique (hF v).1 fun x => ?_⟩` and prove the remaining obligations. Use `(Matrix.mulVec_mulVec (Φ v x) (Matrix.of (b v)) (Matrix.of (a v))).symm` as an intermediate fact. Rewrite `this` using `[ha, hb]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `p ⟨s, hs, hp⟩ i`. Take `⟨u, h1, h2, -⟩` from `t1 s hs _ _ i.1.2`. Conclude with `⟨u _, h2 _, funext fun v => ((htop v s _ (hp v)).1 i u h1).symm⟩`. Introduce and unpack `p ⟨s, hs, hp⟩ h1 b -`. Take `⟨y, hy, h⟩` from `d1 s hs ((htop v₀ s _ (hp v₀)).2.1 (h10 p h1 v₀)) b.1 b.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy, funext fun v => ((htop v s _ (hp v)).2.2 (h10 p h1 v) b y h).symm⟩`. Introduce and unpack `p ⟨s, hs, hp⟩ h1 h2`. Establish `h` using `fun v => hskew v s _ (hp v) (h10 p h1 v) (h20 p h2 v)`. Establish `h3` using `d3 s hs ((htop v₀ s _ (hp v₀)).2.1 (h10 p h1 v₀)) (h v₀).1`. Use `⟨fun i _ => ⟨_, (h3 i.1.1.1 i.1.1.2 i.2 (i.2.trans (le_of_lt i.1.2))).1, funext fun v => ((h v).2.1 i).symm⟩, fun a _ => ⟨_, ⟨?_, (h3 a.1 a.1 a.2 a.2).2⟩, funext fun v => ((h v).2.2 a).symm⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hcast]`. Conclude with `(h3 a.1 a.1 a.2 a.2).1`. Introduce and unpack `i _ ⟨t, ht, rfl⟩`. Take `⟨s, hs, h⟩` from `t2 _ _ i.1.2 i.2 t ht`. Take `⟨p, hp⟩` from `hex s hs`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨p, ⟨s, hs, hp⟩, funext fun l => funext fun v => ?_⟩` and prove the remaining obligations. Use `(htop v s _ (hp v)).1 l (Pi.single i.1.1.1 (if l.1.1.2 = i.1.1.2 then t else 0)) (by rw [h]; simp [Pi.single_apply])` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Rewrite using `[@Pi.single_eq_of_ne _ _ _ (fun a b => Classical.propDecidable (a = b)) _ _ hl]`. Distinguish the cases in `h1 : l.1.1.1 = i.1.1.1`. Establish `h2 : l.1.1.2 ≠ i.1.1.2` using `fun h2 => hl (Subtype.ext (Subtype.ext (Prod.ext h1 h2)))`. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Pi.single_eq_of_ne h1]`. Introduce `b hb choose y hy hyb using fun a => hb a trivial`. Take `⟨s, hs, he, h⟩` from `d2 (fun a => if h : N.j ≤ a.val then y ⟨a, h⟩ else 0) fun a => by`. Distinguish the cases in `h : N.j ≤ a.val`. Rewrite using `[dif_pos h]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hy ⟨a, h⟩`. Rewrite using `[dif_neg h]`. Conclude with `Submodule.zero_mem _`. Take `⟨p, hp⟩` from `hex s hs`. Establish `h1` using `hu0 s p hp he`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨p, ⟨s, hs, hp⟩, h1, funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hyb a]`. Use function extensionality and compare the values at `v`. Use `(htop v s _ (hp v)).2.2 (h10 p h1 v) a (y a) ?_` and prove the remaining obligations. Use `h a.1 a.2` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[dif_pos a.2]`. Then use the resulting hypothesis. Introduce and unpack `d ⟨hd1, hd2⟩ choose t ht htd using fun a => hd1 a trivial choose t' ht' htd' using fun a => hd2 a trivial`. Set `S : Fin r → Fin r → K` to `fun a b => if h : N.j ≤ a.val ∧ N.j ≤ b.val then if h1 : a < b then t ⟨⟨(a, b), h1⟩, h.1⟩ else if h2 : b < a then -star (t ⟨⟨(b, a), h2⟩, h.2⟩) else t' ⟨a, h.1⟩ else 0`. Establish `hS : ∀ a b, S a b ∈ ipow N.𝔡 (-((r : ℤ) - a.val) - ((r : ℤ) - b.val)) ∧ S a b + star (S b a) = 0`. Introduce `a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : N.j ≤ a.val ∧ N.j ≤ b.val`. Break down `lt_trichotomy a b with h1 | rfl | h1` into its components or cases. Simplify using `only [S, dif_pos h, dif_pos h.symm, dif_pos h1, dif_neg h1.not_gt]`. Conclude with `⟨ht ⟨⟨(a, b), h1⟩, h.1⟩, by simp⟩`. Simplify using `only [S, dif_pos h, dif_neg (lt_irrefl a)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcast]`. Conclude with `ht' ⟨a, h.1⟩`. Simplify using `only [S, dif_pos h, dif_pos h.symm, dif_pos h1, dif_neg h1.not_gt]`. Use `⟨neg_mem (LiftS.ipow_star _ N.𝔡_ne N.𝔡_star _ ?_), by simp⟩` and prove the remaining obligations. Rewrite using `[show -((r : ℤ) - a.val) - ((r : ℤ) - b.val) = -((r : ℤ) - b.val) - ((r : ℤ) - a.val) by ring]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ht ⟨⟨(b, a), h1⟩, h.2⟩`. Simplify using `[S, dif_neg h, dif_neg (mt And.symm h)]`. Take `⟨s, hs, he, h⟩` from `d4 S hS`. Take `⟨p, hp⟩` from `hex s hs`. Establish `h1` using `hu0 s p hp he`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : p.2.1 = 0`. Use function extensionality and compare the values at `b v`. Use `((htop v s _ (hp v)).2.2 (h10 p h1 v) b 0 ?_).trans ?_` and prove the remaining obligations. Rewrite using `[h b.1 b.2, add_sub_cancel_left, sub_zero]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : N.j ≤ a.val`. Conclude with `Submodule.smul_mem _ _ (NFGeom.e_mem_II N a ha)`. Simplify using `[ha]`. Use function extensionality and compare the values at `l`. Simplify using `[RealMat.phi_zero (hF v).1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hSB : ∀ a b : Fin r, N.j ≤ a.val → N.j ≤ b.val → H.B (s (N.ist b)) (N.ist a) = S a b`. Introduce `a b ha hb`. Rewrite using `[h b hb]`. Simplify using `only [map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, N.ist_iso b a hb ha, N.ist_e _ a ha]`. Simplify using `[ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h3` using `fun v => hskew v s _ (hp v) (h10 p h1 v) (h20 p h2 v)`. Establish `h4 : p = (0, 0, d)`. Use `Prod.ext h1 (Prod.ext h2 (Prod.ext ?_ ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `i v`. Establish `hi : N.j ≤ i.1.1.2.val` using `i.2.trans (le_of_lt i.1.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `((h3 v).2.1 i).trans ?_` and prove the remaining obligations. Rewrite using `[hSB _ _ i.2 hi]`. Simplify using `only [S, dif_pos (And.intro i.2 hi), dif_pos i.1.2]`. Conclude with `congrFun (htd i) v`. Use function extensionality and compare the values at `a v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((h3 v).2.2 a).trans ?_` and prove the remaining obligations. Rewrite using `[hSB _ _ a.2 a.2]`. Simplify using `only [S, dif_pos (And.intro a.2 a.2), dif_neg (lt_irrefl a.1)]`. Conclude with `congrFun (htd' a) v`. Conclude with `h4 ▸ ⟨s, hs, hp⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ (n : ℕ) (m : ℤ), m = -(n : ℤ) → (Ideal.absNorm N.𝔡 : ℝ) ^ m * (ρ ^ n) ^ (2 * Fintype.card ι) = 1`. Introduce and unpack `n _ rfl`. Rewrite using `[hN, _root_.zpow_neg, _root_.zpow_natCast, ← pow_mul, ← pow_mul, mul_comm n]`. Conclude with `inv_mul_cancel₀ (pow_pos hρ0 _).ne'`. Establish `hsc' : ∀ (n : ℕ) (m : ℤ), m = -(n : ℤ) → Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι * (Ideal.absNorm N.𝔡 : ℝ) ^ m * ∏ _v : ι, ‖((ρ ^ n : ℝ) : ℂ)‖ ^ 2 = Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n m h`. Rewrite using `[Finset.prod_const, Finset.card_univ, Complex.norm_real, Real.norm_of_nonneg (pow_pos hρ0 n).le, ← pow_mul, mul_assoc, hsc n m h, mul_one]`. Establish `e1 : ∀ i, volume (F₁ i) = ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι)` using `fun i => by`. Rewrite using `[hF₁v, hsc']`. Establish `: i.1.1.1.val < i.1.1.2.val` using `i.1.2`.
-
-Use linear arithmetic over natural numbers and integers. Establish `e2 : ∀ i, volume (F₂ i) = ENNReal.ofReal ((Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι) ^ (k + 1))` using `fun i => by`. Rewrite using `[hF₂v, mul_assoc, hsc, mul_one]`. Use `i.1.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish `e3 : ∀ i, volume (F₃ i) = ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι)` using `fun i => by`. Rewrite using `[hF₃v, hsc']`. Use `i.1.1.1.2` as an intermediate fact. Use `i.1.1.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hΩv]`. Simplify using `only [e1, e2, e3, Finset.prod_const, Finset.card_univ, card_top]`. Use `GlobalTheory.T.layer_covolume_product_pow_two_sided_bounds _ _ k r _ _ _ _ hv (Nat.sub_le _ _) (card_UT r _) (card_UT r _) ?_ ?_` and prove the remaining obligations. Rewrite using `[← card_top, ← Finset.card_univ (α := {a : Fin r // N.j ≤ a.val}), ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod' fun i _ => hF₄l i`.
-
-Rewrite using `[← card_top, ← Finset.card_univ (α := {a : Fin r // N.j ≤ a.val}), ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod' fun i _ => hF₄u i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_ref : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (k : ℕ) (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)) (β : Fin r → ℕ) (Φ : ι → V → Fin (2 * r + k + 1) → ℂ) (z z' : ι → Fin (2 * r + k + 1) → ℂ) (g : ι → Mat k r), IsPlaces σ → Module.finrank K V = 2 * r + k + 1 → (∀ v, IsFrameOf N k (σ v) (2 * Formalism.HermitianLatticesTheory.vInv K) β (Φ v) (z v) (z' v) (g v)) → (Ideal.absNorm N.𝔡 : ℝ) = (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * Fintype.card ι) → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → ∀ L : Submodule (𝓞 K) V, IsUnimodMod H L (uPerp N.F N.F') (II N.F N.F') → N.F.z ∈ L → ∃ Ω : Set (ι → Mt k r), IsFund (realPts Φ (N.Gam (N.Ref L) : Set (V ≃ₗ[K] V))) (RP k r g) Ω ∧ ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv K ^ (k * (r - N.j) * Fintype.card ι) / (8 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * (r + 1) ^ 2 * Fintype.card ι)) ≤ Measure.pi (fun _ : ι => lebR0 k r N.j β) Ω ∧ Measure.pi (fun _ : ι => lebR0 k r N.j β) Ω ≤ ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv K ^ (k * (r - N.j) * Fintype.card ι) * (8 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * (r + 1) ^ 2 * Fintype.card ι)) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g hσ hd hF hN hv L hL hz

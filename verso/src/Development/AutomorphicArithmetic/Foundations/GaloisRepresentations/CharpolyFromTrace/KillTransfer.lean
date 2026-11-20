@@ -6,27 +6,25 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Cong UpperTheory.Gal.NearKilling
 
 /- English proof (translation)
-Introduce `I V V' _ _ _ _ _ _ _ ρ ρ' hfin htr x hx`. Establish `h1 : ∀ y : MonoidAlgebra ℂ I, LinearMap.trace ℂ V (ρ.asAlgebraHom y) = LinearMap.trace ℂ V' (ρ'.asAlgebraHom y)`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g => simpa [Representation.asAlgebraHom_of] using htr g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `smul c a ha => simp only [map_smul, ha]`. Establish `h2 : ∀ g : I, LinearMap.trace ℂ V (ρ.asAlgebraHom x * ρ g) = 0`. Introduce `g`. Establish `h3 : ρ.asAlgebraHom x * ρ g = ρ.asAlgebraHom (x * MonoidAlgebra.of ℂ I g)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Representation.asAlgebraHom_of]`. Rewrite using `[h3, h1, map_mul, hx, zero_mul, map_zero]`. Set `b` to `Module.finBasis ℂ V`. Set `φ` to `LinearMap.toMatrixAlgEquiv (R := ℂ) b`. Set `r : I →* GL (Fin (Module.finrank ℂ V)) ℂ` to `(φ.toAlgHom.toMonoidHom.comp ρ).toHomUnits`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : ∀ g, ((r g : GL (Fin (Module.finrank ℂ V)) ℂ) : Matrix _ _ ℂ) = φ (ρ g)`. Introduce `g`. Simplify using `[r, MonoidHom.coe_toHomUnits]`. Establish `hrange : Finite r.range`. Establish `hsub : (Set.range r).Finite`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.Finite.of_finite_image (f := fun u : GL (Fin (Module.finrank ℂ V)) ℂ => (u : Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ)) ?_ (fun _ _ _ _ h => Units.ext h)` and prove the remaining obligations. Use `(hfin.image φ).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨ρ g, ⟨g, rfl⟩, (hr g).symm⟩`. Conclude with `hsub.to_subtype`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hss : IsSSRep r`. Use `GlobalTheory.ssRep_of_normal_finiteIndex _ _ _ r r.ker inferInstance inferInstance ?_` and prove the remaining obligations. Introduce `W _`. Take `⟨W', hW'⟩` from `Submodule.exists_isCompl W`. Use `⟨W', ?_, hW'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g v hv`. Establish `hg : r (g : I) = 1` using `g.2`. Simplify `hv` using `[hg]`. Establish `hspan : ∀ y : MonoidAlgebra ℂ I, φ (ρ.asAlgebraHom y) ∈ Submodule.span ℂ (Set.range fun g => ((r g : GL (Fin (Module.finrank ℂ V)) ℂ) : Matrix _ _ ℂ))`. Introduce `y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g`. Rewrite using `[Representation.asAlgebraHom_of, ← hr]`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `add a c ha hc`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add]`. Conclude with `Submodule.add_mem _ ha hc`. Consider the case `smul c a ha`. Rewrite using `[map_smul, map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : φ (ρ.asAlgebraHom x) = 0`. Use `GlobalTheory.T.eq_zero_of_trace_mul_eq_zero_semisimple_rep ℂ I _ r hss _ (hspan x) ?_` and prove the remaining obligations. Introduce `g`. Rewrite using `[hr, ← map_mul, ← h2 g, LinearMap.trace_eq_matrix_trace ℂ b]`. Both sides reduce to the same expression.
-
-Conclude with `φ.injective (by rw [h0, map_zero])`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.NearKilling.killTransfer : KillTransfer := by
   intro I V V' _ _ _ _ _ _ _ ρ ρ' hfin htr x hx

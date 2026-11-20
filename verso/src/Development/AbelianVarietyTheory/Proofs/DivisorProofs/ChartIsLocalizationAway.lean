@@ -15,27 +15,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChartLocAway
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ io θ hθ q c hc`. Establish `hsep` using `(GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN q c).2`. Establish `hext` using `GlobalTheory.T.prechart_translate_order R K G hG N hN q c hc 1`. Use `set ρ : A →ₐ[R] c.C := θ.pt c.C c.j with hρ`. Establish `key : ∀ (ψ : c.C →ₐ[R] K) (a : A), ψ (ρ a) = (io a : Tors G N K → K) (torsMap ψ c.j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ a`. Rewrite using `[← hθ, θ.nat]`. Both sides reduce to the same expression. Establish `lift : ∀ u : c.C, ∃ (k : ℕ) (a : A), ρ a = algebraMap R c.C c.r ^ k * u ∧ ∀ x, (∀ ψ : c.C →ₐ[R] K, x ≠ torsMap ψ c.j) → (io a : Tors G N K → K) x = 0`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, g, hg, h1, h2⟩` from `hext u`. Use `⟨k, io.symm ⟨g, hg⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `hsep` to reduce the goal to its premises. Introduce `ψ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h1 ψ` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Rewrite using `[map_sub, key, AlgEquiv.apply_symm_apply, map_mul, map_pow, AlgHom.commutes]`. Conclude with `sub_eq_zero.2 this`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `h2 x (fun ψ => by rw [_root_.one_mul]; exact hx ψ)`. Take `⟨k, e₀, he₀, he₀z⟩` from `lift 1`. Rewrite `he₀` using `[_root_.mul_one]`. Establish `hr : IsUnit (algebraMap R c.C c.r)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (Localization.Away c.r) c.C]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit c.r).map _`. Establish `he : ρ (algebraMap R A c.r * e₀) = algebraMap R c.C c.r ^ (k + 1)`. Rewrite using `[map_mul, AlgHom.commutes, he₀, pow_succ']`. Use `⟨algebraMap R A c.r * e₀, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra A c.C := ρ.toRingHom.toAlgebra`. Establish `ham : ∀ a, algebraMap A c.C a = ρ a` using `fun _ => rfl`. Use `IsLocalization.Away.mk _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[ham, he]`. Conclude with `hr.pow _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `u`. Take `⟨m, a, ha, -⟩` from `lift u`. Use `⟨m, algebraMap R A c.r ^ (k * m) * a, ?_⟩` and prove the remaining obligations. Rewrite using `[ham, ham, he, map_mul, map_pow, AlgHom.commutes, ha]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Rewrite `hab` using `[ham, ham]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: e₀ * a = e₀ * b`. Apply `io.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, map_mul]`. Use `show (io e₀ : Tors G N K → K) x * (io a : Tors G N K → K) x = (io e₀ : Tors G N K → K) x * (io b : Tors G N K → K) x`. Distinguish the cases in `hx : ∃ ψ : c.C →ₐ[R] K, x = torsMap ψ c.j`.
-
-Take `⟨ψ, rfl⟩` from `hx`. Rewrite using `[← key ψ a, ← key ψ b, hab]`. Rewrite using `[he₀z x (fun ψ h => hx ⟨ψ, h⟩), zero_mul, zero_mul]`. Rewrite using `[pow_one, _root_.mul_assoc, _root_.mul_assoc, this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_isLocalization_away : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] (io : A ≃ₐ[R] ord G N K) (θ : TorsPt G N A), (∀ (x : Tors G N K) (a : A), θ.pt K x a = (io a : Tors G N K → K) x) → ∀ (q : PrimeSpectrum R) (c : PreChart G N q), c.IsGrp → ∃ e : A, @IsLocalization.Away A _ e c.C _ (θ.pt c.C c.j).toRingHom.toAlgebra := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ io θ hθ q c hc

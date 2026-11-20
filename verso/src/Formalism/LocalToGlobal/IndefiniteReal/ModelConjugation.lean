@@ -27,11 +27,11 @@ def toCj (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] : H ≃ₗ�
   norm_map' _ := rfl
 
 /- English proof (translation)
-Establish `hC : Formalism.MainNotions.S.IsDS (revE ε) (revP lam) (sigC σ)` using `discrete_series_holds n ε H σ lam hσ`. Establish `hlam' : Formalism.QuantumDeterminants.IsHCParam (revP lam)` using `harish_chandra_holds n lam hlam`. Establish `hgap' : Formalism.QuantumDeterminants.GapAtLeast (revE ε) (revP lam) h` using `spectral_gap_holds n ε lam h hgap`. Take `⟨-, -, -, -, hU⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_props_large_gap n (revE ε) (revP lam) hlam' h hgap' hbig (Cj H) (sigC σ) hC`. Take `⟨U', hU'⟩` from `hU H' σ' hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(toCj H).trans U', fun m hm x => ?_⟩` and prove the remaining obligations. Establish `hm' : revM m ∈ Formalism.MainNotions.S.UJset (revE ε)` using `revM_mem_UJset' hm`. Establish `e1 : Cj.mk (σ m x) = sigC σ (revM m) (Cj.mk x)` using `by show Cj.mk (σ m x) = cjOp (σ (revM (revM m))) (Cj.mk x)`. Rewrite using `[revM_revM]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show U' (Cj.mk (σ m x)) = σ' (revM m) (U' (Cj.mk x))`. Rewrite using `[e1, hU' _ hm']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjDS_unique (ε : Fin n → Bool) (lam : Fin n → ℝ) (hlam : Formalism.QuantumDeterminants.IsHCParam lam) (h : ℝ)
     (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hbig : 2 * (n : ℝ) < h)
@@ -58,9 +58,9 @@ theorem conjDS_unique (ε : Fin n → Bool) (lam : Fin n → ℝ) (hlam : Formal
 def Rm (n : ℕ) : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if j = Fin.rev i then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [revM, Rm, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.of_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (Fin.rev j)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (by rw [h, Fin.rev_rev])`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem revM_eq_Rm (m : Matrix (Fin n) (Fin n) ℂ) : revM m = Rm n * m * Rm n := by
   ext i j
@@ -75,7 +75,7 @@ theorem revM_eq_Rm (m : Matrix (Fin n) (Fin n) ℂ) : revM m = Rm n * m * Rm n :
   · simp
 
 /- English proof (translation)
-Establish `h` using `revM_eq_Rm (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite `h` using `[revM_one, Matrix.mul_one]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rm_mul_self : Rm n * Rm n = 1 := by
   have h := revM_eq_Rm (1 : Matrix (Fin n) (Fin n) ℂ)
@@ -83,7 +83,7 @@ theorem Rm_mul_self : Rm n * Rm n = 1 := by
   exact h.symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Rm, conjTranspose_apply, Matrix.of_apply]`. Distinguish the cases in `h : i = Fin.rev j`. Rewrite using `[if_pos h, if_pos (by rw [h, Fin.rev_rev]), star_one]`. Rewrite using `[if_neg h, if_neg (fun h' => h (by rw [h', Fin.rev_rev])), star_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rm_conjTranspose : (Rm n)ᴴ = Rm n := by
   ext i j
@@ -93,9 +93,7 @@ theorem Rm_conjTranspose : (Rm n)ᴴ = Rm n := by
   · rw [if_neg h, if_neg (fun h' => h (by rw [h', Fin.rev_rev])), star_zero]
 
 /- English proof (translation)
-Introduce `g hg x hx`. Establish `hle : Formalism.MainNotions.S.lowKSub ε lam σ ≤ (Formalism.MainNotions.S.lowKSub ε lam σ).comap (σ g : H →ₗ[ℂ] H)`. Apply `sSup_le` to reduce the goal to its premises. Introduce `S hS y hy`. Conclude with `le_sSup hS (hS.2.1 g hg y hy)`.
-
-Conclude with `hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowKSub_kStable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
@@ -108,29 +106,25 @@ theorem lowKSub_kStable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   exact hle hx
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `eε : εM = revE εX` using `funext fun a => by rw [hε a]; rfl`. Establish `el : lamM = revP lamX` using `funext fun a => by rw [hl a]; rfl`. Substitute `eε el` using the available equality. Take `⟨U0, hU0⟩` from `conjDS_unique εX lamX hlam h hgap hbig H σ hσ H' σ' hσ'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `set k : Matrix (Fin N) (Fin N) ℂ := A * Rm N with hk`. Use `set k' : Matrix (Fin N) (Fin N) ℂ := Rm N * A' with hk'`. Establish `hkk' : k * k' = 1`. Rewrite using `[hk, hk', Matrix.mul_assoc, ← Matrix.mul_assoc (Rm N), Rm_mul_self, Matrix.one_mul, h1]`. Establish `hk'k : k' * k = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, hk', Matrix.mul_assoc, ← Matrix.mul_assoc A', h2, Matrix.one_mul, Rm_mul_self]`. Establish `hkU : k ∈ Formalism.MainNotions.S.UJset (revE εX)` using `by show kᴴ * PI.UpqRep.Jm (revE εX) * k = PI.UpqRep.Jm (revE εX)`. Rewrite using `[hk, conjTranspose_mul, Rm_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = PI.UpqRep.Jm (revE εX) := by rw [hJ, ← revM_eq_Rm, revM_Jm]`. Establish `ujMul : ∀ a b : Matrix (Fin N) (Fin N) ℂ, a ∈ Formalism.MainNotions.S.UJset (revE εX) → b ∈ Formalism.MainNotions.S.UJset (revE εX) → a * b ∈ Formalism.MainNotions.S.UJset (revE εX)`. Introduce `a b ha hb`. Establish `ha' : aᴴ * PI.UpqRep.Jm (revE εX) * a = PI.UpqRep.Jm (revE εX)` using `ha`. Establish `hb' : bᴴ * PI.UpqRep.Jm (revE εX) * b = PI.UpqRep.Jm (revE εX)` using `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show (a * b)ᴴ * PI.UpqRep.Jm (revE εX) * (a * b) = PI.UpqRep.Jm (revE εX)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = PI.UpqRep.Jm (revE εX) := by rw [ha', hb']`. Establish `hk'U : k' ∈ Formalism.MainNotions.S.UJset (revE εX)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk0 : kᴴ * PI.UpqRep.Jm (revE εX) * k = PI.UpqRep.Jm (revE εX)` using `hkU`. Use `show k'ᴴ * PI.UpqRep.Jm (revE εX) * k' = PI.UpqRep.Jm (revE εX)`. Combine the equalities or inequalities in the displayed calculation. Establish `hrep` using `hσ'.2.2.1`. Establish `hmul : ∀ a b, a ∈ Formalism.MainNotions.S.UJset (revE εX) → b ∈ Formalism.MainNotions.S.UJset (revE εX) → ∀ y, σ' (a * b) y = σ' a (σ' b y)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b ha hb y`. Rewrite using `[hrep.1.2 a ha b hb]`. Both sides reduce to the same expression. Establish `hone : ∀ y, σ' 1 y = y` using `by intro y; rw [hrep.1.1]; rfl`. Set `Lk : H' →ₗᵢ[ℂ] H'` to `⟨(σ' k : H' →ₗ[ℂ] H'), hrep.2.1 k hkU⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLk : Function.Surjective Lk` using `fun y => ⟨σ' k' y, by show σ' k (σ' k' y) = y`. Rewrite using `[← hmul k k' hkU hk'U, hkk', hone]⟩`. Use `⟨U0.trans (LinearIsometryEquiv.ofSurjective Lk hLk), ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm x`. Establish `hmr : revM m ∈ Formalism.MainNotions.S.UJset (revE εX)` using `revM_mem_UJset' hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAm : A * m * A' = k * revM m * k'`. Rewrite using `[revM_eq_Rm, hk, hk']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Rm N) (Rm N), Rm_mul_self, Matrix.one_mul, ← Matrix.mul_assoc (Rm N) (Rm N), Rm_mul_self, Matrix.one_mul]`. Use `show σ' k (U0 (σ m x)) = σ' (A * m * A') (σ' k (U0 x))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU0 m hm x, hAm, ← hmul _ _ (ujMul _ _ (ujMul _ _ hkU hmr) hk'U) hkU, Matrix.mul_assoc (k * revM m), hk'k, Matrix.mul_one, hmul _ _ hkU hmr]`. Use `⟨k, hkU, (Formalism.MainNotions.S.lowKSub εX lamX σ).map (U0 : H →ₛₗ[starRingEnd ℂ] H'), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hfin` using `(ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_props_large_gap _ εX lamX hlam h hgap hbig H σ hσ).2.2.1 (Formalism.QuantumDeterminants.lowK εX lamX)`. Establish `hfg : (Formalism.MainNotions.S.lowKSub εX lamX σ).FG` using `(Submodule.fg_iff_finiteDimensional _).2 hfin`. Conclude with `(Submodule.fg_iff_finiteDimensional _).1 (hfg.map _)`.
-
-Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Establish `hm : revM g ∈ Formalism.REAL.Kset εX` using `revM_mem_Kset hg`. Establish `hmU : revM g ∈ Formalism.MainNotions.S.UJset εX` using `ReciprocityTheory.ChartRestriction.DS.HW.hw_kset_subset εX hm`. Use `⟨σ (revM g) x, lowKSub_kStable εX lamX σ (revM g) hm x hx, ?_⟩` and prove the remaining obligations. Use `show U0 (σ (revM g) x) = σ' g (U0 x)`.
-
-Rewrite using `[hU0 _ hmU x, revM_revM]`. Introduce `w hw`. Conclude with `⟨U0 w, Submodule.mem_map_of_mem hw, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conjDS_frame {N : ℕ} (hN : N = n) (εX : Fin n → Bool) (lamX : Fin n → ℝ) (hlam : Formalism.QuantumDeterminants.IsHCParam lamX)
     (h : ℝ) (hgap : Formalism.QuantumDeterminants.GapAtLeast εX lamX h) (hbig : 2 * (n : ℝ) < h)
@@ -230,23 +224,19 @@ def ModelConjAt (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : Formalism.I
     U (X.B.w v) ∈ M.sm τ ∧ ‖U (X.B.w v)‖ = 1
 
 /- English proof (translation)
-Establish `hdsM` using `M.ds τ`. Use `haveI : CompleteSpace (M.H τ) := hdsM.1`. Take `⟨U, hU, k, hk, W, hWf, hWK, hlow⟩` from `conjDS_frame hN (X.B.I.ε v) (X.B.lam v) hlamX hX hgapX hbigX (X.B.H v) (X.B.σ v) (X.ds v) (M.H τ) (M.σ τ) (M.ε τ) (M.lam τ) hdsM hε hl A A' h1 h2 hJ`. Take `⟨w', hw', hUw⟩` from `hlow (X.B.w v) (X.low v).2`. Use `⟨U, hU, ?_, by rw [LinearIsometryEquiv.norm_map]; exact (X.low v).1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsm` using `(ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_props_large_gap V.rank (M.ε τ) (M.lam τ) hlamM hM hgapM hbigM (M.H τ) (M.σ τ) hdsM).2.2.2.1 W hWf hWK w' hw'`. Establish `hw'sm : w' ∈ M.sm τ` using `Submodule.subset_span (Formalism.IndefR.PeterssonHilbertSpace.sm_transfer (M.ε τ) (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (lieAt V τ) (fun X hX => hX) w' (Formalism.IndefR.LowestKTypeSmoothness.smoothOnH_of_isSmoothVecU (M.ε τ) (M.σ τ) w' hsm))`. Establish `hfr : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hk' : kᴴ * Formalism.REAL.Jm (M.ε τ) * k = Formalism.REAL.Jm (M.ε τ)` using `hk`. Establish `hkdet : IsUnit k.det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJd : (Formalism.REAL.Jm (M.ε τ)).det ≠ 0`. Use `congrArg Matrix.det (Formalism.REAL.Jm_mul_self (M.ε τ))` as an intermediate fact. Introduce `h0`. Rewrite `this` using `[det_mul, h0, mul_zero, det_one]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Matrix.det hk'` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => hJd ?_` and prove the remaining obligations. Rewrite `this` using `[h0, mul_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set g0 : Matrix (Fin V.rank) (Fin V.rank) ℂ := (M.fr τ)⁻¹ * k * M.fr τ with hg0`. Establish `hg0u : IsUnit g0`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hg0, det_mul, det_mul]`. Conclude with `((isUnit_nonsing_inv_det _ hfr).mul hkdet).mul hfr`. Establish `hg0mem : g0 ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `by show g0ᴴ * gramAt D V τ * g0 = gramAt D V τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← M.fr_gram τ, hg0]`. Establish `hfrh : IsUnit (M.fr τ)ᴴ.det` using `by rw [det_conjTranspose]; exact hfr.star`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = (M.fr τ)ᴴ * (kᴴ * Formalism.REAL.Jm (M.ε τ) * k) * M.fr τ := by`. Rewrite using `[Matrix.nonsing_inv_mul _ hfrh, Matrix.mul_nonsing_inv _ hfr]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by rw [hk']`. Set `g : Formalism.IndefR.SchurOrthogonalityAlt.Gt V τ` to `⟨hg0u.unit, hg0mem⟩`.
-
-Establish `hrep : M.rep τ (Formalism.IndefR.SchurOrthogonalityAlt.gm g) = M.σ τ k` using `by show M.σ τ (M.fr τ * g0 * (M.fr τ)⁻¹) = M.σ τ k`. Use `congr 1`. Rewrite using `[hg0]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hfr, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hfr, Matrix.one_mul]`.
-
-Rewrite using `[hUw, ← hrep]`. Conclude with `Formalism.IndefR.SchurOrthogonalityAlt.sm_stable M τ g hw'sm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelConjAt_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : Formalism.IndefR.Mult.DSModel V S)
     (v : NumberField.InfinitePlace X.B.I.F) (τ : D.what₂.Tau) (hN : V.rank = X.B.I.n)

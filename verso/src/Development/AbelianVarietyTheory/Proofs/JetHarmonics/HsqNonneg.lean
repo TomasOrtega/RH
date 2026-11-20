@@ -10,7 +10,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.SupTau
 
 /- English proof (translation)
-Unfold `Hsq`. Apply `mul_nonneg (le_trans zero_le_one (le_max_left _ _))` to reduce the goal to its premises. Rewrite using `[show 20 * (r + 1) = 2 * (10 * (r + 1)) by ring, pow_mul]`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem hsq_nonneg (r : ℕ) (T b : ℝ) : 0 ≤ Hsq r T b := by
   unfold Hsq
@@ -19,7 +19,7 @@ theorem hsq_nonneg (r : ℕ) (T b : ℝ) : 0 ≤ Hsq r T b := by
   positivity
 
 /- English proof (translation)
-Establish `h2 : (Real.sqrt (A * A') ^ n) ^ 2 = A ^ n * A' ^ n`. Rewrite using `[← pow_mul, mul_comm n 2, pow_mul, Real.sq_sqrt (mul_nonneg hA hA'), mul_pow]`. Apply `(pow_le_pow_iff_left₀ (by positivity) (by positivity) two_ne_zero).1` to reduce the goal to its premises. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem arith (a a' d e A A' : ℝ) (n : ℕ) (ha : 0 ≤ a) (ha' : 0 ≤ a') (hd : 0 < d) (he : 0 < e) (hA : 0 ≤ A)
     (hA' : 0 ≤ A') (h : a ^ 2 * d / e ≤ A ^ n) (h' : a' ^ 2 * d / e ≤ A' ^ n) :
@@ -32,17 +32,17 @@ theorem arith (a a' d e A A' : ℝ) (n : ℕ) (ha : 0 ≤ a) (ha' : 0 ≤ a') (h
     _ ≤ A ^ n * A' ^ n := mul_le_mul h h' (by positivity) (by positivity)
 
 /- English proof (translation)
-Introduce `hyp P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hN' hS ν hν I hI`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Distinguish the cases in `hz : J ν = 0 ∨ J (ν + eZ I) = 0`. Rewrite using `[hS.tau_zero ν I hz, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Check the signs of the components of the expression. Rewrite `hz` using `[not_or]`. Establish `h1 : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hc`. Conclude with `hz.1 (hS.zero ν hc)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h2 : n1 (ν + eZ I) ≤ q0 ∧ NzOn (R (ν + eZ I)) (l (ν + eZ I)) ∧ NzOn (R (ν + eZ I)) (l' (ν + eZ I))`. Assume the negation of the conclusion as `hc`. Conclude with `hz.2 (hS.zero _ hc)`. Take `⟨-, -, -, hT, hT', hty, hty'⟩` from `p.hP`. Take `⟨νq, νq', hG, hG'⟩` from `GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' hty hty'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨io, pr, ep, hTens, hκ⟩` from `hS.tau_eq ν hν`. Take `⟨κ, κ', hk, hk', ht⟩` from `hκ ⟨I, hI⟩ hz.1 hz.2`. Establish `b1` using `GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wp lam P.u b bv ga h q0 _ _ _ _ _ νq R l dg ⟨hN, hS.fam, hG, hS.left⟩ ν hν io pr ep hTens h1.2.1 ⟨I, hI⟩ κ h2.2.1 hk`. Establish `b2` using `GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wq lam P.u' b bv ga h q0 _ _ _ _ _ νq' R l' dg ⟨hN', hS.fam, hG', hS.right⟩ ν hν io pr ep hTens h1.2.2 ⟨I, hI⟩ κ' h2.2.2 hk'`. Rewrite `b1` using `[hT]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b2` using `[hT']`. Establish `s1` using `(hS.coef ν h1.1 h1.2.1 h1.2.2).2`. Establish `s2` using `(hS.coef _ h2.1 h2.2.1 h2.2.2).2`. Establish `d1` using `(hS.left ν h1.1).2.1`. Establish `d2` using `(hS.left _ h2.1).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hep : ‖(ep ⟨I, hI⟩ : ℂ)‖ = 1`. Apply the tactic sequence `rcases hTens.ep_sq ⟨I, hI⟩ with h | h <;> simp [h]`. Establish `ht' : tau ν I = (ep ⟨I, hI⟩ : ℂ) * κ' * star κ * s ν / s (ν + eZ I)` using `ht`. Rewrite using `[ht', norm_div, norm_mul, norm_mul, norm_mul, hep, one_mul, norm_star, s1, s2]`. Conclude with `arith _ _ _ _ _ _ _ (norm_nonneg _) (norm_nonneg _) d1 d2 (hsq_nonneg _ _ _) (hsq_nonneg _ _ _) b1 b2`.
+A detailed English derivation is pending.
 -/
 theorem tau_bound : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Num P.k P.r lam P.u' b bv ga h q0 → Sup p lam q0 R l l' dg s J tau → ∀ ν, n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∀ I : Finset (Fin (2 * P.r + P.k + 1)), I.card = P.r + 1 → ‖tau ν I‖ ≤ Real.sqrt (Hsq P.r P.T b * Hsq P.r P.T' b) ^ (P.r + 1) := by
   intro hyp P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hN' hS ν hν I hI

@@ -108,14 +108,14 @@ def ConjRatLift5 : Prop :=
      GalOut R i ph
 
 /- English proof (translation)
-Introduce `hc` and use `h ⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AdelC.full {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (h : AdelC R F) :
     AdelicLiftScalar R F := fun hc => h ⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hc` and use `h D G Pl0 T0 A T R F κ v₀ O ph (GlobalTheory.Core5.of_char hc)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConjRatLift5.full (h : ConjRatLift5) : GlobalTheory.ConjScalar.ConjRatLift :=
   fun D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hc => h D G Pl0 T0 A T R F κ v₀ O ph (GlobalTheory.Core5.of_char hc)

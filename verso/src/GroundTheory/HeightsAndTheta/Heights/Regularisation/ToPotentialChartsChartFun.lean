@@ -16,7 +16,7 @@ open GroundTheory.Heights₂.Heights.Regular (PotentialCharts)
 noncomputable section
 
 /- English proof (translation)
-Establish `hK : IsCompact (e '' closure s)` using `isClosed_closure.isCompact.image_of_continuousOn (e.continuousOn.mono hs)`. Use `⟨hK, closure_minimal ?_ hK.isClosed⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hys⟩`. Conclude with `⟨e.symm y, subset_closure hys, e.right_inv hy⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem closure_image_subset {X Y : Type*} [TopologicalSpace X] [CompactSpace X] [TopologicalSpace Y]
     [T2Space Y] (e : OpenPartialHomeomorph X Y) {s : Set X} (hs : closure s ⊆ e.source) :
@@ -28,7 +28,7 @@ theorem closure_image_subset {X Y : Type*} [TopologicalSpace X] [CompactSpace X]
   exact ⟨e.symm y, subset_closure hys, e.right_inv hy⟩
 
 /- English proof (translation)
-Establish `hK : IsCompact (e.symm '' closure s)` using `hc.image_of_continuousOn (e.continuousOn_symm.mono hs)`. Use `closure_minimal ?_ hK.isClosed` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxs⟩`. Conclude with `⟨e x, subset_closure hxs, e.left_inv hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem closure_preimage_subset {X Y : Type*} [TopologicalSpace X] [T2Space X] [TopologicalSpace Y]
     (e : OpenPartialHomeomorph X Y) {s : Set Y} (hc : IsCompact (closure s))
@@ -93,9 +93,9 @@ variable [CompactSpace X] (P : PotentialCharts A) (om : LocPot X) (om_pot : IsPo
   (om_pos : IsPosPot A om)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, -, hm⟩`. Establish `hm' : (P.chart j).symm (P.chart j x) ∈ P.mid j` using `hm`. Rewrite `hm'` using `[(P.chart j).left_inv hx]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Establish `hs` using `P.mid_subset_source j hx`. Use `⟨hs, (P.chart j).map_source hs, ?_⟩` and prove the remaining obligations. Use `show (P.chart j).symm (P.chart j x) ∈ P.mid j`. Rewrite using `[(P.chart j).left_inv hs]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ofPotentialCharts_V' (j : Fin P.N) :
     (ofPotentialCharts P om om_pot om_pos).V' j = P.mid j := by
@@ -111,9 +111,9 @@ theorem ofPotentialCharts_V' (j : Fin P.N) :
     rwa [(P.chart j).left_inv hs]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, -, hm⟩`. Establish `hm' : (P.chart j).symm (P.chart j x) ∈ P.inner j` using `hm`. Rewrite `hm'` using `[(P.chart j).left_inv hx]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Establish `hs` using `P.mid_subset_source j (P.inner_subset_mid j hx)`. Use `⟨hs, (P.chart j).map_source hs, ?_⟩` and prove the remaining obligations. Use `show (P.chart j).symm (P.chart j x) ∈ P.inner j`. Rewrite using `[(P.chart j).left_inv hs]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ofPotentialCharts_V'' (j : Fin P.N) :
     (ofPotentialCharts P om om_pot om_pos).V'' j = P.inner j := by
@@ -138,7 +138,7 @@ def restrChart (j : Fin R.n) : OpenPartialHomeomorph X (Fin D → ℂ) :=
   ((R.ψ j).symm.restrOpen (R.W j) (R.isOpen_kappaOpenNeighbourhood j)).symm
 
 /- English proof (translation)
-The claim follows from `inter_eq_right.2 (R.W_subset j)`.
+A detailed English derivation is pending.
 -/
 theorem restrChart_target (j : Fin R.n) : (R.restrChart j).target = R.W j :=
   inter_eq_right.2 (R.W_subset j)
@@ -208,11 +208,11 @@ variable [CompactSpace X] [T2Space X]
 end RoundTrip
 
 /- English proof (translation)
-Introduce `R`. Establish `hV' : R.V' j = P.mid j` using `RegCharts.ofPotentialCharts_V' P om om_pot om_pos j`. Establish `hV'' : R.V'' j = P.inner j` using `RegCharts.ofPotentialCharts_V'' P om om_pot om_pos j`. Rewrite using `[hV', hV'']`. Take `⟨L, hL, hLm, hLη⟩` from `hη.eq_neg_one j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hLs : L ⊆ (P.chart j).source` using `hLm.trans (P.mid_subset_source j)`. Use `⟨hη.smooth j, hη.bounds j, hη.eq_zero j, P.chart j '' L, hL.isCompact.image_of_continuousOn ((P.chart j).continuousOn.mono hLs), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨(P.chart j).map_source (hLs hx), ?_⟩` and prove the remaining obligations. Use `show (P.chart j).symm (P.chart j x) ∈ P.mid j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(P.chart j).left_inv (hLs hx)]`. Conclude with `hLm hx`. Introduce `x hx hK`. Conclude with `hLη x ⟨hx, fun hxL => hK ⟨x, hxL, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCutoffFamily.ofPotentialCharts [CompactSpace X] {P : PotentialCharts A} {om : LocPot X}
     {om_pot : IsPotential A om} {om_pos : IsPosPot A om} {η : Fin P.N → X → ℝ} {Cη : ℝ}
@@ -238,11 +238,9 @@ theorem IsCutoffFamily.ofPotentialCharts [CompactSpace X] {P : PotentialCharts A
     exact hLη x ⟨hx, fun hxL => hK ⟨x, hxL, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `P`. Take `⟨h1, h2, h3, ⟨K, hK, hKW, hKη⟩, -⟩` from `hη j`. Establish `hKt : K ⊆ (R.ψ j).target` using `hKW.trans ((subset_closure.trans (R.closure_W'_subset j)).trans (R.W_subset j))`. Use `⟨h1, h2, h3, (R.ψ j).symm '' K, (hK.image_of_continuousOn ((R.ψ j).continuousOn_symm.mono hKt)).isClosed, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(R.ψ j).map_target (hKt hy), ?_⟩` and prove the remaining obligations. Use `show R.ψ j ((R.ψ j).symm y) ∈ R.W' j`. Rewrite using `[(R.ψ j).right_inv (hKt hy)]`. Conclude with `hKW hy`. Introduce and unpack `x ⟨hx, hxL⟩`.
-
-Use `hKη x hx fun hxK => hxL ⟨R.ψ j x, hxK, ?_⟩` and prove the remaining obligations. Conclude with `(R.ψ j).left_inv hx.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsCutoffFamily.toPotentialCharts [T2Space X] {R : RegCharts A} {hW : ∀ j, R.W j ⊆ ball 0 1}
     {C : ℝ} {η : Fin R.n → X → ℝ} (hη : R.IsCutoffFamily C η) (j : Fin R.n) :
@@ -266,21 +264,19 @@ theorem IsCutoffFamily.toPotentialCharts [T2Space X] {R : RegCharts A} {hW : ∀
     exact (R.ψ j).left_inv hx.1
 
 /- English proof (translation)
-Unfold `regMax`. Use `set e := MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => ℝ) p`. Establish `hmp : MeasurePreserving e (Measure.pi fun _ : ι => (volume : Measure ℝ)) ((Measure.pi fun _ : {j // p j} => (volume : Measure ℝ)).prod (Measure.pi fun _ : {j // ¬p j} => (volume : Measure ℝ)))` using `measurePreserving_piEquivPiSubtypeProd (fun _ : ι => (volume : Measure ℝ)) p`. Use `set G : ({j // p j} → ℝ) → ℝ := fun u => tmax (fun i : {j // p j} => f i + η * u i) * ∏ i, kθ (u i)`. Use `set H : ({j // ¬p j} → ℝ) → ℝ := fun w => ∏ i, kθ (w i)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ h : ι → ℝ, tmax (fun j => (if p j then f j else f c - η) + η * h j) * ∏ j, kθ (h j) = G (e h).1 * H (e h).2`. Introduce `h`. Establish `hprod : ∏ j, kθ (h j) = (∏ i : {j // p j}, kθ (h i)) * ∏ i : {j // ¬p j}, kθ (h i)` using `(Fintype.prod_subtype_mul_prod_subtype p (fun j => kθ (h j))).symm`. Use `show _ = tmax (fun i : {j // p j} => f i + η * h i) * (∏ i : {j // p j}, kθ (h i)) * ∏ i : {j // ¬p j}, kθ (h i)`. Rewrite using `[mul_assoc, ← hprod]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : ∏ j, kθ (h j) = 0`. Rewrite using `[h0, mul_zero, mul_zero]`. Use `congr 1`. Establish `hh : ∀ j, |h j| ≤ 1 / 2` using `fun j => abs_le_of_kθ_ne fun hj => h0 (Finset.prod_eq_zero (Finset.mem_univ j) hj)`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `tmax_le` to reduce the goal to its premises. Introduce `j`. Distinguish the cases in `hj : p j`. Rewrite using `[if_pos hj]`. Conclude with `le_tmax (fun i : {j // p j} => f i + η * h i) ⟨j, hj⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[if_neg hj]`. Use `le_trans ?_ (le_tmax (fun i : {j // p j} => f i + η * h i) ⟨c, hc⟩)` and prove the remaining obligations. Establish `h1 : η * h j ≤ η * (1 / 2)` using `mul_le_mul_of_nonneg_left (abs_le.1 (hh j)).2 hη`. Establish `h2 : η * (-(1 / 2)) ≤ η * h c` using `mul_le_mul_of_nonneg_left (abs_le.1 (hh c)).1 hη`. Use `show f c - η + η * h j ≤ f c + η * h c`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `tmax_le` to reduce the goal to its premises. Introduce `i`. Use `le_tmax (fun j => (if p j then f j else f c - η) + η * h j) i.1` as an intermediate fact. Simplify using `only [if_pos i.2] at this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Repeatedly rewrite using `[key]`. Rewrite using `[show (volume : Measure (ι → ℝ)) = Measure.pi fun _ => volume from rfl, hmp.integral_comp' (fun z => G z.1 * H z.2), integral_prod_mul]`. Establish `hH : ∫ w, H w ∂(Measure.pi fun _ : {j // ¬p j} => (volume : Measure ℝ)) = 1`. Simplify using `only [H]`.
-
-Rewrite using `[integral_fintype_prod_eq_prod (fun _ => kθ)]`. Simplify using `[kθ_integral]`. Rewrite using `[hH, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem regMax_pad {ι : Type*} [Fintype ι] [Nonempty ι] (p : ι → Prop) [DecidablePred p]
     [Nonempty {j // p j}] (f : ι → ℝ) {c : ι} (hc : p c) {η : ℝ} (hη : 0 ≤ η) :
@@ -342,7 +338,7 @@ variable (P : PotentialCharts A)
 open Classical in
 
 /- English proof (translation)
-Establish `: Nonempty (Fin P.N)` using `⟨c⟩`. Rewrite using `[PotentialCharts.glue, regMax_pad (fun j => x ∈ P.mid j) (fun j => a j x) hc hε]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_eq_pad (a : Fin P.N → X → ℝ) {ε : ℝ} (hε : 0 ≤ ε) (x : X) {c : Fin P.N}
     (hc : x ∈ P.mid c) :

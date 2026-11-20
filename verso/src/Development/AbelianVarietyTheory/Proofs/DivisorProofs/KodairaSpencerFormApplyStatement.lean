@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.KottwitzDimSignatur
 open Module GlobalTheory.HTRho GlobalTheory.UPel.Sm GlobalTheory.UPel.Sm.Model
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HTRho.finrank_homO_eq_quot_mSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKodairaSpencerFormApply.lean&line=8#L8)
 -/

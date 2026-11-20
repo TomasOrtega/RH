@@ -13,15 +13,15 @@ namespace GlobalTheory.PerfPairField
 open Module
 
 /- English proof (translation)
-Introduce `x hx hφx`. Use `set T : W →ₗ[K] Module.Dual K A := (φ.domRestrict A).flip with hT`. Establish `hker : LinearMap.ker T ≤ B`. Introduce `y hy`. Apply `h y` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Use `LinearMap.congr_fun (LinearMap.mem_ker.mp hy) ⟨a, ha⟩` as an intermediate fact. Simplify `this` using `[hT]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker T`. Establish `hkb` using `Submodule.finrank_mono hker`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdA : finrank K (Module.Dual K A) = finrank K A` using `Subspace.dual_finrank_eq`. Establish `htop : LinearMap.range T = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use `Submodule.finrank_le (LinearMap.range T)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hx0 : (⟨x, hx⟩ : A) = 0`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff K]`. Introduce `f`. Take `⟨y, rfl⟩ : f ∈ LinearMap.range T` from `htop ▸ Submodule.mem_top`. Simplify using `[hT, hφx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg Subtype.val hx0`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_of_flip_ker {K V W : Type*} [Field K] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] [FiniteDimensional K V] [FiniteDimensional K W]
@@ -55,13 +55,11 @@ end GlobalTheory.PerfPairField
 
 open Module in
 /- English proof (translation)
-Introduce `k _ M N _ _ _ _ _ _ F F' g hM hN hF hF' φ h1 h2`. Establish `eM` using `Subspace.finrank_add_finrank_dualAnnihilator_eq F`. Establish `eN` using `Subspace.finrank_add_finrank_dualAnnihilator_eq F'`. Establish `dM : finrank k (Module.Dual k M) = 2 * g` using `by rw [Subspace.dual_finrank_eq, hM]`. Establish `dN : finrank k (Module.Dual k N) = 2 * g` using `by rw [Subspace.dual_finrank_eq, hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `LinearMap.IsPerfPair.of_injective` to reduce the goal to its premises. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hA : x ∈ F.dualAnnihilator` using `h1 x (fun y _ => by simp [hx])`. Conclude with `GlobalTheory.PerfPairField.eq_zero_of_mem_of_flip_ker φ F.dualAnnihilator F'.dualAnnihilator (by omega) h2 x hA hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `hB : y ∈ F'.dualAnnihilator` using `h2 y (fun x _ => by`. Use `LinearMap.congr_fun hy x` as an intermediate fact. Simplify using `using this)`.
-
-Conclude with `GlobalTheory.PerfPairField.eq_zero_of_mem_of_flip_ker φ.flip F'.dualAnnihilator F.dualAnnihilator (by omega) (fun x hx => h1 x (fun y hy => by simpa using hx y hy)) y hB hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PerfPairField.isPerfPair_of_kernel_conditions : ∀ (k : Type) [Field k] (M N : Type 1) [AddCommGroup M] [Module k M] [AddCommGroup N] [Module k N] [FiniteDimensional k M] [FiniteDimensional k N] (F : Submodule k M) (F' : Submodule k N) (g : ℕ), Module.finrank k M = 2 * g → Module.finrank k N = 2 * g → Module.finrank k F = g → Module.finrank k F' = g → ∀ φ : Module.Dual k M →ₗ[k] Module.Dual k N →ₗ[k] k, (∀ x, (∀ y ∈ F'.dualAnnihilator, φ x y = 0) → x ∈ F.dualAnnihilator) → (∀ y, (∀ x ∈ F.dualAnnihilator, φ x y = 0) → y ∈ F'.dualAnnihilator) → φ.IsPerfPair := by
   intro k _ M N _ _ _ _ _ _ F F' g hM hN hF hF' φ h1 h2

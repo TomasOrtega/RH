@@ -26,7 +26,7 @@ def wS (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ)
       (fun x => Φ (x * (t : E))) 1
 
 /- English proof (translation)
-Unfold `GL2LocalData.Wc wS`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wc_eq_wS (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ)
     (g : GL (Fin 2) F) (h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det) :
@@ -35,7 +35,7 @@ theorem Wc_eq_wS (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `GL2LocalData.Wc`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wc_eq_zero (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ)
     (g : GL (Fin 2) F) (h : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det) :

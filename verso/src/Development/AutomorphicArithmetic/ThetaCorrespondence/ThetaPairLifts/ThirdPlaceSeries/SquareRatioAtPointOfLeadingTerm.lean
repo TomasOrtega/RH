@@ -17,15 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigTop.Fun
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hP hAg hMa hSet hdl hC hLN hTX hTW`. Establish `hBF` using `_root_.GlobalTheory.T.bottom_triple_integral_eq_const_mul_local hP hAg hMa hLN`. Take `⟨c3, h3⟩` from `hSet.atPt hC`. Take `⟨c5, h5⟩` from `Model.gBig_and (Model.gBig_and hLN hTX) (Model.gBig_and hTW hBF)`. Use `⟨max c3 c5, fun CF hCF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k3 : c3 ≤ CF` using `le_trans (by simp) hCF`. Establish `k5 : c5 ≤ CF` using `le_trans (by simp) hCF`. Take `⟨e0, he0, H⟩` from `(h3 CF k3).and (hdl.and hSet)`. Use `⟨e0, he0, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps he hle`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C0, x₀, hg⟩` from `h5 eps CF k5`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨⟨y3, g3⟩, ⟨y5, g5⟩, ⟨y6, g6⟩⟩` from `hK Fm CH hc hL`. Use `⟨max (max y3 y5) (max y6 x₀), fun x hx hle i p hp G W n a ha => ?_⟩` and prove the remaining obligations. Establish `l3 : y3 ≤ x` using `le_trans (by simp) hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l5 : y5 ≤ x` using `le_trans (by simp) hle`. Establish `l6 : y6 ≤ x` using `le_trans (by simp) hle`. Establish `l7 : x₀ ≤ x` using `le_trans (by simp) hle`. Establish `hset` using `g6 x hx l6 i p hp ha.eser`. Establish `hrec : Rec (Fm.L x i)` using `⟨hset.size, hset.host, hset.hF, g5 x hx l5 i p hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨hLN', hTX'⟩, hTW', hBF'⟩` from `hg C0 le_rfl _ (Fm.L x i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact l7) hrec _ _ _ hset.core.lev G`. Establish `hc` using `g3 x hx l3 i p hp G W n a ha`. Establish `hstd : IsStdChar (Fm.D x i) W.ψ (-1)` using `(ha.is.weil.ψ : a.ch.W.ψ = _) ▸ hset.std`. Conclude with `fun i' j' t => sqRatio_mem_of G _ W a.S.toGridChoice a.rm a.c hstd ha.field hc ha.is.const (fun i j => (hLN' i j).1) (hTX' W hstd) (hTW' W a.S.toGridChoice a.rm hstd ha.field) (hBF' W hstd) i' j' t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem square_ratio_at_point_of_leading_term_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.RowClaim.ConstK → LNe → TriEx → Tower → (_root_.GlobalTheory.BigTop.Fun.CharacterAtPoint fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ i j t, GlobalTheory.RowTest.sqRatio ch i j t ∈ Set.range D.what₂.embLL) := by
   intro hP hAg hMa hSet hdl hC hLN hTX hTW
@@ -61,7 +61,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt | exact _root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt | (intros; apply _root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sq_ratio_mem_range_emb_ll : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.RowClaim.ConstK → LNe → TriEx → Tower → (_root_.GlobalTheory.BigTop.Fun.CharacterAtPoint fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ i j t, GlobalTheory.RowTest.sqRatio ch i j t ∈ Set.range D.what₂.embLL) := by
   first | exact @_root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt | exact _root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt | (intros; apply _root_.GlobalTheory.BigTop.Fun.square_ratio_at_point_of_leading_term_alt <;> assumption)

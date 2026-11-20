@@ -36,7 +36,7 @@ variable {G}
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_iff {a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)} :
     a ∈ openCompletion G ↔
@@ -45,7 +45,7 @@ theorem mem_iff {a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)} :
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `a.2 H H' h`.
+A detailed English derivation is pending.
 -/
 theorem apply_eq (a : openCompletion G) {H H' : openFiniteIndex G} (h : (H : Subgroup G) ≤ H') :
     quotientMapOfLE h ((a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) H) =
@@ -55,7 +55,7 @@ theorem apply_eq (a : openCompletion G) {H H' : openFiniteIndex G} (h : (H : Sub
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem ext {a b : openCompletion G}
     (h : ∀ H : openFiniteIndex G, (a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) H =
@@ -79,15 +79,15 @@ theorem of_apply (x : G) (H : openFiniteIndex G) :
   rfl
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.discreteTopology H.2.1`.
+A detailed English derivation is pending.
 -/
 theorem discreteTopology_quotient (H : openFiniteIndex G) : DiscreteTopology (G ⧸ (H : Subgroup G)) :=
   QuotientGroup.discreteTopology H.2.1
 
 /- English proof (translation)
-Establish `hset : (openCompletion G : Set (∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G))) = ⋂ (H : openFiniteIndex G) (H' : openFiniteIndex G) (h : (H : Subgroup G) ≤ H'), {a | quotientMapOfLE h (a H) = a H'}`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Both sides reduce to the same expression. Rewrite using `[hset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun H => isClosed_iInter fun H' => isClosed_iInter fun h => ?_` and prove the remaining obligations. Use `discreteTopology_quotient H` as an intermediate fact. Use `discreteTopology_quotient H'` as an intermediate fact. Conclude with `isClosed_eq ((continuous_of_discreteTopology (f := quotientMapOfLE h)).comp (continuous_apply H)) (continuous_apply H')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed : IsClosed (openCompletion G : Set (∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G))) := by
   have hset : (openCompletion G : Set (∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G))) =
@@ -118,15 +118,13 @@ instance : T2Space (openCompletion G) := by
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[denseRange_iff_closure_range, Set.eq_univ_iff_forall]`. Introduce `a`. Rewrite using `[mem_closure_iff]`. Introduce `U hU haU`. Take `⟨V, hV, rfl⟩` from `isOpen_induced_iff.1 hU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨I, u, hu, hIV⟩` from `isOpen_pi_iff.1 hV _ haU`. Set `H₀ : Subgroup G` to `⨅ H ∈ I, (H : Subgroup G)`. Establish `hH₀ : H₀ ∈ openFiniteIndex G`. Use `⟨?_, Subgroup.finiteIndex_iInf' _ fun H _ => H.2.2⟩` and prove the remaining obligations. Establish `: (H₀ : Set G) = ⋂ H ∈ I, ((H : Subgroup G) : Set G)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[H₀, Subgroup.coe_iInf]`. Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun H _ => H.2.1`. Take `⟨x, hx⟩` from `QuotientGroup.mk_surjective ((a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) ⟨H₀, hH₀⟩)`. Use `⟨of G x, hIV fun H hH => ?_, x, rfl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : H₀ ≤ (H : Subgroup G)` using `iInf₂_le H hH`. Use `apply_eq a (H := ⟨H₀, hH₀⟩) (H' := H) hle` as an intermediate fact. Rewrite `this` using `[← hx, quotientMapOfLE_mk]`. Express the relevant statement in the definitionally equal form `(x : G ⧸ (H : Subgroup G)) ∈ u H`. Rewrite using `[this]`.
-
-Conclude with `(hu H hH).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_of : DenseRange (of G) := by
   rw [denseRange_iff_closure_range, Set.eq_univ_iff_forall]

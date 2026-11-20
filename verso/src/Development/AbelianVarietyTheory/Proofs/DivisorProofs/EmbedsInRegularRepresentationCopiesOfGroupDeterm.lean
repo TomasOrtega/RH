@@ -11,19 +11,19 @@ variable {K Γ R : Type} [Field K] [Group Γ] [CommRing R] [Algebra K R]
   (act : Γ →* (R →ₐ[K] R)) (H : Subgroup Γ) [Fintype H]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_mul_apply (a b : Γ) (x : R) : act (a * b) x = act a (act b x) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_one_apply (x : R) : act 1 x = x := by
   rw [map_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp (Equiv.mulRight g⁻¹)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[← act_mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_act_act (x : R) (g : H) : ∑ k : H, act k (act g x) = ∑ k : H, act k x := by
   rw [← Equiv.sum_comp (Equiv.mulRight g⁻¹)]
@@ -31,7 +31,7 @@ theorem sum_act_act (x : R) (g : H) : ∑ k : H, act k (act g x) = ∑ k : H, ac
   simp [← act_mul_apply]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft g⁻¹)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, ← act_mul_apply, Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_sum_act (x : R) (g : H) : act g (∑ k : H, act k x) = ∑ k : H, act k x := by
   rw [map_sum]
@@ -48,13 +48,13 @@ def invIn (V₁ : Submodule K R) : Submodule K R where
 def trL : R →ₗ[K] R := ∑ g : H, (act g).toLinearMap
 
 /- English proof (translation)
-Simplify using `[trL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trL_apply (x : R) : trL act H x = ∑ g : H, act g x := by
   simp [trL]
 
 /- English proof (translation)
-Rewrite using `[trL_apply]`. Conclude with `⟨V₁.sum_mem fun g _ => hV₁ g x hx, fun g => act_sum_act act H x g⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem trL_mem (V₁ : Submodule K R) (hV₁ : ∀ h : H, ∀ x ∈ V₁, act h x ∈ V₁) (x : R) (hx : x ∈ V₁) :
     trL act H x ∈ invIn act H V₁ := by
@@ -62,9 +62,9 @@ theorem trL_mem (V₁ : Submodule K R) (hV₁ : ∀ h : H, ∀ x ∈ V₁, act h
   exact ⟨V₁.sum_mem fun g _ => hV₁ g x hx, fun g => act_sum_act act H x g⟩
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.mulVec_eq_zero_of_det_nonZeroDivisor (Matrix.transpose (Matrix.of fun h g : H => act ((h : Γ) * g) u)) (by rwa [Matrix.det_transpose]) (fun g : H => act g v) (by`. Use function extensionality and compare the values at `h`. Rewrite using `[Pi.zero_apply, ← hv h]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul (act (g : Γ)), act_mul_apply, mul_comm])`. Simplify `congrFun h0 1` using `[act_one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_traces [DecidableEq H] (u : R)
     (hdet : (Matrix.of fun h g : H => act ((h : Γ) * g) u).det ∈ nonZeroDivisors R) (v : R)
@@ -79,9 +79,9 @@ theorem eq_zero_of_traces [DecidableEq H] (u : R)
   simpa [act_one_apply] using congrFun h0 1
 
 /- English proof (translation)
-Use `GlobalTheory.mulVec_eq_zero_of_det_nonZeroDivisor _ hdet F ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `h2` using `congrArg (fun x => act (g : Γ) x) h0`. Simplify using `only [map_sum, map_zero] at h2`. Rewrite using `[Pi.zero_apply, ← h2]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul (act (g : Γ)), hF, act_mul_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_sum [DecidableEq H] (u : R)
     (hdet : (Matrix.of fun h g : H => act ((h : Γ) * g) u).det ∈ nonZeroDivisors R) (F : H → R)
@@ -102,25 +102,23 @@ namespace GlobalTheory.BadCount
 open GlobalTheory.RegEmbed in
 
 /- English proof (translation)
-Introduce `K Γ R _ _ _ _ _ act H _ _ u hdet V V₁ V₂ _ ρ hρ hV hV₁ hV₁₂`. Set `I` to `invIn act H V₁`. Set `T : H → (V →ₗ[K] I)` to `fun h => ((trL act H).comp ((LinearMap.mulRight K (act h u)).comp V.subtype)).codRestrict I (fun v => trL_mem act H V₁ hV₁ _ (hV h v v.2))`. Establish `hT : ∀ h v, ((T h v : I) : R) = ∑ g : H, act g (v * act h u)` using `fun h v => by`. Simplify using `[T, trL_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `Ψ : (H → I) →ₗ[K] V₂` to `(∑ h : H, (LinearMap.mulRight K (act h u)).comp (I.subtype.comp (LinearMap.proj h))).codRestrict V₂ (fun F => by`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply]`. Conclude with `V₂.sum_mem fun h _ => hV₁₂ h _ (F h).2.1)`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF`. Establish `h0` using `eq_zero_of_sum act H u hdet (fun h => (F h : R)) (fun g h => (F h).2.2 g) (by`. Use `congrArg Subtype.val hF` as an intermediate fact. Simplify `this)` using `[Ψ]`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (congrFun h0 h)`. Use `haveI : Module.Finite K (H → I) := Module.Finite.of_injective Ψ hΨ`. Use `haveI : Module.Finite K I := Module.Finite.of_surjective (LinearMap.proj (R := K) (φ := fun _ : H => I) 1) (fun x => ⟨fun _ => x, rfl⟩)`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hΨ`. Rewrite `hle` using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `b` to `Module.finBasis K I`. Set `j : V →ₗ[K] (Fin (finrank K I) → MonoidAlgebra K H)` to `LinearMap.pi fun i => (MonoidAlgebra.coeffLinearEquiv K).symm.toLinearMap ∘ₗ (Finsupp.linearEquivFunOnFinite K K H).symm.toLinearMap ∘ₗ LinearMap.pi (fun h => (LinearMap.proj i ∘ₗ b.equivFun.toLinearMap) ∘ₗ T h)`. Establish `hj : ∀ v i h, (j v i).coeff h = b.equivFun (T h v) i` using `fun v i h => by`. Simplify using `[j]`. Use `⟨finrank K I, ⟨j, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `hTv : ∀ h, T h v = 0` using `fun h => by`. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hj, hv]`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_zero_of_traces act H u hdet (v : R) fun h => ?_` and prove the remaining obligations. Rewrite using `[← hT, hTv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Introduce `h v i`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[MonoidAlgebra.single_mul_apply, one_mul, hj, hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: T k (ρ h v) = T (h⁻¹ * k) v`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT, hT, hρ]`. Use `conv_rhs => rw [← sum_act_act act H _ h]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
-
-Use `congr 1`. Rewrite using `[map_mul (act (h : Γ)), Subgroup.coe_mul, Subgroup.coe_inv, ← act_mul_apply act (h : Γ) ((h : Γ)⁻¹ * k), mul_inv_cancel_left]`. Rewrite using `[this]`. Rewrite using `[Nat.card_eq_fintype_card, mul_comm]`. Conclude with `hle`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embReg_of_groupDet : ∀ (K Γ R : Type) [Field K] [Group Γ] [Finite Γ] [CommRing R] [Algebra K R] (act : Γ →* (R →ₐ[K] R)) (H : Subgroup Γ) [Fintype H] [DecidableEq H] (u : R), (Matrix.of fun h g : H => act ((h : Γ) * g) u).det ∈ nonZeroDivisors R → ∀ (V V₁ V₂ : Submodule K R) [FiniteDimensional K V₂] (ρ : Representation K Γ V), (∀ g x, (ρ g x : R) = act g x) → (∀ h : H, ∀ x ∈ V, x * act h u ∈ V₁) → (∀ h : H, ∀ x ∈ V₁, act h x ∈ V₁) → (∀ h : H, ∀ x ∈ V₁, x * act h u ∈ V₂) → ∃ n : ℕ, EmbReg ρ H n ∧ n * Nat.card H ≤ finrank K V₂ := by
   intro K Γ R _ _ _ _ _ act H _ _ u hdet V V₁ V₂ _ ρ hρ hV hV₁ hV₁₂

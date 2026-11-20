@@ -26,16 +26,16 @@ variable {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] {m : ℕ}
   {ρ : Representation ℂ G M} {ρF : Representation ℂ G (Fin m → M)}
 
 /- English proof (translation)
-Simplify using `only [opE, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem opE_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (a : G →₀ ℤ) (F : Fin m → M) (i : Fin m) :
     opE ρF a F i = opE ρ a (F i) := by
   simp only [opE, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, h]
 
 /- English proof (translation)
-Establish `hn : ∀ (i : Fin m), ((N : Module.End ℂ (Fin m → M)) F) i = (N : Module.End ℂ M) (F i)` using `fun i => by`. Simplify using `[Module.End.natCast_apply]`. Simplify using `only [ePart, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `e i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← opE_pi h, e, hn]`. Introduce `e`. Use function extensionality and compare the values at `i`. Rewrite using `[opE_pi h, e i, hn]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ePart_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (a : G →₀ ℤ) (N : ℕ) (F : Fin m → M) :
     F ∈ ePart ρF a N ↔ ∀ i, F i ∈ ePart ρ a N := by
@@ -57,7 +57,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {n : ℕ} {s : HidaSetting l L Ω} {V : s.Lev} {lam : Wt L l n} {d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `F`. Use `Iff.trans (ePart_pi (m := m) (M := Ga l L n × GL' n V → Fin d → ℂ) (ρF := (trF (hset Q τ₀) d).comp (sec0 n s)) (ρ := ((actS n V d).comp (MonoidHom.inr _ _)).comp (MonoidHom.inr _ _)) (fun g F i => rfl) a N F) ?_` and prove the remaining obligations. Conclude with `⟨fun h i _ => h i, fun h i => h i trivial⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 private theorem eC_eq (Q : QData V) {c : Coef l} {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (a : GLw n (s.w s.v0) →₀ ℤ) (N : ℕ) :
     eC Q τ₀ d a N = Submodule.pi Set.univ fun _ =>
@@ -68,7 +68,7 @@ private theorem eC_eq (Q : QData V) {c : Coef l} {m : ℕ} (τ₀ : KT n (wt s) 
   exact ⟨fun h i _ => h i, fun h i => h i trivial⟩
 
 /- English proof (translation)
-Rewrite using `[part_eq hS hn hV Q ι τ₀ e ξ σ R hR b φ μ, eC_eq, invE]`. Conclude with `inf_right_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem part_eqE (hS : SecS) (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData V) {c : Coef l} (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
@@ -91,9 +91,9 @@ end UpperTheory.V.Z.Desc.V0
 set_option maxHeartbeats 1600000 in
 open UpperTheory.V.Z.Desc.V0 in
 /- English proof (translation)
-Introduce `hFl hEB hS l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hb σ hσ hun hwt C b φ μ a N`. Establish `hne` using `vs_ne hn hV Q ι τ₀ e ξ hb hσ hun hwt`. Establish `h0` using `hFl l L Ω s n hn V hV Q c ι m τ₀ lam d e ξ hb σ hσ hne C`. Use `Exists.elim h0 fun f hf => ?_` and prove the remaining obligations. Establish `h1` using `part_eqE hS hn hV Q ι τ₀ e ξ σ _ hf.2.1 b φ μ a N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hEB L n V.frame.Vl (fun v => s.w v.1) _ _ _ _ _ C.repL C.repS (actS n V d) f hf.1 hf.2.2 m (KT n (wt s)) (Kc _ n 1) ((Matrix.GeneralLinearGroup.map (ι.toRingHom.comp (algebraMap c.O (Qbar l)))).comp τ₀) b φ μ a N`. Conclude with `rank_of h1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.V0.yDimE :
     UpperTheory.V.Z.J.D.Flath → EigBoxE → UpperTheory.V.Z.J.D.SecS → YDimE := by

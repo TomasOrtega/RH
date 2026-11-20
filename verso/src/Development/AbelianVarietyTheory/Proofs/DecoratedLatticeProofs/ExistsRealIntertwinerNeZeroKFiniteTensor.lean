@@ -15,29 +15,27 @@ open GlobalTheory.Chain.RealIt
 open scoped TensorProduct InnerProductSpace
 
 /- English proof (translation)
-Introduce `hHC D V W S S' M M' θ ω pt It hIt h'`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hIt.ne` to reduce the goal to its premises. Establish `key : ∀ φ (w : ∀ τ, M.H τ) (s : Finset D.what₂.Tau) (v : M'.Vec), (∀ τ ∉ s, (v τ : M'.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M' τ) → ellT M w (inclT M (It φ (PiTensorProduct.tprod ℂ v))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ w s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `v hv`. Establish `e : PiTensorProduct.tprod ℂ v = GlobalTheory.Chain.IoLift.inclK h' (PiTensorProduct.tprod ℂ fun τ => ⟨v τ, hv τ (by simp)⟩)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Chain.IoLift.inclK, PiTensorProduct.map_tprod]`. Both sides reduce to the same expression. Rewrite using `[e, hcon, map_zero, map_zero]`. Consider the case `insert τ s hτ ih`. Introduce `v hv`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hIt.bdd φ w`. Set `ℓ₀ : M'.sm τ →ₗ[ℂ] ℂ` to `(ellT M w ∘ₗ inclT M ∘ₗ It φ) ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap v τ`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`. Establish `hℓv : ∀ y : M'.sm τ, ℓ (y : M'.H τ) = ellT M w (inclT M (It φ (PiTensorProduct.tprod ℂ (Function.update v τ y))))` using `fun y => by`. Use `LinearMap.congr_fun hℓ y` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ℓ₀, MultilinearMap.toLinearMap_apply]`. Establish `hsob : Formalism.L2.Theta.Sobolev₂ (lieAt W τ) (M'.rep τ) ℓ`. Use `⟨[[]], c * ∏ ρ ∈ Finset.univ.erase τ, ‖(v ρ : M'.H ρ)‖, by simp, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hy : u ∈ M'.sm τ` using `Submodule.subset_span hu`. Establish `h1` using `hc (Function.update v τ ⟨u, hy⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hℓv ⟨u, hy⟩]`. Establish `h2 : ∏ ρ, ‖((Function.update v τ ⟨u, hy⟩ ρ : M'.sm ρ) : M'.H ρ)‖ = ‖u‖ * ∏ ρ ∈ Finset.univ.erase τ, ‖(v ρ : M'.H ρ)‖`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun ρ hρ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Rewrite `h1` using `[h2]`. Simplify using `only [List.map_cons, List.map_nil, List.foldr_nil, List.sum_cons, List.sum_nil, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Establish `hk : ∀ u ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M' τ, ℓ u = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `hy : u ∈ M'.sm τ` using `h' τ hu`. Rewrite using `[show u = ((⟨u, hy⟩ : M'.sm τ) : M'.H τ) from rfl, hℓv]`. Use `ih _ fun ρ hρ => ?_` and prove the remaining obligations. Distinguish the cases in `e : ρ = τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hu`. Rewrite using `[Function.update_of_ne e]; exact hv ρ (by simp [e, hρ])`. Establish `h0` using `GlobalTheory.KFiniteDense.eq_zero_of_kFin hHC D W S' M' τ ℓ hsob hk (v τ) (v τ).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0` using `[hℓv, Function.update_eq_self]`. Then use the resulting hypothesis. Use `LinearMap.ext fun φ => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.zero_apply]`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul]`. Establish `h0 : It φ (PiTensorProduct.tprod ℂ v) = 0`. Use `(tensorLaw D V S M).inj ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(tensorLaw D V S M).sep _ fun w => key φ w Finset.univ v (by simp)`.
-
-Rewrite using `[h0, smul_zero]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_inclK : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (pt : PolF D W.rank V.rank → (WO V W → ℂ)) (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M), IsItW θ M M' ω pt It → ∀ h' : GlobalTheory.Chain.IoLift.KSm M', ∃ φ y, It φ (GlobalTheory.Chain.IoLift.inclK h' y) ≠ 0 := by
   classical

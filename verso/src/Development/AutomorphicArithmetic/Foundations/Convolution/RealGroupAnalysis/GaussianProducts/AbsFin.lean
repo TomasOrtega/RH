@@ -10,13 +10,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Take `⟨s, hs⟩` from `UpperTheory.ConvolutionTheory.R2.G.nuPos F E D h`. Take `⟨h₁, c, hnu, hux⟩` from `UpperTheory.ConvolutionTheory.R2.G.uxCen F E D W π s h`. Establish `hnu₁ : ((nu F h₁ : (A F)ˣ) : A F).1 = 1`. Establish `e : nu F h * (s ^ 4)⁻¹ = nu F h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hnu, mul_comm, inv_mul_cancel_left]`. Rewrite using `[← e]`. Conclude with `hs`. Establish `hLf : Pp.Lf f.1` using `(Pp.cuspZero F π f hf).1`. Establish `hterm : ∀ ξ, abelian₂ M (ux W f.1 φ h ξ) = ‖c‖ₑ * abelian₂ M (ux W f.1 φ h₁ ξ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ`. Establish `e : ux W f.1 φ h ξ = fun g => c * ux W f.1 φ h₁ ξ (g * mD (s ^ 2)⁻¹)`. Use function extensionality and compare the values at `fun g => hux f hf φ ξ g`. Rewrite using `[e]`. Conclude with `UpperTheory.ConvolutionTheory.R2.G.lamRight F M _ (UpperTheory.ConvolutionTheory.R2.G.uxAv F E D W f.1 hLf φ h₁ ξ).1 c _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hterm]`. Rewrite using `[ENNReal.tsum_mul_left]`. Conclude with `ENNReal.mul_ne_top enorm_ne_top (UpperTheory.ConvolutionTheory.R2.G.absFin1 F E D W M π f hf φ hφ h₁ hnu₁)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.absFin :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ h : GL (Fin 2) (A E), ∑' ξ, abelian₂ M (ux W f.1 φ h ξ) ≠ ⊤ := by

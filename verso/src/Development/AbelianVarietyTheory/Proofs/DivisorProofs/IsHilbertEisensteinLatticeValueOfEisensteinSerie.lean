@@ -20,9 +20,9 @@ namespace GlobalTheory.HilbFam.EisCmp
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[← NumberField.Embeddings.card F ℂ]`. Use `Fintype.card_of_bijective (f := fun τ : F →+* ℝ ↦ (Complex.ofRealHom.comp τ : F →+* ℂ)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `τ τ' hτ`. Use extensionality with `y`. Use `DFunLike.congr_fun hτ y` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `φ`. Establish `hr : NumberField.ComplexEmbedding.IsReal φ` using `IsTotallyReal.complexEmbedding_isReal φ`. Conclude with `⟨hr.embedding, by ext y; simp⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem card_realEmb (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Fintype.card (Emb F) = Module.finrank ℚ F := by
@@ -37,7 +37,7 @@ theorem card_realEmb (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     exact ⟨hr.embedding, by ext y; simp⟩
 
 /- English proof (translation)
-Use `show v 0 ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F) ∧ v 1 - v 0 * 0 ∈ latM 𝔞 ↔ _`. Rewrite using `[mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_split (𝔞 𝔟 : Frac F) (v : Fin 2 → F) :
     v ∈ split 𝔞 𝔟 0 ↔ v 0 ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F) ∧ v 1 ∈ latM 𝔞 := by
@@ -45,7 +45,7 @@ theorem mem_split (𝔞 𝔟 : Frac F) (v : Fin 2 → F) :
   rw [mul_zero, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[Pi.smul_apply, Units.smul_def, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_smul_apply (ε : (𝓞 F)ˣ) (v : Fin 2 → F) (i : Fin 2) : (ε • v) i = ((ε : 𝓞 F) : F) * v i := by
   rw [Pi.smul_apply, Units.smul_def, Algebra.smul_def]
@@ -58,17 +58,15 @@ def pair (𝔞 𝔟 : Frac F) (q : cls (split 𝔞 𝔟 0)) : LatPair 𝔞 𝔟 
     · exact congrArg Prod.fst h)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q1 q2 h`. Take `⟨ε, h1, h2⟩` from `Quotient.exact h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq q1.1, ← Quotient.out_eq q2.1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(Quotient.sound ?_).symm` and prove the remaining obligations. Use `⟨ε, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (ε • q1.1.out) i = _`. Rewrite using `[unit_smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases i`. Conclude with `h2.symm`. Conclude with `h1.symm`. Introduce `cl`. Take `⟨p, rfl⟩` from `Quotient.exists_rep cl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `v : Fin 2 → F` to `![p.1.2, p.1.1]`. Establish `hv : v ∈ split 𝔞 𝔟 0` using `(mem_split 𝔞 𝔟 v).2 ⟨p.2.2.1, p.2.1⟩`. Establish `hv0 : v ≠ 0` using `fun h ↦ p.2.2.2 (Prod.ext (congrFun h 1) (congrFun h 0))`. Take `⟨ε, hε⟩ : (Quotient.mk (MulAction.orbitRel (𝓞 F)ˣ (Fin 2 → F)) v).out ∈ MulAction.orbit (𝓞 F)ˣ v` from `Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel (𝓞 F)ˣ (Fin 2 → F)) v))`. Establish `hε' : (Quotient.mk (MulAction.orbitRel (𝓞 F)ˣ (Fin 2 → F)) v).out = ε • v` using `hε.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Quotient.mk _ v, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hε']`. Conclude with `Submodule.smul_mem _ (ε : 𝓞 F) hv`. Rewrite using `[hε']`. Conclude with `(smul_ne_zero_iff_ne ε).2 hv0`.
-
-Use `(Quotient.sound (show (latRel 𝔞 𝔟).r p _ from ⟨ε, ?_, ?_⟩)).symm` and prove the remaining obligations. Conclude with `(congrFun hε' 1).trans (unit_smul_apply ε v 1)`. Conclude with `(congrFun hε' 0).trans (unit_smul_apply ε v 0)`.
+A detailed English derivation is pending.
 -/
 theorem bij (𝔞 𝔟 : Frac F) :
     Function.Bijective (fun q : cls (split 𝔞 𝔟 0) ↦ Quotient.mk (latRel 𝔞 𝔟) (pair 𝔞 𝔟 q)) := by
@@ -101,13 +99,13 @@ theorem bij (𝔞 𝔟 : Frac F) :
       · exact (congrFun hε' 0).trans (unit_smul_apply ε v 0)
 
 /- English proof (translation)
-Establish `hP : ∏ τ, latPt w (x 1, x 0) τ = (2 * Real.pi * Complex.I) ^ Module.finrank ℚ F * ∏ τ, coord w 1 x τ`. Rewrite using `[← card_realEmb, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ ↦ ?_` and prove the remaining obligations. Simplify using `only [latPt, coord, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hΛ : (2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F ≠ 0` using `pow_ne_zero _ Complex.two_pi_I_ne_zero`. Unfold `gTerm eisTerm`. Rewrite using `[hP]`. Generalize the expression as in `(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F = Λ at hΛ`. Establish `hn : ((‖Λ‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hΛ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h1 : Λ ^ k * Λ⁻¹ ^ k = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hΛ, one_pow]`. Establish `h2 : ((‖Λ‖ : ℝ) : ℂ) ^ (2 * σ) * ((‖Λ‖ : ℝ) : ℂ) ^ (-2 * σ) = 1`. Rewrite using `[← Complex.cpow_add _ _ hn, show 2 * σ + -2 * σ = 0 by ring, Complex.cpow_zero]`. Rewrite using `[mul_inv, mul_pow, norm_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _)]`. Generalize the expression as in `(∏ τ, coord w 1 x τ)⁻¹ ^ k = A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `((‖∏ τ, coord w 1 x τ‖ : ℝ) : ℂ) ^ (-2 * σ) = B`. Take the linear combination `(-(A * B) * (((‖Λ‖ : ℝ) : ℂ) ^ (2 * σ) * ((‖Λ‖ : ℝ) : ℂ) ^ (-2 * σ))) * h1 - (A * B) * h2`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem term_eq [IsTotallyReal F] (k : ℕ) (σ : ℂ) (w : Emb F → ℂ) (x : Fin 2 → F) :
     gTerm k σ w 1 x = (((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F) ^ k *
@@ -130,9 +128,9 @@ theorem term_eq [IsTotallyReal F] (k : ℕ) (σ : ℂ) (w : Emb F → ℂ) (x : 
   linear_combination (-(A * B) * (((‖Λ‖ : ℝ) : ℂ) ^ (2 * σ) * ((‖Λ‖ : ℝ) : ℂ) ^ (-2 * σ))) * h1 - (A * B) * h2
 
 /- English proof (translation)
-Establish `h1` using `((Equiv.hasSum_iff (Equiv.ofBijective _ (bij 𝔞 𝔟))).2 h).mul_left (((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F) ^ k * ((‖(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F‖ : ℝ) : ℂ) ^ (2 * σ))`. Establish `h2 : (fun q : cls (split 𝔞 𝔟 0) ↦ gTerm k σ w 1 q.1.out) = fun q : cls (split 𝔞 𝔟 0) ↦ (((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F) ^ k * ((‖(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F‖ : ℝ) : ℂ) ^ (2 * σ)) * eisClass 𝔞 𝔟 k σ w (Quotient.mk (latRel 𝔞 𝔟) (pair 𝔞 𝔟 q))`. Use function extensionality and compare the values at `q`. Rewrite using `[eisClass_mk 𝔞 𝔟 hk, term_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_gTerm [IsTotallyReal F] (𝔞 𝔟 : Frac F) {k : ℕ} (hk : Even k) (σ : ℂ) (w : Emb F → ℂ) (S : ℂ)
     (h : HasSum (eisClass 𝔞 𝔟 k σ w) S) :
@@ -153,13 +151,11 @@ theorem hasSum_gTerm [IsTotallyReal F] (𝔞 𝔟 : Frac F) {k : ℕ} (hk : Even
   exact h1
 
 /- English proof (translation)
-Introduce `F _ _ _ k 𝔞 𝔟 G w hk hG hw`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Establish `h` using `hasSum_gTerm 𝔞 𝔟 hk 0 w _ (hG.1 h2 w hw)`. Rewrite `h` using `[mul_zero, Complex.cpow_zero, mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `rfl`. Take `⟨H, hH, rfl⟩` from `hG.2 rfl`. Establish `hn : ((‖(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (pow_ne_zero _ Complex.two_pi_I_ne_zero))`. Use `⟨fun σ ↦ (((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F) ^ 2 * ((‖(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F‖ : ℝ) : ℂ) ^ (2 * σ)) * H σ w, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hHd : DifferentiableOn ℂ (fun σ ↦ H σ w) {σ : ℂ | -1 / 2 < σ.re}` using `hH.2.2 [] w hw`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hAd : Differentiable ℂ fun σ : ℂ ↦ ((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F) ^ 2 * ((‖(2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F‖ : ℝ) : ℂ) ^ (2 * σ)` using `fun σ ↦ (differentiableAt_const _).mul (((differentiableAt_const (2 : ℂ)).mul differentiableAt_id).const_cpow (Or.inl hn))`. Conclude with `hAd.differentiableOn.mul hHd`. Introduce `σ hσ`. Take `⟨hsm, hHe⟩` from `hH.1 σ hσ w hw`. Conclude with `hasSum_gTerm 𝔞 𝔟 hk σ w _ (by rw [hHe]; exact hsm.hasSum)`.
-
-Simplify using `only [mul_zero, Complex.cpow_zero, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGVal_of_isEis : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (G : (Emb F → ℂ) → ℂ)
     (w : Emb F → ℂ), Even k → IsEis 𝔞 𝔟 k G → w ∈ upperHalf F →

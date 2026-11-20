@@ -13,15 +13,13 @@ open scoped Formalism.Per
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hne : ∀ m, NeZero (l ^ m)` using `fun m => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h1 : ∀ m, ∃ a : ℕ, Q.ζQ m = P.ζQ m ^ a` using `fun m => by`. Take `⟨a, -, ha⟩` from `(isPrimitiveRoot_zeta P m).eq_pow_of_pow_eq_one (isPrimitiveRoot_zeta Q m).pow_eq_one`. Conclude with `⟨a, ha.symm⟩`. Use `choose a ha using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hd : ∀ i, (l : ℤ) ^ i ∣ (a (i + 1) : ℤ) - (a i : ℤ)`. Introduce `i`. Establish `h2` using `congrArg (· ^ l) (ha (i + 1))`. Simplify using `only [Q.ζQ_succ] at h2`. Rewrite `h2` using `[← pow_mul, mul_comm (a (i + 1)), pow_mul, P.ζQ_succ, ha i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(zeta_pow_eq_iff P i _ _).mp h2`. Rewrite `h3` using `[ZMod.natCast_eq_natCast_iff]`. Conclude with `h3.dvd` after adjusting the coercions. Establish `key : ∀ g, kummer P g = PadicInt.ofIntSeq (fun i => (a i : ℤ)) (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub _ l hd) * kummer Q g` using `fun g => by`. Use `(isKummer_kummer P g).unique fun m => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[isKummer_kummer Q g m, ha m, ← pow_mul, map_mul, PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ l hd]`. Use `congr 1`. Rewrite using `[zeta_pow_eq_iff]`. Simplify using the standard rewrite rules. Use `⟨_, fun h0 => ?_, key⟩` and prove the remaining obligations.
-
-Take `⟨g, hg⟩` from `exists_kummer_ne_zero P`. Conclude with `hg (by rw [key, h0, zero_mul])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem kummer_ratio (P Q : LocPrime l) :
     ∃ a : ℤ_[l], a ≠ 0 ∧ ∀ g, kummer P g = a * kummer Q g := by
@@ -50,13 +48,13 @@ private theorem kummer_ratio (P Q : LocPrime l) :
   exact hg (by rw [key, h0, zero_mul])
 
 /- English proof (translation)
-Set `e₀ : P.R.B ≃+* Q.R.B` to `TP.eB.trans TQ.eB.symm`. Establish `he : ∀ b, TQ.eB (e₀ b) = TP.eB b` using `fun b => TQ.eB.apply_symm_apply _`. Establish `hq : (e₀ : P.R.B →+* Q.R.B).comp (algebraMap ℚ_[l] P.R.B) = algebraMap ℚ_[l] Q.R.B`. Use `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => TQ.eB.injective ?_)` and prove the remaining obligations. Conclude with `(he _).trans ((TP.zB z).trans (TQ.zB z).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `e : P.R.B ≃ₐ[ℚ_[l]] Q.R.B` to `{ e₀ with commutes' := RingHom.congr_fun hq }`. Establish `he' : ∀ b, TQ.eB (e b) = TP.eB b` using `he`. Use `⟨e, fun g b => TQ.eB.injective ?_, fun b => TQ.eB.injective ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[he', TP.actB, TQ.actB, he']`. Rewrite using `[he', TP.frob, TQ.frob, he']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (e : P.R.B →ₐ[ℚ_[l]] Q.R.B).comp (IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B) = IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) Q.R.B`. Use `kur_algHom_ext fun c m h0 hm hc => TQ.eB.injective ?_` and prove the remaining obligations. Establish `hc' : (c : Om l) ^ m = 1` using `congrArg Subtype.val hc`. Take `⟨xb, hxb⟩` from `GlobalTheory.MemLoc.exists_isTiltOf (c : Om l) m h0 hm hc'`. Use `(he' _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show TP.eB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = TQ.eB (algebraMap ↥(MaximalUnramifiedExtension l) Q.R.B c)`. Rewrite using `[← AP.ιA_teich c m h0 hm hc' xb hxb, ← AQ.ιA_teich c m h0 hm hc' xb hxb, TP.ιA, TQ.ιA]`. Conclude with `AlgHom.congr_fun this c`.
+A detailed English derivation is pending.
 -/
 private theorem exists_cris {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) : ∃ e : P.R.B ≃ₐ[ℚ_[l]] Q.R.B, (∀ g b, e (P.actQ g b) = Q.actQ g (e b)) ∧
@@ -83,11 +81,11 @@ private theorem exists_cris {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf 
     exact AlgHom.congr_fun this c
 
 /- English proof (translation)
-Establish `hχ : P.χQ = Q.χQ` using `GlobalTheory.Cyc.TwistLift.isCyc_unique P.χQ_cyc Q.χQ_cyc`. Take `⟨c, hc⟩` from `(Q.PD (botExt l)).invB (e P.tB * tInv Q) fun g => by`. Rewrite using `[Q.PD_actB, map_mul, ← ha, localPrime_galoisAction_periodT, map_smul, smul_mul_assoc, ← mul_smul_comm, hχ, smul_actQ_tInv]`. Take `⟨u, hu⟩` from `IntermediateField.mem_bot.mp c.2.1`. Establish `h1 : c = algebraMap ℚ_[l] _ u` using `Subtype.ext hu.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hc` using `[h1, ← IsScalarTower.algebraMap_apply]`. Establish `h2 : e P.tB = u • Q.tB`. Rewrite using `[Algebra.smul_def, hc, mul_assoc, tInv_mul, mul_one]`. Use `⟨u, fun h0 => ?_, h2⟩` and prove the remaining obligations. Use `nontrivial_B Q` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[h0, zero_smul]`. Conclude with `((isUnit_tB P).map e).ne_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {P Q : LocPrime l} (e : P.R.B ≃ₐ[ℚ_[l]] Q.R.B)
     (ha : ∀ g b, e (P.actQ g b) = Q.actQ g (e b)) : ∃ u : ℚ_[l], u ≠ 0 ∧ e P.tB = u • Q.tB := by
@@ -108,19 +106,19 @@ private def stMap {P Q : LocPrime l} (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) (z : ℚ_
   eval₂AlgHom (CAlgHom.comp e) (z • X) fun _ => Commute.all _ _
 
 /- English proof (translation)
-The claim follows from `eval₂_C _ _`.
+A detailed English derivation is pending.
 -/
 private theorem stMap_C {P Q : LocPrime l} (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) (z : ℚ_[l]) (b : P.R.B) :
     stMap e z (C b) = C (e b) := eval₂_C _ _
 
 /- English proof (translation)
-The claim follows from `eval₂_X _ _`.
+A detailed English derivation is pending.
 -/
 private theorem stMap_X {P Q : LocPrime l} (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) (z : ℚ_[l]) :
     stMap e z X = z • X := eval₂_X _ _
 
 /- English proof (translation)
-Establish `h : ∀ q : Bst P, stMap e z q = (q.map (e : P.R.B →+* Q.R.B)).comp (z • X)` using `fun q => by`. Rewrite using `[comp, eval₂_map]`. Both sides reduce to the same expression. Rewrite using `[h, h, derivative_comp, derivative_map, derivative_smul, derivative_X, smul_mul_assoc, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem stMap_der {P Q : LocPrime l} (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) (z : ℚ_[l]) (p : Bst P) :
     derivative (stMap e z p) = z • stMap e z (derivative p) := by
@@ -129,15 +127,15 @@ private theorem stMap_der {P Q : LocPrime l} (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) (
   rw [h, h, derivative_comp, derivative_map, derivative_smul, derivative_X, smul_mul_assoc, one_mul]
 
 /- English proof (translation)
-Take `⟨e, h1, h2, h3⟩` from `exists_cris TP TQ`. Take `⟨u, hu, ht⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator e h1`. Take `⟨a, ha, hk⟩` from `kummer_ratio P Q`. Establish `hz : (a : ℚ_[l]) * u ≠ 0` using `mul_ne_zero (PadicInt.coe_ne_zero.mpr ha) hu`. Use `set z := (a : ℚ_[l]) * u with hzd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `E : Bst P ≃ₐ[ℚ_[l]] Bst Q` to `AlgEquiv.ofAlgHom (stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z) (stMap (e.symm : Q.R.B →ₐ[ℚ_[l]] P.R.B) z⁻¹) (stHom_ext Q (fun b => by simp [stMap_C]) (by simp [stMap_X, smul_smul, hz])) (stHom_ext P (fun b => by simp [stMap_C]) (by simp [stMap_X, smul_smul, hz]))`. Establish `hE : ∀ b, E b = stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z b` using `fun _ => rfl`. Use `⟨E, z⁻¹, inv_ne_zero hz, fun g b => ?_, fun b => ?_, fun c => ?_, fun b => ?_⟩` and prove the remaining obligations. Establish `: (stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z).comp (actSt P g) = (actSt Q g).comp (stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z)`. Use `algHom_ext' (AlgHom.ext fun b => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[stMap_C, h1]`. Establish `: (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) P.tB = u • Q.tB` using `ht`. Simplify using `only [AlgHom.comp_apply, actSt_X, map_add, stMap_X, stMap_C, map_smul, this, smul_add, smul_C, smul_smul, hk, PadicInt.coe_mul, hzd]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `AlgHom.congr_fun this b`. Establish `: (stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z).comp (phiSt P) = (phiSt Q).comp (stMap (e : P.R.B →ₐ[ℚ_[l]] Q.R.B) z)`. Use `algHom_ext' (AlgHom.ext fun b => ?_) ?_` and prove the remaining obligations. Simplify using `[stMap_C, h2]`. Simplify using `[stMap_X]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AlgHom.congr_fun this b`. Rewrite using `[hE, Polynomial.algebraMap_apply, Polynomial.algebraMap_apply, stMap_C]`. Conclude with `congrArg C (h3 c)`. Rewrite using `[hE, hE, monSt_apply, monSt_apply, stMap_der, map_neg, smul_neg, inv_smul_smul₀ hz]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_st {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) : ∃ (E : Bst P ≃ₐ[ℚ_[l]] Bst Q) (z : ℚ_[l]), z ≠ 0 ∧
@@ -176,15 +174,15 @@ private theorem exists_st {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l 
   · rw [hE, hE, monSt_apply, monSt_apply, stMap_der, map_neg, smul_neg, inv_smul_smul₀ hz]
 
 /- English proof (translation)
-Take `⟨E, z, hz, h1, h2, h3, h4⟩` from `exists_st TP TQ`. Set `S : V ⊗[ℚ_[l]] Bst P ≃ₗ[LL] V ⊗[ℚ_[l]] Bst Q` to `AlgebraTensorModule.congr (LinearEquiv.refl LL V) E.toLinearEquiv`. Establish `hS : ∀ v b, S (v ⊗ₜ b) = v ⊗ₜ E b` using `fun _ _ => rfl`. Establish `ext : ∀ (f : End LL (V ⊗[ℚ_[l]] Bst P)) (f' : End LL (V ⊗[ℚ_[l]] Bst Q)), (∀ v b, S (f (v ⊗ₜ b)) = f' (v ⊗ₜ E b)) → ∀ x, S (f x) = f' (S x)` using `fun f f' h x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul v b => exact h v b`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `a1 : ∀ g x, S (stRep P ρ g x) = stRep Q ρ g (S x)` using `fun g =>`. Use extensionality with `_ _ fun v b => by rw [stRep_tmul, stRep_tmul, hS, h1]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `a2` using `ext (phiV P LL V) (phiV Q LL V) fun v b => by rw [phiV_tmul, phiV_tmul, hS, h2]`. Establish `a3` using `fun c => ext (mulV P LL V c) (mulV Q LL V c) fun v b => by`. Rewrite using `[mulV_tmul, mulV_tmul, hS, map_mul, h3]`. Establish `a4` using `ext (monV P LL V) (algebraMap ℚ_[l] LL z • monV Q LL V) fun v b => by`. Rewrite using `[LinearMap.smul_apply, monV_tmul, monV_tmul, hS, h4, tmul_smul, algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (Dpst P ρ).map (S : V ⊗[ℚ_[l]] Bst P →ₗ[LL] V ⊗[ℚ_[l]] Bst Q) = Dpst Q ρ`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `S.surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, mem_Dpst, mem_Dpst]`. Simplify using `only [← a1, S.injective.eq_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨S.ofSubmodules _ _ hmap, algebraMap ℚ_[l] LL z, (_root_.map_ne_zero _).mpr hz, fun g x => Subtype.ext (a1 g x.1), fun x => Subtype.ext (a2 x.1), fun c x => Subtype.ext (a3 c x.1), fun x => Subtype.ext (a4 x.1)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_D {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
@@ -220,7 +218,7 @@ private theorem exists_D {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q
     fun x => Subtype.ext (a4 x.1)⟩
 
 /- English proof (translation)
-Take `⟨T, -, -, -, -, h3, -⟩` from `exists_D TP TQ ρ`. Set `U : DpstUr P ρ ≃ₗ[↥(MaximalUnramifiedExtension l)] DpstUr Q ρ` to `{ ((toUr P ρ).symm.trans T.toAddEquiv).trans (toUr Q ρ) with map_smul' := fun c x => h3 c x }`. Conclude with `U.rank_eq.symm.trans hV`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem isPst_indep {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
@@ -237,7 +235,7 @@ variable (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E] [NumberField E] [Field Ω
   (B : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : GlobalTheory.Pst.Induces B)
 
 /- English proof (translation)
-The claim follows from `(t1 _ _).trans (congrArg (actD Q ρ (weilToGK B h σ)) (BridgeParam.map_zpow_apply T (phiU P ρ) (phiU Q ρ) t2 (-alpha l σ) x))`.
+A detailed English derivation is pending.
 -/
 private theorem map_weilD {P Q : LocPrime l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
@@ -249,17 +247,15 @@ private theorem map_weilD {P Q : LocPrime l} {LL : Type} [Field LL] [Algebra ℚ
     (BridgeParam.map_zpow_apply T (phiU P ρ) (phiU Q ρ) t2 (-alpha l σ) x))
 
 /- English proof (translation)
-Establish `hV'` using `isPst_indep TP TQ ρ hV`. Use `hV.finite` as an intermediate fact. Use `hV'.finite` as an intermediate fact. Take `⟨T, a, ha, t1, t2, t3, hN⟩` from `exists_D TP TQ ρ`. Establish `hw` using `map_weilD B h ρ T t1 t2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := algC ι L`. Set `Φ : WDSpace P ι ρ →ₗ[ℂ] WDSpace Q ι ρ` to `EnlargeCoeff.chg (mulD P ρ) (mulD Q ρ) ℂ (urC ι) (RingHom.id _) (fun _ => rfl) T.toAddEquiv.toAddMonoidHom T.map_smul t3`. Establish `hΦ : ∀ x, Φ (wdMk P ι ρ x) = wdMk Q ι ρ (T x)` using `fun x => EnlargeCoeff.chg_mk _ _ _ _ _ _ _ _ _ _`. Establish `hsurj : Function.Surjective Φ`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_wdMk Q ι ρ, Submodule.span_le]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨_, (hΦ (T.symm y)).trans (by rw [T.apply_symm_apply])⟩`. Establish `hd : finrank ℂ (WDSpace P ι ρ) = finrank ℂ (WDSpace Q ι ρ)`. Rewrite using `[LetterDim.finrank_wdSpace l P ι B.Kw L _ _ hV, LetterDim.finrank_wdSpace l Q ι B.Kw L _ _ hV']`. Set `e` to `LinearEquiv.ofBijective Φ ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).mpr hsurj, hsurj⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : ∀ σ v, e (wdRho P ι B h hj ρ σ v) = wdRho Q ι B h hj ρ σ (e v)` using `fun σ v => by`. Establish `: Φ.comp (wdRho P ι B h hj ρ σ) = (wdRho Q ι B h hj ρ σ).comp Φ` using `LinearMap.ext_on_range (span_wdMk P ι ρ) fun x => by`. Simplify using `only [LinearMap.comp_apply, wdRho_mk, hΦ, hw]`. Conclude with `LinearMap.congr_fun this v`. Establish `h2 : ∀ v, e (wdN P ι ρ v) = (ι (a : Om l) • wdN Q ι ρ) (e v)` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Φ.comp (wdN P ι ρ) = (ι (a : Om l) • wdN Q ι ρ).comp Φ` using `LinearMap.ext_on_range (span_wdMk P ι ρ) fun x => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, wdN_mk, hΦ, hN, wdMk_smul]`. Conclude with `LinearMap.congr_fun this v`. Establish `ha' : ι (a : Om l) ≠ 0` using `(_root_.map_ne_zero ι).mpr fun h0 => ha (Subtype.ext h0)`. Rewrite using `[wdPst_of_isPst ι B h hj hV, wdPst_of_isPst ι B h hj hV']`.
-
-Conclude with `WD.sound (BridgeParam.iso_of_equiv_smul h (BridgeParam.isFrobSS_wdRep P ι B h hj ρ) (BridgeParam.isFrobSS_wdRep Q ι B h hj ρ) (isSmooth_wdRho Q ι B h hj ρ) (isNilpotent_wdN Q ι ρ) (wdRho_wdN Q ι B h hj ρ) e ha' h1 h2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wdPst_indep {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) {L : FinExt l}
@@ -300,9 +296,9 @@ private theorem wdPst_indep {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf 
     (isSmooth_wdRho Q ι B h hj ρ) (isNilpotent_wdN Q ι ρ) (wdRho_wdN Q ι B h hj ρ) e ha' h1 h2)
 
 /- English proof (translation)
-Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι B h hj (r := r) ⟨L₂, r₂, hm₂, hV₂⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `h₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `e : mapRep (IntermediateField.inclusion h₁).toRingHom r₁ = mapRep (IntermediateField.inclusion h₂).toRingHom r₂`. Use extensionality with `g i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun f : ↥(Dec (F := E) A) →* GL (Fin a) (Om l) => (f g : Matrix (Fin a) (Fin a) (Om l)) i j) (hm₁.2.trans hm₂.2.symm)`. Rewrite using `[e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wdAt_model (P : LocPrime l) {a : ℕ}
     (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)) (L₂ : FinExt l) (r₂ : ↥(Dec (F := E) A) →* GL (Fin a) ↥L₂.1)
@@ -319,7 +315,7 @@ private theorem wdAt_model (P : LocPrime l) {a : ℕ}
   rw [e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]
 
 /- English proof (translation)
-Take `⟨L, r', hm, hV⟩` from `hr`. Establish `hV'` using `isPst_indep TP TQ _ hV`. Use `⟨⟨L, r', hm, hV'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[wdAt_model ι B h hj P r L r' hm hV, wdAt_model ι B h hj Q r L r' hm hV', wdPst_indep ι B h hj TP TQ _ hV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem wdAt_indep {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l Q} (TP : LocTied l P AP)
     (TQ : LocTied l Q AQ) {a : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)) (hr : IsPstAt P B r) :
@@ -332,7 +328,7 @@ private theorem wdAt_indep {P Q : LocPrime l} {AP : LocAinf l P} {AQ : LocAinf l
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ A w P AI ⟨TP⟩ ι h O _ _ _ Bw hj κ ξ _ ⟨h1, hs, h2⟩`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Take `⟨h3, h4⟩` from `wdAt_indep ι Bw h hj T TP _ h1`. Conclude with `⟨h3, hs, h4.trans h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Lit.CharWD.chIndep :
     ChIndep := by

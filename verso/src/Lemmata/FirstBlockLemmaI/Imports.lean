@@ -3,9 +3,9 @@ import Mathlib
 namespace Bl.FirstBlockLemmaI
 
 /- English proof (translation)
-Introduce `R _ u z hu hz`. Take `⟨v, rfl⟩` from `hu`. Establish `h` using `(Ideal.mem_jacobson_bot.mp hz) (↑v⁻¹ : R)`. Establish `e : (v : R) + z = (z * ↑v⁻¹ + 1) * ↑v`. Rewrite using `[add_mul, one_mul, mul_assoc, Units.inv_mul, mul_one, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.mul v.isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type} [inst : CommRing.{0} R] {u z : R},

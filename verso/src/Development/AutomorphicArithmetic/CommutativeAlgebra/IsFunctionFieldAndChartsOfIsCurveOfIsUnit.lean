@@ -8,14 +8,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (R := k) (M := L) B.val.toLinearMap Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit.inc_injective {k K L : Type} [Field k] [Field K] [Algebra k K] [Field L] [Algebra k L]
     (B : Subalgebra k K) : Function.Injective (inc L B) := by
   exact Module.Flat.lTensor_preserves_injective_linearMap (R := k) (M := L) B.val.toLinearMap Subtype.val_injective
 
 /- English proof (translation)
-Establish `hDq : D ^ q ≠ 0` using `pow_ne_zero _ hD`. Rewrite using `[mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit.solve {E : Type*} [Field E] {f S T A D : E} {q : ℕ} (hS : S ≠ 0) (hD : D ≠ 0)
     (h : f * (S * D ^ q) = T * A ^ q) : f = T * S⁻¹ * (A * D⁻¹) ^ q := by
@@ -25,21 +25,19 @@ private lemma UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit.solve 
   linear_combination h
 
 /- English proof (translation)
-Introduce `hH q _ k _ _ hq C _ c hc _ hgen`. Take `⟨hff, n, B, hB, hX⟩` from `UpperTheory.isFunctionField_and_chart_cover_of_isCurve k c hc hgen`. Use `⟨hff, n, B, hB, ?_⟩` and prove the remaining obligations. Introduce `L _ _ _ F hF hloc`. Take `⟨X, hXi, u, x, θ, hpb, hic, hcomm, hθ, hfrac, hloc'⟩` from `hX L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hθF : θ F ≠ 0` using `(map_ne_zero_iff θ hθ).mpr hF`. Establish `key` using `UpperTheory.baseChange_curve_functionField_comp_of_normal hH q k L hq c hc u x hpb hic (θ.comp Algebra.TensorProduct.includeRight.toRingHom) hcomm (Units.mk0 (θ F) hθF) (by`. Introduce `y`. Take `⟨i, m, hm, hw⟩` from `hloc' y`. Take `⟨M, hM, hmM⟩` from `Ideal.exists_le_maximal m hm.ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, a, b, hs, ht, ha, hb, he⟩` from `hloc i M hM`. Take `⟨ws, hws⟩` from `hw s (fun h => hs (hmM h))`. Take `⟨wt, hwt⟩` from `hw t (fun h => ht (hmM h))`. Establish `hinc` using `UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit.inc_injective (L := L) (B i)`. Establish `hne : ∀ z : L ⊗[k] ↥(B i), z ≠ 0 → θ (inc L (B i) z) ≠ 0` using `fun z hz => (map_ne_zero_iff θ hθ).mpr ((map_ne_zero_iff _ hinc).mpr hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ M.zero_mem)`. Establish `hA` using `hne a ha`. Establish `hD` using `hne b hb`. Establish `hS` using `hne s hs0`. Use `⟨wt * ws⁻¹, Units.mk0 (θ (inc L (B i) a) * (θ (inc L (B i) b))⁻¹) (mul_ne_zero hA (inv_ne_zero hD)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg θ he`. Simplify using `only [map_mul, map_pow] at h1`. Rewrite using `[Units.val_mk0, Units.val_mk0, Units.val_mul, map_mul, map_units_inv, hws, hwt]`. Conclude with `UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit.solve hS hD h1)`. Take `⟨f, h, hfh⟩` from `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfh` using `[Units.val_mk0]`. Take `⟨a, b, hb, hab⟩` from `hfrac ↑h`. Establish `hθb : θ b ≠ 0` using `(map_ne_zero_iff θ hθ).mpr hb`. Use `⟨f, a, b, ?_, hb, ?_⟩` and prove the remaining obligations. Introduce `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[ha, map_zero]`. Conclude with `mul_ne_zero h.ne_zero hθb hab`. Apply `hθ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow, map_pow, ← hab, hfh]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.includeRight_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit :
     Hyps → ∀ (q : ℕ) [NeZero q], ∀ (k : Type) [Field k] [IsAlgClosed k], IsUnit (q : k) → ∀ {C : Scheme.{0}} [IsIntegral C] (c : C ⟶ Sp k), IsCurve c → ∀ [Algebra k C.functionField], Spec.map (CommRingCat.ofHom (algebraMap k C.functionField)) = (C.fromSpecStalk (genericPoint C)) ≫ c → IsFunctionField k C.functionField ∧ Charts k C.functionField q := by

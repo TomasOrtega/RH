@@ -11,21 +11,21 @@ namespace GlobalTheory.SelfDualUnip
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (σ : L →+* L) {n : ℕ} (X Y : Matrix (Fin n) (Fin n) L) :
     Formalism.UG.cT σ (X + Y) = Formalism.UG.cT σ X + Formalism.UG.cT σ Y := by
   unfold Formalism.UG.cT; ext i j; simp
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_cT (σ : L →+* L) {n : ℕ} (X : Matrix (Fin n) (Fin n) L) :
     (Formalism.UG.cT σ X).det = σ X.det := by
   unfold Formalism.UG.cT; rw [Matrix.det_transpose, RingHom.map_det]; rfl
 
 /- English proof (translation)
-Establish `h` using `hX j i`. Rewrite `h`, the goal using `[GlobalTheory.Hk3.mem_intL_iff]`. Use `show Valued.v (σ (X j i)) ≤ 1`. Rewrite using `[hσ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n : ℕ} {X : Matrix (Fin n) (Fin n) L}
     (hX : ∀ i j, X i j ∈ Formalism.UG.intL L) (i j : Fin n) : Formalism.UG.cT σ X i j ∈ Formalism.UG.intL L := by
@@ -35,20 +35,18 @@ theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n :
   rw [hσ]; exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => ⟨X i j, hX i j⟩, by ext i j; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem lift_int {n : ℕ} {X : Matrix (Fin n) (Fin n) L} (hX : ∀ i j, X i j ∈ Formalism.UG.intL L) :
     ∃ X' : Matrix (Fin n) (Fin n) (Formalism.UG.intL L), X'.map (Formalism.UG.intL L).subtype = X :=
   ⟨fun i j => ⟨X i j, hX i j⟩, by ext i j; rfl⟩
 
 /- English proof (translation)
-Establish `hd : Valued.v M.det * Valued.v N.det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, hMN, Matrix.det_one, map_one]`. Take `⟨M', rfl⟩` from `lift_int hM`. Take `⟨N', rfl⟩` from `lift_int hN`. Establish `hdM : (M'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype M'.det` using `(RingHom.map_det _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdN : (N'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype N'.det` using `(RingHom.map_det _ _).symm`. Establish `hM1 : Valued.v (M'.map (Formalism.UG.intL L).subtype).det ≤ 1`. Rewrite using `[hdM]`. Conclude with `(M'.det).2`. Establish `hN1 : Valued.v (N'.map (Formalism.UG.intL L).subtype).det ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdN]`. Conclude with `(N'.det).2`. Assume the negation of the conclusion as `hne`. Establish `hlt` using `lt_of_le_of_ne hM1 hne`. Use `mul_lt_one_of_lt_of_le hlt hN1` as an intermediate fact.
-
-Rewrite `this` using `[hd]`. Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_det_eq_one {n : ℕ} {M N : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M i j ∈ Formalism.UG.intL L)
     (hN : ∀ i j, N i j ∈ Formalism.UG.intL L) (hMN : M * N = 1) : Valued.v M.det = 1 := by
@@ -71,15 +69,13 @@ theorem v_det_eq_one {n : ℕ} {M N : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Take `⟨G', rfl⟩` from `lift_int hG`. Establish `hdG : (G'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype G'.det` using `(RingHom.map_det _ _).symm`. Establish `hne : (G'.map (Formalism.UG.intL L).subtype).det ≠ 0`. Introduce `h`. Rewrite `hd` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hd`. Establish `hinv : ((G'.map (Formalism.UG.intL L).subtype).det)⁻¹ ∈ Formalism.UG.intL L`. Rewrite using `[GlobalTheory.Hk3.mem_intL_iff, map_inv₀, hd, inv_one]`. Establish `hu : IsUnit G'.det`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Formalism.UG.intL L).subtype G'.det * ((G'.map (Formalism.UG.intL L).subtype).det)⁻¹ = 1`. Rewrite using `[← hdG]`. Conclude with `mul_inv_cancel₀ hne`. Establish `hGY : G'.map (Formalism.UG.intL L).subtype * (G'⁻¹).map (Formalism.UG.intL L).subtype = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv G' hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hX : X = (G'⁻¹).map (Formalism.UG.intL L).subtype`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGY, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hXG, Matrix.one_mul]`.
-
-Introduce `i j`. Rewrite using `[hX]`. Conclude with `(G'⁻¹ i j).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_left_inv {n : ℕ} {G X : Matrix (Fin n) (Fin n) L} (hG : ∀ i j, G i j ∈ Formalism.UG.intL L)
     (hd : Valued.v G.det = 1) (hXG : X * G = 1) : ∀ i j, X i j ∈ Formalism.UG.intL L := by
@@ -105,23 +101,21 @@ theorem int_of_left_inv {n : ℕ} {G X : Matrix (Fin n) (Fin n) L} (hG : ∀ i j
   rw [hX]; exact (G'⁻¹ i j).2
 
 /- English proof (translation)
-Introduce `L _ _ σ hσ n JS a k E hJ ha hE hEint hEa hk hki`. Take `⟨hG0, hX0⟩` from `ha`. Establish `hKint : ∀ i j, (k : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[hk, Matrix.add_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(Formalism.UG.intL L).add_mem ?_ (hEint i j)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(Formalism.UG.intL L).one_mem`. Conclude with `(Formalism.UG.intL L).zero_mem`. Establish `hE' : ∀ X : Matrix (Fin n) (Fin n) L, Formalism.UG.cT σ E * ((JS : Matrix (Fin n) (Fin n) L) * X) = -((JS : Matrix (Fin n) (Fin n) L) * (E * X))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hE, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hGeq : Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) = Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * …`. Rewrite using `[hk, Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_add', Formalism.UG.cT_one]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, hE', Matrix.mul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Establish `hGint : ∀ i j, (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[hGeq, Matrix.add_apply]`. Conclude with `(Formalism.UG.intL L).add_mem (hG0 i j) (GlobalTheory.Hk3.matMul_int (GlobalTheory.Hk3.matMul_int (cT_int σ hσ hEa) hJ) hEa i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK1 : Valued.v (k : Matrix (Fin n) (Fin n) L).det = 1` using `v_det_eq_one hKint hki k.mul_inv`. Establish `hX0G0 : Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L) * (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((a⁻¹ : GL (Fin n) L) : Matrix …`. Establish `e3 : Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Formalism.UG.cT_mul, a.inv_mul, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hG01` using `v_det_eq_one hG0 hX0 hX0G0`. Establish `hdet : Valued.v (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))).det = 1`. Establish `: (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))).det = σ (k : Matrix (Fin n) (Fin n) L).det * (k : Matrix (Fin n) (Fin n) L).det * (Formali …`. Simplify using `only [Matrix.det_mul, det_cT, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, map_mul, hσ, hK1, hG01]`. Simplify using the standard rewrite rules. Establish `hXG : (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * …`. Establish `hka : ((k * a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)` using `Units.val_mul k a`. Rewrite using `[← hka]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `e3 : Formalism.UG.cT σ (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((k * a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Formalism.UG.cT_mul, (k * a).mul_inv, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [e3, Matrix.one_mul, ← Matrix.mul_assoc ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L), JS.inv_mul, Matrix.one_mul, (k * a).inv_mul]`.
-
-Use `⟨?_, int_of_left_inv hGint hdet hXG⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Units.val_mul]`. Conclude with `hGint i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_mul_of_skew : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L), (∀ x, Valued.v (σ x) = Valued.v x) →
   ∀ (n : ℕ) (JS a k : GL (Fin n) L) (E : Matrix (Fin n) (Fin n) L),

@@ -9,9 +9,9 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEnds
 attribute [local instance] Formalism.MainNotions.S.starE
 
 /- English proof (translation)
-Introduce `D Λ h v`. Take `⟨⟨t, ht⟩, hv⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.host.E)) D.host.E (Λ : Set (Formalism.MainNotions.S.VS D).V) v (h.span_eq_top ▸ Submodule.mem_top)`. Take `⟨n, hn, c, hc⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) t).exists_nonzero_dvd ht`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `hc' : (n : NumberField.RingOfIntegers D.host.E) = c * t` using `by rw [mul_comm]; simpa using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (n : D.host.E) • v = c • t • v`. Rewrite using `[smul_smul, ← hc', ← algebraMap_smul D.host.E (n : NumberField.RingOfIntegers D.host.E) v, map_intCast]`. Rewrite `hv` using `[Submodule.span_eq]`. Conclude with `e ▸ Λ.smul_mem c hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult :
     ∀ (D : Formalism.BasicNotions.D7)

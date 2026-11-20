@@ -3,21 +3,21 @@ import Mathlib
 open CategoryTheory Limits AlgebraicGeometry
 
 /- English proof (translation)
-Introduce `U W _ a _ t h`. Establish `hr : Set.range a = Set.range (U.basicOpen t).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `h`. Set `χ` to `IsOpenImmersion.isoOfRangeEq a (U.basicOpen t).ι hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfac : χ.hom ≫ (U.basicOpen t).ι = a` using `IsOpenImmersion.isoOfRangeEq_hom_fac a _ hr`. Use `haveI : IsAffine (U.basicOpen t) := (isAffineOpen_top U).basicOpen t`. Establish `hW : IsAffine W` using `IsAffine.of_isIso χ.hom`. Establish `happ : ∀ r, a.appTop.hom r = χ.hom.appTop.hom (algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) r)`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hfac, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `hl : ∀ x, χ.inv.appTop.hom (χ.hom.appTop.hom x) = x`. Introduce `x`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, χ.inv_hom_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hr' : ∀ x, χ.hom.appTop.hom (χ.inv.appTop.hom x) = x`. Introduce `x`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, χ.hom_inv_id]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hW, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨⟨ℓ, m⟩, hℓ⟩` from `IsLocalization.surj (Submonoid.powers t) (χ.inv.appTop.hom x)`. Take `⟨k, hk⟩` from `m.2`. Establish `hk' : t ^ k = (m : Γ(U, ⊤))` using `hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hℓ' : χ.inv.appTop.hom x * algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) (t ^ k) = algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) ℓ`. Rewrite using `[hk']`. Conclude with `hℓ`. Use `⟨k, ℓ, ?_⟩` and prove the remaining obligations. Rewrite using `[happ, happ, ← hℓ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_pow, map_mul, hr']`. Expand and normalize the polynomial expressions, which then agree. Introduce `y hy`. Establish `h0 : algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) y = 0`. Establish `h2` using `congrArg χ.inv.appTop.hom ((happ y).symm.trans hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h2` using `[hl, map_zero]`. Then use the resulting hypothesis. Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers t) _ y).mp h0`. Conclude with `⟨k, hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.isAffine_isLocalizationAway_of_range_eq_basicOpen :
     ∀ {U W : Scheme.{0}} [IsAffine U] (a : W ⟶ U) [IsOpenImmersion a] (t : Γ(U, ⊤)),

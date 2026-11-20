@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 abbrev eAt (v : Pl F) : AF F := GlobalTheory.LatVac.liftV v 1
 
 /- English proof (translation)
-Establish `h1 : evFin F v (1 - eAt v) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `h2 : (1 - eAt v) • a = 0` using `ha _ h1`. Rewrite `h2` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eAt_mul (v : Pl F) (a : AF F) (ha : At (evFin F v) a) : eAt v * a = a := by
   have h1 : evFin F v (1 - eAt v) = 0 := by
@@ -27,22 +27,22 @@ theorem eAt_mul (v : Pl F) (a : AF F) (ha : At (evFin F v) a) : eAt v * a = a :=
   exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThK.LocalOps.liftV_one_mul]`. Conclude with `GlobalTheory.LatVac.at_liftV v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_eAt_mul (v : Pl F) (a : AF F) : At (evFin F v) (eAt v * a) := by
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul]
   exact GlobalTheory.LatVac.at_liftV v _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThK.LocalOps.liftV_one_mul, GlobalTheory.LatVac.evFin_liftV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_eAt_mul (v : Pl F) (a : AF F) : evFin F v (eAt v * a) = evFin F v a := by
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, GlobalTheory.LatVac.evFin_liftV]
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, hai, y, hy, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a, GlobalTheory.ThK.LocalOps.evI_of_at ha, fun w => ?_, y, hy, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hai`. Rewrite using `[GlobalTheory.ThK.LocalOps.evFin_of_at hw ha]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_le_latHat {d : ℕ} (W : Spc F E d) (v : Pl F) : GlobalTheory.InertSph.latAt W v ≤ latHat W := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -53,11 +53,9 @@ theorem latAt_le_latHat {d : ℕ} (W : Spc F E d) (v : Pl F) : GlobalTheory.Iner
   · rw [GlobalTheory.ThK.LocalOps.evFin_of_at hw ha]; exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, -, hai, x, hx, rfl⟩` from `hz`. Rewrite using `[smul_smul]`. Use `AddSubgroup.subset_closure ⟨eAt v * a, at_eAt_mul v a, ?_, x, hx, rfl⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evFin_eAt_mul]`. Conclude with `hai v`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [smul_add]`.
-
-Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eAt_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F E} (hz : z ∈ latHat W) :
     eAt v • z ∈ GlobalTheory.InertSph.latAt W v := by
@@ -72,9 +70,9 @@ theorem eAt_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F E}
   | neg z _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, y, -, rfl⟩` from `hz`. Rewrite using `[smul_smul, eAt_mul v a ha]`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add z z' _ _ h h' => rw [smul_add, h, h']`. Consider the case `neg z _ h => rw [smul_neg, h]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem eAt_smul_of_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F E}
     (hz : z ∈ GlobalTheory.InertSph.latAt W v) : eAt v • z = z := by
@@ -87,7 +85,7 @@ theorem eAt_smul_of_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F
   | neg z _ h => rw [smul_neg, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem smul_mulVec' {d : ℕ} (u : AF F) (M : Matrix (Fin d) (Fin d) (AE F E)) (z : Fin d → AE F E) :
     (u • M) *ᵥ z = u • (M *ᵥ z) := by
@@ -95,11 +93,11 @@ theorem smul_mulVec' {d : ℕ} (u : AF F) (M : Matrix (Fin d) (Fin d) (AE F E)) 
   simp [Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : evFin F v (1 - eAt v) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `hz' : (1 - eAt v) • z = 0`. Rewrite using `[sub_smul, one_smul, eAt_smul_of_mem W v hz, sub_self]`. Establish `hMz : (1 - eAt v) • ((M - 1) *ᵥ z) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← smul_mulVec', hM _ h1, Matrix.zero_mulVec]`. Establish `key : M *ᵥ z = eAt v • (M *ᵥ z)`. Establish `e : M *ᵥ z = z + (M - 1) *ᵥ z`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, add_sub_cancel]`. Establish `: (1 - eAt v) • (M *ᵥ z) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, smul_add, hz', hMz, add_zero]`. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this`. Rewrite using `[key]`. Conclude with `eAt_smul_mem W v (hL z (latAt_le_latHat W v hz))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_latAt {d : ℕ} (W : Spc F E d) (v : Pl F) (M : Matrix (Fin d) (Fin d) (AE F E))
     (hM : At (evFin F v) (M - 1)) (hL : ∀ z ∈ latHat W, M *ᵥ z ∈ latHat W) {z : Fin d → AE F E}
@@ -121,11 +119,9 @@ theorem mulVec_mem_latAt {d : ℕ} (W : Spc F E d) (v : Pl F) (M : Matrix (Fin d
   exact eAt_smul_mem W v (hL z (latAt_le_latHat W v hz))
 
 /- English proof (translation)
-Take `⟨hU, hL⟩` from `hk`. Establish `hinv : mat k⁻¹ * mat k = 1` using `Units.inv_mul k.1`. Establish `hU' : At (evFin F v) (mat k⁻¹ - 1)`. Introduce `u hu`. Establish `h0 : u • (mat k - 1) = 0` using `hU u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: mat k⁻¹ - 1 = -(mat k⁻¹ * (mat k - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one, neg_sub]`. Rewrite using `[this, smul_neg, ← Matrix.mul_smul, h0, Matrix.mul_zero, neg_zero]`. Use `⟨hU, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `mulVec_mem_latAt W v _ hU (fun z hz => (hL z hz).1) hz`.
-
-Conclude with `mulVec_mem_latAt W v _ hU' (fun z hz => (hL z hz).2) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_inertSph_KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) {k : UA σ W.J} (hk : k ∈ KAt σ W v) :
     k ∈ GlobalTheory.InertSph.KAt σ W v := by
@@ -146,7 +142,7 @@ end GlobalTheory.VacFixKAt
 namespace GlobalTheory.VacFixKAt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h v hv hT k hk`. Take `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 E), Formalism.UG.IsInertAt F E v w` from `(GlobalTheory.KFinLoc.split_or_inert F E σ B h.base v).resolve_left fun ⟨e⟩ => hv.false e`. Conclude with `GlobalTheory.T.inert_place_lattice_stabiliser_fixes_vacuum F E σ B a a' G X om om' h v w hw hT k (mem_inertSph_KAt σ G.W v hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vacFixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

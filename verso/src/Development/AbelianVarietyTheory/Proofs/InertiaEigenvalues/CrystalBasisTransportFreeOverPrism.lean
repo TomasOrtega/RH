@@ -13,13 +13,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysIndep
 
 /- English proof (translation)
-Use `letI : Algebra Z R := ((algebraMap O R).comp (algebraMap Z O)).toAlgebra`. Use `haveI : IsScalarTower Z O R := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `g' : S →ₐ[Z] R` to `{ toRingHom := g, commutes' := hg }`. Set `Ψ : O ⊗[Z] S →ₐ[O] R` to `Algebra.TensorProduct.lift (Algebra.ofId O R) g' fun _ _ => Commute.all _ _`. Establish `hi : Function.Injective (Algebra.TensorProduct.map (AlgHom.id O O) ρ)` using `Module.Flat.lTensor_preserves_injective_linearMap (M := O) ρ.toLinearMap hρ`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose C hC using hD`. Use `⟨AddMonoidHom.mk' (fun x i => Ψ (C x i)) fun x y => funext fun i => ?_, fun s x x' i h => ?_, fun c x i h => ?_⟩` and prove the remaining obligations. Establish `: C (x + y) i = C x i + C y i` using `hi (by rw [map_add, hC, hC, hC, map_add, Pi.add_apply])`. Express the relevant statement in the definitionally equal form `Ψ (C (x + y) i) = Ψ (C x i) + Ψ (C y i)`. Rewrite using `[this, map_add]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: C x' i = ((1 : O) ⊗ₜ[Z] s) * C x i` using `hi (by`. Rewrite using `[map_mul, hC, hC, h, Algebra.TensorProduct.map_tmul]`. Use the proof step `rfl)`. Express the relevant statement in the definitionally equal form `Ψ (C x' i) = g s * Ψ (C x i)`. Rewrite using `[this, map_mul, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `: C x i = algebraMap O _ c` using `hi (by rw [hC, h, AlgHom.commutes])`. Express the relevant statement in the definitionally equal form `Ψ (C x i) = _`. Rewrite using `[this, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_read {Z O S W R N ι : Type} [CommRing Z] [CommRing O] [CommRing S] [CommRing W] [CommRing R]
     [Algebra Z O] [Algebra Z S] [Algebra Z W] [Algebra O R] [Module.Flat Z O] [AddCommGroup N]
@@ -51,15 +51,13 @@ theorem exists_read {Z O S W R N ι : Type} [CommRing Z] [CommRing O] [CommRing 
     rw [this, AlgHom.commutes]
 
 /- English proof (translation)
-Take `⟨V, hV1, hV2⟩` from `exists_read ρ hρ (ψ.comp f) hψ D hD`. Establish `hVb : ∀ (o : O) j k, V (m o j) k = algebraMap O R (if k = j then o else 0)` using `fun o j k => by`. Use `hV2 _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hm]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Algebra.algebraMap_eq_smul_one o).symm`. Rewrite using `[smul_zero, map_zero]`. Set `V' : M →+ (Unit → ι → R)` to `AddMonoidHom.mk' (fun x _ => V x) fun x y => funext fun _ => map_add V x y`. Take `⟨lam, hl1, hl2⟩` from `CrysExt.exists_ext hu (fun _ : Unit => ψ) V' fun w x _ k => hV1 w x (w • x) k (by rw [hs]; rfl)`. Use `⟨(Pi.evalAddMonoidHom _ ()).comp lam, fun Q _ c y i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ j q, lam (y j q • u (m (c j q) j)) () i = if i = j then c j q • ψ (y j q) else 0` using `fun j q => by`. Rewrite using `[hl1, hl2]`. Express the relevant statement in the definitionally equal form `_ * V _ i = _`. Rewrite using `[hVb]`. Use `split_ifs`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[map_zero, mul_zero]`. Express the relevant statement in the definitionally equal form `lam _ () i = _`. Simplify using `only [map_sum, Finset.sum_apply, h3]`. Rewrite using `[Finset.sum_comm]`.
-
-Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indep_of_coord {Z O S W B R M N ι : Type} [CommRing Z] [CommRing O] [CommRing S] [CommRing W] [CommRing B]
     [CommRing R] [Algebra Z O] [Algebra Z S] [Algebra Z W] [Algebra O R] [Module.Flat Z O] [AddCommGroup M]
@@ -112,9 +110,9 @@ variable {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [
   (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι}
 
 /- English proof (translation)
-Establish `h1 : toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩ i = OfCrystal.iR K t ϖ fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩` using `ϖ.iW_of_mem t K fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩`. Take `⟨s, hs⟩` from `exists_eq_sum_toAc t K (Module.Free.chooseBasis ℤ_[l] O) (fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩)`. Use `⟨∑ k, Module.Free.chooseBasis ℤ_[l] O k • ((1 : O) ⊗ₜ[ℤ_[l]] s k), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hs, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_smul, OfCrystal.iR_toAc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_toW_eq {m : Vec K a ι} (hm : m ∈ P.M) (i : ι) :
     ∃ z, Algebra.TensorProduct.map (AlgHom.id O O) (evW a ϖ) z = toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩ i := by
@@ -130,9 +128,7 @@ theorem exists_toW_eq {m : Vec K a ι} (hm : m ∈ P.M) (i : ι) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[toW_apply]`. Use `split_ifs with h`. Rewrite using `[← map_one (ϖ.iW t K)]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (by simp [bas, h]))`. Rewrite using `[← map_zero (ϖ.iW t K)]`.
-
-Conclude with `congrArg _ (funext fun τ => Subtype.ext (by simp [bas, h]))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toW_bas (j : ι) (hm : (bas j : Vec K a ι) ∈ P.M) (i : ι) :
     toW t ϖ P ⟨bas j, mem_ME_of_mem_M hm⟩ i = if i = j then 1 else 0 := by
@@ -144,23 +140,19 @@ theorem toW_bas (j : ι) (hm : (bas j : Vec K a ι) ∈ P.M) (i : ι) :
     exact congrArg _ (funext fun τ => Subtype.ext (by simp [bas, h]))
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I`. Use `letI := zlLat T`. Introduce `E jA H him oE hoE b hb`. Establish `h0 : ∃ J : E.M (ϖ.prism a) →+ TW (OW l O) T, ∀ x, J x = kappa T (jA (E.tr (ϖ.toAinf a) x))` using `⟨(kappa T).comp (jA.toAddMonoidHom.comp (E.tr (ϖ.toAinf a)).toAddMonoidHom), fun _ => rfl⟩`. Take `⟨J, hJ⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hi : Function.Injective J`. Use `E.proj (ainfObj (ϖ.field a))` as an intermediate fact. Use `E.proj (ϖ.prism a)` as an intermediate fact. Introduce `x y h`. Rewrite `h` using `[hJ, hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `BKCoord.semiBC_injective (E.tr_bc (ϖ.toAinf a)) (BKCoord.ev_injective ϖ) (BKCoord.semiBC_injective H.bc inclW_injective ((kappa_bijective T).1 h))`. Establish `hJo : ∀ c x, J ((oE c).u (ϖ.prism a) x) = c • J x` using `fun c x => by`. Establish `h3` using `(congrArg jA ((oE c).u_tr (ϖ.toAinf a) x)).symm.trans (hoE c _)`. Establish `h4` using `(congrArg (kappa T) h3).trans (OfCrystal.kappa_mulZ T c _)`. Use `rewrite [hJ, hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4`. Establish `hJs : ∀ (w : (ϖ.prism a).A) x, J (w • x) = ((1 : O) ⊗ₜ[ℤ_[l]] evW a ϖ w : OW l O) • J x` using `fun w x => by`. Establish `h3` using `congrArg jA ((E.tr (ϖ.toAinf a)).map_smulₛₗ w x)`. Establish `h4` using `congrArg (kappa T) (h3.trans (jA.map_smulₛₗ _ _))`. Establish `h5` using `h4.trans (BKCoord.kappa_smul T _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `rewrite [hJ, hJ]`. Conclude with `h5`. Use `⟨fun i => hi (by rw [hJo, one_smul]), ?_⟩` and prove the remaining obligations. Introduce `P' f Q Q' _ _ c y c' y' heq R _ _ ψ hψ i`. Establish `h1 : ∃ D : E.M (ϖ.prism a) →+ (ι → OW l O), ∀ x, D x = I.j.symm (J x)` using `⟨I.j.symm.toLinearMap.toAddMonoidHom.comp J, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨D, hD⟩` from `h1`. Establish `h2 : ∀ x k, ∃ z, Algebra.TensorProduct.map (AlgHom.id O O) (evW a ϖ) z = D x k` using `fun x k => by`. Take `⟨m, hm, h⟩` from `(him (J x)).1 ⟨x, hJ x⟩`. Rewrite using `[hD, h, LinearEquiv.symm_apply_apply]`. Conclude with `exists_toW_eq t ϖ hm k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ (w : (ϖ.prism a).A) x, D (w • x) = ((1 : O) ⊗ₜ[ℤ_[l]] evW a ϖ w : OW l O) • D x` using `fun w x => (hD _).trans ((congrArg I.j.symm (hJs w x)).trans ((I.j.symm.map_smul _ _).trans (congrArg _ (hD x).symm)))`. Establish `h4 : ∀ (o : O) j k, D ((oE o).u (ϖ.prism a) (b j)) k = o • if k = j then 1 else 0` using `fun o j k => by`. Take `⟨hm, h⟩` from `hb j`. Establish `h5 : I.j.symm (J (b j)) = toW t ϖ P ⟨bas j, mem_ME_of_mem_M hm⟩` using `I.j.symm_apply_eq.2 ((hJ _).trans h)`. Establish `h6 : I.j.symm (o • J (b j)) = o • I.j.symm (J (b j))` using `LinearMapClass.map_smul_of_tower _ _ _`.
-
-Establish `h7` using `((hD _).trans (congrArg I.j.symm (hJo o (b j)))).trans (h6.trans (congrArg (o • ·) h5))`. Conclude with `(congrFun h7 k).trans (congrArg (o • ·) (toW_bas t ϖ j hm k))`. Use `letI : Algebra ℤ_[l] (ϖ.prism a).A := (inferInstance : Algebra ℤ_[l] (Wq l a)⟦X⟧)`. Take `⟨lam, hlam⟩` from `indep_of_coord (Z := ℤ_[l]) (S := (ϖ.prism a).A) (E.tr_bc f) (evW a ϖ) (OfCrystal.ev_injective ϖ t K) ψ hψ D h2 h3 (fun o j => (oE o).u (ϖ.prism a) (b j)) h4`. Simplify using `only [FHom.u_tr] at heq`.
-
-Conclude with `(hlam Q c y i).symm.trans ((congrArg (lam · i) heq).trans (hlam Q' c' y' i))`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : Lat a O K ϖ) (I : Ident t ϖ P T), letI := zlLat T; ∀ (E : FCrys l ↥(OL (ϖ.field a))) (jA : E.M (ainfObj (ϖ.field a)) →ₛₗ[(inclW l).comp (ainfId (ϖ.field a)).toRingHom] (WCb l ⊗[ℤ_[l]] ↥T.L.T)), Realises (ϖ.field a) E (ainfObj _) (ainfId _) ↥T.L.T (actZ T) jA → (∀ y : TW (OW l O) T, (∃ x : E.M (ϖ.prism a), y = kappa T (jA (E.tr (ϖ.toAinf a) x))) ↔ ∃ (m : Vec K a ι) (hm : m ∈ P.M), y = I.j (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩)) → ∀ (oE : O → FHom E E), (∀ (c : O) (x : E.M (ainfObj (ϖ.field a))), jA ((oE c).u (ainfObj (ϖ.field a)) x) = (OfCrystal.mulZ T c).lTensor (WCb l) (jA x)) → ∀ (b : ι → E.M (ϖ.prism a)), (∀ j, ∃ hm : (bas j : Vec K a ι) ∈ P.M, kappa T (jA (E.tr (ϖ.toAinf a) (b j))) = I.j (toW t ϖ P ⟨bas j, mem_ME_of_mem_M hm⟩)) → (∀ i, (oE 1).u (ϖ.prism a) (b i) = b i) ∧ ∀ (P' : Obj l ↥(OL (ϖ.field a))) (f : GlobalTheory.Prism.Hom (ϖ.prism a) P') (Q Q' : Type) [Fintype Q] [Fintype Q'] (c : ι → Q → O) (y : ι → Q → P'.A) (c' : ι → Q' → O) (y' : ι → Q' → P'.A), ∑ i, ∑ q, y i q • (oE (c i q)).u P' (E.tr f (b i)) = ∑ i, ∑ q, y' i q • (oE (c' i q)).u P' (E.tr f (b i)) → ∀ (R : Type) [CommRing R] [Algebra O R] (ψ : P'.A →+* R), (∀ z : ℤ_[l], ψ (f.f (algebraMap ℤ_[l] (Wq l a)⟦X⟧ z)) = algebraMap O R (algebraMap ℤ_[l] O z)) → ∀ i, ∑ q, c i q • ψ (y i q) = ∑ q, c' i q • ψ (y' i q) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I

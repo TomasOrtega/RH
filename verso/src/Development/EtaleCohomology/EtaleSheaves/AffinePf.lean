@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.AffinePf
 
 /- English proof (translation)
-Introduce `n` and use `by have hiso : ∀ {X Y : Spc} (e : X ≅ Y), Function.Bijective (pull R e.hom F n) := fun e => by refine ⟨Function.LeftInverse.injective (g := pull R e.inv F n) fun x => ?_, Function.RightInverse.surjective (g := pull R e.inv F n) fun x => ?_⟩ · rw [← pull_comp, e.inv_hom_id, pull_i …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_of_sq (R : Type) [CommRing R] (F : Shv R) {E₁ E₂ E₁' E₂' : Spc} (f : E₁ ⟶ E₂) (f' : E₁' ⟶ E₂')
     (a : E₁ ≅ E₁') (b : E₂ ≅ E₂') (h : f ≫ b.hom = a.hom ≫ f') (hf : Eqv R f' F) : Eqv R f F := fun n => by
@@ -22,9 +22,9 @@ theorem eqv_of_sq (R : Type) [CommRing R] (F : Shv R) {E₁ E₂ E₁' E₂' : S
   exact (hiso a).comp ((hf n).comp (hiso b.symm))
 
 /- English proof (translation)
-Establish `h1 : Spec.map (gam p V) = hV.fromSpec ≫ p`. Use `IsAffineOpen.SpecMap_appLE_fromSpec p (isAffineOpen_top (Spec T)) hV (by simp)` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[gam, Spec.map_comp]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec]`.
+A detailed English derivation is pending.
 -/
 theorem ι_comp_eq {T : CommRingCat.{0}} {X : Scheme.{0}} (p : X ⟶ Spec T) (V : X.Opens) (hV : IsAffineOpen V) :
     V.ι ≫ p = hV.isoSpec.hom ≫ Spec.map (gam p V) := by
@@ -36,9 +36,9 @@ theorem ι_comp_eq {T : CommRingCat.{0}} {X : Scheme.{0}} (p : X ⟶ Spec T) (V 
   rw [h1, ← Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec]
 
 /- English proof (translation)
-Introduce `q i T K k X p V hV hb`. Establish `hpo` using `IsPushout.of_hasPushout k (gam p V)`. Establish `hre` using `hb _ _ _ hpo`. Establish `hS` using `isPullback_SpecMap_of_isPushout _ _ _ _ hpo.flip`. Establish `h1` using `(isPullback_morphismRestrict (pullback.fst p (Spec.map k)) V).paste_vert (IsPullback.of_hasPullback p (Spec.map k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsPullback hV.isoSpec.hom (V.ι ≫ p) (Spec.map (gam p V)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [ι_comp_eq p V hV, Category.comp_id]⟩`. Establish `h3` using `h1.paste_horiz h2`. Rewrite `h3` using `[Category.comp_id]`. Use `eqv_of_sq _ _ _ (sch.map (Spec.map (pushout.inr k (gam p V)))) (sch.mapIso (h3.isoIsPullback _ _ hS)) (sch.mapIso hV.isoSpec) ?_ hre` and prove the remaining obligations. Simplify using `only [Functor.mapIso_hom, ← Functor.map_comp, IsPullback.isoIsPullback_hom_fst]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Affine_of : Affine := by
   intro q i T K k X p V hV hb

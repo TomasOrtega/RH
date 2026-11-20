@@ -25,7 +25,7 @@ namespace GlobalTheory.DownLift.SplitCoef
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, GlobalTheory.PlaceModel.symplO_zero_left, GlobalTheory.PlaceModel.symplO_zero_right]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, GlobalTheory.PlaceModel.symplO_add_left, GlobalTheory.PlaceModel.symplO_add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem symplO_nsmul_left_eq (S T : HSp D) (k : ℕ) (l x : WO S T) :
     symplO S T (k • l) x = symplO S T l (k • x) := by
@@ -34,27 +34,25 @@ theorem symplO_nsmul_left_eq (S T : HSp D) (k : ℕ) (l x : WO S T) :
   | succ n ih => rw [succ_nsmul, succ_nsmul, GlobalTheory.PlaceModel.symplO_add_left, GlobalTheory.PlaceModel.symplO_add_right, ih]
 
 /- English proof (translation)
-Introduce `D ψ S T hψ ΛS ΛT hS hT a ha f hf`. Establish `ha'` using `GlobalTheory.SplitScalar.isSplitIdem_conj ha`. Establish `hd` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1`. Establish `hstc : ∀ u ∈ latH S T ΛS ΛT, cA D a • u ∈ latH S T ΛS ΛT` using `fun u hu => GlobalTheory.SplitScalar.idem_smul_mem ha'.1 u hu`. Take `⟨U, hU, hUf⟩` from `hf.level`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hkU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T ΛS ΛT hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)).1 U hU`. Establish `hinv : ∀ u ∈ latH S T ΛS ΛT, heisO ψ S T (k • u) f = f` using `fun u hu => hUf _ (hkU u hu) (GlobalTheory.SplitScalar.latO_fin ((latH S T ΛS ΛT).nsmul_mem hu k))`. Establish `hsupp : ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x f) ≠ 0 → k • x ∈ latH S T ΛS ΛT`. Introduce `ℓ hℓ x hx hne`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨l, hl, hlh, hlne⟩` from `GlobalTheory.SplitScalar.exists_dual_half ha hd hstc (GlobalTheory.SplitScalar.isHalf_nsmul hx k) hn`. Establish `h1` using `hℓ (k • l) (GlobalTheory.SplitScalar.isHalf_nsmul hlh k) _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf x)`. Rewrite `h1` using `[GlobalTheory.SplitScalar.heisO_comm, hinv l hl, map_smul, smul_eq_mul, symplO_nsmul_left_eq]`. Apply `hlne` to reduce the goal to its premises. Establish `h2 : (ψ (symplO S T l (k • x)) - 1) * ℓ (heisO ψ S T x f) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, h1, one_mul, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right hne)`. Establish `hcoef : ∀ ℓ, InvForm ψ S T a ℓ → IsSBHalf a (latH S T ΛS ΛT) (coef ψ S T a ℓ f)`. Introduce `ℓ hℓ`. Use `⟨fun t ht => ?_, k, hk, fun u hu huh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `ht (by simp only [coef, if_neg hn])`. Distinguish the cases in `htt : IsHalf a t`. Establish `h2 : IsHalf a (t + k • u)` using `GlobalTheory.SplitScalar.isHalf_add htt (GlobalTheory.SplitScalar.isHalf_nsmul huh k)`. Simplify using `only [coef, if_pos htt, if_pos h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (GlobalTheory.SplitScalar.half_orth ha htt (GlobalTheory.SplitScalar.isHalf_nsmul huh k)), hinv u hu]`. Establish `h2 : ¬ IsHalf a (t + k • u)` using `fun h => htt (by`. Use `GlobalTheory.SplitScalar.isHalf_sub h (GlobalTheory.SplitScalar.isHalf_nsmul huh k)` as an intermediate fact. Rewrite using `[add_sub_cancel_right] at this)` and apply the resulting hypothesis. Simplify using `only [coef, if_neg htt, if_neg h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `htt : IsHalf a t`. Assume the negation of the conclusion as `hn`. Conclude with `ht (by simp only [coef, if_neg hn])`. Use `hsupp ℓ hℓ t htt ?_` and prove the remaining obligations. Simplify `ht` using `only [coef, if_pos htt]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, hR, hRm⟩` from `GlobalTheory.DiagLiftFix.half_finite_mod (S := S) (T := T) hS.1.fg hT.1.fg ha.1 (k * k) (Nat.mul_pos hk hk)`. Establish `tf : Function.Injective fun t : WO S T => k • t` using `fun x y hxy => by`. Rewrite using `[← GlobalTheory.PlaceModel.inv_smul_nsmul S T hk x, ← GlobalTheory.PlaceModel.inv_smul_nsmul S T hk y]`. Conclude with `congrArg _ hxy`. Establish `hP : ((fun t : WO S T => k • t) ⁻¹' R).Finite` using `hR.preimage tf.injOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨k, hk, fun u hu _ => hinv u hu, hsupp⟩, hcoef, hP.toFinset.filter (fun x => IsHalf a x), fun x hx => (Finset.mem_filter.1 hx).2, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hkx : k • x ∈ latH S T ΛS ΛT`. Use `right`. Take `⟨r, hr, u, hu, e⟩` from `hRm (k • x) ⟨hkx, (GlobalTheory.PlaceModel.isHalf_iff S T).1 (GlobalTheory.SplitScalar.isHalf_nsmul hx k)⟩`. Establish `huh : IsHalf a u` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 hu.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxu : IsHalf a (x - k • u)` using `GlobalTheory.SplitScalar.isHalf_sub hx (GlobalTheory.SplitScalar.isHalf_nsmul huh k)`. Use `⟨x - k • u, Finset.mem_filter.2 ⟨hP.mem_toFinset.2 ?_, hxu⟩, ?_⟩` and prove the remaining obligations. Use `show k • (x - k • u) ∈ R`. Rewrite using `[smul_sub, e, smul_smul, add_sub_cancel_right]` and apply the resulting hypothesis. Use `conv_lhs => rw [show x = (x - k • u) + k • u by abel]`.
-
-Rewrite using `[GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (GlobalTheory.SplitScalar.half_orth ha hxu (GlobalTheory.SplitScalar.isHalf_nsmul huh k)), hinv u hu.1]`. Use `left`. Introduce `ℓ hℓ`. Assume the negation of the conclusion as `hne`. Conclude with `hkx (hsupp ℓ hℓ x hx hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem coef_isSBHalf_uniform : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ a : AE D, IsSplitIdem D a → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∃ k : ℕ, 0 < k ∧ (∀ u ∈ latH S T ΛS ΛT, IsHalf a u ∨ IsHalf (cA D a) u → heisO ψ S T (k • u) f = f) ∧ ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x f) ≠ 0 → k • x ∈ latH S T ΛS ΛT) ∧ (∀ ℓ, InvForm ψ S T a ℓ → IsSBHalf a (latH S T ΛS ΛT) (coef ψ S T a ℓ f)) ∧ ∃ X : Finset (WO S T), (∀ x ∈ X, IsHalf a x) ∧ ∀ x, IsHalf a x → (∀ ℓ, InvForm ψ S T a ℓ → ℓ (heisO ψ S T x f) = 0) ∨ ∃ x₁ ∈ X, heisO ψ S T x f = heisO ψ S T x₁ f := by
   intro D ψ S T hψ ΛS ΛT hS hT a ha f hf

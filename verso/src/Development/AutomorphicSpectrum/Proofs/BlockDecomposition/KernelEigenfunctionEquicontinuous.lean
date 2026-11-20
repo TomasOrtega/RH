@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Conc.WeightedCauchySchwarzLintegral
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r96a.GlobalTheory.CompanionTheory.Conc.WeightedCauchySchwarzLintegral.sq_lintegral_mul_le ν ha hb`.
+A detailed English derivation is pending.
 -/
 theorem sq_lintegral_mul_le {X : Type*} [MeasurableSpace X] (ν : Measure X) {a b : X → ℝ≥0∞}
     (ha : Measurable a) (hb : Measurable b) :
@@ -24,17 +24,15 @@ theorem sq_lintegral_mul_le {X : Type*} [MeasurableSpace X] (ν : Measure X) {a 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Take `⟨V, hVc, hV⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hC : IsCompact (V * tsupport α)` using `hVc.mul hs`. Use `set C : Set G := V * tsupport α with hCdef`. Establish `hfin : μ C ≠ ∞` using `hC.measure_lt_top.ne`. Establish `hc : 0 < ε / (μ C + 1)` using `ENNReal.div_pos hε.ne' (by simp [hfin])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℝ≥0∞ := ε / (μ C + 1) with hcdef`. Establish `hunif : ∀ᶠ y in 𝓝 (1 : G), ∀ w ∈ C, ‖α (y⁻¹ * w) - α w‖ₑ < c`. Use `hC.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `hcont : Continuous fun z : G × G => ‖α (z.1⁻¹ * z.2) - α z.2‖ₑ` using `by fun_prop`. Establish `h0 : ‖α ((1 : G)⁻¹ * w) - α w‖ₑ < c` using `by simpa using hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcont.continuousAt.eventually_lt continuousAt_const h0`. Use `filter_upwards [hunif, hV] with y hy hyV`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Establish `hle : ∀ w, ‖α (y⁻¹ * w) - α w‖ₑ ≤ C.indicator (fun _ => c) w`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ C`. Rewrite using `[Set.indicator_of_mem hw]`. Conclude with `(hy w hw).le`. Rewrite using `[Set.indicator_of_notMem hw]`. Establish `h1 : α w = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Assume the negation of the conclusion as `h`. Conclude with `hw (Set.mem_mul.2 ⟨1, mem_of_mem_nhds hV, w, subset_tsupport _ h, one_mul w⟩)`. Establish `h2 : α (y⁻¹ * w) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hw (Set.mem_mul.2 ⟨y, hyV, y⁻¹ * w, subset_tsupport _ h, by group⟩)`.
-
-Simplify using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem eventually_lintegral_translate_le [LocallyCompactSpace G]
     (μ : Measure G) [IsFiniteMeasureOnCompacts μ] {α : G → ℂ} (hα : Continuous α) (hs : HasCompactSupport α)
@@ -76,11 +74,11 @@ theorem eventually_lintegral_translate_le [LocallyCompactSpace G]
 variable [LocallyCompactSpace G] [SecondCountableTopology G]
 
 /- English proof (translation)
-Establish `h1 : s * ψ (x * y) = ∫ w, α (y⁻¹ * w) * ψ (x * w) ∂μ`. Rewrite using `[← hrep (x * y), ← integral_mul_left_eq_self (fun w => α (y⁻¹ * w) * ψ (x * w)) y]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`. Establish `hcs : HasCompactSupport fun w => α (y⁻¹ * w)` using `hs.comp_homeomorph (Homeomorph.mulLeft y⁻¹)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi1 : Integrable (fun w => α (y⁻¹ * w) * ψ (x * w)) μ` using `Continuous.integrable_of_hasCompactSupport (by fun_prop) hcs.mul_right`. Establish `hi2 : Integrable (fun w => α w * ψ (x * w)) μ` using `Continuous.integrable_of_hasCompactSupport (by fun_prop) hs.mul_right`. Establish `h3 : s * (ψ (x * y) - ψ x) = ∫ w, (α (y⁻¹ * w) - α w) * ψ (x * w) ∂μ`. Rewrite using `[mul_sub, h1, ← hrep x, ← integral_sub hi1 hi2]`. Conclude with `integral_congr_ae (ae_of_all _ fun w => by ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← enorm_mul, h3]`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `lintegral_congr fun w => enorm_mul _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem enorm_translate_sub_le (μ : Measure G) [μ.IsHaarMeasure] {α ψ : G → ℂ} (hα : Continuous α)
     (hs : HasCompactSupport α) (hψ : Continuous ψ) {s : ℂ}
@@ -103,9 +101,9 @@ theorem enorm_translate_sub_le (μ : Measure G) [μ.IsHaarMeasure] {α ψ : G �
   exact lintegral_congr fun w => enorm_mul _ _
 
 /- English proof (translation)
-Establish `hF' : IsFundamentalDomain Γ (MulOpposite.op w • F) μ` using `hF.smul_of_comm (MulOpposite.op w)`. Establish `himg : (fun x => x * w) '' F = MulOpposite.op w • F` using `rfl`. Establish `h1` using `(measurePreserving_mul_right μ w).setLIntegral_comp_emb (MeasurableEquiv.mulRight w).measurableEmbedding (fun x => ‖ψ x‖ₑ ^ 2) F`. Rewrite using `[h1, himg]`. Use `hF'.setLIntegral_eq hF _ fun γ x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Subgroup.smul_def, smul_eq_mul]`. Rewrite using `[hl _ γ.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_right_translate (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (Γ : Subgroup G) [Countable Γ] {F : Set G} (hF : IsFundamentalDomain Γ F μ) {ψ : G → ℂ}
@@ -121,15 +119,11 @@ theorem lintegral_right_translate (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulR
   rw [hl _ γ.2]
 
 /- English proof (translation)
-Use `set a : G → ℝ≥0∞ := fun w => ‖α (y⁻¹ * w) - α w‖ₑ with ha_def`. Establish `hac : Continuous a` using `by fun_prop`. Establish `ha : Measurable a` using `hac.measurable`. Establish `hjm : Measurable fun z : G × G => a z.2 * ‖ψ (z.1 * z.2)‖ₑ ^ 2`. Establish `hc : Continuous fun z : G × G => ‖ψ (z.1 * z.2)‖ₑ` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(ha.comp measurable_snd).mul (hc.measurable.pow_const 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_const_mul' _ _ (by simp)]`. Conclude with `lintegral_congr fun x => (mul_pow _ _ _).symm`. Use `_ ≤ ∫⁻ x in F, (∫⁻ w, a w * ‖ψ (x * w)‖ₑ ∂μ) ^ 2 ∂μ := lintegral_mono fun x => by gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `enorm_translate_sub_le μ hα hs hψ hrep x y`. Use `_ ≤ ∫⁻ x in F, (∫⁻ w, a w ∂μ) * ∫⁻ w, a w * ‖ψ (x * w)‖ₑ ^ 2 ∂μ ∂μ := lintegral_mono fun x => sq_lintegral_mul_le μ ha (by`. Establish `: Continuous fun w => ‖ψ (x * w)‖ₑ` using `by fun_prop`. Conclude with `this.measurable)`. Use `_ = (∫⁻ w, a w ∂μ) * ∫⁻ x in F, ∫⁻ w, a w * ‖ψ (x * w)‖ₑ ^ 2 ∂μ ∂μ := lintegral_const_mul' _ _ hA`.
-
-Use `_ = (∫⁻ w, a w ∂μ) * ∫⁻ w, ∫⁻ x in F, a w * ‖ψ (x * w)‖ₑ ^ 2 ∂μ ∂μ := by`. Rewrite using `[lintegral_lintegral_swap hjm.aemeasurable]`. Use `_ = (∫⁻ w, a w ∂μ) * ∫⁻ w, a w ∂μ := by`. Use `congr 1`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top, lintegral_right_translate μ Γ hF hl w, hn, mul_one]`. Use `_ = (∫⁻ w, a w ∂μ) ^ 2 := (sq _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_mean_translate_le (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (Γ : Subgroup G) [Countable Γ] {F : Set G} (hF : IsFundamentalDomain Γ F μ) {α ψ : G → ℂ}
@@ -168,15 +162,13 @@ theorem sq_mean_translate_le (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightI
     _ = (∫⁻ w, a w ∂μ) ^ 2 := (sq _).symm
 
 /- English proof (translation)
-Use `set d : ℝ≥0∞ := ENNReal.ofReal δ with hd`. Establish `hd0 : d ≠ 0` using `by simpa [hd] using hδ`. Establish `hdt : d ≠ ∞` using `ENNReal.ofReal_ne_top`. Establish `hd2 : d ^ 2 ≠ 0` using `pow_ne_zero 2 hd0`. Establish `hd2t : d ^ 2 ≠ ∞` using `ENNReal.pow_ne_top hdt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ε : ℝ≥0∞ := min 1 (η * d ^ 2) with hε`. Establish `hε0 : 0 < ε` using `lt_min one_pos (ENNReal.mul_pos hη.ne' hd2)`. Establish `hε1 : ε ≤ 1` using `min_le_left _ _`. Use `⟨_, eventually_lintegral_translate_le μ hα hs hε0, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ hψ hl ⟨s, hsδ, hrep⟩ hn y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : ∫⁻ w, ‖α (y⁻¹ * w) - α w‖ₑ ∂μ ≤ ε` using `hy`. Establish `hA : ∫⁻ w, ‖α (y⁻¹ * w) - α w‖ₑ ∂μ ≠ ∞` using `(hy'.trans hε1).trans_lt ENNReal.one_lt_top |>.ne`. Establish `hb` using `sq_mean_translate_le μ Γ hF hα hs hψ hl hrep hn y hA`. Establish `hds : d ≤ ‖s‖ₑ`. Rewrite using `[hd, ← ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ENNReal.ofReal_le_ofReal hsδ`. Establish `hεε : ε ^ 2 ≤ η * d ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : d ^ 2 * ∫⁻ x in F, ‖ψ (x * y) - ψ x‖ₑ ^ 2 ∂μ ≤ d ^ 2 * η`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `(ENNReal.mul_le_mul_iff_right hd2 hd2t).1 hfin`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_nhds_sq_mean_le (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (Γ : Subgroup G) [Countable Γ] {α : G → ℂ} {δ : ℝ} {F : Set G}
@@ -218,7 +210,7 @@ theorem exists_nhds_sq_mean_le (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRigh
 end GlobalTheory.CompanionTheory.Conc.WeightedCauchySchwarzLintegral
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _ α δ F hα hs hδ hF η hη`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.haar_right_invariant_totally_complex E N μ`. Use `haveI : Countable (latticeGL E N) := GlobalTheory.DiscreteUnit.countable_latticeGL`. Conclude with `GlobalTheory.CompanionTheory.Conc.WeightedCauchySchwarzLintegral.exists_nhds_sq_mean_le μ (latticeGL E N) hα hs hδ hF hη`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Conc.translate_sq_mean_close : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure] (α : GA E N → ℂ) (δ : ℝ) (F : Set (GA E N)), Continuous α → HasCompactSupport α → 0 < δ →
   IsFundamentalDomain (latticeGL E N) F μ → ∀ η : ℝ≥0∞, 0 < η → ∃ U ∈ 𝓝 (1 : GA E N), ∀ ψ : GA E N → ℂ, Continuous ψ →

@@ -17,7 +17,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ h _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mul_single_one (i j k l : Fin n) :
     Matrix.single i j (1 : ℂ) * Matrix.single k l 1 = if j = k then Matrix.single i l 1 else 0 := by
@@ -27,14 +27,14 @@ theorem single_mul_single_one (i j k l : Fin n) :
   · exact Matrix.single_mul_single_of_ne _ _ _ _ h _
 
 /- English proof (translation)
-Simplify using `[Lhol, Matrix.neg_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lhol_neg (X : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (z : Matrix (Fin n) (Fin n) ℂ) : Lhol (-X) F z = -Lhol X F z := by
   simp [Lhol, Matrix.neg_mul]
 
 /- English proof (translation)
-Introduce `_ hz` and use `(contDiffAt_phiM μ hz).contDiffWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phiM_contDiffOn (μ : Fin n → ℤ) : ContDiffOn ℂ ∞ (PhiM μ) (OmegaSet n) :=
   fun _ hz => (contDiffAt_phiM μ hz).contDiffWithinAt
@@ -43,16 +43,16 @@ def phiT (μ : Fin n → ℤ) : smoothS n :=
   ⟨(OmegaSet n).indicator (PhiM μ), (phiM_contDiffOn μ).congr fun _ hz => Set.indicator_of_mem hz _⟩
 
 /- English proof (translation)
-Introduce `_ hz` and use `(Set.indicator_of_mem hz _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phiT_eqOn (μ : Fin n → ℤ) :
     Set.EqOn (PhiM μ) ((phiT μ : smoothS n) : Matrix (Fin n) (Fin n) ℂ → ℂ) (OmegaSet n) :=
   fun _ hz => (Set.indicator_of_mem hz _).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Rewrite using `[eOp_apply]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hz : z ∈ OmegaSet n`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[ltOp_of_mem _ hz, lhol_congr (phiT_eqOn μ).symm hz, h z hz, ← phiT_eqOn μ hz]`. Rewrite using `[ltOp_of_not_mem _ hz]`. Simplify using `[phiT, Set.indicator_apply, hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eOp_phiT (μ : Fin n → ℤ) (X : Matrix (Fin n) (Fin n) ℂ) (c : ℂ)
     (h : ∀ z ∈ OmegaSet n, Lhol X (PhiM μ) z = c * PhiM μ z) : eOp X (phiT μ) = c • phiT μ := by
@@ -72,11 +72,11 @@ def xTr (n : ℕ) : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ :=
   fun a b => Matrix.single b a 1
 
 /- English proof (translation)
-Unfold `xRev`. Rewrite using `[neg_mul_neg, neg_mul_neg, single_mul_single_one, single_mul_single_one]`. Distinguish the cases in `h1 : b = c`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : d = a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Apply the tactic sequence `simp <;> abel`. Simplify using `[h2, Ne.symm h2]`. Distinguish the cases in `h2 : d = a`. Substitute `h2` using the available equality.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xRev_rel (a b c d : Fin n) : xRev n c d * xRev n a b - xRev n a b * xRev n c d =
     (if b = c then xRev n a d else 0) - (if d = a then xRev n c b else 0) := by
@@ -94,11 +94,11 @@ theorem xRev_rel (a b c d : Fin n) : xRev n c d * xRev n a b - xRev n a b * xRev
     · simp [h1, h2, Ne.symm h1, Ne.symm h2]
 
 /- English proof (translation)
-Unfold `xTr`. Rewrite using `[single_mul_single_one, single_mul_single_one]`. Distinguish the cases in `h1 : b = c`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : d = a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Apply the tactic sequence `simp <;> abel`. Simplify using `[h2, Ne.symm h2]`. Distinguish the cases in `h2 : d = a`. Substitute `h2` using the available equality.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xTr_rel (a b c d : Fin n) : xTr n c d * xTr n a b - xTr n a b * xTr n c d =
     (if b = c then xTr n a d else 0) - (if d = a then xTr n c b else 0) := by
@@ -116,11 +116,11 @@ theorem xTr_rel (a b c d : Fin n) : xTr n c d * xTr n a b - xTr n a b * xTr n c 
     · simp [h1, h2, Ne.symm h1, Ne.symm h2]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `eOp_phiT μ _ _ fun z hz => ?_` and prove the remaining obligations. Unfold `xRev`. Rewrite using `[lhol_neg, lhol_phiM_diag μ _ hz]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : eOp (xRev n a b) (phiT μ) = (0 : ℂ) • phiT μ`. Use `eOp_phiT μ _ _ fun z hz => ?_` and prove the remaining obligations. Unfold `xRev`. Rewrite using `[lhol_neg, lhol_phiM_lower μ (Fin.rev_lt_rev.2 hab) hz]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hw_rev (μ : Fin n → ℤ) :
     IsHWVec (fun a b => eOp (xRev n a b)) (fun a => ((μ (Fin.rev a) : ℤ) : ℝ)) (phiT μ) := by
@@ -138,11 +138,11 @@ theorem hw_rev (μ : Fin n → ℤ) :
     rw [h0, zero_smul]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `eOp_phiT μ _ _ fun z hz => ?_` and prove the remaining obligations. Unfold `xTr`. Rewrite using `[lhol_phiM_diag μ _ hz]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : eOp (xTr n a b) (phiT μ) = (0 : ℂ) • phiT μ`. Use `eOp_phiT μ _ _ fun z hz => ?_` and prove the remaining obligations. Unfold `xTr`. Rewrite using `[lhol_phiM_lower μ hab hz]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hw_tr (μ : Fin n → ℤ) :
     IsHWVec (fun a b => eOp (xTr n a b)) (fun a => -((μ a : ℤ) : ℝ)) (phiT μ) := by
@@ -160,7 +160,7 @@ theorem hw_tr (μ : Fin n → ℤ) :
     rw [h0, zero_smul]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Unfold `rho`. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega : a.val + 1 ≤ n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_rev_add (a : Fin n) : rho n (Fin.rev a) + rho n a = 0 := by
   have ha := a.isLt
@@ -170,7 +170,7 @@ theorem rho_rev_add (a : Fin n) : rho n (Fin.rev a) + rho n a = 0 := by
   ring
 
 /- English proof (translation)
-Establish `h : (∏ r, (1 - PowerSeries.X * (1 - PowerSeries.C (l (σ r)) * PowerSeries.X)⁻¹)) = ∏ r, (1 - PowerSeries.X * (1 - PowerSeries.C (l r) * PowerSeries.X)⁻¹)` using `Equiv.prod_comp σ (fun r => 1 - PowerSeries.X * (1 - PowerSeries.C (l r) * PowerSeries.X)⁻¹)`. Unfold `gval gelfandSeries`. Use `beta_reduce`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gval_comp_perm (l : Fin n → ℂ) (σ : Equiv.Perm (Fin n)) (k : ℕ) :
     gval (fun r => l (σ r)) k = gval l k := by
@@ -182,15 +182,15 @@ private theorem gval_comp_perm (l : Fin n → ℂ) (σ : Equiv.Perm (Fin n)) (k 
   rw [h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hY : ∀ a b, Matrix.single a b (1 : ℂ) = (-1 : ℂ) • xRev n (Fin.revPerm a) (Fin.revPerm b)`. Introduce `a b`. Simplify using `[xRev]`. Establish `hν : ((fun a => ((μ (Fin.rev a) : ℤ) : ℝ)) + rho n) = fun a => lam (Fin.revPerm a)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Fin.revPerm_apply, hμ (Fin.rev a)]`. Use `rho_rev_add (n := n) a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(opGelfand_eq (xRev n) _ Fin.revPerm (-1) hY (PhiM μ) (phiT μ) (phiT_eqOn μ) k hz).trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gelfand_hw (isGlRep_eOp (xRev n) xRev_rel) (hw_rev μ) k, hν, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ← phiT_eqOn μ hz]`. Rewrite using `[show icShift (fun a => lam (Fin.revPerm a)) = fun a => icShift lam (Fin.revPerm a) from rfl, gval_comp_perm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY : ∀ a b, Matrix.single (Fin.rev b) (Fin.rev a) (1 : ℂ) = (1 : ℂ) • xTr n (Fin.revPerm a) (Fin.revPerm b)`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[xTr]`. Establish `hν : ((fun a => -((μ a : ℤ) : ℝ)) + rho n) = -lam`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.neg_apply, hμ a]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(opGelfand_eq (xTr n) _ Fin.revPerm 1 hY (PhiM μ) (phiT μ) (phiT_eqOn μ) k hz).trans ?_` and prove the remaining obligations. Rewrite using `[gelfand_hw (isGlRep_eOp (xTr n) xTr_rel) (hw_tr μ) k, hν, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ← phiT_eqOn μ hz, one_pow, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gelfand_phiM (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) (k : ℕ) {z : Matrix (Fin n) (Fin n) ℂ}
     (hz : z ∈ OmegaSet n) :

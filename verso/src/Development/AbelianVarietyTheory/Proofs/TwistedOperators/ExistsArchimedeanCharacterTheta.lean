@@ -47,9 +47,9 @@ namespace GlobalTheory.BottomRealChar
 open GlobalTheory.Grid (neg sgn ofSgn)
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilParts.detPlus`. Establish `e : (1 : Matrix (Fin m) (Fin m) ℂ) ⊗ₖ (-1 : Matrix (Fin n) (Fin n) ℂ)ᵀ = -1`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.neg_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : (1 / 2 : ℂ) • ((1 + -1 : Matrix (Fin m × Fin n) (Fin m × Fin n) ℂ) * (b ⊗ₖ aᵀ)) + (1 / 2 : ℂ) • (1 - -1 : Matrix (Fin m × Fin n) (Fin m × Fin n) ℂ) = 1`. Rewrite using `[add_neg_cancel, Matrix.zero_mul, smul_zero, zero_add, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions. Rewrite using `[e, e2, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPlus_neg_one_one {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.WeilParts.detPlus (-1) 1 a b = 1 := by
@@ -65,7 +65,7 @@ theorem detPlus_neg_one_one {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Ma
   rw [e, e2, Matrix.det_one]
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem commGroup_div_eq_div_mul_ratio {G : Type*} [CommGroup G] (a x y e c : G) :
     c * e / (a * x * e) = c * e / (a * y * e) * (y * x⁻¹) := by
@@ -87,7 +87,7 @@ theorem detChar_apply {D : D7} (θ : InfFam D) (V : HSp D) (e : D.what₂.Tau �
     detChar θ V e g = ∏ τ, (compAt θ τ (Formalism.L2.Theta.mt V g.1)).det ^ e τ := rfl
 
 /- English proof (translation)
-Use `continuous_finset_prod _ fun τ _ => Continuous.zpow₀ ?_ _ fun g => Or.inl fun h0 => ?_` and prove the remaining obligations. Conclude with `(((GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).comp ((GlobalTheory.RealWeil.continuous_mt V).1.comp continuous_subtype_val))).matrix_det`. Use `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ g.1)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_detChar {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (e : D.what₂.Tau → ℤ) :
     Continuous (detChar θ V e) := by
@@ -99,9 +99,9 @@ theorem continuous_detChar {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp
     exact zero_ne_one this
 
 /- English proof (translation)
-Set `K` to `algebraicClosure ℚ ℂ`. Establish `hK : ∀ z : ℂ, z ∈ K ↔ IsAlgebraic ℚ z` using `fun z => mem_algebraicClosure_iff`. Rewrite using `[← hK, detChar_apply]`. Use `prod_mem fun τ _ => zpow_mem ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun a _ => (hK _).2 (hg τ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_detChar {D : D7} (θ : InfFam D) (V : HSp D) (e : D.what₂.Tau → ℤ) (g : GinfC V)
     (hg : ∀ τ a b, IsAlgebraic ℚ (compAt θ τ (Formalism.L2.Theta.mt V g.1) a b)) : IsAlgebraic ℚ (detChar θ V e g) := by
@@ -113,27 +113,23 @@ theorem isAlgebraic_detChar {D : D7} (θ : InfFam D) (V : HSp D) (e : D.what₂.
   exact sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun a _ => (hK _).2 (hg τ _ _))
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ hL hX`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Establish `hW` using `fun t => hI.weil t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : ∀ t τ, HasInfExp D (L.xi t) τ 0` using `fun t τ => by`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t) hn ho τ`. Use `choose b hb using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ WW.rank τ hθ (hW μ₀).hecT (hW μ₀).resT`. Establish `hbt : ∀ t τ, HasInfExp D ((G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) / (L.mu t (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2))) τ (b τ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t τ`. Establish `hrel : (G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) / (L.mu t (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2)) = (G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) / (L.mu μ₀ (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2)) * (L.xi μ₀ * (L.xi t)⁻¹)`. Simplify using `only [LevCh.mu, Lift.tup]`. Conclude with `commGroup_div_eq_div_mul_ratio _ _ _ _ _`. Rewrite using `[hrel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.Mem.HeckeExp.hasInfExp_mul (hb τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_mul (hxi μ₀ τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (hxi t τ)))` as an intermediate fact. Simplify using `using this`. Use `choose k hk using fun τ => GlobalTheory.SplitParity.exists_int_add_half D _ WW.rank τ (b τ) (hW μ₀).hecT (hW μ₀).resT (hb τ)`. Use `⟨detChar W.θ A fun τ => -(k τ - WW.rank), continuous_detChar hθ _ _, fun t g => ?_, fun g hg => isAlgebraic_detChar _ _ _ g hg⟩` and prove the remaining obligations. Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Establish `hf : IsThetaFunO W.ψ (neg A) WW (X.f t)`. Establish `hne : X.ideal (locPl G) t ≠ ⊥` using `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`. Take `⟨f, h1, h2⟩` from `GlobalTheory.Adopt.first_standard_pair_member_has_theta_function D W.ψ W.θ A WW X.rA X.rW _ _ _ _ _ hI.rigA hI.rigW (hI.weil' t).hecT (hI.idem t) hne hI.isVac`. Take `⟨Tm, hT⟩` from `h1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((hI.fst t).2 Tm hT).trans (h1.2 Tm hT).symm ▸ h2`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)`. Establish `hfock : ∀ τ, IsFockVacAt (heisO W.ψ (neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f t)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (hI.fst t) hI.isVac.2.theta hf (hI.isVac.2.fock τ)`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hI.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hI.rigW.2.2 τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ τ, (gramAt D (neg A) τ).det ≠ 0` using `fun τ h0 => by`. Use `(cS τ).2.2.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `this rfl`. Establish `hg' : (ofSgn true A).symm g.1 ∈ GinfC (neg A)` using `(GlobalTheory.SgnIdent.mem_GinfC_sgn true A _).2 (by rw [MulEquiv.apply_symm_apply]; exact g.2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmt : Formalism.L2.Theta.mt (neg A) ((ofSgn true A).symm g.1) = Formalism.L2.Theta.mt A g.1`. Rewrite using `[← GlobalTheory.Grid.mt_ofSgn, MulEquiv.apply_symm_apply]`. Take `⟨x, hx, hxv⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ (neg A) hdet _ hg'`. Establish `hy1 : IsDetRoot WW 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Matrix.det_one).symm`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `one : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt WW 1) = 1` using `fun τ => GlobalTheory.StdUnn.CartanMove.compAt_mt_one W.θ τ WW`. Rewrite using `[GlobalTheory.WeilVacChar.vacuum_character D W.ψ hψ (neg A) WW W.θ hθ _ _ _ η hη (hW t) (fun τ => -X.rA.s τ) X.rW.s cS cT _ hg' 1 (one_mem _) (fun τ => by rw [hsA, Matrix.neg_mul, Matrix.mul_neg, Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [one, one_mul, mul_one]) x 1 hx hy1 …`. Use `congr 1`.
-
-Establish `hx' : ∀ τ, HasInfExp D (((G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) / (L.mu t (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2))) * (η ^ WW.rank)⁻¹) τ ((k τ - WW.rank : ℤ) : ℚ)` using `fun τ => by`. Establish `e : ((k τ - WW.rank : ℤ) : ℚ) = b τ - (WW.rank : ℚ) / 2` using `by push_cast; rw [hk]; ring`. Rewrite using `[e]`. Conclude with `GlobalTheory.VacuumCharacter.hasInfExp_twist (hbt t τ) (hη.2.2.2 τ) _`. Simplify using `only [hsA, hsW, detPlus_neg_one_one, Finset.prod_const_one, mul_one, map_one]`.
-
-Rewrite using `[Circle.coe_inv, hxv _ (fun τ => k τ - WW.rank) hx', ← Finset.prod_inv_distrib, detChar_apply, hmt]`. Conclude with `Finset.prod_congr rfl fun τ _ => (_root_.zpow_neg _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_realChar : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X → ∃ χ : GinfC A →* ℂ, Continuous χ ∧ (∀ (t : T) (g : GinfC A), (X.ω t).toSgn true ((GlobalTheory.Grid.ofSgn true A).symm g.1, 1) (X.f t) = χ g • X.f t) ∧ ∀ g : GinfC A, (∀ τ a b, IsAlgebraic ℚ (compAt W.θ τ (Formalism.L2.Theta.mt A g.1) a b)) → IsAlgebraic ℚ (χ g) := by
   intro D T _ L μ₀ sc G W i j A A' WW X _ _ hL hX

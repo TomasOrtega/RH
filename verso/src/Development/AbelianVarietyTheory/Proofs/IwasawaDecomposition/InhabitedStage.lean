@@ -16,7 +16,7 @@ def baseVol (B : Base) (cd : CDHaar) (W : @HSpace B.host.E _ _ B.host.cmStar) : 
   GlobalTheory.Mem.Vol.trueVol B.sp.cm (fun τ : Tau B.R => B.host.emb τ.1) cd W
 
 /- English proof (translation)
-The claim follows from `letI := B.host.cmStar GlobalTheory.Mem.Vol.trueVol_pos B.sp.cm (fun τ : Tau B.R => B.host.emb τ.1) cd W`.
+A detailed English derivation is pending.
 -/
 theorem baseVol_pos (B : Base) (cd : CDHaar) (W : @HSpace B.host.E _ _ B.host.cmStar) : 0 < baseVol B cd W :=
   letI := B.host.cmStar
@@ -65,7 +65,7 @@ def oneJet {R : Ranks} (H : Host R) (hm : 1 ≤ R.m) (l : ℕ) (hl : l.Prime) (h
   firstJet_upperRank_eq := fun i => i.elim
 
 /- English proof (translation)
-Take `⟨J, hv, hcd, hj, -, hf⟩` from `GJModel.exists_of_jet B C (baseVol B cd) (baseVol_pos B cd) cd (noJet B.host) (GJModel.gxOne B) (fun i => i.elim) (fun i => i.elim)`. Conclude with `⟨J, hcd, by rw [hv, hcd], hj, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_noJet (B : Base) (C : Cols B) (cd : CDHaar) :
     ∃ J : GJStage B C, J.cd = cd ∧ J.vol = baseVol B J.cd ∧ J.jet = noJet B.host ∧
@@ -75,9 +75,9 @@ theorem exists_noJet (B : Base) (C : Cols B) (cd : CDHaar) :
   exact ⟨J, hcd, by rw [hv, hcd], hj, hf⟩
 
 /- English proof (translation)
-Take `⟨J, hv, hcd, hj, -, hf⟩` from `GJModel.exists_of_jet B C (baseVol B cd) (baseVol_pos B cd) cd (oneJet B.host hm l hl h5 hc) (GJModel.gxOne B) (fun _ => ⟨u, h0, h1⟩) (fun i => i.elim)`. Establish `key : ∃ i : J.jet.Sit, J.jet.jOf i = 1 ∧ (J.jet.loc i).l = l ∧ (J.jet.loc i).d = 2`. Rewrite using `[hj]`. Conclude with `⟨(), rfl, rfl, rfl⟩`. Take `⟨i, hi1, hil, hid⟩` from `key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨J, hcd, by rw [hv, hcd], hj, ⟨i, hi1, hil, hid, (J.jetW_l i).trans hil⟩, hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_oneJet (B : Base) (C : Cols B) (cd : CDHaar) (hm : 1 ≤ B.R.m) (u : B.Word)
     (h0 : Nonempty ((C.mem u).C.cls 0)) (h1 : Nonempty ((C.mem u).C.cls 1))
@@ -95,7 +95,7 @@ theorem exists_oneJet (B : Base) (C : Cols B) (cd : CDHaar) (hm : 1 ≤ B.R.m) (
   exact ⟨J, hcd, by rw [hv, hcd], hj, ⟨i, hi1, hil, hid, (J.jetW_l i).trans hil⟩, hf⟩
 
 /- English proof (translation)
-Take `⟨cd⟩` from `GlobalTheory.T.nonempty_compactDualHaar`. Take `⟨J, -⟩` from `exists_noJet B C cd`. Conclude with `⟨J⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_stage (B : Base) (C : Cols B) : Nonempty (GJStage B C) := by
   obtain ⟨cd⟩ := GlobalTheory.T.nonempty_compactDualHaar
@@ -103,9 +103,9 @@ theorem nonempty_stage (B : Base) (C : Cols B) : Nonempty (GJStage B C) := by
   exact ⟨J⟩
 
 /- English proof (translation)
-Take `⟨cd⟩` from `GlobalTheory.T.nonempty_compactDualHaar`. Use `⟨?_, fun hm h0 h1 l hl h5 hc => ?_, fun h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨J, -, hv, -⟩` from `exists_noJet B C cd`. Conclude with `⟨J, hv⟩`. Take `⟨J, -, hv, -, ⟨i, hi⟩, -⟩` from `exists_oneJet B C cd hm B.u₀ h0 h1 l hl h5 hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨J, hv, ⟨i⟩, i, hi⟩`. Take `⟨l, hl, h5, hc⟩` from `GJModel.exists_inert B.host`. Establish `hm` using `B.R.two_le_m`. Take `⟨J, -, hv, -, ⟨i, -⟩, -⟩` from `exists_oneJet B C cd (by omega) B.u₀ h0 h1 l hl h5 hc`. Conclude with `⟨J, hv, ⟨i⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inhabited_stage (B : Base) (C : Cols B) :
     (∃ J : GJStage B C, J.vol = baseVol B J.cd) ∧

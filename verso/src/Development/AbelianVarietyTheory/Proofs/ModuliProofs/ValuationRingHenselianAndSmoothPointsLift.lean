@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `Polynomial.Splits.of_splits_map_of_injective (IsFractionRing.injective O K) (IsAlgClosed.splits _) fun a ha => ?_` and prove the remaining obligations. Establish `hroot : Polynomial.eval₂ (algebraMap O K) a f = 0`. Rewrite `ha` using `[Polynomial.mem_roots (hf.map _).ne_zero, Polynomial.IsRoot, Polynomial.eval_map]`. Conclude with `ha`. Establish `hint : IsIntegral O a` using `⟨f, hf, hroot⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Conclude with `⟨b, hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splits_of_monic_of_valuationRing_of_isAlgClosed (O K : Type*) [CommRing O] [IsDomain O]
     [ValuationRing O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K]
@@ -30,9 +30,9 @@ theorem splits_of_monic_of_valuationRing_of_isAlgClosed (O K : Type*) [CommRing 
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Establish `hs` using `splits_of_monic_of_valuationRing_of_isAlgClosed O K hf`. Rewrite `h₁` using `[hs.eval_eq_prod_roots_of_monic hf a₀, (IsLocalRing.maximalIdeal.isMaximal O).isPrime.multiset_prod_mem_iff_exists_mem]`. Take `⟨c, hc, hcm⟩` from `h₁`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.mp hc`. Use `⟨r, (Polynomial.mem_roots hf.ne_zero).mp hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem hcm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem henselianLocalRing_of_valuationRing_of_isAlgClosed (O K : Type*) [CommRing O] [IsDomain O]
     [ValuationRing O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] :
@@ -48,9 +48,9 @@ theorem henselianLocalRing_of_valuationRing_of_isAlgClosed (O K : Type*) [CommRi
     exact neg_mem hcm
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun p hp hirr => ?_` and prove the remaining obligations. Take `⟨g, hg, hdeg, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic (Polynomial.map_surjective _ IsLocalRing.residue_surjective p) hp`. Establish `hs` using `splits_of_monic_of_valuationRing_of_isAlgClosed O K hgm`. Establish `hd : g.degree ≠ 0`. Rewrite using `[Polynomial.degree_eq_natDegree hgm.ne_zero, hdeg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Irreducible.natDegree_pos hirr).ne'` after adjusting the coercions. Take `⟨r, hr⟩` from `hs.exists_eval_eq_zero hd`. Conclude with `⟨IsLocalRing.residue O r, by rw [← hg, Polynomial.eval_map, Polynomial.eval₂_at_apply, hr, map_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_residueField_of_valuationRing_of_isAlgClosed (O K : Type*) [CommRing O]
     [IsDomain O] [ValuationRing O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] :
@@ -66,9 +66,9 @@ theorem isAlgClosed_residueField_of_valuationRing_of_isAlgClosed (O K : Type*) [
   exact ⟨IsLocalRing.residue O r, by rw [← hg, Polynomial.eval_map, Polynomial.eval₂_at_apply, hr, map_zero]⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _`. Use `henselianLocalRing_of_valuationRing_of_isAlgClosed O K` as an intermediate fact. Use `⟨inferInstance, isAlgClosed_residueField_of_valuationRing_of_isAlgClosed O K, ?_⟩` and prove the remaining obligations. Introduce `X f hf x hx`. Use `hf` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨⟨y, hy⟩, hy'⟩` from `reducePoint_residue_surjective f O (𝟙 _) ⟨x, by simpa using hx⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val hy'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuationRing_henselian_and_lift_of_isAlgClosed :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K], HenselianLocalRing O ∧ IsAlgClosed (IsLocalRing.ResidueField O) ∧ ∀ (X : Scheme.{0}) (f : X ⟶ Sp O), Smooth f → ∀ x : Sp (IsLocalRing.ResidueField O) ⟶ X, x ≫ f = spMap (IsLocalRing.residue O) → ∃ y : Sp O ⟶ X, y ≫ f = 𝟙 _ ∧ spMap (IsLocalRing.residue O) ≫ y = x := by

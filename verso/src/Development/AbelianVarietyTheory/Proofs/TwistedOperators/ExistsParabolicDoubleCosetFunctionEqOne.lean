@@ -9,33 +9,31 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Simplify using `only [deltaR, nabs, map_mul, NNReal.coe_mul, mul_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deltaR_mul (g g' : GL n k) : deltaR c (g * g') = deltaR c g * deltaR c g' := by
   simp only [deltaR, nabs, map_mul, NNReal.coe_mul, mul_zpow]
 
 /- English proof (translation)
-Simplify using `[deltaR, nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deltaR_one : deltaR c (1 : GL n k) = 1 := by
   simp [deltaR, nabs]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mul_embX_mem_R {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1) (g : GL n k) :
     u * embX c g ∈ R k n c 1 :=
   mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩)
 
 /- English proof (translation)
-Establish `h1 : g'⁻¹ * g ∈ prX (Cgrp J h)`. Use `⟨embX c g'⁻¹ * (u'⁻¹ * u) * (embX c g'⁻¹)⁻¹, Radical.conj_mem _ (mul_mem (inv_mem hu') hu), ?_⟩` and prove the remaining obligations. Establish `e2 : embX c g'⁻¹ * (u'⁻¹ * u) * (embX c g'⁻¹)⁻¹ * embX c (g'⁻¹ * g) = (u' * embX c g')⁻¹ * (u * embX c g)`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mul_mem _ (Subgroup.inv_mem _ (mul_embX_mem_R hu' g')) (mul_embX_mem_R hu g), ?_⟩` and prove the remaining obligations. Establish `e3 : u * embX c g = u' * embX c g' * h * j' * j⁻¹ * h⁻¹`. Rewrite using `[← e]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : h⁻¹ * ((u' * embX c g')⁻¹ * (u * embX c g)) * h⁻¹⁻¹ = j' * j⁻¹`. Rewrite using `[e3]`. Use `group`. Use `show h⁻¹ * ((u' * embX c g')⁻¹ * (u * embX c g)) * h⁻¹⁻¹ ∈ J`. Rewrite using `[e4]`.
-
-Conclude with `mul_mem hj' (inv_mem hj)`. Establish `h2` using `deltaR_mul (c := c) g' (g'⁻¹ * g)`. Rewrite `h2` using `[H _ h1, mul_inv_cancel_left, mul_one]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaR_eq {J : Subgroup (GL (n ⊕ Fin c) k)} {h : GL (n ⊕ Fin c) k}
     (H : ∀ g ∈ prX (Cgrp J h), deltaR c g = 1) {u u' j j' : GL (n ⊕ Fin c) k} {g g' : GL n k}
@@ -64,27 +62,27 @@ theorem deltaR_eq {J : Subgroup (GL (n ⊕ Fin c) k)} {h : GL (n ⊕ Fin c) k}
 end
 
 /- English proof (translation)
-Set `P : GL (n ⊕ Fin c) k → GL n k → Prop` to `fun x g => ∃ u ∈ N k n c 1, ∃ j ∈ J, x = u * embX c g * h * j`. Set `f : GL (n ⊕ Fin c) k → ℂ` to `fun x => if hx : ∃ g, P x g then (deltaR c hx.choose : ℂ) else 0`. Establish `fpos : ∀ x g, P x g → f x = (deltaR c g : ℂ)`. Introduce `x g hg`. Establish `hx : ∃ g, P x g` using `⟨g, hg⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨u, hu, j, hj, e⟩` from `hx.choose_spec`. Take `⟨u', hu', j', hj', e'⟩` from `hg`. Simplify using `only [f, dif_pos hx]`. Rewrite using `[deltaR_eq H hu hu' hj hj' (e.symm.trans e')]`. Establish `fneg : ∀ x, (¬ ∃ g, P x g) → f x = 0` using `fun x hx => by simp only [f, dif_neg hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `left : ∀ u ∈ N k n c 1, ∀ (g g' : GL n k) x, P x g' → P (u * embX c g * x) (g * g')`. Introduce and unpack `u hu g g' x ⟨u', hu', j, hj, rfl⟩`. Use `⟨u * (embX c g * u' * (embX c g)⁻¹), mul_mem hu (Radical.conj_mem _ hu'), j, hj, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Use `group`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `right : ∀ j ∈ J, ∀ g x, P x g → P (x * j) g`. Introduce and unpack `j hj g x ⟨u', hu', j', hj', rfl⟩`. Conclude with `⟨u', hu', j' * j, mul_mem hj' hj, by group⟩`. Use `⟨f, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `u hu g x`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : ∃ g', P x g'`. Take `⟨g', hg'⟩` from `hx`. Rewrite using `[fpos _ _ (left u hu g g' x hg'), fpos _ _ hg', deltaR_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fneg x hx, mul_zero]`. Apply `fneg` to reduce the goal to its premises. Introduce and unpack `⟨g', hg'⟩`. Apply `hx` to reduce the goal to its premises. Use `left _ (Radical.conj_mem g⁻¹ (inv_mem hu)) g⁻¹ g' _ hg'` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : embX c g⁻¹ * u⁻¹ * (embX c g⁻¹)⁻¹ * embX c g⁻¹ * (u * embX c g * x) = x`. Simplify using `only [map_inv]`. Use `group`. Rewrite `this` using `[e]`. Conclude with `⟨_, this⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `x j hj`. Distinguish the cases in `hx : ∃ g', P x g'`. Take `⟨g', hg'⟩` from `hx`. Rewrite using `[fpos _ _ (right j hj g' x hg'), fpos _ _ hg']`. Rewrite using `[fneg x hx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `fneg` to reduce the goal to its premises. Introduce and unpack `⟨g', hg'⟩`. Apply `hx` to reduce the goal to its premises. Use `right _ (inv_mem hj) g' _ hg'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, this⟩`. Introduce `x hx`. Apply `fneg` to reduce the goal to its premises. Introduce and unpack `⟨g, u, hu, j, hj, e⟩`. Apply `hx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨_, mul_embX_mem_R hu g, j, hj, e⟩`. Rewrite using `[fpos h 1 ⟨1, one_mem _, 1, one_mem _, by simp⟩, deltaR_one]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isCosetFn (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (c : ℕ)

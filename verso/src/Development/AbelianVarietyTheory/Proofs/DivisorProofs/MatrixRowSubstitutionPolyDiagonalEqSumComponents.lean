@@ -7,16 +7,16 @@ set_option autoImplicit false
 namespace GlobalTheory.DiagRowSubst
 
 /- English proof (translation)
-Simplify using `only [Matrix.diagonal_apply, apply_ite C, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diag_var (N : ℕ) (R : Type) [CommRing R] (d : Fin N → R) (v : Fin N × Fin N) :
     (∑ b : Fin N, C (Matrix.diagonal d v.1 b) * X (b, v.2) : MvPolynomial (Fin N × Fin N) R) = C (d v.1) * X v := by
   simp only [Matrix.diagonal_apply, apply_ite C, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, rowW, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Repeatedly rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm, Finsupp.prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [pow_ite, pow_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_ite_eq' Finset.univ v.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_prod (N : ℕ) (R : Type) [CommRing R] (d : Fin N → R) (m : Fin N × Fin N →₀ ℕ) :
     ∏ a, d a ^ Finsupp.weight (rowW N N) m a = m.prod (fun v e => d v.1 ^ e) := by
@@ -31,7 +31,7 @@ theorem weight_prod (N : ℕ) (R : Type) [CommRing R] (d : Fin N → R) (m : Fin
   simp
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, rowW, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `exact Finset.sum_le_sum fun v _ => by split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weight_le (N : ℕ) (m : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     Finsupp.weight (rowW N N) m a ≤ m.sum (fun _ e => e) := by
@@ -41,7 +41,7 @@ theorem weight_le (N : ℕ) (m : Fin N × Fin N →₀ ℕ) (a : Fin N) :
   exact Finset.sum_le_sum fun v _ => by split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[weight_prod, rowSubst, aeval_monomial]`. Repeatedly rewrite using `[diag_var, mul_pow]`. Rewrite using `[Finsupp.prod_mul, monomial_eq, map_mul, map_finsuppProd]`. Simplify using `only [map_pow, MvPolynomial.algebraMap_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mono (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (d : Fin N → R)
     (m : Fin N × Fin N →₀ ℕ) (c : O) :
@@ -53,11 +53,11 @@ theorem mono (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra 
   simp only [map_pow, MvPolynomial.algebraMap_apply, mul_assoc]
 
 /- English proof (translation)
-Introduce `O _ N R _ _ d D f hf`. Establish `hL : rowSubst O N R (Matrix.diagonal d) f = ∑ m ∈ f.support, monomial m (algebraMap O R (coeff m f) * ∏ a, d a ^ Finsupp.weight (rowW N N) m a)` using `by conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[mono]`. Rewrite using `[hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[weightedHomogeneousComponent_apply, map_sum, map_monomial, Finset.smul_sum, smul_monomial, smul_eq_mul, Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq, if_pos, mul_comm]`. Rewrite using `[Fintype.mem_piFinset]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Conclude with `(weight_le N m a).trans ((le_totalDegree hm).trans hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowSubst_diagonal_eq_sum_components : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (d : Fin N → R) (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D → rowSubst O N R (Matrix.diagonal d) f = ∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (D + 1)), (∏ a, d a ^ w a) • MvPolynomial.map (algebraMap O R) (weightedHomogeneousComponent (rowW N N) w f) := by
   intro O _ N R _ _ d D f hf

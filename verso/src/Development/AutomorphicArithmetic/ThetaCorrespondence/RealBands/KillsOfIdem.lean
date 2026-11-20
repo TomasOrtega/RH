@@ -9,29 +9,27 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N a H e hR hc hi hid`. Establish `step1 : ∀ s, OpLe μ N a e s (1 / 2) → OpLe μ N a e s 0`. Introduce `s hs`. Establish `hk : ∀ k : ℕ, OpLe μ N a e s ((1 / 2) ^ (k + 1))`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa using hs`. Consider the case `succ k ih`. Introduce `C h hh x`. Establish `h1` using `conv_isEig G μ N a e h s C hi hh`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : IsEig N a s (1 / 2 * C) (conv μ e h)` using `⟨h1.1, hs C h hh, h1.2.2.1, h1.2.2.2⟩`. Establish `h3` using `ih _ _ h2 x`. Rewrite `h3` using `[← conv_assoc G μ e e h C hc hi hc hi hh.1 hh.2.1 hid x]`. Combine the equalities or inequalities in the displayed calculation. Introduce `C h hh x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht : Tendsto (fun k : ℕ => ((1 / 2 : ℝ) ^ (k + 1)) * C) atTop (𝓝 (0 * C))` using `((tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).comp (tendsto_add_atTop_nat 1)).mul_const C`. Conclude with `ge_of_tendsto' ht (fun k => hk k C h hh x)`. Take `⟨δ, hδ, hnear⟩` from `opLe_near G μ N a H e hR hi (1 / 2) (by norm_num)`. Establish `step2 : ∀ s s', |s - s'| < δ → OpLe μ N a e s 0 → OpLe μ N a e s' 0`. Introduce `s s' hss hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hnear s s' 0 hss hs` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `step1 s' this`. Take `⟨s₀, hs₀⟩` from `opLe_half G μ N a H e hR hi`. Establish `h0` using `step1 s₀ hs₀`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step3 : ∀ n : ℕ, ∀ s, |s - s₀| ≤ n * (δ / 2) → OpLe μ N a e s 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `s hs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: s = s₀`. Establish `: |s - s₀| ≤ 0` using `by simpa using hs`. Combine the linear relations using `[abs_nonpos_iff.mp this]`. Rewrite using `[this]`. Conclude with `h0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `succ n ih`. Introduce `s hs`. Establish `hn : (0 : ℝ) ≤ n * (δ / 2)` using `by positivity`. Move the coercions through the operations in `at hs`. Rewrite `hs` using `[abs_le]`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h1 : |s - s₀| ≤ n * (δ / 2)`. Conclude with `ih s h1`. Break down `le_total s s₀ with h2 | h2` into its components or cases. Use `step2 (s₀ - n * (δ / 2)) s ?_ (ih _ ?_)` and prove the remaining obligations. Rewrite `h1` using `[abs_of_nonpos (by linarith), not_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [abs_lt]; constructor <;> nlinarith`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Use `step2 (s₀ + n * (δ / 2)) s ?_ (ih _ ?_)` and prove the remaining obligations. Rewrite `h1` using `[abs_of_nonneg (by linarith), not_le]`. Apply the tactic sequence `rw [abs_lt]; constructor <;> nlinarith`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Introduce `s C h hh x`. Take `⟨n, hn⟩` from `exists_nat_ge (|s - s₀| / (δ / 2))`. Rewrite `hn` using `[div_le_iff₀ (by positivity)]`. Use `step3 n s hn C h hh x` as an intermediate fact.
-
-Rewrite `this` using `[zero_mul]`. Conclude with `norm_le_zero_iff.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.kills_of_idem :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

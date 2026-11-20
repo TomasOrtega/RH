@@ -13,9 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Khead
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Φ hΦ`. Take `⟨c1, c2⟩` from `sec_cont_law d.ok.dbl hΦ.1`. Use `⟨c1, fun p t x hp => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.sec0, s0]`. Conclude with `c2 p t x hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hΦ.2` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : d.K => d.om k.1 Φ)).map (LinearMap.pi fun x => d.l ∘ₗ d.om x)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, funext fun x => by simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.sec0, map_mul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secK_k : _root_.PositivityTheory.SiegelWeilFormula.SecK_k := by
   intro F E _ _ _ _ _ σ d Φ hΦ

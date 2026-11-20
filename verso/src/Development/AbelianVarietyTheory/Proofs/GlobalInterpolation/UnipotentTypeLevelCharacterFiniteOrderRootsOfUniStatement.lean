@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.L2.Forms NumberField IsDedekindDomain Matr
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.unipotent_type_character_finite_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FUnipotentTypeLevelCharacterFiniteOrderRootsOfUni.lean&line=24#L24)
 -/

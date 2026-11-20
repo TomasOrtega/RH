@@ -12,9 +12,9 @@ variable {K : Type*} [Field K] [CharZero K]
 
 omit [CharZero K] in
 /- English proof (translation)
-Establish `hz : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hM.ne']`. Conclude with `zero_ne_one hζ`. Take `⟨s, hs⟩` from `h.dvd`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : b = a + M * s` using `by linarith`. Rewrite using `[hb, zpow_add₀ hz, zpow_mul, zpow_natCast, hζ, one_zpow, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_congr_of_pow_eq_one {ζ : K} {M : ℕ} (hM : 0 < M) (hζ : ζ ^ M = 1) {a b : ℤ}
     (h : a ≡ b [ZMOD M]) : ζ ^ a = ζ ^ b := by
@@ -27,13 +27,13 @@ theorem zpow_congr_of_pow_eq_one {ζ : K} {M : ℕ} (hM : 0 < M) (hζ : ζ ^ M =
   rw [hb, zpow_add₀ hz, zpow_mul, zpow_natCast, hζ, one_zpow, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Establish `h₁' : a₁ % (M : ℤ) = b₁ % (M : ℤ)` using `h₁`. Establish `hc : const0 j M ζ a₁ a₂ = const0 j M ζ b₁ b₂`. Establish `hd : ((M : ℤ) ∣ a₁) ↔ ((M : ℤ) ∣ b₁)`. Rewrite using `[Int.dvd_iff_emod_eq_zero, Int.dvd_iff_emod_eq_zero, h₁']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : frc M a₁ = frc M b₁` using `by unfold frc; rw [h₁']`. Unfold `const0`. Rewrite using `[zpow_congr_of_pow_eq_one hM hζ h₂, hf]`. Simplify using `only [hd]`. Establish `hp : coefPos j M ζ a₁ a₂ n = coefPos j M ζ b₁ b₂ n`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `coefPos`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Establish `e1 : ∀ z : ℤ, z ≡ a₁ [ZMOD M] ↔ z ≡ b₁ [ZMOD M]` using `fun z => ⟨fun h => h.trans h₁, fun h => h.trans h₁.symm⟩`. Rewrite using `[zpow_congr_of_pow_eq_one hM hζ (h₂.mul_right (d : ℤ)), zpow_congr_of_pow_eq_one hM hζ (h₂.mul_right (d : ℤ)).neg]`. Simplify using `only [e1]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `eisF`. Rewrite using `[hc, hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eisF_congr_mod {j M : ℕ} (hM : 0 < M) {ζ : K} (hζ : ζ ^ M = 1) {a₁ a₂ b₁ b₂ : ℤ}
     (h₁ : a₁ ≡ b₁ [ZMOD M]) (h₂ : a₂ ≡ b₂ [ZMOD M]) :
@@ -60,7 +60,7 @@ theorem eisF_congr_mod {j M : ℕ} (hM : 0 < M) {ζ : K} (hζ : ζ ^ M = 1) {a�
 
 omit [CharZero K] in
 /- English proof (translation)
-Unfold `cmul`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmul_expand (a b a' b' : K) (f g h l : ℕ → K) (r : ℕ) :
     cmul (fun i => a * f i - b * g i) (fun i => a' * h i - b' * l i) r =
@@ -71,7 +71,7 @@ theorem cmul_expand (a b a' b' : K) (f g h l : ℕ → K) (r : ℕ) :
   exact Finset.sum_congr rfl (fun i _ => by ring)
 
 /- English proof (translation)
-Establish `h` using `ZMod.isUnit_iff_coprime y.val (p ^ n)`. Rewrite `h` using `[ZMod.natCast_zmod_val]`. Rewrite using `[h, Nat.coprime_pow_right_iff hn, Nat.coprime_comm, hp.out.coprime_iff_not_dvd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_dvd_val_iff_isUnit {p n : ℕ} [hp : Fact p.Prime] (hn : 0 < n) (y : ZMod (p ^ n)) :
     ¬ p ∣ y.val ↔ IsUnit y := by
@@ -80,9 +80,9 @@ theorem not_dvd_val_iff_isUnit {p n : ℕ} [hp : Fact p.Prime] (hn : 0 < n) (y :
   rw [h, Nat.coprime_pow_right_iff hn, Nat.coprime_comm, hp.out.coprime_iff_not_dvd]
 
 /- English proof (translation)
-Establish `h1 : IsCoprime (p : ℤ) c` using `(Nat.prime_iff_prime_int.mp hp.out).irreducible.coprime_iff_not_dvd.mpr hc`. Take `⟨a, b, hab⟩` from `(h1.pow_left (m := n))`. Establish `h2 : ((a * (p : ℤ) ^ n + b * c : ℤ) : ZMod (p ^ n)) = 1` using `by rw [hab]; simp`. Establish `h3 : ((p : ZMod (p ^ n))) ^ n = 0`. Rewrite using `[← Nat.cast_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ZMod.natCast_self _`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[h3, mul_zero, zero_add, mul_comm]`. Conclude with `IsUnit.of_mul_eq_one _ h2`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_intCast_of_not_dvd {p n : ℕ} [hp : Fact p.Prime] {c : ℤ}
     (hc : ¬ (p : ℤ) ∣ c) : IsUnit (c : ZMod (p ^ n)) := by
@@ -102,7 +102,7 @@ def diagGL {R : Type*} [CommRing R] (u v : Rˣ) : GL (Fin 2) R :=
    by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; ext i; fin_cases i <;> simp⟩
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Conclude with `Matrix.diagonal_mul _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagGL_mul_zero {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R) (j : Fin 2) :
     ((diagGL u v * γ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) 0 j =
@@ -111,7 +111,7 @@ theorem diagGL_mul_zero {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R)
   exact Matrix.diagonal_mul _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Conclude with `Matrix.diagonal_mul _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagGL_mul_one {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R) (j : Fin 2) :
     ((diagGL u v * γ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) 1 j =
@@ -120,7 +120,7 @@ theorem diagGL_mul_one {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R) 
   exact Matrix.diagonal_mul _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two, Matrix.det_fin_two]`. Simplify using `only [diagGL_mul_zero, diagGL_mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagGL_mul_det {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R) :
     ((diagGL u v * γ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R).det =
@@ -130,7 +130,7 @@ theorem diagGL_mul_det {R : Type*} [CommRing R] (u v : Rˣ) (γ : GL (Fin 2) R) 
   ring
 
 /- English proof (translation)
-Simplify using `only [unitSet, Finset.mem_filter, Finset.mem_univ, true_and, not_dvd_val_iff_isUnit hn, diagGL_mul_zero, diagGL_mul_one, Units.isUnit_units_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagGL_mul_mem {p n : ℕ} [Fact p.Prime] (hn : 0 < n) (u v : (ZMod (p ^ n))ˣ)
     (γ : GL (Fin 2) (ZMod (p ^ n))) : diagGL u v * γ ∈ unitSet p n ↔ γ ∈ unitSet p n := by

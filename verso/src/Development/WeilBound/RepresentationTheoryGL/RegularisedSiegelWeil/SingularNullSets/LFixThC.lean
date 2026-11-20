@@ -35,11 +35,9 @@ structure GoodPl (χ : (AE D)ˣ →* Circle) (b₀ : HermE D ρ) (v : Pl D) : Pr
   bint : ∀ i j, inclR (Fv D.host.F v) (b₀.1 i j) ∈ intLoc D.host.F D.host.E v
 
 /- English proof (translation)
-Set `m : Pl D → (AE D)ˣ` to `fun v => if h : ∃ u ∈ GlobalTheory.ThK.unitsAt D.host.E v, χ u ≠ 1 then h.choose else 1`. Establish `hm : ∀ v, m v ∈ GlobalTheory.ThK.unitsAt D.host.E v` using `fun v => by`. Simplify using `only [m]`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Use `filter_upwards [GlobalTheory.ThK.ConeEulerChr.eventually_chr_eq_one (ν := χ) hχ.1 m (Eventually.of_forall hm)] with v hv u hu`. Assume the negation of the conclusion as `hne`. Establish `h : ∃ u ∈ GlobalTheory.ThK.unitsAt D.host.E v, χ u ≠ 1` using `⟨u, hu, hne⟩`. Establish `e : m v = h.choose` using `dif_pos h`.
-
-Conclude with `h.choose_spec.2 (e ▸ hv)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_unr {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) :
     ∀ᶠ v in cofinite, ∀ u ∈ GlobalTheory.ThK.unitsAt D.host.E v, χ u = 1 := by
@@ -58,7 +56,7 @@ theorem eventually_unr {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) :
   exact h.choose_spec.2 (e ▸ hv)
 
 /- English proof (translation)
-Use `filter_upwards [LFixW.eventually_good (F := D.host.F) (E := D.host.E), eventually_unr hχ, eventually_all.2 fun i => eventually_all.2 fun j => GlobalTheory.AdelicU.SelfDual.eventually_mem_intLoc (F := D.host.F) (b₀.1 i j)] with v h1 h2 h3`. Conclude with `⟨h1, h2, h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_goodPl {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (b₀ : HermE D ρ) :
     ∀ᶠ v in cofinite, GoodPl χ b₀ v := by
@@ -73,7 +71,7 @@ Both sides reduce to the same expression.
 theorem adj_apply (x : Mx D ρ p) (i : Fin p) (j : Fin ρ) : adj x i j = cA D (x j i) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add (cA D), map_add (cv D v), map_add (cv D v), hx, hy, map_add (sigR (Fv D.host.F v) D.sp.cm.sig)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cv_cA (v : Pl D) (x : AE D) : cv D v (cA D x) = sigR (Fv D.host.F v) D.sp.cm.sig (cv D v x) := by
   induction x using TensorProduct.induction_on with
@@ -82,28 +80,26 @@ theorem cv_cA (v : Pl D) (x : AE D) : cv D v (cA D x) = sigR (Fv D.host.F v) D.s
   | add x y hx hy => rw [map_add (cA D), map_add (cv D v), map_add (cv D v), hx, hy, map_add (sigR (Fv D.host.F v) D.sp.cm.sig)]
 
 /- English proof (translation)
-Rewrite using `[← block_matrix_one (R := R), block_matrix_apply_top_right, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_cn {R : Type} [Ring R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (Fin.castAdd n i) (Fin.natAdd n j) = 0 := by
   rw [← block_matrix_one (R := R), block_matrix_apply_top_right, Matrix.zero_apply]
 
 /- English proof (translation)
-Establish `hbe : ∀ i j, b i j = mat g (Fin.castAdd p i) (Fin.natAdd p j)` using `fun i j => by rw [hb, block_matrix_apply_top_right]`. Establish `hbInf : ∀ w i j, compInf D.host.F D.host.E w (b i j) = 0` using `fun w i j => by`. Apply the tactic sequence `rw [hbe, (kOff_entry hg _ _).1 w, one_cn]`. Establish `hbS : ∀ v ∈ S, ∀ i j, cv D v (b i j) = 0` using `fun v hv i j => by`. Apply the tactic sequence `rw [hbe, (kOff_entry hg _ _).2.1 v hv, one_cn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbI : ∀ v ∉ S, ∀ i j, cv D v (b i j) ∈ intLoc D.host.F D.host.E v` using `fun v hv i j => by`. Rewrite using `[hbe]`. Apply the tactic sequence `exact (kOff_entry hg _ _).2.2 v hv`. Establish `hPI : ∀ v ∉ S, ∀ k i, cv D v (pr b₀ y y k i) ∈ intLoc D.host.F D.host.E v`. Introduce `v hv k i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [pr, Matrix.mul_apply, map_sum, map_mul]`. Use `sum_mem fun l _ => mul_mem ?_ (sum_mem fun m _ => mul_mem ?_ (hy v hv m i))` and prove the remaining obligations. Rewrite using `[adj_apply, cv_cA]`. Conclude with `sigR_mem_intLoc _ (hy v hv l k)`. Rewrite using `[Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hS v hv).bint l m`. Establish `hX : ∀ (R : Type) [CommRing R] (f : AE D →+* R), f (b * pr b₀ y y).trace = ∑ i, ∑ k, f (b i k) * f (pr b₀ y y k i)` using `fun R _ f => by`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul]`. Establish `hXinf : ∀ w, compInf D.host.F D.host.E w (b * pr b₀ y y).trace = 0` using `fun w => by`. Rewrite using `[hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hbInf]`. Establish `hXS : ∀ v ∈ S, cv D v (b * pr b₀ y y).trace = 0` using `fun v hv => by`. Rewrite using `[hX]`. Simplify using `[hbS v hv]`. Establish `hXI : ∀ v ∉ S, cv D v (b * pr b₀ y y).trace ∈ intLoc D.host.F D.host.E v` using `fun v hv => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hX]`. Conclude with `sum_mem fun i _ => sum_mem fun k _ => mul_mem (hbI v hv i k) (hPI v hv k i)`. Apply `hker` to reduce the goal to its premises. Use `funext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evInf D.host.F w (algebraMap D.host.F (AF D.host.F) (1 / 2) * trA (b * pr b₀ y y).trace) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, LFixW.evInf_apply w (trA _), LFixW.trA_fst, hXinf, map_zero, mul_zero]`. Introduce `v hv`. Express the relevant statement in the definitionally equal form `evFin D.host.F v (algebraMap D.host.F (AF D.host.F) (1 / 2) * trA (b * pr b₀ y y).trace) = 0`. Rewrite using `[map_mul, LFixW.evFin_apply v (trA _), LFixW.trA_snd, hXS v hv, map_zero, mul_zero]`. Introduce `v hv`.
-
-Express the relevant statement in the definitionally equal form `evFin D.host.F v (algebraMap D.host.F (AF D.host.F) (1 / 2) * trA (b * pr b₀ y y).trace) ∈ _`. Rewrite using `[map_mul, LFixW.evFin_apply v (trA _), LFixW.trA_snd, AlgHom.commutes, one_div]`. Conclude with `mul_mem (hS v hv).good.half (LFixW.trace_mem (hS v hv).good (hXI v hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_one {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {b₀ : HermE D ρ} {S : Finset (Pl D)}
     (hS : ∀ v ∉ S, GoodPl χ b₀ v)

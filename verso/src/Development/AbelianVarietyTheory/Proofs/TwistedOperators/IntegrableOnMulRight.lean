@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Chain.IoLift.AvgLift
 
 /- English proof (translation)
-The claim follows from `h.preimage_of_equiv (measurePreserving_mul_right μ a).quasiMeasurePreserving Function.bijective_id (fun γ x => mul_assoc (γ : G) x a)`.
+A detailed English derivation is pending.
 -/
 private theorem isFundamentalDomain_preimage_mul_right' {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (Γ : Subgroup G) (μ : Measure G) [μ.IsMulRightInvariant] {𝓕 : Set G}
@@ -27,9 +27,7 @@ private theorem isFundamentalDomain_preimage_mul_right' {G : Type} [Group G] [Me
     (fun γ x => mul_assoc (γ : G) x a)
 
 /- English proof (translation)
-Establish `hinv : ∀ (γ : Γ) (x : G), (fun g => Φ (g * a)) (γ • x) = (fun g => Φ (g * a)) x`. Introduce `γ x`. Use `show Φ ((γ : G) * x * a) = Φ (x * a)`. Rewrite using `[mul_assoc]`. Conclude with `hΦ γ γ.2 (x * a)`.
-
-Rewrite using `[h.integrableOn_iff (isFundamentalDomain_preimage_mul_right' Γ μ h a) hinv]`. Conclude with `((measurePreserving_mul_right μ a).integrableOn_comp_preimage (MeasurableEquiv.mulRight a).measurableEmbedding).mpr hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_mul_right {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G)
     [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {𝓕 : Set G}
@@ -45,9 +43,7 @@ theorem integrableOn_mul_right {G : Type} [Group G] [MeasurableSpace G] [Measura
     (MeasurableEquiv.mulRight a).measurableEmbedding).mpr hi
 
 /- English proof (translation)
-Establish `hinv : ∀ (γ : Γ) (x : G), (fun g => Φ (g * a)) (γ • x) = (fun g => Φ (g * a)) x`. Introduce `γ x`. Use `show Φ ((γ : G) * x * a) = Φ (x * a)`. Rewrite using `[mul_assoc]`. Conclude with `hΦ γ γ.2 (x * a)`.
-
-Rewrite using `[h.setIntegral_eq (isFundamentalDomain_preimage_mul_right' Γ μ h a) hinv]`. Conclude with `(measurePreserving_mul_right μ a).setIntegral_preimage_emb (MeasurableEquiv.mulRight a).measurableEmbedding Φ 𝓕`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem setIntegral_fd_comp_mul_right_of_invariant {G E : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     [NormedAddCommGroup E] [NormedSpace ℝ E] (Γ : Subgroup G) [Countable Γ] (μ : Measure G)
@@ -64,9 +60,9 @@ private theorem setIntegral_fd_comp_mul_right_of_invariant {G E : Type} [Group G
     (MeasurableEquiv.mulRight a).measurableEmbedding Φ 𝓕
 
 /- English proof (translation)
-Establish `hjoint : Continuous fun p : G × K => Φ (p.1 * κ p.2)` using `hc.comp (continuous_fst.mul (hκ.comp continuous_snd))`. Establish `hint : Integrable (Function.uncurry fun g k => Φ (g * κ k)) ((μ.restrict 𝓕).prod m)`. Use `(integrable_prod_iff' hjoint.aestronglyMeasurable).mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun k => integrableOn_mul_right Γ μ h hΦ hi (κ k)`. Establish `hn : ∀ k, ∫ g in 𝓕, ‖Φ (g * κ k)‖ ∂μ = ∫ g in 𝓕, ‖Φ g‖ ∂μ` using `fun k => setIntegral_fd_comp_mul_right_of_invariant Γ μ h (Φ := fun g => ‖Φ g‖) (fun γ hγ g => by simp only [hΦ γ hγ g]) (κ k) show Integrable (fun k => ∫ g in 𝓕, ‖Φ (g * κ k)‖ ∂μ) m`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hn]`. Conclude with `integrable_const _`. Rewrite using `[integral_integral_swap hint]`. Establish `hs : ∀ k, ∫ g in 𝓕, Φ (g * κ k) ∂μ = ∫ g in 𝓕, Φ g ∂μ` using `fun k => setIntegral_fd_comp_mul_right_of_invariant Γ μ h hΦ (κ k)`. Simplify using `only [hs, integral_const, probReal_univ, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_average {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ]
@@ -94,11 +90,11 @@ theorem setIntegral_average {G K : Type} [Group G] [TopologicalSpace G] [IsTopol
 variable {D : D7} {T : HSp D} {Sp : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Take `⟨hu, hcomm⟩` from `hκ`. Establish `hdet : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Establish `h1 : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `h2 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκu : κᴴ * κ = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Use `show ((M.fr τ)⁻¹ * κ * M.fr τ)ᴴ * gramAt D T τ * ((M.fr τ)⁻¹ * κ * M.fr τ) = gramAt D T τ`. Rewrite using `[← M.fr_gram τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`. Rewrite using `[← mul_assoc ((M.fr τ)⁻¹)ᴴ, h2, one_mul, ← mul_assoc (M.fr τ) (M.fr τ)⁻¹, h1, one_mul, ← mul_assoc (Formalism.REAL.Jm (M.ε τ)) κ, ← hcomm, mul_assoc κ, ← mul_assoc κᴴ κ, hκu, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem (M : DSModel T Sp) (τ : D.what₂.Tau) {κ : Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hκ : κ ∈ Formalism.REAL.Kset (M.ε τ)) : (M.fr τ)⁻¹ * κ * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D T τ) := by
@@ -117,7 +113,7 @@ theorem frame_mem (M : DSModel T Sp) (τ : D.what₂.Tau) {κ : Matrix (Fin T.ra
     ← mul_assoc (Formalism.REAL.Jm (M.ε τ)) κ, ← hcomm, mul_assoc κ, ← mul_assoc κᴴ κ, hκu, one_mul]
 
 /- English proof (translation)
-Establish `hK : ∀ k : Formalism.REAL.KG (M.ε τ), Formalism.REAL.toMK k ∈ Formalism.REAL.Kset (M.ε τ)` using `fun k => (Formalism.REAL.mem_KG (M.ε τ) k).mp k.2`. Establish `hc : Continuous fun k : Formalism.REAL.KG (M.ε τ) => Formalism.REAL.toMK k` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Use `show Continuous fun k : Formalism.REAL.KG (M.ε τ) => atTau θ T τ ((M.fr τ)⁻¹ * Formalism.REAL.toMK k * M.fr τ)`. Conclude with `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ T τ).comp_continuous ((continuous_const.matrix_mul hc).matrix_mul continuous_const) (fun k => frame_mem M τ (hK k))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_elt {θ : InfFam D} (hθ : IsInfFam θ) (M : DSModel T Sp) (τ : D.what₂.Tau) :
     Continuous fun k : Formalism.REAL.KG (M.ε τ) => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M τ (Formalism.REAL.toMK k) := by
@@ -131,21 +127,19 @@ theorem continuous_elt {θ : InfFam D} (hθ : IsInfFam θ) (M : DSModel T Sp) (�
     (fun k => frame_mem M τ (hK k))
 
 /- English proof (translation)
-Introduce `D V W S' M' θ ψ χS χT ω ν 𝓕 hθ hW hν h𝓕 τ n c f fs F Fs hc hf hω hF hFs g hi hii`. Take `⟨hlc, hsc, ht2, hbor, htg, -, hcount⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Take `⟨hright, -⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D W ν hν`. Establish `hker` using `GlobalTheory.thetaKO_continuous_and_rat_invariant ψ V W χS χT ω hW f hf`. Establish `hec : Continuous fun k : Formalism.REAL.KG (M'.ε τ) => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)` using `continuous_elt hθ M' τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦinv : ∀ γ ∈ GQ W, ∀ h, thetaKO ω g (γ * h) f * F (γ * h) = thetaKO ω g h f * F h`. Introduce `γ hγ h`. Establish `h1` using `hker.2 1 (GQ V).one_mem γ hγ g h`. Rewrite `h1` using `[one_mul]`. Rewrite using `[h1, hF.left γ hγ h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦc : Continuous fun h => thetaKO ω g h f * F h` using `(hker.1.comp (continuous_const.prodMk continuous_id)).mul hF.cont`. Establish `hlin : ∀ (h k : GA D W) (u : WO V W → ℂ), thetaKO ω g (h * k) u = thetaKO ω g h (ω (1, k) u)`. Introduce `h k u`. Use `show ω (g, h * k) u 0 = ω (g, h) (ω (1, k) u) 0`. Establish `hp : ((g, h * k) : GA D V × GA D W) = (g, h) * (1, k)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, map_mul]`. Both sides reduce to the same expression. Establish `hsum : ∀ (h : GA D W) (k : Formalism.REAL.KG (M'.ε τ)), thetaKO ω g h (∑ i, c i k • fs i) = ∑ i, c i k * thetaKO ω g h (fs i)`. Introduce `h k`. Use `show ω (g, h) (∑ i, c i k • fs i) 0 = ∑ i, c i k * ω (g, h) (fs i) 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hpt : ∀ h, ∫ k, thetaKO ω g (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) f * F (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) ∂(Formalism.REAL.muK (M'.ε τ)) = ∑ …`. Introduce `h`. Establish `hexp : ∀ k, thetaKO ω g (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) f * F (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) = ∑ i, thetaKO ω g h (fs i) * (c i k * …`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlin, hω k, hsum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hFk : Continuous fun k : Formalism.REAL.KG (M'.ε τ) => F (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k))` using `hF.cont.comp (continuous_const.mul hec)`. Establish `hint : ∀ i, Integrable (fun k => thetaKO ω g h (fs i) * (c i k * F (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)))) (Formalism.REAL.muK (M'.ε τ))` using `fun i => integrableOn_univ.mp ((continuous_const.mul ((hc i).mul hFk)).continuousOn.integrableOn_compact isCompact_univ)`. Repeatedly rewrite using `[hexp]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ fun i _ => hint i]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hFs i h]`. Use `show ∫ h in 𝓕, thetaKO ω g h f * F h ∂ν = ∑ i, ∫ h in 𝓕, thetaKO ω g h (fs i) * Fs i h ∂ν`. Use `(setIntegral_average (GQ W) ν h𝓕 (m := Formalism.REAL.muK (M'.ε τ)) (Φ := fun h => thetaKO ω g h f * F h) hec hΦinv hΦc hi).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← integral_finsetSum _ fun i _ => hii i]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall hpt)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftInt_eq_sum_average : ∀ (D : D7) (V W : HSp D) (S' : D.what₂.Tau → SPar) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω → ν.IsHaarMeasure → IsFundamentalDomain (GQ W) 𝓕 ν → ∀ (τ : D.what₂.Tau) (n : ℕ) (c : Fin n → Formalism.REAL.KG (M'.ε τ) → ℂ) (f : WO V W → ℂ) (fs : Fin n → WO V W → ℂ) (F : GA D W → ℂ) (Fs : Fin n → GA D W → ℂ), (∀ i, Continuous (c i)) → IsThetaFunO ψ V W f → (∀ k, ω (1, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) f = ∑ i, c i k • fs i) → IsAutFun W F → (∀ i h, Fs i h = ∫ k, c i k * F (h * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) ∂(Formalism.REAL.muK (M'.ε τ))) → ∀ g, IntegrableOn (fun h => thetaKO ω g h f * F h) 𝓕 ν → (∀ i, IntegrableOn (fun h => thetaKO ω g h (fs i) * Fs i h) 𝓕 ν) → Lift.liftInt ν 𝓕 (thetaKO ω) f F g = ∑ i, Lift.liftInt ν 𝓕 (thetaKO ω) (fs i) (Fs i) g := by
   intro D V W S' M' θ ψ χS χT ω ν 𝓕 hθ hW hν h𝓕 τ n c f fs F Fs hc hf hω hF hFs g hi hii

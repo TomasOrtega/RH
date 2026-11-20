@@ -18,9 +18,9 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf)
 
 /- English proof (translation)
-Establish `hc : (substR P R G).comp (substR P R G') = substR P R (fun v s => G' v s * G v s)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨v, s, a, t⟩`. Simplify using `only [AlgHom.comp_apply, substR, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← MvPolynomial.C_mul]`. Conclude with `congrArg (fun φ : XR P R →ₐ[R] XR P R => φ Q) hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substR_substR (R : Type) [CommRing R] (G G' : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R)
     (Q : XR P R) : substR P R G (substR P R G' Q) = substR P R (fun v s => G' v s * G v s) Q := by
@@ -35,9 +35,9 @@ theorem substR_substR (R : Type) [CommRing R] (G G' : ∀ v, Fin (P.n' v) → Ma
   exact congrArg (fun φ : XR P R →ₐ[R] XR P R => φ Q) hc
 
 /- English proof (translation)
-Unfold `natActR`. Simplify using `only [LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_smul, substR_substR]`. Use `congr 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.det_mul, mul_zpow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem natActR_natActR (R : Type) [Field R] (g g' : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) R) (Q : XR P R) :
     natActR P R g (natActR P R g' Q) = natActR P R (fun v s => g v s * g' v s) Q := by
@@ -51,9 +51,9 @@ theorem natActR_natActR (R : Type) [Field R] (g g' : ∀ v, Fin (P.n' v) → GL 
     rw [Units.val_mul, Matrix.det_mul, mul_zpow, mul_comm]
 
 /- English proof (translation)
-Establish `hs : substR P R (fun _ _ => 1) = AlgHom.id R (XR P R)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨v, s, a, t⟩`. Simplify using `only [substR, MvPolynomial.aeval_X, AlgHom.coe_id, id_eq, Matrix.one_apply]`. Simplify using `[ite_mul, Finset.sum_ite_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `natActR`. Simplify using `only [inv_one, Units.val_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[hs]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natActR_one (R : Type) [Field R] (Q : XR P R) : natActR P R (fun _ _ => 1) Q = Q := by
   have hs : substR P R (fun _ _ => 1) = AlgHom.id R (XR P R) := by
@@ -70,14 +70,14 @@ theorem natActR_one (R : Type) [Field R] (Q : XR P R) : natActR P R (fun _ _ => 
 end Act
 
 /- English proof (translation)
-Use extensionality with `: 1`. Simplify using `only [invT, Units.val_mk, Units.val_mul, mul_inv_rev, Matrix.transpose_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem invT_mul {k : Type} [Fintype k] [DecidableEq k] (A B : GL k ℂ) : invT (A * B) = invT A * invT B := by
   ext : 1
   simp only [invT, Units.val_mk, Units.val_mul, mul_inv_rev, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `: 1`. Simplify using `[invT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem invT_one {k : Type} [Fintype k] [DecidableEq k] : invT (1 : GL k ℂ) = 1 := by
   ext : 1
@@ -86,19 +86,17 @@ theorem invT_one {k : Type} [Fintype k] [DecidableEq k] : invT (1 : GL k ℂ) = 
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hcr : ∀ τ, crdB (embT D) B τ = (atR D B⁻¹ τ : Matrix (Fin n) (Fin n) ℂ)` using `fun τ => rfl`. Set `y : Fr1 D n` to `⟨fun τ => crdB (embT D) B τ * z.1 τ, fun τ => by`. Rewrite using `[Matrix.det_mul, hcr]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (atR D B⁻¹ τ).isUnit).mul (z.2 τ)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : ∀ v s, zAt (X.Pj i) h (posJ X D pos i) (crdB (embT D) B) z.1 v s = zAt (X.Pj i) h (posJ X D pos i) (fun _ => 1) y.1 v s`. Introduce `v s`. Simplify using `only [zAt, y, one_mul]`. Establish `h1 : evC (X.Pj i) h (posJ X D pos i) Gr (crdB (embT D) B) V z = ev1 X D pos i h V y` using `by show (∏ v, ∏ s : Fin ((X.Pj i).n' v), (_ : ℂ)) * (_ : ℂ) = (∏ v, ∏ s : Fin ((X.Pj i).n' v), (_ : ℂ)) * (_ : ℂ)`. Simplify using `only [hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : IsTr (fun τ => (atR D M τ : Matrix (Fin n) (Fin n) ℂ)) y f`. Introduce `τ`. Rewrite using `[hf τ]`. Use `show _ = (atR D M τ : Matrix (Fin n) (Fin n) ℂ) * (crdB (embT D) B τ * z.1 τ)`. Rewrite using `[hcr, ← Matrix.mul_assoc, ← Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `atR`. Rewrite using `[map_mul]`. Establish `h2` using `evC_natAct (X.Pj i) h (posJ X D pos i) (fun _ => 1) (fun _ => 1) (atR D M) y f hy V`. Rewrite using `[h1]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `actC`. Rewrite using `[natActR_natActR]`. Establish `he : (fun v s => hAt (X.Pj i) h (posJ X D pos i) (fun _ => 1) (atR D M) v s * hAt (X.Pj i) h (posJ X D pos i) (fun _ => 1) (atR D M⁻¹) v s) = fun _ _ => 1`. Use function extensionality and compare the values at `v s`. Establish `hm : ∀ τ, ((1 : GL (Fin n) ℂ) * atR D M τ * (1 : GL (Fin n) ℂ)⁻¹) * ((1 : GL (Fin n) ℂ) * atR D M⁻¹ τ * (1 : GL (Fin n) ℂ)⁻¹) = (1 : GL (Fin n) ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Introduce `τ`. Simplify using `only [one_mul, inv_one, mul_one, atR, ← map_mul, mul_inv_cancel, map_one]`. Unfold `hAt`. Use `split_ifs`. Rewrite using `[← map_mul, hm, map_one]`.
-
-Rewrite using `[← invT_mul, ← map_mul, hm, map_one, invT_one]`. Rewrite using `[he, natActR_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evC_crdB_actC (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (i : ℕ) {n : ℕ}
     (h : (X.Pj i).m + 1 = n) (Gr : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (B M : GL (Fin n) D.host.E)

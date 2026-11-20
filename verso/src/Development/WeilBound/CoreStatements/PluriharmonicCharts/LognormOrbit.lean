@@ -18,7 +18,7 @@ def mfac (j : ℕ) (a i : Fin N) (h : Matrix (Fin N) (Fin N) ℂ) : ℂ :=
   else minorIJ h (omIdx N j) (omIdx N j)
 
 /- English proof (translation)
-Unfold `mfac`. Rewrite using `[MinorCalc.minorIJ_mul_of_support T h _ _ (MinorCalc.support_wIdx hh), MinorCalc.minorIJ_mul_of_support T h _ _ (MinorCalc.support_omIdx hh)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mfac_mul (a i : Fin N) (T : Matrix (Fin N) (Fin N) ℂ) {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag j h) :
     mfac j a i (T * h) = mfac j a i T * mfac j a i h := by
@@ -28,9 +28,9 @@ theorem mfac_mul (a i : Fin N) (T : Matrix (Fin N) (Fin N) ℂ) {h : Matrix (Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1` using `mfac_mul a i h⁻¹ hh`. Rewrite `h1` using `[Matrix.nonsing_inv_mul _ hd.isUnit]`. Establish `h2 : mfac j a i (1 : Matrix (Fin N) (Fin N) ℂ) = 1`. Unfold `mfac`. Apply the tactic sequence `split_ifs <;> simp [CPts.minorIJ_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h1` using `[h2]`. Conclude with `right_ne_zero_of_mul_eq_one h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mfac_ne (a i : Fin N) {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag j h) (hd : h.det ≠ 0) :
     mfac j a i h ≠ 0 := by
@@ -43,7 +43,7 @@ theorem mfac_ne (a i : Fin N) {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag
   exact right_ne_zero_of_mul_eq_one h1.symm
 
 /- English proof (translation)
-Establish `h1` using `MinorCalc.minorIJ_mul_of_support h⁻¹ h (wIdx N j) _ (MinorCalc.support_wIdx hh)`. Establish `h2` using `MinorCalc.minorIJ_mul_of_support h⁻¹ h (omIdx N j) _ (MinorCalc.support_omIdx hh)`. Rewrite `h1`, `h2` using `[Matrix.nonsing_inv_mul _ hd.isUnit, CPts.minorIJ_one]`. Conclude with `⟨right_ne_zero_of_mul_eq_one h1.symm, right_ne_zero_of_mul_eq_one h2.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem minor_w_ne {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag j h) (hd : h.det ≠ 0) :
     minorIJ h (wIdx N j) (wIdx N j) ≠ 0 ∧ minorIJ h (omIdx N j) (omIdx N j) ≠ 0 := by
@@ -53,17 +53,17 @@ theorem minor_w_ne {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag j h) (hd :
   exact ⟨right_ne_zero_of_mul_eq_one h1.symm, right_ne_zero_of_mul_eq_one h2.symm⟩
 
 /- English proof (translation)
-Take `⟨hw, ho⟩` from `minor_w_ne hT hd`. Establish `ha` using `a.2`. Establish `hb'` using `b.2`. Establish `key : ∀ i : Fin N, (a : ℕ) ≤ i + 1 → (i : ℕ) ≤ a + 1 → (Real.log ‖detFac j i T‖ - if IsProperStep N j i then 0 else Real.log ‖mfac j a i T‖) = if j ≤ (a : ℕ) then Real.log ‖minorIJ T (wIdx N j) (wIdx N j)‖ else 0`. Introduce `i h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi` using `i.2`. Establish `ho1 : j = N → minorIJ T (omIdx N j) (omIdx N j) = 1` using `fun e => by`. Rewrite using `[show omIdx N j = ∅ by ext c; simp [omIdx, e]]`. Conclude with `SchurCalc.minor_empty T`. Unfold `detFac mfac IsProperStep`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases c1 : (i : ℕ) + 1 = j <;> by_cases c2 : (i : ℕ) + 1 = N <;> by_cases c3 : j ≤ (a : ℕ)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ho1 (by omega)]`. Simplify using `[c1, c3, not_le.1 c3]`. Simplify using `[c1, c3, not_lt.2 c3, show ¬ j = N by omega]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[c1, c3, not_le.1 c3, show ¬ j = N by omega]`. Simplify using `[c1, c2, c3, hj, show ¬ N = j by omega, Real.log_mul (norm_ne_zero_iff.2 hw) (norm_ne_zero_iff.2 ho)]`. Use linear arithmetic over natural numbers and integers. Simplify using `[c1, c2, c3, show j ≤ (i : ℕ) + 1 by omega]`. Simplify using `[c1, c2, c3, show ¬ j ≤ (i : ℕ) + 1 by omega]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SchurCalc.sum_xi _ a b hb (if j ≤ (a : ℕ) then Real.log ‖minorIJ T (wIdx N j) (wIdx N j)‖ else 0) (fun i hi => key i (by omega) (by omega)) ?_, key b (by omega) (by omega), key a (by omega) (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0 split_ifs with c`. Rewrite using `[show wIdx N j = ∅ by ext c; simp [wIdx, show j = 0 by omega], SchurCalc.minor_empty]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_detFac (hj : j ≤ N) {a b : Fin N} (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     {T : Matrix (Fin N) (Fin N) ℂ} (hT : IsBlockDiag j T) (hd : T.det ≠ 0) :
@@ -101,7 +101,7 @@ theorem sum_detFac (hj : j ≤ N) {a b : Fin N} (hb : (b : ℕ) = a + 1) (hab : 
     · rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Introduce `τ' _ h`. Simplify using `[xiCoef, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_xi_prod {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] (τ : Ψ) (a : Fin N) (T : Ψ × Fin N → ℝ) :
     ∑ p, (xiCoef τ a p : ℝ) * T p = ∑ i, (xiCoef τ a (τ, i) : ℝ) * T (τ, i) := by
@@ -111,7 +111,7 @@ theorem sum_xi_prod {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] (τ : Ψ) (a : Fin
   · simp
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.2 ht) (norm_ne_zero_iff.2 (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hA i))), norm_prod, Real.log_prod fun i _ => norm_ne_zero_iff.2 (zpow_ne_zero _ (hA i))]`. Simplify using `only [norm_zpow, Real.log_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_fac {Ψ : Type} [DecidableEq Ψ] (τ : Ψ) (a : Fin N) {t : ℂ} (ht : t ≠ 0) {A : Fin N → ℂ} (hA : ∀ i, A i ≠ 0) :
     Real.log ‖t * ∏ i, A i ^ xiCoef τ a (τ, i)‖ = Real.log ‖t‖ + ∑ i, (xiCoef τ a (τ, i) : ℝ) * Real.log ‖A i‖ := by
@@ -126,7 +126,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Establish `hu : (∏ k, c k ^ dg k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[eval_smul_homog g dg hg]`. Use `⟨mul_ne_zero hu h0, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.2 hu) (norm_ne_zero_iff.2 h0), norm_prod, Real.log_prod fun k _ => norm_ne_zero_iff.2 (pow_ne_zero _ (hc k)), add_comm]`. Simplify using `only [norm_pow, Real.log_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_eval_smul {g : MRing ι} {dg : K → ℕ} (hg : IsMultiHomog g dg) (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     {z : (Σ k, ι k) → ℂ} (h0 : eval z (map (Int.castRingHom ℂ) g) ≠ 0) :
@@ -146,19 +146,19 @@ def lognorm (τ : Ψ) (a : Fin N) (k₀ : K) (g h : MRing fun o : Option K => ι
     (1 / 2) * ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((A p).h (fstPt k₀ z)) + Real.log ((A p).h (sndPt k₀ z)))
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `ho`. Take `⟨g1, g2⟩` from `log_eval_smul hg c hc g0`. Take `⟨h1, h2⟩` from `log_eval_smul hh c hc h0`. Use `⟨g1, h1, ?_⟩` and prove the remaining obligations. Establish `e₀ : fstPt k₀ (fun q => c q.1 * z q) = fun q => (fun k => c (some k)) q.1 * fstPt k₀ z q` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁ : sndPt k₀ (fun q => c q.1 * z q) = fun q => (fun k => c (κ₁ k₀ k)) q.1 * sndPt k₀ z q`. Use function extensionality and compare the values at `q`. Use `show c (v₁ k₀ q).1 * _ = _`. Rewrite using `[(isBlockMap_v₁ k₀).2.2.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `lognorm`. Rewrite using `[g2, h2, e₀, e₁]`. Simplify using `only [fun p => log_smul (A p) (fun k => c (some k)) (fun k => hc _) h₀, fun p => log_smul (A p) (fun k => c (κ₁ k₀ k)) (fun k => hc _) h₁]`. Establish `hd : ∀ o, (dg o : ℝ) - dh o = (((o.elim 1 fun k => -(∑ p, xiCoef τ a p * (A p).a k) - if k₀ = k then 1 else 0 : ℤ)) : ℝ)` using `fun o => by rw [← hdeg]; push_cast; rfl`. Establish `key : ∑ o, (dg o : ℝ) * Real.log ‖c o‖ - ∑ o, (dh o : ℝ) * Real.log ‖c o‖ + (1 / 2) * ∑ p, (xiCoef τ a p : ℝ) * (∑ k, ((A p).a k : ℝ) * Real.log ‖c (some k)‖ + ∑ k, ((A p).a k : ℝ) * Real.log ‖c (κ₁ k₀ k)‖) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∑ p, (xiCoef τ a p : ℝ) * (∑ k, ((A p).a k : ℝ) * Real.log ‖c (some k)‖ + ∑ k, ((A p).a k : ℝ) * Real.log ‖c (κ₁ k₀ k)‖) = ∑ k, ((∑ p, xiCoef τ a p * (A p).a k : ℤ) : ℝ) * (Real.log ‖c (some k)‖ + Real.log ‖c (κ₁ k₀ k)‖)`. Simplify using `only [← Finset.sum_add_distrib, Finset.mul_sum, Int.cast_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun p _ => by push_cast; ring`. Rewrite using `[e2, ← Finset.sum_sub_distrib, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← sub_mul, hd]`. Rewrite using `[Fintype.sum_option, add_assoc, ← Finset.sum_add_distrib, Finset.sum_eq_single k₀]`. Simplify using `only [Option.elim, hxi, κ₁_self, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Simplify using `only [Option.elim, κ₁_ne hk, if_neg (Ne.symm hk)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((A p).h (fstPt k₀ z)) + ∑ k, ((A p).a k : ℝ) * Real.log ‖c (some k)‖ + (Real.log ((A p).h (sndPt k₀ z)) + ∑ k, ((A p).a k : ℝ) * Real.log ‖c (κ₁ k₀ k)‖)) = ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((A p).h (fstPt k₀ z)) + Real.log ((A p).h (sn …`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lognorm_orbit {τ : Ψ} {a : Fin N} {k₀ : K} {g h : MRing fun o : Option K => ι (o.getD k₀)}
     {dg dh : Option K → ℕ} (hg : IsMultiHomog g dg) (hh : IsMultiHomog h dh) {A : Ψ × Fin N → HermLine ι}
@@ -216,7 +216,7 @@ theorem lognorm_orbit {τ : Ψ} {a : Fin N} {k₀ : K} {g h : MRing fun o : Opti
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(H p₀).1, hh, fun p k hk => ⟨1, one_ne_zero, fun m => by rw [one_mul]; exact (H p).2 k hk m⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem flag_of_exact (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {z : (Σ k, ι k) → ℂ}
     {h : Ψ → Matrix (Fin N) (Fin N) ℂ} (p₀ : Ψ × Fin N) (hh : ∀ τ, IsBlockDiag j (h τ) ∧ (h τ).det ≠ 0)
@@ -224,9 +224,9 @@ theorem flag_of_exact (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk
   ⟨(H p₀).1, hh, fun p k hk => ⟨1, one_ne_zero, fun m => by rw [one_mul]; exact (H p).2 k hk m⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `hp : IsProperStep N j i`. Take `⟨k, hk⟩ : ∃ k, M.blk (τ, i) = some k` from `Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hp`. Simplify using `[hp, FlagModel.upsLog, hk]`. Establish `hn` using `(M.blk_none (τ, i)).2 hp`. Take `⟨h1, h2, h3⟩` from `hG.2.2 _ hn`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `val_ne_zero hz h1 h2 h3`. Establish `h5` using `mfac_ne a i hh hd`. Simplify using `only [if_neg hp, FlagModel.upsLog, hn, Option.elim, norm_mul]`. Conclude with `⟨mul_ne_zero h4 h5, Real.log_mul (norm_ne_zero_iff.2 h4) (norm_ne_zero_iff.2 h5)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem log_A (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {z : (Σ k, ι k) → ℂ}
     (hz : basePart M.blk z ∈ mcPts (mCoordIdeal M.x)) (hG : M.GoodAt F (mCoordIdeal (basePart M.blk z)))
@@ -250,33 +250,33 @@ variable {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} {n d : ℕ} {BM : B
   {Cv : FlagCover M' M} {τ : Ψ} {a b : Fin N} {k₀' : K'} {ca cb : Fin N}
 
 /- English proof (translation)
-Establish `hz₀` using `fst_mem hz`. Establish `hz₁` using `S'.snd_mem hy' hz`. Take `⟨F', hF', hg'⟩` from `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').2.1 _ (CPts.base_mem M' hz₀)`. Take `⟨z', oz', H, t, fl₀, fl₁⟩` from `S'.data hz₀ hz₁ hF' hg'`. Take `⟨u₀, ou₀, bu₀, ex₀⟩` from `exists_exact M' fl₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, ou₁, bu₁, ex₁⟩` from `exists_exact M' fl₁`. Establish `bu : basePart M'.blk u₁ = basePart M'.blk u₀` using `by rw [bu₀, bu₁, Pts.basePart_snd M' S'.hk]`. Establish `e₁ : sndPt k₀' (joinPt k₀' u₀ u₁) = u₁`. Use `join_v₁ fun k hk m => ?_` and prove the remaining obligations. Distinguish the cases in `hkb : ∀ p, M'.blk p ≠ some k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(congrFun bu ⟨⟨k, hkb⟩, m⟩).symm`. Take `⟨⟨τ', i⟩, hp⟩ : ∃ p, M'.blk p = some k` from `by simpa using hkb`. Rewrite using `[(ex₀ _).2 k hp m, (ex₁ _).2 k hp m, bu]`. Distinguish the cases in `e' : τ' = τ`. Substitute `e'` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hi : i ≠ a` using `fun e => hk (by rw [e, S'.hk] at hp; exact (Option.some.inj hp).symm)`. Simplify using `only [Function.update_self, minor_transv M'.j_le S'.hb S'.hab S'.hca S'.hcb hi]`. Simplify using `only [Function.update_of_ne e']`. Establish `e₀ : fstPt k₀' (joinPt k₀' u₀ u₁) = u₀` using `rfl`. Establish `oj : SameOrbit (joinPt k₀' u₀ u₁) z` using `orbit_trans (join_orbit ou₀ ou₁) oz'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, h1, hl⟩` from `lognorm_orbit hg hh hxi hdeg oj hz₀.1 hz₁.1 g0 h0`. Establish `hj` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) oj hz`. Establish `o₀ : SameOrbit u₀ (fstPt k₀' z)` using `e₀ ▸ fst_orbit oj`. Establish `o₁ : SameOrbit u₁ (sndPt k₀' z)` using `e₁ ▸ snd_orbit oj`. Establish `m₀` using `mem_mcPts_of_sameOrbit hy'.2.1.2.1 o₀ hz₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁` using `mem_mcPts_of_sameOrbit hy'.2.1.2.1 o₁ hz₁`. Establish `hb` using `CPts.base_mem M' m₀`. Establish `hG' : M'.GoodAt F' (mCoordIdeal (basePart M'.blk u₀))` using `by rw [ideal_orbit (base_orbit o₀)]; exact hg'`. Establish `hlc` using `LC _ hj F' hF' hG' (H τ) t (fl₀.2.1 τ).1 (fl₀.2.1 τ).2 (fun i => ex₀ (τ, i)) (by rw [e₁]; simpa only [Function.update_self] using ex₁ (τ, a))`. Rewrite `hlc` using `[e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : t ≠ 0` using `fun e => g1 (by rw [hlc, e, zero_mul, zero_mul])`. Establish `hbv` using `(GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1`. Take `⟨F, hF, hG⟩` from `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ hbv`. Take `⟨x₀, ox₀, bx₀, fx₀⟩` from `i₀ u₀ o₀ F' F hF' hF hG' hG H (flag_of_exact M' (τ, a) fl₀.2.1 ex₀)`. Take `⟨x₁, ox₁, bx₁, fx₁⟩` from `i₁ u₁ o₁ F' F hF' hF (by rw [bu]; exact hG') (by rw [bu]; exact hG) _ (flag_of_exact M' (τ, a) fl₁.2.1 ex₁)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₀, oz₀, bz₀, ez₀⟩` from `exists_exact M fx₀`. Take `⟨z₁, oz₁, bz₁, ez₁⟩` from `exists_exact M fx₁`. Rewrite `bx₀` using `[← bz₀]`. Rewrite `bx₁` using `[← bz₁]`. Establish `hI` using `CoordinateConeArithVar.isMultiHomogIdeal y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `M₀` using `fun p => CR.metric _ m₀ _ (mem_mcPts_of_sameOrbit hI (orbit_trans oz₀ ox₀) hw₀) F' F hF' hF hG' hG bx₀ p _ (fl₀.2.1 p.1).1 (fl₀.2.1 p.1).2 (ex₀ p) (ez₀ p)`. Establish `M₁` using `fun p => CR.metric _ m₁ _ (mem_mcPts_of_sameOrbit hI (orbit_trans oz₁ ox₁) hw₁) F' F hF' hF (by rw [bu]; exact hG') (by rw [bu]; exact hG) bx₁ p _ (fl₁.2.1 p.1).1 (fl₁.2.1 p.1).2 (ex₁ p) (ez₁ p)`. Rewrite `bx₁`, `ez₁` using `[bu]`. Establish `hT` using `FibreCount.trans_unit Cv hb hF' hF hG' hG τ`. Establish `hGz : M.GoodAt F (mCoordIdeal (basePart M.blk z₀))` using `by rw [ideal_orbit bx₀]; exact hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbz` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) bx₀ hbv`. Use `⟨z₀, z₁, F, Cv.trans F' F (basePart M'.blk u₀) τ * H τ, t, hF, hGz, orbit_trans oz₀ ox₀, orbit_trans oz₁ ox₁, (fx₀.2.1 τ).1, (fx₀.2.1 τ).2, ht, fun i => ez₀ (τ, i), fun i => by simpa only [Function.update_self, Matrix.mul_assoc] using ez₁ (τ, i), ?_⟩` and prove the remaining obligations. Establish `A'` using `fun i => log_A M' hb hG' τ a i (fl₀.2.1 τ).1 (fl₀.2.1 τ).2`. Establish `A` using `fun i => log_A M hbz hGz τ a i (fx₀.2.1 τ).1 (fx₀.2.1 τ).2`. Establish `hU' : ∀ p, M'.upsLog F' p u₁ = M'.upsLog F' p u₀` using `fun p => by simp only [FlagModel.upsLog, bu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ p, M.upsLog F p z₁ = M.upsLog F p z₀` using `fun p => by`. Simplify using `only [FlagModel.upsLog, valAt_orbit bx₀ hbv, valAt_orbit bx₁ hbv]`. Establish `hs` using `sum_detFac M.j_le S'.hb S'.hab hT.1 hT.2`. Establish `hx : ∀ i, xiCoef () a ((), i) = xiCoef τ a (τ, i)` using `fun i => by simp [xiCoef]`. Simplify using `only [hx] at hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl, lognorm, hlc, e₀, e₁, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (left_ne_zero_of_mul (hlc ▸ g1))) (norm_ne_zero_iff.2 h1), log_fac τ a ht fun i => (A' i).1]`. Use `show _ = Real.log ‖t * ∏ i : Fin N, (if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) * mfac j a i (Cv.trans F' F (basePart M'.blk u₀) τ * H τ)) ^ xiCoef τ a (τ, i)‖ + _`. Rewrite using `[log_fac τ a ht fun i => (A i).1, sum_xi_prod, sum_xi_prod]`. Simplify using `only [fun i => (A' i).2, fun i => (A i).2]`. Establish `fin : ∀ i, (xiCoef τ a (τ, i) : ℝ) * (M'.upsLog F' (τ, i) u₀ + if IsProperStep N j i then 0 else Real.log ‖mfac j a i (H τ)‖) + (1 / 2) * ((xiCoef τ a (τ, i) : ℝ) * (Real.log ((CR.Re.ref (τ, i)).h u₀) + Real.log ((CR.Re.ref (τ, i)).h u₁))) = (xiCoef τ a (τ, i) : ℝ) * (M.upsLog F …` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₀` using `M₀ (τ, i)`. Establish `r₁` using `M₁ (τ, i)`. Rewrite `r₁` using `[hU, hU', bu]`. Rewrite using `[mfac_mul a i _ (fl₀.2.1 τ).1, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (mfac_ne a i hT.1 hT.2)) (norm_ne_zero_iff.2 (mfac_ne a i (fl₀.2.1 τ).1 (fl₀.2.1 τ).2))]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(1 / 2 * (xiCoef τ a (τ, i) : ℝ)) * (r₀ + r₁)`. Take the linear combination `(1 / 2 * (xiCoef τ a (τ, i) : ℝ)) * (r₀ + r₁)`. Establish `tot` using `Finset.sum_congr (rfl : (Finset.univ : Finset (Fin N)) = _) fun i _ => fin i`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, hs] at tot`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_pt (CR : CovReal FA Cv) (S' : Sw M' τ a b k₀' ca cb) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
     {g h : MRing fun o : Option K' => ι' (o.getD k₀')} {dg dh : Option K' → ℕ} (hg : IsMultiHomog g dg)

@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a x`. Establish `h` using `PadicInt.zmodRepr_spec a`. Take `⟨-, h⟩` from `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Use `⟨c ⊗ₜ[ℤ] x, (a.zmodRepr : ℤ) • x, ?_⟩` and prove the remaining obligations. Establish `ha : a = (p : ℕ) • c + (a.zmodRepr : ℤ) • (1 : ℤ_[p])`. Rewrite using `[nsmul_eq_mul, ← hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← nsmul_eq_mul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', ← TensorProduct.add_tmul, ← ha]`. Consider the case `add a b ha hb`. Take `⟨s, x, rfl⟩` from `ha`. Take `⟨s', x', rfl⟩` from `hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s + s', x + x', by rw [TensorProduct.tmul_add]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem padicTensor_eq_mul_add (A : Type) [CommRing A] (p : ℕ) [Fact p.Prime]
     (r : ℤ_[p] ⊗[ℤ] A) :

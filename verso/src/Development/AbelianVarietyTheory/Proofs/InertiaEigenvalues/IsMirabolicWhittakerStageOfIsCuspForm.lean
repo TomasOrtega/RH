@@ -20,13 +20,13 @@ def blkIxEquiv (r : ℕ) : UnipotentBlockColumnIndex a r (a - 1) ≃ BlockIx a r
   right_inv _ := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 + posM Subtype.val (fun t => x (blkIxEquiv r t)) = 1 + nilM x`. Use `congr 1`. Establish `e1 : posM Subtype.val (fun t => x (blkIxEquiv r t)) = ∑ s : BlockIx a r, Matrix.single s.1.1 s.1.2 (x s)` using `Equiv.sum_comp (blkIxEquiv r) (fun s : BlockIx a r => Matrix.single s.1.1 s.1.2 (x s))`. Rewrite using `[e1]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.single_apply, nilM, Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[Fintype.sum_eq_single ⟨(i, j), h⟩]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hs (Subtype.ext (Prod.ext h1 h2))`. Use `Finset.sum_eq_zero fun s _ => if_neg ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `h` to reduce the goal to its premises. Rewrite using `[← h1, ← h2]`. Conclude with `s.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkU_comp_equiv {R : Type} [CommRing R] (r : ℕ) (x : BlockIx a r → R) :
     blkU (fun t => x (blkIxEquiv r t)) = unip x := by
@@ -62,9 +62,9 @@ def blkIxHomeo (r : ℕ) : (BlockIx a r → Ad E) ≃ₜ+ (UnipotentBlockColumnI
   continuous_invFun := continuous_pi fun s => continuous_apply _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨fun s => c ((blkIxEquiv r).symm s), funext fun s => ?_⟩` and prove the remaining obligations. Use `congrFun hc ((blkIxEquiv r).symm s)` as an intermediate fact. Simplify `this` using `[blkIxHomeo]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun t => c (blkIxEquiv r t), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem blkIxHomeo_mem (r : ℕ) (x : BlockIx a r → Ad E) :
     blkIxHomeo r x ∈ ratV E (UnipotentBlockColumnIndex a r (a - 1)) ↔ x ∈ ratN E a r := by
@@ -77,17 +77,17 @@ theorem blkIxHomeo_mem (r : ℕ) (x : BlockIx a r → Ad E) :
     exact ⟨fun t => c (blkIxEquiv r t), rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a ψ φ h`. Establish `hcont : Continuous φ.1` using `ContAut.continuous_of_isOpen_stab E a φ h.1.level`. Use `⟨hcont, fun γ _ g => h.1.left γ g, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk y g`. Establish `he : IsEmpty (UnipotentBlockColumnIndex a k k)` using `⟨fun t => by have := t.1.2.isLt; have := t.2; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : y = 0` using `Subsingleton.elim _ _`. Substitute `hy` using the available equality. Establish `hd : dot (eLast a k) (0 : UnipotentBlockColumnIndex a k k → Ad E) = 0` using `by simp [dot]`. Rewrite using `[hd, AddChar.map_zero_eq_one, one_mul]`. Unfold `blkU`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[posU_zero, one_mul]`. Introduce `r hr hra g`. Establish `hra' : r < a` using `by omega`. Establish `hper` using `per_blk (E := E) (r := r) (m := a - 1) hcont (fun c g => h.1.left _ g) g`. Establish `hper2 : Per (ratN E a r) (fun x => φ.1 (blkU (blkIxHomeo r x) * g))` using `⟨hper.1.comp (blkIxHomeo r).continuous, fun γ hγ x => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add]`. Conclude with `hper.2 _ ((blkIxHomeo_mem r γ).2 hγ) _⟩`. Establish `key` using `GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ (ratN E a r) (ratV E _) (isCoLat_ratV E (BlockIx a r)) (isCoLat_ratV E _) (blkIxHomeo r) (blkIxHomeo_mem r) _ hper`. Rewrite using `[← key]`. Establish `hfun : (fun x => φ.1 (blkU (blkIxHomeo r x) * g)) = fun x => φ.1 (unip x * g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => by rw [← blkU_comp_equiv]; rfl`. Rewrite `hper2`, the goal using `[hfun]`. Use `letI : MeasurableSpace (BlockIx a r → Ad E) := borel _`. Use `haveI : BorelSpace (BlockIx a r → Ad E) := ⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, hF, h1⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice _ (ratN E a r) (isCoLat_ratV E (BlockIx a r))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, hint⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average _ _ (isCoLat_ratV E (BlockIx a r)) μ 𝓕 hμ hF _ hper2`. Establish `hc` using `h.2 r hr hra' μ 𝓕 hμ hF g`. Rewrite `hc` using `[hint, h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at hc`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_of_isCuspForm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ψ : AddChar (Ad E) ℂ) (φ : Sm E a), IsCuspForm φ → Good ψ (a - 1) φ.1 := by

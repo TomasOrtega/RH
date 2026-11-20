@@ -15,11 +15,9 @@ namespace GlobalTheory.InertSph.Scal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨s, a, ha, hs⟩` from `v.isMaximal.exists_inv h2`. Apply `hroot (s * (t - b))` to reduce the goal to its premises. Establish `h4 : (2 : 𝓞 F) * (2 * ((s * (t - b)) ^ 2 + b * (s * (t - b)) + c)) ∈ v.asIdeal`. Establish `e : (2 : 𝓞 F) * (2 * ((s * (t - b)) ^ 2 + b * (s * (t - b)) + c)) = (t ^ 2 - (b ^ 2 - 4 * c)) + a * ((t - b) * (a * (t - b) - 2 * t))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a = 1 - s * 2` using `by linear_combination hs`. Substitute `this` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem h (Ideal.mul_mem_right _ _ ha)`.
-
-Conclude with `((v.isPrime.mem_or_mem ((v.isPrime.mem_or_mem h4).resolve_left h2)).resolve_left h2)`.
+Establish an intermediate fact. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_sub_sq_notMem (v : Pl F) (b c t : 𝓞 F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal)
     (hroot : ∀ r : 𝓞 F, r ^ 2 + b * r + c ∉ v.asIdeal) : t ^ 2 - (b ^ 2 - 4 * c) ∉ v.asIdeal := by
@@ -37,11 +35,11 @@ theorem disc_sub_sq_notMem (v : Pl F) (b c t : 𝓞 F) (h2 : (2 : 𝓞 F) ∉ v.
   exact ((v.isPrime.mem_or_mem ((v.isPrime.mem_or_mem h4).resolve_left h2)).resolve_left h2)
 
 /- English proof (translation)
-Establish `hp : (v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))).IsPrime`. Rewrite using `[show v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) = w.asIdeal from hin]`. Conclude with `w.isPrime`. Take `⟨a, b, c, hq, hc, hroot⟩` from `GlobalTheory.InertUnitNorm.exists_integral_gen σ hσ v hp`. Establish `hδ : ((2 * a + algebraMap (𝓞 F) (𝓞 E) b : 𝓞 E) : E) = 2 * (a : E) + algebraMap F E (b : F)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ((b ^ 2 - 4 * c : 𝓞 F) : F) = (b : F) ^ 2 - 4 * (c : F)` using `rfl`. Use `⟨2 * a + algebraMap (𝓞 F) (𝓞 E) b, b ^ 2 - 4 * c, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hδ, map_add, map_mul, map_ofNat, AlgHom.commutes, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hδ, hD, map_sub, map_mul, map_pow, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `4 * hq`. Introduce `h`. Apply `disc_sub_sq_notMem v b c 0 h2 hroot` to reduce the goal to its premises. Simplify using `using neg_mem h`. Simplify using `using disc_sub_sq_notMem v b c 1 h2 hroot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_delta (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : Pl F) (w : HeightOneSpectrum (𝓞 E))
     (hin : Formalism.UG.IsInertAt F E v w) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) :
@@ -64,11 +62,11 @@ theorem exists_delta (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : Pl F) (w :
   · simpa using disc_sub_sq_notMem v b c 1 h2 hroot
 
 /- English proof (translation)
-Establish `h1 : Valued.v (algebraMap F (Fv F v) (D : F)) = 1`. Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (D : F)`. Establish `h' : v.valuation F (D : F) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).2 hD`. Rewrite using `[← h', ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : algebraMap F (Fv F v) (D : F) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Use `⟨(algebraMap F (Fv F v) (D : F))⁻¹, ?_, inv_mul_cancel₀ h0⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv (v : Pl F) (D : 𝓞 F) (hD : D ∉ v.asIdeal) :
     ∃ c : Fv F v, c ∈ v.adicCompletionIntegers F ∧ c * algebraMap F (Fv F v) (D : F) = 1 := by
@@ -85,7 +83,7 @@ theorem exists_inv (v : Pl F) (D : 𝓞 F) (hD : D ∉ v.asIdeal) :
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]
 
 /- English proof (translation)
-Establish `h` using `hz (a - 1) (by rw [map_sub, map_one, ha, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_eq_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] {v : Pl F} {z : M} (hz : At (evFin F v) z)
     {a : AF F} (ha : evFin F v a = 1) : a • z = z := by
@@ -93,11 +91,11 @@ theorem smul_eq_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] {v : Pl F} {
   rwa [sub_smul, one_smul, sub_eq_zero] at h
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, y, -, rfl⟩` from `hz`. Introduce `u hu`. Rewrite using `[smul_smul, ← smul_eq_mul u a, ha u hu, zero_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro u _`. Conclude with `smul_zero u`. Consider the case `add x y _ _ hx hy => intro u hu`. Rewrite using `[smul_add, hx u hu, hy u hu, add_zero]`. Consider the case `neg x _ hx => intro u hu`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_neg, hx u hu, neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem at_of_mem_latAt {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F E} (hz : z ∈ latAt W v) :
     At (evFin F v) z := by
@@ -111,7 +109,7 @@ theorem at_of_mem_latAt {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F
   | neg x _ hx => intro u hu; rw [smul_neg, hx u hu, neg_zero]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.InertLocFrame.Lat.smul_mem_latAt W (AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV v c, by rwa [GlobalTheory.LatVac.evFin_liftV], o, rfl⟩) hz`.
+A detailed English derivation is pending.
 -/
 theorem lift_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F)
     (o : 𝓞 E) {z : Fin d → AE F E} (hz : z ∈ latAt W v) :
@@ -126,23 +124,21 @@ namespace GlobalTheory.InertSph
 open GlobalTheory.InertSph.Scal GlobalTheory.LatVac in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB d W v w hin`. Take `⟨δ, D, hσ, hsq, hD, hD1⟩` from `exists_delta σ hB.cm v w hin (hB.inert v w hin).1`. Take `⟨c, hc, hcD⟩` from `exists_inv v D hD`. Take `⟨c', hc', hcD'⟩` from `exists_inv v (1 - D) hD1`. Establish `hcD'' : c' * (1 - algebraMap F (Fv F v) (D : F)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hcD'` using `[show ((1 - D : 𝓞 F) : F) = 1 - (D : F) from rfl, map_sub, map_one]`. Then use the resulting hypothesis. Use `set x : AE F E := inclR (F := F) (AF F) (δ : E) with hx`. Establish `hxx : x * x = algebraMap (AF F) (AE F E) (algebraMap F (AF F) (D : F))`. Rewrite using `[hx, ← map_mul, hsq, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] AE F E).commutes _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : inclR (F` using `F) (AF F) ((1 + δ : 𝓞 E) : E) = 1 + x := by`. Rewrite using `[show ((1 + δ : 𝓞 E) : E) = 1 + (δ : E) from rfl, map_add, map_one]`. Establish `hm : inclR (F` using `F) (AF F) ((1 - δ : 𝓞 E) : E) = 1 - x := by`. Rewrite using `[show ((1 - δ : 𝓞 E) : E) = 1 - (δ : E) from rfl, map_sub, map_one]`. Establish `he : liftV v (1 : Fv F v) * liftV v c' = liftV v c'` using `smul_eq_of_at (at_liftV v c') (evFin_liftV v 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : algebraMap (AF F) (AE F E) (liftV v (1 : Fv F v)) * algebraMap (AF F) (AE F E) (liftV v c') = algebraMap (AF F) (AE F E) (liftV v c')` using `by rw [← map_mul, he]`. Establish `key : ∀ z ∈ latAt W v, ∀ a : AF F, evFin F v a = 1 → algebraMap (AF F) (AE F E) a • z = z`. Introduce `z hz a ha`. Rewrite using `[algebraMap_smul]`. Conclude with `smul_eq_of_at (at_of_mem_latAt W v hz) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : evFin F v (liftV v c' * (1 - algebraMap F (AF F) (D : F))) = 1`. Rewrite using `[map_mul, map_sub, map_one, evFin_liftV, AlgHom.commutes, hcD'']`. Use `⟨liftV v 1 • x, liftV v c • x, liftV v c' • (1 - x), liftV v c' • (1 + x), ?_, ?_, fun z hz => ⟨lift_smul_mem W v (one_mem _) δ hz, lift_smul_mem W v hc δ hz, hm ▸ lift_smul_mem W v hc' (1 - δ) hz, hp ▸ lift_smul_mem W v hc' (1 + δ) hz, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_smul, ← smul_eq_mul, at_liftV v 1 u hu, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h : cA σ x = -x`. Establish `h1 : cA σ x = inclR (F` using `F) (AF F) (σ (δ : E)) := by`. Simplify using `[hx, cA, inclR]`. Rewrite using `[h1, hσ, map_neg]`. Rewrite using `[map_smul, h, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `key z hz (liftV v 1 * liftV v c * algebraMap F (AF F) (D : F)) (by`. Rewrite using `[map_mul, map_mul, evFin_liftV, evFin_liftV, AlgHom.commutes, one_mul, hcD])`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Algebra.smul_def, map_mul, ← hxx]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `key z hz _ hu using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Algebra.smul_def, map_mul, map_sub, map_one, ← hxx]`. Take the linear combination `(x * (1 - x)) * he'`. Use `key z hz _ hu using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Algebra.smul_def, map_mul, map_sub, map_one, ← hxx]`.
-
-Take the linear combination `(-x * (1 + x)) * he'`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_traceZero_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →

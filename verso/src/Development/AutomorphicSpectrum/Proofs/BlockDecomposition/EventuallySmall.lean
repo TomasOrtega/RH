@@ -23,7 +23,7 @@ def res (H : G D p → ℝ≥0) (f : G D p → ℂ) (σ : ℝ) (h : G D p) : ℂ
 def ufil (p : ℕ) : Ultrafilter ℝ := Ultrafilter.of (𝓝[>] ((p : ℝ) / 2))
 
 /- English proof (translation)
-Unfold `ufil`. Conclude with `Ultrafilter.of_le _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ufil_le (p : ℕ) : ((ufil p : Ultrafilter ℝ) : Filter ℝ) ≤ 𝓝[>] ((p : ℝ) / 2) := by
   unfold ufil
@@ -33,15 +33,15 @@ def resA (H : G D p → ℝ≥0) (f : G D p → ℂ) (h : G D p) : ℂ :=
   limUnder ((ufil p : Ultrafilter ℝ) : Filter ℝ) fun σ => res H f σ h
 
 /- English proof (translation)
-Conclude with `pos_iff_ne_zero.mpr ((Group.isUnit u).map (absA D)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem abs_pos' (u : (AE D)ˣ) : 0 < absA D u := by
   exact pos_iff_ne_zero.mpr ((Group.isUnit u).map (absA D)).ne_zero
 
 /- English proof (translation)
-Introduce `q hq a ha g`. Establish `hx : (0:ℝ) < (absA D (Matrix.GeneralLinearGroup.det a) : ℝ)` using `NNReal.coe_pos.mpr (abs_pos' _)`. Establish `hxne : ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hx.ne'`. Simplify using `only [fam, npow, hH.2.2 q hq a ha g, h q hq a ha g, NNReal.coe_mul, Complex.ofReal_mul]`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg hx.le (NNReal.coe_nonneg _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z + (n : ℂ) / 2 = (z - s₁) + (s₁ + (n : ℂ) / 2)` using `by ring`. Rewrite using `[e, Complex.cpow_add (z - s₁) (s₁ + (n : ℂ) / 2) hxne]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fam_law {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHt H) {χ : (AE D)ˣ →* Circle} {s₁ : ℂ} {φ : G D n → ℂ} (h : IsLaw χ s₁ φ)
     (z : ℂ) : IsLaw χ z (fam H φ s₁ z) := by
@@ -55,9 +55,7 @@ theorem fam_law {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHt H) {χ : (AE D)ˣ �
   ring
 
 /- English proof (translation)
-Unfold `fam npow`. Use `Continuous.mul (Continuous.cpow ?_ ?_ ?_) (hφ.comp continuous_snd)` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (hH.1.comp continuous_snd))`. Conclude with `(Complex.continuous_ofReal.comp continuous_fst).sub continuous_const`. Introduce `u`.
-
-Conclude with `Complex.ofReal_mem_slitPlane.mpr (NNReal.coe_pos.mpr (hH.2.1 u.2))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fam_cont {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ} (hφ : Continuous φ) (s₁ : ℂ) :
     Continuous fun u : ℝ × G D n => fam H φ s₁ (u.1 : ℂ) u.2 := by
@@ -69,7 +67,7 @@ theorem fam_cont {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n →
     exact Complex.ofReal_mem_slitPlane.mpr (NNReal.coe_pos.mpr (hH.2.1 u.2))
 
 /- English proof (translation)
-Introduce `q hq a ha g`. Use `show φ (q * g) - φ' (q * g) = _ * (φ g - φ' g)`. Rewrite using `[h q hq a ha g, h' q hq a ha g]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem law_sub {n : ℕ} {s : ℂ} {φ φ' : G D n → ℂ} {χ : (AE D)ˣ →* Circle} (h : IsLaw χ s φ) (h' : IsLaw χ s φ') :
     IsLaw χ s (φ - φ') := by
@@ -79,7 +77,7 @@ theorem law_sub {n : ℕ} {s : ℂ} {φ φ' : G D n → ℂ} {χ : (AE D)ˣ →*
   ring
 
 /- English proof (translation)
-Introduce `q hq a ha g`. Use `show φ (q * g * x) = _ * φ (g * x)`. Rewrite using `[mul_assoc]`. Conclude with `h q hq a ha (g * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_right {n : ℕ} {s : ℂ} {φ : G D n → ℂ} {χ : (AE D)ˣ →* Circle} (h : IsLaw χ s φ) (x : G D n) :
     IsLaw χ s (fun g => φ (g * x)) := by
@@ -89,9 +87,9 @@ theorem law_right {n : ℕ} {s : ℂ} {φ : G D n → ℂ} {χ : (AE D)ˣ →* C
   exact h q hq a ha (g * x)
 
 /- English proof (translation)
-Take `⟨q, hq, c, hc, rfl⟩` from `hcov g`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hq`. Establish `hx : (0:ℝ) < (absA D (Matrix.GeneralLinearGroup.det a) : ℝ)` using `NNReal.coe_pos.mpr (abs_pos' _)`. Establish `hHc : (0:ℝ) < (H c : ℝ)` using `NNReal.coe_pos.mpr (hH.2.1 c)`. Rewrite using `[hs q hq a ha c, hH.2.2 q hq a ha c]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((σ : ℂ) + (p : ℂ) / 2) = (((σ + p / 2 : ℝ)) : ℂ)` using `by push_cast; ring`. Rewrite using `[norm_mul, norm_mul, e1]`. Simplify using `only [npow, MonoidHom.one_apply, Circle.coe_one, norm_one, one_mul]`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hx, Complex.ofReal_re, NNReal.coe_mul, Real.mul_rpow hx.le hHc.le]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem law_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {σ : ℝ}
     {s : G D p → ℂ} (hs : IsLaw 1 (σ : ℂ) s) {δ : ℝ} (hδ : ∀ c ∈ C, ‖s c‖ ≤ δ * (H c : ℝ) ^ (σ + p / 2)) (g : G D p) :
@@ -110,11 +108,9 @@ theorem law_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hcov 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hcont : ContinuousOn (fun c => ‖s c‖ / (H c : ℝ) ^ (σ + p / 2)) C`. Use `ContinuousOn.div hc.norm.continuousOn ?_ ?_` and prove the remaining obligations. Conclude with `((NNReal.continuous_coe.comp hH.1).rpow_const (fun c => Or.inl (NNReal.coe_pos.mpr (hH.2.1 c)).ne')).continuousOn`. Introduce `c _`. Conclude with `(Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 c)) _).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, hδ⟩` from `hC.exists_bound_of_continuousOn hcont`. Use `⟨δ, law_bound hH hcov hs (fun c hc => ?_)⟩` and prove the remaining obligations. Establish `hpos` using `Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 c)) (σ + p / 2)`. Use `hδ c hc` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, abs_div, abs_norm, abs_of_pos hpos, div_le_iff₀ hpos]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {σ : ℝ} {s : G D p → ℂ} (hc : Continuous s) (hs : IsLaw 1 (σ : ℂ) s) :
@@ -132,13 +128,13 @@ theorem exists_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC
   exact this
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hS D p hp H hH C hC`. Use `⟨max B 0, le_max_right _ _, fun σ hσ h hh s δ hs => ?_⟩` and prove the remaining obligations. Take `⟨hsum, hle⟩` from `hB σ hσ h hh`. Establish `hσ0 : 0 < σ - p / 2` using `by linarith [hσ.1]`. Establish `hδ : 0 ≤ δ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(norm_nonneg _).trans (hs 1)`. Establish `h2 : 0 < (H 1 : ℝ) ^ (σ + p / 2)` using `Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 1)) _`. Conclude with `le_of_mul_le_mul_right (by rw [zero_mul]; exact h1) h2`. Establish `hbd : ∀ q : GlobalTheory.Eis.Cosets (P D p) (GF D p), ‖GlobalTheory.Eis.term (P D p) (GF D p) s h q‖ ≤ δ * (H (↑(Quotient.out q) * h) : ℝ) ^ (σ + p / 2)` using `fun q => hs _`. Establish `hconv : CosetConv (P D p) (GF D p) s h` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hbd (hsum.mul_left δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hconv, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖eisS s h‖ ≤ δ * ∑' q : GlobalTheory.Eis.Cosets (P D p) (GF D p), (H (↑(Quotient.out q) * h) : ℝ) ^ (σ + p / 2)`. Unfold `eisS GlobalTheory.Eis.cosetSum`. Use `(norm_tsum_le_tsum_norm hconv).trans ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Summable.tsum_le_tsum hbd hconv (hsum.mul_left δ)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem eis_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1), ∀ h ∈ C, ∀ (s : G D p → ℂ) (δ : ℝ),
@@ -165,7 +161,7 @@ theorem eis_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
     _ ≤ δ * max B 0 := mul_le_mul_of_nonneg_left (hle.trans (le_max_left _ _)) hδ
 
 /- English proof (translation)
-Establish `h1 : Summable fun q => GlobalTheory.Eis.term (P D p) (GF D p) s h q` using `Summable.of_norm hc`. Establish `h2 : Summable fun q => GlobalTheory.Eis.term (P D p) (GF D p) s' h q` using `Summable.of_norm hc'`. Unfold `eisS GlobalTheory.Eis.cosetSum`. Conclude with `h1.tsum_sub h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eis_sub {s s' : G D p → ℂ} {h : G D p} (hc : CosetConv (P D p) (GF D p) s h) (hc' : CosetConv (P D p) (GF D p) s' h) :
     eisS (s - s') h = eisS s h - eisS s' h := by
@@ -175,7 +171,7 @@ theorem eis_sub {s s' : G D p → ℂ} {h : G D p} (hc : CosetConv (P D p) (GF D
   exact h1.tsum_sub h2
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `exists_bound hH hC hcov hc hs`. Take `⟨B, _, hB⟩` from `eis_bound hS hp hH (isCompact_singleton (x := h))`. Conclude with `(hB σ hσ h (Set.mem_singleton h) s δ hδ).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conv_of_section (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {σ : ℝ} (hσ : σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1)) {s : G D p → ℂ}
@@ -185,13 +181,11 @@ theorem conv_of_section (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (
   exact (hB σ hσ h (Set.mem_singleton h) s δ hδ).1
 
 /- English proof (translation)
-Establish `hHpos : ∀ c, (0:ℝ) < (H c : ℝ)` using `fun c => NNReal.coe_pos.mpr (hH.2.1 c)`. Use `set F : ℝ × G D p → ℝ := fun u => ‖T u.1 u.2‖ / (H u.2 : ℝ) ^ (u.1 + p / 2) with hF`. Establish `hFc : ContinuousOn F (Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ univ)`. Use `ContinuousOn.div hc.norm ?_ ?_` and prove the remaining obligations. Conclude with `(Continuous.rpow (NNReal.continuous_coe.comp (hH.1.comp continuous_snd)) (continuous_fst.add continuous_const) (fun u => Or.inl (hHpos u.2).ne')).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u _`. Conclude with `(Real.rpow_pos_of_pos (hHpos u.2) _).ne'`. Establish `hP : ∀ c ∈ C, ∀ᶠ z : ℝ × G D p in 𝓝 (((p : ℝ) / 2), c), z.1 ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) → F (z.1, z.2) < ε`. Introduce `c _`. Establish `hmem : (((p : ℝ) / 2), c) ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ (univ : Set (G D p))` using `⟨⟨le_rfl, by linarith⟩, mem_univ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht` using `(hFc _ hmem).tendsto`. Establish `h0' : F (((p : ℝ) / 2), c) = 0` using `by simp [hF, h0]`. Rewrite `ht` using `[h0']`. Establish `hh` using `ht.eventually (gt_mem_nhds hε)`. Rewrite `hh` using `[eventually_nhdsWithin_iff]`.
-
-Conclude with `hh.mono fun z hz h1 => hz ⟨h1, mem_univ _⟩`. Establish `hev` using `hC.eventually_forall_of_forall_eventually (P := fun σ c => σ ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) → F (σ, c) < ε) hP`. Use `filter_upwards [hev.filter_mono nhdsWithin_le_nhds, Ioc_mem_nhdsGT (show (p : ℝ) / 2 < p / 2 + 1 by linarith)] with σ hσ hI c hc`. Use `hσ c hc (Ioc_subset_Icc_self hI)` as an intermediate fact. Conclude with `((div_lt_iff₀ (Real.rpow_pos_of_pos (hHpos c) _)).mp this).le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_small {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C) {T : ℝ → G D p → ℂ}
     (hc : ContinuousOn (fun u : ℝ × G D p => T u.1 u.2) (Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ univ))
@@ -219,19 +213,19 @@ theorem eventually_small {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)}
   exact ((div_lt_iff₀ (Real.rpow_pos_of_pos (hHpos c) _)).mp this).le
 
 /- English proof (translation)
-Conclude with `Ioc_mem_nhdsGT (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem ev_Ioc (p : ℕ) : ∀ᶠ σ in 𝓝[>] ((p : ℝ) / 2), σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1) := by
   exact Ioc_mem_nhdsGT (by linarith)
 
 /- English proof (translation)
-Take `⟨B, hB0, hB⟩` from `eis_bound hS hp hH (isCompact_singleton (x := (1 : G D p)))`. Establish `hcont : ∀ σ ∈ Icc ((p : ℝ) / 2) (p / 2 + 1), Continuous (S σ)` using `fun σ hσ => hc.comp_continuous (f := fun c : G D p => (σ, c)) (by fun_prop) (fun c => ⟨hσ, mem_univ _⟩)`. Establish `hcont' : ∀ σ ∈ Icc ((p : ℝ) / 2) (p / 2 + 1), Continuous (S' σ)` using `fun σ hσ => hc'.comp_continuous (f := fun c : G D p => (σ, c)) (by fun_prop) (fun c => ⟨hσ, mem_univ _⟩)`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hε' : 0 < ε / (B + 1)` using `div_pos hε (by linarith)`. Establish `hsmall` using `eventually_small (T := fun σ => S σ - S' σ) hH hC (hc.sub hc') (fun c => by simp [h0]) hε'`. Use `filter_upwards [hsmall, ev_Ioc p] with σ hσs hσ`. Establish `hσI : σ ∈ Icc ((p : ℝ) / 2) (p / 2 + 1)` using `Ioc_subset_Icc_self hσ`. Establish `hlaw : IsLaw 1 (σ : ℂ) (S σ - S' σ)` using `law_sub (hl σ hσI) (hl' σ hσI)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `law_bound hH hcov hlaw hσs`. Take `⟨_, hb⟩` from `hB σ hσ 1 (Set.mem_singleton _) (S σ - S' σ) (ε / (B + 1)) hall`. Establish `hconv` using `conv_of_section hS hp hH hC hcov hσ (hcont σ hσI) (hl σ hσI) 1`. Establish `hconv'` using `conv_of_section hS hp hH hC hcov hσ (hcont' σ hσI) (hl' σ hσI) 1`. Rewrite using `[dist_zero_right, ← eis_sub hconv hconv', norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith [hσ.1])]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tendsto_diff (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {S S' : ℝ → G D p → ℂ}
@@ -264,9 +258,9 @@ theorem tendsto_diff (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH 
       nlinarith
 
 /- English proof (translation)
-Establish `hHg : (0:ℝ) < (H g : ℝ)` using `NNReal.coe_pos.mpr (hH.2.1 g)`. Unfold `fam npow`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hHg]`. Establish `hre : ((σ : ℂ) - (p : ℂ) / 2).re = σ - p / 2` using `by simp`. Rewrite using `[hre]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hHg]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fam_bound {H : G D p → ℝ≥0} (hH : IsHt H) {f : G D p → ℂ} {δ : ℝ} (hf : ∀ g, ‖f g‖ ≤ δ * (H g : ℝ) ^ p) (σ : ℝ) (g : G D p) :
     ‖fam H f ((p : ℂ) / 2) (σ : ℂ) g‖ ≤ δ * (H g : ℝ) ^ (σ + p / 2) := by
@@ -283,7 +277,7 @@ theorem fam_bound {H : G D p → ℝ≥0} (hH : IsHt H) {f : G D p → ℂ} {δ 
       ring
 
 /- English proof (translation)
-Establish `e : ((((p : ℝ) / 2 : ℝ)) : ℂ) = (p : ℂ) / 2` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `hf.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_law {f : G D p → ℂ} (hf : IsRho f) : IsLaw 1 (((p : ℝ) / 2 : ℝ) : ℂ) f := by
   have e : ((((p : ℝ) / 2 : ℝ)) : ℂ) = (p : ℂ) / 2 := by push_cast; ring
@@ -291,9 +285,9 @@ theorem rho_law {f : G D p → ℂ} (hf : IsRho f) : IsLaw 1 (((p : ℝ) / 2 : �
   exact hf.2
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `exists_bound hH hC hcov hf.1 (rho_law hf)`. Use `⟨δ, fun g => ?_⟩` and prove the remaining obligations. Use `hδ g` as an intermediate fact. Establish `e : ((p : ℝ) / 2 + p / 2) = ((p : ℕ) : ℝ)` using `by ring`. Rewrite `this` using `[e, Real.rpow_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem rho_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) :
@@ -306,9 +300,9 @@ theorem rho_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : 
   exact this
 
 /- English proof (translation)
-Take `⟨B, hB0, hB⟩` from `eis_bound hS hp hH hC'`. Use `⟨B, hB0, fun f δ hf σ hσ h hh => ?_⟩` and prove the remaining obligations. Take `⟨_, hb⟩` from `hB σ hσ h hh _ δ (fam_bound hH hf σ)`. Unfold `res`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith [hσ.1])]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem res_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C' : Set (G D p)} (hC' : IsCompact C') :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ (f : G D p → ℂ) (δ : ℝ), (∀ g, ‖f g‖ ≤ δ * (H g : ℝ) ^ p) →
@@ -321,9 +315,9 @@ theorem res_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
   exact hb
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `rho_bound hH hC hcov hf`. Take `⟨B, _, hB⟩` from `res_bound hS hp hH (isCompact_singleton (x := h))`. Establish `hev : ∀ᶠ σ in ((ufil p : Ultrafilter ℝ) : Filter ℝ), res H f σ h ∈ Metric.closedBall (0 : ℂ) (δ * B)`. Use `Filter.Eventually.filter_mono (ufil_le p) ((ev_Ioc p).mono fun σ hσ => ?_)` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB f δ hδ σ hσ h (Set.mem_singleton _)`. Take `⟨x, _, hx⟩` from `(isCompact_closedBall (0 : ℂ) (δ * B)).ultrafilter_le_nhds ((ufil p).map fun σ => res H f σ h) (by rw [Ultrafilter.coe_map, Filter.le_principal_iff]; exact hev)`. Unfold `resA`. Conclude with `tendsto_nhds_limUnder ⟨x, by rw [Ultrafilter.coe_map] at hx; exact hx⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_tendsto (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (h : G D p) :

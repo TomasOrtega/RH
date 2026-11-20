@@ -8,13 +8,13 @@ namespace PI.RepsIndep.Tr
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.UniformConstantsAndStatements
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun O : Set α => f ⁻¹' O)`. Introduce `O O' h`. Use extensionality with `y`. Use `Set.ext_iff.mp h (g y)` as an intermediate fact. Simplify `this` using `only [Set.mem_preimage, hfg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `himg : (fun O : Set α => f ⁻¹' O) '' {O | ∃ a ∈ Y, O = {b | b ∈ Y ∧ R' a b}} = {O | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}}`. Use extensionality with `O`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨O', ⟨y, hy, rfl⟩, rfl⟩`. Use `⟨g y, (hX (g y)).mp (by rw [hfg]; exact hy), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `c`. Rewrite using `[← hfg y]`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, hX, hR, hgf]`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨{b | b ∈ Y ∧ R' (f a) b}, ⟨f a, (hX a).mpr ha, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `c`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, hX, hR]`. Unfold `Cnt.cntCl`. Rewrite using `[← himg, hinj.injOn.encard_image]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cntCl_equiv {α : Type} (f g : α → α) (hgf : ∀ a, g (f a) = a) (hfg : ∀ a, f (g a) = a)
     (X Y : Set α) (R R' : α → α → Prop)
@@ -46,9 +46,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `XS Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, x, hx, rfl⟩`. Conclude with `⟨x • F.e a, ⟨a, x, hx, rfl⟩, by simp [mapF]⟩`. Introduce and unpack `⟨_, ⟨a, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, x, hx, by simp [mapF]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem XS_map {T : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (F : FlagG (VS D) D.R.rS T) : XS D (mapF γ hγ F) = Formalism.HermitianLatticesTheory.gmap γ (XS D F) := by
@@ -64,7 +64,7 @@ theorem XS_map {T : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : �
     exact ⟨a, x, hx, by simp [mapF]⟩
 
 /- English proof (translation)
-Unfold `FrameOK at h ⊢`. Use `⟨IsFixedConv_map hγ h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[XLam_mapL hγ, h.2]`. Conclude with `(XS_map hγ F'.fl).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrameOK_map {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} {F' : LFlag (VS D) D.R.rS T'} (h : FrameOK D Λ F') :
@@ -75,9 +75,9 @@ theorem FrameOK_map {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h
   exact (XS_map hγ F'.fl).symm
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, IsGeneric_map hγ h2, ?_⟩` and prove the remaining obligations. Unfold `IsNormFrame at h1 ⊢`. Take `⟨k1, k2, k3⟩` from `h1`. Conclude with `⟨IsLift_map hγ k1, AdmWit_map hγ k2, FrameOK_map hγ k3⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Substitute `h3` using the available equality. Unfold `ZhatL`. Conclude with `Zhat_mapF hγ F.fl F'.fl`.
+Substitute using the available equality. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem EZ_map {T T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     {Λ : Cnt.LatV D} {F : LFlag (Lat.hS D) D.R.rS T} {Z : Cnt.GramM D} {F' : LFlag (Lat.hS D) D.R.rS T'}
@@ -92,13 +92,13 @@ theorem EZ_map {T T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ 
     exact Zhat_mapF hγ F.fl F'.fl
 
 /- English proof (translation)
-Unfold `cntZ`. Establish `hγ'` using `iso_symm hγ`. Establish `hΛ : Formalism.HermitianLatticesTheory.gmap γ.symm (Formalism.HermitianLatticesTheory.gmap γ Λ) = Λ`. Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `cntCl_equiv (mapL γ hγ) (mapL γ.symm hγ') (mapL_symm hγ) (fun a => ?_) _ _ _ _ (fun a => ?_) (fun a b => ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact mapL_symm hγ' a`. Consider the case `simpa using mapL_symm hγ' a`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `EZ_map hγ' h` as an intermediate fact. Rewrite `this` using `[hΛ, mapL_symm hγ, mapL_symm hγ]`. Then use the resulting hypothesis. Conclude with `EZ_map hγ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `rel_map hγ' h` as an intermediate fact. Rewrite `this` using `[hΛ, mapL_symm hγ, mapL_symm hγ, mapL_symm hγ]`. Then use the resulting hypothesis. Conclude with `rel_map hγ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cntZ_map {T : D.host.E} (T' : D.host.E) {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (Λ : Cnt.LatV D) (F : LFlag (Lat.hS D) D.R.rS T) (Z : Cnt.GramM D) :
@@ -125,9 +125,9 @@ theorem cntZ_map {T : D.host.E} (T' : D.host.E) {γ : (VS D).V ≃ₗ[D.host.E] 
     · exact rel_map hγ
 
 /- English proof (translation)
-Establish `hz : γ₀ F0.z = F0.z` using `hγ.2.2`. Unfold `lf mapL mapF`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `exact hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Consider the case `(cases F0; simp only [FlagG.mk.injEq]; exact ⟨funext hfix, hz⟩)`.
+A detailed English derivation is pending.
 -/
 theorem lf_map {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {γ₀ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ₀ ∈ stabF D F0)
     (hfix : ∀ a, γ₀ (F0.e a) = F0.e a) : mapL γ₀ hγ.1 (lf D F0) = lf D F0 := by
@@ -147,7 +147,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `StepCnt`. Introduce `T T' F0 Λ _ γ₀ hγ hfix Z`. Establish `h` using `PI.RepsIndep.Tr.cntZ_map T' hγ.1 Λ (lf D F0) Z`. Rewrite `h` using `[PI.RepsIndep.Tr.lf_map F0 hγ hfix]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stepCnt (D : D7) : StepCnt D := by
   unfold StepCnt

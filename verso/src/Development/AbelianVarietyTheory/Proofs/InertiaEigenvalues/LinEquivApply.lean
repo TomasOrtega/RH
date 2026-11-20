@@ -27,19 +27,19 @@ section Zl
 attribute [local instance] zlT zlV zlB
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_smul fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem towT (T : QLat LL) : IsScalarTower ℤ_[l] ↥(OL LL) ↥T.L.T :=
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_smul fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem towV (T : QLat LL) : IsScalarTower ℤ_[l] ℚ_[l] T.V :=
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_smul fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem towB (Pl : LocPrime l) : IsScalarTower ℤ_[l] ℚ_[l] Pl.R.B :=
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
@@ -56,9 +56,9 @@ def incl (T : QLat LL) : ↥T.L.T →ₗ[ℤ_[l]] T.V where
     rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `h1 : IsAlgebraic ℚ_[l] a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `h2 : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 h1`. Take `⟨y, hy, hi⟩` from `h2.exists_integral_multiple`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy (PadicInt.irreducible_p (p := l))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h3` using `hi.smul ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h3` using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (LL : FinExt l) (a : ↥LL.1) :
     ∃ k : ℕ, (l : ↥LL.1) ^ k * a ∈ OL LL := by
@@ -74,9 +74,9 @@ theorem exists_pow_mul_mem (LL : FinExt l) (a : ↥LL.1) :
   exact h3
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem`. Consider the case `exact _root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem`. Consider the case `(apply _root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (T : QLat LL) (v : T.V) :
     ∃ n : ℕ, (l : ↥LL.1) ^ n • v ∈ T.L.T := by
@@ -89,7 +89,7 @@ theorem exists_pow_smul_mem (T : QLat LL) (v : T.V) :
   | (intros; exact _root_.GlobalTheory.IntegralPowerScalar.exists_pow_smul_mem ..)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap ℤ_[l] ℚ_[l] z • v = _`. Rewrite using `[← algebraMap_smul ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] z) v]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zl_smul_V (T : QLat LL) (z : ℤ_[l]) (v : T.V) : z • v = algebraMap ℚ_[l] ↥LL.1 (z : ℚ_[l]) • v := by
   change algebraMap ℤ_[l] ℚ_[l] z • v = _
@@ -97,13 +97,13 @@ theorem zl_smul_V (T : QLat LL) (z : ℤ_[l]) (v : T.V) : z • v = algebraMap �
   rfl
 
 /- English proof (translation)
-Use `⟨fun s => ?_, fun y => ?_, fun {x₁ x₂} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Establish `hs : ((s : ℤ_[l]) : ℚ_[l]) ≠ 0`. Rewrite using `[Ne, PadicInt.coe_eq_zero]`. Conclude with `nonZeroDivisors.coe_ne_zero s`. Establish `hs' : algebraMap ℚ_[l] ↥LL.1 ((s : ℤ_[l]) : ℚ_[l]) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]` and apply the resulting hypothesis. Use `(Module.End.isUnit_iff _).2 ⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, zl_smul_V, zl_smul_V]`. Conclude with `smul_right_injective _ hs' hab`. Use `⟨(algebraMap ℚ_[l] ↥LL.1 ((s : ℤ_[l]) : ℚ_[l]))⁻¹ • a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.algebraMap_end_apply, zl_smul_V, smul_smul, mul_inv_cancel₀ hs', one_smul]`. Take `⟨n, hn⟩` from `exists_pow_smul_mem T y`. Establish `hl : ((l : ℤ_[l]) ^ n) ∈ nonZeroDivisors ℤ_[l]` using `mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Use `⟨(⟨_, hn⟩, ⟨_, hl⟩), ?_⟩` and prove the remaining obligations. Use `show ((l : ℤ_[l]) ^ n) • y = (l : ↥LL.1) ^ n • y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[zl_smul_V]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using `only [one_smul]`. Conclude with `Subtype.ext h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLoc (T : QLat LL) : IsLocalizedModule (nonZeroDivisors ℤ_[l]) (incl T) := by
   refine ⟨fun s => ?_, fun y => ?_, fun {x₁ x₂} h => ⟨1, ?_⟩⟩
@@ -127,7 +127,7 @@ theorem isLoc (T : QLat LL) : IsLocalizedModule (nonZeroDivisors ℤ_[l]) (incl 
   · simp only [one_smul]; exact Subtype.ext h
 
 /- English proof (translation)
-The claim follows from `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors ℤ_[l]) ℚ_[l] (incl T)).1 (isLoc T)`.
+A detailed English derivation is pending.
 -/
 theorem hbc (T : QLat LL) : IsBaseChange ℚ_[l] (incl T) :=
   (isLocalizedModule_iff_isBaseChange (nonZeroDivisors ℤ_[l]) ℚ_[l] (incl T)).1 (isLoc T)
@@ -168,7 +168,7 @@ def addEquiv (T : QLat LL) (eB : Pl.R.B ≃+* Bc)
   (((swapLat T).trans (cancelCoeff T)).toAddEquiv.trans (changeRing T eB hz).toAddEquiv).trans (invertPrime Pl T).toAddEquiv
 
 /- English proof (translation)
-Simplify using `[addEquiv, swapLat, cancelCoeff, changeRing, invertPrime, ringLin, IsBaseChange.equiv_tmul, incl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem addEquiv_tmul (T : QLat LL) (eB : Pl.R.B ≃+* Bc)
     (hz : ∀ z : ℤ_[l], eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] Bc z)
@@ -181,13 +181,13 @@ end Zl
 variable {Pl : LocPrime l}
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add x y hx hy`. Rewrite using `[smul_add, map_add, map_add]`. Conclude with `(congrArg₂ (· + ·) hx hy).trans (smul_add c _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul y x`. Rewrite using `[TensorProduct.smul_tmul']`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, zero_tmul, map_zero]`. Consider the case `add y₁ y₂ h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, add_tmul, add_tmul, map_add, map_add]`. Conclude with `(congrArg₂ (· + ·) h₁ h₂).trans (smul_add c _ _).symm`. Consider the case `tmul o b`. Establish `e : (((c • o) • x : ↥T.L.T) : T.V) = (c : ↥LL.1) • ((o • x : ↥T.L.T) : T.V)`. Rewrite using `[smul_assoc, Submodule.coe_smul, ← algebraMap_smul ↥LL.1 c]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[TensorProduct.smul_tmul', addEquiv_tmul, addEquiv_tmul, e]`. Conclude with `(TensorProduct.smul_tmul' (c : ↥LL.1) _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem addEquiv_smul (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
     (hz : ∀ z : ℤ_[l], eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] (Per.Bcris l) z)
@@ -225,7 +225,7 @@ theorem linEquiv_apply (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
     (w : TW (OB l ↥(OL LL)) T) : linEquiv T eB hz w = addEquiv T eB hz w := rfl
 
 /- English proof (translation)
-Rewrite using `[linEquiv_apply, Algebra.TensorProduct.one_def, addEquiv_tmul, one_smul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem linEquiv_one (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
     (hz : ∀ z : ℤ_[l], eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] (Per.Bcris l) z)
@@ -234,13 +234,13 @@ theorem linEquiv_one (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
   rw [linEquiv_apply, Algebra.TensorProduct.one_def, addEquiv_tmul, one_smul, map_one]
 
 /- English proof (translation)
-Rewrite using `[linEquiv_apply, linEquiv_apply]`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· + ·) hx hy`. Consider the case `tmul y x`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_tmul, map_zero]`. Consider the case `add y₁ y₂ h₁ h₂`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_tmul, map_add, map_add, map_add, map_add]`. Conclude with `congrArg₂ (· + ·) h₁ h₂`. Consider the case `tmul o b`. Establish `h1 : actB (sQ l) T g ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = (o ⊗ₜ[ℤ_[l]] Per.σB (g : GQ l) b) ⊗ₜ[↥(OL LL)] T.actT g x` using `rfl`. Rewrite using `[h1, addEquiv_tmul, addEquiv_tmul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [actVB, AlgebraTensorModule.map_tmul]`. Use `congr 1`. Rewrite using `[Submodule.coe_smul, Submodule.coe_smul, ← algebraMap_smul ↥LL.1 o, ← algebraMap_smul ↥LL.1 o, map_smul]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, AlgEquiv.coe_toAlgHom, Pl.PD_actB, RingEquiv.symm_apply_eq, hact, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linEquiv_act (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
     (hz : ∀ z : ℤ_[l], eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] (Per.Bcris l) z)
@@ -272,13 +272,13 @@ theorem linEquiv_act (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
           RingEquiv.symm_apply_eq, hact, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[linEquiv_apply, linEquiv_apply]`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· + ·) hx hy`. Consider the case `tmul y x`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_tmul, map_zero]`. Consider the case `add y₁ y₂ h₁ h₂`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_tmul, map_add, map_add, map_add, map_add]`. Conclude with `congrArg₂ (· + ·) h₁ h₂`. Consider the case `tmul o b`. Establish `h1 : TWmap (frobOB l ↥(OL LL)) T ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = (o ⊗ₜ[ℤ_[l]] Per.φB l b) ⊗ₜ[↥(OL LL)] x` using `rfl`. Rewrite using `[h1, addEquiv_tmul, addEquiv_tmul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [φVB, AlgebraTensorModule.map_tmul, LinearMap.id_apply]`. Use `congr 1`. Rewrite using `[AlgHom.toLinearMap_apply, Pl.PD_φ, RingEquiv.symm_apply_eq, hfr, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linEquiv_frob (T : QLat LL) (eB : Pl.R.B ≃+* Per.Bcris l)
     (hz : ∀ z : ℤ_[l], eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] (Per.Bcris l) z)

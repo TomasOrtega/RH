@@ -12,31 +12,27 @@ open Matrix
 namespace GlobalTheory.Hk3.IntWitt
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU hq n' JT hJT hherm ι _ z z' k hk hz hz' hind hdiff hgram`. Establish `hv` using `hU.2.2.2.1`. Establish `hσϖ : σ ϖ = ϖ` using `hU.2.2.1`. Establish `hσv` using `hU.2.1`. Establish `hϖI : ϖ ∈ Formalism.UG.intL L` using `by show Valued.v ϖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv]; exact_mod_cast (show Multiplicative.ofAdd (-1 : ℤ) ≤ 1 from by decide)`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set J : Matrix (Fin n') (Fin n') L := (JT : Matrix (Fin n') (Fin n') L) with hJdef`. Use `set Ji : Matrix (Fin n') (Fin n') L := ((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hJidef`. Establish `hJI : ∀ r s, J r s ∈ Formalism.UG.intL L` using `GlobalTheory.Hk3.HoweDuality.entry_mem_of_mem_GLint hJT`. Establish `hJiI : ∀ r s, Ji r s ∈ Formalism.UG.intL L` using `GlobalTheory.Hk3.HoweDuality.entry_mem_of_mem_GLint (inv_mem hJT)`. Establish `hJiJ : Ji * J = 1` using `by rw [hJidef, hJdef, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hwI hwe using hdiff`. Establish `hz'e : ∀ i r, z' i r = z i r + ϖ ^ k * w i r` using `fun i r => by rw [← hwe]; ring`. Establish `hz'v : ∀ i, z' i = z i + ϖ ^ k • w i` using `fun i => funext fun r => by simp [hz'e]`. Establish `hformI : ∀ x y : Fin n' → L, (∀ r, x r ∈ Formalism.UG.intL L) → (∀ r, y r ∈ Formalism.UG.intL L) → Formalism.UG.hform σ J x y ∈ Formalism.UG.intL L`. Introduce `x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sum_mem fun r _ => sum_mem fun s _ => mul_mem (mul_mem ?_ (hJI r s)) (hy s)` and prove the remaining obligations. Use `show Valued.v (σ (x r)) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hx r`. Establish `key : ∀ i j, Formalism.UG.hform σ J (z' i) (z' j) - Formalism.UG.hform σ J (z i) (z j) = ϖ ^ k * (Formalism.UG.hform σ J (z i) (w j) + Formalism.UG.hform σ J (w i) (z j) + ϖ ^ k * Formalism.UG.hform σ J (w i) (w j))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `only [Formalism.UG.hform, hz'e, map_add, map_mul, map_pow, hσϖ, mul_add, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => by ring` and prove the remaining obligations. Establish `hgram1 : ∀ i j, GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 (Formalism.UG.hform σ J (z i) (w j) + Formalism.UG.hform σ J (w i) (z j))`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 (Formalism.UG.hform σ J (z i) (w j) + Formalism.UG.hform σ J (w i) (z j) + ϖ ^ k * Formalism.UG.hform σ J (w i) (w j))`. Take `⟨b, hb, hbe⟩` from `hgram i j`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `(key i j).symm.trans hbe` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[pow_one]`. Conclude with `mul_left_cancel₀ (pow_ne_zero k hϖ0) this`. Establish `h2 : GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 (ϖ ^ k * Formalism.UG.hform σ J (w i) (w j))`. Use `⟨ϖ ^ (k - 1) * Formalism.UG.hform σ J (w i) (w j), mul_mem (pow_mem hϖI _) (hformI _ _ (hwI i) (hwI j)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.Hk3.IntWitt.dvdPow_sub h1 h2` as an intermediate fact. Simplify using `using this`. Take `⟨a, haI, ha⟩` from `GlobalTheory.T.exists_integral_dual_of_independentModUniformizer L ϖ hv n' ι z hz hind`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨C, hCs, hCI, hCz⟩` from `GlobalTheory.T.exists_integral_skew_hermitian_lift_mod_uniformizer L ϖ σ q hU hq n' JT hJT hherm ι z w a hz hwI haI ha hgram1`. Take `⟨g, hgI, hg1, hg2⟩` from `GlobalTheory.T.cayley_transform_integral_unitary_congruent_one L ϖ σ q hU hq n' JT hJT hherm C hCs hCI k hk`. Use `⟨g, hgI, hg1, fun i r => ?_⟩` and prove the remaining obligations. Use `set G : Matrix (Fin n') (Fin n') L := ((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hGdef`. Establish `e : G *ᵥ z i - z' i = (G - 1 - ϖ ^ k • (Ji * C)) *ᵥ z i + ϖ ^ k • (Ji *ᵥ (C *ᵥ z i - J *ᵥ w i))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec (w i) Ji J, hJiJ, Matrix.one_mulVec, hz'v, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `e'` using `congrFun e r`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at e'`. Rewrite using `[e']`.
-
-Establish `t1 : GlobalTheory.Hk3.IntWitt.DvdPow ϖ (k + 1) (((G - 1 - ϖ ^ k • (Ji * C)) *ᵥ z i) r)` using `by show GlobalTheory.Hk3.IntWitt.DvdPow ϖ (k + 1) (∑ s, (G - 1 - ϖ ^ k • (Ji * C)) r s * z i s)`. Use `GlobalTheory.Hk3.IntWitt.dvdPow_sum _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.Hk3.IntWitt.dvdPow_mul_int (hg2 r s) (hz i s)`. Establish `t2 : GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 ((Ji *ᵥ (C *ᵥ z i - J *ᵥ w i)) r)` using `by show GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 (∑ s, Ji r s * (C *ᵥ z i - J *ᵥ w i) s)`.
-
-Conclude with `GlobalTheory.Hk3.IntWitt.dvdPow_sum _ _ fun s _ => GlobalTheory.Hk3.IntWitt.dvdPow_mul_int (hCz i s) (hJiI r s)`. Use `GlobalTheory.Hk3.IntWitt.dvdPow_add t1 ?_` and prove the remaining obligations. Take `⟨b, hb, hbe⟩` from `t2`. Conclude with `⟨b, hb, by rw [hbe, pow_succ]; ring⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hensel_step : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),

@@ -21,7 +21,7 @@ variable {D : D7}
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
 /- English proof (translation)
-The claim follows from `map_nsmul (AddMonoidHom.mk' (frMapAdj A' WW βA' βW) (GlobalTheory.PlaceVec.frMapAdj_add A' WW βA' βW)) k x`.
+A detailed English derivation is pending.
 -/
 theorem frMapAdj_nsmul (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D)) (βW : GL (Fin WW.rank) (EAf D)) (k : ℕ)
     (x : WO A' WW) : frMapAdj A' WW βA' βW (k • x) = k • frMapAdj A' WW βA' βW x :=
@@ -34,7 +34,7 @@ theorem dualCoord_apply (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D)) (βW :
     (i j) : dualCoord A' WW βA' βW x i j = eToEAf D D.host.xi0 * frMapAdj A' WW βA' βW x i j := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, dualCoord_apply, dualCoord_apply, dualCoord_apply, GlobalTheory.PlaceVec.frMapAdj_add, Matrix.add_apply, mul_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualCoord_add (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D)) (βW : GL (Fin WW.rank) (EAf D)) (x y : WO A' WW) :
     dualCoord A' WW βA' βW (x + y) = dualCoord A' WW βA' βW x + dualCoord A' WW βA' βW y := by
@@ -43,18 +43,18 @@ theorem dualCoord_add (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D)) (βW : G
     mul_add]
 
 /- English proof (translation)
-The claim follows from `map_nsmul (AddMonoidHom.mk' (dualCoord A' WW βA' βW) (dualCoord_add A' WW βA' βW)) k x`.
+A detailed English derivation is pending.
 -/
 theorem dualCoord_nsmul (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D)) (βW : GL (Fin WW.rank) (EAf D)) (k : ℕ)
     (x : WO A' WW) : dualCoord A' WW βA' βW (k • x) = k • dualCoord A' WW βA' βW x :=
   map_nsmul (AddMonoidHom.mk' (dualCoord A' WW βA' βW) (dualCoord_add A' WW βA' βW)) k x
 
 /- English proof (translation)
-Take `⟨k₃, hk₃, h₃⟩` from `GlobalTheory.PlaceVec.exists_nsmul_latO_int (S := A') (T := WW) hS hT`. Take `⟨k₁, hk₁, h₁⟩` from `GlobalTheory.PlaceVec.frMapAdj_up A' WW βA' βW`. Take `⟨d, hd, hξ⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_int (eToEAf D D.host.xi0)`. Use `⟨d * k₁ * k₃, by positivity, fun u hu i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `h₁ (k₃ • u) (by rw [GlobalTheory.PlaceVec.map_toEAf_nsmul]; exact h₃ u hu) i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ((d * k₁ * k₃ : ℕ) : EAf D) * dualCoord A' WW βA' βW u i j = (d • eToEAf D D.host.xi0) * (k₁ • frMapAdj A' WW βA' βW (k₃ • u)) i j`. Rewrite using `[frMapAdj_nsmul, dualCoord_apply, Matrix.smul_apply, Matrix.smul_apply, nsmul_eq_mul, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hξ h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_den_dualCoord {A' WW : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E)} (hS : ΛS.FG) (hT : ΛT.FG) (βA' : GL (Fin A'.rank) (EAf D))
@@ -75,11 +75,11 @@ theorem exists_den_dualCoord {A' WW : HSp D} {ΛS : Submodule (𝓞 D.host.E) (F
   exact mul_mem hξ h1
 
 /- English proof (translation)
-Take `⟨m, hm, hξ⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_int (eToEAf D D.host.xi0⁻¹)`. Take `⟨k₂, hk₂, h₂⟩` from `GlobalTheory.PlaceVec.frMapAdj_down A' WW βA' βW`. Take `⟨k₄, hk₄, h₄⟩` from `GlobalTheory.PlaceVec.exists_nsmul_int_mem_latO hS hT (S := A') (T := WW)`. Use `⟨k₄ * (k₂ * m), by positivity, fun t ht hi => ?_⟩` and prove the remaining obligations. Establish `hF : IsIntM (frMapAdj A' WW βA' βW (m • t))` using `fun i j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : frMapAdj A' WW βA' βW (m • t) i j = (m • eToEAf D D.host.xi0⁻¹) * dualCoord A' WW βA' βW t i j`. Rewrite using `[frMapAdj_nsmul, dualCoord_apply, Matrix.smul_apply, nsmul_eq_mul, nsmul_eq_mul, mul_assoc, ← mul_assoc (eToEAf D _), ← RingHom.map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), RingHom.map_one, one_mul]`. Rewrite using `[e]`. Conclude with `mul_mem hξ (hi i j)`. Establish `h3` using `h₄ (k₂ • m • t) (GlobalTheory.PlaceVec.half_infPart hinf (nsmul_mem (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff A' WW).1 ht) _) _)) (by rw [GlobalTheory.PlaceVec.map_toEAf_nsmul]; exact h₂ _ hF)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[smul_smul, smul_smul, mul_assoc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_dualCoord {A' WW : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E)} (hS : Submodule.IsLattice D.host.E ΛS)
@@ -102,7 +102,7 @@ theorem exists_mul_dualCoord {A' WW : HSp D} {ΛS : Submodule (𝓞 D.host.E) (F
   rwa [smul_smul, smul_smul, mul_assoc] at h3
 
 /- English proof (translation)
-Introduce `i j` and use `by unfold rightBlock split_ifs · exact h _ _ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_rightBlock {k d a : ℕ} {Y : Matrix (Fin k) (Fin d) (EAf D)} (h : IsIntM Y) : IsIntM (rightBlock a Y) :=
   fun i j => by
@@ -112,7 +112,7 @@ theorem isIntM_rightBlock {k d a : ℕ} {Y : Matrix (Fin k) (Fin d) (EAf D)} (h 
     · exact zero_mem _
 
 /- English proof (translation)
-Unfold `rightBlock`. Use `split_ifs`. Conclude with `h _ _`. Rewrite using `[mul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightBlock_shift {k d a : ℕ} {Y Y' W : Matrix (Fin k) (Fin d) (EAf D)} {c : EAf D}
     (h : ∀ i j, Y' i j = Y i j + c * W i j) (i j : Fin k) :
@@ -125,13 +125,13 @@ theorem rightBlock_shift {k d a : ℕ} {Y Y' W : Matrix (Fin k) (Fin d) (EAf D)}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hW1 : ∀ i j, ((n * c : ℕ) : EAf D) * W i j ∈ OO` using `fun i j => mul_mem (natCast_mem _ _) (hW i j)`. Establish `hW2 : ∀ i j, (n₀ : EAf D) * (((n * c : ℕ) : EAf D) * W i j) ∈ OO` using `fun i j => mul_mem (natCast_mem _ _) (hW1 i j)`. Establish `ha : ∀ i j, dualCoord A' WW βA' βW t' i j = dualCoord A' WW βA' βW t i j + (n₀ : EAf D) * (((n * c : ℕ) : EAf D) * W i j)` using `fun i j => by`. Rewrite using `[h, Nat.cast_mul n₀, mul_assoc]`. Establish `hb : ∀ i j, dualCoord A' WW βA' βW t i j = dualCoord A' WW βA' βW t' i j + (n₀ : EAf D) * (-(((n * c : ℕ) : EAf D) * W i j))` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, mul_neg, add_neg_cancel_right]`. Establish `hint : IsIntM (dualCoord A' WW βA' βW t') ↔ IsIntM (dualCoord A' WW βA' βW t)` using `forall_congr' fun i => forall_congr' fun j => by`. Rewrite using `[ha]`. Conclude with `add_mem_cancel_right (hW2 i j)`. Establish `hid : (∀ i j, j.1 < a → InId I (dualCoord A' WW βA' βW t' i j)) ↔ ∀ i j, j.1 < a → InId I (dualCoord A' WW βA' βW t i j)` using `⟨fun H i j hj => StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.inId_shift hn₀ (neg_mem (hW1 i j)) (hb i j) (H i j hj), fun H i j hj => StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.inId_shift hn₀ (hW1 i j) (ha i j) (H i j hj)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `stdSnd`. Distinguish the cases in `hcnd : IsHalf (cA D e) t ∧ IsIntM (dualCoord A' WW βA' βW t) ∧ ∀ i j, j.1 < a → InId I (dualCoord A' WW βA' βW t i j)`. Rewrite using `[if_pos hcnd, if_pos ⟨hh.2 hcnd.1, hint.2 hcnd.2.1, hid.2 hcnd.2.2⟩]`. Use `(StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.unitChar_congr he hl hc (isIntM_rightBlock hcnd.2.1) (Z := rightBlock a fun i j => (n₀ : EAf D) * W i j) (isIntM_rightBlock fun i j => mul_mem (natCast_mem _ _) (hW i j)) (rightBlock_shift (c := ((n * c : ℕ) : EAf D)) f …` and prove the remaining obligations. Rewrite using `[h, Nat.cast_mul n₀]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hcnd, if_neg fun h' => hcnd ⟨hh.1 h'.1, hint.1 h'.2.1, hid.1 h'.2.2⟩]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdSnd_shift {ν : (AE D)ˣ →* Circle} {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S)
     {I : Ideal (𝓞 D.host.E)} {n₀ n c : ℕ} (hn₀ : ((n₀ : ℕ) : 𝓞 D.host.E) ∈ I)
@@ -171,15 +171,13 @@ theorem stdSnd_shift {ν : (AE D)ˣ →* Circle} {e : AE D} {S : Finset (Pl D.ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨M, hM, hB⟩` from `hB`. Take `⟨K, hK, hC⟩` from `hC`. Take `⟨n, hn, hl, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D ν hν`. Take `⟨n₀, hn₀, hnI⟩ : ∃ n₀ : ℕ, 0 < n₀ ∧ ((n₀ : ℕ) : 𝓞 D.host.E) ∈ I` from `⟨_, Nat.pos_of_ne_zero fun h => hI (Ideal.absNorm_eq_zero_iff.1 h), Ideal.absNorm_mem I⟩`. Take `⟨c, hc, hcS⟩` from `GlobalTheory.PlaceVec.exists_nat_mem_places S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun t ht => ?_, K * ((n₀ * (n * c)) * M), Nat.mul_pos hK (Nat.mul_pos (Nat.mul_pos hn₀ (Nat.mul_pos hn hc)) hM), fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Unfold `stdSnd at ht`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg fun h' => h h'.1)`. Use `stdSnd_shift he hnI hl hcS a A' WW βA' βW (W := fun i j => (K : EAf D) * ((M : EAf D) * dualCoord A' WW βA' βW u i j)) ?_ (fun i j => mul_mem (natCast_mem _ _) (hB u hu i j)) fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff A' WW, GlobalTheory.PlaceModel.isHalf_iff A' WW]`. Conclude with `AddSubgroup.add_mem_cancel_right _ (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff A' WW).1 hh) _)`. Rewrite using `[dualCoord_add, dualCoord_nsmul, Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h : IsHalf (cA D e) t ∧ IsIntM (dualCoord A' WW βA' βW t)`. Unfold `stdSnd at ht`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg fun h' => h ⟨h'.1, h'.2.1⟩)`. Rewrite using `[mul_nsmul]`.
-
-Conclude with `nsmul_mem (hC t h.1 h.2) _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdSnd_isSB {ν : (AE D)ˣ →* Circle} (hν : Continuous ν) {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S)
     {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) (a : ℕ) (A' WW : HSp D) (βA' : GL (Fin A'.rank) (EAf D))
@@ -214,11 +212,11 @@ theorem stdSnd_isSB {ν : (AE D)ˣ →* Circle} (hν : Continuous ν) {e : AE D}
     exact nsmul_mem (hC t h.1 h.2) _
 
 /- English proof (translation)
-Introduce `D ψ θ A' WW rA' rW ν e S I a vac hA hW hν he hI hv`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `ha : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hSd : IsSelfDualC A' rA'.Λ` using `hA.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSB : IsSBHalf (cA D e) (latO A' WW rA'.Λ rW.Λ fun _ => True) (stdSnd ν e I a A' WW rA'.β rW.β)` using `stdSnd_isSB hν.1 he hI a A' WW rA'.β rW.β _ (exists_den_dualCoord hSd.1.fg hW.1.1.fg rA'.β rW.β) (exists_mul_dualCoord hSd.1 hW.1.1 hinf rA'.β rW.β)`. Take `⟨Tm, hTm⟩` from `(GlobalTheory.PlaceModelSum.placeModelExistsSum D ψ hv.1 A' WW rA'.Λ rW.Λ hSd hW.1 _ e he vac hv.2.theta hv.2.lat).2`. Take `⟨f, h⟩` from `GlobalTheory.PlaceVec.exists_isThetaAt hv.1 hSd hW.1 ha hinf ⟨Tm, hTm⟩ hSB`. Use `⟨f, h, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 Tm hTm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hv.1 A' WW rA'.Λ rW.Λ hSd hW.1 (cA D e) ha hinf vac hv.2.theta Tm hTm _ hSB`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A' WW : HSp D) (rA' : Rig A') (rW : Rig WW) (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Pl D.host.E)) (I : Ideal (𝓞 D.host.E)) (a : ℕ) (vac : WO A' WW → ℂ), rA'.Is → rW.Is → IsHeckeChar D ν → IsIdemSum e S → I ≠ ⊥ → IsVacO ψ θ A' WW rA'.s rW.s rA'.Λ rW.Λ vac → ∃ f, IsThetaAt ψ (symplO A' WW) (heisO ψ A' WW) (cA D e) (latO A' WW rA'.Λ rW.Λ fun _ => True) 1 vac (stdSnd ν e I a A' WW rA'.β rW.β) f ∧ IsThetaFunO ψ A' WW f := by
   intro D ψ θ A' WW rA' rW ν e S I a vac hA hW hν he hI hv

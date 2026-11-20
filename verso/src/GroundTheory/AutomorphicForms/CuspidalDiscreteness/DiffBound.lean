@@ -21,7 +21,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 def unipBallMat (R : ℝ) : Set (ArchMatrix K n) := {A | ‖A - 1‖ ≤ R ∧ (A - 1) * (A - 1) = 0}
 
 /- English proof (translation)
-Use `(isCompact_closedBall (1 : ArchMatrix K n) R).of_isClosed_subset ?_ fun A hA => ?_` and prove the remaining obligations. Conclude with `(isClosed_le (continuous_id.sub continuous_const).norm continuous_const).inter (isClosed_eq ((continuous_id.sub continuous_const).mul (continuous_id.sub continuous_const)) continuous_const)`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `hA.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unipBallMat (R : ℝ) : IsCompact (unipBallMat (K := K) (n := n) R) := by
   refine (isCompact_closedBall (1 : ArchMatrix K n) R).of_isClosed_subset ?_ fun A hA => ?_
@@ -32,9 +32,9 @@ theorem isCompact_unipBallMat (R : ℝ) : IsCompact (unipBallMat (K := K) (n := 
     exact hA.1
 
 /- English proof (translation)
-Introduce `A hA`. Use `⟨⟨A, 2 - A, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `hA.2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `hA.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem unipBallMat_subset_range (R : ℝ) :
     unipBallMat (K := K) (n := n) R ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n) := by
@@ -51,14 +51,14 @@ def unipBall (R : ℝ) : Set (ArchUnits K n) :=
   (Units.val : ArchUnits K n → ArchMatrix K n) ⁻¹' unipBallMat R
 
 /- English proof (translation)
-The claim follows from `Units.isOpenEmbedding_val.isInducing.isCompact_preimage' (isCompact_unipBallMat R) (unipBallMat_subset_range R)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_unipBall (R : ℝ) : IsCompact (unipBall (K := K) (n := n) R) :=
   Units.isOpenEmbedding_val.isInducing.isCompact_preimage' (isCompact_unipBallMat R)
     (unipBallMat_subset_range R)
 
 /- English proof (translation)
-Unfold `altPoint`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem altPoint_mul_altPoint {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : ∀ i j, Y i * Y j = 0)
     (ε : Fin k → Bool) : altPoint Y ε * altPoint Y ε = 0 := by
@@ -68,9 +68,7 @@ theorem altPoint_mul_altPoint {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : ∀
   split_ifs <;> simp [hY]
 
 /- English proof (translation)
-Unfold `altPoint`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hR i`.
-
-Rewrite using `[norm_zero]`. Conclude with `(norm_nonneg _).trans (hR i)`. Use `_ = k * R := by simp`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_altPoint_le {k : ℕ} {Y : Fin k → ArchMatrix K n} {R : ℝ} (hR : ∀ i, ‖Y i‖ ≤ R)
     (ε : Fin k → Bool) : ‖altPoint Y ε‖ ≤ k * R := by
@@ -84,7 +82,7 @@ theorem norm_altPoint_le {k : ℕ} {Y : Fin k → ArchMatrix K n} {R : ℝ} (hR 
     _ = k * R := by simp
 
 /- English proof (translation)
-Unfold `altPoint`. Rewrite using `[Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem altPoint_neg_mul {k : ℕ} (Y : Fin k → ArchMatrix K n) (a : ArchMatrix K n)
     (ε : Fin k → Bool) : altPoint (fun i => -(Y i * a)) ε = -(altPoint Y ε * a) := by
@@ -94,7 +92,7 @@ theorem altPoint_neg_mul {k : ℕ} (Y : Fin k → ArchMatrix K n) (a : ArchMatri
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hC]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_inv_eq_of_val_eq {C : ArchUnits K n} {W : ArchMatrix K n} (hW : W * W = 0)
     (hC : (C : ArchMatrix K n) = 1 + W) : ((C⁻¹ : ArchUnits K n) : ArchMatrix K n) = 1 - W := by
@@ -108,7 +106,7 @@ section Diff
 variable (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure] {β : ArchMatrix K n → ℝ}
 
 /- English proof (translation)
-Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp (hβ.comp (Units.continuous_val.comp (continuous_const.mul continuous_id)))).mul (h.continuous.comp ((continuous_archProj.inv).mul continuous_const))`. Use `HasCompactSupport.intro ((isCompact_unitsSupport hβc hβu).image (continuous_const_mul C⁻¹)) fun A hA => ?_` and prove the remaining obligations. Establish `: ((C * A : ArchUnits K n) : ArchMatrix K n) ∉ tsupport β` using `fun h' => hA ⟨C * A, h', by simp⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport this, Complex.ofReal_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_archConv_integrand (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -127,13 +125,13 @@ theorem integrable_archConv_integrand (hβ : Continuous β) (hβc : HasCompactSu
     rw [image_eq_zero_of_notMem_tsupport this, Complex.ofReal_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hterm : ∀ ε, archConvFun ν β h ((archProj K n (C ε))⁻¹ * w) = ∫ A : ArchUnits K n, (β ((A : ArchMatrix K n) + altPoint (fun i => -(Y i * (A : ArchMatrix K n))) ε) : ℂ) * h ((archProj K n A)⁻¹ * w) ∂ν`. Introduce `ε`. Rewrite using `[← map_inv, archConvFun_archProj_mul]`. Use `integral_congr_ae (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_mul, val_inv_eq_of_val_eq (altPoint_mul_altPoint hY ε) (hC ε), altPoint_neg_mul, sub_mul, one_mul, sub_eq_add_neg]`. Repeatedly rewrite using `[hterm, ← integral_const_mul]`. Rewrite using `[← integral_finsetSum]`. Use `integral_congr_ae (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[altSum_eq_sum, Complex.ofReal_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, Complex.ofReal_mul, Complex.ofReal_intCast, mul_assoc]`. Introduce `ε _`. Use `(Integrable.const_mul ?_ _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `integrable_archConv_integrand ν hβ hβc hβu h (C ε)⁻¹ w` as an intermediate fact. Use `this.congr (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Units.val_mul, val_inv_eq_of_val_eq (altPoint_mul_altPoint hY ε) (hC ε), altPoint_neg_mul, sub_mul, one_mul, sub_eq_add_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_altSign_archConvFun_eq (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -168,7 +166,7 @@ theorem sum_altSign_archConvFun_eq (hβ : Continuous β) (hβc : HasCompactSuppo
       altPoint_neg_mul, sub_mul, one_mul, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, val_inv_eq_of_val_eq (altPoint_mul_altPoint hY ε) hC, altPoint_neg_mul, sub_mul, one_mul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_inv_mul_eq {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : ∀ i j, Y i * Y j = 0)
     {C : ArchUnits K n} {ε : Fin k → Bool} (hC : (C : ArchMatrix K n) = 1 + altPoint Y ε)
@@ -179,7 +177,7 @@ theorem val_inv_mul_eq {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : ∀ i j, Y
     sub_mul, one_mul, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hC, add_sub_cancel_left]`. Conclude with `norm_altPoint_le hR ε`. Rewrite using `[hC, add_sub_cancel_left]`. Conclude with `altPoint_mul_altPoint hY ε`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipBall_of_val_eq {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : ∀ i j, Y i * Y j = 0)
     {R : ℝ} (hR : ∀ i, ‖Y i‖ ≤ R) {C : ArchUnits K n} {ε : Fin k → Bool}
@@ -191,21 +189,17 @@ theorem mem_unipBall_of_val_eq {k : ℕ} {Y : Fin k → ArchMatrix K n} (hY : �
     exact altPoint_mul_altPoint hY ε
 
 /- English proof (translation)
-Take `⟨Bk, hBk⟩` from `exists_norm_altSum_le hβ hβc k`. Use `set S' := unipBall (K := K) (n := n) (k * R) * (Units.val : ArchUnits K n → ArchMatrix K n) ⁻¹' tsupport β`. Establish `hS' : IsCompact S'` using `(isCompact_unipBall _).mul (isCompact_unitsSupport hβc hβu)`. Take `⟨Rβ, hRβ⟩` from `hS'.exists_bound_of_continuousOn (Units.continuous_val (M := ArchMatrix K n)).continuousOn`. Take `⟨Mh, hMh⟩` from `h.continuous.bounded_above_of_compact_support h.hasCompactSupport`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Bk' := max Bk 0`. Use `set Rβ' := max Rβ 0`. Use `set Mh' := max Mh 0`. Use `⟨Bk' * Rβ' ^ k * Mh' * ν.real S', fun Y hY hR C hC w => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_altSign_archConvFun_eq ν hβ.continuous hβc hβu h hY hC w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ A : ArchUnits K n, ‖((altSum k β (fun i => -(Y i * (A : ArchMatrix K n))) (A : ArchMatrix K n) : ℝ) : ℂ) * h ((archProj K n A)⁻¹ * w)‖ ≤ S'.indicator (fun _ => Bk' * (∏ i, ‖Y i‖) * Rβ' ^ k * Mh') A`. Introduce `A`. Distinguish the cases in `hA : A ∈ S'`. Rewrite using `[indicator_of_mem hA, norm_mul, Complex.norm_real]`. Use `mul_le_mul ?_ ((hMh _).trans (le_max_left _ _)) (norm_nonneg _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hBk _ _).trans ?_` and prove the remaining obligations. Establish `hA' : ‖(A : ArchMatrix K n)‖ ≤ Rβ'` using `(hRβ A hA).trans (le_max_left _ _)`. Establish `hprod : ∏ i, ‖-(Y i * (A : ArchMatrix K n))‖ ≤ (∏ i, ‖Y i‖) * Rβ' ^ k`. Rewrite using `[← Fin.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_neg]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left hA' (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_nonneg (mul_nonneg (le_max_right _ _) (Finset.prod_nonneg fun i _ => norm_nonneg _)) (pow_nonneg (le_max_right _ _) _)`. Rewrite using `[indicator_of_notMem hA]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : altSum k β (fun i => -(Y i * (A : ArchMatrix K n))) (A : ArchMatrix K n) = 0`. Rewrite using `[altSum_eq_sum]`. Use `Finset.sum_eq_zero fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[← val_inv_mul_eq hY (hC ε) A]`. Distinguish the cases in `hs : (((C ε)⁻¹ * A : ArchUnits K n) : ArchMatrix K n) ∈ tsupport β`.
-
-Conclude with `absurd ⟨C ε, mem_unipBall_of_val_eq hY hR (hC ε), _, hs, mul_inv_cancel_left _ _⟩ hA`. Rewrite using `[image_eq_zero_of_notMem_tsupport hs, smul_zero]`. Rewrite using `[hzero, Complex.ofReal_zero, zero_mul, norm_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_indicator hS'.measurableSet, setIntegral_const, smul_eq_mul, mul_comm]`.
-
-Use `_ = Bk' * Rβ' ^ k * Mh' * ν.real S' * ∏ i, ‖Y i‖ := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_sum_altSign_archConvFun_le (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β)
     (hβc : HasCompactSupport β)

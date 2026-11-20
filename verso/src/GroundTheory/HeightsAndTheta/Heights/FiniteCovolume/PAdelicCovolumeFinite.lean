@@ -15,11 +15,11 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `γ hγ`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Establish `h1 : ((unitaryGroupEquivMatrix h v γ : GL ι E) : Matrix ι ι E).map w.embedding = 1` using `congrArg (fun g : archUnitary h v => (((g : InfinitePlace E → GL ι ℂ) w : GL ι ℂ) : Matrix ι ι ℂ)) hγ`. Establish `h2 : ((unitaryGroupEquivMatrix h v γ : GL ι E) : Matrix ι ι E) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : unitaryGroupEquivMatrix h v γ = 1` using `Subtype.ext (Units.ext h2)`. Rewrite `h3` using `[MulEquiv.map_eq_one_iff]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem archEmbed_injective (h : HermitianForm F E W) (v : Basis ι E W) :
     Function.Injective (archEmbed h v) := by
@@ -40,7 +40,7 @@ theorem archEmbed_injective (h : HermitianForm F E W) (v : Basis ι E W) :
   rwa [MulEquiv.map_eq_one_iff] at h3
 
 /- English proof (translation)
-Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `: Countable (Matrix ι ι E)` using `inferInstanceAs (Countable (ι → ι → E))`. Use `Function.Injective.countable (f := fun γ : h.unitaryGroup => ((unitaryGroupEquivMatrix h v γ : GL ι E) : Matrix ι ι E)) ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `(unitaryGroupEquivMatrix h v).injective (Subtype.ext (Units.ext hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countable_unitaryGroup (h : HermitianForm F E W) (v : Basis ι E W) :
     Countable h.unitaryGroup := by
@@ -52,27 +52,23 @@ theorem countable_unitaryGroup (h : HermitianForm F E W) (v : Basis ι E W) :
   exact (unitaryGroupEquivMatrix h v).injective (Subtype.ext (Units.ext hab))
 
 /- English proof (translation)
-Introduce `μ _`. Take `⟨ψ, hψ⟩` from `h₃`. Take `⟨K, D, L, hKc, hKo, hLD, hLeq, hLinj⟩` from `h₄`. Set `e : unitaryPoints F E (gram h.toSesq v) (InfiniteAdeleRing F) × unitaryPoints F E (gram h.toSesq v) (FiniteAdeleRing (𝓞 F) F) ≃ₜ* archUnitary h v × unitaryPoints F E (gram h.toSesq v) (FiniteAdeleRing (𝓞 F) F)` to `{ toMulEquiv := MulEquiv.prodCongr ψ.toMulEquiv (MulEquiv.refl _) continuous_toFun := (ψ.continuous.comp continuous_fst).prodMk continuous_snd continuous_invFun := (ψ.symm.continuous.comp continuous_fst).prodMk continuous_snd }`. Set `Φ` to `(adeleSplit h v).trans e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ₁ : ∀ γ : h.unitaryGroup, (Φ (hermitianDiagonal h v γ)).1 = archEmbed h v γ` using `fun γ => hψ γ`. Establish `hΦ₂ : ∀ γ : h.unitaryGroup, (Φ (hermitianDiagonal h v γ)).2 = (adeleSplit h v (hermitianDiagonal h v γ)).2` using `fun γ => rfl`. Use `haveI := countable_unitaryGroup h v`. Use `haveI : Countable (hermitianDiagonal h v).range := by`. Use `Function.Surjective.countable (f := fun γ : h.unitaryGroup => (⟨hermitianDiagonal h v γ, γ, rfl⟩ : (hermitianDiagonal h v).range)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, γ, rfl⟩`. Conclude with `⟨γ, rfl⟩`. Take `⟨S₀, hS₀, hS₀cov⟩` from `h₁ D`. Set `r : AddSubgroup W → unitaryPoints F E (gram h.toSesq v) (FiniteAdeleRing (𝓞 F) F)` to `fun L₀ => if hL : ∃ y, L y = L₀ then hL.choose else 1`. Establish `hr : ∀ y, L (r (L y)) = L y` using `fun y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL : ∃ y', L y' = L y` using `⟨y, rfl⟩`. Simplify using `only [r, dif_pos hL]`. Conclude with `hL.choose_spec`. Establish `hstab : ∀ (γ : h.unitaryGroup) (s : unitaryPoints F E (gram h.toSesq v) (FiniteAdeleRing (𝓞 F) F)), γ ∈ latticeStab h (L s) ↔ s⁻¹ * (Φ (hermitianDiagonal h v γ)).2 * s ∈ K`. Introduce `γ s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[latticeStab, MulAction.mem_stabilizer_iff, hΦ₂, ← hLeq, eq_comm, hLinj, mul_assoc]`. Establish `hslice : ∀ s : unitaryPoints F E (gram h.toSesq v) (FiniteAdeleRing (𝓞 F) F), sliceGroup Φ (hermitianDiagonal h v).range K s = archLatticeGroup h v (L s)`. Introduce `s`. Use extensionality with `x`. Rewrite using `[mem_sliceGroup, archLatticeGroup, Subgroup.mem_map]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨γ, rfl⟩, hk, rfl⟩`. Conclude with `⟨γ, (hstab γ s).2 hk, (hΦ₁ γ).symm⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨hermitianDiagonal h v γ, ⟨γ, rfl⟩, (hstab γ s).1 hγ, hΦ₁ γ⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨FD, hFD, hfin⟩` from `h₅ Φ (hermitianDiagonal h v).range K (hS₀.toFinset.image r) hKc hKo (by`. Introduce and unpack `_ ⟨γ, rfl⟩ h1`. Rewrite `h1` using `[hΦ₁, ← (archEmbed h v).map_one]`. Rewrite using `[archEmbed_injective h v h1, map_one])`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Take `⟨L₀, hL₀, g, hg⟩` from `hS₀cov (L y) (hLD y)`. Establish `hL₀' : L₀ = L ((adeleSplit h v (hermitianDiagonal h v g⁻¹)).2 * y)`. Rewrite using `[hLeq, ← hg, smul_smul, inv_mul_cancel, one_smul]`. Establish `hs : L (r L₀) = L₀` using `by rw [hL₀']; exact hr _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : ((Φ (hermitianDiagonal h v g)).2 * r L₀)⁻¹ * y ∈ K`. Rewrite using `[← hLinj, hΦ₂, hLeq, hs, hg]`. Use `⟨hermitianDiagonal h v g, ⟨g, rfl⟩, r L₀, ?_, _, hk, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image_of_mem r (hS₀.mem_toFinset.2 hL₀)`. Use the proof step `group)`.
-
-Use the proof step `(by`. Introduce `s _ μ₁ _`. Rewrite using `[hslice s]`. Conclude with `h₂ μ₁ D (L s) (hLD s))`. Use `μ`.
-
-Conclude with `⟨FD, hFD, hfin⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AdelicCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E W)
     [FiniteDimensional E W] (h₁ : LatticeOrbitsFinite.Statement h)

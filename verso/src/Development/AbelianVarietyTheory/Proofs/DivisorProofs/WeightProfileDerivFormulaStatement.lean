@@ -6,7 +6,7 @@ open GlobalTheory Matrix Filter Topology Set GlobalTheory.HermFrame GlobalTheory
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.InterpCurv.weightProfile_second_deriv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightProfileDerivFormula.lean&line=41#L41)
 -/

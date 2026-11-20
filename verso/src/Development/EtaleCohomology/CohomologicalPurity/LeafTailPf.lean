@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_bij_of_iso (R : Type) [CommRing R] {E E' : Spc} (e : E ≅ E') (F : Shv R) (n : ℤ) :
     Function.Bijective (pull R e.hom F n) := by
@@ -15,9 +15,9 @@ theorem pull_bij_of_iso (R : Type) [CommRing R] {E E' : Spc} (e : E ≅ E') (F :
   · rw [← pull_comp, e.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Establish `hf : f = e₁.hom ≫ g ≫ e₂.inv` using `by rw [← Category.assoc, ← w, Category.assoc, e₂.hom_inv_id, Category.comp_id]`. Establish `hE : ∀ {E E' : Spc} (u : E ⟶ E'), Eqv R u F ↔ ∀ n, Function.Bijective (pull R u F n)` using `fun _ => Iff.rfl`. Rewrite `h`, the goal using `[hE]`. Introduce `n`. Establish `key : pull R f F n = (pull R e₁.hom F n).comp ((pull R g F n).comp (pull R e₂.inv F n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [hf, pull_comp, AddMonoidHom.comp_apply]`. Rewrite using `[key]`. Conclude with `(pull_bij_of_iso R e₁ F n).comp ((h n).comp (pull_bij_of_iso R e₂.symm F n))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqv_of_iso (R : Type) [CommRing R] {E₁ E₂ E₁' E₂' : Spc} (f : E₁ ⟶ E₂) (g : E₁' ⟶ E₂')
     (e₁ : E₁ ≅ E₁') (e₂ : E₂ ≅ E₂') (w : f ≫ e₂.hom = e₁.hom ≫ g) (F : Shv R) (h : Eqv R g F) : Eqv R f F := by
@@ -40,9 +40,9 @@ def LeafTailRep : Prop := ∀ (d : ℕ) (R : Type) [CommRing R] (n : SimplexCate
         e₁.hom ≫ sch.map ((Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))).resLE _ _ h)
 
 /- English proof (translation)
-Introduce `hyp q _ d R _ hq i`. Take `⟨hA1, -, hA3, hA4, -, -, -, -, -, hC4, -, -⟩` from `hyp`. Apply `hA3` to reduce the goal to its premises. Introduce `n`. Take `⟨A, _, I, φ, hI, h, e₁, e₂, w⟩` from `hRep d R n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hqA : IsUnit (q : A)` using `by simpa using hq.map φ`. Conclude with `eqv_of_iso _ _ _ e₁ e₂ w _ (hH hA1 hA4 hC4 q A I hI hqA h i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafTail_of (hRep : LeafTailRep) (hH : LeafHtpy) : LeafTail := by
   intro hyp q _ d R _ hq i

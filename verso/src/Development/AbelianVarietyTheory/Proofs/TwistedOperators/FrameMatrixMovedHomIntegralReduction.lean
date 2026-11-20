@@ -16,13 +16,13 @@ variable {R k : Type} [CommRing R] [CommRing k] {b a : ℕ}
 open Classical in
 
 /- English proof (translation)
-Take `⟨M, rfl⟩ : ∃ M : Matrix (Fin b) (Fin a) O, N = M.map O.subtype` from `⟨Matrix.of fun i j => ⟨N i j, h i j⟩, by ext i j; rfl⟩`. Establish `key : z.map O.subtype * M.map O.subtype * y.map O.subtype = (z * M * y).map O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `mem : ∀ i j, (z.map O.subtype * M.map O.subtype * y.map O.subtype) i j ∈ O` using `fun i j => by`. Rewrite using `[key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((z * M * y) i j).2`. Use `⟨mem, ?_⟩` and prove the remaining obligations. Establish `lhs : (Matrix.of fun i j => if h : (z.map O.subtype * M.map O.subtype * y.map O.subtype) i j ∈ O then ρ ⟨(z.map O.subtype * M.map O.subtype * y.map O.subtype) i j, h⟩ else 0) = (z * M * y).map ρ`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, dif_pos (mem i j), Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext (congrFun (congrFun key i) j)`. Establish `mid : (Matrix.of fun i j => if h : M.map O.subtype i j ∈ O then ρ ⟨M.map O.subtype i j, h⟩ else 0) = M.map ρ`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, dif_pos (h i j)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[lhs, mid, Matrix.map_mul, Matrix.map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem int_mul (O : Subring R) (ρ : O →+* k) (z : Matrix (Fin b) (Fin b) O) (y : Matrix (Fin a) (Fin a) O)
     (N : Matrix (Fin b) (Fin a) R) (h : ∀ i j, N i j ∈ O) :
@@ -50,7 +50,7 @@ theorem int_mul (O : Subring R) (ρ : O →+* k) (z : Matrix (Fin b) (Fin b) O) 
   rw [lhs, mid, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cancel (Z : GL (Fin b) R) (Y : GL (Fin a) R) (N : Matrix (Fin b) (Fin a) R) :
     Z.val * ((Z⁻¹).val * N * Y.val) * (Y⁻¹).val = N := by
@@ -59,9 +59,9 @@ theorem cancel (Z : GL (Fin b) R) (Y : GL (Fin a) R) (N : Matrix (Fin b) (Fin a)
     _ = N := by rw [Units.mul_inv, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `eH : (H⁻¹).val = βT.val * ((Z⁻¹).val * (βT⁻¹).val)`. Rewrite using `[← hZ, mul_inv_rev, mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`. Establish `eG : G.val = βS.val * (Y.val * (βS⁻¹).val)`. Rewrite using `[← hY, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hg, hh, eH, eG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc (βT⁻¹).val βT.val, Units.inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem move {A : Type} [CommRing A] (f : A →+* R) (βS G Y : GL (Fin a) R) (βT H Z : GL (Fin b) R)
     (hY : βS * Y * βS⁻¹ = G) (hZ : βT * Z * βT⁻¹ = H)
@@ -77,9 +77,9 @@ theorem move {A : Type} [CommRing A] (f : A →+* R) (βS G Y : GL (Fin a) R) (�
   rw [Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc (βT⁻¹).val βT.val, Units.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `ez : (Formalism.UG.bc O.subtype z).val = z.val.map O.subtype` using `rfl`. Establish `ey : (Formalism.UG.bc O.subtype y).val = y.val.map O.subtype` using `rfl`. Establish `ez' : (Formalism.UG.bc ρ z).val = z.val.map ρ` using `rfl`. Establish `ey' : (Formalism.UG.bc ρ y).val = y.val.map ρ` using `rfl`. Rewrite using `[ez, ey, ez', ey']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FrameRed.int_mul O ρ z.val y.val N h`.
+A detailed English derivation is pending.
 -/
 private theorem bc_mul_restrict_mul_bc_eq (O : Subring R) (ρ : O →+* k) (z : GL (Fin b) O) (y : GL (Fin a) O)
     (N : Matrix (Fin b) (Fin a) R) (h : ∀ i j, N i j ∈ O) :
@@ -101,7 +101,7 @@ end General
 variable {D : D7}
 
 /- English proof (translation)
-Conclude with `⟨(bc_mul_restrict_mul_bc_eq _ (RingHom.id _) z y N h).1, fun PP => (bc_mul_restrict_mul_bc_eq _ (resS D.host.F PP) z y N h).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) {N : Matrix (Fin b) (Fin a) (Datum.EAf D)}
@@ -118,9 +118,7 @@ theorem mt_map (V : HSp D) (g : GA D V) :
     (Formalism.L2.Theta.mt V g).map (toEAf D) = (finE V g).val := rfl
 
 /- English proof (translation)
-Establish `hY : βS * intGL D.host.F D.host.E _ y * βS⁻¹ = finE S g` using `by rw [← hy]; rfl`. Establish `hZ : βT * intGL D.host.F D.host.E _ z * βT⁻¹ = finE T h` using `by rw [← hz]; rfl`. Establish `hg : (Formalism.L2.Theta.mt S g⁻¹⁻¹).map (toEAf D) = (finE S g).val` using `by rw [inv_inv]; exact GlobalTheory.FrameRed.mt_map S g`. Establish `hh : (Formalism.L2.Theta.mt T h⁻¹).map (toEAf D) = ((finE T h)⁻¹).val` using `by rw [GlobalTheory.FrameRed.mt_map, map_inv]`. Use `show (βT⁻¹).val * (Formalism.L2.Theta.mt T h⁻¹ * x * Formalism.L2.Theta.mt S g⁻¹⁻¹).map (toEAf D) * βS.val = _`.
-
-Conclude with `GlobalTheory.FrameRed.move (toEAf D) βS (finE S g) (intGL D.host.F D.host.E _ y) βT (finE T h) (intGL D.host.F D.host.E _ z) hY hZ _ _ hg hh x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frMapO_actO {S T : HSp D} {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL (Fin T.rank) (Lev.EAf D)}
     {g : GA D S} {h : GA D T} {y : GL (Fin S.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -137,9 +135,9 @@ theorem frMapO_actO {S T : HSp D} {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL 
     (intGL D.host.F D.host.E _ z) hY hZ _ _ hg hh x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hM`. Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z y⁻¹ hM).1`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E a) y, GlobalTheory.FrameRed.cancel]`. Then use the resulting hypothesis. Introduce `hN`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y hN).1`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E b) z]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isIntM_iff {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) (N : Matrix (Fin b) (Fin a) (Datum.EAf D)) :
@@ -154,7 +152,7 @@ theorem isIntM_iff {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F
     rwa [map_inv (intGL D.host.F D.host.E b) z] at h1
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y h).2 PP`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E b) z, map_inv (Formalism.UG.bc (resS D.host.F PP)) z]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem redM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) {N : Matrix (Fin b) (Fin a) (Datum.EAf D)}
@@ -165,13 +163,11 @@ theorem redM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D
   rwa [map_inv (intGL D.host.F D.host.E b) z, map_inv (Formalism.UG.bc (resS D.host.F PP)) z] at h1
 
 /- English proof (translation)
-Introduce `D S T βS βT g h hg hh x`. Unfold `St at hg hh`. Take `⟨y, hy⟩` from `MonoidHom.mem_range.1 hg`. Take `⟨z, hz⟩` from `MonoidHom.mem_range.1 hh`. Establish `e` using `GlobalTheory.FrameRed.frMapO_actO hy hz x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, fun hI PP => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `GlobalTheory.FrameRed.isIntM_iff z y _`. Rewrite using `[e, GlobalTheory.FrameRed.redM_mul z y hI PP]`. Establish `a : redFn βS PP (finE S g) = Formalism.UG.bc (resS D.host.F PP) y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `redFn_frGL βS PP y`. Establish `b : redFn βT PP (finE T h) = Formalism.UG.bc (resS D.host.F PP) z`. Rewrite using `[← hz]`. Conclude with `redFn_frGL βT PP z`.
-
-Rewrite using `[a, b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapO_actO_red : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ x : WO S T, (IsIntM (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) ↔ IsIntM (frMapO S T βS βT x)) ∧ (IsIntM (frMapO S T βS βT x) → ∀ PP, redM PP (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) = ((redFn βT PP (finE T h))⁻¹).val * redM PP (frMapO S T βS βT x) * (redFn βS PP (finE S g)).val) := by
   intro D S T βS βT g h hg hh x

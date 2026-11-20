@@ -14,7 +14,7 @@ open Matrix
 variable {l : ℕ} [Fact l.Prime] {r : ℕ}
 
 /- English proof (translation)
-Establish `h : (resMat n ω) = ((resGL n ω hdet : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l))` using `rfl`. Rewrite using `[h, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Units.mul_inv, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resGL_mul_inv_map (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r → ↥(MaximalUnramifiedExtension l))
     (hdet : (frobMat ω).det ≠ 0) {S : Type} [CommRing S] (f : ↥(MaximalUnramifiedExtension l) →+* S) :
@@ -23,7 +23,7 @@ theorem resGL_mul_inv_map (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r →
   rw [h, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Units.mul_inv, map_one]
 
 /- English proof (translation)
-Establish `h : (resMat n ω) = ((resGL n ω hdet : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l))` using `rfl`. Rewrite using `[h, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resGL_inv_mul_map (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r → ↥(MaximalUnramifiedExtension l))
     (hdet : (frobMat ω).det ≠ 0) {S : Type} [CommRing S] (f : ↥(MaximalUnramifiedExtension l) →+* S) :
@@ -32,7 +32,7 @@ theorem resGL_inv_mul_map (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r →
   rw [h, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Units.inv_mul, map_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, resMat_apply, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Ne.symm hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,7 +49,7 @@ theorem resMat_mulVec_apply (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r �
 variable (P : LocPrime l) {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `h` using `congrFun hu (i, ⟨m % r, Nat.mod_lt _ hr⟩)`. Rewrite `h` using `[resMat_mulVec_apply]`. Simplify using `only [fr_mod (hω _)] at h`. Rewrite using `[h]`. Conclude with `Function.IsPeriodicPt.iterate_mod_apply (ha i) m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fr_mul_eq_iter (hr : 0 < r) (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (hω : ∀ k, fr l r (ω k) = ω k)
     (a : n → P.R.B) (ha : ∀ i, P.φB^[r] (a i) = a i) (u : n × Fin r → P.R.B)
@@ -63,13 +63,11 @@ theorem sum_fr_mul_eq_iter (hr : 0 < r) (ω : Fin r → ↥(MaximalUnramifiedExt
   exact Function.IsPeriodicPt.iterate_mod_apply (ha i) m
 
 /- English proof (translation)
-Use `set d : n × Fin r → P.R.B := fun j => P.φB (u j) - u j with hd`. Establish `hz : (resMat n ω).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) *ᵥ d = 0`. Use function extensionality and compare the values at `⟨i, m⟩`. Rewrite using `[resMat_mulVec_apply]`. Establish `h1` using `sum_fr_mul_eq_iter P hr ω hω a ha u hu (m + (r - 1)) i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sum_fr_mul_eq_iter P hr ω hω a ha u hu (m + (r - 1) + 1) i`. Establish `e : m + (r - 1) + 1 = (m : ℕ) + r` using `by omega`. Rewrite `h2` using `[Function.iterate_succ_apply', ← h1, map_sum]`. Simplify using `only [map_mul, phiB_algebraMap, ← fr_one, ← fr_add] at h2`. Rewrite `h2` using `[show 1 + ((m : ℕ) + (r - 1)) = (m : ℕ) + r by omega, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fr_add, hω] at h2`. Simplify using `only [hd, mul_sub, Finset.sum_sub_distrib, Pi.zero_apply]`. Rewrite using `[h2, sub_self]`. Establish `: d = 0`. Rewrite using `[← Matrix.one_mulVec d, ← resGL_inv_mul_map n ω hdet, ← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`.
-
-Conclude with `sub_eq_zero.1 (congrFun this j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_fix_of_res (hr : 0 < r) (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (hω : ∀ k, fr l r (ω k) = ω k)
     (hdet : (frobMat ω).det ≠ 0)
@@ -100,13 +98,13 @@ def tzGL {N : Type} [Fintype N] [DecidableEq N] (e : N → ℤ) : GL N P.R.BdR w
   inv_val := by rw [Matrix.diagonal_mul_diagonal]; simp [← tz_add, tz_zero]
 
 /- English proof (translation)
-Use `set G : GL (n × Fin r) P.R.BdR := Units.map ((P.ιB : P.R.B →+* P.R.BdR).mapMatrix).toMonoidHom A₀ with hGdef`. Use `set kp : GL (n × Fin r) P.R.BdR := Units.map ((kd P).mapMatrix : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l) →+* Matrix (n × Fin r) (n × Fin r) P.R.BdR).toMonoidHom (resGL n ω hdet) with hkp`. Establish `hG : G = kp⁻¹ * blockGL U * tzGL P e * W₀`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hGdef]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply, Units.val_mul]`. Rewrite using `[show (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map (P.ιB : P.R.B →+* P.R.BdR) = (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map (ev P 0) from rfl, hA]`. Both sides reduce to the same expression. Establish `h1 : ((A₀⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B).map P.ιB = ((G⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR)`. Rewrite using `[hGdef, ← map_inv, Units.coe_map]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : ((((resGL n ω hdet)⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B)).map P.ιB = ((kp⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R. …`. Rewrite using `[hkp, ← map_inv, Units.coe_map, Matrix.map_map]`. Use extensionality with `i j`. Simplify using `[iota_kur]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (blockGL U : Matrix (n × Fin r) (n × Fin r) P.R.BdR) * Matrix.diagonal (fun j => tz P (e j)) = ((blockGL U * tzGL P e : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR)` using `rfl`. Rewrite using `[h1, h2, Matrix.mul_assoc, h3, ← Units.val_mul, ← Units.val_mul, hG]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iota_q_eq (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (hdet : (frobMat ω).det ≠ 0) (U : Fin r → GL n P.R.BdR)
     (e : n × Fin r → ℤ) (A₀ : GL (n × Fin r) P.R.B) (W₀ : GL (n × Fin r) P.R.BdR)
@@ -144,35 +142,31 @@ theorem iota_q_eq (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (hdet : (fr
   group
 
 /- English proof (translation)
-Introduce `l _ P r hr ω hω hdet n _ _ U x y A₀ hφ W₀ hW₀ hA a hLat`. Take `⟨ha, hw⟩` from `hLat`. Use `choose w hw0 hwe using hw`. Use `set pB : Matrix (n × Fin r) (n × Fin r) P.R.B := (resMat n ω).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) with hpB`. Use `set pI : Matrix (n × Fin r) (n × Fin r) P.R.B := (((resGL n ω hdet)⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) with hpI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set V : n × Fin r → P.R.B := fun j => P.φB^[j.2] (a j.1) with hV`. Use `set u : n × Fin r → P.R.B := pI *ᵥ V with hu`. Establish `hpu : pB *ᵥ u = V`. Rewrite using `[hu, Matrix.mulVec_mulVec, hpB, hpI, resGL_mul_inv_map, Matrix.one_mulVec]`. Use `set Ai : Matrix (n × Fin r) (n × Fin r) P.R.B := ((A₀⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B) with hAi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `set q : n × Fin r → P.R.B := Ai *ᵥ u with hq`. Establish `hAφ : (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map P.φB = A₀` using `Matrix.ext fun i j => hφ i j`. Establish `hAiφ : Ai.map (P.φB : P.R.B →+* P.R.B) = Ai`. Establish `h1 : Ai.map (P.φB : P.R.B →+* P.R.B) * (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B) = 1` using `by conv_lhs => rw [← hAφ]`. Rewrite using `[show (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map P.φB = ((P.φB : P.R.B →+* P.R.B).mapMatrix (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B)) from rfl, show Ai.map (P.φB : P.R.B →+* P.R.B) = (P.φB : P.R.B →+* P.R.B).mapMatrix Ai from rfl, ← map_mul, hAi, ← Units.val_mul, inv_mul_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAi, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = Ai := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `huφ : ∀ j, P.φB (u j) = u j` using `phi_fix_of_res P hr ω hω hdet a ha u hpu`. Establish `hqφ : ∀ c, P.φB (q c) = q c`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `c`. Use `RingHom.map_mulVec (P.φB : P.R.B →+* P.R.B) Ai u c` as an intermediate fact. Rewrite `this` using `[hAiφ]`. Express the relevant statement in the definitionally equal form `P.φB (q c) = _ at this`. Rewrite using `[this, hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `huφ j`. Use `set wt : n × Fin r → P.R.BdR := fun j => w j.2 j.1 with hwt`. Establish `hιV : (fun j => P.ιB (V j)) = ((blockGL U : Matrix (n × Fin r) (n × Fin r) P.R.BdR) * Matrix.diagonal (fun j : n × Fin r => tz P (eps x y (j.2, j.1)))) *ᵥ wt`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `⟨i, m⟩`. Establish `h` using `congrFun (hwe m) i`. Express the relevant statement in the definitionally equal form `P.ιB (P.φB^[m] (a i)) = _`. Establish `hd : ∀ (v w : n × Fin r → P.R.BdR), Matrix.diagonal v *ᵥ w = fun j => v j * w j` using `fun v w => funext (Matrix.mulVec_diagonal v w)`. Establish `hd' : ∀ (v w : n → P.R.BdR), Matrix.diagonal v *ᵥ w = fun j => v j * w j` using `fun v w => funext (Matrix.mulVec_diagonal v w)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[show P.ιB (P.φB^[m] (a i)) = ev P m (a i) from rfl, h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hd, hd']`. Simplify using `only [Matrix.mulVec, dotProduct, blockGL, Matrix.blockDiagonal_apply, Fintype.sum_prod_type, hwt]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single m]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Ne.symm hk]`. Simplify using the standard rewrite rules. Establish `hιq : (fun c => P.ιB (q c)) = ((W₀⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR) *ᵥ wt`. Use function extensionality and compare the values at `c`. Establish `e1` using `RingHom.map_mulVec (P.ιB : P.R.B →+* P.R.BdR) Ai u c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : (fun j => P.ιB (u j)) = (pI.map (P.ιB : P.R.B →+* P.R.BdR)) *ᵥ (fun j => P.ιB (V j))`. Use function extensionality and compare the values at `j`. Conclude with `RingHom.map_mulVec (P.ιB : P.R.B →+* P.R.BdR) pI V j`. Express the relevant statement in the definitionally equal form `P.ιB (q c) = _ at e1`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Ai.map P.ιB *ᵥ (fun j => P.ιB (u j))) c = _`. Rewrite using `[e2, hιV, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[← iota_q_eq P ω hdet U (fun j : n × Fin r => eps x y (j.2, j.1)) A₀ W₀ hA]`. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hqF : ∀ c, P.ιB (q c) ∈ Fil P 0`. Introduce `c`. Rewrite using `[show P.ιB (q c) = (fun c => P.ιB (q c)) c from rfl, hιq]`. Conclude with `Fil_sum fun j _ => Fil_mul_left (hW₀.2 c j) (hw0 j.2 j.1)`. Use `choose cq hcq using fun c => fund P (hqφ c) (hqF c)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hAq : (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B) *ᵥ q = u`. Rewrite using `[hq, Matrix.mulVec_mulVec, hAi, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `haeq : a = ∑ c, cq c • colv P ω A₀ c`. Use function extensionality and compare the values at `i`. Establish `h0` using `sum_fr_mul_eq_iter P hr ω hω a ha u hpu 0 i`.
-
-Simplify using `only [fr_zero, Function.iterate_zero, id] at h0`. Rewrite using `[← h0, ← hAq]`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply]`. Simplify using `only [Algebra.smul_def, hcq, colv, Matrix.mulVec, dotProduct, Finset.mul_sum]`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[haeq]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self c))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_colv : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (r : ℕ), 0 < r → ∀ (ω : Fin r → ↥(MaximalUnramifiedExtension l)),
     (∀ k, fr l r (ω k) = ω k) → ∀ (hdet : (frobMat ω).det ≠ 0) (n : Type) [Fintype n] [DecidableEq n]

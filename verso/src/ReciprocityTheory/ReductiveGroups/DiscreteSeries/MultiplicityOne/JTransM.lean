@@ -11,35 +11,33 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨hB2, -, -, -, hUWb, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hCG, -⟩` from `hB2`. Introduce `k r Wp _ _ _ D X _ _ γ hγ y hy`. Establish `hG` using `hCG k r`. Establish `hEG : embWb k r γ ∈ GV k r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : embWb k r γ ∈ UWb k r` using `by rw [(hUWb k r).1]; exact ⟨γ, hγ.1, rfl⟩`. Conclude with `hmem.1`. Establish `hE` using `hG.unit _ hEG`. Use `set E := embWb k r γ with hEdef`. Establish `hEiG : E⁻¹ ∈ GV k r` using `hG.inv_mem _ hEG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ B : Mat k r, E⁻¹ * (E * B) = B` using `fun B => Matrix.nonsing_inv_mul_cancel_left E B hE`. Establish `hEE : ∀ v, E⁻¹ *ᵥ (E *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hE, Matrix.one_mulVec]`. Establish `hEfix : ∀ j, ¬ InvGrp.isW k r j → E *ᵥ bvec j = bvec j` using `fun j hj => InvGrp.embWb_fix_offW γ _ (InvGrp.bvec_offW j hj)`. Establish `hEifix : ∀ j, ¬ InvGrp.isW k r j → E⁻¹ *ᵥ bvec j = bvec j` using `fun j hj => InvGrp.embWb_inv_fix_offW hE _ (InvGrp.bvec_offW j hj)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwl : ¬ InvGrp.isW k r (wI k r (Fin.last k)) → False` using `fun h => h ⟨by simp [wI], by simp [wI]⟩`. Use `set b := bvec (wI k r (Fin.last k)) with hbdef`. Establish `hs0 : ((Real.sqrt (Tz k r D.z) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.mpr D.T_pos).ne'` after adjusting the coercions. Establish `hzE : D.z = ((Real.sqrt (Tz k r D.z) : ℝ) : ℂ) • (E *ᵥ b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ.2, smul_smul, Complex.ofReal_inv, mul_inv_cancel₀ hs0, one_smul]`. Use `set x := E⁻¹ * y * E with hxdef`. Establish `hxG : x ∈ GV k r` using `hG.mul_mem _ (hG.mul_mem _ hEiG _ hy.1) _ hEG`. Establish `hxv : ∀ v, x *ᵥ v = E⁻¹ *ᵥ (y *ᵥ (E *ᵥ v))` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxe : ∀ a : Fin r, x *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ x *ᵥ bvec (esI k r a) = bvec (esI k r a)`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hxv, hEfix _ (InvGrp.not_isW_eI a), (hy.2.1 a).1, hEifix _ (InvGrp.not_isW_eI a)]`. Rewrite using `[hxv, hEfix _ (InvGrp.not_isW_esI a), (hy.2.1 a).2, hEifix _ (InvGrp.not_isW_esI a)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxl : x *ᵥ b = b`. Rewrite using `[hxv, hγ.2, Matrix.mulVec_smul, hy.2.2, ← hγ.2, hEE]`. Establish `hxeq` using `TransM.eq_Qm x hxG hxe hxl`. Use `set m := x.submatrix (Subtype.val : {i // TransM.pK k r i} → _) Subtype.val with hmdef`. Establish `hm : mᴴ * m = 1` using `TransM.unitary_of_Qm m (hxeq ▸ hxG)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : ∀ s : {i // TransM.pK k r i}, conj (bvec (wI k r 0) s.1) = bvec (wI k r 0) s.1`. Introduce `s`. Simplify using `only [bvec, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨U, hU1, hUw, hUc⟩` from `TransM.exists_transpose_mat m hm (fun s => bvec (wI k r 0) s.1) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set PU := TransM.Qm U 1 with hPUdef`. Establish `hPUG : PU ∈ GV k r` using `TransM.Qm_mem_UH U hU1`. Establish `hPUs : TransM.Qm Uᴴ 1 * PU = 1`. Rewrite using `[hPUdef, TransM.Qm_mul, hU1, Matrix.one_mul, TransM.Qm_one]`. Establish `hPUs' : PU * TransM.Qm Uᴴ 1 = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hPUdef, TransM.Qm_mul, mul_eq_one_comm.mp hU1, Matrix.one_mul, TransM.Qm_one]`. Establish `hkey : x.map (starRingEnd ℂ) * PU * x = PU`. Rewrite using `[hxeq, TransM.Qm_map, hPUdef, TransM.Qm_mul, TransM.Qm_mul, hUc]`. Simplify using the standard rewrite rules. Establish `hyx : y = E * x * E⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hxdef]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left E _ hE, Matrix.mul_nonsing_inv _ hE, Matrix.mul_one]`. Establish `hnotK : ∀ j, ¬ InvGrp.isW k r j → ¬ TransM.pK k r j` using `fun j hj hK => hj ⟨hK.1, by have := hK.2; omega⟩`. Establish `hnotKl : ¬ TransM.pK k r (wI k r (Fin.last k))` using `fun hK => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hK.2` as an intermediate fact. Simplify using `[wI] at this`. Use `⟨E * PU * E⁻¹, ⟨⟨hG.mul_mem _ (hG.mul_mem _ hEG _ hPUG) _ hEiG, fun a => ⟨?_, ?_⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hEifix _ (InvGrp.not_isW_eI a), TransM.Qm_fix_off U _ (hnotK _ (InvGrp.not_isW_eI a)), hEfix _ (InvGrp.not_isW_eI a)]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hEifix _ (InvGrp.not_isW_esI a), TransM.Qm_fix_off U _ (hnotK _ (InvGrp.not_isW_esI a)), hEfix _ (InvGrp.not_isW_esI a)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hzE]`. Rewrite using `[Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hEE, TransM.Qm_fix_off U _ hnotKl, ← hzE]`. Use `show (E * PU * E⁻¹) *ᵥ (E *ᵥ bvec (wI k r 0)) = E *ᵥ bvec (wI k r 0)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hEE, TransM.Qm_fix_vec U _ hUw]`. Establish `hinv : (E * PU * E⁻¹)⁻¹ = E * TransM.Qm Uᴴ 1 * E⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [Matrix.mul_assoc, hc]`. Rewrite using `[← Matrix.mul_assoc (TransM.Qm Uᴴ 1) PU, hPUs, Matrix.one_mul, Matrix.mul_nonsing_inv _ hE]`. Establish `hgb : gbar k r γ y = E * x.map (starRingEnd ℂ) * E⁻¹` using `rfl`. Use `show (gbar k r γ y)⁻¹ = _`.
-
-Rewrite using `[hinv, hgb]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[hyx]`. Simplify using `only [Matrix.mul_assoc, hc]`. Rewrite using `[← Matrix.mul_assoc (x.map (starRingEnd ℂ)) PU, ← Matrix.mul_assoc (x.map (starRingEnd ℂ) * PU) x, hkey, ← Matrix.mul_assoc PU, hPUs', Matrix.one_mul, Matrix.mul_nonsing_inv _ hE]`.
+A detailed English derivation is pending.
 -/
 theorem stTransM (h : UnitaryGroupStructuralFacts) : StTransM := by
   obtain ⟨hB2, -, -, -, hUWb, -⟩ := h

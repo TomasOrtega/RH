@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 open ReciprocityTheory.ChartRestriction.G.AI.I4 (IsPullHerm imageZ blockFnField)
 
 /- English proof (translation)
-Rewrite using `[sub_div (e₁ * a), mul_div_mul_left _ _ p₁, sub_sub_cancel, div_div, show e₁ * d₁ * m = e₂ * d₂ by rw [← h]; ring, mul_div_mul_left _ _ p₂]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cmp_arith {a b e₁ e₂ d₁ d₂ m : ℝ} (p₁ : e₁ ≠ 0) (p₂ : e₂ ≠ 0) (hm : m ≠ 0) (h : e₁ * (m * d₁) = e₂ * d₂) :
     (a / d₁ - (e₁ * a - e₂ * b) / (e₁ * d₁)) / m = b / d₂ := by
@@ -25,17 +25,17 @@ theorem cmp_arith {a b e₁ e₂ d₁ d₂ m : ℝ} (p₁ : e₁ ≠ 0) (p₂ : 
     mul_div_mul_left _ _ p₂]
 
 /- English proof (translation)
-Establish `hne' : IntermediateField.relfinrank (blockFnField (y ∘ v₂)) (blockFnField y) ≠ 0` using `left_ne_zero_of_mul (hdeg ▸ mul_ne_zero hne (mul_ne_zero hm Re₁.deg_pos.ne'))`. Establish `hW` using `PairTop.cmpSt_of_eq hC II hII K ι K₁ ι₁ K₂ ι₂ κ₁ v₁ κ₂ v₂ Ω y D σ S₁ S₂ P₁ P₂ Re₁ Re₂ h₁ h₂ β b hv₁ hv₂ hy hβ hβy hA₁ hA₂ hS`. Establish `hG` using `fun w : Fin D → σ => intNum_cmp hN y hv₁ hv₂ hy hne hne' (fun j => (Re₁.ref (w j)).a) (fun j => (Re₂.ref (w j)).a) fun j => (hS (w j)).imp fun f => Exists.imp fun g h => h.1`. Rewrite `hG` using `[h₁, h₂]`. Generalize the expression as in `IntermediateField.relfinrank (blockFnField (y ∘ v₁)) (blockFnField y) = e₁ at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `IntermediateField.relfinrank (blockFnField (y ∘ v₂)) (blockFnField y) = e₂ at *`. Establish `hdeg' : (e₁ : ℝ) * (m * Re₁.deg) = e₂ * Re₂.deg` using `by exact_mod_cast hdeg`. Establish `p₁ : (e₁ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hne`. Establish `p₂ : (e₂ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hne'`. Establish `q₁ : (Re₁.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Re₁.deg_pos.ne'`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pm : (m : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[PB.Realis.PB, PB.Realis.PB, ← PB.formPoly_const_mul]`. Use `congrArg (PB.formPoly (D + 1)) (funext fun w => ?_)` and prove the remaining obligations. Take `⟨C₃, s₀, -, h⟩` from `GlobalTheory.T.agreement_positive hIn D σ S₁ 0 (S₁.reg (w 0)).1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `c₁` using `(h II hII _ _ _ Re₁).1 w`. Establish `c₂ : Tendsto (fun t => Re₂.num II t w) (𝓝[>] 0) (𝓝 (Re₁.limNum II w / m))`. Use `(c₁.sub ((hW w).div_const ((e₁ : ℝ) * Re₁.deg))).div_const (m : ℝ)` as an intermediate fact. Rewrite `this` using `[zero_div, sub_zero]`. Use `this.congr fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cmp_arith p₁ p₂ pm hdeg'`. Rewrite using `[show Re₂.limNum II w = _ from c₂.limUnder_eq, mul_div_cancel₀ _ pm]`. Rewrite using `[PB.AnSys.degPoly, PB.AnSys.degPoly, ← PB.formPoly_const_mul]`. Use `congrArg (PB.formPoly D) (funext fun w => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (Int.cast : ℤ → ℝ) (hG w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h`. Rewrite `h` using `[← degNum_eq hIn Re₁, ← degNum_eq hIn Re₂, ← mul_assoc, ← mul_assoc, ← hdeg']`. Conclude with `mul_left_cancel₀ (mul_ne_zero p₁ q₁) (h.trans (by ring))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_smul_of_sameSing (hN : SheetDecomposition.NumPull) (hIn : PB.Inputs) (hC : CmpSt) (II : IntersectionSystem) (hII : IsFullIntersectionSystem II)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -85,13 +85,11 @@ theorem poly_smul_of_sameSing (hN : SheetDecomposition.NumPull) (hIn : PB.Inputs
     exact mul_left_cancel₀ (mul_ne_zero p₁ q₁) (h.trans (by ring))
 
 /- English proof (translation)
-Introduce `hIn hC II hII E _ _ _ H D l Xo c O _ β Y S n M M' T T' hβ hgen hR hd hd'`. Establish `hm : T.Fl.deg ≠ 0`. Take `⟨_, _, -, -, -, -, -, -, -, -, h, -⟩` from `T.Fl.generic`. Conclude with `h.ne'`. Establish `hsab : SABMap (twistSAB Xo.univ.t (HostAut.refl H)) Xo.univ.t (Iso.refl Xo.X).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(twistSAB_symm_refl E H Xo.X Xo.univ.t (HostAut.refl H)).2.2]`. Conclude with `(exists_sabMap_id E H Xo.X Xo.univ.t).choose`. Take `⟨K, hK, ι, hι, κ, v, κ', v', Ω, hΩ, hΩ0, y, b, d, hbv, hbv', hP, hP', harith, hmh, hb, hne, hdeg, hiso⟩` from `GlobalTheory.T.twisted_hodge_tie_compare PositivityTheory.UnitarySelfGeneration.cmpHodgeTiedAlt GlobalTheory.T.theta_uniformisation_complex_abelian_varieties E H D l Xo c O β Y (HostAut.refl H) (Iso.refl Xo.X) hsab (Equiv.refl _) S n M M' T T' hβ (by simp) (fun τ => by ext; rfl) …`. Establish `hJ` using `GlobalTheory.T.block_pullback_herm_line M.K M.ι K ι κ v hbv`. Establish `hJ'` using `GlobalTheory.T.block_pullback_herm_line M'.K M'.ι K ι κ' v' hbv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmpp : IsMultiProjPrime (mCoordIdeal y)` using `harith.2.1`. Take `⟨hc1, -, -, hc4⟩` from `GlobalTheory.T.iso_line_on_equivalence K ι (mCoordIdeal y) {z | z ∈ mcPts (mCoordIdeal y) ∧ evC z b ≠ 0} hmpp (fun z hz => hz.1)`. Use `choose Lr hLr using fun r => (hJ.1 (T.sing r)).exists`. Use `choose Lr' hLr' using fun r => (hJ'.1 (T'.sing r)).exists`. Use `poly_smul_of_sameSing SheetDecomposition.numPull hIn hC II hII T.Re T'.Re hP hP' hbv hbv' harith hmh hb T.alg T'.alg (fun a => ?_) hne hm (by rw [hd, hd', mul_one, hdeg])` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.T.realisation_fibre_product_compatible K ι M.K M.ι M'.K M'.ι κ v κ' v' (mCoordIdeal y) M.P M'.P _ _ _ T.Sy T'.Sy T.Re T'.Re b a a _ _ _ _ hbv hbv' (hc4 _ _ κ v _ _ _ _ hbv hLr) (hc4 _ _ κ' v' _ _ _ _ hbv' hLr') (T.ref_deg a) (T'.ref_deg a) (T.sing_eq a) (T'.sing_eq a …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stCmp : StCmp := by
   intro hIn hC II hII E _ _ _ H D l Xo c O _ β Y S n M M' T T' hβ hgen hR hd hd'

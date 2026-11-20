@@ -6,11 +6,11 @@ open UpperTheory.Gal.crystallineComparison (resPt twist PtId)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Establish `hu : IsUnit ((ConcreteCategory.hom (Scheme.Hom.app x ⊤)) (p : Γ(Y, ⊤)))`. Rewrite using `[map_natCast]`. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (p : Ω) = (p : Γ(gp Ω, ⊤))` using `map_natCast _ p`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu0` using `(IsUnit.mk0 _ hne).map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom`. Rewrite `hu0` using `[e]`. Conclude with `hu0`. Establish `hpre` using `Scheme.preimage_basicOpen x (p : Γ(Y, ⊤))`. Rewrite `hpre` using `[Scheme.basicOpen_of_isUnit _ hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : IsLocalRing.closedPoint Ω ∈ x ⁻¹ᵁ Y.basicOpen (p : Γ(Y, ⊤))`. Rewrite using `[hpre]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private lemma natCast_eq_zero_of_pt {p : ℕ} {Y : Scheme.{0}} {Ω : Type} [Field Ω] (x : gp Ω ⟶ Y)
     (h : pt x ∉ Y.basicOpen (p : Γ(Y, ⊤))) : (p : Ω) = 0 := by
@@ -30,21 +30,21 @@ private lemma natCast_eq_zero_of_pt {p : ℕ} {Y : Scheme.{0}} {Ω : Type} [Fiel
   exact hm
 
 /- English proof (translation)
-Conclude with `IsLocalRing.comap_closedPoint a`.
+A detailed English derivation is pending.
 -/
 private lemma sp_closedPoint {K L : Type} [Field K] [Field L] (a : K →+* L) :
     (sp a) (IsLocalRing.closedPoint L) = IsLocalRing.closedPoint K := by
   exact IsLocalRing.comap_closedPoint a
 
 /- English proof (translation)
-Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue V)`.
+A detailed English derivation is pending.
 -/
 private lemma resPt_closedPoint (V : Type) [CommRing V] [IsLocalRing V] :
     (resPt V) (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)) = IsLocalRing.closedPoint V := by
   exact IsLocalRing.comap_closedPoint (IsLocalRing.residue V)
 
 /- English proof (translation)
-Use `haveI : CharP F p := (CharP.charP_iff_prime_eq_zero hp).2 h`. Use `haveI : ExpChar F p := ExpChar.prime hp`. Conclude with `⟨iterateFrobenius F p f, fun a => iterateFrobenius_def p f a⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_frob (p f : ℕ) (hp : p.Prime) (F : Type) [Field F] (h : (p : F) = 0) :
     ∃ φ : F →+* F, ∀ a, φ a = a ^ p ^ f := by
@@ -53,17 +53,17 @@ private lemma exists_frob (p f : ℕ) (hp : p.Prime) (F : Type) [Field F] (h : (
   exact ⟨iterateFrobenius F p f, fun a => iterateFrobenius_def p f a⟩
 
 /- English proof (translation)
-Introduce `hRC hVL hCR hCE p f n hp Y π T w hOne hPt hdense hbasic Ω _ _ x hgen`. Take `⟨η, hη, hsp⟩` from `hdense (pt x)`. Take `⟨V, _, _, _, _, y, Ω', _, _, a, b, hpV, hsq⟩` from `hVL p Y Ω x η hsp hη`. Use `haveI := hRC V`. Establish `hx0 : pt x ∉ Y.basicOpen (p : Γ(Y, ⊤))` using `fun h => hgen.1 (hbasic _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hptA : pt (sp a ≫ x) = pt x`. Express the relevant statement in the definitionally equal form `x (sp a (IsLocalRing.closedPoint Ω')) = _`. Rewrite using `[sp_closedPoint]`. Both sides reduce to the same expression. Establish `hptB : pt (sp b ≫ resPt V ≫ y) = y (IsLocalRing.closedPoint V)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `y (resPt V (sp b (IsLocalRing.closedPoint Ω'))) = _`. Rewrite using `[sp_closedPoint, resPt_closedPoint]`. Establish `hyx : y (IsLocalRing.closedPoint V) = pt x`. Rewrite using `[← hptB, ← hsq, hptA]`. Establish `hpΩ` using `natCast_eq_zero_of_pt x hx0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpΩ'` using `natCast_eq_zero_of_pt (sp a ≫ x) (by rw [hptA]; exact hx0)`. Establish `hpR` using `natCast_eq_zero_of_pt (resPt V ≫ y) (by`. Express the relevant statement in the definitionally equal form `y (resPt V (IsLocalRing.closedPoint _)) ∉ _`. Rewrite using `[resPt_closedPoint, hyx]`. Conclude with `hx0)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `exists_frob p f hp Ω hpΩ`. Take `⟨φ', hφ'⟩` from `exists_frob p f hp Ω' hpΩ'`. Take `⟨ψ, hψ⟩` from `exists_frob p f hp (IsLocalRing.ResidueField V) hpR`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Establish `hW : ∀ j, IsWt (T j).p (w j)` using `fun j => (hOne j).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hCR p (p ^ f) n Y π T w hOne hPt V hpV y (by rw [hyx]; exact hgen) ψ hψ`. Establish `h2` using `(hCE p (p ^ f) n Y T w hW _ Ω' b ψ φ' (RingHom.ext fun z => by simp [hψ, hφ', map_pow]) (resPt V ≫ y)).mp h1`. Rewrite `h2` using `[← hsq]`. Conclude with `(hCE p (p ^ f) n Y T w hW Ω Ω' a φ φ' (RingHom.ext fun z => by simp [hφ, hφ', map_pow]) x).mpr h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.cycAll :
     ResClosed → ValLift → CycRes → CycExt → CycAll := by

@@ -23,14 +23,14 @@ def ringOf {E : Type} [CommRing E] (g : Sp E ⟶ X'.left) : R' →+* E :=
   (Spec.preimage (R := CommRingCat.of R') (S := CommRingCat.of E) (g ≫ X'.hom)).hom
 
 /- English proof (translation)
-Unfold `ringOf`. Conclude with `Spec.map_preimage _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem spMap_ringOf {E : Type} [CommRing E] (g : Sp E ⟶ X'.left) : spMap (ringOf g) = g ≫ X'.hom := by
   unfold ringOf
   exact Spec.map_preimage _
 
 /- English proof (translation)
-Establish `h1 : spMap (ringOf g) = spMap τ` using `by rw [spMap_ringOf, h]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringOf_eq_of_spMap {E : Type} [CommRing E] (g : Sp E ⟶ X'.left) (τ : R' →+* E)
     (h : spMap τ = g ≫ X'.hom) : ringOf g = τ := by
@@ -43,7 +43,7 @@ def ptBack [IsIso q] {E : Type} [CommRing E] (g : Sp E ⟶ X.left) :
     (spMap_ringOf (X' := X') (g ≫ inv q)).symm
 
 /- English proof (translation)
-Establish `h1 : spMap ((ringOf (X'` using `X') (z.left ≫ inv q)).comp σ) = spMap (algebraMap R E) := by`. Rewrite using `[spMap_comp, spMap_ringOf]`. Simplify using `only [Category.assoc, ← w, IsIso.inv_hom_id_assoc]`. Conclude with `Over.w z`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringOf_comp (w : q ≫ X.hom = X'.hom ≫ spMap σ) [IsIso q] {E : Type} [CommRing E] [Algebra R E]
     (z : Pt X E) : (ringOf (X' := X') (z.left ≫ inv q)).comp σ = algebraMap R E := by
@@ -54,9 +54,9 @@ theorem ringOf_comp (w : q ≫ X.hom = X'.hom ≫ spMap σ) [IsIso q] {E : Type}
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
 
 /- English proof (translation)
-Substitute `h h'` using the available equality. Use `letI := algVia σ E`. Use `letI := algVia σ E'`. Establish `e1 : homVia σ ψ = φ` using `AlgHom.ext hψ`. Establish `e2 : ptVia w y = z`.
+Substitute using the available equality. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hy`. Rewrite using `[← e1, ← e2]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bcPull_transport (w : q ≫ X.hom = X'.hom ≫ spMap σ) (u : Fn1 X) (E E' : Type) [CommRing E] [CommRing E']
     (A : Algebra R' E) (A' : Algebra R' E') (i : Algebra R E) (i' : Algebra R E') (h : i = algVia σ E)
@@ -78,15 +78,15 @@ end BcIso
 open BcIso
 
 /- English proof (translation)
-Introduce `R R' _ _ σ X X' q w hq u _ hk`. Take `⟨k', hk'⟩` from `hk`. Use `⟨fun E _ _ z ↦ @k' E _ (ringOf (X' := X') (z.left ≫ inv q)).toAlgebra (ptBack z.left), ?_⟩` and prove the remaining obligations. Introduce `E _ i E' _ i' φ z _`. Set `τ` to `ringOf (X' := X') (z.left ≫ inv q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `τ'` to `ringOf (X' := X') ((spOver φ ≫ z).left ≫ inv q)`. Use `letI A : Algebra R' E := τ.toAlgebra`. Use `letI A' : Algebra R' E' := τ'.toAlgebra`. Establish `hτ : τ' = (φ : E →+* E').comp τ`. Apply `ringOf_eq_of_spMap` to reduce the goal to its premises.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[spMap_comp, spMap_ringOf]`. Simplify using `only [Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Establish `hc : ∀ r, φ (τ r) = τ' r` using `fun r ↦ by rw [hτ]; rfl`. Set `ψ : E →ₐ[R'] E'` to `{ (φ : E →+* E') with commutes' := hc }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : i = algVia σ E` using `Algebra.algebra_ext _ _ fun r ↦ (congrArg (fun f ↦ f r) (ringOf_comp w z)).symm`. Establish `h' : i' = algVia σ E'` using `Algebra.algebra_ext _ _ fun r ↦ (congrArg (fun f ↦ f r) (ringOf_comp w (spOver φ ≫ z))).symm`. Establish `e1` using `bcPull_transport w u E E' A A' i i' h h' φ z ψ (ptBack z.left) (fun _ ↦ rfl) (by simp [ptBack])`. Establish `e2` using `hk' E E' ψ (ptBack z.left) (sm_whole _)`. Establish `e3 : spOver ψ ≫ ptBack (X'` using `X') z.left = ptBack (spOver φ ≫ z).left := Over.OverMorphism.ext (by simp [ptBack]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isCob_of_bcPull_isIso : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X : Over (Sp R))
     (X' : Over (Sp R')) (q : X'.left ⟶ X.left) (w : q ≫ X.hom = X'.hom ≫ spMap σ), IsIso q → ∀ u : Fn1 X,

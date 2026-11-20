@@ -10,11 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce and unpack `⟨ha, hma⟩ ⟨hb, hmb⟩`. Use `⟨(grpAt S P).mul_mem ha hb, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : ∀ i, (mt S b *ᵥ y) i ∈ idAt D P`. Introduce `i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (mt S b *ᵥ y) i = ∑ j, mt S b i j * y j` using `rfl`. Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`. Establish `hmul : mt S (a * b) = mt S a * mt S b` using `rfl`. Rewrite using `[hmul, ← Matrix.mulVec_mulVec]`.
-
-Conclude with `(hmb y hy).trans (hma _ hy')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_mul {D : D7} (S : HSp D) (L : Lat S) (P : Pl D → Prop) (a b : GA D S) :
     InK S L P a → InK S L P b → InK S L P (a * b) := by

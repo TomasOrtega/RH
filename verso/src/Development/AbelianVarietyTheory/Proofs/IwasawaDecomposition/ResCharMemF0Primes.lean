@@ -5,7 +5,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.NonzeroPlacesOverPrimes
 
 /- English proof (translation)
-Use `Formalism.MainNotions.Inhab.eq_resChar_of_mem D _ _ (D.what₂.places.resChar_prime v) ?_` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`. Use `show _ ∈ Ideal.map _ _`. Establish `h` using `Ideal.mem_map_of_mem (Formalism.DivisionValues.cO D.what₂.LL) (Formalism.MainNotions.Inhab.resChar_mem D v)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem resChar_symm_conjPl (D : Formalism.BasicNotions.D7) (v : D.what₂.places.Pl) :
     D.what₂.places.resChar (D.plEq.symm (Formalism.DivisionValues.conjPl (D.plEq v))) = D.what₂.places.resChar v := by
@@ -16,13 +16,11 @@ theorem resChar_symm_conjPl (D : Formalism.BasicNotions.D7) (v : D.what₂.place
   rwa [map_natCast] at h
 
 /- English proof (translation)
-Introduce `K B f T w Z v hv`. Take `⟨j, y, hy, hne⟩` from `hv`. Establish `key : (w.D Z).what₂.places.resChar ((w.D Z).plEq.symm y) = B.places.resChar v`. Break down `hy with h | h` into its components or cases. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (w.D Z).what₂.places.resChar ((w.D Z).plEq.symm_apply_apply v)`. Rewrite using `[h]`. Conclude with `resChar_symm_conjPl (w.D Z) v`. Unfold `F0K FK at hne`. Rewrite `hne` using `[key]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show B.places.resChar v ∈ ({(w.D Z).host.g 0, (w.D Z).host.g 1, (w.D Z).host.d} ∪ Finset.range (⌊K.s.X'' (w.D Z).R.n⌋₊ + 1) : Finset ℕ)`. Use `split_ifs at hne with h1 h2 h3`. Take `⟨i, hi⟩` from `h1`. Rewrite using `[hi]`. Apply the tactic sequence `fin_cases i <;> simp`.
-
-Use `Finset.mem_union_left _ ?_` and prove the remaining obligations. Unfold `Host.cls primeClass at h2`. Apply the tactic sequence `split_ifs at h2 with e1 e2 e3 <;> first | simp [e3] | exact absurd h2 (by decide)`. Conclude with `Finset.mem_union_right _ (Finset.mem_range.2 (Nat.lt_succ_of_le (Nat.le_floor h3.2)))`. Conclude with `absurd rfl hne`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem resChar_mem_f0Primes : ∀ (K : Ctx) (B : Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt), ∀ v ∈ R3.placesWithNonzeroContentOrConj (w.D Z) (F0K K.s (w.D Z)), B.places.resChar v ∈ GlobalTheory.Mem.NonzeroPlacesOverPrimes.forcedContentSupportPrimes K B.toPre := by
   intro K B f T w Z v hv

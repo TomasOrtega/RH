@@ -7,23 +7,21 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Comb
 
 /- English proof (translation)
-Introduce `m A hA lam hlam i hpos hcase`. Establish `key : (i : ℕ) + 1 < m ∧ ∀ h : (i : ℕ) + 1 < m, lam ⟨i + 1, h⟩ = lam i`. Distinguish the cases in `h0 : lam i = 0`. Establish `hs : 1 ≤ stair m i` using `by omega`. Simplify using `only [stair] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨by omega, fun h => ?_⟩` and prove the remaining obligations. Use `hlam (show i ≤ (⟨i + 1, h⟩ : Fin m) from Fin.le_iff_val_le_val.mpr (by simp))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hna : ¬ Antitone (Function.update lam i (lam i - 1))`. Break down `hcase with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h h0`. Conclude with `h`. Establish `hK : ∃ b : Fin m, i < b ∧ lam i ≤ lam b`. Assume the negation of the conclusion as `hK`. Use `push Not at hK`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hna` to reduce the goal to its premises. Introduce `a b hab`. Simplify using `only [Function.update_apply]`. Use `split_ifs with hb ha ha`. Conclude with `le_rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hlam (show a ≤ i from hb ▸ hab)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hib : i < b` using `lt_of_le_of_ne (ha ▸ hab) (fun e => hb e.symm)`. Use `hK b hib` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hlam hab`. Take `⟨b, hib, hb⟩` from `hK`. Establish `hib' : (i : ℕ) < b` using `hib`. Establish `hm : (i : ℕ) + 1 < m` using `by have := b.isLt; omega`. Use `⟨hm, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hlam (show i ≤ (⟨i + 1, h⟩ : Fin m) from Fin.le_iff_val_le_val.mpr (by simp))`. Establish `h2` using `hlam (show (⟨i + 1, h⟩ : Fin m) ≤ b from Fin.le_iff_val_le_val.mpr (by simp; omega))`. Use linear arithmetic over natural numbers and integers. Take `⟨hm, heq⟩` from `key`. Establish `hne : i ≠ (⟨i + 1, hm⟩ : Fin m)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Apply `cf_eq_zero_of_eq hA hne` to reduce the goal to its premises. Rewrite using `[Function.update_self, Function.update_of_ne hne.symm, heq hm]`.
-
-Simplify using `only [stair] at hpos ⊢`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem CombCfUpdateZero.proof : CombCfUpdateZero.Statement := by
   intro m A hA lam hlam i hpos hcase

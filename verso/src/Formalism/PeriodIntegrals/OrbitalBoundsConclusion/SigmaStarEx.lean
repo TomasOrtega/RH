@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.SigmaStarEx
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ThetaSeriesExistence.SigmaStarEx
 
 /- English proof (translation)
-The claim follows from `PI.SSE.sigmaStarEx`.
+A detailed English derivation is pending.
 -/
 theorem sigma_star_exists : PI.SigmaStarEx := PI.SSE.sigmaStarEx

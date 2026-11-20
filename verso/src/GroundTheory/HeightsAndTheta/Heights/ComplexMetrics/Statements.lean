@@ -98,11 +98,9 @@ def unitFibreEquiv (x : X.complexPoints ρ) : X.Fibre (𝟙_ X.X.Modules) x ≃�
     (isBasisOn_one ⊤)
 
 /- English proof (translation)
-Establish `h1 : resM ((preMod X.X).obj (𝟙_ X.X.Modules)) le_top (1 : ringOn X.X ⊤) = (1 : ringOn X.X U)` using `map_one (resR le_top)`. Establish `e1 : s = (show ringOn X.X U from s) • resM ((preMod X.X).obj (𝟙_ X.X.Modules)) le_top (1 : ringOn X.X ⊤)`. Rewrite using `[h1]`. Conclude with `(mul_one (show ringOn X.X U from s)).symm`. Establish `hg : germM (L` using `𝟙_ X.X.Modules) hx s = germR hx (show ringOn X.X U from s) • germM (L := 𝟙_ X.X.Modules) (show X.point x ∈ (⊤ : X.X.Opens) from trivial) (1 : ringOn X.X ⊤) := by conv_lhs => rw [e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[germM_smul]`. Use `congr 1`. Conclude with `germM_resM (L := 𝟙_ X.X.Modules) le_top hx _`. Establish `key` using `fibreEquiv_fibreMk (φ := X.evalAtPoint x) (show X.point x ∈ (⊤ : X.X.Opens) from trivial) (isBasisOn_one ⊤) 1 (germR hx (show ringOn X.X U from s))`. Express the relevant statement in the definitionally equal form `(Via.ofComplex (X.evalAtPoint x)).symm (fibreEquiv (X.evalAtPoint x) _ (isBasisOn_one ⊤) (fibreMk _ _ 1 (germM hx s))) = _`.
-
-Rewrite using `[hg, key, mul_one, RingEquiv.symm_apply_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unitFibreEquiv_sectionValue (x : X.complexPoints ρ) {U : X.X.Opens} (hx : X.point x ∈ U)
     (s : ((preMod X.X).obj (𝟙_ X.X.Modules)).obj (op U)) :

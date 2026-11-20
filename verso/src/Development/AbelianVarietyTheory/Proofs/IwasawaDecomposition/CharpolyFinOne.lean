@@ -14,13 +14,13 @@ def castQ {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) : Qbar p ≃+* Q
   subst h; exact RingEquiv.refl _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨z, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_heq {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (z : ℤ_[p]) : ∃ z' : ℤ_[q], HEq z z' := by
   subst h; exact ⟨z, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hz`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem castQ_alg {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (z : ℤ_[p]) (z' : ℤ_[q]) (hz : HEq z z') :
     (castQ h).symm (algebraMap ℚ_[q] (Qbar q) (z' : ℚ_[q])) = algebraMap ℚ_[p] (Qbar p) (z : ℚ_[p]) := by
@@ -29,7 +29,7 @@ theorem castQ_alg {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (z : ℤ
   rfl
 
 /- English proof (translation)
-Use extensionality with `x i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mapRep_mapRep {Γ A B C : Type} [Group Γ] [CommRing A] [CommRing B] [CommRing C] {n : ℕ} (f : A →+* B)
     (g : B →+* C) (ρ : Γ →* GL (Fin n) A) : mapRep g (mapRep f ρ) = mapRep (g.comp f) ρ := by
@@ -37,7 +37,7 @@ theorem mapRep_mapRep {Γ A B C : Type} [Group Γ] [CommRing A] [CommRing B] [Co
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : (castQ (rfl : p = p)).trans ι = ι` using `by ext x; rfl`. Establish `e2 : mapRep (castQ (rfl : p = p)).symm.toRingHom ρ = ρ` using `by ext g i j; rfl`. Rewrite `hρ` using `[e1, e2]`. Conclude with `hρ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRepOf_cast (D : D7) {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (ι : Qbar q ≃+* ℂ) {n : ℕ}
     (π : D.naut.CG n) (s : ℝ) (ρ : G D.host.E D.nd.Om →* GL (Fin n) (Qbar q))
@@ -49,11 +49,11 @@ theorem isRepOf_cast (D : D7) {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p =
   exact hρ
 
 /- English proof (translation)
-Take `⟨c₁, s₁, f₁⟩` from `h₁`. Take `⟨c₂, s₂, f₂⟩` from `h₂`. Establish `hfin` using `(Filter.eventually_cofinite.mp f₁).union (Filter.eventually_cofinite.mp f₂)`. Establish `hcp` using `GlobalTheory.TwistLG.charpoly_eq_of_dense ρ₁ ρ₂ c₁ c₂ _ (hC hfin.toFinset).closure_eq (by`. Introduce and unpack `g ⟨w, hw, -, B, hB, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hw`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[hw.1 B g hB hg, hw.2 B g hB hg])`. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix ρ₂ ρ₁ s₂ s₁ (fun g => (hcp g).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P⁻¹, fun g => by rw [hP g, inv_inv]⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_of_isRepOf (D : D7) {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} (π : D.naut.CG n) (s : ℝ)
     (hC : GlobalTheory.RowTie.ChebSplit D.nd) (ρ₁ ρ₂ : G D.host.E D.nd.Om →* GL (Fin n) (Qbar l))
@@ -71,26 +71,24 @@ theorem conj_of_isRepOf (D : D7) {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ
   exact ⟨P⁻¹, fun g => by rw [hP g, inv_inv]⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, Matrix.det_unique, Matrix.charmatrix_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_fin_one {k : Type} [CommRing k] (M : Matrix (Fin 1) (Fin 1) k) : M.charpoly = X - C (M 0 0) := by
   rw [Matrix.charpoly, Matrix.det_unique, Matrix.charmatrix_apply_eq]
   rfl
 
 /- English proof (translation)
-Take `⟨c1, ss1, f1⟩` from `rowRho_spec D hG a π hc hr`. Take `⟨cχ, awayχ, -⟩` from `Classical.choose_spec (hC a D.naut.etaTinv (-(D.R.t : ℝ) / 2) hη)`. Use `set χ1 := Classical.choose (hC a D.naut.etaTinv (-(D.R.t : ℝ) / 2) hη) with hχ1`. Establish `e0 : rhoOfRow D hG hC hη a π hc hr = Formalism.MainNotions.SumRepresentations.At.twGL (rowRho D hG a π hc hr) (Matrix.GeneralLinearGroup.det.comp χ1)` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Conclude with `GlobalTheory.TwistLG.cont_twGL _ _ c1 cχ`. Rewrite using `[e0]`. Conclude with `GlobalTheory.TwistLG.isSSRep_twGL _ _ ss1`. Establish `hfin` using `placesOver_finite D.host.E (D.nd.l a) (Fact.out : (D.nd.l a).Prime).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [f1, D.naut.locG_unr_ae π, hfin.compl_mem_cofinite] with w hw1 hu hwl`. Introduce `B σ hB hσ`. Establish `hwl' : w ∉ placesOver D.host.E (D.nd.l a)` using `hwl`. Establish `hue : D.naut.unr (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2))` using `(D.naut.unr_tw _ _).2 (D.naut.etaTinv_def w).1`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu1⟩ : ∃ u, D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2)) = {u} := by`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Multiset.card_eq_one.mp` to reduce the goal to its premises. Rewrite using `[D.naut.frobEig_tw _ _ (D.naut.etaTinv_def w).1, Multiset.card_map, D.naut.frobEig_card _ (D.naut.etaTinv_def w).1, D.naut.locG_dim]`. Establish `hwd` using `D.naut.wdOf_frob a χ1 w hwl' cχ (by rw [awayχ w hwl']; exact hue) B σ hB hσ`. Rewrite `hwd` using `[awayχ w hwl', hu1, Multiset.map_singleton, Multiset.prod_singleton, charpoly_fin_one, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Establish `hχu : D.naut.iotaQC a ((Matrix.GeneralLinearGroup.det.comp χ1 σ : (Qbar (D.nd.l a))ˣ) : Qbar (D.nd.l a)) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (Polynomial.coeff · 0) hwd` as an intermediate fact. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_X_zero, Polynomial.coeff_C_zero, zero_sub, neg_inj] at this`. Use `show D.naut.iotaQC a ((χ1 σ : Matrix (Fin 1) (Fin 1) _).det) = u`. Rewrite using `[Matrix.det_unique]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hw1 B σ hB hσ`. Rewrite `h1` using `[isoLoc_single]`. Rewrite using `[e0, GlobalTheory.TwistLG.twGL_val, ← Matrix.charpoly_map, GlobalTheory.ParamRep.map_smul_matrix, GlobalTheory.ParamRep.galPol_twist D.nd D.naut π hu u hu1]`. Establish `h2 : ((((rowRho D hG a π hc hr) σ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) _).map (D.naut.iotaQC a).toRingHom).charpoly = ((D.naut.frobEig (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2))).map fun α => X - C α).prod`. Rewrite using `[Matrix.charpoly_map]`.
-
-Conclude with `h1`. Establish `h3` using `GlobalTheory.ParamRep.charpoly_smul_of_prod _ u _ h2`. Establish `hχu' : (D.naut.iotaQC a).toRingHom ((Matrix.GeneralLinearGroup.det.comp χ1 σ : (Qbar (D.nd.l a))ˣ) : Qbar (D.nd.l a)) = u` using `hχu`. Rewrite using `[hχu']`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoOfRow_isRepOf (D : D7) (hG : GalRepEx D) (hC : ClassFieldHeckeAlgebraic D) (hη : EtaShiftInt D) (a : D.nd.Loc)
     (π : D.naut.CG D.R.r) (hc : D.naut.csd π) (hr : D.naut.ralg π) :
@@ -146,9 +144,9 @@ namespace GlobalTheory.HeightCounting.FitRho
 open Formalism.L2.NR
 
 /- English proof (translation)
-Break down `ValuationRing.isInteger_or_isInteger O0 (e x) with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Rewrite using `[← hy, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap_alg, h x y hy]`. Establish `hy' : algebraMap O0 (FractionRing O0) y = e x⁻¹` using `by rw [map_inv₀]; exact hy`. Establish `h1` using `h x⁻¹ y hy'`. Establish `h2 : e x = (algebraMap O0 (FractionRing O0) y)⁻¹` using `by rw [hy, inv_inv]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, map_inv₀, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap_alg, ← h1, map_inv₀, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fracMap_eq {O0 O : Type} [CommRing O0] [IsDomain O0] [ValuationRing O0] [CommRing O] [IsDomain O]
     (f : O0 →+* O) (hf : Function.Injective f) {F : Type} [Field F] (e : F →+* FractionRing O0)
@@ -171,21 +169,17 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨hiso, hgood, hspec⟩` from `b.Bs.rhoS (b.L.T.twOf a) s`. Establish `hσ : (withLoc b.L).what₂.isot ((withLoc b.L).nd.j a) (b.Bs.rowS (b.L.T.twOf a) s) ≠ ⊥`. Rewrite using `[← hj]`. Conclude with `hiso`. Use `⟨b.Bs.rowS (b.L.T.twOf a) s, hσ, hgood, fun π hS => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hc, hr⟩` from `rowSig_csd_ralg (withLoc b.L) hP a _ hσ hgood π hS`. Establish `hloc : ∀ w, IsSplitPl b.D.host w → b.D.naut.locG π w = b.A.row.locR (b.Bs.rowS (b.L.T.twOf a) s) w`. Introduce `w hw`. Establish `h1` using `(rowSig_spec (withLoc b.L) hP a _ hσ).2.2 w hw`. Rewrite `h1` using `[hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((isoLoc_single (withLoc b.L) π w).symm.trans h1).trans (b.Au.locW a _ w)`. Establish `hpq : (withLoc b.L).ntw.l ((withLoc b.L).ntw.twOf a) = (withLoc b.L).nd.l a` using `(withLoc b.L).ntw.twOf_l a`. Set `φ0 : FractionRing ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a)) →+* Qbar ((withLoc b.L).nd.l a)` to `((withLoc b.L).naut.iotaQ a).comp (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap ((withLoc b.L).ntw.twist₂ a) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.twO_inj (withLoc b.L).ntw a))`. Establish `hφ0 : φ0.comp (algebraMap ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a)) (FractionRing ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a)))) = (Formalism.MainNotions.N.iotaOQ (withLoc b.L).nd (withLoc b.L).naut a).comp ((withLoc b.L).ntw.twist₂ a)`. Use extensionality with `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (withLoc b.L).naut.iotaQ a (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap _ _ (algebraMap _ _ y)) = (withLoc b.L).naut.iotaQ a (algebraMap _ _ ((withLoc b.L).ntw.twist₂ a y))`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap_alg]`. Establish `hemb : ∀ x : ↥b.D.LL0, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap ((withLoc b.L).ntw.twist₂ a) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.twO_inj (withLoc b.L).ntw a) ((if (withLoc b.L).ntw.twSide a then (withLoc b.L).ntw.emb0 ((withLoc b.L) …` using `fracMap_eq ((withLoc b.L).ntw.twist₂ a) _ (if (withLoc b.L).ntw.twSide a then (withLoc b.L).ntw.emb0 ((withLoc b.L).ntw.twOf a) else (withLoc b.L).ntw.emb0b ((withLoc b.L).ntw.twOf a)) (((withLoc b.L).nd.embK a).comp (algebraMap ↥b.D.LL0 b.D.what₂.LL)) (fun x y hy => (withLoc b.L …`. Set `φ` to `(castQ hpq).symm.toRingHom.comp φ0`. Set `ι` to `(castQ hpq).trans ((withLoc b.L).naut.iotaQC a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hφ : ∀ z : ℤ_[(withLoc b.L).ntw.l ((withLoc b.L).ntw.twOf a)], φ (algebraMap ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a)) (FractionRing ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a))) (algebraMap ℤ_[(withLoc b.L).ntw.l ((withLoc b.L).ntw.twOf a)] ((withLoc b.L).ntw.O0 ((w …`. Introduce `z`. Take `⟨z', hz⟩` from `exists_heq hpq z`. Use `show (castQ hpq).symm ((withLoc b.L).naut.iotaQ a (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap _ _ (algebraMap ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a)) (FractionRing ((withLoc b.L).ntw.O0 ((withLoc b.L).ntw.twOf a))) (algebraMap ℤ_[((withLoc b.L).nt …`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap_alg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [b.Sp.twO_alg a z z' hz, (withLoc b.L).naut.iotaQ_alg a z']`. Conclude with `castQ_alg hpq z z' hz`. Establish `hι : ∀ x : ↥b.D.LL0, ι (φ ((if (withLoc b.L).ntw.side ((withLoc b.L).ntw.twOf a) s then (withLoc b.L).ntw.emb0 ((withLoc b.L).ntw.twOf a) else (withLoc b.L).ntw.emb0b ((withLoc b.L).ntw.twOf a)) x)) = embLL0 b.D x`. Introduce `x`. Establish `hs' : (withLoc b.L).ntw.side ((withLoc b.L).ntw.twOf a) s = (withLoc b.L).ntw.twSide a` using `hs`.
-
-Rewrite using `[hs']`. Use `show (withLoc b.L).naut.iotaQC a ((castQ hpq) ((castQ hpq).symm ((withLoc b.L).naut.iotaQ a (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap _ _ _)))) = _`. Rewrite using `[RingEquiv.apply_symm_apply, hemb x]`. Conclude with `(withLoc b.L).naut.iota_LL a _`. Establish `hR` using `hspec π hc hr hloc φ ι hφ hι`.
-
-Establish `hR' : IsRepOf (withLoc b.L) ((withLoc b.L).ntw.l ((withLoc b.L).ntw.twOf a)) ((castQ hpq).trans ((withLoc b.L).naut.iotaQC a)) ((withLoc b.L).naut.tw π (withLoc b.L).naut.etaTinv) ((1 - ((withLoc b.L).R.nV : ℝ)) / 2) (Formalism.MainNotions.N.mapRep (castQ hpq).symm.toRingHom (For …`. Rewrite using `[← hφ0, mapRep_mapRep]`. Conclude with `hR`. Conclude with `conj_of_isRepOf (withLoc b.L) ((withLoc b.L).naut.iotaQC a) _ _ hcheb _ _ (isRepOf_cast (withLoc b.L) hpq _ _ _ _ hR') (rhoOfRow_isRepOf (withLoc b.L) hG hC hη a π _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoS_withLoc (hL : GlobalTheory.Published.LocalLanglandsGL) (D' : D7) (b : NBuilt hL D')
     (hcheb : GlobalTheory.RowTie.ChebSplit b.D.nd) (hP : RowPar (withLoc b.L)) (hG : GalRepEx (withLoc b.L))
@@ -263,7 +257,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hL D' b _ _ _ hcheb hT`. Conclude with `⟨hT.rbarSS, hT.rbar, fun hP hG hC hη a s hs hj => FitRho.rhoS_withLoc hL D' b hcheb hP hG hC hη a s hs hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nRhoTied_withLoc : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D' : D7) (b : NBuilt hL D'), (∀ x : b.D.LL0, star (x : b.D.what₂.LL) ∈ b.D.LL0) → (∀ j g, ∃ z : ℤ, eExp b.D j g = z) → (∀ v, v ∈ placesOver b.D.host.E b.D.host.pde ∨ v ∈ placesOver b.D.host.E b.D.host.pde' → IsSplitPl b.D.host v) → GlobalTheory.RowTie.ChebSplit b.D.nd → TypesOpen (withLoc b.L) b.jE → NR.NRhoTied (withLoc b.L) := by
   intro hL D' b _ _ _ hcheb hT

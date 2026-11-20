@@ -7,17 +7,17 @@ open MvPolynomial
 universe u_1 u_2 u_3 u_4
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval₂Hom_C, pderiv_C, map_zero, mul_zero, Finset.sum_const_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Establish `hlin : HasDerivAt (fun t : ℂ => u i + t * v i) (v i) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (v i)).const_add (u i)`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : ∀ j, eval₂Hom φ u (pderiv j (X i : MvPolynomial J S)) = if j = i then 1 else 0`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[pderiv_X]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[pderiv_X, h, Ne.symm h]`. Establish `key : ∀ j, v j * eval₂Hom φ u (pderiv j (p * X i)) = (if j = i then v i * eval₂Hom φ u p else 0) + v j * eval₂Hom φ u (pderiv j p) * u i`. Introduce `j`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, eval₂Hom_X', hX]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_mul, eval₂Hom_X', Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `(hp.mul hlin).congr_deriv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl fun j _ => key j, Finset.sum_add_distrib, ← Finset.sum_mul]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, zero_smul, add_zero, zero_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line {S : Type*} {J : Type*} [CommRing S] [Fintype J] (φ : S →+* ℂ)
     (u v : J → ℂ) (p : MvPolynomial J S) :
@@ -55,9 +55,9 @@ theorem hasDerivAt_line {S : Type*} {J : Type*} [CommRing S] [Fintype J] (φ : S
     ring
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval₂Hom_C]`. Conclude with `(h a).comp_of_eq analyticAt_fst rfl`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, eval₂Hom_X']`. Conclude with `hp.mul (((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℂ E (J → ℂ))).analyticAt _)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_eval {E : Type*} {S : Type*} {J : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [CommRing S] [Fintype J] (χ : E → S →+* ℂ) (z₀ : E) (u₀ : J → ℂ)
@@ -76,31 +76,27 @@ theorem analyticAt_eval {E : Type*} {S : Type*} {J : Type*} [NormedAddCommGroup 
       (ContinuousLinearMap.snd ℂ E (J → ℂ))).analyticAt _)
 
 /- English proof (translation)
-Establish `: CompleteSpace E` using `FiniteDimensional.complete ℂ E`. Use `set G : E × (J → ℂ) → (σ → ℂ) := fun w r => eval₂Hom (χ w.1) w.2 (rel r)`. Use `set F : E × (J → ℂ) → E × (σ → ℂ) := fun w => (w.1, G w)`. Use `set a₀ : E × (J → ℂ) := (z₀, u₀)`. Establish `hGan : AnalyticAt ℂ G a₀` using `AnalyticAt.pi fun r => analyticAt_eval χ z₀ u₀ han (rel r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFan : AnalyticAt ℂ F a₀` using `analyticAt_fst.prod hGan`. Establish `hGd : HasFDerivAt G (fderiv ℂ G a₀) a₀` using `hGan.differentiableAt.hasFDerivAt`. Establish `hdirG : ∀ v : J → ℂ, fderiv ℂ G a₀ (0, v) = fun r => ∑ j, v j * eval₂Hom (χ z₀) u₀ (pderiv j (rel r))`. Introduce `v`. Establish `hℓ : HasDerivAt (fun t : ℂ => ((z₀, u₀ + t • v) : E × (J → ℂ))) ((0 : E), (1 : ℂ) • v) 0` using `(hasDerivAt_const (0 : ℂ) z₀).prodMk (((hasDerivAt_id (0 : ℂ)).smul_const v).const_add u₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcomp` using `hGd.comp_hasDerivAt_of_eq 0 hℓ (by simp [a₀])`. Rewrite `hcomp` using `[one_smul]`. Use function extensionality and compare the values at `r`. Conclude with `((hasDerivAt_pi.mp hcomp) r).unique (hasDerivAt_line (χ z₀) u₀ v (rel r))`. Use `set L : E × (J → ℂ) →L[ℂ] E × (σ → ℂ) := (ContinuousLinearMap.fst ℂ E (J → ℂ)).prod (fderiv ℂ G a₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hFd : HasFDerivAt F L a₀` using `hasFDerivAt_fst.prodMk hGd`. Establish `hLinj : Function.Injective L`. Use `(injective_iff_map_eq_zero L).mpr ?_` and prove the remaining obligations. Introduce and unpack `⟨h, v⟩ hw`. Establish `hh : h = 0` using `by simpa [L] using congrArg Prod.fst hw`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Substitute `hh` using the available equality. Establish `hv : fderiv ℂ G a₀ (0, v) = 0` using `by simpa [L] using congrArg Prod.snd hw`. Rewrite `hv` using `[hdirG]`. Establish `hzero : Matrix.vecMul (fun s => v (c s)) (Matrix.of fun s r : σ => eval₂Hom (χ z₀) u₀ (pderiv (c s) (rel r))) = 0`. Use function extensionality and compare the values at `r`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr` using `congrFun hv r`. Simplify using `only [Pi.zero_apply] at hr ⊢`. Rewrite using `[← hr]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply]`. Conclude with `(Equiv.ofBijective c hc).sum_comp (fun j => v j * eval₂Hom (χ z₀) u₀ (pderiv j (rel r)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hvc : (fun s => v (c s)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hdet (Matrix.exists_vecMul_eq_zero_iff.mp ⟨_, hne, hzero⟩)`. Establish `hv0 : v = 0`. Use function extensionality and compare the values at `j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨s, rfl⟩` from `hc.2 j`. Conclude with `congrFun hvc s`. Substitute `hv0` using the available equality. Both sides reduce to the same expression. Establish `hrank : Module.finrank ℂ (E × (J → ℂ)) = Module.finrank ℂ (E × (σ → ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Module.finrank_prod, Fintype.card_of_bijective hc]`. Establish `hLsurj : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank (f := (L : E × (J → ℂ) →ₗ[ℂ] E × (σ → ℂ)))).mp hLinj`. Set `i : (E × (J → ℂ)) ≃L[ℂ] (E × (σ → ℂ))` to `(LinearEquiv.ofBijective (L : E × (J → ℂ) →ₗ[ℂ] E × (σ → ℂ)) ⟨hLinj, hLsurj⟩).toContinuousLinearEquiv`. Establish `hi : (i : E × (J → ℂ) →L[ℂ] E × (σ → ℂ)) = L` using `ContinuousLinearMap.ext fun _ => rfl`. Establish `hstrict : HasStrictFDerivAt F (i : E × (J → ℂ) →L[ℂ] E × (σ → ℂ)) a₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hi, ← hFd.fderiv]`. Conclude with `hFan.hasStrictFDerivAt`. Establish `hev : ∀ᶠ w in nhds a₀, AnalyticAt ℂ F w ∧ ∃ j : (E × (J → ℂ)) ≃L[ℂ] (E × (σ → ℂ)), fderiv ℂ F w = j`. Use `hFan.eventually_analyticAt.and ?_` and prove the remaining obligations. Establish `hmem : fderiv ℂ F a₀ ∈ Set.range ((↑) : ((E × (J → ℂ)) ≃L[ℂ] (E × (σ → ℂ))) → E × (J → ℂ) →L[ℂ] E × (σ → ℂ))` using `⟨i, by rw [hi, hFd.fderiv]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hFan.fderiv.continuousAt.eventually_mem (ContinuousLinearEquiv.isOpen.mem_nhds hmem)).mono fun w hw => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hw`. Conclude with `⟨j, hj.symm⟩`. Take `⟨U, hUsub, hUopen, ha₀U⟩` from `mem_nhds_iff.mp hev`. Use `⟨(hstrict.toOpenPartialHomeomorph F).restrOpen U hUopen, fun w => rfl, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[OpenPartialHomeomorph.restrOpen_source]`. Conclude with `⟨hstrict.mem_toOpenPartialHomeomorph_source, ha₀U⟩`. Introduce `b hb`. Establish `hsrc` using `((hstrict.toOpenPartialHomeomorph F).restrOpen U hUopen).map_target hb`. Rewrite `hsrc` using `[OpenPartialHomeomorph.restrOpen_source]`.
-
-Take `⟨hA, j, hj⟩` from `hUsub hsrc.2`. Conclude with `((hstrict.toOpenPartialHomeomorph F).restrOpen U hUopen).analyticAt_symm hb hA hj`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main {E : Type u_1} {S : Type u_2} {J : Type u_3} {σ : Type u_4}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] [CommRing S] [Fintype J]

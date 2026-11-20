@@ -21,14 +21,14 @@ section Op
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (D : Dom E n 0)
 
 /- English proof (translation)
-The claim follows from `ae_restrict_of_ae ((mp_fst D).quasiMeasurePreserving.ae (ae_quotMeasure_iff.1 h))`.
+A detailed English derivation is pending.
 -/
 theorem ae_nu_of {p : GlobalTheory.AutomorphicL2Unitary.Quot (latticeGL E n) → Prop}
     (h : ∀ᵐ q ∂quotMeasure (latticeGL E n) (muG D), p q) : ∀ᵐ x ∂D.ν, p (mk (latticeGL E n) x.1) :=
   ae_restrict_of_ae ((mp_fst D).quasiMeasurePreserving.ae (ae_quotMeasure_iff.1 h))
 
 /- English proof (translation)
-The claim follows from `ae_restrict_of_ae ((mp_fst D).quasiMeasurePreserving.ae h)`.
+A detailed English derivation is pending.
 -/
 theorem ae_nu_of' {p : GA E n → Prop} (h : ∀ᵐ g ∂muG D, p g) : ∀ᵐ x ∂D.ν, p x.1 :=
   ae_restrict_of_ae ((mp_fst D).quasiMeasurePreserving.ae h)
@@ -59,7 +59,7 @@ def Top (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (hs : HasCompactSup
         _ = _ := by rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal hk]
 
 /- English proof (translation)
-The claim follows from `MemLp.coeFn_toLp ((exists_bound D hn u hu hs).choose_spec.2 F).1`.
+A detailed English derivation is pending.
 -/
 theorem Top_ae (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (hs : HasCompactSupport u)
     (F : L2 (latticeGL E n) (muG D)) : (Top D hn u hu hs F : H E n 0 → ℂ) =ᵐ[D.ν] Tf D u F :=
@@ -68,29 +68,27 @@ theorem Top_ae (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (hs : HasCom
 end Op
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn D π hπ ι _ ψ u z f hψ hf`. Establish `hm : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E n) (muG D) φ.1` using `fun φ hφ => (GlobalTheory.CompanionTheory.CuspForms.memL2_and_bounded_of_normalised GlobalTheory.CompanionTheory.CuspFinGL.Split.cuspFormsBoundedGL E n (muG D) π hπ.1 φ hφ).1`. Establish `hC : IsSubrep (R (latticeGL E n) (muG D)) (classes π.V (muG D)).topologicalClosure` using `GlobalTheory.CompanionTheory.CuspIrred.isSubrep_closure π.stable fun φ h => ⟨(π.cusp φ h).1, hm φ h⟩`. Set `P1 : Set (Lp ℂ 2 D.ν)` to `{h | ∃ φ ∈ π.V, ∃ v : ℝ → ℂ, Continuous v ∧ HasCompactSupport v ∧ (h : H E n 0 → ℂ) =ᵐ[D.ν] fun x => φ.1 x.1 * v (ldet x)}`. Set `W1 : Submodule ℂ (Lp ℂ 2 D.ν)` to `(Submodule.span ℂ P1).topologicalClosure`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hstep : ∀ i, f i ∈ W1` using `fun i => by`. Take `⟨hψi, hui, hsi⟩` from `hψ i`. Set `u' : ℝ → ℂ` to `fun s => u i (s + ldet z)`. Establish `hu' : Continuous u'` using `hui.comp (continuous_add_right _)`. Establish `hs' : HasCompactSupport u'` using `hsi.comp_homeomorph (Homeomorph.addRight (ldet z))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T` to `Top D hn u' hu' hs'`. Establish `hle : (classes π.V (muG D)).topologicalClosure ≤ W1.comap (T : L2 (latticeGL E n) (muG D) →ₗ[ℂ] Lp ℂ 2 D.ν)`. Use `Submodule.topologicalClosure_minimal _ (fun F hF => ?_) ((Submodule.isClosed_topologicalClosure _).preimage T.continuous)` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `hF`. Use `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨φ, hφ, u', hu', hs', ?_⟩)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Top_ae D hn u' hu' hs' F).trans ?_` and prove the remaining obligations. Use `filter_upwards [ae_nu_of' D e] with x h2`. Simplify using `only [Tf, h2]`. Establish `hF0 : (hm _ hψi).toL2 ∈ (classes π.V (muG D)).topologicalClosure` using `Submodule.le_topologicalClosure _ (toL2_mem_classes hψi (hm _ hψi))`. Establish `hFi` using `hle (hC.2 z.1 _ hF0)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTF : T (R (latticeGL E n) (muG D) z.1 (hm _ hψi).toL2) = f i`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [Top_ae D hn u' hu' hs' (R (latticeGL E n) (muG D) z.1 (hm _ hψi).toL2), ae_nu_of' D (lift_R z.1 (hm _ hψi).toL2), ae_nu_of' D ((measurePreserving_mul_right (muG D) z.1).quasiMeasurePreserving.ae (hm _ hψi).lift_toL2_ae_eq), hf i] with x h1 h2 h3 h4`. Rewrite using `[h1, h4]`. Simplify using `only [Tf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3]`. Use `show (ψ i).1 (x.1 * z.1) * u i (lg x.1 + lg z.1) = (ψ i).1 (x.1 * z.1) * u i (lg (x.1 * z.1))`. Rewrite using `[lg_mul]`. Rewrite using `[← hTF]`. Conclude with `hFi`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Set `J : ι → (Lp ℂ 2 D.ν →L[ℂ] Hs (ι` to `ι) D) := fun i => (PiLp.continuousLinearEquiv 2 ℂ (fun _ : ι => Lp ℂ 2 D.ν)).symm.toContinuousLinearMap.comp (ContinuousLinearMap.single ℂ (fun _ : ι => Lp ℂ 2 D.ν) i)`. Establish `hJe : ∀ i (h : Lp ℂ 2 D.ν), (PiLp.continuousLinearEquiv 2 ℂ (fun _ : ι => Lp ℂ 2 D.ν)) (J i h) = Pi.single (M` using `fun _ : ι => Lp ℂ 2 D.ν) i h := fun i h => by`. Simplify using `only [J, ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, ContinuousLinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hJj : ∀ i j (h : Lp ℂ 2 D.ν), ((J i : Lp ℂ 2 D.ν →ₗ[ℂ] Hs (ι` using `ι) D) h).ofLp j = Pi.single (M := fun _ : ι => Lp ℂ 2 D.ν) i h j := fun i j h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hJe]`. Both sides reduce to the same expression. Establish `hJ : ∀ i, W1 ≤ (piSp D π ι).comap (J i : Lp ℂ 2 D.ν →ₗ[ℂ] Hs (ι` using `ι) D) := fun i => by`. Use `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 fun h hh => ?_) ((Submodule.isClosed_topologicalClosure _).preimage (J i).continuous)` and prove the remaining obligations. Use `Submodule.le_topologicalClosure _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Take `⟨φ, hφ, v, hv, hvs, e⟩` from `hh`. Use `⟨φ, hφ, v, hv, hvs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJj, Pi.single_eq_same]`. Conclude with `e`. Use `⟨0, Submodule.zero_mem _, 0, continuous_const, HasCompactSupport.zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hJj, Pi.single_eq_of_ne hij]`. Use `filter_upwards [Lp.coeFn_zero ℂ 2 D.ν] with x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Simplify using the standard rewrite rules. Establish `hsum : f = ∑ i, J i (f i)`. Apply `(PiLp.continuousLinearEquiv 2 ℂ (fun _ : ι => Lp ℂ 2 D.ν)).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`.
-
-Simplify using `only [hJe]`. Conclude with `(Finset.univ_sum_single _).symm`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => hJ i (hstep i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piClosureInv : PiClosureInv := by
   intro E _ _ _ n hn D π hπ ι _ ψ u z f hψ hf

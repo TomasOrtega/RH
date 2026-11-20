@@ -10,9 +10,9 @@ namespace UpperTheory.V.Z.GSp4Splitting.LieStabilizer
 open Matrix
 
 /- English proof (translation)
-Establish `hψ : ∀ t : ℝ, HasDerivAt (fun u : ℝ => NormedSpace.exp ((1 - u) • D) (c u)) 0 t`. Introduce `t`. Establish `he` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) D (1 - t)).comp_const_sub 1 t`. Establish `h` using `he.clm_apply (hc t)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[ContinuousLinearMap.mul_apply]`. Establish `hconst` using `is_const_of_deriv_eq_zero (fun u => (hψ u).differentiableAt) (fun u => (hψ u).deriv) 1 0`. Simplify using `using hconst`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem flow {S : Type*} [NormedAddCommGroup S] [NormedSpace ℝ S] [CompleteSpace S]
     (D : S →L[ℝ] S) (c : ℝ → S) (hc : ∀ t, HasDerivAt c (D (c t)) t) :
@@ -28,11 +28,11 @@ private theorem flow {S : Type*} [NormedAddCommGroup S] [NormedSpace ℝ S] [Com
   simpa using hconst
 
 /- English proof (translation)
-Establish `hs` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) D`. Establish `hs2` using `(ContinuousLinearMap.apply ℝ S x).hasSum hs`. Establish `hpow : ∀ m : ℕ, (D ^ m) x ∈ M`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa using hx`. Consider the case `succ m ih`. Rewrite using `[pow_succ', ContinuousLinearMap.mul_apply]`. Conclude with `hD _ ih`. Use `hM.mem_of_tendsto hs2 (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `M.sum_mem fun m _ => ?_` and prove the remaining obligations. Simplify using `using M.smul_mem _ (hpow m)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exp_mem {S : Type*} [NormedAddCommGroup S] [NormedSpace ℝ S] [CompleteSpace S]
     (D : S →L[ℝ] S) (M : Submodule ℝ S) (hM : IsClosed (M : Set S)) (hD : ∀ y ∈ M, D y ∈ M)
@@ -51,7 +51,7 @@ private theorem exp_mem {S : Type*} [NormedAddCommGroup S] [NormedSpace ℝ S] [
   simpa using M.smul_mem _ (hpow m)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Conclude with `(Asymptotics.isLittleO_norm_left).1 h.norm_left`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {S : Submodule ℂ V}
     {c : ℝ → S} {d : S} {t : ℝ} (h : HasDerivAt (fun s => (c s : V)) (d : V) t) : HasDerivAt c d t := by
@@ -65,7 +65,7 @@ private def curve (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (t : ℝ) : 
     rw [conjTranspose_smul, hX]; simp)⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show NormedSpace.exp (((s + t : ℝ) : ℂ) • X) = NormedSpace.exp ((s : ℂ) • X) * NormedSpace.exp ((t : ℂ) • X)`. Establish `hc : Commute ((s : ℂ) • X) ((t : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hc, Complex.ofReal_add, add_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem curve_add (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s t : ℝ) :
     curve X hX (s + t) = curve X hX s * curve X hX t := by
@@ -75,7 +75,7 @@ private theorem curve_add (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s t
   rw [← Matrix.exp_add_of_commute _ _ hc, Complex.ofReal_add, add_smul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show NormedSpace.exp (((0 : ℝ) : ℂ) • X) = 1`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem curve_zero (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) : curve X hX 0 = 1 := by
   apply Subtype.ext
@@ -86,27 +86,23 @@ end UpperTheory.V.Z.GSp4Splitting.LieStabilizer
 
 open UpperTheory.V.Z.GSp4Splitting.LieStabilizer in
 /- English proof (translation)
-Introduce `n V _ _ σ Kf hder N hN k x hx`. Take `⟨X, hX, hXk⟩` from `(UpperTheory.RealTr.skewExp n).2 k`. Take `⟨S, hfd, hxS, hσS, hKS, hd⟩` from `hder.2 x`. Use `haveI : FiniteDimensional ℂ S := hfd`. Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : Module.End ℂ V` to `∑ a, ∑ b, X a b • Kf a b`. Establish `hLapp : ∀ w, L w = ∑ a, ∑ b, X a b • Kf a b w`. Introduce `w`. Simplify using `[L, LinearMap.sum_apply]`. Establish `hLS : ∀ w ∈ S, L w ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[hLapp]`. Conclude with `S.sum_mem fun a _ => S.sum_mem fun b _ => S.smul_mem _ (hKS a b w hw)`. Establish `hLN : ∀ w ∈ N, L w ∈ N`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hLapp]`. Conclude with `N.sum_mem fun a _ => N.sum_mem fun b _ => N.smul_mem _ (hN a b w hw)`. Set `Dc : S →L[ℂ] S` to `LinearMap.toContinuousLinearMap (L.restrict hLS)`. Set `D : S →L[ℝ] S` to `Dc.restrictScalars ℝ`. Establish `hDapp : ∀ w : S, ((D w : S) : V) = L w` using `fun w => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `γ` to `curve X hX`. Set `c : ℝ → S` to `fun t => ⟨σ (γ t) x, hσS _ _ hxS⟩`. Establish `hc : ∀ t, HasDerivAt c (D (c t)) t`. Introduce `t`. Apply `lift` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h0 : HasDerivAt (fun s : ℝ => σ (γ s) (c t : V)) (L (c t : V)) (t - t)`. Rewrite using `[sub_self, hLapp]`. Conclude with `hd X γ (fun _ => rfl) _ (c t).2`. Establish `h1` using `h0.comp_sub_const t t`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Establish `: γ s = γ (s - t) * γ t`. Rewrite using `[← curve_add, sub_add_cancel]`. Use `show σ (γ s) x = σ (γ (s - t)) (σ (γ t) x)`. Rewrite using `[this, map_mul, Module.End.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hDapp _`. Establish `h1` using `flow D c hc`. Set `M : Submodule ℂ S` to `N.comap S.subtype`. Establish `hMc : IsClosed (M : Set S)` using `Submodule.closed_of_finiteDimensional M`. Establish `hc0 : c 0 ∈ M.restrictScalars ℝ` using `by show σ (γ 0) x ∈ N`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: γ 0 = 1` using `curve_zero X hX`. Rewrite using `[this, map_one]`. Conclude with `hx`. Establish `h2` using `exp_mem D (M.restrictScalars ℝ) hMc (fun y hy => hLN _ hy) hc0`. Rewrite `h2` using `[← h1]`.
-
-Establish `hk : γ 1 = k`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show NormedSpace.exp (((1 : ℝ) : ℂ) • X) = k.1`. Simplify using `using hXk`. Establish `h3 : σ (γ 1) x ∈ N` using `h2`.
-
-Rewrite `h3` using `[hk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.lieStab :
     LieStab := by

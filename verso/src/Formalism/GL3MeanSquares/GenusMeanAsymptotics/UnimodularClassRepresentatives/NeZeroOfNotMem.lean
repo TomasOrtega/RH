@@ -20,16 +20,16 @@ structure IsUnif0 (𝔭 : Ideal (𝓞 F)) (π₀ s₀ : 𝓞 F) : Prop where
   le : Ideal.span {s₀} * 𝔭 ≤ Ideal.span {π₀}
 
 /- English proof (translation)
-Take `⟨π₀, h1, h2, s₀, h3, h4⟩` from `exists_unif0 h𝔭`. Conclude with `⟨π₀, s₀, ⟨h1, h2, h3, h4⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isUnif0 {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : ∃ π₀ s₀, IsUnif0 𝔭 π₀ s₀ := by
   obtain ⟨π₀, h1, h2, s₀, h3, h4⟩ := exists_unif0 h𝔭
   exact ⟨π₀, s₀, ⟨h1, h2, h3, h4⟩⟩
 
 /- English proof (translation)
-Introduce `h0`. Apply `ha` to reduce the goal to its premises. Establish `h1 : algebraMap F K (a : F) = 0` using `h0`. Rewrite `h1` using `[map_eq_zero]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `exact_mod_cast h1`. Consider the case `exact RingOfIntegers.ext h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jι_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 := by
   intro h0
@@ -41,27 +41,27 @@ theorem jι_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 := by
   | exact RingOfIntegers.ext h1
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hu.notMem (Submodule.zero_mem _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsUnif0.ne_zero {𝔭 : Ideal (𝓞 F)} {π₀ s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π₀ s₀) : π₀ ≠ 0 := by
   rintro rfl
   exact hu.notMem (Submodule.zero_mem _)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `ht (Submodule.zero_mem _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_notMem {𝔭 : Ideal (𝓞 F)} {t : 𝓞 F} (ht : t ∉ 𝔭) : t ≠ 0 := by
   rintro rfl
   exact ht (Submodule.zero_mem _)
 
 /- English proof (translation)
-Establish `hp : 𝔭.IsPrime` using `h𝔭`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, e⟩`. Establish `hmem : ι (s₀ ^ k) * z ∈ Ideal.span {ι (π₀ ^ k)}` using `span_pow_mul_le hu.le k (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hz)`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp hmem`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htu : t * s₀ ^ k ∉ 𝔭` using `fun hm => (hp.mem_or_mem hm).elim ht (fun h => hu.s_notMem (hp.mem_of_pow_mem k h))`. Establish `hd : jK (ι (t * s₀ ^ k)) ≠ 0` using `jι_ne_zero (ne_zero_of_notMem htu)`. Use `⟨jK w / jK (ι (t * s₀ ^ k)), mem_SP.mpr ⟨t * s₀ ^ k, htu, w, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc', eq_div_iff hd, mul_comm]`. Establish `hw'` using `congrArg jK hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow] at hw'`. Rewrite using `[mul_div_assoc', eq_div_iff hd]`. Simplify using `only [map_mul, map_pow]`. Take the linear combination `-hw' - jK (ι s₀) ^ k * e`. Introduce and unpack `⟨s, hs, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : InP 𝔭 k (jK (ι π₀) ^ k)`. Rewrite using `[← map_pow]`. Conclude with `inP_jK (Ideal.pow_mem_pow (Ideal.mem_map_of_mem _ hu.mem) k)`. Establish `h2` using `h1.mul (show InP 𝔭 0 s from hs)`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_noncompactPart_iff {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {π₀ s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π₀ s₀) (k : ℕ)
     (a : K) : InP 𝔭 k a ↔ ∃ s ∈ SP K 𝔭, a = jK (ι π₀) ^ k * s := by
@@ -89,11 +89,9 @@ theorem mem_noncompactPart_iff {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {�
     simpa using h2
 
 /- English proof (translation)
-Establish `hs : star (jK (u * conjO K u)) = jK (u * conjO K u)`. Rewrite using `[map_mul]`. Use `show star (jK u * star (jK u)) = jK u * star (jK u)`. Rewrite using `[star_mul, star_star, mul_comm]`. Take `⟨f, hf⟩` from `(hF _).mp hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ f`. Establish `h1 : IsIntegral ℤ (algebraMap F K f)`. Rewrite using `[hf]`. Conclude with `(u * conjO K u).isIntegral_coe`. Conclude with `(isIntegral_algHom_iff ((algebraMap F K).toIntAlgHom) (algebraMap F K).injective).mp h1`.
-
-Conclude with `⟨⟨f, hint⟩, RingOfIntegers.ext hf⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_norm (hF : IsFixF K F) (u : 𝓞 K) : ∃ n₀ : 𝓞 F, ι n₀ = u * conjO K u := by
   have hs : star (jK (u * conjO K u)) = jK (u * conjO K u) := by
@@ -109,7 +107,7 @@ theorem exists_norm (hF : IsFixF K F) (u : 𝓞 K) : ∃ n₀ : 𝓞 F, ι n₀ 
   exact ⟨⟨f, hint⟩, RingOfIntegers.ext hf⟩
 
 /- English proof (translation)
-Introduce `a ha` and use `InP.conj hF ha mem := jK_mem_SP _ fix := star_ι hF _ ne := jι_ne_zero hu.ne_zero tr := by obtain ⟨z, hz⟩ := exists_add_conj_eq hK hF (1 : 𝓞 F) refine ⟨jK z, jK_mem_SP _, ?_⟩ have := congrArg jK hz rw [map_add, map_one, map_one] at this exact this skew := by obtain ⟨P, hP, -⟩ := e …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocUnif (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) [hp : 𝔭.IsPrime] {π₀ s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π₀ s₀) :

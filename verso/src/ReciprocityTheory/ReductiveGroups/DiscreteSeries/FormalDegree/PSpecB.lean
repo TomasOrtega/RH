@@ -12,16 +12,16 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[pmat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pmat_eq_zero_of_eq {ε : Fin n → Bool} (z : PCoord ε → ℂ) {a b : Fin n} (h : ε a = ε b) :
     pmat z a b = 0 := by
   simp [pmat, h]
 
 /- English proof (translation)
-Establish `hU` using `((pmat_isHermitian z).eigenvectorUnitary).2`. Use `first`. Consider the case `exact Matrix.mem_unitaryGroup_iff'.mp hU`. Consider the case `exact Unitary.star_mul_self_of_mem hU`. Consider the case `exact unitary.star_mul_self_of_mem hU`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`.
+A detailed English derivation is pending.
 -/
 private lemma pmat_eigenvectorUnitary_star_mul_self {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     star ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -34,7 +34,7 @@ private lemma pmat_eigenvectorUnitary_star_mul_self {ε : Fin n → Bool} (z : P
   | simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [(pmat_isHermitian z).spectral_theorem]`. Use `first`. Consider the case `rfl`. Consider the case `(congr 2; ext i j; simp [pev, Matrix.diagonal_apply])`. Consider the case `simp [pev, Function.comp_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     pmat z = ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -47,7 +47,7 @@ private lemma pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star {ε : Fin n → B
   | simp [pev, Function.comp_def]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => M * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) (pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star z)`. Rewrite using `[h, Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pmat_mul_evU {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     pmat z * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) =
@@ -58,9 +58,9 @@ theorem pmat_mul_evU {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   rw [h, Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h` using `congrArg Neg.neg (pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star z)`. Rewrite using `[h]`. Establish `hd : diagonal (fun a => ((-pev z a : ℝ) : ℂ)) = -diagonal (fun a => (pev z a : ℂ))`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [diagonal_apply, hij]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hd]`. Use `first`. Consider the case `rw [Matrix.mul_neg, Matrix.neg_mul]`. Consider the case `simp [Matrix.mul_neg, Matrix.neg_mul]`. Consider the case `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem neg_pmat_eq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     -pmat z = ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -78,7 +78,7 @@ theorem neg_pmat_eq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   | noncomm_ring
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_jm (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -88,9 +88,9 @@ theorem jm_mul_jm (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   by_cases h : ε a <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `a b`. Unfold `Jm`. Simplify using `only [diagonal_mul, mul_diagonal, Matrix.neg_apply]`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[pmat_eq_zero_of_eq z h]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rcases hA : ε a <;> rcases hB : ε b <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_conj_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Jm ε * (pmat z * Jm ε) = -pmat z := by
   ext a b
@@ -101,7 +101,7 @@ theorem jm_conj_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Jm ε * (pm
   · rcases hA : ε a <;> rcases hB : ε b <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma charpoly_eigenvectorUnitary_conj_eq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     (((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * M *
@@ -109,13 +109,13 @@ private lemma charpoly_eigenvectorUnitary_conj_eq {ε : Fin n → Bool} (z : PCo
   rw [Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : (diagonal d).charpoly = ∏ i, (Polynomial.X - Polynomial.C (d i))`. Unfold `Matrix.charpoly`. Establish `hc : (diagonal d).charmatrix = diagonal (fun i => Polynomial.X - Polynomial.C (d i))`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij first` using the available equality. Consider the case `simp [Matrix.charmatrix_apply]`. Consider the case `simp [Matrix.charmatrix]`. Use `first`. Consider the case `simp [Matrix.charmatrix_apply, hij]`.
+Substitute using the available equality. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Matrix.charmatrix, hij]`. Rewrite using `[hc, det_diagonal]`. Rewrite using `[h1, Finset.prod_eq_multiset_prod]`. Establish `hm : (univ.val.map fun i => Polynomial.X - Polynomial.C (d i)) = (univ.val.map d).map (fun a => Polynomial.X - Polynomial.C a)`. Rewrite using `[Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hm, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma charpoly_roots_diagonal (d : Fin n → ℂ) :
     (diagonal d).charpoly.roots = univ.val.map d := by
@@ -139,11 +139,11 @@ private lemma charpoly_roots_diagonal (d : Fin n → ℂ) :
   rw [hm, Polynomial.roots_multiset_prod_X_sub_C]
 
 /- English proof (translation)
-Establish `hcp : (-pmat z).charpoly = (pmat z).charpoly`. Rewrite using `[← jm_conj_pmat z, Matrix.charpoly_mul_comm, Matrix.mul_assoc, jm_mul_jm, Matrix.mul_one]`. Establish `h1 : (pmat z).charpoly = (diagonal fun a => (pev z a : ℂ)).charpoly` using `by conv_lhs => rw [pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star z]`. Conclude with `charpoly_eigenvectorUnitary_conj_eq z _`. Establish `h2 : (-pmat z).charpoly = (diagonal fun a => ((-pev z a : ℝ) : ℂ)).charpoly`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_pmat_eq z]`. Conclude with `charpoly_eigenvectorUnitary_conj_eq z _`. Establish `h3` using `congrArg Polynomial.roots (h2.symm.trans (hcp.trans h1))`. Rewrite `h3` using `[charpoly_roots_diagonal, charpoly_roots_diagonal]`. Establish `h4 : (univ.val.map fun a => -pev z a).map (fun x : ℝ => (x : ℂ)) = (univ.val.map (pev z)).map (fun x : ℝ => (x : ℂ))` using `by first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Multiset.map_map, Multiset.map_map]; exact h3)`. Consider the case `simpa [Multiset.map_map, Function.comp_def] using h3`. Conclude with `Multiset.map_injective Complex.ofReal_injective h4`.
+A detailed English derivation is pending.
 -/
 theorem pev_neg_multiset {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     Multiset.map (fun a => -pev z a) univ.val = Multiset.map (pev z) univ.val := by
@@ -165,7 +165,7 @@ theorem pev_neg_multiset {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   exact Multiset.map_injective Complex.ofReal_injective h4
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun s => (s.map g).sum) (pev_neg_multiset z)`. Simplify using `only [Multiset.map_map, Function.comp_def] at h`. Rewrite using `[Finset.sum_eq_multiset_sum, Finset.sum_eq_multiset_sum]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_pev_neg {ε : Fin n → Bool} (z : PCoord ε → ℂ) (g : ℝ → ℝ) :
     ∑ a, g (-pev z a) = ∑ a, g (pev z a) := by
@@ -178,9 +178,9 @@ def pevU {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Matrix (Fin n) (Fin n) 
   ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Establish `hAU` using `pmat_mul_evU z`. Unfold `pevU`. Rewrite using `[Matrix.mulVec_mulVec, hAU, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, pmat_eigenvectorUnitary_star_mul_self, Matrix.vecMul_one]`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Establish `h1 : star (c a) * c a = ((‖c a‖ : ℂ)) ^ 2` using `by first`. Consider the case `exact Complex.conj_mul' (c a)`. Consider the case `simp [← Complex.conj_mul']`. Rewrite using `[← h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -202,11 +202,11 @@ theorem quad_evU {ε : Fin n → Bool} (z : PCoord ε → ℂ) (c : Fin n → �
   ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hi : ε i = b`. Simplify using `[hv i hi]`. Distinguish the cases in `hj : ε j = b`. Simplify using `[hv j hj]`. Establish `hij : ε i = ε j`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `cases h1 : ε i <;> cases h2 : ε j <;> cases b <;> simp_all`. Simplify using `[pmat_eq_zero_of_eq z hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem quad_zero_of_support {ε : Fin n → Bool} (z : PCoord ε → ℂ) (b : Bool) (v : Fin n → ℂ)
     (hv : ∀ j, ε j = b → v j = 0) : star v ⬝ᵥ (pmat z *ᵥ v) = 0 := by
@@ -231,19 +231,19 @@ def pevExt {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ({a // 0 < pev z a} �
     funext a; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Set `Φ : ({a // 0 < pev z a} → ℂ) →ₗ[ℂ] ({j // ε j = b} → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Subtype.val : {j // ε j = b} → Fin n)) ∘ₗ ((Matrix.mulVecLin (pevU z)) ∘ₗ pevExt z)`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `c hc`. Rewrite `hc` using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Establish `hv : ∀ j, ε j = b → (pevU z *ᵥ pevExt z c) j = 0`. Introduce `j hj`. Establish `e` using `congrFun hc ⟨j, hj⟩`. Simplify `e` using `[Φ, LinearMap.funLeft_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0` using `quad_zero_of_support z b _ hv`. Rewrite `h0` using `[quad_evU]`. Establish `h1 : ∑ a, ‖pevExt z c a‖ ^ 2 * pev z a = 0` using `by exact_mod_cast h0`. Establish `hterm : ∀ a, 0 ≤ ‖pevExt z c a‖ ^ 2 * pev z a`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : 0 < pev z a`. Conclude with `mul_nonneg (sq_nonneg _) ha.le`. Establish `e : pevExt z c a = 0` using `by simp [pevExt, ha]`. Simplify using `[e]`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => hterm a)).mp h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Take `⟨a, ha⟩` from `x`. Establish `e` using `hz a (Finset.mem_univ a)`. Establish `hext : pevExt z c a = c ⟨a, ha⟩` using `by simp [pevExt, ha]`. Rewrite `e` using `[hext]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ‖c ⟨a, ha⟩‖ ^ 2 = 0`. Break down `mul_eq_zero.mp e with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h ha.ne'`. Simplify using `using e2`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hinj`. Use `first`. Consider the case `simpa [Fintype.card_subtype] using hle`. Consider the case `(simp only [Module.finrank_fintype_fun_eq_card, Fintype.card_subtype] at hle; convert hle using 2)`.
+A detailed English derivation is pending.
 -/
 theorem card_pos_le {ε : Fin n → Bool} (z : PCoord ε → ℂ) (b : Bool) :
     (univ.filter (fun a => 0 < pev z a)).card ≤ (univ.filter fun a => ε a = b).card := by
@@ -286,14 +286,14 @@ theorem card_pos_le {ε : Fin n → Bool} (z : PCoord ε → ℂ) (b : Bool) :
   | (simp only [Module.finrank_fintype_fun_eq_card, Fintype.card_subtype] at hle; convert hle using 2)
 
 /- English proof (translation)
-Conclude with `le_min (card_pos_le z true) (card_pos_le z false)`.
+A detailed English derivation is pending.
 -/
 theorem pev_card_pos {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     (univ.filter (fun a => 0 < pev z a)).card ≤ q0 ε := by
   exact le_min (card_pos_le z true) (card_pos_le z false)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma eigenvectorUnitary_star_mul_mul_cancel {ε : Fin n → Bool} (z : PCoord ε → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     star ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -301,21 +301,19 @@ private lemma eigenvectorUnitary_star_mul_mul_cancel {ε : Fin n → Bool} (z : 
   rw [← Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : (pmat z * pmat z).trace = ∑ a, ((pev z a : ℂ)) ^ 2` using `by conv_lhs => rw [pmat_eq_eigenvectorUnitary_mul_diagonal_mul_star z]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[eigenvectorUnitary_star_mul_mul_cancel, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, pmat_eigenvectorUnitary_star_mul_self, Matrix.mul_one, diagonal_mul_diagonal, trace_diagonal]`. Simplify using `only [sq]`. Establish `h2 : (pmat z * pmat z).trace = ((∑ i, ∑ j, ‖pmat z i j‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Establish `hh : pmat z j i = star (pmat z i j)` using `by first`. Consider the case `exact ((pmat_isHermitian z).apply j i).symm`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(have e := congrFun (congrFun (pmat_isHermitian z).eq j) i`. Rewrite `e` using `[Matrix.conjTranspose_apply]`. Conclude with `e.symm)`. Rewrite using `[hh]`. Use `first`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Complex.mul_conj' _`. Consider the case `(rw [mul_comm]; exact Complex.conj_mul' _)`. Establish `hsum : ∑ a, pev z a ^ 2 = ∑ i, ∑ j, ‖pmat z i j‖ ^ 2`. Establish `e` using `h1.symm.trans h2`. Conclude with `e` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ∑ a, pev z a ^ 2 = ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a ^ 2 + ∑ a, (if pev z a < 0 then pev z a ^ 2 else 0)`. Rewrite using `[Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Break down `lt_trichotomy (pev z a) 0 with h | h | h` into its components or cases. Simplify using `[h, lt_asymm h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h]`. Simplify using `[h, lt_asymm h]`. Establish `hneg : ∑ a, (if pev z a < 0 then pev z a ^ 2 else 0) = ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a ^ 2`. Establish `e` using `sum_pev_neg z (fun x => if x < 0 then x ^ 2 else 0)`. Rewrite using `[Finset.sum_filter]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eq.trans e.symm ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [neg_lt_zero, neg_sq]`. Unfold `hs`. Rewrite using `[← hsum, hsplit, hneg]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pev_pos_sum_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a ^ 2 = hs (pmat z) / 2 := by
@@ -362,7 +360,7 @@ theorem pev_pos_sum_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `max_eq_left h.le`. Conclude with `max_eq_right (not_lt.mp h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_max_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∑ a, max (pev z a) 0 = ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a := by
@@ -373,13 +371,13 @@ theorem sum_max_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   · exact max_eq_right (not_lt.mp h)
 
 /- English proof (translation)
-Use `set S := ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a with hS`. Establish `hcs : S ^ 2 ≤ ((univ.filter (fun a => 0 < pev z a)).card : ℝ) * ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a ^ 2` using `by first`. Consider the case `exact sq_sum_le_card_mul_sum_sq`. Consider the case `(have e := Finset.sum_mul_sq_le_sq_mul_sq (univ.filter (fun a => 0 < pev z a)) (fun _ => (1 : ℝ)) (pev z)`. Simplify using `using e)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcs` using `[pev_pos_sum_sq]`. Establish `hq : ((univ.filter (fun a => 0 < pev z a)).card : ℝ) ≤ q0 ε` using `by exact_mod_cast pev_card_pos z`. Establish `hhs : 0 ≤ hs (pmat z)` using `by unfold hs; positivity`. Establish `hR : (rhoP z / 2) ^ 2 = (q0 ε : ℝ) * (hs (pmat z) / 2)`. Unfold `rhoP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, mul_pow, Real.sq_sqrt (by positivity), Real.sq_sqrt hhs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRnn : 0 ≤ rhoP z / 2` using `by unfold rhoP; positivity`. Establish `h2 : S ^ 2 ≤ (rhoP z / 2) ^ 2`. Rewrite using `[hR]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcs.trans (mul_le_mul_of_nonneg_right hq (div_nonneg hhs zero_le_two))`. Establish `h3` using `Real.sqrt_le_sqrt h2`. Rewrite `h3` using `[Real.sqrt_sq_eq_abs, Real.sqrt_sq hRnn]`. Conclude with `(le_abs_self S).trans h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_pos_pev_le {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∑ a ∈ univ.filter (fun a => 0 < pev z a), pev z a ≤ rhoP z / 2 := by
@@ -406,7 +404,7 @@ theorem sum_pos_pev_le {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   exact (le_abs_self S).trans h3
 
 /- English proof (translation)
-The claim follows from `|∑ s ∈ S, pev z s| ≤ rhoP z / 2 := by have hup : ∀ T : Finset (Fin n), ∑ s ∈ T, pev z s ≤ rhoP z / 2 := by intro T calc ∑ s ∈ T, pev z s ≤ ∑ s ∈ T, max (pev z s) 0 := Finset.sum_le_sum (fun s _ => le_max_left _ _) _ ≤ ∑ s, max (pev z s) 0 := Finset.sum_le_sum_of_subset_of_nonneg …`.
+A detailed English derivation is pending.
 -/
 theorem abs_sum_pev_le {ε : Fin n → Bool} (z : PCoord ε → ℂ) (S : Finset (Fin n)) :
     |∑ s ∈ S, pev z s| ≤ rhoP z / 2 := by

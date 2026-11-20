@@ -18,19 +18,17 @@ open scoped ComplexOrder
 namespace GlobalTheory.GaussInner
 
 /- English proof (translation)
-Take `⟨hc, hm⟩` from `moments σ S T x y E E' hE hE' hd hd'`. Use `set f : ℝ → ℂ := fun s => ∑' α : σ →₀ ℕ, (s : ℂ) ^ α.degree * ((GlobalTheory.FockSeq.mfact α : ℂ) * MvPowerSeries.coeff α E * MvPowerSeries.coeff α E') with hf`. Use `set w : ℝ → σ → ℂ := fun s => (1 - ((s : ℂ) ^ 2) • (T * S))⁻¹ *ᵥ (y + (s : ℂ) • T *ᵥ x) with hw`. Use `set u : ℝ → σ → ℂ := fun s => x + (s : ℂ) • S *ᵥ w s with hu`. Use `set Φ : ℝ → ℂ := fun s => (s : ℂ) / 2 * (x ⬝ᵥ w s + y ⬝ᵥ u s) with hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΦ' : ∀ t ∈ Set.Icc (0 : ℝ) 1, HasDerivAt Φ (u t ⬝ᵥ w t) t` using `fun t ht => GlobalTheory.Mem.GaussPhase.hasDerivAt_phase σ S T x y t hS hT (hD t ht).1`. Establish `hg : ∀ t ∈ Set.Ioo (0 : ℝ) 1, HasDerivAt (fun s => f s * D s * Complex.exp (-Φ s)) 0 t`. Introduce `t ht`. Establish `ht'` using `Set.Ioo_subset_Icc_self ht`. Take `⟨p, q, m, n, h1, h2, h3, h4, h5⟩` from `hm t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6` using `GlobalTheory.gaussian_pairing_moment_algebra σ S T x y t (f t) p q m n hS hT (hD t ht').1 h1 h2 h3 h4`. Express the relevant statement in the definitionally equal form `_ = f t * (u t ⬝ᵥ w t + _) at h6`. Rewrite `h5` using `[h6]`. Use `((h5.fun_mul (hD t ht').2).fun_mul (hΦ' t ht').fun_neg.cexp).congr_deriv ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgc : ContinuousOn (fun s => f s * D s * Complex.exp (-Φ s)) (Set.Icc 0 1)` using `(hc.mul fun t ht => (hD t ht).2.continuousAt.continuousWithinAt).mul fun t ht => (hΦ' t ht).fun_neg.cexp.continuousAt.continuousWithinAt`. Establish `key` using `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le zero_le_one hgc hg intervalIntegrable_const`. Establish `f0 : f 0 = 1`. Simplify using `only [hf]`. Rewrite using `[tsum_eq_single 0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0, h0', GlobalTheory.FockSeq.mfact]`. Introduce `α hα`. Establish `: α.degree ≠ 0` using `fun h => hα ((Finsupp.degree_eq_zero_iff α).1 h)`. Simplify using `[this]`. Establish `Φ0 : Φ 0 = 0` using `by simp [hΦ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[f0, hD0, Φ0, intervalIntegral.integral_zero, Complex.exp_neg]`. Establish `e : f 1 * D 1 = Complex.exp (Φ 1)`. Use `Complex.exp_ne_zero (Φ 1)` as an intermediate fact. Simplify using `only [neg_zero, Complex.exp_zero, mul_one] at key`. Clear denominators, using `at key` for the nonvanishing conditions.
-
-Take the linear combination `-key`. Simplify `e` using `[hf, hΦ, hu, hw]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pairing_mul_eq_exp {σ : Type} [Fintype σ] [DecidableEq σ] (S T : Matrix σ σ ℂ) (x y : σ → ℂ)
     (E E' : MvPowerSeries σ ℂ) (hS : Sᵀ = S) (hT : Tᵀ = T)
@@ -86,9 +84,9 @@ theorem pairing_mul_eq_exp {σ : Type} [Fintype σ] [DecidableEq σ] (S T : Matr
   simpa [hf, hΦ, hu, hw] using e
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.OscExpDeriv.coeff_deriv_expPS _ _ (coeff_zero_gaussPoly A x)]`. Use `congr 1`. Break down `l with i | j` into its components or cases. Rewrite using `[GlobalTheory.OscGauss.pderiv_inl_gaussPoly, ← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_add, map_sum]`. Simplify using `[Fintype.sum_sum_type, add_mul, Finset.sum_mul, MvPowerSeries.smul_eq_C_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.OscGauss.pderiv_inr_gaussPoly, ← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_add, map_sum]`. Simplify using `[Fintype.sum_sum_type, add_mul, Finset.sum_mul, MvPowerSeries.smul_eq_C_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deriv_gauss {P Q : ℕ} (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) (l : Ix P Q) (α : Ix P Q →₀ ℕ) :
     ((α l : ℂ) + 1) * MvPowerSeries.coeff (α + Finsupp.single l 1) (expPS (gaussPoly A x)) =
@@ -103,9 +101,9 @@ theorem deriv_gauss {P Q : ℕ} (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q →
     simp [Fintype.sum_sum_type, add_mul, Finset.sum_mul, MvPowerSeries.smul_eq_C_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h4 : (0 : ℂ) ≤ ((1 - t ^ 4 : ℝ) : ℂ)` using `Complex.zero_le_real.2 (sub_nonneg.2 (pow_le_one₀ ht.1 ht.2))`. Establish `e : 1 - (((t : ℂ) ^ 2) • B)ᴴ * (((t : ℂ) ^ 2) • B) = (1 - Bᴴ * B) + ((1 - t ^ 4 : ℝ) : ℂ) • (Bᴴ * B)`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Establish `: star ((t : ℂ) ^ 2) * (t : ℂ) ^ 2 = (t : ℂ) ^ 4` using `by simp; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`. Rewrite using `[e]`. Conclude with `hB.add_posSemidef ((posSemidef_conjTranspose_mul_self B).smul h4)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_smul {P Q : ℕ} {B : Matrix (Fin P) (Fin Q) ℂ} (hB : (1 - Bᴴ * B).PosDef) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) : (1 - (((t : ℂ) ^ 2) • B)ᴴ * (((t : ℂ) ^ 2) • B)).PosDef := by
@@ -119,13 +117,13 @@ theorem posDef_smul {P Q : ℕ} {B : Matrix (Fin P) (Fin Q) ℂ} (hB : (1 - Bᴴ
   exact hB.add_posSemidef ((posSemidef_conjTranspose_mul_self B).smul h4)
 
 /- English proof (translation)
-Introduce `P Q F A B x y hA hB v w hv hw a b c d M N`. Take `⟨s1, hin⟩` from `GlobalTheory.FockParseval.parseval _ F v w _ _ hv hw`. Take `⟨s2, -⟩` from `GlobalTheory.FockParseval.parseval _ F w w _ _ hw hw`. Establish `hU : ∀ t ∈ Set.Icc (0 : ℝ) 1, IsUnit (1 - ((t : ℂ) ^ 2) • (Aᴴ * B)).det` using `fun t ht => by`. Simplify `GlobalTheory.isUnit_det_one_sub_conjTranspose_mul_of_contractions P Q A _ hA (posDef_smul hB ht)` using `only [Matrix.mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hU1 : IsUnit (1 - Aᴴ * B).det` using `by simpa using hU 1 ⟨zero_le_one, le_rfl⟩`. Apply the tactic sequence `have hy : y = Sum.elim c d := by ext (i | j) <;> rfl`. Establish `key` using `pairing_mul_eq_exp (fromBlocks 0 Aᴴᵀ Aᴴ 0) (fromBlocks 0 B Bᵀ 0) (Sum.elim a b) y (MvPowerSeries.map (starRingEnd ℂ) (expPS (gaussPoly A x))) (expPS (gaussPoly B y)) (by simp [fromBlocks_transpose]) (by simp [fromBlocks_transpose]) (by simpa using s1) s2 (by rw [MvPowerSeries.coe …`. Use `congrArg (starRingEnd ℂ) (deriv_gauss A x l α)` as an intermediate fact. Rewrite `this` using `[← MvPowerSeries.coeff_map (f := starRingEnd ℂ) (n := α)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases l with i | j <;>`. Simplify `this)` using `[MvPowerSeries.smul_eq_C_mul, Fintype.sum_sum_type, a, b]`. Use the proof step `(deriv_gauss B y) (fun s : ℝ => (1 - ((s : ℂ) ^ 2) • (Aᴴ * B)).det) (by simp)`. Use the proof step `(fun t ht => GlobalTheory.FockDetDer.hasDerivAt_det_one_sub_sq P Q A B t (hU t ht))`. Establish `hb` using `GlobalTheory.gaussian_phase_critical_value_blocks P Q A B a c b d hU1`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [← hy] at hb`. Rewrite `key` using `[hb]`. Simplify using `only [MvPowerSeries.coeff_map, Complex.ofReal_one, one_pow, one_smul] at key`. Rewrite using `[hin, ← key, mul_comm, mul_assoc, mul_inv_cancel₀ hU1.ne_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_gauss_gauss : ∀ (P Q : ℕ) (F : Fock (Ix P Q)) (A B : Matrix (Fin P) (Fin Q) ℂ) (x y : Ix P Q → ℂ), (1 - Aᴴ * A).PosDef → (1 - Bᴴ * B).PosDef → ∀ v w : F.H, HasCoeff F v (expPS (gaussPoly A x)) → HasCoeff F w (expPS (gaussPoly B y)) → let a : Fin P → ℂ := fun i => star (x (Sum.inl i)); let b : Fin Q → ℂ := fun j => star (x (Sum.inr j)); let c : Fin P → ℂ := fun i => y (Sum.inl i); let d : Fin Q → ℂ := fun j => y (Sum.inr j); let M := (1 - B * Aᴴ)⁻¹; let N := (1 - Aᴴ * B)⁻¹; inner ℂ v w = ((1 - Aᴴ * B).det)⁻¹ * Complex.exp (a ⬝ᵥ M *ᵥ c + d ⬝ᵥ N *ᵥ b + a ⬝ᵥ (M * B) *ᵥ b + d ⬝ᵥ (N * Aᴴ) *ᵥ c) := by
   intro P Q F A B x y hA hB v w hv hw a b c d M N

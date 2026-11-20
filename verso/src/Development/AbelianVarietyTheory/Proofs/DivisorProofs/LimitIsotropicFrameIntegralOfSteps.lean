@@ -13,9 +13,9 @@ open ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Recipro
 open ReciprocityTheory.ChartRestriction.G.TB (dAct)
 
 /- English proof (translation)
-Establish `ht : HasSubst (fun q : Fin n × Fin d => ∑ i : κ × Fin d, M i.1 q.1 q.2 i.2 • w i.1 i.2)` using `hasSubst_of_constantCoeff_zero (by intro q; simp [hw])`. Establish `hs : HasSubst (fun q : Fin n × Fin d => expPt G (fun e => (X (q.1, e) : MvPowerSeries (Fin n × Fin d) C)) q.2)` using `hasSubst_of_constantCoeff_zero (fun q => cc_expPt G (by simp) q.2)`. Use `(subst_comp_subst_apply hs ht F).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(subst_expPt G ht (by simp) q.2).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `e`. Use `(subst_X ht _).trans ?_` and prove the remaining obligations. Simplify using `[mv, Fintype.sum_prod_type, Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem subst_comb_expPt {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d n : ℕ} {σ κ : Type} [Fintype κ]
     (G : LogFGL v d) (w : κ → Fin d → MvPowerSeries σ C) (hw : ∀ b i, constantCoeff (w b i) = 0)
@@ -39,7 +39,7 @@ theorem subst_comb_expPt {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
   simp [mv, Fintype.sum_prod_type, Finset.sum_apply]
 
 /- English proof (translation)
-Establish `hz : 0 ≤ v (z : C)` using `intCast_mem (ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v) z`. Use `push_cast`. Rewrite using `[v.map_mul, v.map_pow, hp]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_v_pow_mul_int {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {p : ℕ} (hp : v (p : C) = 1)
     (N : ℕ) (z : ℤ) : ((N : ℝ) : WithTop ℝ) ≤ v ((((p : ℤ) ^ N * z : ℤ)) : C) := by
@@ -50,27 +50,23 @@ theorem le_v_pow_mul_int {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
     _ ≤ _ := le_add_of_nonneg_right hz
 
 /- English proof (translation)
-Introduce `_ hAct hUnit hBi hFr hFin hCont C _ _ v p hp d R _ _ O _ _ _ B hB h hh σ _ κ _ w hw w0 n A a hA hiso α`. Establish `hw0 : ∀ b i, constantCoeff (w b i) = 0` using `fun b => (hw b).1`. Establish `mono : ∀ {M N : ℕ} {x : WithTop ℝ}, M ≤ N → ((N : ℝ) : WithTop ℝ) ≤ x → ((M : ℝ) : WithTop ℝ) ≤ x` using `fun hMN hx => le_trans (WithTop.coe_le_coe.2 (Nat.cast_le.2 hMN)) hx`. Establish `zle : ∀ {N : ℕ} {x : C}, ((N : ℝ) : WithTop ℝ) ≤ v x → IsIntV v x` using `fun hx => by`. Use `mono (Nat.zero_le _) hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[IsIntV]`. Establish `hD : ∀ (x : O) i j, IsIntV v (dAct C B x i j)` using `fun x i j => hB.2.1 x i _`. Establish `hAi : ∀ b j e e', IsIntV v (A b j e e')` using `fun b j e e' => by`. Use `(ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v).add_mem (zle (hA 0 b j e e')) (hD (a 0 b j) e e')` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨m, e, he⟩` from `Module.Finite.exists_fin (R := ℤ) (M := O)`. Set `g : κ × κ × Fin m → MvPowerSeries σ C` to `fun i => pairSer (fglOf hB) h (w i.1) (mv (dAct C B (e i.2.2)) (w i.2.1))`. Establish `hg0 : ∀ i, constantCoeff (g i) = 0` using `fun i => (hBi C v d R O B hB h hh σ (w i.1) (w i.1) _ (hw _) (hw _) ((hAct C v d R O B hB σ (e i.2.2)).2 _ (hw i.2.1))).1`. Take `⟨N₀, hN₀⟩` from `hCont C v (Fin n × Fin d) σ (κ × Fin d) (subst (fun q : Fin n × Fin d => expPt (fglOf hB) (fun e => (X (q.1, e) : MvPowerSeries (Fin n × Fin d) C)) q.2) (frameSer B h w0 n)) (fun i => w i.1 i.2) (fun i => hw0 _ _) α`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose N₁ hN₁ using fun γ => hCont C v Unit σ (κ × κ × Fin m) (PowerSeries.exp C) g hg0 γ`. Take `⟨N, hN0, hN1⟩ : ∃ N : ℕ, N₀ ≤ N ∧ ∀ x ∈ Finset.HasAntidiagonal.antidiagonal α, N₁ x.2 ≤ N` from `⟨max N₀ ((Finset.HasAntidiagonal.antidiagonal α).sup fun x => N₁ x.2), le_max_left _ _, fun x hx => le_trans (Finset.le_sup (f := fun x => N₁ x.2) hx) (le_max_right _ _)⟩`. Establish `hdec : ∀ b b', ∃ nn : Fin m → ℤ, (∑ j, star (a N b j) * a N b' j) * w0 = ∑ i, ((p : ℤ) ^ N * nn i) • e i` using `fun b b' => by`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (hiso N b b')`. Take `⟨nn, hnn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ (v := e) (x := c * w0)).1 (by rw [he]; exact Submodule.mem_top)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨nn, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_assoc, ← hnn, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul, mul_assoc]`. Use `choose nn hnn using hdec`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU` using `hFin C v d R O B hB h hh σ κ w hw w0 n (a N) (Fin m) e (fun b b' i => (p : ℤ) ^ N * nn b b' i) hnn`. Establish `hF` using `(hFr C v d R O B hB h hh w0 n).2.2 σ (fun j => ∑ b, mv (dAct C B (a N b j)) (w b)) (fun j i => by simp [Finset.sum_apply, mv, hw0])`. Set `s : κ × κ × Fin m → C` to `fun i => (((p : ℤ) ^ N * nn i.1 i.2.1 i.2.2 : ℤ) : C)`. Establish `hT : ∑ b, ∑ b', ∑ i, (((p : ℤ) ^ N * nn b b' i : ℤ) : C) • pairSer (fglOf hB) h (w b) (mv (dAct C B (e i)) (w b')) = ∑ i, s i • g i`. Simplify using `only [Fintype.sum_prod_type, s, g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hU` using `[hT]`. Establish `hT0 : constantCoeff (∑ i, s i • g i) = 0` using `by simp [hg0]`. Take `⟨hz, -, -, hmul, -⟩` from `hUnit C v σ`. Establish `hprod` using `hmul _ _ hU.1 hT0`. Rewrite `hprod` using `[sub_add_cancel, ← hF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hN₀ (fun q i => A i.1 q.1 q.2 i.2) (fun q i => dAct C B (a N i.1 q.1) q.2 i.2) (fun q i => hAi _ _ _ _) (fun q i => hD _ _ _) (fun q i => mono hN0 (hA N _ _ _ _))`. Rewrite `h1` using `[subst_comb_expPt (fglOf hB) w hw0 _ A, subst_comb_expPt (fglOf hB) w hw0 _ (fun b j => dAct C B (a N b j)), hprod]`. Establish `h2 : ∀ x ∈ Finset.HasAntidiagonal.antidiagonal α, IsIntV v (coeff x.2 (PowerSeries.subst (∑ i, s i • g i) (PowerSeries.exp C)))` using `fun x hx => by`. Establish `h3` using `hN₁ x.2 (fun _ => s) (fun _ _ => 0) (fun _ i => zle (le_v_pow_mul_int hp N _)) (fun _ _ => by simp [IsIntV]) (fun _ i => by`. Rewrite using `[sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mono (hN1 x hx) (le_v_pow_mul_int hp N _))`. Simplify using `only [zero_smul, Finset.sum_const_zero] at h3`. Establish `h4` using `(ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v).add_mem h3 (hz.2 x.2)`. Establish `h5 : ∀ y z : C, y - z + z ∈ ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v → IsIntV v y` using `fun y z hyz => by`. Rewrite `hyz` using `[sub_add_cancel]`.
-
-Conclude with `hyz`. Conclude with `h5 _ _ h4`. Rewrite `h1` using `[coeff_mul]`. Establish `h6` using `(ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v).add_mem h1 ((ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v).sum_mem fun x hx => (ReciprocityTheory.ChartRestriction.G.Sh.ptIntSub v).mul_mem (hU.2 x.1) (h2 x hx))`. Rewrite `h6` using `[sub_add_cancel]`.
-
-Conclude with `h6`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limFrame : AddSt → ActSt → UnitSt → BiaddSt → FrameSt → FinSt → ContSt → LimFrameSt := by
   classical

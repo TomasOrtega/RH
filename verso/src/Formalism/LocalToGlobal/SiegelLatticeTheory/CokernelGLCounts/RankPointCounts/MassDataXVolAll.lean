@@ -8,11 +8,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.MassDataX
 
 /- English proof (translation)
-Introduce `D T u u' X0 sd C Th Q i0 i0' νq`. Use `⟨PI.VolStabS.MassDataS.inVolumesAt_of_SWS hSW _ _ _ _ _ _ _ _ _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `apply level_s_at_instance`. Consider the case `apply PI.Final.level_s_at_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `apply PI.level_s_at_instance`. Consider the case `apply MassDataLevelSSteps.inLevelSAt_holds`. Consider the case `apply PI.MassDataLevelSSteps.inLevelSAt_holds`. Consider the case `apply PI.UnitaryGroupMassFormula.MassDataLevelSSteps.inLevelSAt_holds`. Apply `inMassesAt_holds` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inColumnsAt_holds` to reduce the goal to its premises. Apply `inIndicesAt_holds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem massDataVolAll_of (hSW : PI.VolStabS.MassDataS.SWXS) :
     Formalism.L2.SG.PoincareAmplitudeLowerBounds.MassDataVolAll := by

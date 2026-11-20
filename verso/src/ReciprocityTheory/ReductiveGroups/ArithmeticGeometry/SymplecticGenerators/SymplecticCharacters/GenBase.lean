@@ -10,56 +10,56 @@ abbrev spH (g : ℕ) : Submonoid (Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ
   Submonoid.closure (spGens g)
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Set.mem_union_left _ (Set.mem_union_left _ ⟨S, hS, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem spTransl_mem {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) : spTransl S ∈ spH g := Submonoid.subset_closure (Set.mem_union_left _ (Set.mem_union_left _ ⟨S, hS, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Set.mem_union_left _ (Set.mem_union_right _ ⟨U, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem spDiag_mem (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U ∈ spH g := Submonoid.subset_closure (Set.mem_union_left _ (Set.mem_union_right _ ⟨U, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Set.mem_union_right _ (Set.mem_singleton _))`.
+A detailed English derivation is pending.
 -/
 theorem J_mem_spH : J (Fin g) ℤ ∈ spH g := Submonoid.subset_closure (Set.mem_union_right _ (Set.mem_singleton _))
 
 /- English proof (translation)
-Simplify using `[spTransl, fromBlocks_multiply, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spTransl_neg_mul (S : Matrix (Fin g) (Fin g) ℤ) : spTransl (-S) * spTransl S = 1 := by
 
   simp [spTransl, fromBlocks_multiply, fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[spDiag, fromBlocks_multiply, ← Matrix.transpose_mul, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spDiag_inv_mul (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U⁻¹ * spDiag U = 1 := by
 
   simp [spDiag, fromBlocks_multiply, ← Matrix.transpose_mul, fromBlocks_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.J_squared, neg_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_cube : J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ = -J (Fin g) ℤ := by
 
   rw [Matrix.J_squared, neg_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[J_cube, neg_mul, Matrix.J_squared, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_pow_four : J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ = 1 := by
 
   rw [J_cube, neg_mul, Matrix.J_squared, neg_neg]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem x hx`. Break down `hx with (⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ` into its components or cases. Establish `hS' : (-S).IsSymm`. Unfold `Matrix.IsSymm at hS ⊢`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.transpose_neg, hS]`. Conclude with `⟨spTransl (-S), spTransl_mem hS', spTransl_neg_mul S⟩`. Conclude with `⟨spDiag U⁻¹, spDiag_mem _, spDiag_inv_mul U⟩`. Rewrite `hJ` using `[Set.mem_singleton_iff]`. Substitute `hJ` using the available equality.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ, mul_mem (mul_mem J_mem_spH J_mem_spH) J_mem_spH, J_pow_four⟩`. Consider the case `one => exact ⟨1, one_mem _, one_mul 1⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨x', hx'm, hx'⟩` from `hx`. Take `⟨y', hy'm, hy'⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y' * x', mul_mem hy'm hx'm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc x' x y, hx', one_mul, hy']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem spH_exists_inv {x : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} (hx : x ∈ spH g) :
     ∃ y ∈ spH g, y * x = 1 := by
@@ -83,7 +83,7 @@ theorem spH_exists_inv {x : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} (hx 
     rw [mul_assoc, ← mul_assoc x' x y, hx', one_mul, hy']
 
 /- English proof (translation)
-Take `⟨y, hy, hyN⟩` from `spH_exists_inv hN`. Establish `h1 : M = y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spH_of_mul_eq_one {M N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} (hN : N ∈ spH g)
     (h : N * M = 1) : M ∈ spH g := by
@@ -97,7 +97,7 @@ theorem mem_spH_of_mul_eq_one {M N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) 
   exact hy
 
 /- English proof (translation)
-Rewrite using `[SymplecticGroup.mem_iff]`. Establish `hS' : Sᵀ = S` using `hS`. Unfold `spTransl`. Rewrite using `[Matrix.J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hS']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spTransl_mem_sp {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) :
     spTransl S ∈ symplecticGroup (Fin g) ℤ := by
@@ -109,7 +109,7 @@ theorem spTransl_mem_sp {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) :
   simp [hS']
 
 /- English proof (translation)
-Rewrite using `[SymplecticGroup.mem_iff]`. Unfold `spDiag`. Rewrite using `[Matrix.J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[← Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spDiag_mem_sp (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U ∈ symplecticGroup (Fin g) ℤ := by
 
@@ -119,9 +119,7 @@ theorem spDiag_mem_sp (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U ∈ symple
   simp [← Matrix.transpose_mul]
 
 /- English proof (translation)
-Introduce `x hx`. Break down `hx with (⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ` into its components or cases. Conclude with `spTransl_mem_sp hS`. Conclude with `spDiag_mem_sp U`. Rewrite `hJ` using `[Set.mem_singleton_iff]`.
-
-Substitute `hJ` using the available equality. Conclude with `SymplecticGroup.J_mem _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spGens_subset (g : ℕ) : spGens g ⊆ symplecticGroup (Fin g) ℤ := by
 
@@ -134,7 +132,7 @@ theorem spGens_subset (g : ℕ) : spGens g ⊆ symplecticGroup (Fin g) ℤ := by
     exact SymplecticGroup.J_mem _ _
 
 /- English proof (translation)
-The claim follows from `Submonoid.closure_le.mpr (spGens_subset g)`.
+A detailed English derivation is pending.
 -/
 theorem spH_le (g : ℕ) : spH g ≤ symplecticGroup (Fin g) ℤ := Submonoid.closure_le.mpr (spGens_subset g)
 
@@ -142,7 +140,7 @@ def spLow (S : Matrix (Fin g) (Fin g) ℤ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕
   fromBlocks 1 0 S 1
 
 /- English proof (translation)
-Rewrite using `[J_cube]`. Unfold `spLow spTransl`. Rewrite using `[Matrix.J, fromBlocks_neg, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spLow_eq (S : Matrix (Fin g) (Fin g) ℤ) :
     spLow S = J (Fin g) ℤ * spTransl (-S) * (J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ) := by
@@ -153,7 +151,7 @@ theorem spLow_eq (S : Matrix (Fin g) (Fin g) ℤ) :
   simp
 
 /- English proof (translation)
-Establish `hS' : (-S).IsSymm`. Unfold `Matrix.IsSymm at hS ⊢`. Rewrite using `[Matrix.transpose_neg, hS]`. Rewrite using `[spLow_eq]`. Conclude with `mul_mem (mul_mem J_mem_spH (spTransl_mem hS')) (mul_mem (mul_mem J_mem_spH J_mem_spH) J_mem_spH)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spLow_mem {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) : spLow S ∈ spH g := by
 
@@ -166,7 +164,7 @@ theorem spLow_mem {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) : spLow S ∈
 abbrev eJ (j : Fin g) : Matrix (Fin g) (Fin g) ℤ := single j j 1
 
 /- English proof (translation)
-Use `show (single j j (1 : ℤ))ᵀ = single j j 1`. Rewrite using `[Matrix.transpose_single]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eJ_symm (j : Fin g) : (eJ j).IsSymm := by
 
@@ -174,7 +172,7 @@ theorem eJ_symm (j : Fin g) : (eJ j).IsSymm := by
   rw [Matrix.transpose_single]
 
 /- English proof (translation)
-Simplify using `[eJ, Matrix.single_mul_single_same]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eJ_mul_self (j : Fin g) : eJ j * eJ j = eJ j := by
 
@@ -184,7 +182,7 @@ def spPJ (j : Fin g) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ :=
   fromBlocks (1 - eJ j) (eJ j) (-eJ j) (1 - eJ j)
 
 /- English proof (translation)
-Establish `hE` using `eJ_mul_self j`. Unfold `spPJ spTransl spLow`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_add, Matrix.add_mul, hE] <;> abel`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spPJ_eq (j : Fin g) : spPJ j = spTransl (eJ j) * spLow (-eJ j) * spTransl (eJ j) := by
 
@@ -195,9 +193,9 @@ theorem spPJ_eq (j : Fin g) : spPJ j = spTransl (eJ j) * spLow (-eJ j) * spTrans
     Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_add, Matrix.add_mul, hE] <;> abel
 
 /- English proof (translation)
-Establish `hE` using `eJ_symm j`. Establish `hE' : (-eJ j).IsSymm`. Unfold `Matrix.IsSymm at hE ⊢`. Rewrite using `[Matrix.transpose_neg, hE]`. Rewrite using `[spPJ_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (mul_mem (spTransl_mem hE) (spLow_mem hE')) (spTransl_mem hE)`.
+A detailed English derivation is pending.
 -/
 theorem spPJ_mem (j : Fin g) : spPJ j ∈ spH g := by
 
@@ -209,7 +207,7 @@ theorem spPJ_mem (j : Fin g) : spPJ j ∈ spH g := by
   exact mul_mem (mul_mem (spTransl_mem hE) (spLow_mem hE')) (spTransl_mem hE)
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_mul_inl (A B C D : Matrix (Fin g) (Fin g) ℤ)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
@@ -219,7 +217,7 @@ theorem fromBlocks_mul_inl (A B C D : Matrix (Fin g) (Fin g) ℤ)
   simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_mul_inr (A B C D : Matrix (Fin g) (Fin g) ℤ)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
@@ -229,7 +227,7 @@ theorem fromBlocks_mul_inr (A B C D : Matrix (Fin g) (Fin g) ℤ)
   simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[h]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_of_unit {M O : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} {p : Fin g ⊕ Fin g}
     (h : ∀ r, M r p = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r p) (q : Fin g ⊕ Fin g) :
@@ -240,11 +238,11 @@ theorem mul_col_of_unit {M O : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} {
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : Mᵀ * J (Fin g) ℤ * M = J (Fin g) ℤ` using `SymplecticGroup.mem_iff'.mp hM`. Establish `h2` using `congrFun (congrFun h1 q) (Sum.inl i)`. Rewrite `h2` using `[mul_col_of_unit h, Matrix.mul_apply]`. Establish `hJ : ∀ r, J (Fin g) ℤ r (Sum.inl i) = if r = Sum.inr i then 1 else 0`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases r with r | r <;> by_cases hri : r = i <;> simp [Matrix.J, Matrix.one_apply, hri]`. Rewrite `h2` using `[hJ, Matrix.transpose_apply]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Rewrite using `[h2, Matrix.one_apply]`. Distinguish the cases in `hq : q = Sum.inr i`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hq, if_neg (Ne.symm hq)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem row_inr_of_col_inl {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hM : M ∈ symplecticGroup (Fin g) ℤ) {i : Fin g}
@@ -267,13 +265,13 @@ theorem row_inr_of_col_inl {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   · rw [if_neg hq, if_neg (Ne.symm hq)]
 
 /- English proof (translation)
-Establish `h1 : Mᵀ * J (Fin g) ℤ * M = J (Fin g) ℤ` using `SymplecticGroup.mem_iff'.mp hM`. Establish `h2` using `congrFun (congrFun h1 q) (Sum.inr i)`. Rewrite `h2` using `[mul_col_of_unit h, Matrix.mul_apply]`. Establish `hJ : ∀ r, J (Fin g) ℤ r (Sum.inr i) = if r = Sum.inl i then -1 else 0`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases r with r | r <;> by_cases hri : r = i <;> simp [Matrix.J, Matrix.one_apply, hri]`. Rewrite `h2` using `[hJ, Matrix.transpose_apply]`. Simplify using `only [mul_ite, mul_neg, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `hq : q = Sum.inl i`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hq` using the available equality. Rewrite `h2` using `[if_pos rfl]`. Simplify using `only [if_true]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[if_neg hq]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg (Ne.symm hq)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem row_inl_of_col_inr {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hM : M ∈ symplecticGroup (Fin g) ℤ) {i : Fin g}

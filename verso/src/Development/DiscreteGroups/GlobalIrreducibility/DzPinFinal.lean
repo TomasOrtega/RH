@@ -12,37 +12,31 @@ namespace DiscreteGroups.sglob.DzType
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `g _ n hn2 hbig K _ _ hcard ψ₀ hψ₀ θ ξ hθ hξ hH`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hg2` using `hgp.two_le`. Establish `hfin : Finite K` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `letI : Fintype K := Fintype.ofFinite K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hK : Fintype.card K = g ^ n` using `by rw [← Nat.card_eq_fintype_card, hcard]`. Establish `hg2n : g ^ 2 ≤ g ^ n` using `Nat.pow_le_pow_right (by omega) hn2`. Establish `hg4 : 4 ≤ g ^ 2` using `by nlinarith`. Use `set N := g ^ n - 1 with hNdef`. Establish `hN1 : N + 1 = g ^ n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : 0 < N` using `by omega`. Establish `hN1lt : 1 < N` using `by omega`. Take `⟨Q, ω, Ω, hΩi, hdat⟩` from `DzPin.exists_setup g n (by omega) K hK ψ₀ hψ₀`. Take `⟨k, hk⟩` from `DzPin.exists_eq_pow_of_injective Ω θ hΩi`. Take `⟨k', hk'⟩` from `DzPin.exists_eq_pow_of_injective Ω ξ hΩi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΩN : Ω ^ N = 1`. Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Establish `hz : z ^ N = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one, hNdef, ← hK]`. Conclude with `FiniteField.pow_card_sub_one_eq_one _ z.ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.pow_apply, ← map_pow, hz, map_one, MonoidHom.one_apply]`. Establish `hreg : ∀ {η : Kˣ →* ℂˣ} {m : ℕ}, η = Ω ^ m → GlobalTheory.Published.IsRegularChar g n η → ∀ i j, i < n → j < n → m * g ^ i ≡ m * g ^ j [MOD g ^ n - 1] → i = j`. Introduce `η m hηm hr i j hi hj hm`. Use `hr i j hi hj ?_` and prove the remaining obligations. Rewrite using `[hηm, ← pow_mul, ← pow_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DzPin.pow_eq_pow_of_modEq hΩN hm`. Establish `hmain : ∀ u b : ℕ, u.Coprime (g ^ n - 1) → (Nat.digits g ((u * k + b * ((g ^ n - 1) / (g - 1))) % (g ^ n - 1))).sum + (Nat.digits g (u * k' % (g ^ n - 1))).sum = (Nat.digits g ((u * k' + b * ((g ^ n - 1) / (g - 1))) % (g ^ n - 1))).sum + (Nat.digits g (u * k % (g ^ n - 1))).sum`. Introduce `u b hu`. Use `haveI : NeZero N := ⟨by omega⟩`. Use `set t0 := ((ZMod.unitOfCoprime u hu)⁻¹ : (ZMod N)ˣ).val.val with ht0def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : u * t0 ≡ 1 [MOD N]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Use `push_cast`. Rewrite using `[ht0def, ZMod.natCast_zmod_val, ← ZMod.coe_unitOfCoprime u hu, Units.mul_inv]`. Use `set t := t0 + N * (t0 + 1) with htdef`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htu : t * u ≡ 1 [MOD N]`. Establish `e : t * u = u * t0 + N * ((t0 + 1) * u)` using `by rw [htdef]; ring`. Unfold `Nat.ModEq`. Rewrite using `[e, Nat.add_mul_mod_self_left]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htN : t.Coprime N` using `Nat.coprime_of_mul_modEq_one u htu`. Establish `htg : t.Coprime g`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hgp]`. Introduce `hdt`. Establish `h1 : g ∣ t + 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : t + 1 = g ^ n * (t0 + 1)` using `by rw [← hN1, htdef]; ring`. Rewrite using `[e]`. Conclude with `Dvd.dvd.mul_right (dvd_pow_self g (by omega)) _`. Establish `h2 : g ∣ 1` using `(Nat.dvd_add_right hdt).mp h1`. Conclude with `hgp.one_lt.ne' (Nat.dvd_one.mp h2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Φ, D, hΦi, hDω, hΦζ, hΦω⟩` from `hdat t (Nat.Coprime.mul_right htg htN)`. Establish `hG : ∀ (η : Kˣ →* ℂˣ) (a : ℕ), η = Ω ^ (t * a) → gs ψ₀ η⁻¹ = Φ (D.g a)`. Introduce `η a hη`. Conclude with `DzPin.gs_eq ψ₀ Φ D.ω D.ζ D.prim.pow_eq_one hΦζ η a (fun z => by`. Rewrite using `[hη, hDω, hΦω, MonoidHom.pow_apply, Units.val_pow_eq_pow_val, pow_mul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e := (g ^ n - 1) / (g - 1) with hedef`. Set `χ₀ : (ZMod g)ˣ →* ℂˣ` to `(Ω.comp (Units.map (algebraMap (ZMod g) K).toMonoidHom)) ^ (t * b)`. Establish `hnm : nmChar K χ₀ = Ω ^ (e * (t * b))` using `DzPin.nm_eq hK Ω (t * b)`. Take `⟨r, hr, hrr⟩` from `hH χ₀`. Establish `h1 : θ * nmChar K χ₀ = Ω ^ (t * ((u * k + b * e) % N))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnm, hk, ← pow_add]`. Conclude with `(DzPin.pow_eq_pow_of_modEq hΩN (DzPin.modEq_twist htu)).symm`. Establish `h2 : ξ = Ω ^ (t * (u * k' % N))`. Rewrite using `[hk']`. Conclude with `(DzPin.pow_eq_pow_of_modEq hΩN (DzPin.modEq_twist0 htu)).symm`.
-
-Establish `h3 : ξ * nmChar K χ₀ = Ω ^ (t * ((u * k' + b * e) % N))`. Rewrite using `[hnm, hk', ← pow_add]`. Conclude with `(DzPin.pow_eq_pow_of_modEq hΩN (DzPin.modEq_twist htu)).symm`. Establish `h4 : θ = Ω ^ (t * (u * k % N))`. Rewrite using `[hk]`.
-
-Conclude with `(DzPin.pow_eq_pow_of_modEq hΩN (DzPin.modEq_twist0 htu)).symm`. Rewrite `hrr` using `[hG _ _ h1, hG _ _ h2, hG _ _ h3, hG _ _ h4, ← map_mul, ← map_mul, ← map_pow, ← map_pow]`. Conclude with `DzPin.dsum_eq_of_pow_eq D (Nat.mod_lt _ hN0) (Nat.mod_lt _ hN0) (Nat.mod_lt _ hN0) (Nat.mod_lt _ hN0) hr (hΦi hrr)`. Take `⟨i, hi⟩` from `hD g n hgp hn2 hbig k k' (hreg hk hθ) (hreg hk' hξ) hmain`. Use `⟨i, fun z => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hk', hk, DzPin.pow_eq_pow_of_modEq hΩN hi, MonoidHom.pow_apply, MonoidHom.pow_apply, map_pow, ← pow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem lPin_of_dig (hD : Dig) : LPin := by
   intro g _ n hn2 hbig K _ _ hcard ψ₀ hψ₀ θ ξ hθ hξ hH

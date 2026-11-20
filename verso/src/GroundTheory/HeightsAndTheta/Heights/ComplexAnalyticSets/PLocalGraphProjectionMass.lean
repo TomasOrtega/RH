@@ -17,11 +17,11 @@ namespace LocalGraphProjectionMass
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hP : ∀ z, frameProj (c.map b.repr) I (b.repr z) = frameProj c I z`. Introduce `z`. Use function extensionality and compare the values at `i`. Simplify using `only [frameProj, OrthonormalBasis.map_apply, LinearIsometryEquiv.inner_map_map]`. Establish `h : {y ∈ b.repr '' A | frameProj (c.map b.repr) I y = x} = b.repr '' {z ∈ A | frameProj c I z = x}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, hz, rfl⟩, hy⟩`. Conclude with `⟨z, ⟨hz, by rwa [hP] at hy⟩, rfl⟩`. Introduce and unpack `⟨z, ⟨hz, hzx⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨z, hz, rfl⟩, by rw [hP]; exact hzx⟩`. Simplify using `only [frameFibreCount]`. Rewrite using `[h, b.repr.injective.injOn.encard_image]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frameFibreCount_image_repr_map (b c : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
     (I : Finset (Fin n)) (A : Set (EuclideanSpace ℂ (Fin n))) (x : I → ℂ) :
@@ -42,9 +42,9 @@ theorem frameFibreCount_image_repr_map (b c : OrthonormalBasis (Fin n) ℂ (Eucl
   rw [h, b.repr.injective.injOn.encard_image]
 
 /- English proof (translation)
-Take `⟨m, e, Ω', F, hΩ', hF, himg⟩` from `LocalGraphMass.image_repr_eq_graph b I₀ hd Ω g hΩ hg hfix`. Establish `hT : b.repr '' (g '' Ω ∩ M) = graphPt e F '' Ω' ∩ b.repr '' M`. Rewrite using `[Set.image_inter b.repr.injective, himg]`. Establish `hM' : MeasurableSet (b.repr '' M)` using `b.repr.toHomeomorph.measurableEmbedding.measurableSet_image.2 hM`. Establish `h` using `hPF d m n e Ω' F hΩ' hF (c.map b.repr) _ hM'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← hT, b.repr.isometry.hausdorffMeasure_image (Or.inr b.repr.surjective)]`. Rewrite using `[h]`. Repeatedly rewrite using `[frameFibreCount_image_repr_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mass_piece_frame (hPF : ProjectionFormula.Statement)
     (b c : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I₀ : Finset (Fin n)) {d : ℕ}
@@ -65,21 +65,19 @@ theorem mass_piece_frame (hPF : ProjectionFormula.Statement)
   simp_rw [frameFibreCount_image_repr_map]
 
 /- English proof (translation)
-Use `set e := I.orderIsoOfFin hI`. Use `set s : Fin d → Fin n := ⇑(I.orderEmbOfFin hI) with hs`. Set `φ : EuclideanSpace ℂ I ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin d)` to `LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e.toEquiv.symm`. Establish `hφ : ∀ x k, φ x k = x (e k)` using `fun x k => rfl`. Establish `hrow : ∀ z k, rowsProj U s z k = inner ℂ (c (e k)) z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z k`. Rewrite using `[hc]`. Simplify using `[rowsProj, Matrix.mulVec, dotProduct, s, e, Finset.coe_orderIsoOfFin_apply]`. Establish `hiff : ∀ x z, frameProj c I z = WithLp.ofLp x ↔ rowsProj U s z = φ x`. Introduce `x z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `k`. Rewrite using `[hrow, hφ]`. Conclude with `congrFun h (e k)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `h`. Use function extensionality and compare the values at `i`. Use `congrArg (fun y : EuclideanSpace ℂ (Fin d) => y (e.symm i)) h` as an intermediate fact. Simplify using `only [hrow, hφ, OrderIso.apply_symm_apply] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set T := rowsProj U s '' A`. Use `set N := ⨆ y : EuclideanSpace ℂ (Fin d), (({z | z ∈ A ∧ rowsProj U s z = y}.encard : ℕ∞) : ℝ≥0∞)`. Establish `hle : ∀ x : EuclideanSpace ℂ I, frameFibreCount c I A (WithLp.ofLp x) ≤ (φ ⁻¹' toMeasurable (μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))) T).indicator (fun _ => N) x`. Introduce `x`. Establish `hset : {z ∈ A | frameProj c I z = WithLp.ofLp x} = {z | z ∈ A ∧ rowsProj U s z = φ x}`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `z`. Conclude with `and_congr Iff.rfl (hiff x z)`. Distinguish the cases in `hx : φ x ∈ T`. Rewrite using `[Set.indicator_of_mem (show x ∈ φ ⁻¹' toMeasurable (μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))) T from subset_toMeasurable _ T hx)]`. Simplify using `only [frameFibreCount]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hset]`. Conclude with `le_iSup (fun y => (({z | z ∈ A ∧ rowsProj U s z = y}.encard : ℕ∞) : ℝ≥0∞)) (φ x)`. Establish `h0 : {z ∈ A | frameProj c I z = WithLp.ofLp x} = ∅`. Rewrite using `[hset]`. Conclude with `Set.eq_empty_of_forall_notMem fun z hz => hx ⟨z, hz.1, hz.2⟩`.
-
-Simplify using `only [frameFibreCount]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[φ.isometry.hausdorffMeasure_preimage (Or.inr φ.surjective), φ.surjective.range_eq, Set.inter_univ, measure_toMeasurable]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_count_le (U : Matrix (Fin n) (Fin n) ℂ)
     (c : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
@@ -143,31 +141,27 @@ end LocalGraphProjectionMass
 open LocalGraphProjectionMass in
 
 /- English proof (translation)
-Introduce `n d b I₀ S hd hS U hU B hB`. Take `⟨c, hc⟩` from `MassFinite.exists_frame U hU`. Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Simplify using the standard rewrite rules. Establish `hS' : ∀ z : S, ∃ (Ω : Set (I₀ → ℂ)) (V : Set (EuclideanSpace ℂ (Fin n))) (g : (I₀ → ℂ) → EuclideanSpace ℂ (Fin n)), IsOpen Ω ∧ IsOpen V ∧ (z : EuclideanSpace ℂ (Fin n)) ∈ V ∧ DifferentiableOn ℂ g Ω ∧ (∀ w ∈ Ω, frameProj b I₀ (g w) = w) ∧ S ∩ V = g '' Ω` using `fun z => hS z z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose Ω V g hΩ hV hzV hg hfix hSV using hS'`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable V hV`. Establish `hmemT : ∀ z ∈ S, ∃ i ∈ T, z ∈ V i`. Introduce `z hz`. Establish `: z ∈ ⋃ i ∈ T, V i` using `hTU ▸ Set.mem_iUnion.2 ⟨⟨z, hz⟩, hzV _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hzi⟩` from `Set.mem_iUnion₂.1 this`. Conclude with `⟨i, hi, hzi⟩`. Establish `hTne : T.Nonempty`. Take `⟨z, hz⟩` from `hne`. Take `⟨i, hi, -⟩` from `hmemT z hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, hi⟩`. Take `⟨f, hf⟩` from `hTc.exists_eq_range hTne`. Set `W : ℕ → Set (EuclideanSpace ℂ (Fin n))` to `fun k => V (f k)`. Establish `hcover : S ⊆ ⋃ k, disjointed W k`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iUnion_disjointed]`. Take `⟨i, hi, hzi⟩` from `hmemT z hz`. Rewrite `hi` using `[hf]`. Take `⟨k, rfl⟩` from `hi`. Conclude with `Set.mem_iUnion.2 ⟨k, hzi⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDmeas : ∀ k, MeasurableSet (disjointed W k)` using `MeasurableSet.disjointed fun k => (hV _).measurableSet`. Establish `hpiece : ∀ k, S ∩ B ∩ disjointed W k = g (f k) '' Ω (f k) ∩ (B ∩ disjointed W k)`. Introduce `k`. Rewrite using `[← hSV (f k)]`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzS, hzB⟩, hzD⟩`. Conclude with `⟨⟨hzS, disjointed_subset W k hzD⟩, hzB, hzD⟩`. Introduce and unpack `⟨⟨hzS, -⟩, hzB, hzD⟩`. Conclude with `⟨⟨hzS, hzB⟩, hzD⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdisj : Pairwise (Disjoint on fun k => S ∩ B ∩ disjointed W k)` using `fun i j hij => (disjoint_disjointed W hij).mono Set.inter_subset_right Set.inter_subset_right`. Set `G : (Fin d → Fin n) → ℝ≥0∞` to `fun s => (⨆ x : EuclideanSpace ℂ (Fin d), (({z | z ∈ S ∩ B ∧ rowsProj U s z = x}.encard : ℕ∞) : ℝ≥0∞)) * μH[((2 * d : ℕ) : ℝ)] (rowsProj U s '' (S ∩ B))`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun z hz => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 (hcover hz.1)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Set.mem_iUnion.2 ⟨k, hz, hk⟩`. Use `_ ≤ ∑' k, μH[((2 * d : ℕ) : ℝ)] (S ∩ B ∩ disjointed W k) := measure_iUnion_le _`. Use `_ = ∑' k, ∑ I ∈ Finset.univ.powersetCard d, ∫⁻ x : EuclideanSpace ℂ I, frameFibreCount c I (S ∩ B ∩ disjointed W k) (WithLp.ofLp x) ∂(μH[((2 * d : ℕ) : ℝ)]) := by`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hpiece k]`. Conclude with `mass_piece_frame hPF b c I₀ hd _ _ (hΩ _) (hg _) (hfix _) _ (hB.inter (hDmeas k))`. Use `_ = ∑ I ∈ Finset.univ.powersetCard d, ∑' k, ∫⁻ x : EuclideanSpace ℂ I, frameFibreCount c I (S ∩ B ∩ disjointed W k) (WithLp.ofLp x) ∂(μH[((2 * d : ℕ) : ℝ)]) := Summable.tsum_finsetSum fun _ _ => ENNReal.summable`. Use `_ ≤ ∑ I ∈ Finset.univ.powersetCard d, ⨆ hI : I.card = d, G (I.orderEmbOfFin hI) := by`. Use `Finset.sum_le_sum fun I hI => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIc` using `(Finset.mem_powersetCard.1 hI).2`. Use `le_trans ?_ (le_iSup (fun h : I.card = d => G (I.orderEmbOfFin h)) hIc)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ s ∈ Finset.univ.filter (fun s : Fin d → Fin n => StrictMono s), G s := by`. Use `Finset.sum_bij (fun I hI => ⇑(I.orderEmbOfFin (Finset.mem_powersetCard.1 hI).2)) (fun I hI => Finset.mem_filter.2 ⟨Finset.mem_univ _, (I.orderEmbOfFin _).strictMono⟩) (fun I₁ hI₁ I₂ hI₂ h => ?_) (fun t ht => ?_) (fun I hI => ?_)` and prove the remaining obligations.
-
-Use `congrArg Set.range h` as an intermediate fact. Rewrite `this` using `[Finset.range_orderEmbOfFin, Finset.range_orderEmbOfFin]`. Conclude with `Finset.coe_inj.1 this`. Establish `hmono` using `(Finset.mem_filter.1 ht).2`. Establish `hcard : (Finset.univ.image t).card = d`.
-
-Rewrite using `[Finset.card_image_of_injective _ hmono.injective, Finset.card_univ, Fintype.card_fin]`. Use `⟨Finset.univ.image t, Finset.mem_powersetCard.2 ⟨Finset.subset_univ _, hcard⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.orderEmbOfFin_unique hcard (fun x => Finset.mem_image_of_mem t (Finset.mem_univ x)) hmono).symm`. Conclude with `iSup_pos (Finset.mem_powersetCard.1 hI).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LocalGraphProjectionMass.proof (hPF : ProjectionFormula.Statement) :
     LocalGraphProjectionMass.Statement := by

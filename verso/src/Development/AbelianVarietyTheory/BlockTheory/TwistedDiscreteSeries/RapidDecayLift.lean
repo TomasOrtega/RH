@@ -82,7 +82,7 @@ def LiftProps (D : D7) : Prop := LiftPropsOn D fun θ W F => IsAutFunSm θ W F �
 def LiftPropsRapid (D : D7) : Prop := LiftPropsOn D fun θ W F => RapidDecSm θ W F
 
 /- English proof (translation)
-The claim follows from `h.integ f F hf (hc F hF) integ_der f F hf hF := h.integ_der f F hf (hc F hF) aut f F hf hF := h.aut f F hf (hc F hF) equiv f F hf hF := h.equiv f F hf (hc F hF) smooth f F hf hF := h.smooth f F hf (hc F hF) dS := h.dS dT := h.dT derS f F hf hF := h.derS f F hf (hc F hF) derT f F …`.
+A detailed English derivation is pending.
 -/
 theorem LiftLaws.mono {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ν : Measure (GA D W)} {𝓕 : Set (GA D W)}
@@ -105,14 +105,14 @@ theorem LiftLaws.mono {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {V W : HS
     exact (hd μ 𝓓 h1 h2 U hU).imp fun C hC f hf F hF => hC f hf F (hc F hF)
 
 /- English proof (translation)
-Introduce `V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕` and use `(h V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕).mono fun _ hF => rapidDecSm_of_cuspForm hP hθ hF.1 hF.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem liftProps_of_rapid (hP : GlobalTheory.Published.CuspRapidDecay) (h : LiftPropsRapid D) : LiftProps D :=
   fun V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕 => (h V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕).mono fun _ hF =>
     rapidDecSm_of_cuspForm hP hθ hF.1 hF.2
 
 /- English proof (translation)
-Rewrite using `[← setLIntegral_const]`. Conclude with `lintegral_mono fun h => le_iSup (fun g => ENNReal.ofReal (‖F g‖ * quotHeight W g ^ A)) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decayInt_le {W : HSp D} (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (A : ℕ) (F : GA D W → ℂ) :
     decayInt ν 𝓕 A F ≤ decaySize W A F * ν 𝓕 := by
@@ -120,7 +120,7 @@ theorem decayInt_le {W : HSp D} (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (A
   exact lintegral_mono fun h => le_iSup (fun g => ENNReal.ofReal (‖F g‖ * quotHeight W g ^ A)) h
 
 /- English proof (translation)
-Use `h.derT f F hf hF τ Y hY g` as an intermediate fact. Simplify using `only [h.equiv f F hf hF] at this`. Conclude with `this.unique (hasDerivAt_const _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LiftLaws.derT_add {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ν : Measure (GA D W)} {𝓕 : Set (GA D W)}

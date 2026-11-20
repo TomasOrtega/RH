@@ -30,18 +30,18 @@ theorem matRep_apply {n n' : ℕ} (g : GL (Fin n) ℂ) (h : GL (Fin n') ℂ) (f 
     matRep n n' (g, h) f = sub ((h : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (g : Matrix (Fin n) (Fin n) ℂ))ᵀ f := rfl
 
 /- English proof (translation)
-Simplify using `[matRep_apply, sub, Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matRep_X {n n' : ℕ} (g : GL (Fin n) ℂ) (h : GL (Fin n') ℂ) (a : Fin n') (s : Fin n) :
     matRep n n' (g, h) (X (a, s)) = ∑ b, ∑ t, C (h b a * g t s) * X (b, t) := by
   simp [matRep_apply, sub, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Rewrite using `[matRep_apply]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [sub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, s⟩` from `v`. Simplify using `only [map_mul, hp, eval_X]`. Use `congr 1`. Simplify using `only [sub, aeval_X, map_sum, map_mul, eval_C, eval_X, Fintype.sum_prod_type, Matrix.mul_apply, Matrix.transpose_apply, Matrix.kroneckerMap_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem eval_matRep {n n' : ℕ} (g : GL (Fin n) ℂ) (h : GL (Fin n') ℂ) (x : Matrix (Fin n') (Fin n) ℂ)
     (f : MvPolynomial (Fin n' × Fin n) ℂ) :
@@ -61,7 +61,7 @@ theorem eval_matRep {n n' : ℕ} (g : GL (Fin n) ℂ) (h : GL (Fin n') ℂ) (x :
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `: sub ((h : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ ((1 : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))ᵀ = rowAct ℂ (n` using `n) (h : Matrix (Fin n') (Fin n') ℂ)ᵀ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Simplify using `[sub, rowAct, Fintype.sum_prod_type, Matrix.one_apply, apply_ite C]`. Rewrite using `[matRep_apply, this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matRep_one_left {n n' : ℕ} (h : GL (Fin n') ℂ) (f : MvPolynomial (Fin n' × Fin n) ℂ) :
     matRep n n' (1, h) f = rowAct ℂ (h : Matrix (Fin n') (Fin n') ℂ)ᵀ f := by
@@ -86,21 +86,21 @@ def pad {m : ℕ} (N : ℕ) (a : Part m) : DomWeight N where
     · exact le_rfl
 
 /- English proof (translation)
-Simplify using `[pad, rowNu, hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pad_w_of_lt {m N : ℕ} (a : Part m) (i : Fin N) (hi : i.val < m) : (pad N a).w i = a.1 ⟨i.val, hi⟩ := by
   simp [pad, rowNu, hi]
 
 /- English proof (translation)
-Simplify using `[pad, rowNu, Nat.not_lt.2 hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pad_w_of_le {m N : ℕ} (a : Part m) (i : Fin N) (hi : m ≤ i.val) : (pad N a).w i = 0 := by
   simp [pad, rowNu, Nat.not_lt.2 hi]
 
 /- English proof (translation)
-Introduce `a b e`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Establish `h1` using `pad_w_of_lt a (Fin.castLE h i) i.2`. Establish `h2` using `pad_w_of_lt b (Fin.castLE h i) i.2`. Rewrite `h1` using `[e, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem pad_injective {m N : ℕ} (h : m ≤ N) : Function.Injective (pad (m := m) N) := by
   intro a b e
@@ -122,7 +122,7 @@ def pieceRep (a : Part (min n n')) :
     ((smallRep ι' (pad n' a)).comp (MonoidHom.snd H H'))
 
 /- English proof (translation)
-Simplify using `[pieceRep]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pieceRep_tmul (a : Part (min n n')) (p : H × H') (v : nablaSq ℂ n (pad n a))
     (w : nablaSq ℂ n' (pad n' a)) :
@@ -140,7 +140,7 @@ def DualAlong : Prop :=
 end Along
 
 /- English proof (translation)
-Use `⟨fun a => isIrreducible_smallRep_unitary n _, fun a b ⟨e⟩ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Set `φ : (sqRep ℂ n (pad n a)).IntertwiningMap (sqRep ℂ n (pad n b))` to `⟨e.toLinearMap, fun g => LinearMap.ext fun f => intertwining_gl_of_unitary n _ _ e.toIntertwiningMap g f⟩`. Take `⟨f, hf, h0⟩` from `exists_ne_zero_map_eq_zero_of_weight_ne n _ _ (fun e' => hne (pad_injective h e')) φ`. Conclude with `hf (e.toLinearEquiv.map_eq_zero_iff.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem irreducibleDistinct_unitary {m n : ℕ} (h : m ≤ n) : IrreducibleDistinct (unitaryIncl n) m := by
   refine ⟨fun a => isIrreducible_smallRep_unitary n _, fun a b ⟨e⟩ => ?_⟩
@@ -151,9 +151,9 @@ theorem irreducibleDistinct_unitary {m n : ℕ} (h : m ≤ n) : IrreducibleDisti
   exact hf (e.toLinearEquiv.map_eq_zero_iff.1 h0)
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b ⟨e⟩ => (irreducibleDistinct_unitary h).2 a b ⟨Representation.Equiv.mk e.toLinearEquiv fun u => e.isIntertwining' (unitaryIncl n u)⟩⟩` and prove the remaining obligations. Establish `hU` using `isIrreducible_smallRep_unitary n (pad n a)`. Establish `hnt : Nontrivial (Subrepresentation (smallRep (MonoidHom.id (GL (Fin n) ℂ)) (pad n a)))` using `⟨⊥, ⊤, fun e => bot_ne_top (congrArg Subrepresentation.toSubmodule e)⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Set `T : Subrepresentation (smallRep (unitaryIncl n) (pad n a))` to `⟨S.toSubmodule, fun u _ hv => S.apply_mem_toSubmodule (unitaryIncl n u) hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Break down `eq_bot_or_eq_top T with e | e` into its components or cases. Conclude with `Or.inl (Subrepresentation.ext (congrArg Subrepresentation.toSubmodule e :))`. Conclude with `Or.inr (Subrepresentation.ext (congrArg Subrepresentation.toSubmodule e :))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem irreducibleDistinct_gl {m n : ℕ} (h : m ≤ n) : IrreducibleDistinct (MonoidHom.id (GL (Fin n) ℂ)) m := by
   refine ⟨fun a => ?_, fun a b ⟨e⟩ => (irreducibleDistinct_unitary h).2 a b
@@ -180,7 +180,7 @@ def GLHoweDuality : Prop :=
       DualAlong (unitaryIncl n) (unitaryIncl n')
 
 /- English proof (translation)
-Introduce `n n' hn hn'`. Take `⟨e⟩` from `h n n' hn hn'`. Use `⟨⟨⟨e⟩, irreducibleDistinct_gl (min_le_left _ _), irreducibleDistinct_gl (min_le_right _ _)⟩, ⟨⟨Representation.Equiv.mk e.toLinearEquiv fun u => e.isIntertwining' (unitaryIncl n u.1, unitaryIncl n' u.2)⟩, irreducibleDistinct_unitary (min_le_left _ _), irreducibleDistinct_unitary ( …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem glHoweDuality_of_equiv
     (h : ∀ n n' : ℕ, 1 ≤ n → 1 ≤ n' → Nonempty ((Representation.directSum fun a : Part (min n n') =>

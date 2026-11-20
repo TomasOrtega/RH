@@ -4,65 +4,61 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T H κ _ _ _ _ _ Φ a c M r r' hr hr' hadj hcomm hM hMa hMc l d hl hld`. Establish `hreal : ∀ (s : ℝ) (x : T), RCLike.re (inner ℂ (Φ x) (Φ ((s : ℂ) • x))) = s * ‖Φ x‖ ^ 2`. Introduce `s x`. Rewrite using `[map_smul, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Simplify using `[Complex.mul_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `left`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Establish `hca : ∀ j x, RCLike.re (inner ℂ (Φ x) (Φ (c j (a j x)))) = ‖Φ (a j x)‖ ^ 2`. Introduce `j x`. Rewrite using `[← inner_conj_symm, hadj, RCLike.conj_re, inner_self_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMx : ∀ x, M x = ∑ j, c j (a j x) + (r : ℂ) • x`. Introduce `x`. Substitute `hM` using the available equality. Simplify using `[Module.End.mul_apply]`. Establish `hQeq : ∀ x, RCLike.re (inner ℂ (Φ x) (Φ (M x))) = ∑ j, ‖Φ (a j x)‖ ^ 2 + r * ‖Φ x‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hMx, map_add, inner_add_right, map_add, ← hreal, map_sum, inner_sum, map_sum]`. Simplify using `only [hca]`. Establish `hQ : ∀ x, ∑ j, ‖Φ (a j x)‖ ^ 2 + r * ‖Φ x‖ ^ 2 ≤ ‖Φ x‖ * ‖Φ (M x)‖`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hQeq]`. Conclude with `(RCLike.re_le_norm _).trans (norm_inner_le_norm _ _)`. Establish `hsum : ∀ x, 0 ≤ ∑ j, ‖Φ (a j x)‖ ^ 2` using `fun x => Finset.sum_nonneg (fun j _ => sq_nonneg _)`. Establish `hrx : ∀ x, r * ‖Φ x‖ ≤ ‖Φ (M x)‖`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `(norm_nonneg (Φ x)).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, mul_zero]`. Conclude with `norm_nonneg _`. Use `le_of_mul_le_mul_left ?_ hpos` and prove the remaining obligations. Use polynomial arithmetic with `[hQ x, hsum x]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hx : ∀ x, ‖Φ x‖ ≤ ‖Φ (M x)‖`. Introduce `x`. Use polynomial arithmetic with `[hrx x, norm_nonneg (Φ x)]`. Establish `hsq : ∀ x u, 0 ≤ u → u ^ 2 ≤ ∑ j, ‖Φ (a j x)‖ ^ 2 + r * ‖Φ x‖ ^ 2 → u ≤ ‖Φ (M x)‖`. Introduce `x u hu h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hQ x`. Establish `h2` using `mul_le_mul_of_nonneg_right (hx x) (norm_nonneg (Φ (M x)))`. Establish `h3 : u ^ 2 ≤ ‖Φ (M x)‖ ^ 2` using `by nlinarith`. Conclude with `(pow_le_pow_iff_left₀ hu (norm_nonneg _) two_ne_zero).1 h3`. Establish `ha : ∀ j x, ‖Φ (a j x)‖ ≤ ‖Φ (M x)‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j x`. Use `hsq x _ (norm_nonneg _) ?_` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun i => ‖Φ (a i x)‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Establish `: 0 ≤ r * ‖Φ x‖ ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hac : ∀ j, a j * c j = c j * a j + (r' : ℂ) • 1` using `fun j => sub_eq_iff_eq_add'.1 (hcomm j)`. Establish `hc : ∀ j x, ‖Φ (c j x)‖ ≤ ‖Φ (M x)‖`. Introduce `j x`. Use `hsq x _ (norm_nonneg _) ?_` and prove the remaining obligations. Establish `e : ‖Φ (c j x)‖ ^ 2 = ‖Φ (a j x)‖ ^ 2 + r' * ‖Φ x‖ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), hadj, ← Module.End.mul_apply, hac, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, Module.End.mul_apply, map_add, inner_add_right, map_add, hca, hreal]`. Use `Finset.single_le_sum (f := fun i => ‖Φ (a i x)‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Establish `: r' * ‖Φ x‖ ^ 2 ≤ r * ‖Φ x‖ ^ 2` using `mul_le_mul_of_nonneg_right hr' (sq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : ∀ s : ℝ, Commute M (M + (s : ℂ) • 1)` using `fun s => (Commute.refl M).add_right ((Commute.one_right M).smul_right _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hshift : ∀ (s : ℝ), |s| ≤ r → ∀ y, ‖Φ ((M + (s : ℂ) • 1) y)‖ ≤ 2 * ‖Φ (M y)‖`. Introduce `s hs y`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ∀ (s : ℝ), |s| ≤ r → ∀ k y, ‖Φ (((M + (s : ℂ) • 1) ^ k) y)‖ ≤ 2 ^ k * ‖Φ ((M ^ k) y)‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `s hs k`. Proceed by induction on `k with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Establish `e` using `LinearMap.congr_fun ((hC s).pow_left k).eq y`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[pow_succ (M + (s : ℂ) • 1) k, Module.End.mul_apply, pow_succ' M k, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcommx : ∀ (s : ℝ) (k : ℕ) x, M (((M + (s : ℂ) • 1) ^ k) x) = ((M + (s : ℂ) • 1) ^ k) (M x)`. Introduce `s k x`. Establish `e` using `LinearMap.congr_fun ((hC s).pow_right k).eq x`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hMka : ∀ j (k : ℕ) x, (M ^ k) (a j x) = a j (((M + ((-r : ℝ) : ℂ) • 1) ^ k) x)`. Introduce `j k x`. Establish `hs : SemiconjBy (a j) (M + ((-r : ℝ) : ℂ) • 1) M`. Unfold `SemiconjBy`. Rewrite using `[hMa j]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Establish `e` using `LinearMap.congr_fun (hs.pow_right k).eq x`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMkc : ∀ j (k : ℕ) x, (M ^ k) (c j x) = c j (((M + (r : ℂ) • 1) ^ k) x)`. Introduce `j k x`. Establish `hs : SemiconjBy (c j) (M + (r : ℂ) • 1) M`. Unfold `SemiconjBy`. Rewrite using `[hMc j]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `LinearMap.congr_fun (hs.pow_right k).eq x`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `e.symm`. Establish `hra : |(-r)| ≤ r` using `by rw [abs_neg, abs_of_nonneg (by linarith)]`. Establish `hrc : |r| ≤ r` using `by rw [abs_of_nonneg (by linarith)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPa : ∀ j (k : ℕ), ∃ C : ℝ, ∀ x, ‖Φ ((M ^ k) (a j x))‖ ≤ C * ‖Φ ((M ^ (k + 1)) x)‖`. Introduce `j k`. Use `⟨2 ^ k, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hMka]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPc : ∀ j (k : ℕ), ∃ C : ℝ, ∀ x, ‖Φ ((M ^ k) (c j x))‖ ≤ C * ‖Φ ((M ^ (k + 1)) x)‖`. Introduce `j k`. Use `⟨2 ^ k, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hMkc]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Establish `hP : ∀ X ∈ Submodule.span ℂ (Set.range a ∪ Set.range c), ∀ k : ℕ, ∃ C : ℝ, ∀ x, ‖Φ ((M ^ k) (X x))‖ ≤ C * ‖Φ ((M ^ (k + 1)) x)‖`. Introduce `X hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem X h`. Break down `h with ⟨j, rfl⟩ | ⟨j, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hPa j`. Conclude with `hPc j`. Consider the case `zero => intro k; exact ⟨0, fun x => by simp⟩`. Consider the case `add X Y _ _ hX hY`. Introduce `k`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C1, h1⟩` from `hX k`. Take `⟨C2, h2⟩` from `hY k`. Use `⟨C1 + C2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, map_add, map_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `smul s X _ hX`. Introduce `k`. Take `⟨C1, h1⟩` from `hX k`. Use `⟨‖s‖ * C1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, map_smul, norm_smul, mul_assoc]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_left (h1 x) (norm_nonneg _)`. Establish `hlist : ∀ l : List (Module.End ℂ T), (∀ X ∈ l, X ∈ Submodule.span ℂ (Set.range a ∪ Set.range c)) → ∀ k : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖Φ ((M ^ k) (l.prod x))‖ ≤ C * ‖Φ ((M ^ (k + l.length)) x)‖`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ k; exact ⟨1, zero_le_one, fun x => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `cons X l ih`. Introduce `hXl k`. Take `⟨C1, h1⟩` from `hP X (hXl X (by simp)) k`. Take `⟨C2, hC2, h2⟩` from `ih (fun Y hY => hXl Y (List.mem_cons_of_mem _ hY)) (k + 1)`. Use `⟨max C1 0 * C2, mul_nonneg (le_max_right _ _) hC2, fun x => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.prod_cons, Module.End.mul_apply, List.length_cons]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, show k + (l.length + 1) = k + 1 + l.length by omega]`. Establish `hmono : ∀ x n i, ‖Φ ((M ^ n) x)‖ ≤ ‖Φ ((M ^ (n + i)) x)‖`. Introduce `x n i`.
-
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [← add_assoc, pow_succ', Module.End.mul_apply]`. Conclude with `ih.trans (hx _)`. Take `⟨C, hC0, h⟩` from `hlist l hl 0`.
-
-Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Establish `h'` using `h x`. Rewrite `h'` using `[pow_zero, Module.End.one_apply, zero_add]`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hld`. Conclude with `h'.trans (mul_le_mul_of_nonneg_left (hmono x _ i) hC0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_word_le_number_pow : ∀ (T H κ : Type) [AddCommGroup T] [Module ℂ T] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Fintype κ] (Φ : T →ₗ[ℂ] H) (a c : κ → Module.End ℂ T) (M : Module.End ℂ T) (r r' : ℝ), 1 ≤ r → r' ≤ r → (∀ j x y, inner ℂ (Φ (c j x)) (Φ y) = inner ℂ (Φ x) (Φ (a j y))) → (∀ j, a j * c j - c j * a j = (r' : ℂ) • 1) → M = ∑ j, c j * a j + (r : ℂ) • 1 → (∀ j, M * a j = a j * (M - (r : ℂ) • 1)) → (∀ j, M * c j = c j * (M + (r : ℂ) • 1)) → ∀ (l : List (Module.End ℂ T)) (d : ℕ), (∀ X ∈ l, X ∈ Submodule.span ℂ (Set.range a ∪ Set.range c)) → l.length ≤ d → ∃ C : ℝ, ∀ x, ‖Φ (l.prod x)‖ ≤ C * ‖Φ ((M ^ d) x)‖ := by
   intro T H κ _ _ _ _ _ Φ a c M r r' hr hr' hadj hcomm hM hMa hMc l d hl hld

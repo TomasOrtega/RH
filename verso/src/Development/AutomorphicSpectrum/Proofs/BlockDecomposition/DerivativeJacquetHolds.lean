@@ -27,7 +27,7 @@ def embM (n j : ℕ) : Mir k n →* Mir k (n + j) :=
     (fun j f => ((levi k (n + j + 1)).comp (Mir k (n + j)).subtype).comp f) j
 
 /- English proof (translation)
-The claim follows from `| 0, τ => ⟨LinearMap.id, Function.surjective_id, fun _ _ => rfl, by rintro _ ⟨y, hy, rfl⟩ exact (GlobalTheory.T.mirabolic_twisted_kernel_derivative_zero k ψ n τ.V τ.ρ).ge hy⟩ | j + 1, τ => by obtain ⟨p, hp, hq, hk⟩ := exists_proj ψ n j (MRep.phiM k ψ τ) have hnm : n ≤ n + j := Na …`.
+A detailed English derivation is pending.
 -/
 theorem exists_proj (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ : MRep k (n + j)),
     ∃ p : τ.V →ₗ[ℂ] (iterPhi k ψ j τ).V, Function.Surjective p ∧
@@ -50,11 +50,11 @@ theorem exists_proj (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ : MRep
     exact hk (Submodule.mem_map_of_mem (e.ge (Submodule.mem_map_of_mem hy)))
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [glEmbMat]`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `b.2` as an intermediate fact. Simplify using `[glEmbMat]`. Use linear arithmetic over natural numbers and integers. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Proceed by induction.
 
-Consider the case `last`. Use `a.2` as an intermediate fact. Simplify using `[glEmbMat]`. Use linear arithmetic over natural numbers and integers. Consider the case `cast b => simp [glEmbMat]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 -/
 theorem glEmbMat_apply (N : ℕ) (A : Matrix (Fin N) (Fin N) k) (a b : Fin (N + 1)) :
     glEmbMat k N A a b = if h : (a : ℕ) < N ∧ (b : ℕ) < N then A ⟨a, h.1⟩ ⟨b, h.2⟩
@@ -76,7 +76,7 @@ theorem glEmbMat_apply (N : ℕ) (A : Matrix (Fin N) (Fin N) k) (a b : Fin (N + 
     | cast b => simp [glEmbMat]
 
 /- English proof (translation)
-The claim follows from `| 0, g, a, b => glEmbMat_apply n _ a b | j + 1, g, a, b => by refine (glEmbMat_apply (n + j + 1) _ a b).trans ?_ by_cases h : (a : ℕ) < n + j + 1 ∧ (b : ℕ) < n + j + 1 · rw [dif_pos h] exact embM_levi_apply n j g ⟨a, h.1⟩ ⟨b, h.2⟩ · have h2 : ¬ ((a : ℕ) < n ∧ (b : ℕ) < n) := by o …`.
+A detailed English derivation is pending.
 -/
 theorem embM_levi_apply (n : ℕ) : ∀ (j : ℕ) (g : GL (Fin n) k) (a b : Fin (n + j + 1)),
     (((embM k n j (levi k n g) : Mir k (n + j)) : GL (Fin (n + j + 1)) k) :
@@ -95,40 +95,40 @@ theorem embM_levi_apply (n : ℕ) : ∀ (j : ℕ) (g : GL (Fin n) k) (a b : Fin 
 abbrev dd (n t : ℕ) : Fin 2 → ℕ := ![n, t]
 
 /- English proof (translation)
-Simplify using `[dd, Fin.sum_univ_two]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dd_sum (n j : ℕ) : ∑ a, dd n (j + 1) a = n + j + 1 := by
   simp [dd, Fin.sum_univ_two]
   omega
 
 /- English proof (translation)
-Simplify using `using stdBlocks_val (dd n t) h 0 i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem std_val0 (n t N : ℕ) (h : ∑ a, dd n t a = N) (i : Fin n) :
     (stdBlocks (dd n t) h ⟨0, i⟩ : ℕ) = i := by
   simpa using stdBlocks_val (dd n t) h 0 i
 
 /- English proof (translation)
-Simplify using `using stdBlocks_val (dd n t) h 1 i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem std_val1 (n t N : ℕ) (h : ∑ a, dd n t a = N) (i : Fin t) :
     (stdBlocks (dd n t) h ⟨1, i⟩ : ℕ) = n + i := by
   simpa using stdBlocks_val (dd n t) h 1 i
 
 /- English proof (translation)
-Use `set e := stdBlocks (dd n (j + 1)) (dd_sum n j) with he`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[embM_levi_apply]`. Take `⟨⟨x, i⟩, rfl⟩` from `e.surjective a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨y, l⟩, rfl⟩` from `e.surjective b`. Take `rfl | rfl : x = 0 ∨ x = 1` from `by omega`. Establish `hi : (e ⟨0, i⟩ : ℕ) = i` using `std_val0 n (j + 1) _ (dd_sum n j) i`. Establish `hin : (i : ℕ) < n` using `i.2`. Take `rfl | rfl : y = 0 ∨ y = 1` from `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : (e ⟨0, l⟩ : ℕ) = l` using `std_val0 n (j + 1) _ (dd_sum n j) l`. Establish `hln : (l : ℕ) < n` using `l.2`. Establish `hs : Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 0 = g := Pi.mulSingle_eq_same _ _`. Rewrite using `[leviEmb_apply_same, dif_pos (by omega)]`. Use `Eq.trans ?_ (congrArg (fun X : GL (Fin n) k => (X : Matrix (Fin n) (Fin n) k) i l) hs).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg₂ (fun a b => (g : Matrix (Fin n) (Fin n) k) a b) (Fin.ext hi) (Fin.ext hl)`. Establish `hl : (e ⟨1, l⟩ : ℕ) = n + l` using `std_val1 n (j + 1) _ (dd_sum n j) l`. Rewrite using `[leviEmb_apply_ne k e _ (by decide), dif_neg (by omega), if_neg (by omega)]`. Establish `hi : (e ⟨1, i⟩ : ℕ) = n + i` using `std_val1 n (j + 1) _ (dd_sum n j) i`. Take `rfl | rfl : y = 0 ∨ y = 1` from `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : (e ⟨0, l⟩ : ℕ) = l` using `std_val0 n (j + 1) _ (dd_sum n j) l`. Establish `hln : (l : ℕ) < n` using `l.2`. Rewrite using `[leviEmb_apply_ne k e _ (by decide), dif_neg (by omega), if_neg (by omega)]`. Establish `hl : (e ⟨1, l⟩ : ℕ) = n + l` using `std_val1 n (j + 1) _ (dd_sum n j) l`. Establish `hs : Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 1 = 1 := Pi.mulSingle_eq_of_ne (by decide) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[leviEmb_apply_same, dif_neg (by omega)]`. Use `Eq.trans ?_ (congrArg (fun X : GL (Fin (dd n (j + 1) 1)) k => (X : Matrix (Fin (dd n (j + 1) 1)) (Fin (dd n (j + 1) 1)) k) i l) hs).symm` and prove the remaining obligations. Use `show _ = (1 : Matrix (Fin (dd n (j + 1) 1)) (Fin (dd n (j + 1) 1)) k) i l`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `h : i = l`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Establish `h' : (i : ℕ) ≠ l` using `fun e' => h (Fin.ext e')`. Rewrite using `[if_neg h, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embM_eq_leviEmb (n j : ℕ) (g : GL (Fin n) k) :
     ((embM k n j (levi k n g) : Mir k (n + j)) : GL (Fin (n + j + 1)) k) =
@@ -173,11 +173,11 @@ theorem embM_eq_leviEmb (n j : ℕ) (g : GL (Fin n) k) :
         rw [if_neg h, if_neg (by omega)]
 
 /- English proof (translation)
-Use `set e := stdBlocks (dd n t) h with he`. Take `⟨hP, hD⟩` from `mem_unipRad.1 hu`. Take `⟨⟨x, i⟩, rfl⟩` from `e.surjective a`. Take `⟨⟨y, l⟩, rfl⟩` from `e.surjective b`. Distinguish the cases in `hxy : x = y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hxy` using the available equality. Rewrite using `[hD, Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (x = 0 ∧ y = 1) ∨ (x = 1 ∧ y = 0)` from `by omega`. Establish `hi : (e ⟨0, i⟩ : ℕ) = i` using `std_val0 n t _ h i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : (e ⟨1, l⟩ : ℕ) = n + l` using `std_val1 n t _ h l`. Establish `hin : (i : ℕ) < n` using `i.2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mem_parab_iff.1 hP 1 0 i l (by decide)]`. Conclude with `(Matrix.one_apply_ne fun e' => hxy (by simpa using congrArg Sigma.fst (e.injective e'))).symm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipRad_apply {n t N : ℕ} (h : ∑ a, dd n t a = N) {u : GL (Fin N) k}
     (hu : u ∈ unipRad k (stdBlocks (dd n t) h)) (a b : Fin N) (hab : (b : ℕ) < n ∨ n ≤ (a : ℕ)) :
@@ -199,9 +199,9 @@ theorem unipRad_apply {n t N : ℕ} (h : ∑ a, dd n t a = N) {u : GL (Fin N) k}
       exact (Matrix.one_apply_ne fun e' => hxy (by simpa using congrArg Sigma.fst (e.injective e'))).symm
 
 /- English proof (translation)
-Introduce `u hu`. Establish `H` using `unipRad_apply h hu`. Use `⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩, (GlobalTheory.CompanionTheory.BZMirStep.mem_colFix_iff _).2 fun i j hj => H i j (Or.inl hj)⟩` and prove the remaining obligations. Rewrite using `[H i j (by have : (j : ℕ) < i := hji; omega)]`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at hji; exact lt_irrefl _ hji)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H i i (by omega)]`. Conclude with `Matrix.one_apply_eq i`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_le_derUnip {n t N : ℕ} (h : ∑ a, dd n t a = N) :
     unipRad k (stdBlocks (dd n t) h) ≤ derUnip k N n := by
@@ -215,9 +215,9 @@ theorem unipRad_le_derUnip {n t N : ℕ} (h : ∑ a, dd n t a = N) :
     exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Establish `H` using `unipRad_apply h hu`. Use `show Circle.toUnits (ψ (∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1 ∧ n ≤ (p.1 : ℕ), ((u : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) p.1 p.2)) = 1`. Rewrite using `[Finset.sum_eq_zero, AddChar.map_zero_eq_one, map_one]`. Introduce `p hp`. Take `⟨h1, h2⟩` from `(Finset.mem_filter.1 hp).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H _ _ (Or.inr h2)]`. Conclude with `Matrix.one_apply_ne fun e => by rw [e] at h1; omega`.
+A detailed English derivation is pending.
 -/
 theorem derChar_eq_one {n t N : ℕ} (h : ∑ a, dd n t a = N) (ψ : AddChar k Circle) (u : derUnip k N n)
     (hu : (u : GL (Fin N) k) ∈ unipRad k (stdBlocks (dd n t) h)) : derChar k ψ N n u = 1 := by
@@ -231,9 +231,7 @@ theorem derChar_eq_one {n t N : ℕ} (h : ∑ a, dd n t a = N) (ψ : AddChar k C
   exact Matrix.one_apply_ne fun e => by rw [e] at h1; omega
 
 /- English proof (translation)
-Take `⟨R, f, hf⟩` from `h`. Use `⟨⟨R.toSubmodule, fun g v hv => ?_⟩, ⟨f.toLinearMap, fun g => LinearMap.ext fun v => ?_⟩, hf⟩` and prove the remaining obligations. Rewrite using `[twist_apply]`. Conclude with `R.toSubmodule.smul_mem _ (R.apply_mem_toSubmodule g hv)`. Use `show f.toLinearMap ((χ g : ℂ) • R.toRepresentation g v) = (χ g : ℂ) • σ g (f v)`.
-
-Rewrite using `[map_smul]`. Conclude with `congrArg _ (f.isIntertwining _ _ g v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubquotient_twist' {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient σ ρ) (χ : G →* ℂˣ) :
@@ -247,13 +245,11 @@ theorem isSubquotient_twist' {G V W : Type} [Group G] [AddCommGroup V] [Module �
     exact congrArg _ (f.isIntertwining _ _ g v)
 
 /- English proof (translation)
-Take `⟨p, hp, hq, hk⟩` from `exists_proj ψ n j (resM k π)`. Set `q : V →ₗ[ℂ] TwJacquet (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1` to `(twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ ∘ₗ p`. Establish `hker : twKer π (unipRad k (stdBlocks (dd n (j + 1)) (dd_sum n j))) 1 ≤ LinearMap.ker q`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hmem : (u : GL (Fin (n + j + 1)) k) ∈ derUnip k (n + j + 1) n` using `unipRad_le_derUnip _ u.2`. Establish `h1 : π (u : GL (Fin (n + j + 1)) k) v - (((1 : (unipRad k (stdBlocks (dd n (j + 1)) (dd_sum n j))) →* ℂˣ) u : ℂˣ) : ℂ) • v ∈ twKer π (derUnip k (n + j + 1) n) (derChar k ψ (n + j + 1) n)` using `Submodule.subset_span ⟨⟨u, hmem⟩, v, by rw [derChar_eq_one (dd_sum n j) ψ ⟨u, hmem⟩ u.2]; rfl⟩`. Rewrite `h1` using `[← GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ (n + j) n V π]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hk (Submodule.mem_map_of_mem h1))`. Use `⟨(twKer π (unipRad k (stdBlocks (dd n (j + 1)) (dd_sum n j))) 1).liftQ q hker, ?_, fun g v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨v, rfl⟩` from `hp y`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Rewrite using `[← embM_eq_leviEmb]`.
-
-Conclude with `congrArg (twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ (hq (levi k n g) v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jac_deriv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) :
@@ -284,11 +280,11 @@ theorem exists_jac_deriv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddComm
     exact congrArg (twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ (hq (levi k n g) v)
 
 /- English proof (translation)
-Establish `h0 : Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 0 = g := Pi.mulSingle_eq_same _ _`. Establish `h1 : Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 1 = 1 := Pi.mulSingle_eq_of_ne (by decide) _`. Establish `hm : modExp (fun a => Fin (dd n (j + 1) a)) (0 : Fin 2) = (j : ℤ) + 1`. Simplify using `[modExp, Fin.sum_univ_two, Finset.sum_filter]`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : absPow k (((modExp (fun a => Fin (dd n (j + 1) a)) (0 : Fin 2) : ℤ) : ℂ) / 2) (GeneralLinearGroup.det (Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 0)) = absPow k (((j : ℂ) + 1) / 2) (GeneralLinearGroup.det g) := by`. Rewrite using `[hm]`. Use `push_cast`. Conclude with `congrArg (fun X : GL (Fin n) k => absPow k (((j : ℂ) + 1) / 2) (GeneralLinearGroup.det X)) h0`. Establish `e1 : absPow k (((modExp (fun a => Fin (dd n (j + 1) a)) (1 : Fin 2) : ℤ) : ℂ) / 2) (GeneralLinearGroup.det (Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g 1)) = 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_one, map_one]`. Rewrite using `[e0, e1, mul_one, detChar_apply, absPow_neg, MonoidHom.inv_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_mulSingle (n j : ℕ) (g : GL (Fin n) k) :
     (deltaHalf k (fun a => Fin (dd n (j + 1) a))
@@ -313,7 +309,7 @@ theorem delta_mulSingle (n j : ℕ) (g : GL (Fin n) k) :
   rw [e0, e1, mul_one, detChar_apply, absPow_neg, MonoidHom.inv_apply]
 
 /- English proof (translation)
-The claim follows from `.of_surjective ⟨L, fun g => LinearMap.ext fun x => by show L (T g x) = twist R χ g (L x) rw [twist_apply, h]⟩ hL`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_quot {G X D : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup D] [Module ℂ D]
     (T : Representation ℂ G X) (R : Representation ℂ G D) (χ : G →* ℂˣ) (L : X →ₗ[ℂ] D)
@@ -326,9 +322,9 @@ abbrev iota (n t : ℕ) : GL (Fin n) k →* Levi k (fun a => Fin (dd n t a)) :=
   MonoidHom.mulSingle (fun a => GL (Fin (dd n t a)) k) (0 : Fin 2)
 
 /- English proof (translation)
-Take `⟨L, hL, hLe⟩` from `exists_jac_deriv ψ n j π`. Use `isSubquotient_of_quot _ _ _ L hL fun g x => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1` using `congrArg (fun c : ℂˣ => (c : ℂ) • GlobalTheory.BZMir.deriv k ψ j π g (L (Submodule.Quotient.mk v))) (delta_mulSingle n j g)`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hLe g v`. Establish `h3 : (jac (stdBlocks (dd n (j + 1)) (dd_sum n j)) π).comp (iota n (j + 1)) g (Submodule.Quotient.mk v) = (((deltaHalf k (fun a => Fin (dd n (j + 1) a)) (Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g))⁻¹ : ℂˣ) : ℂ) • Submodule.Quotient.mk (π (leviEmb k (stdBlocks (dd n (j + 1)) (dd_sum n j)) (Pi.mulSingle (M := fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g)) v) := jac_mk _ π _ v`. Rewrite using `[h3, map_smul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSubquotient_twist_deriv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) :
@@ -351,11 +347,9 @@ theorem isSubquotient_twist_deriv (ψ : AddChar k Circle) (n j : ℕ) {V : Type}
   rw [h3, map_smul, h2]
 
 /- English proof (translation)
-Use `GlobalTheory.ProdSubquot.exists_irreducible_of_pred _ _ T (fun Y _ _ σ => IsSubquotient A (σ.comp (iota n t) : Representation ℂ (GL (Fin n) k) Y)) hT ?_ ?_ ?_ h` and prove the remaining obligations. Introduce `Y Y' _ _ _ _ σ σ' f hf' h`. Conclude with `h.trans (GlobalTheory.LocGL.SupportUnique.isSubquotient_comp (.of_injective f hf') _)`. Introduce `Y _ _ σ h`. Take `⟨R, f, hf⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hA` as an intermediate fact. Establish `: Nontrivial R.toSubmodule` using `hf.nontrivial`. Conclude with `R.toSubmodule.injective_subtype.nontrivial`. Introduce `B C hCB h`. Set `i : Representation.IntertwiningMap (C.toRepresentation.comp (iota n t) : Representation ℂ (GL (Fin n) k) _) (B.toRepresentation.comp (iota n t) : Representation ℂ (GL (Fin n) k) _)` to `⟨Submodule.inclusion hCB, fun _ => rfl⟩`.
-
-Set `q : Representation.IntertwiningMap (B.toRepresentation.comp (iota n t) : Representation ℂ (GL (Fin n) k) _) ((subQuot B C).comp (iota n t) : Representation ℂ (GL (Fin n) k) _)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Conclude with `GlobalTheory.ProdSubquot.subquot_dichotomy _ _ _ _ _ _ _ _ _ i q hA (fun b hb => ⟨⟨b.1, (Submodule.Quotient.mk_eq_zero (C.toSubmodule.comap B.toSubmodule.subtype)).1 hb⟩, Subtype.ext rfl⟩) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_irr_block {n t : ℕ} {X W : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup W] [Module ℂ W]
     (T : Representation ℂ (Levi k fun a => Fin (dd n t a)) X) (hT : HasFiniteLength T)
@@ -385,9 +379,9 @@ theorem exists_irr_block {n t : ℕ} {X W : Type} [AddCommGroup X] [Module ℂ X
         Subtype.ext rfl⟩) h
 
 /- English proof (translation)
-Take `⟨Y, _, _, τ, hτi, hτs, hP⟩` from `exists_irr_block T hT A hAi h`. Establish `hτsm : IsSmooth τ` using `hτs.isSmooth hs`. Take `⟨σ, ⟨φ⟩⟩` from `GlobalTheory.T.levi_irreducible_tensor_decomposition hA (dd n t) (⟨Y, τ, hτsm, hτi⟩ : IrrRep _)`. Establish `h3 : IsSubquotient A ((piTensor fun a => (σ a).rep.ρ).comp (iota n t) : Representation ℂ (GL (Fin n) k) _)` using `hP.trans (GlobalTheory.LocGL.SupportUnique.isSubquotient_comp (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective) _)`. Establish `h4` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_factor (fun a => (σ a).rep.ρ) (0 : Fin 2) hAi h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨σ, (IsSubquotient.of_injective φ.symm.toIntertwiningMap φ.symm.toLinearEquiv.injective).trans hτs, GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient hAi (σ 0).rep.irr h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_tensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n t : ℕ} {X W : Type} [AddCommGroup X] [Module ℂ X]
     [AddCommGroup W] [Module ℂ W] (T : Representation ℂ (Levi k fun a => Fin (dd n t a)) X) (hs : IsSmooth T)
@@ -407,15 +401,13 @@ theorem exists_tensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n t
     GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient hAi (σ 0).rep.irr h4⟩
 
 /- English proof (translation)
-Introduce `ψ hc h1 n j V _ _ π hs hf S hS`. Establish `hdd` using `dd_sum (n + 1) j`. Establish `hχ : IsSmoothChar (detChar (Fin (n + 1)) (absPow k (-(((j : ℂ) + 1) / 2))))` using `(isSmoothChar_absPow _).detChar`. Establish `hSi` using `isIrreducible_twist S.irr (detChar (Fin (n + 1)) (absPow k (-(((j : ℂ) + 1) / 2))))`. Establish `h2` using `(isSubquotient_twist' hS _).trans (isSubquotient_twist_deriv ψ (n + 1) j π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hsub, ⟨E⟩⟩` from `exists_tensor hA _ (isSmooth_jac _ hs) (GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k _ _ _ _ V π hs hf) _ hSi h2`. Set `y : Fin 2 → IrrGL k` to `fun a => ⟨dd (n + 1) (j + 1) a, σ a⟩`. Establish `hy0 : y 0 = (IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2))`. Rewrite using `[IrrGL.nu, IrrGL.tw_of]`. Conclude with `(IrrGL.of_rep (y 0)).symm.trans (IrrGL.of_eq_of.2 ⟨E⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : y = ![(IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2)), y 1]`. Use function extensionality and compare the values at `a`. Use `fin_cases a`. Conclude with `hy0`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `key : ∀ (w : Fin 2 → IrrGL k) (hw : ∑ a, (w a).1 = n + 1 + j + 1), w = y → 1 ≤ Zc.jm w hw π`. Introduce `w hw hwy`. Substitute `hwy` using the available equality. Conclude with `ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 hsub)`. Establish `hw : ∑ a, (y a).1 = n + 1 + j + 1` using `hdd`.
-
-Conclude with `⟨y 1, hy ▸ hw, rfl, key _ _ hy.symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem derivJac (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) : GlobalTheory.BZSeg.DerivJac k := by
   intro ψ hc h1 n j V _ _ π hs hf S hS
@@ -443,7 +435,7 @@ theorem derivJac (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) : GlobalT
   exact ⟨y 1, hy ▸ hw, rfl, key _ _ hy.symm⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hA` and use `derivJac hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem derivJac_main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.BZSeg.DerivJac k :=

@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : Out.HomExtDvrSt` using `fun T _ _ _ G G' _ _ hG hG' φ hφ => GlobalTheory.existsUnique_hom_extension_semiAbelian T (FractionRing T) G G' hG hG' φ hφ`. Conclude with `⟨h, ⟨h⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem homExtDvr_and_laws : Out.HomExtDvrSt ∧ Out.Laws7 := by
   have h : Out.HomExtDvrSt := fun T _ _ _ G G' _ _ hG hG' φ hφ =>

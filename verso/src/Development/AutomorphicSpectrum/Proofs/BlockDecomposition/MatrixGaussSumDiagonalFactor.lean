@@ -8,14 +8,14 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens GlobalTheo
 namespace GlobalTheory.CompanionTheory.GaussProd
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pi_prod {ι Q : Type} [Fintype ι] [DecidableEq ι] [Fintype Q] (g : ι → Q → ℂ) :
     (∑ y : ι → Q, ∏ i, g i (y i)) = ∏ i, ∑ w, g i w := by
   rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_sum {ι Q : Type} [AddCommMonoid Q] (χ : AddChar Q ℂ) (s : Finset ι) (g : ι → Q) :
     χ (∑ i ∈ s, g i) = ∏ i ∈ s, χ (g i) := by
@@ -26,9 +26,9 @@ theorem chi_sum {ι Q : Type} [AddCommMonoid Q] (χ : AddChar Q ℂ) (s : Finset
     rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_diag {Q : Type} [CommRing Q] (τ : Q →+* Q) (m n : ℕ) (d : Fin n → Q) (e : Fin m → Q)
     (y : Matrix (Fin m) (Fin n) Q) :
@@ -43,7 +43,7 @@ theorem trace_diag {Q : Type} [CommRing Q] (τ : Q →+* Q) (m n : ℕ) (d : Fin
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[red]`. Simplify using `[red, Matrix.diagonal_apply_ne _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem red_diagonal {R : Type} [CommRing R] (ϖ : R) (k n : ℕ) (D : Fin n → R) :
     red ϖ k (Matrix.diagonal D) =
@@ -54,7 +54,7 @@ theorem red_diagonal {R : Type} [CommRing R] (ϖ : R) (k n : ℕ) (D : Fin n →
   · simp [red, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Establish `h1 : ∀ l, ∑ v : Fin n → Q, ∏ i, f i l (v i) = ∏ i, ∑ w, f i l w` using `fun l => sum_pi_prod (fun i => f i l)`. Establish `h2` using `sum_pi_prod (ι := Fin m) (Q := Fin n → Q) (fun l v => ∏ i, f i l (v i))`. Simplify using `only [h1] at h2`. Rewrite using `[Finset.prod_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fun_prod {Q : Type} [Fintype Q] (m n : ℕ) (f : Fin n → Fin m → Q → ℂ) :
     (∑ y : Fin m → Fin n → Q, ∏ l, ∏ i, f i l (y l i)) = ∏ i, ∏ l, ∑ w, f i l w := by
@@ -66,9 +66,9 @@ theorem sum_fun_prod {Q : Type} [Fintype Q] (m n : ℕ) (f : Fin n → Fin m →
   exact h2
 
 /- English proof (translation)
-Set `f : Fin n → Fin m → Q → ℂ` to `fun i l w => χ (e l * d i * (τ w * w))`. Establish `hterm : ∀ y : Matrix (Fin m) (Fin n) Q, χ (Matrix.trace (Matrix.diagonal d * (cT τ y * Matrix.diagonal e * y))) = ∏ l, ∏ i, f i l (y l i)`. Introduce `y`. Rewrite using `[trace_diag, chi_sum, Finset.prod_comm (s := Finset.univ) (t := Finset.univ)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chi_sum]`. Conclude with `(Fintype.sum_equiv Matrix.of.symm _ _ fun y => hterm y).trans (sum_fun_prod m n f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_gen {Q : Type} [CommRing Q] [Fintype Q] (τ : Q →+* Q) (χ : AddChar Q ℂ) (m n : ℕ)
     (d : Fin n → Q) (e : Fin m → Q) :
@@ -86,7 +86,7 @@ theorem gauss_gen {Q : Type} [CommRing Q] [Fintype Q] (τ : Q →+* Q) (χ : Add
   exact (Fintype.sum_equiv Matrix.of.symm _ _ fun y => hterm y).trans (sum_fun_prod m n f)
 
 /- English proof (translation)
-Introduce `R _ σ ϖ hf k _ χ m n D E`. Establish `h` using `gauss_gen (barσ σ ϖ hf k) χ m n (fun i => Ideal.Quotient.mk (lev ϖ k) (D i)) (fun l => Ideal.Quotient.mk (lev ϖ k) (E l))`. Simplify using `only [red_diagonal, map_mul]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_prod : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (hf : σ ϖ = ϖ) (k : ℕ) [Fintype (R ⧸ lev ϖ k)] (χ : AddChar (R ⧸ lev ϖ k) ℂ) (m n : ℕ) (D : Fin n → R) (E : Fin m → R), (∑ y : Matrix (Fin m) (Fin n) (R ⧸ lev ϖ k), χ (Matrix.trace (red ϖ k (Matrix.diagonal D) * (cT (barσ σ ϖ hf k) y * red ϖ k (Matrix.diagonal E) * y)))) = ∏ i : Fin n, ∏ l : Fin m, ∑ w : R ⧸ lev ϖ k, χ (Ideal.Quotient.mk (lev ϖ k) (E l * D i) * (barσ σ ϖ hf k w * w)) := by
   intro R _ σ ϖ hf k _ χ m n D E

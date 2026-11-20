@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `star_star ((x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem theta_theta {K : Type} [Field K] (Δ : K) (x : U3 Δ) : theta Δ (theta Δ x) = x := by
   apply Subtype.ext
@@ -11,16 +11,16 @@ private theorem theta_theta {K : Type} [Field K] (Δ : K) (x : U3 Δ) : theta Δ
   exact star_star ((x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_inv, theta_theta, mul_assoc, mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mul_theta_conj {K : Type} [Field K] (Δ : K) (δ x : U3 Δ) :
     (x⁻¹ * δ * theta Δ x) * theta Δ (x⁻¹ * δ * theta Δ x) = x⁻¹ * (δ * theta Δ δ) * x := by
   simp only [map_mul, map_inv, theta_theta, mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `e : ((x⁻¹ * n * x : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = ((x⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * ((n * x : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.charpoly_mul_comm]`. Establish `e2 : ((n * x : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * ((x⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = ((n * x * x⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_conj {K : Type} [Field K] (Δ : K) (n x : U3 Δ) :
     ((x⁻¹ * n * x : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).charpoly =
@@ -34,7 +34,7 @@ private theorem charpoly_conj {K : Type} [Field K] (Δ : K) (n x : U3 Δ) :
   rw [e2, mul_inv_cancel_right]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [lmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lmap_star {K K' : Type} [Field K] [Field K'] (f : K →+* K') (Δ : K) (x : Lsq K Δ) :
     lmap f Δ (star x) = star (lmap f Δ x) := by
@@ -42,7 +42,7 @@ private theorem lmap_star {K K' : Type} [Field K] [Field K'] (f : K →+* K') (�
 
 open Polynomial in
 /- English proof (translation)
-Simplify using `only [C_add, C_1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem poly_expand {R : Type} [CommRing R] (t : R) :
     ((X - 1) * (X ^ 2 - C t * X + 1) : R[X]) = X ^ 3 - C (1 + t) * X ^ 2 + C (1 + t) * X - 1 := by
@@ -50,25 +50,25 @@ private theorem poly_expand {R : Type} [CommRing R] (t : R) :
 
 open Polynomial in
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ Δ δ x τ h`. Unfold `HasTau at h ⊢`. Rewrite using `[mul_theta_conj, charpoly_conj, h]`. Introduce `K _ Δ δ τ τ' h h'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `HasTau at h h'`. Establish `e` using `h.symm.trans h'`. Establish `m : (X - 1 : (Lsq K Δ)[X]).Monic`. Simplify using `using Polynomial.monic_X_sub_C (1 : Lsq K Δ)`. Establish `e1` using `m.isRegular.left e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun p => p.coeff 1) e1`. Simplify using `[coeff_X, coeff_one, coeff_X_pow] at e2`. Conclude with `e2`. Introduce `K K' _ _ f Δ δ δ' τ hd h`. Unfold `HasTau at h ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : ((δ' * theta (f Δ) δ' : U3 (f Δ)) : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) = ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map (lmap f Δ)`. Establish `a : ((theta (f Δ) δ' : U3 (f Δ)) : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) = ((theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map (lmap f Δ)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star ((δ' : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) i j) = lmap f Δ (star ((δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j))`. Rewrite using `[hd, lmap_star]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(δ' : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) * ((theta (f Δ) δ' : U3 (f Δ)) : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) = _`. Rewrite using `[a, hd]`. Conclude with `(Matrix.map_mul (f := lmap f Δ)).symm`. Establish `hl : lmap f Δ (algebraMap K (Lsq K Δ) τ) = algebraMap K' (Lsq K' (f Δ)) (f τ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [lmap]`. Rewrite using `[e, Matrix.charpoly_map, h]`. Simplify using `only [Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C, Polynomial.map_one, hl]`. Introduce `O K _ _ _ Δ δ τ hK h`. Unfold `HasTau at h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hθ : theta Δ δ ∈ KU O Δ` using `fun i j => by`. Use `⟨(hK i j).2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIntegral O (star (star ((δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)))`. Rewrite using `[star_star]`. Conclude with `(hK i j).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `(KU O Δ).mul_mem hK hθ`. Establish `ht : IsIntegral O (((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))).trace` using `IsIntegral.sum _ fun i _ => (hN i i).1`. Establish `hc` using `Matrix.trace_eq_neg_charpoly_coeff ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Establish `c2 : ∀ s : Lsq K Δ, (X ^ 3 - C s * X ^ 2 + C s * X - 1 : (Lsq K Δ)[X]).coeff (Fintype.card (Fin 3) - 1) = -s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[coeff_X, coeff_one, coeff_X_pow, coeff_C_mul]`. Rewrite `hc` using `[h, poly_expand, c2, neg_neg]`. Rewrite `ht` using `[hc]`. Establish `h2 : IsIntegral O (algebraMap K (Lsq K Δ) τ)`. Simplify using `using ht.sub isIntegral_one`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(isIntegral_algebraMap_iff ?_).1 h2` and prove the remaining obligations. Introduce `a b hab`. Simplify using `using congrArg QuadraticAlgebra.re hab`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.sideGTau :
     (∀ (K : Type) [Field K] (Δ : K) (δ x : U3 Δ) (τ : K), HasTau δ τ → HasTau (x⁻¹ * δ * theta Δ x) τ) ∧

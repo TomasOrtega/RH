@@ -20,9 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted`. Consider the case `exact _root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted`. Consider the case `(apply _root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ModularAutomorphism.unimodular_of_contracted ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unimod_of_contract (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Measure G}
     (h : IsHaarSub (N : Set G) ν) (a : ℝ → G) (h1 : ∀ s, ∀ m ∈ N, a s * m * (a s)⁻¹ ∈ N)
@@ -40,9 +40,9 @@ theorem unimod_of_contract (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Me
 end General
 
 /- English proof (translation)
-Introduce `n ε W ν hW hν`. Take `⟨a, Hm, -, ha, -, h1, h3, -⟩` from `GlobalTheory.T.isotropic_splitTorus_iwasawa_unitaryGroup n ε W hW`. Establish `hinv : ∀ s, a (-s) = (a s)⁻¹` using `fun s => by`. Use `eq_inv_of_mul_eq_one_left (Subtype.ext (Units.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `umat (a (-s)) * umat (a s) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ha, ha, Complex.ofReal_neg, neg_smul, ← Matrix.exp_add_of_commute _ _ (Commute.refl ((s : ℂ) • Hm)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Use `unimod_of_contract (nwSub ε W) (isClosed_NW ε W) hν a (fun s m hm => (h1 s m hm).1) (fun s m hm => ?_) h3` and prove the remaining obligations. Use `(h1 (-s) m hm).1` as an intermediate fact. Rewrite `this` using `[hinv, inv_inv]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unimodular_NW : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) (ν : Measure (UJ ε)), IsIsoC ε W → IsHaarSub (NW ε W) ν → (∀ m ∈ NW ε W, ν.map (fun x => x * m) = ν) ∧ ν.map (fun x => x⁻¹) = ν := by
   intro n ε W ν hW hν

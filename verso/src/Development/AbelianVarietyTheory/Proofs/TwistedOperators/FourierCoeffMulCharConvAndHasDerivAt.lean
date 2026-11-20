@@ -7,7 +7,7 @@ namespace GlobalTheory
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(hK.image hΦ.norm).bddAbove`. Use `⟨M, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `hcov x`. Rewrite using `[← hper γ hγ x]`. Conclude with `hM ⟨_, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_norm_le_of_continuous_periodic_compact_cover {G : Type} [AddCommGroup G] [TopologicalSpace G]
     (Γ : AddSubgroup G) {K : Set G} (hK : IsCompact K) (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K)
@@ -23,31 +23,25 @@ open MeasureTheory in
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ K hK hcov μ 𝓕 hμ h𝓕 χ hχ hmul hnorm hχΓ Φ hΦ hper`. Use `haveI : Countable Γ := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Establish `hcc : ∀ x, starRingEnd ℂ (χ x) * χ x = 1`. Introduce `x`. Rewrite using `[Complex.conj_mul', hnorm x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `conv : ∀ Ψ : G → ℂ, (∀ γ ∈ Γ, ∀ x, Ψ (γ + x) = Ψ x) → ∀ z, (∫ y in 𝓕, Ψ y * starRingEnd ℂ (χ y) ∂μ) * χ z = ∫ y in 𝓕, Ψ (z + y) * starRingEnd ℂ (χ y) ∂μ`. Introduce `Ψ hΨ z`. Use `set g : G → ℂ := fun y => Ψ y * starRingEnd ℂ (χ y) with hg`. Establish `hgper : ∀ (γ : Γ) (y : G), g (γ +ᵥ y) = g y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `γ y`. Simplify using `only [hg, AddSubgroup.vadd_def, vadd_eq_add, hmul, map_mul, hχΓ γ γ.2, map_one, one_mul, hΨ γ γ.2]`. Establish `hpt : ∀ y, Ψ (z + y) * starRingEnd ℂ (χ y) = g (z + y) * χ z`. Introduce `y`. Simplify using `only [hg, hmul, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-(Ψ (z + y) * starRingEnd ℂ (χ y)) * hcc z`. Establish `hS : IsAddFundamentalDomain Γ ((fun y => -z + y) ⁻¹' 𝓕) μ`. Establish `hset : (fun y => -z + y) ⁻¹' 𝓕 = z +ᵥ 𝓕`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_vadd_set, vadd_eq_add]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, add_neg_cancel_left z y⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hset]`. Conclude with `h𝓕.vadd_of_comm z`. Establish `hpre : (fun y => z + y) ⁻¹' ((fun y => -z + y) ⁻¹' 𝓕) = 𝓕`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← (measurePreserving_add_left μ z).setIntegral_preimage_emb (measurableEmbedding_addLeft z), hpre]`. Use `_ = ∫ y in 𝓕, g (z + y) * χ z ∂μ := (integral_mul_const _ _).symm`. Use `_ = ∫ y in 𝓕, Ψ (z + y) * starRingEnd ℂ (χ y) ∂μ := by simp_rw [hpt]`. Use `⟨conv Φ hper, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L Φ' hΦ' hper' hderiv x`. Take `⟨M, hM⟩` from `exists_norm_le_of_continuous_periodic_compact_cover Γ hK hcov hΦ hper`. Take `⟨M', hM'⟩` from `exists_norm_le_of_continuous_periodic_compact_cover Γ hK hcov hΦ' hper'`. Establish `hfin : μ 𝓕 < ⊤` using `_root_.GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov μ h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.mpr hfin.ne`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfun : (fun t : ℝ => (∫ y in 𝓕, Φ y * starRingEnd ℂ (χ y) ∂μ) * χ (x + L t)) = fun t : ℝ => ∫ y in 𝓕, Φ (x + L t + y) * starRingEnd ℂ (χ y) ∂μ`. Use function extensionality and compare the values at `t`. Conclude with `conv Φ hper (x + L t)`. Rewrite using `[hfun, conv Φ' hper' x]`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (𝕜 := ℝ) (F := fun (t : ℝ) y => Φ (x + L t + y) * starRingEnd ℂ (χ y)) (F' := fun (t : ℝ) y => Φ' (x + L t + y) * starRingEnd ℂ (χ y)) (x₀ := 0) (s := Set.univ) (bound := fun _ => M') Filter.univ_mem (Filter.Eve …`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hnorm, hM]))`. Use the proof step `(by fun_prop)`. Use the proof step `(Filter.Eventually.of_forall fun y t _ => by simp [hnorm, hM'])`. Use the proof step `(integrable_const _)`. Use the proof step `(Filter.Eventually.of_forall fun y t _ => by`.
-
-Establish `h` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact hderiv (x + L t + y))`. Establish `h' : HasDerivAt (fun s : ℝ => Φ (x + L s + y)) (Φ' (x + L t + y)) t`. Establish `e : (fun s : ℝ => Φ (x + L s + y)) = fun s : ℝ => Φ (x + L t + y + L (s - t))`. Use function extensionality and compare the values at `s`. Use `congr 1`.
-
-Rewrite using `[show L s = L t + L (s - t) by rw [← map_add]; congr 1; ring]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h`. Conclude with `h'.mul_const _)`.
-
-Simplify using `using key.2`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.fourierCoeff_mul_char_conv_and_hasDerivAt :
     ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [DiscreteTopology Γ] (K : Set G), IsCompact K → (∀ x, ∃ γ ∈ Γ, γ + x ∈ K) → ∀ (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure → IsAddFundamentalDomain Γ 𝓕 μ → ∀ χ : G → ℂ, Continuous χ → (∀ x y, χ (x + y) = χ x * χ y) → (∀ x, ‖χ x‖ = 1) → (∀ γ ∈ Γ, χ γ = 1) → ∀ Φ : G → ℂ, Continuous Φ → (∀ γ ∈ Γ, ∀ x, Φ (γ + x) = Φ x) → (∀ z, (∫ y in 𝓕, Φ y * starRingEnd ℂ (χ y) ∂μ) * χ z = ∫ y in 𝓕, Φ (z + y) * starRingEnd ℂ (χ y) ∂μ) ∧ ∀ (L : ℝ →+ G) (Φ' : G → ℂ), Continuous Φ' → (∀ γ ∈ Γ, ∀ x, Φ' (γ + x) = Φ' x) → (∀ x, HasDerivAt (fun t : ℝ => Φ (x + L t)) (Φ' x) 0) → ∀ x, HasDerivAt (fun t : ℝ => (∫ y in 𝓕, Φ y * starRingEnd ℂ (χ y) ∂μ) * χ (x + L t)) ((∫ y in 𝓕, Φ' y * starRingEnd ℂ (χ y) ∂μ) * χ x) 0 := by

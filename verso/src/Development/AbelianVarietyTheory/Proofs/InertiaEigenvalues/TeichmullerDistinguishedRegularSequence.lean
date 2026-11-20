@@ -5,11 +5,11 @@ open scoped NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h`. Establish `h0 : (((l : ℕ) : WittVector l O) * a).coeff 0 = 0`. Rewrite using `[← WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite `h0` using `[hb, WittVector.mul_coeff_zero, WittVector.teichmuller_coeff_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : b.coeff 0 = 0` using `(mul_eq_zero.mp h0).resolve_left hx`. Rewrite `hb0` using `[← WittVector.mem_span_p_iff_coeff_zero_eq_zero, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hb0`. Establish `hl : ((l : ℕ) : WittVector l O) ≠ 0` using `WittVector.p_nonzero l O`. Use `⟨c, mul_left_cancel₀ hl ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem teichmuller_dvd_of_dvd_natCast_mul (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
     [IsDomain O] [CharP O l] [PerfectRing O l] (x : O) (hx : x ≠ 0) (a : WittVector l O)
@@ -28,19 +28,17 @@ theorem teichmuller_dvd_of_dvd_natCast_mul (l : ℕ) [Fact l.Prime] (O : Type) [
   rw [hb]; ring
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ x e w E' hx he hw hE`. Establish `hT : WittVector.teichmuller l x ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← WittVector.teichmuller_coeff_zero l x, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : ∀ a : WittVector l O, WittVector.teichmuller l x ∣ E' * a → WittVector.teichmuller l x ∣ a`. Introduce `a h`. Rewrite `h` using `[hE, add_mul]`. Establish `h2 : WittVector.teichmuller l x ∣ WittVector.teichmuller l x ^ e * a` using `(dvd_pow_self _ he.ne').mul_right a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(dvd_add_right h2).mp h`. Rewrite `h3` using `[mul_assoc]`. Conclude with `hw.dvd_mul_left.mp (teichmuller_dvd_of_dvd_natCast_mul l O x hx _ h3)`. Establish `hk : ∀ (k : ℕ) (a : WittVector l O), WittVector.teichmuller l x ^ k ∣ E' * a → WittVector.teichmuller l x ^ k ∣ a`. Introduce `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a h`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `h1 a ((dvd_pow_self _ k.succ_ne_zero).trans h)`. Rewrite `h` using `[pow_succ', mul_left_comm, mul_dvd_mul_iff_left hT]`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih c h)`. Introduce `k a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨hk k a, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Take `⟨c, rfl⟩` from `hk k b ⟨a, hb.symm⟩`. Use `⟨c, mul_left_cancel₀ (pow_ne_zero k hT) ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem teichmuller_distinguished_regular : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharP O l] [PerfectRing O l] (x : O) (e : ℕ) (w E' : WittVector l O), x ≠ 0 → 0 < e → IsUnit w → E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w → ∀ (k : ℕ) (a : WittVector l O), (WittVector.teichmuller l x ^ k ∣ E' * a → WittVector.teichmuller l x ^ k ∣ a) ∧ (E' ∣ WittVector.teichmuller l x ^ k * a → E' ∣ a) := by
   intro l _ O _ _ _ _ x e w E' hx he hw hE

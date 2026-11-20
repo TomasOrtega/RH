@@ -7,11 +7,11 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hZ hLC p _ D G L ha hm v hv t₀ ht gb hgb N N' h hok X X' c₁ c₂ hreg k α hα hE h₁ h₂`. Take `⟨hsm, Fx, At, hF, hT, hfin, htriv, hsum⟩` from `hZ p D G L ha hm v hv t₀ ht gb hgb N N' h hok X X' c₁ c₂ hreg k α hα hE h₁ h₂`. Take `⟨hN3, -, hN'3, -, hdvd, hconj⟩` from `hok`. Establish `hN : 0 < N` using `by omega`. Establish `hN' : 0 < N'` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : L.KN N' ≤ GlobalTheory.HeckeCorr.heckeLevel (L.KN N) h⁻¹`. Take `⟨k', rfl⟩` from `hdvd`. Conclude with `fun u hu => GlobalTheory.W2.mem_heckeLevel_inv.2 ⟨GlobalTheory.W2.KN_mul_le L N k' hu, hconj u hu⟩`. Use `⟨hsm, Fx, At, hF, hT, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum t]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hLC p G v (wtFix L v t₀ α t) (L.KN N) (L.KN N') h hle (GlobalTheory.W2.relIndex_KN_ne_zero L hN hN') htriv hfin`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.fixZ_of :
     UpperTheory.Gal.W2.HeckeFixedPointCMCycleClass → UpperTheory.Gal.W2.LevelChange → UpperTheory.Gal.W2.FixZ := by

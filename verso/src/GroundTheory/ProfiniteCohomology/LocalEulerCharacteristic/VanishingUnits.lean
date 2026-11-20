@@ -12,19 +12,19 @@ section Group
 variable {G : Type*} [CommGroup G]
 
 /- English proof (translation)
-Establish `hPn : P.Normal` using `Subgroup.normal_of_isMulCommutative P`. Establish `hq : ∀ a b : G, a * b⁻¹ ∈ P → (a : G ⧸ P) = b` using `fun a b h => by`. Rewrite using `[QuotientGroup.eq]`. Use `P.inv_mem h` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set c := s x * x⁻¹ with hc`. Establish `hOs : ∀ e ∈ O, s e ∈ O` using `fun e he => by`. Use `O.mul_mem (hO e) he` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Establish `hcO : ∀ j : ℕ, s^[j] c ∈ O` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `j with`. Consider the case `zero => exact hO x`. Consider the case `succ j ih => rw [Function.iterate_succ_apply']`. Conclude with `hOs _ ih`. Establish `hcj : ∀ j : ℕ, ((s^[j] c : G) : G ⧸ P) = c` using `fun j => by`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [Function.iterate_succ_apply', hq _ _ (hOP _ (hcO j)), ih]`. Establish `hsx : s x = x * c` using `by rw [hc, mul_comm (s x), mul_inv_cancel_left]`. Establish `hxj : ∀ j : ℕ, ((s^[j] x : G) : G ⧸ P) = (x : G ⧸ P) * (c : G ⧸ P) ^ j` using `fun j => by`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply, hsx, iterate_map_mul, QuotientGroup.mk_mul, ih, hcj, pow_succ, mul_assoc]`. Establish `h1 : (c : G ⧸ P) ^ m = 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hxj m`. Rewrite `h` using `[hsm]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one _).symm)`. Establish `h2 : (c : G ⧸ P) ^ l = 1`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hPl c`. Establish `h3 : (c : G ⧸ P) = 1`. Establish `h` using `(pow_gcd_eq_one (a := (c : G ⧸ P))).2 ⟨h1, h2⟩`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hm, pow_one]`. Then use the resulting hypothesis. Conclude with `(QuotientGroup.eq_one_iff c).1 h3`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv_mem_of_iterate_eq {l m : ℕ} (P O : Subgroup G) (s : G →* G)
     (hPl : ∀ y : G, y ^ l ∈ P) (hO : ∀ x : G, s x * x⁻¹ ∈ O)
@@ -73,27 +73,25 @@ section LocalField
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `set s : Fˣ →* Fˣ := Units.map (σ : F →* F) with hs_def`. Establish `hs : ∀ x : Fˣ, ((s x : Fˣ) : F) = σ x` using `fun x => rfl`. Set `P : Subgroup Fˣ` to `(powMonoidHom l : Fˣ →* Fˣ).range`. Set `O : Subgroup Fˣ` to `{ carrier := {x | valuation F (x : F) = 1} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, Units.val_mul, map_mul] at ha hb ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, hb, mul_one]`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_ofPred_eq, Units.val_inv_eq_inv_val, map_inv₀] at ha ⊢`. Rewrite using `[ha, inv_one] }`. Establish `hmemO : ∀ x : Fˣ, x ∈ O ↔ valuation F (x : F) = 1` using `fun x => Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0 : ∀ x : Fˣ, valuation F (x : F) ≠ 0` using `fun x => (valuation F).ne_zero_iff.2 x.ne_zero`. Establish `hO : ∀ x : Fˣ, s x * x⁻¹ ∈ O` using `fun x => by`. Rewrite using `[hmemO, Units.val_mul, hs, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hval, mul_inv_cancel₀ (hv0 x)]`. Establish `hOP : ∀ e ∈ O, s e * e⁻¹ ∈ P` using `fun e he => by`. Rewrite `he` using `[hmemO]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := s e * e⁻¹ with ht`. Establish `htv : valuation F (t : F) = 1` using `(hmemO t).1 (hO e)`. Establish `ht1 : valuation F ((t : F) - 1) < 1`. Establish `e1 : (t : F) - 1 = (σ e - e) * (e : F)⁻¹`. Rewrite using `[ht, Units.val_mul, hs, Units.val_inv_eq_inv_val, sub_mul, mul_inv_cancel₀ e.ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_mul, map_inv₀, he, inv_one, mul_one]`. Conclude with `hin _ he.le`. Establish `hnt : normalizedValuation F (t : F) = 1`. Rewrite using `[← map_one (normalizedValuation F), normalizedValuation_eq_iff, map_one]`. Conclude with `htv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t', ht'⟩` from `mem_range_unitsIncl_iff.2 hnt`. Establish `ht'F : ((t' : 𝒪[F]) : F) = t` using `by rw [← coe_unitsIncl, ht']`. Establish `hmem : t' ∈ unitFiltration F 1`. Rewrite using `[mem_unitFiltration, pow_one, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `valuation_unit hu.unit`. Rewrite `h1` using `[IsUnit.unit_spec]`. Establish `h2 : (((t' : 𝒪[F]) - 1 : 𝒪[F]) : F) = (t : F) - 1`. Use `push_cast`. Rewrite using `[ht'F]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `(lt_irrefl _ (h1 ▸ ht1))`. Take `⟨z, -, hz⟩` from `exists_pow_eq_of_mem_unitFiltration_one hl hmem`. Use `⟨unitsIncl F z, ?_⟩` and prove the remaining obligations. Rewrite using `[powMonoidHom_apply, ← map_pow, hz, ht']`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiter : ∀ (j : ℕ) (x : Fˣ), ((s^[j] x : Fˣ) : F) = σ^[j] (x : F)` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ j ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hs, ih]`. Establish `hsm : ∀ x : Fˣ, s^[m] x = x` using `fun x => Units.ext (by rw [hiter, hσm])`. Take `⟨y, hy⟩` from `mul_inv_mem_of_iterate_eq P O s (fun y => ⟨y, rfl⟩) hO hOP hm hsm u`. Use `⟨y, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hy` using `[powMonoidHom_apply]`. Rewrite using `[hy, mul_comm (s u), mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_units_eq_mul_pow {l m : ℕ} (hl : (l : 𝓀[F]) ≠ 0) (σ : F ≃+* F)
     (hval : ∀ x : F, valuation F (σ x) = valuation F x)

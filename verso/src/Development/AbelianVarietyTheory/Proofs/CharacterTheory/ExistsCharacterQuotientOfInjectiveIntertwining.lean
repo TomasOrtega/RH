@@ -6,9 +6,9 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `K L _ _ _ G _ V _ _ _ W _ _ _ ρ σ f hf`. Establish `hcomm : ∀ g, ρ g ∘ₗ f.toLinearMap = f.toLinearMap ∘ₗ σ g` using `fun g => (f.isIntertwining' g).symm`. Establish `hle : ∀ g, LinearMap.range f.toLinearMap ≤ (LinearMap.range f.toLinearMap).comap (ρ g)`. Introduce and unpack `g _ ⟨w, rfl⟩`. Conclude with `⟨σ g w, (LinearMap.congr_fun (hcomm g) w).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨fun g => algebraMap K L ((ρ.quotient _ hle).character g), (GlobalTheory.T.isCharacterOverSubfield_of_representation K L G _ (ρ.quotient _ hle)).1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`. Use `GlobalTheory.T.linear_map_short_exact_commute K W V _ f.toLinearMap (LinearMap.range f.toLinearMap).mkQ (σ g) (ρ g) (ρ.quotient _ hle g) hf (Submodule.mkQ_surjective _) (Submodule.ker_mkQ _).symm (hcomm g) ?_` and prove the remaining obligations. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/

@@ -35,9 +35,9 @@ open MvPolynomial
 variable {B : Type} [CommRing B] {M : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Establish `h1 : (monomial u c : MvPolynomial (Fin M) B).IsHomogeneous u.degree` using `isHomogeneous_monomial c rfl`. Rewrite using `[homogeneousComponent_of_mem (hp.mul h1), homogeneousComponent_of_mem h1]`. Distinguish the cases in `hd : d = u.degree`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hd]`. Simplify using `[hd]`. Consider the case `add a b ha hb => rw [mul_add, map_add, map_add, mul_add, ha, hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem comp_mul {p : MvPolynomial (Fin M) B} {e : ℕ} (hp : p.IsHomogeneous e) (d : ℕ)
     (h : MvPolynomial (Fin M) B) :
@@ -53,7 +53,7 @@ private theorem comp_mul {p : MvPolynomial (Fin M) B} {e : ℕ} (hp : p.IsHomoge
   | add a b ha hb => rw [mul_add, map_add, map_add, mul_add, ha, hb]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hmk`. Establish `: r ^ (m + c) * f = r ^ c * (r ^ m * f)` using `by ring`. Rewrite using `[this]`. Conclude with `Q.mul_mem_left _ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_mul_mem {R : Type} [CommRing R] {Q : Ideal R} {r f : R} {m k : ℕ}
     (hmk : m ≤ k) (h : r ^ m * f ∈ Q) : r ^ k * f ∈ Q := by
@@ -63,11 +63,9 @@ private theorem pow_mul_mem {R : Type} [CommRing R] {Q : Ideal R} {r f : R} {m k
   exact Q.mul_mem_left _ h
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `IsNoetherian.noetherian T`. Substitute `hs` using the available equality. Use `choose! m hm using h`. Use `⟨s.sup m, fun f hf => ?_⟩` and prove the remaining obligations. Proceed by induction on `hf using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem t ht => exact pow_mul_mem (Finset.le_sup ht) (hm t (Submodule.subset_span ht))`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `Q.add_mem ha hb`. Consider the case `smul a b _ hb`.
-
-Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Q.mul_mem_left _ hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unif {R : Type} [CommRing R] [IsNoetherianRing R] (T Q : Ideal R) (r : R)
     (h : ∀ f ∈ T, ∃ m : ℕ, r ^ m * f ∈ Q) : ∃ k : ℕ, ∀ f ∈ T, r ^ k * f ∈ Q := by
@@ -85,21 +83,19 @@ private theorem unif {R : Type} [CommRing R] [IsNoetherianRing R] (T Q : Ideal R
     exact Q.mul_mem_left _ hb
 
 /- English proof (translation)
-Use `choose k hk using fun i => unif T Q (X i) (h i)`. Take `⟨s, hs⟩` from `IsNoetherian.noetherian T`. Substitute `hs` using the available equality. Use `⟨(∑ i, k i) + s.sup totalDegree + 1, fun n hn f hf => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a, homogeneousComponent n (a * f) ∈ Q`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem t ht`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on' with`. Consider the case `monomial u c`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : ∃ i, k i ≤ u i`. Take `⟨i, hi⟩` from `hu`. Apply `hQ` to reduce the goal to its premises. Establish `h1 : (X i : MvPolynomial (Fin M) B) ^ k i ∣ monomial u c`. Rewrite using `[X_pow_eq_monomial]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨monomial (u - Finsupp.single i (k i)) c, ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_mul, one_mul, add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr hi)]`. Take `⟨w, hw⟩` from `h1`. Rewrite using `[hw, mul_comm _ w, mul_assoc]`. Conclude with `Q.mul_mem_left _ (hk i t (Submodule.subset_span ht))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push Not at hu`. Establish `h1 : (monomial u c : MvPolynomial (Fin M) B).totalDegree ≤ ∑ i, k i`. Use `(totalDegree_monomial_le u c).trans ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `Finset.sum_le_sum fun i _ => (hu i).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `h2 : t.totalDegree ≤ s.sup totalDegree` using `Finset.le_sup (f := totalDegree) ht`. Establish `h3` using `totalDegree_mul (monomial u c) t`. Rewrite using `[homogeneousComponent_eq_zero _ _ (by omega)]`. Conclude with `Q.zero_mem`. Consider the case `add a b ha hb => rw [add_mul, map_add]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Q.add_mem ha hb`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a`. Rewrite using `[mul_add, map_add]`.
-
-Conclude with `Q.add_mem (hx a) (hy a)`. Consider the case `smul b x _ hx => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx _`. Simplify using `using key 1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem comp_mem_of_nilp [IsNoetherianRing B] (T Q : Ideal (MvPolynomial (Fin M) B))
     (hQ : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal Q)
@@ -142,15 +138,13 @@ private theorem comp_mem_of_nilp [IsNoetherianRing B] (T Q : Ideal (MvPolynomial
   simpa using key 1
 
 /- English proof (translation)
-Set `T : Ideal (MvPolynomial (Fin M) B)` to `{ carrier := {f | ∀ i, ∃ m : ℕ, X i ^ m * f ∈ Q} zero_mem' := fun i => ⟨0, by simp⟩ add_mem' := by`. Introduce `a b ha hb i`. Take `⟨m, hm⟩` from `ha i`. Take `⟨l, hl⟩` from `hb i`. Use `⟨m + l, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_add]`. Conclude with `Q.add_mem (pow_mul_mem (by omega) hm) (pow_mul_mem (by omega) hl)`. Use the proof step `smul_mem' := by`. Introduce `c a ha i`. Take `⟨m, hm⟩` from `ha i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Q.mul_mem_left _ hm }`. Take `⟨n₀, h⟩` from `comp_mem_of_nilp T Q hQ (fun i f hf => hf i)`. Use `⟨n₀, fun n hn f hfP hf hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← homogeneousComponent_eq_self hf]`. Use `h n hn f (fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hiW : i ∈ W`. Conclude with `hi i hiW`. Take `⟨k, hk⟩` from `hW i hiW`.
-
-Conclude with `⟨k, hk f hfP⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem v0 [IsNoetherianRing B] (W : Finset (Fin M))
     (P Q : Ideal (MvPolynomial (Fin M) B)) (hQ : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal Q)
@@ -206,7 +200,7 @@ private def plus {R : Type} [CommRing R] (P Q : Ideal R) (x : R) : Ideal R where
     exact ⟨c * q, Q.mul_mem_left _ hq, c * h, P.mul_mem_left _ hh, by rw [smul_eq_mul]; ring⟩
 
 /- English proof (translation)
-Introduce and unpack `d f ⟨hf, m, hm⟩`. Use `⟨hP d f hf, m, ?_⟩` and prove the remaining obligations. Rewrite using `[← comp_mul (isHomogeneous_X_pow a m)]`. Conclude with `hQ _ _ hm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_homog {P Q : Ideal (MvPolynomial (Fin M) B)}
     (hP : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal P) (hQ : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal Q) (a : Fin M) :
@@ -217,11 +211,11 @@ private theorem sat_homog {P Q : Ideal (MvPolynomial (Fin M) B)}
   exact hQ _ _ hm
 
 /- English proof (translation)
-Introduce and unpack `d _ ⟨q, hq, h, hh, rfl⟩`. Rewrite using `[map_add]`. Break down `d with _ | d` into its components or cases. Use `⟨_, hQ 0 q hq, 0, P.zero_mem, ?_⟩` and prove the remaining obligations. Use `congr 1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[homogeneousComponent_zero, ← constantCoeff_eq]`. Simplify using the standard rewrite rules. Use `⟨_, hQ (d + 1) q hq, _, hP d h hh, ?_⟩` and prove the remaining obligations. Use `congr 1`. Rewrite using `[add_comm d 1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comp_mul (isHomogeneous_X B a) d h`.
+A detailed English derivation is pending.
 -/
 private theorem plus_homog {P Q : Ideal (MvPolynomial (Fin M) B)}
     (hP : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal P) (hQ : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal Q) (a : Fin M) :
@@ -239,17 +233,17 @@ private theorem plus_homog {P Q : Ideal (MvPolynomial (Fin M) B)}
     exact comp_mul (isHomogeneous_X B a) d h
 
 /- English proof (translation)
-Establish `step : ∀ l : ℕ, (∃ g ∈ P, g.IsHomogeneous (n + l) ∧ ∀ i ∈ W, ∃ m : ℕ, X i ^ m * (X i ^ k * g - X a ^ l * f i) ∈ sat P Q (X a)) → ∃ g ∈ P, g.IsHomogeneous n ∧ ∀ i ∈ W, ∃ m : ℕ, X i ^ m * (X i ^ k * g - f i) ∈ sat P Q (X a)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `⟨g, hgP, hg, hi⟩`. Apply `ih` to reduce the goal to its premises. Establish `hgR : g ∈ plus P (sat P Q (X a)) (X a)`. Use `h0 (n + (l + 1)) (by omega) g hgP hg (fun i hiW => ?_)` and prove the remaining obligations. Take `⟨m, hm⟩` from `hi i hiW`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨m + k, _, hm, X i ^ m * X a ^ l * f i, P.mul_mem_left _ (hf i hiW).1, by ring⟩` and prove the remaining obligations. Take `⟨q, hq, h, hh, hgq⟩` from `hgR`. Establish `hq'` using `sat_homog hP hQ a (n + (l + 1)) q hq`. Establish `e : g = homogeneousComponent (n + (l + 1)) q + X a * homogeneousComponent (n + l) h`. Rewrite using `[← comp_mul (isHomogeneous_X B a), show 1 + (n + l) = n + (l + 1) by omega, ← map_add, ← hgq, homogeneousComponent_eq_self hg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh'` using `hP (n + l) h hh`. Use `⟨_, hh', homogeneousComponent_isHomogeneous _ _, fun i hiW => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hi i hiW`. Generalize the expression as in `homogeneousComponent (n + (l + 1)) q = q' at hq' e`. Generalize the expression as in `homogeneousComponent (n + l) h = h' at hh' e ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨-, r, hr⟩` from `(sat P Q (X a)).sub_mem hm ((sat P Q (X a)).mul_mem_left (X i ^ m * X i ^ k) hq')`. Use `⟨m, P.mul_mem_left _ (P.sub_mem (P.mul_mem_left _ hh') (P.mul_mem_left _ (hf i hiW).1)), r + 1, ?_⟩` and prove the remaining obligations. Use `hr using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `step k ⟨f a, (hf a ha).1, (hf a ha).2, fun i hiW => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hc a ha i hiW`. Use `⟨m, P.mul_mem_left _ (P.sub_mem (P.mul_mem_left _ (hf a ha).1) (P.mul_mem_left _ (hf i hiW).1)), m, ?_⟩` and prove the remaining obligations. Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lift_sat {W : Finset (Fin M)} {P Q : Ideal (MvPolynomial (Fin M) B)}
     (hP : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal P) (hQ : UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal Q) {a : Fin M}
@@ -299,25 +293,23 @@ private theorem lift_sat {W : Finset (Fin M)} {P Q : Ideal (MvPolynomial (Fin M)
   ring
 
 /- English proof (translation)
-Proceed by induction on `W using Finset.induction_on with`. Consider the case `empty`. Introduce `P Q _ _ _ _`. Conclude with `⟨0, fun n _ k f _ _ => ⟨0, P.zero_mem, isHomogeneous_zero _ _ _, by simp⟩⟩`. Consider the case `insert a W haW ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `P Q hP hQ hQP hW`. Establish `hQS : Q ≤ sat P Q (X a)` using `fun f hf => ⟨hQP hf, 0, by simpa using hf⟩`. Take `⟨n₁, h1⟩` from `ih (sat P Q (X a)) Q (sat_homog hP hQ a) hQ hQS (by`. Introduce `j hj`. Distinguish the cases in `hja : j = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hja` using the available equality. Conclude with `unif _ _ _ (fun f hf => hf.2)`. Take `⟨k, hk⟩` from `hW j (by simp [hja, hj])`. Conclude with `⟨k, fun f hf => hk f hf.1⟩)`. Take `⟨n₂, h2⟩` from `v0 (insert a W) P (plus P (sat P Q (X a)) (X a)) (plus_homog hP (sat_homog hP hQ a) a) (by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Take `⟨k, hk⟩` from `hW j hj`. Conclude with `⟨k, fun f hf => ⟨_, hQS (hk f hf), 0, P.zero_mem, by simp⟩⟩)`. Use `⟨n₁ + n₂, fun n hn k f hf hc => ?_⟩` and prove the remaining obligations. Take `⟨g₀, hg₀P, hg₀, hi⟩` from `lift_sat hP hQ (Finset.mem_insert_self a W) h2 (n := n) (by omega) hf hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose! e he using hi`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, ∀ i ∈ insert a W, X i ^ m * (f i - X i ^ k * g₀) ∈ sat P Q (X a) := by`. Use `⟨(insert a W).sup e, fun i hi => pow_mul_mem (Finset.le_sup hi) ?_⟩` and prove the remaining obligations. Use `(sat P Q (X a)).neg_mem (he i hi) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g₁, hg₁S, hg₁, hj⟩` from `h1 n (by omega) (k + m) (fun i => X i ^ m * (f i - X i ^ k * g₀)) (by`. Introduce `i hi`. Establish `hi'` using `Finset.mem_insert_of_mem (b := a) hi`. Use `⟨hm i hi', ?_⟩` and prove the remaining obligations. Establish `t1` using `(isHomogeneous_X_pow (R := B) i k).mul hg₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `t1` using `[add_comm]`. Establish `t2` using `(isHomogeneous_X_pow (R := B) i m).mul ((hf i hi').2.sub t1)`. Rewrite using `[show m + (n + k) = n + (k + m) by omega] at t2) (by` and apply the resulting hypothesis. Introduce `i hi j hj`. Take `⟨r, hr⟩` from `hc i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Use `Q.mul_mem_left ((X i * X j) ^ m) hr using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Use `⟨g₀ + g₁, P.add_mem hg₀P hg₁S.1, hg₀.add hg₁, fun i hi => ?_⟩` and prove the remaining obligations. Establish `: ∃ r : ℕ, X i ^ r * (X i ^ (k + m) * g₁ - X i ^ m * (f i - X i ^ k * g₀)) ∈ Q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.mp hi with rfl | hiW` into its components or cases. Conclude with `((sat P Q (X i)).sub_mem ((sat P Q (X i)).mul_mem_left _ hg₁S) (hm i hi)).2`. Conclude with `hj i hiW`. Take `⟨r, hr⟩` from `this`. Use `⟨r + m, ?_⟩` and prove the remaining obligations.
-
-Use `hr using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem v1 [IsNoetherianRing B] (W : Finset (Fin M)) :
     ∀ (P Q : Ideal (MvPolynomial (Fin M) B)), UpperTheory.Reformulated.B.ProjectiveCharts.HomogIdeal P →
@@ -380,7 +372,7 @@ private theorem v1 [IsNoetherianRing B] (W : Finset (Fin M)) :
 end Helpers
 
 /- English proof (translation)
-Introduce `B _ M _ W P Q hP hQ hQP hW`. Take `⟨n₀, h0⟩` from `v0 W P Q hQ hW`. Take `⟨n₁, h1⟩` from `v1 W P Q hP hQ hQP hW`. Conclude with `⟨n₀ + n₁, fun n hn => h0 n (by omega), fun n hn => h1 n (by omega)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.ProjectiveCharts.charts :
     ∀ {B : Type} [inst : CommRing B] {M : ℕ} [IsNoetherianRing B] (W : Finset (Fin M))

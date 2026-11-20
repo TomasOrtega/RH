@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
   {q0 : ℕ} (hr : X.p0 + q0 = r) {n : ℕ} {c : X.Ψ → Fin q0 → ℕ} {c' : X.Ψ → Fin X.p0 → ℕ}
 
 /- English proof (translation)
-Establish `h1 : Summable fun p : J × ι => ‖f p.1 p.2‖` using `(summable_prod_of_nonneg fun _ => norm_nonneg _).2 ⟨hf, Summable.of_finite⟩`. Establish `h2` using `h1.of_norm.hasSum`. Conclude with `⟨h1, (h2.prod_fiberwise h).unique (hasSum_fintype y) ▸ h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hasSum_prod_of_fintype {J ι : Type*} [Fintype J] {f : J → ι → ℂ} {y : J → ℂ}
     (hf : ∀ j, Summable fun m => ‖f j m‖) (h : ∀ j, HasSum (f j) (y j)) :
@@ -27,9 +27,9 @@ theorem hasSum_prod_of_fintype {J ι : Type*} [Fintype J] {f : J → ι → ℂ}
   exact ⟨h1, (h2.prod_fiberwise h).unique (hasSum_fintype y) ▸ h2⟩
 
 /- English proof (translation)
-Take `⟨bas', S, hs', hA⟩` from `exists_isAdapted hs hξ.2.1`. Take `⟨a', b', κ, -, -, hκ⟩` from `exists_thFr_eq_mul idx hr hs hs' hn a b`. Establish `hm : P ∈ GaussGauge.minorSpan (Fin n) c c'` using `GaussGauge.orbitSpan_le_minorSpan (add_comm X.p0 q0 ▸ hpq) c c' (Harm.rowHighest_eq_orbitSpan (add_comm X.p0 q0 ▸ hpq) c c' ℂ ▸ hP)`. Take `⟨A, hA1, hA2, hA3⟩` from `hA.exists_expansion hr idx hs' hξ n a' b' (Harm.isHarmonic_of_mem_rowHighest hP) hm hc hx`. Use `⟨fun m => κ * A m, _, ?_, fun s => ?_, fun m hm h0 => hm (mul_eq_zero_of_right κ (hA3 m h0))⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hA1.mul_left ‖κ‖` using `only [norm_mul]`. Establish `hxs` using `(FlowCoefficientBounds.flow_real X hξ hx s 0).1`. Rewrite using `[hκ P _ hxs]`. Simplify `(hA2 _ hxs).mul_left κ` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_expansion_of_rowHighest (hs : IsSympl X bas) (hn : Even n) (hpq : X.p0 + q0 ≤ n)
     (hc : ∃ τ, (∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ c τ i) ∨
@@ -60,7 +60,7 @@ variable {J : Type*} (s : Finset J) (t : J → ℂ) (a b : J → Fin n → Fin g
   {P : J → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)} {Q : Frame X.Ψ r → ℂ}
 
 /- English proof (translation)
-Use `⟨DifferentiableOn.congr (DifferentiableOn.fun_sum fun j hj => ?_) hQ, fun x hx u hu => ?_, hΓ⟩` and prove the remaining obligations. Conclude with `(differentiableOn_thFr idx hs hr n _ _ (Harm.isHarmonic_of_mem_rowHighest (hP j hj))).const_mul _`. Rewrite using `[hQ _ (PerMove.rmul_mem_GG hx hu), hQ x hx, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j hj => by`. Rewrite using `[thFr_rmul idx hr _ _ hs (hP j hj) hx hu, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSec_of_eq_sum_thFr (hs : IsSympl X bas) (hP : ∀ j ∈ s, P j ∈ Harm.rowHighest ℂ c c')
     (hQ : ∀ x ∈ X.dom, Q x = ∑ j ∈ s, t j * thFr X hr bas idx n (a j) (b j) (P j) x)
@@ -75,7 +75,7 @@ theorem isSec_of_eq_sum_thFr (hs : IsSympl X bas) (hP : ∀ j ∈ s, P j ∈ Har
       rw [thFr_rmul idx hr _ _ hs (hP j hj) hx hu, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `isModerate_sum_thFr idx hr hs hn s t a b hP`. Conclude with `⟨C, A, fun x hx => by simpa only [Data.pnorm, hQ x hx] using h x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isModerate_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n)
     (hP : ∀ j ∈ s, P j ∈ Harm.rowHighest ℂ c c')
@@ -85,11 +85,11 @@ theorem isModerate_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n)
   exact ⟨C, A, fun x hx => by simpa only [Data.pnorm, hQ x hx] using h x hx⟩
 
 /- English proof (translation)
-Use `choose A ν h1 h2 h3 using fun j : s => exists_expansion_of_rowHighest idx hr hs hn hpq hc (a j) (b j) (hP j j.2) hξ hx`. Establish `h4 (j : s) : Summable fun m => ‖t j * A j m‖`. Simplify `(h1 j).mul_left ‖t j‖` using `only [norm_mul]`. Use `⟨fun p => t p.1 * A p.1 p.2, fun p => ν p.1 p.2, (hasSum_prod_of_fintype h4 fun j => (h4 j).of_norm.hasSum).1, fun u => ?_, fun p hp => h3 _ _ (right_ne_zero_of_mul hp)⟩` and prove the remaining obligations. Rewrite using `[hQ _ (FlowCoefficientBounds.flow_real X hξ hx u 0).1, ← Finset.sum_coe_sort]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hasSum_prod_of_fintype (f := fun (j : s) m => t j * A j m * cexp (4 * Real.pi * I * ∑ τ, (ν j m τ : ℂ) * u τ)) (fun j => ?_) fun j => ?_).2` and prove the remaining obligations. Use `(h4 j).congr fun m => ?_` and prove the remaining obligations. Establish `h` using `FJZero.norm_expo (ν j m) u`. Rewrite `h` using `[FJZero.expo]`. Rewrite using `[norm_mul (t j * A j m), h, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(h2 j u).mul_left (t j)` using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_expansion_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n) (hpq : X.p0 + q0 ≤ n)
     (hc : ∃ τ, (∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ c τ i) ∨
@@ -120,7 +120,7 @@ theorem exists_expansion_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n) (hpq 
   · simpa only [mul_assoc] using (h2 j u).mul_left (t j)
 
 /- English proof (translation)
-Establish `hsec` using `isSec_of_eq_sum_thFr idx hr s t a b hs hP hQ hΓ`. Use `FJZero.mem_SS_of_isModerate X _ Q hsec (isModerate_of_eq_sum_thFr idx hr s t a b hs hn hP hQ) fun ξ hξ x hx => ?_` and prove the remaining obligations. Take `⟨hpq, hc⟩` from `hc.resolve_right fun h => h ξ hξ`. Take `⟨A, ν, h1, h2, h3⟩` from `exists_expansion_of_eq_sum_thFr idx hr s t a b hs hn hpq hc hP hQ hξ hx`. Conclude with `FJZero.fj_eq_zero_of_isSec X _ Q hsec hξ hx A h1 ν h2 0 h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_SS_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n)
     (hc : (X.p0 + q0 ≤ n ∧ ∃ τ, (∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ c τ i) ∨
@@ -137,7 +137,7 @@ theorem mem_SS_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n)
   exact FJZero.fj_eq_zero_of_isSec X _ Q hsec hξ hx A h1 ν h2 0 h3
 
 /- English proof (translation)
-Establish `h : 1 + HyperbolicCusp.flagData.p0 ≤ 2` using `(add_comm _ _).trans_le Gauss.hr.le`. Take `⟨τ⟩` from `nonempty_type HyperbolicCusp.flagData`. Use `⟨fun _ _ => 1, fun _ _ => 0, Harm.basePoly ℂ h (fun _ _ => 1) fun _ _ => 0, Gauss.isSympl_bas, HyperbolicCusp.isIso_one, Gauss.hr.le, ⟨τ, 0, rfl, le_rfl⟩, ?_, Harm.basePoly_ne_zero h _ _⟩` and prove the remaining obligations. Conclude with `Harm.basePoly_mem_rowHighest h _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example : ∃ (c : HyperbolicCusp.flagData.Ψ → Fin 1 → ℕ)
     (c' : HyperbolicCusp.flagData.Ψ → Fin HyperbolicCusp.flagData.p0 → ℕ)

@@ -16,11 +16,11 @@ open scoped Classical
 open GlobalTheory.CovTestDR
 
 /- English proof (translation)
-Introduce `hS hX h2 hH hR hV r hr D O hc hf A T H h`. Establish `e : Tendsto (vdmVal O.Y) atTop (𝓝 (r * O.Y.chern (lamA D.what₂.Tau O.Y.N O.Y.j ^ dimGr D.what₂.Tau O.Y.N O.Y.j * vdmCl D.what₂.Tau O.Y.N O.Y.j)))` using `GlobalTheory.T.vandermonde_value_tendsto_chern hS hX h2 hH hR hV r hr D O hc hf A T H h`. Establish `hp : Propor O.Y` using `(GlobalTheory.CompPropObj.main h2 hH D O hc hf A T H h).2.2`. Use `haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hpos : 1 ≤ dimGr D.what₂.Tau O.Y.N O.Y.j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dimGr`. Conclude with `Nat.mul_pos Fintype.card_pos (Nat.mul_pos O.Y.j_pos (by have := O.Y.j_lt; omega))`. Establish `hc' : lamA D.what₂.Tau O.Y.N O.Y.j ^ dimGr D.what₂.Tau O.Y.N O.Y.j * fibPt D.what₂.Tau O.Y.N O.Y.j = lamA D.what₂.Tau O.Y.N O.Y.j * curveCl D.what₂.Tau O.Y.N O.Y.j`. Unfold `curveCl`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel hpos]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `e` using `[hp, GlobalTheory.VdmFibre.degFl_lamA_pow_vdmCl D.what₂.Tau O.Y.N O.Y.j _ O.Y.j_lt.le, hc', GlobalTheory.FlagPoly.TestClass.degFl_lamA_mul]`. Use `e using 2` and compare the differences between its conclusion and the goal. Unfold `testI`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTestDR.vdmVal_tendsto : GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes →
     ∀ r : ℝ, Ch2Const r → OnObj fun _ O _ _ _ _ => Tendsto (vdmVal O.Y) atTop (𝓝 (-(2 * r * O.Y.vol * testI O.Y))) := by

@@ -17,9 +17,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 attribute [local instance] t2Sp lcSp tdSp contSMul lcH tdH scH contSMulH
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨x.2, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stab_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (p : Sp k n) :
     (stab Z p).subgroupOf (GzS Z) = stabilizer (GzS Z) (toT p) := by
@@ -32,7 +32,7 @@ theorem stab_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) 
     exact ⟨x.2, h⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inf_subgroupOf' {G : Type*} [Group G] (A B G' : Subgroup G) :
     (A ⊓ B).subgroupOf G' = A.subgroupOf G' ⊓ B.subgroupOf G' := by
@@ -40,7 +40,7 @@ theorem inf_subgroupOf' {G : Type*} [Group G] (A B G' : Subgroup G) :
   simp [Subgroup.mem_subgroupOf, Subgroup.mem_inf]
 
 /- English proof (translation)
-Use `⟨?_, (Subgroup.relIndex_subgroupOf hKG).symm⟩` and prove the remaining obligations. Rewrite using `[← stab_subgroupOf, ← inf_subgroupOf', ← inf_subgroupOf', Subgroup.relIndex_subgroupOf (inf_le_left.trans hKG)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_H {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (p : Sp k n)
     {K L : Subgroup (GL (Fin n) k)} (hKG : K ≤ GzS Z) :
@@ -52,9 +52,9 @@ theorem relIndex_H {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (p : 
     Subgroup.relIndex_subgroupOf (inf_le_left.trans hKG)]
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Use `hKc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hKG hx⟩, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {K : Subgroup (GL (Fin n) k)}
     (hKG : K ≤ GzS Z) (hKc : IsCompact (K : Set (GL (Fin n) k))) : IsCompact ((K.subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) := by

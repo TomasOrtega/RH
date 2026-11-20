@@ -15,9 +15,7 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 namespace Formalism.L2.SG.Pf.MassDataX
 
 /- English proof (translation)
-Establish `hM : massH X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (frameOf X w) = covol (X.measW w).μH / ((X.muH w Set.univ).toReal * ((X.measW w).μHf (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))).toReal)` using `MassDataMassesW.massAll_of hinfCompact_holds kCompactOpen_holds classFinite_holds X hb w hT`. Establish `hm` using `massH_pos X w`. Rewrite `hm` using `[hM]`. Break down `div_pos_iff.mp hm with h | h` into its components or cases. Conclude with `h.1`.
-
-Conclude with `absurd h.2 (not_lt.mpr (mul_nonneg ENNReal.toReal_nonneg ENNReal.toReal_nonneg))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem covolH_pos {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (w : D.what₂.Word) (hT : X.MeasTie hb) :
     0 < covol (X.measW w).μH := by
@@ -32,9 +30,9 @@ theorem covolH_pos {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (w : D.
   · exact absurd h.2 (not_lt.mpr (mul_nonneg ENNReal.toReal_nonneg ENNReal.toReal_nonneg))
 
 /- English proof (translation)
-Establish `hM : massH X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (frameOf X w) = covol (X.measW w).μH / ((X.muH w Set.univ).toReal * ((X.measW w).μHf (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))).toReal)` using `MassDataMassesW.massAll_of hinfCompact_holds kCompactOpen_holds classFinite_holds X hb w hT`. Establish `hm` using `massH_pos X w`. Rewrite `hm` using `[hM]`. Establish `h0 : (X.muH w Set.univ).toReal * ((X.measW w).μHf (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))).toReal ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[h, div_zero]`. Conclude with `lt_irrefl _ hm`. Conclude with `lt_of_le_of_ne ENNReal.toReal_nonneg (fun h => h0 (by rw [← h, zero_mul]))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volH_pos {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (w : D.what₂.Word) (hT : X.MeasTie hb) :
     0 < (X.muH w Set.univ).toReal := by
@@ -52,9 +50,9 @@ theorem volH_pos {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (w : D.wh
   exact lt_of_le_of_ne ENNReal.toReal_nonneg (fun h => h0 (by rw [← h, zero_mul]))
 
 /- English proof (translation)
-Use `haveI hHaar : (X.measW w).μHf.IsHaarMeasure := (X.measW_norm w).2.2.1`. Take `⟨hO, h1, hsub⟩` from `conjugated_level_open_one_mem (X := X) (hb := hb) (hK := hK) (u := w)`. Establish `hHc` using `(closed_SNH_X (X := X) (u := w)).2.2`. Establish `hKc` using `hHc.isClosedEmbedding_subtypeVal.isCompact_preimage (kCompactOpen_holds X).1`. Establish `hKf : (X.measW w).μHf (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))) < ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hHaar.toIsFiniteMeasureOnCompacts.lt_top_of_isCompact hKc`. Establish `hfin : (X.measW w).μHf (Subtype.val ⁻¹' K2u X hb w) < ⊤` using `lt_of_le_of_lt (measure_mono (Set.preimage_mono hsub)) hKf`. Establish `hpos : (X.measW w).μHf (Subtype.val ⁻¹' K2u X hb w) ≠ 0` using `((hO.preimage continuous_subtype_val).measure_pos _ ⟨1, h1⟩).ne'`. Conclude with `ENNReal.toReal_pos hpos hfin.ne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muHpp_pos {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (w : D.what₂.Word) :
     0 < ((X.measW w).μHf (Subtype.val ⁻¹' K2u X hb w)).toReal := by
@@ -87,13 +85,11 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
 /- English proof (translation)
-Establish `hs` using `MassDataVolumesW.stepSizeW X`. Establish `hH` using `covolH_pos X hb u hT`. Establish `hH'` using `covolH_pos X hb u' hT`. Establish `hG : 0 < covolBy (G` using `HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) (HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) X.measG.μG := by`. Rewrite using `[← covolH_eq_volG hSW X ψ hψ hC u]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH`. Take `⟨hTB, νB, hνB, hcB⟩` from `hC.2 X0 hdet`. Establish `eB` using `MassDataVolumesW.covol_eq_covolBy_w (PI.VolStabS.MassDataS.volStabXS_of hSW X) (MassDataVolumesW.stepHerm X) (a := 2 * D.R.rS + 2) (by omega) (by omega) X0 hTB hdet hψ X.measG_norm.1 hνB (X.measG_norm.2.2.2.2.1 X0) hcB`. Use `⟨hG, hH, hH', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 0 < covol (X.measW u).μN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hC.1 u).2]`. Conclude with `one_pos`. Use `show 0 < covol (X.measW u').μN`. Rewrite using `[(hC.1 u').2]`. Conclude with `one_pos`.
-
-Use `show 0 < covol (X.measG.μB X0)`. Rewrite using `[eB]`. Conclude with `hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolPosC_of (hSW : PI.VolStabS.MassDataS.SWXS) (hψ : IsCharAF X.B.I.F ψ) (hC : MeasCompatψ X ψ)
     (hT : X.MeasTie hb) (hdet : (gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0) :

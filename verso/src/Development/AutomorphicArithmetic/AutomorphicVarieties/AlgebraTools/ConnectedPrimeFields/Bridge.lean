@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (Ideal.Quotient.mk a)` using `Ideal.Quotient.mk_surjective`. Establish `hemb` using `PrimeSpectrum.isClosedEmbedding_comap_of_surjective (R ⧸ a) (Ideal.Quotient.mk a) hs`. Establish `hr` using `range_comap_of_surjective (R ⧸ a) (Ideal.Quotient.mk a) hs`. Rewrite `hr` using `[Ideal.mk_ker]`. Establish `hpre : (PrimeSpectrum.zeroLocus ((I.map (Ideal.Quotient.mk a) : Ideal (R ⧸ a)) : Set (R ⧸ a))) = PrimeSpectrum.comap (Ideal.Quotient.mk a) ⁻¹' PrimeSpectrum.zeroLocus (I : Set R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `p`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, Set.mem_preimage, SetLike.coe_subset_coe, PrimeSpectrum.comap_asIdeal]`. Conclude with `Ideal.map_le_iff_le_comap`. Establish `him : PrimeSpectrum.comap (Ideal.Quotient.mk a) '' ((PrimeSpectrum.zeroLocus ((I.map (Ideal.Quotient.mk a) : Ideal (R ⧸ a)) : Set (R ⧸ a)))ᶜ) = PrimeSpectrum.zeroLocus (a : Set R) \ PrimeSpectrum.zeroLocus (I : Set R)`. Rewrite using `[hpre, ← Set.preimage_compl, Set.image_preimage_eq_inter_range, hr, Set.diff_eq, Set.inter_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← him]`. Unfold `IsConnected`. Rewrite using `[Set.image_nonempty, hemb.isInducing.isPreconnected_image]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.etaleCohomology_simplicialCochain_representation_step {R : Type} [CommRing R] (a I : Ideal R) :
     IsConnected (PrimeSpectrum.zeroLocus (a : Set R) \ PrimeSpectrum.zeroLocus (I : Set R)) ↔
@@ -38,11 +38,11 @@ private theorem UpperTheory.V.AlgebraTools.Conn.etaleCohomology_simplicialCochai
   rw [Set.image_nonempty, hemb.isInducing.isPreconnected_image]
 
 /- English proof (translation)
-Introduce `R _ a k`. Prove the components needed by the constructor for the conclusion. Introduce `h J hJ`. Establish `hs : Function.Surjective (Ideal.Quotient.mk a)` using `Ideal.Quotient.mk_surjective`. Establish `hle : a ≤ J.comap (Ideal.Quotient.mk a)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `J.zero_mem`. Establish `hJ' : (J.comap (Ideal.Quotient.mk a)).map (Ideal.Quotient.mk a) = J` using `Ideal.map_comap_of_surjective _ hs J`. Rewrite `hJ`, the goal using `[← hJ']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ` using `[ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hle)]`. Conclude with `(etaleCohomology_simplicialCochain_representation_step a _).mp (h _ hle hJ)`. Introduce `h I hle hI`. Rewrite `hI` using `[← ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hle)]`. Conclude with `(etaleCohomology_simplicialCochain_representation_step a I).mpr (h _ hI)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.bridge :
     ∀ {R : Type} [CommRing R] (a : Ideal R) (k : WithBot ℕ∞), ConnOn a k ↔ ReciprocityTheory.CA.ConnInDim (R ⧸ a) k := by

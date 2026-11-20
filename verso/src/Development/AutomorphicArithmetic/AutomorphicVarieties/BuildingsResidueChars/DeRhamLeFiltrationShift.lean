@@ -15,7 +15,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation Qp G V) {d : ℕ} (e : Basis (Fin d) Qp V)
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply, Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,11 +29,11 @@ private theorem coord_sum (c : Fin d → BdR) (i : Fin d) :
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ i`. Rewrite using `[← coord_sum e c i, ← hz]`. Use `clear hz`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v x`. Use `((PD.Fil a).restrictScalars Qp).smul_mem (e.coord i v) x.2` as an intermediate fact. Simplify using `using this`. Consider the case `add x y hx hy`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `h`. Conclude with `Submodule.sum_mem _ fun j _ => ⟨e j ⊗ₜ ⟨c j, h j⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem sum_mem_fil_iff (a : ℤ) (c : Fin d → BdR) :
     ∑ j, e j ⊗ₜ[Qp] c j ∈ FilV PD (LL := Qp) (V := V) a ↔ ∀ i, c i ∈ PD.Fil a := by
@@ -53,11 +53,9 @@ private theorem sum_mem_fil_iff (a : ℤ) (c : Fin d → BdR) :
     exact Submodule.sum_mem _ fun j _ => ⟨e j ⊗ₜ ⟨c j, h j⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Use `conv_rhs => rw [← h g]`. Simplify using `only [map_sum, Matrix.mulVec, dotProduct, tmul_sum, Matrix.map_apply, LinearMap.toMatrix_apply]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ g (e j) ⊗ₜ[Qp] PD.actdR g (c j) = _`. Use `conv_lhs => rw [← e.sum_repr (ρ g (e j))]`. Rewrite using `[sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_tmul, Algebra.smul_def]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_mem_DdR (c : Fin d → BdR)
     (h : ∀ g, ((LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp BdR)).mulVec (fun j => PD.actdR g (c j)) = c) :
@@ -75,7 +73,7 @@ private theorem sum_mem_DdR (c : Fin d → BdR)
   rw [smul_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `i j` and use `(sum_mem_fil_iff PD e a (fun i => N i j)).1 (h0 (sum_mem_DdR PD ρ e _ fun g => by funext i exact congrFun (congrFun (hg g) i) j)) i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem core (a : ℤ) (h0 : DdR PD ρ ≤ FilV PD (LL := Qp) (V := V) a)
     (N : Matrix (Fin d) (Fin d) BdR)
@@ -88,9 +86,9 @@ private theorem core (a : ℤ) (h0 : DdR PD ρ ≤ FilV PD (LL := Qp) (V := V) a
 end Coord
 
 /- English proof (translation)
-Introduce `l _ K V _ _ _ ρ d e M M' _ hg a h0`. Establish `key` using `core ((PP l).PD K) ρ e a h0 (M.map (PP l).ιB) (fun g => by`. Use extensionality with `i j`. Use `congrArg (PP l).ιB (congrFun (congrFun (hg g) i) j)` as an intermediate fact. Rewrite using `[Matrix.map_apply, ← this, Matrix.mul_apply, Matrix.mul_apply, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, map_mul, AlgHom.commutes]`. Rewrite using `[← (PP l).PD_actB K g, ← (PP l).PD_ι K, ← (PP l).PD_ι K, ((PP l).PD K).ι_comm])`. Conclude with `fun i j => (GlobalTheory.DRFil.fil_iff K _ _ _).1 (key i j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.de_rham_le_filtration_shift :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) {d : ℕ} (e : Basis (Fin d) ℚ_[l] V) (M M' : Matrix (Fin d) (Fin d) (Bcr l)), M * M' = 1 → (∀ g : ↥(GK K), (LinearMap.toMatrix e e (ρ g)).map (algebraMap ℚ_[l] (Bcr l)) * M.map ((PP l).actQ (g : GQ l)) = M) → ∀ a : ℤ, DdR ((PP l).PD K) ρ ≤ FilV ((PP l).PD K) (LL := ℚ_[l]) (V := V) a → ∀ i j, (PP l).ιB (M i j) ∈ ((PP l).PD (botExt l)).Fil a := by

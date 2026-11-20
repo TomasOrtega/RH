@@ -30,9 +30,9 @@ noncomputable section
 namespace GlobalTheory.StageDict
 
 /- English proof (translation)
-Introduce `D T A A' WW X ψ θ α β νH S FA' FW hA' hW hI t`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)`. Establish `hth : IsThetaFunO ψ A' WW (X.f' t)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hI.isVac'.1 hI.isVac'.2.inf (hI.snd t) hI.isVac'.2.theta`. Use `⟨hth, fun τ => ?_⟩` and prove the remaining obligations. Establish `hF` using `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hI.isVac'.1.1.1 hI.isVac'.2.inf ho.conj.infPart_eq ho.conj.conj.infPart_eq (hI.snd t) hI.isVac'.2.theta hth (hI.isVac'.2.fock τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hA' τ, hW τ]`. Conclude with `hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinF_snd_frames : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E)))

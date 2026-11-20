@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u w
 
 /- English proof (translation)
-The claim follows from `hT1`.
+A detailed English derivation is pending.
 -/
 theorem FiniteTwists.proof (hT1 : TwistFinite.Statement.{u, w}) : FiniteTwists.Statement.{u, w} :=
   hT1

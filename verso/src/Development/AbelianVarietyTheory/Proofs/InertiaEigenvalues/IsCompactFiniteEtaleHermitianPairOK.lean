@@ -8,9 +8,7 @@ noncomputable section
 namespace GlobalTheory.JR.OKCompact
 
 /- English proof (translation)
-Establish `: (fun M : Matrix (Fin n) (Fin n) A => M.charpoly.coeff k) = fun M => MvPolynomial.eval (fun p : Fin n × Fin n => M p.1 p.2) (MvPolynomial.map (Int.castRingHom A) ((Matrix.charpoly.univ ℤ (Fin n)).coeff k))`. Use function extensionality and compare the values at `M`. Rewrite using `[MvPolynomial.eval_map]`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (Int.castRingHom A) (fun p => M p.1 p.2) k).symm`. Rewrite using `[this]`.
-
-Conclude with `(MvPolynomial.continuous_eval _).comp (by fun_prop)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_charpoly {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] {n : ℕ}
     (k : ℕ) : Continuous fun M : Matrix (Fin n) (Fin n) A => M.charpoly.coeff k := by
@@ -24,9 +22,9 @@ theorem continuous_coeff_charpoly {A : Type} [CommRing A] [TopologicalSpace A] [
   exact (MvPolynomial.continuous_eval _).comp (by fun_prop)
 
 /- English proof (translation)
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`. Rewrite using `[Polynomial.scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul_eq_scaleRoots {K : Type} [Field K] [Infinite K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     {c : K} (hc : c ≠ 0) : (c • M).charpoly = M.charpoly.scaleRoots c := by
@@ -43,7 +41,7 @@ theorem charpoly_smul_eq_scaleRoots {K : Type} [Field K] [Infinite K] {n : ℕ} 
 variable {F : Type} [NontriviallyNormedField F] {K : Type} [CommRing K] [Algebra F K] [Module.Finite F K]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F K`. Rewrite using `[← LinearMap.charpoly_toMatrix (Algebra.lmul F K (c • z)) b, ← LinearMap.charpoly_toMatrix (Algebra.lmul F K z) b, map_smul, map_smul, charpoly_smul_eq_scaleRoots _ hc, Polynomial.coeff_scaleRoots, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_charpoly_lmul_smul [Infinite F] (z : K) {c : F} (hc : c ≠ 0) (k : ℕ) :
     (LinearMap.charpoly (Algebra.lmul F K (c • z))).coeff k =
@@ -54,9 +52,9 @@ theorem coeff_charpoly_lmul_smul [Infinite F] (z : K) {c : F} (hc : c ≠ 0) (k 
     charpoly_smul_eq_scaleRoots _ hc, Polynomial.coeff_scaleRoots, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F K`. Establish `h : (fun z : K => (LinearMap.charpoly (Algebra.lmul F K z)).coeff k) = (fun M : Matrix _ _ F => M.charpoly.coeff k) ∘ (fun z => Algebra.leftMulMatrix b z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp, Algebra.leftMulMatrix_apply, LinearMap.charpoly_toMatrix]`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(continuous_coeff_charpoly k).comp ?_` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Set `l : K →ₗ[F] F` to `{ toFun := fun z => Algebra.leftMulMatrix b z i j map_add' := fun x y => by simp map_smul' := fun c x => by simp }`. Conclude with `IsModuleTopology.continuous_of_linearMap l`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_lmul [TopologicalSpace K] [IsModuleTopology F K] (k : ℕ) :
     Continuous fun z : K => (LinearMap.charpoly (Algebra.lmul F K z)).coeff k := by
@@ -79,43 +77,37 @@ end GlobalTheory.JR.OKCompact
 namespace GlobalTheory.JR.OKCompact
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A`. Use `haveI : CharZero F := hU.charZero`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : Infinite F := Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨n, hn⟩ : ∃ n, Module.finrank F A.K = n` from `⟨_, rfl⟩`. Set `e : A.K ≃ₗ[F] (Fin n → F)` to `(Module.finBasisOfFinrankEq F A.K hn).equivFun`. Establish `hes : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `P : ℕ → A.K → F` to `fun k z => (LinearMap.charpoly (Algebra.lmul F A.K z)).coeff k`. Establish `hPc : ∀ k, Continuous (P k)` using `fun k => continuous_coeff_lmul k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl : IsClosed A.OK`. Establish `: A.OK = ⋂ k, {z | ‖P k z‖ ≤ 1}` using `by ext z; simp [Et.OK, P]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun k => isClosed_le (continuous_norm.comp (hPc k)) continuous_const`. Establish `hzero : ∀ z : A.K, (∀ k < n, P k z = 0) → z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `z hz`. Establish `hp : LinearMap.charpoly (Algebra.lmul F A.K z) = Polynomial.X ^ n`. Use extensionality with `k`. Rewrite using `[Polynomial.coeff_X_pow]`. Break down `lt_trichotomy k n with hk | hk | hk` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hk.ne]`. Conclude with `hz k hk`. Rewrite using `[if_pos hk]`. Use `(LinearMap.charpoly_monic (Algebra.lmul F A.K z)).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[LinearMap.charpoly_natDegree, hn, ← hk]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hk.ne']`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[LinearMap.charpoly_natDegree, hn]`. Conclude with `hk`. Establish `hCH` using `LinearMap.aeval_self_charpoly (Algebra.lmul F A.K z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hCH` using `[hp, map_pow, Polynomial.aeval_X, ← map_pow]`. Establish `h1` using `LinearMap.congr_fun hCH 1`. Establish `h2 : z ^ n = 0` using `by simpa using h1`. Conclude with `IsReduced.eq_zero z ⟨n, h2⟩`. Take `⟨a, ha⟩` from `NormedField.exists_one_lt_norm F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Set `T : Set (Fin n → F)` to `{v | 1 ≤ ‖v‖ ∧ ‖v‖ ≤ ‖a‖}`. Establish `hT : IsCompact T` using `(isCompact_closedBall (0 : Fin n → F) ‖a‖).of_isClosed_subset ((isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)) (fun v hv => mem_closedBall_zero_iff.2 hv.2)`. Set `h : (Fin n → F) → ℝ` to `fun v => ∑ k ∈ Finset.range n, ‖P k (e.symm v)‖`. Establish `hc : Continuous h` using `continuous_finset_sum _ fun k _ => continuous_norm.comp ((hPc k).comp hes)`. Establish `hpos : ∀ v ∈ T, 0 < h v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `hsum : h v = 0` using `le_antisymm hle (Finset.sum_nonneg fun k _ => norm_nonneg _)`. Establish `h0 : ∀ k < n, P k (e.symm v) = 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce `k hk`. Conclude with `norm_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun k _ => norm_nonneg (P k (e.symm v))).1 hsum k (Finset.mem_range.2 hk))`. Establish `hv0 : v = 0` using `by simpa using congrArg e (hzero _ h0)`. Use `hv.1` as an intermediate fact. Rewrite `this` using `[hv0, norm_zero]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨m, hm0, hm⟩ : ∃ m : ℝ, 0 < m ∧ ∀ v ∈ T, m ≤ h v := by`. Break down `T.eq_empty_or_nonempty with hTe | hTn` into its components or cases. Conclude with `⟨1, one_pos, fun v hv => by rw [hTe] at hv; exact hv.elim⟩`. Take `⟨v₀, hv₀, hmin⟩` from `hT.exists_isMinOn hTn hc.continuousOn`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h v₀, hpos v₀ hv₀, fun v hv => hmin hv⟩`. Establish `hsub : A.OK ⊆ e.symm '' Metric.closedBall 0 (‖a‖ * max 1 (n / m))`. Introduce `z hz`. Use `⟨e z, ?_, e.symm_apply_apply z⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : ‖a‖ ≤ ‖a‖ * max 1 (n / m)` using `le_mul_of_one_le_right (norm_nonneg _) (le_max_left _ _)`. Distinguish the cases in `hv : e z = 0`. Rewrite using `[hv, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨d, hd0, hd1, hd2, -⟩` from `rescale_to_shell ha (by linarith : (0 : ℝ) < ‖a‖) hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hwT : d • e z ∈ T` using `⟨by rwa [div_self (by linarith : ‖a‖ ≠ 0)] at hd2, hd1.le⟩`. Establish `hvw : e z = d⁻¹ • (d • e z)` using `by rw [smul_smul, inv_mul_cancel₀ hd0, one_smul]`. Establish `hnv : ‖e z‖ = ‖d⁻¹‖ * ‖d • e z‖` using `by rw [← norm_smul, ← hvw]`. Establish `hsc : ∀ k, P k (e.symm (e z)) = P k (e.symm (d • e z)) * d⁻¹ ^ (n - k)`. Introduce `k`.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hvw, map_smul]`. Use `coeff_charpoly_lmul_smul (F := F) (e.symm (d • e z)) (inv_ne_zero hd0) k` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `this`. Establish `hhv : h (e z) ≤ n`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e.symm_apply_apply]`. Conclude with `hz k`. Use `_ = n := by simp`. Distinguish the cases in `hc1 : ‖d⁻¹‖ ≤ 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hc1`. Establish `hlow : ‖d⁻¹‖ * m ≤ h (e z)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsc k, norm_mul, norm_pow, mul_comm]`.
-
-Apply `mul_le_mul_of_nonneg_left _ (norm_nonneg _)` to reduce the goal to its premises. Establish `hk' : 1 ≤ n - k` using `by have := Finset.mem_range.1 hk; omega`. Combine the equalities or inequalities in the displayed calculation. Establish `hcm : ‖d⁻¹‖ ≤ n / m` using `by rw [le_div_iff₀ hm0]; linarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `((isCompact_closedBall 0 _).image hes).of_isClosed_subset hcl hsub`.
+A detailed English derivation is pending.
 -/
 theorem okCompact : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E), IsCompact A.OK := by

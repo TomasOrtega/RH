@@ -12,19 +12,17 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Use `set s := X ↘ Spec (.of A)`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace s`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `: IsNoetherian X` using `⟨⟩`. Establish `hex : ∀ x : X, ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `⟨V, hV, hxV⟩`. Use `choose V hVaff hxV using hex`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : X => (V x : Set X)) (fun x => (V x).2) (fun x _ => Set.mem_iUnion.2 ⟨x, hxV x⟩)`. Establish `htne : t.Nonempty`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x⟩` from `(inferInstance : Nonempty X)`. Take `⟨y, hy, -⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨y, hy⟩`. Take `⟨k, hk⟩ : ∃ k, t.card = k + 1` from `⟨t.card - 1, by have := htne.card_pos; omega⟩`. Set `e : Fin (k + 1) ≃ t` to `(Fintype.equivFinOfCardEq (by simpa using hk)).symm`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : Fin (k + 1) → X.Opens` to `fun j => V (e j)`. Establish `hUaff : ∀ j, IsAffineOpen (U j)` using `fun j => hVaff _`. Establish `hU : iSup U = ⊤`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Opens.mem_iSup.2 ⟨e.symm ⟨y, hy⟩, by simpa [U] using hxy⟩`. Establish `hc` using `fun j => ProjSpace.exists_closedImmersion_stdOpen (A := A) s (hUaff j)`. Use `choose n c hccl hcc using hc`. Establish `: ∀ j, IsClosedImmersion (c j)` using `hccl`. Establish `hη : genericPoint X ∈ ChowGraph.W U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ChowGraph.W, ← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter]`. Introduce `j`. Conclude with `((genericPoint_spec X).mem_open_set_iff (U j).2).2 ⟨e j, Set.mem_univ _, hxV _⟩`. Establish `: NoetherianSpace (ChowGraph.W U).toScheme` using `NoetherianSpace.set ((ChowGraph.W U : X.Opens) : Set X)`. Establish `: QuasiCompact (ChowGraph.g s n U c hcc)` using `⟨fun _ _ _ => NoetherianSpace.isCompact _⟩`.
-
-Use `⟨k, n, ChowGraph.X' s n U c hcc, ChowGraph.q s n U c hcc, ChowGraph.π s n U c hcc, ChowGraph.W U, ChowGraph.isClosedImmersion_q s n U c hcc hU, ?_, hη, ChowGraph.isIso_π_restrict s n U c hcc⟩` and prove the remaining obligations. Simplify using `only [ChowGraph.q, ChowGraph.π, Category.assoc, pullback.condition]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chow_multiProj {A : Type u} [CommRing A] [IsNoetherianRing A] (X : Scheme.{u})
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] [IrreducibleSpace X] :

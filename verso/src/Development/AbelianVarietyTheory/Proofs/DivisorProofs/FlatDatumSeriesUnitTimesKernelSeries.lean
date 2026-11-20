@@ -22,11 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.SerBase
 
 /- English proof (translation)
-Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Take `⟨hv0, m, hm1, hm2⟩` from `hv`. Use `⟨inv_ne_zero (mul_ne_zero hu0 hv0), n + m, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (N : ℂ) ^ (n + m) * (u * v)⁻¹ = ((N : ℂ) ^ n * u⁻¹) * ((N : ℂ) ^ m * v⁻¹)`. Rewrite using `[pow_add, mul_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hn2.mul hm2`. Establish `e : (N : ℂ) ^ (n + m) * (u * v)⁻¹⁻¹ = ((N : ℂ) ^ n * u) * ((N : ℂ) ^ m * v)`. Rewrite using `[inv_inv, pow_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hn1.mul hm1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_inv_mul' {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff N v) : UnitOff N (u * v)⁻¹ := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
@@ -40,13 +40,13 @@ theorem unitOff_inv_mul' {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff 
     rw [e]; exact hn1.mul hm1
 
 /- English proof (translation)
-Establish `hx : ∀ PP : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ∃ x ∈ PP.asIdeal, x ∉ PP.asIdeal ^ 2` using `fun PP => by`. Simplify using `using Ideal.exists_mem_pow_notMem_pow_succ PP.asIdeal PP.ne_bot PP.isPrime.ne_top 1`. Use `choose x hx1 hx2 using hx`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := Q) (fun PP => PP.asIdeal) (fun _ => 2) (fun PP _ => Ideal.prime_of_isPrime PP.ne_bot PP.isPrime) (fun PP _ PP' _ h e => h (IsDedekindDomain.HeightOneSpectrum.ext e)) (fun PP => x PP.1)`. Establish `key : ∀ PP ∈ Q, y ∈ PP.asIdeal ∧ y ∉ PP.asIdeal ^ 2` using `fun PP hPP => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hy PP hPP`. Establish `hle : PP.asIdeal ^ 2 ≤ PP.asIdeal` using `Ideal.pow_le_self (by norm_num)`. Use `⟨?_, fun h => hx2 PP ?_⟩` and prove the remaining obligations. Use `PP.asIdeal.add_mem (hle h1) (hx1 PP)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(PP.asIdeal ^ 2).sub_mem h h1` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hQ : Q.Nonempty`. Take `⟨PP, hPP⟩` from `hQ`. Use `⟨y, fun h0 => (key PP hPP).2 (h0 ▸ Ideal.zero_mem _), key⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_ne_zero, fun PP hPP => absurd ⟨PP, hPP⟩ hQ⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_unif' (E : Type) [Field E] [NumberField E] (Q : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 E))) :
     ∃ ϖ : 𝓞 E, ϖ ≠ 0 ∧ ∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2 := by
@@ -70,17 +70,17 @@ theorem exists_unif' (E : Type) [Field E] [NumberField E] (Q : Finset (IsDedekin
   · refine ⟨1, one_ne_zero, fun PP hPP => absurd ⟨PP, hPP⟩ hQ⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i hV B hBg hB ξ ξR ω φ hK hQt N hN hNQ`. Take `⟨eg, eQ, fg, heg, heQ, hfg, hflat⟩` from `GlobalTheory.BaseCmp.flatTwoStep_holds D G Pl0 T0 A Ks R F hC i ξ B.de.chi ξR ω φ B hBg hB hK hK.chr`. Take `⟨ϖ, hϖ0, hϖ⟩` from `exists_unif' D.host.E B.de.Q`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ0`. Take `⟨z, hz, hzm⟩` from `GlobalTheory.CentScal.exists_isCentAt_scalar D i B.de.Q eQ heQ (ϖ : D.host.E) hϖE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hact⟩` from `GlobalTheory.T.central_uniformiser_acts_by_dilation_tame_kernel D G Pl0 T0 A Ks R F hC hQG i hV ξ B.de.chi ξR B.de.Q ω φ hK hQt N hN hNQ eg eQ fg heg heQ hfg ϖ hϖE hϖ z hzm`. Take `⟨Gc, hG, hSB, hφ⟩` from `GlobalTheory.T.tameKernel_vector_unit_mul_dilated_flat D G Pl0 T0 A Ks R F hC hQG i hV ξ B.de.chi ξR B.de.Q ω φ hK hQt N hN hNQ eg eQ fg heg heQ hfg ϖ hϖ0 hϖ`. Take `⟨Tm, hTm⟩` from `hflat.1`. Establish `hvT` using `hflat.2 Tm hTm`. Establish `hφT` using `hφ Tm hTm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : κ * Gc ≠ 0` using `mul_ne_zero hκ.1 hG.1`. Establish `hcomp : ∀ x : WO (Vc D i) (Wc D i), dil i (ϖ : D.host.E) (dil i (ϖ : D.host.E)⁻¹ x) = x`. Introduce `x`. Use `show Matrix.map (Matrix.map x fun w => incA D ((ϖ : D.host.E)⁻¹) * w) (fun w => incA D (ϖ : D.host.E) * w) = x`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hϖE, map_one, one_mul]`. Establish `hvec : (princ B).vecBase = (κ * Gc)⁻¹ • ω (z, 1) φ`. Rewrite using `[hφT, hact Tm hTm _ hSB]`. Simplify using `only [hcomp]`. Establish `hsm : (fun x : WO (Vc D i) (Wc D i) => Gc * flatDat R i B.de.Q ξR eQ x) = Gc • flatDat R i B.de.Q ξR eQ` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hsm, map_smul, ← hvT, smul_smul, smul_smul, mul_assoc (κ * Gc)⁻¹, inv_mul_cancel₀ hne, one_smul]`. Use `⟨z, (κ * Gc)⁻¹, hz, unitOff_inv_mul' hκ hG, fun h P => ?_⟩` and prove the remaining obligations. Establish `hθ : IsInfFam R.θ` using `hK.vec.1.2.inf`. Establish `hth` using `GlobalTheory.VecTheta.isThetaFunO_thPVec hK.vec`. Use function extensionality and compare the values at `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvec, Pi.smul_apply, series_apply, series_apply, hB.fock_eq, hB.fock_eq, GlobalTheory.FiniteFock.pureTensorO_smul, ← GlobalTheory.OrientedHeis.om_fin_pureTensorO R.ψ _ _ _ _ ω hK.weil R.θ hθ z hz.2.1 1 (one_mem _) _ _ _ _ φ _ hth, map_smul, Pi.smul_apply, ← Module.End.mul_apply, …`.
+A detailed English derivation is pending.
 -/
 theorem flatKer_holds : FlatKer := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i hV B hBg hB ξ ξR ω φ hK hQt N hN hNQ

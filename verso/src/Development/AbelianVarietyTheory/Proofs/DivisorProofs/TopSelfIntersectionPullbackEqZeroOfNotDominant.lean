@@ -16,20 +16,18 @@ noncomputable section
 namespace GlobalTheory.PullVanish
 
 /- English proof (translation)
-The claim follows from `withBot_lt_of_add_one_lt (lt_of_le_of_lt h (by exact_mod_cast Nat.lt_succ_self n))`.
+A detailed English derivation is pending.
 -/
 theorem withBot_lt_of_add_one_le_nat {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 ≤ (n : WithBot ℕ∞)) :
     a < (n : WithBot ℕ∞) :=
   withBot_lt_of_add_one_lt (lt_of_le_of_lt h (by exact_mod_cast Nat.lt_succ_self n))
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q D hq hX hY π hπ B hB`. Use `letI := GlobalTheory.algebraΓOfHom q`. Establish `hs : strHom k Y = q` using `GlobalTheory.strHom_eq (f := q) fun _ => rfl`. Establish `hη : genericPoint X ∈ (closure ({π (genericPoint Y)} : Set X))ᶜ` using `fun h => hπ (((specializes_iff_mem_closure.2 h).antisymm (genericPoint_specializes _)).eq)`. Establish `h1` using `dim_closure_add_one_le (genericPoint_specializes (π (genericPoint Y))) isClosed_closure.isOpen_compl hη (fun h => h (subset_closure rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : topologicalKrullDim (closure ({genericPoint X} : Set X)) = topologicalKrullDim X`. Rewrite using `[(genericPoint_spec X).def]`. Conclude with `(Homeomorph.Set.univ X).isHomeomorph.topologicalKrullDim_eq`. Establish `h3` using `withBot_lt_of_add_one_le_nat (h1.trans (h2.trans_le hX))`. Establish `h` using `interNum_pull_eq_zero k 0 D Y X (hs ▸ hq) (by rwa [Nat.zero_add]) π h3 (fun i => i.elim0) (fun i => i.elim0) (fun _ => B) (fun _ => hB)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[topSelf_def, ← interNum_comp_equiv k _ (fun _ => pull_isLB hB π) (Equiv.emptySum (Fin 0) (Fin D)), ← h]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Break down `x with i | a` into its components or cases. Conclude with `i.elim0`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem topSelf_pull_eq_zero_of_not_dominant : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D : ℕ), IsProjOver q → topologicalKrullDim X ≤ D → topologicalKrullDim Y ≤ D → ∀ (π : Y ⟶ X), π (genericPoint Y) ≠ genericPoint X → ∀ B : LB X, B.IsLB → letI := GlobalTheory.algebraΓOfHom q; topSelfIntersection k (B.pull π) D = 0 := by
   intro k _ X Y _ _ p q D hq hX hY π hπ B hB

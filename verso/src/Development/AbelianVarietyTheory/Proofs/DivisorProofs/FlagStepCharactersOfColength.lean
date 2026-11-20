@@ -18,21 +18,19 @@ namespace GlobalTheory.RefSum
 open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (pairDet hasChars_iff)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ T io y Ch X f xs r hAF hr`. Establish `hp0 : (0 : ℝ) < (X.v (p : X.C) : ℝ)`. Establish `: X.v (p : X.C) ≠ 0` using `by simpa using (Fact.out : p.Prime).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hxs0 : (0 : ℝ) < (xs : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hp0 r) hr`. Establish `hxs : xs ≠ 0` using `fun h => by rw [h] at hxs0; simp at hxs0`. Take `⟨-, χ, hχ, hmin⟩` from `exists_flag_characters X.C X.v X.O X.ints _ _ _ _ xs hAF hxs`. Set `lf : Fin (rk f) → Fin (chD Ch.ch) → X.C` to `fun b j => algebraMap X.O X.C (ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl (χ (Fin.castLE (rk_le f) b)) j)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : ∀ b, IsCharLog (fgl Ch X) (lf b)` using `fun b => GlobalTheory.T.chart_character_is_logarithm E H Dw l Xo c p T io y Ch X _ (hχ _)`. Establish `hdet : pairDet lf (frame Ch X f) = algebraMap X.O X.C (Matrix.of fun a b : Fin (f.2.val + 1) => ∑ j, X.ι (Ch.uvecT ⟨f.1, Fin.castLE f.2.isLt a⟩ j) * ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl (χ (Fin.castLE f.2.isLt b)) j).det`. Rewrite using `[RingHom.map_det]`. Unfold `pairDet`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, map_sum, map_mul, frame, lieVec, jX, RingHom.comp_apply, X.comp, lf]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hm` using `hmin f.2`. Rewrite `hm` using `[← hdet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := pairDet lf (frame Ch X f) with hD`. Establish `hDpos : (0 : ℝ) < (X.v D : ℝ)` using `lt_of_lt_of_le hxs0 (by exact_mod_cast hm)`. Establish `hD0 : D ≠ 0` using `fun h => by rw [h, map_zero] at hDpos; simp at hDpos`. Establish `hlog` using `log_v_p_neg X`. Establish `hval : ((Real.log (X.v (p : X.C) : ℝ))⁻¹ * Real.log (X.v D : ℝ)) ≤ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : r * Real.log (X.v (p : X.C) : ℝ) ≤ Real.log (X.v D : ℝ)`. Rewrite using `[← Real.log_rpow hp0]`. Conclude with `Real.log_le_log (Real.rpow_pos_of_pos hp0 r) (hr.trans (by exact_mod_cast hm))`. Establish `h2` using `mul_le_mul_of_nonpos_left h1 (inv_lt_zero.2 hlog).le`. Rewrite `h2` using `[← mul_assoc, mul_comm _ r, mul_assoc, inv_mul_cancel₀ hlog.ne, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvD : vX_vp X D = (((Real.log (X.v (p : X.C) : ℝ))⁻¹ * Real.log (X.v D : ℝ) : ℝ) : WithTop ℝ)` using `vX_vp_apply X hD0`. Use `⟨(hasChars_iff (isSatFrame_frame Ch X f) _).2 ⟨lf, hl, ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hD, hvD]`. Conclude with `EReal.coe_le_coe_iff.2 hval`. Use `(nuFac_le Ch X f k).trans ?_` and prove the remaining obligations.
-
-Use `(GlobalTheory.FGDepth.CharBound.detDepth_le_char X.C (vX_vp X) (rk f) _ k (fgl Ch X) (frame Ch X f) lf hl).trans ?_` and prove the remaining obligations. Establish `e : Matrix.det (Matrix.of fun a b => ∑ e, lf b e * frame Ch X f a e) = D` using `rfl`. Rewrite using `[e, AddValuation.map_pow, hvD, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Use `show ((k * ((Real.log (X.v (p : X.C) : ℝ))⁻¹ * Real.log (X.v D : ℝ)) : ℝ) : EReal) ≤ _`. Conclude with `EReal.coe_le_coe_iff.2 (mul_le_mul_of_nonneg_left hval (Nat.cast_nonneg k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasChars_frame_of_hasAF : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), ∀ (f : Lt1 Dw) (xs : NNReal) (r : ℝ), ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.HasAF X.v (fun i => MvPowerSeries.map X.ι (Ch.FT i)) (fun (i : Fin (Dw.mult f.1)) j => X.ι (Ch.uvecT ⟨f.1, i⟩ j)) xs → (X.v (p : X.C) : ℝ) ^ r ≤ xs → HasChars (fgl Ch X) (frame Ch X f) (r : EReal) ∧ ∀ k : ℕ, nuFac p y f k ≤ ((k * r : ℝ) : EReal) := by
   intro E _ _ _ H Dw l Xo c

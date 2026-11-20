@@ -17,7 +17,7 @@ namespace GlobalTheory.Published
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `H k X p D hX Unit fun _ => L`. Take `⟨h, hh, -⟩` from `hΦ.1 (Pi.single () 1)`. Conclude with `⟨h, (isometric_comb_single (fun _ : Unit => L) ()).isArithHeight hX hh⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArFormExists.exists_isArithHeight (H : ArFormExists) (hX : IsArithVar p D) (L : HermLB p) :
     ∃ h, L.IsArithHeight h := by
@@ -26,11 +26,11 @@ theorem ArFormExists.exists_isArithHeight (H : ArFormExists) (hX : IsArithVar p 
   exact ⟨h, (isometric_comb_single (fun _ : Unit => L) ()).isArithHeight hX hh⟩
 
 /- English proof (translation)
-Use `hX.isLocallyNoetherian` as an intermediate fact. Establish `hr : IsRatSec (ArInt.fnB u hu hc).B fun _ => 1` using `fun a b h => (map_one _).symm.trans (mul_one _).symm`. Establish `he (z : X) : ((ArInt.fnB u hu hc).div hr).IsEqn z 1` using `(presents_divOfRatSec _ hr).isEqn PUnit.unit z trivial`. Establish `h₁ (z : X) : ((ArInt.fnB u hu hc).div hr).mult z = 0` using `(he z).mult_eq.trans (unitAt_one z).ord_eq_zero`. Establish `h₂ (σ) : offSupp p σ ((ArInt.fnB u hu hc).div hr) = Set.univ` using `Set.eq_univ_of_forall fun y => mem_offSupp.2 fun hy => (he _).mem_supp_iff.1 hy (unitAt_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ (σ) : logNorm ((ArInt.fnB u hu hc).φ σ) (fun _ => 1) = fun y => -(1 / 2) * u σ y` using `funext fun y => by`. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`. Rewrite `e` using `[map_one, ev_one mem_ptsIn_top]`. Rewrite using `[logNorm, Units.val_one, e, norm_one, Real.log_one]`. Express the relevant statement in the definitionally equal form `0 - u σ y / 2 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(H k X p D hX ι _ L Φ hΦ n h hh _ hr).2, HermLB.archInt, chInt]`. Simplify using `only [h₁, h₂, h₃, Weight.chernInt_const_mul, Int.cast_zero, zero_mul, finsum_zero, ← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ArMix.fnB_of_height (H : ArMix) (hX : IsArithVar p D) {ι : Type} [Fintype ι] {L : ι → HermLB p}
     {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} {hu : ∀ σ y, CInfAt (u σ) y}
@@ -57,11 +57,11 @@ theorem ArMix.fnB_of_height (H : ArMix) (hX : IsArithVar p D) {ι : Type} [Finty
   ring
 
 /- English proof (translation)
-Introduce `HF HM k _ X _ p D hX`. Use `⟨HF.exists_isArithHeight hX, fun ι _ L => ⟨HF k X p D hX ι L, ?_⟩⟩` and prove the remaining obligations. Establish `hu (σ : k →+* ℂ) (y : CxPts p σ) : CInfAt (fun _ => (2 : ℝ)) y` using `cInfAt_const _ y`. Establish `hc (σ σ' : k →+* ℂ) : (Weight.ofFun (p` using `p) (σ := σ) fun _ => (2 : ℝ)).IsConj (Weight.ofFun (σ := σ') fun _ => (2 : ℝ)) := fun _ _ _ _ _ => rfl`. Take `⟨Φ, hΦ⟩` from `HF k X p D hX _ fun o : Option ι => o.elim (ArInt.fnB (fun _ _ => 2) hu hc) L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ ∘ₗ LinearMap.mulLeft ℝ (MvPolynomial.X none) ∘ₗ (rename (R := ℝ) (some : ι → Option ι)).toLinearMap, fun n => ?_, fun P d hd hP => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `HF.exists_isArithHeight hX (comb L n)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, LinearMap.mulLeft_apply, HM.fnB_of_height hX hΦ n hh, gdeg, chInt, chInt, mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[← Weight.chernInt_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply]`. Conclude with `hΦ.2 _ (1 + d) (by omega) ((isHomogeneous_X ℝ none).mul hP.rename_isHomogeneous)`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arExists_of_form_of_mix : ArFormExists → ArMix → ArExists := by
   intro HF HM k _ X _ p D hX

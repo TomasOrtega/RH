@@ -10,7 +10,7 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SubQuotChTwo.ddcForm_extTrace_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDdcExtensionTraceChernForms.lean&line=161#L161)
 -/

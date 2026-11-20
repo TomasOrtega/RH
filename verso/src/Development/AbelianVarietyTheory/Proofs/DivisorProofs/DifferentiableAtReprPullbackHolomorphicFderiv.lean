@@ -18,15 +18,13 @@ namespace GlobalTheory.CxForm
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `γ using ExteriorAlgebra.induction generalizing S with`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes]`. Conclude with `differentiableAt_const _`. Consider the case `ι x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [ExteriorAlgebra.map_apply_ι]`. Set `ℓ : (Fin n ⊕ Fin n → ℂ) →ₗ[ℂ] ℂ` to `Finsupp.lapply S ∘ₗ (bas n).repr.toLinearMap ∘ₗ ExteriorAlgebra.ι ℂ`. Establish `hu : DifferentiableAt ℝ (fun w => Matrix.toLin' (M w) x) v`. Simplify using `only [Matrix.toLin'_apply]`. Use `differentiableAt_pi.2 fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct]`. Conclude with `DifferentiableAt.fun_sum fun j _ => (hM i j).mul_const _`. Conclude with `((LinearMap.toContinuousLinearMap ℓ).restrictScalars ℝ).differentiableAt.comp v hu`. Consider the case `mul a b ha hb`. Establish `e : (fun w => (bas n).repr (ExteriorAlgebra.map (Matrix.toLin' (M w)) (a * b)) S) = fun w => ∑ p : Finset (Fin (n + n)) × Finset (Fin (n + n)), (bas n).repr (ExteriorAlgebra.map (Matrix.toLin' (M w)) a) p.1 * (bas n).repr (ExteriorAlgebra.map (Matrix.toLin' (M w)) b) p.2 * (bas n …`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `fun w => by rw [map_mul, FormMul.repr_mul]`. Rewrite using `[e]`. Conclude with `DifferentiableAt.fun_sum fun p _ => ((ha p.1).mul (hb p.2)).mul_const _`. Consider the case `add a b ha hb`. Simplify using `only [map_add, Finsupp.add_apply]`.
-
-Conclude with `(ha S).add (hb S)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_repr_map_toLin' {M : V n → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ} {v : V n}
     (hM : ∀ i j, DifferentiableAt ℝ (fun w => M w i j) v) (γ : Alt n) (S : Finset (Fin (n + n))) :
@@ -57,11 +55,11 @@ theorem differentiableAt_repr_map_toLin' {M : V n → Matrix (Fin n ⊕ Fin n) (
     exact (ha S).add (hb S)
 
 /- English proof (translation)
-Introduce `n φ v h γ S`. Establish `hd : DifferentiableAt ℂ (fderiv ℂ φ) v` using `(h.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `he (b a : Fin n) : DifferentiableAt ℝ (fun w => fderiv ℂ φ w (coordVec b) a) v` using `(((EuclideanSpace.proj a : V n →L[ℂ] ℂ).differentiableAt).comp v (hd.clm_apply (differentiableAt_const (coordVec b)))).restrictScalars ℝ`. Establish `hc (b a : Fin n) : DifferentiableAt ℝ (fun w => conj (fderiv ℂ φ w (coordVec b) a)) v` using `Complex.conjCLE.differentiableAt.comp v (he b a)`. Use `differentiableAt_repr_map_toLin' (M := fun w => fromBlocks (of fun b a => fderiv ℂ φ w (coordVec b) a) 0 0 (of fun b a => conj (fderiv ℂ φ w (coordVec b) a))) ?_ γ S` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(i | i) (j | j)`. Simplify `he i j` using `only [fromBlocks_apply₁₁, of_apply]`. Simplify using `only [fromBlocks_apply₁₂, Matrix.zero_apply]`. Conclude with `differentiableAt_const _`. Simplify using `only [fromBlocks_apply₂₁, Matrix.zero_apply]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `differentiableAt_const _`. Simplify `hc i j` using `only [fromBlocks_apply₂₂, of_apply]`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_repr_pull_fderiv : ∀ {n : ℕ} {φ : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.L2DbarEstimates.V n}
     {v : ReciprocityTheory.L2DbarEstimates.V n}, ContDiffAt ℂ 2 φ v → ∀ (γ : GlobalTheory.CxForm.Alt n) (S : Finset (Fin (n + n))),

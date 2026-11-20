@@ -21,7 +21,7 @@ abbrev yv (v : HeightOneSpectrum (𝓞 F)) (yf : (Af F)ˣ) : (v.adicCompletion F
   Units.map (pLoc F v).toMonoidHom yf
 
 /- English proof (translation)
-Rewrite using `[← ord_units_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ordAt_eq (v : HeightOneSpectrum (𝓞 F)) (ξ : Fˣ) (yf : (Af F)ˣ) :
     ordAt (xiF ξ * yf) v = ord ((tv v ξ : (v.adicCompletion F)ˣ) : v.adicCompletion F) +
@@ -30,7 +30,7 @@ theorem ordAt_eq (v : HeightOneSpectrum (𝓞 F)) (ξ : Fˣ) (yf : (Af F)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[valued_eq_exp_neg_ord u.ne_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem valued_le_iff {v : HeightOneSpectrum (𝓞 F)} (u : (v.adicCompletion F)ˣ) (n : ℤ) :
     Valued.v (u : v.adicCompletion F) ≤ WithZero.exp n ↔ -n ≤ ord (u : v.adicCompletion F) := by
@@ -43,13 +43,13 @@ def gI (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : HeightOneSpe
     ((ω.loc v x : ℂˣ) : ℂ) * (localAdelicChar F v (x : v.adicCompletion F) : ℂ) else 0
 
 /- English proof (translation)
-Establish `h1 : (((tv v ξ * x⁻¹)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * algebraMap F (v.adicCompletion F) (ξ : F) = (x : v.adicCompletion F)`. Establish `: (algebraMap F (v.adicCompletion F) (ξ : F)) = ((tv v ξ : (v.adicCompletion F)ˣ) : v.adicCompletion F)` using `rfl`. Rewrite using `[this, mul_inv_rev, inv_inv, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`. Establish `h2 : ((tv v ξ * x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * pLoc F v (yf : Af F) = ((tv v ξ * x⁻¹ * yv v yf : (v.adicCompletion F)ˣ) : v.adicCompletion F)` using `rfl`. Establish `hc1 : Valued.v (((tv v ξ * x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * pLoc F v (yf : Af F)) ≤ WithZero.exp (-(c v : ℤ)) ↔ ord (x : v.adicCompletion F) ≤ ordAt (xiF ξ * yf) v - c v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, valued_le_iff, ord_units_mul, ord_units_mul, ord_units_inv, ordAt_eq]`. Use linear arithmetic over natural numbers and integers. Establish `hc2 : Valued.v ((((tv v ξ * x⁻¹)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * algebraMap F (v.adicCompletion F) (ξ : F)) ≤ WithZero.exp ((c v : ℤ) + dd v) ↔ -((c v : ℤ) + dd v) ≤ ord (x : v.adicCompletion F)`. Rewrite using `[h1, valued_le_iff]`. Establish `h3 : ((ω.loc v (tv v ξ * x⁻¹) : ℂˣ) : ℂ)⁻¹ = ((ω.loc v (tv v ξ) : ℂˣ) : ℂ)⁻¹ * ((ω.loc v x : ℂˣ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv, inv_inv]`. Unfold `locF gI`. Rewrite using `[h3, h1]`. Establish `hc2'` using `valued_le_iff x ((c v : ℤ) + dd v)`. Distinguish the cases in `hA : Valued.v (((tv v ξ * x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * pLoc F v (yf : Af F)) ≤ WithZero.exp (-(c v : ℤ)) ∧ Valued.v (x : v.adicCompletion F) ≤ WithZero.exp ((c v : ℤ) + dd v)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hA, if_pos ⟨hc2'.1 hA.2, hc1.1 hA.1⟩]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hA, if_neg fun h => hA ⟨hc1.2 h.2, hc2'.2 h.1⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem locF_subst (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (yf : (Af F)ˣ) (ξ : Fˣ)
     (v : HeightOneSpectrum (𝓞 F)) (x : (v.adicCompletion F)ˣ) :
@@ -83,14 +83,14 @@ theorem locF_subst (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (yf :
     ring
 
 /- English proof (translation)
-The claim follows from `L2.norm_omega_eq_one hfin _`.
+A detailed English derivation is pending.
 -/
 theorem norm_loc {ω : HChar F} (hfin : IsOfFinOrder ω) (v : HeightOneSpectrum (𝓞 F)) (x : (v.adicCompletion F)ˣ) :
     ‖((ω.loc v x : ℂˣ) : ℂ)‖ = 1 :=
   L2.norm_omega_eq_one hfin _
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp (LocalShellIntegral.continuous_loc ω v)).mul (continuous_subtype_val.comp ((continuous_localAdelicChar v).comp Units.continuous_val))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_chiPsi (ω : HChar F) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous fun x : (v.adicCompletion F)ˣ =>
@@ -99,7 +99,7 @@ theorem continuous_chiPsi (ω : HChar F) (v : HeightOneSpectrum (𝓞 F)) :
     (continuous_subtype_val.comp ((continuous_localAdelicChar v).comp Units.continuous_val))
 
 /- English proof (translation)
-Use `IntegrableOn.of_bound (by rw [multHaar_ordShell]; exact ENNReal.one_lt_top) (continuous_chiPsi ω v).aestronglyMeasurable 1 (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_loc hfin, Circle.norm_coe, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrableOn_shell {ω : HChar F} (hfin : IsOfFinOrder ω) (v : HeightOneSpectrum (𝓞 F)) (k : ℤ) :
     IntegrableOn (fun x : (v.adicCompletion F)ˣ =>
@@ -110,13 +110,13 @@ theorem integrableOn_shell {ω : HChar F} (hfin : IsOfFinOrder ω) (v : HeightOn
   rw [norm_mul, norm_loc hfin, Circle.norm_coe, one_mul]
 
 /- English proof (translation)
-Unfold `gI`. Distinguish the cases in `h : A ≤ ord (x : v.adicCompletion F) ∧ ord (x : v.adicCompletion F) ≤ A + m`. Rewrite using `[if_pos h, Finset.sum_eq_single_of_mem (ord (x : v.adicCompletion F) - A).toNat (Finset.mem_range.2 (by omega))]`. Rewrite using `[Set.indicator_of_mem]`. Rewrite using `[mem_ordShell]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `j _ hj`. Rewrite using `[Set.indicator_of_notMem]`. Rewrite using `[mem_ordShell]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg h]`. Use `symm`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem]`. Rewrite using `[mem_ordShell]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hj` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gI_eq_sum (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : HeightOneSpectrum (𝓞 F)) (A m : ℤ)
     (hm : 0 ≤ m) (x : (v.adicCompletion F)ˣ) :
@@ -142,9 +142,9 @@ theorem gI_eq_sum (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : H
     omega
 
 /- English proof (translation)
-Establish `hfun : gI ω c v A (A + m) = fun x => ∑ j ∈ Finset.range (m.toNat + 1), (ordShell (v.adicCompletion F) (A + j)).indicator (fun x : (v.adicCompletion F)ˣ => ((ω.loc v x : ℂˣ) : ℂ) * (localAdelicChar F v (x : v.adicCompletion F) : ℂ)) x`. Use function extensionality and compare the values at `(gI_eq_sum ω c v A m hm)`. Establish `hint : ∀ j ∈ Finset.range (m.toNat + 1), Integrable ((ordShell (v.adicCompletion F) (A + j)).indicator (fun x : (v.adicCompletion F)ˣ => ((ω.loc v x : ℂˣ) : ℂ) * (localAdelicChar F v (x : v.adicCompletion F) : ℂ))) (multHaar (v.adicCompletion F))` using `fun j _ => (integrableOn_shell hfin v (A + j)).integrable_indicator (measurableSet_ordShell _)`. Rewrite using `[hfun]`. Use `⟨integrable_finset_sum _ hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_finset_sum _ hint]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator (measurableSet_ordShell _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_gI {ω : HChar F} (hfin : IsOfFinOrder ω) (c : HeightOneSpectrum (𝓞 F) → ℕ)
     (v : HeightOneSpectrum (𝓞 F)) (A m : ℤ) (hm : 0 ≤ m) :
@@ -167,7 +167,7 @@ theorem integral_gI {ω : HChar F} (hfin : IsOfFinOrder ω) (c : HeightOneSpectr
   rw [integral_indicator (measurableSet_ordShell _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `gI`. Rewrite using `[if_neg]`. Both sides reduce to the same expression. Introduce `h'`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -187,29 +187,27 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 open L4 LocalGaussSum
 
 /- English proof (translation)
-Introduce `hInv F _ _ _ ω c H yf ξ v`. Establish `hfin` using `H.fin`. Use `set A : ℤ := -((c v : ℤ) + dd v) with hAdef`. Use `set M : ℤ := ordAt (xiF ξ * yf) v with hMdef`. Use `set m : ℤ := M + dd v with hmdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB : M - (c v : ℤ) = A + m` using `by simp only [hAdef, hmdef]; ring`. Take `⟨hiff, heq⟩` from `hInv F v (locF ω c yf (ξ : F) v) (tv v ξ)`. Establish `hsub : (fun x => locF ω c yf (ξ : F) v (tv v ξ * x⁻¹)) = fun x => ((ω.loc v (tv v ξ) : ℂˣ) : ℂ)⁻¹ * gI ω c v A (A + m) x`. Use function extensionality and compare the values at `x`. Rewrite using `[locF_subst, hB]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Integrable (gI ω c v A (A + m)) (multHaar (v.adicCompletion F)) ∧ ∫ x, gI ω c v A (A + m) x ∂multHaar (v.adicCompletion F) = if M + dd v < 0 then 0 else cst ω c v * ∑ j ∈ Finset.range ((M + dd v).toNat + 1), chiW ω c v ^ j`. Distinguish the cases in `hm0 : M + dd v < 0`. Rewrite using `[if_pos hm0, gI_empty ω c v A (A + m) (by omega)]`. Conclude with `⟨integrable_zero _ _ _, by simp⟩`. Rewrite using `[if_neg hm0]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : 0 ≤ m` using `by omega`. Take `⟨hI, hE⟩` from `integral_gI hfin c v A m hm`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Distinguish the cases in `hc : c v = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcond` using `LocalShellIntegral.quasiCharConductor_loc (H.cond v)`. Establish `hunr : IsUnramifiedChar (ω.loc v)` using `(quasiCharConductor_eq_zero_iff (LocalShellIntegral.continuous_loc ω v)).1 (hcond.trans hc)`. Establish `hψ1 : ∀ x : (v.adicCompletion F)ˣ, -dd v ≤ ord (x : v.adicCompletion F) → localAdelicChar F v (x : v.adicCompletion F) = 1`. Introduce `x hx`. Establish `ht` using `(isTrivialOn_localAdelicChar_iff v (-dd v)).2 (by rw [LocalShellIntegral.dd_eq])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `ht _ ((mem_valBall_iff_le_ord x.ne_zero).2 hx)`. Establish `hπ : ord ((atFin v (unif v) : (v.adicCompletion F)ˣ) : v.adicCompletion F) = 1`. Establish `h1` using `unif_spec v`. Unfold `IsUnifAt at h1`. Rewrite `h1` using `[valued_eq_exp_neg_ord (atFin v (unif v)).ne_zero, WithZero.exp_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hval : ((ω.val v : ℂˣ) : ℂ) = ((ω.loc v (unifUnit (v.adicCompletion F)) : ℂˣ) : ℂ)`. Use `quasiChar_apply_eq_of_isUnramified hunr hπ` as an intermediate fact. Conclude with `congrArg (fun u : ℂˣ => (u : ℂ)) this`. Establish `hα : ((ω.val v : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hterm : ∀ j : ℕ, ∫ x in ordShell (v.adicCompletion F) (A + j), ((ω.loc v x : ℂˣ) : ℂ) * (localAdelicChar F v (x : v.adicCompletion F) : ℂ) ∂multHaar (v.adicCompletion F) = ((ω.val v : ℂˣ) : ℂ) ^ (-dd v) * ((ω.val v : ℂˣ) : ℂ) ^ j`. Introduce `j`. Rewrite using `[setIntegral_congr_fun (measurableSet_ordShell _) (g := fun x => ((ω.loc v x : ℂˣ) : ℂ)) (fun x hx => by`. Rewrite `hx` using `[mem_ordShell]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hψ1 x (by rw [hx, hAdef, hc]; push_cast; omega), Circle.coe_one, mul_one])]`. Rewrite using `[setIntegral_ordShell_quasiChar (LocalShellIntegral.continuous_loc ω v), if_pos hunr, ← hval, hAdef, hc, Nat.cast_zero, zero_add, zpow_add₀ hα, zpow_natCast]`. Simplify using `only [hterm]`. Rewrite using `[← Finset.mul_sum, cst, if_pos hc]`. Unfold `chiW`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hc]`. Take `⟨hvan, -⟩` from `local_ramified_holds F ω c H v hc`. Rewrite using `[Finset.sum_eq_single_of_mem 0 (Finset.mem_range.2 (Nat.succ_pos _)) (fun j _ hj => hvan _ (by`. Establish `: (0 : ℤ) < j` using `by exact_mod_cast Nat.pos_of_ne_zero hj`. Use the proof step `omega))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ j ∈ Finset.range (m.toNat + 1), chiW ω c v ^ j = 1`. Unfold `chiW`. Rewrite using `[if_neg hc, Finset.sum_eq_single_of_mem 0 (Finset.mem_range.2 (Nat.succ_pos _)) (fun j _ hj => zero_pow hj), pow_zero]`. Rewrite using `[hsum, mul_one, cst, if_neg hc, Nat.cast_zero, add_zero]`. Use `⟨hiff.2 ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hsub]`. Conclude with `key.1.const_mul _`. Rewrite using `[heq, hsub, integral_const_mul, key.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_integral_of_substitution : InvSubst → LocInt := by
   intro hInv F _ _ _ ω c H yf ξ v

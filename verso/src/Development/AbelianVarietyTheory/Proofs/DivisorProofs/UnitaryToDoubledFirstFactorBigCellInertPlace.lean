@@ -12,7 +12,7 @@ namespace GlobalTheory.InertBigCell
 open Matrix
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cayley_skew {S : Type} [Ring S] (J P Q Mt Mc : S) (hK : P * J * Q = J) (h1 : Mt * (1 + P) = 1)
     (h2 : (1 + Q) * Mc = 1) : Mt * (P - 1) * J + J * ((Q - 1) * Mc) = 0 := by
@@ -25,7 +25,7 @@ theorem cayley_skew {S : Type} [Ring S] (J P Q Mt Mc : S) (hK : P * J * Q = J) (
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (2 : 𝓞 F)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 h2]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_ofNat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem valued_two (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) : Valued.v (2 : Fv F v) = 1 := by
   have h := HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (2 : 𝓞 F)
@@ -34,7 +34,7 @@ theorem valued_two (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) : Valued.v (2 : 
   simp only [map_ofNat]
 
 /- English proof (translation)
-Establish `e : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]`. Rewrite using `[e, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, valued_two v h2, inv_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_mem (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) : evFin F v (⅟(2 : AF F)) ∈ v.adicCompletionIntegers F := by
   have e : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹ := by
@@ -43,13 +43,11 @@ theorem half_mem (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) : evFin F v (⅟(2
   rw [e, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, valued_two v h2, inv_one]
 
 /- English proof (translation)
-Introduce `z hz`. Unfold `GlobalTheory.InertSph.latAt at hz ⊢`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `AddSubgroup.subset_closure ⟨⅟2 * a, fun u hu => ?_, ?_, y, hy, ?_⟩` and prove the remaining obligations. Use `ha u hu` as an intermediate fact. Simplify using `only [smul_eq_mul] at this ⊢`. Rewrite using `[mul_left_comm, this, mul_zero]`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (half_mem v h2) hai`. Rewrite using `[smul_smul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem half_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) :
     ∀ z ∈ GlobalTheory.InertSph.latAt W v, (⅟(2 : AF F)) • z ∈ GlobalTheory.InertSph.latAt W v := by
@@ -76,48 +74,48 @@ section Keeps
 variable {d : ℕ} {W : Spc F E d} {v : Pl F}
 
 /- English proof (translation)
-Introduce `z hz` and use `by rwa [one_mulVec]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_one : Keeps W v 1 := fun z hz => by rwa [one_mulVec]
 
 /- English proof (translation)
-Introduce `z _` and use `by rw [zero_mulVec]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_zero : Keeps W v 0 := fun z _ => by rw [zero_mulVec]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [add_mulVec]; exact add_mem (hX z hz) (hY z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_add {X Y : Matrix (Fin d) (Fin d) (AE F E)} (hX : Keeps W v X) (hY : Keeps W v Y) : Keeps W v (X + Y) :=
   fun z hz => by rw [add_mulVec]; exact add_mem (hX z hz) (hY z hz)
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [sub_mulVec]; exact sub_mem (hX z hz) (hY z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_sub {X Y : Matrix (Fin d) (Fin d) (AE F E)} (hX : Keeps W v X) (hY : Keeps W v Y) : Keeps W v (X - Y) :=
   fun z hz => by rw [sub_mulVec]; exact sub_mem (hX z hz) (hY z hz)
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [neg_mulVec]; exact neg_mem (hX z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_neg {X : Matrix (Fin d) (Fin d) (AE F E)} (hX : Keeps W v X) : Keeps W v (-X) :=
   fun z hz => by rw [neg_mulVec]; exact neg_mem (hX z hz)
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [← mulVec_mulVec]; exact hX _ (hY z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_mul {X Y : Matrix (Fin d) (Fin d) (AE F E)} (hX : Keeps W v X) (hY : Keeps W v Y) : Keeps W v (X * Y) :=
   fun z hz => by rw [← mulVec_mulVec]; exact hX _ (hY z hz)
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [smul_mulVec]; exact half_smul_mem W v h2 _ (hX z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keeps_half (h2 : (2 : 𝓞 F) ∉ v.asIdeal) {X : Matrix (Fin d) (Fin d) (AE F E)} (hX : Keeps W v X) :
     Keeps W v ((⅟(2 : AF F)) • X) :=
   fun z hz => by rw [smul_mulVec]; exact half_smul_mem W v h2 _ (hX z hz)
 
 /- English proof (translation)
-Introduce and unpack `z ⟨h1, h2⟩`. Rewrite using `[fromBlocks_mulVec]`. Conclude with `⟨add_mem (hA _ h1) (hB _ h2), add_mem (hC _ h1) (hD _ h2)⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fromBlocks_keeps {A B C D : Matrix (Fin d) (Fin d) (AE F E)} (hA : Keeps W v A) (hB : Keeps W v B)
     (hC : Keeps W v C) (hD : Keeps W v D) :
@@ -133,42 +131,42 @@ section Supp
 variable {n : Type} [Fintype n] {v : Pl F}
 
 /- English proof (translation)
-Introduce `u _` and use `smul_zero u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_zero : At (evFin F v) (0 : Matrix n n (AE F E)) := fun u _ => smul_zero u
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.smul_mul, hX u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right {X : Matrix n n (AE F E)} (hX : At (evFin F v) X) (Q : Matrix n n (AE F E)) :
     At (evFin F v) (X * Q) := fun u hu => by rw [← Matrix.smul_mul, hX u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.mul_smul, hX u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_left {X : Matrix n n (AE F E)} (hX : At (evFin F v) X) (Q : Matrix n n (AE F E)) :
     At (evFin F v) (Q * X) := fun u hu => by rw [← Matrix.mul_smul, hX u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_comm, hX u hu, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_smul {X : Matrix n n (AE F E)} (hX : At (evFin F v) X) (r : AF F) : At (evFin F v) (r • X) :=
   fun u hu => by rw [smul_comm, hX u hu, smul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_add, hX u hu, hY u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add {X Y : Matrix n n (AE F E)} (hX : At (evFin F v) X) (hY : At (evFin F v) Y) : At (evFin F v) (X + Y) :=
   fun u hu => by rw [smul_add, hX u hu, hY u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_neg, hX u hu, neg_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_neg {X : Matrix n n (AE F E)} (hX : At (evFin F v) X) : At (evFin F v) (-X) :=
   fun u hu => by rw [smul_neg, hX u hu, neg_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [fromBlocks_smul, hA u hu, hB u hu, hC u hu, hD u hu, fromBlocks_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_fromBlocks {A B C D : Matrix n n (AE F E)} (hA : At (evFin F v) A) (hB : At (evFin F v) B)
     (hC : At (evFin F v) C) (hD : At (evFin F v) D) : At (evFin F v) (Matrix.fromBlocks A B C D) :=
@@ -183,9 +181,9 @@ variable {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F}
 open GlobalTheory.InertDbl
 
 /- English proof (translation)
-Establish `e1 : matD (g * h) = matD g * matD h` using `rfl`. Establish `e2 : matD (g * h)⁻¹ = matD h⁻¹ * matD g⁻¹` using `by rw [_root_.mul_inv_rev]; rfl`. Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, show matD g * matD h - 1 = (matD g - 1) * matD h + (matD h - 1) by noncomm_ring]`. Conclude with `at_add (at_mul_right hg.1 _) hh.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← mulVec_mulVec, ← mulVec_mulVec]`. Conclude with `⟨(hg.2 _ (hh.2 z hz).1).1, (hh.2 _ (hg.2 z hz).2).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem KAtD_mul {g h : UD σ W} (hg : g ∈ KAtD σ W v) (hh : h ∈ KAtD σ W v) : g * h ∈ KAtD σ W v := by
   have e1 : matD (g * h) = matD g * matD h := rfl
@@ -197,7 +195,7 @@ theorem KAtD_mul {g h : UD σ W} (hg : g ∈ KAtD σ W v) (hh : h ∈ KAtD σ W 
     exact ⟨(hg.2 _ (hh.2 z hz).1).1, (hh.2 _ (hg.2 z hz).2).2⟩
 
 /- English proof (translation)
-Establish `e : matD g⁻¹ * matD g = 1` using `(g.1).inv_val`. Use `⟨?_, fun z hz => ⟨(hg.2 z hz).2, by rw [inv_inv]; exact (hg.2 z hz).1⟩⟩` and prove the remaining obligations. Rewrite using `[show matD g⁻¹ - 1 = -(matD g⁻¹ * (matD g - 1)) by rw [Matrix.mul_sub, e, Matrix.mul_one]; abel]`. Conclude with `at_neg (at_mul_left hg.1 _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KAtD_inv {g : UD σ W} (hg : g ∈ KAtD σ W v) : g⁻¹ ∈ KAtD σ W v := by
   have e : matD g⁻¹ * matD g = 1 := (g.1).inv_val
@@ -206,9 +204,9 @@ theorem KAtD_inv {g : UD σ W} (hg : g ∈ KAtD σ W v) : g⁻¹ ∈ KAtD σ W v
   exact at_neg (at_mul_left hg.1 _)
 
 /- English proof (translation)
-Use `⟨?_, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : matD (inlD σ W k) - 1 = Matrix.fromBlocks (mat k - 1) 0 0 0`. Apply the tactic sequence `rw [matD_inlD]; ext (i|i) (j|j) <;> simp [Matrix.one_apply]`. Rewrite using `[e]`. Conclude with `at_fromBlocks hk.1 at_zero at_zero at_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[matD_inlD]`. Conclude with `fromBlocks_keeps (fun z hz => (hk.2 z hz).1) keeps_zero keeps_zero keeps_one z hz`. Rewrite using `[← map_inv, matD_inlD]`. Conclude with `fromBlocks_keeps (fun z hz => (hk.2 z hz).2) keeps_zero keeps_zero keeps_one z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inlD_mem {k : UA σ W.J} (hk : k ∈ GlobalTheory.InertSph.KAt σ W v) : inlD σ W k ∈ KAtD σ W v := by
   refine ⟨?_, fun z hz => ⟨?_, ?_⟩⟩
@@ -235,24 +233,22 @@ section Cell
 variable {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F}
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i|i) j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromRows_add_fromRows {m₁ m₂ n R : Type} [Add R] (A B : Matrix m₁ n R) (C D : Matrix m₂ n R) :
     Matrix.fromRows A C + Matrix.fromRows B D = Matrix.fromRows (A + B) (C + D) := by
   ext (i|i) j <;> rfl
 
 /- English proof (translation)
-Establish `hinv1 : Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) * Matrix.fromBlocks (1 - Z) (-Z) Z (1 + Z) = 1`. Apply the tactic sequence `rw [fromBlocks_multiply, ← fromBlocks_one]; congr 1 <;> noncomm_ring`. Establish `hinv2 : Matrix.fromBlocks (1 - Z) (-Z) Z (1 + Z) * Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) = 1`. Apply the tactic sequence `rw [fromBlocks_multiply, ← fromBlocks_one]; congr 1 <;> noncomm_ring`. Establish `hmap : ∀ X : Matrix (Fin d) (Fin d) (AE F E), X.map (cA σ) = (cA σ).mapMatrix X` using `fun _ => rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hU : (Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z))ᵀ * dbl (incM F W.J) * (Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z)).map (cA σ) = dbl (incM F W.J)`. Rewrite using `[fromBlocks_transpose, dbl, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [transpose_add, transpose_sub, transpose_neg, transpose_one, hmap, map_add, map_sub, map_neg, map_one]`. Rewrite `hZ` using `[hmap]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> rw [← sub_eq_zero] <;> convert hZ using 1 <;> noncomm_ring`. Set `n : UD σ W` to `⟨⟨_, _, hinv1, hinv2⟩, hU⟩`. Use `⟨n, ⟨⟨?_, fun z hz => ⟨?_, ?_⟩⟩, ?_, Z + Z, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show At (evFin F v) (Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) - 1)`. Establish `e : Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) - 1 = Matrix.fromBlocks Z Z (-Z) (-Z)`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext (i|i) (j|j) <;> simp [Matrix.one_apply]`. Rewrite using `[e]`. Conclude with `at_fromBlocks hat hat (at_neg hat) (at_neg hat)`. Conclude with `fromBlocks_keeps (keeps_add keeps_one hkeep) hkeep (keeps_neg hkeep) (keeps_sub keeps_one hkeep) z hz`. Conclude with `fromBlocks_keeps (keeps_sub keeps_one hkeep) (keeps_neg hkeep) hkeep (keeps_add keeps_one hkeep) z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) * antiCols d = antiCols d`. Rewrite using `[show antiCols d = Matrix.fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) from rfl]`. Apply the tactic sequence `erw [fromBlocks_mul_fromRows]; congr 1 <;> noncomm_ring`. Use `show Matrix.fromBlocks (1 + Z) Z (-Z) (1 - Z) * diagCols (Fin d) = diagCols (Fin d) + antiCols d * (Z + Z)`. Rewrite using `[show antiCols d = Matrix.fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) from rfl, show diagCols (Fin d) = Matrix.fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 from rfl]`.
-
-Apply the tactic sequence `erw [fromBlocks_mul_fromRows, fromRows_mul, fromRows_add_fromRows]; congr 1 <;> noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem exists_nab (Z : Matrix (Fin d) (Fin d) (AE F E))
     (hZ : Zᵀ * incM F W.J + incM F W.J * Z.map (cA σ) = 0) (hat : At (evFin F v) Z) (hkeep : Keeps W v Z) :
@@ -286,21 +282,17 @@ theorem exists_nab (Z : Matrix (Fin d) (Fin d) (AE F E))
     erw [fromBlocks_mul_fromRows, fromRows_mul, fromRows_add_fromRows]; congr 1 <;> noncomm_ring
 
 /- English proof (translation)
-Use `set K := mat k with hKdef`. Establish `hmap : ∀ X : Matrix (Fin d) (Fin d) (AE F E), X.map (cA σ) = (cA σ).mapMatrix X` using `fun _ => rfl`. Establish `hkJ : Kᵀ * incM F W.J * K.map (cA σ) = incM F W.J` using `k.2`. Establish `hY : ((K - 1) * M)ᵀ * incM F W.J + incM F W.J * ((K - 1) * M).map (cA σ) = 0`. Establish `h1 : Mᵀ * (1 + Kᵀ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg transpose hM1` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_add, transpose_one]`. Then use the resulting hypothesis. Establish `h2' : (1 + K.map (cA σ)) * M.map (cA σ) = 1`. Use `congrArg (cA σ).mapMatrix hM1` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, ← hmap, ← hmap]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[transpose_mul, transpose_sub, transpose_one, hmap ((K - 1) * M), map_mul, map_sub, map_one, ← hmap, ← hmap]`. Conclude with `cayley_skew _ _ _ _ _ hkJ h1 h2'`. Use `set Z : Matrix (Fin d) (Fin d) (AE F E) := (⅟(2 : AF F)) • ((K - 1) * M) with hZdef`. Establish `hZ : Zᵀ * incM F W.J + incM F W.J * Z.map (cA σ) = 0`. Rewrite using `[hZdef, transpose_smul, hmap, map_smul, ← hmap, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hY, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hat : At (evFin F v) Z` using `at_smul (at_mul_right hk.1 M) _`. Establish `hkeep : Keeps W v Z` using `keeps_half h2 (keeps_mul (keeps_sub (fun z hz => (hk.2 z hz).1) keeps_one) hMlat)`. Take `⟨n, hn, hninv⟩` from `exists_nab Z hZ hat hkeep`. Establish `hZK : Z * (1 + K) = (⅟(2 : AF F)) • (K - 1)`. Rewrite using `[hZdef, Matrix.smul_mul, Matrix.mul_assoc, hM2, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hK2 : ∀ X : Matrix (Fin d) (Fin d) (AE F E), X = (⅟(2 : AF F)) • X + (⅟(2 : AF F)) • X` using `fun X => by`. Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`. Set `t : GL (Fin d) (AE F E)` to `⟨(⅟(2 : AF F)) • (1 + K), (2 : AF F) • M, by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hM1, invOf_mul_self, one_smul], by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hM2, mul_invOf_self, one_smul]⟩`. Use `⟨n, hn, n⁻¹ * inlD σ W k, ⟨KAtD_mul (KAtD_inv hn.1) (inlD_mem hk), t, ?_⟩, (mul_inv_cancel_left n _).symm⟩` and prove the remaining obligations. Use `show matD n⁻¹ * matD (inlD σ W k) * diagCols (Fin d) = diagCols (Fin d) * ((⅟(2 : AF F)) • (1 + K))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hninv, matD_inlD, fromBlocks_multiply]`. Rewrite using `[show diagCols (Fin d) = Matrix.fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 from rfl]`. Use `erw [fromBlocks_mul_fromRows, fromRows_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`. Use `congr 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hZK, smul_sub, ← hK2]`. Use `_ = (⅟(2 : AF F)) • (1 + K) := by rw [smul_add]; abel`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hZK, smul_sub, ← hK2]`.
-
-Use `_ = (⅟(2 : AF F)) • (1 + K) := by rw [smul_add]; abel`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inlD_eq_nab_mul_par (h2 : (2 : 𝓞 F) ∉ v.asIdeal) (k : UA σ W.J) (hk : k ∈ GlobalTheory.InertSph.KAt σ W v)
     (M : Matrix (Fin d) (Fin d) (AE F E)) (hM1 : (1 + mat k) * M = 1) (hM2 : M * (1 + mat k) = 1)
@@ -352,7 +344,7 @@ end Cell
 end GlobalTheory.InertBigCell
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hv k hk hM`. Take `⟨M, hM1, hM2, hMlat⟩` from `hM`. Conclude with `GlobalTheory.InertBigCell.inlD_eq_nab_mul_par (hT.base.inert v w hv).1 k hk M hM1 hM2 hMlat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertBigCell.inlD_bigCell : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

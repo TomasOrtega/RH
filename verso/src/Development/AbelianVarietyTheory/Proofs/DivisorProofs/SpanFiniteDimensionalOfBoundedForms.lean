@@ -5,15 +5,15 @@ open Topology Filter
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨t, hts, hspan, hli⟩` from `exists_linearIndependent ℂ s`. Establish `ht : t.Finite`. Assume the negation of the conclusion as `hinf`. Establish `hinf' : t.Infinite` using `hinf`. Set `e : ℕ ↪ t` to `hinf'.natEmbedding`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hli' : LinearIndepOn ℂ id t` using `hli`. Set `b` to `Module.Basis.extend hli'`. Set `v : (hli'.extend (Set.subset_univ t)) → ℂ` to `fun i => if h : ∃ k : ℕ, ((e k : t) : V) = (i : V) then (h.choose : ℂ) else 0`. Take `⟨C, hC⟩` from `hs (b.constr ℂ v)`. Establish `key : ∀ k : ℕ, b.constr ℂ v ((e k : t) : V) = (k : ℂ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Establish `hmem : ((e k : t) : V) ∈ hli'.extend (Set.subset_univ t)` using `hli'.subset_extend _ (e k).2`. Establish `hb : b ⟨_, hmem⟩ = ((e k : t) : V)` using `by simp [b, Module.Basis.coe_extend]`. Rewrite using `[← hb, Module.Basis.constr_basis]`. Establish `h : ∃ j : ℕ, ((e j : t) : V) = ((⟨_, hmem⟩ : hli'.extend (Set.subset_univ t)) : V)` using `⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [v, dif_pos h]`. Establish `hj : h.choose = k` using `e.injective (Subtype.ext h.choose_spec)`. Rewrite using `[hj]`. Take `⟨k, hk⟩` from `exists_nat_gt C`. Establish `hle` using `hC _ (hts (e k).2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hle` using `[key, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ t)` using `FiniteDimensional.span_of_finite ℂ ht`. Rewrite `hfd` using `[hspan]`. Conclude with `hfd`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_finiteDimensional_of_bounded_forms {V : Type} [AddCommGroup V] [Module ℂ V]
     (s : Set V) (hs : ∀ l : V →ₗ[ℂ] ℂ, ∃ C : ℝ, ∀ x ∈ s, ‖l x‖ ≤ C) :

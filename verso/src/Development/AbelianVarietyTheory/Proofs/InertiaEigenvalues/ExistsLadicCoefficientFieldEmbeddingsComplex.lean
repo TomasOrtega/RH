@@ -18,15 +18,13 @@ namespace GlobalTheory.EmbExt
 open Cardinal
 
 /- English proof (translation)
-Use `letI : Algebra A ℂ := φ.toAlgebra`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis A K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis A ℂ`. Establish `hA : #A ≤ ℵ₀` using `Cardinal.mk_le_aleph0`. Establish `hC : ℵ₀ < #ℂ` using `by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : #ℂ = #t` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hA hC`. Establish `hst : #s ≤ #t`. Rewrite using `[← ht', Cardinal.mk_complex]`. Conclude with `(Cardinal.mk_le_mk_of_subset (Set.subset_univ _)).trans (by simpa using hK)`. Take `⟨f⟩` from `hst`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : AlgebraicIndependent A (fun x : s => ((f x : t) : ℂ))` using `ht.1.comp (fun x => f x) f.injective`. Set `S` to `Algebra.adjoin A (Set.range ((↑) : s → K))`. Set `g : S →ₐ[A] ℂ` to `(MvPolynomial.aeval (fun x : s => ((f x : t) : ℂ))).comp hs.1.aevalEquiv.symm.toAlgHom`. Establish `hg : Function.Injective g` using `(show Function.Injective (MvPolynomial.aeval (fun x : s => ((f x : t) : ℂ))) from hw).comp hs.1.aevalEquiv.symm.injective`. Use `letI : Algebra S ℂ := g.toRingHom.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.IsTorsionFree S ℂ := Module.isTorsionFree_iff_algebraMap_injective.2 hg`. Use `haveI : Module.IsTorsionFree S K := Module.isTorsionFree_iff_algebraMap_injective.2 Subtype.val_injective`. Use `haveI : Algebra.IsAlgebraic S K := hs.isAlgebraic`. Set `ψ : K →ₐ[S] ℂ` to `IsAlgClosed.lift`. Use `⟨ψ.toRingHom, fun a => ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : algebraMap A K a = algebraMap S K (algebraMap A S a)` using `rfl`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h1, ψ.commutes]`. Conclude with `g.commutes a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_countable {A K : Type} [Field A] [Field K] [Algebra A K] [Countable A]
     (hK : #K ≤ 𝔠) (φ : A →+* ℂ) : ∃ ψ : K →+* ℂ, ∀ a, ψ (algebraMap A K a) = φ a := by
@@ -61,7 +59,7 @@ end GlobalTheory.EmbExt
 namespace GlobalTheory.EmbExt
 
 /- English proof (translation)
-Take `⟨p, hp, hev⟩` from `hy`. Use `⟨p.map (Int.castRingHom ℚ), (hp.map _).ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Establish `h : (algebraMap ℚ F).comp (Int.castRingHom ℚ) = g.comp (algebraMap ℤ R)` using `RingHom.ext_int _ _`. Rewrite using `[h, ← Polynomial.hom_eval₂, hev, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAlgebraic_rat_of_isIntegral_int {R F : Type} [CommRing R] [Field F] [CharZero F] (g : R →+* F)
     {y : R} (hy : IsIntegral ℤ y) : IsAlgebraic ℚ (g y) := by
@@ -76,23 +74,19 @@ end GlobalTheory.EmbExt
 namespace GlobalTheory.EmbExt
 
 /- English proof (translation)
-Introduce `D N X f0 hf0 hcard`. Establish `hcz : ∀ i, CharZero (FractionRing (X.O0 i))` using `fun i => charZero_of_injective_ringHom (X.emb0 i).injective`. Establish `key : ∀ i b, ∃ e : FractionRing (X.O i) →+* ℂ, letI` using `hcz i; ∀ z : FractionRing (X.O0 i), IsAlgebraic ℚ z → e (IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i)) (L := FractionRing (X.O i)) (X.O_inj i) z) = f0 i b z := by`. Introduce `i b`. Use `letI := hcz i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Set `A` to `algebraicClosure ℚ (FractionRing (X.O0 i))`. Use `haveI : Algebra.IsAlgebraic ℚ A := ⟨fun a => IntermediateField.isAlgebraic_iff.2 (mem_algebraicClosure_iff.1 a.2)⟩`. Use `haveI : Countable A := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ A).trans (by simp)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `m` to `IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i)) (L := FractionRing (X.O i)) (X.O_inj i)`. Use `letI : Algebra A (FractionRing (X.O i)) := (m.comp (algebraMap A (FractionRing (X.O0 i)))).toAlgebra`. Establish `hK : Cardinal.mk (FractionRing (X.O i)) ≤ Cardinal.continuum` using `(Cardinal.mk_le_of_injective (IsFractionRing.map (A := X.O i) (B := X.Ok i 0) (K := FractionRing (X.O i)) (L := FractionRing (X.Ok i 0)) (X.Ok_inj i 0)).injective).trans (hcard i 0)`. Take `⟨ψ, hψ⟩` from `exists_extend_of_countable hK ((f0 i b).comp (algebraMap A (FractionRing (X.O0 i))))`. Use `⟨ψ, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzA : z ∈ A` using `mem_algebraicClosure_iff.2 hz`. Conclude with `hψ ⟨z, hzA⟩`. Use `choose e he using key`. Establish `keyk : ∀ i b k, ∃ ek : FractionRing (X.Ok i k) →+* ℂ, ∀ x : X.O i, ek (algebraMap (X.Ok i k) (FractionRing (X.Ok i k)) (algebraMap (X.O i) (X.Ok i k) x)) = e i b (algebraMap (X.O i) (FractionRing (X.O i)) x)`. Introduce `i b k`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra (X.O i) ℂ := ((e i b).comp (algebraMap (X.O i) (FractionRing (X.O i)))).toAlgebra`. Use `haveI : Module.IsTorsionFree (X.O i) ℂ := Module.isTorsionFree_iff_algebraMap_injective.2 ((e i b).injective.comp (IsFractionRing.injective (X.O i) (FractionRing (X.O i))))`. Use `haveI : Module.IsTorsionFree (X.O i) (FractionRing (X.Ok i k)) := by`. Use `Module.isTorsionFree_iff_algebraMap_injective.2 ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq (X.O i) (X.Ok i k) (FractionRing (X.Ok i k))]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `(IsFractionRing.injective (X.Ok i k) (FractionRing (X.Ok i k))).comp (X.Ok_inj i k)`. Use `haveI := X.Ok_fin i k`. Use `haveI : Algebra.IsAlgebraic (X.O i) (X.Ok i k) := Algebra.IsIntegral.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic (X.O i) (FractionRing (X.Ok i k)) := (IsFractionRing.isAlgebraic_iff' (X.O i) (X.Ok i k) (FractionRing (X.Ok i k))).1 inferInstance`. Set `ψ : FractionRing (X.Ok i k) →ₐ[X.O i] ℂ` to `IsAlgClosed.lift`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `⟨ψ.toRingHom, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ← IsScalarTower.algebraMap_apply, ψ.commutes]`. Both sides reduce to the same expression. Use `choose ek hek using keyk`. Use `⟨e, ek, fun i b x => ?_, hek, fun i b y hy => ?_⟩` and prove the remaining obligations.
-
-Use `letI := hcz i`. Establish `hx : IsAlgebraic ℚ x` using `Algebra.IsAlgebraic.isAlgebraic x`. Establish `h2 : IsAlgebraic ℚ ((if b then X.emb0 i else X.emb0b i) x)` using `hx.algHom ((if b then X.emb0 i else X.emb0b i).toRatAlgHom)`. Rewrite using `[← hf0 i b x, ← he i b _ h2]`. Both sides reduce to the same expression.
-
-Use `letI := hcz i`. Establish `h2 : IsAlgebraic ℚ (algebraMap (X.O0 i) (FractionRing (X.O0 i)) y)` using `isAlgebraic_rat_of_isIntegral_int _ hy`. Rewrite using `[← he i b _ h2]`. Simplify using `[IsFractionRing.map, IsLocalization.map_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_side_embeddings : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (f0 : ∀ i, Bool → (FractionRing (X.O0 i) →+* ℂ)), (∀ i b x, f0 i b ((if b then X.emb0 i else X.emb0b i) x) = embLL0 D x) → (∀ i k, Cardinal.mk (FractionRing (X.Ok i k)) ≤ Cardinal.continuum) → ∃ (e : ∀ i, Bool → (FractionRing (X.O i) →+* ℂ)) (ek : ∀ i, Bool → ∀ k, FractionRing (X.Ok i k) →+* ℂ), (∀ i b x, e i b (sideEmb X i b x) = embLL0 D x) ∧ (∀ i b k (x : X.O i), ek i b k (algebraMap (X.Ok i k) (FractionRing (X.Ok i k)) (algebraMap (X.O i) (X.Ok i k) x)) = e i b (algebraMap (X.O i) (FractionRing (X.O i)) x)) ∧ (∀ i b (y : X.O0 i), IsIntegral ℤ y → e i b (algebraMap (X.O i) (FractionRing (X.O i)) (algebraMap (X.O0 i) (X.O i) y)) = f0 i b (algebraMap (X.O0 i) (FractionRing (X.O0 i)) y)) := by
   intro D N X f0 hf0 hcard

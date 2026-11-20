@@ -9,7 +9,7 @@ noncomputable section
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
 
 /- English proof (translation)
-The claim follows from `| 0, g, _ => by have h := hF.top 0 le_rfl T simp only [Nat.cast_zero, h] exact Submodule.mem_top | n + 1, g, h => by rw [Fin.prod_univ_castSucc] have h1 : g (Fin.last n) ∈ (Fil ((1 : ℕ) : ℤ)).S T := by rw [Nat.cast_one, hF.one]; exact h _ exact hF.mul n 1 T (prod_mem_fil hF T n _ …`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_fil {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (T : C) :
     ∀ (n : ℕ) (g : Fin n → Φ.A.obj T), (∀ k, g k ∈ Φ.J.S T) → ∏ k, g k ∈ (Fil n).S T
@@ -26,9 +26,9 @@ theorem prod_mem_fil {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (T : C) :
 variable {d : ℕ} {E : Frame Φ (d + 1)} (Q : Poly Φ) (σ : ∀ T : C, E.D ⟶ T)
 
 /- English proof (translation)
-Rewrite using `[Cut.τ_sec, if_neg (Fin.succ_ne_zero i), neg_zero, zero_add]`. Establish `e : σ T ≫ Q.j T ≫ Cut.Pmap Q (X` using `⟨T, σ T⟩) (Y := ⟨T', σ T'⟩) φ = (σ T ≫ φ) ≫ Q.j T' := by`. Use `Cut.Pmap_j Q (X := ⟨T, σ T⟩) (Y := ⟨T', σ T'⟩) φ` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[e, E.add i.succ _ (σ T' ≫ Q.j T') _, E.nat]`. Establish `h` using `Cut.sec_spec Q (E := E) ⟨T', σ T'⟩ i.succ`. Simplify using `only at h`. Rewrite using `[h, if_neg (Fin.succ_ne_zero i), add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_sec_Pmap (i : Fin d) {T T' : C} (φ : T ⟶ T') :
     E.τ i.succ (Cut.sec Q ⟨T, σ T⟩ ≫ Cut.Pmap Q (X := ⟨T, σ T⟩) (Y := ⟨T', σ T'⟩) φ) (Cut.sec Q ⟨T', σ T'⟩) =
@@ -45,7 +45,7 @@ theorem tau_sec_Pmap (i : Fin d) {T T' : C} (φ : T ⟶ T') :
   rw [h, if_neg (Fin.succ_ne_zero i), add_zero]
 
 /- English proof (translation)
-Rewrite using `[tau_sec_Pmap, ← Cut.mapA_comp, ← Cut.mapA_comp]`. Use `Cut.Pmap_j Q (X := ⟨T₁, σ T₁⟩) (Y := ⟨T₂, σ T₂⟩) a` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor {T₀ T₁ T₂ : C} (i : Fin d) (b : T₀ ⟶ T₁) (a : T₁ ⟶ T₂) :
     (Φ.A.map (Cut.Pmap Q (X := ⟨T₁, σ T₁⟩) (Y := ⟨T₂, σ T₂⟩) a)).hom
@@ -59,13 +59,13 @@ theorem factor {T₀ T₁ T₂ : C} (i : Fin d) (b : T₀ ⟶ T₁) (a : T₁ �
 variable {Fil : ℤ → IdF Φ.A}
 
 /- English proof (translation)
-Establish `e1 : ∀ k : Fin j, ((Cut.Φ1 E).A.map ((s ⋙ Cut.Pσ Q σ).map (homOfLE (Fin.le_last k.succ)))).hom ((Cut.E1 E).a Cut.can (I k) ((s ⋙ Cut.Pσ Q σ).map (homOfLE (Fin.castSucc_lt_succ (i` using `k)).le))) = (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom ((Φ.A.map (s.map (homOfLE (Fin.le_last k.succ)))).hom (E.a σ ((Fin.succ ∘ I) k) (s.map (homOfLE (Fin.castSucc_lt_succ (i := k)).le)))) := fun k => factor Q σ (I k) _ _`. Set `P₀ : Φ.A.obj (s.obj (Fin.last j))` to `∏ k : Fin j, (Φ.A.map (s.map (homOfLE (Fin.le_last k.succ)))).hom (E.a σ ((Fin.succ ∘ I) k) (s.map (homOfLE (Fin.castSucc_lt_succ (i := k)).le)))`. Establish `hP : P₀ ∈ (Fil j).S (s.obj (Fin.last j))` using `prod_mem_fil hF _ j _ fun k => Φ.J.map_mem _ (E.mem _ _ _)`. Set `u : E.D ⟶ Q.P (s.obj (Fin.last j))` to `Cut.sec Q ⟨s.obj (Fin.last j), σ _⟩`. Set `v : E.D ⟶ Q.P (s.obj (Fin.last j))` to `σ (s.obj (Fin.last j)) ≫ Q.j _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `f1 : (show Φ.A.obj (Q.P (s.obj (Fin.last j))) from (Cut.E1 E).form Cut.can I x (s ⋙ Cut.Pσ Q σ)) = (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom P₀ * (Φ.A.map u).hom x`. Establish `h : (∏ k : Fin j, (show Φ.A.obj (Q.P (s.obj (Fin.last j))) from ((Cut.Φ1 E).A.map ((s ⋙ Cut.Pσ Q σ).map (homOfLE (Fin.le_last k.succ)))).hom ((Cut.E1 E).a Cut.can (I k) ((s ⋙ Cut.Pσ Q σ).map (homOfLE (Fin.castSucc_lt_succ (i` using `k)).le))))) = (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom P₀ := (Finset.prod_congr rfl fun k _ => e1 k).trans (map_prod (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom _ _).symm`. Conclude with `congrArg (· * (Φ.A.map u).hom x) h`. Establish `f2 : (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom (E.form σ (Fin.succ ∘ I) x s) = (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom P₀ * (Φ.A.map v).hom x`. Express the relevant statement in the definitionally equal form `(Φ.A.map (Q.j (s.obj (Fin.last j)))).hom (P₀ * (Φ.A.map (σ _)).hom x) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← Cut.mapA_comp]`. Rewrite using `[f1, f2, ← mul_sub]`. Establish `hcast : r + 1 = ((j + (q + 1) : ℕ) : ℤ)` using `by rw [hr]; push_cast; ring`. Rewrite using `[hcast]`. Use `hF.mul j (q + 1) _ ((Fil j).map_mem _ hP) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc q u v hx` as an intermediate fact. Establish `e : ((q + 1 : ℕ) : ℤ) = (q : ℤ) + 1` using `by push_cast; rfl`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sub_mem (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ) (hr : r = j + q)
     (I : Fin j → Fin d) (x : Φ.A.obj E.D) (hx : x ∈ (Fil q).S E.D) (s : ComposableArrows C j) :
@@ -105,9 +105,9 @@ theorem form_sub_mem (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (j q : ℕ) (r : �
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `hf (s ⋙ Cut.Pσ Q σ)`. Establish `h2` using `hg s`. Express the relevant statement in the definitionally equal form `(show sqM _ _ _ from f (s ⋙ Cut.Pσ Q σ)).1 = Ideal.quotientMapₐ _ (Φ.A.map (Q.j (s.obj (Fin.last j)))).hom (fun _ hx => (Fil (r + 1)).map_mem _ hx) (show sqM _ _ _ from g s).1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, h2]`. Conclude with `Ideal.Quotient.eq.2 (form_sub_mem Q σ hF hc j q r hr I x hx s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_pull {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) {Fil : ℤ → IdF Φ.A}
     (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ) (hr : r = j + q)

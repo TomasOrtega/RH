@@ -14,59 +14,49 @@ variable {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m] [Fact X.p.Prime] {O : Typ
   {G : ∀ j, MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)} {Std : MonH X}
 
 /- English proof (translation)
-The claim follows from `(Finset.sum_eq_zero_iff.1 h) c (Finset.mem_univ c)`.
+A detailed English derivation is pending.
 -/
 theorem zero_of_multideg {l : X.TT × Bool} {M : MonH X} (h : multideg M l = 0) (c : Fin (X.m + 1)) : M (l, c) = 0 :=
   (Finset.sum_eq_zero_iff.1 h) c (Finset.mem_univ c)
 
 /- English proof (translation)
-Use `set uC : ∀ j, P.ιC j → ℕ := fun j a => u (Sum.inl ⟨j, a⟩) with huCdef`. Use `set uH : ∀ j, Fin (BDk C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j).T.t → ℕ := fun j i => u (Sum.inr (Sum.inl ⟨j, i⟩)) with huHdef`. Use `set uM : P.ιM → ℕ := fun a => u (Sum.inr (Sum.inr a)) with huMdef`. Establish `huC : ∀ j a, uC j a ≤ 1` using `fun j a => hu (Sum.inl ⟨j, a⟩)`. Establish `huM : ∀ a, uM a ≤ P.multM a` using `fun a => hu (Sum.inr (Sum.inr a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum' : (∑ j, ∑ a, uC j a) + ((∑ j, ∑ i, uH j i) + ∑ a, uM a) ≤ e`. Rewrite using `[← P.sum_κ u]`. Conclude with `hsum`. Use `set B : MonH X := (∑ j, ∑ a, (1 - uC j a) • P.pl j a) + ∑ a, (P.multM a - uM a) • P.aM a with hB`. Use `set Brem : MonH X := (∑ j, ∑ a, uC j a • P.pl j a) + ∑ a, uM a • P.aM a with hBrem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : P.sgR * (∏ a, P.sg a ^ (P.mult a - u a)) * monomial M 1 = (∏ j, L.head O j (fun i => L.lv j i - uH j i) (∏ a, P.Kc j a ^ (1 - uC j a))) * monomial (P.R + B + M) 1`. Rewrite using `[P.prod_κ]`. Conclude with `P.ident (fun j a => 1 - uC j a) (fun j i => L.lv j i - uH j i) (fun a => P.multM a - uM a) M`. Establish `hSB : Std = (P.R + B) + Brem`. Use `P.stdEq.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (∑ j, ∑ a, P.pl j a) = (∑ j, ∑ a, (1 - uC j a) • P.pl j a) + ∑ j, ∑ a, uC j a • P.pl j a`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← add_smul, Nat.sub_add_cancel (huC j a), one_smul]`. Establish `h2 : (∑ a, P.multM a • P.aM a) = (∑ a, (P.multM a - uM a) • P.aM a) + ∑ a, uM a • P.aM a`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul, Nat.sub_add_cancel (huM a)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, h2, hB, hBrem]`. Normalize the expressions using the abelian group laws. Establish `hSv : ∀ v, Std v = (P.R + B) v + Brem v` using `fun v => by`. Rewrite using `[← Finsupp.add_apply]`. Conclude with `DFunLike.congr_fun hSB v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAv : ∀ v, (P.R + B + M) v = (P.R + B) v + M v` using `fun v => Finsupp.add_apply _ _ v`. Establish `hmdB : ∀ l, multideg Brem l = (∑ j, ∑ a, uC j a * multideg (P.pl j a) l) + ∑ a, uM a * multideg (P.aM a) l`. Introduce `l`. Establish `: (mdHom X l) Brem = (∑ j, ∑ a, uC j a * (mdHom X l) (P.pl j a)) + ∑ a, uM a * (mdHom X l) (P.aM a)`. Rewrite using `[hBrem]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_sum, map_nsmul, smul_eq_mul]`. Conclude with `this`. Rewrite using `[key]`. Use `hT e he1 hen (fun j i => L.lv j i - uH j i) (fun j i => Nat.sub_le _ _) (fun j => ∏ a, P.Kc j a ^ (1 - uC j a)) (fun j i => ∑ a, (1 - uC j a) * P.dK j a i) ?_ ?_ ?_ ?_ (P.R + B + M) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun j => glIntProd _ _ fun a _ => glIntPow (P.KInt j a) _`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun j => chain_pol_prod (KK O) Finset.univ (fun a i => (1 - uC j a) * P.dK j a i) _ fun a _ => chain_pol_pow (KK O) (P.KPol j a) _`. Introduce `j i`. Rewrite using `[← P.dKsum j i]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `j k`. Establish `hprod : (∏ a, P.Kc j a ^ (1 - uC j a)) * (∏ a, P.Kc j a ^ uC j a) = G j`. Rewrite using `[← Finset.prod_mul_distrib, ← P.Kprod j]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, Nat.sub_add_cancel (huC j a), pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use `ycond_factor D (L.LL j) _ _ _ (∏ a, P.Kc j a ^ uC j a) (fun i => ∑ a, uC j a * P.dK j a i) (chain_pol_prod (KK O) Finset.univ (fun a i => uC j a * P.dK j a i) _ fun a _ => chain_pol_pow (KK O) (P.KPol j a) _) ?_ ?_ (X.N1 * e) ?_` and prove the remaining obligations. Introduce `h0`. Apply `hG0 j` to reduce the goal to its premises. Rewrite using `[← hprod, h0, mul_zero]`. Rewrite using `[hprod]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hGY j k`. Establish `hCj : ∑ a, uC j a ≤ e`. Establish `h1 : ∑ a, uC j a ≤ ∑ j, ∑ a, uC j a` using `Finset.single_le_sum (f := fun j => ∑ a, uC j a) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : (L.LL j).vec i = true`. Simplify using `[hv]`. Simplify using `only [hv, if_false, one_mul, Bool.false_eq_true]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = (∑ i, (if (L.LL j).vec i then 0 else 1)) * ∑ a, uC j a := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ X.N1 * e := Nat.mul_le_mul (hcov j) hCj`. Introduce `l`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hSv, hAv]`. Use linear arithmetic over natural numbers and integers. Use `_ = multideg Brem l := rfl`. Use `_ = (∑ j, ∑ a, uC j a * multideg (P.pl j a) l) + ∑ a, uM a * multideg (P.aM a) l := hmdB l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ (∑ j, ∑ a, uC j a) * X.p ^ X.G' + (∑ a, uM a) * X.p ^ X.G' := by`. Use `Nat.add_le_add ?_ (sum_mul_le _ _ _ fun a => by rw [P.polM a l]; exact P.dgMQ a l)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun j _ => sum_mul_le _ _ _ fun a => P.plQ j a l`. Use `_ = ((∑ j, ∑ a, uC j a) + ∑ a, uM a) * X.p ^ X.G' := (Nat.add_mul _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ ≤ e * X.p ^ X.G' := Nat.mul_le_mul_right _ (by omega)`. Use `_ = X.p ^ X.G' * e := Nat.mul_comm _ _`. Introduce `l`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSv, hAv]`. Use linear arithmetic over natural numbers and integers. Use `_ = multideg M l := rfl`. Use `_ = ∑ a, u a * P.dg a l := hdeg l`. Use `_ ≤ (∑ a, u a) * X.p ^ X.G' := sum_mul_le _ _ _ fun a => P.dgQ a l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ e * X.p ^ X.G' := Nat.mul_le_mul_right _ hsum`. Use `_ = X.p ^ X.G' * e := Nat.mul_comm _ _`. Introduce `j c`. Establish `hM0 : multideg M (topEnd X j, false) = 0`. Rewrite using `[hdeg]`.
-
-Conclude with `Finset.sum_eq_zero fun a _ => by rw [P.dgY a j, mul_zero]`. Establish `hB0 : multideg Brem (topEnd X j, false) = 0`. Rewrite using `[hmdB]`. Establish `h1 : (∑ j', ∑ a, uC j' a * multideg (P.pl j' a) (topEnd X j, false)) = 0` using `Finset.sum_eq_zero fun j' _ => Finset.sum_eq_zero fun a _ => by rw [P.plY j' a j, mul_zero]`. Establish `h2 : (∑ a, uM a * multideg (P.aM a) (topEnd X j, false)) = 0` using `Finset.sum_eq_zero fun a _ => by rw [P.polM a, P.dgMY a j, mul_zero]`.
-
-Rewrite using `[h1, h2]`. Rewrite using `[hSv, hAv, zero_of_multideg hM0 c, zero_of_multideg hB0 c]`. Rewrite using `[← key]`. Use `mem_Pol_iffW.2 fun l => ?_` and prove the remaining obligations. Establish `h1` using `hom_total (mdHom X l) P.sg (fun a => P.dg a l) (fun a => mem_Pol_iffW.1 (P.sgMd a) l) (mem_Pol_iffW.1 P.rigPol l) P.mult u M`.
-
-Establish `h2 : P.dR l + ∑ a, (P.mult a - u a) * P.dg a l + (mdHom X l) M = hhDegs X.TT X.aT X.bT l`. Establish `h3 : (mdHom X l) M = ∑ a, u a * P.dg a l` using `hdeg l`. Rewrite using `[h3, add_assoc, sum_split _ _ _ hu, P.degκ l]`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
-
-Rewrite using `[← key]`. Introduce `m hm`. Establish `h1` using `hom_total (ndHom X) P.sg P.od P.sgNd P.rigHom P.mult u M m hm`. Establish `h1' : ndM X m = P.oR + ∑ a, (P.mult a - u a) * P.od a + ndM X M` using `h1`. Establish `h2` using `sum_split P.mult u P.od hu`.
-
-Establish `h3` using `P.ordκ`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem PreSys.core (D : Formalism.BasicNotions.D7) [CharZero (KK O)]
     (P : PreSys C0 CE1 CE2 X O w (mm + (n : ℝ) * ka1 X) β L G Std)

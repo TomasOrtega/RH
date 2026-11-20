@@ -11,9 +11,9 @@ open Formalism.NG Formalism.RepresentationBoundsCohomology.LOC Formalism.Represe
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop)
 
 /- English proof (translation)
-Use `haveI := hO.ring`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : (Ideal.span {a} : Ideal O) ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ`. Establish `hm : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(isAdic_iff.1 hO.adic).1 k`. Rewrite `h` using `[hm, Ideal.span_singleton_pow]`. Rewrite using `[hk]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padic_isOpen_span {ℓ : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     (hO : PadicCoeff ℓ O) {a : O} (ha : a ≠ 0) : IsOpen ((Ideal.span {a} : Ideal O) : Set O) := by
@@ -28,9 +28,7 @@ theorem padic_isOpen_span {ℓ : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDi
   exact h
 
 /- English proof (translation)
-Use `haveI := hO.compact`. Use `haveI := hR.t2`. Use `haveI := hR.csmul`. Use `haveI := hR.fg`. Take `⟨k, π, hπ⟩` from `Module.Finite.exists_fin' O M`.
-
-Establish `hπc : Continuous π` using `LinearMap.continuous_on_pi π`. Establish `hq : Topology.IsQuotientMap π` using `hπc.isClosedMap.isQuotientMap hπc hπ`. Rewrite using `[hq.continuous_iff]`. Conclude with `LinearMap.continuous_on_pi (f.comp π)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fgTop_continuous_linearMap {ℓ : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] {M N : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [ContinuousAdd M]
@@ -54,13 +52,13 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 def matK (A : Matrix n n O) : Matrix n n (FractionRing O) := A.map (algebraMap O (FractionRing O))
 
 /- English proof (translation)
-Conclude with `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem matK_mul (A B : Matrix n n O) : matK (A * B) = matK A * matK B := by
   exact Matrix.map_mul
 
 /- English proof (translation)
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem matK_one : matK (1 : Matrix n n O) = 1 := by
   exact Matrix.map_one _ (map_zero _) (map_one _)
@@ -71,14 +69,14 @@ Both sides reduce to the same expression.
 theorem matK_transpose (A : Matrix n n O) : matK Aᵀ = (matK A)ᵀ := rfl
 
 /- English proof (translation)
-Simplify using `only [matK, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matK_mulVec (A : Matrix n n O) (v : n → FractionRing O) (a : n) :
     (matK A *ᵥ v) a = ∑ j, A a j • v j := by
   simp only [matK, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [matK, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matK_mulVec_alg (A : Matrix n n O) (y : n → O) :
     matK A *ᵥ (fun a => algebraMap O (FractionRing O) (y a)) =
@@ -151,9 +149,9 @@ def latT : Submodule O (n → FractionRing O) :=
   Submodule.pi Set.univ (fun _ => (1 : Submodule O (FractionRing O)))
 
 /- English proof (translation)
-Simplify using `only [latT, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose y hy using h`. Conclude with `⟨y, funext fun a => (hy a).symm⟩`. Introduce and unpack `⟨y, rfl⟩ a`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y a, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latT (x : n → FractionRing O) :
     x ∈ (latT : Submodule O (n → FractionRing O)) ↔ ∃ y : n → O, x = fun a => algebraMap O _ (y a) := by
@@ -166,7 +164,7 @@ theorem mem_latT (x : n → FractionRing O) :
     exact ⟨y a, rfl⟩
 
 /- English proof (translation)
-Introduce `g x hx`. Take `⟨y, rfl⟩` from `(mem_latT x).1 hx`. Use `(mem_latT _).2 ⟨M g *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[repV_apply, matK_mulVec_alg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem latT_stable (M : Γ →* Matrix n n O) : StableUnder (repV M) (latT : Submodule O (n → FractionRing O)) := by
   intro g x hx
@@ -175,13 +173,13 @@ theorem latT_stable (M : Γ →* Matrix n n O) : StableUnder (repV M) (latT : Su
   rw [repV_apply, matK_mulVec_alg]
 
 /- English proof (translation)
-Rewrite using `[← matK_mul, ← map_mul, inv_mul_cancel, map_one, matK_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matK_inv_mul (M : Γ →* Matrix n n O) (g : Γ) : matK (M g⁻¹) * matK (M g) = 1 := by
   rw [← matK_mul, ← map_mul, inv_mul_cancel, map_one, matK_one]
 
 /- English proof (translation)
-Introduce `g x f`. Rewrite using `[pairStd_apply, pairStd_apply, repV_apply, repV'_apply, dotProduct_smul, matK_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, matK_inv_mul, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_pairStd (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O) : EquivPair ε (repV M) (repV' ε M) pairStd := by
   intro g x f
@@ -193,9 +191,7 @@ variable [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
   [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)] [TopologicalSpace Γ]
 
 /- English proof (translation)
-Use `show Continuous fun p : Γ × (n → FractionRing O) => repV' ε M p.1 p.2`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [repV'_apply, Pi.smul_apply, matK_mulVec]`. Use `(hε.comp continuous_fst).smul ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
-
-Conclude with `((hM a j).comp continuous_fst).smul ((continuous_apply j).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contAction_repV' (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O)
     (hε : Continuous fun g => ((ε g : Oˣ) : O)) (hM : ∀ a b, Continuous fun g => M g⁻¹ b a) :
@@ -208,7 +204,7 @@ theorem contAction_repV' (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O)
   exact ((hM a j).comp continuous_fst).smul ((continuous_apply j).comp continuous_snd)
 
 /- English proof (translation)
-Use `show Continuous fun p : Γ × (n → FractionRing O) => repV M p.1 p.2`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [repV_apply, matK_mulVec]`. Conclude with `continuous_finset_sum _ fun j _ => ((hM a j).comp continuous_fst).smul ((continuous_apply j).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contAction_repV (M : Γ →* Matrix n n O) (hM : ∀ a b, Continuous fun g => M g a b) :
     ContAction (repV M) := by
@@ -219,7 +215,7 @@ theorem contAction_repV (M : Γ →* Matrix n n O) (hM : ∀ a b, Continuous fun
     ((hM a j).comp continuous_fst).smul ((continuous_apply j).comp continuous_snd)
 
 /- English proof (translation)
-Simplify using `only [pairStd_apply, dotProduct]`. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_apply i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_pairStd [ContinuousMul (FractionRing O)] :
     Continuous fun p : (n → FractionRing O) × (n → FractionRing O) => pairStd p.1 p.2 := by
@@ -261,7 +257,7 @@ def vMap : (n → O) →ₗ[O] dualLat (pairStd (O := O) (n := n)) latT where
   map_smul' c y := Subtype.ext (funext fun a => by simp [Algebra.smul_def])
 
 /- English proof (translation)
-Use `(mem_latT _).2 ⟨fun j => if a = j then 1 else 0, funext fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : a = j <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unit_mem_latT (a : n) :
     (fun j => if a = j then (1 : FractionRing O) else 0) ∈ (latT : Submodule O (n → FractionRing O)) := by
@@ -269,11 +265,11 @@ theorem unit_mem_latT (a : n) :
   by_cases h : a = j <;> simp [h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `y y' h`. Use function extensionality and compare the values at `a`. Establish `h'` using `congrFun (congrArg Subtype.val h) a`. Conclude with `IsFractionRing.injective O (FractionRing O) h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨f, hf⟩`. Establish `h : ∀ a, ∃ y : O, algebraMap O (FractionRing O) y = f a`. Introduce `a`. Establish `h1` using `hf _ (unit_mem_latT a)`. Rewrite `h1` using `[pairStd_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[dotProduct, Submodule.mem_one]`. Use `choose y hy using h`. Conclude with `⟨y, Subtype.ext (funext fun a => hy a)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vMap_bij : Function.Bijective (vMap (O := O) (n := n)) := by
   constructor
@@ -303,9 +299,9 @@ def uStd : (n → KO O) ≃ₗ[O] (n → FractionRing O) ⧸ (latT : Submodule O
   (Submodule.quotientPi (fun _ : n => (1 : Submodule O (FractionRing O)))).symm
 
 /- English proof (translation)
-Apply `(uStd (O := O) (n := n)).symm.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `a`. Use `first`. Consider the case `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Submodule.quotientPi_apply _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem uStd_mk (x : n → FractionRing O) :
     uStd (fun a => toKO O (x a)) = Submodule.Quotient.mk x := by
@@ -329,9 +325,9 @@ Both sides reduce to the same expression.
 theorem gamStd_apply (t : n → O) (m : n → KO O) : gamStd t m = ∑ a, t a • m a := rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩ : ∃ x : n → FractionRing O, (fun a => toKO O (x a)) = m` from `⟨fun a => (Submodule.Quotient.mk_surjective _ (m a)).choose,`. Use function extensionality and compare the values at `fun a => (Submodule.Quotient.mk_surjective _ (m a)).choose_spec⟩`. Rewrite using `[uStd_mk, gamStd_apply]`. Simplify using `only [pairKO, Submodule.liftQ_apply, LinearMap.compr₂_apply, LinearMap.compl₂_apply, Submodule.subtype_apply, pairStd_apply, dotProduct, vStd_apply]`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, Algebra.smul_def, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamStd_eq (t : n → O) (m : n → KO O) :
     gamStd t m = pairKO (pairStd (O := O) (n := n)) (latT (O := O) (n := n)) (uStd m) (vStd t) := by
@@ -355,11 +351,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {n : Type} [Fintype n] [DecidableEq n] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
 
 /- English proof (translation)
-Use `haveI := hO.t2`. Use `IsTopologicalAddGroup.t2Space_of_zero_sep fun z hz => ?_` and prove the remaining obligations. Distinguish the cases in `h : z ∈ Set.range (algebraMap O (FractionRing O))`. Take `⟨w, rfl⟩` from `h`. Establish `hw : w ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hz (map_zero _)`. Take `⟨U1, U2, hU1, _, h0, hw', hd⟩` from `t2_separation hw.symm`. Use `⟨algebraMap O _ '' U1, (hF.emb.isOpenMap U1 hU1).mem_nhds ⟨0, h0, map_zero _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv, hvw⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hvw' : v = w` using `IsFractionRing.injective O (FractionRing O) hvw`. Substitute `hvw'` using the available equality. Conclude with `Set.disjoint_left.1 hd hv hw'`. Conclude with `⟨_, hF.emb.isOpen_range.mem_nhds ⟨0, map_zero _⟩, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem t2Space_fractionRing_of_padicCoeff (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) : T2Space (FractionRing O) := by
   haveI := hO.t2
@@ -378,9 +374,9 @@ theorem t2Space_fractionRing_of_padicCoeff (ℓ : ℕ) (hO : PadicCoeff ℓ O) (
   · exact ⟨_, hF.emb.isOpen_range.mem_nhds ⟨0, map_zero _⟩, h⟩
 
 /- English proof (translation)
-Use `haveI := hO.ring`. Establish `hpre : algebraMap O (FractionRing O) ⁻¹' U ∈ nhds (0 : O)` using `hF.emb.continuous.continuousAt.preimage_mem_nhds (by rwa [map_zero])`. Take `⟨k, hk⟩` from `(isAdic_iff.1 hO.adic).2 _ hpre`. Establish `hm : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.image_subset_iff, ← Ideal.span_singleton_pow, ← hm]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem frac_nhds {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) {ϖ : O} (hϖ : Irreducible ϖ)
     {U : Set (FractionRing O)} (hU : U ∈ nhds (0 : FractionRing O)) :
@@ -396,24 +392,22 @@ theorem frac_nhds {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) {ϖ : O} 
   exact hk
 
 /- English proof (translation)
-Conclude with `(hF.emb.isOpenMap _ (padic_isOpen_span hO ha)).mem_nhds ⟨0, (Ideal.span {a}).zero_mem, map_zero _⟩`.
+A detailed English derivation is pending.
 -/
 theorem frac_open {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) {a : O} (ha : a ≠ 0) :
     algebraMap O (FractionRing O) '' ((Ideal.span {a} : Ideal O) : Set O) ∈ nhds (0 : FractionRing O) := by
   exact (hF.emb.isOpenMap _ (padic_isOpen_span hO ha)).mem_nhds ⟨0, (Ideal.span {a}).zero_mem, map_zero _⟩
 
 /- English proof (translation)
-Use `haveI := hO.ring`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Establish `key : ∀ x₀ : FractionRing O, Filter.Tendsto (fun x => x₀ * x) (nhds 0) (nhds 0)`. Introduce `x₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors O) x₀`. Establish `hpq' : x₀ * algebraMap O (FractionRing O) q = algebraMap O (FractionRing O) p` using `hpq`. Establish `hq0 : (q : O) ≠ 0` using `nonZeroDivisors.ne_zero q.2`. Use `Filter.tendsto_def.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `frac_nhds hO hF hϖ (by simpa using hU)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset (frac_open hO hF (mul_ne_zero hq0 (pow_ne_zero k hϖ0))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Rewrite using `[Set.mem_preimage]`. Use `hk ⟨p * c * ϖ ^ k, Ideal.mem_span_singleton'.2 ⟨p * c, rfl⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[← hpq']`. Expand and normalize the polynomial expressions, which then agree. Establish `hmul : Filter.Tendsto (Function.uncurry ((· * ·) : FractionRing O → FractionRing O → FractionRing O)) (nhds 0 ×ˢ nhds 0) (nhds 0)`. Use `Filter.tendsto_def.2 fun U hU => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `frac_nhds hO hF hϖ hU`. Establish `hV` using `frac_open hO hF (pow_ne_zero k hϖ0)`. Use `Filter.mem_of_superset (Filter.prod_mem_prod hV hV) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, _⟩ ⟨⟨a, ha, rfl⟩, ⟨b, hb, rfl⟩⟩`. Rewrite using `[Set.mem_preimage]`.
-
-Conclude with `hk ⟨a * b, Ideal.mul_mem_right b _ ha, map_mul _ _ _⟩`. Conclude with `IsTopologicalRing.of_addGroup_of_nhds_zero hmul key (fun x₀ => Filter.Tendsto.congr (fun x => mul_comm x₀ x) (key x₀))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac_topRing {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) : IsTopologicalRing (FractionRing O) := by
   haveI := hO.ring
@@ -447,16 +441,16 @@ theorem frac_topRing {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) : IsTo
     (fun x₀ => Filter.Tendsto.congr (fun x => mul_comm x₀ x) (key x₀))
 
 /- English proof (translation)
-Use `haveI := frac_topRing hO hF`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem frac_contMul {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hF : FracTop O) : ContinuousMul (FractionRing O) := by
   haveI := frac_topRing hO hF
   infer_instance
 
 /- English proof (translation)
-Establish `h : (latT : Submodule O (n → FractionRing O)) = Submodule.map (LinearMap.pi fun a => (Algebra.linearMap O (FractionRing O)).comp (LinearMap.proj a)) ⊤`. Use extensionality with `x`. Rewrite using `[mem_latT, Submodule.map_top, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`. Rewrite using `[h]`. Conclude with `Module.Finite.fg_top.map _`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latT_fg : (latT : Submodule O (n → FractionRing O)).FG := by
   have h : (latT : Submodule O (n → FractionRing O)) = Submodule.map
@@ -472,9 +466,9 @@ theorem latT_fg : (latT : Submodule O (n → FractionRing O)).FG := by
   exact Module.Finite.fg_top.map _
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Establish `hv : v = ∑ a, v a • (fun j => if a = j then (1 : FractionRing O) else 0)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span (unit_mem_latT a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latT_span :
     Submodule.span (FractionRing O) ((latT : Submodule O (n → FractionRing O)) : Set (n → FractionRing O)) = ⊤ := by
@@ -487,9 +481,9 @@ theorem latT_span :
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span (unit_mem_latT a))
 
 /- English proof (translation)
-Introduce `ψ`. Use `⟨fun a => ψ (fun j => if a = j then 1 else 0), fun x => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[pairStd_apply, LinearMap.pi_apply_eq_sum_univ ψ x]`. Simplify using `[dotProduct, smul_eq_mul]`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hf (fun j => if a = j then 1 else 0)`. Rewrite `h` using `[pairStd_apply]`. Simplify `h` using `[dotProduct]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem perf_pairStd : PerfectRight (pairStd (O := O) (n := n)) := by
   intro ψ
@@ -502,9 +496,9 @@ theorem perf_pairStd : PerfectRight (pairStd (O := O) (n := n)) := by
     simpa [dotProduct] using h
 
 /- English proof (translation)
-Establish `h : ((latT : Submodule O (n → FractionRing O)) : Set (n → FractionRing O)) = Set.univ.pi fun _ => Set.range (algebraMap O (FractionRing O))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_latT, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y a, rfl⟩`. Introduce `h choose y hy using h`. Conclude with `⟨y, funext fun a => (hy a).symm⟩`. Rewrite using `[h]`. Conclude with `isOpen_set_pi Set.finite_univ fun a _ => hF.emb.isOpen_range`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latT_open (hF : FracTop O) :
     IsOpen ((latT : Submodule O (n → FractionRing O)) : Set (n → FractionRing O)) := by
@@ -522,7 +516,7 @@ theorem latT_open (hF : FracTop O) :
   exact isOpen_set_pi Set.finite_univ fun a _ => hF.emb.isOpen_range
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨latT_fg, latT_span⟩ perf := perf_pairStd contT := contAction_repV M hM' openT := latT_open hF t2 := by haveI := t2Space_fractionRing_of_padicCoeff ℓ hO hF; infer_instance t2' := by haveI := t2Space_fractionRing_of_padicCoeff ℓ hO hF; infer_instance cs := by haveI := hK; infer_in …`.
+Supply the required witnesses or components.
 -/
 theorem realLat_datStd (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) (hK : ContinuousMul (FractionRing O))
     (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O) (hε : Continuous fun g => ((ε g : Oˣ) : O))
@@ -544,23 +538,23 @@ section Cont
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
 
 /- English proof (translation)
-Use `haveI := hO.ring`. Establish `hB : ∀ U ∈ nhds (0 : O), ∃ n : ℕ, ((Ideal.span {(ℓ : O) ^ n} : Ideal O) : Set O) ⊆ U`. Introduce `U hU`. Take `⟨k, hk⟩` from `(isAdic_iff.1 hO.adic).2 U hU`. Conclude with `⟨k, fun x hx => hk ((Ideal.span_singleton_le_iff_mem _).2 (Ideal.pow_mem_pow hO.p_mem k) hx)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hA : ∀ n : ℕ, ∃ W : Set (Ω ≃ₐ[Ek] Ω), IsOpen W ∧ (1 : Ω ≃ₐ[Ek] Ω) ∈ W ∧ ∀ h ∈ W, ((ε h : Oˣ) : O) - 1 ∈ Ideal.span {(ℓ : O) ^ n}`. Introduce `n`. Establish `hN : 0 < ℓ ^ n` using `pow_pos hℓ.out.pos n`. Use `haveI : NeZero ((ℓ ^ n : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 hN.ne'⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic (ℓ ^ n) Ω) (Polynomial.degree_cyclotomic_pos _ Ω hN).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprim : IsPrimitiveRoot ζ (ℓ ^ n)` using `Polynomial.isRoot_cyclotomic_iff.1 hζ`. Establish `hint : IsIntegral Ek ζ` using `IsIntegral.of_pow hN (by rw [hprim.pow_eq_one]; exact isIntegral_one)`. Use `haveI : FiniteDimensional Ek (IntermediateField.adjoin Ek {ζ}) := IntermediateField.adjoin.finiteDimensional hint`. Use `⟨((IntermediateField.adjoin Ek {ζ}).fixingSubgroup : Set (Ω ≃ₐ[Ek] Ω)), IntermediateField.fixingSubgroup_isOpen _, (IntermediateField.adjoin Ek {ζ}).fixingSubgroup.one_mem, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hfix : h ζ = ζ` using `by first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hh) ζ (IntermediateField.mem_adjoin_simple_self Ek ζ)`. Consider the case `exact (IntermediateField.mem_fixingSubgroup_iff _).1 hh ζ (IntermediateField.mem_adjoin_simple_self Ek ζ)`. Consider the case `exact hh ⟨ζ, IntermediateField.mem_adjoin_simple_self Ek ζ⟩`. Take `⟨a, ha1, ha2⟩` from `hc h n ζ hprim.pow_eq_one`. Rewrite `ha1` using `[hfix]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ζ ≠ 0` using `hprim.ne_zero hN.ne'`. Establish `hdvd : ((ℓ ^ n : ℕ) : ℤ) ∣ (a : ℤ) - 1`. Rewrite using `[← hprim.zpow_eq_one_iff_dvd, zpow_sub₀ hz, zpow_natCast, zpow_one, ← ha1, div_self hz]`. Take `⟨m, hm⟩` from `hdvd`. Establish `hm'` using `congrArg (Int.cast : ℤ → O) hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at hm'`. Establish `he : ((ε h : Oˣ) : O) - 1 = (((ε h : Oˣ) : O) - a) + (ℓ : O) ^ n * (m : O)`. Take the linear combination `hm'`. Rewrite using `[he]`. Conclude with `Ideal.add_mem _ ha2 (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Use `Filter.tendsto_def.2 fun V hV => ?_` and prove the remaining obligations. Establish `hV' : (fun x => ((ε g₀ : Oˣ) : O) + x) ⁻¹' V ∈ nhds (0 : O)` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hV)`. Take `⟨n, hn⟩` from `hB _ hV'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨W, hWo, hW1, hW⟩` from `hA n`. Establish `hWn : (fun g => g₀⁻¹ * g) ⁻¹' W ∈ nhds g₀` using `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hWo.mem_nhds hW1)`. Use `Filter.mem_of_superset hWn fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hW _ hg`. Establish `hg' : g = g₀ * (g₀⁻¹ * g)` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ((ε g : Oˣ) : O) = ((ε g₀ : Oˣ) : O) + ((ε g₀ : Oˣ) : O) * (((ε (g₀⁻¹ * g) : Oˣ) : O) - 1)` using `by conv_lhs => rw [hg']`. Rewrite using `[map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.mem_preimage, he]`. Conclude with `hn (Ideal.mul_mem_left _ _ h1)`.
+A detailed English derivation is pending.
 -/
 theorem eps_cont (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (hO : PadicCoeff ℓ O) {Ek Ω : Type} [Field Ek] [Field Ω] [Algebra Ek Ω]
     [CharZero Ω] [IsAlgClosed Ω] (ε : (Ω ≃ₐ[Ek] Ω) →* Oˣ) (hc : IsCycG ℓ ε) :
@@ -649,9 +643,9 @@ def zsm (c : FractionRing O) : Z1 ρ →ₗ[O] Z1 ρ where
       ← algebraMap_smul (FractionRing O) o (c • (z : Γ → V) g), smul_smul, smul_smul, mul_comm])
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype] at hz ⊢`. Take `⟨v, hv⟩` from `hz`. Use `⟨c • v, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((zsm ρ hcs hρ c z : Z1 ρ) : Γ → V) = c • (z : Γ → V) from rfl, ← hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Simplify using `[d0, hρ, smul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zsm_B (c : FractionRing O) :
     (B1 ρ).comap (Z1 ρ).subtype ≤ ((B1 ρ).comap (Z1 ρ).subtype).comap (zsm ρ hcs hρ c) := by
@@ -681,9 +675,9 @@ def moduleH1FractionField : Module (FractionRing O) (H1 ρ) :=
     (fun _ _ => rfl)
 
 /- English proof (translation)
-Use `letI := moduleH1FractionField ρ hcs hρ`. Use `⟨fun o c x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Express the relevant statement in the definitionally equal form `Submodule.mapQ _ _ (zsm ρ hcs hρ (o • c)) (zsm_B ρ hcs hρ (o • c)) (Submodule.Quotient.mk z) = o • Submodule.mapQ _ _ (zsm ρ hcs hρ c) (zsm_B ρ hcs hρ c) (Submodule.Quotient.mk z)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.mapQ_apply, Submodule.mapQ_apply, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `smul_assoc o c ((z : Γ → V) g)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isScalarTower_H1 :
     @IsScalarTower O (FractionRing O) (H1 ρ) _ (moduleH1FractionField ρ hcs hρ).toSMul _ := by
@@ -779,9 +773,9 @@ Both sides reduce to the same expression.
 theorem dat_eps (w : ℕ) (g : decs Ek Aw w) : (Dat r χ bl ρk ε Aw hK hε hM w).ε g = ε g := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `algebraMap O (FractionRing O) (rho2 r χ bl ρk ε (g : Ω ≃ₐ[Ek] Ω) y a) = (repV' (epsW ε Aw w) (Mw r χ bl ρk Aw w) g (fun b => algebraMap O (FractionRing O) (y b))) a`. Rewrite using `[repV'_apply, matK_mulVec_alg, rho2_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `try rfl`.
+A detailed English derivation is pending.
 -/
 theorem vD_equiv (w : ℕ) (g : decs Ek Aw w) (y : {a // bl a = 0} → O) :
     vD r χ bl ρk ε Aw hK hε hM w (rho2 r χ bl ρk ε g y) =
@@ -795,7 +789,7 @@ theorem vD_equiv (w : ℕ) (g : decs Ek Aw w) (y : {a // bl a = 0} → O) :
   try rfl
 
 /- English proof (translation)
-Conclude with `gamStd_eq y (blkEquiv bl ρk m)`.
+A detailed English derivation is pending.
 -/
 theorem gam_eq (w : ℕ) (y : {a // bl a = 0} → O) (m : blockRestrictedRepresentationType bl ρk 0) :
     gam bl ρk y m = pairKO (Dat r χ bl ρk ε Aw hK hε hM w).bT (Dat r χ bl ρk ε Aw hK hε hM w).T
@@ -803,7 +797,7 @@ theorem gam_eq (w : ℕ) (y : {a // bl a = 0} → O) (m : blockRestrictedReprese
   exact gamStd_eq y (blkEquiv bl ρk m)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Simplify using `[matK_mulVec]`. Both sides reduce to the same expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem smul_apply_eq_toKO_matK_mulVec {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {X' d : Type} [Fintype d] [DecidableEq d] {R' : Subalgebra O (X' → Matrix d d (FractionRing O))}
@@ -816,9 +810,9 @@ private theorem smul_apply_eq_toKO_matK_mulVec {O : Type} [CommRing O] [IsDomain
   rfl
 
 /- English proof (translation)
-Use `choose x hx using fun a => Submodule.Quotient.mk_surjective _ (m a)`. Establish `hxm : (fun a => toKO O (x a)) = m` using `funext hx`. Establish `hL : (fun a => toKO O ((matK (ρk 0 (uElt r χ (g : Ω ≃ₐ[Ek] Ω))) *ᵥ x) a)) = resRep (uRep O (M` using `blockRestrictedRepresentationType bl ρk 0) r χ) (decs Ek Aw w) g m := by`. Use function extensionality and compare the values at `a`. Conclude with `(smul_apply_eq_toKO_matK_mulVec bl ρk _ m a x hxm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : uD r χ bl ρk ε Aw hK hε hM w (fun a => toKO O (x a)) = Submodule.Quotient.mk x` using `uStd_mk x`. Rewrite using `[← hL, ← hxm, e1]`. Conclude with `uStd_mk (matK (ρk 0 (uElt r χ (g : Ω ≃ₐ[Ek] Ω))) *ᵥ x)`.
+A detailed English derivation is pending.
 -/
 theorem huD [∀ k, SMulCommClass R' O (blockRestrictedRepresentationType bl ρk k)] (w : ℕ) (g : decs Ek Aw w) (m : blockRestrictedRepresentationType bl ρk 0) :
     uD r χ bl ρk ε Aw hK hε hM w (resRep (uRep O (M := blockRestrictedRepresentationType bl ρk 0) r χ) (decs Ek Aw w) g m) =
@@ -847,7 +841,7 @@ variable [TopologicalSpace (FractionRing O)] [IsTopologicalAddGroup (FractionRin
   (ρk : ∀ k : Fin (t + 1), R' →ₐ[O] Matrix {a // bl a = k} {a // bl a = k} O)
 
 /- English proof (translation)
-Use `haveI := hO.ring`. Set `f : R' →ₗ[O] O` to `{ toFun := fun x => ρk 0 x a b map_add' := fun x y => by simp map_smul' := fun c x => by simp }`. Establish `hf : Continuous f` using `fgTop_continuous_linearMap hR hO f`. Conclude with `hf.comp hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem block_zero_continuous {ℓ : ℕ} (hO : PadicCoeff ℓ O) (hR : IsFGTop O R') (hu : Continuous fun g => uElt r χ g)
     (a b : {a // bl a = 0}) : Continuous fun g => M0 r χ bl ρk g a b := by
@@ -876,7 +870,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   (hM : ∀ a b, Continuous fun g => M0 r χ bl ρk g a b)
 
 /- English proof (translation)
-Conclude with `realLat_datStd ℓ hO hF hK (epsW ε Aw w) (Mw r χ bl ρk Aw w) _ _ (fun a b => (hM a b).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem realLat_Dat (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) (w : ℕ) :
     RealLat (Dat r χ bl ρk ε Aw hK hε hM w) := by
@@ -884,7 +878,7 @@ theorem realLat_Dat (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) (w : �
     (fun a b => (hM a b).comp continuous_subtype_val)
 
 /- English proof (translation)
-Conclude with `⟨fun g => rfl, realLat_Dat r χ bl ρk ε Aw hK hε hM ℓ hO hF w, fun g y => vD_equiv r χ bl ρk ε Aw hK hε hM w g y, fun y m => gam_eq r χ bl ρk ε Aw hK hε hM w y m⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowLat (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) (w : ℕ) :
     (∀ g : decs Ek Aw w, (Dat r χ bl ρk ε Aw hK hε hM w).ε g = ε g) ∧
@@ -899,7 +893,7 @@ theorem rowLat (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) (w : ℕ) :
     fun g y => vD_equiv r χ bl ρk ε Aw hK hε hM w g y, fun y m => gam_eq r χ bl ρk ε Aw hK hε hM w y m⟩
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `continuous_pi fun a => hF.emb.continuous.comp ((continuous_apply a).comp hπ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hpD {T₁ : Type} [AddCommGroup T₁] [Module O T₁] [TopologicalSpace T₁]
     (π : T₁ →ₗ[O] ({a // bl a = 0} → O)) (hπ : Continuous π) (hF : FracTop O) (w : ℕ) :
@@ -908,7 +902,7 @@ theorem hpD {T₁ : Type} [AddCommGroup T₁] [Module O T₁] [TopologicalSpace 
   exact continuous_pi fun a => hF.emb.continuous.comp ((continuous_apply a).comp hπ)
 
 /- English proof (translation)
-Establish `h : π (resRep ρ₁ (decs Ek Aw w) g x) = rho2 r χ bl ρk ε g (π x)` using `hπe g x`. Rewrite using `[h]`. Conclude with `vD_equiv r χ bl ρk ε Aw hK hε hM w g (π x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heD {T₁ : Type} [AddCommGroup T₁] [Module O T₁] (ρ₁ : Representation O (Ω ≃ₐ[Ek] Ω) T₁)
     (π : T₁ →ₗ[O] ({a // bl a = 0} → O)) (hπe : ∀ g x, π (ρ₁ g x) = rho2 r χ bl ρk ε g (π x))
@@ -920,7 +914,7 @@ theorem heD {T₁ : Type} [AddCommGroup T₁] [Module O T₁] (ρ₁ : Represent
   exact vD_equiv r χ bl ρk ε Aw hK hε hM w g (π x)
 
 /- English proof (translation)
-Use `haveI := h`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem csK (h : ContinuousMul (FractionRing O)) :
     ContinuousConstSMul (FractionRing O) ({a // bl a = 0} → FractionRing O) := by
@@ -931,7 +925,7 @@ def modT (w : ℕ) : Module (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε h
   moduleH1FractionField _ (csK bl hK) (fun g c v => Matrix.mulVec_smul _ c v)
 
 /- English proof (translation)
-Conclude with `isScalarTower_H1 _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem towerT (w : ℕ) :
     @IsScalarTower O (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε hM w).ρT) _
@@ -939,7 +933,7 @@ theorem towerT (w : ℕ) :
   exact isScalarTower_H1 _ _ _
 
 /- English proof (translation)
-Rewrite using `[repV'_apply, repV'_apply, Matrix.mulVec_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repV'_smul {Γ : Type} [Group Γ] {n : Type} [Fintype n] [DecidableEq n] (ε' : Γ →* Oˣ)
     (M : Γ →* Matrix n n O) (g : Γ) (c : FractionRing O) (v : n → FractionRing O) :
@@ -950,7 +944,7 @@ def modT' (w : ℕ) : Module (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε 
   moduleH1FractionField _ (csK bl hK) (repV'_smul _ _)
 
 /- English proof (translation)
-Conclude with `isScalarTower_H1 _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem towerT' (w : ℕ) :
     @IsScalarTower O (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε hM w).ρT') _
@@ -965,7 +959,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Topol
   {Ek Ω : Type} [Field Ek] [NumberField Ek] [Field Ω] [Algebra Ek Ω] [IsAlgClosure Ek Ω]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed Ek`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap Ek Ω).injective`. Conclude with `eps_cont ℓ hO ε hc`.
+A detailed English derivation is pending.
 -/
 theorem eps_cont_nf (ℓ : ℕ) [Fact ℓ.Prime] (hO : PadicCoeff ℓ O) (ε : (Ω ≃ₐ[Ek] Ω) →* Oˣ) (hc : IsCycG ℓ ε) :
     Continuous fun g => ((ε g : Oˣ) : O) := by

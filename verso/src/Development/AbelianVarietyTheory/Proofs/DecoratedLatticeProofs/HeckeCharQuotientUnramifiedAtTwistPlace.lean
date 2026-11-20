@@ -23,23 +23,21 @@ noncomputable section
 namespace GlobalTheory.ChainTw.QuotUnr
 
 /- English proof (translation)
-Establish `ht` using `GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes D H PP a h`. Establish `ht'` using `GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes D H' PP a h'`. Take `⟨b, hb⟩` from `GlobalTheory.GaussModulus.exists_int_approx PP (x := (x : PP.adicCompletion D.host.E)) (le_of_eq hx) 1`. Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hbv : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E)) = 1`. Establish `hx1 : Valued.v (x : PP.adicCompletion D.host.E) = 1` using `hx`. Establish `e : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E)) = Valued.v (x : PP.adicCompletion D.host.E)` using `Valuation.map_eq_of_sub_lt _ (by rw [Valuation.map_sub_swap, hx1]; exact lt_of_le_of_lt hb hlt)`. Rewrite using `[e, hx1]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbP : b ∉ PP.asIdeal`. Introduce `hm`. Establish `h1 : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E b) < 1` using `(PP.valuation_lt_one_iff_mem b).2 hm`. Establish `h2 : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E b) = 1`. Rewrite using `[← GlobalTheory.GaussModulus.valued_algebraMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbv`. Conclude with `(ne_of_lt h1) h2`. Establish `hb0 : (b : D.host.E) ≠ 0` using `fun h0 => hbP (by rw [RingOfIntegers.coe_eq_zero_iff.1 h0]; exact zero_mem _)`. Set `kb : D.host.Eˣ` to `Units.mk0 _ hb0`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI : Field (kP PP) := Ideal.Quotient.field PP.asIdeal`. Establish `hu0 : (Ideal.Quotient.mk PP.asIdeal b : kP PP) ≠ 0` using `fun h0 => hbP (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Set `u : (kP PP)ˣ` to `Units.mk0 _ hu0`. Establish `e1` using `h b kb u rfl rfl`. Establish `e2` using `h' b kb u rfl rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩ : ∃ y : (PP.adicCompletion D.host.E)ˣ, y = x * (Formalism.L2.Host.atFin PP kb)⁻¹` from `⟨_, rfl⟩`. Establish `hkv : Valued.v ((Formalism.L2.Host.atFin PP kb : (PP.adicCompletion D.host.E)ˣ) : PP.adicCompletion D.host.E) = 1` using `hbv`. Establish `hyu : Formalism.L2.Host.IsUnitAt PP y` using `by show Valued.v ((y : (PP.adicCompletion D.host.E)ˣ) : PP.adicCompletion D.host.E) = 1`. Rewrite using `[hy, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hkv, inv_one, mul_one]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1 : Valued.v ((y : PP.adicCompletion D.host.E) - 1) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Establish `hk0 : ((Formalism.L2.Host.atFin PP kb : (PP.adicCompletion D.host.E)ˣ) : PP.adicCompletion D.host.E) = algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E)` using `rfl`. Establish `e : (y : PP.adicCompletion D.host.E) - 1 = ((x : PP.adicCompletion D.host.E) - algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E)) * (algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E))⁻¹`. Establish `hne : algebraMap D.host.E (PP.adicCompletion D.host.E) (b : D.host.E) ≠ 0`. Rewrite using `[← hk0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ne_zero _`. Rewrite using `[hy, Units.val_mul, Units.val_inv_eq_inv_val, hk0, sub_mul, mul_inv_cancel₀ hne]`. Rewrite using `[e, map_mul, map_inv₀, hbv, inv_one, mul_one]`. Conclude with `hb`. Establish `hxy : x = Formalism.L2.Host.atFin PP kb * y` using `by rw [hy, mul_left_comm, mul_inv_cancel, mul_one]`.
-
-Rewrite using `[hxy, map_mul, map_mul, ht y hyu hy1, ht' y hyu hy1, mul_one, mul_one]`. Conclude with `e1.symm.trans e2`.
+A detailed English derivation is pending.
 -/
 theorem loc_eq_of_isRes {D : D7} {H H' : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} {a : (kP PP)ˣ →* ℂˣ}
     (h : IsRes H PP a) (h' : IsRes H' PP a) (x : (PP.adicCompletion D.host.E)ˣ) (hx : Formalism.L2.Host.IsUnitAt PP x) :
@@ -95,11 +93,11 @@ end GlobalTheory.ChainTw.QuotUnr
 open GlobalTheory.ChainTw.QuotUnr in
 
 /- English proof (translation)
-Introduce `D c w hw PP hPP i j hi1 him hj1 hjm`. Establish `hPg : PP ∈ c.Pg` using `by classical rw [hw.union]; exact Finset.mem_union_right _ hPP`. Take `⟨Hi, hci, hri⟩` from `hw.com.res ⟨i - 1, by omega⟩`. Take `⟨Hj, hcj, hrj⟩` from `hw.com.res ⟨j - 1, by omega⟩`. Simplify using `only [Nat.sub_add_cancel hi1, Nat.sub_add_cancel hj1] at hci hri hcj hrj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `ri` using `hri PP hPg`. Establish `rj` using `hrj PP hPg`. Rewrite `ri` using `[hw.chiQ i PP hPP]`. Rewrite `rj` using `[hw.chiQ j PP hPP]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `li` using `DFunLike.congr_fun (GlobalTheory.LFun.locChar_eq_of_chrEq hci PP) x`. Establish `lj` using `DFunLike.congr_fun (GlobalTheory.LFun.locChar_eq_of_chrEq hcj PP) x`. Establish `split : GlobalTheory.LFun.locChar (c.μ i * (c.μ j)⁻¹) PP x = GlobalTheory.LFun.locChar (c.μ i) PP x * (GlobalTheory.LFun.locChar (c.μ j) PP x)⁻¹`. Simplify using `only [GlobalTheory.LFun.locChar, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv]`. Rewrite using `[split, li, lj, loc_eq_of_isRes ri rj x hx, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.ChainTw.quot_unrAt_twist : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ PP ∈ w.Q, ∀ i j : ℕ, 1 ≤ i → i ≤ D.R.m → 1 ≤ j → j ≤ D.R.m → GlobalTheory.LFun.UnrAt (F := D.host.F) (c.μ i * (c.μ j)⁻¹) PP := by
   intro D c w hw PP hPP i j hi1 him hj1 hjm

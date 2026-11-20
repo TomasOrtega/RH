@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h1` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k C.functionField))`. Rewrite `h1` using `[h, Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop]`. Establish `hm : (Spec (C.presheaf.stalk (genericPoint C))).presheaf.map (homOfLE (le_top : (⊤ : (Spec (C.presheaf.stalk (genericPoint C))).Opens) ≤ ⊤)).op = 𝟙 _` using `(Spec (C.presheaf.stalk (genericPoint C))).presheaf.map_id _`. Establish `h2 : CommRingCat.ofHom (algebraMap k C.functionField) = (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ c.appTop ≫ C.presheaf.germ ⊤ (genericPoint C) trivial`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (C.presheaf.stalk (genericPoint C))).inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Use `erw [hm, Category.comp_id]`. Rewrite using `[h2]`. Simplify using `only [Scheme.Hom.appLE, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `C.presheaf.germ_res (homOfLE le_top) (genericPoint C) _`.
+A detailed English derivation is pending.
 -/
 private lemma scal {k : Type} [Field k] {C : Scheme.{0}} [IsIntegral C] (c : C ⟶ Sp k)
     [Algebra k C.functionField]
@@ -36,21 +36,19 @@ private lemma scal {k : Type} [Field k] {C : Scheme.{0}} [IsIntegral C] (c : C �
   exact C.presheaf.germ_res (homOfLE le_top) (genericPoint C) _
 
 /- English proof (translation)
-Introduce `k L _ _ _ C X _ c u x H _ hK W _ hW B hB`. Establish `hu : IsAffineHom u` using `MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`. Use `⟨hW.preimage u, ?_⟩` and prove the remaining obligations. Set `g0 : Γ(C, W) →+* C.functionField` to `(C.germToFunctionField W).hom`. Establish `hinj : Function.Injective g0` using `C.germToFunctionField_injective W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, g0 a ∈ B` using `fun a => by`. Establish `: g0 a ∈ (B : Set C.functionField)` using `by rw [hB]; exact ⟨a, rfl⟩`. Conclude with `this`. Set `g1 : Γ(C, W) →+* B` to `g0.codRestrict B hmem`. Establish `hbij : Function.Bijective g1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a a' h => hinj (congrArg Subtype.val h), fun b => ?_⟩` and prove the remaining obligations. Establish `: (b : C.functionField) ∈ (B : Set C.functionField)` using `b.2`. Rewrite `this` using `[hB]`. Take `⟨a, ha⟩` from `this`. Conclude with `⟨a, Subtype.ext ha⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `gB : Γ(C, W) ≃+* B` to `RingEquiv.ofBijective g1 hbij`. Set `iB : CommRingCat.of B ≅ Γ(C, W)` to `gB.symm.toCommRingCatIso`. Establish `hP` using `(GroundTheory.Arith.SchemeCoh.isPushout_app_of_isPullback H hW).flip`. Establish `hT` using `CommRingCat.isPushout_tensorProduct k L B`. Establish `hP' : IsPushout (CommRingCat.ofHom (algebraMap k L)) (CommRingCat.ofHom (algebraMap k B)) ((Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ x.appLE ⊤ (u ⁻¹ᵁ W) le_top) (iB.hom ≫ u.app W)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hP.of_iso (Scheme.ΓSpecIso _) (Scheme.ΓSpecIso _) iB.symm (Iso.refl _) (Scheme.ΓSpecIso_naturality _) ?_ (by simp) (by simp)` and prove the remaining obligations. Rewrite using `[← Iso.inv_comp_eq]`. Use extensionality with `r`. Conclude with `congr($(scal c hK W).hom r)`. Set `E` to `IsPushout.isoIsPushout _ _ hT hP'`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨E.commRingCatIsoToRingEquiv, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `h1` using `congr($(IsPushout.inr_isoIsPushout_hom _ _ hT hP').hom b)`. Establish `h2 : iB.hom b = a`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg Subtype.val (gB.apply_symm_apply b)`. Conclude with `h3.trans hab`. Rewrite using `[← h2]`. Conclude with `h1`. Introduce `l`.
-
-Establish `h1` using `congr($(IsPushout.inl_isoIsPushout_hom _ _ hT hP').hom l)`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.baseChange_affine_sections_subalgebra_tensor :
     ∀ (k L : Type) [Field k] [Field L] [Algebra k L] {C X : Scheme.{0}} [IsIntegral C] (c : C ⟶ Sp k) (u : X ⟶ C) (x : X ⟶ Sp L), IsPullback u x c (Spec.map (CommRingCat.ofHom (algebraMap k L))) → ∀ [Algebra k C.functionField], Spec.map (CommRingCat.ofHom (algebraMap k C.functionField)) = (C.fromSpecStalk (genericPoint C)) ≫ c → ∀ (W : C.Opens) [Nonempty W], IsAffineOpen W → ∀ B : Subalgebra k C.functionField, (B : Set C.functionField) = Set.range (C.germToFunctionField W) → IsAffineOpen (u ⁻¹ᵁ W) ∧ ∃ e : L ⊗[k] B ≃+* Γ(X, u ⁻¹ᵁ W), (∀ (a : Γ(C, W)) (b : B), (b : C.functionField) = C.germToFunctionField W a → e ((1 : L) ⊗ₜ[k] b) = u.app W a) ∧ ∀ l : L, e (l ⊗ₜ[k] (1 : B)) = x.appLE ⊤ (u ⁻¹ᵁ W) le_top ((Scheme.ΓSpecIso (CommRingCat.of L)).inv l) := by

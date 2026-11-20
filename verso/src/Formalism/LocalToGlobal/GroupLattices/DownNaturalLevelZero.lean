@@ -46,31 +46,31 @@ def fMe : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0) v, (T.cls i hi h).lev.fM 
   | 0, _, _ => T.fMe0
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => T.fv0`.
+A detailed English derivation is pending.
 -/
 theorem fv : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), FvTie (T.lv i hi h) (T.cls i hi h) (T.fMe i hi h)
   | 0, _, _ => T.fv0
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => T.up_natural_level_zero`.
+A detailed English derivation is pending.
 -/
 theorem upN : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), UpNatTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h)
   | 0, _, _ => T.up_natural_level_zero
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => T.down_natural_level_zero`.
+A detailed English derivation is pending.
 -/
 theorem dnN : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), DnNatTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h)
   | 0, _, _ => T.down_natural_level_zero
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => T.norm0`.
+A detailed English derivation is pending.
 -/
 theorem norm : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), NormTie (T.val i hi h)
   | 0, _, _ => T.norm0
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => T.bw0`.
+A detailed English derivation is pending.
 -/
 theorem bw : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), BwTie T.atT (T.val i hi h)
   | 0, _, _ => T.bw0
@@ -121,7 +121,7 @@ def Joint0 {D : D7} (L0 : LevelData D) (u : D.what₂.Word) (T : Forms0 D u) : P
     (fun c s => ((L0 u).stabI c s).1) (fun c s => (T.cls0.stabI c s).1)
 
 /- English proof (translation)
-The claim follows from `h.car0`.
+A detailed English derivation is pending.
 -/
 theorem Joint.to0 {D : D7} {X : Formalism.L2.Herm.ColsHerm D} {u : D.what₂.Word} {T : FormsTied D u} (h : Joint X u T) :
     Joint0 X.base.lev0 u T.to0 := h.car0

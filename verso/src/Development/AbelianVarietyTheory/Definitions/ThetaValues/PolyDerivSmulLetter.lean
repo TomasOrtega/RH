@@ -36,33 +36,33 @@ theorem per_apply (x : Frame X.Ψ r) (v : Fin r → E) (p : X.Ψ × Fin r) :
       else ((mat x p.1)⁻¹ *ᵥ Data.emb p.1.1 v) p.2 := rfl
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem per_of_lt (x : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) {a : Fin r} (h : (a : ℕ) < X.p0) :
     per X x v (τ, a) = hermC τ.1 X.Gm (FD.col (mat x τ) a) (Data.emb τ.1 v) := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg (not_lt.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem per_of_le (x : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) {a : Fin r} (h : X.p0 ≤ (a : ℕ)) :
     per X x v (τ, a) = ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 v) a := if_neg (not_lt.2 h)
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem rowType_of_lt (τ : X.Ψ) {a : Fin r} (h : (a : ℕ) < X.p0) :
     rowType X (τ, a) = ComplexEmbedding.conjugate τ.1 := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg (not_lt.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem rowType_of_le (τ : X.Ψ) {a : Fin r} (h : X.p0 ≤ (a : ℕ)) : rowType X (τ, a) = τ.1 :=
   if_neg (not_lt.2 h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h : Data.emb p.1.1 (u + v) = Data.emb p.1.1 u + Data.emb p.1.1 v`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Simplify using `only [per, Pi.add_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`. Rewrite using `[mulVec_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_add (x : Frame X.Ψ r) (u v : Fin r → E) :
     per X x (u + v) = per X x u + per X x v := by
@@ -75,9 +75,9 @@ theorem per_add (x : Frame X.Ψ r) (u v : Fin r → E) :
   · rw [mulVec_add, Pi.add_apply]
 
 /- English proof (translation)
-Establish `h : Data.emb p.1.1 (α • v) = p.1.1 α • Data.emb p.1.1 v`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Simplify using `only [per, rowType, h]`. Use `split_ifs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_smul (x : Frame X.Ψ r) (α : E) (v : Fin r → E) (p : X.Ψ × Fin r) :
     per X x (α • v) p = rowType X p α * per X x v p := by
@@ -91,7 +91,7 @@ theorem per_smul (x : Frame X.Ψ r) (α : E) (v : Fin r → E) (p : X.Ψ × Fin 
   · rw [mulVec_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[← Rat.cast_smul_eq_qsmul E, per_smul, map_ratCast, Pi.smul_apply, Rat.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_ratSmul (x : Frame X.Ψ r) (q : ℚ) (v : Fin r → E) :
     per X x (q • v) = q • per X x v := by
@@ -109,24 +109,24 @@ Both sides reduce to the same expression.
 @[simp] theorem perLin_apply (x : Frame X.Ψ r) (v : Fin r → E) : perLin X x v = per X x v := rfl
 
 /- English proof (translation)
-The claim follows from `map_zero (perLin X x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem per_zero (x : Frame X.Ψ r) : per X x 0 = 0 := map_zero (perLin X x)
 
 /- English proof (translation)
-The claim follows from `map_neg (perLin X x) v`.
+A detailed English derivation is pending.
 -/
 theorem per_neg (x : Frame X.Ψ r) (v : Fin r → E) : per X x (-v) = -per X x v :=
   map_neg (perLin X x) v
 
 /- English proof (translation)
-The claim follows from `map_zsmul (perLin X x) m v`.
+A detailed English derivation is pending.
 -/
 theorem per_zsmul (x : Frame X.Ψ r) (m : ℤ) (v : Fin r → E) : per X x (m • v) = m • per X x v :=
   map_zsmul (perLin X x) m v
 
 /- English proof (translation)
-The claim follows from `map_sum (perLin X x) v s`.
+A detailed English derivation is pending.
 -/
 theorem per_sum {ι : Type*} (x : Frame X.Ψ r) (s : Finset ι) (v : ι → Fin r → E) :
     per X x (∑ i ∈ s, v i) = ∑ i ∈ s, per X x (v i) := map_sum (perLin X x) v s
@@ -140,7 +140,7 @@ theorem EF_def (u v : Fin r → E) :
     EF X u v = Algebra.trace ℚ E (-(X.κ0 / 2) * herm X.Gm u v) := rfl
 
 /- English proof (translation)
-Use `X.κ0_sign τ` as an intermediate fact. Simplify using `only [map_neg, map_div₀, map_ofNat, neg_im, div_ofNat_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem im_neg_half_pos (τ : X.Ψ) : 0 < (τ.1 (-(X.κ0 / 2))).im := by
   have := X.κ0_sign τ
@@ -148,9 +148,9 @@ theorem im_neg_half_pos (τ : X.Ψ) : 0 < (τ.1 (-(X.κ0 / 2))).im := by
   linarith
 
 /- English proof (translation)
-Break down `X.κ0_xi with h | h` into its components or cases. Use `Or.inl fun u v => ?_` and prove the remaining obligations. Rewrite using `[EF, h, mul_div_cancel_left₀ _ two_ne_zero]`. Use `Or.inr fun u v => ?_` and prove the remaining obligations. Rewrite using `[EF_def, EFf, ← map_neg, h]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem EF_eq_or : (∀ u v, EF X u v = EFf X.ξ0 X.Gm u v) ∨
     ∀ u v, EF X u v = -EFf X.ξ0 X.Gm u v := by
@@ -188,16 +188,16 @@ Both sides reduce to the same expression.
     perMat X bas idx s x i k = per X x (bas (Pi.single (s k) 1)) (idx i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem perMat_mulVec_single (s : Fin g → Fin g ⊕ Fin g) (x : Frame X.Ψ r) (k : Fin g) :
     perMat X bas idx s x *ᵥ Pi.single k 1 = per X x (bas (Pi.single (s k) 1)) ∘ idx := by
   funext i; simp
 
 /- English proof (translation)
-Establish `hd : ((tauMat X bas idx x).map fun z => (z.im : ℂ)) = Complex.ofRealHom.mapMatrix ((tauMat X bas idx x).map Complex.im)` using `rfl`. Distinguish the cases in `h : IsUnit ((tauMat X bas idx x).map Complex.im).det`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Rewrite using `[hd, imInv]`. Express the relevant statement in the definitionally equal form `Complex.ofRealHom.mapMatrix _ * _ = _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_mul, nonsing_inv_mul _ h, map_one]`. Rewrite using `[imInv, nonsing_inv_apply_not_isUnit _ h, nonsing_inv_apply_not_isUnit]`. Simplify using the standard rewrite rules. Rewrite using `[hd, ← RingHom.map_det]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem imInv_eq (x : Frame X.Ψ r) :
     imInv X bas idx x = ((tauMat X bas idx x).map fun z => (z.im : ℂ))⁻¹ := by
@@ -214,9 +214,9 @@ theorem imInv_eq (x : Frame X.Ψ r) :
       simpa using h
 
 /- English proof (translation)
-Establish `hm : m = ∑ j, m j • Pi.single j (1 : ℤ)`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply]`. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [hm, map_sum, AddSubmonoidClass.coe_finset_sum, per_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zsmul, AddSubgroupClass.coe_zsmul, per_zsmul, Fintype.sum_sum_type]`. Simplify using `[mulVec, dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_bas (x : Frame X.Ψ r) (m : Fin g ⊕ Fin g → ℤ) :
     per X x (bas m) ∘ idx = perMat X bas idx Sum.inl x *ᵥ (fun k => (m (Sum.inl k) : ℂ)) +
@@ -229,7 +229,7 @@ theorem per_bas (x : Frame X.Ψ r) (m : Fin g ⊕ Fin g → ℤ) :
   simp [mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[per_bas, mulVec_add, mulVec_mulVec, mulVec_mulVec, tauMat]`. Use `congr 1`. Rewrite using `[hMat, nonsing_inv_mul _ h, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem hMat_mulVec_per {x : Frame X.Ψ r} (h : IsUnit (perMat X bas idx Sum.inl x).det)
     (m : Fin g ⊕ Fin g → ℤ) :
@@ -244,7 +244,7 @@ def canFn (a b : Fin g → ℝ) (x : Frame X.Ψ r) (z : Fin g → ℂ) : ℂ :=
     thetaChar (tauMat X bas idx x) (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) (hMat X bas idx x *ᵥ z)
 
 /- English proof (translation)
-Simplify using `[canFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem canFn_zero (a b : Fin g → ℝ) (x : Frame X.Ψ r) :
     canFn X bas idx a b x 0 =
@@ -266,7 +266,7 @@ Both sides reduce to the same expression.
     (rowIdx hr (Sum.inl i) : ℕ) = p + i := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p - (i + 1) = _`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 @[simp] theorem rowIdx_inr {p q r : ℕ} (hr : p + q = r) (i : Fin p) :
     (rowIdx hr (Sum.inr i) : ℕ) = p - 1 - i := by
@@ -284,13 +284,13 @@ Both sides reduce to the same expression.
     rowOf X hr (τ, ρ) = (τ, rowIdx hr ρ) := rfl
 
 /- English proof (translation)
-The claim follows from `rowType_of_le X τ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem rowType_rowOf_inl (τ : X.Ψ) (i : Fin q0) : rowType X (rowOf X hr (τ, Sum.inl i)) = τ.1 :=
   rowType_of_le X τ (by simp)
 
 /- English proof (translation)
-The claim follows from `rowType_of_lt X τ (by have := i.isLt; rw [rowIdx_inr]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem rowType_rowOf_inr (τ : X.Ψ) (i : Fin X.p0) :
     rowType X (rowOf X hr (τ, Sum.inr i)) = ComplexEmbedding.conjugate τ.1 :=
@@ -301,7 +301,7 @@ def wtOf (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (n : ℕ
     (fun i => -(Harm.partOf (c' τ) i : ℤ) - (n / 2 : ℕ)) ((rowIdx hr).symm a)
 
 /- English proof (translation)
-Rewrite using `[wtOf, Equiv.symm_apply_apply, Sum.elim_inl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem wtOf_inl (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (n : ℕ) (τ : X.Ψ)
     (i : Fin q0) :
@@ -309,7 +309,7 @@ Rewrite using `[wtOf, Equiv.symm_apply_apply, Sum.elim_inl]`.
   rw [wtOf, Equiv.symm_apply_apply, Sum.elim_inl]
 
 /- English proof (translation)
-Rewrite using `[wtOf, Equiv.symm_apply_apply, Sum.elim_inr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem wtOf_inr (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (n : ℕ) (τ : X.Ψ)
     (i : Fin X.p0) :
@@ -317,9 +317,9 @@ Rewrite using `[wtOf, Equiv.symm_apply_apply, Sum.elim_inr]`.
   rw [wtOf, Equiv.symm_apply_apply, Sum.elim_inr]
 
 /- English proof (translation)
-Introduce `τ`. Apply the tactic sequence `refine ⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩ <;>`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := (rowIdx hr).surjective i <;>`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := (rowIdx hr).surjective j <;>`. Apply the tactic sequence `have hi := i.isLt <;> have hj := j.isLt <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Fin.le_def, rowIdx_inl, rowIdx_inr, wtOf_inl, wtOf_inr] <;> intro h₁ h₂ <;>`. Use `first`. Consider the case `omega`. Consider the case `(have := Harm.partOf_antitone (c τ) (show i ≤ j by rw [Fin.le_def]; omega); omega)`. Consider the case `(have := Harm.partOf_antitone (c' τ) (show j ≤ i by rw [Fin.le_def]; omega); omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wtOf_isDominant (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (n : ℕ) :
     X.IsDominant (wtOf X hr c c' n) := by
@@ -352,7 +352,7 @@ def thFr (n : ℕ) (a b : Fin n → Fin g → ℝ) (P : Harm.Poly ℂ X.Ψ q0 X.
 variable (n : ℕ) (a b : Fin n → Fin g → ℝ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [thFr, I2.polyDeriv_add, mul_add, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thFr_add (P Q : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) :
     thFr X hr bas idx n a b (P + Q) = thFr X hr bas idx n a b P + thFr X hr bas idx n a b Q := by
@@ -360,7 +360,7 @@ theorem thFr_add (P Q : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) :
   simp only [thFr, I2.polyDeriv_add, mul_add, Pi.add_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [thFr, I2.polyDeriv_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thFr_smul (c : ℂ) (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) :
     thFr X hr bas idx n a b (c • P) = c • thFr X hr bas idx n a b P := by
@@ -379,12 +379,12 @@ Both sides reduce to the same expression.
     thFrLin X hr bas idx n a b P = thFr X hr bas idx n a b P := rfl
 
 /- English proof (translation)
-The claim follows from `map_zero (thFrLin X hr bas idx n a b)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem thFr_zero : thFr X hr bas idx n a b 0 = 0 := map_zero (thFrLin X hr bas idx n a b)
 
 /- English proof (translation)
-Rewrite using `[thFr, show (1 : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) = MvPolynomial.monomial 0 1 from rfl, I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD]`. Simplify using `[I2.itD_nil, canFn_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thFr_one (x : Frame X.Ψ r) :
     thFr X hr bas idx n a b 1 x = (hMat X bas idx x).det ^ (n / 2) *
@@ -406,7 +406,7 @@ variable {X} {d : X.Ψ → Fin r → ℂ} (hd : ∀ τ a, d τ a ≠ 0)
 include hd
 
 /- English proof (translation)
-Unfold `rowFac`. Use `split_ifs`. Conclude with `hd _ _`. Conclude with `inv_ne_zero (hd _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowFac_ne_zero (p : X.Ψ × Fin r) : rowFac X d p ≠ 0 := by
   unfold rowFac
@@ -415,9 +415,9 @@ theorem rowFac_ne_zero (p : X.Ψ × Fin r) : rowFac X d p ≠ 0 := by
   · exact inv_ne_zero (hd _ _)
 
 /- English proof (translation)
-Establish `hm : mat (rmul x (diagFr X d)) p.1 = mat x p.1 * Matrix.diagonal (d p.1)` using `rfl`. Establish `hi : (Matrix.diagonal (d p.1))⁻¹ = Matrix.diagonal fun a => (d p.1 a)⁻¹` using `Matrix.inv_eq_left_inv (by simp [diagonal_mul_diagonal, hd])`. Simplify using `only [per, rowFac, hm]`. Use `split_ifs`. Simplify using `only [hermC, FD.col, mul_diagonal, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[Matrix.mul_inv_rev, ← mulVec_mulVec, hi, mulVec_diagonal]`.
+A detailed English derivation is pending.
 -/
 theorem per_rmul_diagFr (x : Frame X.Ψ r) (v : Fin r → E) (p : X.Ψ × Fin r) :
     per X (rmul x (diagFr X d)) v p = rowFac X d p * per X x v p := by
@@ -433,7 +433,7 @@ theorem per_rmul_diagFr (x : Frame X.Ψ r) (v : Fin r → E) (p : X.Ψ × Fin r)
 variable (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[diagonal_mul, perMat_apply, perMat_apply, per_rmul_diagFr hd]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem perMat_rmul_diagFr (s : Fin g → Fin g ⊕ Fin g) :
     perMat X bas idx s (rmul x (diagFr X d)) =
@@ -442,7 +442,7 @@ theorem perMat_rmul_diagFr (s : Fin g → Fin g ⊕ Fin g) :
   rw [diagonal_mul, perMat_apply, perMat_apply, per_rmul_diagFr hd]
 
 /- English proof (translation)
-Rewrite using `[hMat, perMat_rmul_diagFr hd, Matrix.mul_inv_rev, hMat]`. Use `congr 1`. Conclude with `Matrix.inv_eq_left_inv (by simp [diagonal_mul_diagonal, rowFac_ne_zero hd])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hMat_rmul_diagFr : hMat X bas idx (rmul x (diagFr X d)) =
     hMat X bas idx x * Matrix.diagonal fun i => (rowFac X d (idx i))⁻¹ := by
@@ -453,9 +453,9 @@ theorem hMat_rmul_diagFr : hMat X bas idx (rmul x (diagFr X d)) =
 omit hd in
 
 /- English proof (translation)
-Unfold `polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul, ← h m hm, mul_left_comm]`. Establish `h1` using `(finCongr (Multiset.length_toList (Finsupp.toMultiset m)).symm).prod_comp fun k => s ((Finsupp.toMultiset m).toList.get k)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∏ k, s ((Finsupp.toMultiset m).toList.get k) = ((Finsupp.toMultiset m).toList.map s).prod`. Simplify using `[← Fin.prod_univ_fun_getElem]`. Use `congrArg (· * _) ((h1.trans h2).trans ?_)` and prove the remaining obligations. Rewrite using `[Multiset.prod_map_toList, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_smul_letter {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (P : MvPolynomial σ ℂ) (s : σ → ℂ) (t : ℂ) (h : ∀ m ∈ P.support, (m.prod fun l e => s l ^ e) = t)
@@ -485,7 +485,7 @@ def vec (m : Fin 2 ⊕ Fin 2 → ℤ) : Fin 2 → E4 :=
   ![m (Sum.inl 0) - m (Sum.inr 0) * ii, m (Sum.inl 1) + m (Sum.inr 1) * ii]
 
 /- English proof (translation)
-Rewrite using `[flagData_Λ]`. Introduce `a`. Use `fin_cases a`. Conclude with `(isIntegral_intCast _).sub ((isIntegral_intCast _).mul ii_isIntegral)`. Conclude with `(isIntegral_intCast _).add ((isIntegral_intCast _).mul ii_isIntegral)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vec_mem (m : Fin 2 ⊕ Fin 2 → ℤ) : vec m ∈ flagData.Λ := by
   rw [flagData_Λ]
@@ -495,9 +495,9 @@ theorem vec_mem (m : Fin 2 ⊕ Fin 2 → ℤ) : vec m ∈ flagData.Λ := by
   · exact (isIntegral_intCast _).add ((isIntegral_intCast _).mul ii_isIntegral)
 
 /- English proof (translation)
-Establish `hc (a : ℤ) : cc (a : E4) = a` using `map_intCast (IsCMField.complexConj E4) a`. Establish `hadd (u v : E4) : cc (u + v) = cc u + cc v` using `map_add (IsCMField.complexConj E4) u v`. Establish `h` using `trace_eq (-(m (.inl 0) * m' (.inl 0) + m (.inr 0) * m' (.inr 0) - m (.inl 1) * m' (.inl 1) - m (.inr 1) * m' (.inr 1) : ℤ)) (-(omegaStd m m' : ℤ))`. Rewrite using `[← h, EF_def, flagData_κ0, flagData_Gm, herm_gm]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [vec, cons_val_zero, cons_val_one, cc_sub, hadd, cc_mul, hc, cc_ii, omegaStd, Fin.sum_univ_two]`. Use `push_cast`. Take the linear combination `(ii / 2 * (-(m (.inr 0) * m' (.inr 0) : E4) + m (.inr 1) * m' (.inr 1))) * ii_mul_ii`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem EF_vec (m m' : Fin 2 ⊕ Fin 2 → ℤ) :
     EF flagData (vec m) (vec m') = -(omegaStd m m' : ℤ) := by
@@ -520,13 +520,13 @@ def vecLin : (Fin 2 ⊕ Fin 2 → ℤ) →ₗ[ℤ] flagData.Λ :=
       map_add' := fun m m' => by ext a; fin_cases a <;> simp [vec] <;> ring }
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`. Establish `h0 : vec m = 0` using `congrArg Subtype.val hm`. Establish `h (m' : Fin 2 ⊕ Fin 2 → ℤ) : omegaStd m m' = 0`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `EF_vec m m'` as an intermediate fact. Rewrite `this` using `[h0, EF_def]`. Simplify `this` using `[herm]`. Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `h (Pi.single (Sum.inr j) 1)` using `[omegaStd, Pi.single_apply]`. Simplify `h (Pi.single (Sum.inl j) 1)` using `[omegaStd, Pi.single_apply]`. Introduce and unpack `⟨v, hv⟩`. Establish `hv' : v ∈ lat` using `flagData_Λ ▸ hv`. Take `⟨m₀, n₀, h₀⟩` from `exists_int_of_isIntegral (hv' 0)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, n₁, h₁⟩` from `exists_int_of_isIntegral (hv' 1)`. Use `⟨Sum.elim ![m₀, m₁] ![-n₀, n₁], Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `vec _ = v`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> simp [vec, h₀, h₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecLin_bijective : Function.Bijective vecLin := by
   constructor
@@ -553,7 +553,7 @@ theorem vecLin_bijective : Function.Bijective vecLin := by
 def bas : (Fin 2 ⊕ Fin 2 → ℤ) ≃ₗ[ℤ] flagData.Λ := LinearEquiv.ofBijective vecLin vecLin_bijective
 
 /- English proof (translation)
-The claim follows from `EF_vec`.
+A detailed English derivation is pending.
 -/
 theorem isSympl_bas : IsSympl flagData bas := EF_vec
 
@@ -571,14 +571,14 @@ instance : Unique flagData.Ψ :=
 def idx : Fin 2 ≃ flagData.Ψ × Fin 2 := (Equiv.uniqueProd _ _).symm
 
 /- English proof (translation)
-Rewrite using `[hyperbolicFlagData_base_point]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hr : flagData.p0 + 1 = 2 := by rw [hyperbolicFlagData_base_point]
 
 def one : Frame flagData.Ψ 2 := fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ)
 
 /- English proof (translation)
-Introduce `τ` and use `by have hm : mat one τ = 1 := rfl refine ⟨by rw [hm]; simp, fun i => ?_⟩ unfold dmin rw [hm, flagData_Gm, hyperbolicFlagData_base_point, gram_one] fin_cases i · simp [lminor, psgn] · simp [lminor, psgn, sgn] · simp [lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem : one ∈ flagData.dom := fun τ => by
   have hm : mat one τ = 1 := rfl
@@ -591,7 +591,7 @@ theorem one_mem : one ∈ flagData.dom := fun τ => by
   · simp [lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]
 
 /- English proof (translation)
-Establish `hm : mat one τ = 1` using `rfl`. Rewrite using `[per_of_lt _ _ _ _ (by simp [hyperbolicFlagData_base_point]), per_of_le _ _ _ _ (by simp [hyperbolicFlagData_base_point]), hm, flagData_Gm]`. Simplify using `[hermC, FD.col, gm, Data.emb, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem per_one (v : Fin 2 → E4) (τ : flagData.Ψ) :
     per flagData one v (τ, 0) = conj (τ.1 (v 0)) ∧ per flagData one v (τ, 1) = τ.1 (v 1) := by
@@ -601,7 +601,7 @@ theorem per_one (v : Fin 2 → E4) (τ : flagData.Ψ) :
   simp [hermC, FD.col, gm, Data.emb, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h0 (m) : per flagData one (bas m) (idx 0) = _` using `(per_one (vec m) default).1`. Establish `h1 (m) : per flagData one (bas m) (idx 1) = _` using `(per_one (vec m) default).2`. Apply the tactic sequence `constructor <;> ext i k <;> fin_cases i <;> fin_cases k <;> simp [h0, h1, vec, emb_ii_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem perMat_one : perMat flagData bas idx Sum.inl one = 1 ∧
     perMat flagData bas idx Sum.inr one = I • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
@@ -610,24 +610,24 @@ theorem perMat_one : perMat flagData bas idx Sum.inl one = 1 ∧
   constructor <;> ext i k <;> fin_cases i <;> fin_cases k <;> simp [h0, h1, vec, emb_ii_eq]
 
 /- English proof (translation)
-Rewrite using `[hMat, perMat_one.1, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hMat_one : hMat flagData bas idx one = 1 := by rw [hMat, perMat_one.1, inv_one]
 
 /- English proof (translation)
-Rewrite using `[tauMat, hMat_one, perMat_one.2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tauMat_one : tauMat flagData bas idx one = I • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
   rw [tauMat, hMat_one, perMat_one.2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : Summable fun n : ℤ => Real.exp (-Real.pi * 1 * n ^ 2)`. Use `(summable_jacobiTheta₂_term_iff 0 I).2 (by simp)` as an intermediate fact. Use `(Complex.summable_ofReal.1 (this.congr fun n => ?_))` and prove the remaining obligations. Simplify using `only [jacobiTheta₂_term, ofReal_exp]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Take the linear combination `(Real.pi * n ^ 2 : ℂ) * I_mul_I`. Establish `h2 : Summable fun n : Fin 2 → ℤ => Real.exp (-Real.pi * 1 * n 0 ^ 2) * Real.exp (-Real.pi * 1 * n 1 ^ 2)` using `(finTwoArrowEquiv ℤ).summable_iff.2 (h1.mul_of_nonneg h1 (fun _ => (Real.exp_pos _).le) fun _ => (Real.exp_pos _).le)`. Establish `h3` using `h2.tsum_pos (fun _ => by positivity) 0 (by positivity)`. Establish `h4` using `ofReal_ne_zero.2 h3.ne'`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[ofReal_tsum]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, ofReal_exp]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [add_zero, smul_mulVec, one_mulVec, dotProduct, Fin.sum_univ_two, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, mul_zero]`. Use `push_cast`. Take the linear combination `(Real.pi * (n 0 ^ 2 + n 1 ^ 2) : ℂ) * I_mul_I`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem thetaChar_I_ne_zero : thetaChar (I • (1 : Matrix (Fin 2) (Fin 2) ℂ)) 0 0 0 ≠ 0 := by
   have h1 : Summable fun n : ℤ => Real.exp (-Real.pi * 1 * n ^ 2) := by
@@ -654,7 +654,7 @@ theorem thetaChar_I_ne_zero : thetaChar (I • (1 : Matrix (Fin 2) (Fin 2) ℂ))
   linear_combination (Real.pi * (n 0 ^ 2 + n 1 ^ 2) : ℂ) * I_mul_I
 
 /- English proof (translation)
-Rewrite using `[thFr_one, hMat_one, tauMat_one, det_one, one_pow, one_mul]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => by`. Simplify `thetaChar_I_ne_zero` using `[Pi.zero_def]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem thFr_one_ne_zero (n : ℕ) : thFr flagData hr bas idx n 0 0 1 one ≠ 0 := by
   rw [thFr_one, hMat_one, tauMat_one, det_one, one_pow, one_mul]
@@ -671,9 +671,9 @@ example : rowIdx (show 2 + 1 = 3 from rfl) (Sum.inr 0) = 1 ∧
     rowIdx (show 2 + 1 = 3 from rfl) (Sum.inl 0) = 2 := by decide
 
 /- English proof (translation)
-Establish `hp` using `HyperbolicCusp.hyperbolicFlagData_base_point`. Use function extensionality and compare the values at `a`. Take `⟨i | i, rfl⟩` from `(rowIdx Gauss.hr).surjective a`. Establish `: rowIdx Gauss.hr (Sum.inl i) = 1` using `Fin.ext (by simp [hp])`. Rewrite using `[wtOf_inl, this, Harm.partOf_eq_add, dif_neg (by omega)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `: rowIdx Gauss.hr (Sum.inr i) = 0` using `Fin.ext (by simp [hp])`. Rewrite using `[wtOf_inr, this, Harm.partOf_eq_add, dif_neg (by omega)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (τ : HyperbolicCusp.flagData.Ψ) :
     wtOf HyperbolicCusp.flagData Gauss.hr (fun _ _ => 3) (fun _ _ => 5) 4 τ = ![-7, 5] := by
@@ -688,14 +688,14 @@ example (τ : HyperbolicCusp.flagData.Ψ) :
     rfl
 
 /- English proof (translation)
-Simplify `Gauss.EF_vec (Pi.single (Sum.inl 0) 1) (Pi.single (Sum.inr 0) 1)` using `[Gauss.vec, omegaStd]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 example : EF HyperbolicCusp.flagData ![1, 0] ![-HyperbolicCusp.ii, 0] = -1 := by
   simpa [Gauss.vec, omegaStd] using
     Gauss.EF_vec (Pi.single (Sum.inl 0) 1) (Pi.single (Sum.inr 0) 1)
 
 /- English proof (translation)
-Apply the tactic sequence `rw [hMat_rmul_diagFr (fun _ a => by fin_cases a <;> simp), Gauss.hMat_one, Matrix.one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [rowFac, Gauss.idx, HyperbolicCusp.hyperbolicFlagData_base_point]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : hMat HyperbolicCusp.flagData Gauss.bas Gauss.idx
     (rmul Gauss.one (diagFr _ fun _ => ![2, 3])) = Matrix.diagonal ![2⁻¹, 3] := by

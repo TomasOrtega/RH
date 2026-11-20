@@ -19,17 +19,17 @@ noncomputable section
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y k α σ τ hT j V hVj S _ φ x x' c a a' ha ha' hV hV' hq hc`. Substitute `ha ha'` using the available equality. Establish `hle : Y.q.left ⁻¹ᵁ V ≤ (LB.LinComb Q.P.L (K` using `Fin 1) (fun _ => Y.q.left) fun _ => (k : ℤ)).U fun _ => j := fun z hz => Set.mem_iInter.2 fun _ => hVj hz`. Establish `hql : x'.left ≫ Y.q.left = x.left ≫ Y.q.left`. Use `congrArg CommaMorphism.left hq` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `key : ((x'.left.appLE (Y.q.left ⁻¹ᵁ V) ⊤ hV').hom (rsT (τ.f fun _ => j) (Y.q.left ⁻¹ᵁ V))) = (show Γ((Over.mk (spMap φ)).left, ⊤) from (unitOn (c α)).val) * (x.left.appLE (Y.q.left ⁻¹ᵁ V) ⊤ hV).hom (rsT (τ.f fun _ => j) (Y.q.left ⁻¹ᵁ V))`. Use `fn_ext fun y _ => ?_` and prove the remaining obligations. Establish `hy : x.left y ∈ Y.q.left ⁻¹ᵁ V` using `hV trivial`. Establish `hy' : x'.left y ∈ Y.q.left ⁻¹ᵁ V` using `hV' trivial`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, eJ⟩` from `exists_good Q.P.L Q.P.isLB y (fun _ : Unit => x.left ≫ Y.q.left) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hVj hy)`. Establish `e` using `hT _ x' y J hJ`. Establish `e0` using `hT _ x y J hJ`. Rewrite `e` using `[hq, hc α y J hJ]`. Rewrite using `[gs_mul (𝟙 _) y ⊤ trivial, gs_unit (𝟙 _) y ⊤ trivial, gs_appLE _ _ ⊤ _ (𝟙 _) y trivial, gs_appLE _ _ ⊤ _ (𝟙 _) y trivial, Category.id_comp, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rsT, dif_pos hle]`. Use `erw [gs_res _ y hle hy, gs_res _ y hle hy']`. Establish `e1` using `sval_of τ x'.left y J (fun _ => j) (fun _ => (congrArg J hql).trans (eJ ()))`. Establish `e2` using `sval_of τ x.left y J (fun _ => j) (fun _ => eJ ())`. Rewrite `e` using `[e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0` using `[e2]`. Use `e.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun t => _ * t) e0.symm)` and prove the remaining obligations. Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `valR`. Rewrite using `[dif_pos hV, dif_pos hV', key, map_mul]`. Use `congr 1`. Simplify using `[unitOn]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isWt_rsT_of_isTerm : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (k : ℕ) (α : Q.X) (σ : Q.SecB k α) (τ : SecM Y.q.left Q.P.L k), IsTerm Y k α σ τ → ∀ (j : Q.P.L.ι) (V : Q.P.A.left.Opens), Y.q.left ⁻¹ᵁ V ≤ Y.q.left ⁻¹ᵁ Q.P.L.U j → IsWt Y α (Y.q.left ⁻¹ᵁ V) (rsT (τ.f fun _ => j) (Y.q.left ⁻¹ᵁ V)) := by
   intro R _ _ Q O _ _ _ oa Y k α σ τ hT j V hVj S _ φ x x' c a a' ha ha' hV hV' hq hc

@@ -12,11 +12,11 @@ variable {K : Type*} [Field K] [NumberField K]
 namespace SUnit
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 K) K (x : K) fun v => (h v).le`. Take `⟨b, hb⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 K) K ((x⁻¹ : Kˣ) : K) fun v => by`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h v, inv_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : a * b = 1`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Establish `hba : b * a = 1` using `by rw [mul_comm, hab]`. Use `⟨⟨a, b, hab, hba⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext`. Simplify using `[ha]`. Introduce and unpack `⟨u, rfl⟩ v`. Rewrite using `[← valuationOfNeZero_eq, valuation_of_unit_eq, WithZero.coe_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem forall_valuation_eq_one_iff (x : Kˣ) :
     (∀ v : HeightOneSpectrum (𝓞 K), v.valuation K (x : K) = 1) ↔
@@ -51,7 +51,7 @@ Both sides reduce to the same expression.
 theorem coe_ofUnits (u : (𝓞 K)ˣ) : ((ofUnits S u : Kˣ) : K) = algebraMap (𝓞 K) K u := rfl
 
 /- English proof (translation)
-Introduce `u u' h`. Establish `: ((ofUnits S u : Kˣ) : K) = ((ofUnits S u' : Kˣ) : K)` using `by rw [h]`. Simplify using `only [coe_ofUnits] at this`. Conclude with `Units.ext (IsFractionRing.injective (𝓞 K) K this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofUnits_injective : Function.Injective (ofUnits S (K := K)) := by
   intro u u' h
@@ -73,11 +73,11 @@ theorem valuationVector_apply (x : S.unit K) (v : S) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Distinguish the cases in `hv : v ∈ S`. Establish `h1` using `congrFun h ⟨v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h1` using `[valuationVector_apply, Pi.zero_apply, toAdd_eq_zero]`. Rewrite using `[← valuationOfNeZero_eq, h1, WithZero.coe_one]`. Conclude with `x.2 v hv`. Introduce `h`. Use function extensionality and compare the values at `v`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valuationVector_apply, Pi.zero_apply, toAdd_eq_zero, ← WithZero.coe_inj, valuationOfNeZero_eq, WithZero.coe_one]`. Conclude with `h v.1`.
+A detailed English derivation is pending.
 -/
 theorem mem_ker_valuationVector_iff (x : S.unit K) :
     Additive.ofMul x ∈ LinearMap.ker (valuationVector S) ↔
@@ -97,11 +97,11 @@ theorem mem_ker_valuationVector_iff (x : S.unit K) :
     exact h v.1
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[← ofMul_toMul x, mem_ker_valuationVector_iff, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `(forall_valuation_eq_one_iff _).mp h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Additive.ofMul u, by`. Express the relevant statement in the definitionally equal form `Additive.ofMul (ofUnits S u) = _`. Use `congr 1`. Conclude with `Subtype.ext hu⟩`. Introduce and unpack `⟨u, hu⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hx : ofUnits S u.toMul = x.toMul` using `congrArg Additive.toMul hu`. Rewrite using `[← hx]`. Conclude with `(forall_valuation_eq_one_iff _).mpr ⟨u.toMul, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_valuationVector :
     LinearMap.ker (valuationVector S) =

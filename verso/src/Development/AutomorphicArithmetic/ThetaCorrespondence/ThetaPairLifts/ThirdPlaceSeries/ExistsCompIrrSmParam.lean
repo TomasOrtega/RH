@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 namespace GlobalTheory.TypeRec
 /- English proof (translation)
-Take `⟨cp, hc⟩` from `exists_isComp_of_rowDepth I rep h2`. Use `⟨cp, hc, fun σ k v => ⟨?_, _root_.GlobalTheory.TypeRec.Model.locR_eq_rc_of_isRc_and_true_reading hrc hc h1 σ k v⟩⟩` and prove the remaining obligations. Take `⟨s, hs, τ, -, e⟩` from `hc σ k v`. Rewrite using `[e]`. Conclude with `Model.irrSm_pull I k v τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comp_irrSm_param_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
     (I : Ident D) (rc : GlobalTheory.SerSys.Corr D) (hrc : _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc) (Rw : GlobalTheory.HeightCounting.RowSide D)

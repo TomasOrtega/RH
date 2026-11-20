@@ -4,13 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Introduce `Γ Γ' _ _ f H H' hc hle hp ⟨τ, hτ, hτ'⟩`. Establish `hN : H'.Normal`. Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Establish `h1 : g * n * g⁻¹ * n⁻¹ ∈ H'` using `hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))`. Establish `h2 : g * n * g⁻¹ = (g * n * g⁻¹ * n⁻¹) * n` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `H'.mul_mem h1 hn`. Rewrite using `[Subgroup.relIndex_comap]`. Use `set J := (H.comap f).map f with hJ`. Establish `hJH : J ≤ H` using `Subgroup.map_comap_le _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmul : H'.relIndex (H' ⊔ J) * (H' ⊔ J).relIndex H = H'.relIndex H` using `Subgroup.relIndex_mul_relIndex _ _ _ le_sup_left (sup_le hle hJH)`. Rewrite `hmul` using `[Subgroup.relIndex_sup_left]`. Establish `hne : H'.relIndex J ≠ 1`. Introduce `h`. Rewrite `h` using `[Subgroup.relIndex_eq_one]`.
-
-Conclude with `hτ' (h ⟨τ, hτ, rfl⟩)`. Conclude with `(hp.eq_one_or_self_of_dvd _ ⟨_, hmul.symm⟩).resolve_left hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indexComap : IndexComap := by
   intro Γ Γ' _ _ f H H' hc hle hp ⟨τ, hτ, hτ'⟩

@@ -76,7 +76,7 @@ def CyclotomicExists : Prop :=
     ∃ (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩), IsCyclotomic R ι
 
 /- English proof (translation)
-Take `⟨-, ψ, h1, h2, h3⟩` from `h l k hl R ι hι`. Use `⟨ψ, h1, h2, fun n V _ _ _ _ _ _ _ _ D i => ?_⟩` and prove the remaining obligations. Conclude with `h3 V _ _ _ (D.φ_semi i) (D.etale i) (D.γ_semi _) (D.γ_semi _) (D.comm i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LemmaPsi.modPG (h : LemmaPsi) (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (hl : 5 ≤ l)
     (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) (hι : IsCyclotomic R ι) :
@@ -90,7 +90,7 @@ theorem LemmaPsi.modPG (h : LemmaPsi) (l : ℕ) [Fact l.Prime] (k : Type) [Field
   exact h3 V _ _ _ (D.φ_semi i) (D.etale i) (D.γ_semi _) (D.γ_semi _) (D.comm i)
 
 /- English proof (translation)
-Unfold `phiPi vv`. Use `erw [HahnSeries.embDomainRingHom_apply, HahnSeries.embDomain_single]`. Simplify using `[HahnSeries.single_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiPi_vv (k : Type) [Field k] (l : ℕ) [Fact l.Prime] : phiPi k l (vv k) = vv k ^ l := by
   unfold phiPi vv

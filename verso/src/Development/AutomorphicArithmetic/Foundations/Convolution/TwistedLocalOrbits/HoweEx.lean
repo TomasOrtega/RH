@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n V _ _ π hs ϖ hϖ ⟨ψ₀, h1, h2, h3⟩ c`. Take `⟨d, hd⟩` from `UpperTheory.V.Z.Tf.L4.condEx E ϖ hϖ ψ₀ h1 h2`. Take `⟨a₀, h⟩` from `UpperTheory.V.Z.Tf.L4.howeEx0 E n V π hs ϖ hϖ ψ₀ d hd h3`. Use `⟨a₀, fun a ha ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, e⟩` from `UpperTheory.V.Z.Tf.L4.charDual E ϖ hϖ ψ₀ ψ d _ hd hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `UpperTheory.V.Z.Tf.L4.howeConj E n V π ϖ β a c _ hβ ψ₀ ψ e ?_` and prove the remaining obligations. Rewrite using `[show c - (d - (2 * a - c)) = 2 * a - d by ring]`. Conclude with `h a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.howeEx :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) E) V), IsSmooth π → ∀ ϖ : Eˣ, valuation E (ϖ : E) = uniformizer E → GlobalTheory.LocGL.IsGeneric π → ∀ c : ℤ, ∃ a₀ : ℤ, ∀ a ≥ a₀,

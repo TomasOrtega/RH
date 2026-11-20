@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory.SncComponents
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `e : Y.fromSpecStalk x q = hU.fromSpec (PrimeSpectrum.comap (Y.presheaf.germ U.1 x hx).hom q)`. Rewrite using `[← hU.fromSpecStalk_eq_fromSpecStalk hx]`. Both sides reduce to the same expression. Rewrite using `[Scheme.mem_zeroLocus_iff, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_singleton_iff, forall_eq]`. Establish `h` using `hU.fromSpec_preimage_basicOpen f`. Establish `h2 : hU.fromSpec (PrimeSpectrum.comap (Y.presheaf.germ U.1 x hx).hom q) ∈ Y.basicOpen f ↔ PrimeSpectrum.comap (Y.presheaf.germ U.1 x hx).hom q ∈ PrimeSpectrum.basicOpen f` using `iff_of_eq (congrArg (fun V => PrimeSpectrum.comap (Y.presheaf.germ U.1 x hx).hom q ∈ V) h)`. Conclude with `(not_congr h2).trans not_not`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_mem_zeroLocus_iff {Y : Scheme.{0}} (U : Y.affineOpens) (x : Y) (hx : x ∈ U.1)
     (f : Γ(Y, U.1)) (q : PrimeSpectrum (Y.presheaf.stalk x)) :
@@ -32,21 +32,17 @@ theorem fromSpecStalk_mem_zeroLocus_iff {Y : Scheme.{0}} (U : Y.affineOpens) (x 
   exact (not_congr h2).trans not_not
 
 /- English proof (translation)
-Use `effCartier_of_stalkId _ fun x => ?_` and prove the remaining obligations. Take `⟨hreg, U, hx, n, f, J, hrsp, hZU⟩` from `hZ x`. Take `⟨O, hxO, -, hO⟩` from `exists_open_comps x U hx f J hrsp hZU`. Establish `hO'` using `hO _ hC`. Establish `hq : ∀ q : PrimeSpectrum (Y.presheaf.stalk x), Y.fromSpecStalk x q ∈ (C : Set Y) ↔ ∃ i ∈ J, IsBranch (Z.support : Set Y) (f i) x C ∧ Y.presheaf.germ U.1 x hx (f i) ∈ q.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Establish `hqO : Y.fromSpecStalk x q ∈ (O : Set Y)`. Establish `h : Y.fromSpecStalk x q ∈ Set.range (Y.fromSpecStalk x)` using `⟨q, rfl⟩`. Rewrite `h` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open h O.isOpen hxO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Set.ext_iff.1 hO' (Y.fromSpecStalk x q)`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, hqO, and_true, true_and, fromSpecStalk_mem_zeroLocus_iff U x hx] at h`. Conclude with `h`. Establish `hCC : C.compl.compl = C` using `SetLike.coe_injective (compl_compl _)`. Distinguish the cases in `hb : ∃ i ∈ J, IsBranch (Z.support : Set Y) (f i) x C`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi, hbi⟩` from `hb`. Establish `hp : Prime (Y.presheaf.germ U.1 x hx (f i))` using `prime_of_regular_params (fun i => Y.presheaf.germ U.1 x hx (f i)) hrsp.1 hrsp.2 i`. Use `haveI : IsDomain (Y.presheaf.stalk x) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain _`. Use `⟨_, mem_nonZeroDivisors_of_ne_zero hp.ne_zero, ?_⟩` and prove the remaining obligations. Establish `h` using `AffineComplement.stalkId_vanishingIdeal_compl C.compl x (Y.presheaf.germ U.1 x hx (f i)) fun q => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Use `not_congr ((hq q).trans ⟨?_, fun h => ⟨i, hi, hbi, h⟩⟩)` and prove the remaining obligations. Introduce and unpack `⟨j, hj, hbj, h⟩`. Distinguish the cases in `hij : i = j`. Conclude with `hij ▸ h`. Conclude with `absurd rfl (branch_ne x U hx f J hrsp hZU hi hj hij hbi hbj)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hCC]`. Rewrite using `[h]`. Conclude with `((Ideal.span_singleton_prime hp.ne_zero).2 hp).radical`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Establish `h` using `AffineComplement.stalkId_vanishingIdeal_compl C.compl x 1 fun q => by`.
-
-Use `not_congr ((hq q).trans ⟨?_, fun h => ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨j, hj, hbj, -⟩`. Conclude with `absurd ⟨j, hj, hbj⟩ hb`. Conclude with `absurd ((Ideal.eq_top_iff_one _).2 h) q.isPrime.ne_top`. Rewrite `h` using `[hCC]`.
-
-Rewrite using `[h, Ideal.span_singleton_one, Ideal.radical_top]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_of_mem_comps {Y : Scheme.{0}} [IsNoetherian Y] {Z : Y.IdealSheafData}
     (hZ : FinalTheorems.Snc Z) (C : Closeds Y) (hC : (C : Set Y) ∈ comps (Z.support : Set Y)) :
@@ -94,11 +90,9 @@ theorem effCartier_of_mem_comps {Y : Scheme.{0}} [IsNoetherian Y] {Z : Y.IdealSh
     rw [h, Ideal.span_singleton_one, Ideal.radical_top]
 
 /- English proof (translation)
-Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace p`. Use `haveI : IsNoetherian Y := {}`. Use `haveI : Finite (comps (B : Set Y)) := (comps_finite _).to_subtype`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin (comps (B : Set Y))`. Use `⟨m, fun i => ⟨(e.symm i).1, isClosed_of_mem_comps B.isClosed (e.symm i).2⟩, ⟨fun i => (e.symm i).2.1.1, ?_, fun i j hij => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← sUnion_comps (B : Set Y), Set.sUnion_eq_iUnion]`. Conclude with `e.symm.surjective.iUnion_comp (fun c => (c.1 : Set Y))`. Establish `hi : Maximal (fun C => IsIrreducible C ∧ C ⊆ (B : Set Y)) (e.symm i).1` using `(e.symm i).2`.
-
-Conclude with `e.symm.injective (Subtype.ext (Set.Subset.antisymm hij (hi.2 (e.symm j).2.1 hij)))`. Use `effCartier_of_mem_comps hB _ ?_` and prove the remaining obligations. Establish `hs : ((Scheme.IdealSheafData.vanishingIdeal B).support : Set Y) = B` using `by simp`. Rewrite using `[hs]`. Conclude with `(e.symm i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compList_effCartier (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ)
     [SmoothOfRelativeDimension d p] [QuasiCompact p] (B : Closeds Y)

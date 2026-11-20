@@ -16,7 +16,7 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 namespace GlobalTheory.ClosingSixth
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.conclusionG6_of_all_parts GlobalTheory.T.sixth_decomposition GlobalTheory.T.sixth_weight_statement GlobalTheory.T.sixth_character_equality GlobalTheory.T.mu_character GlobalTheory.T.eigencharacter_of_summand_charZero (GlobalTheory.T.residue_count_of_ss_rank GlobalT …`.
+A detailed English derivation is pending.
 -/
 theorem conclusionG6_of_adm : ∀ D : D7, SumRepresentations.admitted D → RbEx D → SumRepresentations.ConclusionG6 D :=
   GlobalTheory.T.conclusionG6_of_all_parts GlobalTheory.T.sixth_decomposition GlobalTheory.T.sixth_weight_statement GlobalTheory.T.sixth_character_equality GlobalTheory.T.mu_character GlobalTheory.T.eigencharacter_of_summand_charZero

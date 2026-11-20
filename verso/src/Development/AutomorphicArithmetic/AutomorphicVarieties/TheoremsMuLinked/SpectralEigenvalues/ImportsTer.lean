@@ -5,29 +5,27 @@ open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W U
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `O R B M V _ _ _ _ _ _ _ _ _ q n β x P act f α I t₀ hβ hTM hP hker a ha v`. Take `⟨φ, ψ, h1, h2, h3, h4⟩` from `hTM`. Establish `hπC : ∀ b : B, (Ideal.Quotient.mk (mSplitIdeal P n)) (MvPolynomial.C b) = algebraMap B (MSplitAlg P n) b` using `fun b => rfl`. Establish `key : ∀ i ∈ I, ∀ w : MSplitAlg P n ⊗[B] M, φ ((β i) • w) ∈ (I • ⊤ : Submodule R V)`. Introduce `i hi w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (β i) • w = (Ideal.Quotient.mk (mSplitIdeal P n)) ((MvPolynomial.map β.toRingHom) (MvPolynomial.C i)) • w`. Rewrite using `[MvPolynomial.map_C, hπC, algebraMap_smul]`. Both sides reduce to the same expression. Rewrite using `[e1, h1, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Module.algebraMap_end_apply]`. Conclude with `Submodule.smul_mem_smul hi trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `claim : ∀ b : B, x b = 0 → ∀ z : MSplitAlg P n ⊗[B] M, φ (algebraMap B (MSplitAlg P n) (β t₀ * b) • z) ∈ (I • ⊤ : Submodule R V)`. Introduce `b hb z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraMap_smul, ← TensorProduct.tmul_smul]`. Use `Submodule.smul_induction_on (p := fun y => φ (s ⊗ₜ[B] y) ∈ (I • ⊤ : Submodule R V)) (hker b hb m) ?_ ?_` and prove the remaining obligations. Introduce `r hr m' _`. Take `⟨i, hi, rfl⟩` from `(Ideal.mem_map_iff_of_surjective β hβ).mp hr`. Rewrite using `[TensorProduct.tmul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key i hi _`. Introduce `y1 y2 k1 k2`. Rewrite using `[TensorProduct.tmul_add, map_add]`. Conclude with `add_mem k1 k2`. Consider the case `add z1 z2 k1 k2`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_add, map_add]`. Conclude with `add_mem k1 k2`. Establish `gen : ∀ y ∈ Ideal.map (algebraMap B (MSplitAlg P n)) (RingHom.ker x), ∀ z : MSplitAlg P n ⊗[B] M, φ ((algebraMap B (MSplitAlg P n) (β t₀) * y) • z) ∈ (I • ⊤ : Submodule R V)`. Introduce `y hy`. Unfold `Ideal.map at hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, rfl⟩` from `hy`. Introduce `z`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `claim b (RingHom.mem_ker.mp hb) z`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `add y1 y2 _ _ k1 k2`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_add, add_smul, map_add]`. Conclude with `add_mem (k1 z) (k2 z)`. Consider the case `smul r y _ k`. Introduce `z`. Rewrite using `[smul_eq_mul, mul_left_comm, mul_comm r, mul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `k _`. Establish `hE : MvPolynomial.map β.toRingHom (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O R (α j k))) : PU R q n) = ∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k)))`. Simplify using `[map_prod]`. Establish `hmem` using `Sp.msp O B (Fin q) n x P α hP (MvPolynomial.map β.toRingHom a) (by rw [MvPolynomial.eval₂_map]; exact ha)`. Establish `e3 : act (MvPolynomial.C t₀ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O R (α j k)))) * f * a) v = φ (((Ideal.Quotient.mk (mSplitIdeal P n)) (MvPolynomial.map β.toRingHom (MvPolynomial.C t₀ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, ← h2, h1, h3]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[e3]`. Establish `e4 : (Ideal.Quotient.mk (mSplitIdeal P n)) (MvPolynomial.map β.toRingHom (MvPolynomial.C t₀ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O R (α j k)))))) * (Ideal.Quotient.mk (mSplitIdeal P n)) (MvPolynomial.map β.toRingHom a) = alge …`. Rewrite using `[map_mul (MvPolynomial.map β.toRingHom), hE, MvPolynomial.map_C, ← hπC, ← map_mul, ← map_mul, mul_assoc]`.
-
-Both sides reduce to the same expression. Rewrite using `[e4]`. Conclude with `gen _ hmem _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.kill :
     ∀ (O R B M V : Type) [CommRing O] [CommRing R] [CommRing B] [Algebra O R] [Algebra O B] [AddCommGroup M] [Module B M] [AddCommGroup V] [Module R V] (q n : ℕ) (β : R →ₐ[O] B) (x : B →ₐ[O] O) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) (f : PU R q n) (α : Fin q → Fin n → O) (I : Ideal R) (t₀ : R), Function.Surjective β → TwoMaps (M := M) β.toRingHom P act f → (∀ j, (P j).map (x : B →+* O) = ∏ i, (Polynomial.X - Polynomial.C (α j i))) → (∀ a : B, x a = 0 → ∀ m : M, (β t₀ * a) • m ∈ (I.map β • ⊤ : Submodule B M)) → ∀ a : PU R q n, MvPolynomial.eval₂ ((x.comp β : R →ₐ[O] O) : R →+* O) (fun p => α p.1 p.2) a = 0 → ∀ v : V, act (MvPolynomial.C t₀ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O R (α j k)))) * f * a) v ∈ (I • ⊤ : Submodule R V) := by

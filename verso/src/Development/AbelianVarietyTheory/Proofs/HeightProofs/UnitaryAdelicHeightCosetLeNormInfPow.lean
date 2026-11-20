@@ -13,11 +13,11 @@ namespace GlobalTheory.SmoothForms.HeightCoset
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun x => ?_` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_eq]`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Use `(Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => norm_nonneg _).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `: (Matrix.toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) A x) i = ∑ j, A i j * x j := rfl`. Rewrite using `[this, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Use `gcongr`. Conclude with `PiLp.norm_apply_le x j`.
+A detailed English derivation is pending.
 -/
 theorem opNorm_le_sum {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A‖ ≤ ∑ i, ∑ j, ‖A i j‖ := by
@@ -38,7 +38,7 @@ theorem opNorm_le_sum {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
 variable {D : D7}
 
 /- English proof (translation)
-Establish `: HA.mat (AF D.host.F) D.sp.cm.sig V.gram (g * h) = HA.mat (AF D.host.F) D.sp.cm.sig V.gram g * HA.mat (AF D.host.F) D.sp.cm.sig V.gram h` using `rfl`. Simplify using `only [infMat, this, Units.val_mul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_mul' (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * h) = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ h := by
@@ -48,7 +48,7 @@ theorem infMat_mul' (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : H
   rw [Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `: HA.mat (AF D.host.F) D.sp.cm.sig V.gram (1 : GA D V) = 1` using `rfl`. Simplify using `only [infMat, this, Units.val_one]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_one' (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) :
     infMat D.sp.cm.sig V.gram θ (1 : GA D V) = 1 := by
@@ -62,9 +62,9 @@ Both sides reduce to the same expression.
 theorem finMat_eq (V : HSp D) (g : GA D V) : finMat D.sp.cm.sig V.gram g = (finHom V g).1 := rfl
 
 /- English proof (translation)
-Establish `h0 : finHom V g = 1` using `hg`. Establish `h1 : finMat D.sp.cm.sig V.gram (x * g) = finMat D.sp.cm.sig V.gram x`. Rewrite using `[finMat_eq, finMat_eq, map_mul, h0, mul_one]`. Establish `h2 : finMat D.sp.cm.sig V.gram (x * g)⁻¹ = finMat D.sp.cm.sig V.gram x⁻¹`. Rewrite using `[finMat_eq, finMat_eq, map_inv, map_inv, map_mul, h0, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [finHt, finNorm, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finHt_mul (V : HSp D) (x g : GA D V) (hg : g ∈ GinfC V) (v) : finHt V v (x * g) = finHt V v x := by
   have h0 : finHom V g = 1 := hg
@@ -77,7 +77,7 @@ theorem finHt_mul (V : HSp D) (x g : GA D V) (hg : g ∈ GinfC V) (v) : finHt V 
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Unfold `infNorm`. Rewrite using `[infMat_mul', map_mul]`. Conclude with `nnnorm_mul_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infNorm_mul_le (τ : D.what₂.Tau) (x g : GA D V) :
     infNorm θ V τ (x * g) ≤ infNorm θ V τ x * infNorm θ V τ g := by
@@ -86,9 +86,7 @@ theorem infNorm_mul_le (τ : D.what₂.Tau) (x g : GA D V) :
   exact nnnorm_mul_le _ _
 
 /- English proof (translation)
-Use `max_le (one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)) (max_le ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `refine (infNorm_mul_le θ V τ x g).trans (mul_le_mul' ?_ ?_) <;>`. Conclude with `le_max_of_le_right (le_max_left _ _)`. Rewrite using `[_root_.mul_inv_rev, mul_comm (infHt θ V τ x)]`. Apply the tactic sequence `refine (infNorm_mul_le θ V τ g⁻¹ x⁻¹).trans (mul_le_mul' ?_ ?_) <;>`.
-
-Conclude with `le_max_of_le_right (le_max_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem infHt_mul_le (τ : D.what₂.Tau) (x g : GA D V) :
     infHt θ V τ (x * g) ≤ infHt θ V τ x * infHt θ V τ g := by
@@ -100,9 +98,7 @@ theorem infHt_mul_le (τ : D.what₂.Tau) (x g : GA D V) :
       exact le_max_of_le_right (le_max_right _ _)
 
 /- English proof (translation)
-Establish `h : ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖) ≤ normInf θ V g` using `Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Prove the components needed by the constructor for the conclusion. Use `(opNorm_le_sum _).trans (le_trans ?_ h) gcongr` and prove the remaining obligations. Conclude with `le_add_of_nonneg_right (norm_nonneg _)`. Use `(opNorm_le_sum _).trans (le_trans ?_ h) gcongr` and prove the remaining obligations.
-
-Conclude with `le_add_of_nonneg_left (norm_nonneg _)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infNorm_le_normInf (τ : D.what₂.Tau) (g : GA D V) :
     (infNorm θ V τ g : ℝ) ≤ normInf θ V g ∧ (infNorm θ V τ g⁻¹ : ℝ) ≤ normInf θ V g := by
@@ -120,13 +116,11 @@ theorem infNorm_le_normInf (τ : D.what₂.Tau) (g : GA D V) :
     exact le_add_of_nonneg_left (norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `infNorm_le_normInf θ V τ g`. Use `haveI : Nonempty (Fin V.rank) := ⟨⟨0, hV⟩⟩`. Establish `h3 : infNorm θ V τ 1 = 1`. Unfold `infNorm`. Rewrite using `[infMat_one', map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `nnnorm_one`. Establish `h4 : (1 : ℝ) ≤ infNorm θ V τ g * infNorm θ V τ g⁻¹`. Use `infNorm_mul_le θ V τ g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h3]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h5 : 1 ≤ normInf θ V g`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `a0` using `(infNorm θ V τ g).coe_nonneg`. Establish `b0` using `(infNorm θ V τ g⁻¹).coe_nonneg`.
-
-Use the polynomial consequences of the given equalities and inequalities. Unfold `infHt`. Use `push_cast`. Conclude with `max_le h5 (max_le h1 h2)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem infHt_le_normInf (hV : 0 < V.rank) (τ : D.what₂.Tau) (g : GA D V) :
     (infHt θ V τ g : ℝ) ≤ normInf θ V g := by
@@ -151,9 +145,7 @@ theorem infHt_le_normInf (hV : 0 < V.rank) (τ : D.what₂.Tau) (g : GA D V) :
   exact max_le h5 (max_le h1 h2)
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin V.rank) := by rw [hV]; infer_instance`. Establish `h : ∀ g, infNorm θ V τ g ≤ 1` using `fun g => by`. Use `opNorm_le_sum (infMat D.sp.cm.sig V.gram (θ τ) g)` as an intermediate fact. Rewrite `this` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `this.trans zero_le_one` after adjusting the coercions.
-
-Conclude with `max_eq_left (max_le (h g) (h g⁻¹))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infHt_rank_zero (hV : V.rank = 0) (τ : D.what₂.Tau) (g : GA D V) : infHt θ V τ g = 1 := by
   haveI : IsEmpty (Fin V.rank) := by rw [hV]; infer_instance
@@ -164,7 +156,7 @@ theorem infHt_rank_zero (hV : V.rank = 0) (τ : D.what₂.Tau) (g : GA D V) : in
   exact max_eq_left (max_le (h g) (h g⁻¹))
 
 /- English proof (translation)
-Unfold `height`. Simplify using `only [finHt_mul V x g hg]`. Rewrite using `[mul_right_comm, ← Finset.prod_mul_distrib]`. Use `gcongr with τ`. Conclude with `infHt_mul_le θ V τ x g`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_mul_le (x g : GA D V) (hg : g ∈ GinfC V) :
     height θ V (x * g) ≤ height θ V x * ∏ τ, infHt θ V τ g := by
@@ -175,11 +167,9 @@ theorem height_mul_le (x g : GA D V) (hg : g ∈ GinfC V) :
   exact infHt_mul_le θ V τ x g
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos V.rank with hV | hV` into its components or cases. Use `⟨0, fun x => ⟨height θ V x, fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `height_mul_le θ V x g hg` as an intermediate fact. Simplify using `only [infHt_rank_zero θ V hV, Finset.prod_const_one] at this`. Rewrite using `[pow_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Use `⟨Fintype.card D.what₂.Tau, fun x => ⟨height θ V x, fun g hg => ?_⟩⟩` and prove the remaining obligations. Establish `: (height θ V (x * g) : ℝ) ≤ height θ V x * ∏ τ, (infHt θ V τ g : ℝ)`. Conclude with `height_mul_le θ V x g hg` after adjusting the coercions. Use `this.trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => NNReal.coe_nonneg _) fun τ _ => infHt_le_normInf θ V hV τ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_le_normInf_pow (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) :
     ∃ M : ℕ, ∀ x : GA D V, ∃ C : ℝ, ∀ g ∈ GinfC V,

@@ -11,7 +11,7 @@ namespace PositivityTheory.Rg.BcB.E2.P
 namespace Locint
 
 /- English proof (translation)
-Break down `le_total x 1 with h | h` into its components or cases. Conclude with `h.trans le_self_add`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem enorm_le_one_add_sq (x : ℝ≥0∞) : x ≤ 1 + x ^ 2 := by
   rcases le_total x 1 with h | h
@@ -24,19 +24,19 @@ theorem enorm_le_one_add_sq (x : ℝ≥0∞) : x ≤ 1 + x ^ 2 := by
 end Locint
 
 /- English proof (translation)
-Introduce `hT X S _ ν _ F f hF hrep`. Set `K` to `CompactExhaustion.choice X.G`. Establish `hfin : ∀ n, ∀ᵐ s ∂ν, ∫⁻ y, (K n).indicator 1 y * ‖f y s‖ₑ ^ 2 ∂X.μ < ⊤`. Introduce `n`. Establish `hK : IsCompact (K n)` using `K.isCompact n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hW : Measurable ((K n).indicator (1 : X.G → ℝ≥0∞))` using `measurable_one.indicator hK.measurableSet`. Apply `hT X.G S X.μ ν F f _ hrep hW` to reduce the goal to its premises. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hF.continuousOn`. Use `ne_top_of_le_ne_top (b := ∫⁻ y, (K n).indicator (fun _ => ENNReal.ofReal C ^ 2) y ∂X.μ) ?_ ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_const hK.measurableSet]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_ne_top (by simp) hK.measure_lt_top.ne`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K n`. Simplify using `only [Set.indicator_of_mem hy, Pi.one_apply, one_mul] gcongr`. Rewrite using `[← ofReal_norm]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hC y hy)`. Simplify using `[Set.indicator_of_notMem hy]`. Rewrite `hfin` using `[← ae_all_iff]`. Use `filter_upwards [hfin] with s hs`. Establish `hm : Measurable fun y => f y s` using `hrep.1.of_uncurry_right`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[locallyIntegrable_iff]`. Introduce `k hk`. Take `⟨n, hn⟩` from `K.exists_superset_of_isCompact hk`. Use `IntegrableOn.mono_set ?_ hn` and prove the remaining obligations. Establish `hKn : IsCompact (K n)` using `K.isCompact n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨hm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `heq : (fun y => (K n).indicator 1 y * ‖f y s‖ₑ ^ 2) = (K n).indicator (fun y => ‖f y s‖ₑ ^ 2)`. Apply the tactic sequence `ext y; by_cases hy : y ∈ K n <;> simp [hy]`. Establish `h2` using `hs n`. Rewrite `h2` using `[heq, lintegral_indicator hKn.measurableSet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ∫⁻ y, ‖f y s‖ₑ ∂(X.μ.restrict (K n)) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const]`. Simplify using the standard rewrite rules. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨hKn.measure_lt_top, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem locint : Tonelli → LocInt := by
   intro hT X S _ ν _ F f hF hrep

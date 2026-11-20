@@ -27,9 +27,9 @@ def chi (K : Type) [Fintype K] : MvPolynomial (Unit ⊕ K) Ω →+* Polynomial (
     (Sum.elim (fun _ => Polynomial.X * Polynomial.C (∏ k, X k)) (fun k => Polynomial.C (X k)))
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[theta, chi, mConeMapOver]`. Introduce and unpack `⟨(u | k), i⟩`. Simplify using `[theta, thetaVal, chi, mConeMapOver, segreJoin, IndefiniteRowSideFullHecke.Kleiman2.joinVec, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, NumbersDVR.segreVec, Polynomial.map_prod, Finset.prod_mul_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[theta, thetaVal, chi, mConeMapOver, segreJoin, IndefiniteRowSideFullHecke.Kleiman2.joinVec]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem map_cone_theta (y : (Σ k, ι k) → Ω) :
     (Polynomial.mapRingHom (mConeMapOver O y).toRingHom).comp (theta ι O) =
@@ -44,9 +44,9 @@ theorem map_cone_theta (y : (Σ k, ι k) → Ω) :
     · simp [theta, thetaVal, chi, mConeMapOver, segreJoin, IndefiniteRowSideFullHecke.Kleiman2.joinVec]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [theta, segreLiftMap, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, coe_eval₂Hom, eval₂_C, Polynomial.coe_mapRingHom, Polynomial.map_C, map_C, aeval_C]`. Both sides reduce to the same expression. Introduce and unpack `⟨(u | k), i⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Simplify using `[theta, thetaVal, segreLiftMap, segreLiftVal, Polynomial.map_prod]`. Simplify using `[theta, thetaVal, segreLiftMap, segreLiftVal]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem segreLiftMap_map (F : Type) [Field F] (φ : O →+* F) (W : Ideal (MRing ι F)) :
     (segreLiftMap ι F W).toRingHom.comp (MvPolynomial.map φ) =
@@ -64,23 +64,23 @@ end SegreFibreIdeal
 
 open SegreFibreIdeal in
 /- English proof (translation)
-Introduce `O _ Ω _ _ F _ φ K _ _ ι _ y`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨c, d, rfl⟩`. Establish `hm : (segreY c * segreMon d - segreY d * segreMon c : MRing (segreIdx ι) O) ∈ mIdealOver O (segreJoin y)`. Simplify using `only [mIdealOver, RingHom.mem_ker, map_sub, map_mul, map_prod, segreY, segreMon, mConeMapOver, aeval_X, segreJoin, IndefiniteRowSideFullHecke.Kleiman2.joinVec, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, NumbersDVR.segreVec, Sum.elim_inr, Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Ideal.mem_map_of_mem (MvPolynomial.map φ) hm` as an intermediate fact. Rewrite using `[SetLike.mem_coe]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[segreY, segreMon, map_prod]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Simplify using `only [Ideal.mem_comap]`. Establish `hr : segreIncl ι F (MvPolynomial.map φ f) = MvPolynomial.map φ (segreIncl ι O f)`. Simplify using `[segreIncl, MvPolynomial.map_rename]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Establish `key : (mConeMapOver O (segreJoin y)).toRingHom.comp (segreIncl ι O).toRingHom = (rename (R` using `Ω) (Sum.inr : K → Unit ⊕ K)).toRingHom.comp (mConeMapOver O y).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[segreIncl, mConeMapOver]`. Introduce and unpack `⟨k, i⟩`. Simplify using `[segreIncl, mConeMapOver, segreJoin, IndefiniteRowSideFullHecke.Kleiman2.joinVec]`. Establish `hc : mConeMapOver O (segreJoin y) (segreIncl ι O f) = rename Sum.inr (mConeMapOver O y f)`. Simplify using `using congrArg (fun g => g f) key`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hf`, the goal using `[mIdealOver, RingHom.mem_ker]`. Rewrite using `[hc, hf, map_zero]`. Introduce `W hW`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, segreLift, RingHom.mem_ker]`. Establish `h1` using `congrArg (fun g => g f) (segreLiftMap_map F φ W)`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h1`. Rewrite using `[h1]`. Establish `h2` using `congrArg (fun g => g f) (map_cone_theta (O := O) y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2`. Rewrite `hf` using `[mIdealOver, RingHom.mem_ker]`. Rewrite `h2` using `[hf, map_zero]`. Use extensionality with `n`. Simplify using `only [Polynomial.coeff_map, Polynomial.coe_mapRingHom, Polynomial.coeff_zero, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `hW` to reduce the goal to its premises. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[mIdealOver, RingHom.mem_ker]`. Use `congrArg (fun p => Polynomial.coeff p n) h2` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SegreFibreIdeal.proof : SegreFibreIdeal.Statement := by
   intro O _ Ω _ _ F _ φ K _ _ ι _ y

@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `l R S B _ _ _ _ _ h hl`. Establish `hl' : IsUnit (algebraMap R B (l : R))` using `by simpa using hl`. Use `letI : Algebra (Localization.Away (l : R)) B := (IsLocalization.Away.lift (S := Localization.Away (l : R)) (l : R) hl').toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away (l : R)) B := IsScalarTower.of_algebraMap_eq fun r => (IsLocalization.Away.lift_eq (S := Localization.Away (l : R)) (l : R) hl' r).symm`. Conclude with `Algebra.Etale.of_equiv (Algebra.TensorProduct.cancelBaseChange R (Localization.Away (l : R)) B B S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.etUnit_of :
     EtOfUnit := by

@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.ProdFormulaE
 namespace PI.LocProdFormulaW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h2 sig atP M hM x hx`. Rewrite using `[((h F E sig h2 atP).1 M hM x hx).2, Rat.cast_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem locProdFormula_of (h : PI.ProdFormulaE.ProdFormulaE) : PI.LocProdFormula := by
   intro F E _ _ _ _ _ h2 sig atP M hM x hx

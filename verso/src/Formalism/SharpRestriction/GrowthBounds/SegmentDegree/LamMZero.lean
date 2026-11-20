@@ -11,9 +11,9 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Substitute `h` using the available equality. Break down `lt_trichotomy m 0 with hm | hm | hm` into its components or cases. Establish `: m * J ≤ -J` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Conclude with `hm`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: J ≤ m * J` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lam_m_zero {a b m J : ℤ} (ha : 0 ≤ a) (ha' : a < J) (hb : 0 ≤ b) (hb' : b < J) (h : b = a + m * J) :
     m = 0 := by
@@ -26,13 +26,11 @@ theorem lam_m_zero {a b m J : ℤ} (ha : 0 ≤ a) (ha' : a < J) (hb : 0 ≤ b) (
     omega
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ i hi`. Establish `: i = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `le_refl _`. Consider the case `succ k ih`. Introduce `hk i hi`. Break down `Nat.lt_or_ge i (k + 1) with h | h` into its components or cases.
+Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1` using `ih (by omega) i (by omega)`. Establish `h2` using `hV.2.2.1 j k hk`. Use linear arithmetic over natural numbers and integers. Establish `: i = k + 1` using `by omega`. Substitute `this` using the available equality.
-
-Conclude with `le_refl _`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem fr_le_fr_of_index_le {n' r : ℕ} [NeZero n'] (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁)
     (j : ℤ) : ∀ k, k < r → ∀ i ≤ k, F.fr j i ≤ F.fr j k := by
@@ -54,11 +52,11 @@ private theorem fr_le_fr_of_index_le {n' r : ℕ} [NeZero n'] (F : Frames n' r) 
       exact le_refl _
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ h1 h2`. Conclude with `⟨0, le_refl _, le_antisymm h2 h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `hk h1 h2`. Break down `le_or_gt x (F.fr j k) with h | h` into its components or cases. Take `⟨i, hi, hxi⟩` from `ih (by omega) h1 h`. Conclude with `⟨i, by omega, hxi⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `lt_or_eq_of_le h2 with h' | h'` into its components or cases. Conclude with `absurd hx (hV.2.2.2.2.2.1 j k x hk h h')`. Conclude with `⟨k + 1, le_refl _, h'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_index_eq_fr_of_between {n' r : ℕ} [NeZero n'] (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁)
     (j x : ℤ) (hx : posOf n' x ∈ F.TT) :
@@ -78,13 +76,13 @@ private theorem exists_index_eq_fr_of_between {n' r : ℕ} [NeZero n'] (F : Fram
       · exact ⟨k + 1, le_refl _, h'⟩
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hx`. Take `⟨⟨hx1, hx2⟩, hxT⟩` from `hx`. Establish `hW' : x ≤ X.F.fr (j - 1) (r - 1)` using `hW`. Take `⟨i, hi, rfl⟩` from `exists_index_eq_fr_of_between X.F hV (j - 1) x hxT (r - 1) (by omega) hx1 hW'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, i, by omega, rfl⟩` and prove the remaining obligations. Establish `hg` using `hV.2.2.2.1 (j - 1 - 1)`. Establish `h1 : j - 1 - 1 + 1 = j - 1` using `by ring`. Rewrite `hg` using `[h1]`. Establish `hm0` using `fr_le_fr_of_index_le X.F hV (j - 1 - 1) (r - 1) (by omega) 0 (Nat.zero_le _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmi` using `fr_le_fr_of_index_le X.F hV (j - 1) (r - 1) (by omega) i hi`. Establish `hm0i` using `fr_le_fr_of_index_le X.F hV (j - 1) i (by omega) 0 (Nat.zero_le _)`. Unfold `Dat.toLate`. Simplify using `only [Finset.mem_filter]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, hmi⟩, hxT⟩`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lam_W_late {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) {L₁ N₁ : ℕ} (hV : X.F.Valid L₁ N₁) (j x : ℤ)
     (hx : x ∈ X.F.letters j) (hW : X.F.IsW j x) : x ∈ X.toLate (j - 1) ∧ ∃ i < r, x = X.F.fr (j - 1) i := by
@@ -111,7 +109,7 @@ theorem lam_W_late {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) {L₁ N₁
     omega
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `h1` using `hV.2.2.2.1 a`. Establish `h2` using `fr_le_fr_of_index_le F hV (a + 1) (r - 1) (by omega) 0 (Nat.zero_le _)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem fr_last_lt_fr_last_succ {n' r : ℕ} [NeZero n'] [NeZero r] (F : Frames n' r) {L₁ N₁ : ℕ}
     (hV : F.Valid L₁ N₁) (a : ℤ) : F.fr a (r - 1) < F.fr (a + 1) (r - 1) := by
@@ -121,9 +119,9 @@ private theorem fr_last_lt_fr_last_succ {n' r : ℕ} [NeZero n'] [NeZero r] (F :
   omega
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h` using `fr_last_lt_fr_last_succ F hV (a + k)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[← add_assoc]`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem fr_last_le_fr_last_add_nat {n' r : ℕ} [NeZero n'] [NeZero r] (F : Frames n' r) {L₁ N₁ : ℕ}
     (hV : F.Valid L₁ N₁) (a : ℤ) : ∀ k : ℕ, F.fr a (r - 1) ≤ F.fr (a + k) (r - 1) := by
@@ -137,7 +135,7 @@ private theorem fr_last_le_fr_last_add_nat {n' r : ℕ} [NeZero n'] [NeZero r] (
     omega
 
 /- English proof (translation)
-Establish `h1` using `fr_last_le_fr_last_add_nat F hV a (b - a).toNat`. Rewrite `h1` using `[Int.toNat_of_nonneg (by omega), show a + (b - a) = b by ring]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fr_last_monotone {n' r : ℕ} [NeZero n'] [NeZero r] (F : Frames n' r) {L₁ N₁ : ℕ}
     (hV : F.Valid L₁ N₁) (a b : ℤ) (h : a ≤ b) : F.fr a (r - 1) ≤ F.fr b (r - 1) := by
@@ -146,15 +144,15 @@ private theorem fr_last_monotone {n' r : ℕ} [NeZero n'] [NeZero r] (F : Frames
   exact h1
 
 /- English proof (translation)
-Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne n')`. Establish `hper` using `hV.2.1 (s - 1) (r - 1)`. Rewrite `hper` using `[show s - 1 + (F.J : ℤ) = s + F.J - 1 by ring]`. Establish `m1` using `fr_last_monotone F hV (s - 1) (a - 1) (by omega)`. Establish `m2` using `fr_last_monotone F hV a (s + F.J - 1) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m3` using `fr_last_monotone F hV (s - 1) (b - 1) (by omega)`. Establish `m4` using `fr_last_monotone F hV b (s + F.J - 1) (by omega)`. Establish `e1 : x % (n' : ℤ) + n' * (x / n') = x` using `by rw [Int.emod_def]; ring`. Establish `e2 : x' % (n' : ℤ) + n' * (x' / n') = x'` using `by rw [Int.emod_def]; ring`. Establish `hq` using `lam_m_zero (a := x - F.fr (s - 1) (r - 1) - 1) (b := x' - F.fr (s - 1) (r - 1) - 1) (m := x' / n' - x / n') (J := n') (by omega) (by omega) (by omega) (by omega) (by linear_combination e1 - e2 - hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : x = x'`. Establish `hq' : x' / (n' : ℤ) = x / n'` using `by linarith`. Rewrite `e2` using `[hq']`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, hxx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hxx` using the available equality. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Use `fr_last_monotone F hV a (b - 1) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `fr_last_monotone F hV b (a - 1) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem eq_of_mod_eq_of_mem_Ioc_fr_last {n' r : ℕ} [NeZero n'] [NeZero r] (F : Frames n' r) {L₁ N₁ : ℕ}
     (hV : F.Valid L₁ N₁) (s a b x x' : ℤ) (hsa : s ≤ a) (haJ : a < s + F.J) (hsb : s ≤ b)
@@ -187,9 +185,9 @@ private theorem eq_of_mod_eq_of_mem_Ioc_fr_last {n' r : ℕ} [NeZero n'] [NeZero
     omega
 
 /- English proof (translation)
-Unfold `Dat.toLate at h`. Simplify using `only [Finset.mem_filter] at h`. Take `⟨h1, h2⟩` from `h`. Unfold `Frames.letters at h1`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at h1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Frames.IsW at h2`. Conclude with `⟨by omega, h1.1.2, h1.2⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private theorem mem_Ioc_and_posOf_mem_of_mem_late {n' r : ℕ} [NeZero n'] (X : Dat n' r) (j x : ℤ) (h : x ∈ X.toLate j) :
     X.F.fr (j - 1) (r - 1) < x ∧ x ≤ X.F.fr j (r - 1) ∧ posOf n' x ∈ X.F.TT := by
@@ -203,9 +201,9 @@ private theorem mem_Ioc_and_posOf_mem_of_mem_late {n' r : ℕ} [NeZero n'] (X : 
   exact ⟨by omega, h1.1.2, h1.2⟩
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `h0` using `fr_le_fr_of_index_le X.F hV (j - 1) (r - 1) (by omega) 0 (Nat.zero_le _)`. Unfold `Dat.toLate`. Simplify using `only [Finset.mem_filter]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, h2⟩, h3⟩`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem mem_late_of_mem_Ioc_of_posOf_mem {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) {L₁ N₁ : ℕ}
     (hV : X.F.Valid L₁ N₁) (j x : ℤ) (h1 : X.F.fr (j - 1) (r - 1) < x) (h2 : x ≤ X.F.fr j (r - 1))
@@ -223,11 +221,11 @@ private theorem mem_late_of_mem_Ioc_of_posOf_mem {n' r : ℕ} [NeZero n'] [NeZer
     omega
 
 /- English proof (translation)
-Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne n')`. Unfold `posOf at h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only at h'`. Use `clear h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `a1` using `Int.emod_nonneg x (ne_of_gt hn)`. Establish `a2` using `Int.emod_lt_of_pos x hn`. Establish `b1` using `Int.emod_nonneg x' (ne_of_gt hn)`. Establish `b2` using `Int.emod_lt_of_pos x' hn`. Generalize the expression as in `x % (n' : ℤ) = u at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `x' % (n' : ℤ) = v at *`. Rewrite `h'` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem emod_eq_of_posOf_eq' {n' : ℕ} [NeZero n'] {x x' : ℤ} (h : posOf n' x = posOf n' x') :
     x % (n' : ℤ) = x' % (n' : ℤ) := by
@@ -246,7 +244,7 @@ private theorem emod_eq_of_posOf_eq' {n' : ℕ} [NeZero n'] {x x' : ℤ} (h : po
   omega
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[pow_succ, ← Nat.div_div_eq_div_mul, Nat.log_div_base, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -259,7 +257,7 @@ private theorem nat_log_div_pow_eq_sub (p N : ℕ) : ∀ d : ℕ, Nat.log p (N /
     omega
 
 /- English proof (translation)
-Unfold `Dat.Rj`. Rewrite using `[div_mul_eq_div_div, ← Nat.cast_pow, Nat.floor_div_natCast]`. Conclude with `nat_log_div_pow_eq_sub p _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Rj_eq_log_floor {n' r : ℕ} (X : Dat n' r) (p K : ℕ) (j : ℤ) :
     X.Rj p K j = Nat.log p ⌊X.a / (8 * X.Y * Dat.k (r := r) K ^ 2 * ↑X.Ns)⌋₊ - X.F.dist j (X.F.fr (j - 1) 0) := by
@@ -268,9 +266,9 @@ private theorem Rj_eq_log_floor {n' r : ℕ} (X : Dat n' r) (p K : ℕ) (j : ℤ
   exact nat_log_div_pow_eq_sub p _ _
 
 /- English proof (translation)
-Establish `hRj` using `Rj_eq_log_floor X p K j`. Establish `hRc` using `Rj_eq_log_floor X p K c`. Establish `hRc1` using `Rj_eq_log_floor X p K (c + 1)`. Unfold `Dat.Pz Dat.Qc`. Rewrite using `[hRj, hRc, hRc1, ← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `Frames.dist`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem Pz_eq_Pz_mul_Qc {n' r : ℕ} (X : Dat n' r) (p K : ℕ) (j c x x' s : ℤ)
     (h1 : X.F.fr c (r - 1) = X.F.fr (j - 1) (r - 1) + s)
@@ -293,47 +291,43 @@ private theorem Pz_eq_Pz_mul_Qc {n' r : ℕ} (X : Dat n' r) (p K : ℕ) (j c x x
   omega
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hH _ _`. Establish `hV` using `hH.valid`. Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne n')`. Establish `hJ : 1 ≤ X.F.J` using `hV.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' x hx x' hx' hp`. Take `⟨a1, a2, a3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x hx`. Take `⟨b1, b2, b3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x' hx'`. Establish `hj` using `j.isLt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj'` using `j'.isLt`. Take `⟨e1, e2⟩` from `eq_of_mod_eq_of_mem_Ioc_fr_last X.F hV 0 _ _ x x' (by omega) (by omega) (by omega) (by omega) a1 a2 b1 b2 (emod_eq_of_posOf_eq' hp)`. Conclude with `⟨Fin.ext (by omega), e2⟩`. Introduce `j j' x hx hW x' hx' hW' hp`. Take `⟨hl, -⟩` from `lam_W_late X hV _ x hx hW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hl', -⟩` from `lam_W_late X hV _ x' hx' hW'`. Take `⟨a1, a2, a3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x hl`. Take `⟨b1, b2, b3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x' hl'`. Establish `hj` using `j.isLt`. Establish `hj'` using `j'.isLt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e1, e2⟩` from `eq_of_mod_eq_of_mem_Ioc_fr_last X.F hV (-1) _ _ x x' (by omega) (by omega) (by omega) (by omega) a1 a2 b1 b2 (emod_eq_of_posOf_eq' hp)`. Conclude with `⟨Fin.ext (by omega), e2⟩`. Introduce `j j' x hx hW x' hx' hp`. Take `⟨hl, i, hi, hxi⟩` from `lam_W_late X hV _ x hx hW`. Take `⟨a1, a2, a3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x hl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2, b3⟩` from `mem_Ioc_and_posOf_mem_of_mem_late X _ x' hx'`. Establish `hj` using `j.isLt`. Establish `hj'` using `j'.isLt`. Establish `hTT : X.F.fr (((j : ℕ) : ℤ) - 1) (r - 1) < X.F.fr ((j : ℕ) : ℤ) (r - 1)`. Establish `h` using `fr_last_lt_fr_last_succ X.F hV (((j : ℕ) : ℤ) - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hf1` using `fr_le_fr_of_index_le X.F hV (((j : ℕ) : ℤ) - 1) (r - 1) (by omega) 0 (Nat.zero_le _)`. Establish `hf2` using `fr_le_fr_of_index_le X.F hV (((j : ℕ) : ℤ) - 1 - 1) (r - 1) (by omega) 0 (Nat.zero_le _)`. Establish `hg` using `hV.2.2.2.1 (((j : ℕ) : ℤ) - 1 - 1)`. Rewrite `hg` using `[sub_add_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : X.F.fr (((j : ℕ) : ℤ) - 1) 0 ≤ X.F.fr ((j : ℕ) : ℤ) (r - 1)` using `by omega`. Establish `hC : X.F.fr (((j : ℕ) : ℤ) - 1 - 1) 0 < X.F.fr (((j : ℕ) : ℤ) - 1) 0` using `by omega`. Establish `hB : X.F.fr (((j : ℕ) : ℤ) - 1 - 1) 0 ≤ X.F.fr (((j : ℕ) : ℤ) - 1) (r - 1)` using `by omega`. Break down `Nat.eq_zero_or_pos (j : ℕ) with hj0 | hj0` into its components or cases. Establish `q1 : X.F.fr (((j : ℕ) : ℤ) - 1 + X.F.J - 1) (r - 1) = X.F.fr (((j : ℕ) : ℤ) - 1 - 1) (r - 1) + n'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[show ((j : ℕ) : ℤ) - 1 + X.F.J - 1 = ((j : ℕ) : ℤ) - 1 - 1 + X.F.J by ring]`. Conclude with `hV.2.1 _ _`. Establish `q2` using `hV.2.1 (((j : ℕ) : ℤ) - 1) (r - 1)`. Establish `hpy : (x + n') % (n' : ℤ) = x' % (n' : ℤ)`. Rewrite using `[Int.add_emod_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `emod_eq_of_posOf_eq' hp`. Take `⟨e1, e2⟩` from `eq_of_mod_eq_of_mem_Ioc_fr_last X.F hV 0 (((j : ℕ) : ℤ) - 1 + X.F.J) ((j' : ℕ) : ℤ) (x + n') x' (by omega) (by omega) (by omega) (by omega) (by rw [q1]; omega) (by rw [q2]; omega) b1 b2 hpy`. Use `⟨⟨i, hi, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← e1, ← e2, hxi]`. Conclude with `(hV.2.1 _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2]`. Use `Pz_eq_Pz_mul_Qc X p K _ _ x _ n' (hV.2.1 _ _) ?_ ?_ ?_ rfl a2 hTT hA hB hC` and prove the remaining obligations. Rewrite using `[show ((j : ℕ) : ℤ) - 1 + X.F.J - 1 = ((j : ℕ) : ℤ) - 1 - 1 + X.F.J by ring]`. Conclude with `hV.2.1 _ _`. Rewrite using `[show ((j : ℕ) : ℤ) - 1 + X.F.J + 1 = ((j : ℕ) : ℤ) + X.F.J by ring]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hV.2.1 _ _`. Rewrite using `[show ((j : ℕ) : ℤ) - 1 + X.F.J + 1 - 1 = ((j : ℕ) : ℤ) - 1 + X.F.J by ring]`. Conclude with `hV.2.1 _ _`. Take `⟨e1, e2⟩` from `eq_of_mod_eq_of_mem_Ioc_fr_last X.F hV 0 (((j : ℕ) : ℤ) - 1) ((j' : ℕ) : ℤ) x x' (by omega) (by omega) (by omega) (by omega) a1 a2 b1 b2 (emod_eq_of_posOf_eq' hp)`. Use `⟨⟨i, hi, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e1, ← e2]`. Conclude with `hxi`. Rewrite using `[← e1, ← e2]`. Use `Pz_eq_Pz_mul_Qc X p K _ (((j : ℕ) : ℤ) - 1) x x 0 (by rw [add_zero]) (by rw [add_zero]) ?_ ?_ (by rw [add_zero]) a2 hTT hA hB hC` and prove the remaining obligations. Rewrite using `[sub_add_cancel, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_add_cancel, add_zero]`. Introduce `t ht`. Establish `hper` using `hV.2.1 (-1) (r - 1)`. Take `⟨y, hy⟩ : ∃ y : ℤ, y = X.F.fr (-1) (r - 1) + 1 + (((t : ℕ) : ℤ) - (X.F.fr (-1) (r - 1) + 1)) % (n' : ℤ)` from `⟨_, rfl⟩`. Establish `hy0` using `Int.emod_nonneg (((t : ℕ) : ℤ) - (X.F.fr (-1) (r - 1) + 1)) (ne_of_gt hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hy1` using `Int.emod_lt_of_pos (((t : ℕ) : ℤ) - (X.F.fr (-1) (r - 1) + 1)) hn`. Establish `ht'` using `t.isLt`. Establish `hypos : posOf n' y = t`. Establish `hmod : y % (n' : ℤ) = ((t : ℕ) : ℤ)`. Establish `hy2 : y = ((t : ℕ) : ℤ) + (n' : ℤ) * (-((((t : ℕ) : ℤ) - (X.F.fr (-1) (r - 1) + 1)) / (n' : ℤ)))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy2, Int.add_mul_emod_self_left]`. Conclude with `Int.emod_eq_of_lt (by omega) (by omega)`. Unfold `posOf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[hmod, Int.toNat_natCast]`. Conclude with `Nat.mod_eq_of_lt ht'`. Establish `hyB : y ≤ X.F.fr (((X.F.J - 1 : ℕ)) : ℤ) (r - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[show (((X.F.J - 1 : ℕ)) : ℤ) = -1 + X.F.J by omega, hper]`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∃ k : ℕ, y ≤ X.F.fr (k : ℤ) (r - 1)` using `⟨_, hyB⟩`. Establish `hk0` using `Nat.find_spec hex`. Establish `hk0le` using `Nat.find_min' hex hyB`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmin : ∀ m < Nat.find hex, ¬ y ≤ X.F.fr (m : ℤ) (r - 1)` using `fun m hm => Nat.find_min hex hm`. Generalize the expression as in `Nat.find hex = k0 at hk0 hk0le hmin`. Establish `hlow : X.F.fr ((k0 : ℤ) - 1) (r - 1) < y`. Break down `Nat.eq_zero_or_pos k0 with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
-
-Rewrite using `[Nat.cast_zero, zero_sub]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hmin (k0 - 1) (by omega)`. Rewrite `h` using `[show (((k0 - 1 : ℕ)) : ℤ) = (k0 : ℤ) - 1 by omega]`. Use linear arithmetic over natural numbers and integers.
-
-Use `⟨⟨k0, by omega⟩, y, ?_, hypos⟩` and prove the remaining obligations. Conclude with `mem_late_of_mem_Ioc_of_posOf_mem X hV _ y hlow hk0 (by rw [hypos]; exact ht)`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restLamGeo (C₀ : ℝ) : RestLamGeo C₀ := by
   classical
@@ -449,23 +443,23 @@ theorem restLamGeo (C₀ : ℝ) : RestLamGeo C₀ := by
     exact mem_late_of_mem_Ioc_of_posOf_mem X hV _ y hlow hk0 (by rw [hypos]; exact ht)
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hH la e j i`. Establish `hV` using `hH.valid`. Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : X.F.fr ((j : ℕ) : ℤ) i ≤ X.F.fr ((j : ℕ) : ℤ) (r - 1)` using `fr_le_fr_of_index_le X.F hV _ (r - 1) (by omega) i (by omega)`. Establish `h0i : X.F.fr ((j : ℕ) : ℤ) 0 ≤ X.F.fr ((j : ℕ) : ℤ) i` using `fr_le_fr_of_index_le X.F hV _ i hi 0 (Nat.zero_le _)`. Establish `hg` using `hV.2.2.2.1 (((j : ℕ) : ℤ) - 1)`. Rewrite `hg` using `[sub_add_cancel]`. Establish `h00` using `fr_le_fr_of_index_le X.F hV (((j : ℕ) : ℤ) - 1) (r - 1) (by omega) 0 (Nat.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT` using `(hV.2.2.2.2.1 ((j : ℕ) : ℤ) i hi).1`. Establish `hmem : X.F.fr ((j : ℕ) : ℤ) i ∈ X.F.letters ((j : ℕ) : ℤ)`. Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, hle⟩, hT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hnW : ¬ X.F.IsW ((j : ℕ) : ℤ) (X.F.fr ((j : ℕ) : ℤ) i)`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers. Unfold `Dat.bfam`. Rewrite using `[if_pos hmem, if_neg hnW, if_pos h0i]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos rfl]`. Unfold `Dat.eZ`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Establish `hm : ((j : ℕ) : ℤ) % (X.F.J : ℤ) = ((j : ℕ) : ℤ)` using `Int.emod_eq_of_lt (by omega) (by omega)`. Simplify using `only [hm, Int.toNat_natCast]`. Conclude with `Nat.mod_eq_of_lt hj`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Establish `hbl` using `b.isLt`. Break down `lt_trichotomy (b : ℕ) (i : ℕ) with hlt | heq | hgt` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1` using `hV.2.2.1 ((j : ℕ) : ℤ) b (by omega)`. Establish `h2` using `fr_le_fr_of_index_le X.F hV ((j : ℕ) : ℤ) i hi ((b : ℕ) + 1) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `Fin.ext heq`. Establish `h1` using `hV.2.2.1 ((j : ℕ) : ℤ) i (by omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `fr_le_fr_of_index_le X.F hV ((j : ℕ) : ℤ) b hbl ((i : ℕ) + 1) (by omega)`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restLamTau : RestLamTau := by
   classical
@@ -517,7 +511,7 @@ theorem restLamTau : RestLamTau := by
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-The claim follows from `restLamInj_of C₀ (restLamGeo C₀) restLamTau`.
+A detailed English derivation is pending.
 -/
 theorem restLamInj (C₀ : ℝ) : RestLamInj C₀ := restLamInj_of C₀ (restLamGeo C₀) restLamTau
 

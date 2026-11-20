@@ -12,13 +12,13 @@ section Principal
 variable {S M : Type*} [CommRing S] [AddCommGroup M] [Module S M]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Establish `ex : ∀ t : span {g} ⊗[S] M, ∃ m : M, t = (⟨g, mem_span_singleton_self g⟩ : span {g}) ⊗ₜ[S] m`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (tmul_zero _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul i m`. Take `⟨i, hi⟩` from `i`. Take `⟨r, rfl⟩` from `mem_span_singleton'.1 hi`. Use `⟨r • m, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_tmul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Consider the case `add x y hx hy`. Take `⟨m₁, rfl⟩` from `hx`. Take `⟨m₂, rfl⟩` from `hy`. Conclude with `⟨m₁ + m₂, (tmul_add _ _ _).symm⟩`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `t ht`. Take `⟨m, rfl⟩` from `ex t`. Rewrite `ht` using `[lift.tmul]`. Conclude with `h m ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma principal_inj (g : S)
     (h : ∀ m : M, g • m = 0 → (⟨g, mem_span_singleton_self g⟩ : span {g}) ⊗ₜ[S] m = 0) :
@@ -51,19 +51,17 @@ section ZModSq
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, ZMod.natCast_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma p_sq_zero : ((p : ZMod (p ^ 2))) ^ 2 = 0 := by
   rw [← Nat.cast_pow, ZMod.natCast_self]
 
 /- English proof (translation)
-Establish `: NeZero (p ^ 2)` using `⟨pow_ne_zero 2 hp.out.ne_zero⟩`. Establish `hg : g = ((g.val : ℕ) : ZMod (p ^ 2))` using `(ZMod.natCast_zmod_val g).symm`. Establish `unit_of : ∀ k : ℕ, ¬ p ∣ k → IsUnit ((k : ℕ) : ZMod (p ^ 2))`. Introduce `k hk`. Rewrite using `[ZMod.isUnit_iff_coprime]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.pow_right 2 (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hk))`. Distinguish the cases in `h1 : p ∣ g.val`. Take `⟨k, hk⟩` from `h1`. Distinguish the cases in `h2 : p ∣ k`. Use `right`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Take `⟨l, hl⟩` from `h2`. Rewrite using `[hg, hk, hl, Nat.cast_mul, Nat.cast_mul, ← mul_assoc, ← sq, p_sq_zero, zero_mul]`. Use `right`. Use `left`.
-
-Conclude with `⟨k, unit_of k h2, by rw [hg, hk, Nat.cast_mul]⟩`. Use `left`. Rewrite using `[hg]`. Conclude with `unit_of _ h1`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma zmod_trichotomy (g : ZMod (p ^ 2)) :
     IsUnit g ∨ (∃ u : ZMod (p ^ 2), IsUnit u ∧ g = (p : ZMod (p ^ 2)) * u) ∨ g = 0 := by
@@ -85,17 +83,11 @@ private lemma zmod_trichotomy (g : ZMod (p ^ 2)) :
     rw [hg]; exact unit_of _ h1
 
 /- English proof (translation)
-Distinguish the cases in `hu : ∃ g ∈ J, IsUnit g`. Use `right`. Use `right`. Take `⟨g, hgJ, hg⟩` from `hu`. Rewrite using `[span_singleton_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_top_of_isUnit_mem J hgJ hg`. Distinguish the cases in `hz : ∀ g ∈ J, g = 0`. Use `left`. Rewrite using `[span_singleton_eq_bot.2 rfl]`. Conclude with `eq_bot_iff.2 (fun g hg => (mem_bot).2 (hz g hg))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Use `left push Not at hz`. Take `⟨g, hgJ, hg0⟩` from `hz`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
-
-Break down `zmod_trichotomy p x with h | ⟨u, _, rfl⟩ | rfl` into its components or cases. Conclude with `absurd ⟨x, hx, h⟩ hu`. Conclude with `mem_span_singleton'.2 ⟨u, mul_comm _ _⟩`. Conclude with `zero_mem _`. Rewrite using `[span_singleton_le_iff_mem]`.
-
-Break down `zmod_trichotomy p g with h | ⟨u, hu', rfl⟩ | rfl` into its components or cases. Conclude with `absurd ⟨g, hgJ, h⟩ hu`. Establish `: (p : ZMod (p ^ 2)) = p * u * ↑hu'.unit⁻¹`. Rewrite using `[mul_assoc, IsUnit.mul_val_inv, mul_one]`. Rewrite using `[this]`.
-
-Conclude with `J.mul_mem_right _ hgJ`. Conclude with `absurd rfl hg0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma zmod_ideal (J : Ideal (ZMod (p ^ 2))) :
     J = span {0} ∨ J = span {(p : ZMod (p ^ 2))} ∨ J = span {1} := by
@@ -127,13 +119,13 @@ private lemma zmod_ideal (J : Ideal (ZMod (p ^ 2))) :
         · exact absurd rfl hg0
 
 /- English proof (translation)
-Rewrite using `[Module.Flat.iff_lift_lsmul_comp_subtype_injective]`. Introduce `J _`. Break down `zmod_ideal p J with rfl | rfl | rfl` into its components or cases. Apply `principal_inj` to reduce the goal to its premises. Introduce `m _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨0, mem_span_singleton_self 0⟩ : span {(0 : ZMod (p ^ 2))}) = 0` using `rfl`. Rewrite using `[this, zero_tmul]`. Apply `principal_inj` to reduce the goal to its premises. Introduce `m hm`. Take `⟨y, rfl⟩` from `h m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← smul_tmul]`. Establish `: (p : ZMod (p ^ 2)) • (⟨p, mem_span_singleton_self _⟩ : span {(p : ZMod (p ^ 2))}) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (p : ZMod (p ^ 2)) * p = 0`. Rewrite using `[← sq, p_sq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_tmul]`. Apply `principal_inj` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[one_smul]`. Rewrite using `[hm, tmul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_ann {M : Type*} [AddCommGroup M] [Module (ZMod (p ^ 2)) M]
     (h : ∀ m : M, (p : ZMod (p ^ 2)) • m = 0 → ∃ y : M, m = (p : ZMod (p ^ 2)) • y) :
@@ -167,23 +159,23 @@ variable (p : ℕ) [hp : Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p
   [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Introduce `pflat _`. Use `set T : WittVector p (PreTilt O p) := teichmuller p pflat with hT`. Use `set I : Ideal (WittVector p (PreTilt O p)) := span {(p : WittVector p (PreTilt O p)) ^ 2, T} with hI`. Establish `hpc : ((p : ℕ) : WittVector p (PreTilt O p) ⧸ I) = Ideal.Quotient.mk I (p : WittVector p (PreTilt O p))` using `(map_natCast _ p).symm`. Establish `hTI : Ideal.Quotient.mk I T = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (subset_span (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hann : ∀ x : WittVector p (PreTilt O p) ⧸ I, (p : WittVector p (PreTilt O p) ⧸ I) * x = 0 → ∃ y, x = (p : WittVector p (PreTilt O p) ⧸ I) * y`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[hpc, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, hI, mem_span_pair]`. Take `⟨c, d, hcd⟩` from `hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : d - teichmuller p (d.coeff 0) ∈ span {(p : WittVector p (PreTilt O p))}`. Rewrite using `[mem_span_p_iff]`. Establish `: constantCoeff (d - teichmuller p (d.coeff 0)) = 0`. Rewrite using `[map_sub, constantCoeff_apply, constantCoeff_apply, teichmuller_coeff_zero, sub_self]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `mem_span_singleton'.1 hd`. Establish `h1 : teichmuller p (d.coeff 0) * T = (a - c * p - e * T) * p`. Establish `hd' : d = teichmuller p (d.coeff 0) + e * p` using `by rw [he]; ring`. Rewrite `hcd` using `[hd']`. Take the linear combination `hcd`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : teichmuller p (d.coeff 0) * T = 0`. Establish `hm : teichmuller p (d.coeff 0) * T ∈ span {(p : WittVector p (PreTilt O p))}` using `mem_span_singleton'.2 ⟨_, h1.symm⟩`. Rewrite `hm` using `[mem_span_p_iff, mul_coeff_zero, hT, teichmuller_coeff_zero, teichmuller_coeff_zero]`. Rewrite using `[hT, ← map_mul, hm, teichmuller_zero]`. Establish `h3 : a = c * p + e * T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `p_mul_eq_zero _ (h1.symm.trans h2)` as an intermediate fact. Take the linear combination `this`. Use `⟨Ideal.Quotient.mk I c, ?_⟩` and prove the remaining obligations. Rewrite using `[hpc, h3, map_add, map_mul, map_mul, hTI]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, hann, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Conclude with `⟨mem_span_pair.2 ⟨1, 2 * p - T, by ring⟩, subset_span (by simp)⟩`. Rewrite using `[span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨mem_span_pair.2 ⟨1, T - 2 * p, by ring⟩, subset_span (by simp)⟩`. Rewrite using `[hpc, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `subset_span (by simp)`. Introduce `_`. Apply `flat_of_ann` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `m hm`. Rewrite `hm` using `[Algebra.smul_def, map_natCast]`. Take `⟨y, hy⟩` from `hann m hm`. Conclude with `⟨y, by rw [Algebra.smul_def, map_natCast]; exact hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem flatW' : FlatW'Statement p O := by
   intro pflat _

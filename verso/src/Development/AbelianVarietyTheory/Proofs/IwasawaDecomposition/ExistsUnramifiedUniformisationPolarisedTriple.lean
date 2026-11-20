@@ -17,7 +17,7 @@ namespace GlobalTheory.ResLift
 open ReciprocityTheory.ChartRestriction.G.Semi.Nb
 
 /- English proof (translation)
-Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, maxEq f hf hg, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem irreducible_adjoinRoot {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (f : V[X])
     (hf : f.Monic) (hg : Irreducible (f.map (residue V))) [IsDomain (AdjoinRoot f)] [IsLocalRing (AdjoinRoot f)]
@@ -27,29 +27,27 @@ theorem irreducible_adjoinRoot {V : Type} [CommRing V] [IsDomain V] [IsDiscreteV
     Set.image_singleton]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V' _ _ _ _ k'' _ _ _ hn`. Distinguish the cases in `hs : Function.Surjective (algebraMap (ResidueField V') k'')`. Establish `hb : Function.Bijective (algebraMap (ResidueField V') k'')` using `⟨(algebraMap (ResidueField V') k'').injective, hs⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨V', inferInstance, inferInstance, inferInstance, inferInstance, Algebra.id V', Module.Finite.self V', Function.injective_id, fun ϖ h => h, ?_, (RingEquiv.ofBijective _ hb).symm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalHom (RingHom.id V')`. Use `infer_instance`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ = ResidueField.map (RingHom.id V') x`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ResidueField.map_id]`. Conclude with `(RingEquiv.ofBijective _ hb).symm_apply_apply x`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α : k'', α ∉ Set.range (algebraMap (ResidueField V') k'') := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs h`. Establish `hint : IsIntegral (ResidueField V') α` using `.of_finite (ResidueField V') α`. Establish `hmon` using `minpoly.monic hint`. Establish `hirr` using `minpoly.irreducible hint`. Take `⟨f, hfg, hdeg, hf⟩` from `exists_monic_lift (minpoly (ResidueField V') α) hmon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Irreducible (f.map (residue V'))` using `hfg ▸ hirr`. Use `isDomain f hf hg` as an intermediate fact. Use `isLocal f hf hg` as an intermediate fact. Use `dvr f hf hg` as an intermediate fact. Use `complete f hf hg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `locHom f hf hg` as an intermediate fact. Use `finite f hf` as an intermediate fact. Establish `haev : Polynomial.aeval α (f.map (residue V')) = 0`. Rewrite using `[hfg]`. Conclude with `minpoly.aeval _ α`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `ψ : AdjoinRoot (f.map (residue V')) →ₐ[ResidueField V'] k''` to `AdjoinRoot.liftAlgHom _ (Algebra.ofId _ _) α (by rwa [Polynomial.aeval_def] at haev)`. Use `letI : Algebra (ResidueField (AdjoinRoot f)) k'' := (ψ.toRingHom.comp (resEquiv f hf hg).toRingHom).toAlgebra`. Establish `: Fact (Irreducible (f.map (residue V')))` using `⟨hg⟩`. Use `letI : Algebra (AdjoinRoot (f.map (residue V'))) k'' := ψ.toRingHom.toAlgebra`. Establish `: IsScalarTower (ResidueField V') (AdjoinRoot (f.map (residue V'))) k''` using `IsScalarTower.of_algebraMap_eq fun x => (ψ.commutes x).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Module.finrank (ResidueField V') (AdjoinRoot (f.map (residue V'))) = (minpoly (ResidueField V') α).natDegree`. Rewrite using `[(AdjoinRoot.powerBasis hg.ne_zero).finrank, AdjoinRoot.powerBasis_dim, hfg]`. Establish `hd1 : (minpoly (ResidueField V') α).natDegree ≠ 1` using `fun h => hα (minpoly.natDegree_eq_one_iff.1 h)`. Establish `hd0 : 0 < (minpoly (ResidueField V') α).natDegree` using `minpoly.natDegree_pos hint`. Establish `: FiniteDimensional (AdjoinRoot (f.map (residue V'))) k''` using `Module.Finite.of_restrictScalars_finite (ResidueField V') _ k''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `Module.finrank_mul_finrank (ResidueField V') (AdjoinRoot (f.map (residue V'))) k''`. Establish `hAL : Module.finrank (ResidueField (AdjoinRoot f)) k'' = Module.finrank (AdjoinRoot (f.map (residue V'))) k''` using `Algebra.finrank_eq_of_equiv_equiv (resEquiv f hf hg) (RingEquiv.refl k'') rfl`. Establish `hpos : 0 < Module.finrank (AdjoinRoot (f.map (residue V'))) k''` using `Module.finrank_pos`. Establish `: FiniteDimensional (ResidueField (AdjoinRoot f)) k''` using `Module.finite_of_finrank_pos (hAL ▸ hpos)`. Establish `hlt : Module.finrank (ResidueField (AdjoinRoot f)) k'' < n`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[hAL, ← hn, ← hmul, hL]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨V'', i1, i2, i3, i4, i5, hfin, hinj, hirr'', hloc, e2, he2⟩` from `ih _ hlt (AdjoinRoot f) k'' rfl`. Use `letI : Algebra V' V'' := ((algebraMap (AdjoinRoot f) V'').comp (algebraMap V' (AdjoinRoot f))).toAlgebra`. Establish `: IsScalarTower V' (AdjoinRoot f) V''` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hlc : IsLocalHom (algebraMap V' V'')`. Express the relevant statement in the definitionally equal form `IsLocalHom ((algebraMap (AdjoinRoot f) V'').comp (algebraMap V' (AdjoinRoot f)))`. Use `infer_instance`. Use `⟨V'', i1, i2, i3, i4, inferInstance, Module.Finite.trans (AdjoinRoot f) V'', hinj.comp (inj f hf hg), fun ϖ hϖ => hirr'' _ (irreducible_adjoinRoot f hf hg hϖ), hlc, e2, ?_⟩` and prove the remaining obligations. Establish `h1 : (algebraMap (ResidueField (AdjoinRoot f)) k'').comp (ResidueField.map (algebraMap V' (AdjoinRoot f))) = algebraMap (ResidueField V') k''`.
-
-Express the relevant statement in the definitionally equal form `ψ.toRingHom.comp ((resEquiv f hf hg).toRingHom.comp (ResidueField.map (algebraMap V' (AdjoinRoot f)))) = _`. Rewrite using `[resEquiv_comp f hf hg, ← AdjoinRoot.algebraMap_eq]`. Conclude with `ψ.comp_algebraMap`. Express the relevant statement in the definitionally equal form `e2.toRingHom.comp (algebraMap (ResidueField V') k'') = ResidueField.map ((algebraMap (AdjoinRoot f) V'').comp (algebraMap V' (AdjoinRoot f)))`. Rewrite using `[ResidueField.map_comp, ← h1, ← RingHom.comp_assoc, he2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (n : ℕ) : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V]
@@ -144,15 +142,15 @@ end GlobalTheory.ResLift
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ hV ϖ hϖ t hp`. Take `⟨hd, hc, hz⟩` from `(cDvr_iff V).1 hV`. Set `Ω` to `AlgebraicClosure (ResidueField V)`. Take `⟨s, hs, h⟩` from `GlobalTheory.Ex.UnifModel.exists_finite_split (algebraMap (ResidueField V) Ω) t.G t.semi`. Use `hs.to_subtype` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `k''` to `IntermediateField.adjoin (ResidueField V) s`. Establish `: FiniteDimensional (ResidueField V) k''` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Take `⟨W, _, _, _, hcW, _, -, hinj, hirr, hloc, e, he⟩` from `GlobalTheory.ResLift.exists_lift _ V k'' rfl`. Establish `: IsLocalRing W` using `inferInstance`. Establish `hzW : CharZero W` using `charZero_of_injective_algebraMap hinj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `β : ResidueField W →+* Ω` to `k''.val.toRingHom.comp e.symm.toRingHom`. Establish `hβ : β.comp (ResidueField.map (algebraMap V W)) = algebraMap (ResidueField V) Ω`. Rewrite using `[← he]`. Use extensionality with `x`. Simplify using `[β]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hsp` using `h W (algebraMap V W) β hβ fun x hx => ⟨e ⟨x, IntermediateField.subset_adjoin _ _ hx⟩, by simp [β]⟩`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull CubePf.cubePull (spMap (algebraMap V W)) t`. Establish `j : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap V W))` using `(IsFractionRing.injective W _).comp hinj`. Set `g : FractionRing V →+* FractionRing W` to `IsFractionRing.lift j`. Establish `hp'` using `GlobalTheory.DatUniq.polAt_pull m hp (jK W) (spMap g) ((GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).trans (GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW : CDvr W` using `(cDvr_iff W).2 ⟨inferInstance, hcW, hzW⟩`. Take `⟨P, -⟩` from `GlobalTheory.LN.uDvrSt_holds E H W hW _ hp' hsp`. Conclude with `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W, hW, hinj, hloc, hirr ϖ hϖ, _, m, ⟨P⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif_unram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V]
     [IsLocalRing V], CDvr V → ∀ ϖ : V, Irreducible ϖ → ∀ (t : SAB H (Sp V)), PolAt t (jK V) →

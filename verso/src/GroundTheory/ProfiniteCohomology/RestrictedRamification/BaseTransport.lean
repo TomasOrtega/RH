@@ -54,9 +54,9 @@ def transportLocal :
       (transportLocalMor φ φ' θ e ψ hcomm f i)
 
 /- English proof (translation)
-Use `HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x =>` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => cochainOf_injective (funext fun σ => ?_))`. Express the relevant statement in the definitionally equal form `f.hom (cochainOf A' x (⇑(φ' (e i)) ∘ ⇑(ψ i) ∘ σ)) = f.hom (cochainOf A' x (⇑θ ∘ ⇑(φ i) ∘ σ))`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hcomm i (σ j)).symm`.
+A detailed English derivation is pending.
 -/
 theorem localRes_transportLocal :
     localRes φ' A' (fun j => Rep.res (φ' j).toMonoidHom A') (fun _ => 𝟙 _) ≫
@@ -78,7 +78,7 @@ def compactTransport (n : ℕ) : compactCohomologyRes φ' A' n ⟶ compactCohomo
   HomologicalComplex.homologyMap (compactTransportCochains φ φ' θ e ψ hcomm f) n
 
 /- English proof (translation)
-The claim follows from `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ((congrArg (fun ψ => HomologicalComplex.homologyMap ψ n) (mappingCoconeNat.mapOfHomotopy_fst _)).trans (HomologicalComplex.homologyMap_comp _ _ n))`.
+A detailed English derivation is pending.
 -/
 theorem compactTransport_compactToGlobal (n : ℕ) :
     compactTransport φ φ' θ e ψ hcomm f n ≫ compactToGlobal φ A _ (fun _ => 𝟙 _) n =
@@ -98,7 +98,7 @@ def transportLocalCohomology (n : ℕ) :
 omit [IsTopologicalGroup G] [IsTopologicalGroup G'] in
 
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun z => funext fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (piProj _ i) n).hom ((HomologicalComplex.homologyMap (transportLocal φ φ' θ e ψ hcomm f) n).hom z) = (cohomologyMapAlong (ψ i).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (ψ i)) (transportLocalMor φ φ' θ e ψ hcomm f i) n).hom ((Homologi …`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp _ _ n).symm z, transportLocal, piLift_piProj, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homologyMap_transportLocal_localCohomologyIso (n : ℕ) :
     HomologicalComplex.homologyMap (transportLocal φ φ' θ e ψ hcomm f) n ≫
@@ -139,7 +139,7 @@ def transportLocalIso (i : ι) :
 
 omit [IsTopologicalGroup G] [IsTopologicalGroup G'] in
 /- English proof (translation)
-Establish `hc : ∀ i, Function.Bijective (cohomologyMapAlong (ψ i).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (ψ i)) (transportLocalMor φ φ' θ e ψ hcomm f.hom i) n).hom` using `fun i => ((cohomologyIsoOfContinuousMulEquiv (ψ i) (transportLocalIso φ φ' θ e ψ hcomm f i) n).toLinearEquiv).bijective`. Establish `h1 : Function.Bijective (fun ξ : ∀ j, cohomology (Rep.res (φ' j).toMonoidHom A') n => fun i => ξ (e i))` using `(Equiv.piCongrLeft (fun j => cohomology (Rep.res (φ' j).toMonoidHom A') n) e).symm.bijective`. Conclude with `(Function.Bijective.piMap hc).comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transportLocalCohomology_bijective (n : ℕ) :
     Function.Bijective (transportLocalCohomology φ φ' θ e ψ hcomm f.hom n).hom := by
@@ -194,7 +194,7 @@ variable {K₁ K₂ : Type u} [Group K₁] [TopologicalSpace K₁] [IsTopologica
 include hμ in
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `c.hom (μ.hom (cupCochain h (cochainOf A x) (cochainOf B z) (⇑ι₀ ∘ σ))) = μ₁.hom (cupCochain h (fun τ => a.hom (cochainOf A x (⇑ι₀ ∘ τ))) (fun τ => b.hom (cochainOf B z (⇑ι₀ ∘ τ))) σ)`. Rewrite using `[cupCochain_apply, cupCochain_apply, ← Rep.hom_comm_apply, partialProd_comp_monoidHom]`. Conclude with `congrArg (fun F : Rep.res ι₀ (A ⊗ B) ⟶ C₁ => F.hom ((cochainOf A x fun i => (⇑ι₀ ∘ σ) ⟨i, by omega⟩) ⊗ₜ[k] B.ρ (ι₀ (Fin.partialProd σ ⟨r, by omega⟩)) (cochainOf B z fun j => (⇑ι₀ ∘ σ) ⟨r + j, by omega⟩) : (A ⊗ B : Rep k K₂))) hμ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainsMapAlong_cupPairingCochains {r s n : ℕ} (h : r + s = n) (x : (cochainsComplex A).X r)
     (z : (cochainsComplex B).X s) :
@@ -230,9 +230,9 @@ omit [IsTopologicalGroup G] [IsTopologicalGroup G'] [∀ i, IsTopologicalGroup (
 include hμ in
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Express the relevant statement in the definitionally equal form `fC.hom (μ'.hom ((a : A') ⊗ₜ[k] (b : B') : (A' ⊗ B' : Rep k G'))) = μ.hom ((fA.hom a ⊗ₜ[k] fB.hom b : (A ⊗ B : Rep k G)))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `congrArg (fun F : Rep.res θ.toMulEquiv.toMonoidHom (A' ⊗ B') ⟶ C => F.hom ((a : A') ⊗ₜ[k] (b : B') : (A' ⊗ B' : Rep k G'))) hμ`.
+A detailed English derivation is pending.
 -/
 theorem transportLocalMor_pairing (i : ι) :
     (Rep.resFunctor (ψ i).toMulEquiv.toMonoidHom).map ((Rep.resFunctor (φ' (e i)).toMonoidHom).map μ') ≫
@@ -252,7 +252,7 @@ omit [IsTopologicalGroup G] [IsTopologicalGroup G'] in
 include hμ in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((cochainsMapAlong (ψ i).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (ψ i)) (transportLocalMor φ φ' θ e ψ hcomm fC i)).f n).hom (cupPairingCochains (A := Rep.res (φ' (e i)).toMonoidHom A') (B := Rep.res (φ' (e i)).toMonoidHom B') (C := Rep.res (φ' (e i)).toMonoidHom C …`. Conclude with `cochainsMapAlong_cupPairingCochains (ψ i).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (ψ i)) (A := Rep.res (φ' (e i)).toMonoidHom A') (B := Rep.res (φ' (e i)).toMonoidHom B') (C := Rep.res (φ' (e i)).toMonoidHom C') (A₁ := Rep.res (φ i).toMonoidHom A) (B₁ := Rep.res ( …`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem transportLocal_pi_cup {r s n : ℕ} (hh : r + s = n)
     (y₀ : (piComplex fun j => cochainsComplex (Rep.res (φ' j).toMonoidHom A')).X r)
@@ -287,9 +287,7 @@ theorem transportLocal_pi_cup {r s n : ℕ} (hh : r + s = n)
 include hμ in
 
 /- English proof (translation)
-Establish `hc` using `fun {r s n : ℕ} (hh : r + s = n) (x₀ : (cochainsComplex A').X r) (z₀ : (cochainsComplex B').X s) => localRes_cupPairingCochains φ' μ' (Aᵥ := fun j => Rep.res (φ' j).toMonoidHom A') (Bᵥ := fun j => Rep.res (φ' j).toMonoidHom B') (Cᵥ := fun j => Rep.res (φ' j).toMonoidHom C') (a := …`. Establish `hc'` using `fun {r s n : ℕ} (hh : r + s = n) (x₀ : (cochainsComplex A).X r) (z₀ : (cochainsComplex B).X s) => localRes_cupPairingCochains φ μ (Aᵥ := fun i => Rep.res (φ i).toMonoidHom A) (Bᵥ := fun i => Rep.res (φ i).toMonoidHom B) (Cᵥ := fun i => Rep.res (φ i).toMonoidHom C) (a := fun _ => …`. Conclude with `mappingCoconeNat.homologyMap_mapOfHomotopy_coconeLeft (Homotopy.ofEq (localRes_transportLocal φ φ' θ e ψ hcomm fA)) (Homotopy.ofEq (localRes_transportLocal φ φ' θ e ψ hcomm fC)) (Homotopy.ofEq (localRes_transportLocal φ φ' θ e ψ hcomm fB)) (LeibnizPairing.pi fun j => cupLeibniz ( …`. Rewrite using `[homotopy_ofEq_hom_apply, homotopy_ofEq_hom_apply, homotopy_ofEq_hom_apply, LinearMap.map_zero₂, map_zero, smul_zero, add_zero])`. Use the proof step `(fun _ _ _ => by rw [homotopy_ofEq_hom_apply, homotopy_ofEq_hom_apply, map_zero])`.
-
-Use the proof step `(fun _ _ _ => by rw [homotopy_ofEq_hom_apply, homotopy_ofEq_hom_apply, LinearMap.map_zero₂]) h y x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactTransport_compactCupRes {r s n : ℕ} (h : r + s = n) (y : compactCohomologyRes φ' A' r)
     (x : cohomology B' s) :

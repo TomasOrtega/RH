@@ -18,9 +18,9 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.KSplit
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => latV_mono S L (fun _ _ => trivial) h`. Introduce `h`. Establish `h1` using `((mem_latV_iff_parts S L (fun _ => True) {p} (fun i => idAt_mono (fun _ _ => trivial) (hz i))).1 h).1`. Establish `e : eQ {p} • z = z` using `funext fun i => eQ_mul_of_in (P := fun _ => True) {p} (idAt_mono (fun w hw => ⟨trivial, Finset.mem_singleton.2 hw⟩) (hz i))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Conclude with `latV_mono S L (fun w hw => Finset.mem_singleton.1 hw.2) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_at_iff_all (S : HSp D) (L : Lat S) (p : Pl D) {z : Fin S.rank → AE D}
     (hz : ∀ i, z i ∈ idAt D (· = p)) : z ∈ latV S L (· = p) ↔ z ∈ latV S L (fun _ => True) := by
@@ -36,11 +36,11 @@ theorem mem_latV_at_iff_all (S : HSp D) (L : Lat S) (p : Pl D) {z : Fin S.rank �
     exact latV_mono S L (fun w hw => Finset.mem_singleton.1 hw.2) h1
 
 /- English proof (translation)
-Establish `key : ∀ z : Fin S.rank → AE D, (∀ i, z i ∈ idAt D (· = p)) → (z ∈ latV S N (· = p) ↔ z ∈ latV S M (· = p))`. Introduce `z hz`. Use `set y := mt S g⁻¹ *ᵥ z with hy`. Establish `hys : ∀ i, y i ∈ idAt D (· = p)` using `mulVec_mem S _ hz`. Establish `hgy : mt S g *ᵥ y = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, Matrix.mulVec_mulVec, ← KSplit.mt_mul, mul_inv_cancel]`. Conclude with `Matrix.one_mulVec z`. Rewrite using `[← hgy, ← hN y hys, mem_latV_at_iff_all S M p (by rw [hgy]; exact hz), ← hM y (fun i => idAt_mono (fun _ _ => trivial) (hys i)), mem_latV_at_iff_all S Λ p hys]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `(key z (GlobalTheory.FinPlLoc.latV_idAt h)).1 h`. Introduce `h`. Conclude with `(key z (GlobalTheory.FinPlLoc.latV_idAt h)).2 h`.
+A detailed English derivation is pending.
 -/
 theorem latV_eq_of_moves (S : HSp D) (g : GA D S) (Λ N M : Lat S) (p : Pl D)
     (hN : Moves S g Λ N (· = p)) (hM : Moves S g Λ M (fun _ => True)) :
@@ -66,7 +66,7 @@ end
 
 open GlobalTheory.Fam.OffLevel in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f _ _ v _ hv n G pl _ _ j hj M M' hM hM' p hp`. Establish `hP : ∀ q, (· = p) q → q ∉ v.gP` using `fun q hq => hq ▸ hp`. Conclude with `⟨latV_eq_of_moves _ _ _ _ _ p (hv.moves j (by omega) _ hP) hM, latV_eq_of_moves _ _ _ _ _ p (hv.moves (j + 1) hj _ hP) hM'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Fam.latV_N_eq_off_level : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∀ j, j + 1 < D.R.m → ∀ (M : GlobalTheory.FinPl.Lat (Yc D j)) (M' : GlobalTheory.FinPl.Lat (Yc D (j + 1))), GlobalTheory.FinPl.Moves (Yc D j) (f.g.b j) ((pk W).ΛY j) M (fun _ => True) → GlobalTheory.FinPl.Moves (Yc D (j + 1)) (f.g.b (j + 1)) ((pk W).ΛY (j + 1)) M' (fun _ => True) → ∀ p, p ∉ v.gP → GlobalTheory.FinPl.latV (Yc D j) (v.N j) (· = p) = GlobalTheory.FinPl.latV (Yc D j) M (· = p) ∧ GlobalTheory.FinPl.latV (Yc D (j + 1)) (v.N (j + 1)) (· = p) = GlobalTheory.FinPl.latV (Yc D (j + 1)) M' (· = p) := by
   intro D L hT Gi Gl Kc Yd cX ex W u f _ _ v _ hv n G pl _ _ j hj M M' hM hM' p hp

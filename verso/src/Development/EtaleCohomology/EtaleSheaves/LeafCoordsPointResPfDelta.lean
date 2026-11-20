@@ -21,7 +21,7 @@ def delta (hIP : I ≤ P) : P.ResidueField ⊗[B] I →ₗ[P.ResidueField] P.Res
   LinearMap.liftBaseChange P.ResidueField (delta0 (A := A) I P hIP)
 
 /- English proof (translation)
-Simplify using `[delta, delta0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem delta_tmul (hIP : I ≤ P) (k : P.ResidueField) (x : I) :
     delta (A := A) I P hIP (k ⊗ₜ x) = k • ((1 : P.ResidueField) ⊗ₜ[B] KaehlerDifferential.D A B (x : B)) := by
@@ -41,15 +41,15 @@ def cot (hIP : I ≤ P) : (RingHom.ker (algebraMap B (B ⧸ I))).Cotangent →�
     · intro x y hx hy; exact add_mem hx hy)
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `conormal_retraction I n m hB hBI`. Set `ρ0 : Ω[B⁄A] →ₗ[B] P.ResidueField ⊗[B] I` to `cot I P hIP ∘ₗ (l.restrictScalars B) ∘ₗ TensorProduct.mk B (B ⧸ I) Ω[B⁄A] 1`. Set `ρ` to `LinearMap.liftBaseChange P.ResidueField ρ0`. Establish `h1 : ∀ x : I, ρ ((1 : P.ResidueField) ⊗ₜ[B] KaehlerDifferential.D A B (x : B)) = (1 : P.ResidueField) ⊗ₜ[B] x`. Introduce `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : (x : B) ∈ RingHom.ker (algebraMap B (B ⧸ I))` using `RingHom.mem_ker.mpr (Ideal.Quotient.eq_zero_iff_mem.mpr x.2)`. Establish `e1 : (1 : B ⧸ I) ⊗ₜ[B] KaehlerDifferential.D A B (x : B) = KaehlerDifferential.kerCotangentToTensor A B (B ⧸ I) ((RingHom.ker (algebraMap B (B ⧸ I))).toCotangent ⟨x, hx⟩)` using `(KaehlerDifferential.kerCotangentToTensor_toCotangent A B (B ⧸ I) ⟨x, hx⟩).symm`. Establish `e2` using `LinearMap.congr_fun hl ((RingHom.ker (algebraMap B (B ⧸ I))).toCotangent ⟨x, hx⟩)`. Simplify using `only [ρ, ρ0, LinearMap.liftBaseChange_tmul, one_smul, LinearMap.coe_comp, Function.comp_apply, TensorProduct.mk_apply, LinearMap.coe_restrictScalars]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_apply] at e2`. Rewrite using `[e2]`. Both sides reduce to the same expression. Establish `key : ∀ z, ρ (delta (A` using `A) I P hIP z) = z := by`. Introduce `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k x`. Rewrite using `[delta_tmul, LinearMap.map_smul, h1, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Function.LeftInverse.injective key`.
+A detailed English derivation is pending.
 -/
 theorem delta_injective (n m : ℕ) (hB : Algebra.IsStandardSmoothOfRelativeDimension n A B)
     (hBI : Algebra.IsStandardSmoothOfRelativeDimension m A (B ⧸ I)) (hIP : I ≤ P) :
@@ -84,7 +84,7 @@ theorem delta_injective (n m : ℕ) (hB : Algebra.IsStandardSmoothOfRelativeDime
   exact Function.LeftInverse.injective key
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_eq_map, ← span_one_tmul (M := I) P, Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use `ext`. Simplify using `[delta_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem range_delta (hIP : I ≤ P) : LinearMap.range (delta (A := A) I P hIP) =
     Submodule.span P.ResidueField (Set.range fun x : I =>
@@ -101,9 +101,9 @@ def LeafResSpanD : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B
       (1 : P.ResidueField) ⊗ₜ[B] KaehlerDifferential.D A B (x : B))) ≤ d
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I hB hBI P _ hIP`. Take `⟨hfin, hle⟩` from `hS d e A B I hB hBI P hIP`. Establish `hinj` using `delta_injective (A := A) I P _ _ hB hBI hIP`. Establish `e` using `LinearEquiv.ofInjective _ hinj`. Rewrite `e` using `[range_delta]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: FiniteDimensional P.ResidueField (P.ResidueField ⊗[B] I)` using `LinearEquiv.finiteDimensional e.symm`. Rewrite using `[e.finrank_eq]`. Conclude with `hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafResDimI_of (hS : LeafResSpanD) : LeafResDimI := by
   intro d e A B _ _ _ I hB hBI P _ hIP
@@ -115,7 +115,7 @@ theorem LeafResDimI_of (hS : LeafResSpanD) : LeafResDimI := by
   rw [e.finrank_eq]; exact hle
 
 /- English proof (translation)
-The claim follows from `LeafCoordsPointRes_of' (LeafResDimI_of hS) hY`.
+A detailed English derivation is pending.
 -/
 theorem LeafCoordsPointRes_of'' (hS : LeafResSpanD) (hY : LeafResY) : LeafCoordsPointRes :=
   LeafCoordsPointRes_of' (LeafResDimI_of hS) hY

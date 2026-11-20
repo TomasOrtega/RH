@@ -15,14 +15,14 @@ namespace PositivityTheory.Rg.Sw.Glob.OG
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_zero' (θ : InfFam D) (τ : D.what₂.Tau) {m n : ℕ} : compAt θ τ (0 : Mx D m n) = 0 := by
   ext i j
   simp [compAt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compAt_one' (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} : compAt θ τ (1 : Mx D n n) = 1 := by
   ext i j
@@ -30,25 +30,25 @@ theorem compAt_one' (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} : compAt θ �
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[component_block_matrix, GlobalTheory.RealParamSize.compAt_neg, compAt_zero', compAt_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_J (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} :
     compAt θ τ (blk4 (0 : Mx D n n) 1 (-1) 0) = blk4 0 1 (-1) 0 := by
   rw [component_block_matrix, GlobalTheory.RealParamSize.compAt_neg, compAt_zero', compAt_one']
 
 /- English proof (translation)
-Rewrite using `[finite_part_block_matrix, Matrix.map_neg _ (map_neg (finPart D)), Matrix.map_zero _ (map_zero (finPart D)), Matrix.map_one _ (map_zero (finPart D)) (map_one (finPart D))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_J {n : ℕ} : (blk4 (0 : Mx D n n) 1 (-1) 0).map (finPart D) = blk4 0 1 (-1) 0 := by
   rw [finite_part_block_matrix, Matrix.map_neg _ (map_neg (finPart D)), Matrix.map_zero _ (map_zero (finPart D)),
     Matrix.map_one _ (map_zero (finPart D)) (map_one (finPart D))]
 
 /- English proof (translation)
-Apply `g_ext` to reduce the goal to its premises. Establish `hm : mat (w⁻¹ * ι y * w) = mat w⁻¹ * mat (ι y) * mat w` using `rfl`. Rewrite using `[hm, mat_inv_w w hw, hw]`. Apply `GlobalTheory.StabAtPlace.mx_ext hθ` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, (hι.2 yn).2.2, (hι.2 y).2.2, Matrix.map_neg _ (map_neg (finPart D)), fin_J, mul_one, neg_mul, jsq, neg_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ'`. Rewrite using `[GlobalTheory.AdForm.RatMove.compAt_mul, GlobalTheory.AdForm.RatMove.compAt_mul, GlobalTheory.RealParamSize.compAt_neg, compAt_J]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[(hι.2 yn).1, (hι.2 y).1, hyn, hyc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `blk4 1 (-c) 0 1 = -blk4 0 1 (-1) 0 * blk4 1 0 c 1 * blk4 0 1 (-1) 0`. Rewrite using `[neg_block_matrix, GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules. Rewrite using `[(hι.2 yn).2.1 τ' h, (hι.2 y).2.1 τ' h, mul_one, neg_mul, jsq, neg_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_conj {θ : InfFam D} {τ : D.what₂.Tau} {n : ℕ} {ι : GR n →* G D n} (hθ : IsInfFam θ)
     (hι : IsPlaceEmb θ τ ι) (w : G D n) (hw : mat w = blk4 0 1 (-1) 0) (y yn : GR n) (c : Matrix (Fin n) (Fin n) ℂ)

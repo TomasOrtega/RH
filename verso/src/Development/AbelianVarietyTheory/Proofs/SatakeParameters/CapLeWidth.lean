@@ -18,9 +18,9 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory.ShapeRows
 
 /- English proof (translation)
-Apply `YoungDiagram.ext` to reduce the goal to its premises. Use extensionality with `⟨r, c⟩`. Rewrite using `[YoungDiagram.mem_cells, YoungDiagram.mem_cells, YoungDiagram.mem_iff_lt_rowLen, YoungDiagram.mem_iff_lt_rowLen]`. Establish `h : (E.nu u j z).rowLen r = (nuD D u j z).rowLen r`. Establish `h1` using `E.nu_row u j hj z r`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `nuRowOK D u j hj z r`. Conclude with `h1.trans h2.symm` after adjusting the coercions. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ent_nu {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m) (z : Bool × HH D) :
     E.nu u j z = nuD D u j z := by
@@ -35,7 +35,7 @@ theorem ent_nu {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) (
   rw [h]
 
 /- English proof (translation)
-Unfold `OrbitPlaces.Ent.size`. Rewrite using `[ent_nu E u j hj z]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ent_size {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m) (z : Bool × HH D) :
     E.size u j z = (((nuD D u j z).card : ℕ) : ℝ) := by
@@ -43,7 +43,7 @@ theorem ent_size {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ)
   rw [ent_nu E u j hj z]
 
 /- English proof (translation)
-Unfold `OrbitPlaces.Ent.row`. Rewrite using `[ent_nu E u j hj z]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ent_row {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m) (z : Bool × HH D) (r : ℕ) :
     E.row u j z r = (((nuD D u j z).rowLen r : ℕ) : ℝ) := by
@@ -51,7 +51,7 @@ theorem ent_row {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) 
   rw [ent_nu E u j hj z]
 
 /- English proof (translation)
-Unfold `OrbitPlaces.Ent.cap`. Rewrite using `[ent_row E u j hj z, ent_row E u j hj z]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ent_cap {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m) (z : Bool × HH D) :
     E.cap u j z = if IsTopPl D z then (((nuD D u j z).rowLen 1 : ℕ) : ℝ) else (((nuD D u j z).rowLen 0 : ℕ) : ℝ) := by
@@ -59,15 +59,15 @@ theorem ent_cap {D : D7} (E : OrbitPlaces.Ent D) (u : D.what₂.Word) (j : ℕ) 
   rw [ent_row E u j hj z, ent_row E u j hj z]
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x1, h1⟩` from `GlobalTheory.Ggeo.wPl_windows Fm`. Take `⟨x2, h2⟩` from `GlobalTheory.LongRows.longRows Fm`. Use `⟨max x1 x2, fun x hx hx1 i u j hj z => ?_⟩` and prove the remaining obligations. Take `⟨-, hw, -⟩` from `h1 x (le_trans (le_max_left _ _) hx) hx1 i j hj z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `h2 x (le_trans (le_max_right _ _) hx) hx1 i u j hj z`. Establish `hk : 5 ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hN : (Fm.D x i).R.k ≤ (Fm.D x i).R.N j` using `by unfold Ranks.N; omega`. Establish `hS` using `(Fm.L x i).Sc_pos`. Use `split_ifs with hz`. Establish `e` using `nuRowOK (Fm.D x i) u j hj z 1`. Rewrite `e` using `[if_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `((hr 1 (by omega)).2 hz le_rfl (by omega)).2` as an intermediate fact. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e` using `nuRowOK (Fm.D x i) u j hj z 0`. Rewrite `e` using `[if_pos (by omega)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `((hr 0 (by omega)).1 hz).2` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cap_le_width : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (if IsTopPl (Fm.D x i) z then (((nuD (Fm.D x i) u j z).rowLen 1 : ℕ) : ℝ) else (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ)) ≤ (Fm.L x i).sc.b + (Fm.L x i).etaSz + 1 + 3 * (Fm.L x i).Sc := by
   intro eps Fm
@@ -96,21 +96,15 @@ theorem cap_le_width : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ 
     linarith
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨a1, h1⟩` from `GlobalTheory.Ggeo.wPl_pos Fm`. Take `⟨a2, h2⟩` from `GlobalTheory.ExcessLow.excess_mem_Icc Fm`. Take `⟨a3, h3⟩` from `GlobalTheory.TopExcess.top_excess Fm`. Take `⟨a4, h4⟩` from `GlobalTheory.TopFirstRow.two_w_le_first_row Fm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a5, h5⟩` from `GlobalTheory.nuD_card_le_a_sq Fm`. Take `⟨a6, h6⟩` from `GlobalTheory.rank_two_logb_five_sq_le Fm`. Take `⟨a7, h7⟩` from `GlobalTheory.ShXa.X''_le_a Fm`. Take `⟨a8, h8⟩` from `GlobalTheory.family_one_lt_scale_a Fm`. Take `⟨a9, h9⟩` from `cap_le_width Fm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a10, h10⟩` from `GlobalTheory.AlTop.al_le Fm`. Take `⟨a11, h11⟩` from `GlobalTheory.CapBound.cap_le Fm`. Use `⟨max a1 (max a2 (max a3 (max a4 (max a5 (max a6 (max a7 (max a8 (max a9 (max a10 a11))))))))), fun x hx hx1 i Ee => ?_⟩` and prove the remaining obligations. Simplify using `only [ge_iff_le, max_le_iff] at hx`. Take `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `{ wpos := h1 x b1 hx1 i low := fun u j hj z hz => by`. Rewrite using `[ent_size Ee u j hj z]`. Conclude with `h2 x b2 hx1 i u j hj z hz`. Use `top := fun u j hj z hz => by`. Rewrite using `[ent_size Ee u j hj z, ent_row Ee u j hj z]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 x b3 hx1 i u j hj z hz`. Use `top1 := fun u j hj z hz => by`. Rewrite using `[ent_row Ee u j hj z]`. Conclude with `h4 x b4 hx1 i u j hj z hz`. Use `sizeA := fun u j hj z => by`.
-
-Rewrite using `[ent_size Ee u j hj z]`. Conclude with `h5 x b5 hx1 i u j hj z`. Use `rankA := h6 x b6 hx1 i`. Use `xa := ⟨h7 x b7 hx1 i, h8 x b8 hx1 i⟩`. Use `capW := fun u j hj z => by`.
-
-Rewrite using `[ent_cap Ee u j hj z]`. Conclude with `h9 x b9 hx1 i u j hj z`. Use `alG := fun u j hj t ht => by`. Rewrite using `[ent_row Ee u j hj, ent_row Ee u j hj]`. Conclude with `h10 x b10 hx1 i u j hj t ht`.
-
-Use `capG := fun u j hj z => by`. Rewrite using `[ent_cap Ee u j hj z]`. Conclude with `h11 x b11 hx1 i u j hj z }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) (Ee : OrbitPlaces.Ent (Fm.D x i)), OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Ee := by
   intro eps Fm

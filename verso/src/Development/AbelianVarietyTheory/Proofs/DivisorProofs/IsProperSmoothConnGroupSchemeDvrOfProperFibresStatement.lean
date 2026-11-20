@@ -9,7 +9,7 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GoodRedProper.isProper_of_proper_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProperSmoothConnGroupSchemeDvrOfProperFibres.lean&line=14#L14)
 -/

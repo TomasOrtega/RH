@@ -14,7 +14,7 @@ open scoped Classical
 namespace GlobalTheory.ConeWeilComm
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
@@ -27,23 +27,15 @@ theorem eval_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype �
   rw [mul_comm]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h h₁ g y`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))` using `GlobalTheory.StabCpt.isCompact_of_isStab hKP F E σ B (b + 2) G.V' G.q (b + 2 - G.q) K hT.base hT.geo.hV' hK`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure μK := inferInstance`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := eh.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin (b + 2) → Fin (b + 2) → AE F E))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin (b + 2)) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SecondCountableTopology K := inferInstance`. Take `⟨r, gg, f, hg, hdec, hcont, hdom⟩` from `GlobalTheory.T.config_b_stabilizer_haar_adelic hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Establish `hW : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G₁.V'.J) (incM F G₁.W.J) G₁.M'.co X.α (X.α / X.β) om₁'` using `hT₁.weil'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set L : Fn F b (a + b) →ₗ[ℂ] ℂ := (LinearMap.proj y : Fn F b (a + b) →ₗ[ℂ] ℂ) ∘ₗ om₁' (g, h₁) with hLdef`. Establish `hL : L ∈ (adeleClass F).adm (Fin b × Fin (a + b))` using `hW.isUSplitting.adm (g, h₁) _ (eval_mem_adm F _ y)`. Establish `hmul : ∀ k : K, om' (k.1, 1) (om' (1, h) Φ') = om' (k.1, h) Φ'`. Introduce `k`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
-
-Establish `hfun : cone B G.M' om' e' K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (om' (1, h) Φ') = fun y => ∫ k, ∫ l, ∑ j, pureA F (f j k l) (gg j) y ∂μ ∂μK`. Use function extensionality and compare the values at `y'`. Simplify using `only [cone, hmul, hdec]`. Establish `hsum : ∀ (k : K) (l : (AE F E)ˣ), (∑ j, pureA F (f j k l) (gg j)) = ((X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) • e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))`. Introduce `k l`.
-
-Use function extensionality and compare the values at `y'`. Rewrite using `[Finset.sum_apply, ← hdec, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show L (cone B G.M' om' e' K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (om' (1, h) Φ')) = _`. Rewrite using `[hfun, GlobalTheory.T.admissible_integral_interchange F _ K (AE F E)ˣ μK μ r gg f hg hcont hdom L hL]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[hsum, map_smul, smul_eq_mul, hLdef, LinearMap.comp_apply, LinearMap.proj_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weil_cone_comm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

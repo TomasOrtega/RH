@@ -6,7 +6,7 @@ open Complex Metric
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `n S φ ρ C N _ hφ hb`. Establish `hg : HasLogGrowth S id (ball (0 : Fin n → ℂ) ρ) φ` using `fun K hK _ => ⟨C, N, fun z hz hB => hb z (hK hz) (notMem_coordDivisor.1 hB)⟩`. Take `⟨ψ, hψ, he⟩` from `HasLogGrowth.exists_differentiableOn_extension isOpen_ball (hφ.mono fun z hz => ⟨hz.1, notMem_coordDivisor.1 hz.2⟩) hg`. Conclude with `⟨ψ, hψ, fun z hz h0 => he ⟨hz, notMem_coordDivisor.2 h0⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_extension_polydisc_of_log_growth :
     ∀ (n : ℕ) (S : Finset (Fin n)) (φ : (Fin n → ℂ) → ℂ) (ρ C : ℝ) (N : ℕ), 0 < ρ →

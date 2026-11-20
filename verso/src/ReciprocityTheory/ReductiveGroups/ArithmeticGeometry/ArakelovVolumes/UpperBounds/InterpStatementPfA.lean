@@ -12,9 +12,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `⟨hP, ?_⟩` and prove the remaining obligations. Introduce `ξ hξ ν hν x hx`. Assume the negation of the conclusion as `hne`. Establish `hpos : ∀ τ, 0 ≤ ν τ` using `BoundedSectionAlgebra.sign_of_bdd (X := X) moderateCoefficientPositivity_holds hP.1 hξ ν hx hne`. Establish `hsum : ∑ τ, ν τ = 0` using `le_antisymm hν (Finset.sum_nonneg fun τ _ => hpos τ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ν = 0`. Use function extensionality and compare the values at `τ`. Conclude with `(Finset.sum_eq_zero_iff_of_nonneg (fun τ _ => hpos τ)).1 hsum τ (Finset.mem_univ τ)`. Substitute `hz` using the available equality. Conclude with `hne (hP.2 ξ hξ x hx)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ss_sub_ssgt0 {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SS la) : P ∈ X.SSgt la 0 := by
@@ -30,9 +30,9 @@ theorem ss_sub_ssgt0 {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r
   exact hne (hP.2 ξ hξ x hx)
 
 /- English proof (translation)
-Introduce `v`. Use `choose F hF hval using h`. Take `⟨h0, hadd, hsmul⟩` from `(siegelSpaceAlgebra_holds (E := E) r X la la 0).2.2.1`. Use `⟨∑ j, v j • F j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_induction (fun j => v j • F j) (· ∈ X.SSgt la 0) (fun a b ha hb => hadd a ha b hb) h0 (fun j _ => hsmul (v j) (F j) (hF j))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `[Finset.sum_apply, hval]`.
+A detailed English derivation is pending.
 -/
 theorem interp_of_kron {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) {δ : ℕ} (xs : Fin δ → Frame X.Ψ r)
     (h : ∀ j, ∃ F ∈ X.SSgt la 0, ∀ j', F (xs j') = if j' = j then 1 else 0) :

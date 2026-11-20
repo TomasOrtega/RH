@@ -11,7 +11,7 @@ open GlobalTheory.CompanionTheory.Iwahori
 variable {E ι : Type} [Ring E] [Fintype ι] {wt : ι → ℕ} {P : ι → E}
 
 /- English proof (translation)
-Establish `: y * ∑ j, P j = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero (fun j _ => h j)`. Rewrite `this` using `[hP.sum, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mul_pieces (hP : IsPieces P) {y : E} (h : ∀ j, y * P j = 0) : y = 0 := by
   have : y * ∑ j, P j = 0 := by
@@ -19,7 +19,7 @@ theorem eq_zero_of_mul_pieces (hP : IsPieces P) {y : E} (h : ∀ j, y * P j = 0)
   rwa [hP.sum, mul_one] at this
 
 /- English proof (translation)
-Establish `: (∑ j, P j) * y = 0`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero (fun j _ => h j)`. Rewrite `this` using `[hP.sum, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pieces_mul (hP : IsPieces P) {y : E} (h : ∀ j, P j * y = 0) : y = 0 := by
   have : (∑ j, P j) * y = 0 := by
@@ -27,9 +27,9 @@ theorem eq_zero_of_pieces_mul (hP : IsPieces P) {y : E} (h : ∀ j, P j * y = 0)
   rwa [hP.sum, one_mul] at this
 
 /- English proof (translation)
-Establish `h : ∀ l, (u * x * P l) * (P l * y * v) = u * x * (P l) * y * v`. Introduce `l`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hP.idem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h]`. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul, ← Finset.mul_sum, hP.sum]`. Simplify using `only [mul_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem block_mul (hP : IsPieces P) (u x y v : E) :
     u * (x * y) * v = ∑ l, (u * x * P l) * (P l * y * v) := by
@@ -43,9 +43,9 @@ theorem block_mul (hP : IsPieces P) (u x y v : E) :
   simp only [mul_one, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[block_mul hP]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge (wt l) (wt i) with h | h` into its components or cases. Rewrite using `[ha i l h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb l j (lt_of_lt_of_le hij h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUpper_mul (hP : IsPieces P) {a b : E} (ha : IsUpper wt P a) (hb : IsUpper wt P b) :
     IsUpper wt P (a * b) := by
@@ -57,11 +57,11 @@ theorem isUpper_mul (hP : IsPieces P) {a b : E} (ha : IsUpper wt P a) (hb : IsUp
   · rw [hb l j (lt_of_lt_of_le hij h), mul_zero]
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[block_mul hP]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge (wt i) (wt l) with h | h` into its components or cases. Rewrite using `[ha.1 i l h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb.1 l j (lt_of_le_of_lt h hij), mul_zero]`. Rewrite using `[block_mul hP, Finset.sum_eq_single i]`. Rewrite using `[ha.2, hb.2, hP.idem]`. Introduce `l _ hl`. Break down `lt_trichotomy (wt i) (wt l) with h | h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ha.1 i l h, zero_mul]`. Conclude with `absurd (hwt h).symm hl`. Rewrite using `[hb.1 l i h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isLowerUni_mul (hwt : Function.Injective wt) (hP : IsPieces P) {a b : E}
     (ha : IsLowerUni wt P a) (hb : IsLowerUni wt P b) : IsLowerUni wt P (a * b) := by
@@ -81,14 +81,14 @@ theorem isLowerUni_mul (hwt : Function.Injective wt) (hP : IsPieces P) {a b : E}
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [mul_one] exact hP.orth i j (fun e => by subst e; exact lt_irrefl _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUpper_one (hP : IsPieces P) : IsUpper wt P 1 := fun i j h => by
   rw [mul_one]
   exact hP.orth i j (fun e => by subst e; exact lt_irrefl _ h)
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `hP.orth i j (fun e => by subst e; exact lt_irrefl _ h)`. Rewrite using `[mul_one, hP.idem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLowerUni_one (hP : IsPieces P) : IsLowerUni wt P 1 := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -97,7 +97,7 @@ theorem isLowerUni_one (hP : IsPieces P) : IsLowerUni wt P 1 := by
   · rw [mul_one, hP.idem]
 
 /- English proof (translation)
-Establish `: a * b - 1 = (a - 1) * (b - 1) + (a - 1) + (b - 1)` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `J.add_mem (J.add_mem (hJ.mul_mem _ ha _ hb) ha) hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_mul_mem {J : AddSubgroup E} (hJ : IsCongIdeal J P) {a b : E}
     (ha : a - 1 ∈ J) (hb : b - 1 ∈ J) : a * b - 1 ∈ J := by
@@ -106,43 +106,43 @@ theorem sub_one_mul_mem {J : AddSubgroup E} (hJ : IsCongIdeal J P) {a b : E}
   exact J.add_mem (J.add_mem (hJ.mul_mem _ ha _ hb) ha) hb
 
 /- English proof (translation)
-Establish `hl : ∀ i, m + 1 ≤ wt i → P i * x = 0` using `fun i hi => eq_zero_of_mul_pieces hP fun j => hH i j (Or.inl hi)`. Establish `hr : ∀ j, m + 1 ≤ wt j → x * P j = 0` using `fun j hj => eq_zero_of_pieces_mul hP fun i => by rw [← mul_assoc]; exact hH i j (Or.inr hj)`. Establish `hne : ∀ j, m + 1 ≤ wt j → P q * P j = 0` using `fun j hj => hP.orth q j (fun e => by subst e; omega)`. Establish `hne' : ∀ j, m + 1 ≤ wt j → P j * P q = 0` using `fun j hj => hP.orth j q (fun e => by subst e; omega)`. Establish `hQQ` using `hP.idem q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy, h1, h2⟩` from `hJ.inv (x * P q) (hJ.right_mem q x hx)`. Take `⟨z, hz, hzdef⟩ : ∃ z ∈ J, 1 + z = (1 + y) * (1 + x)` from `⟨(1 + y) * (1 + x) - 1, sub_one_mul_mem hJ (by rwa [add_sub_cancel_left]) (by rwa [add_sub_cancel_left]), by abel⟩`. Establish `hAB : 1 + x = (1 + x * P q) * (1 + z)`. Rewrite using `[hzdef, ← mul_assoc, h1, one_mul]`. Establish `hzQ : z * P q = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (1 + x) * P q = (1 + x * P q) * P q`. Simplify using `only [add_mul, one_mul, mul_assoc, hQQ]`. Establish `: (1 + z) * P q = P q`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[add_mul, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hzr : ∀ j, m + 1 ≤ wt j → z * P j = 0`. Introduce `j hj`. Establish `e1 : (1 + x) * P j = P j` using `by rw [add_mul, one_mul, hr j hj, add_zero]`. Establish `e2 : (1 + x * P q) * P j = P j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_mul, one_mul, mul_assoc, hne j hj, mul_zero, add_zero]`. Establish `e3 : (1 + y) * P j = P j`. Combine the equalities or inequalities in the displayed calculation. Establish `: (1 + z) * P j = P j`. Rewrite using `[hzdef, mul_assoc, e1, e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[add_mul, one_mul]`. Simplify using `using this`. Establish `hzl : ∀ i, m + 1 ≤ wt i → P i * z = 0`. Introduce `i hi`. Establish `e1 : P i * (1 + x) = P i` using `by rw [mul_add, mul_one, hl i hi, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : P i * (1 + x * P q) = P i`. Rewrite using `[mul_add, mul_one, ← mul_assoc, hl i hi, zero_mul, add_zero]`. Establish `e3 : P i * (1 + y) = P i`. Combine the equalities or inequalities in the displayed calculation. Establish `: P i * (1 + z) = P i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hzdef, ← mul_assoc, e3, e1]`. Rewrite `this` using `[mul_add, mul_one]`. Simplify using `using this`. Establish `hsJ : z - P q * z ∈ J` using `J.sub_mem hz (hJ.left_mem q z hz)`. Establish `hsr : ∀ j, m ≤ wt j → (z - P q * z) * P j = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Break down `hj.eq_or_lt with h | h` into its components or cases. Establish `: j = q` using `hwt (h.symm.trans hq.symm)`. Substitute `this` using the available equality. Rewrite using `[sub_mul, hzQ, mul_assoc, hzQ, mul_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, hzr j h, mul_assoc, hzr j h, mul_zero, sub_zero]`. Establish `hsl : ∀ i, m ≤ wt i → P i * (z - P q * z) = 0`. Introduce `i hi`. Break down `hi.eq_or_lt with h | h` into its components or cases. Establish `: i = q` using `hwt (h.symm.trans hq.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Rewrite using `[mul_sub, ← mul_assoc, hQQ, sub_self]`. Rewrite using `[mul_sub, hzl i h, ← mul_assoc, hne' i h, zero_mul, sub_zero]`. Establish `hS : ∀ i j, (m ≤ wt i ∨ m ≤ wt j) → P i * ((1 + (z - P q * z)) - 1) * P j = 0`. Introduce `i j hij`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_sub_cancel_left]`. Break down `hij with h | h` into its components or cases. Rewrite using `[hsl i h, zero_mul]`. Rewrite using `[mul_assoc, hsr j h, mul_zero]`. Take `⟨a', b', ha, hb, hau, hbl, hk⟩` from `ih (1 + (z - P q * z)) (by rwa [add_sub_cancel_left]) hS`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hSC : (1 + (z - P q * z)) * (1 + P q * z) = 1 + z`. Establish `: (1 + (z - P q * z)) * (1 + P q * z) = 1 + z + (z * P q) * z - P q * (z * P q) * z` using `by noncomm_ring`. Rewrite using `[this, hzQ]`. Simplify using the standard rewrite rules. Establish `hA : IsUpper wt P (1 + x * P q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j hij`. Establish `hm : P i * (1 + x * P q) * P j = P i * P j + P i * x * (P q * P j)`. Simplify using `only [mul_add, add_mul, mul_one, mul_assoc]`. Rewrite using `[hm, hP.orth i j (fun e => by subst e; exact lt_irrefl _ hij), zero_add]`. Distinguish the cases in `hjq : j = q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hjq` using the available equality. Rewrite using `[hl i (by omega), zero_mul]`. Rewrite using `[hP.orth q j (Ne.symm hjq), mul_zero]`. Establish `hC : IsLowerUni wt P (1 + P q * z)`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : P i * (1 + P q * z) * P j = P i * P j + (P i * P q) * (z * P j)`. Simplify using `only [mul_add, add_mul, mul_one, mul_assoc]`. Rewrite using `[hm, hP.orth i j (fun e => by subst e; exact lt_irrefl _ hij), zero_add]`. Distinguish the cases in `hiq : i = q`. Substitute `hiq` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hzr j (by omega), mul_zero]`. Rewrite using `[hP.orth i q hiq, zero_mul]`. Establish `hm : P i * (1 + P q * z) * P i = P i * P i + (P i * P q) * (z * P i)`. Simplify using `only [mul_add, add_mul, mul_one, mul_assoc]`. Rewrite using `[hm, hP.idem]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hiq : i = q`. Substitute `hiq` using the available equality. Rewrite using `[hzQ, mul_zero, add_zero]`. Rewrite using `[hP.orth i q hiq, zero_mul, add_zero]`. Use `⟨(1 + x * P q) * a', b' * (1 + P q * z), ?_, ?_, isUpper_mul hP hA hau, isLowerUni_mul hwt hP hbl hC, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_one_mul_mem hJ (by rw [add_sub_cancel_left]; exact hJ.right_mem q x hx) ha`. Conclude with `sub_one_mul_mem hJ hb (by rw [add_sub_cancel_left]; exact hJ.left_mem q z hz)`. Rewrite using `[hAB, ← hSC, hk]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step (hwt : Function.Injective wt) (hP : IsPieces P) {J : AddSubgroup E}
     (hJ : IsCongIdeal J P) (m : ℕ)
@@ -266,15 +266,13 @@ theorem step (hwt : Function.Injective wt) (hP : IsPieces P) {J : AddSubgroup E}
     simp only [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `k _ h`. Establish `h0 : k - 1 = 0` using `eq_zero_of_mul_pieces hP fun j => eq_zero_of_pieces_mul hP fun i => by`. Rewrite using `[← mul_assoc]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i j (Or.inl (Nat.zero_le _))`. Establish `hk : k = 1` using `sub_eq_zero.mp h0`. Conclude with `⟨1, 1, by simp, by simp, isUpper_one hP, isLowerUni_one hP, by simp [hk]⟩`. Consider the case `succ m ih`. Introduce `k hk h`.
+Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : ∃ q, wt q = m`. Take `⟨q, hq⟩` from `hq`. Use `step hwt hP hJ m ih q hq (k - 1) hk h` as an intermediate fact. Simplify using `using this`. Establish `hq' : ∀ i, m ≤ wt i → m + 1 ≤ wt i` using `fun i hi => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hi.eq_or_lt with e | e` into its components or cases. Conclude with `absurd ⟨i, e.symm⟩ hq`. Conclude with `e`. Use `ih k hk fun i j hij => h i j ?_` and prove the remaining obligations. Break down `hij with e | e` into its components or cases.
-
-Conclude with `Or.inl (hq' i e)`. Conclude with `Or.inr (hq' j e)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem exists_of_support (hwt : Function.Injective wt) (hP : IsPieces P) {J : AddSubgroup E}
     (hJ : IsCongIdeal J P) (m : ℕ) :
@@ -304,7 +302,7 @@ theorem exists_of_support (hwt : Function.Injective wt) (hP : IsPieces P) {J : A
       · exact Or.inr (hq' j e)
 
 /- English proof (translation)
-Introduce `E ι _ _ wt hwt P hP J hJ k hk`. Use `exists_of_support hwt hP hJ (Finset.univ.sup wt + 1) k hk ?_` and prove the remaining obligations. Introduce `i j h`. Establish `h1` using `Finset.le_sup (f := wt) (Finset.mem_univ i)`. Establish `h2` using `Finset.le_sup (f := wt) (Finset.mem_univ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

@@ -10,9 +10,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Introduce `hz`. Apply `Matrix.det_mvPolynomialX_ne_zero n R` to reduce the goal to its premises. Apply `MvPolynomial.rename_injective g hg` to reduce the goal to its premises. Rewrite using `[map_zero, AlgHom.map_det]`. Use `hz using 2` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i k`. Simplify using `[Matrix.mvPolynomialX]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_X_ne_zero_lemma {ι n R : Type} [Fintype n] [DecidableEq n] [CommRing R] [IsDomain R]
     (g : n × n → ι) (hg : Function.Injective g) :
@@ -26,7 +26,7 @@ private theorem det_X_ne_zero_lemma {ι n R : Type} [Fintype n] [DecidableEq n] 
   simp [Matrix.mvPolynomialX]
 
 /- English proof (translation)
-Unfold `arcDet`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Use `det_X_ne_zero_lemma (R := LaurentSeries K₁) (fun p => (⟨τ, p⟩ : ArcLt Dw)) (fun p q hpq => by simpa using hpq)` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem arcDet_ne_zero (Dw : Datum H) (K₁ : Type) [Field K₁] : arcDet Dw K₁ ≠ 0 := by
   classical
@@ -37,7 +37,7 @@ theorem arcDet_ne_zero (Dw : Datum H) (K₁ : Type) [Field K₁] : arcDet Dw K�
     (fun p q hpq => by simpa using hpq)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsFractionRing.injective _ _`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective _ _`. Consider the case `exact IsLocalization.injective (M := Submonoid.powers (arcDet Dw K₁)) _ (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K₁))`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inj (Dw : Datum H) (K₁ : Type) [Field K₁] :
     Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁)) := by
@@ -48,7 +48,7 @@ theorem inj (Dw : Datum H) (K₁ : Type) [Field K₁] :
       (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K₁))
 
 /- English proof (translation)
-Establish `hex : ∃ Q, algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁) Q = algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁) P` using `⟨P, rfl⟩`. Unfold `arcNum`. Rewrite using `[dif_pos hex]`. Conclude with `inj Dw K₁ hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arcNum_map (Dw : Datum H) (K₁ : Type) [Field K₁]
     (P : MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) :
@@ -61,7 +61,7 @@ theorem arcNum_map (Dw : Datum H) (K₁ : Type) [Field K₁]
   exact inj Dw K₁ hex.choose_spec
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, HahnSeries.ofPowerSeries_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem laur_alg {S K : Type} [CommRing S] [Field K] [Algebra S K] (x : S) :
     algebraMap S (LaurentSeries K) x = HahnSeries.C (algebraMap S K x) := by
@@ -70,7 +70,7 @@ theorem laur_alg {S K : Type} [CommRing S] [Field K] [Algebra S K] (x : S) :
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact evalAt_add (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g y`. Consider the case `simp [evR, map_add]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evR_add (f g : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     evR Xo c (f + g) y = evR Xo c f y + evR Xo c g y := by
@@ -79,7 +79,7 @@ theorem evR_add (f g : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : Fr
   | simp [evR, map_add]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact evalAt_smul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) a f y`. Consider the case `simp [evR, Algebra.smul_def]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evR_smul (a : c.F) (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     evR Xo c (a • f) y = algebraMap c.F S a * evR Xo c f y := by

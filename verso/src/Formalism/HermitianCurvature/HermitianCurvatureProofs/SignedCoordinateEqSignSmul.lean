@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Simplify using `only [Pi.smul_apply, smul_eq_mul, M.x0, M.sgn, M.xC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem signed_coordinate_eq_sign_smul (P : M.Par) (l : ℕ) (Y : ℂ) :
     (fun ρ => M.x0 P l ρ Y) = M.sgn P l • fun ρ => M.xC P ρ Y := by
@@ -18,29 +18,27 @@ theorem signed_coordinate_eq_sign_smul (P : M.Par) (l : ℕ) (Y : ℂ) :
   simp only [Pi.smul_apply, smul_eq_mul, M.x0, M.sgn, M.xC]
 
 /- English proof (translation)
-Introduce `hNF hPos Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD`. Take `⟨hPl, -, hL, hQQ, -, hinv, -, hLS⟩` from `hD`. Take `⟨d, hdL, hdS, hdR, hdQ⟩` from `hNF Wp Wq P z z' π π' hPl X`. Establish `hfn : ∀ i j : Fin 6, (∀ x ∈ DomR P.k P.r z z', fnVal P.k P.r z z' i x.2 * fnVal P.k P.r z z' j x.2 = 1) → X.fn i * X.fn j = 1`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun Φ => Subtype.ext (funext fun c => funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.one_apply]`. Distinguish the cases in `hx : (c, g) ∈ DomR P.k P.r z z'`. Establish `e1` using `X.fn_apply i (X.fn j Φ) (c, g) hx`. Establish `e2` using `X.fn_apply j Φ (c, g) hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at e1 e2`. Rewrite using `[e1, e2, smul_smul, hij (c, g) hx, one_smul]`. Establish `e1` using `(X.fn i (X.fn j Φ)).2.1 (c, g) hx`. Establish `e2` using `Φ.2.1 (c, g) hx`. Simplify using `only at e1 e2`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite using `[e1, e2]`. Establish `hG : ∀ x ∈ DomR P.k P.r z z', fnVal P.k P.r z z' 5 x.2 * fnVal P.k P.r z z' 4 x.2 = 1`. Introduce `x hx`. Simplify using `only [fnVal]`. Conclude with `inv_mul_cancel₀ (Complex.ofReal_ne_zero.mpr hx.2.2.ne')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hG' : ∀ x ∈ DomR P.k P.r z z', fnVal P.k P.r z z' 4 x.2 * fnVal P.k P.r z z' 5 x.2 = 1`. Introduce `x hx`. Simplify using `only [fnVal]`. Conclude with `mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hx.2.2.ne')`. Establish `hGinv : L.GGi * L.GG = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.1, hL.2.2.2.2.2.2.2.2.2.2.2.1]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show X.fn 5 * X.fn 4 = 1`. Conclude with `hfn 5 4 hG`. Use `show MulOpposite.op (X.fn 5) * MulOpposite.op (X.fn 4) = MulOpposite.op 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← MulOpposite.op_mul, hfn 4 5 hG']`. Establish `hGG : L.GG = d.L.GG` using `hL.2.2.2.2.2.2.2.2.2.2.1.trans hdL.2.2.2.2.2.2.2.2.2.2.1.symm`. Establish `hx : ∀ Y, st.x Y = d.κ fun ρ => M.x0 P l0 ρ Y`. Introduce `Y`. Establish `h1` using `hLS.tau Y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : d.QQ Y 1 1 = d.L.GG * d.x Y` using `by simp [NFData.QQ]`. Rewrite `h1` using `[hQQ Y, hdQ Y, Matrix.smul_apply, h2, ← hGG, ← mul_smul_comm]`. Establish `h3 : st.x Y = M.sgn P l0 • d.x Y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, NFData.x, signed_coordinate_eq_sign_smul, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxi : ∀ Y ∈ st.inv, st.xi Y = d.κ fun ρ => (M.x0 P l0 ρ Y)⁻¹`. Introduce `Y hY`. Establish `hne : ∀ ρ, M.x0 P l0 ρ Y ≠ 0`. Introduce `ρ`. Establish `hY'` using `hY`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hY'` using `[hinv]`. Establish `e` using `congrFun (signed_coordinate_eq_sign_smul P l0 Y) ρ`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e`. Rewrite using `[e]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (hY' ρ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hprod : (d.κ fun ρ => M.x0 P l0 ρ Y) * (d.κ fun ρ => (M.x0 P l0 ρ Y)⁻¹) = 1`. Rewrite using `[← map_mul, ← map_one d.κ]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Simplify using `[hne ρ]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, mul_one]`. Use `_ = (st.xi Y * st.x Y) * (d.κ fun ρ => (M.x0 P l0 ρ Y)⁻¹) := by rw [hx Y, mul_assoc]`. Use `_ = _ := by rw [(hLS.x_xi Y hY).2, one_mul]`. Conclude with `⟨d.κ, hx, hxi, hPos Wp Wq P z z' π π' hPl X d hdL hdS hdR hdQ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xKappaOfNF : XKappaOfNF := by
   intro hNF hPos Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD

@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.RmCharacter
 open ReciprocityTheory.ChartRestriction.TR.Weyl PositivityTheory.RgBcC
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by simp [gtChar] | n + 1, t => by have h : interl (0 : Fin (n + 1) → ℤ) = {(0 : Fin n → ℤ)} := by ext mu simp only [interl, Fintype.mem_piFinset, Pi.zero_apply, Finset.Icc_self, Finset.mem_singleton] exact ⟨fun h => funext h, fun h i => congrFun h i⟩ rw [gtChar, h, Fins …`.
+A detailed English derivation is pending.
 -/
 theorem gtChar_zero : ∀ (n : ℕ) (t : Fin n → ℂ), gtChar n (0 : Fin n → ℤ) t = 1
   | 0, _ => by simp [gtChar]
@@ -25,7 +25,7 @@ theorem gtChar_zero : ∀ (n : ℕ) (t : Fin n → ℂ), gtChar n (0 : Fin n →
     simp [wsum]
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `sub_ne_zero.2 fun e => h.ne (ht e)`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wden_ne_zero {n : ℕ} {t : Fin n → ℂ} (ht : Function.Injective t) : wden n t ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => ?_
@@ -34,9 +34,9 @@ theorem wden_ne_zero {n : ℕ} {t : Fin n → ℂ} (ht : Function.Injective t) :
   · exact one_ne_zero
 
 /- English proof (translation)
-Unfold `alt`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hj` using `j.2`. Simplify using `only [Matrix.of_apply, Pi.add_apply, delta]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem alt_num {n : ℕ} (lam : Fin n → ℤ) (t : Fin n → ℂ) :
     alt n (lam + delta n) t = (Matrix.of fun i j : Fin n => t i ^ (lam j + (n - 1 - (j : ℕ) : ℕ))).det := by
@@ -49,9 +49,9 @@ theorem alt_num {n : ℕ} (lam : Fin n → ℤ) (t : Fin n → ℂ) :
   omega
 
 /- English proof (translation)
-Unfold `alt`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hj` using `j.2`. Simplify using `only [Matrix.of_apply, Pi.add_apply, Pi.zero_apply, delta, zero_add]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← zpow_natCast]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem alt_den {n : ℕ} (t : Fin n → ℂ) :
     alt n ((0 : Fin n → ℤ) + delta n) t = (Matrix.of fun i j : Fin n => t i ^ (n - 1 - (j : ℕ))).det := by
@@ -65,7 +65,7 @@ theorem alt_den {n : ℕ} (t : Fin n → ℂ) :
   omega
 
 /- English proof (translation)
-Establish `hnum` using `weylGT ℂ n lam hlam t h0`. Establish `hden` using `weylGT ℂ n (0 : Fin n → ℤ) (fun _ _ _ => le_rfl) t h0`. Rewrite `hden` using `[gtChar_zero, mul_one, alt_den]`. Rewrite `hnum` using `[alt_num]`. Rewrite using `[weylChar, ← hnum, ← hden, mul_div_cancel_left₀ _ (wden_ne_zero ht)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylChar_eq_gtChar {n : ℕ} (lam : Fin n → ℤ) (hlam : Antitone lam) (t : Fin n → ℂ) (h0 : ∀ a, t a ≠ 0)
     (ht : Function.Injective t) : weylChar lam t = gtChar n lam t := by
@@ -76,9 +76,9 @@ theorem weylChar_eq_gtChar {n : ℕ} (lam : Fin n → ℤ) (hlam : Antitone lam)
   rw [weylChar, ← hnum, ← hden, mul_div_cancel_left₀ _ (wden_ne_zero ht)]
 
 /- English proof (translation)
-Introduce `n lam hlam t h0 ht`. Establish `hu : IsUnit (diagonal t : Matrix (Fin n) (Fin n) ℂ).det`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun a _ => h0 a)`. Establish `hw : (dw lam).w = lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dw, dif_pos hlam]`. Rewrite using `[Rm, dif_pos hu, ← LinearMap.trace_eq_matrix_trace, weylChar_eq_gtChar lam hlam t h0 ht, GlobalTheory.ContraChar.trace_sqRep_diag (dw lam) _ t rfl, hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmChar : RmChar := by
   intro n lam hlam t h0 ht

@@ -6,9 +6,9 @@ namespace Formalism.HermitianLattices.ModelCocycles
 open Finset Formalism.HermitianLattices.IntegralLatticeDensity
 
 /- English proof (translation)
-Introduce `Z O M Q _ _ _ _ _ _ _ _ φ nm hnm hlin α hα a b`. Establish `h1 : ∀ a b', cob φ ((α : O) • a) ((α : O) • b') = nm α • cob φ a b'`. Introduce `a b'`. Unfold `cob`. Rewrite using `[← smul_add, hα, hα, hα, smul_sub, smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `h1 a ((↑α⁻¹ : O) • b)`. Rewrite `h2` using `[smul_smul, Units.mul_inv, one_smul, ← hlin, hnm, smul_smul, mul_assoc, Units.mul_inv, mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_from_norm : AdjointFromNorm := by
   intro Z O M Q _ _ _ _ _ _ _ _ φ nm hnm hlin α hα a b
@@ -19,9 +19,9 @@ theorem adjoint_from_norm : AdjointFromNorm := by
   exact h2
 
 /- English proof (translation)
-Introduce `O M Q _ _ _ _ _ φ hadd α α' h h' a b`. Establish `symm : ∀ a b, cob φ a b = cob φ b a`. Introduce `a b`. Unfold `cob`. Rewrite using `[add_comm a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[add_smul, hadd, h, h', star_add, add_smul, symm a (_ + _), hadd, symm a, symm a]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_additive : AdjointAdd := by
   intro O M Q _ _ _ _ _ φ hadd α α' h h' a b
@@ -30,11 +30,11 @@ theorem adjoint_additive : AdjointAdd := by
   rw [add_smul, hadd, h, h', star_add, add_smul, symm a (_ + _), hadd, symm a, symm a]
 
 /- English proof (translation)
-Introduce `M N Q _ _ _ Φ hadd hneg x y`. Establish `z : cob Φ ((0 : M), (0 : N)) (0, y) = 0`. Use `hadd ((0 : M), (0 : N)) (0, 0) (0, y)` as an intermediate fact. Simplify using `using this`. Establish `h1 : cob Φ (x, 0) (0, y) + cob Φ (-x, 0) (0, y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hadd]`. Simplify using `using z`. Establish `h2 : cob Φ (-x, 0) (0, y) = cob Φ (x, 0) (0, y)`. Unfold `cob`. Simplify using `[hneg]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cross_terms_vanish : CrossTermsVanish := by
   intro M N Q _ _ _ Φ hadd hneg x y
@@ -47,18 +47,18 @@ theorem cross_terms_vanish : CrossTermsVanish := by
   rw [h2] at h1; exact h1
 
 /- English proof (translation)
-Unfold `GenusOneCharacter`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 theorem genus_one_character : GenusOneCharacter := by unfold GenusOneCharacter; decide
 
 /- English proof (translation)
-Introduce `Z M Q _ _ _ _ _ φ a abar h1 h2 h3 hu hev h0 h22`. Establish `symm : ∀ a b, cob φ a b = cob φ b a`. Introduce `a b`. Unfold `cob`. Rewrite using `[add_comm a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `c0 : ∀ x y, cob φ x y = 0`. Introduce `x y`. Establish `e : (a - abar) • cob φ x y = 0`. Rewrite using `[sub_smul, ← h2, h3, symm x, h2, symm y, sub_self]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `hu`. Use `congrArg (fun t => (↑w⁻¹ : Z) • t) e` as an intermediate fact. Simplify `this` using `[← hw, smul_smul]`. Use `⟨c0, fun u => h22 _ ?_⟩` and prove the remaining obligations. Use `c0 u (-u)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `cob at this`. Rewrite `this` using `[add_neg_cancel, h0, hev]`. Establish `h : φ u + φ u = -(0 - φ u - φ u)` using `by abel`. Rewrite using `[h, this, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_component_vanishes : SplitVanish := by
   intro Z M Q _ _ _ _ _ φ a abar h1 h2 h3 hu hev h0 h22
@@ -79,9 +79,9 @@ theorem split_component_vanishes : SplitVanish := by
   rw [h, this, neg_zero]
 
 /- English proof (translation)
-Introduce `R _ _ _ σ N f g hN hf hg h`. Establish `hc` using `(Commute.all f g).mul_geom_sum₂ N`. Rewrite `hc` using `[h, sub_self]`. Break down `mul_eq_zero.1 hc with h1 | h1` into its components or cases. Conclude with `sub_eq_zero.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Use `congrArg MvPowerSeries.constantCoeff h1` as an intermediate fact. Simplify using `[map_sum, hf, hg] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem equal_powers_formula : EqualPowers := by
   intro R _ _ _ σ N f g hN hf hg h
@@ -95,7 +95,7 @@ theorem equal_powers_formula : EqualPowers := by
     omega
 
 /- English proof (translation)
-Introduce `E _ _ Ψ A _ ι K χ hK hχ t h z k hk ht`. Establish `e : χ t ^ h = χ (ι z)` using `by rw [← map_pow, ht, map_mul, hK k hk, mul_one]`. Rewrite using `[← hχ, ← e, Circle.coe_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem character_power_formula : ChiPower := by
   intro E _ _ Ψ A _ ι K χ hK hχ t h z k hk ht
@@ -103,13 +103,13 @@ theorem character_power_formula : ChiPower := by
   rw [← hχ, ← e, Circle.coe_pow]
 
 /- English proof (translation)
-Introduce `E _ _ Ψ A _ ι K χ hcm hK hχ t h z k hh hk ht s`. Establish `e` using `character_power_formula E Ψ A ι K χ hK hχ t h z k hk ht`. Establish `u : ∀ τ : E →+* ℂ, ‖s (τ (z : E))‖ = 1`. Introduce `τ`. Establish `h1 : star (z : E) * (z : E) = 1` using `(Unitary.mem_iff.1 z.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (s.comp τ) h1`. Rewrite `h2` using `[map_mul, map_one, hcm (s.comp τ)]`. Establish `h3` using `congrArg (fun w : ℂ => ‖w‖) h2`. Simplify using `only [norm_mul, RCLike.norm_conj, norm_one, RingHom.comp_apply] at h3`. Use polynomial arithmetic with `[norm_nonneg (s (τ (z : E)))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `p : ‖s ((χ t : Circle) : ℂ)‖ ^ h = 1`. Rewrite using `[← norm_pow, ← map_pow, e, map_prod, norm_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `τ _`. Rewrite using `[map_inv₀, norm_inv, u, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hh.ne').1 p`.
+A detailed English derivation is pending.
 -/
 theorem character_modulus_all : ChiModulusAll := by
   intro E _ _ Ψ A _ ι K χ hcm hK hχ t h z k hh hk ht s
@@ -130,9 +130,9 @@ theorem character_modulus_all : ChiModulusAll := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hh.ne').1 p
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ h s hadd hherm hs x y a b ha hb hxy`. Establish `hadd2 : ∀ x y y', h x (y + y') = h x y + h x y'`. Introduce `x y y'`. Rewrite using `[hherm, hadd, star_add, ← hherm, ← hherm]`. Establish `hyx : h y x = (a - b * s) / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hherm y x, hxy, star_div₀, star_add, star_mul', ha, hb, hs, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd, hadd2, hadd2, hxy, hyx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem model_cocycle_exponent : ModelCocycleExponent := by
   intro E V _ _ _ _ h s hadd hherm hs x y a b ha hb hxy
@@ -143,23 +143,23 @@ theorem model_cocycle_exponent : ModelCocycleExponent := by
   rw [hadd, hadd2, hadd2, hxy, hyx]; ring
 
 /- English proof (translation)
-Introduce `Z O M Q _ _ _ _ _ _ _ _ φ nm hinj hnm hadd hadj hφ n ι _ _ f hiso t`. Establish `symm : ∀ a b, cob φ a b = cob φ b a`. Introduce `a b`. Unfold `cob`. Rewrite using `[add_comm a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hadd2 : ∀ a b b', cob φ a (b + b') = cob φ a b + cob φ a b'`. Introduce `a b b'`. Rewrite using `[symm, hadd, symm b, symm b']`. Establish `nm0 : nm 0 = 0` using `hinj (by rw [hnm, map_zero, mul_zero])`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `φ0 : φ 0 = 0`. Use `hφ 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, nm0, zero_smul]`. Then use the resulting hypothesis. Set `c : M → M →+ Q` to `fun a => AddMonoidHom.mk' (fun b => cob φ a b) (hadd2 a)`. Establish `hc : ∀ a b, c a b = cob φ a b` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ s : Finset ι, ∑ i, φ (∑ e ∈ s, f e i • t e) = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [φ0]`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e1 : ∀ i, φ (∑ e ∈ insert a s, f e i • t e) = cob φ (f a i • t a) (∑ e ∈ s, f e i • t e) + φ (f a i • t a) + φ (∑ e ∈ s, f e i • t e)`. Introduce `i`. Rewrite using `[Finset.sum_insert ha]`. Unfold `cob`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [e1, Finset.sum_add_distrib, ih, add_zero]`. Establish `e2 : ∑ i, φ (f a i • t a) = 0`. Simplify using `only [hφ]`. Rewrite using `[← Finset.sum_smul]`. Establish `: ∑ i, nm (f a i) = 0` using `hinj (by rw [map_sum, map_zero]; simp only [hnm]; exact hiso a a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, zero_smul]`. Establish `e3 : ∑ i, cob φ (f a i • t a) (∑ e ∈ s, f e i • t e) = 0`. Establish `: ∀ i, cob φ (f a i • t a) (∑ e ∈ s, f e i • t e) = ∑ e ∈ s, c (t a) ((star (f a i) * f e i) • t e)`. Introduce `i`. Rewrite using `[hadj, ← hc, Finset.smul_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `e _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_sum, ← Finset.sum_smul, hiso, zero_smul, map_zero]`. Rewrite using `[e2, e3, add_zero]`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isotropic_vector_zero : IsotropicZero := by
   classical
@@ -202,33 +202,31 @@ theorem isotropic_vector_zero : IsotropicZero := by
   simpa using key Finset.univ
 
 /- English proof (translation)
-Introduce `d hd`. Establish `hfact : Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Take `⟨m, hm⟩ : ∃ m : ℕ, d + 1 = 8 * m` from `⟨(d + 1) / 8, by omega⟩`. Establish `n2 : ‖(2 : ℚ_[2])‖ = 2⁻¹` using `by have := Padic.norm_p (p := 2); simpa using this`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `n2' : ‖(2 : ℤ_[2])‖ = 2⁻¹` using `by have := PadicInt.norm_p (p := 2); simpa using this`. Establish `H` using `hensels_lemma (p := 2) (R := ℤ_[2]) (F := Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[2])) (a := 1) (by`. Establish `e1 : Polynomial.aeval (1 : ℤ_[2]) (Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[2])) = 2 ^ 3 * (m : ℤ_[2])`. Establish `: ((d + 1 : ℕ) : ℤ_[2]) = ((8 * m : ℕ) : ℤ_[2])` using `by rw [hm]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Take the linear combination `this`. Establish `e2 : Polynomial.aeval (1 : ℤ_[2]) (Polynomial.derivative (Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[2]))) = 2` using `by simp; norm_num`. Rewrite using `[e1, e2, norm_mul, norm_pow, n2']`. Use `PadicInt.norm_le_one (m : ℤ_[2])` as an intermediate fact.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `norm_nonneg (m : ℤ_[2])`. Use the proof step `nlinarith)`. Take `⟨z, hz, _⟩` from `H`. Use `⟨(z : ℚ_[2]), ?_⟩` and prove the remaining obligations. Establish `hz' : z ^ 2 + (d : ℤ_[2]) = 0` using `by simpa using hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun w : ℤ_[2] => (w : ℚ_[2])) hz'` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`. Introduce `δ hδ`. Establish `nd : ‖(d : ℚ_[2])‖ = 1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd Nat.prime_two]`. Use linear arithmetic over natural numbers and integers. Establish `nδ : ‖δ‖ = 1`. Establish `: ‖δ‖ ^ 2 = 1` using `by rw [← norm_pow, hδ, norm_neg, nd]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 this`. Establish `δ0 : δ ≠ 0` using `by intro h; rw [h, norm_zero] at nδ; exact zero_ne_one nδ`. Set `z : ℤ_[2]` to `⟨δ, nδ.le⟩`. Establish `hz : (z : ℚ_[2]) = δ` using `rfl`. Establish `hz2 : z ^ 2 = -(d : ℤ_[2])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Apply `PadicInt.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hz, hδ]`. Establish `hprod : (1 - z) * (1 + z) = 2 * (4 * (m : ℤ_[2]))`. Establish `: ((d + 1 : ℕ) : ℤ_[2]) = ((8 * m : ℕ) : ℤ_[2])` using `by rw [hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at this`. Take the linear combination `this - hz2`. Establish `pr : Prime (2 : ℤ_[2])` using `by have := PadicInt.prime_p (p := 2); simpa using this`. Establish `both : (2 : ℤ_[2]) ∣ 1 - z ∧ (2 : ℤ_[2]) ∣ 1 + z`. Break down `pr.dvd_or_dvd (Dvd.intro _ hprod.symm) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `: 1 + z = 2 - (1 - z)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_sub (dvd_refl _) h`. Use `⟨?_, h⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: 1 - z = 2 - (1 + z)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_sub (dvd_refl _) h`. Take `⟨⟨c, hc⟩, ⟨c', hc'⟩⟩` from `both`. Establish `hcq : 1 - δ = 2 * (c : ℚ_[2])`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg (fun w : ℤ_[2] => (w : ℚ_[2])) hc` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Establish `hcq' : 1 + δ = 2 * (c' : ℚ_[2])`. Use `congrArg (fun w : ℤ_[2] => (w : ℚ_[2])) hc'` as an intermediate fact.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcq, mul_div_mul_left _ _ two_ne_zero, norm_div, nδ, div_one]`. Conclude with `c.2`.
-
-Rewrite using `[hcq', norm_div, norm_neg, ← norm_div, mul_div_mul_left _ _ two_ne_zero, norm_div, nδ, div_one]`. Conclude with `c'.2`. Introduce `a b`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem model_cocycle_order_two : ModelCocycleTwo := by
   intro d hd
@@ -299,17 +297,15 @@ theorem model_cocycle_order_two : ModelCocycleTwo := by
       ring
 
 /- English proof (translation)
-Introduce `K _ _ R U f hU hU0 hf n hn`. Establish `hg : ∀ n, PowerSeries.coeff n (PowerSeries.derivative K f) ∈ R`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h1` using `congrArg (PowerSeries.coeff n) hf`. Rewrite `h1` using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, hU0, mul_one]`. Establish `hU' : PowerSeries.coeff n (PowerSeries.derivative K U) = PowerSeries.coeff (n + 1) U * ((n : K) + 1)` using `PowerSeries.coeff_derivative U n`. Rewrite `h1` using `[hU']`. Simplify using `only [] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : PowerSeries.coeff n (PowerSeries.derivative K f) = PowerSeries.coeff (n + 1) U * ((n : K) + 1) - ∑ x ∈ range n, PowerSeries.coeff x (PowerSeries.derivative K f) * PowerSeries.coeff (n - x) U`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `R.sub_mem (R.mul_mem (hU _) ?_) (R.sum_mem ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `natCast_mem R (n + 1)` after adjusting the coercions. Introduce `x hx`. Conclude with `R.mul_mem (ih x (Finset.mem_range.1 hx)) (hU _)`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `h3` using `hg k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[PowerSeries.coeff_derivative]`. Establish `: ((k + 1).factorial : K) * PowerSeries.coeff (k + 1) f = (k.factorial : K) * (PowerSeries.coeff (k + 1) f * ((k : K) + 1))`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `R.mul_mem (natCast_mem R _) h3`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jets_of_log_unit : JetsOfLogUnit := by
   intro K _ _ R U f hU hU0 hf n hn
@@ -345,25 +341,23 @@ theorem jets_of_log_unit : JetsOfLogUnit := by
   exact R.mul_mem (natCast_mem R _) h3
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Use `set N := p ^ 2 - 1 with hN`. Establish `hN1 : N + 1 = p ^ 2`. Establish `: 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ hp.pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hodd : Odd p` using `hp.odd_of_ne_two hp2`. Establish `hNe : Even N`. Establish `: Odd (p ^ 2)` using `hodd.pow`. Rewrite `this` using `[← hN1]`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Nat.not_even_iff_odd]`. Conclude with `(Nat.not_even_iff_odd.2 this) (h.add_odd odd_one)`. Use `set a := WittVector.frobenius (WittVector.frobenius ε) with ha`. Use `set b := -ε with hb`. Establish `haN : a ^ N = -1` using `by rw [ha, ← map_pow, ← map_pow, hε, map_neg, map_neg, map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hbN : b ^ N = -1` using `by rw [hb, hNe.neg_pow, hε]`. Establish `hc` using `(Commute.all a b).mul_geom_sum₂ N`. Rewrite `hc` using `[haN, hbN, sub_self]`. Break down `mul_eq_zero.1 hc with h1 | h1` into its components or cases. Conclude with `sub_eq_zero.1 h1`.
+It suffices to derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Set `c : WittVector p k →+* k` to `WittVector.constantCoeff`. Establish `cfrob : ∀ x : WittVector p k, c (WittVector.frobenius x) = c x ^ p` using `fun x => WittVector.coeff_frobenius_charP p x 0`. Establish `cε : c ε ^ N = -1` using `by rw [← map_pow, hε, map_neg, map_one]`. Establish `cab : c a = c b`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ha, hb, cfrob, cfrob, ← pow_mul, ← sq, ← hN1, pow_succ, cε, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `cbN : c b ^ N = -1` using `by rw [← map_pow, hbN, map_neg, map_one]`. Establish `h2` using `congrArg c h1`. Rewrite `h2` using `[map_sum, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3 : ∀ i ∈ range N, c (a ^ i * b ^ (N - 1 - i)) = c b ^ (N - 1)`. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[map_mul, map_pow, map_pow, cab, ← pow_add]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[Finset.sum_congr rfl h3, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hNk : (N : k) = -1`. Establish `: ((N + 1 : ℕ) : k) = 0` using `by rw [hN1]; push_cast; simp`. Move the coercions through the operations in `at this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `this`. Establish `hb0 : c b ≠ 0`. Introduce `h0`. Rewrite `cbN` using `[h0, zero_pow (by have := hp.two_le; nlinarith)]`. Conclude with `one_ne_zero (neg_eq_zero.1 cbN.symm)`.
-
-Rewrite `h2` using `[hNk]`. Conclude with `(mul_ne_zero (neg_ne_zero.2 one_ne_zero) (pow_ne_zero _ hb0)) h2`.
+A detailed English derivation is pending.
 -/
 private theorem witt_frobenius_sq_eq_neg (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (hp2 : p ≠ 2)
     (ε : WittVector p k) (hε : ε ^ (p ^ 2 - 1) = -1) :
@@ -415,7 +409,7 @@ private theorem witt_frobenius_sq_eq_neg (p : ℕ) [Fact p.Prime] (k : Type) [Fi
     exact (mul_ne_zero (neg_ne_zero.2 one_ne_zero) (pow_ne_zero _ hb0)) h2
 
 /- English proof (translation)
-Introduce `p _ hp2 ε hε` and use `witt_frobenius_sq_eq_neg p _ hp2 ε hε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem teichmuller_unit_all_primes : EpsTeichAll := fun p _ hp2 ε hε => witt_frobenius_sq_eq_neg p _ hp2 ε hε
 

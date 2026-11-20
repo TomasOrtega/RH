@@ -12,35 +12,29 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h hnu`. Use `haveI := M.prob`. Use `haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Take `⟨N, hN⟩` from `UpperTheory.ConvolutionTheory.R2.G.zetaFin F`. Take `⟨B', L, hB'0, hB'⟩` from `UpperTheory.ConvolutionTheory.R2.G.majL F E D W φ hφ h hnu N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC : IsCompact ((fun k : G1 F => gl k * dM (nu F h)) '' KK F)` using `(UpperTheory.ConvolutionTheory.R2.M.kkCpt F).2.image (UpperTheory.ConvolutionTheory.R2.M.continuous_gl.mul continuous_const)`. Take `⟨B, hB0, hB⟩` from `UpperTheory.ConvolutionTheory.R2.G.bdInv F π f hf _ hC`. Establish `hLf` using `(UpperTheory.ConvolutionTheory.R2.Pp.cuspZero F π f hf).1`. Set `w : IdeleGroup F → (Fin 2 → F) → ℝ` to `fun a ξ => wt4 L N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F) * rt (ξ 0), (a : A F) * rt (ξ 1)]`. Establish `hw : ∀ ξ, Continuous fun a : IdeleGroup F => w a ξ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ξ`. Establish `h1 : Continuous (wt4 L N : V4 F → ℝ)` using `continuous_finset_prod _ fun i _ => (GlobalTheory.CompanionTheory.EpConvB.continuous_adeleWeight L N).comp (continuous_apply i)`. Use `h1.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.continuous_coe_inv`. Conclude with `Units.continuous_val.mul continuous_const`. Conclude with `Units.continuous_val.mul continuous_const`. Establish `pw : ∀ (a : IdeleGroup F), ∀ k ∈ KK F, ∀ (b : A F) (ξ : Fin 2 → F), ‖ux W f.1 φ h ξ (nU b * (mD a * k))‖ ≤ B * B' * w a ξ`. Introduce `a k hk b ξ`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(UpperTheory.ConvolutionTheory.R2.G.uxAv F E D W f.1 hLf φ h ξ).2.2 b (mD a * k)]`. Establish `hgl : ∀ x y : G1 F, gl (x * y) = gl x * gl y` using `fun x y => map_mul _ x y`. Establish `e1 : gl (nU b * (mD a * k)) * dM (nu F h) = gl (nU b * mD a) * (gl k * dM (nu F h))`. Rewrite using `[← mul_assoc, hgl (nU b * mD a) k, mul_assoc]`. Establish `h1` using `(hB b a _ ⟨k, hk, rfl⟩).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← e1]`. Establish `e2 : hat (W.Om (mD a * k) (W.L h φ)).1 (pt ξ) = ((W.η.1 a : ℂˣ) : ℂ) * ((ab a : ℝ) : ℂ) * hat (W.Om k (W.L h φ)).1 ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F) * rt (ξ 0), (a : A F) * rt (ξ 1)]`. Rewrite using `[map_mul, Module.End.mul_apply, (UpperTheory.ConvolutionTheory.R2.hatSt F E D W).m]`. Simplify using `[pt]`. Establish `hη : ‖((W.η.1 a : ℂˣ) : ℂ)‖ = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((W.η.1 a : ℂˣ) : ℂ) ^ 2 = 1`. Use `congrArg (fun u : ℂˣ => (u : ℂ)) (W.η_sq a)` as an intermediate fact. Simplify using `using this`. Establish `h3 : ‖((W.η.1 a : ℂˣ) : ℂ)‖ ^ 2 = 1` using `by rw [← norm_pow, h2, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hab : 0 < ab a` using `UpperTheory.ConvolutionTheory.R2.M.ab_pos a`. Establish `h4 : ‖hat (W.Om (mD a * k) (W.L h φ)).1 (pt ξ)‖ ≤ ab a * (B' * w a ξ)`. Rewrite using `[e2, norm_mul, norm_mul, hη, one_mul, Complex.norm_real, Real.norm_of_nonneg hab.le]`. Conclude with `mul_le_mul_of_nonneg_left (hB' k hk _) hab.le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p ∂M.ν, p.2 ∈ KK F`. Establish `h0 : ∀ᵐ k ∂M.κ, k ∈ KK F`. Rewrite using `[ae_iff]`. Conclude with `M.supp`. Conclude with `Measure.quasiMeasurePreserving_snd.ae h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `G : (Fin 2 → F) → IdeleGroup F → ℝ≥0∞` to `fun ξ a => _root_.UpperTheory.ConvolutionTheory.R2.M.wt a * ENNReal.ofReal (w a ξ)`. Establish `hG : ∀ ξ, Measurable (G ξ)` using `fun ξ => _root_.UpperTheory.ConvolutionTheory.R2.M.measurable_wt.mul (hw ξ).measurable.ennreal_ofReal`. Establish `key : ∀ ξ, abelian₂ M (ux W f.1 φ h ξ) ≤ ENNReal.ofReal (B * B') * ∫⁻ a, G ξ a ∂(ideleMeasure F)`. Introduce `ξ`. Establish `hm : Measurable fun p : IdeleGroup F × G1 F => G ξ p.1` using `(hG ξ).comp measurable_fst`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∫⁻ p, G ξ p.1 ∂M.ν = ∫⁻ a, G ξ a ∂(ideleMeasure F)`. Rewrite using `[Meas.ν, lintegral_prod _ hm.aemeasurable]`. Simplify using the standard rewrite rules. Rewrite using `[← e, ← lintegral_const_mul _ hm, abelian₂, _root_.UpperTheory.ConvolutionTheory.R2.M.J0]`. Use `lintegral_mono_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∫⁻ b in fundamentalSet F, ‖ux W f.1 φ h ξ (nU b * (mD p.1 * p.2))‖ₑ ∂(adeleMeasure F) ≤ ENNReal.ofReal (B * B') * ENNReal.ofReal (w p.1 ξ)`. Establish `hw0 : 0 ≤ B * B'` using `mul_nonneg hB0 hB'0`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun b => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal (pw p.1 p.2 hp b ξ)`. Use `_ = _ := by`. Rewrite using `[setLIntegral_const, adeleMeasure_fundamentalSet, mul_one, ENNReal.ofReal_mul hw0]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [G]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑' ξ, ∫⁻ a, G ξ a ∂(ideleMeasure F) ≠ ⊤`. Rewrite using `[← lintegral_tsum fun ξ => (hG ξ).aemeasurable]`. Establish `e : ∀ a, ∑' ξ, G ξ a = _root_.UpperTheory.ConvolutionTheory.R2.M.wt a * ∑' ξ, ENNReal.ofReal (w a ξ)` using `fun a => ENNReal.tsum_mul_left`. Repeatedly rewrite using `[e]`.
-
-Conclude with `hN L`. Use `ne_top_of_le_ne_top ?_ (ENNReal.tsum_le_tsum key)` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_left]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hsum`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.absFin1 :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ h : GL (Fin 2) (A E), ((nu F h : (A F)ˣ) : A F).1 = 1 → ∑' ξ, abelian₂ M (ux W f.1 φ h ξ) ≠ ⊤ := by

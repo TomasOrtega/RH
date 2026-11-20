@@ -46,15 +46,13 @@ def PhiC (N : NumDatum) (l : ℕ) : Prop := N.cls l = PrimeClass.inertClass ∧ 
 def ConjIn (N : NumDatum) (l : ℕ) : Prop := N.cls l = PrimeClass.inertClass ∧ Odd (addOrderOf (N.hP l))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, by rw [h.2, addOrderOf_zero]; exact odd_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem PhiC.conjIn {N : NumDatum} {l : ℕ} (h : PhiC N l) : ConjIn N l :=
   ⟨h.1, by rw [h.2, addOrderOf_zero]; exact odd_one⟩
 
 /- English proof (translation)
-Unfold `NumDatum.ordP`. Distinguish the cases in `hc : N.cls l = PrimeClass.signal`. Rewrite using `[if_pos hc]`. Conclude with `even_two_mul _`. Rewrite using `[if_neg hc]`.
-
-Conclude with `Nat.not_odd_iff_even.1 fun h => hC ⟨hI.resolve_right hc, h⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_ordP_of_not_conjIn {N : NumDatum} {l : ℕ} (hI : Inert N l) (hC : ¬ ConjIn N l) : Even (N.ordP l) := by
   unfold NumDatum.ordP
@@ -64,7 +62,7 @@ theorem even_ordP_of_not_conjIn {N : NumDatum} {l : ℕ} (hI : Inert N l) (hC : 
     exact Nat.not_odd_iff_even.1 fun h => hC ⟨hI.resolve_right hc, h⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `h (Nat.mem_primeFactors.2 ⟨Nat.prime_two, (dvd_pow_self 2 (by omega)).trans N.H.tower_dvd, N.H.QS_pos.ne'⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_two_of_not_small {N : NumDatum} {l : ℕ} (h : l ∉ N.H.small) : l ≠ 2 := by
   rintro rfl

@@ -13,31 +13,29 @@ open scoped CategoryTheory.Obj RatFunc
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `Ω _ _ H _ hP ξ hξ hrat`. Take `⟨β, hβ⟩` from `hrat`. Take `⟨σ, j, r₂, rh, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_scaling_compatible_expansion_at_infinity Ω`. Establish `comp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C), spMap g ≫ spMap f = spMap (g.comp f)` using `fun f g => by rw [← Spec.map_comp]; rfl`. Establish `compA : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) {Z : Scheme.{0}} (h : Sp A ⟶ Z), spMap g ≫ spMap f ≫ h = spMap (g.comp f) ≫ h` using `by intros; rw [← Category.assoc, comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `canc` using `(GlobalTheory.T.spec_injectiveRingMap_cancellation).1`. Establish `cancS` using `(GlobalTheory.T.spec_injectiveRingMap_cancellation).2`. Use `haveI := hP`. Use `haveI : IsSeparated H.hom := inferInstance`. Establish `sqr_hom : sqr H ≫ H.hom = H.hom` using `Over.w (𝟙 H * 𝟙 H)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Function.Injective (algebraMap (PowerSeries Ω) (LaurentSeries Ω))` using `IsFractionRing.injective _ _`. Establish `ha : Function.Injective (algebraMap (RatFunc Ω) (LaurentSeries Ω))` using `RingHom.injective _`. Establish `hj : Function.Injective j` using `RingHom.injective _`. Establish `hσ : spMap σ ≫ β = β ≫ sqr H`. Use `canc _ _ (algebraMap (RatFunc Ω) (LaurentSeries Ω)) ha _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[compA, ← h2, ← comp, Category.assoc, hβ, compA, h1, ← compA, hξ.scale, ← Category.assoc, ← Category.assoc, hβ]`. Establish `hβb : β ≫ H.hom = spMap RatFunc.C`. Use `canc _ _ (algebraMap (RatFunc Ω) (LaurentSeries Ω)) ha _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hβ, Category.assoc, hξ.base, Category.comp_id, comp, comp, h6]`. Establish `hsq : (spMap j ≫ β) ≫ H.hom = Spec.map (CommRingCat.ofHom (algebraMap (PowerSeries Ω) (LaurentSeries Ω))) ≫ spMap PowerSeries.C`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hβb, comp, h5]`. Conclude with `(comp _ _).symm`. Establish `hE : ValuativeCriterion.Existence H.hom` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed H.hom) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) H.hom).1`. Set `V : ValuativeCommSq H.hom` to `{ R := PowerSeries Ω K := LaurentSeries Ω i₁ := spMap j ≫ β i₂ := spMap PowerSeries.C commSq := ⟨hsq⟩ }`. Take `⟨⟨l⟩⟩` from `hE V`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ1 : spMap (algebraMap (PowerSeries Ω) (LaurentSeries Ω)) ≫ l.l = spMap j ≫ β` using `l.fac_left`. Establish `hζ2 : l.l ≫ H.hom = spMap PowerSeries.C` using `l.fac_right`. Establish `hrC : (PowerSeries.rescale (2⁻¹ : Ω)).comp PowerSeries.C = PowerSeries.C`. Use `RingHom.ext fun x => PowerSeries.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, PowerSeries.coeff_rescale, PowerSeries.coeff_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hn`. Substitute `hn` using the available equality. Rewrite using `[pow_zero, _root_.one_mul]`. Rewrite using `[MulZeroClass.mul_zero]`. Establish `hcc : (PowerSeries.constantCoeff (R` using `Ω)).comp (PowerSeries.rescale (2⁻¹ : Ω)) = PowerSeries.constantCoeff (R := Ω) := RingHom.ext fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.comp_apply, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, _root_.one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `hcC : (PowerSeries.constantCoeff (R` using `Ω)).comp PowerSeries.C = RingHom.id Ω := RingHom.ext fun x => by rw [RingHom.comp_apply, PowerSeries.constantCoeff_C]; rfl`. Establish `hζs : spMap (PowerSeries.rescale (2⁻¹ : Ω)) ≫ l.l = l.l ≫ sqr H`. Use `cancS _ _ (algebraMap (PowerSeries Ω) (LaurentSeries Ω)) hi _ _ H.hom _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hζ2, comp, hrC, sqr_hom, hζ2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compA, ← h3, ← comp, Category.assoc, hζ1, compA, h4, ← compA, hσ, ← Category.assoc, ← Category.assoc, hζ1]`. Establish `hunit : ∀ n : ℕ, 1 ≤ n → IsUnit ((2⁻¹ : Ω) ^ n - 2)`. Introduce `n hn`. Rewrite using `[isUnit_iff_ne_zero, sub_ne_zero, inv_pow]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h0 : (2 : Ω) ^ n ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `e : (2 : Ω) ^ (n + 1) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `e' : (2 : ℕ) ^ (n + 1) = 1` using `by exact_mod_cast e`. Establish `: 1 < (2 : ℕ) ^ (n + 1)` using `Nat.one_lt_two_pow (by omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hz` using `(GlobalTheory.T.formalSquaringPath_unique_constant_localRing (Sp Ω) H Ω).2.1 (spMap (PowerSeries.constantCoeff (R := Ω)) ≫ l.l) (by rw [Category.assoc, ← hζs, compA, hcc])`. Establish `hzero : spMap (PowerSeries.constantCoeff (R` using `Ω)) ≫ l.l = 𝟙 (Sp Ω) ≫ unitSec H := by`. Rewrite using `[hz, Category.assoc (spMap _) l.l H.hom, hζ2, comp, hcC, show spMap (RingHom.id Ω) = 𝟙 (Sp Ω) from Spec.map_id _]`. Establish `hζt : l.l = triv H (𝟙 (Sp Ω))` using `(GlobalTheory.T.formalSquaringPath_unique_constant_localRing (Sp Ω) H Ω).2.2 inferInstance (2⁻¹) hunit (𝟙 _) l.l ⟨by rw [Category.comp_id]; exact hζ2, hzero, hζs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hβu : β = spMap RatFunc.C ≫ unitSec H`. Use `canc _ _ j hj _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← hζ1, hζt, triv, Category.id_comp, compA, ← h5, ← compA]`. Use `cancS _ _ (algebraMap (PowerSeries Ω) (LaurentSeries Ω)) hi _ _ H.hom _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hξ.base, triv_over]`.
-
-Rewrite using `[← hβ, hβu, compA, h6, triv, Category.id_comp, compA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratRigid_of_isProper_of_charZero : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (H : Over (Sp Ω)) [GrpObj H],
     IsProper H.hom → RatRigid H (𝟙 (Sp Ω)) := by

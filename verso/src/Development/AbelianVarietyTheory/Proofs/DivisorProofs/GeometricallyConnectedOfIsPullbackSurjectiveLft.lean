@@ -9,11 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ S π hlft hsurj G' G β hpb hG'`. Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ y ↦ ?_⟩` and prove the remaining obligations. Set `jK : Spec (.of (AlgebraicClosure K)) ⟶ Spec (.of K)` to `Spec.map (CommRingCat.ofHom (algebraMap K (AlgebraicClosure K)))`. Take `⟨t, ht⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective (Ω := AlgebraicClosure K) π (jK ≫ y)`. Establish `hct : ConnectedSpace ↥(pullback G'.hom t)` using `pullback_of_geometrically hG'.geometrically_connectedSpace _ t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : IsPullback (pullback.fst G'.hom t ≫ β) (pullback.snd G'.hom t) G.hom (t ≫ π)` using `(IsPullback.of_hasPullback G'.hom t).paste_horiz hpb`. Rewrite `hP` using `[← ht]`. Establish `hc' : ConnectedSpace ↥(pullback G.hom (jK ≫ y))` using `hP.isoPullback.hom.homeomorph.connectedSpace_iff.mp hct`. Establish `hjK : Surjective jK` using `⟨fun z ↦ by`. Take `⟨w⟩ : Nonempty ↥(Spec (.of (AlgebraicClosure K)))` from `inferInstance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, Subsingleton.elim _ _⟩⟩`. Establish `hc'' : ConnectedSpace ↥(pullback (pullback.snd G.hom y) jK)` using `(pullbackLeftPullbackSndIso G.hom y jK).hom.homeomorph.connectedSpace_iff.mpr hc'`. Conclude with `(pullback.fst (pullback.snd G.hom y) jK).surjective.connectedSpace (pullback.fst (pullback.snd G.hom y) jK).continuous`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isPullback_of_surjective :
     ∀ (R : Type) [CommRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), LocallyOfFiniteType π → Surjective π →

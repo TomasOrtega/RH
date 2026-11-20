@@ -6,7 +6,7 @@ set_option autoImplicit false
 namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 
 /- English proof (translation)
-The claim follows from `expActOf_of_eig hE`.
+A detailed English derivation is pending.
 -/
 theorem expActOf_of (hE : LinEigSt) : ExpActOfSt := expActOf_of_eig hE
 

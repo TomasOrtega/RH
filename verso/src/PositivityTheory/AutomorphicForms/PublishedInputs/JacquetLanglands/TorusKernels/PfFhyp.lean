@@ -10,7 +10,7 @@ namespace UpperTheory.Esk.HyperbolicTermsContribution
 open UpperTheory.Esk
 
 /- English proof (translation)
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `h2` using `congrArg (fun v => v ᵥ* (δ⁻¹ : GL (Fin 2) F).val) h`. Simplify `h2` using `[Matrix.vecMul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vecMul_ne {F : Type} [Field F] (s : Fin 2 → F) (hs : s ≠ 0) (δ : GL (Fin 2) F) : s ᵥ* δ.val ≠ 0 := by
   intro h
@@ -19,13 +19,13 @@ theorem vecMul_ne {F : Type} [Field F] (s : Fin 2 → F) (hs : s ≠ 0) (δ : GL
   simpa [Matrix.vecMul_vecMul] using h2
 
 /- English proof (translation)
-Take `⟨δ, rfl⟩` from `QuotientGroup.mk_surjective g`. Take `⟨γ, rfl⟩` from `QuotientGroup.mk_surjective γ`. Establish `h1 : ∀ s : Fin 2 → F, Fix s (γ : PG F) ↔ ∃ c : F, s ᵥ* γ.val = c • s`. Introduce `s`. Use `hfix s γ 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Prove the components needed by the constructor for the conclusion. Introduce `h s hs hf`. Take `⟨c, hc⟩` from `(h1 s).1 hf`. Establish `hs' : s ᵥ* (δ⁻¹ : GL (Fin 2) F).val ≠ 0` using `vecMul_ne s hs _`.
+Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `h _ hs'` to reduce the goal to its premises. Rewrite using `[hfix]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e : (s ᵥ* (δ⁻¹ : GL (Fin 2) F).val) ᵥ* δ.val = s`. Rewrite using `[Matrix.vecMul_vecMul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, hc]`. Introduce `h s hs hf`. Take `⟨c, hc⟩` from `(hfix s γ δ).1 hf`. Conclude with `h _ (vecMul_ne s hs δ) ((h1 _).2 ⟨c, hc⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEll_conj {F : Type} [Field F]
     (hfix : ∀ (s : Fin 2 → F) (γ δ : GL (Fin 2) F), Fix s ((δ : PG F) * γ * (δ : PG F)⁻¹) ↔
@@ -59,7 +59,7 @@ def uT (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (T : ℝ) (γ : PG F) (y
   if IsEll γ then 0 else (D.LamF T γ).indicator (D.kk k a γ) y
 
 /- English proof (translation)
-Unfold `uT`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem enorm_uT_le (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (T : ℝ) (γ : PG F) (y : D.Y) :
     ‖uT D k a T γ y‖ₑ ≤ ‖(D.LamF T γ).indicator (D.kk k a γ) y‖ₑ := by
@@ -67,7 +67,7 @@ theorem enorm_uT_le (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (T : ℝ) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem enorm_ind_le (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (T : ℝ) (γ : PG F) (y : D.Y) :
     ‖(D.LamF T γ).indicator (D.kk k a γ) y‖ₑ ≤ ‖D.kk k a γ y‖ₑ := by
@@ -77,57 +77,49 @@ theorem enorm_ind_le (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (T : ℝ) 
 
 open Classical in
 /- English proof (translation)
-Establish `hax` using `hyp.ax`. Take `⟨hcnt, hsf, hpres, -, -, -, -, -⟩` from `hE0a F I Gf D hax`. Take `⟨-, hkkc, hkkm, -, -, -⟩` from `hE0c F I Gf ι D k a hyp`. Take `⟨-, -, -, -, -, -, -, hLamF, hev, -, hfix⟩` from `hE0d F I Gf D hax`. Take `⟨-, hE2'⟩` from `hE2 F I Gf ι D k a hyp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb3` using `hE3 F I Gf D hax b hb`. Take `⟨-, hcut⟩` from `hEcut F I Gf D hax`. Take `⟨C, hC⟩` from `hF5 F I Gf ι D k a hyp`. Establish `hF6'` using `hF6 F I Gf ι D k a hyp`. Establish `: Countable (PG F)` using `hcnt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable D.Cj` using `hcnt`. Establish `: Countable D.Om` using `hax.cO`. Establish `hbI : Integrable b D.μY`. Use `⟨hb.meas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `lt_of_le_of_lt (le_of_eq ?_) hb3` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Conclude with `Real.enorm_eq_ofReal (hb.nonneg y)`. Establish `hum : ∀ T γ, Measurable (uT D k a T γ)`. Introduce `T γ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : IsEll γ`. Unfold `uT`. Simplify using `only [h, if_true]`. Conclude with `measurable_const`. Unfold `uT`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h, if_false]`. Conclude with `(hkkm γ).indicator (hLamF T γ).1`. Establish `hsumle : ∀ T : ℝ, 1 < T → ∀ y, y ∉ D.abelian₂ T → ∑' γ, ‖uT D k a T γ y‖ₑ ≤ C`. Introduce `T hT y hy`. Conclude with `le_trans (ENNReal.tsum_le_tsum fun γ => enorm_uT_le D k a T γ y) ((hC T hT y).2 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Establish `hon : ∀ T : ℝ, 1 < T → ∀ y, y ∈ D.abelian₂ T → ∀ γ, uT D k a T γ y = if IsEll γ then 0 else D.kk k a γ y`. Introduce `T hT y hy γ`. Unfold `uT`. Use `split_ifs`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Set.indicator_of_mem ((hC T hT y).1 hy γ) _`. Establish `hinv : ∀ T (g γ : PG F) (y : D.Y), uT D k a T (g * γ * g⁻¹) (g • y) = uT D k a T γ y`. Introduce `T g γ y`. Unfold `uT`. Rewrite using `[isEll_conj hfix g γ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_apply, Set.indicator_apply, hkkc]`. Simplify using `only [(hLamF T γ).2 g y]`. Establish `step1 : ∀ T : ℝ, 1 < T → Integrable (fun y => b y • ∑' γ, uT D k a T γ y) D.μY ∧ ∫ y, b y • ∑' γ, uT D k a T γ y ∂D.μY = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T hT`. Take `⟨CT, hCT⟩` from `hE2' T`. Establish `hfin : ∫⁻ y, ENNReal.ofReal (b y) * ∑' γ, ‖uT D k a T γ y‖ₑ ∂D.μY < ⊤`. Establish `hle : ∀ y, ∑' γ, ‖uT D k a T γ y‖ₑ ≤ (CT : ℝ≥0∞) + C`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy : y ∈ D.abelian₂ T`. Use `le_trans ?_ le_self_add` and prove the remaining obligations. Use `le_trans (ENNReal.tsum_le_tsum fun γ => ?_) (hCT y hy)` and prove the remaining obligations. Conclude with `(enorm_uT_le D k a T γ y).trans (enorm_ind_le D k a T γ y)`. Conclude with `(hsumle T hT y hy).trans le_add_self`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨hb', hFs⟩` from `hFsum F I Gf D hax b hb`. Take `⟨hm', hi', hiY, heq⟩` from `hFs (uT D k a T) (hum T) hfin`. Use `⟨hiY, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `R : Set (D.Cj × D.Om)` to `Set.range (fun q : MulAction.orbitRel.Quotient (PG F) (D.Cj × D.Om) => q.out)`. Establish `hR : ∀ ω : D.Cj × D.Om, ∃! r, r ∈ R ∧ r ∈ MulAction.orbit (PG F) ω`. Introduce `ω`. Use `⟨(Quotient.mk (MulAction.orbitRel (PG F) (D.Cj × D.Om)) ω).out, ⟨⟨_, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(MulAction.orbitRel_apply).1 (Quotient.mk_out ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `r ⟨⟨q, rfl⟩, hq⟩`. Establish `e1 : q = Quotient.mk (MulAction.orbitRel (PG F) (D.Cj × D.Om)) ω`. Rewrite using `[← Quotient.out_eq q]`. Conclude with `Quotient.sound ((MulAction.orbitRel_apply).2 hq)`. Rewrite using `[e1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hβ : ∀ r : D.Cj × D.Om, ∃ β : D.Xs → ℝ, IsCut (MulAction.stabilizer (PG F) r) β`. Introduce `r`. Use `hcut r.2 _ ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `congrArg Prod.snd hg` as an intermediate fact. Simplify using `using this`. Use `choose β hβ using hβ`. Establish `hinv' : ∀ (g : PG F) (p : (D.Cj × D.Om) × D.Xs), uT D k a T (D.el (g • p).1.1) ((g • p).1.2, (g • p).2) = uT D k a T (D.el p.1.1) (p.1.2, p.2)`. Introduce `g p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ((g • p).1.2, (g • p).2) = g • ((p.1.2, p.2) : D.Y)` using `rfl`. Rewrite using `[e, show D.el (g • p).1.1 = g * D.el p.1.1 * g⁻¹ from D.smulC g p.1.1, hinv]`. Take `⟨hI, hS⟩` from `hC4 (PG F) (D.Cj × D.Om) D.Xs volume hpres _ hb' _ hm' hinv' hi' R hR β (fun r _ => hβ r)`. Establish `hz : ∀ r : R, ∫ x, β r x • uT D k a T (D.el r.1.1) (r.1.2, x) = 0`. Introduce `r`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `he : IsEll (D.el r.1.1)`. Simplify using `[uT, he]`. Establish `hI'` using `hI r.1 r.2`. Simplify using `only [uT, he, if_false] at hI' ⊢`. Conclude with `hF6' T hT (D.el r.1.1) r.1.2 he (β r.1) (hβ r.1) hI'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hS'` using `hS`. Simplify using `only [hz] at hS'`. Conclude with `(hS'.unique hasSum_zero)`. Establish `hT2 : ∀ n : ℕ, (1 : ℝ) < (n : ℝ) + 2` using `fun n => by`. Use `n.cast_nonneg (α := ℝ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlim : Tendsto (fun n : ℕ => ∫ y, b y • ∑' γ, uT D k a ((n : ℝ) + 2) γ y ∂D.μY) atTop (𝓝 (∫ y, b y • (∑' γ : PG F, if IsEll γ then 0 else D.kk k a γ y) ∂D.μY))`. Use `tendsto_integral_of_dominated_convergence (fun y => ‖b y • ∑' γ : PG F, (if IsEll γ then 0 else D.kk k a γ y)‖ + b y * C) (fun n => (step1 _ (hT2 n)).1.aestronglyMeasurable) (hint.norm.add (hbI.mul_const _)) ?_ ?_` and prove the remaining obligations. Introduce `n`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : (1 : ℝ) < (n : ℝ) + 2` using `hT2 n`. Rewrite using `[norm_smul, norm_smul, Real.norm_of_nonneg (hb.nonneg y), ← mul_add]`. Use `mul_le_mul_of_nonneg_left ?_ (hb.nonneg y)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ D.abelian₂ ((n : ℝ) + 2)`. Rewrite using `[tsum_congr (hon _ hT y hy)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_add_of_nonneg_right C.2`. Establish `h1 : ‖∑' γ, uT D k a ((n : ℝ) + 2) γ y‖ₑ ≤ C` using `enorm_tsum_le_tsum_enorm.trans (hsumle _ hT y hy)`. Establish `h2 : ‖∑' γ, uT D k a ((n : ℝ) + 2) γ y‖ ≤ C`. Use `ENNReal.toReal_mono ENNReal.coe_ne_top h1` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `h2.trans (le_add_of_nonneg_left (norm_nonneg _))`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Take `⟨T₀, hT₀⟩` from `hev y`. Take `⟨N, hN⟩` from `exists_nat_ge T₀`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
-
-Use `Filter.eventually_atTop.2 ⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hT : (1 : ℝ) < (n : ℝ) + 2` using `hT2 n`. Establish `hy : y ∈ D.abelian₂ ((n : ℝ) + 2)` using `hT₀ _ (by`. Establish `: (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Use the proof step `linarith)`.
-
-Simplify using `only`. Rewrite using `[tsum_congr (hon _ hT y hy)]`. Establish `h0 : Tendsto (fun n : ℕ => ∫ y, b y • ∑' γ, uT D k a ((n : ℝ) + 2) γ y ∂D.μY) atTop (𝓝 0)`. Use `tendsto_const_nhds.congr' (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Conclude with `((step1 _ (hT2 n)).2).symm`.
-
-Conclude with `tendsto_nhds_unique hlim h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fhyp (hC4 : C4) (hE0a : E0a) (hE0c : KernelTermsInvariantBounded) (hE0d : E0d) (hE2 : E2) (hE3 : E3) (hEcut : Ecut)
     (hFsum : Fsum) (hF5 : F5) (hF6 : F6) (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (hyp : D.Hyp k a)
@@ -278,7 +270,7 @@ theorem fhyp (hC4 : C4) (hE0a : E0a) (hE0c : KernelTermsInvariantBounded) (hE0d 
 end UpperTheory.Esk.HyperbolicTermsContribution
 
 /- English proof (translation)
-Introduce `hC4 hE0a hE0c hE0d hE2 hE3 hEcut hFsum hF5 hF6 F I Gf ι _ _ _ _ D k a hyp b hb hint`. Conclude with `UpperTheory.Esk.HyperbolicTermsContribution.fhyp hC4 hE0a hE0c hE0d hE2 hE3 hEcut hFsum hF5 hF6 D k a hyp b hb hint`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_Fhyp : UpperTheory.Esk.C4 → UpperTheory.Esk.E0a → UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E0d → UpperTheory.Esk.E2 → UpperTheory.Esk.E3 → UpperTheory.Esk.Ecut → UpperTheory.Esk.Fsum → UpperTheory.Esk.F5 → UpperTheory.Esk.F6 → UpperTheory.Esk.Fhyp := by
   intro hC4 hE0a hE0c hE0d hE2 hE3 hEcut hFsum hF5 hF6 F I Gf ι _ _ _ _ D k a hyp b hb hint

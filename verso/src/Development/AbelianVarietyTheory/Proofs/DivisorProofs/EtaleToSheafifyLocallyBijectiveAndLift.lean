@@ -14,11 +14,11 @@ end GlobalTheory.EtC.ShfLoc
 open GlobalTheory.EtC.ShfLoc in
 
 /- English proof (translation)
-Introduce `R _ P`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U y`. Conclude with `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) y, fun V g hg => hg⟩`. Introduce `U x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ((toSheafify Scheme.etaleTopology P).app (op U)).hom x = ((toSheafify Scheme.etaleTopology P).app (op U)).hom 0` using `by rw [hx, map_zero]`. Use `⟨_, Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) x 0 h, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `h' : (P.map g.op).hom x = (P.map g.op).hom 0` using `hg`. Use `show (P.map g.op).hom x = 0`. Rewrite using `[h', map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F φ`. Use `⟨⟨sheafifyLift Scheme.etaleTopology φ F.cond⟩, toSheafify_sheafifyLift _ _ _, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ`. Use `ext1`. Conclude with `sheafifyLift_unique _ _ _ _ hψ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.toSheafify_loc_bij_lift : ∀ (R : Type) [CommRing R] (P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)), (∀ (U : Scheme.{0}) (y : Sec ((presheafToSheaf Scheme.etaleTopology _).obj P) U), Loc U fun V g => ∃ x, ((toSheafify Scheme.etaleTopology P).app (op V)).hom x = Sec.res g y) ∧ (∀ (U : Scheme.{0}) (x : P.obj (op U)), ((toSheafify Scheme.etaleTopology P).app (op U)).hom x = 0 → Loc U fun _ g => (P.map g.op).hom x = 0) ∧ ∀ (F : Shv R) (φ : P ⟶ F.obj), ∃! ψ : (presheafToSheaf Scheme.etaleTopology _).obj P ⟶ F, toSheafify Scheme.etaleTopology P ≫ ψ.hom = φ := by
   intro R _ P

@@ -5,17 +5,15 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `K _ n α hα t hcard hmem hprod`. Distinguish the cases in `hn : Nonempty (Fin n)`. Set `g` to `Function.invFun α`. Establish `hg : ∀ x ∈ t, α (g x) = x` using `fun x hx => by`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 (hmem x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Function.invFun_eq ⟨i, rfl⟩`. Set `u` to `t.map g`. Establish `hu : u.map α = t`. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id t]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Multiset.map_congr rfl hg`. Establish `key` using `hα (fun i => u.count i) ?_ ?_`. Establish `hu1 : u = Finset.univ.val` using `Multiset.ext.2 fun i => by`. Rewrite using `[key i, Multiset.count_eq_one_of_mem Finset.univ.nodup (Finset.mem_univ i)]`. Rewrite using `[← hu, hu1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Multiset.sum_count_eq_card (fun a _ => Finset.mem_univ a)]`. Simplify using `[u, hcard]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_multiset_map_count]`. Conclude with `(Finset.prod_subset (Finset.subset_univ _) (fun i _ hi => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Multiset.count_eq_zero.2 (by simpa using hi), pow_zero])).symm`. Use `_ = t.prod := by rw [hu]`. Use `_ = ∏ i, α i := by rw [hprod, Finset.prod_eq_multiset_prod]`. Establish `h0 : (Finset.univ : Finset (Fin n)).val = 0`. Rewrite using `[Finset.univ_eq_empty_iff.2 (not_nonempty_iff.1 hn)]`.
-
-Both sides reduce to the same expression. Rewrite `hcard`, the goal using `[h0, Multiset.map_zero]`. Conclude with `Multiset.card_eq_zero.1 hcard`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.genMul_of :
     GenericMulOfProd := by

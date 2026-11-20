@@ -32,7 +32,7 @@ def thetaAt (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (om : GA D S × GA D 
   heisO ψ S T w (om (1, g) v) 0
 
 /- English proof (translation)
-Simplify using `[thetaAt, heisO, symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaAt_eq (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
     (v : WO S T → ℂ) (g : GA D T) (w : WO S T) : thetaAt ψ om v g w = om (1, g) v w := by
@@ -47,7 +47,7 @@ def perVec (Wt : UnfAt U k x) (v : Fin r → D.host.E) : Fin Wt.g → ℂ :=
   fun j => perFr (U.X k) x.1 v (relab c σ (Wt.e j).1) (Wt.e j).2
 
 /- English proof (translation)
-The claim follows from `funext fun j => (Wt.pm_eq a j).symm`.
+A detailed English derivation is pending.
 -/
 theorem perVec_lat (Wt : UnfAt U k x) (a : (Wt.F.Di (Wt.ik k)).La) :
     perVec Wt (Wt.φ k a : Fin r → D.host.E) = Wt.Pm a := funext fun j => (Wt.pm_eq a j).symm
@@ -77,7 +77,7 @@ def FramePin : Prop :=
 omit [Algebra T.Q.c.F D.what₂.LL] in
 
 /- English proof (translation)
-Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Take `⟨th, hr, -, hd⟩` from `hL.dictU _ hj σ hσ`. Establish `hx` using `hd.2.2.2.1 (cast (congrArg (GA D) hV.symm) h)`. Take `⟨Wt⟩` from `nonempty_unfAt (hL.unf _ hj σ hσ) _ ⟨_, hx⟩`. Conclude with `⟨hx, Wt, nonempty_unitAt Wt ((hL.muUnit _ hj σ hσ).2.2.2 _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_witness (hL : LawsM T.toCore) (hσ : GoodEmb T.Q.c σ) (h : GA D (Wc D i)) :
     ∃ (hx : (dictW T i σ hV h).2 ∈ ((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV h).1).dom)
@@ -117,7 +117,7 @@ def HeckeRead : Prop :=
 variable {T R i σ hV}
 
 /- English proof (translation)
-Rewrite using `[H P p k α Rc hs 1 f g hf hg hr h, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ReadsAt.unitary {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} (H : ReadsAt T R i σ hV κ) {P : Formalism.L2.DIV.Pl D.host.E} {p k : ℕ}
     {α : GA D (Wc D i)} {Rc : Finset (GA D (Wc D i))} (hs : IsUnitaryHeckeOperatorSplitPrimeData T R i P p k α Rc) {f g : T.R ((i : ℕ) + 1)}
@@ -127,7 +127,7 @@ theorem ReadsAt.unitary {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} (H : ReadsAt 
   rw [H P p k α Rc hs 1 f g hf hg hr h, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[H P p k α Rc hs _ f g hf hg hr h, map_pow, map_inv₀, map_natCast, mul_comm ((Nat.card (kP P) : ℂ)⁻¹ ^ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ReadsAt.modulus {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} (H : ReadsAt T R i σ hV κ) {P : Formalism.L2.DIV.Pl D.host.E} {p k : ℕ}
     {α : GA D (Wc D i)} {Rc : Finset (GA D (Wc D i))} (hs : IsUnitaryHeckeOperatorSplitPrimeData T R i P p k α Rc) {f g : T.R ((i : ℕ) + 1)}

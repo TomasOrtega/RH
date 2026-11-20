@@ -12,14 +12,14 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] {ι : Type} {K : ι → C
 
 include hc in
 /- English proof (translation)
-The claim follows from `(hc p).hom_ext fun ⟨j⟩ => h j`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_v {p q : ℤ} {a b : c.pt.X p ⟶ L.X q} (h : ∀ j, (c.inj j).f p ≫ a = (c.inj j).f p ≫ b) : a = b :=
   (hc p).hom_ext fun ⟨j⟩ => h j
 
 include hc in
 /- English proof (translation)
-Use extensionality with `p q hpq`. Use `hom_ext_v c hc fun j => ?_` and prove the remaining obligations. Use `congrArg (fun z => Cochain.v z p q hpq) (h j)` as an intermediate fact. Simplify `this` using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cochain_ext {n : ℤ} {x y : Cochain c.pt L n}
     (h : ∀ j, (Cochain.ofHom (c.inj j)).comp x (zero_add n) = (Cochain.ofHom (c.inj j)).comp y (zero_add n)) : x = y := by
@@ -43,7 +43,7 @@ def glue (hc : ∀ p, IsColimit ((HomologicalComplex.eval C (ComplexShape.up ℤ
   Cochain.mk fun p q hpq => (hc p).desc (cof L b p q hpq)
 
 /- English proof (translation)
-Use extensionality with `p q hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Conclude with `(hc p).fac (cof L b p q hpq) ⟨j⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_glue {n : ℤ} (b : ∀ j, Cochain (K j) L n) (j : ι) :
     (Cochain.ofHom (c.inj j)).comp (glue c hc b) (zero_add n) = b j := by
@@ -53,17 +53,15 @@ theorem restr_glue {n : ℤ} (b : ∀ j, Cochain (K j) L n) (j : ι) :
 
 include hc in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨y, rfl⟩` from `y.mk_surjective`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ∀ j, ∃ β : Cochain (K j) L (n - 1), δ (n - 1) n β = (Cochain.ofHom (c.inj j)).comp (x - y : Cocycle c.pt L n).1 (zero_add n)`. Introduce `j`. Establish `h` using `congrFun hxy j`. Simplify using `only [cpre_mk] at h`. Rewrite `h` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨β, hβ⟩` from `h`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Simplify using `[zcomp, Cochain.comp_sub]`. Use `choose β hβ using hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨glue c hc β, cochain_ext c hc fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_ofHom_comp, restr_glue, hβ]`. Introduce `y choose z hz using fun j => (y j).mk_surjective`. Establish `hδ : δ n (n + 1) (glue c hc fun j => (z j).1) = 0` using `cochain_ext c hc fun j => by`. Rewrite using `[← δ_ofHom_comp, restr_glue, Cocycle.δ_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨CohomologyClass.mk (Cocycle.mk _ (n + 1) rfl hδ), funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [cpre_mk]`. Rewrite using `[← hz j]`. Use `congr 1`.
-
-Conclude with `Cocycle.ext (restr_glue c hc (fun j => (z j).1) j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem bij (n : ℤ) : Function.Bijective fun (x : CohomologyClass c.pt L n) (j : ι) =>
     cpre (Cocycle.ofHom (c.inj j)) L n n (zero_add n) x := by
@@ -101,7 +99,7 @@ end General
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `R _ ι K c hc F n`. Establish `h1 : HasColimitsOfSize.{1, 1} (Shv R)` using `IsGrothendieckAbelian.hasColimits.{1} (Shv R)`. Establish `h0 : HasColimitsOfSize.{0, 0} (Shv R)` using `hasColimitsOfSizeShrink.{0, 0, 1, 1} (Shv R)`. Establish `: HasColimitsOfShape (Discrete ι) (Shv R)` using `inferInstance`. Conclude with `bij c (fun p => isColimitOfPreserves (HomologicalComplex.eval _ _ p) hc) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HKCoprod_of : LateralTheory.E.CoprodPf.HKCoprod := by
   intro R _ ι K c hc F n

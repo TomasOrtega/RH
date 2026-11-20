@@ -27,7 +27,7 @@ def embeddingBasisOfTotallyComplex [IsTotallyComplex E] :
   (latticeBasis E).map (mixedSpaceEquivPiOfTotallyComplex E)
 
 /- English proof (translation)
-Rewrite using `[embeddingBasisOfTotallyComplex, Basis.map_apply, latticeBasis_apply]`. Conclude with `mixedEmbedding_apply_isComplex _ _ ⟨w, IsTotallyComplex.isComplex w⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddingBasisOfTotallyComplex_apply [IsTotallyComplex E]
     (j : Free.ChooseBasisIndex ℤ (𝓞 E)) (w : InfinitePlace E) :
@@ -41,11 +41,11 @@ def piSwapEquiv : (ι → InfinitePlace E → ℂ) ≃ₗ[ℝ] (InfinitePlace E 
     map_smul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Set `B` to `(Pi.basis fun _ : ι => embeddingBasisOfTotallyComplex E).map (piSwapEquiv E ι)`. Establish `hB : ∀ k, B k = coordEmbed E ι (Pi.basis (fun _ : ι => integralBasis E) k)`. Introduce and unpack `⟨i, j⟩`. Use function extensionality and compare the values at `w i'`. Simplify using `only [B, Basis.map_apply, Pi.basis_apply, coordEmbed_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show (Pi.single i (embeddingBasisOfTotallyComplex E j) : ι → InfinitePlace E → ℂ) i' w = _`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using `[embeddingBasisOfTotallyComplex_apply]`. Simplify using `[Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hli` using `B.linearIndependent`. Rewrite using `[show (⇑B) = fun k => coordEmbed E ι (Pi.basis (fun _ : ι => integralBasis E) k) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `hB] at hli`. Rewrite using `[finrank_eq_card_basis B, finrank_eq_card_basis (Pi.basis fun _ : ι => integralBasis E)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoordEmbedBasis.proof [IsTotallyComplex E] : CoordEmbedBasis.Statement E ι := by
   classical

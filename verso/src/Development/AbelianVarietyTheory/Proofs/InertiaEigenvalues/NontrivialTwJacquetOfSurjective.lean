@@ -16,42 +16,40 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable (k) in
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_hasConductor_one k`. Conclude with `⟨ψ, hψ.continuous, hψ.ne_one⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_continuous_addChar_ne_one : ∃ ψ : AddChar k Circle, Continuous ψ ∧ ψ ≠ 1 := by
   obtain ⟨ψ, hψ⟩ := exists_hasConductor_one k
   exact ⟨ψ, hψ.continuous, hψ.ne_one⟩
 
 /- English proof (translation)
-Introduce `x (hx : valuation k x ≤ valuation k (t : k))` and use `le_trans hx h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cball_subset_cball_of_valuation_le {s t : kˣ} (h : valuation k (t : k) ≤ valuation k (s : k)) :
     cball t ⊆ cball s := fun x (hx : valuation k x ≤ valuation k (t : k)) => le_trans hx h
 
 /- English proof (translation)
-Set `_ : MeasurableSpace k` to `borel k`. Establish `_ : BorelSpace k` using `⟨rfl⟩`. Take `⟨ν, hν, hν1⟩` from `exists_isUnitVol k`. Establish `_` using `hν`. Establish `h0s : (0 : k) ∈ cball s` using `by simp [cball]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : k → ℂ := (cball s).indicator fun x => (ψ' x : ℂ) with hf`. Establish `hfinv : ∀ z ∈ cball t, ∀ x, f (x + z) = f x`. Introduce `z hz x`. Establish `hzs : z ∈ cball s` using `hts hz`. Distinguish the cases in `hx : x ∈ cball s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hxz : x + z ∈ cball s` using `add_mem_cball hx hzs`. Simplify using `only [hf, Set.indicator_of_mem hx, Set.indicator_of_mem hxz, AddChar.map_add_eq_mul, ht z hz, mul_one]`. Establish `hxz : x + z ∉ cball s` using `fun hxz => hx (by simpa using add_mem_cball hxz (neg_mem_cball hzs))`. Simplify using `only [hf, Set.indicator_of_notMem hx, Set.indicator_of_notMem hxz]`. Establish `hSB : f ∈ SB k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(· - x) ⁻¹' cball t, (isOpen_cball t).preimage (continuous_id.sub continuous_const), ?_, fun x' hx' => ?_⟩` and prove the remaining obligations. Simplify using `[cball]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `hfinv (x' - x) hx' x`. Rewrite `e` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `HasCompactSupport.intro (isCompact_cball s) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [hf, Set.indicator_of_notMem hx]`. Establish `hf0 : f 0 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, Set.indicator_of_mem h0s, AddChar.map_zero_eq_one, Circle.coe_one]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, ∫ x, f x * (ψ (x * y) : ℂ) ∂ν ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Establish `hall : ∀ y, ∫ x, f x * (ψ (x * y) : ℂ) ∂ν = 0` using `fun y => not_not.1 fun h => hne ⟨y, h⟩`. Establish `hI : ∫ y, (∫ x, f x * (ψ (x * y) : ℂ) ∂ν) ∂ν = 0` using `by simp [hall]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hI` using `[fourier_inversion ν h hSB, hf0, mul_one]`. Establish `hvol : ν.real (𝒪[k] : Set k) = 1` using `by simp [Measure.real, hν1]`. Establish `hpos : (0 : ℝ) < ν.real (𝒪[k] : Set k) ^ 2 * nabs k c`. Rewrite using `[hvol, one_pow, one_mul]`. Conclude with `nabs_pos k c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hpos.ne' (Complex.ofReal_eq_zero.1 hI)`. Establish `hyc : y ∈ cball (c * t⁻¹)`. Assume the negation of the conclusion as `hyc`. Conclude with `hy (fourier_eq_zero ν h hfinv hyc)`. Establish `key : ∀ x0 ∈ cball s, (ψ' x0 : ℂ) * (ψ (x0 * y) : ℂ) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x0 hx0`. Set `g : k → ℂ` to `fun x => f x * (ψ (x * y) : ℂ)`. Establish `hshift : ∀ x, g (x0 + x) = ((ψ' x0 : ℂ) * (ψ (x0 * y) : ℂ)) * g x`. Introduce `x`. Distinguish the cases in `hx : x ∈ cball s`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hxx : x0 + x ∈ cball s` using `add_mem_cball hx0 hx`. Simplify using `only [g, hf, Set.indicator_of_mem hx, Set.indicator_of_mem hxx, add_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxx : x0 + x ∉ cball s` using `fun hxx => hx (by simpa using add_mem_cball (neg_mem_cball hx0) hxx)`. Simplify using `only [g, hf, Set.indicator_of_notMem hx, Set.indicator_of_notMem hxx, zero_mul, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI : ∫ x, g x ∂ν = ((ψ' x0 : ℂ) * (ψ (x0 * y) : ℂ)) * ∫ x, g x ∂ν`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_right_cancel₀ hy (hI.symm.trans (one_mul _).symm)`. Use `⟨-y, neg_mem_cball hyc, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : ψ' x * ψ (x * y) = 1` using `Circle.ext (by rw [Circle.coe_mul, Circle.coe_one]; exact key x hx)`.
-
-Rewrite using `[mul_neg, AddChar.map_neg_eq_inv]`. Conclude with `(eq_inv_of_mul_eq_one_left e).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_shift_of_conductor_of_trivial_on_cball {ψ ψ' : AddChar k Circle} {c t s : kˣ} (h : HasConductor ψ c)
     (ht : ∀ z ∈ cball t, ψ' z = 1) (hts : cball t ⊆ cball s) :
@@ -121,19 +119,19 @@ private theorem exists_shift_of_conductor_of_trivial_on_cball {ψ ψ' : AddChar 
   exact (eq_inv_of_mul_eq_one_left e).symm
 
 /- English proof (translation)
-Establish `_ : T2Space k` using `t2Space k`. Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Take `⟨t, ht⟩` from `exists_cball_addChar_eq_one ψ' h'`. Set `Y : kˣ → Set k` to `fun s => cball (c * t⁻¹) ∩ {y | ∀ x ∈ cball s, ψ (x * y) = ψ' x}`. Establish `hYc : ∀ s, IsClosed (Y s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s`. Use `(isCompact_cball _).isClosed.inter ?_` and prove the remaining obligations. Establish `e : {y | ∀ x ∈ cball s, ψ (x * y) = ψ' x} = ⋂ x ∈ cball s, {y | ψ (x * y) = ψ' x}`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isClosed_biInter fun x _ => isClosed_eq (f := fun y => ψ (x * y)) (hψ.comp (continuous_const_mul x)) continuous_const`. Establish `hYk : ∀ s, IsCompact (Y s)` using `fun s => (isCompact_cball _).of_isClosed_subset (hYc s) Set.inter_subset_left`. Establish `hYn : ∀ s, (Y s).Nonempty`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total (valuation k (t : k)) (valuation k (s : k)) with hle | hle` into its components or cases. Take `⟨y, hy, hy'⟩` from `exists_shift_of_conductor_of_trivial_on_cball hc ht (cball_subset_cball_of_valuation_le hle)`. Conclude with `⟨y, hy, hy'⟩`. Take `⟨y, hy, hy'⟩` from `exists_shift_of_conductor_of_trivial_on_cball (s := t) hc ht subset_rfl`. Conclude with `⟨y, hy, fun x hx => hy' x (cball_subset_cball_of_valuation_le hle hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hYd : Directed (· ⊇ ·) Y`. Introduce `s₁ s₂`. Break down `le_total (valuation k (s₁ : k)) (valuation k (s₂ : k)) with hle | hle` into its components or cases. Conclude with `⟨s₂, fun y hy => ⟨hy.1, fun x hx => hy.2 x (cball_subset_cball_of_valuation_le hle hx)⟩, subset_rfl⟩`. Conclude with `⟨s₁, subset_rfl, fun y hy => ⟨hy.1, fun x hx => hy.2 x (cball_subset_cball_of_valuation_le hle hx)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed Y hYd hYn hYk hYc`. Rewrite `hy` using `[Set.mem_iInter]`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[AddChar.mulShift_apply, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hxx : x ∈ cball (Units.mk0 x hx)` using `by simp [cball]`. Rewrite using `[(hy (Units.mk0 x hx)).2 x hxx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_mulShift {ψ ψ' : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1) (h' : Continuous ψ') :
     ∃ a : k, ψ' = ψ.mulShift a := by
@@ -176,7 +174,7 @@ theorem exists_eq_mulShift {ψ ψ' : AddChar k Circle} (hψ : Continuous ψ) (h1
     rw [(hy (Units.mk0 x hx)).2 x hxx]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_eq_mulShift hψ h1 h'`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `h1' (by rw [ha, AddChar.mulShift_zero])`. Conclude with `⟨Units.mk0 a ha0, by rw [Units.val_mk0]; exact ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_eq_mulShift {ψ ψ' : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1) (h' : Continuous ψ')
     (h1' : ψ' ≠ 1) : ∃ a : kˣ, ψ' = ψ.mulShift (a : k) := by
@@ -193,9 +191,9 @@ section Generic
 variable {k : Type} [Field k] {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {N : ℕ}
 
 /- English proof (translation)
-Establish `hle : twKer ρ U θ ≤ (twKer σ U θ').comap T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Conclude with `h u v`. Establish `hs : Function.Surjective ((twKer ρ U θ).mapQ (twKer σ U θ') T hle)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨v, rfl⟩` from `hT w`. Conclude with `⟨Submodule.Quotient.mk v, Submodule.mapQ_apply _ _ _ _⟩`. Conclude with `hs.nontrivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nontrivial_twJacquet_of_surjective {G : Type} [Group G] {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     {U : Subgroup G} {θ θ' : U →* ℂˣ} (T : V →ₗ[ℂ] W) (hT : Function.Surjective T)
@@ -217,14 +215,14 @@ def powTorus (N : ℕ) (a : kˣ) : GL (Fin N) k :=
     by simp [diagonal_mul_diagonal], by simp [diagonal_mul_diagonal]⟩
 
 /- English proof (translation)
-Simplify using `[powTorus, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem powTorus_conj_apply (a : kˣ) (g : GL (Fin N) k) (i j : Fin N) :
     ((powTorus N a)⁻¹ * g * powTorus N a).val i j = ((a⁻¹ : kˣ) : k) ^ (i : ℕ) * g.val i j * (a : k) ^ (j : ℕ) := by
   simp [powTorus, Matrix.diagonal_mul, Matrix.mul_diagonal]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨g, hg⟩, v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem sub_smul_mem_twKer' {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ G X)
     (U : Subgroup G) (θ : U →* ℂˣ) (g : G) (hg : g ∈ U) (v : X) :
@@ -232,17 +230,15 @@ private theorem sub_smul_mem_twKer' {G X : Type} [Group G] [AddCommGroup X] [Mod
   Submodule.subset_span ⟨⟨g, hg⟩, v, rfl⟩
 
 /- English proof (translation)
-Unfold `IsGenericFor at h ⊢`. Use `set t := powTorus N a with ht`. Establish `hmem : ∀ u : unipB k (Fin N), t⁻¹ * (u : GL (Fin N) k) * t ∈ unipB k (Fin N)`. Introduce `u`. Take `⟨hl, hd⟩` from `(mem_unipB (R := k)).1 u.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_unipB (R := k)).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ht, powTorus_conj_apply, hl i j hji, mul_zero, zero_mul]`. Rewrite using `[ht, powTorus_conj_apply, hd i, mul_one, ← mul_pow, Units.inv_mul, one_pow]`. Establish `hchar : ∀ u : unipB k (Fin N), whitChar ψ N ⟨_, hmem u⟩ = whitChar (ψ.mulShift (a : k)) N u`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [whitChar, MonoidHom.coe_mk, OneHom.coe_mk, AddChar.mulShift_apply]`. Use `congr 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp2 : (p.2 : ℕ) = p.1 + 1` using `(Finset.mem_filter.1 hp).2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((a⁻¹ : kˣ) : k) ^ (p.1 : ℕ) * (a : k) ^ (p.1 : ℕ) = 1`. Rewrite using `[← mul_pow, Units.inv_mul, one_pow]`. Use `show ((t⁻¹ * (u : GL (Fin N) k) * t : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) p.1 p.2 = _`. Rewrite using `[ht, powTorus_conj_apply, hp2, pow_succ]`. Take the linear combination `((a : k) * (u : GL (Fin N) k).val p.1 p.2) * e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `nontrivial_twJacquet_of_surjective (π t⁻¹) (fun v => ⟨π t v, ?_⟩) (fun u v => ?_) h` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e : π t⁻¹ (π (u : GL (Fin N) k) v) = π (t⁻¹ * u * t) (π t⁻¹ v)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, mul_assoc _ t, mul_inv_cancel, mul_one]`. Rewrite using `[map_sub, LinearMap.map_smul, e, ← hchar u]`.
-
-Conclude with `sub_smul_mem_twKer' π _ _ _ (hmem u) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGenericFor.mulShift {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V} (h : IsGenericFor ψ π)
     (a : kˣ) : IsGenericFor (ψ.mulShift (a : k)) π := by
@@ -276,7 +272,7 @@ theorem IsGenericFor.mulShift {ψ : AddChar k Circle} {π : Representation ℂ (
     exact sub_smul_mem_twKer' π _ _ _ (hmem u) _
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.mulShift a⟩` and prove the remaining obligations. Establish `h'` using `h.mulShift a⁻¹`. Rewrite `h'` using `[AddChar.mulShift_mulShift, ← Units.val_mul, mul_inv_cancel, Units.val_one, AddChar.mulShift_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isGenericFor_mulShift_iff {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V} (a : kˣ) :
     IsGenericFor (ψ.mulShift (a : k)) π ↔ IsGenericFor ψ π := by
@@ -286,7 +282,7 @@ theorem isGenericFor_mulShift_iff {ψ : AddChar k Circle} {π : Representation �
     AddChar.mulShift_one] at h'
 
 /- English proof (translation)
-Unfold `IsGenericFor at h ⊢`. Use `nontrivial_twJacquet_of_surjective (ρ := σ) (σ := π) φ.symm.toLinearEquiv.toLinearMap φ.symm.toLinearEquiv.surjective (fun u w => ?_) h` and prove the remaining obligations. Establish `e : φ.symm.toLinearEquiv.toLinearMap (σ (u : GL (Fin N) k) w) = π u (φ.symm.toLinearEquiv.toLinearMap w)` using `Representation.IntertwiningMap.isIntertwining σ π φ.symm.toIntertwiningMap (u : GL (Fin N) k) w`. Rewrite using `[map_sub, LinearMap.map_smul, e]`. Conclude with `sub_smul_mem_twKer' π _ _ _ u.2 _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGenericFor.of_equiv {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V}
     {σ : Representation ℂ (GL (Fin N) k) W} (h : IsGenericFor ψ π) (φ : π.Equiv σ) : IsGenericFor ψ σ := by
@@ -300,18 +296,18 @@ theorem IsGenericFor.of_equiv {ψ : AddChar k Circle} {π : Representation ℂ (
   exact sub_smul_mem_twKer' π _ _ _ u.2 _
 
 /- English proof (translation)
-Conclude with `⟨fun h => h.of_equiv φ, fun h => h.of_equiv φ.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGenericFor_congr {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V}
     {σ : Representation ℂ (GL (Fin N) k) W} (φ : π.Equiv σ) : IsGenericFor ψ π ↔ IsGenericFor ψ σ := by
   exact ⟨fun h => h.of_equiv φ, fun h => h.of_equiv φ.symm⟩
 
 /- English proof (translation)
-Establish `hdet : ∀ u : unipB k (Fin N), ((detChar (Fin N) χ (u : GL (Fin N) k) : ℂˣ) : ℂ) = 1`. Introduce `u`. Rewrite using `[detChar_apply, det_eq_one_of_mem_unipRad k u.2, map_one, Units.val_one]`. Unfold `IsGenericFor`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `nontrivial_twJacquet_of_surjective (ρ := π) LinearMap.id Function.surjective_id (fun u v => ?_) h` and prove the remaining obligations. Establish `e : π u v = twist π (detChar (Fin N) χ) u v` using `by rw [twist_apply, hdet u, one_smul]`. Rewrite using `[LinearMap.id_apply, e]`. Conclude with `sub_smul_mem_twKer' _ _ _ _ u.2 _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `nontrivial_twJacquet_of_surjective (σ := π) LinearMap.id Function.surjective_id (fun u v => ?_) h` and prove the remaining obligations. Establish `e : twist π (detChar (Fin N) χ) u v = π u v` using `by rw [twist_apply, hdet u, one_smul]`. Rewrite using `[LinearMap.id_apply, e]`. Conclude with `sub_smul_mem_twKer' _ _ _ _ u.2 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericFor_twist_iff {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V} (χ : kˣ →* ℂˣ) :
     IsGenericFor ψ (twist π (detChar (Fin N) χ)) ↔ IsGenericFor ψ π := by
@@ -334,27 +330,25 @@ theorem isGenericFor_twist_iff {ψ : AddChar k Circle} {π : Representation ℂ 
     exact sub_smul_mem_twKer' _ _ _ _ u.2 _
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `AddChar.ne_one_iff.1 hψ`. Set `i0 : Fin N` to `⟨0, by omega⟩`. Set `i1 : Fin N` to `⟨1, by omega⟩`. Establish `hlt : i0 < i1` using `by simp [i0, i1, Fin.lt_def]`. Establish `hne : i0 ≠ i1` using `ne_of_lt hlt`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : GL (Fin N) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection i0 i1 z) (by rw [Matrix.det_transvection_of_ne _ _ hne]; exact one_ne_zero)`. Establish `hg : ∀ i j, (g : Matrix (Fin N) (Fin N) k) i j = (if i = j then 1 else 0) + (if i0 = i ∧ i1 = j then z else 0)`. Introduce `i j`. Simplify using `[g, Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`. Establish `hgU : g ∈ unipB k (Fin N)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(mem_unipB (R := k)).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : i ≠ j` using `ne_of_gt hji`. Establish `h2 : ¬ (i0 = i ∧ i1 = j)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hlt hji`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, if_neg h1, if_neg h2, add_zero]`. Establish `h2 : ¬ (i0 = i ∧ i1 = i)`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hne h.symm`. Rewrite using `[hg, if_pos rfl, if_neg h2, add_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1, (g : Matrix (Fin N) (Fin N) k) p.1 p.2 = z`. Rewrite using `[Finset.sum_eq_single (i0, i1)]`. Rewrite using `[hg, if_neg hne, if_pos ⟨rfl, rfl⟩, zero_add]`. Introduce `p hp hpne`. Establish `hp2 : (p.2 : ℕ) = p.1 + 1` using `(Finset.mem_filter.1 hp).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : p.1 ≠ p.2`. Introduce `h`. Rewrite `hp2` using `[h]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ (i0 = p.1 ∧ i1 = p.2)` using `fun h => hpne (Prod.ext h.1.symm h.2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg, if_neg h1, if_neg h2, add_zero]`. Introduce `h`. Conclude with `(h (by simp [i0, i1])).elim`. Establish `hθ : ((whitChar ψ N ⟨g, hgU⟩ : ℂˣ) : ℂ) = (ψ z : ℂ)` using `by show ((Circle.toUnits (ψ (∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1, (g : Matrix (Fin N) (Fin N) k) p.1 p.2)) : ℂˣ) : ℂ) = _`. Rewrite using `[hsum, Circle.toUnits_apply, Units.val_mk0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : detRep (Fin N) χ g 1 = 1`. Rewrite using `[detRep, ofChar_apply, detChar_apply, det_eq_one_of_mem_unipRad k hgU, map_one, Units.val_one, mul_one]`. Establish `hw : (1 - (ψ z : ℂ)) ∈ twKer (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N)`. Establish `h` using `sub_smul_mem_twKer' (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N) g hgU 1`. Rewrite `h` using `[hd, hθ, smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne1 : (1 - (ψ z : ℂ)) ≠ 0`. Introduce `h0`. Conclude with `hz (Circle.ext ((sub_eq_zero.1 h0).symm.trans Circle.coe_one.symm))`. Establish `htop : ∀ x : ℂ, x ∈ twKer (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `h` using `Submodule.smul_mem _ (x / (1 - (ψ z : ℂ))) hw`. Rewrite `h` using `[smul_eq_mul, div_mul_cancel₀ _ hne1]`. Then use the resulting hypothesis. Introduce `H`. Unfold `IsGenericFor at H`. Take `⟨p, q, hpq⟩` from `H.exists_pair_ne`.
-
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ p`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `hpq (by rw [(Submodule.Quotient.mk_eq_zero _).2 (htop x), (Submodule.Quotient.mk_eq_zero _).2 (htop y)])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isGenericFor_detRep {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) :
     ¬ IsGenericFor ψ (detRep (Fin N) χ) := by
@@ -421,7 +415,7 @@ theorem not_isGenericFor_detRep {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (hN : 2
 variable [TopologicalSpace k]
 
 /- English proof (translation)
-Unfold `IsGeneric`. Conclude with `exists_congr fun ψ => and_congr_right fun _ => and_congr_right fun _ => isGenericFor_congr φ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isGeneric_congr {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (φ : π.Equiv σ) : IsGeneric π ↔ IsGeneric σ := by
@@ -429,7 +423,7 @@ theorem isGeneric_congr {π : Representation ℂ (GL (Fin N) k) V} {σ : Represe
   exact exists_congr fun ψ => and_congr_right fun _ => and_congr_right fun _ => isGenericFor_congr φ
 
 /- English proof (translation)
-Unfold `IsGeneric`. Conclude with `exists_congr fun ψ => and_congr_right fun _ => and_congr_right fun _ => isGenericFor_twist_iff χ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isGeneric_twist_iff {π : Representation ℂ (GL (Fin N) k) V} (χ : kˣ →* ℂˣ) :
     IsGeneric (twist π (detChar (Fin N) χ)) ↔ IsGeneric π := by
@@ -437,7 +431,7 @@ theorem isGeneric_twist_iff {π : Representation ℂ (GL (Fin N) k) V} (χ : kˣ
   exact exists_congr fun ψ => and_congr_right fun _ => and_congr_right fun _ => isGenericFor_twist_iff χ
 
 /- English proof (translation)
-Unfold `IsGeneric`. Introduce and unpack `⟨ψ, -, h1, h⟩`. Conclude with `not_isGenericFor_detRep h1 hN χ h`.
+Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_isGeneric_detRep (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) : ¬ IsGeneric (detRep (Fin N) χ) := by
   unfold IsGeneric
@@ -447,7 +441,7 @@ theorem not_isGeneric_detRep (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) : ¬ IsGeneric
 variable [ValuativeRel k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `exists_unit_eq_mulShift hψ h1 h' h1'`. Conclude with `(isGenericFor_mulShift_iff a).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isGenericFor_iff_of_continuous {ψ ψ' : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1) (h' : Continuous ψ')
     (h1' : ψ' ≠ 1) (π : Representation ℂ (GL (Fin N) k) V) : IsGenericFor ψ π ↔ IsGenericFor ψ' π := by
@@ -455,9 +449,9 @@ theorem isGenericFor_iff_of_continuous {ψ ψ' : AddChar k Circle} (hψ : Contin
   exact (isGenericFor_mulShift_iff a).symm
 
 /- English proof (translation)
-Unfold `IsGeneric`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ', h', h1', hg⟩`. Conclude with `(isGenericFor_iff_of_continuous hψ h1 h' h1' π).2 hg`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨ψ, hψ, h1, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isGeneric_iff_isGenericFor {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (π : Representation ℂ (GL (Fin N) k) V) : IsGeneric π ↔ IsGenericFor ψ π := by
@@ -469,7 +463,7 @@ theorem isGeneric_iff_isGenericFor {ψ : AddChar k Circle} (hψ : Continuous ψ)
     exact ⟨ψ, hψ, h1, h⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ, h1⟩` from `exists_continuous_addChar_ne_one k`. Conclude with `⟨ψ, hψ, h1, isGenericFor_one ψ χ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGeneric_detRep_one (χ : kˣ →* ℂˣ) : IsGeneric (detRep (Fin 1) χ) := by
   obtain ⟨ψ, hψ, h1⟩ := exists_continuous_addChar_ne_one k

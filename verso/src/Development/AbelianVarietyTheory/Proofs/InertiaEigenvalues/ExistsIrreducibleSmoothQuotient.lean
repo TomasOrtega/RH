@@ -14,33 +14,29 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 namespace GlobalTheory.SmGL.IrrQuot
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ hsm hfl hnt`. Use `haveI : WellFoundedGT (Subrepresentation ρ) := ((hasFiniteLength_iff_wellFounded ρ).1 hfl).1`. Establish `hbt : (⊥ : Subrepresentation ρ) ≠ ⊤`. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Take `⟨M, hM, -⟩` from `(IsCoatomic.eq_top_or_exists_le_coatom (⊥ : Subrepresentation ρ)).resolve_left hbt`. Set `W : Submodule ℂ V` to `M.toSubmodule`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hW : ∀ g : G, W ≤ W.comap (ρ g)` using `fun g v hv => M.apply_mem_toSubmodule g hv`. Set `τ : Representation ℂ G (V ⧸ W)` to `ρ.quotient W hW`. Establish `hτ : ∀ (g : G) (v : V), τ g (W.mkQ v) = W.mkQ (ρ g v)` using `fun g v => rfl`. Set `q : ρ.IntertwiningMap τ` to `⟨W.mkQ, fun g => by ext v; rfl⟩`. Establish `hq : Function.Surjective q` using `Submodule.mkQ_surjective W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨V ⧸ W, inferInstance, inferInstance, τ, ?_, ?_, q, hq⟩` and prove the remaining obligations. Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`. Set `stab : (u : Type) → [AddCommGroup u] → [Module ℂ u] → (σ : Representation ℂ G u) → u → Subgroup G` to `fun u _ _ σ y => { carrier := {g | σ g y = y} mul_mem' := by`. Introduce `a b ha hb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : stab V ρ v ≤ stab (V ⧸ W) τ (W.mkQ v)`. Introduce `g hg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `τ g (W.mkQ v) = W.mkQ v`. Rewrite using `[hτ]`. Conclude with `congrArg W.mkQ hg`. Conclude with `Subgroup.isOpen_mono hle (hsm v)`. Establish `hMtop : M ≠ ⊤` using `hM.1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `{ exists_pair_ne := ⟨⊥, ⊤, ?_⟩, eq_bot_or_eq_top := ?_ }` and prove the remaining obligations. Introduce `h`. Apply `hMtop` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_top_iff.2` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Establish `hmem : W.mkQ v ∈ (⊤ : Subrepresentation τ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).1 ((Submodule.mem_bot ℂ).1 hmem)`. Introduce `S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Set `T : Subrepresentation ρ` to `⟨S.toSubmodule.comap W.mkQ, fun g v hv => by`. Express the relevant statement in the definitionally equal form `W.mkQ (ρ g v) ∈ S.toSubmodule`. Rewrite using `[← hτ]`. Conclude with `S.apply_mem_toSubmodule g hv⟩`. Establish `hMT : M ≤ T`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv`. Express the relevant statement in the definitionally equal form `W.mkQ v ∈ S.toSubmodule`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero W).2 hv]`. Conclude with `S.toSubmodule.zero_mem`. Break down `hM.le_iff.1 hMT with h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_top_iff.2` to reduce the goal to its premises. Introduce `x _`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`.
-
-Establish `hvT : v ∈ T.toSubmodule` using `by rw [h]; exact Submodule.mem_top`. Conclude with `hvT`. Use `left`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_bot_iff.2` to reduce the goal to its premises.
-
-Introduce `x hx`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`. Establish `hvT : v ∈ T.toSubmodule` using `hx`. Rewrite `hvT` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).2 (by rw [Submodule.mkQ_apply]; exact (Submodule.Quotient.mk_eq_zero W).2 hvT)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_smooth_quotient : ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V), IsSmooth ρ → HasFiniteLength ρ → Nontrivial V →

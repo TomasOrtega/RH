@@ -12,11 +12,9 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop
 namespace GlobalTheory.BigTop.Fun
 /- English proof (translation)
-Introduce `hS hL hD`. Use `_root_.GlobalTheory.BigTop.Fun.LeafConditions.mono (_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hL hD) fun {D _ _ _ _ _ _ _ _ _} p CF d C CH _ hd => ⟨hd, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨-, a, ha⟩` from `hd`. Establish `hsq` using `ha.sq`. Use `⟨fun l hl => ((hsq.den l).1 hl).1, fun ij s h1 h2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lift s to ℕ using (by omega)`. Establish `h1' : 1 ≤ s` using `by exact_mod_cast h1`. Establish `h2' : s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Establish `h2'' : s ≤ sqRank D ij / 2` using `by exact_mod_cast h2`. Conclude with `h2''.trans_eq (halfRank_eq_sqRank_div D ij).symm`.
-
-Conclude with `hq ij.1 ij.2 s h1' h2' _ (hsq.inside ij s h1' h2').2 d.Sd fun l hl => ((hsq.den l).1 hl).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem den_tie_alt : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) →
     DenSum → _root_.GlobalTheory.BigTop.Fun.LeafDensity @Comparison₂ := by

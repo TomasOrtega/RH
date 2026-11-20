@@ -6,9 +6,9 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Simplify using `only [Nset, UH, Set.mem_setOf_eq, Set.setOf_and, Set.setOf_forall]`. Use `IsClosed.inter ?_ (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Establish `hc : Continuous fun y : Mt k r => (Matrix.of y)ᴴ * Hpk k r * Matrix.of y`. Establish `h0 : Continuous fun y : Mt k r => (Matrix.of y : Matrix _ _ ℂ)` using `continuous_id`. Conclude with `(h0.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul h0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_eq hc continuous_const`. Use `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_apply _).comp (continuous_apply _)) continuous_const`. Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_apply _).comp (continuous_apply _)) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nset_closed (k r : ℕ) : IsClosed {y : Mt k r | Matrix.of y ∈ Nset k r} := by
   simp only [Nset, UH, Set.mem_setOf_eq, Set.setOf_and, Set.setOf_forall]
@@ -24,11 +24,11 @@ theorem nset_closed (k r : ℕ) : IsClosed {y : Mt k r | Matrix.of y ∈ Nset k 
     exact isClosed_eq ((continuous_apply _).comp (continuous_apply _)) continuous_const
 
 /- English proof (translation)
-Introduce `ι _ k r`. Establish `hS : MeasurableSet {y : Mt k r | Matrix.of y ∈ Nset k r}` using `(nset_closed k r).measurableSet`. Establish `hH` using `(GlobalTheory.T.haar_lie_nilpotent_coordinates k r).1`. Use `haveI : SigmaFinite (haarLie (Nset k r) 1) := hH.1`. Establish `hset : {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r} = ⋂ w, Function.eval w ⁻¹' {y : Mt k r | Matrix.of y ∈ Nset k r}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `MeasurableSet.iInter fun w => measurable_pi_apply w hS`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hset, Set.compl_iInter]`. Use `measure_iUnion_null fun w => ?_` and prove the remaining obligations. Rewrite using `[← Set.preimage_compl]`. Conclude with `Measure.pi_eval_preimage_null _ (by simpa [Set.compl_setOf] using hH.2.2.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_nset_full : ∀ (ι : Type) [Fintype ι] (k r : ℕ), MeasurableSet {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r} ∧ (Measure.pi fun _ : ι => haarLie (Nset k r) 1) {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r}ᶜ = 0 := by
   intro ι _ k r

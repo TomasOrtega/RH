@@ -19,19 +19,19 @@ variable {K : Type} [Field K] (w : AbsoluteValue K ℝ)
 def supN {n : ℕ} (x : Fin n → K) : ℝ := ⨆ i, w (x i)
 
 /- English proof (translation)
-The claim follows from `le_ciSup (f := fun i => w (x i)) (Set.finite_range _).bddAbove i`.
+A detailed English derivation is pending.
 -/
 theorem le_supN {n : ℕ} (x : Fin n → K) (i : Fin n) : w (x i) ≤ supN w x :=
   le_ciSup (f := fun i => w (x i)) (Set.finite_range _).bddAbove i
 
 /- English proof (translation)
-The claim follows from `Real.iSup_nonneg fun i => w.nonneg (x i)`.
+A detailed English derivation is pending.
 -/
 theorem supN_nonneg {n : ℕ} (x : Fin n → K) : 0 ≤ supN w x :=
   Real.iSup_nonneg fun i => w.nonneg (x i)
 
 /- English proof (translation)
-The claim follows from `Real.iSup_le h hr`.
+A detailed English derivation is pending.
 -/
 theorem supN_le {n : ℕ} {x : Fin n → K} {r : ℝ} (hr : 0 ≤ r) (h : ∀ i, w (x i) ≤ r) : supN w x ≤ r :=
   Real.iSup_le h hr
@@ -40,7 +40,7 @@ def colMinor {n g : ℕ} (H : Matrix (Fin n) (Fin g) K) (S : Finset (Fin g)) : �
   ⨆ σ : S → Fin n, w (H.submatrix σ Subtype.val).det
 
 /- English proof (translation)
-Unfold `colMinor`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem colMinor_empty {n g : ℕ} (H : Matrix (Fin n) (Fin g) K) : colMinor w H ∅ = 1 := by
   unfold colMinor
@@ -65,13 +65,11 @@ def compl {R : Type} [CommRing R] {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) R)
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `key : ∀ a b : AlgebraicClosure F, e.w a ≤ e.w b → e.w (a + b) ≤ e.w b`. Introduce `a b hab`. Distinguish the cases in `h0 : b = 0`. Substitute `h0` using the available equality. Simplify using `using hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb0 : 0 < e.w b` using `e.w.pos h0`. Establish `h1 : a / b ∈ e.O` using `(e.mem_O _).2 (by rw [map_div₀]; exact (div_le_one hb0).2 hab)`. Establish `h2 : a / b + 1 ∈ e.O` using `add_mem h1 e.O.one_mem`. Establish `h3 : a + b = (a / b + 1) * b` using `by field_simp`. Rewrite using `[h3, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_mul_of_nonneg_right ((e.mem_O _).1 h2) (e.w.nonneg _)).trans_eq (one_mul _)`. Introduce `a b`. Break down `le_total (e.w a) (e.w b) with h | h` into its components or cases. Conclude with `(key a b h).trans (le_max_right _ _)`. Rewrite using `[add_comm]`.
-
-Conclude with `(key b a h).trans (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNonarchimedean_w {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) : IsNonarchimedean e.w := by
   have key : ∀ a b : AlgebraicClosure F, e.w a ≤ e.w b → e.w (a + b) ≤ e.w b := by

@@ -2,19 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `q e hq D`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hqC : (q : ℂ) ≠ 0` using `by exact_mod_cast hqR.ne'`. Use `⟨⟨D.S, D.fin, fun s => ((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum, ?_, ?_, ?_⟩, Equiv.refl _, fun s => rfl⟩` and prove the remaining obligations. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `D.conj σ`. Use `⟨u, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, map_multiset_sum, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `s`. Use `(norm_multiset_sum_le _).trans ?_` and prove the remaining obligations. Establish `h` using `Multiset.sum_le_card_nsmul (((D.β s).map fun b => ((q : ℂ) * b)⁻¹).map fun x => ‖x‖) (1 : ℝ) (by`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hx`. Take `⟨b, hb, rfl⟩` from `Multiset.mem_map.1 hy`. Establish `hp` using `D.pure s b hb`. Establish `he : (((1 - ((3 : ℕ) : ℤ) : ℤ) : ℝ) / 2) = -1` using `by push_cast; norm_num`. Rewrite `hp` using `[he, Real.rpow_neg_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_inv, norm_mul, hp, Complex.norm_natCast, mul_inv_cancel₀ hqR.ne', inv_one])`. Rewrite `h` using `[Multiset.card_map, Multiset.card_map, D.card]`. Simplify using `using h`. Introduce `s`. Rewrite using `[← Multiset.sum_map_mul_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(integralClosure ℤ ℂ).multiset_sum_mem ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨b, hb, rfl⟩` from `Multiset.mem_map.1 hx`. Establish `h` using `D.intInv ((e : ℤ) - 1) (by`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> simp <;> omega) s b hb`. Establish `he : (q : ℂ) ^ e * ((q : ℂ) * b)⁻¹ = (q : ℂ) ^ ((e : ℤ) - 1) * b⁻¹`. Rewrite using `[zpow_sub_one₀ hqC, zpow_natCast, mul_inv, mul_assoc]`. Rewrite using `[mem_integralClosure_iff, he]`. Conclude with `h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.traces_from_eigenvalues_rank3 :
     ∀ (q e : ℕ), 1 ≤ q → ∀ D : EigData 3 q ![(e : ℤ) - 1, -1, -(e : ℤ) - 1] (1 - ((3 : ℕ) : ℤ)), ∃ (T : TrData q e) (u : D.S ≃ T.S), ∀ s, T.t (u s) = ((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum := by

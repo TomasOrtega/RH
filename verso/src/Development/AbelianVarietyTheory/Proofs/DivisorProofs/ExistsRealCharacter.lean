@@ -17,15 +17,15 @@ namespace GlobalTheory.FrameEquiv.RealChar
 variable {D : D7} {S T : HSp D} (C : GlobalTheory.Ker.Ctx S T)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Ker.ONBasis.mem_dom C.X (GlobalTheory.Ker.ONBasis.isONFr_xB C hB)`.
+A detailed English derivation is pending.
 -/
 theorem xB_mem_dom {B : C.Bas} (hB : C.IsB B) : C.xB B ∈ C.X.dom :=
   GlobalTheory.Ker.ONBasis.mem_dom C.X (GlobalTheory.Ker.ONBasis.isONFr_xB C hB)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨l1, l2, -⟩` from `GlobalTheory.Ker.Ctx.th_laws D S T C x hx φ hφ`. Establish `h3 : GlobalTheory.SW.IsSB ((0 : ℂ) • φ)`. Rewrite using `[zero_smul]`. Conclude with `GlobalTheory.SW.isSB_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h0 (((l1 _ h3).2 ?_).trans (zero_smul ℂ φ))` and prove the remaining obligations. Rewrite using `[l2, h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Th_ne_zero {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {φ : TF S.rank C.g} (hφ : GlobalTheory.SW.IsSB φ)
     (h0 : φ ≠ 0) : C.Th x φ ≠ 0 := by
@@ -38,22 +38,22 @@ theorem Th_ne_zero {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {φ : TF S.ran
   rw [l2, h, smul_zero]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.Ker.Ctx.th_laws D S T C x hx 0 GlobalTheory.SW.isSB_zero).2.1 0`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Th_zero {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) : C.Th x (0 : TF S.rank C.g) = 0 := by
   have h := (GlobalTheory.Ker.Ctx.th_laws D S T C x hx 0 GlobalTheory.SW.isSB_zero).2.1 0
   rwa [zero_smul, zero_smul] at h
 
 /- English proof (translation)
-Take `⟨⟨μ, 𝓕, hμ⟩, hip⟩` from `GlobalTheory.Ker.ScalarProduct.ip_basic D S T C`. Establish `hmv : ∀ A, C.IsB A → C.IsB (C.mvB u A)` using `fun A hA => (((GlobalTheory.Ker.onBasis_frame_period D S T C).2 A hA).2.2.2.2.2 u).1`. Establish `hth : ∀ A, C.IsB A → C.IsTh (C.Th (C.xB A) φ)` using `fun A hA => (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ (xB_mem_dom C hA) φ hφ).1.1`. Establish `hd : dbl C.X C.bas C.idx φ φ 0 ≠ 0`. Introduce `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `GlobalTheory.AdTh.Overlap.ipO_Th C hμ (xB_mem_dom C hB) (xB_mem_dom C hB) hφ hφ`. Rewrite `h1` using `[hc, zero_mul]`. Conclude with `Th_ne_zero C (xB_mem_dom C hB) hφ h0 ((hip μ 𝓕 hμ _ (hth B hB)).2.1 h1)`. Establish `hk : kZero C.X C.idx (C.xB B) (C.xB B') (0 : Fin S.rank → Fin C.g → ℂ) 0 ≠ 0`. Rewrite using `[GlobalTheory.AdTh.Overlap.kZero_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => inv_ne_zero (pow_ne_zero _ (mul_ne_zero (DblPoint.det_aLin_ne_zero (xB_mem_dom C hB) (xB_mem_dom C hB') τ) (DblPoint.det_aAnti_ne_zero (xB_mem_dom C hB) (xB_mem_dom C hB') τ)))`. Establish `h1` using `((hip μ 𝓕 hμ _ (hth B hB)).2.2.2 _ (hth B' hB')).2.2.2.2.2 om hom (1, u)`. Establish `h2 : GlobalTheory.Ker.ipO μ 𝓕 (c • C.Th (C.xB (C.mvB u B)) φ) (c' • C.Th (C.xB (C.mvB u B')) φ) = c * conj c' * GlobalTheory.Ker.ipO μ 𝓕 (C.Th (C.xB (C.mvB u B)) φ) (C.Th (C.xB (C.mvB u B')) φ)`. Rewrite using `[GlobalTheory.Ker.ipO, GlobalTheory.Ker.ipO, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e, e', h2, GlobalTheory.AdTh.Overlap.ipO_Th C hμ (xB_mem_dom C (hmv B hB)) (xB_mem_dom C (hmv B' hB')) hφ hφ, GlobalTheory.AdTh.Overlap.ipO_Th C hμ (xB_mem_dom C hB) (xB_mem_dom C hB') hφ hφ, GlobalTheory.AdTh.Overlap.kZero_mvB C hB u]`. Establish `h3 : c * conj c' = 1` using `mul_right_cancel₀ (mul_ne_zero hd hk) (h1.trans (one_mul _).symm)`. Establish `h4 : c' * conj c' = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hc']`. Simplify using the standard rewrite rules. Take the linear combination `c' * h3 - c * h4`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem scalar_eq {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : GlobalTheory.Ker.IsWeak C.ψ S T om)
     {u : GA D T} {B B' : C.Bas} (hB : C.IsB B) (hB' : C.IsB B') {φ : TF S.rank C.g} (hφ : GlobalTheory.SW.IsSB φ)
@@ -97,15 +97,15 @@ open GlobalTheory.FrameEquiv.RealChar in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T C om hom`. Distinguish the cases in `hex : ∃ φ₀ : TF S.rank C.g, GlobalTheory.SW.IsSB φ₀ ∧ φ₀ ≠ 0`. Use `swap`. Use `⟨fun _ => 1, fun _ _ => norm_one, fun _ _ _ _ => (mul_one _).symm, fun u _ B hB φ hφ => ?_⟩` and prove the remaining obligations. Establish `h0 : φ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hex ⟨φ, hφ, h⟩`. Establish `hmv : C.IsB (C.mvB u B)` using `(((GlobalTheory.Ker.onBasis_frame_period D S T C).2 B hB).2.2.2.2.2 u).1`. Rewrite using `[h0, Th_zero C (xB_mem_dom C hB), Th_zero C (xB_mem_dom C hmv), map_zero, smul_zero]`. Take `⟨φ₀, s₀, n₀⟩` from `hex`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨B₀, hB₀⟩, hJ⟩` from `GlobalTheory.Ker.onBasis_frame_period D S T C`. Establish `hr` using `GlobalTheory.Ker.RealScalar.om_real_Th D S T C om hom 1 (one_mem _)`. Use `choose! χ hχ1 hχ using fun u hu => hr u hu B₀ hB₀`. Establish `main : ∀ u ∈ GinfC T, ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, GlobalTheory.SW.IsSB φ → om (1, u) (C.Th (C.xB B) φ) = χ u • C.Th (C.xB (C.mvB u B)) φ` using `fun u hu B hB φ hφ => by`. Take `⟨c, -, hc⟩` from `hr u hu B hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← scalar_eq C hom hB hB₀ s₀ n₀ (hχ1 u hu) (hc φ₀ s₀) (hχ u hu φ₀ s₀)]`. Conclude with `hc φ hφ`. Use `⟨χ, hχ1, fun u hu u' hu' => ?_, main⟩` and prove the remaining obligations. Establish `h1` using `main (u * u') (mul_mem hu hu') B₀ hB₀ φ₀ s₀`. Take `⟨hm, hmul, -⟩` from `(hJ B₀ hB₀).2.2.2.2.2 u'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((1, u * u') : GA D S × GA D T) = (1, u) * (1, u')` using `by simp`. Rewrite `h1` using `[e, map_mul, Module.End.mul_apply, main u' hu' B₀ hB₀ φ₀ s₀, map_smul, main u hu _ hm φ₀ s₀, hmul u, smul_smul]`. Establish `hne` using `Th_ne_zero C (xB_mem_dom C ((hJ _ hm).2.2.2.2.2 u).1) s₀ n₀`. Rewrite using `[mul_comm]`. Conclude with `(smul_left_injective ℂ hne h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameEquiv.exists_real_character : ∀ (D : D7) (S T : HSp D) (C : GlobalTheory.Ker.Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak C.ψ S T om → ∃ χ : GA D T → ℂ, (∀ u ∈ GinfC T, ‖χ u‖ = 1) ∧ (∀ u ∈ GinfC T, ∀ u' ∈ GinfC T, χ (u * u') = χ u * χ u') ∧ ∀ u ∈ GinfC T, ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, GlobalTheory.SW.IsSB φ → om (1, u) (C.Th (C.xB B) φ) = χ u • C.Th (C.xB (C.mvB u B)) φ := by
   intro D S T C om hom

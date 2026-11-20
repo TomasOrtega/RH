@@ -12,7 +12,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `P.B5.haar_sigmaFinite D.haarW` as an intermediate fact. Use `P.B5.haar_sigmaFinite D.haarN` as an intermediate fact. Use `P.B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Conclude with `bessel_unitary_equiv_holds Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc D.haarW.conc D.haarW'.conc (fun h₀ hh₀ => D.haarW.left h₀ hh₀) (fun h₀ hh₀ => D.haarW'.left h₀ hh₀) (P.conjugation_invariance_every_setting k r Wp Wq D) D.π_rep D.π'_rep g …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jf_uEquiv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq)
@@ -26,17 +26,15 @@ theorem jf_uEquiv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
     (P.conjugation_invariance_every_setting k r Wp Wq D) D.π_rep D.π'_rep g h hh h' hh'
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ Pa z z' π π' D F _hP hz hz' hπ hπ' hF`. Substitute `hz hz' hπ hπ'` using the available equality. Set `Φf : Fn Pa.k Pa.r (Wq →L[ℂ] Wp)` to `fun c g => if (c, g) ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) c g else 0`. Establish `hsm` using `sf_resG (jf_smoothLev D F hF.1)`. Establish `hmem : Φf ∈ RadSp Pa.k Pa.r D.z D.z' D.π D.π'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun x hx => ?_, fun x₀ hx₀ => ?_, fun x hx h hh h' hh' => ?_⟩` and prove the remaining obligations. Use `show (if (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) x.1 x.2 else 0) = 0`. Rewrite using `[if_neg (by simpa using hx)]`. Take `⟨U, Fe, hU, hxU, hFe, hΦ⟩` from `hsm x₀ ⟨hx₀.1, wCell_mem_omPlus D.z_mem D.z'_mem hx₀.1 hx₀.2.1 hx₀.2.2⟩ hx₀.2.1`. Establish `hV : IsOpen {x : (Fin Pa.r → ℂ) × Mx Pa.k Pa.r | x.1 ∈ OmX Pa.r ∧ 0 < GGl Pa.k Pa.r D.z D.z' x.2}` using `((P.Qx3.isOpen_OmX Pa.r).preimage continuous_fst).inter (isOpen_lt continuous_const ((P.Qx5.GGl_continuous Pa.k Pa.r D.z D.z').comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U ∩ {x | x.1 ∈ OmX Pa.r ∧ 0 < GGl Pa.k Pa.r D.z D.z' x.2}, Fe, hU.inter hV, ⟨hxU, hx₀.1, hx₀.2.2⟩, hFe.mono Set.inter_subset_left, fun x hx hxG => ?_⟩` and prove the remaining obligations. Establish `hxD : (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z'` using `⟨hx.2.1, hxG, hx.2.2⟩`. Use `show (if (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) x.1 x.2 else 0) = _`. Rewrite using `[if_pos hxD]`. Conclude with `hΦ x hx.1 hxG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hx' : (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z'` using `by simpa using hx show (if (x.1, h * x.2 * h') ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) x.1 (h * x.2 * h') else 0) = (D.π h).comp ((if (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) x.1 x.2 else 0).comp (D.π' h' …`. Rewrite using `[if_pos (domR_uw hx hh hh'), if_pos hx']`. Unfold `resG`. Establish `e : wCell Pa.k Pa.r (Fin.last Pa.r) x.1 * (h * x.2 * h') = h * (wCell Pa.k Pa.r (Fin.last Pa.r) x.1 * x.2) * h'`. Establish `hc` using `P.Qx3.wlist_comm (k := Pa.k) (Fin.last Pa.r) x.1 ((List.finRange Pa.r).filter fun a => a.val < (Fin.last Pa.r).val) (fun a ha => by simpa using (List.mem_filter.1 ha).2) (P.Qx3.uw_glev (Fin.last Pa.r) hh)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `wCell Pa.k Pa.r (Fin.last Pa.r) x.1 * h = h * wCell Pa.k Pa.r (Fin.last Pa.r) x.1 at hc`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hc, Matrix.mul_assoc h]`. Rewrite using `[e, jf_uEquiv D F _ hh hh']`. Use extensionality with `v`. Simplify using the standard rewrite rules.
-
-Conclude with `⟨⟨Φf, hmem⟩, fun x hx => by show (if (x.1, x.2) ∈ DomR Pa.k Pa.r D.z D.z' then resG Pa.k Pa.r (Fin.last Pa.r) (B.JF D F) x.1 x.2 else 0) = _`. Rewrite using `[if_pos (by simpa using hx)]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radJFExists : RadJFExists := by
   intro Wp Wq _ _ _ _ _ _ Pa z z' π π' D F _hP hz hz' hπ hπ' hF

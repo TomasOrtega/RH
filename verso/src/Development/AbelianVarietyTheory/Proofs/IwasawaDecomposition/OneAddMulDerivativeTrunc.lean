@@ -13,13 +13,11 @@ namespace GlobalTheory.MemLoc.LogAdd
 open Polynomial
 
 /- English proof (translation)
-Establish `h1 : derivative (∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : R[X]) * u ^ (k + 1)) = (∑ k ∈ Finset.range n, (-u) ^ k) * ((n.factorial : R[X]) * derivative u)`. Rewrite using `[derivative_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hd : (k + 1) ∣ n.factorial` using `Nat.dvd_factorial (Nat.succ_pos k) (Finset.mem_range.1 hk)`. Establish `hc : ((n.factorial / (k + 1) : ℕ) : R[X]) * ((k : R[X]) + 1) = (n.factorial : R[X])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (Nat.cast : ℕ → R[X]) (Nat.div_mul_cancel hd)` after adjusting the coercions. Establish `hs : derivative ((-1 : R[X]) ^ k) = 0`. Apply the tactic sequence `rcases neg_one_pow_eq_or R[X] k with h | h <;> simp [h]`. Rewrite using `[derivative_mul, derivative_mul, hs, derivative_natCast, derivative_pow_succ, ← hc, neg_pow u]`. Simplify using `only [map_add, map_natCast, map_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (1 + u) * ∑ k ∈ Finset.range n, (-u) ^ k = 1`. Use `mul_neg_geom_sum (-u) n` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, neg_pow u, hu, mul_zero, sub_zero]`. Conclude with `this`.
-
-Rewrite using `[h1, ← mul_assoc, h2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_mul_derivative_trunc {R : Type} [CommRing R] (n : ℕ) (u : R[X]) (hu : u ^ n = 0) :
     (1 + u) * derivative (∑ k ∈ Finset.range n,
@@ -46,21 +44,19 @@ theorem one_add_mul_derivative_trunc {R : Type} [CommRing R] (n : ℕ) (u : R[X]
   rw [h1, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Set `F : R[X] → R[X]` to `fun u => ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : R[X]) * u ^ (k + 1)`. Set `J : Ideal R[X]` to `I.map (C : R →+* R[X])`. Establish `hJ : ∀ u ∈ J, u ^ n = 0`. Introduce `u hu`. Use `Ideal.pow_mem_pow hu n` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← Ideal.map_pow, hI, Ideal.map_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `set s : R[X] := C a * X with hs`. Use `set t : R[X] := C b * X with ht`. Establish `hsJ : s ∈ J` using `J.mul_mem_right _ (Ideal.mem_map_of_mem _ ha)`. Establish `htJ : t ∈ J` using `J.mul_mem_right _ (Ideal.mem_map_of_mem _ hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huJ : s + t + s * t ∈ J` using `J.add_mem (J.add_mem hsJ htJ) (J.mul_mem_right _ hsJ)`. Establish `e1 : (1 + s) * derivative (F s) = _` using `one_add_mul_derivative_trunc n s (hJ _ hsJ)`. Establish `e2 : (1 + t) * derivative (F t) = _` using `one_add_mul_derivative_trunc n t (hJ _ htJ)`. Establish `e3 : (1 + (s + t + s * t)) * derivative (F (s + t + s * t)) = _` using `one_add_mul_derivative_trunc n _ (hJ _ huJ)`. Establish `hunit : IsUnit (1 + (s + t + s * t))` using `IsNilpotent.isUnit_one_add ⟨n, hJ _ huJ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hD : derivative (F (s + t + s * t) - F s - F t) = 0`. Apply `hunit.mul_left_cancel` to reduce the goal to its premises. Rewrite `e3` using `[derivative_add, derivative_add, derivative_mul (f := s) (g := t)]`. Rewrite using `[derivative_sub, derivative_sub]`. Take the linear combination `e3 - (1 + t) * e1 - (1 + s) * e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hC : F (s + t + s * t) - F s - F t = C ((F (s + t + s * t) - F s - F t).coeff 0)`. Use extensionality with `k`. Consider the cases of `k with`. Consider the case `zero => simp only [coeff_C_zero]`. Consider the case `succ k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun p => coeff p k) hD`. Simplify using `only [coeff_derivative, coeff_zero] at h`. Rewrite using `[coeff_C_succ]`. Establish `hu : IsUnit ((k : R) + 1)` using `by exact_mod_cast hR (k + 1) (Nat.succ_ne_zero k)`. Conclude with `(hu.mul_left_eq_zero).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : (F (s + t + s * t) - F s - F t).coeff 0 = 0`. Rewrite using `[coeff_zero_eq_eval_zero]`. Simplify using `[F, hs, ht, eval_finsetSum]`. Rewrite `hC` using `[h0, map_zero]`. Establish `h1` using `congrArg (eval 1) hC`.
-
-Simplify using `only [F, hs, ht, eval_sub, eval_finsetSum, eval_mul, eval_pow, eval_neg, eval_one, eval_natCast, eval_add, eval_C, eval_X, mul_one, eval_zero] at h1`. Take the linear combination `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trunc_add {R : Type} [CommRing R] (hR : ∀ m : ℕ, m ≠ 0 → IsUnit (m : R)) (n : ℕ)
     (I : Ideal R) (hI : I ^ n = ⊥) (a b : R) (ha : a ∈ I) (hb : b ∈ I) :
@@ -109,7 +105,7 @@ theorem trunc_add {R : Type} [CommRing R] (hR : ∀ m : ℕ, m ≠ 0 → IsUnit 
   linear_combination h1
 
 /- English proof (translation)
-Apply `GlobalTheory.RingIface.alg_mem_kerP` to reduce the goal to its premises. Simplify using `[he]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem tm_sub_one_mem (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt = 1) :
     algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1) ∈ Per.kerP l := by
@@ -117,7 +113,7 @@ theorem tm_sub_one_mem (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt = 
   simp [he]
 
 /- English proof (translation)
-Simplify using `only [map_sub, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_mul_sub_one {M A B : Type} [Monoid M] [CommRing A] [CommRing B] (g : M →* A)
     (f : A →+* B) (e e' : M) :
@@ -126,7 +122,7 @@ theorem map_mul_sub_one {M A B : Type} [Monoid M] [CommRing A] [CommRing B] (g :
   ring
 
 /- English proof (translation)
-The claim follows from `map_mul_sub_one (WittVector.teichmuller l) _ e e'`.
+A detailed English derivation is pending.
 -/
 theorem tm_mul_sub_one (l : ℕ) [Fact l.Prime] (e e' : Per.Fl l) :
     algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm (e * e') - 1) =
@@ -137,13 +133,13 @@ theorem tm_mul_sub_one (l : ℕ) [Fact l.Prime] (e e' : Per.Fl l) :
   map_mul_sub_one (WittVector.teichmuller l) _ e e'
 
 /- English proof (translation)
-Introduce `l _ e e' y y' z he he' hy hy' hz`. Use `GlobalTheory.RingIface.ev_ext l _ _ fun n => ?_` and prove the remaining obligations. Set `q : Per.AinfP l →+* Per.AinfP l ⧸ Per.kerP l ^ n` to `Ideal.Quotient.mk _`. Establish `hR : ∀ m : ℕ, m ≠ 0 → IsUnit (m : Per.AinfP l ⧸ Per.kerP l ^ n)` using `fun m hm => by`. Use `(GlobalTheory.RingBasics.isUnit_nat l m hm).map q` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Apply `(hR _ n.factorial_ne_zero).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[map_add, mul_add, GlobalTheory.CrisIncl.factorial_mul_ev l e y he hy n, GlobalTheory.CrisIncl.factorial_mul_ev l e' y' he' hy' n, GlobalTheory.CrisIncl.factorial_mul_ev l _ z (by rw [map_mul, he, he', mul_one]) hz n]`. Establish `hI : ((Per.kerP l).map q) ^ n = ⊥`. Rewrite using `[← Ideal.map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.map_quotient_self _`. Establish `key` using `trunc_add hR n _ hI _ _ (Ideal.mem_map_of_mem q (tm_sub_one_mem l e he)) (Ideal.mem_map_of_mem q (tm_sub_one_mem l e' he'))`. Rewrite using `[tm_mul_sub_one]`. Generalize the expression as in `algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1) = a at key ⊢`. Generalize the expression as in `algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e' - 1) = b at key ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `q _ = q _ + q _`. Simplify using `only [map_sum, map_mul, map_pow, map_neg, map_one, map_natCast, map_add]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem log_add : ∀ (l : ℕ) [Fact l.Prime], ∀ (e e' : Per.Fl l) (y y' z : Per.BdRp l),
     e.untilt = 1 → e'.untilt = 1 → Per.IsLog l e y → Per.IsLog l e' y' →

@@ -12,7 +12,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 namespace Formalism.L2.SG.NormCut
 
 /- English proof (translation)
-Introduce `D X Y u u' hI hA hF`. Establish `h1` using `Set.mem_insert (Y.tO u u').genSet {(Y.tO u u').ngSet, (Y.tO u u').degSet}`. Establish `h2 : (Y.tO u u').ngSet ∈ ({(Y.tO u u').genSet, (Y.tO u u').ngSet, (Y.tO u u').degSet} : Set (Set (GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))))` using `Set.mem_insert_of_mem _ (Set.mem_insert _ _)`. Conclude with `⟨Formalism.L2.SG.Pf.SatGram.satGram_of (hL := hL D X Y u u' hI hA hF _ h1) (hR := hR D X Y u u' hI hA hF _ h1), Formalism.L2.SG.Pf.SatGram.satGram_of (hL := hL D X Y u u' hI hA hF _ h2) (hR := hR D X Y u u' hI hA hF _ h2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem satGramC'_of (hL : Formalism.L2.SG.Pf.SatGramActL.LeftActC') (hR : Formalism.L2.SG.Pf.SatGramActR.RightActC') :
     SatGramC' := by
@@ -25,12 +25,12 @@ theorem satGramC'_of (hL : Formalism.L2.SG.Pf.SatGramActL.LeftActC') (hR : Forma
     Formalism.L2.SG.Pf.SatGram.satGram_of (hL := hL D X Y u u' hI hA hF _ h2) (hR := hR D X Y u u' hI hA hF _ h2)⟩
 
 /- English proof (translation)
-Introduce `_ _ Y u` and use `Formalism.L2.SG.Pf.NormSteps.levi_onto_reduction Y.TR (Y.cs u)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leviOntoC_holds : LeviOntoC := fun _ _ Y u => Formalism.L2.SG.Pf.NormSteps.levi_onto_reduction Y.TR (Y.cs u)
 
 /- English proof (translation)
-The claim follows from `normExpSatC'_of hN leviOntoC_holds hM (satGramC'_of hL hR)`.
+A detailed English derivation is pending.
 -/
 theorem normExpSatC'_of_acts (hN : NeatC) (hM : MassAC) (hL : Formalism.L2.SG.Pf.SatGramActL.LeftActC')
     (hR : Formalism.L2.SG.Pf.SatGramActR.RightActC') : NormExpSatC' :=

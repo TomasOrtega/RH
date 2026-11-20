@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Distinguish the cases in `h : IsField A`. Use `letI := h.toField`. Use `⟨PowerSeries A, inferInstance, inferInstance, inferInstance, PowerSeries.C, ⟨inferInstance, ?_, ?_⟩, RingHom.injective _, inferInstance⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`.
+Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `charZero_of_injective_ringHom (f := PowerSeries.C (R := A)) (RingHom.injective _)`. Take `⟨O, _, _, _, _, φ, h1, h2⟩` from `exists_complete_discreteValuationRing_dominating A h`. Conclude with `⟨O, inferInstance, inferInstance, inferInstance, φ, ⟨inferInstance, inferInstance, charZero_of_injective_ringHom h1⟩, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cDvr_injective_isLocalHom (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A]
     [CharZero A] :
@@ -34,25 +34,23 @@ theorem exists_cDvr_injective_isLocalHom (A : Type) [CommRing A] [IsDomain A] [I
       ⟨inferInstance, inferInstance, charZero_of_injective_ringHom h1⟩, h1, h2⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hB M x₀ hx`. Establish `: IsNoetherianRing R` using `hB.1.1`. Establish `: CharZero R` using `hB.2`. Use `M.integral` as an intermediate fact. Use `M.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LocallyOfFiniteType.isLocallyNoetherian M.π` as an intermediate fact. Take `⟨θ, hθ⟩` from `Spec.map_surjective (M.S.fromSpecStalk x₀ ≫ M.π)`. Establish `hpt : ∀ q, (Spec.map θ) q = M.π (M.S.fromSpecStalk x₀ q)` using `fun q => by`. Rewrite using `[hθ, Scheme.Hom.comp_apply]`. Establish `hloc : IsLocalHom θ.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `((local_hom_TFAE θ.hom).out 0 4).2` to reduce the goal to its premises. Establish `e` using `hpt (closedPoint (M.S.presheaf.stalk x₀) : Spec (M.S.presheaf.stalk x₀))`. Rewrite `e` using `[Scheme.fromSpecStalk_closedPoint, hx]`. Conclude with `congrArg PrimeSpectrum.asIdeal e`. Establish `hinj : Function.Injective θ.hom`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pt : Sp (FractionRing R)` to `closedPoint (FractionRing R)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : M.gp pt ∈ Set.range (M.S.fromSpecStalk x₀) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Use `show _ ⤳ x₀`. Rewrite using `[specializes_iff_mem_closure]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `M.dominant.denseRange`. Establish `hs : Set.range M.gp.base ⊆ {M.gp pt}`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y (closedPoint _)]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_mono hs (hd.closure_range ▸ Set.mem_univ x₀)`. Establish `h1 : (Spec.map θ) q = jK R pt`. Rewrite using `[hpt, hq]`. Conclude with `(Scheme.Hom.comp_apply M.gp M.π pt).symm.trans (by rw [M.gp_π])`. Establish `h2` using `congrArg PrimeSpectrum.asIdeal h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h3 : a ∈ Ideal.comap θ.hom q.asIdeal`. Rewrite using `[Ideal.mem_comap, ha]`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h4 : algebraMap R (FractionRing R) a ∈ maximalIdeal (FractionRing R)`. Establish `h5 : a ∈ ((jK R) pt).asIdeal`. Rewrite using `[← h2]`. Conclude with `h3`. Conclude with `h5`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h6 : algebraMap R (FractionRing R) a = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(maximalIdeal.isMaximal _).ne_top (Ideal.eq_top_of_isUnit_mem _ h4 (isUnit_iff_ne_zero.2 hne))`. Conclude with `IsFractionRing.injective R (FractionRing R) (h6.trans (map_zero _).symm)`. Establish `: CharZero (M.S.presheaf.stalk x₀)` using `charZero_of_injective_ringHom hinj`.
-
-Take `⟨W, _, _, _, ψ, hW, hψi, hψl⟩` from `exists_cDvr_injective_isLocalHom (M.S.presheaf.stalk x₀)`. Use `⟨W, inferInstance, inferInstance, inferInstance, ψ.comp θ.hom, spMap ψ ≫ M.S.fromSpecStalk x₀, hW, hψi.comp hinj, RingHom.isLocalHom_comp _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hθ, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (M.S.fromSpecStalk x₀) (IsLocalRing.comap_closedPoint ψ)) (Scheme.fromSpecStalk_closedPoint (x := x₀)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_trait_over_closedPoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (M : Modif R) (x₀ : M.S), M.π x₀ = closedPoint R →

@@ -16,13 +16,13 @@ open Classical
 namespace GlobalTheory.FrameAdjAdd
 
 /- English proof (translation)
-Introduce `D S T βS βT x y hx hy`. Establish `hadd : frMapAdj S T βS βT (x + y) = frMapAdj S T βS βT x + frMapAdj S T βS βT y`. Unfold `frMapAdj`. Rewrite using `[Matrix.map_add (⇑(cA D)) (map_add (cA D)), Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul, Matrix.map_add (⇑(toEAf D)) (map_add (toEAf D)), Matrix.mul_add, Matrix.add_mul]`. Establish `hI : IsIntM (frMapAdj S T βS βT (x + y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[hadd]`. Conclude with `add_mem (hx i j) (hy i j)`. Use `⟨hI, fun PP => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `hI i j`. Establish `h2` using `hx i j`. Establish `h3` using `hy i j`. Simplify using `only [redM, Matrix.add_apply, dif_pos h1, dif_pos h2, dif_pos h3]`. Rewrite using `[← map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hadd]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frMapAdj_add_isIntM_redM : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Datum.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Datum.EAf D)) (x y : WO S T),
   IsIntM (frMapAdj S T βS βT x) → IsIntM (frMapAdj S T βS βT y) →

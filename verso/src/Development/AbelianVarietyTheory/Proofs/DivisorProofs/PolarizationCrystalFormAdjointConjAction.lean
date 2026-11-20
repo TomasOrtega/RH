@@ -28,9 +28,9 @@ def expU (T : Thick κ s) : T.J →+ Additive T.Bˣ :=
     fun a b ↦ congrArg Additive.ofMul (Units.ext (exp_add T a.2 b.2))
 
 /- English proof (translation)
-Establish `e1 : ∀ k, q k = Additive.toMul (expU T ⟨a k, ha k⟩) * p k` using `fun k ↦ Units.ext (h k).symm`. Establish `e2 : dpExp T.δ (∑ k, ε k • a k) = (Additive.toMul (expU T (∑ k, ε k • (⟨a k, ha k⟩ : T.J)))).val`. Express the relevant statement in the definitionally equal form `_ = dpExp T.δ (Subtype.val _)`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, map_sum, toMul_sum, ← Units.val_mul, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[e1, mul_zpow, map_zsmul, toMul_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_sum (T : Thick κ s) {K : Type} [Fintype K] (ε : K → ℤ) (a : K → T.B) (ha : ∀ k, a k ∈ T.J)
     (p q : K → T.Bˣ) (h : ∀ k, dpExp T.δ (a k) * (p k).val = (q k).val) :
@@ -47,19 +47,17 @@ theorem exp_sum (T : Thick κ s) {K : Type} [Fintype K] (ε : K → ℤ) (a : K 
   rw [e1, mul_zpow, map_zsmul, toMul_zsmul]
 
 /- English proof (translation)
-Take `⟨i, hi, u, ℓ, h1, h2, h3⟩` from `hz`. Set `G : K → (IsSmall κ s' (LB.LinComb L φ ε).U).FullSubcategory ⥤ (IsSmall κ s L.U).FullSubcategory` to `fun k ↦ ObjectProperty.lift _ ((IsSmall κ s' (LB.LinComb L φ ε).U).ι ⋙ (m k).functor) fun T ↦ T.property.elim fun j hj ↦ ⟨j k, fun p _ ↦ LB.wchart_le L φ j k (hj (Set.mem_univ p))⟩`. Set `n : K → CoefMap (RingHom.id R) ((IsSmall κ s L.U).ι ⋙ O κ s) ((IsSmall κ s' (LB.LinComb L φ ε).U).ι ⋙ O κ s')` to `fun k ↦ { G := G k α := fun T ↦ RingHom.id T.obj.B naturality := fun _ _ ↦ rfl smul := fun T r b ↦ (m k).coef.smul T.obj r b }`. Establish `hu : ∀ k T T' (ψ : T ⟶ T'), IsUnit (M` using `T'.obj.B) (u _ _ ((G k).map ψ)) := fun k T T' ψ ↦ isUnit_of_π T'.obj ((h1 _ _ ((G k).map ψ)).symm ▸ (Units.isUnit _).map _)`. Use `choose U hU using hu`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : ∀ T : (IsSmall κ s' (LB.LinComb L φ ε).U).FullSubcategory, ⊤ ≤ T.obj.x ⁻¹ᵁ (LB.LinComb L φ ε).U (fun k ↦ i ((G k).obj T))` using `fun T p _ ↦ Set.mem_iInter.2 fun k ↦ hi ((G k).obj T) (Set.mem_univ p)`. Use `⟨fun T k ↦ i ((G k).obj T), hi', fun T T' ψ ↦ (∏ k, U k T T' ψ ^ ε k).val, ∑ k, ε k • (n k).pullbackTwoCocycle ℓ, fun T T' ψ ↦ ?_, fun T T' T'' ψ χ ↦ ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (show Units.map (T'.obj.π : T'.obj.B →* T'.obj.B₀) (∏ k, U k T T' ψ ^ ε k) = evU T'.obj.x ((LB.LinComb L φ ε).U (fun k ↦ i ((G k).obj T')) ⊓ (LB.LinComb L φ ε).U (fun k ↦ i ((G k).obj T))) (le_inf (hi' T') (ψ.hom.le_preimage (hi' T))) ((LB.LinComb L φ ε).g _ _) …` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Eq.trans (Finset.prod_congr rfl fun k _ ↦ ?_) (map_prod _ _ _).symm)` and prove the remaining obligations. Use `(map_zpow _ _ _).trans (Eq.trans (congrArg (· ^ ε k) ?_) (map_zpow _ _ _).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Use `((congrArg T'.obj.π (hU k T T' ψ)).trans (h1 _ _ ((G k).map ψ))).trans ?_` and prove the remaining obligations. Conclude with `evalAt_pull (φ k) T'.obj.x _ _ _ _`. Establish `e : ((∑ k, ε k • (n k).pullbackTwoCocycle ℓ).1 T T' T'' ψ χ : T''.obj.B) = ∑ k, ε k • (show T''.obj.B from ℓ.1 _ _ _ ((G k).map ψ) ((G k).map χ))`. Rewrite using `[Submodule.coe_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hm : ∀ k, (show T''.obj.B from ℓ.1 _ _ _ ((G k).map ψ) ((G k).map χ)) ∈ T''.obj.J` using `fun k ↦ (h2 _ _ _ ((G k).map ψ) ((G k).map χ)).1`. Rewrite using `[e]`. Use `⟨Submodule.sum_mem _ fun k _ ↦ zsmul_mem (hm k) _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(exp_sum T''.obj ε _ hm _ (fun k ↦ Units.map (χ.hom.φ : T'.obj.B →* T''.obj.B) (U k T T' ψ) * U k T' T'' χ) fun k ↦ ?_).trans ?_` and prove the remaining obligations. Rewrite using `[hU, Units.val_mul, hU, Units.coe_map, hU]`. Conclude with `(h2 _ _ _ ((G k).map ψ) ((G k).map χ)).2`. Use `Eq.trans ?_ (Units.val_mul (Units.map (χ.hom.φ : T'.obj.B →* T''.obj.B) (∏ k, U k T T' ψ ^ ε k)) _)` and prove the remaining obligations. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_zpow, map_zpow]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, ← (n k).pullCohomologyTwo_class, ← h3]`. Take `⟨z, rfl⟩` from `CatCoh.H2.mk_surjective _ z`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isChern_linComb {L : LB X} {z : Cris.H2 κ s} (hz : IsChern κ s L z) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (m : ∀ k, IsMor κ s κ s' (RingHom.id R) (φ k)) :
@@ -120,7 +118,7 @@ variable {R : Type} [CommRing R] {I : Ideal R} {S : Scheme.{0}} {κ : DividedPow
   {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `h` using `c.2 T 1 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullOver_one {T : Over S} (c : prim κ t A) : pullOver κ t (1 : T ⟶ A) c.1 = 0 := by
   have h := c.2 T 1 1
@@ -128,9 +126,9 @@ theorem pullOver_one {T : Over S} (c : prim κ t A) : pullOver κ t (1 : T ⟶ A
   exact left_eq_add.1 h
 
 /- English proof (translation)
-Establish `key : ∀ l : List (Fin n), pullOver κ t (l.foldr (fun k acc ↦ padd A (x k) acc) (pzero A T)) c.1 = (l.map fun i ↦ pullOver κ t (x i) c.1).sum` using `fun l ↦ by`. Proceed by induction on `l with`. Consider the case `nil => exact pullOver_one c`. Consider the case `cons k l ih => exact (c.2 T (x k) _).trans (by rw [ih, List.map_cons, List.sum_cons])`. Rewrite using `[psum, key, ← List.sum_toFinset _ ((List.nodup_finRange n).filter _)]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pullOver_psum {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (J : Finset (Fin n)) (c : prim κ t A) :
     pullOver κ t (psum A x J) c.1 = ∑ i ∈ J, pullOver κ t (x i) c.1 := by
@@ -145,18 +143,18 @@ theorem pullOver_psum {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (J : Fins
   simp
 
 /- English proof (translation)
-The claim follows from `IsMor.of_over κ (by rw [← Category.assoc, Over.w])`.
+A detailed English derivation is pending.
 -/
 theorem isMor_psum {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (J : ULift.{0} (Finset (Fin n))) :
     IsMor κ (A.hom ≫ t) κ (T.hom ≫ t) (RingHom.id R) (psum A x J.down).left :=
   IsMor.of_over κ (by rw [← Category.assoc, Over.w])
 
 /- English proof (translation)
-Establish `H` using `isChern_linComb h _ (fun J : ULift.{0} (Finset (Fin 2)) ↦ (-1 : ℤ) ^ (2 - J.down.card)) (isMor_psum ![u, v])`. Establish `e : ∀ J : ULift.{0} (Finset (Fin 2)), (isMor_psum ![u, v] J).pull2 (∑ k, cup _ (a k).1 (b k).1) = ∑ k, cup _ (∑ i ∈ J.down, pullOver κ t (![u, v] i) (a k).1) (∑ i ∈ J.down, pullOver κ t (![u, v] i) (b k).1)` using `fun J ↦ by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[IsMor.pullCohomologyTwo_cup, ← pullOver_psum, ← pullOver_psum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e, Finset.smul_sum] at H`. Rewrite `H` using `[Finset.sum_comm]`. Use `(congrArg (IsChern κ (T.hom ≫ t) (cubeLB A ![u, v] L)) ?_).mpr H` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Equiv.ulift.symm.sum_comp, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_pair (by decide)]`. Simplify using `only [Equiv.ulift_symm_down, Finset.sum_empty, Finset.sum_singleton, Finset.sum_pair (show (0 : Fin 2) ≠ 1 by decide), Finset.card_pair (show (0 : Fin 2) ≠ 1 by decide), Finset.card_singleton, map_zero, smul_zero, map_add, LinearMap.add_apply, Matrix.cons_val_zero, Matrix.cons_va …`. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
 -/
 theorem isChern_cube {L : LB A.left} {n : ℕ} {a b : Fin n → prim κ t A}
     (h : IsChern κ (A.hom ≫ t) L (∑ k, cup _ (a k).1 (b k).1)) {T : Over S} (u v : T ⟶ A) :
@@ -189,11 +187,9 @@ theorem isChern_cube {L : LB A.left} {n : ℕ} {a b : Fin n → prim κ t A}
 end Cube
 
 /- English proof (translation)
-Set `U : Over.mk ((A ⊗ A).hom ≫ f) ⟶ G ⊗ G` to `lift (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A))`. Establish `e : ∀ {ρ : G ⟶ G} {ρ' : A ⟶ A}, ρ'.left ≫ π = π ≫ ρ.left → ∀ p : A ⊗ A ⟶ A, pushPt h.1.w (p ≫ ρ') = pushPt h.1.w p ≫ ρ` using `fun hρ p ↦ Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `(p.left ≫ _) ≫ π = (p.left ≫ π) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hρ])`. Use `LBIso.chartPull (chartPullLinComb L π _ _ _ U.left fun J ↦ psum_push h _ _ U (fun i ↦ ?_) _) (chartPullLinComb L π _ _ _ U.left fun J ↦ psum_push h _ _ U (fun i ↦ ?_) _) H` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Conclude with `(e hα _).trans (lift_fst_assoc _ _ _).symm`. Conclude with `(lift_snd _ _).symm`. Use `fin_cases i`. Conclude with `(lift_fst _ _).symm`.
-
-Conclude with `(e hβ _).trans (lift_snd_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_cube {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {A : Over S'} [GrpObj A]
     [IsCommMonObj A] {f : S' ⟶ S} {π : A.left ⟶ G.left} (h : IsGrpPullback A G f π) (L : LB G.left)
@@ -215,7 +211,7 @@ theorem lbIso_cube {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] 
     · exact (e hβ _).trans (lift_snd_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `⟨exteriorPower.alternatingMapLinearEquiv (Matrix.detRowAlternating.compLinearMap (LinearMap.pi ![X, Y])), fun c d ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i j ↦ (![X, Y] j) (![c, d] i)) = _`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_wedge {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (X Y : M →ₗ[R] R) :
     ∃ Λ : ⋀[R]^2 M →ₗ[R] R, ∀ c d, Λ (exteriorPower.ιMulti R 2 ![c, d]) = X c * Y d - X d * Y c := by
@@ -227,7 +223,7 @@ theorem exists_wedge {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (X
   simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, e, he⟩` from `P R A g hA hg`. Take `⟨Λ, hΛ⟩` from `exists_wedge X Y`. Conclude with `⟨Λ ∘ₗ e.symm.toLinearMap, fun c d ↦ by`. Rewrite using `[← he, LinearMap.comp_apply, LinearEquiv.coe_coe, e.symm_apply_apply, hΛ]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_wedge_functional (P : GlobalTheory.Published.AbelianDeRham.Free) {R : Type} [CommRing R] {A : Over (Sp R)}
     [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
@@ -239,9 +235,9 @@ theorem exists_wedge_functional (P : GlobalTheory.Published.AbelianDeRham.Free) 
     rw [← he, LinearMap.comp_apply, LinearEquiv.coe_coe, e.symm_apply_apply, hΛ]⟩
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.tensorObj_hom, Limits.pullback.condition] infer_instance`. Rewrite using `[Over.tensorObj_hom, Limits.pullback.condition] infer_instance`. Rewrite using `[Over.tensorObj_hom, Limits.pullback.condition]`. Conclude with `GeometricallyConnected.comp _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_sq {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) :
     IsAbelianScheme (A ⊗ A) := by
@@ -258,13 +254,13 @@ theorem isAbelianScheme_sq {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbel
     exact GeometricallyConnected.comp _ _
 
 /- English proof (translation)
-Take `⟨n, a, b, hc, rfl⟩` from `hψ`. Establish `h0` using `(P R A g hA hg).1`. Establish `hg2 : SmoothOfRelativeDimension (g + g) (A ⊗ A).hom`. Establish `: SmoothOfRelativeDimension g (Limits.pullback.fst A.hom A.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom A.hom).flip hg`. Rewrite using `[Over.tensorObj_hom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smoothOfRelativeDimension_comp g g _ _`. Set `E : primDR A ≃ₗ[R] FirstDeRham (A.hom ≫ 𝟙 _)` to `LinearEquiv.ofTop _ h0`. Take `⟨Λ, hΛ⟩` from `exists_wedge_functional P (isAbelianScheme_sq hA) hg2 (x ∘ₗ E.symm.toLinearMap ∘ₗ pullOver (dp0 R) (𝟙 _) (lift (𝟙 A) 1)) (y ∘ₗ E.symm.toLinearMap ∘ₗ pullOver (dp0 R) (𝟙 _) (lift 1 (𝟙 A)))`. Establish `C` using `isChern_existsUnique_and_iso R _ (dp0 R) _ ((A ⊗ A).hom ≫ 𝟙 _)`. Establish `l₁ : (cubeLB A ![fst A A ≫ α, snd A A] L).IsLB` using `DVR.linComb_isLB _ hL _ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₂ : (cubeLB A ![fst A A, snd A A ≫ β] L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `e` using `congrArg Λ ((C.1 _ l₂).unique (C.2 _ _ l₁ l₂ H _ (isChern_cube hc _ _)) (isChern_cube hc _ _))`. Establish `v : ∀ (ρ : A ⟶ A) [IsMonHom ρ] (c : primDR A), E.symm (pullOver (dp0 R) (𝟙 _) ρ c.1) = primPull (dp0 R) (𝟙 _) ρ c` using `fun _ _ _ ↦ Subtype.ext rfl`. Establish `v₁ : ∀ c : primDR A, primPull (dp0 R) (𝟙 _) (𝟙 A) c = c` using `fun c ↦ Subtype.ext (IsMor.pullCohomologyOne_id _ _)`. Simplify using `only [map_sum, map_add, hΛ, LinearMap.comp_apply, LinearEquiv.coe_coe, pullOver_pullOver, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd, Category.id_comp, MonObj.one_comp, pullOver_one, map_zero, v, v₁, mul_zero, zero_mul, sub_zero, zero_sub] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [wedgeForm_apply, push_apply, sub_eq_add_neg]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_of_lbIso (P : GlobalTheory.Published.AbelianDeRham.Free) {R : Type} [CommRing R] {A : Over (Sp R)}
     [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left}
@@ -299,9 +295,9 @@ theorem adjoint_of_lbIso (P : GlobalTheory.Published.AbelianDeRham.Free) {R : Ty
   exact e
 
 /- English proof (translation)
-Introduce `P E _ _ _ H Dw l Xo K _ x A _ π hπ a ha ψ hψ z u v`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback (ObjDim.isAbelianScheme Xo.univ) hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 (ObjDim.smoothOfRelativeDimension Xo.univ)`. Use `hA.comm` as an intermediate fact. Use `a.hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `adjoint_of_lbIso P.1 hA gA (pull_isLB Xo.univ.t.PP.isLB π) hψ (a.act z) (a.act (H.bar z)) (lbIso_cube hπ _ (ha z) (ha (H.bar z)) (Xo.univ.t.adj z)) u v`.
+A detailed English derivation is pending.
 -/
 theorem polForm_adjoint : GlobalTheory.Published.AbelianDeRham → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) {K : Type} [Field K] {x : Sp K ⟶ Xo.X} {A : Over (Sp K)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}, IsGrpPullback A Xo.univ.t.G x π → ∀ (a : OAct (𝓞 E) A), (∀ z, (a.act z).left ≫ π = π ≫ (Xo.univ.t.act.act z).left) → ∀ {ψ : LinearMap.BilinForm K (HdR A)}, IsPolForm (dp0 K) (𝟙 _) A (Xo.univ.t.PP.L.pull π) ψ → IsAdjointFor a (fun z => H.bar z) ψ := by
   intro P E _ _ _ H Dw l Xo K _ x A _ π hπ a ha ψ hψ z u v

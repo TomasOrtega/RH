@@ -15,27 +15,27 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.GapNear
 
 /- English proof (translation)
-Introduce `Cn`. Use `⟨max Cn 1000, fun D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl hm₀ τ lam' hl => ?_⟩` and prove the remaining obligations. Establish `hdim` using `dimS_eq D.R`. Establish `hrr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hmk` using `D.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2` using `D.R.two_le_m`. Establish `hnR : (D.R.r : ℝ) = 2 * D.R.rS + D.R.k + 1` using `by rw [← hdim]; push_cast; ring`. Establish `hmC : Cn ≤ (D.R.m : ℝ)` using `le_trans (le_max_left _ _) hm₀`. Establish `hm1000 : (1000 : ℝ) ≤ D.R.m` using `le_trans (le_max_right _ _) hm₀`. Establish `hkr : (D.R.k : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : D.R.k ≤ D.R.r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmr : (D.R.m : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : D.R.m ≤ D.R.r)`. Establish `hr1000 : (1000 : ℝ) ≤ D.R.r` using `le_trans hm1000 hmr`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hsize : Cn * D.R.k * (D.R.m : ℝ) ^ 3 + D.R.r ≤ (D.R.r : ℝ) ^ 19 / 2`. Establish `h1 : Cn * D.R.k * (D.R.m : ℝ) ^ 3 ≤ (D.R.m : ℝ) * D.R.k * (D.R.m : ℝ) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right hmC (show (0 : ℝ) ≤ D.R.k * (D.R.m : ℝ) ^ 3 by positivity)` as an intermediate fact. Combine the linear relations using `[show Cn * D.R.k * (D.R.m : ℝ) ^ 3 = Cn * (D.R.k * (D.R.m : ℝ) ^ 3) by ring, show (D.R.m : ℝ) * D.R.k * (D.R.m : ℝ) ^ 3 = (D.R.m : ℝ) * (D.R.k * (D.R.m : ℝ) ^ 3) by ring]`. Establish `h2 : (D.R.m : ℝ) * D.R.k * (D.R.m : ℝ) ^ 3 ≤ (D.R.r : ℝ) ^ 5`. Establish `e : (D.R.m : ℝ) * D.R.k * (D.R.m : ℝ) ^ 3 = D.R.k * (D.R.m : ℝ) ^ 4` using `by ring`. Establish `e' : (D.R.r : ℝ) ^ 5 = D.R.r * (D.R.r : ℝ) ^ 4` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, e']`. Conclude with `mul_le_mul hkr (pow_le_pow_left₀ (by positivity) hmr 4) (by positivity) (by positivity)`. Establish `h3 : (D.R.r : ℝ) ≤ (D.R.r : ℝ) ^ 5` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `h4 : (4 : ℝ) ≤ (D.R.r : ℝ) ^ 14` using `le_trans (by norm_num) (le_trans hr1000 (le_self_pow₀ (by linarith) (by norm_num)))`. Establish `h5 : 4 * (D.R.r : ℝ) ^ 5 ≤ (D.R.r : ℝ) ^ 19`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left h4 (show (0 : ℝ) ≤ (D.R.r : ℝ) ^ 5 by positivity)` as an intermediate fact. Combine the linear relations using `[show (D.R.r : ℝ) ^ 5 * (D.R.r : ℝ) ^ 14 = (D.R.r : ℝ) ^ 19 by ring]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : 1 ≤ D.R.f`. Use `D.R.m_le_f` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hL : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hG0` using `Formalism.MainNotions.BridgeLemma.szh_gap hZ.1 τ`. Establish `hG : (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 5` using `one_le_pow₀ (by exact_mod_cast hf)`. Establish `h5 : (1 : ℝ) ≤ Cl * ((D.R.f : ℝ) ^ 5 * large₂.sc.L)` using `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_mul_of_one_le_of_one_le hf' hL)`. Establish `h6` using `mul_le_mul_of_nonneg_left h5 (show (0 : ℝ) ≤ (D.R.r : ℝ) ^ 19 by positivity)`. Establish `h7 : (D.R.r : ℝ) ^ 19 * (Cl * ((D.R.f : ℝ) ^ 5 * large₂.sc.L)) = Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hne => ?_, ?_⟩` and prove the remaining obligations. Establish `hab : a ≠ b` using `fun e => hne (e ▸ rfl)`. Establish `g` using `hG0 a b hne`. Express the relevant statement in the definitionally equal form `_ ≤ |lamD D τ a - lamD D τ b| at g`. Establish `hpair : |lam' a - lamD D τ a| + |lam' b - lamD D τ b| ≤ l1dist lam' (lamD D τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `l1dist`. Rewrite using `[← Finset.sum_pair (f := fun i => |lam' i - lamD D τ i|) hab]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun i _ _ => abs_nonneg _)`. Establish `tri : |lamD D τ a - lamD D τ b| ≤ |lam' a - lam' b| + |lam' a - lamD D τ a| + |lam' b - lamD D τ b|`. Rewrite using `[abs_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply the tactic sequence `constructor <;>`. Combine the linear relations using `[le_abs_self (lam' a - lam' b), neg_abs_le (lam' a - lam' b), le_abs_self (lam' a - lamD D τ a), neg_abs_le (lam' a - lamD D τ a), le_abs_self (lam' b - lamD D τ b), neg_abs_le (lam' b - lamD D τ b)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hok` using `(GlobalTheory.SizeNum.gapOK D.R.k D.R.rS D.R.r hnR (by omega) hr1000).1`. Conclude with `GlobalTheory.NumFam.gapOK_mono D.R.k D.R.rS (by linarith [show (0:ℝ) ≤ (D.R.r : ℝ) ^ 19 by positivity]) hok`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gap_near : ∀ Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → 1000 ≤ Cl → m₀ ≤ D.R.m → ∀ (τ : D.what₂.Tau) (lam' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ), l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 + D.R.r → GapAtLeast (epsSH D.R) lam' ((D.R.r : ℝ) ^ 19 / 2) ∧ Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS ((D.R.r : ℝ) ^ 19 / 2) := by
   intro Cn

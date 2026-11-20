@@ -7,7 +7,7 @@ variable {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup
   [MeasurableSpace A] [BorelSpace A]
 
 /- English proof (translation)
-Establish `h` using `integral_add_right_eq_self (μ := lam) (fun b => H b * χ (b + -a)) a`. Simplify using `only [add_neg_cancel_right] at h`. Rewrite using `[h, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only [AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,7 +22,7 @@ theorem integral_translate_mul_char (lam : Measure A) [lam.IsAddHaarMeasure] (H 
   ring
 
 /- English proof (translation)
-Use `hH.mono (hH.aestronglyMeasurable.mul hχ.aestronglyMeasurable) (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrable_mul_char {lam : Measure A} {H : A → ℂ} (hH : Integrable H lam)
     {χ : AddChar A ℂ} (hχ : Continuous χ) (hn : ∀ x, ‖χ x‖ = 1) :
@@ -32,13 +32,11 @@ theorem integrable_mul_char {lam : Measure A} {H : A → ℂ} (hH : Integrable H
   simp [hn]
 
 /- English proof (translation)
-Establish `hcont : Continuous (Function.uncurry fun (u : ℝ) (b : A) => K * G (b + c u) * χ b)`. Unfold `Function.uncurry`. Use `fun_prop`. Use `haveI : IsFiniteMeasure (volume.restrict (Set.uIoc (0 : ℝ) s)) := by`. Unfold `Set.uIoc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `infer_instance`. Use `(integrable_prod_iff hcont.aestronglyMeasurable).2 ⟨ae_of_all _ fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Integrable (fun b => G (b + c u)) lam` using `hGi.comp_add_right (c u)`. Establish `h2` using `integrable_mul_char (h1.const_mul K) hχ hn`. Simplify `h2` using `[Function.uncurry, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hconst : ∀ u : ℝ, ∫ b, ‖Function.uncurry (fun (u : ℝ) (b : A) => K * G (b + c u) * χ b) (u, b)‖ ∂lam = ‖K‖ * ∫ b, ‖G b‖ ∂lam`. Introduce `u`. Establish `h` using `integral_add_right_eq_self (μ := lam) (fun b => ‖G b‖) (c u)`. Rewrite using `[← h, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations.
-
-Simplify using `[Function.uncurry, hn]`. Repeatedly rewrite using `[hconst]`. Conclude with `integrable_const _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_uncurry_translate (lam : Measure A) [lam.IsAddHaarMeasure] [SFinite lam]
     (c : ℝ →+ A) (hc : Continuous c) {G : A → ℂ} (hG : Continuous G) (hGi : Integrable G lam)
@@ -66,31 +64,29 @@ theorem integrable_uncurry_translate (lam : Measure A) [lam.IsAddHaarMeasure] [S
     exact integrable_const _
 
 /- English proof (translation)
-Use `set K : ℂ := 2 * Real.pi * Complex.I with hK`. Establish `hK0 : K ≠ 0`. Simplify using `[hK, Real.pi_ne_zero, Complex.I_ne_zero]`. Use `set e : ℝ → ℂ := fun u => Complex.exp (K * ((u * f : ℝ) : ℂ)) with he`. Establish `hχe : ∀ s : ℝ, χ (-(c s)) = e s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[← map_neg, hf, he]`. Simplify using `only`. Use `congr 1`. Use `push_cast`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set Fh : ℂ := ∫ b, F b * χ b ∂lam with hFh`. Use `set Gh : ℂ := ∫ b, G b * χ b ∂lam with hGh`. Establish `hec : Continuous e`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fun_prop`. Establish `key : ∀ s : ℝ, (e s - 1) * Fh = K * Gh * ∫ u in (0 : ℝ)..s, e u`. Introduce `s`. Establish `hftc : ∀ b : A, F (b + c s) - F b = ∫ u in (0 : ℝ)..s, K * G (b + c u)`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : Continuous fun u : ℝ => K * G (b + c u)` using `by fun_prop`. Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := s) (f := fun t : ℝ => F (b + c t)) (f' := fun u => K * G (b + c u)) (fun x _ => hd b x) (hcu.intervalIntegrable _ _)` as an intermediate fact. Simplify using `using this.symm`. Establish `hswap` using `intervalIntegral_integral_swap (integrable_uncurry_translate lam c hc hG hGi hχ hn K s)`. Establish `h1 : ∫ b, F (b + c s) * χ b ∂lam = e s * Fh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_translate_mul_char, hχe]`. Establish `hi1 : Integrable (fun b => F (b + c s) * χ b) lam` using `integrable_mul_char (hFi.comp_add_right (c s)) hχ hn`. Establish `hi2 : Integrable (fun b => F b * χ b) lam` using `integrable_mul_char hFi hχ hn`. Establish `h2 : (e s - 1) * Fh = ∫ b, (∫ u in (0 : ℝ)..s, K * G (b + c u) * χ b) ∂lam`. Establish `: (e s - 1) * Fh = ∫ b, (F (b + c s) * χ b - F b * χ b) ∂lam`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_sub hi1 hi2, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[intervalIntegral.integral_mul_const, ← hftc b]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, ← hswap, ← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun u _ => ?_` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∫ b, K * G (b + c u) * χ b ∂lam = K * ∫ b, G (b + c u) * χ b ∂lam`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h3, integral_translate_mul_char, hχe]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : HasDerivAt (fun s : ℝ => (e s - 1) * Fh) (K * f * Fh) 0`. Establish `h0 : HasDerivAt (fun u : ℝ => K * ((u * f : ℝ) : ℂ)) (K * f) 0`. Establish `: HasDerivAt (fun u : ℝ => ((u : ℂ))) 1 0` using `Complex.ofRealCLM.hasDerivAt`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(this.mul_const (f : ℂ)).const_mul K` using `[mul_assoc]`. Use `((h0.cexp).sub_const 1).mul_const Fh` as an intermediate fact. Simplify `this` using `[he]`. Establish `hR : HasDerivAt (fun s : ℝ => K * Gh * ∫ u in (0 : ℝ)..s, e u) (K * Gh) 0`. Use `(hec.integral_hasStrictDerivAt 0 0).hasDerivAt.const_mul (K * Gh)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[he]`. Establish `hEq : (fun s : ℝ => (e s - 1) * Fh) = fun s : ℝ => K * Gh * ∫ u in (0 : ℝ)..s, e u`. Use function extensionality and compare the values at `key`. Rewrite `hL` using `[hEq]`. Use `hL.unique hR` as an intermediate fact.
-
-Establish `h4 : K * (f * Fh) = K * Gh`. Rewrite using `[← mul_assoc]`. Conclude with `this`. Conclude with `(mul_left_cancel₀ hK0 h4).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_char_eq_of_hasDerivAt (A : Type) [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] [MeasurableSpace A] [BorelSpace A] (lam : Measure A)

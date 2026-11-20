@@ -24,11 +24,11 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 noncomputable section
 namespace GlobalTheory.MovedKappaEx
 /- English proof (translation)
-Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y κ κ' h1 h2`. Use `set F := Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p x y)) (ch.S.Z.e …`. Establish `hF : Differentiable ℂ F` using `_root_.GlobalTheory.MovedDict.Entire.differentiable_moved_operator_eval hPr hInp ch hIs p hp x y`. Take `⟨hsd, hsd'⟩` from `_root_.GlobalTheory.MovedSD.moved_series_decomposition hPr hInp ch hIs p hp x y`. Establish `hF0 : F ≠ 0` using `selfDualLattice_intertwiner_baseVector_ne_zero ch.S.Z.crv ch.S.Z.pt0 (ch.S.Z.e0_is p hp) hsd hsd'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `GlobalTheory.NatFamily.exists_taylor_ne D hF hF0`. Establish `e` using `(h1 α).symm.trans (h2 α)`. Rewrite `e` using `[applyAt0_monomial', applyAt0_monomial', GlobalTheory.ProdThetaConj.taylor_const_mul hF, GlobalTheory.ProdThetaConj.taylor_const_mul hF]`. Establish `e'` using `(opp p).injective (mul_left_cancel₀ (ch.S.Z.c0 p).ne_zero e)`. Establish `hP : (α.prod fun v e => period ch.S.Z.δ v.1 ^ e) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero (GlobalTheory.TwoTorsionPt.delta_ne ch.S.Z.crv) v.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `e''` using `mul_left_cancel₀ (mul_ne_zero hP hfac) (by simpa only [mul_assoc] using e')`. Conclude with `mul_right_cancel₀ hα e''`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jet_kappa_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -54,29 +54,27 @@ theorem jet_kappa_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D
 end GlobalTheory.MovedKappaEx
 namespace GlobalTheory.MovedKappaEx
 /- English proof (translation)
-Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y`. Take `⟨hns, hnb⟩` from `hp.nodes`. Establish `chain : ∀ Q : Finset ℕ, (∀ q ∈ Q, q.Prime) → (∀ q ∈ Q, EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small x) (stdL D _) ∧ EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.big y) (stdL D _)) → ∃ κ, Mod1All κ ∧ (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ) ∧ JetKa …`. Introduce `Q hQ hQx`. Take `⟨r, s, x₀, hr, hs, hx₀, hsx, rfl⟩` from `_root_.GlobalTheory.T.movedKappa_decomposition_exists hPr hInp ch hIs _ hns Q hQ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r', s', y₀, hr', hs', hy₀, hsy, rfl⟩` from `_root_.GlobalTheory.T.movedKappa_decomposition_exists hPr hInp ch hIs _ hnb Q hQ y`. Take `⟨κ₀, hm₀, hu₀, hj₀⟩` from `_root_.GlobalTheory.T.moved_vacuum_has_algebraic_root hPr hInp ch hIs p hp x₀ y₀ hx₀ hy₀`. Establish `stepS : ∀ g ∈ splitOff (ch.G.V p.small) Q, ∀ (x' : FinPt ch.G p.small) (κ : ℂ), JetKap ch p x' y₀ κ → Mod1All κ → (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ) → ∃ κ', Mod1All κ' ∧ (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ') ∧ JetKap ch p (g * x') y₀ κ'`. Establish `gen : ∀ g : FinPt ch.G p.small, (∃ e, IsSplitIdem D e ∧ (∀ q ∈ Q, OffPrime e q) ∧ SuppAt e _ (g : GA D (ch.G.V p.small))) → ∀ (x' : FinPt ch.G p.small) (κ : ℂ), JetKap ch p x' y₀ κ → Mod1All κ → (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ) → ∃ κ', Mod1All κ' ∧ (∀ q ∈ Q, ∀ (_ : Fac …`. Introduce and unpack `g ⟨e, he, hoff, hsupp⟩ x' κ hj hm hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, hcu, hjc⟩` from `_root_.GlobalTheory.T.splitting_of_moved_kappa_twist hPr hInp ch hIs p hp x' y₀ κ hj e he g 1 hsupp (by rw [OneMemClass.coe_one]; exact GlobalTheory.LeviSplitChar.suppAt_one e _)`. Rewrite `hjc` using `[one_mul]`. Conclude with `⟨c * κ, GlobalTheory.FamilyTieProof.mod1All_mul' hc hm, fun q hq hf => unitAt_mul hc hm (@hcu q hf (hoff q hq)) (hu q hq hf), hjc⟩`. Introduce `g hg`. Proceed by induction on `hg using Subgroup.closure_induction'' with`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem g hg => exact gen g hg`. Consider the case `inv_mem g hg`. Take `⟨e, he, hoff, hsupp⟩` from `hg`. Conclude with `gen g⁻¹ ⟨e, he, hoff, by rw [InvMemClass.coe_inv]; exact GlobalTheory.SplitPlace.suppAt_inv hsupp⟩`. Consider the case `one => intro x' κ hj hm hu; exact ⟨κ, hm, hu, by rwa [one_mul]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul g₁ g₂ _ _ h1 h2`. Introduce `x' κ hj hm hu`. Take `⟨κ₁, hm₁, hu₁, hj₁⟩` from `h2 x' κ hj hm hu`. Take `⟨κ₂, hm₂, hu₂, hj₂⟩` from `h1 _ κ₁ hj₁ hm₁ hu₁`. Conclude with `⟨κ₂, hm₂, hu₂, by rwa [mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `stepB : ∀ g ∈ splitOff (ch.G.V p.big) Q, ∀ (y' : FinPt ch.G p.big) (κ : ℂ), JetKap ch p (s * x₀) y' κ → Mod1All κ → (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ) → ∃ κ', Mod1All κ' ∧ (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ') ∧ JetKap ch p (s * x₀) (g * y') κ'`. Establish `gen : ∀ g : FinPt ch.G p.big, (∃ e, IsSplitIdem D e ∧ (∀ q ∈ Q, OffPrime e q) ∧ SuppAt e _ (g : GA D (ch.G.V p.big))) → ∀ (y' : FinPt ch.G p.big) (κ : ℂ), JetKap ch p (s * x₀) y' κ → Mod1All κ → (∀ q ∈ Q, ∀ (_ : Fact q.Prime), UnitAt q κ) → ∃ κ', Mod1All κ' ∧ (∀ q ∈ Q, ∀ (_ : Fac …`. Introduce and unpack `g ⟨e, he, hoff, hsupp⟩ y' κ hj hm hu`. Take `⟨c, hc, hcu, hjc⟩` from `_root_.GlobalTheory.T.splitting_of_moved_kappa_twist hPr hInp ch hIs p hp (s * x₀) y' κ hj e he 1 g (by rw [OneMemClass.coe_one]; exact GlobalTheory.LeviSplitChar.suppAt_one e _) hsupp`. Rewrite `hjc` using `[one_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨c * κ, GlobalTheory.FamilyTieProof.mod1All_mul' hc hm, fun q hq hf => unitAt_mul hc hm (@hcu q hf (hoff q hq)) (hu q hq hf), hjc⟩`. Introduce `g hg`. Proceed by induction on `hg using Subgroup.closure_induction'' with`. Consider the case `mem g hg => exact gen g hg`. Consider the case `inv_mem g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hoff, hsupp⟩` from `hg`. Conclude with `gen g⁻¹ ⟨e, he, hoff, by rw [InvMemClass.coe_inv]; exact GlobalTheory.SplitPlace.suppAt_inv hsupp⟩`. Consider the case `one => intro y' κ hj hm hu; exact ⟨κ, hm, hu, by rwa [one_mul]⟩`. Consider the case `mul g₁ g₂ _ _ h1 h2`. Introduce `y' κ hj hm hu`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ₁, hm₁, hu₁, hj₁⟩` from `h2 y' κ hj hm hu`. Take `⟨κ₂, hm₂, hu₂, hj₂⟩` from `h1 _ κ₁ hj₁ hm₁ hu₁`. Conclude with `⟨κ₂, hm₂, hu₂, by rwa [mul_assoc]⟩`. Take `⟨κ₁, hm₁, hu₁, hj₁⟩` from `stepS s hs x₀ κ₀ hj₀ hm₀ (fun q _ hf => @hu₀ q hf)`. Take `⟨κ₂, hm₂, hu₂, hj₂⟩` from `stepB s' hs' y₀ κ₁ hj₁ hm₁ hu₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hcu, hjc⟩` from `_root_.GlobalTheory.T.rational_jet_move_exists hPr hInp ch hIs p hp _ _ κ₂ hj₂ r r' hr hr'`. Use `⟨c * κ₂, GlobalTheory.FamilyTieProof.mod1All_mul' hc hm₂, fun q hq hf => unitAt_mul hc hm₂ ?_ (hu₂ q hq hf), ?_⟩` and prove the remaining obligations. Take `⟨hqx, hqy⟩` from `hQx q hq`. Rewrite `hqx`, `hqy` using `[mul_assoc]`. Conclude with `@hcu q hf (hsx q hq) (hsy q hq) hqx hqy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `hjc`. Take `⟨κ₀, hm, -, hj⟩` from `chain ∅ (by simp) (by simp)`. Use `⟨κ₀, hm, fun q hf hx hy lam => ?_, hj⟩` and prove the remaining obligations. Take `⟨κq, -, hu, hjq⟩` from `chain {q} (by simpa using hf.out) (by simpa using ⟨hx, hy⟩)`.
-
-Take `rfl` from `_root_.GlobalTheory.MovedKappaEx.jet_kappa_unique hPr hInp ch hIs p hp x y κ₀ κq hj hjq`. Conclude with `hu q (Finset.mem_singleton_self q) hf lam`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_moved_kappa : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -180,7 +178,7 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedKappaEx.exists_moved_kappa | exact _root_.GlobalTheory.MovedKappaEx.exists_moved_kappa | (intros; apply _root_.GlobalTheory.MovedKappaEx.exists_moved_kappa <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_unique_moved_kappa_jet : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

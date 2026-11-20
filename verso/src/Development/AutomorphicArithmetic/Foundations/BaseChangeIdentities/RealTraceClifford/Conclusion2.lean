@@ -15,21 +15,21 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Introduce `n ν hν`. Take `⟨hR1, hR2, hR3, -, hR5, -⟩` from `rearr n`. Take `⟨hνA, hκD⟩` from `hR5 ν hν`. Take `⟨χ, hχS, hχ⟩` from `divEx n (domC (ν - rhoV n)) hκD`. Take `⟨hκA, ⟨w0, hw0⟩, -, -, hnsq⟩` from `hR2 (ν - rhoV n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, -, c3⟩` from `divSupp n (domC (ν - rhoV n)) χ hκA hχ`. Take `⟨hD2, -⟩` from `chRF n`. Take `⟨-, -, -, -, -, -, hA, -⟩` from `cfBasic n`. Establish `hx : StrictAnti (ν + rhoV n)` using `hνA.add_strictAnti hR3`. Establish `hm : chR n * alt (domC (ν - rhoV n) + rhoV n) = alt ((2:ℝ) • rhoV n) * χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hχ, hD2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hm, hA]`. Rewrite using `[Finset.sum_eq_single 1]`. Establish `e1 : ν + rhoV n - ((2:ℝ) • rhoV n) ∘ ⇑(1 : Equiv.Perm (Fin n)) = ν - rhoV n`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Function.comp_apply, Equiv.Perm.coe_one, id_eq, Pi.smul_apply, two_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← hχS w0, ← hw0, c1]`. Simplify using `[sg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `w _ hw`. Assume the negation of the conclusion as `h`. Establish `hne` using `right_ne_zero_of_mul h`. Establish `hle` using `c3 hχS _ hne`. Rewrite `hle` using `[hnsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hle2, heq⟩` from `hR1 (ν + rhoV n) (rhoV n) hx.antitone hR3.antitone w`. Establish `hlt : ∑ a, (ν + rhoV n) a * rhoV n (w a) < ∑ a, (ν + rhoV n) a * rhoV n a` using `lt_of_le_of_ne hle2 (fun h' => hw (heq hx hR3 h'))`. Establish `hsum : ∑ a, rhoV n (w a) ^ 2 = ∑ a, rhoV n a ^ 2` using `Equiv.sum_comp w (fun a => rhoV n a ^ 2)`. Establish `hdiff : nsq (ν + rhoV n - ((2:ℝ) • rhoV n) ∘ ⇑w) - nsq (ν - rhoV n) = 4 * (∑ a, (ν + rhoV n) a * rhoV n a - ∑ a, (ν + rhoV n) a * rhoV n (w a)) + 4 * (∑ a, rhoV n (w a) ^ 2 - ∑ a, rhoV n a ^ 2)`. Simplify using `only [nsq, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.add_apply, Function.comp_apply, Pi.smul_apply, two_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hdiff` using `[hsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.aux₃ :
     ∀ (n : ℕ) (ν : Wt n), Dom ν → cf (chR n * alt (domC (ν - rhoV n) + rhoV n)) (ν + rhoV n) = 1 := by

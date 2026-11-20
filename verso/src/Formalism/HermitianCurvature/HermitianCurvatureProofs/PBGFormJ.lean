@@ -19,9 +19,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.beta betaBig`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.big_cell_orbit_set k r Wp Wq D)] with q hq`. Distinguish the cases in `hQ : q ∈ B.Qset D`. Establish `hg : bigCell k r q.1 (D.μsec q.2) ∈ JF.Om k r D.z D.z'` using `hq hQ show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G (bigCell k r q.1 (D.μsec q.2)))) (hsVec (JF D F (bigCell k r q.1 (D.μsec q.2)))) = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G (bigCell k r q.1 (D.μsec q.2)))) (hsVec …`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ hg]`. Establish `hw : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0` using `le_antisymm (not_lt.1 hQ) (sq_bcWeight_nonneg _ _ q) show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _ = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _`. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_congrJ_left (D : RealPlaceData k r Wp Wq) {F F₂ G : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ JF.Om k r D.z D.z', JF D F g = JF D F₂ g) : beta D F G = beta D F₂ G := by
@@ -42,9 +42,9 @@ theorem beta_congrJ_left (D : RealPlaceData k r Wp Wq) {F F₂ G : Mat k r → (
     simp
 
 /- English proof (translation)
-Unfold `B.beta betaBig`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.big_cell_orbit_set k r Wp Wq D)] with q hq`. Distinguish the cases in `hQ : q ∈ B.Qset D`. Establish `hg : bigCell k r q.1 (D.μsec q.2) ∈ JF.Om k r D.z D.z'` using `hq hQ show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G (bigCell k r q.1 (D.μsec q.2)))) (hsVec (JF D F (bigCell k r q.1 (D.μsec q.2)))) = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G₂ (bigCell k r q.1 (D.μsec q.2)))) (hsVec …`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ hg]`. Establish `hw : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0` using `le_antisymm (not_lt.1 hQ) (sq_bcWeight_nonneg _ _ q) show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _ = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _`. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_congrJ_right (D : RealPlaceData k r Wp Wq) {F G G₂ : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ JF.Om k r D.z D.z', JF D G g = JF D G₂ g) : beta D F G = beta D F G₂ := by
@@ -73,9 +73,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   (P0 : M.Par) (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter)
 
 /- English proof (translation)
-Establish `hQQ : ∀ Y p q, BcGood (T.bs j) ε (D.QQlev T s j Y p q)` using `fun Y p q => bcGood_tL s Y p q`. Establish `hR` using `mn_rrop_closure bcGood_closed (D.QQlev T s j) hQQ (D.positionted w)`. Unfold `D.formLev`. Use `Finset.sum_congr rfl fun a _ => beta_congrJ_left (T.bs j) fun h hh => ?_` and prove the remaining obligations. Rewrite using `[bc_core (D.RRlev T s j w) hR x hx a hh, bc_core (D.RRlev T s j w) hR y hy a hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (∑ b, D.ap (D.RRlev T s j w a b) (fun g => B.JF (T.bs j) (x b) g)) h = (∑ b, D.ap (D.RRlev T s j w a b) (fun g => B.JF (T.bs j) (y b) g)) h`. Simplify using `only [Finset.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `(hR a b).2.2 _ _ (fun g hg hgG => hJ b g ⟨hgG, hg⟩) h hh.2 hh.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formLev_congrJ_left (x y x' : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (ε : ℝ)
     (hx : ∀ a, JC.NiceCoef (T.bs j) ε (x a)) (hy : ∀ a, JC.NiceCoef (T.bs j) ε (y a))
@@ -93,7 +93,7 @@ theorem formLev_congrJ_left (x y x' : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r 
   exact (hR a b).2.2 _ _ (fun g hg hgG => hJ b g ⟨hgG, hg⟩) h hh.2 hh.1
 
 /- English proof (translation)
-Unfold `D.formLev`. Conclude with `Finset.sum_congr rfl fun a _ => beta_congrJ_right (T.bs j) (hJ a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem formLev_congrJ_right (x' x y : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))
     (hJ : ∀ a, ∀ g ∈ JF.Om P0.k (P0.r - j) (T.bs j).z (T.bs j).z', B.JF (T.bs j) (x a) g = B.JF (T.bs j) (y a) g) :
@@ -102,7 +102,7 @@ theorem formLev_congrJ_right (x' x y : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r
   exact Finset.sum_congr rfl fun a _ => beta_congrJ_right (T.bs j) (hJ a)
 
 /- English proof (translation)
-The claim follows from `| [], x, y, x', hx, hy, hJ => formLev_congrJ_left P0 T s j w x y x' ε hx hy hJ | _ :: ys, x, y, x', hx, hy, hJ => by simp only [KB.pairJ] rw [pairJ_congrJ_left ε ys (fun e => x (Fin.cons 1 e)) (fun e => y (Fin.cons 1 e)) _ (fun _ => hx _) (fun _ => hy _) (fun _ => hJ _), pairJ_co …`.
+A detailed English derivation is pending.
 -/
 theorem pairJ_congrJ_left (ε : ℝ) : ∀ (ys : List ℝ)
     (x y : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))
@@ -119,7 +119,7 @@ theorem pairJ_congrJ_left (ε : ℝ) : ∀ (ys : List ℝ)
       (fun _ => hy _) (fun _ => hJ _)]
 
 /- English proof (translation)
-The claim follows from `| [], x', x, y, hJ => formLev_congrJ_right P0 T s j w x' x y hJ | _ :: ys, x', x, y, hJ => by simp only [KB.pairJ] rw [pairJ_congrJ_right ys _ (fun e => x (Fin.cons 0 e)) (fun e => y (Fin.cons 0 e)) (fun _ => hJ _), pairJ_congrJ_right ys _ (fun e => x (Fin.cons 1 e)) (fun e => y …`.
+A detailed English derivation is pending.
 -/
 theorem pairJ_congrJ_right : ∀ (ys : List ℝ)
     (x' : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))

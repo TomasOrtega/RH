@@ -10,11 +10,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Establish `key : ∀ C : Multiset α, (∀ x ∈ C, x ∈ S) → ∀ ξ ∈ S, C.count ξ = (C.map g).count (g ξ)`. Introduce `C hC ξ hξ`. Rewrite using `[Multiset.count_map, Multiset.count_eq_card_filter_eq]`. Use `congr 1`. Apply `Multiset.filter_congr` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Conclude with `⟨fun e => congrArg g e, fun e => hg hξ (hC x hx) e⟩`. Use extensionality with `ξ`. Distinguish the cases in `hξ : ξ ∈ S`. Rewrite using `[key A hA ξ hξ, key B hB ξ hξ, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.count_eq_zero_of_notMem (fun m => hξ (hA _ m)), Multiset.count_eq_zero_of_notMem (fun m => hξ (hB _ m))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_eq_of_injOn {α β : Type*} (S : Set α) (g : α → β) (hg : Set.InjOn g S)
     (A B : Multiset α) (hA : ∀ x ∈ A, x ∈ S) (hB : ∀ x ∈ B, x ∈ S)
@@ -33,9 +33,9 @@ private theorem map_eq_of_injOn {α β : Type*} (S : Set α) (g : α → β) (hg
       Multiset.count_eq_zero_of_notMem (fun m => hξ (hB _ m))]
 
 /- English proof (translation)
-Unfold `ValsExtOf ValsExt`. Introduce `hP k _ _ _ _ c c' θ h`. Establish `hinj : Set.InjOn (fun ξ : kˣ →* ℂˣ => (ξ * θ) (unif k)) {ξ | IsUnram (ξ * θ)}`. Introduce `ξ hξ ξ' hξ' e`. Establish `hu : IsUnram ((ξ * θ) * (ξ' * θ)⁻¹)` using `isUnram_mul hξ (isUnram_inv hξ')`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel ((hP k).2.1 _ _ hu e)`. Conclude with `map_eq_of_injOn _ _ hinj _ _ (fun x hx => (Multiset.mem_filter.1 hx).2) (fun x hx => (Multiset.mem_filter.1 hx).2) h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.GamX.valsExtOf :
     UpperTheory.Gal.GamX.ValsExtOf := by

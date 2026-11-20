@@ -69,23 +69,19 @@ section Frames
 open Formalism.MainNotions.FrameBoundFromBesselTorus Formalism.MainNotions.OnePlaceEstimates in
 
 /- English proof (translation)
-Introduce `L f κ₀ κ τ hκ₀ hκ hτ hc hκN hκNt hε hgap hf`. Take `⟨f₁, C, hC, hf₁, hJ, hO⟩` from `hOB L f κ₀ κ τ hκ₀ hκ hτ hc hκN hκNt hε hgap hf`. Establish `hk2 : 2 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hk1 : 1 ≤ D.R.k` using `by omega`. Establish `hCpos : 0 < ‖C‖` using `norm_pos_iff.mpr hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Tz D.R.k D.R.rS (trDat L κ τ hκ hτ).z = τ ^ 2 * Tz D.R.k D.R.rS L.z` using `Tz_smul _ _`. Establish `e2 : Tz D.R.k D.R.rS (trDat L κ τ hκ hτ).z' = τ ^ 2 * Tz D.R.k D.R.rS L.z'` using `Tz_smul _ _`. Use `⟨trDat L κ τ hκ hτ, f₁, rfl, rfl, rfl, rfl, ?_, ?_, ?_, e1, e2, hf₁, ?_⟩` and prove the remaining obligations. Use `show (κ : ℂ) * L.c = _`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `cOfDpsi`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show 0 < L.κN * ENNReal.ofReal (deltaN D.R.k D.R.rS κ τ)`. Conclude with `ENNReal.mul_pos hκN.ne' (ENNReal.ofReal_pos.mpr (deltaN_pos hκ hτ)).ne'`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show L.κN * ENNReal.ofReal (deltaN D.R.k D.R.rS κ τ) ≠ ⊤`. Conclude with `ENNReal.mul_ne_top hκNt ENNReal.ofReal_ne_top`. Introduce `μsec hsec`. Use `⟨secTr τ μsec, isSection_tr hτ hsec, jacBig D.R.rS κ τ * wBig D.R.k D.R.rS κ τ * ‖C‖ ^ 2, mul_pos (mul_pos (jacBig_pos hκ hτ) (wBig_pos hκ hτ)) (pow_pos hCpos 2), ?_, ?_⟩` and prove the remaining obligations. Use `jNorm2_tr hκ hτ L (trDat L κ τ hκ hτ) e1 e2 f f₁ μsec (secTr τ μsec) C hk2 fun p hp hζ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[secTr_sBig hτ]`. Establish `hb : bigCell D.R.k D.R.rS (sBig D.R.rS κ τ p).1 (μsec p.2) = cj D.R.k D.R.rS κ τ (bigCell D.R.k D.R.rS p.1 (μsec p.2))`. Rewrite using `[bigCell_cj hκ hτ]`. Both sides reduce to the same expression. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show @hsNormSq L.Wp L.Wq _ _ _ _ _ ((trDat L κ τ hκ hτ).J f₁ (cj D.R.k D.R.rS κ τ (bigCell D.R.k D.R.rS p.1 (μsec p.2)))) = _`. Rewrite using `[J_trD hκ hτ L, hJ p.1 (μsec p.2) hp (hsec.2 p.2 hζ).1, Formalism.MainNotions.FrameBoundFromBesselTorus.hsNormSq_smul]`. Introduce `γ hG`. Use `⟨ptTr κ τ hκ hτ γ, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, GPoint_ptTr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, orbSq_trDat hκ hτ L f f₁ γ C fun g μR ν h1 h2 h3 h4 => hO γ g μR ν hG h1 h2 h3 h4]`. Establish `hα` using `alphaPt_pos hκ hτ γ`. Establish `hw` using `ptWeight_ptTr hk1 hκ hτ (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ`. Establish `hcard` using `card_rootPat_le γ`. Use `frames_ineqs (orbSq L f γ) (by positivity) (mul_pos (mul_pos (jacBig_pos hκ hτ) (wBig_pos hκ hτ)) (pow_pos hCpos 2)).le (inv_pos.mpr (by positivity)) (ratio_le_frameFactor hκ hτ hCf hcard) (by rw [inv_inv]; exact ratio_inv_le_frameFactor hκ hτ hCf hcard) ?_` and prove the remaining obligations.
-
-Establish `hP : 0 < κ ^ (2 * (rootPat γ).card)` using `pow_pos hκ _`. Establish `hpw : ptWeight D.R.k D.R.rS (τ ^ 2 * Tz D.R.k D.R.rS L.z) (τ ^ 2 * Tz D.R.k D.R.rS L.z') (ptTr κ τ hκ hτ γ) = Wbig D.R.k D.R.rS κ τ * alphaPt κ τ γ ^ 2 * ptWeight D.R.k D.R.rS (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ / κ ^ (2 * (rootPat γ).card)`. Rewrite using `[eq_div_iff hP.ne']`. Conclude with `hw`. Rewrite using `[hpw, wBig_eq_Wbig hk1, jacBig_eq, pow_add]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem frame_bound_of_bessel_torus (D : D7) (Cgf Cf : ℝ) (hCf : 2 ≤ Cf) (hOB : OneBesselTor D Cgf) :
     Formalism.MainNotions.OnePlaceEstimates.FrameBesselBound D Cgf Cf := by

@@ -16,7 +16,7 @@ private theorem algebraMap_degreeZero_apply (I : Ideal R) (x : ↥(reesGrading I
     algebraMap ↥(reesGrading I 0) ↥(reesAlgebra I) x = (x : ↥(reesAlgebra I)) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[algebraMap_degreeZero_apply, reesDegreeZeroEquiv_coe_coe]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem algebraMap_reesAlgebra_eq_algebraMap_degreeZero (I : Ideal R) (r : R) :
     algebraMap R ↥(reesAlgebra I) r =
@@ -33,21 +33,21 @@ private noncomputable def adjoinOverDegreeZero (I : Ideal R) (s : Set ↥(reesAl
     exact Subalgebra.algebraMap_mem (Algebra.adjoin ↥(reesGrading I 0) s) _
 
 /- English proof (translation)
-The claim follows from `hx`.
+A detailed English derivation is pending.
 -/
 private theorem mem_adjoin_degreeZero_of_mem_restrictScalars (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (x : ↥(reesAlgebra I)) (hx : x ∈ adjoinOverDegreeZero I s) :
     x ∈ Algebra.adjoin ↥(reesGrading I 0) s := hx
 
 /- English proof (translation)
-The claim follows from `hx`.
+A detailed English derivation is pending.
 -/
 private theorem mem_restrictScalars_of_mem_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (x : ↥(reesAlgebra I)) (hx : x ∈ Algebra.adjoin ↥(reesGrading I 0) s) :
     x ∈ adjoinOverDegreeZero I s := hx
 
 /- English proof (translation)
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[SetLike.mem_coe]`. Conclude with `mem_restrictScalars_of_mem_adjoin_degreeZero I s y (Algebra.subset_adjoin hy)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adjoin_le_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I)) :
     Algebra.adjoin R s ≤ adjoinOverDegreeZero I s := by
@@ -57,9 +57,7 @@ private theorem adjoin_le_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgeb
   exact mem_restrictScalars_of_mem_adjoin_degreeZero I s y (Algebra.subset_adjoin hy)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Algebra.adjoin R s`. Rewrite using `[hs]`. Conclude with `Algebra.mem_top`.
-
-Conclude with `mem_adjoin_degreeZero_of_mem_restrictScalars I s x (adjoin_le_adjoin_degreeZero I s hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adjoin_degreeZero_eq_top_of_adjoin_eq_top (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (hs : Algebra.adjoin R s = ⊤) : Algebra.adjoin ↥(reesGrading I 0) s = ⊤ := by
@@ -71,7 +69,7 @@ private theorem adjoin_degreeZero_eq_top_of_adjoin_eq_top (I : Ideal R) (s : Set
   exact mem_adjoin_degreeZero_of_mem_restrictScalars I s x (adjoin_le_adjoin_degreeZero I s hx)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType R ↥(reesAlgebra I)).out`. Conclude with `⟨⟨s, adjoin_degreeZero_eq_top_of_adjoin_eq_top I (↑s : Set ↥(reesAlgebra I)) hs⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finiteType_reesAlgebra_degreeZero (I : Ideal R) [IsNoetherianRing R] :
     Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) := by
@@ -83,7 +81,7 @@ instance instFiniteTypeReesAlgebraOverDegZero (I : Ideal R) [IsNoetherianRing R]
   finiteType_reesAlgebra_degreeZero I
 
 /- English proof (translation)
-Use `hf` as an intermediate fact. Use `hg` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isProper_comp_of_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     (hf : AlgebraicGeometry.IsProper f) (hg : IsIso g) :
@@ -93,7 +91,7 @@ private theorem isProper_comp_of_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y
   infer_instance
 
 /- English proof (translation)
-Establish `hft : Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I)` using `finiteType_reesAlgebra_degreeZero I`. Establish `h1 : AlgebraicGeometry.IsProper (AlgebraicGeometry.Proj.toSpecZero (reesGrading I))` using `inferInstance`. Rewrite using `[AffineBlowup.toSpec_eq_toSpecZero_comp]`. Conclude with `isProper_comp_of_isIso _ _ h1 (isIso_SpecMap_iff.mpr (reesDegreeZeroEquiv I).bijective)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.IsProper (AffineBlowup.toSpec I) := by
@@ -109,7 +107,7 @@ instance instIsProperAffineBlowupToSpec (I : Ideal R) [IsNoetherianRing R] :
   isProper_affineBlowup_toSpec I
 
 /- English proof (translation)
-Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.LocallyOfFiniteType (AffineBlowup.toSpec I) := by
@@ -121,7 +119,7 @@ instance instLocallyOfFiniteTypeAffineBlowupToSpec (I : Ideal R) [IsNoetherianRi
   locallyOfFiniteType_affineBlowup_toSpec I
 
 /- English proof (translation)
-Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem universallyClosed_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.UniversallyClosed (AffineBlowup.toSpec I) := by
@@ -133,7 +131,7 @@ instance instUniversallyClosedAffineBlowupToSpec (I : Ideal R) [IsNoetherianRing
   universallyClosed_affineBlowup_toSpec I
 
 /- English proof (translation)
-Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quasiCompact_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.QuasiCompact (AffineBlowup.toSpec I) := by

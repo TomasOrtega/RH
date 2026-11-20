@@ -6,7 +6,7 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ResidueEisenstein.ModConj.modulus_conj_flow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviCentreFlowConjScalesHaarIsotropicUnipotent.lean&line=30#L30)
 -/

@@ -4,7 +4,7 @@ import Development.DiscreteGroups.GlobalIrreducibility.LConvKMCore
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Introduce `G M _ _ _ ρ hspan B₀ hB₀ f hf`. Take `⟨B, ⟨hB, hext⟩, hBf⟩` from `DiscreteGroups.sglob.LConvKM.extreme_exists_core ρ hspan B₀ hB₀ f hf`. Conclude with `⟨B, ⟨hB, hext⟩, hBf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem extremeExists : ExtremeExists := by
   intro G M _ _ _ ρ hspan B₀ hB₀ f hf

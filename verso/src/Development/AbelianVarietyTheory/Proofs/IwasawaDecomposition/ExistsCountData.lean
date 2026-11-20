@@ -19,9 +19,9 @@ section Infl
 variable {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g Q)
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `ρ.surj q`. Establish `ht' : t⁻¹ ∈ I.Kset` using `(Ksub I).inv_mem ht`. Use `⟨t⁻¹, Set.ext fun x => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Use `(ρ.ker _ ((Ksub I).mul_mem ht' h.1)).1 ?_` and prove the remaining obligations. Rewrite using `[ρ.map_mul _ ht' _ h.1, ρ.map_inv ht, h.2, inv_mul_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : t⁻¹ * x ∈ I.Kset` using `h.1`. Establish `hx : x ∈ I.Kset` using `((Ksub I).mul_mem_cancel_left ht').1 h1`. Establish `h2` using `(ρ.ker _ h1).2 h`. Rewrite `h2` using `[ρ.map_mul _ ht' _ hx, ρ.map_inv ht, inv_mul_eq_one]`. Conclude with `⟨hx, h2.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fibre_eq (q : Q) :
     ∃ t : I.Gf, {x | x ∈ I.Kset ∧ ρ.toFun x = q} = (fun y => t * y) ⁻¹' I.Kg g := by
@@ -37,15 +37,15 @@ theorem fibre_eq (q : Q) :
     exact ⟨hx, h2.symm⟩
 
 /- English proof (translation)
-Establish `hU : IsOpen (I.Kg g)` using `I.topf_open g hg`. Establish `hfin : μf (I.Kg g) ≠ ⊤` using `((measure_mono fun x hx => hx.1).trans_lt (GlobalTheory.adelicStab_isCompact_isOpen I).1.measure_lt_top).ne`. Establish `hm : ∀ q, MeasurableSet {x | x ∈ I.Kset ∧ ρ.toFun x = q} ∧ μf {x | x ∈ I.Kset ∧ ρ.toFun x = q} = μf (I.Kg g)` using `fun q => by`. Take `⟨t, ht⟩` from `fibre_eq ρ q`. Rewrite using `[ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(hU.preimage (by fun_prop)).measurableSet, measure_preimage_mul μf t _⟩`. Establish `e : (fun x => if x ∈ I.Kset then F (ρ.toFun x) else 0) = fun x => ∑ q, {x | x ∈ I.Kset ∧ ρ.toFun x = q}.indicator (fun _ => F q) x`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ I.Kset`. Rewrite using `[if_pos hx, Finset.sum_eq_single (ρ.toFun x)]`.
+Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem]`. Conclude with `⟨hx, rfl⟩`. Conclude with `fun q _ hq => Set.indicator_of_notMem (fun h => hq h.2.symm) _`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hx]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.sum_eq_zero fun q _ => Set.indicator_of_notMem (fun h => hx h.1) _).symm`. Establish `hi : ∀ q, Integrable ({x | x ∈ I.Kset ∧ ρ.toFun x = q}.indicator (fun _ => F q)) μf` using `fun q => (integrable_indicator_iff (hm q).1).2 (integrableOn_const ((hm q).2 ▸ hfin))`. Rewrite using `[e]`. Use `⟨integrable_finset_sum _ fun q _ => hi q, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun q _ => hi q, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hm q).1, Measure.real, (hm q).2, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_inflate [Fintype Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg : 1 ≤ g) (F : Q → ℂ) :
     Integrable (fun x => if x ∈ I.Kset then F (ρ.toFun x) else 0) μf ∧
@@ -78,7 +78,7 @@ theorem integral_inflate [Fintype Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (h
   rw [integral_indicator_const _ (hm q).1, Measure.real, (hm q).2, Complex.real_smul]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite Q`. Conclude with `(integral_inflate ρ μf hg fun q => a.coeff q / ((μf (I.Kg g)).toReal : ℂ)).1`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem integrable_lift [Finite Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg : 1 ≤ g) (a : MonoidAlgebra ℂ Q) :
     Integrable (ρ.lift μf a) μf := by
@@ -86,7 +86,7 @@ theorem integrable_lift [Finite Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg 
   exact (integral_inflate ρ μf hg fun q => a.coeff q / ((μf (I.Kg g)).toReal : ℂ)).1
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ I.Kset`. Establish `h1 : k * x ∈ I.Kset` using `(Ksub I).mul_mem hk.1 hx`. Rewrite using `[ρ.lift_of_mem μf a hx, ρ.lift_of_mem μf a ((Ksub I).mul_mem h1 hk'.1), ρ.map_mul _ h1 _ hk'.1, ρ.map_mul _ hk.1 _ hx, (ρ.ker _ hk.1).2 hk, (ρ.ker _ hk'.1).2 hk', one_mul, mul_one]`. Rewrite using `[ρ.lift_of_notMem μf a hx, ρ.lift_of_notMem μf a fun h => hx (((Ksub I).mul_mem_cancel_left hk.1).1 (((Ksub I).mul_mem_cancel_right hk'.1).1 h))]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_biinv (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) (x : I.Gf) (k : I.Gf) (hk : k ∈ I.Kg g)
     (k' : I.Gf) (hk' : k' ∈ I.Kg g) : ρ.lift μf a (k * x * k') = ρ.lift μf a x := by
@@ -98,22 +98,22 @@ theorem lift_biinv (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) (x : I.Gf) (k 
       (((Ksub I).mul_mem_cancel_left hk.1).1 (((Ksub I).mul_mem_cancel_right hk'.1).1 h))]
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul_eq_sum [Fintype Q] (a b : MonoidAlgebra ℂ Q) (s : Q) :
     (a * b).coeff s = ∑ q, a.coeff q * b.coeff (q⁻¹ * s) := by
   rw [MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp)]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite Q`. Use function extensionality and compare the values at `x`. Unfold `AutInst.convF`. Distinguish the cases in `hx : x ∈ I.Kset`. Establish `e : (fun y => ρ.lift μf a y * ρ.lift μf b (y⁻¹ * x)) = fun y => if y ∈ I.Kset then (fun q => a.coeff q / ((μf (I.Kg g)).toReal : ℂ) * (b.coeff (q⁻¹ * ρ.toFun x) / ((μf (I.Kg g)).toReal : ℂ))) (ρ.toFun y) else 0`.
+Equip the data with the indicated structure. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ I.Kset`. Establish `hy' : y⁻¹ ∈ I.Kset` using `(Ksub I).inv_mem hy`. Rewrite using `[if_pos hy, ρ.lift_of_mem μf a hy, ρ.lift_of_mem μf b ((Ksub I).mul_mem hy' hx), ρ.map_mul _ hy' _ hx, ρ.map_inv hy]`. Rewrite using `[if_neg hy, ρ.lift_of_notMem μf a hy, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, (integral_inflate ρ μf hg fun q => a.coeff q / ((μf (I.Kg g)).toReal : ℂ) * (b.coeff (q⁻¹ * ρ.toFun x) / ((μf (I.Kg g)).toReal : ℂ))).2, ρ.lift_of_mem μf _ hx, coeff_mul_eq_sum, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ((μf (I.Kg g)).toReal : ℂ) = 0`. Simplify using `[h]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[ρ.lift_of_notMem μf _ hx]`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ I.Kset`. Establish `: y⁻¹ * x ∉ I.Kset` using `fun h => hx (((Ksub I).mul_mem_cancel_left ((Ksub I).inv_mem hy)).1 h)`. Simplify using `only [ρ.lift_of_notMem μf b this, mul_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ρ.lift_of_notMem μf a hy, zero_mul, Pi.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conv_lift [Finite Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg : 1 ≤ g) (a b : MonoidAlgebra ℂ Q) :
     I.convF μf (ρ.lift μf a) (ρ.lift μf b) = ρ.lift μf (a * b) := by
@@ -144,21 +144,19 @@ theorem conv_lift [Finite Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg : 1 �
     · simp only [ρ.lift_of_notMem μf a hy, zero_mul, Pi.zero_apply]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite Q`. Introduce `m x c`. Set `q : Fin m → I.Gf ⧸ Ksub I` to `fun i => (x i : I.Gf ⧸ Ksub I)`. Establish `hk : ∀ i, ((q i).out)⁻¹ * x i ∈ I.Kset` using `fun i => by show _ ∈ Ksub I`. Rewrite using `[← QuotientGroup.eq]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.out_eq _`. Set `b : Q → Fin m → ℂ` to `fun u i => c i * a.coeff (u⁻¹ * ρ.toFun (((q i).out)⁻¹ * x i))`. Establish `key : ∀ i j, star (c i) * c j * ρ.lift μf a ((x i)⁻¹ * x j) = ∑ u, (if q i = q j then star (b u i) * b u j else 0) * (1 / ((μf (I.Kg g)).toReal : ℂ))`. Introduce `i j`. Distinguish the cases in `hij : q i = q j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e1 : (x i)⁻¹ * x j = (((q i).out)⁻¹ * x i)⁻¹ * (((q j).out)⁻¹ * x j)`. Rewrite using `[← hij]`. Use `group`. Establish `hi' : (((q i).out)⁻¹ * x i)⁻¹ ∈ I.Kset` using `(Ksub I).inv_mem (hk i)`. Rewrite using `[e1, ρ.lift_of_mem μf a ((Ksub I).mul_mem hi' (hk j)), ρ.map_mul _ hi' _ (hk j), ρ.map_inv (hk i)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [if_pos hij, b]`. Generalize the expression as in `ρ.toFun (((q i).out)⁻¹ * x i) = s`. Generalize the expression as in `ρ.toFun (((q j).out)⁻¹ * x j) = t`. Establish `e2 : a.coeff (s⁻¹ * t) = ∑ u, star (a.coeff (u⁻¹ * s)) * a.coeff (u⁻¹ * t)` using `by conv_lhs => rw [← h1, coeff_mul_eq_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft s) _ _ fun u => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2]`. Simplify using `[mul_assoc]`. Rewrite using `[e2, Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: (x i)⁻¹ * x j ∉ I.Kset` using `fun h => hij (QuotientGroup.eq.2 h)`. Simplify using `only [if_neg hij, ρ.lift_of_notMem μf a this, mul_zero, zero_mul, Finset.sum_const_zero]`. Establish `e3 : ∑ i, ∑ j, star (c i) * c j * ρ.lift μf a ((x i)⁻¹ * x j) = ∑ u, (∑ i, ∑ j, if q i = q j then star (b u i) * b u j else 0) * (1 / ((μf (I.Kg g)).toReal : ℂ))`. Simplify using `only [key, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm (γ := Q)]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Rewrite using `[e3]`. Use `Finset.sum_nonneg fun u _ => mul_nonneg (GlobalTheory.CharIdem.sum_fiber_nonneg q (b u)) ?_` and prove the remaining obligations. Establish `: (1 / ((μf (I.Kg g)).toReal : ℂ)) = ((1 / (μf (I.Kg g)).toReal : ℝ) : ℂ)` using `by push_cast; rfl`.
-
-Rewrite using `[this]`. Conclude with `Complex.zero_le_real.2 (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPosType_lift [Finite Q] (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) (h1 : a * a = a) (h2 : IsSA a) :
     I.IsPosType (ρ.lift μf a) := by
@@ -204,11 +202,11 @@ theorem isPosType_lift [Finite Q] (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q)
   exact Complex.zero_le_real.2 (by positivity)
 
 /- English proof (translation)
-Establish `hU : IsOpen (I.Kg g)` using `I.topf_open g hg`. Establish `hone : (1 : I.Gf) ∈ I.Kg g` using `(KgSub I g).one_mem`. Establish `hs : ∀ x, ρ.lift μf a x ≠ 0 → x ∈ I.Kset` using `fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (ρ.lift_of_notMem μf a h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, by rw [conv_lift ρ μf hg, h1], ρ.lift_inv μf a h2, isPosType_lift ρ μf a h1 h2, hs, fun x k hk k' hk' => lift_biinv ρ μf a x k hk k' hk', fun x hx => h3 x (hs x hx) fun h => hx ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' I.Kg g, hU.preimage (by fun_prop), by simpa using hone, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e1 : y = 1 * x * (x⁻¹ * y)` using `by group`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, lift_biinv ρ μf a x 1 hone _ hy]`. Rewrite using `[ρ.lift_of_mem μf a (hs x hx), h, zero_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmIdem_lift [Finite Q] (μf : Measure I.Gf) [μf.IsHaarMeasure] (hg : 1 ≤ g) (g₀ : ℕ)
     (a : MonoidAlgebra ℂ Q) (h1 : a * a = a) (h2 : IsSA a)
@@ -234,7 +232,7 @@ section Tens
 variable {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)]
 
 /- English proof (translation)
-Use `letI := fun i => Fintype.ofFinite (G i)`. Use extensionality with `h`. Rewrite using `[coeff_mul_eq_sum]`. Simplify using `only [tensAlg_coeff, coeff_mul_eq_sum, ← Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Equip the data with the indicated structure. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -247,7 +245,7 @@ theorem tensAlg_mul (a b : ∀ i, MonoidAlgebra ℂ (G i)) : tensAlg a * tensAlg
   rfl
 
 /- English proof (translation)
-Introduce `q`. Rewrite using `[tensAlg_coeff, tensAlg_coeff, star_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => h i _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSA_tensAlg (a : ∀ i, MonoidAlgebra ℂ (G i)) (h : ∀ i, IsSA (a i)) : IsSA (tensAlg a) := by
   intro q
@@ -257,9 +255,9 @@ theorem isSA_tensAlg (a : ∀ i, MonoidAlgebra ℂ (G i)) (h : ∀ i, IsSA (a i)
 end Tens
 
 /- English proof (translation)
-Take `⟨-, -, hU, -, -, ⟨S, hS⟩, -⟩` from `h`. Prove the components needed by the constructor for the conclusion. Take `⟨v, hv, h0, -⟩` from `hS.2.2.2.1`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, ?_, Submodule.smul_mem _ _ ((le_sSup hS : S ≤ _) hv)⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 h0)]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x a b`. Conclude with `(LinearIsometry.mk (σ (uMat x) : H →ₗ[ℂ] H) (hU.2.1 (uMat x) x.2)).inner_map_map a b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isDS_low_unitary {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : IsDS ε lam σ) :
@@ -274,7 +272,7 @@ theorem isDS_low_unitary {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {
     exact (LinearIsometry.mk (σ (uMat x) : H →ₗ[ℂ] H) (hU.2.1 (uMat x) x.2)).inner_map_map a b
 
 /- English proof (translation)
-Take `⟨fund, hfund⟩` from `GlobalTheory.FundExists.exists_isFundDom I μf`. Take `⟨R, hR, -⟩` from `GlobalTheory.RightRegExists.exists_rightReg I μf fund hfund`. Take `⟨Hs, i1, i2, i3, σs, tens, htens⟩` from `GlobalTheory.HilbTensorExists.exists_isHilbTensor I H σ hσ`. Take `⟨Re, hRe⟩` from `(GlobalTheory.AutInst_exists_isRConvF_and_isRConv I μf fund hfund R hR).1 e he`. Conclude with `⟨fund, Hs, i1, i2, i3, σs, tens, R, Re, hfund, htens, hR, hRe⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_count_data (I : AutInst) (H : InfinitePlace I.F → Type) [∀ v, NormedAddCommGroup (H v)]
     [∀ v, InnerProductSpace ℂ (H v)] (σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ] H v))

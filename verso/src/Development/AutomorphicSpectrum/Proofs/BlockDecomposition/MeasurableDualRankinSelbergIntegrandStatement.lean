@@ -12,7 +12,7 @@ open GlobalTheory.CompanionTheory.DualHol
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.DualHol.IwMeas.measurable_dual_iwasawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMeasurableDualRankinSelbergIntegrand.lean&line=81#L81)
 -/

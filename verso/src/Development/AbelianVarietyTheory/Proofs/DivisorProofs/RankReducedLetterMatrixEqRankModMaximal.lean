@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.WachRank
 
 /- English proof (translation)
-Unfold `lrank`. Rewrite using `[← GlobalTheory.Core.Rk.rank_map_field (IsFractionRing.lift (K := LaurentSeries F) hψ), Matrix.map_map]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Conclude with `(IsFractionRing.lift_algebraMap hψ x).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rank_map_inj {F κ : Type} [Field F] [Field κ] (ψ : F⟦X⟧ →+* κ) (hψ : Function.Injective ψ) {a b : ℕ}
     (M : Mx F⟦X⟧ a b) : (M.map ψ).rank = lrank M := by
@@ -22,16 +22,16 @@ theorem rank_map_inj {F κ : Type} [Field F] [Field κ] (ψ : F⟦X⟧ →+* κ)
   exact (IsFractionRing.lift_algebraMap hψ x).symm
 
 /- English proof (translation)
-Rewrite using `[← Matrix.rank_mul_eq_right_of_isUnit_det G' X hG', h, Matrix.rank_mul_eq_left_of_isUnit_det G Y hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_eq_of_mul_eq {κ : Type} [Field κ] {a b : ℕ} (G' : Mx κ a a) (G : Mx κ b b) (X Y : Mx κ a b)
     (hG' : IsUnit G'.det) (hG : IsUnit G.det) (h : G' * X = Y * G) : X.rank = Y.rank := by
   rw [← Matrix.rank_mul_eq_right_of_isUnit_det G' X hG', h, Matrix.rank_mul_eq_left_of_isUnit_det G Y hG]
 
 /- English proof (translation)
-Use extensionality with `r k`. Establish `h` using `congrArg (fun z => B'.repr z r) (hX k)`. Simplify using `only [hv, hv', hY, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[Finset.sum_congr rfl (fun m _ => mul_comm (G' r m) (X m k)), ← h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem mat_identity {S M M' : Type} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup M'] [Module S M']
     {n n' : ℕ} (u : Fin n → M) (B' : Module.Basis (Fin n') S M') (v : Fin n → M) (v' : Fin n' → M')
@@ -48,9 +48,9 @@ theorem mat_identity {S M M' : Type} [CommRing S] [AddCommGroup M] [Module S M] 
   exact Finset.sum_congr rfl fun m _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ∃ c : Fin n → S, ∑ k, c k • v k = B j` using `fun j => (Submodule.mem_span_range_iff_exists_fun S).1 (hv Submodule.mem_top)`. Use `choose H hH using h1`. Establish `h2 : ∀ k, v k = ∑ j, (Matrix.of fun j k => B.repr (v k) j) j k • B j` using `fun k => (B.sum_repr (v k)).symm`. Establish `h3 : ∀ k, B k = ∑ j, (1 : Mx S n n) j k • B j` using `fun k => by simp [Matrix.one_apply]`. Use `⟨_, ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mat_identity B B B v 1 _ (Matrix.of fun k j => H j k) 1 LinearMap.id h3 h2 (fun k => (hH k).symm) h3` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `Matrix.isUnit_det_of_right_inverse this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_mat {S M : Type} [CommRing S] [AddCommGroup M] [Module S M] {n : ℕ}
     (B : Module.Basis (Fin n) S M) (v : Fin n → M) (hv : ⊤ ≤ Submodule.span S (Set.range v)) :
@@ -66,11 +66,9 @@ theorem exists_unit_mat {S M : Type} [CommRing S] [AddCommGroup M] [Module S M] 
   exact Matrix.isUnit_det_of_right_inverse this
 
 /- English proof (translation)
-Use `haveI : Nontrivial (O ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hI`. Use `haveI : Nontrivial (TensorProduct Z (O ⧸ I) C) := Module.FaithfullyFlat.rTensor_nontrivial Z C (O ⧸ I)`. Set `f` to `Algebra.TensorProduct.map (Ideal.Quotient.mkₐ Z I) (AlgHom.id Z C)`. Establish `hle : Ideal.map (algebraMap O (TensorProduct Z O C)) I ≤ RingHom.ker f`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `c hc`. Express the relevant statement in the definitionally equal form `f (TensorProduct.tmul Z c 1) = 0`. Simplify using `[f, Ideal.Quotient.eq_zero_iff_mem.2 hc]`. Introduce `h`. Use `hle h` as an intermediate fact.
-
-Rewrite `this` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_not_mem_map {Z O C : Type} [CommRing Z] [CommRing O] [CommRing C] [Algebra Z O] [Algebra Z C]
     [Module.FaithfullyFlat Z C] (I : Ideal O) (hI : I ≠ ⊤) :
@@ -89,23 +87,23 @@ theorem one_not_mem_map {Z O C : Type} [CommRing Z] [CommRing O] [CommRing C] [A
   exact one_ne_zero this
 
 /- English proof (translation)
-Establish `hJ : Ideal.map (algebraMap O R) I ≤ Ideal.comap φ (Ideal.map (algebraMap O R) I)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, φ.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ j : ZMod n, letφ φ₀ (letE j : LetA O n) = letE (j + 1)` using `fun j => by`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `φ₀ ((letE j : LetA O n) (k - 1)) = _`. Distinguish the cases in `hk : k = j + 1`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[letE]`. Establish `: k - 1 ≠ j` using `fun h => hk (by rw [← h]; ring)`. Simplify using `[letE, Pi.single_apply, hk, this]`. Establish `hne : ι (letE i) ∉ Ideal.map (algebraMap O R) I`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∀ k : ℕ, ι (letE (i + k)) ∈ Ideal.map (algebraMap O R) I` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ, ← add_assoc, ← he, hφ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hJ ih`. Establish `h3 : ∀ j, ι (letE j) ∈ Ideal.map (algebraMap O R) I` using `fun j => by`. Use `h2 (j - i).val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val, add_sub_cancel]`. Then use the resulting hypothesis. Establish `h4 : ∑ j : ZMod n, (letE j : LetA O n) = 1` using `Finset.univ_sum_single (1 : ZMod n → O⟦X⟧)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h1` to reduce the goal to its premises. Rewrite using `[← map_one ι, ← h4, map_sum]`. Conclude with `Ideal.sum_mem _ fun j _ => h3 j`. Establish `hee : ι (letE i) * ι (letE i) = ι (letE i)`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [letE, Pi.single_apply, hk]`. Establish `hp : Ideal.map (algebraMap O R) I ⊔ Ideal.span {1 - ι (letE i)} ≠ ⊤`. Rewrite using `[Ideal.ne_top_iff_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Apply `hne` to reduce the goal to its premises. Establish `: ι (letE i) = ι (letE i) * x` using `by linear_combination (-ι (letE i)) * hxy - c * hee`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hx`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hp`. Conclude with `⟨m, hm, le_sup_left.trans hle, hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))⟩`.
+A detailed English derivation is pending.
 -/
 theorem choose_max {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {n : ℕ} [NeZero n]
     (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (ι : LetA O n →ₐ[O] R) (φ : R →ₐ[O] R) (I : Ideal O)
@@ -157,15 +155,13 @@ theorem choose_max {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {n : ℕ
   exact ⟨m, hm, le_sup_left.trans hle, hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmax : maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hker : RingHom.ker (PowerSeries.map (residue O)) ≤ RingHom.ker θ`. Introduce `f hf`. Establish `h1 : ∀ k, ∃ d, d * ϖ = coeff k f` using `fun k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (coeff k) (RingHom.mem_ker.1 hf)` as an intermediate fact. Rewrite `this` using `[coeff_map, map_zero, residue_eq_zero_iff, hmax]`. Conclude with `Ideal.mem_span_singleton'.1 this`. Use `choose d hd using h1`. Establish `h2 : f = C ϖ * PowerSeries.mk d`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k`. Rewrite using `[coeff_C_mul, coeff_mk, ← hd, mul_comm]`. Rewrite using `[RingHom.mem_ker, h2, map_mul, h0 ϖ (hmax ▸ Ideal.mem_span_singleton_self ϖ), zero_mul]`. Establish `hsurj : Function.Surjective (PowerSeries.map (residue O))` using `PowerSeries.map_surjective _ residue_surjective`. Establish `hc : ∀ f, RingHom.liftOfSurjective _ hsurj ⟨θ, hker⟩ (PowerSeries.map (residue O) f) = θ f` using `fun f => RingHom.liftOfRightInverse_comp_apply _ _ _ _ f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨_, (injective_iff_map_eq_zero _).2 fun f hf => ?_, hc⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hf0`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hf0 PowerSeries.X_irreducible`. Establish `h3` using `hc X`. Rewrite `h3` using `[map_X]`.
-
-Rewrite `hf` using `[map_mul, map_pow, h3]`. Conclude with `((u.isUnit.map _).mul (hX.pow k)).ne_zero hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {O κ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing κ] [Nontrivial κ]
     (θ : O⟦X⟧ →+* κ) (h0 : ∀ c ∈ maximalIdeal O, θ (C c) = 0) (hX : IsUnit (θ X)) :
@@ -196,17 +192,17 @@ theorem exists_lift {O κ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   exact ((u.isUnit.map _).mul (hX.pow k)).ne_zero hf
 
 /- English proof (translation)
-Use `haveI : Nontrivial (R ⧸ m) := Ideal.Quotient.nontrivial_iff.2 hm.ne_top`. Set `θ : O⟦X⟧ →+* R ⧸ m` to `(Ideal.Quotient.mk m).comp ((ι : LetA O n →+* R).comp (Pi.constRingHom (ZMod n) O⟦X⟧))`. Establish `hθ : ∀ f, θ f = Ideal.Quotient.mk m (ι (fun _ => f))` using `fun _ => rfl`. Establish `hC : ∀ c, θ (C c) = Ideal.Quotient.mk m (algebraMap O R c)` using `fun c => by`. Rewrite using `[hθ, ← ι.commutes]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `he : Ideal.Quotient.mk m (ι (letE i)) = 1`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hi` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ x : LetA O n, Ideal.Quotient.mk m (ι x) = θ (x i)` using `fun x => by`. Establish `h1 : (letE i : LetA O n) * x = letE i * fun _ => x i`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [letE, Pi.single_apply, hk]`. Establish `h2` using `congrArg (fun z => Ideal.Quotient.mk m (ι z)) h1`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hθ]`. Simplify `h2` using `only [map_mul, he, one_mul]`. Take `⟨θ', hinj, hθ'⟩` from `exists_lift θ (fun c hc => by`. Rewrite using `[hC]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hmO (Ideal.mem_map_of_mem _ hc))) (hπ.map (Ideal.Quotient.mk m))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℤ_[l] (ResidueField O) := ((residue O).comp (algebraMap ℤ_[l] O)).toAlgebra`. Take `⟨hadd, hmul, hcst, -, -, -, -, hi'⟩` from `pi0Subst_laws_hold l (ResidueField O)`. Take `⟨-, hred, -⟩` from `pi0Subst_reduction_holds l O (ResidueField O) (residue O) (fun _ => rfl)`. Set `incK : (ResidueField O)⟦X⟧ →+* (ResidueField O)⟦X⟧` to `RingHom.mk' ⟨⟨inc l (ResidueField O), by simpa using hcst 1⟩, hmul⟩ hadd`. Establish `hK : ∀ f, incK f = inc l (ResidueField O) f` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨θ'.comp incK, hinj.comp (hi' hl), fun y => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hx, RingHom.comp_apply θ', hK, ← hred, hθ']`. Rewrite using `[RingHom.comp_apply, hK, hcst, ← map_C, hθ', hC]`.
+A detailed English derivation is pending.
 -/
 theorem exists_psi (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) {O R : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [CommRing R] [Algebra O R] {n : ℕ}
@@ -260,15 +256,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (E : EtTie W RA' RW' inclR' φR gR πA)
 
 /- English proof (translation)
-Take `⟨e, e₀, hsp, hj, -⟩` from `E.one_e`. Take `⟨e₁, he₁, hT⟩` from `W.one_line`. Use `haveI : Module.Free O ↥W.one.L.T := W.one.L.free`. Establish `he₀ : e₀ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : (⟨e₁, hT ▸ Submodule.mem_span_singleton_self e₁⟩ : ↥W.one.L.T) ∈ Submodule.span O {(0 : ↥W.one.L.T)}` using `hsp ▸ Submodule.mem_top`. Rewrite `h1` using `[Submodule.span_zero_singleton, Submodule.mem_bot]`. Conclude with `he₁ (congrArg Subtype.val h1)`. Establish `hli : LinearIndependent O (fun _ : Unit => e₀)`. Rewrite using `[linearIndependent_unique_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `he₀`. Set `b₀` to `Module.Basis.mk hli (by rw [← hsp, Set.range_const])`. Establish `hb : Algebra.TensorProduct.basis RW' b₀ () = TensorProduct.tmul O (1 : RW') e₀`. Rewrite using `[Algebra.TensorProduct.basis_apply, Module.Basis.mk_apply]`. Establish `hφe : W.φD _ e = e` using `E.jD_inj _ (by rw [E.jD_φ, hj]; simp [TWmap])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `E.jD_φ _ (x • e)`. Rewrite `h2` using `[W.φD_smul, hφe, E.jD_smul, E.jD_smul, hj]`. Establish `h3 : TWmap φR W.one (E.ioE x • TensorProduct.tmul O (1 : RW') e₀) = φR (E.ioE x) • TensorProduct.tmul O (1 : RW') e₀`. Simplify using `[TWmap, TensorProduct.smul_tmul']`. Rewrite `h2` using `[h3, ← hb]`.
-
-Simplify using `using congrArg (fun z => (Algebra.TensorProduct.basis RW' b₀).repr z ()) h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ioE_φE [IsDomain O] (x : W.EE) : E.ioE (W.φE x) = φR (E.ioE x) := by
   obtain ⟨e, e₀, hsp, hj, -⟩ := E.one_e
@@ -296,13 +290,11 @@ theorem ioE_φE [IsDomain O] (x : W.EE) : E.ioE (W.φE x) = φR (E.ioE x) := by
   simpa using congrArg (fun z => (Algebra.TensorProduct.basis RW' b₀).repr z ()) h2
 
 /- English proof (translation)
-Use `exists_unit_mat _ _ ?_` and prove the remaining obligations. Rewrite using `[← E.jD_span T, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `(W.N_base T hT).inductionOn x (fun x => E.jD T x ∈ Submodule.span RW' (Set.range fun k => E.jD T (b k : W.DD T))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `y`. Rewrite using `[← b.sum_repr y, map_sum, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul W.EE, E.jD_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce `s y hy`. Rewrite using `[E.jD_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Introduce `y z hy hz`.
-
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_tie (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {n : ℕ}
     (b : Module.Basis (Fin n) (LetA O f) ↥(W.N T)) (e : Module.Basis (Fin n) O ↥T.L.T) :
@@ -330,19 +322,19 @@ theorem exists_unit_tie (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {n : ℕ}
 include E in
 
 /- English proof (translation)
-Take `⟨M, hM, hb⟩` from `exists_unit_tie E T hT b e`. Take `⟨M', hM', hb'⟩` from `exists_unit_tie E T' hT' b' e'`. Set `ι` to `inclR'.comp E.io`. Establish `hι : ∀ x, ι x = E.ioE (algebraMap _ W.EE x)` using `fun x => (E.ioE_ext x).symm`. Take `⟨m, hm, hmO, hmi⟩` from `choose_max W.φ₀ ι φR (maximalIdeal O) (fun x => by rw [hι, hι, ← ioE_φE E, W.φE_ext]) h1 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, hψA, hψC⟩` from `exists_psi l hl ι m hm hmO i hmi (by rw [hι]; exact W.EE_π.map E.ioE)`. Establish `key : M' * (Matrix.of fun r k => ι (fun j => inc l O (A j r k))) = a.map (algebraMap O RW') * M`. Use `mat_identity (Algebra.TensorProduct.basis RW' e) (Algebra.TensorProduct.basis RW' e') (fun k => E.jD T (b k : W.DD T)) (fun k => E.jD T' (b' k : W.DD T')) M M' _ _ (LinearMap.baseChange RW' ((g.f.restrictScalars O).restrict g.T_le)) hb hb' (fun k => ?_) (fun k => ?_)` and prove the remaining obligations. Establish `h1` using `E.jD_map g (b k : W.DD T)`. Rewrite `h1` using `[hmap k, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1.symm.trans (Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, hι, ← E.jD_smul, algebraMap_smul]`. Establish `h2 : ((g.f.restrictScalars O).restrict g.T_le) (e k) = ∑ r, a r k • e' r`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(ha k).trans (Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, algebraMap_smul]`. Rewrite using `[Algebra.TensorProduct.basis_apply, LinearMap.baseChange_tmul, h2, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, Matrix.map_apply, algebraMap_smul, TensorProduct.tmul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Field (RW' ⧸ m) := Ideal.Quotient.field m`. Establish `key2` using `congrArg (fun Z => Matrix.map Z (Ideal.Quotient.mk m)) key`. Simplify using `only [Matrix.map_mul] at key2`. Establish `hr` using `rank_eq_of_mul_eq _ _ _ _ (by`. Use `hM'.map (Ideal.Quotient.mk m)` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det] at this) (by` and apply the resulting hypothesis. Use `hM.map (Ideal.Quotient.mk m)` as an intermediate fact. Rewrite using `[RingHom.map_det] at this) key2` and apply the resulting hypothesis. Rewrite using `[← rank_map_inj ψ hψ, ← GlobalTheory.Core.Rk.rank_map_field (ψ.comp PowerSeries.C) (a.map (residue O))]`. Use `hr using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `ext1 r k`. Conclude with `(hψA fun j => A j r k).symm`. Use `ext1 r k`. Conclude with `(hψC (a r k)).symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_eq_of_tie (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O]
     [NeZero f] (h1 : (1 : RW') ∉ Ideal.map (algebraMap O RW') (maximalIdeal O))
@@ -397,7 +389,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K LL hA T T' n n' b b' g A e e' a hT hT' hmap ha i`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).injective`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Conclude with `rank_eq_of_tie ((F l).E K 1 LL hA.2.2).tie l hA.2.1 (one_not_mem_map (Z := ℤ_[l]) (C := WCb l) _ (maximalIdeal.isMaximal ↥(OL LL)).ne_top) b b' g A e e' a hT hT' hmap ha i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL) (T T' : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (n n' : ℕ) (b : Module.Basis (Fin n) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(((HW l).W K 1 LL hA.2.2).N T)) (b' : Module.Basis (Fin n') (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(((HW l).W K 1 LL hA.2.2).N T')) (g : LatHom T.L T'.L) (A : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Mx (PowerSeries ↥(OL LL)) n' n) (e : Module.Basis (Fin n) ↥(OL LL) ↥T.L.T) (e' : Module.Basis (Fin n') ↥(OL LL) ↥T'.L.T) (a : Mx ↥(OL LL) n' n), IsCrys ((D.loc l).PD K) T.ρ → IsCrys ((D.loc l).PD K) T'.ρ → IsMapMat ((HW l).W K 1 LL hA.2.2) g b b' A → (∀ k, g.f (e k : T.V) = ∑ m, ((a m k : ↥(OL LL)) : ↥LL.1) • (e' m : T'.V)) → ∀ i, lrank ((A i).map (PowerSeries.map (residue ↥(OL LL)))) = (a.map (residue ↥(OL LL))).rank := by
   intro D HW F l _ K LL hA T T' n n' b b' g A e e' a hT hT' hmap ha i

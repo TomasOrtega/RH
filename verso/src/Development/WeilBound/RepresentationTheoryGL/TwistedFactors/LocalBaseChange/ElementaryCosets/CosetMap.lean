@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def ones (N : ℕ) : Fin N → ℕ := fun _ => 1
 
 /- English proof (translation)
-Simplify using `[ones]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_ones (N : ℕ) : ∑ a, ones N a = N := by simp [ones]
 

@@ -22,25 +22,21 @@ variable {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n
   {π : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ → (H →L[ℂ] H)} {σ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
 
 /- English proof (translation)
-Take `⟨S, E, hS⟩` from `hSmMod (n + 1) ε H π hπ.2.2.1`. Take `⟨S', E', hS'⟩` from `hSmMod n ε' H' σ hσ.2.2.1`. Use `set m : Fin (n + 1) → ℂ := fun j => (lam j : ℂ) - (((n + 1 : ℕ) : ℂ) - 1) / 2 with hmd`. Establish `hq : ∀ u v, qdet E u v = (∏ j, (u + m j)) • v` using `cap_of hl hπ hS`. Set `co : (Fin (n + 1) → S) → Fin (n + 1) → H` to `fun x l => x l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hco : ∀ x, co x ∈ SmT ε π` using `fun x l => (hS.mem _).1 (x l).2`. Set `Y : (Fin (n + 1) → S) → X.S → Fin (n + 1) → S` to `fun x t c => ⟨X.p t (co x) c, (hS.mem _).2 (X.p_sm t t.2 _ (hco x) c)⟩`. Establish `hYe : ∀ x t, EE E (Y x t) = X.κ t • Y x t` using `fun x t => funext fun c => Subtype.ext (by`. Use `congrFun (X.cas t t.2 _ (hco x)) c` as an intermediate fact. Rewrite using `[EE_apply, Submodule.coe_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hS.act]`. Conclude with `this)`. Establish `hYs : ∀ x, ∑ t, Y x t = x` using `fun x => funext fun c => Subtype.ext (by`. Use `congrFun (X.sum _ (hco x)) c` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply, Submodule.coe_sum]`. Conclude with `(Finset.sum_coe_sort X.S fun t => X.p t (co x) c).trans this)`. Establish `hsing : ∀ (l : Fin (n + 1)) (v : S), co (Pi.single l v) = Pi.single l (v : H)` using `fun l v => funext fun c => by`. Distinguish the cases in `h : c = l`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[co]`. Simplify using `[co, Pi.single_eq_of_ne h]`. Establish `hi : X.κ s = (n : ℂ) + m s` using `by rw [hκ]; simp only [hmd]; push_cast; ring`. Use `set d : ℂ := ∏ j ∈ univ.erase s, (-m s + m j) with hd`. Establish `hd' : d = ∏ j ∈ univ.erase s, ((lam j - lam s : ℝ) : ℂ)` using `Finset.prod_congr rfl fun j _ => by simp only [hmd]; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ l c (v : S), d • X.p s (Pi.single l (v : H)) c = ((-1 : ℂ) ^ ((l : ℕ) + (c : ℕ))) • ((qminor E l.succAbove c.succAbove (-m s) v : S) : H)` using `fun l c v => by`. Establish `h` using `th_proj hS.gl hq univ (Y (Pi.single l v)) (fun t : X.S => X.κ t) (fun a _ b _ h => Subtype.ext (X.κ_inj a.2 b.2 h)) (fun t _ => hYe _ t) (mem_univ (⟨s, hs⟩ : X.S)) s hi`. Rewrite `h` using `[hYs]`. Establish `h2` using `congrArg Subtype.val (congrFun h c)`. Rewrite `h2` using `[th_single]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsing]`. Conclude with `h2.symm`. Set `f : S →ₗ[ℂ] S'` to `(P.toLinearMap ∘ₗ S.subtype).codRestrict S' fun x => (hS'.mem _).2 (smooth_map hF hP ((hS.mem _).1 x.2))`. Establish `hf : ∀ a b x, f (E (e (Sum.inl a)) (e (Sum.inl b)) x) = E' a b (f x)` using `fun a b x => Subtype.ext (by show P (E _ _ x : H) = _`. Rewrite using `[hS.act, hS'.act, ← blk_single]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `dsigC_map hF hP (fun Z hZ => (hS.real Z hZ x).differentiableAt) _)`. Set `η' : S` to `⟨η, (hS.mem _).2 hη⟩`. Establish `h1` using `key (zi e) (zi e) η'`. Rewrite `h1` using `[← two_mul, pow_mul, neg_one_sq, one_pow, one_smul, corner hS.gl (zi e) (fun a => e (Sum.inl a)) (e.injective.comp Sum.inl_injective) (fun a h => Sum.inl_ne_inr (e.injective h))]`. Establish `h2` using `congrArg Subtype.val (qdet_int f hf (-m s) η')`.
-
-Rewrite `h2` using `[cap_of hm hσ hS', Submodule.coe_smul]`. Establish `h3 : d • P (X.p s (Pi.single (zi e) η) (zi e)) = (∏ j, (-m s + ((mu j : ℂ) - ((n : ℂ) - 1) / 2))) • P η`. Rewrite using `[← map_smul]`. Conclude with `(congrArg P h1).trans h2`. Establish `e2 : ∏ j, (-m s + ((mu j : ℂ) - ((n : ℂ) - 1) / 2)) = ∏ j, ((mu j - lam s + 1 / 2 : ℝ) : ℂ)` using `Finset.prod_congr rfl fun j _ => by simp only [hmd]; push_cast; ring`.
-
-Rewrite using `[← hd', ← e2]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_val {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hF : Fits ε ε' e) (hl : Formalism.QuantumDeterminants.IsHCParam lam)
     (hm : Formalism.QuantumDeterminants.IsHCParam mu) (hπ : IsDS ε lam π) (hσ : IsDS ε' mu σ) (X : Dec ε lam π) (s : Fin (n + 1))
@@ -105,9 +101,9 @@ theorem corner_val {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hF : Fits �
   exact h3
 
 /- English proof (translation)
-Establish `hρ` using `uRep_emb hF hπ.2.2.1`. Establish `hs` using `uRep_self hσ.2.2.1`. Establish `hPa : ∀ y x, ⟪y, ContinuousLinearMap.adjoint i x⟫_ℂ = ⟪i y, x⟫_ℂ` using `fun y x => ContinuousLinearMap.adjoint_inner_right _ y x`. Use `⟨?_, fun h x => ext_inner_left ℂ fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.norm_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `i.opNorm_le_bound zero_le_one fun y => by rw [hn, one_mul]`. Establish `a1` using `hρ.adj h⁻¹ (i y) x`. Establish `a2` using `hs.adj h⁻¹ y (ContinuousLinearMap.adjoint i x)`. Simplify using `only [inv_inv] at a1 a2`. Rewrite using `[hPa, ← a1, ← a2, hPa, hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertw_adj {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hF : Fits ε ε' e) (hπ : IsDS ε lam π) (hσ : IsDS ε' mu σ)
     (i : H' →L[ℂ] H) (hn : ∀ x, ‖i x‖ = ‖x‖) (hi : IsHMap ε' e π σ i) :
@@ -125,11 +121,11 @@ theorem intertw_adj {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hF : Fits 
     rw [hPa, ← a1, ← a2, hPa, hi]
 
 /- English proof (translation)
-Establish `hU` using `hπ.2.2.1`. Establish `hx` using `smT_single hη (zi e)`. Establish `e1 : π (emb e (um h)) (X.p s (Pi.single (zi e) η) (zi e)) = actT π (um (embU hF h)) (X.p s (Pi.single (zi e) η)) (zi e)`. Unfold `actT`. Rewrite using `[← um_inv, Finset.sum_eq_single (zi e) (fun b _ hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show um (embU hF h)⁻¹ b (zi e) = _ from emb_col _ b, if_neg hb, zero_smul]) (by simp),`. Use `show um (embU hF h)⁻¹ (zi e) (zi e) = _ from emb_col _ (zi e), if_pos rfl, one_smul]`. Both sides reduce to the same expression. Establish `e2` using `X.form s hs _ (smT_act hU (embU hF h) hx) _ hx`. Rewrite `e2` using `[formT_single, show ε (zi e) = true from hF.1, if_pos rfl, one_mul, X.pr_act s hs _ _ hx, X.p_act s hs _ _ hx]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pt_id {lam : Fin (n + 1) → ℝ} (hF : Fits ε ε' e) (hπ : IsDS ε lam π) (X : Dec ε lam π) (s : Fin (n + 1))
     (hs : s ∈ X.S) (η : H) (hη : η ∈ PI.PhMeasCore.smoothVecs (Jm ε) π) (h : UJ ε') :
@@ -153,9 +149,9 @@ theorem pt_id {lam : Fin (n + 1) → ℝ} (hF : Fits ε ε' e) (hπ : IsDS ε la
 end Corner
 
 /- English proof (translation)
-Use `ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap m ε lam hl h hg (Or.inr ?_)` and prove the remaining obligations. Establish `hq : (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) ≤ m`. Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ m` using `(min_le_left _ _).trans (by unfold ReciprocityTheory.ChartRestriction.DS.pOf; exact (Finset.card_filter_le _ _).trans (by simp))`. Conclude with `this` after adjusting the coercions. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) ≤ ReciprocityTheory.ChartRestriction.DS.S7.q0 ε` using `Nat.cast_nonneg _`. Use `max_lt (by nlinarith) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hq hm]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_ds (m : ℕ) (ε : Fin m → Bool) (lam : Fin m → ℝ) (hl : Formalism.QuantumDeterminants.IsHCParam lam) (h : ℝ)
     (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hh : 8 * (m : ℝ) ^ 2 + 2 * m + 1 ≤ h) :
@@ -172,21 +168,17 @@ theorem exists_ds (m : ℕ) (ε : Fin m → Bool) (lam : Fin m → ℝ) (hl : Fo
   nlinarith [mul_le_mul_of_nonneg_left hq hm]
 
 /- English proof (translation)
-Introduce `n ε lam ε' mu e hG s hG' hne hocc`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨H, i1, i2, π, hπ⟩` from `exists_ds (n + 1) ε lam hG.hc _ (by push_cast; exact hG.gap) (by push_cast; nlinarith [pow_pos (show (0 : ℝ) < n + 1 by linarith) 2, pow_pos (show (0 : ℝ) < n + 1 by linarith) 3])`. Take `⟨H', i3, i4, σ, hσ⟩` from `exists_ds n ε' mu hG.hc' _ hG.gap' (by`. Use polynomial arithmetic with `[pow_pos (show (0 : ℝ) < n + 1 by linarith) 2, pow_pos (show (0 : ℝ) < n + 1 by linarith) 3])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `haveI : CompleteSpace H := hπ.1`. Use `haveI : CompleteSpace H' := hσ.1`. Take `⟨j, hj0, hj⟩` from `hocc H H' π σ hπ hσ`. Take `⟨-, -, w, hw, hw1⟩` from `PositivityTheory.UnitaryDecomposition.X4.emb.2.2.2 ε' mu σ (muG ε') inferInstance hG.hc' hσ`. Take `⟨κ, hκ⟩` from `schur_haar hσ (muG ε')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, i, η, hin, hiH, hη, hηw, hid⟩` from `hSe n ε lam ε' mu e hG H H' π σ (muG ε') inferInstance hπ hσ ⟨j, hj0, hj⟩ κ hκ w hw hw1`. Take `⟨X, hXS, hXκ⟩` from `hD (n + 1) ε lam H π hG.neg ⟨zi e, hG.fits.1⟩ hG.hc hπ (by push_cast; exact hG.gap)`. Establish `hs : s ∈ X.S` using `(hXS s).2 hG'.hc`. Establish `hP` using `intertw_adj hG.fits hπ hσ i hin hiH`. Establish `hcor` using `corner_val hG.fits hG.hc hG.hc' hπ hσ X s hs (hXκ s) _ hP η hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set dd : ℂ := ∏ j ∈ univ.erase s, ((lam j - lam s : ℝ) : ℂ) with hdd`. Use `set γ : ℂ := ∏ j, ((mu j - lam s + 1 / 2 : ℝ) : ℂ) with hγd`. Use `set b := X.pr s (Pi.single (zi e) η) with hb`. Use `set y0 := X.p s (Pi.single (zi e) η) (zi e) with hy0d`. Establish `hγ : γ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => Complex.ofReal_ne_zero.2 fun h0 => hne k (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw' : dd * ⟪i w, y0⟫_ℂ = γ * ⟪i w, η⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right i w y0, ← ContinuousLinearMap.adjoint_inner_right i w η, ← inner_smul_right, ← inner_smul_right, hcor]`. Establish `hηw' : ⟪i w, η⟫_ℂ ≠ 0`. Rewrite using `[← inner_conj_symm]`. Conclude with `(map_ne_zero (starRingEnd ℂ)).2 hηw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : ⟪i w, y0⟫_ℂ ≠ 0` using `fun h0 => by`. Rewrite `hw'` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hγ hηw' hw'.symm`. Establish `hpt : ∀ h : UJ ε', conj ⟪w, σ (um h) w⟫_ℂ * ⟪b, X.πs s (emb e (um h)) b⟫_ℂ * X.c s = conj ⟪w, σ (um h) w⟫_ℂ * ⟪η, π (emb e (um h)) y0⟫_ℂ` using `fun h => by`. Rewrite using `[mul_assoc, mul_comm _ (X.c s), pt_id hG.fits hπ X s hs η hη h]`.
-
-Establish `hI : (∫ h : UJ ε', conj ⟪w, σ (um h) w⟫_ℂ * ⟪b, X.πs s (emb e (um h)) b⟫_ℂ ∂(muG ε')) * X.c s = κ * (⟪η, i w⟫_ℂ * ⟪i w, y0⟫_ℂ)`. Rewrite using `[← integral_mul_const]`. Conclude with `(integral_congr_ae (.of_forall hpt)).trans (hid y0)`. Establish `hκ0 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.1.ne'`. Establish `hI0 : (∫ h : UJ ε', conj ⟪w, σ (um h) w⟫_ℂ * ⟪b, X.πs s (emb e (um h)) b⟫_ℂ ∂(muG ε')) ≠ 0` using `fun h0 => by`.
-
-Rewrite `hI` using `[h0, zero_mul]`. Conclude with `mul_ne_zero hκ0 (mul_ne_zero hηw hy0) hI.symm`. Take `⟨j', hj'0, hj'⟩` from `hOI n ε (lam - Pi.single s 1) ε' mu e hG' (X.Hs s) H' (X.πs s) σ (muG ε') inferInstance (X.ds s hs).2 hσ w hw hw1 b b hI0`. Conclude with `(hMo n ε (lam - Pi.single s 1) ε' mu e hG').1 ⟨X.Hs s, H', inferInstance, inferInstance, inferInstance, inferInstance, X.πs s, σ, (X.ds s hs).2, hσ, j', hj'0, hj'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stepL_of (hMo : Models) (hOI : OfInt) (hSe : Seed) (hD : DecEx2) : StepL := by
   intro n ε lam ε' mu e hG s hG' hne hocc

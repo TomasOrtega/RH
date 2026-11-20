@@ -14,7 +14,7 @@ private theorem permR_apply (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : 
     (x : Γ ⧸ H) : permR R H g f x = f (g⁻¹ • x) := rfl
 
 /- English proof (translation)
-Establish `h : ((g⁻¹ * x.out : Γ) : Γ ⧸ H) = (((g⁻¹ • x).out : Γ) : Γ ⧸ H)`. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Simplify `QuotientGroup.eq.1 h` using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : Γ ⧸ H) :
     (x.out)⁻¹ * g * (g⁻¹ • x).out ∈ H := by
@@ -23,23 +23,19 @@ private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : �
   simpa [mul_assoc] using QuotientGroup.eq.1 h
 
 /- English proof (translation)
-Introduce `H hH`. Use `haveI : DiscreteTopology (Γ ⧸ H) := QuotientGroup.discreteTopology hH`. Use `haveI : Finite (Γ ⧸ H) := finite_of_compact_of_discrete`. Use `letI : TopologicalSpace (ZMod n) := ⊥`. Use `haveI : DiscreteTopology (ZMod n) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∀ x : Γ ⧸ H, Continuous fun g : Γ => g⁻¹ • x` using `fun x => continuous_inv.smul continuous_const`. Establish `hc : ContAction (permR (ZMod n) H)`. Use `continuous_pi fun x => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : (Γ ⧸ H → ZMod n) × (Γ ⧸ H) => p.1 p.2` using `continuous_of_discreteTopology`. Conclude with `h1.comp (continuous_snd.prodMk ((hs x).comp continuous_fst))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI h1 := h _ _ hc`. Use `haveI : Finite (Z1 (permR (ZMod n) H)) := by`. Establish `hB : Finite (B1 (permR (ZMod n) H))` using `(Set.finite_range _).to_subtype`. Establish `hB' : Finite ((B1 (permR (ZMod n) H)).comap (Z1 (permR (ZMod n) H)).subtype).toAddSubgroup` using `Finite.of_injective (fun z => (⟨z.1.1, z.2⟩ : B1 (permR (ZMod n) H))) fun a b hab => Subtype.ext (Subtype.ext (Subtype.mk.inj hab))`. Conclude with `@Finite.of_addSubgroup_quotient _ _ _ hB' h1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : ∀ φ : H →* Multiplicative (ZMod n), IsOpen (φ.ker : Set H) → Continuous φ` using `fun φ hφ => continuous_of_continuousAt_one φ (by`. Rewrite using `[ContinuousAt, map_one, nhds_discrete (Multiplicative (ZMod n)), Filter.tendsto_pure]`. Conclude with `hφ.mem_nhds φ.ker.one_mem)`. Set `c : {φ : H →* Multiplicative (ZMod n) // IsOpen (φ.ker : Set H)} → Z1 (permR (ZMod n) H)` to `fun φ => ⟨fun g x => Multiplicative.toAdd (φ.1 ⟨_, sec_mem H g x⟩), by`. Use `⟨continuous_pi fun x => continuous_toAdd.comp ((hφ φ.1 φ.2).comp (Continuous.subtype_mk ?_ _)), fun g g' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_const.mul continuous_id).mul ((continuous_of_discreteTopology (f := fun y : Γ ⧸ H => y.out)).comp (hs x))`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.add_apply, permR_apply, ← toAdd_mul, ← map_mul]`. Use `congrArg (fun u => Multiplicative.toAdd (φ.1 u)) (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[mul_smul, mul_assoc]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finite.of_injective c fun φ φ' e => Subtype.ext (MonoidHom.ext fun u => ?_)` and prove the remaining obligations. Set `x : Γ ⧸ H` to `((1 : Γ) : Γ ⧸ H)`. Establish `hx : x.out ∈ H`. Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' x).symm` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfix : (x.out * u * (x.out)⁻¹)⁻¹ • x = x`. Express the relevant statement in the definitionally equal form `(((x.out * u * (x.out)⁻¹)⁻¹ * 1 : Γ) : Γ ⧸ H) = ((1 : Γ) : Γ ⧸ H)`. Rewrite using `[QuotientGroup.eq]`. Simplify using `using H.mul_mem (H.mul_mem hx u.2) (H.inv_mem hx)`. Establish `hu : (⟨_, sec_mem H (x.out * u * (x.out)⁻¹) x⟩ : H) = u`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hfix]`. Use `group`. Use `congrFun (congrFun (congrArg Subtype.val e) (x.out * u * (x.out)⁻¹)) x` as an intermediate fact. Simplify using `only [c, hu] at this`.
-
-Conclude with `Multiplicative.toAdd.injective this`.
+A detailed English derivation is pending.
 -/
 private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (n : ℕ)
     [NeZero n]
@@ -93,9 +89,7 @@ private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [Topol
   exact Multiplicative.toAdd.injective this
 
 /- English proof (translation)
-Introduce `hLF l hl F Ω _ _ _ _ _ A v hA`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `key : PhiCond (Dec (F` using `F) A) (l ^ 1) := phi_condition_of_finite_cohomology (l ^ 1) fun M _ _ _ _ _ ρ hρ => by`.
-
-Take `⟨-, f1, -⟩` from `hLF F Ω l 1 M A ρ v one_pos hA hρ`. Conclude with `f1`. Rewrite `key` using `[pow_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.phiDec :
     LocalFiniteness → ∀ (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → PhiCond (Dec (F := F) A) l := by

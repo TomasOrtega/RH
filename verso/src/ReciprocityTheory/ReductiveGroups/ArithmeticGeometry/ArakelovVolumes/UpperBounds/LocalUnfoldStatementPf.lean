@@ -8,9 +8,9 @@ open scoped ENNReal ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `hm : ∀ (τ : X.Ψ) (i : Fin r), Measurable fun w => ‖dmin X.Gm (cpt X x w) τ i.castSucc‖` using `fun τ i => (OntoB.cd_dmin (X := X) (x0 := x) (τ := τ) (i := i.castSucc)).continuous.norm.measurable`. Establish `hf : ∀ (τ : X.Ψ) (i : Fin r), Measurable fun w => ‖dmin X.Gm (cpt X x w) τ i.castSucc‖ ^ (-2 : ℤ)`. Introduce `τ i`. Simplify using `only [zpow_neg, zpow_ofNat]`. Conclude with `((hm τ i).pow_const 2).inv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : Measurable fun w => densF X x w`. Unfold `densF`. Conclude with `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => hf τ i`. Conclude with `ENNReal.measurable_ofReal.comp hp`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem densF_meas {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (x : Frame X.Ψ r) : Measurable fun w => ENNReal.ofReal (densF X x w) := by
@@ -26,45 +26,41 @@ theorem densF_meas {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
   exact ENNReal.measurable_ofReal.comp hp
 
 /- English proof (translation)
-Introduce `r X x0 ho hPD FF hFF x1 hx1`. Take `⟨x1', ho', b1, hb1, rfl⟩` from `ortho_holds r X x1 hx1`. Take `⟨D⟩` from `ExtFPf.luData_of hLU X x1' ho'`. Use `KU.countable_Γ X` as an intermediate fact. Establish `hM` using `measInv_holds (E := E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ1, hρ1, hball1⟩` from `exists_ball X b1 D ho' hb1`. Take `⟨ρ2, hρ2, hball2⟩` from `Metric.isOpen_iff.mp (ExF.isOpen_OmF X x1') 0 (IW.zero_mem_OmF X x1' ho')`. Use `set ρ0 : ℝ := min ρ1 ρ2 / 2 with hρ0def`. Establish `hρ0 : 0 < ρ0` using `by positivity`. Establish `hρ01 : ρ0 < ρ1` using `by have := min_le_left ρ1 ρ2; linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ02 : ρ0 < ρ2` using `by have := min_le_right ρ1 ρ2; linarith`. Establish `hcl : Metric.closedBall (0 : V (nd X)) ρ0 ⊆ Uc X b1 D` using `fun z hz => hball1 z (Metric.mem_ball.mpr (lt_of_le_of_lt (Metric.mem_closedBall.mp hz) hρ01))`. Establish `hclO : Metric.closedBall (0 : V (nd X)) ρ0 ⊆ OmF X x1'` using `fun z hz => hball2 (Metric.mem_ball.mpr (lt_of_le_of_lt (Metric.mem_closedBall.mp hz) hρ02))`. Take `⟨Kj, hKj⟩` from `jac_bound X b1 D hcl`. Take `⟨Kd, hKd⟩` from `dens_bound X b1 D hcl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ0, hρ0, fun ρ hρ hρle => ?_⟩` and prove the remaining obligations. Establish `hbcl : Metric.ball (0 : V (nd X)) ρ ⊆ Metric.closedBall 0 ρ0` using `fun z hz => Metric.ball_subset_closedBall (Metric.ball_subset_ball hρle hz)`. Establish `hbU : Metric.ball (0 : V (nd X)) ρ ⊆ Uc X b1 D` using `hbcl.trans hcl`. Establish `hbO : Metric.ball (0 : V (nd X)) ρ ⊆ OmF X x1'` using `hbcl.trans hclO`. Establish `hopen` using `isOpen_sat D ho' hb1 hbO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hopen, ENNReal.ofReal (max Kd 0 * max Kj 0), ENNReal.ofReal_lt_top, fun G hG hGB hGΓ => ?_⟩` and prove the remaining obligations. Use `set x1 := rmul x1' b1 with hx1def`. Use `set T := Tset X x1 ρ with hTdef`. Establish `hT : MeasurableSet T` using `meas_Tset X b1 D ho' hbU hx1`. Establish `hTeq : T = KU.Sset X x1' (Φ X b1 D '' Metric.ball 0 ρ)` using `Tset_eq X b1 D hbU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTB : ∀ y b, b ∈ Bor X.Ψ r → (rmul y b ∈ T ↔ y ∈ T)` using `fun y b hb => by`. Rewrite using `[hTeq]`. Conclude with `KU.rmul_mem_S X hb`. Establish `hS : MeasurableSet (KU.Sset X x0 FF)` using `KU.meas_S X ho hFF.1`. Establish `hcpt0` using `(KU.cont_cpt X x0).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcpt1` using `(KU.cont_cpt X x1').measurable`. Establish `hae0 : ∀ᵐ z ∂muF X x0, z ∈ OmF X x0` using `ExtFPf.ae_OmF (X := X) (x0 := x0)`. Use `set Sat : Set (V (nd X)) := {z | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ Metric.ball (0 : V (nd X)) ρ, cpt X x0 z = lact γ (rmul (cpt X x1 z') b)} with hSatdef`. Establish `hSat : MeasurableSet Sat` using `(hopen.preimage (KU.cont_cpt X x0)).measurableSet`. Set `H : X.Γ → Frame X.Ψ r → ℝ≥0∞` to `fun γ y => (KU.Sset X x0 FF).indicator 1 y * T.indicator 1 (lact γ.1⁻¹ y) * G y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHm : ∀ γ, Measurable (H γ)` using `fun γ => ((measurable_one.indicator hS).mul ((measurable_one.indicator hT).comp (KU.cont_lact X γ.1⁻¹).measurable)).mul hG`. Establish `hHB : ∀ γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, H γ (rmul x b) = H γ x`. Introduce `γ x hx b hb`. Establish `e1 : rmul x b ∈ KU.Sset X x0 FF ↔ x ∈ KU.Sset X x0 FF` using `KU.rmul_mem_S X hb`. Establish `e2 : lact γ.1⁻¹ (rmul x b) ∈ T ↔ lact γ.1⁻¹ x ∈ T` using `by rw [KU.lact_rmul']; exact hTB _ _ hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [H, Set.indicator_apply, e1, e2, hGB x hx b hb, Pi.one_apply]`. Establish `stepA : ∫⁻ z in FF ∩ Sat, G (cpt X x0 z) ∂muF X x0 ≤ ∫⁻ z, ∑' γ : X.Γ, H γ (cpt X x0 z) ∂muF X x0`. Use `le_trans (setLIntegral_mono' (hFF.1.inter hSat) fun z hz => ?_) (setLIntegral_le_lintegral _ _)` and prove the remaining obligations. Take `⟨hzF, γ, hγ, b, hb, z', hz', he⟩` from `hz`. Establish `hT1 : lact γ⁻¹ (cpt X x0 z) ∈ T`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[he, KU.lact_lact, inv_mul_cancel, KU.lact_one]`. Conclude with `⟨⟨z', b⟩, ⟨hz', hb⟩, rfl⟩`. Use `le_trans (le_of_eq ?_) (ENNReal.le_tsum (⟨γ, hγ⟩ : X.Γ))` and prove the remaining obligations. Simplify using `only [H, Set.indicator_of_mem ((KU.cpt_mem_S X ho z).mpr hzF), Set.indicator_of_mem hT1, Pi.one_apply, one_mul]`. Establish `stepB : ∫⁻ z, ∑' γ : X.Γ, H γ (cpt X x0 z) ∂muF X x0 = ∑' γ : X.Γ, ∫⁻ z, H γ (cpt X x0 z) ∂muF X x0` using `lintegral_tsum fun γ => ((hHm γ).comp hcpt0).aemeasurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `stepC : ∀ γ : X.Γ, ∫⁻ z, H γ (cpt X x0 z) ∂muF X x0 = ∫⁻ z, (KU.Sset X x0 FF).indicator 1 (lact γ.1 (cpt X x0 z)) * (T.indicator 1 (cpt X x0 z) * G (cpt X x0 z)) ∂muF X x0`. Introduce `γ`. Rewrite using `[hM r X x0 (lact γ.1 x0) ho (KU.isOrth_lact X γ.2 ho) (H γ) (hHm γ) (hHB γ), KU.muF_lact X γ.2]`. Use `lintegral_congr_ae (hae0.mono fun z hz => ?_)` and prove the remaining obligations. Use `show H γ (cpt X (lact γ.1 x0) z) = _`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[KU.cpt_lact]`. Simplify using `only [H, KU.lact_lact, inv_mul_cancel, KU.lact_one, hGΓ γ.1 γ.2 _ hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hIm : ∀ γ : X.Γ, Measurable fun z => (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 (cpt X x0 z)) * (T.indicator 1 (cpt X x0 z) * G (cpt X x0 z))` using `fun γ => ((measurable_one.indicator hS).comp ((KU.cont_lact X γ.1).comp (KU.cont_cpt X x0)).measurable).mul (((measurable_one.indicator hT).comp hcpt0).mul (hG.comp hcpt0))`. Establish `stepD : ∑' γ : X.Γ, ∫⁻ z, (KU.Sset X x0 FF).indicator 1 (lact γ.1 (cpt X x0 z)) * (T.indicator 1 (cpt X x0 z) * G (cpt X x0 z)) ∂muF X x0 ≤ ∫⁻ z, T.indicator 1 (cpt X x0 z) * G (cpt X x0 z) ∂muF X x0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← lintegral_tsum fun γ => (hIm γ).aemeasurable]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right]`. Combine the equalities or inequalities in the displayed calculation. Establish `hφB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, (fun y => T.indicator (1 : Frame X.Ψ r → ℝ≥0∞) y * G y) (rmul x b) = (fun y => T.indicator 1 y * G y) x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx b hb`. Simplify using `only [Set.indicator_apply, hTB x b hb, hGB x hx b hb, Pi.one_apply]`. Establish `stepE : ∫⁻ z, T.indicator 1 (cpt X x0 z) * G (cpt X x0 z) ∂muF X x0 = ∫⁻ w, T.indicator 1 (cpt X x1' w) * G (cpt X x1' w) ∂muF X x1'` using `hM r X x0 x1' ho ho' (fun y => T.indicator 1 y * G y) ((measurable_one.indicator hT).mul hG) hφB`. Establish `hA : MeasurableSet (Φ X b1 D '' Metric.ball 0 ρ)` using `meas_image X b1 D hbU hx1`. Establish `stepF : ∫⁻ w, T.indicator 1 (cpt X x1' w) * G (cpt X x1' w) ∂muF X x1' = ∫⁻ w in Φ X b1 D '' Metric.ball 0 ρ, G (cpt X x1' w) ∂muF X x1'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator hA]`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Establish `e : cpt X x1' w ∈ T ↔ w ∈ Φ X b1 D '' Metric.ball 0 ρ` using `by rw [hTeq]; exact KU.cpt_mem_S X ho' w`. Distinguish the cases in `hw : w ∈ Φ X b1 D '' Metric.ball 0 ρ`. Rewrite using `[Set.indicator_of_mem (e.mpr hw), Set.indicator_of_mem hw, Pi.one_apply, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => hw (e.mp h)), Set.indicator_of_notMem hw, zero_mul]`. Establish `stepG : ∫⁻ w in Φ X b1 D '' Metric.ball 0 ρ, G (cpt X x1' w) ∂muF X x1' ≤ ∫⁻ w in Φ X b1 D '' Metric.ball 0 ρ, ENNReal.ofReal (densF X x1' w) * G (cpt X x1' w)`. Unfold `muF`. Rewrite using `[restrict_withDensity hA]`. Use `(lintegral_withDensity_le_lintegral_mul _ (densF_meas X x1') _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_mono' (Measure.restrict_mono subset_rfl Measure.restrict_le_self) (fun w => le_rfl)` and prove the remaining obligations. Establish `hder : ∀ z ∈ Metric.ball (0 : V (nd X)) ρ, HasFDerivWithinAt (Φ X b1 D) (fderiv ℝ (Φ X b1 D) z) (Metric.ball 0 ρ) z` using `fun z hz => ((((Φ_diffOn X b1 D) z (hbU hz)).differentiableAt ((isOpen_Uc X b1 D).mem_nhds (hbU hz))).restrictScalars ℝ ).hasFDerivAt.hasFDerivWithinAt`. Establish `stepH : ∫⁻ w in Φ X b1 D '' Metric.ball 0 ρ, ENNReal.ofReal (densF X x1' w) * G (cpt X x1' w) = ∫⁻ z in Metric.ball 0 ρ, ENNReal.ofReal |(fderiv ℝ (Φ X b1 D) z).det| * (ENNReal.ofReal (densF X x1' (Φ X b1 D z)) * G (cpt X x1' (Φ X b1 D z)))` using `lintegral_image_eq_lintegral_abs_det_fderiv_mul volume measurableSet_ball hder ((Φ_injOn X b1 D hx1).mono hbU) _`. Establish `stepI : ∫⁻ z in Metric.ball 0 ρ, ENNReal.ofReal |(fderiv ℝ (Φ X b1 D) z).det| * (ENNReal.ofReal (densF X x1' (Φ X b1 D z)) * G (cpt X x1' (Φ X b1 D z))) ≤ ENNReal.ofReal (max Kd 0 * max Kj 0) * ∫⁻ z in Metric.ball 0 ρ, G (cpt X x1 z)`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_mono' measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Take `⟨hΦO, hβ, e⟩` from `split X b1 D (hbU hz)`. Establish `hG1 : G (cpt X x1' (Φ X b1 D z)) = G (cpt X x1 z)`. Rewrite using `[e, hGB _ (by exact hΦO) _ hβ]`. Rewrite using `[hG1, ← mul_assoc]`.
-
-Use `gcongr`. Rewrite using `[ENNReal.ofReal_mul (le_max_right _ _), mul_comm]`. Use `gcongr`. Conclude with `(hKd z (hbcl hz)).trans (le_max_left _ _)`. Conclude with `(hKj z (hbcl hz)).trans (le_max_left _ _)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem localUnfoldB_of {E : Type} [Field E] [NumberField E] [IsCMField E] (hLU : LUStatement (E := E)) :
     LocalUnfoldBStatement (E := E) := by
@@ -217,7 +213,7 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 open NumberField
 
 /- English proof (translation)
-The claim follows from `LUB.localUnfoldB_of hLU`.
+A detailed English derivation is pending.
 -/
 theorem localUnfoldB_of {E : Type} [Field E] [NumberField E] [IsCMField E] (hLU : LUStatement (E := E)) :
     LocalUnfoldBStatement (E := E) := LUB.localUnfoldB_of hLU

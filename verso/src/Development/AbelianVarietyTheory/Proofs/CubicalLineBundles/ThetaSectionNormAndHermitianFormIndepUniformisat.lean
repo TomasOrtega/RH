@@ -20,7 +20,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.KeyUniq
 
 /- English proof (translation)
-Establish `h` using `Measure.addHaar_image_linearMap volume (F.restrictScalars ℝ) s`. Rewrite `h` using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, abs_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]`. Rewrite using `[show (F '' s) = (F.restrictScalars ℝ) '' s from rfl, h, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_image {g : ℕ} (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (s : Set (Fin g → ℂ)) :
     (volume (F '' s)).toReal = ‖LinearMap.det F‖ ^ 2 * (volume s).toReal := by
@@ -30,9 +30,9 @@ theorem volume_image {g : ℕ} (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
   rw [show (F '' s) = (F.restrictScalars ℝ) '' s from rfl, h, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]
 
 /- English proof (translation)
-Set `φ : Λ' ≃ Λ` to `{ toFun := fun b => ⟨F.symm b, (hF _).1 (by rw [F.apply_symm_apply]; exact b.2)⟩ invFun := fun a => ⟨F a, (hF a).2 a.2⟩ left_inv := fun b => Subtype.ext (F.apply_symm_apply b.1) right_inv := fun a => Subtype.ext (F.symm_apply_apply a.1) }`. Establish `hq : Measure.QuasiMeasurePreserving F.toEquiv.symm volume volume` using `Measure.LinearMap.quasiMeasurePreserving volume (F.symm.restrictScalars ℝ).toLinearMap (F.symm.restrictScalars ℝ).isUnit_det'.ne_zero`. Establish `h1 : IsAddFundamentalDomain Λ' (F.toEquiv '' s) volume` using `hs.image_of_equiv F.toEquiv hq φ fun b z => by`. Express the relevant statement in the definitionally equal form `F (F.symm b + z) = b + F z`. Rewrite using `[map_add, F.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: Countable Λ'` using `countable_of_Lindelof_of_discrete`. Establish `: MeasurableConstVAdd Λ' (Fin g → ℂ)` using `⟨fun c => measurable_const_add (c : Fin g → ℂ)⟩`. Establish `: VAddInvariantMeasure Λ' (Fin g → ℂ) volume` using `⟨fun c s _ => measure_preimage_add volume (c : Fin g → ℂ) s⟩`. Rewrite using `[hs'.measure_eq h1]`. Conclude with `volume_image F.toLinearMap s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_fund {g : ℕ} (Λ Λ' : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ']
     (F : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hF : ∀ z, F z ∈ Λ' ↔ z ∈ Λ) {s s' : Set (Fin g → ℂ)}
@@ -58,17 +58,15 @@ theorem volume_fund {g : ℕ} (Λ Λ' : Submodule ℤ (Fin g → ℂ)) [Discrete
   exact volume_image F.toLinearMap s
 
 /- English proof (translation)
-Introduce and unpack `x u Hm χ θ Fd u' Hm' χ' θ' Fd' ⟨hA, hR, hθ, hD⟩ ⟨hA', hR', hθ', hD'⟩`. Take `⟨-, t1, -⟩` from `unimodular_and_tangent_of_isAH thetaUnifAV_all x.P x.rig x.rig_gen u Hm χ hA`. Take `⟨-, t1', t2'⟩` from `unimodular_and_tangent_of_isAH thetaUnifAV_all x.P x.rig x.rig_gen u' Hm' χ' hA'`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo x.P.A x.P.isAb x.P.L x.P.g x.P.g u' t1' t2' u.ex u.ex_add (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)`. Set `e : (Fin x.P.g → ℂ) ≃ₗ[ℂ] (Fin x.P.g → ℂ)` to `LinearEquiv.ofInjectiveEndo F (UnifCompare.injective u u' F hF)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hd : ∀ w v, u.IsDiff w v ↔ u'.IsDiff (F w) v` using `UnifCompare.isDiff_iff u u' e.toContinuousLinearEquiv hF`. Use `⟨?_, fun v w V W V' W' hv hw h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, κ, -, -, -, -, hK⟩` from `keyFormulaPow_and_keyDegree.1 choose W hW using fun i => (t1 _ (x.basis.1 i)).exists`. Establish `k` using `hK x u Hm (Matrix.of W) χ θ Fd _ _ hA hR hθ hW hD rfl rfl`. Establish `k'` using `hK x u' Hm' (Matrix.of fun i => F (W i)) χ' θ' Fd' _ _ hA' hR' hθ' (fun i => (hd _ _).1 (hW i)) hD' rfl rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u'.discrete` as an intermediate fact. Establish `hvol : (volume Fd').toReal = ‖LinearMap.det F‖ ^ 2 * (volume Fd).toReal` using `volume_fund u.Λ u'.Λ e (UnifCompare.mem_iff u u' F hF) hD hD'`. Establish `hdet : (Matrix.of fun i => F (W i)).det = LinearMap.det F * (Matrix.of W).det`. Establish `: (Matrix.of fun i => F (W i)) = Matrix.of W * (LinearMap.toMatrix' F).transpose`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.of_apply, ← LinearMap.toMatrix'_mulVec, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun _ _ => _root_.mul_comm _ _`. Rewrite using `[this, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix', _root_.mul_comm]`. Establish `h0 : ‖LinearMap.det F‖ ≠ 0` using `norm_ne_zero_iff.2 e.isUnit_det'.ne_zero`. Establish `hη : (volume Fd').toReal / (Real.pi ^ x.P.g * ‖(Matrix.of fun i => F (W i)).det‖ ^ 2) = (volume Fd).toReal / (Real.pi ^ x.P.g * ‖(Matrix.of W).det‖ ^ 2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvol, hdet, norm_mul, mul_pow, mul_left_comm, mul_div_mul_left _ _ (pow_ne_zero 2 h0)]`. Rewrite `k'` using `[hη]`. Establish `hne` using `k.trans_ne (pow_ne_zero _ Real.two_pi_pos.ne')`. Establish `h1` using `mul_left_cancel₀ (left_ne_zero_of_mul (left_ne_zero_of_mul hne)) (mul_right_cancel₀ (right_ne_zero_of_mul hne) (k.trans k'.symm))`. Conclude with `(pow_left_inj₀ (div_nonneg (integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg) (div_nonneg (integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg) (by have := hN x.P.g; omega)).1 h1`.
-
-Rewrite using `[(t1' v hv).unique h3 ((hd _ _).1 h1), (t1' w hw).unique h4 ((hd _ _).1 h2)]`. Conclude with `(UnifCompare.hermForm_eq x.P.isLB u u' hA hA' F hF V W).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_and_hermForm_eq : ∀ (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g) (Hm : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (χ : u.Λ → ℂ) (θ : (Fin x.P.g → ℂ) → ℂ) (Fd : Set (Fin x.P.g → ℂ)) (u' : HolUnif x.P.A x.P.L x.P.g) (Hm' : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (χ' : u'.Λ → ℂ) (θ' : (Fin x.P.g → ℂ) → ℂ) (Fd' : Set (Fin x.P.g → ℂ)), u.IsAH Hm χ ∧ u.IsRig x.rig ∧ u.IsFn x.th θ ∧ IsAddFundamentalDomain u.Λ Fd volume → u'.IsAH Hm' χ' ∧ u'.IsRig x.rig ∧ u'.IsFn x.th θ' ∧ IsAddFundamentalDomain u'.Λ Fd' volume → (∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re)) / (volume Fd).toReal = (∫ z in Fd', ‖θ' z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm' z z).re)) / (volume Fd').toReal ∧ ∀ (v w : epsR ℂ ⟶ x.P.A) (V W V' W' : Fin x.P.g → ℂ), IsTangent v → IsTangent w → u.IsDiff V v → u.IsDiff W w → u'.IsDiff V' v → u'.IsDiff W' w → hermForm Hm V W = hermForm Hm' V' W' := by
   rintro x u Hm χ θ Fd u' Hm' χ' θ' Fd' ⟨hA, hR, hθ, hD⟩ ⟨hA', hR', hθ', hD'⟩

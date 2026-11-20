@@ -11,7 +11,7 @@ namespace GlobalTheory.MixPer.Decomp
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S) _ Y, ← Matrix.mul_assoc (adj (mt S g)), GlobalTheory.MixModel.mt_unitary]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mt (g : GA D S) {k l : ℕ} (X : Mx D S.rank k) (Y : Mx D S.rank l) :
     adj (mt S g ⬝ X) ⬝ (gA S ⬝ (mt S g ⬝ Y)) = adj X ⬝ (gA S ⬝ Y) := by
@@ -19,7 +19,7 @@ theorem gram_mt (g : GA D S) {k l : ℕ} (X : Mx D S.rank k) (Y : Mx D S.rank l)
     GlobalTheory.MixModel.mt_unitary]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.one_mul Z, ← d.sum_eq_one]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp {k : ℕ} (Z : Mx D S.rank k) :
     Z = d.jX ⬝ (d.pX ⬝ Z) + d.j0 ⬝ (d.p0 ⬝ Z) + d.jY ⬝ (d.pY ⬝ Z) := by
@@ -27,11 +27,11 @@ theorem decomp {k : ℕ} (Z : Mx D S.rank k) :
   simp only [Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `eY : d.pY ⬝ (mt S g ⬝ d.jY) = 1`. Rewrite using `[d.pY_eq, Matrix.mul_assoc, ← hX, gram_mt, d.gram_XY]`. Establish `e0 : d.p0 ⬝ (mt S g ⬝ d.jY) = 0`. Rewrite using `[d.p0_eq, Matrix.mul_assoc, Matrix.mul_assoc, ← h0, gram_mt, d.gram_0Y, Matrix.mul_zero]`. Establish `eM : mt S g ⬝ d.jY = d.jY + d.jX ⬝ (d.pX ⬝ (mt S g ⬝ d.jY))` using `by conv_lhs => rw [decomp d (mt S g ⬝ d.jY)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eY, e0, Matrix.mul_zero, add_zero, Matrix.mul_one, add_comm]`. Generalize the expression as in `d.pX ⬝ (mt S g ⬝ d.jY) = c at eM`. Establish `hs` using `gram_mt g d.jY d.jY`. Rewrite `hs` using `[eM, d.gram_YY]`. Simplify using `only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, d.gram_YY, d.gram_XY, cancel₃ d.gram_XX, cancel₃ d.gram_YX, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add] at hs`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : adj c = -c` using `eq_neg_of_add_eq_zero_left hs`. Use `⟨⟨_, hc⟩, d.ga_ext ?_ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hX, d.nC_jX]`. Rewrite using `[h0, d.nC_j0]`. Rewrite using `[eM, d.nC_jY]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_nC {g : GA D S} (hX : mt S g ⬝ d.jX = d.jX) (h0 : mt S g ⬝ d.j0 = d.j0) :
     ∃ c : skewA D ρ, g = d.nC c := by
@@ -54,14 +54,14 @@ theorem eq_nC {g : GA D S} (hX : mt S g ⬝ d.jX = d.jX) (h0 : mt S g ⬝ d.j0 =
   · rw [eM, d.nC_jY]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, ← h, ← Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_of_eq {g n : GA D S} {k : ℕ} {X : Mx D S.rank k} (h : mt S g ⬝ X = mt S n ⬝ X) :
     mt S (g⁻¹ * n) ⬝ X = X := by
   rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, ← h, ← Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Use `Matrix.mulVec_injective_iff.1 fun x y h => ?_` and prove the remaining obligations. Use `congrArg ((d.e'ᴴ * S.gram).mulVec) h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, d.e'e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linInd : LinearIndependent D.host.E d.eᵀ := by
   refine Matrix.mulVec_injective_iff.1 fun x y h => ?_
@@ -73,15 +73,15 @@ namespace GlobalTheory.MixPer.Decomp
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uc1 {m : ℕ} (u : GL (Fin ρ) (AE D)) (B : Mx D ρ m) : u.1 ⬝ ((u⁻¹).1 ⬝ B) = B := by
   rw [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hU : (1 + T).BlockTriangular id` using `Matrix.blockTriangular_one.add hT.tri`. Establish `hdet : (1 + T).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hU]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, hT i i le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨u, hu1⟩ : ∃ u : GL (Fin ρ) (AE D), u.1 = 1 + T` from `⟨Matrix.nonsingInvUnit (1 + T) (by rw [hdet]; exact isUnit_one), rfl⟩`. Use `⟨u, (GlobalTheory.UniIndexPrime.mem_uniSub u).2 ⟨fun i j h => ?_, fun i => ?_⟩, hu1⟩` and prove the remaining obligations. Rewrite using `[hu1, Matrix.add_apply, Matrix.one_apply_ne h.ne', hT i j h.le, add_zero]`. Rewrite using `[hu1, Matrix.add_apply, Matrix.one_apply_eq, hT i i le_rfl, add_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unit {T : Mx D ρ ρ} (hT : GlobalTheory.BesselChar.StrictUp T) : ∃ u ∈ UX D ρ, u.1 = 1 + T := by
   have hU : (1 + T).BlockTriangular id := Matrix.blockTriangular_one.add hT.tri
@@ -96,9 +96,9 @@ theorem exists_unit {T : Mx D ρ ρ} (hT : GlobalTheory.BesselChar.StrictUp T) :
   · rw [hu1, Matrix.add_apply, Matrix.one_apply_eq, hT i i le_rfl, add_zero]
 
 /- English proof (translation)
-Establish `hz : ∀ k : Fin S₀.rank, ∃ a : Fin ρ → AE D, mt S n *ᵥ (fun i => d.j0 i k) = (fun i => d.j0 i k) + d.jX *ᵥ a` using `fun k => h2 _ (by`. Express the relevant statement in the definitionally equal form `d.pY *ᵥ (fun i => d.j0 i k) = 0`. Use function extensionality and compare the values at `r`. Use `congrFun (congrFun d.pY_j0 r) k` as an intermediate fact. Simplify `this)` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose a ha using hz`. Use `⟨Matrix.of (fun i k => a k i), ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Use `congrFun (ha k) i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_B {n : GA D S}
     (h2 : ∀ y, (GlobalTheory.BesselChar.perpMat S d.e).map (incA D) *ᵥ y = 0 →
@@ -117,7 +117,7 @@ theorem exists_B {n : GA D S}
   simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct] using this
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nB_jX, d.levi_jX, h1, hu1, Matrix.mul_add, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem k1t (n : GA D S) (u : GL (Fin ρ) (AE D)) (T : Mx D ρ ρ) (hu1 : u.1 = 1 + T)
     (h1 : mt S n ⬝ d.jX = d.jX + d.jX ⬝ T) (B : Mx D ρ S₀.rank) :
@@ -125,7 +125,7 @@ theorem k1t (n : GA D S) (u : GL (Fin ρ) (AE D)) (T : Mx D ρ ρ) (hu1 : u.1 = 
   rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nB_jX, d.levi_jX, h1, hu1, Matrix.mul_add, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nB_j0, hB, Matrix.mul_add, d.wittDecomp_levi_inclAnisotropic, cancel₂ (d.levi_jX u), Matrix.mul_assoc d.jX, uc1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem k2t (n : GA D S) (u : GL (Fin ρ) (AE D)) (B : Mx D ρ S₀.rank) (hB : mt S n ⬝ d.j0 = d.j0 + d.jX ⬝ B) :
     mt S (d.levi u * d.nB ((u⁻¹).1 ⬝ B)) ⬝ d.j0 = mt S n ⬝ d.j0 := by
@@ -133,9 +133,9 @@ theorem k2t (n : GA D S) (u : GL (Fin ρ) (AE D)) (B : Mx D ρ S₀.rank) (hB : 
       Matrix.mul_assoc d.jX, uc1]
 
 /- English proof (translation)
-Take `⟨⟨T, hT, h1⟩, h2⟩` from `(GlobalTheory.BesselChar.mem_NFlag_iff S d.e (linInd d) n).1 hn`. Take `⟨u, hu, hu1⟩` from `exists_unit hT`. Take `⟨B, hB⟩` from `exists_B d h2`. Establish `f1` using `fix_of_eq (k1t d n u T hu1 h1 B)`. Establish `f2` using `fix_of_eq (k2t d n u B hB)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(eq_nC d f1 f2).elim fun c hc => ⟨u, hu, (u⁻¹).1 ⬝ B, c, ?_⟩` and prove the remaining obligations. Conclude with `((mul_inv_cancel_left (d.levi u * d.nB ((u⁻¹).1 ⬝ B)) n).symm.trans (congrArg ((d.levi u * d.nB ((u⁻¹).1 ⬝ B)) * ·) hc)).trans (mul_assoc _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flag_decomp {n : GA D S} (hn : n ∈ flagN d) :
     ∃ u ∈ UX D ρ, ∃ b c, n = d.levi u * (d.nB b * d.nC c) := by
@@ -148,14 +148,14 @@ theorem flag_decomp {n : GA D S} (hn : n ∈ flagN d) :
   exact ((mul_inv_cancel_left (d.levi u * d.nB ((u⁻¹).1 ⬝ B)) n).symm.trans
     (congrArg ((d.levi u * d.nB ((u⁻¹).1 ⬝ B)) * ·) hc)).trans (mul_assoc _ _ _)
 /- English proof (translation)
-Simplify using `only [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_flag_jX (u : GL (Fin ρ) (AE D)) (b : Mx D ρ S₀.rank) (c : skewA D ρ) :
     mt S (d.levi u * (d.nB b * d.nC c)) ⬝ d.jX = d.jX ⬝ u.1 := by
   simp only [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_j0, d.nB_j0, Matrix.mul_add, d.wittDecomp_levi_inclAnisotropic, cancel₂ (d.levi_jX u)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flag_unipotent_product_anisotropic_action (u : GL (Fin ρ) (AE D)) (b : Mx D ρ S₀.rank) (c : skewA D ρ) :
     mt S (d.levi u * (d.nB b * d.nC c)) ⬝ d.j0 = d.j0 + d.jX ⬝ (u.1 ⬝ b) := by
@@ -163,7 +163,7 @@ theorem flag_unipotent_product_anisotropic_action (u : GL (Fin ρ) (AE D)) (b : 
     cancel₂ (d.levi_jX u)]
 
 /- English proof (translation)
-Take `⟨u, -, b, c, rfl⟩` from `flag_decomp d hn`. Rewrite using `[← Matrix.mul_assoc (mt S _), flag_unipotent_product_anisotropic_action, ← Matrix.mul_assoc, Matrix.mul_add, d.p0_j0, cancel₂ d.p0_jX, Matrix.zero_mul, add_zero, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem witt_anisotropic_projection_flag_unipotent_inclusion {n : GA D S} (hn : n ∈ flagN d) {k : ℕ} (X : Mx D S₀.rank k) :
     d.p0 ⬝ (mt S n ⬝ (d.j0 ⬝ X)) = X := by
@@ -172,9 +172,9 @@ theorem witt_anisotropic_projection_flag_unipotent_inclusion {n : GA D S} (hn : 
     Matrix.zero_mul, add_zero, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu, b, c, rfl⟩` from `flag_decomp d hn`. Establish `e : d.emb0 h * (d.levi u * (d.nB b * d.nC c)) = d.levi u * (d.nB (b ⬝ mt S₀ h⁻¹) * d.nC c) * d.emb0 h`. Rewrite using `[← mul_assoc, d.wittHyperbolic_anisotropic_commute_levi, mul_assoc, ← mul_assoc (d.emb0 h), d.wittHyperbolic_anisotropic_conj_nB, mul_assoc, d.wittHyperbolic_anisotropic_commute_nC]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (d.levi_mem_NFlag hu) (mul_mem (d.nB_mem_NFlag _) (d.nC_mem_NFlag c))`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem {n : GA D S} (hn : n ∈ flagN d) (h : GA D S₀) : d.emb0 h * n * (d.emb0 h)⁻¹ ∈ flagN d := by
   obtain ⟨u, hu, b, c, rfl⟩ := flag_decomp d hn
@@ -191,7 +191,7 @@ namespace GlobalTheory.MixPer.Decomp
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Use `⟨flag_decomp d, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, b, c, rfl⟩`. Conclude with `mul_mem (d.levi_mem_NFlag hu) (mul_mem (d.nB_mem_NFlag b) (d.nC_mem_NFlag c))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_flag_iff {n : GA D S} : n ∈ flagN d ↔ ∃ u ∈ UX D ρ, ∃ b c, n = d.levi u * (d.nB b * d.nC c) := by
   refine ⟨flag_decomp d, ?_⟩
@@ -199,13 +199,13 @@ theorem mem_flag_iff {n : GA D S} : n ∈ flagN d ↔ ∃ u ∈ UX D ρ, ∃ b c
   exact mul_mem (d.levi_mem_NFlag hu) (mul_mem (d.nB_mem_NFlag b) (d.nC_mem_NFlag c))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `n ∈ flagN d ⊓ fixer S d.jX ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hn`. Take `⟨hf, hx⟩` from `Subgroup.mem_inf.1 hn`. Take `⟨u, -, b, c, rfl⟩` from `flag_decomp d hf`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : mt S (d.levi u * (d.nB b * d.nC c)) ⬝ d.jX = d.jX` using `hx`. Rewrite `hx'` using `[mt_flag_jX]`. Establish `e : u.1 = 1`. Use `cancel₂ d.pX_jX u.1` as an intermediate fact. Rewrite `this` using `[hx', d.pX_jX, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `: u = 1` using `Units.ext e`. Substitute `this` using the available equality. Conclude with `⟨b, c, by rw [map_one, one_mul]⟩`. Introduce and unpack `⟨b, c, rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_inf.2 ⟨mul_mem (d.nB_mem_NFlag b) (d.nC_mem_NFlag c), ?_⟩` and prove the remaining obligations. Use `show mt S (d.nB b * d.nC c) ⬝ d.jX = d.jX`. Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_jX, d.nB_jX]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_radX_iff {n : GA D S} : n ∈ radX d ↔ ∃ b c, n = d.nB b * d.nC c := by
   change n ∈ flagN d ⊓ fixer S d.jX ↔ _
@@ -228,9 +228,9 @@ theorem mem_radX_iff {n : GA D S} : n ∈ radX d ↔ ∃ b c, n = d.nB b * d.nC 
     rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_jX, d.nB_jX]
 
 /- English proof (translation)
-Establish `jointCmpEmbeddingY : d.pY ⬝ (mt S g ⬝ d.j0) = 0`. Rewrite using `[d.pY_eq, Matrix.mul_assoc, ← hg, gram_mt, d.wittDecomp_gram_X_anisotropic]`. Establish `eM : mt S g ⬝ d.j0 = d.jX ⬝ (d.pX ⬝ (mt S g ⬝ d.j0)) + d.j0 ⬝ (d.p0 ⬝ (mt S g ⬝ d.j0))` using `by conv_lhs => rw [decomp d (mt S g ⬝ d.j0)]`. Rewrite using `[jointCmpEmbeddingY, Matrix.mul_zero, add_zero]`. Generalize the expression as in `d.pX ⬝ (mt S g ⬝ d.j0) = B at eM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `d.p0 ⬝ (mt S g ⬝ d.j0) = Q at eM`. Establish `hs` using `gram_mt g d.j0 d.j0`. Rewrite `hs` using `[eM, d.gram_00]`. Simplify using `only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₃ d.gram_XX, cancel₃ d.wittDecomp_gram_X_anisotropic, cancel₃ d.gram_0X, cancel₃ d.gram_00, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add] at hs`. Conclude with `⟨B, GlobalTheory.MixModel.ofMat S₀ Q hs, eM⟩`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem stab_split {g : GA D S} (hg : mt S g ⬝ d.jX = d.jX) :
     ∃ (B : Mx D ρ S₀.rank) (h : GA D S₀), mt S g ⬝ d.j0 = d.jX ⬝ B + d.j0 ⬝ mt S₀ h := by
@@ -249,11 +249,11 @@ theorem stab_split {g : GA D S} (hg : mt S g ⬝ d.jX = d.jX) :
   exact ⟨B, GlobalTheory.MixModel.ofMat S₀ Q hs, eM⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : mt S g ⬝ d.jX = d.jX` using `hg`. Take `⟨B, h, eM⟩` from `stab_split d hg'`. Establish `hX : mt S (g * (d.emb0 h)⁻¹) ⬝ d.jX = d.jX`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, hg']`. Establish `h0 : mt S (g * (d.emb0 h)⁻¹) ⬝ d.j0 = d.j0 + d.jX ⬝ (B ⬝ mt S₀ h⁻¹)`. Rewrite using `[← map_inv, GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, eM, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc d.j0, GlobalTheory.MixModel.mt_mul_inv, Matrix.mul_one, add_comm]`. Use `⟨g * (d.emb0 h)⁻¹, Subgroup.mem_inf.2 ⟨d.mem_NFlag HypDec.one_mem_upperUni ?_ h0, hX⟩, h, (inv_mul_cancel_right g _).symm⟩` and prove the remaining obligations. Rewrite using `[hX, Units.val_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨n, hn, h, rfl⟩ show mt S (n * d.emb0 h) ⬝ d.jX = d.jX`. Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX]`. Conclude with `(Subgroup.mem_inf.1 hn).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabX_iff {g : GA D S} : g ∈ stabX d ↔ ∃ n ∈ radX d, ∃ h, g = n * d.emb0 h := by
   constructor
@@ -274,13 +274,11 @@ theorem mem_stabX_iff {g : GA D S} : g ∈ stabX d ↔ ∃ n ∈ radX d, ∃ h, 
     exact (Subgroup.mem_inf.1 hn).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Set `K : Subgroup (GA D S)` to `{ carrier := {g | ∃ n ∈ flagN d, ∃ h, g = n * d.emb0 h} one_mem' := ⟨1, one_mem _, 1, by rw [map_one, one_mul]⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨n, hn, h, rfl⟩ ⟨n', hn', h', rfl⟩`. Conclude with `⟨n * (d.emb0 h * n' * (d.emb0 h)⁻¹), mul_mem hn (conj_mem d hn' h), h * h', by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[map_mul]`. Use the proof step `group⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨n, hn, h, rfl⟩`. Conclude with `⟨d.emb0 h⁻¹ * n⁻¹ * (d.emb0 h⁻¹)⁻¹, conj_mem d (inv_mem hn) h⁻¹, h⁻¹, by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_inv]`. Use the proof step `group⟩ }`. Establish `hle : jacGrp d ≤ K` using `sup_le (fun n hn => ⟨n, hn, 1, by rw [map_one, mul_one]⟩) (by rintro _ ⟨h, rfl⟩; exact ⟨1, one_mem _, h, (one_mul _).symm⟩)`. Conclude with `hle hg`. Introduce and unpack `⟨n, hn, h, rfl⟩`.
-
-Conclude with `mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_jacGrp_iff {g : GA D S} : g ∈ jacGrp d ↔ ∃ n ∈ flagN d, ∃ h, g = n * d.emb0 h := by
   constructor
@@ -303,9 +301,9 @@ theorem mem_jacGrp_iff {g : GA D S} : g ∈ jacGrp d ↔ ∃ n ∈ flagN d, ∃ 
     exact mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun g => d.p0 ⬝ (mt S g ⬝ d.j0)) e`. Simplify using `only [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic] at e1`. Rewrite `e1` using `[witt_anisotropic_projection_flag_unipotent_inclusion d hn, witt_anisotropic_projection_flag_unipotent_inclusion d hn']`. Establish `hh : h = h'` using `GlobalTheory.MixModel.mt_injective S₀ e1`. Substitute `hh` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨mul_right_cancel e, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem flag_unipotent_mul_embedded_anisotropic_unique {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) {h h' : GA D S₀}
     (e : n * d.emb0 h = n' * d.emb0 h') : n = n' ∧ h = h' := by
@@ -317,11 +315,11 @@ theorem flag_unipotent_mul_embedded_anisotropic_unique {n n' : GA D S} (hn : n �
   exact ⟨mul_right_cancel e, rfl⟩
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun g => d.pX ⬝ (mt S g ⬝ d.jX)) e`. Simplify using `only [mt_flag_jX] at e1`. Rewrite `e1` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul, Matrix.one_mul]`. Establish `hu : u = u'` using `Units.ext e1`. Substitute `hu` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e'` using `mul_left_cancel e`. Establish `e2` using `congrArg (fun g => d.pX ⬝ (mt S g ⬝ d.j0)) e'`. Simplify using `only [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, d.nC_j0, d.nB_j0, Matrix.mul_add, d.pX_j0, cancel₂ d.pX_jX, Matrix.one_mul, zero_add] at e2`. Substitute `e2` using the available equality. Establish `e''` using `mul_left_cancel e'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e3` using `congrArg (fun g => d.pX ⬝ (mt S g ⬝ d.jY)) e''`. Simplify using `only [d.nC_jY, Matrix.mul_add, d.pX_jY, cancel₂ d.pX_jX, Matrix.one_mul, zero_add] at e3`. Conclude with `⟨rfl, rfl, Subtype.ext e3⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem unique_levi {u u' : GL (Fin ρ) (AE D)} {b b' : Mx D ρ S₀.rank} {c c' : skewA D ρ}
     (e : d.levi u * (d.nB b * d.nC c) = d.levi u' * (d.nB b' * d.nC c')) : u = u' ∧ b = b' ∧ c = c' := by
@@ -345,7 +343,7 @@ end GlobalTheory.MixPer.Decomp
 namespace GlobalTheory.MixPer
 
 /- English proof (translation)
-Introduce `_ _ _ _ d` and use `⟨fun _ => Decomp.mem_flag_iff d, fun _ => Decomp.mem_radX_iff d, fun _ => Decomp.mem_stabX_iff d, fun _ => Decomp.mem_jacGrp_iff d, fun _ hn h => Decomp.conj_mem d hn h, fun _ hn _ hn' _ _ e => Decomp.flag_unipotent_mul_embedded_anisotropic_unique d hn hn' e, fun _ _ _ _ _ _ e => …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem flag_jacobi_structure : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ),
     (∀ n, n ∈ flagN d ↔ ∃ u ∈ UX D ρ, ∃ b c, n = d.levi u * (d.nB b * d.nC c)) ∧

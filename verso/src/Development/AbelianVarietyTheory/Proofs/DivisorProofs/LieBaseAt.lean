@@ -38,7 +38,7 @@ def LieBaseAt (P : Finset ℕ) (R : ℝ) (c : O.s.Comp) {Bs : Scheme.{0}} (q : B
     LieGen O c q E jB πB u ∧ LieFin O P E jB πB u ∧ LieInf O R c q E h jB πB u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨Bg, jB, πB, pb, u, G, h₁, h₂, h₃, h₄, h₅, h₆⟩ => ⟨Bg, jB, πB, u, ⟨pb, h₁, h₂, h₃⟩, h₄, G, h₅, h₆⟩, fun ⟨Bg, jB, πB, u, ⟨pb, h₁, h₂, h₃⟩, h₄, G, h₅, h₆⟩ => ⟨Bg, jB, πB, pb, u, G, h₁, h₂, h₃, h₄, h₅, h₆⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lieBase_iff (B R : ℝ) (c : O.s.Comp) {Bs : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (E : D.what₂.Tau × Bool → Bs.Modules) (h : ∀ a, VMetric q (E a) (rkB D.what₂.Tau O.N O.j a)) :

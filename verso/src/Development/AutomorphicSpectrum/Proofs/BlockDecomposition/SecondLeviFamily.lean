@@ -32,9 +32,9 @@ section Eval
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `e : (evKP E1 E2).comp (inj s) = CompanionTheory.D.LK.ev (if s then E1 else E2)`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Consider the cases of `s`. Simplify using `[evKP, inj, CompanionTheory.D.LK.ev, kA, pA] module`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `[evKP, inj, CompanionTheory.D.LK.ev, kA, pA] module`. Conclude with `DFunLike.congr_fun e z`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalCartan_inclusion (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool) (z : FreeAlgebra ℂ (Fin n × Fin n)) :
     evKP E1 E2 (inj s z) = CompanionTheory.D.LK.ev (if s then E1 else E2) z := by
@@ -49,9 +49,9 @@ theorem evalCartan_inclusion (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s :
   exact DFunLike.congr_fun e z
 
 /- English proof (translation)
-Establish `e : (evLv lev E1 E2).comp (inj s) = CompanionTheory.RgExh.U.evL lev (if s then E1 else E2)`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : lev p.1 = lev p.2`. Consider the cases of `s`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data.
 
-Simplify using `[evLv, inj, CompanionTheory.RgExh.U.evL, kA, pA, hp] module`. Simplify using `[evLv, inj, CompanionTheory.RgExh.U.evL, kA, pA, hp] module`. Apply the tactic sequence `cases s <;> simp [evLv, inj, CompanionTheory.RgExh.U.evL, hp]`. Conclude with `DFunLike.congr_fun e z`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem evLv_inj (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool)
     (z : FreeAlgebra ℂ (Fin n × Fin n)) :
@@ -69,9 +69,9 @@ theorem evLv_inj (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
   exact DFunLike.congr_fun e z
 
 /- English proof (translation)
-Establish `e : (evLc lev E1 E2).comp (inj s) = CompanionTheory.RgExh.U.evL lev (if s then firstLeviFamily lev E1 E2 else secondLeviFamily lev E1 E2)`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : lev p.1 = lev p.2`. Apply the tactic sequence `cases s <;> simp [inj, CompanionTheory.RgExh.U.evL, hp, firstLeviFamily, secondLeviFamily]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases s <;> simp [inj, evLc, CompanionTheory.RgExh.U.evL, hp]`. Conclude with `DFunLike.congr_fun e z`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem evLc_inj (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool)
     (z : FreeAlgebra ℂ (Fin n × Fin n)) :
@@ -88,7 +88,7 @@ def wL (s : Bool) (w : Pos n → V) (l : Lt n) : V :=
   (1 / 2 : ℂ) • (if l.1 && !s then -w l.2 else w l.2)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_bool, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : lev i.1.1 < lev i.1.2`. Apply the tactic sequence `cases s <;> simp [hi, xL, kA, pA, wL, CompanionTheory.RgExh.U.inU] <;> module`. Simplify using `[hi, CompanionTheory.RgExh.U.inU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem sum_letters (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool) (w : Pos n → V) :
     (∑ i : Pos n, if CompanionTheory.RgExh.U.inU lev i then (if s then E1 else E2) i.1.1 i.1.2 (w i) else 0) =
@@ -102,13 +102,11 @@ theorem sum_letters (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.En
 end Eval
 
 /- English proof (translation)
-Rewrite using `[evalCartan_inclusion]`. Establish `hG : GlRel (if s then E1 else E2)`. Consider the cases of `s`. Simplify using `using hP.2.1`. Simplify using `using hP.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : ∀ p q, Commute ((if s then E1 else E2) p q) (CompanionTheory.D.LK.ev (if s then E1 else E2) (fa n Y))` using `fun p q => by`. Rewrite using `[GlobalTheory.CompanionTheory.RgCOBlock.ev_fa]`. Conclude with `(Formalism.REAL.qDetCentral (Module.End ℂ V) n _ hG _ p q).symm`. Establish `h1 : Commute (E1 c d) (CompanionTheory.D.LK.ev (if s then E1 else E2) (fa n Y))`. Consider the cases of `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `GlobalTheory.CompanionTheory.PairMult.CapProdProof.commute_ev _ _ (fun p q => hP.2.2 _ _ p q) _`. Simplify using `using hc c d`. Establish `h2 : Commute (E2 c d) (CompanionTheory.D.LK.ev (if s then E1 else E2) (fa n Y))`. Consider the cases of `s`. Simplify using `using hc c d`.
-
-Conclude with `GlobalTheory.CompanionTheory.PairMult.CapProdProof.commute_ev _ _ (fun p q => (hP.2.2 p q _ _).symm) _`. Conclude with `h1.add_left h2`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem central (s : Bool) (Y : ℂ) (V : Type) [AddCommGroup V] [Module ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     (hP : IsPairA E1 E2) (c d : Fin n) : Commute (kA E1 E2 c d) (evKP E1 E2 (inj s (fa n Y))) := by
@@ -131,13 +129,13 @@ theorem central (s : Bool) (Y : ℂ) (V : Type) [AddCommGroup V] [Module ℂ V] 
   exact h1.add_left h2
 
 /- English proof (translation)
-Establish `hlev` using `(GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters n M lev h hm hM).1`. Take `⟨w, w1, w2, w3⟩` from `hAct n lev hm (inj s (fa n Y)) (inj s (fb (sz lev M) h Y)) (fun V _ _ E1 E2 hP c d => central s Y V E1 E2 hP c d) (fun V _ _ E1 E2 hP x => by`. Establish `hG : GlRel (if s then E1 else E2)`. Consider the cases of `s`. Simplify using `using hP.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hP.1`. Take `⟨w, hw⟩` from `(GlobalTheory.CompanionTheory.RgCOBlock.co_hyp n M lev (sz lev M) h Y hm hlev V _ hG).2 x`. Use `⟨wL s w, ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_letters, evalCartan_inclusion, evLv_inj]`. Conclude with `hw) V E1 E2 hP v hv`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, ⟨w1, w2⟩, ?_⟩` and prove the remaining obligations. Use `show bdL (inUU lev) E1 E2 w = _`. Rewrite using `[← w3, evalCartan_inclusion, evLc_inj, GlobalTheory.CompanionTheory.RgCOBlock.ev_fa, hq]`. Use `congr 1`. Use function extensionality and compare the values at `A`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hA : A = omU lev`. Substitute `hA` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hA]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem co_class (hAct : ActUU) (M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = n) (hm : Monotone lev)
     (hM : ∀ a, lev a < M) (s : Bool) (Y r : ℂ) (V : Type) [AddCommGroup V] [Module ℂ V]
@@ -173,11 +171,11 @@ def sg (lev : Fin n → ℕ) (j : ℕ) : ℂ :=
   (((univ.filter fun b => j < lev b).card : ℂ) - ((univ.filter fun b => lev b < j).card : ℂ)) / 2
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun a => (⟨lev a, hM a⟩ : Fin M)) (t := univ.filter fun b : Fin M => P (b : ℕ))]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hb' : P (b : ℕ)` using `(Finset.mem_filter.1 hb).2`. Unfold `sz`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a`. Simplify using `only [mem_filter, mem_univ, true_and, Fin.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h ▸ hb', h⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun h => h.2`. Introduce `a ha`. Simplify using `using ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_sz (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) (P : ℕ → Prop) [DecidablePred P] :
     ∑ b ∈ univ.filter (fun b : Fin M => P (b : ℕ)), sz lev M b = (univ.filter fun a => P (lev a)).card := by
@@ -197,9 +195,9 @@ theorem sum_sz (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) (P : ℕ 
     simpa using ha
 
 /- English proof (translation)
-Establish `h1` using `sum_sz M lev hM (fun b => (i : ℕ) < b)`. Establish `h2` using `sum_sz M lev hM (fun b => b < (i : ℕ))`. Establish `e1 : (univ.filter fun b : Fin M => i < b) = univ.filter fun b : Fin M => (i : ℕ) < b` using `rfl`. Establish `e2 : (univ.filter fun b : Fin M => b < i) = univ.filter fun b : Fin M => (b : ℕ) < i` using `rfl`. Simplify using `only [GlobalTheory.SmGL.modExp, Fintype.card_fin, sg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Use `push_cast`. Rewrite using `[← Nat.cast_sum, ← Nat.cast_sum, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem modExp_sz (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) (i : Fin M) :
     ((GlobalTheory.SmGL.modExp (fun i => Fin (sz lev M i)) i : ℤ) : ℂ) / 2 = sg lev i := by
@@ -213,9 +211,9 @@ theorem modExp_sz (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) (i : F
   rw [← Nat.cast_sum, ← Nat.cast_sum, h1, h2]
 
 /- English proof (translation)
-Establish `hs : StrictMono fun p : Fin (sz lev M i) => stdBlocks (sz lev M) h ⟨i, p⟩` using `fun p q hpq => by`. Rewrite using `[Fin.lt_def, GlobalTheory.SmGL.stdBlocks_val, GlobalTheory.SmGL.stdBlocks_val]`. Establish `: (p : ℕ) < q` using `hpq`. Use linear arithmetic over natural numbers and integers. Establish `hf : ∀ p : Fin (sz lev M i), stdBlocks (sz lev M) h ⟨i, p⟩ ∈ blk lev (i : ℕ)` using `fun p => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify `GlobalTheory.CompanionTheory.RgCOBlock.lev_stdBlocks lev h hm i p` using `[blk]`. Conclude with `Finset.orderEmbOfFin_unique (s := blk lev (i : ℕ)) rfl hf hs`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem std_eq_blkE (M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = n) (hm : Monotone lev) (i : Fin M) :
     (fun p : Fin (sz lev M i) => stdBlocks (sz lev M) h ⟨i, p⟩) = blkE lev (i : ℕ) := by
@@ -228,9 +226,9 @@ theorem std_eq_blkE (M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = n) 
   exact Finset.orderEmbOfFin_unique (s := blk lev (i : ℕ)) rfl hf hs
 
 /- English proof (translation)
-Establish `e : ∀ (t : ℕ) (a b : Fin t → Fin n) (x : ℂ), t = 0 → qminor F a b x = 1`. Introduce and unpack `t a b x rfl`. Simplify using `[qminor]`. Use `e _ _ _ _ ?_` and prove the remaining obligations. Use `Finset.card_eq_zero.2 (Finset.filter_eq_empty_iff.2 fun a _ ha => hj ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.mem_image.2 ⟨a, mem_univ _, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem capS_empty {W : Type} [AddCommGroup W] [Module ℂ W] (F : Fin n → Fin n → Module.End ℂ W) (lev : Fin n → ℕ)
     (j : ℕ) (u : ℂ) (hj : j ∉ univ.image lev) : capS F lev j u = 1 := by
@@ -242,9 +240,9 @@ theorem capS_empty {W : Type} [AddCommGroup W] [Module ℂ W] (F : Fin n → Fin
   exact Finset.mem_image.2 ⟨a, mem_univ _, ha⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons x l ih`. Distinguish the cases in `hx : p x`. Simplify using `[List.filter_cons, hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[List.filter_cons, hx, ih, hg x hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_filter {A : Type} [Monoid A] (g : ℕ → A) (p : ℕ → Prop) [DecidablePred p] (hg : ∀ j, ¬p j → g j = 1) (l : List ℕ) :
     ((l.filter fun j => decide (p j)).map g).prod = (l.map g).prod := by
@@ -256,9 +254,9 @@ theorem prod_filter {A : Type} [Monoid A] (g : ℕ → A) (p : ℕ → Prop) [De
     · simp [List.filter_cons, hx, ih, hg x hx]
 
 /- English proof (translation)
-Establish `hp : (univ.image lev).sort (· ≤ ·) |>.Perm ((List.range M).filter fun j => decide (j ∈ univ.image lev))`. Use `(List.perm_ext_iff_of_nodup (Finset.sort_nodup _ _) ((List.nodup_range).filter _)).2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_sort, List.mem_filter, List.mem_range, decide_eq_true_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hj`. Conclude with `⟨hM a, Finset.mem_image.2 ⟨a, mem_univ _, rfl⟩⟩`. Conclude with `fun hj => hj.2`. Conclude with `hp.eq_of_pairwise' (Finset.pairwise_sort _ _) ((List.pairwise_lt_range.imp le_of_lt).filter _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem levs_eq (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) :
     levs lev = (List.range M).filter fun j => decide (j ∈ univ.image lev) := by
@@ -273,13 +271,13 @@ theorem levs_eq (M : ℕ) (lev : Fin n → ℕ) (hM : ∀ a, lev a < M) :
   exact hp.eq_of_pairwise' (Finset.pairwise_sort _ _) ((List.pairwise_lt_range.imp le_of_lt).filter _)
 
 /- English proof (translation)
-Establish `hlev` using `(GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters n M lev h hm hM).1`. Rewrite using `[GlobalTheory.CompanionTheory.RgCOBlock.evL_fb lev (sz lev M) h hlev]`. Establish `hblk : ∀ i : Fin M, qdet (fun p q : Fin (sz lev M i) => F (stdBlocks (sz lev M) h ⟨i, p⟩) (stdBlocks (sz lev M) h ⟨i, q⟩)) (Y + ((sz lev M i : ℂ) - 1) / 2 - (GlobalTheory.SmGL.modExp (fun i => Fin (sz lev M i)) i : ℂ) / 2) = capS F lev (i : ℕ) (Y - sg lev i)` using `fun i => by`. Establish `hinj : Function.Injective fun p : Fin (sz lev M i) => stdBlocks (sz lev M) h ⟨i, p⟩` using `fun p q hpq => by`. Use `(stdBlocks (sz lev M) h).injective hpq` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Unfold `qdet capS`. Rewrite using `[GlobalTheory.CompanionTheory.RgHeSM.qminor_restrict F _ hinj, modExp_sz M lev hM i]`. Simplify using `only [Function.comp_id]`. Rewrite using `[std_eq_blkE M lev h hm i]`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show _ = Y - sg lev i + (((sz lev M i : ℕ) : ℂ) - 1) / 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : (List.ofFn fun i : Fin M => capS F lev (i : ℕ) (Y - sg lev i)) = (List.range M).map fun j => capS F lev j (Y - sg lev j)`. Rewrite using `[List.ofFn_eq_map, ← List.map_coe_finRange_eq_range, List.map_map]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [hblk]`. Rewrite using `[hg, capProd, levs_eq M lev hM, prod_filter _ _ (fun j hj => capS_empty F lev j _ hj)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evL_fb_capProd (M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = n) (hm : Monotone lev) (hM : ∀ a, lev a < M)
     {W : Type} [AddCommGroup W] [Module ℂ W] (F : Fin n → Fin n → Module.End ℂ W) (Y : ℂ) :
@@ -307,15 +305,15 @@ theorem evL_fb_capProd (M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = 
   rw [hg, capProd, levs_eq M lev hM, prod_filter _ _ (fun j hj => capS_empty F lev j _ hj)]
 
 /- English proof (translation)
-Establish `hcard : (((univ.filter fun b => j < lev b).card : ℝ) + ((univ.filter fun b => lev b < j).card : ℝ) + ((blk lev j).card : ℝ)) = n`. Establish `e : (univ.filter fun b => j < lev b).card + (univ.filter fun b => lev b < j).card + (blk lev j).card = n`. Unfold `blk`. Simplify using `only [Finset.card_filter]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ a : Fin n, ((if j < lev a then 1 else 0) + (if lev a < j then 1 else 0) + (if lev a = j then 1 else 0) : ℕ) = 1`. Introduce `a`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[this]`. Conclude with `e` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.CompanionTheory.PairMult.Asm.level_sum lev hm j`. Establish `hr : ∀ a ∈ blk lev j, rhoU lev a = (((univ.filter fun b => j < lev b).card : ℝ) - ((univ.filter fun b => lev b < j).card : ℝ)) / 2` using `fun a ha => by`. Establish `: lev a = j` using `(Finset.mem_filter.1 ha).2`. Simplify using `only [rhoU, this]`. Establish `e1 : ∑ a ∈ blk lev j, (muQ lam lev a + 2 * rhoU lev a) = 2 * ∑ a ∈ blk lev j, (lam a : ℝ) + ((blk lev j).card : ℝ) * (2 * (((univ.filter fun b => j < lev b).card : ℝ) - ((univ.filter fun b => lev b < j).card : ℝ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, ← nsmul_eq_mul, ← Finset.sum_const, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [muQ, hr a ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ a ∈ blk lev j, Lr lam a = ∑ a ∈ blk lev j, (lam a : ℝ) + ((blk lev j).card : ℝ) * (((n : ℝ) - 1) / 2) - ∑ a ∈ blk lev j, ((a : ℕ) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← nsmul_eq_mul, ← Finset.sum_const, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `2 * ∑ a ∈ blk lev j, ((a : ℕ) : ℝ) = 2 * ((blk lev j).card : ℝ) * ((univ.filter fun a => lev a < j).card : ℝ) + ((blk lev j).card : ℝ) * (((blk lev j).card : ℝ) - 1) at hs`. Rewrite using `[e1, e2]`. Take the linear combination `((blk lev j).card : ℝ) * hcard + hs`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem shift_real (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hm : Monotone lev) (j : ℕ) :
     (∑ a ∈ blk lev j, (muQ lam lev a + 2 * rhoU lev a)) - ((blk lev j).card : ℝ) *
@@ -353,7 +351,7 @@ theorem shift_real (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hm : Monotone le
   linear_combination ((blk lev j).card : ℝ) * hcard + hs
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun x : ℝ => (x : ℂ)) (shift_real lam lev hm j)`. Simplify using `only [sg]`. Move the coercions through the operations in `at e ⊢`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shift_id (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hm : Monotone lev) (j : ℕ) :
     (∑ a ∈ blk lev j, ((muQ lam lev a + 2 * rhoU lev a : ℝ) : ℂ)) - ((blk lev j).card : ℂ) * (sg lev j + sg lev j) =
@@ -365,19 +363,17 @@ theorem shift_id (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hm : Monotone lev)
   ring
 
 /- English proof (translation)
-Introduce `n lam _ lev hlev`. Use `⟨sg lev, sg lev, shift_id lam lev hlev.1, ?_⟩` and prove the remaining obligations. Introduce `V _ _ E1 E2 hA v hv u`. Take `⟨M, hM⟩ : ∃ M, ∀ a, lev a < M` from `⟨univ.sup lev + 1, fun a => Nat.lt_succ_of_le (Finset.le_sup (f := lev) (mem_univ a))⟩`. Establish `h : ∑ i, sz lev M i = n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using sum_sz M lev hM (fun _ => True)`. Establish `hP : IsPairA E1 E2` using `⟨hA.gl1, hA.gl2, hA.comm⟩`. Establish `hLχ : (fun a => ((Lr lam a : ℝ) : ℂ)) = infOf lam true`. Use function extensionality and compare the values at `a`. Simplify using `[Lr, infOf]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hneg : (fun a => -infOf lam true a) = infOf lam false`. Use function extensionality and compare the values at `a`. Simplify using `[infOf]`. Establish `hcap : Formalism.QuantumDeterminants.capP (infOf lam true) u = ∏ a, (u + (Lr lam a : ℂ))`. Rewrite using `[← hLχ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hq1 : qdet E1 (u + ((n : ℂ) - 1) / 2) = (∏ a, (u + (Lr lam a : ℂ))) • (1 : Module.End ℂ V)`. Rewrite using `[← hcap]`. Conclude with `hC n V E1 (infOf lam true) hA.gl1 hA.ch1 u`. Establish `hq2 : qdet E2 (u + ((n : ℂ) - 1) / 2) = (∏ a, (u + (Lr lam a : ℂ))) • (1 : Module.End ℂ V)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcap]`. Conclude with `hD n V E2 (infOf lam true) hA.gl2 (by rw [hneg]; exact hA.ch2) u`. Establish `hk : ∀ l : Lt n, l.1 = false → inUU lev l → xL E1 E2 l v = 0`. Introduce and unpack `⟨s, i⟩ rfl -`. Conclude with `hv.2 i.1.1 i.1.2 i.2 rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c1` using `co_class hAct M lev h hlev.1 hM true u _ V E1 E2 hP hq1 v hk`. Establish `c2` using `co_class hAct M lev h hlev.1 hM false u _ V E1 E2 hP hq2 v hk`. Rewrite `c1`, `c2` using `[evL_fb_capProd M lev h hlev.1 hM]`. Prove the components needed by the constructor for the conclusion. Simplify using `using (bdSub lev E1 E2).neg_mem c1`.
-
-Simplify using `using (bdSub lev E1 E2).neg_mem c2`.
+Prove the components needed by the constructor for the conclusion. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem capCls_of (hAct : ActUU) (hC : GlobalTheory.CompanionTheory.PairMult.CapOne) (hD : GlobalTheory.CompanionTheory.PairMult.DualCap) : CapCls := by
   intro n lam _ lev hlev

@@ -5,19 +5,15 @@ namespace GlobalTheory.AbelianStatement
 open Module
 
 /- English proof (translation)
-Set `π : V →ₗ[PowerSeries k] (V ⧸ LinearMap.range f)` to `(LinearMap.range f).mkQ.restrictScalars (PowerSeries k)`. Set `P : Submodule (PowerSeries k) (V ⧸ LinearMap.range f)` to `N.map π`. Use `haveI : Module.Finite (PowerSeries k) P := Module.Finite.iff_fg.mpr (hN.map π)`. Use `haveI : FaithfulSMul (PowerSeries k) (LaurentSeries k) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective _ _)`. Use `haveI : IsTorsionFree (PowerSeries k) (V ⧸ LinearMap.range f) := IsTorsionFree.trans_faithfulSMul (PowerSeries k) (LaurentSeries k) _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsTorsionFree (PowerSeries k) P := inferInstance`. Set `B` to `Module.finBasis (PowerSeries k) P`. Establish `hB : ∀ j, ∃ v ∈ N, π v = (B j : V ⧸ LinearMap.range f)` using `fun j => (B j).2`. Use `choose b hbN hb using hB`. Use `⟨_, b, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ((LinearMap.range f).mkQ : V → V ⧸ LinearMap.range f) ∘ b = (Subtype.val : P → V ⧸ LinearMap.range f) ∘ B`. Use function extensionality and compare the values at `j`. Conclude with `hb j`. Rewrite using `[e, ← LinearIndependent.iff_fractionRing (PowerSeries k) (LaurentSeries k)]`. Conclude with `B.linearIndependent.map' P.subtype (Submodule.ker_subtype _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Establish `hyP : π y ∈ P` using `Submodule.mem_map_of_mem hy`. Use `set c := B.repr ⟨π y, hyP⟩ with hc`. Establish `hsum` using `congrArg Subtype.val (B.sum_repr ⟨π y, hyP⟩)`. Establish `h0 : π (y - ∑ j, c j • b j) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul, hb]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hsum`. Rewrite using `[hsum, sub_self]`. Establish `hz : y - ∑ j, c j • b j ∈ LinearMap.range f` using `(Submodule.Quotient.mk_eq_zero _).mp h0`.
-
-Take `⟨x, hx⟩` from `hz`. Use `⟨c, x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `N.sub_mem hy (N.sum_mem fun j _ => N.smul_mem _ (hbN j))`. Rewrite using `[hx]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem main {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module (LaurentSeries k) V]
     [Module (PowerSeries k) V] [IsScalarTower (PowerSeries k) (LaurentSeries k) V]

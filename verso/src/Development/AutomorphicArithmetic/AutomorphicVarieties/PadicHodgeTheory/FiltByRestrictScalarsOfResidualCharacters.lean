@@ -8,16 +8,16 @@ private def Reach {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module
     ∃ κ ∈ S, ∃ x, F (i + 1) = F i ⊔ Submodule.span A {x} ∧ ∀ g, ρ g x - ((κ g : Aˣ) : A) • x ∈ F i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ => ⊥, rfl, rfl, fun i hi => absurd hi (Nat.not_lt_zero i)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem reach_bot {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module A V]
     (ρ : Representation A G V) (S : Set (G →* Aˣ)) : Reach ρ S ⊥ :=
   ⟨0, fun _ => ⊥, rfl, rfl, fun i hi => absurd hi (Nat.not_lt_zero i)⟩
 
 /- English proof (translation)
-Take `⟨n, F, h0, hn, hs⟩` from `h`. Use `⟨n + 1, fun i => if i ≤ n then F i else U ⊔ Submodule.span A {x}, by simp [h0], by simp, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with hi | rfl` into its components or cases. Establish `h1 : i ≤ n` using `hi.le`. Establish `h2 : i + 1 ≤ n` using `hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h1, h2, if_true]`. Conclude with `hs i hi`. Establish `h2 : ¬ (i + 1 ≤ i)` using `by omega`. Simplify using `only [h2, le_refl, if_true, if_false, hn]`. Conclude with `⟨le_sup_left, κ, hκ, x, rfl, hx⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem reach_step {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module A V]
     {ρ : Representation A G V} {S : Set (G →* Aˣ)} {U : Submodule A V} (h : Reach ρ S U)
@@ -35,11 +35,11 @@ private theorem reach_step {G A V : Type} [Group G] [CommRing A] [AddCommGroup V
     exact ⟨le_sup_left, κ, hκ, x, rfl, hx⟩
 
 /- English proof (translation)
-Proceed by induction on `T, hT using Set.Finite.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `using h`. Consider the case `@insert a s ha hs ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hall`. Establish `hr` using `ih (fun y hy => hall y (Set.mem_insert_of_mem a hy))`. Take `⟨κ, hκ, hk⟩` from `hall a (Set.mem_insert a s)`. Establish `hr2` using `reach_step hr hκ (x := a) (fun g => Submodule.mem_sup_left (hk g))`. Establish `e : U ⊔ Submodule.span A (insert a s) = U ⊔ Submodule.span A s ⊔ Submodule.span A {a}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_insert]`. The two sides agree by associativity and commutativity. Rewrite using `[e]`. Conclude with `hr2`.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reach_fin {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module A V]
     {ρ : Representation A G V} {S : Set (G →* Aˣ)} {U : Submodule A V} (h : Reach ρ S U)
@@ -61,45 +61,37 @@ private theorem reach_fin {G A V : Type} [Group G] [CommRing A] [AddCommGroup V]
     exact hr2
 
 /- English proof (translation)
-Introduce `G E B V _ _ _ _ _ _ _ _ _ π hπ ρ S ι _ x κ hx hκ hstep`. Establish `hnil : IsNilpotent (RingHom.ker (π : B →+* E))` using `by haveI : IsNoetherianRing B := isNoetherian_of_tower E inferInstance`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]`. Introduce `a ha`. Conclude with `mem_nilradical.mpr (hπ a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hnil`. Take `⟨M, hM⟩ : ∃ M : ℕ → Submodule E V, ∀ k, M k = ((RingHom.ker (π : B →+* E)) ^ k • (⊤ : Submodule B V)).restrictScalars E` from `⟨_, fun _ => rfl⟩`. Establish `hMm : ∀ k v, v ∈ M k ↔ v ∈ (RingHom.ker (π : B →+* E)) ^ k • (⊤ : Submodule B V)`. Introduce `k v`. Rewrite using `[hM, Submodule.restrictScalars_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `down : ∀ p, Reach (resCoef E ρ) S (M (p + 1)) → Reach (resCoef E ρ) S (M p)`. Introduce `p h`. Establish `hfg : (((RingHom.ker (π : B →+* E)) ^ p).restrictScalars E).FG` using `IsNoetherian.noetherian _`. Take `⟨s, hsf, hs⟩` from `Submodule.fg_def.mp hfg`. Establish `hsub : ∀ a ∈ s, a ∈ (RingHom.ker (π : B →+* E)) ^ p` using `fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a ∈ ((RingHom.ker (π : B →+* E)) ^ p).restrictScalars E` using `hs ▸ Submodule.subset_span ha`. Conclude with `this`. Establish `hTf : (Set.image2 (fun a j => a • x j) s (Set.univ : Set ι)).Finite` using `hsf.image2 _ Set.finite_univ`. Establish `hr` using `reach_fin (ρ := resCoef E ρ) (S := S) h hTf (by`. Introduce and unpack `y ⟨a, ha, j, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨κ j, hκ j, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hMm]`. Use `show ρ g (a • x j) - ((κ j g : Eˣ) : E) • (a • x j) ∈ ((RingHom.ker (π : B →+* E)) ^ (p + 1) • (⊤ : Submodule B V))`. Rewrite using `[map_smul, smul_comm ((κ j g : Eˣ) : E) a, ← smul_sub, pow_succ, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul (hsub a ha) (hstep g j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `claim : ∀ n ∈ Submodule.span B (Set.range x), ∀ a ∈ (RingHom.ker (π : B →+* E)) ^ p, a • n ∈ Submodule.span E (Set.image2 (fun a j => a • x j) s (Set.univ : Set ι))`. Introduce `n hn`. Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce `a ha`. Establish `ha' : a ∈ Submodule.span E s`. Rewrite using `[hs]`. Conclude with `ha`. Use `clear ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `ha' using Submodule.span_induction with`. Consider the case `mem b hb => exact Submodule.subset_span ⟨b, hb, j, trivial, rfl⟩`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc`. Rewrite using `[add_smul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem hb hc`. Consider the case `smul c b _ hb`. Rewrite using `[smul_assoc]`. Conclude with `Submodule.smul_mem _ c hb`. Consider the case `zero => intro a _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`. Introduce `a ha`. Rewrite using `[smul_add]`. Conclude with `add_mem (hy a ha) (hz a ha)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul b y _ hy`. Introduce `a ha`. Rewrite using `[smul_smul]`. Conclude with `hy (a * b) (Ideal.mul_mem_right b _ ha)`. Establish `e : M p = M (p + 1) ⊔ Submodule.span E (Set.image2 (fun a j => a • x j) s (Set.univ : Set ι))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Rewrite `hv` using `[hMm]`. Use `Submodule.smul_induction_on hv ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha n _`. Conclude with `claim n (by rw [hx]; trivial) a ha`. Introduce `y z hy hz`. Conclude with `add_mem hy hz`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `v hv`. Rewrite `hv`, the goal using `[hMm]`. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ p)) hv`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨a, ha, j, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show a • x j ∈ M p`. Rewrite using `[hMm]`. Conclude with `Submodule.smul_mem_smul (hsub a ha) trivial`. Rewrite using `[e]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `base : M N = ⊥`. Rewrite using `[hM, hN, Submodule.zero_eq_bot, Submodule.bot_smul, Submodule.restrictScalars_bot]`. Establish `all : ∀ k, Reach (resCoef E ρ) S (M (N - k))`. Introduce `k`. Proceed by induction on `k with`.
-
-Consider the case `zero`. Rewrite using `[Nat.sub_zero, base]`. Conclude with `reach_bot _ _`. Consider the case `succ k ih`. Break down `Nat.lt_or_ge k N with hk | hk` into its components or cases.
-
-Establish `e : N - k = (N - (k + 1)) + 1` using `by omega`. Rewrite `ih` using `[e]`. Conclude with `down _ ih`. Establish `e : N - (k + 1) = N - k` using `by omega`. Rewrite using `[e]`.
-
-Conclude with `ih`. Establish `top : M 0 = ⊤`. Rewrite using `[hM, pow_zero, Ideal.one_eq_top, Submodule.top_smul, Submodule.restrictScalars_top]`. Establish `fin` using `all N`. Rewrite `fin` using `[Nat.sub_self, top]`.
-
-Conclude with `fin`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.filtBy_restrictScalars_of_residual_characters :
     ∀ {G E B V : Type} [Group G] [Field E] [CommRing B] [Algebra E B] [Module.Finite E B] [AddCommGroup V] [Module B V] [Module E V] [IsScalarTower E B V] (π : B →ₐ[E] E), (∀ a, π a = 0 → IsNilpotent a) → ∀ (ρ : Representation B G V) (S : Set (G →* Eˣ)) {ι : Type} [Finite ι] (x : ι → V) (κ : ι → G →* Eˣ), Submodule.span B (Set.range x) = ⊤ → (∀ j, κ j ∈ S) → (∀ g j, ρ g (x j) - ((κ j g : Eˣ) : E) • x j ∈ (RingHom.ker (π : B →+* E)) • (⊤ : Submodule B V)) → FiltBy (resCoef E ρ) S := by

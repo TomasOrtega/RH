@@ -36,9 +36,9 @@ namespace Formalism.MainNotions.UnusedSlot80
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.WachCoordinates.Br
 
 /- English proof (translation)
-Establish `hmem : (D.loc l).ζQ 1 ∈ Ks K 1`. Apply `(le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ Ks K 1)` to reduce the goal to its premises. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Use `show (D.loc l).ζQ 1 ^ (l ^ 1) = 1`. Rewrite using `[pow_one, (D.loc l).ζQ_succ 0, (D.loc l).ζQ_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLL : (D.loc l).ζQ 1 ∈ LL.1` using `hG.2.2.2 (Ks K 1).val ⟨_, hmem⟩`. Use `⟨⟨_, hLL⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := LL.1.val) (hf := Subtype.val_injective) (LevR.root_of_unity_primitive D l)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_prim_of_good (D : D7) {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (hG : Good K 1 LL) :
     ∃ ζ : ↥LL.1, IsPrimitiveRoot ζ l := by
@@ -53,9 +53,9 @@ theorem exists_prim_of_good (D : D7) {l : ℕ} [Fact l.Prime] {K LL : FinExt l} 
     (LevR.root_of_unity_primitive D l)
 
 /- English proof (translation)
-Introduce `l _ K LL hG hCA h5l A hA c' hc' T hT d b sol hb e`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Establish `C` using `ctx_of D HW F Cm hAdm l K LL hG hCA h5l`. Establish `Ti` using `levETie_of D HW F Cm h4 l K LL hG`. Establish `E1` using `LevE.expFrame0_of Ti C.hs C.hR C.hp0 C.h5 C.hH C.hCA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E2` using `LevE.expNoNeg0_of Ti C.hs C.hR C.hp0 C.h5`. Establish `h4'` using `Strict.p4YL D HW F (levCoeff_of_pt D HW F Cm h4 (points_exist_of_ring_condition D HW F h9)) l K LL hG hCA h5l`. Take `⟨ζ, hζ⟩` from `exists_prim_of_good D hG`. Establish `hζ' : ∃ ζ : ↥LL.1, IsPrimitiveRoot ζ ((D.loc l).PD K).p` using `⟨ζ, by rw [(D.loc l).PD_p]; exact hζ⟩`. Conclude with `hW l K LL hG hCA h5l C Ti E1 E2 h4' hζ' A hA c' hc' T hT b sol hb e`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev0MpL_of_from (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hAdm : AdmArcA D HW F Cm) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
@@ -75,7 +75,7 @@ theorem lev0MpL_of_from (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (
   exact hW l K LL hG hCA h5l C Ti E1 E2 h4' hζ' A hA c' hc' T hT b sol hb e
 
 /- English proof (translation)
-The claim follows from `lev0MpL_of_from D HW F Cm hAdm h4 h9 fun l _ K LL hG _ _ => by haveI := neZero_finrank_max_unramified K haveI := eq_sum_herm_smul_frame_of_inW (D.loc l) K LL intro C Ti E1 E2 h4' hζ A hA c' hc' T hT d b sol hb e exact CrC.level_zero_membership_of_horizontal _ _ C Ti E1 E2 h4' hζ …`.
+A detailed English derivation is pending.
 -/
 theorem lev0MpL_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hAdm : AdmArcA D HW F Cm) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) : LevelZeroModPLocal D HW :=

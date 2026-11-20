@@ -10,13 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ProjModelSurj
 
 /- English proof (translation)
-Take `⟨N, i, hi, hs⟩` from `hM`. Use `haveI : IsProper (PSpace.str o N) := isProper_str o N`. Use `haveI : IsProper M.s := hs ▸ inferInstance`. Use `haveI : IsSeparated X.s := X.sep`. Use `haveI : IsProper (f ≫ X.s) := by rw [hf.inducedModelMorphism_comp_structureMap]; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsProper f := IsProper.of_comp f X.s`. Establish `hcl : IsClosed (Set.range f)` using `f.isClosedMap.isClosed_range`. Establish `hgen : genericPoint X.Z ∈ Set.range f`. Establish `w : Sp Ω` using `IsLocalRing.closedPoint Ω`. Use `⟨M.pt w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h : (M.pt ≫ f) w = (spMap (AlgHom.id o Ω).toRingHom ≫ X.pt) w` using `by rw [hf]`. Simplify using `only [Scheme.Hom.comp_apply] at h`. Rewrite using `[h]`. Conclude with `X.pt_apply _`. Introduce `x`.
-
-Take `⟨y, hy⟩` from `(genericPoint_specializes x).mem_closed hcl hgen`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_of_isProjOver (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (X M : RatModel o Ω) (f : M.Z ⟶ X.Z)
     (hf : X.IsHom M (AlgHom.id o Ω) f) (hM : IsProjOver M.s) : Function.Surjective f := by
@@ -41,7 +39,7 @@ theorem surjective_of_isProjOver (o Ω : Type) [CommRing o] [Field Ω] [Algebra 
 end GlobalTheory.ProjModelSurj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProjModelSurj.surjective_of_isProjOver`.
+A detailed English derivation is pending.
 -/
 example : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (X M : RatModel o Ω) (f : M.Z ⟶ X.Z),
     X.IsHom M (AlgHom.id o Ω) f → IsProjOver M.s → Function.Surjective f := GlobalTheory.ProjModelSurj.surjective_of_isProjOver

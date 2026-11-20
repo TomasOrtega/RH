@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.Br
 
 /- English proof (translation)
-Introduce `hres hgaga E _ _ _ H D l Xo c O _ β Y _ U Z τ φ N _ χ hχ hO hpq hτ hcl hZ hflat hinf hfin`. Take `⟨g, ty, FU, i, hty, hin⟩` from `GlobalTheory.T.family_uniformization_type_relay E H D l Xo c U hpq hcl ⟨_, Z.genPt_mem⟩`. Establish `hA` using `GlobalTheory.T.flat_first_from_resolution_and_gaga hres hgaga E H D l Xo c O β Y U Z τ φ hO hpq hτ hZ hflat.isLineFn hflat`. Conclude with `GlobalTheory.CompanionTheory.Ar.Fl.TopLL.degree_frames GlobalTheory.T.FlatDegree_holds E H D l Xo c g ty FU i U τ φ N χ hχ hty hτ (hA.2 g ty FU i hty hin) hinf hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem degree_of_flatOnModel : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [NumberField c.F] (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (φ : FrameFn Xo c) (N : LogNorms c.F) [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → FracBase β → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → IsClopen U → Z.IsGeom → FlatOnModel Z τ φ → (∀ s, HasInfNorm U τ φ s (N.inf s)) → (∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), HasFinNorm U τ φ p κ (N.fin p κ)) → N.IsAdelic ∧ N.deg = ((D.p : ℝ) - D.q) / 2 * (GlobalTheory.CM.logOm E χ).re := by
   intro hres hgaga E _ _ _ H D l Xo c O _ β Y _ U Z τ φ N _ χ hχ hO hpq hτ hcl hZ hflat hinf hfin

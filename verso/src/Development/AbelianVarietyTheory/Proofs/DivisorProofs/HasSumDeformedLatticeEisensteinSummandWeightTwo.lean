@@ -7,7 +7,7 @@ namespace GlobalTheory.WeightTwoCompare
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ih, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodCpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f j) (w : ℂ) :
     ∏ j ∈ t, ((f j : ℝ) : ℂ) ^ w = (((∏ j ∈ t, f j : ℝ)) : ℂ) ^ w := by
@@ -19,7 +19,7 @@ theorem prodCpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f 
       Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j)]
 
 /- English proof (translation)
-Establish `hn : ((‖h‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hh`. Rewrite using `[Complex.cpow_def_of_ne_zero hn, ← Complex.ofReal_log (norm_nonneg _), Complex.normSq_eq_norm_sq, Real.log_pow]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_cpow_eq_exp {h : ℂ} (hh : h ≠ 0) (σ : ℂ) :
     ((‖h‖ : ℝ) : ℂ) ^ (-2 * σ) = Complex.exp (-σ * ((Real.log (Complex.normSq h) : ℝ) : ℂ)) := by
@@ -33,9 +33,9 @@ theorem norm_cpow_eq_exp {h : ℂ} (hh : h ≠ 0) (σ : ℂ) :
 variable [IsCMField E]
 
 /- English proof (translation)
-Establish `h1` using `one_add_ne_zero hz i`. Establish `hπ : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero this) Complex.I_ne_zero`. Simplify using `only [defCoord, latPt, modPt, Equiv.symm_apply_apply, map_add, map_mul, he, Complex.conj_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem defCoord_eq (φ : I → E →+* ℂ) (e : I ≃ Emb (maximalRealSubfield E))
     (he : ∀ (i : I) (a : maximalRealSubfield E), φ i (a : E) = ((e i a : ℝ) : ℂ)) (θ : E) {z : I → ℂ}
@@ -51,13 +51,11 @@ theorem defCoord_eq (φ : I → E →+* ℂ) (e : I ≃ Emb (maximalRealSubfield
   ring
 
 /- English proof (translation)
-Use `set w := latPt (modPt φ e θ z) (a, b)`. Use `set c : I → ℂ := fun i => (1 + z i) / (2 * (Real.pi : ℂ) * Complex.I)`. Establish `hc : homFac z = ∏ i, c i` using `rfl`. Establish `hw : ∏ τ, w τ = ∏ i, w (e i)` using `(Equiv.prod_comp e w).symm`. Unfold `defTerm eisTerm logFac`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [defCoord_eq φ e he θ hz a b]`. Rewrite using `[Finset.prod_mul_distrib]`. Establish `h1 : ∏ i, (c i * w (e i))⁻¹ ^ 2 = (homFac z)⁻¹ ^ 2 * (∏ τ, w τ)⁻¹ ^ 2`. Rewrite using `[hc, hw, ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_inv, mul_pow]`. Establish `h2 : ∏ i, ((‖c i * w (e i)‖ : ℝ) : ℂ) ^ (-2 * σ) = ((‖homFac z‖ : ℝ) : ℂ) ^ (-2 * σ) * ((‖∏ τ, w τ‖ : ℝ) : ℂ) ^ (-2 * σ)`. Rewrite using `[prodCpow _ _ (fun i => norm_nonneg _), hc, hw, norm_prod, norm_prod, ← Complex.mul_cpow_ofReal_nonneg (Finset.prod_nonneg fun i _ => norm_nonneg _) (Finset.prod_nonneg fun i _ => norm_nonneg _), ← Complex.ofReal_mul, ← Finset.prod_mul_distrib]`. Simplify using `only [norm_mul]`. Rewrite using `[h1, h2, norm_cpow_eq_exp (homFac_ne_zero hz)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem defTerm_eq (φ : I → E →+* ℂ) (e : I ≃ Emb (maximalRealSubfield E))
     (he : ∀ (i : I) (a : maximalRealSubfield E), φ i (a : E) = ((e i a : ℝ) : ℂ)) (θ : E) {z : I → ℂ}
@@ -92,11 +90,11 @@ namespace GlobalTheory.WeightTwoCompare
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Use `⟨Subtype.ext ?_, rfl⟩` and prove the remaining obligations. Simplify using `using h`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction.
 
-Apply `hθ` to reduce the goal to its premises. Establish `hb' : ((b : E) - (b' : E)) ≠ 0`. Introduce `h0`. Apply `hb` to reduce the goal to its premises. Conclude with `Subtype.ext (sub_eq_zero.1 h0)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: θ = ((a' : E) - (a : E)) / ((b : E) - (b' : E))`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`. Rewrite using `[this]`. Conclude with `div_mem (sub_mem a'.2 a.2) (sub_mem b.2 b'.2)`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_add_mul {θ : E} (hθ : θ ∉ maximalRealSubfield E) {a b a' b' : maximalRealSubfield E}
     (h : (a : E) + (b : E) * θ = (a' : E) + (b' : E) * θ) : a = a' ∧ b = b' := by
@@ -142,17 +140,15 @@ namespace GlobalTheory.WeightTwoCompare
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c c' h`. Establish `h1` using `Quotient.exact (congrArg Subtype.val h)`. Take `⟨u, hu⟩` from `h1`. Rewrite `hu` using `[algebraMap_unit, mul_add, ← mul_assoc, ← Subfield.coe_mul, ← Subfield.coe_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ha, hb⟩` from `eq_of_add_mul hθ hu`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Conclude with `Quotient.sound ⟨u, ha, hb⟩`. Introduce and unpack `⟨q, x, hxL, hx0, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `(hL x).1 hxL`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : ((a, b) : maximalRealSubfield E × maximalRealSubfield E) ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `h1 : a = 0` using `congrArg Prod.fst h0`. Establish `h2 : b = 0` using `congrArg Prod.snd h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Set `p : LatPair 𝔞 𝔟` to `⟨(a, b), ha, hb, hp⟩`. Use `⟨Quotient.mk _ p, Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨ε, h1, h2⟩ : (latRel 𝔞 𝔟).r (Quotient.mk (latRel 𝔞 𝔟) p).out p` from `Quotient.exact (Quotient.out_eq _)`. Use `show Quotient.mk _ _ = Quotient.mk _ _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Quotient.sound ⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_unit]`. Establish `e1 : a = p.1.1` using `rfl`. Establish `e2 : b = p.1.2` using `rfl`. Rewrite using `[e1, e2, h1, h2, Subfield.coe_mul, Subfield.coe_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem classMap_bijective (𝔞 𝔟 : Frac (maximalRealSubfield E)) (θ : E) (L : Set E) (hθ : θ ∉ maximalRealSubfield E)
     (hL : ∀ x : E, x ∈ L ↔ ∃ a ∈ latM 𝔞, ∃ b ∈ (𝔟 : FractionalIdeal (𝓞 (maximalRealSubfield E))⁰ (maximalRealSubfield E)),
@@ -190,13 +186,11 @@ end GlobalTheory.WeightTwoCompare
 namespace GlobalTheory.WeightTwoCompare
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ e he 𝔞 𝔟 θ L hθ hL z hz σ S hS`. Set `g` to `Equiv.ofBijective _ (classMap_bijective 𝔞 𝔟 θ L hθ hL)`. Rewrite using `[← g.hasSum_iff]`. Establish `key1 : ∀ c, defTerm φ 2 z σ (g c).1.out = (homFac z)⁻¹ ^ 2 * Complex.exp (-σ * logFac z) * eisClass 𝔞 𝔟 2 σ (modPt φ e θ z) c`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set x : E := (c.out.1.1 : E) + (c.out.1.2 : E) * θ with hx`. Establish `hg : (g c).1 = Quotient.mk _ x` using `rfl`. Take `⟨u, hu⟩ : unitRel.r x (g c).1.out` from `Quotient.exact (by rw [hg, Quotient.out_eq])`. Rewrite using `[hu, hx, algebraMap_unit, mul_add, ← mul_assoc, ← Subfield.coe_mul, ← Subfield.coe_mul, defTerm_eq φ e he θ hz, eisTerm_unit (by decide)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : (fun q : modUnits L => defTerm φ 2 z σ q.1.out) ∘ g = fun c => (homFac z)⁻¹ ^ 2 * Complex.exp (-σ * logFac z) * eisClass 𝔞 𝔟 2 σ (modPt φ e θ z) c`. Use function extensionality and compare the values at `c`. Simplify using `only [Function.comp_apply]`. Conclude with `key1 c`. Rewrite using `[key]`.
-
-Conclude with `hS.mul_left _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_defTerm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)
     (e : I ≃ Emb (maximalRealSubfield E)), (∀ (i : I) (a : maximalRealSubfield E), φ i (a : E) = ((e i a : ℝ) : ℂ)) →

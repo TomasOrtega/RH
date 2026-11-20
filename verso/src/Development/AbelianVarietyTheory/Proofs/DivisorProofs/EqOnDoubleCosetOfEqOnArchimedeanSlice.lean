@@ -9,21 +9,21 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory
 namespace GlobalTheory.JSW.MirPatch
 
 /- English proof (translation)
-Introduce `E _ _ _ m S b W V q hq hqi hb hW hbV hWV hsl p hp hpc`. Take `⟨u, hu, k, hk, y, rfl⟩` from `hpc`. Establish `key : u * q * finGL E (m + 1) k * infGL E (m + 1) y = u * ((q * infGL E (m + 1) y) * finGL E (m + 1) k)`. Rewrite using `[mul_assoc (q) (infGL E (m + 1) y), infGL_comm, ← mul_assoc, ← mul_assoc]`. Establish `hy : ∀ j, (y : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j = if j = Fin.last m then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `congrArg (pInf E) (hp.2 j)`. Establish `hmap : GeneralLinearGroup.map (pInf E) (u * q * finGL E (m + 1) k * infGL E (m + 1) y) = GeneralLinearGroup.map (pInf E) u * y`. Simplify using `[map_mul, hqi]`. Establish `h2 : (GeneralLinearGroup.map (pInf E) (u * q * finGL E (m + 1) k * infGL E (m + 1) y) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j = if j = Fin.last m then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `*` using `[GeneralLinearGroup.map_apply]`. Simplify `h1` using `[apply_ite (pInf E)]`. Rewrite `h2` using `[hmap]`. Rewrite using `[← h2]`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Establish `: (u : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) (Fin.last m) = 1` using `hu.2 _`. Simplify using `[GeneralLinearGroup.map_apply, this]`. Introduce `l _ hl`. Establish `hlt : l < Fin.last m` using `lt_of_le_of_ne (Fin.le_last l) hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (u : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) l = 0` using `hu.1 _ _ hlt`. Simplify using `[GeneralLinearGroup.map_apply, this]`. Simplify using the standard rewrite rules. Establish `hslice : q * infGL E (m + 1) y ∈ GlobalTheory.JSW.mirS E S m`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Rewrite using `[map_mul, hq.1 w hw, one_mul]`. Conclude with `map_cornerGL_of_zero _ _ (fun _ => map_zero (pLoc E w)) y`. Introduce `j`. Use `ad_ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun g : GL (Fin (m + 1)) (Cinf E) => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j) (show GeneralLinearGroup.map (pInf E) (q * infGL E (m + 1) y) = y by simp [hqi])` as an intermediate fact. Simplify using `only [GeneralLinearGroup.map_apply] at this`. Apply the tactic sequence `rw [this, hy j]; split_ifs <;> simp`. Use `congrArg (fun g : GL (Fin (m + 1)) (Af E) => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Af E)) (Fin.last m) j) (show GeneralLinearGroup.map (pFin E) (q * infGL E (m + 1) y) = GeneralLinearGroup.map (pFin E) q by simp)` as an intermediate fact. Simplify using `only [GeneralLinearGroup.map_apply] at this`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hq.2 j]`. Rewrite using `[key, hW u hu, hb u hu, hWV k hk, hbV k hk, hsl y hslice]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_on_cell_of_eq_on_slice : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (b W : GA E (m + 1) → ℂ) (V : Subgroup (GL (Fin (m + 1)) (Af E))) (q : GA E (m + 1)), q ∈ GlobalTheory.JSW.mirS E S m → GeneralLinearGroup.map (pInf E) q = 1 → (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) → (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, W (u * g) = GlobalTheory.JSW.psiN u * W g) → (∀ u ∈ V, ∀ g, b (g * finGL E (m + 1) u) = b g) → (∀ u ∈ V, ∀ g, W (g * finGL E (m + 1) u) = W g) → (∀ y : GL (Fin (m + 1)) (Cinf E), q * infGL E (m + 1) y ∈ GlobalTheory.JSW.mirS E S m → W (q * infGL E (m + 1) y) = b (q * infGL E (m + 1) y)) → ∀ p ∈ GlobalTheory.JSW.mirS E S m, p ∈ GlobalTheory.JSW.MirPatch.cell V q → W p = b p := by
   intro E _ _ _ m S b W V q hq hqi hb hW hbV hWV hsl p hp hpc

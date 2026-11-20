@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.PointEigen
 
 /- English proof (translation)
-Establish `hS : v ∈ D.nd.S i ↔ v ∈ placesS D (D.nd.l i)`. Rewrite using `[D.nd.S_def]`. Both sides reduce to the same expression. Unfold `SplitOut GenAt`. Rewrite using `[hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 The claim follows by propositional logic.
 -/
@@ -22,9 +22,9 @@ theorem genAt_iff_splitOut (D : D7) (i : D.nd.Loc) (v : PlE D.host) (k : ℕ) :
   tauto
 
 /- English proof (translation)
-Introduce `D M A i x`. Use `⟨fun v k h => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ptSys, if_neg h]`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 (D.naut.typeV_ne i P)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y, hy0, fun v k s ϖ hg hc hu => ?_⟩` and prove the remaining obligations. Take `⟨hw, k1, k2⟩` from `(genAt_iff_splitOut D i v k).1 hg`. Simplify using `only [ptSys, if_pos hg]`. Conclude with `(A.ptV i P x).1 hP v k s ϖ hw hc hu k1 k2 y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptSys_mem_eigSet : ∀ (D : D7) (M : MtFam D), AVTied D M → ∀ (i : D.nd.Loc) (x : D.nd.X i),
     ptSys D i x ∈ EigSet (M.loc i) (D.nd.l i) (D.nd.Q i) := by

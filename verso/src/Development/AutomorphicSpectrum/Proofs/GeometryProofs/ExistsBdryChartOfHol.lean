@@ -18,7 +18,7 @@ namespace HolChart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨M⟩` from `lieModel_of_isLieBasis w hw`. Take `⟨φ⟩` from `basis_of_isLieBasis v hv M`. Simplify using `using φ.finrank_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_eq {κ : Type} [Field κ] {G : Over (Sp κ)} [GrpObj G] [IsCommMonObj G] {n m : ℕ}
     (v : Fin n → (epsR κ ⟶ G)) (hv : IsLieBasis v) (w : Fin m → (epsR κ ⟶ G)) (hw : IsLieBasis w) : n = m := by
@@ -27,17 +27,15 @@ theorem card_eq {κ : Type} [Field κ] {G : Over (Sp κ)} [GrpObj G] [IsCommMonO
   simpa using φ.finrank_eq
 
 /- English proof (translation)
-Use `t.semi.smooth` as an intermediate fact. Establish `key : ∀ x : t.G.left, ∃ W : t.G.left.Opens, x ∈ W ∧ SmoothOfRelativeDimension n (W.ι ≫ t.G.hom)`. Introduce `x`. Take `⟨d, W, hx, hd⟩` from `H1.exists_dim t.G.hom x`. Set `p : PrimeSpectrum R` to `t.G.hom x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : R →+* p.asIdeal.ResidueField` to `algebraMap R _`. Take `⟨t₀, ⟨m⟩⟩` from `exists_sab (spMap f) t`. Use `t₀.semi.smooth` as an intermediate fact. Use `t₀.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace t₀.G.left` using `GeometricallyConnected.connectedSpace t₀.G.hom t₀.G.hom.isOpenMap`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `exists_dim_of_preconnected t₀.G.hom (Classical.arbitrary _)`. Take `⟨v, hv⟩` from `hb _ f t₀ m`. Take `⟨w, hw⟩` from `GlobalTheory.KeyPow.exists_isLieBasis t₀.G he`. Establish `hne : n = e` using `card_eq v hv w hw`. Establish `hpt : t.G.hom x = spMap f (default : PrimeSpectrum p.asIdeal.ResidueField)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `p.asIdeal = Ideal.comap f _`. Rewrite using `[show (default : PrimeSpectrum p.asIdeal.ResidueField).asIdeal = ⊥ from Ideal.eq_bot_of_prime _]`. Conclude with `(Ideal.ker_algebraMap_residueField p.asIdeal).symm`. Take `⟨z, hz₁, -⟩` from `Scheme.Pullback.exists_preimage_pullback x _ hpt`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hax : m.cm.F (m.cart.1.isoPullback.inv z) = x`. Rewrite using `[← Scheme.Hom.comp_apply, m.cart.1.isoPullback_inv_fst, hz₁]`. Establish `hdn` using `H1.dim_base m.cart.1 hd he (m.cart.1.isoPullback.inv z) (by rw [hax]; exact hx)`. Conclude with `⟨W, hx, by rw [hne, ← hdn]; exact hd⟩`. Use `choose W hW hd using key`.
-
-Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension n)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension n) W (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hW x⟩) hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothDim_of_fibres {R : Type} [CommRing R] (t : SAB H (Sp R)) (n : ℕ)
     (hb : ∀ (κ : Type) [Field κ] (f : R →+* κ) (t₀ : SAB H (Sp κ)), SABMap t₀ t (spMap f) →
@@ -76,23 +74,21 @@ theorem smoothDim_of_fibres {R : Type} [CommRing R] (t : SAB H (Sp R)) (n : ℕ)
 end HolChart
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ Z T U₀ j₀ k₀ To n a y han hj ⟨n₁⟩ ⟨n₂⟩ hy hp`. Use `T.semi.smooth` as an intermediate fact. Take `⟨U, hU, hx, -, n', v₀, hv₀⟩` from `GlobalTheory.exists_affine_lieBasis_baseChange Z T.G (y 0 (default : PrimeSpectrum ℂ)) ⊤ trivial`. Establish `h0 : ⊤ ≤ y 0 ⁻¹ᵁ U` using `fun p _ => by`. Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hx`. Take `⟨ρ₀, hρ₀, hB₀⟩` from `Metric.isOpen_iff.1 (hy U 0).1 0 ⟨Metric.mem_ball_self one_pos, h0⟩`. Take `⟨ρ, hρ, hρ1, hB⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ Metric.ball (0 : Fin n → ℂ) ρ ⊆ {b ∈ Metric.ball 0 1 | ⊤ ≤ y b ⁻¹ᵁ U}` from `⟨min ρ₀ 1, lt_min hρ₀ one_pos, min_le_right _ _, (Metric.ball_subset_ball (min_le_left _ _)).trans hB₀⟩`. Establish `hin : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (ρ : ℂ) • z ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `fun z hz => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Conclude with `mul_lt_of_lt_one_right hρ hz`. Take `⟨t, ⟨m⟩⟩` from `exists_sab hU.fromSpec T`. Establish `hdim : SmoothOfRelativeDimension n' t.G.hom` using `HolChart.smoothDim_of_fibres t n' fun κ _ f t₀ m₀ => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m m₀`. Take `⟨v', -, hv'⟩` from `hv₀ κ f t₀.G _ q.cart`. Conclude with `⟨v', hv'⟩`. Take `⟨v', -, hv'⟩` from `hv₀ Γ(Z, U) (RingHom.id _) t.G m.cm.F (by`. Establish `: spMap (RingHom.id Γ(Z, U)) = 𝟙 _` using `Spec.map_id _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, Category.id_comp]`. Conclude with `m.cart)`. Take `⟨M⟩` from `lieModel_of_isLieBasis v' hv'`. Set `ψ : (Fin n → ℂ) → (Γ(Z, U) →+* ℂ)` to `fun z => if h : ⊤ ≤ y ((ρ : ℂ) • z) ⁻¹ᵁ U then evalHom _ U h else evalHom _ U h0`. Establish `hψ : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (ψ z) ≫ hU.fromSpec = y ((ρ : ℂ) • z)` using `fun z hz => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [ψ, dif_pos (hB (hin z hz)).2]`. Conclude with `spMap_evalHom _ _ _ _`. Take `⟨tV, ⟨q⟩⟩` from `exists_sab (pullback.snd hU.fromSpec j₀) To`. Take `⟨m₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n₂ q`. Take `⟨q₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n₁ q`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `q₁` using `[← pullback.condition]`. Take `⟨m₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m q₁`. Establish `hpt : ∀ z ∈ punct n a 1, ∃ p : Sp ℂ ⟶ pullback hU.fromSpec j₀, p ≫ pullback.fst _ _ = spMap (ψ z) ∧ p ≫ (pullback.snd _ _ ≫ k₀) ≫ Xo.s = spMap σ` using `fun z hz => by`. Take `⟨p, hp₁, hp₂⟩` from `hp ((ρ : ℂ) • z) ⟨(hB (hin z hz.1)).1, fun i hi => by`. Simplify using `using ⟨hρ.ne', hz.2 i hi⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨pullback.lift (spMap (ψ z)) p ((hψ z hz.1).trans hp₁.symm), pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_snd_assoc, hp₂]`. Take `⟨p₀, -⟩` from `hpt _ (half_mem_punct n a)`. Establish `: Nonempty (Sp ℂ ⟶ pullback hU.fromSpec j₀)` using `⟨p₀⟩`. Use `choose! pt hpt using hpt`.
-
-Use `⟨ρ, { a_le := han, R := Γ(Z, U), t := t, g := n', dim := hdim M := M, ψ := ψ, hol := ⟨Metric.isOpen_ball, fun r => ?_⟩ V := pullback hU.fromSpec j₀, j := pullback.fst _ _, j_open := inferInstance k := pullback.snd _ _ ≫ k₀, tV := tV, m₁ := m₁, m₂ := m₂, pt := pt, pt_eq := hpt }, …` and prove the remaining obligations. Use `(((hy U r).2.comp (f := fun z => (ρ : ℂ) • z) (by fun_prop) (fun z hz => hB (hin z hz)))).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [ψ, Function.comp, valAt', dif_pos (hB (hin z hz)).2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_bdryChart_of_hol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (Z : Scheme.{0}) (t : SAB H Z) (U : Scheme.{0}) (j : U ⟶ Z) (k : U ⟶ Xo.X) (tU : SAB H U) (n a : ℕ) (y : (Fin n → ℂ) → (Sp ℂ ⟶ Z)), a ≤ n → IsOpenImmersion j → Nonempty (SABMap tU t j) → Nonempty (SABMap tU Xo.univ.t k) → IsHolTo (Metric.ball 0 1) y → (∀ z ∈ punct n a 1, ∃ p : Sp ℂ ⟶ U, p ≫ j = y z ∧ p ≫ k ≫ Xo.s = spMap σ) → ∃ (ρ : ℝ) (C : BdryChart Xo σ n a) (i : Sp C.R ⟶ Z) (e : C.V ⟶ U), 0 < ρ ∧ ρ ≤ 1 ∧ IsOpenImmersion i ∧ Nonempty (SABMap C.t t i) ∧ e ≫ j = C.j ≫ i ∧ e ≫ k = C.k ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (C.ψ z) ≫ i = y ((ρ : ℂ) • z) := by
   intro E _ _ _ H D l Xo σ Z T U₀ j₀ k₀ To n a y han hj ⟨n₁⟩ ⟨n₂⟩ hy hp

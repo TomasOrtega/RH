@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.TrivialModel
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.trivial_type_good_reduction`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_of_rank_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t : SAB H (Sp L)), IsPrincipal t → (∀ (σ : L →+* ℂ) (τ : 𝓞 E →+* ℂ), LieMult t.act (spMap σ) τ 0) → ∃ t' : SAB H (Sp (𝓞 L)), Nonempty (SABMap t t' (spMap (algebraMap (𝓞 L) L))) :=
   @PositivityTheory.Xgn.trivial_type_good_reduction

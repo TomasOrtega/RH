@@ -7,13 +7,13 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Polynomial
 
 /- English proof (translation)
-Establish `hA : AnalyticOnNhd ℂ (fun z => q.eval z) Set.univ` using `fun z _ => (Polynomial.differentiable q).analyticAt z`. Establish `hM : MeromorphicOn (fun z => q.eval z) (Metric.closedBall (0 : ℂ) |(1 : ℝ)|)` using `(hA.mono (Set.subset_univ _)).meromorphicOn`. Establish `hD : 0 ≤ MeromorphicOn.divisor (fun z => q.eval z) (Metric.closedBall (0 : ℂ) |(1 : ℝ)|)` using `MeromorphicOn.AnalyticOnNhd.divisor_nonneg (hA.mono (Set.subset_univ _))`. Rewrite using `[MeromorphicOn.circleAverage_log_norm one_ne_zero hM, AnalyticAt.meromorphicTrailingCoeffAt_of_ne_zero (hA 0 trivial) hq, Real.log_one, mul_zero, add_zero]`. Establish `hsum : 0 ≤ ∑ᶠ u, ((MeromorphicOn.divisor (fun z => q.eval z) (Metric.closedBall (0 : ℂ) |(1 : ℝ)|) u : ℤ) : ℝ) * Real.log (1 * ‖0 - u‖⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `finsum_nonneg` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u ∈ Metric.closedBall (0 : ℂ) |(1 : ℝ)|`. Establish `hle : ‖u‖ ≤ 1` using `by simpa using hu`. Apply `mul_nonneg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(show (0 : ℤ) ≤ _ by simpa using hD u)` after adjusting the coercions. Rewrite using `[one_mul, Real.log_inv, zero_sub, norm_neg]`. Conclude with `neg_nonneg.mpr (Real.log_nonpos (norm_nonneg _) hle)`. Establish `h0 : MeromorphicOn.divisor (fun z => q.eval z) (Metric.closedBall (0 : ℂ) |(1 : ℝ)|) u = 0`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hu (Function.locallyFinsuppWithin.supportWithinDomain _ (Function.mem_support.mpr h))`. Simplify using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem log_norm_eval_zero_le_circleAverage (q : ℂ[X]) (hq : q.eval 0 ≠ 0) :
     Real.log ‖q.eval 0‖ ≤ Real.circleAverage (fun ζ => Real.log ‖q.eval ζ‖) 0 1 := by
@@ -46,9 +46,9 @@ def lineRestrict {σ : Type*} (f : MvPolynomial σ ℂ) (x y : σ → ℂ) : ℂ
   MvPolynomial.aeval (fun i => C (x i) + C (y i) * X) f
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = a`. Establish `h` using `hf (MvPolynomial.mem_support_iff.mp hd)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_smul_of_isHomogeneous {σ : Type*} {f : MvPolynomial σ ℂ} {a : ℕ}
     (hf : f.IsHomogeneous a) (c : ℂ) (x : σ → ℂ) :

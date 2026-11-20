@@ -5,34 +5,30 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_single_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem entry_eq {A : Type} [CommRing A] {n : ℕ} (X : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     X i j = (Matrix.single j i (1 : A) * X).trace := by
   rw [Matrix.trace_single_mul, one_smul]
 
 /- English proof (translation)
-Introduce `A G _ _ n ρ hF`. Establish `hs : ∀ h : G, W.GDet.repAlg (W.mat ρ) A (MonoidAlgebra.single h 1) = W.mat ρ h`. Introduce `h`. Simplify using `[W.GDet.repAlg]`. Establish `hsp : ∀ X : Matrix (Fin n) (Fin n) A, X ∈ Submodule.span A (Set.range (W.mat ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `X`. Unfold `Full at hF`. Rewrite using `[hF]`. Conclude with `Submodule.mem_top`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use extensionality with `i j`. Conclude with `i.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ X, (X * W.GDet.repAlg (W.mat ρ) A z).trace = 0`. Introduce `X`. Proceed by induction on `hsp X using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← hs h, ← map_mul, ← (AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn]`. Conclude with `hz h`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, Matrix.trace_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Matrix.smul_mul, Matrix.trace_smul, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `(entry_eq _ i j).trans (key _)`. Introduce `_ _ _ _ hc`. Establish `key : ∀ X, Continuous fun g => (X * W.mat ρ g).trace`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities.
 
-Proceed by induction on `hsp X using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Repeatedly rewrite using `[← map_mul]`. Conclude with `hc.comp (continuous_mul_left h)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion repeatedly using the stated equalities. Treat this case separately. Rewrite the conclusion repeatedly using the stated equalities.
 
-Consider the case `zero => simpa using continuous_const`. Consider the case `add x y _ _ hx hy`. Repeatedly rewrite using `[add_mul, Matrix.trace_add]`. Conclude with `hx.add hy`. Consider the case `smul a x _ hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Matrix.smul_mul, Matrix.trace_smul]`. Conclude with `hx.const_smul a`. Establish `hm : Continuous fun g => W.mat ρ g`. Apply `continuous_matrix` to reduce the goal to its premises. Introduce `i j`.
-
-Conclude with `(key (Matrix.single j i 1)).congr (fun g => (entry_eq _ i j).symm)`. Rewrite using `[Units.continuous_iff]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `(hm.comp continuous_inv).congr fun x => ?_` and prove the remaining obligations. Use `show ((ρ x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = _`.
-
-Rewrite using `[map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.trPlus :
     ∀ {A G : Type} [CommRing A] [Group G] {n : ℕ} (ρ : G →* GL (Fin n) A), Full ρ →

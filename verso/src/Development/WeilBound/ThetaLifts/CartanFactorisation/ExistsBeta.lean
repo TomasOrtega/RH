@@ -14,11 +14,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Use `⟨⟨h0, fun e => ?_⟩, fun N hN hge x hx => ?_⟩` and prove the remaining obligations. Establish `: (⊤ : Submodule ℂ P) = ⊥`. Rewrite using `[← onto, ← e, eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `top_ne_bot this`. Break down `hirr N hN.1 with h | h` into its components or cases. Conclude with `⟨(Submodule.eq_bot_iff _).1 h _ ⟨x, hx, rfl⟩, hle N hN.1 hx⟩`. Use `absurd (le_antisymm (hle N hN.1) fun y hy => ?_) hN.2` and prove the remaining obligations. Take `⟨z, hz, e⟩ : p y ∈ N.map p` from `h ▸ Submodule.mem_top`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: y - z ∈ N` using `hge ⟨by simp [e], sub_mem hy (hle N hN.1 hz)⟩`. Simplify using `using N.add_mem this hz`.
+A detailed English derivation is pending.
 -/
 theorem maximal_of {Q P : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup P] [Module ℂ P] [Nontrivial P] (p : Q →ₗ[ℂ] P)
     (S : Submodule ℂ Q) (St : Submodule ℂ Q → Prop) (onto : S.map p = ⊤) (hle : ∀ N, St N → N ≤ S)
@@ -38,11 +38,11 @@ theorem maximal_of {Q P : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup P]
       simpa using N.add_mem this hz
 
 /- English proof (translation)
-Establish `mc : ∀ N, N ≤ S → (N.comap S.subtype).map S.subtype = N` using `fun N hN => by`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hN]`. Establish `inj` using `Submodule.map_injective_of_injective S.injective_subtype`. Establish `ne : ∀ P : Submodule ℂ S, P ≠ ⊤ ↔ P.map S.subtype ≠ S` using `fun P => by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h e`. Conclude with `h (inj (e.trans (Submodule.map_subtype_top S).symm))`. Introduce `h e`. Conclude with `h (e ▸ Submodule.map_subtype_top S)`. Use `⟨⟨⟨(h _).2 (by rw [mc N (hle N hN.prop.1)]; exact hN.prop.1), (ne _).2 (by rw [mc N (hle N hN.prop.1)]; exact hN.prop.2)⟩, fun P hP hge x hx => hN.le_of_ge ⟨(h P).1 hP.1, (ne P).1 hP.2⟩ ((mc N (hle N hN.prop.1)).symm.le.trans (Submodule.map_mono hge)) ⟨x, hx, rfl⟩⟩, fun P hP => ? …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu (P.map S.subtype) ⟨⟨(h P).1 hP.prop.1, (ne P).1 hP.prop.2⟩, fun N' hN' hge => by` as an intermediate fact. Establish `h1 : N'.comap S.subtype ≤ P` using `hP.le_of_ge ⟨(h _).2 (by rw [mc N' (hle N' hN'.1)]; exact hN'.1), (ne _).2 (by rw [mc N' (hle N' hN'.1)]; exact hN'.2)⟩ (Submodule.map_le_iff_le_comap.1 hge)`. Conclude with `(mc N' (hle N' hN'.1)).symm.le.trans (Submodule.map_mono h1)⟩`. Rewrite using `[← this, Submodule.comap_map_eq_of_injective S.injective_subtype]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem max_comap {Q : Type} [AddCommGroup Q] [Module ℂ Q] (S : Submodule ℂ Q) (St : Submodule ℂ Q → Prop)
     (St' : Submodule ℂ S → Prop) (hle : ∀ N, St N → N ≤ S) (h : ∀ P : Submodule ℂ S, St' P ↔ St (P.map S.subtype))
@@ -66,13 +66,13 @@ theorem max_comap {Q : Type} [AddCommGroup Q] [Module ℂ Q] (S : Submodule ℂ 
   rw [← this, Submodule.comap_map_eq_of_injective S.injective_subtype]
 
 /- English proof (translation)
-Establish `ii` using `fun x y => L2.integrableOn_mul (hc x) (hc y) (h2 x) (h2 y)`. Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => ∫ g in 𝓕, conj (u x g) * u y g ∂μ) (fun x x' y => ?_) (fun c x y => ?_) (fun x y y' => ?_) (fun c x y => ?_), fun _ _ => rfl, fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_add (ii x y) (ii x' y)]`. Simplify using `[add_mul]`. Simplify using `[← integral_const_mul, mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_add (ii x y) (ii x y')]`. Simplify using `[mul_add]`. Simplify using `[← integral_const_mul, mul_left_comm]`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[← integral_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[← RCLike.re_to_complex, ← integral_re (ii x x)]`. Conclude with `integral_nonneg fun g => by`. Simplify using `only [Complex.conj_mul', Pi.zero_apply, RCLike.re_to_complex, ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem exists_beta {G : Type} [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] (𝓕 : Set G) (μ : Measure G)
     {Q : Type} [AddCommGroup Q] [Module ℂ Q] (u : Q →ₗ[ℂ] (G → ℂ)) (hc : ∀ x, Continuous (u x))
@@ -121,9 +121,7 @@ section I
 variable {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hp.weil.isUSplitting.pres _ _ (hc.sch hΦ)) (hp.weil.isUSplitting.pres _ _ (hc.sch hΨ))`. Simplify using `only [Model.I, e, Pi.add_apply]`.
-
-Conclude with `integral_add (hc.conv _ hΦ h) (hc.conv _ hΨ h)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_add' (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls B M om 𝓒) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ 𝓒) (hΨ : Ψ ∈ 𝓒) :
     M.I om (Φ + Ψ) = M.I om Φ + M.I om Ψ := by
@@ -135,15 +133,15 @@ theorem I_add' (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls B M om �
   exact integral_add (hc.conv _ hΦ h) (hc.conv _ hΨ h)
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem I_right (Φ : Fn F n d) (h₀ h : UA σ W.J) : M.I om (om (1, h₀) Φ) h = M.I om Φ (h * h₀) := by
   simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `h1 : Pᵀ * (A * (P.map star * (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ))) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hP, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Matrix.mul_eq_one_comm_of_equiv (finSumFinEquiv.trans (finCongr e)), Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Matrix.isUnit_det_of_right_inverse h1).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_of_sig {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} {r s : ℕ} (h : HasSig A r s) : A.det ≠ 0 := by
   obtain ⟨e, P, hP⟩ := h
@@ -153,7 +151,7 @@ theorem det_of_sig {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} {r s : ℕ} (h : H
   exact (Matrix.isUnit_det_of_right_inverse h1).ne_zero
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance refine det_of_sig (hp.herm.sig w) ?_ rw [show X.J.map (B.emb w).1 = (RingHom.mapMatrix ((B.emb w).1 : E →+* ℂ)) X.J from rfl, ← RingHom.map_det, h0, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detX (hp : IsPair B M χX χW om r s r' s') : X.J.det ≠ 0 := fun h0 => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -161,7 +159,7 @@ theorem detX (hp : IsPair B M χX χW om r s r' s') : X.J.det ≠ 0 := fun h0 =>
   rw [show X.J.map (B.emb w).1 = (RingHom.mapMatrix ((B.emb w).1 : E →+* ℂ)) X.J from rfl, ← RingHom.map_det, h0, map_zero]
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance refine det_of_sig (hp.skew.sig w) ?_ rw [Matrix.det_smul, show W.J.map (B.emb w).1 = (RingHom.mapMatrix ((B.emb w).1 : E →+* ℂ)) W.J from rfl, ← RingHom.map_det, h0, map_zero, mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detW (hp : IsPair B M χX χW om r s r' s') : W.J.det ≠ 0 := fun h0 => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -170,14 +168,14 @@ theorem detW (hp : IsPair B M χX χW om r s r' s') : W.J.det ≠ 0 := fun h0 =>
     map_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `hU F E σ hp.base.cm n X.J 1 (fun i j => by simpa using hp.herm.herm i j) (detX hp)`. Conclude with `⟨h1, h3 _ hp.good.haar⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uniX (hU : Unimod) (hp : IsPair B M χX χW om r s r' s') : Countable (ratU σ X.J) ∧ M.μ.IsMulRightInvariant := by
   obtain ⟨h1, -, h3⟩ := hU F E σ hp.base.cm n X.J 1 (fun i j => by simpa using hp.herm.herm i j) (detX hp)
   exact ⟨h1, h3 _ hp.good.haar⟩
 
 /- English proof (translation)
-Take `⟨h1, ⟨μ, 𝓕, h2, h2'⟩, h3⟩` from `hU F E σ hp.base.cm d W.J (-1) (fun i j => by simpa using hp.skew.skew i j) (detW hp)`. Conclude with `⟨h1, μ, 𝓕, h2, h2', h3 _ h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uniW (hU : Unimod) (hp : IsPair B M χX χW om r s r' s') : Countable (ratU σ W.J) ∧
     ∃ (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)), μ.IsHaarMeasure ∧ IsFundamentalDomain (ratU σ W.J) 𝓕 μ ∧
@@ -186,9 +184,9 @@ theorem uniW (hU : Unimod) (hp : IsPair B M χX χW om r s r' s') : Countable (r
   exact ⟨h1, μ, 𝓕, h2, h2', h3 _ h2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Take `⟨h1, h2⟩` from `uniX hU hp`. Use `haveI := hp.good.haar`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `e : ∀ g, theta om (om (g₀, 1) Φ) g h = theta om Φ (g * g₀) h` using `fun g => by`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [Model.I, e]`. Conclude with `L2.integral_right hp.good.dom (fun g => theta om Φ g h) (fun γ hγ g => by`. Simplify using `using ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 γ hγ 1 (one_mem _) g h) g₀`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem I_left (hU : Unimod) (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _)
     (g₀ : UA σ X.J) : M.I om (om (g₀, 1) Φ) = M.I om Φ := by
@@ -203,7 +201,7 @@ theorem I_left (hU : Unimod) (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r
     simpa using ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 γ hγ 1 (one_mem _) g h) g₀
 
 /- English proof (translation)
-Introduce `γ hγ h` and use `by simp only [Model.I] congr 1 funext g simpa using ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 1 (one_mem _) γ hγ g h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem I_inv (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) :
     L2.Inv (ratU σ W.J) (M.I om Φ) := fun γ hγ h => by

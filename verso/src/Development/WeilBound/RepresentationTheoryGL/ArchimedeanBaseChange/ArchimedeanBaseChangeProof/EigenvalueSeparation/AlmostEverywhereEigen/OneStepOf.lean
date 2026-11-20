@@ -151,11 +151,11 @@ def OneStep : Prop := ∀ (X : Ctx) (ι : Type) [Fintype ι] (K : Type) [NormedA
     Realised X W (fun c : C => Φ c) (fun c => s (c * a₀)) (fun n i x => conj ((g n i : X.G → ℂ) x)) f
 
 /- English proof (translation)
-Introduce `X ι _ K _ _ _ J B _ _ _ _ R p a₀ C Φ g W hJ hp ha hC h1C hΦ hT hW hW' hWc hg hg' C₀ ε hε`. Establish `hpos : 0 < ‖p a₀‖` using `norm_pos_iff.2 ha`. Take `⟨S, _, ν, _, χ, V, hS, hae⟩` from `h1 K B R p (insert a₀ C₀) (min ε (‖p a₀‖ / 2)) hp (lt_min hε (half_pos hpos))`. Establish `hne : ∀ᵐ s ∂ν, χ s a₀ ≠ 0` using `hae.mono fun s hs e => by`. Use `(hs a₀ (Finset.mem_insert_self _ _)).trans (min_le_right _ _)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, zero_sub, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨F, hF⟩` from `h2 X ι K J B R a₀ Φ g W S ν χ V hJ hΦ hT hS hne hW hW' hWc hg hg'`. Use `h4 X ι` as an intermediate fact. Establish `: SecondCountableTopology (X.Hs ι)` using `UniformSpace.secondCountable_of_separable _`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (Lp ℂ 2 ν)` using `(AddMonoidHomClass.isometry_of_norm (J.comp V) fun h => (hJ _).trans (hS.iso h)).isEmbedding.secondCountableTopology`. Use `hC.to_subtype` as an intermediate fact. Take `⟨s, hs, f, hf⟩` from `h3 X ι C S ν F W (fun c : C => Φ c) (fun c s => χ s (c * a₀)) _ ⟨1, h1C⟩ _ ⟨hF.cont, hF.inv, hF.ne, hF.wt, fun c => hF.eig c, hF.gint, hF.orth⟩ hW (fun c => hΦ c) (fun c => ⟨hS.meas _, _, hS.bdd _⟩) (by simpa using hne) (hae.and hne)`. Conclude with `⟨χ s, f, fun c hc => (hs.1 c (Finset.mem_insert_of_mem hc)).trans (min_le_left _ _), hs.2, fun b => hS.bdd b s, hf⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oneStep_of (h1 : Spec) (h2 : FData) (h3 : Desint) (h4 : HsSep) : OneStep := by
   classical

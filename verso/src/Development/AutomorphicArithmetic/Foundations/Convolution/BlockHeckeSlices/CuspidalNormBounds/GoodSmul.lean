@@ -15,9 +15,9 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hL : ratN E n r = unipLattice E n r` using `AddSubgroup.ext fun x => ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`. Establish `hu : ∀ x : UPos n r → AdeleRing (𝓞 E) E, unip x = unipGL x` using `fun x => Units.ext rfl`. Establish `hF : IsAddFundamentalDomain (ratN E n r) (unipFundamentalDomain E n r) (unipMeasure E n r)`. Rewrite using `[hL]`. Conclude with `isAddFundamentalDomain_unipFundamentalDomain`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `constTerm_mem_Sm E n r (unipMeasure E n r) (unipFundamentalDomain E n r) inferInstance hF (unipMeasure_unipFundamentalDomain r) φ h.1 h.2`. Simplify using `only [hu] at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ct_sm (r : ℕ) {φ : Sm E n} (h : Good φ) : constantTerm r φ.1 ∈ Sm E n ∧
     ∀ X g, lieD X (constantTerm r φ.1) g = constantTerm r (lie E n X φ).1 g := by
@@ -32,7 +32,7 @@ private theorem ct_sm (r : ℕ) {φ : Sm E n} (h : Good φ) : constantTerm r φ.
   exact key
 
 /- English proof (translation)
-Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset ((h₁.2.inter h₂.2).mem_nhds ⟨by simp, by simp⟩) fun k hk => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _`. Rewrite using `[h₁.1 γ g, h₂.1 γ g]`. Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.finRep E n k _ = _`. Rewrite using `[map_add, hk.1, hk.2]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem good_add {φ ψ : Sm E n} (h₁ : Good φ) (h₂ : Good ψ) : Good (φ + ψ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset
@@ -43,7 +43,7 @@ private theorem good_add {φ ψ : Sm E n} (h₁ : Good φ) (h₂ : Good ψ) : Go
     rw [map_add, hk.1, hk.2]
 
 /- English proof (translation)
-Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.2.mem_nhds (by simp)) fun k hk => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c * φ.1 _ = c * φ.1 _`. Rewrite using `[h.1 γ g]`. Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.finRep E n k _ = _`. Rewrite using `[map_smul, show GlobalTheory.CuspRep.finRep E n k φ = φ from hk]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem good_smul {φ : Sm E n} (h : Good φ) (c : ℂ) : Good (c • φ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset
@@ -66,9 +66,9 @@ private def pas (r : ℕ) : Subalgebra ℂ (Module.End ℂ (Sm E n)) where
     rw [hF, constantTerm_smul]⟩
 
 /- English proof (translation)
-Establish `hι : ∀ X, ιC E n X ∈ S.comap (uC E n)` using `fun X => by`. Rewrite using `[Subalgebra.mem_comap, uC_ιC]`. Conclude with `h X`. Establish `h : Algebra.adjoin ℂ {x : UC E n | ∃ τ i j, x = genC τ i j} ≤ S.comap (uC E n)` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨τ, i, j, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genC, UpperTheory.V.AlgRepEndIrreducible.eL]`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (hι _) (Subalgebra.smul_mem _ (hι _) _)) _)`. Conclude with `h (adjoin_genC (E := E) (a := n) ▸ Algebra.mem_top)`.
+A detailed English derivation is pending.
 -/
 private theorem of_lie (S : Subalgebra ℂ (Module.End ℂ (Sm E n))) (h : ∀ X, lie E n X ∈ S) (u : UC E n) :
     uC E n u ∈ S := by
@@ -82,7 +82,7 @@ private theorem of_lie (S : Subalgebra ℂ (Module.End ℂ (Sm E n))) (h : ∀ X
   exact h (adjoin_genC (E := E) (a := n) ▸ Algebra.mem_top)
 
 /- English proof (translation)
-Introduce `φ h` and use `⟨h.lie X, fun F hF => funext fun g => by rw [lie_apply, hF] exact (ct_sm r h).2 X g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem lie_pas (r : ℕ) (X : Lie E n) : lie E n X ∈ (pas r : Subalgebra ℂ (Module.End ℂ (Sm E n))) :=
   fun φ h => ⟨h.lie X, fun F hF => funext fun g => by
@@ -91,7 +91,7 @@ private theorem lie_pas (r : ℕ) (X : Lie E n) : lie E n X ∈ (pas r : Subalge
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `hD : IsAddFundamentalDomain (unipLattice E n r) ((fun X => X + -Y) ⁻¹' unipFundamentalDomain E n r) (unipMeasure E n r)` using `isAddFundamentalDomain_unipFundamentalDomain.preimage_of_equiv (measurePreserving_add_right _ (-Y)).quasiMeasurePreserving Function.bijective_id fun ξ X => by`. Express the relevant statement in the definitionally equal form `((ξ : UPos n r → AdeleRing (𝓞 E) E) + X) + -Y = ξ + (X + -Y)`. Rewrite using `[add_assoc]`. Rewrite using `[constantTerm_eq_setIntegral hφ hD g, constantTerm, ← (measurePreserving_add_right (unipMeasure E n r) (-Y)).setIntegral_preimage_emb (measurableEmbedding_addRight _)]`. Simplify using `only [← mul_assoc, ← unipGL_add, neg_add_cancel_right]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ct_unip {r : ℕ} {φ : AdelicGLn.AdelicGL E n → ℂ} (hφ : IsLeftInvariant φ)
     (Y : UPos n r → AdeleRing (𝓞 E) E) (g : AdelicGLn.AdelicGL E n) :
@@ -109,9 +109,9 @@ private theorem ct_unip {r : ℕ} {φ : AdelicGLn.AdelicGL E n → ℂ} (hφ : I
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ r s φ h`. Establish `hg : Good φ` using `⟨h.left, h.level⟩`. Use `⟨⟨_, (UpperTheory.ConvolutionTheory.BW.ct_sm r hg).1⟩, rfl, fun x g => ?_, fun γ g => ?_, fun u => (UpperTheory.ConvolutionTheory.BW.of_lie _ (UpperTheory.ConvolutionTheory.BW.lie_pas r) u φ hg).2 _ rfl⟩` and prove the remaining obligations. Rewrite using `[show unip x = unipGL x from Units.ext rfl]`. Conclude with `UpperTheory.ConvolutionTheory.BW.ct_unip h.left x g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `UpperTheory.ConvolutionTheory.BW.Pair.ct_lev_rat (φ := rightTranslate g φ.1) (fun γ x => by` as an intermediate fact. Simplify using `only [rightTranslate, mul_assoc]`. Conclude with `h.left γ _) γ.1 γ.2 1 1`. Rewrite `this` using `[constantTerm_rightTranslate, constantTerm_rightTranslate, mul_one, mul_one, Prod.mk_one_one, map_one, one_mul]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.ctOps :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.CtOps E := by

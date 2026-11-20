@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh.VacProj
 
 /- English proof (translation)
-Establish `hU'` using `(GenLatCmp.unimod_iff Λ.La).1 hU`. Take `⟨N, hN, h⟩` from `TensLat.exists_mul_le (B := stdL E n) (B' := Λ.La) (Submodule.fg_span (Set.finite_range _)) (DualFamily.span_eq_top Λ.La hfg fun x => (hU' x).2)`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {N}))`. Establish `h4 : ∀ u ∈ stdL E n, ((Ideal.absNorm (Ideal.span {N}) : ℕ) : E) • u ∈ Λ.La` using `fun u hu => by`. Establish `e : ((Ideal.absNorm (Ideal.span {N}) : ℕ) : E) = (a : E) * (N : E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (𝓞 E) E) ha` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Conclude with `this.symm`. Rewrite using `[e, mul_smul]`. Conclude with `TensLat.int_smul_mem a.isIntegral_coe (h u hu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hfg, hU', _, Nat.pos_of_ne_zero ?_, Nat.coprime_one_right _, GenLatCmp.smul_mem_std hU' h4, h4⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hN`.
+A detailed English derivation is pending.
 -/
 theorem mem_vset {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (Λ : Formalism.L2.Pj.GenLat E n) (hU : Λ.Unimod) (hfg : Λ.La.FG) : Λ.La ∈ Vset E n 1 := by
@@ -45,18 +45,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {w : E} {A A' : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[heisG, heisS, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisG_sum {ι : Type} (y : Matrix (Fin n) (Fin r) E) (s : Finset ι) (f : ι → TF n g) :
     heisG X bas y (∑ i ∈ s, f i) = ∑ i ∈ s, heisG X bas y (f i) := by
   funext x; simp [heisG, heisS, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hfix : ∀ y, epsW X w y • heisG X bas y v = v ↔ y ∈ A'`. Use `fun y => ⟨fun h => ?_, hv.2.2 y⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Use `hA'.ip_eq_zero idx hs hn hv hy` as an intermediate fact. Rewrite `this` using `[h, hv.2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero this`. Rewrite using `[← hfix, ← hA.rho_rho idx hs hn (A.neg_mem ha) hb hv.1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h, hA.rho_rho idx hs hn (A.neg_mem ha) ha hv.1, neg_add_cancel, TensVac.rho_zero idx hs hn hv.1]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h conv_lhs => rw [← h]`. Rewrite using `[hA.rho_rho idx hs hn ha (A.neg_mem ha) (TensVac.rho_sb idx hs hn b hv.1), add_neg_cancel, TensVac.rho_zero idx hs hn (TensVac.rho_sb idx hs hn b hv.1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_eq_iff (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
     (hA : TensVac.Good X w A) (hA' : TensVac.Good X w A') {v : TF n g} (hv : IsVac X bas w A' v)
@@ -79,17 +79,15 @@ theorem rho_eq_iff (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Ev
       TensVac.rho_zero idx hs hn (TensVac.rho_sb idx hs hn b hv.1)]
 
 /- English proof (translation)
-Use `set f : Matrix (Fin n) (Fin r) E → TF n g := fun y => epsW X w y • heisG X bas y v with hf`. Establish `hiff : ∀ a ∈ A, ∀ b ∈ A, f a = f b ↔ -a + b ∈ A'` using `fun a ha b hb => rho_eq_iff idx hs hn hA hA' hv ha hb`. Establish `hinj : Set.InjOn f R` using `fun a ha b hb h => by`. Establish `h1` using `(hiff a (hR a ha) b (hR b hb)).1 h`. Rewrite `h1` using `[neg_add_eq_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hR' b (hR b hb)).unique ⟨ha, h1⟩ ⟨hb, by rw [sub_self]; exact A'.zero_mem⟩`. Establish `him : f '' A = f '' R`. Use `Set.Subset.antisymm ?_ (Set.image_mono fun y hy => hR y hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨b, ⟨hb, h⟩, -⟩` from `hR' a ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨b, hb, (hiff b (hR b hb) a ha).2 (by rwa [neg_add_eq_sub])⟩`. Establish `hc : (f '' A).ncard = R.card`. Rewrite using `[him, hinj.ncard_image, Set.ncard_coe_finset]`. Establish `hidx : R.card = A'.relIndex A` using `hc.symm.trans (TensVac.ncard_image_eq f hiff)`. Use `⟨hidx, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ᶠ ψ ∈ f '' R, ψ = ∑ y ∈ R, f y` using `(finsum_mem_image (f := fun ψ : TF n g => ψ) hinj).trans (finsum_mem_coe_finset _ _)`. Rewrite using `[projA, ← hf, hc, him, h1]`. Take `⟨u, hu, -⟩` from `hA.vac hs`. Establish `hov` using `hA.overlap idx hs hn hA' hu hv`. Rewrite using `[(hA.proj idx hs hn hv.1 hu).2, smul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a := (Real.sqrt (R.card : ℝ) : ℂ) * SW.ip v u with ha`. Establish `hn1 : ‖a‖ ^ 2 = 1`. Rewrite using `[ha, TensVac.ip_conj hu.1 hv.1, norm_mul, Complex.norm_conj, Complex.norm_real, mul_pow, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (Nat.cast_nonneg _), hidx, hov]`. Use `⟨TensVac.sb_smul a hu.1, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[TensVac.ip_smul_left a hu.1 (TensVac.sb_smul a hu.1), TensVac.ip_smul_right a hu.1 hu.1, hu.2.1, _root_.mul_one, Complex.mul_conj']`.
-
-Conclude with `hn1` after adjusting the coercions. Rewrite using `[TensVac.heisG_smul, smul_comm, hu.2.2 y hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_eq (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
     (hA : TensVac.Good X w A) (hA' : TensVac.Good X w A') {v : TF n g} (hv : IsVac X bas w A' v)
@@ -133,13 +131,13 @@ theorem proj_eq (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r g n X bas idx hs hn w hw hw1 L hL Λ₀ Λ hU₀ hU hf₀ hf v hv R hR hR'`. Establish `h₀` using `mem_vset Λ₀ hU₀ hf₀`. Establish `h₁` using `mem_vset Λ hU hf`. Take `⟨a1, a2, a3, -, -, a4⟩` from `TensLat.tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw1 L hL 1 _ h₁`. Take `⟨b1, b2, b3, -⟩` from `TensLat.tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw1 L hL 1 _ h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2, c3⟩` from `proj_eq idx hs hn ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ hv R hR hR'`. Use `⟨?_, c2, c3, fun Q _ c Y => ?_⟩` and prove the remaining obligations. Rewrite using `[c1, a4 _ h₀, ← AddSubgroup.inf_relIndex_left]`. Both sides reduce to the same expression. Rewrite using `[gphi, finsum_eq_sum_of_fintype, c2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ Finset.smul_sum.symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[TensVac.heisG_smul, heisG_sum, smul_comm]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[TensVac.heisG_smul, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem projA_gphi_eq_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r g n : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsSympl X bas → Even n → ∀ (w : E), IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ (Λ₀ Λ : Formalism.L2.Pj.GenLat E n), Λ₀.Unimod → Λ.Unimod → Λ₀.La.FG → Λ.La.FG → ∀ v : TF n g, IsVac X bas w (tens Λ₀.La L) v → ∀ R : Finset (Matrix (Fin n) (Fin r) E), (∀ y ∈ R, y ∈ tens Λ.La L) → (∀ y ∈ tens Λ.La L, ∃! y', y' ∈ R ∧ y - y' ∈ tens Λ₀.La L) → R.card = ((Λ.La ⊓ Λ₀.La).toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index ^ r ∧ projA X bas w (tens Λ.La L) v = ((R.card : ℂ))⁻¹ • ∑ y ∈ R, epsW X w y • heisG X bas y v ∧ IsVac X bas w (tens Λ.La L) ((Real.sqrt (R.card : ℝ) : ℂ) • projA X bas w (tens Λ.La L) v) ∧ ∀ (Q : Type) [Fintype Q] (c : Q → ℂ) (Y : Q → Matrix (Fin n) (Fin r) E), gphi X bas w Λ.La L v c Y = ((R.card : ℂ))⁻¹ • ∑ q, ∑ y ∈ R, (c q * epsW X w y) • heisG X bas (Y q) (heisG X bas y v) := by
   intro E _ _ _ r g n X bas idx hs hn w hw hw1 L hL Λ₀ Λ hU₀ hU hf₀ hf v hv R hR hR'

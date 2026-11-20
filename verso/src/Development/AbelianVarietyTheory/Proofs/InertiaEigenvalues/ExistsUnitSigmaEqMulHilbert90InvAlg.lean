@@ -8,29 +8,23 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma.HilbertNinety
 
 /- English proof (translation)
-Use `letI : Module ℚ B.A := Module.compHom B.A (algebraMap ℚ K.E)`. Set `b : B.A →+ B.A` to `{ toFun := fun a => a + B.σ a * B.σ u map_zero' := by simp map_add' := by intro x y; simp only [map_add]; ring }`. Establish `hb : ∀ a, b a = a + B.σ a * B.σ u` using `fun a => rfl`. Establish `hbσ : ∀ a, B.σ (b a) = b a * u`. Introduce `a`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hb, map_add, map_mul, B.σ_σ, B.σ_σ]`. Take the linear combination `(-(B.σ a)) * hu`. Take `⟨x, y, hxy, hne⟩` from `K.c_res`. Use `set e : K.E := algebraMap K.O K.E x with he`. Establish `hce : K.c e - e ≠ 0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `h` using `[sub_eq_zero, he, hxy]`. Use `IsFractionRing.injective K.O K.E h` as an intermediate fact. Conclude with `hne (by rw [this, sub_self]; exact Ideal.zero_mem _)`. Establish `key : ∀ z : B.A, algebraMap K.E B.A (K.c e - e) * z = algebraMap K.E B.A (K.c e) * b z - b (algebraMap K.E B.A e * z)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[hb, hb, map_mul, B.σ_alg, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : IsArtinianRing B.A := IsArtinianRing.of_finite K.E B.A`. Use `haveI : Fintype (MaximalSpectrum B.A) := Fintype.ofFinite _`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `S : MaximalSpectrum B.A → Submodule ℚ B.A` to `fun m => { carrier := {a | b a ∈ m.asIdeal} add_mem' := fun {a c} ha hc => by`. Express the relevant statement in the definitionally equal form `b (a + c) ∈ m.asIdeal`. Rewrite using `[map_add]`. Conclude with `m.asIdeal.add_mem ha hc`. Use the proof step `zero_mem' := by change b 0 ∈ m.asIdeal; rw [map_zero]; exact m.asIdeal.zero_mem`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `smul_mem' := fun q a ha => by`. Express the relevant statement in the definitionally equal form `b (q • a) ∈ m.asIdeal`. Rewrite using `[map_rat_smul]`. Express the relevant statement in the definitionally equal form `(algebraMap ℚ K.E q) • b a ∈ m.asIdeal`. Rewrite using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `m.asIdeal.mul_mem_left _ ha }`. Establish `hS : ⊤ ∉ Finset.univ.image S`. Introduce `h`. Take `⟨m, -, hm⟩` from `Finset.mem_image.1 h`. Establish `hall : ∀ a, b a ∈ m.asIdeal` using `fun a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: a ∈ S m` using `hm ▸ Submodule.mem_top`. Conclude with `this`. Establish `h1 : algebraMap K.E B.A (K.c e - e) ∈ m.asIdeal`. Use `key 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `m.asIdeal.sub_mem (m.asIdeal.mul_mem_left _ (hall 1)) (hall _)`. Apply `m.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h2 : algebraMap K.E B.A (K.c e - e)⁻¹ * algebraMap K.E B.A (K.c e - e) = 1`.
-
-Rewrite using `[← map_mul, inv_mul_cancel₀ hce, map_one]`. Rewrite using `[← h2]`. Conclude with `m.asIdeal.mul_mem_left _ h1`. Establish `h3` using `Subspace.biUnion_ne_univ_of_top_notMem hS`. Take `⟨a, ha⟩` from `(Set.ne_univ_iff_exists_notMem _).1 h3`.
-
-Establish `hunit : IsUnit (b a)`. Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits hn`. Apply `ha` to reduce the goal to its premises. Conclude with `Set.mem_biUnion (x := S ⟨m, hm⟩) (by simp) hxm`.
-
-Conclude with `⟨hunit.unit, by rw [IsUnit.unit_spec]; exact hbσ a⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_sigma (K : UQ) (B : InvAlg K) (u : B.A) (hu : u * B.σ u = 1) :
     ∃ β : B.Aˣ, B.σ (β : B.A) = β * u := by

@@ -26,11 +26,11 @@ Both sides reduce to the same expression.
 theorem hermRat_apply {n : ℕ} (x y : Fin n → E) : hermRat n x y = herm 1 x y := rfl
 
 /- English proof (translation)
-Set `g : (Fin n → E) ≃ₗ[ℚ] (Fin n → E)` to `b.equiv b' (Equiv.refl ι)`. Establish `hg : ∀ x y, herm 1 (g x) (g y) = herm 1 x y`. Establish `: (hermRat n).compl₁₂ g.toLinearMap g.toLinearMap = hermRat (E` using `E) n := LinearMap.ext_basis b b fun i j => by simp [g, hermRat_apply, h]`. Introduce `x y`. Conclude with `LinearMap.congr_fun₂ this x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ (c : E) x, g (c • x) = c • g x`. Introduce `c x`. Rewrite using `[← sub_eq_zero]`. Use `(traceHerm_nondegenerate n).1 _ fun z => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `g.surjective z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, traceHerm_apply, traceHerm_apply, hg, TraceDualMin.herm_smul_left, TraceDualMin.herm_smul_left, hg, sub_self]`. Conclude with `⟨{ g.toAddEquiv with map_smul' := hs }, hg, fun i => by simp [g]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isometry {n : ℕ} {ι : Type} (b b' : Basis ι ℚ (Fin n → E))
     (h : ∀ i j, herm 1 (b' i) (b' j) = herm 1 (b i) (b j)) :
@@ -52,19 +52,19 @@ theorem exists_isometry {n : ℕ} {ι : Type} (b b' : Basis ι ℚ (Fin n → E)
   exact ⟨{ g.toAddEquiv with map_smul' := hs }, hg, fun i => by simp [g]⟩
 
 /- English proof (translation)
-Set `L₀ : Submodule ℤ (Fin n → E)` to `span ℤ (Set.range b)`. Set `L₁ : Submodule ℤ (Fin n → E)` to `(traceHerm n).dualSubmodule L₀`. Establish `hfg : L₁.FG`. Simplify using `only [L₁, L₀]`. Rewrite using `[LinearMap.BilinForm.dualSubmodule_span_of_basis _ (traceHerm_nondegenerate n)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fg_span (Set.finite_range _)`. Establish `: Module.Finite ℤ L₁` using `Module.Finite.iff_fg.mpr hfg`. Establish `: Finite (L₁ ⧸ L₀.submoduleOf L₁)` using `Module.finite_of_fg_torsion _ fun q => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hx : (x : Fin n → E) ∈ span ℚ (Set.range b)` using `b.mem_span _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors ℤ) ℚ _ _ hx`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `ht`. Establish `h0 : ∀ Λ : Submodule (𝓞 E) (Fin n → E), (∀ i, b i ∈ Λ) → ∀ x ∈ L₀, x ∈ Λ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Λ hΛ`. Establish `: L₀ ≤ Λ.restrictScalars ℤ` using `span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hΛ i)`. Conclude with `this`. Establish `h1 : ∀ Λ : Submodule (𝓞 E) (Fin n → E), (∀ i, b i ∈ Λ) → (∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) → ∀ x ∈ Λ, x ∈ L₁`. Introduce `Λ hΛ hint x hx y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Algebra.isIntegral_trace (L := ℚ) (hint x hx y (h0 Λ hΛ y hy))` as an intermediate fact. Rewrite using `[Submodule.mem_one]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp this`. Set `F : Submodule (𝓞 E) (Fin n → E) → Set (L₁ ⧸ L₀.submoduleOf L₁)` to `fun Λ => {q | ∃ x : L₁, (x : Fin n → E) ∈ Λ ∧ Submodule.Quotient.mk x = q}`. Establish `key : ∀ Λ Λ' : Submodule (𝓞 E) (Fin n → E), (∀ i, b i ∈ Λ) → (∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) → (∀ i, b i ∈ Λ') → F Λ = F Λ' → Λ ≤ Λ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `Λ Λ' hΛ hint hΛ' hF x hx`. Establish `: Submodule.Quotient.mk ⟨x, h1 Λ hΛ hint x hx⟩ ∈ F Λ` using `⟨_, hx, rfl⟩`. Rewrite `this` using `[hF]`. Take `⟨y, hy, hq⟩` from `this`. Rewrite `hq` using `[Submodule.Quotient.eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h2 : (y : Fin n → E) - x ∈ Λ'` using `h0 Λ' hΛ' _ hq`. Simplify using `using Λ'.sub_mem hy h2`. Use `Set.Finite.of_finite_image (f := F) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce and unpack `Λ ⟨hΛ, hi⟩ Λ' ⟨hΛ', hi'⟩ hF`. Conclude with `le_antisymm (key _ _ hΛ hi hΛ' hF) (key _ _ hΛ' hi' hΛ hF.symm)`.
+A detailed English derivation is pending.
 -/
 theorem finite_integral_of_basis {n : ℕ} {ι : Type} [Fintype ι] (b : Basis ι ℚ (Fin n → E)) :
     {Λ : Submodule (𝓞 E) (Fin n → E) | (∀ i, b i ∈ Λ) ∧
@@ -110,9 +110,9 @@ theorem finite_integral_of_basis {n : ℕ} {ι : Type} [Fintype ι] (b : Basis �
   exact le_antisymm (key _ _ hΛ hi hΛ' hF) (key _ _ hΛ' hi' hΛ hF.symm)
 
 /- English proof (translation)
-Establish `h : ‖τ (herm 1 x y)‖ ≤ ∑ k, (‖τ (x k)‖ ^ 2 + ‖τ (y k)‖ ^ 2) / 2`. Rewrite using `[DualFamily.herm_one_eq, map_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Establish `: ‖τ (cc (y k))‖ = ‖τ (y k)‖`. Simplify using `[cc, IsCMField.complexEmbedding_complexConj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, norm_mul, this]`. Use polynomial arithmetic with `[sq_nonneg (‖τ (x k)‖ - ‖τ (y k)‖)]`. Rewrite `h` using `[← Finset.sum_div, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_herm_le {n : ℕ} (τ : E →+* ℂ) (x y : Fin n → E) (C : ℝ)
     (hx : ∑ k, ‖τ (x k)‖ ^ 2 ≤ C) (hy : ∑ k, ‖τ (y k)‖ ^ 2 ≤ C) : ‖τ (herm 1 x y)‖ ≤ C := by
@@ -127,7 +127,7 @@ theorem norm_herm_le {n : ℕ} (τ : E →+* ℂ) (x y : Fin n → E) (C : ℝ)
   linarith
 
 /- English proof (translation)
-Take `⟨m, f, hf⟩` from `Module.Finite.exists_fin' R M`. Use `Finite.of_injective (fun (g : M →ₗ[R] T) (i : Fin m) => g (f (Pi.basisFun R (Fin m) i))) fun g g' h => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.cancel_right hf]`. Conclude with `(Pi.basisFun R (Fin m)).ext fun i => congrFun h i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_linearMap {R M T : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup T] [Module R T] [Module.Finite R M] [Finite T] : Finite (M →ₗ[R] T) := by
@@ -142,23 +142,19 @@ end SelfDualClasses
 open SelfDualClasses in
 
 /- English proof (translation)
-Use `set C : ℝ := (2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rdE E) ^ 2 with hC`. Set `ι` to `Fin (2 * fdeg E * n)`. Set `A : Set E` to `{x | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ C}`. Establish `hA : A.Finite` using `Embeddings.finite_of_norm_le E ℂ C`. Set `gram : Basis ι ℚ (Fin n → E) → ι → ι → E` to `fun b i j => herm 1 (b i) (b j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Set (Basis ι ℚ (Fin n → E))` to `{b | ∀ i j, gram b i j ∈ A}`. Establish `hG : (gram '' B).Finite`. Use `(Set.Finite.pi' fun _ : ι => Set.Finite.pi' fun _ : ι => hA).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B₀, -, hB₀fin, hB₀⟩` from `Set.exists_subset_image_finite_and.mp (⟨gram '' B, subset_rfl, hG, rfl⟩ : ∃ t ⊆ gram '' B, t.Finite ∧ t = gram '' B)`. Establish `hS : {Λ : Submodule (𝓞 E) (Fin n → E) | (∃ b ∈ B₀, ∀ i, b i ∈ Λ) ∧ Λ.FG ∧ (∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) ∧ ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) → x ∈ Λ}.Finite`. Use `(hB₀fin.biUnion fun b _ => finite_integral_of_basis b).subset ?_` and prove the remaining obligations. Introduce and unpack `Λ ⟨⟨b, hb, hbΛ⟩, -, hi, -⟩`. Conclude with `Set.mem_biUnion hb ⟨hbΛ, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨hS.toFinset, fun Λ hΛ => (hS.mem_toFinset.mp hΛ).2, fun Λ hfg hint hdual => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hli, hsp, hle⟩` from `exists_short_vectors Λ hfg hint hdual`. Set `b : Basis ι ℚ (Fin n → E)` to `Basis.mk hli hsp.ge`. Establish `hb : ∀ i, b i = v i` using `fun i => Basis.mk_apply _ _ i`. Establish `hbB : gram b ∈ gram '' B₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB₀]`. Use `⟨b, fun i j => ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [gram, hb]`. Conclude with `⟨hint _ (hv i) _ (hv j), fun φ => norm_herm_le φ _ _ C (hle i φ) (hle j φ)⟩`. Take `⟨b₀, hb₀, hgram⟩` from `hbB`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `obtain ⟨γ, hγ, hγb⟩ := exists_isometry b₀ b fun i j => (congrFun₂ hgram i j).symm`. Set `γ' : (Fin n → E) ≃ₗ[𝓞 E] (Fin n → E)` to `γ.restrictScalars (𝓞 E)`. Use `⟨Λ.comap γ'.toLinearMap, hS.mem_toFinset.mpr ⟨⟨b₀, hb₀, fun i => ?_⟩, ?_, ?_, ?_⟩, γ, hγ, fun x => Iff.rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `γ (b₀ i) ∈ Λ`. Rewrite using `[hγb, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv i`. Rewrite using `[Submodule.comap_equiv_eq_map_symm]`. Conclude with `hfg.map _`. Introduce `x hx y hy`. Rewrite using `[← hγ]`.
-
-Conclude with `hint _ hx _ hy`. Introduce `x hx`. Use `hdual (γ x) fun y hy => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `γ.surjective y`. Rewrite using `[hγ]`.
-
-Conclude with `hx z hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_classes_selfDual_of_selfDual (n : ℕ) :
     ∃ S : Finset (Submodule (𝓞 E) (Fin n → E)),
@@ -217,11 +213,9 @@ theorem finite_classes_selfDual_of_selfDual (n : ℕ) :
     exact hx z hy
 
 /- English proof (translation)
-Take `⟨S, hS, hcl⟩` from `finite_classes_selfDual_of_selfDual (E := E) n`. Establish `hfin : {P : Σ Λ : Submodule (𝓞 E) (Fin n → E), Λ →ₗ[𝓞 E] T | P.1 ∈ S}.Finite`. Use `(S.finite_toSet.biUnion (t := fun Λ => Set.range fun f : Λ →ₗ[𝓞 E] T => (⟨Λ, f⟩ : Σ Λ : Submodule (𝓞 E) (Fin n → E), Λ →ₗ[𝓞 E] T)) fun Λ hΛ => ?_).subset ?_` and prove the remaining obligations. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr (hS Λ hΛ).1`. Establish `: Finite (Λ →ₗ[𝓞 E] T)` using `SelfDualClasses.finite_linearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.finite_range _`. Introduce and unpack `⟨Λ, f⟩ h`. Conclude with `Set.mem_biUnion h ⟨f, rfl⟩`. Use `⟨hfin.toFinset, fun P hP => hS _ (hfin.mem_toFinset.mp hP), fun Λ h1 h2 h3 f => ?_⟩` and prove the remaining obligations. Take `⟨Λ₀, hΛ₀, γ, hγ, h⟩` from `hcl Λ h1 h2 h3`.
-
-Conclude with `⟨⟨Λ₀, f ∘ₗ (γ.restrictScalars (𝓞 E)).toLinearMap.restrict fun x hx => (h x).mp hx⟩, hfin.mem_toFinset.mpr hΛ₀, γ, hγ, h, fun x => rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_classes_selfDual_pairs (n : ℕ) (T : Type) [AddCommGroup T] [Module (𝓞 E) T]
     [Finite T] :
@@ -251,7 +245,7 @@ theorem finite_classes_selfDual_pairs (n : ℕ) (T : Type) [AddCommGroup T] [Mod
     hfin.mem_toFinset.mpr hΛ₀, γ, hγ, h, fun x => rfl⟩
 
 /- English proof (translation)
-Establish `: Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN)`. Conclude with `finite_classes_selfDual_pairs n _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_classes_selfDual_level (n N : ℕ) (hN : N ≠ 0) :
     ∃ S : Finset (Σ Λ : Submodule (𝓞 E) (Fin n → E),

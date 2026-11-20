@@ -19,11 +19,11 @@ section Alg
 variable {V Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l'`. Establish `hp : ∀ n : ℕ, (L ^ n) T ∈ N` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hT`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `hN _ ih`. Establish `h` using `hU T (l' ∘ₗ N.mkQ)`. Establish `e : (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * (l' ∘ₗ N.mkQ) ((L ^ n) T)) = fun _ => 0`. Use function extensionality and compare the values at `n`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[(Submodule.Quotient.mk_eq_zero N).2 (hp n)]`. Rewrite `h` using `[e]`. Conclude with `h.unique hasSum_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExp_mem {L U : Module.End ℂ V} (hU : IsExp L U) (N : Submodule ℂ V) (hN : ∀ v ∈ N, L v ∈ N) {T : V}
     (hT : T ∈ N) : U T ∈ N := by
@@ -41,11 +41,11 @@ theorem isExp_mem {L U : Module.End ℂ V} (hU : IsExp L U) (N : Submodule ℂ V
   exact h.unique hasSum_zero
 
 /- English proof (translation)
-Use `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, map_smul, smul_eq_mul]`. Establish `hp : ∀ n : ℕ, q ((L ^ n) T) = μ ^ n • q T` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ', Module.End.mul_apply, h, ih, map_smul, hT, smul_smul, pow_succ]`. Establish `a` using `hU T (l ∘ₗ q)`. Simplify using `only [LinearMap.comp_apply, hp, map_smul, smul_eq_mul] at a`. Establish `b` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) μ).mul_right (l (q T))`. Rewrite `b` using `[← Complex.exp_eq_exp_ℂ]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [smul_eq_mul, mul_assoc] at b`. Conclude with `a.unique b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isExp_eig {L U : Module.End ℂ V} (hU : IsExp L U) (q : V →ₗ[ℂ] Z) (L0 : Module.End ℂ Z)
     (h : ∀ v, q (L v) = L0 (q v)) {T : V} {μ : ℂ} (hT : L0 (q T) = μ • q T) : q (U T) = Complex.exp μ • q T := by
@@ -63,9 +63,9 @@ theorem isExp_eig {L U : Module.End ℂ V} (hU : IsExp L U) (q : V →ₗ[ℂ] Z
   exact a.unique b
 
 /- English proof (translation)
-Establish `d : ∀ z : ℂ, HasDerivAt (fun s : ℝ => Complex.exp (s * z)) z 0` using `fun z => by`. Establish `h1 : HasDerivAt (fun s : ℝ => (s : ℂ) * z) z 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const z`. Simplify using `using h1.cexp`. Establish `e : (fun s : ℝ => Complex.exp (s * a)) = fun s : ℝ => Complex.exp (s * b)` using `funext h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(d a).unique (e ▸ d b)`.
+A detailed English derivation is pending.
 -/
 theorem exp_mul_eq {a b : ℂ} (h : ∀ s : ℝ, Complex.exp (s * a) = Complex.exp (s * b)) : a = b := by
   have d : ∀ z : ℂ, HasDerivAt (fun s : ℝ => Complex.exp (s * z)) z 0 := fun z => by
@@ -76,15 +76,15 @@ theorem exp_mul_eq {a b : ℂ} (h : ∀ s : ℝ, Complex.exp (s * a) = Complex.e
   exact (d a).unique (e ▸ d b)
 
 /- English proof (translation)
-Establish `hle : (⨆ n : ℕ × ℕ, D₁.eigenspace (a + n.1) ⊓ D₂.eigenspace (-a + n.2)) ≤ (D₁.eigenspace a ⊓ D₂.eigenspace (-a)) ⊔ ⨆ μ ≠ (0 : ℂ), (D₁ + D₂).eigenspace μ`. Use `iSup_le fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `le_sup_of_le_right (le_iSup₂_of_le ((n.1 + n.2 : ℕ) : ℂ) ?_ ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero]`. Apply the tactic sequence `intro h; apply hn; ext <;> simp <;> omega`. Introduce `x hx`. Establish `h1` using `Module.End.mem_eigenspace_iff.1 hx.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `Module.End.mem_eigenspace_iff.1 hx.2`. Rewrite using `[Module.End.mem_eigenspace_iff, LinearMap.add_apply, h1, h2, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨y, hy, z, hz, e⟩` from `Submodule.mem_sup.1 (hle hv)`. Establish `h1` using `Module.End.mem_eigenspace_iff.1 hy.1`. Establish `h2` using `Module.End.mem_eigenspace_iff.1 hy.2`. Establish `hz0 : z ∈ (D₁ + D₂).eigenspace 0`. Rewrite using `[Module.End.mem_eigenspace_iff, zero_smul, show z = v - y by rw [← e]; abel, map_sub, LinearMap.add_apply, h0, LinearMap.add_apply, h1, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `(Submodule.disjoint_def.1 ((Module.End.eigenspaces_iSupIndep (D₁ + D₂)) 0)) z hz0 hz` as an intermediate fact. Rewrite `e` using `[this, add_zero]`. Conclude with `e ▸ ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bottom_of_sum (D₁ D₂ : Module.End ℂ V) (a : ℂ) {v : V}
     (hv : v ∈ ⨆ n : ℕ × ℕ, D₁.eigenspace (a + n.1) ⊓ D₂.eigenspace (-a + n.2)) (h0 : D₁ v + D₂ v = 0) :
@@ -114,9 +114,7 @@ theorem bottom_of_sum (D₁ D₂ : Module.End ℂ V) (a : ℂ) {v : V}
   exact e ▸ ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `hle : (⨆ i, N i) ≤ ⨆ μ ≠ (a - 1), D.eigenspace μ`. Use `iSup_le fun i => le_iSup₂_of_le (a + f i) ?_ (hN i)` and prove the remaining obligations. Introduce `e`. Establish `: ((f i + 1 : ℕ) : ℂ) = 0` using `by push_cast; linear_combination e`. Conclude with `Nat.succ_ne_zero _ (Nat.cast_eq_zero.1 this)`.
-
-Conclude with `(Submodule.disjoint_def.1 ((Module.End.eigenspaces_iSupIndep D) (a - 1))) v (Module.End.mem_eigenspace_iff.2 h) (hle hv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_below (D : Module.End ℂ V) (a : ℂ) {ι : Type} (f : ι → ℕ) (N : ι → Submodule ℂ V)
     (hN : ∀ i, N i ≤ D.eigenspace (a + f i)) {v : V} (hv : v ∈ ⨆ i, N i) (h : D v = (a - 1) • v) : v = 0 := by
@@ -135,13 +133,11 @@ section Mat
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `hp : ∀ (k : ℕ) a, (Y ^ k) a c = if a = c then μ ^ k else 0` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro a`. Simplify using `[Matrix.one_apply]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `a`. Rewrite using `[pow_succ', Matrix.mul_apply]`. Simplify using `only [ih, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, h]`. Apply the tactic sequence `split_ifs <;> simp [pow_succ']`. Establish `h1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y).mapL (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ a c))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : ∀ M : Matrix n n ℂ, LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ a c) M = M a c` using `fun _ => rfl`. Simplify using `only [e, Matrix.smul_apply, hp] at h1`. Use `split_ifs at h1 ⊢`. Rewrite using `[Complex.exp_eq_exp_ℂ]`. Conclude with `h1.unique (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) μ)`.
-
-Simplify using `only [smul_zero] at h1`. Conclude with `h1.unique hasSum_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_col {n : Type} [Fintype n] [DecidableEq n] (Y : Matrix n n ℂ) (c : n) (μ : ℂ)
     (h : ∀ a, Y a c = if a = c then μ else 0) (a : n) :
@@ -165,7 +161,7 @@ theorem exp_col {n : Type} [Fintype n] [DecidableEq n] (Y : Matrix n n ℂ) (c :
     exact h1.unique hasSum_zero
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `[exp_col Y c μ h, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_exp_col {m n : Type} [Fintype n] [DecidableEq n] (C : Matrix m n ℂ) (Y : Matrix n n ℂ) (c : n) (μ : ℂ)
     (h : ∀ a, Y a c = if a = c then μ else 0) (i : m) :
@@ -176,17 +172,17 @@ theorem mul_exp_col {m n : Type} [Fintype n] [DecidableEq n] (C : Matrix m n ℂ
 end Mat
 
 /- English proof (translation)
-Simplify using `[Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_conjTranspose (R S : ℕ) : (Formalism.BasicNotions.TH.Jm R S)ᴴ = Formalism.BasicNotions.TH.Jm R S := by
   simp [Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Use `set J := Formalism.BasicNotions.TH.Jm R S`. Establish `hJ : J * J = 1` using `GlobalTheory.FockKStab.jm_mul_jm R S`. Establish `hJ' : Jᴴ = J` using `jm_conjTranspose R S`. Establish `h1 : ∀ M : Mat R S, J * (J * M) = M` using `fun M => by rw [← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Use `⟨(1 / 2 : ℂ) • (Z - J * Zᴴ * J), ?_, (1 / (2 * Complex.I)) • (Z + J * Zᴴ * J), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * J + J * _ = 0`. Rewrite using `[Matrix.conjTranspose_smul, show star (1 / 2 : ℂ) = 1 / 2 by simp, Matrix.smul_mul, Matrix.mul_smul, ← smul_add]`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ', Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hJ, h1, Matrix.mul_one]`. Simplify using the standard rewrite rules. Use `show _ * J + J * _ = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by simp, neg_smul, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, neg_add_eq_zero]`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ', Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hJ, h1, Matrix.mul_one]`. Rewrite using `[add_comm]`. Rewrite using `[smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp, ← smul_add]`. Rewrite using `[show Z - J * Zᴴ * J + (Z + J * Zᴴ * J) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]; norm_num`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upq_decomp {R S : ℕ} (Z : Mat R S) : ∃ Y₁ ∈ upq R S, ∃ Y₂ ∈ upq R S, Z = Y₁ + Complex.I • Y₂ := by
   set J := Formalism.BasicNotions.TH.Jm R S
@@ -217,7 +213,7 @@ def genOp (P Q : ℕ) (c : InfinitePlace F → ℂ) (Yg : InfinitePlace F → Ma
   sumPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) fun w => fockAct2 P Q R S (Yg w) + (c w * (Yg w).trace) • 1
 
 /- English proof (translation)
-Simplify using `[genOp, sumPl, LinearMap.sum_apply, Main.atPl_add, Main.atPl_smul, Main.atPl_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genOp_apply (c : InfinitePlace F → ℂ) (Yg : InfinitePlace F → Mat R S) (T : Tens F P Q R S) :
     genOp P Q c Yg T = ∑ w, (atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S (Yg w)) T +
@@ -225,7 +221,7 @@ theorem genOp_apply (c : InfinitePlace F → ℂ) (Yg : InfinitePlace F → Mat 
   simp [genOp, sumPl, LinearMap.sum_apply, Main.atPl_add, Main.atPl_smul, Main.atPl_one]
 
 /- English proof (translation)
-Rewrite using `[genOp_apply, Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `w' _ h`. Simplify using `[Pi.single_eq_of_ne h, Main.atPl_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem genOp_single (c : InfinitePlace F → ℂ) (w : InfinitePlace F) (Z : Mat R S) (T : Tens F P Q R S) :
     genOp P Q c (Pi.single w Z) T = atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S Z) T +
@@ -237,7 +233,7 @@ theorem genOp_single (c : InfinitePlace F → ℂ) (w : InfinitePlace F) (Z : Ma
   · simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun T => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, genOp_apply, genOp_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, map_smul, Main.atPl_smul, LinearMap.smul_apply, Matrix.trace_smul, smul_add, smul_smul, smul_eq_mul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -251,7 +247,7 @@ theorem genOp_smul (c : InfinitePlace F → ℂ) (Yg : InfinitePlace F → Mat R
   congr 2; ring
 
 /- English proof (translation)
-The claim follows from `Main.i_locfin _ _ _ fun w => Main.locFin_fock2 P Q R S (Yg w) (h w) _`.
+A detailed English derivation is pending.
 -/
 theorem genOp_locFin (c : InfinitePlace F → ℂ) {Yg : InfinitePlace F → Mat R S} (h : ∀ w, IsKC (Yg w)) :
     LocFin (genOp P Q c Yg) :=
@@ -261,14 +257,14 @@ variable {B : Base F E} {om : Rep σ Y W} {C : InfinitePlace F → Matrix (Fin d
   {Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)} {c : InfinitePlace F → ℂ}
 
 /- English proof (translation)
-The claim follows from `(Main.i_actslaws F _ f f₁ f₂).2.2.2.1 T h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem acts_unique {T : ((Fin n × Fin d → AF F) → ℂ) → (Fin n × Fin d → AF F) → ℂ} {f f₁ f₂ : SInf F (Fin n × Fin d)}
     (h₁ : Acts (evI F) T f f₁) (h₂ : Acts (evI F) T f f₂) : f₁ = f₂ :=
   (Main.i_actslaws F _ f f₁ f₂).2.2.2.1 T h₁ h₂
 
 /- English proof (translation)
-Take `⟨U, hU, hSA⟩` from `Main.i_expact F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) (genOp_locFin c hKC) (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hY T)`. Conclude with `⟨U, hU, fun T => (Main.i_actslaws F _ (Φ T) (Φ (U T)) (Φ T)).2.1 _ (map_zero _) (hSA T)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exp_of_gen (hact : ActsBy B.emb C (om.comp (MonoidHom.inr _ _)) Φ (fockAct2 P Q R S) c)
     (hadm : ∀ g, ∀ l ∈ (adeleClass F).adm (Fin n × Fin d), l ∘ₗ om g ∈ (adeleClass F).adm (Fin n × Fin d))
@@ -281,7 +277,7 @@ theorem exp_of_gen (hact : ActsBy B.emb C (om.comp (MonoidHom.inr _ _)) Φ (fock
   exact ⟨U, hU, fun T => (Main.i_actslaws F _ (Φ T) (Φ (U T)) (Φ T)).2.1 _ (map_zero _) (hSA T)⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `Main.i_kline Main.i_lineex F E σ (Fin d) R S B.emb (incM F W.J) Complex.I C W.θ hcm hC hθ k hk.1 hk.2`. Take `⟨U, hU, hA⟩` from `exp_of_gen hact hadm hγ hgen hKC`. Conclude with `⟨Yg, U, hKC, hU, hγ1 ▸ hA⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exp_of_kInf (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
     (hθ : ∀ w, W.θ w * C w = C w * Formalism.BasicNotions.TH.Jm R S)
@@ -296,9 +292,9 @@ theorem exp_of_kInf (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (
   exact ⟨Yg, U, hKC, hU, hγ1 ▸ hA⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, hgen⟩` from `Main.i_lineex F E σ (Fin d) R S B.emb (incM F W.J) Complex.I C hcm hC Yg fun w => GlobalTheory.FockKStab.mem_upq (hKC w) (hs w)`. Establish `h1 : ∀ w, (mat (γ (Multiplicative.ofAdd 1))).map (piInf (B.emb w)) * C w = C w * NormedSpace.exp (Yg w)` using `fun w => by`. Use `hgen 1 w` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `⟨γ (Multiplicative.ofAdd 1), ⟨hγ.2 _, fun w => ?_⟩, h1, exp_of_gen hact hadm hγ hgen hKC⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A', hA'⟩` from `(hC w).2`. Conclude with `GlobalTheory.FockKStab.commute_of_frame hA' (GlobalTheory.FockKStab.frame_inv (hC w) hA') (h1 w) (hθ w) (Commute.exp_left (GlobalTheory.FockKStab.commute_jm (hKC w)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exp_of_skew (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
     (hθ : ∀ w, W.θ w * C w = C w * Formalism.BasicNotions.TH.Jm R S)
@@ -318,13 +314,13 @@ theorem exp_of_skew (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (
     (Commute.exp_left (GlobalTheory.FockKStab.commute_jm (hKC w)))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mat k = mat k'`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hcm B.emb _ (fun u hu => ?_) fun w => ?_` and prove the remaining obligations. Establish `a` using `congrFun (congrFun (hk u hu) i) j`. Establish `b` using `congrFun (congrFun (hk' u hu) i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply] at a b`. Rewrite using `[show mat k i j - mat k' i j = (mat k i j - (1 : Matrix (Fin d) (Fin d) (AE F E)) i j) - (mat k' i j - (1 : Matrix (Fin d) (Fin d) (AE F E)) i j) by ring, smul_sub, a, b, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A', hA'⟩` from `(hC w).2`. Establish `e` using `congrArg (· * A') (h w)`. Simplify using `only [Matrix.mul_assoc, hA', Matrix.mul_one] at e`. Use `congrFun (congrFun e i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, this, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_frame (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
     {k k' : UA σ W.J} (hk : k ∈ UAt σ W (evI F)) (hk' : k' ∈ UAt σ W (evI F))
@@ -347,21 +343,21 @@ theorem eq_of_frame (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (
     rw [map_sub, this, sub_self]
 
 /- English proof (translation)
-Establish `key : ∀ Y : Mat R S, IsKC Y → Yᴴ = -Y → (∀ b ∈ I, ∀ a, Y a b = 0) → atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S Y) T ∈ N := by`. Introduce `Y hY hs h0`. Establish `hKC : ∀ (s : ℂ) w', IsKC ((s • (Pi.single w Y : InfinitePlace F → Mat R S)) w')` using `fun s w' => by`. Use `GlobalTheory.FockKStab.isKC_smul ?_ s` and prove the remaining obligations. Distinguish the cases in `h : w' = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `using hY`. Simplify `GlobalTheory.FockKStab.isKC_zero R S` using `[Pi.single_eq_of_ne h]`. Establish `hmem` using `GlobalTheory.FockKStab.mem_of_exp (genOp P Q c (Pi.single w Y)) (genOp_locFin c (by simpa using hKC 1)) N T fun s => by`. Take `⟨k, hk, hkC, U, hU, hA⟩` from `exp_of_skew hcm hC hθ hact hadm ((s : ℂ) • Pi.single w Y) (hKC s) fun w' => by`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `[Matrix.conjTranspose_smul, hs]`. Simplify using `[Pi.single_eq_of_ne h]`. Use `⟨U, genOp_smul c _ (s : ℂ) ▸ hU, hN k hk (fun w' b hb i => ?_) T hT _ (hA T)⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hkC, mul_exp_col _ _ b 0, Complex.exp_zero, one_mul]`. Introduce `a`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `[h0 b hb a]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`. Rewrite `hmem` using `[genOp_single]`. Simplify using `using N.sub_mem hmem (N.smul_mem (c w * Y.trace) hT)`. Establish `hZh : IsKC Zᴴ` using `GlobalTheory.FockKStab.isKC_conjTranspose hZ`. Establish `hZ' : Z = (1 / 2 : ℂ) • (Z - Zᴴ) + Complex.I • (1 / (2 * Complex.I)) • (Z + Zᴴ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp, ← smul_add]`. Rewrite using `[show Z - Zᴴ + (Z + Zᴴ) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]; norm_num`. Rewrite using `[hZ', map_add, map_smul _ Complex.I, Main.atPl_add, Main.atPl_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Use `N.add_mem (key _ ?_ ?_ ?_) (N.smul_mem _ (key _ ?_ ?_ ?_))` and prove the remaining obligations. Conclude with `GlobalTheory.FockKStab.isKC_smul (fun a b h => by rw [Matrix.sub_apply, hZ a b h, hZh a b h, sub_zero]) _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_neg, neg_sub]`. Introduce `b hb a`. Simplify using `[Matrix.conjTranspose_apply, hI b hb a]`. Conclude with `GlobalTheory.FockKStab.isKC_smul (GlobalTheory.FockKStab.isKC_add hZ hZh) _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by simp, neg_smul, add_comm]`. Introduce `b hb a`. Simplify using `[Matrix.conjTranspose_apply, hI b hb a]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_of_fix (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
     (hθ : ∀ w, W.θ w * C w = C w * Formalism.BasicNotions.TH.Jm R S)

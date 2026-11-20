@@ -13,39 +13,39 @@ variable {R : Type} [CommRing R] {c : R →+* R} {V : Type} [AddCommGroup V] [Mo
   {h : V → V → R}
 
 /- English proof (translation)
-Use `H.smul_right 0 x 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_zero_right (H : IsHerm c h) (x : V) : h x 0 = 0 := by
   have := H.smul_right 0 x 0
   simpa using this
 
 /- English proof (translation)
-Use `H.smul_right (-1) x y` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_neg_right (H : IsHerm c h) (x y : V) : h x (-y) = - h x y := by
   have := H.smul_right (-1) x y
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, H.add_right, herm_neg_right H, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sub_right (H : IsHerm c h) (x y z : V) : h x (y - z) = h x y - h x z := by
   rw [sub_eq_add_neg, H.add_right, herm_neg_right H, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[H.symm z (x + y), H.add_right, map_add, ← H.symm, ← H.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_add_left (H : IsHerm c h) (x y z : V) : h (x + y) z = h x z + h y z := by
   rw [H.symm z (x + y), H.add_right, map_add, ← H.symm, ← H.symm]
 
 /- English proof (translation)
-Rewrite using `[H.symm y (a • x), H.smul_right, map_mul, ← H.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_left (H : IsHerm c h) (a : R) (x y : V) : h (a • x) y = c a * h x y := by
   rw [H.symm y (a • x), H.smul_right, map_mul, ← H.symm]
 
 /- English proof (translation)
-Rewrite using `[H.symm z (x - y), herm_sub_right H, map_sub, ← H.symm, ← H.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sub_left (H : IsHerm c h) (x y z : V) : h (x - y) z = h x z - h y z := by
   rw [H.symm z (x - y), herm_sub_right H, map_sub, ← H.symm, ← H.symm]
@@ -69,7 +69,7 @@ def perp (H : IsHerm c h) (x y : V) : Submodule R V :=
   LinearMap.ker (linForm H x) ⊓ LinearMap.ker (linForm H y)
 
 /- English proof (translation)
-Simplify using `[perp, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perp (H : IsHerm c h) {x y z : V} : z ∈ perp H x y ↔ h x z = 0 ∧ h y z = 0 := by
   simp [perp, LinearMap.mem_ker]
@@ -78,7 +78,7 @@ def projV (H : IsHerm c h) (x y : V) : V →ₗ[R] V :=
   LinearMap.id - (linForm H y).smulRight x - (linForm H x).smulRight y
 
 /- English proof (translation)
-Simplify using `[projV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projV_apply (H : IsHerm c h) (x y z : V) :
     projV H x y z = z - h y z • x - h x z • y := by
@@ -87,7 +87,7 @@ theorem projV_apply (H : IsHerm c h) (x y z : V) :
 def resForm (h : V → V → R) (W : Submodule R V) : W → W → R := fun a b => h a b
 
 /- English proof (translation)
-The claim follows from `H.add_right _ _ _ smul_right a b d := H.smul_right _ _ _ symm a b := H.symm _ _`.
+A detailed English derivation is pending.
 -/
 theorem isHerm_resForm (H : IsHerm c h) (W : Submodule R V) : IsHerm c (resForm h W) where
   add_right a b d := H.add_right _ _ _
@@ -101,19 +101,19 @@ def pullLat (𝔬 : Subring R) (p : V ≃ₗ[R] V) (L : Submodule 𝔬 V) : Subm
   L.comap (p.toLinearMap.restrictScalars 𝔬)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pullLat {𝔬 : Subring R} {p : V ≃ₗ[R] V} {L : Submodule 𝔬 V} {z : V} :
     z ∈ pullLat 𝔬 p L ↔ p z ∈ L := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[H.symm x y, hy.xy, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHyp.yx (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) : h y x = 1 := by
   rw [H.symm x y, hy.xy, map_one]
 
 /- English proof (translation)
-Rewrite using `[mem_perp, projV_apply, herm_sub_right H, herm_sub_right H, herm_sub_right H, herm_sub_right H, H.smul_right, H.smul_right, H.smul_right, H.smul_right, hy.xx, hy.yy, hy.xy, hy.yx H]`. Apply the tactic sequence `constructor <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projV_mem (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) (z : V) :
     projV H x y z ∈ perp H x y := by
@@ -123,14 +123,14 @@ theorem projV_mem (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) (z : V) :
   constructor <;> ring
 
 /- English proof (translation)
-Rewrite using `[projV_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem decomp (H : IsHerm c h) (x y z : V) :
     z = h y z • x + h x z • y + projV H x y z := by
   rw [projV_apply]; abel
 
 /- English proof (translation)
-Use `(mem_perp H).1 hz` as an intermediate fact. Rewrite using `[projV_apply, herm_sub_left H, herm_sub_left H, herm_smul_left H, herm_smul_left H, this.1, this.2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_perp_left (H : IsHerm c h) {x y z : V} (hz : z ∈ perp H x y) (w : V) :
     h (projV H x y w) z = h w z := by
@@ -140,7 +140,7 @@ theorem herm_perp_left (H : IsHerm c h) {x y z : V} (hz : z ∈ perp H x y) (w :
   ring
 
 /- English proof (translation)
-Use `(mem_perp H).1 hz` as an intermediate fact. Establish `h1 : h z x = 0` using `by rw [H.symm x z, this.1, map_zero]`. Establish `h2 : h z y = 0` using `by rw [H.symm y z, this.2, map_zero]`. Rewrite using `[projV_apply, herm_sub_right H, herm_sub_right H, H.smul_right, H.smul_right, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_perp_right (H : IsHerm c h) {x y z : V} (hz : z ∈ perp H x y) (w : V) :
     h z (projV H x y w) = h z w := by
@@ -151,7 +151,7 @@ theorem herm_perp_right (H : IsHerm c h) {x y z : V} (hz : z ∈ perp H x y) (w 
   ring
 
 /- English proof (translation)
-Rewrite using `[herm_perp_right H (projV_mem H hy z), projV_apply, herm_sub_left H, herm_sub_left H, herm_smul_left H, herm_smul_left H]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_projV (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) (z w : V) :
     h (projV H x y z) (projV H x y w) = h z w - c (h y z) * h x w - c (h x z) * h y w := by
@@ -165,28 +165,28 @@ variable {R : Type} [CommRing R] {c : R →+* R} {𝔬 : Subring R} {V : Type} [
   {h : V → V → R}
 
 /- English proof (translation)
-Use `herm_smul_left H 0 0 x` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_zero_left (H : IsHerm c h) (x : V) : h 0 x = 0 := by
   have := herm_smul_left H 0 0 x
   simpa using this
 
 /- English proof (translation)
-The claim follows from `L.smul_of_tower_mem (⟨a, ha⟩ : 𝔬) hz`.
+A detailed English derivation is pending.
 -/
 theorem smem {L : Submodule 𝔬 V} {a : R} {z : V} (ha : a ∈ 𝔬) (hz : z ∈ L) : a • z ∈ L :=
   L.smul_of_tower_mem (⟨a, ha⟩ : 𝔬) hz
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span R (L : Set V)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨1, 𝔬.one_mem, isUnit_one, by simpa using hv⟩`. Consider the case `zero => exact ⟨1, 𝔬.one_mem, isUnit_one, by simp⟩`. Consider the case `add v w _ _ hv hw`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs₁, hs₂, hs₃⟩` from `hv`. Take `⟨t, ht₁, ht₂, ht₃⟩` from `hw`. Use `⟨s * t, 𝔬.mul_mem hs₁ ht₁, hs₂.mul ht₂, ?_⟩` and prove the remaining obligations. Establish `: (s * t) • (v + w) = t • (s • v) + s • (t • w)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm t s]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `L.add_mem (smem ht₁ hs₃) (smem hs₁ ht₃)`. Consider the case `smul a v _ hv`. Take `⟨s, hs₁, hs₂, hs₃⟩` from `hv`. Take `⟨t, ht₁, ht₂, ht₃⟩` from `hR.denom a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t * s, 𝔬.mul_mem ht₁ hs₁, ht₂.mul hs₂, ?_⟩` and prove the remaining obligations. Establish `: (t * s) • a • v = (t * a) • (s • v)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `smem ht₃ hs₃`.
+A detailed English derivation is pending.
 -/
 theorem exists_denom (hR : IsHermRing c 𝔬) {L : Submodule 𝔬 V}
     (hs : Submodule.span R (L : Set V) = ⊤) (v : V) : ∃ s ∈ 𝔬, IsUnit s ∧ s • v ∈ L := by
@@ -212,15 +212,15 @@ theorem exists_denom (hR : IsHermRing c 𝔬) {L : Submodule 𝔬 V}
     exact smem ht₃ hs₃
 
 /- English proof (translation)
-Establish `hyx : h y₁ x₁ = 1` using `by rw [H.symm x₁ y₁, hxy, map_one]`. Set `I : Submodule 𝔬 R` to `L.comap ((LinearMap.toSpanSingleton R V x₁).restrictScalars 𝔬)`. Establish `memI : ∀ a, a ∈ I ↔ a • x₁ ∈ L` using `fun a => Iff.rfl`. Set `J : Submodule 𝔬 R` to `L.map ((linForm H y₁).restrictScalars 𝔬)`. Establish `hJ : J.FG` using `hL.1.map _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hIJ : I ≤ J` using `fun a ha => ⟨a • x₁, ha, by`. Express the relevant statement in the definitionally equal form `h y₁ (a • x₁) = a`. Rewrite using `[H.smul_right, hyx, mul_one]⟩`. Use `hR.noeth` as an intermediate fact. Establish `hN : IsNoetherian 𝔬 J` using `isNoetherian_of_fg_of_noetherian J hJ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : I.FG` using `(isNoetherian_submodule.1 hN) I hIJ`. Take `⟨s, -, hs, hsL⟩` from `exists_denom hR hL.2 x₁`. Take `⟨u, hu, e⟩` from `hR.principal I hI ⟨s, (memI s).2 hsL, hs⟩`. Establish `huI : u ∈ I` using `e ▸ Submodule.mem_span_singleton_self u`. Use `⟨u, hu, huI, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ha` using `[smul_smul]`. Establish `: a * u ∈ I` using `ha`. Rewrite `this` using `[e, Submodule.mem_span_singleton]`. Take `⟨b, hb⟩` from `this`. Establish `hb' : (b : R) * u = a * u` using `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hu.mul_right_cancel hb'` as an intermediate fact. Conclude with `this ▸ b.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_primitive (hR : IsHermRing c 𝔬) (H : IsHerm c h) {L : Submodule 𝔬 V}
     (hL : IsLat 𝔬 L) {x₁ y₁ : V} (hxy : h x₁ y₁ = 1) :
@@ -249,33 +249,33 @@ theorem exists_primitive (hR : IsHermRing c 𝔬) (H : IsHerm c h) {L : Submodul
   exact this ▸ b.2
 
 /- English proof (translation)
-Take `⟨u, hu, hxL, prim⟩` from `exists_primitive hR H hL.1 hxy`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x, x = u • x₁` from `⟨_, rfl⟩`. Rewrite `hxL`, `prim`, the goal using `[← hx]`. Establish `hx0 : h x x = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx, herm_smul_left H, H.smul_right, hxx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcu : IsUnit (c u)` using `hu.map c`. Establish `hxy' : h x y₁ = c u` using `by rw [hx, herm_smul_left H, hxy, mul_one]`. Set `I : Submodule 𝔬 R` to `L.map ((linForm H x).restrictScalars 𝔬)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `memI : ∀ l ∈ L, h x l ∈ I` using `fun l hl => ⟨l, hl, rfl⟩`. Establish `hI : I.FG` using `hL.1.1.map _`. Take `⟨s, -, hs, hsL⟩` from `exists_denom hR hL.1.2 y₁`. Establish `hsu : h x (s • y₁) = s * c u` using `by rw [H.smul_right, hxy']`. Take `⟨e, he, eI⟩` from `hR.principal I hI ⟨_, memI _ hsL, by rw [hsu]; exact hs.mul hcu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `he.exists_left_inv`. Establish `hxl : ∀ l ∈ L, ∃ b ∈ 𝔬, h x l = b * e` using `fun l hl => by`. Use `memI l hl` as an intermediate fact. Rewrite `this` using `[eI, Submodule.mem_span_singleton]`. Take `⟨b, hb⟩` from `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, b.2, hb.symm⟩`. Take `⟨w, hw⟩ : ∃ w, w = c f • x` from `⟨_, rfl⟩`. Establish `hinv` using `hR.invol`. Establish `hwl : ∀ l ∈ L, h w l ∈ 𝔬` using `fun l hl => by`. Take `⟨b, hb, e1⟩` from `hxl l hl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: h w l = b`. Rewrite using `[hw, herm_smul_left H, hinv, e1]`. Take the linear combination `b * hf`. Conclude with `this ▸ hb`. Establish `hww : h w w = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, herm_smul_left H, H.smul_right, hx0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlw : ∀ l ∈ L, h l w ∈ 𝔬` using `fun l hl => by`. Rewrite using `[H.symm w l]`. Conclude with `hR.conj_mem _ (hwl l hl)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : IsEvenInt c 𝔬 h (L ⊔ Submodule.span 𝔬 {w})`. Establish `form : ∀ z ∈ L ⊔ Submodule.span 𝔬 {w}, ∃ l ∈ L, ∃ a ∈ 𝔬, z = l + a • w` using `fun z hz => by`. Take `⟨l, hl, m, hm, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `⟨l, hl, a, a.2, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun z hz z' hz' => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, a, ha, rfl⟩` from `form z hz`. Take `⟨l', hl', a', ha', rfl⟩` from `form z' hz'`. Simplify using `only [herm_add_left H, H.add_right, herm_smul_left H, H.smul_right, hww, mul_zero, add_zero]`. Conclude with `𝔬.add_mem (𝔬.add_mem (hL.2.1.1 l hl l' hl') (𝔬.mul_mem ha' (hlw l hl))) (𝔬.mul_mem (hR.conj_mem _ ha) (hwl l' hl'))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl, a, ha, rfl⟩` from `form z hz`. Take `⟨b, hb, e1⟩` from `hL.2.1.2 l hl`. Use `⟨b + c a * h w l, 𝔬.add_mem hb (𝔬.mul_mem (hR.conj_mem _ ha) (hwl l hl)), ?_⟩` and prove the remaining obligations. Simplify using `only [herm_add_left H, H.add_right, herm_smul_left H, H.smul_right, hww, mul_zero, add_zero]`. Rewrite using `[e1, map_add, map_mul, hinv, ← H.symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hwL : w ∈ L` using `hL.2.2 _ key le_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self w))`. Establish `hcf : c f ∈ 𝔬` using `prim _ (hw ▸ hwL)`. Establish `hfo : f ∈ 𝔬`. Use `hR.conj_mem _ hcf` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Establish `h1 : (1 : R) ∈ I`. Rewrite using `[eI, Submodule.mem_span_singleton]`. Conclude with `⟨⟨f, hfo⟩, hf⟩`. Take `⟨l, hl, hl1⟩` from `h1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl1' : h x l = 1` using `hl1`. Establish `hlx : h l x = 1` using `by rw [H.symm x l, hl1', map_one]`. Take `⟨a, ha, e2⟩` from `hL.2.1.2 l hl`. Use `⟨l - a • x, L.sub_mem hl (smem ha hxL), hxL, hx0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [herm_sub_left H, herm_sub_right H, herm_smul_left H, H.smul_right, hx0, hlx, hl1', e2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[herm_sub_right H, H.smul_right, hx0, hl1']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_partner (hR : IsHermRing c 𝔬) (H : IsHerm c h) {L : Submodule 𝔬 V}
     (hL : IsMaxEven c 𝔬 h L) {x₁ y₁ : V} (hxx : h x₁ x₁ = 0) (hxy : h x₁ y₁ = 1) :
@@ -360,7 +360,7 @@ Both sides reduce to the same expression.
     (projP H hy z : V) = projV H x y z := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `(mem_perp H).1 m.2` as an intermediate fact. Rewrite using `[coe_projP, projV_apply, this.1, this.2]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projP_coe (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) (m : perp H x y) :
     projP H hy m = m := by
@@ -370,9 +370,9 @@ theorem projP_coe (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) (m : perp H x y)
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `P.nondeg _ fun w => ?_` and prove the remaining obligations. Rewrite using `[← herm_perp_right H m.2 w]`. Conclude with `hm (projP H hy w)`. Use `repr f := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `P.repr (f ∘ₗ projP H hy)`. Use `⟨projP H hy v, fun m => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (projV H x y v) m = _`. Rewrite using `[herm_perp_left H m.2, hv]`. Simplify using `[projP_coe]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPerfect_resForm (H : IsHerm c h) (P : IsPerfect h) {x y : V} (hy : IsHyp h x y) :
     IsPerfect (resForm h (perp H x y)) where
@@ -389,21 +389,21 @@ theorem isPerfect_resForm (H : IsHerm c h) (P : IsPerfect h) {x y : V} (hy : IsH
     simp [projP_coe]
 
 /- English proof (translation)
-Establish `hEq : pullLat 𝔬 p L = L.map (p.symm.toLinearMap.restrictScalars 𝔬)`. Use extensionality with `z`. Rewrite using `[mem_pullLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨p z, hz, by simp⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Simplify using `using ht`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL.1.1.map _`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `h1 : p z ∈ Submodule.span R (L : Set V)` using `hL.1.2 ▸ Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := p.symm.toLinearMap) h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Submodule.map_span]`. Establish `h3 : p.symm.toLinearMap '' (L : Set V) ⊆ (pullLat 𝔬 p L : Set V)`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Express the relevant statement in the definitionally equal form `p (p.symm t) ∈ L`. Simplify using `using ht`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.span_mono h3 h2`. Simplify using `using h4`. Introduce `s hs t ht`. Rewrite using `[← hp]`. Conclude with `hL.2.1.1 _ hs _ ht`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite using `[← hp]`. Conclude with `hL.2.1.2 _ hs`. Introduce `M hM hLM z hz`. Establish `hs : ∀ a b, h (p.symm a) (p.symm b) = h a b` using `fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hp]`. Simplify using the standard rewrite rules. Establish `hE : IsEvenInt c 𝔬 h (pullLat 𝔬 p.symm M)` using `⟨fun s hs' t ht' => by rw [← hs]; exact hM.1 _ hs' _ ht', fun s hs' => by rw [← hs]; exact hM.2 _ hs'⟩`. Use `hL.2.2 _ hE (fun t ht => ?_) (?_ : p z ∈ pullLat 𝔬 p.symm M)` and prove the remaining obligations. Apply `hLM` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_pullLat]`. Simplify using `using ht`. Rewrite using `[mem_pullLat]`. Simplify using `using hz`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isMaxEven_pullLat (H : IsHerm c h) {p : V ≃ₗ[R] V} (hp : ∀ a b, h (p a) (p b) = h a b)
     {L : Submodule 𝔬 V} (hL : IsMaxEven c 𝔬 h L) : IsMaxEven c 𝔬 h (pullLat 𝔬 p L) := by
@@ -448,33 +448,27 @@ theorem isMaxEven_pullLat (H : IsHerm c h) {p : V ≃ₗ[R] V} (hp : ∀ a b, h 
       simpa using hz
 
 /- English proof (translation)
-Establish `hprojL : ∀ z ∈ L, projV H x y z ∈ L` using `fun z hz => by`. Rewrite using `[projV_apply]`. Conclude with `L.sub_mem (L.sub_mem hz (smem (hL.2.1.1 y hyL z hz) hx)) (smem (hL.2.1.1 x hx z hz) hyL)`. Establish `hEq : resLat 𝔬 (perp H x y) L = L.map ((projP H hy).restrictScalars 𝔬)`. Use extensionality with `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Conclude with `⟨m, hm, projP_coe H hy m⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `hprojL t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_⟩, ⟨fun s hs t ht => hL.2.1.1 _ hs _ ht, fun s hs => hL.2.1.2 _ hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`. Conclude with `hL.1.1.map _`. Rewrite using `[eq_top_iff]`. Introduce `m _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (m : V) ∈ Submodule.span R (L : Set V)` using `hL.1.2 ▸ Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := projP H hy) h1`. Rewrite `h2` using `[Submodule.map_span, projP_coe]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hprojL t ht`. Introduce `M hM hLM`. Set `L' : Submodule 𝔬 V` to `{ carrier := {z | h y z ∈ 𝔬 ∧ h x z ∈ 𝔬 ∧ projP H hy z ∈ M} add_mem' := fun {s t} hs ht => by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[H.add_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `𝔬.add_mem hs.1 ht.1`. Rewrite using `[H.add_right]`. Conclude with `𝔬.add_mem hs.2.1 ht.2.1`. Rewrite using `[map_add]`. Conclude with `M.add_mem hs.2.2 ht.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[herm_zero_right H]`. Conclude with `𝔬.zero_mem`. Rewrite using `[herm_zero_right H]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `𝔬.zero_mem`. Rewrite using `[map_zero]`. Conclude with `M.zero_mem`. Use the proof step `smul_mem' := fun a z hz => by`. Establish `e : ∀ v, h v (a • z) = (a : R) * h v z` using `fun v => H.smul_right (a : R) v z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `𝔬.mul_mem a.2 hz.1`. Rewrite using `[e]`. Conclude with `𝔬.mul_mem a.2 hz.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: projP H hy (a • z) = a • projP H hy z` using `(projP H hy).map_smul (a : R) z`. Rewrite using `[this]`. Conclude with `M.smul_mem a hz.2.2 }`. Establish `hform : ∀ z w, h z w = h (projV H x y z) (projV H x y w) + c (h y z) * h x w + c (h x z) * h y w` using `fun z w => by`. Rewrite using `[herm_projV H hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hE : IsEvenInt c 𝔬 h L'`. Use `⟨fun z hz w hw => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Conclude with `𝔬.add_mem (𝔬.add_mem (hM.1 _ hz.2.2 _ hw.2.2) (𝔬.mul_mem (hR.conj_mem _ hz.1) hw.2.1)) (𝔬.mul_mem (hR.conj_mem _ hz.2.1) hw.1)`.
-
-Take `⟨a, ha, e⟩` from `hM.2 _ hz.2.2`. Establish `e' : h (projV H x y z) (projV H x y z) = a + c a` using `e`. Use `⟨a + c (h y z) * h x z, 𝔬.add_mem ha (𝔬.mul_mem (hR.conj_mem _ hz.1) hz.2.1), ?_⟩` and prove the remaining obligations. Rewrite using `[hform, e', map_add, map_mul, hR.invol]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hLL' : L ≤ L'` using `fun z hz => ⟨hL.2.1.1 y hyL z hz, hL.2.1.1 x hx z hz, hLM (hprojL z hz)⟩`. Introduce `m hm`. Establish `hp` using `(mem_perp H).1 m.2`. Use `hL.2.2 _ hE hLL' (⟨?_, ?_, ?_⟩ : (m : V) ∈ L')` and prove the remaining obligations. Rewrite using `[hp.2]`.
-
-Conclude with `𝔬.zero_mem`. Rewrite using `[hp.1]`. Conclude with `𝔬.zero_mem`. Rewrite using `[projP_coe]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxEven_resLat (hR : IsHermRing c 𝔬) (H : IsHerm c h) {x y : V} (hy : IsHyp h x y)
     {L : Submodule 𝔬 V} (hL : IsMaxEven c 𝔬 h L) (hx : x ∈ L) (hyL : y ∈ L) :
@@ -543,21 +537,21 @@ theorem isMaxEven_resLat (hR : IsHermRing c 𝔬) (H : IsHerm c h) {x y : V} (hy
     · rw [projP_coe]; exact hm
 
 /- English proof (translation)
-Set `f : V →ₗ[R] V` to `(linForm H y).smulRight x' + (linForm H x).smulRight y' + ψ ∘ₗ projP H hy`. Establish `fa : ∀ z, f z = h y z • x' + h x z • y' + ψ (projP H hy z)` using `fun z => by simp [f]`. Establish `hR1 : ∀ s t, h x' (ψ s) = 0 ∧ h y' (ψ s) = 0 ∧ h (ψ t) x' = 0 ∧ h (ψ t) y' = 0` using `fun s t => by`. Establish `e1` using `(mem_perp H).1 (hψ' s)`. Establish `e2` using `(mem_perp H).1 (hψ' t)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e1.1, e1.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[H.symm x' (ψ t), e2.1, map_zero]`. Rewrite using `[H.symm y' (ψ t), e2.2, map_zero]`. Establish `iso : ∀ a b, h (f a) (f b) = h a b` using `fun a b => by`. Establish `e` using `hR1 (projP H hy b) (projP H hy a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : h (ψ (projP H hy a)) (ψ (projP H hy b)) = h (projV H x y a) (projV H x y b)` using `hψ _ _`. Rewrite `e3` using `[herm_projV H hy]`. Rewrite using `[fa, fa]`. Simplify using `only [herm_add_left H, H.add_right, herm_smul_left H, H.smul_right, e.1, e.2.1, e.2.2.1, e.2.2.2, e3, hy'.xx, hy'.yy, hy'.xy, hy'.yx H]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `inj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Use `P.nondeg z fun w => ?_` and prove the remaining obligations. Rewrite using `[← iso, hz, herm_zero_left H]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hR.artinian` as an intermediate fact. Use `⟨LinearEquiv.ofBijective f ⟨inj, IsArtinian.surjective_of_injective_endomorphism f inj⟩, iso, ?_, ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e : projP H hy x = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_projP, projV_apply, hy.xx, hy.yx H]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `f x = _`. Rewrite using `[fa, e, hy.xx, hy.yx H]`. Simplify using the standard rewrite rules. Establish `e : projP H hy y = 0`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_projP, projV_apply, hy.yy, hy.xy]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `f y = _`. Rewrite using `[fa, e, hy.yy, hy.xy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `f m = _`. Establish `hm` using `(mem_perp H).1 m.2`. Rewrite using `[fa, projP_coe, hm.1, hm.2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_glue (hR : IsHermRing c 𝔬) [Module.Finite R V] (H : IsHerm c h) (P : IsPerfect h) {x y x' y' : V}
     (hy : IsHyp h x y) (hy' : IsHyp h x' y') (ψ : perp H x y →ₗ[R] V)
@@ -614,9 +608,9 @@ def Good (c : R →+* R) (𝔬 : Subring R) {V : Type} [AddCommGroup V] [Module 
         ∀ j, p (x j) ∈ Submodule.span R (x '' {i | i ≤ j})
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `hE.1 y hy z hz`. Establish `h2` using `hE.1 x hx z hz`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[projV_apply]`. Conclude with `L.sub_mem (L.sub_mem hz (L.smul_of_tower_mem (⟨_, h1⟩ : 𝔬) hx)) (L.smul_of_tower_mem (⟨_, h2⟩ : 𝔬) hy)`. Introduce and unpack `⟨h1, h2, h3⟩`. Rewrite using `[decomp H x y z]`. Conclude with `L.add_mem (L.add_mem (L.smul_of_tower_mem (⟨_, h1⟩ : 𝔬) hx) (L.smul_of_tower_mem (⟨_, h2⟩ : 𝔬) hy)) h3`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_hyp (H : IsHerm c h) {x y : V} {L : Submodule 𝔬 V} (hE : IsEvenInt c 𝔬 h L)
     (hx : x ∈ L) (hy : y ∈ L) (z : V) :
@@ -635,9 +629,9 @@ theorem mem_iff_of_hyp (H : IsHerm c h) {x y : V} {L : Submodule 𝔬 V} (hE : I
       (L.smul_of_tower_mem (⟨_, h2⟩ : 𝔬) hy)) h3
 
 /- English proof (translation)
-Establish `e1 : h a (q z) = h a z` using `by conv_lhs => rw [← hqa]`. Conclude with `hq _ _`. Establish `e2 : h b (q z) = h b z` using `by conv_lhs => rw [← hqb]`. Conclude with `hq _ _`. Establish `e3 : projV H a b (q z) = q (projV H a b z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projV_apply, projV_apply, e1, e2, map_sub, map_sub, map_smul, map_smul, hqa, hqb]`. Rewrite using `[mem_iff_of_hyp H hE ha hb, mem_iff_of_hyp H hE₂ ha₂ hb₂, e1, e2, e3, hp ⟨_, projV_mem H hyp z⟩]`.
+A detailed English derivation is pending.
 -/
 theorem mem_iff_lift (H : IsHerm c h) {a b : V} (hyp : IsHyp h a b) {L L₂ : Submodule 𝔬 V}
     (hE : IsEvenInt c 𝔬 h L) (hE₂ : IsEvenInt c 𝔬 h L₂) (ha : a ∈ L) (hb : b ∈ L)
@@ -656,51 +650,45 @@ theorem mem_iff_lift (H : IsHerm c h) {a b : V} (hyp : IsHyp h a b) {L L₂ : Su
     hp ⟨_, projV_mem H hyp z⟩]
 
 /- English proof (translation)
-Establish `hxx0 : h (x 0) (x 0) = 0` using `hf.xx 0 0`. Establish `hxy0 : h (x 0) (y 0) = 1` using `by simpa using hf.xy 0 0`. Take `⟨u, hu, b, hbL, haL, hyp⟩` from `exists_partner hR H hL hxx0 hxy0`. Take `⟨u', hu', b', hbL', haL', hyp'⟩` from `exists_partner hR H hL' hxx0 hxy0`. Take `⟨a, ha⟩ : ∃ a, a = u • x 0` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩ : ∃ a', a' = u' • x 0` from `⟨_, rfl⟩`. Rewrite `haL`, `hyp` using `[← ha]`. Rewrite `haL'`, `hyp'` using `[← ha']`. Establish `aperp : ∀ z, h (x 0) z = 0 → h a z = 0` using `fun z hz => by`. Rewrite using `[ha, herm_smul_left H, hz, mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a'perp : ∀ z, h a z = 0 → h a' z = 0` using `fun z hz => by`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `: x 0 = v • a` using `by rw [ha, smul_smul, hv, one_smul]`. Rewrite using `[ha', herm_smul_left H, this, herm_smul_left H, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Set `ψ : perp H a b →ₗ[R] V` to `(perp H a b).subtype - ((linForm H b') ∘ₗ (perp H a b).subtype).smulRight a'`. Establish `ψa : ∀ m : perp H a b, ψ m = (m : V) - h b' m • a'` using `fun m => by simp [ψ]`. Establish `mpa : ∀ m : perp H a b, h a' m = 0` using `fun m => a'perp _ ((mem_perp H).1 m.2).1`. Establish `hψ : ∀ s t, h (ψ s) (ψ t) = h s t` using `fun s t => by`. Establish `: h s a' = 0` using `by rw [H.symm a' s, mpa, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ψa, ψa, herm_sub_left H, herm_sub_right H, herm_sub_right H, herm_smul_left H, herm_smul_left H, H.smul_right, H.smul_right, mpa, this, hyp'.xx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψ' : ∀ s, ψ s ∈ perp H a' b'` using `fun s => by`. Rewrite using `[mem_perp H, ψa, herm_sub_right H, herm_sub_right H, H.smul_right, H.smul_right, mpa, hyp'.xx, hyp'.yx H]`. Apply the tactic sequence `constructor <;> ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨T, hT, hTa, hTb, hTz⟩` from `exists_glue hR H P hyp hyp' ψ hψ hψ'`. Establish `hL₂` using `isMaxEven_pullLat H hT hL'`. Establish `ha₂ : a ∈ pullLat 𝔬 T L'` using `by rw [mem_pullLat, hTa]; exact haL'`. Establish `hb₂ : b ∈ pullLat 𝔬 T L'` using `by rw [mem_pullLat, hTb]; exact hbL'`. Establish `hax : ∀ j : Fin r, h a (x j.succ) = 0` using `fun j => aperp _ (hf.xx _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hay : ∀ j : Fin r, h a (y j.succ) = 0` using `fun j => aperp _ (by`. Rewrite using `[hf.xy, if_neg (Fin.succ_ne_zero j).symm])`. Set `w : Fin r → perp H a b` to `fun j => ⟨projV H a b (x j.succ), projV_mem H hyp _⟩`. Set `v : Fin r → perp H a b` to `fun j => ⟨projV H a b (y j.succ), projV_mem H hyp _⟩`. Establish `fr : IsFrame (resForm h (perp H a b)) w v` using `{ xx := fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `h (projV H a b _) (projV H a b _) = 0`. Rewrite using `[herm_projV H hyp, hax, hax, hf.xx]`. Simplify using the standard rewrite rules. Use `yy := fun i j => by`. Express the relevant statement in the definitionally equal form `h (projV H a b _) (projV H a b _) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_projV H hyp, hay, hay, hf.yy]`. Simplify using the standard rewrite rules. Use `xy := fun i j => by`. Express the relevant statement in the definitionally equal form `h (projV H a b _) (projV H a b _) = _`. Rewrite using `[herm_projV H hyp, hax, hay, hf.xy]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[Fin.succ_inj] }`. Take `⟨p₂, ⟨hp₂, hmem⟩, hflag⟩` from `ih a b hyp r w v fr _ _ (isMaxEven_resLat hR H hyp hL haL hbL) (isMaxEven_resLat hR H hyp hL₂ ha₂ hb₂)`. Take `⟨q, hq, hqa, hqb, hqz⟩` from `exists_glue hR H P hyp hyp ((perp H a b).subtype ∘ₗ p₂.toLinearMap) (fun s t => hp₂ s t) (fun s => (p₂ s).2)`. Establish `flagMono : ∀ {i j : Fin (r + 1)}, i ≤ j → Submodule.span R (x '' {k | k ≤ i}) ≤ Submodule.span R (x '' {k | k ≤ j})` using `fun hij => Submodule.span_mono (Set.image_mono fun _ hk => le_trans hk hij)`. Establish `xF : ∀ {i j : Fin (r + 1)}, i ≤ j → x i ∈ Submodule.span R (x '' {k | k ≤ j})` using `fun hij => Submodule.subset_span ⟨_, hij, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `aF : ∀ j : Fin (r + 1), a ∈ Submodule.span R (x '' {k | k ≤ j})` using `fun j => by`. Rewrite using `[ha]`. Conclude with `Submodule.smul_mem _ _ (xF (Fin.zero_le j))`. Establish `a'F : ∀ j : Fin (r + 1), a' ∈ Submodule.span R (x '' {k | k ≤ j})` using `fun j => by`. Rewrite using `[ha']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.smul_mem _ _ (xF (Fin.zero_le j))`. Establish `projF : ∀ j : Fin r, projV H a b (x j.succ) = x j.succ - h b (x j.succ) • a` using `fun j => by`. Rewrite using `[projV_apply, hax]`. Simplify using the standard rewrite rules. Establish `wF : ∀ (i : Fin r) (j : Fin r), i ≤ j → ((w i : perp H a b) : V) ∈ Submodule.span R (x '' {k | k ≤ j.succ})` using `fun i j hij => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Express the relevant statement in the definitionally equal form `projV H a b (x i.succ) ∈ _`. Rewrite using `[projF]`. Conclude with `Submodule.sub_mem _ (xF (Fin.succ_le_succ_iff.2 hij)) (Submodule.smul_mem _ _ (aF _))`. Establish `TF : ∀ i : Fin (r + 1), T (x i) ∈ Submodule.span R (x '' {k | k ≤ i})` using `fun i => by`. Proceed by induction on `i using Fin.cases with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Take `⟨v', hv⟩` from `hu.exists_left_inv`. Establish `: x 0 = v' • a` using `by rw [ha, smul_smul, hv, one_smul]`. Rewrite using `[this, map_smul, hTa]`. Conclude with `Submodule.smul_mem _ _ (a'F _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j`. Establish `e` using `decomp H a b (x j.succ)`. Rewrite using `[e, map_add, map_add, map_smul, map_smul, hTa, hTb, hax, zero_smul, add_zero]`. Take `⟨m, hm⟩ : ∃ m : perp H a b, (m : V) = projV H a b (x j.succ)` from `⟨⟨_, projV_mem H hyp _⟩, rfl⟩`. Establish `hmF : (m : V) ∈ Submodule.span R (x '' {k | k ≤ j.succ})`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, projF]`. Conclude with `Submodule.sub_mem _ (xF le_rfl) (Submodule.smul_mem _ _ (aF _))`. Rewrite using `[← hm, hTz, ψa]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (a'F _)) (Submodule.sub_mem _ hmF (Submodule.smul_mem _ _ (a'F _)))`. Establish `qF : ∀ i : Fin (r + 1), q (x i) ∈ Submodule.span R (x '' {k | k ≤ i})` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Take `⟨v', hv⟩` from `hu.exists_left_inv`. Establish `: x 0 = v' • a` using `by rw [ha, smul_smul, hv, one_smul]`. Rewrite using `[this, map_smul, hqa]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (aF _)`. Consider the case `succ j`. Establish `e` using `decomp H a b (x j.succ)`. Rewrite using `[e, map_add, map_add, map_smul, map_smul, hqa, hqb, hax, zero_smul, add_zero]`. Use `hqz ⟨_, projV_mem H hyp (x j.succ)⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.add_mem _ (Submodule.smul_mem _ _ (aF _)) ?_` and prove the remaining obligations. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `((p₂ (w j) : perp H a b) : V) ∈ _`. Establish `hle : Submodule.span R (w '' {i | i ≤ j}) ≤ (Submodule.span R (x '' {k | k ≤ j.succ})).comap (perp H a b).subtype`. Rewrite using `[Submodule.span_le]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `wF i j hi`. Conclude with `hle (hflag j)`. Use `⟨q.trans T, ⟨fun s t => ?_, fun z => ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (T (q s)) (T (q t)) = _`.
-
-Rewrite using `[hT, hq]`. Express the relevant statement in the definitionally equal form `z ∈ L ↔ T (q z) ∈ L'`. Rewrite using `[← mem_pullLat (p := T)]`. Use `mem_iff_lift H hyp hL.2.1 hL₂.2.1 haL hbL ha₂ hb₂ q hq hqa hqb (fun m => ?_) z` and prove the remaining obligations. Rewrite using `[hqz]`.
-
-Conclude with `hmem m`. Express the relevant statement in the definitionally equal form `T (q (x j)) ∈ _`. Establish `: Submodule.span R (x '' {k | k ≤ j}) ≤ (Submodule.span R (x '' {k | k ≤ j})).comap T.toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
-
-Conclude with `flagMono hi (TF i)`. Conclude with `this (qF j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem flag_step (hR : IsHermRing c 𝔬) [Module.Finite R V] (H : IsHerm c h) (P : IsPerfect h)
     (ih : ∀ x y, IsHyp h x y → Good c 𝔬 (resForm h (perp H x y)))
@@ -834,9 +822,9 @@ theorem flag_step (hR : IsHermRing c 𝔬) [Module.Finite R V] (H : IsHerm c h) 
     exact this (qF j)
 
 /- English proof (translation)
-Introduce `e`. Establish `: y ∈ perp H x y` using `e ▸ Submodule.mem_top`. Establish `h1` using `((mem_perp H).1 this).1`. Rewrite `h1` using `[hy.xy]`. Use `hR.nontrivial` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem perp_ne_top (hR : IsHermRing c 𝔬) (H : IsHerm c h) {x y : V} (hy : IsHyp h x y) :
     perp H x y ≠ ⊤ := by
@@ -848,21 +836,19 @@ theorem perp_ne_top (hR : IsHermRing c 𝔬) (H : IsHerm c h) {x y : V} (hy : Is
   exact one_ne_zero h1
 
 /- English proof (translation)
-Proceed by induction on `k using WellFoundedLT.induction with`. Consider the case `ind k IH`. Introduce `V _ _ _ h H P hk`. Use `hR.artinian` as an intermediate fact. Establish `hperp : ∀ x y, IsHyp h x y → Good c 𝔬 (resForm h (perp H x y))` using `fun x y hy => IH _ (hk ▸ Submodule.length_lt (perp_ne_top hR H hy)) _ _ (isHerm_resForm H _) (isPerfect_resForm H P hy) rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r`. Consider the cases of `r with`. Consider the case `succ r`. Introduce `x y hf L L' hL hL'`. Conclude with `flag_step hR H P hperp x y hf hL hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `zero`. Introduce `x y hf L L' hL hL'`. Distinguish the cases in `hn : ∀ s t, h s s = 0 → h s t ≠ 1`. Take `⟨p, hp⟩` from `hB V h H P hn L L' hL hL'`. Conclude with `⟨p, hp, fun j => j.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hn`. Take `⟨s, t, hs, hst⟩` from `hn`. Take `⟨two, htwo⟩` from `hR.two.exists_left_inv`. Establish `hc2 : c two = two`. Establish `: c two * 2 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg c htwo` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Establish `hts : h t s = 1` using `by rw [H.symm s t, hst, map_one]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hct : c (h t t) = h t t` using `(H.symm t t).symm`. Set `t'` to `t - (two * h t t) • s`. Establish `f1 : IsFrame h (fun _ : Fin 1 => s) (fun _ => t')` using `{ xx := fun _ _ => hs yy := fun _ _ => by`. Simplify using `only [t']`. Rewrite using `[herm_sub_left H, herm_sub_right H, herm_sub_right H, herm_smul_left H, herm_smul_left H, H.smul_right, H.smul_right, hs, hst, hts, map_mul, hc2, hct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(- h t t) * htwo`. Use `xy := fun i j => by`. Establish `: i = j` using `Subsingleton.elim _ _`. Simplify using `only [t', this, if_true]`. Rewrite using `[herm_sub_right H, H.smul_right, hs, hst]`.
-
-Use `ring }`. Take `⟨p, hp, -⟩` from `flag_step hR H P hperp _ _ f1 hL hL'`. Conclude with `⟨p, hp, fun j => j.elim0⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_all (hR : IsHermRing c 𝔬) (hB : HasBase c 𝔬) (k : ℕ∞) :
     ∀ (V : Type) [AddCommGroup V] [Module R V] [Module.Finite R V] (h : V → V → R), IsHerm c h → IsPerfect h →
@@ -913,7 +899,7 @@ theorem good_all (hR : IsHermRing c 𝔬) (hB : HasBase c 𝔬) (k : ℕ∞) :
         exact ⟨p, hp, fun j => j.elim0⟩
 
 /- English proof (translation)
-Introduce `R _ c 𝔬 hR hB V _ _ _ h H P r x y hf L L' hL hL'`. Conclude with `good_all hR hB _ V h H P rfl r x y hf L L' hL hL'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flagTransitive : ∀ {R : Type} [CommRing R] (c : R →+* R) (𝔬 : Subring R), IsHermRing c 𝔬 → HasBase c 𝔬 →
     FlagTransitive c 𝔬 := by

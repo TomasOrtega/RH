@@ -15,15 +15,15 @@ def expN (N : ℕ) (z : ℂ) : ℂ := ∑ n ∈ Finset.range (N + 1), z ^ n / (n
 def gN (N : ℕ) (z : ℂ) : ℂ := cexp z - expN N z
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => show HasDerivAt (expN 1) (expN 0 z) z`. Establish `h0 : expN 1 = fun w => 1 + w`. Use function extensionality and compare the values at `w`. Simplify using `[expN, Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : expN 0 z = 1` using `by simp [expN]`. Rewrite using `[h0, h1]`. Conclude with `(hasDerivAt_id z).const_add 1`. Consider the case `succ N ih`. Establish `hf : expN (N + 1 + 1) = fun w => expN (N + 1) w + w ^ (N + 1 + 1) / ((N + 1 + 1).factorial : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [expN]`. Conclude with `Finset.sum_range_succ _ (N + 1 + 1)`. Rewrite using `[hf]`. Establish `h2` using `ih.add ((hasDerivAt_pow (N + 1 + 1) z).div_const ((N + 1 + 1).factorial : ℂ))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h2.congr_deriv ?_` and prove the remaining obligations. Establish `hf1 : ((N + 1).factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero (N + 1)`. Establish `hne : ((N + 1 + 1 : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (N + 1)`. Simplify using `only [expN, Finset.sum_range_succ _ (N + 1), Nat.factorial_succ (N + 1), Nat.add_sub_cancel]`. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(congr 1; rw [Nat.cast_mul]; exact mul_div_mul_left _ _ hne)`. Consider the case `(push_cast; field_simp; ring)`. Consider the case `(push_cast; field_simp)`.
+A detailed English derivation is pending.
 -/
 theorem expN_hasDerivAt (N : ℕ) (z : ℂ) : HasDerivAt (expN (N + 1)) (expN N z) z := by
   induction N with
@@ -49,7 +49,7 @@ theorem expN_hasDerivAt (N : ℕ) (z : ℂ) : HasDerivAt (expN (N + 1)) (expN N 
       | (push_cast; field_simp)
 
 /- English proof (translation)
-Unfold `expN`. Use `first`. Consider the case `exact ContDiff.sum fun n _ => (contDiff_id.pow n).div_const _`. Consider the case `fun_prop`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem contDiff_expN (N : ℕ) : ContDiff ℂ (⊤ : ℕ∞) (expN N) := by
   unfold expN
@@ -58,16 +58,16 @@ theorem contDiff_expN (N : ℕ) : ContDiff ℂ (⊤ : ℕ∞) (expN N) := by
     | fun_prop
 
 /- English proof (translation)
-Unfold `gN`. Conclude with `Complex.contDiff_exp.sub (contDiff_expN N)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_gN (N : ℕ) : ContDiff ℂ (⊤ : ℕ∞) (gN N) := by
   unfold gN
   exact Complex.contDiff_exp.sub (contDiff_expN N)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h : HasDerivAt (gN (N + 1)) (cexp z - expN N z) z`. Unfold `gN`. Conclude with `(Complex.hasDerivAt_exp z).sub (expN_hasDerivAt N z)`. Rewrite using `[h.deriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem deriv_gN (N : ℕ) : deriv (gN (N + 1)) = gN N := by
   funext z
@@ -78,15 +78,15 @@ theorem deriv_gN (N : ℕ) : deriv (gN (N + 1)) = gN N := by
   rfl
 
 /- English proof (translation)
-Simplify using `[gN, expN, Finset.sum_range_succ']`.
+Simplify using the standard rewrite rules.
 -/
 theorem gN_zero (N : ℕ) : gN N 0 = 0 := by
   simp [gN, expN, Finset.sum_range_succ']
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro N _`. Rewrite using `[iteratedDeriv_zero]`. Conclude with `gN_zero N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `N hN`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[iteratedDeriv_succ', deriv_gN]`. Conclude with `ih M (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_gN : ∀ i N : ℕ, i ≤ N → iteratedDeriv i (gN N) 0 = 0 := by
   intro i
@@ -102,9 +102,7 @@ def ellL (q : ℕ) (a : EuclideanSpace ℂ ι) : EuclideanSpace ℂ ι →L[ℂ]
   ((q : ℂ) * (Real.pi : ℂ)) • innerSL ℂ a
 
 /- English proof (translation)
-Simplify using `[ellL, Hf]`. Use `left`. Use `first`. Consider the case `(rw [PiLp.inner_apply]; exact Finset.sum_congr rfl fun x _ => by simp [mul_comm])`. Consider the case `(simp [PiLp.inner_apply, mul_comm]; done)`.
-
-Consider the case `(simp [EuclideanSpace.inner_eq_star_dotProduct, dotProduct, mul_comm]; done)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ellL_apply (q : ℕ) (a v : EuclideanSpace ℂ ι) : ellL q a v = q * Real.pi * Hf v a := by
   simp [ellL, Hf]
@@ -115,11 +113,11 @@ theorem ellL_apply (q : ℕ) (a v : EuclideanSpace ℂ ι) : ellL q a v = q * Re
     | (simp [EuclideanSpace.inner_eq_star_dotProduct, dotProduct, mul_comm]; done)
 
 /- English proof (translation)
-Establish `hg : ContDiff ℂ (⊤ : ℕ∞) (fun v => gN N (ellL q a v))` using `(contDiff_gN N).comp (ellL q a).contDiff`. Establish `hz : ∀ i, i ≤ N → ‖iteratedFDeriv ℂ i (fun v => gN N (ellL q a v)) 0‖ = 0`. Introduce `i hi`. Apply the tactic sequence `have h1 := (ellL q a).iteratedFDeriv_comp_right (contDiff_gN N) (0 : EuclideanSpace ℂ ι) (i := i) (by first | exact le_top | exact WithTop.coe_le_coe.mpr le_top | exact_mod_cast (le_top : (i : ℕ∞) ≤ ⊤) | simp)`. Establish `h2 : iteratedFDeriv ℂ i (gN N) 0 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_eq_zero, norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_gN i N hi, norm_zero]`. Rewrite `h1` using `[map_zero, h2]`. Rewrite using `[show (fun v => gN N (ellL q a v)) = gN N ∘ ellL q a from rfl, h1, norm_eq_zero]`. Use extensionality with `m`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine norm_le_zero_iff.mp ((norm_iteratedFDeriv_mul_le hg hP 0 (by first | exact le_top | simp | exact_mod_cast (le_top : (k : ℕ∞) ≤ ⊤))).trans_eq ?_)`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hz i (by have := Finset.mem_range.mp hi; omega)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedFDeriv_tail_zero (q : ℕ) (a : EuclideanSpace ℂ ι) (N : ℕ) {P : EuclideanSpace ℂ ι → ℂ}
     (hP : ContDiff ℂ (⊤ : ℕ∞) P) {k : ℕ} (hk : k ≤ N) :
@@ -142,11 +140,11 @@ theorem iteratedFDeriv_tail_zero (q : ℕ) (a : EuclideanSpace ℂ ι) (N : ℕ)
   simp
 
 /- English proof (translation)
-Unfold `paD polyDeriv`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hmα : m = α` using `by first`. Consider the case `(simp [MvPolynomial.support_monomial] at hm; exact hm)`. Consider the case `(rw [MvPolynomial.support_monomial] at hm; split_ifs at hm with h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Simplify using `at hm`. Simplify using `using hm)`. Substitute `hmα` using the available equality. Establish `hk : Multiset.card (Finsupp.toMultiset m) ≤ N`. Rewrite using `[Finsupp.card_toMultiset]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact hα`. Consider the case `simpa [Finsupp.degree, Finsupp.sum] using hα`. Rewrite using `[iteratedFDeriv_tail_zero q a N hP hk]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem paD_tail_zero (q : ℕ) (a : EuclideanSpace ℂ ι) (N : ℕ) {P : EuclideanSpace ℂ ι → ℂ}
     (hP : ContDiff ℂ (⊤ : ℕ∞) P) {α : ι →₀ ℕ} (hα : α.degree ≤ N) :

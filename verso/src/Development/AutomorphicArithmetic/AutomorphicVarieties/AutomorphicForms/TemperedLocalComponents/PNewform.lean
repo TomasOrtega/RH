@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open NumberField GlobalTheory.CuspRep UpperTheory.V
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Af.newformRepOf UpperTheory.V.Af.cuspSemisimpleReal UpperTheory.V.Af.admissibleReal`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.newformRep :
     UpperTheory.V.Published.NewformRep :=

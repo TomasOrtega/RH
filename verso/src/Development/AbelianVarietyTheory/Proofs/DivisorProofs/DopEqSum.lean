@@ -12,7 +12,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dop_eq_sum (z : List (ℝ → GAd σ J) →₀ ℂ) (f : GAd σ J → ℂ) :
     dop z f = ∑ l ∈ z.support, z l • l.foldr lineDer f := by
@@ -20,7 +20,7 @@ theorem dop_eq_sum (z : List (ℝ → GAd σ J) →₀ ℂ) (f : GAd σ J → �
   simp only [dop, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `k γ hγ g`. Simplify using `only [Finset.sum_apply]`. Conclude with `ContDiff.sum fun i hi => h i hi k γ hγ g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSm_sum {ι : Type} (s : Finset ι) (φ : ι → GAd σ J → ℂ) (h : ∀ i ∈ s, IsSm σ J (φ i)) :
     IsSm σ J (∑ i ∈ s, φ i) := by
@@ -29,9 +29,9 @@ theorem isSm_sum {ι : Type} (s : Finset ι) (φ : ι → GAd σ J → ℂ) (h :
   exact ContDiff.sum fun i hi => h i hi k γ hγ g
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `foldr_smul l (0 : ℂ) (0 : GAd σ J → ℂ)` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hs : ∀ i ∈ s, IsSm σ J (φ i)` using `fun i hi => h i (Finset.mem_insert_of_mem hi)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, foldr_add hl (h a (Finset.mem_insert_self _ _)) (isSm_sum s φ hs), ih hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_sum {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine σ J γ) {ι : Type} (s : Finset ι)
     (φ : ι → GAd σ J → ℂ) (h : ∀ i ∈ s, IsSm σ J (φ i)) :
@@ -47,9 +47,9 @@ theorem foldr_sum {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine �
       foldr_add hl (h a (Finset.mem_insert_self _ _)) (isSm_sum s φ hs), ih hs]
 
 /- English proof (translation)
-Establish `hs : ∀ l ∈ z.support, IsSm σ J (z l • l.foldr lineDer f)` using `fun l hl => isSm_smul _ (isSm_foldr (hz l hl) hf)`. Use `⟨by rw [dop_eq_sum]; exact isSm_sum _ _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[dop_eq_sum w, wordMul, Finsupp.sum, dop_sum_comb]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum, dop_sum_comb, dop_eq_sum z, foldr_sum (hw l hl) _ _ hs, Finset.smul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[dop_single, foldr_smul, List.foldr_append]`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dop_dop {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (f : GAd σ J → ℂ) (hf : IsSm σ J f)

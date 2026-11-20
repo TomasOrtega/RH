@@ -11,7 +11,7 @@ open Matrix NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Use `first`. Consider the case `fun_prop`. Consider the case `exact ((EuclideanSpace.proj j).restrictScalars ℝ).contDiff`. Consider the case `exact (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (nd X) => ℂ) j).contDiff`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cd_coord (j : Fin (nd X)) : ContDiff ℝ 2 fun w : V (nd X) => w j := by
   first
@@ -20,7 +20,7 @@ theorem cd_coord (j : Fin (nd X)) : ContDiff ℝ 2 fun w : V (nd X) => w j := by
   | exact (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (nd X) => ℂ) j).contDiff
 
 /- English proof (translation)
-Simplify using `only [mat, nmat, Matrix.of_apply]`. Use `split_ifs`. Conclude with `cd_coord X _`. Conclude with `contDiff_const`. Conclude with `contDiff_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cd_nmat (τ : X.Ψ) (a c : Fin r) : ContDiff ℝ 2 fun w : V (nd X) => mat (nmat X w) τ a c := by
   simp only [mat, nmat, Matrix.of_apply]
@@ -30,9 +30,9 @@ theorem cd_nmat (τ : X.Ψ) (a c : Fin r) : ContDiff ℝ 2 fun w : V (nd X) => m
   · exact contDiff_const
 
 /- English proof (translation)
-Establish `hM : ∀ a c : Fin r, ContDiff ℝ 2 fun w : V (nd X) => (mat x0 τ * mat (nmat X w) τ) a c` using `cd_mul (fun _ => mat x0 τ) (fun w => mat (nmat X w) τ) (fun _ _ => contDiff_const) (cd_nmat X τ)`. Establish `hMt : ∀ a c : Fin r, ContDiff ℝ 2 fun w : V (nd X) => ((mat x0 τ * mat (nmat X w) τ)ᵀ) a c` using `fun a c => hM c a`. Establish `hMc : ∀ a c : Fin r, ContDiff ℝ 2 fun w : V (nd X) => ((mat x0 τ * mat (nmat X w) τ).map (starRingEnd ℂ)) a c` using `fun a c => Complex.conjCLE.contDiff.comp (hM a c)`. Establish `hG : ∀ a c : Fin r, ContDiff ℝ 2 fun w : V (nd X) => ((mat x0 τ * mat (nmat X w) τ)ᵀ * X.Gm.map τ.1 * (mat x0 τ * mat (nmat X w) τ).map (starRingEnd ℂ)) a c` using `cd_mul _ _ (cd_mul _ _ hMt (fun _ _ => contDiff_const)) hMc`. Unfold `dmin lminor`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [FrameDegreeData.gram_eq]`. Conclude with `cd_det (fun w : V (nd X) => ((mat x0 τ * mat (nmat X w) τ)ᵀ * X.Gm.map τ.1 * (mat x0 τ * mat (nmat X w) τ).map (starRingEnd ℂ)).submatrix _ _) (fun a c => hG _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cd_dmin (x0 : Frame X.Ψ r) (τ : X.Ψ) (k : Fin (r + 1)) :
     ContDiff ℝ 2 fun w : V (nd X) => dmin X.Gm (cpt X x0 w) τ k := by
@@ -52,7 +52,7 @@ theorem cd_dmin (x0 : Frame X.Ψ r) (τ : X.Ψ) (k : Fin (r + 1)) :
     (mat x0 τ * mat (nmat X w) τ).map (starRingEnd ℂ)).submatrix _ _) (fun a c => hG _ _)
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 2 (fun w => ‖d w‖) z` using `(hd.contDiffAt).norm ℝ hz`. Conclude with `h1.log (norm_ne_zero_iff.mpr hz)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cd_lognorm {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (d : F → ℂ) (hd : ContDiff ℝ 2 d)
     (z : F) (hz : d z ≠ 0) : ContDiffAt ℝ 2 (fun w => Real.log ‖d w‖) z := by
@@ -60,11 +60,11 @@ theorem cd_lognorm {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (d : F 
   exact h1.log (norm_ne_zero_iff.mpr hz)
 
 /- English proof (translation)
-Establish `hne : ∀ τ k, dmin X.Gm (cpt X x0 z) τ k ≠ 0` using `fun τ k h => by`. Use `(hz τ).2 k` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Establish `hev : ∀ᶠ w in 𝓝 z, ∀ τ k, dmin X.Gm (cpt X x0 w) τ k ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `τ`. Rewrite using `[Filter.eventually_all]`. Introduce `k`. Conclude with `(cd_dmin X x0 τ k).continuous.continuousAt.eventually_ne (hne τ k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hEq : (fun w => -2 * Real.log (X.nfac la (cpt X x0 w))) =ᶠ[𝓝 z] fun w => ∑ τ, ∑ i : Fin r, (la τ i : ℝ) * (Real.log ‖dmin X.Gm (cpt X x0 w) τ i.succ‖ - Real.log ‖dmin X.Gm (cpt X x0 w) τ i.castSucc‖)` using `by filter_upwards [hev] with w hw`. Conclude with `neg2log_nfac X la _ hw`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hEq` and prove the remaining obligations. Conclude with `ContDiffAt.sum fun τ _ => ContDiffAt.sum fun i _ => contDiffAt_const.mul ((cd_lognorm _ (cd_dmin X x0 τ _) z (hne τ _)).sub (cd_lognorm _ (cd_dmin X x0 τ _) z (hne τ _)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cd_h (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cpt X x0 z ∈ X.dom) (la : Wt X.Ψ r) :
     ContDiffAt ℝ 2 (fun w => -2 * Real.log (X.nfac la (cpt X x0 w))) z := by
@@ -86,7 +86,7 @@ theorem cd_h (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cpt X x0 z ∈ X.dom) (la 
     ((cd_lognorm _ (cd_dmin X x0 τ _) z (hne τ _)).sub (cd_lognorm _ (cd_dmin X x0 τ _) z (hne τ _)))
 
 /- English proof (translation)
-Rewrite using `[leviV_re_line (fun w => -2 * Real.log (X.nfac la (cpt X x0 w))) z (cd_h X x0 z hz la) ξ, line_levi hb hgram la]`. Conclude with `Finset.sum_congr rfl fun τ _ => tele X b z _ la τ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_formula (la : Wt X.Ψ r) (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cpt X x0 z ∈ X.dom)
     (b : Frame X.Ψ r) (hb : b ∈ Bor X.Ψ r) (hgram : ∀ τ, gram τ.1 X.Gm (mat (rmul (cpt X x0 z) b) τ) =
@@ -99,17 +99,13 @@ theorem levi_formula (la : Wt X.Ψ r) (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : c
   exact Finset.sum_congr rfl fun τ _ => tele X b z _ la τ
 
 /- English proof (translation)
-Introduce `r X la x0 z hz`. Take `⟨b, hb, hgr⟩` from `MajorantNormalForms.exists_normal_frame X hz`. Establish `hgram : ∀ τ, gram τ.1 X.Gm (mat (rmul (cpt X x0 z) b) τ) = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)` using `fun τ => (hgr τ).1`. Establish `hval : ∀ ξ : Fin (nd X) → ℂ, (leviV (nd X) (fun w => ((-2 * Real.log (X.nfac la (cpt X x0 w)) : ℝ) : ℂ)) z ξ).re = ∑ τ, ∑ a : Fin r, ∑ j : Fin r, if (a : ℕ) < j then coef X la τ a j * ‖Yd X b z (WithLp.toLp 2 ξ) τ j a‖ ^ 2 else 0`. Introduce `ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[leviV_re_line (fun w => -2 * Real.log (X.nfac la (cpt X x0 w))) z (cd_h X x0 z hz la) ξ, line_levi hb hgram la]`. Conclude with `Finset.sum_congr rfl fun τ _ => tele X b z _ la τ`. Prove the components needed by the constructor for the conclusion. Introduce `hdom ξ`. Rewrite using `[hval]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `mul_nonneg (coef_nonneg X la hdom τ a j h) (sq_nonneg _)`. Conclude with `le_rfl`. Introduce `hs ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hval]`. Establish `hu : (WithLp.toLp 2 ξ : V (nd X)) ≠ 0` using `fun h => hξ (by simpa using congrArg WithLp.ofLp h)`. Take `⟨τ, a, j, haj, hY⟩` from `Yd_ne X b hb z _ hu`. Establish `hnn : ∀ τ' (a' j' : Fin r), 0 ≤ (if (a' : ℕ) < j' then coef X la τ' a' j' * ‖Yd X b z (WithLp.toLp 2 ξ) τ' j' a'‖ ^ 2 else 0)`. Introduce `τ' a' j'`.
-
-Use `split_ifs with h`. Conclude with `mul_nonneg (coef_pos X la hs τ' a' j' h).le (sq_nonneg _)`. Conclude with `le_rfl`. Use `Finset.sum_pos' (fun τ' _ => Finset.sum_nonneg fun a' _ => Finset.sum_nonneg fun j' _ => hnn τ' a' j') ⟨τ, Finset.mem_univ _, Finset.sum_pos' (fun a' _ => Finset.sum_nonneg fun j' _ => hnn τ a' j') ⟨a, Finset.mem_univ _, Finset.sum_pos' (fun j' _ => hnn τ a j') ⟨j, Finset.mem_uni …` and prove the remaining obligations. Rewrite using `[if_pos haj]`.
-
-Conclude with `mul_pos (coef_pos X la hs τ a j haj) (pow_pos (norm_pos_iff.2 hY) 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curvature_statement_holds : CurvGGStatement (E := E) := by
   intro r X la x0 z hz

@@ -17,7 +17,7 @@ namespace GlobalTheory.ZM.CoordMove
 open GlobalTheory.ZM.RepBC
 
 /- English proof (translation)
-Rewrite using `[cst, gs_eq _ _ ⊤ trivial]`. Use `((Sp R).mem_basicOpen (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) p trivial).symm.trans ?_` and prove the remaining obligations. Use `basicOpen_eq_of_affine (R := CommRingCat.of R) a` as an intermediate fact. Conclude with `(congrArg (fun U : (Sp R).Opens => p ∈ U) this).to_iff`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_cst_id {R : Type} [CommRing R] (p : Sp R) (a : R) : IsUnit (cst (𝟙 (Sp R)) p a) ↔ a ∉ p.asIdeal := by
   rw [cst, gs_eq _ _ ⊤ trivial]
@@ -26,7 +26,7 @@ theorem isUnit_cst_id {R : Type} [CommRing R] (p : Sp R) (a : R) : IsUnit (cst (
   exact (congrArg (fun U : (Sp R).Opens => p ∈ U) this).to_iff
 
 /- English proof (translation)
-Use `exists_congr fun τ => and_congr_right fun _ => forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `l : ∀ (h : (M.pull x).U j ≤ x ⁻¹ᵁ M.U (j PUnit.unit)) (p : Sp R), p ∈ (M.pull x).U j → gs (𝟙 (Sp R)) p ((M.pull x).U j) ((x.appLE _ _ h).hom ((th i).f (j PUnit.unit))) = gs x p _ ((th i).f (j PUnit.unit))` using `fun h p hp => (gs_appLE x _ _ h (𝟙 _) p hp _).trans (by rw [Category.id_comp])`. Establish `r : ∀ (p : Sp R), p ∈ (M.pull x).U j → gs (𝟙 (Sp R)) p ((M.pull x).U j) (resG (Sp R) le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (v i)) * (show Γ(Sp R, (M.pull x).U j) from (τ.s j).val)) = cst (𝟙 (Sp R)) p (v i) * (gm (𝟙 (Sp R)) p ((M.pull x).U j) (τ.s j)).val` using `fun p hp => (gs_mul _ p _ hp _ _).trans (congrArg₂ (· * ·) (gs_res _ p le_top hp _) (gs_unit _ p _ hp _))`. Conclude with `⟨fun h p hp => (l (pull_le M x j) p hp).symm.trans ((congrArg _ (h _)).trans (r p hp)), fun h e => fn_ext fun p hp => (l e p hp).trans ((h p hp).trans (r p hp).symm)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem secCoord_iff {X : Scheme.{0}} (M : LB X) {I : Type} (th : I → M.Sec) {R : Type} [CommRing R] (x : Sp R ⟶ X)
     (v : I → R) : SecCoord M th x v ↔ ∃ τ : (M.pull x).Gen, τ.IsGen ∧ ∀ (i : I) (j : PUnit → M.ι) (p : Sp R),
@@ -46,17 +46,17 @@ theorem secCoord_iff {X : Scheme.{0}} (M : LB X) {I : Type} (th : I → M.Sec) {
     fun h e => fn_ext fun p hp => (l e p hp).trans ((h p hp).trans (r p hp).symm)⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Establish `hw'` using `(isGen_iff w).1 hw`. Use `choose th' h' using fun i => sec_pull_down hw' hL hL' (th i)`. Use `⟨th', fun R _ x v => ?_⟩` and prove the remaining obligations. Establish `e : ∀ (p : Sp R) (j : PUnit → L.ι) (k : PUnit → L'.ι), pw w (fun _ : PUnit => x) (fun _ => 1) (𝟙 _) p j k = gw w x p (j PUnit.unit) (k PUnit.unit)` using `fun p j k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pw, Fintype.prod_unique, zpow_one, Category.id_comp]`. Rewrite using `[secCoord_iff, secCoord_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, h⟩`. Take `⟨t, ht, hv⟩` from `exists_up hw' hL hL' τ hτ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ht, fun i j p hp => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hL' (x p)`. Establish `hk' : p ∈ (L'.pull x).U (fun _ => k)` using `mem_pull.2 hk`. Establish `h₁` using `h' i _ x p (j PUnit.unit) k (mem_pull₂.1 hp) hk`. Establish `h₂` using `congrArg Units.val (hv _ (𝟙 _) p j (fun _ => k) hp hk')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[e, Units.val_mul]`. Use `h₁.trans ((congrArg (_ * ·) (h i (fun _ => k) p hk')).trans ?_)` and prove the remaining obligations. Conclude with `(mul_left_comm _ _ _).trans (congrArg (_ * ·) h₂.symm)`. Introduce and unpack `⟨τ, hτ, h⟩`. Take `⟨t, ht, hv⟩` from `CubTransport.exists_down_units hw' hL hL' (φ' := fun _ : PUnit => x) τ hτ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ht, fun i k p hp => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hL (F (x p))`. Establish `hj' : p ∈ (L.pull (x ≫ F)).U (fun _ => j)` using `mem_pull₂.2 hj`. Establish `h₁` using `h' i _ x p j (k PUnit.unit) hj (mem_pull.1 hp)`. Establish `h₂` using `congrArg Units.val (hv _ (𝟙 _) p (fun _ => j) k hj' hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h₂` using `[e, Units.val_mul]`. Use `(Units.mul_right_inj (gw w x p j (k PUnit.unit))).1 (h₁.symm.trans ((h i (fun _ => j) p hj').trans ?_))` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) h₂).trans (mul_left_comm _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_down {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     (H : LBIso L' (L.pull F)) {I : Type} (th : I → L.Sec) :
@@ -93,9 +93,9 @@ theorem secCoord_down {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
     exact (congrArg (_ * ·) h₂).trans (mul_left_comm _ _ _)
 
 /- English proof (translation)
-Take `⟨τ, -, h⟩` from `(secCoord_iff M th x v).1 h`. Establish `key : ∀ k, x p ∈ M.U k → (IsUnit (gs (𝟙 X) (x p) _ ((th i).f k)) ↔ v i ∉ p.asIdeal)` using `fun k hk => by`. Establish `e` using `h i (fun _ => k) p (mem_pull.2 hk)`. Rewrite `e` using `[gs_stalkMap x p _ hk]`. Rewrite using `[← isUnit_cst_id, ← isUnit_map_iff (x.stalkMap p).hom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg IsUnit e).to_iff.trans (Units.isUnit_mul_units _ _)`. Rewrite using `[mem_nonzeroLocus]`. Use `⟨fun ⟨k, hk, u⟩ => (key k hk).1 u, fun u => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hM (x p)`. Conclude with `⟨k, hk, (key k hk).2 u⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {I : Type} {th : I → M.Sec} {R : Type} [CommRing R]
     {x : Sp R ⟶ X} {v : I → R} (i : I) (p : Sp R) (h : SecCoord M th x v) :
@@ -112,9 +112,9 @@ theorem mem_nonzeroLocus_iff {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {I : Type
   exact ⟨k, hk, (key k hk).2 u⟩
 
 /- English proof (translation)
-Introduce `X M I th hM`. Use `⟨fun X' π => ⟨fun i => secPull M π (th i), fun R _ x v => secCoord_pull M th π x v⟩, fun M' hM' H => ?_, fun R _ x v i p h => mem_nonzeroLocus_iff hM i p h⟩` and prove the remaining obligations. Take `⟨th', h⟩` from `secCoord_down hM hM' (LBIso.chartPull (chartPullId M') (chartPullPull M (𝟙 X) (𝟙 X) rfl) (LBIso.symm H)) th`. Use `⟨th', fun R _ x v => ?_⟩` and prove the remaining obligations. Use `h R x v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secCoord_pull_iso_locus : ∀ (X : Scheme.{0}) (M : LB X) (I : Type) (th : I → M.Sec), M.IsLB → (∀ (X' : Scheme.{0}) (π : X' ⟶ X), ∃ th' : I → (M.pull π).Sec, ∀ (R : Type) [CommRing R] (x : Sp R ⟶ X') (v : I → R), SecCoord (M.pull π) th' x v ↔ SecCoord M th (x ≫ π) v) ∧ (∀ M' : LB X, M'.IsLB → LBIso M M' → ∃ th' : I → M'.Sec, ∀ (R : Type) [CommRing R] (x : Sp R ⟶ X) (v : I → R), SecCoord M' th' x v ↔ SecCoord M th x v) ∧ ∀ (R : Type) [CommRing R] (x : Sp R ⟶ X) (v : I → R) (i : I) (p : Sp R), SecCoord M th x v → (x p ∈ Out.nonzeroLocus (th i) ↔ v i ∉ p.asIdeal) := by
   intro X M I th hM

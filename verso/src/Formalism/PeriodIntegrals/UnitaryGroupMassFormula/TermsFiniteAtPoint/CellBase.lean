@@ -15,7 +15,7 @@ def Intg {m n : Type*} (d : 𝓞 E) (M : Matrix m n E) : Prop :=
   ∃ M' : Matrix m n (𝓞 E), M'.map (algebraMap (𝓞 E) E) = (algebraMap (𝓞 E) E d) • M
 
 /- English proof (translation)
-Take `⟨M', hM'⟩` from `hM`. Take `⟨N', hN'⟩` from `hN`. Use `⟨M' * N', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hM', hN', Matrix.smul_mul, Matrix.mul_smul, smul_smul, map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem intg_mul {l m n : Type*} [Fintype m] {d d' : 𝓞 E} {M : Matrix l m E} {N : Matrix m n E}
     (hM : Intg d M) (hN : Intg d' N) : Intg (d * d') (M * N) := by
@@ -25,9 +25,9 @@ theorem intg_mul {l m n : Type*} [Fintype m] {d d' : 𝓞 E} {M : Matrix l m E} 
   rw [Matrix.map_mul, hM', hN', Matrix.smul_mul, Matrix.mul_smul, smul_smul, map_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨M', hM'⟩` from `hM`. Take `⟨N', hN'⟩` from `hN`. Use `⟨M' - N', ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hM' i) j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun hN' i) j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub] at h1 h2 ⊢`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intg_sub {m n : Type*} {d : 𝓞 E} {M N : Matrix m n E} (hM : Intg d M) (hN : Intg d N) :
     Intg d (M - N) := by
@@ -41,9 +41,9 @@ theorem intg_sub {m n : Type*} {d : 𝓞 E} {M N : Matrix m n E} (hM : Intg d M)
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Take `⟨M', hM'⟩` from `hM`. Take `⟨k, rfl⟩` from `h`. Use `⟨k • M', ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun hM' i) j` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul] at this ⊢`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intg_dvd {m n : Type*} {a D : 𝓞 E} {M : Matrix m n E} (hM : Intg a M) (h : a ∣ D) : Intg D M := by
   obtain ⟨M', hM'⟩ := hM
@@ -55,7 +55,7 @@ theorem intg_dvd {m n : Type*} {a D : 𝓞 E} {M : Matrix m n E} (hM : Intg a M)
   rw [this]; ring
 
 /- English proof (translation)
-Use `⟨d • (1 : Matrix n n (𝓞 E)), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem intg_one {n : Type*} [DecidableEq n] (d : 𝓞 E) : Intg d (1 : Matrix n n E) := by
   refine ⟨d • (1 : Matrix n n (𝓞 E)), ?_⟩
@@ -63,13 +63,13 @@ theorem intg_one {n : Type*} [DecidableEq n] (d : 𝓞 E) : Intg d (1 : Matrix n
   by_cases h : i = j <;> simp [h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by ext i j; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intg_zero {m n : Type*} (d : 𝓞 E) : Intg d (0 : Matrix m n E) :=
   ⟨0, by ext i j; simp⟩
 
 /- English proof (translation)
-Take `⟨M', hM'⟩` from `hM`. Use `⟨M'.submatrix f g, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hM' (f i)) (g j)`. Simplify using `using h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intg_submatrix {m n m' n' : Type*} {d : 𝓞 E} {M : Matrix m n E} (hM : Intg d M) (f : m' → m)
     (g : n' → n) : Intg d (M.submatrix f g) := by
@@ -80,9 +80,9 @@ theorem intg_submatrix {m n m' n' : Type*} {d : 𝓞 E} {M : Matrix m n E} (hM :
   simpa using h1
 
 /- English proof (translation)
-Take `⟨A', hA'⟩` from `hA`. Take `⟨B', hB'⟩` from `hB`. Take `⟨C', hC'⟩` from `hC`. Take `⟨D', hD'⟩` from `hD`. Use `⟨Matrix.fromBlocks A' B' C' D', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.fromBlocks_map, hA', hB', hC', hD', Matrix.fromBlocks_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intg_fromBlocks {l m n o : Type*} {d : 𝓞 E} {A : Matrix l n E} {B : Matrix l o E}
     {C : Matrix m n E} {D : Matrix m o E} (hA : Intg d A) (hB : Intg d B) (hC : Intg d C) (hD : Intg d D) :
@@ -95,7 +95,7 @@ theorem intg_fromBlocks {l m n o : Type*} {d : 𝓞 E} {A : Matrix l n E} {B : M
   rw [Matrix.fromBlocks_map, hA', hB', hC', hD', Matrix.fromBlocks_smul]
 
 /- English proof (translation)
-Take `⟨M', hM'⟩` from `hM`. Use `⟨M'.adjugate, ?_⟩` and prove the remaining obligations. Establish `h1` using `RingHom.map_adjugate (algebraMap (𝓞 E) E) M'`. Simplify using `only [RingHom.mapMatrix_apply] at h1`. Rewrite using `[h1, hM', Matrix.adjugate_smul, Fintype.card_fin, map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem intg_adj {k : ℕ} {d : 𝓞 E} {M : Matrix (Fin k) (Fin k) E} (hM : Intg d M) :
     Intg (d ^ (k - 1)) M.adjugate := by
@@ -106,7 +106,7 @@ theorem intg_adj {k : ℕ} {d : 𝓞 E} {M : Matrix (Fin k) (Fin k) E} (hM : Int
   rw [h1, hM', Matrix.adjugate_smul, Fintype.card_fin, map_pow]
 
 /- English proof (translation)
-Use `⟨fun i j => Classical.choose (h i j), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, map_one, one_smul]`. Conclude with `Classical.choose_spec (h i j)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intg_of_entries {m n : Type*} {Z : Matrix m n E} (h : ∀ i j, ∃ o : 𝓞 E, (o : E) = Z i j) :
     Intg 1 Z := by
@@ -116,7 +116,7 @@ theorem intg_of_entries {m n : Type*} {Z : Matrix m n E} (h : ∀ i j, ∃ o : �
   exact Classical.choose_spec (h i j)
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) x`. Use `⟨s, nonZeroDivisors.ne_zero s.2, a, ?_⟩` and prove the remaining obligations. Simplify using `only at h`. Rewrite using `[← h, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_den (x : E) :
     ∃ m : 𝓞 E, m ≠ 0 ∧ ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = algebraMap (𝓞 E) E m * x := by
@@ -126,7 +126,7 @@ theorem exists_den (x : E) :
   rw [← h, mul_comm]
 
 /- English proof (translation)
-Introduce `h`. Conclude with `hd ((injective_iff_map_eq_zero (algebraMap (𝓞 E) E)).mp (IsFractionRing.injective (𝓞 E) E) d h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem alg_ne_zero {d : 𝓞 E} (hd : d ≠ 0) : algebraMap (𝓞 E) E d ≠ 0 := by
   intro h
@@ -137,15 +137,15 @@ section Uni
 variable {K : Type*} [Field K] {k : ℕ}
 
 /- English proof (translation)
-Introduce `i j h` and use `(hA i j).1 (by simpa using h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lo_bt {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : A.BlockTriangular OrderDual.toDual :=
   fun i j h => (hA i j).1 (by simpa using h)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[hB (by simpa using h), mul_zero]`. Rewrite using `[hA (by simpa using h), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lo_diag_mul {A B : Matrix (Fin k) (Fin k) K} (hA : A.BlockTriangular OrderDual.toDual)
     (hB : B.BlockTriangular OrderDual.toDual) (i : Fin k) : (A * B) i i = A i i * B i i := by
@@ -157,7 +157,7 @@ theorem lo_diag_mul {A B : Matrix (Fin k) (Fin k) K} (hA : A.BlockTriangular Ord
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `ht` using `(lo_bt hA).mul (lo_bt hB)`. Introduce `i j`. Use `⟨fun h => ht (by simpa using h), fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Rewrite using `[lo_diag_mul (lo_bt hA) (lo_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_mul {A B : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) (hB : IsLoUni B) : IsLoUni (A * B) := by
   have ht := (lo_bt hA).mul (lo_bt hB)
@@ -167,30 +167,30 @@ theorem lo_mul {A B : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) (hB : IsLoUni B
   rw [lo_diag_mul (lo_bt hA) (lo_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular A (lo_bt hA)]`. Conclude with `Finset.prod_eq_one fun i _ => (hA i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_det {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : A.det = 1 := by
   rw [Matrix.det_of_isLowerTriangular A (lo_bt hA)]
   exact Finset.prod_eq_one fun i _ => (hA i i).2 rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_adjugate, lo_det hA, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_mul_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : A * A.adjugate = 1 := by
   rw [Matrix.mul_adjugate, lo_det hA, one_smul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_mul, lo_det hA, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_adj_mul {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : A.adjugate * A = 1 := by
   rw [Matrix.adjugate_mul, lo_det hA, one_smul]
 
 /- English proof (translation)
-Use `letI : Invertible A.det := invertibleOfNonzero (by rw [lo_det hA]; exact one_ne_zero)`. Use `letI : Invertible A := Matrix.invertibleOfDetInvertible A`. Establish `hinv : A⁻¹ = A.adjugate` using `by rw [Matrix.inv_def, lo_det hA, Ring.inverse_one, one_smul]`. Establish `ht : A.adjugate.BlockTriangular OrderDual.toDual`. Rewrite using `[← hinv]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular (lo_bt hA)`. Introduce `i j`. Use `⟨fun h => ht (by simpa using h), fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Establish `h1` using `congrFun (congrFun (lo_mul_adj hA) i) i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[lo_diag_mul (lo_bt hA) ht, (hA i i).2 rfl, one_mul, Matrix.one_apply_eq]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem lo_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : IsLoUni A.adjugate := by
   letI : Invertible A.det := invertibleOfNonzero (by rw [lo_det hA]; exact one_ne_zero)
@@ -206,7 +206,7 @@ theorem lo_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsLoUni A) : IsLoUni A.adjug
   exact h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `⟨fun hij => (h j i).1 hij, fun hij => (h j i).2 hij.symm⟩`. Introduce `h i j`. Conclude with `⟨fun hij => (h j i).1 hij, fun hij => (h j i).2 hij.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem up_iff_lo_transpose {U : Matrix (Fin k) (Fin k) K} : IsUpUni U ↔ IsLoUni U.transpose := by
   constructor
@@ -216,32 +216,32 @@ theorem up_iff_lo_transpose {U : Matrix (Fin k) (Fin k) K} : IsUpUni U ↔ IsLoU
     exact ⟨fun hij => (h j i).1 hij, fun hij => (h j i).2 hij.symm⟩
 
 /- English proof (translation)
-Rewrite `*` using `[up_iff_lo_transpose]`. Rewrite using `[Matrix.transpose_mul]`. Conclude with `lo_mul hB hA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_mul {A B : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) (hB : IsUpUni B) : IsUpUni (A * B) := by
   rw [up_iff_lo_transpose] at *
   rw [Matrix.transpose_mul]; exact lo_mul hB hA
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Conclude with `lo_det (up_iff_lo_transpose.mp hA)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_det {A : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) : A.det = 1 := by
   rw [← Matrix.det_transpose]; exact lo_det (up_iff_lo_transpose.mp hA)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_adjugate, up_det hA, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem up_mul_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) : A * A.adjugate = 1 := by
   rw [Matrix.mul_adjugate, up_det hA, one_smul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_mul, up_det hA, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem up_adj_mul {A : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) : A.adjugate * A = 1 := by
   rw [Matrix.adjugate_mul, up_det hA, one_smul]
 
 /- English proof (translation)
-Rewrite `*` using `[up_iff_lo_transpose]`. Rewrite using `[Matrix.adjugate_transpose]`. Conclude with `lo_adj hA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) : IsUpUni A.adjugate := by
   rw [up_iff_lo_transpose] at *
@@ -250,19 +250,19 @@ theorem up_adj {A : Matrix (Fin k) (Fin k) K} (hA : IsUpUni A) : IsUpUni A.adjug
 end Uni
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hc)`.
+A detailed English derivation is pending.
 -/
 theorem quotFinite (c : 𝓞 E) (hc : c ≠ 0) : Finite (𝓞 E ⧸ Ideal.span {c}) :=
   Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hc)
 
 /- English proof (translation)
-Use `quotFinite c hc` as an intermediate fact. Set `g : α → ι → (𝓞 E ⧸ Ideal.span {c})` to `fun x i => if h : ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = f x i then Ideal.Quotient.mk _ (Classical.choose h) else 0`. Use `haveI : Finite {ρ : ι → (𝓞 E ⧸ Ideal.span {c}) // ∃ x ∈ X, g x = ρ} := Subtype.finite`. Use `⟨Set.range (fun ρ : {ρ : ι → (𝓞 E ⧸ Ideal.span {c}) // ∃ x ∈ X, g x = ρ} => Classical.choose ρ.2), Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hex : ∃ x' ∈ X, g x' = g x` using `⟨x, hx, rfl⟩`. Use `⟨Classical.choose hex, ⟨⟨g x, hex⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨hy, hgy⟩` from `Classical.choose_spec hex`. Apply `hR x hx _ hy` to reduce the goal to its premises. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hf x hx i`. Establish `h2` using `hf _ hy i`. Establish `hg` using `congrFun hgy i`. Simplify using `only [g, dif_pos h1, dif_pos h2] at hg`. Rewrite `hg` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `hg`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← ho, map_sub, Classical.choose_spec h1, Classical.choose_spec h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_of_cong {α ι : Type*} [Finite ι] (X : Set α) (f : α → ι → E)
     (hf : ∀ x ∈ X, ∀ i, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = f x i) (c : 𝓞 E) (hc : c ≠ 0)

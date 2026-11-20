@@ -35,7 +35,7 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
 set_option maxHeartbeats 4000000 in
 variable [Fact PI.AprimeInfW.GaugeVolUD] [Fact Formalism.L2.SG.Pf.WB.RhsWLim] [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.NcAllS.ncTie0All_of X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq (Formalism.L2.SG.Closed.RealBracket_holds hCov) hSW hHyp hMC hStd hLat hdet' hdet hPC hL hL' hTF hQ hsd hC0 hTh hcong hRR`.
+A detailed English derivation is pending.
 -/
 theorem ncTieC_of_closed (hCov : Formalism.L2.SG.Pf.NcReal.JX.CovolRef) (hSW : PI.VolStabS.MassDataS.SWXS)
     (hHyp : HypX X hb FdN FdN' u u') (hMC : MeasCompatψ X ψ) (hStd : StdHyp X.B.I.cm.sig X.B.I.J ψ)

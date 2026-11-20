@@ -17,7 +17,7 @@ section Scalars
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h1 : la.valuation K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `h2 : la.valuation K y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Simplify using `only [vLa, map_mul, WithZero.log_mul h1 h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vLa_mul_of_ne (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     vLa la (x * y) = vLa la x + vLa la y := by
@@ -27,16 +27,16 @@ theorem vLa_mul_of_ne (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0)
   ring
 
 /- English proof (translation)
-Use `vAdd_int_nonneg la (a := (n : 𝓞 K)) (by simpa using hn)` as an intermediate fact. Simplify `this` using `[vLa, Formalism.BasicNotions.vAdd]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vLa_natCast_nonneg (la : HeightOneSpectrum (𝓞 K)) {n : ℕ} (hn : n ≠ 0) : 0 ≤ vLa la (n : K) := by
   have := vAdd_int_nonneg la (a := (n : 𝓞 K)) (by simpa using hn)
   simpa [vLa, Formalism.BasicNotions.vAdd] using this
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `h`. Establish `h1` using `mul_ne_zero_iff.1 hN`. Establish `h2 : vLa la (((p ^ n : ℕ)) : K) = n * vLa la (p : K)`. Simplify using `[vLa, WithZero.log_pow]`. Rewrite using `[Nat.cast_mul, vLa_mul_of_ne la (Nat.cast_ne_zero.2 h1.1) (Nat.cast_ne_zero.2 h1.2), h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[vLa_natCast_nonneg la h1.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem le_vLa_of_pow_dvd (la : HeightOneSpectrum (𝓞 K)) {p n N : ℕ} (hN : N ≠ 0) (h : p ^ n ∣ N) :
     n * vLa la (p : K) ≤ vLa la (N : K) := by
@@ -48,15 +48,15 @@ theorem le_vLa_of_pow_dvd (la : HeightOneSpectrum (𝓞 K)) {p n N : ℕ} (hN : 
   linarith [vLa_natCast_nonneg la h1.2]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `GlobalTheory.T.exists_elt_prescribed_valuations_balanced_archimedean K e t ht`. Use `⟨C + ∑ p ∈ S, Real.log p, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨α, h0, h1, h2⟩` from `hC τ`. Use `set N : ℕ := ∏ p ∈ S, p ^ ⌈τ * a p⌉₊ with hN`. Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p hp => pow_ne_zero _ (hS p hp).ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNK : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 hN0`. Use `⟨N * α, mul_ne_zero hNK h0, fun la => ?_, fun la p hp => ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `h3 : (0 : ℝ) ≤ vLa la (N : K)` using `by exact_mod_cast vLa_natCast_nonneg la hN0`. Rewrite using `[vLa_mul_of_ne la hNK h0, Int.cast_add]`. Combine the linear relations using `[h1 la]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (⌈τ * a p⌉₊ : ℝ) * vLa la (p : K) ≤ vLa la (N : K)`. Conclude with `le_vLa_of_pow_dvd la hN0 (Finset.dvd_prod_of_mem (fun p => p ^ ⌈τ * a p⌉₊) hp)` after adjusting the coercions. Establish `h4 : (0 : ℝ) ≤ vLa la (p : K)` using `by exact_mod_cast vLa_natCast_nonneg la (hS p hp).ne_zero`. Establish `h5` using `mul_le_mul_of_nonneg_right (Nat.le_ceil (τ * a p)) h4`. Rewrite using `[vLa_mul_of_ne la hNK h0, Int.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[h1 la]`. Establish `h3 : Real.log N ≤ τ * ∑ p ∈ S, a p * Real.log p + ∑ p ∈ S, Real.log p`. Rewrite using `[hN, Nat.cast_prod, Real.log_prod (fun p hp => by exact_mod_cast pow_ne_zero _ (hS p hp).ne_zero), Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h4` using `(Nat.ceil_lt_add_one (mul_nonneg (Nat.cast_nonneg (α := ℝ) τ) (ha p hp))).le`. Use polynomial arithmetic with `[Real.log_natCast_nonneg p]`. Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast, Real.log_mul (Nat.cast_ne_zero.2 hN0) (norm_ne_zero_iff.2 ((map_ne_zero σ).2 h0))]`. Use polynomial arithmetic with `[h2 σ]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar (e : HeightOneSpectrum (𝓞 K) →₀ ℝ) (t : (K →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) (a : ℕ → ℝ)
@@ -93,7 +93,7 @@ theorem exists_scalar (e : HeightOneSpectrum (𝓞 K) →₀ ℝ) (t : (K →+* 
 variable {R : Type} [CommRing R] [Algebra K R] {la : HeightOneSpectrum (𝓞 K)} {v : R → EReal}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hb`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc, hv.mul, show ((k + 1 : ℕ) : ℝ) * a + b = a + (k * a + b) by push_cast; ring, EReal.coe_add]`. Conclude with `add_le_add ha ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_val_pow_mul (hv : IsVal la v) {θ f : R} {a b : ℝ} (ha : (a : EReal) ≤ v θ) (hb : (b : EReal) ≤ v f) (k : ℕ) :
     ((k * a + b : ℝ) : EReal) ≤ v (θ ^ k * f) := by
@@ -106,7 +106,7 @@ theorem le_val_pow_mul (hv : IsVal la v) {θ f : R} {a b : ℝ} (ha : (a : EReal
 end Scalars
 
 /- English proof (translation)
-The claim follows from `Filter.limsup_le_limsup (h.mono fun _ hk => ENNReal.div_le_div_right (mul_le_mul_right (EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 hk))) _) _)`.
+A detailed English derivation is pending.
 -/
 theorem countVol_mono_eventually (D d a : ℕ) {m m' : ℕ → ℕ∞} (h : ∀ᶠ k in Filter.atTop, m (a * k) ≤ m' (a * k)) :
     countVol D d a m ≤ countVol D d a m' :=
@@ -119,13 +119,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[CovHt.l1, Finset.mul_sum, abs_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weightAbsEntrySum_nsmul (τ : ℕ) (u : AllWt.Weight Dw) : CovHt.l1 (τ • u) = τ * CovHt.l1 u := by
   simp [CovHt.l1, Finset.mul_sum, abs_mul]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem weightAbsEntrySum_nonneg (u : AllWt.Weight Dw) : 0 ≤ CovHt.l1 u :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
@@ -133,7 +133,7 @@ theorem weightAbsEntrySum_nonneg (u : AllWt.Weight Dw) : 0 ≤ CovHt.l1 u :=
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `: (1 : ℝ) ≤ p` using `by exact_mod_cast hp.one_le`. Establish `: (0 : ℝ) ≤ p - 1` using `by linarith`. Unfold `htEx`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem htEx_nonneg {p : ℕ} (hp : p.Prime) : 0 ≤ htEx E p := by
   have : (1 : ℝ) ≤ p := by exact_mod_cast hp.one_le
@@ -144,14 +144,14 @@ theorem htEx_nonneg {p : ℕ} (hp : p.Prime) : 0 ≤ htEx E p := by
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[Prod.smul_snd, nsmul_eq_mul]`. Conclude with `hG.mul_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_nsmul_snd {G : WTZ E} (hG : Even G.2) (k : ℕ) : Even (k • G).2 := by
   rw [Prod.smul_snd, nsmul_eq_mul]
   exact hG.mul_left _
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `he : Even (k • G + G').2` using `(even_nsmul_snd hG k).add hG'`. Rewrite using `[succ_nsmul', add_assoc, pow_succ', mul_assoc, homN_mul U x hG he _ _ _ hz, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -166,7 +166,7 @@ theorem homN_pow_mul_eq {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (x : ℝ) {G G'
     ring
 
 /- English proof (translation)
-Simplify using `only [nsmul_wtOf, ← wtOf_add, smul_zero, add_zero]`. Use `congr 1`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wt_split (u u' : AllWt.Weight Dw) (k : ℕ) :
     (8 * k) • wtOf Dw u 0 = k • wtOf Dw ((8 : ℤ) • (u - u')) 0 + (8 * k) • wtOf Dw u' 0 := by
@@ -177,7 +177,7 @@ theorem wt_split (u u' : AllWt.Weight Dw) (k : ℕ) :
 variable {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
 /- English proof (translation)
-Establish `h : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Use `secZ_eq_zero_of_genVal (cuspW_le_secZ G hf.1) fun Z' => ?_` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`. Rewrite using `[hZ, h0]`. Rewrite using `[genVal_apply h, evC_eq_zero h hZ hf.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_genVal {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) (h0 : genVal Z f = 0) :
     f = 0 := by
@@ -188,15 +188,15 @@ theorem eq_zero_of_genVal {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈
   · rw [genVal_apply h, evC_eq_zero h hZ hf.2]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ p ∈ htPrimes l B, ((p : ℕ) : 𝓞 c.F) ∈ la.asIdeal`. Take `⟨p, hp, hla⟩` from `h`. Take `⟨w, hw, hle⟩` from `hc p la hp.1 hla v hv`. Establish `hs : (f : Rul Xo c) ∈ secZ Xo c (exOf Dw (τ • u) 0)`. Establish `e : wtOf Dw (τ • u) 0 = τ • wtOf Dw u 0` using `by rw [nsmul_wtOf, smul_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[exOf, e]`. Conclude with `cuspW_le_secZ _ f.2.1`. Establish `h0 : 0 ≤ w f` using `hf la w (by rw [mixVals_of_mem hp hla]; exact hw)`. Establish `h1` using `h0.trans (hle _ _ hs)`. Use `Or.inr ⟨p, hp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[weightAbsEntrySum_nsmul]`. Proceed by induction on `hx : v f using EReal.rec with`. Consider the case `bot => rw [hx] at h1`. Simplify using `at h1`. Consider the case `top => exact le_top`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `coe b`. Rewrite `h1` using `[hx, ← EReal.coe_add, EReal.coe_nonneg]`. Rewrite using `[EReal.coe_le_coe_iff]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Or.inl (hf la v (by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Prove the first alternative. Establish an intermediate fact.
 
-Establish `: (mixVals Xo c B).1 la = (recVals Xo c).1 la` using `if_neg h`. Rewrite using `[this]`. Conclude with `hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_val_of_mixVals (hc : HTCmp Xo c) {B : ℝ} {Z : Comp Xo c} {u : AllWt.Weight Dw} {τ : ℕ}
     {f : cuspOn U Z (τ • wtOf Dw u 0)} (hf : f ∈ latVal U (mixVals Xo c B) Z (τ • wtOf Dw u 0))
@@ -226,15 +226,15 @@ theorem le_val_of_mixVals (hc : HTCmp Xo c) {B : ℝ} {Z : Comp Xo c} {u : AllWt
       rw [this]; exact hv))
 
 /- English proof (translation)
-Establish `hV` using `(recVals Xo c).2 la v hv`. Distinguish the cases in `ht : v f = ⊤`. Rewrite using `[hV.smul _ _ hα, hV.mul, ht, EReal.add_top_of_ne_bot (hV.ne_bot _), EReal.add_top_of_ne_bot (EReal.coe_ne_bot _)]`. Conclude with `le_top`. Take `⟨w, hw, hwt⟩` from `hN la v hv G' f hf ht`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hF la v hv ⟨w, hw, hwt⟩`. Establish `h2 : 0 ≤ depthOn U Z G v` using `le_iInf₂ fun w hw => hw la v hv`. Establish `h3 : depthOn U Z G v ≤ v w` using `iInf₂_le w hw`. Take `⟨d, hd⟩ : ∃ d : ℝ, depthOn U Z G v = d` from `⟨_, (EReal.coe_toReal (ne_top_of_le_ne_top hwt h3) (ne_bot_of_le_ne_bot EReal.zero_ne_bot h2)).symm⟩`. Rewrite `h1`, the goal using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ((8 * d - 8 * e la : ℝ) : EReal) ≤ v θ`. Proceed by induction on `hx : v θ using EReal.rec with`. Consider the case `bot => exact absurd hx (hV.ne_bot _)`. Consider the case `top => exact le_top`. Consider the case `coe a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hx, ← EReal.coe_add, ← EReal.coe_natCast, ← EReal.coe_mul, EReal.coe_le_coe_iff]`. Rewrite using `[EReal.coe_le_coe_iff]`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hV.smul _ _ hα]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (add_le_add le_rfl (le_val_pow_mul hV h4 hb k))` and prove the remaining obligations. Rewrite using `[← EReal.coe_add, ← EReal.coe_natCast, ← EReal.coe_mul, EReal.coe_le_coe_iff]`. Establish `: (vAdd la α : ℝ) = vLa la α` using `rfl`. Move the coercions through the operations in `at ha ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem fin_bound {Z : Comp Xo c} {G G' : WTZ E} {θ : Rul Xo c} {e : HeightOneSpectrum (𝓞 c.F) →₀ ℝ}
     (hN : NoBase U Z G) (hF : FinBd U Z G 8 θ e) {f : Rul Xo c} (hf : f ∈ cuspOn U Z G')
@@ -270,11 +270,11 @@ theorem fin_bound {Z : Comp Xo c} {G G' : WTZ E} {θ : Rul Xo c} {e : HeightOneS
   nlinarith
 
 /- English proof (translation)
-Establish `h4 : n * b ≤ Real.exp ((8 * k : ℕ) * (T - s))`. Use `mul_le_mul ((Real.log_le_iff_le_exp hn).1 h3) h2 hb (Real.exp_pos _).le` as an intermediate fact. Rewrite `this` using `[← Real.exp_add]`. Conclude with `this.trans_eq (by congr 1; ring)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show n * (a ^ k * b) = n * b * a ^ k by ring, ENNReal.ofReal_mul (mul_nonneg hn.le hb), ENNReal.ofReal_pow ha]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal (Real.exp ((8 * k : ℕ) * (T - s))) ^ 2 * (ENNReal.ofReal (Real.exp (2 * (8 : ℕ) * s)) * B ^ 8) ^ k := by gcongr`. Use `_ = _ := by`. Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← ENNReal.ofReal_pow (Real.exp_pos _).le, ← ENNReal.ofReal_pow (Real.exp_pos _).le, ← ENNReal.ofReal_mul (by positivity), ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem inf_bound {a b n s t T : ℝ} {B : ℝ≥0∞} {k : ℕ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hn : 0 < n)
     (h1 : ENNReal.ofReal a ^ 2 ≤ ENNReal.ofReal (Real.exp (2 * (8 : ℕ) * s)) * B ^ 8)
@@ -301,17 +301,15 @@ theorem inf_bound {a b n s t T : ℝ} {B : ℝ≥0∞} {k : ℕ} (ha : 0 ≤ a) 
 variable (U) (x : ℝ) {D : D7} (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r)
 
 /- English proof (translation)
-Take `⟨hN, θ, e, s, ⟨-, hθ, hcar⟩, hF, ⟨hs, hI⟩, hcc⟩` from `hM`. Establish `hfin` using `htPrimes_finite (l := l) B`. Take `⟨C, hC⟩` from `exists_scalar e s hs hfin.toFinset (fun p hp => (hfin.mem_toFinset.1 hp).1) (fun p => htEx E p * CovHt.l1 u') fun p hp => mul_nonneg (htEx_nonneg (hfin.mem_toFinset.1 hp).1) (weightAbsEntrySum_nonneg u')`. Establish `hsum : ∑ p ∈ hfin.toFinset, htEx E p * CovHt.l1 u' * Real.log p = htCost l B * CovHt.l1 u'`. Rewrite using `[htCost, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Use `countVol_mono_eventually _ _ _ ((Filter.eventually_ge_atTop ⌈|C| / ε⌉₊).mono fun k hk => ?_)` and prove the remaining obligations. Establish `hk' : C ≤ ((8 * k : ℕ) : ℝ) * ε`. Establish `h1` using `(div_le_iff₀ hε).1 (Nat.ceil_le.1 hk)`. Establish `h2 : (0 : ℝ) ≤ k * ε` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear relations using `[le_abs_self C]`. Take `⟨α, hα, h1, h2, h3⟩` from `hC (8 * k)`. Use `Set.encard_le_encard_of_injOn (f := fun f => ⟨α • (θ ^ k * f), Submodule.smul_mem _ _ (hcar k f f.2)⟩) (fun f hf => ⟨fun la v hv => ?_, ?_⟩) ?_` and prove the remaining obligations. Break down `le_val_of_mixVals hc hf.1 hv with h | ⟨p, hp, h⟩` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fin_bound hN hF f.2 hv hα (b := 0) (by simpa using h) (by simpa using h1 la)`. Conclude with `fin_bound hN hF f.2 hv hα h ((mul_add _ _ _).symm.trans_le (h2 la p (hfin.mem_toFinset.2 hp)))`. Introduce `σ hσ y hy show ENNReal.ofReal (homN (U σ) x _ (α • (θ ^ k * (f : Rul Xo c))) _) ^ 2 ≤ _`. Establish `he : Even ((8 * k) • wtOf Dw u' 0).2` using `even_nsmul_snd (even_wtOf u' 0) _`. Rewrite using `[FlatLine.homN_smul, wt_split u u', homN_pow_mul_eq (U σ) x (even_wtOf _ 0) he θ f y.2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `inf_bound (homN_nonneg _ _ _ _ _) (homN_nonneg _ _ _ _ _) (norm_pos_iff.2 ((map_ne_zero σ).2 hα)) (hI σ hσ y hy) (hf.2 σ hσ _ hy) ((h3 σ).trans ?_)` and prove the remaining obligations. Rewrite using `[hsum]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hcc (Nat.cast_nonneg (α := ℝ) (8 * k))]`. Introduce `f _ g _ h`. Establish `h4` using `congrArg (genVal Z) (congrArg Subtype.val h)`.
-
-Simplify using `only [map_smul, map_mul, map_pow] at h4`. Establish `h5` using `mul_left_cancel₀ (pow_ne_zero k hθ) (smul_right_injective _ hα h4)`. Conclude with `Subtype.ext (sub_eq_zero.1 (eq_zero_of_genVal (sub_mem f.2 g.2) (by rw [map_sub, h5, sub_self])))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compVol_le_volL (hc : HTCmp Xo c) (Z : Comp Xo c) (u u' : AllWt.Weight Dw) (cc B t ε : ℝ)
     (hM : Mult U x V dict Z u u' cc) (hε : 0 < ε) :
@@ -353,7 +351,7 @@ theorem compVol_le_volL (hc : HTCmp Xo c) (Z : Comp Xo c) (u u' : AllWt.Weight D
 end Generic
 
 /- English proof (translation)
-Introduce `_ _ _ Y _ _ _ _ hc Z u u' cc B t ε hM hε` and use `compVol_le_volL Y.U _ _ Y.dict hc Z u u' cc B t ε hM hε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compVol_le_volL_deep : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → HTCmp Y.d.Xo₂ Y.d.c₂ → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (u u' : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (cc B t ε : ℝ), Mult Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z u u' cc → 0 < ε → compVol Y.U (xiR D) 8 (mixVals Y.d.Xo₂ Y.d.c₂ B) Z (wtOf (T.Q.Dw j) u' 0) t ≤ volL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict 8 Z (wtOf (T.Q.Dw j) u 0) (t + cc + htCost Y.d.l₂ B * GlobalTheory.CovHt.l1 u' + ε) :=
   fun _ _ _ Y _ _ _ _ hc Z u u' cc B t ε hM hε => compVol_le_volL Y.U _ _ Y.dict hc Z u u' cc B t ε hM hε

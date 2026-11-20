@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.AeUnit
 
 /- English proof (translation)
-Use `GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Algebra.TensorProduct.map_tmul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.LatVac.evalV_singleV_same, map_one, ← Algebra.TensorProduct.one_def, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : GlobalTheory.FinPl.compAt D w a = 0` using `(Submodule.mem_iInf _).1 ha.2 ⟨w, hw⟩`. Establish `h1 : Algebra.TensorProduct.map (evalV D.host.F w) (AlgHom.id D.host.F D.host.E) (finPart D a) = 0` using `h0`. Rewrite using `[h1, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_finPart (D : D7) (v : Pl D) {a : AE D} (ha : a ∈ idAt D (· = v)) :
     (singleV D.host.F v 1 ⊗ₜ[D.host.F] (1 : D.host.E)) * finPart D a = finPart D a := by
@@ -28,11 +28,11 @@ theorem idem_mul_finPart (D : D7) (v : Pl D) {a : AE D} (ha : a ∈ idAt D (· =
     rw [h1, mul_zero]
 
 /- English proof (translation)
-Introduce `w`. Rewrite using `[map_smul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.LatVac.evalV_singleV_same, ← Algebra.algebraMap_eq_smul_one, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : w.valuation F (algebraMap (𝓞 F) F N) = 1` using `(w.valuation_eq_one_iff_notMem (K := F)).2 h`. Rewrite `h1` using `[map_intCast]`. Establish `h2 : Valued.v (algebraMap F (Fv F w) (N : F)⁻¹) = w.valuation F (N : F)⁻¹` using `w.valuedAdicCompletion_eq_valuation' _`. Rewrite using `[h2, map_inv₀, h1, inv_one]`. Rewrite using `[GlobalTheory.LatVac.evalV_singleV_ne F v w hw, smul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem inv_smul_singleV_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (N : ℤ)
     (h : (N : 𝓞 F) ∉ v.asIdeal) : (N : F)⁻¹ • singleV F v 1 ∈ intAf F := by
@@ -51,18 +51,18 @@ theorem inv_smul_singleV_mem {F : Type} [Field F] [NumberField F] (v : HeightOne
     exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul F N c, smul_smul, inv_mul_cancel₀ hN, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_inv_smul_tmul {F M P : Type} [Field F] [AddCommGroup M] [Module F M] [AddCommGroup P] [Module F P]
     (N : ℤ) (hN : (N : F) ≠ 0) (x : M) (c : P) : x ⊗ₜ[F] c = ((N : F)⁻¹ • x) ⊗ₜ[F] (N • c) := by
   rw [TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul F N c, smul_smul, inv_mul_cancel₀ hN, one_smul]
 
 /- English proof (translation)
-Introduce `D c`. Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨N, hN, hint⟩` from `halg.exists_integral_multiple`. Establish `hN' : (N : 𝓞 D.host.F) ≠ 0` using `Int.cast_ne_zero.2 hN`. Establish `hNF : (N : D.host.F) ≠ 0` using `Int.cast_ne_zero.2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `Ideal.finite_factors (I := Ideal.span {(N : 𝓞 D.host.F)}) (fun h => hN' (Ideal.span_singleton_eq_bot.1 h))`. Use `filter_upwards [hfin.compl_mem_cofinite] with v hv a ha`. Establish `hv' : (N : 𝓞 D.host.F) ∉ v.asIdeal` using `fun h => hv (Ideal.dvd_span_singleton.2 h)`. Use `⟨Ideal.mul_mem_left _ _ ha.1, ?_⟩` and prove the remaining obligations. Establish `hc : finPart D (incA D c) = (1 : Af D.host.F) ⊗ₜ[D.host.F] c` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hc, ← idem_mul_finPart D v ha.1, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Use `GlobalTheory.HostAdeleIso.intAE_mul_mem D ?_ ha.2` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨_, inv_smul_singleV_mem v N hv', ⟨N • c, hint⟩, ?_⟩` and prove the remaining obligations. Conclude with `tmul_eq_inv_smul_tmul N hNF _ c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_incA_mul_mem_intAt : ∀ (D : D7) (c : D.host.E), ∀ᶠ v : Pl D in cofinite,
     ∀ a ∈ intAt D (· = v), incA D c * a ∈ intAt D (· = v) := by

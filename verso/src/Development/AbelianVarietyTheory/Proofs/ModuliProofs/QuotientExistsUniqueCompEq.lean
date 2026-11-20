@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Γ _ _ X X' ρ π ⟨hπ, hinv, hV⟩ T f hf`. Establish `hq : IsAffineQuotient ρ π` using `{ comp_eq := hinv isAffineHom := hπ app_injective := fun W => (hV W).1 mem_range_app := fun W s hs => (hV W).2 s (fun g _ => by obtain ⟨_, e⟩ := hs g; exact e) }`. Conclude with `hq.existsUnique_comp_eq f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quotient_existsUnique_comp_eq :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → ∀ (T : Scheme.{0}) (f : X ⟶ T), (∀ g, (ρ g).hom ≫ f = f) → ∃! f' : X' ⟶ T, π ≫ f' = f := by

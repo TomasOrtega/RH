@@ -26,7 +26,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LlcDepth
 
 /- English proof (translation)
-Establish `e : (X - 1 : ℂ[X]) = X - C 1` using `by simp`. Rewrite `hd`, the goal using `[e]`. Take `⟨i, -, hi⟩` from `(dvd_prime_pow (prime_X_sub_C (1 : ℂ)) n).1 hd`. Establish `hpi` using `eq_of_monic_of_associated hp ((monic_X_sub_C (1 : ℂ)).pow i) hi`. Rewrite using `[hpi, natDegree_pow, natDegree_X_sub_C, mul_one]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_pow_natDegree_of_dvd {p : ℂ[X]} (hp : p.Monic) {n : ℕ} (hd : p ∣ (X - 1) ^ n) :
     p = (X - 1) ^ p.natDegree := by
@@ -37,7 +37,7 @@ theorem eq_pow_natDegree_of_dvd {p : ℂ[X]} (hp : p.Monic) {n : ℕ} (hd : p �
   rw [hpi, natDegree_pow, natDegree_X_sub_C, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih => simp [ih, pow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_map_pow {α : Type*} (q : ℂ[X]) (f : α → ℕ) (s : Multiset α) :
     (s.map fun y => q ^ f y).prod = q ^ (s.map f).sum := by
@@ -46,19 +46,17 @@ theorem prod_map_pow {α : Type*} (q : ℂ[X]) (f : α → ℕ) (s : Multiset α
   | cons a s ih => simp [ih, pow_add]
 
 /- English proof (translation)
-Introduce `hDZC hDZI hEx hZel hGeo hBZ E Ω _ _ _ _ _ A w h rc hrc x`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨a, ha, ε, -, hL⟩` from `id hrc`. Take `⟨m, hm⟩` from `hEx _ x`. Establish `hs : HasSupport x.rep (msupp m)` using `GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment hZel _ m x hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp` using `GlobalTheory.T.central_character_rec_compatible hEx hZel hGeo hBZ E Ω A w h a ha _ rc hL x (msupp m) hs`. Establish `hdy : ∀ y ∈ msupp m, (fixed y.rep (KOne (w.adicCompletion E) (Fin y.1)) ≠ ⊥ ↔ IsTameWD (rc y))` using `fun y hy => hDZC E Ω A w h rc hrc y (hs.isCusp hy)`. Establish `htame : IsTameWD (rc x) ↔ ∀ y ∈ msupp m, IsTameWD (rc y)`. Simplify using `only [GlobalTheory.T.isTameWeilDeligne_iff_wild_charpoly E Ω A w h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H y hy σ hσ`. Establish `hdvd : (rc y).charPol σ ∣ (rc x).charPol σ`. Rewrite using `[hcp σ]`. Conclude with `Multiset.dvd_prod (Multiset.mem_map_of_mem _ hy)`. Rewrite `hdvd` using `[H σ hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `eq_pow_natDegree_of_dvd ((rc y).charPol_monic σ) hdvd`. Rewrite `e` using `[WD.charPol_natDegree]`. Then use the resulting hypothesis. Introduce `H σ hσ`. Rewrite using `[hcp σ, Multiset.map_congr rfl (fun y hy => H y hy σ hσ), prod_map_pow]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.dim x, Multiset.map_congr rfl (fun y _ => hL.dim y), hs.sum_fst, Fintype.card_fin]`. Rewrite using `[htame]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite using `[← hdy y hy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, xs, hxs, hcs⟩` from `hs`. Establish `H` using `GlobalTheory.SmGL.depthZeroSupport _ x.1 (GlobalTheory.SplitRead.Irr.ofIrrRep x.2.rep) n (fun i => (xs i).1) (fun i => GlobalTheory.SplitRead.Irr.ofIrrRep (xs i).2.rep) hcs ((Submodule.ne_bot_iff _).1 hx)`. Rewrite `hy` using `[← hxs]`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨v, hv, hv0⟩` from `H i`.
-
-Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩`. Introduce `H`. Conclude with `hDZI _ x (msupp m) hs fun y hy => (hdy y hy).2 (H y hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_iff_isTameWD : DepthZeroCuspidalLL → DepthZeroInduction → LanglandsExhaustionGL →
     ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness →

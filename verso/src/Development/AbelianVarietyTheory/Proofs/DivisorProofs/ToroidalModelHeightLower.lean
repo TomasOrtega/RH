@@ -22,7 +22,7 @@ namespace GlobalTheory.LieFilt
 open GlobalTheory.TangentOrigin (evalPt evalPt_res)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `Scheme.Hom.appLE_comp_appLE y π U V ⊤ e hV` as an intermediate fact. Unfold `evalPt`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPt_appLE_of_eq {K : Type} [CommRing K] {X Y : Scheme.{0}} (y : Sp K ⟶ Y) (π : Y ⟶ X) {x : Sp K ⟶ X}
     (hx : y ≫ π = x) (U : X.Opens) (V : Y.Opens) (e : V ≤ π ⁻¹ᵁ U) (hV : ⊤ ≤ y ⁻¹ᵁ V) (hU : ⊤ ≤ x ⁻¹ᵁ U)
@@ -38,9 +38,9 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Set `L : Γ(omega t.G, ch'.U ⊓ ch.U) →+ K` to `AddMonoidHom.mk' (tanEv t hv h'') (GlobalTheory.LocM.tanEv_add t hv h'')`. Establish `e` using `congrArg L ((ch'.isFrame.basis (inf_le_left : ch'.U ⊓ ch.U ≤ ch'.U)).sum_repr (Twist.resM _ inf_le_right (ch.e k)))`. Rewrite `e` using `[map_sum]`. Use `((GlobalTheory.LocM.tanEv_resM t hv h'' inf_le_right _).symm.trans e.symm).trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Use `(GlobalTheory.LocM.tanEv_smul t hv h'' _ _).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[VB.IsFrame.basis_apply, GlobalTheory.LocM.tanEv_resM]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tanEv_change {Y : Scheme.{0}} (t : SAB H Y) {K : Type} [CommRing K] {x : Sp K ⟶ Y}
     {v : Sp (DualNumber K) ⟶ t.G.left} (hv : IsTanAtG t x v) {g : ℕ} (ch ch' : VB.Chart (omega t.G) g)
@@ -61,23 +61,19 @@ variable {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : Recipr
   {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {jB : W ⟶ X} {πB : W ⟶ gen Z} (ρ : X ⟶ Z.X) {d : ℕ}
 
 /- English proof (translation)
-Establish `hI : V ⊓ V' ≤ ρ ⁻¹ᵁ ch.U ⊓ ρ ⁻¹ᵁ ch'.U` using `inf_le_inf hV hV'`. Establish `key : ∀ k, ∑ b, resG X (inf_le_right : V ⊓ V' ≤ V') (A' b a) * resG X hI (trCo (hℓ ch) (ℓ ch') k b) = ∑ b, trCo hf f' b a * resG X (inf_le_left : V ⊓ V' ≤ V) (A k b)`. Introduce `k`. Break down `((V ⊓ V' : X.Opens) : Set X).eq_empty_or_nonempty with hE | hE` into its components or cases. Establish `hb : V ⊓ V' = ⊥` using `TopologicalSpace.Opens.coe_eq_empty.1 hE haveI : Subsingleton Γ(X, V ⊓ V') := CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Take `⟨K, _, x, ψ, hψ, h, hinj⟩` from `exists_generic_evalPt_injective hq hW _ hE`. Establish `hU : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ V` using `h.trans ((x ≫ jB).preimage_mono inf_le_left)`. Establish `hU' : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ V'` using `h.trans ((x ≫ jB).preimage_mono inf_le_right)`. Establish `hII : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ (ρ ⁻¹ᵁ ch.U ⊓ ρ ⁻¹ᵁ ch'.U)` using `h.trans ((x ≫ jB).preimage_mono hI)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (x ≫ jB) ≫ ρ = x ≫ πB ≫ genι Z` using `by rw [Category.assoc, hρ]`. Establish `hc : ⊤ ≤ (x ≫ πB ≫ genι Z) ⁻¹ᵁ ch.U`. Rewrite using `[← hy]`. Conclude with `hU.trans ((x ≫ jB).preimage_mono hV)`. Establish `hc' : ⊤ ≤ (x ≫ πB ≫ genι Z) ⁻¹ᵁ ch'.U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `hU'.trans ((x ≫ jB).preimage_mono hV')`. Establish `hcc : ⊤ ≤ (x ≫ πB ≫ genι Z) ⁻¹ᵁ (ch'.U ⊓ ch.U)` using `fun p hp => ⟨hc' hp, hc hp⟩`. Establish `bf` using `ht.1 V f hf K x hU ψ hψ`. Take `⟨hv, hcomb⟩` from `GlobalTheory.TanSec.Norm.exists_tanEv_comb Z.t hc ch.isFrame (fun i => (bf.1 i).1) (ht.2.1 V V' f f' hf hf' K x hU hU' h a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 (b : Fin r) : evalPt (x ≫ jB) V hU (A k b) = tanEv Z.t (bf.1 b).1 hc (ch.e k)`. Rewrite using `[← hA K x hU hU b _ hc k, Matrix.map_apply, Matrix.map_apply, Scheme.Hom.app_eq_appLE]`. Conclude with `(evalPt_appLE_of_eq x jB rfl _ _ _ _ _ _).symm`. Establish `e2 (b : Fin g) : evalPt (x ≫ jB) V' hU' (A' b a) = tanEv Z.t hv hc' (ch'.e b)`. Rewrite using `[← hA' K x hU' hU' a _ hc' b, Matrix.map_apply, Matrix.map_apply, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(evalPt_appLE_of_eq x jB rfl _ _ _ _ _ _).symm`. Establish `e3 (b : Fin g) : evalPt (x ≫ jB) _ hII (trCo (hℓ ch) (ℓ ch') k b) = evalPt (x ≫ πB ≫ genι Z) _ hcc (trCo ch'.isFrame ch.e b k)`. Rewrite using `[hD]`. Conclude with `evalPt_appLE_of_eq _ ρ hy _ _ _ _ _ _`. Apply `hinj` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul]`. Simplify using `only [evalPt_res (x ≫ jB) inf_le_left hU h, evalPt_res (x ≫ jB) inf_le_right hU' h, evalPt_res (x ≫ jB) hI hII h, e1, e2, e3]`. Rewrite using `[← hcomb k, tanEv_change Z.t hv ch ch' hc hc' hcc k]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Use `((hℓ ch).basis ((inf_le_left : V ⊓ V' ≤ V).trans hV)).ext_elem fun k => ?_` and prove the remaining obligations.
-
-Establish `e1 (b : Fin g) : Twist.resM L (inf_le_left : V ⊓ V' ≤ V) (Twist.resM L hV (ℓ ch b)) = (hℓ ch).basis (inf_le_left.trans hV) b`. Rewrite using `[VB.IsFrame.basis_apply, Twist.resM_resM]`. Establish `e2 (b : Fin g) : ((hℓ ch).basis ((inf_le_left : V ⊓ V' ≤ V).trans hV)).repr (Twist.resM L (inf_le_right : V ⊓ V' ≤ V') (Twist.resM L hV' (ℓ ch' b))) k = resG X hI (trCo (hℓ ch) (ℓ ch') k b)`. Rewrite using `[trCo, ← (hℓ ch).repr_resM inf_le_left hI, Twist.resM_resM, Twist.resM_resM]`. Simplify using `only [map_sum, Twist.resM_smul, e1, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, e2]`.
-
-Conclude with `key k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genCoord_compat (hq : IsArithVar q d)
     (hW : IsPullback jB (πB ≫ genStr Z ≫ spMap e.toRingHom) q (spMap (algebraMap (𝓞 F) F)))
@@ -145,15 +141,15 @@ theorem genCoord_compat (hq : IsArithVar q d)
 end Free
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB ρ d hq hW hρ L g ℓ hℓ hω hD M r τ t hM ht hA`. Establish `ex (x : X) : ∃ (ch : VB.Chart (omega Z.t.G) g) (V : X.Opens) (_ : V ≤ ρ ⁻¹ᵁ ch.U) (f : Fin r → Γ(M, V)) (hf : VB.IsFrame f) (A : Matrix (Fin g) (Fin r) Γ(X, V)), x ∈ V ∧ GenCoord Z jB πB t ch hf (A.map (jB.app V))`. Take `⟨U, m, hU, hm⟩` from `hω (ρ x)`. Take `⟨U', f, hU', hf⟩` from `hM x`. Take `⟨V, hV, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ρ ⁻¹ᵁ U ⊓ U') ⟨hU, hU'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle' : V ≤ ρ ⁻¹ᵁ U ⊓ U'` using `hle`. Take `⟨A, hA'⟩` from `hA ⟨U, m, hm⟩ V (hle'.trans inf_le_left) hV _ (hf.res (hle'.trans inf_le_right))`. Conclude with `⟨⟨U, m, hm⟩, V, hle'.trans inf_le_left, _, _, A, hx, hA'⟩`. Use `choose ch V hV f hf A hx hAc using ex`. Take `⟨T, hT⟩` from `GlobalTheory.FrameGlue.exists_hom_of_frames X M L r X V (fun x => ⟨x, hx x⟩) f hf (fun x i => ∑ b, A x b i • Twist.resM L (hV x) (ℓ (ch x) b)) fun x y a => genCoord_compat Z e ρ hq hW hρ hℓ hD ht (hV x) (hV y) (hf x) (hf y) (hAc x) (hAc y) a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, fun ch₀ V₀ hV₀ haff f₀ hf₀ => ?_⟩` and prove the remaining obligations. Take `⟨A₀, hA₀⟩` from `hA ch₀ V₀ hV₀ haff f₀ hf₀`. Establish `key (i : Fin r) : T.app V₀ (f₀ i) = ∑ b, A₀ b i • Twist.resM L hV₀ (ℓ ch₀ b)`. Use `Twist.sec_ext_of_cover (fun x : X => V x ⊓ V₀) (fun _ => inf_le_right) (fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hx y, hy⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[genCoord_compat Z e ρ hq hW hρ hℓ hD ht (hV x) hV₀ (hf x) hf₀ (hAc x) hA₀ i, ← Twist.app_resM, ← ((hf x).basis (inf_le_left : V x ⊓ V₀ ≤ V x)).sum_repr (Twist.resM M inf_le_right (f₀ i)), map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, VB.IsFrame.basis_apply, Twist.app_resM, hT]`. Both sides reduce to the same expression. Establish `e0 : (Matrix.of fun b i => jB.app V₀ (((hℓ ch₀).basis hV₀).repr (T.app V₀ (f₀ i)) b)) = A₀.map (jB.app V₀)`. Use extensionality with `b i : 2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.of_apply, Matrix.map_apply, key]`. Simplify using `only [← (hℓ ch₀).basis_apply hV₀, Module.Basis.repr_sum_self]`. Rewrite using `[e0]`. Conclude with `hA₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tanCoord : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

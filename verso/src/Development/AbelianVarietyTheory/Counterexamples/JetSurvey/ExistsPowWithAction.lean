@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PowActProbe
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PowDegData.main GlobalTheory.globalFns_holds R I D n`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (n : ℕ) :
     ∃ D' : DegData R I, Nonempty (IsPowDeg D'.toPre D.toPre n) :=
@@ -29,7 +29,7 @@ section Unique
 variable {R : Type} [CommRing R] [IsDomain R] {D' D : DegPre R} {n : ℕ}
 
 /- English proof (translation)
-Establish `: f' = powMap pD.pw f` using `pow_ext pD.pw fun i => (h i).trans (powMap_pr _ _ i).symm`. Rewrite using `[this]`. Conclude with `powMap_isMonHom _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_coord (pD : IsPowDeg D' D n) (f : D.P.A ⟶ D.P.A) [IsMonHom f] (f' : D'.P.A ⟶ D'.P.A)
     (h : ∀ i, f' ≫ pD.pw.pr i = pD.pw.pr i ≫ f) : IsMonHom f' := by
@@ -39,7 +39,7 @@ theorem isMonHom_of_coord (pD : IsPowDeg D' D n) (f : D.P.A ⟶ D.P.A) [IsMonHom
 end Unique
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem powOActSt_iff : PowOActSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V]
@@ -53,7 +53,7 @@ theorem powOActSt_iff : PowOActSt ↔
           pD.pw.pr i ≫ (letI := H.starRing; P.oD.onB.act a) := Iff.rfl
 
 /- English proof (translation)
-Take `⟨t, P, -, -, hg, -⟩` from `GlobalTheory.ConstantFamily.exists_pelUnif_powerSeries E H Δ h`. Conclude with `⟨t, P, hg, exists_pow _ _ P.D n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem premises_met (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Δ : Datum H)
     (h : 1 ≤ Δ.p + Δ.q) (n : ℕ) :

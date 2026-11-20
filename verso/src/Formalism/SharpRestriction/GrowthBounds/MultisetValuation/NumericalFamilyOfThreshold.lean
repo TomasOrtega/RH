@@ -19,7 +19,7 @@ def nc_Need3 (C₀ : ℝ) : Prop :=
           Formalism.MainNotions.G.Pr X K (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j t0
 
 /- English proof (translation)
-The claim follows from `numerical_closed_of_need C₀ fun D L X Y K h1 h2 h3 hr hs hT hL u w hg hlog t0 ht0 j hj => have H := h D L X Y K h1 h2 h3 hr hs hT hL u w hg hlog t0 ht0 j hj ⟨nc_de X Y K hT hL u w hg t0 ht0 j hj (h9.trans h1) (h9.trans h2) hlog H.1, H.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem numerical_closed_of_threshold (C₀ : ℝ) (h9 : 9 ≤ C₀) (h : nc_Need3 C₀) : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform :=
   numerical_closed_of_need C₀ fun D L X Y K h1 h2 h3 hr hs hT hL u w hg hlog t0 ht0 j hj =>
@@ -27,7 +27,7 @@ theorem numerical_closed_of_threshold (C₀ : ℝ) (h9 : 9 ≤ C₀) (h : nc_Nee
     ⟨nc_de X Y K hT hL u w hg t0 ht0 j hj (h9.trans h1) (h9.trans h2) hlog H.1, H.2⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `numerical_closed_of_threshold C₀ h9 h`. Conclude with `⟨C, fun x i => hC _ _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem numerical_family_of_threshold (C₀ : ℝ) (h9 : 9 ≤ C₀) (h : nc_Need3 C₀) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     ∃ C₀, Formalism.MainNotions.FormalGroupSystem.NumericalComparisonFamily Fm C₀ := by

@@ -5,13 +5,13 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 namespace GlobalTheory.UnipKill
 
 /- English proof (translation)
-Introduce `E _ _ _ N X φ d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `ξ α _ _`. Use `⟨1, ?_, map_one φ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `ξ α horth hγ`. Take `⟨γ0, h0, hφ0⟩` from `ih (ξ ∘ Fin.castSucc) (α ∘ Fin.castSucc) (fun i j => horth _ _) (fun j => hγ _)`. Take `⟨γl, hl, hφl⟩` from `hγ (Fin.last d)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨γ0 * γl, ?_, by rw [map_mul, hφ0, hφl, one_mul]⟩` and prove the remaining obligations. Establish `hmat : ((γ0 * γl : X.Γ) : GL (Fin N) E) = (γ0 : GL (Fin N) E) * (γl : GL (Fin N) E)` using `rfl`. Rewrite using `[hmat, Matrix.GeneralLinearGroup.coe_mul, h0, hl, transvMat_eq, Fin.sum_univ_castSucc]`. Establish `hz : (∑ j : Fin d, (α ∘ Fin.castSucc) j • rk1 X.Gm ((ξ ∘ Fin.castSucc) j) ((ξ ∘ Fin.castSucc) j)) * (α (Fin.last d) • rk1 X.Gm (ξ (Fin.last d)) (ξ (Fin.last d))) = 0`. Rewrite using `[Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, one_add_smul_vecMulVec_mul]`. Simplify using `only [Function.comp_apply, horth, zero_smul, smul_zero]`. Rewrite using `[add_mul, one_mul, mul_add, mul_one, hz, add_zero]`. Simplify using `only [Function.comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/

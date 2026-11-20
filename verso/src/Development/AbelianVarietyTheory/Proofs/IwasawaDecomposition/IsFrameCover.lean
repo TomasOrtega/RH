@@ -36,7 +36,7 @@ def Down {k : ℕ} (e : Fin k → Let m) : Prop :=
 def std (τ : T) (k : ℕ) (h : k ≤ m τ) : Fin k → Let m := fun l => ⟨τ, Fin.castLE h l⟩
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun l j hj => ⟨⟨j, lt_trans hj l.2⟩, rfl⟩⟩` and prove the remaining obligations. Use `congrArg (fun z : Let m => (z.2 : ℕ)) hab` as an intermediate fact. Conclude with `Fin.ext this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem down_std (τ : T) (k : ℕ) (h : k ≤ m τ) : Down (std τ k h) := by
   refine ⟨fun a b hab => ?_, fun l j hj => ⟨⟨j, lt_trans hj l.2⟩, rfl⟩⟩
@@ -79,7 +79,7 @@ def InBlock {ι : Type} (c c' : Let m → ι → S) : Prop :=
   ∀ z : Let m, c' z ∈ Submodule.span S (Set.range fun j : Fin (m z.1) => c ⟨z.1, j⟩)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [plk, Function.comp_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_plk {ι : Type} {k : ℕ} {S' : Type} [CommRing S'] (φ : S →+* S') (c : ι → Fin (M + 1) → S) (e : Fin k → ι) :
     φ ∘ plk c e = plk (fun z => φ ∘ c z) e := by
@@ -88,9 +88,9 @@ theorem map_plk {ι : Type} {k : ℕ} {S' : Type} [CommRing S'] (φ : S →+* S'
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [cellVec, Function.comp_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `cell`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_cellVec {ι : Type} {S' : Type} [CommRing S'] (φ : S →+* S') (c : Let m → ι → S) (w : Pm m)
     (x : CellVar m → S) (z : Let m) : φ ∘ cellVec c w x z = cellVec (fun z => φ ∘ c z) w (φ ∘ x) z := by
@@ -102,7 +102,7 @@ theorem map_cellVec {ι : Type} {S' : Type} [CommRing S'] (φ : S →+* S') (c :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `z z'` and use `by have := congrArg φ (h z z') simp only [map_sum, map_mul] at this refine this.trans ?_ split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LeftInv.map {ι : Type} {S' : Type} [CommRing S'] (φ : S →+* S') {D c : ι → Fin M → S} (h : LeftInv D c) :
     LeftInv (fun z => φ ∘ D z) (fun z => φ ∘ c z) := fun z z' => by
@@ -200,7 +200,7 @@ structure IsLieEmb (L : FinLB X) (aff : ∀ i, IsAffineOpen (L.U i)) {M : ℕ} (
 open GlobalTheory.FactorDepth in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isTanAtG_of _ (combT_tan _ (fun j => ovT (hu j)) (fun j => smT_zero_ovT _) a), (isCombAtG_iff t x (fun j => ovT (hu j)) a _).2 rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comb {R : Type} [CommRing R] {x : Sp R ⟶ X} {n : ℕ} {u : Fin n → Tn t R} (hu : ∀ j, IsTanAtG t x (u j))
     (a : Fin n → R) : ∃ w, IsTanAtG t x w ∧ IsCombAtG t x u a w :=
@@ -210,14 +210,14 @@ theorem exists_comb {R : Type} [CommRing R] {x : Sp R ⟶ X} {n : ℕ} {u : Fin 
 open GlobalTheory.FactorDepth in
 
 /- English proof (translation)
-The claim follows from `((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h')`.
+A detailed English derivation is pending.
 -/
 theorem comb_unique {R : Type} [CommRing R] {x : Sp R ⟶ X} {n : ℕ} {u : Fin n → Tn t R} (hu : ∀ j, IsTanAtG t x (u j))
     {a : Fin n → R} {w w' : Tn t R} (h : IsCombAtG t x u a w) (h' : IsCombAtG t x u a w') : w = w' :=
   ((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h')
 
 /- English proof (translation)
-Take `⟨w', h1, h2⟩` from `exists_comb t hu a`. Conclude with `comb_unique t hu h2 h ▸ h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comb_tan {R : Type} [CommRing R] {x : Sp R ⟶ X} {n : ℕ} {u : Fin n → Tn t R} (hu : ∀ j, IsTanAtG t x (u j))
     {a : Fin n → R} {w : Tn t R} (h : IsCombAtG t x u a w) : IsTanAtG t x w := by
@@ -227,7 +227,7 @@ theorem comb_tan {R : Type} [CommRing R] {x : Sp R ⟶ X} {n : ℕ} {u : Fin n �
 variable {t} in
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `⟨h.comb i R φ n u a w hu, fun e => ?_⟩` and prove the remaining obligations. Take `⟨w', h1, h2⟩` from `exists_comb t hu a`. Rewrite using `[h.inj i R φ w w' hw h1 (e.trans (h.comb i R φ n u a w' hu h2).symm)]` and apply the resulting hypothesis.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsLieEmb.comb_iff {L : FinLB X} {aff : ∀ i, IsAffineOpen (L.U i)} {M : ℕ} {crd : Crd t L M}
     (h : IsLieEmb t L aff crd) (i : Fin L.n) {R : Type} [CommRing R] (φ : Γ(X, L.U i) →+* R) {x : Sp R ⟶ X}

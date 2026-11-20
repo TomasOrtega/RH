@@ -21,37 +21,37 @@ section Theta
 variable {T : Tor D} {N N' : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_left (x y w : VC D N N') : Hf D T (x + y) w = Hf D T x w + Hf D T y w := by
   simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_smul_left (c : ℂ) (x w : VC D N N') : Hf D T (c • x) w = c * Hf D T x w := by
   simp only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]
 
 /- English proof (translation)
-Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_conj (x w : VC D N N') : Hf D T w x = (starRingEnd ℂ) (Hf D T x w) := by
   simp only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, Hf_smul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_nsmul_left (n : ℕ) (x w : VC D N N') : Hf D T (n • x) w = n * Hf D T x w := by
   rw [← Nat.cast_smul_eq_nsmul ℂ, Hf_smul_left]
 
 /- English proof (translation)
-Rewrite using `[Hf_conj, Hf_nsmul_left, map_mul, ← Hf_conj, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_nsmul_right (n : ℕ) (x w : VC D N N') : Hf D T x (n • w) = n * Hf D T x w := by
   rw [Hf_conj, Hf_nsmul_left, map_mul, ← Hf_conj, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[qH, qH, Hf_nsmul_left, Hf_nsmul_right, ← mul_assoc, ← Nat.cast_mul, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qH_nsmul (n : ℕ) (x : VC D N N') : qH D T (n • x) = n ^ 2 * qH D T x := by
   rw [qH, qH, Hf_nsmul_left, Hf_nsmul_right, ← mul_assoc, ← Nat.cast_mul, ← Complex.ofReal_natCast,
@@ -59,14 +59,14 @@ theorem qH_nsmul (n : ℕ) (x : VC D N N') : qH D T (n • x) = n ^ 2 * qH D T x
   push_cast; ring
 
 /- English proof (translation)
-Unfold `Hf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Hf_diff (x : VC D N N') : Differentiable ℂ (fun z : VC D N N' => Hf D T z x) := by
   unfold Hf
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `Hf_diff (T := T) x`. Unfold `Wd U`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Wd_diff (x : VC D N N') {F : VC D N N' → ℂ} (hF : Differentiable ℂ F) :
     Differentiable ℂ (Wd D T x F) := by
@@ -75,11 +75,11 @@ theorem Wd_diff (x : VC D N N') {F : VC D N N' → ℂ} (hF : Differentiable ℂ
   fun_prop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h1 : Hf D T x a = Hf D T a x - 2 * m * Complex.I`. Rewrite using `[Hf_conj a x]`. Apply the tactic sequence `apply Complex.ext <;> simp [h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : Complex.exp (-(Real.pi : ℂ) * Hf D T (z + x) a - (Real.pi : ℂ) * Hf D T a a / 2) * Complex.exp (-(Real.pi : ℂ) * Hf D T z x - (Real.pi : ℂ) * Hf D T x x / 2) = Complex.exp (-(Real.pi : ℂ) * Hf D T (z + a) x - (Real.pi : ℂ) * Hf D T x x / 2) * Complex.exp (-(Real.pi : ℂ) * Hf …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[Hf_add_left, Hf_add_left, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Wd, U]`. Rewrite using `[add_right_comm z a x]`. Take the linear combination `(-(wdPh D T a * wdPh D T x * F (z + x + a))) * h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Wd_comm (a x : VC D N N') (m : ℤ) (h : (Hf D T a x).im = m) (F : VC D N N' → ℂ) :
     Wd D T a (Wd D T x F) = Wd D T x (Wd D T a F) := by
@@ -101,21 +101,21 @@ theorem Wd_comm (a x : VC D N N') (m : ℤ) (h : (Hf D T a x).im = m) (F : VC D 
   linear_combination (-(wdPh D T a * wdPh D T x * F (z + x + a))) * h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wd_add (x : VC D N N') (F G : VC D N N' → ℂ) : Wd D T x (F + G) = Wd D T x F + Wd D T x G := by
   funext z; simp only [Wd, U, Pi.add_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wd_smul (x : VC D N N') (c : ℂ) (F : VC D N N' → ℂ) : Wd D T x (c • F) = c • Wd D T x F := by
   funext z; simp only [Wd, U, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Take `⟨d, m, hm, h⟩` from `hF`. Take `⟨d', m', hm', h'⟩` from `hG`. Use `⟨d.add d', m * m', by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Wd_add]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_nsmul']`. Conclude with `h _ (nsmul_mem hx _)`. Rewrite using `[mul_nsmul]`. Conclude with `h' _ (nsmul_mem hx _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TT_add {F G : VC D N N' → ℂ} (hF : F ∈ TT D T N N') (hG : G ∈ TT D T N N') : F + G ∈ TT D T N N' := by
   obtain ⟨d, m, hm, h⟩ := hF
@@ -127,14 +127,14 @@ theorem TT_add {F G : VC D N N' → ℂ} (hF : F ∈ TT D T N N') (hG : G ∈ TT
   · rw [mul_nsmul]; exact h' _ (nsmul_mem hx _)
 
 /- English proof (translation)
-Take `⟨d, m, hm, h⟩` from `hF`. Conclude with `⟨d.const_smul c, m, hm, fun x hx => by rw [Wd_smul, h x hx]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TT_smul (c : ℂ) {F : VC D N N' → ℂ} (hF : F ∈ TT D T N N') : c • F ∈ TT D T N N' := by
   obtain ⟨d, m, hm, h⟩ := hF
   exact ⟨d.const_smul c, m, hm, fun x hx => by rw [Wd_smul, h x hx]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨differentiable_const 0, 1, one_pos, fun x _ => by funext z; simp [Wd, U]⟩`.
+Supply the required witnesses or components.
 -/
 theorem TT_zero : (0 : VC D N N' → ℂ) ∈ TT D T N N' :=
   ⟨differentiable_const 0, 1, one_pos, fun x _ => by funext z; simp [Wd, U]⟩
@@ -142,9 +142,9 @@ theorem TT_zero : (0 : VC D N N' → ℂ) ∈ TT D T N N' :=
 end Theta
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using TT_zero, ?_⟩` and prove the remaining obligations. Use `W.smul g g' 0 0 TT_zero` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨TT_add (TT_smul _ (hF a)) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[W.add g g' _ (TT_smul _ (hF a)) _ ih.1, W.smul g g' _ _ (hF a), ih.2]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Om_sum {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ} {e0 : VC D N N' → ℂ} (W : WeilO D cc δ N N' e0)
     (g : GA D N) (g' : GA D N') {κ : Type} (s : Finset κ) (r : κ → ℂ) (F : κ → VC D N N' → ℂ)
@@ -162,17 +162,15 @@ theorem Om_sum {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ} {e0 : VC D N
     rw [W.add g g' _ (TT_smul _ (hF a)) _ ih.1, W.smul g g' _ _ (hF a), ih.2]
 
 /- English proof (translation)
-Take `⟨a, ha0, ha⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger (MovedLattice.inverseHalfDifferent_ne_zero D)`. Use `set b : D.host.E := algebraMap (𝓞 D.host.E) D.host.E a with hb`. Establish `hb0 : b ≠ 0`. Rewrite using `[hb]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 ha0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := D.host.E) (Finset.univ.image fun p : Fin N' × Fin N => z p.1 p.2 / b)`. Establish `hA : ∀ i j, IsIntegral ℤ (((y.natAbs * y.natAbs : ℕ) : D.host.E) * (z i j / b))`. Introduce `i j`. Establish `h1` using `hy _ (Finset.mem_image_of_mem _ (Finset.mem_univ (i, j)))`. Establish `h2 : ((y.natAbs * y.natAbs : ℕ) : D.host.E) = (y : D.host.E) * (y : D.host.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_natCast, Int.natAbs_mul_self, Int.cast_mul]`. Rewrite using `[h2, mul_assoc]`. Rewrite `h1` using `[zsmul_eq_mul]`. Conclude with `(isIntegral_algebraMap (R := ℤ) (x := y)).mul h1`. Use `set m : ℕ := y.natAbs * y.natAbs with hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm0 : 0 < m` using `by positivity`. Establish `hn0 : 0 < Ideal.absNorm cc` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Use `⟨Ideal.absNorm cc * m, by positivity, AddSubgroup.subset_closure ⟨δ * D.host.φ₀ ((((Ideal.absNorm cc : 𝓞 D.host.K) : D.host.K) : D.host.E)), AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem cc, rfl⟩, b • Matrix.of (fun i j => (m : D.host.E) * (z i j / b)), Submodule.subset_span ⟨ …` and prove the remaining obligations. Introduce `x hx i _`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨_, hA i j⟩ : 𝓞 D.host.E) (hx j trivial)`. Use function extensionality and compare the values at `τ i j`. Establish `h1 : b * ((m : D.host.E) * (z i j / b)) = m * z i j` using `by field_simp`. Simplify using `only [pt, embV, tor0, Pi.smul_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, h1, map_mul, map_natCast, nsmul_eq_mul]`.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {cc : Ideal (𝓞 D.host.K)} (hc : cc ≠ ⊥) (δ : ℂ) {N N' : ℕ}
     (z : Matrix (Fin N') (Fin N) D.host.E) :
@@ -211,7 +209,7 @@ theorem exists_nsmul_mem {cc : Ideal (𝓞 D.host.K)} (hc : cc ≠ ⊥) (δ : �
     ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `D.host.conjE_apply (embT D τ) (γ j i)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_conj {a b : ℕ} (γ : Matrix (Fin a) (Fin b) D.host.E) (τ : D.what₂.Tau) :
     ((γ.map D.host.conj).transpose).map (embT D τ) = (γ.map (embT D τ)).conjTranspose := by
@@ -220,7 +218,7 @@ theorem emb_conj {a b : ℕ} (γ : Matrix (Fin a) (Fin b) D.host.E) (τ : D.what
   exact D.host.conjE_apply (embT D τ) (γ j i)
 
 /- English proof (translation)
-Simplify using `[Hf, Matrix.trace, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_eq_trace {T : Tor D} {N N' : ℕ} (z w : VC D N N') :
     Hf D T z w = (∑ τ, (Matrix.of (z τ) * (Matrix.of (w τ)).conjTranspose).trace) / (area T.abelian₂ : ℂ) := by
@@ -231,9 +229,9 @@ def subst {N N' : ℕ} (u : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ) (u' : 
   fun τ => ((u' τ).conjTranspose * Matrix.of (z τ) * u τ : Matrix _ _ ℂ)
 
 /- English proof (translation)
-Rewrite using `[Hf_eq_trace, Hf_eq_trace]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((u' τ).conjTranspose * Matrix.of (z τ) * u τ) * ((u' τ).conjTranspose * Matrix.of (w τ) * u τ).conjTranspose).trace = _`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (u τ), hu, Matrix.one_mul, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, hu', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hf_subst {T : Tor D} {N N' : ℕ} {u : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ}
     {u' : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ} (hu : ∀ τ, u τ * (u τ).conjTranspose = 1)
@@ -249,7 +247,7 @@ theorem Hf_subst {T : Tor D} {N N' : ℕ} {u : D.what₂.Tau → Matrix (Fin N) 
   simp only [Matrix.mul_assoc, hu', Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `((u' τ).conjTranspose * (Matrix.of (z τ) + Matrix.of (w τ)) * u τ : Matrix _ _ ℂ) = (u' τ).conjTranspose * Matrix.of (z τ) * u τ + (u' τ).conjTranspose * Matrix.of (w τ) * u τ`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_add {N N' : ℕ} (u : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ)
     (u' : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ) (z w : VC D N N') :
@@ -260,11 +258,11 @@ theorem subst_add {N N' : ℕ} (u : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ
   rw [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `hu : ∀ τ, γ.map (embT D τ) * (γ.map (embT D τ)).conjTranspose = 1` using `fun τ => by`. Rewrite using `[← emb_conj, ← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu' : ∀ τ, γ'.map (embT D τ) * (γ'.map (embT D τ)).conjTranspose = 1` using `fun τ => by`. Rewrite using `[← emb_conj, ← Matrix.map_mul, h', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hx : pt D (tor0 D cc δ) δ z = subst (fun τ => γ.map (embT D τ)) (fun τ => γ'.map (embT D τ)) (pt D (tor0 D cc δ) δ (γ' * z * (γ.map D.host.conj).transpose))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(δ • z.map (embT D τ) : Matrix _ _ ℂ) = (γ'.map (embT D τ)).conjTranspose * (δ • (γ' * z * (γ.map D.host.conj).transpose).map (embT D τ)) * γ.map (embT D τ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, emb_conj, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[mul_eq_one_comm.1 (hu τ), Matrix.mul_one, ← Matrix.mul_assoc, mul_eq_one_comm.1 (hu' τ), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `pt D (tor0 D cc δ) δ (γ' * z * (γ.map D.host.conj).transpose) = x at hx`. Rewrite using `[hx]`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `Wd D (tor0 D cc δ) _ G (subst (fun τ => γ.map (embT D τ)) (fun τ => γ'.map (embT D τ)) w) = wdPh D (tor0 D cc δ) x * (G (subst (fun τ => γ.map (embT D τ)) (fun τ => γ'.map (embT D τ)) (w + x)) * _)`. Simplify using `only [Wd, U, wdPh, qH, Hf_subst hu hu', subst_add]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem pull_Wd {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ} {γ : Matrix (Fin N) (Fin N) D.host.E}
     {γ' : Matrix (Fin N') (Fin N') D.host.E} (h : γ * (γ.map D.host.conj).transpose = 1)
@@ -292,21 +290,21 @@ theorem pull_Wd {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ} {γ : Matri
   simp only [Wd, U, wdPh, qH, Hf_subst hu hu', subst_add]
 
 /- English proof (translation)
-Introduce `D cc δ hC N N' e0 he0 hspan W γA γA' γ γ' a hγ hγ' h0 F hF`. Establish `hSD0 : ∀ N : ℕ, SD D (stdL D N)`. Introduce `N`. Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 1).2`. Take `⟨-, hW, hint, -⟩` from `GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hC N N' (La0 D (tor0 D cc δ) N N') (Or.inr ⟨_, _, hSD0 _, hSD0 _, rfl⟩)`. Establish `hfix : ∀ x ∈ La0 D (tor0 D cc δ) N N', Wd D (tor0 D cc δ) x e0 = e0`. Introduce `x hx`. Rewrite using `[hW x hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Conclude with `he0.2 x hx z`. Establish `heT : e0 ∈ TT D (tor0 D cc δ) N N'` using `⟨he0.1, 1, one_pos, fun x hx => by rw [one_nsmul]; exact hfix x hx⟩`. Establish `hT : ∀ z, Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) e0 ∈ TT D (tor0 D cc δ) N N'`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q, hQ, hz⟩` from `exists_nsmul_mem hC.1.1 δ z`. Use `⟨Wd_diff _ he0.1, Q, hQ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hint x hx _ hz`. Rewrite `hm` using `[Hf_nsmul_right, ← Hf_nsmul_left]`. Rewrite using `[Wd_comm _ _ m hm, hfix _ (nsmul_mem hx _)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `(GlobalTheory.NormSum.mem_ratG_intG D N).2.2.2.1 γA γ hγ`. Establish `hu'` using `(GlobalTheory.NormSum.mem_ratG_intG D N').2.2.2.1 γA' γ' hγ'`. Establish `hinv : (((γA : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = ((γ.map D.host.conj).transpose).map (inc D)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[show ((γA : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = γ.map (inc D) from hγ, ← Matrix.map_mul, hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ z, W.Om γA γA' (Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) e0) = a • pull D (tor0 D cc δ) γ γ' (Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) e0)`. Introduce `z`. Take `⟨m, -, hl⟩` from `W.lift γA γA' z e0 heT`. Rewrite using `[hl (γ' * z * (γ.map D.host.conj).transpose), pull_Wd hu hu', ← Wd_smul, h0]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, show ((γA' : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) = γ'.map (inc D) from hγ', Matrix.map_mul, Matrix.map_mul, sub_self, mul_zero]`. Both sides reduce to the same expression. Take `⟨k, r, z, rfl⟩` from `hspan F hF`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[(Om_sum W γA γA' Finset.univ _ _ fun i => hT (z i)).2]`. Use function extensionality and compare the values at `w`. Simplify using `only [key, pull, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `erw [Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_left_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_eq_pull_of_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), (∀ F ∈ TT D (tor0 D cc δ) N N', ∃ (k : ℕ) (r : Fin k → ℂ) (z : Fin k → Matrix (Fin N') (Fin N) D.host.E), F = ∑ i, r i • Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) e0) → ∀ (W : WeilO D cc δ N N' e0) (γA : GA D N) (γA' : GA D N') (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (a : ℂ), IsRat D (γA : GL (Fin N) (AE D)) γ → IsRat D (γA' : GL (Fin N') (AE D)) γ' → (W.Om γA γA' e0 = fun z => a * pull D (tor0 D cc δ) γ γ' e0 z) → ∀ F ∈ TT D (tor0 D cc δ) N N', W.Om γA γA' F = fun z => a * pull D (tor0 D cc δ) γ γ' F z := by
   intro D cc δ hC N N' e0 he0 hspan W γA γA' γ γ' a hγ hγ' h0 F hF

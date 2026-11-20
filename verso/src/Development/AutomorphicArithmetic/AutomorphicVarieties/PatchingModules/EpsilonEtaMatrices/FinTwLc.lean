@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hs : ∀ i j, ∀ x, ∀ᶠ y in nhds x, f y i j = f x i j` using `fun i j => (IsLocallyConstant.iff_eventually_eq _).1 (h i j)`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `hall : ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => hs i j x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `filter_upwards [hall] with y hy`. Use extensionality with `i j`. Conclude with `hy i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem finTw_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
@@ -26,19 +26,17 @@ private theorem finTw_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ �
   exact hy i j
 
 /- English proof (translation)
-Introduce `l _ L G0 n x k m hΦ`. Take `⟨_, _, hfinR, _, hlR, _, htR, _, _⟩` from `finAm l G0.frame n x m k.g`. Set `χ : G0.Γ →* x.A` to `(algebraMap ℤ_[l] x.A).toMonoidHom.comp ((Units.coeHom ℤ_[l]).comp G0.ε)`. Establish `hok` using `(ok1 l L G0 G0 (Glob.Hom.refl G0) n x k (x.Am m) χ).2.1`. Take `⟨rep, hrep⟩` from `adEx l G0.frame x.A (DD (x.Am m) k.g) n _ _ _ hok`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hlce, hLC⟩` from `lc1 l L G0 G0 (Glob.Hom.refl G0) n x k m`. Establish `hLCrep` using `hLC _ _ rep hlce hrep`. Use `haveI : Finite (DD (x.Am m) k.g) := hfinR`. Establish `hl : ∀ v : pairedDualFirstOrderDualMatrixSpace n x.A (x.Am m) k.g x.a, l • v = 0`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `[hlR]`. Take `⟨hfin, _⟩` from `finZ l x.A G0.Γ (pairedDualFirstOrderDualMatrixSpace n x.A (x.Am m) k.g x.a) rep hΦ hLCrep hl`. Establish `key : ∀ z ∈ TwZ k (x.Am m), ∃ y ∈ Zl rep, y G0.c = 0 ∧ ∀ g : G0.frame.G₀, (y (g : G0.Γ) : Matrix _ _ _) = z g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨h1, h2, h3, h4⟩` from `hz`. Use `(polZ l G0.frame x.A (DD (x.Am m) k.g) n _ _ _ rep hrep).1 z h1 ?_ h3 h4` and prove the remaining obligations. Apply `finTw_lc` to reduce the goal to its premises. Introduce `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `(adicLC G0.frame.G₀ (DD (x.Am m) k.g) _ m _ htR).1 (h2 i j)`. Set `φ : TwZ k (x.Am m) → Zl rep` to `fun z => ⟨(key z.1 z.2).choose, (key z.1 z.2).choose_spec.1⟩`. Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Establish `ha` using `(key a.1 a.2).choose_spec.2.2 g`. Establish `hb` using `(key b.1 b.2).choose_spec.2.2 g`. Establish `he : (key a.1 a.2).choose = (key b.1 b.2).choose` using `congrArg Subtype.val hab`. Rewrite using `[← ha, ← hb, he]`.
-
-Conclude with `Set.finite_coe_iff.mp (Finite.of_injective φ hinj)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.finTw :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (m : ℕ), PhiCond G0.Γ l → (TwZ k (x.Am m)).Finite := by

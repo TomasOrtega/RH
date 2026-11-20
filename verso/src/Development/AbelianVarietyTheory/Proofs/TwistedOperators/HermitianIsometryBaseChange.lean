@@ -17,7 +17,7 @@ variable {F : Type} [Field F] {k k' : Type} [CommRing k] [Algebra F k] [CommRing
   (ψ : k →ₐ[F] k')
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => simp [sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_map {A : Type} [Field A] [Algebra F A] (τ : A →ₐ[F] A) (z : k ⊗[F] A) :
     sigR k' τ (Algebra.TensorProduct.map ψ (AlgHom.id F A) z) =
@@ -28,7 +28,7 @@ theorem sigR_map {A : Type} [Field A] [Algebra F A] (τ : A →ₐ[F] A) (z : k 
   | tmul a e => simp [sigR]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show Algebra.TensorProduct.map ψ (AlgHom.id F A) (inclR k _) = inclR k' _`. Simplify using `[inclR]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapH_diagH' {A : Type} [Field A] [Algebra F A] (τ : A →ₐ[F] A) {m : ℕ} (G : Matrix (Fin m) (Fin m) A)
     (g : Formalism.UG.UJ (τ : A →+* A) G) : mapH τ G ψ (diagH τ G k g) = diagH τ G k' g := by
@@ -39,38 +39,38 @@ theorem mapH_diagH' {A : Type} [Field A] [Algebra F A] (τ : A →ₐ[F] A) {m :
 variable {A : Type} [CommRing A] {ι : Type} [Fintype ι] (s : A →+* A) (G : Matrix ι ι A)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (u u' v : ι → A) :
     Formalism.UG.hform s G (u + u') v = Formalism.UG.hform s G u v + Formalism.UG.hform s G u' v := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (u v v' : ι → A) :
     Formalism.UG.hform s G u (v + v') = Formalism.UG.hform s G u v + Formalism.UG.hform s G u v' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_left (v : ι → A) : Formalism.UG.hform s G 0 v = 0 := by simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_right (u : ι → A) : Formalism.UG.hform s G u 0 = 0 := by simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_left (c : A) (u v : ι → A) : Formalism.UG.hform s G (c • u) v = s c * Formalism.UG.hform s G u v := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right (c : A) (u v : ι → A) : Formalism.UG.hform s G u (c • v) = c * Formalism.UG.hform s G u v := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -97,18 +97,18 @@ def coordF : (k ⊗[F] Fld P) ≃ₗ[F] (Fin (dimL P) → k ⊗[F] E) :=
     TensorProduct.piRight F F k (fun _ : Fin (dimL P) => E)
 
 /- English proof (translation)
-Simplify using `[coordF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordF_tmul (a : k) (l : Fld P) (i : Fin (dimL P)) :
     coordF P k (a ⊗ₜ l) i = a ⊗ₜ (Module.finBasis E (Fld P)).repr l i := by
   simp [coordF]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c c' hc hc' => simp [add_smul, hc, hc']`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp [smul_add, hy, hy']`. Consider the case `tmul b l`. Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, IsScalarTower.coe_toAlgHom', Algebra.TensorProduct.tmul_mul_tmul, coordF_tmul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def, map_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordF_smul (c : k ⊗[F] E) (y : k ⊗[F] Fld P) : coordF P k (c • y) = c • coordF P k y := by
   induction c using TensorProduct.induction_on with
@@ -139,9 +139,9 @@ end Coord
 variable {k k' : Type} [CommRing k] [Algebra F k] [CommRing k'] [Algebra F k'] (ψ : k →ₐ[F] k')
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => funext i`. Simplify using the standard rewrite rules. Consider the case `add y y' hy hy' => funext i`. Simplify using `only [map_add, hy, hy', Pi.add_apply]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `tmul a l => funext i`. Simplify using `[coordF_tmul]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem coordF_map (y : k ⊗[F] Fld P) : coordF P k' (mapL P ψ y) = fun i => mapE ψ (coordF P k y i) := by
   induction y using TensorProduct.induction_on with
@@ -157,19 +157,19 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r 
 variable {k k' : Type} [CommRing k] [Algebra F k] [CommRing k'] [Algebra F k'] (ψ : k →ₐ[F] k') {n : ℕ}
 
 /- English proof (translation)
-Set `ρ` to `(coordE P k).symm ≪≫ₗ φ`. Set `A` to `LinearMap.toMatrix' ρ.toLinearMap`. Set `B` to `LinearMap.toMatrix' ρ.symm.toLinearMap`. Establish `hAB : A * B = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `hBA : B * A = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules. Set `f : k ⊗[F] E →+* k' ⊗[F] E` to `(mapE ψ).toRingHom`. Establish `hAB' : A.map f * B.map f = 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hBA' : B.map f * A.map f = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero f) (map_one f)]`. Set `ρ' : (Fin (dimL P) → k' ⊗[F] E) ≃ₗ[k' ⊗[F] E] (Fin n → k' ⊗[F] E)` to `LinearEquiv.ofLinear (Matrix.toLin' (A.map f)) (Matrix.toLin' (B.map f)) (by rw [← Matrix.toLin'_mul, hAB', Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, hBA', Matrix.toLin'_one])`. Establish `hA : ∀ v, A *ᵥ v = ρ v` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression. Use `⟨coordE P k' ≪≫ₗ ρ', fun y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (A.map f *ᵥ coordE P k' (mapL P ψ y)) i = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coordE_apply, coordF_map]`. Use `RingHom.map_mulVec f A (coordF P k y) i` as an intermediate fact. Rewrite `this` using `[hA]`. Use `this.symm.trans ?_` and prove the remaining obligations. Use `show f (φ ((coordE P k).symm (coordE P k y)) i) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_natural (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) :
     ∃ φ' : (k' ⊗[F] Fld P) ≃ₗ[k' ⊗[F] E] (Fin n → k' ⊗[F] E),
@@ -206,7 +206,7 @@ theorem exists_natural (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k �
   rw [LinearEquiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a l => simp [trBase]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem trBase_map (z : k ⊗[F] Fld P) : trBase P k' (mapL P ψ z) = mapE ψ (trBase P k z) := by
   induction z using TensorProduct.induction_on with
@@ -215,7 +215,7 @@ theorem trBase_map (z : k ⊗[F] Fld P) : trBase P k' (mapL P ψ z) = mapE ψ (t
   | tmul a l => simp [trBase]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`. Consider the case `tmul b l => simp [trBase, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem trBase_tmul_one_mul (a : k') (z : k' ⊗[F] Fld P) :
     trBase P k' ((a ⊗ₜ 1) * z) = (a ⊗ₜ 1) * trBase P k' z := by
@@ -225,7 +225,7 @@ theorem trBase_tmul_one_mul (a : k') (z : k' ⊗[F] Fld P) :
   | tmul b l => simp [trBase, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Simplify using `only [hx, ← trBase_map, map_mul]`. Rewrite using `[sigR_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hx_map (x y y' : k ⊗[F] Fld P) :
     hx P k' (mapL P ψ x) (mapL P ψ y) (mapL P ψ y') = mapE ψ (hx P k x y y') := by
@@ -233,7 +233,7 @@ theorem hx_map (x y y' : k ⊗[F] Fld P) :
   rw [sigR_map]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sigR_map]`. Use `congr 2`. Simplify using `[JR, inclR]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem map_hform (J : Matrix (Fin n) (Fin n) E) (u v : Fin n → k ⊗[F] E) :
     mapE ψ (Formalism.UG.hform (sigR k σ) (JR k J) u v) =
@@ -252,7 +252,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r 
 variable {k k' : Type} [CommRing k] [Algebra F k] [CommRing k'] [Algebra F k'] (ψ : k →ₐ[F] k') {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmul_eq_smul (a : k') (l : Fld P) :
     (a ⊗ₜ[F] l : k' ⊗[F] Fld P) = ((a ⊗ₜ[F] (1 : E) : k' ⊗[F] E)) • ((1 : k') ⊗ₜ[F] l) := by
@@ -260,17 +260,17 @@ theorem tmul_eq_smul (a : k') (l : Fld P) :
   simp
 
 /- English proof (translation)
-Establish `base : ∀ l l' : Fld P, Formalism.UG.hform (sigR k' σ) (JR k' J) (φ' ((1 : k') ⊗ₜ l')) (φ' ((1 : k') ⊗ₜ l)) = hx P k' (mapL P ψ x) ((1 : k') ⊗ₜ l) ((1 : k') ⊗ₜ l')`. Introduce `l l'`. Establish `e : ∀ m : Fld P, ((1 : k') ⊗ₜ[F] m : k' ⊗[F] Fld P) = mapL P ψ ((1 : k) ⊗ₜ m)` using `fun m => by simp`. Rewrite using `[e l, e l', hφ', hφ', ← map_hform, h, hx_map]`. Introduce `y y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [hx, hform_zero_right]`. Consider the case `add y₁ y₂ h₁ h₂`. Rewrite using `[map_add, hform_add_right, h₁, h₂]`. Simplify using `only [hx, add_mul, mul_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `tmul a l`. Proceed by induction on `y' using TensorProduct.induction_on with`. Consider the case `zero => simp [hx, hform_zero_left]`. Consider the case `add y₁ y₂ h₁ h₂`. Rewrite using `[map_add, hform_add_left, h₁, h₂]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hx, add_mul, mul_add, map_add]`. Consider the case `tmul a' l'`. Rewrite using `[tmul_eq_smul P a l, tmul_eq_smul P a' l', map_smul, map_smul, hform_smul_left, hform_smul_right, base]`. Simplify using `only [hx, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Establish `s1 : sigR k' σ (a' ⊗ₜ[F] (1 : E)) = a' ⊗ₜ 1` using `by simp [sigR]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[s1]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, map_one]`. Establish `s2 : sigR k' (star' P) (a' ⊗ₜ[F] (1 : Fld P)) = a' ⊗ₜ 1` using `by simp [sigR]`. Rewrite using `[RingHom.map_mul (sigR k' (star' P)), s2]`. Establish `e3 : mapL P ψ x * (a ⊗ₜ[F] 1 * 1 ⊗ₜ[F] l) * (a' ⊗ₜ[F] 1 * sigR k' (star' P) (1 ⊗ₜ[F] l')) = (a' ⊗ₜ[F] 1) * ((a ⊗ₜ[F] 1) * (mapL P ψ x * 1 ⊗ₜ[F] l * sigR k' (star' P) (1 ⊗ₜ[F] l')))` using `by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3, trBase_tmul_one_mul, trBase_tmul_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isIsom_map {J : Matrix (Fin n) (Fin n) E} {x : k ⊗[F] Fld P}
     {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ)
@@ -305,13 +305,13 @@ theorem isIsom_map {J : Matrix (Fin n) (Fin n) E} {x : k ⊗[F] Fld P}
       rw [e3, trBase_tmul_one_mul, trBase_tmul_one_mul]
 
 /- English proof (translation)
-Establish `ht : (torUnit (mapH (star' P) (one₁ P) ψ t)).1 = mapL P ψ (torUnit t).1`. Express the relevant statement in the definitionally equal form `Matrix.det ((mapH (star' P) (one₁ P) ψ t).1 : Matrix (Fin 1) (Fin 1) (k' ⊗[F] Fld P)) = (mapL P ψ : k ⊗[F] Fld P →+* k' ⊗[F] Fld P) (Matrix.det (t.1 : Matrix (Fin 1) (Fin 1) (k ⊗[F] Fld P)))`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show mulMat φ' (torUnit (mapH (star' P) (one₁ P) ψ t)).1 = (mulMat φ (torUnit t).1).map (mapE ψ).toRingHom`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Establish `hs : (Pi.single j 1 : Fin n → k' ⊗[F] E) = fun i => mapE ψ (φ (φ.symm (Pi.single j 1)) i)`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ← hφ', mulMat_mulVec, ht, ← map_mul, hφ']`. Use function extensionality and compare the values at `i`. Rewrite using `[← mulMat_mulVec φ, LinearEquiv.apply_symm_apply]`. Rewrite using `[hφ', LinearEquiv.apply_symm_apply]`. Conclude with `RingHom.map_mulVec (mapE (E := E) ψ).toRingHom (mulMat φ (torUnit t).1) (Pi.single j 1) i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torEmb_map {J : Matrix (Fin n) (Fin n) E} {x : k ⊗[F] Fld P} {x' : k' ⊗[F] Fld P}
     {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ)
@@ -343,11 +343,11 @@ end GlobalTheory.TrEll.BaseChg
 namespace GlobalTheory.TrEll.BaseChg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ r n P J _ k k' _ _ _ _ ψ x φ h`. Take `⟨φ', hφ'⟩` from `exists_natural P ψ φ`. Establish `hx : sigR k (star' P) x.1.1 = x.1.1` using `congrArg Units.val x.2`. Set `x' : plusUnits P k'` to `⟨Units.map (mapL P ψ).toMonoidHom x.1, by show Units.map (sigR k' (star' P)).toMonoidHom (Units.map (mapL P ψ).toMonoidHom x.1) = Units.map (mapL P ψ).toMonoidHom x.1`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show sigR k' (star' P) (mapL P ψ x.1.1) = mapL P ψ x.1.1`. Rewrite using `[sigR_map, hx]⟩`. Establish `h' : IsIsom P k' J x'.1.1 φ'` using `isIsom_map P ψ h hφ'`. Establish `ht : ∀ t, torEmb h' (mapH (star' P) (one₁ P) ψ t) = mapH σ J ψ (torEmb h t)` using `torEmb_map P ψ h h' hφ'`. Use `⟨x', φ', h', rfl, ?_, ht⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show torEmb h' (diagH (star' P) (one₁ P) k' (alphaRat P)) = mapH σ J ψ (torEmb h (diagH (star' P) (one₁ P) k (alphaRat P)))`. Rewrite using `[← mapH_diagH' ψ, ht]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isom_baseChange : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r n : ℕ) (P : PPol σ r) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (k k' : Type) [CommRing k] [Algebra F k] [CommRing k'] [Algebra F k'] (ψ : k →ₐ[F] k') (x : plusUnits P k) (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) (h : IsIsom P k J x.1.1 φ), ∃ (x' : plusUnits P k') (φ' : (k' ⊗[F] Fld P) ≃ₗ[k' ⊗[F] E] (Fin n → k' ⊗[F] E)) (h' : IsIsom P k' J x'.1.1 φ'), x'.1.1 = Algebra.TensorProduct.map ψ (AlgHom.id F (Fld P)) x.1.1 ∧ gam h' = mapH σ J ψ (gam h) ∧ ∀ t, torEmb h' (mapH (star' P) (one₁ P) ψ t) = mapH σ J ψ (torEmb h t) := by
   intro F E _ _ _ _ _ σ _ r n P J _ k k' _ _ _ _ ψ x φ h

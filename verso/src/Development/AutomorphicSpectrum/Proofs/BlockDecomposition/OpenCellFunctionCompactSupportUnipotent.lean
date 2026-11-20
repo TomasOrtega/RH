@@ -16,9 +16,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.Rodier.OpenSupp
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `hT` using `f.2`. Use `Filter.mem_of_superset ((IsOpen.preimage (f := fun y => g⁻¹ * y) (continuous_const.mul continuous_id) hT).mem_nhds ?_) ?_` and prove the remaining obligations. Use `show _ = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `y hy`. Establish `h1` using `congrFun (congrArg Subtype.val hy) g`. Establish `h2 : f.1.1 (g * (g⁻¹ * y)) = f.1.1 g` using `h1`. Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_ind {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W]
@@ -37,7 +37,7 @@ theorem isLocallyConstant_ind {k : Type} [Field k] [ValuativeRel k] [Topological
     simpa using h2
 
 /- English proof (translation)
-Introduce `h0`. Apply `hg` to reduce the goal to its premises. Use `parInd_law (stdBlocks d hd) ρ f (⟨p, hp⟩⁻¹) (p * g)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, smul_zero]`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem support_stable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W]
@@ -51,9 +51,9 @@ theorem support_stable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
   simpa using this
 
 /- English proof (translation)
-Take `⟨p, hp, n, hn, rfl⟩` from `hg`. Take `⟨a, ha, u, hu, rfl⟩` from `(GlobalTheory.CompanionTheory.Rodier.unipB_eq_levi_mul_rad k h N d hd).1 n hn`. Take `⟨m, hm⟩ : (MulAut.conj (pm k (wOpen d hd))).toMonoidHom a ∈ (leviEmb k (stdBlocks d hd)).range` from `ha.2`. Establish `hc : pm k (wOpen d hd) * a * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m`. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨p * leviEmb k (stdBlocks d hd) m, mul_mem hp (leviEmb_mem_parab k _ m), u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use `group`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (g : GL (Fin N) k)
@@ -68,11 +68,11 @@ theorem cell_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   rw [← hc]; group
 
 /- English proof (translation)
-Use `⟨⋃ l ∈ (L : Set G), (fun x => l⁻¹ * x) ⁻¹' O₀, isOpen_biUnion fun l _ => hO.preimage (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨l, hl, hx⟩, hxU⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: l⁻¹ * x ∈ (L₀ : Set G)`. Rewrite using `[← hOU]`. Conclude with `⟨hx, mul_mem (inv_mem (hL hl)) hxU⟩`. Establish `h2` using `mul_mem hl (h0 this)`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Establish `h1 : (1 : G) ∈ (L₀ : Set G)` using `one_mem L₀`. Rewrite `h1` using `[← hOU]`. Conclude with `⟨⟨x, hx, by simpa using h1.1⟩, hL hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_open_of_le {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] (U L L₀ : Subgroup G)
     (hL : L ≤ U) (h0 : L₀ ≤ L) (O₀ : Set G) (hO : IsOpen O₀) (hOU : O₀ ∩ (U : Set G) = L₀) :
@@ -98,23 +98,19 @@ end GlobalTheory.CompanionTheory.Rodier.OpenSupp
 open GlobalTheory.CompanionTheory.Rodier.OpenSupp in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N d hd W _ _ ρ hρ f hf`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: LocallyCompactSpace (GL (Fin N) k)` using `GlobalTheory.SplitFlip.locallyCompact_GL`. Use `set w := pm k (wOpen d hd) with hw`. Use `set U := unipU k d hd with hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := parab k (stdBlocks d hd) with hP`. Establish `hUB : U ≤ unipB k (Fin N)` using `inf_le_left`. Establish `hUc : IsClosed (U : Set (GL (Fin N) k))` using `(GlobalTheory.CompanionTheory.Rodier.unipU_open_cell k h N d hd).2.2`. Take `⟨Lj, hmono, hcpt, hle, hexh⟩` from `GlobalTheory.CompanionTheory.UnipExhaust.exists_monotone_compact_exhaustion k N U hUB hUc`. Establish `hlc` using `isLocallyConstant_ind d hd ρ f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : Set (GL (Fin N) k)` to `{g | f.1.1 g ≠ 0}`. Establish `hSo : IsOpen S` using `hlc ({0}ᶜ)`. Establish `hSc : IsClosed S`. Rewrite using `[← isOpen_compl_iff]`. Establish `: Sᶜ = (fun g => f.1.1 g) ⁻¹' {0}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `g`. Simplify using `[S]`. Rewrite using `[this]`. Conclude with `hlc {0}`. Establish `hcov : ∀ g ∈ S, ∃ p ∈ P, ∃ j, ∃ n ∈ Lj j, g = p * w * n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `g hg`. Take `⟨p, hp, u, hu, rfl⟩` from `cell_eq d hd g (hf g hg)`. Take `⟨j, hj⟩` from `hexh u hu`. Conclude with `⟨p, hp, j, u, hj, rfl⟩`. Establish `hSeq : S ∩ {g | ∃ p ∈ P, ∃ j, ∃ n ∈ Lj j, g = p * w * n} = S` using `Set.inter_eq_left.2 hcov`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `GlobalTheory.CompanionTheory.BaireCoset.baire_double_coset P (GlobalTheory.WhitHered.CellLoc.isClosed_parab _) (GlobalTheory.SplitWeil.KO k (Fin N) : Set (GL (Fin N) k)) GlobalTheory.SplitFlip.isCompact_KO (fun g => by`. Take `⟨p, c, hc, e⟩` from `GlobalTheory.SmGL.MultiIrr.exists_parab_mul (stdBlocks d hd) g`. Conclude with `⟨p, p.2, c, hc, e⟩) Lj hmono hcpt w S hSo`. Use the proof step `(fun p hp g hg => support_stable d hd ρ f p hp g hg) (by rw [hSeq]; exact hSc)`. Take `⟨L₀, hL₀U, hL₀c, ⟨O₀, hO₀, hO₀U⟩, -⟩` from `GlobalTheory.T.exists_bump_section_on_compact_unipotent k (1 : AddChar k Circle) (by simpa using (continuous_one : Continuous (1 : k → Circle))) h N d hd ρ hρ 0`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U₀, hU₀c, hU₀⟩` from `GlobalTheory.UnipCptSub.exists_compact_subgroup_of_isCompact ((L₀ : Set (GL (Fin N) k)) ∪ (Lj j : Set (GL (Fin N) k))) (hL₀c.union (hcpt j)) (by`. Introduce and unpack `x (hx | hx)`. Conclude with `hUB (hL₀U hx)`. Conclude with `hUB (hle j hx))`. Use `⟨U₀ ⊓ U, inf_le_right, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `hU₀c.inter_right hUc`. Conclude with `exists_open_of_le U (U₀ ⊓ U) L₀ inf_le_right (fun x hx => ⟨hU₀ (Or.inl hx), hL₀U hx⟩) O₀ hO₀ hO₀U`. Introduce `g hg`. Take `⟨p, hp, n, hn, e⟩` from `hj g hg (hcov g hg)`.
-
-Conclude with `⟨p, hp, n, ⟨hU₀ (Or.inr hn), hle j hn⟩, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Rodier.exists_compact_open_support :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W), IsSmooth ρ → ∀ f ∈ openFns d hd ρ, ∃ L : Subgroup (GL (Fin N) k), L ≤ unipU k d hd ∧ IsCompact (L : Set (GL (Fin N) k)) ∧ (∃ O : Set (GL (Fin N) k), IsOpen O ∧ O ∩ (unipU k d hd : Set (GL (Fin N) k)) = L) ∧ ∀ g, f.1.1 g ≠ 0 → ∃ p ∈ parab k (stdBlocks d hd), ∃ u ∈ L, g = p * pm k (wOpen d hd) * u := by

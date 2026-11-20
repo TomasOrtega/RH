@@ -11,9 +11,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Set `S : Submodule ℂ H` to `(LinearMap.range J.toLinearMap ⊔ LinearMap.range J'.toLinearMap)ᗮ`. Use `⟨Sᗮ.starProjection, isSelfAdjoint_starProjection _, (Sᗮ.isIdempotentElem_starProjection).eq, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.starProjection_apply_eq_zero_iff, Submodule.orthogonal_orthogonal]`. Simplify using `only [S]`. Rewrite using `[← Submodule.inf_orthogonal, Submodule.mem_inf, Submodule.mem_orthogonal, Submodule.mem_orthogonal]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun u => h1 _ ⟨u, rfl⟩, fun v => h2 _ ⟨v, rfl⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rintro _ ⟨u, rfl⟩; exact h1 u, by rintro _ ⟨v, rfl⟩; exact h2 v⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem exists_orthogonal_projection {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
@@ -31,7 +31,7 @@ private theorem exists_orthogonal_projection {H V W : Type} [NormedAddCommGroup 
     exact ⟨by rintro _ ⟨u, rfl⟩; exact h1 u, by rintro _ ⟨v, rfl⟩; exact h2 v⟩
 
 /- English proof (translation)
-Take `⟨h1, -, -, -, -, -, -, h2, -⟩` from `UpperTheory.V.Z.IntegralApplyAeEq.cutLaws (V := V) (Ioi T) (Ioi T) measurableSet_Ioi measurableSet_Ioi`. Rewrite `h1` using `[inter_self]`. Use `filter_upwards [(h2 _).1 (DFunLike.congr_fun h1 u)] with x hx hT`. Conclude with `hx (not_lt.2 hT)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cutZero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V]
     (T : ℝ) (u : L V) : ∀ᵐ x : ℝ, x ≤ T → UpperTheory.V.Z.IntegralApplyAeEq.cut V (Ioi T) u x = 0 := by
@@ -41,9 +41,7 @@ private theorem cutZero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ
   exact hx (not_lt.2 hT)
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A'`. Establish `hc` using `(pairFacts K μ μ₂ τ₁ τ₂ hp D d d' A A').2`. Use `⟨exists_orthogonal_projection _ _, fun T hT => ⟨_, (UpperTheory.V.Z.IntegralApplyAeEq.truncEq A.J A'.J T _ fun u v => ?_).2 rfl⟩⟩` and prove the remaining obligations. Use `hc T _ _ (cutZero T u) ?_` and prove the remaining obligations. Use `filter_upwards [cutZero T v] with x hx hx'`.
-
-Conclude with `hx (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.projEx :
     ProjExC := by

@@ -6,9 +6,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on generalizing x with`. Consider the case `C a`. Simplify using `[Polynomial.aeval_C, Module.algebraMap_end_apply, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `add p r hp hr => simp only [map_add, LinearMap.add_apply, hp, hr, Matrix.add_mulVec]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← _root_.mul_assoc, map_mul (aeval f) (C a * X ^ n) X, map_mul (aeval H) (C a * X ^ n) X, aeval_X, aeval_X, Module.End.mul_apply, ih, h, Matrix.mulVec_mulVec]`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem evI_mulVec {L : Type} [AddCommGroup L] {g : ℕ} (P : L →+ (Fin g → ℂ)) (f : L →ₗ[ℤ] L)
     (H : Matrix (Fin g) (Fin g) ℂ) (h : ∀ x, P (f x) = H *ᵥ P x) (q : ℤ[X]) (x : L) :
@@ -24,11 +24,11 @@ private theorem evI_mulVec {L : Type} [AddCommGroup L] {g : ℕ} (P : L →+ (Fi
       aeval_X, aeval_X, Module.End.mul_apply, ih, h, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Rewrite using `[Polynomial.aeval_C]`. Simplify using `only [Polynomial.aeval_C, algebraMap_int_eq, eq_intCast, map_intCast]`. Rewrite using `[Matrix.diagonal_intCast, Int.cast_comm]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p r hp hr => simp only [map_add, add_mul, hp, hr, ← Matrix.diagonal_add, mul_add, Pi.add_def]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← _root_.mul_assoc, map_mul (aeval H) (C a * X ^ n) X, aeval_X, _root_.mul_assoc, h, ← _root_.mul_assoc, ih, _root_.mul_assoc, Matrix.diagonal_mul_diagonal]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mul (aeval (ev i)) (C a * X ^ n) X, aeval_X]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem evI_diag {g : ℕ} (H Sb : Matrix (Fin g) (Fin g) ℂ) (ev : Fin g → ℂ)
     (h : H * Sb = Sb * Matrix.diagonal ev) (q : ℤ[X]) :
@@ -47,27 +47,25 @@ private theorem evI_diag {g : ℕ} (H Sb : Matrix (Fin g) (Fin g) ℂ) (ev : Fin
     rw [map_mul (aeval (ev i)) (C a * X ^ n) X, aeval_X]
 
 /- English proof (translation)
-Introduce `F _ _ O _ bar g ρ a D P₀ hP ga H hH Sb ty ev hD i x`. Use `haveI := D.fin`. Use `haveI := D.free`. Set `f : D.La →ₗ[ℤ] D.La` to `ga.toAddMonoidHom.toIntLinearMap`. Establish `hf : ∀ y, P₀ (f y) = H *ᵥ P₀ y` using `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ y, aeval H f.charpoly *ᵥ P₀ y = 0` using `fun y => by`. Rewrite using `[← evI_mulVec P₀ f H hf f.charpoly y, LinearMap.aeval_self_charpoly]`. Simplify using the standard rewrite rules. Establish `hall : ∀ v, aeval H f.charpoly *ᵥ v = 0`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : v ∈ Submodule.span ℝ (Set.range P₀)`. Rewrite using `[hP.2.2.2.1]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem z hz`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `hz`. Conclude with `hv y`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw => rw [Matrix.mulVec_add, hu, hw, add_zero]`. Consider the case `smul r u _ hu => rw [Matrix.mulVec_smul, hu, smul_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hq0 : aeval H f.charpoly = 0`. Use extensionality with `j k`. Establish `hjk` using `congrFun (hall (Pi.single k 1)) j`. Simplify `hjk` using `[Matrix.mulVec_single]`. Establish `hdiag` using `evI_diag H Sb ev hD.2.2 f.charpoly`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdiag` using `[hq0, zero_mul]`. Establish `hinv : IsUnit Sb` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hD.1)`. Establish `hd : Matrix.diagonal (fun j => aeval (ev j) f.charpoly) = 0` using `hinv.mul_left_cancel (by rw [← hdiag, mul_zero])`. Establish `hev0 : aeval (ev i) f.charpoly = 0`. Establish `hii` using `congrFun (congrFun hd i) i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hii`. Establish `hint_ev : IsIntegral ℤ (ev i)` using `⟨f.charpoly, LinearMap.charpoly_monic f, by rw [← aeval_def]; exact hev0⟩`. Establish `hint_t : IsIntegral ℤ (ty i (x : F))` using `(NumberField.RingOfIntegers.isIntegral_coe x).map (ty i).toIntAlgHom`. Introduce `hzero`. Establish `h2 : ty i ((2 * x : 𝓞 F) : F) = 2 * ty i (x : F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Simplify using `[map_mul, map_ofNat]`. Rewrite `hzero` using `[h2]`. Establish `hprod : algebraMap ℚ ℂ (1 / 2) = ty i (x : F) * ev i`. Simplify using `only [map_div₀, map_one, map_ofNat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(1 / 2 : ℂ) * hzero`. Establish `hhalf : IsIntegral ℤ (algebraMap ℚ ℂ (1 / 2))`. Rewrite using `[hprod]`. Conclude with `hint_t.mul hint_ev`. Rewrite `hhalf` using `[isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hhalf`. Establish `h2n : ((2 * n : ℤ) : ℚ) = 1`. Use `push_cast`. Rewrite using `[show (n : ℚ) = algebraMap ℤ ℚ n from rfl, hn]`. Evaluate the numerical expressions.
-
-Establish `h2n' : 2 * n = 1` using `by exact_mod_cast h2n`. Use linear arithmetic over natural numbers and integers.
+Evaluate the numerical expressions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.evIntegral_of :
     UpperTheory.Gal.W2.EvIntegral := by

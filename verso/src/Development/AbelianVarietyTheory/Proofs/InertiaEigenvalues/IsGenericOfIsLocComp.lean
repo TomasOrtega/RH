@@ -24,7 +24,7 @@ namespace GlobalTheory.CuspRep.Generic
 variable {E : Type} [Field E] [NumberField E] {a : ℕ} {ψ : AddChar (Ad E) ℂ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_unipotentColumnWhittakerTransform E a ψ hψ m f hf left := GlobalTheory.T.unipotentColumnWhittakerTransform_mirabolic_invariant E a ψ hψ m f h hf law k hk y g := by rcases Nat.lt_or_ge (m + 1) k with h1 | h1 · exact GlobalTheory.T.columnWhittakerTransform …`.
+A detailed English derivation is pending.
 -/
 theorem good_colT (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (h : m + 1 < a) (hf : Good ψ (m + 1) f) :
     Good ψ m (colT ψ (m + 1) f) where
@@ -38,7 +38,7 @@ theorem good_colT (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (h : m + 1 < 
   van := GlobalTheory.T.quotientAverage_unipotentBlock_columnTransform_eq_zero E a ψ hψ m f h hf
 
 /- English proof (translation)
-Use `hf.left _ (fun i j h => isMir_blkU c i j ?_) g` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hl_of_good {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) {k : ℕ} (hk : k ≤ m) (c : UnipotentBlockColumnIndex a k k → E) (g : GA E a) :
     f (ratGL E a (blkU c) * g) = f g := by
@@ -46,7 +46,7 @@ theorem hl_of_good {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) {k : ℕ} (
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `GlobalTheory.T.quotientAverage_add_of_periodic _ (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (isCoLat_ratV E _) _ _ (per_coef hψ (eLast a (m + 1)) hf.cont (hl_of_good hf le_rfl) g) (per_coef hψ (eLast a (m + 1)) hf'.cont (hl_of_good hf' le_rfl) g)` as an intermediate fact. Simplify using `only [colT, coefF, mul_add]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colT_add (hψ : StdPsi ψ) {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ (m + 1) f) (hf' : Good ψ (m + 1) f') :
     colT ψ (m + 1) (fun g => f g + f' g) = fun g => colT ψ (m + 1) f g + colT ψ (m + 1) f' g := by
@@ -58,7 +58,7 @@ theorem colT_add (hψ : StdPsi ψ) {m : ℕ} {f f' : GA E a → ℂ} (hf : Good 
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [colT, coefF]`. Rewrite using `[← avg_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,9 +72,9 @@ theorem colT_smul (m : ℕ) (c : ℂ) (f : GA E a → ℂ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ f hf => ⟨hf, id⟩`. Consider the case `succ m ih`. Introduce `h f hf`. Establish `h1 : m + 1 < a` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨h2, h3⟩` from `ih (Or.inl (by omega)) (good_colT hψ h1 hf)`. Conclude with `⟨h2, fun h0 => h3 (GlobalTheory.T.unipotentColumnWhittakerTransform_ne_zero E a ψ hψ m f h1 hf h0)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem whit_good (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f : GA E a → ℂ}, Good ψ m f →
     Good ψ 0 (whit ψ m f) ∧ (f ≠ 0 → whit ψ m f ≠ 0) := by
@@ -87,9 +87,9 @@ theorem whit_good (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f : G
     exact ⟨h2, fun h0 => h3 (GlobalTheory.T.unipotentColumnWhittakerTransform_ne_zero E a ψ hψ m f h1 hf h0)⟩
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ f f' _ _ => rfl`. Consider the case `succ m ih`. Introduce `h f f' hf hf'`. Establish `h1 : m + 1 < a` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[whit_succ, whit_succ, whit_succ, colT_add hψ hf hf']`. Conclude with `ih (Or.inl (by omega)) (good_colT hψ h1 hf) (good_colT hψ h1 hf')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_add (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f f' : GA E a → ℂ}, Good ψ m f → Good ψ m f' →
     whit ψ m (fun g => f g + f' g) = fun g => whit ψ m f g + whit ψ m f' g := by
@@ -102,7 +102,7 @@ theorem whit_add (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f f' :
     exact ih (Or.inl (by omega)) (good_colT hψ h1 hf) (good_colT hψ h1 hf')
 
 /- English proof (translation)
-Proceed by induction on `m generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [whit_succ, whit_succ, colT_smul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem whit_smul (m : ℕ) (c : ℂ) (f : GA E a → ℂ) : whit ψ m (fun g => c * f g) = fun g => c * whit ψ m f g := by
   induction m generalizing f with
@@ -110,9 +110,9 @@ theorem whit_smul (m : ℕ) (c : ℂ) (f : GA E a → ℂ) : whit ψ m (fun g =>
   | succ m ih => rw [whit_succ, whit_succ, colT_smul, ih]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing f g with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[whit_succ, whit_succ, ← ih]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [colT, coefF, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem whit_rt (m : ℕ) (f : GA E a → ℂ) (h g : GA E a) : whit ψ m (fun x => f (x * h)) g = whit ψ m f (g * h) := by
   induction m generalizing f g with
@@ -142,25 +142,21 @@ theorem coe_locPsi (hψ : StdPsi ψ) (w : HeightOneSpectrum (𝓞 E)) (y : w.adi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ a P w σ ⟨f, hf0, hf⟩`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_standardAdelicAddChar E`. Establish `hg : ∀ v, Good ψ (a - 1) (f v).1.1` using `fun v => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ (f v).1 (P.cusp _ (f v).2)`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf0 (LinearMap.ext h)`. Establish `hv1 : (f v₀).1.1 ≠ 0` using `fun h => hv₀ (Subtype.ext (Subtype.ext h))`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 ((whit_good hψ (a - 1) h0 (hg v₀)).2 hv1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, gw, e, hc⟩` from `GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w g₀`. Establish `hrt : ∀ u v x, whit ψ (a - 1) (f (σ.ρ u v)).1.1 x = whit ψ (a - 1) (f v).1.1 (x * finGL E a (locGL E a w u))` using `fun u v x => by`. Rewrite using `[hf u v]`. Conclude with `whit_rt _ _ _ _`. Set `l : σ.V →ₗ[ℂ] ℂ` to `{ toFun := fun v => whit ψ (a - 1) (f v).1.1 h map_add' := fun v v' => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add f]`. Conclude with `congrFun (whit_add hψ (a - 1) h0 (hg v) (hg v')) h`. Use the proof step `map_smul' := fun c v => by`. Rewrite using `[map_smul f]`. Conclude with `congrFun (whit_smul (a - 1) c (f v).1.1) h }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hl : ∀ v, l v = whit ψ (a - 1) (f v).1.1 h` using `fun _ => rfl`. Establish `hne : l (σ.ρ gw v₀) ≠ 0`. Rewrite using `[hl, hrt, ← e]`. Conclude with `hg₀`. Establish `hlaw : ∀ (u : GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin a)) v, l (σ.ρ u v) = (locPsi hψ w (∑ p : Fin a × Fin a with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin a) (w.adicCompletion E)).val p.1 p.2) : ℂ) * l v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `u v`. Take `⟨u1, u2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 u.2`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E a w u u1 u2`. Establish `hlw` using `(whit_good hψ (a - 1) h0 (hg v)).1.law`. Use `GlobalTheory.T.whittakerLaw_upperTriangularUnipotent_adelic E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hl, hrt, hc, this, t3]`. Both sides reduce to the same expression. Use `⟨locPsi hψ w, ?_, fun h1 => ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.subtype_mk (hψ.cont.comp ?_) _` and prove the remaining obligations. Conclude with `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E)).comp (CuspSub.continuous_sLoc w)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy⟩` from `hψ.loc w`. Apply `hy` to reduce the goal to its premises. Use `congrArg (fun c : Circle => (c : ℂ)) (DFunLike.congr_fun h1 y)` as an intermediate fact. Simplify `this` using `[coe_locPsi]`. Use `Submodule.Quotient.nontrivial_iff.2 fun htop => hne ?_` and prove the remaining obligations.
-
-Establish `hle : GlobalTheory.PRep.twKer σ.ρ (GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin a)) (GlobalTheory.LocGL.whitChar (locPsi hψ w) a) ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, hlaw, smul_eq_mul]`. Conclude with `sub_eq_zero.2 rfl`.
-
-Conclude with `hle (htop ▸ Submodule.mem_top)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGeneric_of_isLocComp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (P : CuspSub E a)
     (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), P.IsLocComp w σ →

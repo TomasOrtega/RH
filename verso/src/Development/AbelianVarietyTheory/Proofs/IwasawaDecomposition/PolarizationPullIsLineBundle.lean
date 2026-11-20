@@ -16,13 +16,13 @@ def GermCoc (L : LB X) (f : Y' ⟶ X) (y : Y') : Prop :=
     gm f y _ (L.g i j) * gm f y _ (L.g j k) = gm f y _ (L.g i k)
 
 /- English proof (translation)
-Introduce `_ _ _ hi hj hk` and use `gm_cocycle hL f y hi hj hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem germCoc_of_isLB {L : LB X} (hL : L.IsLB) (f : Y' ⟶ X) (y : Y') : GermCoc L f y :=
   fun _ _ _ hi hj hk => gm_cocycle hL f y hi hj hk
 
 /- English proof (translation)
-Introduce `i j k hi hj hk`. Use `show gm f y _ (L.g i j)⁻¹ * gm f y _ (L.g j k)⁻¹ = gm f y _ (L.g i k)⁻¹`. Rewrite using `[map_inv, map_inv, map_inv, ← h i j k hi hj hk, mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germCoc_dual {L : LB X} {f : Y' ⟶ X} {y : Y'} (h : GermCoc L f y) : GermCoc (CechPic.dual L) f y := by
   intro i j k hi hj hk
@@ -30,7 +30,7 @@ theorem germCoc_dual {L : LB X} {f : Y' ⟶ X} {y : Y'} (h : GermCoc L f y) : Ge
   rw [map_inv, map_inv, map_inv, ← h i j k hi hj hk, mul_inv]
 
 /- English proof (translation)
-Introduce `p q r hp hq hr`. Rewrite using `[CechPic.gm_tens A B f y p q hp hq, CechPic.gm_tens A B f y q r hq hr, CechPic.gm_tens A B f y p r hp hr, ← hA _ _ _ hp.1 hq.1 hr.1, ← hB _ _ _ hp.2 hq.2 hr.2, mul_mul_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem germCoc_tens {A B : LB X} {f : Y' ⟶ X} {y : Y'} (hA : GermCoc A f y) (hB : GermCoc B f y) :
     GermCoc (CechPic.tens A B) f y := by
@@ -39,7 +39,7 @@ theorem germCoc_tens {A B : LB X} {f : Y' ⟶ X} {y : Y'} (hA : GermCoc A f y) (
     ← hA _ _ _ hp.1 hq.1 hr.1, ← hB _ _ _ hp.2 hq.2 hr.2, mul_mul_mul_comm]
 
 /- English proof (translation)
-Introduce `i j k hi hj hk`. Use `show gm f y (LB.wchart L φ i ⊓ LB.wchart L φ j) _ * gm f y (LB.wchart L φ j ⊓ LB.wchart L φ k) _ = gm f y (LB.wchart L φ i ⊓ LB.wchart L φ k) _`. Rewrite using `[gm_linComb L φ ε f y i j hi hj, gm_linComb L φ ε f y j k hj hk, gm_linComb L φ ε f y i k hi hk, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, h a _ _ _ (Set.mem_iInter.1 hi a) (Set.mem_iInter.1 hj a) (Set.mem_iInter.1 hk a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germCoc_linComb (L : LB X) {K : Type} [Fintype K] (φ : K → (Y'' ⟶ X)) (ε : K → ℤ) {f : Y' ⟶ Y''} {y : Y'}
     (h : ∀ k, GermCoc L (f ≫ φ k) y) : GermCoc (LB.LinComb L φ ε) f y := by
@@ -57,7 +57,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
 /- English proof (translation)
-Use `Units.ext (ext_ev fun S _ z hz => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `((congrArg₂ (· * ·) (ev_res z _ hz _ _) (ev_res z _ hz _ _)).trans (ev_detChg_mul M M' M'' z (le_preimage_mono inf_le_left hz) (le_preimage_mono (le_inf (inf_le_left.trans inf_le_right) inf_le_right) hz) (le_preimage_mono (le_inf (inf_le_left.trans inf_le_left) inf_le_right) hz)) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detChg_cocycle (M M' M'' : MChart Y) :
     res (inf_le_left : M.U ⊓ M'.U ⊓ M''.U ≤ M.U ⊓ M'.U) (detChg M M') *
@@ -71,7 +71,7 @@ theorem detChg_cocycle (M M' M'' : MChart Y) :
       (le_preimage_mono (le_inf (inf_le_left.trans inf_le_left) inf_le_right) hz))).trans (ev_res z _ hz _ _).symm
 
 /- English proof (translation)
-Introduce `M M' M'' hi hj hk`. Establish `hm : f y ∈ M.U ⊓ M'.U ⊓ M''.U` using `⟨⟨hi, hj⟩, hk⟩`. Establish `e` using `congrArg (gm f y _) (detChg_cocycle M M' M'')`. Rewrite `e` using `[map_mul, gm_res f y _ hm, gm_res f y _ hm, gm_res f y _ hm]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germCoc_detLie (f : Y' ⟶ Y.X) (y : Y') : GermCoc (detLie Y) f y := by
   intro M M' M'' hi hj hk
@@ -81,9 +81,9 @@ theorem germCoc_detLie (f : Y' ⟶ Y.X) (y : Y') : GermCoc (detLie Y) f y := by
   exact e
 
 /- English proof (translation)
-Establish `hG : ∀ (f : X' ⟶ Y.X) (y : X'), GermCoc (polOf Y m DY) f y` using `fun f y => germCoc_tens (germCoc_linComb _ _ _ fun _ => germCoc_dual (germCoc_detLie _ _)) (germCoc_dual (germCoc_of_isLB DY.isLB_lb _ _))`. Use `⟨top_le_iff.1 fun y _ => ?_, fun J => unit_ext fun y hy => ?_, fun I J K => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hF y`. Take `⟨b, hb⟩` from `exists_chart DY.isLB_lb (F y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => ((fun _ => M), b), Set.mem_iInter.2 fun _ => ⟨Set.mem_iInter.2 fun _ => hM, hb⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_res (𝟙 X') y _ hy, map_one, gm_pull_g _ F (𝟙 X') y J J hy hy]`. Establish `hJ` using `Set.mem_iInter.1 hy PUnit.unit`. Conclude with `mul_eq_left.1 (hG _ y _ _ _ hJ hJ hJ)`. Rewrite using `[map_mul, gm_res (𝟙 X') y _ hy, gm_res (𝟙 X') y _ hy, gm_res (𝟙 X') y _ hy, gm_pull_g _ F (𝟙 X') y I J hy.1.1 hy.1.2, gm_pull_g _ F (𝟙 X') y J K hy.1.2 hy.2, gm_pull_g _ F (𝟙 X') y I K hy.1.1 hy.2]`. Conclude with `hG _ y _ _ _ (Set.mem_iInter.1 hy.1.1 PUnit.unit) (Set.mem_iInter.1 hy.1.2 PUnit.unit) (Set.mem_iInter.1 hy.2 PUnit.unit)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLB_pull_polOf (Y : Model Xo c β) (m : ℕ) (DY : EffCartierData Y.X) {X' : Scheme.{0}} (F : X' ⟶ Y.X)
     (hF : ∀ y : X', ∃ M : MChart Y, F y ∈ M.U) : ((polOf Y m DY).pull F).IsLB := by

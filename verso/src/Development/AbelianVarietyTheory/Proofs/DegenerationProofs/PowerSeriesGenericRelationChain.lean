@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ ρ Gen hs ht hg`. Establish `h1 : ∀ m n, Gen m n → ∀ z w : PowerSeries k, z.order = (m : ℕ∞) → w.order = (m : ℕ∞) → ρ z w`. Introduce `m n hmn z w hz hw`. Take `⟨S, hS, hzS⟩` from `hg m n hmn z hz`. Take `⟨T, hT, hwT⟩` from `hg m n hmn w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, htt⟩` from `(hS.union hT).exists_notMem`. Simplify using `only [Set.mem_union, not_or] at htt`. Conclude with `ht _ _ _ (hzS t htt.1) (hs _ _ (hwT t htt.2))`. Use `⟨h1, fun m₀ hG => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ m, m₀ ≤ m → ∀ z : PowerSeries k, z.order = (m : ℕ∞) → ρ z (PowerSeries.X ^ m₀)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => exact fun z hz => h1 _ _ (hG _ le_rfl) _ _ hz (PowerSeries.order_X_pow _)`. Consider the case `succ m hm ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hXS⟩` from `hg m _ (hG m hm) (PowerSeries.X ^ m) (PowerSeries.order_X_pow _)`. Take `⟨t, htt⟩` from `(hS.insert 0).exists_notMem`. Simplify using `only [Set.mem_insert_iff, not_or] at htt`. Establish `ho : (PowerSeries.C t * PowerSeries.X ^ (m + 1) : PowerSeries k).order = ((m + 1 : ℕ) : ℕ∞)`. Rewrite using `[PowerSeries.X_pow_eq, ← PowerSeries.monomial_zero_eq_C_apply, PowerSeries.monomial_mul_monomial, zero_add, mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `PowerSeries.order_monomial_of_ne_zero _ _ htt.1`. Conclude with `ht _ _ _ (h1 _ _ (hG _ (Nat.le_succ_of_le hm)) _ _ hz ho) (ht _ _ _ (hs _ _ (hXS t htt.2)) (ih _ (PowerSeries.order_X_pow _)))`. Introduce `m n z w hm hn hz hw`. Conclude with `ht _ _ _ (h2 m hm z hz) (hs _ _ (h2 n hn w hw))`.
+A detailed English derivation is pending.
 -/
 theorem powerSeries_generic_relation_chain :
     ∀ (k : Type) [Field k] [Infinite k] (ρ : PowerSeries k → PowerSeries k → Prop) (Gen : ℕ → ℕ → Prop), (∀ z w, ρ z w → ρ w z) → (∀ x y z, ρ x y → ρ y z → ρ x z) → (∀ m n, Gen m n → ∀ z : PowerSeries k, z.order = (m : ℕ∞) → ∃ S : Set k, S.Finite ∧ ∀ t, t ∉ S → ρ z (PowerSeries.C t * PowerSeries.X ^ n)) → (∀ m n, Gen m n → ∀ z w : PowerSeries k, z.order = (m : ℕ∞) → w.order = (m : ℕ∞) → ρ z w) ∧ ∀ m₀, (∀ m, m₀ ≤ m → Gen m (m + 1)) → ∀ (m n : ℕ) (z w : PowerSeries k), m₀ ≤ m → m₀ ≤ n → z.order = (m : ℕ∞) → w.order = (n : ℕ∞) → ρ z w := by

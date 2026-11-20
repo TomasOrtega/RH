@@ -5,7 +5,7 @@ import Formalism.PolynomialDimension.FinalM
 namespace Formalism.InvariantFactorPaths.PW.Top
 
 /- English proof (translation)
-The claim follows from `lattice_theorem_of_discharge Formalism.CountingSumsFrames.Top.theoremM discharge_height_bound`.
+A detailed English derivation is pending.
 -/
 theorem lattice_theorem_height_bound : LatticeTheoremHeightBound := lattice_theorem_of_discharge Formalism.CountingSumsFrames.Top.theoremM discharge_height_bound
 

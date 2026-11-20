@@ -20,7 +20,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `Blowup.comap_eq_top_of_notMem_support _ Z fun x => ?_` and prove the remaining obligations. Use `show π.base x.1 ∉ Z.support`. Conclude with `hV x.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem comap_comp_eq_top_of_le_preimage_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens) (hV : V ≤ π ⁻¹ᵁ Z.support.compl) :
@@ -30,7 +30,7 @@ private theorem comap_comp_eq_top_of_le_preimage_compl {X X₁ : Scheme.{u}} (π
   exact hV x.2
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem restrictIdeal_comap_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (D : X.IdealSheafData) (W : X.Opens) :
@@ -47,7 +47,7 @@ private theorem length_strictTransform_append_exceptionalIdeal {X X₁ : Scheme.
   simp
 
 /- English proof (translation)
-Rewrite using `[List.getElem_append_left (by simpa using hi)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem getElem_strictTransform_append_exceptionalIdeal_of_lt {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) (i : ℕ) (hi : i < E.length)
@@ -58,7 +58,7 @@ private theorem getElem_strictTransform_append_exceptionalIdeal_of_lt {X X₁ : 
   simp
 
 /- English proof (translation)
-Rewrite using `[List.getElem_append_right (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem getElem_length_strictTransform_append_exceptionalIdeal {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData)
@@ -69,9 +69,7 @@ private theorem getElem_length_strictTransform_append_exceptionalIdeal {X X₁ :
   simp
 
 /- English proof (translation)
-Establish `h1` using `hπ.restrict W`. Establish `h2 : Z.comap (Scheme.Opens.ι W) = ⊤`. Use `Blowup.comap_eq_top_of_notMem_support _ Z fun x => ?_` and prove the remaining obligations. Use `show x.1 ∉ Z.support`. Conclude with `hW x.1 x.2`.
-
-Rewrite `h1` using `[h2]`. Conclude with `h1.isIso_of_top`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_morphismRestrict_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {π : X₁ ⟶ X}
     {Z : X.IdealSheafData} (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (W : X.Opens)
@@ -86,9 +84,9 @@ theorem isIso_morphismRestrict_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} 
   exact h1.isIso_of_top
 
 /- English proof (translation)
-Use `quasiCompact_strictTransformι_comp_ι π Z D V` as an intermediate fact. Establish `hZ : Z.comap (V.ι ≫ π) = ⊤` using `comap_comp_eq_top_of_le_preimage_compl π Z V hV`. Rewrite using `[restrictIdeal_strictTransform π Z D V, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp]`. Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `strictTransform_ideal_eq_comap_of_isUnit (V.ι ≫ π) Z D W 1 (by simp [hZ]) isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem restrictIdeal_strictTransform_eq_comap_of_le_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -102,7 +100,7 @@ theorem restrictIdeal_strictTransform_eq_comap_of_le_compl {X X₁ : Scheme.{u}}
   exact strictTransform_ideal_eq_comap_of_isUnit (V.ι ≫ π) Z D W 1 (by simp [hZ]) isUnit_one
 
 /- English proof (translation)
-Use `restrictIdeal_strictTransform_eq_comap_of_le_compl π Z D V ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `hV x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_strictTransform_eq_comap_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -113,7 +111,7 @@ theorem restrictIdeal_strictTransform_eq_comap_of_notMem_support {X X₁ : Schem
   exact hV x hx
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι, Blowup.exceptionalIdeal_eq_comap, ← Scheme.IdealSheafData.comap_comp]`. Conclude with `comap_comp_eq_top_of_le_preimage_compl π Z V hV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_exceptionalIdeal_eq_top_of_le_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens) (hV : V ≤ π ⁻¹ᵁ Z.support.compl) :
@@ -122,7 +120,7 @@ theorem restrictIdeal_exceptionalIdeal_eq_top_of_le_compl {X X₁ : Scheme.{u}} 
   exact comap_comp_eq_top_of_le_preimage_compl π Z V hV
 
 /- English proof (translation)
-Use `restrictIdeal_exceptionalIdeal_eq_top_of_le_compl π Z V ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `hV x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_exceptionalIdeal_eq_top_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens)
@@ -133,39 +131,37 @@ theorem restrictIdeal_exceptionalIdeal_eq_top_of_notMem_support {X X₁ : Scheme
   exact hV x hx
 
 /- English proof (translation)
-Establish `instQuasiCompact : ∀ D : X.IdealSheafData, QuasiCompact (strictTransformι π Z D)` using `fun D => quasiCompact_strictTransformι_of_noetherianSpace π Z D`. Unfold `HasStrictNormalCrossingsWith at hZE`. Take `⟨U, hxU, m, c, a, S, ha1, ha2, ha3, hZU⟩` from `hZE _ hx₁`. Establish `hxmem : x₁ ∈ π ⁻¹ᵁ U` using `hxU`. Take `⟨s, hs, hx₁B⟩` from `exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZU x₁ hxmem`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set B := blowupChartOfIsBlowup π c S hπ hZU s hs with hBdef`. Establish `hlen : (E.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]).length = E.length + 1` using `length_strictTransform_append_exceptionalIdeal π Z E`. Unfold `InStrictNormalCrossingPositionAt`. Use `⟨B.domain, hx₁B, m, B.chart, fun i => if i = E.length then some s else if a i = some s then none else a i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hti' : (if i = E.length then some s else if a i = some s then none else a i) = some t` using `hti`. Establish `htj' : (if j = E.length then some s else if a j = some s then none else a j) = some t` using `htj`. Rewrite `hi`, `hj` using `[hlen]`. Distinguish the cases in `hiE : i = E.length`. Distinguish the cases in `hjE : j = E.length`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hiE, hjE]`. It suffices to derive a contradiction. Rewrite `hti'` using `[if_pos hiE]`. Rewrite `htj'` using `[if_neg hjE]`. Establish `hts : s = t` using `Option.some.inj hti'`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `haj : a j = some s`. Rewrite `htj'` using `[if_pos haj]`. Simplify using `at htj'`. Rewrite `htj'` using `[if_neg haj]`. Conclude with `haj (by rw [htj', ← hts])`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Distinguish the cases in `hjE : j = E.length`. It suffices to derive a contradiction. Rewrite `htj'` using `[if_pos hjE]`. Rewrite `hti'` using `[if_neg hiE]`. Establish `hts : s = t` using `Option.some.inj htj'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hai : a i = some s`. Rewrite `hti'` using `[if_pos hai]`. Simplify using `at hti'`. Rewrite `hti'` using `[if_neg hai]`. Conclude with `hai (by rw [hti', ← hts])`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hti'` using `[if_neg hiE]`. Rewrite `htj'` using `[if_neg hjE]`. Distinguish the cases in `hai : a i = some s`. Rewrite `hti'` using `[if_pos hai]`. Simplify using `at hti'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hti'` using `[if_neg hai]`. Distinguish the cases in `haj : a j = some s`. Rewrite `htj'` using `[if_pos haj]`. Simplify using `at htj'`. Rewrite `htj'` using `[if_neg haj]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha1 i (by omega) j (by omega) t hti' htj'`. Introduce `i h hnone`. Establish `hnone' : (if i = E.length then some s else if a i = some s then none else a i) = none` using `hnone`. Establish `hcount : i < E.length + 1` using `by rw [hlen] at h; exact h`. Distinguish the cases in `hiE : i = E.length`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hnone'` using `[if_pos hiE]`. Simplify using `at hnone'`. Establish `hi : i < E.length` using `by omega`. Rewrite using `[getElem_strictTransform_append_exceptionalIdeal_of_lt π Z E i hi]`. Rewrite `hnone'` using `[if_neg hiE]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hai : a i = some s`. Establish `hD` using `ha3 i hi s hai`. Establish `hres` using `BlowupChart.restrictIdeal_strictTransform_coordIdeal B Z (E[i]'hi) hs hZU s hD`. Simplify using `using hres`. Rewrite `hnone'` using `[if_neg hai]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `BlowupChart.restrictIdeal_strictTransform_of_eq_top B Z (E[i]'hi) (ha2 i hi hnone')`. Introduce `i h t hti`. Establish `hti' : (if i = E.length then some s else if a i = some s then none else a i) = some t` using `hti`. Establish `hcount : i < E.length + 1` using `by rw [hlen] at h; exact h`. Distinguish the cases in `hiE : i = E.length`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hiE` using the available equality. Rewrite using `[getElem_length_strictTransform_append_exceptionalIdeal π Z E]`. Establish `hts : s = t` using `by simpa using hti'`. Rewrite using `[← hts]`. Conclude with `BlowupChart.restrictIdeal_exceptionalIdeal B Z hs hZU`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hi : i < E.length` using `by omega`. Rewrite using `[getElem_strictTransform_append_exceptionalIdeal_of_lt π Z E i hi]`. Rewrite `hti'` using `[if_neg hiE]`. Distinguish the cases in `hai : a i = some s`. Rewrite `hti'` using `[if_pos hai]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at hti'`. Rewrite `hti'` using `[if_neg hai]`. Establish `hD` using `ha3 i hi t hti'`. Establish `hts : t ≠ s`. Introduce `hh`.
-
-Conclude with `hai (by rw [hti', hh])`. Rewrite using `[BlowupChart.restrictIdeal_strictTransform_coordIdeal B Z (E[i]'hi) hs hZU t hD, if_neg hts]`.
+A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPositionAt_strictTransform_of_mem_support {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -265,29 +261,27 @@ theorem inStrictNormalCrossingPositionAt_strictTransform_of_mem_support {X X₁ 
           if_neg hts]
 
 /- English proof (translation)
-Establish `instQuasiCompact : ∀ D : X.IdealSheafData, QuasiCompact (strictTransformι π Z D)` using `fun D => quasiCompact_strictTransformι_of_noetherianSpace π Z D`. Rewrite `hE` using `[inStrictNormalCrossingPosition_iff]`. Take `⟨hEdiv, hEpos⟩` from `hE`. Establish `hpos` using `hEpos (π.base x₁)`. Unfold `InStrictNormalCrossingPositionAt at hpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨U, hxU, m, c, a, ha1, ha2, ha3⟩` from `hpos`. Establish `hWU : U ⊓ Z.support.compl ≤ U` using `inf_le_left`. Establish `hiso : IsIso (π ∣_ (U ⊓ Z.support.compl))` using `isIso_morphismRestrict_of_isBlowupAlongIdealSheaf hπ (U ⊓ Z.support.compl) (fun x hx => hx.2)`. Establish `hxW : π.base x₁ ∈ U ⊓ Z.support.compl` using `⟨hxU, hx₁⟩`. Establish `hVle : (π ⁻¹ᵁ (U ⊓ Z.support.compl)) ≤ π ⁻¹ᵁ Z.support.compl` using `fun x hx => hx.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : ((π ∣_ (U ⊓ Z.support.compl)) ≫ (c.restrict hWU).map) ≫ affineSpaceFinToSpec k m = (π ⁻¹ᵁ (U ⊓ Z.support.compl)).ι ≫ (π ≫ p)`. Rewrite using `[Category.assoc, (c.restrict hWU).comp_struct, ← Category.assoc, morphismRestrict_ι, Category.assoc]`. Establish `het : Etale ((π ∣_ (U ⊓ Z.support.compl)) ≫ (c.restrict hWU).map)`. Establish `: IsIso (π ∣_ (U ⊓ Z.support.compl))` using `hiso`. Establish `: Etale (c.restrict hWU).map` using `(c.restrict hWU).isEtale`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hlen : (E.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]).length = E.length + 1` using `length_strictTransform_append_exceptionalIdeal π Z E`. Unfold `InStrictNormalCrossingPositionAt`. Use `⟨π ⁻¹ᵁ (U ⊓ Z.support.compl), hxW, m, ⟨(π ∣_ (U ⊓ Z.support.compl)) ≫ (c.restrict hWU).map, hcs, het⟩, fun i => if i = E.length then none else a i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hti' : (if i = E.length then none else a i) = some t` using `hti`. Establish `htj' : (if j = E.length then none else a j) = some t` using `htj`. Rewrite `hi`, `hj` using `[hlen]`. Establish `hiE : i ≠ E.length`. Introduce `hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hti'` using `[if_pos hh]`. Simplify using `at hti'`. Establish `hjE : j ≠ E.length`. Introduce `hh`. Rewrite `htj'` using `[if_pos hh]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at htj'`. Rewrite `hti'` using `[if_neg hiE]`. Rewrite `htj'` using `[if_neg hjE]`. Conclude with `ha1 i (by omega) j (by omega) t hti' htj'`. Introduce `i h hnone`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcount : i < E.length + 1` using `by rw [hlen] at h; exact h`. Distinguish the cases in `hiE : i = E.length`. Substitute `hiE` using the available equality. Rewrite using `[getElem_length_strictTransform_append_exceptionalIdeal π Z E]`. Conclude with `restrictIdeal_exceptionalIdeal_eq_top_of_le_compl π Z _ hVle`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi : i < E.length` using `by omega`. Establish `hnone' : (if i = E.length then none else a i) = none` using `hnone`. Rewrite `hnone'` using `[if_neg hiE]`. Rewrite using `[getElem_strictTransform_append_exceptionalIdeal_of_lt π Z E i hi, restrictIdeal_strictTransform_eq_comap_of_le_compl π Z (E[i]'hi) _ hVle, restrictIdeal_comap_preimage π (E[i]'hi) (U ⊓ Z.support.compl), restrictIdeal_eq_top_of_le (E[i]'hi) hWU (ha2 i hi hnone')]`. Conclude with `Scheme.IdealSheafData.comap_top _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i h t hti`. Establish `hti' : (if i = E.length then none else a i) = some t` using `hti`. Establish `hcount : i < E.length + 1` using `by rw [hlen] at h; exact h`. Establish `hiE : i ≠ E.length`. Introduce `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hti'` using `[if_pos hh]`. Simplify using `at hti'`. Establish `hi : i < E.length` using `by omega`. Rewrite `hti'` using `[if_neg hiE]`. Rewrite using `[getElem_strictTransform_append_exceptionalIdeal_of_lt π Z E i hi, restrictIdeal_strictTransform_eq_comap_of_le_compl π Z (E[i]'hi) _ hVle, restrictIdeal_comap_preimage π (E[i]'hi) (U ⊓ Z.support.compl), restrictIdeal_eq_restrict_coordIdeal_of_le hWU c (E[i]'hi) {t} (ha3 i hi t h …`.
-
-Simplify using `only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Conclude with `(Scheme.IdealSheafData.comap_comp ..).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPositionAt_strictTransform_of_notMem_support {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -367,13 +361,13 @@ theorem inStrictNormalCrossingPositionAt_strictTransform_of_notMem_support {X X�
     exact (Scheme.IdealSheafData.comap_comp ..).symm
 
 /- English proof (translation)
-Establish `hat : ∀ x₁ : X₁, InStrictNormalCrossingPositionAt (π ≫ p) (E.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]) x₁`. Introduce `x₁`. Distinguish the cases in `hx : π.base x₁ ∈ Z.support`. Conclude with `inStrictNormalCrossingPositionAt_strictTransform_of_mem_support p π Z E hπ hZE x₁ hx`. Conclude with `inStrictNormalCrossingPositionAt_strictTransform_of_notMem_support p π Z E hπ hE x₁ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inStrictNormalCrossingPosition_iff]`. Use `⟨?_, hat⟩` and prove the remaining obligations. Introduce `D hD`. Take `⟨i, hi, rfl⟩` from `List.mem_iff_getElem.mp hD`. Use `isSmoothDivisor_of_locally_coordIdeal _ fun x₁ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hx` using `hat x₁`. Unfold `InStrictNormalCrossingPositionAt at hx`. Take `⟨U, hxU, m, c, a, h1, h2, h3⟩` from `hx`. Use `⟨U, hxU, m, c, ?_⟩` and prove the remaining obligations. Consider the cases of `hai : a i with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `none => exact Or.inl (h2 i hi hai)`. Consider the case `some t => exact Or.inr ⟨t, h3 i hi t hai⟩`.
+A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_strictTransform_append {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) (Z : X.IdealSheafData)
@@ -401,7 +395,7 @@ theorem inStrictNormalCrossingPosition_strictTransform_append {X X₁ : Scheme.{
   | some t => exact Or.inr ⟨t, h3 i hi t hai⟩
 
 /- English proof (translation)
-The claim follows from `inStrictNormalCrossingPosition_strictTransform_append p π Z (H :: E) hπ hE hZE`.
+A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_strictTransform_cons_append {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) (Z : X.IdealSheafData)

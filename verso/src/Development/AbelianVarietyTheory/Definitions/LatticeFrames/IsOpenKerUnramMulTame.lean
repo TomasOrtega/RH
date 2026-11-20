@@ -80,9 +80,9 @@ structure QGeo.UnitScal (G : QGeo v B PP) : Prop where
   hz_unit : ∀ j ρ h, valuation G.k ((ofSplit G.q).hz (c.B j ρ h)) = 1
 
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (x := Units.val ⁻¹' ((· - 1) ⁻¹' {x : k | valuation k x < 1})) (IsOpen.mem_nhds (IsOpen.preimage Units.continuous_val (IsOpen.preimage (by fun_prop) ?_)) (by simp)) fun x hx => ?_)` and prove the remaining obligations. Simplify using `using (valuation k).isOpen_ball 1`. Establish `h1 : valuation k (x : k) = 1`. Use `(valuation k).map_one_add_of_lt (x := (x : k) - 1) hx` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `η x * δ x = 1`. Rewrite using `[hη x h1, hδ x hx, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOpen_ker_unram_mul_tame {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {η δ : kˣ →* ℂˣ} (hη : IsUnram η) (hδ : IsTame δ) : IsOpen ((η * δ).ker : Set kˣ) := by
@@ -100,17 +100,17 @@ namespace QGeo
 variable (G : QGeo v B PP) (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ)
 
 /- English proof (translation)
-The claim follows from `Chain.ofTwist_regular _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem T_regular : (G.T δ hδ η).Regular := Chain.ofTwist_regular _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `Chain.ofTwist_laws _ _ _ hη _ _`.
+A detailed English derivation is pending.
 -/
 theorem T_laws (hη : ∀ j, IsUnram (η j)) : (G.T δ hδ η).Laws := Chain.ofTwist_laws _ _ _ hη _ _
 
 /- English proof (translation)
-Introduce `g hg` and use `by have := ((G.T_regular δ hδ η).2.2 j d h).2.2 hg rw [show (G.T δ hδ η).bas j d h = 1 from rfl, mem_stabLat] at this simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_le (j d : ℕ) (h : j + d = G.s + 1) : ((G.T δ hδ η).lev j d h).J ≤ KO G.k _ := fun g hg => by
   have := ((G.T_regular δ hδ η).2.2 j d h).2.2 hg
@@ -118,7 +118,7 @@ theorem T_le (j d : ℕ) (h : j + d = G.s + 1) : ((G.T δ hδ η).lev j d h).J �
   simpa using this
 
 /- English proof (translation)
-Introduce `g hg` and use `by have := (TypeDatum.map_conj (parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin (G.s + 2) × Fin D.R.t) δ hδ) (LatFrame.refl G.k _)).2.2 hg rw [show (LatFrame.refl G.k (Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t) (G.s + 2))).bas = 1 from rfl, mem_stabLat] at this simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_leTop : (G.T δ hδ η).levTop.J ≤ KO G.k _ := fun g hg => by
   have := (TypeDatum.map_conj (parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin (G.s + 2) × Fin D.R.t) δ hδ) (LatFrame.refl G.k _)).2.2 hg
@@ -126,7 +126,7 @@ theorem T_leTop : (G.T δ hδ η).levTop.J ≤ KO G.k _ := fun g hg => by
   simpa using this
 
 /- English proof (translation)
-The claim follows from `(TypeDatum.map_conj (parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin (G.s + 2) × Fin D.R.t) δ hδ) (LatFrame.refl G.k _)).1`.
+A detailed English derivation is pending.
 -/
 theorem T_openTop :
     IsOpen ((G.T δ hδ η).levTop.J : Set (GL (Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t) (G.s + 2)) G.k)) :=
@@ -197,34 +197,34 @@ namespace QExt
 variable {G : QGeo v B PP} {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G χ)
 
 /- English proof (translation)
-The claim follows from `G.T_regular _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem reg : (G.T E.δ E.tame E.η).Regular := G.T_regular _ _ _
 
 /- English proof (translation)
-The claim follows from `G.T_laws _ _ _ E.unr`.
+A detailed English derivation is pending.
 -/
 theorem laws : (G.T E.δ E.tame E.η).Laws := G.T_laws _ _ _ E.unr
 
 /- English proof (translation)
-The claim follows from `G.T_le _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem le : ∀ j d h, ((G.T E.δ E.tame E.η).lev j d h).J ≤ KO G.k _ := G.T_le _ _ _
 
 /- English proof (translation)
-The claim follows from `G.T_leTop _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem leT : (G.T E.δ E.tame E.η).levTop.J ≤ KO G.k _ := G.T_leTop _ _ _
 
 /- English proof (translation)
-The claim follows from `G.T_openTop _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem openT :
     IsOpen ((G.T E.δ E.tame E.η).levTop.J : Set (GL (Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t) (G.s + 2)) G.k)) :=
   G.T_openTop _ _ _
 
 /- English proof (translation)
-Introduce `j hj` and use `⟨E.mu_comp j hj, isOpen_ker_unram_mul_tame (E.unr _) E.tame⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mu : ∀ j, j ≤ G.s + 1 →
     (ofSplit G.q).IsComp (χ j)⁻¹ (E.η (j + 1) * E.δ) ∧ IsOpen ((E.η (j + 1) * E.δ).ker : Set G.kˣ) :=
@@ -238,12 +238,12 @@ structure Exact : Prop where
   cos_mem : ∀ y, ∃ z ∈ box (XIx (Fin D.R.k) (Fin D.R.t) (G.s + 1)) (G.ϖ ^ E.M)⁻¹, Submodule.Quotient.mk z = E.cos y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(E.cos_all 0 (zero_mem _)).choose⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (E.Ch (G.s + 1)) := ⟨(E.cos_all 0 (zero_mem _)).choose⟩
 
 /- English proof (translation)
-Use `(E.rep_bij 0 d h).1 (Set.mem_univ α)` as an intermediate fact. Rewrite `this` using `[E.reps.zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example (d h α) : E.rep 0 d h α = 1 := by
   have := (E.rep_bij 0 d h).1 (Set.mem_univ α)
@@ -325,7 +325,7 @@ def QExt.toAt {G : QGeo v B PP} {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G 
   wt_top := E.wt_top
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {G : QGeo v B PP} {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G χ) :
     E.toAt.T = G.T E.δ E.tame E.η ∧ E.toAt.Ch = E.Ch ∧ E.toAt.c₁ = (G.ϖ ^ E.M)⁻¹ ∧ E.toAt.c₂ = G.ϖ ^ E.M := ⟨rfl, rfl, rfl, rfl⟩

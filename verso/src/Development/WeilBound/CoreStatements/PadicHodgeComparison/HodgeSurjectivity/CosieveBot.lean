@@ -19,7 +19,7 @@ def inU (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : ObjectProperty (Thic
   InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) V
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cosieve_bot {C : Type 1} [Category.{0} C] : Cosieve (⊥ : ObjectProperty C) := fun _ _ _ h => h
 

@@ -11,9 +11,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRe
 namespace GlobalTheory.ArInt
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[interNum_eq_zero_of_cls_eq_zero κ _ (isLB_vecOne (isLB_lbPow hN 0)) 0 ((cls_lbPow hN 0 _).trans (zero_nsmul _))]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[interNum_one_of_cls_eq_add hH hd (isLB_lbPow hN (n + 1)) (isLB_lbPow hN n) hN (by rw [cls_lbPow hN, cls_lbPow hN, succ_nsmul]), ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem interNum_one_lbPow_of_curve {κ : Type} [Field κ] {C : Scheme.{0}} [Algebra κ Γ(C, ⊤)]
     [IsProper (strHom κ C)] {H N : LB C} (hH : IsAmpleLB H) (hd : topologicalKrullDim C = 1)
@@ -31,19 +31,17 @@ theorem interNum_one_lbPow_of_curve {κ : Type} [Field κ] {C : Scheme.{0}} [Alg
     ring
 
 /- English proof (translation)
-Introduce `k _ _ X p hp L m hm`. Take `⟨hpr, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp`. Establish `key : ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type) [Field κ] [Finite κ] [Algebra κ Γ(Z, ⊤)], topologicalKrullDim Z = 1 → topSelfIntersection κ ((L.pow m).B.pull i) 1 = m * topSelfIntersection κ (L.B.pull i) 1`. Introduce `Z i _ _ κ _ _ _ hd`. Establish `: IsFinite (spMap (Int.castRingHom k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))` using `by rw [e]; infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAZ` using `hA.pull_of_isClosedImmersion i`. Establish `hN : (L.B.pull i).IsLB` using `LB.isLB_pull L.isLB i`. Establish `e1 : topSelfIntersection κ ((L.pow m).B.pull i) 1 = interNum κ (structureModule Z) ![lbPow (L.B.pull i) m]` using `interNum_congr_cls κ _ (fun _ => LB.isLB_pull (L.pow m).isLB i) (isLB_vecOne (isLB_lbPow hN m)) fun j => by fin_cases j`. Conclude with `(cls_pull (L.pow m).isLB i _).trans ((congrArg (pull i) (cls_lbPow L.isLB m (L.pow m).isLB)).trans ((map_nsmul (pull i) m _).trans (cls_lbPow hN m _).symm))`. Establish `e2 : topSelfIntersection κ (L.B.pull i) 1 = interNum κ (structureModule Z) ![L.B.pull i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[topSelf_def]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[e1, e2]`. Conclude with `interNum_one_lbPow_of_curve hAZ hd hN m`. Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Prove the components needed by the constructor for the conclusion. Introduce `h Z i _ _ κ _ _ _ hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `h Z i κ hd`. Rewrite `h'` using `[key Z i κ hd]`. Conclude with `(mul_nonneg_iff_of_pos_left hm').1 h'`. Introduce `h Z i _ _ κ _ _ _ hd`. Rewrite using `[key Z i κ hd]`.
-
-Conclude with `mul_nonneg hm'.le (h Z i κ hd)`.
+A detailed English derivation is pending.
 -/
 theorem nefFib_pow_iff : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X : Scheme.{0})
     (p : X ⟶ Sp k), IsProjOver p → ∀ (L : HermLB p) (m : ℕ), 0 < m →

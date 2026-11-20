@@ -7,13 +7,13 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open Submodule
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r s h`. Simplify using `only at h`. Rewrite `h` using `[← map_smul, ← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, ← sub_smul, mem_span_singleton]`. Take `⟨c, hc⟩` from `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `congrFun hc 0`. Establish `h1` using `congrFun hc 1`. Simplify using `[eps, hv] at h0 h1`. Substitute `h0` using the available equality. Simplify using `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp h1.symm`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ q`. Use `⟨x 1 - x 0 * v 1, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, mem_span_singleton]`. Use `⟨-x 0, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [eps, hv]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem quotient_span_bijective_second_basis {R : Type} [CommRing R] (v : Fin 2 → R) (hv : v 0 = 1) :
     Function.Bijective (fun r : R => r • (span R {v}).mkQ (eps R 1)) := by
@@ -39,13 +39,13 @@ theorem quotient_span_bijective_second_basis {R : Type} [CommRing R] (v : Fin 2 
     fin_cases k <;> simp [eps, hv]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r s h`. Simplify using `only at h`. Rewrite `h` using `[← map_smul, ← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, ← sub_smul, mem_span_singleton]`. Take `⟨c, hc⟩` from `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `congrFun hc 0`. Establish `h1` using `congrFun hc 1`. Simplify using `[eps, hv] at h0 h1`. Substitute `h1` using the available equality. Simplify using `at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp h0.symm`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ q`. Use `⟨x 0 - x 1 * v 0, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, mem_span_singleton]`. Use `⟨-x 1, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [eps, hv]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem quotient_span_bijective_first_basis {R : Type} [CommRing R] (v : Fin 2 → R) (hv : v 1 = 1) :
     Function.Bijective (fun r : R => r • (span R {v}).mkQ (eps R 0)) := by
@@ -71,13 +71,11 @@ theorem quotient_span_bijective_first_basis {R : Type} [CommRing R] (v : Fin 2 �
     fin_cases k <;> simp [eps, hv]
 
 /- English proof (translation)
-Introduce `R _ a₁ a₂ b₁ b₂`. Use `⟨⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `quotient_span_bijective_second_basis _ (by simp [eps])`. Rewrite using `[← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, mem_span_singleton]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [eps]`. Conclude with `quotient_span_bijective_first_basis _ (by simp [eps])`. Rewrite using `[← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, mem_span_singleton]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [eps]`. Rewrite using `[← map_smul, mkQ_apply, mkQ_apply, Submodule.Quotient.eq, mem_span_singleton]`. Use `⟨a₁, ?_⟩` and prove the remaining obligations. Use extensionality with `k`.
-
-Apply the tactic sequence `fin_cases k <;> simp [eps]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem SectionLocalEquation.proof : SectionLocalEquation.Statement := by
   intro R _ a₁ a₂ b₁ b₂

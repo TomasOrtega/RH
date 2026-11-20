@@ -15,15 +15,11 @@ open GlobalTheory.RegSch.IkSchwartz GlobalTheory.PartialIntegral
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af D.host.F) (AEf D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AEf D) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele D.host.F`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField D.host.F`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (Af D.host.F)`. Use `haveI : LocallyCompactSpace (AEf D) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AEf D) := e0.secondCountableTopology`. Use `haveI : T2Space (AEf D) := e0.isEmbedding.t2Space`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `letI : MeasurableSpace (Fin m → Fin n → AEf D) := borel _`. Use `haveI : BorelSpace (Fin m → Fin n → AEf D) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := (lattice_Mx D m n).1`. Take `⟨e, he⟩` from `exists_split hθ m n`.
-
-Set `μr : Measure (D.what₂.Tau → Fin m → Fin n → ℂ)` to `Measure.addHaar`. Set `ν : Measure (Fin m → Fin n → AEf D)` to `Measure.addHaar`. Take `⟨c, hc⟩` from `exists_integral_split e μ μr ν`. Establish `hf : Integrable (fun x => f x) μr` using `f.integrable`. Establish `hg' : Integrable g ν` using `hg.1.continuous.integrable_of_hasCompactSupport hg.2`.
-
-Use `(hc _ _ hf hg').1` as an intermediate fact. Use `this using 2 with x` and compare the differences between its conclusion and the goal. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_pure {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (μ : Measure (Mx D m n))
     [μ.IsAddHaarMeasure] (f : SchwartzMap (D.what₂.Tau → Fin m → Fin n → ℂ) ℂ) (g : (Fin m → Fin n → AEf D) → ℂ)
@@ -54,9 +50,9 @@ theorem integrable_pure {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ}
   rw [he]
 
 /- English proof (translation)
-Introduce `D θ hθ m n μ 𝓕 hμ Φ hΦ`. Use `haveI := hμ.1`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `integrable_pure hθ μ f g hg`. Consider the case `zero => exact integrable_zero _ _ _`. Consider the case `add Φ Ψ _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c Φ _ h => exact h.smul c`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integrable_of_mem : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)),
     IsCovolOne (ratMx D m n) μ 𝓕 → ∀ Φ ∈ schwartzA θ m n, Integrable Φ μ := by

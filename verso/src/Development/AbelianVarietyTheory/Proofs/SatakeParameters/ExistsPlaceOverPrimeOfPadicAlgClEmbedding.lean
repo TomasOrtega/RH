@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.LocPlace
 
 /- English proof (translation)
-Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral' {C : Type} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : @IsIntegral ℤ C _ _ (Ring.toIntAlgebra C) x) : ‖x‖ ≤ 1 := by
@@ -19,14 +19,14 @@ theorem norm_le_one_of_isIntegral' {C : Type} [NormedField C] [IsUltrametricDist
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral' (map_isIntegral_int c x.isIntegral_coe)`.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le_one (l : ℕ) [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 :=
   norm_le_one_of_isIntegral' (map_isIntegral_int c x.isIntegral_coe)
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_prime_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   have h : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l]) := by simp
@@ -51,17 +51,17 @@ def ballIdeal (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (norm_int_le_one l c a)) hb
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ballIdeal (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : x ∈ ballIdeal l E c ↔ ‖c (x : E)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : (1 : 𝓞 E) ∈ ballIdeal l E c` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[mem_ballIdeal]`. Simplify using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Rewrite `*` using `[mem_ballIdeal, mem_ballIdeal]`. Move the coercions through the operations in `at hab`. Rewrite `hab` using `[map_mul, norm_mul]`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Establish `ha` using `le_antisymm (norm_int_le_one l c a) hcon.1`. Establish `hb` using `le_antisymm (norm_int_le_one l c b) hcon.2`. Rewrite `hab` using `[ha, hb]`. Evaluate the numerical expressions using `at hab`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem ballIdeal_isPrime (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) : (ballIdeal l E c).IsPrime := by
@@ -82,7 +82,7 @@ theorem ballIdeal_isPrime (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberF
     norm_num at hab
 
 /- English proof (translation)
-Rewrite using `[mem_ballIdeal]`. Use `push_cast`. Rewrite using `[map_natCast]`. Conclude with `norm_natCast_prime_lt_one l`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_ballIdeal (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) : ((l : ℕ) : 𝓞 E) ∈ ballIdeal l E c := by
@@ -92,7 +92,7 @@ theorem natCast_mem_ballIdeal (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [Num
   exact norm_natCast_prime_lt_one l
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `natCast_mem_ballIdeal l E c`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `h2 : ((l : ℕ) : E) = 0` using `by exact_mod_cast congrArg (fun y : 𝓞 E => (y : E)) h1`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ballIdeal_ne_bot (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) : ballIdeal l E c ≠ ⊥ := by
@@ -103,7 +103,7 @@ theorem ballIdeal_ne_bot (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberFi
   exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)
 
 /- English proof (translation)
-Introduce `l _ E _ _ c`. Use `⟨⟨ballIdeal l E c, ballIdeal_isPrime l E c, ballIdeal_ne_bot l E c⟩, ?_, fun x => Iff.rfl⟩` and prove the remaining obligations. Conclude with `natCast_mem_ballIdeal l E c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_place_of_emb : ∀ (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l), ∃ v : HeightOneSpectrum (𝓞 E), v ∈ placesOver E l ∧

@@ -17,7 +17,7 @@ open Complex
 variable {d : ℕ}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, vecMul, Finset.sum_mul, Pi.star_apply, Complex.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_dotProduct_star (B : Matrix (Fin d) (Fin d) ℂ) (x : Fin d → ℂ) :
     (x ᵥ* B) ⬝ᵥ star x = ∑ k, ∑ l, B k l * x k * starRingEnd ℂ (x l) := by
@@ -26,13 +26,13 @@ theorem vecMul_dotProduct_star (B : Matrix (Fin d) (Fin d) ℂ) (x : Fin d → �
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `set B : Matrix (Fin d) (Fin d) ℂ := ((1 / (2 * Real.pi) : ℝ) : ℂ) • (b + bᴴ) with hBdef`. Establish `hB : B.IsHermitian`. Rewrite using `[hBdef, IsHermitian, conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose, Complex.star_def, conj_ofReal, add_comm]`. Establish `key (ξ : Fin d → ℂ) : ∑ k, ∑ l, B k l * ξ k * starRingEnd ℂ (ξ l) = (((∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l)).re / Real.pi : ℝ) : ℂ)`. Establish `h1 : ∑ k, ∑ l, (bᴴ) k l * ξ k * starRingEnd ℂ (ξ l) = starRingEnd ℂ (∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, Complex.conj_conj, conjTranspose_apply, Complex.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `h2 : ∑ k, ∑ l, B k l * ξ k * starRingEnd ℂ (ξ l) = ((1 / (2 * Real.pi) : ℝ) : ℂ) * (∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l) + ∑ k, ∑ l, (bᴴ) k l * ξ k * starRingEnd ℂ (ξ l))`. Simplify using `only [hBdef, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[h2, h1, add_conj]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `ofReal_ne_zero.2 Real.pi_ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hqB : q = fun ξ => (∑ k, ∑ l, B k l * ξ k * starRingEnd ℂ (ξ l)).re`. Rewrite using `[hq]`. Use function extensionality and compare the values at `ξ`. Rewrite using `[key, ofReal_re]`. Rewrite using `[hqB, polMat_form hB, vecMul_dotProduct_star, key, ← hqB, hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polMat_diag {q : (Fin d → ℂ) → ℝ} {b : Matrix (Fin d) (Fin d) ℂ}
     (hq : q = fun ξ => (∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l)).re / Real.pi) (x : Fin d → ℂ) :
@@ -63,9 +63,9 @@ theorem polMat_diag {q : (Fin d → ℂ) → ℝ} {b : Matrix (Fin d) (Fin d) �
   rw [hqB, polMat_form hB, vecMul_dotProduct_star, key, ← hqB, hq]
 
 /- English proof (translation)
-Establish `e (c : ℂ) : starRingEnd ℂ c * f ξ ζ + c * f ζ ξ = 0`. Use `h0 (ξ + c • ζ)` as an intermediate fact. Rewrite `this` using `[hadd, hadd', hadd', hsmul', hsmul, hsmul, hsmul', h0 ξ, h0 ζ]`. Take the linear combination `this`. Establish `e1` using `e 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `eI` using `e I`. Rewrite `e1` using `[map_one]`. Rewrite `eI` using `[conj_I]`. Take the linear combination `(1 / 2 : ℂ) * e1 + (I / 2) * eI + ((f ξ ζ - f ζ ξ) / 2) * I_mul_I`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_zero_of_diag {E : Type} [AddCommGroup E] [Module ℂ E] (f : E → E → ℂ)
     (hadd : ∀ x y z, f (x + y) z = f x z + f y z) (hsmul : ∀ (c : ℂ) x z, f (c • x) z = c * f x z)
@@ -86,17 +86,15 @@ end GlobalTheory.ChernReg.MatCompat
 namespace GlobalTheory.ChernReg.MatCompat
 
 /- English proof (translation)
-Introduce `ha c c' v hv hy' ξ ζ`. Establish `hy : c.e.symm v ∈ c.e.source` using `c.e.map_target hv`. Use `set J := fderiv ℂ (c'.e ∘ c.e.symm) v with hJ`. Establish `hM' : matIn a c' ((c'.e ∘ c.e.symm) v) = polMat (a c' (c.e.symm v))`. Rewrite using `[matIn, Function.comp_apply, c'.e.left_inv hy']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : matIn a c v = polMat (a c (c.e.symm v))` using `rfl`. Rewrite using `[hM', hM]`. Establish `hd (x : Fin d → ℂ) : c.dtrans c' (c.e.symm v) x = (J (WithLp.toLp 2 x)).ofLp`. Unfold `AlgChart.dtrans`. Rewrite using `[c.e.right_inv hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_eq_sum ha hy`. Take `⟨b', hb'⟩` from `exists_eq_sum ha hy'`. Set `f : (Fin d → ℂ) → (Fin d → ℂ) → ℂ` to `fun x z => (x ᵥ* polMat (a c (c.e.symm v))) ⬝ᵥ star z - ((J (WithLp.toLp 2 x)).ofLp ᵥ* polMat (a c' (c.e.symm v))) ⬝ᵥ star (J (WithLp.toLp 2 z)).ofLp`. Establish `h` using `eq_zero_of_diag f (fun x y z => by`. Simplify using `only [f, WithLp.toLp_add, map_add, WithLp.ofLp_add, add_vecMul, add_dotProduct]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `ring)`. Use the proof step `(fun c x z => by`. Simplify using `only [f, WithLp.toLp_smul, map_smul, WithLp.ofLp_smul, smul_vecMul, smul_dotProduct, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun x y z => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [f, WithLp.toLp_add, map_add, WithLp.ofLp_add, star_add, dotProduct_add]`. Use the proof step `ring)`. Use the proof step `(fun c x z => by`. Simplify using `only [f, WithLp.toLp_smul, map_smul, WithLp.ofLp_smul, star_smul, dotProduct_smul, smul_eq_mul, Complex.star_def]`. Use the proof step `ring)`.
-
-Use the proof step `(fun x => by`. Simplify using `only [f]`. Rewrite using `[polMat_diag hb, polMat_diag hb', ← hd, ← ha.trans hy hy' x, sub_self])`. Use the proof step `ξ.ofLp ζ.ofLp`. Simplify `h` using `only [f, WithLp.toLp_ofLp, sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem matIn_trans (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d)
     (a : ChartForm p σ d) : IsKaehlerForm R a → ∀ c c' : AlgChart p σ d, ∀ v ∈ c.e.target, c.e.symm v ∈ c'.e.source →

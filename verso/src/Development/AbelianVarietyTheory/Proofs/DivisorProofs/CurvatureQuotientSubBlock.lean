@@ -9,9 +9,9 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e1 : blockQS (curv H z ξ η) = -mdbar (fun x => secondForm H x ξ) z η`. Rewrite using `[blockQS_eq, curv]`. Use extensionality with `a b`. Simplify using `[secondForm, blockQS_eq, Matrix.toBlocks₂₁]`. Establish `he : (fun x => extFormAdj H x ξ) =ᶠ[𝓝 z] fun x => -secondForm H x ξ` using `by filter_upwards [h.isOpen.mem_nhds hz] with x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `extFormAdj_eq_neg_secondForm (h.one hx) (h.eventually_herm hx) (h.isUnit x hx) (hs x hx) ξ`. Rewrite using `[e1, dbarHol, neg_neg, mdbar_congr he, mdbar_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockQS_curv_eq_neg_dbarHol_extFormAdj {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m]

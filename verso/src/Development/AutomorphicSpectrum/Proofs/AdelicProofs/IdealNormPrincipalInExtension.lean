@@ -7,9 +7,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.Lines
 
 /- English proof (translation)
-Establish `h1` using `congrArg UniqueFactorizationMonoid.normalizedFactors hab`. Rewrite `h1` using `[UniqueFactorizationMonoid.normalizedFactors_pow, UniqueFactorizationMonoid.normalizedFactors_pow]`. Establish `h2 : UniqueFactorizationMonoid.normalizedFactors a = UniqueFactorizationMonoid.normalizedFactors b`. Use extensionality with `p`. Establish `h3` using `congrArg (Multiset.count p) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h3` using `[Multiset.count_nsmul, Multiset.count_nsmul]`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hh) h3`. Conclude with `associated_iff_eq.mp ((UniqueFactorizationMonoid.associated_iff_normalizedFactors_eq_normalizedFactors ha hb).mpr h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_of_pow_eq {R : Type} [CommRing R] [IsDedekindDomain R] {a b : Ideal R} {h : ℕ}
     (hh : h ≠ 0) (ha : a ≠ ⊥) (hb : b ≠ ⊥) (hab : a ^ h = b ^ h) : a = b := by
@@ -27,7 +27,7 @@ theorem ideal_eq_of_pow_eq {R : Type} [CommRing R] [IsDedekindDomain R] {a b : I
     ((UniqueFactorizationMonoid.associated_iff_normalizedFactors_eq_normalizedFactors ha hb).mpr h2)
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (y : K') : ℚ) : ℝ)| = (I.absNorm : ℝ) ^ Module.finrank K K' := by have hc0 : c ≠ 0 := by rintro rfl rw [Ideal.span_singleton_zero] at hc exact pow_ne_zero h hI hc have hcK : (c : K) ≠ 0 := fun h0 => hc0 (RingOfIntegers.ext h0) have hz0 : z ≠ 0 := by rintro rfl r …`.
+A detailed English derivation is pending.
 -/
 theorem principal_of_root (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K']
     [Algebra K K'] (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) (h : ℕ) (hh : h ≠ 0) (c : 𝓞 K)
@@ -78,7 +78,7 @@ theorem principal_of_root (K K' : Type) [Field K] [NumberField K] [Field K'] [Nu
   exact (pow_left_inj₀ (abs_nonneg _) (by positivity) hh).mp hpow
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (y : K') : ℚ) : ℝ)| = (I.absNorm : ℝ) ^ Module.finrank K K' := by intro K _ _ I hI obtain ⟨h, c, hh, hc⟩ := GlobalTheory.UnRep.exists_pow_eq_span_singleton K I hI let p : Polynomial K := Polynomial.X ^ h - Polynomial.C (c : K) have hdeg : p.degree ≠ 0 := by rw [ …`.
+A detailed English derivation is pending.
 -/
 theorem exists_principal_extension : ∀ (K : Type) [Field K] [NumberField K] (I : Ideal (𝓞 K)),
     I ≠ ⊥ → ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (y : 𝓞 K'),

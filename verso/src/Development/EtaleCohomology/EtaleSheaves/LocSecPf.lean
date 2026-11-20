@@ -15,7 +15,7 @@ def LocSecB : Prop := ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F : Shv R) (
   Nonempty (CohomologyClass (pt R X) (res R F) n ≃+ (LateralTheory.E.LeafLocPf.secCx F X).homology n)
 
 /- English proof (translation)
-Introduce `_ R _ X F n`. Take `⟨a⟩` from `hA R X F n`. Take `⟨b⟩` from `hB R X F n`. Conclude with `⟨a.trans b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LocSec_of (hA : LocSecA) (hB : LocSecB) : LateralTheory.E.LeafLocPf.LocSec := by
   intro _ R _ X F n

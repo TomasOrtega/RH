@@ -12,7 +12,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory.FlagPoly
 
 /- English proof (translation)
-Simplify using `only [ev, invForm, map_sum, map_add, map_mul, eval_C, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ev_invForm_scale {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (j : ℕ) (al be : ι → ℝ) (k : ℝ)
     (lam : ι → Fin N → ℝ) :
@@ -22,13 +22,13 @@ theorem ev_invForm_scale {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (j 
   ring
 
 /- English proof (translation)
-Introduce `ι _ _ N j hj hjN`. Take `⟨K, hK, hlem⟩` from `GlobalTheory.T.small_on_walls_near_discriminant ι N j hj hjN`. Take `⟨c, hc, hdeg⟩` from `GlobalTheory.T.flag_degree_eq_discriminant_multiple ι N`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Introduce `P h vol e hvol he hP hh hanti hzero hwall`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : (P - MvPolynomial.C vol * h).IsHomogeneous (dimFl ι N + 1)` using `hP.sub (hh.C_mul vol)`. Establish `hevR : ∀ lam, ev lam (P - MvPolynomial.C vol * h) = ev lam P - vol * ev lam h`. Introduce `lam`. Simplify using `only [ev, map_sub, map_mul, eval_C]`. Take `⟨al, be, hco⟩` from `hlem (P - MvPolynomial.C vol * h) e he hR hanti (by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `τ lam hlam`. Rewrite using `[hevR, hzero τ lam ((GlobalTheory.T.wall_set_compact_dominant ι N j τ hj hjN).2.1 lam hlam) hlam.2.1]`. Simplify using `using hwall τ lam hlam)`. Establish `hD : (0 : ℝ) < (dimFl ι N : ℝ) + 1` using `by positivity`. Use `⟨fun τ => (vol * ((dimFl ι N : ℝ) + 1) * c)⁻¹ * al τ, fun τ => (vol * ((dimFl ι N : ℝ) + 1) * c)⁻¹ * be τ, P - MvPolynomial.C vol * h - delPol ι N * invForm j al be, hR.sub (GlobalTheory.T.antisymmetric_discriminant_invariant ι N j al be).2, hco, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `lam`. Rewrite using `[ev_invForm_scale, hdeg lam]`. Establish `: ev lam (P - MvPolynomial.C vol * h - delPol ι N * invForm j al be) = ev lam P - vol * ev lam h - ev lam (delPol ι N) * ev lam (invForm j al be)`. Simplify using `only [ev, map_sub, map_mul, eval_C]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/

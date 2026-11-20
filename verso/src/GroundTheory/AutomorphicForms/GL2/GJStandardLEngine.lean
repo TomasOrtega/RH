@@ -13,11 +13,11 @@ namespace GJStandardL
 open GodementJacquet GLnLocal
 
 /- English proof (translation)
-Establish `h1 : HasProd ((S : Set ι).mulIndicator f) (∏ i ∈ S, f i)`. Establish `: HasProd ((S : Set ι).mulIndicator f) (∏ i ∈ S, (S : Set ι).mulIndicator f i)` using `hasProd_prod_of_ne_finset_one fun i hi ↦ Set.mulIndicator_of_notMem (by simpa using hi) _`. Rewrite `this` using `[Finset.prod_congr rfl fun i hi ↦ Set.mulIndicator_of_mem (by simpa using hi) f]`. Then use the resulting hypothesis. Establish `h2 : HasProd (({i | i ∉ S} : Set ι).mulIndicator f) b` using `(hasProd_subtype_iff_mulIndicator (s := {i | i ∉ S})).1 h`. Establish `h3` using `h1.mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (fun i ↦ (S : Set ι).mulIndicator f i * ({i | i ∉ S} : Set ι).mulIndicator f i) = f`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ S`. Rewrite using `[Set.mulIndicator_of_mem (by simpa using hi), Set.mulIndicator_of_notMem (by simpa using hi), mul_one]`. Rewrite using `[Set.mulIndicator_of_notMem (by simpa using hi), Set.mulIndicator_of_mem (by simpa using hi), one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[heq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasProd_of_hasProd_compl {ι : Type*} {f : ι → ℂ} {b : ℂ} (S : Finset ι)
     (h : HasProd (fun i : {i // i ∉ S} ↦ f i) b) : HasProd f ((∏ i ∈ S, f i) * b) := by
@@ -40,31 +40,25 @@ theorem hasProd_of_hasProd_compl {ι : Type*} {f : ι → ℂ} {b : ℂ} (S : Fi
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨g₀, hg₀⟩` from `hf0`. Use `set c₀ := ∏ᶠ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) (localComp n v g₀) with hc₀`. Establish `hsupp : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v) (localComp n v g₀)).Finite := by`. Use `((finite_setOf_not_mem g₀).union S.finite_toSet).subset fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_union, Finset.mem_coe, not_or] at hc`. Establish `hK : localComp n v g₀ ∈ integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `h`. Conclude with `hc.1 h`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show ℓ v (π v (localComp n v g₀) (ξ v)) = 1`. Rewrite using `[(hsph v hc.2).1 _ hK, (hsph v hc.2).2]`. Rewrite `hg₀` using `[hf g₀]`. Establish `hfi0 : fi (archComp K n g₀) ≠ 0` using `left_ne_zero_of_mul hg₀`. Establish `hc₀0 : c₀ ≠ 0` using `right_ne_zero_of_mul hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc0 : ∀ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v) (localComp n v g₀) ≠ 0 := fun v h ↦ hc₀0 (finprod_eq_zero _ v h hsupp)`. Establish `hfic : Continuous fi`. Establish `key : ∀ x, fi x = f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) / c₀`. Introduce `x`. Establish `: f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) = fi x * c₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hf, archComp_prodEquiv_symm]`. Repeatedly rewrite using `[localComp_prodEquiv_symm]`. Both sides reduce to the same expression. Rewrite using `[this, mul_div_cancel_right₀ _ hc₀0]`. Establish `hc : Continuous fun x ↦ f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) / c₀` using `(hfc.comp ((AdelicGLn.prodEquiv K n).symm.continuous.comp (continuous_id.prodMk continuous_const))).div_const c₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.congr fun x ↦ (key x).symm`. Use `set μi : Measure (AdelicGLn.InfiniteAdelicGL K n) := Measure.haar`. Take `⟨φ, -, hφne, -, -⟩` from `exists_archBump μi hfic hfi0`. Establish `hbump : ∀ v ∈ S, ∃ Φ : Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ, IsSchwartzBruhat Φ ∧ ∃ a : ℂ, a ≠ 0 ∧ ∀ s : ℂ, Integrable (fun g : GL (Fin n) (v.adicCompletion K) ↦ Φ (g : Matrix (Fin n) (Fin n) (v.adicCompletion K)) * Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v) g * detPow g (s + ((n : ℂ) - 1) / 2)) (localHaar n v) ∧ ∫⁻ g : GL (Fin n) (v.adicCompletion K), ‖Φ (g : Matrix (Fin n) (Fin n) (v.adicCompletion K)) * Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) g * detPow g (s + ((n : ℂ …`. Use `choose Φb hΦbSB a ha hΦb using hbump`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ := fun v ↦ if h : v ∈ S then Φb v h else integralIndicator (v.adicCompletion K) n with hΦdef`. Establish `hΦS : ∀ v (hv : v ∈ S), Φ v = Φb v hv` using `fun v hv ↦ by simp only [hΦdef, dif_pos hv]`. Establish `hSB : ∀ v ∈ S, IsSchwartzBruhat (Φ v)` using `fun v hv ↦ by rw [hΦS v hv]; exact hΦbSB v hv`. Establish `hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n` using `fun v hv ↦ by simp only [hΦdef, dif_neg hv]`. Take `⟨σ₀, hσ₀⟩` from `hP _ (matrixTensor_mem φ S Φ hSB hS0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σ₀, fun s hs ↦ ?_⟩` and prove the remaining obligations. Take `⟨-, hE2⟩` from `globalZeta_eq_euler ν μi φ hSB hS0 hξ hsph hfic hf (hσ₀ s hs)`. Establish `hAne : ¬ (archIntegrand φ fi s =ᵐ[μi] 0)`. Introduce `h0`. Apply `hφne s` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0' : (fun x ↦ ‖archIntegrand φ fi s x‖ₑ) =ᵐ[μi] 0` using `h0.mono fun x hx ↦ by simp [hx]`. Rewrite using `[lintegral_congr_ae h0']`. Simplify using the standard rewrite rules. Take `⟨hBint, hP'⟩` from `hE2 hAne`. Establish `hlocint : ∀ v, Integrable (localIntegrand Φ π ξ ℓ s v) (localHaar n v)` using `integrable_factor_finite (localIntegrand Φ π ξ ℓ s) (fun v ↦ (continuous_localIntegrand' hSB hS0 hξ s v).measurable) (by filter_upwards [S.finite_toSet.compl_mem_cofinite] with v hv k hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `localIntegrand_eq_one hS0 hsph s hv hk)`. Use the proof step `(fun y ↦ rfl) hBint (fun v hv ↦ by`. Distinguish the cases in `hvS : v ∈ S`. Use `(hΦb v hvS s).2.1` as an intermediate fact. Simplify using `only [localIntegrand, hΦS v hvS]`.
-
-Conclude with `this`. Conclude with `absurd (fun k hk ↦ localIntegrand_eq_one hS0 hsph s hvS hk) hv)`. Establish `hram0 : ∀ v ∈ S, zetaIntegral (localHaar n v) (Φ v) (Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v)) s ≠ 0 := by`. Introduce `v hv`. Rewrite using `[hΦS v hv, (hΦb v hv s).2.2]`.
-
-Conclude with `mul_ne_zero (ha v hv) (detPow_ne_zero' _ _)`. Use `⟨fun v hv ↦ ?_, ?_⟩` and prove the remaining obligations. Use `(hlocint v).congr (Eventually.of_forall fun g ↦ ?_)` and prove the remaining obligations. Simplify using `only [localIntegrand, hS0 v hv]`. Use `(hasProd_compl_of_hasProd hP' S hram0).multipliable.congr fun v ↦ ?_` and prove the remaining obligations.
-
-Rewrite using `[hS0 v v.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sphericalIntegrable (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     {f : AdelicGLn.AdelicGL K n → ℂ} (hfc : Continuous f)

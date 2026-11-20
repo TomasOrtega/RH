@@ -11,13 +11,13 @@ open MvPolynomial
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `u using U.induction with`. Consider the case `halg r`. Use `⟨algebraMap ℂ (U n) (star r), fun f g => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply, fischer_smul_left, fischer_smul_right]`. Consider the case `hι X`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨∑ a : Fin n × Fin n, star (X a.1 a.2) • e (a.2, a.1), fun f g => ?_⟩` and prove the remaining obligations. Rewrite using `[ι_eq_sum_e]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, fischer_sum_left, fischer_sum_right, fischer_smul_left, fischer_smul_right, star_star]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show e a = e (a.1, a.2) from rfl, rho_zero_e, rho_zero_e, fischer_rowOp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `hmul a b ha hb`. Take `⟨a', ha'⟩` from `ha`. Take `⟨b', hb'⟩` from `hb`. Use `⟨b' * a', fun f g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, ha', hb', map_mul, Module.End.mul_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `hadd a b ha hb`. Take `⟨a', ha'⟩` from `ha`. Take `⟨b', hb'⟩` from `hb`. Use `⟨a' + b', fun f g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, fischer_add_left, ha', hb', map_add, LinearMap.add_apply, fischer_add_right]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_adjoint (u : U n) :
     ∃ u' : U n, ∀ f g : Poly n, fischer (rho 0 u f) g = fischer f (rho 0 u' g) := by
@@ -45,11 +45,11 @@ theorem exists_adjoint (u : U n) :
       fischer_add_right]
 
 /- English proof (translation)
-Take `⟨z', hz'⟩` from `exists_adjoint z`. Establish `hc : ∀ u : U n, u * z = z * u` using `fun u => (Subalgebra.mem_center_iff.1 hz) u`. Apply `eq_zero_of_rho_zero_eq_zero` to reduce the goal to its premises. Use `eq_zero_of_forall_highestWeight (rho 0 z) (rho 0 z') ?_ hz' ?_ ?_` and prove the remaining obligations. Introduce `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← rho_zero_e, ← map_mul, ← map_mul, hc]`. Rewrite using `[← map_mul, ← map_mul, hc]`. Introduce `v μ hup hwt`. Use `rep_apply_of_highestWeight (rho 0) (fun i => (μ i : ℂ)) (v := v) (fun a ha => by` as an intermediate fact. Rewrite using `[show e a = e (a.1, a.2) from rfl, rho_zero_e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hup a.1 a.2 ha)`. Use the proof step `(fun k => by rw [rho_zero_e]; exact rowOp_self_of_wtProj μ v k hwt)`. Use the proof step `(fun k => hc (e (k, k)))`. Rewrite using `[this, h, map_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_center_of_hcProjLin_eq_zero {z : U n}
     (hz : z ∈ Subalgebra.center ℂ (U n)) (h : hcProjLin z = 0) : z = 0 := by
@@ -70,7 +70,7 @@ theorem eq_zero_of_mem_center_of_hcProjLin_eq_zero {z : U n}
     rw [this, h, map_zero, zero_smul]
 
 /- English proof (translation)
-Introduce `z hz z' hz' h`. Use `eq_zero_of_mem_center_of_hcProjLin_eq_zero (Subalgebra.sub_mem _ hz hz') (by rw [map_sub, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hcProjLin_injOn_center :
     Set.InjOn (hcProjLin (n := n)) (Subalgebra.center ℂ (U n) : Set (U n)) := by
@@ -80,7 +80,7 @@ theorem hcProjLin_injOn_center :
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Use `MvPolynomial.funext fun lam => ?_` and prove the remaining obligations. Rewrite using `[eval_translate, eval_translate, neg_add_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_neg_translate (c : Fin n → ℂ) (p : MvPolynomial (Fin n) ℂ) :
     translate (-c) (translate c p) = p := by
@@ -88,13 +88,13 @@ theorem translate_neg_translate (c : Fin n → ℂ) (p : MvPolynomial (Fin n) �
   rw [eval_translate, eval_translate, neg_add_cancel_right]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (translate_neg_translate c)`.
+A detailed English derivation is pending.
 -/
 theorem translate_injective (c : Fin n → ℂ) : Function.Injective (translate (n := n) c) :=
   Function.LeftInverse.injective (translate_neg_translate c)
 
 /- English proof (translation)
-Introduce `z z' h`. Rewrite `h` using `[harishChandraHom_apply, harishChandraHom_apply]`. Conclude with `Subtype.ext (hcProjLin_injOn_center z.2 z'.2 (translate_injective _ h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harishChandraHom_injective : Function.Injective (harishChandraHom (n := n)) := by
   intro z z' h

@@ -13,7 +13,7 @@ private noncomputable def mkL {K : Type} [Field K] [NumberField K] {n : ℕ} (L 
   ⟨⟨fun g => L (f g), L.continuous.comp f.continuous⟩, f.hasCompactSupport.comp_left (map_zero L)⟩
 
 /- English proof (translation)
-Set `_` to `(isExpLieAlgebra K n).chartedSpace`. Conclude with `L.contDiff.comp_contMDiff hf`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem smoothT_mkL {K : Type} [Field K] [NumberField K] {n : ℕ} (L : ℂ →L[ℝ] ℂ) {f : TI K n}
     (hf : SmoothT f) : SmoothT (mkL L f) := by
@@ -25,9 +25,9 @@ private noncomputable def reL : ℂ →L[ℝ] ℂ := Complex.ofRealCLM.comp Comp
 private noncomputable def imL : ℂ →L[ℝ] ℂ := Complex.ofRealCLM.comp Complex.imCLM
 
 /- English proof (translation)
-Establish `hb : Continuous fun y : archGroup K n => b (y⁻¹ * x)` using `by fun_prop`. Establish `i1 : Integrable (fun y => mkL reL a y * b (y⁻¹ * x)) ν` using `((mkL reL a).continuous.mul hb).integrable_of_hasCompactSupport (mkL reL a).hasCompactSupport.mul_right`. Establish `i2 : Integrable (fun y => mkL imL a y * (Complex.I • b) (y⁻¹ * x)) ν` using `((mkL imL a).continuous.mul ((Complex.I • b).continuous.comp (by fun_prop))).integrable_of_hasCompactSupport (mkL imL a).hasCompactSupport.mul_right`. Rewrite using `[conv_apply, conv_apply, ← integral_add i1 i2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((a y).re : ℂ) * b (y⁻¹ * x) + ((a y).im : ℂ) * (Complex.I * b (y⁻¹ * x)) = a y * b (y⁻¹ * x)`. Establish `hz : ((a y).re : ℂ) + ((a y).im : ℂ) * Complex.I = a y` using `Complex.re_add_im _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem conv_split {K : Type} [Field K] [NumberField K] {n : ℕ}
     (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (a b : TI K n) (x : archGroup K n) :
@@ -47,13 +47,13 @@ private theorem conv_split {K : Type} [Field K] [NumberField K] {n : ℕ}
     _ = _ := by rw [hz]
 
 /- English proof (translation)
-Introduce `K _ _ n ν _ F hF`. Take `⟨N, φ, ψ, h, e⟩` from `dixmierMalliavin (isExpLieAlgebra K n) ν (fun g => F g) hF F.hasCompactSupport`. Set `_` to `(isExpLieAlgebra K n).chartedSpace`. Set `a : Fin N → TI K n` to `fun i => ⟨⟨φ i, (h i).1.continuous⟩, (h i).2.1⟩`. Set `b : Fin N → TI K n` to `fun i => ⟨⟨ψ i, (h i).2.2.1.continuous⟩, (h i).2.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `has : ∀ i, SmoothT (a i)` using `fun i => (h i).1`. Use `⟨Fin N × Bool, inferInstance, fun p => if p.2 then mkL imL (a p.1) else mkL reL (a p.1), fun p => if p.2 then Complex.I • b p.1 else b p.1, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, _ | _⟩`. Conclude with `⟨smoothT_mkL _ (has i), fun g => by simp [mkL, reL]⟩`. Conclude with `⟨smoothT_mkL _ (has i), fun g => by simp [mkL, imL]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use extensionality with `x`. Establish `ex : F x = ∑ i, groupConv ν (φ i) (ψ i) x`. Use `congrFun e x` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Rewrite using `[ex, CompactlySupportedContinuousMap.sum_apply, Fintype.sum_prod_type]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Rewrite using `[add_comm, conv_split]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.exists_sum_conv_real_smoothT :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]

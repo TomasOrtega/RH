@@ -9,7 +9,7 @@ namespace UpperTheory.Esk.RadialIntegralLemmas
 open UpperTheory.Esk
 
 /- English proof (translation)
-Establish `hI` using `Complex.I_ne_zero`. Establish `e1 : Complex.I * (1 + u) / (1 - u) - -Complex.I * (α + β * ub) / (α - β * ub) = 2 * Complex.I * (α - β * u * ub) / ((1 - u) * (α - β * ub))` using `by field_simp; ring`. Establish `e2 : Complex.I * (β + α * u) / (β - α * u) - -Complex.I * (α + β * ub) / (α - β * ub) = 2 * Complex.I * α * β * (1 - u * ub) / ((β - α * u) * (α - β * ub))` using `by field_simp; ring`. Establish `e3 : 1 - β / α * (u * ub) = (α - β * u * ub) / α` using `by field_simp`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -30,54 +30,52 @@ theorem key_id (α β u ub : ℂ) (hα : α ≠ 0) (hu : 1 - u ≠ 0) (h1 : β -
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← h, div_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_combine (c X Y S T : ℂ) (k : ℕ) (h : X * Y / S = T) :
     c * X ^ k * (Y ^ k * (S ^ k)⁻¹) = c * T ^ k := by
   rw [← h, div_pow, mul_pow]; ring
 
 /- English proof (translation)
-Use `set u := circleMap 0 r θ with hu_def`. Establish `hnu : ‖u‖ = r` using `by simp [u, abs_of_pos hr0]`. Establish `hu1 : (1 : ℂ) - u ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnu` using `[← h, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `huu : u * conj u = (r : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hnu]`. Use `push_cast`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hn : u.re ^ 2 + u.im ^ 2 = r ^ 2`. Rewrite using `[← hnu, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `set z := Complex.I * (1 + u) / (1 - u) with hz_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz_im : z.im = (1 - r ^ 2) / Complex.normSq (1 - u)`. Rewrite using `[hz_def, Complex.div_im, ← sub_div]`. Use `congr 1`. Simplify using the standard rewrite rules. Use polynomial arithmetic with `[hn]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzpos : 0 < z.im`. Rewrite using `[hz_im]`. Apply `div_pos` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Complex.normSq_pos.2 hu1`.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z.im ≠ 0` using `hzpos.ne'`. Use `set zP : P := ⟨z, hz⟩ with hzP`. Establish `hzP1 : zP.1 = z` using `rfl`. Establish `hzpos' : 0 < zP.1.im` using `hzpos`. Establish `hext : ext1 (U k m) z = F k m zP`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ext1`. Rewrite using `[dif_pos hz]`. Conclude with `if_pos hzpos'`. Establish `hab : 0 < a ^ 2 + b ^ 2`. Use `lt_of_le_of_ne (sq_nonneg b) (Ne.symm (pow_ne_zero 2 hb))` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg a]`. Take `⟨s, hs_def⟩ : ∃ s, s = Real.sqrt (a ^ 2 + b ^ 2)` from `⟨_, rfl⟩`. Establish `hs : 0 < s` using `by rw [hs_def]; exact Real.sqrt_pos.2 hab`. Establish `hs2 : s ^ 2 = a ^ 2 + b ^ 2` using `by rw [hs_def]; exact Real.sq_sqrt hab.le`. Establish `hS0 : (s : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hα0 : (a : ℂ) + b * Complex.I ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hb this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ0 : (a : ℂ) - b * Complex.I ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hb this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hden : den m z = (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u) / (1 - u)`. Rewrite using `[eq_div_iff hu1]`. Unfold `den`. Rewrite using `[h10, h11, hz_def]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hnum : num m z = Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) / (1 - u)`. Rewrite using `[eq_div_iff hu1]`. Unfold `num`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h00, h01, hz_def]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(b * (1 - u)) * Complex.I_sq`. Establish `h1 : ((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u ≠ 0`. Use `den_ne m hz` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `this` using `[hden]`. Conclude with `(div_ne_zero_iff.1 this).1`. Establish `h2 : ((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex.I) * conj u ≠ 0`. Establish `h` using `(map_ne_zero (starRingEnd ℂ)).2 h1`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, map_add, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex.I) * u * conj u ≠ 0`. Introduce `h`. Rewrite `h` using `[mul_assoc, huu, ← Complex.ofReal_pow]`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Complex.im h` as an intermediate fact. Simplify using `only [Complex.sub_im, Complex.add_im, Complex.mul_im, Complex.ofReal_im, Complex.ofReal_re, Complex.I_re, Complex.I_im, Complex.sub_re, Complex.mul_re, Complex.add_re, Complex.zero_im] at this`. Establish `h3 : b * (1 + r ^ 2) = 0`. Take the linear combination `this`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb h4`. Use polynomial arithmetic with `[sq_nonneg r]`. Establish `hw : (m • zP).1 = Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) / (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u)`. Rewrite using `[coe_smul, hzP1, hnum, hden, div_div_div_cancel_right₀ hu1]`. Establish `hwb : conj (Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) / (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u)) = -Complex.I * (((a : ℂ) + b * Complex.I) + ((a : ℂ) - b * Complex.I) * conj u) / (((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex …`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_div₀, map_sub, map_mul, map_add, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwim : 0 < (m • zP).1.im`. Rewrite using `[coe_smul, im_div, det_eq, h00, h01, h10, h11]`. Apply `div_pos (mul_pos (by nlinarith) hzpos') (Complex.normSq_pos.2 (den_ne m hz))` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : |m.val.det| = s ^ 2`. Rewrite using `[det_eq, h00, h01, h10, h11, hs2, abs_of_pos (by nlinarith)]; ring`. Establish `hrp : (|m.val.det| ^ (-(k : ℝ) / 2) : ℝ) = (s ^ k)⁻¹`. Rewrite using `[hdet, ← Real.rpow_natCast s 2, ← Real.rpow_mul hs.le, show ((2 : ℕ) : ℝ) * (-(k : ℝ) / 2) = -(k : ℝ) by push_cast; ring, Real.rpow_neg hs.le, Real.rpow_natCast]`. Establish `hηsq : (((a : ℂ) - b * Complex.I) / (s : ℂ)) ^ 2 = ((a : ℂ) - b * Complex.I) / ((a : ℂ) + b * Complex.I)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, div_eq_div_iff (pow_ne_zero 2 hS0) hα0, ← Complex.ofReal_pow, hs2]`. Use `push_cast`. Take the linear combination `(-((a : ℂ) - b * Complex.I) * (b : ℂ) ^ 2) * Complex.I_sq`. Rewrite using `[hext]`. Unfold `F q1 j1`.
-
-Rewrite using `[if_pos (mul_pos hzpos' hwim), hrp]`. Use `push_cast`. Use `pow_combine _ _ _ _ _ k ?_` and prove the remaining obligations. Rewrite using `[hw, hwb, hzP1, hden, key_id _ _ _ _ hα0 hu1 h1 h2 hA, ← huu, eta, ← hs_def, hηsq]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem cayley_val (k : ℕ) (m : GL (Fin 2) ℝ) (a b : ℝ) (h00 : m 0 0 = a) (h01 : m 0 1 = b)
     (h10 : m 1 0 = -b) (h11 : m 1 1 = a) (hb : b ≠ 0) (r θ : ℝ) (hr0 : 0 < r) (hr1 : r < 1) :

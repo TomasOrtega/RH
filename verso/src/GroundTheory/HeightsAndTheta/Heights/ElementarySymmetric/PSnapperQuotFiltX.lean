@@ -41,43 +41,37 @@ end SnapperQuotFilt
 open SnapperQuotFilt in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x E _ _ _ _ F₁ F₂ hfg hle J hJ hxJ hJF`. Establish `hfg₂ : ∀ I, (F₂.sub I).FG` using `fg_of_le F₁ F₂ hfg hle`. Take `⟨M₁, -, hM₁⟩` from `Extension.proof k Ω N x E F₁ hfg`. Take `⟨M₀, -, hM₀⟩` from `Extension.proof k Ω N x E F₂ hfg₂`. Take `⟨H, hHJ, hHspan, hHhom⟩` from `IdealTwistFamily.exists_finset_forms J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set hs : Fin H.card → Poly k N := fun l => (H.equivFin.symm l : Poly k N) with hs_def`. Establish `hrange : Set.range hs = ↑H`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(H.equivFin.symm l).2`. Introduce `hf`. Conclude with `⟨H.equivFin ⟨f, hf⟩, by simp [hs_def]⟩`. Establish `hhom : ∀ l, (hs l).IsHomogeneous (hs l).totalDegree` using `fun l => hHhom _ (H.equivFin.symm l).2`. Establish `hsJ : ∀ l, hs l ∈ J` using `fun l => hHJ (H.equivFin.symm l).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set A := gsup M₁ M₀ with hA_def`. Use `set B := gsup M₀ (gmul A hs fun l => (hs l).totalDegree) with hB_def`. Establish `hA : ∀ I, A.tilde 0 I = F₁.sub I` using `fun I => by`. Rewrite using `[hA_def, tilde_gsup, hM₁, hM₀]`. Conclude with `sup_eq_left.mpr (hle I)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hB : ∀ I, B.tilde 0 I = F₂.sub I` using `fun I => by`. Rewrite using `[hB_def, tilde_gsup, hM₀]`. Conclude with `sup_eq_left.mpr ((tilde_gmul_le A hs _ hhom hsJ F₁.toSubSystem (fun I => (hA I).le) I).trans (hJF I))`. Establish `hBA : ∀ c, B.piece c ≤ A.piece c` using `fun c => by`. Use `sup_le le_sup_right (Submodule.span_le.mpr ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨l, b, m, hm, hb, rfl⟩`. Use `A.smul_mem _ b (hs l) m (hhom l) hm` as an intermediate fact. Rewrite `this` using `[hb]`. Then use the resulting hypothesis. Establish `hkill : ∀ (f : Poly k N) (e : ℕ), f ∈ J → f.IsHomogeneous e → ∀ (a : ℤ), ∀ z ∈ A.piece a, aeval x f • z ∈ B.piece (a + e)` using `fun f e hf hfe a z hz => Submodule.mem_sup_right (smul_mem_gmul A hs _ hhom (by rw [hrange, hHspan]) hf hfe hz)`. Take `⟨n, Nf, g, deg, pr, h0, hlast, hk⟩` from `StepTwo.Filt.proof PrimeFiltration.Exists.proof k Ω N x E A B hBA J hkill`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hstep : ∀ (j : Fin n) (c : ℤ), (Nf j.castSucc).piece c ≤ (Nf j.succ).piece c` using `fun j c => by`. Rewrite using `[(hk j).2.2.2.2.2.1 c]`. Conclude with `le_sup_left`. Establish `hmono : ∀ (i j : ℕ) (hij : i ≤ j) (hj : j ≤ n) (c : ℤ), (Nf ⟨i, by omega⟩).piece c ≤ (Nf ⟨j, by omega⟩).piece c`. Introduce `i j hij hj c`.
+Extract witnesses or component facts from the available result. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Proceed by induction on `j with`. Consider the case `zero`. Take `rfl : i = 0` from `by omega`. Conclude with `le_rfl`. Consider the case `succ j ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `Nat.eq_or_lt_of_le hij with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `le_rfl`. Conclude with `(ih (by omega) (by omega)).trans (hstep ⟨j, by omega⟩ c)`. Establish `hNf : ∀ m (hm : m ≤ n), Nf ⟨min m n, by omega⟩ = Nf ⟨m, by omega⟩` using `fun m hm => congrArg Nf (Fin.ext (Nat.min_eq_left hm))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set G : ℕ → SubFamily k x E := fun m => tildeFam (Nf ⟨min m n, by omega⟩) with hG_def`. Establish `hGle : ∀ m I, (G m).sub I ≤ F₁.sub I` using `fun m I => by`. Rewrite using `[← hA, ← hlast]`. Conclude with `tilde_mono (hmono _ n (by omega) le_rfl) 0 I`. Use `⟨n, G, pr, fun m => -deg m, fun m I => fg_of_le F₁ (G m) hfg (hGle m) I, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Nf ⟨min 0 n, _⟩).tilde 0 I = F₂.sub I`. Rewrite using `[hNf 0 (Nat.zero_le n), Fin.mk_zero, h0, hB]`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Nf ⟨min n n, _⟩).tilde 0 I = F₁.sub I`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Rewrite using `[hNf n le_rfl]`. Express the relevant statement in the definitionally equal form `(Nf (Fin.last n)).tilde 0 I = F₁.sub I`. Rewrite using `[hlast, hA]`. Introduce `m hm I`. Express the relevant statement in the definitionally equal form `(Nf ⟨min m n, _⟩).tilde 0 I ≤ (Nf ⟨min (m + 1) n, _⟩).tilde 0 I`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hNf m hm.le, hNf (m + 1) hm]`. Conclude with `tilde_mono (hstep ⟨m, hm⟩) 0 I`. Introduce `m`. Take `⟨hp, hh, -, hJf, -⟩` from `hk m`. Conclude with `⟨hp, hh, le_of_forms hJ hJf⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m t L n' c`. Take `⟨hp, -, -, -, hg, hN, hiff⟩` from `hk m`. Simplify using `only`. Establish `e1 : (G (m + 1)).toSubSystem = (Nf m.succ).tildeSys 0`. Express the relevant statement in the definitionally equal form `(Nf ⟨min (m + 1) n, _⟩).tildeSys 0 = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNf _ m.2]`. Both sides reduce to the same expression. Establish `e2 : (G m).toSubSystem = (Nf m.castSucc).tildeSys 0`. Express the relevant statement in the definitionally equal form `(Nf ⟨min m n, _⟩).tildeSys 0 = _`. Rewrite using `[hNf _ m.2.le]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hs1 : ∀ T : SubSystem k x E, (T.twistPows t (fun j => (L j).toSubSystem) n').twist (twistSys k x c) = T.twist ((powsBundle t L n').toSubSystem.twist (twistSys k x c))` using `fun T => by`. Rewrite using `[twistPows_eq, twist_twist]`. Establish `ht1 : ((twistSys k x (-deg m)).twistPows t (fun j => (L j).toSubSystem) n').twist (twistSys k x c) = (powsBundle t L n').toSubSystem.twist (twistSys k x (c - deg m))`. Rewrite using `[twistPows_eq]`.
-
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Simplify using `only [SubSystem.twist_sub_eq_mul_of_line]`. Rewrite using `[sub_eq_add_neg, ← twistSys_sub_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `ht2 : (((twistSys k x (-deg m)).twist (idealSys x (pr m))).twistPows t (fun j => (L j).toSubSystem) n').twist (twistSys k x c) = ((powsBundle t L n').toSubSystem.twist (twistSys k x (c - deg m))).twist (idealSys x (pr m))`.
-
-Rewrite using `[twistPows_eq]`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Simplify using `only [SubSystem.twist_sub_eq_mul_of_line]`. Rewrite using `[sub_eq_add_neg, ← twistSys_sub_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e1, e2, hs1, hs1, ht1, ht2]`. Conclude with `⟨pieceIso (Nf m.castSucc) (Nf m.succ) (powsBundle t L n') c hp hg hN hiff⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SnapperQuotFilt.proof : SnapperQuotFilt.Statement.{u, v, w} := by
   intro k _ Ω _ _ N x E _ _ _ _ F₁ F₂ hfg hle J hJ hxJ hJF

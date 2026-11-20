@@ -16,17 +16,17 @@ def PlaceStep : Prop := ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] [Al
     ∀ x : K, x ∈ A.toSubring ∨ x⁻¹ ∈ A.toSubring
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _`. Take `⟨A, hA, hmax⟩` from `h1 k K`. Establish `hv` using `h2 k K A hA hmax`. Set `T : ValuationSubring K` to `⟨A.toSubring, hv⟩`. Set `σ : k →+* T` to `(algebraMap k K).codRestrict T (fun c => hA.1 c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨T, σ, fun x => rfl, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨c, hc⟩` from `hA.2 a a.2`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.comp_apply]`. Apply `Ideal.Quotient.eq.mpr` to reduce the goal to its premises. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.mp hu`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hK : ((σ c : K) - (a : K)) * (w : K) = 1`. Use `congrArg (fun z : T => (z : K)) hw` as an intermediate fact. Simplify using `using this`. Break down `hc with h | h` into its components or cases. Establish `: (σ c : K) - (a : K) = 0` using `by rw [h]; simp [σ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hK` using `[this, zero_mul]`. Conclude with `zero_ne_one hK`. Apply `h` to reduce the goal to its premises. Establish `hinv : ((σ c : K) - (a : K))⁻¹ = (w : K)` using `inv_eq_of_mul_eq_one_right hK`. Establish `: ((a : K) - algebraMap k K c)⁻¹ = -(w : K)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinv, ← inv_neg, neg_sub]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `T.neg_mem _ w.2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PlaceEx_of (h1 : PlaceZorn) (h2 : PlaceStep) : PlaceEx := by
   intro k K _ _ _ _ _

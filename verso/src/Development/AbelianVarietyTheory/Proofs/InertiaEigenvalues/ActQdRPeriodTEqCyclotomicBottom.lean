@@ -33,7 +33,7 @@ section Mul
 variable {R : Type} [CommRing R] [Algebra Qp R]
 
 /- English proof (translation)
-Simplify using `[mulPeriod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mp_tmul (b c : R) (v : V) :
     mulPeriod (Qp := Qp) (LL := LL) (V := V) b (v ⊗ₜ c) = v ⊗ₜ (b * c) := by
@@ -52,7 +52,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V) in
 variable {R : Type} [CommRing R] [Algebra Qp R] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v r`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.comm_mp (b : R) (x : V ⊗[Qp] R) :
     TensorProduct.comm Qp V R (_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod (Qp := Qp) (LL := LL) (V := V) b x) =
@@ -64,7 +64,7 @@ theorem _root_.GlobalTheory.DeRhamCompare.comm_mp (b : R) (x : V ⊗[Qp] R) :
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (finrank LL V) with h0 | h0` into its components or cases. Establish `: Subsingleton V` using `Module.finrank_zero_iff.1 h0 infer_instance`. Conclude with `Module.finite_of_finrank_pos (h ▸ Nat.mul_pos hn h0)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_finrank_eq [FiniteDimensional LL V] (S : Submodule LL (V ⊗[Qp] R)) {n : ℕ}
     (hn : 0 < n) (h : finrank LL S = n * finrank LL V) : FiniteDimensional LL S := by
@@ -87,7 +87,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) in
 /- English proof (translation)
-Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.DdR`. Simplify using `[Submodule.mem_iInf, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.mem_DdR (x : V ⊗[Qp] BdR) :
     x ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ ↔ ∀ g, _root_.Formalism.WeaklyAdmissibleFiltrations.actVdR PD ρ g x = x := by
@@ -95,13 +95,13 @@ theorem _root_.GlobalTheory.DeRhamCompare.mem_DdR (x : V ⊗[Qp] BdR) :
   simp [Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `[Dcris, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dcris (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `[DdRE, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdRE (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] BdR) : x ∈ DdRE PD ρ τ ↔
     x ∈ DdR PD ρ ∧ ∀ c : K, mulVdR (Qp := Qp) (LL := LL) (V := V) (BdR := BdR) c x = τ c • x := by
@@ -119,9 +119,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[_root_.GlobalTheory.DeRhamCompare.mem_DdR]`. Introduce `g`. Establish `key : ∀ y : V ⊗[Qp] BdR, _root_.Formalism.WeaklyAdmissibleFiltrations.actVdR PD ρ g (_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod (Qp` using `Qp) (LL := LL) (V := V) (algebraMap K BdR c) y) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod (Qp := Qp) (LL := LL) (V := V) (algebraMap K BdR c) (_root_.Formalism.WeaklyAdmissibleFiltrations.actVdR PD ρ g y) := by`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul v r => simp [_root_.Formalism.WeaklyAdmissibleFiltrations.actVdR, _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Rewrite using `[key, hx g]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.mulK_mem (c : K) (x : V ⊗[Qp] BdR) (hx : x ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod (Qp := Qp) (LL := LL) (V := V) (algebraMap K BdR c) x ∈
@@ -141,9 +141,9 @@ theorem _root_.GlobalTheory.DeRhamCompare.mulK_mem (c : K) (x : V ⊗[Qp] BdR) (
   rw [key, hx g]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_Dcris]`. Introduce `g`. Use `conv_rhs => rw [← hx g]`. Use `clear hx`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v b => simp [mp_tmul, actVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulK₀_mem (c : K₀) (x : V ⊗[Qp] B) (hx : x ∈ Dcris PD ρ) :
     mulPeriod (Qp := Qp) (LL := LL) (V := V) (algebraMap K₀ B c) x ∈ Dcris PD ρ := by
@@ -168,11 +168,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) in
 /- English proof (translation)
-Establish `hK : FiniteDimensional Qp K` using `by cases PD; assumption`. Unfold `_root_.Formalism.MainNotions.N.IsDR at h`. Distinguish the cases in `hV : Module.finrank LL V = 0`. Establish `hsV : Subsingleton V` using `Module.finrank_zero_iff.mp hV`. Establish `hzero : ∀ z : V ⊗[Qp] BdR, z = 0` using `fun z => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul v r => rw [Subsingleton.elim v 0, TensorProduct.zero_tmul]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Establish `hsub : Subsingleton (_root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ)` using `⟨fun x y => Subtype.ext (by rw [hzero x, hzero y])⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `infer_instance`. Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `Nat.mul_pos Module.finrank_pos (Nat.pos_of_ne_zero hV)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.finite_DdR [FiniteDimensional LL V] (h : _root_.Formalism.MainNotions.N.IsDR PD ρ) :
     FiniteDimensional LL (_root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ) := by
@@ -193,7 +193,7 @@ theorem _root_.GlobalTheory.DeRhamCompare.finite_DdR [FiniteDimensional LL V] (h
     exact Nat.mul_pos Module.finrank_pos (Nat.pos_of_ne_zero hV)
 
 /- English proof (translation)
-Use `PD.finK₀` as an intermediate fact. Conclude with `finite_of_finrank_eq _ finrank_pos h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_Dcris [FiniteDimensional LL V] (h : IsCrys PD ρ) :
     FiniteDimensional LL (Dcris PD ρ) := by
@@ -201,16 +201,16 @@ theorem finite_Dcris [FiniteDimensional LL V] (h : IsCrys PD ρ) :
   exact finite_of_finrank_eq _ finrank_pos h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v ⊗ₜ ⟨b, hb⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem_FilV (v : V) {a : ℤ} {b : BdR} (hb : b ∈ PD.Fil a) :
     v ⊗ₜ[Qp] b ∈ FilV PD (LL := LL) (V := V) a :=
   ⟨v ⊗ₜ ⟨b, hb⟩, by simp⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `tmul v b => simpa using ht v b b.2`. Consider the case `add x y hx hy => rw [map_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `ha _ _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem FilV_induction {a : ℤ} {p : V ⊗[Qp] BdR → Prop} (h0 : p 0)
     (ht : ∀ v, ∀ b ∈ PD.Fil a, p (v ⊗ₜ b)) (ha : ∀ x y, p x → p y → p (x + y))
@@ -233,9 +233,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) in
 /- English proof (translation)
-Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FildR`. Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FilV`. Establish `hle : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `PD.Fil_anti a`. Introduce and unpack `x ⟨y, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.FildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
     _root_.Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ (a + 1) ≤ _root_.Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ a := by
@@ -250,7 +250,7 @@ theorem _root_.GlobalTheory.DeRhamCompare.FildR_succ_le (τ : K →ₐ[Qp] LL) (
   rfl
 
 /- English proof (translation)
-Introduce `h'` and use `h (by rw [multV, h', sub_self])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isJumpV_of_multV_ne {τ : K →ₐ[Qp] LL} {a : ℤ} (h : multV PD ρ τ a ≠ 0) :
     IsJumpV PD ρ τ a := fun h' => h (by rw [multV, h', sub_self])
@@ -308,14 +308,14 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.mem_DdRK (y : BdR ⊗[Qp] V) :
     y ∈ _root_.GlobalTheory.DeRhamCompare.DdRK PD ρ ↔ (TensorProduct.comm Qp V BdR).symm y ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ :=
   Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_DcrisK (y : B ⊗[Qp] V) :
     y ∈ DcrisK PD ρ ↔ (TensorProduct.comm Qp V B).symm y ∈ Dcris PD ρ := Iff.rfl
@@ -344,7 +344,7 @@ def InjVectors : Prop :=
       ∑ j, mulPeriod (Qp := Qp) (LL := LL) (V := V) (b j) (x j) = 0 → ∀ j, b j = 0
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [mp_tmul, ιV]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ιV_mp (c : B) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (mulPeriod (Qp := Qp) (LL := LL) (V := V) c x) =
@@ -384,7 +384,7 @@ def co (φ : V →ₗ[Qp] Qp) : V ⊗[Qp] BdR →ₗ[Qp] BdR :=
   (TensorProduct.lid Qp BdR).toLinearMap ∘ₗ φ.rTensor BdR
 
 /- English proof (translation)
-Simplify using `[co]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem co_tmul (φ : V →ₗ[Qp] Qp) (v : V) (b : BdR) : co φ (v ⊗ₜ b) = φ v • b := by
   simp [co]

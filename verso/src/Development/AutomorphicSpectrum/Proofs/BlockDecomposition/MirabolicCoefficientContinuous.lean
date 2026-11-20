@@ -6,11 +6,11 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V V' _ _ _ _ T B hT v v'`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hcont : Continuous fun y : Fin n → k => GlobalTheory.CompanionTheory.MirFourier.unipIn k n (Multiplicative.ofAdd (y - x))` using `(GlobalTheory.CompanionTheory.MirFourier.continuous_unipIn n).comp (continuous_ofAdd.comp (continuous_id.sub continuous_const))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hopen : IsOpen {y : Fin n → k | T (GlobalTheory.CompanionTheory.MirFourier.unipIn k n (Multiplicative.ofAdd (y - x))) v = v}` using `(hT v).preimage hcont`. Establish `hx : x ∈ {y : Fin n → k | T (GlobalTheory.CompanionTheory.MirFourier.unipIn k n (Multiplicative.ofAdd (y - x))) v = v}`. Simplify using the standard rewrite rules. Use `filter_upwards [hopen.mem_nhds hx] with y hy`. Establish `hy' : T (GlobalTheory.CompanionTheory.MirFourier.unipIn k n (Multiplicative.ofAdd (y - x))) v = v` using `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : GlobalTheory.CompanionTheory.MirPair.uM n y = GlobalTheory.CompanionTheory.MirPair.uM n x * GlobalTheory.CompanionTheory.MirFourier.unipIn k n (Multiplicative.ofAdd (y - x))`. Unfold `GlobalTheory.CompanionTheory.MirPair.uM`. Rewrite using `[← map_mul, ← ofAdd_add, add_sub_cancel]`. Unfold `GlobalTheory.CompanionTheory.MirPair.coef`. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, hy']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coef : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ), IsSmooth T → ∀ (v : V) (v' : V'), Continuous (coef T B v v') := by
   intro k _ _ _ _ n V V' _ _ _ _ T B hT v v'

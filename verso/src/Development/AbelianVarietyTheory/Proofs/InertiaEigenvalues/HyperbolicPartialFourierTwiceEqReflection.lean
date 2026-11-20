@@ -5,15 +5,13 @@ noncomputable section
 namespace GlobalTheory.JR.Hyp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x ν hsd Φ hΦ`. Use `haveI : T2Space A.K := by`. Set `e` to `(Module.finBasis F A.K).equivFun`. Establish `he : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact T2Space.of_continuous_injective e.injective he`. Consider the case `exact T2Space.of_injective_continuous e.injective he`. Consider the case `exact e.injective.t2Space he`. Use function extensionality and compare the values at `p`. Establish `hemb : Topology.IsClosedEmbedding (Prod.mk p.1 : A.K → A.K × A.K)`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨isEmbedding_prodMkRight p.1, ?_⟩` and prove the remaining obligations. Establish `: Set.range (Prod.mk p.1 : A.K → A.K × A.K) = ({p.1} : Set A.K) ×ˢ Set.univ`. Use extensionality with `⟨a, b⟩`. Simplify using `only [Set.mem_range, Prod.mk.injEq, Set.mem_prod, Set.mem_singleton_iff, Set.mem_univ, and_true]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨y, rfl, rfl⟩`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨b, rfl, rfl⟩`. Rewrite using `[this]`.
-
-Conclude with `isClosed_singleton.prod isClosed_univ`. Establish `hf : IsTest (fun b => Φ (p.1, b))` using `⟨hΦ.1.comp_continuous hemb.continuous, hΦ.2.comp_isClosedEmbedding hemb⟩`. Conclude with `hsd.2 _ hf p.2`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pt_pt_eq_reflect : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (ν : Measure A.K), SelfDual ν (Hyp.kx A ψ x) → ∀ Φ : A.K × A.K → ℂ, IsTest Φ → Hyp.pt A ν ψ x (Hyp.pt A ν ψ x Φ) = fun p => Φ (p.1, -p.2) := by
   intro F E _ _ _ _ _ A ψ x ν hsd Φ hΦ

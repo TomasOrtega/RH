@@ -142,7 +142,7 @@ namespace Check
 open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (IsLatOf)
 
 /- English proof (translation)
-Unfold `jet taylor`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `[iteratedFDeriv_const_of_ne, Algebra.algebraMap_eq_smul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_const (J : JetRing ℂ I n) (a : ℂ) : jet J (fun _ ↦ a) = algebraMap ℂ J.B a := by
   unfold jet taylor
@@ -150,7 +150,7 @@ theorem jet_const (J : JetRing ℂ I n) (a : ℂ) : jet J (fun _ ↦ a) = algebr
   simp [iteratedFDeriv_const_of_ne, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Unfold `jet taylor`. Use `Finset.sum_congr rfl fun k _ ↦ Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[(h.iteratedFDeriv ℂ k).eq_of_nhds]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_congr (J : JetRing ℂ I n) {f g : (I → ℂ) → ℂ} (h : f =ᶠ[𝓝 0] g) : jet J f = jet J g := by
   unfold jet taylor
@@ -158,9 +158,9 @@ theorem jet_congr (J : JetRing ℂ I n) {f g : (I → ℂ) → ℂ} (h : f =ᶠ[
   rw [(h.iteratedFDeriv ℂ k).eq_of_nhds]
 
 /- English proof (translation)
-Establish `h1 : fderiv ℂ l = fun _ ↦ l` using `funext fun _ ↦ l.fderiv`. Unfold `jet taylor`. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ', Finset.sum_eq_zero]`. Rewrite using `[← (Equiv.funUnique (Fin 1) I).symm.sum_comp]`. Simplify using `[h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _`. Use `Finset.sum_eq_zero fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_succ_apply_right, h1, iteratedFDeriv_const_of_ne (Nat.succ_ne_zero k)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_linear (J : JetRing ℂ I n) (l : (I → ℂ) →L[ℂ] ℂ) : jet J l = ∑ i, l (Pi.single i 1) • J.t i := by
   have h1 : fderiv ℂ l = fun _ ↦ l := funext fun _ ↦ l.fderiv
@@ -174,19 +174,19 @@ theorem jet_linear (J : JetRing ℂ I n) (l : (I → ℂ) →L[ℂ] ℂ) : jet J
     simp
 
 /- English proof (translation)
-Use `(jet_linear J (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I ↦ ℂ) i)).trans ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jet_coord (J : JetRing ℂ I n) (i : I) : jet J (fun z ↦ z i) = J.t i := by
   refine (jet_linear J (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I ↦ ℂ) i)).trans ?_
   simp [Pi.single_apply]
 
 /- English proof (translation)
-The claim follows from `J.b.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem t_ne_zero (J : JetRing ℂ I n) (i : I) : J.t i ≠ 0 := J.b.ne_zero _
 
 /- English proof (translation)
-Simplify using `[jet_coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jet_aeval_X (J : JetRing ℂ I n) (i : I) :
     MvPolynomial.aeval J.t (MvPolynomial.X i : MvPolynomial I ℂ) =
@@ -194,9 +194,9 @@ theorem jet_aeval_X (J : JetRing ℂ I n) (i : I) :
   simp [jet_coord]
 
 /- English proof (translation)
-Take `⟨𝔠, X₀, δ₀, N, T, hA, hO, -, hT⟩` from `h4 K d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E I φ hφ hio c y hc`. Take `⟨J₀⟩` from `h1 Qb I n`. Take `⟨J⟩` from `h1 ℂ I n`. Take `⟨Y₀⟩` from `h2 (FR E) 𝔠 Qb I n J₀ X₀ δ₀ N hA`. Take `⟨Y, -⟩` from `h3 E I 𝔠 φ _ Qb _ n J₀ J X₀ δ₀ N Y₀ T hO`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G⟩` from `h5 E I 𝔠 φ c y hφ hc n T J Y`. Take `⟨ε, h⟩` from `h6`. Conclude with `⟨𝔠, T, J, Y, G, ε, h E I 𝔠 φ c y hφ hc n T J Y G, fun i ↦ (hT i).1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coord_nonempty (h1 : JetRingEx) (h2 : JetLift) (h3 : JetBC) (h4 : ModelAlg) (h5 : GermEx) (h6 : CoordEx)
     (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ) (hK : Module.finrank ℚ K = 2) (hd : 0 < d)
@@ -215,9 +215,9 @@ theorem coord_nonempty (h1 : JetRingEx) (h2 : JetLift) (h3 : JetBC) (h4 : ModelA
   exact ⟨𝔠, T, J, Y, G, ε, h E I 𝔠 φ c y hφ hc n T J Y G, fun i ↦ (hT i).1⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h5, h6, ⟨s, hZ⟩, hD⟩` from `h`. Take `⟨𝔠, T, J, Y, G, ε, ⟨C⟩, hA⟩` from `coord_nonempty h1 h2 h3 h4 h5 h6 K d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E I φ hφ hio c y hc n`. Use `⟨𝔠, T, J, Y, G, ε, C, fun i ↦ ?_, (hD ε E I 𝔠 φ c y hφ hc n T J Y G C).2⟩` and prove the remaining obligations. Establish `h0 : jet J (fun z ↦ C.ζ z i) ≠ 0`. Rewrite using `[hZ ε E I 𝔠 φ c y hφ hc n T J Y G C i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := Module.Free.of_basis J.b`. Conclude with `smul_ne_zero (mul_ne_zero (Int.cast_ne_zero.2 (Units.ne_zero _)) (hA i)) (t_ne_zero J i)`. Conclude with `⟨h0, fun he ↦ h0 (by rw [jet_congr J he, jet_const, map_zero])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem steps_nonvacuous (h : Steps) (h1 : JetRingEx) (h2 : JetLift) (h3 : JetBC) (h4 : ModelAlg)
     (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ) (hK : Module.finrank ℚ K = 2) (hd : 0 < d)

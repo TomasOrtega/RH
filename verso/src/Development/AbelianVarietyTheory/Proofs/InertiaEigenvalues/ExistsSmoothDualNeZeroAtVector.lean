@@ -9,13 +9,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Top
 namespace GlobalTheory.SmoothForm
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ hK hρ v hv`. Take `⟨K, hKo, hKc, hKU⟩` from `hK {g | ρ g v = v} ((hρ v).mem_nhds (by simp))`. Establish `hfix : v ∈ fixed ρ K` using `GlobalTheory.IwahoriInj.mem_fixed.2 fun h hh => hKU hh`. Establish `hnot : v ∉ twKer ρ K 1` using `fun h => hv (GlobalTheory.IwahoriInj.eq_zero_of_fixed hρ hKc hfix h)`. Establish `hq : (twKer ρ K 1).mkQ v ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ (V ⧸ twKer ρ K 1), f ((twKer ρ K 1).mkQ v) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨f ∘ₗ (twKer ρ K 1).mkQ, ?_, hf⟩` and prove the remaining obligations. Establish `hinv : ∀ g ∈ K, ρ.dual g (f ∘ₗ (twKer ρ K 1).mkQ) = f ∘ₗ (twKer ρ K 1).mkQ`. Introduce `g hg`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Representation.dual_apply]`.
-
-Use `show f ((twKer ρ K 1).mkQ (ρ g⁻¹ x)) = f ((twKer ρ K 1).mkQ x)`. Use `congr 1`. Conclude with `(Submodule.Quotient.eq _).2 (GlobalTheory.IwahoriInj.sub_mem_twKer (inv_mem hg) x)`. Conclude with `GlobalTheory.SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset (hKo.mem_nhds K.one_mem) fun g hg => hinv g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_smooth_form_ne_zero : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), (∀ U ∈ 𝓝 (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U) → IsSmooth ρ → ∀ v : V, v ≠ 0 → ∃ l : Module.Dual ℂ V, l ∈ smoothPart ρ.dual ∧ l v ≠ 0 := by
   intro G V _ _ _ _ _ ρ hK hρ v hv

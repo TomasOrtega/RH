@@ -28,7 +28,7 @@ variable {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {l l' : Level H} {c :
 include hx
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(pushE mu x' hx).surjective (tanOf hw)`. Conclude with `⟨(tv v).left, isTan_tv v, congrArg (fun z => (tv z).left) hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_lift {w : Sp (DualNumber R) ⟶ t.G.left} (hw : IsTanAtG t x w) :
     ∃ v, IsTanAtG t' x' v ∧ v ≫ mu.φ = w := by
@@ -36,7 +36,7 @@ private theorem exists_lift {w : Sp (DualNumber R) ⟶ t.G.left} (hw : IsTanAtG 
   exact ⟨(tv v).left, isTan_tv v, congrArg (fun z => (tv z).left) hv⟩
 
 /- English proof (translation)
-Use `(eig_iff (tanOf hv) a s).2 ((pushE mu x' hx).injective ?_)` and prove the remaining obligations. Rewrite using `[pushE_act, map_smul]`. Conclude with `(eig_iff _ a _).1 h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eig_pull {v : Sp (DualNumber R) ⟶ t'.G.left} (hv : IsTanAtG t' x' v) (a : 𝓞 E) (s : R)
     (h : (v ≫ mu.φ) ≫ (t.act.act a).left = spMap (epsMul s) ≫ v ≫ mu.φ) :
@@ -46,7 +46,7 @@ private theorem eig_pull {v : Sp (DualNumber R) ⟶ t'.G.left} (hv : IsTanAtG t'
   exact (eig_iff _ a _).1 h
 
 /- English proof (translation)
-Use `⟨fun τ i => ⟨hu τ i, fun a => ?_⟩, fun τ w hw he => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf]`. Conclude with `eig_pull mu hx (hu τ i) a _ ((h.1 τ i).2 a)`. Use `(existsUnique_congr fun cf => comb_push mu hx (hu τ) hw cf).1 (h.2 τ _ (isTan_push mu x' hx hw) fun a => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, ← mu.act, ← Category.assoc, he, hf, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_pull {f' : c'.F →+* R} {f : c.F →+* R} (hf : ∀ τ a, f (embK c τ a) = f' (embK c' τ a))
     {u : Vecs Dw t' R} (hu : ∀ τ i, IsTanAtG t' x' (u τ i))
@@ -61,7 +61,7 @@ private theorem frame_pull {f' : c'.F →+* R} {f : c.F →+* R} (hf : ∀ τ a,
 end Frames
 
 /- English proof (translation)
-Introduce `τ n _ i hi` and use `by obtain ⟨cf, h1, h2⟩ := h τ i exact ⟨cf, fun j hj => h1 j (Fin.lt_def.2 (by omega)), h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sameFlag_of_tri {X : Scheme.{0}} {t : SAB H X} {k : Type} [Field k] {x : Sp k ⟶ X} {u u' : Vecs Dw t k}
     (ty : (E →+* ℂ) → Finset ℕ) (h : ∀ τ, Pull.Tri t x (u τ) (u' τ)) : SameFlag ty t x u u' := fun τ n _ i hi => by
@@ -69,7 +69,7 @@ private theorem sameFlag_of_tri {X : Scheme.{0}} {t : SAB H X} {k : Type} [Field
   exact ⟨cf, fun j hj => h1 j (Fin.lt_def.2 (by omega)), h2⟩
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) h)`.
+A detailed English derivation is pending.
 -/
 private theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) h)
@@ -77,7 +77,7 @@ private theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Use `(Y i).jQ_open` as an intermediate fact. Use `mono_spMap_subtype (i.c.V W)` as an intermediate fact. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_j (i : Idx H p) : Mono (Y i).j := by
   have := (Y i).jQ_open
@@ -86,7 +86,7 @@ private theorem mono_j (i : Idx H p) : Mono (Y i).j := by
   infer_instance
 
 /- English proof (translation)
-Use `mono_spMap_subtype (Z.i.c.V W)` as an intermediate fact. Rewrite using `[← cancel_mono (spMap (Z.i.c.V W).subtype), ← affineOpenChart_comp_structure_eq_spMap Z h, reassoc_of% hy, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, Category.assoc, Category.assoc, pullback.condition, reassoc_of% (Y Z.i).jQ_over]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem snd_of_chart (Z : LocM.Mdl Y i₀) {a : Fin Z.m} {R : Type} [CommRing R] {φ : Γ(Z.X, (Z.U a).1) →+* R}
     {w : Sp R ⟶ Z.X} (h : spMap φ ≫ Z.chart a = w) {y : Sp R ⟶ (Xo Z.i.l).XF Z.i.c} (hy : w ≫ Z.π = y ≫ (Y Z.i).j) :
@@ -96,9 +96,9 @@ private theorem snd_of_chart (Z : LocM.Mdl Y i₀) {a : Fin Z.m} {R : Type} [Com
     Category.assoc, Category.assoc, pullback.condition, reassoc_of% (Y Z.i).jQ_over]
 
 /- English proof (translation)
-Establish `h₀` using `h`. Take `⟨a, φ, c, F, -⟩` from `h`. Take `⟨a', φ', c', F', S'⟩` from `h'`. Establish `e` using `snd_of_chart Z c hw`. Establish `e' : φ.comp (Z.alg a) = φ'.comp (Z.alg a')` using `spMap_inj (e.symm.trans (snd_of_chart Z c' hw'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Z.bij k _ y e u (hw ▸ F)).unique ⟨hw, h₀⟩ ⟨hw', a', φ', c', ?_, sameFlag_of_tri _ fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← e', hw', ← hw]`. Conclude with `F`. Conclude with `(tri_of_sameFlag hty S' τ).trans (frame_ind (chart_frame Z c') τ).1 (frame_ind F' τ).1 (hw' ▸ ht τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flagAt_tri (Z : LocM.Mdl Y i₀) (hty : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) {k : Type} [Field k]
     {w w' : Sp k ⟶ Z.X} {y : Sp k ⟶ (Xo Z.i.l).XF Z.i.c} (hw : w ≫ Z.π = y ≫ (Y Z.i).j)
@@ -120,25 +120,23 @@ end
 
 open UpperTheory.MFib GlobalTheory.ShFam.Pad.Pull GlobalTheory.LieMet in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ O _ β Z T F _ e L C hty k _ q y hq`. Use `T.jQ_open` as an intermediate fact. Use `mono_j (Y := Y) Z.i` as an intermediate fact. Take `⟨⟨φ₀, g₀, hg₀⟩, hc⟩` from `UpperTheory.flag_carries_eigenframe C k q`. Establish `hr : ∀ {y₂ : Sp k ⟶ (Xo Z.i.l).XF Z.i.c}, q ≫ C.π = y₂ ≫ L.r ≫ T.jQ → y₂ ≫ L.r = y` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono T.jQ, Category.assoc, ← h, hq]`. Establish `hx : ∀ {y₂ : Sp k ⟶ (Xo Z.i.l).XF Z.i.c}, q ≫ C.π = y₂ ≫ L.r ≫ T.jQ → (y₂ ≫ L.r) ≫ T.jQ ≫ pullback.fst _ _ = q ≫ C.π ≫ genι T` using `fun h => by`. Rewrite using `[reassoc_of% h, Category.assoc]`. Use `⟨Equiv.ofBijective (fun w => ⟨w.2.choose, ?_⟩) ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨v, φ, g, -, h, -⟩` from `w.2.choose_spec`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hr h`. Introduce `w w' h`. Take `⟨v, φ, g, h1, h2, h3, h4, h5, h6⟩` from `w.2.choose_spec`. Take `⟨v', φ', g', h1', h2', h3', h4', h5', h6'⟩` from `w'.2.choose_spec`. Establish `h0 : w.2.choose = w'.2.choose` using `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1'`, `h2'`, `h3'` using `[← h0]`. Use `Subtype.ext (flagAt_tri Z hty h1 h1' h4 h4' fun τ j => ?_)` and prove the remaining obligations. Take `⟨t, -, -, ht⟩` from `((hc φ' _ g' h5').2.2 φ _ g).1 h5`. Take `⟨cf, -, c1, c2⟩` from `ht τ j`. Establish `hid : spMap (dualMap (RingHom.id k)) = 𝟙 _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Simplify using `only [hid, Category.id_comp, h6, h6', ← Category.assoc] at c2`. Use `⟨cf, c1, (comb_push (Y Z.i).m rfl (h3' τ) (h3 τ j) cf).2 ((comb_push L.ν rfl (h3' τ) (h3 τ j) cf).1 ((comb_push T.m (hx h2) (fun i => isTan_push L.ν _ rfl (h3' τ i)) (isTan_push L.ν _ rfl (h3 τ j)) cf).1 ?_))⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `c2` using `only [Category.assoc]`. Introduce and unpack `⟨y₂, hy₂⟩`. Establish `h2 : q ≫ C.π = y₂ ≫ L.r ≫ T.jQ` using `by rw [hq, ← hy₂, Category.assoc]`. Set `f : Z.i.c.F →+* k` to `(Spec.preimage (y₂ ≫ pullback.snd _ _)).hom`. Establish `hf : y₂ ≫ pullback.snd _ _ = spMap f` using `(Spec.map_preimage _).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ₀ = f.comp (incl Z)`. Use `spMap_inj ?_` and prove the remaining obligations. Rewrite using `[← (hc φ₀ _ g₀ hg₀).2.1, reassoc_of% h2, T.jQ_over, L.snd, reassoc_of% hf, ModelRelProbe.spMap_comp]`. Use `choose v₁ t₁ e₁ using fun τ i => exists_lift T.m (hx h2) (g₀.tan τ i)`. Use `choose v t e using fun τ i => exists_lift L.ν (x' := y₂) rfl (t₁ τ i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `F₀ : GlobalTheory.LocM.IsFrame (Dw` using `Dw) T.t φ₀ (q ≫ C.π ≫ genι T) fun τ i => v₁ τ i ≫ T.m.φ := by`. Simplify using `only [e₁]`. Conclude with `⟨fun τ i => ⟨g₀.tan τ i, g₀.eig τ i⟩, g₀.basis⟩`. Establish `F₁ : GlobalTheory.LocM.IsFrame (Dw` using `Dw) T.oF.t φ₀ (y₂ ≫ L.r) fun τ i => v τ i ≫ L.ν.φ := by`. Simplify using `only [e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `frame_pull T.m (hx h2) (fun _ _ => rfl) t₁ F₀`. Establish `F₂ : GlobalTheory.LocM.IsFrame (Dw` using `Dw) (Y Z.i).oF.t f y₂ v := frame_pull L.ν rfl (fun τ a => by rw [hφ]; rfl) t F₁`. Take `⟨w, ⟨w1, w2⟩, -⟩` from `Z.bij k f y₂ hf _ (frame_push (Y Z.i).m rfl (fun _ _ => rfl) F₂)`. Establish `hm : Match L C w q` using `⟨y₂, v, φ₀, g₀, w1, h2, t, w2, hg₀, fun τ i => by rw [reassoc_of% e, e₁]⟩`. Use `⟨⟨w, hm⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Take `⟨_, _, _, h1, -⟩` from `hm.choose_spec`. Conclude with `(cancel_mono (Y Z.i).j).1 (h1.symm.trans w1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.level_flag_multiplicity :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} {O : Type} [CommRing O] {β : O →+* i₀.c.F} {Z : LocM.Mdl Y i₀} {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F] {e : F ≃+* i₀.c.F} (L : Lev Z T) (C : FlagCpt T e), (∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) → ∀ {k : Type} [Field k] (q : Sp k ⟶ C.Y.X) (y : Sp k ⟶ (Xo i₀.l).XF i₀.c), q ≫ C.π = y ≫ T.jQ → Nonempty ({w : Sp k ⟶ Z.X // Match L C w q} ≃ {y₂ : Sp k ⟶ (Xo Z.i.l).XF Z.i.c // y₂ ≫ L.r = y}) := by

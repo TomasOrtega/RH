@@ -25,13 +25,13 @@ noncomputable section
 namespace GlobalTheory.VertCoeffRing
 
 /- English proof (translation)
-Introduce `p`. Use `haveI := p.isPrime`. Use `⟨(⟨p.asIdeal.comap (algebraMap B (DualNumber B)), Ideal.IsPrime.comap _⟩ : PrimeSpectrum B), ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap B (DualNumber B)) x.fst ∈ p.asIdeal ↔ x ∈ p.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hx : x = algebraMap B (DualNumber B) x.fst + TrivSqZeroExt.inr x.snd`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hn : (TrivSqZeroExt.inr x.snd : DualNumber B) ∈ p.asIdeal`. Apply `p.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises. Rewrite using `[pow_two, TrivSqZeroExt.inr_mul_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `zero_mem _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[hx]`. Conclude with `add_mem h hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Establish `h2` using `sub_mem h hn`. Rewrite using `[show x - TrivSqZeroExt.inr x.snd = algebraMap B (DualNumber B) x.fst by` and apply the resulting hypothesis. Rewrite using `[sub_eq_iff_eq_add]`. Conclude with `hx] at h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fstHom_surjective (B : Type) [CommRing B] :
     Function.Surjective (spMap (TrivSqZeroExt.fstHom B B B).toRingHom) := by
@@ -56,41 +56,37 @@ theorem spMap_fstHom_surjective (B : Type) [CommRing B] :
       rw [sub_eq_iff_eq_add]; exact hx] at h2
 
 /- English proof (translation)
-Introduce `R _ G _ _ u dd hinv B _ _ e he z O h`. Use `set φ : R →+* B := algebraMap R B with hφ`. Establish `hz : z.left ≫ G.hom = spMap φ` using `Over.w z`. Establish `eφ : (dualMap φ).comp (algebraMap R (DualNumber R)) = (algebraMap B (DualNumber B)).comp φ`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hv : (tv u).left ≫ G.hom = spMap (algebraMap R (DualNumber R))` using `(Over.w (tv u)).trans (Category.comp_id _)`. Establish `h2 : (spMap (dualMap φ) ≫ (tv u).left) ≫ G.hom = (tEpsG (z.left ≫ G.hom)).hom` using `by show _ = spMap (algebraMap B (DualNumber B)) ≫ z.left ≫ G.hom`. Use `(Category.assoc _ _ _).trans ((congrArg (spMap (dualMap φ) ≫ ·) hv).trans ?_)` and prove the remaining obligations. Rewrite using `[hz, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, eφ]`. Set `g' : tEpsG (z.left ≫ G.hom) ⟶ G` to `Over.homMk (spMap (algebraMap B (DualNumber B)) ≫ z.left) (Category.assoc _ _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v' : tEpsG (z.left ≫ G.hom) ⟶ G` to `Over.homMk (spMap (dualMap φ) ≫ (tv u).left) h2`. Establish `htr : IsTr G φ z.left u (g' * v').left` using `⟨g', v', rfl, rfl, rfl⟩`. Establish `hk : ∀ (t : B) (ht : t * t = 0), ∃ kt : Chart.sp (R₀` using `R) B ⟶ tEpsG (z.left ≫ G.hom), kt.left = spMap (GlobalTheory.SqZero.dualTo (AlgHom.id R B) t ht).toRingHom ∧ kt ≫ g' = z ∧ kt ≫ v' = Chart.spMap (GlobalTheory.SqZero.epsTo R t ht) ≫ tvE u := by`. Introduce `t ht`. Establish `hτa : (GlobalTheory.SqZero.dualTo (AlgHom.id R B) t ht).toRingHom.comp (algebraMap B (DualNumber B)) = RingHom.id B`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `[GlobalTheory.SqZero.dualTo_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hsp : spMap (GlobalTheory.SqZero.dualTo (AlgHom.id R B) t ht).toRingHom ≫ spMap (algebraMap B (DualNumber B)) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hτa, CommRingCat.ofHom_id, Spec.map_id]`. Use `⟨Over.homMk (spMap (GlobalTheory.SqZero.dualTo (AlgHom.id R B) t ht).toRingHom) ?_, rfl, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show spMap _ ≫ spMap (algebraMap B (DualNumber B)) ≫ z.left ≫ G.hom = _`. Rewrite using `[← Category.assoc, hsp, Category.id_comp]`. Conclude with `hz`. Apply `Over.OverMorphism.ext show spMap _ ≫ spMap (algebraMap B (DualNumber B)) ≫ z.left = z.left` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hsp, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Over.OverMorphism.ext show spMap _ ≫ spMap (dualMap φ) ≫ (tv u).left = (Chart.spMap (GlobalTheory.SqZero.epsTo R t ht)).left ≫ (tv u).left` to reduce the goal to its premises. Rewrite using `[Chart.spMap_left, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.SqZero.dualTo_apply, GlobalTheory.SqZero.epsTo, dualMap, hφ, TrivSqZeroExt.algebraMap_eq_inl, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hkl, hkg, hkv⟩` from `hk e he`. Take `⟨k0, hk0l, hk0g, hk0v⟩` from `hk 0 (mul_zero 0)`. Establish `hone : Chart.spMap (GlobalTheory.SqZero.epsTo R (0 : B) (mul_zero 0)) ≫ tvE u = 1`. Set `K : Chart.sp (R₀` to `R) B ⟶ overAt (𝟙 (Sp R)) (DualNumber R) := Over.homMk (spMap (GlobalTheory.SqZero.epsTo R (0 : B) (mul_zero 0)).toRingHom) (by show _ ≫ spMap (algebraMap R (DualNumber R)) ≫ 𝟙 _ = spMap φ`. Rewrite using `[Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.SqZero.epsTo, GlobalTheory.SqZero.dualTo_apply, TrivSqZeroExt.algebraMap_eq_inl, hφ])`. Establish `e1 : Chart.spMap (GlobalTheory.SqZero.epsTo R (0 : B) (mul_zero 0)) ≫ tvE u = K ≫ smT (𝟙 (Sp R)) 0 (tv u)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (Chart.spMap _).left ≫ (tv u).left = spMap _ ≫ (smT (𝟙 (Sp R)) 0 (tv u)).left`. Rewrite using `[smT_left, Chart.spMap_left, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.SqZero.epsTo, GlobalTheory.SqZero.dualTo_apply, epsMul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem, MonObj.comp_one]`. Establish `hp : (Chart.spMap (GlobalTheory.SqZero.epsTo R e he) ≫ tvE u) * z = k ≫ (g' * v')`. Rewrite using `[MonObj.comp_mul, hkg, hkv, mul_comm]`. Establish `hp0 : k0 ≫ (g' * v') = z`. Rewrite using `[MonObj.comp_mul, hk0g, hk0v, hone, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfst : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ (g' * v').left = z.left`. Use `congrArg (fun q => q.left) hp0` as an intermediate fact. Simplify using `only [Over.comp_left, hk0l] at this`. Establish `hfh : (GlobalTheory.SqZero.dualTo (AlgHom.id R B) (0 : B) (mul_zero 0)).toRingHom = (TrivSqZeroExt.fstHom B B B).toRingHom` using `RingHom.ext fun a => by`. Simplify using `[GlobalTheory.SqZero.dualTo_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfh]`. Conclude with `this`. Establish `hw : ⊤ ≤ (g' * v').left ⁻¹ᵁ O`. Introduce `p _`. Take `⟨q, rfl⟩` from `spMap_fstHom_surjective B p`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← hfst]`. Conclude with `h (Set.mem_univ q)`. Establish `hpl : ((Chart.spMap (GlobalTheory.SqZero.epsTo R e he) ≫ tvE u) * z).left = spMap (GlobalTheory.SqZero.dualTo (AlgHom.id R B) e he).toRingHom ≫ (g' * v').left`. Rewrite using `[hp, Over.comp_left, hkl]`. Establish `h' : ⊤ ≤ ((Chart.spMap (GlobalTheory.SqZero.epsTo R e he) ≫ tvE u) * z).left ⁻¹ᵁ O`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpl]`. Introduce `q _`. Conclude with `hw (Set.mem_univ _)`. Use `⟨h', fun f => ?_⟩` and prove the remaining obligations. Establish `hval : valR (g' * v').left O f = evalPt (g' * v').left O hw f`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `valR`. Rewrite using `[dif_pos hw]`. Both sides reduce to the same expression. Establish `hvalz : valR z.left O (dd O f) = evalPt z.left O h (dd O f)`. Unfold `valR`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h]`. Both sides reduce to the same expression. Establish `hsnd` using `hinv.2 B φ z.left (g' * v').left O f hz h htr`. Rewrite `hsnd` using `[hval, hvalz]`. Establish `key : ∀ (y : Sp B ⟶ G.left) (hy : ⊤ ≤ y ⁻¹ᵁ O), spMap (GlobalTheory.SqZero.dualTo (AlgHom.id R B) e he).toRingHom ≫ (g' * v').left = y → evalPt y O hy f = (evalPt (g' * v').left O hw f).fst + (evalPt (g' * v').left O hw f).snd * e`.
-
-Introduce and unpack `y hy rfl`. Rewrite using `[evalPt_spMap_comp _ _ O hw hy f]`. Conclude with `GlobalTheory.SqZero.dualTo_apply _ _ _ _`. Establish `key0 : ∀ (y : Sp B ⟶ G.left) (hy : ⊤ ≤ y ⁻¹ᵁ O), spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ (g' * v').left = y → evalPt y O hy f = (evalPt (g' * v').left O hw f).fst`. Introduce and unpack `y hy rfl`.
-
-Conclude with `evalPt_spMap_comp _ _ O hw hy f`. Rewrite using `[key _ h' hpl.symm, key0 _ h hfst, hsnd]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evalPt_tvE_mul : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {u : TanM (𝟙 (Sp R)) G} {dd : Fld G.left}, IsInv G u dd → ∀ {B : Type} [CommRing B] [Algebra R B]
     (e : B) (he : e * e = 0) (z : ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) B ⟶ G) (O : G.left.Opens) (h : ⊤ ≤ z.left ⁻¹ᵁ O),

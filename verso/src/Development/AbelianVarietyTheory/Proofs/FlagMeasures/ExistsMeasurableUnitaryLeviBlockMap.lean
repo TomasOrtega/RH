@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.LeviIso
 
 /- English proof (translation)
-Establish `hdet : Continuous fun x : Fin m → Fin m → ℂ => (Matrix.of x).det` using `(continuous_id (X := Matrix (Fin m) (Fin m) ℂ)).matrix_det`. Establish `hadj : Continuous fun x : Fin m → Fin m → ℂ => (Matrix.of x).adjugate` using `(continuous_id (X := Matrix (Fin m) (Fin m) ℂ)).matrix_adjugate`. Use `measurable_pi_lambda _ fun r => measurable_pi_lambda _ fun s => ?_` and prove the remaining obligations. Establish `key : (fun x : Fin m → Fin m → ℂ => (Matrix.of x)⁻¹ r s) = fun x => ((Matrix.of x).det)⁻¹ * (Matrix.of x).adjugate r s`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[key]`. Conclude with `(hdet.measurable.inv).mul (((continuous_apply s).comp ((continuous_apply r).comp hadj)).measurable)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_matInv (m : ℕ) :
     Measurable fun x : Fin m → Fin m → ℂ => (fun r s => (Matrix.of x)⁻¹ r s : Fin m → Fin m → ℂ) := by
@@ -30,7 +30,7 @@ theorem measurable_matInv (m : ℕ) :
     (((continuous_apply s).comp ((continuous_apply r).comp hadj)).measurable)
 
 /- English proof (translation)
-Establish `h : Topology.IsClosedEmbedding fun g : UJ ε => (fun r s => uMat g r s : Fin n → Fin n → ℂ)` using `(isClosedEmbeddingMatrix n ε).1`. Conclude with `h.measurableEmbedding`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_uMat {n : ℕ} (ε : Fin n → Bool) :
     MeasurableEmbedding fun g : UJ ε => (fun r s => uMat g r s : Fin n → Fin n → ℂ) := by
@@ -40,13 +40,11 @@ theorem measurableEmbedding_uMat {n : ℕ} (ε : Fin n → Bool) :
   exact h.measurableEmbedding
 
 /- English proof (translation)
-Set `Φ : (∀ i, Fin (j i) → Fin (j i) → ℂ) × (∀ i, Fin (j i) → Fin (j i) → ℂ) × (Fin n₀ → Fin n₀ → ℂ) → Fin n → Fin n → ℂ` to `fun w r s => (∑ i, B i * Matrix.of (w.1 i) * (B i)ᴴ + ∑ i, Jm ε * B i * (Matrix.of (w.2.1 i))ᴴ * (B i)ᴴ * Jm ε + B₀ * Matrix.of w.2.2 * B₀ᴴ) r s`. Establish `hΦ : Continuous Φ`. Use `continuous_pi fun r => continuous_pi fun s => ?_` and prove the remaining obligations. Use `Continuous.matrix_elem ?_ r s` and prove the remaining obligations. Use `Continuous.add (Continuous.add ?_ ?_) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul ((continuous_apply i).comp continuous_fst : Continuous fun w : (∀ i, Fin (j i) → Fin (j i) → ℂ) × (∀ i, Fin (j i) → Fin (j i) → ℂ) × (Fin n₀ → Fin n₀ → ℂ) => (Matrix.of (w.1 i)))).matrix_mul continuous_const`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul ((continuous_apply i).comp (continuous_fst.comp continuous_snd) : Continuous fun w : (∀ i, Fin (j i) → Fin (j i) → ℂ) × (∀ i, Fin (j i) → Fin (j i) → ℂ) × (Fin n₀ → Fin n₀ → ℂ) => (Matrix.of (w.2.1 i))).matrix_conjTranspose).matrix_mul continuous_con …`. Conclude with `(continuous_const.matrix_mul ((continuous_snd.comp continuous_snd) : Continuous fun w : (∀ i, Fin (j i) → Fin (j i) → ℂ) × (∀ i, Fin (j i) → Fin (j i) → ℂ) × (Fin n₀ → Fin n₀ → ℂ) => (Matrix.of w.2.2))).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : Measurable fun z : (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀ => (fun i r s => (Matrix.of (z.1 i))⁻¹ r s : ∀ i, Fin (j i) → Fin (j i) → ℂ)` using `measurable_pi_lambda _ fun i => (measurable_matInv (j i)).comp ((measurable_pi_apply i).comp measurable_fst)`. Establish `hg : Measurable fun z : (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀ => (fun r s => uMat z.2 r s : Fin n₀ → Fin n₀ → ℂ)` using `(measurableEmbedding_uMat ε₀).measurable.comp measurable_snd`. Establish `hcomp` using `hΦ.measurable.comp (measurable_fst.prodMk (hinv.prodMk hg))`. Use `hcomp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z r s`.
-
-Simplify using `only [Function.comp_apply, Φ, lev]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem measurable_lev {n n₀ a : ℕ} {j : Fin a → ℕ} (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool)
     (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ) :
@@ -90,19 +88,17 @@ theorem measurable_lev {n n₀ a : ℕ} {j : Fin a → ℕ} (ε : Fin n → Bool
   rfl
 
 /- English proof (translation)
-Set `S : Set ((∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀)` to `{z | ∀ i, (Matrix.of (z.1 i)).det ≠ 0}`. Establish `hex : ∀ z ∈ S, ∃ g : UJ ε, uMat g = lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2)`. Introduce `z hz`. Establish `hU : inUJ ε (lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2))` using `h.inUJ_lev _ _ hz z.2.2`. Establish `hr : lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2) ∈ Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(isClosedEmbeddingMatrix n ε).2]`. Conclude with `hU`. Take `⟨g, hg⟩` from `hr`. Conclude with `⟨g, hg⟩`. Set `θ : (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀ → UJ ε` to `fun z => if hz : z ∈ S then (hex z hz).choose else 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hθ : ∀ z ∈ S, uMat (θ z) = lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2)`. Introduce `z hz`. Simplify using `only [θ, dif_pos hz]`. Conclude with `(hex z hz).choose_spec`. Use `⟨θ, ?_, fun z hz => hθ z hz⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ i, Measurable fun z : (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀ => (Matrix.of (z.1 i)).det` using `fun i =>`. Establish `hc : Continuous fun x : Fin (j i) → Fin (j i) → ℂ => (Matrix.of x).det` using `(continuous_id (X := Matrix (Fin (j i)) (Fin (j i)) ℂ)).matrix_det`. Use the proof step `hc.measurable.comp ((measurable_pi_apply i).comp measurable_fst)`. Establish `hS : MeasurableSet S`. Establish `: S = ⋂ i, (fun z : (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ ε₀ => (Matrix.of (z.1 i)).det) ⁻¹' {0}ᶜ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Simplify using `[S]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun i => (hdet i) (measurableSet_singleton 0).compl`. Rewrite using `[← (measurableEmbedding_uMat ε).measurable_comp_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `heq : ((fun g : UJ ε => (fun r s => uMat g r s : Fin n → Fin n → ℂ)) ∘ θ) = fun z => if z ∈ S then (fun r s => lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2) r s : Fin n → Fin n → ℂ) else (fun r s => uMat (1 : UJ ε) r s)`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ S`. Simplify using `only [Function.comp_apply, if_pos hz, hθ z hz]`. Simplify using `only [Function.comp_apply, if_neg hz, θ, dif_neg hz]`.
-
-Rewrite using `[heq]`. Conclude with `Measurable.ite hS (measurable_lev ε ε₀ B B₀) measurable_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_measurable_levMap (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool)
     (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ) (h : IsFrame ε ε₀ B B₀) :

@@ -8,7 +8,7 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hab hk hca hcb`. Use `choose c hc using PositivityTheory.Xgp.W.blocks_of_model M`. Take `⟨Fr⟩` from `PositivityTheory.Xgp.W.exists_penFrame M hb hab hk hca hcb (PositivityTheory.Xgp.W.isPt_self fun k => ⟨c k, hc k⟩) c hc`. Rewrite using `[PositivityTheory.Xgp.W.wCo_eq M hb hab hk hca hcb]`. Conclude with `fun G => PositivityTheory.Xgp.W.line_pen Fr G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_w_line : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ G : GenFibre (fun p : (Σ k, ι k) => (⟨some p.1, p.2⟩ : Σ o : Option K, ι (o.getD k₀))) (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)), ∃ T : Set (MRingOver G.Φ (fibreIdx (fun o : Option K => ι (o.getD k₀)) (some : K → Option K))), (∀ f ∈ T, IsMultiHomog f fun _ => 1) ∧ fibreIdeal (some : K → Option K) G = Ideal.span T := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hab hk hca hcb

@@ -16,7 +16,7 @@ def relDiscr : Ideal (𝓞 K) :=
   Ideal.relNorm (𝓞 K) (differentIdeal (𝓞 K) (𝓞 M))
 
 /- English proof (translation)
-Rewrite using `[relDiscr, Ne, Ideal.relNorm_eq_bot_iff]`. Conclude with `differentIdeal_ne_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDiscr_ne_bot : relDiscr K M ≠ ⊥ := by
   rw [relDiscr, Ne, Ideal.relNorm_eq_bot_iff]
@@ -29,16 +29,16 @@ section Multiplicity
 variable {K M : Type*} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-The claim follows from `Ideal.prime_of_isPrime u.ne_bot u.isPrime`.
+A detailed English derivation is pending.
 -/
 theorem prime_asIdeal {F : Type*} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F)) :
     Prime u.asIdeal :=
   Ideal.prime_of_isPrime u.ne_bot u.isPrime
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `h1` using `emultiplicity_pow_self_of_prime (prime_asIdeal u) 1`. Rewrite `h1` using `[pow_one]`. Rewrite using `[← h, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[emultiplicity_eq_zero, Ideal.dvd_iff_le]`. Introduce `hle`. Conclude with `h (hp.eq_of_le u.isPrime.ne_top hle).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem emultiplicity_asIdeal_of_isMaximal {F : Type*} [Field F] [NumberField F]
     (u : HeightOneSpectrum (𝓞 F)) (p : Ideal (𝓞 F)) [hp : p.IsMaximal] :
@@ -55,17 +55,17 @@ theorem emultiplicity_asIdeal_of_isMaximal {F : Type*} [Field F] [NumberField F]
 variable (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Establish `hp0 : p ≠ ⊥` using `hp.ne_zero`. Establish `hpp : p.IsPrime` using `(Ideal.prime_iff_isPrime hp0).1 hp`. Establish `hpm : p.IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hp0 hpp`. Establish `hqm : (p.under (𝓞 K)).IsMaximal` using `Ideal.IsMaximal.under (𝓞 K) p`. Rewrite using `[Ideal.relNorm_eq_pow_of_isMaximal p (p.under (𝓞 K)), emultiplicity_pow (prime_asIdeal v), emultiplicity_asIdeal_of_isMaximal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [emultiplicity_asIdeal_of_isMaximal, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hv : v.asIdeal = p.under (𝓞 K)`. Rewrite using `[if_pos hv]`. Establish `hlies : p.LiesOver v.asIdeal` using `⟨hv⟩`. Set `w0 : SemiLocal.PlacesOver M v` to `⟨⟨p, hpp, hp0⟩, hlies⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.sum_eq_single w0]`. Simplify using `[w0]`. Introduce `w _ hw`. Rewrite using `[if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `h`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hv]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[if_neg]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `Ideal.over_def w.1.asIdeal v.asIdeal`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emultiplicity_relNorm_of_prime (p : Ideal (𝓞 M)) (hp : Prime p) :
     emultiplicity v.asIdeal (Ideal.relNorm (𝓞 K) p) =
@@ -103,11 +103,11 @@ theorem emultiplicity_relNorm_of_prime (p : Ideal (𝓞 M)) (hp : Prime p) :
     exact Ideal.over_def w.1.asIdeal v.asIdeal
 
 /- English proof (translation)
-Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hI`. Consider the case `h₂ x hx`. Rewrite using `[Ideal.isUnit_iff.1 hx, Ideal.relNorm_top, ← Ideal.one_eq_top, emultiplicity_of_one_right (prime_asIdeal v).not_isUnit]`. Use `symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[← Ideal.one_eq_top, emultiplicity_of_one_right (prime_asIdeal w.1).not_isUnit, mul_zero]`. Consider the case `h₃ a p ha hp ih`. Rewrite using `[map_mul, emultiplicity_mul (prime_asIdeal v), ih ha, emultiplicity_relNorm_of_prime v p hp, ← Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[emultiplicity_mul (prime_asIdeal w.1), mul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem emultiplicity_relNorm (I : Ideal (𝓞 M)) (hI : I ≠ ⊥) :
     emultiplicity v.asIdeal (Ideal.relNorm (𝓞 K) I) =
@@ -130,7 +130,7 @@ theorem emultiplicity_relNorm (I : Ideal (𝓞 M)) (hI : I ≠ ⊥) :
     rw [emultiplicity_mul (prime_asIdeal w.1), mul_add]
 
 /- English proof (translation)
-Establish `h` using `emultiplicity_relNorm v I hI`. Rewrite `h` using `[(FiniteMultiplicity.of_prime_left (prime_asIdeal v) ((Ideal.relNorm_eq_bot_iff (R := 𝓞 K)).not.2 hI)).emultiplicity_eq_multiplicity]`. Simplify using `only [fun w : SemiLocal.PlacesOver M v ↦ (FiniteMultiplicity.of_prime_left (prime_asIdeal w.1) hI).emultiplicity_eq_multiplicity] at h`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multiplicity_relNorm (I : Ideal (𝓞 M)) (hI : I ≠ ⊥) :
     multiplicity v.asIdeal (Ideal.relNorm (𝓞 K) I) =
@@ -144,7 +144,7 @@ theorem multiplicity_relNorm (I : Ideal (𝓞 M)) (hI : I ≠ ⊥) :
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `multiplicity_relNorm v _ differentIdeal_ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem multiplicity_relDiscr_eq_sum :
     multiplicity v.asIdeal (relDiscr K M) =
@@ -160,7 +160,7 @@ variable (K M N : Type*) [Field K] [NumberField K] [Field M] [NumberField M] [Al
   [Field N] [NumberField N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
 /- English proof (translation)
-Rewrite using `[relDiscr, differentIdeal_eq_differentIdeal_mul_differentIdeal (𝓞 K) (𝓞 M) (𝓞 N), map_mul, mul_comm, relDiscr, relDiscr, Ideal.relNorm_relNorm (𝓞 K) (𝓞 M), ← Ideal.relNorm_relNorm (𝓞 K) (𝓞 M) (Ideal.map _ _), Ideal.relNorm_algebraMap, map_pow, IsFractionRing.finrank_eq (𝓞 M) M (𝓞 …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relDiscr_tower :
     relDiscr K N = relDiscr K M ^ finrank M N * Ideal.relNorm (𝓞 K) (relDiscr M N) := by
@@ -176,7 +176,7 @@ section Rat
 variable (M : Type*) [Field M] [NumberField M]
 
 /- English proof (translation)
-Establish `h1 : differentIdeal ℤ (𝓞 ℚ) = ⊤`. Rewrite using `[← Ideal.absNorm_eq_one_iff, absNorm_differentIdeal ℚ, Rat.numberField_discr]`. Both sides reduce to the same expression. Rewrite using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 ℚ) (𝓞 M), h1, Ideal.map_top, Ideal.mul_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem differentIdeal_ringOfIntegers_rat :
     differentIdeal (𝓞 ℚ) (𝓞 M) = differentIdeal ℤ (𝓞 M) := by
@@ -187,7 +187,7 @@ theorem differentIdeal_ringOfIntegers_rat :
     Ideal.mul_top]
 
 /- English proof (translation)
-Rewrite using `[relDiscr, Ideal.absNorm_relNorm, differentIdeal_ringOfIntegers_rat, absNorm_differentIdeal M]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_relDiscr_rat : Ideal.absNorm (relDiscr ℚ M) = (discr M).natAbs := by
   rw [relDiscr, Ideal.absNorm_relNorm, differentIdeal_ringOfIntegers_rat,

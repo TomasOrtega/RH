@@ -8,29 +8,27 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H`. Take `⟨hs, -, -, hrd⟩` from `UpperTheory.HF.log_rd_sum H`. Establish `hp : ∀ l ∈ H.ram, l.Prime` using `fun l hl => Nat.prime_of_mem_primeFactors hl`. Establish `hv : ∀ l ∈ H.ram, 1 / 2 ≤ H.vdH l` using `fun l hl => (UpperTheory.HF.mem_ram H (hp l hl)).2.2.2.1 hl`. Establish `hl0 : ∀ l ∈ H.ram, (0 : ℝ) < l` using `fun l hl => Nat.cast_pos.2 (hp l hl).pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog2 : ∀ l ∈ H.ram, Real.log 2 ≤ Real.log l` using `fun l hl => Real.log_le_log (by norm_num) (by exact_mod_cast (hp l hl).two_le)`. Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlog : ∀ l ∈ H.ram, 0 ≤ Real.log l` using `fun l hl => h2.le.trans (hlog2 l hl)`. Establish `hsum : ∑ l ∈ H.ram, Real.log l ≤ 2 * Real.log H.rd`. Rewrite using `[hs, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Use polynomial arithmetic with `[hv l hl, hlog l hl]`. Establish `hradpos : (0 : ℝ) < H.rad`. Unfold `HostRaw.rad`. Rewrite using `[Nat.cast_prod]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_pos hl0`. Establish `h1 : Real.log H.rad ≤ 2 * Real.log H.rd`. Use `le_trans (le_of_eq ?_) hsum` and prove the remaining obligations. Unfold `HostRaw.rad`. Rewrite using `[Nat.cast_prod, Real.log_prod fun l hl => (hl0 l hl).ne']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ h2]`. Use `le_trans ?_ hsum` and prove the remaining obligations. Use `Finset.card_nsmul_le_sum H.ram (fun l : ℕ => Real.log l) _ hlog2` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D₀ hD`. Rewrite using `[hs, Finset.mul_sum]`. Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Establish `hc : (⌈H.vdH l * D₀⌉ : ℝ) ≤ (D₀ + 2) * H.vdH l`. Use `(Int.ceil_lt_add_one (H.vdH l * D₀)).le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hv l hl]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hc (hlog l hl)`. Establish `hpos : (0 : ℝ) < ((∏ l ∈ H.ram, l ^ ⌈H.vdH l⌉₊ : ℕ) : ℝ)`. Rewrite using `[Nat.cast_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_pos fun l hl => by`. Rewrite using `[Nat.cast_pow]`. Conclude with `pow_pos (hl0 l hl) _`. Rewrite using `[← Real.log_le_log_iff hpos (pow_pos hrd 2), Real.log_pow, Nat.cast_prod, Real.log_prod fun l hl => by rw [Nat.cast_pow]; exact (pow_pos (hl0 l hl) _).ne', hs, Finset.mul_sum]`. Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.cast_pow, Real.log_pow, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (hlog l hl)` and prove the remaining obligations. Establish `hy` using `hv l hl`. Use `push_cast`. Distinguish the cases in `h : H.vdH l ≤ 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: ⌈H.vdH l⌉₊ ≤ 1` using `Nat.ceil_le.2 (by simpa using h)`. Establish `: (⌈H.vdH l⌉₊ : ℝ) ≤ 1` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Nat.ceil_lt_add_one (by linarith : 0 ≤ H.vdH l)).le push Not at h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `g₁ g₂ L h₁ h₂ hg₁ hg₂ hL`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Real.log_mul (mul_pos h₁ h₂).ne' hradpos.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_mul h₁.ne' h₂.ne']`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.rad_bounds :
     ∀ {φ : Frame} (H : HostAx φ), Real.log H.rad ≤ 2 * Real.log H.rd ∧ (H.ram.card : ℝ) ≤ 2 * Real.log H.rd / Real.log 2 ∧ (∀ D₀ : ℝ, 0 ≤ D₀ → ∑ l ∈ H.ram, (⌈H.vdH l * D₀⌉ : ℝ) * Real.log l ≤ (D₀ + 2) * Real.log H.rd) ∧ ((∏ l ∈ H.ram, l ^ ⌈H.vdH l⌉₊ : ℕ) : ℝ) ≤ H.rd ^ 2 ∧ ∀ g₁ g₂ L : ℝ, 0 < g₁ → 0 < g₂ → Real.log g₁ ≤ 9 * L + 1 → Real.log g₂ ≤ 9 * L + 1 → Real.log H.rd ≤ L / 100 → Real.log (g₁ * g₂ * H.rad) ≤ Real.log (g₁ * g₂) + 2 * Real.log H.rd ∧ Real.log (g₁ * g₂) + 2 * Real.log H.rd ≤ 18 * L + 2 + L / 50 := by

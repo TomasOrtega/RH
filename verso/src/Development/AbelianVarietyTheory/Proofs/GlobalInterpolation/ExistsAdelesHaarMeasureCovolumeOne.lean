@@ -9,33 +9,27 @@ open scoped TensorProduct NNReal ENNReal Pointwise
 namespace GlobalTheory.SWQ
 
 /- English proof (translation)
-Introduce `F _ _`. Set `Γ : AddSubgroup (AF F)` to `(algebraMap F (AF F)).range.toAddSubgroup`. Establish `hdisc : DiscreteTopology Γ`. Take `⟨U, hU, hU0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Take `⟨V, hVU, hVo, h0V⟩` from `mem_nhds_iff.1 hU`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Establish `: ({0} : Set Γ) = ((↑) : Γ → AF F) ⁻¹' V`. Use extensionality with `⟨x, hx⟩`. Take `⟨y, rfl⟩` from `hx`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: algebraMap F (AF F) y = 0` using `congrArg Subtype.val h`. Rewrite using `[this]`. Conclude with `h0V`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `hU0 y (hVU h)` as an intermediate fact. Substitute `this` using the available equality. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hVo.preimage continuous_subtype_val`. Use `letI : MeasurableSpace (Multiplicative (AF F)) := borel _`. Use `haveI : BorelSpace (Multiplicative (AF F)) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (Multiplicative (AF F)) := inferInstanceAs (SecondCountableTopology (AF F))`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : DiscreteTopology (AddSubgroup.toSubgroup Γ) := hdisc`. Take `⟨hc, D, hDm, hD⟩` from `GlobalTheory.discreteSubgroup_countable_and_exists_strict_fundamentalDomain (AddSubgroup.toSubgroup Γ)`. Use `haveI : Countable Γ := hc`. Set `D' : Set (AF F)` to `Multiplicative.ofAdd ⁻¹' D`. Establish `hDm' : MeasurableSet D'` using `hDm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfd : ∀ m : Measure (AF F), IsAddFundamentalDomain Γ D' m`. Introduce `m`. Use `IsAddFundamentalDomain.mk' hDm'.nullMeasurableSet ?_` and prove the remaining obligations. Introduce `x`. Take `⟨γ, hγ, huniq⟩` from `hD (Multiplicative.ofAdd x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨⟨γ.1.toAdd, γ.2⟩, hγ, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use `huniq ⟨Multiplicative.ofAdd g.1, g.2⟩ hg` as an intermediate fact. Use `ext`. Conclude with `congrArg (fun s => Multiplicative.toAdd s.1) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `μ : Measure (AF F)` to `Measure.addHaar`. Establish `hμD` using `hfd μ`. Take `⟨K, hK, hKx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Establish `hfin : μ D' < ∞`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Apply `measure_mono` to reduce the goal to its premises. Introduce `d hd`. Take `⟨x, hx⟩` from `hKx d`. Use `Set.mem_iUnion.2 ⟨⟨algebraMap F (AF F) x, x, rfl⟩, ?_, hd⟩` and prove the remaining obligations. Use `⟨_, hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap F (AF F) x + (d - algebraMap F (AF F) x) = d`. Normalize the expressions using the abelian group laws. Use `_ ≤ ∑' γ : Γ, μ ((γ +ᵥ K) ∩ D') := measure_iUnion_le _`. Use `_ = μ K := (hμD.measure_eq_tsum K).symm`. Use `_ < ∞ := hK.measure_lt_top`.
-
-Establish `hpos : μ D' ≠ 0`. Introduce `h0`. Use `hμD.measure_eq_tsum' Set.univ` as an intermediate fact. Simplify using `only [Set.univ_inter] at this`. Establish `h2 : ∀ g : Γ, μ (g +ᵥ D') = 0` using `fun g => by`.
-
-Rewrite using `[measure_vadd]`. Conclude with `h0`. Simplify using `only [h2, tsum_zero] at this`. Conclude with `(Measure.measure_univ_ne_zero.2 (NeZero.ne μ)) this`. Use `⟨(μ D')⁻¹ • μ, ?_, D', hDm', hfd _, ?_⟩` and prove the remaining obligations.
-
-Conclude with `Measure.IsAddHaarMeasure.smul (μ := μ) (ENNReal.inv_ne_zero.2 hfin.ne) (ENNReal.inv_ne_top.2 hpos)`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin.ne]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adeles_haarMeasure_covolume_one : ∀ (F : Type) [Field F] [NumberField F], ∃ ν : Measure (AF F), IsCov1 ν := by
   intro F _ _

@@ -25,26 +25,26 @@ namespace GlobalTheory.HSAmp.GoodH
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_H_of_eq (P : Pair p) {a a' b b' : ℤ} {f : X.functionField} (ha : a = a') (hb : b = b')
     (h : f ∈ P.H a b) : f ∈ P.H a' b' := by
   subst ha hb; exact h
 
 /- English proof (translation)
-Rewrite using `[Pair.nu]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) : 0 ≤ P.nu a b σ y f := by
   rw [Pair.nu]; positivity
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty, one_mul, Nat.cast_zero, mul_zero, zero_add]`. Conclude with `⟨hg, fun _ _ => trivial⟩`. Consider the case `@insert j S hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨hp1, hp2⟩` from `GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P (e : ℤ) 0 (x j) (hx j) (α j)`. Take `⟨hm1, hm2⟩` from `GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ _ _ hp1 ih.1`. Establish `ea : ((α j : ℕ) : ℤ) * (e : ℤ) + ((e : ℤ) * ((∑ l ∈ S, α l : ℕ) : ℤ) + a) = (e : ℤ) * ((∑ l ∈ insert j S, α l : ℕ) : ℤ) + a`. Rewrite using `[Finset.sum_insert hj]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `eb : ((α j : ℕ) : ℤ) * 0 + b = b` using `by ring`. Rewrite `hm1`, `hm2` using `[ea, eb]`. Establish `ep : (∏ l ∈ insert j S, x l ^ α l) * g = x j ^ α j * ((∏ l ∈ S, x l ^ α l) * g)`. Rewrite using `[Finset.prod_insert hj, mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ep]`. Use `⟨hm1, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hm2, hp2, ih.2, Finset.prod_insert hj, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_mem {D : ℕ} (P : Pair p) (e : ℕ) (x : Fin (D + 1) → X.functionField) (hx : ∀ l, x l ∈ P.H e 0)
     (a b : ℤ) (g : X.functionField) (hg : g ∈ P.H a b) (α : Fin (D + 1) → ℕ) (S : Finset (Fin (D + 1))) :
@@ -75,45 +75,41 @@ end GlobalTheory.HSAmp.GoodH
 namespace GlobalTheory.HSAmp.GoodH
 
 /- English proof (translation)
-Introduce `hAr k _ X _ p D hX P hL`. Take `⟨e, x, hx⟩` from `GlobalTheory.T.exists_basepointFreeSectionTuple_ample_arith k X p D hX P hL`. Establish `he : 0 < e` using `hx.pos`. Establish `hup : ∀ s : ℕ, ∃ c : ℕ, ∀ q : ℕ, (P.H ((e * q + s : ℕ) : ℤ) 1).FG ∧ Module.finrank ℤ (P.H ((e * q + s : ℕ) : ℤ) 1) ≤ Module.finrank (ratF x) X.functionField * (q + c + D).choose D`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, C, -, h⟩` from `GlobalTheory.T.arithHilbertSamuel_upperBound_count_rank_ample k X p D hX P hL e x hx (s : ℤ) 1`. Use `⟨c, fun q => ?_⟩` and prove the remaining obligations. Establish `e1 : ((e * q + s : ℕ) : ℤ) = (e : ℤ) * (q : ℤ) + (s : ℤ)` using `by push_cast; ring`. Rewrite using `[e1]`. Conclude with `⟨(h q).1, (h q).2.1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hlow : ∀ s : ℕ, ∃ c : ℕ, ∀ q : ℕ, Module.finrank (ratF x) X.functionField * (q + D).choose D ≤ Module.finrank ℤ (P.H ((e * (q + c) + s : ℕ) : ℤ) 1)`. Introduce `s`. Take `⟨c, C, -, h⟩` from `GlobalTheory.T.arithHilbertSamuel_lowerBound_count_rank_ample k X p D hX P hL e x hx (s : ℤ) 1`. Take `⟨c', hc'⟩` from `hup s`. Use `⟨c, fun q => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hli⟩` from `(h q).1`. Establish `e1 : ((e * (q + c) + s : ℕ) : ℤ) = (e : ℤ) * ((q + c : ℕ) : ℤ) + (s : ℤ)` using `by push_cast; ring`. Establish `hfg` using `(hc' (q + c)).1`. Rewrite `hfg`, the goal using `[e1]`. Use `haveI : Module.Finite ℤ (P.H ((e : ℤ) * ((q + c : ℕ) : ℤ) + (s : ℤ)) 1) := Module.Finite.iff_addGroup_fg.2 ((AddGroup.fg_iff_addSubgroup_fg _).2 hfg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `w : Fin (Module.finrank (ratF x) X.functionField * (q + D).choose D) → P.H ((e : ℤ) * ((q + c : ℕ) : ℤ) + (s : ℤ)) 1` to `fun i => ⟨v i, hv i⟩`. Establish `hw : LinearIndependent ℤ w` using `LinearIndependent.of_comp (P.H ((e : ℤ) * ((q + c : ℕ) : ℤ) + (s : ℤ)) 1).subtype.toIntLinearMap hli`. Simplify using `using hw.fintype_card_le_finrank`. Establish `hrank` using `GlobalTheory.T.tendsto_div_pow_of_choose_bounds D e (Module.finrank (ratF x) X.functionField) (fun m => Module.finrank ℤ (P.H (m : ℤ) 1)) he (fun s _ => by`. Take `⟨c, hc⟩` from `hlow s`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'⟩` from `hup s`. Conclude with `⟨c, c', fun q => ⟨hc q, (hc' q).2⟩⟩)`. Establish `hdeg` using `GlobalTheory.T.finrank_functionField_quotientSubfield_eq_degree hAr k X p D hX P hL e x hx`. Establish `hg : (Module.finrank (ratF x) X.functionField : ℝ) / ((e : ℝ) ^ D * D.factorial) = gdeg P.L D / D.factorial`. Establish `: (e : ℝ) ^ D ≠ 0` using `pow_ne_zero _ (by exact_mod_cast he.ne')`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdeg]`. Conclude with `mul_div_mul_left _ _ this`. Establish `hkey : ∀ s : ℕ, ∃ C : ℝ, 1 ≤ C ∧ ∀ q : ℕ, 1 ≤ e * q + s → P.H ((e * q + s : ℕ) : ℤ) 1 ≤ AddSubgroup.closure (ballIn P (P.H ((e * q + s : ℕ) : ℤ) 1) ((e * q + s : ℕ) : ℤ) 1 (C ^ (e * q + s)))`. Introduce `s`. Take `⟨c, w, Cr, -, hrep⟩` from `GlobalTheory.T.sections_eq_sum_aeval_boundedIntCoeff_ample k X p D hX P hL e x hx (s : ℤ) 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Λ : ℕ → AddSubgroup X.functionField` to `fun q => P.H ((e : ℤ) * (q : ℤ) + (s : ℤ)) 1`. Establish `hmul : ∀ q l, ∀ f ∈ Λ q, x l * f ∈ Λ (q + 1)`. Introduce `q l f hf`. Establish `h` using `(GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ _ _ (hx.mem l) hf).1`. Use `show x l * f ∈ P.H _ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_H_of_eq P (by push_cast; ring) (by ring) h`. Establish `hrepr : ∀ q, ∀ f ∈ Λ q, ∃ T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ, (∀ i, (T i).IsHomogeneous (q + c)) ∧ f = ∑ i, MvPolynomial.aeval x (T i) * w i`. Introduce `q f hf`. Take `⟨T, h1, h2, -⟩` from `hrep q f hf`. Conclude with `⟨T, h1, h2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG, hcl⟩` from `GlobalTheory.T.exists_finite_homogeneous_generators_graded_subgroup X.functionField D c x _ w Λ hmul hrepr`. Establish `hb : ∀ (a b : ℤ) (f : X.functionField), f ∈ P.H a b → ∃ C : ℝ, 0 ≤ C ∧ ∀ σ y, P.nu a b σ y f ≤ C`. Introduce `a b f hf`. Take `⟨C, hC⟩` from `((GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P a b).2 f hf).2`. Conclude with `⟨|C|, abs_nonneg _, fun σ y => (hC σ y).trans (le_abs_self _)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `choose Cx hCx0 hCx using fun l => hb _ _ _ (hx.mem l)`. Establish `hbG : ∀ g : ℕ × X.functionField, ∃ C : ℝ, 0 ≤ C ∧ (g ∈ G → ∀ σ y, P.nu ((e : ℤ) * (g.1 : ℤ) + s) 1 σ y g.2 ≤ C)`. Introduce `g`. Distinguish the cases in `hg : g ∈ G`. Take `⟨C, hC0, hC⟩` from `hb _ _ _ (hG g hg)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨C, hC0, fun _ => hC⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hg⟩`. Use `choose Cg hCg0 hCg using hbG`. Establish `hC1 : 1 ≤ 1 + ∑ l, Cx l` using `le_add_of_nonneg_right (Finset.sum_nonneg fun l _ => hCx0 l)`. Establish `hC2 : 1 ≤ 1 + ∑ g ∈ G, Cg g` using `le_add_of_nonneg_right (Finset.sum_nonneg fun g _ => hCg0 g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxl : ∀ l σ y, P.nu e 0 σ y (x l) ≤ 1 + ∑ l, Cx l` using `fun l σ y => (hCx l σ y).trans (by`. Use `Finset.single_le_sum (fun j _ => hCx0 j) (Finset.mem_univ l)` as an intermediate fact. Use the proof step `linarith)`. Establish `hgl : ∀ g ∈ G, ∀ σ y, P.nu ((e : ℤ) * (g.1 : ℤ) + s) 1 σ y g.2 ≤ 1 + ∑ g ∈ G, Cg g` using `fun g hg σ y => (hCg g hg σ y).trans (by`. Use `Finset.single_le_sum (fun j _ => hCg0 j) hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Use `⟨(1 + ∑ l, Cx l) * (1 + ∑ g ∈ G, Cg g), one_le_mul_of_one_le_of_one_le hC1 hC2, fun q hq => ?_⟩` and prove the remaining obligations. Establish `e1 : ((e * q + s : ℕ) : ℤ) = (e : ℤ) * (q : ℤ) + (s : ℤ)` using `by push_cast; ring`. Rewrite using `[e1]`. Use `(hcl q).trans (AddSubgroup.closure_mono ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `f ⟨g, hg, α, hα, rfl⟩`. Take `⟨h1, h2⟩` from `mono_mem P e x hx.mem ((e : ℤ) * (g.1 : ℤ) + s) 1 g.2 (hG g hg) α Finset.univ`. Establish `ea : (e : ℤ) * ((∑ l, α l : ℕ) : ℤ) + ((e : ℤ) * (g.1 : ℤ) + s) = (e : ℤ) * (q : ℤ) + (s : ℤ)`. Rewrite using `[← hα]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1`, `h2` using `[ea]`. Use `⟨h1, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Establish `hnu0 : ∀ l, 0 ≤ P.nu e 0 σ y (x l)` using `fun l => nu_nonneg P _ _ σ y _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hqe : q ≤ e * q` using `Nat.le_mul_of_pos_left q he`. Establish `hsum : ∑ l, α l ≤ e * q + s` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Use `choose Cs hCs1 hCs using hkey`. Use `⟨fun m => le_rfl, fun m => ?_, ⟨∑ s ∈ Finset.range e, Cs s, ?_, fun m hm => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `hup (m % e)`. Establish `h` using `(hc (m / e)).1`. Rewrite `h` using `[Nat.div_add_mod]`. Conclude with `h`. Conclude with `(hCs1 0).trans (Finset.single_le_sum (fun j _ => zero_le_one.trans (hCs1 j)) (Finset.mem_range.2 he))`.
-
-Establish `hs` using `Nat.mod_lt m he`. Establish `h` using `hCs (m % e) (m / e) (by rw [Nat.div_add_mod]; exact hm)`. Rewrite `h` using `[Nat.div_add_mod]`. Establish `hle : Cs (m % e) ≤ ∑ s ∈ Finset.range e, Cs s` using `Finset.single_le_sum (fun j _ => zero_le_one.trans (hCs1 j)) (Finset.mem_range.2 hs)`. Use `h.trans (AddSubgroup.closure_mono ?_)` and prove the remaining obligations.
-
-Introduce and unpack `f ⟨hf, hf'⟩`. Conclude with `⟨hf, fun σ y => (hf' σ y).trans (pow_le_pow_left₀ (zero_le_one.trans (hCs1 _)) hle _)⟩`. Rewrite using `[← hg]`. Conclude with `hrank`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodFam_H : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → GoodFam P D (gdeg P.L D / D.factorial) fun m => P.H m 1 := by

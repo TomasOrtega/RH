@@ -11,15 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D V S θ M J χ T hT v`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `⟨(hx.aut v).left, (hx.aut v).cont, hx.lev v⟩`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨fun γ _ g => ?_, ?_, fun k _ g => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [MultilinearMap.zero_apply]`. Conclude with `continuous_zero`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Use `⟨fun γ hγ g => ?_, ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx.1 γ hγ g, hy.1 γ hγ g]`. Simplify `hx.2.1.add hy.2.1` using `only [MultilinearMap.add_apply]`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx.2.2 k hk g, hy.2.2 k hk g, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Use `⟨fun γ hγ g => ?_, ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx.1 γ hγ g]`. Simplify `hx.2.1.const_smul c` using `only [MultilinearMap.smul_apply]`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx.2.2 k hk g]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mult_value_left_cont_level :
     ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S), ∀ J χ, ∀ T ∈ Mult θ M J χ, ∀ v, (∀ γ ∈ GQ V, ∀ g, T v (γ * g) = T v g) ∧ Continuous (T v) ∧ ∀ k ∈ J, ∀ g, T v (g * k) = χ k * T v g := by

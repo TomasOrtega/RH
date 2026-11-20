@@ -9,15 +9,13 @@ namespace GlobalTheory.Mean4
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `H k _ X _ p D hX ι _ L n f g hf hg`. Establish `hu : ∀ (σ : k →+* ℂ) (y : CxPts p σ), CxPts.CInfAt (fun _ : CxPts p σ => (1 : ℝ)) y` using `fun σ y => CxPts.cInfAt_const 1 y`. Establish `hc : ∀ σ σ' : k →+* ℂ, (Weight.ofFun (fun _ : CxPts p σ => (1 : ℝ))).IsConj (Weight.ofFun (fun _ : CxPts p σ' => (1 : ℝ)))` using `fun _ _ _ _ _ _ _ => rfl`. Take `⟨Φ, hΦ⟩` from `((H.arExists k X p D hX).2 (Option ι) (fun o : Option ι => o.elim (ArInt.fnB (fun σ (_ : CxPts p σ) => (1 : ℝ)) hu hc) L)).1`. Establish `h1` using `(H.arMix.fnB H.arExists hX hΦ n).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : ∀ σ (ε : ℤˣ), IsFiniteMeasure (((ArInt.comb L n).φ σ).chernPart D ε)`. Introduce `σ ε`. Establish `h1' : Integrable (fun _ : CxPts p σ => (1 : ℝ)) (((ArInt.comb L n).φ σ).chernPart D ε)`. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Conclude with `integrableOn_univ.1 (h1 σ).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `integrableOn_univ.1 (h1 σ).2`. Conclude with `(integrable_const_iff.1 h1').resolve_left one_ne_zero`. Establish `hint : ∀ σ (u : CxPts p σ → ℝ), Continuous u → ((ArInt.comb L n).φ σ).ChernIntegrableOn D Set.univ u`. Introduce `σ u hu'`. Use `haveI := hX.compactSpace σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hi : ∀ ε : ℤˣ, IntegrableOn u Set.univ (((ArInt.comb L n).φ σ).chernPart D ε)` using `fun ε => by haveI := hfin σ ε`. Conclude with `integrableOn_univ.2 ((BoundedContinuousFunction.mkOfCompact ⟨u, hu'⟩).integrable (((ArInt.comb L n).φ σ).chernPart D ε))`. Conclude with `⟨hi 1, hi (-1)⟩`. Establish `hfs : Finite (k →+* ℂ)` using `hX.finite_emb`. Unfold `chInt`.
-
-Rewrite using `[← finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`. Conclude with `finsum_congr fun σ => Weight.chernInt_add (hint σ _ (hf σ)) (hint σ _ (hg σ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chInt_add_of_continuous : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ) (f g : ∀ σ : k →+* ℂ, CxPts p σ → ℝ), (∀ σ, Continuous (f σ)) → (∀ σ, Continuous (g σ)) → chInt (ArInt.comb L n) D (fun σ y => f σ y + g σ y) = chInt (ArInt.comb L n) D f + chInt (ArInt.comb L n) D g := by
   intro H k _ X _ p D hX ι _ L n f g hf hg

@@ -9,7 +9,7 @@ namespace GlobalTheory.SURestrict
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, by simp⟩` and prove the remaining obligations. Use `show inUJ ε 1`. Simplify using `[inUJ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_SUset (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε := by
   refine ⟨?_, by simp⟩
@@ -17,9 +17,9 @@ theorem one_mem_SUset (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) �
   simp [inUJ]
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Use `⟨?_, by rw [Matrix.det_mul, ha2, hb2, one_mul]⟩` and prove the remaining obligations. Establish `ha1' : aᴴ * Jm ε * a = Jm ε` using `ha1`. Establish `hb1' : bᴴ * Jm ε * b = Jm ε` using `hb1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (a * b)ᴴ * Jm ε * (a * b) = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [ha1', hb1']`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_SUset {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ SUset ε)
     (hb : b ∈ SUset ε) : a * b ∈ SUset ε := by
@@ -34,7 +34,7 @@ theorem mul_mem_SUset {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (
     _ = Jm ε := by rw [ha1', hb1']
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Establish `h1 : star g * g = 1` using `(Matrix.mem_unitaryGroup_iff').mp hu`. Use `show gᴴ * Jm ε * g = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Kset_sub_UJset {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     g ∈ UJset ε := by
@@ -46,7 +46,7 @@ theorem Kset_sub_UJset {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h
     _ = Jm ε := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Kset_sub_UJset hg.1, hg.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem KS_sub_SUset {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ KS ε) :
     g ∈ SUset ε := ⟨Kset_sub_UJset hg.1, hg.2⟩
@@ -55,7 +55,7 @@ section
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Use `he 1 (by simp) g hg` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_on_SU {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (he : Ext ε m π' π) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ SUset ε) : π g = π' g := by
@@ -65,25 +65,21 @@ theorem eq_on_SU {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fin n
 end
 
 /- English proof (translation)
-Introduce `n hn ε H _ _ m π' π he`. Take `⟨hsplit, -, -⟩` from `GlobalTheory.T.unitary_to_special_unitary_local n hn ε`. Establish `heq : ∀ g ∈ SUset ε, π g = π' g` using `fun g hg => eq_on_SU he hg`. Establish `hSU : ∀ g ∈ SUset ε, g ∈ UJset ε` using `fun g hg => hg.1`. Establish `hstab : ∀ S : Submodule ℂ H, (∀ g ∈ UJset ε, ∀ v ∈ S, π g v ∈ S) ↔ (∀ g ∈ SUset ε, ∀ v ∈ S, π' g v ∈ S)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg v hv`. Rewrite using `[← heq g hg]`. Conclude with `h g (hSU g hg) v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h g hg v hv`. Take `⟨z, hz, g₀, hg₀, rfl, -⟩` from `hsplit g hg`. Rewrite using `[he z hz g₀ hg₀]`. Conclude with `S.smul_mem _ (h g₀ hg₀ v hv)`. Establish `hK : ∀ S : Submodule ℂ H, Stable (Kset ε) π S ↔ Stable (KS ε) π' S`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `S`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg v hv`. Rewrite using `[← heq g (KS_sub_SUset hg)]`. Conclude with `h g hg.1 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h g hg v hv`. Take `⟨z, hz, g₀, hg₀, rfl, hiff⟩` from `hsplit g (Kset_sub_UJset hg)`. Rewrite using `[he z hz g₀ hg₀]`. Conclude with `S.smul_mem _ (h g₀ (hiff.mp hg) v hv)`. Use `⟨?_, ?_, hK, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨⟨h1, hmul⟩, hiso, hcont⟩`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq 1 (one_mem_SUset ε)]`. Conclude with `h1`. Introduce `a ha b hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← heq _ (mul_mem_SUset ha hb), ← heq a ha, ← heq b hb]`. Conclude with `hmul a (hSU a ha) b (hSU b hb)`. Introduce `g hg v`. Rewrite using `[← heq g hg]`. Conclude with `hiso g (hSU g hg) v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `v`. Conclude with `((hcont v).mono (fun g hg => hSU g hg)).congr (fun g hg => by simp only [heq g hg])`. Prove the components needed by the constructor for the conclusion. Introduce `h S hS hst`. Conclude with `h S hS ((hstab S).mpr hst)`.
-
-Introduce `h S hS hst`. Conclude with `h S hS ((hstab S).mp hst)`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hfd, hv, hs⟩`.
-
-Conclude with `⟨S, hfd, hv, (hK S).mp hs⟩`. Introduce and unpack `⟨S, hfd, hv, hs⟩`. Conclude with `⟨S, hfd, hv, (hK S).mpr hs⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem restrict_main : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Ext ε m π' π → (IsURepOn (UJset ε) π → IsURepOn (SUset ε) π') ∧ (IsIrredOn (UJset ε) π ↔ IsIrredOn (SUset ε) π') ∧ (∀ S : Submodule ℂ H, Stable (Kset ε) π S ↔ Stable (KS ε) π' S) ∧ ∀ v, IsKFin ε π v ↔ IsKFinS ε π' v := by
   intro n hn ε H _ _ m π' π he

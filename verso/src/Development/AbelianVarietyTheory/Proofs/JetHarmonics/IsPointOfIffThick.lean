@@ -18,7 +18,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 
 variable {U} in
 /- English proof (translation)
-Rewrite using `[hasCoords_iff, hasCoords_iff, h.1, Category.assoc]`. Use `and_congr Iff.rfl (forall_congr' fun χ => forall_congr' fun z => forall_congr' fun J => forall_congr' fun hJ => ?_)` and prove the remaining obligations. Rewrite using `[(val_corr hJ (h.2 χ) r).trans (val_pull hJ _ _ _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasCoords_pull {e : ℕ} {k : T' ⟶ T} {g : GtPt D.toPre T} {g' : GtPt D.toPre T'}
     (h : GtPt.IsPull k.left g g') {Z : Scheme.{0}} {r : Z ⟶ T'.left} {y : Z ⟶ (thickObj R I e G).left} :
@@ -30,7 +30,7 @@ theorem hasCoords_pull {e : ℕ} {k : T' ⟶ T} {g : GtPt D.toPre T} {g' : GtPt 
 
 variable {U} in
 /- English proof (translation)
-Rewrite `h`, `h'` using `[hasCoords_iff, Category.id_comp]`. Conclude with `pt_ext (Over.OverMorphism.ext (h.1.symm.trans h'.1)) fun χ z J hJ => (h.2 χ z J hJ).symm.trans (h'.2 χ z J hJ)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_hasCoords {e : ℕ} {g g' : GtPt D.toPre T} {y : T.left ⟶ (thickObj R I e G).left}
     (h : HasCoords U e g (𝟙 _) y) (h' : HasCoords U e g' (𝟙 _) y) : g = g' := by
@@ -38,9 +38,9 @@ theorem eq_of_hasCoords {e : ℕ} {g g' : GtPt D.toPre T} {y : T.left ⟶ (thick
   exact pt_ext (Over.OverMorphism.ext (h.1.symm.trans h'.1)) fun χ z J hJ => (h.2 χ z J hJ).symm.trans (h'.2 χ z J hJ)
 
 /- English proof (translation)
-Use `⟨fun h e => h e _ _ _ (thickHom_ι I e x), fun h e Z r y hy => ?_⟩` and prove the remaining obligations. Establish `w : r ≫ T.hom = (y ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[← Over.w x, ← Category.assoc, ← hy, Category.assoc, Over.w (fstG I e G), Category.assoc]`. Both sides reduce to the same expression. Take `⟨l, rfl⟩ : ∃ l, l ≫ thickι I e T = r` from `⟨pullback.lift r _ w, pullback.lift_fst _ _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : y = l ≫ thickHom I e x := by`. Rewrite using `[← cancel_mono (thickι I e G), Category.assoc, thickHom_ι]`. Conclude with `hy.trans (Category.assoc _ _ _)`. Conclude with `(h e).comp l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPointOf_iff_thick (g : GtPt D.toPre T) (x : T ⟶ G) :
     IsPointOf U g x ↔ ∀ e, HasCoords U e g (thickι I e T) (thickHom I e x) := by
@@ -54,11 +54,11 @@ theorem isPointOf_iff_thick (g : GtPt D.toPre T) (x : T ⟶ G) :
   exact (h e).comp l
 
 /- English proof (translation)
-Use `choose y hy using fun e => exists_hasCoords U e g (thickι I e T) (thickObj R I e T).hom pullback.condition.symm`. Use `existsUnique_of_exists_of_unique ?_ fun x x' h h' => Over.OverMorphism.ext (hT.hom_ext fun e => (h.comp_fstG_eq (hy e)).symm.trans (h'.comp_fstG_eq (hy e)))` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `hT G.left (fun e => y e ≫ thickι I e G) fun e => by`. Establish `h₁` using `(hy (e + 1)).comp (thickMap R I e T)`. Rewrite `h₁` using `[thickMap_ι]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, h₁.unique (hy e).succ, Category.assoc, thickMap_ι]`. Establish `hw : x ≫ G.hom = T.hom` using `hT.hom_ext fun e => by`. Establish `h₁ : thickι I e G ≫ G.hom = (U.gt e).pG.left ≫ D.toPre.P.A.hom` using `(Over.w (fstG I e G)).trans (Over.w (U.gt e).pG).symm`. Rewrite using `[reassoc_of% hx e, h₁, reassoc_of% (hy e).1, Over.w]`. Use `⟨Over.homMk x hw, (isPointOf_iff_thick U g _).2 fun e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: thickHom I e (Over.homMk x hw : T ⟶ G) = y e`. Rewrite using `[← cancel_mono (thickι I e G), thickHom_ι]`. Conclude with `hx e`. Rewrite using `[this]`. Conclude with `hy e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_point (hT : IsAdicColimit I T) (g : GtPt D.toPre T) : ∃! x : T ⟶ G, IsPointOf U g x := by
   choose y hy using fun e =>
@@ -83,17 +83,15 @@ theorem existsUnique_point (hT : IsAdicColimit I T) (g : GtPt D.toPre T) : ∃! 
 variable {H : Over (Spec (CommRingCat.of R))} [GrpObj H] {Φ : ∀ T, (T ⟶ H) ≃ GtPt D.toPre T}
 
 /- English proof (translation)
-Establish `pl : ∀ (e : ℕ) (w : T ⟶ H), HasCoords U e (Φ T w) (thickι I e T) (thickHom I e x) ↔ HasCoords U e (Φ _ (fstG I e T ≫ w)) (𝟙 _) (thickHom I e x)` using `fun e w => by`. Rewrite using `[← hasCoords_pull (hΦ.1 _ _ (fstG I e T) w), Category.id_comp]`. Both sides reduce to the same expression. Use `existsUnique_of_exists_of_unique ?_ fun w w' h h' => Over.OverMorphism.ext (hT.hom_ext fun e => congrArg (·.left) ((Φ _).injective (eq_of_hasCoords ((pl e w).1 ((isPointOf_iff_thick U _ x).1 h e)) ((pl e w').1 ((isPointOf_iff_thick U _ x).1 h' e)))))` and prove the remaining obligations. Establish `ex : ∀ e, ∃ w : (Over.map (thick R I e)).obj (thickObj R I e T) ⟶ H, HasCoords U e (Φ _ w) (𝟙 _) (thickHom I e x)` using `fun e => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨ξ, hξ⟩` from `TorusCoord.exists_isPointOf (U.gt e) (T := (Over.map (thick R I e)).obj (thickObj R I e T)) (thickHom I e x) (by rw [← Category.assoc, Over.w]; rfl)`. Use `⟨(Φ _).symm ξ, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply, hasCoords_iff]`. Use `⟨hξ.1.symm.trans (Category.id_comp _).symm, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_corr hJ (hξ.2 χ) (𝟙 _)).trans (val_pull hJ _ _ _)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Category.id_comp]`. Conclude with `this.symm`. Use `choose w hw using ex`. Take `⟨v, hv, -⟩` from `hT H.left (fun e => (w e).left) fun e => by`. Set `m : (Over.map (thick R I e)).obj (thickObj R I e T) ⟶ (Over.map (thick R I (e + 1))).obj (thickObj R I (e + 1) T)` to `Over.homMk (thickMap R I e T) (((congrArg (thickMap R I e T ≫ ·) (Over.w (fstG I (e + 1) T)).symm).trans (thickMap_ι_assoc I e T T.hom)).trans (Over.w (fstG I e T)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁` using `(hw (e + 1)).comp (thickMap R I e T)`. Rewrite `h₁` using `[thickMap_thickHom, Category.comp_id, ← Category.id_comp (thickMap R I e T)]`. Establish `h₂` using `(hasCoords_pull (hΦ.1 _ _ m (w (e + 1)))).1 h₁`. Conclude with `congrArg (·.left) ((Φ _).injective (eq_of_hasCoords h₂ (hw e).succ))`. Establish `hv' : v ≫ H.hom = T.hom` using `hT.hom_ext fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% hv e, Over.w]`. Conclude with `(Over.w (fstG I e T)).symm`. Use `⟨Over.homMk v hv', (isPointOf_iff_thick U _ x).2 fun e => (pl e _).2 ?_⟩` and prove the remaining obligations. Establish `: fstG I e T ≫ (Over.homMk v hv' : T ⟶ H) = w e` using `Over.OverMorphism.ext (hv e)`. Rewrite using `[this]`.
-
-Conclude with `hw e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift (hΦ : Represents Φ) (hT : IsAdicColimit I T) (x : T ⟶ G) :
     ∃! w : T ⟶ H, IsPointOf U (Φ T w) x := by
@@ -132,7 +130,7 @@ theorem existsUnique_lift (hΦ : Represents Φ) (hT : IsAdicColimit I T) (x : T 
   exact hw e
 
 /- English proof (translation)
-Use `choose j hj hu using fun T (hT : IsAdicColimit I T) (w : T ⟶ H) => existsUnique_point U hT (Φ T w)`. Establish `bij : ∀ T hT, Function.Bijective (j T hT)` using `fun T hT => (Function.bijective_iff_existsUnique _).2 fun x => (existsUnique_congr fun w => ⟨fun h => (hu T hT w x h).symm, fun h => h ▸ hj T hT w⟩).1 (existsUnique_lift U hΦ hT x)`. Conclude with `⟨fun T hT => MulEquiv.mk' (Equiv.ofBijective _ (bij T hT)) fun w w' => (hu T hT _ _ ((hj T hT w).mul hG (hj T hT w') (hΦ.2 T w w'))).symm, fun T hT w x => ⟨fun h => h ▸ hj T hT w, fun h => (hu T hT w x h).symm⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv (hG : GlobalFnsSt) (hΦ : Represents Φ) :
     ∃ J : ∀ T, IsAdicColimit I T → ((T ⟶ H) ≃* (T ⟶ G)),

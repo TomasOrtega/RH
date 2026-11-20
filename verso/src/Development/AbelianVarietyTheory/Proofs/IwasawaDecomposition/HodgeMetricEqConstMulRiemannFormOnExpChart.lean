@@ -23,35 +23,31 @@ noncomputable section
 namespace GlobalTheory.HodgeChart
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T σ U hσ hU n a ha g ch₀ ex hEC _ hIn`. Take `⟨htarget, -, hsymmHol, hadd, hjoint, htan⟩` from `hEC`. Establish `hsrc : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ch₀.symm z ∈ ch₀.source` using `fun z hz => ch₀.map_target (by rw [htarget]; exact hz)`. Use `set Ω : Set (Fin n → ℂ) := {z | z ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ∀ i : Fin a, z (Fin.castLE ha i) ≠ 0} with hΩ`. Establish `hinΩ : ∀ x ∈ ch₀.source, Inner x → ch₀ x ∈ Ω` using `fun x hx hI => ⟨by rw [← htarget]; exact ch₀.map_source hx, (hIn x hx).1 hI⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΩin : ∀ z ∈ Ω, Inner (ch₀.symm z)` using `fun z hz => (hIn _ (hsrc z hz.1)).2 (by rw [ch₀.right_inv (by rw [htarget]; exact hz.1)]; exact hz.2)`. Distinguish the cases in `h1 : 1 ≤ Dw.p + Dw.q`. Use `swap`. Apply the tactic sequence `have hm : ∀ τ : E →+* ℂ, Dw.mult τ = 0 := fun τ => by unfold Datum.mult; split_ifs <;> omega`. Use `⟨fun _ => 1, fun _ => one_pos, fun x _ _ Hm _ f Wd _ => ⟨fun τ => ?_, fun p q _ => ?_⟩⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i`. Establish `h0` using `hm τ`. Establish `h2` using `i.2`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `hm p.1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `p.2.2`. Use linear arithmetic over natural numbers and integers. Use `set U' := unfFam U σ with hU'def`. Establish `hU' : Formalism.L2.PjFree.IsUnf U'` using `by rw [hU'def, unfFam_self]; exact hU`. Take `⟨W, hinj⟩` from `exists_unfWit_inj hσ hU' h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨d, hdpos, hd⟩` from `GlobalTheory.T.exists_diagonal_riemannForm_orthonormalFrame E H Dw l Xo c σ _ U' hσ hU' W`. Establish `hreach : ∀ z ∈ Ω, ∃ (k : U'.Comp) (x : (U'.X k).dom), IsOrth (U'.X k) x.1 ∧ cxPt T.Z (U'.un k x) = ch₀.symm z` using `fun z hz => exists_orth (Z := T.Z) hσ hU' (hΩin z hz)`. Distinguish the cases in `hne : Ω.Nonempty`. Use `swap`. Conclude with `⟨fun _ => 1, fun _ => one_pos, fun x hx hI => absurd ⟨ch₀ x, hinΩ x hx hI⟩ hne⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨z₁, hz₁⟩` from `hne`. Establish `hreach' : ∀ z, ∃ k : U'.Comp, z ∈ Ω → ∃ x : (U'.X k).dom, IsOrth (U'.X k) x.1 ∧ cxPt T.Z (U'.un k x) = ch₀.symm z` using `fun z => by`. Distinguish the cases in `h : z ∈ Ω`. Take `⟨k, x, hx⟩` from `hreach z h`. Conclude with `⟨k, fun _ => ⟨x, hx⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(hreach z₁ hz₁).choose, fun h' => absurd h' h⟩`. Use `choose comp hcomp using hreach'`. Use `letI : TopologicalSpace U'.Comp := ⊥`. Use `haveI : DiscreteTopology U'.Comp := ⟨rfl⟩`. Establish `hcont : ContinuousOn comp Ω`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Take `⟨x₀, -, hx₀⟩` from `hcomp z hz`. Establish `hs0 : cxPt T.Z (U'.un (comp z) x₀) ∈ ch₀.source` using `by rw [hx₀]; exact hsrc z hz.1`. Take `⟨B, hBo, hzB, hB⟩` from `GlobalTheory.T.orthonormalFrames_same_component_near_chart E H Dw l Xo c O β T.Z σ _ U' hσ hU' h1 n ch₀ hsymmHol (comp z) x₀ hs0`. Rewrite `hzB` using `[hx₀, ch₀.right_inv (by rw [htarget]; exact hz.1)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (hBo.mem_nhds hzB)] with w hw hwB`. Take `⟨x, -, hx⟩` from `hcomp w hw`. Conclude with `hB w hwB _ x hx`. Establish `hconst : ∀ z ∈ Ω, comp z = comp z₁` using `fun z hz => (GlobalTheory.T.isPreconnected_ball_inter_coords_ne_zero n a ha).constant hcont hz hz₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun τ => if 0 < d (comp z₁) τ then 2 * Real.pi / d (comp z₁) τ else 1, fun τ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs with h`. Conclude with `div_pos Real.two_pi_pos h`. Conclude with `one_pos`. Introduce `x hx hI Hm hHm f Wd hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `hinΩ x hx hI`. Take `⟨x', hx'o, hx'⟩` from `hcomp _ hz`. Rewrite `hx'` using `[ch₀.left_inv hx]`. Establish `hk` using `hconst _ hz`. Establish `hExpAt : IsExpAt T.Z.t (x.1 ≫ genι T.Z) (ex x)` using `⟨hadd x hx, (htan x hx).1, (htan x hx).2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. By extensionality, compare the relevant components.
 
-Establish `hslice : IsHolTo Set.univ (fun w => (ex x w).left)`. Establish `hmem : ch₀ x ∈ ch₀.target` using `ch₀.map_source hx`. Use `GlobalTheory.HolPeriods.isHolTo_comp (φ := fun w : Fin g → ℂ => (ch₀ x, w)) hjoint isOpen_univ ((differentiableOn_const (ch₀ x)).prodMk differentiableOn_id) fun w _ => Set.mk_mem_prod hmem (Set.mem_univ w)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[ch₀.left_inv hx]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this`. Take `⟨hg, ho⟩` from `GlobalTheory.T.hodgeMetric_frame_eq_riemannForm_at_interior_point E H Dw l Xo c O β T.Z σ U hσ hU W hinj d hdpos hd g x (ex x) hI hExpAt hslice _ x' hx'o hx' Hm hHm.2.2.1 hHm.2.2.2 f Wd hW`. Use `⟨fun τ => ?_, ho⟩` and prove the remaining obligations. Rewrite using `[hg τ]`. Distinguish the cases in `hm : Dw.mult τ = 0`.
-
-Use extensionality with `i`. Establish `h2` using `i.2`. Use linear arithmetic over natural numbers and integers. Establish `hpos` using `hdpos _ x' hx'o τ (Nat.pos_of_ne_zero hm)`. Establish `e : d (comp (ch₀ x)) τ = d (comp z₁) τ` using `by rw [hk]`.
-
-Rewrite `hpos`, the goal using `[e]`. Simplify using `only [if_pos hpos]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hodgeMet_eq_riem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (n a : ℕ) (ha : a ≤ n) (g : ℕ) (ch₀ : OpenPartialHomeomorph (GlobalTheory.CxPts (genStr T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps T.Z σ g), IsExpChart ch₀ ex → Fintype.card ((Σ τ : E →+* ℂ, Fin (Dw.mult τ))) = g → (∀ x ∈ ch₀.source, Inner x ↔ ∀ i : Fin a, ch₀ x (Fin.castLE ha i) ≠ 0) → ∃ κ : (E →+* ℂ) → ℝ, (∀ τ, 0 < κ τ) ∧ ∀ x ∈ ch₀.source, Inner x → ∀ Hm : Matrix (Fin g) (Fin g) ℂ, ((Hm).IsHermitian ∧ (∀ u : Fin g → ℂ, u ≠ 0 → 0 < (hermForm (Hm) u u).re) ∧ (∀ v w : Fin g → ℂ, ex x v = 1 → ex x w = 1 → ∃ m : ℤ, (hermForm (Hm) v w).im = m) ∧ ∀ (k : ℕ) (v w : Fin g → ℂ) (ζ : ℂˣ), 0 < k → ex x v = 1 → ex x w = 1 → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm (Hm) v w).im : ℂ) / k) → GlobalTheory.UU.CubWeil T.Z.t.cub k (ex x ((k : ℂ)⁻¹ • v)) (ex x ((k : ℂ)⁻¹ • w)) (unitOn ζ)) → ∀ (f : EigFrame T.Z σ (x.1 ≫ genι T.Z)) (W : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → Fin g → ℂ), Dirs ⟨x, f⟩ (fun w => (ex x w).left) W → (∀ τ, (hodgeMet T.Z U).gram x f τ = ((κ τ : ℝ) : ℂ) • Matrix.of fun b b' => hermForm Hm (W ⟨τ, b'⟩) (W ⟨τ, b⟩)) ∧ ∀ p q : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), p.1 ≠ q.1 → hermForm Hm (W p) (W q) = 0 := by
   intro E _ _ _ H Dw l Xo c O _ β Y T σ U hσ hU n a ha g ch₀ ex hEC _ hIn

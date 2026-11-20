@@ -6,7 +6,7 @@ open MeasureTheory Complex Matrix GlobalTheory.RealWeil GlobalTheory.Mem.Lift
 open scoped RealInnerProductSpace Real ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Twist.EuclidCoord.exists_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsEuclideanCoordsHermitianCartanInvolution.lean&line=14#L14)
 -/

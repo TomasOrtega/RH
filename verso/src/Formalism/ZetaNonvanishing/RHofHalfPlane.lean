@@ -7,21 +7,19 @@ noncomputable section
 namespace Formalism
 
 /- English proof (translation)
-Use `set t : ℂ := ((2 * m + 2 : ℕ) : ℂ) with ht`. Establish `htre : t.re = 2 * (m : ℝ) + 2` using `by simp [ht]`. Establish `ht1 : (1 : ℝ) < t.re` using `by rw [htre]; linarith [(m.cast_nonneg : (0 : ℝ) ≤ m)]`. Establish `hn : ∀ n : ℕ, t ≠ -n`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Complex.re hn` as an intermediate fact. Rewrite `this` using `[htre]`. Simplify using `at this`. Establish `h0 : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Combine the linear relations using `[(m.cast_nonneg : (0 : ℝ) ≤ m)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ht1' : t ≠ 1`. Introduce `h1`. Use `congrArg Complex.re h1` as an intermediate fact. Rewrite `this` using `[htre]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[(m.cast_nonneg : (0 : ℝ) ≤ m)]`. Establish `hfe` using `riemannZeta_one_sub hn ht1'`. Establish `hsub : (1 : ℂ) - t = -((2 * m + 1 : ℕ) : ℂ)`. Rewrite using `[ht]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hfe` using `[hsub]`. Rewrite using `[hfe]`. Establish `hcos : Complex.cos (Real.pi * t / 2) = ((Real.cos (((m + 1 : ℕ) : ℝ) * Real.pi) : ℝ) : ℂ)`. Rewrite using `[ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Establish `hpi : (2 * ((Real.pi : ℝ) : ℂ)) ≠ 0`. Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Conclude with `mul_ne_zero two_ne_zero this`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero ?_) ?_) ?_) (riemannZeta_ne_zero_of_one_lt_re ht1)` and prove the remaining obligations. Conclude with `(cpow_ne_zero_iff).mpr (Or.inl hpi)`. Conclude with `Complex.Gamma_ne_zero hn`. Rewrite using `[hcos, Real.cos_nat_mul_pi]`. Use `push_cast`.
-
-Conclude with `pow_ne_zero _ (by norm_num)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma zeta_neg_odd_ne_zero (m : ℕ) : riemannZeta (-((2 * m + 1 : ℕ) : ℂ)) ≠ 0 := by
   set t : ℂ := ((2 * m + 2 : ℕ) : ℂ) with ht
@@ -59,11 +57,11 @@ lemma zeta_neg_odd_ne_zero (m : ℕ) : riemannZeta (-((2 * m + 1 : ℕ) : ℂ)) 
     exact pow_ne_zero _ (by norm_num)
 
 /- English proof (translation)
-Introduce `h s hs htriv hs1`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Distinguish the cases in `hn : ∃ n : ℕ, s = -n`. Take `⟨n, rfl⟩` from `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl | rfl⟩` from `Nat.even_or_odd' n`. Break down `k with _ | m` into its components or cases. Simplify using `[riemannZeta_zero] at hs`. Conclude with `htriv ⟨m, by push_cast; ring⟩`. Conclude with `zeta_neg_odd_ne_zero k hs`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [not_exists] at hn`. Establish `hfe` using `riemannZeta_one_sub hn hs1`. Rewrite `hfe` using `[hs, mul_zero]`. Conclude with `h (1 - s) (by simp; linarith) hfe`. Conclude with `h s hgt hs`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riemannHypothesis_of_zero_free_halfPlane : RHofHalfPlane := by
   intro h s hs htriv hs1

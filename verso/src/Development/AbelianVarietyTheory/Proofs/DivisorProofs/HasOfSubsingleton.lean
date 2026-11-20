@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D hX`. Use `haveI : IsNoetherianRing R := hR.1`. Set `A : PolAV (Spec (CommRingCat.of (FractionRing R)))` to `GlobalTheory.AmpleSpecialisation.baseChange D.toPre.P (jK R)`. Set `eA : (Over.pullback (jK R)).obj D.toPre.P.A ≅ A.A` to `Iso.refl _`. Establish `hA : IsMonHom eA.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Category.comp_id _`. Use `show μ ≫ 𝟙 _ = (𝟙 _ ⊗ₘ 𝟙 _) ≫ μ`. Rewrite using `[Category.comp_id, id_tensorHom_id, Category.id_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hw : ∃ w : LB.Iso (A.L.pull eA.hom.left) (D.toPre.P.L.pull (pullback.fst D.toPre.P.A.hom (jK R))), w.IsGen`. Take `⟨w, hw⟩` from `GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB D.toPre.P.isLB (pullback.fst D.toPre.P.A.hom (jK R)))`. Conclude with `⟨GlobalTheory.PtTie.isoFromPullId w, GlobalTheory.PtTie.isoFromPullId_isGen hw⟩`. Establish `hI : maximalIdeal R ≤ Ideal.jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Conclude with `⟨D.toPre.P.A, inferInstance, inferInstance, A, GlobalTheory.isSemiAbelian_of_isAbelianScheme _ D.toPre.P.isAb, ⟨⟨GlobalTheory.SelfUnif.selfPre D A eA hA hw, fun k _ => GlobalTheory.SelfUnif.expBij D A eA hA hw GlobalTheory.globalFns_holds hI k⟩⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem has_of_subsingleton : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ D : DegData R (maximalIdeal R), Subsingleton D.toPre.X → Has D := by

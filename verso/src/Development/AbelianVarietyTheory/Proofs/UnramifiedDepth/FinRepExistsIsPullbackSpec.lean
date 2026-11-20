@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `N` to `Limits.pullback m u`. Use `haveI : IsAffine N := isAffine_of_isAffineHom (Limits.pullback.snd m u)`. Set `f : Spec Γ(N, ⊤) ⟶ Spec O` to `N.isoSpec.inv ≫ Limits.pullback.snd m u`. Establish `hf : Spec.map (Spec.preimage f) = f` using `Spec.map_preimage f`. Use `⟨Γ(N, ⊤), Spec.preimage f, N.isoSpec.inv ≫ Limits.pullback.fst m u, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsFinite.SpecMap_iff, hf] infer_instance`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Flat), hf] infer_instance`. Rewrite using `[hf]`. Apply the tactic sequence `refine (IsPullback.of_hasPullback m u).of_iso N.isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [f]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem finRep_exists_isPullback_spec {X Y : Scheme.{0}} (m : X ⟶ Y) [IsFinite m] [Flat m]
     (O : CommRingCat.{0}) (u : Spec O ⟶ Y) :
@@ -32,7 +32,7 @@ theorem finRep_exists_isPullback_spec {X Y : Scheme.{0}} (m : X ⟶ Y) [IsFinite
       ?_ ?_ ?_ ?_ <;> simp [f]
 
 /- English proof (translation)
-Rewrite using `[← spMap_left, ← Over.comp_left, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finRep_one_left {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G]
     {P S : Type} [CommRing P] [Algebra R₀ P] [CommRing S] [Algebra R₀ S] (g : P →ₐ[R₀] S) :
@@ -41,25 +41,21 @@ theorem finRep_one_left {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingC
   rw [← spMap_left, ← Over.comp_left, MonObj.comp_one]
 
 /- English proof (translation)
-Introduce `R₀ _ G _ _ O p hfin hflat _`. Take `⟨A, φ, y, hφf, hφl, hpb⟩` from `finRep_exists_isPullback_spec ((𝟙 G) ^ p : G ⟶ G).left (CommRingCat.of (O : Type)) (1 : sp (R₀ := R₀) (O : Type) ⟶ G).left`. Use `letI : Algebra (O : Type) A := φ.hom.toAlgebra`. Use `letI : Algebra R₀ A := (φ.hom.comp (algebraMap R₀ (O : Type))).toAlgebra`. Use `haveI : IsScalarTower R₀ (O : Type) A := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Module.Finite (O : Type) A := hφf`. Use `haveI : Module.Flat (O : Type) A := hφl`. Establish `hpow : ∀ {T : Over (Spec (CommRingCat.of R₀))} (z : T ⟶ G), z.left ≫ ((𝟙 G) ^ p : G ⟶ G).left = (z ^ p).left`. Introduce `T z`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hy : y ≫ G.hom = (sp (R₀` using `R₀) A).hom := by`. Rewrite using `[← Over.w ((𝟙 G) ^ p : G ⟶ G), ← Category.assoc, hpb.w, Category.assoc, Over.w (1 : sp (R₀ := R₀) (O : Type) ⟶ G)]`. Simplify using `only [sp, Over.mk_hom]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `y' : sp (R₀` to `R₀) A ⟶ G := Over.homMk y hy`. Use `⟨A, inferInstance, inferInstance, inferInstance, inferInstance, Module.free_of_flat_of_isLocalRing, inferInstance, y', ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hpow, finRep_one_left G (IsScalarTower.toAlgHom R₀ (O : Type) A)]`. Conclude with `hpb.w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `S _ _ _ _ z hz`. Establish `hw : z.left ≫ ((𝟙 G) ^ p : G ⟶ G).left = Spec.map (CommRingCat.ofHom (algebraMap (O : Type) S)) ≫ (1 : sp (R₀` using `R₀) (O : Type) ⟶ G).left := by`. Rewrite using `[hpow, hz, finRep_one_left G (IsScalarTower.toAlgHom R₀ (O : Type) S)]`. Both sides reduce to the same expression. Set `l : Spec (CommRingCat.of S) ⟶ Spec A` to `hpb.lift _ _ hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : Spec.map (Spec.preimage l) = l` using `Spec.map_preimage l`. Establish `h1 : φ ≫ Spec.preimage l = CommRingCat.ofHom (algebraMap (O : Type) S)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hl]`. Conclude with `hpb.lift_snd _ _ hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨(Spec.preimage l).hom, fun r => congrArg (fun f => f.hom r) h1⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage l) ≫ y = z.left`. Rewrite using `[hl]`. Conclude with `hpb.lift_fst _ _ hw`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ hψ`. Establish `h2 : Spec.map (CommRingCat.ofHom ψ.toRingHom : A ⟶ CommRingCat.of S) = l`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[hpb.lift_fst _ _ hw, ← hψ]`. Both sides reduce to the same expression.
-
-Rewrite using `[hpb.lift_snd _ _ hw, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `ψ.commutes r`. Establish `h3` using `Spec.map_injective (h2.trans hl.symm)`.
-
-Use extensionality with `a`. Conclude with `congrArg (fun f => f.hom a) h3`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem finRep_kernel_mul_finite_free :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (O : LAlg R₀) (p : ℕ), IsFinite ((𝟙 G) ^ p : G ⟶ G).left → Flat ((𝟙 G) ^ p : G ⟶ G).left → Smooth G.hom →

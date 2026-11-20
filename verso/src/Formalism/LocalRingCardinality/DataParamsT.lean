@@ -109,24 +109,24 @@ structure ParamsT (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) : Type
   s_hi : s ≤ D.R.r + 7
 
 /- English proof (translation)
-The claim follows from `le_trans zero_le_one T.Cp_ge`.
+A detailed English derivation is pending.
 -/
 theorem ParamsT.Cp_nonneg {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : 0 ≤ T.Cp :=
   le_trans zero_le_one T.Cp_ge
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_trans (by omega) T.TO_40, le_trans (Nat.le_mul_of_pos_left _ (by norm_num)) T.TO_11D2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ParamsT.order_ge_max_linear_square {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     4 * T.Dp + 4 ≤ T.TO ∧ T.Dp ^ 2 ≤ T.TO :=
   ⟨le_trans (by omega) T.TO_40, le_trans (Nat.le_mul_of_pos_left _ (by norm_num)) T.TO_11D2⟩
 
 /- English proof (translation)
-Establish `hf : 2 ≤ D.R.f`. Use `D.R.ord_pos` as an intermediate fact. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hr : 6 ≤ D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `h3 : 2 * 6 * (6 + 1) ≤ D.R.f * D.R.r * (D.R.r + 1)` using `Nat.mul_le_mul (Nat.mul_le_mul hf hr) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `le_trans (by norm_num) (le_trans h3 T.nW_lo.1)`.
+A detailed English derivation is pending.
 -/
 theorem ParamsT.nW_40 {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : 40 ≤ T.nWn := by
   have hf : 2 ≤ D.R.f := by
@@ -141,31 +141,31 @@ theorem ParamsT.nW_40 {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T
   exact le_trans (by norm_num) (le_trans h3 T.nW_lo.1)
 
 /- English proof (translation)
-The claim follows from `(even_iff_two_dvd.2 (Dvd.dvd.trans (by norm_num) T.nW_dvd))`.
+A detailed English derivation is pending.
 -/
 theorem ParamsT.nW_even {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nWn :=
   (even_iff_two_dvd.2 (Dvd.dvd.trans (by norm_num) T.nW_dvd))
 
 /- English proof (translation)
-The claim follows from `T.nP_eq.ge`.
+A detailed English derivation is pending.
 -/
 theorem ParamsT.nP_ge {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     8 * D.R.f * D.R.r + 4 ≤ T.nP := T.nP_eq.ge
 
 /- English proof (translation)
-Rewrite using `[T.nP_eq]; exact ⟨2 * D.R.f * D.R.r + 1, by ring⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ParamsT.four_dvd_nP {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : 4 ∣ T.nP := by
   rw [T.nP_eq]; exact ⟨2 * D.R.f * D.R.r + 1, by ring⟩
 
 /- English proof (translation)
-The claim follows from `even_iff_two_dvd.2 (Dvd.dvd.trans (by norm_num) T.four_dvd_nP)`.
+A detailed English derivation is pending.
 -/
 theorem ParamsT.even_nP₂ {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nP :=
   even_iff_two_dvd.2 (Dvd.dvd.trans (by norm_num) T.four_dvd_nP)
 
 /- English proof (translation)
-Rewrite using `[T.PP_eq]`. Use `T.one_le_CP` as an intermediate fact. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem ParamsT.PP_pos {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P)
     (hZ : 0 < zBase L) : 0 < T.PP := by

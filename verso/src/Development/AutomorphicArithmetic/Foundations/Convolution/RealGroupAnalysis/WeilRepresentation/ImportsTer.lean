@@ -6,7 +6,7 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨eq_top_of_nU_wW _ (fun b => Subgroup.subset_closure (Or.inl ⟨b, rfl⟩)) (Subgroup.subset_closure (Or.inr rfl)), le_antisymm ((Subgroup.closure_le _).2 ?_) (Gam_le _ (fun b => Subgroup.subset_closure (Or.inl ⟨b, rfl⟩)) (Subgroup.subset_closure (Or.inr rfl)))⟩` and prove the remaining obligations. Introduce and unpack `_ (⟨b, rfl⟩ | rfl)`. Use `exacts [nU_rt_mem b, wW_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.gen :
     ∀ (F : Type) [Field F] [NumberField F], St.Gen F := by

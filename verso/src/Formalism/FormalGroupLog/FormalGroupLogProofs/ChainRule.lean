@@ -12,13 +12,13 @@ def Agree (N : ℕ) (f g : MvPowerSeries σ R) : Prop :=
   ∀ d : σ →₀ ℕ, d.degree < N → coeff d f = coeff d g
 
 /- English proof (translation)
-Introduce `d hd` and use `h d (lt_of_lt_of_le hd hMN)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Agree.mono {N M : ℕ} {f g : MvPowerSeries σ R} (h : Agree N f g) (hMN : M ≤ N) :
     Agree M f g := fun d hd => h d (lt_of_lt_of_le hd hMN)
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[coeff_pderiv, coeff_pderiv, h (d + Finsupp.single i 1) ?_]`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Agree.pderiv {N : ℕ} {f g : MvPowerSeries σ R} (h : Agree (N + 1) f g) (i : σ) :
     Agree N (MvPowerSeries.pderiv R i f) (MvPowerSeries.pderiv R i g) := by
@@ -29,9 +29,9 @@ theorem Agree.pderiv {N : ℕ} {f g : MvPowerSeries σ R} (h : Agree (N + 1) f g
   omega
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = d` using `by simpa using hp`. Establish `h1 : p.1 ≤ d` using `hp' ▸ le_self_add`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p.2 ≤ d` using `hp' ▸ le_add_self`. Rewrite using `[hx p.1 (lt_of_le_of_lt (Finsupp.degree_mono h1) hd), hy p.2 (lt_of_le_of_lt (Finsupp.degree_mono h2) hd)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Agree.mul {N : ℕ} {x x' y y' : MvPowerSeries σ R} (hx : Agree N x x')
     (hy : Agree N y y') : Agree N (x * y) (x' * y') := by
@@ -46,9 +46,9 @@ theorem Agree.mul {N : ℕ} {x x' y y' : MvPowerSeries σ R} (hx : Agree N x x')
     hy p.2 (lt_of_le_of_lt (Finsupp.degree_mono h2) hd)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `d`. Rewrite using `[coeff_truncTotal_eq_ite, coeff_truncTotal_eq_ite]`. Use `split_ifs with hd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `h d hd`. Both sides reduce to the same expression. Introduce `h d hd`. Use `congrArg (MvPolynomial.coeff d) h` as an intermediate fact. Rewrite `this` using `[coeff_truncTotal _ hd, coeff_truncTotal _ hd]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem agree_iff [Finite σ] {N : ℕ} {f g : MvPowerSeries σ R} :
     Agree N f g ↔ truncTotal N f = truncTotal N g := by
@@ -64,7 +64,7 @@ theorem agree_iff [Finite σ] {N : ℕ} {f g : MvPowerSeries σ R} :
     rwa [coeff_truncTotal _ hd, coeff_truncTotal _ hd] at this
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[MvPolynomial.coeff_coe, coeff_truncTotal _ hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem agree_truncTotal [Finite σ] (N : ℕ) (f : MvPowerSeries σ R) :
     Agree N f (truncTotal N f : MvPowerSeries σ R) := by
@@ -72,7 +72,7 @@ theorem agree_truncTotal [Finite σ] (N : ℕ) (f : MvPowerSeries σ R) :
   rw [MvPolynomial.coeff_coe, coeff_truncTotal _ hd]
 
 /- English proof (translation)
-Rewrite using `[agree_iff, truncTotal_subst ha, truncTotal_subst ha', agree_iff.mp hf]`. Establish `: (fun i => ((a i).truncTotal N : MvPowerSeries τ R)) = fun i => ((a' i).truncTotal N : MvPowerSeries τ R)`. Use function extensionality and compare the values at `i`. Rewrite using `[agree_iff.mp (haa i)]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Agree.subst [Finite σ] [Finite τ] {N : ℕ} {f f' : MvPowerSeries σ R}
     {a a' : σ → MvPowerSeries τ R} (ha : ∀ j, constantCoeff (a j) = 0)
@@ -85,11 +85,11 @@ theorem Agree.subst [Finite σ] [Finite τ] {N : ℕ} {f f' : MvPowerSeries σ R
   rw [this]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp [hp, hq, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p j hp`. Simplify using `only [MvPolynomial.pderiv_mul, MvPolynomial.pderiv_X, map_add, map_mul, MvPolynomial.aeval_X, add_mul, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Derivation.leibniz, hp, smul_eq_mul, smul_eq_mul]`. Rewrite using `[add_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, apply_ite (MvPolynomial.aeval A), mul_ite, ite_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_aeval [Fintype σ] (p : MvPolynomial σ R) (A : σ → MvPowerSeries τ R) (i : τ) :
     MvPowerSeries.pderiv R i (MvPolynomial.aeval A p) =
@@ -109,13 +109,11 @@ theorem pderiv_aeval [Fintype σ] (p : MvPolynomial σ R) (A : σ → MvPowerSer
     · simp [Pi.single_apply, apply_ite (MvPolynomial.aeval A), mul_ite, ite_mul]
 
 /- English proof (translation)
-Use extensionality with `d`. Use `set N := d.degree + 2 with hN`. Use `set P : MvPolynomial σ R := truncTotal N f with hP`. Use `set A : σ → MvPowerSeries τ R := fun j => (truncTotal N (a j) : MvPowerSeries τ R) with hA`. Establish `hA0 : ∀ j, constantCoeff (A j) = 0` using `fun j => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `agree_truncTotal N (a j) 0 (by simp [hN])` as an intermediate fact. Rewrite `this` using `[coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, ha j]`. Conclude with `this.symm`. Establish `hfP : Agree N f (P : MvPowerSeries σ R)` using `agree_truncTotal N f`. Establish `haA : ∀ j, Agree N (a j) (A j)` using `fun j => agree_truncTotal N (a j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Agree (d.degree + 1) (MvPowerSeries.pderiv R i (f.subst a)) (MvPowerSeries.pderiv R i ((P : MvPowerSeries σ R).subst A))` using `(Agree.subst ha hA0 hfP haA).pderiv i`. Establish `h2 : ∀ j, Agree (d.degree + 1) ((MvPowerSeries.pderiv R j f).subst a * MvPowerSeries.pderiv R i (a j)) ((MvPowerSeries.pderiv R j (P : MvPowerSeries σ R)).subst A * MvPowerSeries.pderiv R i (A j))` using `fun j => Agree.mul (Agree.subst ha hA0 (hfP.pderiv j) fun k => (haA k).mono (by omega)) ((haA j).pderiv i)`. Establish `key : MvPowerSeries.pderiv R i ((P : MvPowerSeries σ R).subst A) = ∑ j, (MvPowerSeries.pderiv R j (P : MvPowerSeries σ R)).subst A * MvPowerSeries.pderiv R i (A j)`. Rewrite using `[subst_coe, pderiv_aeval]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[MvPowerSeries.pderiv_coe P, subst_coe]`. Rewrite using `[h1 d (by omega), key, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (h2 j d (by omega)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_subst [Fintype σ] [Finite τ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ j, constantCoeff (a j) = 0) (f : MvPowerSeries σ R) (i : τ) :
@@ -151,7 +149,7 @@ theorem pderiv_subst [Fintype σ] [Finite τ] {a : σ → MvPowerSeries τ R}
   exact Finset.sum_congr rfl fun j _ => (h2 j d (by omega)).symm
 
 /- English proof (translation)
-Use `pderiv_subst (σ := Unit) (a := fun _ => a) (fun _ => ha) f i` as an intermediate fact. Simplify `this` using `[PowerSeries.subst_def, PowerSeries.derivative]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_psubst [Finite τ] {a : MvPowerSeries τ R} (ha : constantCoeff a = 0)
     (f : PowerSeries R) (i : τ) :

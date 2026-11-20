@@ -26,13 +26,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `key : ∀ z : R ⊗[F] E, u • GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E` using `E) j' hj' (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU j hj z) = 0 := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, smul_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b e`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU_tmul, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU_tmul, TensorProduct.smul_tmul', smul_eq_mul, hu, TensorProduct.zero_tmul]`. Use extensionality with `r s`. Establish `e` using `key ((HA.mat R σ J x).1 r s - (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) r s)`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply, ← e]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Matrix.sub_apply, GlobalTheory.AutFunCompare.mat_extH, GlobalTheory.AutFunCompare.mat_extH]`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one, map_add, map_sub]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.one_apply_ne h, mul_zero, zero_add, sub_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem smul_extH_extH_sub_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {R R' R'' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] [CommRing R''] [Algebra F R''] (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b)
@@ -59,11 +59,11 @@ theorem smul_extH_extH_sub_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {R R' R'
   · simp only [Matrix.one_apply_ne h, mul_zero, zero_add, sub_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Use `smul_extH_extH_sub_one (R'' := AF F) (singleFin v) (singleFin_mul v) (LinearMap.inr F (Ainf F) (Af F)) (fun _ _ => Prod.ext (mul_zero _).symm rfl) u (fun b => ?_) x` and prove the remaining obligations. Use `Prod.ext (show u.1 * (0 : Ainf F) = 0 from mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.2 * singleFin v b = 0`. Use `af_ext fun w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Establish `: evalV F w u.2 = 0` using `hu`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evalV_singleFin_ne h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_emb_sub_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) :
     At (evFin F v) ((matHom _ σ J (emb σ J v x)).1 - 1) := by
@@ -81,15 +81,15 @@ theorem at_emb_sub_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : HeightOneSp
   · rw [evalV_singleFin_ne h, mul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d W c hc v t g x hx`. Use `set y := (toGAd hσ W.J hc).symm (GlobalTheory.AdelicU.emb σ (c • W.J.map σ) v x) with hy`. Establish `hm : mat y = (matHom _ σ _ (GlobalTheory.AdelicU.emb σ (c • W.J.map σ) v x)).1`. Use `toGAd_mat hσ W.J hc y` as an intermediate fact. Rewrite `this` using `[hy, MulEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat, ← this]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `At _ (mat y - 1)`. Rewrite using `[hm]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `at_emb_sub_one v x`. Establish `hpi : (mat y).map (piW t) = ((mat y).map (compFin F E v)).map (splitProj t)`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Rewrite using `[hpi, hm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (matHom _ σ _ (GlobalTheory.AdelicU.emb σ (c • W.J.map σ) v x)).1.map (compFin F E v) = (matHom _ σ _ x).1`. Rewrite using `[← proj_emb_self σ (c • W.J.map σ) v x, matHom_proj, proj_emb_self]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Establish `h3` using `hx`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsCompAt at h3`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_mem_uAt_piW : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (W : Spc F E d) (c : E) (hc : c ≠ 0) (v : Pl F) (t : E →ₐ[F] Fv F v)

@@ -11,17 +11,17 @@ namespace GlobalTheory.SplitParLeft
 open GlobalTheory.DblVacLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v _ hT hunr _ _ d' hd' dd omd hdc hws R hR0 hRv p hp`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) R with hΨdef`. Establish `hΨ : Ψ ∈ schA F _` using `hRv.2`. Establish `hΦ : GlobalTheory.InertDbl.dblFun Ψ ∈ schA F _` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hΨ _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hΨ)`. Establish `hV` using `hTr.geo.hM'.vac v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Function.ne_iff.mp hV.2.1`. Establish `hΨne : Ψ ≠ 0`. Introduce `h0`. Set `x : Fin a' × Fin (a + a') → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hRx : R x = R 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hRv.1 0 x (fun u hu => by funext i; exact GlobalTheory.LatVac.at_liftV v _ u hu)` as an intermediate fact. Simplify using `using this`. Establish `h1` using `congrFun h0 x`. Simplify using `only [hΨdef, tens, x, GlobalTheory.LatVac.evFin_liftV, hRx, Pi.zero_apply] at h1`. Conclude with `mul_ne_zero hy hR0 h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `dblFun_eigen_left hTr.base hTr.geo v hunr d' hd' dd omd hdc hws.2.1 R hRv p hp.1`. Take `⟨l, hl, hinv, hl0⟩` from `GlobalTheory.DblDiagForm.exists_form F _ Ψ hΨ hΨne`. Take `⟨t, ht⟩` from `hp.2`. Establish `hS` using `hws.2.2 l hl (fun z φ hφ => hinv φ hφ _ _ (GlobalTheory.WeilM.SiegelModel.rho_diag B.ψ hdc z φ)) p t ht _ hΦ`. Establish `htp` using `GlobalTheory.InertDbl.parD_diag_action F E σ G.V' v p hp t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w ∉ above E (X.T : Set (Pl F))` using `fun w h hm => hT (h ▸ hm)`. Establish `ha : (X.α / X.β) (Matrix.GeneralLinearGroup.det t) = 1`. Rewrite using `[MonoidHom.div_apply, chr_det_eq_one G.V' hTr.geo.hV'.lat v X.α (fun w h => hTr.chars.unrα w (hw w h)) t htp.1 htp.2, chr_det_eq_one G.V' hTr.geo.hV'.lat v X.β (fun w h => hTr.chars.unrβ w (hw w h)) t htp.1 htp.2, div_one]`. Establish `hb` using `GlobalTheory.IntegralDetModule.modu_norm_det G.V' hTr.geo.hV'.lat v t htp.1 htp.2`. Rewrite `hS` using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hS` using `[hc, map_smul, smul_eq_mul]`. Simplify using `only [Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_mul] at hS`. Establish `h1 : c = 1` using `(mul_eq_right₀ hl0).mp hS`. Rewrite using `[hc, h1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitParallel_derivative_fixes_left : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -78,7 +78,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitParLeft.splitParallel_derivative_fixes_left | exact _root_.GlobalTheory.SplitParLeft.splitParallel_derivative_fixes_left | (intros; apply _root_.GlobalTheory.SplitParLeft.splitParallel_derivative_fixes_left <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.split_parallel_derivative_left_fixed : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -20,22 +20,22 @@ open GlobalTheory.IndefiniteRowSideFullHecke
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `Compare.isKroneckerChar_iff χ`.
+A detailed English derivation is pending.
 -/
 theorem isKroneckerChar_iff (χ : DirichletCharacter ℂ H.d) : IsKroneckerChar χ ↔ χ = EllipticFibrePrincipalData.chi H :=
   Compare.isKroneckerChar_iff χ
 
 /- English proof (translation)
-The claim follows from `Compare.logOm_eq h`.
+A detailed English derivation is pending.
 -/
 theorem logOm_eq [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) :
     logOm E χ = (EllipticFibrePrincipalData.logOm H : ℝ) :=
   Compare.logOm_eq h
 
 /- English proof (translation)
-Rewrite using `[Compare.logOm_eq_logOmCurve h h2 hD]`. Establish `h₁ : (0 : ℝ) < rootDiscr E`. Rewrite using `[rootDiscr_def]`. Conclude with `Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _`. Establish `h₂ : (0 : ℝ) < √H.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 H.d_prime.pos)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : (2 * Real.pi) ≠ 0` using `by positivity`. Use `congr 1`. Use `show _ = Real.eulerMascheroniConstant + Real.log (2 * Real.pi / rootDiscr E) - LogarithmicDifferentialCharacter.dlogL H + _`. Rewrite using `[LogarithmicDifferentialCharacter.logOmCurve, Real.log_div h₃ h₁.ne', Real.log_div h₃ h₂.ne', Real.log_div h₁.ne' h₂.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logOm_quadratic [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) {K : Type} [Field K]
     [NumberField K] (h2 : Module.finrank ℚ K = 2) (hD : discr K = -H.d) :
@@ -56,28 +56,28 @@ section Curve
 variable {R R' : Type} [CommRing R] [CommRing R'] {ω : R} {ω' : R'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩, fun h => ⟨h.val.symm, h.fib, h.vec, h.act⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ellMap_iff (C' : Ell H R' ω') (C : Ell H R ω) (f : R →+* R') (φ : C'.P.A.left ⟶ C.P.A.left) :
     EllMap C' C f φ ↔ EllipticFibrePrincipalData.IsEllFibre f C C' φ :=
   ⟨fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩, fun h => ⟨h.val.symm, h.fib, h.vec, h.act⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPrincipalAt_iff (C : Ell H R ω) (s : R →+* ℂ) : C.IsPrincipalAt s ↔ EllipticFibrePrincipalData.IsPrincipalAt C s := Iff.rfl
 
 variable {M : Type} [Field M] [NumberField M] {w : 𝓞 M}
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr (forall_congr' fun _ => and_congr_right fun _ => ⟨fun h => (h _).2 rfl, fun h _ => ⟨CMCurveCompare.isLieNormSq_unique (C.basis.1 0) h, fun e => e ▸ h⟩⟩) eq_comm`.
+A detailed English derivation is pending.
 -/
 theorem hasPeriod_iff (C : Ell H (𝓞 M) w) (x : ℝ) : C.HasPeriod x ↔ EllipticFibrePrincipalData.IsLogPeriod C x :=
   exists_congr fun _ => and_congr (forall_congr' fun _ => and_congr_right fun _ =>
     ⟨fun h => (h _).2 rfl, fun h _ => ⟨CMCurveCompare.isLieNormSq_unique (C.basis.1 0) h, fun e => e ▸ h⟩⟩) eq_comm
 
 /- English proof (translation)
-Rewrite using `[logOm_quadratic h h2 hD, Complex.ofReal_re, hasPeriod_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasPeriod_logOm_iff [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) {K : Type} [Field K]
     [NumberField K] (h2 : Module.finrank ℚ K = 2) (hD : discr K = -H.d) (C : Ell H (𝓞 M) w) :
@@ -104,15 +104,13 @@ def conjEll (C : Ell H R ω) : Ell H R (1 - ω) where
     (EllConj.lbIso_of_adj C.P.isLB (C.adj (EllConj.barK H (wK H)) (wK H) (HostModel.bar_bar H _).symm))
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, h.2 _⟩, fun ⟨h₁, h₂⟩ => ⟨h₁, ?_⟩⟩` and prove the remaining obligations. Set `N : Subring (OK H)` to `{ carrier := {c | a.act c ≫ f = f ≫ b.act c} mul_mem' := fun {x y} (hx : _ = _) (hy : _ = _) => show _ = _ by`. Rewrite using `[a.mul, b.mul, Category.assoc, hy, ← Category.assoc, hx, Category.assoc]`. Use the proof step `one_mem' := show _ = _ by rw [a.one, b.one, Category.id_comp, Category.comp_id]`. Use the proof step `add_mem' := fun {x y} (hx : _ = _) (hy : _ = _) => show _ = _ by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[a.add, b.add, MonObj.mul_comp, MonObj.comp_mul, hx, hy]`. Use the proof step `zero_mem' := show _ = _ by rw [Serre.act_zero, Serre.act_zero, MonObj.one_comp, MonObj.comp_one]`. Use the proof step `neg_mem' := fun {x} (hx : _ = _) => show _ = _ by`. Establish `e₁ : (a.act (-x) ≫ f) * (a.act x ≫ f) = 1`. Rewrite using `[← MonObj.mul_comp, ← a.add, neg_add_cancel, Serre.act_zero, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Establish `e₂ : (f ≫ b.act (-x)) * (f ≫ b.act x) = 1`. Rewrite using `[← MonObj.comp_mul, ← b.add, neg_add_cancel, Serre.act_zero, MonObj.comp_one]`. Conclude with `mul_right_cancel (e₁.trans (hx ▸ e₂.symm)) }`. Introduce and unpack `⟨c, hc⟩`. Use `show (⟨c, hc⟩ : OK H) ∈ N`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hc using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `rfl : x = H.w0` from `hx`. Conclude with `h₂`. Consider the case `algebraMap r => exact (show ((r : ℤ) : OK H) = ⟨algebraMap ℤ (𝓞 E) r, _⟩ from Subtype.ext (by simp)) ▸ intCast_mem N r`.
-
-Consider the case `add x y hx hy k₁ k₂ => exact N.add_mem k₁ k₂`. Consider the case `mul x y hx hy k₁ k₂ => exact N.mul_mem k₁ k₂`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_iff {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (a : OAct (OK H) A) (b : OAct (OK H) B)
     (f : A ⟶ B) : Serre.IsLinearHom a b f ↔ IsMonHom f ∧ a.act (wK H) ≫ f = f ≫ b.act (wK H) := by
@@ -142,13 +140,13 @@ theorem isLinearHom_iff {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (a
   | mul x y hx hy k₁ k₂ => exact N.mul_mem k₁ k₂
 
 /- English proof (translation)
-The claim follows from `eq_sub_of_add_eq (EllConj.barK_wK_add H)`.
+A detailed English derivation is pending.
 -/
 theorem barK_wK : EllConj.barK H (wK H) = EllipticFibrePrincipalData.wSide H false :=
   eq_sub_of_add_eq (EllConj.barK_wK_add H)
 
 /- English proof (translation)
-Rewrite using `[EllipticFibrePrincipalData.kForm, EllipticFibrePrincipalData.kForm, map_add, map_mul, map_intCast, map_intCast, ← barK_wK]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem barK_kForm (D : Datum H) (ε : ℤˣ) (x y : D.La) :
     EllConj.barK H (EllipticFibrePrincipalData.kForm D ε true x y) = EllipticFibrePrincipalData.kForm D ε false x y := by
@@ -156,7 +154,7 @@ theorem barK_kForm (D : Datum H) (ε : ℤˣ) (x y : D.La) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => Compare.isKForm_unique a (EllipticFibrePrincipalData.isKForm_kForm D ε), fun e => e ▸ EllipticFibrePrincipalData.isKForm_kForm D ε⟩`.
+Supply the required witnesses or components.
 -/
 theorem isKForm_iff {D : Datum H} {ε : ℤˣ} (h : D.La → D.La → OK H) : IsKForm D ε h ↔ h = EllipticFibrePrincipalData.kForm D ε true :=
   ⟨fun a => Compare.isKForm_unique a (EllipticFibrePrincipalData.isKForm_kForm D ε), fun e => e ▸ EllipticFibrePrincipalData.isKForm_kForm D ε⟩
@@ -165,7 +163,7 @@ variable {C : Ell H R ω} {T : PAT H (Sp R)} {D : Datum H} {L : Submodule (𝓞 
   {ε : ℤˣ} {h : D.La → D.La → OK H}
 
 /- English proof (translation)
-Take `rfl` from `(isKForm_iff h).1 hh`. Simplify using `only [IsFam, isLinearHom_iff]`. Conclude with `⟨fun ⟨a, b, c, d⟩ => ⟨fun x => (a x).1, b, c, fun x => (a x).2, d⟩, fun k => ⟨fun x => ⟨k.hom x, k.side x⟩, k.add, k.smul, k.lam⟩⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isFam_iff (hh : IsKForm D ε h) : IsFam C T h L φ ↔ EllipticFibrePrincipalData.IsHomFam C T.t L ε true φ := by
   obtain rfl := (isKForm_iff h).1 hh
@@ -174,7 +172,7 @@ theorem isFam_iff (hh : IsKForm D ε h) : IsFam C T h L φ ↔ EllipticFibrePrin
     fun k => ⟨fun x => ⟨k.hom x, k.side x⟩, k.add, k.smul, k.lam⟩⟩
 
 /- English proof (translation)
-Take `rfl` from `(isKForm_iff h).1 hh`. Establish `e₁ : (conjEll C).act.act (wK H) = C.act.act (EllipticFibrePrincipalData.wSide H false)` using `congrArg C.act.act barK_wK`. Establish `e₂ : ∀ a b, (conjEll C).act.act (EllipticFibrePrincipalData.kForm D ε true a b) = C.act.act (EllipticFibrePrincipalData.kForm D ε false a b)` using `fun a b => congrArg C.act.act (barK_kForm D ε a b)`. Conclude with `⟨fun ⟨a, b, c, d⟩ => ⟨fun x => (a x).1, b, c, fun x => e₁ ▸ (a x).2 (wK H), fun x y => e₂ x y ▸ d x y⟩, fun k => ⟨fun x => (isLinearHom_iff _ _ _).2 ⟨k.hom x, e₁.symm ▸ k.side x⟩, k.add, k.smul, fun x y => (e₂ x y).symm ▸ k.lam x y⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isFam_conj_iff (hh : IsKForm D ε h) : IsFam (conjEll C) T h L φ ↔ EllipticFibrePrincipalData.IsHomFam C T.t L ε false φ := by
   obtain rfl := (isKForm_iff h).1 hh
@@ -188,11 +186,11 @@ theorem isFam_conj_iff (hh : IsKForm D ε h) : IsFam (conjEll C) T h L φ ↔ El
 end Family
 
 /- English proof (translation)
-Take `⟨Q, φ, -, hφ, hL⟩` from `PureType.exists_baseChange polBaseChange_holds y P`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨u, -, -, -, -, -, h₁, h₂, -⟩` from `thetaUnifAV_all Q rig hrig`. Choose the witnesses or unpack the hypotheses as in `⟨Φ, hΦ⟩ : ∃ Φ : (𝟙_ (Over (Sp ℂ)) ⟶ Q.A) ≃* (Over.mk y ⟶ P.A), ∀ p, (Φ p).left = p.left ≫ φ := by`. Establish `key : ∀ t, (𝟙_ (Over (Sp ℂ))).hom ≫ y = t → ∃ Φ : (𝟙_ (Over (Sp ℂ)) ⟶ Q.A) ≃* (Over.mk t ⟶ P.A), ∀ p, (Φ p).left = p.left ≫ φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Conclude with `⟨ObjPull.pushEquiv hφ _, fun _ => rfl⟩`. Conclude with `key y (Category.id_comp y)`. Establish `he` using `PointUnif.isExp_push hφ u h₁ h₂ Φ hΦ`. Use `P.isAb.proper` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u.discrete` as an intermediate fact. Establish `: IsZLattice ℝ u.Λ` using `⟨u.full⟩`. Take `⟨F, hF⟩` from `UnifPoint.IsExp.exists_linearEquiv (e := fun z => Φ (u.ex z)) he u.Λ (fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z)) ha hs hh hc`. Use `he.comp_equiv F` as an intermediate fact. Simplify `this` using `only [hF]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem deriv_of_hol {S : Scheme.{0}} (P : Out.PolAV S) (y : Sp ℂ ⟶ S) {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ P.A)}
     (ha : ∀ z w, e (z + w) = e z * e w) (hs : Function.Surjective e) (hh : IsHolTo Set.univ fun z => (e z).left)
@@ -216,9 +214,9 @@ theorem deriv_of_hol {S : Scheme.{0}} (P : Out.PolAV S) (y : Sp ℂ ⟶ S) {g : 
   simpa only [hF] using this
 
 /- English proof (translation)
-Use `⟨fun ⟨a, b, c, d, f, l, w⟩ => ?_, fun h => ⟨h.period, h.hol, h.add, h.onto, h.ker, h.lin, h.weil⟩⟩` and prove the remaining obligations. Establish `hc : {z | e z = 1}.Countable`. Take `⟨_, _⟩` from `PeriodCompare.finiteDimensional D`. Establish `: Countable D.La` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Conclude with `(Set.countable_range Pe).mono fun z hz => (f z).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `deriv_of_hol T.pol (spMap σ) c d b hc`. Conclude with `⟨a, c, d, f, l, b, k.2.2.2.1, k.2.2.2.2, w⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isExp_iff {R : Type} [CommRing R] (T : PAT H (Sp R)) (σ : R →+* ℂ) (D : Datum H) {g : ℕ}
     (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)) (e : (Fin g → ℂ) → (Over.mk (spMap σ) ⟶ T.t.G)) :
@@ -236,7 +234,7 @@ section Degree
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[Compare.isThetaDeg_iff]`. Use `exists₂_congr fun oa nth => and_congr_right fun _ => and_congr_right fun _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm, one_div, inv_mul_eq_div]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isThetaDeg_iff (x : KeyIn K) (δ : ℝ) : IsThetaDeg x δ ↔ EllipticFibrePrincipalData.IsThetaDegOn x δ := by
   rw [Compare.isThetaDeg_iff]
@@ -244,7 +242,7 @@ theorem isThetaDeg_iff (x : KeyIn K) (δ : ℝ) : IsThetaDeg x δ ↔ EllipticFi
   rw [add_comm, one_div, inv_mul_eq_div]
 
 /- English proof (translation)
-Rewrite using `[Compare.isDegDeOf_iff]`. Conclude with `exists₂_congr fun x φ => and_congr_right fun _ => (Compare.isThetaDeg_iff x δ).symm.trans (isThetaDeg_iff x δ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThetaDeg_key_iff (P : Out.PolAV (Sp (𝓞 K))) (δ : ℝ) :
     (∃ (F : GenFib P) (hg : _) (rig : _) (hr : _) (th : _) (hth : _), IsThetaDeg (F.key hg rig hr th hth) δ) ↔
@@ -259,9 +257,9 @@ section Lattice
 variable {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} {hP : IsPeriod D ty Pe} {p q : ℕ}
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Establish `h₁` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `h₂` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `[pow_two] at h₁ h₂`. Establish `him : H.rt0.im ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h₁` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Conclude with `⟨mul_right_cancel₀ him (by linarith), him⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 -/
 theorem principal_root_re_zero_im_sq (H : Host E) : H.rt0.re = 0 ∧ H.rt0.im ≠ 0 := by
   have hd : (0 : ℝ) < H.d := Nat.cast_pos.2 H.d_prime.pos
@@ -274,7 +272,7 @@ theorem principal_root_re_zero_im_sq (H : Host E) : H.rt0.re = 0 ∧ H.rt0.im �
   exact ⟨mul_right_cancel₀ him (by linarith), him⟩
 
 /- English proof (translation)
-Establish `h : H.rt = 2 * H.w0 - 1` using `by rw [H.two_weight_eq_one_add_root]; ring`. Rewrite using `[h, map_sub, map_mul, map_one, HostModel.cmHost_bar_halfIntegerGenerator, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   have h : H.rt = 2 * H.w0 - 1 := by rw [H.two_weight_eq_one_add_root]; ring
@@ -282,11 +280,11 @@ theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   ring
 
 /- English proof (translation)
-Take `⟨Hm, -, -, hE⟩` from `hP.2.2.2.2`. Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Establish `h₁` using `hE (H.rt • x) (H.rt • y)`. Rewrite `h₁` using `[D.adj, smul_smul, bar_rt, neg_mul, ← sq, H.rt_sq, neg_neg, Nat.cast_smul_eq_nsmul, map_nsmul, PureType.period_rt_smul hP hx, PureType.period_rt_smul hP hy]`. Establish `h₂ : hermForm Hm (H.rt0 • Pe x) (-H.rt0 • Pe y) = (-(H.d : ℝ) : ℝ) * hermForm Hm (Pe x) (Pe y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : star (-H.rt0) = H.rt0` using `Complex.ext (by simp [(principal_root_re_zero_im_sq H).1]) (by simp)`. Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, e]`. Rewrite using `[← _root_.mul_assoc, ← sq, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Rewrite `h₁` using `[h₂, Complex.im_ofReal_mul, hE, nsmul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h₁`. Conclude with `(mul_eq_zero.1 (show (H.d : ℝ) * D.EF x y = 0 by linarith)).resolve_left hd.ne'` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem orth_of_pure (hP : IsPeriod D ty Pe) {x y : D.La} (hx : x ∈ PureType.lat hP H.rt0)
     (hy : y ∈ PureType.lat hP (-H.rt0)) : D.EF x y = 0 := by
@@ -305,17 +303,15 @@ theorem orth_of_pure (hP : IsPeriod D ty Pe) {x y : D.La} (hx : x ∈ PureType.l
   exact_mod_cast (mul_eq_zero.1 (show (H.d : ℝ) * D.EF x y = 0 by linarith)).resolve_left hd.ne'
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `hnt : ∀ b, Nontrivial (Z.D₁ b).La` using `fun b => Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [Z.finrank_D₁]; exact one_pos)`. Use `choose a ha using fun b => exists_ne (0 : (Z.D₁ b).La)`. Establish `key : ∀ y : ∀ j : Fin p ⊕ Fin q, (Z.D₁ j.isLeft).La, ∃ (r : 𝓞 E) (s : Fin p ⊕ Fin q → 𝓞 E), r ≠ 0 ∧ ∀ j, r • y j = s j • a _` using `fun y => by choose r s hr e using fun j : Fin p ⊕ Fin q => CMLat.exists_smul_eq_smul (Z.finrank_D₁ _) (ha j.isLeft) (y j)`. Use `⟨∏ j, r j, fun j => (∏ i ∈ Finset.univ.erase j, r i) * s j, Finset.prod_ne_zero_iff.2 fun j _ => hr j, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), mul_smul, mul_smul, e]`. Set `N` to `Submodule.span (𝓞 E) (Set.range fun j : Fin p ⊕ Fin q => Z.f j (a _))`. Establish `htor : Module.IsTorsion (𝓞 E) (D.La ⧸ N)` using `fun y => by`. Take `⟨y, rfl⟩` from `N.mkQ_surjective y`. Take `⟨n, hn, hs⟩` from `Z.span`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hs y`. Take `⟨r, s, hr, e⟩` from `key z`. Use `⟨⟨r * n, mem_nonZeroDivisors_of_ne_zero (mul_ne_zero hr (by exact_mod_cast hn.ne'))⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.mk_smul, ← map_smul, mul_smul, Nat.cast_smul_eq_nsmul, hz, Finset.smul_sum]`. Use `(Submodule.Quotient.mk_eq_zero N).2 (N.sum_mem fun j _ => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, e, map_smul]`. Conclude with `N.smul_mem _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `h₁` using `Submodule.finrank_quotient_add_finrank N`. Rewrite `h₁` using `[Module.finrank_eq_zero_iff_isTorsion.2 htor, D.rank, zero_add]`. Establish `hli : LinearIndependent (𝓞 E) fun j : Fin p ⊕ Fin q => Z.f j (a _)` using `linearIndependent_iff_card_eq_finrank_span.2 (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, hpq]; exact h₁.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, s, hr, e⟩` from `key x`. Establish `h₂` using `Fintype.linearIndependent_iff.1 hli s (by`. Simplify using `only [← map_smul, ← e]`. Simplify using `only [map_smul, ← Finset.smul_sum, hx, smul_zero])`. Use function extensionality and compare the values at `j`.
-
-Use `(Z.D₁ j.isLeft).proj` as an intermediate fact. Conclude with `(smul_eq_zero.1 ((e j).trans (by rw [h₂, zero_smul]))).resolve_left hr`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum (Z : CMLat hP p q) (hpq : p + q = D.p + D.q) (x : ∀ j : Fin p ⊕ Fin q, (Z.D₁ j.isLeft).La)
     (hx : ∑ j, Z.f j (x j) = 0) : x = 0 := by
@@ -358,11 +354,11 @@ def blockP (Z : CMLat hP p q) (j : Fin p) : (Z.D₁ true).La →ₗ[𝓞 E] D.La
 def blockM (Z : CMLat hP p q) (j : Fin q) : (Z.D₁ false).La →ₗ[𝓞 E] D.La := Z.f (.inr j)
 
 /- English proof (translation)
-Establish `key : ∀ (x : Fin p → (Z.D₁ true).La) (y : Fin q → (Z.D₁ false).La), ∑ j, blockP Z j (x j) + ∑ j, blockM Z j (y j) = 0 → x = 0 ∧ y = 0` using `fun x y h => by`. Use `eq_zero_of_sum Z (by omega) (fun j => Sum.rec x y j) (by rw [Fintype.sum_sum_type]; exact h)` as an intermediate fact. Conclude with `⟨funext fun j => congrFun this (.inl j), funext fun j => congrFun this (.inr j)⟩`. Use `⟨Z.sigP, Z.sigM, hs, fun x y (h : _ + _ = _ + _) => ?_, fun z => ?_, fun i j x y => orth_of_pure hP (Z.pure (.inl i) x) (Z.pure (.inr j) y), fun x hx => ?_, fun y hy => ?_, fun j => Z.form (.inl j), fun j => Z.form (.inr j), fun j => hb _, fun j => hb _⟩` and prove the remaining obligations. Use `key (x.1 - y.1) (x.2 - y.2) (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, map_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_add_sub_comm, h, sub_self])`. Conclude with `Prod.ext (sub_eq_zero.1 this.1) (sub_eq_zero.1 this.2)`. Take `⟨n, hn, h⟩` from `Z.span`. Take `⟨x, hx⟩` from `h z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn, fun j => x (.inl j), fun j => x (.inr j), hx.trans (Fintype.sum_sum_type _)⟩`. Conclude with `EllipticFibrePrincipalData.im_mul_form_pos hP H.sqrt_neg_disc_sq (Submodule.sum_mem _ fun j _ => Z.pure (.inl j) _) fun h => hx (key x 0 (by simpa using h)).1`. Use `EllipticFibrePrincipalData.im_mul_form_pos hP (ρ := -H.rt0) (by rw [neg_sq, H.sqrt_neg_disc_sq]) (Submodule.sum_mem _ fun j (_ : j ∈ Finset.univ) => Z.pure (.inr j) (y j)) fun h => hy (key 0 y (by simp only [Pi.zero_apply, map_zero, Finset.sum_const_zero, zero_add]; exact h)).2` as an intermediate fact. Rewrite `this` using `[Complex.neg_im, neg_mul]`. Conclude with `neg_pos.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatData_of_cmLat (Z : CMLat hP p q) (hs : D.p = p ∧ D.q = q) {Λ : ℝ}
     (hb : ∀ j (τ : E →+* ℂ), √‖τ (Z.hh j : E)‖ ≤ Λ) :
@@ -391,7 +387,7 @@ theorem isLatData_of_cmLat (Z : CMLat hP p q) (hs : D.p = p ∧ D.q = q) {Λ : �
     exact neg_pos.1 this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PeriodCompare.isTypeFn_of_isPeriod hP, hP, fun j => Z.pure (.inl j), fun j => Z.pure (.inr j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPointOf_of_cmLat (Z : CMLat hP p q) :
     EllipticFibrePrincipalData.IsPointOf (blockP Z) (blockM Z) ty Pe :=
@@ -416,7 +412,7 @@ def cmLatOf (hP : IsPeriod D ty Pe) {D₁ D₂ : Datum H} {lp : Fin p → (D₁.
       (Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem (.inr j) ⟨y j, rfl⟩)⟩
 
 /- English proof (translation)
-Consider the cases of `Z`. Consider the cases of `Z'`. Consider the cases of `h₁`. Consider the cases of `h₂`. Consider the cases of `h₃`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/
@@ -429,7 +425,7 @@ theorem cmLat_ext {Z Z' : CMLat hP p q} (h₁ : Z.D₁ = Z'.D₁) (h₂ : HEq Z.
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `refine cmLat_ext (funext fun b => by cases b <;> rfl) ?_ (funext fun j => by cases j <;> rfl)`. Use `Function.hfunext rfl fun j j' e => ?_` and prove the remaining obligations. Consider the cases of `e`. Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmLatOf_blocks (Z : CMLat hP p q) {Λ : ℝ} (h : EllipticFibrePrincipalData.IsLatData (Z.D₁ true) (Z.D₁ false) D (blockP Z) (blockM Z)
     (fun j => Z.hh (.inl j)) (fun j => Z.hh (.inr j)) Λ) (k : EllipticFibrePrincipalData.IsPointOf (blockP Z) (blockM Z) ty Pe) :
@@ -455,7 +451,7 @@ def latEquiv (hP : IsPeriod D ty Pe) (p q : ℕ) (Λ : ℝ) :
     exact Subtype.ext rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Set.finite_range fun x : (Fin p ⊕ Fin q) × (E →+* ℂ) => √‖x.2 (Z.hh x.1 : E)‖).bddAbove`. Conclude with `⟨c, fun j τ => hc ⟨(j, τ), rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bound (Z : CMLat hP p q) : ∃ Λ : ℝ, ∀ j (τ : E →+* ℂ), √‖τ (Z.hh j : E)‖ ≤ Λ := by
   obtain ⟨c, hc⟩ := (Set.finite_range fun x : (Fin p ⊕ Fin q) × (E →+* ℂ) => √‖x.2 (Z.hh x.1 : E)‖).bddAbove
@@ -468,15 +464,13 @@ section Point
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨n, c, v, rfl⟩` from `Submodule.mem_span_set'.1 hx`. Use `choose m hm e using fun i => (v i).2`. Simplify using `only [← e]`. Establish `key : ∀ c : Fin n → ℝ, B.baseChange ℝ (∑ i, c i • (1 : ℝ) ⊗ₜ[ℤ] m i) (∑ i, c i • (1 : ℝ) ⊗ₜ[ℤ] m i) = ∑ i, ∑ j, c i * c j * B (m j) (m i)` using `fun c => by`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.BilinForm.baseChange_tmul, smul_eq_mul, zsmul_eq_mul, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[key]`. Establish `hd : DenseRange (Pi.map fun (_ : Fin n) (a : ℚ) => (a : ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Use `hd.induction_on (p := fun c => 0 ≤ t * ∑ i, ∑ j, c i * c j * (B (m j) (m i) : ℝ)) c (isClosed_le continuous_const (by fun_prop)) fun a => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose k hk using hb`. Establish `hb0 : ((b : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero b.2`. Establish `hk' : ∀ i, (k i : ℝ) = (b : ℤ) * (a i : ℝ)` using `fun i => by`. Use `congrArg (fun z : ℚ => (z : ℝ)) (hk i)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h₁` using `h (∑ i, k i • m i) (N.sum_mem fun i _ => N.smul_mem _ (hm i))`. Establish `h₂ : ((B (∑ i, k i • m i) (∑ i, k i • m i) : ℤ) : ℝ) = ((b : ℤ) : ℝ) ^ 2 * ∑ i, ∑ j, (a i : ℝ) * a j * (B (m j) (m i) : ℝ)`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hk', hk']; ring`.
-
-Rewrite `h₁` using `[h₂, mul_left_comm]`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).1 h₁`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_span {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ M) (N : Submodule ℤ M) (t : ℝ)
     (h : ∀ m ∈ N, 0 ≤ t * B m m) {x : ℝ ⊗[ℤ] M} (hx : x ∈ Submodule.span ℝ ((fun m => (1 : ℝ) ⊗ₜ[ℤ] m) '' N)) :
@@ -509,19 +503,19 @@ theorem nonneg_span {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ M) 
   exact (mul_nonneg_iff_of_pos_left (by positivity)).1 h₁
 
 /- English proof (translation)
-Establish `dec : ∀ x, ∃ a ∈ W₁, ∃ b ∈ W₂, a + b = x` using `fun x => Submodule.mem_sup.1 (hs ▸ Submodule.mem_top)`. Establish `ho' : ∀ x ∈ W₂, ∀ y ∈ W₁, B x y = 0` using `fun x hx y hy => by rw [halt, ho y hy x hx, neg_zero]`. Establish `hc : IsCompl W₁ W₂` using `⟨Submodule.disjoint_def.2 fun x h₁ h₂ => hnd x fun y => by`. Take `⟨a, ha, b, hb, rfl⟩` from `dec y`. Rewrite using `[map_add, ho' x h₂ a ha, ho x h₁ b hb, add_zero], codisjoint_iff.2 hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `J` to `LinearMap.ofIsCompl hc (t⁻¹ • R ∘ₗ W₁.subtype) (-t⁻¹ • R ∘ₗ W₂.subtype)`. Establish `j₁ : ∀ x ∈ W₁, J x = t⁻¹ • R x` using `fun x hx => LinearMap.ofIsCompl_apply_left hc (⟨x, hx⟩ : W₁)`. Establish `j₂ : ∀ x ∈ W₂, J x = -t⁻¹ • R x` using `fun x hx => LinearMap.ofIsCompl_apply_right hc (⟨x, hx⟩ : W₂)`. Establish `hJ : ∀ x, J (J x) = -x` using `fun x => by`. Take `⟨a, ha, b, hb, rfl⟩` from `dec x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, j₁ a ha, j₂ b hb, map_add, map_smul, map_smul, j₁ _ (s₁ a ha), j₂ _ (s₂ b hb), hR, hR]`. Apply the tactic sequence `match_scalars <;> field_simp`. Establish `hsk : ∀ x y, B (J x) y = -B x (J y)` using `fun x y => by`. Take `⟨a, ha, b, hb, rfl⟩` from `dec x`. Take `⟨c, hc, d, hd, rfl⟩` from `dec y`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_add, j₁ a ha, j₂ b hb, j₁ c hc, j₂ d hd, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hB, ho a ha _ (s₂ d hd), ho' b hb _ (s₁ c hc)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : ∀ x, 0 ≤ B (J x) x` using `fun x => by`. Take `⟨a, ha, b, hb, rfl⟩` from `dec x`. Establish `e : B (J (a + b)) (a + b) = (t * B (R a) a + -t * B (R b) b) / t ^ 2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_add, j₁ a ha, j₂ b hb, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, ho _ (s₁ a ha) b hb, ho' _ (s₂ b hb) a ha]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `div_nonneg (add_nonneg (p₁ a ha) (p₂ b hb)) (sq_nonneg t)`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨J, j₁, j₂, hJ, fun x y => by rw [hsk, hJ, map_neg, neg_neg], fun x hx => (hnn x).lt_of_ne fun h => hx ?_⟩` and prove the remaining obligations. Establish `hsy : LinearMap.IsSymm (B.compLeft J)` using `⟨fun x y => by show B (J x) y = B (J y) x`. Rewrite using `[hsk, ← halt]⟩`. Establish `h₁` using `((B.compLeft J).apply_apply_same_eq_zero_iff hnn hsy (x := x)).1 h.symm`. Establish `h₂ : J x = 0` using `hnd _ fun y => LinearMap.congr_fun h₁ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_eq_zero, ← hJ, h₂, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_complexStructure {V : Type} [AddCommGroup V] [Module ℝ V] (B : LinearMap.BilinForm ℝ V)
     (halt : ∀ x y, B x y = -B y x) (hnd : ∀ x, (∀ y, B x y = 0) → x = 0) (R : V →ₗ[ℝ] V) {t : ℝ} (ht : t ≠ 0)
@@ -566,9 +560,9 @@ theorem exists_complexStructure {V : Type} [AddCommGroup V] [Module ℝ V] (B : 
   rw [← neg_eq_zero, ← hJ, h₂, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' k k' => simp only [map_add, LinearMap.add_apply, k, k', neg_add]`. Consider the case `tmul r x`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' k k' => simp only [map_add, k, k', neg_add]`. Consider the case `tmul r' y => simp [h]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseChange_skew {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ M) (f g : M →ₗ[ℤ] M)
     (h : ∀ x y, B (f x) y = -B x (g y)) (x y : ℝ ⊗[ℤ] M) :
@@ -583,11 +577,11 @@ theorem baseChange_skew {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ
     | tmul r' y => simp [h]
 
 /- English proof (translation)
-Establish `h : ∀ x y, D.EF x y = -D.EF y x` using `fun x y => by`. Use `D.alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x x' k k' => simp only [map_add, LinearMap.add_apply, k, k', neg_add]`. Consider the case `tmul r x`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add y y' k k' => simp only [map_add, LinearMap.add_apply, k, k', neg_add]`. Consider the case `tmul r' y => simp [h x y, mul_comm]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem baseChange_alt (D : Datum H) (x y : ℝ ⊗[ℤ] D.La) : D.EF.baseChange ℝ x y = -D.EF.baseChange ℝ y x := by
   have h : ∀ x y, D.EF x y = -D.EF y x := fun x y => by
@@ -606,37 +600,35 @@ theorem baseChange_alt (D : Datum H) (x y : ℝ ⊗[ℤ] D.La) : D.EF.baseChange
 open PeriodMapPresentation in
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `PeriodCompare.finiteDimensional D`. Take `⟨hre, him⟩` from `principal_root_re_zero_im_sq H`. Establish `hsq : H.rt0.im ^ 2 = H.d`. Use `congrArg Complex.re H.sqrt_neg_disc_sq` as an intermediate fact. Simplify using `[pow_two, hre] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[sq, this]`. Set `W : Submodule (𝓞 E) D.La → Submodule ℝ (ℝ ⊗[ℤ] D.La)` to `fun N => Submodule.span ℝ ((fun m => (1 : ℝ) ⊗ₜ[ℤ] m) '' (N.restrictScalars ℤ : Submodule ℤ D.La))`. Establish `hW : ∀ N m, m ∈ N → (1 : ℝ) ⊗ₜ[ℤ] m ∈ W N` using `fun N m hm => Submodule.subset_span ⟨m, hm, rfl⟩`. Establish `act : ∀ (a : 𝓞 E) (r : ℝ) (m : D.La), actR D a (r ⊗ₜ m) = r ⊗ₜ (a • m)` using `fun _ _ _ => rfl`. Establish `st : ∀ N (a : 𝓞 E), ∀ x ∈ W N, actR D a x ∈ W N` using `fun N a => show W N ≤ (W N).comap (actR D a) from Submodule.span_le.2 (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `hW N _ (N.smul_mem a hm))`. Establish `mul : ∀ (a b : 𝓞 E) x, actR D a (actR D b x) = actR D (a * b) x` using `fun a b x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x x' k k' => simp only [map_add, k, k']`. Consider the case `tmul r m => rw [act, act, act, mul_smul]`. Establish `two : ∀ m, D.EF (H.rt • m) m = 2 * D.EF (H.w0 • m) m` using `fun m => by`. Establish `: D.EF ((2 * H.w0) • m) m = D.EF ((1 + H.rt) • m) m` using `by rw [H.two_weight_eq_one_add_root]`. Rewrite `this` using `[two_mul, add_smul, add_smul, one_smul, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, D.alt]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `nn : ∀ (N : Submodule (𝓞 E) D.La) (t : ℝ), (∀ m ∈ N, 0 ≤ t * D.EF (H.w0 • m) m) → ∀ x ∈ W N, 0 ≤ t * D.EF.baseChange ℝ (actR D H.rt x) x` using `fun N t h x hx => by`. Use `nonneg_span (D.EF.compLeft (DistribMulAction.toLinearMap ℤ D.La H.rt)) (N.restrictScalars ℤ) t (fun m hm => by show 0 ≤ t * (D.EF (H.rt • m) m : ℝ)` as an intermediate fact. Rewrite using `[two]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[h m hm]) hx`. Use `this.trans_eq (congrArg _ ?_)` and prove the remaining obligations. Establish `k : (D.EF.compLeft (DistribMulAction.toLinearMap ℤ D.La H.rt)).baseChange ℝ = (D.EF.baseChange ℝ).compLeft (actR D H.rt)`. Use extensionality with `a b`. Simplify using `[act]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[k]`. Both sides reduce to the same expression. Establish `htop : W N₁ ⊔ W N₂ = ⊤` using `(top_le_iff.1 fun x _ => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add x x' k k' => exact add_mem (k trivial) (k' trivial)`. Consider the case `tmul r m`. Take `⟨n, hn, h⟩` from `hs m`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 h`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: r ⊗ₜ[ℤ] m = (r / n) • ((1 : ℝ) ⊗ₜ[ℤ] a + (1 : ℝ) ⊗ₜ[ℤ] b)`. Rewrite using `[← TensorProduct.tmul_add, e, TensorProduct.tmul_smul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, div_mul_cancel₀ _ (Nat.cast_ne_zero.2 hn.ne'), TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem_sup (hW _ a ha) (hW _ b hb)))`. Take `⟨J₀, -, -, hJ₀, -⟩` from `D.dom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨J, j₁, j₂, hJ, hinv, hpos⟩` from `exists_complexStructure (D.EF.baseChange ℝ) (baseChange_alt D) (fun x hx => by_contra fun h => (hJ₀ x h).ne' (by rw [baseChange_alt, hx, neg_zero])) (actR D H.rt) him (fun x => by`. Rewrite using `[mul, ← sq, H.rt_sq, hsq]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' k k' => simp only [map_add, k, k', smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul r m`. Rewrite using `[act, neg_smul, Nat.cast_smul_eq_nsmul, TensorProduct.tmul_neg, neg_smul, Nat.cast_smul_eq_nsmul, TensorProduct.tmul_smul])`. Use the proof step `(baseChange_skew _ _ _ fun x y => by show D.EF (H.rt • x) y = -D.EF x (H.rt • y)`. Rewrite using `[D.adj, bar_rt, neg_smul, map_neg])`. Use `htop`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(fun x hx y hy => by`. Use `Submodule.span_induction₂ (p := fun x y _ _ => D.EF.baseChange ℝ x y = 0) ?_ (by simp) (by simp) (fun _ _ _ _ _ _ k k' => by simp [k, k']) (fun _ _ _ _ _ _ k k' => by simp [k, k']) (fun _ _ _ _ _ k => by simp [k]) (fun _ _ _ _ _ k => by simp [k]) hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Simplify using `[ho a ha b hb])`. Use the proof step `(st N₁ _) (st N₂ _) (nn N₁ _ p₁) (nn N₂ _ fun m hm => by linarith [p₂ m hm])`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hcomm : ∀ a, J ∘ₗ actR D a = actR D a ∘ₗ J` using `fun a => LinearMap.ext fun x => by`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : x ∈ W N₁ ⊔ W N₂)`. Simplify using `only [LinearMap.comp_apply, map_add, j₁ u hu, j₂ v hv, j₁ _ (st N₁ a u hu), j₂ _ (st N₂ a v hv), map_smul, mul, mul_comm]`. Establish `hdom` using `PeriodCompare.mem_domain D hJ hcomm hinv hpos`. Set `ρ : 𝓞 E →+* Module.End ℝ (ℝ ⊗[ℤ] D.La)` to `(Module.End.baseChangeHom ℤ ℝ D.La : Module.End ℤ D.La →+* Module.End ℝ (ℝ ⊗[ℤ] D.La)).comp (Algebra.lsmul ℤ ℤ D.La : 𝓞 E →ₐ[ℤ] Module.End ℤ D.La)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨e, heJ, heρ⟩` from `PeriodNonempty.exists_diag_real J hJ ρ ty fun a => by`. Establish `k` using `(hdom.2.2.2.2 a).trans (PeriodNonempty.sum_type H hty (a : E)).symm`. Establish `k₁` using `congrArg Complex.re k`. Establish `k₂` using `congrArg Complex.im k`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.div_ofNat_re, Complex.div_ofNat_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_mul_re, Complex.I_mul_im] at k₁ k₂`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hcomm a, show LinearMap.trace ℝ _ (actR D a) = _ by linarith, show LinearMap.trace ℝ _ (J ∘ₗ actR D a) = _ by linarith⟩`. Set `Pe : D.La →+ (Fin g → ℂ)` to `AddMonoidHom.mk' (fun x => e (1 ⊗ₜ x)) fun x y => by`. Rewrite using `[TensorProduct.tmul_add, map_add]`. Establish `hP : IsPeriod D ty Pe` using `PeriodCompare.isPeriod_of_presents hdom ⟨e, fun _ => rfl, heJ, fun a v => funext (heρ a v)⟩`. Establish `pure : ∀ (t : ℝ) (r : ℂ), t ≠ 0 → r = t * Complex.I → ∀ m, J (1 ⊗ₜ m) = t⁻¹ • actR D H.rt (1 ⊗ₜ m) → m ∈ PureType.lat hP r` using `fun t r ht hr m hm j hj => by`.
-
-Establish `k` using `congrFun (heJ (1 ⊗ₜ m)) j`. Rewrite `k` using `[hm, map_smul, Pi.smul_apply, Pi.smul_apply, show e (actR D H.rt (1 ⊗ₜ m)) j = _ from heρ H.rt _ j, Complex.real_smul, smul_eq_mul, Complex.ofReal_inv, inv_mul_eq_iff_eq_mul₀ (Complex.ofReal_ne_zero.2 ht), ← _root_.mul_assoc, ← hr]`. Conclude with `(mul_eq_zero.1 ((sub_mul _ _ _).trans (sub_eq_zero.2 k))).resolve_left (sub_ne_zero.2 hj)`. Conclude with `⟨Pe, hP, fun m hm => pure _ _ him (Complex.ext (by simp [hre]) (by simp)) m (j₁ _ (hW _ m hm)), fun m hm => pure (-H.rt0.im) _ (neg_ne_zero.2 him) (Complex.ext (by simp [hre]) (by simp)) m (by rw [j₂ _ (hW _ m hm), inv_neg])⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_period (D : Datum H) (N₁ N₂ : Submodule (𝓞 E) D.La) (hs : ∀ z, ∃ n : ℕ, 0 < n ∧ n • z ∈ N₁ ⊔ N₂)
     (ho : ∀ x ∈ N₁, ∀ y ∈ N₂, D.EF x y = 0) (p₁ : ∀ x ∈ N₁, 0 ≤ H.rt0.im * D.EF (H.w0 • x) x)
@@ -753,9 +745,9 @@ variable {D₁ D₂ D : Datum H} {p q : ℕ} {lp : Fin p → (D₁.La →ₗ[�
   {hp : Fin p → 𝓞 E} {hm : Fin q → 𝓞 E} {Λ : ℝ}
 
 /- English proof (translation)
-Use `Submodule.iSup_induction _ (motive := fun a => ∃ x : Fin n → N, a = ∑ j, f j (x j)) h ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨b, rfl⟩`. Use `⟨Pi.single i b, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero]) (by simp), Pi.single_eq_same]`. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x + y, by simp [Finset.sum_add_distrib]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iSup_range {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N] {n : ℕ}
     (f : Fin n → (N →ₗ[O] M)) {a : M} (h : a ∈ ⨆ j, LinearMap.range (f j)) : ∃ x : Fin n → N, a = ∑ j, f j (x j) := by
@@ -767,13 +759,11 @@ theorem mem_iSup_range {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M]
     exact ⟨x + y, by simp [Finset.sum_add_distrib]⟩
 
 /- English proof (translation)
-Take `⟨Pe, hP, k₁, k₂⟩` from `exists_period D (⨆ j, LinearMap.range (lp j)) (⨆ j, LinearMap.range (lm j)) (fun z => by`. Take `⟨n, hn, x, y, e⟩` from `h.span z`. Conclude with `⟨n, hn, e ▸ Submodule.add_mem_sup (Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem j ⟨x j, rfl⟩) (Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem j ⟨y j, rfl⟩)⟩)`. Use the proof step `(fun x hx y hy => by`. Take `⟨x, rfl⟩` from `mem_iSup_range lp hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `mem_iSup_range lm hy`. Simplify using `[h.orth])`. Use the proof step `(fun x hx => by`. Take `⟨x, rfl⟩` from `mem_iSup_range lp hx`. Distinguish the cases in `k : x = 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[k]`. Conclude with `(h.pos x k).le)`. Use the proof step `(fun y hy => by`. Take `⟨y, rfl⟩` from `mem_iSup_range lm hy`. Distinguish the cases in `k : y = 0`.
-
-Simplify using `[k]`. Conclude with `(h.neg y k).le) hty`. Conclude with `⟨Pe, hty, hP, fun j x => k₁ (Submodule.mem_iSup_of_mem j ⟨x, rfl⟩), fun j y => k₂ (Submodule.mem_iSup_of_mem j ⟨y, rfl⟩)⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isPointOf (h : EllipticFibrePrincipalData.IsLatData D₁ D₂ D lp lm hp hm Λ) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (hty : IsTypeFn H D.p D.q ty) : ∃ Pe, EllipticFibrePrincipalData.IsPointOf lp lm ty Pe := by
@@ -805,9 +795,9 @@ def blocks {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → �
   ⟨Z.D₁ true, Z.D₁ false, blockP Z, blockM Z, fun j => Z.hh (.inl j), fun j => Z.hh (.inr j)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨Pe, k⟩` from `exists_isPointOf h hty`. Take `⟨Z, hZ⟩` from `(latEquiv k.2.1 p q Λ).surjective ⟨X, h, k⟩`. Conclude with `⟨Pe, k.2.1, Z.1, congrArg Subtype.val hZ, Z.2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨Pe, hP, Z, rfl, a, b⟩`. Conclude with `isLatData_of_cmLat Z a b`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLatData_iff (X : Blocks D p q) (Λ : ℝ) {g : ℕ} {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H D.p D.q ty) :
     EllipticFibrePrincipalData.IsLatData X.1 X.2.1 D X.2.2.1 X.2.2.2.1 X.2.2.2.2.1 X.2.2.2.2.2 Λ ↔
@@ -824,7 +814,7 @@ theorem isLatData_iff (X : Blocks D p q) (Λ : ℝ) {g : ℕ} {ty : Fin g → (E
 end Point
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun χ => ⟨isKroneckerChar_iff χ, logOm_eq⟩, fun _ _ _ _ _ _ => ellMap_iff, fun _ _ _ => isPrincipalAt_iff, fun _ _ _ _ C => ⟨hasPeriod_iff C, fun _ _ _ _ h h2 hD => hasPeriod_logOm_iff h h2 hD C⟩, fun _ _ _ _ _ _ _ _ _ h => ⟨isKForm_iff h, fun k => ⟨isFam_iff k, isFam_conj_iff k …`.
+Supply the required witnesses or components.
 -/
 theorem typings_agree (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     (∀ χ : DirichletCharacter ℂ H.d, (IsKroneckerChar χ ↔ χ = EllipticFibrePrincipalData.chi H) ∧

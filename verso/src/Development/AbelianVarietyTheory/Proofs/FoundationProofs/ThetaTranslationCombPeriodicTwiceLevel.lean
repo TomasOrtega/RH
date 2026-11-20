@@ -12,13 +12,13 @@ namespace GlobalTheory.GalTheta.Period
 variable (D : D7) (T : Tor D) {N N' : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Hf_nsmul_right, Hf_nsmul_left]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_two_mul (m : ℕ) (y l : VC D N N') : Hf D T y ((2 * m) • l) = 2 * Hf D T (m • y) l := by
   rw [Hf_nsmul_right, Hf_nsmul_left]; push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [qH, Hf_add_left, Hf_add_right, Complex.add_re, Hf_re_swap D T a b]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qH_add (a b : VC D N N') :
     qH D T (a + b) = qH D T a + qH D T b + Real.sqrt D.host.d * (Hf D T a b).re := by
@@ -26,7 +26,7 @@ theorem qH_add (a b : VC D N N') :
   ring
 
 /- English proof (translation)
-Simplify using `only [qH, Hf_nsmul_left, Hf_nsmul_right]`. Establish `: ((n : ℂ) * ((n : ℂ) * Hf D T a a)).re = (n : ℝ) ^ 2 * (Hf D T a a).re` using `by simp; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qH_nsmul (n : ℕ) (a : VC D N N') : qH D T (n • a) = (n : ℝ) ^ 2 * qH D T a := by
   simp only [qH, Hf_nsmul_left, Hf_nsmul_right]
@@ -35,7 +35,7 @@ theorem qH_nsmul (n : ℕ) (a : VC D N N') : qH D T (n • a) = (n : ℝ) ^ 2 * 
   rw [this]; ring
 
 /- English proof (translation)
-Rewrite using `[h, Complex.exp_eq_one_iff]`. Conclude with `⟨-m, by push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exp_even (r : ℝ) (m : ℤ) (h : r = 2 * m) :
     Complex.exp (-(Real.pi : ℂ) * Complex.I * (r : ℂ)) = 1 := by
@@ -43,27 +43,25 @@ theorem exp_even (r : ℝ) (m : ℤ) (h : r = 2 * m) :
   exact ⟨-m, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨ql, hql⟩` from `hq l hl`. Establish `hqμ : qH D T ((2 * m₀) • l) = ((2 * (2 * (m₀ : ℤ) ^ 2 * ql) : ℤ) : ℝ)`. Rewrite using `[qH_nsmul, hql]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hμ : U D T ((2 * m₀) • l) e₀ = e₀`. Use function extensionality and compare the values at `z`. Establish `h` using `he.2 _ (A.nsmul_mem hl (2 * m₀)) z`. Establish `hal : al D T ((2 * m₀) • l) = 1`. Express the relevant statement in the definitionally equal form `(-1 : ℂ) ^ (round (qH D T ((2 * m₀) • l))) = 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hqμ, round_intCast, zpow_mul]`. Evaluate the numerical expressions. Rewrite `h` using `[hal, one_mul]`. Then use the resulting hypothesis. Establish `hev : ∀ y : VC D N N', m₀ • y ∈ A → ∃ m : ℤ, (Hf D T y ((2 * m₀) • l)).im = 2 * m`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `hIm _ hy _ hl`. Conclude with `⟨m, by rw [Hf_two_mul, ← hm]; simp⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (s : VC D N N'), m₀ • s ∈ A → ∀ z, U D T (x + (2 * m₀) • l) (U D T s e₀) z = U D T x (U D T s e₀) z`. Introduce `s hs z`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : U D T (x + s) e₀ z = U D T (x + (2 * m₀) • l + s) e₀ z`. Take `⟨m, hm⟩` from `hev (x + s) (by rw [smul_add]; exact A.add_mem hx hs)`. Use `conv_lhs => rw [← hμ]`. Rewrite using `[U_U, exp_even _ m hm, one_mul, add_right_comm]`. Take `⟨m, hm⟩` from `hev s hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (Hf D T ((2 * m₀) • l) s).im = 2 * ((-m : ℤ) : ℝ)`. Rewrite using `[Hf_im_swap, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[U_U, U_U, h1, Hf_add_left, Complex.add_im, Complex.ofReal_add, mul_add, Complex.exp_add, exp_even _ _ h2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : ∀ y z, U D T y (comb D T c t e₀) z = ∑ j, c j * U D T y (U D T (t j) e₀) z`. Introduce `y z`. Use `U_sum D T Finset.univ y (fun j w => c j * U D T (t j) e₀ w) z` as an intermediate fact. Simplify using `only [U_mul] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[h, h]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [key _ (ht j)]`. Take `⟨a, ha⟩` from `hq _ hx`. Take `⟨b, hb⟩` from `hq _ (A.add_mem hx hl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `qH_add D T (m₀ • x) l`. Establish `h2` using `qH_add D T x ((2 * m₀) • l)`. Establish `h3 : (Hf D T x ((2 * m₀) • l)).re = 2 * (Hf D T (m₀ • x) l).re`. Rewrite using `[Hf_two_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : qH D T (x + (2 * m₀) • l) / 2 = qH D T x / 2 + ((2 * (m₀ : ℤ) ^ 2 * ql + (b - a - ql) : ℤ) : ℝ)`. Rewrite using `[h2, hqμ, h3]`. Rewrite `h1` using `[ha, hb, hql]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Unfold `wdPh ee`. Rewrite using `[h4, Complex.ofReal_add, mul_add, Complex.exp_add, Complex.ofReal_intCast, mul_comm _ ((_ : ℤ) : ℂ), Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem period (D : D7) (T : Tor D) (N N' : ℕ) (A : AddSubgroup (VC D N N'))
     (hIm : ∀ x ∈ A, ∀ y ∈ A, ∃ m : ℤ, (Hf D T x y).im = m) (hq : ∀ x ∈ A, ∃ m : ℤ, qH D T x = m)

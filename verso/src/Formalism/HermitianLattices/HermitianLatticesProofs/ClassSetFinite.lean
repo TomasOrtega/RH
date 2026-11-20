@@ -9,7 +9,7 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.IsomOfTrace
 namespace Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-The claim follows from `classSetFinite_of traceReal genusCovolBound shortVectors genusScale finIntermediate isomOfTrace`.
+A detailed English derivation is pending.
 -/
 theorem classSetFinite : ClassSetFinite :=
   classSetFinite_of traceReal genusCovolBound shortVectors genusScale finIntermediate isomOfTrace

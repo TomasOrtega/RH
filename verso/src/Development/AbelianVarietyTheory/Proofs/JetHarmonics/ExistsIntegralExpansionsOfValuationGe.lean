@@ -30,11 +30,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)}
 
 /- English proof (translation)
-Take `⟨n, a, σ, σF, hσ, hva, hsum⟩` from `hs`. Establish `hint : ∀ i, ∃ b : V, a i = algebraMap V (FractionRing V) b` using `fun i => by`. Take `⟨b, hb⟩` from `(FamInt.le_ordFn_iff hϖ (a i) 0).1 (le_trans (by exact_mod_cast hr) (hva i))`. Conclude with `⟨b, by rw [hb, zpow_zero, _root_.one_mul]⟩`. Use `choose b hb using hint`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨FamInt.secLin (fun i => scal D.toPre.P.A.hom (b i)) σ, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[SectionScalarValuation.sval_lin (fun i => scal D.toPre.P.A.hom (b i)) σ (fun _ => rfl) _ y hJ, SectionScalarValuation.sval_lin (fun i => gF D.toPre (FractionRing V) (a i)) σF (fun j => hsum j) (𝟙 _) y hJ]`. Use `Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ?_ (SectionScalarValuation.secScal_sval (hσ i) _ y hJ)` and prove the remaining obligations. Establish `e1 : gs (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y ⊤ (scal D.toPre.P.A.hom (b i)) = cst ((𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom) y (b i)` using `gs_pull _ _ y ⊤ trivial _`. Establish `e2 : gs (𝟙 _) y ⊤ (gF D.toPre (FractionRing V) (a i)) = cst (𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) y (a i) := gs_pull _ (fst (TF (R := V) (FractionRing V)) D.toPre.P.A).left y ⊤ trivial _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom = ((𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) ≫ spMap (algebraMap (FractionRing V) (FractionRing V))) ≫ spMap (algebraMap V (FractionRing V)) := by`. Rewrite using `[Category.id_comp, Category.id_comp, Category.assoc, Over.w]`. Conclude with `(Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).symm`. Rewrite using `[e1, e2, e3, cst_comp, cst_comp, hb i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k))} {r : ℚ}
@@ -67,17 +67,15 @@ theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
   rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `FamInt.exists_pull (F := FractionRing V) β`. Take `⟨Φ, hΦ, hΦ0⟩` from `UUA.exists_fam_rep (F := FractionRing V) hL.globalFns D.tau_bimult q χ (fun a b h => by`. Establish `h' : (q : ℤ) • a = (q : ℤ) • b`. Rewrite using `[natCast_zsmul, natCast_zsmul]`. Conclude with `add_left_cancel h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `smul_right_injective D.toPre.X (by omega : (q : ℤ) ≠ 0) h') σ`. Establish `h0 : VGe D (FractionRing V) (FamInt.ordVal hϖ) q χ (Φ.s χ) 0`. Use `⟨1, fun _ => 1, fun _ => β, fun _ => Φ.s χ, fun _ => hΦ ▸ hσ, fun _ => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[DegPre.constBF]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ α : D.toPre.X, ∃ f : D.toPre.SecB q α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε q) f (DegPre.prB D.toPre (FractionRing V)).left 1 ∧ (∀ h : χ = α, f = h ▸ β) ∧ ((∀ z, α ≠ χ + q • z …`. Introduce `α`. Distinguish the cases in `hα : χ = α`. Substitute `hα` using the available equality. Conclude with `⟨β, hΦ ▸ hσ, fun _ => rfl, fun h => absurd (by simp) (h 0)⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : ∃ z, α = χ + q • z`. Take `⟨z, rfl⟩` from `hc`. Establish `H` using `SectionScalarValuation.fe_move hϖ hQ (FamInt.valOver_ordVal hϖ) q z χ Φ h0`. Establish `hle` using `hmin z`. Rewrite `hle` using `[q_shift hϖ hQ, le_add_iff_nonneg_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpos : (0 : ℤ) ≤ q * Q z + QForm.bOf D.toPre Q z χ` using `nonneg_of_mul_nonneg_right hle (by omega)`. Take `⟨f, h1⟩` from `exists_int_of_vge hϖ (by rw [zero_add]; exact_mod_cast hpos) H`. Conclude with `⟨f, h1, fun h => absurd h hα, fun h => absurd rfl (h z)⟩`. Use `⟨SecOps.secZero, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_, fun h => absurd h hα, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _), UUA.sval_zero_of (hΦ0 α fun mu e => hc ⟨mu, e.symm⟩) _ y J (hJ.mem _ _)]`.
-
-Use `choose f h1 h2 h3 using key`. Conclude with `⟨Φ, f, h1, h2 χ rfl, h3⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integralFamily_of_min (hL : Laws) (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
     {q : ℕ} (hq : 1 ≤ q) (χ : D.toPre.X) (β : D.toPre.SecB q χ) (hmin : ∀ z, Q χ ≤ Q (χ + q • z)) :
@@ -120,13 +118,11 @@ theorem integralFamily_of_min (hL : Laws) (hϖ : Irreducible ϖ) {Q : D.toPre.X 
   exact ⟨Φ, f, h1, h2 χ rfl, h3⟩
 
 /- English proof (translation)
-Take `⟨-, e, he⟩` from `exists_representatives_mod_nsmul D.toPre.X q hq`. Establish `hnn : ∀ x, 0 ≤ Q x` using `fun x => by`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, QForm.Q_zero hϖ D hQ]`. Conclude with `le_trans zero_le_one (QForm.Q_pos hϖ D hQ hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ i, ∃ m : D.toPre.X, ∀ z, Q (e i + q • m) ≤ Q (e i + q • z)` using `fun i => by`. Use `⟨Function.argmin (fun z : D.toPre.X => (Q (e i + q • z)).toNat), fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `Function.argmin_le (fun z : D.toPre.X => (Q (e i + q • z)).toNat) z`. Establish `h1` using `hnn (e i + q • z)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m hm using hm`. Use `⟨_, fun i => e i + q • m i, fun α => ?_, fun i i' hi z h => hi ?_, fun i z => ?_⟩` and prove the remaining obligations. Take `⟨i, ⟨z, hz⟩, -⟩` from `he α`. Conclude with `⟨i, z - m i, by rw [hz, smul_sub, add_assoc, add_sub_cancel]⟩`. Conclude with `(he (e i + q • m i)).unique ⟨m i' + z, by rw [smul_add, ← add_assoc]; exact h⟩ ⟨m i, rfl⟩`.
-
-Use `hm i (m i + z)` as an intermediate fact. Rewrite `this` using `[smul_add, ← add_assoc]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_min_reps (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
     {q : ℕ} (hq : 1 ≤ q) : ∃ (N : ℕ) (χ : Fin N → D.toPre.X), (∀ α, ∃ i m, α = χ i + q • m) ∧
@@ -152,7 +148,7 @@ theorem exists_min_reps (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ} (hQ : QFo
 variable {F : Type} [Field F] [Algebra (FractionRing V) F] {k : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_f {n : ℕ} (S : Finset (Fin n)) (t : Fin n → Fam D.toPre F k) (α : D.toPre.X) (j) :
     ((∑ i ∈ S, t i).s α).f j = ∑ i ∈ S, ((t i).s α).f j := by
@@ -162,7 +158,7 @@ theorem sum_f {n : ℕ} (S : Finset (Fin n)) (t : Fin n → Fam D.toPre F k) (α
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]
 
 /- English proof (translation)
-The claim follows from `SectionScalarValuation.sval_lin (fun i => gF D.toPre F (c i)) (fun i => (t i).s α) (fun j => sum_f _ _ α j) r z hJ`.
+A detailed English derivation is pending.
 -/
 theorem sval_comb {n : ℕ} (c : Fin n → F) (t : Fin n → Fam D.toPre F k) (α : D.toPre.X) {Z : Scheme.{0}}
     (r : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) {J} (hJ : Good D.toPre.P.L z J) :
@@ -173,15 +169,13 @@ theorem sval_comb {n : ℕ} (c : Fin n → F) (t : Fin n → Fam D.toPre F k) (�
 end IntComb
 
 /- English proof (translation)
-Introduce `hL V _ _ _ ϖ hϖ D A G _ _ U Q hQ F _ _ v _ q hq s r hs`. Take `⟨N, χ, hrep, hdis, hmin⟩` from `IntComb.exists_min_reps hϖ hQ hq`. Use `choose n a β βF hβ hva hsum using fun i => hs (χ i)`. Use `choose Φ f hf hfβ hf0 using fun p : (Σ i : Fin N, Fin (n i)) => IntComb.integralFamily_of_min hL hϖ hQ hq (χ p.1) (β p.1 p.2) (hmin p.1)`. Use `choose σ hσ using fun p => IntegralExpansion.main hL V D A G U q hq (Φ p) (f p) (hf p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose θ hθ using fun p => GlobalTheory.T.integralDegenerationFamily_baseChange_extensionField hL.globalFns V _ D q (Φ p) (f p) (hf p) F`. Set `E` to `(Fintype.equivFin (Σ i : Fin N, Fin (n i))).symm`. Establish `hst : s = ∑ x, a (E x).1 (E x).2 • θ (E x)`. Use `fam_ext fun α => ?_` and prove the remaining obligations. Take `⟨i, m, rfl⟩` from `hrep α`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fam_eq_on_class_of_eq hL.globalFns V D.toPre F q _ _ (χ i) ?_ m` and prove the remaining obligations. Use `sec_ext_val D.toPre.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[IntComb.sval_comb _ _ _ _ _ hJ, SectionScalarValuation.sval_lin (fun x => gF D.toPre F (a i x)) (βF i) (fun j => hsum i j) (𝟙 _) y hJ, E.sum_comp (fun p => gs (𝟙 _) y ⊤ (scal (fst (TF (R := V) F) D.toPre.P.A).left (a p.1 p.2)) * sval ((θ p).s (χ i)) (𝟙 _) y J), Fintype.sum_sigma …`. Use `Finset.sum_congr rfl fun x _ => congrArg₂ (· * ·) rfl ?_` and prove the remaining obligations. Rewrite using `[← SectionScalarValuation.secScal_sval (hβ i x) _ y hJ, ← SectionScalarValuation.secScal_sval (hθ ⟨i, x⟩ (χ i)) _ y hJ, hfβ ⟨i, x⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun i' _ hi => Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← SectionScalarValuation.secScal_sval (hθ ⟨i', x⟩ (χ i)) _ y hJ, UUA.sval_zero_of (hf0 ⟨i', x⟩ (χ i) (hdis i i' hi)) _ y J (hJ.mem _ _), mul_zero]`. Conclude with `fun h => absurd (Finset.mem_univ i) h`. Use `⟨_, fun x => a (E x).1 (E x).2, fun x => σ (E x), fun x => f (E x), fun x => hva _ _, fun x e => hσ _ e, fun α => ?_⟩` and prove the remaining obligations. Use `(FieldBaseChange.secLin_iff_val D.toPre.P.isLB _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hst, IntComb.sval_comb _ _ _ _ _ hJ]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [SectionScalarValuation.secScal_sval (hθ _ α) _ _ hJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_expansions_of_vge : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (q : ℕ), 1 ≤ q → ∀ (s : Fam D.toPre F q) (r : ℚ), (∀ χ, VGe D F v q χ (s.s χ) r) → ∃ (l : ℕ) (c : Fin l → F) (σ : Fin l → H0 U.LG.L q) (f : Fin l → ∀ α, D.toPre.SecB q α), (∀ i, ((r : ℚ) : WithTop ℚ) ≤ v (c i)) ∧ (∀ i e, U.ExpandsAt e q (σ i) (f i)) ∧ ∀ α : D.toPre.X, GeneratorPullback.SecLin D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε q) (s.s α) (D.toPre.famφB α) (DegPre.famε q) (fun i => f i α) (DegPre.prB D.toPre F).left (fun i => scal (fst (TF (R := V) F) D.toPre.P.A).left (c i)) := by
   intro hL V _ _ _ ϖ hϖ D A G _ _ U Q hQ F _ _ v _ q hq s r hs

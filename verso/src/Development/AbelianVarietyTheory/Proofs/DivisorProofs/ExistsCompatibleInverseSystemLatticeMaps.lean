@@ -10,11 +10,11 @@ open scoped TensorProduct
 namespace GlobalTheory.InvSys
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span ℤ (Set.range b)` using `by rw [b.span_eq]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `hb i`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y w _ _ hy hw`. Take `⟨z1, h1⟩` from `hy`. Take `⟨z2, h2⟩` from `hw`. Conclude with `⟨z1 + z2, by rw [map_add, h1, h2, smul_add]⟩`. Consider the case `smul a y _ hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z, h⟩` from `hy`. Conclude with `⟨a • z, by rw [map_smul, h, smul_comm]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_of_basis {M κ : Type} [AddCommGroup M] (b : Module.Basis κ ℤ M) (f : M →ₗ[ℤ] M) (n : ℕ)
     (hb : ∀ i, ∃ z, f (b i) = n • z) (x : M) : ∃ z, f x = n • z := by
@@ -30,19 +30,19 @@ theorem exists_nsmul_of_basis {M κ : Type} [AddCommGroup M] (b : Module.Basis �
     exact ⟨a • z, by rw [map_smul, h, smul_comm]⟩
 
 /- English proof (translation)
-Introduce `p _ D g htow hsurj hinj`. Use `haveI := D.freeLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Use `choose y z hyz using hsurj`. Set `g' : ℕ → D.La →+ D.La` to `fun n => if h : 0 < n ∧ n.Coprime p then (b.constr ℤ (fun i => y n h.1 h.2 (b i))).toAddMonoidHom else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `sec : ∀ n, 0 < n → n.Coprime p → ∀ x, ∃ z, g n (g' n x) = x + n • z`. Introduce `n hn hc x`. Establish `hg' : g' n = (b.constr ℤ (fun i => y n hn hc (b i))).toAddMonoidHom`. Simplify using `only [g', dif_pos (And.intro hn hc)]`. Take `⟨w, hw⟩` from `exists_nsmul_of_basis b ((g n).toIntLinearMap ∘ₗ b.constr ℤ (fun i => y n hn hc (b i)) - LinearMap.id) n (fun i => ⟨z n hn hc (b i), by simp [Module.Basis.constr_basis, hyz]⟩) x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, AddMonoidHom.coe_toIntLinearMap, LinearMap.id_apply] at hw`. Simplify using `only [LinearMap.toAddMonoidHom_coe]`. Rewrite using `[← hw]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Use `⟨g', ?_, sec, ?_⟩` and prove the remaining obligations. Introduce `n m hn hm hc x`. Establish `hcn : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) hc`. Take `⟨z1, h1⟩` from `htow n m hn hm hc (g' (n * m) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z2, h2⟩` from `sec (n * m) (Nat.mul_pos hn hm) hc x`. Take `⟨z3, h3⟩` from `sec n hn hcn x`. Take `⟨w, hw⟩` from `hinj n hn hcn (g' (n * m) x - g' n x) (m • z2 - z1 - z3) (by`. Rewrite using `[map_sub, smul_sub, smul_sub]`. Rewrite `h1` using `[h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g n (g' (n * m) x) = x + (n * m) • z2 - n • z1` using `by rw [h1]; abel`. Rewrite using `[this, h3]`. Rewrite using `[mul_smul]`. Use the proof step `abel)`. Conclude with `⟨w, by rw [← hw]; abel⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `n hn hc x`. Take `⟨z1, h1⟩` from `sec n hn hc (g n x)`. Take `⟨w, hw⟩` from `hinj n hn hc (g' n (g n x) - x) z1 (by rw [map_sub, h1]; abel)`. Conclude with `⟨w, by rw [← hw]; abel⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem invSys : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (g : ℕ → D.La →+ D.La), (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g (n * m) x = g n x + n • z) → (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, g n y = x + n • z) → (∀ n, 0 < n → n.Coprime p → ∀ x z, g n x = n • z → ∃ w, x = n • w) → ∃ g' : ℕ → D.La →+ D.La, (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g' (n * m) x = g' n x + n • z) ∧ (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ z, g n (g' n x) = x + n • z) ∧ (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ z, g' n (g n x) = x + n • z) := by
   intro p _ D g htow hsurj hinj

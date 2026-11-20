@@ -18,11 +18,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Use `show r₀ ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ r₀ = r₀`. Use `⟨hr₀N, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hΔ δ hδ`. Rewrite `h1` using `[← algebraMap_smul W.EE (π' ^ k) r₀, W.γD_smul, W.γE_ext]`. Establish `e : Formalism.BasicNotions.letγ (W.γ₀ δ) (π' ^ k) = π' ^ k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `W.γA δ (π' ^ k) = π' ^ k`. Rewrite using `[map_pow, hπΔ δ hδ]`. Rewrite `h1` using `[e]`. Establish `hu' : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k))`. Rewrite using `[map_pow]`.
-
-Conclude with `hu.pow k`. Conclude with `hu'.smul_left_cancel.mp h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invLiftPf_quot_Δ (π' : LetA O n) (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
     (hπΔ : ∀ δ ∈ W.DelF, W.γA δ π' = π') (k : ℕ) (r₀ : W.DD T) (hr₀N : r₀ ∈ W.N T)
@@ -40,9 +38,9 @@ theorem invLiftPf_quot_Δ (π' : LetA O n) (hu : IsUnit (algebraMap (LetA O n) W
   exact hu'.smul_left_cancel.mp h1
 
 /- English proof (translation)
-Unfold `PiNS`. Rewrite using `[Submodule.mem_inf]`. Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Use `show x ∈ (W.N T).map (Formalism.MainNotions.DeltaInvariantLattices.smulA W T (π' ^ k)) ↔ _`. Rewrite using `[Submodule.mem_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem PiNS_iff_lemma_3 (π' : LetA O n) (k : ℕ) (x : W.DD T) :
     x ∈ PiNS W T π' k ↔ (∃ y ∈ W.N T, π' ^ k • y = x) ∧ x ∈ DelS W T := by
@@ -54,14 +52,14 @@ private theorem PiNS_iff_lemma_3 (π' : LetA O n) (k : ℕ) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Unfold `DelS`. Simplify using `[Submodule.mem_iInf, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem DelS_iff_lemma_4 (x : W.DD T) : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
   unfold DelS
   simp [Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Use `show W.γD T g (a • x) = Formalism.BasicNotions.letγ (W.γ₀ g) a • W.γD T g x`. Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gamD_smulA_lemma_5 (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -69,7 +67,7 @@ private theorem gamD_smulA_lemma_5 (g : W.Gam) (a : LetA O n) (x : W.DD T) :
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite `h` using `[← algebraMap_smul W.EE (π' ^ k) u, ← algebraMap_smul W.EE (π' ^ k) v]`. Establish `hu' : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k))` using `by rw [map_pow]; exact hu.pow k`. Conclude with `hu'.smul_left_cancel.mp h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cancel_lemma_6 (π' : LetA O n) (hu : IsUnit (algebraMap (LetA O n) W.EE π')) (k : ℕ)
     (u v : W.DD T) (h : π' ^ k • u = π' ^ k • v) : u = v := by
@@ -78,7 +76,7 @@ private theorem cancel_lemma_6 (π' : LetA O n) (hu : IsUnit (algebraMap (LetA O
   exact hu'.smul_left_cancel.mp h
 
 /- English proof (translation)
-Take `⟨⟨y, hy, hyz⟩, hzD⟩` from `(PiNS_iff_lemma_3 W T π' b z).mp hz`. Use `(PiNS_iff_lemma_3 W T π' a z).mpr ⟨⟨π' ^ (b - a) • y, (W.N T).smul_mem _ hy, ?_⟩, hzD⟩` and prove the remaining obligations. Rewrite using `[← hyz, smul_smul, ← pow_add, show a + (b - a) = b by omega]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem PiNS_anti_lemma_7 (π' : LetA O n) {a b : ℕ} (hab : a ≤ b) {z : W.DD T}
     (hz : z ∈ PiNS W T π' b) : z ∈ PiNS W T π' a := by
@@ -87,25 +85,23 @@ private theorem PiNS_anti_lemma_7 (π' : LetA O n) {a b : ℕ} (hab : a ≤ b) {
   rw [← hyz, smul_smul, ← pow_add, show a + (b - a) = b by omega]
 
 /- English proof (translation)
-Establish `hx'` using `(PiNS_iff_lemma_3 W T π' 1 x).mp hx`. Establish `hxD : x ∈ DelS W T` using `hx'.2`. Establish `hxΔ : ∀ δ ∈ W.DelF, W.γD T δ x = x` using `(DelS_iff_lemma_4 W T x).mp hxD`. Take `⟨x₁, hx₁, hx₁x⟩` from `hx'.1`. Establish `hxN : x ∈ W.N T` using `by rw [← hx₁x]; exact (W.N T).smul_mem _ hx₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hgx` using `[hK]`. Establish `key : ∀ y : ℕ, y ≤ M → x ∈ PiNS W T π' y`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Conclude with `(PiNS_iff_lemma_3 W T π' 0 x).mpr ⟨⟨x, hxN, by simp⟩, hxD⟩`. Consider the case `succ y ih`. Introduce `hyM`. Break down `Nat.eq_zero_or_pos y with hy0 | hy0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `hy0` using the available equality. Conclude with `hx`. Take `⟨⟨r₀, hr₀, hr₀x⟩, -⟩` from `(PiNS_iff_lemma_3 W T π' y x).mp (ih (by omega))`. Establish `hr₀Δ : r₀ ∈ W.NΔ T` using `invLiftPf_quot_Δ W T π' hu hπΔ y r₀ hr₀ (fun δ hδ => by rw [hr₀x]; exact hxΔ δ hδ)`. Take `⟨d, hd, hdγ⟩` from `hγN r₀ hr₀Δ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hγr : W.γD T W.gam r₀ = r₀ + π' • d` using `sub_eq_iff_eq_add'.mp hdγ`. Take `⟨s, hs⟩ : π' ∣ f ^ y - algebraMap O (LetA O n) c₀ ^ y` from `(Dvd.intro t ht.symm).trans (sub_dvd_pow_sub_pow _ _ _)`. Establish `hfy : f ^ y = algebraMap O (LetA O n) c₀ ^ y + π' * s` using `by rw [← hs]; ring`. Establish `hg'` using `PiNS_anti_lemma_7 W T π' hyM hgx`. Take `⟨⟨e', he', he'x⟩, -⟩` from `(PiNS_iff_lemma_3 W T π' (y + 1) _).mp hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγx : W.γD T W.gam x - x = π' ^ y • (algebraMap O (LetA O n) (c₀ ^ y - 1) • r₀ + π' • (s • r₀ + f ^ y • d))`. Rewrite using `[← hr₀x, gamD_smulA_lemma_5, map_pow, hf, hγr, mul_pow, hfy, map_sub, map_pow, map_one]`. Use `set a : LetA O n := algebraMap O (LetA O n) c₀ with ha_def`. Establish `e1 : ∀ (A B A' B' : LetA O n), A = A' → B = B' → A • r₀ + B • d = A' • r₀ + B' • d`. Introduce `A B A' B' h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_add, sub_smul, smul_smul]`. Normalize the expressions using the abelian group laws. Use `_ = (π' ^ y * (a ^ y - 1) + π' ^ y * (π' * s)) • r₀ + (π' ^ y * (π' * (a ^ y + π' * s))) • d := e1 _ _ _ _ (by ring) (by ring)`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = _ := by`. Simplify using `only [smul_add, smul_smul, add_smul, add_assoc, mul_add]`. Rewrite `he'x` using `[hγx, pow_succ, ← smul_smul]`. Establish `h1` using `cancel_lemma_6 W T π' hu y _ _ he'x`. Establish `h2 : (c₀ ^ y - 1) • r₀ = π' • (e' - (s • r₀ + f ^ y • d))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul (LetA O n) (c₀ ^ y - 1) r₀, smul_sub, h1]`. Normalize the expressions using the abelian group laws. Take `⟨e, he, hre⟩` from `hnz y hy0 (by omega) r₀ hr₀ _ (Submodule.sub_mem _ he' (Submodule.add_mem _ ((W.N T).smul_mem _ hr₀) ((W.N T).smul_mem _ hd))) h2`. Use `(PiNS_iff_lemma_3 W T π' (y + 1) x).mpr ⟨⟨e, he, ?_⟩, hxD⟩` and prove the remaining obligations. Rewrite using `[← hr₀x, hre, smul_smul, ← pow_succ]`.
-
-Conclude with `key M le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem invLiftPf_inj (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π' * f)
     (ht : f - algebraMap O (LetA O n) c₀ = π' * t)
@@ -168,27 +164,23 @@ theorem invLiftPf_inj (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
   exact key M le_rfl
 
 /- English proof (translation)
-Establish `hℓm : ∀ k : ℕ, ∀ c : O, ℓ ^ k * c = 0 → c = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro c hc`. Simplify using `using hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih => intro c hc`. Rewrite `hc` using `[pow_succ, mul_assoc]`. Conclude with `hℓ _ (ih _ hc)`. Take `⟨a, ha, -⟩` from `huniq r₀ hr₀`. Take `⟨cc, hc, -⟩` from `huniq y hy`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ℓ ^ m • r₀ ∈ W.N T`. Rewrite using `[← algebraMap_smul (LetA O n) (ℓ ^ m) r₀]`. Conclude with `(W.N T).smul_mem _ hr₀`. Establish `e1 : ℓ ^ m • r₀ = ∑ j, (algebraMap O (LetA O n) (ℓ ^ m) * a j) • b j`. Rewrite using `[ha, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) (ℓ ^ m), smul_smul]`. Establish `e2 : ℓ ^ m • r₀ = ∑ j, (π' * cc j) • b j`. Rewrite using `[h, hc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_smul]`. Establish `hcoef : (fun j => algebraMap O (LetA O n) (ℓ ^ m) * a j) = fun j => π' * cc j` using `(huniq _ hmem).unique e1 e2`. Establish `hdiv : ∀ j i, ∃ e : PowerSeries O, a j i = PowerSeries.X ^ s' * e`. Introduce `j i`. Establish `h1 : (algebraMap O (LetA O n) (ℓ ^ m) * a j) i = (π' * cc j) i` using `congrFun (congrFun hcoef j) i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hπ]`. Establish `h3 : algebraMap O (PowerSeries O) (ℓ ^ m) * a j i = (w i * PowerSeries.X ^ s') * cc j i` using `h1`. Establish `h2 : algebraMap O (PowerSeries O) (ℓ ^ m) * a j i = PowerSeries.X ^ s' * (w i * cc j i)`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ∀ d < s', PowerSeries.coeff d (a j i) = 0`. Introduce `d hd`. Establish `h5 : PowerSeries.coeff d (algebraMap O (PowerSeries O) (ℓ ^ m) * a j i) = 0`. Rewrite using `[h2]`. Conclude with `PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _) d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h5` using `[← Algebra.smul_def, PowerSeries.coeff_smul, smul_eq_mul]`. Conclude with `hℓm m _ h5`. Conclude with `PowerSeries.X_pow_dvd_iff.mpr h4`. Use `choose e he using hdiv`. Take `⟨u, hu⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hA : ∀ j, a j = π' * ((↑u⁻¹ : LetA O n) * fun i => e j i)`. Introduce `j`. Establish `hx : π' * ((↑u⁻¹ : LetA O n) * fun i => e j i) = letπ ^ s' * fun i => e j i`. Rewrite using `[hπ, ← hu, show ((↑u : LetA O n) * letπ ^ s') * ((↑u⁻¹ : LetA O n) * fun i => e j i) = ((↑u : LetA O n) * ↑u⁻¹) * (letπ ^ s' * fun i => e j i) by ring, Units.mul_inv, one_mul]`. Rewrite using `[hx]`.
-
-Use function extensionality and compare the values at `i`. Conclude with `he j i`. Use `⟨∑ j, ((↑u⁻¹ : LetA O n) * fun i => e j i) • b j, Submodule.sum_mem _ fun j _ => (W.N T).smul_mem _ (hbN j), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, ha]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_smul, ← hA j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invLiftPf_nzd (π' w : LetA O n) (s' : ℕ) (hw : IsUnit w) (hπ : π' = w * letπ ^ s')
     (ℓ : O) (hℓ : ∀ c : O, ℓ * c = 0 → c = 0)
@@ -250,7 +242,7 @@ theorem invLiftPf_nzd (π' w : LetA O n) (s' : ℕ) (hw : IsUnit w) (hπ : π' =
   rw [smul_smul, ← hA j]
 
 /- English proof (translation)
-Unfold `letS`. Rewrite using `[LinearMap.mem_ker]`. Simplify using `[sub_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem letS_mem_lemma (c : ZMod n) (x : W.DD T) :
     x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
@@ -259,9 +251,9 @@ private theorem letS_mem_lemma (c : ZMod n) (x : W.DD T) :
   simp [sub_eq_zero]
 
 /- English proof (translation)
-Establish `e : Formalism.BasicNotions.letγ (W.γ₀ g) (letE c : LetA O n) = letE c`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ g ((letE c : LetA O n) i) = (letE c : LetA O n) i`. Unfold `letE`. Distinguish the cases in `hi : i = c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hi]`. Rewrite using `[← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext, e, algebraMap_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gam_letE_lemma_2 (g : W.Gam) (c : ZMod n) (x : W.DD T) :
     W.γD T g ((letE c : LetA O n) • x) = (letE c : LetA O n) • W.γD T g x := by
@@ -275,19 +267,19 @@ private theorem gam_letE_lemma_2 (g : W.Gam) (c : ZMod n) (x : W.DD T) :
   rw [← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext, e, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `w hw`. Unfold `InvS at hw ⊢`. Rewrite `hw` using `[Submodule.mem_inf, Submodule.mem_comap]`. Take `⟨hwL, hwγ⟩` from `hw`. Rewrite `hwγ` using `[LinearMap.sub_apply, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwS : w ∈ letS W T c`. Establish `h0` using `hwL`. Unfold `LamPS at h0`. Conclude with `(Submodule.mem_inf.mp h0).2`. Establish `hzS : W.γD T W.gamK w - w ∈ letS W T c`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hwS`, the goal using `[letS_mem_lemma]`. Rewrite using `[smul_sub, ← gam_letE_lemma_2, hwS]`. Take `⟨k, hk, hk2⟩` from `hG c (W.γD T W.gamK w - w) (Submodule.mem_inf.mpr ⟨hwγ, hzS⟩)`. Take `⟨hk1, hkS⟩` from `Submodule.mem_inf.mp hk`. Use `⟨((PD.p : ℕ) : O) ^ σ • w - k, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_inf]`. Use `⟨Submodule.sub_mem _ (Submodule.smul_mem _ _ hwL) (hL c ?_), ?_⟩` and prove the remaining obligations. Unfold `NcS`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨?_, ?_⟩, hkS⟩` and prove the remaining obligations. Establish `h0` using `hk1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `PiNS at h0`. Establish `h1 : k ∈ (W.N T).map (Formalism.MainNotions.DeltaInvariantLattices.smulA W T (π' ^ 1))` using `(Submodule.mem_inf.mp h0).1`. Take `⟨y, hy, hyk⟩` from `Submodule.mem_map.mp h1`. Rewrite using `[← hyk]`. Conclude with `(W.N T).smul_mem _ hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h0` using `hk1`. Unfold `PiNS at h0`. Conclude with `(Submodule.mem_inf.mp h0).2`. Rewrite using `[Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply, map_sub, map_smul]`. Use `hk2 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[sub_sub_cancel]`. Conclude with `hk1`.
+A detailed English derivation is pending.
 -/
 theorem invLiftPf_lift (π' Eπ : LetA O n) (h' M σ : ℕ) (c : ZMod n)
     (hG : GradN W T π' σ M) (hL : NinLam W T Eπ h') :

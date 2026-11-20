@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OffPlaceWeil
 
 /- English proof (translation)
-Establish `key : ∀ u ∈ latO S T (LS : Set _) (LT : Set _) P, heisO ψ S T u f = f → heisO ψ S T u (om (g, h) f) = om (g, h) f`. Introduce `u hu hfix`. Establish `e` using `hW.om_heis g h u f hf.1`. Rewrite `e` using `[hfix, GlobalTheory.DisjComb.actO_off hg hh (GlobalTheory.FinPl.LatMem.latO_mxAt hu)]`. Conclude with `e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hW.om_pres _ f hf.1, fun u hu => key _ (AddSubgroup.nsmul_mem _ hu 2) (hf.2.1 u hu), fun e he u hu hh' => key u hu (hf.2.2 e he u hu hh')⟩`.
+A detailed English derivation is pending.
 -/
 theorem vac_off {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {LS : Lat S} {LT : Lat T} {P : GlobalTheory.FinPl.Pl D → Prop} {f : WO S T → ℂ}
@@ -31,7 +31,7 @@ theorem vac_off {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT
     fun e he u hu hh' => key u hu (hf.2.2 e he u hu hh')⟩
 
 /- English proof (translation)
-Establish `hs` using `Gi.hs`. Introduce `u hu a b`. Establish `h1` using `(Gi.eg_is j (Gi.s - j) (by omega)).1 u hu a b`. Take `⟨ε, hε, hsum⟩` from `Gi.q.above`. Conclude with `((GlobalTheory.FinPl.placeIdem_acts D Gi.q.v ε hε).1 _).2 (hsum ▸ h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem combAt_eg {D : D7} {c : Comm D} {v : VCom c} (Gi : GLoc v) (j : ℕ) (hj : j + 1 < D.R.m) :
     CombAt (· = Gi.q.v) (Gi.eg j) := by
@@ -42,7 +42,7 @@ theorem combAt_eg {D : D7} {c : Comm D} {v : VCom c} (Gi : GLoc v) (j : ℕ) (hj
   exact ((GlobalTheory.FinPl.placeIdem_acts D Gi.q.v ε hε).1 _).2 (hsum ▸ h1)
 
 /- English proof (translation)
-Introduce `D c v hc _ Gi j hj χS χT om hW F hF y hy`. Conclude with `⟨vac_off hW hF (one_mem _) hy, (GlobalTheory.DisjComb.main D c.ψ hc.std _ _ (· = Gi.q.v) (fun _ => False) (fun _ _ h => h)).2.2.1 χS χT om hW _ (combAt_eg Gi j hj) 1 (one_mem _) y hy F hF.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ {D : D7} {c : Comm D} {v : VCom c}, c.Is → v.Is → ∀ (Gi : GLoc v) (j : ℕ), j + 1 < D.R.m → ∀ (χS χT : (AE D)ˣ →* Circle) (om : Om (c.V j) (c.V (j + 1))), IsWeilDatumO c.ψ _ _ χS χT om → ∀ (F : WO (c.V j) (c.V (j + 1)) → ℂ), Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = Gi.q.v) F → ∀ y ∈ grpOff (c.V (j + 1)) (· = Gi.q.v), Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = Gi.q.v) (om (1, y) F) ∧ om (1, y) (comb c.ψ _ _ (Gi.eg j) F) = comb c.ψ _ _ (Gi.eg j) (om (1, y) F) := by
   intro D c v hc _ Gi j hj χS χT om hW F hF y hy

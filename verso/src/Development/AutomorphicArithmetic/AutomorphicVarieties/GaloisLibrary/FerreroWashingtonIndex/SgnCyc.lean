@@ -11,15 +11,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `f n c N _ L _ _ _ _ γ hf hf1 hn hc ho hmem`. Establish `hM : 2 < f * 2 ^ n`. Establish `h4 : 2 ^ 2 ≤ 2 ^ n` using `Nat.pow_le_pow_right (by norm_num) hn`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨φ, hφ⟩` from `sgnUnit (f * 2 ^ n) c L hc ho hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4⟩` from `sgnStab (f * 2 ^ n) L φ`. Use `(hMinus L _ (embT (f * 2 ^ n) L φ) (evenF (-1 : (ZMod (f * 2 ^ n))ˣ)) (unrJ f n L hf hf1 hn) (unitSurj f n L hf hf1 hn) h1 h2).trans ?_` and prove the remaining obligations. Use `haveI : Fact (2 < f * 2 ^ n) := ⟨hM⟩`. Use `sgnAlg _ (-1) γ (thetaH (f * 2 ^ n) c) N _ (by simp) ?_ h3 ?_ hmem` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `congrArg Units.val h`. Rewrite `h'` using `[Units.val_neg, Units.val_one]`. Conclude with `ZMod.neg_one_ne_one h'`. Establish `h5` using `(sgnE (embT (f * 2 ^ n) L φ)).sub_mem (h3 _ hφ (ZMod.unitOfCoprime c hc)⁻¹) ((sgnE (embT (f * 2 ^ n) L φ)).nsmul_mem h4 ((c - 1) / 2))`. Use `h5 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[(thetaFull (f * 2 ^ n) c hc ho hM).2 s]`. Establish `hi : (((ZMod.unitOfCoprime c hc)⁻¹ : (ZMod (f * 2 ^ n))ˣ) : ZMod (f * 2 ^ n)) = (c : ZMod (f * 2 ^ n))⁻¹`. Rewrite using `[← ZMod.inv_coe_unit, ZMod.coe_unitOfCoprime]`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, mul_one]`.
-
-Simplify using `only [gc, Units.val_mul, hi, Int.cast_sub, Int.cast_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.sgnCyc :
     ∀ (f n c N : ℕ) [NeZero (f * 2 ^ n)] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {f * 2 ^ n} ℚ L] [IsCMField L] (γ : (ZMod (f * 2 ^ n))ˣ), Odd f → 1 < f → 2 ≤ n → c.Coprime (f * 2 ^ n) → Odd c → (MonoidAlgebra.of ℤ _ γ - 1) ^ N ∈ Ideal.span {thetaH (f * 2 ^ n) c, 1 + MonoidAlgebra.of ℤ _ (-1 : (ZMod (f * 2 ^ n))ˣ), ((2 : ℕ) : MonoidAlgebra ℤ (ZMod (f * 2 ^ n))ˣ)} → (difR (clMap (cE L))).relIndex (minK (clMap (cE L))) ≤ (2 ^ (Subgroup.zpowers γ).index) ^ N := by

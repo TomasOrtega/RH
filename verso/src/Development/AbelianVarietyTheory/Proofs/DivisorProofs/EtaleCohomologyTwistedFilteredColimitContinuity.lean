@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistFinitarySt
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q J _ _ D c hc n i`. Establish `h` using `GlobalTheory.T.etaleCohomology_filteredColimit_rings_finitary (ZMod q) (tw q i) (GlobalTheory.T.tateTwist_finitary q i) J D c hc n`. Conclude with `⟨fun x _ => h.1 x, fun j y _ hy => h.2 j y hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.EtC.pairingProperties : GlobalTheory.EtC.B1 := by
   intro q J _ _ D c hc n i

@@ -6,9 +6,9 @@ open NumberField GlobalTheory.UnitaryBC GlobalTheory.CuspRep Formalism.BasicNoti
 open UpperTheory.V.Z.J.D
 
 /- English proof (translation)
-Establish `h : ∀ a b : DomWeight n, (∀ i, a.w i = b.w i) → a = b`. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ h`. Establish `: a = b` using `funext h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `h _ _ fun i => by simp [DomWeight.dual]`.
+A detailed English derivation is pending.
 -/
 private theorem dual_dual' {n : ℕ} (lam : DomWeight n) : lam.dual.dual = lam := by
   have h : ∀ a b : DomWeight n, (∀ i, a.w i = b.w i) → a = b := by
@@ -19,7 +19,7 @@ private theorem dual_dual' {n : ℕ} (lam : DomWeight n) : lam.dual.dual = lam :
   exact h _ _ fun i => by simp [DomWeight.dual]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DefU.AU.hasWt_mk (⟨σ, hσ⟩ : GlobalTheory.DefU.AutSub E n) _ _).1 ((GlobalTheory.DefU.AU.hasWt_mk (⟨σ, hσ⟩ : GlobalTheory.DefU.AutSub E n) _ _).2 h).conjugate`.
+A detailed English derivation is pending.
 -/
 private theorem conj_wt {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {σ : Submodule ℂ (UA E n → ℂ)}
     (hσ : IsAutRepU σ) {τ : E →+* ℂ} {μ : DomWeight n} (h : HasWeightAt σ τ μ) :
@@ -28,15 +28,13 @@ private theorem conj_wt {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
     ((GlobalTheory.DefU.AU.hasWt_mk (⟨σ, hσ⟩ : GlobalTheory.DefU.AutSub E n) _ _).2 h).conjugate
 
 /- English proof (translation)
-Use `choose y hy using hb.2`. Establish `hconj : ∀ v, v.embedding ≠ φ (y v) → ComplexEmbedding.conjugate (φ (y v)) = v.embedding` using `fun v c => by`. Establish `e : InfinitePlace.mk (φ (y v)) = InfinitePlace.mk v.embedding` using `(hy v).trans (InfinitePlace.mk_embedding v).symm`. Conclude with `(InfinitePlace.mk_eq_iff.1 e).resolve_left fun e' => c e'.symm`. Use `⟨fun v => if v.embedding = φ (y v) then μ (y v) else (μ (y v)).dual, fun σ hσ => ⟨fun h v => ?_, fun h i => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `c : v.embedding = φ (y v)`. Simplify using `only [if_pos c]`. Rewrite using `[c]`. Conclude with `h _`. Simplify using `only [if_neg c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hconj v c]`. Conclude with `conj_wt hσ (h _)`. Establish `hi : y (InfinitePlace.mk (φ i)) = i` using `hb.1 (hy _)`. Establish `key : ∀ v, HasWeightAt σ v.embedding (if v.embedding = φ (y v) then μ (y v) else (μ (y v)).dual) → HasWeightAt σ (φ (y v)) (μ (y v))` using `fun v hv => by`. Distinguish the cases in `c : v.embedding = φ (y v)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_pos c] at hv`. Rewrite `hv` using `[c]`. Then use the resulting hypothesis. Simplify using `only [if_neg c] at hv`. Establish `h2` using `conj_wt hσ hv`. Rewrite `h2` using `[← hconj v c, dual_dual']`.
-
-Conclude with `(star_star (φ (y v))) ▸ h2`. Establish `h3` using `key _ (h (InfinitePlace.mk (φ i)))`. Rewrite `h3` using `[hi]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem link_abs {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {I : Type} (φ : I → E →+* ℂ)
     (hb : Function.Bijective fun i => InfinitePlace.mk (φ i)) (μ : I → DomWeight n) :
@@ -69,7 +67,7 @@ private theorem link_abs {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
     rwa [hi] at h3
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n _ V _ ι lam`. Conclude with `link_abs (fun y : UpperTheory.V.Hi.Emb l (fun v : V.frame.Vl => s.w v.1) => ι.toRingHom.comp y.res) (UpperTheory.placeEmbeddings_bijective_infinitePlaces l L Ω s V ι).2 fun y => (lam y.res).dual`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.wtEx :
     WtEx := by

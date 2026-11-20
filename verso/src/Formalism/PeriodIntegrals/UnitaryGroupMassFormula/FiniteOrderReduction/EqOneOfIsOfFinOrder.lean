@@ -12,7 +12,7 @@ def PDvd (q : R) (k : ℕ) (A : Matrix n n R) : Prop :=
   ∃ X : Matrix n n R, A = q ^ k • X
 
 /- English proof (translation)
-Take `⟨X, rfl⟩` from `hA`. Take `⟨Y, rfl⟩` from `hB`. Conclude with `⟨X + Y, by rw [smul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma pdvd_add {q : R} {k : ℕ} {A B : Matrix n n R} (hA : PDvd q k A) (hB : PDvd q k B) :
     PDvd q k (A + B) := by
@@ -21,19 +21,19 @@ lemma pdvd_add {q : R} {k : ℕ} {A B : Matrix n n R} (hA : PDvd q k A) (hB : PD
   exact ⟨X + Y, by rw [smul_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by rw [smul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 lemma pdvd_zero (q : R) (k : ℕ) : PDvd q k (0 : Matrix n n R) := ⟨0, by rw [smul_zero]⟩
 
 /- English proof (translation)
-Take `⟨X, rfl⟩` from `hA`. Conclude with `⟨-X, by rw [smul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma pdvd_neg {q : R} {k : ℕ} {A : Matrix n n R} (hA : PDvd q k A) : PDvd q k (-A) := by
   obtain ⟨X, rfl⟩ := hA
   exact ⟨-X, by rw [smul_neg]⟩
 
 /- English proof (translation)
-Take `⟨X, rfl⟩` from `hA`. Use `⟨q ^ (k - m) • X, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma pdvd_mono {q : R} {k m : ℕ} (h : m ≤ k) {A : Matrix n n R} (hA : PDvd q k A) :
     PDvd q m A := by
@@ -42,7 +42,7 @@ lemma pdvd_mono {q : R} {k m : ℕ} (h : m ≤ k) {A : Matrix n n R} (hA : PDvd 
   rw [smul_smul, ← pow_add, Nat.add_sub_cancel' h]
 
 /- English proof (translation)
-Take `⟨X, rfl⟩` from `hA`. Conclude with `⟨c • X, by rw [smul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma pdvd_smul {q : R} {k : ℕ} {A : Matrix n n R} (c : R) (hA : PDvd q k A) :
     PDvd q k (c • A) := by
@@ -50,7 +50,7 @@ lemma pdvd_smul {q : R} {k : ℕ} {A : Matrix n n R} (c : R) (hA : PDvd q k A) :
   exact ⟨c • X, by rw [smul_comm]⟩
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `pdvd_smul _ hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pdvd_nsmul {q : R} {k : ℕ} {A : Matrix n n R} (c : ℕ) (hA : PDvd q k A) :
     PDvd q k (c • A) := by
@@ -58,21 +58,21 @@ lemma pdvd_nsmul {q : R} {k : ℕ} {A : Matrix n n R} (c : ℕ) (hA : PDvd q k A
   exact pdvd_smul _ hA
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (PDvd q k) (fun _ _ ha hb => pdvd_add ha hb) (pdvd_zero q k) h`.
+A detailed English derivation is pending.
 -/
 lemma pdvd_sum {q : R} {k : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Matrix n n R)
     (h : ∀ i ∈ s, PDvd q k (f i)) : PDvd q k (∑ i ∈ s, f i) :=
   Finset.sum_induction f (PDvd q k) (fun _ _ ha hb => pdvd_add ha hb) (pdvd_zero q k) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X ^ m, by rw [smul_pow, ← pow_mul]⟩`.
+Supply the required witnesses or components.
 -/
 lemma pdvd_pow_smul (q : R) (a m : ℕ) (X : Matrix n n R) :
     PDvd q (a * m) ((q ^ a • X) ^ m) :=
   ⟨X ^ m, by rw [smul_pow, ← pow_mul]⟩
 
 /- English proof (translation)
-Rewrite using `[add_comm (1 : Matrix n n R) D, (Commute.one_right D).add_pow, Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `only [one_pow, mul_one, ← nsmul_eq_mul', Nat.choose_one_right, Nat.choose_zero_right, pow_zero, pow_one, one_smul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma one_add_pow_eq (D : Matrix n n R) (k : ℕ) :
     (1 + D) ^ (k + 2) = ∑ i ∈ range (k + 1), (k + 2).choose (i + 2) • D ^ (i + 2)
@@ -83,7 +83,7 @@ lemma one_add_pow_eq (D : Matrix n n R) (k : ℕ) :
     pow_zero, pow_one, one_smul, zero_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hc this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smul_cancel [IsDomain R] {c : R} (hc : c ≠ 0) {X Y : Matrix n n R} (h : c • X = c • Y) :
     X = Y := by
@@ -93,25 +93,23 @@ lemma smul_cancel [IsDomain R] {c : R} (hc : c ≠ 0) {X Y : Matrix n n R} (h : 
   exact mul_left_cancel₀ hc this
 
 /- English proof (translation)
-Use `set D : Matrix n n R := (p : R) ^ a • X with hD`. Take `⟨k, rfl⟩ : ∃ k, l = k + 2` from `⟨l - 2, by have := hl.two_le; omega⟩`. Rewrite `hpow` using `[one_add_pow_eq]`. Use `set S := ∑ i ∈ range (k + 1), (k + 2).choose (i + 2) • D ^ (i + 2) with hS`. Establish `hlin : (k + 2) • D = -S`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Use `congrArg (· - (1 : Matrix n n R)) hpow` as an intermediate fact. Simplify `this` using `only [add_sub_cancel_right, sub_self]`. Distinguish the cases in `hlp : k + 2 = p`. Establish `hS2 : PDvd (p : R) (a + 2) S`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `pdvd_sum _ _ fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i + 2 ≤ p` using `by rw [Finset.mem_range] at hi; omega`. Break down `lt_or_eq_of_le hi' with hlt | heq` into its components or cases. Take `⟨c, hc⟩` from `hp.dvd_choose_self (by omega : i + 2 ≠ 0) hlt`. Rewrite using `[hlp, hc, mul_nsmul]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `pdvd_nsmul _ ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Take `⟨Y, hY⟩` from `pdvd_pow_smul (p : R) a (i + 2) X`. Use `pdvd_mono (k := 1 + a * (i + 2)) (by nlinarith) ⟨Y, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, hY, smul_smul, ← pow_succ', add_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pdvd_nsmul _ ?_` and prove the remaining obligations. Use `pdvd_mono (k := a * (i + 2)) ?_ (pdvd_pow_smul (p : R) a (i + 2) X)` and prove the remaining obligations. Rewrite using `[heq]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpD : PDvd (p : R) (a + 2) ((p : R) • D)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hS2`, the goal using `[← hlp]`. Use `pdvd_neg hS2` as an intermediate fact. Rewrite `this` using `[← hlin, ← Nat.cast_smul_eq_nsmul R]`. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨Y, hY⟩` from `hpD`. Use `⟨Y, ?_⟩` and prove the remaining obligations. Establish `hne : (p : R) ^ (a + 1) ≠ 0` using `pow_ne_zero _ hp0`. Establish `hXY : X = (p : R) • Y`. Apply `smul_cancel hne` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hY` using `[hD, smul_smul, ← pow_succ']`. Rewrite using `[hY, smul_smul, ← pow_succ]`. Rewrite using `[hD, hXY, smul_smul, ← pow_succ]`. Establish `hS1 : PDvd (p : R) (a + 1) S`. Use `pdvd_sum _ _ fun i _ => pdvd_nsmul _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pdvd_mono (k := a * (i + 2)) (by nlinarith) (pdvd_pow_smul (p : R) a (i + 2) X)`. Take `⟨u, hu⟩` from `hunit (k + 2) hl hlp`. Establish `h1 : PDvd (p : R) (a + 1) (((k + 2 : ℕ) : R) • D)`. Rewrite using `[Nat.cast_smul_eq_nsmul, hlin]`. Conclude with `pdvd_neg hS1`.
-
-Establish `h2` using `pdvd_smul ((u⁻¹ : Rˣ) : R) h1`. Rewrite `h2` using `[← hu, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem step [IsDomain R] (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) (hp0 : (p : R) ≠ 0)
     (hunit : ∀ l : ℕ, l.Prime → l ≠ p → IsUnit (l : R))
@@ -167,13 +165,13 @@ theorem step [IsDomain R] (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) (hp0 : (p : R
     rwa [← hu, smul_smul, Units.inv_mul, one_smul] at h2
 
 /- English proof (translation)
-Establish `key : ∀ a, 1 ≤ a → PDvd (p : R) a (A - 1)`. Introduce `a ha`. Proceed by induction on `a, ha using Nat.le_induction with`. Consider the case `base => exact hA`. Consider the case `succ a ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨X, hX⟩` from `ih`. Establish `hA' : A = 1 + (p : R) ^ a • X` using `by rw [← hX]; abel`. Rewrite using `[hX]`. Conclude with `step p hp hp3 hp0 hunit l hl X a ha (hA' ▸ hAl)`. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.zero_apply]`. Apply `hsep` to reduce the goal to its premises. Introduce `k`. Take `⟨X, hX⟩` from `key (k + 1) (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, Matrix.smul_apply, smul_eq_mul, pow_succ, mul_assoc]`. Conclude with `dvd_mul_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_prime [IsDomain R] (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p)
     (hp0 : (p : R) ≠ 0) (hunit : ∀ l : ℕ, l.Prime → l ≠ p → IsUnit (l : R))
@@ -199,11 +197,11 @@ theorem eq_one_of_pow_prime [IsDomain R] (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hlM : (l : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h`. Establish `hcop : IsCoprime (l : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hl hp).mpr hlp)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `hcop`. Establish `h1 : ((u : R) * l + (v : R) * p) = 1`. Use `congrArg (Int.cast : ℤ → R) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[← h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hlM) (Ideal.mul_mem_left _ _ hpM)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr this)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_ne [IsLocalRing R] (p : ℕ) (hp : p.Prime)
     (hpM : (p : R) ∈ IsLocalRing.maximalIdeal R) (l : ℕ) (hl : l.Prime) (hlp : l ≠ p) :
@@ -224,9 +222,9 @@ theorem isUnit_natCast_of_ne [IsLocalRing R] (p : ℕ) (hp : p.Prime)
   exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr this)
 
 /- English proof (translation)
-Establish `h : ∀ i j, ∃ c : R, (A - 1) i j = (p : R) ^ 1 * c`. Introduce `i j`. Establish `hij` using `congrFun (congrFun hA i) j`. Rewrite `hij` using `[map_apply, ← Matrix.map_one (IsLocalRing.residue R) (map_zero _) (map_one _), map_apply]`. Establish `hmem : A i j - (1 : Matrix n n R) i j ∈ IsLocalRing.maximalIdeal R` using `Ideal.Quotient.eq.mp hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hM, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hmem`. Conclude with `⟨c, by rw [Matrix.sub_apply, ← hc, pow_one, mul_comm]⟩`. Use `choose X hX using h`. Conclude with `⟨Matrix.of X, by ext i j; rw [hX, Matrix.smul_apply, of_apply, smul_eq_mul]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pdvd_of_map_residue [IsLocalRing R] (p : ℕ)
     (hM : IsLocalRing.maximalIdeal R = Ideal.span {(p : R)}) (A : Matrix n n R)
@@ -245,15 +243,13 @@ theorem pdvd_of_map_residue [IsLocalRing R] (p : ℕ)
   exact ⟨Matrix.of X, by ext i j; rw [hX, Matrix.smul_apply, of_apply, smul_eq_mul]⟩
 
 /- English proof (translation)
-Establish `hpM : (p : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hM]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hunit` using `isUnit_natCast_of_ne (R := R) p hp hpM`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set N := orderOf β with hN`. Establish `hNpos : 0 < N` using `hfin.orderOf_pos`. Establish `hN1 : N ≠ 1` using `fun h => hne (orderOf_eq_one_iff.mp h)`. Take `⟨l, hl, hld⟩` from `Nat.exists_prime_and_dvd hN1`. Use `set γ := β ^ (N / l) with hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγl : γ ^ l = 1`. Rewrite using `[hγ, ← pow_mul, Nat.div_mul_cancel hld, hN, pow_orderOf_eq_one]`. Establish `hγred : (γ : Matrix n n R).map (IsLocalRing.residue R) = 1`. Rewrite using `[hγ, Units.val_pow_eq_pow_val, ← RingHom.mapMatrix_apply, map_pow, RingHom.mapMatrix_apply, hred, one_pow]`. Establish `hγ1 : (γ : Matrix n n R) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_one_of_pow_prime p hp hp3 hp0 hunit hsep _ (pdvd_of_map_residue p hM _ hγred) l hl ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, hγl, Units.val_one]`. Establish `hγ1' : γ = 1` using `Units.ext hγ1`. Establish `hdvd : N ∣ N / l` using `orderOf_dvd_of_pow_eq_one hγ1'`. Establish `hpos : 0 < N / l` using `Nat.div_pos (Nat.le_of_dvd hNpos hld) hl.pos`.
-
-Establish `hlt : N / l < N` using `Nat.div_lt_self hNpos hl.one_lt`. Conclude with `absurd (Nat.le_of_dvd hpos hdvd) (not_le.mpr hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isOfFinOrder [IsDomain R] [IsLocalRing R] (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p)
     (hp0 : (p : R) ≠ 0) (hM : IsLocalRing.maximalIdeal R = Ideal.span {(p : R)})

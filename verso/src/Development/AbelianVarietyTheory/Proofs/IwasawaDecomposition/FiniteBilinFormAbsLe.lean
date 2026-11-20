@@ -6,7 +6,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.Mark
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := X)`. Set `f : LinearMap.BilinForm ℤ X → (s × s → ℤ)` to `fun x p => x p.1 p.2`. Establish `hf : Function.Injective f` using `fun x y h => LinearMap.ext_on hs fun a ha => LinearMap.ext_on hs fun b hb => congrFun h (⟨a, ha⟩, ⟨b, hb⟩)`. Establish `hfin : (Set.pi Set.univ fun p : s × s => Set.Icc (-B p.1 p.2) (B p.1 p.2)).Finite` using `Set.Finite.pi' (fun p : s × s => Set.finite_Icc (-B p.1 p.2) (B p.1 p.2)) |>.subset fun g hg p => hg p trivial`. Conclude with `(hfin.preimage hf.injOn).subset fun x hx p _ => abs_le.1 (hx p.1 p.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_bilinForm_abs_le (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (B : X → X → ℤ) :
     {x : LinearMap.BilinForm ℤ X | ∀ a b, |x a b| ≤ B a b}.Finite := by
@@ -20,7 +20,7 @@ theorem finite_bilinForm_abs_le (X : Type) [AddCommGroup X] [Module.Finite ℤ X
   exact (hfin.preimage hf.injOn).subset fun x hx p _ => abs_le.1 (hx p.1 p.2)
 
 /- English proof (translation)
-The claim follows from `|x a b| ≤ ∑ j, |τ j a b| := by classical obtain ⟨c, hc, h⟩ := hx have hv : ∀ a b, ((x a b : ℤ) : ℝ) = ∑ i, c i * (τ i a b : ℝ) := fun a b => by have := LinearMap.congr_fun₂ h a b simpa [toReal, LinearMap.sum_apply] using this by_cases hex : ∃ j, τ j ≠ 0 ∧ 1 ≤ c j · obtain ⟨j, hj, …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_of_indec {X : Type} [AddCommGroup X] {m : ℕ} (τ : Fin m → LinearMap.BilinForm ℤ X)
     {x : LinearMap.BilinForm ℤ X} (hx : InRCone τ x)
@@ -56,7 +56,7 @@ theorem abs_le_of_indec {X : Type} [AddCommGroup X] {m : ℕ} (τ : Fin m → Li
     exact_mod_cast this
 
 /- English proof (translation)
-The claim follows from `(finite_bilinForm_abs_le X fun a b => ∑ j, |τ j a b|).subset fun _ hx => abs_le_of_indec τ hx.1 hx.2.2`.
+A detailed English derivation is pending.
 -/
 theorem finite_indec_inRCone (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (m : ℕ)
     (τ : Fin m → LinearMap.BilinForm ℤ X) :

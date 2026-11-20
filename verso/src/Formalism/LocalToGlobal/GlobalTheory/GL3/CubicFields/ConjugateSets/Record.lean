@@ -14,7 +14,7 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.ComplexMulti
 open Formalism.BasicNotions (D7)
 
 /- English proof (translation)
-The claim follows from `hF D.host.K D.host.d (discriminant_mod_four D) _ (br_sqrt_sq D) (br_finrank_K D) (brPhi D)`.
+A detailed English derivation is pending.
 -/
 theorem conjSet_of_F (hF : CMConjSetF) (D : D7) : CMConjSet D :=
   hF D.host.K D.host.d (discriminant_mod_four D) _ (br_sqrt_sq D) (br_finrank_K D) (brPhi D)

@@ -18,7 +18,7 @@ namespace GlobalTheory.MBLow.Cl.FJD
 open GlobalTheory.MBLow.Cl.FJ
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s : ℂ => Z + s • W) W 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const W).const_add Z`. Establish `h2 : HasFDerivAt f (fderiv ℂ f Z) (Z + (0 : ℂ) • W)`. Simplify using `using (hf Z).hasFDerivAt`. Conclude with `(h2.comp_hasDerivAt (0 : ℂ) h1).deriv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem deriv_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : E → ℂ} (hf : Differentiable ℂ f) (Z W : E) :
     deriv (fun s : ℂ => f (Z + s • W)) 0 = fderiv ℂ f Z W := by
@@ -29,11 +29,11 @@ theorem deriv_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : E 
   exact (h2.comp_hasDerivAt (0 : ℂ) h1).deriv
 
 /- English proof (translation)
-Establish `hl : Differentiable ℂ (fun s : ℂ => Z + s • W)` using `by fun_prop`. Establish `hd : ∀ i, Differentiable ℂ (fun s : ℂ => f i (Z + s • W))` using `fun i => (hf i).comp hl`. Use `⟨hu.of_nonneg_of_le (fun _ => norm_nonneg _) fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← deriv_line (hf i)]`. Use `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (c := 0) (R := 1) (C := u i) one_pos (hd i).diffContOnCl (fun s hs => hb i s (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ‖s‖ = 1` using `by simpa using hs`. Use the proof step `linarith))`. Simplify using `using this`. Establish `h` using `Complex.hasSum_deriv_of_summable_norm (U := Metric.ball (0 : ℂ) 2) (z := 0) (F := fun i s => f i (Z + s • W)) hu (fun i => (hd i).differentiableOn) Metric.isOpen_ball (fun i s hs => hb i s (le_of_lt (by simpa using hs))) (by simp)`. Simplify using `only [hs] at h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[deriv_line hF]`. Simplify using `only [deriv_line (hf _)] at h`. Conclude with `h.tsum_eq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem termwise {J E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : J → E → ℂ} {F : E → ℂ}
     (hf : ∀ i, Differentiable ℂ (f i)) (hF : Differentiable ℂ F) (hs : ∀ Z, ∑' i, f i Z = F Z) (Z W : E)
@@ -57,11 +57,11 @@ theorem termwise {J E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : J 
     exact h.tsum_eq
 
 /- English proof (translation)
-Establish `h1` using `abs_le.mp ((Complex.abs_re_le_norm s).trans hs)`. Establish `h2` using `abs_le.mp ((Complex.abs_im_le_norm s).trans hs)`. Simplify using `only [Complex.norm_exp]`. Establish `p1` using `Real.exp_pos (α + (2 + 2 * Complex.I) * c).re`. Establish `p2` using `Real.exp_pos (α + (2 - 2 * Complex.I) * c).re`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3` using `Real.exp_pos (α + (-2 + 2 * Complex.I) * c).re`. Establish `p4` using `Real.exp_pos (α + (-2 - 2 * Complex.I) * c).re`. Apply the tactic sequence `rcases le_total 0 c.re with hr | hr <;> rcases le_total 0 c.im with hi | hi`. Establish `: Real.exp (α + s * c).re ≤ Real.exp (α + (2 - 2 * Complex.I) * c).re` using `Real.exp_le_exp.mpr (by simp; nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Real.exp (α + s * c).re ≤ Real.exp (α + (2 + 2 * Complex.I) * c).re` using `Real.exp_le_exp.mpr (by simp; nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Real.exp (α + s * c).re ≤ Real.exp (α + (-2 - 2 * Complex.I) * c).re` using `Real.exp_le_exp.mpr (by simp; nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Real.exp (α + s * c).re ≤ Real.exp (α + (-2 + 2 * Complex.I) * c).re` using `Real.exp_le_exp.mpr (by simp; nlinarith)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -90,9 +90,9 @@ theorem norm_exp_le_corners (α c s : ℂ) (hs : ‖s‖ ≤ 2) :
     linarith
 
 /- English proof (translation)
-Establish `key : ∀ t : ℂ, thT τ a b (Z + t • W) n = Complex.exp ((Real.pi * Complex.I * (((fun i => (n i : ℂ)) + a) ⬝ᵥ τ.mulVec ((fun i => (n i : ℂ)) + a)) + 2 * Real.pi * Complex.I * (((fun i => (n i : ℂ)) + a) ⬝ᵥ (Z + b))) + t * (2 * Real.pi * Complex.I * (((fun i => (n i : ℂ)) + a) ⬝ᵥ W) …`. Introduce `t`. Unfold `thT`. Use `congr 1`. Generalize the expression as in `((fun i => (n i : ℂ)) + a) = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [dotProduct_add, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Conclude with `norm_exp_le_corners _ _ s hs`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_thT_le_corners {k : ℕ} (τ : Matrix (Fin k) (Fin k) ℂ) (a b Z W : Fin k → ℂ) (n : Fin k → ℤ) (s : ℂ)
     (hs : ‖s‖ ≤ 2) :
@@ -124,9 +124,9 @@ def splitE {g g' r : ℕ} (σ : Fin g ≃ Fin g' ⊕ Fin r) : (Fin g → ℤ) �
 variable {N : NumD ℂ} {g' r g : ℕ} {bX : Module.Basis (Fin r) ℤ N.X} (d : CD N g' r bX) (σ : Fin g ≃ Fin g' ⊕ Fin r)
 
 /- English proof (translation)
-Establish `hcv : cv (bX.equivFun χ) = co bX χ`. Use function extensionality and compare the values at `l`. Simplify using `[cv, co, Module.Basis.equivFun_apply]`. Establish `hsymm : ∀ p, splitE σ ((splitE σ).symm p) = p` using `(splitE σ).apply_symm_apply`. Simplify using `only [CD.fj, thetaChar_eq_tsum, ← tsum_mul_left]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `m`. Establish `h1 : tP σ ((splitE σ).symm (bX.equivFun χ, m)) = bX.equivFun χ` using `congrArg Prod.fst (hsymm (bX.equivFun χ, m))`. Establish `h2 : zP σ ((splitE σ).symm (bX.equivFun χ, m)) = m` using `congrArg Prod.snd (hsymm (bX.equivFun χ, m))`. Rewrite using `[thT_full, h1, h2, hcv]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fj_eq_tsum (S : Matrix (Fin r) (Fin r) ℂ) (χ : N.X) (Z : Fin g → ℂ) :
     d.fj σ S χ Z = ∑' m, thT (d.full σ S) (d.aF σ) (d.bF σ) Z ((splitE σ).symm (bX.equivFun χ, m)) := by
@@ -141,7 +141,7 @@ theorem fj_eq_tsum (S : Matrix (Fin r) (Fin r) ℂ) (χ : N.X) (Z : Fin g → �
   rw [thT_full, h1, h2, hcv]
 
 /- English proof (translation)
-Introduce `j`. Simplify using `only [CD.aF]`. Break down `σ j with i | l` into its components or cases. Conclude with `d.ha i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_aF : Half (d.aF σ) := by
   intro j
@@ -151,7 +151,7 @@ theorem half_aF : Half (d.aF σ) := by
   · simp
 
 /- English proof (translation)
-Introduce `j`. Simplify using `only [CD.bF]`. Break down `σ j with i | l` into its components or cases. Conclude with `d.hb i`. Conclude with `d.hb2 l`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem half_bF : Half (d.bF σ) := by
   intro j
@@ -161,15 +161,15 @@ theorem half_bF : Half (d.bF σ) := by
   · exact d.hb2 l
 
 /- English proof (translation)
-The claim follows from `(Matrix.IsSymm.fromBlocks d.symm rfl (d.toricPeriodBlock_isSymm.add hS)).submatrix σ`.
+A detailed English derivation is pending.
 -/
 theorem full_isSymm {S : Matrix (Fin r) (Fin r) ℂ} (hS : S.IsSymm) : (d.full σ S).IsSymm :=
   (Matrix.IsSymm.fromBlocks d.symm rfl (d.toricPeriodBlock_isSymm.add hS)).submatrix σ
 
 /- English proof (translation)
-Establish `h` using `(thetaChar_entire_ne_zero_automorphy g' d.τ d.a d.b d.symm d.pos d.ha d.hb).1`. Establish `hz : Differentiable ℂ (fun Z : Fin g → ℂ => zP σ Z + d.t12 *ᵥ co bX χ)`. Use `Differentiable.add_const _ ?_` and prove the remaining obligations. Unfold `zP`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `ht : Differentiable ℂ (fun Z : Fin g → ℂ => co bX χ ⬝ᵥ (tP σ Z + d.b2))`. Simplify using `only [dotProduct, tP, Pi.add_apply]`. Use `fun_prop`. Unfold `CD.fj`. Conclude with `(((ht.const_mul _).const_add _).cexp).mul (h.comp hz)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_fj (S : Matrix (Fin r) (Fin r) ℂ) (χ : N.X) : Differentiable ℂ (d.fj σ S χ) := by
   have h := (thetaChar_entire_ne_zero_automorphy g' d.τ d.a d.b d.symm d.pos d.ha d.hb).1
@@ -184,9 +184,9 @@ theorem differentiable_fj (S : Matrix (Fin r) (Fin r) ℂ) (χ : N.X) : Differen
   exact (((ht.const_mul _).const_add _).cexp).mul (h.comp hz)
 
 /- English proof (translation)
-Establish `haF : ∀ j, ((d.aF σ j).re : ℂ) = d.aF σ j`. Introduce `j`. Apply the tactic sequence `rcases half_aF d σ j with h | h <;> simp [h]`. Establish `hF : ∀ t : ℂ, Summable fun p => ‖thT (d.full σ S) (d.aF σ) (d.bF σ) (Z + t • W) ((splitE σ).symm p)‖` using `fun t => ((splitE σ).symm.summable_iff (f := fun n => ‖thT (d.full σ S) (d.aF σ) (d.bF σ) (Z + t • W) n‖)).mpr (summable_thT hpos haF (d.bF σ) _)`. Establish `hG` using `(((hF (2 + 2 * Complex.I)).add (hF (2 - 2 * Complex.I))).add (hF (-2 + 2 * Complex.I))).add (hF (-2 - 2 * Complex.I))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, hG.prod.comp_injective bX.equivFun.injective, fun χ s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[fj_eq_tsum]`. Use `(norm_tsum_le_tsum_norm ((hF s).prod_factor _)).trans ?_` and prove the remaining obligations. Conclude with `Summable.tsum_le_tsum (fun m => norm_thT_le_corners _ _ _ Z W _ s hs) ((hF s).prod_factor _) (hG.prod_factor _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound {S : Matrix (Fin r) (Fin r) ℂ} (hpos : ((d.full σ S).map Complex.im).PosDef) (Z W : Fin g → ℂ) :
     ∃ u : N.X → ℝ, Summable u ∧ ∀ χ (s : ℂ), ‖s‖ ≤ 2 → ‖d.fj σ S χ (Z + s • W)‖ ≤ u χ := by
@@ -208,7 +208,7 @@ end GlobalTheory.MBLow.Cl.FJD
 open GlobalTheory.MBLow.Cl.FJD in
 
 /- English proof (translation)
-Introduce `N g' r g bX d σ S hS hpos`. Use `⟨differentiable_fj d σ S, fun Z W => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hb⟩` from `exists_bound d σ hpos Z W`. Conclude with `termwise (differentiable_fj d σ S) (thetaChar_entire_ne_zero_automorphy g _ _ _ (full_isSymm d σ hS) hpos (half_aF d σ) (half_bF d σ)).1 (fun Z => (fj_expansion N g' r g bX d σ S hS hpos Z).2) Z W hu hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MBLow.Cl.fj_expansion_fderiv : AllCD fun {N} {g'} {r} {g} {bX} d σ => ∀ S : Matrix (Fin r) (Fin r) ℂ, S.IsSymm → ((d.full σ S).map Complex.im).PosDef → (∀ χ, Differentiable ℂ (d.fj σ S χ)) ∧ ∀ Z W, (Summable fun χ => ‖fderiv ℂ (d.fj σ S χ) Z W‖) ∧ ∑' χ, fderiv ℂ (d.fj σ S χ) Z W = fderiv ℂ (thetaChar (d.full σ S) (d.aF σ) (d.bF σ)) Z W := by
   intro N g' r g bX d σ S hS hpos

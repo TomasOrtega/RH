@@ -10,13 +10,13 @@ namespace GlobalTheory.TameRootSurj
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 
 /- English proof (translation)
-Establish `hmon : (X ^ L - C ϖ : (𝓞 E)[X]).Monic` using `monic_X_pow_sub_C ϖ hL.ne'`. Establish `hdeg : (X ^ L - C ϖ : (𝓞 E)[X]).natDegree = L` using `natDegree_X_pow_sub_C`. Establish `hEis : (X ^ L - C ϖ : (𝓞 E)[X]).IsEisensteinAt P.asIdeal`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmon.leadingCoeff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Introduce `m hm`. Rewrite `hm` using `[hdeg]`. Rewrite using `[coeff_sub, coeff_X_pow, coeff_C, if_neg hm.ne]`. Distinguish the cases in `h0 : m = 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h0` using the available equality. Simplify using `using P.asIdeal.neg_mem_iff.2 hmem`. Simplify using `[h0]`. Rewrite using `[coeff_sub, coeff_X_pow, coeff_C, if_neg hL.ne, if_pos rfl, zero_sub]`. Rewrite using `[Ideal.neg_mem_iff]` and apply the resulting hypothesis.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hirr : Irreducible (X ^ L - C ϖ : (𝓞 E)[X])` using `hEis.irreducible P.isPrime hmon.isPrimitive (by rw [hdeg]; exact hL)`. Establish `hmap : (X ^ L - C ϖ : (𝓞 E)[X]).map (algebraMap (𝓞 E) E) = X ^ L - C (ϖ : E)`. Simplify using `[Polynomial.map_sub]`. Rewrite using `[← hmap]`. Conclude with `(hmon.irreducible_iff_irreducible_map_fraction_map (K := E)).1 hirr`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_X_pow_sub_C {E : Type} [Field E] [NumberField E]
     (P : HeightOneSpectrum (𝓞 E)) {L : ℕ} (hL : 0 < L) {ϖ : 𝓞 E}
@@ -42,25 +42,21 @@ theorem irreducible_X_pow_sub_C {E : Type} [Field E] [NumberField E]
   rw [← hmap]; exact (hmon.irreducible_iff_irreducible_map_fraction_map (K := E)).1 hirr
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ P A L ϖ π hA hL h1 h2 hπ`. Establish `hϖ0 : ϖ ≠ 0` using `by rintro rfl; exact h2 (zero_mem _)`. Establish `hL0 : L ≠ 0` using `by rintro rfl; exact hL (by simp)`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hπ` using `[zero_pow hL0, eq_comm, map_eq_zero]`. Conclude with `hϖ0 (by simpa using hπ)`. Break down `Nat.lt_or_ge L 2 with hL2 | hL2` into its components or cases. Establish `hL1 : L = 1` using `by omega`. Substitute `hL1` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.one_apply, div_self hπ0]`. Conclude with `IsPrimitiveRoot.one`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero ((L : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hL0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω L`. Establish `hirr` using `irreducible_X_pow_sub_C P (Nat.pos_of_ne_zero hL0) h1 h2`. Establish `hmon : (X ^ L - C (ϖ : E)).Monic` using `monic_X_pow_sub_C _ hL0`. Establish `hr1 : aeval π (X ^ L - C (ϖ : E)) = 0` using `by simp [hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr2 : aeval (ζ * π) (X ^ L - C (ϖ : E)) = 0` using `by simp [mul_pow, hζ.pow_eq_one, hπ]`. Establish `hm1` using `minpoly.eq_of_irreducible_of_monic hirr hr1 hmon`. Establish `hm2` using `minpoly.eq_of_irreducible_of_monic hirr hr2 hmon`. Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : Ω ≃ₐ[E] Ω, g π = ζ * π := by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := E) (E := Ω)).1 (hm2.symm.trans hm1)`. Conclude with `⟨g, hg⟩`. Take `⟨-, hx2⟩` from `GlobalTheory.InertiaMovesRoot.cong_on_adjoin hA hL2 h1 h2 hπ`. Use `letI : TopologicalSpace (IntCl E Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl E Ω) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := continuousSMul_intCl E Ω`. Set `H` to `MulAction.stabilizer (Ω ≃ₐ[E] Ω) π`. Establish `hH : IsClosed (H : Set (Ω ≃ₐ[E] Ω))` using `H.isClosed_of_isOpen (stabilizer_isOpen_of_isIntegral (K := E) π)`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.mp hH.isCompact`. Take `⟨k, hk, k', hk', hc⟩` from `GlobalTheory.InertiaMovesRoot.exists_cong_of_cong_on_fixed (R := 𝓞 E) H (primeBelow (F := E) A) g (fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hx2 g b ?_ (valuation_le_one_intCl A b)` and prove the remaining obligations. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (IntermediateField.adjoin E {π}), IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Conclude with `congrArg Subtype.val (hb f (hf ⟨π, IntermediateField.mem_adjoin_simple_self E π⟩)))`. Use `⟨k' * g * k, GlobalTheory.InertiaMovesRoot.mem_Ine_of_cong hc, ?_⟩` and prove the remaining obligations.
-
-Establish `e1 : k π = π` using `hk`. Establish `e2 : k' π = π` using `hk'`. Establish `e3 : (k' * g * k) π / π = k' ζ`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, e1, hg, map_mul, e2, mul_div_cancel_right₀ _ hπ0]`. Rewrite using `[e3]`.
-
-Conclude with `hζ.map_of_injective k'.injective`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (P : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (L : ℕ) (ϖ : 𝓞 E) (π : Ω),

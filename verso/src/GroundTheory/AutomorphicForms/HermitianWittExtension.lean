@@ -14,13 +14,13 @@ variable {V : Type*} [AddCommGroup V] [Module E V]
 namespace HermitianForm
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_extend μ`. Take `⟨s₀, hs₀⟩` from `h.nonsingular.2 g`. Establish `hs₀u : ∀ u : U, h.toSesq s₀ u = μ u` using `fun u => by`. Rewrite using `[hs₀, ← hg]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨e₀, he₀⟩` from `h.toSesq_self_mem_range s₀`. Take `⟨c, hc⟩` from `exists_trace_eq_one (F := F) (E := E)`. Establish `hc1 : c + conj F E c = 1` using `by rw [add_conj, hc, map_one]`. Use `⟨s₀ + (-(c * algebraMap F E e₀)) • r, fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, h.toSesq_smul_left, hr u u.2, mul_zero, add_zero, hs₀u]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : h.toSesq s₀ r = 1` using `by rw [← hμ, ← hs₀u]`. Establish `h2 : h.toSesq r s₀ = 1` using `by rw [← h.conj_toSesq, h1, map_one]`. Establish `h3 : h.toSesq r r = 0` using `hr r hrU`. Simplify using `only [map_add, LinearMap.add_apply, h.toSesq_smul_left, h.toSesq_smul_right, h1, h2, h3]`. Rewrite using `[← he₀, map_neg, map_mul, conj_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(algebraMap F E e₀)) * hc1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_isotropic_partner (h : HermitianForm F E V) (U : Submodule E V) {r : V}
     (hrU : r ∈ U) (hr : ∀ u ∈ U, h.toSesq r u = 0) (μ : U →ₗ[E] E) (hμ : μ ⟨r, hrU⟩ = 1) :
@@ -43,45 +43,41 @@ theorem exists_isotropic_partner (h : HermitianForm F E V) (U : Submodule E V) {
     linear_combination (-(algebraMap F E e₀)) * hc1
 
 /- English proof (translation)
-It suffices to establish `key : ∀ d : ℕ, ∀ (U : Submodule E V) (f : U →ₗ[E] V), finrank E V - finrank E U = d → Function.Injective f → (∀ x y : U, h.toSesq (f x) (f y) = h.toSesq x y) → ∃ g : V ≃ₗ[E] V, (∀ x y, h.toSesq (g x) (g y) = h.toSesq x y) ∧ ∀ x : U, g x = f x from key _ U f rfl hf hfh`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `U f hd hf hfh`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hU : ∀ u ∈ U, (∀ u' ∈ U, h.toSesq u u' = 0) → u = 0`. Take `⟨g, hg, hgf⟩` from `h.exists_extend_of_nondegenerate hU (LinearEquiv.ofInjective f hf) (fun x y => by simp only [LinearEquiv.ofInjective_apply]; exact hfh x y)`. Conclude with `⟨g, hg, fun x => by rw [hgf, LinearEquiv.ofInjective_apply]⟩`. Use `push Not at hU`. Take `⟨r, hrU, hr, hr0⟩` from `hU`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual E U, φ ⟨r, hrU⟩ ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `hr0 (congrArg Subtype.val ((Module.forall_dual_apply_eq_zero_iff E _).1 H))`. Use `set μ : U →ₗ[E] E := (φ ⟨r, hrU⟩)⁻¹ • φ with hμ_def`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hμ : μ ⟨r, hrU⟩ = 1`. Rewrite using `[hμ_def, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hφ]`. Take `⟨s, hs, hss⟩` from `h.exists_isotropic_partner U hrU hr μ hμ`. Use `set e := LinearEquiv.ofInjective f hf with he_def`. Establish `he : ∀ x : U, ((e x : LinearMap.range f) : V) = f x` using `fun x => LinearEquiv.ofInjective_apply _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr₂ : ∀ u ∈ LinearMap.range f, h.toSesq (f ⟨r, hrU⟩) u = 0`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[hfh]`. Conclude with `hr u u.2`. Establish `hrr : (⟨f ⟨r, hrU⟩, LinearMap.mem_range_self f _⟩ : LinearMap.range f) = e ⟨r, hrU⟩` using `Subtype.ext (he _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨s', hs', hss'⟩` from `h.exists_isotropic_partner (LinearMap.range f) (LinearMap.mem_range_self f ⟨r, hrU⟩) hr₂ (μ ∘ₗ (e.symm : LinearMap.range f →ₗ[E] U)) (by rw [LinearMap.comp_apply, hrr, LinearEquiv.coe_coe, e.symm_apply_apply, hμ])`. Establish `hs'' : ∀ x : U, h.toSesq s' (f x) = μ x`. Introduce `x`. Use `hs' (e x)` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, LinearEquiv.coe_coe, e.symm_apply_apply, he]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsU : s ∉ U`. Introduce `hsU`. Establish `h1` using `hr s hsU`. Establish `h2 : h.toSesq s r = 1` using `by rw [← hμ, ← hs]`. Rewrite `h1` using `[← h.conj_toSesq, h2, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`. Use `set ψ : (U × E) →ₗ[E] V := U.subtype.coprod (LinearMap.toSpanSingleton E V s) with hψ_def`. Establish `hψ : ∀ (u : U) (a : E), ψ (u, a) = u + a • s` using `fun u a => by`. Simplify using `[hψ_def]`. Establish `hψinj : Function.Injective ψ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨u, a⟩ hp`. Rewrite `hp` using `[hψ]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[zero_smul, add_zero]`. Rewrite using `[Submodule.coe_eq_zero.1 hp]`. Both sides reduce to the same expression. It suffices to derive a contradiction. Apply `hsU` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : a • s = -(u : V)` using `eq_neg_of_add_eq_zero_right hp`. Establish `: s = a⁻¹ • -(u : V)` using `by rw [← h2, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Rewrite using `[this]`. Conclude with `U.smul_mem _ (U.neg_mem u.2)`. Use `set f₀ : (U × E) →ₗ[E] V := f.coprod (LinearMap.toSpanSingleton E V s') with hf₀_def`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf₀ : ∀ (u : U) (a : E), f₀ (u, a) = f u + a • s'` using `fun u a => by`. Simplify using `[hf₀_def]`. Establish `hL : ∀ (u v : U) (a b : E), h.toSesq (f u + a • s') (f v + b • s') = h.toSesq u v + b * conj F E (μ u) + conj F E a * μ v`. Introduce `u v a b`. Simplify using `only [map_add, LinearMap.add_apply, h.toSesq_smul_left, h.toSesq_smul_right, hfh, hss']`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← h.conj_toSesq s' (f u), hs'' u, hs'' v]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ (u v : U) (a b : E), h.toSesq ((u : V) + a • s) ((v : V) + b • s) = h.toSesq u v + b * conj F E (μ u) + conj F E a * μ v`. Introduce `u v a b`. Simplify using `only [map_add, LinearMap.add_apply, h.toSesq_smul_left, h.toSesq_smul_right, hss]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[← h.conj_toSesq s (u : V), hs u, hs v]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf₀inj : Function.Injective f₀`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨u, a⟩ hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `hp` using `[hf₀]`. Establish `ha : a = 0`. Establish `h1` using `congrArg (h.toSesq (f ⟨r, hrU⟩)) hp`. Rewrite `h1` using `[map_add, h.toSesq_smul_right, hfh, hr u u.2, zero_add, map_zero, ← h.conj_toSesq s', hs'', hμ, map_one, mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `ha` using the available equality. Rewrite `hp` using `[zero_smul, add_zero]`. Establish `hu : u = 0` using `hf (by rw [hp, map_zero])`. Rewrite using `[hu]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e' := LinearEquiv.ofInjective ψ hψinj with he'_def`. Establish `he' : ∀ p : U × E, ((e' p : LinearMap.range ψ) : V) = ψ p` using `fun p => LinearEquiv.ofInjective_apply _ _`. Use `set f' : LinearMap.range ψ →ₗ[E] V := f₀ ∘ₗ (e'.symm : LinearMap.range ψ →ₗ[E] U × E)`. Establish `hf'inj : Function.Injective f'` using `hf₀inj.comp e'.symm.injective`. Establish `hf'h : ∀ x y : LinearMap.range ψ, h.toSesq (f' x) (f' y) = h.toSesq x y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Take `⟨⟨u, a⟩, rfl⟩` from `e'.surjective x`. Take `⟨⟨v, b⟩, rfl⟩` from `e'.surjective y`. Simplify using `only [f', LinearMap.comp_apply, LinearEquiv.coe_coe, e'.symm_apply_apply]`. Rewrite using `[he', he', hf₀, hf₀, hψ, hψ, hL, hR]`.
-
-Establish `hdim : finrank E (LinearMap.range ψ) = finrank E U + 1`. Rewrite using `[LinearMap.finrank_range_of_inj hψinj, Module.finrank_prod, Module.finrank_self]`. Establish `hle : finrank E (LinearMap.range ψ) ≤ finrank E V` using `Submodule.finrank_le _`. Take `⟨g, hg, hgf⟩` from `ih (finrank E V - finrank E (LinearMap.range ψ)) (by omega) (LinearMap.range ψ) f' rfl hf'inj hf'h`. Use `⟨g, hg, fun u => ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `hgf (e' (u, 0))`. Rewrite `h1` using `[he', hψ, zero_smul, add_zero]`. Rewrite using `[h1]`. Simplify using `only [f', LinearMap.comp_apply, LinearEquiv.coe_coe, e'.symm_apply_apply, hf₀, zero_smul, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extend [FiniteDimensional E V] (h : HermitianForm F E V) (U : Submodule E V)
     (f : U →ₗ[E] V) (hf : Function.Injective f)

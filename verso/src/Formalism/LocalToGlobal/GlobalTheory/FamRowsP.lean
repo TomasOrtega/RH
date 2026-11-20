@@ -20,7 +20,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {I : Type}
 def flD (C : ColObj K I) (u : I) : HeightOneSpectrum (𝓞 K) → ℤ := fun w => ⌊sgD C u w⌋
 
 /- English proof (translation)
-Use `(C.supp.finite_toSet).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hw` to reduce the goal to its premises. Rewrite `h` using `[Finset.mem_coe]`. Simplify using `[flD, sgD, h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flD_support_finite (C : ColObj K I) (u : I) : (Function.support (flD C u)).Finite := by
   classical
@@ -53,7 +53,7 @@ example : LineHypothesesOfColumnExtension = ∀ (K : Type) [Field K] [NumberFiel
     RowHyp C (rowArg C L S X hu) sg := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {K : Type} [Field K] [NumberField K] [StarRing K] {I : Type} {Bs : DefBase K} {Df : DefSide Bs}
     {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs} (C : ColObj K I) (L : ColLink C Dc) (S : IndefCols Df Dc Sp N)

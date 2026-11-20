@@ -10,13 +10,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 namespace GlobalTheory.CompanionTheory.ChernPoly
 
 /- English proof (translation)
-Introduce `Y Δ Δ₀`. Use `⟨∑ s : Finset (Fin Y.dim), Polynomial.C ((Y.interForm (s.piecewise (fun _ => Δ₀) (fun _ => Δ)) : ℤ) : ℝ) * Polynomial.X ^ s.card, fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : (fun _ : Fin Y.dim => Δ + m • Δ₀) = (fun _ => (m : ℤ) • Δ₀) + (fun _ => Δ)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, natCast_zsmul, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Y.interForm_apply, h1, MultilinearMap.map_add_univ]`. Simplify using `only [Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Use `push_cast`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hpw : (s.piecewise (fun i => (m : ℤ) • s.piecewise (fun _ => Δ₀) (fun _ => Δ) i) (s.piecewise (fun _ => Δ₀) (fun _ => Δ))) = s.piecewise (fun _ => (m : ℤ) • Δ₀) (fun _ => Δ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ s`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hi, Finset.piecewise_eq_of_mem _ _ _ hi, Finset.piecewise_eq_of_mem _ _ _ hi]`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hi, Finset.piecewise_eq_of_notMem _ _ _ hi, Finset.piecewise_eq_of_notMem _ _ _ hi]`. Establish `key` using `Y.interForm.map_piecewise_smul (fun _ => (m : ℤ)) (s.piecewise (fun _ => Δ₀) (fun _ => Δ)) s`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hpw, Finset.prod_const, smul_eq_mul]`. Rewrite using `[key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inter_add_nsmul_polynomial :
     ∀ (Y : Var ℂ) (Δ Δ₀ : Y.Dv), ∃ Q : Polynomial ℝ, ∀ m : ℕ,

@@ -11,37 +11,33 @@ private noncomputable def sgn {Γ : Type} [Group Γ] (H : Subgroup Γ) (h : H.in
     by_cases ha : a ∈ H <;> by_cases hb : b ∈ H <;> simp [ha, hb]
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s S' hfin hsub hsplit`. Establish `key : ∀ σ : G (Lp L) Ω, σ ∈ (resP L Ω).range ↔ ∀ x : L, σ (algebraMap L Ω x) = algebraMap L Ω x`. Introduce `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `τ.commutes x`. Introduce `h`. Conclude with `⟨{ σ with commutes' := h }, AlgEquiv.ext fun _ => rfl⟩`. Establish `hrange : (resP L Ω).range = (AlgEquiv.restrictNormalHom (F` using `Lp L) (K₁ := Ω) L).ker := by`. Use extensionality with `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `_ ↔ σ.restrictNormal L = 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `AlgEquiv.ext fun x => (algebraMap L Ω).injective ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.restrictNormal_commutes, h x, AlgEquiv.one_apply]`. Introduce `h x`. Rewrite using `[← AlgEquiv.restrictNormal_commutes σ L x, h, AlgEquiv.one_apply]`. Establish `hidx : (resP L Ω).range.index = 2`. Rewrite using `[hrange, Subgroup.index_ker, MonoidHom.range_eq_top.mpr (AlgEquiv.restrictNormalHom_surjective (F := Lp L) (K₁ := L) Ω), Subgroup.card_top, IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : s.c ∉ (resP L Ω).range`. Introduce `hm`. Take `⟨j, hj⟩` from `s.hc`. Apply `IsTotallyComplex.complexEmbedding_not_isReal (j.comp (algebraMap L Ω))` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hj, (key _).1 hm x]`. Establish `hsg : ∀ g, sgn _ hidx g = 1 ↔ g ∈ (resP L Ω).range`. Introduce `g`. Simplify using `only [sgn, MonoidHom.mk'_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`. Evaluate the decidable proposition. Establish `hclosed : IsClosed ((resP L Ω).range : Set (G (Lp L) Ω))`.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.coe_range]`. Conclude with `(isCompact_range UpperTheory.V.W.continuous_resP).isClosed`. Establish `hnorm : (resP L Ω).range.Normal`. Rewrite using `[hrange]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNS : NS Ω S' ≤ (resP L Ω).range`. Apply `Subgroup.topologicalClosure_minimal _ _ hclosed` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at hσ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, hv, A, hA, hσA⟩` from `hσ`. Conclude with `s.unr A v hA hσA`. Establish `hcycClosed : IsClosed ((cycZ (Lp L) Ω l).ker : Set (G (Lp L) Ω))`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage (continuous_cycZ (Lp L) Ω l)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hNS2 : NS Ω S' ≤ (cycZ (Lp L) Ω l).ker`. Apply `Subgroup.topologicalClosure_minimal _ _ hcycClosed` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨v, hv, A, hA, hσA⟩` from `hσ`. Establish `hl : ((l : 𝓞 (Lp L))) ∉ v.asIdeal` using `fun h => hv (hsub (Or.inl h))`. Conclude with `GlobalTheory.WeilDeligne.cycZ_of_mem_Ine hA hl hσA`. Establish `hNSη : NS Ω S' ≤ (sgn _ hidx).ker` using `fun σ hσ => (hsg σ).2 (hNS hσ)`. Set `η : GS Ω S' →* ℤˣ` to `QuotientGroup.lift (NS Ω S') (sgn _ hidx) hNSη`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Set `ε : GS Ω S' →* ℤ_[l]ˣ` to `QuotientGroup.lift (NS Ω S') (cycZ (Lp L) Ω l) hNS2`. Establish `hηg : ∀ g, η (toGS Ω S' g) = sgn _ hidx g` using `fun g => QuotientGroup.lift_mk _ hNSη g`. Establish `hpre : (QuotientGroup.mk ⁻¹' (η.ker : Set (GS Ω S')) : Set (G (Lp L) Ω)) = ((resP L Ω).range : Set (G (Lp L) Ω))`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsg g]`. Conclude with `Iff.rfl`. Use `haveI : (resP L Ω).range.FiniteIndex := ⟨by rw [hidx]; norm_num⟩`. Use `⟨⟨S', hfin, hsub, hsplit, η, ?_, ?_, ?_, ε, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `g`.
-
-Rewrite using `[hηg, hsg]`. Rewrite using `[← (QuotientGroup.isQuotientMap_mk (NS Ω S')).isOpen_preimage, hpre]`. Conclude with `Subgroup.isOpen_of_isClosed_of_finiteIndex _ hclosed`. Rewrite using `[hηg]`. Simplify using `only [sgn, MonoidHom.mk'_apply, if_neg hc]`.
-
-Conclude with `MonoidHom.ext fun g => QuotientGroup.lift_mk _ hNS2 g`. Conclude with `(QuotientGroup.isQuotientMap_mk (NS Ω S')).continuous_iff.mpr (by exact continuous_cycZ (Lp L) Ω l)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.levEx :
     LevEx := by

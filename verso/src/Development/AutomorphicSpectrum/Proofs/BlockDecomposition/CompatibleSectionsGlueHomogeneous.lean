@@ -14,7 +14,7 @@ variable {B : Type} [CommRing B] {M : ℕ}
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Establish `h` using `DirectSum.coe_decompose_mul_add_of_left_mem (homogeneousSubmodule (Fin M) B) (i := e) (j := d) (a := a) (b := f) ha`. Rewrite using `[← decomposition.decompose'_apply, ← decomposition.decompose'_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mul {a : MvPolynomial (Fin M) B} {e : ℕ} (ha : a.IsHomogeneous e) (d : ℕ)
     (f : MvPolynomial (Fin M) B) :
@@ -27,7 +27,7 @@ theorem comp_mul {a : MvPolynomial (Fin M) B} {e : ℕ} (ha : a.IsHomogeneous e)
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Establish `h` using `DirectSum.coe_decompose_mul_of_left_mem_of_not_le (homogeneousSubmodule (Fin M) B) (i := 1) (n := 0) (a := X i) (b := f) (isHomogeneous_X B i) (by norm_num)`. Rewrite using `[← decomposition.decompose'_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_zero_X_mul (i : Fin M) (f : MvPolynomial (Fin M) B) :
     homogeneousComponent 0 (X i * f) = 0 := by
@@ -71,7 +71,7 @@ section Main
 variable {P Q : Ideal (MvPolynomial (Fin M) B)}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ProjectiveCharts.charts W`.
+A detailed English derivation is pending.
 -/
 theorem charts [IsNoetherianRing B] (W : Finset (Fin M)) :
     ∀ P Q : Ideal (MvPolynomial (Fin M) B), HomogIdeal P → HomogIdeal Q → Q ≤ P →
@@ -80,7 +80,7 @@ theorem charts [IsNoetherianRing B] (W : Finset (Fin M)) :
   _root_.UpperTheory.Reformulated.B.ProjectiveCharts.charts W
 
 /- English proof (translation)
-Introduce `B _ _ N P hP`. Take `⟨n₀, -, h⟩` from `charts (B := B) (M := N + 1) Finset.univ ⊤ P (fun _ _ _ => trivial) hP le_top (fun j hj => absurd (Finset.mem_univ j) hj)`. Use `⟨n₀, fun n hn k f hf hc => ?_⟩` and prove the remaining obligations. Take `⟨g, -, hgh, hg⟩` from `h n hn k f (fun i _ => ⟨trivial, hf i⟩) (fun i _ j _ => hc i j)`. Conclude with `⟨g, hgh, fun i => hg i (Finset.mem_univ i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem serre_vanishing : ∀ (B : Type) [CommRing B] [IsNoetherianRing B] (N : ℕ)
     (P : Ideal (MvPolynomial (Fin (N + 1)) B)), HomogIdeal P →

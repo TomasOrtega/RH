@@ -5,9 +5,9 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory.CMTypeRealEmb
 
 /- English proof (translation)
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `a`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[← IsCMField.complexEmbedding_complexConj]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `IsCMField.complexConj_apply_eq_self E a`.
+A detailed English derivation is pending.
 -/
 theorem comp_isReal {E : Type} [Field E] [NumberField E] [IsCMField E] (φ : E →+* ℂ) :
     ComplexEmbedding.IsReal (φ.comp (algebraMap (maximalRealSubfield E) E)) := by
@@ -19,25 +19,23 @@ theorem comp_isReal {E : Type} [Field E] [NumberField E] [IsCMField E] (φ : E �
   exact IsCMField.complexConj_apply_eq_self E a
 
 /- English proof (translation)
-Use `set F := maximalRealSubfield E`. Set `ψ : I → F →+* ℂ` to `fun i => (φ i).comp (algebraMap F E)`. Establish `hre : ∀ i, ComplexEmbedding.IsReal (ψ i)` using `fun i => comp_isReal (φ i)`. Set `e : I → Emb F` to `fun i => (hre i).embedding`. Establish `he : ∀ i a, ((e i a : ℝ) : ℂ) = φ i (a : E)` using `fun i a => (hre i).coe_embedding_apply a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hplace : ∀ i, (InfinitePlace.mk (φ i)).comap (algebraMap F E) = InfinitePlace.mk (ψ i)` using `fun i => InfinitePlace.comap_mk _ _`. Use `⟨Equiv.ofBijective e ⟨?_, ?_⟩, fun i a => (he i a).symm⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `hψ : ψ i = ψ j`. Use extensionality with `a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show φ i (a : E) = φ j (a : E)`. Rewrite using `[← he, ← he, hij]`. Establish `h1 : InfinitePlace.mk (φ i) = InfinitePlace.mk (φ j)`. Apply `(IsCMField.equivInfinitePlace E).injective` to reduce the goal to its premises. Simplify using `only [IsCMField.equivInfinitePlace_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hplace, hplace, hψ]`. Break down `InfinitePlace.mk_eq_iff.mp h1 with h | h` into its components or cases. Take `⟨k, _, hk⟩` from `hφ (φ j)`. Conclude with `(hk i (Or.inl h.symm)).trans (hk j (Or.inl rfl)).symm`. Take `⟨k, _, hk⟩` from `hφ (φ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hk i (Or.inr h.symm)).trans (hk j (Or.inl rfl)).symm`. Introduce `f`. Set `fc : F →+* ℂ` to `Complex.ofRealHom.comp f`. Establish `hfc : ComplexEmbedding.IsReal fc`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use extensionality with `a`. Simplify using `[fc]`. Set `w : InfinitePlace E` to `(IsCMField.equivInfinitePlace E).symm (InfinitePlace.mk fc)`. Take `⟨i, hi, _⟩` from `hφ w.embedding`. Establish `hmk : InfinitePlace.mk (φ i) = w`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `hi with h | h` into its components or cases. Rewrite using `[← h, InfinitePlace.mk_embedding]`. Rewrite using `[← InfinitePlace.mk_conjugate_eq, ← h, InfinitePlace.mk_embedding]`. Establish `h2 : InfinitePlace.mk (ψ i) = InfinitePlace.mk fc`. Rewrite using `[← hplace, hmk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(IsCMField.equivInfinitePlace E).apply_symm_apply (InfinitePlace.mk fc)` as an intermediate fact. Rewrite `this` using `[IsCMField.equivInfinitePlace_apply]`. Conclude with `this`. Establish `h3 : ψ i = fc`. Break down `InfinitePlace.mk_eq_iff.mp h2 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[← h]`. Conclude with `((ComplexEmbedding.isReal_iff).mp (hre i)).symm`. Use `⟨i, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[he]`. Use `show ψ i a = fc a`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     (φ : I → E →+* ℂ) (hφ : IsCMType φ) :

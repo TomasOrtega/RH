@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.TermOp.Vanish
 
 /- English proof (translation)
-The claim follows from `rCocompactC_of ratApprox_holds ratMem_holds`.
+A detailed English derivation is pending.
 -/
 theorem rational_cocompact_holds : RCocompactC := rCocompactC_of ratApprox_holds ratMem_holds
 

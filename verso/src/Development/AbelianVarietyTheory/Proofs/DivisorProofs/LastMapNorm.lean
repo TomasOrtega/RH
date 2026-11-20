@@ -28,13 +28,13 @@ variable {K : Type} [Field K] {n : ℕ}
 open GlobalTheory.Branching.AddColumn in
 
 /- English proof (translation)
-Unfold `BrCompare.incl`. Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hf ⊢`. Use `⟨fun d hd => ?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero _ _ _ hd`. Establish `h` using `hf.1 hu`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[(weight_mapDomain (n + 1) n u).2, hν]`. Rewrite using `[(weight_mapDomain (n + 1) n u).1, h]`. Proceed by induction on `j using Fin.lastCases with`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last => exact colAddGen_rename_last K l f`. Consider the case `cast j`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => exact absurd hlj (not_lt.2 (Fin.le_last _))`. Consider the case `cast l`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[colAddGen_rename_castSucc, hf.2 l j (Fin.castSucc_lt_castSucc_iff.1 hlj), rename_rename, rename_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incl_mem (ν : Fin (n + 1) → ℕ) (hν : ν (Fin.last n) = 0) (f : MvPolynomial (Fin (n + 1) × Fin n) K)
     (hf : f ∈ dualWeyl K (n + 1) n fun i => ν i.castSucc) : BrCompare.incl K n f ∈ dualWeyl K (n + 1) (n + 1) ν := by
@@ -60,12 +60,12 @@ theorem incl_mem (ν : Fin (n + 1) → ℕ) (hν : ν (Fin.last n) = 0) (f : MvP
 variable {lam : DomWeight (n + 1)} {sg : DomWeight n}
 
 /- English proof (translation)
-Simplify using `[DomWeight.natW, detShift_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem natW_last : lam.natW (Fin.last n) = 0 := by simp [DomWeight.natW, detShift_succ]
 
 /- English proof (translation)
-Take `⟨h1, -, -, -, h5⟩` from `shifted_branching_list_character n lam sg ((interlace_iff _ _).1 hI) ((sameShift_iff _ _).1 hS).1`. Rewrite using `[h5]`. Conclude with `incl_mem _ natW_last _ (Formalism.BranchingDeterminantCap.bmLift_xi _ _ (Formalism.BranchingDeterminantCap.bm_IL_of _ _ h1)).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_mem (hI : Interlace rfl lam sg) (hS : SameShift lam sg) : xiBr K rfl lam sg ∈ nablaSq K (n + 1) lam := by
   obtain ⟨h1, -, -, -, h5⟩ := shifted_branching_list_character n lam sg ((interlace_iff _ _).1 hI) ((sameShift_iff _ _).1 hS).1
@@ -73,9 +73,9 @@ theorem xi_mem (hI : Interlace rfl lam sg) (hS : SameShift lam sg) : xiBr K rfl 
   exact incl_mem _ natW_last _ (Formalism.BranchingDeterminantCap.bmLift_xi _ _ (Formalism.BranchingDeterminantCap.bm_IL_of _ _ h1)).1
 
 /- English proof (translation)
-Take `⟨h1, -, -, h4, h5⟩` from `shifted_branching_list_character n lam sg ((interlace_iff _ _).1 hI) ((sameShift_iff _ _).1 hS).1`. Take `⟨x', hx', rfl⟩` from `exists_eq_incl_of_last_eq_zero K n lam.natW natW_last x hx`. Establish `h` using `fock_xi h1 x' hx'`. Rewrite `h` using `[(GlobalTheory.BrCoefFock.fockB_zmon_emb K n _).1]`. Establish `hb : ((bfact fun s => lamN lam s - sg.natW s : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun s _ => Nat.factorial_ne_zero _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h5, fockB_incl, fockB_incl, funext h4]`. Use `mul_right_cancel₀ hb ?_` and prove the remaining obligations. Unfold `extremal`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fock_xi_one [CharZero K] (hI : Interlace rfl lam sg) (hS : SameShift lam sg)
     {x : MvPolynomial (Fin (n + 1) × Fin (n + 1)) K} (hx : x ∈ nablaSq K (n + 1) lam) :
@@ -94,7 +94,7 @@ theorem fock_xi_one [CharZero K] (hI : Interlace rfl lam sg) (hS : SameShift lam
   linear_combination h
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.XiTopCoef.coefLast_xi K _ n rfl lam sg hI hS`. Unfold `coefOne`. Conclude with `(congrArg _ h).trans (GlobalTheory.BranchFormula.rename_snd_unit _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coefOne_xi (hI : Interlace rfl lam sg) (hS : SameShift lam sg) :
     coefOne K n (fun s => (bBr rfl lam sg s).toNat) (xiBr K rfl lam sg) = extremal K n sg := by
@@ -103,7 +103,7 @@ theorem coefOne_xi (hI : Interlace rfl lam sg) (hS : SameShift lam sg) :
   exact (congrArg _ h).trans (GlobalTheory.BranchFormula.rename_snd_unit _)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `coefOne_xi (K := K) hI hS`. Rewrite `h` using `[h0]`. Conclude with `Formalism.GradedWeylDivisibility.hwNe K n n le_rfl sg.natW (h.symm.trans (by simp [coefOne]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_ne (hI : Interlace rfl lam sg) (hS : SameShift lam sg) : xiBr K rfl lam sg ≠ 0 := by
   intro h0
@@ -112,7 +112,7 @@ theorem xi_ne (hI : Interlace rfl lam sg) (hS : SameShift lam sg) : xiBr K rfl l
   exact Formalism.GradedWeylDivisibility.hwNe K n n le_rfl sg.natW (h.symm.trans (by simp [coefOne]))
 
 /- English proof (translation)
-Establish `h` using `(Formalism.BranchingDeterminantCap.capConst n lam.w sg.w fun i => by`. Use `(interlace_iff _ _).1 hI i` as an intermediate fact. Conclude with `⟨this.2, this.1⟩).1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -125,20 +125,20 @@ theorem cBr_ne (hI : Interlace rfl lam sg) : cBr rfl lam sg ≠ 0 := by
   ring
 
 /- English proof (translation)
-Use `Finset.sum_pos (fun m hm => mul_pos (mul_self_pos.2 (mem_support_iff.1 hm)) ?_) (support_nonempty.2 hf)` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 (Finset.prod_pos fun _ _ => Nat.factorial_pos _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fockB_pos {σ : Type} {f : MvPolynomial σ ℝ} (hf : f ≠ 0) : 0 < fockB f f := by
   refine Finset.sum_pos (fun m hm => mul_pos (mul_self_pos.2 (mem_support_iff.1 hm)) ?_) (support_nonempty.2 hf)
   exact Nat.cast_pos.2 (Finset.prod_pos fun _ _ => Nat.factorial_pos _)
 
 /- English proof (translation)
-The claim follows from `div_pos (fockB_pos (xi_ne hI hS)) (fockB_pos (Formalism.GradedWeylDivisibility.hwNe ℝ _ _ le_rfl _))`.
+A detailed English derivation is pending.
 -/
 theorem kapBr_pos (hI : Interlace rfl lam sg) (hS : SameShift lam sg) : 0 < kapBr ℝ rfl lam sg :=
   div_pos (fockB_pos (xi_ne hI hS)) (fockB_pos (Formalism.GradedWeylDivisibility.hwNe ℝ _ _ le_rfl _))
 
 /- English proof (translation)
-Simplify using `only [kapBr, map_div₀, ← GlobalTheory.Proof.TensorMapDescent.fockB_map, GlobalTheory.Proof.TensorMapDescent.xiBr_map, Formalism.L2.DIV.map_extremal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kapBr_map {L : Type} [Field L] (φ : K →+* L) : φ (kapBr K rfl lam sg) = kapBr L rfl lam sg := by
   simp only [kapBr, map_div₀, ← GlobalTheory.Proof.TensorMapDescent.fockB_map, GlobalTheory.Proof.TensorMapDescent.xiBr_map, Formalism.L2.DIV.map_extremal]
@@ -168,14 +168,14 @@ def tr : VV K sg →ₗ[K] VV K lam :=
     (brStd rfl lam sg).dualMap ∘ₗ pairBK sg
 
 /- English proof (translation)
-Simplify using `[tr, LinearMap.BilinForm.apply_toDual_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_tr (y : VV K sg) (x : VV K lam) :
     pairBK lam (tr K lam sg y) x = pairBK sg y (brStd rfl lam sg x) := by
   simp [tr, LinearMap.BilinForm.apply_toDual_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Conclude with `(pairingBNondegenerate_holds K ι m w).1 _ fun z => by rw [map_sub, LinearMap.sub_apply, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_pair {m : ℕ} {w : ι → DomWeight m} {x y : VV K w} (h : ∀ z, pairBK w x z = pairBK w y z) : x = y := by
   rw [← sub_eq_zero]
@@ -185,13 +185,13 @@ variable (hI : ∀ τ, Interlace rfl (lam τ) (sg τ)) (hS : ∀ τ, SameShift (
 include hI hS
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, rfl⟩` from `hy`. Express the relevant statement in the definitionally equal form `_ * pairB lam (ten f) _ = pairB sg (brStdP rfl lam sg (ten f) : Pol K ι n) _`. Simplify using `only [pairB_apply, brStdP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.coe_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[← fockBL_apply (_ • _), map_smul, LinearMap.smul_apply, fockBL_apply, GlobalTheory.BranchFormula.fockB_projVV sg _ (extVV_mem K sg), GlobalTheory.BrCompare.coefLast_ten, extVV, GlobalTheory.BrCompare.fockB_ten, GlobalTheory.BrCompare.fockB_ten, brConst, extNormB, extNormB, smul_ …`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `fock_xi_one (hI τ) (hS τ) (hf τ)`. Establish `h1` using `fock_extremal_ne (K := K) (lam τ)`. Establish `h2` using `fock_extremal_ne (K := K) (sg τ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `coefOne at h`. Unfold `kapBr bExp`. Clear the denominators using the available nonvanishing facts. Take the linear combination `((cBr rfl (lam τ) (sg τ) : ℤ) : K) * h`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => simp only [map_add, LinearMap.add_apply, Submodule.coe_add, mul_add, hy, hz]`. Consider the case `smul a y _ hy => simp only [map_smul, LinearMap.smul_apply, Submodule.coe_smul, ← hy, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair_hi {F : Pol K ι (n + 1)} (hF : F ∈ VV K lam) :
     (∏ τ, ((cBr rfl (lam τ) (sg τ) : ℤ) : K)) * pairB lam F (ten fun τ => xiBr K rfl (lam τ) (sg τ)) =
@@ -219,7 +219,7 @@ theorem pair_hi {F : Pol K ι (n + 1)} (hF : F ∈ VV K lam) :
   | smul a y _ hy => simp only [map_smul, LinearMap.smul_apply, Submodule.coe_smul, ← hy, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use `ext_pair fun z => ?_` and prove the remaining obligations. Rewrite using `[pair_tr, map_smul, LinearMap.smul_apply, smul_eq_mul, pairBK_apply, pairBK_apply, pairingBSymm_holds, pairingBSymm_holds K ι _ lam]`. Conclude with `(pair_hi hI hS z.2).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_hi : tr K lam sg (hiV K sg) = (∏ τ, ((cBr rfl (lam τ) (sg τ) : ℤ) : K)) • xiV K hI hS := by
   refine ext_pair fun z => ?_
@@ -228,7 +228,7 @@ theorem tr_hi : tr K lam sg (hiV K sg) = (∏ τ, ((cBr rfl (lam τ) (sg τ) : �
   exact (pair_hi hI hS z.2).symm
 
 /- English proof (translation)
-Simplify using `only [brStd, brStdP, LinearMap.comp_apply, LinearMap.smul_apply, Submodule.subtype_apply, xiV]`. Rewrite using `[GlobalTheory.BrCompare.coefLast_ten, ← projVV_coe sg (hiV K sg)]`. Use `congr 3`. Use function extensionality and compare the values at `τ`. Conclude with `coefOne_xi (hI τ) (hS τ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem br_xi : brStd rfl lam sg (xiV K hI hS) = brConst rfl K lam sg • hiV K sg := by
   simp only [brStd, brStdP, LinearMap.comp_apply, LinearMap.smul_apply, Submodule.subtype_apply, xiV]
@@ -239,14 +239,14 @@ theorem br_xi : brStd rfl lam sg (xiV K hI hS) = brConst rfl K lam sg • hiV K 
 
 omit [CharZero K] hI hS in
 /- English proof (translation)
-Rewrite using `[pairBK_apply, pairBK_apply, rhoK_coe, rhoK_coe, pairB_adj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairBK_adj {m : ℕ} (w : ι → DomWeight m) (g : ι → GL (Fin m) K) (x y : VV K w) :
     pairBK w (rhoK w g x) y = pairBK w x (rhoK w (invTrK g)⁻¹ y) := by
   rw [pairBK_apply, pairBK_apply, rhoK_coe, rhoK_coe, pairB_adj]
 
 /- English proof (translation)
-Use `ext_pair fun z => ?_` and prove the remaining obligations. Rewrite using `[pair_tr, pairBK_adj, pairBK_adj, pair_tr, brStd_rhoK rfl hI hS (invTrK g)⁻¹ (invTrK g')⁻¹ (fun _ => 1) fun τ => (h τ).transpose]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_rhoK (g : ι → GL (Fin n) K) (g' : ι → GL (Fin (n + 1)) K)
     (h : ∀ τ, IsBlock rfl (g' τ : Matrix (Fin (n + 1)) (Fin (n + 1)) K) (g τ : Matrix (Fin n) (Fin n) K) 1)
@@ -257,13 +257,13 @@ theorem tr_rhoK (g : ι → GL (Fin n) K) (g' : ι → GL (Fin (n + 1)) K)
   simp
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `y`. Establish `hy'` using `hy`. Rewrite `hy'` using `[GlobalTheory.OrbitSpan.VV_eq_span_orbit]`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨g, rfl⟩` from `hx`. Use `choose g' hg' using fun τ => exists_block (g τ) (one_ne_zero (α := K))`. Express the relevant statement in the definitionally equal form `brStd rfl lam sg (tr K lam sg (rhoK sg g (hiV K sg))) = _ • rhoK sg g (hiV K sg)`. Rewrite using `[tr_rhoK hI hS g g' hg', brStd_rhoK rfl hI hS g g' (fun _ => 1) hg', tr_hi hI hS, map_smul, br_xi]`. Simplify using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => change brStd rfl lam sg (tr K lam sg 0) = _ • 0`. Simplify using the standard rewrite rules. Consider the case `add x z hx hz h1 h2`. Rewrite `hx`, `hz` using `[← GlobalTheory.OrbitSpan.VV_eq_span_orbit]`. Express the relevant statement in the definitionally equal form `brStd rfl lam sg (tr K lam sg (⟨x, hx⟩ + ⟨z, hz⟩)) = _ • (⟨x, hx⟩ + ⟨z, hz⟩ : VV K sg)`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, h1, h2, smul_add]`. Consider the case `smul a x hx h1`. Rewrite `hx` using `[← GlobalTheory.OrbitSpan.VV_eq_span_orbit]`. Express the relevant statement in the definitionally equal form `brStd rfl lam sg (tr K lam sg (a • ⟨x, hx⟩)) = _ • (a • ⟨x, hx⟩ : VV K sg)`. Rewrite using `[map_smul, map_smul, h1, smul_comm]`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_tr (y : VV K sg) : brStd rfl lam sg (tr K lam sg y) =
     ((∏ τ, ((cBr rfl (lam τ) (sg τ) : ℤ) : K)) * brConst rfl K lam sg) • y := by
@@ -294,7 +294,7 @@ section Abstract
 variable {K V W : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
 
 /- English proof (translation)
-Establish `h` using `hpos (k • f - A (P f))`. Establish `e1 : B f (A (P f)) = B' (P f) (P f)` using `by rw [← hB, hA, hB']`. Establish `e2 : s (star k) = κ` using `by rw [hs, hk]; simp`. Simplify using `only [map_sub, LinearMap.sub_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hA, hPA, e1, starRingEnd_apply, RingHom.id_apply, map_mul, hk, e2, Complex.sub_re, Complex.re_ofReal_mul] at h`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_le (s : K →+* ℂ) (hs : ∀ x, s (star x) = star (s x)) (B : V →ₗ⋆[K] V →ₗ[K] K) (B' : W →ₗ⋆[K] W →ₗ[K] K)
     (hB : ∀ x y, star (B x y) = B y x) (hB' : ∀ x y, star (B' x y) = B' y x) (hpos : ∀ x, 0 ≤ (s (B x x)).re)
@@ -319,7 +319,7 @@ def cV {m : ℕ} (w : ι → DomWeight m) (x : VV K w) : VV K w :=
   ⟨map (starRingEnd K) x.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV _ w _ x.2⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `map _ (map _ x.1) = x.1`. Rewrite using `[map_map, show (starRingEnd K).comp (starRingEnd K) = RingHom.id K from RingHom.ext fun a => star_star a, map_id]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cV_cV {m : ℕ} (w : ι → DomWeight m) (x : VV K w) : cV w (cV w x) = x := by
   apply Subtype.ext
@@ -327,7 +327,7 @@ theorem cV_cV {m : ℕ} (w : ι → DomWeight m) (x : VV K w) : cV w (cV w x) = 
   rw [map_map, show (starRingEnd K).comp (starRingEnd K) = RingHom.id K from RingHom.ext fun a => star_star a, map_id]
 
 /- English proof (translation)
-Rewrite using `[pairBK_apply, pairBK_apply, pairB_apply, pairB_apply, ← starRingEnd_apply, map_mul, map_inv₀, ← GlobalTheory.Proof.TensorMapDescent.fockB_map, extNormB, map_prod]`. Simplify using `only [← GlobalTheory.Proof.TensorMapDescent.fockB_map, Formalism.L2.DIV.map_extremal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pairBK_cV {m : ℕ} (w : ι → DomWeight m) (x y : VV K w) :
     pairBK w (cV w x) (cV w y) = star (pairBK w x y) := by
@@ -337,7 +337,7 @@ theorem pairBK_cV {m : ℕ} (w : ι → DomWeight m) (x y : VV K w) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[pairK_apply, pairP_eq_pairB, pairBK_apply, rhoK_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairK_eq {m : ℕ} (w : ι → DomWeight m) (G : ι → GL (Fin m) K) (x y : VV K w) :
     pairK w (fun τ => (G τ : Matrix (Fin m) (Fin m) K)) x y = pairBK w (cV w x) (rhoK w G y) := by
@@ -345,7 +345,7 @@ theorem pairK_eq {m : ℕ} (w : ι → DomWeight m) (G : ι → GL (Fin m) K) (x
   rfl
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CoefModel.pairK_mapVV s w hs]`. Distinguish the cases in `h : GlobalTheory.CoefModel.mapVV s w x = 0`. Simplify using `[h]`. Conclude with `(Complex.lt_def.1 (GlobalTheory.CoefModel.pairK_pos w hG _ h)).1.le`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairK_pos (s : K →+* ℂ) (hs : ∀ x, s (star x) = star (s x)) {m : ℕ} (w : ι → DomWeight m)
     {G : ι → Matrix (Fin m) (Fin m) K} (hG : ∀ τ, ((G τ).map s).PosDef) (x : VV K w) :
@@ -356,7 +356,7 @@ theorem pairK_pos (s : K →+* ℂ) (hs : ∀ x, s (star x) = star (s x)) {m : �
   · exact (Complex.lt_def.1 (GlobalTheory.CoefModel.pairK_pos w hG _ h)).1.le
 
 /- English proof (translation)
-The claim follows from `(pairSymm K ι m w G fun τ => by ext a b apply s.injective rw [Matrix.conjTranspose_apply, hs] exact (hG τ).isHermitian.apply a b).eq x y`.
+A detailed English derivation is pending.
 -/
 theorem pairK_star (s : K →+* ℂ) (hs : ∀ x, s (star x) = star (s x)) {m : ℕ} (w : ι → DomWeight m)
     {G : ι → Matrix (Fin m) (Fin m) K} (hG : ∀ τ, ((G τ).map s).PosDef) (x y : VV K w) :
@@ -369,7 +369,7 @@ theorem pairK_star (s : K →+* ℂ) (hs : ∀ x, s (star x) = star (s x)) {m : 
 
 omit [StarRing K] in
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero G fun h => hG.det_pos.ne' ?_, rfl⟩` and prove the remaining obligations. Use `s.map_det G` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_GL (s : K →+* ℂ) {m : ℕ} {G : Matrix (Fin m) (Fin m) K} (hG : (G.map s).PosDef) :
     ∃ g : GL (Fin m) K, (g : Matrix (Fin m) (Fin m) K) = G := by
@@ -379,15 +379,13 @@ theorem exists_GL (s : K →+* ℂ) {m : ℕ} {G : Matrix (Fin m) (Fin m) K} (hG
   exact this.symm
 
 /- English proof (translation)
-Establish `h1 : ∀ a b : Fin n, A' a.castSucc b.castSucc = A a b` using `h.1`. Establish `h2 : ∀ a : Fin n, A' a.castSucc (Fin.last n) = 0` using `fun a => (h.2.1 a).1`. Establish `h3 : ∀ a : Fin n, A' (Fin.last n) a.castSucc = 0` using `fun a => (h.2.1 a).2`. Establish `h4 : A' (Fin.last n) (Fin.last n) = t` using `h.2.2`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply]`. Apply the tactic sequence `induction a using Fin.lastCases <;> induction b using Fin.lastCases`. Rewrite using `[h4]`. Conclude with `(IsSelfAdjoint.of_nonneg ht.le).star_eq`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h2, h3]`. Simplify using `[h2, h3]`. Rewrite using `[h1, h1]`. Conclude with `hA.isHermitian.apply _ _`. Establish `e : star x ⬝ᵥ A' *ᵥ x = star (fun a : Fin n => x a.castSucc) ⬝ᵥ A *ᵥ (fun a : Fin n => x a.castSucc) + t * (star (x (Fin.last n)) * x (Fin.last n))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Fin.sum_univ_castSucc, h1, h2, h3, h4, Pi.star_apply, zero_mul, add_zero, Finset.sum_const_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Distinguish the cases in `h0 : (fun a : Fin n => x a.castSucc) = 0`. Establish `h5 : x (Fin.last n) ≠ 0` using `fun h5 => hx (funext fun a => Fin.lastCases h5 (fun a => congrFun h0 a) a)`.
-
-Conclude with `add_pos_of_nonneg_of_pos (hA.posSemidef.dotProduct_mulVec_nonneg _) (mul_pos ht (star_mul_self_pos (IsRegular.of_ne_zero h5)))`. Conclude with `add_pos_of_pos_of_nonneg (hA.dotProduct_mulVec_pos h0) (mul_nonneg ht.le (star_mul_self_nonneg _))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsBlock.posDef {n : ℕ} {A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} {A : Matrix (Fin n) (Fin n) ℂ} {t : ℂ}
     (h : IsBlock rfl A' A t) (hA : A.PosDef) (ht : 0 < t) : A'.PosDef := by
@@ -418,20 +416,20 @@ theorem IsBlock.posDef {n : ℕ} {A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} {
 variable [CharZero K] {n : ℕ} {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (GlobalTheory.Proof.TensorMapDescent.branchingProjection_map (starRingEnd K) rfl lam sg x.1)`.
+A detailed English derivation is pending.
 -/
 theorem br_cV (x : VV K lam) : brStd rfl lam sg (cV lam x) = cV sg (brStd rfl lam sg x) :=
   Subtype.ext (GlobalTheory.Proof.TensorMapDescent.branchingProjection_map (starRingEnd K) rfl lam sg x.1)
 
 /- English proof (translation)
-Use `ext_pair fun z => ?_` and prove the remaining obligations. Rewrite using `[← cV_cV lam z, pairBK_cV, pair_tr, pair_tr, br_cV, br_cV, pairBK_cV, br_cV]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_cV (y : VV K sg) : cV lam (tr K lam sg y) = tr K lam sg (cV sg y) := by
   refine ext_pair fun z => ?_
   rw [← cV_cV lam z, pairBK_cV, pair_tr, pair_tr, br_cV, br_cV, pairBK_cV, br_cV]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.smul_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, brAt, LinearMap.smul_apply, map_smul, pairK_eq, pairK_eq, tr_cV, pair_tr, brStd_rhoK rfl hI hS G' G g h, map_smul, smul_smul, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_zpow, mul_assoc, ← zpow_add₀ (hg τ), neg_add_cancel, zpow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint (hI : ∀ τ, Interlace rfl (lam τ) (sg τ)) (hS : ∀ τ, SameShift (lam τ) (sg τ))
     (G' : ι → GL (Fin n) K) (G : ι → GL (Fin (n + 1)) K) (g t : ι → K) (hg : ∀ τ, g τ ≠ 0)
@@ -451,25 +449,23 @@ end Hermitian
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ScaledCoisometryNorms GlobalTheory.BranchFormula in
 /- English proof (translation)
-Introduce `K _ _ s hs ι _ N n hN lam sg hI hS G' hG' g t T hT ht`. Substitute `hN` using the available equality. Establish `: CharZero K` using `(RingHom.charZero_iff s.injective).2 inferInstance`. Establish `ht0 : ∀ τ, 0 < ‖s (t τ)‖ ^ 2` using `fun τ => by`. Use `lt_of_le_of_ne (sq_nonneg _) fun h => hT.ne' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ht τ` as an intermediate fact. Rewrite `this` using `[← h]`. Conclude with `(by simpa using this.symm : (T : ℂ) = 0)` after adjusting the coercions. Establish `hg : ∀ τ, s (g τ) = ((T / ‖s (t τ)‖ ^ 2 : ℝ) : ℂ)` using `fun τ => by`. Rewrite using `[Complex.ofReal_div, ← ht τ, mul_div_cancel_left₀ _ (Complex.ofReal_ne_zero.2 (ht0 τ).ne')]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : ∀ τ, 0 < s (g τ)` using `fun τ => by rw [hg]; exact Complex.zero_lt_real.2 (div_pos hT (ht0 τ))`. Establish `hb : ∀ τ, IsBlock rfl (sumGram (n + 1) (G' τ) (g τ)) (G' τ) (g τ)` using `fun τ => sumGram_entries rfl _ _`. Establish `hG : ∀ τ, ((sumGram (n + 1) (G' τ) (g τ)).map s).PosDef` using `fun τ => IsBlock.posDef (A := (G' τ).map s) (t := s (g τ)) ⟨fun a b => congrArg s ((hb τ).1 a b), fun a => ⟨(congrArg s ((hb τ).2.1 a).1).trans (map_zero s), (congrArg s ((hb τ).2.1 a).2).trans (map_zero s)⟩, congrArg s (hb τ).2.2⟩ (hG' τ) (hg0 τ)`. Use `choose u' hu' using fun τ => exists_GL s (hG' τ)`. Use `choose u hu using fun τ => exists_GL s (hG τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA` using `adjoint hI hS u' u g t (fun τ h => (hg0 τ).ne' (by rw [h, map_zero])) fun τ => by rw [hu, hu']; exact hb τ`. Simplify using `only [hu, hu'] at hA`. Use `set A := star (∏ τ, (t τ * g τ) ^ (-nBr (lam τ) (sg τ))) • tr K lam sg with hAdef`. Use `set k : K := (∏ τ, t τ ^ (-nBr (lam τ) (sg τ))) * star (∏ τ, (t τ * g τ) ^ (-nBr (lam τ) (sg τ))) * ((∏ τ, ((cBr rfl (lam τ) (sg τ) : ℤ) : K)) * brConst rfl K lam sg) with hkdef`. Establish `hPA : ∀ y, brAt rfl lam sg t (A y) = k • y` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[brAt, hAdef, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, br_tr hI hS, smul_smul, smul_smul]`. Establish `hk : s k = (brSq rfl lam sg T : ℝ)`. Simplify using `only [hkdef, brSq, brConst, map_mul, map_prod, hs, star_prod, map_zpow₀, star_zpow₀, map_intCast, kapBr_map, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e1 : ((kapBr ℝ rfl (lam τ) (sg τ) : ℝ) : ℂ) = kapBr ℂ rfl (lam τ) (sg τ)` using `kapBr_map Complex.ofRealHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : s (t τ) * star (s (t τ) * s (g τ)) = (T : ℂ)`. Rewrite using `[star_mul', (IsSelfAdjoint.of_nonneg (hg0 τ).le).star_eq, ← mul_assoc, ← ht τ, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[← mul_zpow, e2]`. Use `push_cast`. Rewrite using `[e1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hκ : 0 < brSq rfl lam sg T` using `Finset.prod_pos fun τ _ => mul_pos (zpow_pos hT _) (mul_pos (sq_pos_of_ne_zero (Int.cast_ne_zero.2 (cBr_ne (hI τ)))) (kapBr_pos (hI τ) (hS τ)))`. Establish `hAA : ∀ y y', s (pairK lam (fun τ => sumGram (n + 1) (G' τ) (g τ)) (A y) (A y')) = (brSq rfl lam sg T : ℝ) * s (pairK sg G' y y')` using `fun y y' => by`. Rewrite using `[hA, hPA, map_smul, smul_eq_mul, map_mul, hk]`. Use `⟨hκ, ⟨A, hA, hAA⟩, fun f => norm_le s hs _ _ (pairK_star s hs lam hG) (pairK_star s hs sg hG') (pairK_pos s hs lam hG) _ A hA hk hκ hPA f, A (hiV K sg), fun h0 => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hPA (hiV K sg)`. Rewrite `h1` using `[h0, map_zero]`. Break down `smul_eq_zero.1 h1.symm with h | h` into its components or cases. Rewrite `hk` using `[h, map_zero]`. Conclude with `hκ.ne (by exact_mod_cast hk)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `pairingBExtremal_holds K ι n sg 1`. Establish `h3 : extVV K sg = 0` using `congrArg Subtype.val h`. Rewrite `h3` using `[extVV, ten]`. Rewrite `h2` using `[ten, h3]`. Simplify using `at h2`.
-
-Rewrite using `[nrmSq, nrmSq, hAA, hPA, map_smul, (pairK sg G').map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul s k, hk, map_mul s, starRingEnd_apply, hs, hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brNorm : BrNorm := by
   intro K _ _ s hs ι _ N n hN lam sg hI hS G' hG' g t T hT ht
@@ -531,7 +527,7 @@ theorem brNorm : BrNorm := by
     simp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.BrNormCompare.lastMapNorm_iff_brNorm.2 brNorm`.
+A detailed English derivation is pending.
 -/
 theorem lastMapNorm : GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.LastMapNorm := GlobalTheory.BrNormCompare.lastMapNorm_iff_brNorm.2 brNorm
 

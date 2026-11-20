@@ -16,9 +16,9 @@ open RowTiePE0 RowTiePKey RowTiePProj GmExArith
 variable {C : Type} [Field C] {V : VF C} {O : Type} [CommRing O] {n d : ℕ} (K : KeyData C V O n d)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [mm_zero]`. Consider the case `succ k ih`. Establish `h1` using `K.em_frob (a + k) x`. Establish `h2` using `mm_pow_sub (K.em_int _ x) ((K.em_int a x).pow _) ih V.l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : K.em (a + ((k + 1 : ℕ) : ZMod d)) x - K.em a x ^ V.l ^ (k + 1) = (K.em (a + k + 1) x - K.em (a + k) x ^ V.l) + (K.em (a + k) x ^ V.l - (K.em a x ^ V.l ^ k) ^ V.l)`. Rewrite using `[← pow_mul, ← pow_succ, Nat.cast_succ, ← add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mm_add h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem em_iter (x : O) (a : ZMod d) (k : ℕ) : V.MM (K.em (a + k) x - K.em a x ^ V.l ^ k) := by
   induction k with
@@ -33,7 +33,7 @@ theorem em_iter (x : O) (a : ZMod d) (k : ℕ) : V.MM (K.em (a + k) x - K.em a x
     exact mm_add h1 h2
 
 /- English proof (translation)
-Establish `h` using `em_iter K x a d`. Rewrite `h` using `[ZMod.natCast_self, add_zero]`. Rewrite using `[map_sub, map_pow]`. Use `mm_neg h` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem em_cong (x : O) (a : ZMod d) : V.MM (K.em a (x ^ V.l ^ d - x)) := by
   have h := em_iter K x a d
@@ -43,13 +43,13 @@ theorem em_cong (x : O) (a : ZMod d) : V.MM (K.em a (x ^ V.l ^ d - x)) := by
   rwa [neg_sub] at this
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `K.ε_ann (x ^ V.l ^ d - x) fun a => em_cong K x a`. Establish `hl0 : (V.l : C) ≠ 0` using `V.l_ne_zero`. Establish `hq : V.l ^ d = (V.l ^ d - 1) + 1` using `(Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ V.l_prime.ne_zero))).symm`. Establish `eM : (K.P * K.ρ x) ^ V.l ^ d - K.P * K.ρ x = K.P * (K.P * K.ρ (x ^ V.l ^ d - x))`. Rewrite using `[← Matrix.mul_assoc, P_idem, map_sub, Matrix.mul_sub, hq, S_pow, ← hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eM]`. Use `⟨fun k => K.ε ^ (V.l ^ k - 1) * y, ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, K.P * K.ρ (K.ε ^ (V.l ^ k - 1) * y) = (V.l : C)⁻¹ • (K.ρ (K.ε ^ V.l ^ k) * (K.P * K.ρ (x ^ V.l ^ d - x)))`. Introduce `k`. Establish `hk : V.l ^ k ≠ 0` using `pow_ne_zero _ V.l_prime.ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : K.ε ^ V.l ^ k * (x ^ V.l ^ d - x) = (V.l : O) * (K.ε ^ (V.l ^ k - 1) * y)`. Rewrite using `[← pow_sub_one_mul hk, mul_assoc, hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Matrix.mul_assoc, ← P_comm, Matrix.mul_assoc, ← map_mul, e1, ρ_natmul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hl0, one_smul]`. Establish `hseq : (fun k => K.P * K.ρ (K.ε ^ (V.l ^ k - 1) * y)) = fun k => (V.l : C)⁻¹ • (K.ρ (K.ε ^ V.l ^ k) * (K.P * K.ρ (x ^ V.l ^ d - x)))` using `funext key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hseq]`. Conclude with `MT.smul _ ((hPT K).mul (MT.const _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_S (x : O) : (V.l : C)⁻¹ • ((K.P * K.ρ x) ^ V.l ^ d - K.P * K.ρ x) ∈ Acl K := by
   obtain ⟨y, hy⟩ := K.ε_ann (x ^ V.l ^ d - x) fun a => em_cong K x a
@@ -74,7 +74,7 @@ theorem star_S (x : O) : (V.l : C)⁻¹ • ((K.P * K.ρ x) ^ V.l ^ d - K.P * K.
   exact MT.smul _ ((hPT K).mul (MT.const _))
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hB`. Conclude with `closed_mem K (fun k => star_S K (s k)) (MT.smul _ ((hs.pow _).sub hs))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem star_mem {B : Matrix (Fin n) (Fin n) C} (hB : B ∈ Acl K) : (V.l : C)⁻¹ • (B ^ V.l ^ d - B) ∈ Acl K := by
   obtain ⟨s, hs⟩ := hB

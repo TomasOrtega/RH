@@ -17,11 +17,11 @@ open GlobalTheory.Models
 namespace GlobalTheory.ProjClosure
 
 /- English proof (translation)
-Take `⟨N, c, hc, rfl⟩` from `hs`. Establish `P` using `GlobalTheory.ProjSpace.isPullback_baseChange N (algebraMap O R)`. Establish `hf : Flat (spMap (algebraMap O R))` using `GlobalTheory.flat_specMap_localization M R`. Establish `hm : Mono (spMap (algebraMap O R))` using `GlobalTheory.mono_specMap_localization M R`. Establish `hq : QuasiCompact (spMap (algebraMap O R))` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat (GlobalTheory.ProjSpace.baseChange N (algebraMap O R))` using `MorphismProperty.of_isPullback P.flip hf`. Establish `: Mono (GlobalTheory.ProjSpace.baseChange N (algebraMap O R))` using `(MorphismProperty.monomorphisms _).of_isPullback P.flip hm`. Establish `: QuasiCompact (GlobalTheory.ProjSpace.baseChange N (algebraMap O R))` using `MorphismProperty.of_isPullback P.flip hq`. Set `j` to `c ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap O R)`. Establish `H` using `GlobalTheory.isPullback_toImage_of_isClosedImmersion j c _ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨j.image, j.imageι ≫ PSpace.str O N, j.toImage, ⟨N, j.imageι, inferInstance, rfl⟩, H.flip.paste_vert P⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isProjOver_isPullback_of_isLocalization {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
     (M : Submonoid O) [IsLocalization M R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : IsProjOver s) :
@@ -43,7 +43,7 @@ theorem exists_isProjOver_isPullback_of_isLocalization {O R : Type} [CommRing O]
     H.flip.paste_vert P⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ a _ _ s hs` and use `exists_isProjOver_isPullback_of_isLocalization (Submonoid.powers a) s hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_projective_closure : ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (a : O) [IsLocalization.Away a R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsProjOver s → ∃ (X' : Scheme.{0}) (s' : X' ⟶ Sp O) (i : X ⟶ X'), IsProjOver s' ∧ IsPullback i s s' (spMap (algebraMap O R)) :=
   fun _ _ _ _ _ a _ _ s hs =>

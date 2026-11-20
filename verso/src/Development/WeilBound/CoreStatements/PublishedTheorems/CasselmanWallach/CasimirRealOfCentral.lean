@@ -11,7 +11,7 @@ namespace CasimirRealScalar
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `casimir Mm`. Rewrite using `[sq, Matrix.trace]`. Simplify using `[Matrix.diag, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem casimir_eq_trace {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) :
     casimir E = (Mm E ^ 2).trace := by
@@ -20,9 +20,9 @@ theorem casimir_eq_trace {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n �
   simp [Matrix.diag, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, hu a b, Complex.conj_im, neg_eq_zero]`. Establish `h1 : (adjSign ε a b).im = 0`. Unfold `adjSign`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : (inner ℂ (E b a v) (E b a v)).im = 0` using `inner_self_im (𝕜 := ℂ) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_im, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E) (a b : Fin n) (v : V) :
@@ -36,7 +36,7 @@ theorem term_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε 
   ring
 
 /- English proof (translation)
-Unfold `casimir`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, inner_sum, Complex.im_sum]`. Conclude with `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => term_im ε E hu a b v`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cas_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E) (v : V) :
@@ -48,17 +48,15 @@ theorem cas_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε :
 end CasimirRealScalar
 
 /- English proof (translation)
-Introduce `h2 h3`. Unfold `CasimirIsRealScalar ForMod`. Introduce `n ε V _ _ E h`. Establish `hc : ∀ a b, E a b * casimir E = casimir E * E a b`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[CasimirRealScalar.casimir_eq_trace]`. Conclude with `h2 n ε V E h 2 a b`. Take `⟨c, hc'⟩` from `h3 n ε V E h (casimir E) hc`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `⟨0, fun v => Subsingleton.elim _ _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `him` using `CasimirRealScalar.cas_im ε E h.uni v`. Establish `hn : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr hv`. Establish `hcim : c.im = 0`. Rewrite `him` using `[hc', inner_smul_right, inner_self_eq_norm_sq_to_K, Complex.mul_im]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : ((‖v‖ : ℂ) ^ 2).re = ‖v‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Establish `him2 : ((‖v‖ : ℂ) ^ 2).im = 0`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_im]`. Use `erw [hre, him2, mul_zero, zero_add] at him`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `mul_eq_zero.mp him with h0 | h0` into its components or cases. Conclude with `h0`. Conclude with `absurd (pow_eq_zero_iff two_ne_zero |>.mp h0) hn`. Use `⟨c.re, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hc' w]`.
-
-Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp [hcim]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem casimir_real_of_central : A2 → A3 → CasimirIsRealScalar := by
   intro h2 h3

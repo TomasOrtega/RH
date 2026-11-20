@@ -133,7 +133,7 @@ def AdjIs {L : LB G.left} {j : JetPts G x d} (e : FrameFam G x L j) (α β : G �
     IsRigAdj G L α β w ∧ AdjVia e w A B ad
 
 /- English proof (translation)
-Simplify using `only [lamφ, psum]`. Rewrite using `[foldr_padd_pre, Over.comp_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_lamφ {T T' : Over X₀} (h : T' ⟶ T) (p : Fin 2 → (T ⟶ G)) (I : ULift.{0} (Finset (Fin 2))) :
     h.left ≫ lamφ G p I = lamφ G (fun k => h ≫ p k) I := by

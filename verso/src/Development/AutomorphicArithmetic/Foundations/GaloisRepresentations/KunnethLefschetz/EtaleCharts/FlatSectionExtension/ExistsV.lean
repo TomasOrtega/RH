@@ -6,13 +6,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B T j`. Set `X : B.ι × Fin d → Scheme.{0}` to `fun p => (oT B j p : Scheme.{0})`. Use `choose v hv _ using fun m : Fin d => sigmaSection X (fun p => uV B p.1 p.2 ((oT B j p).ι ≫ j) (oT_le B j p) m)`. Use `⟨v, fun p m => hv m p, ?_⟩` and prove the remaining obligations. Use `choose b hb _ using fun m : Fin d => sigmaSection X (fun p => if p.2 = m then (1 : Γ(X p, ⊤)) else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, -, hs⟩` from `sigmaSection X (fun _ => 1)`. Establish `h1 : (∑ m, b m * v m) = 1`. Establish `e2` using `hs 1 (fun p => map_one _)`. Establish `e1 : (∑ m, b m * v m) = s`. Use `hs _ fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_mul, hb, hv]`. Simplify using `[uSelf]`. Rewrite using `[e1, e2]`. Rewrite using `[Ideal.eq_top_iff_one, ← h1]`.
-
-Conclude with `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨m, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.existsV :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {T : Scheme.{0}} (j : T ⟶ Y), ∃ v : Fin d → Γ(TP B j, ⊤), IsV B j v ∧ Ideal.span (Set.range v) = ⊤ := by

@@ -24,9 +24,9 @@ instance instFactG' (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[ES_eq, ES_eq, ES_eq, Finset.sum_mul_sum]`. Simplify using `only [Ea_mul]`. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_ite_eq _ _ _, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Set.mem_inter_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ES_inter (S S' : Set (Tup2 D)) : ES S * ES S' = ES (S ∩ S') := by
   rw [ES_eq, ES_eq, ES_eq, Finset.sum_mul_sum]
@@ -37,11 +37,11 @@ theorem ES_inter (S S' : Set (Tup2 D)) : ES S * ES S' = ES (S ∩ S') := by
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, Set.mem_inter_iff]
 
 /- English proof (translation)
-Establish `: ∀ k, NeZero (D.host.g k)` using `fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Establish `: ∃ kv : (Σ k : Fin 2, D.nd.PlG k), ¬ IsLabel D kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `labT`. Use `Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩, fun k v => hc ⟨k, v⟩⟩` and prove the remaining obligations. Take `⟨kv, hkv⟩` from `this`. Establish `h0 : D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv)) = 0` using `D.ntypes.eSer_zero _ _ hkv`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `γ`. Rewrite using `[Ea_coeff, Finset.prod_eq_zero (Finset.mem_univ kv) (by rw [h0]; rfl)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Ea_zero (a : CV D) (h : tupOf a ∉ labT (D := D)) : Ea a = 0 := by
   classical
@@ -61,15 +61,15 @@ theorem Ea_zero (a : CV D) (h : tupOf a ∉ labT (D := D)) : Ea a = 0 := by
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [ES_eq]`. Establish `e1 : ∑ a ∈ Finset.univ.filter (fun a : CV D => tupOf a ∈ S), Ea a = ∑ a ∈ Finset.univ.filter (fun a : CV D => tupOf a ∈ S ∧ tupOf a ∈ labT (D` using `D)), Ea a := by`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : tupOf a ∈ S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : tupOf a ∈ labT (D := D)`. Rewrite using `[if_pos h1, if_pos ⟨h1, h2⟩]`. Rewrite using `[if_pos h1, if_neg (fun h => h2 h.2), Ea_zero a h2]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Rewrite using `[e1, ← Finset.sum_fiberwise_of_maps_to (g := tupOf) (t := (labT (D := D)).filter (· ∈ S)) (fun a ha => by`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Conclude with `⟨ha.2, ha.1⟩)]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Finset.filter_filter]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `ht` using `[Finset.mem_filter]`. Conclude with `⟨⟨h ▸ ht.2, h ▸ ht.1⟩, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ES_split (S : Set (Tup2 D)) : ES S = ∑ t ∈ (labT (D := D)).filter (· ∈ S), ES {t} := by
   simp only [ES_eq]
@@ -100,9 +100,9 @@ variable {X : HidaSetting D} (hS : Function.Surjective (rhoX X))
 include hS
 
 /- English proof (translation)
-Use `hat_inj hS (biInv_conv hS (biInv_eT X S) (biInv_eT X S')) (biInv_eT X _) fun γ => ?_` and prove the remaining obligations. Rewrite using `[conv_hat hS (biInv_eT X S) (biInv_eT X S'), hat_eT' hS]`. Simplify using `only [hat_eT' hS]`. Rewrite using `[← coeff_mul_fin]`. Establish `key : (Ehat hS * ES S) * (Ehat hS * ES S') = Ehat hS * ES (S ∩ S')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_inter (S S' : Set (Tup2 D)) : X.B.I.convF X.B.μf (eT X S) (eT X S') = eT X (S ∩ S') := by
   refine hat_inj hS (biInv_conv hS (biInv_eT X S) (biInv_eT X S')) (biInv_eT X _) fun γ => ?_
@@ -118,7 +118,7 @@ theorem eT_inter (S S' : Set (Tup2 D)) : X.B.I.convF X.B.μf (eT X S) (eT X S') 
 
 omit hS in
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x n hn => ?_, fun x n hn => ?_⟩` and prove the remaining obligations. Take `⟨i, _, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`. Conclude with `(h i).1 x hi`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.1 x n hn`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.2 x n hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem biInv_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ) (h : ∀ i, BiInv X (f i)) :
     BiInv X (fun x => ∑ i ∈ F, f i x) := by
@@ -129,7 +129,7 @@ theorem biInv_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ) (h :
   · exact Finset.sum_congr rfl fun i _ => (h i).2.2 x n hn
 
 /- English proof (translation)
-Unfold `hat`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ) (γ : G0g D.nd) :
     hat hS (fun x => ∑ i ∈ F, f i x) γ = ∑ i ∈ F, hat hS (f i) γ := by
@@ -138,7 +138,7 @@ theorem hat_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ) (γ : 
 open Classical in
 
 /- English proof (translation)
-Use `hat_inj hS (biInv_eT X S) (biInv_sum _ _ fun t => biInv_eT X {t}) fun γ => ?_` and prove the remaining obligations. Rewrite using `[hat_sum, hat_eT' hS, ES_split, Finset.mul_sum, MonoidAlgebra.coeff_sum, Finset.sum_apply']`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hat_eT' hS]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_split (S : Set (Tup2 D)) :
     eT X S = fun x => ∑ t ∈ (labT (D := D)).filter (· ∈ S), eT X {t} x := by
@@ -154,14 +154,14 @@ section Ops
 variable (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.RhoSurjW.reduction_map_surjective D X`.
+A detailed English derivation is pending.
 -/
 theorem hS_X : Function.Surjective (rhoX X) := Formalism.L2.SG.Pf.RhoSurjW.reduction_map_surjective D X
 
 /- English proof (translation)
-Establish `hS` using `hS_X X`. Use `hat_inj hS (biInv_conv hS (biInv_egA X _ (ES_conj S')) (biInv_eT X S)) (biInv_eT X _) fun γ => ?_` and prove the remaining obligations. Rewrite using `[conv_hat hS (biInv_egA X _ (ES_conj S')) (biInv_eT X S), hat_eT' hS]`. Simplify using `only [hat_egA hS _ (ES_conj S'), hat_eT' hS]`. Rewrite using `[← coeff_mul_fin]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ES S' * (Ehat hS * ES S) = Ehat hS * ES (S' ∩ S)`. Rewrite using `[← mul_assoc, ES_central, mul_assoc, ES_inter]`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem egA_conv_eT (S S' : Set (Tup2 D)) :
     X.B.I.convF X.B.μf (egA X (ES S')) (eT X S) = eT X (S' ∩ S) := by
@@ -175,7 +175,7 @@ theorem egA_conv_eT (S S' : Set (Tup2 D)) :
   rw [key]
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.Pf.AllRowsRMul.isRConvF_conv X (reT_spec X (etInt_holds X) S) (reT_spec X (etInt_holds X) S')`. Rewrite `h` using `[eT_inter (hS_X X) S S']`. Conclude with `isRConvF_unique X h (reT_spec X (etInt_holds X) (S ∩ S'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reT_inter (S S' : Set (Tup2 D)) : (ReT X S).comp (ReT X S') = ReT X (S ∩ S') := by
   have h := Formalism.L2.SG.Pf.AllRowsRMul.isRConvF_conv X (reT_spec X (etInt_holds X) S) (reT_spec X (etInt_holds X) S')
@@ -183,19 +183,19 @@ theorem reT_inter (S S' : Set (Tup2 D)) : (ReT X S).comp (ReT X S') = ReT X (S �
   exact isRConvF_unique X h (reT_spec X (etInt_holds X) (S ∩ S'))
 
 /- English proof (translation)
-Introduce `S S' φ` and use `by rw [← ContinuousLinearMap.comp_apply, reT_inter]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem etConv_holds : Formalism.L2.SG.Pf.RowsGoodRed.EtConv X := fun S S' φ => by
   rw [← ContinuousLinearMap.comp_apply, reT_inter]
 
 /- English proof (translation)
-Introduce `S x` and use `by rw [eT_inv (hS_X X) S x, star_star]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem etSA_holds : Formalism.L2.SG.Pf.RowsGoodRed.EtSA X := fun S x => by
   rw [eT_inv (hS_X X) S x, star_star]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.RowsGoodRed.projT_of X G (etConv_holds X) (Formalism.L2.SG.Pf.RowsGoodRed.etEmpty X) (Formalism.L2.SG.Pf.RowsGoodRed.etAdj_of X (etSA_holds X)) (Formalism.L2.SG.Pf.RowsGoodRed.etGood_of X G (egA_conv_eT X))`.
+A detailed English derivation is pending.
 -/
 theorem projT_holds (G : Formalism.L2.SG.RowDict.GoodOp X) : Formalism.L2.SG.Pf.RowsGoodRed.ProjT X G :=
   Formalism.L2.SG.Pf.RowsGoodRed.projT_of X G (etConv_holds X) (Formalism.L2.SG.Pf.RowsGoodRed.etEmpty X)
@@ -208,9 +208,9 @@ section Split
 variable (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨-, -, hmeas⟩` from `Formalism.L2.SG.Pf.AllRowsRMul.R_facts X`. Use `⟨integrable_finsetSum _ fun i _ => (h i).1, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.sum_apply, inner_sum]`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[integral_finsetSum _ fun i _ => (h i).1.mul_bdd ((hmeas x y).aestronglyMeasurable) (Filter.Eventually.of_forall fun c => Formalism.L2.SG.Pf.AllRowsRMul.phi_bound X x y c)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (h i).2 x y`.
+A detailed English derivation is pending.
 -/
 theorem isRConvF_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ)
     (T : ι → (X.B.I.L2 X.B.μf X.B.fund →L[ℂ] X.B.I.L2 X.B.μf X.B.fund))
@@ -227,7 +227,7 @@ theorem isRConvF_sum {ι : Type} (F : Finset ι) (f : ι → X.B.I.Gf → ℂ)
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `isRConvF_sum X ((labT (D := D)).filter (· ∈ S)) (fun t => eT X {t}) (fun t => ReT X {t}) (fun t => reT_spec X (etInt_holds X) {t})`. Rewrite `h` using `[← eT_split (hS_X X) S]`. Conclude with `isRConvF_unique X (reT_spec X (etInt_holds X) S) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reT_split (S : Set (Tup2 D)) : ReT X S = ∑ t ∈ (labT (D := D)).filter (· ∈ S), ReT X {t} := by
   have h := isRConvF_sum X ((labT (D := D)).filter (· ∈ S)) (fun t => eT X {t}) (fun t => ReT X {t})
@@ -236,9 +236,9 @@ theorem reT_split (S : Set (Tup2 D)) : ReT X S = ∑ t ∈ (labT (D := D)).filte
   exact isRConvF_unique X (reT_spec X (etInt_holds X) S) h
 
 /- English proof (translation)
-Rewrite using `[reT_inter]`. Use `split_ifs with h`. Rewrite using `[h, Set.inter_self]`. Establish `e : ({t} : Set (Tup2 D)) ∩ {t'} = ∅`. Use extensionality with `u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`. Rewrite using `[e]`. Conclude with `ContinuousLinearMap.ext fun φ => Formalism.L2.SG.Pf.RowsGoodRed.etEmpty X φ`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reT_orth (t t' : Tup2 D) :
     (ReT X {t}).comp (ReT X {t'}) = if t = t' then ReT X {t} else 0 := by
@@ -258,33 +258,33 @@ section LA
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V)
 
 /- English proof (translation)
-Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => intro _ _ _`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, Submodule.map_zero, finrank_bot]`. Consider the case `insert t F ht ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `hQ hW hfin`. Establish `hQ' : ∀ i ∈ F, ∀ j ∈ F, Q i ∘ₗ Q j = if i = j then Q i else 0` using `fun i hi j hj => hQ i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj)`. Establish `hW' : ∀ i ∈ F, ∀ x ∈ W, Q i x ∈ W` using `fun i hi => hW i (Finset.mem_insert_of_mem hi)`. Establish `hfin' : ∀ G ⊆ F, FiniteDimensional ℂ (W.map (∑ i ∈ G, Q i))` using `fun G hG => hfin G (hG.trans (Finset.subset_insert _ _))`. Rewrite using `[Finset.sum_insert ht, Finset.sum_insert ht, ← ih hQ' hW' hfin']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set QF := ∑ i ∈ F, Q i with hQF`. Establish `htt : ∀ x, Q t (Q t x) = Q t x` using `fun x => by`. Use `congrArg (fun L : V →ₗ[ℂ] V => L x) (hQ t (Finset.mem_insert_self t F) t (Finset.mem_insert_self t F))` as an intermediate fact. Simplify using `using this`. Establish `htF : ∀ x, Q t (QF x) = 0` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQF, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `congrArg (fun L : V →ₗ[ℂ] V => L x) (hQ t (Finset.mem_insert_self t F) i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, if_neg (fun (h : t = i) => ht (h ▸ hi))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hFt : ∀ x, QF (Q t x) = 0` using `fun x => by`. Rewrite using `[hQF, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `congrArg (fun L : V →ₗ[ℂ] V => L x) (hQ i (Finset.mem_insert_of_mem hi) t (Finset.mem_insert_self t F))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, if_neg (fun (h : i = t) => ht (h ▸ hi))]`. Both sides reduce to the same expression. Establish `hFF : ∀ x, QF (QF x) = QF x` using `fun x => by`. Rewrite using `[hQF]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Use `congrArg (fun L : V →ₗ[ℂ] V => L x) (hQ' i hi i hi)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj hji`. Use `congrArg (fun L : V →ₗ[ℂ] V => L x) (hQ' j hj i hi)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, if_neg hji]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd hi h`. Establish `hWF : ∀ x ∈ W, QF x ∈ W` using `fun x hx => by`. Rewrite using `[hQF, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i hi => hW' i hi x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hC : W.map (Q t + QF) = W.map (Q t) ⊔ W.map QF`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `Submodule.add_mem_sup ⟨w, hw, rfl⟩ ⟨w, hw, rfl⟩`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `⟨Q t w, hW t (Finset.mem_insert_self t F) w hw, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, htt, hFt, add_zero]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `⟨QF w, hWF w hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [LinearMap.add_apply, htF, hFF, zero_add]`. Establish `hdis : W.map (Q t) ⊓ W.map QF = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨⟨w, _, rfl⟩, ⟨w', _, hw'⟩⟩`. Establish `h1 : Q t (Q t w) = Q t w` using `htt w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Q t (Q t w) = 0` using `by rw [← hw', htF]`. Rewrite using `[Submodule.mem_bot, ← h1, h2]`. Establish `hfA : FiniteDimensional ℂ (W.map (Q t))`. Use `hfin {t} (Finset.singleton_subset_iff.2 (Finset.mem_insert_self t F))` as an intermediate fact. Rewrite `this` using `[Finset.sum_singleton]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfB : FiniteDimensional ℂ (W.map QF)` using `hfin' F (Finset.Subset.refl _)`. Use `Submodule.finrank_sup_add_finrank_inf_eq (W.map (Q t)) (W.map QF)` as an intermediate fact. Rewrite `this` using `[hdis, finrank_bot, add_zero]`. Rewrite using `[hC, this]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_map_sum {ι : Type} [DecidableEq ι] (Q : ι → V →ₗ[ℂ] V) :
     ∀ (F : Finset ι), (∀ i ∈ F, ∀ j ∈ F, Q i ∘ₗ Q j = if i = j then Q i else 0) →
@@ -368,9 +368,9 @@ section Add
 variable (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨hmul, -, -⟩` from `Formalism.L2.SG.Pf.AllRowsRMul.R_facts X`. Establish `hT` using `reT_spec X (etInt_holds X) S`. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hT.2, ← ContinuousLinearMap.adjoint_inner_left, hT.2]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.comp_apply, ← hmul, ← hmul, Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, one_mul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem reT_comm (S : Set (Tup2 D)) (g : X.B.I.Ginf) :
     (ReT X S).comp (X.B.R (g, 1)) = (X.B.R (g, 1)).comp (ReT X S) := by
@@ -385,7 +385,7 @@ theorem reT_comm (S : Set (Tup2 D)) (g : X.B.I.Ginf) :
     ← hmul, ← hmul, Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, one_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `reT_univ X (etUniv_of X (redKer_of X (redKerOne_of X (Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X 0) (Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X 1)))) (etInt_holds X)`.
+A detailed English derivation is pending.
 -/
 theorem reT_univ' : ReT X Set.univ = X.B.Re :=
   reT_univ X (etUniv_of X (redKer_of X (redKerOne_of X (Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X 0)
@@ -394,25 +394,23 @@ theorem reT_univ' : ReT X Set.univ = X.B.Re :=
 open Classical in
 
 /- English proof (translation)
-Introduce `S`. Use `set W := X.B.I.HomS X.B.σs X.B.μf X.B.fund X.B.R`. Set `Q : Tup2 D → ((X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund) →ₗ[ℂ] (X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund))` to `fun t => (ContinuousLinearMap.compL ℂ X.B.Hs _ _ (ReT X {t}) : _ →ₗ[ℂ] _)`. Establish `hQapp : ∀ t A, Q t A = (ReT X {t}).comp A` using `fun t A => rfl`. Establish `hsumQ : ∀ G : Finset (Tup2 D), (∑ t ∈ G, Q t) = (ContinuousLinearMap.compL ℂ X.B.Hs _ _ (∑ t ∈ G, ReT X {t}) : _ →ₗ[ℂ] _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `A`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [hQapp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `show ∑ t ∈ G, (ReT X {t}).comp A = (∑ t ∈ G, ReT X {t}).comp A`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hQQ : ∀ i ∈ labT (D` using `D), ∀ j ∈ labT (D := D), Q i ∘ₗ Q j = if i = j then Q i else 0 := by`. Introduce `i _ j _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `A`. Rewrite using `[LinearMap.comp_apply, hQapp, hQapp, ← ContinuousLinearMap.comp_assoc, reT_orth]`. Use `split_ifs`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hWQ : ∀ i ∈ labT (D` using `D), ∀ A ∈ W, Q i A ∈ W := by`. Introduce `i _ A hA g`. Rewrite using `[hQapp]`. Use `show ((ReT X {i}).comp A).comp (X.B.σs g) = (X.B.R (g, 1)).comp ((ReT X {i}).comp A)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.comp_assoc, hA g, ← ContinuousLinearMap.comp_assoc, reT_comm, ContinuousLinearMap.comp_assoc]`. Establish `hfin : ∀ G ⊆ labT (D` using `D), FiniteDimensional ℂ (W.map (∑ t ∈ G, Q t)) := by`. Introduce `G _`. Use `hFD` as an intermediate fact. Set `Qe : (X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund) →ₗ[ℂ] (X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund)` to `(ContinuousLinearMap.compL ℂ X.B.Hs (X.B.I.L2 X.B.μf X.B.fund) (X.B.I.L2 X.B.μf X.B.fund) X.B.Re : (X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund) →ₗ[ℂ] (X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : (∑ t ∈ G, Q t) ∘ₗ Qe = ∑ t ∈ G, Q t`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `A`. Rewrite using `[LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hQapp, hQapp]`. Use `show (ReT X {t}).comp (X.B.Re.comp A) = (ReT X {t}).comp A`. Rewrite using `[← ContinuousLinearMap.comp_assoc, ← reT_univ' X, reT_inter, Set.inter_univ]`. Establish `e2 : W.map (∑ t ∈ G, Q t) = (X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re).map (∑ t ∈ G, Q t)`. Unfold `AutInst.eHom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_comp]`. Conclude with `congrArg (fun L => W.map L) hcomp.symm`. Rewrite using `[e2]`. Use `infer_instance`. Establish `hF` using `finrank_map_sum W Q ((labT (D := D)).filter (· ∈ S)) (fun i hi j hj => hQQ i (Finset.mem_of_mem_filter i hi) j (Finset.mem_of_mem_filter j hj)) (fun i hi => hWQ i (Finset.mem_of_mem_filter i hi)) (fun G hG => hfin G (hG.trans (Finset.filter_subset _ _)))`.
-
-Unfold `dimX AutInst.Dcount AutInst.eHom`. Rewrite using `[reT_split X S, ← hsumQ, hF, Finset.sum_filter]`.
+A detailed English derivation is pending.
 -/
 theorem rowsAdd_of (hFD : FiniteDimensional ℂ (X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re)) : RowsAdd X := by
   intro S

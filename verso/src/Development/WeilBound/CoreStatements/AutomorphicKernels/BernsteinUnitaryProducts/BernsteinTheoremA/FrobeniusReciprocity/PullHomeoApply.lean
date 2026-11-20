@@ -13,14 +13,14 @@ def SupportedIn {X : Type*} [TopologicalSpace X] (D : Distr X) (C : Set X) : Pro
   ∀ f : SB X, Function.support (f : X → ℂ) ⊆ Cᶜ → D f = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_SB_iff {X : Type*} [TopologicalSpace X] {f : X → ℂ} :
     f ∈ SB X ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
   Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_homeo_mem {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y)
     {f : Y → ℂ} (hf : f ∈ SB Y) : (fun x => f (e x)) ∈ SB X :=
@@ -67,7 +67,7 @@ def eqv (χ : G →* ℂˣ) : Submodule ℂ (Distr X) where
     ring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_eqv {χ : G →* ℂˣ} {D : Distr X} :
     D ∈ eqv X χ ↔ ∀ (g : G) (f : SB X), D (transl g f) = (χ g : ℂ) * D f :=
@@ -85,7 +85,7 @@ abbrev Fib (p : X → G ⧸ H) : Type _ := {x : X // p x = ((1 : G) : G ⧸ H)}
 omit [TopologicalSpace X] [ContinuousConstSMul G X] in
 
 /- English proof (translation)
-Rewrite using `[hp, z.2, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one, QuotientGroup.eq]`. Simplify using `[H.inv_mem h.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_mem_fib {p : X → G ⧸ H} (hp : ∀ (g : G) (x : X), p (g • x) = g • p x) (h : H)
     (z : Fib p) : p ((h : G) • z.1) = ((1 : G) : G ⧸ H) := by

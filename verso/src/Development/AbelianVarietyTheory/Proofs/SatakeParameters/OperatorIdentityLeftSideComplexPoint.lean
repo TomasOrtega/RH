@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `he' : Additive.ofMul e + Additive.ofMul e = 0` using `by rw [← ofMul_mul, he]; rfl`. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_pow, ofMul_inv]`. Take the linear combination `(norm := module) (c - w) • he'`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem leftSide_odd_grp {M : Type} [CommGroup M] (u e d d' e' : M) (n : ℕ) (c s w : ℤ) (hu : u = e' * d'⁻¹) (he : e * e = 1) :
     (u ^ ((n : ℤ) - 1) * e * d) ^ ((n : ℤ) * c - s) * (u ^ (c - s) * (u ^ n * e * d) ^ (c - (n : ℤ) * c + s)) * u ^ (w - c) * d ^ (-w)
@@ -25,9 +25,9 @@ theorem leftSide_odd_grp {M : Type} [CommGroup M] (u e d d' e' : M) (n : ℕ) (c
   linear_combination (norm := module) (c - w) • he'
 
 /- English proof (translation)
-Establish `he0 : e ≠ 0` using `left_ne_zero_of_mul_eq_one he`. Establish `he0' : e' ≠ 0` using `left_ne_zero_of_mul_eq_one he'`. Establish `h` using `leftSide_odd_grp (Units.mk0 e' he0' * (Units.mk0 d' hd')⁻¹) (Units.mk0 e he0) (Units.mk0 d hd) (Units.mk0 d' hd') (Units.mk0 e' he0') n c s w rfl (Units.ext (by simpa using he))`. Establish `h2` using `congrArg Units.val h`. Simplify using `only [Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Units.val_mk0] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Conclude with `h2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem leftSide_odd (u e d d' e' : ℂ) (n : ℕ) (c s w : ℤ) (hd : d ≠ 0) (hd' : d' ≠ 0) (he : e * e = 1) (he' : e' * e' = 1)
     (hu : u = e' * d'⁻¹) :
@@ -43,7 +43,7 @@ theorem leftSide_odd (u e d d' e' : ℂ) (n : ℕ) (c s w : ℤ) (hd : d ≠ 0) 
   exact h2
 
 /- English proof (translation)
-Unfold `sgRev`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leftSide_sgRev_sq (n : ℕ) : sgRev n * sgRev n = 1 := by
   unfold sgRev
@@ -51,7 +51,7 @@ theorem leftSide_sgRev_sq (n : ℕ) : sgRev n * sgRev n = 1 := by
   simp
 
 /- English proof (translation)
-Unfold `zT`. Rewrite using `[if_pos h]`. Use `Matrix.det_permute' (Fin.revPerm : Equiv.Perm (Fin n)) ((f τ)⁻¹).transpose` as an intermediate fact. Rewrite `this` using `[show (⇑(Fin.revPerm : Equiv.Perm (Fin n))) = Fin.rev from rfl]`. Rewrite using `[this, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -66,7 +66,7 @@ theorem leftSide_det_zT_odd {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos :
   rfl
 
 /- English proof (translation)
-Unfold `zT`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem leftSide_zT_even {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) {n : ℕ}
     (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.what₂.Tau) (h : ¬ IsOddPos (pos.symm τ).2) :
@@ -79,19 +79,19 @@ end
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ ι j hN ν hν Q hQ Gc G hR hG d f' hf' hdf`. Establish `hodd` using `GlobalTheory.T.modelPolynomial_oddDegree_of_realisesFramePoly X D pos Kc ι j hN ν hν Q hQ Gc G hR hG`. Establish `hsub` using `GlobalTheory.T.substituted_value_at_complex_point_oddBlocks X D pos Kc ι j hN Gc G hG hodd d f' hf' hdf`. Establish `hnum` using `GlobalTheory.T.numerator_div_denominator_at_complex_point X D pos Kc ι j hN d f' hf' hdf`. Establish `hex` using `GlobalTheory.T.realPlaceBlockWeightLastEntry_consecutive_levels X D pos j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn` using `(GlobalTheory.T.modelPartition_size_extension_firstLast_rows X D pos j hN ν hν).2.2.2.2`. Establish `hR'` using `hR ⟨dfr X D hN d f', fun τ => (hdf τ).isUnit⟩`. Establish `hR2` using `(ev1_eq_prod_det_pow_mul_valZ X D pos j (rkS X D hN) Gc ⟨dfr X D hN d f', fun τ => (hdf τ).isUnit⟩).symm.trans hR'`. Use `clear hR'`. Simplify using `only at hR2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hsub, hnum]`. Establish `gen : ∀ (x y z : ℂ) (E : Kc), ι x * (E * ι y) * ι z = E * ι (x * y * z)`. Introduce `x y z E`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gen]`. Use `congr 2`. Establish `hW : (∏ τ, (dfr X D hN d f' τ).det ^ (-(wT X D pos j τ))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hdf τ)`. Establish `key : ∀ A V B P' S W' q Pj Wf : ℂ, Wf ≠ 0 → A * B * P' * Wf = S * W' * Pj → Pj * V = Wf * q → A * V * B * P' = S * W' * q`. Introduce `A V B P' S W' q Pj Wf hWf hK hP`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ hWf` to reduce the goal to its premises. Take the linear combination `V * hK + S * W' * hP`. Use `key _ _ _ _ _ _ _ _ _ hW ?_ hR2` and prove the remaining obligations. Unfold `sgO`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hex τ`. Distinguish the cases in `ho : IsOddPos (pos.symm τ).2`. Simplify using `only [if_pos ho] at h1 h2 ⊢`. Rewrite using `[h1, h2, leftSide_det_zT_odd X D pos f' τ ho, leftSide_det_zT_odd X D pos (dfr X D hN d f') τ ho]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `leftSide_odd _ _ _ _ _ _ _ _ _ (hdf τ) (hf' τ) (leftSide_sgRev_sq _) (leftSide_sgRev_sq _) rfl`. Simplify using `only [if_neg ho] at h1 h2 ⊢`. Rewrite using `[h1, h2, leftSide_zT_even X D pos f' τ ho, leftSide_zT_even X D pos (dfr X D hN d f') τ ho, ← zpow_natCast, Int.toNat_of_nonneg (hnn τ), zpow_sub₀ (hdf τ)]`. Simplify using `only [zpow_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem leftSide_at_point : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j) (ν : D.what₂.Tau → Fin (D.R.N j) → ℕ), NuIs X D pos j ν → ∀ (Q : MvPolynomial (GL3Theta.FrV D (D.R.N j)) ℂ), Q ∈ WtPol ℂ ν → ∀ (Gc : XR (X.Pj j) ℂ) (G : (X.Pj j).Xsp), Realises X D pos j (rkS X D hN) (wT X D pos j) Q Gc → MvPolynomial.map (algebraMap X.G.Kf Kc) G = MvPolynomial.map ι Gc → ∀ (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ) (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ), (∀ τ, (f' τ).det ≠ 0) → (∀ τ, (dfr X D hN d f' τ).det ≠ 0) → evD X D pos ι hN d f' (subD X Kc j G * numD X Kc j) * ι (∏ τ, (zT X D pos f' τ).det ^ eT X D pos (j + 1) τ) = evD X D pos ι hN d f' (denD X Kc j) * ι (sgO X D pos j * (∏ τ, (f' τ).det ^ (-(wT X D pos j τ))) * GL3Theta.evFr D Q (dfr X D hN d f')) := by
   intro p _ X D pos Kc _ _ ι j hN ν hν Q hQ Gc G hR hG d f' hf' hdf

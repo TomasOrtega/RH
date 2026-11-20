@@ -17,13 +17,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `h1 : M * (∑ j, Matrix.single L.i₀ (L.em j) (u j)) = 0`. Use extensionality with `r s`. Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[(h0 r).2]`. Simplify using `[hk]`. Establish `h2 : ((∑ j, Matrix.single L.i₀ (L.em j) (u j)).map (cA σ))ᵀ * M = 0`. Use extensionality with `r s`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply, Matrix.zero_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`. Substitute `hk` using the available equality. Simplify using `[(h0 s).1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hk]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add, Matrix.transpose_one, Matrix.add_mul, Matrix.one_mul, h2, add_zero, Matrix.mul_add, Matrix.mul_one, h1, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cong_unip_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (M : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (h0 : ∀ i, M L.i₀ i = 0 ∧ M i L.i₀ = 0) (u : Fin L.n → AE F E) :
@@ -46,25 +46,23 @@ theorem cong_unip_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L :
   rw [Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add,
     Matrix.transpose_one, Matrix.add_mul, Matrix.one_mul, h2, add_zero, Matrix.mul_add, Matrix.mul_one, h1, add_zero]
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Establish `hb : IsFrame2 σ d.Y d.b` using `d.ok.frame`. Establish `hψ : ∀ z : F, d.B.ψ (algebraMap F (AF F) z) = 1` using `d.ok.good.std.2.1`. Establish `hcc : ∀ z, cA σ (cA σ z) = z` using `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ hσ`. Take `⟨v, rfl⟩` from `(_root_.PositivityTheory.SiegelWeilFormula.Afc.mem_ratV_iff_k L u).1 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `hU.1 (GlobalTheory.ThK.incV F v)`. Use `set N0 : Matrix (Fin d.n) (Fin d.n) E := ∑ j, Matrix.single L.i₀ (L.em j) (v j) with hN0`. Establish `hne : ∀ j, L.em j ≠ L.i₀` using `fun j => (L.rng (L.em j)).2 ⟨j, rfl⟩`. Establish `hN2 : N0 * N0 = 0`. Rewrite using `[hN0, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j' _ => ?_` and prove the remaining obligations. Use extensionality with `r s`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`. Substitute `hk` using the available equality. Simplify using `[hne j]`. Simplify using `[hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `a : GL (Fin d.n) E` to `⟨1 + N0, 1 - N0, by`. Rewrite using `[mul_sub, mul_one, add_mul, one_mul, hN2, add_zero, add_sub_cancel_right], by`. Rewrite using `[mul_add, mul_one, sub_mul, one_mul, hN2, sub_zero, sub_add_cancel]⟩`. Take `⟨g, hg, hgf⟩` from `levi_ex hσ hb a`. Establish `hA : (1 + ∑ j, Matrix.single L.i₀ (L.em j) (GlobalTheory.ThK.incV F v j)) = incM F (1 + N0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r s`. Simplify using `[hN0, incM, Matrix.sum_apply, Matrix.single_apply, GlobalTheory.ThK.incV, Matrix.one_apply, apply_ite]`. Rewrite `ha'` using `[hA]`. Establish `hgu : uM (GlobalTheory.ThK.incV F v) = g`. Apply `inFrame_injective d.b` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha', hgf]`. Establish `r1` using `(blk_rel hb _ ha').1`. Establish `r2` using `(blk_rel hb _ hgf).1`. Establish `r1'` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 r1`. Establish `e1 : a'.map (cA σ) = (incM F (((a⁻¹).1)ᵀ.map σ)).map (cA σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[r2, Matrix.mul_one]`. Use `_ = (a'.map (cA σ) * (incM F (a.1))ᵀ) * (incM F (((a⁻¹).1)ᵀ.map σ)).map (cA σ) := by rw [Matrix.mul_assoc]`. Use `_ = _ := by rw [r1', Matrix.one_mul]`. Establish `e2 : a' = incM F (((a⁻¹).1)ᵀ.map σ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun M => M.map (cA σ)) e1` as an intermediate fact. Simplify `this` using `[Matrix.map_map, Function.comp_def, hcc]`. Rewrite using `[e2]`. Establish `hgm : uM (GlobalTheory.ThK.incV F v) ∈ rat2 σ d.Y` using `hgu ▸ hg`. Use `fc_levi hσ hb hψ hc _ hgm ha' T T ?_ φ hφ x` and prove the remaining obligations.
-
-Rewrite using `[← hA]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Afc.cong_unip_k L T.1.1 hs.1 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_U_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {uM : (Fin L.n → AE F E) → d.G}
@@ -119,27 +117,23 @@ theorem fc_U_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _roo
   rw [← hA]
   exact _root_.PositivityTheory.SiegelWeilFormula.Afc.cong_unip_k L T.1.1 hs.1 _
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Establish `hb : IsFrame2 σ d.Y d.b` using `d.ok.frame`. Establish `hψ : ∀ z : F, d.B.ψ (algebraMap F (AF F) z) = 1` using `d.ok.good.std.2.1`. Take `⟨ε, hε⟩` from `hb.1`. Take `⟨ε', hε'⟩` from `L.ok.frame.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hee` using `_root_.PositivityTheory.SiegelWeilFormula.Afc.eps_eq_k L hε hε'`. Take `⟨T0, hT0⟩` from `(mem_nF_iff T.1).1 T.2`. Establish `hC : incM F T0 ∈ nCond σ d.n ε` using `hT0 ▸ (mem_nA_iff hσ hε T.1.1).1 T.1.2`. Establish `hdet : T0.det = 0`. Establish `h1 : T.1.1.det = 0` using `not_not.1 hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hT0, incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `kfour.inclR_injective (F := F) (h1.trans (map_zero _).symm)`. Take `⟨v, hv0, hTv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Take `⟨a', ha'⟩` from `exists_gl_col v hv0 L.i₀`. Take `⟨γ, hγ, hγf⟩` from `levi_ex hσ hb a'⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set M0 : Matrix (Fin d.n) (Fin d.n) E := (a'.1.map σ)ᵀ * T0 * a'.1 with hM0`. Establish `hMc : incM F M0 = ((incM F a'.1).map (cA σ))ᵀ * incM F T0 * incM F a'.1`. Rewrite using `[incM_mapc, incM_tr, hM0, incM_mul', incM_mul']`. Establish `hM0C : incM F M0 ∈ nCond σ d.n ε` using `hMc ▸ cong_nCond hσ _ _ hC`. Establish `hM0A : incM F M0 ∈ nA σ d.Y d.b` using `(mem_nA_iff hσ hε _).2 hM0C`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T₀ : nF σ d.Y d.b` to `⟨⟨incM F M0, hM0A⟩, (mem_nF_iff _).2 ⟨M0, rfl⟩⟩`. Establish `hsubC : (incM F M0).submatrix L.em L.em ∈ nCond σ L.n ε'` using `hee ▸ sub_nCond L.em _ hM0C`. Set `T' : nF σ L.Y L.b` to `⟨⟨(incM F M0).submatrix L.em L.em, (mem_nA_iff hσ hε' _).2 hsubC⟩, (mem_nF_iff _).2 ⟨M0.submatrix L.em L.em, rfl⟩⟩`. Establish `hcol : ∀ k, M0 k L.i₀ = 0` using `fun k => by`. Establish `e1 : M0 k L.i₀ = (((a'.1.map σ)ᵀ * T0) *ᵥ v) k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hM0, Matrix.mul_apply, Matrix.mulVec, dotProduct, ha']`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hTv, Matrix.mulVec_zero, Pi.zero_apply]`. Establish `hrow : ∀ k, M0 L.i₀ k = 0` using `fun k => by`. Establish `e0 : ∀ l, ∑ p, σ (v p) * T0 p l = 0` using `fun l => by`. Establish `h1` using `congrArg σ (congrFun hTv l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Use `_ = 0 := by rw [h1, mul_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hM0, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, ha']`. Simplify using `only [e0, zero_mul, Finset.sum_const_zero]`. Use `⟨γ, hγ, T₀, T', ⟨fun i => ⟨?_, ?_⟩, rfl⟩, fun φ _ hφ x => ?_⟩` and prove the remaining obligations. Use `show inclR (F := F) (AF F) (M0 L.i₀ i) = 0`. Rewrite using `[hrow, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `show inclR (F := F) (AF F) (M0 i L.i₀) = 0`. Rewrite using `[hcol, map_zero]`. Use `(fc_levi hσ hb hψ hc γ hγ hγf T₀ T ?_ φ hφ x).symm` and prove the remaining obligations. Use `show ((incM F (a'⁻¹).1).map (cA σ))ᵀ * incM F M0 * incM F (a'⁻¹).1 = T.1.1`. Rewrite using `[hT0, incM_mapc, incM_tr, ← incM_mul', ← incM_mul', hM0]`.
-
-Use `congr 1`. Establish `ha : a'.1 * (a'⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mapσ_mul', Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = T0 := by rw [ha, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fc_deg_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) (hT : ¬ IsND T) :
@@ -202,7 +196,7 @@ theorem fc_deg_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _r
         simp only [Matrix.mul_assoc]
     _ = T0 := by rw [ha, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]
 /- English proof (translation)
-Introduce `_ _F _E _ _ _ _ _ _σ d L _nb _lam _𝓖 hc` and use `⟨fun T hT => _root_.PositivityTheory.SiegelWeilFormula.Afc.fc_deg_k L hc T hT, fun _uM _ν _𝓤 hU T T' hs φ _ hφ u hu x => _root_.PositivityTheory.SiegelWeilFormula.Afc.fc_U_k L hc hU T T' hs φ hφ u hu x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fcConj_of_k : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties → _root_.PositivityTheory.SiegelWeilFormula.FcConj_k := fun _ _F _E _ _ _ _ _ _σ d L _nb _lam _𝓖 hc =>
   ⟨fun T hT => _root_.PositivityTheory.SiegelWeilFormula.Afc.fc_deg_k L hc T hT, fun _uM _ν _𝓤 hU T T' hs φ _ hφ u hu x => _root_.PositivityTheory.SiegelWeilFormula.Afc.fc_U_k L hc hU T T' hs φ hφ u hu x⟩

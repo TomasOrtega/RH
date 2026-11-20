@@ -9,11 +9,11 @@ open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge Glob
 namespace GlobalTheory.CompanionTheory.AcrUniv
 
 /- English proof (translation)
-Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => x ^ p ∈ Ideal.span {(p : B)}) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (hI y hy)`. Rewrite using `[← map_pow, hc, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[zero_pow hp.ne_zero]`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr]`. Conclude with `add_mem (add_mem ha hb) (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))))`. Introduce `a b _ hb`. Rewrite using `[smul_eq_mul, mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_map {R B : Type} [CommRing R] [CommRing B] (h : R →+* B) (I : Ideal R) (p : ℕ) (hp : p.Prime)
     (hI : ∀ x ∈ I, x ^ p ∈ Ideal.span {(p : R)}) : ∀ x ∈ I.map h, x ^ p ∈ Ideal.span {(p : B)} := by
@@ -41,9 +41,9 @@ variable {R S T C B : Type} [CommRing R] [CommRing S] [CommRing T] [CommRing C] 
 open TensorProduct in
 
 /- English proof (translation)
-Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs c`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Algebra.TensorProduct.lift_tmul, IsScalarTower.coe_toAlgHom', IsScalarTower.coe_toAlgHom', map_mul, map_mul, h1, h2]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem tens_ext
     (hs : Function.Surjective (Algebra.TensorProduct.lift (IsScalarTower.toAlgHom R S C)
@@ -62,13 +62,13 @@ theorem tens_ext
 open TensorProduct in
 
 /- English proof (translation)
-Use `letI : Algebra R B := (u.comp (algebraMap R S)).toAlgebra`. Set `u' : S →ₐ[R] B` to `{ u with commutes' := fun _ => rfl }`. Set `v' : T →ₐ[R] B` to `{ v with commutes' := fun r => (huv r).symm }`. Set `L : S ⊗[R] T →ₐ[R] B` to `Algebra.TensorProduct.lift u' v' (fun _ _ => Commute.all _ _)`. Set `Φ : S ⊗[R] T →ₐ[R] C` to `Algebra.TensorProduct.lift (IsScalarTower.toAlgHom R S C) (IsScalarTower.toAlgHom R T C) (fun _ _ => Commute.all _ _)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hker : RingHom.ker (Φ : S ⊗[R] T →+* C) ≤ RingHom.ker (L : S ⊗[R] T →+* B)`. Introduce `z hz`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ((hk z).1 hz)`. Rewrite using `[RingHom.mem_ker, map_mul, map_pow, map_natCast, hm, mul_zero]`. Set `f : C →+* B` to `(Φ : S ⊗[R] T →+* C).liftOfSurjective hs ⟨(L : S ⊗[R] T →+* B), hker⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hf : ∀ z, f (Φ z) = L z` using `fun z => RingHom.liftOfRightInverse_comp_apply _ _ _ _ z`. Use `⟨f, fun s => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `hf (s ⊗ₜ 1)`. Simplify `h` using `[Φ, L, u']`. Establish `h` using `hf (1 ⊗ₜ t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[Φ, L, v']`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tens_desc (m n : ℕ)
     (hs : Function.Surjective (Algebra.TensorProduct.lift (IsScalarTower.toAlgHom R S C)
@@ -105,23 +105,21 @@ end GlobalTheory.CompanionTheory.AcrUniv
 namespace GlobalTheory.CompanionTheory.AcrUniv
 
 /- English proof (translation)
-Introduce `l _ A n B _ h`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨⟨π, -, -⟩, hFil, -, -, -, -, -⟩` from `GlobalTheory.T.period_ring_base_change_from_universal A n`. Take `⟨-, -, -, -, -, hpow, -⟩` from `GlobalTheory.T.period_ring_base_change_from_universal (base l) n`. Establish `hlB : (l : B) ^ n = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast h, ← map_pow, pow_l_acr, map_zero]`. Establish `hlJ : (l : B) ∈ ((base l).PFil n).map h`. Rewrite using `[← map_natCast h]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Establish `hJp : ∀ x ∈ ((base l).PFil n).map h, x ^ l ∈ Ideal.span {(l : B)}` using `pow_mem_map h _ l hp fun x hx => (hpow x hx).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOb : D.Pf l (Ob l)` using `⟨(base l).natCast_l, (base l).perf.1⟩`. Establish `hA : D.Pf l A.A` using `⟨A.natCast_l, A.perf.1⟩`. Take `⟨hts, htk⟩` from `RL.tens A n`. Establish `hbs` using `((RL.base_acr (base l) isBase_base).2 n).1`. Use `⟨fun g hg => ?_, fun f f' h1 h2 h3 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨f₀, hf₀⟩, -⟩` from `GlobalTheory.CompanionTheory.PerfectWittMaps.wittVector_lift l _ n hA hlB hlJ hJp g`. Establish `hc : f₀.comp A.sW = h.comp ((base l).toAcr n)` using `(GlobalTheory.CompanionTheory.PerfectWittMaps.wittVector_lift l (A := Ob l) _ n hOb hlB hlJ hJp (g.comp A.s)).2 _ _ fun a => by`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, sW, WittVector.map_teichmuller, hf₀]`. Conclude with `hg a`. Establish `huv : ∀ r : Ainf l, (h.comp ((base l).cris n)) (algebraMap (Ainf l) (Acris l) r) = f₀ (algebraMap (Ainf l) A.W r)` using `fun r => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, cris_algebraMap]`. Establish `e : (base l).sW r = r` using `wmap_id r`. Rewrite using `[e]`. Conclude with `(RingHom.congr_fun hc r).symm`. Take `⟨f, hf1, hf2⟩` from `tens_desc l n hts htk (h.comp ((base l).cris n)) f₀ huv hlB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, RingHom.ext fun y => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hbs y`. Rewrite using `[RingHom.comp_apply, mapAcr_cris]`. Conclude with `hf1 a`. Establish `e : f (A.toAcr n (WittVector.teichmuller l a)) = f₀ (WittVector.teichmuller l a)` using `hf2 (WittVector.teichmuller l a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hf₀]`. Establish `hfJ : A.PFil n ≤ (((base l).PFil n).map h).comap f`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `hlJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hFil 1, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← RingHom.comp_apply, h1]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_sup_right hx)`. Establish `hw` using `(GlobalTheory.CompanionTheory.PerfectWittMaps.wittVector_lift l _ n hA hlB hlJ hJp ((Ideal.quotientMap _ f hfJ).comp π)).2 (f.comp (A.toAcr n)) (f'.comp (A.toAcr n)) fun a => Ideal.Quotient.eq.2 (h3 a)`.
-
-Use `tens_ext hts f f' (fun a => ?_) fun t => RingHom.congr_fun hw t` and prove the remaining obligations. Establish `e : algebraMap (Acris l) (A.Acr n) a = mapAcr A.fromBase n ((base l).cris n a)` using `(mapAcr_cris A.fromBase n a).symm`. Rewrite using `[e]`. Conclude with `RingHom.congr_fun (h1.trans h2.symm) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_out : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ) (B : Type) [CommRing B] (h : (base l).Acr n →+* B), (∀ g : A.A →+* B ⧸ ((base l).PFil n).map h, (∀ a : Ob l, g (A.s a) = Ideal.Quotient.mk _ (h ((base l).toAcr n (WittVector.teichmuller l a)))) → ∃ f : A.Acr n →+* B, f.comp (mapAcr A.fromBase n) = h ∧ ∀ a, Ideal.Quotient.mk _ (f (A.toAcr n (WittVector.teichmuller l a))) = g a) ∧ ∀ f f' : A.Acr n →+* B, f.comp (mapAcr A.fromBase n) = h → f'.comp (mapAcr A.fromBase n) = h → (∀ a, f (A.toAcr n (WittVector.teichmuller l a)) - f' (A.toAcr n (WittVector.teichmuller l a)) ∈ ((base l).PFil n).map h) → f = f' := by
   intro l _ A n B _ h

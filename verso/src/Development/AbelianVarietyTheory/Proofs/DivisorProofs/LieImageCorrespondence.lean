@@ -12,13 +12,13 @@ set_option autoImplicit false
 namespace GlobalTheory.RealMult.Obj
 
 /- English proof (translation)
-Use `letI : Algebra R R' := σ.toAlgebra`. Take `⟨-, PH, PB, -, -⟩` from `P`. Establish `hφ : IsGrpPullback X'.A X.A (spMap (algebraMap R R')) φ` using `hX.grp`. Take `⟨-, hF⟩` from `PB R X.A _ X.ab X.dim R' X'.A φ hφ`. Establish `hL` using `(PH R' X'.A _ X'.ab X'.dim).1`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : (Chart.dualMapR σ).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp σ`. Apply the tactic sequence `ext r <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `w : (spMap (Chart.dualMapR σ) ≫ v.hom.left) ≫ X.A.hom = (epsR R').hom ≫ spMap σ`. Rewrite using `[Category.assoc, Over.w v.hom]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _ ≫ spMap _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp, hc]`. Set `u : epsR R' ⟶ X'.A` to `Over.homMk (hφ.1.lift _ _ w) (hφ.1.lift_snd _ _ w)`. Establish `hu : u.left ≫ φ = spMap (Chart.dualMapR σ) ≫ v.hom.left` using `hφ.1.lift_fst _ _ w`. Establish `e : (GlobalTheory.Published.AbelianDeRham.bcMor hφ).Corr x x'` using `hx`. Establish `hiu : IsLieImage x' u` using `IsLieImage.baseChange (hφ := hφ) hF hL e hu hv`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u = v'.hom` using `(hL.1 x').unique hiu hv'`. Unfold `Obj.LieCorr`. Rewrite using `[← this]`. Conclude with `hu`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieCorr_of_isLieImage (P : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}

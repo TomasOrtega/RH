@@ -5,19 +5,19 @@ open Finset
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Unfold `CycleProbPrime CycleProbSum`. Introduce `h N`. Establish `hdisj : ∀ p ∈ (range (N + 1)).filter (fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N), ∀ q ∈ (range (N + 1)).filter (fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N), p ≠ q → Disjoint (univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.cycleType) (univ.filter fun σ : Equiv.Perm (Fin N) = …`. Introduce `p hp q hq hpq`. Simplify using `only [mem_filter, mem_range] at hp hq`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.disjoint_left]`. Introduce `σ h1 h2`. Simplify using `only [mem_filter, mem_univ, true_and] at h1 h2`. Establish `hq' : q ∈ σ.cycleType.erase p` using `(Multiset.mem_erase_of_ne hpq.symm).2 h2`. Establish `hsum : σ.cycleType.sum ≤ N`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Equiv.Perm.sum_cycleType]`. Conclude with `(Finset.card_le_univ _).trans (by simp)`. Establish `hsplit : σ.cycleType.sum = p + (σ.cycleType.erase p).sum` using `by conv_lhs => rw [← Multiset.cons_erase h1]`. Rewrite using `[Multiset.sum_cons]`. Establish `hle : q ≤ (σ.cycleType.erase p).sum` using `Multiset.le_sum_of_mem hq'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hset : (univ.filter fun σ : Equiv.Perm (Fin N) => ∃ p ∈ σ.cycleType, Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N) = ((range (N + 1)).filter fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N).biUnion (fun p => univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.cycleType)`. Use extensionality with `σ`. Simplify using `only [mem_filter, mem_univ, true_and, mem_biUnion, mem_range]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨p, hp, hpr, h2, h3⟩`. Conclude with `⟨p, ⟨by omega, hpr, h2, h3⟩, hp⟩`. Introduce and unpack `⟨p, ⟨-, hpr, h2, h3⟩, hp⟩`. Conclude with `⟨p, hp, hpr, h2, h3⟩`. Rewrite using `[hset, Finset.card_biUnion hdisj, Nat.cast_sum]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun p hp => ?_)` and prove the remaining obligations. Simplify using `only [mem_filter, mem_range] at hp`. Take `⟨hpN, hpr, h2, h3⟩` from `hp`. Establish `hk` using `h N p hpr (by omega) h2`. Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast hpr.ne_zero`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_div_iff hp0, ← hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cycleProbSum_of_cycleProbPrime : CycleProbPrime → CycleProbSum := by
   unfold CycleProbPrime CycleProbSum

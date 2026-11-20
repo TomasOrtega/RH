@@ -18,7 +18,7 @@ variable {g : ℕ} {A₀ : Over (Sp ℂ)} [GrpObj A₀] {L₀ : LB A₀.left} {u
   {R : Type} [CommRing R] {p : X ⟶ Sp R} {m : A₀.left ⟶ X}
 
 /- English proof (translation)
-The claim follows from `{ add := fun W hW f f' => by simp only [(h.der z).add W hW, (h'.der z).add W hW] ring mul := fun W hW f f' => by simp only [(h.der z).mul W hW, (h'.der z).mul W hW] ring res := fun W W' hle hW' f => by simp only [(h.der z).res W W' hle hW', (h'.der z).res W W' hle hW'] } base z r …`.
+A detailed English derivation is pending.
 -/
 theorem ksRel_add {D D' : R → ℂ} {Θ Θ' : Matrix (Fin g) (Fin g) ℂ}
     {s s' : (Fin g → ℂ) → ∀ W : X.Opens, Γ(X, W) → ℂ}
@@ -40,7 +40,7 @@ theorem ksRel_add {D D' : R → ℂ} {Θ Θ' : Matrix (Fin g) (Fin g) ℂ}
     ring
 
 /- English proof (translation)
-The claim follows from `{ add := fun W hW f f' => by simp only [(h.der z).add W hW] ring mul := fun W hW f f' => by simp only [(h.der z).mul W hW] ring res := fun W W' hle hW' f => by simp only [(h.der z).res W W' hle hW'] } base z r := by simp only [h.base] hol W f := (h.hol W f).const_mul c per l W f …`.
+A detailed English derivation is pending.
 -/
 theorem ksRel_smul (c : ℂ) {D : R → ℂ} {Θ : Matrix (Fin g) (Fin g) ℂ}
     {s : (Fin g → ℂ) → ∀ W : X.Opens, Γ(X, W) → ℂ} (h : KSRel u p m D Θ s) :
@@ -62,13 +62,13 @@ theorem ksRel_smul (c : ℂ) {D : R → ℂ} {Θ : Matrix (Fin g) (Fin g) ℂ}
 end
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hG o R _ _ _ _ _ _ X p m hs hpb`. Establish `hder : ∀ D : Derivation o R ℂ, IsDer (algebraMap R ℂ) (fun r => D r)` using `fun D => ⟨fun a b => D.map_add a b, fun a b => by show D (a * b) = _`. Rewrite using `[D.leibniz, Algebra.smul_def, Algebra.smul_def]⟩`. Establish `hex : ∀ D : Derivation o R ℂ, ∃ Θ s, KSRel u p m (fun r => D r) Θ s` using `fun D => GlobalTheory.T.exists_analytic_kodairaSpencer_class P₀ u Hm χ hG R (algebraMap R ℂ) X p m hs hpb _ (hder D)`. Use `choose Θ s hΘ using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ (D : Derivation o R ℂ) Θ' s', KSRel u p m (fun r => D r) Θ' s' → Θ D = Θ'` using `fun D Θ' s' h => GlobalTheory.KS.Uniq.ks_unique P₀ u Hm χ hG R (algebraMap R ℂ) X p m hs hpb _ _ _ _ _ (hΘ D) h`. Use `⟨{ toFun := Θ, map_add' := ?_, map_smul' := ?_ }, fun D => ⟨s D, hΘ D⟩⟩` and prove the remaining obligations. Introduce `D D'`. Apply `huniq (D + D')` to reduce the goal to its premises. Establish `e : (fun r => (D + D') r) = fun r => D r + D' r` using `funext fun _ => Derivation.add_apply _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `ksRel_add (hΘ D) (hΘ D')`. Introduce `c D`. Rewrite using `[RingHom.id_apply]`. Apply `huniq (c • D)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun r => (c • D) r) = fun r => c * D r` using `funext fun r => by`. Rewrite using `[Derivation.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `ksRel_smul c (hΘ D)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ks_linear : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (o R : Type) [CommRing o] [CommRing R] [Algebra o R] [Algebra o ℂ] [Algebra R ℂ] [IsScalarTower o R ℂ] (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap (algebraMap R ℂ)) → ∃ κ : Derivation o R ℂ →ₗ[ℂ] Matrix (Fin P₀.g) (Fin P₀.g) ℂ, ∀ D : Derivation o R ℂ, ∃ s, KSRel u p m (fun r => D r) (κ D) s := by
   intro P₀ u Hm χ hG o R _ _ _ _ _ _ X p m hs hpb

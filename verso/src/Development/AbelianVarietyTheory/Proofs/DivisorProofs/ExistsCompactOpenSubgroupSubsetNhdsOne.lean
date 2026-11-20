@@ -9,9 +9,9 @@ namespace GlobalTheory.GLFinSmall
 open Set Filter Pointwise Topology
 
 /- English proof (translation)
-Apply `hWc.induction_on (p := fun S ↦ ∃ T ∈ 𝓝 (1 : G), S * T ⊆ W) ⟨Set.univ, by simp only [univ_mem, Set.empty_mul, empty_subset, and_self]⟩ (fun _ _ huv ⟨T, hT, mem⟩ ↦ ⟨T, hT, (mul_subset_mul_right huv).trans mem⟩) fun U V ⟨T₁, hT₁, mem1⟩ ⟨T₂, hT₂, mem2⟩ ↦ ⟨T₁ ∩ T₂, inter_mem hT₁ hT₂, …` to reduce the goal to its premises. Rewrite using `[union_mul]`. Conclude with `union_subset (mul_subset_mul_left inter_subset_left |>.trans mem1) (mul_subset_mul_left inter_subset_right |>.trans mem2)⟩`. Introduce `x memW`. Establish `: (x, 1) ∈ (fun p : G × G ↦ p.1 * p.2) ⁻¹' W` using `by simp [memW]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isOpen_prod_iff.mp (continuous_mul.isOpen_preimage W hWo) x 1 this with ⟨U, V, Uopen, Vopen, xmemU, onememV, prodsub⟩` into its components or cases. Establish `h6 : U * V ⊆ W` using `mul_subset_iff.mpr (fun _ hx _ hy ↦ prodsub (mk_mem_prod hx hy))`. Conclude with `⟨U ∩ W, ⟨U, Uopen.mem_nhds xmemU, W, fun _ a ↦ a, rfl⟩, V, IsOpen.mem_nhds Vopen onememV, fun _ a ↦ h6 ((mul_subset_mul_right inter_subset_left) a)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nhds_mul_subset {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {W : Set G} (hWc : IsCompact W) (hWo : IsOpen W) : ∃ T ∈ 𝓝 (1 : G), W * T ⊆ W := by
@@ -41,13 +41,13 @@ def rightStab {G : Type} [Group G] (W : Set G) : Subgroup G where
     rw [hg (w * g⁻¹), inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨T, hT, hTW⟩` from `exists_nhds_mul_subset hWc hWo`. Establish `hsub : T ∩ T⁻¹ ⊆ (rightStab W : Set G)`. Introduce `v hv w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTW (Set.mul_mem_mul hw hv.1)`. Introduce `hw`. Establish `: w * v * v⁻¹ ∈ W` using `hTW (Set.mul_mem_mul hw (Set.mem_inv.mp hv.2))`. Simplify using `using this`. Establish `hnhds : (rightStab W : Set G) ∈ 𝓝 (1 : G)` using `Filter.mem_of_superset (inter_mem hT (inv_mem_nhds_one G hT)) hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopen : IsOpen (rightStab W : Set G)` using `Subgroup.isOpen_of_mem_nhds _ hnhds`. Establish `hW : (rightStab W : Set G) ⊆ W`. Introduce `g hg`. Use `(hg 1).mp h1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rightStab W, hopen, ?_, hW⟩` and prove the remaining obligations. Conclude with `hWc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hopen) hW`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_open_subgroup_subset {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] {W : Set G} (hWc : IsCompact W) (hWo : IsOpen W) (h1 : (1 : G) ∈ W) :
@@ -73,7 +73,7 @@ theorem exists_compact_open_subgroup_subset {G : Type} [Group G] [TopologicalSpa
 end GlobalTheory.GLFinSmall
 
 /- English proof (translation)
-Introduce `E _ _ a B hB`. Take `⟨W, hWo, hWc, -, h1, hWB⟩` from `GlobalTheory.T.exists_compact_clopen_nhds_one_GL_finiteAdeles E a B hB`. Take `⟨U, hUo, hUc, hUW⟩` from `GlobalTheory.GLFinSmall.exists_compact_open_subgroup_subset hWc hWo h1`. Conclude with `⟨U, hUo, hUc, hUW.trans hWB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.GLFin.exists_compact_open_subgroup_subset_nhds_one :
     ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (B : Set (GL (Fin a) (Af E))),

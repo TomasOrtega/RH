@@ -23,23 +23,21 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ T e₁ e₂`. Establish `hPt` using `ptOk E a b l₁ l₂ D A`. Establish `hMul` using `hkMul E a b l₁ l₂ D A S Z L hS hZ`. Establish `hComm` using `hkComm E a b l₁ l₂ D A S Z L hS hZ`. Establish `hidm : ∀ e e', A.hk S L ∅ e e' = A.idm S L` using `hMul.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ T' e e', IsFinM (A.hk S L T' e e')` using `fun T' e e' => (hMul.2.2.2.2.2.2.1 T' e e').1`. Establish `hform : ∀ γ : Gam a b S Z, ∃ wa wb T' e e', A.gen S L T e₁ e₂ γ = A.pt wa wb (A.hk S L T' e e')`. Introduce and unpack `(_ | x | x | _)`. Conclude with `⟨_, _, ∅, fun _ => .one, fun _ => .one, by`. Rewrite using `[hidm]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Conclude with `⟨_, _, ∅, fun _ => .one, fun _ => .one, by`. Rewrite using `[hidm]`. Use the proof step `rfl⟩`. Conclude with `⟨_, _, _, _, _, rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, _, _, _, _, rfl⟩`. Establish `hok : ∀ γ, (A.gen S L T e₁ e₂ γ).Ok`. Introduce `γ`. Take `⟨wa, wb, T', e, e', h⟩` from `hform γ`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hPt.2.2.1 wa wb _ (hfin T' e e')`. Use `⟨⟨hok, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x y`. Take `⟨wa, wb, T', e, e', h⟩` from `hform x`. Take `⟨wa', wb', T'', f, f', h'⟩` from `hform y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hx` using `hok x`. Establish `hy` using `hok y`. Rewrite `hx`, the goal using `[h]`. Rewrite `hy`, the goal using `[h']`. Conclude with `BlockFiniteConvolution.blkComm₀ E A.blk _ _ hx hy (hComm T' T'' e e' f f').1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x y`. Take `⟨wa, wb, T', e, e', h⟩` from `hform x`. Take `⟨wa', wb', T'', f, f', h'⟩` from `hform y`. Establish `hx` using `hok x`. Establish `hy` using `hok y`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[h]`. Rewrite `hy`, the goal using `[h']`. Establish `hop` using `BlockFiniteConvolution.blkOp₀ E A.blk _ _ hy hy`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ← hop.2.2.2.2.2.1]`. Conclude with `BlockFiniteConvolution.blkComm₀ E A.blk _ _ hx hop.2.2.2.2.1 (hComm T' T'' e e' f f').2`.
-
-Use `haveI : Countable (Pl E) := Small.countable_pl E infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem genSt : GenSt := by
   intro E _ _ _ a b l₁ l₂ D A S Z L hS hZ T e₁ e₂

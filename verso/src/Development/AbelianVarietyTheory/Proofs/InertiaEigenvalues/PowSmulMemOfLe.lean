@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.PowerScalarMembership
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_of_le {O V : Type} [CommRing O] [AddCommGroup V] [Module O V]
     (L : Submodule O V) (c : O) {x : V} {m n : ℕ} (hmn : m ≤ n) (h : c ^ m • x ∈ L) :
@@ -13,13 +13,13 @@ theorem pow_smul_mem_of_le {O V : Type} [CommRing O] [AddCommGroup V] [Module O 
   exact L.smul_mem _ h
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span LL (L : Set V)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨0, by simpa using hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨m, hm⟩` from `hy`. Take `⟨n, hn⟩` from `hz`. Use `⟨max m n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `L.add_mem (pow_smul_mem_of_le L c (le_max_left _ _) hm) (pow_smul_mem_of_le L c (le_max_right _ _) hn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a y _ hy`. Take `⟨m, hm⟩` from `hy`. Take `⟨k, b, hb⟩` from `hc a`. Use `⟨k + m, ?_⟩` and prove the remaining obligations. Establish `key : c ^ (k + m) • (a • y) = b • (c ^ m • y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul LL (c ^ (k + m)), smul_smul, ← algebraMap_smul LL b, ← algebraMap_smul LL (c ^ m), smul_smul, hb, map_pow, map_pow, pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `L.smul_mem b hm`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] (c : O)
@@ -50,9 +50,9 @@ theorem exists_pow_smul_mem {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
     exact L.smul_mem b hm
 
 /- English proof (translation)
-Introduce `LL O _ _ _ _ V _ _ _ _ c hc L S hL hS`. Take `⟨s, rfl⟩` from `hS`. Use `choose f hf using fun x => exists_pow_smul_mem (LL := LL) c hc L hL x`. Use `⟨s.sup f, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span O (s : Set V) ≤ L.comap ((c ^ s.sup f) • LinearMap.id)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `pow_smul_mem_of_le L c (Finset.le_sup hy) (hf y)`. Simplify using `using hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ {LL O : Type} [inst : Field LL] [inst_1 : CommRing O] [inst_2 : Algebra O LL] [TopologicalSpace LL] {V : Type} [inst_4 : AddCommGroup V] [inst_5 : Module LL V] [inst_6 : Module O V] [IsScalarTower O LL V] (c : O), (∀ (a : LL), ∃ (k : ℕ) (b : O), (Algebra.algebraMap O LL : O → LL) b = (Algebra.algebraMap O LL : O → LL) c ^ k * a) → ∀ (L S : Submodule O V), Submodule.span LL (↑L : Set V) = ⊤ → Submodule.FG S → ∃ (m : ℕ), ∀ x ∈ S, c ^ m • x ∈ L := by
   intro LL O _ _ _ _ V _ _ _ _ c hc L S hL hS

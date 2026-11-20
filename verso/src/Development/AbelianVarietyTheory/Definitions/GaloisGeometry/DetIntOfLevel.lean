@@ -32,17 +32,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨q, hq, hv⟩` from `Formalism.BasicNotions.Examples₂.PlacesToy.exists_prime_mem v`. Establish `: Fact q.Prime` using `⟨hq⟩`. Take `⟨B, hB⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis q _ Lb hfg hsp`. Rewrite `hg` using `[latS_of_locBasis v hq hv Lb B hB]`. Take `⟨Bv, hBv⟩ : ∃ Bv, Bv = bc (inclE (F` from `F) (v.adicCompletion F)) B := ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hent : ∀ a b, ((Bv⁻¹ * g * Bv : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b ∈ intV E v`. Introduce `a b`. Establish `h1 : (Bv : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ (Pi.single b 1) ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) (latB B) := by`. Use `(mem_latS_latB v B _).2 fun a' => ?_` and prove the remaining obligations. Rewrite using `[← hBv, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : a' = b`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `h3` using `(mem_latS_latB v B _).1 ((hg _).1 h1) a`. Rewrite `h3` using `[← hBv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `det_mem_sub (intV E v) _ hent`. Establish `e3 : Matrix.GeneralLinearGroup.det (Bv⁻¹ * g * Bv) = Matrix.GeneralLinearGroup.det g`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `e4 : ((Bv⁻¹ * g * Bv : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)).det = (g : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)).det` using `congrArg Units.val e3`. Rewrite using `[← e4]`.
-
-Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_stab_loc (v : HeightOneSpectrum (𝓞 F)) (Lb : Submodule (𝓞 E) (Fin n → E)) (hfg : Lb.FG)
     (hsp : Submodule.span E (Lb : Set (Fin n → E)) = ⊤) (g : GL (Fin n) (E ⊗[F] v.adicCompletion F))
@@ -83,7 +81,7 @@ variable {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `Formalism.L2.Col.rll_int_of_loc _ fun v => ?_` and prove the remaining obligations. Establish `h2` using `(S.Uloc_lev v (((S.U_eq x).1 hx).2 v)).2`. Establish `h3` using `det_stab_loc v S.Lb (Module.Finite.iff_fg.1 S.Lb_fin) S.Lb_span _ h2`. Rewrite using `[RingHom.map_det]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_int_of_level (S : StepLevel F E σ J T f bad) (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hx : x ∈ S.U) :
     (x : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).det ∈ intAf F E := by
@@ -94,11 +92,9 @@ theorem det_int_of_level (S : StepLevel F E σ J T f bad) (x : GL (Fin n) (E ⊗
   exact h3
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (show cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (x : Matrix (Fin n) (Fin n) _) * J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * (x : Matrix (Fin n) (Fin n) _) = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) from hx)`. Establish `hu : IsUnit (J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))).det := by`. Establish `e : (J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))).det = inclE (F := F) (FiniteAdeleRing (𝓞 F) F) J.det := (RingHom.map_det _ J).symm`. Rewrite using `[e]`. Conclude with `hJ.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, cT, Matrix.det_transpose]`. Establish `e2 : ((x : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).map (sigR σ (FiniteAdeleRing (𝓞 F) F))).det = sigR σ (FiniteAdeleRing (𝓞 F) F) (x : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).det` using `(RingHom.map_det _ _).symm`. Rewrite `h` using `[e2]`. Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[one_mul, mul_right_comm]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_norm_one (hJ : IsUnit J.det) (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hx : x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
@@ -126,7 +122,7 @@ end Gen
 variable {D : D7}
 
 /- English proof (translation)
-Use `show cT _ _ * _ * _ = _`. Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`. Simplify using `[cT, Matrix.mul_apply, Matrix.GeneralLinearGroup.scalar, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalar_mem_U1Af (d : (D.host.E ⊗[D.host.F] Af D.host.F)ˣ)
     (h : sigR D.sp.cm.sig (Af D.host.F) (d : D.host.E ⊗[D.host.F] Af D.host.F) * d = 1) :
@@ -137,15 +133,13 @@ theorem scalar_mem_U1Af (d : (D.host.E ⊗[D.host.F] Af D.host.F)ˣ)
   simp [cT, Matrix.mul_apply, Matrix.GeneralLinearGroup.scalar, h]
 
 /- English proof (translation)
-Introduce `y`. Establish `hmem : ∀ y : Fin 1 → A, y ∈ stdLat (n` using `Fin 1) (A := A) ↥R ↔ ∀ a, y a ∈ R := by`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `hy a trivial`. Rewrite using `[← hr]`. Conclude with `r.2`. Introduce `hy a _`. Conclude with `⟨⟨y a, hy a⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsm : ∀ a, ((Matrix.GeneralLinearGroup.scalar (Fin 1) d : GL (Fin 1) A) : Matrix (Fin 1) (Fin 1) A).mulVec y a = d * y a`. Introduce `a`. Use `fin_cases a`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.mulVec, dotProduct]`. Rewrite using `[hmem, hmem]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy a`. Rewrite using `[hsm]`. Conclude with `mul_mem h1 (hy a)`. Introduce `hy a`.
-
-Establish `h3` using `mul_mem h2 (hy a)`. Rewrite `h3` using `[hsm, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_stab {A : Type} [CommRing A] (R : Subring A) (d : Aˣ) (h1 : (d : A) ∈ R) (h2 : ((d⁻¹ : Aˣ) : A) ∈ R) :
     Matrix.GeneralLinearGroup.scalar (Fin 1) d ∈ stabGL (stdLat (n := Fin 1) (A := A) ↥R) := by
@@ -177,7 +171,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨scalar_mem_U1Af d h, scalar_stab _ d h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem scalar_mem_U1int (d : (D.host.E ⊗[D.host.F] Af D.host.F)ˣ)
     (h : sigR D.sp.cm.sig (Af D.host.F) (d : D.host.E ⊗[D.host.F] Af D.host.F) * d = 1)
@@ -194,7 +188,7 @@ def detU (i : ℕ) (hi : i ≤ D.R.m) : UPts (sigD D) (gramN D i hi) (FiniteAdel
     fun x => scalar_mem_U1Af _ (det_norm_one (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) x.1 x.2)
 
 /- English proof (translation)
-Use `show Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) _) = _`. Rewrite using `[Matrix.GeneralLinearGroup.det_scalar]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_detU (i : ℕ) (hi : i ≤ D.R.m) (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     Matrix.GeneralLinearGroup.det (detU D i hi x : GL (Fin 1) (D.host.E ⊗[D.host.F] Af D.host.F)) =

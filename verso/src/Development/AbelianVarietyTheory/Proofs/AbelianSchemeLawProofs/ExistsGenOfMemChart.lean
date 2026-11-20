@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbSquare
 
 /- English proof (translation)
-Establish `hm : ∀ y : Y, y ∈ LB.wchart L φ i` using `fun y => Set.mem_iInter.2 fun k => hi k y`. Establish `le : ∀ j : K → L.ι, LB.wchart L φ j ≤ LB.wchart L φ j ⊓ LB.wchart L φ i` using `fun j y hy => ⟨hy, hm y⟩`. Establish `v : ∀ (j : K → L.ι) (y : Y), y ∈ LB.wchart L φ j → gm (𝟙 Y) y (LB.wchart L φ j) (res (le j) ((LB.LinComb L φ ε).g j i)) = trF φ ε (𝟙 Y) y j i` using `fun j y hy => (gm_res (𝟙 Y) y (le j) hy _).trans (gm_linComb L φ ε (𝟙 Y) y j i hy (hm y))`. Use `⟨⟨fun j => res (le j) ((LB.LinComb L φ ε).g j i)⟩, fun j j' => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j y hy.1)).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_linComb L φ ε (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' y hy.2))).trans ?_)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `trF_trans hL φ ε (𝟙 Y) y hy.1 hy.2 (hm y)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_mem_chart {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i : K → L.ι) (hi : ∀ k (y : Y), φ k y ∈ L.U (i k)) :
@@ -32,9 +32,9 @@ theorem exists_gen_of_mem_chart {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K :
   exact trF_trans hL φ ε (𝟙 Y) y hy.1 hy.2 (hm y)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_gen_of_mem_chart hL _ ![1, -1, -1, 1] i hi`. Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := ![(a * b * c).left, c.left, (a * c).left, (b * c).left]) (ε' := ![1, 1, -1, -1]) (fun U _ h => by`. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) rfl (prod_cub a b c h))).trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `abel)`. Use the proof step `(LB.mulGen L _ _ _ _ w (LB.pullGen L (thφ G (x3 G)) thε t (lift a (lift b c)).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hw (DVR.pullGen_isGen _ _ _ _ ht _))`. Conclude with `⟨u, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_square {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     (hL : L.IsLB) (t : LB.Gen (Theta G L)) (ht : t.IsGen) {T : Over S} (a b c : T ⟶ G) (i : Fin 4 → L.ι)
@@ -53,17 +53,13 @@ theorem exists_gen_square {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Set `χ : Fin 4 → (T.left ⟶ G.left)` to `![(x * y).left, x.left, y.left, (1 : T ⟶ G).left]`. Use `choose i hi using fun k => exists_chart hL (χ k p)`. Use `⟨LB.wchart L χ i, Set.mem_iInter.2 hi, ?_⟩` and prove the remaining obligations. Set `W` to `(fst T G).left ⁻¹ᵁ LB.wchart L χ i`. Set `ρ : overRes (T` to `T ⊗ G) W ⟶ T ⊗ G := overResι W`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : ∀ k, (![((ρ ≫ fst T G ≫ x) * (ρ ≫ fst T G ≫ y)).left, (ρ ≫ fst T G ≫ x).left, (ρ ≫ fst T G ≫ y).left, (1 : overRes (T` using `T ⊗ G) W ⟶ G).left] k) = W.ι ≫ (fst T G).left ≫ χ k := by`. Introduce `k`. Use `fin_cases k`. Use `show _ = (ρ ≫ fst T G ≫ (x * y)).left`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `show _ = (ρ ≫ fst T G ≫ (1 : T ⟶ G)).left`. Rewrite using `[MonObj.comp_one, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Take `⟨u, hu⟩` from `exists_gen_square hL t ht (ρ ≫ fst T G ≫ x) (ρ ≫ fst T G ≫ y) (ρ ≫ snd T G) i (fun k z => by`. Rewrite using `[e k]`. Conclude with `Set.mem_iInter.1 z.2 k)`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) u hu` and prove the remaining obligations.
-
-Establish `tr : ∀ w : T ⟶ G, (ρ ≫ fst T G ≫ w) * (ρ ≫ snd T G) = ρ ≫ translPt G w` using `fun w => (MonObj.comp_mul ρ (fst T G ≫ w) (snd T G)).symm`. Use `fin_cases k`. Use `show _ = (ρ ≫ translPt G (x * y)).left`. Rewrite using `[← tr, MonObj.comp_mul, MonObj.comp_mul]`. Both sides reduce to the same expression.
-
-Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.left) (tr x)`. Conclude with `congrArg (fun q => q.left) (tr y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem square_local {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     (hL : L.IsLB) (t : LB.Gen (Theta G L)) (ht : t.IsGen) (T : Over S) (x y : T ⟶ G) (p : T.left) :
@@ -100,9 +96,9 @@ theorem square_local {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {
   · exact congrArg (fun q => q.left) (tr y)
 
 /- English proof (translation)
-Introduce `h`. Establish `key : ∀ (S : Scheme.{0}) (P : PolAV S) (T : Over S) (x y : T ⟶ P.A) (p : T.left), ∃ V : T.left.Opens, p ∈ V ∧ ∃ c : LB.Gen ((LB.LinComb P.L (K` using `Fin 4) ![(translPt P.A (x * y)).left, (snd T P.A).left, (translPt P.A x).left, (translPt P.A y).left] ![1, 1, -1, -1]).pull ((fst T P.A).left ⁻¹ᵁ V).ι), c.IsGen := by`. Introduce `S P T x y p`. Take `⟨t, ht⟩` from `h S P P.L P.isLB`. Conclude with `square_local P.isLB t ht T x y p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨key, fun S _ P T x y p => key S P T x y p⟩`.
+A detailed English derivation is pending.
 -/
 theorem square_of_cube :
     (∀ (S : Scheme.{0}) (P : PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) →

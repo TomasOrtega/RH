@@ -12,20 +12,20 @@ namespace GlobalTheory.ConjTwist
 variable {k : ℕ}
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.Jm, allPos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_allPos (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
   simp [Formalism.REAL.Jm, allPos]
 
 /- English proof (translation)
-Use `show gᴴ * Formalism.REAL.Jm (allPos k) * g = Formalism.REAL.Jm (allPos k) ↔ _`. Rewrite using `[Jm_allPos, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_U_iff (g : Matrix (Fin k) (Fin k) ℂ) : g ∈ UJset (allPos k) ↔ gᴴ * g = 1 := by
   show gᴴ * Formalism.REAL.Jm (allPos k) * g = Formalism.REAL.Jm (allPos k) ↔ _
   rw [Jm_allPos, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[mem_U_iff]`. Use `show (g ∈ Matrix.unitaryGroup (Fin k) ℂ ∧ g * Formalism.REAL.Jm (allPos k) = Formalism.REAL.Jm (allPos k) * g) ↔ _`. Rewrite using `[Jm_allPos, Matrix.mul_one, Matrix.one_mul, Matrix.mem_unitaryGroup_iff']`. Simplify using `[Matrix.star_eq_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_K_iff (g : Matrix (Fin k) (Fin k) ℂ) :
     g ∈ Formalism.REAL.Kset (allPos k) ↔ g ∈ UJset (allPos k) := by
@@ -35,27 +35,27 @@ theorem mem_K_iff (g : Matrix (Fin k) (Fin k) ℂ) :
   simp [Matrix.star_eq_conjTranspose]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_mul (g h : Matrix (Fin k) (Fin k) ℂ) :
     (g * h).map star = g.map star * h.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (star_zero _) (star_one _)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_one : (1 : Matrix (Fin k) (Fin k) ℂ).map star = 1 :=
   Matrix.map_one _ (star_zero _) (star_one _)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_star (g : Matrix (Fin k) (Fin k) ℂ) : (g.map star).map star = g := by
   ext a b
   simp
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_U_iff]`. Establish `h : (g.map star)ᴴ = gᴴ.map star`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[h, ← map_star_mul, hg, map_star_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_star_mem {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) :
     g.map star ∈ UJset (allPos k) := by
@@ -66,7 +66,7 @@ theorem map_star_mem {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos 
   rw [h, ← map_star_mul, hg, map_star_one]
 
 /- English proof (translation)
-Rewrite `hg` using `[mem_U_iff]`. Establish `h` using `congrArg (fun M => ‖Matrix.det M‖) hg`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star, Matrix.det_one, norm_one] at h`. Use polynomial arithmetic with `[norm_nonneg g.det]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_det {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) : ‖g.det‖ = 1 := by
   rw [mem_U_iff] at hg
@@ -76,7 +76,7 @@ theorem norm_det {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) 
   nlinarith [norm_nonneg g.det]
 
 /- English proof (translation)
-Introduce `h`. Use `norm_det hg` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) : g.det ≠ 0 := by
   intro h
@@ -88,9 +88,9 @@ abbrev tor (θ : Fin k → ℝ) : Matrix (Fin k) (Fin k) ℂ :=
   Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)
 
 /- English proof (translation)
-Rewrite using `[tor, Matrix.diagonal_map (star_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `show (starRingEnd ℂ) _ = _`. Rewrite using `[← Complex.exp_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tor_map_star (θ : Fin k → ℝ) : (tor θ).map star = tor (fun a => -θ a) := by
   rw [tor, Matrix.diagonal_map (star_zero _)]
@@ -101,9 +101,9 @@ theorem tor_map_star (θ : Fin k → ℝ) : (tor θ).map star = tor (fun a => -�
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_U_iff, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `show (starRingEnd ℂ) _ * _ = _`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tor_mem (θ : Fin k → ℝ) : tor θ ∈ UJset (allPos k) := by
   rw [mem_U_iff, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -114,7 +114,7 @@ theorem tor_mem (θ : Fin k → ℝ) : tor θ ∈ UJset (allPos k) := by
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_diagonal, ← Complex.exp_sum, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tor_det_zpow (θ : Fin k → ℝ) (x : ℤ) :
     (tor θ).det ^ x = Complex.exp (((∑ a, (x : ℝ) * θ a : ℝ) : ℂ) * Complex.I) := by
@@ -127,7 +127,7 @@ theorem tor_det_zpow (θ : Fin k → ℝ) (x : ℤ) :
 def revMat (k : ℕ) : Matrix (Fin k) (Fin k) ℂ := Matrix.of fun a b => if Fin.rev a = b then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev a)]`. Simplify using `[revMat, Matrix.one_apply]`. Introduce `c _ hc`. Simplify using `[revMat, hc.symm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -140,9 +140,9 @@ theorem revMat_mul_self : revMat k * revMat k = 1 := by
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [revMat, Matrix.conjTranspose_apply, Matrix.of_apply]`. Distinguish the cases in `h : Fin.rev a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : ¬ Fin.rev b = a` using `fun h' => h (by rw [← h', Fin.rev_rev])`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem revMat_conjTranspose : (revMat k)ᴴ = revMat k := by
   ext a b
@@ -154,15 +154,15 @@ theorem revMat_conjTranspose : (revMat k)ᴴ = revMat k := by
     simp [h, h']
 
 /- English proof (translation)
-Rewrite using `[mem_U_iff, revMat_conjTranspose, revMat_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem revMat_mem : revMat k ∈ UJset (allPos k) := by
   rw [mem_U_iff, revMat_conjTranspose, revMat_mul_self]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, revMat, Matrix.of_apply]`. Distinguish the cases in `h : Fin.rev a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tor_mul_revMat (θ : Fin k → ℝ) :
     tor θ * revMat k = revMat k * tor (fun a => θ (Fin.rev a)) := by
@@ -177,11 +177,11 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `θ _`. Establish `h1 : σ (tor θ) (σ (revMat k) v) = σ (revMat k) (σ (tor fun a => θ (Fin.rev a)) v)`. Establish `h2` using `hσ.1.2 _ (tor_mem θ) _ revMat_mem`. Establish `h3` using `hσ.1.2 _ revMat_mem _ (tor_mem fun a => θ (Fin.rev a))`. Rewrite `h2` using `[tor_mul_revMat, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg (fun f : H →L[ℂ] H => f v) h2).symm`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[hv _ ((mem_K_iff _).2 (tor_mem _)), map_smul]`. Use `congr 4`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isWtOn_rev (hσ : IsURepOn (UJset (allPos k)) σ) {μ : Fin k → ℝ} {v : H}
     (hv : IsWtOn (Formalism.REAL.Kset (allPos k)) σ μ v) :
@@ -199,7 +199,7 @@ theorem isWtOn_rev (hσ : IsURepOn (UJset (allPos k)) σ) {μ : Fin k → ℝ} {
   simp
 
 /- English proof (translation)
-Rewrite using `[← norm_ne_zero_iff, hσ.2.1 _ revMat_mem, norm_ne_zero_iff]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rev_ne_zero (hσ : IsURepOn (UJset (allPos k)) σ) {v : H} (hv : v ≠ 0) :
     σ (revMat k) v ≠ 0 := by
@@ -207,7 +207,7 @@ theorem rev_ne_zero (hσ : IsURepOn (UJset (allPos k)) σ) {v : H} (hv : v ≠ 0
   exact hv
 
 /- English proof (translation)
-Rewrite using `[tor_det_zpow, ← Complex.exp_add, ← add_mul, ← Complex.ofReal_add, ← Finset.sum_add_distrib]`. Use `congr 3`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exp_split (x : ℤ) (μ θ : Fin k → ℝ) :
     Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) =
@@ -217,9 +217,9 @@ theorem exp_split (x : ℤ) (μ θ : Fin k → ℝ) :
   exact Finset.sum_congr rfl fun a _ => by ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h θ _`. Establish `h1 : (tor fun a => -θ a).det ^ x • σ ((tor fun a => -θ a).map star) v = _` using `h (fun a => -θ a) ((mem_K_iff _).2 (tor_mem _))`. Rewrite `h1` using `[exp_split x, ← smul_smul, tor_map_star]`. Simplify using `only [neg_neg] at h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `smul_right_injective H (zpow_ne_zero x (det_ne_zero (tor_mem _))) h1`. Introduce `h θ _ show (tor θ).det ^ x • σ ((tor θ).map star) v = _`. Rewrite using `[exp_split x, ← smul_smul, tor_map_star, h _ ((mem_K_iff _).2 (tor_mem _))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWtOn_twist_iff (x : ℤ) (μ : Fin k → ℝ) (v : H) :
     IsWtOn (Formalism.REAL.Kset (allPos k)) (fun g => g.det ^ x • σ (g.map star)) μ v ↔
@@ -236,9 +236,9 @@ theorem isWtOn_twist_iff (x : ℤ) (μ : Fin k → ℝ) (v : H) :
     rw [exp_split x, ← smul_smul, tor_map_star, h _ ((mem_K_iff _).2 (tor_mem _))]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g hg v hv`. Establish `hg'` using `map_star_mem ((mem_K_iff g).1 hg)`. Establish `h1 : (g.map star).det ^ x • σ ((g.map star).map star) v ∈ S` using `h _ ((mem_K_iff _).2 hg') v hv`. Rewrite `h1` using `[map_star_star]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(S.smul_mem_iff (zpow_ne_zero x (det_ne_zero hg'))).1 h1`. Introduce `h g hg v hv`. Conclude with `S.smul_mem _ (h _ ((mem_K_iff _).2 (map_star_mem ((mem_K_iff g).1 hg))) v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stable_twist_iff (x : ℤ) (S : Submodule ℂ H) :
     IsKStableOn (allPos k) (fun g => g.det ^ x • σ (g.map star)) S ↔ IsKStableOn (allPos k) σ S := by
@@ -253,11 +253,9 @@ theorem stable_twist_iff (x : ℤ) (S : Submodule ℂ H) :
     exact S.smul_mem _ (h _ ((mem_K_iff _).2 (map_star_mem ((mem_K_iff g).1 hg))) v hv)
 
 /- English proof (translation)
-Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.det_one, _root_.one_zpow, one_smul, map_star_one, hσ.1.1]`. Simplify using `only [Matrix.det_mul, mul_zpow, map_star_mul]`. Rewrite using `[hσ.1.2 _ (map_star_mem ha) _ (map_star_mem hb)]`. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[smul_smul, mul_comm]`. Simplify using `only [ContinuousLinearMap.smul_apply, norm_smul, norm_zpow, norm_det hg, _root_.one_zpow, one_mul, hσ.2.1 _ (map_star_mem hg)]`. Simplify using `only [ContinuousLinearMap.smul_apply]`. Use `ContinuousOn.smul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_id.matrix_det.continuousOn).zpow₀ x fun g hg => Or.inl (det_ne_zero hg)`.
-
-Conclude with `(hσ.2.2 v).comp (continuous_id.matrix_map continuous_star).continuousOn fun g hg => map_star_mem hg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isURepOn_twist (hσ : IsURepOn (UJset (allPos k)) σ) (x : ℤ) :
     IsURepOn (UJset (allPos k)) (fun g => g.det ^ x • σ (g.map star)) := by
@@ -276,11 +274,11 @@ theorem isURepOn_twist (hσ : IsURepOn (UJset (allPos k)) σ) (x : ℤ) :
         fun g hg => map_star_mem hg
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `h`. Use `⟨fun a b => c (Fin.rev b) (Fin.rev a), fun a b hab => ⟨?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Fin.rev_lt_rev.1 (hc _ _ hab).1`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun he (Fin.rev i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, Fin.rev_rev, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1 ⊢`. Establish `h2 : ∑ a, ∑ b, (c (Fin.rev b) (Fin.rev a) : ℝ) * Formalism.REAL.root a b i = -∑ a, ∑ b, (c a b : ℝ) * Formalism.REAL.root a b (Fin.rev i)`. Rewrite using `[Finset.sum_comm, ← Equiv.sum_comp Fin.revPerm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Fin.revPerm, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, Formalism.REAL.root, Pi.sub_apply, Pi.single_apply, Fin.rev_eq_iff]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cdom_rev (x : ℤ) (Λ μ : Fin k → ℝ)
     (h : CDom (allPos k) (fun a => (x : ℝ) - μ (Fin.rev a)) Λ) :
@@ -304,9 +302,9 @@ theorem cdom_rev (x : ℤ) (Λ μ : Fin k → ℝ)
     ring
 
 /- English proof (translation)
-Introduce `k Λ x H _ _ _ σ hσ hK`. Take `⟨hfd, -, hirr, ⟨v, -, hv0, hv⟩, hdom⟩` from `hK`. Use `⟨isURepOn_twist hσ x, hfd, fun _ _ _ _ => trivial, fun S hS hst => hirr S hS ((stable_twist_iff x S).1 hst), ⟨σ (revMat k) v, trivial, rev_ne_zero hσ hv0, ?_⟩, fun μ w _ hw0 hw => ?_⟩` and prove the remaining obligations. Rewrite using `[isWtOn_twist_iff]`. Simplify `isWtOn_rev hσ hv` using `only [sub_sub_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hw` using `[isWtOn_twist_iff]`. Conclude with `cdom_rev x Λ μ (hdom _ _ trivial (rev_ne_zero hσ hw0) (isWtOn_rev hσ hw))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_twist_isKTypeOf : ∀ (k : ℕ) (Λ : Fin k → ℝ) (x : ℤ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)), IsURepOn (UJset (allPos k)) σ → IsKTypeOf (allPos k) σ Λ ⊤ → IsURepOn (UJset (allPos k)) (fun g => g.det ^ x • σ (g.map star)) ∧ IsKTypeOf (allPos k) (fun g => g.det ^ x • σ (g.map star)) (fun a => (x : ℝ) - Λ (Fin.rev a)) ⊤ := by
   intro k Λ x H _ _ _ σ hσ hK

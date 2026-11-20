@@ -25,39 +25,37 @@ def oneMaps (v : Pl F) (P : Type) [AddCommGroup P] [Module ℂ P]
   p' := fun v' => if h : v' = v then h ▸ p' else 0
 
 /- English proof (translation)
-Simplify using `[oneMaps]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem oneMaps_p (v : Pl F) (P : Type) [AddCommGroup P] [Module ℂ P] p p' :
     (oneMaps (a := a) (a' := a') v P p p').p v = p := by simp [oneMaps]; rfl
 
 /- English proof (translation)
-Simplify using `[oneMaps]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem oneMaps_p' (v : Pl F) (P : Type) [AddCommGroup P] [Module ℂ P] p p' :
     (oneMaps (a := a) (a' := a') v P p p').p' v = p' := by simp [oneMaps]; rfl
 
 /- English proof (translation)
-Take `⟨p, hp, hpon⟩` from `mk_p _ _ ι hι I f hlin hmem hon`. Take `⟨p', hp', hpon'⟩` from `mk_p _ _ ι' hι' I f' hlin' hmem' hon'`. Establish `actA : ∀ (T : ((Fin a × Fin (a + a') → AF F) → ℂ) → _) (S : (Matrix (Fin a) (Fin (a + a')) (Fv F v) → ℂ) → _), Reads v ι T S → ∀ φ ∈ SB _, ∀ φ₁, Acts (evFin F v) T φ φ₁ → φ₁ ∈ SB _ → ι φ₁ = S (ι φ)`. Introduce `T S hR φ hφ φ₁ h₁ _`. Take `⟨φ₂, _, h₂, e⟩` from `hR φ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hAU F _ v T φ hφ φ₁ φ₂ h₁ h₂, e]`. Establish `actB : ∀ (T : ((Fin a' × Fin (a + a') → AF F) → ℂ) → _) (S : (Matrix (Fin a') (Fin (a + a')) (Fv F v) → ℂ) → _), Reads v ι' T S → ∀ φ ∈ SB _, ∀ φ₁, Acts (evFin F v) T φ φ₁ → φ₁ ∈ SB _ → ι' φ₁ = S (ι' φ)`. Introduce `T S hR φ hφ φ₁ h₁ _`. Take `⟨φ₂, _, h₂, e⟩` from `hR φ hφ`. Rewrite using `[hAU F _ v T φ hφ φ₁ φ₂ h₁ h₂, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, p', hp, hp', hpon, hpon', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[augAt, Submodule.span_le]`. Introduce and unpack `z ⟨g, hg, φ, hφ, φ₁, hφ₁, hA, rfl⟩`. Use `show p (φ₁ - φ) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp φ₁ hφ₁, hp φ hφ, actA _ _ (hRg g hg) φ hφ φ₁ hA hφ₁, hinv _ (hι.mapsTo hφ)]`. Rewrite using `[augAt, Submodule.span_le]`. Introduce and unpack `z ⟨g, hg, φ, hφ, φ₁, hφ₁, hA, rfl⟩`. Use `show p' (φ₁ - φ) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp' φ₁ hφ₁, hp' φ hφ, actB _ _ (hRg' g hg) φ hφ φ₁ hA hφ₁, hinv' _ (hι'.mapsTo hφ)]`. Introduce `h hh φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' hA hA' e`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `congrArg Subtype.val e`. Rewrite `e'` using `[hp φ hφ, hp' φ' hφ']`. Rewrite using `[hp φ₁ hφ₁, hp' φ₁' hφ₁', actA _ _ (hRh h hh) φ hφ φ₁ hA hφ₁, actB _ _ (hRh' h hh) φ' hφ' φ₁' hA' hφ₁', heq _ (hι.mapsTo hφ), heq' _ (hι'.mapsTo hφ'), e']`. Take `⟨Φ, hΦ, hne⟩` from `hnz`. Conclude with `⟨⟨⟨f Φ, hmem Φ hΦ⟩, 0, fun h => hne (congrArg Subtype.val h)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `N hN`. Establish `hst : ∀ h₁, ∀ y ∈ N.map I.subtype, rtr h₁ y ∈ N.map I.subtype`. Introduce and unpack `h₁ _ ⟨y, hy, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, rfl⟩ : ∃ φ ∈ SB _, p φ = y := by`. Establish `: y ∈ (SB _).map p` using `hpon ▸ Submodule.mem_top`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨φ, hφ, e⟩` from `this`. Conclude with `⟨φ, hφ, e⟩`. Take `⟨h, hh, rfl⟩` from `hhl h₁`. Take `⟨φ₁, hφ₁, hA, e⟩` from `hRh h hh φ hφ`. Use `⟨p φ₁, hN h hh φ hφ φ₁ hφ₁ hA hy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show (p φ₁ : GL (Fin (a + a')) (Fv F v) → ℂ) = rtr (hl h) (p φ : GL (Fin (a + a')) (Fv F v) → ℂ)`. Rewrite using `[hp φ₁ hφ₁, hp φ hφ, e, heq _ (hι.mapsTo hφ)]`. Break down `hirr (N.map I.subtype) (by rintro _ ⟨y, -, rfl⟩; exact y.2) hst with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `: (y : GL (Fin (a + a')) (Fv F v) → ℂ) ∈ N.map I.subtype` using `⟨y, hy, rfl⟩`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext ((Submodule.mem_bot ℂ).1 this))`. Use `right`.
-
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `: (y : GL (Fin (a + a')) (Fv F v) → ℂ) ∈ N.map I.subtype` using `by rw [h1]; exact y.2`. Take `⟨z, hz, e⟩` from `this`. Conclude with `(Subtype.ext e : z = y) ▸ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core (hAU : ActsUniq) (v : Pl F) (G : Geo σ a a') (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (ν α β : (Fv F v)ˣ →* ℂˣ) (I : Submodule ℂ (GL (Fin (a + a')) (Fv F v) → ℂ))
@@ -152,19 +150,15 @@ theorem core (hAU : ActsUniq) (v : Pl F) (G : Geo σ a a') (om : Rep σ G.V G.W)
       exact (Subtype.ext e : z = y) ▸ hz
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv`. Establish `hP : v ∈ B.P` using `hT.chars.sub hv`. Take `⟨hα, hβ, hν, hcond, hram, -⟩` from `hC F E B X a a' v (B.τ ⟨v, hP⟩) hT.chars`. Establish `hS : HidaSetting a a' (unifAt v) (chrW X.α (B.τ ⟨v, hP⟩)) (chrW X.β (B.τ ⟨v, hP⟩)) (chrW X.ν (B.τ ⟨v, hP⟩))` using `⟨GlobalTheory.SplitFlip.exists_isUnif.choose_spec, hα, hβ, hν, hT.geo.lt, hT.geo.even, hcond⟩`. Take `⟨hlin, hlin', hmem, hmem', hinv, hinv', heq, heq', hon, hon'⟩` from `hR (Fv F v) a a' _ _ _ _ hS (hram hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ0, hΦ0, hnz⟩` from `hRN (Fv F v) a a' _ _ _ _ hS (hram hv)`. Take `⟨b, b', c, ι, ι', gl, gl', hl, hW, hB, hbas, hvac, hvac', hRg, hRh, hRg', hRh', hhl⟩` from `hD F E σ B a a' G X om om' hT v (B.τ ⟨v, hP⟩)`. Take `⟨rfl, rfl, rfl⟩` from `hbas hP rfl`. Take `⟨p, p', hp, hp', hon1, hon1', hinv1, hinv1', heq1, hnt, hirr1⟩` from `core hAU v G om om' _ _ _ (indSp a a' _ _) (pRam a a' (unifAt v) (chrW X.ν (B.τ ⟨v, hP⟩)) (chrW X.β (B.τ ⟨v, hP⟩))) (pRam' a a' (chrW X.ν (B.τ ⟨v, hP⟩)) (chrW X.α (B.τ ⟨v, hP⟩))) (fun Φ h Φ₁ h₁ => hlin Φ h Φ₁ h₁) (fun Φ h Φ₁ h₁ => hlin' Φ h Φ₁ h₁) (fun Φ h => hmem Φ h) (fun Φ h = …`. Use `⟨oneMaps v _ p p', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[oneMaps_p]`. Conclude with `hon1`. Rewrite using `[oneMaps_p']`. Conclude with `hon1'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneMaps_p]`. Conclude with `hinv1`. Rewrite using `[oneMaps_p']`. Conclude with `hinv1'`. Rewrite using `[oneMaps_p, oneMaps_p']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `heq1`. Conclude with `hnt`. Rewrite using `[oneMaps_p]`. Conclude with `hirr1`. Introduce `hv'`.
-
-Conclude with `absurd hv hv'`. Introduce `hv' _`. Use `⟨ι, ι', hW, hB, hvac, hvac', fun φ hφ φ' hφ' => ?_⟩` and prove the remaining obligations. Rewrite using `[oneMaps_p, oneMaps_p']`. Use `⟨fun h => ?_, fun h => Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Use `congrArg Subtype.val h erw [hp φ hφ, hp' φ' hφ'] at this` as an intermediate fact. Conclude with `this`. Use `erw [hp φ hφ, hp' φ' hφ']`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finRam_of (hR : RamMaps) (hRN : RamNonzero) (hI : IndIrred) (hD : Dict) (hAU : ActsUniq) (hC : ChrFacts) :
     FinRam := by
@@ -211,29 +205,23 @@ def IntEq : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (x : Fv F v), x ∈ 𝒪[Fv F v] ↔ x ∈ v.adicCompletionIntegers F
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨hv, ⟨τ⟩⟩`. Take `⟨hα, hβ, hν, hcond, -, hunr⟩` from `hC F E B X a a' v τ hT.chars`. Take `⟨hαu, hβu⟩` from `hunr hv`. Establish `hS : HidaSetting a a' (unifAt v) (chrW X.α τ) (chrW X.β τ) (chrW X.ν τ)` using `⟨GlobalTheory.SplitFlip.exists_isUnif.choose_spec, hα, hβ, hν, hT.geo.lt, hT.geo.even, hcond⟩`. Take `⟨hlin, hlin', hmem, hmem', hinv, hinv', heq, heq', hon, hon', hsph, hsph'⟩` from `hU (Fv F v) a a' _ _ _ _ hS hαu hβu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, b', c, ι, ι', gl, gl', hl, hW, hB, -, hvac, hvac', hRg, hRh, hRg', hRh', hhl⟩` from `hD F E σ B a a' G X om om' hT v τ`. Establish `hind : ∀ m n : ℕ, (intInd v : Matrix (Fin m) (Fin n) (Fv F v) → ℂ) = Set.indicator {Y | ∀ i j, Y i j ∈ 𝒪[Fv F v]} 1`. Introduce `m n`. Unfold `intInd`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq, hZ F v]`. Establish `h1 : ∀ h ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin (a + a')), pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) h = 1` using `fun h hh => by rw [hind]; exact hsph h hh`. Establish `h1' : ∀ h ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin (a + a')), pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) h = 1` using `fun h hh => by rw [hind]; exact hsph' h hh`. Establish `hiSB : intInd v ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin a) (Fin (a + a')) (Fv F v))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hvac]`. Conclude with `hW.bij.mapsTo (hT.geo.hM.vac v).1`. Establish `hnz : pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) ≠ 0` using `fun h0 => by`. Use `h1 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one this`. Take `⟨p, p', hp, hp', hon1, hon1', hinv1, hinv1', heq1, hnt, hirr1⟩` from `core hAU v G om om' _ _ _ (indSp a a' _ _) (pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ)) (pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ)) (fun Φ h Φ₁ h₁ => hlin Φ h Φ₁ h₁) (fun Φ h Φ₁ h₁ => hlin' Φ h Φ₁ h₁) (fun Φ h => hmem Φ h) (fun Φ h => hmem' Φ h) (fun Φ h => hinv Φ h) (f …`. Use `⟨oneMaps v _ p p', ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[oneMaps_p]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hon1`. Rewrite using `[oneMaps_p']`. Conclude with `hon1'`. Rewrite using `[oneMaps_p]`. Conclude with `hinv1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneMaps_p']`. Conclude with `hinv1'`. Rewrite using `[oneMaps_p, oneMaps_p']`. Conclude with `heq1`. Conclude with `hnt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[oneMaps_p]`. Conclude with `hirr1`. Introduce `_`. Rewrite using `[oneMaps_p, oneMaps_p']`. Establish `e1` using `hp _ (hT.geo.hM.vac v).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `hp' _ (hT.geo.hM'.vac v).1`. Rewrite `e1` using `[hvac]`. Rewrite `e2` using `[hvac']`. Establish `hm1` using `hmem _ hiSB`. Establish `hm2 : pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) ∈ indSp a a' (chrW X.α τ) (chrW X.β τ)`.
-
-Rewrite using `[← e2]`. Conclude with `(p' (G.M'.vac v)).2`. Establish `hd : pUnr a a' (unifAt v) (chrW X.ν τ) (chrW X.β τ) (intInd v) - pUnr' a a' (unifAt v) (chrW X.ν τ) (chrW X.α τ) (intInd v) = 0` using `hIw (Fv F v) a a' _ _ _ (Submodule.sub_mem _ hm1 hm2) fun h hh => by`. Simplify using `only [Pi.sub_apply, h1 h hh, h1' h hh, sub_self]`. Use `⟨Subtype.ext ?_, fun h0 => hnz ?_⟩` and prove the remaining obligations.
-
-Use `erw [e1, e2]`. Conclude with `sub_eq_zero.1 hd`. Use `congrArg Subtype.val h0 erw [e1] at this` as an intermediate fact. Conclude with `this`. Introduce `_ hvT`.
-
-Conclude with `absurd hvT hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finSplit_of (hU : UnrMaps) (hI : IndIrred) (hIw : IndIwasawa) (hD : Dict) (hAU : ActsUniq) (hC : ChrFacts)
     (hZ : IntEq) : FinSplit := by

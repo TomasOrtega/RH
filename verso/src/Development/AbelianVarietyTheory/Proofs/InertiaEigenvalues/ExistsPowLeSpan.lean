@@ -8,11 +8,11 @@ namespace GlobalTheory.CoeffEmbedding
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ_[N.l i] (N.O i)).FG)`. Use `⟨∑ a ∈ s, ‖iotaOQ N A i a‖, fun b => ?_⟩` and prove the remaining obligations. Establish `hb : b ∈ Submodule.span ℤ_[N.l i] (s : Set (N.O i))` using `hs ▸ Submodule.mem_top`. Take `⟨c, -, rfl⟩` from `Submodule.mem_span_finset.1 hb`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Establish `hz : iotaOQ N A i (algebraMap ℤ_[N.l i] (N.O i) (c a)) = algebraMap ℚ_[N.l i] (Qbar (N.l i)) (c a : ℚ_[N.l i])` using `A.iotaQ_alg i (c a)`. Rewrite using `[Algebra.smul_def, map_mul, norm_mul, hz]`. Establish `h1 : ‖algebraMap ℚ_[N.l i] (Qbar (N.l i)) (c a : ℚ_[N.l i])‖ ≤ 1`. Establish `he : ‖algebraMap ℚ_[N.l i] (Qbar (N.l i)) (c a : ℚ_[N.l i])‖ = ‖(c a : ℚ_[N.l i])‖` using `PadicAlgCl.norm_extends (p := N.l i) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, ← PadicInt.norm_def]`. Conclude with `PadicInt.norm_le_one _`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_le : ∃ C : ℝ, ∀ b : N.O i, ‖iotaOQ N A i b‖ ≤ C := by
 
@@ -35,9 +35,9 @@ theorem exists_norm_le : ∃ C : ℝ, ∀ b : N.O i, ‖iotaOQ N A i b‖ ≤ C 
 include A in
 
 /- English proof (translation)
-Establish `hl : ((N.l i : ℕ) : N.O i) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (iotaOQ N A i) h`. Rewrite `h'` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : (N.l i).Prime).ne_zero) h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (N.O i)`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {((N.l i : ℕ) : N.O i)}) (by rwa [Ne, Ideal.span_singleton_eq_bot]) hϖ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hn, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_le_span : ∃ e : ℕ, IsLocalRing.maximalIdeal (N.O i) ^ e ≤
     Ideal.span {((N.l i : ℕ) : N.O i)} := by
@@ -54,15 +54,13 @@ theorem exists_pow_le_span : ∃ e : ℕ, IsLocalRing.maximalIdeal (N.O i) ^ e �
   rw [hn, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Introduce `R H what₂ N A i`. Take `⟨C, hC⟩` from `exists_norm_le N A i`. Take `⟨e, he⟩` from `exists_pow_le_span N A i`. Use `continuous_of_continuousAt_zero (iotaOQ N A i) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, Metric.nhds_basis_ball.tendsto_right_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `ε hε`. Use `set q : ℝ := ‖((N.l i : ℕ) : Qbar (N.l i))‖ with hq`. Establish `hq1 : q < 1`. Establish `he : ‖algebraMap ℚ_[N.l i] (Qbar (N.l i)) ((N.l i : ℕ) : ℚ_[N.l i])‖ = ‖((N.l i : ℕ) : ℚ_[N.l i])‖` using `PadicAlgCl.norm_extends (p := N.l i) _`. Rewrite `he` using `[map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, he]`. Conclude with `Padic.norm_p_lt_one`. Establish `hq0 : 0 ≤ q` using `norm_nonneg _`. Establish `hC1 : 0 < |C| + 1` using `by positivity`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (div_pos hε hC1) hq1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hopen, -⟩` from `isAdic_iff.mp (N.O_adic i)`. Use `filter_upwards [(hopen (e * k)).mem_nhds (Ideal.zero_mem _)] with x hx`. Establish `hx' : x ∈ Ideal.span {((N.l i : ℕ) : N.O i) ^ k}`. Rewrite `*` using `[← Ideal.span_singleton_pow, pow_mul]`. Conclude with `Ideal.pow_right_mono he k hx`.
-
-Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hx'`. Rewrite using `[Metric.mem_ball, dist_zero_right, map_mul, map_pow, map_natCast, norm_mul, norm_pow, ← hq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_iotaOQ : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂)
     (A : NAut N) (i : N.Loc), Continuous (iotaOQ N A i) := by

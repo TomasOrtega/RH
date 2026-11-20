@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `congrArg (fun z => z.left) (map_one (pushHom h (Over.mk a)))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gr_one {S S' T : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (a : T ⟶ S') (b : T ⟶ S) (e : a ≫ f = b) :
@@ -20,7 +20,7 @@ theorem gr_one {S S' T : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Grp
   exact congrArg (fun z => z.left) (map_one (pushHom h (Over.mk a)))
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gr_dual {R R' : Type} [CommRing R] [CommRing R'] (s : R →+* R') :
     spMap (dualMap s) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R' (DualNumber R')) ≫ spMap s := by
@@ -29,13 +29,11 @@ theorem gr_dual {R R' : Type} [CommRing R] [CommRing R'] (s : R →+* R') :
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `: Mono φ` using `(MorphismProperty.monomorphisms _).of_isPullback h.1.flip (MorphismProperty.monomorphisms.infer_property _)`. Take `⟨l, hl1, hl2⟩ : ∃ l : Sp (DualNumber R) ⟶ Gp.left, l ≫ φ = a.left ∧ l ≫ Gp.hom = spMap (algebraMap R (DualNumber R))` from `⟨h.1.lift a.left _ (Over.w a), h.1.lift_fst _ _ _, h.1.lift_snd _ _ _⟩`. Establish `w0 : (spMap (dualMap s) ≫ l) ≫ Gp.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap s`. Rewrite using `[Category.assoc, hl2]`. Conclude with `gr_dual _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w1 : (l ≫ φ') ≫ G'.hom = spMap (algebraMap R (DualNumber R)) ≫ x`. Rewrite using `[Category.assoc, h'.1.w, ← Category.assoc, hl2]`. Establish `w2 : ((spMap (dualMap s) ≫ l) ≫ φ') ≫ G'.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ z`. Rewrite using `[Category.assoc, h'.1.w, ← Category.assoc, w0, Category.assoc, hz]`. Use `⟨Over.homMk _ w0, Over.homMk _ w2, Over.homMk _ w1, ?_, rfl, ?_, ?_, Category.assoc _ _ _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg _ hl1).trans ha3.symm)`. Establish `e : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ l = (1 : Over.mk (𝟙 (Sp R)) ⟶ Gp).left`. Rewrite using `[← cancel_mono φ]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ hl1).trans (Eq.trans ha1 (gr_one h _ _ (Category.id_comp _)).symm))`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ') e).trans (gr_one h' _ _ (Category.id_comp _)))`.
-
-Establish `e : u = spMap (dualMap k) ≫ l`. Rewrite using `[← cancel_mono φ, hu, Category.assoc, hl1]`. Conclude with `ha2`. Conclude with `hu'.symm.trans ((congrArg (· ≫ φ') e).trans (Category.assoc _ _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_core {X : Scheme.{0}} {Ω R : Type} [Field Ω] [CommRing R] {x : Sp R ⟶ X} (hx : Mono x)
     (z : Sp ℂ ⟶ X) (s : R →+* ℂ) (k : R →+* Ω) (hz : spMap s ≫ x = z)
@@ -72,9 +70,9 @@ theorem gr_core {X : Scheme.{0}} {Ω R : Type} [Field Ω] [CommRing R] {x : Sp R
     exact hu'.symm.trans ((congrArg (· ≫ φ') e).trans (Category.assoc _ _ _))
 
 /- English proof (translation)
-Take `⟨v, hv, hΓ⟩` from `hG`. Establish `hz : Spec.map (Scheme.stalkClosedPointTo z) ≫ X.fromSpecStalk (centre z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Establish `key : ∀ i, ∃ (v₀ : epsAt (R` using `ℂ) (Spec.map (Scheme.stalkClosedPointTo z)) ⟶ Gp) (v' : epsAt z ⟶ G'), v₀.left ≫ φ = (v i).left ∧ v₀.left ≫ φ' = v'.left ∧ M'.ValAt z (b i) v' := by`. Introduce `i`. Take `⟨hs, a, ⟨ha1, ha2⟩, ha3⟩` from `hv i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu'⟩` from `tie (b i)`. Take `⟨v₀, v', a', k1, k2, k3, k4, k5⟩` from `@gr_core X Ω (X.presheaf.stalk (centre z)) _ _ (X.fromSpecStalk (centre z)) (inferInstanceAs (Mono (X.fromSpecStalk (centre z)))) z (Scheme.stalkClosedPointTo z).hom (genMap ξ ⟨centre z, hs⟩) hz G G' _ _ Gp iG φ φ' h h' _ _ u hu hu' (v i) a ha1 ha2 ha3`. Conclude with `⟨v₀, v', k1, k2, hs, a', ⟨k3, k4⟩, k5⟩`. Use `choose v₀ v' k1 k2 k3 using key`. Conclude with `⟨v', k3, fun p q => ip (v₀ p) (v₀ q) _ _ _ _ _ (k1 p) (k1 q) (k2 p) (k2 q) (hΓ p q)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gr_half {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (z : Sp ℂ ⟶ X)
     {G G' : Over X} [GrpObj G] [GrpObj G'] {Gp : Over (Spec (X.presheaf.stalk (centre z)))} [iG : GrpObj Gp]
@@ -103,7 +101,7 @@ theorem gr_half {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (z : 
   exact ⟨v', k3, fun p q => ip (v₀ p) (v₀ q) _ _ _ _ _ (k1 p) (k1 q) (k2 p) (k2 q) (hΓ p q)⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `GlobalTheory.T.hodge_inner_product_pullback_iff E H S S' t t' f m z' v' w' v w c hv hw`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gr_ip {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} {t : SAB H S}
     {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) (z' : Sp ℂ ⟶ S') (z : Sp ℂ ⟶ S) (e : z' ≫ f = z)
@@ -113,9 +111,9 @@ theorem gr_ip {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S
   exact GlobalTheory.T.hodge_inner_product_pullback_iff E H S S' t t' f m z' v' w' v w c hv hw
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ H g X Ω _ ξ ⟨q, hq⟩ t t' tp m m' V _ _ M M' tie z (rfl : centre z = q) r b Γ`. Establish `hz : Spec.map (Scheme.stalkClosedPointTo z) ≫ X.fromSpecStalk (centre z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Prove the components needed by the constructor for the conclusion. Use `gr_half z m.cart m'.cart M M' tie (fun v₀ w₀ v w v' w' c a1 a2 a3 a4 hh => ?_) b Γ` and prove the remaining obligations. Conclude with `(gr_ip m' _ z hz v₀ w₀ v' w' c a3 a4).1 ((gr_ip m _ z hz v₀ w₀ v w c a1 a2).2 hh)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `gr_half z m'.cart m.cart M' M (fun e => (tie e).imp fun _ h => h.symm) (fun v₀ w₀ v w v' w' c a1 a2 a3 a4 hh => ?_) b Γ` and prove the remaining obligations. Conclude with `(gr_ip m _ z hz v₀ w₀ v' w' c a3 a4).1 ((gr_ip m' _ z hz v₀ w₀ v w c a1 a2).2 hh)`.
+A detailed English derivation is pending.
 -/
 theorem gram_matrix_twisted_lie_models : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (g : HostAut H) (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (t t' : SAB H X) (tp : SAB H (Spec (X.presheaf.stalk p.1))) (m : SABMap tp t (X.fromSpecStalk p.1)) (m' : SABMap (twistSAB tp g) t' (X.fromSpecStalk p.1)) (V : Type) [AddCommGroup V] [Module Ω V] (M : LieModel t.G ξ V) (M' : LieModel t'.G ξ V), (∀ e, ∃ v : Sp (DualNumber Ω) ⟶ tp.G.left, v ≫ m.φ = (M.pt e).left ∧ v ≫ m'.φ = (M'.pt e).left) → ∀ (z : Sp ℂ ⟶ X), centre z = p.1 → ∀ (r : ℕ) (b : Fin r → V) (Γ : Matrix (Fin r) (Fin r) ℂ), M.GramAt t.PP.L z b Γ ↔ M'.GramAt t'.PP.L z b Γ := by
   rintro E _ _ _ H g X Ω _ ξ ⟨q, hq⟩ t t' tp m m' V _ _ M M' tie z (rfl : centre z = q) r b Γ

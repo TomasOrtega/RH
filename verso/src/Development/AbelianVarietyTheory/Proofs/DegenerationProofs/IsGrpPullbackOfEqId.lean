@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.LN.SelfCmp
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ex, ey, ← MonObj.comp_mul]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S ⟶ S} (hf : f = 𝟙 S) :
     IsGrpPullback G G f (𝟙 G.left) := by
@@ -34,7 +34,7 @@ theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S �
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Conclude with `IsCPMap.id P`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isCPMap_of_eq_id {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : CP G) {f : S ⟶ S}
     (hf : f = 𝟙 S) (hw : 𝟙 G.left ≫ G.hom = G.hom ≫ f) : IsCPMap P P f (𝟙 G.left) hw (GlobalTheory.UU.idIso P.L.L) := by
@@ -42,7 +42,7 @@ theorem isCPMap_of_eq_id {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj 
   exact IsCPMap.id P
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
 

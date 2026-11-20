@@ -16,7 +16,7 @@ noncomputable def complexGaussian (g : ℕ) : Measure E :=
 variable {E}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1` using `GaussianFourier.integral_rexp_neg_mul_sq_norm (V := E) hb`. Rewrite `h1` using `[integral_undef h]`. Conclude with `absurd h1 (by positivity)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_exp_neg_mul_norm_sq {b : ℝ} (hb : 0 < b) :
     Integrable fun z : E => exp (-b * ‖z‖ ^ 2) := by
@@ -26,7 +26,7 @@ theorem integrable_exp_neg_mul_norm_sq {b : ℝ} (hb : 0 < b) :
   exact absurd h1 (by positivity)
 
 /- English proof (translation)
-Rewrite using `[GaussianFourier.integral_rexp_neg_mul_sq_norm hb, hE, ← rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_exp_neg_mul_norm_sq {g : ℕ} (hE : Module.finrank ℝ E = 2 * g) {b : ℝ}
     (hb : 0 < b) : ∫ z : E, exp (-b * ‖z‖ ^ 2) = (π / b) ^ g := by
@@ -36,7 +36,7 @@ theorem integral_exp_neg_mul_norm_sq {g : ℕ} (hE : Module.finrank ℝ E = 2 * 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h` using `integral_exp_neg_mul_norm_sq hE one_pos`. Establish `hi` using `integrable_exp_neg_mul_norm_sq (E := E) one_pos`. Simplify using `only [neg_mul, one_mul, div_one] at h hi`. Rewrite using `[complexGaussian, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← ofReal_integral_eq_lintegral_ofReal (hi.const_mul _) (.of_forall fun z => by positivity), integral_const_mul, h, inv_mul_cancel₀ (by positivity), ENNReal.ofReal_one]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isProbabilityMeasure_complexGaussian {g : ℕ} (hE : Module.finrank ℝ E = 2 * g) :
     IsProbabilityMeasure (complexGaussian E g) := by
@@ -49,9 +49,9 @@ theorem isProbabilityMeasure_complexGaussian {g : ℕ} (hE : Module.finrank ℝ 
     integral_const_mul, h, inv_mul_cancel₀ (by positivity), ENNReal.ofReal_one]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial E with h | h` into its components or cases. Conclude with `Integrable.of_finite`. Rewrite using `[integrable_fun_norm_addHaar volume (f := fun r => r ^ n * exp (-b * r ^ 2))]`. Use `integrableOn_rpow_mul_exp_neg_mul_sq hb (s := ((Module.finrank ℝ E - 1 + n : ℕ) : ℝ)) (lt_of_lt_of_le neg_one_lt_zero (by positivity))` as an intermediate fact. Use `this.congr_fun (fun x _ => ?_) measurableSet_Ioi` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [rpow_natCast, smul_eq_mul, pow_add, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_norm_pow_mul_exp_neg_mul_norm_sq (n : ℕ) {b : ℝ} (hb : 0 < b) :
     Integrable fun z : E => ‖z‖ ^ n * exp (-b * ‖z‖ ^ 2) := by
@@ -79,20 +79,20 @@ end Kernel
 section Monomials
 
 /- English proof (translation)
-Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_real_euclideanSpace_complex (ι : Type*) [Fintype ι] :
     Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι := by
   rw [finrank_real_of_complex, finrank_euclideanSpace]
 
 /- English proof (translation)
-Set `e : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ)` to `PiLp.continuousLinearEquiv 2 ℝ fun _ : ι => ℂ`. Express the relevant statement in the definitionally equal form `MeasurePreserving e`. Use `⟨e.continuous.measurable, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map e volume = c • (volume : Measure (ι → ℂ))` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Establish `h1 : ∫ w : ι → ℂ, ∏ i, exp (-1 * ‖w i‖ ^ 2) = π ^ Fintype.card ι`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[integral_fintype_prod_volume_eq_pow fun w : ℂ => exp (-1 * ‖w‖ ^ 2), integral_exp_neg_mul_norm_sq (E := ℂ) (g := 1) (by simp) one_pos]`. Simplify using the standard rewrite rules. Establish `h2 : ∫ w : ι → ℂ, ∏ i, exp (-1 * ‖w i‖ ^ 2) ∂(Measure.map e volume) = π ^ Fintype.card ι`. Rewrite using `[integral_map e.continuous.measurable.aemeasurable (Continuous.aestronglyMeasurable (by fun_prop))]`. Use `integral_exp_neg_mul_norm_sq (finrank_real_euclideanSpace_complex ι) one_pos` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[div_one]`. Rewrite using `[← this]`. Use `integral_congr_ae (.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← exp_sum, EuclideanSpace.norm_sq_eq, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h2` using `[hc, integral_smul_nnreal_measure, h1, NNReal.smul_def, smul_eq_mul, mul_eq_right₀ (by positivity)]`. Rewrite using `[hc, show c = 1 by exact_mod_cast h2, one_smul]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_preserving_ofLp_complex (ι : Type*) [Fintype ι] :
     MeasurePreserving (@WithLp.ofLp 2 (ι → ℂ)) := by
@@ -128,7 +128,7 @@ noncomputable abbrev fockMeasure (g : ℕ) : Measure (EuclideanSpace ℂ (Fin g)
   complexGaussian (EuclideanSpace ℂ (Fin g)) g
 
 /- English proof (translation)
-Rewrite using `[finrank_real_euclideanSpace_complex, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_real_euclideanSpace_complex_fin (g : ℕ) :
     Module.finrank ℝ (EuclideanSpace ℂ (Fin g)) = 2 * g := by

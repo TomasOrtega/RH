@@ -20,39 +20,39 @@ section Rep
 variable {K : Type} [Group K] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-The claim follows from `(LinearIsometry.mk (σ k).toLinearMap (hiso k)).inner_map_map a b`.
+A detailed English derivation is pending.
 -/
 theorem inner_rep {σ : K →* (H →L[ℂ] H)} (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (k : K) (a b : H) :
     ⟪σ k a, σ k b⟫_ℂ = ⟪a, b⟫_ℂ :=
   (LinearIsometry.mk (σ k).toLinearMap (hiso k)).inner_map_map a b
 
 /- English proof (translation)
-Rewrite using `[map_mul, ContinuousLinearMap.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_mul_apply (σ : K →* (H →L[ℂ] H)) (a b : K) (x : H) : σ (a * b) x = σ a (σ b x) := by
   rw [map_mul, ContinuousLinearMap.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← rep_mul_apply, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_inv_apply (σ : K →* (H →L[ℂ] H)) (k : K) (x : H) : σ k (σ k⁻¹ x) = x := by
   rw [← rep_mul_apply, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← inner_rep hiso k (σ k⁻¹ a) b, rep_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_rep_inv {σ : K →* (H →L[ℂ] H)} (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (k : K) (a b : H) :
     ⟪σ k⁻¹ a, b⟫_ℂ = ⟪a, σ k b⟫_ℂ := by
   rw [← inner_rep hiso k (σ k⁻¹ a) b, rep_inv_apply]
 
 /- English proof (translation)
-Use `haveI : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 hS0`. Take `⟨c, hc'⟩` from `Module.End.exists_eigenvalue (A.restrict hA)`. Take `⟨v, hv⟩` from `hc'.exists_hasEigenvector`. Establish `hv1 : A (v : H) = c • (v : H)` using `congrArg Subtype.val hv.apply_eq_smul`. Set `T : Submodule ℂ H` to `S ⊓ LinearMap.ker (A - c • LinearMap.id)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ x, x ∈ T ↔ x ∈ S ∧ A x = c • x` using `fun x => by`. Simplify using `[T, sub_eq_zero]`. Establish `hT : T ≤ S` using `inf_le_left`. Establish `hst : ∀ k, ∀ x ∈ T, σ k x ∈ T` using `fun k x hx => by`. Take `⟨h1, h2⟩` from `(hmem x).1 hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hmem _).2 ⟨hS k x h1, by rw [hc k x h1, h2, map_smul]⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hirr T hT hst with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: (v : H) ∈ T` using `(hmem _).2 ⟨v.2, hv1⟩`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hv.2 (Subtype.ext this)`. Introduce `x hx`. Conclude with `((hmem x).1 (h ▸ hx)).2`.
+A detailed English derivation is pending.
 -/
 theorem schur_scalar (σ : K →* (H →L[ℂ] H)) (S : Submodule ℂ H) [FiniteDimensional ℂ S] (hS0 : S ≠ ⊥)
     (hS : ∀ k, ∀ x ∈ S, σ k x ∈ S)
@@ -80,9 +80,7 @@ theorem schur_scalar (σ : K →* (H →L[ℂ] H)) (S : Submodule ℂ H) [Finite
     exact ((hmem x).1 (h ▸ hx)).2
 
 /- English proof (translation)
-Take `⟨S, ⟨hle, hne, hst⟩, hmin⟩` from `(measure fun T : Submodule ℂ H => Module.finrank ℂ T).wf.has_min {T | T ≤ S₀ ∧ T ≠ ⊥ ∧ ∀ k, ∀ x ∈ T, σ k x ∈ T} ⟨S₀, le_rfl, h0, hS₀⟩`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hle`. Use `⟨S, inferInstance, hne, hst, fun T hT hTs => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
-
-Conclude with `hmin T ⟨hT.trans hle, hcon.1, hTs⟩ (Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hT hcon.2))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_minimal_stable (σ : K →* (H →L[ℂ] H)) (S₀ : Submodule ℂ H) [FiniteDimensional ℂ S₀] (h0 : S₀ ≠ ⊥)
     (hS₀ : ∀ k, ∀ x ∈ S₀, σ k x ∈ S₀) :
@@ -105,13 +103,11 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : K →* (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `hi : ∀ x, Integrable (fun k => ⟪σ k s, x⟫_ℂ • σ k u) μ` using `fun x => integrable_cont (((hc s).inner continuous_const).smul (hc u))`. Set `L : H →ₗ[ℂ] H` to `{ toFun := fun x => ∫ k, ⟪σ k s, x⟫_ℂ • σ k u ∂μ map_add' := fun a b => by`. Simplify using `only [inner_add_right, add_smul]`. Conclude with `integral_add (hi a) (hi b)`. Use the proof step `map_smul' := fun c b => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [inner_smul_right, RingHom.id_apply, mul_smul]`. Conclude with `integral_smul _ _ }`. Use `⟨L.mkContinuous (‖s‖ * ‖u‖) fun x => ?_, fun x => rfl⟩` and prove the remaining obligations. Establish `hb : ∀ k, ‖⟪σ k s, x⟫_ℂ • σ k u‖ ≤ ‖s‖ * ‖u‖ * ‖x‖` using `fun k => by`. Rewrite using `[norm_smul, hiso]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `norm_inner_le_norm (𝕜 := ℂ) (σ k s) x` as an intermediate fact. Rewrite `this` using `[hiso]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le_const (μ := μ) (f := fun k => ⟪σ k s, x⟫_ℂ • σ k u) (C := ‖s‖ * ‖u‖ * ‖x‖) (Filter.Eventually.of_forall hb)` as an intermediate fact. Use `show ‖∫ k, ⟪σ k s, x⟫_ℂ • σ k u ∂μ‖ ≤ _`.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rankOneAvg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) (s u : H) :
     ∃ B : H →L[ℂ] H, ∀ x, B x = ∫ k, ⟪σ k s, x⟫_ℂ • σ k u ∂μ := by
@@ -140,7 +136,7 @@ theorem exists_rankOneAvg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, 
 variable [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Establish `hi : Integrable (fun k => ⟪σ k s, x⟫_ℂ • σ k u) μ` using `integrable_cont (((hc s).inner continuous_const).smul (hc u))`. Rewrite using `[hB, hB, ← (σ g).integral_comp_comm hi, ← integral_mul_left_eq_self (μ := μ) (fun k => ⟪σ k s, σ g x⟫_ℂ • σ k u) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show ⟪σ (g * k) s, σ g x⟫_ℂ • σ (g * k) u = σ g (⟪σ k s, x⟫_ℂ • σ k u)`. Rewrite using `[rep_mul_apply, rep_mul_apply, inner_rep hiso, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankOneAvg_comm (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) {s u : H}
     {B : H →L[ℂ] H} (hB : ∀ x, B x = ∫ k, ⟪σ k s, x⟫_ℂ • σ k u ∂μ) (g : K) (x : H) :
@@ -154,19 +150,19 @@ theorem rankOneAvg_comm (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Co
   rw [rep_mul_apply, rep_mul_apply, inner_rep hiso, map_smul]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_rankOneAvg μ hiso hc s t`. Establish `hScl : CompleteSpace S` using `FiniteDimensional.complete ℂ S`. Establish `hi : ∀ x, Integrable (fun k => ⟪σ k s, x⟫_ℂ • σ k t) μ` using `fun x => integrable_cont (((hc s).inner continuous_const).smul (hc t))`. Establish `hin : ∀ w x, ⟪w, B x⟫_ℂ = ∫ k, ⟪σ k s, x⟫_ℂ * ⟪w, σ k t⟫_ℂ ∂μ` using `fun w x => by`. Rewrite using `[hB, ← integral_inner (hi x)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner_smul_right]`. Establish `hBS : ∀ x, B x ∈ S` using `fun x => by`. Rewrite using `[← Submodule.orthogonal_orthogonal S, Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[hin]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ k, ⟪w, σ k t⟫_ℂ = 0` using `fun k => Submodule.inner_left_of_mem_orthogonal (hS k t ht) hw`. Simplify using `[this]`. Take `⟨c, hcS⟩` from `schur_scalar σ S hS0 hS hirr (B : H →ₗ[ℂ] H) (fun x _ => hBS x) fun k x _ => rankOneAvg_comm μ hiso hc hB k x`. Use `set b := stdOrthonormalBasis ℂ S`. Establish `h1 : ∑ i, ⟪(b i : H), B (b i)⟫_ℂ = (Module.finrank ℂ S : ℂ) * c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ i, ⟪(b i : H), B (b i)⟫_ℂ = c` using `fun i => by`. Establish `e` using `hcS (b i) (b i).2`. Establish `e' : B (b i : H) = c • (b i : H)` using `e`. Establish `e1 : ⟪b i, b i⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]; simp`. Rewrite using `[e', inner_smul_right, ← Submodule.coe_inner, e1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Establish `h2 : ∑ i, ⟪(b i : H), B (b i)⟫_ℂ = ⟪s, t⟫_ℂ`. Simplify using `only [hin]`. Rewrite using `[← integral_finsetSum _ fun i _ => integrable_cont (((hc s).inner continuous_const).mul (continuous_const.inner (hc t)))]`. Establish `: ∀ k, ∑ i, ⟪σ k s, (b i : H)⟫_ℂ * ⟪(b i : H), σ k t⟫_ℂ = ⟪s, t⟫_ℂ` using `fun k => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.sum_inner_mul_inner ⟨σ k s, hS k s hs⟩ ⟨σ k t, hS k t ht⟩` as an intermediate fact. Simplify using `only [Submodule.coe_inner] at this`. Rewrite using `[this, inner_rep hiso]`. Simplify using `[this]`. Establish `hs' : B s = c • s` using `hcS s hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB, hs', smul_smul, h1.symm.trans h2]`.
+A detailed English derivation is pending.
 -/
 theorem schur_avg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) (S : Submodule ℂ H)
     [FiniteDimensional ℂ S] (hS0 : S ≠ ⊥) (hS : ∀ k, ∀ x ∈ S, σ k x ∈ S)
@@ -209,11 +205,11 @@ theorem schur_avg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuo
   rw [← hB, hs', smul_smul, h1.symm.trans h2]
 
 /- English proof (translation)
-Establish `hE' : ∀ u, E u = ∫ k, (d * ⟪σ k s, s⟫_ℂ) • σ k u ∂μ` using `hE`. Use extensionality with `u`. Take `⟨B, hB⟩` from `exists_rankOneAvg μ hiso hc s u`. Establish `h1 : E u = d • B s`. Rewrite using `[hE, hB, ← integral_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [smul_smul]`. Establish `hi : Integrable (fun k => (d * ⟪σ k s, s⟫_ℂ) • σ k s) μ` using `integrable_cont ((continuous_const.mul ((hc s).inner continuous_const)).smul (hc s))`. Establish `h2 : E (B s) = B s` using `by conv_rhs => rw [← hs, hE s, ← B.integral_comp_comm hi]`. Rewrite using `[hE]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show (d * ⟪σ k s, s⟫_ℂ) • σ k (B s) = B ((d * ⟪σ k s, s⟫_ℂ) • σ k s)`. Rewrite using `[map_smul, rankOneAvg_comm μ hiso hc hB]`. Rewrite using `[ContinuousLinearMap.mul_apply, h1, map_smul, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_idem (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) {s : H} {d : ℂ}
     {E : H →L[ℂ] H} (hE : ∀ u, E u = ∫ k, (d * ⟪σ k s, s⟫_ℂ) • σ k u ∂μ) (hs : E s = s) : E * E = E := by
@@ -235,9 +231,9 @@ theorem avg_idem (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuou
   rw [ContinuousLinearMap.mul_apply, h1, map_smul, h2]
 
 /- English proof (translation)
-Establish `hi : ∀ x, Integrable (fun k => ((d : ℂ) * ⟪σ k s, s⟫_ℂ) • σ k x) μ` using `fun x => integrable_cont ((continuous_const.mul ((hc s).inner continuous_const)).smul (hc x))`. Rewrite using `[← inner_conj_symm, hE u, hE w, ← integral_inner (hi u), ← integral_inner (hi w), ← integral_conj, ← integral_inv_eq_self (fun k => ⟪u, ((d : ℂ) * ⟪σ k s, s⟫_ℂ) • σ k w⟫_ℂ) μ]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show conj ⟪w, ((d : ℂ) * ⟪σ k s, s⟫_ℂ) • σ k u⟫_ℂ = ⟪u, ((d : ℂ) * ⟪σ k⁻¹ s, s⟫_ℂ) • σ k⁻¹ w⟫_ℂ`. Establish `h1 : ⟪σ k u, w⟫_ℂ = ⟪u, σ k⁻¹ w⟫_ℂ` using `by simpa using inner_rep_inv hiso k⁻¹ u w`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_conj_symm, inner_smul_left, inner_smul_right, inner_rep_inv hiso k s s, h1, map_mul, Complex.conj_ofReal, inner_conj_symm]`.
+A detailed English derivation is pending.
 -/
 theorem avg_symm [μ.IsInvInvariant] (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) {s : H}
     {d : ℝ} {E : H →L[ℂ] H} (hE : ∀ u, E u = ∫ k, ((d : ℂ) * ⟪σ k s, s⟫_ℂ) • σ k u ∂μ) (u w : H) :
@@ -255,11 +251,9 @@ theorem avg_symm [μ.IsInvInvariant] (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (h
 end Avg
 
 /- English proof (translation)
-Set `B` to `Module.finBasis ℂ S`. Use `⟨fun i x => d * ⟪σ x (B i), s⟫_ℂ, fun i => continuous_const.mul ((hc _).inner continuous_const), fun k => ?_⟩` and prove the remaining obligations. Use `⟨fun i => (starRingEnd ℂ) (B.repr ⟨σ k⁻¹ s, hS _ s hs⟩ i), fun x => ?_⟩` and prove the remaining obligations. Establish `e1 : σ k⁻¹ s = ∑ i, B.repr ⟨σ k⁻¹ s, hS _ s hs⟩ i • (B i : H)`. Use `congrArg Subtype.val (B.sum_repr ⟨σ k⁻¹ s, hS _ s hs⟩)` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Use `show d * ⟪σ (x * k⁻¹) s, s⟫_ℂ = _`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply]`. Use `conv_lhs => rw [e1]`.
-
-Simplify using `only [map_sum, map_smul, sum_inner, inner_smul_left, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rFin_coef {K : Type} [Group K] [TopologicalSpace K] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : K →* (H →L[ℂ] H)} (hc : ∀ v, Continuous fun x => σ x v) (S : Submodule ℂ H) [FiniteDimensional ℂ S]
@@ -279,17 +273,17 @@ theorem rFin_coef {K : Type} [Group K] [TopologicalSpace K] {H : Type} [NormedAd
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨S₀, hfd, hne, hst⟩ : ∃ S₀ : Submodule ℂ H, FiniteDimensional ℂ S₀ ∧ S₀ ≠ ⊥ ∧ ∀ k, ∀ x ∈ S₀, σ k x ∈ S₀ := by`. Establish `hd` using `GlobalTheory.CompactRep.dense_finite_vectors K H σ hiso hc`. Take `⟨x, hx⟩` from `exists_ne (0 : H)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hv0⟩ : ∃ v ∈ {v : H | ∃ S : Submodule ℂ H, FiniteDimensional ℂ S ∧ v ∈ S ∧ ∀ k, ∀ x ∈ S, σ k x ∈ S}, v ≠ 0 := by`. Take `⟨v, hv, hvm⟩` from `hd.inter_open_nonempty {0}ᶜ isOpen_compl_singleton ⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, hvm, hv⟩`. Take `⟨S, hS, hvS, hSt⟩` from `hv`. Conclude with `⟨S, hS, fun h => hv0 (by simpa [h] using hvS), hSt⟩`. Take `⟨S, hfd', hS0, hS, hirr⟩` from `exists_minimal_stable σ S₀ hne hst`. Take `⟨s₀, hs₀, hs₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set s : H := ((‖s₀‖ : ℂ)⁻¹) • s₀ with hs_def`. Establish `hs : s ∈ S` using `S.smul_mem _ hs₀`. Establish `hn : ‖s‖ = 1`. Rewrite using `[hs_def, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hs₀0)]`. Establish `hss : ⟪s, s⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hn]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `fun h => by simp [h] at hn`. Use `set d : ℕ := Module.finrank ℂ S with hd`. Establish `hce : Continuous fun k => (((d : ℝ) : ℂ) * ⟪σ k s, s⟫_ℂ)` using `continuous_const.mul ((hc s).inner continuous_const)`. Take `⟨E, hE⟩` from `exists_avg (μ := μ) hiso hc hce`. Establish `hEs : E s = s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `schur_avg μ hiso hc S hS0 hS hirr hs hs` as an intermediate fact. Rewrite `this` using `[hss, one_smul, ← integral_smul]`. Rewrite using `[hE]`. Use `Eq.trans (integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)) this` and prove the remaining obligations. Simplify using `only [smul_smul, Complex.ofReal_natCast, hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, Module.finrank ℂ S, E, hce, rFin_coef hc S hS hs _, hE, fun h => hs0 ?_, avg_idem μ hiso hc hE hEs, avg_symm μ hiso hc hE⟩` and prove the remaining obligations. Rewrite using `[← hEs, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_projAvg (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [T2Space K]
     [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsProbabilityMeasure μ]
@@ -329,7 +323,7 @@ theorem exists_projAvg (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalG
   rw [← hEs, h]; rfl
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, M, h4⟩` from `h`. Use `⟨h0, h1, h2, fun T hT => h3 T fun g => hT _, M, fun g => ?_⟩` and prove the remaining obligations. Simplify using `using h4 fun i => φ (g i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPIProj_of_equiv {G G' H : Type} [Group G] [Group G'] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (φ : G ≃* G') (ρ : G →* (H →L[ℂ] H)) {E : H →L[ℂ] H} (h : IsPIProj (ρ.comp φ.symm.toMonoidHom) E) :
@@ -341,19 +335,17 @@ theorem isPIProj_of_equiv {G G' H : Type} [Group G] [Group G'] [NormedAddCommGro
 open PI.UpqRep in
 
 /- English proof (translation)
-Take `⟨U, hU, hiwa⟩` from `iwasawa_decomposition_unitary_group n ε`. Set `μ : Measure (KG ε)` to `GlobalTheory.haarProb _`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨e, d, E, he, hfin, hE, h0, h1, h2⟩` from `exists_projAvg (KG ε) μ H (ρ.comp (KG ε).subtype) (fun k u => hiso k u) (fun u => (hc u).comp continuous_subtype_val)`. Use `choose st hst using fun g : UJ ε => exists_elt (conjTranspose_mem (m := toM g) g.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Tr : Set (UJ ε)` to `{s | (stdU ε hU s).BlockTriangular id}`. Establish `hgood : IsGood st Tr (stdU ε hU)`. Use `⟨(continuous_const.matrix_mul continuous_toM).matrix_mul continuous_const, fun g => ?_, Fin.val, Fin.val_injective, fun s hs i j hij => hs hij⟩` and prove the remaining obligations. Use `show Uᴴ * toM (st g) * U = (Uᴴ * toM g * U)ᴴ`. Rewrite using `[hst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_assoc]`. Establish `hinj : Function.Injective (stdU ε hU)`. Introduce `a b hab`. Establish `h1 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hU`. Establish `key : ∀ g : UJ ε, U * stdU ε hU g * Uᴴ = toM g` using `fun g => by show U * (Uᴴ * toM g * U) * Uᴴ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `injective_coeMatrix ε ((key a).symm.trans (hab ▸ key b))`. Establish `hKS : ∀ g : UJ ε, ∃ k ∈ KG ε, ∃ s ∈ Tr, g = k * s`. Introduce `g`. Take `⟨k, hk, s, hs, hg, ht⟩` from `hiwa (toM g) g.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨k, rfl⟩` from `exists_elt (Kset_sub hk)`. Take `⟨s, rfl⟩` from `exists_elt hs`. Conclude with `⟨k, hk, s, ht, injective_coeMatrix ε hg⟩`. Establish `hPI : ∀ g : Fin (d ^ 2 + 1) → UJ ε, stdPoly E (fun i => ρ (g i)) = 0` using `fun g => transfer_holds (UJ ε) (KG ε) μ st Tr (Fin n) (stdU ε hU) hgood hinj e he _ g (fun ι _ _ ρ' hρ' E' hE' => goodPI_of small_irreducible_representation (UJ ε) (KG ε) μ st Tr hKS e _ _ he hfin (Nat.lt_succ_self _) ι ρ' hρ' E' hE' g) H ρ hc E hE`. Use `⟨E, h0, h1, h2, fun T hT => ?_, _, hPI⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `u`. Use `show T (E u) = E (T u)`. Establish `hint : Integrable (fun k : KG ε => e k • (ρ.comp (KG ε).subtype) k u) μ` using `integrable_cont (he.smul ((hc u).comp continuous_subtype_val))`. Rewrite using `[hE, hE, ← T.integral_comp_comm hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
-
-Use `show T (e k • ρ k u) = e k • ρ k (T u)`. Use `DFunLike.congr_fun (hT k) u` as an intermediate fact. Rewrite using `[map_smul]`. Conclude with `congrArg (e k • ·) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPIProj_UJ {n : ℕ} (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [Nontrivial H] (ρ : UJ ε →* (H →L[ℂ] H)) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
@@ -403,9 +395,9 @@ theorem exists_isPIProj_UJ {n : ℕ} (ε : Fin n → Bool) (H : Type) [NormedAdd
   exact congrArg (e k • ·) this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ w H _ _ _ _ ρ hρ`. Take `⟨c, ε, hb⟩` from `GlobalTheory.AdelicU.Frames.exists_arch_frame hCM hJ w`. Take `⟨τ⟩ : Nonempty (GlobalTheory.AdelicU.EmbOver E w)` from `inferInstance`. Set `φ : GlobalTheory.AdelicU.GArch σ J w ≃ₜ* PI.UpqRep.UJ ε` to `GlobalTheory.FrameIsoReal.frameEquiv σ J hCM τ c hb`. Take `⟨P, hP⟩` from `exists_isPIProj_UJ ε H (ρ.comp φ.symm.toMulEquiv.toMonoidHom) (fun g v => hρ.norm_apply _ v) (fun v => (hρ.continuous_apply v).comp φ.symm.continuous)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P, isPIProj_of_equiv φ.toMulEquiv ρ hP⟩`.
+Supply the required witnesses or components.
 -/
 theorem archPI : StArchPI := by
   intro F E _ _ _ _ _ σ hCM n J hJ w H _ _ _ _ ρ hρ

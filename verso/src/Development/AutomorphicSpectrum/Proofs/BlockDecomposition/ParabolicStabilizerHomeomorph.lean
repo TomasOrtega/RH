@@ -19,13 +19,13 @@ Both sides reduce to the same expression.
 theorem uMat_one' : uMat (1 : UJ ε) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul', mul_inv_cancel, uMat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_mul_inv' (g : UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← uMat_mul', mul_inv_cancel, uMat_one']
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul', inv_mul_cancel, uMat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_inv_mul' (g : UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   rw [← uMat_mul', inv_mul_cancel, uMat_one']

@@ -17,21 +17,19 @@ open GlobalTheory.ZM
 namespace GlobalTheory.EllipticLevel
 
 /- English proof (translation)
-Use `set H : Subgroup G := (powMonoidHom k : G →* G).ker with hH`. Establish `memH : ∀ x : G, x ∈ H ↔ x ^ k = 1` using `fun x => by`. Rewrite using `[hH, MonoidHom.mem_ker, powMonoidHom_apply]`. Establish `torsH : ∀ x : H, (x : G) ^ k = 1` using `fun x => (memH x).1 x.2`. Set `f : H → H → Rˣ` to `fun x y => (hW x y (torsH x) (torsH y)).exists.choose`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ x y : H, W x y (f x y)` using `fun x y => (hW x y (torsH x) (torsH y)).exists.choose_spec`. Establish `uniq : ∀ (x y : H) (c : Rˣ), W x y c → c = f x y` using `fun x y c h => (hW x y (torsH x) (torsH y)).unique h (hf x y)`. Establish `fswap : ∀ x y : H, f y x = (f x y)⁻¹` using `fun x y => (uniq y x _ (hsymm _ _ _ (hf x y))).symm`. Establish `fmulL : ∀ x x' y : H, f (x * x') y = f x y * f x' y` using `fun x x' y => (uniq _ _ _ (hmul _ _ _ _ _ (hf x y) (hf x' y))).symm`. Establish `fmulR : ∀ x y y' : H, f x (y * y') = f x y * f x y'` using `fun x y y' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← uniq x (y * y') _ (hsymm _ _ _ (hmul _ _ _ _ _ (hf y x) (hf y' x))), fswap x y, fswap x y', mul_inv, inv_inv, inv_inv]`. Set `e : H →* H →* Rˣ` to `MonoidHom.mk' (fun x => MonoidHom.mk' (f x) (fmulR x)) (fun x x' => by`. Use extensionality with `y`. Simplify using `only [MonoidHom.mk'_apply, MonoidHom.mul_apply]`. Rewrite using `[fmulL])`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : ∀ x y : H, e x y = f x y` using `fun _ _ => rfl`. Establish `hcH : ∀ d : ℕ, d ∣ k → Nat.card {x : H // x ^ d = 1} = d ^ (2 * g)`. Introduce `d hd`. Take `⟨m, hm⟩` from `hd`. Establish `eqv : {x : H // x ^ d = 1} ≃ {x : G // x ^ d = 1}` using `{ toFun := fun x => ⟨x.1, by simpa using congrArg Subtype.val x.2⟩ invFun := fun y => ⟨⟨y.1, (memH _).2 (by rw [hm, pow_mul, y.2, one_pow])⟩, Subtype.ext (by simpa using y.2)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr eqv]`. Conclude with `hc d ⟨m, hm⟩`. Establish `hkH : ∀ x : H, x ^ k = 1` using `fun x => Subtype.ext (by simpa using torsH x)`. Establish `halt' : ∀ x : H, e x x = 1` using `fun x => by`. Rewrite using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(uniq x x 1 (halt x (torsH x))).symm`. Establish `hnd' : ∀ x : H, (∀ y, e x y = 1) → x = 1`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hnd x (torsH x) (fun y hy => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hf x ⟨y, (memH y).2 hy⟩`. Rewrite `h1` using `[← heq, hx]`. Then use the resulting hypothesis. Take `⟨v, hv⟩` from `GlobalTheory.exists_stdSymp_of_alternating_pairing k g H R ze hk hz hkH hcH e halt' hnd'`. Use `⟨fun i => (v i : G), fun i => torsH (v i), fun i j => ?_⟩` and prove the remaining obligations. Establish `h2` using `hf (v i) (v j)`.
-
-Rewrite `h2` using `[← heq, hv i j]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_stdSymp_of_rel {k g : ℕ} (hk : 0 < k) {G R : Type} [CommGroup G] [CommRing R] [IsDomain R]
     (hc : ∀ d, d ∣ k → Nat.card {x : G // x ^ d = 1} = d ^ (2 * g)) {ze : Rˣ} (hz : IsPrimitiveRoot ze k)
@@ -92,13 +90,13 @@ theorem exists_stdSymp_of_rel {k g : ℕ} (hk : 0 < k) {G R : Type} [CommGroup G
   rwa [← heq, hv i j] at h2
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hmn, -, -, -, hw, hwn, -⟩` from `hL`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero (by rintro rfl; exact hk Nat.cast_zero)`. Use `P.isAb.comm` as an intermediate fact. Establish `hc : ∀ d, d ∣ k → Nat.card {x : Out.baseOver (Sp K) ⟶ P.A // x ^ d = 1} = d ^ (2 * P.g)`. Introduce `d hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0 : 0 < d` using `Nat.pos_of_dvd_of_pos hd hk0`. Establish `hdK : (d : K) ≠ 0`. Take `⟨m, rfl⟩` from `hd`. Introduce `h0`. Apply `hk` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Nat.cast_mul, h0, zero_mul]`. Conclude with `((hmn (Sp K) P d hd0).2.2.2.2 K (𝟙 _) hdK)`. Establish `hleft : ∀ a, (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a) = a` using `fun a => by simp`. Establish `hleft' : ∀ a, (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom a) = a` using `fun a => by simp`. Use `haveI : IsDomain Γ(Sp K, ⊤) := Function.Injective.isDomain (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (Function.LeftInverse.injective hleft')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : IsPrimitiveRoot (unitOn ze) k` using `hze.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom) (Units.map_injective (Function.LeftInverse.injective hleft))`. Establish `hwB` using `hw (Sp K) P k (Out.baseOver (Sp K))`. Take `⟨v, hv1, hv2⟩` from `exists_stdSymp_of_rel (G := Out.baseOver (Sp K) ⟶ P.A) (R := Γ(Sp K, ⊤)) hk0 hc hz' (fun x y c => Out.WeilIs P.A P.L k x y c) hwB.1 hwB.2.1 hwB.2.2.1 (fun _ _ _ h => GlobalTheory.CommPairing.weilIs_symm P.isLB h) (fun x hx h => hwn K P k hk x hx h)`. Conclude with `⟨v, hv1, hv2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_symplectic_system (hL : Out.Laws) {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (k : ℕ)
     (hk : (k : K) ≠ 0) (ze : Kˣ) (hze : IsPrimitiveRoot ze k) :

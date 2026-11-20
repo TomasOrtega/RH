@@ -15,13 +15,13 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hT`. Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x0, (D.fm u).fv 0 v c x0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Apply `(D.fm u).fv_ne 0 v c` to reduce the goal to its premises. Use extensionality with `x0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Assume the negation of the conclusion as `hx`. Conclude with `h ⟨x0, by rwa [LinearMap.zero_apply] at hx⟩`. Take `⟨z, hz⟩` from `T.lv0.pr_surj v c (((D.fm u).fv 0 v c x0)⁻¹ • x0)`. Establish `hx : (D.fm u).fv 0 v c (T.lv0.pr v c z) = 1`. Rewrite using `[hz, map_smul, smul_eq_mul, inv_mul_cancel₀ hx0]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTz : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left (CrossDiaZero.dnk_tld T c z.1 z.2)`. Establish `hte` using `T.lv0.te v c z hx hTz`. Establish `hsq : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z.1 ∈ T.atT.Pv v • Lk T.atT 0 (Nat.zero_le _) v c`. Establish `h1 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z.1 ∈ (T.atT.Pv v ^ 2) • Ld D u 0 (Nat.zero_le _) c` using `Submodule.smul_mem_smul hT z.2`. Rewrite `h1` using `[pow_two, Submodule.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mono le_rfl le_sup_right h1`. Establish `h0` using `(T.lv0.prk_ker v c ⟨_, hTz⟩).2 hsq`. Rewrite `h0` using `[hte]`. Conclude with `(D.fm u).te_ne 0 v c h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_notin_sq (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) :
     (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∉ T.atT.Pv v ^ 2 := by
@@ -51,13 +51,11 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hle : Ideal.span {(((D.mem u).A.T : ℕ) : 𝓞 D.host.E)} ≤ T.atT.Pv v` using `(Ideal.span_singleton_le_iff_mem _).2 (bwA_T_mem_Pv (D := D) (u := u) (A := T.atT) (v := v))`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hJP : ¬ J ≤ T.atT.Pv v`. Introduce `h`. Apply `t_notin_sq T v c` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : Ideal.span {(((D.mem u).A.T : ℕ) : 𝓞 D.host.E)} ≤ T.atT.Pv v ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `h2 (Ideal.subset_span rfl)`. Take `⟨s, hsJ, hsP⟩` from `Set.not_subset.1 hJP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, hsP, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hm : s * p ∈ Ideal.span {(((D.mem u).A.T : ℕ) : 𝓞 D.host.E)}`. Rewrite using `[hJ, mul_comm s p]`. Conclude with `Ideal.mul_mem_mul hp hsJ`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 hm`.
-
-Conclude with `⟨e, he.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_Pv_mul_mem_span_T (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) :
     ∃ s : 𝓞 D.host.E, s ∉ T.atT.Pv v ∧ ∀ p ∈ T.atT.Pv v, ∃ e : 𝓞 D.host.E,

@@ -9,17 +9,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.Cyc
 
 /- English proof (translation)
-Introduce `l _ act χ _ _ K m d M U Dm g J hD hH`. Take `⟨hdet, -, -, -, hrel⟩` from `hD`. Take `⟨e, u, hli, hu, hfix⟩` from `hH`. Establish `hDe : ∀ v : Fin d → PadicComplex l, Dm.mulVec (Dm⁻¹.mulVec v) = v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hinj : ∀ v w : Fin d → PadicComplex l, Dm.mulVec v = Dm.mulVec w → v = w`. Introduce `v w h`. Establish `h2` using `congrArg (fun x => Dm⁻¹.mulVec x) h`. Simplify `h2` using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun k => Dm⁻¹.mulVec (e k), u, ?_, hu, ?_⟩` and prove the remaining obligations. Use `LinearIndependent.of_comp Dm.mulVecLin ?_` and prove the remaining obligations. Establish `: (Dm.mulVecLin ∘ fun k => Dm⁻¹.mulVec (e k)) = e`. Use function extensionality and compare the values at `k`. Conclude with `hDe (e k)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hli`. Introduce `σ hσ k`. Apply `hinj` to reduce the goal to its premises. Establish `hmap : (Dm.map (act σ)).mulVec (fun a => act σ (Dm⁻¹.mulVec (e k) a)) = fun a => act σ (e k a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Use `conv_rhs => rw [← hDe (e k)]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`. Establish `h1` using `hfix σ hσ k`. Unfold `twAct at h1 ⊢`.
-
-Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, hrel σ hσ, ← Matrix.mulVec_mulVec, hmap, h1, hDe]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htBasis_of_isDec : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ (m d : ℕ) (M U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (Dm : Matrix (Fin d) (Fin d) (PadicComplex l)) (g : GQ l) (J : Set ℤ), IsDec act χ K m M Dm U g → HTBasis act χ (Gj K m) M J → HTBasis act χ (Gj K m) U J := by
   intro l _ act χ _ _ K m d M U Dm g J hD hH

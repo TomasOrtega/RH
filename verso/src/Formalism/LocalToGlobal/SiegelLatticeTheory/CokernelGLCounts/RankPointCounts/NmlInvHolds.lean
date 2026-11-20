@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 
 /- English proof (translation)
-The claim follows from `nmlInv_of NmlLine_holds Formalism.L2.SG.NGCut.NormalIntegrality.NmlInt_holds NmlSep_holds`.
+A detailed English derivation is pending.
 -/
 theorem NmlInv_holds : Formalism.L2.SG.NGCut.NormalInvariants.NmlInv :=
   nmlInv_of NmlLine_holds Formalism.L2.SG.NGCut.NormalIntegrality.NmlInt_holds NmlSep_holds

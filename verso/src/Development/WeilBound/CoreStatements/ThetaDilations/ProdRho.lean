@@ -17,7 +17,7 @@ namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h` using `InfinitePlace.prod_eq_abs_norm a`. Rewrite using `[← Rat.cast_abs, ← h]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[IsTotallyReal.mult_eq, pow_one, ← w.norm_embedding_eq, ← hρ, Complex.norm_real, Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_rho {ρ : InfinitePlace F → (F →+* ℝ)} (hF : IsTotallyReal F)
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) (a : F) : ∏ w, |ρ w a| = |((Algebra.norm ℚ a : ℚ) : ℝ)| := by
@@ -27,7 +27,7 @@ theorem prod_rho {ρ : InfinitePlace F → (F →+* ℝ)} (hF : IsTotallyReal F)
   rw [IsTotallyReal.mult_eq, pow_one, ← w.norm_embedding_eq, ← hρ, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-The claim follows from `Matrix.SpecialLinearGroup.ext _ _ fun i j => by show f (nMat b i j) = _ fin_cases i <;> fin_cases j <;> simp [nMat]`.
+A detailed English derivation is pending.
 -/
 theorem map_nMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (b : R) :
     Matrix.SpecialLinearGroup.map f (nMat b) = nMat (f b) :=
@@ -36,7 +36,7 @@ theorem map_nMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (b : R) 
     fin_cases i <;> fin_cases j <;> simp [nMat]
 
 /- English proof (translation)
-The claim follows from `Matrix.SpecialLinearGroup.ext _ _ fun i j => by show f ((wMat : SL(2, R)) i j) = _ fin_cases i <;> fin_cases j <;> simp [wMat]`.
+A detailed English derivation is pending.
 -/
 theorem map_wMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) : Matrix.SpecialLinearGroup.map f wMat = wMat :=
   Matrix.SpecialLinearGroup.ext _ _ fun i j => by
@@ -44,7 +44,7 @@ theorem map_wMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) : Matrix
     fin_cases i <;> fin_cases j <;> simp [wMat]
 
 /- English proof (translation)
-The claim follows from `Matrix.SpecialLinearGroup.ext _ _ fun i j => by show f (mMat a i j) = _ fin_cases i <;> fin_cases j <;> simp [mMat]`.
+A detailed English derivation is pending.
 -/
 theorem map_mMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : Rˣ) :
     Matrix.SpecialLinearGroup.map f (mMat a) = mMat (Units.map (f : R →* S) a) :=
@@ -55,7 +55,7 @@ theorem map_mMat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : Rˣ
 def uA (a : Fˣ) : (A F)ˣ := Units.map (algebraMap F (A F) : F →* A F) a
 
 /- English proof (translation)
-Establish `h2` using `(GlobalTheory.T.adelic_haar_measure_linear_change F lf hlf h1 ι).2 (uA a) s hs`. Establish `h3` using `(GlobalTheory.T.adelic_haar_measure_scaling F lf hlf h1).1 a a.ne_zero _ (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.1.measurableSet`. Rewrite `h3` using `[h1, mul_one]`. Rewrite using `[muF, Measure.smul_apply, Measure.smul_apply, h2, smul_eq_mul, smul_eq_mul, mul_left_comm, ← pow_mul, ENNReal.ofReal_pow (by positivity), hc, mul_comm M 2]`. Conclude with `congrArg (fun t => t ^ (2 * M) * _) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mod_rat [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)} (hlf : lf.IsAddHaarMeasure)
     (h1 : lf (Oh F) = 1) {ι : Type} [Fintype ι] [DecidableEq ι] {M : ℕ} (hc : Fintype.card ι = 2 * M)
@@ -70,23 +70,23 @@ theorem mod_rat [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)} 
   exact congrArg (fun t => t ^ (2 * M) * _) h3
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.T.weil_representation_quadratic_datum F lf hlf h1 ψ hψ ι B hQ.2.2.1 hQ.2.2.2.1`. Establish `hmob` using `GlobalTheory.T.mobius_action_upper_half_plane F ρ`. Use `set G : SL(2, F) → Prop := fun γ => ∃ T, Impl ψ (hf F) (Bf B) (muF B lf) (Matrix.SpecialLinearGroup.map (algebraMap F (A F)) γ) T ∧ ∀ φ τ, SB φ → (∀ w, 0 < (τ w).im) → wt M (mob ρ γ τ) * ‖𝒟 (T φ) (mob ρ γ τ)‖ = wt M τ * ‖𝒟 φ τ‖ with hG`. Establish `gmul : ∀ g g', G g → G g' → G (g * g')`. Introduce and unpack `g g' ⟨T, a1, a2⟩ ⟨T', b1, b2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T ∘ T', by rw [map_mul]; exact impl_mul a1 b1, fun φ τ hφ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[(hmob τ hτ).2.1, ← b2 φ τ hφ hτ]`. Conclude with `a2 _ _ (b1.1 φ hφ) fun w => ((hmob τ hτ).1 g' w).2`. Establish `gU : ∀ b, G (nMat b)` using `fun b => by`. Establish `e : Matrix.SpecialLinearGroup.map (algebraMap F (A F)) (nMat b) = nMat (algebraMap F (A F) b)` using `map_nMat _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, e ▸ impl_U H _, fun φ τ hφ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[(hmob τ hτ).2.2.1, (hD φ τ hφ hτ).1]`. Simplify using `[wt]`. Establish `gW : G wMat`. Establish `e : Matrix.SpecialLinearGroup.map (algebraMap F (A F)) wMat = wMat` using `map_wMat _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, e ▸ impl_fou_chiB H, fun φ τ hφ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[(hmob τ hτ).2.2.2.2, ← (hD φ τ hφ hτ).2.2.1, norm_mul, (GlobalTheory.T.archimedean_gaussian_fourier F ι M B ρ P hQ τ hτ).2.1, ← mul_assoc, wt, wt, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.neg_im, Complex.inv_im, neg_div, neg_neg, Real.sqrt_div (hτ w).le, ← Complex.norm_def, div_pow, div_eq_mul_inv]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gD : ∀ a : Fˣ, G (mMat a)` using `fun a => by`. Establish `e : Matrix.SpecialLinearGroup.map (algebraMap F (A F)) (mMat a) = mMat (uA a)` using `map_mMat _ _`. Establish `hn : (0 : ℝ) < |((Algebra.norm ℚ (a : F) : ℚ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast Algebra.norm_ne_zero_iff.2 a.ne_zero)`. Use `⟨_, e ▸ impl_D H (uA a) (by positivity) (mod_rat hlf h1 hQ.2.1 B a), fun φ τ hφ hτ => ?_⟩` and prove the remaining obligations. Establish `e2 : opD (|((Algebra.norm ℚ (a : F) : ℚ) : ℝ)|⁻¹ ^ M) (uA a : A F) φ = ((|((Algebra.norm ℚ (a : F) : ℚ) : ℝ)|⁻¹ ^ M : ℝ) : ℂ) • opD 1 (algebraMap F (A F) a) φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Simplify using `[opD, uA]`. Establish `hτ'` using `fun w => ((hmob τ hτ).1 (mMat a) w).2`. Establish `hs : SB (opD 1 (algebraMap F (A F) a) φ)` using `sb_opD H 1 (uA a) hφ`. Rewrite using `[e2, (hD _ _ hs hτ').2.2.2, (hmob τ hτ).2.2.2.1, (hD φ τ hφ hτ).2.1 a a.ne_zero, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity), ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[inv_pow, ← div_eq_mul_inv, div_eq_iff (by positivity), ← prod_rho hQ.1 hQ.2.2.2.2.1, wt, wt, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Complex.im_ofReal_mul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq_eq_abs, mul_pow, mul_comm]`. Use `show G γ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨d1, -, d3, -⟩` from `GlobalTheory.T.SL2_bruhat_decompositions_and_w_inv F γ`. Distinguish the cases in `hc : γ 1 0 = 0`. Establish `ha : γ 0 0 ≠ 0` using `fun h0 => by`. Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two, h0, hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at this`. Rewrite using `[d3 (Units.mk0 _ ha) rfl hc]`. Conclude with `gmul _ _ (gU _) (gD _)`. Rewrite using `[d1 (Units.mk0 _ hc) rfl]`. Conclude with `gmul _ _ (gmul _ _ (gmul _ _ (gU _) (gD _)) gW) (gU _)`.
+A detailed English derivation is pending.
 -/
 theorem good_ex [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)} (hlf : lf.IsAddHaarMeasure)
     (h1 : lf (Oh F) = 1) {ψ : AddChar (A F) ℂ} (hψ : IsStdChar F ψ) {ι : Type} [Fintype ι] [DecidableEq ι] {M : ℕ}
@@ -153,9 +153,9 @@ theorem good_ex [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)} 
     exact gmul _ _ (gmul _ _ (gmul _ _ (gU _) (gD _)) gW) (gU _)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ 𝒟 hD γ T hT φ τ hφ hτ`. Establish `H` using `GlobalTheory.T.weil_representation_quadratic_datum F lf hlf h1 ψ hψ ι B hQ.2.2.1 hQ.2.2.2.1`. Take `⟨T₀, a1, a2⟩` from `good_ex hlf h1 hψ hQ hD γ`. Take `⟨c, hc, e⟩` from `impl_uniq H a1 hT`. Rewrite using `[e φ hφ, (hD _ _ (a1.1 φ hφ) fun w => ((GlobalTheory.T.mobius_action_upper_half_plane F ρ τ hτ).1 γ w).2).2.2.2, norm_mul, hc, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a2 φ τ hφ hτ`.
+A detailed English derivation is pending.
 -/
 theorem inv_all : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ 𝒟 : ((ι → A F) → ℂ) → (InfinitePlace F → ℂ) → ℂ, (∀ φ τ, SB φ → (∀ w, 0 < (τ w).im) → (∀ b : F, 𝒟 (opU ψ (hf F) (Bf B) (algebraMap F (A F) b) φ) (fun w => τ w + (ρ w b : ℝ)) = 𝒟 φ τ) ∧ (∀ a : F, a ≠ 0 → 𝒟 (opD 1 (algebraMap F (A F) a) φ) (fun w => ((ρ w a : ℝ) : ℂ) ^ 2 * τ w) = 𝒟 φ τ) ∧ (cG B ρ P τ * 𝒟 (fou (chiB ψ (Bf B)) (muF B lf) φ) (fun w => -(τ w)⁻¹) = 𝒟 φ τ) ∧ ∀ c : ℂ, 𝒟 (c • φ) τ = c * 𝒟 φ τ) → ∀ (γ : SL(2, F)) T, Impl ψ (hf F) (Bf B) (muF B lf) (Matrix.SpecialLinearGroup.map (algebraMap F (A F)) γ) T → ∀ φ τ, SB φ → (∀ w, 0 < (τ w).im) → wt M (mob ρ γ τ) * ‖𝒟 (T φ) (mob ρ γ τ)‖ = wt M τ * ‖𝒟 φ τ‖ := by
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ 𝒟 hD γ T hT φ τ hφ hτ

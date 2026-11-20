@@ -10,16 +10,16 @@ open Formalism.BasicNotions NumberField
 variable (D : Car)
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL, Submodule.mem_pi, Submodule.mem_one, RingHom.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdL {N : ℕ} (x : Fin N → D.host.E) :
     x ∈ Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N ↔ ∀ i, x i ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   simp [Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL, Submodule.mem_pi, Submodule.mem_one, RingHom.mem_range]
 
 /- English proof (translation)
-Rewrite using `[mem_stdL]`. Introduce `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `one_mem _`. Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.host.E) ∈ Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N := by
   rw [mem_stdL]
@@ -32,7 +32,7 @@ theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.hos
     exact zero_mem _
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Take `⟨y, rfl⟩` from `RingHom.mem_range.1 h`. Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 D.host.E) D.host.E y))` using `(NumberField.RingOfIntegers.isIntegral_coe y).map (starRingEnd D.host.E).toIntAlgHom`. Conclude with `RingHom.mem_range.2 ⟨⟨_, hi⟩, rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
     (letI := D.host.cmStar; star x) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -43,23 +43,21 @@ theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.h
   exact RingHom.mem_range.2 ⟨⟨_, hi⟩, rfl⟩
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hspan : Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N = Submodule.span (𝓞 D.host.E) (Set.range fun i : Fin N => (Pi.single i 1 : Fin N → D.host.E))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[mem_stdL]`. Establish `hy' : ∀ i, ∃ z, algebraMap (𝓞 D.host.E) D.host.E z = y i` using `fun i => RingHom.mem_range.1 (hy i)`. Use `choose z hz using hy'`. Establish `hyz : y = ∑ i, z i • (Pi.single i 1 : Fin N → D.host.E)`. Use function extensionality and compare the values at `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply, ← hz j, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[hyz]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `single_mem_stdL D i`. Rewrite using `[hspan]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (Pi.basisFun D.host.E (Fin N)).sum_repr v]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_))` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_stdL D i`. Introduce `y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx`, `hy` using `[mem_stdL]`. Simplify using `only [stdH]`. Use `Subring.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `exact Subring.mul_mem _ (star_mem_range D _ (hx i)) (hy i)`. Consider the case `exact Subring.mul_mem _ (hx i) (star_mem_range D _ (hy i))`. Consider the case `exact Subring.mul_mem _ (hy i) (star_mem_range D _ (hx i))`. Consider the case `exact Subring.mul_mem _ (star_mem_range D _ (hy i)) (hx i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite using `[mem_stdL]`. Introduce `i`. Use `h _ (single_mem_stdL D i)` as an intermediate fact. Simplify using `only [stdH] at this`.
-
-Rewrite `this` using `[Fintype.sum_eq_single i (fun j hj => by simp [Pi.single_eq_of_ne hj])]`. Simplify using `only [Pi.single_eq_same, star_one, one_mul, mul_one] at this`. Use `first`. Consider the case `exact this`. Consider the case `simpa using star_mem_range D _ this`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N)) := by
   letI := D.host.cmStar
@@ -110,7 +108,7 @@ theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formal
         | simpa using star_mem_range D _ this
 
 /- English proof (translation)
-Conclude with `⟨h, h', stdL_isSD D N, stdL_isSD D N'⟩`.
+Supply the required witnesses or components.
 -/
 theorem Adm_std (N N' : ℕ) (h : Even N) (h' : Even N') :
     Formalism.L2.Ker.Cd.TaylorLogMetric.admitted D N N' (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N) (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D N') := by

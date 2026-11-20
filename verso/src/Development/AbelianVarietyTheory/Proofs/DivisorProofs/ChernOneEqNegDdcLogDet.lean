@@ -12,7 +12,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
 variable {m n l : Type*}
 
 /- English proof (translation)
-Establish `h1` using `(HasFDerivAt.finsetProd (u := t) (g := f) (fun i hi => (h i hi).hasFDerivAt)).fderiv`. Simplify using `only [del_apply, h1, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem del_finsetProd {ι : Type*} [DecidableEq ι] (t : Finset ι) {f : ι → E → ℂ} {z : E}
     (h : ∀ i ∈ t, DifferentiableAt ℝ (f i) z) (ξ : E) :
@@ -27,13 +27,13 @@ section Det
 variable [Fintype n] [DecidableEq n] {H : E → Matrix n n ℂ} {z : E}
 
 /- English proof (translation)
-Establish `h1 : ∀ i, (A.adjugate * B) i i = (A.updateCol i (fun k => B k i)).det`. Introduce `i`. Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [Matrix.trace, Matrix.diag, h1, det_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Simplify using `only [updateCol_apply]`. Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_adjugate_mul_eq_sum (A B : Matrix n n ℂ) :
     (A.adjugate * B).trace = ∑ σ : Equiv.Perm n, (Equiv.Perm.sign σ : ℂ) *
@@ -56,7 +56,7 @@ theorem trace_adjugate_mul_eq_sum (A B : Matrix n n ℂ) :
   rw [if_neg (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Establish `hp : ∀ σ : Equiv.Perm n, DifferentiableAt ℝ (fun x => ∏ i, H x (σ i) i) z` using `fun σ => (contDiffAt_prod fun c _ => h (σ c) c).differentiableAt one_ne_zero`. Simplify using `only [det_apply']`. Rewrite using `[del_sum fun σ _ => (differentiableAt_const _).fun_mul (hp σ), trace_adjugate_mul_eq_sum, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[del_mul (differentiableAt_const _) (hp σ), del_finsetProd _ (f := fun i x => H x (σ i) i) fun i _ => h.diff _ _]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -73,7 +73,7 @@ theorem del_det (h : MContDiffAt 1 H z) (ξ : E) :
   simp
 
 /- English proof (translation)
-Establish `_` using `hu`. Rewrite using `[del_det h, conn, ← transpose_nonsing_inv, ← transpose_mul, trace_transpose, trace_mul_comm, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_mul, trace_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conn (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det) (ξ : E) :
     (conn H z ξ).trace = (H z).det⁻¹ * del (fun x => (H x).det) z ξ := by
@@ -82,7 +82,7 @@ theorem trace_conn (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det) (ξ : E) :
     Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_mul, trace_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hc : MContDiffAt 1 (fun x => conn H x ξ) z` using `h.conn hu (by norm_num) ξ`. Simplify using `only [curv, trace, diag_apply, Matrix.neg_apply, mdbar_apply, Finset.sum_neg_distrib]`. Rewrite using `[dbar_sum fun a _ => hc.diff a a, ContinuousLinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_curv_eq_neg_dbar (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
     (curv H z ξ η).trace = -dbar (fun x => (conn H x ξ).trace) z η := by
@@ -91,7 +91,7 @@ theorem trace_curv_eq_neg_dbar (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (
   rw [dbar_sum fun a _ => hc.diff a a, ContinuousLinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `he : (fun x => (conn H x ξ).trace) =ᶠ[𝓝 z] fun x => conn (fun x => (of fun _ _ => (H x).det : Matrix Unit Unit ℂ)) x ξ () ()` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu] with x h1 h2`. Rewrite using `[trace_conn (h1.of_le one_le_two) h2]`. Simplify using `[conn, Matrix.mul_apply]`. Rewrite using `[trace_curv_eq_neg_dbar h hu, dbar_congr he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_curv_eq_curv_det (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
     (curv H z ξ η).trace =
@@ -105,16 +105,16 @@ theorem trace_curv_eq_curv_det (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (
   rfl
 
 /- English proof (translation)
-Use `conj_eq_iff_re.1 ?_` and prove the remaining obligations. Rewrite using `[← star_def, ← det_conjTranspose, hM.eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_re_det {M : Matrix n n ℂ} (hM : M.IsHermitian) : (M.det.re : ℂ) = M.det := by
   refine conj_eq_iff_re.1 ?_
   rw [← star_def, ← det_conjTranspose, hM.eq]
 
 /- English proof (translation)
-Rewrite using `[trace_curv_eq_curv_det h hu]`. Use `curv_line (f := fun x => (H x).det.re) (reCLM.contDiff.contDiffAt.comp z h.det) ?_ (hh.mono fun x hx => (ofReal_re_det hx).symm) ξ η () ()` and prove the remaining obligations. Introduce `h0`. Apply `hu.ne_zero` to reduce the goal to its premises. Rewrite using `[← ofReal_re_det hh.self_of_nhds, ofReal_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem trace_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (ξ η : E) :
@@ -128,7 +128,7 @@ theorem trace_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHer
   exact h0
 
 /- English proof (translation)
-Rewrite using `[chernOne, trace_curv h hh hu, ddc, mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chernOne_eq_neg_ddc_log_det (h : MContDiffAt 2 H z)
     (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian) (hu : IsUnit (H z).det) (ξ η : E) :
@@ -143,7 +143,7 @@ variable [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
   {H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
 
 /- English proof (translation)
-Establish `hq` using `isUnit_det_quotGram hu hs`. Establish `he : (fun x => (H x).det) =ᶠ[𝓝 z] fun x => (subGram (H x)).det * (quotGram (H x)).det` using `(h.subGram.eventually_isUnit hs).mono fun x hx => det_eq_det_subGram_mul hx`. Rewrite using `[trace_conn h hu, trace_conn h.subGram hs, trace_conn (h.quotGram hs) hq, del_congr he, del_mul (h.subGram.det.differentiableAt one_ne_zero) ((h.quotGram hs).det.differentiableAt one_ne_zero), det_eq_det_subGram_mul hs]`. Establish `h1` using `hs.ne_zero`. Establish `h2` using `hq.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -162,9 +162,9 @@ theorem trace_conn_eq_sub_add_quot (h : MContDiffAt 1 H z) (hu : IsUnit (H z).de
   ring
 
 /- English proof (translation)
-Establish `hq` using `isUnit_det_quotGram hu hs`. Establish `he : (fun x => (conn H x ξ).trace) =ᶠ[𝓝 z] fun x => (conn (fun x => subGram (H x)) x ξ).trace + (conn (fun x => quotGram (H x)) x ξ).trace` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu, h.subGram.eventually_isUnit hs] with x h1 h2 h3`. Conclude with `trace_conn_eq_sub_add_quot (h1.of_le one_le_two) h2 h3 ξ`. Establish `hS : MContDiffAt 1 (fun x => conn (fun x => subGram (H x)) x ξ) z` using `h.subGram.conn hs (by norm_num) ξ`. Establish `hQ : MContDiffAt 1 (fun x => conn (fun x => quotGram (H x)) x ξ) z` using `(h.quotGram hs).conn hq (by norm_num) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trace_curv_eq_neg_dbar h hu, trace_curv_eq_neg_dbar h.subGram hs, trace_curv_eq_neg_dbar (h.quotGram hs) hq, dbar_congr he, dbar_add, ContinuousLinearMap.add_apply, neg_add]`. Conclude with `DifferentiableAt.fun_sum fun a _ => hS.diff a a`. Conclude with `DifferentiableAt.fun_sum fun a _ => hQ.diff a a`.
+A detailed English derivation is pending.
 -/
 theorem trace_curv_eq_sub_add_quot (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det)
     (hs : IsUnit (subGram (H z)).det) (ξ η : E) : (curv H z ξ η).trace =

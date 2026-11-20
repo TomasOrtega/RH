@@ -13,7 +13,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hS`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem muMax_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) {S1 : IndefData (P.A3.side3 P.Ps P.ψs Z1)}
     {S2 : IndefData (P.A3.side3 P.Ps P.ψs Z2)} (hS : HEq S1 S2) : S1.muMaxRR = S2.muMaxRR := by
@@ -22,9 +22,9 @@ theorem muMax_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1
   rfl
 
 /- English proof (translation)
-Establish `hZs : (pkOf Q hOk hsep Cl CHl hP hI).Zs = P.Zs` using `Q.zs`. Establish `hS1 : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.cols.toIndefData P.S1` using `Q.s1`. Establish `hpass : (pkOf Q hOk hsep Cl CHl hP hI).core.cols.muMaxRR ≤ (Zscf (pkOf Q hOk hsep Cl CHl hP hI).Zs).x ^ CHl * (Zscf (pkOf Q hOk hsep Cl CHl hP hI).Zs).b - meanLog (pkOf Q hOk hsep Cl CHl hP hI).core.base.κ + 14 * (Zscf (pkOf Q hOk hsep Cl CHl hP hI).Zs).la` using `((pkOf Q hOk hsep Cl CHl hP hI).core.extra.passage hde0 hde _ (pkOf Q hOk hsep Cl CHl hP hI).core.extra.fun0).1`. Establish `hmu : D.div.RR.muMax = (pkOf Q hOk hsep Cl CHl hP hI).core.cols.muMaxRR` using `(Formalism.MainNotions.DIV.HookProducts.FunSharp.muMax_tie D.div.RR _ _ P.I.eRR hR.sharpRR.lat hR.sharpRR.metric).symm.trans (muMax_heq hZs hS1).symm`. Establish `hκ : meanE D (fun e => Real.log (Y.kapR e)) = meanLog (pkOf Q hOk hsep Cl CHl hP hI).core.base.κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(pkOf Q hOk hsep Cl CHl hP hI).core.extra.level.2.1]`. Conclude with `meanEmb_eq_meanLog _ _ (fun σ => by rw [hkap σ, kap_heq hZs hS1])`. Rewrite using `[hmu, hκ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem funSharp_pt [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex}
     {Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)} {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)}

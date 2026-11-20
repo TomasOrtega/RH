@@ -11,7 +11,7 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Introduce `d k S N z`. Simplify using `only [MCSchur.qf, intGram, ← mulVec_mulVec]`. Rewrite using `[dotProduct_mulVec, vecMul_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IntGramQf.proof : IntGramQf.Statement := by
   intro d k S N z

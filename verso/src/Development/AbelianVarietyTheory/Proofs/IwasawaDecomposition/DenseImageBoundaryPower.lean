@@ -9,19 +9,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.BlowSupp
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y BY ρ n _ hpre hab`. Take `⟨⟨_, _⟩, -, _⟩` from `(GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1`. Establish `hdom` using `(GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F X.X _ X.s X.jQ X.flat X.proj X.jQ_open X.jQ_dense).2.2.2.2.2.1`. Establish `hd : Dense (Set.range X.j)` using `hdom.denseRange`. Establish `hb : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of (𝓞 c.F)) (S := c.F) (nonZeroDivisors (𝓞 c.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : IsPreimmersion (genι X)` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`. Establish `hemb : Topology.IsEmbedding (genι X)` using `(genι X).isEmbedding`. Establish `hQ : QuasiCompact (ρ ≫ genι X)`. Establish `hYc : CompactSpace Y.X` using `(GlobalTheory.genericPart_dense_proOpen c.F c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense).2.1`. Establish `hXs : X.X.IsSeparated` using `(GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F X.X _ X.s X.jQ X.flat X.proj X.jQ_open X.jQ_dense).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : IsIso (spMap (RingHom.id c.F))`. Apply the tactic sequence `have e : spMap (RingHom.id c.F) = 𝟙 _ := by first | (unfold spMap; exact Spec.map_id _) | (simp [spMap]) | rfl`. Rewrite using `[e]`. Use `infer_instance`. Establish `: CompactSpace (gen Y)` using `QuasiCompact.compactSpace_of_compactSpace (genι Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `quasiCompact_of_compactSpace _`. Use `hd.mono ?_` and prove the remaining obligations. Use `haveI := X.jQ_open`. Introduce and unpack `_ ⟨z, rfl⟩ hz`. Rewrite `hz` using `[Scheme.IdealSheafData.support_map]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz' : (X.j z) ∈ closure ((ρ ≫ genι X) '' ((((BY.idealSheaf ^ n).comap (genι Y)).support : Set _)))` using `hz`. Establish `hj : X.j z = genι X (X.jQ z)` using `rfl`. Rewrite `hz'` using `[hj, Scheme.Hom.comp_base, TopCat.coe_comp, Set.image_comp, ← Set.mem_preimage, ← hemb.isInducing.closure_eq_preimage_closure_image]`. Take `⟨_, ⟨v, rfl⟩, ⟨y, hy, hyv⟩⟩` from `mem_closure_iff.1 hz' _ (X.jQ.isOpenEmbedding.isOpen_range) ⟨z, rfl⟩`. Establish `hy' : y ∈ Set.range Y.jQ` using `by rw [← hpre]; exact ⟨v, hyv.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `hy'`. Rewrite `hy` using `[Scheme.IdealSheafData.support_comap]`. Establish `hsupp : genι Y (Y.jQ u) ∈ BY.idealSheaf.support`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `at hy`.
-
-Rewrite `hy` using `[Scheme.IdealSheafData.support_pow _ _ hn.ne']`. Conclude with `hy`. Conclude with `hab _ hsupp (by`. Establish `: Y.jQ u ∈ pullback.fst Y.s (spMap (RingHom.id c.F)) ⁻¹' abLocus Y.t.G` using `by rw [Y.ab_gen]; exact ⟨u, rfl⟩`. Conclude with `this)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dense_compl_support_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : GlobalTheory.EffCartierData Y.X) (ρ : gen Y ⟶ gen X) (n : ℕ),

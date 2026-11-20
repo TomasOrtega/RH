@@ -18,7 +18,7 @@ section Field
 variable (E : Type) [Field E] [CharZero E] [StarRing E]
 
 /- English proof (translation)
-Substitute `he he' hi` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> ext a b <;> rw [Matrix.mul_apply] <;>`. Apply the tactic sequence `simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply] <;> fin_cases a <;> fin_cases b <;>`. Apply the tactic sequence `simp [Fin.sum_univ_four, Examples₂.sgn] <;> norm_num`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem four_gram (e e' : Matrix (Fin 4) (Fin 1) E) (i : Matrix (Fin 4) (Fin 2) E) (he : e = !![0; 0; 1; 1])
     (he' : e' = !![0; 0; 1 / 2; -(1 / 2)]) (hi : i = !![1, 0; 0, 1; 0, 0; 0, 0]) :
@@ -31,7 +31,7 @@ theorem four_gram (e e' : Matrix (Fin 4) (Fin 1) E) (i : Matrix (Fin 4) (Fin 2) 
     simp [Fin.sum_univ_four, Examples₂.sgn] <;> norm_num
 
 /- English proof (translation)
-Substitute `he he'` using the available equality. Apply the tactic sequence `refine ⟨col_gram E _ _ _ _ ?_, col_gram E _ _ _ _ ?_, col_gram E _ _ _ _ ?_⟩ <;> simp [Fin.sum_univ_two, Examples₂.sgn]`. Evaluate the numerical expressions.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions.
 -/
 theorem two_gram (e e' : Matrix (Fin 2) (Fin 1) E) (he : e = !![1; 1]) (he' : e' = !![1 / 2; -(1 / 2)]) :
     eᴴ * sgnM E ![false, true] * e = 0 ∧ e'ᴴ * sgnM E ![false, true] * e' = 0 ∧
@@ -67,13 +67,13 @@ def hypTwo (D : D7) : HypDec (diagSp D 2 ![false, true] 1 1) (diagSp D 0 ![] 0 0
   rank_add := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `h.2.1.ne_zero ⟨0, h.1⟩ (funext fun i => i.elim0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAniso_zero (D : D7) : IsAniso (diagSp D 0 ![] 0 0) := fun _ _ h =>
   h.2.1.ne_zero ⟨0, h.1⟩ (funext fun i => i.elim0)
 
 /- English proof (translation)
-Introduce `h` and use `by refine h r d.e ⟨hr, ?_, d.ee⟩ have h1 := d.e'e refine (Matrix.mulVec_injective_iff (M := d.e)).1 fun x y hxy => ?_ have h2 := congrArg ((d.e'ᴴ * T.gram) *ᵥ ·) hxy simpa only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] using h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isAniso {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (hr : 0 < r) : ¬ IsAniso T := fun h => by
   refine h r d.e ⟨hr, ?_, d.ee⟩
@@ -83,7 +83,7 @@ theorem not_isAniso {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (h
   simpa only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] using h2
 
 /- English proof (translation)
-The claim follows from `let ⟨a, _, h⟩ := @AdelicU.Frames.exists_isLatticeFrame_isMajorantFrame _ _ _ _ _ _ _ _ _ (AdelicU.isCMExt_host D) _ (isHermND_gram V) _ (isLattice_frameLat_host V) ⟨a, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isMaj {D : D7} (V : HSp D) : ∃ a, IsMaj V a :=
   let ⟨a, _, h⟩ := @AdelicU.Frames.exists_isLatticeFrame_isMajorantFrame _ _ _ _ _ _ _ _ _ (AdelicU.isCMExt_host D) _ (isHermND_gram V) _
@@ -91,7 +91,7 @@ theorem exists_isMaj {D : D7} (V : HSp D) : ∃ a, IsMaj V a :=
   ⟨a, h⟩
 
 /- English proof (translation)
-Use `haveI : CompactSpace (Kmax T b) := isCompact_iff_compactSpace.1 (isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _)`. Conclude with `⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_Kmax {D : D7} (T : HSp D) (b : GL (Fin T.rank) (AE D)) :
     ∃ ν : Measure (Kmax T b), ν.IsHaarMeasure ∧ IsProbabilityMeasure ν := by
@@ -100,7 +100,7 @@ theorem exists_haar_Kmax {D : D7} (T : HSp D) (b : GL (Fin T.rank) (AE D)) :
   exact ⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩
 
 /- English proof (translation)
-Take `⟨hθ, ψ, hψ⟩` from `Ker.exists_infFam_and_stdChar D`. Take `⟨b, hb⟩` from `exists_isMaj (diagSp D 4 ![false, true, false, true] 2 2)`. Conclude with `⟨ψ, diagSp D 3 ![false, false, false] 3 0, _, _, _, 1, 1, hypFour D, hypTwo D, hψ, rfl, (by decide : 2 < 4), (by decide : 0 < 2), isAniso_zero D, Nat.one_pos, not_isAniso (hypTwo D) Nat.one_pos, exists_isMaj _, exists_isMaj _, hθ, exists_isCovolOne D _ _, exists_isCovolOne D _ _, …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_isotropic (D : D7) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (V T T' T₀ : HSp D) (t r' : ℕ)
     (_ : HypDec T T' t) (_ : HypDec T' T₀ r'), IsStdChar D ψ (-1) ∧
@@ -116,28 +116,28 @@ theorem hypotheses_isotropic (D : D7) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (V 
     exists_isCovolOne D _ _, exists_isCovolOne D _ _, ⟨Measure.haar, inferInstance⟩, b, hb, exists_haar_Kmax _ b⟩
 
 /- English proof (translation)
-Use `show ((2 : ℕ) - (1 : ℕ) : ℝ) / 2 = 1 / 2`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example (D : D7) : rhoH (diagSp D 2 ![false, true] 1 1) 1 = 1 / 2 := by
   show ((2 : ℕ) - (1 : ℕ) : ℝ) / 2 = 1 / 2
   norm_num
 
 /- English proof (translation)
-Rewrite using `[sphericalSection, h.isIwasawa.iwAbs_of_mem hk]`. Simplify using `[npow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sphericalSection_of_mem_compact {D : D7} {T T₀ : HSp D} {r : ℕ} {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)}
     (h : HasIw d (Kmax T b)) (s : ℂ) {k : GA D T} (hk : k ∈ Kmax T b) : sphericalSection d b s k = 1 := by
   rw [sphericalSection, h.isIwasawa.iwAbs_of_mem hk]; simp [npow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `[sphericalSection, npow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sphericalSection_neg_rho {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (b : GL (Fin T.rank) (AE D)) :
     sphericalSection d b (-(rhoH T r : ℂ)) = 1 := by
   funext h; simp [sphericalSection, npow]
 
 /- English proof (translation)
-The claim follows from `Polynomial.funext fun s => by have := congrFun ((h.2.2.1 s).symm.trans (h'.2.2.1 s)) 1 simpa only [Pi.smul_apply, sphericalSection_of_mem_compact hI s (one_mem _), smul_eq_mul, mul_one] using this`.
+A detailed English derivation is pending.
 -/
 theorem IsRegElt.unique {D : D7} {S T T₀ : HSp D} {r : ℕ} {ψ : AddChar (AF D.host.F) ℂ}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {θ : InfFam D} {τ : D.what₂.Tau} {d : HypDec T T₀ r}

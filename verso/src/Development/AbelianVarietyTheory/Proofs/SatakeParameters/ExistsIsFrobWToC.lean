@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.TwU
 
 /- English proof (translation)
-Use `Formalism.L2.G.Pend.eq_of_close p fun N => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff x N`. Use `set S := ∑ i ∈ Finset.Iic N, (WittVector.teichmuller p (((_root_.frobeniusEquiv (Formalism.L2.G.Pend.kb p) p).symm ^ i) (x.coeff i)) * (p : Formalism.L2.G.Pend.WW p) ^ i) with hS`. Establish `hfS : f S = g S`. Rewrite using `[hS, map_sum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, ht]`. Establish `hx : x = S + (p : Formalism.L2.G.Pend.WW p) ^ (N + 1) * c` using `by rw [← hc]; ring`. Establish `hpC : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹` using `Formalism.L2.G.Pend.norm_p_C p`. Establish `e : f x - g x = (p : ℂ_[p]) ^ (N + 1) * (f c - g c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_add, map_add, hfS, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_pow, hpC]`. Establish `h1 : ‖f c - g c‖ ≤ 1` using `Formalism.L2.G.Pend.nsub p (hf c) (hg c)`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem wHom_ext (p : ℕ) [Fact p.Prime] (f g : Formalism.L2.G.Pend.WW p →+* ℂ_[p])
     (hf : ∀ x, ‖f x‖ ≤ 1) (hg : ∀ x, ‖g x‖ ≤ 1)
@@ -46,11 +46,9 @@ theorem wHom_ext (p : ℕ) [Fact p.Prime] (f g : Formalism.L2.G.Pend.WW p →+* 
     _ = ((p : ℝ)⁻¹) ^ N := mul_one _
 
 /- English proof (translation)
-Use `wHom_ext p (σ.comp (Formalism.L2.G.Pend.wToC p)) ((Formalism.L2.G.Pend.wToC p).comp (sigW p)) (fun y => by rw [RingHom.comp_apply, hσ]; exact Formalism.L2.G.Pend.norm_wToC_le p y) (fun y => Formalism.L2.G.Pend.norm_wToC_le p _) (fun y => ?_) x` as an intermediate fact. Conclude with `this`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply]`. Establish `hs : sigW p (WittVector.teichmuller p y) = WittVector.teichmuller p (y ^ p)` using `by show WittVector.frobenius (WittVector.teichmuller p y) = _`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_pow (WittVector.teichmuller p), map_pow (Formalism.L2.G.Pend.wToC p)]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[WittVector.teichmuller_zero, map_zero, map_zero, zero_pow (Fact.out : p.Prime).ne_zero]`. Take `⟨m, hm, hc, h1⟩` from `Formalism.L2.G.Pend.exists_coprime_pow_eq_one p hy`.
-
-Conclude with `hζ _ m hm hc (by rw [← map_pow, ← map_pow, h1, map_one, map_one])`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wToC_frob (p : ℕ) [Fact p.Prime] (σ : ℂ_[p] →+* ℂ_[p]) (hσ : ∀ x, ‖σ x‖ = ‖x‖)
     (hζ : ∀ (ζ : ℂ_[p]) (n : ℕ), 0 < n → Nat.Coprime n p → ζ ^ n = 1 → σ ζ = ζ ^ p) (x : FormalGroupSystem.WW p) :
@@ -71,9 +69,9 @@ theorem wToC_frob (p : ℕ) [Fact p.Prime] (σ : ℂ_[p] →+* ℂ_[p]) (hσ : �
       exact hζ _ m hm hc (by rw [← map_pow, ← map_pow, h1, map_one, map_one])
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨g, hg⟩` from `GlobalTheory.ThBe0.exists_gal_pow p`. Establish `hζ : ∀ (ζ : ℂ_[p]) (n : ℕ), 0 < n → Nat.Coprime n p → ζ ^ n = 1 → Formalism.Per.σC g ζ = ζ ^ p`. Introduce `ζ n hn hnl h`. Take `⟨a, rfl, ha⟩` from `GlobalTheory.ThBe0.exists_coe_eq_of_pow_eq_one p ζ n hn h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.RingBasics.σC_coe, hg a n hnl ha]`. Conclude with `map_pow (algebraMap (PadicAlgCl p) ℂ_[p]) a p`. Conclude with `⟨Formalism.Per.σC g, GlobalTheory.ThBe0.isFrob_of_rootOfUnity _ (GlobalTheory.RingBasics.norm_σC g) hζ, wToC_frob p _ (GlobalTheory.RingBasics.norm_σC g) hζ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrob_wToC : ∀ (p : ℕ) [Fact p.Prime], ∃ σ : ℂ_[p] →+* ℂ_[p], GlobalTheory.ThBe0.IsFrob σ ∧
     ∀ x : FormalGroupSystem.WW p, σ (Formalism.L2.G.Pend.wToC p x) = Formalism.L2.G.Pend.wToC p (sigW p x) := by

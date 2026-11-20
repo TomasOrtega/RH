@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Approx.abelianScheme_descends_to_fg_subring` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAbelianSchemeSpreadsOutFiniteTypeSubring.lean&line=45#L45)
 -/

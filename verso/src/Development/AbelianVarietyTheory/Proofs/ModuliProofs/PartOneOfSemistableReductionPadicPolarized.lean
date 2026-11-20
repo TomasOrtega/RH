@@ -17,7 +17,7 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Introduce `h` and use `_root_.GlobalTheory.partI_of_semistableReduction_of_arcFam h _root_.GlobalTheory.arcFam_closed`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.partI_of_semistableReduction :
     _root_.GlobalTheory.Published.SemistableReductionSt → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PartI := fun h =>

@@ -18,7 +18,7 @@ namespace GlobalTheory.BCT.LocCompU
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 h`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun W hW => h1 W fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hφ g`. Conclude with `hW g' v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_of_surjective {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ H X) (φ : H' →* H) (hφ : Function.Surjective φ) (h : ρ.IsIrreducible) :
@@ -29,9 +29,7 @@ theorem isIrreducible_comp_of_surjective {H H' X : Type} [Group H] [Group H'] [A
   exact hW g' v hv
 
 /- English proof (translation)
-Unfold `UL`. Use `split_ifs`. Conclude with `isClosed_univ`. Establish `hc` using `(GlobalTheory.ConjAtPlace.main E hU w).1`. Establish `: Continuous fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) _) * 1 * (g : Matrix (Fin n) (Fin n) _)`.
-
-Use `Continuous.mul (Continuous.mul ?_ continuous_const) Units.continuous_val` and prove the remaining obligations. Conclude with `continuous_matrix fun i j => hc.comp (Units.continuous_val.matrix_elem _ _)`. Conclude with `isClosed_singleton.preimage this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_UL (hU : Unr E) (n : ℕ) (w : Pl E) : IsClosed (UL n w : Set (GLw n w)) := by
   unfold UL
@@ -45,7 +43,7 @@ theorem isClosed_UL (hU : Unr E) (n : ℕ) (w : Pl E) : IsClosed (UL n w : Set (
     exact isClosed_singleton.preimage this
 
 /- English proof (translation)
-Establish `hK` using `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Rewrite using `[KL, Subgroup.coe_subgroupOf]`. Conclude with `⟨hK.1.preimage continuous_subtype_val, (isClosed_UL hU n w).isClosedEmbedding_subtypeVal.isCompact_preimage hK.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isOpen_isCompact_KL (hU : Unr E) (n : ℕ) (w : Pl E) :
     IsOpen (KL n w : Set (UL n w)) ∧ IsCompact (KL n w : Set (UL n w)) := by
@@ -55,9 +53,9 @@ theorem isOpen_isCompact_KL (hU : Unr E) (n : ℕ) (w : Pl E) :
     (isClosed_UL hU n w).isClosedEmbedding_subtypeVal.isCompact_preimage hK.2⟩
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSplitAt w`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hs`. Establish `h : UL n w = ⊤` using `if_pos hs`. Establish `hm : ∀ g : GLw n w, g ∈ UL n w` using `fun g => by rw [h]; exact Subgroup.mem_top _`. Use `⟨{ toFun := fun x => ⟨e x, hm _⟩ invFun := fun g => e.symm g.1 left_inv := fun x => by simp right_inv := fun g => Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by simp) continuous_toFun := e.continuous.subtype_mk _ continuous_invFun := e.symm.continuous.comp continuou …` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, hv, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨e, he⟩` from `GlobalTheory.DefU.Inert.locU_equiv E n w (cj w) (hns hs).1 hv`. Establish `h : UL n w = UJ (cj w) 1` using `if_neg hs`. Rewrite using `[h]`. Conclude with `⟨e, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_equiv (hU : Unr E) (n : ℕ) (w : Pl E) :
     ∃ e : locU n w ≃ₜ* UL n w, ∀ x : locU n w, ((e x : UL n w) : GLw n w) = cLoc w (x : UA E n) := by
@@ -79,25 +77,23 @@ theorem exists_equiv (hU : Unr E) (n : ℕ) (w : Pl E) :
     exact ⟨e, he⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n _ π hπ w`. Take `⟨e, he⟩` from `exists_equiv hU n w`. Take `⟨hKo, hKc⟩` from `isOpen_isCompact_KL hU n w`. Establish `hesurj : Function.Surjective (e.toMulEquiv.symm.toMonoidHom)` using `e.symm.surjective`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ₀, hadm, hirr, f, hf0, hfm, hf⟩` from `GlobalTheory.DefU.LocAdm.exists_admissible_comp E n ⟨π, hπ⟩ w`. Set `ρ : Representation ℂ (UL n w) σ₀.V` to `σ₀.ρ.comp e.toMulEquiv.symm.toMonoidHom`. Establish `hρ : ∀ g v, ρ g v = σ₀.ρ (e.symm g) v` using `fun _ _ => rfl`. Set `σ : SmIrr (UL n w)` to `{ V := σ₀.V ρ := ρ smooth := fun v => (σ₀.smooth v).preimage e.symm.continuous irred := isIrreducible_comp_of_surjective σ₀.ρ _ hesurj σ₀.irred }`. Use `⟨σ, ⟨e.toMulEquiv.toMonoidHom, fun x => he x, σ.irred, f, hf0, hfm, fun x v => ?_⟩, fun U hUo => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `f (σ₀.ρ (e.symm (e x)) v) = _`. Rewrite using `[e.symm_apply_apply]`. Conclude with `hf x v`. Set `K' : Subgroup (locU n w)` to `(U ⊓ KL n w).comap e.toMulEquiv.toMonoidHom`. Establish `hK'o : IsOpen (K' : Set (locU n w))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsOpen (e ⁻¹' ((U : Set (UL n w)) ∩ (KL n w : Set (UL n w))))`. Conclude with `(hUo.inter hKo).preimage e.continuous`. Establish `hK'c : IsCompact (K' : Set (locU n w))`. Express the relevant statement in the definitionally equal form `IsCompact (e ⁻¹' ((U : Set (UL n w)) ∩ (KL n w : Set (UL n w))))`. Conclude with `e.toHomeomorph.isCompact_preimage.2 (hKc.inter_left (U.isClosed_of_isOpen hUo))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := hadm.2 K' hK'o hK'c`. Establish `hle : fixed σ.ρ U ≤ fixed σ₀.ρ K'`. Introduce `v hv k`. Establish `h1` using `hv ⟨e k, k.2.1⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at h1 ⊢`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `σ₀.ρ (e.symm (e k)) v = v at h1`. Rewrite `h1` using `[e.symm_apply_apply]`. Then use the resulting hypothesis. Conclude with `Submodule.finiteDimensional_of_le hle`. Introduce and unpack `σ σ' ⟨p, hp, -, f, hf0, hfm, hf⟩ ⟨p', hp', -, f', hf0', hfm', hf'⟩`. Establish `hpe : ∀ x, p x = e x` using `fun x => Subtype.ext ((hp x).trans (he x).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hpe' : ∀ x, p' x = e x` using `fun x => Subtype.ext ((hp' x).trans (he x).symm)`. Establish `hps : Function.Surjective p` using `fun g => ⟨e.symm g, by rw [hpe, e.apply_symm_apply]⟩`. Establish `hps' : Function.Surjective p'` using `fun g => ⟨e.symm g, by rw [hpe', e.apply_symm_apply]⟩`. Take `⟨r, -, -, hr2⟩` from `GlobalTheory.DefU.LocRet.exists_ret E n w`. Set `π' : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `F : Representation.IntertwiningMap (σ.ρ.comp p) (π'.rep.comp (locU n w).subtype)` to `⟨f.codRestrict π hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Set `F' : Representation.IntertwiningMap (σ'.ρ.comp p') (π'.rep.comp (locU n w).subtype)` to `⟨f'.codRestrict π hfm', fun x => LinearMap.ext fun v => Subtype.ext (hf' x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h v))`. Establish `hF0' : F' ≠ 0` using `fun h => hf0' (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h v))`. Take `⟨-, h2⟩` from `GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (locU n w) π σ.V σ'.V π'.rep (locU n w).subtype (σ.ρ.comp p) (σ'.ρ.comp p') π'.isIrreducible_rep (isIrreducible_comp_of_surjective σ.ρ p hps σ.irred) (isIrreducible_comp_of_surjective σ'.ρ p' hps' σ'.irred) (fun g => ⟨r g, fun y => …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T⟩` from `h2 F' hF0'`. Use `⟨{ toLinearEquiv := T.toLinearEquiv, isIntertwining' := fun g => ?_ }⟩` and prove the remaining obligations. Establish `h1 : p (e.symm g) = g` using `by rw [hpe, e.apply_symm_apply]`. Establish `h1' : p' (e.symm g) = g` using `by rw [hpe', e.apply_symm_apply]`. Use `T.isIntertwining' (e.symm g)` as an intermediate fact.
-
-Rewrite `this` using `[MonoidHom.comp_apply, MonoidHom.comp_apply, h1, h1']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_locComp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → ∀ w : Pl E,

@@ -18,9 +18,9 @@ variable (T : _root_.Formalism.L2.TiedDataSKAlt ex) (P : RowSideFamily ex) (hp :
 include hp hL h in
 open Classical in
 /- English proof (translation)
-Take `⟨cOf, -, -, h3⟩` from `hL`. Establish `e1` using `sum_finrank P.S0.Ep (Ep_decomp P h).1 (Ep_decomp P h).2`. Rewrite `e1` using `[Module.finrank_fin_fun]`. Establish `e2 : ∑ c, ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = c), D.what₂.nRows0 σ = ∑ σ, D.what₂.nRows0 σ` using `Finset.sum_fiberwise _ _ _`. Establish `e3 : ∑ σ, D.what₂.nRows0 σ = D.what₂.D0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Rows.Data.nRows0`. Rewrite using `[← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv D.what₂.ft0), Fintype.card_fin]`. Rewrite using `[← e1, ← e3, ← e2]`. Conclude with `Finset.sum_congr rfl fun c _ => (h3 c).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_rows_eq_record_rows_alt : P.S0.D = D.what₂.D0 := by
   obtain ⟨cOf, -, -, h3⟩ := hL
@@ -35,7 +35,7 @@ theorem base_rows_eq_record_rows_alt : P.S0.D = D.what₂.D0 := by
   exact Finset.sum_congr rfl fun c _ => (h3 c).symm
 include hp hL h in
 /- English proof (translation)
-Introduce `j h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Use `finrank_Mj_eq_dW P ⟨k, by omega⟩` as an intermediate fact. Rewrite `this` using `[dW_eq_D P h, _root_.Formalism.L2.N.ExtNRows3.base_rows_eq_record_rows_alt T P hp hL h]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Mj_eq_D0 : ∀ j, 1 ≤ j → j ≤ D.R.m → finrank ℂ (D.what₂.Mj j) = D.what₂.D0 := by
   intro j h1 h2
@@ -45,7 +45,7 @@ theorem finrank_Mj_eq_D0 : ∀ j, 1 ≤ j → j ≤ D.R.m → finrank ℂ (D.wha
   exact this
 end Pin
 /- English proof (translation)
-Establish `hi : Function.Injective (D.what₂.thetaT (P.I.tup t) ((i : ℕ) + 1))` using `adjoint_injective _ (thetaP_surj P h hR i t hl)`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Unfold `Rows.Data.Zj`. Rewrite using `[LinearMap.finrank_range_of_inj hi]`. Conclude with `_root_.Formalism.L2.N.ExtNRows3.finrank_Mj_eq_D0 T P hp hL h _ (Nat.succ_le_succ (Nat.zero_le _)) i.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaT_injective_and_finrank_Zj_eq_D0_of_surjective (T : _root_.Formalism.L2.TiedDataSKAlt ex) (P : RowSideFamily ex) (hp : _root_.Formalism.L2.Rows.RowSideDeterminedAlt T P) (hL : RowsHoldLam3 P) (h : RowsHold0_3 P)
     (hR : Formalism.L2.DIV.DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) (i : Fin D.R.m) (t : P.T)

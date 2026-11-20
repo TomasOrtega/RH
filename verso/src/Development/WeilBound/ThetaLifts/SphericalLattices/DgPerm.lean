@@ -9,7 +9,7 @@ open Matrix
 variable {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `congrArg ψ h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, mul_comm]`. Conclude with `mul_right_cancel₀ (hpos g).ne' this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_eq (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) {g a b : GL n K} (h : g * a = b * g) : ψ a = ψ b := by
   have := congrArg ψ h
@@ -37,18 +37,18 @@ Both sides reduce to the same expression.
 theorem tv_val {i j : n} (h : i ≠ j) (s : K) : ((tv h s : GL n K) : Matrix n n K) = transvection i j s := rfl
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Units.val_mul, tv_val, tv_val, tv_val, transvection_mul_transvection_same i j h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_mul {i j : n} (h : i ≠ j) (s t : K) : tv h s * tv h t = tv h (s + t) := by
   ext1
   rw [Units.val_mul, tv_val, tv_val, tv_val, transvection_mul_transvection_same i j h]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Units.val_mul, Units.val_mul, dg_val, tv_val, tv_val, diagonal_mul, mul_diagonal]`. Simplify using `only [transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single, of_apply]`. Distinguish the cases in `h1 : a = b`. Substitute `h1` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: ¬ (i = a ∧ j = a)` using `fun e => h (e.1.trans e.2.symm)`. Simplify using `[this]`. Distinguish the cases in `h2 : i = a ∧ j = b`. Take `⟨rfl, rfl⟩` from `h2`. Simplify using `[h1, Function.update_of_ne (Ne.symm h)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dg_tv {i j : n} (h : i ≠ j) (d : Kˣ) (s : K) :
     dg (Function.update 1 i d) * tv h s = tv h (d * s) * dg (Function.update 1 i d) := by
@@ -65,9 +65,9 @@ theorem dg_tv {i j : n} (h : i ≠ j) (d : Kˣ) (s : K) :
     · simp [h1, h2]
 
 /- English proof (translation)
-Establish `e1` using `conj_eq ψ hpos (dg_tv h (Units.mk0 w h0) s)`. Establish `e2` using `conj_eq ψ hpos (dg_tv h (Units.mk0 _ h1) s)`. Establish `e3` using `congrArg ψ (tv_mul h s (w * s))`. Simplify using `only [Units.val_mk0] at e1 e2`. Rewrite `e3` using `[map_mul, ← e1, show s + w * s = (1 + w) * s by ring, ← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (hpos _).ne' (e3.trans (mul_one _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem tv_one (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) {w : K} (h0 : w ≠ 0) (h1 : 1 + w ≠ 0) {i j : n} (h : i ≠ j)
     (s : K) : ψ (tv h s) = 1 := by
@@ -79,11 +79,9 @@ theorem tv_one (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) {w : K} (h0 : w �
   exact mul_left_cancel₀ (hpos _).ne' (e3.trans (mul_one _).symm)
 
 /- English proof (translation)
-Establish `hd : ((1 : Matrix n n K).submatrix σ id).det ≠ 0`. Rewrite using `[det_permute, det_one, mul_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]`. Use `conj_eq ψ hpos (g := GeneralLinearGroup.mkOfDetNeZero _ hd) ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.val_mul, Units.val_mul, dg_val, dg_val, diagonal_mul, mul_diagonal]`. Use `show ((1 : Matrix n n K).submatrix σ id) a b * _ = _ * ((1 : Matrix n n K).submatrix σ id) a b`. Simplify using `only [submatrix_apply, id, Matrix.one_apply]`. Use `split_ifs with e`. Simplify using `[e]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_perm (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) (σ : Equiv.Perm n) (D : n → Kˣ) :
     ψ (dg D) = ψ (dg fun i => D (σ i)) := by
@@ -100,11 +98,11 @@ theorem dg_perm (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) (σ : Equiv.Perm
   · simp
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty n with hn | ⟨⟨i₀⟩⟩` into its components or cases. Rewrite using `[Subsingleton.elim D 1, map_one, map_one]`. Establish `e1 : (∏ σ : Equiv.Perm n, fun i => D (σ i)) = fun _ => ∏ σ : Equiv.Perm n, D (σ i₀)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.prod_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.prod_equiv (Equiv.mulRight (Equiv.swap i i₀)) _ _ fun σ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e2` using `hsc (∏ σ : Equiv.Perm n, D (σ i₀))`. Rewrite `e2` using `[← e1, ← MonoidHom.comp_apply, map_prod]`. Simplify using `only [MonoidHom.comp_apply, ← dg_perm ψ hpos _ D, Finset.prod_const, Finset.card_univ] at e2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (hpos _).le Fintype.card_ne_zero).1 e2`.
+A detailed English derivation is pending.
 -/
 theorem dg_one (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) (hsc : ∀ u : Kˣ, ψ (dg fun _ => u) = 1) (D : n → Kˣ) :
     ψ (dg D) = 1 := by
@@ -121,13 +119,11 @@ theorem dg_one (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) (hsc : ∀ u : K�
   exact (pow_eq_one_iff_of_nonneg (hpos _).le Fintype.card_ne_zero).1 e2
 
 /- English proof (translation)
-Establish `key : ∀ M : Matrix n n K, M.det ≠ 0 → ∀ g : GL n K, (g : Matrix n n K) = M → ψ g = 1`. Introduce `M hM`. Use `diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ g : GL n K, (g : Matrix n n K) = M → ψ g = 1) M hM ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD g hg`. Rewrite `hD` using `[det_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD' : ∀ i, D i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`. Establish `: g = dg fun i => Units.mk0 (D i) (hD' i)` using `Units.ext hg`. Rewrite using `[this]`. Conclude with `dg_one ψ hpos hsc _`. Introduce `t g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: g = tv t.hij t.c` using `Units.ext hg`. Rewrite using `[this]`. Conclude with `tv_one ψ hpos h0 h1 _ _`. Introduce `A B hA hB pA pB g hg`. Establish `: g = GeneralLinearGroup.mkOfDetNeZero A hA * GeneralLinearGroup.mkOfDetNeZero B hB` using `Units.ext hg`.
-
-Rewrite using `[this, map_mul, pA _ rfl, pB _ rfl, one_mul]`. Conclude with `key _ (Matrix.GeneralLinearGroup.det_ne_zero g) g rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem all_one (ψ : GL n K →* ℝ) (hpos : ∀ g, 0 < ψ g) {w : K} (h0 : w ≠ 0) (h1 : 1 + w ≠ 0)
     (hsc : ∀ u : Kˣ, ψ (dg fun _ => u) = 1) (g : GL n K) : ψ g = 1 := by

@@ -11,13 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PairsRow
 
 /- English proof (translation)
-Introduce `hMax hSi hHost hLat D large₂ X Y u hStd W HW hEmb hk hpd Λ hΛ x x' hx hx'`. Take `⟨hK, -, -, hv1, -, -, -, -, -, -, -, hg, hT⟩` from `hHost D large₂ hStd`. Establish `hv : 1 ≤ Formalism.HermitianLatticesTheory.vInv D.host.E`. Rewrite using `[(hHost D large₂ hStd).2.2.1]`. Conclude with `hv1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hTp, hTP⟩` from `hT u`. Take `⟨hI, he⟩` from `hLat D large₂ X Y u hStd W HW hEmb Λ hΛ`. Establish `hk3 : 3 ≤ Module.finrank D.host.E W`. Rewrite using `[hk]`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: FiniteDimensional D.host.E W` using `Module.finite_of_finrank_pos (by omega)`. Establish `h` using `GlobalTheory.DegCnt.PairMean.main Formalism.MainNotions.KappaEndpoints.mk_core hMax hSi D.host.E W HW hK (GlobalTheory.OrthoLattice.hasOrtho D.host.E hK) hv hpd hk3 (Tu D u) (GlobalTheory.DegAsm.lat0 (F0 X u) W.subtype Λ) _ hTp hTP hI he rfl _ rfl (gS D) D.R.rS x x' _ hg hx hx' r …`. Rewrite `h` using `[hk]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `GlobalTheory.DegAsm.pairBd`. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Mass.MaxMass → Formalism.HermitianLatticesTheory.SiegelMassRatio → HostC → LatticeNormalizationCondition →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Std D large₂ →

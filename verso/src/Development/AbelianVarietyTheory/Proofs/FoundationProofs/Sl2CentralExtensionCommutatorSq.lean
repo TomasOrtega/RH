@@ -18,19 +18,17 @@ namespace GlobalTheory
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 /- English proof (translation)
-Use `set A := (Subgroup.zpowers g).comap π with hAdef`. Take `⟨e, he⟩` from `hπ g`. Establish `key : ∀ a ∈ A, ∃ i : ℤ, ∃ k ∈ π.ker, a = e ^ i * k`. Introduce `a ha`. Take `⟨i, hi⟩` from `Subgroup.mem_zpowers_iff.mp (Subgroup.mem_comap.mp ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, (e ^ i)⁻¹ * a, ?_, by group⟩` and prove the remaining obligations. Simplify using `[MonoidHom.mem_ker, map_zpow, he, hi]`. Establish `hA : ∀ a b : A, a * b = b * a`. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`. Take `⟨i, k, hk, rfl⟩` from `key a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, m, hm, rfl⟩` from `key b hb`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Establish `hkc` using `Subgroup.mem_center_iff.mp (hK hk)`. Establish `hmc` using `Subgroup.mem_center_iff.mp (hK hm)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc k, ← hkc (e ^ j), mul_assoc]`. Use `_ = e ^ j * e ^ i * (m * k) := by`. Rewrite using `[← _root_.zpow_add, ← _root_.zpow_add, add_comm, (hmc k).symm]`. Use `_ = e ^ j * m * (e ^ i * k) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc m, ← hmc (e ^ i), mul_assoc]`. Establish `hidx : A.index = Nat.card G / orderOf g`. Rewrite using `[hAdef, Subgroup.index_comap_of_surjective _ hπ, ← Nat.card_zpowers, ← (Subgroup.zpowers g).card_mul_index, Nat.mul_div_cancel_left _ Nat.card_pos]`. Use `haveI : A.FiniteIndex := ⟨by`. Rewrite using `[hAdef, Subgroup.index_comap_of_surjective _ hπ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subgroup.index_ne_zero_of_finite⟩`. Rewrite using `[← hidx]`. Use `letI : CommGroup A := { (inferInstance : Group A) with mul_comm := hA }`. Establish `h1` using `Abelianization.commutator_subset_ker ((MonoidHom.id A).transfer (H := A)) hc`. Rewrite `h1` using `[MonoidHom.mem_ker, MonoidHom.transfer_eq_pow (MonoidHom.id A) x]`.
-
-Simplify using `using congrArg Subtype.val h1`. Introduce `k g₀ _`. Establish `: x ^ k ∈ Subgroup.center E` using `Subgroup.pow_mem _ (hK hx) k`. Rewrite using `[mul_assoc, (Subgroup.mem_center_iff.mp this g₀).symm, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_card_div_orderOf_eq_one_of_mem_ker_commutator {E G : Type} [Group E] [Group G]
     [Finite G] (π : E →* G) (hπ : Function.Surjective π)
@@ -74,29 +72,27 @@ private theorem pow_card_div_orderOf_eq_one_of_mem_ker_commutator {E G : Type} [
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hdiv : ∀ z : ZMod (p ^ (b + 1)), ZMod.castHom (dvd_pow_self p (Nat.succ_ne_zero b)) (ZMod p) z = 0 → ∃ w : ZMod (p ^ (b + 1)), z = p * w`. Introduce `z hz`. Rewrite `hz` using `[ZMod.castHom_apply, ZMod.cast_eq_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(ZMod.natCast_eq_zero_iff _ p).mp hz`. Conclude with `⟨w, by rw [← ZMod.natCast_zmod_val z, hw]; push_cast; ring⟩`. Establish `binom : ∀ (A : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))) (r : ℕ), (A + 1) ^ (r + 2) = 1 + A * ((r + 2 : ℕ) : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))) + A ^ 2 * ∑ m ∈ Finset.range (r + 1), A ^ m * ((r + 2).choose (m + 2) : Matrix _ _ _)`. Introduce `A r`. Rewrite using `[(Commute.one_right A).add_pow, Finset.sum_range_succ', Finset.sum_range_succ']`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_pow, mul_one, pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one, Finset.mul_sum]`. Establish `: ∀ m, A ^ (m + 1 + 1) * ((r + 2).choose (m + 1 + 1) : Matrix _ _ _) = A ^ 2 * (A ^ m * ((r + 2).choose (m + 2) : Matrix _ _ _))`. Introduce `m`. Rewrite using `[← mul_assoc, ← pow_add]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Rewrite using `[pow_one, Nat.choose_one_right]`. Normalize the expressions using the abelian group laws. Take `⟨r, hr⟩ : ∃ r, p = r + 2` from `⟨p - 2, by have := hp.two_le; omega⟩`. Establish `step : ∀ (j : ℕ) (Y : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))), ∃ Y', ((p : ZMod (p ^ (b + 1))) ^ (j + 1) • Y + 1) ^ p = (p : ZMod (p ^ (b + 1))) ^ (j + 2) • Y' + 1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j Y`. Establish `e1 : ((p : ZMod (p ^ (b + 1))) ^ (j + 1) • Y + 1) ^ p = ((p : ZMod (p ^ (b + 1))) ^ (j + 1) • Y + 1) ^ (r + 2)` using `by rw [← hr]`. Rewrite using `[e1, binom]`. Use `set S := ∑ m ∈ Finset.range (r + 1), ((p : ZMod (p ^ (b + 1))) ^ (j + 1) • Y) ^ m * ((r + 2).choose (m + 2) : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1))))`. Use `⟨Y + (p : ZMod (p ^ (b + 1))) ^ j • (Y ^ 2 * S), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hr, ← Nat.cast_comm, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul (ZMod (p ^ (b + 1))), smul_pow, smul_mul_assoc, smul_smul, smul_add, smul_smul]`. Establish `c1 : (p : ZMod (p ^ (b + 1))) * (p : ZMod (p ^ (b + 1))) ^ (j + 1) = (p : ZMod (p ^ (b + 1))) ^ (j + 2)` using `by ring`. Establish `c2 : ((p : ZMod (p ^ (b + 1))) ^ (j + 1)) ^ 2 = (p : ZMod (p ^ (b + 1))) ^ (j + 2) * (p : ZMod (p ^ (b + 1))) ^ j` using `by ring`. Rewrite using `[c1, c2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ g : Matrix.SpecialLinearGroup (Fin 2) (ZMod (p ^ (b + 1))), _root_.GlobalTheory.SLTwoCentral.red p b g = 1 → ∀ j, ∃ Y, (g : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))) ^ (p ^ j) = (p : ZMod (p ^ (b + 1))) ^ (j + 1) • Y + 1`. Introduce `g hg j`. Proceed by induction on `j with`. Consider the case `zero`. Establish `hent : ∀ i k, ZMod.castHom (dvd_pow_self p (Nat.succ_ne_zero b)) (ZMod p) (((g : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))) - 1) i k) = 0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i k`. Establish `h1` using `congrFun (congrFun (congrArg Subtype.val hg) i) k`. Establish `h2` using `congrFun (congrFun (Matrix.map_one (ZMod.castHom (dvd_pow_self p (Nat.succ_ne_zero b)) (ZMod p)) (map_zero _) (map_one _)) i) k`. Rewrite using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `h1.trans (by rw [Matrix.SpecialLinearGroup.coe_one]; exact h2.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of fun i k => Classical.choose (hdiv _ (hent i k)), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, pow_one, zero_add, pow_one, ← sub_eq_iff_eq_add]`. Use extensionality with `i k`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Conclude with `Classical.choose_spec (hdiv _ (hent i k))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ j ih`. Take `⟨Y, hY⟩` from `ih`. Rewrite using `[show p ^ (j + 1) = p ^ j * p from pow_succ p j, pow_mul, hY]`. Conclude with `step j Y`. Establish `hP : IsPGroup p (_root_.GlobalTheory.SLTwoCentral.red p b).ker`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨g, hg⟩`. Use `⟨b, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `hpow g hg b`. Establish `h0 : (p : ZMod (p ^ (b + 1))) ^ (b + 1) = 0`. Rewrite using `[← Nat.cast_pow, ZMod.natCast_self]`.
-
-Express the relevant statement in the definitionally equal form `(g : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (b + 1)))) ^ (p ^ b) = 1`. Rewrite using `[hY, h0, zero_smul, zero_add]`. Conclude with `IsPGroup.iff_card.mp hP`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_card_ker_red_eq_prime_pow (p b : ℕ) [Fact p.Prime] :
     ∃ k, Nat.card (_root_.GlobalTheory.SLTwoCentral.red p b).ker = p ^ k := by
@@ -176,9 +172,9 @@ private theorem exists_card_ker_red_eq_prime_pow (p b : ℕ) [Fact p.Prime] :
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 /- English proof (translation)
-Use `set D := Matrix.GeneralLinearGroup.det (n := Fin 2) (R := ZMod p)`. Establish `hdet : ∀ g : GL (Fin 2) (ZMod p), D g = 1 ↔ (g : Matrix (Fin 2) (Fin 2) (ZMod p)).det = 1`. Introduce `g`. Rewrite using `[← Units.val_eq_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) ≃ D.ker` using `{ toFun := fun A => ⟨Matrix.SpecialLinearGroup.toGL A, (hdet _).mpr A.2⟩ invFun := fun g => ⟨(g.1 : Matrix (Fin 2) (Fin 2) (ZMod p)), (hdet g.1).mp g.2⟩ left_inv := fun A => rfl right_inv := fun g => Subtype.ext (Units.ext rfl) }`. Establish `hrange : Nat.card D.range = p - 1`. Rewrite using `[MonoidHom.range_eq_top.mpr Matrix.GeneralLinearGroup.det_surjective, Subgroup.card_top, Nat.card_eq_fintype_card, ZMod.card_units]`. Rewrite using `[Nat.card_congr e, ← hrange, ← Subgroup.index_ker, Subgroup.card_mul_index, Matrix.card_GL_field, Fin.prod_univ_two, ZMod.card]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem card_sl2_zmod_mul_pred (p : ℕ) [Fact p.Prime] :
     Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) * (p - 1) = (p ^ 2 - 1) * (p ^ 2 - p) := by
@@ -202,19 +198,17 @@ private theorem card_sl2_zmod_mul_pred (p : ℕ) [Fact p.Prime] :
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Use `set K := GaloisField p 2`. Use `haveI : Fintype K := Fintype.ofFinite K`. Establish `hcard : Nat.card K = p ^ 2` using `GaloisField.card p 2 (by norm_num)`. Establish `hsq : p ^ 2 - 1 = (p - 1) * (p + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hp.one_le` as an intermediate fact. Use `zify [this, Nat.one_le_pow 2 p hp.pos]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨γ, hγ⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := Kˣ)`. Establish `hunits : Nat.card Kˣ = p ^ 2 - 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_units, ← Nat.card_eq_fintype_card, hcard]`. Use `set ζ : K := (γ : K) ^ (p - 1)`. Establish `hp1 : p - 1 ≠ 0` using `by have := hp.two_le; omega`. Establish `hζ : orderOf ζ = p + 1`. Rewrite using `[orderOf_pow_of_dvd hp1, orderOf_units, hγ, hunits, hsq, Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hp1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orderOf_units, hγ, hunits, hsq]`. Conclude with `dvd_mul_right _ _`. Establish `hnorm : Algebra.norm (ZMod p) ζ = 1`. Apply `(algebraMap (ZMod p) K).injective` to reduce the goal to its premises. Rewrite using `[FiniteField.algebraMap_norm_eq_pow, hcard, Nat.card_zmod, hsq, Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hp1), map_one, ← hζ, pow_orderOf_eq_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.finBasisOfFinrankEq (ZMod p) K (GaloisField.finrank p (n := 2) (by norm_num))`. Establish `hdet : (Algebra.leftMulMatrix b ζ).det = 1` using `by rw [← Algebra.norm_eq_matrix_det, hnorm]`. Set `h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)` to `⟨Algebra.leftMulMatrix b ζ, hdet⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hζ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `orderOf_eq_orderOf_iff.mpr fun n => ?_` and prove the remaining obligations. Establish `hval : h ^ n = 1 ↔ (h : Matrix (Fin 2) (Fin 2) (ZMod p)) ^ n = 1`. Apply the tactic sequence `constructor <;> intro H`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_pow, H]`. Both sides reduce to the same expression.
-
-Conclude with `Subtype.ext (by rw [Matrix.SpecialLinearGroup.coe_pow, H]; rfl)`. Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `(Algebra.leftMulMatrix b ζ) ^ n = 1 ↔ _`. Rewrite using `[← map_pow, ← map_one (Algebra.leftMulMatrix b), (Algebra.leftMulMatrix_injective b).eq_iff]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_orderOf_eq_succ_sl2_zmod (p : ℕ) [Fact p.Prime] :
     ∃ h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p), orderOf h = p + 1 := by
@@ -256,17 +250,15 @@ private theorem exists_orderOf_eq_succ_sl2_zmod (p : ℕ) [Fact p.Prime] :
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod p)ˣ)`. Establish `hunits : Nat.card (ZMod p)ˣ = p - 1`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `hdet : (Matrix.diagonal ![(γ : ZMod p), ((γ⁻¹ : (ZMod p)ˣ) : ZMod p)]).det = 1`. Rewrite using `[Matrix.det_diagonal, Fin.prod_univ_two]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `γ.mul_inv`. Set `h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)` to `⟨_, hdet⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hunits, ← hγ]`. Use `orderOf_eq_orderOf_iff.mpr fun n => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hval : h ^ n = 1 ↔ (h : Matrix (Fin 2) (Fin 2) (ZMod p)) ^ n = 1`. Apply the tactic sequence `constructor <;> intro H`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_pow, H]`. Both sides reduce to the same expression. Conclude with `Subtype.ext (by rw [Matrix.SpecialLinearGroup.coe_pow, H]; rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal _) ^ n = 1 ↔ _`. Rewrite using `[Matrix.diagonal_pow, ← Matrix.diagonal_one, Matrix.diagonal_eq_diagonal_iff, ← Units.val_eq_one, Units.val_pow_eq_pow_val]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `H 0`. Introduce `H i`. Establish `hγn : γ ^ n = 1` using `Units.val_eq_one.mp (by rw [Units.val_pow_eq_pow_val]; exact H)`. Use `fin_cases i`. Conclude with `H`.
-
-Express the relevant statement in the definitionally equal form `((γ⁻¹ : (ZMod p)ˣ) : ZMod p) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow, hγn, inv_one, Units.val_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_orderOf_eq_pred_sl2_zmod (p : ℕ) [Fact p.Prime] :
     ∃ h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p), orderOf h = p - 1 := by
@@ -301,25 +293,23 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 
 /- English proof (translation)
-Introduce `l n p a hl hp hp5 hpl E _ π hπ hK hexp x hx hc`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpow` using `fun g => pow_card_div_orderOf_eq_one_of_mem_ker_commutator π hπ hK g x hx hc`. Establish `hd : orderOf x ∣ l ^ n` using `orderOf_dvd_of_pow_eq_one (hexp x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hl).mp hd`. Establish `hcop : ∀ m, Nat.Coprime (orderOf x) (p ^ m)` using `fun m => by`. Rewrite using `[hj]`. Conclude with `Nat.Coprime.pow _ _ ((Nat.coprime_primes hl hp).mpr hpl.symm)`. Break down `a with _ | b` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hpow 1 haveI : Subsingleton (ZMod (p ^ 0)) := by rw [pow_zero]; infer_instance haveI : Subsingleton (Matrix.SpecialLinearGroup (Fin 2) (ZMod (p ^ 0))) := ⟨fun A B => Subtype.ext (funext fun i => funext fun j => Subsingleton.elim _ _)⟩`. Rewrite `h1` using `[orderOf_one, Nat.div_one, Nat.card_of_subsingleton (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod (p ^ 0))), pow_one]`. Rewrite using `[h1, one_pow]`. Use `set G := Matrix.SpecialLinearGroup (Fin 2) (ZMod (p ^ (b + 1)))`. Establish `hred : Function.Surjective (_root_.GlobalTheory.SLTwoCentral.red p b)` using `_root_.GlobalTheory.specialLinearGroup_map_surjective (ZMod.castHom_surjective _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `exists_card_ker_red_eq_prime_pow p b`. Establish `hcardG : Nat.card G = p ^ k * (p * (p + 1) * (p - 1))`. Establish `hSL` using `card_sl2_zmod_mul_pred p`. Establish `hSL' : Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) = p * (p + 1) * (p - 1)`. Establish `h1 : 0 < p - 1` using `by omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `Nat.eq_of_mul_eq_mul_right h1` to reduce the goal to its premises. Rewrite using `[hSL]`. Use `hp.one_le` as an intermediate fact. Use `zify [this, Nat.one_le_pow 2 p hp.pos, Nat.pow_le_pow_left this 2, Nat.le_self_pow two_ne_zero p]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hk, ← hSL', ← (_root_.GlobalTheory.SLTwoCentral.red p b).ker.card_mul_index, Subgroup.index_ker, MonoidHom.range_eq_top.mpr hred, Subgroup.card_top]`. Establish `hdiv : ∀ c : ℕ, (∃ h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p), orderOf h = c) → orderOf x * c ∣ Nat.card G`. Introduce and unpack `c ⟨h, rfl⟩`. Take `⟨g, rfl⟩` from `hred h`. Establish `hxg : orderOf x ∣ Nat.card G / orderOf g` using `orderOf_dvd_of_pow_eq_one (hpow g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : orderOf g ∣ Nat.card G` using `orderOf_dvd_natCard g`. Conclude with `(Nat.mul_dvd_mul_left _ (orderOf_map_dvd _ g)).trans (by rw [mul_comm]; exact Nat.mul_dvd_of_dvd_div hg hxg)`. Establish `hplus` using `hdiv _ (exists_orderOf_eq_succ_sl2_zmod p)`. Establish `hminus` using `hdiv _ (exists_orderOf_eq_pred_sl2_zmod p)`. Rewrite `hplus`, `hminus` using `[hcardG]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : orderOf x ∣ p - 1`. Establish `: orderOf x ∣ p ^ (k + 1) * (p - 1)`. Apply `Nat.dvd_of_mul_dvd_mul_right (show 0 < p + 1 by omega)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hcop (k + 1)).dvd_of_dvd_mul_left this`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hB : orderOf x ∣ p + 1`. Establish `: orderOf x ∣ p ^ (k + 1) * (p + 1)`. Apply `Nat.dvd_of_mul_dvd_mul_right (show 0 < p - 1 by omega)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hcop (k + 1)).dvd_of_dvd_mul_left this`.
-
-Establish `h2 : orderOf x ∣ 2`. Use `Nat.dvd_sub hB hA` as an intermediate fact. Rewrite `this` using `[show p + 1 - (p - 1) = 2 by omega]`. Then use the resulting hypothesis. Conclude with `orderOf_dvd_iff_pow_eq_one.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.sl2_zmod_central_ext_commutator_sq_eq_one :
     ∀ (l n p a : ℕ), l.Prime → p.Prime → 5 ≤ p → p ≠ l → ∀ (E : Type) [Group E]

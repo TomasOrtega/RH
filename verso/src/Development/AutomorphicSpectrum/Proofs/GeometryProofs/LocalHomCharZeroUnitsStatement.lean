@@ -4,7 +4,7 @@ import Mathlib
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ggeo.unit_of_local_hom_charZero_nf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLocalHomCharZeroUnits.lean&line=11#L11)
 -/

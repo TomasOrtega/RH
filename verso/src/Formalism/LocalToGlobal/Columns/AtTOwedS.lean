@@ -12,9 +12,9 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 section Gen
 
 /- English proof (translation)
-Establish `hfin : Finite (A ⧸ P)` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact hp.ne_zero)`. Set `_ : Fintype (A ⧸ P)` to `Fintype.ofFinite _`. Establish `hc' : Fintype.card (A ⧸ P) = p` using `by rw [← Nat.card_eq_fintype_card, hc]`. Set `e` to `ZMod.ringEquivOfPrime (A ⧸ P) hp hc'`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : e (e.symm (Ideal.Quotient.mk P x)) = Ideal.Quotient.mk P x` using `e.apply_symm_apply _`. Rewrite `h1` using `[← ZMod.natCast_zmod_val (e.symm (Ideal.Quotient.mk P x)), map_natCast]`. Take `⟨k, hk⟩ : ∃ k : ℕ, (k : A ⧸ P) = Ideal.Quotient.mk P x` from `⟨_, h1⟩`. Use `⟨(k : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, ← hk, Int.cast_natCast, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem owedS_exists_int {A : Type} [CommRing A] (P : Ideal A) {p : ℕ} (hp : p.Prime) (hc : Nat.card (A ⧸ P) = p) (x : A) :
     ∃ a : ℤ, x - (a : A) ∈ P := by
@@ -30,31 +30,27 @@ theorem owedS_exists_int {A : Type} [CommRing A] (P : Ideal A) {p : ℕ} (hp : p
   rw [← Ideal.Quotient.eq, ← hk, Int.cast_natCast, map_natCast]
 
 /- English proof (translation)
-Establish `hsup : Ideal.span {(p : A)} ⊔ P ^ 2 = P`. Establish `h1 : P ^ (1 + 1) < Ideal.span {(p : A)} ⊔ P ^ 2`. Use `lt_of_le_of_ne le_sup_right ?_` and prove the remaining obligations. Introduce `h`. Apply `hp2` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (p : A) ∈ Ideal.span {(p : A)} ⊔ P ^ 2` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite `this` using `[← h]`. Conclude with `this`. Establish `h2 : Ideal.span {(p : A)} ⊔ P ^ 2 ≤ P ^ 1`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hp) (Ideal.pow_le_self (by norm_num))`. Use `Ideal.eq_prime_pow_of_succ_lt_of_le hP0 h1 h2` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `key : ∀ (n : ℕ) (x : A), φ x - φ' x ∈ w ^ n`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Establish `hprod : ∀ r ∈ P, ∀ s ∈ P, φ (r * s) - φ' (r * s) ∈ w ^ (n + 1)`. Introduce `r hr s hs`. Establish `e : φ (r * s) - φ' (r * s) = (φ s - φ' s) * φ r + (φ r - φ' r) * φ' s`. Rewrite using `[map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_succ]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_mul (ih s) (hφ r hr)) (Ideal.mul_mem_mul (ih r) (hφ' s hs))`. Establish `hsq : ∀ z ∈ P ^ 2, φ z - φ' z ∈ w ^ (n + 1)`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[sq]`. Use `Submodule.mul_induction_on hz (fun r hr s hs => hprod r hr s hs) (fun a b ha hb => ?_)` and prove the remaining obligations. Establish `e : φ (a + b) - φ' (a + b) = (φ a - φ' a) + (φ b - φ' b)`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Ideal.add_mem _ ha hb`. Establish `hP : ∀ y ∈ P, φ y - φ' y ∈ w ^ (n + 1)`. Introduce `y hy`. Rewrite `hy` using `[← hsup]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨y1, hy1, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy1`. Establish `e : φ (c * (p : A) + z) - φ' (c * (p : A) + z) = (φ c - φ' c) * φ (p : A) + (φ z - φ' z)`. Rewrite using `[map_add, map_add, map_mul, map_mul, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ (hsq z hz)` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul (ih c) (hφ _ hp)`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨a, ha⟩` from `hZ x`. Establish `e : φ x - φ' x = φ (x - (a : A)) - φ' (x - (a : A))`. Rewrite using `[map_sub, map_sub, map_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `hP _ ha`. Use extensionality with `x`. Establish `h0 : φ x - φ' x ∈ (⨅ i, w ^ i : Ideal B)`. Rewrite using `[Ideal.mem_iInf]`. Conclude with `fun n => key n x`.
-
-Rewrite `h0` using `[Ideal.iInf_pow_eq_bot_of_isDomain w hw, Ideal.mem_bot]`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem owedS_ringHom_eq {A B : Type} [CommRing A] [IsDedekindDomain A] [CommRing B] [IsDomain B] [IsNoetherianRing B]
     (φ φ' : A →+* B) (w : Ideal B) (hw : w ≠ ⊤) (P : Ideal A) [hPp : P.IsPrime] (hP0 : P ≠ ⊥)
@@ -126,12 +122,12 @@ section Seen
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-The claim follows from `Fintype.card_pos_iff.1 hX.f_pos`.
+A detailed English derivation is pending.
 -/
 theorem Fields.Ok.nonempty_Tau (hX : X.Ok) : Nonempty X.Tau := Fintype.card_pos_iff.1 hX.f_pos
 
 /- English proof (translation)
-Apply `hX.emb_inj` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 X.E))` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun z : 𝓞 X.K => (z : X.K)) (DFunLike.congr_fun h x)` as an intermediate fact. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem owedS_emb_of_embO (hX : X.Ok) {τ τ' : X.Tau} (h : X.embO τ = X.embO τ') : τ = τ' := by
   apply hX.emb_inj
@@ -141,16 +137,14 @@ theorem owedS_emb_of_embO (hX : X.Ok) {τ τ' : X.Tau} (h : X.embO τ = X.embO �
   exact this
 
 /- English proof (translation)
-The claim follows from `mem_divs (hPr.piT_ne_zero u) _`.
+A detailed English derivation is pending.
 -/
 theorem conjP_pullW_mem_vT_iff (hPr : Pr.Ok) (u : Pr.Word) (τ : X.Tau) (w : HeightOneSpectrum (𝓞 X.K)) :
     conjPrime₂ (pullW τ w) ∈ Pr.vT u ↔ X.embO τ (X.conjO (Pr.piT u)) ∈ w.asIdeal :=
   mem_divs (hPr.piT_ne_zero u) _
 
 /- English proof (translation)
-Establish `e : (Pr.T u : 𝓞 X.K) = X.embO τ (Pr.piT u) * X.embO τ (X.conjO (Pr.piT u))`. Rewrite using `[← map_mul, hPr.piT_norm u, map_natCast]`. Rewrite using `[e]`. Break down `h with h | h` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ h`.
-
-Conclude with `Ideal.mul_mem_left _ _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem owedS_T_mem {u : Pr.Word} (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.K)} {τ : X.Tau}
     (h : X.embO τ (Pr.piT u) ∈ w.asIdeal ∨ X.embO τ (X.conjO (Pr.piT u)) ∈ w.asIdeal) : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal := by
@@ -162,9 +156,9 @@ theorem owedS_T_mem {u : Pr.Word} (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.K
   · exact Ideal.mul_mem_left _ _ h
 
 /- English proof (translation)
-Apply `owedS_emb_of_embO hX` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `T_unif hX hPr u ⟨pullW τ w, hP⟩`. Establish `hc : Nat.card (𝓞 X.E ⧸ (pullW τ w).asIdeal) = Pr.T u`. Rewrite using `[← hPr.vT_norm u _ hP, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `(pullW τ w).isPrime` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `owedS_ringHom_eq (X.embO τ) (X.embO τ') w.asIdeal w.isPrime.ne_top (pullW τ w).asIdeal (pullW τ w).ne_bot (fun x hx => hx) (fun x hx => by rw [h] at hx; exact hx) (Pr.T u) h1 h2 (owedS_exists_int _ (hPr.T_prime u) hc)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_pullW_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) {τ τ' : X.Tau}
     (h : pullW τ w = pullW τ' w) (hP : pullW τ w ∈ Pr.vT u) : τ = τ' := by
@@ -178,9 +172,9 @@ theorem eq_of_pullW_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpe
     (owedS_exists_int _ (hPr.T_prime u) hc)
 
 /- English proof (translation)
-Apply `owedS_emb_of_embO hX` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `T_unif hX hPr u ⟨conjPrime₂ (pullW τ w), hP⟩`. Establish `hc : Nat.card (𝓞 X.E ⧸ (conjPrime₂ (pullW τ w)).asIdeal) = Pr.T u`. Rewrite using `[← hPr.vT_norm u _ hP, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `(conjPrime₂ (pullW τ w)).isPrime` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `owedS_ringHom_eq ((X.embO τ).comp (cO X.E)) ((X.embO τ').comp (cO X.E)) w.asIdeal w.isPrime.ne_top (conjPrime₂ (pullW τ w)).asIdeal (conjPrime₂ (pullW τ w)).ne_bot (fun x hx => hx) (fun x hx => by rw [h] at hx; exact hx) (Pr.T u) h1 h2 (owedS_exists_int _ (hPr.T_prime u) hc)`. Use `ext1 x`. Use `DFunLike.congr_fun key (cO X.E x)` as an intermediate fact. Simplify `this` using `only [RingHom.comp_apply, cO_cO]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem owedS_inj_Pbar (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) {τ τ' : X.Tau}
     (h : pullW τ w = pullW τ' w) (hP : conjPrime₂ (pullW τ w) ∈ Pr.vT u) : τ = τ' := by
@@ -198,7 +192,7 @@ theorem owedS_inj_Pbar (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpe
   simpa only [RingHom.comp_apply, cO_cO] using this
 
 /- English proof (translation)
-Introduce `τ τ' h`. Break down `seenC_or_seenBarC hX hPr u w hw with hs | hs` into its components or cases. Conclude with `eq_of_pullW_eq hX hPr u w h ((pullW_mem_vT hPr u τ w).2 (hs τ))`. Conclude with `owedS_inj_Pbar hX hPr u w h ((conjP_pullW_mem_vT_iff hPr u τ w).2 (hs τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem pullW_injective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) : Function.Injective fun τ : X.Tau => pullW τ w := by
@@ -208,7 +202,7 @@ theorem pullW_injective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSp
   · exact owedS_inj_Pbar hX hPr u w h ((conjP_pullW_mem_vT_iff hPr u τ w).2 (hs τ))
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hX.nonempty_Tau`. Conclude with `owedS_T_mem hPr (Or.inl (h τ))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem seenC.T_mem (hX : X.Ok) (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (h : seenC Pr u w) :
     (Pr.T u : 𝓞 X.K) ∈ w.asIdeal := by
@@ -216,7 +210,7 @@ theorem seenC.T_mem (hX : X.Ok) (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectr
   exact owedS_T_mem hPr (Or.inl (h τ))
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hX.nonempty_Tau`. Conclude with `owedS_T_mem hPr (Or.inr (h τ))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem seenBarC.T_mem (hX : X.Ok) (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (h : seenBarC Pr u w) :
     (Pr.T u : 𝓞 X.K) ∈ w.asIdeal := by
@@ -224,7 +218,7 @@ theorem seenBarC.T_mem (hX : X.Ok) (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpe
   exact owedS_T_mem hPr (Or.inr (h τ))
 
 /- English proof (translation)
-Introduce `τ'`. Rewrite using `[embO_of_Kq (hPr.piT_Kq u) τ' τ]`. Conclude with `(pullW_mem_vT hPr u τ w).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenC_of_one (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} {τ : X.Tau}
     (h : pullW τ w ∈ Pr.vT u) : seenC Pr u w := by
@@ -233,7 +227,7 @@ theorem seenC_of_one (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.
   exact (pullW_mem_vT hPr u τ w).1 h
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨fun τ τ' e => pullW_injective hX hPr u w (h.T_mem hX hPr) (congrArg Subtype.val e), ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_coe, hPr.vT_card u]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullW_bijective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (h : seenC Pr u w) :
     Function.Bijective fun τ : X.Tau => (⟨pullW τ w, (seenC_iff hPr u w).1 h τ⟩ : {P // P ∈ Pr.vT u}) := by
@@ -243,11 +237,11 @@ theorem pullW_bijective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSp
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨fun τ τ' e => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : conjPrime₂ (pullW τ w) = conjPrime₂ (pullW τ' w)` using `congrArg Subtype.val e`. Use `pullW_injective hX hPr u w (h.T_mem hX hPr) ?_` and prove the remaining obligations. Use `show pullW τ w = pullW τ' w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun Q : HeightOneSpectrum (𝓞 X.E) => cO X.E x ∈ Q.asIdeal) e1` as an intermediate fact. Simplify `this` using `only [mem_conjP, cO_cO, eq_iff_iff]`. Rewrite using `[Fintype.card_coe, hPr.vT_card u]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem pullW_bar_bijective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (h : seenBarC Pr u w) :
     Function.Bijective fun τ : X.Tau =>
@@ -265,7 +259,7 @@ theorem pullW_bar_bijective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightO
     rfl
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_conjP'₂ (P : HeightOneSpectrum (𝓞 X.E)) : conjPrime₂ (conjPrime₂ P) = P := by
   apply HeightOneSpectrum.ext
@@ -273,7 +267,7 @@ theorem conjP_conjP'₂ (P : HeightOneSpectrum (𝓞 X.E)) : conjPrime₂ (conjP
   rw [mem_conjP, mem_conjP, cO_cO]
 
 /- English proof (translation)
-Introduce `hb`. Use `not_seen_both hPr u w τ (h τ) ((conjP_pullW_mem_vT_iff hPr u τ w).1 ?_)` and prove the remaining obligations. Rewrite using `[show pullW τ w = conjPrime₂ P.1 from hb, conjP_conjP'₂]`. Conclude with `P.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenC.not_bar (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (h : seenC Pr u w) (τ : X.Tau)
     (P : {P // P ∈ Pr.vT u}) : ¬ SeesPbar w τ P.1 := by
@@ -283,7 +277,7 @@ theorem seenC.not_bar (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X
   exact P.2
 
 /- English proof (translation)
-Introduce `hb`. Use `not_seen_both hPr u w τ ((pullW_mem_vT hPr u τ w).1 ?_) (h τ)` and prove the remaining obligations. Rewrite using `[show pullW τ w = P.1 from hb]`. Conclude with `P.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenBarC.not_P (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (h : seenBarC Pr u w) (τ : X.Tau)
     (P : {P // P ∈ Pr.vT u}) : ¬ SeesP w τ P.1 := by
@@ -293,11 +287,11 @@ theorem seenBarC.not_P (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 
   exact P.2
 
 /- English proof (translation)
-Break down `seenC_or_seenBarC hX hPr u w hw with hs | hs` into its components or cases. Take `⟨τ, hτ⟩` from `(pullW_bijective hX hPr u w hs).2 P`. Establish `hτ' : pullW τ w = P.1` using `congrArg Subtype.val hτ`. Use `⟨τ, Or.inl hτ', ?_⟩` and prove the remaining obligations. Introduce and unpack `τ' (h' | h')`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `pullW_injective hX hPr u w hw ((show pullW τ' w = P.1 from h').trans hτ'.symm)`. Conclude with `absurd h' (hs.not_bar hPr τ' P)`. Take `⟨τ, hτ⟩` from `(pullW_bar_bijective hX hPr u w hs).2 P`. Establish `hτ' : conjPrime₂ (pullW τ w) = P.1` using `congrArg Subtype.val hτ`. Establish `hτ'' : pullW τ w = conjPrime₂ P.1` using `by rw [← hτ', conjP_conjP'₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨τ, Or.inr hτ'', ?_⟩` and prove the remaining obligations. Introduce and unpack `τ' (h' | h')`. Conclude with `absurd h' (hs.not_P hPr τ' P)`. Conclude with `pullW_injective hX hPr u w hw ((show pullW τ' w = conjPrime₂ P.1 from h').trans hτ''.symm)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_sees (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (P : {P // P ∈ Pr.vT u}) : ∃! τ : X.Tau, SeesP w τ P.1 ∨ SeesPbar w τ P.1 := by
@@ -319,7 +313,7 @@ theorem existsUnique_sees (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOne
 variable [Nonempty X.Tau]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun τ => SeesP w τ P.1 ∨ SeesPbar w τ P.1) (existsUnique_sees hX hPr u w hw P).exists`.
+A detailed English derivation is pending.
 -/
 theorem tauOfC_spec (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (P : {P // P ∈ Pr.vT u}) :
@@ -327,7 +321,7 @@ theorem tauOfC_spec (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectr
   Classical.epsilon_spec (p := fun τ => SeesP w τ P.1 ∨ SeesPbar w τ P.1) (existsUnique_sees hX hPr u w hw P).exists
 
 /- English proof (translation)
-The claim follows from `(existsUnique_sees hX hPr u w hw P).unique (tauOfC_spec hX hPr u w hw P) h`.
+A detailed English derivation is pending.
 -/
 theorem tauOfC_unique (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (P : {P // P ∈ Pr.vT u}) {τ : X.Tau} (h : SeesP w τ P.1 ∨ SeesPbar w τ P.1) :
@@ -335,25 +329,25 @@ theorem tauOfC_unique (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpec
   (existsUnique_sees hX hPr u w hw P).unique (tauOfC_spec hX hPr u w hw P) h
 
 /- English proof (translation)
-The claim follows from `tauOfC_unique hX hPr u w ((seenC_of_one hPr h).T_mem hX hPr) ⟨pullW τ w, h⟩ (Or.inl rfl)`.
+A detailed English derivation is pending.
 -/
 theorem tauOfC_pullW (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (τ : X.Tau)
     (h : pullW τ w ∈ Pr.vT u) : tauOfC w (pullW τ w) = τ :=
   tauOfC_unique hX hPr u w ((seenC_of_one hPr h).T_mem hX hPr) ⟨pullW τ w, h⟩ (Or.inl rfl)
 
 /- English proof (translation)
-The claim follows from `(tauOfC_spec hX hPr u w (h.T_mem hX hPr) P).resolve_right (h.not_bar hPr _ P)`.
+A detailed English derivation is pending.
 -/
 theorem pullW_tauOfC (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (h : seenC Pr u w)
     (P : {P // P ∈ Pr.vT u}) : pullW (tauOfC w P.1) w = P.1 :=
   (tauOfC_spec hX hPr u w (h.T_mem hX hPr) P).resolve_right (h.not_bar hPr _ P)
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨fun P P' e => ?_, ?_⟩` and prove the remaining obligations. Establish `e' : tauOfC w P.1 = tauOfC w P'.1` using `e`. Establish `h1` using `tauOfC_spec hX hPr u w hw P`. Establish `h2` using `tauOfC_spec hX hPr u w hw P'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← e']`. Apply `Subtype.ext` to reduce the goal to its premises. Break down `seenC_or_seenBarC hX hPr u w hw with hs | hs` into its components or cases. Conclude with `(h1.resolve_right (hs.not_bar hPr _ P)).symm.trans (h2.resolve_right (hs.not_bar hPr _ P'))`. Establish `a1 : pullW (tauOfC w P.1) w = conjPrime₂ P.1` using `h1.resolve_left (hs.not_P hPr _ P)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : pullW (tauOfC w P.1) w = conjPrime₂ P'.1` using `h2.resolve_left (hs.not_P hPr _ P')`. Rewrite using `[← conjP_conjP'₂ P.1, ← a1, a2, conjP_conjP'₂]`. Rewrite using `[Fintype.card_coe, hPr.vT_card u]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tauOfC_bijective (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) : Function.Bijective fun P : {P // P ∈ Pr.vT u} => tauOfC w P.1 := by
@@ -377,11 +371,11 @@ variable {R : Ranks} (W : Wts X Pr.Word R)
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Use extensionality with `P`. Rewrite using `[mem_VVTc, topsP_of_seenC W hPr u w h, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, e⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[tauOfC_unique hX hPr u w (h.T_mem hX hPr) P (Or.inl e)]`. Conclude with `hτ`. Introduce and unpack `⟨-, hτ⟩`. Conclude with `⟨_, hτ, pullW_tauOfC hX hPr u w h P⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `P`. Rewrite using `[mem_VVTc]`. Simplify using `only [Finset.notMem_empty, iff_false]`. Introduce and unpack `⟨τ, -, e⟩`. Conclude with `h (seenC_of_one hPr (τ := τ) (by rw [e]; exact P.2))`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem VVTc_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) :
     VVTc W u w =
@@ -403,11 +397,11 @@ theorem VVTc_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (
     exact h (seenC_of_one hPr (τ := τ) (by rw [e]; exact P.2))
 
 /- English proof (translation)
-Unfold `expTc`. Use `congr 1`. Establish `hmem : ∀ τ ∈ topsP W u w, pullW τ w ∈ Pr.vT u` using `fun τ hτ => (Finset.mem_filter.1 hτ).2`. Use `Finset.sum_bij (fun τ hτ => (⟨pullW τ w, hmem τ hτ⟩ : {P // P ∈ Pr.vT u})) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_VVTc W u w _).2 ⟨τ, hτ, rfl⟩`. Introduce `τ hτ τ' _ e`. Conclude with `pullW_injective hX hPr u w ((seenC_of_one hPr (hmem τ hτ)).T_mem hX hPr) (congrArg Subtype.val e)`. Introduce `P hP`. Take `⟨τ, hτ, e⟩` from `(mem_VVTc W u w P).1 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨τ, hτ, Subtype.ext e⟩`. Introduce `τ hτ`. Rewrite using `[tauOfC_pullW hX hPr u w τ (hmem τ hτ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expTc_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) :
     expTc W u w = (R.m : ℤ) * ∑ P ∈ VVTc W u w, W.bTop u (tauOfC w P.1) := by
@@ -427,9 +421,9 @@ theorem expTc_eq (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum 
     rw [tauOfC_pullW hX hPr u w τ (hmem τ hτ)]
 
 /- English proof (translation)
-Establish `hmem : ∀ τ ∈ topsP W u w, pullW τ w ∈ Pr.vT u` using `fun τ hτ => (Finset.mem_filter.1 hτ).2`. Use `symm`. Use `Finset.card_bij (fun τ hτ => (⟨pullW τ w, hmem τ hτ⟩ : {P // P ∈ Pr.vT u})) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Conclude with `(mem_VVTc W u w _).2 ⟨τ, hτ, rfl⟩`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ τ' _ e`. Conclude with `pullW_injective hX hPr u w ((seenC_of_one hPr (hmem τ hτ)).T_mem hX hPr) (congrArg Subtype.val e)`. Introduce `P hP`. Take `⟨τ, hτ, e⟩` from `(mem_VVTc W u w P).1 hP`. Conclude with `⟨τ, hτ, Subtype.ext e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_VVTc (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) :
     (VVTc W u w).card = (topsP W u w).card := by
@@ -452,17 +446,15 @@ section Exist
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Establish `hx0' : (x : X.E) ≠ 0`. Introduce `h`. Conclude with `hx0 (RingOfIntegers.ext h)`. Establish `hnu : ¬ IsUnit (X.embO τ x)`. Introduce `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `hy' : X.emb τ (x : X.E) * (y : X.K) = 1` using `congrArg (fun z : 𝓞 X.K => (z : X.K)) hy`. Establish `e : X.emb τ ((x : X.E)⁻¹) = (y : X.K)`. Rewrite using `[map_inv₀]`. Conclude with `inv_eq_of_mul_eq_one_right hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ ((x : X.E)⁻¹)`. Establish `h1 : IsIntegral ℤ ((X.emb τ).toIntAlgHom ((x : X.E)⁻¹))` using `by show IsIntegral ℤ (X.emb τ ((x : X.E)⁻¹))`. Rewrite using `[e]`. Conclude with `y.isIntegral_coe`. Conclude with `(isIntegral_algHom_iff (X.emb τ).toIntAlgHom (X.emb τ).injective).1 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one (IsIntegralClosure.mk' (𝓞 X.E) _ hint) ?_` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (x : X.E) * algebraMap (𝓞 X.E) X.E (IsIntegralClosure.mk' (𝓞 X.E) _ hint) = 1`. Rewrite using `[IsIntegralClosure.algebraMap_mk', mul_inv_cancel₀ hx0']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {X.embO τ x}) (fun h => hnu (Ideal.span_singleton_eq_top.1 h))`. Establish `hmem : X.embO τ x ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce `hb`. Rewrite `hmem` using `[hb, Ideal.mem_bot]`.
-
-Apply `hx0'` to reduce the goal to its premises. Establish `: X.emb τ (x : X.E) = 0` using `congrArg (fun z : 𝓞 X.K => (z : X.K)) hmem`. Conclude with `(map_eq_zero (X.emb τ)).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem owedS_exists_prime (τ : X.Tau) {x : 𝓞 X.E} (hx0 : x ≠ 0) (hx : ¬ IsUnit x) :
     ∃ w : HeightOneSpectrum (𝓞 X.K), X.embO τ x ∈ w.asIdeal := by
@@ -498,9 +490,9 @@ theorem owedS_exists_prime (τ : X.Tau) {x : 𝓞 X.E} (hx0 : x ≠ 0) (hx : ¬ 
   exact (map_eq_zero (X.emb τ)).1 this
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hX.nonempty_Tau`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : (Pr.vT u).Nonempty := by`. Rewrite using `[← Finset.card_pos, hPr.vT_card u]`. Conclude with `hX.f_pos`. Establish `hmem : Pr.piT u ∈ P.asIdeal` using `(mem_divs (hPr.piT_ne_zero u) P).1 hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `owedS_exists_prime τ (hPr.piT_ne_zero u) (fun hu => P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu))`. Conclude with `⟨w, seenC_of_one hPr ((pullW_mem_vT hPr u τ w).2 hw)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_seenC (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) : ∃ w : HeightOneSpectrum (𝓞 X.K), seenC Pr u w := by
   obtain ⟨τ⟩ := hX.nonempty_Tau
@@ -513,13 +505,13 @@ theorem exists_seenC (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) : ∃ w : HeightOne
   exact ⟨w, seenC_of_one hPr ((pullW_mem_vT hPr u τ w).2 hw)⟩
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hX.nonempty_Tau`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : (Pr.vT u).Nonempty := by`. Rewrite using `[← Finset.card_pos, hPr.vT_card u]`. Conclude with `hX.f_pos`. Establish `hmem : Pr.piT u ∈ P.asIdeal` using `(mem_divs (hPr.piT_ne_zero u) P).1 hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem' : X.conjO (Pr.piT u) ∈ (conjPrime₂ P).asIdeal`. Rewrite using `[mem_conjP]`. Use `show cO X.E (cO X.E (Pr.piT u)) ∈ P.asIdeal`. Rewrite using `[cO_cO]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : X.conjO (Pr.piT u) ≠ 0`. Introduce `h`. Apply `hPr.piT_ne_zero u` to reduce the goal to its premises. Rewrite using `[← cO_cO (Pr.piT u)]`. Use `show cO X.E (X.conjO (Pr.piT u)) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, map_zero]`. Take `⟨w, hw⟩` from `owedS_exists_prime τ h0 (fun hu => (conjPrime₂ P).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem' hu))`. Use `⟨w, fun τ' => ?_⟩` and prove the remaining obligations. Rewrite using `[embO_of_Kq (conjO_mem_Kq hX (hPr.piT_Kq u)) τ' τ]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_seenBarC (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) : ∃ w : HeightOneSpectrum (𝓞 X.K), seenBarC Pr u w := by
   obtain ⟨τ⟩ := hX.nonempty_Tau

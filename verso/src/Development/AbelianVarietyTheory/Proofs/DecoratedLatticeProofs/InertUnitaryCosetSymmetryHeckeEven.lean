@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.ChainOnto.InertSym
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Use `⟨k * a, mul_mem hk ha, ?_⟩` and prove the remaining obligations. Rewrite using `[e, show k * (a * g * b) = (k * a * g) * b by group, QuotientGroup.mk_mul_of_mem _ hb]`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨k * a⁻¹, mul_mem hk (inv_mem ha), ?_⟩` and prove the remaining obligations. Rewrite using `[e, show k * a⁻¹ * (a * g * b) = (k * g) * b by group, QuotientGroup.mk_mul_of_mem _ hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cosets_eq {G : Type} [Group G] (K : Subgroup G) {g g' : G} {a b : G} (ha : a ∈ K) (hb : b ∈ K)
     (e : g' = a * g * b) (c : G ⧸ K) :
@@ -34,7 +34,7 @@ theorem cosets_eq {G : Type} [Group G] (K : Subgroup G) {g g' : G} {a b : G} (ha
     rw [e, show k * a⁻¹ * (a * g * b) = (k * g) * b by group, QuotientGroup.mk_mul_of_mem _ hb]
 
 /- English proof (translation)
-Introduce `g`. Take `⟨a, ha, b, hb, e⟩` from `h g`. Conclude with `(Nat.card_congr (Equiv.subtypeEquivRight fun c => cosets_eq K ha hb e c)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cosetSym_of_inv {G : Type} [Group G] (K : Subgroup G)
     (h : ∀ g : G, ∃ a ∈ K, ∃ b ∈ K, g⁻¹ = a * g * b) : CosetSym K := by
@@ -43,11 +43,11 @@ theorem cosetSym_of_inv {G : Type} [Group G] (K : Subgroup G)
   exact (Nat.card_congr (Equiv.subtypeEquivRight fun c => cosets_eq K ha hb e c)).symm
 
 /- English proof (translation)
-Establish `hint : ∀ i j, Formalism.UG.antiJ L n i j ∈ Formalism.UG.intL L`. Introduce `i j`. Unfold `Formalism.UG.antiJ`. Use `split_ifs`. Conclude with `one_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨J, hJ, hJe⟩` from `Formalism.UG.P.cartan_exists_glint (Formalism.UG.intL L) _ _ (GlobalTheory.UnitarySwap.antiJ_mul_self (L := L) (n := n)) hint hint`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `(GlobalTheory.UnitarySwap.inv_mem_doubleCoset_and_comm).1 L ϖ σ q n J hU hJ (by`. Introduce `i j`. Rewrite using `[hJe]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Formalism.UG.antiJ, add_comm i.val j.val]`. Apply the tactic sequence `split_ifs <;> simp) (g : GL (Fin n) L) (by rw [hJe]; exact g.2)`. Rewrite `hk₁`, `hk₂` using `[hJe]`. Conclude with `⟨⟨k₁, hk₁.1⟩, hk₁, ⟨k₂, hk₂.1⟩, hk₂, Subtype.ext e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem_KU {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (n : ℕ) (g : GU σ n) :
@@ -71,9 +71,9 @@ end GlobalTheory.ChainOnto.InertSym
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hU n`. Use `⟨Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU n, InertSym.cosetSym_of_inv _ (InertSym.inv_mem_KU hU n), ?_⟩` and prove the remaining obligations. Introduce `φ hφ g`. Take `⟨a, ha, b, hb, e⟩` from `InertSym.inv_mem_KU hU n g`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ.1 ⟨a, ha⟩ ⟨b, hb⟩ g`.
+A detailed English derivation is pending.
 -/
 theorem inert_cosetSym_heckeEven : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ n : ℕ, IsCommensurated (KU σ n) ∧ CosetSym (KU σ n) ∧ ∀ φ ∈ Hecke ℂ (KU σ n), ∀ g, φ g⁻¹ = φ g := by
   intro L _ _ _ ϖ σ q hU n

@@ -10,9 +10,9 @@ def mapE {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ} (g : GL 
     Edge W Qq k := ⟨e.src.map (nt_phi W g), e.tgt.map (nt_phi W g)⟩
 
 /- English proof (translation)
-Establish `hid : (nt_phi W g).comp (nt_phi W g⁻¹) = LinearMap.id` using `LinearMap.ext fun x => by`. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, LinearMap.id_apply]`. Consider the cases of `e with`. Consider the case `mk src tgt`. Simplify using `only [mapE, Edge.mk.injEq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> rw [← Submodule.map_comp, hid, Submodule.map_id]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapE_inv {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ} (g : GL (Fin k) Qq)
     (e : Edge W Qq k) : mapE g (mapE g⁻¹ e) = e := by
@@ -38,7 +38,7 @@ variable {O Kf V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V
   [IsScalarTower O Kf V]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨T y, (h y).1 hy, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem scale_alt (T : V ≃ₗ[Kf] V) (c : Kf) {M M' : Submodule O V} (h : ∀ x, x ∈ M ↔ T x ∈ M') {x : V}
     (hx : x ∈ scale c M) : T x ∈ scale c M' := by
@@ -46,7 +46,7 @@ theorem scale_alt (T : V ≃ₗ[Kf] V) (c : Kf) {M M' : Submodule O V} (h : ∀ 
   exact ⟨T y, (h y).1 hy, by simp⟩
 
 /- English proof (translation)
-Introduce `v hv`. Conclude with `hφ (T.symm v) ((h _).2 (by rwa [LinearEquiv.apply_symm_apply]))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_symm_mem_dualLat_of_mem_iff (T : V ≃ₗ[Kf] V) {M M' : Submodule O V} (h : ∀ x, x ∈ M ↔ T x ∈ M') {φ : Module.Dual Kf V}
     (hφ : φ ∈ Formalism.GradedWeylDivisibility.dualLat O Kf M) : φ.comp T.symm.toLinearMap ∈ Formalism.GradedWeylDivisibility.dualLat O Kf M' := by
@@ -54,7 +54,7 @@ theorem comp_symm_mem_dualLat_of_mem_iff (T : V ≃ₗ[Kf] V) {M M' : Submodule 
   exact hφ (T.symm v) ((h _).2 (by rwa [LinearEquiv.apply_symm_apply]))
 
 /- English proof (translation)
-Take `⟨ψ, hψ, rfl⟩` from `hφ`. Conclude with `⟨ψ.comp T.symm.toLinearMap, comp_symm_mem_dualLat_of_mem_iff T h hψ, by ext v; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_symm_mem_scale_dualLat_of_mem_iff (T : V ≃ₗ[Kf] V) (c : Kf) {M M' : Submodule O V} (h : ∀ x, x ∈ M ↔ T x ∈ M')
     {φ : Module.Dual Kf V} (hφ : φ ∈ scale c (Formalism.GradedWeylDivisibility.dualLat O Kf M)) :
@@ -63,7 +63,7 @@ theorem comp_symm_mem_scale_dualLat_of_mem_iff (T : V ≃ₗ[Kf] V) (c : Kf) {M 
   exact ⟨ψ.comp T.symm.toLinearMap, comp_symm_mem_dualLat_of_mem_iff T h hψ, by ext v; simp⟩
 
 /- English proof (translation)
-Establish `hs : ∀ y, y ∈ M' ↔ T.symm y ∈ M` using `fun y => by rw [h (T.symm y), LinearEquiv.apply_symm_apply]`. Establish `hiff : ∀ y, y ∈ scale d M ↔ T y ∈ scale d M'` using `fun y => ⟨fun hy => scale_alt T d h hy, fun hy => by`. Use `scale_alt T.symm d hs hy` as an intermediate fact. Rewrite using `[LinearEquiv.symm_apply_apply] at this⟩` and apply the resulting hypothesis. Conclude with `scale_alt T c hiff hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem apply_mem_scale_scale_of_mem_iff (T : V ≃ₗ[Kf] V) (c d : Kf) {M M' : Submodule O V} (h : ∀ x, x ∈ M ↔ T x ∈ M') {x : V}
     (hx : x ∈ scale c (scale d M)) : T x ∈ scale c (scale d M') := by
@@ -75,7 +75,7 @@ theorem apply_mem_scale_scale_of_mem_iff (T : V ≃ₗ[Kf] V) (c d : Kf) {M M' :
   exact scale_alt T c hiff hx
 
 /- English proof (translation)
-Take `⟨ψ, hψ, rfl⟩` from `hφ`. Conclude with `⟨ψ.comp T.symm.toLinearMap, comp_symm_mem_scale_dualLat_of_mem_iff T d h hψ, by ext v; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem scaled_dual_lattice_transport (T : V ≃ₗ[Kf] V) (c d : Kf) {M M' : Submodule O V} (h : ∀ x, x ∈ M ↔ T x ∈ M')
     {φ : Module.Dual Kf V} (hφ : φ ∈ scale c (scale d (Formalism.GradedWeylDivisibility.dualLat O Kf M))) :
@@ -86,33 +86,31 @@ theorem scaled_dual_lattice_transport (T : V ≃ₗ[Kf] V) (c d : Kf) {M M' : Su
 end Formal
 
 /- English proof (translation)
-Introduce `p n' R m lam0 hDom t c n D e e' he he' hfac`. Establish `hfrW : IsFractionRing R.W R.Qq` using `R.std.1.frac_alt`. Take `⟨g, hg, hsrc, htgt⟩` from `lc_main p n' 1 (m + 1) R.std.1.p_unif R.std.1.res_card R.std.1.prime.two_le (by have := R.std.1.two_le; omega) e he`. Take `⟨g', hg', hsrc', htgt'⟩` from `lc_main p n' 1 (m + 1) R.std.1.p_unif R.std.1.res_card R.std.1.prime.two_le (by have := R.std.1.two_le; omega) e' he'`. Establish `hug : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det _).2 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hug' : IsUnit g'` using `(Matrix.isUnit_iff_isUnit_det _).2 hg'`. Set `γ : GL (Fin (m + 1)) R.Qq` to `hug'.unit * hug.unit⁻¹`. Establish `hγg : (γ : Matrix (Fin (m + 1)) (Fin (m + 1)) R.Qq) * g = g'`. Establish `: γ * hug.unit = hug'.unit` using `by simp [γ]`. Establish `h2` using `congrArg Units.val this`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `hee : e' = mapE γ e`. Consider the cases of `e with`. Consider the case `mk s tg`. Consider the cases of `e' with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `mk s' tg'`. Simplify using `only at hsrc htgt hsrc' htgt'`. Simplify using `only [mapE]`. Rewrite using `[hsrc, htgt, hsrc', htgt', map_colSpan, map_colSpan, ← Matrix.mul_assoc, hγg]`. Take `⟨T, hT1, hT2⟩` from `hFun p n' R m lam0 hDom γ`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hedge : ∀ e'' : Edge R.W R.Qq (m + 1), IsEdge p n' 1 e'' → IsEdge p n' 1 (mapE γ⁻¹ e'')` using `fun e'' h => nt_edge_map p n' 1 γ⁻¹ _ _ h`. Establish `hsrcC : ∀ x, x ∈ CCL R lam0 t c e → T x ∈ CCL R lam0 t c (mapE γ e)`. Introduce `x hx`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `scale_alt T _ (hT1 e.src he.1) hx.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `scale_alt T _ (hT2 e he) hx.1.2`. Rewrite using `[Submodule.mem_iInf]`. Introduce `e''`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (mapE γ⁻¹ e'').src = e.src` using `by show e''.src.map (nt_phi R.W γ⁻¹) = e.src`. Rewrite using `[h2]`. Conclude with `nt_map_inv γ e.src`. Establish `h5 : mapE γ⁻¹ e'' ≠ e`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `h3` to reduce the goal to its premises. Rewrite using `[← h, mapE_inv]`. Establish `h6` using `CCL_other R lam0 t c e (mapE γ⁻¹ e'') (hedge e'' h1) h4 h5 hx`. Establish `h7` using `apply_mem_scale_scale_of_mem_iff T _ _ (hT2 (mapE γ⁻¹ e'') (hedge e'' h1)) h6`. Rewrite `h7` using `[mapE_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htgtC : ∀ y, y ∈ CCL' R lam0 t c e → y.comp T.symm.toLinearMap ∈ CCL' R lam0 t c (mapE γ e)`. Introduce `y hy`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `comp_symm_mem_scale_dualLat_of_mem_iff T _ (hT1 e.tgt he.2.1) hy.1.1`. Conclude with `comp_symm_mem_scale_dualLat_of_mem_iff T _ (hT2 e he) hy.1.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_iInf]`. Introduce `e''`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `h4 : (mapE γ⁻¹ e'').tgt = e.tgt` using `by show e''.tgt.map (nt_phi R.W γ⁻¹) = e.tgt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `nt_map_inv γ e.tgt`. Establish `h5 : mapE γ⁻¹ e'' ≠ e`. Introduce `h`. Apply `h3` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h, mapE_inv]`. Establish `h6` using `CCL'_other R lam0 t c e (mapE γ⁻¹ e'') (hedge e'' h1) h4 h5 hy`. Establish `h7` using `scaled_dual_lattice_transport T _ _ (hT2 (mapE γ⁻¹ e'') (hedge e'' h1)) h6`. Rewrite `h7` using `[mapE_inv]`. Then use the resulting hypothesis. Rewrite using `[hee]`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Break down `hfac with h0 | ⟨x, y, hx, hy, z, M, hz, hv, hM⟩` into its components or cases. Conclude with `Or.inl h0`. Use `Or.inr ⟨fun i => T (x i), fun l => (y l).comp T.symm.toLinearMap, fun i => hsrcC _ (hx i), fun l => htgtC _ (hy l), z, M, hz, hv, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hM i j]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Use `congr 1`. Unfold `be`. Rewrite using `[LinearMap.comp_apply, ← map_smul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restEdge_of (hFun : RestFunct) : RestEdge := by
   classical

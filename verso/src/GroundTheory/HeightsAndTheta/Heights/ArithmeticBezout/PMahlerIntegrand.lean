@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `u hu`. Simplify using `only [LogInt.polydisc, Set.mem_univ_pi, Metric.mem_closedBall, dist_zero_right]`. Introduce `ij`. Conclude with `(hC (fun j => u (ij.1, j)) ij.2).trans (mul_le_of_le_one_right hC0 (hu ij.1).le)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ballProd_subset_polydisc {n k : ℕ} (h : HermNorm n) (C : ℝ) (hC0 : 0 ≤ C)
     (hC : ∀ (v : Fin n → ℂ) (j : Fin n), ‖v j‖ ≤ C * h.norm v) :
@@ -19,9 +19,9 @@ theorem ballProd_subset_polydisc {n k : ℕ} (h : HermNorm n) (C : ℝ) (hC0 : 0
   exact (hC (fun j => u (ij.1, j)) ij.2).trans (mul_le_of_le_one_right hC0 (hu ij.1).le)
 
 /- English proof (translation)
-Introduce `n k δ h f hf _`. Take `⟨C, hC0, hC⟩` from `h.li_exists_coord_le`. Establish `e : nrmGroups h k = LogInt.normT h Finset.univ`. Use function extensionality and compare the values at `u ij`. Simplify using `[nrmGroups, LogInt.normT]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(LogInt.logNormT h C hC0 hC Finset.univ f hf).1.mono_set (ballProd_subset_polydisc h C hC0 hC)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MahlerIntegrand.proof : MahlerIntegrand.Statement := by
   intro n k δ h f hf _

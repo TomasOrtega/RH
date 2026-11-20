@@ -7,17 +7,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `B S X G π f Φ U J e ψ β he hcov hf hβ hch`. Set `𝒰 : (pullback f (pullback.fst π π)).OpenCover` to `Scheme.Cover.mkOfCovers J (fun j => pullback (e j) (pullback.fst f (pullback.fst π π))) (fun j => pullback.snd _ _) (by`. Introduce `q`. Take `⟨j, y, hy⟩` from `(by simpa [Set.mem_range] using hcov (pullback.fst f (pullback.fst π π) q) : ∃ j, ∃ y, (e j) y = pullback.fst f (pullback.fst π π) q)`. Take `⟨p, -, hp⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback (e j) (pullback.fst f (pullback.fst π π))) y q hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, p, hp⟩)`. Use `Scheme.Cover.hom_ext 𝒰 _ _ (fun (j : J) => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullback.snd (e j) (pullback.fst f (pullback.fst π π)) ≫ _ = pullback.snd (e j) (pullback.fst f (pullback.fst π π)) ≫ _`. Establish `hc` using `pullback.condition (f := e j) (g := pullback.fst f (pullback.fst π π))`. Generalize the expression as in `pullback.snd (e j) (pullback.fst f (pullback.fst π π)) = z at hc ⊢`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `pullback.fst (e j) (pullback.fst f (pullback.fst π π)) = y₁ at hc`. Establish `h1 : y₁ ≫ pullback.snd U.hom π = (z ≫ pullback.snd f (pullback.fst π π)) ≫ pullback.fst π π`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (y₁ ≫ pullback.fst U.hom π) ≫ U.hom = ((z ≫ pullback.snd f (pullback.fst π π)) ≫ pullback.snd π π) ≫ π`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Category.assoc, pullback.condition]`. Use `_ = (z ≫ pullback.snd f (pullback.fst π π)) ≫ pullback.fst π π ≫ π := by rw [reassoc_of% h1]; simp only [Category.assoc]`. Use `_ = _ := by rw [pullback.condition]; simp only [Category.assoc]`. Establish `hΦ` using `hch j _ y₁ (pullback.lift _ _ h2) _ (pullback.lift_fst _ _ _).symm h1 (pullback.lift_snd _ _ _) z hc.symm rfl`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% hc]`. Use `_ = pullback.lift _ _ h2 ≫ e j ≫ β := by`. Rewrite using `[hβ, pullback.lift_fst_assoc, Category.assoc]`. Use `_ = z ≫ Φ ≫ pullback.fst f (pullback.snd π π) ≫ β := by`. Establish `h3` using `congrArg (· ≫ β) hΦ`.
-
-Simplify `h3.symm` using `only [Category.assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.descent_eqn_of_chart_projection : ∀ (B S X G : Scheme.{0}) (π : S ⟶ B) (f : X ⟶ S) (Φ : pullback f (pullback.fst π π) ⟶ pullback f (pullback.snd π π)) (U : Over B) (J : Type) (e : J → (pullback U.hom π ⟶ X)) (ψ : J → (U.left ⟶ G)) (β : X ⟶ G), (∀ j, IsOpenImmersion (e j)) → (∀ x : X, ∃ j, x ∈ Set.range (e j)) → (∀ j, e j ≫ f = pullback.snd _ _) → (∀ j, e j ≫ β = pullback.fst _ _ ≫ ψ j) → (∀ (j : J) (T : Scheme.{0}) (y₁ y₂ : T ⟶ pullback U.hom π) (s : T ⟶ pullback π π), y₁ ≫ pullback.fst _ _ = y₂ ≫ pullback.fst _ _ → y₁ ≫ pullback.snd _ _ = s ≫ pullback.fst π π → y₂ ≫ pullback.snd _ _ = s ≫ pullback.snd π π → ∀ z : T ⟶ pullback f (pullback.fst π π), z ≫ pullback.fst _ _ = y₁ ≫ e j → z ≫ pullback.snd _ _ = s → z ≫ Φ ≫ pullback.fst _ _ = y₂ ≫ e j) → pullback.fst f (pullback.fst π π) ≫ β = Φ ≫ pullback.fst f (pullback.snd π π) ≫ β := by
   intro B S X G π f Φ U J e ψ β he hcov hf hβ hch

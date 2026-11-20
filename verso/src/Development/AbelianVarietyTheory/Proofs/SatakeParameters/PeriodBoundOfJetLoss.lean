@@ -28,14 +28,14 @@ section Val
 variable {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vAdd_mul_of_ne {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : vAdd w (x * y) = vAdd w x + vAdd w y := by
   unfold vAdd
   rw [map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), neg_add]
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_pow, WithZero.log_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vAdd_pow_eq (x : K) (n : ℕ) : vAdd w (x ^ n) = n * vAdd w x := by
   unfold vAdd
@@ -43,7 +43,7 @@ theorem vAdd_pow_eq (x : K) (n : ℕ) : vAdd w (x ^ n) = n * vAdd w x := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [vAdd]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, vAdd_mul_of_ne w (h a) (Finset.prod_ne_zero_iff.2 fun i _ => h i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem vAdd_prod_of_ne {ι : Type} (s : Finset ι) (f : ι → K) (h : ∀ i, f i ≠ 0) :
     vAdd w (∏ i ∈ s, f i) = ∑ i ∈ s, vAdd w (f i) := by
@@ -54,7 +54,7 @@ theorem vAdd_prod_of_ne {ι : Type} (s : Finset ι) (f : ι → K) (h : ∀ i, f
     rw [Finset.prod_insert ha, Finset.sum_insert ha, vAdd_mul_of_ne w (h a) (Finset.prod_ne_zero_iff.2 fun i _ => h i), ih]
 
 /- English proof (translation)
-Unfold `vAdd`. Use `(WithZero.log_le_log ((Valuation.ne_zero_iff _).2 hx) one_ne_zero).2 h` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vAdd_nonneg_of_le {x : K} (hx : x ≠ 0) (h : w.valuation K x ≤ 1) : 0 ≤ vAdd w x := by
   unfold vAdd
@@ -63,7 +63,7 @@ theorem vAdd_nonneg_of_le {x : K} (hx : x ≠ 0) (h : w.valuation K x ≤ 1) : 0
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h1 : w.valuation K (a : K) = 1` using `(w.valuation_eq_one_iff_notMem (K := K)).2 hn`. Rewrite `h` using `[vAdd, h1, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_of_vAdd_pos {a : 𝓞 K} (h : 0 < vAdd w (a : K)) : a ∈ w.asIdeal := by
   by_contra hn
@@ -74,7 +74,7 @@ theorem mem_of_vAdd_pos {a : 𝓞 K} (h : 0 < vAdd w (a : K)) : a ∈ w.asIdeal 
 end Val
 
 /- English proof (translation)
-Take `⟨s, s', ⟨h1, h2, -⟩, h3⟩` from `chainWeights X Pr R W u j hj`. Use `Finset.sum_nonneg fun a _ => ?_` and prove the remaining obligations. Establish `h4` using `(W.lamTrue u (j + 1) τ).anti (show Fin.castLE (N_lt_succ R j).le a ≤ ⟨R.N j, N_lt_succ R j⟩ from a.2.le)`. Rewrite `h4` using `[h2 τ _ le_rfl]`. Rewrite using `[← h3, ← h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -88,7 +88,7 @@ theorem sum_nuW_nonneg {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Wo
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.hc τ, rfl⟩ hc_row := recWts_row EX u_first u u' τ h := (D.hcW_first u τ h).trans (D.hcW_first u' τ h).symm u_last u u' τ h := (D.hcW_last u τ (by omega)).trans (D.hcW_last u' τ (by omega)).symm`.
+Supply the required witnesses or components.
 -/
 theorem recWts_ok {D : D7} (EX : ErrX D) : (recWts EX).Ok where
   row_ok τ := ⟨D.hc τ, rfl⟩
@@ -97,9 +97,9 @@ theorem recWts_ok {D : D7} (EX : ErrX D) : (recWts EX).Ok where
   u_last u u' τ h := (D.hcW_last u τ (by omega)).trans (D.hcW_last u' τ (by omega)).symm
 
 /- English proof (translation)
-Establish `h : ∀ x : D.host.E, @star _ (recFields D).starE.toStar x = D.host.conj x` using `fun x => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Set `_` to `D.host.isCMField_hostE`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.host.toHostAx.conjE_apply D.host.φ₀ x).symm`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emb_star_piG {D : D7} (EX : ErrX D) (i : Fin 2) (τ : D.what₂.Tau) :
     (recFields D).emb τ (@star _ (recFields D).starE.toStar (((recPrimes EX).piG i : 𝓞 D.host.E) : D.host.E)) = tauPib EX i τ := by
@@ -113,23 +113,23 @@ theorem emb_star_piG {D : D7} (EX : ErrX D) (i : Fin 2) (τ : D.what₂.Tau) :
   rfl
 
 /- English proof (translation)
-Establish `hg0 : (D.host.g i : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero`. Establish `hπ : ∀ τ, tauPib EX i τ ≠ 0`. Introduce `τ h`. Establish `h1 : (recFields D).emb τ (((recFields D).conjO (EX.piG i) : 𝓞 D.host.E) : D.host.E) = 0` using `(emb_star_piG EX i τ).trans h`. Establish `h2 : (recFields D).conjO (EX.piG i) = 0` using `RingOfIntegers.ext ((map_eq_zero _).1 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hPr.piG_norm i`. Express the relevant statement in the definitionally equal form `EX.piG i * (recFields D).conjO (EX.piG i) = _ at h3`. Rewrite `h3` using `[h2, mul_zero]`. Conclude with `(hPr.g_prime i).ne_zero (by exact_mod_cast h3.symm)`. Establish `e : ∀ j, lossAt (Pr` using `recPrimes EX) (recWts EX) i u j = (D.host.g i : D.what₂.LL) ^ (D.R.f * D.R.N j * D.R.N (j + 1)) * ∏ τ, tauPib EX i τ ^ (∑ a, ((recWts EX).nuW u (j + 1) τ).w a).toNat := fun j => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← D.what₂.card_Tau]`. Simplify using `only [← emb_star_piG]`. Both sides reduce to the same expression. Establish `hne : ∀ j, lossAt (Pr` using `recPrimes EX) (recWts EX) i u j ≠ 0 := fun j => by`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ hg0) (Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (hπ τ))`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hw' : D.what₂.places.resChar w = D.host.g i` using `hw`. Establish `hvg : vAdd (D.plEq w) (D.host.g i : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)`. Establish `h1` using `D.what₂.places.val_resChar w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hw', D.val_eq w _ hg0]`. Conclude with `h1` after adjusting the coercions. Establish `he : (0 : ℝ) < D.what₂.places.ramIdx w` using `by exact_mod_cast D.what₂.places.ramIdx_pos w`. Establish `h1 : ∀ j ∈ Finset.range D.R.m, (vAdd (D.plEq w) (lossAt (Pr` using `recPrimes EX) (recWts EX) i u j) : ℝ) / D.what₂.places.ramIdx w ≤ vNN EX i u (1 + j) w + D.R.f * (D.R.N D.R.m * (D.R.N D.R.m + D.R.t)) := by`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj'` using `Finset.mem_range.1 hj`. Establish `h2 : (D.R.f : ℝ) * D.R.N j * D.R.N (j + 1) ≤ D.R.f * D.R.N D.R.m * (D.R.N D.R.m + D.R.t)`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.IntegralityWeylConditions.exp_le D j hj'` after adjusting the coercions. Establish `h3 : ∀ τ, (((∑ a, ((recWts EX).nuW u (j + 1) τ).w a).toNat : ℕ) : ℝ) = nuAbs D u (1 + j) τ` using `fun τ => by`. Rewrite using `[add_comm 1 j, partitionSize D EX u j hj' τ, ← Int.cast_natCast, Int.toNat_of_nonneg (sum_nuW_nonneg (Pr := recPrimes EX) (recWts EX) u hj' τ)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, vAdd_mul_of_ne _ (pow_ne_zero _ hg0) (Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (hπ τ)), vAdd_prod_of_ne _ _ _ fun τ => pow_ne_zero _ (hπ τ)]`. Simplify using `only [vAdd_pow_eq, hvg]`. Use `push_cast`. Simplify using `only [h3]`. Rewrite using `[add_div, mul_div_assoc, div_self he.ne', mul_one, vNN]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 0 ≤ (D.R.f : ℝ) * ((D.R.m : ℝ) ^ 3 * L.etaSz)`. Use `L.etaSz_pos.le` as an intermediate fact. Check the signs of the components of the expression. Unfold `LiftErrorLocal.vG`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[vAdd_prod_of_ne _ _ _ hne, Int.cast_sum, Finset.sum_div]`. Use `(Finset.sum_le_sum h1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, LiftErrorLocal.lifts, LiftErrorLocal.errC, ← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range, Nat.add_sub_cancel]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem vG_loss_le {D : D7} (L : SizeData₂ D) (EX : ErrX D) (hPr : (recPrimes EX).Ok) (i : Fin 2) (w : LiftErrorLocal.Pl D)
     (hw : LiftErrorLocal.Over D i w) (u : D.what₂.Word) :

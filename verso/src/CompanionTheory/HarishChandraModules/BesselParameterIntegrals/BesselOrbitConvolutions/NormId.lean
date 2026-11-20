@@ -14,29 +14,29 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 namespace G
 
 /- English proof (translation)
-Introduce `hIn hSch k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hSide x hx v hv ξ`. Take `⟨hDL, hDI, hKS, -⟩` from `hIn`. Take `⟨hlam, hds, hgap, hOK, hw0, hz, hT, hc, hπ, hμW, hμN, hμG, hq⟩` from `hSide`. Establish `: SigmaFinite μW` using `hμW.1`. Establish `: SigmaFinite μN` using `hμN.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hds' : IsDSHpk k r ε lam σ` using `hds`. Establish `hHaar : IsHaarOn (UH (Hpk k r)) μG` using `hμG`. Establish `hq' : IsQuotMeas μG (muSof μW μN) νq` using `hq`. Establish `hGr` using `Cv.grpAll k r z`. Establish `hSg` using `Cv.sigAll k r ε lam H σ hds'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPi` using `Cv.piAll k r z u Wp π hz hT hπ`. Establish `hPs` using `Cv.psiAll k r z c hz`. Establish `hM` using `hMS k r z u Wp π μW μN hz hT hπ hμW hμN`. Take `⟨d, hd, hSd⟩` from `hSch k r ε lam H σ μG hlam hds hμG`. Establish `hS : SchurOn μG σ` using `⟨d, hd, hSd⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set a := Formalism.FourierDecayAlt.ThreeDimData.aOf r h with ha_def`. Take `⟨ha1, hAG, hAS⟩` from `thresholds hOK.2.2.1`. Establish `hb : 0 ≤ a - 1` using `by linarith`. Establish `hGg : Integrable (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-((a - 1) / 2))) μG` using `hGG k r μG _ hμG hAG`. Establish `hSS : Integrable (fun p : Mt k r × Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-((a - 1) / 2))) (μW.prod μN)` using `hGS k r z μW μN μG νq _ hz hT hμW hμN hμG hq hAG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hn1, hmem⟩` from `hw0`. Establish `hw0' : IsLowUnitH k r ε lam σ w0` using `⟨P, hP, hn1, hmem⟩`. Establish `hw0ne : w0 ≠ 0`. Introduce `h0`. Rewrite `hn1` using `[h0, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hn1`. Establish `hK0 : IsKFinHpk (k` using `k) (r := r) σ w0 := Formalism.MainNotions.DoubleDerivativeSmoothness.kfinHpk_of_lowUnitH hw0'`. Establish `hsm0 : w0 ∈ smoothVecs (k` using `k) (r := r) σ := hKS k r ε lam H σ hlam hds w0 hK0`. Establish `hD : DiagonalMatrixCoefficientPowerDecay σ w0 a` using `hDL k r hOK.1 ε lam h H σ hlam hds hgap hOK.2.1 P hP w0 w0 hmem hmem`. Establish `hI : DecInfU σ a` using `hDI k r ε lam h H σ hlam hds hgap hOK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hB : (∀ y ∈ smoothVecs (k` using `k) (r := r) σ, DecBd σ (a - 1) v y) ∧ DecBd σ (a - 1) v v := by`. Break down `hv with hvD | hvK` into its components or cases. Conclude with `⟨fun y hy => decBd_DD_left hds' hSg hb (decBd_of_decInfU hI hK0 hy) v hvD, decBd_mono (by linarith) (decDD hds' (by linarith) hD v hvD v hvD)⟩`. Establish `hvs : v ∈ smoothVecs (k` using `k) (r := r) σ := hKS k r ε lam H σ hlam hds v hvK`. Conclude with `⟨fun y hy => decBd_of_decInfU hI hvK hy, decBd_of_decInfU hI hvK hvs⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfd : ∀ y : H, y ≠ 0 → fdegH μG σ y = d` using `fun y hy => fdegH_eq ⟨hd, hSd⟩ hy`. Take `⟨-, heq0, him⟩` from `normId_gen_bd hds' hHaar hq' hGr hSg hPi hPs hM hS hw0ne hb (hB.1 w0 hsm0) hB.2 hGg hSS ξ`. Establish `hre : 0 ≤ (⟪ξ, PI.WBL.be z c π μW μN σ v v ξ⟫_ℂ).re`. Establish `h0 : 0 ≤ ∫ y, ‖PI.WBL.be z c π μW μN σ (σ (Matrix.of y) w0) v ξ‖ ^ 2 ∂νq` using `integral_nonneg fun _ => by positivity`. Rewrite `h0` using `[heq0, hfd w0 hw0ne, hn1, re_inner_swap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 0 ≤ (⟪ξ, PI.WBL.be z c π μW μN σ v v ξ⟫_ℂ).re / d` using `by simpa using h0`. Conclude with `(div_nonneg_iff.mp this).elim (fun h => h.1) (fun h => absurd h.2 (not_le.mpr hd))`. Use `⟨?_, him, hre⟩` and prove the remaining obligations. Establish `hfd0 : PI.BesselPeriodGGP.fdegH μG σ w0 = d` using `hfd w0 hw0ne`. Rewrite using `[hfd0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Establish `e0 : Formalism.FourierDecayAlt.ThreeDimData.be z c π σ μW μN 0 v = 0`. Simplify using `[Formalism.FourierDecayAlt.ThreeDimData.be, Formalism.FourierDecayAlt.ThreeDimData.beInt]`. Unfold `PI.BesselPeriodGGP.l2SG`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[e0]`. Take `⟨hint, heq, -⟩` from `normId_gen_bd hds' hHaar hq' hGr hSg hPi hPs hM hS hx0 hb (hB.1 x hx) hB.2 hGg hSS ξ`. Rewrite `heq` using `[hfd x hx0, re_inner_swap]`. Unfold `PI.BesselPeriodGGP.l2SG`. Use `show ∫⁻ y, (‖PI.WBL.be z c π μW μN σ (σ (Matrix.of y) x) v ξ‖₊ : ℝ≥0∞) ^ 2 ∂νq = ENNReal.ofReal (‖x‖ ^ 2 * (⟪ξ, PI.WBL.be z c π μW μN σ v v ξ⟫_ℂ).re / d)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← heq, ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun _ => by positivity)]`. Apply `lintegral_congr` to reduce the goal to its premises. Introduce `y`. Simplify using `only [ENNReal.ofReal_pow, norm_nonneg, ofReal_norm, enorm_eq_nnnorm]`.
+A detailed English derivation is pending.
 -/
 theorem normIdSm_of (hGS : Formalism.FourierDecayAlt.ThreeDimData.GrowthS) (hGG : Formalism.FourierDecayAlt.ThreeDimData.GrowthG) (hMS : MeasSideP) :
     CompanionTheory.D.Upq.BesselFunctionalConstruction.NormIdSm := by

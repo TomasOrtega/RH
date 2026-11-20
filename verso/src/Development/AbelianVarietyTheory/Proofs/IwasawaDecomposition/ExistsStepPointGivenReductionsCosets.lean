@@ -16,13 +16,13 @@ section Local
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Use `⟨0, fun e _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_zero]`. Simplify using `using Formalism.L2.Col.IntAt.coe P 0`. Establish `h0 : P.valuation E c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨(WithZero.log (P.valuation E c)).toNat, fun e he => ?_⟩` and prove the remaining obligations. Establish `h1` using `(P.intValuation_le_pow_iff_mem e _).2 he`. Establish `hv : P.valuation E (algebraMap (𝓞 E) E e * c) ≤ 1`. Rewrite using `[map_mul, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hK` using `Int.self_le_toNat (WithZero.log (P.valuation E c))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[WithZero.exp_add, WithZero.exp_log h0]`. Use `_ ≤ 1 := by`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨r, s, hrs⟩` from `P.exists_primeCompl_mul_eq_of_integer _ hv`. Conclude with `⟨r, s, s.2, by rw [mul_comm]; exact hrs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_intAt_mul (P : HeightOneSpectrum (𝓞 E)) (c : E) :
     ∃ K : ℕ, ∀ e ∈ P.asIdeal ^ K, Formalism.L2.Col.IntAt P (algebraMap (𝓞 E) E e * c) := by
@@ -49,7 +49,7 @@ theorem exists_pow_intAt_mul (P : HeightOneSpectrum (𝓞 E)) (c : E) :
 variable [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `(mem_locP P N v).1 hv`. Establish `hs0 : s ≠ 0` using `fun e => hs (e ▸ P.asIdeal.zero_mem)`. Establish `hs1 : algebraMap (𝓞 E) E s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hs0`. Use `⟨(algebraMap (𝓞 E) E s)⁻¹, s • v, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E s v, inv_smul_smul₀ hs1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_of_mem_locP {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {v : Sp E n}
     (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N) : ∃ l : E, ∃ x ∈ N, v = l • x := by
@@ -60,15 +60,13 @@ theorem exists_smul_of_mem_locP {P : HeightOneSpectrum (𝓞 E)} {N : Submodule 
   rw [← algebraMap_smul E s v, inv_smul_smul₀ hs1]
 
 /- English proof (translation)
-Use `choose l x hx hax using ha`. Use `choose K hK using fun P P' : T => exists_pow_intAt_mul P'.1 (c P' * l P)`. Establish `he : ∀ P : T, ∃ e : 𝓞 E, ∀ P' : T, e - (if P = P' then 1 else 0) ∈ P'.1.asIdeal ^ (∑ P'' : T, K P'' P')`. Introduce `P`. Take `⟨e, he⟩` from `exists_forall_sub_mem_ideal (s := (Finset.univ : Finset T)) (fun Q : T => Q.1.asIdeal) (fun Q : T => ∑ P'' : T, K P'' Q) (fun Q _ => Q.1.prime) (fun Q _ Q' _ hne h => hne (Subtype.ext (HeightOneSpectrum.ext h))) (fun Q => if P = Q.1 then 1 else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨e, fun P' => he P' (Finset.mem_univ _)⟩`. Use `choose e he using he`. Use `⟨∑ P, (algebraMap (𝓞 E) E (e P) * l P) • x P, fun P0 => ?_⟩` and prove the remaining obligations. Establish `hsum : (∑ P, (algebraMap (𝓞 E) E (e P) * l P) • x P) - a P0 = ∑ P, (algebraMap (𝓞 E) E (e P - if P = P0 then 1 else 0) * l P) • x P`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `h1 : ∀ P, (algebraMap (𝓞 E) E (e P - if P = P0 then 1 else 0) * l P) • x P = (algebraMap (𝓞 E) E (e P) * l P) • x P - (if P = P0 then l P0 • x P0 else 0)`. Introduce `P`. Use `split_ifs with hP`. Substitute `hP` using the available equality. Rewrite using `[map_sub, map_one, _root_.sub_mul, one_mul, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero, sub_zero]`. Rewrite using `[Finset.sum_congr rfl (fun P _ => h1 P), Finset.sum_sub_distrib, hax P0]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hsum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun P _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_smul]`. Establish `e1 : c P0 * (algebraMap (𝓞 E) E (e P - if P = P0 then 1 else 0) * l P) = algebraMap (𝓞 E) E (e P - if P = P0 then 1 else 0) * (c P0 * l P)` using `by ring`. Rewrite using `[e1]`. Conclude with `GlobalTheory.TopStep.smul_mem_locP (hK P P0 _ (Ideal.pow_le_pow_right (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ P)) (he P P0))) (Formalism.L2.Col.le_locP _ _ (hx P))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx (T : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E n)) (c : T → E) (a : T → Sp E n)
     (ha : ∀ P, ∃ l : E, ∃ x ∈ N, a P = l • x) :
@@ -120,7 +118,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
 open Classical in
 
 /- English proof (translation)
-Unfold `frsF`. Rewrite using `[dif_neg hP]`. Conclude with `p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left hP⟩ x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_mem (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (x : Sp X.E (R.N j)) :
     frsF sel mu p P x ∈ p.deco.1.at P.1 ↔ x ∈ stdAt X.E (R.N j) P.1 := by
@@ -129,7 +127,7 @@ theorem frsF_mem (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 
   exact p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left hP⟩ x
 
 /- English proof (translation)
-Rewrite using `[← frsF_mem p P hP, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frsF_symm_mem (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (v : Sp X.E (R.N j)) :
     (frsF sel mu p P).symm v ∈ stdAt X.E (R.N j) P.1 ↔ v ∈ p.deco.1.at P.1 := by
@@ -138,13 +136,13 @@ theorem frsF_symm_mem (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP :
 open Classical in
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [cosetIn, if_neg hP, hY, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y0, hy0, hz⟩`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy0 P`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[if_neg hP, zpow_natCast]`. Establish `h2` using `(frsF_symm_mem q.1.1 P hP _).2 h1`. Rewrite `h2` using `[map_smul, map_sub]`. Establish `e : ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (z - (frsF sel mu q.1.1 P).symm y) = ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (z - (frsF sel mu q.1.1 P).symm y0) + ((qOf P.1 : X.E) ^ cst.M)⁻¹ • ((frsF sel mu q.1.1 P).symm y0 - (frsF sel mu q.1.1 P).symm y)`. Rewrite using `[← smul_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem hz h2`. Introduce `hz`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [sub_self]; exact zero_mem _, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem cosetIn_eq {cst : LocCst X (rowSG Pr sel mu)} (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
     (hY : q.1.2 = {z | z - y ∈ locLat (rowSG Pr sel mu) q.1.1.deco.1.N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))})
@@ -172,45 +170,39 @@ theorem cosetIn_eq {cst : LocCst X (rowSG Pr sel mu)} (q : PtAt R sel mu cst u j
 end Pt
 
 /- English proof (translation)
-Introduce `X Pr R sel S mu cst u j hQ r p`. Distinguish the cases in `h : j + 1 = R.m`. Take `⟨y, hy, hY⟩` from `r.mem_ybSet h`. Establish `hyG : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ((qOf P.1 : ℕ) : X.E) • y ∈ r.1.1.deco.1.at P.1` using `fun P hP => by`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy P`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[if_pos hP, _root_.zpow_neg_one, inv_inv]`. Then use the resulting hypothesis. Establish `hyQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ((qOf P.1 : X.E) ^ cst.M) • y ∈ r.1.1.deco.1.at P.1` using `fun P hP => by`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy P`. Rewrite `h1` using `[if_neg hP, _root_.zpow_neg, inv_inv, zpow_natCast]`. Then use the resulting hypothesis. Use `choose xw hxN hxv using fun w : Pr.vGs => p.deco.2.be_surj w (r.1.1.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `a : rowSG Pr sel mu → Sp X.E (R.N j)` to `fun P => if hP : P.1 ∈ Pr.vGs then (((qOf P.1 : ℕ) : X.E))⁻¹ • xw ⟨P.1, hP⟩ else frsF sel mu p P ((frsF sel mu r.1.1 P).symm y)`. Set `c : rowSG Pr sel mu → X.E` to `fun P => ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M))⁻¹`. Establish `haG : ∀ (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs), a P = (((qOf P.1 : ℕ) : X.E))⁻¹ • xw ⟨P.1, hP⟩` using `fun P hP => dif_pos hP`. Establish `haQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → a P = frsF sel mu p P ((frsF sel mu r.1.1 P).symm y)` using `fun P hP => dif_neg hP`. Establish `hQa : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ((qOf P.1 : X.E) ^ cst.M) • a P ∈ p.deco.1.at P.1` using `fun P hP => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[haQ P hP, ← map_smul, frsF_mem p P hP, ← map_smul, frsF_symm_mem r.1.1 P hP]`. Conclude with `hyQ P hP`. Establish `ha : ∀ P, ∃ l : X.E, ∃ x ∈ p.deco.1.N, a P = l • x` using `fun P => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Conclude with `⟨_, _, hxN _, haG P hP⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, x, hx, e⟩` from `exists_smul_of_mem_locP (hQa P hP)`. Use `⟨((qOf P.1 : X.E) ^ cst.M)⁻¹ * l, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← e, inv_smul_smul₀ (pow_ne_zero _ GlobalTheory.TopStep.qOf_ne_zero)]`. Take `⟨y', hy'⟩` from `exists_approx (rowSG Pr sel mu) p.deco.1.N c a ha`. Establish `hy'G : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → y' - a P ∈ p.deco.1.at P.1` using `fun P hP => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hy' P`. Simplify using `only [c, if_pos hP, pow_zero, inv_one, one_smul] at h1`. Conclude with `h1`. Establish `hy'Q : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (y' - a P) ∈ p.deco.1.at P.1` using `fun P hP => by`. Establish `h1` using `hy' P`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c, if_neg hP] at h1`. Conclude with `h1`. Establish `eG : ∀ (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs), ((qOf P.1 : ℕ) : X.E) • y' = xw ⟨P.1, hP⟩ + ((qOf P.1 : ℕ) : X.E) • (y' - a P)` using `fun P hP => by`. Rewrite using `[haG P hP, smul_sub, smul_inv_smul₀ GlobalTheory.TopStep.qOf_ne_zero, add_sub_cancel]`. Establish `hG : ∀ w : Pr.vGs, w.1 ∈ rowSG Pr sel mu` using `fun w => Finset.mem_union_left _ w.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨(p, {z | z - y' ∈ locLat (rowSG Pr sel mu) p.deco.1.N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))}), ?_⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ysAt_ys_of_eq sel mu cst h]`. Use `⟨y', (mem_locLat _ _ _ _).2 fun P => ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[if_pos hP, _root_.zpow_neg_one, inv_inv] show _ ∈ p.deco.1.at P.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eG P hP]`. Conclude with `add_mem (Formalism.L2.Col.le_locP _ _ (hxN _)) (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) (hy'G P hP))`. Rewrite using `[if_neg hP, _root_.zpow_neg, inv_inv, zpow_natCast] show _ ∈ p.deco.1.at P.1`. Establish `e : ((qOf P.1 : X.E) ^ cst.M) • y' = ((qOf P.1 : X.E) ^ cst.M) • a P + ((qOf P.1 : X.E) ^ cst.M * (qOf P.1 : X.E) ^ cst.M) • (((qOf P.1 : X.E) ^ cst.M)⁻¹ • (y' - a P))`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ GlobalTheory.TopStep.qOf_ne_zero), mul_one, smul_sub, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem (hQa P hP) (GlobalTheory.TopStep.smul_mem_locP ((GlobalTheory.TopStep.intAt_pow (GlobalTheory.TopStep.intAt_nat _) _).mul (GlobalTheory.TopStep.intAt_pow (GlobalTheory.TopStep.intAt_nat _) _)) (hy'Q P hP))`. Use function extensionality and compare the values at `w`. Establish `hw` using `hG w`. Establish `hmem : ((qOf w.1 : ℕ) : X.E) • y' ∈ p.deco.1.at w.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[eG ⟨w.1, hw⟩ w.2]`. Conclude with `add_mem (Formalism.L2.Col.le_locP _ _ (hxN _)) (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) (hy'G ⟨w.1, hw⟩ w.2))`. Establish `key : p.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y') = r.1.1.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y)`. Rewrite using `[eG ⟨w.1, hw⟩ w.2, p.deco.2.be_add w _ (Formalism.L2.Col.le_locP _ _ (hxN _)) _ (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) (hy'G ⟨w.1, hw⟩ w.2)), GlobalTheory.TopStep.be_smul_int p.deco.2 w (GlobalTheory.TopStep.intAt_nat _) (hy'G ⟨w.1, hw⟩ w.2), Globa …`. Conclude with `hxv w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `(MemChart.CosetLift.coset_be p.deco _ w hw _ (if_pos w.2) hmem).trans ?_` and prove the remaining obligations. Rewrite using `[key, MemChart.bar, hY]`. Conclude with `(MemChart.CosetLift.coset_be r.1.1.deco _ w hw _ (if_pos w.2) (hyG ⟨w.1, hw⟩ w.2)).symm`. Use function extensionality and compare the values at `P`. Establish `hP : (⟨P.1, Finset.mem_union_right _ P.2⟩ : rowSG Pr sel mu).1 ∉ Pr.vGs` using `hQ P.1 P.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Unfold `GlobalTheory.Mem.Col2.ChEx.cqOf`. Rewrite using `[cosetIn_eq r hY _ hP]`. Use `(cosetIn_eq _ (y := y') ?_ _ hP).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Use `set P' : rowSG Pr sel mu := ⟨P.1, Finset.mem_union_right _ P.2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `set cM : X.E := ((qOf P'.1 : X.E) ^ cst.M)⁻¹`. Establish `key : cM • ((frsF sel mu p P').symm y' - (frsF sel mu r.1.1 P').symm y) ∈ stdAt X.E (R.N j) P'.1`. Establish `e1 : (frsF sel mu r.1.1 P').symm y = (frsF sel mu p P').symm (a P')`. Rewrite using `[haQ P' hP, LinearEquiv.symm_apply_apply]`. Rewrite using `[e1, ← map_sub, ← map_smul, frsF_symm_mem p P' hP]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy'Q P' hP`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq]`. Establish `e : cM • (z - (frsF sel mu r.1.1 P').symm y) = cM • (z - (frsF sel mu p P').symm y') + cM • ((frsF sel mu p P').symm y' - (frsF sel mu r.1.1 P').symm y)`. Rewrite using `[← smul_add]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Express the relevant statement in the definitionally equal form `cM • (z - (frsF sel mu r.1.1 P').symm y) ∈ stdAt X.E (R.N j) P'.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `add_mem hz key`. Introduce `hz`. Express the relevant statement in the definitionally equal form `cM • (z - (frsF sel mu p P').symm y') ∈ stdAt X.E (R.N j) P'.1`. Establish `e2 : cM • (z - (frsF sel mu p P').symm y') = cM • (z - (frsF sel mu r.1.1 P').symm y) - cM • ((frsF sel mu p P').symm y' - (frsF sel mu r.1.1 P').symm y)`.
-
-Rewrite using `[e, add_sub_cancel_right]`. Rewrite using `[e2]`. Conclude with `sub_mem hz key`. Establish `hY : r.1.2 = ∅`. Use `r.2` as an intermediate fact.
-
-Rewrite `this` using `[ysAt_ys_of_ne sel mu cst h]`. Then use the resulting hypothesis. Use `⟨⟨(p, ∅), by rw [ysAt_ys_of_ne sel mu cst h]; rfl⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `[MemChart.bar, hY]`. Use function extensionality and compare the values at `P`.
-
-Simplify using `[GlobalTheory.Mem.Col2.ChEx.cqOf, cosetIn, hY]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ptAt_bar_cq_eq : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}, (∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) → ∀ (r : PtAt R sel mu cst u j) (p : ChPt (R := R) sel mu u j), ∃ r' : PtAt R sel mu cst u j, r'.1.1 = p ∧ bar r' = bar r ∧ GlobalTheory.Mem.Col2.ChEx.cqOf r' = GlobalTheory.Mem.Col2.ChEx.cqOf r := by
   intro X Pr R sel S mu cst u j hQ r p

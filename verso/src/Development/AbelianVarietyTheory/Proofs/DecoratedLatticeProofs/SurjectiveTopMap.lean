@@ -23,9 +23,7 @@ section General
 variable {D : D7} {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `hG : IsUnit (gramAt D V τ)`. Rewrite using `[← M.fr_gram τ]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 (M.fr_unit τ)).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self (M.ε τ)))).mul (M.fr_unit τ)`. Establish `hg' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Take `⟨u, rfl⟩ : IsUnit g` from `isUnit_of_mul_isUnit_right (hg'.symm ▸ hG : IsUnit (gᴴ * gramAt D V τ * g))`.
-
-Conclude with `Submodule.subset_span (Formalism.IndefR.SchurOrthogonalityAlt.smoothVec_rep M τ ⟨u, hg⟩ (Formalism.IndefR.SchurOrthogonalityAlt.gp_sv_of_mem hw))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rep_mem_sm (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (w : M.H τ) (hw : w ∈ M.sm τ) : M.rep τ g w ∈ M.sm τ := by
@@ -39,17 +37,15 @@ theorem rep_mem_sm (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.ran
     (Formalism.IndefR.SchurOrthogonalityAlt.smoothVec_rep M τ ⟨u, hg⟩ (Formalism.IndefR.SchurOrthogonalityAlt.gp_sv_of_mem hw))
 
 /- English proof (translation)
-Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ a ∈ GinfC V, (∀ τ ∉ s, infMat D.sp.cm.sig V.gram (θ τ) a = 1) → P a`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `a ha h`. Rewrite using `[R.2.2.1 a ha 1 (one_mem _) fun τ => by rw [h τ (Finset.notMem_empty τ), infMat_one]]`. Conclude with `h1`. Consider the case `insert τ s hτ ih`. Introduce `a ha h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a τ`. Establish `hb` using `atTau_spec hθ V τ hg`. Establish `hi : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) (atTau θ V τ (infMat D.sp.cm.sig V.gram (θ τ) a))⁻¹ * infMat D.sp.cm.sig V.gram (θ ρ) (atTau θ V τ (infMat D.sp.cm.sig V.gram (θ τ) a)) = 1` using `fun ρ => by`. Rewrite using `[← infMat_mul, inv_mul_cancel, infMat_one]`. Rewrite using `[← mul_inv_cancel_left (atTau θ V τ (infMat D.sp.cm.sig V.gram (θ τ) a)) a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmul _ _ (hat τ _ hg) (ih _ (mul_mem (inv_mem hb.1) ha) fun ρ hρ => ?_)` and prove the remaining obligations. Rewrite using `[infMat_mul]`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Use `hi ρ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hb.2.1]`. Then use the resulting hypothesis. Use `hi ρ` as an intermediate fact. Rewrite `this` using `[hb.2.2 ρ c]`. Rewrite using `[h ρ (by simp [c, hρ])]`. Conclude with `this`.
-
-Conclude with `fun a ha => key Finset.univ a ha fun τ h => absurd (Finset.mem_univ τ) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem real_induction (hθ : IsInfFam θ) (P : GA D V → Prop) (h1 : P 1) (hmul : ∀ a b, P a → P b → P (a * b))
     (hat : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), P (atTau θ V τ g)) : ∀ a ∈ GinfC V, P a := by
@@ -82,9 +78,9 @@ theorem real_induction (hθ : IsInfFam θ) (P : GA D V → Prop) (h1 : P 1) (hmu
   exact fun a ha => key Finset.univ a ha fun τ h => absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Take `⟨m, hm, rfl⟩` from `hT`. Use `show PiTensorProduct.lift m _ x' = c * PiTensorProduct.lift m _ x`. Rewrite using `[PiTensorProduct.lift.tprod, PiTensorProduct.lift.tprod]`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm => exact h m hm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [MultilinearMap.add_apply, Pi.add_apply, ha, hb, mul_add]`. Consider the case `smul r a _ ha => simp only [MultilinearMap.smul_apply, Pi.smul_apply, ha, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem multT_rel {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} (v v' : M.Vec) (x x' : GA D V) (c : ℂ)
     (h : ∀ m, IsMultMap θ M J χ m → m v' x' = c * m v x) {T} (hT : T ∈ MultT θ M J χ) :
@@ -99,7 +95,7 @@ theorem multT_rel {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} (v 
   | smul r a _ ha => simp only [MultilinearMap.smul_apply, Pi.smul_apply, ha, smul_eq_mul]; ring
 
 /- English proof (translation)
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, multT_rel v v x x' c (fun m hm => h m hm v) hT, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb => rw [map_add, Pi.add_apply, Pi.add_apply, ha, hb, mul_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem multT_rel' {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} (x x' : GA D V) (c : ℂ)
     (h : ∀ m, IsMultMap θ M J χ m → ∀ v, m v x' = c * m v x) {T} (hT : T ∈ MultT θ M J χ) (v : SmT M) :
@@ -111,7 +107,7 @@ theorem multT_rel' {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} (x
   | add a b ha hb => rw [map_add, Pi.add_apply, Pi.add_apply, ha, hb, mul_add]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hm : Formalism.UG.bc (incA D) δ ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig V.gram` using `unit_transfer (Equiv.refl _) (incA D) (D.sp.cm.sig : D.host.E →+* D.host.E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ D.sp.cm.sig) (fun _ => rfl) V.gram _ (fun _ _ => rfl) δ.1 _ (fun _ _ => rfl) hδ`. Use `⟨⟨_, hm⟩, ⟨δ, hδ, rfl⟩, rfl, fun τ => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.ext fun i j => (hθ τ).1 _`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ratPt (hθ : IsInfFam θ) {n : ℕ} (hn : V.rank = n) (δ : GL (Fin n) D.host.E)
     (hδ : δ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (V.gram.reindex (finCongr hn) (finCongr hn))) :
@@ -125,7 +121,7 @@ theorem exists_ratPt (hθ : IsInfFam θ) {n : ℕ} (hn : V.rank = n) (δ : GL (F
   exact Matrix.ext fun i j => (hθ τ).1 _
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem infN_eq {n : ℕ} (hn : V.rank = n) (γ : GA D V) (τ : D.what₂.Tau) :
     (infN θ V hn (Equiv.refl _) γ τ : Matrix (Fin n) (Fin n) ℂ) =
@@ -143,17 +139,17 @@ variable {D : D7} {u : D.what₂.Word} {K : ClsPTied u} {θ : InfFam D} {S : D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `real_induction hθ _ (fun v => ⟨v, by rw [map_one, lT_one], fun T _ h => by rw [mul_one]⟩) (fun a b ha hb v => ?_) fun τ g hg v => ?_` and prove the remaining obligations. Take `⟨v₁, e1, f1⟩` from `hb v`. Take `⟨v₂, e2, f2⟩` from `ha v₁`. Use `⟨v₂, by rw [map_mul (infPt θ), lT_mul, e2, e1], fun T hT h => ?_⟩` and prove the remaining obligations. Rewrite using `[f2 T hT, f1 T hT, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Set `w : M.sm τ` to `⟨M.rep τ g (v τ), rep_mem_sm M τ hg _ (v τ).2⟩`. Use `⟨r • PiTensorProduct.tprod ℂ (Function.update v τ w), ?_, fun T hT h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, map_smul]`.
+Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Use `hj.eqv τ g hg v w rfl _ y fun ρ => ?_` and prove the remaining obligations. Use `(congrArg (· * y.1 ρ) (infN_atTau θ _ (rankP D) hθ τ hg ρ)).trans ?_` and prove the remaining obligations. Distinguish the cases in `c : ρ = τ`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `c` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne c, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Rewrite using `[map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, multT_rel v (Function.update v τ w) (h * atTau θ _ τ g) h 1 (fun m hm => by`. Rewrite using `[one_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (hm.equiv τ g hg v w rfl) h) hT, one_mul]`. Consider the case `add a b ha hb`. Take `⟨a', e1, f1⟩` from `ha`. Take `⟨b', e2, f2⟩` from `hb`. Use `⟨a' + b', by rw [j.map_add, j.map_add, LinearMap.map_add, e1, e2], fun T hT h => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.map_add, T.map_add, Pi.add_apply, Pi.add_apply, f1 T hT, f2 T hT]`.
+A detailed English derivation is pending.
 -/
 theorem real_translate (hθ : IsInfFam θ) (hj : IsJ u M j) : ∀ a ∈ GinfC D.sp.X', ∀ v : SmT M, ∃ v' : SmT M,
     lT _ (infPt θ a) (j v') = j v ∧ ∀ T ∈ MultT θ M J χ, ∀ h, T v' h = T v (h * a) := by
@@ -186,7 +182,7 @@ theorem real_translate (hθ : IsInfFam θ) (hj : IsJ u M j) : ∀ a ∈ GinfC D.
       rw [T.map_add, T.map_add, Pi.add_apply, Pi.add_apply, f1 T hT, f2 T hT]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hh, fun i j => (finN_apply D.sp.X' (rankP D) h (finCongr (rankP D) i) (finCongr (rankP D) j)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasMat_finPt {h : GA D D.sp.X'} (hh : h ∈ GfC D.sp.X') : HasMat h (finPt h).1 :=
   ⟨hh, fun i j => (finN_apply D.sp.X' (rankP D) h (finCongr (rankP D) i) (finCongr (rankP D) j)).symm⟩

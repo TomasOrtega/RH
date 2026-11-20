@@ -18,9 +18,9 @@ Both sides reduce to the same expression.
 theorem blkOf_eq (a t x : ℕ) : Formalism.L2.Forms.blkOf a t x = lvlX a t x := rfl
 
 /- English proof (translation)
-Use `show ((g : Matrix (Fin n) (Fin n) k).BlockTriangular (lvF n a t) ∧ (∀ x : Fin n, x.val < a → (g : Matrix (Fin n) (Fin n) k) x x = 1) ∧ (zl = true → ∀ l y : Fin n, l.val + 1 = n → (g : Matrix (Fin n) (Fin n) k) l y = (1 : Matrix (Fin n) (Fin n) k) l y ∧ (g : Matrix (Fin n) (Fin n) …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun x y hxy => h1 (by rw [blkOf_eq, blkOf_eq] at hxy; exact hxy), h2, fun x y hy => by rw [h4 x y hy, Matrix.one_apply], fun hz x y hy => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `h3 hz y x hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [e2, Matrix.one_apply], by rw [e1, Matrix.one_apply]; exact if_congr eq_comm rfl rfl⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun ⦃x y⦄ hxy => h1 x y (by rw [blkOf_eq, blkOf_eq]; exact hxy), h2, fun hz l y hl => ?_, fun x y hy => by rw [h3 x y hy, Matrix.one_apply]⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `h4 hz y l hl`. Conclude with `⟨by rw [e2, Matrix.one_apply]; exact if_congr eq_comm rfl rfl, by rw [e1, Matrix.one_apply]⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_JBar_iff_InJ (zl : Bool) (fc : ℕ) (g : GL (Fin n) k) :
     g ∈ JBar k n a t zl fc ↔ Formalism.L2.Forms.InJ a t fc zl (g : Matrix (Fin n) (Fin n) k) := by
@@ -43,13 +43,13 @@ theorem mem_JBar_iff_InJ (zl : Bool) (fc : ℕ) (g : GL (Fin n) k) :
     exact ⟨by rw [e2, Matrix.one_apply]; exact if_congr eq_comm rfl rfl, by rw [e1, Matrix.one_apply]⟩
 
 /- English proof (translation)
-Unfold `lvlX`. Use `split_ifs with h`. Prove the components needed by the constructor for the conclusion. Introduce `h'`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `h'`. Establish `hq : (x - a) / t = i` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : i * t ≤ x - a` using `(Nat.le_div_iff_mul_le ht).1 hq.ge`. Establish `e2 : x - a < (i + 1) * t` using `(Nat.div_lt_iff_lt_mul ht).1 (by omega)`. Rewrite `e2`, the goal using `[Nat.add_mul, Nat.one_mul]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2' : x < a + i * t + t` using `by rw [Nat.add_mul, Nat.one_mul] at h2; omega`. Establish `e1 : i ≤ (x - a) / t` using `(Nat.le_div_iff_mul_le ht).2 (by omega)`. Establish `e2 : (x - a) / t < i + 1` using `(Nat.div_lt_iff_lt_mul ht).2 (by rw [Nat.add_mul, Nat.one_mul]; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lvlX_eq_blk (ht : 0 < t) (i x : ℕ) : lvlX a t x = a + i ↔ a + i * t ≤ x ∧ x < a + (i + 1) * t := by
   unfold lvlX
@@ -90,19 +90,17 @@ def blkEquiv (ht : 0 < t) (i : ℕ) (hn : a + (i + 1) * t ≤ n) : Fin t ≃ {x 
     omega
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin n, (∑ y : Fin n, if (x : ℕ) + 1 = y ∧ (y : ℕ) < a ∧ (y : ℕ) ≠ skip then M x y else 0) = if (x : ℕ) + 1 < a ∧ (x : ℕ) + 1 ≠ skip then entN M x ((x : ℕ) + 1) else 0`. Introduce `x`. Distinguish the cases in `hx : (x : ℕ) + 1 < a`. Establish `hxn : (x : ℕ) + 1 < n` using `by omega`. Rewrite using `[Finset.sum_eq_single (⟨(x : ℕ) + 1, hxn⟩ : Fin n)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : entN M x ((x : ℕ) + 1) = M x ⟨(x : ℕ) + 1, hxn⟩`. Unfold `entN`. Conclude with `dif_pos ⟨x.2, hxn⟩`. Rewrite using `[hE]`. Simplify using `[hx]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _ hy`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, -, -⟩`. Conclude with `hy (Fin.ext h1.symm)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `hn : ¬((x : ℕ) + 1 < a ∧ (x : ℕ) + 1 ≠ skip)` using `fun h => hx h.1`. Rewrite using `[if_neg hn]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨h1, h2, -⟩`. Use linear arithmetic over natural numbers and integers. Simplify using `only [key]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun x => if x + 1 < a ∧ x + 1 ≠ skip then entN M x (x + 1) else 0) n]`. Rewrite using `[← Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩`.
-
-Conclude with `⟨(hSd x h2).2 h3, h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨by omega, h2, (hSd x h2).1 h1⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sum_sup (han : a ≤ n) (skip : ℕ) (Sd : Finset ℕ) (hSd : ∀ x, x + 1 < a → (x ∈ Sd ↔ x + 1 ≠ skip))
     (M : Matrix (Fin n) (Fin n) k) :
@@ -154,7 +152,7 @@ def SplitStabL (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : HeightOn
     toFr v spl fr x ∈ (bc (n := Fin n) (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))).range
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h : ((bc (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) g : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b ∈ v.adicCompletionIntegers F` using `((g : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F)) a b).2`. Unfold `Formalism.L2.Forms.redM`. Conclude with `dif_pos h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem redM_bc (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (v.adicCompletionIntegers F)) :
     Formalism.L2.Forms.redM F v ((bc (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) g :
@@ -169,7 +167,7 @@ theorem redM_bc (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (v.adicCompleti
   exact dif_pos h
 
 /- English proof (translation)
-Conclude with `(mem_JBar_iff_InJ (k := Formalism.L2.Forms.kv F v) zl fc _).trans (by rw [redM_bc])`.
+A detailed English derivation is pending.
 -/
 theorem red_mem_iff (v : HeightOneSpectrum (𝓞 F)) (a t fc : ℕ) (zl : Bool)
     (g : GL (Fin n) (v.adicCompletionIntegers F)) :

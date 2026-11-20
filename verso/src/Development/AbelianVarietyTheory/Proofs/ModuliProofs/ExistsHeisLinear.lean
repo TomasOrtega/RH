@@ -22,9 +22,9 @@ section General
 variable {B : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨fun ⟨_, U', hU', H⟩ => ?_, fun H => ⟨hx, U, hU, H⟩⟩` and prove the remaining obligations. Establish `hc` using `(hL.symLift B P k hk hu T x hx).2 U U' hU hU'`. Establish `e` using `hU.pt_eq.trans hU'.pt_eq.symm`. Take `⟨y, φ, hφ⟩` from `U`. Take `⟨y', φ', hφ'⟩` from `U'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : y = y'` from `e`. Use `VVRank.isTwistPull_of_sv P.A P.isLB hφ fun z J hJ => ?_` and prove the remaining obligations. Conclude with `(VVRank.sv_of_isTwistPull P.A H _ z hJ).trans (congrArg (fun q : ((T ⊗ P.A).left.presheaf.stalk z)ˣ => q.val * _) (val_corr hJ hc _).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_heis (hL : Laws) [IsLocallyNoetherian B] (P : PolAV B) {k : ℕ} (hk : Odd k) (hu : IsUnit (k : Γ(B, ⊤)))
     {T : Over B} {x : T ⟶ P.A} (hx : x ^ k = 1) {U : ThetaGrp P.A P.L k T} (hU : SymLift P.A P.L k k x U)
@@ -40,7 +40,7 @@ theorem exists_heis (hL : Laws) [IsLocallyNoetherian B] (P : PolAV B) {k : ℕ} 
     (congrArg (fun q : ((T ⊗ P.A).left.presheaf.stalk z)ˣ => q.val * _) (val_corr hJ hc _).symm)
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `GlobalTheory.exists_symLift_global hL B P k hk hu T x hx`. Take `⟨r, hr, -⟩` from `GlobalTheory.thetaGrp_acts_linearly hL.globalFns B P k T`. Conclude with `⟨(r U).toLinearMap, fun s s' => (exists_heis hL P hk hu hx hU s s').trans (hr _ _ _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_heis_linear (hL : Laws) [IsLocallyNoetherian B] (P : PolAV B) {k : ℕ} (hk : Odd k)
     (hu : IsUnit (k : Γ(B, ⊤))) {T : Over B} {x : T ⟶ P.A} (hx : x ^ k = 1) :
@@ -51,9 +51,9 @@ theorem exists_heis_linear (hL : Laws) [IsLocallyNoetherian B] (P : PolAV B) {k 
   exact ⟨(r U).toLinearMap, fun s s' => (exists_heis hL P hk hu hx hU s s').trans (hr _ _ _)⟩
 
 /- English proof (translation)
-Use `ThetaPtMove.isValueAt_of_sv hL fun y J hJ => ?_` and prove the remaining obligations. Establish `a` using `(congrArg (fun q => ThetaAct.sv q (𝟙 _ ≫ (ptSecT A x).left) y J) e).trans (ThetaGeom.sv_sum _ _ _ y hJ)`. Use `a.trans ?_` and prove the remaining obligations. Establish `g : gs (𝟙 T.left) y ⊤ (∑ i, c i * v i) = ∑ i, gs (𝟙 T.left) y ⊤ (c i) * gs (𝟙 T.left) y ⊤ (v i)`. Simplify using `only [gs_eq (𝟙 T.left) y ⊤ trivial, map_sum, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[g, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ThetaPtMove.ptSecT_fst, Category.comp_id, _root_.mul_assoc]`. Conclude with `congrArg (_ * ·) (ThetaPtMove.sv_of_isValueAt (h i) (𝟙 _) y hJ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_sum {A : Over B} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over B} {x : T ⟶ A} {τ}
     {I : Type} [Fintype I] (c v : I → Γ(T.left, ⊤)) (s : I → LB.Sec (LPow A L k T))
@@ -70,7 +70,7 @@ theorem isValueAt_sum {A : Over B} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {k :
   exact congrArg (_ * ·) (ThetaPtMove.sv_of_isValueAt (h i) (𝟙 _) y hJ)
 
 /- English proof (translation)
-Establish `key : ∀ y J, Good P.L y J → val (LB.mulGen P.L _ _ _ _ (rigT P.A P.L rig T a) (LB.invGen P.L _ _ (rigT P.A P.L rig T 1))) (𝟙 _) y J = val (LB.mulGen P.L _ _ _ _ (rigT P.A P.L rig T a) (rigT P.A P.L rig T (-1))) (𝟙 _) y J` using `fun y J hJ => by`. Rewrite using `[val_mul hJ, val_mul hJ, val_inv, ThetaCompare.val_rigT _ 1 hJ, ThetaCompare.val_rigT _ (-1) hJ, zpow_neg]`. Conclude with `⟨fun H => corr_of_val P.isLB fun y J hJ => (val_corr hJ H _).trans (key y J hJ), fun H => corr_of_val P.isLB fun y J hJ => (val_corr hJ H _).trans (key y J hJ).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem norm_iff (P : PolAV B) (rig : LB.Gen (P.L.pull (eSec P.A))) (k : ℕ) (a : ℤ) (T : Over B)
     (α : LB.Gen (LB.LinComb P.L (K := Fin 2) ![(snd T P.A).left, (snd T P.A ^ k).left] ![a, -1])) :
@@ -88,15 +88,13 @@ theorem norm_iff (P : PolAV B) (rig : LB.Gen (P.L.pull (eSec P.A))) (k : ℕ) (a
 open SquareLevel ThetaCoord in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: NeZero M` using `⟨by omega⟩`. Establish `hq : ∀ i, (lev.pt i ^ M) ^ M = 1` using `fun i => by rw [← pow_mul, ← sq, lev.torsion]`. Take `⟨pt', h₁, h₂, h₃, -, h₅⟩` from `GlobalTheory.exists_torsionPoints_of_squareLevel hL B P M ze hM hu lev`. Establish `e : ∀ a, pt a = lab (fun i => lev.pt i ^ M) (a ∘ (halves P.g).symm)` using `fun a => (hpt a).trans ((linComb_pow_right _ _ _).trans (linComb_pow_left _ _ _).symm)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : ∀ a, pt' (a ∘ halves P.g) = lab (fun i => lev.pt i ^ M) a` using `fun a => by`. Use `char_ext (fun a => pt' (a ∘ halves P.g)) _ (fun a b => h₁ _ _) (lab_add hq) (fun i => ?_) a` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(halves P.g).surjective i`. Establish `q : (Pi.single (halves P.g s) (1 : ZMod M) : _ → ZMod M) ∘ halves P.g = Pi.single s 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pi.single_apply]`. Use `beta_reduce`. Rewrite using `[q, lab_single hq]`. Break down `s with i | i` into its components or cases. Conclude with `(h₅ i _ (halves P.g (.inr i)) rfl (Nat.add_comm _ _)).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h₅ i (halves P.g (.inl i)) _ rfl (Nat.add_comm _ _)).2`. Take `rfl : pt = pt'` from `funext fun a => by`. Rewrite using `[e, ← e']`. Use `congr 1`. Use function extensionality and compare the values at `j`.
-
-Simplify using the standard rewrite rules. Conclude with `⟨h₁, h₂, h₃⟩`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tor_props (hL : Laws) [IsLocallyNoetherian B] (P : PolAV B) (M : ℕ) (ze : Γ(B, ⊤)ˣ) (hM : 1 ≤ M)
     (hu : IsUnit (M : Γ(B, ⊤))) (lev : Out.Level P (M ^ 2) ze) {g : ℕ} (h : P.g = g)
@@ -135,15 +133,15 @@ end General
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, x, h, by rw [map_one, one_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cstSpan (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {X : Set M} {x : M}
     (h : x ∈ X) : x ∈ cstSpan S X := AddSubgroup.subset_closure ⟨1, x, h, by rw [map_one, one_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨d, y, hy, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨c * d, y, hy, by rw [map_mul, mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_cstSpan (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {X : Set M}
     (c : o) {x : M} (h : x ∈ cstSpan S X) : cst S c • x ∈ cstSpan S X := by
@@ -156,18 +154,18 @@ theorem smul_mem_cstSpan (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-The claim follows from `(AddSubgroup.closure_le _).2 fun _ ⟨c, x, hx, e⟩ => e ▸ smul_mem_cstSpan S c (h x hx)`.
+A detailed English derivation is pending.
 -/
 theorem cstSpan_le (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {X Y : Set M}
     (h : ∀ x ∈ X, x ∈ cstSpan S Y) : cstSpan S X ≤ cstSpan S Y :=
   (AddSubgroup.closure_le _).2 fun _ ⟨c, x, hx, e⟩ => e ▸ smul_mem_cstSpan S c (h x hx)
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun ⟨c, e⟩ => e ▸ sum_mem fun i _ => smul_mem_cstSpan S _ (mem_cstSpan S ⟨i, rfl⟩)⟩` and prove the remaining obligations. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨d, _, ⟨i, rfl⟩, rfl⟩` from `hx`. Conclude with `⟨Pi.single i d, by`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_smul]) (fun h => (h (Finset.mem_univ i)).elim), Pi.single_eq_same]⟩`. Consider the case `zero => exact ⟨0, (Finset.sum_eq_zero fun i _ => by rw [Pi.zero_apply, map_zero, zero_smul]).symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + d, by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨c, rfl⟩` from `hx`. Conclude with `⟨-c, by simp⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_cstSpan_range (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {I : Type}
     [Fintype I] (b : I → M) (x : M) : x ∈ cstSpan S (Set.range b) ↔ ∃ c : I → o, x = ∑ i, cst S (c i) • b i := by
@@ -188,7 +186,7 @@ theorem mem_cstSpan_range (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Modul
     exact ⟨-c, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, map_sum, Finset.sum_smul, smul_smul, map_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_comb (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {I J : Type}
     [Fintype I] [Fintype J] (b : I → M) (A : Matrix I J o) (c : J → o) :
@@ -218,21 +216,21 @@ def Change.scalar (S : ThetaSys o Ω) (u : oˣ) (e : S.Gam → ℕ) : Change S w
   e := e
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_apply.symm.trans ((congrFun (congrFun c.mul_inv l) i).trans Matrix.one_apply)`.
+A detailed English derivation is pending.
 -/
 theorem Change.sum_mul {S : ThetaSys o Ω} (c : Change S) (l i : S.J) :
     ∑ j, c.M l j * c.M' j i = if l = i then 1 else 0 :=
   Matrix.mul_apply.symm.trans ((congrFun (congrFun c.mul_inv l) i).trans Matrix.one_apply)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_apply.symm.trans ((congrFun (congrFun c.inv_mul l) i).trans Matrix.one_apply)`.
+A detailed English derivation is pending.
 -/
 theorem Change.sum_mul' {S : ThetaSys o Ω} (c : Change S) (l i : c.J) :
     ∑ j, c.M' l j * c.M j i = if l = i then 1 else 0 :=
   Matrix.mul_apply.symm.trans ((congrFun (congrFun c.inv_mul l) i).trans Matrix.one_apply)
 
 /- English proof (translation)
-The claim follows from `(((S.prim.isUnit (level_ne_zero S)).pow e).map _).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem zeta_ne_zero (S : ThetaSys o Ω) (e : ℕ) : algebraMap o Ω (S.ζ ^ e) ≠ 0 :=
   (((S.prim.isUnit (level_ne_zero S)).pow e).map _).ne_zero
@@ -272,13 +270,11 @@ def Change.inv {S : ThetaSys o Ω} (c : Change S) : Change (change S c) where
   e := fun a => ((S.r * S.N) ^ 2 - 1) * c.e a
 
 /- English proof (translation)
-Establish `key : ∀ ρ h₁ h₂ h₃ th ev h₄ h₅ h₆ h₇, ρ = S.ρ → th = S.th → ev = S.ev → ({ S with ρ` using `ρ, ρ_one := h₁, ρ_mul := h₂, ρ_add := h₃, th := th, ev := ev, th_mem := h₄, ev_mem := h₅ supp := h₆, th_ne := h₇ } : ThetaSys o Ω) = S := by`. Introduce `ρ _ _ _ th ev _ _ _ _ e₁ e₂ e₃`. Substitute `e₁ e₂ e₃` using the available equality. Both sides reduce to the same expression. Use `key _ _ _ _ _ _ _ _ _ _ (funext fun a => ?_) (funext fun a => ?_) (funext fun (a : S.Gam) => funext fun (i : S.J) => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c.M * (c.M' * S.ρ a * c.M) * c.M' = _`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[c.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, c.mul_inv, Matrix.one_mul]`. Use `show algebraMap o Ω (S.ζ ^ (((S.r * S.N) ^ 2 - 1) * c.e a)) * (algebraMap o Ω (S.ζ ^ c.e a) * S.th a) = _`. Rewrite using `[← _root_.mul_assoc, ← map_mul, ← pow_add, ← Nat.succ_mul, Nat.succ_eq_add_one, Nat.sub_add_cancel (Nat.pos_of_ne_zero (level_ne_zero S)), pow_mul, S.prim.pow_eq_one, one_pow, map_one, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ j, algebraMap o Ω (c.M' j i) * ∑ l, algebraMap o Ω (c.M l j) * S.ev a l = _`. Establish `: ∀ l, ∑ j, algebraMap o Ω (c.M' j i) * (algebraMap o Ω (c.M l j) * S.ev a l) = algebraMap o Ω (if l = i then 1 else 0) * S.ev a l` using `fun l => by`. Rewrite using `[← c.sum_mul, map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_mul]; ring`. Simplify using `only [Finset.mul_sum]`.
-
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [this]`. Simplify using `[apply_ite (algebraMap o Ω)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem change_inv (S : ThetaSys o Ω) (c : Change S) : change (change S c) c.inv = S := by
   have key : ∀ ρ h₁ h₂ h₃ th ev h₄ h₅ h₆ h₇, ρ = S.ρ → th = S.th → ev = S.ev →
@@ -307,9 +303,9 @@ theorem change_inv (S : ThetaSys o Ω) (c : Change S) : change (change S c) c.in
     simp [apply_ite (algebraMap o Ω)]
 
 /- English proof (translation)
-Use `⟨fun H => ⟨H.1, H.2.1⟩, fun H => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos S.g with h0 | h0` into its components or cases. Use `⟨H.1, H.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Use `S.r_pos` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pow_zero, Nat.factorial_zero]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `RealCase.big_third S h0 H.1 H.2`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem big_iff (S : ThetaSys o Ω) (h : 7 ≤ S.N) : S.Big ↔ LowerBounds S.g S.N (S.r * S.N) := by
   refine ⟨fun H => ⟨H.1, H.2.1⟩, fun H => ?_⟩
@@ -322,16 +318,16 @@ theorem big_iff (S : ThetaSys o Ω) (h : 7 ≤ S.N) : S.Big ↔ LowerBounds S.g 
   · exact RealCase.big_third S h0 H.1 H.2
 
 /- English proof (translation)
-Establish `h1 : 2 ^ 2 ≤ n ^ k` using `(Nat.pow_le_pow_left hn.two_le 2).trans (Nat.pow_le_pow_right hn.pos hk)`. Rewrite using `[h]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem seven_le {n k N : ℕ} (hn : n.Prime) (hk : 2 ≤ k) (h : N = (n ^ k) ^ 2) : 7 ≤ N := by
   have h1 : 2 ^ 2 ≤ n ^ k := (Nat.pow_le_pow_left hn.two_le 2).trans (Nat.pow_le_pow_right hn.pos hk)
   rw [h]; nlinarith
 
 /- English proof (translation)
-Establish `h` using `((big_iff S (seven_le Z.prime Z.two_le Z.N_eq)).2 Z.bounds).2.2`. Assume the negation of the conclusion as `h0`. Establish `hr : S.r = 1` using `by rw [Z.r_eq, show Z.j = 0 by omega, pow_zero]`. Establish `h1 : S.N ≤ S.N ^ S.g` using `Nat.le_self_pow (by omega) _`. Establish `h2` using `Nat.factorial_pos S.g`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hr]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_j {S : ThetaSys o Ω} (Z : Realisation S) (hg : 1 ≤ S.g) : 1 ≤ Z.j := by
   have h := ((big_iff S (seven_le Z.prime Z.two_le Z.N_eq)).2 Z.bounds).2.2

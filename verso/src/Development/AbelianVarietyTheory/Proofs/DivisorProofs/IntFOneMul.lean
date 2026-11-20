@@ -18,9 +18,9 @@ def intF (N : ℕ) : Set (AF F) :=
   {x | ∃ c : Af F, (∀ v, c v ∈ v.adicCompletionIntegers F) ∧ x.2 = N • c}
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hx`. Take `⟨d, hd, e'⟩` from `hy`. Use `⟨c * d, fun v => mul_mem (hc v) (hd v), ?_⟩` and prove the remaining obligations. Rewrite `e`, `e'`, the goal using `[one_smul]`. Use `show x.2 * y.2 = c * d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e']`.
+A detailed English derivation is pending.
 -/
 theorem intF_one_mul {x y : AF F} (hx : x ∈ intF F 1) (hy : y ∈ intF F 1) : x * y ∈ intF F 1 := by
   obtain ⟨c, hc, e⟩ := hx
@@ -36,7 +36,7 @@ def SE : AddSubgroup (AF F ⊗[F] E) :=
   AddSubgroup.closure {z | ∃ s ∈ intF F 1, ∃ o : 𝓞 E, z = algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o}
 
 /- English proof (translation)
-Take `⟨s, hs, o, rfl⟩` from `hx`. Take `⟨s', hs', o', rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨s * s', intF_one_mul hs hs', o * o', ?_⟩` and prove the remaining obligations. Establish `h : ((o * o' : 𝓞 E) : E) = (o : E) * o'` using `rfl`. Rewrite using `[map_mul, h, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -52,13 +52,11 @@ theorem gen_mul {x y : AF F ⊗[F] E}
   ring
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem g' hg' => exact gen_mul hg hg'`. Consider the case `zero => rw [mul_zero]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [neg_mul]`.
-
-Conclude with `neg_mem ha`.
+A detailed English derivation is pending.
 -/
 theorem SE_mul {x y : AF F ⊗[F] E} (hx : x ∈ SE F E) (hy : y ∈ SE F E) : x * y ∈ SE F E := by
   induction hx using AddSubgroup.closure_induction with
@@ -73,7 +71,7 @@ theorem SE_mul {x y : AF F ⊗[F] E} (hx : x ∈ SE F E) (hy : y ∈ SE F E) : x
   | neg a _ ha => rw [neg_mul]; exact neg_mem ha
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, ⟨1, fun v => one_mem _, by rw [one_smul]; rfl⟩, 1, by simp [Algebra.TensorProduct.one_def]⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_SE : (1 : AF F ⊗[F] E) ∈ SE F E :=
   AddSubgroup.subset_closure ⟨1, ⟨1, fun v => one_mem _, by rw [one_smul]; rfl⟩, 1, by simp [Algebra.TensorProduct.one_def]⟩
@@ -83,13 +81,13 @@ variable (F E) in
 def CE (N : ℕ) : AddSubgroup (AF F ⊗[F] E) := (SE F E).map (nsmulAddMonoidHom N)
 
 /- English proof (translation)
-Simplify using `[CE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_CE {N : ℕ} {z : AF F ⊗[F] E} : z ∈ CE F E N ↔ ∃ s ∈ SE F E, N • s = z := by
   simp [CE]
 
 /- English proof (translation)
-Take `⟨a, ha, ea⟩` from `mem_CE.1 hx`. Take `⟨b, hb, eb⟩` from `mem_CE.1 hy`. Use `mem_CE.2 ⟨a + b + N • (a * b), add_mem (add_mem ha hb) (nsmul_mem (SE_mul ha hb) N), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_add_of_sub_eq ea.symm, eq_add_of_sub_eq eb.symm]`. Simplify using `only [nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -112,7 +110,7 @@ def WE (N : ℕ) : Subgroup (AF F ⊗[F] E)ˣ where
   inv_mem' := fun {x} hx => ⟨hx.2, by rw [inv_inv]; exact hx.1⟩
 
 /- English proof (translation)
-Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cA_gen (σ : E →ₐ[F] E) (s : AF F) (o : 𝓞 E) :
     cA σ (algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o) =
@@ -121,11 +119,9 @@ theorem cA_gen (σ : E →ₐ[F] E) (s : AF F) (o : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨s, hs, o, rfl⟩` from `hg`. Rewrite using `[cA_gen]`. Establish `: IsIntegral ℤ (σ (o : E))` using `(o.2.map σ)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.subset_closure ⟨s, hs, ⟨σ o, this⟩, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cA_mem_SE (σ : E →ₐ[F] E) {z : AF F ⊗[F] E} (hz : z ∈ SE F E) : cA σ z ∈ SE F E := by
   induction hz using AddSubgroup.closure_induction with

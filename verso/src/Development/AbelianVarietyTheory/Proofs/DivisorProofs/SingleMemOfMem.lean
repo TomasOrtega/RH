@@ -25,9 +25,9 @@ theorem smul_pi_apply {S : Type} {r : ℕ} (b : w.valuationSubring) (x : S → F
     (i : Fin r) : (b • x) s i = (b : C) * x s i := rfl
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨x, hx, fun _ _ => by simp⟩`. Consider the case `insert s0 T hs0 ih`. Take `⟨y, hy, hyv⟩` from `ih`. Use `⟨unif a y - a s0 • y, sub_mem (hst y hy) (Fil.smul_mem _ hy), fun s' i => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_insert hs0]`. Simplify using `only [Pi.sub_apply, unif, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[smul_C, hyv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_prod_apply {S : Type} [DecidableEq S] {r : ℕ} (a : S → w.valuationSubring)
     (Fil : Submodule w.valuationSubring (S → Fin r → C))
@@ -44,11 +44,11 @@ theorem exists_prod_apply {S : Type} [DecidableEq S] {r : ℕ} (a : S → w.valu
     ring
 
 /- English proof (translation)
-Take `⟨y, hy, hyv⟩` from `exists_prod_apply a Fil hst x hx (Finset.univ.erase τ)`. Use `hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s' i`. Rewrite using `[hyv]`. Distinguish the cases in `e : s' = τ`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `only [Pi.single_eq_same, smul_vec_apply, diffGen]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_eq_zero (i := s') (Finset.mem_erase.2 ⟨e, Finset.mem_univ _⟩) (sub_self _)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem single_mem_of_mem {S : Type} [Fintype S] [DecidableEq S] {r : ℕ}
     (a : S → w.valuationSubring) (Fil : Submodule w.valuationSubring (S → Fin r → C))
@@ -67,7 +67,7 @@ theorem single_mem_of_mem {S : Type} [Fintype S] [DecidableEq S] {r : ℕ}
     simp [e]
 
 /- English proof (translation)
-Rewrite using `[diffGen, Finset.prod_ne_zero_iff]`. Introduce `s hs e`. Conclude with `(Finset.mem_erase.1 hs).1 (ha (sub_eq_zero.1 e)).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diffGen_ne_zero {S : Type} [Fintype S] [DecidableEq S] (a : S → w.valuationSubring)
     (ha : Function.Injective a) (τ : S) : diffGen a τ ≠ 0 := by
@@ -127,17 +127,15 @@ def clearDen {S : Type} [DecidableEq S] {r : ℕ}
       exact h
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨hH, hK⟩`. Establish `hH' : (Pi.single τ v : S → Fin r → C) ∈ freeLattice a r`. Simplify `hH` using `[eigenSub]`. Establish `hK' : v ∈ filSpace Fil τ`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hK` using `[quotMap, Submodule.Quotient.mk_eq_zero]`. Establish `hle : filSpace Fil τ ≤ clearDen Fil τ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨diffGen a τ, diffGen_ne_zero a ha τ, single_mem_of_mem a Fil hF.stable τ x hx⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨b, hb, hbv⟩` from `hle hK'`. Use `show (Pi.single τ v : S → Fin r → C) ∈ Fil`. Use `hF.saturated _ hH' b hb ?_` and prove the remaining obligations. Use `hbv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : s = τ`. Substitute `e` using the available equality. Simplify using `[smul_pi_apply, smul_vec_apply, smul_C]`. Simplify using `[smul_pi_apply, e]`. Introduce `v hv`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv' : (Pi.single τ v : S → Fin r → C) ∈ Fil` using `by simpa [eigenSub] using hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (Pi.single τ v : S → Fin r → C) ∈ freeLattice a r`. Conclude with `hF.le hv'`. Use `show quotMap (w := w) (filSpace Fil τ) v = 0`.
-
-Simplify using `only [quotMap, LinearMap.restrictScalars_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.subset_span ⟨_, hv', ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_eq (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S] [DecidableEq S]
     (a : S → w.valuationSubring) (r : ℕ) (Fil : Submodule w.valuationSubring (S → Fin r → C))
@@ -177,7 +175,7 @@ theorem ker_eq (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintyp
 end GlobalTheory.Div.KerFil
 
 /- English proof (translation)
-Introduce `C _ w S _ _ a r Fil τ ha hF` and use `GlobalTheory.Div.KerFil.ker_eq C w S a r Fil τ ha hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Div.kerFil : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (r : ℕ) (Fil : Submodule w.valuationSubring (S → Fin r → C)) (τ : S), Function.Injective a → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration a Fil → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (W := fun _ => Fin r → C) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice a r) τ ⊓ LinearMap.ker (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.quotMap (w := w) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil τ)) = GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (W := fun _ => Fin r → C) Fil τ :=
   fun C _ w S _ _ a r Fil τ ha hF => GlobalTheory.Div.KerFil.ker_eq C w S a r Fil τ ha hF

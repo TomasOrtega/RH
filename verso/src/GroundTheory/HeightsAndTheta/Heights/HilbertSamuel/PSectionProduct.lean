@@ -16,9 +16,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] in
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `h` using `SectionBoundedMul.isMultiHomog_monomial (ι := ι) 0 1`. Establish `h1 : IsMultiHomog (1 : MRing ι) (fun _ => 0)` using `by simpa using h`. Rewrite using `[pow_zero, zero_smul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Consider the case `succ j ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `SectionBoundedMul.isMultiHomog_mul ih hg`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_pow {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (j : ℕ) :
     IsMultiHomog (g ^ j) (j • d) := by
@@ -37,37 +37,33 @@ end SectionProduct
 open SectionBoundedMul SectionProduct in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y A B C n j τ s t hdeg hmet hs ht`. Establish `hdk : ∀ k, (τ : ℤ) * C.a k = (n : ℤ) * A.a k + (j : ℤ) * B.a k` using `fun k => by`. Use `congrFun hdeg k` as an intermediate fact. Simplify `this` using `[smul_eq_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Establish `hs'` using `hs c hc`. Establish `ht'` using `ht c hc`. Establish `heq : s * t ^ j * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * C.a k)) = (s * ∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * A.a k))) * (t * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * B.a k))) ^ j`. Establish `hp : ∀ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * C.a k)) = y ⟨k, c k⟩ ^ (-((n : ℤ) * A.a k)) * (y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * B.a k))) ^ j` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hc k`. Rewrite using `[← zpow_natCast (y ⟨k, c k⟩ ^ _) j, ← zpow_mul, ← zpow_add₀ h0, hdk k]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hp, Finset.prod_mul_distrib, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `mul_mem hs' (pow_mem ht' j)`. Introduce `cc cc' hbs hbt dG dH G H z hG hH hdGH hrep hz`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose c hc using hz.1`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0`. Introduce `k h0`. Establish `hX : IsMultiHomog (X ⟨k, c k⟩ : MRing ι) _` using `(by have h := isMultiHomog_monomial (ι := ι) (Finsupp.single (⟨k, c k⟩ : Σ k, ι k) 1) 1`. Rewrite using `[← X] at h)` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `mem_mCoordIdeal_of_aeval_eq_zero y hX (by rw [aeval_X, h0])`. Establish `hz0` using `hz.2 _ hmem`. Simplify using `only [map_X, eval_X] at hz0`. Conclude with `hc k hz0`. Take `⟨N, dgs, gs, hgs, hdgs, hvs⟩` from `exists_chartForm y A.a n hs c hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, dgt, gt, hgt, hdgt, hvt⟩` from `exists_chartForm y B.a 1 ht c hy`. Establish `bs` using `hbs dgs N gs (chartMono c N) z hgs (isMultiHomog_chartMono c N) hdgs hvs hz`. Establish `bt` using `hbt dgt M gt (chartMono c M) z hgt (isMultiHomog_chartMono c M) hdgt hvt hz`. Establish `hdeq : dgs + j • dgt + dH = dG + (N + j • M)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hdgs k`. Establish `e2` using `hdgt k`. Establish `e3` using `hdGH k`. Establish `e4` using `hdk k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: ((dgs k + j * dgt k + dH k : ℕ) : ℤ) = ((dG k + (N k + j * M k) : ℕ) : ℤ)`. Move the coercions through the operations in `at e1 e2 e3 ⊢`. Take the linear combination `e1 + (j : ℤ) * e2 - e3 - e4`. Conclude with `this` after adjusting the coercions. Establish `hF : IsMultiHomog (gs * gt ^ j * H - G * chartMono c (N + j • M)) (dgs + j • dgt + dH)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isMultiHomog_sub (isMultiHomog_mul (isMultiHomog_mul hgs (isMultiHomog_pow hgt j)) hH) ?_` and prove the remaining obligations. Rewrite using `[hdeq]`. Conclude with `isMultiHomog_mul hG (isMultiHomog_chartMono c (N + j • M))`. Establish `hmono : ∀ {R : Type} [CommRing R] (w : (Σ k, ι k) → R), ∏ k, w ⟨k, c k⟩ ^ (N + j • M) k = (∏ k, w ⟨k, c k⟩ ^ N k) * (∏ k, w ⟨k, c k⟩ ^ M k) ^ j`. Introduce `R _ w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by`. Rewrite using `[Pi.add_apply, Pi.smul_apply, smul_eq_mul, pow_add, pow_mul']`. Establish `hF0 : aeval y (gs * gt ^ j * H - G * chartMono c (N + j • M)) = 0`. Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_mul, hvs, hvt, hrep, aeval_chartMono, aeval_chartMono, aeval_chartMono, hmono]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz0` using `hz.2 _ (mem_mCoordIdeal_of_aeval_eq_zero y hF hF0)`. Simplify using `only [map_sub, map_mul, map_pow] at hz0`. Rewrite `hz0` using `[sub_eq_zero]`. Use `set ev : MRing ι → ℂ := fun f => eval z (map (Int.castRingHom ℂ) f) with hev`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmz : ev (chartMono c (N + j • M)) = ev (chartMono c N) * ev (chartMono c M) ^ j`. Simplify using `only [hev, eval_chartMono]`. Conclude with `hmono z`. Establish `hpos : 0 < ‖ev (chartMono c N)‖ * ‖ev (chartMono c M)‖ ^ j`. Apply the tactic sequence `refine mul_pos (norm_pos_iff.mpr ?_) (pow_pos (norm_pos_iff.mpr ?_) j) <;>`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hev, eval_chartMono]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `key : ‖ev G‖ * (‖ev (chartMono c N)‖ * ‖ev (chartMono c M)‖ ^ j) = ‖ev gs‖ * ‖ev gt‖ ^ j * ‖ev H‖`. Rewrite using `[← norm_pow, ← norm_mul, ← hmz, ← norm_mul, ← norm_pow, ← norm_mul, ← norm_mul]`. Conclude with `congrArg norm hz0.symm`.
-
-Establish `hprod : ‖ev gs‖ * ‖ev gt‖ ^ j ≤ (cc * ‖ev (chartMono c N)‖ * A.h z ^ n) * (cc' * ‖ev (chartMono c M)‖ * B.h z ^ 1) ^ j` using `mul_le_mul bs (pow_le_pow_left₀ (norm_nonneg _) bt j) (pow_nonneg (norm_nonneg _) j) ((norm_nonneg _).trans bs)`. Rewrite using `[hmet z hz]`. Use `le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SectionProduct.proof : SectionProduct.Statement := by
   intro K _ ι _ Ω _ y A B C n j τ s t hdeg hmet hs ht

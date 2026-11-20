@@ -11,23 +11,23 @@ section Hyp
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : M.BlockData N)
 
 /- English proof (translation)
-Establish `hpol : ∀ (LL LL' : M.Letters N) (a : Fin N) (c : Fin r), LL'.deg a = LL.deg a - 1 → (∀ i, i ≠ a → LL'.deg i = LL.deg i) → ∀ y ∈ M.Pol p r LL, pderiv (a, c) y ∈ M.Pol p r LL'`. Introduce `LL LL' a c hda hdo y hy`. Unfold `M.Pol at hy ⊢`. Rewrite `hy` using `[MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Submodule.mem_comap, Finsupp.mem_supported]`. Rewrite using `[y.as_sum, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial]`. Distinguish the cases in `h0 : m (a, c) = 0`. Rewrite using `[h0, Nat.cast_zero, mul_zero, MvPolynomial.monomial_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmd : M.MultiDeg LL m` using `hy (Finset.mem_coe.mpr hm)`. Rewrite using `[MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Submodule.mem_comap, Finsupp.mem_supported]`. Use `(Finset.coe_subset.mpr MvPolynomial.support_monomial_subset).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.coe_singleton, Set.singleton_subset_iff]`. Use `show M.MultiDeg LL' (m - Finsupp.single (a, c) 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Establish `key : ∀ c', ((m - Finsupp.single (i, c) 1 : (Fin N × Fin r) →₀ ℕ) (i, c')) + (if c' = c then 1 else 0) = m (i, c')`. Introduce `c'`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ¬ (i, c) = (i, c')` using `fun h => hc (congrArg Prod.snd h).symm`. Rewrite using `[if_neg hne, if_neg hc]`. Simplify using the standard rewrite rules. Establish `hs : ∑ c', (((m - Finsupp.single (i, c) 1 : (Fin N × Fin r) →₀ ℕ) (i, c')) + (if c' = c then 1 else 0)) = ∑ c', m (i, c')` using `Finset.sum_congr rfl fun c' _ => key c'`. Establish `h1 : ∑ c' : Fin r, (if c' = c then 1 else 0 : ℕ) = 1` using `by simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[Finset.sum_add_distrib, h1]`. Rewrite using `[hda, ← hmd i]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdo i hi, ← hmd i]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg (fun h => hi (congrArg Prod.fst h).symm), Nat.sub_zero]`. Introduce `j jp c y hy`. Simplify using `only [M.Y, Submodule.mem_inf, Submodule.mem_iInf] at hy ⊢`. Use `⟨hpol _ _ G.uPos c ?_ ?_ y hy.1, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [M.BlockData.lettersAt, eq_self_iff_true, if_true]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [M.BlockData.lettersAt, if_neg hi]`. Rewrite using `[ycond_vec (p := p) (r := r) (G.lettersAt j (jp + 1)) (G.lettersAt j jp) rfl]`. Conclude with `pderiv_ycond (p := p) _ _ _ G.uPos (fun _ => hB.2.2.1) c y (hy.2 k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hypU_proved (hB : G.BlockOK) : Formalism.InvariantFactorPaths.KP.LL.HypU p (r := r) G := by
   have hpol : ∀ (LL LL' : M.Letters N) (a : Fin N) (c : Fin r), LL'.deg a = LL.deg a - 1 →
@@ -82,9 +82,9 @@ theorem hypU_proved (hB : G.BlockOK) : Formalism.InvariantFactorPaths.KP.LL.HypU
     exact pderiv_ycond (p := p) _ _ _ G.uPos (fun _ => hB.2.2.1) c y (hy.2 k)
 
 /- English proof (translation)
-Establish `h : ∀ i', (if P i' then Function.update j i (j i + 1) i' else 0) = (if P i' then j i' else 0) + (if i' = i then (if P i then 1 else 0) else 0)`. Introduce `i'`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[Function.update_of_ne hi, if_neg hi, add_zero]`. Rewrite using `[Finset.sum_congr rfl fun i' _ => h i', Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_update_ite {t : ℕ} (P : Fin t → Prop) [DecidablePred P] (j : Fin t → ℕ) (i : Fin t) :
     ∑ i', (if P i' then Function.update j i (j i + 1) i' else 0) =
@@ -101,41 +101,37 @@ theorem sum_update_ite {t : ℕ} (P : Fin t → Prop) [DecidablePred P] (j : Fin
   simp
 
 /- English proof (translation)
-Establish `hpol : ∀ (LL LL' : M.Letters N) (a : Fin N) (c : Fin r), LL'.deg a = LL.deg a - 1 → (∀ i, i ≠ a → LL'.deg i = LL.deg i) → ∀ y ∈ M.Pol p r LL, pderiv (a, c) y ∈ M.Pol p r LL'`. Introduce `LL LL' a c hda hdo y hy`. Unfold `M.Pol at hy ⊢`. Rewrite `hy` using `[MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Submodule.mem_comap, Finsupp.mem_supported]`. Rewrite using `[y.as_sum, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial]`. Distinguish the cases in `h0 : m (a, c) = 0`. Rewrite using `[h0, Nat.cast_zero, mul_zero, MvPolynomial.monomial_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmd : M.MultiDeg LL m` using `hy (Finset.mem_coe.mpr hm)`. Rewrite using `[MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Submodule.mem_comap, Finsupp.mem_supported]`. Use `(Finset.coe_subset.mpr MvPolynomial.support_monomial_subset).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.coe_singleton, Set.singleton_subset_iff]`. Use `show M.MultiDeg LL' (m - Finsupp.single (a, c) 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Establish `key : ∀ c', ((m - Finsupp.single (i, c) 1 : (Fin N × Fin r) →₀ ℕ) (i, c')) + (if c' = c then 1 else 0) = m (i, c')`. Introduce `c'`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ¬ (i, c) = (i, c')` using `fun h => hc (congrArg Prod.snd h).symm`. Rewrite using `[if_neg hne, if_neg hc]`. Simplify using the standard rewrite rules. Establish `hs : ∑ c', (((m - Finsupp.single (i, c) 1 : (Fin N × Fin r) →₀ ℕ) (i, c')) + (if c' = c then 1 else 0)) = ∑ c', m (i, c')` using `Finset.sum_congr rfl fun c' _ => key c'`. Establish `h1 : ∑ c' : Fin r, (if c' = c then 1 else 0 : ℕ) = 1` using `by simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[Finset.sum_add_distrib, h1]`. Rewrite using `[hda, ← hmd i]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdo i hi, ← hmd i]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg (fun h => hi (congrArg Prod.fst h).symm), Nat.sub_zero]`. Introduce `j jp i y hy`. Take `⟨hlt, hvW, hvE⟩` from `hB.1.2.1 i`. Use `set W := G.letterAt (G.T.pos i) with hWdef`. Use `set E := G.letterAt (G.T.pos i + 1) with hEdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hWv : (W : ℕ) = G.T.pos i`. Simplify using `only [hWdef, M.BlockData.letterAt]`. Use linear arithmetic over natural numbers and integers. Establish `hEv : (E : ℕ) = G.T.pos i + 1`. Simplify using `only [hEdef, M.BlockData.letterAt]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hWE : W ≠ E` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hvW' : G.LL.vec W = true`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[show W = ⟨G.T.pos i, by omega⟩ from Fin.ext hWv]` and apply the resulting hypothesis. Establish `hvE' : G.LL.vec E = false`. Rewrite using `[show E = ⟨G.T.pos i + 1, hlt⟩ from Fin.ext hEv]` and apply the resulting hypothesis. Establish `hdeg : ∀ x : Fin N, (G.lettersAt (Function.update j i (j i + 1)) jp).deg x = (G.lettersAt j jp).deg x - (if ((x : ℕ) = G.T.pos i ∨ (x : ℕ) = G.T.pos i + 1) then 1 else 0)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [M.BlockData.lettersAt]`. Rewrite using `[sum_update_ite]`. Use linear arithmetic over natural numbers and integers. Establish `htie : ∀ x : MvPolynomial (Fin N × Fin r) ℚ_[p], Formalism.GM.tieF (fun c => (W, c)) (fun c => (E, c)) x = ∑ c, pderiv (W, c) (pderiv (E, c) x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.GM.tieF]`. Simplify using `only [M.Y, Submodule.mem_inf, Submodule.mem_iInf] at hy ⊢`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[htie]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `L1 : M.Letters N` to `⟨G.LL.vec, fun x => if x = E then (G.lettersAt j jp).deg x - 1 else (G.lettersAt j jp).deg x⟩`. Establish `h1` using `hpol (G.lettersAt j jp) L1 E c (by show (if E = E then _ else _) = _; rw [if_pos rfl]) (fun x hx => by show (if x = E then _ else _) = _; rw [if_neg hx]) y hy.1`. Use `hpol L1 _ W c ?_ ?_ _ h1` and prove the remaining obligations. Rewrite using `[hdeg W, if_pos (Or.inl hWv)] show _ = (if W = E then _ else _) - 1`. Rewrite using `[if_neg hWE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hdeg x]`. Use `show _ = (if x = E then _ else _)`. Distinguish the cases in `hxE : x = E`. Establish `hxv : (x : ℕ) = G.T.pos i + 1` using `by rw [hxE]; exact hEv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hxE, if_pos (Or.inr hxv)]`. Rewrite using `[if_neg hxE, if_neg, Nat.sub_zero]`. Introduce and unpack `(h | h)`. Conclude with `hx (Fin.ext (h.trans hWv.symm))`. Conclude with `hxE (Fin.ext (h.trans hEv.symm))`.
-
-Rewrite using `[ycond_vec (p := p) (r := r) (G.lettersAt (Function.update j i (j i + 1)) jp) (G.lettersAt j jp) rfl]`. Establish `hx` using `hy.2 k`. Distinguish the cases in `hE : (E : ℕ) < G.T.J k`. Conclude with `tieF_ycond (p := p) (G.lettersAt j jp) (G.T.J k) (G.T.thr k) W E (by omega) hE hvW' hvE' y hx`. Rewrite using `[htie]`.
-
-Conclude with `Submodule.sum_mem _ fun c _ => pderiv_ycond (p := p) _ _ _ W (fun _ => hvW') c _ (pderiv_ycond (p := p) _ _ _ E (fun h => absurd h hE) c y hx)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hypTie_proved (hB : G.BlockOK) : Formalism.InvariantFactorPaths.KP.LL.HypJoin p (r := r) G := by
   have hpol : ∀ (LL LL' : M.Letters N) (a : Fin N) (c : Fin r), LL'.deg a = LL.deg a - 1 →
@@ -249,7 +245,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNo
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-The claim follows from `restLL_of C0 CE1 CE2 X hCYb hCE1 hCE2 hH fun aTop aPlus b => ⟨hypTie_proved X.p _ (gB_blockOK C0 CE1 CE2 X aTop aPlus b), hypU_proved X.p _ (gB_blockOK C0 CE1 CE2 X aTop aPlus b)⟩`.
+A detailed English derivation is pending.
 -/
 theorem restLL_proved {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) : RestLL C0 CE1 CE2 X :=
@@ -258,7 +254,7 @@ theorem restLL_proved {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 �
       hypU_proved X.p _ (gB_blockOK C0 CE1 CE2 X aTop aPlus b)⟩
 
 /- English proof (translation)
-The claim follows from `block_valuation_Zp_of_lattice_inclusion C0 CE1 CE2 X (Nat.one_le_iff_ne_zero.mpr X.hm) (restLL_proved C0 CE1 CE2 X hCYb hCE1 hCE2 hH) hV`.
+A detailed English derivation is pending.
 -/
 theorem block_valuation_Zp_of_valuation_bound {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) (hV : RestVal C0 CE1 CE2 X) : BlockBoundIntegers C0 CE1 CE2 X :=

@@ -32,13 +32,13 @@ def LowerTieTwAt (D : D7) (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.T
     ∃ P : PendTw D T u μ, ∀ τ, P.br τ = brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)
 
 /- English proof (translation)
-Unfold `IntSpan at hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hr, hf, rfl⟩` from `hx`. Establish `hg : ∀ τ, ∃ g ∈ delSq ℤ _ ((D.fm u).sg τ), br τ (MvPolynomial.map (Int.castRingHom ℂ) (f τ)) = MvPolynomial.map (Int.castRingHom ℂ) g` using `fun τ => by`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(h4 τ).1 (f τ) (by unfold lamTr; rw [delSq_wSh]; exact hf τ)`. Unfold `sgTr at h`. Rewrite `h` using `[delSq_wSh]`. Then use the resulting hypothesis. Use `choose g hg1 hg2 using hg`. Use `AddSubgroup.subset_closure ⟨r, g, hr, hg1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, blk_ten]`. Use `congr 2`. Use function extensionality and compare the values at `τ`. Conclude with `hg2 τ`. Consider the case `zero => rw [map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+A detailed English derivation is pending.
 -/
 lemma blk_IntSpan_of {D : D7} {u : D.what₂.Word}
     (br : D.what₂.Tau → (MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ →ₗ[ℂ]
@@ -69,7 +69,7 @@ lemma blk_IntSpan_of {D : D7} {u : D.what₂.Word}
 variable {D : D7} {T : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup}
 
 /- English proof (translation)
-Rewrite using `[← ((T.fm u μ).emb_basis i).2, ← ((T.fm u μ).lat i).b.sum_repr x, map_sum]`. Conclude with `Submodule.sum_mem _ (fun a _ => by`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma emb_memT (i : ℕ) (x : ((T.fm u μ).lat i).V) : (T.fm u μ).emb i x ∈ (T.fm u μ).Fi i := by
   rw [← ((T.fm u μ).emb_basis i).2, ← ((T.fm u μ).lat i).b.sum_repr x, map_sum]
@@ -77,7 +77,7 @@ lemma emb_memT (i : ℕ) (x : ((T.fm u μ).lat i).V) : (T.fm u μ).emb i x ∈ (
     rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← ((T.fm u μ).lat_good i).2.2]`. Conclude with `Submodule.span_mono (fun x hx => Submodule.subset_span hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma S_spanT (i : ℕ) (w : D.what₂.places.Pl) :
     Submodule.span D.what₂.LL ((T.fm u μ).S i w : Set ((T.fm u μ).lat i).V) = ⊤ := by
@@ -85,7 +85,7 @@ lemma S_spanT (i : ℕ) (w : D.what₂.places.Pl) :
   exact Submodule.span_mono (fun x hx => Submodule.subset_span hx)
 
 /- English proof (translation)
-Introduce `x hx`. Use `(P.pt_co w _ (hPF _ (emb_memT _ x))).mpr (fun c => ?_)` and prove the remaining obligations. Rewrite using `[P.Pt_eq w _ (emb_memT _ x) c]`. Conclude with `blk_IntSpan_of P.br h4 w _ (P.lat_co w x hx c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pt_locT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.PrimeDegreeVariant.IsBr (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) (P.br τ))
     (hPF : ∀ φ ∈ (T.fm u μ).Fi D.R.m, PtT D u μ φ ∈ (T.fm u μ).ptC) (w : D.what₂.places.Pl) :
@@ -97,13 +97,13 @@ theorem Pt_locT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.PrimeD
   exact blk_IntSpan_of P.br h4 w _ (P.lat_co w x hx c)
 
 /- English proof (translation)
-Take `⟨w, _⟩` from `exists_offT D u`. Introduce `x`. Use `show ∃ y, (T.fm u μ).ptEmb y = PtT D u μ ((T.fm u μ).emb D.R.m x)`. Establish `hx : x ∈ Submodule.span D.what₂.LL ((T.fm u μ).S D.R.m w : Set ((T.fm u μ).lat D.R.m).V)`. Rewrite using `[S_spanT]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, _, hy⟩ := Pt_locT P h4 hPF w x hx`. Conclude with `⟨y, hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a1, h1⟩` from `hx`. Take `⟨a2, h2⟩` from `hy`. Conclude with `⟨a1 + a2, by rw [map_add, map_add, map_add, h1, h2]⟩`. Consider the case `smul r x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, h1⟩` from `hx`. Conclude with `⟨r • a1, by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h1, LinearMap.map_smul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PRat_ofT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.PrimeDegreeVariant.IsBr (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) (P.br τ))
     (hPF : ∀ φ ∈ (T.fm u μ).Fi D.R.m, PtT D u μ φ ∈ (T.fm u μ).ptC) : (T.fm u μ).PRat := by
@@ -123,9 +123,9 @@ theorem PRat_ofT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.Prime
     exact ⟨r • a1, by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h1, LinearMap.map_smul]⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `mem_of_forall_inLoc _ _ (fun p => ?_)` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `Pt_locT P h4 hPF (D.plEq.symm p) x (Submodule.subset_span hx)`. Establish `e : y = (T.fm u μ).PtL h x` using `(T.fm u μ).ptEmb_inj (by rw [hy', (T.fm u μ).PtL_spec h x]; rfl)`. Use `D.inLoc_of_mem_locW (D.plEq.symm p) (T.fm u μ).ptLat.L y hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Equiv.apply_symm_apply, e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Pt_integralT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.PrimeDegreeVariant.IsBr (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) (P.br τ))
     (hPF : ∀ φ ∈ (T.fm u μ).Fi D.R.m, PtT D u μ φ ∈ (T.fm u μ).ptC) (h : (T.fm u μ).PRat) :
@@ -138,7 +138,7 @@ theorem Pt_integralT (P : PendTw D T u μ) (h4 : ∀ τ, Formalism.MainNotions.P
   rwa [Equiv.apply_symm_apply, e] at this
 
 /- English proof (translation)
-Take `⟨hz, hI, P, hP⟩` from `h`. Establish `h4 : ∀ τ, Formalism.MainNotions.PrimeDegreeVariant.IsBr (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) (P.br τ)` using `fun τ => by`. Rewrite using `[hP τ]`. Conclude with `brOneIsBr D u τ (interlaceTr D u hI τ)`. Conclude with `⟨PRat_ofT P h4 hz, Pt_integralT P h4 hz _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowerTieTwAt_integral (h : LowerTieTwAt D T u μ) : ∃ hr : (T.fm u μ).PRat, (T.fm u μ).PtilIntegral hr := by
   obtain ⟨hz, hI, P, hP⟩ := h
@@ -147,7 +147,7 @@ theorem lowerTieTwAt_integral (h : LowerTieTwAt D T u μ) : ∃ hr : (T.fm u μ)
   exact ⟨PRat_ofT P h4 hz, Pt_integralT P h4 hz _⟩
 
 /- English proof (translation)
-Introduce `u μ hμ` and use `lowerTieTwAt_integral (h u μ hμ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twisted_chain_integral_of_lowerTieTwAt (h : ∀ u μ, μ ≠ D.what₂.mu0 → LowerTieTwAt D T u μ) : Formalism.MainNotions.WeightDegreeSizes.TwistedChainIntegral D T :=
   fun u μ hμ => lowerTieTwAt_integral (h u μ hμ)

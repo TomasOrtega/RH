@@ -16,25 +16,21 @@ def fracs {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (C : Subalgebra A
   algebraMap_mem' r := ⟨algebraMap A B r, C.algebraMap_mem r, 1, C.one_mem, isUnit_one, one_mul _⟩
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `(Algebra.essFiniteType_iff A B).mp inferInstance`. Establish `key : ∀ x : B, ∃ y : B, φ y ∈ V ∧ (y = x ∨ y * x = 1)`. Introduce `x`. Distinguish the cases in `hx : φ x ∈ V`. Conclude with `⟨x, hx, Or.inl rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hne : φ x ≠ 0` using `fun h => hx (h ▸ V.zero_mem)`. Establish `hu : IsUnit x`. Assume the negation of the conclusion as `hnu`. Establish `: x ∈ RingHom.ker φ`. Rewrite using `[hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal x).mpr hnu`. Conclude with `hne this`. Take `⟨y, hy⟩` from `hu.exists_left_inv`. Use `⟨y, ?_, Or.inr hy⟩` and prove the remaining obligations. Establish `h1 : φ y * φ x = 1` using `by rw [← map_mul, hy, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[eq_inv_of_mul_eq_one_left h1]`. Conclude with `(V.mem_or_inv_mem (φ x)).resolve_left hx`. Use `choose f hfV hf using key`. Set `C : Subalgebra A B` to `Algebra.adjoin A ((σ.image f : Finset B) : Set B)`. Establish `hfC : ∀ x ∈ σ, f x ∈ C` using `fun x hx => Algebra.subset_adjoin (Finset.mem_coe.mpr (Finset.mem_image_of_mem f hx))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `⟨C, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Subalgebra.fg_iff_finiteType C).mp (Subalgebra.fg_adjoin_finset _)`. Introduce `c hc`. Rewrite using `[ValuationSubring.valuation_le_one_iff]`. Proceed by induction on `hc using Algebra.adjoin_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hx)`. Conclude with `hfV z`. Consider the case `algebraMap r => exact (V.valuation_le_one_iff _).mp (hA r)`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `V.add_mem _ _ hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `V.mul_mem _ _ hx hy`. Establish `hle : Algebra.adjoin A (σ : Set B) ≤ fracs C`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hx'` using `hfC x (Finset.mem_coe.mp hx)`. Break down `hf x with h | h` into its components or cases. Conclude with `⟨x, h ▸ hx', 1, C.one_mem, isUnit_one, one_mul _⟩`. Conclude with `⟨1, C.one_mem, f x, hx', IsUnit.of_mul_eq_one _ h, h⟩`.
-
-Introduce `b`. Take `⟨t, ht, htu, hbt⟩` from `hσ b`. Take `⟨a1, ha1, s1, hs1, hu1, h1⟩` from `hle ht`. Take `⟨a2, ha2, s2, hs2, hu2, h2⟩` from `hle hbt`. Use `⟨s1 * a2, C.mul_mem hs1 ha2, s2 * a1, C.mul_mem hs2 ha1, hu2.mul (h1 ▸ hu1.mul htu), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_finiteType_subalgebra_valuation_le_one (A B k : Type) [CommRing A] [CommRing B]
     [IsLocalRing B] [Algebra A B] [Algebra.EssFiniteType A B] [Field k] (φ : B →+* k)

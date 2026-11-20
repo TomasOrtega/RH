@@ -13,11 +13,11 @@ open PositivityTheory.KB.MomentRationality.Cz.Pk
 variable {ι : Type} {N : ℕ}
 
 /- English proof (translation)
-Break down `eq_or_ne (μ X) 0 with h0 | h0` into its components or cases. Simplify using `[Measure.restrict_eq_zero.mpr h0]`. Break down `eq_or_ne D ⊤ with hD | hD` into its components or cases. Simplify using `[hD]`. Break down `eq_or_ne (μ X) ⊤ with htop | htop` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hz : ∀ x ∈ X, f x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Use `h x hx` as an intermediate fact. Rewrite `this` using `[htop, ENNReal.mul_top hne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD (top_le_iff.mp this)`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : ∀ x ∈ X, f x ≤ D / μ X` using `fun x hx => (ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl htop)).mpr (h x hx)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_of_mul {α : Type*} [MeasurableSpace α] (μ : Measure α) {X : Set α} (hX : MeasurableSet X)
     (f : α → ℝ≥0∞) (D : ℝ≥0∞) (h : ∀ x ∈ X, f x * μ X ≤ D) : ∫⁻ x in X, f x ∂μ ≤ D := by
@@ -42,21 +42,19 @@ theorem setLIntegral_le_of_mul {α : Type*} [MeasurableSpace α] (μ : Measure �
       _ = D := ENNReal.div_mul_cancel h0 htop
 
 /- English proof (translation)
-Take `⟨K, hK, hμ⟩` from `hpk`. Take `⟨c, ε, hε, hexp⟩` from `ineq hN T B hB`. Use `set D : (Fin N → ℤ) → ℝ≥0∞ := fun m => C * K * (ENNReal.ofReal (Real.exp (c + ε * N)) * ENNReal.ofReal (Real.exp (-(ε * ∑ i, |((m i : ℤ) : ℝ)|)))) with hD`. Establish `hcov : Sg P T ⊆ ⋃ m, Xb P T m`. Introduce and unpack `x ⟨p, hp, s, hs, hcone, k, hk, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iUnion.mpr ⟨fun i => ⌊s i⌋, p, hp, s, hs, hcone, fun i => ⟨Int.floor_le _, (Int.lt_floor_add_one _).le⟩, k, hk, rfl⟩` and prove the remaining obligations. Establish `hpiece : ∀ m, ∫⁻ x in Xb P T m, f x ∂μ ≤ D m`. Introduce `m`. Use `setLIntegral_le_of_mul μ (cpt_X hPc T m).measurableSet f (D m) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨p, hp, s, hs, hcone, hb, k, hk, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1` using `hf p hp s hs hcone k hk`. Establish `h2` using `hμ m s hs hcone hb`. Establish `habs : ∑ i, |((m i : ℤ) : ℝ)| ≤ ∑ i, |s i| + N`. Establish `: ∀ i, |((m i : ℤ) : ℝ)| ≤ |s i| + 1`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hb i).1` as an intermediate fact. Use `(hb i).2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hreal : Real.exp (B * W s) * Real.exp (-2 * Phi s) ≤ Real.exp (c + ε * N) * Real.exp (-(ε * ∑ i, |((m i : ℤ) : ℝ)|))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `hexp s hs hcone` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (Real.exp_pos _).le]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C * K * ENNReal.ofReal (Real.exp (c + ε * N) * Real.exp (-(ε * ∑ i, |((m i : ℤ) : ℝ)|))) := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = D m := by`. Rewrite using `[hD, ENNReal.ofReal_mul (Real.exp_pos _).le]`. Establish `hsum : ∑' m, D m ≠ ⊤`. Simplify using `only [hD]`. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_mul_left]`.
-
-Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top hC hK) (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (summ ε hε))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main_of_pack (hN : 2 ≤ N) [Fintype ι] [Nonempty ι] [MeasurableSpace (G ι N)] [BorelSpace (G ι N)]
     (μ : Measure (G ι N)) [μ.IsHaarMeasure] {P : Set (G ι N)} (hPc : IsCompact P)

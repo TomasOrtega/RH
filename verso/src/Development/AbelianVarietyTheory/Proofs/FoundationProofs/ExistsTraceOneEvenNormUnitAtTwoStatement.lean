@@ -8,7 +8,7 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EvenTheta.exists_int_trace_one_unit_at_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsTraceOneEvenNormUnitAtTwo.lean&line=40#L40)
 -/

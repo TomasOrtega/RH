@@ -10,25 +10,21 @@ namespace CrystallineSemistableComparison
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `: IsZariskiLocalAtSource @Smooth.{0}` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `set j := Spec.map (CommRingCat.ofHom (algebraMap O K))`. Establish `hgen` using `IsPullback.of_hasPullback p j`. Use `choose W hW hxW m r h1 h2 ψ hψe hψ using hss`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (fun x : X ↦ (pullback.fst p j) ⁻¹ᵁ W x) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `z _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨pullback.fst p j z, hxW _⟩`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := GlobalTheory.Et.ssModel O ϖ (m x) (r x)`. Use `set s : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of O) := Spec.map (CommRingCat.ofHom (algebraMap O B))`. Use `set φ : (W x).toScheme ⟶ Spec (CommRingCat.of B) := (hW x).isoSpec.hom ≫ Spec.map (CommRingCat.ofHom (ψ x))`. Establish `hφ : (W x).ι ≫ p = φ ≫ s`. Establish `e1 : (W x).ι = (hW x).isoSpec.hom ≫ (hW x).fromSpec`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← (hW x).isoSpec_inv_ι, Iso.hom_inv_id_assoc]`. Establish `e2` using `IsAffineOpen.SpecMap_appLE_fromSpec p (isAffineOpen_top (Spec (CommRingCat.of O))) (hW x) le_top`. Rewrite using `[e1, Category.assoc, ← e2]`. Simplify using `only [φ, s, Category.assoc, ← Spec.map_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Conclude with `(hψ x).symm`. Use `set Bϖ := Localization.Away (algebraMap O B ϖ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ : K →+* Bϖ := IsLocalization.Away.map K Bϖ (algebraMap O B) ϖ`. Establish `hH : σ.comp (algebraMap O K) = (algebraMap B Bϖ).comp (algebraMap O B)`. Simplify using `only [σ, IsLocalization.Away.map]`. Conclude with `IsLocalization.map_comp _`. Establish `: IsLocalization ((Submonoid.powers ϖ).map (algebraMap O B)) Bϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submonoid.map_powers]`. Use `infer_instance`. Establish `hpush` using `CommRingCat.isPushout_of_isLocalization (algebraMap O B) σ hH (Submonoid.powers ϖ)`. Establish `hbot` using `isPullback_SpecMap_of_isPushout _ _ _ _ hpush`. Establish `hout` using `(isPullback_morphismRestrict (pullback.fst p j) (W x)).paste_vert hgen`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hout` using `[hφ]`. Establish `hw : ((pullback.fst p j ∣_ W x) ≫ φ) ≫ s = (((pullback.fst p j) ⁻¹ᵁ W x).ι ≫ pullback.snd p j) ≫ j`. Rewrite using `[Category.assoc]`. Conclude with `hout.w`. Use `set t := hbot.lift _ _ hw`.
-
-Establish `ht1 : t ≫ Spec.map (CommRingCat.ofHom (algebraMap B Bϖ)) = (pullback.fst p j ∣_ W x) ≫ φ` using `hbot.lift_fst _ _ hw`. Establish `ht2 : t ≫ Spec.map (CommRingCat.ofHom σ) = ((pullback.fst p j) ⁻¹ᵁ W x).ι ≫ pullback.snd p j` using `hbot.lift_snd _ _ hw`. Rewrite `hout` using `[← ht2]`. Establish `hleft` using `IsPullback.of_bot hout ht1.symm hbot`. Establish `: Etale (Spec.map (CommRingCat.ofHom (ψ x)))` using `HasRingHomProperty.Spec_iff.mpr (hψe x)`.
-
-Establish `: Etale φ` using `inferInstance`. Establish `: Etale t` using `MorphismProperty.of_isPullback hleft ‹Etale φ›`. Establish `: Smooth (Spec.map (CommRingCat.ofHom σ))` using `HasRingHomProperty.Spec_iff.mpr (hsm _ _ (h1 x) (h2 x))`. Rewrite using `[← ht2]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_snd_of_isStrictlySemistable {O K : Type} [CommRing O] [CommRing K] [Algebra O K] (ϖ : O)
     [IsLocalization.Away ϖ K] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O))

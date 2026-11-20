@@ -15,19 +15,17 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.GeomComp
 
 /- English proof (translation)
-Set `z : ∀ (q : Ideal A) [q.IsPrime], Ideal A` to `fun q _ => RingHom.ker (algebraMap A (Localization.AtPrime q))`. Establish `zp : ∀ (q : Ideal A) [q.IsPrime], (z q).IsPrime` using `fun q _ => haveI := h q RingHom.ker_isPrime _`. Establish `zm : ∀ (q : Ideal A) [q.IsPrime] (a : A), a ∈ z q ↔ ∃ s ∉ q, s * a = 0` using `fun q _ a => by`. Rewrite using `[RingHom.mem_ker, IsLocalization.map_eq_zero_iff q.primeCompl]`. Conclude with `⟨fun ⟨s, hs⟩ => ⟨s, s.2, hs⟩, fun ⟨s, hs, hs'⟩ => ⟨⟨s, hs⟩, hs'⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `zle : ∀ (q r : Ideal A) [q.IsPrime] [r.IsPrime], r ≤ q → z q ≤ r` using `fun q r _ hr hrq a ha => by`. Take `⟨s, hs, hs'⟩` from `(zm q a).1 ha`. Conclude with `(hr.mem_or_mem (hs' ▸ r.zero_mem)).resolve_left fun h => hs (hrq h)`. Establish `htop : z P ⊔ (z P).annihilator = ⊤`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `haveI := hm.isPrime`. Use `haveI := zp P`. Use `haveI := zp m`. Establish `h1 : z m ≤ z P` using `zle m (z P) (le_sup_left.trans hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : z P ≤ z m` using `zle P (z m) (h1.trans (zle P P le_rfl))`. Take `⟨s, hs⟩` from `IsNoetherian.noetherian (z P)`. Establish `h3 : ∀ a : s, ∃ t ∉ m, t * (a : A) = 0` using `fun a => (zm m a).1 (h2 (by rw [← hs]; exact Submodule.subset_span a.2))`. Use `choose t ht ht' using h3`. Establish `h4 : ∏ a, t a ∈ (z P).annihilator`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hs, Submodule.mem_annihilator_span]`. Introduce `a`. Take `⟨r, hr⟩ : t a ∣ ∏ a, t a` from `Finset.dvd_prod_of_mem t (Finset.mem_univ _)`. Rewrite using `[hr, smul_eq_mul, mul_right_comm, ht', zero_mul]`. Take `⟨a, -, ha⟩` from `Ideal.IsPrime.prod_mem_iff.1 (le_sup_right.trans hle h4)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht a ha`. Take `⟨f, hf, e, he, hfe⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : (1 : A) ∈ _)`. Establish `hk : ∀ a ∈ z P, e * a = 0` using `fun a ha => Submodule.mem_annihilator.1 he a ha`. Establish `hfP : f ∈ P` using `zle P P le_rfl hf`. Establish `heP : e ∉ P` using `fun h' => Ideal.IsPrime.ne_top ‹_› ((Ideal.eq_top_iff_one _).2 (hfe ▸ P.add_mem hfP h'))`.
-
-Use `⟨e, ?_, heP, fun x y hxy => ?_⟩` and prove the remaining obligations. Use `hk f hf` as an intermediate fact. Unfold `IsIdempotentElem`. Take the linear combination `e * hfe - this`. Conclude with `((zp P).mem_or_mem ((zm P _).2 ⟨e, heP, hxy⟩)).imp (hk x) (hk y)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_idempotent {A : Type} [CommRing A] [IsNoetherianRing A]
     (h : ∀ (q : Ideal A) [q.IsPrime], IsDomain (Localization.AtPrime q)) (P : Ideal A) [P.IsPrime] :
@@ -75,13 +73,11 @@ theorem exists_idempotent {A : Type} [CommRing A] [IsNoetherianRing A]
   · exact ((zp P).mem_or_mem ((zm P _).2 ⟨e, heP, hxy⟩)).imp (hk x) (hk y)
 
 /- English proof (translation)
-Establish `hz : ∀ a : A, algebraMap A S a = 0 ↔ e * a = 0` using `fun a => by`. Rewrite using `[IsLocalization.map_eq_zero_iff (Submonoid.powers e)]`. Use `⟨fun ⟨⟨_, n, rfl⟩, hn⟩ => ?_, fun h => ⟨⟨e, Submonoid.mem_powers e⟩, h⟩⟩` and prove the remaining obligations. Establish `h1 : e ^ (n + 1) * a = 0`. Rewrite using `[pow_succ', _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (e * ·) hn).trans (mul_zero _)`. Rewrite `h1` using `[he.pow_succ_eq]`. Then use the resulting hypothesis. Establish `hs` using `IsLocalization.Away.algebraMap_surjective_of_isIdempotentElem e he (S := S)`. Use `haveI : Nontrivial S := ⟨1, 0, fun h1 => h0 (by simpa using (hz 1).1 (by rw [map_one, h1]))⟩`. Use `haveI : NoZeroDivisors S := ⟨fun {a b} hab => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hs a`. Take `⟨y, rfl⟩` from `hs b`. Rewrite `hab` using `[← map_mul, hz]`. Rewrite using `[hz, hz]`. Conclude with `h x y hab⟩`.
-
-Conclude with `NoZeroDivisors.to_isDomain S`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDomain_away {A : Type} [CommRing A] {e : A} (he : IsIdempotentElem e) (h0 : e ≠ 0)
     (h : ∀ x y : A, e * (x * y) = 0 → e * x = 0 ∨ e * y = 0)
@@ -104,9 +100,9 @@ theorem isDomain_away {A : Type} [CommRing A] {e : A} (he : IsIdempotentElem e) 
   exact NoZeroDivisors.to_isDomain S
 
 /- English proof (translation)
-Set `f : Spec (.of A) ⟶ Spec (.of K)` to `Spec.map (CommRingCat.ofHom (algebraMap K A))`. Establish `hf : LocallyOfFiniteType f`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `hi : IsIntegral (Over.mk f).left` using `inferInstanceAs (IsIntegral (Spec (.of A)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : GeometricallyIntegral f` using `GlobalTheory.geometricallyIntegral_of_isIntegral_of_isAlgClosed K (Over.mk f) hf`. Set `y` to `Spec.map (CommRingCat.ofHom (algebraMap K F))`. Establish `: IsIntegral (pullback y f)` using `pullback_of_geometrically' GeometricallyIntegral.geometrically_isIntegral F y`. Establish `: IsIntegral (Spec (.of (F ⊗[K] A)))` using `IsIntegral.of_isIso (pullbackSpecIso K F A).hom`. Conclude with `(affine_isIntegral_iff (.of (F ⊗[K] A))).mp this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_tensor_of_isAlgClosed (K A : Type) [Field K] [IsAlgClosed K] [CommRing A] [IsDomain A]
     [Algebra K A] [Algebra.FiniteType K A] (F : Type) [Field F] [Algebra K F] : IsDomain (F ⊗[K] A) := by
@@ -124,9 +120,9 @@ theorem isDomain_tensor_of_isAlgClosed (K A : Type) [Field K] [IsAlgClosed K] [C
   exact (affine_isIntegral_iff (.of (F ⊗[K] A))).mp this
 
 /- English proof (translation)
-Set `L` to `AlgebraicClosure F`. Set `j : Ω →ₐ[k] L` to `IsAlgClosed.lift`. Use `letI : Algebra Ω L := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower k Ω L := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `haveI := isDomain_tensor_of_isAlgClosed Ω (Ω ⊗[k] S) L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsDomain (L ⊗[k] S) := (Algebra.TensorProduct.cancelBaseChange k Ω L L S).symm.toMulEquiv.isDomain _`. Set `φ` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom k F L) (AlgHom.id k S)`. Establish `hφ : Function.Injective φ` using `Module.Flat.rTensor_preserves_injective_linearMap (M := S) (IsScalarTower.toAlgHom k F L).toLinearMap (algebraMap F L).injective`. Conclude with `Function.Injective.isDomain φ.toRingHom hφ`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_tensor_of_closure (k Ω S : Type) [Field k] [Field Ω] [IsAlgClosed Ω] [Algebra k Ω]
     [Algebra.IsAlgebraic k Ω] [CommRing S] [Algebra k S] [Algebra.FiniteType k S] [IsDomain (Ω ⊗[k] S)]
@@ -145,11 +141,9 @@ theorem isDomain_tensor_of_closure (k Ω S : Type) [Field k] [Field Ω] [IsAlgCl
   exact Function.Injective.isDomain φ.toRingHom hφ
 
 /- English proof (translation)
-Use `haveI : Algebra.Smooth B (Localization.Away e) := Algebra.Smooth.of_isLocalization_Away e`. Use `haveI : Algebra.Smooth k (Localization.Away e) := Algebra.Smooth.comp k B _`. Use `⟨this, fun F _ _ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (Ω ⊗[k] B) (Ω ⊗[k] Localization.Away e) := (Algebra.TensorProduct.map (AlgHom.id Ω Ω) (IsScalarTower.toAlgHom k B (Localization.Away e))).toAlgebra`. Use `haveI : IsScalarTower Ω (Ω ⊗[k] B) (Ω ⊗[k] Localization.Away e) := IsScalarTower.of_algebraMap_eq fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[RingHom.algebraMap_toAlgebra]`. Establish `hloc` using `IsLocalization.tensorProduct_tensorProduct_right k Ω (Submonoid.powers e) (Localization.Away e) (by ext; simp [RingHom.algebraMap_toAlgebra])`. Rewrite `hloc` using `[Submonoid.map_powers]`. Establish `he' : IsIdempotentElem ((1 : Ω) ⊗ₜ[k] e)` using `he.map (Algebra.TensorProduct.includeRight (R := k) (A := Ω) (B := B))`. Use `haveI : IsLocalization.Away ((1 : Ω) ⊗ₜ[k] e) (Ω ⊗[k] Localization.Away e) := hloc`.
-
-Use `haveI := isDomain_away he' h0 h (Ω ⊗[k] Localization.Away e)`. Conclude with `isDomain_tensor_of_closure k Ω _ F`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geomInt_away (k Ω B : Type) [Field k] [Field Ω] [IsAlgClosed Ω] [Algebra k Ω]
     [Algebra.IsAlgebraic k Ω] [CommRing B] [Algebra k B] [Algebra.Smooth k B] (e : B)
@@ -176,11 +170,11 @@ theorem geomInt_away (k Ω B : Type) [Field k] [Field Ω] [IsAlgClosed Ω] [Alge
   exact isDomain_tensor_of_closure k Ω _ F
 
 /- English proof (translation)
-Set `φ` to `Algebra.TensorProduct.cancelBaseChange K k Ω Ω R`. Establish `hφ : ∀ x : k ⊗[K] R, φ ((1 : Ω) ⊗ₜ[k] x) = Algebra.TensorProduct.map (IsScalarTower.toAlgHom K k Ω) (AlgHom.id K R) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a r => simp [φ, Algebra.smul_def]`. Consider the case `add x y hx hy => simp only [TensorProduct.tmul_add, map_add, hx, hy]`. Use `geomInt_away k Ω (k ⊗[K] R) e he (fun h => h0 ?_) (fun x y hxy => ?_)` and prove the remaining obligations. Rewrite using `[← hφ, h, map_zero]`. Establish `h1` using `congrArg φ hxy`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_mul, map_zero, hφ]`. Apply the tactic sequence `refine (h _ _ h1).imp (fun h => φ.injective ?_) (fun h => φ.injective ?_) <;>`. Rewrite using `[map_mul, map_zero, hφ, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem geomInt_away_baseChange (K k Ω R : Type) [Field K] [Field k] [Field Ω] [IsAlgClosed Ω] [Algebra K k]
     [Algebra k Ω] [Algebra K Ω] [IsScalarTower K k Ω] [Algebra.IsAlgebraic k Ω] [CommRing R] [Algebra K R]
@@ -207,13 +201,13 @@ theorem geomInt_away_baseChange (K k Ω R : Type) [Field K] [Field k] [Field Ω]
       rw [map_mul, map_zero, hφ, h]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨⊥, bot_le, 0, inferInstance, map_zero _⟩`. Consider the case `tmul a r`. Establish `ha : _root_.IsIntegral K (a : C)` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral.map Ω.val`. Use `⟨IntermediateField.adjoin K {(a : C)}, by simp, ⟨a, IntermediateField.mem_adjoin_simple_self K _⟩ ⊗ₜ r, IntermediateField.adjoin.finiteDimensional ha, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy`. Take `⟨k₁, h₁, e₁, f₁, rfl⟩` from `hx`. Take `⟨k₂, h₂, e₂, f₂, rfl⟩` from `hy`. Establish `key : ∀ (a b : IntermediateField K C) (hab : a ≤ b) (hb : b ≤ Ω) (e : a ⊗[K] R), Algebra.TensorProduct.map (IntermediateField.inclusion hb) (AlgHom.id K R) (Algebra.TensorProduct.map (IntermediateField.inclusion hab) (AlgHom.id K R) e) = Algebra.TensorProduct.map (IntermediateFie …`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b hab hb e`. Proceed by induction on `e using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨k₁ ⊔ k₂, sup_le h₁ h₂, (Algebra.TensorProduct.map (IntermediateField.inclusion (le_sup_left : k₁ ≤ k₁ ⊔ k₂)) (AlgHom.id K R) : k₁ ⊗[K] R →ₐ[K] _) e₁ + (Algebra.TensorProduct.map (IntermediateField.inclusion (le_sup_right : k₂ ≤ k₁ ⊔ k₂)) (AlgHom.id K R) : k₂ ⊗[K] R →ₐ[K] _) e₂, …` and prove the remaining obligations. Rewrite using `[map_add, key, key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_finite_level (K C R : Type) [Field K] [Field C] [Algebra K C] [CommRing R] [Algebra K R]
     (Ω : IntermediateField K C) [Algebra.IsAlgebraic K Ω] (x : Ω ⊗[K] R) :
@@ -249,15 +243,13 @@ theorem exists_finite_level (K C R : Type) [Field K] [Field C] [Algebra K C] [Co
     rw [map_add, key, key]
 
 /- English proof (translation)
-Introduce `K _ _ _ R _ _ _ p`. Set `Ω : IntermediateField K ℂ` to `algebraicClosure K ℂ`. Use `haveI : IsAlgClosed Ω := (algebraicClosure.isAlgClosure K ℂ).isAlgClosed`. Use `haveI : Algebra.IsAlgebraic K Ω := algebraicClosure.isAlgebraic K ℂ`. Use `haveI hreg : IsRegularRing (Ω ⊗[K] R) := GlobalTheory.isRegularRing_of_smooth Ω _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `π : Ω ⊗[K] R →ₐ[K] ℂ` to `Algebra.TensorProduct.lift Ω.val p (fun _ _ => Commute.all _ _)`. Use `haveI : (RingHom.ker π).IsPrime := RingHom.ker_isPrime _`. Take `⟨e', he', hP, hpr⟩` from `exists_idempotent (A := Ω ⊗[K] R) (fun q _ => GlobalTheory.isDomain_of_isRegularLocalRing _) (RingHom.ker π)`. Take `⟨k, hk, e, hfin, rfl⟩` from `exists_finite_level K ℂ R Ω e'`. Set `inc` to `Algebra.TensorProduct.map (IntermediateField.inclusion hk) (AlgHom.id K R)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinc : Function.Injective inc` using `Module.Flat.rTensor_preserves_injective_linearMap (M := R) (IntermediateField.inclusion hk).toLinearMap (IntermediateField.inclusion_injective hk)`. Establish `he : IsIdempotentElem e` using `hinc (by rw [map_mul]; exact he')`. Establish `hπ : ∀ x, π (inc x) = Algebra.TensorProduct.lift k.val p (fun _ _ => Commute.all _ _) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => simp`. Consider the case `tmul a r => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `⟨k, e, hfin, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hπ]`.
-
-Conclude with `(IsIdempotentElem.iff_eq_zero_or_one.1 (he'.map π)).resolve_left hP`. Use `letI : Algebra k Ω := (IntermediateField.inclusion hk).toRingHom.toAlgebra haveI : IsScalarTower K k Ω := IsScalarTower.of_algebraMap_eq fun x => rfl haveI : Algebra.IsAlgebraic k Ω := Algebra.IsAlgebraic.tower_top (K := K) k`. Conclude with `geomInt_away_baseChange K k Ω R e he (fun h => hP (by`. Rewrite using `[RingHom.mem_ker]`. Conclude with `(congrArg π h).trans (map_zero π))) hpr`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_geomInt_component : ∀ (K : Type) [Field K] [NumberField K] [Algebra K ℂ] (R : Type) [CommRing R] [Algebra K R] [Algebra.Smooth K R] (p : R →ₐ[K] ℂ), ∃ (k : IntermediateField K ℂ) (e : k ⊗[K] R), FiniteDimensional K k ∧ IsIdempotentElem e ∧ Algebra.TensorProduct.lift k.val p (fun _ _ => Commute.all _ _) e = 1 ∧ GeomInt k (Localization.Away e) := by
   intro K _ _ _ R _ _ _ p

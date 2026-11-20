@@ -15,21 +15,21 @@ def gLat {n : ℕ} (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) : AddSubgr
   A.comap (Matrix.mulVecLin ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)).toAddMonoidHom
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_inv_mulVec {n : ℕ} (g : GL (Fin n) k) (x : Fin n → k) :
     ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ ((g : Matrix (Fin n) (Fin n) k) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mulVec_inv {n : ℕ} (g : GL (Fin n) k) (x : Fin n → k) :
     (g : Matrix (Fin n) (Fin n) k) *ᵥ (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ ((g : Matrix (Fin n) (Fin n) k) *ᵥ x) ∈ A ↔ x ∈ A`. Rewrite using `[mulVec_inv_mulVec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_gLat {n : ℕ} (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) :
     (gLat g A).comap (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k)).toAddMonoidHom = A := by
@@ -38,17 +38,15 @@ theorem comap_gLat {n : ℕ} (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) 
   rw [mulVec_inv_mulVec]
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_mulVec continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulVec' {n : ℕ} (M : Matrix (Fin n) (Fin n) k) : Continuous fun x : Fin n → k => M *ᵥ x :=
   continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-Establish `e : ((gLat g A : AddSubgroup (Fin (m + 1) → k)) : Set (Fin (m + 1) → k)) = (fun x => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) '' (A : Set (Fin (m + 1) → k))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, hx, mulVec_mulVec_inv g x⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩ show ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ _ ∈ A`. Rewrite using `[mulVec_inv_mulVec]`. Conclude with `hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `hA.1.image (continuous_mulVec' _)`. Conclude with `hA.2.preimage (continuous_mulVec' _)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_gLat {m : ℕ} (g : GL (Fin (m + 1)) k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) :
     IsLat (gLat g A) := by
@@ -66,11 +64,11 @@ theorem isLat_gLat {m : ℕ} (g : GL (Fin (m + 1)) k) {A : AddSubgroup (Fin (m +
   · exact hA.2.preimage (continuous_mulVec' _)
 
 /- English proof (translation)
-Use `⟨?_, AddSubgroup.isOpen_mono le_sup_left hA.2⟩` and prove the remaining obligations. Establish `e : ((A ⊔ B : AddSubgroup (Fin (m + 1) → k)) : Set (Fin (m + 1) → k)) = (fun p : (Fin (m + 1) → k) × (Fin (m + 1) → k) => p.1 + p.2) '' ((A : Set _) ×ˢ (B : Set _))`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, z, hz, rfl⟩`. Conclude with `⟨(y, z), ⟨hy, hz⟩, rfl⟩`. Introduce and unpack `⟨⟨y, z⟩, ⟨hy, hz⟩, rfl⟩`. Conclude with `⟨y, hy, z, hz, rfl⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hA.1.prod hB.1).image continuous_add`.
+A detailed English derivation is pending.
 -/
 theorem isLat_sup {m : ℕ} {A B : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (hB : IsLat B) : IsLat (A ⊔ B) := by
   refine ⟨?_, AddSubgroup.isOpen_mono le_sup_left hA.2⟩
@@ -87,15 +85,15 @@ theorem isLat_sup {m : ℕ} {A B : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat 
   exact (hA.1.prod hB.1).image continuous_add
 
 /- English proof (translation)
-Take `⟨q, hq, hav⟩` from `avg_spec ψ h π hψ hπ ξ A hA v`. Rewrite using `[hav]`. Use `set f : (Fin (m + 1) → k) → V := fun t => (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v with hf`. Establish `inv : ∀ (r : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)), AvgData ψ h π ξ A v r → ∀ x, ∀ d ∈ r.1, f (x + d) = f x`. Introduce `r hr x d hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf]`. Rewrite using `[colEl_add, map_mul, Module.End.mul_apply, hr.2.2.1 d hd, dotProduct_add, AddChar.map_add_eq_mul, hr.2.2.2.1 d hd, mul_one]`. Establish `hpq : ∑ t ∈ p.2, ∑ s ∈ q.2, f (s + t) = (p.2.card : ℂ) • ∑ s ∈ q.2, f s`. Rewrite using `[Finset.sum_congr rfl (fun t ht => sum_translate_transversal A q.1 q.2 hq.2.2.2.2.1 hq.2.2.2.2.2 f (inv q hq) t (hp.2.2.2.2.1 t ht)), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Establish `hqp : ∑ s ∈ q.2, ∑ t ∈ p.2, f (t + s) = (q.2.card : ℂ) • ∑ t ∈ p.2, f t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun s hs => sum_translate_transversal A p.1 p.2 hp.2.2.2.2.1 hp.2.2.2.2.2 f (inv p hp) s (hq.2.2.2.2.1 s hs)), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Establish `hcomm : ∑ t ∈ p.2, ∑ s ∈ q.2, f (s + t) = ∑ s ∈ q.2, ∑ t ∈ p.2, f (t + s)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => by rw [add_comm]` and prove the remaining obligations. Take `⟨t₀, ⟨ht₀, _⟩, _⟩` from `hp.2.2.2.2.2 0 A.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, ⟨hs₀, _⟩, _⟩` from `hq.2.2.2.2.2 0 A.zero_mem`. Establish `hcp : (p.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem ht₀)`. Establish `hcq : (q.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem hs₀)`. Establish `key : (p.2.card : ℂ) • ∑ s ∈ q.2, f s = (q.2.card : ℂ) • ∑ t ∈ p.2, f t`. Rewrite using `[← hpq, ← hqp, hcomm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key2` using `congrArg (fun x => ((p.2.card : ℂ)⁻¹ * (q.2.card : ℂ)⁻¹) • x) key`. Simplify using `only [smul_smul] at key2`. Rewrite `key2` using `[show (p.2.card : ℂ)⁻¹ * (q.2.card : ℂ)⁻¹ * (p.2.card : ℂ) = (q.2.card : ℂ)⁻¹ by field_simp, show (p.2.card : ℂ)⁻¹ * (q.2.card : ℂ)⁻¹ * (q.2.card : ℂ) = (p.2.card : ℂ)⁻¹ by field_simp]`. Conclude with `key2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_eq_of_data (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k)
@@ -135,23 +133,21 @@ theorem avg_eq_of_data (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) {V 
   exact key2
 
 /- English proof (translation)
-Use `set P := blkAt k (m + 1) N (by omega) g with hP`. Establish `hconj : ∀ x, π P (π (colEl k m N h x) v) = π (colEl k m N h ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x)) (π P v)`. Introduce `x`. Establish `e : P * colEl k m N h x = colEl k m N h ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) * P`. Rewrite using `[← blkAt_conj_colEl h g x, ← hP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply]`. Take `⟨p, hp, hav⟩` from `avg_spec ψ h π hψ hπ ξ A hA v`. Take `⟨hMA, hMo, hMfix, hMchar, hT, hu⟩` from `hp`. Set `gv : (Fin (m + 1) → k) → (Fin (m + 1) → k)` to `fun x => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ginj : Function.Injective gv` using `fun x y e => by`. Use `congrArg (fun z => ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ z) e` as an intermediate fact. Simplify `this` using `[gv, mulVec_inv_mulVec]`. Set `p' : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)` to `(gLat g p.1, p.2.image gv)`. Establish `hp' : AvgData ψ h π η (gLat g A) (π P v) p'`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun x hx => hMA hx, hMo.preimage (continuous_mulVec' _), fun a ha => ?_, fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `hconj (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ a)`. Rewrite `e` using `[mulVec_mulVec_inv, hMfix (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ a) ha]`. Conclude with `e.symm`. Establish `e` using `hη (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ a)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[mulVec_mulVec_inv]`. Rewrite using `[e]`. Conclude with `hMchar (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ a) ha`. Introduce `t ht`. Take `⟨t', ht', rfl⟩` from `Finset.mem_image.1 ht`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ *ᵥ (gv t') ∈ A`. Simplify using `only [gv, mulVec_inv_mulVec]`. Conclude with `hT t' ht'`. Introduce `a ha`. Take `⟨t, ⟨htT, hta⟩, hun⟩` from `hu _ ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨gv t, ⟨Finset.mem_image_of_mem _ htT, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show _ *ᵥ (a - gv t) ∈ p.1`. Rewrite using `[Matrix.mulVec_sub]`. Simplify using `only [gv, mulVec_inv_mulVec]`. Conclude with `hta`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce and unpack `t' ⟨ht', ht'a⟩`. Take `⟨t1, ht1, rfl⟩` from `Finset.mem_image.1 ht'`. Use `congr 1`. Use `hun t1 ⟨ht1, ?_⟩` and prove the remaining obligations. Establish `: _ *ᵥ (a - gv t1) ∈ p.1` using `ht'a`.
-
-Rewrite `this` using `[Matrix.mulVec_sub, mulVec_inv_mulVec]`. Then use the resulting hypothesis. Rewrite using `[avg_eq_of_data ψ h π hψ hπ η (isLat_gLat g hA) _ p' hp', hav, map_smul, map_sum, Finset.card_image_of_injective _ ginj, Finset.sum_image (fun x _ y _ e => ginj e)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hconj, hη]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_conj (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hψ : Continuous ψ) (hπ : IsSmooth π) (g : GL (Fin (m + 1)) k)
@@ -204,25 +200,21 @@ theorem avg_conj (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) {V : Type
   rw [map_smul, hconj, hη]
 
 /- English proof (translation)
-Introduce `p hp v w`. Use `set P := blkAt k (m + 1) N (by omega) p with hPdef`. Take `⟨A₁, hA₁, h01, hA₁'⟩` from `hD (π P v) (π P w)`. Take `⟨A₂, hA₂, h02, hA₂'⟩` from `hD v w`. Use `set A' := A₂ ⊔ A₁.comap (Matrix.mulVecLin (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k)).toAddMonoidHom with hA'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA'l : IsLat A'`. Use `isLat_sup hA₂ ?_` and prove the remaining obligations. Use `isLat_gLat p⁻¹ hA₁` as an intermediate fact. Simplify `this` using `[gLat]`. Use `set A := gLat p A' with hAdef`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAl : IsLat A` using `isLat_gLat p hA'l`. Establish `h1A : A₁ ≤ A`. Introduce `x hx`. Use `show _ *ᵥ x ∈ A'`. Use `AddSubgroup.mem_sup_right ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ (_ *ᵥ x) ∈ A₁`. Rewrite using `[mulVec_mulVec_inv]`. Conclude with `hx`. Establish `h2A' : A₂ ≤ A'` using `le_sup_left`. Establish `hη : ∀ x, xi0 k m ⬝ᵥ ((p : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) = xi0 k m ⬝ᵥ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Rewrite using `[Matrix.dotProduct_mulVec]`. Conclude with `congrArg (· ⬝ᵥ x) hp`. Establish `e1` using `hA₁' A hAl h1A`. Establish `e2` using `hA₂' A' hA'l h2A'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj` using `avg_conj ψ h π hB.cont hB.smooth p (xi0 k m) (xi0 k m) hη hA'l v`. Rewrite `hconj` using `[← hPdef]`. Establish `hBP : ∀ a b, B (π P a) (π P b) = ((nabs k (Matrix.GeneralLinearGroup.det p) ^ s : ℝ) : ℂ) * B a b`. Introduce `a b`. Establish `e` using `hB.mir (glEmb k (m + 1) p) (glEmb_mem_Mir k (m + 1) p) a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[blkAt_glEmb h p, det_glEmb]`. Conclude with `e`. Establish `hidx : ((A₀.relIndex A : ℕ) : ℝ) = (MeasureTheory.distribHaarChar k (Matrix.GeneralLinearGroup.det p) : ℝ) * ((A₀.relIndex A' : ℕ) : ℝ)`. Use `GlobalTheory.T.relIndex_lattice_eq_haar_det k (m + 1) p A₀ A hAl.1 hA₀.2 (h01.trans h1A) (by rw [comap_gLat]; exact h02.trans h2A')` as an intermediate fact. Rewrite `this` using `[comap_gLat]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e1, ← hconj, hBP, e2]`. Establish `hn : nabs k (Matrix.GeneralLinearGroup.det p) = (MeasureTheory.distribHaarChar k (Matrix.GeneralLinearGroup.det p) : ℝ)` using `rfl`. Establish `hpos : 0 < nabs k (Matrix.GeneralLinearGroup.det p)`. Rewrite using `[hn]`. Conclude with `NNReal.coe_pos.mpr MeasureTheory.distribHaarChar_pos`.
-
-Establish `hidxC : ((A₀.relIndex A : ℕ) : ℂ) = ((nabs k (Matrix.GeneralLinearGroup.det p) : ℝ) : ℂ) * ((A₀.relIndex A' : ℕ) : ℂ)`. Rewrite using `[hn]`. Conclude with `hidx` after adjusting the coercions. Rewrite using `[hidxC, Real.rpow_add hpos, Real.rpow_one]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dens_mir {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hB : Lv ψ h π s B)

@@ -27,15 +27,15 @@ noncomputable def mapOfHomotopyF (h : Homotopy (f ≫ β) (α ≫ f')) (n : ℕ)
       (homotopyShiftF h n).hom.comp (LinearMap.fst k _ _)))
 
 /- English proof (translation)
-Establish `hβ : ∀ y : shiftNegOneX L n, (shiftNegOneMapF β (n + 1)).hom ((shiftNegOneD L n).hom y) = (shiftNegOneD L' n).hom ((shiftNegOneMapF β n).hom y)` using `fun y => (hom_apply_hom_apply_eq_of_comp_eq (shiftNegOneMapF_comm β n) y).symm`. Establish `hcomm : ∀ x : K.X n, shiftNegOneSucc L' n ((β.f n).hom ((f.f n).hom x)) = shiftNegOneSucc L' n ((h.hom (n + 1) n).hom ((K.d n (n + 1)).hom x)) - (shiftNegOneD L' n).hom ((homotopyShiftF h n).hom x) + shiftNegOneSucc L' n ((f'.f n).hom ((α.f n).hom x))` using `fun x => by`. Establish `e` using `congrArg (fun φ => φ.hom x) (h.comm n)`. Simplify using `only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_add, LinearMap.add_apply] at e`. Rewrite using `[shiftNegOneSucc_apply, shiftNegOneSucc_apply, shiftNegOneSucc_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `n with`. Consider the case `zero`. Rewrite `e` using `[Homotopy.dNext_cochainComplex, Homotopy.prevD_zero_cochainComplex]`. Express the relevant statement in the definitionally equal form `(β.f 0).hom ((f.f 0).hom x) = (h.hom 1 0).hom ((K.d 0 1).hom x) - 0 + (f'.f 0).hom ((α.f 0).hom x)`. Rewrite using `[e]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ n`. Rewrite `e` using `[Homotopy.dNext_cochainComplex, Homotopy.prevD_succ_cochainComplex]`. Express the relevant statement in the definitionally equal form `(β.f (n + 1)).hom ((f.f (n + 1)).hom x) = (h.hom (n + 1 + 1) (n + 1)).hom ((K.d (n + 1) (n + 1 + 1)).hom x) - -(L'.d n (n + 1)).hom ((h.hom (n + 1) n).hom x) + (f'.f (n + 1)).hom ((α.f (n + 1)).hom x)`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[mappingCoconeNat_d, mappingCoconeNat_d]`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : K.X n × shiftNegOneX L n) => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (α.comm n (n + 1)) p.1`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `shiftNegOneSucc L' n ((f'.f n).hom ((α.f n).hom p.1)) + (shiftNegOneD L' n).hom ((shiftNegOneMapF β n).hom p.2 - (homotopyShiftF h n).hom p.1) = (shiftNegOneMapF β (n + 1)).hom (shiftNegOneSucc L n ((f.f n).hom p.1) + (shiftNegOneD L n).hom p.2) - shiftNegOneSucc L' n ((h.hom (n …`. Rewrite using `[map_add, shiftNegOneMapF_succ_apply, hβ, map_sub, hcomm p.1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mapOfHomotopyF_comm (h : Homotopy (f ≫ β) (α ≫ f')) (n : ℕ) :
     mapOfHomotopyF h n ≫ (mappingCoconeNat f').d n (n + 1) =
@@ -84,7 +84,7 @@ noncomputable def mapOfHomotopy (h : Homotopy (f ≫ β) (α ≫ f')) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem mapOfHomotopy_fst (h : Homotopy (f ≫ β) (α ≫ f')) :
     mapOfHomotopy h ≫ fst f' = fst f ≫ α :=
@@ -92,7 +92,7 @@ theorem mapOfHomotopy_fst (h : Homotopy (f ≫ β) (α ≫ f')) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun y => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(α.f n).hom.map_zero`. Express the relevant statement in the definitionally equal form `(shiftNegOneMapF β n).hom y - (homotopyShiftF h n).hom 0 = (shiftNegOneMapF β n).hom y`. Rewrite using `[map_zero, sub_zero]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inr_mapOfHomotopy (h : Homotopy (f ≫ β) (α ≫ f')) :
     inr f ≫ mapOfHomotopy h = shiftNegOneMap β ≫ inr f' := by
@@ -107,7 +107,7 @@ section FiveLemma
 open HomologicalComplex
 
 /- English proof (translation)
-Rewrite using `[homologyδ, homologyδ, Category.assoc, ← homologyMap_comp, hinr, homologyMap_comp, shiftNegOneHomologyHom_naturality_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homologyδ_naturality_of_inr (Φ : mappingCoconeNat f ⟶ mappingCoconeNat f')
     (hinr : inr f ≫ Φ = shiftNegOneMap β ≫ inr f') (n : ℕ) :
@@ -116,33 +116,31 @@ theorem homologyδ_naturality_of_inr (Φ : mappingCoconeNat f ⟶ mappingCoconeN
     shiftNegOneHomologyHom_naturality_assoc]
 
 /- English proof (translation)
-Establish `bα : ∀ m, Function.Bijective (homologyMap α m).hom` using `fun m => by`. Use `hα m` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`. Establish `bβ : ∀ m, Function.Bijective (homologyMap β m).hom` using `fun m => by`. Use `hβ m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ConcreteCategory.bijective_of_isIso _`. Establish `sfst : ∀ m x, (homologyMap (fst f') m).hom ((homologyMap Φ m).hom x) = (homologyMap α m).hom ((homologyMap (fst f) m).hom x)` using `fun m x => hom_apply_hom_apply_eq_of_comp_eq (by rw [← homologyMap_comp, hfst, homologyMap_comp]) x`. Establish `sδ : ∀ m y, (homologyMap Φ (m + 1)).hom ((homologyδ f m).hom y) = (homologyδ f' m).hom ((homologyMap β m).hom y)` using `fun m y => hom_apply_hom_apply_eq_of_comp_eq (homologyδ_naturality_of_inr Φ hinr m) y`. Establish `sf : ∀ m z, (homologyMap f' m).hom ((homologyMap α m).hom z) = (homologyMap β m).hom ((homologyMap f m).hom z)` using `fun m z => (hom_apply_hom_apply_eq_of_comp_eq (hsq m) z).symm`. Establish `e1` using `fun m => (ShortComplex.moduleCat_exact_iff _).1 (homology_exact₁ f m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `fun m => (ShortComplex.moduleCat_exact_iff _).1 (homology_exact₂ f m)`. Establish `e3` using `fun m => (ShortComplex.moduleCat_exact_iff _).1 (homology_exact₃ f m)`. Establish `e1'` using `fun m => (ShortComplex.moduleCat_exact_iff _).1 (homology_exact₁ f' m)`. Establish `e2'` using `fun m => (ShortComplex.moduleCat_exact_iff _).1 (homology_exact₂ f' m)`. Establish `inj_fst0 : ∀ {K₀ L₀ : CochainComplex (ModuleCat.{u} k) ℕ} (g : K₀ ⟶ L₀), Function.Injective (homologyMap (fst g) 0).hom` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mono_homologyMap_fst_zero g` as an intermediate fact. Conclude with `(ModuleCat.mono_iff_injective _).1 this`. Use `@isIso_of_mono_of_epi _ _ _ _ _ _ ((ModuleCat.mono_iff_injective _).2 ?_) ((ModuleCat.epi_iff_surjective _).2 ?_)` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the cases of `n with`. Consider the case `zero`. Apply `inj_fst0 f` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(bα 0).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← sfst, hx, map_zero, map_zero]`. Consider the case `succ m`. Establish `h1 : (homologyMap (fst f) (m + 1)).hom x = 0`. Apply `(bα (m + 1)).1` to reduce the goal to its premises. Rewrite using `[← sfst, hx, map_zero, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `e2 m x h1`. Establish `h2 : (homologyδ f' m).hom ((homologyMap β m).hom y) = 0`. Rewrite using `[← sδ]`. Conclude with `hx`. Take `⟨z', hz'⟩` from `e1' m _ h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `(bα m).2 z'`. Establish `h3 : (homologyMap f m).hom z = y`. Apply `(bβ m).1` to reduce the goal to its premises. Rewrite using `[← sf]`. Conclude with `hz'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `(homologyδ f m).hom y = 0`. Rewrite using `[← h3]`. Conclude with `hom_apply_hom_apply_of_comp_eq (homologyMap_homologyδ f m) z`. Introduce `y'`. Consider the cases of `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `zero`. Take `⟨w, hw⟩` from `(bα 0).2 ((homologyMap (fst f') 0).hom y')`. Establish `h1 : (homologyMap f 0).hom w = 0`. Apply `(bβ 0).1` to reduce the goal to its premises. Rewrite using `[← sf, hw, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hom_apply_hom_apply_of_comp_eq (homologyMap_fst_homologyMap f' 0) y'`. Take `⟨x, rfl⟩` from `e3 0 w h1`. Use `⟨x, inj_fst0 f' ?_⟩` and prove the remaining obligations. Rewrite using `[sfst]`. Conclude with `hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m`. Take `⟨w, hw⟩` from `(bα (m + 1)).2 ((homologyMap (fst f') (m + 1)).hom y')`. Establish `h1 : (homologyMap f (m + 1)).hom w = 0`. Apply `(bβ (m + 1)).1` to reduce the goal to its premises. Rewrite using `[← sf, hw, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hom_apply_hom_apply_of_comp_eq (homologyMap_fst_homologyMap f' (m + 1)) y'`. Take `⟨x, rfl⟩` from `e3 (m + 1) w h1`. Establish `h2 : (homologyMap (fst f') (m + 1)).hom (y' - (homologyMap Φ (m + 1)).hom x) = 0`. Rewrite using `[map_sub, sfst, hw, sub_self]`. Take `⟨u', hu'⟩` from `e2' m _ h2`.
-
-Take `⟨u, rfl⟩` from `(bβ m).2 u'`. Use `⟨x + (homologyδ f m).hom u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, sδ]`. Rewrite using `[show (homologyδ f' m).hom ((homologyMap β m).hom u) = y' - (homologyMap Φ (m + 1)).hom x from hu']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isIso_homologyMap_of_comm (Φ : mappingCoconeNat f ⟶ mappingCoconeNat f')
     (hfst : Φ ≫ fst f' = fst f ≫ α) (hinr : inr f ≫ Φ = shiftNegOneMap β ≫ inr f')
@@ -232,7 +230,7 @@ theorem isIso_homologyMap_of_comm (Φ : mappingCoconeNat f ⟶ mappingCoconeNat 
       abel
 
 /- English proof (translation)
-The claim follows from `isIso_homologyMap_of_comm _ (mapOfHomotopy_fst h) (inr_mapOfHomotopy h) (fun m => by rw [← homologyMap_comp, ← homologyMap_comp, h.homologyMap_eq]) hα hβ n`.
+A detailed English derivation is pending.
 -/
 theorem isIso_homologyMap_mapOfHomotopy (h : Homotopy (f ≫ β) (α ≫ f'))
     (hα : ∀ n, IsIso (homologyMap α n)) (hβ : ∀ n, IsIso (homologyMap β n)) (n : ℕ) :

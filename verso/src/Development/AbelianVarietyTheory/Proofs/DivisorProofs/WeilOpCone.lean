@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.ThKOp
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Establish `hA` using `GlobalTheory.T.config_a_stabilizer_integral_unfold hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hpres` using `(IsUWeilPair.isUSplitting hT₁.weil).pres x _ hA`. Establish `hL : Continuous (om₁ x (cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Ψ))` using `continuous_of_mem_schA hpres`. Establish `hR` using `GlobalTheory.T.config_a_stabilizer_integral_finite hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : MeasurableSpace (Fin b × Fin (b + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin b × Fin (b + a') → AF F) := ⟨rfl⟩`. Establish `hE` using `GlobalTheory.T.config_a_stabilizer_integral_converges hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x Measure.addHaar inferInstance`. Conclude with `(Continuous.ae_eq_iff_eq Measure.addHaar hL hR).1 hE`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilOp_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

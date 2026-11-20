@@ -48,7 +48,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] {π : GAd σ J →* (H →L[ℂ] H)} {π' : GAd σ J →* (H' →L[ℂ] H')}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `e`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective y`. Establish `: isoPart δ ρ ⊤ ≤ (isoPart δ ρ' ⊤).comap (e.toLinearEquiv : H →ₗ[ℂ] H')` using `isoPart_le ((Submodule.isClosed_topologicalClosure _).preimage e.continuous) fun T hT x => apply_mem_isoPart (T := (e : H →L[ℂ] H') ∘L T) (mem_homIn_top.2 fun g x => (congrArg e (hT.2 g x)).trans (he g _)) x`. Conclude with `this (h.ge Submodule.mem_top)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIsotypic_of_uEquiv {G X : Type} [Group G] [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     {δ : G →* (X →L[ℂ] X)} {ρ : G →* (H →L[ℂ] H)} {ρ' : G →* (H' →L[ℂ] H')} (e : UEquiv ρ ρ') (h : IsIsotypic δ ρ) :
@@ -63,7 +63,7 @@ theorem isIsotypic_of_uEquiv {G X : Type} [Group G] [NormedAddCommGroup X] [Inne
   exact this (h.ge Submodule.mem_top)
 
 /- English proof (translation)
-The claim follows from `haveI := hπ.complete haveI := hπ.irred.1 IsIsotypic.uEquiv (R v).isIrr (R' v).isIrr (isUnitaryRep_comp hπ.unitary (continuous_embPl σ J v)) (h.hasCompPl v) (isIsotypic_of_uEquiv (e.comp _) (h'.hasCompPl v))`.
+A detailed English derivation is pending.
 -/
 theorem unique (hπ : IsIrrUnitary π) (e : UEquiv π' π) {R R' : ∀ v, IrrU (GPl σ J v)} {ξ : ∀ v, (R v).H}
     {ξ' : ∀ v, (R' v).H} {B : (∀ v, (R v).H) → H} {B' : (∀ v, (R' v).H) → H'}
@@ -75,7 +75,7 @@ theorem unique (hπ : IsIrrUnitary π) (e : UEquiv π' π) {R R' : ∀ v, IrrU (
     (isIsotypic_of_uEquiv (e.comp _) (h'.hasCompPl v))
 
 /- English proof (translation)
-The claim follows from `let ⟨R, _, _, hR⟩ := h F E σ hc n J hJ H π hπ ⟨R v, hR.1.hasCompPl v⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasCompPl (h : FlathFactorisation) (hc : IsCMExt F E σ) (hJ : IsHermND σ J) (hπ : IsIrrUnitary π)
     (v : Pl F) : ∃ δ : IrrU (GPl σ J v), HasCompPl σ J v δ.π π :=
@@ -91,7 +91,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V : HSp D} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-The claim follows from `let ⟨R, ξ, B, hR⟩ := h _ _ _ (isCMExt_host D) _ _ (GlobalTheory.Mem.VolExists.isHermND D.sp.cm V) H π hπ ⟨R, ξ, B, hR, hR.2.2 _ (SelfDual.isLattice_frameLat V)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_factorisation (h : FlathFactorisation) {π : GA D V →* (H →L[ℂ] H)} (hπ : IsIrrUnitary π) :
     ∃ (R : ∀ v, IrrU (GPl D.sp.cm.sig V.gram v)) (ξ : ∀ v, (R v).H) (B : (∀ v, (R v).H) → H),
@@ -112,11 +112,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Establish `ht : PRep.smoothPart (toRep (charRep χ)) = ⊤` using `eq_top_iff.2 fun z _ => by`. Use `isOpen_iff_mem_nhds.2 fun g hg => mem_of_superset ((h.preimage (continuous_const_mul g⁻¹)).mem_nhds (by simp)) fun x hx => ?_` and prove the remaining obligations. Establish `e : χ x = χ g`. Establish `: χ (g⁻¹ * x) = 1` using `hx`. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Express the relevant statement in the definitionally equal form `(χ x : ℂ) • z = z`. Rewrite using `[e]`. Conclude with `hg`. Establish `h1 : Module.finrank ℂ (PRep.smoothPart (toRep (charRep χ))) = 1` using `by rw [ht, finrank_top, Module.finrank_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isSimpleModule_iff_finrank_eq_one.2 h1` as an intermediate fact. Establish `hs : IsSimpleOrder (Submodule ℂ (PRep.smoothPart (toRep (charRep χ))))` using `inferInstance`. Establish `: Nontrivial (Subrepresentation (smRep (charRep χ)))` using `⟨⊥, ⊤, fun e => bot_ne_top (congrArg Subrepresentation.toSubmodule e :)⟩`. Conclude with `⟨⟨fun S => (eq_bot_or_eq_top S.toSubmodule).imp (fun e => Subrepresentation.toSubmodule_injective e) fun e => Subrepresentation.toSubmodule_injective e⟩, isSmooth_smoothRep _, fun _ _ _ => inferInstance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smRep_charRep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {χ : G →* Circle}
     (h : IsOpen (χ.ker : Set G)) : (smRep (charRep χ)).IsIrreducible ∧ IsAdmissible (smRep (charRep χ)) := by
@@ -139,7 +139,7 @@ theorem smRep_charRep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
     fun e => Subrepresentation.toSubmodule_injective e⟩, isSmooth_smoothRep _, fun _ _ _ => inferInstance⟩
 
 /- English proof (translation)
-Establish `hf : IsFactorisation σ J (fun v => charRep (χ v)) (fun _ => 1) (charRep ψ) fun y => ∏ᶠ v, y v` using `isRestrTensor_charRep (projPl σ J) χ ψ h hψ`. Use `⟨hf, fun v => smRep_charRep (G := GLoc σ J v) (ho v), fun L _ => (hf.eventually_fixed L).mono fun v hv => ?_⟩` and prove the remaining obligations. Use `le_antisymm (fun z _ => Submodule.mem_span_singleton.2 ⟨z, mul_one (z : ℂ)⟩) ((Submodule.span_singleton_le_iff_mem _ _).2 (LGrp.mem_fixed.2 hv))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isUnramFactorisation_charRep (χ : ∀ v, GPl σ J v →* Circle) (hχ : ∀ v, Continuous (χ v))
     (ho : ∀ v, IsOpen ((χ (.inr v)).ker : Set (GPl σ J (.inr v)))) (ψ : GAd σ J →* Circle)
@@ -153,7 +153,7 @@ theorem isUnramFactorisation_charRep (χ : ∀ v, GPl σ J v →* Circle) (hχ :
     ((Submodule.span_singleton_le_iff_mem _ _).2 (LGrp.mem_fixed.2 hv))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isIrrUnitary_charRep continuous_const, _, _, _, isUnramFactorisation_charRep (fun _ => 1) (fun _ => continuous_const) (fun _ => by simp) 1 (fun _ => .of_forall fun _ => rfl) fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : IsIrrUnitary (charRep (1 : GAd σ J →* Circle)) ∧ ∃ (R : ∀ v, IrrU (GPl σ J v)) (ξ : ∀ v, (R v).H)
     (B : (∀ v, (R v).H) → ℂ), IsUnramFactorisation R ξ (charRep 1) B :=

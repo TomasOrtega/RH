@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.N
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm1`. Conclude with `Formalism.MainNotions.DeltaInvariantLattices.wach_free_of_properties (first_clause_of_local_package D HW F Cm h56)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_one_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -19,7 +19,7 @@ theorem local_input_one_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact Formalism.MainNotions.DeltaInvariantLattices.wach_free_of_properties (first_clause_of_local_package D HW F Cm h56)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm2`. Conclude with `second_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_two_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -28,7 +28,7 @@ theorem local_input_two_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact second_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm3`. Conclude with `third_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_three_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -37,7 +37,7 @@ theorem local_input_three_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D
   exact third_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.ArchimedeanSignatureMatching`. Conclude with `fourth_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_four_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -46,7 +46,7 @@ theorem local_input_four_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.
   exact fourth_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm5`. Conclude with `fifth_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_five_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -55,7 +55,7 @@ theorem local_input_five_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.
   exact fifth_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm6`. Conclude with `sixth_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_six_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -64,7 +64,7 @@ theorem local_input_six_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact sixth_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm7`. Conclude with `seventh_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_seven_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -73,7 +73,7 @@ theorem local_input_seven_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D
   exact seventh_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm8`. Conclude with `eighth_clause_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_eight_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -82,7 +82,7 @@ theorem local_input_eight_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D
   exact eighth_clause_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm9`. Conclude with `delta_invariants_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_nine_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -91,7 +91,7 @@ theorem local_input_nine_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.
   exact delta_invariants_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm10`. Conclude with `Formalism.MainNotions.DeltaInvariantLattices.wach_characterisation_of_tenth (tenth_clause_of_local_package D HW F Cm h56)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_ten_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -100,7 +100,7 @@ theorem local_input_ten_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact Formalism.MainNotions.DeltaInvariantLattices.wach_characterisation_of_tenth (tenth_clause_of_local_package D HW F Cm h56)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm11`. Conclude with `Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_local_of_consequences (consistency_of_local_package D HW F Cm h56)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_eleven_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -109,7 +109,7 @@ theorem local_input_eleven_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc 
   exact Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_local_of_consequences (consistency_of_local_package D HW F Cm h56)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm12`. Conclude with `second_first_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_twelve_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -118,7 +118,7 @@ theorem local_input_twelve_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc 
   exact second_first_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm13`. Conclude with `second_b_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_thirteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -127,7 +127,7 @@ theorem local_input_thirteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.lo
   exact second_b_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm14`. Conclude with `second_c_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_fourteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -136,7 +136,7 @@ theorem local_input_fourteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.lo
   exact second_c_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm15`. Conclude with `second_dual_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_fifteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -145,7 +145,7 @@ theorem local_input_fifteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc
   exact second_dual_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.adm16`. Conclude with `lemma_three_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_input_sixteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -154,9 +154,9 @@ theorem local_input_sixteen_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc
   exact lemma_three_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Introduce `l _ K s LL hg`. Take `⟨hA, -, hN⟩` from `h l K s LL hg`. Use `⟨hN, fun _ hl => ?_⟩` and prove the remaining obligations. Introduce `T T' f pr pr' hpr`. Establish `h2 : Formalism.MainNotions.LocalSituation.ell (Formalism.MainNotions.LocalSituation.sit D.loc HW l (D.locA l) K s LL hg) = 2 → ∃ i : (Formalism.MainNotions.LocalSituation.sit D.loc HW l (D.locA l) K s LL hg).K, i ^ 2 = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h2`. Conclude with `absurd (((D.loc l).PD_p K).symm.trans h2) hl`. Conclude with `((hA h2 T).2.2 T' f pr pr' hpr).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem class_map_naturality_of_herr (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : Formalism.MainNotions.LocalSituation.ClassMapInjectiveBijectiveNorms D HW F) : Formalism.MainNotions.LiftingTheory.adm21 D HW F := by
   intro l _ K s LL hg

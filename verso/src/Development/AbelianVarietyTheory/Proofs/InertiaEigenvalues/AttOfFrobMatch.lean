@@ -15,11 +15,9 @@ open GlobalTheory.Pst GlobalTheory.GalOfCusp GlobalTheory.TripleGal
 open GlobalTheory.TypeLeaf (FrobDense)
 
 /- English proof (translation)
-Establish `halg : Algebra.IsAlgebraic ℤ_[l] (Qbar l)` using `haveI := IsLocalization.isAlgebraic (R := ℤ_[l]) ℚ_[l] (nonZeroDivisors ℤ_[l]) Algebra.IsAlgebraic.trans ℤ_[l] ℚ_[l] (Qbar l)`. Establish `key : ∀ (f : O →+* Qbar l) (hf : Function.Injective f), (∀ z : ℤ_[l], f (algebraMap ℤ_[l] O z) = algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l])) →`. Use `letI := f.toAlgebra`. Use `haveI : Module.IsTorsionFree O (Qbar l) := Module.isTorsionFree_iff_algebraMap_injective.2 hf`. Use `IsAlgClosure O (Qbar l) := fun f hf hf' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := f.toAlgebra`. Use `haveI : Module.IsTorsionFree O (Qbar l) := Module.isTorsionFree_iff_algebraMap_injective.2 hf`. Use `haveI : IsScalarTower ℤ_[l] O (Qbar l) := IsScalarTower.of_algebraMap_eq fun z => (hf' z).symm`. Establish `hi : Function.Injective (algebraMap ℤ_[l] O)` using `fun x y h => by`. Use `(hf' x).symm.trans ((congrArg f h).trans (hf' y))` as an intermediate fact.
-
-Conclude with `Subtype.ext ((algebraMap ℚ_[l] (Qbar l)).injective this)`. Conclude with `⟨inferInstance, Algebra.IsAlgebraic.extendScalars hi⟩`. Set `e` to `@IsAlgClosure.equiv O _ _ (Qbar l) (Qbar l) _ _ ψ.toAlgebra (@Module.isTorsionFree_iff_algebraMap_injective _ _ _ _ ψ.toAlgebra _ _ |>.2 hψ) (key ψ hψ hψ') φ.toAlgebra (@Module.isTorsionFree_iff_algebraMap_injective _ _ _ _ φ.toAlgebra _ _ |>.2 hφ) (key φ hφ hφ')`. Conclude with `⟨@AlgEquiv.toRingEquiv O _ _ _ _ _ φ.toAlgebra ψ.toAlgebra e, fun x => @AlgEquiv.commutes O _ _ _ _ _ φ.toAlgebra ψ.toAlgebra e x⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_aut {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O]
     (φ ψ : O →+* Qbar l) (hφ : Function.Injective φ) (hψ : Function.Injective ψ)
@@ -51,9 +49,9 @@ variable {D : D7} {T : WDTie D.nd D.naut} {i : D.ntw.Tw} {j : FractionRing (D.nt
   {ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.ntw.O0 i)} {π : D.naut.CG D.R.r} {s : ℝ}
 
 /- English proof (translation)
-Take `⟨r, h⟩` from `hG _ ι π s hc hr`. Establish `e : ι.toRingHom.comp φ = rd i j` using `RingHom.ext hι`. Take `⟨A, hA⟩` from `GlobalTheory.T.conj_of_frobenius_match D T hF _ ι _ π s r (mapRep φ ρ) h.toIsAttachedAway (hρ.matrix_map hφ) hs (hM.mono fun w hw B σ hB hσ => by`. Rewrite using `[← hw B σ hB hσ, ← e, ← Polynomial.map_map, ← Matrix.charpoly_map _ φ]`. Use the proof step `rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨r, A, h, hA⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj (hF : FrobDense D) (hG : GalHodge D T) (hc : D.naut.csd π) (hr : RegAlgShift D.naut π s)
     (hρ : Continuous fun g => (ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)))
@@ -73,7 +71,7 @@ def brEmb (i : D.ntw.Tw) (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw
   (algebraMap ↥(D.ntwbr i v hv).LL.1 (Om (D.ntw.l i))).comp (D.ntwbr i v hv).toLL
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, by ext g a b; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModel_brEmb (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i)) :
     IsModel (D.ntwbr i v hv) (resDec D.nd.plOm.1 (mapRep (brEmb i v hv) ρ) v) (D.ntwbr i v hv).LL
@@ -81,11 +79,11 @@ theorem isModel_brEmb (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l 
   ⟨le_rfl, by ext g a b; rfl⟩
 
 /- English proof (translation)
-Establish `hj : Function.Injective (rd i j)` using `j.injective.comp (IsFractionRing.injective _ _)`. Establish `h1 : Function.Injective φ` using `fun x y h => hj (by rw [← hι, ← hι, h])`. Establish `h2 : Function.Injective (brEmb i v hv)` using `(algebraMap ↥(D.ntwbr i v hv).LL.1 (Om (D.ntw.l i))).injective.comp (GlobalTheory.EmbInj.toLL_inj _)`. Take `⟨γ, hγ⟩` from `exists_aut φ (brEmb i v hv) h1 h2 hφ fun z => congrArg (fun y : ↥(OL (D.ntwbr i v hv).LL) => ((y : ↥(D.ntwbr i v hv).LL.1) : Om (D.ntw.l i))) ((D.ntwbr i v hv).eO_alg z)`. Establish `h3 : ∀ x, (γ.symm.trans ι) (brEmb i v hv x) = rd i j x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hγ, RingEquiv.trans_apply, γ.symm_apply_apply, hι]`. Establish `h4 : mapRep (brEmb i v hv) ρ = mapRep γ.toRingHom (mapRep φ ρ)`. Use extensionality with `g a b`. Conclude with `(hγ _).symm`. Take `⟨r, A, h, hA⟩` from `exists_conj hF hG hc hr hρ hM (φ := brEmb i v hv) (continuous_subtype_val.comp (continuous_subtype_val.comp (D.ntwbr i v hv).eO_cont)) h3 (h4 ▸ GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ _ _ _ hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, r, A, h3, h, fun g => hA g⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_br (hF : FrobDense D) (hG : GalHodge D T) (hc : D.naut.csd π) (hr : RegAlgShift D.naut π s)
     (hρ : Continuous fun g => (ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)))
@@ -115,21 +113,19 @@ theorem exists_conj_br (hF : FrobDense D) (hG : GalHodge D T) (hc : D.naut.csd �
   exact ⟨_, r, A, h3, h, fun g => hA g⟩
 
 /- English proof (translation)
-Establish `hj : Function.Injective (rd i j)` using `j.injective.comp (IsFractionRing.injective _ _)`. Establish `h1 : Function.Injective φ` using `fun x y h => hj (by rw [← hι, ← hι, h])`. Take `⟨r, A, h, hA⟩` from `exists_conj hF hG hc hr hρ hM hφc hι hs`. Use `⟨fun w hw hu σ hσ => ?_, fun w hw hu B σ hB hσ => ?_, fun w hw => h.temp w hw, fun v hv => ?_, fun v hv τ τc hτ a => ?_⟩` and prove the remaining obligations. Establish `h2` using `hA σ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[(h.toIsAttachedAway.frob hw hu).1 σ hσ, mul_one, mul_inv_cancel]`. Use `Units.ext (Matrix.map_injective h1 ?_)` and prove the remaining obligations. Conclude with `(congrArg Units.val h2).trans (Matrix.map_one φ (map_zero φ) (map_one φ)).symm`. Rewrite using `[← (h.toIsAttachedAway.frob hw hu).2 B σ hB hσ, ← (RingHom.ext hι : ι.toRingHom.comp φ = rd i j), ← Polynomial.map_map, ← Matrix.charpoly_map _ φ]`. Establish `h2 : ((mapRep φ ρ σ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.ntw.l i))).charpoly = ((r σ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.ntw.l i))).charpoly`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `congrArg (Polynomial.map ι.toRingHom) h2`. Take `⟨ι', r', A', -, h', hA'⟩` from `exists_conj_br hF hG hc hr hρ hM hφ hι hs v hv`. Take `⟨a1, a2, a3⟩` from `h'.above v hv _ (D.ntwbr i v hv) (D.ntwbr_ind i v hv)`. Take `⟨b1, b2, b3, -⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant _ (D.loc _) _ _ _ _ (D.ntwbr i v hv) _ _ _ A' hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨((isModel_brEmb v hv).isdRAt_iff _).1 (b1 a1.deRham), fun hu => ((isModel_brEmb v hv).isCrysAt_iff _).1 (b2 (a2 hu)), fun hu => ((isModel_brEmb v hv).isPotCrysAt_iff _).1 (b3 (a3 hu))⟩`. Take `⟨ι', r', A', hι', h', hA'⟩` from `exists_conj_br hF hG hc hr hρ hM hφ hι hs v hv`. Take `⟨a1, -, -⟩` from `h'.above v hv _ (D.ntwbr i v hv) (D.ntwbr_ind i v hv)`. Take `⟨-, -, -, b4⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant _ (D.loc _) _ _ _ _ (D.ntwbr i v hv) _ _ _ A' hA'`. Set `c : D.host.E →+* ↥(D.ntwbr i v hv).Kw.1` to `((D.ntwbr i v hv).j.comp (algebraMap D.host.E D.nd.Om)).codRestrict (D.ntwbr i v hv).Kw.1 (D.ntwbr i v hv).j_E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ₀ : D.host.E →+* Qbar (D.ntw.l i)` to `(algebraMap ↥(D.ntwbr i v hv).LL.1 (Om (D.ntw.l i))).comp ((AlgHom.toRingHom τ).comp c)`. Establish `hi : IsInduced (D.ntwbr i v hv) τ₀ τ` using `fun _ => rfl`. Establish `e : ι'.toRingHom.comp τ₀ = τc`. Use extensionality with `x`. Take `⟨n, d, hd, hnd⟩` from `GlobalTheory.EmbInj.exists_frac (D.ntwbr i v hv) (τ (c x))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(map_mul (ι'.toRingHom.comp (algebraMap ↥(D.ntwbr i v hv).LL.1 (Om (D.ntw.l i)))) _ _).symm.trans (congrArg _ hnd)`. Establish `h4 : rd i j d * ι' (τ₀ x) = rd i j n` using `by rw [← hι', ← hι']; exact h3`. Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ hj).2 hd) (h4.trans (hτ x n d ⟨hd, hnd⟩).symm)`. Take `⟨J, hJ, hJ'⟩` from `a1.jumps τ₀ _ τ hi`. Use `((b4 τ₀ J hJ').count_eq _ (isModel_brEmb v hv) hi a).symm.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hJ` using `[e]`. Rewrite using `[← Multiset.count_map_eq_count' (fun n : ℤ => (n : ℂ)) J Int.cast_injective, hJ]`. Use `congr 2`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem att_of_frobMatch (hF : FrobDense D) (hG : GalHodge D T) (hc : D.naut.csd π) (hr : RegAlgShift D.naut π s)
     (hρ : Continuous fun g => (ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)))

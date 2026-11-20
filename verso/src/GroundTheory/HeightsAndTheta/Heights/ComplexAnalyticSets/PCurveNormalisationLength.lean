@@ -15,7 +15,7 @@ noncomputable section
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hK : (Ideal.span {g}).map (Ideal.Quotient.mkₐ L J) = Ideal.span {Ideal.Quotient.mk J g}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[← (DoubleQuot.quotQuotEquivQuotSupₐ L J (Ideal.span {g})).toLinearEquiv.length_eq, hK]`. Conclude with `Module.length_eq_of_surjective Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_sup_span {L : Type} [CommRing L] (J : Ideal L) (g : L) :
     Module.length L (L ⧸ (J ⊔ Ideal.span {g})) =
@@ -27,7 +27,7 @@ theorem length_quotient_sup_span {L : Type} [CommRing L] (J : Ideal L) (g : L) :
   exact Module.length_eq_of_surjective Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Conclude with `length_quotient_sup_span _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_localization_eq_length_curveLocalRing (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (f : MvPolynomial (Fin n) ℂ) :
@@ -40,15 +40,15 @@ theorem length_localization_eq_length_curveLocalRing (I : Ideal (MvPolynomial (F
   exact length_quotient_sup_span _ _
 
 /- English proof (translation)
-Distinguish the cases in `hm : x ∈ IsLocalRing.maximalIdeal O`. Establish `h` using `ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim_of_mem_nonZeroDivisors hx hm`. Rewrite `h` using `[hdim]`. Establish `h0 : ringKrullDim (O ⧸ Ideal.span {x}) ≤ (0 : ℕ)`. Generalize the expression as in `ringKrullDim (O ⧸ Ideal.span {x}) = d at h ⊢`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe k`. Establish `h' : k + 1 = 1` using `by exact_mod_cast h`. Proceed by induction on `k using ENat.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `top => simp at h'`. Consider the case `coe m`. Establish `hm : m + 1 = 1` using `by exact_mod_cast h'`. Establish `: m = 0` using `by omega`. Substitute `this` using the available equality.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: Ring.KrullDimLE 0 (O ⧸ Ideal.span {x})` using `Ring.krullDimLE_iff.2 h0`. Use `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero (R := O ⧸ Ideal.span {x})` as an intermediate fact. Rewrite using `[Module.length_eq_of_surjective (R := O ⧸ Ideal.span {x}) Ideal.Quotient.mk_surjective]`. Conclude with `Module.length_ne_top`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit x` using `by simpa [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] using hm`. Rewrite using `[Ideal.span_singleton_eq_top.2 hu, Module.length_eq_zero_iff.2 (Ideal.Quotient.subsingleton_iff.2 rfl)]`. Conclude with `ENat.zero_ne_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_ne_top {O : Type} [CommRing O] [IsNoetherianRing O] [IsLocalRing O]
     (hdim : ringKrullDim O = 1) {x : O} (hx : x ∈ nonZeroDivisors O) :
@@ -79,13 +79,11 @@ theorem length_quotient_ne_top {O : Type} [CommRing O] [IsNoetherianRing O] [IsL
     exact ENat.zero_ne_top
 
 /- English proof (translation)
-Introduce `n I q f hrad hdim hf`. Use `set O := curveLocalRing I q`. Use `set f' := algebraMap (MvPolynomial (Fin n) ℂ) O f`. Establish `: Nontrivial O`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hdim` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `WithBot.bot_ne_coe hdim`. Establish `: IsLocalRing O` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `: Module.Finite O (curveNormalisation I q)` using `hFin n I q hrad`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfin` using `length_quotient_ne_top hdim hf`. Establish `hnzd : algebraMap O (curveNormalisation I q) f' ∈ nonZeroDivisors (curveNormalisation I q)`. Set `ι : curveNormalisation I q →+* FractionRing O` to `(integralClosure O (FractionRing O)).val.toRingHom`. Use `mem_nonZeroDivisors_of_injective (f := ι) Subtype.val_injective ?_` and prove the remaining obligations. Conclude with `(IsLocalization.map_units (FractionRing O) (⟨f', hf⟩ : nonZeroDivisors O)).mem_nonZeroDivisors`.
-
-Establish `hEq` using `hE O (curveNormalisation I q) f' (algebraMap_curveNormalisation_injective I q) hnzd (hQ n I q hrad hdim)`. Rewrite using `[localMult, dif_pos (isPrime_ker_eval q), length_localization_eq_length_curveLocalRing, ENat.natCast_toNat hfin, hEq]`. Conclude with `GroundTheory.Heights₂.Heights.Vertical.LengthDecomp.proof O (curveNormalisation I q) _ (hEq ▸ hfin)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveNormalisationLength.proof (hFin : CurveNormalisationFinite.Statement)
     (hQ : CurveNormalisationQuotientLength.Statement) (hE : ExtensionQuotientLength.Statement) :

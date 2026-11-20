@@ -17,7 +17,7 @@ def decompFixed (q : Ideal B) : Subalgebra A B where
     rw [Algebra.algebraMap_eq_smul_one, smul_comm, smul_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_decompFixed {q : Ideal B} {x : B} :
     x ∈ decompFixed A G q ↔ ∀ g : G, g • q = q → g • x = x := Iff.rfl
@@ -42,7 +42,7 @@ def satIdeal (q : Ideal B) [q.IsPrime] (J : Ideal (decompFixed A G q)) :
     exact J.mul_mem_left _ hby
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_satIdeal {q : Ideal B} [q.IsPrime] {J : Ideal (decompFixed A G q)}
     {y : decompFixed A G q} :
@@ -58,25 +58,23 @@ variable {A B G : Type} [CommRing A] [CommRing B] [Algebra A B] [Group G] [Finit
   [MulSemiringAction G B] [SMulCommClass G A B]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Use `set P : Ideal B := Finset.inf (Finset.univ.filter (fun g : G => g • q ≠ q)) (fun g => g • q)`. Establish `h1 : ¬ P ≤ q`. Rewrite using `[Ideal.IsPrime.inf_le' inferInstance]`. Introduce and unpack `⟨g, hg1, hg2⟩`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(Finset.mem_filter.mp hg1).2 (smul_eq_of_smul_le hg2)`. Take `⟨y0, hyP, hyq⟩` from `SetLike.not_le_iff_exists.mp h1`. Take `⟨c, i, hi, hci⟩` from `Ideal.IsMaximal.exists_inv (inferInstance : q.IsMaximal) hyq`. Use `set y := c * y0 with hy`. Establish `hyP' : ∀ g : G, g • q ≠ q → y ∈ g • q` using `fun g hg => Ideal.mul_mem_left _ c ((Finset.inf_le (Finset.mem_filter.mpr ⟨Finset.mem_univ g, hg⟩) : P ≤ g • q) hyP)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : y - 1 ∈ q`. Establish `: y - 1 = -i` using `by rw [hy, ← hci]; ring`. Rewrite using `[this]`. Conclude with `q.neg_mem hi`. Use `set D := Finset.univ.filter (fun g : G => g • q = q) with hD`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∏ g ∈ D, g • y, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Rewrite using `[Finset.smul_prod']`. Use `Finset.prod_nbij' (fun g => h * g) (fun g => h⁻¹ * g) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hD, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hg ⊢`. Rewrite using `[mul_smul, hg, hh]`. Introduce `g hg`. Simplify using `only [hD, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hg ⊢`. Rewrite using `[mul_smul, hg, inv_smul_eq_iff, hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g _`. Simplify using the standard rewrite rules. Introduce `g _`. Simplify using the standard rewrite rules. Introduce `g _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Use `Finset.prod_eq_one (fun g hg => ?_)` and prove the remaining obligations. Establish `hg' : g • q = q` using `(Finset.mem_filter.mp hg).2`. Rewrite using `[← map_one (Ideal.Quotient.mk q), Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: g • y - 1 = g • (y - 1)` using `by rw [smul_sub, smul_one]`. Rewrite using `[this, ← hg']`. Conclude with `Ideal.smul_mem_pointwise_smul_iff.mpr hy1`. Introduce `g hg`. Rewrite using `[Finset.smul_prod']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1D : (1 : G) ∈ D` using `by simp [hD]`. Use `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ h1D) ?_` and prove the remaining obligations. Rewrite using `[one_smul]`. Establish `hgi : g⁻¹ • q ≠ q` using `fun h => hg (by nth_rewrite 1 [← h]; exact smul_inv_smul g q)`. Use `hyP' g⁻¹ hgi` as an intermediate fact.
-
-Rewrite `this` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit (q : Ideal B) [q.IsMaximal] :
     ∃ u : B, (∀ g : G, g • q = q → g • u = u) ∧ u - 1 ∈ q ∧
@@ -138,9 +136,9 @@ variable {A B G : Type} [CommRing A] [CommRing B] [Algebra A B] [Group G] [Finit
   [MulSemiringAction G B] [SMulCommClass G A B]
 
 /- English proof (translation)
-Rewrite using `[Finset.smul_sum]`. Establish `hO : (Finset.univ.image (fun h : G => h • w)).image (fun z => g • z) = Finset.univ.image (fun h : G => h • w)`. Use extensionality with `z`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, exists_exists_eq_and]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨g * h, mul_smul g h w⟩`. Introduce and unpack `⟨h, rfl⟩; exact ⟨g⁻¹ * h, by rw [mul_smul, smul_inv_smul]⟩`. Use `conv_rhs => rw [← hO]`. Rewrite using `[Finset.sum_image (fun a _ b _ h => MulAction.injective g h)]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitSum_smul [Fintype G] [DecidableEq B] (w : B) (g : G) :
     g • (∑ z ∈ Finset.univ.image (fun h : G => h • w), z) =
@@ -157,15 +155,15 @@ theorem orbitSum_smul [Fintype G] [DecidableEq B] (w : B) (g : G) :
   rw [Finset.sum_image (fun a _ b _ h => MulAction.injective g h)]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Establish `hwfix : ∀ g : G, g • q = q → g • (u * x) = u * x` using `fun g hg => by`. Rewrite using `[smul_mul', hu g hg, hx g hg]`. Take `⟨a, ha⟩` from `Algebra.IsInvariant.isInvariant (A := A) (G := G) _ (fun g => orbitSum_smul (u * x) g)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Establish `hwO : u * x ∈ Finset.univ.image (fun h : G => h • (u * x))` using `Finset.mem_image.2 ⟨1, Finset.mem_univ _, one_smul _ _⟩`. Rewrite using `[← Finset.add_sum_erase _ (fun z => z) hwO]`. Establish `h1 : x - u * x ∈ q`. Establish `: x - u * x = -((u - 1) * x)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `q.neg_mem (q.mul_mem_right _ hu1)`. Establish `h2 : ∑ z ∈ (Finset.univ.image (fun h : G => h • (u * x))).erase (u * x), z ∈ q`. Use `Ideal.sum_mem _ (fun z hz => ?_)` and prove the remaining obligations. Take `⟨hzw, hzO⟩` from `Finset.mem_erase.1 hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, _, rfl⟩` from `Finset.mem_image.1 hzO`. Distinguish the cases in `hg : g • q = q`. Conclude with `absurd (hwfix g hg) hzw`. Rewrite using `[smul_mul']`. Conclude with `q.mul_mem_right _ (hu2 g hg)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: x - (u * x + ∑ z ∈ (Finset.univ.image (fun h : G => h • (u * x))).erase (u * x), z) = (x - u * x) - ∑ z ∈ (Finset.univ.image (fun h : G => h • (u * x))).erase (u * x), z`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `q.sub_mem h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_mem [Algebra.IsInvariant A B G] (q : Ideal B) [q.IsMaximal] (u : B)
     (hu : ∀ g : G, g • q = q → g • u = u) (hu1 : u - 1 ∈ q)
@@ -207,9 +205,9 @@ variable {A B G : Type} [CommRing A] [CommRing B] [Algebra A B] [Group G] [Finit
   [MulSemiringAction G B] [SMulCommClass G A B]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, exists_exists_eq_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨g * h, mul_smul g h w⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h, rfl⟩; exact ⟨g⁻¹ * h, by rw [mul_smul, smul_inv_smul]⟩`.
+Assume the hypotheses and unpack their components.
 -/
 theorem image_smul_orbit {α : Type} [MulAction G α] [Fintype G] [DecidableEq α] (w : α) (g : G) :
     (Finset.univ.image (fun h : G => h • w)).image (fun z => g • z) =
@@ -221,7 +219,7 @@ theorem image_smul_orbit {α : Type} [MulAction G α] [Fintype G] [DecidableEq �
   · rintro ⟨h, rfl⟩; exact ⟨g⁻¹ * h, by rw [mul_smul, smul_inv_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.smul_prod']`. Repeatedly rewrite using `[smul_sub, smul_X, smul_C, ← hφ]`. Use `conv_rhs => rw [← image_smul_orbit w g]`. Rewrite using `[Finset.prod_image (fun a _ b _ h => MulAction.injective g h)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_orbit_smul {α : Type} [MulAction G α] [Fintype G] [DecidableEq α] (w : α)
     (φ : α → B) (hφ : ∀ (g : G) z, φ (g • z) = g • φ z) (g : G) :
@@ -233,7 +231,7 @@ theorem prod_orbit_smul {α : Type} [MulAction G α] [Fintype G] [DecidableEq α
   rw [Finset.prod_image (fun a _ b _ h => MulAction.injective g h)]
 
 /- English proof (translation)
-Establish `: P ∈ Polynomial.lifts (algebraMap A B)` using `(Polynomial.lifts_iff_coeff_lifts P).2 fun n => Algebra.IsInvariant.isInvariant (G := G) _ (fun g => by rw [← Polynomial.coeff_smul, hP g])`. Take `⟨p, hp⟩` from `this`. Conclude with `⟨p, by simpa using hp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift [Algebra.IsInvariant A B G] (P : B[X]) (hP : ∀ g : G, g • P = P) :
     ∃ p : A[X], p.map (algebraMap A B) = P := by
@@ -243,7 +241,7 @@ theorem exists_lift [Algebra.IsInvariant A B G] (P : B[X]) (hP : ∀ g : G, g �
   exact ⟨p, by simpa using hp⟩
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_map, Polynomial.eval_map]`. Conclude with `Polynomial.hom_eval₂ p (algebraMap A (decompFixed A G q)) ((decompFixed A G q).val : decompFixed A G q →+* B) r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_map_coe (q : Ideal B) (p : A[X]) (r : decompFixed A G q) :
     (((p.map (algebraMap A (decompFixed A G q))).eval r : decompFixed A G q) : B) =
@@ -262,47 +260,41 @@ variable {A B G : Type} [CommRing A] [CommRing B] [Algebra A B] [Group G] [Finit
   [MulSemiringAction G B] [SMulCommClass G A B]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Establish `hqtop : q ≠ ⊤` using `Ideal.IsMaximal.ne_top inferInstance`. Establish `hxfix : ∀ g : G, g • q = q → g • (x : B) = x` using `(mem_decompFixed A G).1 x.2`. Set `uR : decompFixed A G q` to `⟨u, (mem_decompFixed A G).2 hu⟩`. Take `⟨v, hvdef⟩ : ∃ v : B, v = u * (1 + x)` from `⟨_, rfl⟩`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hv : ∀ g : G, g • q = q → g • v = v` using `fun g hg => by`. Rewrite using `[hvdef, smul_mul', smul_add, smul_one, hu g hg, hxfix g hg]`. Take `⟨S, hS⟩ : ∃ S : Finset (B × B), S = Finset.univ.image (fun h : G => h • (u, v))` from `⟨_, rfl⟩`. Establish `huv : (u, v) ∈ S` using `hS ▸ Finset.mem_image.2 ⟨1, Finset.mem_univ _, one_smul _ _⟩`. Establish `hmem : ∀ z ∈ S, z ≠ (u, v) → z.1 ∈ q ∧ z.2 ∈ q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz hne`. Rewrite `hz` using `[hS]`. Take `⟨g, _, rfl⟩` from `Finset.mem_image.1 hz`. Distinguish the cases in `hg : g • q = q`. Conclude with `absurd (by rw [Prod.smul_mk, hu g hg, hv g hg]) hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hu2 g hg, ?_⟩ show g • v ∈ q` and prove the remaining obligations. Rewrite using `[hvdef, smul_mul']`. Conclude with `q.mul_mem_right _ (hu2 g hg)`. Establish `hcong : ∀ z ∈ S, z.1 - z.2 ∈ q`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hne : z = (u, v)`. Substitute `hne show u - v ∈ q` using the available equality. Establish `: u - v = -(u * x)` using `by rw [hvdef]; ring`. Rewrite using `[this]`. Conclude with `q.neg_mem (q.mul_mem_left _ hxq)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hmem z hz hne`. Conclude with `q.sub_mem h1 h2`. Take `⟨Pu, hPu⟩ : ∃ P : B[X], P = ∏ z ∈ S, (X - C z.1)` from `⟨_, rfl⟩`. Take `⟨Pv, hPv⟩ : ∃ P : B[X], P = ∏ z ∈ S, (X - C z.2)` from `⟨_, rfl⟩`. Take `⟨pu, hpu⟩` from `exists_lift (A := A) (G := G) Pu (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPu, hS]`. Conclude with `prod_orbit_smul (u, v) Prod.fst (fun _ _ => rfl))`. Take `⟨pv, hpv⟩` from `exists_lift (A := A) (G := G) Pv (by`. Rewrite using `[hPv, hS]`. Conclude with `prod_orbit_smul (u, v) Prod.snd (fun _ _ => rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoeff : ∀ n, (pu - pv).coeff n ∈ maximalIdeal A`. Introduce `n`. Establish `hq : (Pu - Pv).coeff n ∈ q`. Establish `hmap : (Pu - Pv).map (Ideal.Quotient.mk q) = 0`. Rewrite using `[Polynomial.map_sub, sub_eq_zero, hPu, hPv, Polynomial.map_prod, Polynomial.map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Finset.prod_congr rfl (fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[Ideal.Quotient.eq.2 (hcong z hz)]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Polynomial.coeff_map, hmap, Polynomial.coeff_zero]`. Rewrite `hq` using `[← hpu, ← hpv, ← Polynomial.map_sub, Polynomial.coeff_map]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `hunit : IsUnit ((pu - pv).coeff n)`. Simplify `hn` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hqtop (Ideal.eq_top_of_isUnit_mem q hq (hunit.map _))`. Establish `hPu_u : Pu.eval u = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPu, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero huv (by simp)`. Establish `hPv_v : Pv.eval v = 0`. Rewrite using `[hPv, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero huv (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hder : Pu.derivative.eval u - 1 ∈ q`. Rewrite using `[hPu, ← Finset.mul_prod_erase S (fun z => X - C z.1) huv, Polynomial.derivative_mul]`. Simplify using `only [Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C, sub_zero, one_mul, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self, zero_mul, add_zero, Polynomial.eval_prod]`. Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Use `Finset.prod_eq_one (fun z hz => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨hne, hzS⟩` from `Finset.mem_erase.1 hz`. Rewrite using `[← map_one (Ideal.Quotient.mk q), Ideal.Quotient.eq]`. Establish `: u - z.1 - 1 = (u - 1) - z.1` using `by ring`. Rewrite using `[this]`. Conclude with `q.sub_mem hu1 (hmem z hzS hne).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set fu : (decompFixed A G q)[X] := pu.map (algebraMap A (decompFixed A G q)) with hfu`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion fu uR (uR * x)`. Establish `hfu0 : fu.eval uR = 0` using `Subtype.ext (by`. Rewrite using `[hfu, eval_map_coe, hpu]`. Simplify using `using hPu_u)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfud : ((fu.derivative.eval uR : decompFixed A G q) : B) = Pu.derivative.eval u`. Rewrite using `[hfu, Polynomial.derivative_map, eval_map_coe, ← Polynomial.derivative_map, hpu]`. Establish `hfuv : fu.eval (uR + uR * x) ∈ (maximalIdeal A).map (algebraMap A (decompFixed A G q))`. Establish `h0 : (pv.map (algebraMap A (decompFixed A G q))).eval (uR + uR * x) = 0` using `Subtype.ext (by`. Rewrite using `[eval_map_coe, hpv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((uR + uR * x : decompFixed A G q) : B) = v`. Rewrite using `[hvdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hPv_v]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `rfl)`. Establish `: fu.eval (uR + uR * x) = ((pu - pv).map (algebraMap A (decompFixed A G q))).eval (uR + uR * x)`. Rewrite using `[Polynomial.map_sub, Polynomial.eval_sub, h0, sub_zero]`. Rewrite using `[this, Polynomial.eval_eq_sum_range]`. Use `Ideal.sum_mem _ (fun n _ => Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_map]`. Conclude with `Ideal.mem_map_of_mem _ (hcoeff n)`. Use `⟨uR * (fu.derivative.eval uR + k * (uR * x)), ?_, ?_⟩` and prove the remaining obligations. Introduce `hbq`. Apply `hqtop` to reduce the goal to its premises.
-
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `hb : ((uR * (fu.derivative.eval uR + k * (uR * x)) : decompFixed A G q) : B) = u * (Pu.derivative.eval u + k * (u * x))` using `by push_cast; rw [hfud]`. Rewrite `hbq` using `[hb]`. Establish `h1 : (1 : B) = u * (Pu.derivative.eval u + k * (u * x)) - ((u - 1) * (Pu.derivative.eval u + k * (u * x)) + (Pu.derivative.eval u - 1) + k * (u * x))` using `by ring`. Rewrite using `[h1]`.
-
-Use `q.sub_mem hbq (q.add_mem (q.add_mem (q.mul_mem_right _ hu1) hder) ?_)` and prove the remaining obligations. Conclude with `q.mul_mem_left _ (q.mul_mem_left _ hxq)`. Establish `: uR * (fu.derivative.eval uR + k * (uR * x)) * x = fu.eval (uR + uR * x)`. Rewrite using `[hk, hfu0]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `hfuv`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_map [IsLocalRing A] [Algebra.IsInvariant A B G] (q : Ideal B)
     [q.IsMaximal] (u : B)
@@ -425,45 +417,39 @@ variable {A B G : Type} [CommRing A] [CommRing B] [Algebra A B] [Group G] [Finit
   [MulSemiringAction G B] [SMulCommClass G A B]
 
 /- English proof (translation)
-Use `set R := decompFixed A G q`. Use `set I : Ideal R := (maximalIdeal A).map (algebraMap A R) with hI`. Set `T : ℕ → Ideal R` to `fun n => satIdeal A G q (I ^ n)`. Take `⟨u, hu, hu1, hu2⟩` from `exists_unit (G := G) q`. Use `haveI : Algebra.IsIntegral A B := Algebra.IsInvariant.isIntegral A B G`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomap : q.comap (algebraMap A B) = maximalIdeal A` using `by haveI : (q.comap (algebraMap A B)).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal q`. Conclude with `IsLocalRing.eq_maximalIdeal this`. Establish `hm : ∀ a ∈ maximalIdeal A, algebraMap A B a ∈ q` using `fun a ha => by`. Rewrite `ha` using `[← hcomap]`. Conclude with `ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIq : ∀ y ∈ I, (y : B) ∈ q`. Introduce `y hy`. Establish `: I ≤ q.comap (decompFixed A G q).val`. Rewrite using `[hI, Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hm a ha`. Conclude with `this hy`. Establish `hIpow : ∀ n, I ^ (n + 1) ≤ I` using `fun n => Ideal.pow_le_self (Nat.succ_ne_zero n)`. Establish `stepA : ∀ r : R, ∃ a : A, r - algebraMap A R a ∈ T 1`. Introduce `r`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩` from `exists_sub_mem (A := A) (G := G) q u hu hu1 hu2 (r : B) r.2`. Take `⟨b, hb, hbr⟩` from `exists_mul_mem_map q u hu hu1 hu2 (r - algebraMap A R a) (by simpa using ha)`. Conclude with `⟨a, b, hb, by simpa using hbr⟩`. Establish `stepB : ∀ i j (y z : R), y ∈ T i → z ∈ T j → y * z ∈ T (i + j)`. Introduce and unpack `i j y z ⟨b, hb, hby⟩ ⟨c, hc, hcz⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨b * c, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (Ideal.IsPrime.mul_notMem inferInstance hb hc)`. Establish `: b * c * (y * z) = (b * y) * (c * z)` using `by ring`. Rewrite using `[this, pow_add]`. Conclude with `Ideal.mul_mem_mul hby hcz`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hTle : ∀ n (y : R), y ∈ I ^ n → y ∈ T n` using `fun n y hy => ⟨1, by simpa using (Ideal.IsPrime.ne_top inferInstance : q ≠ ⊤) ∘ (Ideal.eq_top_iff_one q).2, by simpa using hy⟩`. Establish `stepC : ∀ n (y : R), y ∈ I ^ n → ∃ c ∈ maximalIdeal A ^ n, y - algebraMap A R c ∈ T (n + 1)`. Introduce `n y hy`. Rewrite `hy` using `[hI, ← Ideal.map_pow, Ideal.map]`. Proceed by induction on `hy using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `⟨c, hc, by simp⟩`. Consider the case `zero => exact ⟨0, Ideal.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨c, hc, hxc⟩` from `hx`. Take `⟨d, hd, hyd⟩` from `hy`. Use `⟨c + d, Ideal.add_mem _ hc hd, ?_⟩` and prove the remaining obligations. Establish `: x + y - algebraMap A R (c + d) = (x - algebraMap A R c) + (y - algebraMap A R d)`. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ hxc hyd`. Consider the case `smul r x _ hx`. Take `⟨c, hc, hxc⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `stepA r`. Use `⟨c * a, Ideal.mul_mem_right _ _ hc, ?_⟩` and prove the remaining obligations. Establish `hcI : algebraMap A R c ∈ T n` using `hTle n _ (by`. Rewrite using `[hI, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: r • x - algebraMap A R (c * a) = r * (x - algebraMap A R c) + algebraMap A R c * (r - algebraMap A R a)`. Rewrite using `[smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hxc) (stepB n 1 _ _ hcI ha)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `stepD : ∀ n (y : R), ∃ a : A, y - algebraMap A R a ∈ T n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun y => ⟨0, hTle 0 _ (by simp)⟩`. Consider the case `succ n ih`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Take `⟨a, b, hb, hby⟩` from `ih y`. Take `⟨c, hc, hcy⟩` from `stepC n _ hby`. Take `⟨β, hβ⟩` from `stepA b`. Establish `hβu : IsUnit β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hβn`. Establish `hβm : β ∈ maximalIdeal A` using `hβn`. Take `⟨b', hb', hb'β⟩` from `hβ`. Establish `h1 : ((b' * (b - algebraMap A R β) : R) : B) ∈ q` using `hIq _ (by simpa using hb'β)`. Establish `h2 : ((b - algebraMap A R β : R) : B) ∈ q` using `((Ideal.IsPrime.mem_or_mem inferInstance (by simpa using h1)).resolve_left hb')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hb` to reduce the goal to its premises. Establish `h3 : (b : B) = ((b - algebraMap A R β : R) : B) + algebraMap A B β` using `by simp`. Rewrite using `[h3]`. Conclude with `Ideal.add_mem _ h2 (hm β hβm)`. Take `⟨γ, hγ⟩ : ∃ γ : A, γ * β = 1` from `⟨(hβu.unit⁻¹ : Aˣ), hβu.val_inv_mul⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a + γ * c, ?_⟩` and prove the remaining obligations. Establish `key : y - algebraMap A R (a + γ * c) = algebraMap A R γ * ((-(b - algebraMap A R β)) * (y - algebraMap A R a) + (b * (y - algebraMap A R a) - algebraMap A R c))`. Establish `: algebraMap A R γ * algebraMap A R β = 1` using `by rw [← map_mul, hγ, map_one]`. Rewrite using `[map_add, map_mul]`. Take the linear combination `(-(y - algebraMap A R a)) * this`.
-
-Rewrite using `[key]`. Use `Ideal.mul_mem_left _ _ (Ideal.add_mem _ ?_ hcy)` and prove the remaining obligations. Use `stepB 1 n _ _ ((T 1).neg_mem hβ) ⟨b, hb, hby⟩` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Take `⟨a, b, hb, hbf⟩` from `stepD e ⟨f, hf⟩`.
-
-Use `⟨a, b, hb, ?_⟩` and prove the remaining obligations. Establish `hmap : Ideal.map (R.val : R →+* B) (I ^ e) = (maximalIdeal A ^ e).map (algebraMap A B)`. Rewrite using `[hI, ← Ideal.map_pow, Ideal.map_map]`. Both sides reduce to the same expression. Rewrite using `[← hmap]`.
-
-Simplify using `using Ideal.mem_map_of_mem (R.val : R →+* B) hbf`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_approx [IsLocalRing A] [Algebra.IsInvariant A B G] (q : Ideal B) [q.IsMaximal]
     (f : B) (hf : ∀ g : G, g • q = q → g • f = f) (e : ℕ) :
@@ -583,13 +569,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DecompFixed
 
 /- English proof (translation)
-Introduce `A K L _ _ _ _ _ _ _ _ _ _ _ _ _ q _ f hf e`. Use `letI : SMulCommClass (L ≃ₐ[K] L) A L := ⟨fun σ a x => by`. Rewrite using `[AlgEquiv.smul_def, AlgEquiv.smul_def, Algebra.smul_def, Algebra.smul_def, map_mul, IsScalarTower.algebraMap_apply A K L, AlgEquiv.commutes]⟩`. Use `haveI : Algebra.IsInvariant A (integralClosure A L) (L ≃ₐ[K] L) := ⟨fun b hb => by`. Establish `hL : ∀ σ : L ≃ₐ[K] L, σ (b : L) = b` using `fun σ => congrArg Subtype.val (hb σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : (b : L) ∈ (⊥ : IntermediateField K L)` using `(IsGalois.mem_bot_iff_fixed _).2 hL`. Take `⟨k, hk⟩` from `IntermediateField.mem_bot.1 hbot`. Establish `hint : IsIntegral A k`. Establish `h1 : IsIntegral A (algebraMap K L k)` using `hk ▸ b.2`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A K L) (algebraMap K L).injective).1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← ha]`. Simplify using `[IsScalarTower.algebraMap_apply A K L]⟩`. Use `exists_approx (G := L ≃ₐ[K] L) q f (fun g hg => Subtype.ext ?_) e` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hf g (fun x y hxy => ?_)` and prove the remaining obligations. Establish `hy : y = g • x` using `Subtype.ext (by simpa [AlgEquiv.smul_def] using hxy)`. Rewrite using `[hy]`. Use `conv_rhs => rw [← hg]`. Conclude with `(Ideal.smul_mem_pointwise_smul_iff).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_integralClosure : ∀ (A K L : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] [Field L] [Algebra K L] [Algebra A L] [IsScalarTower A K L] [FiniteDimensional K L] [IsGalois K L] (q : Ideal (integralClosure A L)) [q.IsMaximal] (f : integralClosure A L), (∀ σ : L ≃ₐ[K] L, (∀ x y : integralClosure A L, (y : L) = σ x → (x ∈ q ↔ y ∈ q)) → σ f = f) → ∀ e : ℕ, ∃ (a : A) (b : integralClosure A L), b ∉ q ∧ b * (f - algebraMap A _ a) ∈ (maximalIdeal A ^ e).map (algebraMap A (integralClosure A L)) := by
   intro A K L _ _ _ _ _ _ _ _ _ _ _ _ _ q _ f hf e

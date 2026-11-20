@@ -6,9 +6,9 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.PeriodLimit
 
 /- English proof (translation)
-Establish `h1` using `h.dotProduct_mulVec_nonneg v`. Rewrite `h1` using `[star_trivial, sub_mulVec, smul_mulVec, one_mulVec, dotProduct_sub, dotProduct_smul]`. Establish `h2 : 0 ≤ ∑ k, (c * v k - (Y *ᵥ v) k) ^ 2` using `Finset.sum_nonneg fun k _ => sq_nonneg _`. Establish `h3 : ∑ k, (c * v k - (Y *ᵥ v) k) ^ 2 = c ^ 2 * ∑ k, v k ^ 2 - 2 * c * (v ⬝ᵥ (Y *ᵥ v)) + ∑ k, (Y *ᵥ v) k ^ 2`. Simplify using `only [dotProduct, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `h4 : v ⬝ᵥ v = ∑ k, v k ^ 2` using `by simp [dotProduct, sq]`. Rewrite `h1` using `[h4, smul_eq_mul]`. Use polynomial arithmetic with `[mul_nonneg hc.le h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sq_mul_sum_sq_le {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) {c : ℝ} (hc : 0 < c)
     (h : (Y - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef) (v : Fin g → ℝ) :
@@ -25,9 +25,9 @@ theorem sq_mul_sum_sq_le {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) {c : ℝ} (h
   nlinarith [mul_nonneg hc.le h1]
 
 /- English proof (translation)
-Establish `h : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Rewrite using `[add_mulVec, sum_mulVec, Pi.add_apply, mul_add, Finset.sum_apply, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mulVec, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((B j).map (fun x : ℤ => (x : ℂ))) *ᵥ (fun k => (v k : ℂ))) k = (((B j *ᵥ v) k : ℤ) : ℂ)`. Simplify using `[mulVec, dotProduct]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem coord_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ)
     (l : Fin a → ℂ) (v : Fin g → ℤ) (k : Fin g) :
@@ -47,7 +47,7 @@ theorem coord_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Mat
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Pi.add_apply, mul_add, coord_eq, Complex.exp_add, Complex.exp_add, mul_comm _ (u k : ℂ), Complex.exp_int_mul_two_pi_mul_I, one_mul, Complex.exp_sum]`. Simplify using `only [Complex.exp_int_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_coord_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (l : Fin a → ℂ) (u v : Fin g → ℤ) (k : Fin g) :
@@ -61,9 +61,9 @@ theorem exp_coord_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ)
   simp only [Complex.exp_int_mul]
 
 /- English proof (translation)
-Simplify using `only [Complex.exp_sum, Complex.exp_int_mul, exp_coord_eq, mul_zpow, Finset.prod_mul_distrib]`. Use `congr 1`. Simplify using `only [← Finset.prod_zpow, ← _root_.zpow_mul, ← Complex.exp_int_mul]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Simplify using `only [dotProduct, Int.cast_sum, Int.cast_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_pair_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (l : Fin a → ℂ) (u v : Fin g → ℤ) :
@@ -85,7 +85,7 @@ theorem exp_pair_eq {a g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ)
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cast_pair {g : ℕ} (B : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) :
     star (fun k => (v k : ℝ)) ⬝ᵥ ((B.map (fun x : ℤ => (x : ℝ))) *ᵥ (fun k => (v k : ℝ)))
@@ -93,7 +93,7 @@ theorem cast_pair {g : ℕ} (B : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ)
   simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Use `h.dotProduct_mulVec_nonneg (fun k => (v k : ℝ))` as an intermediate fact. Rewrite `this` using `[cast_pair]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_nonneg {g : ℕ} {B : Matrix (Fin g) (Fin g) ℤ}
     (h : (B.map (fun x : ℤ => (x : ℝ))).PosSemidef) (v : Fin g → ℤ) : 0 ≤ v ⬝ᵥ (B *ᵥ v) := by
@@ -102,9 +102,9 @@ theorem pair_nonneg {g : ℕ} {B : Matrix (Fin g) (Fin g) ℤ}
   exact_mod_cast this
 
 /- English proof (translation)
-Use `(h.dotProduct_mulVec_zero_iff (fun k => (v k : ℝ))).1 (by rw [cast_pair, h0]; simp)` as an intermediate fact. Use extensionality with `k`. Establish `h1` using `congrFun this k`. Establish `h2 : ((B.map (fun x : ℤ => (x : ℝ))) *ᵥ (fun k => (v k : ℝ))) k = (((B *ᵥ v) k : ℤ) : ℝ)`. Simplify using `[mulVec, dotProduct]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2, Pi.zero_apply]`. Conclude with `h1` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_eq_zero_of_pair {g : ℕ} {B : Matrix (Fin g) (Fin g) ℤ}
     (h : (B.map (fun x : ℤ => (x : ℝ))).PosSemidef) (v : Fin g → ℤ) (h0 : v ⬝ᵥ (B *ᵥ v) = 0) :
@@ -119,9 +119,9 @@ theorem mulVec_eq_zero_of_pair {g : ℕ} {B : Matrix (Fin g) (Fin g) ℤ}
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `(Set.Finite.pi' (fun _ : Fin g => Set.finite_Icc (-⌈M⌉) ⌈M⌉)).subset ?_` and prove the remaining obligations. Introduce `v hv k`. Establish `h1 : (v k : ℝ) ^ 2 ≤ M` using `(Finset.single_le_sum (f := fun k => (v k : ℝ) ^ 2) (fun k _ => sq_nonneg _) (Finset.mem_univ k)).trans hv`. Establish `h2 : v k ^ 2 ≤ ⌈M⌉`. Use `h1.trans (Int.le_ceil M)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Apply the tactic sequence `constructor <;> nlinarith [sq_nonneg (v k), sq_nonneg (2 * v k - 1), sq_nonneg (2 * v k + 1), Int.le_self_sq (v k), Int.le_self_sq (-v k)]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem finite_sum_sq_le {g : ℕ} (M : ℝ) :
     {v : Fin g → ℤ | ∑ k, (v k : ℝ) ^ 2 ≤ M}.Finite := by
@@ -136,7 +136,7 @@ theorem finite_sum_sq_le {g : ℕ} (M : ℝ) :
   constructor <;> nlinarith [sq_nonneg (v k), sq_nonneg (2 * v k - 1), sq_nonneg (2 * v k + 1), Int.le_self_sq (v k), Int.le_self_sq (-v k)]
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem im_period {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (u v : Fin g → ℤ) (k : Fin g) :
     ((A.map Complex.im) *ᵥ (fun k => (v k : ℝ))) k
@@ -144,35 +144,33 @@ theorem im_period {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (u v : Fin g → �
   simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Introduce `n a g ha U τ0 B c hU hτ hB hc hY z hz l hl hl0 w hw`. Take `⟨p, hp, hlim⟩` from `mem_closure_iff_seq_limit.1 hw`. Use `choose hpU l' u v hl' hpw using hp`. Establish `hz' : Tendsto (fun m => (p m).1) atTop (𝓝 z)` using `(continuous_fst.tendsto _).comp hlim`. Establish `hw' : Tendsto (fun m => (p m).2) atTop (𝓝 w)` using `(continuous_snd.tendsto _).comp hlim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ' : Tendsto (fun m => τ0 (p m).1) atTop (𝓝 (τ0 z))` using `((hτ.continuousAt (hU.mem_nhds hz)).tendsto).comp hz'`. Establish `hbd : ∀ m, c ^ 2 * ∑ k, (v m k : ℝ) ^ 2 ≤ ∑ k, ((p m).2 k).im ^ 2`. Introduce `m`. Use `sq_mul_sum_sq_le _ hc (hY _ (hpU m) (l' m) (hl' m)) (fun k => (v m k : ℝ))` as an intermediate fact. Simplify using `only [im_period _ (u m)] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hpw m]`. Conclude with `this`. Establish `hcont : Continuous fun x : Fin g → ℂ => ∑ k, (x k).im ^ 2` using `by fun_prop`. Take `⟨M, hM⟩` from `((hcont.tendsto w).comp hw').bddAbove_range`. Establish `hfin : ∀ m, v m ∈ {v : Fin g → ℤ | ∑ k, (v k : ℝ) ^ 2 ≤ M / c ^ 2}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[Set.mem_setOf_eq, le_div_iff₀ (by positivity), mul_comm]`. Conclude with `(hbd m).trans (hM ⟨m, rfl⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v0, ∃ᶠ m in atTop, v m = v0 := by`. Establish `h1 : ∃ᶠ m in atTop, ∃ v0 ∈ {v : Fin g → ℤ | ∑ k, (v k : ℝ) ^ 2 ≤ M / c ^ 2}, v m = v0` using `Frequently.of_forall fun m => ⟨v m, hfin m, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v0, -, h⟩` from `(frequently_exists_finite (finite_sum_sq_le _)).1 h1`. Conclude with `⟨v0, h⟩`. Take `⟨φ, hφ, hφv⟩` from `extraction_of_frequently_atTop hv0`. Establish `hz2` using `hz'.comp hφ.tendsto_atTop`. Establish `hw2` using `hw'.comp hφ.tendsto_atTop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ2` using `hτ'.comp hφ.tendsto_atTop`. Establish `hzj : ∀ j : Fin a, Tendsto (fun m => (p (φ m)).1 (Fin.castLE ha j)) atTop (𝓝 (z (Fin.castLE ha j)))` using `fun j => ((continuous_apply _).tendsto _).comp hz2`. Establish `hpair : Complex.exp (∑ k, (v0 k : ℂ) * (2 * Real.pi * Complex.I * w k)) = Complex.exp (∑ k, (v0 k : ℂ) * (2 * Real.pi * Complex.I * (τ0 z *ᵥ (fun k => (v0 k : ℂ))) k)) * ∏ j, z (Fin.castLE ha j) ^ (v0 ⬝ᵥ (B j *ᵥ v0))`. Establish `c1 : Continuous fun x : Fin g → ℂ => Complex.exp (∑ k, (v0 k : ℂ) * (2 * Real.pi * Complex.I * x k))` using `by fun_prop`. Establish `c2 : Continuous fun T : Matrix (Fin g) (Fin g) ℂ => Complex.exp (∑ k, (v0 k : ℂ) * (2 * Real.pi * Complex.I * (T *ᵥ (fun k => (v0 k : ℂ))) k))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mulVec, dotProduct]`. Use `fun_prop`. Establish `t3 : Tendsto (fun m => ∏ j, (p (φ m)).1 (Fin.castLE ha j) ^ (v0 ⬝ᵥ (B j *ᵥ v0))) atTop (𝓝 (∏ j, z (Fin.castLE ha j) ^ (v0 ⬝ᵥ (B j *ᵥ v0))))`. Use `tendsto_finset_prod _ fun j _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Int.eq_ofNat_of_zero_le (pair_nonneg (hB j) v0)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hb, zpow_natCast]`. Conclude with `(hzj j).pow b`. Use `tendsto_nhds_unique ((c1.tendsto w).comp hw2) ((((c2.tendsto _).comp hτ2).mul t3).congr fun m => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[hpw (φ m), hφv m, exp_pair_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [hl']`. Establish `hker : ∀ j, z (Fin.castLE ha j) = 0 → B j *ᵥ v0 = 0`. Introduce `j hj`. Use `mulVec_eq_zero_of_pair (hB j) v0 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ∏ j, z (Fin.castLE ha j) ^ (v0 ⬝ᵥ (B j *ᵥ v0)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ j) (by rw [hj, _root_.zero_zpow _ hne])`. Rewrite `hpair` using `[this, mul_zero]`. Conclude with `Complex.exp_ne_zero _ hpair`. Establish `hcoord : ∀ k, Complex.exp (2 * Real.pi * Complex.I * w k) = Complex.exp (2 * Real.pi * Complex.I * (τ0 z *ᵥ (fun k => (v0 k : ℂ))) k) * ∏ j, Complex.exp (l j) ^ ((B j *ᵥ v0) k)`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `c1 : Continuous fun x : Fin g → ℂ => Complex.exp (2 * Real.pi * Complex.I * x k)` using `by fun_prop`. Establish `c2 : Continuous fun T : Matrix (Fin g) (Fin g) ℂ => Complex.exp (2 * Real.pi * Complex.I * (T *ᵥ (fun k => (v0 k : ℂ))) k)`. Simplify using `only [mulVec, dotProduct]`. Use `fun_prop`. Establish `t3 : Tendsto (fun m => ∏ j, (p (φ m)).1 (Fin.castLE ha j) ^ ((B j *ᵥ v0) k)) atTop (𝓝 (∏ j, Complex.exp (l j) ^ ((B j *ᵥ v0) k)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tendsto_finset_prod _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : z (Fin.castLE ha j) = 0`. Simplify using `[hker j hj]`. Rewrite using `[hl j hj]`. Conclude with `(hzj j).zpow₀ _ (Or.inl hj)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `tendsto_nhds_unique ((c1.tendsto w).comp hw2) ((((c2.tendsto _).comp hτ2).mul t3).congr fun m => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[hpw (φ m), hφv m, exp_coord_eq]`. Simplify using `only [hl']`. Establish `hint : ∀ k, ∃ N : ℤ, w k = N + ((τ0 z + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))) *ᵥ (fun k => (v0 k : ℂ))) k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `k`. Establish `h1` using `hcoord k`. Rewrite `h1` using `[← exp_coord_eq _ _ _ 0, Complex.exp_eq_exp_iff_exists_int]`. Take `⟨N, hN⟩` from `h1`. Use `⟨N, mul_left_cancel₀ Complex.two_pi_I_ne_zero ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hN]`. Simplify using `only [Pi.add_apply, Pi.zero_apply, Int.cast_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Use `choose u0 hu0 using hint`. Conclude with `⟨u0, v0, hker, funext hu0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limit_period : ∀ (n a g : ℕ) (ha : a ≤ n) (U : Set (Fin n → ℂ)) (τ0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (c : ℝ), IsOpen U → ContinuousOn τ0 U → (∀ j, ((B j).map (fun x : ℤ => (x : ℝ))).PosSemidef) → 0 < c → (∀ z ∈ U, ∀ l : Fin a → ℂ, (∀ j, Complex.exp (l j) = z (Fin.castLE ha j)) → ((τ0 z + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))).map Complex.im - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef) → ∀ z ∈ U, ∀ l : Fin a → ℂ, (∀ j, z (Fin.castLE ha j) ≠ 0 → Complex.exp (l j) = z (Fin.castLE ha j)) → (∀ j, z (Fin.castLE ha j) = 0 → l j = 0) → ∀ w : Fin g → ℂ, (z, w) ∈ closure {p : (Fin n → ℂ) × (Fin g → ℂ) | p.1 ∈ U ∧ ∃ (l' : Fin a → ℂ) (u v : Fin g → ℤ), (∀ j, Complex.exp (l' j) = p.1 (Fin.castLE ha j)) ∧ p.2 = (fun k => (u k : ℂ)) + (τ0 p.1 + ∑ j, (l' j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))) *ᵥ (fun k => (v k : ℂ))} → ∃ u v : Fin g → ℤ, (∀ j, z (Fin.castLE ha j) = 0 → B j *ᵥ v = 0) ∧ w = (fun k => (u k : ℂ)) + (τ0 z + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))) *ᵥ (fun k => (v k : ℂ)) := by
   intro n a g ha U τ0 B c hU hτ hB hc hY z hz l hl hl0 w hw

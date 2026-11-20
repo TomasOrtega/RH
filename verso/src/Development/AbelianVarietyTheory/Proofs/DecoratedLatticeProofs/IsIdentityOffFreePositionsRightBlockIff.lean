@@ -25,9 +25,9 @@ namespace GlobalTheory.MemMatch
 variable {D : D7}
 
 /- English proof (translation)
-Establish `key : ∀ (I : AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D), (castGA hI.symm (Formalism.IndefR.RationalEmbedding.iota D κ)).2 ∈ I.Kset → Lev.finE (D.sp.Y 0) κ ∈ Formalism.L2.DIV.St β`. Introduce `I hI hx`. Substitute `hI` using the available equality. Establish `hL : (Formalism.L2.SG.InstExistsPf.instOf D).L = Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0` using `Formalism.L2.SG.InstExistsPf.Lv_eq_map D`. Establish `e` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Lev.finE (D.sp.Y 0) κ = ((Formalism.IndefR.RationalEmbedding.iota D κ).2.1 : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D))` using `(congrArg (Lev.finE (D.sp.Y 0)) ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ)).symm.trans e`. Establish `hx'` using `(GlobalTheory.FlagBasis.kset_iff (Formalism.L2.SG.InstExistsPf.instOf D) (β := β) (hL ▸ hβ) _).1 hx`. Rewrite using `[e2]`. Conclude with `hx'`. Conclude with `key X.B.I h hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem st_of_kset (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (β : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β (Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0))
@@ -47,7 +47,7 @@ theorem st_of_kset (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = 
   exact key X.B.I h hκ
 
 /- English proof (translation)
-Establish `h : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) ℂ, ψ ≠ 1` using `fun PP => by haveI : Finite (kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot haveI : Nontrivial (kP PP) := Ideal.Quotient.nontrivial_iff.2 PP.isPrime.ne_top`. Take `⟨ψ, hψ⟩` from `(AddChar.exists_apply_ne_zero (α := kP PP) (a := 1)).2 one_ne_zero`. Conclude with `⟨ψ, fun e => hψ (by rw [e]; rfl)⟩`. Use `choose ψ hψ using h`. Conclude with `⟨ψ, fun PP _ => hψ PP⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generic (Pg : Finset (Pl D.host.E)) : ∃ ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, IsGenericPsi Pg ψ := by
   have h : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) ℂ, ψ ≠ 1 := fun PP => by
@@ -59,7 +59,7 @@ theorem exists_generic (Pg : Finset (Pl D.host.E)) : ∃ ψ : ∀ PP : Pl D.host
   exact ⟨ψ, fun PP _ => hψ PP⟩
 
 /- English proof (translation)
-Take `rfl : r = n` from `le_antisymm hr hn`. Rewrite using `[GlobalTheory.SeeConjRead.restrictedBlock_self_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdentityOffFreePositions_rightBlock_iff {K : Type} [CommRing K] {r n : ℕ} (ρ k : ℕ) (hr : r ≤ n) (hn : n ≤ r) (g : GL (Fin n) K) :
     GlobalTheory.SymRes.IsPat ρ k (upperLeftBlock hr g) ↔ GlobalTheory.SymRes.IsPat ρ k g := by
@@ -67,7 +67,7 @@ theorem isIdentityOffFreePositions_rightBlock_iff {K : Type} [CommRing K] {r n :
   rw [GlobalTheory.SeeConjRead.restrictedBlock_self_apply]
 
 /- English proof (translation)
-Take `rfl : r = n` from `le_antisymm hr hn`. Rewrite `h` using `[GlobalTheory.SeeConjRead.restrictedBlock_self_apply, GlobalTheory.SeeConjRead.restrictedBlock_self_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem reductionBlock_injective_of_eq {K : Type} [CommRing K] {r n : ℕ} (hr : r ≤ n) (hn : n ≤ r) (g g' : GL (Fin n) K)
     (h : upperLeftBlock hr g = upperLeftBlock hr g') : g = g' := by
@@ -75,7 +75,7 @@ theorem reductionBlock_injective_of_eq {K : Type} [CommRing K] {r n : ℕ} (hr :
   rwa [GlobalTheory.SeeConjRead.restrictedBlock_self_apply, GlobalTheory.SeeConjRead.restrictedBlock_self_apply] at h
 
 /- English proof (translation)
-Rewrite `hk`, the goal using `[← GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff X h]`. Rewrite using `[map_mul, map_mul, map_inv, Prod.fst_mul, Prod.fst_mul, hk, mul_one, Prod.fst_inv, mul_inv_cancel]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_GfC (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (s k : GA D (D.sp.Y 0)) (hk : k ∈ GfC (D.sp.Y 0)) : s * k * s⁻¹ ∈ GfC (D.sp.Y 0) := by
@@ -83,15 +83,13 @@ theorem conj_mem_GfC (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I 
   rw [map_mul, map_mul, map_inv, Prod.fst_mul, Prod.fst_mul, hk, mul_one, Prod.fst_inv, mul_inv_cancel]
 
 /- English proof (translation)
-Take `⟨ψ0, hψ⟩` from `exists_generic Pg`. Take `⟨β₀, hβ₀, hK⟩` from `GlobalTheory.SeeConjRead.read_fin X h Pg hTP (GlobalTheory.T.genusTypePlaceSet_not_conjugatePlaces Pg hTP hsp) ψ0 hψ`. Establish `hfe : ∀ k : GA D (D.sp.Y 0), finE (D.sp.Y 0) (s * k * s⁻¹) = finE (D.sp.Y 0) s * finE (D.sp.Y 0) k * (finE (D.sp.Y 0) s)⁻¹` using `fun k => by rw [map_mul, map_mul, map_inv]`. Take `⟨β₂, rfl⟩ : ∃ β₂, β₀ = finE (D.sp.Y 0) s * β₂` from `⟨(finE (D.sp.Y 0) s)⁻¹ * β₀, by group⟩`. Establish `h12 : ∀ k ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) k ∈ St β → finE (D.sp.Y 0) k ∈ St β₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k hk hS`. Establish `h1` using `((hSt (s * k * s⁻¹)).1 ⟨conj_mem_GfC X h s k hk, by`. Rewrite using `[hfe, GlobalTheory.FrameConj.conj_mem_St_iff]`. Conclude with `hS⟩).2`. Establish `h2` using `st_of_kset X h _ hβ₀ _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[hfe, GlobalTheory.FrameConj.conj_mem_St_iff]`. Then use the resulting hypothesis. Establish `hm` using `fun PP : Pg => (hid PP).elim fun e he => GlobalTheory.T.splitPlaceReductions_conj_of_nestedFrameStabilisers D (D.sp.Y 0) β β₂ Λ N hβ e PP.1 he h12`. Use `choose m hm using hm`. Use `⟨m, fun k hk hS => ?_⟩` and prove the remaining obligations. Rewrite using `[(hK _).1, hfe, GlobalTheory.FrameConj.conj_mem_St_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.FrameConj.redFn_conj]`. Use `⟨fun hh PP => ?_, fun hh => ⟨h12 k hk hS, fun PP hPP => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hm PP _ hS (h12 k hk hS)]`. Conclude with `hh.2 PP.1 PP.2`. Rewrite using `[hm ⟨PP, hPP⟩ _ hS (h12 k hk hS)]`.
-
-Conclude with `hh ⟨PP, hPP⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_read (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (Pg : Finset (Pl D.host.E)) (hTP : IsTypePlaces Pg) (hsp : ∃ e, IsIdemSum e Pg)
@@ -123,23 +121,19 @@ theorem exists_read (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I =
   · rw [hm ⟨PP, hPP⟩ _ hS (h12 k hk hS)]; exact hh ⟨PP, hPP⟩
 
 /- English proof (translation)
-Establish `hemb : ∀ b, embA B.d B.o b = (embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b : GA D (d.st 0).V)` using `fun b => by`. Establish `h1` using `congr_arg_heq (fun L : BesLev D D.R.rS => (embA L.d L.o : GA D L.A →* GA D L.V)) hBl`. Establish `h2 : embA B.d B.o = (embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o : GA D (D.sp.X 0) →* GA D (d.st 0).V)` using `eq_of_heq h1`. Conclude with `DFunLike.congr_fun h2 b`. Establish `hfl : flagN B.d = (flagN (d.bes 0 D.R.rS h0).d : Subgroup (GA D (d.st 0).V))` using `eq_of_heq (congr_arg_heq (fun L : BesLev D D.R.rS => flagN L.d) hBl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.level_group_property_closed_mul D u d τ G cG h0 hB hTP hPG (fun k : GA D (D.sp.Y 0) => (iotaX S.X S.inst (s * k * s⁻¹)).2 ∈ S.X.K2) ?_ ?_ ?_ hone` and prove the remaining obligations. Introduce `(k : GA D (D.sp.Y 0)) _ (k' : GA D (D.sp.Y 0)) _ q q' show (iotaX S.X S.inst (s * (k * k') * s⁻¹)).2 ∈ S.X.K2`. Establish `e : s * (k * k') * s⁻¹ = (s * k * s⁻¹) * (s * k' * s⁻¹)` using `by group`. Rewrite using `[e, map_mul, Prod.snd_mul]`. Conclude with `S.Y.hK.2.1 _ q _ q'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `PP (n : GA D (D.sp.Y 0)) q hn _ _ hk`. Establish `hn' : n ∈ flagN B.d` using `by rw [hfl]; exact hn`. Establish `e : s * (t⁻¹ * n * t) * s⁻¹ = ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * (embA B.d B.o (a₀ * a) * n * (embA B.d B.o (a₀ * a))⁻¹) * (iotaX S.X S.inst).symm (1, S.X.xu u)`. Rewrite using `[hs]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : t⁻¹ * n * t ∈ levS (D.sp.Y 0) d.bot.β d.bot.L` using `by rw [ht]; exact hk`. Establish `hKs` using `((hSt (s * (t⁻¹ * n * t) * s⁻¹)).1 ⟨conj_mem_GfC S.X S.inst s _ hk'.1, by`. Rewrite using `[map_mul, map_mul, map_inv, GlobalTheory.FrameConj.conj_mem_St_iff]`. Conclude with `parLev_St hk'.2.1⟩).2`. Establish `hN` using `((B.tieN _).1 (GlobalTheory.CharLaws.embA_conj_mem B.d B.o (a₀ * a) hn')).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `goal : (iotaX S.X S.inst (s * (t⁻¹ * n * t) * s⁻¹)).2 ∈ S.X.K2`. Rewrite `hKs`, the goal using `[e]`. Generalize the expression as in `embA B.d B.o (a₀ * a) * n * (embA B.d B.o (a₀ * a))⁻¹ = n' at hN hKs ⊢`. Rewrite `hKs`, the goal using `[map_mul, map_mul, map_inv, ContinuousMulEquiv.apply_symm_apply]`. Generalize the expression as in `iotaX S.X S.inst n' = y at hN hKs ⊢`.
+Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `(S.X.xu u)⁻¹ * y.2 * S.X.xu u ∈ _ at hKs ⊢`. Use `Formalism.L2.SG.Pf.unipotent_conj_mem_level hN ?_` and prove the remaining obligations. Use `Formalism.L2.SG.Pf.unitaryCongruence.K_mul _ (Formalism.L2.SG.Pf.unitaryCongruence.K_mul _ (S.X.xu_K u) hKs) (Formalism.L2.SG.Pf.unitaryCongruence.K_inv _ (S.X.xu_K u))` as an intermediate fact. Rewrite `this` using `[show S.X.xu u * ((S.X.xu u)⁻¹ * y.2 * S.X.xu u) * (S.X.xu u)⁻¹ = y.2 by group]`. Then use the resulting hypothesis. Substitute `ht` using the available equality.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `goal`. Introduce `b hb hk`. Establish `h1` using `(GlobalTheory.T.bessel_adapted_translate_level D u F₀ S d h0 hE hB hLev B hBl hAd a₀ hH0 b hb).1.1 hk`. Establish `hab : a * b * a⁻¹ = b` using `by rw [← Subgroup.mem_center_iff.1 hac b]; group`. Establish `e : s * (t⁻¹ * embA B.d B.o b * t) * s⁻¹ = ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * b * a₀⁻¹) * (iotaX S.X S.inst).symm (1, S.X.xu u)`.
-
-Establish `: a₀ * b * a₀⁻¹ = (a₀ * a) * b * (a₀ * a)⁻¹` using `by conv_lhs => rw [← hab] group`. Rewrite using `[this, map_mul _ _ (a₀ * a)⁻¹, map_mul _ (a₀ * a) b, map_inv, hs]`. Use `group`. Rewrite `h1` using `[← e, hemb b]`. Substitute `ht` using the available equality.
-
-Conclude with `h1.2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem conj_mem_K_two (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
     (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1)
@@ -204,25 +198,23 @@ theorem conj_mem_K_two (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Fo
     exact h1.2
 
 /- English proof (translation)
-Establish `hm0 : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨hr, ξ, hL⟩` from `(hB.st 0 hm0).lev`. Take `⟨N, hN, -⟩` from `(hB.st 0 hm0).base`. Establish `hrk : (D.sp.Y 0).rank = D.R.rankY 0` using `(hB.st 0 hm0).rank`. Establish `hn : (D.sp.Y 0).rank ≤ D.R.r` using `by rw [hrk]; simp [Formalism.BasicNotions.Ranks.rankY]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : D.R.r ≤ (D.sp.Y 0).rank` using `hr`. Establish `hLb : d.bot.L = (datY (D.sp.Y 0).rank D.R.r D.R.t 0 hr' d.c.Pg ∅ d.c.P d.c.chi ξ Frm.B)` using `hL`. Establish `hlift : Lev.LiftsExist (D.sp.Y 0) d.bot.β d.bot.L` using `GlobalTheory.ChainOnto.FlagAct.liftsExist_stage hB.com (hB.st 0 hm0)`. Take `⟨m, hm⟩` from `exists_read S.X S.inst d.c.Pg hTP hB.com.split (fun PP => ⟨_, (G PP).idem⟩) d.bot.β d.bot.Λ N hN s hSt`. Establish `hin` using `conj_mem_K_two u F₀ S d τ G cG h0 hE hB hTP hPG hLev B hBl hAd a₀ hH0 a hac t s ht hs hSt (fun k hk h1 => (hm k hk.1 (parLev_St hk.2.1)).2 fun PP => by rw [h1 PP.1 PP.2, mul_one, mul_inv_cancel]; exact one_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpat : ∀ g : ∀ PP : d.c.Pg, GL (Fin D.R.r) (kP PP.1), g ∈ d.c.P.H ↔ ∀ PP, GlobalTheory.SymRes.IsPat D.R.rS D.R.k (g PP)` using `fun g => (hPG.grp g).trans (forall_congr' fun PP => GlobalTheory.T.exists_reduction_iff_pattern D u d τ PP.1 (G PP) (g PP))`. Rewrite `hlift`, `hin`, the goal using `[hLb]`. Establish `hlev : ∀ k ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) k ∈ St d.bot.β → (fun PP : d.c.Pg => upperLeftBlock hr' (redFn d.bot.β PP.1 (finE (D.sp.Y 0) k))) ∈ d.c.P.H → k ∈ levS (D.sp.Y 0) d.bot.β (datY (D.sp.Y 0).rank D.R.r D.R.t 0 hr' d.c.Pg ∅ d.c.P d.c.chi ξ Frm.B)`. Introduce `k hk hS hP`. Use `⟨hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show finE (D.sp.Y 0) k ∈ lev _ _ _ _`. Rewrite using `[mem_lev, mem_parLev]`. Conclude with `⟨⟨GlobalTheory.LevSplit.finE_mem_UA _ _, hS, fun PP _ => GlobalTheory.SeeConjRead.blockTri_blkOf_top _ hn _, fun PP hPP => absurd hPP (Finset.notMem_empty _)⟩, hP⟩`. Take `⟨k₀, rfl⟩ : ∃ k₀, κ = s * k₀ * s⁻¹` from `⟨s⁻¹ * κ * s, by group⟩`. Establish `hk₀ : k₀ ∈ GfC (D.sp.Y 0)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conj_mem_GfC S.X S.inst s⁻¹ _ hκ` as an intermediate fact. Rewrite `this` using `[show s⁻¹ * (s * k₀ * s⁻¹) * s⁻¹⁻¹ = k₀ by group]`. Then use the resulting hypothesis. Establish `hfe : finE (D.sp.Y 0) (s * k₀ * s⁻¹) = finE (D.sp.Y 0) s * finE (D.sp.Y 0) k₀ * (finE (D.sp.Y 0) s)⁻¹` using `by rw [map_mul, map_mul, map_inv]`. Rewrite `hκS` using `[hfe, GlobalTheory.FrameConj.conj_mem_St_iff]`. Rewrite using `[hfe, GlobalTheory.FrameConj.rTup_conj]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hK => ?_, fun hP => hin k₀ (hlev k₀ hk₀ hκS hP)⟩` and prove the remaining obligations. Use `(hpat _).2 fun PP => (isIdentityOffFreePositions_rightBlock_iff _ _ hr' hn _).2 ?_` and prove the remaining obligations. Use `haveI : Finite (kP PP.1) := Ideal.finiteQuotientOfFreeOfNeBot PP.1.asIdeal PP.1.ne_bot`. Establish `hrr : (D.sp.Y 0).rank = D.R.k + (2 * D.R.rS + 1)`. Use `le_antisymm hn hr'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Ranks.r at this`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.T.conjugate_symmetric_unipotent_pattern (kP PP.1) _ D.R.rS D.R.k hrr (m PP) (fun g hg => ?_) _ ((hm k₀ hk₀ hκS).1 hK PP)` and prove the remaining obligations. Set `g0 : ∀ Q : d.c.Pg, GL (Fin D.R.r) (kP Q.1)` to `Function.update (fun _ => 1) PP (upperLeftBlock hr' g)`. Establish `hg0 : g0 ∈ d.c.P.H` using `(hpat _).2 fun Q => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hQ : Q = PP`. Substitute `hQ` using the available equality. Simplify using `only [g0, Function.update_self]`. Conclude with `(isIdentityOffFreePositions_rightBlock_iff _ _ hr' hn _).2 hg`. Simplify using `only [g0, Function.update_of_ne hQ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.SymRes.isPat_one _ _`. Take `⟨k, hk, hkp, hkr⟩` from `hlift g0`. Establish `hkr' : (fun PP : d.c.Pg => upperLeftBlock hr' (redFn d.bot.β PP.1 (finE (D.sp.Y 0) k))) = g0` using `hkr`. Establish `h1` using `(hm k hk (parLev_St hkp)).1 (hin k (hlev k hk (parLev_St hkp) (hkr' ▸ hg0))) PP`. Establish `h2 : redFn d.bot.β PP.1 (finE (D.sp.Y 0) k) = g` using `reductionBlock_injective_of_eq hr' hn _ _ ((congrFun hkr' PP).trans (Function.update_self _ _ _))`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_K_two_iff (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
     (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1)
@@ -291,7 +283,7 @@ theorem mem_K_two_iff (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.For
   rwa [h2] at h1
 
 /- English proof (translation)
-Introduce `D u F₀ S d k _ _ _ _ ι o G h0 hE hB hTP _ hPG _ _ hLev B hBl hAd a₀ hH0 a _ hac hSt κ hκ hκS`. Conclude with `mem_K_two_iff u F₀ S d o.τ G o.cG h0 hE hB hTP hPG hLev B hBl hAd a₀ hH0 a hac _ _ rfl rfl hSt κ hκ hκS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_K_two_iff_reduction_tuple : ∀ (D : D7) (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : GlobalTheory.FinPl.OffDat d k ι) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d o.τ PP.1) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.Core.Mi.IdE S.X → d.Base → IsTypePlaces d.c.Pg → GlobalTheory.FinPl.PinOff o → GlobalTheory.LocMod.PinGBy G o.cG → (∀ v : GlobalTheory.FinPl.Pl D, o.atT v ↔ (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal) → (∀ v : GlobalTheory.FinPl.Pl D, ¬ o.atT v → GlobalTheory.FinPl.latV (D.sp.X 0) (d.x 0).L (· = v) = GlobalTheory.FinPl.latV (D.sp.X 0) ((F₀ u).cls0.lev.Lb.map ((LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)))).toLinearMap.restrictScalars (𝓞 D.host.E))) (· = v)) → LevX (F₀ u) d h0 → ∀ (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)), B.lev = d.B 0 D.R.rS h0 → B.Adapted (S.tr u).wt → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (S.tr u) a₀ → ∀ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) → (∀ κ : GA D (D.sp.Y 0), (κ ∈ GfC (D.sp.Y 0) ∧ finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β)) ↔ ((iotaX S.X S.inst κ).1 = 1 ∧ (iotaX S.X S.inst κ).2 ∈ S.X.B.I.Kset)) → ∀ κ : GA D (D.sp.Y 0), κ ∈ GfC (D.sp.Y 0) → finE (D.sp.Y 0) κ ∈ Formalism.L2.DIV.St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) → ((iotaX S.X S.inst κ).2 ∈ S.X.K2 ↔ Formalism.L2.DIV.rTup (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) d.bot.L (finE (D.sp.Y 0) κ) ∈ d.bot.L.P.H) := by
   intro D u F₀ S d k _ _ _ _ ι o G h0 hE hB hTP _ hPG _ _ hLev B hBl hAd a₀ hH0 a _ hac hSt κ hκ hκS

@@ -23,13 +23,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RowsAClose
 
 /- English proof (translation)
-Introduce `hP hL D P hJ`. Establish `hlab` using `GlobalTheory.TieLabAt.main hL D P`. Establish `hrig : IsobaricRigid D.nd D.naut` using `GlobalTheory.NPin.isobaricRigid_of_pin hP.fin hP.js hL D P`. Establish `han1` using `GlobalTheory.RowClose.isobaricCuspidalMultiplicityOne_of_twisted _ _ _ D.nd D.naut hrig`. Establish `han2` using `GlobalTheory.SpehRigid.isobaricDiscreteSelfDualMultOne_of_isobaricSumMultOne _ _ _ D.nd D.naut hrig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcheb` using `GlobalTheory.ChebSplitDense.chebSplit_nd hP.cheb D`. Establish `ha5 : Formalism.MainNotions.SumRepresentations.adm5 D` using `(Formalism.MainNotions.SumRepresentations.condition_iff_additive_maps D).2 ⟨han1, han2, fun Sg hSg => by`. Establish `hd` using `(hcheb hSg.toFinset).closure_eq`. Use `hd using 4 with σ` and compare the differences between its conclusion and the goal. Simplify using `[Set.Finite.mem_toFinset]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `haut` using `GlobalTheory.AutomorphismSplitting.tieAut_and_split hP.fin hL D P`. Establish `htie0 : Formalism.MainNotions.SumRepresentations.tie0 D` using `⟨GlobalTheory.RowTieLP.main D P.T, haut.1, GlobalTheory.T.galois_compatibility_of_jumps hP.berger hL D P hJ⟩`. Establish `ha2 : Formalism.MainNotions.SumRepresentations.adm2 D` using `GlobalTheory.GalClose.main hP hL D P`. Establish `ha7 : Formalism.MainNotions.SumRepresentations.adm7 D` using `GlobalTheory.TempGal.main hP.fin hP.gal hL D P`. Establish `heig` using `GlobalTheory.EigConcrete.main hP.berger hL D P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hlab.1, GlobalTheory.RowClose.heckeSplitOne_of_charTied D P.cf P.C P.tp P.chr, htie0, ha2, han1, han2, ha5, ha7, GlobalTheory.LocalInvEta.noLocalInvariants_everywhere D P.T htie0 ha2 ha5 ha7 (GlobalTheory.MuIntegral.muInt_of_charTied D P.cf P.C P.tp P.chr) (GlobalTheory.GoodCusp …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), JumpsCard D.nd D.naut → GlobalTheory.NRows.RowsA D := by
   intro hP hL D P hJ

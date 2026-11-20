@@ -18,11 +18,11 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
   [IsFractionRing O K] {r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Distinguish the cases in `h : i = j`. Conclude with `⟨1, by simp [h]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [h]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, by simp [ha, hb]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by simp [ha, Algebra.smul_def]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coord_of_mem_std {x : Fin r → K} (hx : x ∈ (std O K r).1) (i : Fin r) :
     ∃ a : O, algebraMap O K a = x i := by
@@ -47,7 +47,7 @@ section Adic
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_zpow₀, hϖ, ← WithZero.coe_zpow, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zsmul, ← ofAdd_zero, Multiplicative.ofAdd_le, smul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zpow_mem_iff {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (m : ℤ) :
     ϖ ^ m ∈ w.adicCompletionIntegers E ↔ 0 ≤ m := by
@@ -57,7 +57,7 @@ theorem zpow_mem_iff {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (m : ℤ) 
   omega
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hϖ` using `[IsUnifV, h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_unif {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) : ϖ ≠ 0 := by
   intro h
@@ -65,9 +65,9 @@ theorem ne_zero_of_unif {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) : ϖ �
   exact WithZero.zero_ne_coe hϖ
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ClosedSubgroupCriterion.main`. Consider the case `exact _root_.GlobalTheory.ClosedSubgroupCriterion.main`. Consider the case `(apply _root_.GlobalTheory.ClosedSubgroupCriterion.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClosedSubgroupCriterion.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ClosedSubgroupCriterion.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosedSubgroupCriterion.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem antitone_zero_one {n j : ℕ} (a : Fin n → ℤ) (ha : Antitone a)
     (h01 : ∀ i, a i = 0 ∨ a i = 1)
@@ -84,7 +84,7 @@ theorem antitone_zero_one {n j : ℕ} (a : Fin n → ℤ) (ha : Antitone a)
 end Adic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RowSatakeBound.finite_residue w; glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) → ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), (g : Matrix (Fin n) …`.
+A detailed English derivation is pending.
 -/
 theorem mem_doubleCoset_of_subElem : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (j : ℕ), j ≤ n → ∀ (g : GL (Fin n) (w.adicCompletion E)), haveI := GlobalTheory.RowSatakeBound.finite_residue w; glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) → ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) (w.adicCompletion E)) := by
   intro E _ _ w n ϖ hϖ j _ g hg

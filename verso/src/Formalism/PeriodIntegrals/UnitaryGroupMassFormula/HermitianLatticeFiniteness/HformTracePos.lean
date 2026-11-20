@@ -10,7 +10,7 @@ namespace PI.HermLatFin.UnitaryGroupMassFormula
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ, hσ, Complex.conj_conj]`. Use the proof step `@[instance_reducible]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_invol (σ : E →+* E)
     (hσ : ∀ τ : E →+* ℂ, ∀ a : E, τ (σ a) = starRingEnd ℂ (τ a)) (a : E) : σ (σ a) = a := by
@@ -28,9 +28,9 @@ def starOf (σ : E →+* E) (h2 : ∀ a, σ (σ a) = a) : StarRing E where
   star_add a b := map_add σ a b
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ]`. Establish `h` using `congrFun (congrFun (hJ τ).isHermitian j) i`. Rewrite `h` using `[Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.map_apply]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[starRingEnd_apply]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_hermitian {n : ℕ} (σ : E →+* E)
     (hσ : ∀ τ : E →+* ℂ, ∀ a : E, τ (σ a) = starRingEnd ℂ (τ a))
@@ -71,14 +71,14 @@ theorem hform_apply (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hform J x y = ∑ i, ∑ j, star (x i) * J i j * y j := rfl
 
 /- English proof (translation)
-Simplify using `only [hform_apply, herm, hst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_herm (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
     (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) : hform J x y = herm σ J x y := by
   simp only [hform_apply, herm, hst]
 
 /- English proof (translation)
-Use `LinearMap.IsSymm.mk fun x y => ?_` and prove the remaining obligations. Simplify using `only [hform_apply, starRingEnd_apply, star_sum, star_mul', star_star, hJ, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_isSymm (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, star (J i j) = J j i) :
     (hform J).IsSymm := by
@@ -94,15 +94,13 @@ section Pos
 variable [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : Nonempty (E →ₐ[ℚ] ℂ) := ⟨IsAlgClosed.lift⟩`. Establish `key : ∀ τ : E →ₐ[ℚ] ℂ, 0 < τ (hform J x x)`. Introduce `τ`. Establish `hτσ : ∀ a : E, τ (σ a) = star (τ a)` using `fun a => by`. Rewrite using `[← starRingEnd_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hσ τ.toRingHom a`. Establish `e : τ (hform J x x) = star (fun i => τ (x i)) ⬝ᵥ (J.map τ) *ᵥ (fun i => τ (x i))`. Rewrite using `[hform_apply]`. Simplify using `only [map_sum]`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Matrix.map_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hst, hτσ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(hJ τ.toRingHom).dotProduct_mulVec_pos ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h0 i`. Conclude with `(map_eq_zero_iff _ τ.toRingHom.injective).1 h1`.
-
-Establish `hsum : 0 < ∑ τ : E →ₐ[ℚ] ℂ, τ (hform J x x)` using `Finset.sum_pos (fun τ _ => key τ) Finset.univ_nonempty`. Rewrite `hsum` using `[← trace_eq_sum_embeddings ℂ, eq_ratCast, ← Complex.ofReal_ratCast, Complex.zero_lt_real, Rat.cast_pos]`. Conclude with `hsum`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_trace_pos (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
     (hσ : ∀ τ : E →+* ℂ, ∀ a : E, τ (σ a) = starRingEnd ℂ (τ a))
@@ -136,9 +134,9 @@ theorem hform_trace_pos (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
   exact hsum
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h` using `hg (Pi.single a 1) (Pi.single b 1)`. Rewrite `h` using `[hform_apply, hform_apply]`. Simplify using `only [← LinearMap.toMatrix'_apply, hst] at h`. Establish `hr : ∑ i, ∑ j, σ ((Pi.single a 1 : Fin n → E) i) * J i j * (Pi.single b 1 : Fin n → E) j = J a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, apply_ite σ]`. Rewrite `h` using `[hr]`. Rewrite using `[← h]`. Simplify using `only [IsUJ, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUJ_of_isom (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
     (J : Matrix (Fin n) (Fin n) E) (g : (Fin n → E) →ₗ[E] (Fin n → E))

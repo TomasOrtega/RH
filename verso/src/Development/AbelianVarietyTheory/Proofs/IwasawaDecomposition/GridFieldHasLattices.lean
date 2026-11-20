@@ -20,9 +20,9 @@ section Transfer
 variable {D : Formalism.BasicNotions.D7} {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} {sc : GlobalTheory.ChiGrid.Consts}
 
 /- English proof (translation)
-Establish `hS : G.pl.S0 = G₀.pl.S0` using `by unfold Places.S0; rw [hv]`. Establish `hd : ∀ v, G.pl.depth sc v = G₀.pl.depth sc v` using `fun v => by unfold Places.depth; rw [hv]`. Use `⟨fun i h1 h2 => ?_, fun v hv' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, i = a + 1` from `⟨i - 1, by omega⟩`. Use `hch ⟨a, by omega⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite using `[this]`. Conclude with `h.values _ h1 h2`. Rewrite using `[hd]`. Conclude with `h.roots v (hS ▸ hv')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldHas_of_same {G G₀ : GridData Lc sc} {K : Type} [Field K] {e : K →+* ℂ} (hv : G.pl.v0 = G₀.pl.v0)
     (hch : ∀ a : Fin D.R.m, G.ch.chiH (a.1 + 1) = G₀.ch.chiH (a.1 + 1)) (h : FieldHas G₀ e) : FieldHas G e := by
@@ -38,7 +38,7 @@ theorem fieldHas_of_same {G G₀ : GridData Lc sc} {K : Type} [Field K] {e : K �
     exact h.roots v (hS ▸ hv')
 
 /- English proof (translation)
-Unfold `lamOf`. Rewrite using `[hw]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hch a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lamOf_of_same {G G₀ : GridData Lc sc} (hw : G.pl.w G.pl.v0 = G₀.pl.w G₀.pl.v0)
     (hch : ∀ a : Fin D.R.m, G.ch.chiH (a.1 + 1) = G₀.ch.chiH (a.1 + 1)) : lamOf G = lamOf G₀ := by
@@ -54,7 +54,7 @@ variable {D : Formalism.BasicNotions.D7} {L : Formalism.BasicNotions.SizeData₂
   {Kc : Formalism.MainNotions.G.Consts} {Y : Formalism.BasicNotions.DivX D} {cX : Formalism.BasicNotions.ExtraC} {ex : Formalism.BasicNotions.Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, hs, hc, hp, h3, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem gridFit_of_parts {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} (hs : TwistedPlaceChoiceLiesOverPair D ex.nch)
     (hc : ∀ w, TwistedAt D w → BlochKatoReduction.Gen.QOk D.ntw (ex.nch.twI w) (ex.nch.Q w))
@@ -65,7 +65,7 @@ theorem gridFit_of_parts {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} (hs : Twis
   ⟨h1, h2, hs, hc, hp, h3, h4⟩
 
 /- English proof (translation)
-Establish `hfit` using `gridFit_of_parts hs hc hpw hp.real.valLL0 h2 hp.real.psiChoice h4`. Take `⟨W, M, ρ, ξ, cv, rm, S, rp, n, e, c, hIs, hOK, hSq⟩` from `hF`. Conclude with `⟨G, W, hIs.weil, hfit, n, ⟨M, ρ, ξ, cv, rm, S, rp, e, c⟩, ⟨hIs, hp.eSer, hOK, hSq⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasGrid_of_full (p : PtAt ex Csz) (CF : ℝ) (hp : p.Ties)
     (hs : TwistedPlaceChoiceLiesOverPair D ex.nch)
@@ -83,9 +83,9 @@ end GlobalTheory.Mem.LiteralAutomorphy.GridRow
 namespace GlobalTheory.Mem.LiteralAutomorphy.GridRow
 
 /- English proof (translation)
-Introduce `hL CF N S Γ hN`. Use `((GlobalTheory.Mem.LiteralAutomorphy.TwAtLink.twists_at_linked hL (prmR (NEa hL N (GridA CF)) S Γ) (IsGoodE (prmR (NEa hL N (GridA CF)) S Γ).s)).and ((rowE_pinned_grid hL CF N S Γ hN).and (rowE_full_grid hL CF N S Γ))).imp fun κ K β c b _ _ _ H t ht => ?_` and prove the remaining obligations. Take `⟨hw1, hw2, hcond, hpow⟩` from `H.1`. Take `⟨G₀, hF₀, hT₀⟩` from `H.2.1 t ht`. Take `⟨G, hv, hw, hch, hFull⟩` from `H.2.2 t ht G₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hasGrid_of_full _ CF ht ⟨hw1, fun w w' a b c => (hw2 w w' a b c).2.2⟩ hcond hpow G (fieldHas_of_same hv hch hF₀) (lamOf_of_same hw hch ▸ hT₀) hFull`.
+A detailed English derivation is pending.
 -/
 theorem rowE_hasGrid_fld : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (CF : ℝ) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.Up.NEl hL CF K B f T w Z Wt p0 t nch n xd c)) → RowE (IsGoodE (prmR (NEa hL N (GridA CF)) S Γ).s) (IsLinked (prmR (NEa hL N (GridA CF)) S Γ)) fun _ D O c b => ∀ t : b.Comparison₂, (b.part t).pt.Ties → GlobalTheory.BigTop.Fun.HasGrid @GlobalTheory.BigTop.Fun.Fld (b.part t).pt CF := by
   intro hL CF N S Γ hN

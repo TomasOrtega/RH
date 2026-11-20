@@ -69,7 +69,7 @@ def IsRep (μ : Measure (G n)) (b : Mat n → V) (y : Lp V 2 μ) : Prop :=
   (y : G n → V) =ᵐ[μ] fun g => b g.val
 
 /- English proof (translation)
-Unfold `IsRep toL`. Rewrite using `[dif_pos h]`. Conclude with `h.coeFn_toLp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL_coe {μ : Measure (G n)} {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
     IsRep μ f (toL μ f) := by

@@ -9,7 +9,7 @@ namespace Cong
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx : (s - s') • x = 0` using `Module.mem_annihilator.1 h x`. Rewrite `hx` using `[sub_smul, sub_eq_zero]`. Conclude with `hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lsmul_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) :
     LinearMap.lsmul R F.M s = LinearMap.lsmul R F.M s' := by
@@ -19,14 +19,14 @@ theorem lsmul_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) :
   exact hx
 
 /- English proof (translation)
-Unfold `GMod.quot`. Rewrite using `[lsmul_eq F h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) : F.quot s = F.quot s' := by
   unfold GMod.quot
   rw [lsmul_eq F h]
 
 /- English proof (translation)
-Unfold `GMod.ann`. Rewrite using `[lsmul_eq F h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ann_eq (F : GMod B R k) {s s' : R} (d : Deg k) (h : s - s' ∈ F.Ann) :
     F.ann s d = F.ann s' d := by
@@ -34,7 +34,7 @@ theorem ann_eq (F : GMod B R k) {s s' : R} (d : Deg k) (h : s - s' ∈ F.Ann) :
   rw [lsmul_eq F h]
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `y`. Take `⟨x, rfl⟩` from `(LinearMap.range (LinearMap.lsmul R F.M s)).mkQ_surjective y`. Conclude with `(map_smul (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ a x).symm.trans ((congrArg _ (ha x)).trans (map_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
   intro a ha
@@ -45,7 +45,7 @@ theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
     ((congrArg _ (ha x)).trans (map_zero _))
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Conclude with `Subtype.ext (ha x.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ann_le_ann (F : GMod B R k) (s : R) (d : Deg k) : F.Ann ≤ (F.ann s d).Ann := by
   intro a ha
@@ -54,13 +54,13 @@ theorem ann_le_ann (F : GMod B R k) (s : R) (d : Deg k) : F.Ann ≤ (F.ann s d).
   exact Subtype.ext (ha x.1)
 
 /- English proof (translation)
-Proceed by induction on `ts generalizing ts' with`. Consider the case `nil`. Introduce `F h m`. Consider the cases of `h`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Consider the case `cons p ts ih`. Introduce `F h m`. Consider the cases of `h with`. Consider the case `@cons _ q _ ts'' hpq hrest`. Take `⟨d, s⟩` from `p`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d', s'⟩` from `q`. Take `⟨hd, hs⟩` from `hpq`. Establish `hd' : d = d'` using `hd`. Substitute `hd'` using the available equality. Establish `hs' : s - s' ∈ F.Ann` using `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `show chi ts (F.quot s) m - chi ts (F.ann s d) m = chi ts'' (F.quot s') m - chi ts'' (F.ann s' d) m`. Rewrite using `[← quot_eq F hs', ← ann_eq F d hs', ih (F.quot s) (hrest.imp fun _ _ h => ⟨h.1, ann_le_quot F s h.2⟩) m, ih (F.ann s d) (hrest.imp fun _ _ h => ⟨h.1, ann_le_ann F s d h.2⟩) m]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_cong {ts ts' : List (Deg k × R)} : ∀ (F : GMod B R k),
     List.Forall₂ (fun p q => p.1 = q.1 ∧ p.2 - q.2 ∈ F.Ann) ts ts' →

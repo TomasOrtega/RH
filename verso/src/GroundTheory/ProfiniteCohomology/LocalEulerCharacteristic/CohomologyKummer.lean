@@ -17,7 +17,7 @@ variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep]
 include h hN in
 
 /- English proof (translation)
-Use `hN.conj_mem ⟨v, h hv⟩ (Subgroup.mem_subgroupOf.2 hv) g⁻¹` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_subgroupOf]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_mul_mul_mem_of_subgroupOf_normal (g : (U : Subgroup Gal(Ksep/K))) {v : Gal(Ksep/K)}
     (hv : v ∈ (V : Subgroup Gal(Ksep/K))) :
@@ -29,7 +29,7 @@ theorem inv_mul_mul_mem_of_subgroupOf_normal (g : (U : Subgroup Gal(Ksep/K))) {v
 include h hN in
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_fixedField_iff]`. Introduce `v hv`. Establish `e` using `hx _ (inv_mul_mul_mem_of_subgroupOf_normal h g hv)`. Rewrite `e` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem apply_mem_fixedField (g : (U : Subgroup Gal(Ksep/K))) {x : Ksep}
     (hx : x ∈ fixedField (V : Subgroup Gal(Ksep/K))) :
@@ -101,7 +101,7 @@ theorem coe_unitOfMemFixedField (a : Ksepˣ) (ha : (a : Ksep) ∈ fixedField (V 
 include h in
 
 /- English proof (translation)
-The claim follows from `(mem_fixedField_iff _ _).2 fun v hv => hx ⟨⟨v, h hv⟩, Subgroup.mem_subgroupOf.2 hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_fixedField_of_forall_subgroupOf {x : Ksep}
     (hx : ∀ n : ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))),
@@ -110,7 +110,7 @@ theorem mem_fixedField_of_forall_subgroupOf {x : Ksep}
   (mem_fixedField_iff _ _).2 fun v hv => hx ⟨⟨v, h hv⟩, Subgroup.mem_subgroupOf.2 hv⟩
 
 /- English proof (translation)
-The claim follows from `(mem_fixedField_iff _ _).1 hx _ (Subgroup.mem_subgroupOf.1 n.2)`.
+A detailed English derivation is pending.
 -/
 theorem subgroupOf_apply_of_mem_fixedField {x : Ksep} (hx : x ∈ fixedField (V : Subgroup Gal(Ksep/K)))
     (n : ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) :
@@ -199,7 +199,7 @@ variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Nor
 omit [IsSepClosure K Ksep] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Additive.toMul.injective (Units.ext rfl))`.
+A detailed English derivation is pending.
 -/
 theorem unitsInvariantsOpenEquiv_smul (g : (U : Subgroup Gal(Ksep/K)))
     (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
@@ -211,7 +211,7 @@ theorem unitsInvariantsOpenEquiv_smul (g : (U : Subgroup Gal(Ksep/K)))
 omit [IsSepClosure K Ksep] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Additive.toMul.injective (Units.ext (Subtype.ext rfl)))`.
+A detailed English derivation is pending.
 -/
 theorem rootsInvariantsOpenEquiv_invariantsConj (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (ζ : (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
@@ -224,7 +224,7 @@ theorem rootsInvariantsOpenEquiv_invariantsConj (l : ℕ) (g : (U : Subgroup Gal
   Subtype.ext (Additive.toMul.injective (Units.ext (Subtype.ext rfl)))
 
 /- English proof (translation)
-Conclude with `(congrArg (rootsInvariantsOpenEquiv h l) (H0Iso_hom_cohomologyConj _ _ g x)).trans (rootsInvariantsOpenEquiv_invariantsConj h l g _)`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyZeroRootsEquiv_cohomologyConj (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
@@ -268,7 +268,7 @@ theorem kummerOpenHom_apply (u : Additive (fixedField (V : Subgroup Gal(Ksep/K))
 include hl in
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, hv⟩` from `exists_δ_H0Iso_inv_eq (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) (subsingleton_cohomology_one_galUnits_subgroupOf h) x`. Take `⟨u, rfl⟩` from `(unitsInvariantsOpenEquiv h).surjective v`. Conclude with `⟨u, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kummerOpenHom_surjective : Function.Surjective (kummerOpenHom (l := l) h hl) := by
   intro x
@@ -281,11 +281,11 @@ theorem kummerOpenHom_surjective : Function.Surjective (kummerOpenHom (l := l) h
 include hl in
 
 /- English proof (translation)
-Rewrite using `[kummerOpenHom_apply]`. Use `(δ_H0Iso_inv_eq_zero_iff (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Take `⟨w, rfl⟩` from `(unitsInvariantsOpenEquiv h).surjective w`. Use `⟨w, (unitsInvariantsOpenEquiv h).injective ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hw, map_nsmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(nsmul_id_hom_apply (galUnits.{0} K Ksep) l _).symm`. Introduce and unpack `⟨w, rfl⟩`. Use `⟨unitsInvariantsOpenEquiv h w, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `nsmul_id_hom_apply (galUnits.{0} K Ksep) l _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem kummerOpenHom_eq_zero_iff (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     kummerOpenHom h hl u = 0 ↔ ∃ w, l • w = u := by
@@ -306,7 +306,7 @@ theorem kummerOpenHom_eq_zero_iff (u : Additive (fixedField (V : Subgroup Gal(Ks
 
 include hl in
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker, AddMonoidHom.coe_toIntLinearMap, kummerOpenHom_eq_zero_iff]`. Simplify using `only [LinearMap.lsmul_apply, natCast_zsmul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem range_lsmul_eq_ker_kummerOpenHom :
     LinearMap.range (LinearMap.lsmul ℤ (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) (l : ℤ)) =
@@ -325,9 +325,9 @@ noncomputable def kummerOpenModNHom :
 
 include hl in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, kummerOpenModNHom, Submodule.ker_liftQ_eq_bot']`. Conclude with `range_lsmul_eq_ker_kummerOpenHom h hl`. Introduce `x`. Take `⟨u, rfl⟩` from `kummerOpenHom_surjective h hl x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.Quotient.mk u, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem kummerOpenModNHom_bijective : Function.Bijective (kummerOpenModNHom (l := l) h hl) := by
   constructor
@@ -351,7 +351,7 @@ theorem cohomologyOneRootsEquiv_symm_mk (u : Additive (fixedField (V : Subgroup 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← cohomologyOneRootsEquiv_symm_mk, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyOneRootsEquiv_kummerOpenHom (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     cohomologyOneRootsEquiv h hl (kummerOpenHom h hl u) = Submodule.Quotient.mk u := by
@@ -360,7 +360,7 @@ theorem cohomologyOneRootsEquiv_kummerOpenHom (u : Additive (fixedField (V : Sub
 variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
 
 /- English proof (translation)
-Rewrite using `[kummerOpenHom_apply, kummerOpenHom_apply, unitsInvariantsOpenEquiv_smul]`. Conclude with `δ_H0Iso_inv_invariantsConj _ (shortExact_map_res (U : Subgroup Gal(Ksep/K)) (kummerSequence_shortExact l hl)) g _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerOpenHom_smul (g : (U : Subgroup Gal(Ksep/K)))
     (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
@@ -372,7 +372,7 @@ theorem kummerOpenHom_smul (g : (U : Subgroup Gal(Ksep/K)))
     (kummerSequence_shortExact l hl)) g _
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `kummerOpenHom_surjective h hl x`. Rewrite using `[← kummerOpenHom_smul, cohomologyOneRootsEquiv_kummerOpenHom, cohomologyOneRootsEquiv_kummerOpenHom, modNRep_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyOneRootsEquiv_cohomologyConj (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype

@@ -21,7 +21,7 @@ namespace GlobalTheory.PstOfCrys
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b v`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.comm_tmul, TensorProduct.comm_tmul, crisIncl_tmul, crisIncl_tmul, mulV_tmul, Polynomial.algebraMap_apply, smul_eq_mul, C_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem mulV_crisIncl_comm {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] (c : ↥(MaximalUnramifiedExtension l)) (x : P.R.B ⊗[ℚ_[l]] V) :
@@ -35,21 +35,19 @@ theorem mulV_crisIncl_comm {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `haveI := LL.2`. Use `haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans ↥LL.1 V`. Use `haveI : IsDomain P.R.B := GlobalTheory.RegularRing.isDomain_of_tied T K`. Establish `hf` using `GlobalTheory.Per.TiedRestrict.fracInv_of_tied T K`. Take `⟨hdom, hreg, -⟩` from `GlobalTheory.Pst.stRegular l P AI ⟨T⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hup` using `GlobalTheory.PstRank.rank_DpstUr_le P hdom hreg ρ`. Take `⟨hfin, -⟩` from `GlobalTheory.RegularRing.finite_le₀ (P.PD K) hf ρ`. Establish `hd` using `(GlobalTheory.RegularRing.isCrys_iff_finrank (P.PD K) ρ).1 hc`. Set `e` to `Module.finBasisOfFinrankEq ↥(K0 K) _ hd`. Establish `hB` using `GlobalTheory.RegularRing.indepB (P.PD K) hf ρ e e.linearIndependent`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ i, crisIncl P ↥LL.1 V (TensorProduct.comm ℚ_[l] P.R.B V (e i : P.R.B ⊗[ℚ_[l]] V)) ∈ Dpst P ρ`. Introduce `i`. Use `(mem_Dpst P ρ).mpr ⟨K, fun g _ => ?_⟩` and prove the remaining obligations. Rewrite using `[stRep_crisIncl]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris (PD := P.PD K) ρ _).1 (e i).2 g`. Set `y : Fin (finrank ℚ_[l] V) → DpstUr P ρ` to `fun i => toUr P ρ ⟨_, hmem i⟩`. Establish `hli : LinearIndependent ↥(MaximalUnramifiedExtension l) y`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : (((toUr P ρ).symm (∑ j, c j • y j) : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = 0`. Rewrite using `[hc]`. Both sides reduce to the same expression. Establish `h2 : (((toUr P ρ).symm (∑ j, c j • y j) : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = crisIncl P ↥LL.1 V (TensorProduct.comm ℚ_[l] P.R.B V (∑ j, algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (c j) • (e j : P.R.B ⊗[ℚ_[l]] V)))`. Rewrite using `[map_sum, Submodule.coe_sum, map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mulV_crisIncl_comm]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `h3 : ∑ j, algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (c j) • (e j : P.R.B ⊗[ℚ_[l]] V) = 0` using `(TensorProduct.comm ℚ_[l] P.R.B V).injective (crisIncl_injective P (h1.trans (map_zero _).symm) |>.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h4` using `Fintype.linearIndependent_iff.1 hB (fun j => algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (c j)) h3 i`. Conclude with `(algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective (h4.trans (map_zero _).symm)`. Establish `hlow : (finrank ℚ_[l] V : Cardinal) ≤ Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)`. Use `hli.cardinal_le_rank` as an intermediate fact. Rewrite `this` using `[Cardinal.mk_fintype, Fintype.card_fin]`. Then use the resulting hypothesis.
-
-Establish `hV : Module.rank ℚ_[l] V = (finrank ℚ_[l] V : Cardinal)` using `(Module.finrank_eq_rank ℚ_[l] V).symm`. Rewrite using `[IsPst, hV]`. Conclude with `le_antisymm hup hlow`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPst_of_isCrys (T : LocTied l P AI) {K LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V]
@@ -101,9 +99,9 @@ end GlobalTheory.PstOfCrys
 namespace GlobalTheory.PstOfCrys
 
 /- English proof (translation)
-Introduce `D i w hw K' h hN hF hS m r _ hpc`. Set `r' : ↥(Dec (F` to `D.host.E) (D.nd.plOm.1 w)) →* GL (Fin m) ↥(D.nbr i w hw).LL.1 := mapRep (D.nbr i w hw).toLL (r.comp (decS D.nd w))`. Establish `hmodel : IsModel (D.nbr i w hw) (resDec D.nd.plOm.1 (mapRep (iotaOQ D.nd D.naut i) r) w) (D.nbr i w hw).LL r'`. Use `⟨le_rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `g a b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `((D.loc_tie i w hw).1 _).symm`. Use `⟨(D.nbr i w hw).LL, r', hmodel, ?_⟩` and prove the remaining obligations. Establish `hc` using `((GlobalTheory.PcRes.main _ (D.loc (D.nd.l i)) _ K' (D.nbr i w hw).LL h hN hF hS _ _).2).1 hpc`. Establish `hp` using `isPst_of_isCrys (D.locT (D.nd.l i)) _ hc`. Conclude with `(GlobalTheory.PstLaws.isPst_resTo_iff (D.loc (D.nd.l i)) _ h).1 hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pst_of_pc : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (K' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).Kw.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK (D.nbr i w hw).Kw)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).actB g (algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c) = algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c') (m : ℕ) (r : GE D.nd →* GL (Fin m) (D.nd.O i)), Continuous (fun g => ((r g : GL _ _) : Matrix (Fin m) (Fin m) (D.nd.O i))) → (pc (D.loc (D.nd.l i)) h hN hF hS).IsPotCrys ((D.nbr i w hw).rep (r.comp (decS D.nd w))) → GlobalTheory.Pst.IsPstAt (D.loc (D.nd.l i)) (D.nbr i w hw) (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (iotaOQ D.nd D.naut i) r) w) := by
   intro D i w hw K' h hN hF hS m r _ hpc

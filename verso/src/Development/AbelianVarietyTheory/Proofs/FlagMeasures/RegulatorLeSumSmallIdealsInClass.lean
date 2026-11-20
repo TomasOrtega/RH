@@ -12,21 +12,21 @@ open NumberField.mixedEmbedding NumberField.InfinitePlace NumberField.Units
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Use `set n := finrank ℚ K with hn_def`. Establish `hn : 0 < n` using `finrank_pos`. Establish `hN : 0 < (Ideal.absNorm I : ℝ)` using `Nat.cast_pos.2 (Ideal.absNorm_pos_iff_mem_nonZeroDivisors.2 (mem_nonZeroDivisors_of_ne_zero (by simpa using hI)))`. Establish `hD : 0 < Real.sqrt |(discr K : ℝ)|` using `Real.sqrt_pos.2 (abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero K)))`. Use `set X : ℝ := (Ideal.absNorm I : ℝ) * Real.sqrt |(discr K : ℝ)| with hX_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hX : 0 < X` using `mul_pos hN hD`. Set `J : (FractionalIdeal (𝓞 K)⁰ K)ˣ` to `Units.mk0 (I : FractionalIdeal (𝓞 K)⁰ K) (FractionalIdeal.coeIdeal_ne_zero.2 hI)`. Set `f : InfinitePlace K → NNReal` to `fun w => ⟨Real.exp (c w), (Real.exp_pos _).le⟩`. Establish `hL : (minkowskiBound K J).toReal = (Ideal.absNorm I : ℝ) * (2 : ℝ)⁻¹ ^ nrComplexPlaces K * Real.sqrt |(discr K : ℝ)| * 2 ^ n`. Repeatedly rewrite using `[minkowskiBound, volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_inv, ENNReal.coe_toReal, ENNReal.toReal_ofNat, mixedEmbedding.finrank]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.toReal_ofReal (Rat.cast_nonneg.mpr (FractionalIdeal.absNorm_nonneg _))]`. Simplify using `only [J, Units.val_mk0, FractionalIdeal.coeIdeal_absNorm, Rat.cast_natCast, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV : volume (convexBodyLT K f) ≠ ⊤`. Rewrite using `[convexBodyLT_volume]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.coe_ne_top`. Establish `hR' : (volume (convexBodyLT K f)).toReal = (convexBodyLTFactor K : ℝ) * X`. Rewrite using `[convexBodyLT_volume, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.coe_toReal]`. Use `congr 1`. Rewrite using `[NNReal.coe_prod]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ x : InfinitePlace K, ((f x ^ x.mult : NNReal) : ℝ) = Real.exp (x.mult * c x)` using `fun x => by rw [NNReal.coe_pow, Real.exp_nat_mul]; rfl`. Rewrite using `[Finset.prod_congr rfl fun x _ => e x, ← Real.exp_sum, hc, Real.exp_log hX]`. Establish `hfin : n = 2 * nrComplexPlaces K` using `IsTotallyComplex.finrank K`. Establish `hr : nrRealPlaces K = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Establish `h : minkowskiBound K J < volume (convexBodyLT K f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ENNReal.toReal_lt_toReal (minkowskiBound_lt_top K J).ne hV, hL, hR']`. Establish `h1 : (convexBodyLTFactor K : ℝ) = Real.pi ^ nrComplexPlaces K`. Simplify using `[convexBodyLTFactor, hr]`. Establish `h3 : (2 : ℝ) ^ nrComplexPlaces K < Real.pi ^ nrComplexPlaces K` using `pow_lt_pow_left₀ (by linarith [Real.pi_gt_three]) (by norm_num) (by omega)`. Establish `h4 : (2 : ℝ)⁻¹ ^ nrComplexPlaces K * 2 ^ n = 2 ^ nrComplexPlaces K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hfin, pow_mul, ← mul_pow]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, h1]`. Conclude with `mul_lt_mul_of_pos_right h3 hX`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hne, hlt⟩` from `exists_ne_zero_mem_ideal_lt K J h`. Rewrite `ha` using `[Units.val_mk0, FractionalIdeal.mem_coeIdeal]`. Take `⟨x, hx, rfl⟩` from `ha`. Use `⟨x, hx, fun h0 => hne (by rw [h0, map_zero]), fun w => ?_⟩` and prove the remaining obligations. Conclude with `hlt w`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_box (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) (c : InfinitePlace K → ℝ)
@@ -84,9 +84,9 @@ theorem exists_mem_box (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
   exact hlt w
 
 /- English proof (translation)
-Establish `ha' : (a : K) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 ha`. Establish `h` using `prod_eq_abs_norm (a : K)`. Establish `h2 : (Ideal.absNorm (Ideal.span {a}) : ℝ) = ((|Algebra.norm ℚ (a : K)| : ℚ) : ℝ)`. Rewrite using `[Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int, Nat.cast_natAbs]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[h2, ← h, Real.log_prod (fun w _ => pow_ne_zero _ (pos_iff.2 ha').ne')]`. Simplify using `[Real.log_pow]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mult_log (K : Type) [Field K] [NumberField K] (a : 𝓞 K) (ha : a ≠ 0) :
     ∑ w : InfinitePlace K, (w.mult : ℝ) * Real.log (w (a : K)) =
@@ -100,41 +100,39 @@ theorem sum_mult_log (K : Type) [Field K] [NumberField K] (a : 𝓞 K) (ha : a �
   simp [Real.log_pow]
 
 /- English proof (translation)
-Introduce `K _ _ hK C S hS`. Use `set Y := Real.sqrt |(discr K : ℝ)| with hY`. Establish `hD : 0 < Y` using `Real.sqrt_pos.2 (abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero K)))`. Take `⟨⟨J, hJ⟩, hJC⟩` from `ClassGroup.mk0_surjective C⁻¹`. Establish `hJ0 : J ≠ ⊥` using `nonZeroDivisors.ne_zero hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ I : Ideal (𝓞 K), I ∈ (Ideal (𝓞 K))⁰ → 0 < (Ideal.absNorm I : ℝ)` using `fun I hI => Nat.cast_pos.2 (Ideal.absNorm_pos_iff_mem_nonZeroDivisors.2 hI)`. Establish `hgen : ∀ I : Ideal (𝓞 K), ∃ y : 𝓞 K, (∃ x : 𝓞 K, Ideal.span {x} = J * I) → Ideal.span {y} = J * I`. Introduce `I`. Distinguish the cases in `h : ∃ x : 𝓞 K, Ideal.span {x} = J * I`. Take `⟨x, hx⟩` from `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, fun _ => hx⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose y hy using hgen`. Set `a : Ideal (𝓞 K) → logSpace K` to `fun I w => (w.1.mult : ℝ) * Real.log (w.1 (y I : K))`. Set `A : Ideal (𝓞 K) → Set (logSpace K)` to `fun I => {t | (∀ i, a I i ≤ t i) ∧ ∑ i, (t i - a I i) ≤ Real.log (Y / Ideal.absNorm I)}`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ I ∈ S, 0 ≤ Real.log (Y / Ideal.absNorm I)`. Introduce `I hI`. Take `⟨h1, -, h2⟩` from `(hS I).1 hI`. Conclude with `Real.log_nonneg ((one_le_div (hpos I h1)).2 h2)`. Establish `hcard : Fintype.card {w : InfinitePlace K // w ≠ w₀} = Units.rank K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Units.rank]`. Establish `hmeas : ∀ I, MeasurableSet (A I)`. Introduce `I`. Use `IsClosed.measurableSet ?_` and prove the remaining obligations. Establish `h1 : IsClosed {t : logSpace K | ∀ i, a I i ≤ t i}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_le continuous_const (continuous_apply i)`. Conclude with `h1.inter (isClosed_le (f := fun t : logSpace K => ∑ i, (t i - a I i)) (by fun_prop) continuous_const)`. Establish `hcov : ∀ t : logSpace K, ∃ I ∈ S, ∃ l ∈ unitLattice K, t + l ∈ A I`. Introduce `t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `b : InfinitePlace K → ℝ` to `fun w => if h : w = w₀ then Real.log ((Ideal.absNorm J : ℝ) * Y) - ∑ i, t i else t ⟨w, h⟩`. Establish `hb : ∀ i : {w : InfinitePlace K // w ≠ w₀}, b i.1 = t i` using `fun i => dif_neg i.2`. Establish `hbsum : ∑ w, b w = Real.log ((Ideal.absNorm J : ℝ) * Y)`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ w₀]`. Simplify using `only [hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[b]`. Establish `hm : ∀ w : InfinitePlace K, (0 : ℝ) < w.mult` using `fun w => Nat.cast_pos.2 mult_pos`. Establish `hbc : ∀ w : InfinitePlace K, (w.mult : ℝ) * (b w / w.mult) = b w` using `fun w => mul_div_cancel₀ _ (hm w).ne'`. Take `⟨x, hxJ, hx0, hx⟩` from `exists_mem_box K J hJ0 (fun w => b w / w.mult) (by simp only [hbc]; exact hbsum)`. Establish `hx0' : (x : K) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 hx0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ w : InfinitePlace K, 0 ≤ b w - (w.mult : ℝ) * Real.log (w (x : K))`. Introduce `w`. Establish `h1 : Real.log (w (x : K)) ≤ b w / w.mult` using `(Real.log_le_iff_le_exp (pos_iff.2 hx0')).2 (hx w).le`. Use `mul_le_mul_of_nonneg_left h1 (hm w).le` as an intermediate fact. Rewrite `this` using `[hbc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨I, hI⟩ : J ∣ Ideal.span {x}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hxJ)`. Establish `hI0 : I ∈ (Ideal (𝓞 K))⁰`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hI` using `[mul_zero]`. Conclude with `hx0 (Ideal.span_singleton_eq_bot.1 hI)`. Establish `hsum : ∑ w : InfinitePlace K, (b w - (w.mult : ℝ) * Real.log (w (x : K))) = Real.log (Y / Ideal.absNorm I)`. Rewrite using `[Finset.sum_sub_distrib, hbsum, sum_mult_log K x hx0, hI, map_mul, Nat.cast_mul, Real.log_mul (hpos J hJ).ne' hD.ne', Real.log_mul (hpos J hJ).ne' (hpos I hI0).ne', Real.log_div hD.ne' (hpos I hI0).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIS : I ∈ S`. Use `(hS I).2 ⟨hI0, ?_, ?_⟩` and prove the remaining obligations. Establish `: ClassGroup.mk0 ⟨J, hJ⟩ = (ClassGroup.mk0 ⟨I, hI0⟩)⁻¹` using `ClassGroup.mk0_eq_mk0_inv_iff.2 ⟨x, hx0, hI.symm⟩`. Rewrite `this` using `[hJC]`. Conclude with `(inv_injective this).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ Real.log (Y / Ideal.absNorm I)` using `hsum ▸ Finset.sum_nonneg fun w _ => hs w`. Use `(Real.log_nonneg_iff (div_pos hD (hpos I hI0))).1 h0` as an intermediate fact. Conclude with `(one_le_div (hpos I hI0)).1 this`. Establish `hyI : Ideal.span {x} = Ideal.span {y I}` using `hI.trans (hy I ⟨x, hI⟩).symm`. Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.1 hyI`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ i : {w : InfinitePlace K // w ≠ w₀}, (t + logEmbedding K (Additive.ofMul u)) i - a I i = b i.1 - (i.1.mult : ℝ) * Real.log (i.1 (x : K))`. Introduce `i`. Establish `h1 : ((y I : 𝓞 K) : K) = (x : K) * ((u : 𝓞 K) : K)`. Rewrite using `[← hu]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [a, Pi.add_apply, logEmbedding_component, hb, h1, map_mul]`. Rewrite using `[Real.log_mul (pos_iff.2 hx0').ne' (Units.pos_at_place u i.1).ne']`. Expand and normalize the polynomial expressions, which then agree. Use `⟨I, hIS, logEmbedding K (Additive.ofMul u), ⟨Additive.ofMul u, trivial, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs i.1` as an intermediate fact. Rewrite `this` using `[← key]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [key]`. Rewrite using `[← hsum, Fintype.sum_eq_add_sum_subtype_ne _ (w₀ : InfinitePlace K)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[hs w₀]`. Establish `h1` using `GlobalTheory.covolume_le_sum_volume_of_cover _ (unitLattice K) _ S A hmeas hcov`. Establish `h2 : ∑ I ∈ S, volume (A I) ≤ ∑ I ∈ S, ENNReal.ofReal (Real.log (Y / Ideal.absNorm I) ^ Units.rank K / ((Units.rank K).factorial : ℝ))`. Use `Finset.sum_le_sum fun I hI => ?_` and prove the remaining obligations. Use `GlobalTheory.SimplexVolume.volume_simplex_le _ (a I) _ (hL I hI)` as an intermediate fact.
-
-Rewrite `this` using `[hcard]`. Conclude with `this`. Establish `hnn : ∀ I ∈ S, 0 ≤ Real.log (Y / Ideal.absNorm I) ^ Units.rank K / ((Units.rank K).factorial : ℝ)` using `fun I hI => div_nonneg (pow_nonneg (hL I hI) _) (Nat.cast_nonneg _)`. Rewrite `h2` using `[← ENNReal.ofReal_sum_of_nonneg hnn]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (Finset.sum_nonneg hnn)).1 (h1.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem regulator_le_sum_class : ∀ (K : Type) [Field K] [NumberField K], IsTotallyComplex K → ∀ (C : ClassGroup (𝓞 K)) (S : Finset (Ideal (𝓞 K))), (∀ I, I ∈ S ↔ ∃ hI : I ∈ nonZeroDivisors (Ideal (𝓞 K)), ClassGroup.mk0 ⟨I, hI⟩ = C ∧ (Ideal.absNorm I : ℝ) ≤ Real.sqrt |(discr K : ℝ)|) → Units.regulator K ≤ ∑ I ∈ S, Real.log (Real.sqrt |(discr K : ℝ)| / Ideal.absNorm I) ^ Units.rank K / ((Units.rank K).factorial : ℝ) := by
   intro K _ _ hK C S hS

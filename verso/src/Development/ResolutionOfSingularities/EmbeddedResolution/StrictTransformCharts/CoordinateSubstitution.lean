@@ -12,7 +12,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord]`. Simplify using `only [Finset.coe_empty, Set.image_empty, Ideal.span_empty]`. Use extensionality with `U`. Simplify using `[Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coordSubspaceIdeal_empty (k : Type u) [Field k] (m : ℕ) :
     coordSubspaceIdeal k m (∅ : Finset (Fin m)) = ⊥ := by
@@ -22,7 +22,7 @@ theorem coordSubspaceIdeal_empty (k : Type u) [Field k] (m : ℕ) :
   simp [Ideal.map_bot]
 
 /- English proof (translation)
-Establish `h : ((fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) '' (({j} : Finset (Fin m)) : Set (Fin m))) = {AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j)}`. Rewrite using `[Finset.coe_singleton, Set.image_singleton]`. Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordSubspaceIdeal_singleton (k : Type u) [Field k] (m : ℕ) (j : Fin m) :
     coordSubspaceIdeal k m {j} =
@@ -45,7 +45,7 @@ def coordBlowupSubstMap (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) (s
 
 @[simp]
 /- English proof (translation)
-Apply `AffineSpace.homOfVector_over` to reduce the goal to its premises. Use the proof step `@[simp]`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coordBlowupSubstMap_comp_affineSpaceFinToSpec (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) (s : Fin m) :
     coordBlowupSubstMap k m S s ≫ affineSpaceFinToSpec k m = affineSpaceFinToSpec k m := by
@@ -53,7 +53,7 @@ theorem coordBlowupSubstMap_comp_affineSpaceFinToSpec (k : Type u) [Field k] (m 
 
 @[simp]
 /- English proof (translation)
-Conclude with `AffineSpace.homOfVector_appTop_coord ..`.
+A detailed English derivation is pending.
 -/
 theorem coordBlowupSubstMap_appTop_coord (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) (s : Fin m)
     (i : ULift.{u} (Fin m)) :
@@ -65,7 +65,7 @@ theorem coordBlowupSubstMap_appTop_coord (k : Type u) [Field k] (m : ℕ) (S : F
   exact AffineSpace.homOfVector_appTop_coord ..
 
 /- English proof (translation)
-Establish `hc : (ULift.up j : ULift.{u} (Fin m)).down ∈ S ∧ (ULift.up j : ULift.{u} (Fin m)).down ≠ s` using `⟨hj, hjs⟩`. Rewrite using `[coordBlowupSubstMap_appTop_coord k m S s (ULift.up j : ULift.{u} (Fin m)), if_pos hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordBlowupSubstMap_appTop_coord_of_mem (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (s : Fin m) (j : Fin m) (hj : j ∈ S) (hjs : j ≠ s) :
@@ -78,7 +78,7 @@ theorem coordBlowupSubstMap_appTop_coord_of_mem (k : Type u) [Field k] (m : ℕ)
   rw [coordBlowupSubstMap_appTop_coord k m S s (ULift.up j : ULift.{u} (Fin m)), if_pos hc]
 
 /- English proof (translation)
-Establish `hc : ¬ ((ULift.up s : ULift.{u} (Fin m)).down ∈ S ∧ (ULift.up s : ULift.{u} (Fin m)).down ≠ s)`. Introduce and unpack `⟨-, h⟩`. Conclude with `h rfl`. Rewrite using `[coordBlowupSubstMap_appTop_coord k m S s (ULift.up s : ULift.{u} (Fin m)), if_neg hc]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordBlowupSubstMap_appTop_coord_self (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (s : Fin m) :
@@ -92,7 +92,7 @@ theorem coordBlowupSubstMap_appTop_coord_self (k : Type u) [Field k] (m : ℕ) (
   rw [coordBlowupSubstMap_appTop_coord k m S s (ULift.up s : ULift.{u} (Fin m)), if_neg hc]
 
 /- English proof (translation)
-Establish `hc : ¬ ((ULift.up j : ULift.{u} (Fin m)).down ∈ S ∧ (ULift.up j : ULift.{u} (Fin m)).down ≠ s)` using `fun h => hj h.1`. Rewrite using `[coordBlowupSubstMap_appTop_coord k m S s (ULift.up j : ULift.{u} (Fin m)), if_neg hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordBlowupSubstMap_appTop_coord_of_notMem (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (s : Fin m) (j : Fin m) (hj : j ∉ S) :
@@ -104,7 +104,7 @@ theorem coordBlowupSubstMap_appTop_coord_of_notMem (k : Type u) [Field k] (m : �
   rw [coordBlowupSubstMap_appTop_coord k m S s (ULift.up j : ULift.{u} (Fin m)), if_neg hc]
 
 /- English proof (translation)
-Rewrite using `[coordSubspaceIdeal_singleton, coordSubspaceIdeal_singleton, Scheme.IdealSheafData.comap_ofIdealTop, ← Scheme.IdealSheafData.ofIdealTop_mul, Ideal.map_span, Set.image_singleton, coordBlowupSubstMap_appTop_coord_of_mem k m S s j hj hjs, Ideal.span_singleton_mul_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_mem (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) (j : Fin m) (hj : j ∈ S) (hjs : j ≠ s) :
@@ -117,7 +117,7 @@ theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_mem (k : Type 
     Ideal.span_singleton_mul_span_singleton]
 
 /- English proof (translation)
-Rewrite using `[coordSubspaceIdeal_singleton, Scheme.IdealSheafData.comap_ofIdealTop, Ideal.map_span, Set.image_singleton, coordBlowupSubstMap_appTop_coord_self k m S s]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_self (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) :
@@ -126,7 +126,7 @@ theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_self (k : Type u)
     Ideal.map_span, Set.image_singleton, coordBlowupSubstMap_appTop_coord_self k m S s]
 
 /- English proof (translation)
-Rewrite using `[coordSubspaceIdeal_singleton, Scheme.IdealSheafData.comap_ofIdealTop, Ideal.map_span, Set.image_singleton, coordBlowupSubstMap_appTop_coord_of_notMem k m S s j hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_notMem (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) (j : Fin m) (hj : j ∉ S) :
@@ -135,13 +135,13 @@ theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_notMem (k : Ty
     Ideal.map_span, Set.image_singleton, coordBlowupSubstMap_appTop_coord_of_notMem k m S s j hj]
 
 /- English proof (translation)
-Establish `key : Ideal.map ((coordBlowupSubstMap k m S s).appTop.hom) (Ideal.span ((fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) '' (S : Set (Fin m)))) = Ideal.span {AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s)}`. Rewrite using `[Ideal.map_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `y ⟨z, ⟨i, hi, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hiS : i ∈ S` using `Finset.mem_coe.mp hi`. Use `show (coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) ∈ Ideal.span {AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s)}`. Distinguish the cases in `h : i = s`. Establish `h2 : (coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s)`. Rewrite using `[h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coordBlowupSubstMap_appTop_coord_self k m S s`. Rewrite using `[h2]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[coordBlowupSubstMap_appTop_coord_of_mem k m S s i hiS h]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Establish `hmem : (coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s)) ∈ ((coordBlowupSubstMap k m S s).appTop.hom '' ((fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) '' (S : Set (Fin m))))` using `Set.mem_image_of_mem _ (Set.mem_image_of_mem _ (Finset.mem_coe.mpr hs))`. Rewrite `hmem` using `[coordBlowupSubstMap_appTop_coord_self k m S s]`. Conclude with `Ideal.subset_span hmem`. Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord, Scheme.IdealSheafData.comap_ofIdealTop, key, coordSubspaceIdeal_singleton]`.
+A detailed English derivation is pending.
 -/
 theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_center (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) (hs : s ∈ S) :
@@ -182,7 +182,7 @@ theorem comap_coordBlowupSubstMap_coordSubspaceIdeal_center (k : Type u) [Field 
     coordSubspaceIdeal_singleton]
 
 /- English proof (translation)
-Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, ← Scheme.IdealSheafData.comap_comp, ← hg, Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_coordIdeal_of_coordBlowupSubstMap {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {p₁ : X₁ ⟶ Spec (CommRingCat.of k)}
@@ -196,7 +196,7 @@ theorem comap_coordIdeal_of_coordBlowupSubstMap {X X₁ : Scheme.{u}} {k : Type 
     Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Rewrite using `[comap_coordIdeal_of_coordBlowupSubstMap c c₁ g hg {j}, comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_mem k m S s j hj hjs, Scheme.IdealSheafData.comap_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comap_coordIdeal_singleton_of_mem {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {p₁ : X₁ ⟶ Spec (CommRingCat.of k)}
@@ -212,7 +212,7 @@ theorem comap_coordIdeal_singleton_of_mem {X X₁ : Scheme.{u}} {k : Type u} [Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[comap_coordIdeal_of_coordBlowupSubstMap c c₁ g hg {s}, comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_self k m S s]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comap_coordIdeal_singleton_self {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {p₁ : X₁ ⟶ Spec (CommRingCat.of k)}
@@ -226,7 +226,7 @@ theorem comap_coordIdeal_singleton_self {X X₁ : Scheme.{u}} {k : Type u} [Fiel
   rfl
 
 /- English proof (translation)
-Rewrite using `[comap_coordIdeal_of_coordBlowupSubstMap c c₁ g hg {j}, comap_coordBlowupSubstMap_coordSubspaceIdeal_singleton_of_notMem k m S s j hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comap_coordIdeal_singleton_of_notMem {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {p₁ : X₁ ⟶ Spec (CommRingCat.of k)}
@@ -241,7 +241,7 @@ theorem comap_coordIdeal_singleton_of_notMem {X X₁ : Scheme.{u}} {k : Type u} 
   rfl
 
 /- English proof (translation)
-Rewrite using `[comap_coordIdeal_of_coordBlowupSubstMap c c₁ g hg S, comap_coordBlowupSubstMap_coordSubspaceIdeal_center k m S s hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comap_coordIdeal_center {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {p₁ : X₁ ⟶ Spec (CommRingCat.of k)}

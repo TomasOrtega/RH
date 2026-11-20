@@ -25,7 +25,7 @@ structure AdmK (u : B.Word) (a : I.ι) (i : ℕ) {Ch : Type} (k : Ch → GA B (B
       (if j = r then Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) else 0)
 
 /- English proof (translation)
-Establish `h` using `(l.ch u a).step i`. Use `haveI : Finite (I.stp u a i).Cl := @Finite.instSigma _ _ inferInstance h.fin_orb`. Conclude with `(Set.finite_range _).to_subtype`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_chart (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) : Finite (Chart I u a i) := by
   have h := (l.ch u a).step i

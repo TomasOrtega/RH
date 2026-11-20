@@ -16,26 +16,24 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.CrisMap
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff {R : Type} [CommRing R] (a : R) (n : ℕ) (x y : R) :
     x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule R R)] ↔ a ^ n ∣ x - y := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Establish `key : ∀ (b : B) (k : ℕ), (p : R) ^ (k + N) ∣ g b → (p : B) ^ k ∣ b`. Introduce and unpack `b k ⟨y, hy⟩`. Take `⟨c, hc⟩` from `h y`. Use `⟨c, hg ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_mul, map_pow, map_natCast, ← hc]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `{ haus' := fun x hx => ?_, prec' := fun x hx => ?_ }` and prove the remaining obligations. Simplify using `only [smodEq_iff, sub_zero] at hx`. Take `⟨y, hy⟩` from `hx N`. Take `⟨b, hb⟩` from `h y`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: b = 0`. Use `IsHausdorff.haus hB.toIsHausdorff b fun k => ?_` and prove the remaining obligations. Rewrite using `[smodEq_iff, sub_zero]`. Conclude with `key b k (by rw [← hb, ← hy]; exact hx _)`. Rewrite using `[hy, hb, this, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smodEq_iff] at hx ⊢`. Establish `h1 : ∀ k, ∃ b : B, x (k + N) - x N = g b` using `fun k => by`. Take `⟨y, hy⟩` from `hx (Nat.le_add_left N k)`. Take `⟨b, hb⟩` from `h y`. Conclude with `⟨-b, by rw [map_neg, ← hb, ← hy]; ring⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose b hb using h1`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hB.toIsPrecomplete (f := b) (fun {m n} hmn => by`. Rewrite using `[smodEq_iff]`. Use `key _ _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← hb, ← hb, sub_sub_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hx (Nat.add_le_add_right hmn N))`. Use `⟨x N + g L, fun n => ?_⟩` and prove the remaining obligations. Establish `h2` using `map_dvd g ((smodEq_iff _ _ _ _).1 (hL n))`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, ← hb]`. Establish `h3` using `dvd_add (hx (Nat.le_add_right n N)) h2`.
-
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem complete_of_sandwich (p N : ℕ) {B R : Type} [CommRing B] [CommRing R]
     (hB : IsAdicComplete (Ideal.span {(p : B)}) B) (g : B →+* R) (hg : Function.Injective g)
@@ -74,7 +72,7 @@ theorem complete_of_sandwich (p N : ℕ) {B R : Type} [CommRing B] [CommRing R]
     ring
 
 /- English proof (translation)
-Establish `hf : (Ideal.span {(p : D)}).map f ≤ Ideal.span {(p : R)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Use `⟨((AdicCompletion.ofAlgEquiv (Ideal.span {(p : R)})).symm : _ →+* R).comp (GlobalTheory.AdicMaps.adicMap (Ideal.span {(p : D)}) (Ideal.span {(p : R)}) f (Ideal.map_le_iff_le_comap.1 hf)), fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, GlobalTheory.AdicMaps.adicMap_alg]`. Conclude with `(AdicCompletion.ofAlgEquiv (Ideal.span {(p : R)})).symm_apply_apply (f d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend (p : ℕ) {D R : Type} [CommRing D] [CommRing R]
     (hR : IsAdicComplete (Ideal.span {(p : R)}) R) (f : D →+* R) :
@@ -88,9 +86,9 @@ theorem exists_extend (p : ℕ) {D R : Type} [CommRing D] [CommRing R]
   exact (AdicCompletion.ofAlgEquiv (Ideal.span {(p : R)})).symm_apply_apply (f d)
 
 /- English proof (translation)
-Use `ext1 x`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus hR _ fun k => ?_` and prove the remaining obligations. Rewrite using `[smodEq_iff, sub_zero]`. Take `⟨s, z, rfl⟩` from `GlobalTheory.PrincipalCompletion.dense (p : D) x k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F z - G z, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, map_natCast, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem extend_unique (p : ℕ) {D R : Type} [CommRing D] [CommRing R]
     (hR : IsHausdorff (Ideal.span {(p : R)}) R) (F G : AdicCompletion (Ideal.span {(p : D)}) D →+* R)
@@ -105,13 +103,13 @@ theorem extend_unique (p : ℕ) {D R : Type} [CommRing D] [CommRing R]
   ring
 
 /- English proof (translation)
-Use `choose F hF using fun n => exists_extend p (h n) ((Ideal.Quotient.mk (I ^ n)).comp f).rangeRestrict`. Establish `hc : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow I hle).comp ((Subring.subtype _).comp (F n)) = (Subring.subtype _).comp (F m)`. Introduce `m n hle`. Establish `hm : ∀ x, (Ideal.Quotient.factorPow I hle).comp ((Subring.subtype _).comp (F n)) x ∈ ((Ideal.Quotient.mk (I ^ m)).comp f).range` using `fun x => by`. Take `⟨d, hd⟩` from `(F n x).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Subring.subtype_apply, ← hd]`. Both sides reduce to the same expression. Use `extend_unique p (h m).toIsHausdorff (RingHom.codRestrict _ _ hm) (F m) fun d => by` as an intermediate fact. Use `Subtype.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.codRestrict_apply, RingHom.comp_apply, hF]`. Both sides reduce to the same expression. Rewrite using `[← this]`. Both sides reduce to the same expression. Use `⟨AdicCompletion.liftRingHom I (fun n => (Subring.subtype _).comp (F n)) hc, fun d => ?_, fun n x => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Rewrite using `[AdicCompletion.evalₐ_liftRingHom, RingHom.comp_apply, hF]`. Simplify using `[AdicCompletion.algebraMap_apply]`. Take `⟨d, hd⟩` from `(F n x).2`. Conclude with `⟨d, by rw [AdicCompletion.evalₐ_liftRingHom]; exact hd.symm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (p : ℕ) {D P : Type} [CommRing D] [CommRing P] (I : Ideal P) (f : D →+* P)
     (h : ∀ n : ℕ, IsAdicComplete
@@ -147,9 +145,9 @@ theorem exists_lift (p : ℕ) {D P : Type} [CommRing D] [CommRing P] (I : Ideal 
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨ζ, ε, h0, -, h1, h⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Use `⟨ε, Subtype.ext ?_, fun h2 => h1 ?_⟩` and prove the remaining obligations. Use `h 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `h 1`. Establish `h4 : rootT ε 1 = 1` using `h2`. Rewrite `h3` using `[h4]`. Conclude with `(algebraMap (Om l) ℂ_[l]).injective (by rw [← h3, map_one]; rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEps : ∃ e : Per.Fl l, IsEps e := by
   obtain ⟨ζ, ε, h0, -, h1, h⟩ := GlobalTheory.MemLoc.exists_zeta_eps l
@@ -163,21 +161,21 @@ theorem exists_isEps : ∃ e : Per.Fl l, IsEps e := by
     exact (algebraMap (Om l) ℂ_[l]).injective (by rw [← h3, map_one]; rfl)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_isEps l`. Rewrite `hs` using `[mem_Acris0_iff_span l e he]`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, hk⟩` from `hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Break down `le_total k n with hkn | hkn` into its components or cases. Take `⟨c, hc⟩` from `GlobalTheory.RingBasics.exists_pow_div_factorial l k`. Establish `hc' : ((k.factorial : ℕ) : Per.AinfP l) * algebraMap (Per.Ainf l) (Per.AinfP l) (Per.zA l c) = (l : Per.AinfP l) ^ k`. Establish `h` using `congrArg ((algebraMap (Per.Ainf l) (Per.AinfP l)).comp (Per.zA l)) hc`. Rewrite `h` using `[map_mul, map_natCast, map_pow, map_natCast, RingHom.comp_apply]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨(l : Per.Ainf l) ^ (n - k) * Per.zA l c * xi e ^ k, ?_⟩` and prove the remaining obligations. Establish `: (l : Per.AinfP l) ^ n * y = algebraMap (Per.Ainf l) (Per.AinfP l) ((l : Per.Ainf l) ^ (n - k) * Per.zA l c * xi e ^ k)`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, ← hk]`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hkn`. Rewrite using `[Nat.add_sub_cancel_left, pow_add, ← hc']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, sub_self]`. Conclude with `zero_mem _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(GlobalTheory.RingBasics.isUnit_nat l _ k.factorial_ne_zero).exists_left_inv`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : y = u * algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ^ k`. Rewrite using `[← hk, ← mul_assoc, hu, one_mul]`. Rewrite using `[map_zero, sub_zero, hy, GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right hkn (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) k)))`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨c * a, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mul_mem_left _ (algebraMap (Per.Ainf l) (Per.AinfP l) c) ha using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bound (n : ℕ) (s : Per.AinfP l) (hs : s ∈ Per.Acris0 l) : ∃ a : Per.Ainf l,
     (l : Per.AinfP l) ^ n * s - algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l ^ n := by
@@ -224,11 +222,11 @@ theorem bound (n : ℕ) (s : Per.AinfP l) (hs : s ∈ Per.Acris0 l) : ∃ a : Pe
     ring
 
 /- English proof (translation)
-Establish `h1 : Per.kerP l ^ n = (Ideal.span {xi e ^ n}).map (algebraMap (Per.Ainf l) (Per.AinfP l))`. Rewrite using `[GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]`. Rewrite using `[h1]`. Use `⟨fun h => ?_, Ideal.mem_map_of_mem _⟩` and prove the remaining obligations. Rewrite `h` using `[IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers (l : Per.Ainf l))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨_, ⟨k, rfl⟩, hk⟩` from `h`. Rewrite `hk`, the goal using `[Ideal.mem_span_singleton]`. Proceed by induction on `k with`. Consider the case `zero => simpa using hk`. Consider the case `succ k ih`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `ih ((GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he n).1 _ ?_)` and prove the remaining obligations. Use `hk using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem algebraMap_mem_kerTheta_pow_iff₂ (e : Per.Fl l) (he : IsEps e) (n : ℕ) (a : Per.Ainf l) :
     algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l ^ n ↔ a ∈ Ideal.span {xi e ^ n} := by
@@ -247,11 +245,11 @@ theorem algebraMap_mem_kerTheta_pow_iff₂ (e : Per.Fl l) (he : IsEps e) (n : �
     ring
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_isEps l`. Set `g0 : Per.Ainf l →+* ((Ideal.Quotient.mk (Per.kerP l ^ n)).comp (Per.Acris0 l).val.toRingHom).range` to `((Ideal.Quotient.mk (Per.kerP l ^ n)).comp (Per.Acris0 l).val.toRingHom).rangeRestrict.comp (algebraMap (Per.Ainf l) (Per.Acris0 l))`. Establish `hg0 : ∀ a, (g0 a).1 = Ideal.Quotient.mk _ (algebraMap (Per.Ainf l) (Per.AinfP l) a)` using `fun _ => rfl`. Establish `hk : ∀ a, g0 a = 0 ↔ a ∈ Ideal.span {xi e ^ n}` using `fun a => by`. Rewrite using `[← algebraMap_mem_kerTheta_pow_iff₂ l e he, ← Ideal.Quotient.eq_zero_iff_mem, ← hg0]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext_iff`. Use `complete_of_sandwich l n (GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he n).2 (Ideal.Quotient.lift _ g0 fun a ha => (hk a).2 ha) ?_ ?_` and prove the remaining obligations. Use `RingHom.lift_injective_of_ker_le_ideal _ _ fun a ha => (hk a).1 ha` and prove the remaining obligations. Introduce and unpack `⟨_, s, rfl⟩`. Take `⟨a, ha⟩` from `bound l n s s.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ideal.Quotient.mk _ a, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.lift_mk, hg0, ← (Ideal.Quotient.eq).2 ha, map_mul, map_pow, map_natCast, Subring.coe_mul, SubmonoidClass.coe_pow, SubringClass.coe_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem range_complete (n : ℕ) : IsAdicComplete
     (Ideal.span {(l : ((Ideal.Quotient.mk (Per.kerP l ^ n)).comp (Per.Acris0 l).val.toRingHom).range)})
@@ -279,13 +277,13 @@ end GlobalTheory.MemLoc.CrisMap
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨j, h0, h1⟩` from `CrisMap.exists_lift l (Per.kerP l) (Per.Acris0 l).val.toRingHom (CrisMap.range_complete l)`. Take `⟨e, he⟩` from `GlobalTheory.AdicMaps.exists_acris_completion l`. Take `⟨e', he0, he1⟩` from `GlobalTheory.RingIface.exists_bdRp_equiv l`. Use `⟨e'.symm.toRingHom.comp (j.comp e.toRingHom), fun a => ?_, fun n => ⟨n, fun x => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[he, h0, RingEquiv.symm_apply_eq, he0]`. Both sides reduce to the same expression. Take `⟨d, hd⟩` from `h1 n (e x)`. Take `⟨a, ha⟩` from `CrisMap.bound l n d d.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : Per.ev l n (e'.symm (j (e x))) = Ideal.Quotient.mk _ (d : Per.AinfP l)`. Rewrite using `[← he1, RingEquiv.apply_symm_apply]`. Conclude with `hd`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_natCast, ← (Ideal.Quotient.eq).2 ha, map_mul, map_pow, map_natCast, h2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCrisP : ∀ (l : ℕ) [Fact l.Prime], ∃ j : Per.Acris l →+* Per.BdRp l, IsCrisP j := by
   intro l _

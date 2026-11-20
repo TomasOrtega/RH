@@ -16,11 +16,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.ConeUnit
 
 /- English proof (translation)
-Establish `ha : y k' ∈ grK K N e` using `(MvPolynomial.mem_homogeneousSubmodule e (y k')).2 (hy k')`. Establish `hb : y k ∈ grK K N e` using `(MvPolynomial.mem_homogeneousSubmodule e (y k)).2 (hy k)`. Establish `ha1 : y k' ∈ grK K N (1 • e)` using `by simpa using ha`. Establish `hb1 : y k ∈ grK K N (1 • e)` using `by simpa using hb`. Establish `hVx : W ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k' * y k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Proj.basicOpen_mul]`. Conclude with `le_inf h2 h1`. Establish `e1` using `congrArg (fun φ => φ.hom (HomogeneousLocalization.Away.mk _ ha 1 (y k) hb1)) (Proj.awayMap_awayToSection (grK K N) hb (x := y k' * y k) rfl)`. Establish `e2` using `congrArg (fun φ => φ.hom (HomogeneousLocalization.Away.mk _ hb 1 (y k') ha1)) (Proj.awayMap_awayToSection (grK K N) ha (x := y k' * y k) (mul_comm _ _))`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at e1 e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : (i.appLE _ W h2).hom (yQ y hy k k') = (i.appLE _ W hVx).hom ((Proj.awayToSection (grK K N) (y k' * y k)).hom (HomogeneousLocalization.awayMap (grK K N) hb (x` using `y k' * y k) rfl (HomogeneousLocalization.Away.mk _ ha 1 (y k) hb1))) := by`. Rewrite using `[e1, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression. Use `IsUnit.of_mul_eq_one ((i.appLE _ W hVx).hom ((Proj.awayToSection (grK K N) (y k' * y k)).hom (HomogeneousLocalization.awayMap (grK K N) ha (x := y k' * y k) (mul_comm _ _) (HomogeneousLocalization.Away.mk _ hb 1 (y k') ha1)))) ?_` and prove the remaining obligations. Rewrite using `[e3, ← map_mul, ← map_mul, GlobalTheory.CompanionTheory.GeoUnit.awayMap_ratio_mul ha hb hb1 ha1, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yQ_appLE_isUnit {K : Type} [Field K] {X : Scheme.{0}} {N m e : ℕ} (i : X ⟶ PSpace K N)
     (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) (k k' : Fin m)

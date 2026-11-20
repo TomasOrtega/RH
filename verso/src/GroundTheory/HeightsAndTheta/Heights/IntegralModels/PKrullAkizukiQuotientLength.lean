@@ -5,21 +5,21 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Model
 
 /- English proof (translation)
-Introduce `R _ _ _ hdim K _ _ _ L _ _ _ _ _ S b hb`. Establish `hinj : Function.Injective (algebraMap R S)`. Introduce `x y hxy`. Establish `h1 : algebraMap R L x = algebraMap R L y`. Simplify using `using congrArg (fun s : S => (s : L)) hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[IsScalarTower.algebraMap_apply R K L, IsScalarTower.algebraMap_apply R K L]`. Conclude with `IsFractionRing.injective R K ((algebraMap K L).injective h1)`. Establish `: FaithfulSMul R S` using `(faithfulSMul_iff_algebraMap_injective R S).mpr hinj`. Establish `: Module.IsTorsionFree R S` using `inferInstance`. Establish `hrankL : Module.rank R L = Module.rank K L` using `(IsLocalization.rank_eq K (nonZeroDivisors R) le_rfl).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Module.rank R S < Cardinal.aleph0` using `lt_of_le_of_lt (by rw [← hrankL]; exact Submodule.rank_le (Subalgebra.toSubmodule S)) (Module.rank_lt_aleph0 K L)`. Take `⟨r, hr⟩` from `Cardinal.lt_aleph0.mp hlt`. Establish `hdim0 : Ring.KrullDimLE 0 (R ⧸ Ideal.span {b})`. Rewrite using `[Ring.krullDimLE_iff]`. Establish `h2` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hdim]`. Generalize the expression as in `ringKrullDim (R ⧸ Ideal.span {b}) = d at h2 ⊢`. Consider the cases of `d with`. Consider the case `bot => exact bot_le`. Consider the case `coe n`.
+Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h3 : n + 1 ≤ 1` using `by exact_mod_cast h2`. Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp at h3`. Consider the case `coe k`. Establish `hk : k + 1 ≤ 1` using `by exact_mod_cast h3`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : k = 0` from `by omega`. Simplify using the standard rewrite rules. Establish `: IsArtinianRing (R ⧸ Ideal.span {b})` using `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero`. Establish `hRlen : Module.length R (R ⧸ Ideal.span {b}) ≠ ⊤`. Rewrite using `[Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨inferInstance, isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := Ideal.span {b}))⟩`. Establish `hle` using `h R hdim S r hr b hb`. Establish `hfin : IsFiniteLength R (S ⧸ (Ideal.span {b} • ⊤ : Submodule R S))` using `Module.length_ne_top_iff.mp (ne_top_of_le_ne_top (WithTop.mul_ne_top (ENat.natCast_ne_top r) hRlen) hle)`. Establish `heq : (Ideal.span {b} • ⊤ : Submodule R S) = (Ideal.span {algebraMap R S b}).restrictScalars R`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and, Submodule.restrictScalars_mem, Ideal.mem_span_singleton', Algebra.smul_def, mul_comm]`. Rewrite `hfin` using `[heq]`. Conclude with `hfin.of_surjective (f := (Submodule.Quotient.restrictScalarsEquiv R _).toLinearMap) (Submodule.Quotient.restrictScalarsEquiv R _).surjective`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KrullAkizukiQuotientLength.proof (h : TorsionFreeQuotientLength.Statement) :
     KrullAkizukiQuotientLength.Statement := by

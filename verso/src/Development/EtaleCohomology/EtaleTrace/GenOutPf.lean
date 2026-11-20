@@ -29,7 +29,7 @@ def GenOutGlue : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X
   ∃ π : X ⟶ PN k N, π ≫ PNto k N = p ∧ Gen p π w
 
 /- English proof (translation)
-Introduce `k _ X _ p N w hw`. Conclude with `h2 k p N w (h1 k p N w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GenOut_of (h1 : GenOutChart) (h2 : GenOutGlue) : GenOut := by
   intro k _ X _ p N w hw

@@ -24,7 +24,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 namespace GlobalTheory.ShortLaws
 
 /- English proof (translation)
-Establish `key : ∀ C : Core D, C = J.toCore → ∀ j, InR D j → ∀ k k', ((C.U j C.σ₀).X k).Gm = ((C.U j C.σ₀).X k').Gm ∧ ((C.U j C.σ₀).X k).ξ0 = ((C.U j C.σ₀).X k').ξ0`. Introduce and unpack `C rfl j hj k k'`. Take `⟨hr, hm⟩` from `hJ.modelW j hj J.toCore.σ₀ J.toCore.good_σ₀`. Conclude with `⟨(hm k).1.trans (hm k').1.symm, (hm k).2.trans (hm k').2.symm⟩`. Conclude with `key _ hT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameSpace_of_lawsJ {D : D7} (J : CoreJ D) (T : Top D) (hJ : LawsJ J) (hT : T.toCore = J.toCore) :
     ∀ j, InR D j → ∀ k k', ((T.U j T.σ₀).X k).Gm = ((T.U j T.σ₀).X k').Gm ∧
@@ -37,23 +37,23 @@ theorem sameSpace_of_lawsJ {D : D7} (J : CoreJ D) (T : Top D) (hJ : LawsJ J) (hT
   exact key _ hT
 
 /- English proof (translation)
-Establish `hM : LawsM T.toCore` using `h.toLawsCore.toLawsM`. Take `⟨-, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q hM.pins`. Establish `hL : ReciprocityTheory.ChartRestriction.G.Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hr : ∀ j, InR D j → (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r` using `fun j hj => (hnum j hj).1`. Establish `hr1 : ∀ j, InR D j → 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `fun j hj => (hr j hj).symm ▸ (hnum j hj).2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : badN D ≠ 1`. Establish `h2 : 2 ∣ badN D`. Unfold `badN`. Conclude with `((D.host.two_dvd_QS.mul_right _).mul_right _).mul_right _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hroot : ∀ j, InR D j → ∀ n, ∃ (Cls : Type) (_ : CommGroup Cls) (_ : Finite Cls) (δ : Cls →* (T.dδ j n).c₂.Fˣ) (gdet : FrPt (T.dδ j n).Xo₂ (T.dδ j n).c₂ (CAt (T.dδ j n).c₂.F.val.toRingHom) → Cls), CMP (T.Q.Xo j) T.Q.c (T.dδ j n) _ Cls δ gdet false`. Introduce `j hj n`. Take `⟨-, hlev, -, -, ⟨m, hm, hm1⟩, hval, -⟩` from `hd j hj n`. Conclude with `GlobalTheory.RootOfUnityFn.exists_character _ _ _ _ _ _ n (T.dδ j n) m hm hlev.2.2.2.2.2.2.2.1 hm1 hval`. Establish `htot : ∀ j, InR D j → ∀ a n, ShortValTot (T.Q.Xo j) T.Q.c (T.nab j) (badN D) D.R.nV a n (T.dδ j n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j hj a n`. Take `⟨-, hlev, hA2, hnab, -, -, hphi⟩` from `hd j hj n`. Use `GlobalTheory.shortValTot_of_pinned hL hC _ _ _ _ _ _ n (T.dδ j n) (GlobalTheory.moduliScheme_levelMaps_heckePoints.2 _ _ _ (hr1 j hj)).1 (hM.evalWD j hj) (h.allTest j hj) (GlobalTheory.Frames.algebraic_laws hL.secBaseChange _ _ _ _ _ _).2.2.1 (GlobalTheory.Frames.allTest_of_secBa …` and prove the remaining obligations. Introduce `hn`. Take `⟨ph, ψ, x₀, -, h1, h2⟩` from `hphi hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨ph, ψ, x₀, h1, h2⟩`. Establish `hpin : ∀ j, InR D j → ∀ n, (T.Q.Dw j).p + (T.Q.Dw j).q ≤ n → ∃ ph ψ x₀, (T.dδ j n).PhiPin ph ψ x₀`. Introduce `j hj n hn`. Take `⟨ph, ψ, x₀, -, h1, -⟩` from `(hd j hj n).2.2.2.2.2.2 hn`. Conclude with `⟨ph, ψ, x₀, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunit : ∀ j, InR D j → ∀ n, GlobalTheory.Dict.UnitC (T.dδ j n)`. Introduce `j hj n`. Take `⟨Cls, _, _, δ, gdet, hc⟩` from `hroot j hj n`. Conclude with `GlobalTheory.Dict.unitC_of_finite_character _ _ _ _ _ _ _ _ Cls δ gdet (hr1 j hj) hc`. Use `{ beta := fun j _ n => GlobalTheory.betaExists_of_ne_one _ _ _ _ _ n _ hb1 dLev := fun j hj n => (hd j hj n).2.1 dNab := fun j hj n => (hd j hj n).2.2.2.1 dPd := ⟨p, hp, fun j hj n => (hd j hj n).1⟩ dPhi := fun j hj n hn => (hd j hj n).2.2.2.2.2.2 ((hr j hj).symm ▸ hn) dRoot := h …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j h1 h2`. Establish `hj : InR D j` using `⟨h1, h2.le⟩`. Use `shortNe0_of_t4Span _ _ _ _ _ _ _ ?_` and prove the remaining obligations. Use `GlobalTheory.T.cuspForms_le_span_shortThetaSeries hC D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.σ₀ T.good_σ₀ (hM.unf j hj _ T.good_σ₀) (hnum j hj).2.1 hA (hsp j hj) ?_ (fun a n hdom k => hM.chiTriv j hj _ T.good_σ₀ a …` and prove the remaining obligations. Introduce `k ga hga hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.coreArithmeticGroup_contains_principalCongruence D T.toCore h.toLawsCore j hj _ T.good_σ₀ k ga hga fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu, he⟩` from `hv x hx`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[he, Nat.cast_smul_eq_nsmul]`. Conclude with `add_sub_cancel_left _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Use `⟨(hd j hj n).2.1, (hd j hj n).2.2.2.1, hunit j hj n, ?_, hpin j hj n, fun a _ => htot j hj a n⟩` and prove the remaining obligations. Rewrite using `[(hd j hj n).1]`. Use `D.host.pde_mod` as an intermediate fact. Apply the tactic sequence `rcases hp with rfl | rfl <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lawsSh_of_pinned (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) {D : D7} (T : Top D) (h : LawsP T) (hb : 0 < badN D)
     (hsp : ∀ j, InR D j → ∀ k k', ((T.U j T.σ₀).X k).Gm = ((T.U j T.σ₀).X k').Gm ∧

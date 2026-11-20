@@ -16,34 +16,34 @@ namespace GlobalTheory.Amb
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-The claim follows from `polyCovered_pSpace' N`.
+A detailed English derivation is pending.
 -/
 theorem polyCovered_pSpace [IsDomain k] (N : ℕ) : PolyCovered (PSpace.str k N) N :=
   polyCovered_pSpace' N
 
 /- English proof (translation)
-The claim follows from `polyCovered_pullback' f g a b hf hg`.
+A detailed English derivation is pending.
 -/
 theorem polyCovered_pullback [IsDomain k] {X Y : Scheme.{0}} (f : X ⟶ Sp k) (g : Y ⟶ Sp k) (a b : ℕ) (hf : PolyCovered f a)
     (hg : PolyCovered g b) : PolyCovered (pullback.fst f g ≫ f) (a + b) :=
   polyCovered_pullback' f g a b hf hg
 
 /- English proof (translation)
-The claim follows from `isIntegral_of_polyCovered' f d h`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_polyCovered [IsDomain k] {X : Scheme.{0}} (f : X ⟶ Sp k) (d : ℕ) (h : PolyCovered f d) :
     IsIntegral X :=
   isIntegral_of_polyCovered' f d h
 
 /- English proof (translation)
-The claim follows from `topologicalKrullDim_of_polyCovered' hk f d h`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_of_polyCovered [IsDomain k] [IsNoetherianRing k] (hk : ringKrullDim k = 1)
     {X : Scheme.{0}} (f : X ⟶ Sp k) (d : ℕ) (h : PolyCovered f d) : topologicalKrullDim X = (d + 1 : ℕ) :=
   topologicalKrullDim_of_polyCovered' hk f d h
 
 /- English proof (translation)
-The claim follows from `ringKrullDim_eq_one' hf`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_one [IsDomain k] [CharZero k] (hf : Module.Finite ℤ k) : ringKrullDim k = 1 :=
   ringKrullDim_eq_one' hf

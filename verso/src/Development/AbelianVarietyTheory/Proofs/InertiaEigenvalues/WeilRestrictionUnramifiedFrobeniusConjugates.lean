@@ -10,59 +10,55 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Use `show (frobUr l ^ m) (a • x) = a • (frobUr l ^ m) x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestrScalars.fr_smul (l : ℕ) [Fact l.Prime] (m : ℕ) (a : ℚ_[l]) (x : ↥(MaximalUnramifiedExtension l)) : fr l m (a • x) = a • fr l m x := by
   show (frobUr l ^ m) (a • x) = a • (frobUr l ^ m) x
   rw [Algebra.smul_def, Algebra.smul_def, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Use `show (frobUr l ^ a) ((frobUr l ^ b) x) = (frobUr l ^ b) ((frobUr l ^ a) x)`. Rewrite using `[← AlgHom.mul_apply, ← AlgHom.mul_apply, ← pow_add, ← pow_add, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestrScalars.fr_comm_pow (l : ℕ) [Fact l.Prime] (a b : ℕ) (x : ↥(MaximalUnramifiedExtension l)) : fr l a (fr l b x) = fr l b (fr l a x) := by
   show (frobUr l ^ a) ((frobUr l ^ b) x) = (frobUr l ^ b) ((frobUr l ^ a) x)
   rw [← AlgHom.mul_apply, ← AlgHom.mul_apply, ← pow_add, ← pow_add, add_comm]
 
 /- English proof (translation)
-Introduce `l _ n _ _ K r ρ hρ`. Take `⟨E, ω, -, -, -, hωf, hli, hsp, hdet⟩` from `hE l r hρ.pos`. Use `set v : Fin r → Om l := fun k => ((ω k : ↥(MaximalUnramifiedExtension l)) : Om l) with hvdef`. Establish `hv : LinearIndependent ℚ_[l] v`. Use `hli.map' ((MaximalUnramifiedExtension l).val.toLinearMap) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Use `set S : Submodule ℚ_[l] (Om l) := Submodule.span ℚ_[l] (Set.range v)`. Set `bS : Module.Basis (Fin r) ℚ_[l] S` to `Module.Basis.span hv`. Use `haveI : FiniteDimensional ℚ_[l] S := Module.Finite.of_basis bS`. Establish `coe_sum : ∀ a : Fin r → ℚ_[l], (((∑ k, a k • ω k : ↥(MaximalUnramifiedExtension l))) : Om l) = ∑ k, a k • v k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Simplify using `[hvdef]`. Establish `memS : ∀ c : ↥(MaximalUnramifiedExtension l), fr l r c = c → (c : Om l) ∈ S`. Introduce `c hc`. Take `⟨a, rfl⟩` from `hsp c hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `fix : ∀ g i j k, fr l r ((ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j * ω k) = (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j * ω k`. Introduce `g i j k`. Rewrite using `[map_mul, hρ.rat, hωf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `co : ↥(GK K) → n → n → Fin r → Fin r → ℚ_[l]` to `fun g i j k k' => bS.repr ⟨_, memS _ (fix g i j k)⟩ k'`. Establish `hco : ∀ g i j k, ∑ k', co g i j k k' • ω k' = (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j * ω k`. Introduce `g i j k`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[coe_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `bS.sum_repr ⟨_, memS _ (fix g i j k)⟩`. Establish `h2` using `congrArg Subtype.val h`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Module.Basis.span_apply]`. Set `M : ↥(GK K) → Matrix (n × Fin r) (n × Fin r) ℚ_[l]` to `fun g => Matrix.of fun x y => co g x.1 y.1 y.2 x.2`. Set `W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)` to `Matrix.of fun m k : Fin r => fr l m (ω k)`. Set `pm : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `Matrix.kroneckerMap (· * ·) (1 : Matrix n n ↥(MaximalUnramifiedExtension l)) W`. Establish `hpdet : pm.det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: pm.det = W.det ^ Fintype.card n`. Conclude with `(Matrix.det_kronecker (1 : Matrix n n ↥(MaximalUnramifiedExtension l)) W).trans (by simp)`. Rewrite using `[this]`. Conclude with `pow_ne_zero _ hdet`. Set `pU : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `((Matrix.isUnit_iff_isUnit_det pm).mpr (isUnit_iff_ne_zero.mpr hpdet)).unit`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpU : (pU : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) = pm` using `rfl`. Set `D : ↥(GK K) → Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `fun g => Matrix.blockDiagonal (fun m : Fin r => (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m))`. Establish `key : ∀ g, pm * (M g).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) = D g * pm`. Introduce `g`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨i, m⟩` from `x`. Take `⟨j, k⟩` from `y`. Simplify using `only [pm, D, M, W, Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_ite_irrel, Matrix.kroneckerMap_apply, Matrix.one_apply, Matrix.blockDiagonal_apply, Matrix.map_apply, Matrix.of_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Fins …`. Rewrite using `[← map_mul, ← hco g i j k, map_sum]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RestrScalars.fr_smul, Algebra.smul_def, mul_comm]`. Establish `key' : ∀ g, (M g).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) = ((pU⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix _ _ _) * D g * pm`. Introduce `g`. Rewrite using `[Matrix.mul_assoc, ← key g, ← Matrix.mul_assoc, ← hpU, Units.inv_mul, Matrix.one_mul]`. Establish `hinj : Function.Injective (fun X : Matrix (n × Fin r) (n × Fin r) ℚ_[l] => X.map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)))` using `Matrix.map_injective (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)).injective`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `Dmul : ∀ g h, D (g * h) = D g * D h`. Introduce `g h`. Simplify using `only [D]`. Rewrite using `[← Matrix.blockDiagonal_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `Matrix.map_mul`. Establish `D1 : D 1 = 1`. Simplify using `only [D, map_one, Units.val_one]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.blockDiagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `f : ↥(GK K) →* Matrix (n × Fin r) (n × Fin r) ℚ_[l]` to `{ toFun := M map_one' := by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[key', D1, Matrix.mul_one, ← hpU, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use the proof step `map_mul' := by`. Introduce `g h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, key', key', key', Dmul]`. Establish `: pm * ((pU⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix _ _ _) = 1` using `by rw [← hpU, Units.mul_inv]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.mul_assoc pm, this, Matrix.one_mul] }`. Use `⟨f.toHomUnits, pU, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `hc : Continuous fun g : ↥(GK K) => bS.coord x.2 ⟨_, memS _ (fix g x.1 y.1 y.2)⟩`. Use `(LinearMap.continuous_of_finiteDimensional (bS.coord x.2)).comp ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(hρ.cont x.1 y.1).mul continuous_const`. Simplify `hc` using `[f, M, co]`. Introduce `x y`. Rewrite using `[hpU]`.
-
-Take `⟨i, m⟩` from `x`. Take `⟨j, k⟩` from `y`. Simplify using `only [pm, W, Matrix.kroneckerMap_apply, Matrix.one_apply, Matrix.of_apply, ite_mul, one_mul, zero_mul]`. Use `split_ifs`. Rewrite using `[RestrScalars.fr_comm_pow, hωf]`.
-
-Conclude with `map_zero _`. Introduce `g`. Rewrite using `[hpU]`. Conclude with `key g`.
+A detailed English derivation is pending.
 -/
 theorem weilRes_of_basis (hE : ∀ (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r → ∃ (E : FinExt l) (ω : Fin r → ↥(MaximalUnramifiedExtension l)),
       E.1 ≤ MaximalUnramifiedExtension l ∧ Module.finrank ℚ_[l] ↥E.1 = r ∧ (∀ c : ↥(MaximalUnramifiedExtension l), fr l r c = c ↔ (c : Om l) ∈ E.1) ∧
@@ -181,7 +177,7 @@ theorem weilRes_of_basis (hE : ∀ (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r →
     exact key g
 
 /- English proof (translation)
-The claim follows from `weilRes_of_basis GlobalTheory.T.unramifiedExt_fixedField_frobeniusPow_degree`.
+A detailed English derivation is pending.
 -/
 theorem weilRes : WeilRes := weilRes_of_basis GlobalTheory.T.unramifiedExt_fixedField_frobeniusPow_degree
 

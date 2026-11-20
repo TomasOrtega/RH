@@ -18,20 +18,20 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-The claim follows from `FCount.nuNotCls_of (fun Zd => PCount.inOrbZ_holds Zd u u')`.
+A detailed English derivation is pending.
 -/
 theorem nu_not_class_holds : FCount.NuNotCls M δ u u' F0 what₂ :=
   FCount.nuNotCls_of (fun Zd => PCount.inOrbZ_holds Zd u u')
 
 /- English proof (translation)
-The claim follows from `locClsE_of hA hT hrows hN (fun Zd => PCount.inOrbZ_holds Zd u u')`.
+A detailed English derivation is pending.
 -/
 theorem local_class_holds (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])
     (hrows : IsRowReps D F0 what₂) (hN : PairVal.NormRepExists D u u' F0 what₂) : LocClsE M δ u u' F0 what₂ :=
   locClsE_of hA hT hrows hN (fun Zd => PCount.inOrbZ_holds Zd u u')
 
 /- English proof (translation)
-The claim follows from `coefProd_of hA (local_class_holds hA hT hrows hN) (phase_class_holds M δ) (phaseProd_of hrows hN (Formalism.L2.SG.Pf.phase_well_defined hM hrows) (phaseAtRep_of hPL hPP)) hV`.
+A detailed English derivation is pending.
 -/
 theorem coefProd_of_steps (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])
     (hrows : IsRowReps D F0 what₂) (hN : PairVal.NormRepExists D u u' F0 what₂)
@@ -41,7 +41,7 @@ theorem coefProd_of_steps (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.
     (phaseProd_of hrows hN (Formalism.L2.SG.Pf.phase_well_defined hM hrows) (phaseAtRep_of hPL hPP)) hV
 
 /- English proof (translation)
-The claim follows from `coefProd_of_steps hA hT hrows hN hM hPL hPP (volProd_of hA hT hrows hN (local_class_holds hA hT hrows hN) hVP)`.
+A detailed English derivation is pending.
 -/
 theorem coefficient_product_of_local (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])
     (hrows : IsRowReps D F0 what₂) (hN : PairVal.NormRepExists D u u' F0 what₂)

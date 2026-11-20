@@ -7,11 +7,11 @@ open Subgroup
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `h1 : MulAction.stabilizer (MulAction.stabilizer G y) t = (MulAction.stabilizer G t).subgroupOf (MulAction.stabilizer G y)`. Use extensionality with `g`. Simplify using `[Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff, Subgroup.smul_def]`. Establish `h2 : MulAction.orbit (MulAction.stabilizer G y) t = {x : X | ∃ g : G, g • y = y ∧ g • t = x}`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g, g.2, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Subgroup.relIndex, ← h1, MulAction.index_stabilizer, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ncard_orbit_in_stabilizer_eq_relIndex {X Y : Type*} [MulAction G X] [MulAction G Y] (t : X) (y : Y) :
     {x : X | ∃ g : G, g • y = y ∧ g • t = x}.ncard =
@@ -30,13 +30,13 @@ private theorem ncard_orbit_in_stabilizer_eq_relIndex {X Y : Type*} [MulAction G
   rw [Subgroup.relIndex, ← h1, MulAction.index_stabilizer, h2]
 
 /- English proof (translation)
-Establish `hS` using `ncard_orbit_in_stabilizer_eq_relIndex (G := G) ((1 : G) : G ⧸ C) ((1 : G) : G ⧸ S)`. Establish `hH` using `ncard_orbit_in_stabilizer_eq_relIndex (G := G) ((1 : G) : G ⧸ C) ((1 : G) : G ⧸ H')`. Rewrite `hS`, `hH` using `[MulAction.stabilizer_quotient, MulAction.stabilizer_quotient]`. Rewrite using `[← hS, ← hH]`. Establish `hmem : ∀ (K : Subgroup G) (g : G), g • ((1 : G) : G ⧸ K) = ((1 : G) : G ⧸ K) ↔ g ∈ K` using `fun K g => by rw [← MulAction.mem_stabilizer_iff, MulAction.stabilizer_quotient]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨t, ht, htg⟩` from `h2 g hg`. Use `⟨t⁻¹, H'.inv_mem ht, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.Quotient.smul_mk, MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Simplify using `using htg`. Introduce and unpack `⟨g, hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g, h1 hg, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem relIndex_eq_of_cover (S C H' : Subgroup G) (h1 : H' ≤ S)
     (h2 : ∀ s ∈ S, ∃ t ∈ H', t * s ∈ C) : C.relIndex S = C.relIndex H' := by
@@ -59,7 +59,7 @@ theorem relIndex_eq_of_cover (S C H' : Subgroup G) (h1 : H' ≤ S)
     exact ⟨g, h1 hg, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← relIndex_eq_of_cover S C H' h1 h2, ← inf_relIndex_right C S, ← inf_relIndex_right S C, mul_comm, relIndex_mul_relIndex _ _ _ inf_le_right hS, mul_comm, relIndex_mul_relIndex _ _ _ inf_le_right hC, inf_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_tube (H S C H' : Subgroup G) (hS : S ≤ H) (hC : C ≤ H) (h1 : H' ≤ S)
     (h2 : ∀ s ∈ S, ∃ t ∈ H', t * s ∈ C) :
@@ -68,15 +68,15 @@ theorem index_tube (H S C H' : Subgroup G) (hS : S ≤ H) (hC : C ≤ H) (h1 : H
     relIndex_mul_relIndex _ _ _ inf_le_right hS, mul_comm, relIndex_mul_relIndex _ _ _ inf_le_right hC, inf_comm]
 
 /- English proof (translation)
-Establish `hBA' : B.relIndex A ≠ 0` using `relIndex_ne_zero_trans hCB hAC`. Establish `hAC' : A.relIndex C ≠ 0` using `relIndex_ne_zero_trans hBA hCB`. Establish `orbitMap_conj_smul_one` using `relIndex_inf_mul_relIndex C B A`. Establish `orbitMap_conj_smul_two` using `relIndex_inf_mul_relIndex B C A`. Establish `eB1` using `relIndex_inf_mul_relIndex A C B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB2` using `relIndex_inf_mul_relIndex C A B`. Establish `eC1` using `relIndex_inf_mul_relIndex B A C`. Establish `eC2` using `relIndex_inf_mul_relIndex A B C`. Establish `EA : C.relIndex (A ⊓ B) * B.relIndex A = B.relIndex (A ⊓ C) * C.relIndex A`. Rewrite using `[inf_comm A B, inf_comm A C, orbitMap_conj_smul_one, orbitMap_conj_smul_two, inf_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `EB : A.relIndex (B ⊓ C) * C.relIndex B = C.relIndex (A ⊓ B) * A.relIndex B`. Rewrite using `[inf_comm B C, eB1, eB2, inf_comm]`. Establish `EC : B.relIndex (A ⊓ C) * A.relIndex C = A.relIndex (B ⊓ C) * B.relIndex C`. Rewrite using `[eC1, eC2, inf_comm]`. Establish `hu : C.relIndex (A ⊓ B) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inf_comm]`. Conclude with `left_ne_zero_of_mul (by rw [orbitMap_conj_smul_one]; exact relIndex_inf_ne_zero hAC hBA')`. Establish `hv : B.relIndex (A ⊓ C) ≠ 0` using `left_ne_zero_of_mul (by rw [eC1]; exact relIndex_inf_ne_zero hCB hAC')`. Establish `hw : A.relIndex (B ⊓ C) ≠ 0` using `left_ne_zero_of_mul (by rw [eC2]; exact relIndex_inf_ne_zero hAC' hCB)`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero (mul_ne_zero (mul_ne_zero hu hv) hw))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem relIndex_cocycle (A B C : Subgroup G) (hAC : C.relIndex A ≠ 0) (hBA : A.relIndex B ≠ 0)
     (hCB : B.relIndex C ≠ 0) :
@@ -112,9 +112,9 @@ theorem relIndex_cocycle (A B C : Subgroup G) (hAC : C.relIndex A ≠ 0) (hBA : 
     _ = _ := by ring
 
 /- English proof (translation)
-Use `revert hf hd`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih hf hd`. Establish `hfa : (f a).Finite` using `hf a (Finset.mem_insert_self a s)`. Establish `hfs : (⋃ i ∈ s, f i).Finite` using `Set.Finite.biUnion s.finite_toSet fun i hi => hf i (Finset.mem_insert_of_mem hi)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint (f a) (⋃ i ∈ s, f i)`. Rewrite using `[Set.disjoint_iUnion₂_right]`. Introduce `i hi`. Conclude with `hd (by simp) (by simp [hi]) (fun h => ha (h ▸ hi))`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha, Set.ncard_union_eq hdisj hfa hfs, ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (hd.subset (Finset.coe_subset.2 (Finset.subset_insert a s)))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_biUnion_finset {ι X : Type*} (s : Finset ι) (f : ι → Set X)
     (hf : ∀ i ∈ s, (f i).Finite) (hd : (s : Set ι).PairwiseDisjoint f) :
@@ -135,7 +135,7 @@ theorem ncard_biUnion_finset {ι X : Type*} (s : Finset ι) (f : ι → Set X)
       (hd.subset (Finset.coe_subset.2 (Finset.subset_insert a s)))]
 
 /- English proof (translation)
-Conclude with `ncard_orbit_in_stabilizer_eq_relIndex t y`.
+A detailed English derivation is pending.
 -/
 theorem ncard_orb {X Y : Type*} [MulAction G X] [MulAction G Y] (t : X) (y : Y) :
     {x : X | ∃ g : G, g • y = y ∧ g • t = x}.ncard =
@@ -143,21 +143,21 @@ theorem ncard_orb {X Y : Type*} [MulAction G X] [MulAction G Y] (t : X) (y : Y) 
   exact ncard_orbit_in_stabilizer_eq_relIndex t y
 
 /- English proof (translation)
-Establish `hcard : ∀ y ∈ sY, (Nat.card {x // x ∈ A ∧ π x = y} : ℝ) = ∑ t ∈ sX.filter (fun t => π t = y), ((MulAction.stabilizer G t).relIndex (MulAction.stabilizer G (π t)) : ℝ)`. Introduce `y hy`. Establish `hfib : {x | x ∈ A ∧ π x = y} = ⋃ t ∈ sX.filter (fun t => π t = y), {x : X | ∃ g : G, g • y = y ∧ g • t = x}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Finset.mem_filter, exists_prop]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxA, hxy⟩`. Take `⟨t, ⟨ht, g, hgt⟩, -⟩` from `hX x hxA`. Establish `h1 : π t = y` using `hY (π t) (hsX t ht).2 y hy ⟨g, by rw [← hπ, hgt, hxy]⟩`. Use `⟨t, ⟨ht, h1⟩, g, ?_, hgt⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1, ← hπ, hgt, hxy, h1]`. Introduce and unpack `⟨t, ⟨ht, h1⟩, g, hg, rfl⟩`. Use `⟨hA g t (hsX t ht).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hπ, h1, hg]`. Establish `hfin' : ∀ t ∈ sX.filter (fun t => π t = y), {x : X | ∃ g : G, g • y = y ∧ g • t = x}.Finite`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite `ht` using `[Finset.mem_filter]`. Apply `Set.finite_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[ncard_orb, ← ht.2]`. Conclude with `hfin t ht.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdisj : (↑(sX.filter (fun t => π t = y)) : Set X).PairwiseDisjoint (fun t => {x : X | ∃ g : G, g • y = y ∧ g • t = x})`. Introduce `t ht t' ht' hne`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨g, -, rfl⟩ ⟨g', -, hg'⟩`. Rewrite `ht`, `ht'` using `[Finset.mem_coe, Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t0, -, huniq⟩` from `hX (g • t) (hA g t (hsX t ht.1).1)`. Conclude with `hne ((huniq t ⟨ht.1, g, rfl⟩).trans (huniq t' ⟨ht'.1, g', hg'⟩).symm)`. Apply the tactic sequence `have hnc : Nat.card {x // x ∈ A ∧ π x = y} = ({x | x ∈ A ∧ π x = y} : Set X).ncard := by first | exact Nat.card_coe_set_eq _ | exact (Set.ncard_def _).symm`. Rewrite using `[hnc, hfib, ncard_biUnion_finset _ _ hfin' hdisj]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Finset.mem_filter]`. Rewrite using `[ncard_orb, ht.2]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hcard y hy, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 ht).2]`. Use `_ = _ := Finset.sum_fiberwise_of_maps_to (fun t ht => (hsX t ht).2) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_relIndex_fibre {X Y : Type*} [MulAction G X] [MulAction G Y] (π : X → Y)
     (hπ : ∀ (g : G) x, π (g • x) = g • π x) (A : Set X) (hA : ∀ g : G, ∀ x ∈ A, g • x ∈ A)

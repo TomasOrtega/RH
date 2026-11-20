@@ -19,21 +19,21 @@ def eSum (T : Subalgebra O (End K V)) (Y : Set (T →ₐ[O] O)) : Submodule K V 
   ⨆ ψ ∈ Y, E T ψ
 
 /- English proof (translation)
-The claim follows from `iInf_mono fun _ => eigenspace_le_maxGenEigenspace`.
+A detailed English derivation is pending.
 -/
 theorem E_le_W_pt (T : Subalgebra O (End K V)) (ψ : T →ₐ[O] O) : E T ψ ≤ W T (pt ψ) :=
   iInf_mono fun _ => eigenspace_le_maxGenEigenspace
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz s hs`. Use `(Submodule.mem_iInf _).1 hz ⟨s, Algebra.subset_adjoin hs⟩` as an intermediate fact. Conclude with `mem_eigenspace_iff.1 this`. Introduce `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).2 fun t => ?_` and prove the remaining obligations. Rewrite using `[mem_eigenspace_iff]`. Take `⟨t, ht⟩` from `t`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hz x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r`. Express the relevant statement in the definitionally equal form `(algebraMap O (End K V) r) z = pt ψ (algebraMap O (Algebra.adjoin O S) r) • z`. Simplify using `[pt, algebraMap_smul, Module.algebraMap_end_apply]`. Consider the case `add x y hx hy ihx ihy`. Express the relevant statement in the definitionally equal form `(x + y) z = pt ψ (⟨x, hx⟩ + ⟨y, hy⟩) • z`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [pt, map_add, LinearMap.add_apply, add_smul] at ihx ihy ⊢`. Rewrite using `[ihx, ihy]`. Consider the case `mul x y hx hy ihx ihy`. Express the relevant statement in the definitionally equal form `(x * y) z = pt ψ (⟨x, hx⟩ * ⟨y, hy⟩) • z`. Simplify using `only [pt, map_mul, Module.End.mul_apply] at ihx ihy ⊢`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ihy, LinearMap.map_smul, ihx, smul_smul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mem_E_iff {S : Set (End K V)} (ψ : Algebra.adjoin O S →ₐ[O] O) (z : V) :
     z ∈ E (Algebra.adjoin O S) ψ ↔
@@ -63,21 +63,21 @@ theorem mem_E_iff {S : Set (End K V)} (ψ : Algebra.adjoin O S →ₐ[O] O) (z :
 variable [IsLocalRing O]
 
 /- English proof (translation)
-The claim follows from `le_iSup₂_of_le (f := fun (ψ' : T →ₐ[O] O) (_ : cls ψ' = cls ψ) => W T (pt ψ')) ψ rfl le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem W_le_part (T : Subalgebra O (End K V)) (ψ : T →ₐ[O] O) : W T (pt ψ) ≤ part T (cls ψ) :=
   le_iSup₂_of_le (f := fun (ψ' : T →ₐ[O] O) (_ : cls ψ' = cls ψ) => W T (pt ψ')) ψ rfl le_rfl
 
 /- English proof (translation)
-The claim follows from `(E_le_W_pt T ψ).trans (W_le_part T ψ)`.
+A detailed English derivation is pending.
 -/
 theorem E_le_part (T : Subalgebra O (End K V)) (ψ : T →ₐ[O] O) : E T ψ ≤ part T (cls ψ) :=
   (E_le_W_pt T ψ).trans (W_le_part T ψ)
 
 /- English proof (translation)
-Establish `hind : iSupIndep (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ))` using `(iSupIndep_alt hS).comp (pt_injective hinj)`. Establish `hfin` using `Submodule.finite_ne_bot_of_iSupIndep hind`. Establish `hF : ∀ ψ, W _ (pt ψ) ≠ ⊥ → ψ ∈ hfin.toFinset` using `fun ψ h => hfin.mem_toFinset.2 h`. Establish `h1 : part (Algebra.adjoin O S) 𝔪 = (hfin.toFinset.filter (fun ψ => cls ψ = 𝔪)).sup (fun ψ => W _ (pt ψ))` using `iSup_eq_sup_filter (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ)) _ hF _`. Establish `h2 : off (Algebra.adjoin O S) 𝔪 = (hfin.toFinset.filter (fun ψ => cls ψ ≠ 𝔪)).sup (fun ψ => W _ (pt ψ))` using `iSup_eq_sup_filter (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ)) _ hF _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Conclude with `(hind.supIndep' _).disjoint_sup_sup (Finset.filter_subset _ _) (Finset.filter_subset _ _) (Finset.disjoint_filter.2 fun ψ _ h h' => h' h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_part_off [FiniteDimensional K V] {S : Set (End K V)}
     (hinj : Function.Injective (algebraMap O K)) (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
@@ -138,9 +138,9 @@ def PsiAct (T : NormalizedLocalCompatibility D M) : Prop :=
       T.B.hK j w v k (T.Psi j w i h z)
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `(D.nd.locs_mem j w i).1 h`. Establish `hl : D.nd.l i = D.what₂.places.resChar w` using `by rw [← D.nd.w_l i, h2]`. Establish `hS : v ∈ D.nd.S i ↔ v ∈ placesS D (D.what₂.places.resChar w)`. Rewrite using `[D.nd.S_def, hl]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `SplitOut GenAt`. Rewrite using `[hS, T.Q_eq j w i h, hl]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem genAt_iff (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (v : PlE D.host) (k : ℕ) :
@@ -154,19 +154,19 @@ theorem genAt_iff (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what�
   tauto
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy v k _ _ _`. Conclude with `mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hy (D.nd.hT i v k))`. Introduce `hy`. Use `(Submodule.mem_iInf _).2 fun f => mem_eigenspace_iff.2 ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `f`. Establish `hf'` using `hf`. Rewrite `hf'` using `[← D.nd.T_gen i]`. It suffices to establish `key : ∀ g (hg' : g ∈ Algebra.adjoin (D.nd.O i) {g : D.nd.X i → D.nd.O i | ∃ v k, IsSplitPl D.host v ∧ v ∉ placesOver D.host.E (D.nd.l i) ∧ v ∉ D.nd.S i ∧ v ∉ D.nd.Q i ∧ 1 ≤ k ∧ k ≤ D.R.nV ∧ g = (D.nd.hT i v k : D.nd.X i → D.nd.O i)}), ∀ hg : g ∈ D.nd.T i, ((D.nd.act i ⟨g, hg⟩).ba …`. Introduce `g hg'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hg' using Algebra.adjoin_induction with`. Consider the case `mem g hg0`. Introduce `hg`. Take `⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩` from `hg0`. Conclude with `hy v k ⟨h1, h2, h3, h4⟩ h5 h6`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `algebraMap r`. Introduce `hg`. Establish `e : (⟨algebraMap (D.nd.O i) (D.nd.X i → D.nd.O i) r, hg⟩ : D.nd.T i) = algebraMap (D.nd.O i) (D.nd.T i) r` using `rfl`. Rewrite using `[e, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, LinearMap.baseChange_one]`. Simplify using `[algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add g g' hg1 hg2 ih1 ih2`. Introduce `hg`. Establish `m1 : g ∈ D.nd.T i` using `D.nd.T_gen i ▸ hg1`. Establish `m2 : g' ∈ D.nd.T i` using `D.nd.T_gen i ▸ hg2`. Establish `e : (⟨g + g', hg⟩ : D.nd.T i) = ⟨g, m1⟩ + ⟨g', m2⟩` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, map_add, LinearMap.baseChange_add, LinearMap.add_apply, ih1 m1, ih2 m2, Pi.add_apply, map_add, add_smul]`. Consider the case `mul g g' hg1 hg2 ih1 ih2`. Introduce `hg`. Establish `m1 : g ∈ D.nd.T i` using `D.nd.T_gen i ▸ hg1`. Establish `m2 : g' ∈ D.nd.T i` using `D.nd.T_gen i ▸ hg2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨g * g', hg⟩ : D.nd.T i) = ⟨g, m1⟩ * ⟨g', m2⟩` using `rfl`. Rewrite using `[e, map_mul, LinearMap.baseChange_mul, Module.End.mul_apply, ih2 m2, LinearMap.map_smul, ih1 m1, smul_smul, Pi.mul_apply, map_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mem_heckeEig_iff (i : D.nd.Loc) (x : D.nd.X i)
     (y : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)) :
@@ -215,11 +215,11 @@ theorem mem_heckeEig_iff (i : D.nd.Loc) (x : D.nd.X i)
         smul_smul, Pi.mul_apply, map_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hval : ∀ v k (hvk : GenAt D (D.what₂.places.resChar w) (T.B.Qc j w) v k), (T.phK j w i h).toRingHom (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x)) = NCov.pt (T.ptX j w i h x).1 ⟨T.B.hK j w v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩`. Introduce `v k hvk`. Conclude with `(T.phK_alg j w i h _).trans (congrArg _ (T.ptX_hT j w i h x v k hvk))`. Rewrite using `[mem_heckeEig_iff, NCov.mem_E_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `hy _ ⟨v, k, hvk, rfl⟩`. Take `⟨hso, hk1, hk2⟩` from `(genAt_iff T h v k).2 hvk`. Establish `e` using `congrArg (T.Psi j w i h) (hy v k hso hk1 hk2)`. Rewrite `e` using `[hact j w i h v k hvk, LinearMap.map_smulₛₗ, hval v k hvk]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy v k hso hk1 hk2`. Establish `hvk` using `(genAt_iff T h v k).1 ⟨hso, hk1, hk2⟩`. Apply `T.Psi_inj j w i h` to reduce the goal to its premises. Rewrite using `[hact j w i h v k hvk, LinearMap.map_smulₛₗ, hval v k hvk]`. Conclude with `hy _ ⟨v, k, hvk, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_mem_E_iff (T : NormalizedLocalCompatibility D M) (hact : PsiAct T) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) (x : D.nd.X i) (y : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)) :
@@ -251,7 +251,7 @@ namespace Formalism.L2
 variable {D : D7} {M : MtFam D}
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem jMt_cast_mem {μ μ' : D.what₂.Tup} {j j' : ℕ} (hμ : μ = μ') (hj : j = j')
     (e : D.what₂.MtL μ j = D.what₂.MtL μ' j') (x : D.what₂.MtL μ j) :
@@ -259,7 +259,7 @@ theorem jMt_cast_mem {μ μ' : D.what₂.Tup} {j j' : ℕ} (hμ : μ = μ') (hj 
   subst hμ; subst hj; rfl
 
 /- English proof (translation)
-The claim follows from `jMt_cast_mem (by rw [D.nd.mu_w i, ((D.nd.locs_mem j w i).1 h).2]) ((D.nd.locs_mem j w i).1 h).1 _ x`.
+A detailed English derivation is pending.
 -/
 theorem castMt_mem {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (x : D.what₂.MtL (D.nd.mu i) (D.nd.j i)) :
@@ -268,7 +268,7 @@ theorem castMt_mem {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈
   jMt_cast_mem (by rw [D.nd.mu_w i, ((D.nd.locs_mem j w i).1 h).2]) ((D.nd.locs_mem j w i).1 h).1 _ x
 
 /- English proof (translation)
-Rewrite using `[← castMt_mem h, castMt_castMtInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem castMtInv_mem {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (y : D.what₂.MtL (D.what₂.muTw w) j) :
@@ -294,13 +294,13 @@ theorem psiO_apply (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what�
     psiO T h z = T.Psi j w i h z := rfl
 
 /- English proof (translation)
-The claim follows from `T.Psi_inj j w i h`.
+A detailed English derivation is pending.
 -/
 theorem psiO_injective (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) : Function.Injective (psiO T h) := T.Psi_inj j w i h
 
 /- English proof (translation)
-The claim follows from `RingHomInvPair.of_ringEquiv (T.phO j w i h) (p.restrictScalars (D.nd.O i)).map (psiO T h) = q.restrictScalars (T.B.Oc j w) := by haveI := RingHomInvPair.of_ringEquiv (T.phO j w i h) ext z simp only [Submodule.mem_map, Submodule.restrictScalars_mem, psiO_apply] constructor · rintr …`.
+A detailed English derivation is pending.
 -/
 theorem map_psiO_rs (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (p : Submodule (FractionRing (D.nd.O i)) (TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)))
@@ -319,17 +319,15 @@ theorem map_psiO_rs (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what
     exact ⟨y, (hpq y).2 hz, rfl⟩
 
 /- English proof (translation)
-Use `haveI : RingHomSurjective (T.phK j w i h).toRingHom := ⟨(T.phK j w i h).surjective⟩`. Establish `hx : ∀ x, (heckeEig (D.nd.T i) (D.nd.act i) x).map (T.Psi j w i h) = NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1`. Introduce `x`. Use extensionality with `z`. Rewrite using `[Submodule.mem_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(psi_mem_E_iff T hact h x y).1 hy`. Introduce `hz`. Establish `hz' : z ∈ NCov.part (heckeAlg T.B j w) (T.mx j w i)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `NCov.E_le_part (heckeAlg T.B j w) (T.ptX j w i h x).1 hz` as an intermediate fact. Rewrite `this` using `[(T.ptX j w i h x).2.1]`. Then use the resulting hypothesis. Take `⟨y, rfl⟩` from `(T.Psi_range j w i h z).1 hz'`. Conclude with `⟨y, (psi_mem_E_iff T hact h x y).2 hz, rfl⟩`. Establish `hmap : (D.nd.eigSum i Y).map (T.Psi j w i h) = ⨆ x ∈ Y, NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `NData.eigSum`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_iSup]`. Conclude with `iSup_congr fun _ => hx x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hmap]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `Submodule.mem_map_of_mem hy`. Introduce and unpack `⟨y', hy', e⟩`.
-
-Rewrite using `[← T.Psi_inj j w i h e]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem psi_mem_sum_iff (T : NormalizedLocalCompatibility D M) (hact : PsiAct T) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) (Y : Set (D.nd.X i))
@@ -365,7 +363,7 @@ theorem psi_mem_sum_iff (T : NormalizedLocalCompatibility D M) (hact : PsiAct T)
     rwa [← T.Psi_inj j w i h e]
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun x _ => by have := NCov.E_le_part (heckeAlg T.B j w) (T.ptX j w i h x).1 rwa [(T.ptX j w i h x).2.1] at this`.
+A detailed English derivation is pending.
 -/
 theorem sum_E_le_part (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) (Y : Set (D.nd.X i)) :
@@ -375,11 +373,9 @@ theorem sum_E_le_part (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.wh
     rwa [(T.ptX j w i h x).2.1] at this
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun ψ hψ => ?_` and prove the remaining obligations. Distinguish the cases in `hE : NCov.E (heckeAlg T.B j w) ψ = ⊥`. Rewrite using `[hE]`. Conclude with `bot_le`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : NCov.W (heckeAlg T.B j w) (NCov.pt ψ) ≠ ⊥` using `fun h0 => hE (eq_bot_iff.2 ((NCov.E_le_W_pt _ ψ).trans h0.le)) set x := (T.ptX j w i h).symm ⟨ψ, hψ.2, hW⟩`. Establish `hxψ : (T.ptX j w i h x).1 = ψ` using `by simp [x]`. Use `le_iSup₂_of_le (f := fun x (_ : x ∈ {x | (T.ptX j w i h x).1 ∈ G}) => NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1) x (by simp only [Set.mem_ofPred_eq, hxψ]; exact hψ.1) ?_` and prove the remaining obligations. Rewrite using `[hxψ]`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations.
-
-Conclude with `le_iSup₂_of_le (f := fun ψ (_ : ψ ∈ {ψ | ψ ∈ G ∧ NCov.cls ψ = T.mx j w i}) => NCov.E (heckeAlg T.B j w) ψ) (T.ptX j w i h x).1 ⟨hx, (T.ptX j w i h x).2.1⟩ le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eSum_eq (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (G : Set (heckeAlg T.B j w →ₐ[T.B.Oc j w] T.B.Oc j w)) :
@@ -407,7 +403,7 @@ namespace Formalism.L2
 variable {D : D7} {M : MtFam D}
 
 /- English proof (translation)
-The claim follows from `RingHomInvPair.of_ringEquiv (T.phO j w i h) (D.nd.MtIn i).map (psiO T h) = NCov.latPart (heckeAlg T.B j w) (latC T.B j w) (T.mx j w i) := by haveI := RingHomInvPair.of_ringEquiv (T.phO j w i h) obtain ⟨e1, -⟩ := (D.nd.locs_mem j w i).1 h have h1 : 1 ≤ j := e1 ▸ (D.nd.j_range i).1 …`.
+A detailed English derivation is pending.
 -/
 theorem map_psiO_MtIn (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.B) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) :
@@ -459,15 +455,15 @@ theorem map_psiO_MtIn (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw 
       _ = L' := by rw [hPQ, sup_bot_eq]
 
 /- English proof (translation)
-Use `haveI := RingHomInvPair.of_ringEquiv (T.phO j w i h)`. Take `⟨-, e2⟩` from `(D.nd.locs_mem j w i).1 h`. Establish `hl : D.nd.l i = D.what₂.places.resChar w` using `by rw [← D.nd.w_l i, e2]`. Establish `hY1 : {x | (T.ptX j w i h x).1 ∈ G} = (↑(D.nd.Zgood i) : Set (D.nd.X i))`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(hG x).symm`. Establish `hY2 : {x | (T.ptX j w i h x).1 ∈ Gᶜ} = (↑(D.nd.Zgood i) : Set (D.nd.X i))ᶜ`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff]`. Conclude with `not_congr (hG x).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgood : NCov.eSum (heckeAlg T.B j w) {ψ | ψ ∈ G ∧ NCov.cls ψ = T.mx j w i} = ⨆ x ∈ (↑(D.nd.Zgood i) : Set (D.nd.X i)), NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1`. Rewrite using `[eSum_eq T h G, hY1]`. Establish `hbad : NCov.eSum (heckeAlg T.B j w) {ψ | ψ ∉ G ∧ NCov.cls ψ = T.mx j w i} = ⨆ x ∈ (↑(D.nd.Zgood i) : Set (D.nd.X i))ᶜ, NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1`. Rewrite using `[← hY2]`. Conclude with `eSum_eq T h Gᶜ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∀ (Y : Set (D.nd.X i)) z, z ∈ (⨆ x ∈ Y, NCov.E (heckeAlg T.B j w) (T.ptX j w i h x).1) → ∃ y, T.Psi j w i h y = z` using `fun Y z hz => (T.Psi_range j w i h z).1 (sum_E_le_part T h Y hz)`. Establish `mgood` using `map_psiO_rs T h (D.nd.eigSum i ↑(D.nd.Zgood i)) _ (psi_mem_sum_iff T hact h _) (hq _)`. Establish `mbad` using `map_psiO_rs T h (D.nd.eigSum i (↑(D.nd.Zgood i))ᶜ) _ (psi_mem_sum_iff T hact h _) (hq _)`. Establish `mlat` using `map_psiO_MtIn T hstd h`. Unfold `NData.etaLoc NData.MtUp NData.MtLow NCov.etaAt`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only []`. Rewrite using `[hgood, hbad, ← mgood, ← mbad, ← mlat, ← Submodule.map_sup, ← Submodule.map_inf _ (psiO_injective T h), ← Submodule.map_inf _ (psiO_injective T h)]`. Unfold `lenUnit`. Rewrite using `[NCov.length_quot_map (T.phO j w i h) (psiO T h) (psiO_injective T h), NCov.length_quot_natCast (T.phO j w i h), hl]`.
+A detailed English derivation is pending.
 -/
 theorem etaLoc_eq_etaAt (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.B) (hact : PsiAct T)
     {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
@@ -504,11 +500,11 @@ theorem etaLoc_eq_etaAt (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdT
     NCov.length_quot_natCast (T.phO j w i h), hl]
 
 /- English proof (translation)
-Establish `hset : {𝔪 : Ideal (heckeAlg T.B j w) | 𝔪.IsMaximal} = ↑((D.nd.locs j w).image (T.mx j w))`. Use extensionality with `𝔪`. Simplify using `only [Set.mem_ofPred_eq, Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi, rfl⟩` from `T.mx_all j w h1 h2 hw 𝔪 hm`. Conclude with `⟨i, hi, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `T.mx_max j w i hi`. Unfold `etaC`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset, finsum_mem_coe_finset, Finset.sum_image fun a ha b hb hab => T.mx_inj j w ha hb hab]`. Conclude with `Finset.sum_congr rfl fun i hi => (etaLoc_eq_etaAt T hstd hact hi G (hG i hi)).symm`.
+A detailed English derivation is pending.
 -/
 theorem etaC_eq_sum (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.B) (hact : PsiAct T)
     {j : ℕ} {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0)
@@ -530,7 +526,7 @@ theorem etaC_eq_sum (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.
   exact Finset.sum_congr rfl fun i hi => (etaLoc_eq_etaAt T hstd hact hi G (hG i hi)).symm
 
 /- English proof (translation)
-Rewrite using `[etaC_eq_sum T hstd hact h1 h2 hw G hG]`. Conclude with `(D.etaJ_tie j w h1 h2).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaC_eq_etaJ (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.B) (hact : PsiAct T)
     {j : ℕ} {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0)
@@ -551,9 +547,9 @@ def goodPts (T : NormalizedLocalCompatibility D M) (j : ℕ) (w : D.what₂.plac
   {ψ | ∃ i, ∃ h : i ∈ D.nd.locs j w, ∃ x ∈ D.nd.Zgood i, (T.ptX j w i h x).1 = ψ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨i, h, x, hx, rfl⟩`. Introduce and unpack `⟨i', h', x', hx', e⟩`. Establish `hc : T.mx j w i' = T.mx j w i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← (T.ptX j w i' h' x').2.1, ← (T.ptX j w i h x).2.1, e]`. Establish `hi : i' = i` using `T.mx_inj j w h' h hc`. Substitute `hi` using the available equality. Establish `: x' = x` using `(T.ptX j w i' h).injective (Subtype.ext e)`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_goodPts_iff (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc}
     (h : i ∈ D.nd.locs j w) (x : D.nd.X i) :
@@ -570,7 +566,7 @@ theorem mem_goodPts_iff (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.
     rwa [← this]
 
 /- English proof (translation)
-The claim follows from `etaC_eq_etaJ T hstd hact h1 h2 hw _ fun _ h x => mem_goodPts_iff T h x`.
+A detailed English derivation is pending.
 -/
 theorem etaC_goodPts_eq_etaJ (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.B) (hact : PsiAct T)
     {j : ℕ} {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :
@@ -585,7 +581,7 @@ variable {O K V : Type} [CommRing O] [Field K] [Algebra O K]
   [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] [IsLocalRing O]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.lenUnit`. Rewrite using `[Module.length_eq_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lenUnit_subsingleton (l : ℕ) (M : Type) [AddCommGroup M] [Module O M] (hM : Subsingleton M) :
     Formalism.BasicNotions.lenUnit (O := O) l M = 0 := by
@@ -594,9 +590,9 @@ theorem lenUnit_subsingleton (l : ℕ) (M : Type) [AddCommGroup M] [Module O M] 
   simp
 
 /- English proof (translation)
-Establish `he : {ψ | ψ ∈ G ∧ cls ψ = 𝔪} = (∅ : Set (T →ₐ[O] O))`. Use extensionality with `ψ`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Conclude with `h ψ`. Establish `h0 : eSum T (∅ : Set (T →ₐ[O] O)) = ⊥` using `by simp [eSum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `etaAt`. Simplify using `only`. Rewrite using `[he, h0, Submodule.restrictScalars_bot, bot_inf_eq]`. Conclude with `lenUnit_subsingleton l _ inferInstance`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaAt_noGood (T : Subalgebra O (End K V)) (Λ : Submodule O V) (G : Set (T →ₐ[O] O)) (l : ℕ)
     (𝔪 : Ideal T) (h : ∀ ψ ∈ G, cls ψ ≠ 𝔪) : etaAt T Λ G l 𝔪 = 0 := by
@@ -609,11 +605,11 @@ theorem etaAt_noGood (T : Subalgebra O (End K V)) (Λ : Submodule O V) (G : Set 
   exact lenUnit_subsingleton l _ inferInstance
 
 /- English proof (translation)
-Establish `he : {ψ | ψ ∉ G ∧ cls ψ = 𝔪} = (∅ : Set (T →ₐ[O] O))`. Use extensionality with `ψ`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hn hc`. Conclude with `hn (h ψ hc)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : eSum T (∅ : Set (T →ₐ[O] O)) = ⊥` using `by simp [eSum]`. Unfold `etaAt`. Simplify using `only`. Rewrite using `[he, h0, Submodule.restrictScalars_bot, sup_bot_eq]`. Apply `lenUnit_subsingleton` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.Quotient.subsingleton_iff.2 ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf] at hx ⊢`. Conclude with `⟨hx.2, hx.1⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etaAt_allGood (T : Subalgebra O (End K V)) (Λ : Submodule O V) (G : Set (T →ₐ[O] O)) (l : ℕ)
     (𝔪 : Ideal T) (h : ∀ ψ, cls ψ = 𝔪 → ψ ∈ G) : etaAt T Λ G l 𝔪 = 0 := by
@@ -634,7 +630,7 @@ theorem etaAt_allGood (T : Subalgebra O (End K V)) (Λ : Submodule O V) (G : Set
 variable {S : Set (End K V)}
 
 /- English proof (translation)
-Take `⟨F, hF, -⟩` from `exists_finset_pts hinj hS hsplit hint`. Use `(F.finite_toSet.image cls).subset ?_` and prove the remaining obligations. Introduce `𝔪 h𝔪`. Take `⟨ψ, hW, rfl⟩` from `exists_pt_of_isMaximal hinj hS hsplit hint 𝔪 h𝔪`. Conclude with `⟨ψ, hF ψ hW, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_maximal [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)

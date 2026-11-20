@@ -19,7 +19,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddComm
   [NormedSpace ℝ F]
 
 /- English proof (translation)
-Rewrite using `[fderiv_sub hf hh]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fderiv_sub_apply' {f h : E → F} {g : E} (hf : DifferentiableAt ℝ f g)
     (hh : DifferentiableAt ℝ h g) (v : E) :
@@ -27,7 +27,7 @@ theorem fderiv_sub_apply' {f h : E → F} {g : E} (hf : DifferentiableAt ℝ f g
   rw [fderiv_sub hf hh]; rfl
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (0 : E → F) g = 0`. Simplify using `using (fderiv_const_apply (𝕜 := ℝ) (x := g) (0 : F))`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fderiv_zero_apply' (g v : E) : fderiv ℝ (0 : E → F) g v = 0 := by
   have h : fderiv ℝ (0 : E → F) g = 0 := by
@@ -39,20 +39,20 @@ end General
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[Rd, mul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Rd_sub_left (A B : Mat n) (h : Mat n → V) : Rd (A - B) h = Rd A h - Rd B h := by
   funext g; simp [Rd, mul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `fderiv_zero_apply' _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Rd_zero (X : Mat n) : Rd X (0 : Mat n → V) = 0 := by
   funext g
   exact fderiv_zero_apply' _ _
 
 /- English proof (translation)
-The claim follows from `RCalc.fderiv_add_apply' (RCalc.differentiableAt_of_smooth ha hg) (RCalc.differentiableAt_of_smooth hb hg) _`.
+A detailed English derivation is pending.
 -/
 theorem Rd_add_right (X : Mat n) {a b : Mat n → V} (ha : ContDiffOn ℝ ∞ a (GLs n))
     (hb : ContDiffOn ℝ ∞ b (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -61,7 +61,7 @@ theorem Rd_add_right (X : Mat n) {a b : Mat n → V} (ha : ContDiffOn ℝ ∞ a 
     (RCalc.differentiableAt_of_smooth hb hg) _
 
 /- English proof (translation)
-The claim follows from `fderiv_sub_apply' (RCalc.differentiableAt_of_smooth ha hg) (RCalc.differentiableAt_of_smooth hb hg) _`.
+A detailed English derivation is pending.
 -/
 theorem Rd_sub_right (X : Mat n) {a b : Mat n → V} (ha : ContDiffOn ℝ ∞ a (GLs n))
     (hb : ContDiffOn ℝ ∞ b (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -70,22 +70,22 @@ theorem Rd_sub_right (X : Mat n) {a b : Mat n → V} (ha : ContDiffOn ℝ ∞ a 
     (RCalc.differentiableAt_of_smooth hb hg) _
 
 /- English proof (translation)
-The claim follows from `RCalc.fderiv_csmul_apply (RCalc.differentiableAt_of_smooth ha hg) c _`.
+A detailed English derivation is pending.
 -/
 theorem Rd_smul_right (c : ℂ) (X : Mat n) {a : Mat n → V} (ha : ContDiffOn ℝ ∞ a (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : Rd X (c • a) g = c • Rd X a g :=
   RCalc.fderiv_csmul_apply (RCalc.differentiableAt_of_smooth ha hg) c _
 
 /- English proof (translation)
-Simplify using `[Eu, Rd_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_zero (s : Bool) (a b : Fin n) : Eu s a b (0 : Mat n → V) = 0 := by
   simp [Eu, Rd_zero]
 
 /- English proof (translation)
-Use `show ∑ d, Eu s c d (Epow s 0 d a f) = _`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[Epow]`. Introduce `d _ hd`. Simplify using `[Epow, hd, Eu_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Epow_one (s : Bool) (c a : Fin n) (f : Mat n → V) : Epow s 1 c a f = Eu s c a f := by
   show ∑ d, Eu s c d (Epow s 0 d a f) = _
@@ -96,7 +96,7 @@ theorem Epow_one (s : Bool) (c a : Fin n) (f : Mat n → V) : Epow s 1 c a f = E
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show ∑ c, Eu s a c (Epow s 1 c a f) = _`. Simplify using `only [Epow_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_two (s : Bool) (f : Mat n → V) :
     gel s 2 f = ∑ a, ∑ c, Eu s a c (Eu s c a f) := by
@@ -105,11 +105,11 @@ theorem gel_two (s : Bool) (f : Mat n → V) :
   simp only [Epow_one]
 
 /- English proof (translation)
-Establish `hX` using `RCalc.Rd_contDiffOn (Matrix.single c d (1 : ℂ)) hf`. Establish `hY` using `RCalc.Rd_contDiffOn (Matrix.single c d Complex.I) hf`. Establish `hS : ContDiffOn ℝ ∞ (ε • Rd (Matrix.single c d Complex.I) f) (GLs n)` using `hY.const_smul ε`. Establish `key : ∀ Z : Mat n, Rd Z (Eu s c d f) g = (1 / 2 : ℂ) • (Rd Z (Rd (Matrix.single c d 1) f) g + ε • Rd Z (Rd (Matrix.single c d Complex.I) f) g)`. Introduce `Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : Eu s c d f = (1 / 2 : ℂ) • (Rd (Matrix.single c d 1) f + ε • Rd (Matrix.single c d Complex.I) f)`. Rewrite using `[hε]`. Both sides reduce to the same expression. Establish `hA : ContDiffOn ℝ ∞ (Rd (Matrix.single c d 1) f + ε • Rd (Matrix.single c d Complex.I) f) (GLs n)` using `hX.add hS`. Rewrite using `[e, Rd_smul_right _ _ hA hg, Rd_add_right _ hX hS hg, Rd_smul_right _ _ hY hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Eu s a b (Eu s c d f) g = (1 / 2 : ℂ) • (Rd (Matrix.single a b 1) (Eu s c d f) g + ε • Rd (Matrix.single a b Complex.I) (Eu s c d f) g)`. Rewrite using `[hε]`. Both sides reduce to the same expression. Rewrite using `[e2, key, key]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eu_Eu_apply (s : Bool) (a b c d : Fin n) {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) (ε : ℂ)
@@ -139,7 +139,7 @@ theorem Eu_Eu_apply (s : Bool) (a b c d : Fin n) {f : Mat n → V}
   module
 
 /- English proof (translation)
-Rewrite using `[Eu_Eu_apply true a b c d hf hg (-Complex.I) (by simp), Eu_Eu_apply false a b c d hf hg Complex.I (by simp)]`. Establish `h1 : (-Complex.I) * (-Complex.I) = -1` using `by simp`. Establish `h2 : Complex.I * Complex.I = -1` using `by simp`. Rewrite using `[h1, h2]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eu_pair_apply (a b c d : Fin n) {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -154,7 +154,7 @@ theorem Eu_pair_apply (a b c d : Fin n) {f : Mat n → V}
   module
 
 /- English proof (translation)
-Establish `h : Om f g = (2 : ℂ) • ∑ a, ∑ b, (Eu true a b (Eu true b a f) g + Eu false a b (Eu false b a f) g)`. Simplify using `only [Om, gel_two, Pi.smul_apply, Pi.add_apply, Finset.sum_apply, Finset.sum_add_distrib]`. Rewrite using `[h]`. Simplify using `only [Eu_pair_apply _ _ _ _ hf hg, Finset.smul_sum, smul_smul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem Om_apply {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     Om f g = ∑ a, ∑ b, (Rd (Matrix.single a b 1) (Rd (Matrix.single b a 1) f) g
@@ -167,7 +167,7 @@ theorem Om_apply {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat 
   norm_num
 
 /- English proof (translation)
-Establish `dA` using `RCalc.Rd_contDiffOn A hf`. Establish `dB` using `RCalc.Rd_contDiffOn B hf`. Rewrite using `[RCalc.Rd_add_left A B f, RCalc.Rd_add_left A B (Rd A f + Rd B f)]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[Rd_add_right _ dA dB hg, Rd_add_right _ dA dB hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -182,7 +182,7 @@ theorem Rd_sq_add (A B : Mat n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
   abel
 
 /- English proof (translation)
-Establish `dA` using `RCalc.Rd_contDiffOn A hf`. Establish `dB` using `RCalc.Rd_contDiffOn B hf`. Rewrite using `[Rd_sub_left A B f, Rd_sub_left A B (Rd A f - Rd B f)]`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[Rd_sub_right _ dA dB hg, Rd_sub_right _ dA dB hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -197,7 +197,7 @@ theorem Rd_sq_sub (A B : Mat n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
   abel
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_bool]`. Simplify using `only [Fintype.sum_prod_type, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_Ix (F : Ix n → V) :
     ∑ p, F p = ∑ a, ∑ b, (F (true, a, b) + F (false, a, b)) := by
@@ -205,7 +205,7 @@ theorem sum_Ix (F : Ix n → V) :
   simp only [Fintype.sum_prod_type, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hx : ∑ a, ∑ b, x b a = ∑ a, ∑ b, x a b` using `Finset.sum_comm`. Establish `hy : ∑ a, ∑ b, y b a = ∑ a, ∑ b, y a b` using `Finset.sum_comm`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.smul_sum]`. Rewrite using `[hx, hy]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reindex (x y : Fin n → Fin n → V) :
     ∑ a, ∑ b, (x a b - y a b) = (1 / 4 : ℂ) • ∑ a, ∑ b,
@@ -217,11 +217,11 @@ theorem sum_reindex (x y : Fin n → Fin n → V) :
   module
 
 /- English proof (translation)
-Introduce `hf g hg`. Rewrite using `[Om_apply hf hg, sum_reindex, sum_Ix, sum_Ix, ← smul_sub]`. Use `congr 1`. Simplify using `only [← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : hm (n` using `n) (true, a, b) = Matrix.single a b 1 + Matrix.single b a 1 := by simp [hm]`. Establish `e2 : hm (n` using `n) (false, a, b) = Matrix.single a b Complex.I - Matrix.single b a Complex.I := by simp [hm]`. Establish `e3 : sk (n` using `n) (true, a, b) = Matrix.single a b 1 - Matrix.single b a 1 := by simp [sk]`. Establish `e4 : sk (n` using `n) (false, a, b) = Matrix.single a b Complex.I + Matrix.single b a Complex.I := by simp [sk]`. Rewrite using `[e1, e2, e3, e4, Rd_sq_add _ _ hf hg, Rd_sq_sub _ _ hf hg, Rd_sq_add _ _ hf hg, Rd_sq_sub _ _ hf hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem Om_eq_squares {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V) :
     ContDiffOn ℝ ∞ f (GLs n) → ∀ g ∈ GLs n,

@@ -28,7 +28,7 @@ variable {G G' G'' : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   [Group G''] [TopologicalSpace G''] [IsTopologicalGroup G'']
 
 /- English proof (translation)
-Establish `h` using `groupCohomology.inhomogeneousCochains.d_comp_d (Rep.of rho) (n := n)`. Conclude with `congrArg (fun φ => φ.hom f) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dn_dn {M : Type u} [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (rho : Representation R G M) (n : ℕ) (f : (Fin n → G) → M) :
@@ -37,7 +37,7 @@ theorem dn_dn {M : Type u} [AddCommGroup M] [Module R M] [TopologicalSpace M] [I
   exact congrArg (fun φ => φ.hom f) h
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Unfold `Fin.contractNth`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_contractNth (n : ℕ) (j : Fin (n + 1)) :
     Continuous fun g : Fin (n + 1) → G => Fin.contractNth j (· * ·) g := by
@@ -46,7 +46,7 @@ theorem continuous_contractNth (n : ℕ) (j : Fin (n + 1)) :
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : Fin (n + 1) → G => M.rho (g 0) (f fun i => g i.succ)` using `M.cont.comp (f := fun g : Fin (n + 1) → G => (g 0, f fun i => g i.succ)) ((continuous_apply 0).prodMk (hf.comp (continuous_pi fun i => continuous_apply _)))`. Conclude with `h1.add (continuous_finsetSum _ fun j _ => (hf.comp (continuous_contractNth n j)).const_smul _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_dn (M : TRep R G) (n : ℕ) {f : (Fin n → G) → M.V} (hf : Continuous f) :
     Continuous (dn M.rho n f) := by
@@ -82,7 +82,7 @@ structure Pair (M : TRep R G) (M' : TRep R G') where
   equiv : ∀ g m, u (M.rho (φ g) m) = M'.rho g (u m)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `Fin.contractNth`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_map (φ : G' →* G) (n : ℕ) (j : Fin (n + 1)) (g : Fin (n + 1) → G') :
     (fun i => φ (Fin.contractNth j (· * ·) g i)) = Fin.contractNth j (· * ·) fun i => φ (g i) := by
@@ -122,7 +122,7 @@ def IsInvRep (M : TRep R G) (N : Subgroup G) [N.Normal] (Q : TRep R (G ⧸ N)) (
 def rep (U : Subgroup G) (x : G) : G := (Quotient.mk (QuotientGroup.rightRel U) x).out
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq (Quotient.mk (QuotientGroup.rightRel U) x)))`.
+A detailed English derivation is pending.
 -/
 theorem mul_rep_inv_mem (U : Subgroup G) (x : G) : x * (rep U x)⁻¹ ∈ U :=
   QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq (Quotient.mk (QuotientGroup.rightRel U) x)))

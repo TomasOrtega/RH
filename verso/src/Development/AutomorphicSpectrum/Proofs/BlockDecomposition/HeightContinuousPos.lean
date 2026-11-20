@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Iwasawa
 
 /- English proof (translation)
-Use `continuous_iff_isClosed.2 fun C hC => ?_` and prove the remaining obligations. Establish `hD : IsClosed (P ∩ f ⁻¹' C)` using `hf.preimage_isClosed_of_isClosed hP hC`. Use `hD.mul_right_of_isCompact hK using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨p, hp, k, hk, rfl⟩` from `hd x`. Conclude with `Set.mem_mul.2 ⟨p, ⟨hp, by simpa [Set.mem_preimage, hv p hp k hk] using hx⟩, k, hk, rfl⟩`. Introduce and unpack `⟨p, ⟨hp, hc⟩, k, hk, rfl⟩`. Simplify `hc` using `[Set.mem_preimage, hv p hp k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_mul_compact {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {P K : Set G} {f : G → ℝ}
     (hP : IsClosed P) (hK : IsCompact K) (hf : ContinuousOn f P)
@@ -32,19 +32,19 @@ theorem continuous_of_mul_compact {G : Type*} [Group G] [TopologicalSpace G] [Is
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`.
+A detailed English derivation is pending.
 -/
 theorem topRing_AE : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
 
 /- English proof (translation)
-Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Conclude with `GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_cm_host_adeles : T2Space (AE F E) := by
   haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   exact GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)
 
 /- English proof (translation)
-Use `haveI := topRing_AE (F := F) (E := E)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem topologicalGroup_unitary_double : IsTopologicalGroup (G2 σ Y) := by
   haveI := topRing_AE (F := F) (E := E)
@@ -53,13 +53,13 @@ theorem topologicalGroup_unitary_double : IsTopologicalGroup (G2 σ Y) := by
 def parT (x : G2 σ Y) : Matrix (Fin n) (Fin n) (AE F E) := (mat2 x * dC n (AE F E)).toRows₁
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat2 : Continuous (mat2 : G2 σ Y → _) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `haveI := topRing_AE (F := F) (E := E)`. Establish `h : Continuous fun x : G2 σ Y => mat2 x * dC n (AE F E)` using `continuous_mat2.matrix_mul continuous_const`. Conclude with `continuous_matrix fun i j => h.matrix_elem _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_parT : Continuous (parT : G2 σ Y → _) := by
   haveI := topRing_AE (F := F) (E := E)
@@ -67,15 +67,15 @@ theorem continuous_parT : Continuous (parT : G2 σ Y → _) := by
   exact continuous_matrix fun i j => h.matrix_elem _ _
 
 /- English proof (translation)
-Rewrite using `[parT, isPar_iff.1 h, dC, diagCols, Matrix.fromRows_mul, Matrix.one_mul, Matrix.toRows₁_fromRows]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem parT_eq {p : G2 σ Y} {t : GL (Fin n) (AE F E)} (h : IsPar p t) : parT p = t.1 := by
   rw [parT, isPar_iff.1 h, dC, diagCols, Matrix.fromRows_mul, Matrix.one_mul, Matrix.toRows₁_fromRows]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, h⟩`. Establish `h'` using `IsPar.inv h`. Rewrite using `[parT_eq h, parT_eq h']`. Conclude with `⟨isPar_iff.1 h, isPar_iff.1 h', Units.mul_inv t, Units.inv_mul t⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, -, h3, h4⟩`. Conclude with `⟨⟨parT x, parT x⁻¹, h3, h4⟩, isPar_iff.2 h1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_isPar_iff {x : G2 σ Y} : (∃ t, IsPar x t) ↔ mat2 x * dC n (AE F E) = dC n (AE F E) * parT x ∧
     mat2 x⁻¹ * dC n (AE F E) = dC n (AE F E) * parT x⁻¹ ∧ parT x * parT x⁻¹ = 1 ∧ parT x⁻¹ * parT x = 1 := by
@@ -88,9 +88,9 @@ theorem exists_isPar_iff {x : G2 σ Y} : (∃ t, IsPar x t) ↔ mat2 x * dC n (A
     exact ⟨⟨parT x, parT x⁻¹, h3, h4⟩, isPar_iff.2 h1⟩
 
 /- English proof (translation)
-Use `haveI := topRing_AE (F := F) (E := E)`. Use `haveI := t2Space_cm_host_adeles (F := F) (E := E)`. Use `haveI := topologicalGroup_unitary_double (σ := σ) (Y := Y)`. Establish `ci : Continuous fun x : G2 σ Y => parT x⁻¹` using `continuous_parT.comp continuous_inv`. Establish `cm : Continuous fun x : G2 σ Y => mat2 x⁻¹` using `continuous_mat2.comp continuous_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (par2 σ Y : Set (G2 σ Y)) = {x | mat2 x * dC n (AE F E) = dC n (AE F E) * parT x} ∩ ({x | mat2 x⁻¹ * dC n (AE F E) = dC n (AE F E) * parT x⁻¹} ∩ ({x | parT x * parT x⁻¹ = 1} ∩ {x | parT x⁻¹ * parT x = 1}))`. Use extensionality with `x`. Conclude with `mem_parabolic_GL2_iff.trans exists_isPar_iff`. Rewrite using `[e]`. Conclude with `(isClosed_eq (continuous_mat2.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_parT)).inter ((isClosed_eq (cm.matrix_mul continuous_const) (continuous_const.matrix_mul ci)).inter ((isClosed_eq (continuous_parT.matrix_mul ci) continuous_const).inter (isClosed_e …`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_siegel_stabiliser : IsClosed (par2 σ Y : Set (G2 σ Y)) := by
   haveI := topRing_AE (F := F) (E := E)
@@ -113,12 +113,12 @@ def parU (p : par2 σ Y) : GL (Fin n) (AE F E) :=
   ⟨parT p.1, parT p.1⁻¹, (exists_isPar_iff.1 (mem_parabolic_GL2_iff.1 p.2)).2.2.1, (exists_isPar_iff.1 (mem_parabolic_GL2_iff.1 p.2)).2.2.2⟩
 
 /- English proof (translation)
-The claim follows from `isPar_iff.2 (exists_isPar_iff.1 (mem_parabolic_GL2_iff.1 p.2)).1`.
+A detailed English derivation is pending.
 -/
 theorem isPar_parU (p : par2 σ Y) : IsPar p.1 (parU p) := isPar_iff.2 (exists_isPar_iff.1 (mem_parabolic_GL2_iff.1 p.2)).1
 
 /- English proof (translation)
-Use `haveI := topRing_AE (F := F) (E := E)`. Use `haveI := topologicalGroup_unitary_double (σ := σ) (Y := Y)`. Conclude with `Units.continuous_iff.2 ⟨continuous_parT.comp continuous_subtype_val, continuous_parT.comp (continuous_inv.comp continuous_subtype_val)⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_parU : Continuous (parU : par2 σ Y → GL (Fin n) (AE F E)) := by
   haveI := topRing_AE (F := F) (E := E)
@@ -127,7 +127,7 @@ theorem continuous_parU : Continuous (parU : par2 σ Y → GL (Fin n) (AE F E)) 
     continuous_parT.comp (continuous_inv.comp continuous_subtype_val)⟩
 
 /- English proof (translation)
-Use `haveI := topRing_AE (F := F) (E := E)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_det`. Conclude with `Units.continuous_coe_inv.matrix_det`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_detGL : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) (AE F E) → (AE F E)ˣ) := by
   haveI := topRing_AE (F := F) (E := E)
@@ -136,13 +136,13 @@ theorem continuous_detGL : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n
   · exact Units.continuous_coe_inv.matrix_det
 
 /- English proof (translation)
-Use `haveI := topologicalGroup_unitary_double (σ := σ) (Y := Y)`. Establish `v1 : ∀ p t, IsPar p t → a p = (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ)` using `fun p t h => by`. Simplify using `using ha.val p t h 1 K.one_mem`. Use `⟨continuous_of_mul_compact (P := par2 σ Y) isClosed_siegel_stabiliser hK ?_ ?_ ?_, fun x => ?_⟩` and prove the remaining obligations. Use `continuousOn_iff_continuous_restrict.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (continuous_detGL.comp continuous_parU))).congr fun p => (v1 _ _ (isPar_parU p)).symm`. Introduce `x`. Take `⟨p, t, h, k, hk, e⟩` from `ha.iwa x`. Conclude with `⟨p, mem_parabolic_GL2_iff.2 ⟨t, h⟩, k, hk, e⟩`. Introduce `p hp k hk`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, h⟩` from `mem_parabolic_GL2_iff.1 hp`. Rewrite using `[ha.val p t h k hk, v1 p t h]`. Take `⟨p, t, h, k, hk, rfl⟩` from `ha.iwa x`. Rewrite using `[ha.val p t h k hk]`. Establish `u : absE F E (Matrix.GeneralLinearGroup.det t) ≠ 0` using `fun h0 => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `map_mul (absE F E) (Matrix.GeneralLinearGroup.det t) (Matrix.GeneralLinearGroup.det t)⁻¹`. Rewrite `e` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero e`. Conclude with `pos_iff_ne_zero.2 u` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem continuous_pos {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
     (hK : IsCompact (K : Set (G2 σ Y))) (ha : IsHgt K a) : Continuous a ∧ ∀ x, 0 < a x := by
@@ -168,7 +168,7 @@ theorem continuous_pos {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
     exact_mod_cast pos_iff_ne_zero.2 u
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha` and use `continuous_pos (GlobalTheory.T.isCompact_standard_maximal F E σ B n Y r s hB hn hY b K a hb hK ha) ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem height_continuous_pos : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), B.IsGood σ → 1 ≤ n → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → ∀ (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ), IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → Continuous a ∧ ∀ x, 0 < a x :=
   fun F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha =>

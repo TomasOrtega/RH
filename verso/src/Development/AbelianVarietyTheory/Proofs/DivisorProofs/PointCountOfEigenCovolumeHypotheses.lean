@@ -28,23 +28,23 @@ open GlobalTheory.ShFam.Descent
 namespace GlobalTheory.DetHT
 
 /- English proof (translation)
-Introduce `hB hE hC E _ _ _ _ H Dw τ p _`. Take `⟨δ, hδ, hEδ⟩` from `hE E H p`. Use `⟨-(Dw.mult τ.1 : ℝ) * Real.log ‖δ‖, ?_⟩` and prove the remaining obligations. Introduce `l Xo c Z _ f hf P y z yb hyP Q π ψ hPt hHT hfy`. Use `letI := H.starRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Take `⟨g, a, x, hchg, -, -, htie, hlat⟩` from `hHT`. Establish `hPy : P.x = y.x` using `by rw [← Descent.ptF_fst P, ← hyP, Descent.ptF_fst]`. Establish `hzy : z.x = y.x` using `hchg.1.symm`. Establish `hzP : ptF z = ptF P`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Descent.ptF_fst, Descent.ptF_fst, hzy, hPy]`. Rewrite using `[Descent.ptF_snd, Descent.ptF_snd]`. Establish `LT` using `fun σ j => GlobalTheory.T.p_adic_frobenius_point_comparison E H Dw l Xo c Z p P z yb hzP Q π ψ hPt σ j (x σ j) (htie σ j)`. Establish `LE` using `fun σ j => GlobalTheory.T.p_adic_point_period_relation E H Dw l Xo c Z p z yb (ptF P) Q π ψ hPt σ j (x σ j) (htie σ j)`. Establish `uY` using `fun σ => GlobalTheory.T.combinatorial_tangent_point_condition E H Dw l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Z ℂ_[p] y σ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set vY := (frameOf Z y).v with hvY`. Use `set vZ := (frameOf Z z).v with hvZ`. Establish `tY : ∀ σ k, IsTanAtG Z.t (ptF y ≫ Z.j) (vY σ k)` using `(frameOf Z y).tan`. Establish `rY : ∀ σ k, TanRel Z (ptF y) (y.u σ k) (vY σ k)` using `(tie_frameOf Z y).2.2`. Establish `tZ : ∀ σ k, IsTanAtG Z.t (ptF z ≫ Z.j) (vZ σ k)` using `(frameOf Z z).tan`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `rZ : ∀ σ k, TanRel Z (ptF z) (z.u σ k) (vZ σ k)` using `(tie_frameOf Z z).2.2`. Use `clear_value vY vZ`. Rewrite `tY`, `rY`, `uY` using `[hyP]`. Rewrite `tZ`, `rZ` using `[hzP]`. Establish `Cz : ∀ σ i, IsCombAtG Z.t (ptF P ≫ Z.j) (vZ σ) (g σ i) (vY σ i)` using `fun σ i => (TanRel.comb_iff ((Descent.ptF_fst P).trans (hPy.trans hzy.symm)) rfl (rZ σ) (rY σ i) _).1 (hchg.2.1 σ i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, b, hGu, hG⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c ℂ_[p] y P).1 hPy`. Establish `Cy : ∀ σ i, IsCombAtG Z.t (ptF P ≫ Z.j) (vY σ) (G σ i) ((frameOf Z P).v σ i)` using `fun σ i => (TanRel.comb_iff ((Descent.ptF_fst P).trans hPy) rfl (rY σ) ((tie_frameOf Z P).2.2 σ i) _).1 (hG.2.1 σ i)`. Establish `hev` using `GlobalTheory.FlatGL.evR_flat_chg τ hf P y hPy (G τ.1) (G (conjEmb τ.1)) (hG.2.1 τ.1) (hG.2.1 _)`. Establish `hL` using `fun σ => GlobalTheory.T.p_adic_point_tangent_map_formula hB E H Dw l Xo c Z p (ptF P) yb Q π ψ hPt (Dw.mult σ) (x σ) (vZ σ) (vY σ) (g σ) (tZ σ) (LT σ) (Cz σ)`. Establish `h1` using `hC E H Z.X Z.t ℂ_[p] (ptF P ≫ Z.j) (GlobalTheory.ShFam.Pad.latHT Z.t p (ptF P ≫ Z.j)) (Dw.mult τ.1) ((frameOf Z P).v τ.1) (vY τ.1) (G τ.1) δ⁻¹ (inv_ne_zero hδ) (tY τ.1) (uY τ.1) (fun a w hw => (hL τ.1 a w hw).trans (GlobalTheory.T.lattice_eigenvector_height_matrix E H p δ hδ l c …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hC E H Z.X Z.t ℂ_[p] (ptF P ≫ Z.j) (GlobalTheory.ShFam.Pad.latHT Z.t p (ptF P ≫ Z.j)) (Dw.mult (conjEmb τ.1)) ((frameOf Z P).v (conjEmb τ.1)) (vY (conjEmb τ.1)) (G (conjEmb τ.1)) 1 one_ne_zero (tY _) (uY _) (fun a w hw => (hL _ a w hw).trans (GlobalTheory.T.height_lattice_basis_o …`. Establish `d1` using `(hGu τ.1).ne_zero`. Establish `d2` using `(hGu (conjEmb τ.1)).ne_zero`. Establish `hP0 : evR Xo c f P ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hev` using `[h0, zero_mul]`. Conclude with `mul_ne_zero d2 hfy hev.symm`. Use `⟨hP0, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun t => Real.log ‖t‖) hev`. Simplify using `only [norm_mul] at e`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e` using `[Real.log_mul (norm_ne_zero_iff.2 hP0) (norm_ne_zero_iff.2 d1), Real.log_mul (norm_ne_zero_iff.2 d2) (norm_ne_zero_iff.2 hfy)]`. Unfold `lnDet`. Rewrite using `[h1, h2, norm_inv, Real.log_inv, norm_one, Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem pointSt_of : BridgeSt → EigSt → CovolSt → PointSt := by
   intro hB hE hC E _ _ _ _ H Dw τ p _

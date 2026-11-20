@@ -5,9 +5,9 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f`. Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Use `⟨fun φ => ?_, fun γ hγ x => ?_⟩` and prove the remaining obligations. Use `filter_upwards [integrated_ae_eq_rconvQ (Gam K n) μ f φ] with q hq`. Rewrite using `[inner_kv, ← rconvQ_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hq.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(Quotient.out_eq q).symm`. Use `ext_inner_right ℂ fun φ => ?_` and prove the remaining obligations. Rewrite using `[inner_kv, inner_kv, rconv_mul_left (Gam K n) μ f φ hγ]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.ropAe :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f : CC K n),

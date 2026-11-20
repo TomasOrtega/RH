@@ -6,19 +6,19 @@ open scoped ENNReal ComplexConjugate
 namespace PositivityTheory.Rg.BcB.E2.P
 
 /- English proof (translation)
-Introduce `hJR hTon hWk hEig hLoc hNZ hSm`. Introduce `X ι κ S _ _ _ ν _ _ F W Φ σ g c₀ P hd hW hΦ hσ hc₀ hP`. Set `_ : MeasurableSpace (Lp ℂ 2 ν)` to `borel _`. Establish `: BorelSpace (Lp ℂ 2 ν)` using `⟨rfl⟩`. Take `⟨Ψ, hΨm, hΨ⟩` from `hJR S ν`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hrep, hinv⟩ : ∃ f : ι → X.G → S → ℂ, (∀ i, IsRep (F i) (f i)) ∧ ∀ i, ∀ γ ∈ X.Γ, ∀ x s, f i (γ * x) s = f i x s` from `⟨fun i x s => Ψ (F i x) s, fun i => ⟨hΨm.comp (((hd.cont i).measurable.comp measurable_fst).prodMk measurable_snd), fun x => hΨ (F i x)⟩, fun i γ hγ x s => by simp only [hd.inv i γ hγ x]⟩`. Establish `: SFinite X.ν` using `by unfold Ctx.ν; infer_instance`. Establish `hT : ∀ᵐ s ∂ν, ∀ i, ∫⁻ x, W x * ‖f i x s‖ₑ ^ 2 ∂X.ν < ⊤` using `ae_all_iff.2 fun i => hTon X.G S X.ν ν (F i) (f i) W (hrep i) hW (hd.wt i)`. Establish `hE : ∀ᵐ s ∂ν, ∀ c i, ∀ᵐ x ∂X.μ, ∑ j, ∫ y, Φ c i j y * conj (f j (x * y) s) ∂X.μ = σ c s * conj (f i x s)` using `ae_all_iff.2 fun c => hEig X ι S ν F f (Φ c) (σ c) (hσ c).2.choose hd.cont hrep (hΦ c) (hσ c).1 (hσ c).2.choose_spec (hd.eig c)`. Establish `hL : ∀ᵐ s ∂ν, ∀ i, LocallyIntegrable (fun x => f i x s) X.μ` using `ae_all_iff.2 fun i => hLoc X S ν (F i) (f i) (hd.cont i) (hrep i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : ∀ᵐ s ∂ν, ∀ n, ∑ i, ∫ x, g n i x * conj (f i x s) ∂X.ν = 0` using `ae_all_iff.2 fun n => hWk X.G S ι X.ν ν F f (g n) 0 hrep (fun i => (hd.gint n i).1) (fun i => (hd.gint n i).2) MemLp.zero (fun h => by rw [hd.orth n h]; simp)`. Establish `hN : ¬ ∀ᵐ s ∂ν, ∀ i, ∀ᵐ x ∂X.μ, f i x s = 0`. Introduce `h`. Apply `hd.ne` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hNZ X S ν (F i) (f i) (hd.cont i) (hrep i) (h.mono fun s hs => hs i)`. Take `⟨s, hsN, hsP, hs0, hsT, hsE, hsL, hsO⟩` from `((not_eventually.1 hN).and_eventually (hP.and (hc₀.and (hT.and (hE.and (hL.and hO)))))).exists`. Establish `huL : ∀ i, LocallyIntegrable (fun x => conj (f i x s)) X.μ` using `fun i => (hsL i).mono (Complex.continuous_conj.comp_aestronglyMeasurable (hsL i).aestronglyMeasurable) (Eventually.of_forall fun x => by simp)`. Take `⟨f', hf', heig⟩` from `hSm X ι κ (fun i x => conj (f i x s)) Φ (fun c => σ c s) c₀ huL (fun i γ hγ x => by simp only [hinv i γ hγ x s]) hΦ hs0 hsE`. Establish `hae : ∀ i, f' i =ᵐ[X.ν] fun x => conj (f i x s)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ctx.ν`. Conclude with `ae_restrict_of_ae (hf' i).2.1`. Use `⟨s, hsP, f', ⟨fun i => (hf' i).1, ?_, fun i => (hf' i).2.2, fun i => ?_, heig, fun n => ?_⟩⟩` and prove the remaining obligations. Introduce `h0`. Apply `hsN` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use `filter_upwards [(hf' i).2.1] with x hx`. Simplify using `only [h0, Pi.zero_apply] at hx`. Simplify using `using hx.symm`. Rewrite using `[lintegral_congr_ae (g := fun x => W x * ‖f i x s‖ₑ ^ 2) ((hae i).mono fun x hx => by simp only [hx, RCLike.enorm_conj])]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsT i`. Rewrite using `[← hsO n]`. Use `Finset.sum_congr rfl fun i _ => integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae i] with x hx`. Rewrite using `[hx]`.
+A detailed English derivation is pending.
 -/
 theorem desint : JointRep → Tonelli → WeakAE → EigAE → LocInt → NonZero → Smooth → Desint := by
   intro hJR hTon hWk hEig hLoc hNZ hSm

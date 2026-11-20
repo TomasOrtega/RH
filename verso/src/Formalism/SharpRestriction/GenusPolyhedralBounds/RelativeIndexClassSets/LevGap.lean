@@ -23,9 +23,9 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hg` using `Nat.gcd_eq_gcd_ab p q`. Rewrite `hg` using `[h]`. Establish `h1 : (1 : 𝓞 F) ∈ v.asIdeal`. Establish `: (1 : 𝓞 F) = ((p : ℤ) : 𝓞 F) * ((Nat.gcdA p q : ℤ) : 𝓞 F) + ((q : ℤ) : 𝓞 F) * ((Nat.gcdB p q : ℤ) : 𝓞 F)`. Rewrite using `[← Int.cast_mul, ← Int.cast_mul, ← Int.cast_add, ← hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_right _ (by simpa using hp)) (v.asIdeal.mul_mem_right _ (by simpa using hq))`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_not_both {p q : ℕ} (h : Nat.Coprime p q) (v : HeightOneSpectrum (𝓞 F)) (hp : (p : 𝓞 F) ∈ v.asIdeal)
     (hq : (q : 𝓞 F) ∈ v.asIdeal) : False := by
@@ -39,9 +39,9 @@ theorem asm_not_both {p q : ℕ} (h : Nat.Coprime p q) (v : HeightOneSpectrum (�
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `: (Ideal.span {(p : ℤ)}).IsMaximal` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ |>.isMaximal (by simpa using hpZ.ne_zero)`. Take `⟨Q, hQ, hov⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 F) (Ideal.span {(p : ℤ)})`. Establish `hmem : (p : 𝓞 F) ∈ Q`. Establish `: (p : ℤ) ∈ Q.under ℤ` using `by rw [← hov.over]; exact Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `⟨⟨Q, hQ.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `: (p : 𝓞 F) = 0` using `by simpa using hmem`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem asm_exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 hp
@@ -69,16 +69,16 @@ def latBack (M : Submodule (𝓞 E) (Fin R.k → E)) : Submodule (𝓞 E) (sp.X 
   M.comap ((sp.crd0 : (sp.X 0).V →ₗ[E] (Fin R.k → E)).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-The claim follows from `Submodule.map_comap_eq_of_surjective (f := (sp.crd0 : (sp.X 0).V →ₗ[E] (Fin R.k → E)).restrictScalars (𝓞 E)) sp.crd0.surjective M`.
+A detailed English derivation is pending.
 -/
 theorem crdLat0_latBack (M : Submodule (𝓞 E) (Fin R.k → E)) : sp.crdLat0 (latBack sp M) = M :=
   Submodule.map_comap_eq_of_surjective
     (f := (sp.crd0 : (sp.X 0).V →ₗ[E] (Fin R.k → E)).restrictScalars (𝓞 E)) sp.crd0.surjective M
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨sp.crd0 x, hx, sp.crd0.symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show sp.crd0 (sp.crd0.symm y) ∈ M`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[sp.crd0.apply_symm_apply]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem latBack_eq_map (M : Submodule (𝓞 E) (Fin R.k → E)) :
     latBack sp M = M.map ((sp.crd0.symm : (Fin R.k → E) →ₗ[E] (sp.X 0).V).restrictScalars (𝓞 E)) := by
@@ -91,7 +91,7 @@ theorem latBack_eq_map (M : Submodule (𝓞 E) (Fin R.k → E)) :
     rwa [sp.crd0.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[latBack_eq_map]; exact h.fg.map _ span_eq_top := by`. Rewrite using `[latBack_eq_map]`. Establish `: ((M.map ((sp.crd0.symm : (Fin R.k → E) →ₗ[E] (sp.X 0).V).restrictScalars (𝓞 E)) : Submodule (𝓞 E) (sp.X 0).V) : Set (sp.X 0).V) = (sp.crd0.symm : (Fin R.k → E) →ₗ[E] (sp.X 0).V) '' (M : Set (Fin R.k → E))` using `rfl`. Rewrite using `[this, Submodule.span_image, h.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `sp.crd0.symm.surjective`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latBack_isLattice (M : Submodule (𝓞 E) (Fin R.k → E)) (h : Submodule.IsLattice E M) :
     Submodule.IsLattice E (latBack sp M) where
@@ -111,9 +111,9 @@ namespace Par
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {k : ℕ} (P : Par F E k)
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h.dual y hy`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem T_Ld {d : ℕ} (h : P.LbOK d) : ∀ y ∈ P.Ld, (P.T : E) • y ∈ P.Lb := by
   intro y hy
@@ -124,11 +124,11 @@ theorem T_Ld {d : ℕ} (h : P.LbOK d) : ∀ y ∈ P.Ld, (P.T : E) • y ∈ P.Lb
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(P.T : E) • y, P.T_Ld h y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Simplify using `[Subring.smul_def]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem T_LdV {d : ℕ} (h : P.LbOK d) (v : HeightOneSpectrum (𝓞 F)) :
     ∀ x ∈ P.LdV v, (P.T : intV E v) • x ∈ P.LbV v := by
@@ -144,19 +144,19 @@ theorem T_LdV {d : ℕ} (h : P.LbOK d) (v : HeightOneSpectrum (𝓞 F)) :
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_left hx)`.
+A detailed English derivation is pending.
 -/
 theorem fT_L (v : HeightOneSpectrum (𝓞 F)) (x : P.LdV v) (hx : x.1 ∈ P.LbV v) : P.fT v x = 0 :=
   (Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_left hx)
 
 /- English proof (translation)
-The claim follows from `P.fT_L v _ (P.T_LdV h v x.1 x.2)`.
+A detailed English derivation is pending.
 -/
 theorem fT_T {d : ℕ} (h : P.LbOK d) (v : HeightOneSpectrum (𝓞 F)) (x : P.LdV v) :
     P.fT v ((P.T : intV E v) • x) = 0 := P.fT_L v _ (P.T_LdV h v x.1 x.2)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_right ⟨x, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pz_fM (v : HeightOneSpectrum (𝓞 F)) (y : P.fM v) : P.pzV v • y = 0 := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ y
@@ -164,9 +164,9 @@ theorem pz_fM (v : HeightOneSpectrum (𝓞 F)) (y : P.fM v) : P.pzV v • y = 0 
   exact (Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_right ⟨x, rfl⟩)
 
 /- English proof (translation)
-Introduce `h0`. Apply `hc` to reduce the goal to its premises. Establish `: Subsingleton (P.fM v)` using `⟨fun a b => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(LinearMap.congr_fun h0 x).trans (LinearMap.congr_fun h0 y).symm⟩`. Conclude with `Nat.card_unique`.
+A detailed English derivation is pending.
 -/
 theorem fT_ne (v : HeightOneSpectrum (𝓞 F)) (hc : Nat.card (P.fM v) ≠ 1) : P.fT v ≠ 0 := by
   intro h0
@@ -178,14 +178,14 @@ theorem fT_ne (v : HeightOneSpectrum (𝓞 F)) (hc : Nat.card (P.fM v) ≠ 1) : 
   exact Nat.card_unique
 
 /- English proof (translation)
-Unfold `Uloc`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UlocAlt (S : P.Splits) (v : HeightOneSpectrum (𝓞 F)) (h : (P.T : 𝓞 F) ∈ v.asIdeal) :
     P.Uloc S v = levelVL P.σ P.J v P.Lb ⊓ stabFun _ (P.fT v) := by
   unfold Uloc; rw [if_pos h]
 
 /- English proof (translation)
-Unfold `Uloc`. Rewrite using `[if_neg h, dif_neg h0, dif_neg h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Uloc_hyp (S : P.Splits) (v : HeightOneSpectrum (𝓞 F)) (h0 : (P.gp 0 : 𝓞 F) ∉ v.asIdeal)
     (h1 : (P.gp 1 : 𝓞 F) ∉ v.asIdeal) (h : (P.T : 𝓞 F) ∉ v.asIdeal) :
@@ -193,7 +193,7 @@ theorem Uloc_hyp (S : P.Splits) (v : HeightOneSpectrum (𝓞 F)) (h0 : (P.gp 0 :
   unfold Uloc; rw [if_neg h, dif_neg h0, dif_neg h1]
 
 /- English proof (translation)
-The claim follows from `| 0, v, h => by unfold Uloc; rw [if_neg (fun hh => asm_not_both (hT 0) v hh h), dif_pos h] | 1, v, h => by unfold Uloc; rw [if_neg (fun hh => asm_not_both (hT 1) v hh h), dif_neg (fun hh => asm_not_both hg v hh h), dif_pos h]`.
+A detailed English derivation is pending.
 -/
 theorem Uloc_g (S : P.Splits) (hT : ∀ i, Nat.Coprime P.T (P.gp i)) (hg : Nat.Coprime (P.gp 0) (P.gp 1)) :
     ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)) (h : (P.gp i : 𝓞 F) ∈ v.asIdeal),
@@ -204,9 +204,7 @@ theorem Uloc_g (S : P.Splits) (hT : ∀ i, Nat.Coprime P.T (P.gp i)) (hg : Nat.C
     unfold Uloc; rw [if_neg (fun hh => asm_not_both (hT 1) v hh h), dif_neg (fun hh => asm_not_both hg v hh h), dif_pos h]
 
 /- English proof (translation)
-Unfold `Uloc`. Use `split_ifs with h h0 h1`. Conclude with `inf_le_left`. Conclude with `hiw 0 v h0 _`. Conclude with `hiw 1 v h1 _`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Uloc_lev (S : P.Splits) (hiw : P.IwLe) (v : HeightOneSpectrum (𝓞 F)) :
     P.Uloc S v ≤ levelVL P.σ P.J v P.Lb := by
@@ -218,7 +216,7 @@ theorem Uloc_lev (S : P.Splits) (hiw : P.IwLe) (v : HeightOneSpectrum (𝓞 F)) 
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_inf.trans (and_congr Iff.rfl (Subgroup.mem_iInf.trans (forall_congr' fun _ => Subgroup.mem_comap)))`.
+A detailed English derivation is pending.
 -/
 theorem U_eq (S : P.Splits) (x : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     x ∈ P.U S ↔ x ∈ UPts P.σ P.J (FiniteAdeleRing (𝓞 F) F) ∧ ∀ v, bc (prV (E := E) v) x ∈ P.Uloc S v :=
@@ -318,9 +316,9 @@ structure Par.AllOK {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   stab : P.StabTriv
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[PlacesToy.valW_zero, map_zero]`. Conclude with `⟨fun _ => zero_lt_one, fun _ => WithTop.coe_lt_top 0⟩`. Rewrite using `[PlacesToy.valW_of_ne w hy]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : w.valuation K y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Rewrite using `[show (0 : WithTop ℤ) = ((0 : ℤ) : WithTop ℤ) from rfl, WithTop.coe_lt_coe]`. Unfold `vAdd`. Rewrite using `[Left.neg_pos_iff, ← WithZero.log_one, WithZero.log_lt_log hv one_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valW_pos_iff {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (y : K) :
     (0 : WithTop ℤ) < PlacesToy.valW w y ↔ w.valuation K y < 1 := by
@@ -354,15 +352,15 @@ variable {R : Ranks} (H : Host R) (T : ℕ) [hT : Fact T.Prime] (pz : 𝓞 H.E)
   (hpz : (pz : H.E) * H.conj (pz : H.E) = (T : H.E))
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun x => star_eq_conj H x`.
+A detailed English derivation is pending.
 -/
 theorem signature_eq_conjugation : (letI := H.cmStar; (hostSpacesOfNorm H T pz hpz).cm.sig) = conjF H :=
   AlgHom.ext fun x => star_eq_conj H x
 
 /- English proof (translation)
-Set `_` to `H.cmStar`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(stdSpace_gram_apply (E := H.E) star_isIntegral (R.N 0) (fun _ => false) (R.N 0) 0 _ _).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, sgn]`. Distinguish the cases in `h : i = j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(if_pos rfl).trans (if_neg Bool.false_ne_true)`. Rewrite using `[if_neg h]`. Conclude with `if_neg (fun hh => h (Equiv.injective _ hh))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_matrix_zero_eq_one : (letI := H.cmStar; (hostSpacesOfNorm H T pz hpz).gram0) = 1 := by
   let _ := H.cmStar
@@ -377,7 +375,7 @@ theorem gram_matrix_zero_eq_one : (letI := H.cmStar; (hostSpacesOfNorm H T pz hp
     exact if_neg (fun hh => h (Equiv.injective _ hh))
 
 /- English proof (translation)
-Set `_` to `H.cmStar`. Simplify using `only [parOf, hostPar, Par.mk.injEq, and_true]`. Conclude with `⟨signature_eq_conjugation H T pz hpz, gram_matrix_zero_eq_one H T pz hpz⟩`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem parOf_eq (piG : Fin 2 → 𝓞 H.E) :
     (letI := H.cmStar; parOf (hostSpacesOfNorm H T pz hpz) H.g T pz (fun i => H.conj (piG i : H.E))) = hostPar H T pz piG := by
@@ -392,9 +390,7 @@ def parD (D : D7) (u : D.what₂.Word) (pz : 𝓞 D.host.E) (piG : Fin 2 → �
   parOf D.sp D.host.g (D.mem u).A.T pz (fun i => D.host.conj (piG i : D.host.E))
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Conclude with `⟨{ lev := fun u => colLevel D.sp (D.mem u).C (D.mem u).A (D.clsLat u) (pz u) (fun i => D.host.conj (piG i : D.host.E)) (S u) (e u) (hst u) (hl u) (ok u).lb (ok u).card (ok u).iw (ok u).cp (ok u).op (ok u).stab (hTg u) ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 …`. Establish `hz' : z = (parD D u (pz u) piG).pzV (eT u v).1` using `Subtype.ext hz`. Rewrite using `[hz']`. Conclude with `(parD D u (pz u) piG).pz_fM _ y`.
-
-Use `tau := tau`. Use `tau_def := htau }⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levGapD_gen (D : D7) (pz : D.what₂.Word → 𝓞 D.host.E) (piG : Fin 2 → 𝓞 D.host.E)
     (hK : ∀ u, ((pz u : 𝓞 D.host.E) : D.host.E) ∈ D.host.K)
@@ -473,23 +469,21 @@ def LevGapGen (dOf : Ranks → ℕ) : Prop :=
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `R H T hT hlev hpde pz hK hpz hcong hpi`. Use `letI := H.cmStar`. Use `choose piG hpiK hpiN using hpi`. Distinguish the cases in `hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E`. Establish `hyp : LevHyp H T pz piG` using `⟨hT.out, hK, hpz, hcong, hpiK, hpiN, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ok : (parOf (hostSpacesOfNorm H T pz hpz) H.g T pz (fun i => H.conj (piG i : H.E))).AllOK (2 * R.f)`. Rewrite using `[parOf_eq]`. Conclude with `⟨⟨fun i v h => Classical.choice (h1 H T pz piG hyp i v h)⟩, h2 H T pz piG hyp, h3 H T pz piG hyp, h4 H T pz piG hyp, h5 H T pz piG hyp, h6 H T pz piG hyp, h7 H T pz piG hyp, h8 H T pz piG hyp⟩`. Take `⟨S⟩` from `ok.splits`. Use `haveI := ok.fin S`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨eT⟩` from `h10 H T pz piG hyp`. Establish `hTg : ∀ i, Nat.Coprime T (H.g i)` using `fun i => (Nat.coprime_primes hT.out (H.g_prime i)).2 (h9 H T pz piG hyp i)`. Establish `htau0 : ∀ w : HeightOneSpectrum (𝓞 H.E), ∃ e : Fin R.f ≃ ↥(R.Psi), PlacesToy.resCharW w = T → ∀ (v : Fin R.f) (x : 𝓞 H.F), x ∈ (eT v).1.asIdeal ↔ (0 : WithTop ℤ) < PlacesToy.valW w (H.sigmaOf (e v : R.GG) (algebraMap H.F H.E (x : H.F)))`. Introduce `w`. Distinguish the cases in `h : PlacesToy.resCharW w = T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he⟩` from `h11 H T pz piG hyp w (h ▸ PlacesToy.resCharW_mem w)`. Conclude with `⟨eT.trans e, fun _ v x => (he (eT v) x).trans (valW_pos_iff _ _).symm⟩`. Conclude with `⟨Fintype.equivOfCardEq (by rw [Fintype.card_fin, card_realPlaces_eq_degree]), fun hh => absurd hh h⟩`. Use `choose tauF htau using htau0`. Use `⟨clsPkg ((parOf (hostSpacesOfNorm H T pz hpz) H.g T pz (fun i => H.conj (piG i : H.E))).Cls S) (dOf R) (hd R), fun _ => ⟨fun c => Empty.elim c⟩, rfl, latOf H T pz hpz _ S (dOf R) (hd R), ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Introduce `i c match i, c with`. Consider the case `0, c`. Conclude with `latBack_isLattice _ _ (Formalism.UG.P.global_lattice_isLattice_holds H.F H.E (Fin R.k) _ ok.lb.fin ok.lb.span _)`. Consider the case `_ + 1, c => exact Empty.elim c`. Introduce `hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol Dst hD du hdu Gam hG hwin hg' ht G kb ks tw htw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `levGapD_gen _ (fun _ => pz) piG ?_ ?_ ?_ ?_ ?_ ?_ (fun _ => S) (fun _ => Equiv.refl _) ?_ ?_ ?_ (fun _ => eT) (fun _ w => tauF w) ?_` and prove the remaining obligations. Conclude with `fun _ => hK`. Conclude with `fun _ => hpz`. Conclude with `fun _ => hcong`. Conclude with `hpiK`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `hpiN`. Conclude with `fun _ => ok`. Conclude with `fun _ _ => inferInstanceAs (Subsingleton Unit)`. Conclude with `fun _ c => crdLat0_latBack _ _`. Conclude with `fun _ => hTg`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `fun _ w hw v x => htau w hw v x`. Use `⟨clsPkg Empty (dOf R) (hd R), fun _ => ⟨fun c => Empty.elim c⟩, rfl, fun i => match i with` and prove the remaining obligations. Consider the case `0 => fun c => Empty.elim c`. Consider the case `_ + 1 => fun c => Empty.elim c, ?_, ?_⟩`. Introduce `i c match i, c with`.
-
-Consider the case `0, c => exact Empty.elim c`. Consider the case `_ + 1, c => exact Empty.elim c`. Introduce `hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol Dst hD du hdu Gam hG hwin hg' ht G kb ks tw htw`. Conclude with `absurd hg' hg`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levGapGen_of (dOf : Ranks → ℕ) (hd : ∀ R, 0 < dOf R)
     (h1 : FactSplitG) (h2 : FactLb) (h3 : FactFMCard) (h4 : FactIwLe) (h5 : FactUCompact)
@@ -550,7 +544,7 @@ theorem levGapGen_of (dOf : Ranks → ℕ) (hd : ∀ R, 0 < dOf R)
       exact absurd hg' hg
 
 /- English proof (translation)
-Use `show 0 < Formalism.HermitianLatticeCounting.S6.minkowskiM n`. Unfold `Formalism.HermitianLatticeCounting.S6.minkowskiM`. Conclude with `Finset.prod_pos fun p hp => pow_pos (Nat.Prime.pos (Finset.mem_filter.1 hp).2) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem asm_minkM_pos (n : ℕ) : 0 < minkM n := by
   show 0 < Formalism.HermitianLatticeCounting.S6.minkowskiM n
@@ -558,7 +552,7 @@ theorem asm_minkM_pos (n : ℕ) : 0 < minkM n := by
   exact Finset.prod_pos fun p hp => pow_pos (Nat.Prime.pos (Finset.mem_filter.1 hp).2) _
 
 /- English proof (translation)
-The claim follows from `levGapGen_of (fun R => minkM (2 * R.f * R.N R.m)) (fun _ => asm_minkM_pos _) h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11`.
+A detailed English derivation is pending.
 -/
 theorem levGap_of (h1 : FactSplitG) (h2 : FactLb) (h3 : FactFMCard) (h4 : FactIwLe) (h5 : FactUCompact)
     (h6 : FactUOpen) (h7 : FactClsFinite) (h8 : FactStabTriv) (h9 : FactTNeG) (h10 : FactPlacesT)
@@ -566,7 +560,7 @@ theorem levGap_of (h1 : FactSplitG) (h2 : FactLb) (h3 : FactFMCard) (h4 : FactIw
   levGapGen_of (fun R => minkM (2 * R.f * R.N R.m)) (fun _ => asm_minkM_pos _) h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11
 
 /- English proof (translation)
-The claim follows from `levGapGen_of dOf hd factSplitG Formalism.MainNotions.Gaps.LevGap.factLb factFMCard factIwLe Formalism.MainNotions.Gaps.LevGap.factUCompact Formalism.MainNotions.Gaps.LevGap.factUOpen factClsFinite factStabTriv Formalism.MainNotions.Gaps.LevGap.factTNeG Formalism.MainNotions.Gaps. …`.
+A detailed English derivation is pending.
 -/
 theorem levGapGen (dOf : Ranks → ℕ) (hd : ∀ R, 0 < dOf R) : LevGapGen dOf :=
   levGapGen_of dOf hd factSplitG Formalism.MainNotions.Gaps.LevGap.factLb factFMCard factIwLe Formalism.MainNotions.Gaps.LevGap.factUCompact
@@ -574,13 +568,13 @@ theorem levGapGen (dOf : Ranks → ℕ) (hd : ∀ R, 0 < dOf R) : LevGapGen dOf 
     Formalism.MainNotions.Gaps.LevGap.factPlacesT Formalism.MainNotions.Gaps.LevGap.factTau
 
 /- English proof (translation)
-The claim follows from `levGapGen (fun R => minkM (2 * R.f * R.N R.m)) (fun _ => asm_minkM_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem levGap : Formalism.MainNotions.Inhab.LevGap :=
   levGapGen (fun R => minkM (2 * R.f * R.N R.m)) (fun _ => asm_minkM_pos _)
 
 /- English proof (translation)
-The claim follows from `levGapGen (fun _ => 1) (fun _ => one_pos)`.
+A detailed English derivation is pending.
 -/
 theorem levGapOne : LevGapGen (fun _ => 1) := levGapGen (fun _ => 1) (fun _ => one_pos)
 

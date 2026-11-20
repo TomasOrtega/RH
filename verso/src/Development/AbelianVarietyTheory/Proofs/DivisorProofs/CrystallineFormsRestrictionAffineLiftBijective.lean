@@ -20,7 +20,7 @@ abbrev CC : Type 1 := (LevE D.κ D.t D.i (n + 1)).FullSubcategory
 variable {D n}
 
 /- English proof (translation)
-The claim follows from `ObjectProperty.hom_ext _ (ObjectProperty.hom_ext _ (Subtype.ext h))`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext' {T T' : CC D n} {f g : T ⟶ T'} (h : f.hom.hom.1 = g.hom.hom.1) : f = g :=
   ObjectProperty.hom_ext _ (ObjectProperty.hom_ext _ (Subtype.ext h))
@@ -36,14 +36,14 @@ def qq : CC D n ⥤ AffOp D.X where
   map_comp _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← f.pt, Category.assoc, Scheme.Hom.comp_preimage, top_le_iff.1 h, Scheme.Hom.preimage_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of_hom {T T' : Thick D.κ D.t} (f : T ⟶ T') {U : D.X.Opens} (h : ⊤ ≤ (T.x ≫ D.i) ⁻¹ᵁ U) :
     ⊤ ≤ (T'.x ≫ D.i) ⁻¹ᵁ U := by
   rw [← f.pt, Category.assoc, Scheme.Hom.comp_preimage, top_le_iff.1 h, Scheme.Hom.preimage_top]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_coproduct_thickening_affine_lift_poincare D Λ n ((qq D n).obj T) T.obj.obj.T T.property T.obj.obj.mem`.
+A detailed English derivation is pending.
 -/
 theorem cop_ex (T : CC D n) : ∃ (G : Thick D.κ D.t) (l : T.obj.obj.T ⟶ G) (r : Λ.L.obj ((qq D n).obj T) ⟶ G),
     IsCop (n + 1) l r ∧ (KK D.κ D.t).QAt l :=
@@ -56,13 +56,13 @@ def ll (T : CC D n) : T.obj.obj.T ⟶ GG Λ T := (cop_ex Λ T).choose_spec.choos
 def rr (T : CC D n) : Λ.L.obj ((qq D n).obj T) ⟶ GG Λ T := (cop_ex Λ T).choose_spec.choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(cop_ex Λ T).choose_spec.choose_spec.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem isCop (T : CC D n) : IsCop (n + 1) (ll Λ T) (rr Λ T) :=
   (cop_ex Λ T).choose_spec.choose_spec.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(cop_ex Λ T).choose_spec.choose_spec.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem qat_ll (T : CC D n) : (KK D.κ D.t).QAt (ll Λ T) :=
   (cop_ex Λ T).choose_spec.choose_spec.choose_spec.2
@@ -71,7 +71,7 @@ def SObj (T : CC D n) : CC D n :=
   ⟨⟨⟨GG Λ T, T.obj.obj.U, T.obj.obj.hU, mem_of_hom (ll Λ T) T.obj.obj.mem⟩, T.obj.property⟩, (isCop Λ T).1⟩
 
 /- English proof (translation)
-The claim follows from `(isCop Λ T).2 (GG Λ T') (isCop Λ T').1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_ex {T T' : CC D n} (f : T ⟶ T') : ∃! c : GG Λ T ⟶ GG Λ T',
     ll Λ T ≫ c = f.hom.hom.1 ≫ ll Λ T' ∧ rr Λ T ≫ c = Λ.L.map ((qq D n).map f) ≫ rr Λ T' :=
@@ -80,14 +80,14 @@ theorem smap_ex {T T' : CC D n} (f : T ⟶ T') : ∃! c : GG Λ T ⟶ GG Λ T',
 def smap {T T' : CC D n} (f : T ⟶ T') : GG Λ T ⟶ GG Λ T' := (smap_ex Λ f).exists.choose
 
 /- English proof (translation)
-The claim follows from `(smap_ex Λ f).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem smap_spec {T T' : CC D n} (f : T ⟶ T') :
     ll Λ T ≫ smap Λ f = f.hom.hom.1 ≫ ll Λ T' ∧ rr Λ T ≫ smap Λ f = Λ.L.map ((qq D n).map f) ≫ rr Λ T' :=
   (smap_ex Λ f).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(smap_ex Λ f).unique ⟨h1, h2⟩ (smap_spec Λ f)`.
+A detailed English derivation is pending.
 -/
 theorem smap_uniq {T T' : CC D n} (f : T ⟶ T') (c : GG Λ T ⟶ GG Λ T')
     (h1 : ll Λ T ≫ c = f.hom.hom.1 ≫ ll Λ T') (h2 : rr Λ T ≫ c = Λ.L.map ((qq D n).map f) ≫ rr Λ T') :
@@ -123,15 +123,15 @@ def eps : 𝟭 (AffOp D.X) ⟶ ell Λ h ⋙ qq D n where
 abbrev KL : Cx (CC D n) := (((KK D.κ D.t).res (pE D.κ D.t D.i)).res (LevE D.κ D.t D.i (n + 1)).ι)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem qat_iff {T T' : CC D n} (φ : T ⟶ T') : (KL (D := D) (n := n)).QAt φ ↔ (KK D.κ D.t).QAt φ.hom.hom.1 :=
   Iff.rfl
 
 /- English proof (translation)
-Use `set T := (ell Λ h).obj U`. Establish `hc` using `isCop Λ T`. Take `⟨σ, ⟨h1, h2⟩, -⟩` from `hc.2 (GG Λ T) hc.1 (rr Λ T) (ll Λ T)`. Establish `hσ : σ ≫ σ = 𝟙 _`. Take `⟨c, -, hu⟩` from `hc.2 (GG Λ T) hc.1 (ll Λ T) (rr Λ T)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hu (σ ≫ σ) ⟨(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ σ) h1).trans h2), (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ σ) h2).trans h1)⟩).trans (hu (𝟙 _) ⟨Category.comp_id _, Category.comp_id _⟩).symm`. Establish `hi : IsIso σ` using `⟨σ, hσ, hσ⟩`. Take `⟨hiso, hcomp, -⟩` from `GlobalTheory.T.fourTermComplex_quasiIsoAt_formal_properties (Thick D.κ D.t) (KK D.κ D.t)`. Conclude with `h1 ▸ hcomp _ _ _ _ _ (qat_ll Λ T) (hiso _ _ σ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qat_rr (U : AffOp D.X) : (KK D.κ D.t).QAt (rr Λ ((ell Λ h).obj U)) := by
   set T := (ell Λ h).obj U
@@ -147,7 +147,7 @@ theorem qat_rr (U : AffOp D.X) : (KK D.κ D.t).QAt (rr Λ ((ell Λ h).obj U)) :=
   exact h1 ▸ hcomp _ _ _ _ _ (qat_ll Λ T) (hiso _ _ σ)
 
 /- English proof (translation)
-Rewrite using `[CategoryTheory.Functor.map_id, Category.id_comp]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qat_map_id (U : AffOp D.X) {B : Thick D.κ D.t} (f : Λ.L.obj U ⟶ B) (hf : (KK D.κ D.t).QAt f) :
     (KK D.κ D.t).QAt (Λ.L.map (𝟙 U) ≫ f) := by
@@ -155,7 +155,7 @@ theorem qat_map_id (U : AffOp D.X) {B : Thick D.κ D.t} (f : Λ.L.obj U ⟶ B) (
   exact hf
 
 /- English proof (translation)
-Use `GlobalTheory.T.fourTermComplex_restriction_bijective_collapse (CC D n) (AffOp D.X) KL (ell Λ h) (qq D n) (SS Λ) (uu Λ) (ww Λ h) (eps Λ h) (fun T ↦ qat_ll Λ T) (fun U ↦ ?_)` and prove the remaining obligations. Rewrite using `[qat_iff]`. Conclude with `qat_map_id Λ U _ (qat_rr Λ h U)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resMap_bij : (KL (D := D) (n := n)).resMap (ell Λ h) |>.Bij := by
   refine GlobalTheory.T.fourTermComplex_restriction_bijective_collapse (CC D n) (AffOp D.X) KL (ell Λ h) (qq D n) (SS Λ) (uu Λ) (ww Λ h) (eps Λ h)
@@ -166,7 +166,7 @@ theorem resMap_bij : (KL (D := D) (n := n)).resMap (ell Λ h) |>.Bij := by
 end GlobalTheory.PDForm.LevLift
 
 /- English proof (translation)
-The claim follows from `fun _ Λ _ h ↦ GlobalTheory.PDForm.LevLift.resMap_bij Λ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDForm.levLift_resMap_bij : ∀ (D : Data) (Λ : Lift D) (n : ℕ) (h : ∀ U, LevE D.κ D.t D.i (n + 1) (Λ.toE.obj U)),
     ((((KK D.κ D.t).res (pE D.κ D.t D.i)).res (LevE D.κ D.t D.i (n + 1)).ι).resMap

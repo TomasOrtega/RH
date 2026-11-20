@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.IntegralMultiples
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ({c} : Finset E)`. Conclude with `⟨y, hy0, ⟨y • c, hy c (Finset.mem_singleton_self c)⟩, (zsmul_eq_mul c y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ d : ℤ, d ≠ 0 ∧ ∃ y : NumberField.RingOfIntegers E, (d : E) * c = (y : E) := by
@@ -11,11 +11,11 @@ theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
   exact ⟨y, hy0, ⟨y • c, hy c (Finset.mem_singleton_self c)⟩, (zsmul_eq_mul c y).symm⟩
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (Λ : Set (Fin r → E))`. Rewrite using `[hΛ]`. Conclude with `Submodule.mem_top`. Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.mp hv`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfg, Finset.smul_sum]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Establish `hi` using `hy (f i) (Finset.mem_image_of_mem f (Finset.mem_univ i))`. Set `o : NumberField.RingOfIntegers E` to `⟨y • f i, hi⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : y • f i • (g i : Fin r → E) = o • (g i : Fin r → E)`. Rewrite using `[← smul_assoc, ← algebraMap_smul E o]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Λ.smul_mem o (g i).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {r : ℕ}
     (Λ : Submodule (NumberField.RingOfIntegers E) (Fin r → E))
@@ -39,7 +39,7 @@ theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {r : ℕ}
   exact Λ.smul_mem o (g i).2
 
 /- English proof (translation)
-Introduce `E _ _ r Λ hΛ v`. Conclude with `exists_int_smul_mem Λ hΛ v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E] {r : ℕ}
     (Λ : Submodule (NumberField.RingOfIntegers E) (Fin r → E)),

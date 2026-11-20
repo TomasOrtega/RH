@@ -15,31 +15,29 @@ namespace GlobalTheory.WeilSqKer
 open GlobalTheory.CechPic GlobalTheory.DiagPairing
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP h₁ h₂ hsym hamp k _ _ x₀ m hm a b ha hb ha2 c hc`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Take `⟨t, ht⟩` from `GlobalTheory.HkFam.cube_of_exists_relAmple hA hD hamp hD`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y + pc hP x' y` using `fun T x x' y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP h₁ h₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), pc hP x (y * y') = pc hP x y + pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP h₁ h₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hS : cls P hP = pull (lift (snd A A) (fst A A)).left (cls P hP)` using `(cls_eq_iff hP (pull_isLB hP _)).2 hsym`. Establish `hsw : ∀ (T : Over S) (x y : T ⟶ A), pc hP x y = pc hP y x` using `fun T x y => by`. Establish `h` using `congrArg (pull (lift x y).left) hS`. Rewrite `h` using `[← pull_comp, ← Over.comp_left, comp_lift, lift_snd, lift_fst]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk x₀`. Establish `e : ∀ g : T ⊗ A ⟶ A, pull g.left (cls _ hD) = pc hP g g` using `fun g => by`. Rewrite using `[cls_pull hP, ← pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`. Both sides reduce to the same expression. Establish `hpt : ∀ {N : LB T.left} (hN : N.IsLB), cls N hN = 0` using `fun {N} hN => by haveI : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p⟩ : Nonempty T.left` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`. Take `⟨i, hi⟩` from `exists_chart hN p`. Conclude with `(cls_eq_zero_iff hN).2 (DescendedPrincipal.exists_gen_of_chart hN i fun y => Subsingleton.elim p y ▸ hi)`. Establish `haa : pc hP (fst T A ≫ a) (fst T A ≫ a) = 0`. Unfold `pc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← comp_lift, Over.comp_left, pull_comp, ← cls_pull hP _ (pull_isLB hP _), hpt (pull_isLB hP _), map_zero]`. Establish `ha2' : pc hP (fst T A ≫ a) (snd T A) + pc hP (fst T A ≫ a) (snd T A) = 0`. Rewrite using `[← hB]`. Take `⟨u, hu⟩` from `ha2`. Establish `z` using `(cls_eq_zero_iff (pull_isLB hP _)).2 ⟨u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `z` using `[cls_pull hP]`. Establish `z'` using `congrArg (pull (β_ T A).hom.left) z`. Rewrite `z'` using `[← pull_comp, ← Over.comp_left, comp_lift, braiding_hom_snd_assoc, braiding_hom_fst, map_zero]`. Unfold `pc`. Rewrite using `[← MonObj.comp_mul, ← pow_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `z'`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : LB.Gen (Out.thetaLB A (P.pull (lift (𝟙 A) (𝟙 A)).left) 1 a), φ.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hD _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hD, Fin.sum_univ_two]`. Use `show (1 : ℤ) • pull (snd T A).left _ + (-1 : ℤ) • pull ((fst T A ≫ a) * snd T A).left _ = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, e, hB, hB', hB', hsw _ (snd T A) (fst T A ≫ a), haa]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) 1 a 1 1` using `DescendedPrincipal.weilIs_one_right hG hA hD fun p => by`. Take `⟨θ, hθ⟩` from `CommutatorPairing.exists_pull hD (⟨a, φ, hφ⟩ : Out.ThetaGrp A _ 1 T) (Out.overResι (⊤ : T.left.Opens))`. Conclude with `⟨⊤, trivial, θ, hθ⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1'` using `CommPairing.weilIs_symm hD h1`. Establish `hc'` using `CommPairing.weilIs_symm hD hc`. Rewrite `h1'` using `[inv_one, ← hb]`. Establish `hc'' : Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) ((1 : ℤ) * (m : ℕ)) b a c⁻¹`. Rewrite using `[_root_.one_mul]`.
-
-Conclude with `hc'`. Establish `key` using `PairingLevels.weilIs_value_eq hG hA hD ht hc'' h1'`. Conclude with `inv_eq_one.1 key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilIs_eq_one : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x₀ : Sp k ⟶ S) (m : ℕ), (m : k) ≠ 0 → ∀ (a b : Over.mk x₀ ⟶ A), a ^ m = 1 → b ^ m = 1 → (∃ t : (P.pull (lift (snd A (Over.mk x₀) ≫ a ^ 2) (fst A (Over.mk x₀))).left).Gen, t.IsGen) → ∀ c : Γ((Over.mk x₀).left, ⊤)ˣ, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) (m : ℤ) a b c → c = 1 := by
   intro S A _ _ hA P hP h₁ h₂ hsym hamp k _ _ x₀ m hm a b ha hb ha2 c hc

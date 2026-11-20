@@ -12,27 +12,23 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.EisRes.CReduce
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP`. Take `⟨hCM, -, hJ, -, hW, -, hI⟩` from `hS`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hCM`. Establish `h1 : h 1 = 1`. Establish `e` using `hI.2 1 1 (by simp) 1 (one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[mul_one, map_one]`. Simplify using `using e`. Use `set xv : Fin n → E := fun i => X i 0 with hxv`. Use `set yv : Fin n → E := fun i => Y i 0 with hyv`. Establish `gram : ∀ (A B : Matrix (Fin n) (Fin (r + 1)) E), (Formalism.UG.cT (σ : E →+* E) A * J * B) 0 0 = Formalism.UG.hform (σ : E →+* E) J (fun i => A i 0) (fun i => B i 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `A B`. Simplify using `only [Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hxx : Formalism.UG.hform (σ : E →+* E) J xv xv = 0` using `by rw [← gram, hW.xx]; rfl`. Establish `hyy : Formalism.UG.hform (σ : E →+* E) J yv yv = 0` using `by rw [← gram, hW.yy]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxy : Formalism.UG.hform (σ : E →+* E) J xv yv = 1` using `by rw [← gram, hW.xy]; rfl`. Take `⟨g, hg, hgy⟩` from `GlobalTheory.WittTransitivity.exists_reflection (σ : E →+* E) J hσ hJ.1 (isUnit_iff_ne_zero.2 hJ.2) yv xv (by rw [hyy, hxx]) (by rw [hyy, hxy, zero_sub]; exact isUnit_one.neg)`. Establish `hmem : Formalism.UG.bc (inclR (AF F)) g ∈ HR (AF F) σ J`. Establish `hx' : Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E) * J * (g : Matrix (Fin n) (Fin n) E) = J` using `hg`. Establish `hs : ∀ y : E, sigR (AF F) σ (inclR (AF F) y) = inclR (AF F) (σ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `y`. Use `show sigR (AF F) σ ((1 : AF F) ⊗ₜ[F] y) = (1 : AF F) ⊗ₜ[F] σ y`. Simplify using `[sigR]`. Establish `hc : Formalism.UG.cT (sigR (AF F) σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (AF F))) = (Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E)).map (inclR (AF F))`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `hs _`. Use `show Formalism.UG.cT (sigR (AF F) σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (AF F))) * J.map (inclR (AF F)) * (g : Matrix (Fin n) (Fin n) E).map (inclR (AF F)) = J.map (inclR (AF F))`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hx']`. Set `w : GAd σ J` to `⟨Formalism.UG.bc (inclR (AF F)) g, hmem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hwrat : w ∈ ratPts σ J` using `Subgroup.mem_subgroupOf.2 ⟨g, hg, rfl⟩`. Establish `hgY : (g : Matrix (Fin n) (Fin n) E) * col0 Y = col0 X`. Use extensionality with `i j`. Establish `e` using `congrFun hgy i`. Simplify using `only [Matrix.mulVec, dotProduct, hyv, hxv] at e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [col0, Matrix.mul_apply, Matrix.submatrix_apply, id]`. Conclude with `e`. Establish `hwY : (matHom _ σ J w).1 * adMat F (col0 Y) = adMat F (col0 X)` using `by show (g : Matrix (Fin n) (Fin n) E).map (inclR (AF F)) * (col0 Y).map (inclR (AF F)) = (col0 X).map (inclR (AF F))`. Rewrite using `[← Matrix.map_mul, hgY]`. Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (col0 X)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : col0 X = X.submatrix id (Fin.castLE (show 1 ≤ r + 1 by omega))`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ _`. Use `haveI := GlobalTheory.UAut.locallyCompact_unipRad hCM hJ hC`. Take `⟨μ, 𝓕, hμ, h𝓕, h1𝓕⟩` from `GlobalTheory.UAut.exists_mass_one (GlobalTheory.UAut.cocompact_unipRad hCM hJ hC)`. Use `⟨w, hwrat, hwY, μ, 𝓕, hμ, h𝓕, h1𝓕, fun s hs => ?_⟩` and prove the remaining obligations. Establish `e` using `(hP.2.1 w hwrat hwY μ 𝓕 hμ h𝓕 h1𝓕 s hs 1).2`.
-
-Simplify using `only [mul_one, h1, Complex.ofReal_one, Complex.one_cpow] at e`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intertwiningConst_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

@@ -7,23 +7,21 @@ open scoped ENNReal
 namespace Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Introduce `a S hS y hy`. Use `set M := ⌊y⌋₊ with hM`. Set `g : ℕ → ℂ` to `fun n => a n * ((min 1 (y / (n : ℝ)) : ℝ) : ℂ) - (y : ℂ) * (a n / (n : ℂ))`. Establish `hg0 : ∀ n : ℕ, M < n → g n = 0`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyn : y < n` using `(Nat.floor_lt (by linarith)).mp hn`. Establish `hn0 : (0:ℝ) < n` using `by linarith`. Establish `: min 1 (y / (n:ℝ)) = y / n` using `min_eq_right ((div_le_one hn0).mpr hyn.le)`. Simplify using `only [g, this]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg1 : ∀ n : ℕ, 1 ≤ n → n ≤ M → g n = - (a n * ((y / (n : ℝ) - 1 : ℝ) : ℂ))`. Introduce `n h1 hn`. Establish `hyn : (n:ℝ) ≤ y` using `(Nat.le_floor_iff (by linarith)).mp hn`. Establish `hn0 : (0:ℝ) < n` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: min 1 (y / (n:ℝ)) = 1` using `min_eq_left ((one_le_div hn0).mpr hyn)`. Simplify using `only [g, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ N : ℕ, M ≤ N → ∑ n ∈ Icc 1 N, a n * ((min 1 (y / (n : ℝ)) : ℝ) : ℂ) = (∑ n ∈ Icc 1 M, g n) + (y : ℂ) * ∑ n ∈ Icc 1 N, a n / (n : ℂ)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hN`. Establish `h1 : ∑ n ∈ Icc 1 M, g n = ∑ n ∈ Icc 1 N, g n`. Apply `Finset.sum_subset (Finset.Icc_subset_Icc le_rfl hN)` to reduce the goal to its premises. Introduce `n hn hn'`. Apply `hg0` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hn' (Finset.mem_Icc.mpr ⟨(Finset.mem_Icc.mp hn).1, not_lt.mp hc⟩)`. Rewrite using `[h1, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Tendsto (fun N : ℕ => (∑ n ∈ Icc 1 M, g n) + (y : ℂ) * ∑ n ∈ Icc 1 N, a n / (n : ℂ)) atTop (𝓝 ((∑ n ∈ Icc 1 M, g n) + (y : ℂ) * S))` using `(hS.const_mul _).const_add _`. Establish `hval : -Gchi a S y = (∑ n ∈ Icc 1 M, g n) + (y : ℂ) * S`. Unfold `Gchi`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl (fun n hn => hg1 n (Finset.mem_Icc.mp hn).1 (Finset.mem_Icc.mp hn).2), Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop M] with N hN`.
-
-Conclude with `(key N hN).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weighted_sum_tendsto : WeightedSumTendsto := by
   intro a S hS y hy

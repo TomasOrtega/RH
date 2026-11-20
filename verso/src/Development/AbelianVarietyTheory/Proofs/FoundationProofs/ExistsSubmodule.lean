@@ -27,17 +27,17 @@ theorem resAct_coe {p q : ℕ} (M : GKMod p q) (N : Submodule ℂ M.V)
     ((resAct M N h Z x : N) : M.V) = M.act Z x := rfl
 
 /- English proof (translation)
-Introduce `p q M N h`. Establish `hlie : IsLieAct (resAct M N h)`. Introduce `X Y`. Use extensionality with `x`. Use `congrArg (fun f : Module.End ℂ M.V => f x) (M.lie X Y)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[resAct_coe]`. Establish `hk : ∀ v : N, ∃ W : Submodule ℂ N, FiniteDimensional ℂ W ∧ v ∈ W ∧ KStable (resAct M N h) W`. Introduce `v`. Take `⟨W, hW, hv, hs⟩` from `M.kfin v`. Use `⟨W.comap N.subtype, ?_, hv, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Module.Finite.of_injective (N.subtype.restrict (p := W.comap N.subtype) (q := W) (fun x hx => hx)) (fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun z : W => (z : M.V)) hab)))`. Introduce `X hX w hw`. Conclude with `hs X hX w hw`. Establish `hw : ∀ v : N, v ∈ ⨆ μ : Ix p q → ℚ, wtSub (resAct M N h) μ`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.mem_iSup_inf_weightSubmodule_of_diagonal_stable p q M.V M.act N (fun a => h _) v v.2 (M.wts v)`. Establish `h2 : (⨆ μ : Ix p q → ℚ, N ⊓ wtSub M.act μ) ≤ (⨆ μ : Ix p q → ℚ, wtSub (resAct M N h) μ).map N.subtype`. Use `iSup_le fun μ x hx => ?_` and prove the remaining obligations. Use `⟨⟨x, hx.1⟩, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem μ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx2` using `hx.2`. Simplify using `only [wtSub, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker] at hx2 ⊢`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hx2 a` using `[resAct_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hyv⟩` from `h2 h1`. Establish `: y = v` using `Subtype.ext hyv`. Conclude with `this ▸ hy`. Conclude with `⟨{ V := N, act := resAct M N h, lie := hlie, kfin := hk, wts := hw }, N.subtype, N.injective_subtype, N.range_subtype, fun _ _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_submodule : ∀ (p q : ℕ) (M : GKMod p q) (N : Submodule ℂ M.V), (∀ Z, ∀ x ∈ N, M.act Z x ∈ N) → ∃ (M' : GKMod p q) (i : M'.V →ₗ[ℂ] M.V), Function.Injective i ∧ LinearMap.range i = N ∧ ∀ Z x, i (M'.act Z x) = M.act Z (i x) := by
   intro p q M N h

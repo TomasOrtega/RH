@@ -15,11 +15,11 @@ namespace GlobalTheory.CurvInterp.HodgeConj
 section Pure
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨f', h⟩` from `hf _ (hT z hz)`. Set `L` to `(starL ℂ (A := F)).toContinuousLinearMap`. Set `R` to `(starL ℂ (A := E)).toContinuousLinearMap`. Use `⟨L.comp (f'.comp R), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h`, the goal using `[hasFDerivWithinAt_iff_isLittleO]`. Establish `ht : Tendsto (fun w : E => star w) (𝓝[T] z) (𝓝[S] (star z))` using `continuous_star.continuousWithinAt.tendsto_nhdsWithin hT`. Establish `h1` using `(L.isBigO_comp _ _).trans_isLittleO (h.comp_tendsto ht)`. Establish `h2 : (fun w : E => star w - star z) =O[𝓝[T] z] fun w => w - z`. Simplify `R.isBigO_comp (fun w : E => w - z) (𝓝[T] z)` using `[R, star_sub]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(h1.trans_isBigO h2).congr_left fun w => ?_` and prove the remaining obligations. Simplify using `[L, R, star_sub]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem differentiableOn_star_star {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [StarAddMonoid E]
     [StarModule ℂ E] [ContinuousStar E] [NormedAddCommGroup F] [NormedSpace ℂ F] [StarAddMonoid F] [StarModule ℂ F]
@@ -40,21 +40,21 @@ theorem differentiableOn_star_star {E F : Type} [NormedAddCommGroup E] [NormedSp
   simp [L, R, star_sub]
 
 /- English proof (translation)
-Simplify using `using hz`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_mem_ball {e : ℕ} {ρ : ℝ} {z : Fin e → ℂ} (hz : z ∈ Metric.ball (0 : Fin e → ℂ) ρ) :
     star z ∈ Metric.ball (0 : Fin e → ℂ) ρ := by
   simpa using hz
 
 /- English proof (translation)
-Introduce `k` and use `by simpa using hz k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem star_mem_polydisc {n : ℕ} {ρ : ℝ} {z : Fin n → ℂ} (hz : z ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc n ρ) :
     star z ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc n ρ := fun k => by
   simpa using hz k
 
 /- English proof (translation)
-Establish `h : ∀ X : Matrix (Fin g) (Fin g) ℂ, X.map (starRingEnd ℂ) = Xᵀᴴ` using `fun X => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h, h, transpose_nonsing_inv, conjTranspose_nonsing_inv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_map_conj {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) :
     (M⁻¹).map (starRingEnd ℂ) = (M.map (starRingEnd ℂ))⁻¹ := by
@@ -63,7 +63,7 @@ theorem inv_map_conj {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) :
   rw [h, h, transpose_nonsing_inv, conjTranspose_nonsing_inv]
 
 /- English proof (translation)
-Establish `h : (Y.map Complex.ofReal).map (starRingEnd ℂ) = Y.map Complex.ofReal`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, Matrix.map_mul, inv_map_conj, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_map_conj {a b g : ℕ} (Q : Matrix (Fin a) (Fin g) ℂ) (Q' : Matrix (Fin b) (Fin g) ℂ)
     (Y : Matrix (Fin g) (Fin g) ℝ) :
@@ -75,17 +75,15 @@ theorem block_map_conj {a b g : ℕ} (Q : Matrix (Fin a) (Fin g) ℂ) (Q' : Matr
   rfl
 
 /- English proof (translation)
-Take `⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, hP, hφ, hφ0, hφp, hQ, hc, hli, hκ, hz⟩` from `h`. Establish `him : ∀ M : Matrix (Fin g) (Fin g) ℂ, (-M.map (starRingEnd ℂ)).map Complex.im = M.map Complex.im` using `fun M => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hY : ∀ v, GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.imPeriod hk (fun v => -(τ₀ (star v)).map (starRingEnd ℂ)) B (star v) = GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.imPeriod hk τ₀ B v` using `fun v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.imPeriod, him, star_star, GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog, Pi.star_apply, norm_star]`. Use `⟨n, k, hk, g, rk, fun v => -(τ₀ (star v)).map (starRingEnd ℂ), B, fun z => star (φ (star z)), fun τ z => (Q τ (star z)).map (starRingEnd ℂ), κ, ⟨hP.rk_le, fun j k => ?_, fun z hz => ?_, hP.psd, hP.supp, hP.toric, fun z hz => ?_⟩, differentiableOn_star_star hφ fun _ => star_mem_ba …` and prove the remaining obligations. Conclude with `(differentiableOn_star_star (hP.holo j k) fun _ => star_mem_polydisc).neg`. Conclude with `((hP.symm _ (star_mem_polydisc hz)).map _).neg`. Rewrite using `[him]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hP.abelian _ (star_mem_polydisc hz)`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc0 p`. Establish `h1` using `hli (fun p => star (c p)) (by`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg star (congrFun hc0 l)` as an intermediate fact. Simplify `this) p` using `[Finset.sum_apply]`. Simplify using `using h1`. Take `⟨h1, h2, h3⟩` from `hz _ (star_mem_ball hzb) (hU z hzU)`. Use `⟨⟨star_mem_polydisc h1.1, fun i => by simpa using h1.2 i⟩, fun τ => ?_, fun τ τ' hne => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hH, h2, GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram, GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram, hY, ← block_map_conj]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal]`. Establish `h4` using `h3 τ τ' hne`. Rewrite `h4`, the goal using `[GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram]`.
-
-Rewrite using `[hY, ← block_map_conj, h4]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBlockModel_conj {e : ℕ} {ι : Type} [Fintype ι] {μ : ι → ℕ} {ρ : ℝ} {U U' : Set (Fin e → ℂ)}
     {H H' : ∀ τ, (Fin e → ℂ) → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ} (h : IsBlockModel ρ U' H')
@@ -129,7 +127,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open CategoryTheory AlgebraicGeometry TopologicalSpace Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R.FinalTheorems GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.CurvInterp
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => (GlobalTheory.ZH.CrdCalc.valR_spMap ψ x U h).1⟩` and prove the remaining obligations. Use `(GlobalTheory.ZH.CrdCalc.valR_spMap ψ _ U h).1` as an intermediate fact. Rewrite `this` using `[← Category.assoc, hψ, Category.id_comp]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem le_spMap_iff {R : Type} [CommRing R] {X : Scheme.{0}} (ψ : R →+* R) (hψ : spMap ψ ≫ spMap ψ = 𝟙 _)
     (x : Sp R ⟶ X) (U : X.Opens) : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
@@ -138,9 +136,9 @@ theorem le_spMap_iff {R : Type} [CommRing R] {X : Scheme.{0}} (ψ : R →+* R) (
   rwa [← Category.assoc, hψ, Category.id_comp] at this
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `e1 : {b | b ∈ star ⁻¹' B ∧ ⊤ ≤ (spMap (starRingEnd ℂ) ≫ y (star b)) ⁻¹ᵁ U} = star ⁻¹' {b | b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `b`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, le_spMap_iff _ GlobalTheory.ShFam.HodgeConj.spMap_conj_conj']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨e1 ▸ h1.preimage continuous_star, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(differentiableOn_star_star h2 fun _ hz => hz).congr fun b hb => (GlobalTheory.ZH.CrdCalc.valR_spMap (starRingEnd ℂ) _ U hb.2).2 f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHolTo_conj {e : ℕ} {X : Scheme.{0}} {B : Set (Fin e → ℂ)} {y : (Fin e → ℂ) → (Sp ℂ ⟶ X)} (h : IsHolTo B y) :
     IsHolTo (star ⁻¹' B) fun w => spMap (starRingEnd ℂ) ≫ y (star w) := by
@@ -156,7 +154,7 @@ theorem isHolTo_conj {e : ℕ} {X : Scheme.{0}} {B : Set (Fin e → ℂ)} {y : (
     (GlobalTheory.ZH.CrdCalc.valR_spMap (starRingEnd ℂ) _ U hb.2).2 f
 
 /- English proof (translation)
-Introduce `U f`. Establish `k : ∀ b : Fin e → ℂ, ⊤ ≤ (spMap (dualMap (starRingEnd ℂ)) ≫ v (star b)) ⁻¹ᵁ U → ⊤ ≤ v (star b) ⁻¹ᵁ U` using `fun b => (le_spMap_iff _ GlobalTheory.ShFam.HodgeConj.spMap_dual_conj_conj' _ _).1`. Use `(differentiableOn_star_star (h U f) fun z hz => ⟨hz.1, k z hz.2⟩).congr fun b hb => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.ZH.CrdCalc.valR_spMap (dualMap (starRingEnd ℂ)) _ U (k b hb.2)).2 f]`. Simplify using `[dualMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem holTan_conj {e : ℕ} {X : Scheme.{0}} {B : Set (Fin e → ℂ)} {v : (Fin e → ℂ) → (Sp (DualNumber ℂ) ⟶ X)}
     (h : HolTan B v) : HolTan (star ⁻¹' B) fun w => spMap (dualMap (starRingEnd ℂ)) ≫ v (star w) := by
@@ -168,9 +166,9 @@ theorem holTan_conj {e : ℕ} {X : Scheme.{0}} {B : Set (Fin e → ℂ)} {v : (F
   simp [dualMap]
 
 /- English proof (translation)
-Establish `hL : LiesIn y' (genBd s.T.Z) ↔ LiesIn y (genBd s.T.Z)` using `liesIn_iff_of_comp hy' _`. Establish `hx : y'.1 ≫ genι s.T.Z = spMap (starRingEnd ℂ) ≫ y.1 ≫ genι s.T.Z` using `by rw [hy', Category.assoc]`. Distinguish the cases in `hy : LiesIn y (genBd s.T.Z)`. Rewrite using `[x.hodge_gram_of_liesIn hy, x.hodge_gram_of_liesIn (hL.2 hy), x.gram_conj hy' g g' τ (hg τ)]`. Take `⟨f, hf⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf'⟩` from `f.exists_isMap (starRingEnd ℂ) (φ' := (starRingEnd ℂ).comp σ) rfl hx`. Establish `hH : IsHodgeFrame s.U y' f'` using `hf.conj (RingHom.ext fun a => (Complex.conj_conj (σ a)).symm) (by rw [hy', ← Category.assoc, GlobalTheory.ShFam.HodgeConj.spMap_conj_conj', Category.id_comp]) (fun τ i => by rw [hf' τ i, ← Category.assoc, GlobalTheory.ShFam.HodgeConj.spMap_dual_conj_conj', Category.id_comp])`. Rewrite using `[x.hodge_gram hH, x.hodge_gram hf, hf'.co τ hg hx]`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, map_mul, smul_eq_mul, RCLike.star_def, Complex.conj_conj, Complex.conj_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hodge_gram_conj {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {σ : κ.c.F →+* ℂ} {y : CxPts (genStr s.T.Z) σ} {y' : CxPts (genStr s.T.Z) ((starRingEnd ℂ).comp σ)}
@@ -192,17 +190,15 @@ theorem hodge_gram_conj {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : L
       smul_eq_mul, RCLike.star_def, Complex.conj_conj, Complex.conj_ofReal]
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ _ h e B a hB h0 ha hc`. Set `jm : CxPts (genStr s.T.Z) σ → CxPts (genStr s.T.Z) ((starRingEnd ℂ).comp σ)` to `fun y => ⟨spMap (starRingEnd ℂ) ≫ y.1, by rw [Category.assoc, y.2, ← Spec.map_comp]; rfl⟩`. Establish `hj : IsConjMap jm` using `fun _ => rfl`. Establish `hjc : Continuous jm` using `(GlobalTheory.ConjChart.continuous_and_exists_conj_chart _ _ (genStr s.T.Z) S.Dw.dim _ _ jm rfl hj).1`. Establish `hex : ∀ w : Fin e → ℂ, ∃ g' : EigFrame s.T.Z ((starRingEnd ℂ).comp σ) ((jm (a (star w)).1).1 ≫ genι s.T.Z), (a (star w)).2.IsMap (starRingEnd ℂ) g'` using `fun w => (a (star w)).2.exists_isMap (starRingEnd ℂ) rfl (Category.assoc _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g' hg' using hex`. Set `a' : (Fin e → ℂ) → CxFr s.T.Z ((starRingEnd ℂ).comp σ)` to `fun w => ⟨jm (a (star w)).1, g' w⟩`. Establish `h1 : IsHolTo (star ⁻¹' B) fun w => (a' w).1.1`. Establish `e1 : (fun w => (a' w).1.1) = fun w => spMap (starRingEnd ℂ) ≫ (a (star w)).1.1` using `rfl`. Rewrite using `[e1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isHolTo_conj (y := fun b => (a b).1.1) ha.1`. Establish `h2 : ∀ τ i, HolTan (star ⁻¹' B) fun w => (a' w).2.v τ i` using `fun τ i => by`. Establish `e1 : (fun w => (a' w).2.v τ i) = fun w => spMap (dualMap (starRingEnd ℂ)) ≫ (a (star w)).2.v τ i`. Use function extensionality and compare the values at `fun w => hg' w τ i`. Rewrite using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `holTan_conj (v := fun b => (a b).2.v τ i) (ha.2 τ i)`. Establish `h3 : ContinuousOn (fun w => (a' w).1) (star ⁻¹' B)` using `hjc.comp_continuousOn (hc.comp continuous_star.continuousOn fun _ hw => hw)`. Establish `h4 : ∀ w, Inner (a (star w)).1 → Inner (a' w).1` using `fun w hw hL => hw ((liesIn_iff_of_comp (y := (a (star w)).1) (y' := jm (a (star w)).1) rfl _).1 hL)`. Establish `h5 : ∀ τ w, (x.hodge ((starRingEnd ℂ).comp σ)).gram (a' w).1 (a' w).2 τ = ((x.hodge σ).gram (a (star w)).1 (a (star w)).2 τ).map (starRingEnd ℂ)` using `fun τ w => hodge_gram_conj x (y := (a (star w)).1) (y' := jm (a (star w)).1) (g := (a (star w)).2) (g' := g' w) (hj _) (hg' w) τ`. Take `⟨ρ, hρ, hsub, hm⟩` from `h e (star ⁻¹' B) a' (hB.preimage continuous_star) (by simpa using h0) ⟨h1, h2⟩ h3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `clear_value a'`. Use `⟨ρ, hρ, fun z hz => by simpa using hsub (star_mem_ball hz), isBlockModel_conj hm (fun z hz => ?_) fun τ z => ?_⟩` and prove the remaining obligations. Conclude with `h4 _ (by rw [star_star]; exact hz)`. Rewrite using `[h5, star_star]`. Use extensionality with `i l`.
-
-Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hodgeLocal_of_conj : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ), ¬ Formalism.L2.PjFree.GoodEmb κ.c σ → HodgeLocal x ((starRingEnd ℂ).comp σ) → HodgeLocal x σ := by
   intro D A N j S κ s x σ _ h e B a hB h0 ha hc

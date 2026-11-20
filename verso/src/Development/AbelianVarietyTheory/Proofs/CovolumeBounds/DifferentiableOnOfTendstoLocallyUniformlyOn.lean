@@ -11,7 +11,7 @@ variable {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Use `Complex.norm_fderiv_le_div_of_mapsTo_ball hf (fun z hz => ?_) hr` and prove the remaining obligations. Rewrite using `[mem_closedBall_iff_norm]`. Use `norm_sub_le (f z) (f c)` as an intermediate fact. Combine the linear relations using `[hM z hz, hM c (mem_ball_self hr)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_fderiv_le_of_ball {f : E → V} {c : E} {r M : ℝ} (hr : 0 < r)
     (hf : DifferentiableOn ℂ f (ball c r)) (hM : ∀ z ∈ ball c r, ‖f z‖ ≤ M) :
@@ -22,15 +22,15 @@ theorem norm_fderiv_le_of_ball {f : E → V} {c : E} {r M : ℝ} (hr : 0 < r)
   linarith [hM z hz, hM c (mem_ball_self hr)]
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `pos_of_mem_ball hz`. Establish `h1` using `norm_fderiv_le_of_ball hr hf hM`. Establish `hc : HasFDerivAt f (fderiv ℂ f c) c` using `(hf.differentiableAt (ball_mem_nhds c hr)).hasFDerivAt`. Use `set g : E → V := fun w => f w - fderiv ℂ f c (w - c) with hg`. Establish `hgc : g c = f c` using `by simp [hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgw : ∀ w, g w - g c = f w - f c - fderiv ℂ f c (w - c)`. Introduce `w`. Rewrite using `[hgc, hg]`. Simplify using `only`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `key` using `Complex.dist_le_mul_div_pow_of_mapsTo_ball_of_isLittleO (f := g) (c := c) (z := z) (R₁ := r) (R₂ := 4 * M) (n := 1) ?_ ?_ ?_ hz`. Rewrite `key` using `[dist_eq_norm, dist_eq_norm, hgw]`. Then use the resulting hypothesis. Conclude with `hf.sub (by fun_prop)`. Introduce `w hw`. Rewrite using `[mem_closedBall_iff_norm, hgw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ‖fderiv ℂ f c (w - c)‖ ≤ 2 * M`. Use `((fderiv ℂ f c).le_opNorm _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `norm_sub_le (f w - f c) (fderiv ℂ f c (w - c))` as an intermediate fact. Use `norm_sub_le (f w) (f c)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hM w hw, hM c (mem_ball_self hr)]`. Simplify using `only [hgw, pow_one]`. Conclude with `hc.isLittleO.norm_right`.
+A detailed English derivation is pending.
 -/
 theorem norm_sub_sub_fderiv_le_of_ball {f : E → V} {c z : E} {r M : ℝ}
     (hf : DifferentiableOn ℂ f (ball c r)) (hM : ∀ z ∈ ball c r, ‖f z‖ ≤ M)
@@ -62,17 +62,15 @@ theorem norm_sub_sub_fderiv_le_of_ball {f : E → V} {c z : E} {r M : ℝ}
     exact hc.isLittleO.norm_right
 
 /- English proof (translation)
-Break down `le_or_gt r 0 with hr | hr` into its components or cases. Simplify using `[ball_eq_empty.mpr hr, differentiableOn_empty, tendstoUniformlyOn_empty]`. Establish `hsub : ∀ x ∈ ball c r, ball x r ⊆ ball c (2 * r)` using `fun x hx => ball_subset_ball' (by linarith [mem_ball.mp hx])`. Establish `hC : UniformCauchySeqOn (fun n => fderiv ℂ (F n)) l (ball c r)`. Introduce `u hu`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ε, hε, hεu⟩` from `Metric.mem_uniformity_dist.mp hu`. Establish `h1` using `hlim.uniformCauchySeqOn _ (Metric.dist_mem_uniformity (ε := ε * r / 4) (by positivity))`. Use `filter_upwards [h1, hF.prod_inl l, hF.prod_inr l] with m hm hm1 hm2 x hx`. Apply `hεu` to reduce the goal to its premises. Establish `hn : ball c (2 * r) ∈ 𝓝 x` using `mem_of_superset (ball_mem_nhds x hr) (hsub x hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm, ← fderiv_sub (hm1.differentiableAt hn) (hm2.differentiableAt hn)]`. Use `norm_fderiv_le_of_ball (f := F m.1 - F m.2) (M := ε * r / 4) hr ((hm1.sub hm2).mono (hsub x hx)) (fun z hz => by` as an intermediate fact. Use `hm z (hsub x hx hz)` as an intermediate fact. Simplify using `only [dist_eq_norm] at this`. Conclude with `this.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `this.trans_lt ?_` and prove the remaining obligations. Rewrite using `[div_lt_iff₀ hr]`. Use polynomial arithmetic with `[mul_pos hε hr]`. Use `set g' : E → E →L[ℂ] V := fun x => limUnder l (fun n => fderiv ℂ (F n) x)`. Establish `hT : TendstoUniformlyOn (fun n => fderiv ℂ (F n)) g' l (ball c r)` using `hC.tendstoUniformlyOn_of_tendsto fun x hx => (hC.cauchy_map hx).le_nhds_lim`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub' : ball c r ⊆ ball c (2 * r)` using `ball_subset_ball (by linarith)`. Establish `hD : ∀ x ∈ ball c r, HasFDerivAt f (g' x) x`. Introduce `x hx`. Establish `hn : ball c r ∈ 𝓝 x` using `isOpen_ball.mem_nhds hx`. Use `hasFDerivAt_of_tendstoUniformlyOnFilter (l := l) (f := F) (f' := fun n => fderiv ℂ (F n)) ?_ ?_ ?_` and prove the remaining obligations.
-
-Conclude with `(tendstoUniformlyOn_iff_tendstoUniformlyOnFilter.mp hT).mono_right (le_principal_iff.mpr hn)`. Use `filter_upwards [hF.prod_inl _, Filter.Eventually.prod_inr hn l] with p hp hp2`. Conclude with `(hp.differentiableAt (isOpen_ball.mem_nhds (hsub' hp2))).hasFDerivAt`. Use `filter_upwards [hn] with y hy using hlim.tendsto_at (hsub' hy)`. Conclude with `⟨fun x hx => (hD x hx).differentiableAt.differentiableWithinAt, hT.congr_right fun x hx => (hD x hx).fderiv.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_fderiv_ball [CompleteSpace V] {ι : Type*} {l : Filter ι} [l.NeBot]
     {F : ι → E → V} {f : E → V} {c : E} {r : ℝ}
@@ -118,7 +116,7 @@ theorem tendstoUniformlyOn_fderiv_ball [CompleteSpace V] {ι : Type*} {l : Filte
     hT.congr_right fun x hx => (hD x hx).fderiv.symm⟩
 
 /- English proof (translation)
-Establish `h1 : ContinuousAt f c` using `(hf.differentiableAt (hU.mem_nhds hc)).continuousAt`. Establish `h2 : ∀ᶠ z in 𝓝 c, z ∈ U ∧ ‖f z‖ < ‖f c‖ + 1` using `(Filter.Eventually.and (hU.mem_nhds hc) (h1.norm.eventually (gt_mem_nhds (lt_add_one _))))`. Take `⟨r, hr, h⟩` from `Metric.eventually_nhds_iff_ball.mp h2`. Conclude with `⟨r, hr, ‖f c‖ + 1, fun z hz => (h z hz).1, fun z hz => (h z hz).2.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ball_bound {f : E → V} {U : Set E} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U)
     {c : E} (hc : c ∈ U) : ∃ r > 0, ∃ M : ℝ, ball c r ⊆ U ∧ ∀ z ∈ ball c r, ‖f z‖ ≤ M := by
@@ -129,19 +127,17 @@ theorem exists_ball_bound {f : E → V} {U : Set E} (hU : IsOpen U) (hf : Differ
   exact ⟨r, hr, ‖f c‖ + 1, fun z hz => (h z hz).1, fun z hz => (h z hz).2.le⟩
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨R, hR, M, hRU, hM⟩` from `exists_ball_bound hU hf hc`. Use `set r := R / 4 with hr`. Establish `hr0 : 0 < r` using `by positivity`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM c (mem_ball_self hR))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ x ∈ ball c (2 * r), ball x (2 * r) ⊆ ball c R` using `fun x hx => ball_subset_ball' (by linarith [mem_ball.mp hx])`. Establish `hsmall : ∀ᶠ t in 𝓝[≠] (0 : ℂ), ‖t • v‖ < 2 * r`. Establish `: Tendsto (fun t : ℂ => ‖t • v‖) (𝓝 0) (𝓝 0)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Conclude with `nhdsWithin_le_nhds (this.eventually (gt_mem_nhds (by positivity)))`. Establish `hmem : ∀ t : ℂ, ‖t • v‖ < 2 * r → ∀ x, x + t • v ∈ ball x (2 * r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `t ht x`. Simplify `ht` using `[mem_ball_iff_norm]`. Establish `key` using `tendstoUniformlyOn_fderiv_ball (l := 𝓝[≠] (0 : ℂ)) (F := fun t x => t⁻¹ • (f (x + t • v) - f x)) (f := fun x => fderiv ℂ f x v) (c := c) (r := r) ?_ ?_`. Conclude with `(key.1.differentiableAt (ball_mem_nhds c hr0)).differentiableWithinAt`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε hε`. Establish `h0 : Tendsto (fun t : ℂ => 4 * M * (‖v‖ / (2 * r)) ^ 2 * ‖t‖) (𝓝 0) (𝓝 0)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Use `filter_upwards [hsmall, nhdsWithin_le_nhds (h0.eventually (gt_mem_nhds hε)), self_mem_nhdsWithin] with t ht hte ht0 x hx`. Establish `ht0' : t ≠ 0` using `ht0`. Establish `h1` using `norm_sub_sub_fderiv_le_of_ball (hf.mono ((hsub x hx).trans hRU)) (fun z hz => hM z (hsub x hx hz)) (hmem t ht x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[add_sub_cancel_left, map_smul, norm_smul]`. Establish `h2 : t⁻¹ • (f (x + t • v) - f x) - fderiv ℂ f x v = t⁻¹ • (f (x + t • v) - f x - t • fderiv ℂ f x v)`. Rewrite using `[smul_sub t⁻¹ (_ - _), inv_smul_smul₀ ht0']`. Rewrite using `[dist_comm, dist_eq_norm, h2, norm_smul, norm_inv]`. Establish `htp : 0 < ‖t‖` using `norm_pos_iff.mpr ht0'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `lt_of_le_of_lt ?_ hte` and prove the remaining obligations. Rewrite using `[inv_mul_le_iff₀ htp]`. Use `h1.trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [hsmall] with t ht`.
-
-Use `DifferentiableOn.const_smul (DifferentiableOn.sub ?_ ?_) _` and prove the remaining obligations. Conclude with `hf.comp (by fun_prop) fun x hx => hRU (hsub x hx (hmem t ht x))`. Conclude with `hf.mono ((ball_subset_ball (by linarith)).trans hRU)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_fderiv_apply [CompleteSpace V] {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) (v : E) :
@@ -196,9 +192,9 @@ variable {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensi
   [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf`. Simplify using `using hf.continuousOn`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `f hf`. Rewrite using `[Nat.cast_succ]`. Use `contDiffOn_succ_of_fderiv_apply hf (by simp) fun y => ?_` and prove the remaining obligations. Use `(ih (differentiableOn_fderiv_apply hU hf y)).congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[fderivWithin_of_isOpen hU hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem contDiffOn_nat {U : Set E} (hU : IsOpen U) (n : ℕ) :
     ∀ {f : E → V}, DifferentiableOn ℂ f U → ContDiffOn ℂ n f U := by
@@ -214,7 +210,7 @@ theorem contDiffOn_nat {U : Set E} (hU : IsOpen U) (n : ℕ) :
     rw [fderivWithin_of_isOpen hU hx]
 
 /- English proof (translation)
-Introduce `_ hx` and use `(((contDiffOn_nat hU (n + 1) hf).contDiffAt (hU.mem_nhds hx)).differentiableAt_iteratedFDeriv (by exact_mod_cast Nat.lt_succ_self n)).differentiableWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiableOn_iteratedFDeriv {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) (n : ℕ) : DifferentiableOn ℂ (iteratedFDeriv ℂ n f) U :=
@@ -223,11 +219,11 @@ theorem differentiableOn_iteratedFDeriv {f : E → V} {U : Set E} (hU : IsOpen U
       (by exact_mod_cast Nat.lt_succ_self n)).differentiableWithinAt
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x _ hM`. Simplify using `using hM x (by simp)`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx hM`. Establish `hsub : ∀ y ∈ ball x δ, closedBall y (n * δ) ⊆ closedBall x ((n + 1 : ℕ) * δ)` using `fun y hy => closedBall_subset_closedBall' (by`. Use `push_cast`. Combine the linear relations using `[mem_ball.mp hy])`. Establish `hball : ball x δ ⊆ U` using `fun y hy => hx (hsub y hy (mem_closedBall_self (by positivity)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← norm_fderiv_iteratedFDeriv]`. Use `(norm_fderiv_le_of_ball (M := M * (2 / δ) ^ n) hδ ((differentiableOn_iteratedFDeriv hU hf n).mono hball) fun y hy => ih y ((hsub y hy).trans hx) fun z hz => hM z (hsub y hy hz)).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_iteratedFDeriv_le_pow {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) {δ M : ℝ} (hδ : 0 < δ) (n : ℕ) :
@@ -252,13 +248,13 @@ theorem norm_iteratedFDeriv_le_pow {f : E → V} {U : Set E} (hU : IsOpen U)
     ring
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM c (mem_closedBall_self hR.le))`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using hM c (mem_closedBall_self hR.le)`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `e : (n : ℝ) * (R / n) = R` using `by field_simp`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_iteratedFDeriv_le_pow hU hf (δ := R / n) (M := M) (by positivity) n c (by rwa [e]) (by rwa [e])`. Establish `h2` using `Real.pow_div_factorial_le_exp (n : ℝ) hn'.le n`. Rewrite `h2` using `[div_le_iff₀ (by positivity), ← Real.exp_one_pow]`. Use `h1.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_assoc, ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (M * (2 / R) ^ n) * (Real.exp 1 ^ n * n !) := by gcongr`. Use `_ = n ! * (M * (2 * Real.exp 1 / R) ^ n) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show 2 * Real.exp 1 / R = 2 / R * Real.exp 1 by ring, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_le_factorial {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) {c : E} {R M : ℝ} (hR : 0 < R) (hc : closedBall c R ⊆ U)
@@ -284,11 +280,11 @@ theorem norm_iteratedFDeriv_le_factorial {f : E → V} {U : Set E} (hU : IsOpen 
         ring
 
 /- English proof (translation)
-Use `set L : ℂ →L[ℂ] E := ContinuousLinearMap.toSpanSingleton ℂ y with hL`. Use `set s : Set E := (fun w => c + w) ⁻¹' U with hs`. Establish `hso : IsOpen s` using `hU.preimage (by fun_prop)`. Establish `hso' : IsOpen (L ⁻¹' s)` using `hso.preimage L.continuous`. Establish `hg : DifferentiableOn ℂ (fun w => f (c + w)) s` using `hf.comp (by fun_prop) fun w hw => hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : L 0 ∈ s` using `by simpa [hs] using hc`. Establish `key` using `L.iteratedFDerivWithin_comp_right (contDiffOn_nat hso n hg) hso.uniqueDiffOn hso'.uniqueDiffOn h0 le_rfl`. Rewrite `key` using `[iteratedFDerivWithin_of_isOpen n hso' (show (0 : ℂ) ∈ L ⁻¹' s from h0), iteratedFDerivWithin_of_isOpen n hso h0, iteratedFDeriv_comp_add_left]`. Establish `e : (fun t : ℂ => f (c + t • y)) = (fun w => f (c + w)) ∘ L`. Use extensionality with `t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hL]`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, e, key]`. Simplify using `[hL]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_line {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) {c : E} (hc : c ∈ U) (y : E) (n : ℕ) :
@@ -311,11 +307,11 @@ theorem iteratedDeriv_line {f : E → V} {U : Set E} (hU : IsOpen U)
   simp [hL]
 
 /- English proof (translation)
-Establish `hy0` using `norm_nonneg y`. Establish `hR : 0 < R` using `hy0.trans_lt hy`. Establish `hp : 0 < R + ‖y‖` using `by linarith`. Establish `hg : DifferentiableOn ℂ (fun t : ℂ => f (c + t • y)) (ball 0 (2 * R / (R + ‖y‖)))`. Use `hf.comp (by fun_prop) fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[mem_ball_zero_iff, lt_div_iff₀ hp]`. Rewrite using `[mem_ball_iff_norm, add_sub_cancel_left, norm_smul]`. Use `norm_nonneg t` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg this (sub_nonneg.mpr hy.le)]`. Establish `h1 : (1 : ℂ) ∈ ball (0 : ℂ) (2 * R / (R + ‖y‖))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[mem_ball_zero_iff, norm_one, lt_div_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `Complex.hasSum_taylorSeries_on_ball hg h1`. Simplify `key` using `only [iteratedDeriv_line isOpen_ball hf (mem_ball_self hR), sub_zero, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_taylorSeries_ball {f : E → V} {c : E} {R : ℝ}
     (hf : DifferentiableOn ℂ f (ball c R)) {y : E} (hy : ‖y‖ < R) :
@@ -337,15 +333,13 @@ theorem hasSum_taylorSeries_ball {f : E → V} {c : E} {R : ℝ}
     using key
 
 /- English proof (translation)
-Take `⟨R, hR, M, hRU, hM⟩` from `exists_ball_bound hU hf hc`. Establish `hsub : closedBall c (R / 2) ⊆ ball c R` using `closedBall_subset_ball (by linarith)`. Establish `he : 1 ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `hρ : 0 < R / 2 / (2 * Real.exp 1)` using `by positivity`. Set `ρ : NNReal` to `⟨R / 2 / (2 * Real.exp 1), hρ.le⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hρe : (ρ : ℝ) = R / 2 / (2 * Real.exp 1)` using `rfl`. Use `⟨ρ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `FormalMultilinearSeries.le_radius_of_bound _ M fun n => ?_` and prove the remaining obligations. Establish `h1` using `norm_iteratedFDeriv_le_factorial hU hf (half_pos hR) (hsub.trans hRU) (fun z hz => hM z (hsub hz)) n`. Establish `hn : (0 : ℝ) < n !` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(n ! : ℂ)⁻¹ • iteratedFDeriv ℂ n f c‖ ≤ M * (2 * Real.exp 1 / (R / 2)) ^ n`. Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast, inv_mul_le_iff₀ hn]`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_pow, hρe, show 2 * Real.exp 1 / (R / 2) * (R / 2 / (2 * Real.exp 1)) = 1 by field_simp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `hρ` after adjusting the coercions. Introduce `y hy`. Rewrite `hy` using `[Metric.eball_coe, mem_ball_zero_iff, hρe, lt_div_iff₀ (by positivity)]`. Establish `hy' : ‖y‖ < R` using `by nlinarith [norm_nonneg y]`.
-
-Simplify `hasSum_taylorSeries_ball (hf.mono hRU) hy'` using `only [smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasFPowerSeriesAt_taylor {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) {c : E} (hc : c ∈ U) :
@@ -378,21 +372,21 @@ theorem hasFPowerSeriesAt_taylor {f : E → V} {U : Set E} (hU : IsOpen U)
       using hasSum_taylorSeries_ball (hf.mono hRU) hy'
 
 /- English proof (translation)
-Introduce `_ hc` and use `(hasFPowerSeriesAt_taylor hU hf hc).analyticAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) : AnalyticOnNhd ℂ f U :=
   fun _ hc => (hasFPowerSeriesAt_taylor hU hf hc).analyticAt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AnalyticOnNhd.differentiableOn, analyticOnNhd_of_differentiableOn hU⟩`.
+Supply the required witnesses or components.
 -/
 theorem analyticOnNhd_iff_differentiableOn {f : E → V} {U : Set E} (hU : IsOpen U) :
     AnalyticOnNhd ℂ f U ↔ DifferentiableOn ℂ f U :=
   ⟨AnalyticOnNhd.differentiableOn, analyticOnNhd_of_differentiableOn hU⟩
 
 /- English proof (translation)
-The claim follows from `analyticOnNhd_of_differentiableOn isOpen_interior (hf.mono interior_subset) c (mem_interior_iff_mem_nhds.mpr hs)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_of_differentiableOn {f : E → V} {s : Set E} {c : E}
     (hf : DifferentiableOn ℂ f s) (hs : s ∈ 𝓝 c) : AnalyticAt ℂ f c :=
@@ -400,7 +394,7 @@ theorem analyticAt_of_differentiableOn {f : E → V} {s : Set E} {c : E}
     (mem_interior_iff_mem_nhds.mpr hs)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.eventually_analyticAt.mono fun _ hz => hz.differentiableAt, fun h => analyticAt_of_differentiableOn (s := {z | DifferentiableAt ℂ f z}) (fun _ hz => DifferentiableAt.differentiableWithinAt hz) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem analyticAt_iff_eventually_differentiableAt {f : E → V} {c : E} :
     AnalyticAt ℂ f c ↔ ∀ᶠ z in 𝓝 c, DifferentiableAt ℂ f z :=
@@ -409,42 +403,42 @@ theorem analyticAt_iff_eventually_differentiableAt {f : E → V} {c : E} :
       (fun _ hz => DifferentiableAt.differentiableWithinAt hz) h⟩
 
 /- English proof (translation)
-Introduce `c _` and use `analyticOnNhd_of_differentiableOn isOpen_univ hf.differentiableOn c (mem_univ c)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiable {f : E → V} (hf : Differentiable ℂ f) (s : Set E) :
     AnalyticOnNhd ℂ f s :=
   fun c _ => analyticOnNhd_of_differentiableOn isOpen_univ hf.differentiableOn c (mem_univ c)
 
 /- English proof (translation)
-The claim follows from `(analyticOnNhd_of_differentiableOn hU hf).contDiffOn_of_completeSpace`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_of_differentiableOn {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) (n : WithTop ℕ∞) : ContDiffOn ℂ n f U :=
   (analyticOnNhd_of_differentiableOn hU hf).contDiffOn_of_completeSpace
 
 /- English proof (translation)
-The claim follows from `(analyticAt_of_differentiableOn hf hs).contDiffAt`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_differentiableOn {f : E → V} {s : Set E} {c : E}
     (hf : DifferentiableOn ℂ f s) (hs : s ∈ 𝓝 c) (n : WithTop ℕ∞) : ContDiffAt ℂ n f c :=
   (analyticAt_of_differentiableOn hf hs).contDiffAt
 
 /- English proof (translation)
-The claim follows from `(analyticOnNhd_of_differentiable hf univ).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_of_differentiable {f : E → V} (hf : Differentiable ℂ f) (n : WithTop ℕ∞) :
     ContDiff ℂ n f :=
   (analyticOnNhd_of_differentiable hf univ).contDiff
 
 /- English proof (translation)
-The claim follows from `(analyticOnNhd_of_differentiableOn hU hf).fderiv.differentiableOn`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_fderiv {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) : DifferentiableOn ℂ (fderiv ℂ f) U :=
   (analyticOnNhd_of_differentiableOn hU hf).fderiv.differentiableOn
 
 /- English proof (translation)
-The claim follows from `(analyticOnNhd_of_differentiableOn hU hf).eqOn_of_preconnected_of_eventuallyEq (analyticOnNhd_of_differentiableOn hU hg) hU' hc hfg`.
+A detailed English derivation is pending.
 -/
 theorem eqOn_of_eventuallyEq {f g : E → V} {U : Set E} (hU : IsOpen U) (hU' : IsPreconnected U)
     (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) {c : E} (hc : c ∈ U)
@@ -453,7 +447,7 @@ theorem eqOn_of_eventuallyEq {f g : E → V} {U : Set E} (hU : IsOpen U) (hU' : 
     (analyticOnNhd_of_differentiableOn hU hg) hU' hc hfg
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hne`. Conclude with `eqOn_of_eventuallyEq hU hU' hf hg (hWU hc) (hfg.eventuallyEq_of_mem (hW.mem_nhds hc))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eqOn_of_eqOn_open {f g : E → V} {U W : Set E} (hU : IsOpen U) (hU' : IsPreconnected U)
     (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) (hW : IsOpen W)
@@ -467,7 +461,7 @@ section Limits
 variable {ι : Type*} {l : Filter ι} {F : ι → E → V} {f : E → V} {U : Set E}
 
 /- English proof (translation)
-Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Take `⟨R, hR, hRU⟩` from `Metric.isOpen_iff.mp hU c hc`. Establish `hsub : closedBall c (2 * (R / 4)) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hRU`. Establish `h1` using `(tendstoLocallyUniformlyOn_iff_forall_isCompact hU).mp hlim _ hsub (isCompact_closedBall _ _)`. Conclude with `⟨R / 4, by positivity, tendstoUniformlyOn_fderiv_ball (h1.mono ball_subset_closedBall) (hF.mono fun n hn => hn.mono (ball_subset_closedBall.trans hsub))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem exists_ball_limit [l.NeBot] (hU : IsOpen U)
     (hlim : TendstoLocallyUniformlyOn F f l U) (hF : ∀ᶠ n in l, DifferentiableOn ℂ (F n) U)
@@ -482,7 +476,7 @@ private theorem exists_ball_limit [l.NeBot] (hU : IsOpen U)
     (hF.mono fun n hn => hn.mono (ball_subset_closedBall.trans hsub))⟩
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨r, hr, h, -⟩` from `exists_ball_limit hU hlim hF hc`. Conclude with `(h.differentiableAt (ball_mem_nhds c hr)).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem differentiableOn_of_tendstoLocallyUniformlyOn [l.NeBot] (hU : IsOpen U)
     (hlim : TendstoLocallyUniformlyOn F f l U) (hF : ∀ᶠ n in l, DifferentiableOn ℂ (F n) U) :
@@ -492,7 +486,7 @@ theorem differentiableOn_of_tendstoLocallyUniformlyOn [l.NeBot] (hU : IsOpen U)
   exact (h.differentiableAt (ball_mem_nhds c hr)).differentiableWithinAt
 
 /- English proof (translation)
-Use `tendstoLocallyUniformlyOn_of_forall_exists_nhds fun c hc => ?_` and prove the remaining obligations. Break down `l.eq_or_neBot with rfl | hne` into its components or cases. Conclude with `⟨U, self_mem_nhdsWithin, by simp only [TendstoUniformlyOn, eventually_bot, imp_true_iff]⟩`. Take `⟨r, hr, -, h⟩` from `exists_ball_limit hU hlim hF hc`. Conclude with `⟨ball c r, nhdsWithin_le_nhds (ball_mem_nhds c hr), h⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tendstoLocallyUniformlyOn_fderiv (hU : IsOpen U)
     (hlim : TendstoLocallyUniformlyOn F f l U) (hF : ∀ᶠ n in l, DifferentiableOn ℂ (F n) U) :
@@ -504,9 +498,9 @@ theorem tendstoLocallyUniformlyOn_fderiv (hU : IsOpen U)
   exact ⟨ball c r, nhdsWithin_le_nhds (ball_mem_nhds c hr), h⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [iteratedFDeriv_zero_eq_comp]`. Conclude with `(continuousMultilinearCurryFin0 ℂ E V).symm.isometry.uniformContinuous |>.comp_tendstoLocallyUniformlyOn hlim`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [iteratedFDeriv_succ_eq_comp_left]`. Conclude with `(continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (k + 1) => E) V).symm.isometry.uniformContinuous.comp_tendstoLocallyUniformlyOn (tendstoLocallyUniformlyOn_fderiv hU ih (hF.mono fun n hn => differentiableOn_iteratedFDeriv hU hn k))`.
+A detailed English derivation is pending.
 -/
 theorem tendstoLocallyUniformlyOn_iteratedFDeriv (hU : IsOpen U)
     (hlim : TendstoLocallyUniformlyOn F f l U) (hF : ∀ᶠ n in l, DifferentiableOn ℂ (F n) U)
@@ -525,7 +519,7 @@ theorem tendstoLocallyUniformlyOn_iteratedFDeriv (hU : IsOpen U)
         (hF.mono fun n hn => differentiableOn_iteratedFDeriv hU hn k))
 
 /- English proof (translation)
-The claim follows from `differentiableOn_of_tendstoLocallyUniformlyOn hU (hasSumLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn.mp hsum) (Eventually.of_forall fun _ => DifferentiableOn.fun_sum fun i _ => hF i)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_of_hasSumLocallyUniformlyOn (hU : IsOpen U)
     (hsum : HasSumLocallyUniformlyOn F f U) (hF : ∀ i, DifferentiableOn ℂ (F i) U) :
@@ -535,7 +529,7 @@ theorem differentiableOn_of_hasSumLocallyUniformlyOn (hU : IsOpen U)
     (Eventually.of_forall fun _ => DifferentiableOn.fun_sum fun i _ => hF i)
 
 /- English proof (translation)
-Rewrite `hsum`, the goal using `[hasSumLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn]`. Use `(tendstoLocallyUniformlyOn_fderiv hU hsum (Eventually.of_forall fun _ => DifferentiableOn.fun_sum fun i _ => hF i)).congr fun s z hz => ?_` and prove the remaining obligations. Conclude with `fderiv_fun_sum fun i _ => (hF i).differentiableAt (hU.mem_nhds hz)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasSumLocallyUniformlyOn_fderiv (hU : IsOpen U)
     (hsum : HasSumLocallyUniformlyOn F f U) (hF : ∀ i, DifferentiableOn ℂ (F i) U) :
@@ -547,7 +541,7 @@ theorem hasSumLocallyUniformlyOn_fderiv (hU : IsOpen U)
   exact fderiv_fun_sum fun i _ => (hF i).differentiableAt (hU.mem_nhds hz)
 
 /- English proof (translation)
-Rewrite `hsum`, the goal using `[hasSumLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn]`. Use `(tendstoLocallyUniformlyOn_iteratedFDeriv hU hsum (Eventually.of_forall fun _ => DifferentiableOn.fun_sum fun i _ => hF i) k).congr fun s z hz => ?_` and prove the remaining obligations. Conclude with `iteratedFDeriv_fun_sum_apply fun i _ => contDiffAt_of_differentiableOn (hF i) (hU.mem_nhds hz) _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasSumLocallyUniformlyOn_iteratedFDeriv (hU : IsOpen U)
     (hsum : HasSumLocallyUniformlyOn F f U) (hF : ∀ i, DifferentiableOn ℂ (F i) U) (k : ℕ) :
@@ -562,7 +556,7 @@ theorem hasSumLocallyUniformlyOn_iteratedFDeriv (hU : IsOpen U)
 omit [NormedSpace ℂ E] [FiniteDimensional ℂ E] [NormedSpace ℂ V] in
 
 /- English proof (translation)
-Rewrite using `[hasSumLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn]`. Use `tendstoLocallyUniformlyOn_of_forall_exists_nhds fun x hx => ?_` and prove the remaining obligations. Take `⟨t, ht, u, hu, h⟩` from `hle x hx`. Conclude with `⟨t, nhdsWithin_le_nhds ht, tendstoUniformlyOn_tsum hu h⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSumLocallyUniformlyOn_of_locally_normal
     (hle : ∀ x ∈ U, ∃ t ∈ 𝓝 x, ∃ u : ι → ℝ, Summable u ∧ ∀ i, ∀ z ∈ t, ‖F i z‖ ≤ u i) :
@@ -573,7 +567,7 @@ theorem hasSumLocallyUniformlyOn_of_locally_normal
   exact ⟨t, nhdsWithin_le_nhds ht, tendstoUniformlyOn_tsum hu h⟩
 
 /- English proof (translation)
-The claim follows from `differentiableOn_of_hasSumLocallyUniformlyOn hU (hasSumLocallyUniformlyOn_of_locally_normal hle) hF`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_tsum_of_locally_normal (hU : IsOpen U)
     (hF : ∀ i, DifferentiableOn ℂ (F i) U)
@@ -583,7 +577,7 @@ theorem differentiableOn_tsum_of_locally_normal (hU : IsOpen U)
     (hasSumLocallyUniformlyOn_of_locally_normal hle) hF
 
 /- English proof (translation)
-The claim follows from `(hasSumLocallyUniformlyOn_fderiv hU (hasSumLocallyUniformlyOn_of_locally_normal hle) hF).hasSum hz`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_fderiv_of_locally_normal (hU : IsOpen U)
     (hF : ∀ i, DifferentiableOn ℂ (F i) U)
@@ -593,7 +587,7 @@ theorem hasSum_fderiv_of_locally_normal (hU : IsOpen U)
   (hasSumLocallyUniformlyOn_fderiv hU (hasSumLocallyUniformlyOn_of_locally_normal hle) hF).hasSum hz
 
 /- English proof (translation)
-The claim follows from `(hasSumLocallyUniformlyOn_iteratedFDeriv hU (hasSumLocallyUniformlyOn_of_locally_normal hle) hF k).hasSum hz`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_iteratedFDeriv_of_locally_normal (hU : IsOpen U)
     (hF : ∀ i, DifferentiableOn ℂ (F i) U)
@@ -604,9 +598,9 @@ theorem hasSum_iteratedFDeriv_of_locally_normal (hU : IsOpen U)
     hF k).hasSum hz
 
 /- English proof (translation)
-Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h : ∀ x ∈ U, ∃ t ∈ 𝓝 x, ∃ u : ι → ℝ, Summable u ∧ ∀ i, ∀ z ∈ t, ‖F i z‖ ≤ u i`. Introduce `x hx`. Take `⟨K, ⟨hKx, hK⟩, hKU⟩` from `(compact_basis_nhds x).mem_iff.mp (hU.mem_nhds hx)`. Conclude with `⟨K, hKx, hle K hKU hK⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨differentiableOn_tsum_of_locally_normal hU hF h, fun k => hasSumLocallyUniformlyOn_iteratedFDeriv hU (hasSumLocallyUniformlyOn_of_locally_normal h) hF k⟩`.
+Supply the required witnesses or components.
 -/
 theorem differentiableOn_tsum_of_normal_on_compacts (hU : IsOpen U)
     (hF : ∀ i, DifferentiableOn ℂ (F i) U)

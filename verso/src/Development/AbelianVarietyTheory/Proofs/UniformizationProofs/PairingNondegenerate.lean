@@ -31,7 +31,7 @@ noncomputable section
 namespace GlobalTheory.UU.SpecialPairing
 
 /- English proof (translation)
-Rewrite using `[Subgroup.card_map_of_injective hj]`. Use `Nat.card_congr (Equiv.ofBijective (fun y => ⟨r y.1, by rw [← map_pow, show y.1 ^ N = 1 from y.2.1, map_one], y.2.2⟩) ⟨fun y y' h => Subtype.ext (ri _ _ y.2.1 y'.2.1 (congrArg Subtype.val h)), fun x => ?_⟩)` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `rs x.1 x.2.1`. Conclude with `⟨⟨y, hy, show r y ∈ K from e ▸ x.2.2⟩, Subtype.ext e⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem card_map {A₀ A A' : Type} [CommGroup A₀] [CommGroup A] [CommGroup A'] (r : A →* A₀) (j : A →* A') (N : ℕ)
     (ri : ∀ y y', y ^ N = 1 → y' ^ N = 1 → r y = r y' → y = y') (rs : ∀ x, x ^ N = 1 → ∃ y, y ^ N = 1 ∧ r y = x)
@@ -44,13 +44,11 @@ theorem card_map {A₀ A A' : Type} [CommGroup A₀] [CommGroup A] [CommGroup A'
   exact ⟨⟨y, hy, show r y ∈ K from e ▸ x.2.2⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Establish `tq : ∀ y : A, y ^ N = 1 → q (r y) ^ N = 1` using `fun y hy => by rw [← map_pow, ← map_pow, hy, map_one, map_one]`. Establish `tj : ∀ y : A, y ^ N = 1 → j y ^ N = 1` using `fun y hy => by rw [← map_pow, hy, map_one]`. Take `⟨x, hx, rfl⟩` from `qs b hb`. Take `⟨y, hy, rfl⟩` from `rs x hx`. Take `⟨y', hy', e⟩` from `rad (((powMonoidHom N).ker ⊓ q.ker.comap r).map j) (((powMonoidHom N).ker ⊓ (⊤ : Subgroup A₀).comap r).map j) (by rintro _ ⟨z, hz, rfl⟩; exact tj z hz.1) (by rintro _ ⟨z, hz, rfl⟩; exact tj z hz.1) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[card_map r j N ri rs hj, card_map r j N ri rs hj, ← hc]`. Simplify using `only [Subgroup.mem_top, and_true, MonoidHom.mem_ker])`. Use the proof step `(by`. Introduce and unpack `_ ⟨z, hz, rfl⟩ _ ⟨z', hz', rfl⟩`. Use `hP z z' hz.1 hz'.1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show q (r z) = 1 from hz.2]`. Conclude with `h1 _ (tq _ hz'.1))`. Use the proof step `(j y) (tj y hy) (by`. Introduce and unpack `_ ⟨z', hz', rfl⟩`. Conclude with `hP y z' hy hz'.1 (h _ (tq _ hz'.1)))`.
-
-Take `rfl` from `hj e`. Conclude with `hy'.2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core {A₀ A A' B : Type} [CommGroup A₀] [CommGroup A] [CommGroup A'] [CommGroup B] (r : A →* A₀)
     (j : A →* A') (q : A₀ →* B) (N M : ℕ) (P' : A' → A' → Prop) (P : B → B → Prop)
@@ -84,11 +82,11 @@ theorem core {A₀ A A' B : Type} [CommGroup A₀] [CommGroup A] [CommGroup A'] 
   exact hy'.2
 
 /- English proof (translation)
-Establish `i : Function.Injective (algebraMap V (AlgebraicClosure (FractionRing V)))`. Rewrite using `[IsScalarTower.algebraMap_eq V (FractionRing V)]`. Conclude with `(algebraMap (FractionRing V) _).injective.comp (IsFractionRing.injective V (FractionRing V))`. Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 h`. Establish `: FaithfulSMul V (AlgebraicClosure (FractionRing V))` using `(faithfulSMul_iff_algebraMap_injective _ _).2 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : W →ₐ[V] AlgebraicClosure (FractionRing V)` to `IsAlgClosed.lift`. Use `⟨φ.toRingHom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := V) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, show φ.toRingHom.comp (algebraMap V W) = algebraMap V _ from φ.comp_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 i`. Rewrite using `[← IsScalarTower.algebraMap_eq]`. Conclude with `φ.comp_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem exists_embedding (V W : Type) [CommRing V] [IsDomain V] [CommRing W] [IsDomain W] [Algebra V W]
     [Module.Finite V W] (h : Function.Injective (algebraMap V W)) :
@@ -108,7 +106,7 @@ theorem exists_embedding (V W : Type) [CommRing V] [IsDomain V] [CommRing W] [Is
   · rw [← IsScalarTower.algebraMap_eq]; exact φ.comp_algebraMap
 
 /- English proof (translation)
-Use `GlobalTheory.TorsionSeparable.epi_specMap (IsLocalRing.ResidueField.lift f)` as an intermediate fact. Rewrite `e` using `[← IsLocalRing.ResidueField.lift_comp_residue f, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc, cancel_epi]`. Set `ρ : Over.mk (Spec.map (CommRingCat.ofHom (IsLocalRing.residue W)) ≫ p) ⟶ Over.mk p` to `Over.homMk (Spec.map (CommRingCat.ofHom (IsLocalRing.residue W))) rfl`. Conclude with `(GlobalTheory.existsUnique_torsion_lift W S G p N hN (ρ ≫ y) (by rw [← MonObj.comp_pow, hy, MonObj.comp_one])).unique ⟨hy, rfl⟩ ⟨hy', e.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem torsion_ext (W : Type) [CommRing W] [IsLocalRing W] [IsAdicComplete (IsLocalRing.maximalIdeal W) W]
     {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (p : Spec (CommRingCat.of W) ⟶ S) (N : ℕ)
@@ -124,7 +122,7 @@ theorem torsion_ext (W : Type) [CommRing W] [IsLocalRing W] [IsAdicComplete (IsL
     (by rw [← MonObj.comp_pow, hy, MonObj.comp_one])).unique ⟨hy, rfl⟩ ⟨hy', e.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y h => Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun z => z.left) h) ((Over.w x).trans (Over.w y).symm)), fun x => ⟨Over.homMk (pullback.lift x.left T.hom (Over.w x)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem toBase_bijective {S S' : Scheme.{0}} (G : Over S) (f : S' ⟶ S) (T : Over S') :
     Function.Bijective (toBase (A := G) (A' := (Over.pullback f).obj G) (g := pullback.fst G.hom f)
@@ -137,33 +135,29 @@ theorem toBase_bijective {S S' : Scheme.{0}} (G : Over S) (f : S' ⟶ S) (T : Ov
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hAb hL V _ _ _ A G _ _ s t Ω _ _ p N hN`. Take `⟨dvr, cpl, -⟩` from `s.cdvr`. Use `s.semi.smooth` as an intermediate fact. Use `s.semi.separated` as an intermediate fact. Use `(t.l 0).Q.q_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₀, rfl⟩ : ∃ φ₀ : (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)) →+* Ω, p = Spec.map (CommRingCat.ofHom φ₀)` from `⟨(Spec.preimage p).hom, (Spec.map_preimage p).symm⟩`. Set `f : V →+* Ω` to `φ₀.comp (Ideal.Quotient.mk _)`. Establish `hf : IsLocalHom f` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Establish `: Ideal.Quotient.mk (IsLocalRing.maximalIdeal V ^ (0 + 1)) a = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `ha.ne_zero (by rw [RingHom.comp_apply, this, map_zero])⟩`. Establish `hNΩ : (N : Ω) ≠ 0` using `by simpa using (hN.map f).ne_zero`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hNΩ`. Choose the witnesses or unpack the hypotheses as in `⟨g', hg'⟩ : ∃ g', SmoothOfRelativeDimension g' (t.l 0).Q.B.hom := by`. Establish `: Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))` using `φ₀.domain_nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalRing (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))` using `IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Conclude with `GlobalTheory.AbelianDim.exists_relDim _ _ (t.l 0).Q.isAb`. Establish `hd` using `(GlobalTheory.UU.Tower.dim_eq_add_finrank V A G s t g').1 hg'`. Take `⟨c₁, c₂⟩` from `torusQuotient_card_torsion _ _ _ (t.l 0).Q Ω (Spec.map (CommRingCat.ofHom φ₀)) N hNΩ`. Rewrite `c₂` using `[GlobalTheory.card_torsion_geometricPoint_of_field hAb _ _ (t.l 0).Q.isAb g' hg' Ω _ N hNΩ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T₀ : Over (Spec (CommRingCat.of (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))))` to `Over.mk (Spec.map (CommRingCat.ofHom φ₀))`. Establish `hpf : Spec.map (CommRingCat.ofHom f) = T₀.hom ≫ thick V (IsLocalRing.maximalIdeal V) 0`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Both sides reduce to the same expression. Set `β : (T₀ ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G) ≃* (Over.mk (T₀.hom ≫ thick V (IsLocalRing.maximalIdeal V) 0) ⟶ G)` to `MulEquiv.ofBijective (toBaseHom (toBase_mul_pullback G _) T₀) (toBase_bijective G _ T₀)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hβ : ∀ x, (β x).left = x.left ≫ (fstG _ 0 G).left` using `fun _ => rfl`. Set `ι₀ : Over.mk (Spec.map (CommRingCat.ofHom f)) ⟶ Over.mk (T₀.hom ≫ thick V (IsLocalRing.maximalIdeal V) 0)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans hpf.symm)`. Establish `fin : Finite {x : T₀ ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G // x ^ N = 1}` using `Nat.finite_of_card_ne_zero (by rw [c₂]; positivity)`. Establish `fin'` using `(show Set.Finite {x : T₀ ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G | x ^ N = 1} from fin).image (fun x => ι₀ ≫ β x)`. Take `⟨W, _, _, _, _, _, f', _, inj, _, _, hf', lifts⟩` from `GlobalTheory.exists_finite_extension_torsion_lift hL.unramExt V G N hN Ω f hf fin'.toFinset (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨u, hu, rfl⟩` from `fin'.mem_toFinset.1 hx`. Use `show (ι₀ ≫ β u) ^ N = 1`. Rewrite using `[← MonObj.comp_pow, ← map_pow, show u ^ N = 1 from hu, map_one, MonObj.comp_one])`. Take `⟨φ, φi, hφ⟩` from `exists_embedding V W inj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `TW : Over (Spec (CommRingCat.of V))` to `Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))`. Set `ρ : Over.mk (T₀.hom ≫ thick V (IsLocalRing.maximalIdeal V) 0) ⟶ TW` to `Over.homMk (Spec.map (CommRingCat.ofHom f')) (by`. Use `Eq.trans ?_ hpf` and prove the remaining obligations. Rewrite using `[← hf', CommRingCat.ofHom_comp, Spec.map_comp]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `σ : TF (R` to `V) (AlgebraicClosure (FractionRing V)) ⟶ TW := Over.homMk (Spec.map (CommRingCat.ofHom φ)) (by`. Establish `e` using `congrArg (fun z => Spec.map (CommRingCat.ofHom z)) hφ`. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp] at e`. Conclude with `e)`. Set `r : (TW ⟶ G) →* (T₀ ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G)` to `β.symm.toMonoidHom.comp (preHom ρ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ∀ y, (r y).left ≫ (fstG _ 0 G).left = Spec.map (CommRingCat.ofHom f') ≫ y.left` using `fun y => (hβ _).symm.trans (congrArg (fun z => z.left) (β.apply_symm_apply (ρ ≫ y)))`. Set `q : (T₀ ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G) →* (T₀ ⟶ (t.l 0).Q.B)` to `MonoidHom.mk' (· ≫ (t.l 0).Q.q) fun x y => MonObj.mul_comp x y _`. Use `core r (preHom σ) q N (N ^ (2 * A.g)) (fun x y => CubWeil s.P.c N x y 1) (fun x y => CubWeil (t.l 0).D.M.c N x y 1) (fun y y' hy hy' e => ?_) (fun x hx => ?_) (fun y y' e => ?_) ?_ (fun y y' hy hy' h => ?_) (fun b hb => cubWeil_one_left _ hb) ?_ (mem_of_cubWeil_orthogonal hL V A …` and prove the remaining obligations. Use `torsion_ext W G _ N (by simpa using hN.map (algebraMap V W)) f' y y' hy hy' ?_` and prove the remaining obligations. Rewrite using `[← hr, ← hr, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, e⟩` from `lifts (ι₀ ≫ β x) (fin'.mem_toFinset.2 ⟨x, hx, rfl⟩)`. Use `⟨y, hy, β.injective (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Establish `e' : (ι₀ ≫ β x).left = (β x).left` using `Category.id_comp _`. Rewrite using `[hβ, hr y, e, e']`. Conclude with `GlobalTheory.over_points_ext_of_injective _ G W _ φ φi _ y y' (congrArg (fun z => z.left) e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(torusQuotient_points_lift _ _ _ (t.l 0).Q Ω _).2 N fun a => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq a.val (Nat.pos_of_ne_zero hN0)`. Establish `hz0 : z ≠ 0` using `by rintro rfl; exact a.ne_zero (by rw [← hz, zero_pow hN0])`. Conclude with `⟨Units.mk0 z hz0, Units.ext hz⟩`. Use `((cubWeil_one_iff_closedFibre V A G s t W Ω f' inferInstance _ N hN y y' (r y) (r y') hy hy' (hr y) (hr y')).2 h).comp σ` as an intermediate fact.
-
-Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `e : N ^ (2 * A.g) = N ^ Module.finrank ℤ s.X * (N ^ Module.finrank ℤ s.X * N ^ (2 * g'))`. Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `congrArg₂ (· * ·) ((Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)).trans c₁) c₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_nondegenerate : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) → Laws → AllSet fun {V} _ _ _ {_} {_} _ _ s => ∀ (t : Tower s) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (p : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)))) (N : ℕ), IsUnit (N : V) → ∀ x : Over.mk p ⟶ (t.l 0).Q.B, x ^ N = 1 → (∀ y : Over.mk p ⟶ (t.l 0).Q.B, y ^ N = 1 → CubWeil (t.l 0).D.M.c N x y 1) → x = 1 := by
   intro hAb hL V _ _ _ A G _ _ s t Ω _ _ p N hN

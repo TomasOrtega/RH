@@ -27,7 +27,7 @@ namespace GlobalTheory.Hk3.SplitLabels
 open GlobalTheory.Hk3 GlobalTheory.Hk3.LabDet
 
 /- English proof (translation)
-Unfold `evC`. Rewrite using `[Finsupp.sum_single_index (by simp), if_pos hd, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_single_lab {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) (d : List ℤ) (hd : IsLab V P d) :
     evC V P a (Finsupp.single d 1) = a d := by
@@ -35,19 +35,19 @@ theorem evC_single_lab {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → 
   rw [Finsupp.sum_single_index (by simp), if_pos hd, one_mul]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC t h hh P hP hcP c x w hx0 hxe hw d hd`. Take `⟨-, hgood, -, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev`. Establish `hPA : Good R A.μ0 P` using `(hgood t P hP).2.2`. Establish `hPc : Good R t (Formalism.DivisionValues.conjPl P)` using `(hgood t P hP).2.1`. Take `⟨n, hβ⟩` from `hC.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlev` using `GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hβ P (by rw [Nat.cast_pow]; exact fun hm => (hgood _ P hPA).1 (P.isPrime.mem_of_pow_mem n hm)) (fun PP hPP => hPA PP (hPP.imp id fun h => absurd h (Finset.notMem_empty _)))`. Establish `inj : Function.Injective R.HE.e` using `hC.models.HE.1`. Establish `hmem : ∀ y, R.HE.e y ∈ Mult R.θ (R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))` using `fun y => goodPart_le _ _ _ _ _ (hC.models.HE.2.1 ▸ LinearMap.mem_range_self _ y)`. Establish `hfix : ∀ y, ∀ k ∈ hyp (Yc D 0) P, rRep (R.MY 0) k (R.HE.e y) = R.HE.e y` using `fun y k hk => mult_lev _ _ _ _ _ (hmem y) k (hlev.1 k hk).1 (hlev.1 k hk).2`. Establish `hop : ∀ P', Good R t P' → ∀ e y, opOf (rRep (R.MY 0)) P' (Finsupp.single e 1) (R.HE.e y) = R.HE.e (h P' (Finsupp.single e 1) y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P' hP' e y`. Rewrite using `[opOf_single, sum_rRep, hh P' hP', GlobalTheory.Hk3.OpsRows.hk_single]`. Both sides reduce to the same expression. Establish `hu : R.HE.e x ≠ 0` using `fun h0 => hx0 (inj (by rw [h0, map_zero]))`. Take `⟨a, ha, hae⟩` from `GlobalTheory.SplitGen.gen_split (Yc D 0) P hcP (MMap (R.MY 0)) (rRep (R.MY 0)) d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, h1, h2⟩` from `adjoin_common _ (R.HE.e x) (R.HE.e w) (by`. Introduce and unpack `y ⟨k, hk, rfl | rfl⟩`. Use `⟨evC (Yc D 0) P (fun d => c P (dualLab d)) (Finsupp.single (splitLab (Yc D 0).rank k) 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hop P hP, hxe P hP, map_smul]`. Rewrite using `[hop P hP, (hw k hk).1, map_smul]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `(GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel (Yc D 0) P).2.2 (Finsupp.single (splitLab (Yc D 0).rank k) 1) _ (rRep (R.MY 0))`. Establish `hdc : dualC (Finsupp.single (splitLab (Yc D 0).rank k) 1) = Finsupp.single (dualLab (splitLab (Yc D 0).rank k)) 1`. Unfold `dualC`. Rewrite using `[Finsupp.mapDomain_single]`. Rewrite `hc` using `[hdc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hc _ (hfix x), ← hc _ (hfix w)]`. Use `⟨evC (Yc D 0) (Formalism.DivisionValues.conjPl P) (fun d => c (Formalism.DivisionValues.conjPl P) (dualLab d)) (Finsupp.single (splitLab (Yc D 0).rank k) 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hop _ hPc, hxe _ hPc, map_smul]`. Rewrite using `[hop _ hPc, (hw k hk).2, map_smul]) a ha`. Rewrite `h1` using `[hae _ (hfix x), hop P hP, hxe P hP, evC_single_lab _ _ _ _ hd, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : l = c P (dualLab d)` using `(smul_left_injective ℂ hu h1).symm`. Rewrite `h2` using `[hae _ (hfix w), hop P hP, hl, ← map_smul]`. Conclude with `inj h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_split_vec : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (t : T) (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ R.HE.H), (∀ P, GlobalTheory.Hk3.Good R t P → ∀ c x, R.HE.e (h P c x) = postOn (R.MY 0) (GlobalTheory.Hk3.hk (Yc D 0) P c) (R.HE.e x)) → ∀ P, GlobalTheory.Hk3.Good R t P → Formalism.DivisionValues.conjPl P ≠ P → ∀ (c : Pl D.host.E → List ℤ → ℂ) (x w : R.HE.H), x ≠ 0 → (∀ P', GlobalTheory.Hk3.Good R t P' → ∀ cc, h P' cc x = GlobalTheory.Hk3.evC (Yc D 0) P' (fun d => c P' (dualLab d)) cc • x) → (∀ k ≤ (Yc D 0).rank, h P (Finsupp.single (splitLab (Yc D 0).rank k) 1) w = GlobalTheory.Hk3.evC (Yc D 0) P (fun d => c P (dualLab d)) (Finsupp.single (splitLab (Yc D 0).rank k) 1) • w ∧ h (Formalism.DivisionValues.conjPl P) (Finsupp.single (splitLab (Yc D 0).rank k) 1) w = GlobalTheory.Hk3.evC (Yc D 0) (Formalism.DivisionValues.conjPl P) (fun d => c (Formalism.DivisionValues.conjPl P) (dualLab d)) (Finsupp.single (splitLab (Yc D 0).rank k) 1) • w) → ∀ d, GlobalTheory.Hk3.IsLab (Yc D 0) P d → h P (Finsupp.single d 1) w = c P (dualLab d) • w := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC t h hh P hP hcP c x w hx0 hxe hw d hd

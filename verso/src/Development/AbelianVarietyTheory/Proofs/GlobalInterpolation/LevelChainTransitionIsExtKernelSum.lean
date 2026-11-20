@@ -6,9 +6,9 @@ open Formalism.MainNotions.product_first_zeroth_parts (Ow tops wsum ten blk nfAl
 namespace GlobalTheory.LvT
 
 /- English proof (translation)
-Introduce `D u X i M M' K φ Φ hK hΦ`. Use `⟨fun c' => ?_, fun g' p' => ?_⟩` and prove the remaining obligations. Use `show Formalism.ThetaLiftIndependence.kerOpM (X.C.wt i) (X.C.Kmap i) φ c' = _`. Unfold `Formalism.ThetaLiftIndependence.kerOpM`. Rewrite using `[Submodule.coe_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hΦ.1 c, K.Kmap_eq, Submodule.coe_smul]`. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hK g']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExt_KT : ∀ (D : D7) (u : D.what₂.Word) (X : Ch D u) (i : ℕ) (M : PtModel X i) (M' : PtModel X (i + 1)) (K : KerPt M M') (φ : Fn X i) (Φ : M.Pt → M.Val), K.TgtEq → M.IsExt φ Φ → M'.IsExt (KT X i φ) (fun p' => ∑ c, X.C.wt i c • K.k (M.rep c) p' (Φ (M.rep c))) := by
   intro D u X i M M' K φ Φ hK hΦ

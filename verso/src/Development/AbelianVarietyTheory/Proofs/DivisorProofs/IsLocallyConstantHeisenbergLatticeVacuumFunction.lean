@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.HeisLatVac
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IsotropicVectorExistence.main`. Consider the case `exact _root_.GlobalTheory.IsotropicVectorExistence.main`. Consider the case `(apply _root_.GlobalTheory.IsotropicVectorExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IsotropicVectorExistence.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IsotropicVectorExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IsotropicVectorExistence.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lc_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
@@ -40,7 +40,7 @@ theorem lc_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z
   | (intros; exact _root_.GlobalTheory.IsotropicVectorExistence.main ..)
 
 /- English proof (translation)
-Establish `hV : {t : K | ‖ψ₀ t - 1‖ < 1 / 2} ∈ nhds (0 : K)` using `(isOpen_lt (hψ.sub continuous_const).norm continuous_const).mem_nhds (by simp)`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hV`. Use `⟨V, fun t ht => lc_pow_near_one fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Conclude with `hV (V.toAddSubgroup.nsmul_mem ht n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_exists_open_ker {K : Type} [AddCommGroup K] [TopologicalSpace K] [NonarchimedeanAddGroup K]
     (ψ₀ : AddChar K ℂ) (hψ : Continuous ψ₀) : ∃ U₀ : OpenAddSubgroup K, ∀ t ∈ U₀, ψ₀ t = 1 := by
@@ -52,13 +52,11 @@ theorem lc_exists_open_ker {K : Type} [AddCommGroup K] [TopologicalSpace K] [Non
   exact hV (V.toAddSubgroup.nsmul_mem ht n)
 
 /- English proof (translation)
-Establish `h : ∃ u' ∈ Λ, x₀ + u.1 = x₀ + u'.1` using `⟨u, hu, rfl⟩`. Rewrite using `[vacFn, dif_pos h]`. Take `⟨hw, hwe⟩` from `h.choose_spec`. Generalize the expression as in `h.choose = w at hw hwe ⊢`. Establish `h1 : w.1 = u.1` using `(add_left_cancel hwe).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hyΛ : ((0 : κ → K), w.2 - u.2) ∈ Λ`. Establish `e : ((0 : κ → K), w.2 - u.2) = w - u` using `Prod.ext (by simp [h1]) rfl`. Rewrite using `[e]`. Conclude with `Λ.sub_mem hw hu`. Establish `hwu : w = u + (0, w.2 - u.2)` using `Prod.ext (by simp [h1]) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : χ w = χ u * χ (0, w.2 - u.2) * ψ₀ (⅟(2 : K) * (u.1 ⬝ᵥ (w.2 - u.2) - (0 : κ → K) ⬝ᵥ u.2))` using `by conv_lhs => rw [hwu]`. Conclude with `hco u hu _ hyΛ`. Rewrite using `[e2, hy _ hyΛ, h1, mul_assoc, mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [zero_dotProduct, sub_zero, dotProduct_sub]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lc_val {K κ : Type} [CommRing K] [Invertible (2 : K)] [Fintype κ] (ψ₀ : AddChar K ℂ)
     (Λ : AddSubgroup ((κ → K) × (κ → K))) (χ : (κ → K) × (κ → K) → ℂ) (x₀ : κ → K)
@@ -84,27 +82,23 @@ theorem lc_val {K κ : Type} [CommRing K] [Invertible (2 : K)] [Fintype κ] (ψ�
   ring
 
 /- English proof (translation)
-Take `⟨U₀, hU₀⟩` from `lc_exists_open_ker ψ₀ hψ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Rewrite using `[← map_add_left_nhds_zero, Filter.eventually_map]`. Distinguish the cases in `hx : ∃ u ∈ Λ, x = x₀ + u.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨u, hu, rfl⟩` from `hx`. Establish `hN : {s : κ → K | (⅟(2 : K) • s, (0 : κ → K)) ∈ Λ ∧ s ⬝ᵥ u.2 ∈ (U₀ : Set K)} ∈ nhds (0 : κ → K)`. Use `IsOpen.mem_nhds ?_ ?_` and prove the remaining obligations. Use `(hΛ.preimage ?_).inter (U₀.isOpen.preimage ?_)` and prove the remaining obligations. Conclude with `(continuous_id.const_smul (⅟(2 : K))).prodMk (continuous_const : Continuous fun _ : κ → K => (0 : κ → K))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_id.dotProduct continuous_const`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (⅟(2 : K) • (0 : κ → K), (0 : κ → K)) ∈ Λ`. Rewrite using `[smul_zero, Prod.mk_zero_zero]`. Conclude with `Λ.zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (0 : κ → K) ⬝ᵥ u.2 ∈ (U₀ : Set K)`. Rewrite using `[zero_dotProduct]`. Conclude with `U₀.zero_mem`. Use `filter_upwards [hN] with s hs`. Take `⟨hs1, hs2⟩` from `hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : (s, (0 : κ → K)) ∈ Λ`. Establish `e : (s, (0 : κ → K)) = (⅟(2 : K) • s, (0 : κ → K)) + (⅟(2 : K) • s, (0 : κ → K))`. Use `Prod.ext ?_ (by simp)` and prove the remaining obligations. Simplify using `only [Prod.fst_add]`. Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Λ.add_mem hs1 hs1`. Establish `hχs : χ (s, 0) = 1`. Establish `e : (s, (0 : κ → K)) = (⅟(2 : K) • s, (0 : κ → K)) + (⅟(2 : K) • s, (0 : κ → K))`. Use `Prod.ext ?_ (by simp)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.fst_add]`. Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`. Rewrite using `[e]`. Conclude with `h2 _ hs1`. Establish `hx' : x₀ + u.1 + s = x₀ + (u + (s, 0)).1` using `by simp [add_assoc]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hneg : ψ₀ (-(s ⬝ᵥ u.2)) = 1` using `hU₀ _ (U₀.neg_mem hs2)`. Rewrite using `[hx', lc_val ψ₀ Λ χ x₀ hco hy _ (Λ.add_mem hu hs0), lc_val ψ₀ Λ χ x₀ hco hy u hu, hco u hu _ hs0, hχs, mul_one, mul_assoc, ← AddChar.map_add_eq_mul]`. Establish `key : ⅟(2 : K) * (u.1 ⬝ᵥ (s, (0 : κ → K)).2 - (s, (0 : κ → K)).1 ⬝ᵥ u.2) + (-(x₀ ⬝ᵥ (u + (s, 0)).2) - ⅟(2 : K) * ((u + (s, 0)).1 ⬝ᵥ (u + (s, 0)).2)) = -(s ⬝ᵥ u.2) + (-(x₀ ⬝ᵥ u.2) - ⅟(2 : K) * (u.1 ⬝ᵥ u.2))`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_zero, dotProduct_zero, add_dotProduct]`. Take the linear combination `(-(s ⬝ᵥ u.2)) * (invOf_two_add_invOf_two : ⅟(2 : K) + ⅟(2 : K) = 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, AddChar.map_add_eq_mul, hneg, one_mul]`. Establish `h0 : vacFn ψ₀ Λ χ x₀ x = 0` using `by rw [vacFn, dif_neg hx]`. Establish `hN : {s : κ → K | (s, (0 : κ → K)) ∈ Λ} ∈ nhds (0 : κ → K)`. Use `IsOpen.mem_nhds (hΛ.preimage (continuous_id.prodMk (continuous_const : Continuous fun _ : κ → K => (0 : κ → K)))) ?_` and prove the remaining obligations. Use `show ((0 : κ → K), (0 : κ → K)) ∈ Λ`.
-
-Rewrite using `[Prod.mk_zero_zero]`. Conclude with `Λ.zero_mem`. Use `filter_upwards [hN] with s hs`. Rewrite using `[h0, vacFn, dif_neg]`. Introduce and unpack `⟨u, hu, e⟩`.
-
-Use `hx ⟨u - (s, 0), Λ.sub_mem hu hs, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_sub]`. Rewrite using `[← add_sub_assoc, ← e, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_vacFn {K κ : Type} [CommRing K] [Invertible (2 : K)] [Fintype κ] [TopologicalSpace K]
     [IsTopologicalRing K] [NonarchimedeanAddGroup K] (ψ₀ : AddChar K ℂ) (hψ : Continuous ψ₀)
@@ -170,7 +164,7 @@ end GlobalTheory.HeisLatVac
 open GlobalTheory.HeisLatVac in
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ₀ hψ Λ hΛ χ x₀ hco hy h2`. Conclude with `isLocallyConstant_vacFn ψ₀ hψ Λ hΛ χ x₀ hco hy h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ), Continuous ψ₀ → ∀ (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))),

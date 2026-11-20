@@ -23,23 +23,23 @@ noncomputable section
 namespace GlobalTheory.HodgeLocGeo
 
 /- English proof (translation)
-Introduce `_ _ D O hC _ _ T _ h c a j y hy hZ f hf`. Take `⟨x, P, hw⟩` from `hC`. Take `⟨c', hc'⟩` from `(h.man c).alg a j`. Establish `hsymm : ∀ v, (h.man c).pt a ((((T.M c).A a).chart j).symm v) = c'.finChart.symm v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Simplify using the standard rewrite rules. Establish `hyt : y ∈ c'.finChart.target`. Rewrite `hy` using `[hc']`. Simplify using `using hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp0 : c'.finChart.symm y ∈ c'.finChart.source` using `c'.finChart.map_target hyt`. Establish `hp0y : c'.finChart (c'.finChart.symm y) = y` using `c'.finChart.right_inv hyt`. Establish `hbd : (O.Φ.C c).π (under (c'.finChart.symm y)) ∉ genBd O.s.T.Z`. Establish `h1` using `((h.an c).Z a ((((T.M c).A a).chart j).symm y)).not.1 hZ`. Rewrite `h1` using `[hsymm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨t, U, Zm, GW, GΩ, cW, cΩ, hU, ht, hcW, hcΩ, hev⟩` from `GlobalTheory.T.generic_unit_equation_chart D O.A O.N O.j O.S O.κ O.s x O.Φ c ((h.man c).ε a) _ c' _ hp0 hbd`. Establish `hgen : ∀ x', (divOf (O.Φ.C c) (O.ex x')).GeneratesAt (under (c'.finChart.symm y)) (f x')`. Introduce `x'`. Establish `h1` using `hf x'`. Rewrite `h1` using `[hsymm]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hE : ∀ x', ∀ y' ∈ U, (divOf (O.Φ.C c) (O.ex x')).IsEqn y' (prodPow t (O.ex x'))`. Introduce `x' y' hy'`. Establish `key : ∀ s : Finset (Letter O.S.Dw), (∑ z ∈ s, O.ex x' z • (O.Φ.C c).gr z.1 z.2).IsEqn y' (∏ z ∈ s, t z.1 z.2 ^ O.ex x' z)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht y' hy' _ _).zsmul _).add ih`. Conclude with `key Finset.univ`. Use `choose g hg0 hgev using fun x' => GlobalTheory.T.analytic_equation_locus (O.var c) ((h.man c).ε a) c' _ hp0 _ _ U hU (hE x') (f x') (hgen x')`. Rewrite `hg0`, `hgev`, `hev` using `[hp0y]`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hne : ∀ x', ∀ᶠ v in 𝓝 y, g x' v ≠ 0` using `fun x' => (hgev x').self_of_nhds.1.continuousAt.eventually_ne (hg0 x')`. Use `⟨Zm, GW, GΩ, cW, cΩ, g, hcW, hcΩ, hg0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, Filter.eventually_all.2 hgev, Filter.eventually_all.2 hne] with v hv hgv hnv`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hv`. Use `⟨h1, h2, h3, fun x' => (hgv x').1, h4, h5, h6, fun x' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, heq, hpn⟩` from `hgv x'`. Establish `hm : O.met.hm = metsOf x O.Φ` using `hw.hm_eq`. Establish `hR` using `h7 x'`. Establish `hpos : 0 < (metsOf x O.Φ c none ((h.man c).ε a) (O.ex x')).h (prodPow t (O.ex x')) (c'.finChart.symm v)` using `(Var.Met.mem_posSet_iff heq).1 (Set.eq_univ_iff_forall.1 (posSet_metsOf x O.Φ c none _ _) _)`. Rewrite using `[hsymm, lnN, hpn, hm, hR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hpos` using `[hR]`. Establish `hg : ‖g x' v‖ ≠ 0` using `norm_ne_zero_iff.2 (hnv x')`. Rewrite using `[Real.log_mul (pow_ne_zero 2 hg) hpos.ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lnN_root_local : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →

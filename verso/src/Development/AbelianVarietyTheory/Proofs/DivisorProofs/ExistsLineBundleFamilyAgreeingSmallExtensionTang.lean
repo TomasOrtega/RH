@@ -22,22 +22,22 @@ namespace GlobalTheory.DualOpen.SmallExt
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Simplify using `[spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
   simp [spMap]
 
 /- English proof (translation)
-Use `⟨fun (x : PrimeSpectrum R) ↦ ?_⟩` and prove the remaining obligations. Establish `: x ∈ Set.range (PrimeSpectrum.comap φ)`. Rewrite using `[range_comap_of_surjective _ _ hφ]`. Introduce `a ha`. Take `⟨n, hn⟩` from `hn a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `x.isPrime.mem_of_pow_mem n (by rw [hn]; exact zero_mem _)`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem surjective_spMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (hφ : Function.Surjective φ)
     (hn : ∀ a ∈ RingHom.ker φ, IsNilpotent a) : Surjective (spMap φ) := by
@@ -50,14 +50,14 @@ theorem surjective_spMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* 
   exact this
 
 /- English proof (translation)
-Rewrite using `[MonoidalCategory.whiskerLeft_comp, Over.comp_left, pull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_wl_comp {A X Y Z : Over S} (f : X ⟶ Y) (g : Y ⟶ Z) (c : Pic (A ⊗ Z).left) :
     CechPic.pull (A ◁ (f ≫ g)).left c = CechPic.pull (A ◁ f).left (CechPic.pull (A ◁ g).left c) := by
   rw [MonoidalCategory.whiskerLeft_comp, Over.comp_left, pull_comp]
 
 /- English proof (translation)
-Rewrite using `[MonoidalCategory.whiskerLeft_id, Over.id_left, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_wl_id {A X : Over S} (c : Pic (A ⊗ X).left) : CechPic.pull (A ◁ 𝟙 X).left c = c := by
   rw [MonoidalCategory.whiskerLeft_id, Over.id_left, pull_id]
@@ -67,39 +67,35 @@ end GlobalTheory.DualOpen.SmallExt
 open GlobalTheory.DualOpen.SmallExt in
 
 /- English proof (translation)
-Introduce `S _ A _ hA U M hMf hMi hMt C _ _ e he hme hne s N hNf u' hsame`. Use `haveI : Smooth A.hom := hA.smooth`. Take `⟨P, _, i, p, σ, q, hpi, hσi, hqi, hσc, hσs, hM1, hM2⟩` from `GlobalTheory.T.smallExtension_dualNumber_fibreProduct_affineMilnorSquare C e he hme hne`. Establish `calc3` using `(GlobalTheory.T.additiveLineBundleFamily_calculus_rules S A).2.2.1`. Use `set k := IsLocalRing.ResidueField C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set π : C →+* C ⧸ Ideal.span {e} := Ideal.Quotient.mk (Ideal.span {e})`. Use `set ρ : C →+* k := IsLocalRing.residue C`. Establish `hfi : (dnFst k).comp (dnInl k) = RingHom.id k` using `RingHom.ext fun x ↦ rfl`. Set `TC : Over S` to `Over.mk s`. Set `TP : Over S` to `Over.mk (spMap i ≫ s)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `Tε : Over S` to `Over.mk (spMap (dnInl k) ≫ spMap ρ ≫ s)`. Set `Tk : Over S` to `Over.mk (spMap (dnFst k) ≫ spMap (dnInl k) ≫ spMap ρ ≫ s)`. Set `jp : TC ⟶ TP` to `Over.homMk (spMap p) (by show spMap p ≫ spMap i ≫ s = s`. Rewrite using `[← Category.assoc, ← spMap_comp', hpi, spMap_id', Category.id_comp])`. Set `jσ : TC ⟶ TP` to `Over.homMk (spMap σ) (by show spMap σ ≫ spMap i ≫ s = s`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Category.assoc, ← spMap_comp', hσi, spMap_id', Category.id_comp])`. Set `jq : Tε ⟶ TP` to `Over.homMk (spMap q) (by show spMap q ≫ spMap i ≫ s = spMap (dnInl k) ≫ spMap ρ ≫ s`. Rewrite using `[← Category.assoc, ← spMap_comp', hqi, spMap_comp', Category.assoc])`. Set `r : TP ⟶ TC` to `Over.homMk (spMap i) rfl`. Set `kε : Tk ⟶ Tε` to `ptMap _ (dnFst k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `kc : Tk ⟶ TC` to `Over.homMk (spMap ρ) (by show spMap ρ ≫ s = spMap (dnFst k) ≫ spMap (dnInl k) ≫ spMap ρ ≫ s`. Rewrite using `[← Category.assoc, ← spMap_comp', hfi, spMap_id', Category.id_comp])`. Set `k₀` to `ptMap s π`. Establish `hjr : jp ≫ r = 𝟙 _` using `Over.OverMorphism.ext (by show spMap p ≫ spMap i = 𝟙 _`. Rewrite using `[← spMap_comp', hpi, spMap_id'])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσr : jσ ≫ r = 𝟙 _` using `Over.OverMorphism.ext (by show spMap σ ≫ spMap i = 𝟙 _`. Rewrite using `[← spMap_comp', hσi, spMap_id'])`. Establish `hsq : kε ≫ jq = kc ≫ jp` using `Over.OverMorphism.ext hM2.w.symm`. Establish `hkqr : kε ≫ jq ≫ r = kc` using `Over.OverMorphism.ext (by show spMap (dnFst k) ≫ spMap q ≫ spMap i = spMap ρ`. Rewrite using `[← spMap_comp' i q, hqi, spMap_comp', ← Category.assoc, ← spMap_comp', hfi, spMap_id', Category.id_comp])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hεs : Function.Surjective (dnFst k)` using `fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩`. Establish `hεn : ∀ a ∈ RingHom.ker (dnFst k), IsNilpotent a`. Introduce `a ha`. Establish `h0 : a.fst = 0` using `ha`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [pow_two, h0]`. Establish `hπn : ∀ a ∈ RingHom.ker π, IsNilpotent a`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mk_ker]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨2, by rw [mul_pow, sq e, hme e he, mul_zero]⟩`. Establish `hkεs : Surjective kε.left` using `surjective_spMap _ hεs hεn`. Establish `hkεc : IsClosedImmersion kε.left` using `IsClosedImmersion.spec_of_surjective _ hεs`. Establish `hk₀s : Surjective k₀.left` using `surjective_spMap _ Ideal.Quotient.mk_surjective hπn`. Use `set n := cls N hNf.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set m := cls M hMf.isLB`. Establish `hd : CechPic.pull (A ◁ k₀).left (n - CechPic.pull (A ◁ u').left m) = 0`. Establish `h` using `(calc3 _ _ _ N M hNf.isLB hMf.isLB _ _).1 hsame`. Rewrite using `[map_sub, h, pull_wl_comp, sub_self]`. Take `⟨d', hd'p, hd'σ⟩` from `GlobalTheory.T.exists_picardClass_extend_affineMilnorSquare S A TP TC TC _ jp jσ k₀ k₀ hM1 hσc hσs hk₀s _ hd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : CechPic.pull (A ◁ kε).left (CechPic.pull (A ◁ jq).left d') = 0`. Rewrite using `[← pull_wl_comp, hsq, pull_wl_comp, hd'p, map_zero]`. Take `⟨D, hD, hDc⟩` from `cls_surj (CechPic.pull (A ◁ jq).left d')`. Establish `hDf : Fam A D` using `GlobalTheory.T.additiveFamily_of_trivial_mod_epsilon S A hA k (spMap (dnInl k) ≫ spMap ρ ≫ s) D hD (by rw [hDc]; exact h3)`. Take `⟨D₂, hD₂, hD₂c⟩` from `cls_surj (CechPic.pull (A ◁ jq).left d' + CechPic.pull (A ◁ (jq ≫ r ≫ u')).left m)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hD₂f : Fam A D₂` using `(GlobalTheory.T.additiveLineBundleFamily_calculus_rules S A).2.1 Tε U Tε D M hDf hMf (𝟙 _) (jq ≫ r ≫ u') D₂ hD₂ (Or.inl (by rw [hD₂c, pull_wl_id, hDc]))`. Take `⟨v, hv⟩` from `hMt k (spMap ρ ≫ s) D₂ hD₂f (kε ≫ jq ≫ r ≫ u') ((calc3 _ _ _ D₂ M hD₂ hMf.isLB _ _).2 (by`. Rewrite using `[hD₂c, map_add, h3, zero_add, pull_wl_comp kε]))`. Establish `hv' : CechPic.pull (A ◁ jq).left d' + CechPic.pull (A ◁ (jq ≫ r ≫ u')).left m = CechPic.pull (A ◁ v).left m`. Establish `h` using `(calc3 _ _ _ D₂ M hD₂ hMf.isLB _ _).1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[pull_wl_id, hD₂c]`. Then use the resulting hypothesis. Establish `hglue : kc ≫ u' = kε ≫ v` using `hMi Tk _ _ ((calc3 _ _ _ M M hMf.isLB hMf.isLB _ _).2 (by`. Rewrite using `[← hkqr, Category.assoc, Category.assoc, pull_wl_comp kε (jq ≫ r ≫ u'), pull_wl_comp kε v, ← hv', map_add, h3, zero_add]))`. Take `⟨V, hVa, hV0, -⟩` from `exists_isAffineOpen_mem_and_subset (X := U.left) (U := ⊤) (x := u'.left (IsLocalRing.closedPoint C)) trivial`. Establish `hu'V : ∀ x, u'.left x ∈ V` using `fun x ↦ ((IsLocalRing.specializes_closedPoint (R := C) x).map u'.left.continuous).mem_open V.isOpen hV0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hvV : ∀ y, v.left y ∈ V`. Introduce `y`. Take `⟨z, rfl⟩` from `hkεs.surj y`. Establish `h` using `congrArg (fun f ↦ f.left z) hglue`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `hu'V _`. Take `⟨w, hw₁, hw₂⟩` from `GlobalTheory.T.glue_morphisms_into_affineOpen_milnorSquare S U TP TC Tε Tk jp jq kc kε hM2 V hVa u' v hglue hu'V hvV`. Establish `hunit` using `GlobalTheory.T.abelianScheme_units_lift_along_thickening S A hA Tε Tk kε (inferInstanceAs (IsAffine (Sp (DualNumber k)))) hkεc hkεs`. Establish `hE` using `GlobalTheory.T.picardClass_eq_zero_affineMilnorSquare S A TP TC Tε Tk jp jq kc kε hM2 hunit (CechPic.pull (A ◁ w).left m - CechPic.pull (A ◁ (r ≫ u')).left m - d') (by`.
-
-Rewrite using `[map_sub, map_sub, ← pull_wl_comp, ← pull_wl_comp, hw₁, ← Category.assoc, hjr, Category.id_comp, hd'p, sub_self, sub_zero]) (by`. Rewrite using `[map_sub, map_sub, ← pull_wl_comp, ← pull_wl_comp, hw₂, ← hv', add_sub_cancel_right, sub_self])`. Establish `hwe : CechPic.pull (A ◁ w).left m = CechPic.pull (A ◁ (r ≫ u')).left m + d'`. Rewrite `hE` using `[sub_sub]`. Conclude with `sub_eq_zero.1 hE`.
-
-Use `⟨jσ ≫ w, (calc3 _ _ _ N M hNf.isLB hMf.isLB _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[pull_wl_id, pull_wl_comp, hwe, map_add, ← pull_wl_comp, ← Category.assoc, hσr, Category.id_comp, hd'σ]`. Conclude with `(add_sub_cancel _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DualOpen.exists_same_of_smallExt : ∀ (S : Scheme.{0}) [IsAffine S] (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (U : Over S) (M : LB (A ⊗ U).left), Fam A M → Inj A M → TanLift A M → ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C), e ∈ IsLocalRing.maximalIdeal C → (∀ a ∈ IsLocalRing.maximalIdeal C, a * e = 0) → e ≠ 0 → ∀ (s : Sp C ⟶ S) (N : LB (A ⊗ Over.mk s).left), Fam A N → ∀ u' : Over.mk s ⟶ U, Same A N M (ptMap s (Ideal.Quotient.mk (Ideal.span {e}))) (ptMap s (Ideal.Quotient.mk (Ideal.span {e})) ≫ u') → ∃ u : Over.mk s ⟶ U, Same A N M (𝟙 _) u := by
   intro S _ A _ hA U M hMf hMi hMt C _ _ e he hme hne s N hNf u' hsame

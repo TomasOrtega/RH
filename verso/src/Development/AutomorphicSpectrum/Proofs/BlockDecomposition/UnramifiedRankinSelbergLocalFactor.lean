@@ -27,13 +27,13 @@ Both sides reduce to the same expression.
 theorem hs_succ (α β : ℂ) (n : ℕ) : hs α β (n + 1) = α ^ (n + 1) + β * hs α β n := rfl
 
 /- English proof (translation)
-Simplify using `[hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_one (α β : ℂ) : hs α β 1 = α + β := by
   simp [hs]
 
 /- English proof (translation)
-Establish `h1` using `hs_succ α β (n + 1)`. Establish `h2` using `hs_succ α β n`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hs_rec (α β : ℂ) (n : ℕ) :
     hs α β (n + 2) = (α + β) * hs α β (n + 1) - α * β * hs α β n := by
@@ -43,9 +43,9 @@ theorem hs_rec (α β : ℂ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hs]`. Consider the case `succ n ih`. Rewrite using `[hs_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_pow, hα, one_pow, norm_mul, hβ, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ((n + 1 : ℕ) : ℝ) + 1 := by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_hs_le {α β : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 1) (n : ℕ) :
     ‖hs α β n‖ ≤ (n : ℝ) + 1 := by
@@ -60,9 +60,9 @@ theorem norm_hs_le {α β : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 1) (n : 
       _ = ((n + 1 : ℕ) : ℝ) + 1 := by push_cast; ring
 
 /- English proof (translation)
-Establish `h0 : α ≠ 0`. Introduce `h`. Simplify using `[h] at hα`. Establish `h` using `Complex.mul_conj' α`. Rewrite `h` using `[hα]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Simplify `h` using `[mul_comm]`.
+Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_eq_inv {α : ℂ} (hα : ‖α‖ = 1) : conj α = α⁻¹ := by
   have h0 : α ≠ 0 := by
@@ -74,11 +74,11 @@ theorem conj_eq_inv {α : ℂ} (hα : ‖α‖ = 1) : conj α = α⁻¹ := by
   simpa [mul_comm] using h
 
 /- English proof (translation)
-Establish `h0 : α ≠ 0`. Introduce `h`. Simplify using `[h] at hα`. Establish `h1 : β ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h] at hβ`. Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero => simp [hs]`. Consider the case `one`. Rewrite using `[hs_one, map_add, conj_eq_inv hα, conj_eq_inv hβ]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the case `more n ih1 ih2`. Take `⟨d, hd, e1, e2⟩ : ∃ d, d = (α * β)⁻¹ ∧ α⁻¹ = d * β ∧ β⁻¹ = d * α` from `⟨_, rfl, by field_simp, by field_simp⟩`. Rewrite using `[hs_rec, map_sub, map_mul, map_mul, map_mul, map_add, ih1, ih2, conj_eq_inv hα, conj_eq_inv hβ, ← hd, e1, e2]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -104,9 +104,9 @@ theorem conj_hs {α β : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 1) (n : ℕ
     ring
 
 /- English proof (translation)
-Establish `hr : ‖r‖ < 1` using `by rwa [Real.norm_of_nonneg h0]`. Establish `a2` using `summable_pow_mul_geometric_of_norm_lt_one 2 hr`. Establish `a1` using `summable_pow_mul_geometric_of_norm_lt_one 1 hr`. Establish `a0` using `summable_pow_mul_geometric_of_norm_lt_one 0 hr`. Use `((a2.add (a1.mul_left 4)).add (a0.mul_left 4)).congr fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pow_one, pow_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem summable_sq_mul_geom {r : ℝ} (h0 : 0 ≤ r) (h1 : r < 1) :
     Summable fun n : ℕ => ((n : ℝ) + 2) ^ 2 * r ^ n := by
@@ -119,35 +119,29 @@ theorem summable_sq_mul_geom {r : ℝ} (h0 : 0 ≤ r) (h1 : r < 1) :
   ring
 
 /- English proof (translation)
-Use `set H := hs α β with hH`. Use `set u : ℕ → ℂ := fun n => H n ^ 2 * x ^ n with hu`. Use `set v : ℕ → ℂ := fun n => H n * H (n + 1) * x ^ n with hv`. Establish `hS` using `summable_sq_mul_geom (norm_nonneg x) hx`. Establish `hn : ∀ n, ‖H n‖ ≤ (n : ℝ) + 2` using `fun n => (norm_hs_le hα hβ n).trans (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hn' : ∀ n, ‖H (n + 1)‖ ≤ (n : ℝ) + 2` using `fun n => by`. Use `norm_hs_le hα hβ (n + 1)` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `su : Summable u`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded hS fun n => ?_` and prove the remaining obligations. Simplify using `only [hu, norm_mul, norm_pow]`. Use `gcongr`. Conclude with `hn n`. Establish `sv : Summable v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded hS fun n => ?_` and prove the remaining obligations. Simplify using `only [hv, norm_mul, norm_pow]`. Rewrite using `[sq]`. Use `gcongr`. Conclude with `hn n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hn' n`. Use `⟨su, ?_⟩` and prove the remaining obligations. Use `set A := ∑' n, u n with hA`. Use `set B := ∑' n, v n with hB`. Use `set a := α + β with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set b := α * β with hb`. Establish `h0 : H 0 = 1` using `rfl`. Establish `h1 : H 1 = a` using `hs_one α β`. Establish `hr : ∀ n, H (n + 2) = a * H (n + 1) - b * H n` using `hs_rec α β`. Establish `su1 : Summable fun n => u (n + 1)` using `(summable_nat_add_iff 1).2 su`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `su2 : Summable fun n => u (n + 2)` using `(summable_nat_add_iff 2).2 su`. Establish `sv1 : Summable fun n => v (n + 1)` using `(summable_nat_add_iff 1).2 sv`. Establish `tu1 : ∑' n, u (n + 1) = A - u 0`. Use `su.sum_add_tsum_nat_add 1` as an intermediate fact. Simplify using `only [Finset.sum_range_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hA, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `tu2 : ∑' n, u (n + 2) = A - u 0 - u 1`. Use `su.sum_add_tsum_nat_add 2` as an intermediate fact. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `tv1 : ∑' n, v (n + 1) = B - v 0`. Use `sv.sum_add_tsum_nat_add 1` as an intermediate fact. Simplify using `only [Finset.sum_range_one] at this`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `u0 : u 0 = 1` using `by simp [hu, h0]`. Establish `u1 : u 1 = a ^ 2 * x` using `by simp [hu, h1]`. Establish `v0 : v 0 = a` using `by simp [hv, h0, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ n, u (n + 2) = a ^ 2 * x * u (n + 1) - 2 * a * b * x ^ 2 * v n + b ^ 2 * x ^ 2 * u n`. Introduce `n`. Simplify using `only [hu, hv, hr n]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ n, v (n + 1) = a * u (n + 1) - b * x * v n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `n`. Simplify using `only [hu, hv, hr n]`. Expand and normalize the polynomial expressions, which then agree. Establish `E1 : A - 1 - a ^ 2 * x = a ^ 2 * x * (A - 1) - 2 * a * b * x ^ 2 * B + b ^ 2 * x ^ 2 * A`. Establish `: ∑' n, u (n + 2) = ∑' n, (a ^ 2 * x * u (n + 1) - 2 * a * b * x ^ 2 * v n + b ^ 2 * x ^ 2 * u n)` using `tsum_congr e1`.
-
-Rewrite `this` using `[tu2, u0, u1, ((su1.mul_left _).sub (sv.mul_left _)).tsum_add (su.mul_left _), (su1.mul_left _).tsum_sub (sv.mul_left _), tsum_mul_left, tsum_mul_left, tsum_mul_left, tu1, u0]`. Conclude with `this`. Establish `E2 : B - a = a * (A - 1) - b * x * B`. Establish `: ∑' n, v (n + 1) = ∑' n, (a * u (n + 1) - b * x * v n)` using `tsum_congr e2`. Rewrite `this` using `[tv1, v0, (su1.mul_left _).tsum_sub (sv.mul_left _), tsum_mul_left, tsum_mul_left, tu1, u0]`.
-
-Conclude with `this`. Establish `hfac : (1 - b * x) * (1 - α ^ 2 * x) * (1 - β ^ 2 * x) = 1 + (b - a ^ 2) * x + (a ^ 2 * b - b ^ 2) * x ^ 2 - b ^ 3 * x ^ 3`. Simplify using `only [ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac]`.
-
-Take the linear combination `(1 + b * x) * E1 - 2 * a * b * x ^ 2 * E2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tsum_hs_sq {α β x : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 1) (hx : ‖x‖ < 1) :
     (Summable fun n => hs α β n ^ 2 * x ^ n) ∧
@@ -236,14 +230,14 @@ theorem sum_powersetCard_zero (z : Fin 2 → ℂ) :
   simp
 
 /- English proof (translation)
-Simplify using `[Finset.powersetCard_one, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_powersetCard_one (z : Fin 2 → ℂ) :
     ∑ S ∈ (Finset.univ : Finset (Fin 2)).powersetCard 1, ∏ i ∈ S, z i = z 0 + z 1 := by
   simp [Finset.powersetCard_one, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h : (Finset.univ : Finset (Fin 2)).powersetCard 2 = {Finset.univ}`. Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin 2))`. Simplify using `[h, Fin.prod_univ_two]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem sum_powersetCard_two (z : Fin 2 → ℂ) :
     ∑ S ∈ (Finset.univ : Finset (Fin 2)).powersetCard 2, ∏ i ∈ S, z i = z 0 * z 1 := by
@@ -252,28 +246,28 @@ theorem sum_powersetCard_two (z : Fin 2 → ℂ) :
   simp [h, Fin.prod_univ_two]
 
 /- English proof (translation)
-Rewrite using `[Finset.powersetCard_eq_empty.2 (by simp; omega), Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_powersetCard_big (z : Fin 2 → ℂ) {r : ℕ} (hr : 3 ≤ r) :
     ∑ S ∈ (Finset.univ : Finset (Fin 2)).powersetCard r, ∏ i ∈ S, z i = 0 := by
   rw [Finset.powersetCard_eq_empty.2 (by simp; omega), Finset.sum_empty]
 
 /- English proof (translation)
-Take `⟨h0, hrec⟩` from `GlobalTheory.CompanionTheory.SatakeBound.schur_row_recursion 2 (by norm_num) z`. Establish `hrow : ∀ j : ℕ, (![(j : ℤ), 0] : Fin 2 → ℤ) = Pi.single (⟨0, by norm_num⟩ : Fin 2) (j : ℤ)`. Introduce `j`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set T : ℕ → ℂ := fun j => evalAt z (schur (Pi.single (⟨0, by norm_num⟩ : Fin 2) ((j : ℕ) : ℤ))) with hT`. Establish `e0` using `sum_powersetCard_zero (fun i => (z i : ℂ))`. Establish `e1` using `sum_powersetCard_one (fun i => (z i : ℂ))`. Establish `e2` using `sum_powersetCard_two (fun i => (z i : ℂ))`. Establish `T0 : T 0 = 1` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T1 : T 1 = (z 0 : ℂ) + z 1`. Establish `h` using `hrec 1 le_rfl`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, e0, e1] at h`. Establish `h' : T 1 - ((z 0 : ℂ) + z 1) * T 0 = 0`. Simplify using `[hT, sub_eq_add_neg] at h ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`. Rewrite `h'` using `[T0]`. Take the linear combination `h'`. Establish `Trec : ∀ j, T (j + 2) = ((z 0 : ℂ) + z 1) * T (j + 1) - (z 0 : ℂ) * z 1 * T j`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hrec (j + 2) (by omega)`. Rewrite `h` using `[show j + 2 + 1 = 3 + j by omega, Finset.sum_range_add]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.range j) (fun r _ => by`. Rewrite `h` using `[sum_powersetCard_big (fun i => (z i : ℂ)) (by omega)]; simp)]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, e0, e1, e2] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : T (j + 2) - ((z 0 : ℂ) + z 1) * T (j + 1) + (z 0 : ℂ) * z 1 * T j = 0`. Establish `a1 : j + 2 - 1 = j + 1` using `by omega`. Establish `a2 : j + 2 - 2 = j` using `by omega`. Simplify using `[hT, a1, a2, sub_eq_add_neg] at h ⊢`. Take the linear combination `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h'`. Establish `key : ∀ n, T n = hs (z 0) (z 1) n`. Introduce `n`. Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero => rw [T0, hs_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `one => rw [T1, hs_one]`. Consider the case `more n ih1 ih2 => rw [Trec, hs_rec, ih1, ih2]`. Rewrite using `[hrow, ← key n]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAt_schur_row (z : Fin 2 → ℂˣ) (n : ℕ) :
     evalAt z (schur ![(n : ℤ), 0]) = hs (z 0) (z 1) n := by
@@ -321,9 +315,9 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.exists_unit_eq_uniformizer_zpow_ord_mul F a`. Use `⟨integralGLHom F 2 (Ad3.dg2 u 1), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Units.val_mul, coe_torusPow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.dg2, integralGLHom, Matrix.diagonal_mul, ← hu]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem torus_element_eq_torus_power_mul_compact (a : Fˣ) : ∃ k ∈ integralGL F 2,
     (Ad3.dg2 a 1 : GL (Fin 2) F) = torusPow F 2 ![ord (a : F), 0] * k := by
@@ -336,13 +330,13 @@ theorem torus_element_eq_torus_power_mul_compact (a : Fˣ) : ∃ k ∈ integralG
     simp [Ad3.dg2, integralGLHom, Matrix.diagonal_mul, ← hu]
 
 /- English proof (translation)
-Take `⟨k, hk, hdg⟩` from `torus_element_eq_torus_power_mul_compact a`. Rewrite using `[hdg, sphericalWhittaker_mul_right hψ₀ _ _ hk, sphericalWhittaker_torusPow hψ₀]`. Distinguish the cases in `h : 0 ≤ ord (a : F)`. Establish `hant : Antitone (![ord (a : F), 0] : Fin 2 → ℤ)`. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le h`. Rewrite using `[if_pos hant, if_pos h, halfModulus_eq]`. Establish `hr : rhoPair (![ord (a : F), 0] : Fin 2 → ℤ) = ord (a : F)`. Simplify using `[rhoPair, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr, hn, evalAt_schur_row]`. Simplify using the standard rewrite rules. Establish `hant : ¬ Antitone (![ord (a : F), 0] : Fin 2 → ℤ)`. Introduce `hh`. Use `hh (by decide : (0 : Fin 2) ≤ 1)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Conclude with `h this`. Rewrite using `[if_neg hant, if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spherical_whittaker_torus_formula {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (z : Fin 2 → ℂˣ) (a : Fˣ) :
     sphericalWhittaker ψ₀ z (Ad3.dg2 a 1) =
@@ -373,7 +367,7 @@ section Char
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have a := MonoidHom.mem_ker.1 (h₁ hu) have b := MonoidHom.mem_ker.1 (h₂ hu) simp [MonoidHom.mem_ker, a, b]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_mul {χ₁ χ₂ : Fˣ →* ℂˣ} (h₁ : IsUnramifiedChar χ₁) (h₂ : IsUnramifiedChar χ₂) :
     IsUnramifiedChar (χ₁ * χ₂) := fun u hu => by
@@ -382,14 +376,14 @@ theorem unr_mul {χ₁ χ₂ : Fˣ →* ℂˣ} (h₁ : IsUnramifiedChar χ₁) (
   simp [MonoidHom.mem_ker, a, b]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have a := MonoidHom.mem_ker.1 (h hu) simp [MonoidHom.mem_ker, a]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_inv {χ : Fˣ →* ℂˣ} (h : IsUnramifiedChar χ) : IsUnramifiedChar χ⁻¹ := fun u hu => by
   have a := MonoidHom.mem_ker.1 (h hu)
   simp [MonoidHom.mem_ker, a]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) hr, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_pow_cpow {r : ℝ} (hr : 0 ≤ r) (n : ℕ) (u : ℂ) :
     (((r ^ n : ℝ)) : ℂ) ^ u = ((r : ℂ) ^ u) ^ n := by
@@ -399,9 +393,9 @@ theorem ofReal_pow_cpow {r : ℝ} (hr : 0 ≤ r) (n : ℕ) (u : ℂ) :
     rw [pow_succ, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) hr, ih, pow_succ]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < residueCard F`. Conclude with `(zero_lt_one.trans (one_lt_residueCard (K := F)))` after adjusting the coercions. Establish `hm : ((modulus (a : F) : NNReal) : ℝ) = ((residueCard F : ℝ)⁻¹) ^ n`. Rewrite using `[GlobalTheory.CompanionTheory.LUGauge.modulus_coe, h, zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[Ad3.mp, hm, ofReal_pow_cpow (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Complex.ofReal_inv, Complex.inv_cpow _ _ (by simp [Complex.natCast_arg, Real.pi_ne_zero.symm]), Complex.cpow_neg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mp_eq (a : Fˣ) {n : ℕ} (h : ord (a : F) = n) (u : ℂ) :
     Ad3.mp a u = ((residueCard F : ℂ) ^ (-u)) ^ n := by
@@ -419,15 +413,15 @@ def gv (α β t : ℂ) (k : ℤ) : ℂ :=
   if 0 ≤ k then hs α β k.toNat * conj (hs α β k.toNat) * t ^ k.toNat else 0
 
 /- English proof (translation)
-Rewrite using `[spherical_whittaker_torus_formula hψ₀, gv]`. Distinguish the cases in `h : 0 ≤ ord (a : F)`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `hq0 : (residueCard F : ℂ) ≠ 0`. Establish `: 0 < residueCard F` using `zero_lt_one.trans (one_lt_residueCard (K := F))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `hca : ((c a : ℂˣ) : ℂ) = ((c (unifUnit F) : ℂˣ) : ℂ) ^ n`. Rewrite using `[quasiChar_apply_of_isUnramified hc a, hn, zpow_natCast, Units.val_pow_eq_pow_val]`. Establish `hsq : conj (sqrtQ F) = sqrtQ F`. Rewrite using `[sqrtQ, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq2 : sqrtQ F ^ 2 = (residueCard F : ℂ)`. Rewrite using `[sqrtQ_sq]`. Both sides reduce to the same expression. Establish `hsq0 : sqrtQ F ≠ 0` using `sqrtQ_ne_zero`. Establish `hcp : (residueCard F : ℂ) ^ (-(s - 1)) = (residueCard F : ℂ) ^ (-s) * (residueCard F : ℂ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show -(s - 1) = -s + 1 by ring, Complex.cpow_add _ _ hq0, Complex.cpow_one]`. Rewrite using `[if_pos h, if_pos h, hn, mp_eq a hn, hca, hcp]`. Simplify using `only [Int.toNat_natCast, map_mul, hsq, zpow_neg, zpow_natCast, map_inv₀, map_pow]`. Establish `hone : (sqrtQ F ^ n)⁻¹ * (sqrtQ F ^ n)⁻¹ * (residueCard F : ℂ) ^ n = 1`. Rewrite using `[← hsq2, ← pow_mul, mul_comm 2 n, pow_mul, sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_pow, mul_pow]`. Take the linear combination `(hs (z 0) (z 1) n * conj (hs (z 0) (z 1) n) * ((c (unifUnit F) : ℂˣ) : ℂ) ^ n * ((residueCard F : ℂ) ^ (-s)) ^ n) * hone`. Rewrite using `[if_neg h, if_neg h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrand_eq (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (z : Fin 2 → ℂˣ)
     {c : Fˣ →* ℂˣ} (hc : IsUnramifiedChar c) (s : ℂ) (a : Fˣ) :
@@ -464,25 +458,25 @@ theorem integrand_eq (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ 
 end Char
 
 /- English proof (translation)
-Establish `h0 : α ≠ 0`. Introduce `h`. Simplify using `[h] at hα`. Establish `h1 : β ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h] at hβ`. Use `set x := (α * β)⁻¹ * t with hx`. Establish `hxn : ‖x‖ < 1`. Simplify `ht` using `[hx, hα, hβ]`. Establish `hterm : ∀ n : ℕ, gv α β t (n : ℤ) = hs α β n ^ 2 * x ^ n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Simplify using `only [gv, Nat.cast_nonneg, if_true, Int.toNat_natCast]`. Rewrite using `[conj_hs hα hβ, hx, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAe : A = ∑' n : ℕ, hs α β n ^ 2 * x ^ n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Conclude with `tsum_congr hterm`. Establish `key` using `(tsum_hs_sq hα hβ hxn).2`. Rewrite `key` using `[← hAe]`. Establish `e1 : α * β * x = t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hx]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : α ^ 2 * x = α * β⁻¹ * t`. Rewrite using `[hx]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : β ^ 2 * x = α⁻¹ * β * t`. Rewrite using `[hx]`. Clear the denominators using the available nonvanishing facts. Rewrite `key` using `[e1, e2, e3]`. Establish `nz : ∀ w : ℂ, ‖w‖ = 1 → 1 - w * t ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw h`. Establish `: w * t = 1` using `by linear_combination -h`. Establish `h2 : ‖w * t‖ = 1` using `by rw [this, norm_one]`. Rewrite `h2` using `[norm_mul, hw, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : 1 - t ≠ 0` using `by simpa using nz 1 norm_one`. Establish `n2 : 1 - α * β⁻¹ * t ≠ 0` using `nz _ (by simp [hα, hβ])`. Establish `n3 : 1 - α⁻¹ * β * t ≠ 0` using `nz _ (by simp [hα, hβ])`. Establish `n4 : 1 + t ≠ 0`. Simplify `nz (-1) (by simp)` using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `n5 : 1 - t ^ 2 ≠ 0`. Rewrite using `[show 1 - t ^ 2 = (1 - t) * (1 + t) by ring]`. Conclude with `mul_ne_zero n1 n4`. Establish `hfin : A * ((1 - α * β⁻¹ * t) * (1 - t) * (1 - α⁻¹ * β * t) * (1 - t)) = 1 - t ^ 2`. Take the linear combination `(1 - t) * key`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_inv, ← mul_inv, ← mul_inv]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem euler_identity {α β t A : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 1) (ht : ‖t‖ < 1)
     (hA : A = ∑' n : ℕ, gv α β t (n : ℤ)) :
@@ -541,35 +535,31 @@ theorem euler_identity {α β t A : ℂ} (hα : ‖α‖ = 1) (hβ : ‖β‖ = 
 open Ad3 Ad3.R in
 
 /- English proof (translation)
-Introduce `hL F _ _ _ _ _ _ ψ hψ μ₁ μ₂ c h1 h2 hc r1 r2 rc s hs' G hG`. Establish `hψ₀` using `GlobalTheory.CompanionTheory.LocalChar.sPsi F ψ hψ`. Establish `hW` using `(hL F ψ hψ μ₁ μ₂ h1 h2).2 r1 r2`. Use `set z : Fin 2 → ℂˣ := ![μ₁ (unifUnit F), μ₂ (unifUnit F)] with hz`. Use `set α : ℂ := ((μ₁ (unifUnit F) : ℂˣ) : ℂ) with hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set β : ℂ := ((μ₂ (unifUnit F) : ℂˣ) : ℂ) with hβ`. Use `set γ : ℂ := ((c (unifUnit F) : ℂˣ) : ℂ) with hγ`. Use `set Q : ℂ := (residueCard F : ℂ) ^ (-s) with hQ`. Use `set t : ℂ := γ * Q with ht`. Establish `nα : ‖α‖ = 1` using `h1.2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `nβ : ‖β‖ = 1` using `h2.2 _`. Establish `nγ : ‖γ‖ = 1` using `hc.2 _`. Establish `hq1 : (1 : ℝ) < residueCard F` using `by exact_mod_cast (one_lt_residueCard (K := F))`. Establish `hq0 : 0 < residueCard F` using `zero_lt_one.trans (one_lt_residueCard (K := F))`. Establish `nQ : ‖Q‖ = (residueCard F : ℝ) ^ (-s.re)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ, Complex.norm_natCast_cpow_of_pos hq0, Complex.neg_re]`. Establish `nt : ‖t‖ = (residueCard F : ℝ) ^ (-s.re)`. Rewrite using `[ht, norm_mul, nγ, one_mul, nQ]`. Establish `nt1 : ‖t‖ < 1`. Rewrite using `[nt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`. Establish `hGv : ∀ a : Fˣ, G a = gv α β t (ord (a : F))`. Introduce `a`. Rewrite using `[hG a]`. Establish `hind : (Ad3.R.ind0 : (Fin 2 → F) → ℂ) = Set.indicator {x | ∀ i, x i ∈ 𝒪[F]} 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hind, hW]`. Conclude with `integrand_eq _ hψ₀ z rc s a`. Establish `hpow : ∀ n : ℕ, ord (((unifUnit F ^ n : Fˣ)) : F) = (n : ℤ)`. Introduce `n`. Use `ord_unifUnit_zpow (K := F) (n : ℤ)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis. Use `⟨fun a u hu => ?_, fun a ha => ?_, ?_, fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hGv, hGv, ord_units_mul, hu, add_zero]`. Rewrite `ha` using `[hGv]`. Establish `h0 : 0 ≤ ord (a : F)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `ha (by simp [gv, h])`. Conclude with `GlobalTheory.CompanionTheory.LUGauge.mem_integers_of_ord_nonneg a.ne_zero h0`. Rewrite using `[hGv]`. Establish `: ord (((1 : Fˣ)) : F) = 0` using `by simp [ord]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Simplify using `[gv, hs_zero]`. Rewrite using `[hGv, hpow]`. Simplify using `only [gv, Nat.cast_nonneg, if_true, Int.toNat_natCast]`. Establish `hb` using `norm_hs_le nα nβ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj, norm_pow, nt]`. Establish `hpw : ((residueCard F : ℝ) ^ (-s.re)) ^ n = (residueCard F : ℝ) ^ (-((n : ℝ) * s.re))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hpw, sq]`. Use `gcongr`. Establish `hT : (∑' n : ℕ, G (unifUnit F ^ n)) = ∑' n : ℕ, gv α β t (n : ℤ)` using `tsum_congr fun n => by rw [hGv, hpow]`. Establish `hmain` using `euler_identity nα nβ nt1 hT`. Establish `l1 : localLFactor (c * c) (2 * s) = (1 - t ^ 2)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[localLFactor_of_isUnramified (unr_mul rc rc)]`. Establish `: (residueCard F : ℂ) ^ (-(2 * s)) = Q ^ 2`. Rewrite using `[hQ, show -(2 * s) = ((2 : ℕ) : ℂ) * (-s) by push_cast; ring, Complex.cpow_nat_mul]`. Rewrite using `[this, ht, mul_pow]`. Simplify using `[MonoidHom.mul_apply, sq, hγ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `l2 : localLFactor c s = (1 - t)⁻¹`. Rewrite using `[localLFactor_of_isUnramified rc]`. Establish `l3 : localLFactor (μ₁ * μ₂⁻¹ * c) s = (1 - α * β⁻¹ * t)⁻¹`. Rewrite using `[localLFactor_of_isUnramified (unr_mul (unr_mul r1 (unr_inv r2)) rc), ht, hQ]`. Simplify using `[MonoidHom.mul_apply, hα, hβ, hγ, mul_assoc]`.
-
-Establish `l4 : localLFactor ((μ₁ * μ₂⁻¹)⁻¹ * c) s = (1 - α⁻¹ * β * t)⁻¹`. Establish `v : ((((μ₁ * μ₂⁻¹)⁻¹ * c) (unifUnit F) : ℂˣ) : ℂ) = α⁻¹ * β * γ`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_rev, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[localLFactor_of_isUnramified (unr_mul (unr_inv (unr_mul r1 (unr_inv r2))) rc), v, ht, mul_assoc (α⁻¹ * β)]`.
-
-Rewrite using `[l1, lf3, l2, l3, l4]`. Conclude with `hmain`.
+A detailed English derivation is pending.
 -/
 theorem rankinSelberg_unramified : Ad3.Loc2 → Ad3.R.E4 := by
   intro hL F _ _ _ _ _ _ ψ hψ μ₁ μ₂ c h1 h2 hc r1 r2 rc s hs' G hG

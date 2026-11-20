@@ -6,7 +6,7 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.RankinSelberg
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique_of_eventuallyEq (hf.tendsto.mono_left nhdsWithin_le_nhds) (hg.tendsto.mono_left nhdsWithin_le_nhds) h`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_punctured {f g : ℂ → ℂ} {a : ℂ} (hf : ContinuousAt f a) (hg : ContinuousAt g a)
     (h : f =ᶠ[𝓝[≠] a] g) : f a = g a :=
@@ -14,7 +14,7 @@ theorem eq_of_punctured {f g : ℂ → ℂ} {a : ℂ} (hf : ContinuousAt f a) (h
     (hg.tendsto.mono_left nhdsWithin_le_nhds) h
 
 /- English proof (translation)
-Introduce `s`. Establish `h : DifferentiableAt ℂ (fun s : ℂ => (2 : ℂ) ^ (1 - s)) s` using `DifferentiableAt.const_cpow (by fun_prop) (Or.inl two_ne_zero)`. Conclude with `(differentiableAt_const _).sub h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_euler_two : Differentiable ℂ (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) := by
   intro s
@@ -23,11 +23,9 @@ theorem differentiable_euler_two : Differentiable ℂ (fun s : ℂ => 1 - (2 : �
   exact (differentiableAt_const _).sub h
 
 /- English proof (translation)
-Establish `hd : HasDerivAt (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) (-((2 : ℂ) ^ ((1 : ℂ) - 1) * Complex.log 2 * (-1))) 1`. Establish `h1 : HasDerivAt (fun s : ℂ => 1 - s) (-1) 1`. Simplify using `using (hasDerivAt_id (1 : ℂ)).const_sub 1`. Conclude with `(h1.const_cpow (Or.inl two_ne_zero)).const_sub 1`. Establish `hlog : Complex.log 2 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Complex.log 2 = ((Real.log 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_log (by norm_num)]; simp`. Rewrite using `[h2]`. Conclude with `(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne'` after adjusting the coercions. Rewrite using `[dslope_same, hd.deriv]`.
-
-Simplify using `using hlog`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dslope_euler_two_ne_zero : dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 1 ≠ 0 := by
   have hd : HasDerivAt (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s))
@@ -44,33 +42,31 @@ theorem dslope_euler_two_ne_zero : dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s
   simpa using hlog
 
 /- English proof (translation)
-Introduce `E Λ L Z P Q hE hΛ hL hZ hid`. Establish `hUo : IsOpen {s : ℂ | 1 / 4 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hUc : IsPreconnected {s : ℂ | 1 / 4 < s.re}` using `(convex_halfSpace_re_gt (1 / 4)).isPreconnected`. Establish `hsub : {s : ℂ | 1 / 4 < s.re} ⊆ {s : ℂ | 0 < s.re}`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : (1 / 4 : ℝ) < s.re` using `hs`. Use `show 0 < s.re`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH` using `differentiable_euler_two`. Establish `hf : DifferentiableOn ℂ (fun s : ℂ => (s - 1) ^ 2 * E s) {s : ℂ | 1 / 4 < s.re}` using `(by fun_prop : Differentiable ℂ fun s : ℂ => (s - 1) ^ 2).differentiableOn.mul (hE.mono hsub)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : DifferentiableOn ℂ (fun s : ℂ => (1 - (2 : ℂ) ^ (1 - s)) * Z s * Λ s * L s) {s : ℂ | 1 / 4 < s.re}` using `((hH.differentiableOn.mul (hZ.mono hsub)).mul hΛ).mul hL.differentiableOn`. Establish `hev : (fun s : ℂ => (s - 1) ^ 2 * E s) =ᶠ[𝓝 (2 : ℂ)] fun s : ℂ => (1 - (2 : ℂ) ^ (1 - s)) * Z s * Λ s * L s`. Establish `hmem : {s : ℂ | 1 < s.re} ∈ 𝓝 (2 : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)`. Use `filter_upwards [hmem] with s hs`. Take `⟨h1, h2, h3⟩` from `hid s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2U : (2 : ℂ) ∈ {s : ℂ | 1 / 4 < s.re}` using `by show (1 / 4 : ℝ) < (2 : ℂ).re`. Evaluate the numerical expressions. Establish `heq` using `(hf.analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd hUo) hUc h2U hev`.
+Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun s hs => heq hs, ?_⟩` and prove the remaining obligations. Introduce `hZ1`. Establish `h1U : (1 : ℂ) ∈ {s : ℂ | 1 / 4 < s.re}` using `by show (1 / 4 : ℝ) < (1 : ℂ).re`. Evaluate the numerical expressions. Establish `hUn : {s : ℂ | 1 / 4 < s.re} ∈ 𝓝 (1 : ℂ)` using `hUo.mem_nhds h1U`.
+Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEc : ContinuousAt E 1` using `(hE.differentiableAt (mem_of_superset hUn hsub)).continuousAt`. Establish `hZc : ContinuousAt Z 1` using `(hZ.differentiableAt (mem_of_superset hUn hsub)).continuousAt`. Establish `hΛc : ContinuousAt Λ 1` using `(hΛ.differentiableAt hUn).continuousAt`. Establish `hLc : ContinuousAt L 1` using `(hL 1).continuousAt`. Establish `hgc : ContinuousAt (dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1) 1` using `continuousAt_dslope_same.2 (hH 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1` using `dslope_euler_two_ne_zero`. Establish `hfac : ∀ s : ℂ, 1 - (2 : ℂ) ^ (1 - s) = (s - 1) * dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 s`. Introduce `s`. Establish `h` using `sub_smul_dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 s`. Simplify using `only [smul_eq_mul, sub_self, Complex.cpow_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpunct : ∀ᶠ s in 𝓝[≠] (1 : ℂ), s ≠ 1 ∧ (s - 1) * E s = dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 s * Z s * Λ s * L s` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hUn] with s hs hsU`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `hne : s - 1 ≠ 0` using `sub_ne_zero.2 hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `heq hsU`. Simplify using `only at h`. Rewrite `h` using `[hfac s]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hL1`. Establish `h` using `eq_of_punctured (f := fun s : ℂ => (s - 1) * E s) (g := fun s : ℂ => dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 s * Z s * Λ s * L s) ((by fun_prop : ContinuousAt (fun s : ℂ => s - 1) 1).mul hEc) (((hgc.mul hZc).mul hΛc).mul hLc) (hpunct.mono fun s hs => hs.2)`. Establish `h' : dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 1 * Z 1 * Λ 1 * L 1 = 0` using `h.symm.trans (by simp)`. Conclude with `(mul_eq_zero.1 ((mul_eq_zero.1 h').resolve_right hL1)).resolve_left (mul_ne_zero hg1 hZ1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hL1 hdL hE1`. Establish `hLfac : ∀ s : ℂ, L s = (s - 1) * dslope L 1 s`. Introduce `s`. Establish `h` using `sub_smul_dslope L 1 s`. Simplify using `only [smul_eq_mul, hL1, sub_zero] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hlc : ContinuousAt (dslope L 1) 1` using `continuousAt_dslope_same.2 (hL 1)`. Establish `hl1 : dslope L 1 1 ≠ 0` using `by rwa [dslope_same]`. Establish `h` using `eq_of_punctured (f := E) (g := fun s : ℂ => dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 s * Z s * Λ s * dslope L 1 s) hEc (((hgc.mul hZc).mul hΛc).mul hlc) (hpunct.mono fun s hs => by`. Establish `hne : s - 1 ≠ 0` using `sub_ne_zero.2 hs.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2` using `hs.2`. Rewrite `h2` using `[hLfac s]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h2)`. Establish `h' : dslope (fun s : ℂ => 1 - (2 : ℂ) ^ (1 - s)) 1 1 * Z 1 * Λ 1 * dslope L 1 1 = 0` using `h.symm.trans hE1`.
-
-Conclude with `(mul_eq_zero.1 ((mul_eq_zero.1 h').resolve_right hl1)).resolve_left (mul_ne_zero hg1 hZ1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem x1a : Ad3.R.HalfPlaneAnalyticIdentities := by
   intro E Λ L Z P Q hE hΛ hL hZ hid

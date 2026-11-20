@@ -55,7 +55,7 @@ def ptKer (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
   Sigma.ι (fun _ : Fin P.g ⊕ Fin P.g → ZMod k => 𝟙_ (Over S)) v ≫ ℓ.isKer.isoPullback.hom
 
 /- English proof (translation)
-Simplify using `[ptKer, pt]`.
+Simplify using the standard rewrite rules.
 -/
 example (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
     ℓ.ptKer v ≫ pullback.fst _ _ = ℓ.pt v := by
@@ -64,14 +64,14 @@ example (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
 end Level
 
 /- English proof (translation)
-Simplify using `[stdForm, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 example {g : ℕ} (i : Fin g) :
     stdForm (Pi.single (Sum.inl i) 1) (Pi.single (Sum.inr i) 1) = 1 := by
   simp [stdForm, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [stdForm, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {g : ℕ} (a b : Fin g ⊕ Fin g → ℤ) : stdForm b a = -stdForm a b := by
   simp only [stdForm, ← Finset.sum_neg_distrib]

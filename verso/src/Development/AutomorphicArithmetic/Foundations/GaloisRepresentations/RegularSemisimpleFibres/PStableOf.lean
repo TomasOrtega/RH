@@ -8,7 +8,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.T.splitStrong (UpperTheory.ConvolutionTheory.T.descStep (UpperTheory.ConvolutionTheory.T.coreDesc UpperTheory.ConvolutionTheory.ci (UpperTheory.ConvolutionTheory.GM.gm_of_bcfl PositivityTheory.Rg.Tf.Loc.bcflUnit)) (UpperTheory.ConvolutionTheory.T.lif …`.
+A detailed English derivation is pending.
 -/
 private theorem splitStrong_holds : UpperTheory.ConvolutionTheory.T.SplitStrong :=
   UpperTheory.ConvolutionTheory.T.splitStrong
@@ -17,9 +17,7 @@ private theorem splitStrong_holds : UpperTheory.ConvolutionTheory.T.SplitStrong 
         (UpperTheory.ConvolutionTheory.GM.gm_of_bcfl PositivityTheory.Rg.Tf.Loc.bcflUnit)))))
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ _ hp n hn π P hW`. Establish `hc` using `(UpperTheory.ConvolutionTheory.Sph.weakStable K M hp n hn π P hW).1`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Use `haveI : Fact (Module.finrank K M).Prime := ⟨hp⟩`. Use `haveI : FiniteDimensional K M := Module.finite_of_finrank_pos hp.pos`.
-
-Use `haveI : IsCyclic (M ≃ₐ[K] M) := isCyclic_of_prime_card (IsGalois.card_aut_eq_finrank K M)`. Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := M ≃ₐ[K] M)`. Conclude with `splitStrong_holds K M σ hσ hp n hn π P hc hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.stableOf :
     StableOf := by

@@ -16,7 +16,7 @@ open GlobalTheory.StdFrames (cpt cpt_ext toAd_spec)
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 D.host.E) Λ := Module.Finite.iff_fg.mpr h`. Rewrite using `[mem_hat]`. Conclude with `GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Λ y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hat_iff_locL {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG) (y : Fin n → EAf D) :
     y ∈ hat Λ ↔ ∀ v : HeightOneSpectrum (𝓞 D.host.F),
@@ -26,7 +26,7 @@ theorem mem_hat_iff_locL {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (
   exact GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Λ y
 
 /- English proof (translation)
-Use `(GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (toAd_spec D) v z).trans ?_` and prove the remaining obligations. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem prV_eq_zero_iff_cpt (v : HeightOneSpectrum (𝓞 D.host.F)) (z : EAf D) :
     Formalism.UG.prV (E := D.host.E) v z = 0 ↔ ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → cpt Q z = 0 := by
@@ -34,9 +34,9 @@ theorem prV_eq_zero_iff_cpt (v : HeightOneSpectrum (𝓞 D.host.F)) (z : EAf D) 
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_hat_iff_locL h]`. Use `⟨fun H => H v, fun H w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Conclude with `H`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hz : (fun i => Formalism.UG.prV (E` using `D.host.E) w (y i)) = 0 := by`. Use extensionality with `i`. Conclude with `hy w hwv i`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hat_iff_of_supp {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG)
     (v : HeightOneSpectrum (𝓞 D.host.F)) {y : Fin n → EAf D}
@@ -55,21 +55,21 @@ theorem mem_hat_iff_of_supp {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨e, -, -, he1, he0⟩` from `GlobalTheory.StdFrames.exists_idem (D := D) {Q : Pl D.host.E | Q.under (𝓞 D.host.F) = v}`. Establish `hpe : Formalism.UG.prV (E` using `D.host.E) v e = 1 := by`. Establish `h0 : Formalism.UG.prV (E` using `D.host.E) v (e - 1) = 0 := by`. Rewrite using `[prV_eq_zero_iff_cpt]`. Introduce `Q hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sub, map_one, he1 Q hQ, sub_self]`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `key : ∀ x ∈ Λ, (e • fun i => inc D (x i)) ∈ hat Λ'`. Introduce `x hx`. Use `mem_hat_of_idem h' fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul]`. Distinguish the cases in `hw : w.under (𝓞 D.host.F) = v`. Establish `hwe : idem w * e = idem w`. Use `cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[cpt_idem_self, he1 Q hw, one_mul]`. Rewrite using `[cpt_idem_ne hQ, zero_mul]`. Rewrite using `[hwe]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H w hw _ (smul_mem_hat (idem_mem w) (inc_mem_hat hx))`. Establish `hwe : idem w * e = 0`. Use `cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hQ : Q = w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hQ` using the available equality. Rewrite using `[he0 Q hw, mul_zero]`. Rewrite using `[cpt_idem_ne hQ, zero_mul]`. Rewrite using `[hwe, zero_smul]`. Conclude with `zero_mem_hat`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.Herm.locL Formalism.UG.latS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hm` using `(mem_hat_iff_locL h' _).mp (key x hx) v`. Establish `hxe : (fun i => Formalism.UG.prV (E` using `D.host.E) v ((e • fun i => inc D (x i)) i)) = fun i => Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F) (x i) := by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hpe, one_mul]`. Rewrite using `[Formalism.UG.P.afsplit_prV_inclE]`. Rewrite `hm` using `[hxe]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locL_le {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG) (h' : Λ'.FG)
     (v : HeightOneSpectrum (𝓞 D.host.F))
@@ -122,9 +122,9 @@ theorem locL_le {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : �
   exact hm
 
 /- English proof (translation)
-Introduce `w hw i`. Establish `hQw : Formalism.UG.prV (E` using `D.host.E) w (idem Q) = 0 := by`. Rewrite using `[prV_eq_zero_iff_cpt]`. Introduce `Q' hQ'`. Apply `cpt_idem_ne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hEq`. Substitute `hEq` using the available equality. Conclude with `hw (hQ'.symm.trans hQ)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hQw, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prV_idem_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {Q : Pl D.host.E} (hQ : Q.under (𝓞 D.host.F) = v)
     (y : Fin n → EAf D) : ∀ w, w ≠ v → ∀ i, Formalism.UG.prV (E := D.host.E) w ((idem Q • y) i) = 0 := by
@@ -139,9 +139,9 @@ theorem prV_idem_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {Q : Pl D.host.E} 
   rw [Pi.smul_apply, smul_eq_mul, map_mul, hQw, zero_mul]
 
 /- English proof (translation)
-Introduce `D n Λ Λ' h h' v`. Prove the components needed by the constructor for the conclusion. Introduce `heq Q hQ y`. Rewrite using `[mem_hat_iff_of_supp h v (prV_idem_smul hQ y), mem_hat_iff_of_supp h' v (prV_idem_smul hQ y), heq]`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_antisymm (locL_le h h' v fun Q hQ y => (H Q hQ y).mp) (locL_le h' h v fun Q hQ y => (H Q hQ y).mpr)`.
+A detailed English derivation is pending.
 -/
 theorem locL_eq_iff_idem : ∀ (D : D7) (n : ℕ) (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), Λ.FG → Λ'.FG → ∀ v : HeightOneSpectrum (𝓞 D.host.F), Formalism.L2.Herm.locL v Λ = Formalism.L2.Herm.locL v Λ' ↔ ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → ∀ y : Fin n → EAf D, idem Q • y ∈ hat Λ ↔ idem Q • y ∈ hat Λ' := by
   intro D n Λ Λ' h h' v

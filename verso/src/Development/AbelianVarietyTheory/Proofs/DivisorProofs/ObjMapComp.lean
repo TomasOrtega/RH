@@ -10,15 +10,13 @@ namespace GlobalTheory.UPel.HT.EtLev
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `letI : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `htor : Submodule.torsion (𝓞 D.F) D.La = ⊥`. Rewrite using `[eq_bot_iff]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨a, hax⟩` from `(Submodule.mem_torsion_iff x).1 hx`. Establish `ha0 : (a : 𝓞 D.F) ≠ 0` using `nonZeroDivisors.ne_zero a.2`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) ha0 (Ideal.mem_span_singleton_self (a : 𝓞 D.F)) (Algebra.IsIntegral.isIntegral (R := ℤ) (a : 𝓞 D.F))`. Take `⟨e, he, he0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `he` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `he`. Establish `h1 : e • x = 0`. Establish `: (algebraMap ℤ (𝓞 D.F) e) • x = e • x`. Rewrite using `[algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← this, ← hd, mul_smul]`. Express the relevant statement in the definitionally equal form `d • (a • x) = 0`. Rewrite using `[hax, smul_zero]`. Break down `smul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h he0`.
-
-Conclude with `(Submodule.mem_bot _).2 h`. Use `haveI : Module.Finite (𝓞 D.F) D.La := Module.Finite.of_restrictScalars_finite ℤ (𝓞 D.F) D.La`. Establish `: Module.Flat (𝓞 D.F) D.La` using `(IsDedekindDomain.flat_iff_torsion_eq_bot).2 htor`. Use `Module.finitePresentation_of_finite (𝓞 D.F) D.La` as an intermediate fact. Conclude with `Module.Flat.projective_of_finitePresentation`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projective_La_int (D : Datum p) :
     letI : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)

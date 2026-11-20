@@ -19,13 +19,13 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.IntTerm
 
 /- English proof (translation)
-Introduce `V _ _ _ hCN D A G _ _ hG U N hN β hβ`. Use `haveI : CharZero V := hCN.2.2.2`. Establish `hA` using `GlobalTheory.TorRef.admissibleBase_of_completeNormalLocalCharZero hCN`. Take `⟨f, hf⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hA D A G hG U (AlgebraicClosure (FractionRing V)) N hN`. Take `⟨p, hpy, hpb⟩` from `GlobalTheory.TorusExt.exists_qkPt_of_torsion (F := AlgebraicClosure (FractionRing V)) D.tau_bimult (n := N) (by omega) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f p, ?_, ⟨p, hpy, (hf.1 p (f p)).2 rfl⟩, fun p' hp'y hp' => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `U.ext`. Conclude with `((hf.1 p (f p)).2 rfl w hw).1`. Establish `e : f p = f p'` using `(hf.1 p' (f p)).1 hp'`. Use `letI := GlobalTheory.TorusExt.gtGroup D.toPre (AlgebraicClosure (FractionRing V))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hy, hg⟩` from `(GlobalTheory.TorusExt.equiv_iff D.tau_bimult p p').1 ((hf.2.2.1 p p').1 e)`. Rewrite `hy` using `[hp'y, hpy, zero_add]`. Establish `hz : z = 0`. Establish `h2 : (N : ℤ) • z = 0` using `by rw [natCast_zsmul]; exact hy.symm`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Substitute `hz` using the available equality. Rewrite using `[hg, map_zero, add_zero, hpb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_lies_under : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V →
     ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G]

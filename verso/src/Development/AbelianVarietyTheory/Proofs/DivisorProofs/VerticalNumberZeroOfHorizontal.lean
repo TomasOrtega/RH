@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.EZ.HTot
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [idc, clampHom, SimplexCategory.mkHom, SimplexCategory.Hom.toOrderHom_mk]`. Express the relevant statement in the definitionally equal form `min n (j : ℕ) = (j : ℕ)`. Establish `: (j : ℕ) < n + 1` using `j.isLt`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem idc_self (n : ℕ) : idc n n = 𝟙 _ := by
   ext j
@@ -21,7 +21,7 @@ theorem idc_self (n : ℕ) : idc n n = 𝟙 _ := by
   omega
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [backc, clampHom, SimplexCategory.mkHom, SimplexCategory.Hom.toOrderHom_mk]`. Express the relevant statement in the definitionally equal form `min 0 (0 + (j : ℕ)) = (j : ℕ)`. Establish `: (j : ℕ) < 0 + 1` using `j.isLt`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem backc_zero : backc 0 0 0 = 𝟙 _ := by
   ext j
@@ -36,27 +36,27 @@ Both sides reduce to the same expression.
 theorem bop_id (a b : ℕ) : bop (𝟙 (SimplexCategory.mk a)) (𝟙 (SimplexCategory.mk b)) = 𝟙 (bo a b) := rfl
 
 /- English proof (translation)
-Rewrite using `[idO, if_pos ⟨rfl, rfl⟩, idc_self, idc_self, bop_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idO_self (a b : ℕ) : idO a b a b = 𝟙 (bo a b) := by
   rw [idO, if_pos ⟨rfl, rfl⟩, idc_self, idc_self, bop_id]
 
 /- English proof (translation)
-Rewrite using `[idO, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idO_ne {a b c d : ℕ} (h : ¬ (a = c ∧ b = d)) : idO a b c d = 0 := by
   rw [idO, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[awO, if_pos rfl, idc_self, backc_zero, bop_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awO_zero : awO 0 0 0 = 𝟙 (bo 0 0) := by
   rw [awO, if_pos rfl, idc_self, backc_zero, bop_id]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (a, b)]`. Simplify using `[idO_self]`. Introduce and unpack `⟨p, q⟩ _ hne`. Rewrite using `[idO_ne, Limits.zero_comp]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hne rfl`. Introduce `hn`. Conclude with `absurd (mem_antidiagonal.2 h) hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_idO_comp {T : BOp} (k a b : ℕ) (h : a + b = k) (g : ∀ p q : ℕ, bo p q ⟶ T) :
     ∑ y ∈ antidiagonal k, idO a b y.1 y.2 ≫ g y.1 y.2 = g a b := by
@@ -70,9 +70,9 @@ theorem sum_idO_comp {T : BOp} (k a b : ℕ) (h : a + b = k) (g : ∀ p q : ℕ,
     exact absurd (mem_antidiagonal.2 h) hn
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (c, d)]`. Simplify using `[idO_self]`. Introduce and unpack `⟨p, q⟩ _ hne`. Rewrite using `[idO_ne, Limits.comp_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hne rfl`. Introduce `hn`. Conclude with `absurd (mem_antidiagonal.2 h) hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_comp_idO {S : BOp} (k c d : ℕ) (h : c + d = k) (f : ∀ p q : ℕ, S ⟶ bo p q) :
     ∑ x ∈ antidiagonal k, f x.1 x.2 ≫ idO x.1 x.2 c d = f c d := by
@@ -86,14 +86,14 @@ theorem sum_comp_idO {S : BOp} (k c d : ℕ) (h : c + d = k) (f : ∀ p q : ℕ,
     exact absurd (mem_antidiagonal.2 h) hn
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sum_antidiagonal_dT_comp_dT_eq_zero a b c d h`.
+A detailed English derivation is pending.
 -/
 theorem dT_comp_dT (a b c d : ℕ) (h : c + d + 2 = a + b) :
     ∑ x ∈ antidiagonal (c + d + 1), dT a b x.1 x.2 ≫ dT x.1 x.2 c d = 0 :=
   GlobalTheory.T.sum_antidiagonal_dT_comp_dT_eq_zero a b c d h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.bisimplicialOperatorChains_acyclic_positiveDegree a b k hk z hz`.
+A detailed English derivation is pending.
 -/
 theorem acyclic (a b k : ℕ) (hk : 1 ≤ k) (z : ∀ a' b' : ℕ, bo a b ⟶ bo a' b')
     (hz : ∀ c d : ℕ, c + d + 1 = k → ∑ x ∈ antidiagonal k, z x.1 x.2 ≫ dT x.1 x.2 c d = 0) :
@@ -102,9 +102,9 @@ theorem acyclic (a b k : ℕ) (hk : 1 ≤ k) (z : ∀ a' b' : ℕ, bo a b ⟶ bo
   GlobalTheory.T.bisimplicialOperatorChains_acyclic_positiveDegree a b k hk z hz
 
 /- English proof (translation)
-Establish `: ∀ a b k (z : ∀ a' b' : ℕ, bo a b ⟶ bo a' b'), ∃ w : ∀ a' b' : ℕ, bo a b ⟶ bo a' b', 1 ≤ k → (∀ c d : ℕ, c + d + 1 = k → ∑ x ∈ antidiagonal k, z x.1 x.2 ≫ dT x.1 x.2 c d = 0) → ∀ c d : ℕ, c + d = k → ∑ x ∈ antidiagonal (k + 1), w x.1 x.2 ≫ dT x.1 x.2 c d = z c d`. Introduce `a b k z`. Distinguish the cases in `hk : 1 ≤ k`. Distinguish the cases in `hz : ∀ c d : ℕ, c + d + 1 = k → ∑ x ∈ antidiagonal k, z x.1 x.2 ≫ dT x.1 x.2 c d = 0`. Take `⟨w, hw⟩` from `acyclic a b k hk z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, fun _ _ => hw⟩`. Conclude with `⟨0, fun _ h => absurd h hz⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose H hH using this`. Conclude with `⟨H, hH⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fill : ∃ H : ∀ a b k : ℕ, (∀ a' b' : ℕ, bo a b ⟶ bo a' b') → (∀ a' b' : ℕ, bo a b ⟶ bo a' b'),
     ∀ a b k (z : ∀ a' b' : ℕ, bo a b ⟶ bo a' b'), 1 ≤ k →
@@ -142,25 +142,23 @@ end GlobalTheory.EZ.HTot
 namespace GlobalTheory.EZ.HTot
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `a b hab a' b' hab'`. Take `⟨rfl, rfl⟩ : a = 0 ∧ b = 0` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩ : a' = 0 ∧ b' = 0` from `by omega`. Simplify using `[kRec_zero, hG0, awO_zero, idO_self]`. Consider the case `succ n ih`. Introduce `a b hab a' b' hab'`. Use `set E : ∀ a' b' : ℕ, bo a b ⟶ bo a' b' := fun a' b' => G a b (n + 1) ≫ awO (n + 1) a' b' - idO a b a' b' - ∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ kRec G H n x.1 x.2 a' b' with hE`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcyc : ∀ c d : ℕ, c + d + 1 = n + 1 → ∑ y ∈ antidiagonal (n + 1), E y.1 y.2 ≫ dT y.1 y.2 c d = 0`. Introduce `c d hcd`. Establish `h1 : ∑ y ∈ antidiagonal (n + 1), (G a b (n + 1) ≫ awO (n + 1) y.1 y.2) ≫ dT y.1 y.2 c d = ∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ G x.1 x.2 n ≫ awO n c d`. Simplify using `only [Category.assoc, ← Preadditive.comp_sum]`. Rewrite using `[← GlobalTheory.T.dD_comp_awO_eq_sum_awO_comp_dT n c d (by omega), ← Category.assoc, hGd a b n hab, Preadditive.sum_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Establish `h2 : ∑ y ∈ antidiagonal (n + 1), idO a b y.1 y.2 ≫ dT y.1 y.2 c d = dT a b c d` using `sum_idO_comp (n + 1) a b hab (fun p q => dT p q c d)`. Establish `key : ∀ x ∈ antidiagonal n, ∑ y ∈ antidiagonal (n + 1), kRec G H n x.1 x.2 y.1 y.2 ≫ dT y.1 y.2 c d = G x.1 x.2 n ≫ awO n c d - idO x.1 x.2 c d - ∑ z ∈ antidiagonal (n - 1), dT x.1 x.2 z.1 z.2 ≫ kRec G H (n - 1) z.1 z.2 c d`. Introduce `x hx`. Rewrite using `[ih x.1 x.2 (mem_antidiagonal.1 hx) c d (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `h4 : ∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ idO x.1 x.2 c d = dT a b c d` using `sum_comp_idO n c d (by omega) (fun p q => dT a b p q)`. Establish `h5 : ∑ x ∈ antidiagonal n, ∑ z ∈ antidiagonal (n - 1), dT a b x.1 x.2 ≫ dT x.1 x.2 z.1 z.2 ≫ kRec G H (n - 1) z.1 z.2 c d = 0`. Break down `n with _ | m` into its components or cases. Simplify using `[kRec_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_sub_cancel, Finset.sum_comm]`. Use `Finset.sum_eq_zero (fun z hz => ?_)` and prove the remaining obligations. Establish `hz'` using `mem_antidiagonal.1 hz`. Simplify using `only [← Category.assoc]`. Rewrite using `[← Preadditive.sum_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `dT_comp_dT a b z.1 z.2 (by omega)`. Rewrite `h0` using `[show z.1 + z.2 + 1 = m + 1 by omega]`. Rewrite using `[h0, Limits.zero_comp]`. Establish `h3 : ∑ y ∈ antidiagonal (n + 1), (∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ kRec G H n x.1 x.2 y.1 y.2) ≫ dT y.1 y.2 c d = ∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ G x.1 x.2 n ≫ awO n c d - dT a b c d - 0`. Establish `e1 : ∑ y ∈ antidiagonal (n + 1), (∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ kRec G H n x.1 x.2 y.1 y.2) ≫ dT y.1 y.2 c d = ∑ x ∈ antidiagonal n, dT a b x.1 x.2 ≫ ∑ y ∈ antidiagonal (n + 1), kRec G H n x.1 x.2 y.1 y.2 ≫ dT y.1 y.2 c d`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Preadditive.sum_comp, Category.assoc, Preadditive.comp_sum]`. Conclude with `Finset.sum_comm`. Rewrite using `[e1, Finset.sum_congr rfl (fun x hx => by rw [key x hx])]`. Simplify using `only [Preadditive.comp_sub, Finset.sum_sub_distrib, Preadditive.comp_sum]`. Rewrite using `[h4, h5]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hE, Preadditive.sub_comp, Finset.sum_sub_distrib]`. Use `_ = 0 := by rw [h1, h2, h3]; abel`. Establish `hk : kRec G H (n + 1) a b = H a b (n + 1) E` using `rfl`. Rewrite using `[Nat.add_sub_cancel, hk, hH a b (n + 1) E (by omega) hcyc a' b' hab']`.
-
-Simplify using `only [hE]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem kRec_spec (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (hG0 : G 0 0 0 = 𝟙 (bo 0 0))
     (hGd : ∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n =
@@ -238,9 +236,9 @@ theorem kRec_spec (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (hG0 : G 0 0 0 = 𝟙
     abel
 
 /- English proof (translation)
-Introduce `G hG0 hGd`. Take `⟨H, hH⟩` from `exists_fill`. Use `⟨fun a b => kRec G H (a + b) a b, ?_⟩` and prove the remaining obligations. Introduce `a b a' b' h`. Rewrite using `[kRec_spec G hG0 hGd H hH (a + b) a b rfl a' b' h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations. Use `show _ = dT a b x.1 x.2 ≫ kRec G H (x.1 + x.2) x.1 x.2 a' b'`. Rewrite using `[mem_antidiagonal.1 hx]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htot : ∀ G : ∀ a b n : ℕ, bo a b ⟶ bo n n, G 0 0 0 = 𝟙 (bo 0 0) →
     (∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n =

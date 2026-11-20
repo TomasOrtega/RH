@@ -29,11 +29,11 @@ namespace GlobalTheory.GramAt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hid : IsGrpPullback T.t.G T.t.G (𝟙 _) (𝟙 T.t.G.left)` using `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl T.t.G) (inferInstanceAs (IsMonHom (𝟙 T.t.G)))`. Establish `he₀ : PointUnif.IsExp (y` using `𝟙 (Sp ℂ)) (G := T.t.G) u.ex := PointUnif.isExp_push hid u h1 h2 (MulEquiv.refl _) fun x => (Category.comp_id _).symm`. Take `⟨ρ, hρ⟩` from `he₀.exists_rep T.t.act u.Λ u.discrete u.ker fun a => by`. Take `⟨F, hF, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom T.t.G T.t.G T.ab T.ab _ _ _ _ u u h1 h2 (T.t.act.act a) (T.t.act.hom a)`. Conclude with `⟨F, hF⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Eq.trans (congrArg u.ex ?_) (hρ s z)` and prove the remaining obligations. Establish `hs` using `PointUnif.isSplitting_embeddings (E := E)`. Rewrite using `[← sum_proj hs ρ z, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Establish `hm` using `proj_mem hs ρ φ z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hφ : φ.comp (algebraMap (𝓞 E) E) s = r`. Rewrite using `[mem_eigenSub.1 hm, hφ]`. Establish `h0` using `Submodule.finrank_eq_zero.1 (he₀.finrank_eigenSub _ ρ hρ (hdet _ hφ))`. Rewrite `hm` using `[h0, Submodule.mem_bot]`. Rewrite using `[hm, map_zero, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_smul (T : PAT H (Sp ℂ)) {s : 𝓞 E} {r : ℂ}
     (hdet : ∀ τ : 𝓞 E →+* ℂ, τ s ≠ r → LieMult T.t.act (𝟙 (Sp ℂ)) τ 0)
@@ -61,29 +61,25 @@ theorem ex_smul (T : PAT H (Sp ℂ)) {s : 𝓞 E} {r : ℂ}
     rw [hm, map_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hT : ThetaUnifAV` using `thetaUnifAV_all`. Establish `hL : Out.Laws` using `abelianSchemeLaws_all.1`. Take `⟨u, HA, χA, -, hu, -⟩` from `PureType.exists_isThetaUnif hT A.pol`. Take `⟨u', HA', χA', -, hu', -⟩` from `PureType.exists_isThetaUnif hT A'.pol`. Take `⟨uB, HB, χB, -, hB, -⟩` from `PureType.exists_isThetaUnif hT B.pol`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hA1, hA2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT A.pol _ u HA χA hu`. Take `⟨-, -, -, -, hA1', hA2', -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT A'.pol _ u' HA' χA' hu'`. Take `⟨-, -, -, -, hB1, hB2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT B.pol _ uB HB χB hB`. Take `⟨F, hF, -⟩` from `HomLinear.exists_linear_of_isMonHom A.t.G B.t.G A.ab B.ab _ _ _ _ u uB hB1 hB2 f hf.isMonHom`. Take `⟨F', hF', -⟩` from `HomLinear.exists_linear_of_isMonHom A'.t.G B.t.G A'.ab B.ab _ _ _ _ u' uB hB1 hB2 f' hf'.isMonHom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ρB hρB using fun s : 𝓞 E => (HomLinear.exists_linear_of_isMonHom B.t.G B.t.G B.ab B.ab _ _ _ _ uB uB hB1 hB2 (B.t.act.act s) (B.t.act.hom s)).imp fun _ h => h.1`. Establish `hadj : ∀ s z w, hermForm HB (ρB s z) w = hermForm HB z (ρB (H.bar s) w)` using `fun a => (weilEq_iff_hermForm_eq hT hL B.pol B.pol B.pol B.pol uB uB uB uB HB HB χB χB hB hB (B.t.act.act a) (𝟙 _) (𝟙 _) (B.t.act.act (H.bar a)) (ρB a) LinearMap.id LinearMap.id (ρB (H.bar a)) (hρB a) (fun _ => (Category.comp_id _).symm) (fun _ => (Category.comp_id _).symm) (hρB …`. Unfold `LamEq`. Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `B.t.adj a))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu0 : ∀ {g : ℕ} (M N : (Fin g → ℂ) →ₗ[ℂ] (Fin B.pol.g → ℂ)), (∀ z, uB.ex (M z) = uB.ex (N z)) → M = N` using `fun M N h => by`. Use `sub_eq_zero.1 (PointUnif.linear_eq_zero_of_discrete uB.Λ uB.discrete _ fun z => (uB.ker _).1 ?_)` and prove the remaining obligations. Use `uB.ex_add ((M - N) z) (N z)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, sub_add_cancel, h]`. Conclude with `mul_eq_right.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ z, ρB H.rt (F z) = r • F z` using `fun z => LinearMap.congr_fun (hu0 (ρB H.rt ∘ₗ F) (r • F) fun z => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, ← map_smul, hρB, hF, hF, ex_smul A hA u hA1 hA2, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (hf.comm _).symm) z`. Establish `hA'' : ∀ τ : 𝓞 E →+* ℂ, τ (H.bar H.rt) ≠ r → LieMult A'.t.act (𝟙 (Sp ℂ)) τ 0` using `fun τ h => hA' τ fun h' => h (by rw [EigDec.bar_rt, map_neg, h', neg_neg])`. Establish `e' : ∀ z, ρB (H.bar H.rt) (F' z) = r • F' z` using `fun z => LinearMap.congr_fun (hu0 (ρB (H.bar H.rt) ∘ₗ F') (r • F') fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, ← map_smul, hρB, hF', hF', ex_smul A' hA'' u' hA1' hA2', Category.assoc, Category.assoc]`. Conclude with `congrArg _ (hf'.comm _).symm) z`. Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Establish `hr0 : r ≠ 0` using `fun h0 => by`. Rewrite `hr` using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Complex.re hr` as an intermediate fact. Simplify using `at this`. Conclude with `H.d_prime.ne_zero this`. Establish `hrc : star r = -r`. Establish `h1` using `congrArg Complex.re hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Complex.im hr`. Simplify using `[pow_two] at h1 h2`. Establish `h3 : r.re = 0`. Assume the negation of the conclusion as `h`. Establish `: r.im = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: r.re * r.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h`. Rewrite `h1` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg r.re]`. Conclude with `Complex.ext (by simp [h3]) (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `(weilEq_iff_hermForm_eq hT hL A.pol A'.pol B.pol A.pol u u' uB u HB HA χB χA hB hu f f' (𝟙 _) 1 F F' LinearMap.id 0 hF hF' (fun _ => (Category.comp_id _).symm) fun z => ?_).2 fun z w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, HermWeil.ex_zero]`. Conclude with `(MonObj.comp_one _).symm`. Establish `h` using `hadj H.rt (F z) (F' w)`. Rewrite `h` using `[e, e']`.
-
-Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, hrc] at h`. Establish `h' : hermForm HB (F z) (F' w) = 0`. Use `mul_left_cancel₀ (mul_ne_zero two_ne_zero hr0) ?_` and prove the remaining obligations. Unfold `hermForm`. Take the linear combination `h`.
-
-Rewrite using `[h']`. Simplify using `[hermForm]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilEq_one_complex (A A' B : PAT H (Sp ℂ)) {r : ℂ} (hr : r ^ 2 = -(H.d : ℂ))
     (hA : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ≠ r → LieMult A.t.act (𝟙 (Sp ℂ)) τ 0)
@@ -165,21 +161,19 @@ theorem weilEq_one_complex (A A' B : PAT H (Sp ℂ)) {r : ℂ} (hr : r ^ 2 = -(H
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hβi : Function.Injective (σ.comp (algebraMap (𝓞 K) K))` using `σ.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Generalize the expression as in `σ.comp (algebraMap (𝓞 K) K) = β at hβi`. Take `⟨⟨A₁, m₁, -⟩, h₁⟩` from `GlobalTheory.LamT.pat_pullback E H (𝓞 K) ℂ β A`. Take `⟨⟨A₂, m₂, -⟩, -⟩` from `GlobalTheory.LamT.pat_pullback E H (𝓞 K) ℂ β A'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨B₁, mB, -⟩, hB⟩` from `GlobalTheory.LamT.pat_pullback E H (𝓞 K) ℂ β B`. Take `⟨-, -, wA, hwA⟩` from `h₁ A₁ m₁ inferInstance`. Take `⟨-, -, wB, hwB⟩` from `hB B₁ mB inferInstance`. Use `haveI := hf.isMonHom`. Use `haveI := hf'.isMonHom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI := A.ab.comm`. Use `haveI : IsMonHom (1 : A'.t.G ⟶ A.t.G) := LamF.IsogSum.isMonHom_of_points _ fun T a b => by`. Simplify using `only [MonObj.comp_one, _root_.mul_one]`. Take `⟨f₁, hm₁, e₁⟩` from `GlobalTheory.PairingFibre.exists_hom m₁.cart mB.cart f`. Take `⟨f₂, hm₂, e₂⟩` from `GlobalTheory.PairingFibre.exists_hom m₂.cart mB.cart f'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `lin : ∀ {A : PAT H (Sp (𝓞 K))} {A₁ : PAT H (Sp ℂ)} (mA : SABMap A₁.t A.t (spMap β)) (f : A.t.G ⟶ B.t.G) (f' : A₁.t.G ⟶ B₁.t.G), Serre.IsLinearHom A.t.act B.t.act f → IsMonHom f' → f'.left ≫ mB.φ = mA.φ ≫ f.left → Serre.IsLinearHom A₁.t.act B₁.t.act f'`. Introduce `A A₁ mA f f' hf hm e`. Use `⟨hm, fun c => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `mB.cart.1.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc` using `congrArg CommaMorphism.left (hf.comm c)`. Simplify using `only [Over.comp_left] at hc ⊢`. Rewrite using `[Category.assoc, e, ← Category.assoc, mA.act c, Category.assoc, hc, Category.assoc, mB.act c, ← Category.assoc, ← Category.assoc, e]`. Simplify using `only [Over.comp_left, Category.assoc, Over.w]`. Establish `hlie : ∀ {A : PAT H (Sp (𝓞 K))} {A₁ : PAT H (Sp ℂ)} (mA : SABMap A₁.t A.t (spMap β)) (τ : 𝓞 E →+* ℂ) (n : ℕ), LieMult A.t.act (spMap β) τ n → LieMult A₁.t.act (𝟙 (Sp ℂ)) τ n` using `fun {A A₁} mA τ n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.lieMult_iff_of_isGrpPullback mA.cart A₁.t.act A.t.act mA.act (𝟙 (Sp ℂ)) τ n` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this.2`. Establish `hβρ : β ρ ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, hρ]; simp`. Establish `hτ : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ^ 2 = -(H.d : ℂ)` using `fun τ => by rw [← map_pow, H.rt_sq]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `weilEq_one_complex A₁ A₂ B₁ hβρ (fun τ h => hlie m₁ τ 0 ((hA ℂ β hβi τ).2 h)) (fun τ h => hlie m₂ τ 0 ((hA' ℂ β hβi τ).1 ((sq_eq_sq_iff_eq_or_eq_neg.1 ((hτ τ).trans hβρ.symm)).resolve_right h))) (lin m₁ f f₁ hf hm₁ e₁) (lin m₂ f' f₂ hf' hm₂ e₂)`. Establish `e₄ : (1 : A₂.t.G ⟶ A₁.t.G).left ≫ m₁.φ = m₂.φ ≫ (1 : A'.t.G ⟶ A.t.G).left`. Establish `a : Geo.Tor.pushPt m₁.cart.1.w (1 : A₂.t.G ⟶ A₁.t.G) = 1` using `map_one (Geo.Tor.pushHom m₁.cart _)`. Establish `b : Geo.Tor.pushPt m₂.cart.1.w (𝟙 A₂.t.G) ≫ (1 : A'.t.G ⟶ A.t.G) = 1` using `MonObj.comp_one _`. Conclude with `(congrArg (·.left) (a.trans b.symm)).trans (congrArg (· ≫ _) (Category.id_comp _))`.
-
-Establish `h'` using `(GlobalTheory.PairingFibre.weilEq_iff (g₁ := 𝟙 _) m₁.cart m₂.cart mB.cart m₁.cart B.t.PP.isLB A.t.PP.isLB B₁.t.PP.isLB A₁.t.PP.isLB ⟨wB, hwB.1⟩ ⟨wA, hwA.1⟩ e₁ e₂ (by simp) e₄ (𝟙 (Sp ℂ))).1 h`. Rewrite `h'` using `[Category.id_comp]`. Conclude with `(PairingFibre.lamEq_weilEq_over_ring abelianSchemeLaws_all.1 (𝓞 K) A.pol A'.pol B.pol A.pol _ _ _ _ hf.isMonHom hf'.isMonHom inferInstance inferInstance ℂ β).2 inferInstance hβi h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamEq_one {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) (A A' B : PAT H (Sp (𝓞 K))) {m m' : ℕ}
     (hA : HasType H A.t.act ρ m 0) (hA' : HasType H A'.t.act ρ 0 m')
@@ -237,11 +231,11 @@ theorem lamEq_one {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) (A A' B : PAT H
 variable {ρ : 𝓞 K} {σ₁ : K →+* ℂ} {p q : ℕ} (X : CMObj H K ρ σ₁ p q)
 
 /- English proof (translation)
-Establish `key : ∀ (T : PAT H (Sp (𝓞 K))) (m n : ℕ), HasType H T.t.act ρ m n → T.g = Module.finrank ℚ E / 2 * (m + n)` using `fun T m n h => by`. Take `⟨F⟩` from `GlobalTheory.T.nonempty_polAVGenericFibreWithLieBasis abelianSchemeLaws_all.1.polBaseChange K T.pol`. Conclude with `(EigDec.eigen_decomposition E H K ρ T F m n X.split h X.ρ_sq).2.2.2.1`. Use `⟨fun b => ?_, key _ _ _ X.typeB, ?_⟩` and prove the remaining obligations. Consider the cases of `b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key _ _ _ X.typeM`. Simplify using `using key _ _ _ X.typeP`. Establish `e` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `e` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Establish `: 0 < Module.finrank ℚ (maximalRealSubfield E)` using `Module.finrank_pos`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem dims : (∀ b, (X.A b).g = Module.finrank ℚ E / 2) ∧ X.B.g = Module.finrank ℚ E / 2 * (p + q) ∧
     0 < Module.finrank ℚ E / 2 := by
@@ -259,7 +253,7 @@ theorem dims : (∀ b, (X.A b).g = Module.finrank ℚ E / 2) ∧ X.B.g = Module.
     omega
 
 /- English proof (translation)
-The claim follows from `have hβ := σ₁.injective.comp (IsFractionRing.injective (𝓞 K) K) ⟨fun a b => (PairingFibre.lamEq_weilEq_over_ring abelianSchemeLaws_all.1 (𝓞 K) (X.A true).pol (X.A true).pol X.B.pol (X.A true).pol _ _ _ _ (X.lin (.inl a)).isMonHom (X.lin (.inl b)).isMonHom ((X.A true).t.act.hom _) …`.
+A detailed English derivation is pending.
 -/
 theorem lamEq_of_isGram {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) :
     (∀ a b, LamEq X.B.t.PP.L (phiP X a) (phiP X b) (X.A true).t.PP.L ((X.A true).t.act.act (gP a b)) (𝟙 _)) ∧
@@ -273,19 +267,17 @@ theorem lamEq_of_isGram {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin
       (σ₁.comp (algebraMap (𝓞 K) K))).2 inferInstance hβ (h.2 a b)⟩
 
 /- English proof (translation)
-Use `haveI hP : ∀ i, IsMonHom (M := (X.A true).pol.A) (N := X.B.pol.A) (phiP X i) := fun i => (X.lin (.inl i)).isMonHom`. Use `haveI hQ : ∀ i, IsMonHom (M := (X.A false).pol.A) (N := X.B.pol.A) (phiQ X i) := fun i => (X.lin (.inr i)).isMonHom`. Take `⟨gA, gB, -⟩` from `dims X`. Take `⟨N, ψ, ψ', hN, h1, h2⟩` from `LamF.exists_inverse_isogeny_of_sum thetaUnifAV_all abelianSchemeLaws_all.1 (fun T K _ _ _ _ _ _ G G' _ _ hG hG' φ hφ => GlobalTheory.existsUnique_hom_extension_semiAbelian T K G G' hG hG' φ hφ) K σ₁ (X.A true).pol (X.A false).pol X.B.pol p q (phiP X) (phiQ X) hP hQ (by`. Express the relevant statement in the definitionally equal form `X.B.g = p * (X.A true).g + q * (X.A false).g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[gB, gA, gA]`. Use the proof step `ring) fun y => by`. Take `⟨x, hx⟩` from `X.onto y`. Use `⟨fun i => x (Sum.inl i), fun i => x (Sum.inr i), hx.trans ?_⟩` and prove the remaining obligations. Rewrite using `[List.ofFn_add, List.prod_append]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun j => x j ≫ X.φ j) (finSumFinEquiv_symm_apply_castAdd i)`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun j => x j ≫ X.φ j) (finSumFinEquiv_symm_apply_natAdd i)`. Establish `S` using `LamF.points_sums_eq_products.1 (Sp (𝓞 K))`. Simplify using `only [fun G T [GrpObj G] => (S G T).2.1, fun G T [GrpObj G] => (S G T).2.2.1, fun G T [GrpObj G] => (S G T).2.2.2, List.prod_ofFn] at h1 h2`. Establish `hm : ∀ (T : Over (Sp (𝓞 K))) (x y : T ⟶ X.B.pol.A), ((∏ k, (x ≫ ψ k * y ≫ ψ k) ≫ phiP X k) * ∏ k, (x ≫ ψ' k * y ≫ ψ' k) ≫ phiQ X k : T ⟶ X.B.pol.A) = (∏ k, ((x * y) ≫ ψ k) ≫ phiP X k) * ∏ k, ((x * y) ≫ ψ' k) ≫ phiQ X k` using `fun T x y => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[h1, mul_pow, ← h1, ← h1, _root_.mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Simplify using `only [← Category.assoc]`. Conclude with `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => MonObj.mul_comp _ _ _) (Finset.prod_congr rfl fun k _ => MonObj.mul_comp _ _ _)`. Use `⟨N * N, fun i => ψ i ^ N, fun i => ψ' i ^ N, Nat.mul_pos hN hN, fun i => LamF.IsogSum.isMonHom_of_points _ fun T x y => ?_, fun i => LamF.IsogSum.isMonHom_of_points _ fun T x y => ?_, fun T x => ?_, fun T a a' => ⟨fun i => ?_, fun i => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonObj.comp_pow]`. Rewrite using `[← mul_pow, ← (h2 T (fun k => x ≫ ψ k * y ≫ ψ k) fun k => x ≫ ψ' k * y ≫ ψ' k).1 i, hm, (h2 T (fun k => (x * y) ≫ ψ k) fun k => (x * y) ≫ ψ' k).1 i]`. Simplify using `only [MonObj.comp_pow]`. Rewrite using `[← mul_pow, ← (h2 T (fun k => x ≫ ψ k * y ≫ ψ k) fun k => x ≫ ψ' k * y ≫ ψ' k).2 i, hm, (h2 T (fun k => (x * y) ≫ ψ k) fun k => (x * y) ≫ ψ' k).2 i]`. Rewrite using `[pow_mul, ← h1 T x, mul_pow, ← Finset.prod_pow, ← Finset.prod_pow]`.
-
-Conclude with `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => (congrArg _ (MonObj.pow_comp _ _ _)).trans (MonObj.comp_pow _ _ _)) (Finset.prod_congr rfl fun k _ => (congrArg _ (MonObj.pow_comp _ _ _)).trans (MonObj.comp_pow _ _ _))`. Rewrite using `[MonObj.comp_pow, (h2 T a a').1, pow_mul]`. Rewrite using `[MonObj.comp_pow, (h2 T a a').2, pow_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inverse : ∃ (N : ℕ) (ψ : Fin p → (X.B.pol.A ⟶ (X.A true).pol.A))
     (ψ' : Fin q → (X.B.pol.A ⟶ (X.A false).pol.A)), 0 < N ∧ (∀ i, IsMonHom (ψ i)) ∧ (∀ i, IsMonHom (ψ' i)) ∧

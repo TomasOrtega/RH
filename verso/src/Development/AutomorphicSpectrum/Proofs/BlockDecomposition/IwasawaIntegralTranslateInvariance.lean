@@ -11,15 +11,15 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.RInvB
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ B hB hN g`. Establish `hl` using `GlobalTheory.T.iwasawa_integral_right_translate_invariant F ψ hψ`. Establish `hd : Measurable fun p : Fˣ × Fˣ × GL (Fin 2) F => ENNReal.ofReal (wR p)` using `GlobalTheory.CompanionTheory.BochIw.measurable_wR'.ennreal_ofReal`. Establish `hlt : ∀ᵐ p ∂mIw ψ, ENNReal.ofReal (wR p) < ⊤` using `ae_of_all _ fun _ => ENNReal.ofReal_lt_top`. Establish `hT1 : Measurable fun p : Fˣ × Fˣ × GL (Fin 2) F => B (hI p)` using `(hB.comp GlobalTheory.CompanionTheory.BochIw.cont_hI).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTg : Measurable fun p : Fˣ × Fˣ × GL (Fin 2) F => B (hI p * g)` using `(hB.comp (GlobalTheory.CompanionTheory.BochIw.cont_hI.mul continuous_const)).measurable`. Establish `hmap : Measure.map (fun p => B (hI p * g)) ((mIw ψ).withDensity fun p => ENNReal.ofReal (wR p)) = Measure.map (fun p => B (hI p)) ((mIw ψ).withDensity fun p => ENNReal.ofReal (wR p))`. Use extensionality with `S hS`. Establish `hind : ∀ (T : Fˣ × Fˣ × GL (Fin 2) F → ℂ) (p : Fˣ × Fˣ × GL (Fin 2) F), (T ⁻¹' S).indicator (fun p => ENNReal.ofReal (wR p)) p = ENNReal.ofReal (wR p) * S.indicator (1 : ℂ → ENNReal) (T p)` using `fun T p => by`. Distinguish the cases in `hp : T p ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hp' : p ∈ T ⁻¹' S` using `hp`. Simplify using `[Set.indicator_of_mem hp', Set.indicator_of_mem hp]`. Establish `hp' : p ∉ T ⁻¹' S` using `hp`. Simplify using `[Set.indicator_of_notMem hp', Set.indicator_of_notMem hp]`. Establish `key` using `hl (fun h => S.indicator (1 : ℂ → ENNReal) (B h)) ((measurable_one.indicator hS).comp hB.measurable) (fun x h => by simp only [hN]) g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply hTg hS, Measure.map_apply hT1 hS, withDensity_apply _ (hTg hS), withDensity_apply _ (hT1 hS), ← lintegral_indicator (hTg hS), ← lintegral_indicator (hT1 hS)]`. Simplify using `only [hind]`. Conclude with `key`. Establish `e : ∀ T : Fˣ × Fˣ × GL (Fin 2) F → ℂ, Measurable T → ∫ p, ((wR p : ℝ) : ℂ) * T p ∂mIw ψ = ∫ z, z ∂(Measure.map T ((mIw ψ).withDensity fun p => ENNReal.ofReal (wR p)))`. Introduce `T hT`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_map (f := fun z : ℂ => z) hT.aemeasurable aestronglyMeasurable_id, integral_withDensity_eq_integral_toReal_smul hd hlt]`. Use `integral_congr_ae (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Simplify using `only [ENNReal.toReal_ofReal (GlobalTheory.CompanionTheory.BochIw.wR_pos' p).le, Complex.real_smul]`. Rewrite using `[e _ hTg, e _ hT1, hmap]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_right_invariant : ForS fun F _ _ _ _ _ _ ψ => ∀ B : GL (Fin 2) F → ℂ, Continuous B →
     (∀ x h, B (uni2 x * h) = B h) →

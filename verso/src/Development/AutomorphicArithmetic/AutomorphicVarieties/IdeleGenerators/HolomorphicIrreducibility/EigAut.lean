@@ -12,9 +12,7 @@ open UpperTheory.V UpperTheory.V.Af
 open scoped Matrix
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((N : ℕ) : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_not] at hw`.
-
-Conclude with `Ideal.dvd_span_singleton.2 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ev_not_mem (N : ℕ) (hN : N ≠ 0) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ((N : ℕ) : 𝓞 ℚ) ∉ w.asIdeal := by
@@ -26,9 +24,9 @@ private theorem ev_not_mem (N : ℕ) (hN : N ≠ 0) :
   exact Ideal.dvd_span_singleton.2 hw
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hpow, -⟩` from `ML.placeBasic Ω`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero ((N : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne N)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `h2 : σ ζ = ζ ^ q` using `hpow A _ N _ hσ hN ζ hζ.pow_eq_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Chr.cls_spec N σ ζ hζ.pow_eq_one, pow_eq_pow_mod q hζ.pow_eq_one]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (Nat.mod_lt _ (NeZero.pos N)) h2`. Rewrite using `[← ZMod.natCast_zmod_val ((Chr.cls ℚ Ω N σ : (ZMod N)ˣ) : ZMod N), h3, ZMod.natCast_mod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cls_frob {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N]
     {A : ValuationSubring Ω} (hN : ¬ A.valuation (N : Ω) < 1) {q : ℕ} {σ : G ℚ Ω} (hσ : IsFrob A q σ) :
@@ -43,7 +41,7 @@ private theorem cls_frob {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
   rw [← ZMod.natCast_zmod_val ((Chr.cls ℚ Ω N σ : (ZMod N)ˣ) : ZMod N), h3, ZMod.natCast_mod]
 
 /- English proof (translation)
-Establish `hd : (g : Matrix (Fin 2) (Fin 2) k).det ≠ 0` using `(Matrix.isUnits_det_units g).ne_zero`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, smul_smul, Ring.inverse_eq_inv, mul_inv_cancel₀ hd, one_smul, Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, Matrix.adjugate_fin_two]`. Simplify using `only [Matrix.trace_fin_two, Matrix.det_fin_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Use `congr 2`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,23 +58,23 @@ private theorem charpoly_adj {k : Type} [Field k] (g : GL (Fin 2) k) :
   · ring
 
 /- English proof (translation)
-Introduce `P k N _ hk χ hχ g l hl Ω _ _ _ ι ρ _ hirr hw`. Take `⟨f, -, hfa, hfχ⟩` from `Sd.toNewform P k N hk χ hχ g`. Take `⟨hopen, -, -, -, hine⟩` from `Chr.clsFacts ℚ Ω N`. Use `set d : G ℚ Ω →* (Qbar l)ˣ := Chr.dirG ℚ Ω (χ.ringHomComp ι.symm.toRingHom) with hd`. Establish `hker : (Chr.cls ℚ Ω N).ker ≤ d.ker` using `fun s hs => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, hd, Chr.dirG, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hs, map_one]`. Establish `halg : Sd.IsAlgChar ι d`. Use `(Sd.algCyc P.af ℚ Ω l ι).1 0 d (Subgroup.isOpen_mono hker hopen)` as an intermediate fact. Rewrite `this` using `[zpow_zero, one_mul]`. Then use the resulting hypothesis. Establish `hbas` using `UpperTheory.galoisRep_irreducibility_criterion.1 (G ℚ Ω) (G ℚ Ω) (Qbar l) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haut : IsAutR ι (tw ρ d⁻¹)`. Use `Af.newformAutR P.af k hk f l Ω ι _ (-((k - 1 : ℕ) : ℤ)) ⟨(hbas _).2.2 _ ((hbas _).2.2 _ ((hbas _).2.1 hirr)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hw, ev_not_mem l hl.out.ne_zero, ev_not_mem N (NeZero.ne N)] with w hw hwl hwN A hA`. Establish `hN : ¬ A.valuation (N : Ω) < 1` using `fun h => hwN ((hA N).1 (by simpa using h))`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : cycZ ℚ Ω l s = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq (v := w) hwl hA (q := 1) (fun x hx => by simpa using hs.2 x hx) n]`. Simplify using the standard rewrite rules. Establish `h3 : (cycBar ℚ Ω l ^ (-((k - 1 : ℕ) : ℤ))) s = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.zpow_apply, cycBar, MonoidHom.comp_apply, h2, map_one, one_zpow]`. Establish `h4 : d s = 1` using `hker (hine A hN hs)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[tw_val, tw_val, h3, MonoidHom.inv_apply, h4, (hw A hA).1 s hs]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hw A hA).2 σ hσ`. Establish `h2 : ((cycBar ℚ Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ ℚ Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hwl hA hσ, map_natCast, map_natCast]`. Establish `h3 : ι (d σ : Qbar l) = χ (normV w : ZMod N)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, Chr.dirG, MonoidHom.comp_apply, MulChar.coe_toUnitHom, cls_frob N hN hσ, MulChar.ringHomComp_apply]`. Simplify using the standard rewrite rules. Establish `h4 : ι (ρ σ : Matrix (Fin 2) (Fin 2) (Qbar l)).det = χ (normV w : ZMod N) * (normV w : ℂ) ^ (k - 1)`. Use `congrArg (eval 0) h1` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_fin_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h5 : (((cycBar ℚ Ω l ^ (-((k - 1 : ℕ) : ℤ))) σ⁻¹ : (Qbar l)ˣ) : Qbar l) * ((d⁻¹ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = (ρ σ : Matrix (Fin 2) (Fin 2) (Qbar l)).det`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[h4, MonoidHom.zpow_apply, MonoidHom.inv_apply, map_inv, map_inv, inv_inv, inv_zpow', neg_neg, zpow_natCast, Units.val_pow_eq_pow_val, h2, map_mul, h3, map_pow, map_natCast, mul_comm]`. Rewrite using `[tw_val, tw_val, smul_smul, h5, map_inv, charpoly_adj, h1, Newform.heckePoly, hfa, hfχ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Sd.twR P.af ℚ Ω l ι 2 _ d halg haut`. Establish `e : tw (tw ρ d⁻¹) d = ρ` using `by ext1 s`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[tw_val, tw_val, smul_smul, MonoidHom.inv_apply, Units.mul_inv, one_smul]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.eigAut :
     UpperTheory.V.Sd.Hypotheses₂ → UpperTheory.V.Sd.EigAut := by

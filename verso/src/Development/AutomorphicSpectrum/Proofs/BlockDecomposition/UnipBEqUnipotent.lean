@@ -4,7 +4,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.W
 namespace GlobalTheory.CompanionTheory.IwasawaDict
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n`. Use extensionality with `g`. Rewrite using `[mem_unipB k, GroundTheory.Automorphic.Iwasawa.mem_unipotent k n]`. Conclude with `and_congr_left' ⟨fun h i j hij => h i j hij, fun h i j hij => h hij⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipB_eq_unipotent : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ),

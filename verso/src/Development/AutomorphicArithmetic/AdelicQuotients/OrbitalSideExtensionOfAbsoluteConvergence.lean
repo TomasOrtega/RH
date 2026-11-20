@@ -4,7 +4,7 @@ open MeasureTheory NumberField IsDedekindDomain Topology Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange
 
 /- English proof (translation)
-Establish `h : ((Subgroup.centralizer {g} : Subgroup G) : Set G) = {x | x * g = g * x}`. Use extensionality with `x`. Conclude with `Subgroup.mem_centralizer_singleton_iff`. Rewrite using `[h]`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cent_closed {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] [T2Space G] (g : G) :
     IsClosed ((Subgroup.centralizer {g} : Subgroup G) : Set G) := by
@@ -15,21 +15,17 @@ private theorem cent_closed {G : Type} [Group G] [TopologicalSpace G] [Continuou
   exact isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Introduce `hSA hRPF hRPE hRPC hUL hUO hTC hSL hCL hCo hGC hLE hUI hLN hBE hN3 hN5 hP2 F E _ _ _ _ _ _ σ hσ n hn _ _ _ _ _ _ _ _ μ μi m hμ hμi hm γ hγ δ hδ ν νi nv hν hνi hnv S a b ha hb hET hEE φi φ hφi hφc hφ hS`. Take `⟨c1, c2, c3, c4, -⟩` from `hCo F E σ n`. Take `⟨g0, g1, g2⟩` from `hGC F E σ n`. Take `⟨l1, l2⟩` from `hLE F E n`. Take `⟨t1, t2, t3, -⟩` from `hTC F n γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hG` using `hRPE F E n`. Establish `hT` using `hRPC _ _ _ _ (pI F n) (pF F n) (KF F n) (hRPF F n) (AdelicGLn.diagonal F n γ)`. Use `haveI : LocallyCompactSpace (TA γ) := (cent_closed _).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (TI γ) := (cent_closed _).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : ∀ v : Pl F, LocallyCompactSpace (TF γ v) := fun v => (cent_closed _).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (TA γ) := TopologicalSpace.Subtype.secondCountableTopology ((TA γ : Subgroup (GA F n)) : Set (GA F n))`. Use `haveI : SecondCountableTopology (TI γ) := TopologicalSpace.Subtype.secondCountableTopology ((TI γ : Subgroup _) : Set (GL (Fin n) (InfiniteAdeleRing F)))`. Use `haveI : ∀ v : Pl F, SecondCountableTopology (TF γ v) := fun v => TopologicalSpace.Subtype.secondCountableTopology ((TF γ v : Subgroup _) : Set (GL (Fin n) (v.adicCompletion F)))`. Take `⟨uI, uV⟩` from `hUL (Pl F) (GA E n) _ _ (pI E n) (fun v => pE E n v) (fun v => KE E n v) hG μ μi m hμ hμi hm`. Establish `hZ : Continuous (zA E n)` using `(continuous_centralSection (K := E) (n := n)).comp (Real.continuous_exp.subtype_mk _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `key` using `hSA (Pl F) (GA E n) (GL (Fin n) (InfiniteAdeleRing E)) (fun v => GL (Fin n) (CompletionsOver E v)) (pI E n) (fun v => pE E n v) (fun v => KE E n v) (TA γ) (TI γ) (fun v => TF γ v) (cen (pI F n) (AdelicGLn.diagonal F n γ)) (fun v => cen (pF F n v) (AdelicGLn.diagonal F n γ)) (fun …`. Take `⟨C, hC, hCx⟩` from `(hP2 F E σ hσ n hn).2 (pI F n (AdelicGLn.diagonal F n γ)) (pI E n (AdelicGLn.diagonal E n δ)) (hSL F n γ hγ).1 (hLN F E σ hσ n hn δ γ hδ).1 D hD`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, y, hy, rfl⟩` from `hCx x hx`. Conclude with `⟨⟨t, Subgroup.mem_centralizer_singleton_iff.2 ht⟩, y, hy, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `(fun D hD => hBE F E σ hσ n hn (pI E n (AdelicGLn.diagonal E n δ)) D hD)`. Use `φi φ hφi hφc hφ`. Use the proof step `(fun v hv => by`. Take `⟨e, hx⟩` from `hS v hv`. Use `⟨e, fun x => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, y, hy, rfl⟩` from `(hx x).1 h`. Conclude with `⟨⟨t, Subgroup.mem_centralizer_singleton_iff.2 ht⟩, y, hy, rfl⟩`. Introduce and unpack `⟨t, y, hy, rfl⟩`. Conclude with `(hx _).2 ⟨t.1, Subgroup.mem_centralizer_singleton_iff.1 t.2, y, hy, rfl⟩)`. Establish `hc : ∀ (s : ℝ) (x : GL (Fin n) (InfiniteAdeleRing E)), x⁻¹ * (pI E n (zA E n s) * pI E n (AdelicGLn.diagonal E n δ)) * mapGL n (galInf σ) x = pI E n (zA E n s) * (x⁻¹ * pI E n (AdelicGLn.diagonal E n δ) * mapGL n (galInf σ) x)`.
-
-Introduce `s x`. Establish `h` using `(hCL E n ⟨Real.exp s, Real.exp_pos s⟩).2.1 x⁻¹`. Rewrite using `[← mul_assoc x⁻¹, ← h]`. Simplify using `only [mul_assoc]`. Use `⟨key.1, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [hc]`. Conclude with `key.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalSideExtension_of_absoluteConvergence :
     SideAbs → RPF → RPE → RPCen → UniLoc → UniOf → TComm → SepLoc → CentLoc → Compat → GalCont → LocEmb → UnitIff → LocNorm → BoundE → N3 → N5 → P2 → SideE := by

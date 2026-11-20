@@ -12,17 +12,15 @@ open Filter Topology
 namespace GlobalTheory.SplitEmbed
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h v hs`. Use `haveI hprime : (v.asIdeal.under ℤ).IsPrime := Ideal.IsPrime.under ℤ v.asIdeal`. Establish `hne : v.asIdeal.under ℤ ≠ ⊥`. Introduce `hb`. Conclude with `v.ne_bot (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `(Submodule.IsPrincipal.principal (v.asIdeal.under ℤ))`. Establish `hq' : v.asIdeal.under ℤ = Ideal.span {q}` using `hq`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by rw [hq']; simp)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqp : Prime q`. Rewrite using `[← Ideal.span_singleton_prime hq0, ← hq']`. Conclude with `hprime`. Use `set p := q.natAbs with hpdef`. Establish `hp : p.Prime` using `Int.prime_iff_natAbs_prime.1 hqp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hspan : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}`. Rewrite using `[hq', hpdef, Int.span_natAbs]`. Establish `hpv : (p : 𝓞 F) ∈ v.asIdeal`. Establish `: (p : ℤ) ∈ v.asIdeal.under ℤ` using `by rw [hspan]; exact Ideal.mem_span_singleton_self _`. Rewrite `this` using `[Ideal.under_def, Ideal.mem_comap]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hcount : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E`. Use `hs` as an intermediate fact. Unfold `SplitsFully at this`. Rewrite `this` using `[hspan]`.
-
-Conclude with `this`. Rewrite using `[GlobalTheory.AdelicU.nonempty_split_iff h]`. Conclude with `GlobalTheory.GoodPlace.ncard_primesOver_eq_two h.2.2.1 hp hcount v hpv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_of_splitsFully : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ v : Pl F, SplitsFully E v → Nonempty (E →ₐ[F] Fv F v) := by

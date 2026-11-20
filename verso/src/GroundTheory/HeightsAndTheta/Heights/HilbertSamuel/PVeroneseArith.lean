@@ -16,7 +16,7 @@ open Veronese
 def sq (D : ℕ) (i : Fin (D + 1)) : Ix (Idx D) := ⟨(), ⟨(i, i), le_rfl⟩⟩
 
 /- English proof (translation)
-Introduce `i j h`. Use `congrArg (fun q : Ix (Idx D) => q.2.1.1) h` as an intermediate fact. Simplify `this` using `[sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_injective (D : ℕ) : Function.Injective (sq D) := by
   intro i j h
@@ -24,16 +24,16 @@ theorem sq_injective (D : ℕ) : Function.Injective (sq D) := by
   simpa [sq] using this
 
 /- English proof (translation)
-Rewrite using `[t, ← map_zero (algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Fld D))]`. Conclude with `(IsFractionRing.injective (MvPolynomial (Fin (D + 1)) ℚ) (Fld D)).ne (X_ne_zero i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_ne_zero (D : ℕ) (i : Fin (D + 1)) : t D i ≠ 0 := by
   rw [t, ← map_zero (algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Fld D))]
   exact (IsFractionRing.injective (MvPolynomial (Fin (D + 1)) ℚ) (Fld D)).ne (X_ne_zero i)
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, hp, map_mul, map_mul, map_mul, aeval_X, expand_X, map_pow, map_X, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[x, sq, t, pow_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_sq (D : ℕ) (f : MvPolynomial (Fin (D + 1)) ℤ) :
     aeval (x D ∘ sq D) f = algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Fld D)
@@ -46,11 +46,11 @@ theorem aeval_sq (D : ℕ) (f : MvPolynomial (Fin (D + 1)) ℤ) :
     simp [x, sq, t, pow_two]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot, ← sum_homogeneousComponent f]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `h1 : aeval (x D ∘ sq D) (homogeneousComponent d f) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← coeff_coneMap ℤ]`. Rewrite `hf` using `[coordIdeal, RingHom.mem_ker]`. Rewrite using `[hf, Polynomial.coeff_zero]`. Rewrite `h1` using `[aeval_sq]`. Establish `h2` using `IsFractionRing.injective (MvPolynomial (Fin (D + 1)) ℚ) (Fld D) (h1.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `MvPolynomial.map_injective _ (Int.castRingHom ℚ).injective_int (h2.trans (map_zero _).symm)`. Conclude with `(expand_eq_zero two_pos).mp h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coordIdeal_sq (D : ℕ) : coordIdeal ℤ (x D ∘ sq D) = ⊥ := by
   rw [eq_bot_iff]
@@ -67,9 +67,9 @@ theorem coordIdeal_sq (D : ℕ) : coordIdeal ℤ (x D ∘ sq D) = ⊥ := by
   exact (expand_eq_zero two_pos).mp h3
 
 /- English proof (translation)
-Establish `hmem : ∀ i, (Polynomial.C (x D (sq D i)) * Polynomial.X : Polynomial (Fld D)) ∈ coneRing ℤ (x D ∘ sq D)` using `fun i => ⟨X i, by simp [coneMap]⟩`. Establish `hsq : (Polynomial.C (x D q) * Polynomial.X : Polynomial (Fld D)) ^ 2 = (Polynomial.C (x D (sq D q.2.1.1)) * Polynomial.X) * (Polynomial.C (x D (sq D q.2.1.2)) * Polynomial.X)`. Simplify using `only [x, sq, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsq]`. Conclude with `isIntegral_algebraMap (R := coneRing ℤ (x D ∘ sq D)) (A := Polynomial (Fld D)) (x := ⟨_, mul_mem (hmem _) (hmem _)⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_coord (D : ℕ) (q : Ix (Idx D)) :
     IsIntegral (coneRing ℤ (x D ∘ sq D)) (Polynomial.C (x D q) * Polynomial.X : Polynomial (Fld D)) := by
@@ -85,15 +85,15 @@ theorem isIntegral_coord (D : ℕ) (q : Ix (Idx D)) :
     (x := ⟨_, mul_mem (hmem _) (hmem _)⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sq_injective D, coordIdeal_sq D, isIntegral_coord D⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjFrame_sq (D : ℕ) : IsProjFrame (x D) (sq D) :=
   ⟨sq_injective D, coordIdeal_sq D, isIntegral_coord D⟩
 
 /- English proof (translation)
-Introduce `D _`. Use `⟨⟨()⟩, ⟨coordIdeal_isPrime ℤ _, isMultiHomogIdeal_coordIdeal _, ?_⟩, isHorizontal_coordIdeal _, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `⟨⟨(0, 0), le_rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[X_mem_coordIdeal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (t_ne_zero D 0) (t_ne_zero D 0)`. Rewrite using `[ringKrullDim_quot_of_frame _ (sq D) (isProjFrame_sq D), Fintype.card_unit]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : VeroneseArith.Statement := by
   intro D _

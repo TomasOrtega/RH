@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.I
 open UpperTheory.V.Loc UpperTheory.V.Alg IsLocalRing
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map, Finset.Nat.antidiagonal_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coeff1_mul {σ E : Type} [CommRing E] (j : σ) (f g : MvPowerSeries σ E) :
     MvPowerSeries.coeff (Finsupp.single j 1) (f * g) =
@@ -14,17 +14,17 @@ private theorem coeff1_mul {σ E : Type} [CommRing E] (j : σ) (f g : MvPowerSer
   simp
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `(IsNoetherian.noetherian (RingHom.ker x) : (RingHom.ker x).FG)`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) T D`. Use `⟨c, nonZeroDivisors.ne_zero c.2, ?_⟩` and prove the remaining obligations. Establish `h0 : D 0 = 0` using `by simpa using halg 0`. Establish `key : ∀ a ∈ Submodule.span R (T : Set R), ∃ o : O, algebraMap O E o = algebraMap O E c * D a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨o, ho⟩` from `hc a ha`. Conclude with `⟨o, by rw [ho, Algebra.smul_def]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, by simp [h0]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨o, ho⟩` from `ha`. Take `⟨o', ho'⟩` from `hb`. Conclude with `⟨o + o', by rw [map_add, ho, ho', hadd, mul_add]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul r a ha' ha`. Take `⟨o, ho⟩` from `ha`. Rewrite `ha'` using `[hT]`. Establish `hx : x a = 0` using `ha'`. Conclude with `⟨x r * o, by rw [map_mul, ho, smul_eq_mul, hmul, hx, map_zero]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `a`. Establish `hm : a - algebraMap O R (x a) ∈ RingHom.ker x`. Simplify using `[RingHom.mem_ker]`. Rewrite `hm` using `[← hT]`. Take `⟨o, ho⟩` from `key _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨o, ?_⟩` and prove the remaining obligations. Establish `: D a = D (a - algebraMap O R (x a))` using `by conv_lhs => rw [← sub_add_cancel a (algebraMap O R (x a))]`. Rewrite using `[hadd, halg, add_zero]`. Rewrite using `[this, ho]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_den {O R E : Type} [CommRing O] [IsDomain O] [CommRing R] [IsNoetherianRing R]
     [Algebra O R] [Field E] [Algebra O E] [IsFractionRing O E] (x : R →ₐ[O] O) (D : R → E)
@@ -83,11 +83,11 @@ private def dualHom {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (x : R 
     ext <;> simp [halg, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `exists_den x D hadd hmul halg`. Use `choose d hd using h`. Establish `inj` using `IsFractionRing.injective O E`. Establish `hc' : algebraMap O E c ≠ 0` using `fun h => hc (inj (by rw [h, map_zero]))`. Use `hsep (dualHom x d (fun a b => inj (by rw [map_add, hd, hd, hd, hadd, mul_add])) (fun a b => inj (by rw [map_add, map_mul, map_mul, hd, hd, hd, hmul]; ring)) (fun o => inj (by rw [hd, halg, mul_zero, map_zero]))) (dualHom x (fun _ => 0) (by simp) (by simp) (by simp)) (fun s => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: d (e s) = 0` using `inj (by rw [hd, hs, mul_zero, map_zero])`. Apply the tactic sequence `ext <;> simp [dualHom, this])`. Establish `h3 : d a = 0`. Simplify `congrArg TrivSqZeroExt.snd (DFunLike.congr_fun this a)` using `[dualHom]`. Establish `h4` using `hd a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h3, map_zero]`. Conclude with `(mul_eq_zero.mp h4.symm).resolve_left hc'`.
+A detailed English derivation is pending.
 -/
 private theorem der_zero {O R E : Type} [CommRing O] [IsDomain O] [CommRing R] [IsNoetherianRing R]
     [Algebra O R] [Field E] [Algebra O E] [IsFractionRing O E] (x : R →ₐ[O] O) (D : R → E)
@@ -115,31 +115,29 @@ private theorem der_zero {O R E : Type} [CommRing O] [IsDomain O] [CommRing R] [
   exact (mul_eq_zero.mp h4.symm).resolve_left hc'
 
 /- English proof (translation)
-Introduce `O R E _ _ _ _ _ _ _ _ n I x φ S e h hsep`. Set `L : MvPowerSeries (Fin n) E →ₗ[E] (Fin n → E)` to `LinearMap.pi fun j => MvPowerSeries.coeff (Finsupp.single j 1)`. Establish `hL : ∀ f j, L f j = MvPowerSeries.coeff (Finsupp.single j 1) f` using `fun _ _ => rfl`. Establish `hLmul : ∀ f g, L (f * g) = MvPowerSeries.constantCoeff f • L g + MvPowerSeries.constantCoeff g • L f`. Introduce `f g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [hL, coeff1_mul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm2 : ∀ f ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2, L f = 0`. Establish `hm : ∀ f ∈ maximalIdeal (MvPowerSeries (Fin n) E), MvPowerSeries.constantCoeff f = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf`. Assume the negation of the conclusion as `hne`. Conclude with `hf (MvPowerSeries.isUnit_iff_constantCoeff.mpr (Ne.isUnit hne))`. Introduce `f hf`. Rewrite `hf` using `[pow_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hf ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[hLmul, hm a ha, hm b hb]`. Simplify using the standard rewrite rules. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ha, hb, add_zero]`. Establish `hspan : Submodule.span E (Set.range fun s => L (φ (e s))) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨lam, hlam, hker⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hD` using `der_zero x (fun a => lam (L (φ a))) (fun a b => by simp) (fun a b => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hLmul, h.const, h.const]`. Simplify using `only [map_add, map_smul, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun o => by`. Establish `: L (φ (algebraMap O R o)) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[AlgHom.commutes, hL, MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_zero])`. Use `S e hsep (fun s => hker (Submodule.subset_span ⟨s, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hlam` to reduce the goal to its premises. Use `(Pi.basisFun E (Fin n)).ext fun j => ?_` and prove the remaining obligations. Take `⟨a, c, hc, hca⟩` from `h.dense 2 (MvPowerSeries.X j)`. Establish `h1` using `hm2 _ hca`. Establish `hX : L (MvPowerSeries.X j) = Pi.basisFun E (Fin n) j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hL, MvPowerSeries.coeff_index_single_X]`. Simplify using `[Pi.single_apply]`. Rewrite `h1` using `[map_sub, ← algebraMap_smul E c, map_smul, hX, sub_eq_zero]`. Establish `h2` using `hD a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [← h1, map_smul, smul_eq_mul] at h2`. Establish `hc' : algebraMap O E c ≠ 0` using `fun h => hc (IsFractionRing.injective O E (by rw [h, map_zero]))`. Conclude with `(mul_eq_zero.mp h2).resolve_left hc'`. Take `⟨b, hb, hbs, hbi⟩` from `exists_linearIndependent E (Set.range fun s => L (φ (e s)))`. Rewrite `hbs` using `[hspan]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfin : b.Finite` using `hbi.set_finite_of_isNoetherian`. Use `haveI := hfin.fintype`. Set `B : Module.Basis b E (Fin n → E)` to `Module.Basis.mk hbi (by simp [hbs])`. Establish `hcard : Fintype.card b = n`. Rewrite using `[← Module.finrank_eq_card_basis B]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Set `q : Fin n ≃ b` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `choose u hu using fun i : Fin n => hb (q i).2`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hbs]`.
-
-Use `Submodule.span_mono fun v hv => ⟨q.symm ⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Use `hu (q.symm ⟨v, hv⟩)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.chartSpan :
     ∀ {O R E : Type} [CommRing O] [IsDomain O] [CommRing R] [IsNoetherianRing R] [Algebra O R] [Field E] [Algebra O E] [IsFractionRing O E] (n : ℕ) (I : Ideal R) (x : R →ₐ[O] O) (φ : R →ₐ[O] MvPowerSeries (Fin n) E) (S : Type) (e : S → R), UpperTheory.V.Loc.IsCompl I x φ → (∀ f f' : R →ₐ[O] DualNumber O, (∀ s, f (e s) = f' (e s)) → f = f') → ∃ u : Fin n → S, Submodule.span E (Set.range fun i j : Fin n => MvPowerSeries.coeff (Finsupp.single j 1) (φ (e (u i)))) = ⊤ := by

@@ -9,9 +9,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.AffInj
 
 /- English proof (translation)
-Use `algebraize [φ.hom, ψ.hom]`. Set `e` to `(CommRingCat.isPushout_tensorProduct R A K).isoIsPushout _ _ H`. Establish `h1 : inr = _ ≫ e.hom` using `(IsPushout.inr_isoIsPushout_hom _ _ (CommRingCat.isPushout_tensorProduct R A K) H).symm`. Rewrite using `[h1, CommRingCat.hom_comp, RingHom.coe_comp]`. Use `(ConcreteCategory.injective_of_mono_of_preservesPullback e.hom).comp ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinj` using `Module.Flat.rTensor_preserves_injective_linearMap (M := K) (Algebra.linearMap R A) hφ`. Introduce `a b hab`. Apply `(TensorProduct.lid R K).symm.injective` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Simplify using `using hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inr_injective_of_isPushout {R A K P : CommRingCat.{0}} {φ : R ⟶ A} {ψ : R ⟶ K}
     {inl : A ⟶ P} {inr : K ⟶ P} (H : IsPushout φ ψ inl inr) (hφ : Function.Injective φ.hom)
@@ -34,13 +34,11 @@ end GlobalTheory.AffInj
 namespace GlobalTheory.AffInj
 
 /- English proof (translation)
-Establish `: CompactSpace S` using `QuasiCompact.compactSpace_of_compactSpace π`. Establish `hUY : p ⁻¹ᵁ V = q ⁻¹ᵁ ⊤ ⊓ p ⁻¹ᵁ V` using `by simp`. Establish `hST : V ≤ y ⁻¹ᵁ ⊤` using `le_top`. Establish `hSX : (⊤ : S.Opens) ≤ π ⁻¹ᵁ ⊤` using `le_top`. Set `σ` to `pushoutSection H.flip hST hSX hUY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hm : Mono σ` using `mono_pushoutSection_of_isCompact_of_flat_right H.flip hST hSX hUY (isAffineOpen_top _) hV (by simpa using isCompact_univ)`. Establish `hσ : Function.Injective σ.hom` using `(ConcreteCategory.mono_iff_injective_of_preservesPullback σ).mp hm`. Establish `h1 : pushout.inr _ _ ≫ σ = p.appLE V (p ⁻¹ᵁ V) le_rfl` using `pushout.inr_desc _ _ _`. Establish `hφ : Function.Injective (π.appLE ⊤ ⊤ hSX).hom`. Establish `e : π.appLE ⊤ ⊤ hSX = π.appTop` using `(Scheme.Hom.app_eq_appLE π (U := ⊤)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hinj`. Establish `hinr` using `inr_injective_of_isPushout (IsPushout.of_hasPushout (π.appLE ⊤ ⊤ hSX) (y.appLE ⊤ V hST)) hφ (y.flat_appLE (isAffineOpen_top _) hV _)`. Establish `h2 : p.app V = p.appLE V (p ⁻¹ᵁ V) le_rfl` using `Scheme.Hom.app_eq_appLE p`. Rewrite using `[h2, ← h1, CommRingCat.hom_comp, RingHom.coe_comp]`.
-
-Conclude with `hσ.comp hinr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective_of_isPullback (R : Type) [CommRing R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R)
     (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ S) (hπ : IsProper π) (hy : Flat y)
@@ -65,7 +63,7 @@ theorem app_injective_of_isPullback (R : Type) [CommRing R] (S Y Z : Scheme.{0})
   exact hσ.comp hinr
 
 /- English proof (translation)
-The claim follows from `@app_injective_of_isPullback`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R) (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ S), IsProper π → Flat y → IsPullback p q y π → Function.Injective π.appTop.hom → ∀ V : Y.Opens, IsAffineOpen V → Function.Injective (p.app V).hom :=
   @app_injective_of_isPullback

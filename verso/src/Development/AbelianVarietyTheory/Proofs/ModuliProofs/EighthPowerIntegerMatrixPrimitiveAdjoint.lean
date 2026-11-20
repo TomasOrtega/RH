@@ -25,9 +25,9 @@ variable {M : Type} {V : Type 1} [AddCommGroup M] [AddCommGroup V] {n : Type} [F
 def form (B : M →+ M →+ V) (W : Matrix n n ℤ) (x y : n → M) : V := ∑ u, ∑ v, W u v • B (x u) (y v)
 
 /- English proof (translation)
-Establish `hL : form B W (fun u => ∑ v, m u v • x v) y = ∑ u, ∑ v, ∑ w, (W u v * m u w) • B (x w) (y v)`. Simplify using `[form, Finset.smul_sum, smul_smul, map_sum]`. Establish `hR : form B (m.transpose * W) x y = ∑ w, ∑ v, ∑ u, (m u w * W u v) • B (x w) (y v)`. Simplify using `[form, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[hL, hR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_left (B : M →+ M →+ V) (W m : Matrix n n ℤ) (x y : n → M) :
     form B W (fun u => ∑ v, m u v • x v) y = form B (m.transpose * W) x y := by
@@ -44,9 +44,9 @@ theorem form_left (B : M →+ M →+ V) (W m : Matrix n n ℤ) (x y : n → M) :
         exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
 /- English proof (translation)
-Establish `hL : form B W x (fun u => ∑ v, m u v • y v) = ∑ u, ∑ v, ∑ w, (W u v * m v w) • B (x u) (y w)`. Simplify using `[form, Finset.smul_sum, smul_smul, map_sum]`. Establish `hR : form B (W * m) x y = ∑ u, ∑ w, ∑ v, (W u v * m v w) • B (x u) (y w)`. Simplify using `[form, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[hL, hR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem form_right (B : M →+ M →+ V) (W m : Matrix n n ℤ) (x y : n → M) :
     form B W x (fun u => ∑ v, m u v • y v) = form B (W * m) x y := by
@@ -58,7 +58,7 @@ theorem form_right (B : M →+ M →+ V) (W m : Matrix n n ℤ) (x y : n → M) 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `hyx : ∑ u, ∑ v, W u v • B (y u) (x v) = ∑ u, ∑ v, W v u • B (x u) (y v)`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [hB (y _) (x _)]`. Simplify using `only [form, Pi.add_apply, Pi.zero_apply, map_add, map_zero, AddMonoidHom.add_apply, smul_add, smul_zero, Finset.sum_add_distrib, Finset.sum_const_zero, Matrix.add_apply, Matrix.transpose_apply, add_smul]`. Rewrite using `[hyx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -81,17 +81,15 @@ variable {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B]
 omit [IsCommMonObj B] in
 
 /- English proof (translation)
-Establish `add1 : ∀ x x' y : T ⟶ B, pull (lift (x * x') y).left (cls P hP) = pull (lift x y).left (cls P hP) + pull (lift x' y).left (cls P hP)`. Introduce `x x' y`. Establish `h0` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (hb x x' y)`. Rewrite `h0` using `[cls_linComb hP]`. Simplify using `[Fin.sum_univ_three] at h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_eq_zero, ← h0]`. Normalize the expressions using the abelian group laws. Establish `e1 : cls P hP = pull (lift (snd B B) (fst B B)).left (cls P hP)`. Rewrite using `[← cls_pull hP _ (pull_isLB hP _)]`. Conclude with `(cls_eq_iff hP _).2 hs`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsym : ∀ x y : T ⟶ B, pull (lift y x).left (cls P hP) = pull (lift x y).left (cls P hP)`. Introduce `x y`. Establish `e2 : (lift y x).left ≫ (lift (snd B B) (fst B B)).left = (lift x y).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp`. Combine the equalities or inequalities in the displayed calculation. Establish `add2 : ∀ x y y' : T ⟶ B, pull (lift x (y * y')).left (cls P hP) = pull (lift x y).left (cls P hP) + pull (lift x y').left (cls P hP)`. Introduce `x y y'`. Rewrite using `[hsym (y * y') x, add1, ← hsym y x, ← hsym y' x]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨AddMonoidHom.mk' (fun a => AddMonoidHom.mk' (fun b => pull (lift a.toMul b.toMul).left (cls P hP)) fun b b' => ?_) fun a a' => ?_, fun a b => ?_, fun x y => rfl⟩` and prove the remaining obligations. Rewrite using `[toMul_add]`. Conclude with `add2 _ _ _`. Use extensionality with `b`. Simplify using `only [toMul_add]`.
-
-Conclude with `add1 _ _ _`. Conclude with `(hsym a.toMul b.toMul).symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_biadditive {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pull (lift (snd B B) (fst B B)).left))
     (T : Over S) (hb : ∀ x x' y : T ⟶ B, ∃ t : LB.Gen (LB.LinComb P (K := Fin 3)
@@ -132,7 +130,7 @@ theorem exists_biadditive {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pu
   · exact (hsym a.toMul b.toMul).symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ n ih => simp [List.ofFn_succ, MonObj.comp_mul, GrpObj.comp_zpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod_zpow {T T' : Over S} (ρ : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ B)) (k : Fin n → ℤ) :
     ρ ≫ (List.ofFn fun v => x v ^ k v).prod = (List.ofFn fun v => (ρ ≫ x v) ^ k v).prod := by
@@ -141,7 +139,7 @@ theorem comp_prod_zpow {T T' : Over S} (ρ : T' ⟶ T) {n : ℕ} (x : Fin n → 
   | succ n ih => simp [List.ofFn_succ, MonObj.comp_mul, GrpObj.comp_zpow, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Rewrite using `[Category.assoc, hα u, comp_prod_zpow]`. Simplify using `[ofMul_list_prod, List.sum_ofFn, ofMul_zpow]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ofMul_comp_matrix {Q T : Over S} {n : ℕ} (pr : Fin n → (Q ⟶ B)) (m : Matrix (Fin n) (Fin n) ℤ) (α : Q ⟶ Q)
     (hα : ∀ u, α ≫ pr u = (List.ofFn fun v => pr v ^ m u v).prod) (x : T ⟶ Q) :
@@ -151,13 +149,13 @@ theorem ofMul_comp_matrix {Q T : Over S} {n : ℕ} (pr : Fin n → (Q ⟶ B)) (m
   simp [ofMul_list_prod, List.sum_ofFn, ofMul_zpow]
 
 /- English proof (translation)
-Take `⟨β, hβs, hβ⟩` from `exists_biadditive hP hs T hb`. Establish `hpt : ∀ x : T ⟶ Q, pull x.left (cls L hL) = form β W (fun u => .ofMul (x ≫ pr u)) (fun u => .ofMul (x ≫ pr u))`. Introduce `x`. Rewrite using `[(cls_eq_iff hL (LB.isLB_linComb hP _ _)).2 hW, cls_linComb hP, map_sum, Fintype.sum_prod_type]`. Simplify using `only [form]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left, comp_lift, hβ]`. Use `⟨β, hpt, fun x y hh => ?_⟩` and prove the remaining obligations. Establish `hxy : (fun u => Additive.ofMul ((x * y) ≫ pr u)) = (fun u => Additive.ofMul (x ≫ pr u)) + fun u => Additive.ofMul (y ≫ pr u)`. Use function extensionality and compare the values at `u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hpr u` as an intermediate fact. Simplify using `[MonObj.mul_comp]`. Establish `h1 : (fun u => Additive.ofMul ((1 : T ⟶ Q) ≫ pr u)) = 0`. Use function extensionality and compare the values at `u`. Use `hpr u` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[MonObj.one_comp]`. Rewrite using `[cls_cube_two hL x y hh, lam, hpt, hpt, hpt, hpt, hxy, h1]`. Conclude with `form_polar β hβs W _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pull (lift (snd B B) (fst B B)).left))
     (T : Over S) (hb : ∀ x x' y : T ⟶ B, ∃ t : LB.Gen (LB.LinComb P (K := Fin 3)
@@ -192,13 +190,13 @@ theorem exists_form {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pull (li
   exact form_polar β hβs W _ _
 
 /- English proof (translation)
-Use `⟨fun hm => ?_, fun m' α' hα' hm' => ?_⟩` and prove the remaining obligations. Take `⟨β, hpt, hcube⟩` from `exists_form hP hs Q (hb Q) pr hpr hL W hW`. Establish `hc : (cubeLB Q ![𝟙 Q, α] L).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_iff hL hc).1 ?_` and prove the remaining obligations. Establish `e0` using `hpt (𝟙 Q)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e0` using `[Over.id_left, pull_id]`. Establish `hY` using `ofMul_comp_matrix pr m α hα (𝟙 Q)`. Establish `hR` using `form_right β (W + W.transpose) m (fun u => Additive.ofMul (pr u)) (fun u => Additive.ofMul (pr u))`. Simplify using `only [Category.id_comp] at e0 hY`. Rewrite using `[e0, hcube (𝟙 Q) α hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.id_comp]`. Rewrite using `[hY, hR, hm]`. Take `⟨β, -, hcube⟩` from `exists_form hP hs (Q ⊗ Q) (hb (Q ⊗ Q)) pr hpr hL W hW`. Establish `h1 : (cubeLB Q ![fst Q Q ≫ α, snd Q Q] L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h2 : (cubeLB Q ![fst Q Q, snd Q Q ≫ α'] L).IsLB` using `LB.isLB_linComb hL _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_iff h1 h2).1 ?_` and prove the remaining obligations. Establish `hl` using `form_left β (W + W.transpose) m (fun u => Additive.ofMul (fst Q Q ≫ pr u)) (fun u => Additive.ofMul (snd Q Q ≫ pr u))`. Establish `hr` using `form_right β (W + W.transpose) m' (fun u => Additive.ofMul (fst Q Q ≫ pr u)) (fun u => Additive.ofMul (snd Q Q ≫ pr u))`. Rewrite using `[hcube _ _ h1, hcube _ _ h2, ofMul_comp_matrix pr m α hα (fst Q Q), ofMul_comp_matrix pr m' α' hα' (snd Q Q), hl, hr, hm']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem primitive_adjoint {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pull (lift (snd B B) (fst B B)).left))
     (hb : ∀ (T : Over S) (x x' y : T ⟶ B), ∃ t : LB.Gen (LB.LinComb P (K := Fin 3)
@@ -237,7 +235,7 @@ theorem primitive_adjoint {P : LB (G2 B).left} (hP : P.IsLB) (hs : LBIso P (P.pu
 end Square
 
 /- English proof (translation)
-Introduce `hΘ W K _ o _ s h k ζ c P pr hpr huniv hW m α hα`. Establish `: IsCommMonObj P.A` using `P.isAb.comm`. Conclude with `primitive_adjoint c.isLB c.symm (fun T x x' y => siegPre_bundle_mul_left hΘ K o s h k ζ c P pr hpr huniv T x x' y) pr hpr P.isLB W hW m α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matrix_primitive_adjoint : (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (K : Type) [Field K] (o : Type) [CommRing o] (s : Sp K ⟶ Sp o) (h k : ℕ) (ζ : o) (c : SiegPre h k ζ s) (P : Out.PolAV (Sp K)) (pr : Fin 8 → (P.A ⟶ c.A)), (∀ u, IsMonHom (pr u)) → (∀ (T : Over (Sp K)) (y : Fin 8 → (T ⟶ c.A)), ∃! x : T ⟶ P.A, ∀ u, x ≫ pr u = y u) → LBIso P.L (LB.LinComb c.P (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)) → ∀ (m : Matrix (Fin 8) (Fin 8) ℤ) (α : P.A ⟶ P.A), (∀ u, α ≫ pr u = (List.ofFn fun v => pr v ^ m u v).prod) → ((W + W.transpose) * m = W → LBIso P.L (cubeLB P.A ![𝟙 P.A, α] P.L)) ∧ ∀ (m' : Matrix (Fin 8) (Fin 8) ℤ) (α' : P.A ⟶ P.A), (∀ u, α' ≫ pr u = (List.ofFn fun v => pr v ^ m' u v).prod) → m.transpose * (W + W.transpose) = (W + W.transpose) * m' → LBIso (cubeLB P.A ![fst P.A P.A ≫ α, snd P.A P.A] P.L) (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ α'] P.L) := by
   intro hΘ W K _ o _ s h k ζ c P pr hpr huniv hW m α hα

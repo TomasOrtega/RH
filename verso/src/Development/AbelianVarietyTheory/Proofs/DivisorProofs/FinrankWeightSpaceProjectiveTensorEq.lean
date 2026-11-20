@@ -13,11 +13,11 @@ abbrev chr (k : Type) [Field k] (C : Type) [CommRing C] (χ : C →+* k) : k ⊗
   Algebra.TensorProduct.lift (Algebra.ofId k k) χ.toIntAlgHom (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Use `set f : M →ₗ[k] M := DistribSMul.toLinearMap k M (1 - e)`. Establish `hker : W = LinearMap.ker f`. Use extensionality with `m`. Rewrite using `[hW, LinearMap.mem_ker]`. Simplify using `only [f, DistribSMul.toLinearMap_apply, sub_smul, one_smul, sub_eq_zero, eq_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrange : (Ideal.span {1 - e} • ⊤ : Submodule A M).restrictScalars k = LinearMap.range f`. Use extensionality with `m`. Rewrite using `[Submodule.restrictScalars_mem, Submodule.ideal_span_singleton_smul, LinearMap.mem_range, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `[f]`. Establish `e1` using `(Submodule.Quotient.restrictScalarsEquiv k (Ideal.span {1 - e} • ⊤ : Submodule A M)).finrank_eq`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, hrange, hker]`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `h3` using `Submodule.finrank_quotient_add_finrank (LinearMap.range f)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_fix {k A M : Type*} [Field k] [CommRing A] [Algebra k A] [AddCommGroup M] [Module A M]
     [Module k M] [IsScalarTower k A M] [FiniteDimensional k M] (e : A) (W : Submodule k M)
@@ -40,19 +40,19 @@ theorem finrank_fix {k A M : Type*} [Field k] [CommRing A] [Algebra k A] [AddCom
   omega
 
 /- English proof (translation)
-Introduce `k _ _ C _ _ _ H _ _ _ σ`. Use `letI inst : Module (k ⊗[ℤ] C) H := Module.compHom H (Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k H)) σ.toIntAlgHom (fun _ _ => Algebra.commutes _ _)).toRingHom`. Introduce `hP χ`. Establish `hP' : Module.Projective (k ⊗[ℤ] C) H` using `hP`. Establish `hact : ∀ (a : k ⊗[ℤ] C) (h : H), a • h = (Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k H)) σ.toIntAlgHom (fun _ _ => Algebra.commutes _ _)) a h` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower k (k ⊗[ℤ] C) H := ⟨fun l a h => by`. Rewrite using `[hact, hact, map_smul, LinearMap.smul_apply]⟩`. Take `⟨e, he, h1, hn⟩` from `GlobalTheory.T.exists_idempotent_local_of_character k (k ⊗[ℤ] C) (chr k C χ)`. Establish `hσ : ∀ c, σ c = DistribSMul.toLinearMap k H ((1 : k) ⊗ₜ[ℤ] c)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Rewrite using `[DistribSMul.toLinearMap_apply, hact]`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlm : ∀ c, ((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c = DistribSMul.toLinearMap k (k ⊗[ℤ] C) ((1 : k) ⊗ₜ[ℤ] c)`. Introduce `c`. Use extensionality with `x`. Simplify using `[Algebra.TensorProduct.includeRight_apply]`. Establish `eH : (⨅ c : C, (σ c).maxGenEigenspace (χ c)) = ⨅ c : C, Module.End.maxGenEigenspace (DistribSMul.toLinearMap k H ((1 : k) ⊗ₜ[ℤ] c)) (χ c)` using `iInf_congr fun c => by rw [hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eA : (⨅ c : C, (((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c).maxGenEigenspace (χ c)) = ⨅ c : C, Module.End.maxGenEigenspace (DistribSMul.toLinearMap k (k ⊗[ℤ] C) ((1 : k) ⊗ₜ[ℤ] c)) (χ c)` using `iInf_congr fun c => by rw [hlm]`. Rewrite using `[eH, eA]`. Rewrite using `[finrank_fix e _ (GlobalTheory.T.mem_iInf_maxGenEigenspace_iff_smul_eq k C H χ e he h1 hn), finrank_fix e _ (GlobalTheory.T.mem_iInf_maxGenEigenspace_iff_smul_eq k C (k ⊗[ℤ] C) χ e he h1 hn), GlobalTheory.T.finrank_quot_one_sub_idempotent_eq_mul k (k ⊗[ℤ] C) (chr k C χ) e he h1 h …`. Establish `hq : Module.finrank k (H ⧸ GlobalTheory.HTRho.mSub σ χ ⊤) = Module.finrank k (H ⧸ (RingHom.ker (chr k C χ) • ⊤ : Submodule (k ⊗[ℤ] C) H))`. Establish `heq : GlobalTheory.HTRho.mSub σ χ ⊤ = (RingHom.ker (chr k C χ) • ⊤ : Submodule (k ⊗[ℤ] C) H).restrictScalars k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `GlobalTheory.T.characterAugmentationSubspace_top_eq_ker_smul k C H σ χ x`. Rewrite using `[heq]`. Conclude with `(Submodule.Quotient.restrictScalarsEquiv k _).finrank_eq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Use `congr 1`. Establish `hI : (Ideal.span {1 - e} • ⊤ : Submodule (k ⊗[ℤ] C) (k ⊗[ℤ] C)) = Ideal.span {1 - e}`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `((Submodule.quotEquivOfEq _ _ hI).restrictScalars k).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem weight_finrank_eq : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Type) [CommRing C] [Module.Free ℤ C] [Module.Finite ℤ C] (H : Type 1) [AddCommGroup H] [Module k H] [FiniteDimensional k H] (σ : C →+* Module.End k H), (letI : Module (k ⊗[ℤ] C) H := Module.compHom H (Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k H)) σ.toIntAlgHom (fun _ _ => Algebra.commutes _ _)).toRingHom; Module.Projective (k ⊗[ℤ] C) H) → ∀ χ : C →+* k, Module.finrank k ↥(⨅ c : C, (σ c).maxGenEigenspace (χ c)) = Module.finrank k (H ⧸ GlobalTheory.HTRho.mSub σ χ ⊤) * Module.finrank k ↥(⨅ c : C, (((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c).maxGenEigenspace (χ c)) := by
   intro k _ _ C _ _ _ H _ _ _ σ

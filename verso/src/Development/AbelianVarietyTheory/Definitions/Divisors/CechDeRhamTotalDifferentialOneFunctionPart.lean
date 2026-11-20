@@ -18,7 +18,7 @@ section Complex
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Introduce `r b`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem semiHom_mp {T T' : C} (φ : T ⟶ T') : SemiHom (RingHom.id R) (mp F φ : F.obj T →+* F.obj T') := by
   intro r b
@@ -33,21 +33,21 @@ section
 variable {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'')
 
 /- English proof (translation)
-Unfold `p1`. Conclude with `(semiHom_mp F φ).m1_D b`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem p1_D (b : F.obj T) : p1 F φ (D R _ b) = D R _ (mp F φ b) := by
   unfold p1
   exact (semiHom_mp F φ).m1_D b
 
 /- English proof (translation)
-Unfold `p1`. Conclude with `(semiHom_mp F φ).oneFormMap_smul_semilinear b ω`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oneFormsMapOfFunctorMorphism_smul (b : F.obj T) (ω : Ω[F.obj T⁄R]) : p1 F φ (b • ω) = mp F φ b • p1 F φ ω := by
   unfold p1
   exact (semiHom_mp F φ).oneFormMap_smul_semilinear b ω
 
 /- English proof (translation)
-Unfold `pOm`. Conclude with `(semiHom_mp F φ).mOm_smul b x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_smul {j : ℕ} (b : F.obj T) (x : Om R (F.obj T) j) :
     pOm F j φ (b • x) = mp F φ b • pOm F j φ x := by
@@ -55,7 +55,7 @@ theorem pOm_smul {j : ℕ} (b : F.obj T) (x : Om R (F.obj T) j) :
   exact (semiHom_mp F φ).mOm_smul b x
 
 /- English proof (translation)
-Unfold `p1`. Conclude with `((semiHom_mp F φ).oneFormMap_comp_oneFormMap (semiHom_mp F ψ) (semiHom_mp F (φ ≫ ψ)) (fun b ↦ (mp_comp F φ ψ b).symm) ω).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oneFormsMapOfFunctorMorphism_comp (ω : Ω[F.obj T⁄R]) : p1 F (φ ≫ ψ) ω = p1 F ψ (p1 F φ ω) := by
   unfold p1
@@ -63,14 +63,14 @@ theorem oneFormsMapOfFunctorMorphism_comp (ω : Ω[F.obj T⁄R]) : p1 F (φ ≫ 
     (fun b ↦ (mp_comp F φ ψ b).symm) ω).symm
 
 /- English proof (translation)
-Unfold `p1`. Conclude with `(semiHom_mp F (𝟙 T)).oneFormMap_eq_self_of_id (fun b ↦ mp_id F T b) ω`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oneFormsMapOfFunctorMorphism_id (ω : Ω[F.obj T⁄R]) : p1 F (𝟙 T) ω = ω := by
   unfold p1
   exact (semiHom_mp F (𝟙 T)).oneFormMap_eq_self_of_id (fun b ↦ mp_id F T b) ω
 
 /- English proof (translation)
-Unfold `pOm`. Conclude with `((semiHom_mp F φ).mOm_mOm (semiHom_mp F ψ) (semiHom_mp F (φ ≫ ψ)) (fun b ↦ (mp_comp F φ ψ b).symm) x).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_comp {j : ℕ} (x : Om R (F.obj T) j) : pOm F j (φ ≫ ψ) x = pOm F j ψ (pOm F j φ x) := by
   unfold pOm
@@ -78,14 +78,14 @@ theorem pOm_comp {j : ℕ} (x : Om R (F.obj T) j) : pOm F j (φ ≫ ψ) x = pOm 
     (fun b ↦ (mp_comp F φ ψ b).symm) x).symm
 
 /- English proof (translation)
-Unfold `pOm`. Conclude with `(semiHom_mp F (𝟙 T)).mOm_id (fun b ↦ mp_id F T b) x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_id {j : ℕ} (x : Om R (F.obj T) j) : pOm F j (𝟙 T) x = x := by
   unfold pOm
   exact (semiHom_mp F (𝟙 T)).mOm_id (fun b ↦ mp_id F T b) x
 
 /- English proof (translation)
-Unfold `pOm`. Conclude with `(semiHom_mp F φ).mOm_dOm x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_dOm {j : ℕ} (x : Om R (F.obj T) j) :
     pOm F (j + 1) φ (dOm R _ j x) = dOm R _ j (pOm F j φ x) := by
@@ -93,21 +93,21 @@ theorem pOm_dOm {j : ℕ} (x : Om R (F.obj T) j) :
   exact (semiHom_mp F φ).mOm_dOm x
 
 /- English proof (translation)
-Unfold `pOm p1`. Conclude with `(semiHom_mp F φ).mOm_dOne ω`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_dOne (ω : Ω[F.obj T⁄R]) : pOm F 2 φ (dOne R _ ω) = dOne R _ (p1 F φ ω) := by
   unfold pOm p1
   exact (semiHom_mp F φ).mOm_dOne ω
 
 /- English proof (translation)
-Unfold `pOm`. Conclude with `(semiHom_mp F φ).mOm_dTwo x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_dTwo (x : Om R (F.obj T) 2) : pOm F 3 φ (dTwo R _ x) = dTwo R _ (pOm F 2 φ x) := by
   unfold pOm
   exact (semiHom_mp F φ).mOm_dTwo x
 
 /- English proof (translation)
-Unfold `pOm p1`. Conclude with `(semiHom_mp F φ).mOm_wedge a b`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pOm_wedge (a b : Ω[F.obj T⁄R]) :
     pOm F 2 φ (wedge R _ a b) = wedge R _ (p1 F φ a) (p1 F φ b) := by
@@ -198,7 +198,7 @@ end
 variable {F} in
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Conclude with `h1 T T' φ`. Use function extensionality and compare the values at `T`. Conclude with `h2 T`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Tot1.ext {c c' : Tot1 F} (h1 : ∀ T T' φ, c.1 T T' φ = c'.1 T T' φ) (h2 : ∀ T, c.2 T = c'.2 T) :
     c = c' := by
@@ -211,9 +211,7 @@ theorem Tot1.ext {c c' : Tot1 F} (h1 : ∀ T T' φ, c.1 T T' φ = c'.1 T T' φ) 
 variable {F} in
 
 /- English proof (translation)
-Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `h1 T T' T'' φ ψ`. Use function extensionality and compare the values at `T T' φ`. Conclude with `h2 T T' φ`.
-
-Use function extensionality and compare the values at `T`. Conclude with `h3 T`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Tot2.ext {c c' : Tot2 F} (h1 : ∀ T T' T'' φ ψ, c.1 T T' T'' φ ψ = c'.1 T T' T'' φ ψ)
     (h2 : ∀ T T' φ, c.2.1 T T' φ = c'.2.1 T T' φ) (h3 : ∀ T, c.2.2 T = c'.2.2 T) : c = c' := by
@@ -232,13 +230,11 @@ def cechDeRhamTotalCocyclesTwo : Submodule R (Tot2 F) := LinearMap.ker (dTot2 F)
 variable {F}
 
 /- English proof (translation)
-Rewrite using `[cechDeRhamTotalCocyclesOne, LinearMap.mem_ker, commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨congrArg Prod.fst h, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Establish `e : (dTot1 F c).2.1 T T' φ = 0` using `congrFun (congrFun (congrFun (congrArg (fun x ↦ x.2.1) h) T) T') φ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[dTot1_a, sub_sub, sub_eq_zero]`. Conclude with `e`. Establish `e : (dTot1 F c).2.2 T = 0` using `congrFun (congrArg (fun x ↦ x.2.2) h) T`. Rewrite `e` using `[dTot1_η]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Use `Prod.ext h1 (Prod.ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ show (dTot1 F c).2.1 T T' φ = 0`. Rewrite using `[dTot1_a, h2 φ]`. Normalize the expressions using the abelian group laws.
-
-Use function extensionality and compare the values at `T`. Conclude with `h3 T`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mem_cechDeRhamTotalCocyclesOne_iff {c : Tot1 F} : c ∈ cechDeRhamTotalCocyclesOne F ↔ c.1 ∈ Z1 F ∧
     (∀ ⦃T T' : C⦄ (φ : T ⟶ T'), c.2 T' = p1 F φ (c.2 T) + D R _ (c.1 T T' φ)) ∧
@@ -263,17 +259,15 @@ theorem mem_cechDeRhamTotalCocyclesOne_iff {c : Tot1 F} : c ∈ cechDeRhamTotalC
       exact h3 T
 
 /- English proof (translation)
-Rewrite using `[cechDeRhamTotalCocyclesTwo, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Introduce `T T' T'' T''' φ ψ χ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : c.1 T' T'' T''' ψ χ - c.1 T T'' T''' (φ ≫ ψ) χ + c.1 T T' T''' φ (ψ ≫ χ) - mp F χ (c.1 T T' T'' φ ψ) = 0` using `congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (congrArg Prod.fst h) T) T') T'') T''') φ) ψ) χ`. Take the linear combination `-e`. Establish `e : p1 F ψ (c.2.1 T T' φ) - c.2.1 T T'' (φ ≫ ψ) + c.2.1 T' T'' ψ + D R _ (c.1 T T' T'' φ ψ) = 0` using `congrFun (congrFun (congrFun (congrFun (congrFun (congrArg (fun x ↦ x.2.1) h) T) T') T'') φ) ψ`. Establish `e' : c.2.1 T T'' (φ ≫ ψ) - (p1 F ψ (c.2.1 T T' φ) + c.2.1 T' T'' ψ + D R _ (c.1 T T' T'' φ ψ)) = -(p1 F ψ (c.2.1 T T' φ) - c.2.1 T T'' (φ ≫ ψ) + c.2.1 T' T'' ψ + D R _ (c.1 T T' T'' φ ψ))` using `by abel`. Rewrite `e'` using `[e, neg_zero, sub_eq_zero]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e'`. Establish `e : c.2.2 T' - pOm F 2 φ (c.2.2 T) - dOne R _ (c.2.1 T T' φ) = 0` using `congrFun (congrFun (congrFun (congrArg (fun x ↦ x.2.2.1) h) T) T') φ`. Rewrite `e` using `[sub_sub, sub_eq_zero]`. Conclude with `e`. Conclude with `congrFun (congrArg (fun x ↦ x.2.2.2) h) T`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ show c.1 T' T'' T''' ψ χ - c.1 T T'' T''' (φ ≫ ψ) χ + c.1 T T' T''' φ (ψ ≫ χ) - mp F χ (c.1 T T' T'' φ ψ) = 0`. Establish `e` using `h1 φ ψ χ`. Take the linear combination `-e`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ show p1 F ψ (c.2.1 T T' φ) - c.2.1 T T'' (φ ≫ ψ) + c.2.1 T' T'' ψ + D R _ (c.1 T T' T'' φ ψ) = 0`. Rewrite using `[h2 φ ψ]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `T T' φ show c.2.2 T' - pOm F 2 φ (c.2.2 T) - dOne R _ (c.2.1 T T' φ) = 0`. Rewrite using `[h3 φ]`.
-
-Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `T`. Conclude with `h4 T`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mem_cechDeRhamTotalCocyclesTwo_iff {c : Tot2 F} : c ∈ cechDeRhamTotalCocyclesTwo F ↔ c.1 ∈ Z2 F ∧
     (∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), c.2.1 T T'' (φ ≫ ψ) =
@@ -326,23 +320,23 @@ section
 variable {T T' T'' T''' : C}
 
 /- English proof (translation)
-The claim follows from `Z1.comp ⟨c.1.1, (mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).1⟩ φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesOne.comp (c : cechDeRhamTotalCocyclesOne F) (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     c.1.1 T T'' (φ ≫ ψ) = mp F ψ (c.1.1 T T' φ) + c.1.1 T' T'' ψ := Z1.comp ⟨c.1.1, (mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).1⟩ φ ψ
 
 /- English proof (translation)
-The claim follows from `(mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).2.1 φ`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesOne.conn (c : cechDeRhamTotalCocyclesOne F) (φ : T ⟶ T') : c.1.2 T' = p1 F φ (c.1.2 T) + D R _ (c.1.1 T T' φ) := (mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).2.1 φ
 
 /- English proof (translation)
-The claim follows from `(mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).2.2 T`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesOne.closed (c : cechDeRhamTotalCocyclesOne F) (T : C) : dOne R _ (c.1.2 T) = 0 := (mem_cechDeRhamTotalCocyclesOne_iff.1 c.2).2.2 T
 
 /- English proof (translation)
-Establish `h` using `(mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).1`. Conclude with `h φ ψ χ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesTwo.comp (c : cechDeRhamTotalCocyclesTwo F) (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''') :
     mp F χ (c.1.1 T T' T'' φ ψ) + c.1.1 T T'' T''' (φ ≫ ψ) χ =
@@ -351,19 +345,19 @@ theorem cechDeRhamTotalCocyclesTwo.comp (c : cechDeRhamTotalCocyclesTwo F) (φ :
   exact h φ ψ χ
 
 /- English proof (translation)
-The claim follows from `(mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.1 φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesTwo.one (c : cechDeRhamTotalCocyclesTwo F) (φ : T ⟶ T') (ψ : T' ⟶ T'') : c.1.2.1 T T'' (φ ≫ ψ) =
     p1 F ψ (c.1.2.1 T T' φ) + c.1.2.1 T' T'' ψ + D R _ (c.1.1 T T' T'' φ ψ) := (mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.1 φ ψ
 
 /- English proof (translation)
-The claim follows from `(mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.2.1 φ`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesTwo.two (c : cechDeRhamTotalCocyclesTwo F) (φ : T ⟶ T') :
     c.1.2.2 T' = pOm F 2 φ (c.1.2.2 T) + dOne R _ (c.1.2.1 T T' φ) := (mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.2.1 φ
 
 /- English proof (translation)
-The claim follows from `(mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.2.2 T`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRhamTotalCocyclesTwo.closed (c : cechDeRhamTotalCocyclesTwo F) (T : C) : dTwo R _ (c.1.2.2 T) = 0 := (mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.2.2 T
 
@@ -372,9 +366,9 @@ end
 variable (F)
 
 /- English proof (translation)
-Rewrite using `[mem_cechDeRhamTotalCocyclesOne_iff]`. Use `⟨commAlgFunctorCoboundaryZero_mem_cocyclesOne F g, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[dTot0_ω, dTot0_ω, dTot0_f, p1_D, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[dTot0_ω]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dOne_D _`.
+A detailed English derivation is pending.
 -/
 theorem dTot0_mem (g : Tot0 F) : dTot0 F g ∈ cechDeRhamTotalCocyclesOne F := by
   rw [mem_cechDeRhamTotalCocyclesOne_iff]
@@ -385,9 +379,9 @@ theorem dTot0_mem (g : Tot0 F) : dTot0 F g ∈ cechDeRhamTotalCocyclesOne F := b
     exact dOne_D _
 
 /- English proof (translation)
-Rewrite using `[mem_cechDeRhamTotalCocyclesTwo_iff]`. Use `⟨differential_one_mem_scaled_lattice F c.1, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [dTot1_a, cechDeRhamTotalDifferentialOne_functionPart, oneFormsMapOfFunctorMorphism_comp, map_sub, map_add, p1_D]`. Normalize the expressions using the abelian group laws. Simplify using `only [dTot1_η, dTot1_a, map_sub, pOm_dOne, dOne_D]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[dTot1_η]`. Conclude with `dTwo_dOne _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dTot1_mem (c : Tot1 F) : dTot1 F c ∈ cechDeRhamTotalCocyclesTwo F := by
   rw [mem_cechDeRhamTotalCocyclesTwo_iff]
@@ -416,21 +410,21 @@ def Hyp1.mk : cechDeRhamTotalCocyclesOne F →ₗ[R] Hyp1 F := Submodule.mkQ _
 def Hyp2.mk : cechDeRhamTotalCocyclesTwo F →ₗ[R] Hyp2 F := Submodule.mkQ _
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem Hyp1.mk_surjective : Function.Surjective (Hyp1.mk F) := Submodule.mkQ_surjective _
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem Hyp2.mk_surjective : Function.Surjective (Hyp2.mk F) := Submodule.mkQ_surjective _
 
 variable {F}
 
 /- English proof (translation)
-Use `show (Submodule.Quotient.mk c : cechDeRhamTotalCocyclesOne F ⧸ _) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, congrArg Subtype.val hg⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, Subtype.ext hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Hyp1.mk_eq_zero {c : cechDeRhamTotalCocyclesOne F} : Hyp1.mk F c = 0 ↔ ∃ g, dTot0 F g = c.1 := by
   show (Submodule.Quotient.mk c : cechDeRhamTotalCocyclesOne F ⧸ _) = 0 ↔ _
@@ -442,9 +436,9 @@ theorem Hyp1.mk_eq_zero {c : cechDeRhamTotalCocyclesOne F} : Hyp1.mk F c = 0 ↔
     exact ⟨g, Subtype.ext hg⟩
 
 /- English proof (translation)
-Use `show (Submodule.Quotient.mk c : cechDeRhamTotalCocyclesTwo F ⧸ _) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Conclude with `⟨e, congrArg Subtype.val he⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨e, he⟩`. Conclude with `⟨e, Subtype.ext he⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Hyp2.mk_eq_zero {c : cechDeRhamTotalCocyclesTwo F} : Hyp2.mk F c = 0 ↔ ∃ e, dTot1 F e = c.1 := by
   show (Submodule.Quotient.mk c : cechDeRhamTotalCocyclesTwo F ⧸ _) = 0 ↔ _
@@ -456,14 +450,14 @@ theorem Hyp2.mk_eq_zero {c : cechDeRhamTotalCocyclesTwo F} : Hyp2.mk F c = 0 ↔
     exact ⟨e, Subtype.ext he⟩
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, Hyp1.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hyp1.mk_eq_mk {c c' : cechDeRhamTotalCocyclesOne F} : Hyp1.mk F c = Hyp1.mk F c' ↔ ∃ g, dTot0 F g = c.1 - c'.1 := by
   rw [← sub_eq_zero, ← map_sub, Hyp1.mk_eq_zero]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, Hyp2.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hyp2.mk_eq_mk {c c' : cechDeRhamTotalCocyclesTwo F} : Hyp2.mk F c = Hyp2.mk F c' ↔ ∃ e, dTot1 F e = c.1 - c'.1 := by
   rw [← sub_eq_zero, ← map_sub, Hyp2.mk_eq_zero]
@@ -506,13 +500,11 @@ theorem cupTot_η (T : C) : (cupTot F a b).2.2 T = wedge R _ (a.2 T) (b.2 T) := 
 end
 
 /- English proof (translation)
-Rewrite using `[mem_cechDeRhamTotalCocyclesTwo_iff]`. Use `⟨?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Introduce `T T' T'' T''' φ ψ χ`. Simplify using `only [cupTot_apply, cechDeRhamTotalCocyclesOne.comp a, cechDeRhamTotalCocyclesOne.comp b, map_mul, map_add, mp_comp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [cupTot_a, cupTot_apply]`. Rewrite using `[cechDeRhamTotalCocyclesOne.comp a φ ψ, cechDeRhamTotalCocyclesOne.comp b φ ψ, cechDeRhamTotalCocyclesOne.conn b ψ, cechDeRhamTotalCocyclesOne.conn a φ]`. Simplify using `only [map_add, map_sub, oneFormsMapOfFunctorMorphism_smul, oneFormsMapOfFunctorMorphism_comp, p1_D, Derivation.leibniz]`. Use `module`. Simplify using `only [cupTot_η, cupTot_a, map_sub, dOne_smul, cechDeRhamTotalCocyclesOne.closed b, ← pOm_dOne, cechDeRhamTotalCocyclesOne.closed a, map_zero, smul_zero, add_zero, pOm_wedge]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cechDeRhamTotalCocyclesOne.conn a φ, cechDeRhamTotalCocyclesOne.conn b φ]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[wedge_swap (D R _ (b.1.1 T T' φ)) (p1 F φ (a.1.2 T))]`. Normalize the expressions using the abelian group laws. Rewrite using `[cupTot_η]`.
-
-Conclude with `dTwo_wedge (cechDeRhamTotalCocyclesOne.closed a T) (cechDeRhamTotalCocyclesOne.closed b T)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupTot_mem (a b : cechDeRhamTotalCocyclesOne F) : cupTot F a.1 b.1 ∈ cechDeRhamTotalCocyclesTwo F := by
   rw [mem_cechDeRhamTotalCocyclesTwo_iff]
@@ -615,19 +607,17 @@ def formZZ : Closed1 F →ₗ[R] cechDeRhamTotalCocyclesOne F where
 def ofForm : Closed1 F →ₗ[R] Hyp1 F := Hyp1.mk F ∘ₗ formZZ F
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, rfl⟩` from `Hyp1.mk_surjective F x`. Rewrite `hx` using `[Fil1, LinearMap.mem_ker, toO_mk, H1.mk_eq_zero]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `hx`. Establish `hg' : d0 F g = c.1.1` using `hg`. Set `c' : cechDeRhamTotalCocyclesOne F` to `c - ⟨dTot0 F g, dTot0_mem F g⟩`. Establish `h1 : c'.1.1 = 0` using `by show c.1.1 - d0 F g = 0`. Rewrite using `[hg', sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `mem_cechDeRhamTotalCocyclesOne_iff.1 c'.2`. Set `ω : Closed1 F` to `⟨⟨c'.1.2, by`. Introduce `T T' φ`. Establish `e` using `hm.2.1 φ`. Rewrite `e` using `[h1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using e⟩, by`. Introduce `T`. Conclude with `hm.2.2 T⟩`. Use `⟨ω, ?_⟩` and prove the remaining obligations. Use `show Hyp1.mk F (formZZ F ω) = Hyp1.mk F c`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hω : formZZ F ω = c'` using `Subtype.ext (Prod.ext h1.symm rfl)`. Rewrite using `[hω, Hyp1.mk_eq_mk]`. Use `⟨-g, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg]`. Use `show -dTot0 F g = (c.1 - dTot0 F g) - c.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Introduce and unpack `⟨ω, rfl⟩`. Rewrite using `[Fil1, LinearMap.mem_ker]`. Use `show toO F (Hyp1.mk F (formZZ F ω)) = 0`. Rewrite using `[toO_mk, H1.mk_eq_zero]`.
-
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Fil1_eq_range : Fil1 F = LinearMap.range (ofForm F) := by
   ext x
@@ -668,13 +658,11 @@ theorem Fil1_eq_range : Fil1 F = LinearMap.range (ofForm F) := by
 variable {F} in
 
 /- English proof (translation)
-Use `show Hyp1.mk F (formZZ F ω) = 0 ↔ _`. Rewrite using `[Hyp1.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨g, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (dTot0 F g).1 T T' φ = 0` using `congrFun (congrFun (congrFun (congrArg Prod.fst hg) T) T') φ`. Rewrite `e` using `[dTot0_f]`. Conclude with `sub_eq_zero.1 e`. Establish `e : (dTot0 F g).2 T = ω.1.1 T` using `congrFun (congrArg Prod.snd hg) T`. Rewrite `e` using `[dTot0_ω]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e`. Introduce and unpack `⟨g, h1, h2⟩`. Use `⟨g, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ show (dTot0 F g).1 T T' φ = 0`. Rewrite using `[dTot0_f, h1 φ, sub_self]`.
-
-Use function extensionality and compare the values at `T show (dTot0 F g).2 T = ω.1.1 T`. Rewrite using `[dTot0_ω]`. Conclude with `h2 T`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofForm_eq_zero {ω : Closed1 F} : ofForm F ω = 0 ↔
     ∃ g : C0 F, (∀ ⦃T T' : C⦄ (φ : T ⟶ T'), g T' = mp F φ (g T)) ∧ ∀ T, D R _ (g T) = ω.1.1 T := by

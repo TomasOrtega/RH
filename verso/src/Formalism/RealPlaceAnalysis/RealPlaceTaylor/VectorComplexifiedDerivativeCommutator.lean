@@ -12,11 +12,11 @@ namespace Formalism.REAL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n ε E _ _ f F U g X hU hg hgJ hF hfF hX`. Unfold `RdV`. Establish `hγ` using `hasDerivAt_mul_exp_smul_zero g X`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g`. Simplify using `[NormedSpace.exp_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hg)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`. Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X)))`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hg)`. Use `filter_upwards [hmem] with t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfF _ ht (indefinite_unitary_mul_mem ε hgJ (exp_indefinite_unitary_holds n ε X hX t))`. Rewrite using `[hev.deriv_eq]`. Conclude with `hcomp.deriv`.
+A detailed English derivation is pending.
 -/
 theorem vector_right_derivative_extends : RdExtV := by
   intro n ε E _ _ f F U g X hU hg hgJ hF hfF hX
@@ -39,16 +39,16 @@ theorem vector_right_derivative_extends : RdExtV := by
   exact hcomp.deriv
 
 /- English proof (translation)
-Introduce `n E _ _ f X h g`. Simplify using `only [RdV, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem vector_right_derivative_left_invariant : RdLeftV := by
   intro n E _ _ f X h g
   simp only [RdV, mul_assoc]
 
 /- English proof (translation)
-Introduce `n ε E _ _ f X hf hX g0 hg0`. Use `letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) := ContinuousLinearMap.toNormedAddCommGroup`. Use `letI : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) := ContinuousLinearMap.toNormedSpace`. Take `⟨U, F, hU, hg0U, hF, hfF⟩` from `hf g0 hg0`. Use `⟨U, fun x => fderiv ℝ F x (x * X), hU, hg0U, ?_, fun x hx hxJ => h n ε E f F U x X hU hx hxJ hF hfF hX⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF1 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ F y) U` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).mp hF).2`. Establish `hL : ContDiff ℝ ∞ (fun y : Matrix (Fin n) (Fin n) ℂ => y * X)` using `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff`. Conclude with `hF1.clm_apply hL.contDiffOn`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdSmoothV_of (h : RdExtV) : RdSmoothV := by
   intro n ε E _ _ f X hf hX g0 hg0
@@ -65,7 +65,7 @@ theorem rdSmoothV_of (h : RdExtV) : RdSmoothV := by
   exact hF1.clm_apply hL.contDiffOn
 
 /- English proof (translation)
-Unfold `inG at *`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hY, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inG_add_real_place_taylor {m : ℕ} {e : Fin m → Bool} {X Y : Matrix (Fin m) (Fin m) ℂ}
     (hX : inG e X) (hY : inG e Y) : inG e (X + Y) := by
@@ -73,11 +73,11 @@ private lemma inG_add_real_place_taylor {m : ℕ} {e : Fin m → Bool} {X Y : Ma
   rw [Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hY, add_zero]
 
 /- English proof (translation)
-Introduce `n ε E _ _ f f' X Y r c g hf hf' hX hY hg`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Take `⟨U', F', hU', hgU', hF', hfF'⟩` from `hf' g hg`. Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Establish `hFd' : DifferentiableAt ℝ F' g` using `(hF'.differentiableOn (by simp)).differentiableAt (hU'.mem_nhds hgU')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eX` using `h n ε E f F U g X hU hgU hg hF hfF hX`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h n ε E f F U g (X + Y) hU hgU hg hF hfF (lie_algebra_add_mem ε hX hY), eX, h n ε E f F U g Y hU hgU hg hF hfF hY, Matrix.mul_add, map_add]`. Rewrite using `[h n ε E f F U g ((r : ℂ) • X) hU hgU hg hF hfF (lie_algebra_real_smul_mem ε hX r), eX, Matrix.mul_smul, Complex.coe_smul, map_smul, Complex.coe_smul]`. Establish `hsm : ContDiffOn ℝ ∞ (fun x => F x + c • F' x) (U ∩ U')` using `(hF.mono Set.inter_subset_left).add ((hF'.mono Set.inter_subset_right).const_smul c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h n ε E (fun x => f x + c • f' x) (fun x => F x + c • F' x) (U ∩ U') g X (hU.inter hU') ⟨hgU, hgU'⟩ hg hsm (fun x hx hxJ => by rw [hfF x hx.1 hxJ, hfF' x hx.2 hxJ]) hX, eX, h n ε E f' F' U' g X hU' hgU' hg hF' hfF' hX]`. Establish `hD : HasFDerivAt (fun x => F x + c • F' x) (fderiv ℝ F g + c • fderiv ℝ F' g) g` using `hFd.hasFDerivAt.add (hFd'.hasFDerivAt.const_smul c)`. Rewrite using `[hD.fderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rdLinV_of (h : RdExtV) : RdLinV := by
   intro n ε E _ _ f f' X Y r c g hf hf' hX hY hg
@@ -104,9 +104,9 @@ theorem rdLinV_of (h : RdExtV) : RdLinV := by
     simp
 
 /- English proof (translation)
-Unfold `inG at *`. Establish `key : (X * Y - Y * X)ᴴ * Jm e + Jm e * (X * Y - Y * X) = Yᴴ * (Xᴴ * Jm e + Jm e * X) - (Yᴴ * Jm e + Jm e * Y) * X - Xᴴ * (Yᴴ * Jm e + Jm e * Y) + (Xᴴ * Jm e + Jm e * X) * Y`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[key, hX, hY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma inG_commutator' {m : ℕ} {e : Fin m → Bool} {X Y : Matrix (Fin m) (Fin m) ℂ}
     (hX : inG e X) (hY : inG e Y) : inG e (X * Y - Y * X) := by
@@ -121,15 +121,15 @@ private lemma inG_commutator' {m : ℕ} {e : Fin m → Bool} {X Y : Matrix (Fin 
   simp
 
 /- English proof (translation)
-Introduce `n ε E _ _ f X Y g hf hX hY hg`. Use `letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) := ContinuousLinearMap.toNormedAddCommGroup`. Use `letI : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) := ContinuousLinearMap.toNormedSpace`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hF1 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ F y) U` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).mp hF).2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `LX : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)`. Set `LY : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ Y)`. Establish `hGX : ContDiffOn ℝ ∞ (fun y => fderiv ℝ F y (y * X)) U` using `hF1.clm_apply (LX.contDiff.contDiffOn)`. Establish `hGY : ContDiffOn ℝ ∞ (fun y => fderiv ℝ F y (y * Y)) U` using `hF1.clm_apply (LY.contDiff.contDiffOn)`. Establish `eY : RdV X (RdV Y f) g = fderiv ℝ (fun y => fderiv ℝ F y (y * Y)) g (g * X)` using `h n ε E (RdV Y f) (fun y => fderiv ℝ F y (y * Y)) U g X hU hgU hg hGY (fun x hx hxJ => h n ε E f F U x Y hU hx hxJ hF hfF hY) hX`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eX : RdV Y (RdV X f) g = fderiv ℝ (fun y => fderiv ℝ F y (y * X)) g (g * Y)` using `h n ε E (RdV X f) (fun y => fderiv ℝ F y (y * X)) U g Y hU hgU hg hGX (fun x hx hxJ => h n ε E f F U x X hU hx hxJ hF hfF hX) hY`. Establish `eXY : RdV (X * Y - Y * X) f g = fderiv ℝ F g (g * (X * Y - Y * X))` using `h n ε E f F U g _ hU hgU hg hF hfF (inG_commutator' hX hY)`. Establish `hFd2 : DifferentiableAt ℝ (fun y => fderiv ℝ F y) g` using `(hF1.differentiableOn (by simp) g hgU).differentiableAt (hU.mem_nhds hgU)`. Establish `hev : ∀ᶠ y in 𝓝 g, HasFDerivAt F (fderiv ℝ F y) y` using `Filter.eventually_of_mem (hU.mem_nhds hgU) fun y hy => ((hF.differentiableOn (by simp) y hy).differentiableAt (hU.mem_nhds hy)).hasFDerivAt`. Establish `hsymm` using `second_derivative_symmetric_of_eventually hev hFd2.hasFDerivAt (g * X) (g * Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhY : HasFDerivAt (fun y => fderiv ℝ F y (y * Y)) _ g` using `hFd2.hasFDerivAt.clm_apply LY.hasFDerivAt`. Establish `hhX : HasFDerivAt (fun y => fderiv ℝ F y (y * X)) _ g` using `hFd2.hasFDerivAt.clm_apply LX.hasFDerivAt`. Establish `dY : fderiv ℝ (fun y => fderiv ℝ F y (y * Y)) g (g * X) = fderiv ℝ F g (g * X * Y) + fderiv ℝ (fun y => fderiv ℝ F y) g (g * X) (g * Y)`. Rewrite using `[hhY.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `dX : fderiv ℝ (fun y => fderiv ℝ F y (y * X)) g (g * Y) = fderiv ℝ F g (g * Y * X) + fderiv ℝ (fun y => fderiv ℝ F y) g (g * Y) (g * X)`. Rewrite using `[hhX.fderiv]`. Both sides reduce to the same expression. Establish `hsymm' : fderiv ℝ (fun y => fderiv ℝ F y) g (g * X) (g * Y) = fderiv ℝ (fun y => fderiv ℝ F y) g (g * Y) (g * X)` using `hsymm`. Rewrite using `[eY, eX, eXY, dY, dX, hsymm', Matrix.mul_sub, map_sub, Matrix.mul_assoc g X Y, Matrix.mul_assoc g Y X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -186,7 +186,7 @@ section EabGl
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `h2` using `(hl n ε E f f B B (-1) 0 g hf hf hB hB hg).2.1`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma vector_right_derivative_neg (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ → E}
     {B g : Matrix (Fin n) (Fin n) ℂ} (hf : SmoothOnGV ε f) (hB : inG ε B) (hg : inUJ ε g) :
@@ -195,14 +195,14 @@ lemma vector_right_derivative_neg (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ 
   simpa using h2
 
 /- English proof (translation)
-The claim follows from `(hl n ε E f f A B 0 0 g hf hf hA hB hg).1`.
+A detailed English derivation is pending.
 -/
 lemma vector_right_derivative_add (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ → E}
     {A B g : Matrix (Fin n) (Fin n) ℂ} (hf : SmoothOnGV ε f) (hA : inG ε A) (hB : inG ε B)
     (hg : inUJ ε g) : RdV (A + B) f g = RdV A f g + RdV B f g := (hl n ε E f f A B 0 0 g hf hf hA hB hg).1
 
 /- English proof (translation)
-Establish `hnB : inG ε (-B)`. Unfold `inG at hB ⊢`. Rewrite using `[Matrix.conjTranspose_neg, neg_mul, mul_neg, ← neg_add, hB, neg_zero]`. Rewrite using `[sub_eq_add_neg A B, vector_right_derivative_add hl hf hA hnB hg, vector_right_derivative_neg hl hf hB hg, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma vector_right_derivative_sub (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ → E}
     {A B g : Matrix (Fin n) (Fin n) ℂ} (hf : SmoothOnGV ε f) (hA : inG ε A) (hB : inG ε B)
@@ -213,7 +213,7 @@ lemma vector_right_derivative_sub (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ 
   rw [sub_eq_add_neg A B, vector_right_derivative_add hl hf hA hnB hg, vector_right_derivative_neg hl hf hB hg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jm_mul_JmRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) : Jm e * Jm e = 1 := by
   unfold Jm
@@ -223,14 +223,14 @@ private lemma Jm_mul_JmRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) : Jm e * J
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Jm_mul_JmRealPlaceTaylor, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma Jm_mul_Jm_mulRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) (Y : Matrix (Fin m) (Fin m) ℂ) :
     Jm e * (Jm e * Y) = Y := by
   rw [← Matrix.mul_assoc, Jm_mul_JmRealPlaceTaylor, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hc : star (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[star_div₀, star_one, star_ofNat]`. Unfold `inG cpart1`. Rewrite using `[Matrix.conjTranspose_smul, hc, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Jm_mul_JmRealPlaceTaylor, Jm_mul_Jm_mulRealPlaceTaylor, Matrix.mul_one, smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -246,9 +246,9 @@ private lemma cpart1_inG {m : ℕ} (e : Fin m → Bool) (Z : Matrix (Fin m) (Fin
   abel
 
 /- English proof (translation)
-Establish `hc : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Rewrite using `[star_div₀, star_one, star_mul', star_ofNat, Complex.star_def, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Unfold `inG cpart2`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Jm_mul_JmRealPlaceTaylor, Jm_mul_Jm_mulRealPlaceTaylor, Matrix.mul_one, smul_add]`. Rewrite using `[hc]`. Simplify using `only [neg_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private lemma cpart2_inG {m : ℕ} (e : Fin m → Bool) (Z : Matrix (Fin m) (Fin m) ℂ) :
     inG e (cpart2 e Z) := by
@@ -265,9 +265,9 @@ private lemma cpart2_inG {m : ℕ} (e : Fin m → Bool) (Z : Matrix (Fin m) (Fin
   abel
 
 /- English proof (translation)
-Establish `h1 : cpart1 ε (Z - W) = cpart1 ε Z - cpart1 ε W`. Simplify using `only [cpart1, Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `h2 : cpart2 ε (Z - W) = cpart2 ε Z - cpart2 ε W`. Simplify using `only [cpart2, Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, smul_add, smul_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [EcV]`. Rewrite using `[h1, h2, vector_right_derivative_sub hl hf (cpart1_inG ε Z) (cpart1_inG ε W) hg, vector_right_derivative_sub hl hf (cpart2_inG ε Z) (cpart2_inG ε W) hg, smul_sub]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma vector_complexified_derivative_sub (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ → E} {g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnGV ε f) (hg : inUJ ε g) (Z W : Matrix (Fin n) (Fin n) ℂ) :
@@ -284,14 +284,14 @@ lemma vector_complexified_derivative_sub (hl : RdLinV) {f : Matrix (Fin n) (Fin 
   abel
 
 /- English proof (translation)
-Simplify using `[EcV, RdV, cpart1, cpart2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma vector_complexified_derivative_zero (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (g : Matrix (Fin n) (Fin n) ℂ) : EcV ε 0 f g = 0 := by
   simp [EcV, RdV, cpart1, cpart2]
 
 /- English proof (translation)
-Unfold `inG at *`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, sub_add_sub_comm, hX, hY, sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inG_sub_real_place_taylor {m : ℕ} {e : Fin m → Bool} {X Y : Matrix (Fin m) (Fin m) ℂ}
     (hX : inG e X) (hY : inG e Y) : inG e (X - Y) := by
@@ -299,7 +299,7 @@ private lemma inG_sub_real_place_taylor {m : ℕ} {e : Fin m → Bool} {X Y : Ma
   rw [Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, sub_add_sub_comm, hX, hY, sub_zero]
 
 /- English proof (translation)
-Unfold `inG at hA`. Establish `h : Jm e * Aᴴ * Jm e + A = Jm e * (Aᴴ * Jm e + Jm e * A)`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Jm_mul_JmRealPlaceTaylor, Matrix.one_mul]`. Rewrite `h` using `[hA, Matrix.mul_zero]`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Jm_mul_conjTranspose_mul_Jm_of_inG {m : ℕ} {e : Fin m → Bool} {A : Matrix (Fin m) (Fin m) ℂ}
     (hA : inG e A) : Jm e * Aᴴ * Jm e = -A := by
@@ -310,11 +310,11 @@ private lemma Jm_mul_conjTranspose_mul_Jm_of_inG {m : ℕ} {e : Fin m → Bool} 
   exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-Establish `hs : Jm e * (A + Complex.I • B)ᴴ * Jm e = -A + Complex.I • B`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_I, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Jm_mul_conjTranspose_mul_Jm_of_inG hA, Jm_mul_conjTranspose_mul_Jm_of_inG hB, neg_smul, smul_neg, neg_neg]`. Establish `h2I : (2 * Complex.I) ≠ 0` using `mul_ne_zero two_ne_zero Complex.I_ne_zero`. Prove the components needed by the constructor for the conclusion. Unfold `cpart1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs, show A + Complex.I • B - (-A + Complex.I • B) = (2 : ℂ) • A by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions. Unfold `cpart2`. Rewrite using `[hs, show A + Complex.I • B + (-A + Complex.I • B) = (2 * Complex.I) • B by`. Rewrite using `[mul_smul, two_smul]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel,`. Use the proof step `smul_smul, one_div, inv_mul_cancel₀ h2I, one_smul]`.
+A detailed English derivation is pending.
 -/
 private lemma cpart1_cpart2_add_I_smul_of_inG {m : ℕ} (e : Fin m → Bool) (A B : Matrix (Fin m) (Fin m) ℂ)
     (hA : inG e A) (hB : inG e B) :
@@ -335,7 +335,7 @@ private lemma cpart1_cpart2_add_I_smul_of_inG {m : ℕ} (e : Fin m → Bool) (A 
       smul_smul, one_div, inv_mul_cancel₀ h2I, one_smul]
 
 /- English proof (translation)
-Unfold `cpart1 cpart2`. Rewrite using `[smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp, ← smul_add, show Z - Jm e * Zᴴ * Jm e + (Z + Jm e * Zᴴ * Jm e) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private lemma cpart1_add_I_smul_cpart2 {m : ℕ} (e : Fin m → Bool) (Z : Matrix (Fin m) (Fin m) ℂ) :
     cpart1 e Z + Complex.I • cpart2 e Z = Z := by
@@ -346,7 +346,7 @@ private lemma cpart1_add_I_smul_cpart2 {m : ℕ} (e : Fin m → Bool) (Z : Matri
   norm_num
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.I_mul_I, neg_one_smul, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private lemma commutator_add_I_smul_expand {m : ℕ} (A1 A2 B1 B2 : Matrix (Fin m) (Fin m) ℂ) :
     (A1 + Complex.I • A2) * (B1 + Complex.I • B2) - (B1 + Complex.I • B2) * (A1 + Complex.I • A2) =
@@ -357,13 +357,13 @@ private lemma commutator_add_I_smul_expand {m : ℕ} (A1 A2 B1 B2 : Matrix (Fin 
   abel
 
 /- English proof (translation)
-Establish `hZ1` using `cpart1_inG ε Z`. Establish `hZ2` using `cpart2_inG ε Z`. Establish `hW1` using `cpart1_inG ε W`. Establish `hW2` using `cpart2_inG ε W`. Establish `L1 : ∀ X Y, inG ε X → RdV X (EcV ε Y f) g = RdV X (RdV (cpart1 ε Y) f) g + Complex.I • RdV X (RdV (cpart2 ε Y) f) g` using `fun X Y hX => (hl n ε E (RdV (cpart1 ε Y) f) (RdV (cpart2 ε Y) f) X X 0 Complex.I g (hs n ε E f _ hf (cpart1_inG ε Y)) (hs n ε E f _ hf (cpart2_inG ε Y)) hX hX hg).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Bk : ∀ X Y, inG ε X → inG ε Y → RdV X (RdV Y f) g = RdV Y (RdV X f) g + RdV (X * Y - Y * X) f g`. Introduce `X Y hX hY`. Rewrite using `[← hb n ε E f X Y g hf hX hY hg]`. Normalize the expressions using the abelian group laws. Establish `hC` using `commutator_add_I_smul_expand (cpart1 ε Z) (cpart2 ε Z) (cpart1 ε W) (cpart2 ε W)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `hC` using `[cpart1_add_I_smul_cpart2, cpart1_add_I_smul_cpart2]`. Establish `hP1` using `inG_sub_real_place_taylor (inG_commutator' hZ1 hW1) (inG_commutator' hZ2 hW2)`. Establish `hP2` using `inG_add_real_place_taylor (inG_commutator' hZ1 hW2) (inG_commutator' hZ2 hW1)`. Take `⟨hc1, hc2⟩` from `cpart1_cpart2_add_I_smul_of_inG ε _ _ hP1 hP2`. Simplify using `only [EcV]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[L1 _ W hZ1, L1 _ W hZ2, L1 _ Z hW1, L1 _ Z hW2, Bk _ _ hZ1 hW1, Bk _ _ hZ1 hW2, Bk _ _ hZ2 hW1, Bk _ _ hZ2 hW2, hC, hc1, hc2, vector_right_derivative_sub hl hf (inG_commutator' hZ1 hW1) (inG_commutator' hZ2 hW2) hg, vector_right_derivative_add hl hf (inG_commutator' hZ1 hW2) (in …`. Simplify using `only [smul_add, smul_sub, smul_smul, Complex.I_mul_I, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma vector_complexified_derivative_commutator (hl : RdLinV) (hb : RdBracketV) (hs : RdSmoothV)
     (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → E) (Z W g : Matrix (Fin n) (Fin n) ℂ)
@@ -400,11 +400,11 @@ lemma vector_complexified_derivative_commutator (hl : RdLinV) (hb : RdBracketV) 
 end EabGl
 
 /- English proof (translation)
-Introduce `n ε E _ _ f a b c d g hf hg`. Unfold `EabV`. Rewrite using `[vector_complexified_derivative_commutator hl hb hs ε f _ _ g hf hg, vector_complexified_derivative_sub hl hf hg]`. Establish `h1 : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 = if b = c then Matrix.single a d 1 else 0` using `by split_ifs with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne]`. Conclude with `h`. Establish `h2 : Matrix.single c d (1 : ℂ) * Matrix.single a b 1 = if d = a then Matrix.single c b 1 else 0` using `by split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne]`. Conclude with `h`. Rewrite using `[h1, h2]`. Apply the tactic sequence `split_ifs <;> simp [vector_complexified_derivative_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eabGlV_of (hl : RdLinV) (hb : RdBracketV) (hs : RdSmoothV) : EabGlV := by
   intro n ε E _ _ f a b c d g hf hg
@@ -428,11 +428,11 @@ theorem eabGlV_of (hl : RdLinV) (hb : RdBracketV) (hs : RdSmoothV) : EabGlV := b
   split_ifs <;> simp [vector_complexified_derivative_zero]
 
 /- English proof (translation)
-Introduce `n ε E E' _ _ _ _ φ f X g hf hX hg`. Establish `hsm : SmoothOnGV ε (fun x => φ (f x))`. Introduce `g0 hg0`. Take `⟨U, F, hU, hg0U, hF, hfF⟩` from `hf g0 hg0`. Conclude with `⟨U, fun x => φ (F x), hU, hg0U, (φ.restrictScalars ℝ).contDiff.comp_contDiffOn hF, fun x hx hxJ => by simp only [hfF x hx hxJ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨hsm, ?_⟩` and prove the remaining obligations. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp) g hgU).differentiableAt (hU.mem_nhds hgU)`. Rewrite using `[h n ε E f F U g X hU hgU hg hF hfF hX, h n ε E' (fun x => φ (f x)) (fun x => φ (F x)) U g X hU hgU hg ((φ.restrictScalars ℝ).contDiff.comp_contDiffOn hF) (fun x hx hxJ => by simp only [hfF x hx hxJ]) hX]`. Establish `hcomp : fderiv ℝ (fun x => φ (F x)) g = (φ.restrictScalars ℝ).comp (fderiv ℝ F g)` using `((φ.restrictScalars ℝ).hasFDerivAt.comp g hd.hasFDerivAt).fderiv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdVPair_of (h : RdExtV) : RdVPair := by
   intro n ε E E' _ _ _ _ φ f X g hf hX hg

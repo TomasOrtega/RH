@@ -6,7 +6,7 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Establish `h : (θ z : ℂ) ^ Fintype.card C = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h Fintype.card_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_unitsChar_apply {C : Type} [CommGroup C] [Fintype C] (θ : C →* ℂˣ) (z : C) :
     ‖(θ z : ℂ)‖ = 1 := by
@@ -15,15 +15,15 @@ theorem norm_unitsChar_apply {C : Type} [CommGroup C] [Fintype C] (θ : C →* �
   exact Complex.norm_eq_one_of_pow_eq_one h Fintype.card_ne_zero
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `: ∀ z : C, (θ z : ℂ) * (θ z⁻¹ : ℂ) = 1`. Introduce `z`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Simplify using the standard rewrite rules. Establish `hne : (Units.coeHom ℂ).comp (θ * η⁻¹) ≠ 1`. Introduce `h1`. Apply `h` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Establish `h2` using `DFunLike.congr_fun h1 z`. Establish `h3 : θ z * (η z)⁻¹ = 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[mul_inv_eq_one]`. Rewrite using `[h3]`. Use `sum_hom_units_eq_zero _ hne` as an intermediate fact. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sum_unitsChar_mul_inv {C : Type} [CommGroup C] [Fintype C] (θ η : C →* ℂˣ) :
     ∑ z : C, (θ z : ℂ) * (η z⁻¹ : ℂ) = if θ = η then (Fintype.card C : ℂ) else 0 := by
@@ -50,21 +50,19 @@ theorem sum_unitsChar_mul_inv {C : Type} [CommGroup C] [Fintype C] (θ η : C �
     simp
 
 /- English proof (translation)
-Introduce `C _ _ S c hz`. Take `⟨z₁, hz₁⟩` from `hz`. Use `set f : C → ℂ := fun z => ∑ θ ∈ S, c θ * (θ z : ℂ) with hf`. Use `set T : Finset C := Finset.univ.filter fun z : C => f z ≠ 0 with hT`. Take `⟨z₀, -, hz₀⟩` from `Finset.exists_max_image Finset.univ (fun z => ‖f z‖) ⟨z₁, Finset.mem_univ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 < ‖f z₀‖` using `lt_of_lt_of_le (norm_pos_iff.mpr hz₁) (hz₀ z₁ (Finset.mem_univ _))`. Establish `hinv : ∀ η ∈ S, (Fintype.card C : ℂ) * c η = ∑ z ∈ T, f z * (η z⁻¹ : ℂ)`. Introduce `η hη`. Establish `h1 : ∑ z ∈ T, f z * (η z⁻¹ : ℂ) = ∑ z : C, f z * (η z⁻¹ : ℂ)`. Rewrite using `[hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_subset (Finset.filter_subset _ _) fun z _ hz => ?_` and prove the remaining obligations. Establish `: f z = 0` using `by simpa using hz`. Rewrite using `[this, zero_mul]`. Rewrite using `[h1]`. Simplify using `only [hf, Finset.sum_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, sum_unitsChar_mul_inv, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq' S η, if_pos hη, mul_comm]`. Establish `hc : ∀ η ∈ S, (Fintype.card C : ℝ) * ‖c η‖ ≤ T.card * ‖f z₀‖`. Introduce `η hη`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖(Fintype.card C : ℂ) * c η‖ = (Fintype.card C : ℝ) * ‖c η‖`. Rewrite using `[norm_mul, Complex.norm_natCast]`. Rewrite using `[← h1, hinv η hη]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_card_nsmul _ _ _ fun z _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_unitsChar_apply, mul_one]`. Conclude with `hz₀ z (Finset.mem_univ _)`. Establish `hf0 : ‖f z₀‖ ≤ ∑ η ∈ S, ‖c η‖`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun η _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_unitsChar_apply, mul_one]`. Establish `hfin : (Fintype.card C : ℝ) * ‖f z₀‖ ≤ ((S.card : ℝ) * T.card) * ‖f z₀‖`. Combine the equalities or inequalities in the displayed calculation. Use `le_of_mul_le_mul_right hfin hM` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_le_card_mul_card_support :
     ∀ (C : Type) [CommGroup C] [Fintype C] (S : Finset (C →* ℂˣ)) (c : (C →* ℂˣ) → ℂ), (∃ z : C, ∑ θ ∈ S, c θ * (θ z : ℂ) ≠ 0) → Fintype.card C ≤ S.card * (Finset.univ.filter fun z : C => ∑ θ ∈ S, c θ * (θ z : ℂ) ≠ 0).card := by

@@ -10,19 +10,19 @@ namespace GlobalTheory.SDFrameLattice
 open NumberField GlobalTheory.PlaceModel
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.dualL`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb⟩` from `RingHom.mem_range.mp (hz x hx)`. Conclude with `⟨b, hb⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add z w _ _ hz hw`. Take `⟨b, hb⟩` from `hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hw`. Use `⟨b + a, ?_⟩` and prove the remaining obligations. Establish `e1 : ((b + a : 𝓞 D.host.E) : D.host.E) = (b : D.host.E) + a` using `by push_cast; ring`. Rewrite using `[e1, hb, ha, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, mul_add]`. Consider the case `smul a z _ hz`. Take `⟨b, hb⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨a * b, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e1 : ((a * b : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E a * b := by first | (push_cast; ring) | push_cast | simp`. Rewrite using `[e1, hb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Take `⟨b, hb⟩` from `hy x hx`. Conclude with `RingHom.mem_range.mpr ⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_dualL_iff {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (y : Fin V.rank → D.host.E) :
@@ -63,29 +63,25 @@ theorem mem_dualL_iff {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin 
     exact RingHom.mem_range.mpr ⟨b, hb⟩
 
 /- English proof (translation)
-Introduce `D V β Λ N h`. Take `⟨c, hc⟩` from `h`. Take `⟨-, hdual, hN, hin, hout⟩` from `hc`. Use `set M : ℕ := N ^ c with hM`. Establish `hMpos : 0 < M` using `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hME : (M : D.host.E) ≠ 0` using `by exact_mod_cast hMpos.ne'`. Unfold `IsSelfDualC`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Use `swap`. Establish `e : Formalism.L2.Herm.dualL D.sp.cm V Λ = Λ` using `hdual`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `mem_dualL_iff V Λ y`. Rewrite `key` using `[e]`. Conclude with `key`. Set `f : (Fin V.rank → D.host.E) →ₗ[𝓞 D.host.E] V.V` to `V.frame.equivFun.symm.toLinearMap.restrictScalars (𝓞 D.host.E)`. Establish `hf : ∀ x, f x = ∑ i, x i • V.frame i` using `fun x => by simp [f]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfinj : Function.Injective f` using `V.frame.equivFun.symm.injective`. Establish `hL` using `V.standardTuple_isLattice`. Set `s : (Fin V.rank → D.host.E) →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `M • LinearMap.id`. Establish `hs : ∀ x, s x = M • x` using `fun x => by simp [s]`. Establish `hsinj : Function.Injective s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x x' hxx`. Rewrite `hxx` using `[hs, hs]`. Conclude with `nsmul_right_injective hMpos.ne' hxx`. Establish `hout' : ∀ x ∈ Λ, f (M • x) ∈ V.L0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hout x hx`. Rewrite `h1` using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[hf]`. Conclude with `h1`. Establish `hfg : Λ.FG`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.fg_of_fg_map_injective (f ∘ₗ s) (hfinj.comp hsinj) (Submodule.FG.of_le hL.fg ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[LinearMap.comp_apply, hs]`. Conclude with `hout' x hx`. Establish `h1 : ∀ x, f x ∈ V.L0 → x ∈ Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ Formalism.MainNotions.StandardLattice.L0c D V` using `by show ∑ i, x i • V.frame i ∈ V.L0`. Rewrite using `[← hf]`. Conclude with `hx`. Establish `hxΛ` using `hin x hx'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hxΛ` using `[Nat.cast_smul_eq_nsmul]`. Establish `ex : x = (M : D.host.E)⁻¹ • (M • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, inv_mul_cancel₀ hME, one_smul]`. Rewrite using `[ex]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hxΛ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Submodule.span D.host.E (V.frame.equivFun '' (V.L0 : Set V.V)) ≤ Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Apply `h1` to reduce the goal to its premises. Use `show V.frame.equivFun.symm (V.frame.equivFun w) ∈ V.L0`.
-
-Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hw`. Establish `h3 : Submodule.span D.host.E (V.frame.equivFun '' (V.L0 : Set V.V)) = ⊤`. Establish `hm` using `Submodule.map_span (V.frame.equivFun : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E)) (V.L0 : Set V.V)`. Rewrite `hm` using `[hL.span_eq_top, Submodule.map_top, LinearEquiv.range, LinearEquiv.coe_coe]`.
-
-Conclude with `hm.symm`. Use `⟨hfg, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← h3]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_of_isSDFrame : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (NumberField.RingOfIntegers D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → IsSelfDualC V Λ := by
   intro D V β Λ N h

@@ -5,17 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Establish `key : ∀ k, k ≤ n → ∀ a b : Fin n, b.val < k → ((List.ofFn M).take k).prod a b = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _ a b hb`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ k ih`. Introduce `hk a b hb`. Establish `hl : k < (List.ofFn M).length` using `by simp; omega`. Rewrite using `[List.prod_take_succ _ _ hl, Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Distinguish the cases in `hc : c.val < k`. Rewrite using `[ih (by omega) a c hc, zero_mul]`. Establish `: (List.ofFn M)[k] c b = 0`. Rewrite using `[List.getElem_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hcb : b < c`. Conclude with `h1 _ _ _ hcb`. Establish `hcb' : c.val ≤ b.val` using `not_lt.mp hcb`. Establish `e1 : c = ⟨k, by omega⟩` using `Fin.ext (by simp; omega)`. Establish `e2 : b = ⟨k, by omega⟩` using `Fin.ext (by simp; omega)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `h2 _`. Rewrite using `[this, mul_zero]`. Use extensionality with `a b`. Use `key n le_rfl a b b.2` as an intermediate fact.
-
-Rewrite `this` using `[List.take_of_length_le (by simp)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem tri_prod {A : Type} [CommRing A] {n : ℕ} (M : Fin n → Matrix (Fin n) (Fin n) A)
     (h1 : ∀ i a b, b < a → M i a b = 0) (h2 : ∀ i, M i i i = 0) : (List.ofFn M).prod = 0 := by
@@ -46,9 +44,9 @@ private theorem tri_prod {A : Type} [CommRing A] {n : ℕ} (M : Fin n → Matrix
   rwa [List.take_of_length_le (by simp)] at this
 
 /- English proof (translation)
-Unfold `kEl`. Generalize the expression as in `Finset.univ.erase i = t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j t hj ih`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, map_mul, map_mul, Matrix.map_mul, ih]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.algebraMap_matrix_apply, apply_ite f]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem kEl_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : ℕ}
     (u : Matrix (Fin n) (Fin n) A) (α : Fin n → A) (i : Fin n) :
@@ -64,7 +62,7 @@ private theorem kEl_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {
     simp [Matrix.algebraMap_matrix_apply, apply_ite f]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [kS, Matrix.map_apply, Matrix.of_apply, ← kEl_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem kS_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : ℕ}
     (u : Matrix (Fin n) (Fin n) A) (α : Fin n → A) :
@@ -73,7 +71,7 @@ private theorem kS_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n
   simp only [kS, Matrix.map_apply, Matrix.of_apply, ← kEl_map]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [kT, Matrix.map_apply, Matrix.of_apply, ← kEl_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem kT_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : ℕ}
     (u : Matrix (Fin n) (Fin n) A) (α : Fin n → A) :
@@ -82,7 +80,7 @@ private theorem kT_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n
   simp only [kT, Matrix.map_apply, Matrix.of_apply, ← kEl_map]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem fst_mul' {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n) (Fin n) (DualNumber X)) :
     (A * B).map TrivSqZeroExt.fst = A.map TrivSqZeroExt.fst * B.map TrivSqZeroExt.fst := by
@@ -90,7 +88,7 @@ private theorem fst_mul' {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n)
   simp [Matrix.mul_apply, TrivSqZeroExt.fst_sum]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.snd_sum, ← Finset.sum_add_distrib, add_comm, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem snd_mul' {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n) (Fin n) (DualNumber X)) :
     (A * B).map TrivSqZeroExt.snd =
@@ -99,7 +97,7 @@ private theorem snd_mul' {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n)
   simp [Matrix.mul_apply, TrivSqZeroExt.snd_sum, ← Finset.sum_add_distrib, add_comm, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[dualM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem dualM_fst {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n) (Fin n) X) :
     (dualM A B).map TrivSqZeroExt.fst = A := by
@@ -107,7 +105,7 @@ private theorem dualM_fst {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n
   simp [dualM]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[dualM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem dualM_snd {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n) (Fin n) X) :
     (dualM A B).map TrivSqZeroExt.snd = B := by
@@ -115,33 +113,29 @@ private theorem dualM_snd {X : Type} [CommRing X] {n : ℕ} (A B : Matrix (Fin n
   simp [dualM]
 
 /- English proof (translation)
-Introduce `O H _ _ n r ψ s htri hdiag hinj`. Establish `hrel : ∀ g : Fin n → H, (List.ofFn fun i => r (g i) - ψ i (g i) • (1 : Matrix (Fin n) (Fin n) O)).prod = 0`. Introduce `g`. Apply `tri_prod` to reduce the goal to its premises. Introduce `i a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[htri _ a b hab, Matrix.one_apply_ne hab.ne']`. Introduce `i`. Simplify using `[hdiag]`. Take `⟨hoff, -⟩` from `flagA r ψ s hrel`. Take `⟨hB1, hB2⟩` from `flagB (r s) (fun i => ψ i s) (htri s) (hdiag s)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set S := kS (r s) (fun i => ψ i s) with hS`. Use `set T := kT (r s) (fun i => ψ i s) with hT`. Use `set Δ : Fin n → O := fun i => ∏ j ∈ Finset.univ.erase i, (ψ i s - ψ j s) with hΔ`. Establish `hΔ0 : ∀ i, Δ i ≠ 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_ne_zero_iff.mpr fun j hj h => ?_` and prove the remaining obligations. Conclude with `(Finset.ne_of_mem_erase hj) (hinj (sub_eq_zero.mp h)).symm`. Establish `hST : ∀ i, (S * T) i i = Δ i * Δ i`. Introduce `i`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hB2 i).1, (hB2 i).2]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[(hB1 i b h).1, zero_mul]`. Rewrite using `[(hB1 b i h).2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨c₁, hc₁, hC⟩` from `flagC S T Δ hΔ0 hB1 hB2 hoff`. Use `⟨c₁, hc₁, fun X _ _ D a hD => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `flagA (fun g => dualM (bar X (r g)) (D g)) (fun i g => (TrivSqZeroExt.inl (algebraMap O X (ψ i g)) + TrivSqZeroExt.inr (a i g) : DualNumber X)) s hD`. Establish `eS` using `kS_map (TrivSqZeroExt.fstHom X X X).toRingHom (dualM (bar X (r s)) (D s)) (fun i => (TrivSqZeroExt.inl (algebraMap O X (ψ i s)) + TrivSqZeroExt.inr (a i s) : DualNumber X))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eT` using `kT_map (TrivSqZeroExt.fstHom X X X).toRingHom (dualM (bar X (r s)) (D s)) (fun i => (TrivSqZeroExt.inl (algebraMap O X (ψ i s)) + TrivSqZeroExt.inr (a i s) : DualNumber X))`. Use `set S' := kS (dualM (bar X (r s)) (D s)) (fun i => (TrivSqZeroExt.inl (algebraMap O X (ψ i s)) + TrivSqZeroExt.inr (a i s) : DualNumber X)) with hS'`. Use `set T' := kT (dualM (bar X (r s)) (D s)) (fun i => (TrivSqZeroExt.inl (algebraMap O X (ψ i s)) + TrivSqZeroExt.inr (a i s) : DualNumber X)) with hT'`. Establish `hf : ⇑(TrivSqZeroExt.fstHom X X X).toRingHom = TrivSqZeroExt.fst` using `rfl`. Establish `fS : S'.map TrivSqZeroExt.fst = bar X S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `eS` using `[hf]`. Rewrite using `[eS, dualM_fst, hS, bar, bar, kS_map]`. Simplify using the standard rewrite rules. Establish `fT : T'.map TrivSqZeroExt.fst = bar X T`. Rewrite `eT` using `[hf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eT, dualM_fst, hT, bar, bar, kT_map]`. Simplify using the standard rewrite rules. Establish `e1 : (S' * T').map TrivSqZeroExt.snd = S'.map TrivSqZeroExt.snd * bar X T + bar X S * T'.map TrivSqZeroExt.snd`. Rewrite using `[snd_mul', fS, fT]`. Establish `e2 : ∀ g, (S' * dualM (bar X (r g)) (D g) * T').map TrivSqZeroExt.snd = S'.map TrivSqZeroExt.snd * bar X (r g) * bar X T + bar X S * D g * bar X T + bar X S * bar X (r g) * T'.map TrivSqZeroExt.snd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[snd_mul', snd_mul', fst_mul', fS, fT, dualM_fst, dualM_snd, add_mul]`. Establish `e3 : ∀ i, ((S' * T') i i).fst = algebraMap O X (Δ i * Δ i)`. Introduce `i`. Establish `: (S' * T').map TrivSqZeroExt.fst = bar X (S * T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fst_mul', fS, fT, bar, bar, bar, Matrix.map_mul]`. Establish `h` using `congrFun (congrFun this i) i`. Rewrite using `[← hST]`. Conclude with `h`. Take `⟨Y, hY⟩` from `hC X (S'.map TrivSqZeroExt.snd) (T'.map TrivSqZeroExt.snd) (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Rewrite using `[← e1, Matrix.map_apply, h1 a b hab, TrivSqZeroExt.snd_zero])`. Use `⟨Y, fun g => hY (r g) (D g) (fun i => a i g) (htri g) ?_ ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[← e2, Matrix.map_apply, (h2 g).1 i j hij, TrivSqZeroExt.snd_zero]`.
-
-Introduce `i`. Rewrite using `[← e2, ← e1, Matrix.map_apply, Matrix.map_apply, (h2 g).2 i, TrivSqZeroExt.snd_mul, e3, hdiag]`. Generalize the expression as in `((S' * T') i i).snd = z`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, add_zero, zero_add, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.flag :
     ∀ {O H : Type} [CommRing O] [IsDomain O] {n : ℕ} (r : H → Matrix (Fin n) (Fin n) O) (ψ : Fin n → H → O) (s : H), (∀ g a b, b < a → r g a b = 0) → (∀ g i, r g i i = ψ i g) → (Function.Injective fun i => ψ i s) → ∃ c₁ : O, c₁ ≠ 0 ∧ ∀ (X : Type) [CommRing X] [Algebra O X] (D : H → Matrix (Fin n) (Fin n) X) (a : Fin n → H → X), (∀ g : Fin n → H, (List.ofFn fun i => dualM (bar X (r (g i))) (D (g i)) - (TrivSqZeroExt.inl (algebraMap O X (ψ i (g i))) + TrivSqZeroExt.inr (a i (g i)) : DualNumber X) • (1 : Matrix (Fin n) (Fin n) (DualNumber X))).prod = 0) → ∃ Y : Matrix (Fin n) (Fin n) X, ∀ g, (∀ i j, j < i → (c₁ • D g - (bar X (r g) * Y - Y * bar X (r g))) i j = 0) ∧ ∀ i, (c₁ • D g - (bar X (r g) * Y - Y * bar X (r g))) i i = c₁ • a i g := by

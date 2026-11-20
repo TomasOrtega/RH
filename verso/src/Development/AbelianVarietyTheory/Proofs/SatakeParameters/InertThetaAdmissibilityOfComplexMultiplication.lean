@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.AdmissibleEn
 namespace GlobalTheory.TwV.Lt
 
 /- English proof (translation)
-Introduce `h` and use `by haveI : Fact Formalism.L2.Th1.CM.CM2 := ⟨h⟩ exact Formalism.L2.KerInert.AdmLoc2.admissible_entries_small_chain`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inert_theta_admissibility_of_complex_multiplication : Formalism.L2.Th1.CM.CM2 → GlobalTheory.TwV.Lt.AdmAtEnt2 := fun h => by
   haveI : Fact Formalism.L2.Th1.CM.CM2 := ⟨h⟩

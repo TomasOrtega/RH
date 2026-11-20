@@ -11,9 +11,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [IsUnitBall O K]
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `h1 : n / e < l`. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Simplify using `using hp.pos`. Conclude with `Nat.div_lt_of_lt_mul (by rwa [mul_comm] at hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : Nat.Coprime l (n / e).factorial` using `(Nat.Prime.coprime_iff_not_dvd hp).2 fun h => absurd (hp.dvd_factorial.1 h) (by omega)`. Unfold `wS`. Rewrite using `[norm_natCast_eq l, Padic.norm_natCast_eq_one_iff]`. Apply the tactic sequence `first | exact hc | exact hc.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wS_eq_one_of_lt (l : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] {e n : ℕ}
     (hn : n < l * e) : wS K e n = 1 := by
@@ -29,7 +29,7 @@ theorem wS_eq_one_of_lt (l : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] {e n 
   first | exact hc | exact hc.symm
 
 /- English proof (translation)
-Rewrite using `[coeff_N, norm_mul, mul_assoc]`. Conclude with `mul_le_of_le_one_left (mul_nonneg (norm_nonneg _) (wS_nonneg _ _)) (IsUltrametricDist.norm_natCast_le_one K n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_N_mul_wS_le (e : ℕ) (f : K⟦X⟧) (n : ℕ) :
     ‖coeff n (N K f)‖ * wS K e n ≤ ‖coeff n f‖ * wS K e n := by
@@ -38,7 +38,7 @@ theorem norm_coeff_N_mul_wS_le (e : ℕ) (f : K⟦X⟧) (n : ℕ) :
     (IsUltrametricDist.norm_natCast_le_one K n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n => (norm_coeff_N_mul_wS_le e f n).trans (hf.1 n), squeeze_zero (fun n => mul_nonneg (norm_nonneg _) (wS_nonneg e n)) (norm_coeff_N_mul_wS_le e f) hf.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem N_mem_S {e : ℕ} {f : K⟦X⟧} (hf : f ∈ S O K e) : N K f ∈ S O K e :=
   ⟨fun n => (norm_coeff_N_mul_wS_le e f n).trans (hf.1 n),
@@ -46,21 +46,19 @@ theorem N_mem_S {e : ℕ} {f : K⟦X⟧} (hf : f ∈ S O K e) : N K f ∈ S O K 
       (norm_coeff_N_mul_wS_le e f) hf.2⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a _ _ _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Use `⟨⟨N K (f : K⟦X⟧), N_mem_S f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.mem_SHigh.2 (X_pow_dvd_iff.2 fun m hm => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `coeff m (N K (f : K⟦X⟧)) = 0`. Rewrite using `[coeff_N, X_pow_dvd_iff.1 (GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.mem_SHigh.1 hf) m hm, mul_zero]`. Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf set g : K⟦X⟧ := ((trunc (l * e) f : Polynomial K) : K⟦X⟧) with hgdef`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ n, coeff n g = if n < l * e then coeff n f else 0`. Introduce `n`. Rewrite using `[hgdef, Polynomial.coeff_coe, coeff_trunc]`. Establish `gA : g ∈ A O K` using `fun n => by`. Rewrite using `[hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Use `hf.1 n` as an intermediate fact. Rewrite `this` using `[wS_eq_one_of_lt l h, mul_one]`. Then use the resulting hypothesis. Simplify using the standard rewrite rules. Use `⟨g, gA, ⟨f - g, (S O K e).sub_mem hf (A_le_S l e gA)⟩, GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.mem_SHigh.2 (X_pow_dvd_iff.2 fun m hm => ?_), by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `coeff m (f - g) = 0`. Rewrite using `[map_sub, hg, if_pos hm, sub_self]`. Introduce and unpack `⟨g, hg, h, -, rfl⟩`. Conclude with `(S O K e).add_mem (A_le_S l e hg) h.2`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hfA, h, hh, rfl⟩`. Take `⟨g, hg⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.mem_SHigh.1 hh`. Use `⟨g, fun n => ?_, by rw [hg, ← pow_mul, mul_comm e l]⟩` and prove the remaining obligations. Use `hfA (n + l * e)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[hg, coeff_X_pow_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨g, hg, rfl⟩`. Establish `hm : ((X : K⟦X⟧) ^ e) ^ l * g ∈ A O K` using `(A O K).mul_mem ((A O K).pow_mem ((A O K).pow_mem HasU.X_mem e) l) hg`. Conclude with `⟨hm, ⟨_, A_le_S l e hm⟩, GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.mem_SHigh.2 ⟨g, by`. Express the relevant statement in the definitionally equal form `((X : K⟦X⟧) ^ e) ^ l * g = _`.
-
-Rewrite using `[← pow_mul, mul_comm e l]⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringModHigh : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) [Fact l.Prime]

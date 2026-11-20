@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.EpsRigid
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h0 : TrivSqZeroExt.fst x = 0` using `hx`. Establish `hx' : x = TrivSqZeroExt.inr (TrivSqZeroExt.snd x)`. Use `ext`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[mem_nilradical]`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, hx', TrivSqZeroExt.inr_mul_inr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_ker_le_nilradical (k : Type) [Field k] :
     RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom ≤ nilradical (DualNumber k) := by
@@ -31,7 +31,7 @@ theorem fst_ker_le_nilradical (k : Type) [Field k] :
   rw [pow_two, hx', TrivSqZeroExt.inr_mul_inr]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, by simp⟩`. Use `⟨(RingHom.quotientKerEquivOfSurjective hs).symm.toRingHom, ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[RingEquiv.eq_symm_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -46,17 +46,17 @@ theorem quot_mk_eq (k : Type) [Field k] :
   rfl
 
 /- English proof (translation)
-Introduce `k _ S G' _ hG G _ g₂ φ₁ φ₂ h₂ h0 u _ v _ hu`. Establish `hsq : (φ₂ ≫ v.left) ≫ G.hom = G'.hom ≫ g₂`. Rewrite using `[Category.assoc, Over.w v, h₂.1.w]`. Set `w : G' ⟶ G'` to `Over.homMk (h₂.1.lift (φ₂ ≫ v.left) G'.hom hsq) (h₂.1.lift_snd _ _ _)`. Establish `hw : w.left ≫ φ₂ = φ₂ ≫ v.left` using `h₂.1.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-It suffices to establish `huw : u = w by rw [huw, hw]`. Take `⟨e, he⟩` from `quot_mk_eq k`. Establish `hsp : spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom)) = spMap e ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom`. Rewrite using `[he, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `GlobalTheory.NilRigidity.eq_of_eq_on_quotient _ (fst_ker_le_nilradical k) G' G' hG u w ?_ ?_` and prove the remaining obligations. Establish `hj : ∀ x : pullback G'.hom (spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom))) ⟶ G'.left, x ≫ G'.hom = pullback.fst G'.hom (spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom))) ≫ G'.hom → x ≫ φ₁ = x ≫ φ₂`. Introduce `x hx`. Use `h0 _ x (pullback.snd _ _ ≫ spMap e) ?_` and prove the remaining obligations. Rewrite using `[hx, pullback.condition, Category.assoc, hsp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `h₂.1.hom_ext` to reduce the goal to its premises. Establish `a1` using `hj (pullback.fst _ _ ≫ u.left) (by rw [Category.assoc, Over.w u])`. Establish `a2` using `hj (pullback.fst _ _) rfl`. Simplify using `only [Category.assoc] at a1 a2 ⊢`. Rewrite using `[hw, ← a1, hu, ← Category.assoc, a2, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, Over.w u, Over.w w]`. Rewrite using `[IsMonHom.one_hom]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Apply `h₂.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, hw, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h₂, Category.assoc, ← Over.comp_left, IsMonHom.one_hom]`. Rewrite using `[Category.assoc, Over.w w]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_of_comm :
     ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' : Over (Sp (DualNumber k))) [GrpObj G'], IsAbelianScheme G' → ∀ (G : Over S) [GrpObj G] (g₂ : Sp (DualNumber k) ⟶ S) (φ₁ φ₂ : G'.left ⟶ G.left), IsGrpPullback G' G g₂ φ₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ G'.left) (y : Z ⟶ Sp k), x ≫ G'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ φ₁ = x ≫ φ₂) → ∀ (u : G' ⟶ G') [IsMonHom u] (v : G ⟶ G) [IsMonHom v], u.left ≫ φ₁ = φ₁ ≫ v.left → u.left ≫ φ₂ = φ₂ ≫ v.left := by

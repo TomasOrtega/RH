@@ -15,16 +15,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem {t : k} (h : t ∈ 𝒪[k]) : valuation k t ≤ 1 := h
 
 /- English proof (translation)
-Rewrite using `[mem_KO_iff]`. Use `⟨fun r s => ?_, fun r s => ?_⟩` and prove the remaining obligations. Use `show valuation k ((diagGL c).val r s) ≤ 1`. Rewrite using `[diagGL_val, diagonal_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc r).le`. Simplify using the standard rewrite rules. Use `show valuation k (((diagGL c)⁻¹ : GL (Fin a) k).val r s) ≤ 1`. Rewrite using `[show ((diagGL c)⁻¹ : GL (Fin a) k).val = diagonal fun j => (((c j)⁻¹ : kˣ) : k) from rfl, diagonal_apply]`. Use `split_ifs`.
-
-Simplify using `[hc r]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagGL_mem_KO {a : ℕ} (c : Fin a → kˣ) (hc : ∀ j, valuation k (c j : k) = 1) :
     diagGL c ∈ KO k (Fin a) := by
@@ -46,33 +44,31 @@ end GlobalTheory.ShellPiece
 open GlobalTheory.ShellPiece in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ hϖ ν a μ _ φ M hφ n i hi u hu hν x hx z`. Use `set d : GL (Fin a) k := diagGL (fun j => ϖ ^ n j) with hd`. Use `set D : GL (Fin a) k := diagGL (Pi.mulSingle i u) with hD`. Establish `hDK : D ∈ KO k (Fin a)` using `diagGL_mem_KO _ fun j => by`. Distinguish the cases in `h : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Simplify using `using hu`. Simplify using `[Pi.mulSingle_eq_of_ne h]`. Establish `hcomm : Commute d D` using `Units.ext (by simp [hd, hD, diagonal_mul_diagonal, mul_comm])`. Use `set k0 := x * D * x⁻¹ with hk0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0K : k0 ∈ KO k (Fin a)` using `mul_mem (mul_mem hx hDK) (inv_mem hx)`. Use `set S := {g : GL (Fin a) k | (x * d)⁻¹ * g ∈ KO k (Fin a)} with hS`. Establish `key : ∀ g, (x * d)⁻¹ * (k0 * g) = D * ((x * d)⁻¹ * g)` using `fun g => by`. Establish `h1 : d⁻¹ * D = D * d⁻¹` using `(hcomm.inv_left).eq`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpre : (fun g => k0 * g) ⁻¹' S = S`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, hS, Set.mem_setOf_eq, key]`. Conclude with `Subgroup.mul_mem_cancel_left _ hDK`. Establish `hdetD : gdet D = u`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, gdet, det_diagGL]`. Simplify using the standard rewrite rules. Establish `hdetk0 : gdet k0 = u`. Rewrite using `[hk0, gdet_mul, gdet_mul, hdetD, mul_comm (gdet x), mul_assoc, ← gdet_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hϖ1 : valuation k (ϖ : k) ≤ 1` using `hϖ.mem`. Establish `hpow : valuation k ((ϖ ^ n i : kˣ) : k) ≤ valuation k ((ϖ ^ M : kˣ) : k)`. Establish `e : ϖ ^ n i = ϖ ^ M * ϖ ^ (n i - M).toNat`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by omega), ← _root_.zpow_add]; congr 1; ring`. Rewrite using `[e, Units.val_mul, map_mul, Units.val_pow_eq_pow_val, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right' (pow_le_one₀ zero_le hϖ1)`. Establish `hu1 : valuation k ((u : k) - 1) ≤ 1` using `((valuation k).map_sub _ _).trans (max_le hu.le (by simp))`. Establish `hZ : ∀ y ∈ KO k (Fin a), x.val * ((D.val - 1) * d.val) * y.val ∈ scaledInt ϖ a M`. Introduce `y hy r s`. Establish `e1 : (D.val - 1) * d.val = diagonal fun j => ((((Pi.mulSingle i u : Fin a → kˣ) j : kˣ) : k) - 1) * ((ϖ ^ n j : kˣ) : k)`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, hd, diagGL_val, diagGL_val]`. Use extensionality with `p q`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `[Matrix.mul_apply, diagonal_apply, Matrix.sub_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[Matrix.mul_apply, diagonal_apply, Matrix.sub_apply, Matrix.one_apply, hpq]`. Rewrite using `[e1, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[mul_diagonal, Pi.mulSingle_eq_same, map_mul, map_mul, map_mul]`. Establish `hx1` using `val_le_one_of_mem ((mem_KO_iff x).1 hx |>.1 r i)`. Establish `hy1` using `val_le_one_of_mem ((mem_KO_iff y).1 hy |>.1 i s)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `j _ hj`. Simplify using `[mul_diagonal, Pi.mulSingle_eq_of_ne hj]`. Simplify using the standard rewrite rules. Establish `hF : ∀ g ∈ S, φ (k0 * g).val * (ν (gdet (k0 * g)) : ℂ) * apow (gdet (k0 * g)) z = (ν u : ℂ) * (φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Use `set y := (x * d)⁻¹ * g with hy`. Establish `hyK : y ∈ KO k (Fin a)` using `hg`. Establish `hg' : g = x * d * y` using `by rw [hy]; group`. Establish `hv : (k0 * g).val = g.val + x.val * ((D.val - 1) * d.val) * y.val`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: k0 * g = x * D * d * y` using `by rw [hg', hk0]; group`. Rewrite using `[this, hg']`. Simplify using `only [Units.val_mul]`. Use `noncomm_ring`. Rewrite using `[hv, hφ _ _ (hZ y hyK), gdet_mul, hdetk0, map_mul, Units.val_mul, apow_mul, apow_of_valuation_eq_one hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hSm : MeasurableSet S` using `(isOpen_KO.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `h` using `(measurePreserving_mul_left μ k0).setIntegral_preimage_emb (measurableEmbedding_mulLeft k0) (fun g : GL (Fin a) k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z) S`. Rewrite `h` using `[hpre, setIntegral_congr_fun hSm (fun g hg => hF g hg), integral_const_mul]`. Establish `hne : (ν u : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 fun e => hν (Units.val_eq_one.1 e)`.
-
-Establish `h2 : ((ν u : ℂ) - 1) * ∫ g in S, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z ∂μ = 0`. Rewrite using `[sub_mul, h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h2).resolve_left hne`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShellPiece.setIntegral_coset_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ), IsUnif ϖ → ∀ (ν : kˣ →* ℂˣ) (a : ℕ) (μ : Measure (GL (Fin a) k))

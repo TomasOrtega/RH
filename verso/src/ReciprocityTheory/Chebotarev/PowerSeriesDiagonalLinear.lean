@@ -7,11 +7,11 @@ open NumberField Filter Topology
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Introduce `E _ _ l _ hirr`. Take `⟨C, hC⟩` from `PE_cyclotomicField_le_mul_Pcl_add_const E l hirr`. Take `⟨CE, hE⟩` from `chebyshev_log_bounded E`. Take `⟨CM, hM⟩` from `chebyshev_log_bounded (CyclotomicField l E)`. Use `⟨CE + CM + C, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : Set.Ioc (1:ℝ) 2 ∈ 𝓝[>] (1:ℝ)` using `Ioc_mem_nhdsGT (by norm_num)`. Use `filter_upwards [hmem] with s hs`. Establish `h1` using `hC s hs.1`. Establish `h2` using `(abs_le.mp (hE s hs)).2`. Establish `h3` using `(abs_le.mp (hM s hs)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem power_series_diagonal_linear : S1 := by
   intro E _ _ l _ hirr
@@ -27,13 +27,11 @@ theorem power_series_diagonal_linear : S1 := by
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ l _ hirr χ hχ m hm`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Take `⟨E', _, _, _, k, hk, hsplit⟩` from `splitE_split_ext E l hirr χ hχ`. Establish `hlp : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hml : m * l ≠ 0` using `mul_ne_zero hm hlp.ne_zero`. Apply `splitC_not_almost_split E E' k hk` to reduce the goal to its premises. Use `(splitA_finite_not_coprime E (m * l) hml).subset ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Set.mem_ofPred_eq] at hq ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hcop`. Apply `hq` to reduce the goal to its premises. Apply `hsplit q` to reduce the goal to its premises. Introduce `hdvd`. Establish `h1 : Nat.Coprime (Nrm q) l` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left l m) hcop`.
-
-Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).1 h1.symm hdvd`. Conclude with `H q hcop`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chebyshev_split_estimate : S2 := by
   intro E _ _ l _ hirr χ hχ m hm

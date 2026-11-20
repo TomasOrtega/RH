@@ -26,9 +26,7 @@ namespace GlobalTheory.LocIsoConj
 open Formalism.UG
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ b * (cT σ a * J' * a) * b := by rw [hJ, hg]`. Use `_ = cT σ (a * b) * J' * (a * b) := by rw [cT_mul]; simp only [Matrix.mul_assoc]`.
-
-Use `_ = J' := by rw [hab, cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_unitary {R : Type} [CommRing R] (σ : R →+* R) {n m : Type} [Fintype n] [DecidableEq n]
     [Fintype m] [DecidableEq m] (a : Matrix m n R) (b : Matrix n m R) (hab : a * b = 1)
@@ -50,19 +48,17 @@ def conjHom {R : Type} [CommRing R] {n m : Type} [Fintype n] [DecidableEq n]
       _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hJ' : cT σ b * J * b = J'`. Rewrite using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = J' := by rw [hab, cT_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hc : ∀ {k l : Type} [Fintype k] [DecidableEq k] [Fintype l] [DecidableEq l] (x : Matrix l k R) (y : Matrix k l R), Continuous fun g : Matrix k k R => x * g * y`. Introduce `k l _ _ _ _ x y`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Set `φ₀ : UJ σ J →* GL m R` to `(Units.map (conjHom a b hab hba)).comp (UJ σ J).subtype`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ₀ : UJ σ J' →* GL n R` to `(Units.map (conjHom b a hba hab)).comp (UJ σ J').subtype`. Establish `hφU : ∀ g, φ₀ g ∈ UJ σ J'` using `fun g => conj_unitary σ a b hab J J' hJ _ g.2`. Establish `hψU : ∀ g, ψ₀ g ∈ UJ σ J` using `fun g => conj_unitary σ b a hba J' J hJ' _ g.2`. Set `φ : UJ σ J →* UJ σ J'` to `φ₀.codRestrict _ hφU`. Set `ψ : UJ σ J' →* UJ σ J` to `ψ₀.codRestrict _ hψU`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `((Continuous.units_map _ (hc a b)).comp continuous_subtype_val).subtype_mk _`. Establish `hψc : Continuous ψ` using `((Continuous.units_map _ (hc b a)).comp continuous_subtype_val).subtype_mk _`. Establish `l : ∀ g, ψ (φ g) = g`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show b * (a * (g.1 : Matrix n n R) * b) * a = g.1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hba, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `r : ∀ g, φ (ψ g) = g`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show a * (b * (g.1 : Matrix m m R) * a) * b = g.1`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hab, Matrix.one_mul, Matrix.mul_one]`. Conclude with `⟨{ toFun := φ, invFun := ψ, left_inv := l, right_inv := r, map_mul' := map_mul φ, continuous_toFun := hφc, continuous_invFun := hψc }, fun g => rfl⟩`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (σ : R →+* R)
     {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
@@ -106,7 +102,7 @@ theorem exists_equiv {R : Type} [CommRing R] [TopologicalSpace R] [IsTopological
             continuous_toFun := hφc, continuous_invFun := hψc }, fun g => rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ r r' J J' v a b hab hba hJ`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Take `⟨φ, hφ⟩` from `exists_equiv (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) a b hab hba _ _ hJ`. Conclude with `⟨φ, hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locIso : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E) (J' : Matrix (Fin r') (Fin r') E) (v : HeightOneSpectrum (𝓞 F)) (a : Matrix (Fin r') (Fin r) (Fv F v ⊗[F] E)) (b : Matrix (Fin r) (Fin r') (Fv F v ⊗[F] E)), a * b = 1 → b * a = 1 → Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) a * JR (F := F) (Fv F v) J' * a = JR (F := F) (Fv F v) J → ∃ φ : GLoc σ J v ≃ₜ* GLoc σ J' v, ∀ g, (GlobalTheory.AdelicU.matHom _ σ J' (φ g)).val = a * (GlobalTheory.AdelicU.matHom _ σ J g).val * b := by
   intro F E _ _ _ _ _ σ r r' J J' v a b hab hba hJ

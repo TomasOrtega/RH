@@ -16,7 +16,7 @@ section Rows
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a _ i k => h a i k, fun h a i k => h a 0 i k⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latV_iff_rows {d M n : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (X : Fin n → Fin M → Fv F v ⊗[F] E) :
@@ -24,7 +24,7 @@ theorem mem_latV_iff_rows {d M n : ℕ} (b : Module.Basis (Fin d) F E) (v : Heig
   ⟨fun h a _ i k => h a i k, fun h a i k => h a 0 i k⟩
 
 /- English proof (translation)
-Rewrite using `[mem_latV_iff_rows, mem_latV_iff_rows b v X]`. Conclude with `forall_congr' fun a => hg fun _ => X a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actW_mem_iff (σ : E →ₐ[F] E) {d M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (g : HA (Fv F v) σ J)
@@ -34,15 +34,15 @@ theorem actW_mem_iff (σ : E →ₐ[F] E) {d M n : ℕ} (J : Matrix (Fin M) (Fin
   exact forall_congr' fun a => hg fun _ => X a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨fun p j k => ?_, fun j i k => ?_⟩` and prove the remaining obligations. Use `hX j.succ 0 k` as an intermediate fact. Rewrite using `[Subsingleton.elim p 0]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[consA]`. Use `hX j.succ i.succ.succ k` as an intermediate fact. Simplify `this` using `[consA]`. Introduce and unpack `⟨ha, hY⟩ p`. Use `Fin.cases ?_ (fun j => ?_) p` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Introduce `k`. Simplify `GlobalTheory.CompanionTheory.SW.LatRat.one_mem_latR h k` using `[consA]`. Simplify using `[consA]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Introduce `k`. Simplify `ha 0 j k` using `[consA]`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[consA]`. Introduce `k`. Simplify `hY j i k` using `[consA]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem consA_mem_iff {d M n : ℕ} {b : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (h : ∀ k, algebraMap F (Fv F v) (b.repr 1 k) ∈ v.adicCompletionIntegers F)
@@ -75,17 +75,17 @@ theorem consA_mem_iff {d M n : ℕ} {b : Module.Basis (Fin d) F E} {v : HeightOn
 end Rows
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J _ n d b`. Establish `h0 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k, algebraMap F (Fv F v) (b.repr 1 k) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => GlobalTheory.CompanionTheory.SW.LatRat.eventually_integral (b.repr (1 : E) k)`. Use `filter_upwards [h0] with v hv`. Introduce `lam hlam m g hg`. Establish `hmass : coordW (Fv F v) b lam 1 n (latV b v) = 1` using `by choose std hstd using GlobalTheory.CompanionTheory.SW.StdEx.exists_isStdV F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfam : ∀ w, IsStdV w (Function.update std v lam w)`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `using hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hstd w` using `[Function.update_of_ne hw]`. Simplify using `using GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.coordW_latV σ hCM b (Function.update std v lam) hfam 1 n v`. Establish `hin : ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E, ∫⁻ a, (latV b v).indicator 1 (actW (Fv F v) σ (hypOne J) g (consA a Y)) ∂(coordW (Fv F v) b lam 1 n) = (latV b v).indicator 1 Y`. Introduce `Y`. Distinguish the cases in `hY : Y ∈ latV b v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hf : (fun a : Fin 1 → Fin n → Fv F v ⊗[F] E => (latV b v).indicator (1 : (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞) (actW (Fv F v) σ (hypOne J) g (consA a Y))) = (latV b v).indicator 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a ∈ latV b v`. Rewrite using `[Set.indicator_of_mem ha, Set.indicator_of_mem ((actW_mem_iff σ _ b v g hg _).2 ((consA_mem_iff hv a Y).2 ⟨ha, hY⟩))]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem ha, Set.indicator_of_notMem fun hc => ha ((consA_mem_iff hv a Y).1 ((actW_mem_iff σ _ b v g hg _).1 hc)).1]`. Rewrite using `[hf, lintegral_indicator_one (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.measurableSet_latV σ hCM b 1 n v), hmass, Set.indicator_of_mem hY]`. Both sides reduce to the same expression. Establish `hf : (fun a : Fin 1 → Fin n → Fv F v ⊗[F] E => (latV b v).indicator (1 : (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞) (actW (Fv F v) σ (hypOne J) g (consA a Y))) = 0`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.indicator_of_notMem (fun hc => hY ((consA_mem_iff hv a Y).1 ((actW_mem_iff σ _ b v g hg _).1 hc)).2) _`. Rewrite using `[hf, Set.indicator_of_notMem hY, lintegral_zero_fun]`. Unfold `stageInt`. Repeatedly rewrite using `[hin]`. Conclude with `lintegral_indicator_one (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.measurableSet_latV σ hCM b n M v)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stageInt_latStab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam : Measure (Fv F v), IsStdV v lam → ∀ (m : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (g : HA (Fv F v) σ (hypOne J)), latStab σ (hypOne J) b v g → stageInt (Fv F v) σ J b lam m ((latV b v).indicator 1) g = m (latV b v) := by
   intro F E _ _ _ _ _ σ hCM M J _ n d b

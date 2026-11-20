@@ -18,15 +18,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace CoverDenseAlt
 
 /- English proof (translation)
-Use `letI := e.toAlgebra`. Establish `hp' : IsProper p'` using `MorphismProperty.of_isPullback (P := @IsProper) H inferInstance`. Establish `hc : CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Establish `hs : X.IsSeparated` using `⟨by rw [← terminal.comp_from p]; infer_instance⟩`. Establish `hfl : Flat (spMap e)` using `inferInstance`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsu : Surjective (spMap e)` using `inferInstance`. Establish `hφ : Surjective φ` using `MorphismProperty.of_isPullback (P := @Surjective) H.flip hsu`. Use `⟨hL, hc, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `φ.surjective x`. Take `⟨n, hn, s', hs', -⟩` from `h.exists_affine y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM` using `GlobalTheory.isLB_lbPow hL n`. Establish `hM'` using `GlobalTheory.isLB_lbPow h.isLB n`. Establish `hP` using `LB.isLB_pull hM φ`. Establish `iso` using `GlobalTheory.lbIso_lbPow_pull hL φ n`. Take `⟨s₁, e₁⟩` from `GlobalTheory.exists_sec_nonzeroLocus_eq_of_lbIso hP hM' iso.symm s'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `exists_sec_of_flat_pull p p' φ H (fun U W hU hW => hU.inf hW) _ hM s₁ y (e₁.ge hs')`. Use `⟨n, hn, σ, hσ, ?_⟩` and prove the remaining obligations. Take `⟨s₂, e₂⟩` from `GlobalTheory.exists_sec_nonzeroLocus_eq_of_lbIso hM' hP iso (GlobalTheory.secPull σ φ)`. Establish `ha` using `h.isAffineOpen_nonzeroLocus p' hn s₂`. Rewrite `ha` using `[e₂, GlobalTheory.nonzeroLocus_secPull]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsAffine (φ ⁻¹ᵁ Out.nonzeroLocus σ)` using `ha`. Conclude with `GlobalTheory.isAffine_of_isPullback_of_flat_surjective ((isPullback_morphismRestrict φ (Out.nonzeroLocus σ)).paste_vert H)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_desc {K K' : Type} [Field K] [Field K'] (e : K →+* K') {X X' : Scheme.{0}} (p : X ⟶ Sp K)
     (p' : X' ⟶ Sp K') (φ : X' ⟶ X) (H : IsPullback φ p' p (spMap e)) [IsProper p] (L : LB X) (hL : L.IsLB)
@@ -56,13 +56,11 @@ theorem isAmpleLB_desc {K K' : Type} [Field K] [Field K'] (e : K →+* K') {X X'
     ((isPullback_morphismRestrict φ (Out.nonzeroLocus σ)).paste_vert H)
 
 /- English proof (translation)
-Introduce `R _ t x hx`. Set `T' : Over S'` to `Over.mk (pullback.snd t f)`. Set `u : Over.mk (T'.hom ≫ f) ⟶ Over.mk t` to `Over.homMk (pullback.fst t f) pullback.condition`. Establish `sq : (pullback.fst t f ≫ x.left) ≫ A.hom = pullback.snd t f ≫ f`. Rewrite using `[Category.assoc, Over.w x]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition`. Set `x' : T' ⟶ A'` to `Over.homMk (h.1.lift _ _ sq) (h.1.lift_snd _ _ _)`. Establish `e : pushPt h.1.w x' = u ≫ x` using `Over.OverMorphism.ext (h.1.lift_fst _ _ _)`. Establish `m : GlobalTheory.MemKL A' L' x'` using `GlobalTheory.memKL_of_push h hL hL' hw x' (by rw [e]; exact GlobalTheory.MemKL.comp (A := A) (L := L) (x := x) hx u)`. Take `⟨z, hz⟩` from `(GlobalTheory.memKL_iff_of_kTriv hL' hK x').1 m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x' = 1` using `by rw [← hz, toUnit_unique z (toUnit _)]; rfl`. Establish `e₁ : u ≫ x = u ≫ (toUnit _ ≫ η[A])`. Rewrite using `[← e, hx', ← Category.assoc, comp_toUnit]`. Conclude with `map_one (pushHom h T')`. Establish `: Epi (pullback.fst t f)` using `Flat.epi_of_flat_of_surjective _`.
-
-Conclude with `Over.OverMorphism.ext ((cancel_epi (pullback.fst t f)).1 (congrArg (fun q => q.left) e₁))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kTriv_desc {S S' : Scheme.{0}} {f : S' ⟶ S} [Flat f] [Surjective f] {A : Over S} {A' : Over S'} [GrpObj A]
     [GrpObj A'] {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left} (h : IsGrpPullback A' A f φ) (hL : L.IsLB)
@@ -84,11 +82,11 @@ theorem kTriv_desc {S S' : Scheme.{0}} {f : S' ⟶ S} [Flat f] [Surjective f] {A
   exact Over.OverMorphism.ext ((cancel_epi (pullback.fst t f)).1 (congrArg (fun q => q.left) e₁))
 
 /- English proof (translation)
-Introduce `E _ _ _ H L L' _ _ e t t' m`. Take `⟨w, hw, -⟩` from `m.lin`. Establish `hfl : Flat (spMap e)` using `inferInstance`. Establish `hsu : Surjective (spMap e)` using `inferInstance`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hp, ha, hk⟩`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Establish `: UniversallyClosed t.G.hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @UniversallyClosed) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) m.cart.1.flip ⟨⟨hsu, hfl⟩, inferInstance⟩ inferInstance`. Establish `hp₀ : IsProper t.G.hom` using `{}`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hp₀, ?_, kTriv_desc m.cart t.PP.isLB t'.PP.isLB ⟨w, hw⟩ hk⟩` and prove the remaining obligations. Use `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine t.G t.PP.isLB).2 (isAmpleLB_desc e t.G.hom t'.G.hom m.φ m.cart.1 _ t.PP.isLB ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.isAmpleLB_of_relAmple_of_isAffine t'.G t'.PP.isLB ha).of_lbIso (LB.isLB_pull t.PP.isLB _) (LBIso.symm ⟨w, hw⟩)`. Introduce and unpack `⟨hp, ha, hk⟩`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hp, amplePt _ _ _ _ _ _ m.cart _ _ t.PP.isLB t'.PP.isLB ⟨w, hw⟩ ha hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPrincipal_iff_of_base_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L L' : Type) [Field L] [Field L'] (e : L →+* L') (t : SAB H (Sp L)) (t' : SAB H (Sp L')) (_ : SABMap t' t (spMap e)), IsPrincipal t' ↔ IsPrincipal t := by
   intro E _ _ _ H L L' _ _ e t t' m

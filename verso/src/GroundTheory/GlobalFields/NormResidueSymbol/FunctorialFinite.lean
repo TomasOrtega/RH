@@ -13,15 +13,13 @@ noncomputable section
 variable {K K' : Type*} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun w ↦ ?_) (FiniteAdeleRing.ext (K := K) fun v ↦ ?_)` and prove the remaining obligations. Rewrite using `[ideleNorm_fst]`. Simplify using `only [coe_finiteEmbedding]`. Conclude with `(Finset.prod_eq_one fun _ _ ↦ map_one _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ideleNorm_snd]`. Simplify using `only [coe_finiteEmbedding]`. Distinguish the cases in `hv : v = below K v'`. Substitute `hv` using the available equality. Rewrite using `[Finset.prod_eq_single (⟨v', inferInstance⟩ : PlacesOver K' (below K v')), finiteAdeleSingle_apply_self, finiteAdeleSingle_apply_self, LocalField.coe_normUnits]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _ hw`. Rewrite using `[finiteAdeleSingle_apply_of_ne (fun h ↦ hw (Subtype.ext h)), map_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[finiteAdeleSingle_apply_of_ne hv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_eq_one fun w _ ↦ ?_` and prove the remaining obligations. Establish `hw : w.1 ≠ v'`. Introduce and unpack `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← h]`.
-
-Conclude with `((below_eq_iff w.1 v).2 w.2).symm`. Rewrite using `[finiteAdeleSingle_apply_of_ne hw, map_one]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleNorm_finiteEmbedding (v' : HeightOneSpectrum (𝓞 K')) (a : (v'.adicCompletion K')ˣ) :
     ideleNorm K K' (finiteEmbedding v' a) =
@@ -58,7 +56,7 @@ variable {L L' : Type*} [Field L] [NumberField L] [Field L'] [NumberField L'] [A
 omit [NumberField K] [NumberField K'] [NumberField L'] in
 
 /- English proof (translation)
-The claim follows from `(below_eq_iff u' v).1 (by rw [← below_below (L := K'), (below_eq_iff u' v').2 inferInstance, (below_eq_iff v' v).2 inferInstance])`.
+A detailed English derivation is pending.
 -/
 theorem liesOver_trans_of_liesOver (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 K'))
     (u' : HeightOneSpectrum (𝓞 L')) [v'.asIdeal.LiesOver v.asIdeal]
@@ -71,13 +69,13 @@ variable [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] [IsGalois K' L']
   [IsMulCommutative (L' ≃ₐ[K'] L')]
 
 /- English proof (translation)
-Take `⟨u'⟩` from `nonempty_placesOver L' v'`. Establish `: u'.1.asIdeal.LiesOver v.asIdeal` using `liesOver_trans_of_liesOver v v' u'.1`. Establish `hu : (below L u'.1).asIdeal.LiesOver v.asIdeal` using `(below_eq_iff _ v).1 (by rw [below_below, (below_eq_iff u'.1 v).2 inferInstance])`. Set `u : PlacesOver L v` to `⟨below L u'.1, hu⟩`. Establish `: u'.1.asIdeal.LiesOver u.1.asIdeal` using `liesOver_below (K := L) u'.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower (v.adicCompletion K) (v'.adicCompletion K') (u'.1.adicCompletion L')` using `.of_algebraMap_eq fun r ↦ (completionMap_completionMap v v' u'.1 r).symm`. Use `isMulCommutative_gal_adicCompletion L' v' u'` as an intermediate fact. Use `isMulCommutative_gal_adicCompletion L v u` as an intermediate fact. Set `j : u.1.adicCompletion L →ₐ[v.adicCompletion K] u'.1.adicCompletion L'` to `{ completionMap u.1 u'.1 with commutes' := fun r ↦ completionMap_completionMap v u.1 u'.1 r }`. Establish `hj : ∀ m : L, j (algebraMap L (u.1.adicCompletion L) m) = algebraMap L' (u'.1.adicCompletion L') (algebraMap L L' m)` using `fun m ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `completionMap u.1 u'.1 _ = _`. Rewrite using `[completionMap_algebraMap, IsScalarTower.algebraMap_apply L L' (u'.1.adicCompletion L')]`. Use extensionality with `l`. Apply `(algebraMap L L').injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.restrictNormal_commutes, AlgEquiv.restrictScalars_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(algebraMap L' (u'.1.adicCompletion L')).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_localSymbol_apply L' v' u', ← hj, ← hj, algebraMap_localSymbol_apply L v u, normResidueSymbol_norm j]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictNormal_localSymbol_norm (v : HeightOneSpectrum (𝓞 K))
     (v' : HeightOneSpectrum (𝓞 K')) [v'.asIdeal.LiesOver v.asIdeal] (a : (v'.adicCompletion K')ˣ) :

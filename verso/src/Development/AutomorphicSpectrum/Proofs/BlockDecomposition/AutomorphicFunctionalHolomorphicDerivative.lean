@@ -6,7 +6,7 @@ open Topology Filter
 namespace GlobalTheory.CompanionTheory.HolFamily
 
 /- English proof (translation)
-Establish `hc' : ContinuousOn (fun q : G × ℂ => E q.2 q.1) (Set.univ ×ˢ U)` using `hc.comp continuous_swap.continuousOn fun q hq => ⟨hq.2, Set.mem_univ _⟩`. Establish `h` using `continuousOn_deriv_family G U hU (fun g z => E z g) hc' hd`. Conclude with `h.comp continuous_swap.continuousOn fun y hy => ⟨Set.mem_univ _, hy.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_deriv_param {G : Type} [TopologicalSpace G] {U : Set ℂ} (hU : IsOpen U)
     {E : ℂ → G → ℂ} (hd : ∀ g, DifferentiableOn ℂ (E · g) U)
@@ -18,7 +18,7 @@ theorem continuousOn_deriv_param {G : Type} [TopologicalSpace G] {U : Set ℂ} (
   exact h.comp continuous_swap.continuousOn fun y hy => ⟨Set.mem_univ _, hy.1⟩
 
 /- English proof (translation)
-Introduce `z hz γ hγ g`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Use `filter_upwards [hU.mem_nhds hz] with w hw using hinv w hw γ hγ g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem deriv_param_invariant {G : Type} [Group G] (Γ : Subgroup G) {U : Set ℂ} (hU : IsOpen U)
     {E : ℂ → G → ℂ} (hinv : ∀ z ∈ U, ∀ γ ∈ Γ, ∀ g, E z (γ * g) = E z g) :
@@ -28,31 +28,27 @@ theorem deriv_param_invariant {G : Type} [Group G] (Γ : Subgroup G) {U : Set �
   filter_upwards [hU.mem_nhds hz] with w hw using hinv w hw γ hγ g
 
 /- English proof (translation)
-Take `⟨D, hD⟩ : ∃ D : G → ℂ, D = fun g => deriv (E · g) z` from `⟨_, rfl⟩`. Rewrite using `[← hD]`. Establish `hD'` using `continuousOn_deriv_param hU hd hc`. Establish `hslice : ∀ w ∈ U, Continuous (E w)` using `fun w hw => hc.comp_continuous (continuous_const.prodMk continuous_id) fun _ => ⟨hw, Set.mem_univ _⟩`. Establish `hDc : Continuous D`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD]`. Conclude with `hD'.comp_continuous (continuous_const.prodMk continuous_id) fun _ => ⟨hz, Set.mem_univ _⟩`. Establish `hDinv : ∀ γ ∈ Γ, ∀ g, D (γ * g) = D g`. Rewrite using `[hD]`. Introduce `γ hγ g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `deriv_param_invariant Γ hU hinv z hz γ hγ g`. Rewrite using `[hasDerivAt_iff_isLittleO, Asymptotics.isLittleO_iff]`. Introduce `c hcpos`. Establish `hunif : ∀ᶠ ζ in 𝓝 z, ∀ g ∈ C, ‖deriv (E · g) ζ - deriv (E · g) z‖ ≤ c`. Apply `hC.eventually_forall_of_forall_eventually` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g _`. Establish `hcont : ContinuousAt (fun y : ℂ × G => deriv (E · y.2) y.1) (z, g)` using `hD'.continuousAt ((hU.prod isOpen_univ).mem_nhds ⟨hz, Set.mem_univ _⟩)`. Establish `hcont2 : ContinuousAt (fun y : ℂ × G => deriv (E · y.2) z) (z, g)` using `hcont.comp_of_eq (continuous_const.prodMk continuous_snd).continuousAt rfl`. Establish `h1` using `Metric.tendsto_nhds.mp hcont (c / 2) (by positivity)`. Establish `h2` using `Metric.tendsto_nhds.mp hcont2 (c / 2) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [h1, h2] with y hy1 hy2`. Rewrite `hy1`, `hy2` using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ ‖deriv (E · y.2) y.1 - deriv (E · g) z‖ + ‖deriv (E · y.2) z - deriv (E · g) z‖ := norm_sub_le _ _`. Use `_ ≤ c := by linarith`. Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (hunif.and (hU.mem_nhds hz))`. Use `filter_upwards [Metric.ball_mem_nhds z hδ] with w hw`. Establish `hwU : w ∈ U` using `(hball w hw).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbound : ∀ g ∈ C, ‖E w g - E z g - (w - z) * D g‖ ≤ c * ‖w - z‖`. Introduce `g hg`. Rewrite using `[hD]`. Establish `hφ : ∀ ζ ∈ Metric.ball z δ, HasDerivAt (fun ζ => E ζ g - ζ * deriv (E · g) z) (deriv (E · g) ζ - 1 * deriv (E · g) z) ζ`. Introduce `ζ hζ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdiff : DifferentiableAt ℂ (E · g) ζ` using `(hd g).differentiableAt (hU.mem_nhds (hball ζ hζ).2)`. Conclude with `hdiff.hasDerivAt.sub ((hasDerivAt_id ζ).mul_const _)`. Establish `hmv` using `Convex.norm_image_sub_le_of_norm_deriv_le (fun ζ hζ => (hφ ζ hζ).differentiableAt) (fun ζ hζ => by rw [(hφ ζ hζ).deriv, one_mul]; exact (hball ζ hζ).1 g hg) (convex_ball z δ) (Metric.mem_ball_self hδ) hw`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ c * ‖w - z‖ := hmv`. Establish `hEw` using `hslice w hwU`. Establish `hEz` using `hslice z hz`. Use `set F : G → ℂ := fun g => E w g - E z g - (w - z) * D g with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hFc : Continuous F` using `(hEw.sub hEz).sub (continuous_const.mul hDc)`. Establish `hFi : ∀ γ ∈ Γ, ∀ g, F (γ * g) = F g`. Introduce `γ hγ g`. Simplify using `only [hF, hinv w hwU γ hγ g, hinv z hz γ hγ g, hDinv γ hγ g]`. Establish `hGc : Continuous ((w - z) • D + E z)` using `(hDc.const_smul _).add hEz`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGi : ∀ γ ∈ Γ, ∀ g, ((w - z) • D + E z) (γ * g) = ((w - z) • D + E z) g`. Introduce `γ hγ g`. Simplify using `only [Pi.add_apply, Pi.smul_apply, hDinv γ hγ g, hinv z hz γ hγ g]`. Establish `hsplit : E w = (1 : ℂ) • F + ((w - z) • D + E z)`. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [hF, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hlin 1 F ((w - z) • D + E z) hFc hGc hFi hGi`. Establish `h2` using `hlin (w - z) D (E z) hDc hEz hDinv (hinv z hz)`. Establish `hLF : ‖Lf F‖ ≤ c * ‖w - z‖` using `hb F _ hFc hFi hbound`.
-
-Rewrite using `[hsplit, h1, h2, smul_eq_mul]`. Establish `hring : 1 * Lf F + ((w - z) * Lf D + Lf (E z)) - Lf (E z) - (w - z) * Lf D = Lf F` using `by ring`. Rewrite using `[hring]`. Conclude with `hLF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_functional {G : Type} [Group G] [TopologicalSpace G] (Γ : Subgroup G)
     (Lf : (G → ℂ) → ℂ)
@@ -141,11 +137,11 @@ theorem hasDerivAt_functional {G : Type} [Group G] [TopologicalSpace G] (Γ : Su
   exact hLF
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `E _ _ _ z _`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `E hd hc hinv z hz`. Establish `key` using `ih (fun z g => deriv (E · g) z) (fun g => (hd g).deriv hU) (continuousOn_deriv_param hU hd hc) (deriv_param_invariant Γ hU hinv) z hz`. Establish `hloc : deriv (fun z => Lf (E z)) =ᶠ[𝓝 z] fun z => Lf (fun g => deriv (E · g) z)` using `by filter_upwards [hU.mem_nhds hz] with w hw`. Conclude with `(hasDerivAt_functional Γ Lf hlin hC hb hU hd hc hinv hw).deriv`. Rewrite using `[iteratedDeriv_succ', Filter.EventuallyEq.iteratedDeriv_eq j hloc, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[iteratedDeriv_succ']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_functional {G : Type} [Group G] [TopologicalSpace G] (Γ : Subgroup G)
     (Lf : (G → ℂ) → ℂ)
@@ -177,7 +173,7 @@ theorem iteratedDeriv_functional {G : Type} [Group G] [TopologicalSpace G] (Γ :
     rw [iteratedDeriv_succ']
 
 /- English proof (translation)
-Introduce `G _ _ Γ Lf hlin hCex U Ê hU hd hc hinv`. Take `⟨C, hC, hb⟩` from `hCex`. Conclude with `⟨fun z hz => (hasDerivAt_functional Γ Lf hlin hC hb hU hd hc hinv hz).differentiableAt.differentiableWithinAt, fun z hz j => iteratedDeriv_functional Γ Lf hlin hC hb hU j Ê hd hc hinv z hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem functional_commutes_iteratedDeriv :
     ∀ {G : Type} [Group G] [TopologicalSpace G] (Γ : Subgroup G) (Lf : (G → ℂ) → ℂ), (∀ (a : ℂ) (f f' : G → ℂ), Continuous f → Continuous f' → (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) → (∀ γ ∈ Γ, ∀ g, f' (γ * g) = f' g) → Lf (a • f + f') = a * Lf f + Lf f') → (∃ C : Set G, IsCompact C ∧ ∀ (f : G → ℂ) (M : ℝ), Continuous f → (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) → (∀ x ∈ C, ‖f x‖ ≤ M) → ‖Lf f‖ ≤ M) → ∀ (U : Set ℂ) (Ê : ℂ → G → ℂ), IsOpen U → (∀ g, DifferentiableOn ℂ (Ê · g) U) → ContinuousOn (fun y : ℂ × G => Ê y.1 y.2) (U ×ˢ Set.univ) → (∀ z ∈ U, ∀ γ ∈ Γ, ∀ g, Ê z (γ * g) = Ê z g) → DifferentiableOn ℂ (fun z => Lf (Ê z)) U ∧ ∀ z ∈ U, ∀ j : ℕ, iteratedDeriv j (fun z => Lf (Ê z)) z = Lf fun g => iteratedDeriv j (Ê · g) z := by

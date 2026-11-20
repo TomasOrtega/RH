@@ -13,40 +13,40 @@ open GlobalTheory.UnitLemma Polynomial Filter Topology
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Unfold `UQ.eta`. Rewrite using `[UnramNorm.val_c]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_c (x : K.E) : K.eta (K.c x) = K.eta x := by
   unfold UQ.eta; rw [UnramNorm.val_c]
 
 /- English proof (translation)
-Establish `h` using `Algebra.norm_eq_of_equiv_equiv K.c B.σ (by ext e; simp [B.σ_alg]) u`. Rewrite using `[h, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sigma (u : B.A) : Algebra.norm K.E (B.σ u) = K.c (Algebra.norm K.E u) := by
   have h := Algebra.norm_eq_of_equiv_equiv K.c B.σ (by ext e; simp [B.σ_alg]) u
   rw [h, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `(hu.map (Algebra.norm K.E)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem norm_ne_zero_of_isUnit {u : B.A} (hu : IsUnit u) : Algebra.norm K.E u ≠ 0 :=
   (hu.map (Algebra.norm K.E)).ne_zero
 
 /- English proof (translation)
-Rewrite using `[map_mul, norm_sigma, eta_mul (norm_ne_zero_of_isUnit B hv) ((map_ne_zero K.c).2 (norm_ne_zero_of_isUnit B hv)), eta_c, eta_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_norm_mul_sigma {v : B.A} (hv : IsUnit v) : K.eta (Algebra.norm K.E (v * B.σ v)) = 1 := by
   rw [map_mul, norm_sigma, eta_mul (norm_ne_zero_of_isUnit B hv)
     ((map_ne_zero K.c).2 (norm_ne_zero_of_isUnit B hv)), eta_c, eta_sq]
 
 /- English proof (translation)
-Take the linear combination `(x * y - x - y + 1) * hE`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem twist_mul {E : B.A} (hE : E * E = E) (x y : B.A) :
     (x * E + (1 - E)) * (y * E + (1 - E)) = x * y * E + (1 - E) := by
   linear_combination (x * y - x - y + 1) * hE
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Use `isUnit_iff_exists_inv.2 ⟨((u⁻¹ : B.Aˣ) : B.A) * E + (1 - E), ?_⟩` and prove the remaining obligations. Rewrite using `[twist_mul B hE, Units.mul_inv, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twist_isUnit {E : B.A} (hE : E * E = E) {x : B.A} (hx : IsUnit x) : IsUnit (x * E + (1 - E)) := by
   obtain ⟨u, rfl⟩ := hx
@@ -56,7 +56,7 @@ theorem twist_isUnit {E : B.A} (hE : E * E = E) {x : B.A} (hx : IsUnit x) : IsUn
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `eS`. Rewrite using `[Finset.mul_sum]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single i (fun j _ hji => he.ortho (Ne.symm hji)) (fun h' => absurd h h'), (he.idem i).eq]`. Conclude with `Finset.sum_eq_zero fun j hj => he.ortho (fun hij => h (hij ▸ hj))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_mul_eS {e : ι → B.A} (he : OrthogonalIdempotents e) (i : ι) (I : Finset ι) :
     e i * eS B e I = if i ∈ I then e i else 0 := by
@@ -65,7 +65,7 @@ theorem e_mul_eS {e : ι → B.A} (he : OrthogonalIdempotents e) (i : ι) (I : F
   · exact Finset.sum_eq_zero fun j hj => he.ortho (fun hij => h (hij ▸ hj))
 
 /- English proof (translation)
-Use `show (∑ i ∈ I, e i) * eS B e I = _`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[e_mul_eS B he, if_pos hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eS_idem {e : ι → B.A} (he : OrthogonalIdempotents e) (I : Finset ι) :
     eS B e I * eS B e I = eS B e I := by
@@ -75,7 +75,7 @@ theorem eS_idem {e : ι → B.A} (he : OrthogonalIdempotents e) (I : Finset ι) 
   rw [e_mul_eS B he, if_pos hi]
 
 /- English proof (translation)
-Take `⟨f, -, -, -, h1, h2⟩` from `h.2 i`. Distinguish the cases in `hi : i ∈ S`. Rewrite using `[(h1 hi).1, (h1 hi).2]`. Rewrite using `[(h2 hi).2, map_add, B.σ_σ, add_comm]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_e {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (i : ι) : B.σ (e i) = e i := by
   obtain ⟨f, -, -, -, h1, h2⟩ := h.2 i
@@ -84,13 +84,13 @@ theorem sigma_e {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (i : ι) : B.
   · rw [(h2 hi).2, map_add, B.σ_σ, add_comm]
 
 /- English proof (translation)
-Unfold `eS`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => sigma_e B h i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_eS {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (I : Finset ι) : B.σ (eS B e I) = eS B e I := by
   unfold eS; rw [map_sum]; exact Finset.sum_congr rfl fun i _ => sigma_e B h i
 
 /- English proof (translation)
-Unfold `chi`. Establish `hE` using `eS_idem B he I`. Rewrite using `[← twist_mul B hE, map_mul, eta_mul (norm_ne_zero_of_isUnit B (twist_isUnit B hE hx)) (norm_ne_zero_of_isUnit B (twist_isUnit B hE hy))]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mul {e : ι → B.A} (he : OrthogonalIdempotents e) (I : Finset ι) {x y : B.A} (hx : IsUnit x)
     (hy : IsUnit y) : chi B e I (x * y) = chi B e I x * chi B e I y := by
@@ -100,9 +100,9 @@ theorem chi_mul {e : ι → B.A} (he : OrthogonalIdempotents e) (I : Finset ι) 
     (norm_ne_zero_of_isUnit B (twist_isUnit B hE hy))]
 
 /- English proof (translation)
-Unfold `chi`. Establish `hE` using `eS_idem B h.1.toOrthogonalIdempotents I`. Establish `hσ : B.σ (w * eS B e I + (1 - eS B e I)) = B.σ w * eS B e I + (1 - eS B e I)`. Rewrite using `[map_add, map_mul, map_sub, map_one, sigma_eS B h]`. Rewrite using `[← twist_mul B hE, ← hσ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eta_norm_mul_sigma B (twist_isUnit B hE hw)`.
+A detailed English derivation is pending.
 -/
 theorem chi_norm {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (I : Finset ι) {w : B.A} (hw : IsUnit w) :
     chi B e I (w * B.σ w) = 1 := by
@@ -114,7 +114,7 @@ theorem chi_norm {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (I : Finset 
   exact eta_norm_mul_sigma B (twist_isUnit B hE hw)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [UQ.eta, val]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, eta_mul (hx a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.2 fun i hi => hx i (Finset.mem_insert_of_mem hi)), ih fun i hi => hx i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_prod {s : Finset ι} (x : ι → K.E) (hx : ∀ i ∈ s, x i ≠ 0) :
     K.eta (∏ i ∈ s, x i) = ∏ i ∈ s, K.eta (x i) := by
@@ -126,19 +126,17 @@ theorem eta_prod {s : Finset ι} (x : ι → K.E) (hx : ∀ i ∈ s, x i ≠ 0) 
       ih fun i hi => hx i (Finset.mem_insert_of_mem hi)]
 
 /- English proof (translation)
-Establish `he` using `h.1.1.toOrthogonalIdempotents`. Use `set E := eS B e I with hEdef`. Establish `hE` using `eS_idem B he I`. Establish `h1 : (∏ j ∈ J.filter (· ∉ I), π j) * E = E`. Use `Finset.prod_induction _ (fun t => t * E = E) (fun a b ha hb => by rw [mul_assoc, hb, ha]) (one_mul _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Take `⟨hjJ, hjI⟩` from `Finset.mem_filter.1 hj`. Establish `hEe : E = (1 - e j) * E`. Rewrite using `[sub_mul, one_mul, mul_comm (e j) E, hEdef, mul_comm, e_mul_eS B he, if_neg hjI, sub_zero]`. Use `show π j * E = E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hEe, ← mul_assoc, (h.2 j (hJ hjJ)).2.1]`. Establish `h2 : (∏ j ∈ J.filter (· ∈ I), π j) * (1 - E) = 1 - E`. Use `Finset.prod_induction _ (fun t => t * (1 - E) = 1 - E) (fun a b ha hb => by rw [mul_assoc, hb, ha]) (one_mul _) ?_` and prove the remaining obligations. Introduce `j hj`. Take `⟨hjJ, hjI⟩` from `Finset.mem_filter.1 hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEe : 1 - E = (1 - e j) * (1 - E)`. Use `e_mul_eS B he j I` as an intermediate fact. Rewrite `this` using `[if_pos hjI]`. Rewrite `this` using `[← hEdef]`. Take the linear combination `-this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show π j * (1 - E) = 1 - E`. Rewrite using `[hEe, ← mul_assoc, (h.2 j (hJ hjJ)).2.1]`. Establish `hprod : (∏ j ∈ J, π j) * E + (1 - E) = ∏ j ∈ J.filter (· ∈ I), π j`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not J (· ∈ I), mul_assoc]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h2`. Unfold `chi`. Rewrite using `[← hEdef, hprod, map_prod, eta_prod]`. Rewrite using `[Finset.filter_mem_eq_inter]`. Rewrite using `[Finset.prod_congr rfl fun j hj => (h.2 j (hJ (Finset.mem_inter.1 hj).1)).2.2, Finset.prod_const]`.
-
-Introduce `j hj`. Conclude with `norm_ne_zero_of_isUnit B (h.2 j (hJ (Finset.mem_filter.1 hj).1)).1.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chi_prod {e π : ι → B.A} {S : Finset ι} (h : IsFrame B e π S) (I J : Finset ι) (hJ : J ⊆ S) :
     chi B e I (∏ j ∈ J, π j) = (-1) ^ (J ∩ I).card := by
@@ -177,14 +175,14 @@ theorem chi_prod {e π : ι → B.A} {S : Finset ι} (h : IsFrame B e π S) (I J
     exact norm_ne_zero_of_isUnit B (h.2 j (hJ (Finset.mem_filter.1 hj).1)).1.1
 
 /- English proof (translation)
-Rewrite using `[← ha, ← hb, show a * e i * (b * e j) = a * b * (e i * e j) by ring, he.ortho hij, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mul_eq_zero_of_idem {e : ι → B.A} (he : OrthogonalIdempotents e) {i j : ι} (hij : i ≠ j) {a b : B.A}
     (ha : a * e i = a) (hb : b * e j = b) : a * b = 0 := by
   rw [← ha, ← hb, show a * e i * (b * e j) = a * b * (e i * e j) by ring, he.ortho hij, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Conclude with `Finset.sum_eq_single i (fun j hj hji => mul_eq_zero_of_idem B he (Ne.symm hji) (ha i hi) (hb j hj)) (fun h => absurd hi h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_mul_sum_diag {e : ι → B.A} (he : OrthogonalIdempotents e) (s : Finset ι) (a b : ι → B.A)
     (ha : ∀ i ∈ s, a i * e i = a i) (hb : ∀ i ∈ s, b i * e i = b i) :
@@ -195,27 +193,23 @@ theorem sum_mul_sum_diag {e : ι → B.A} (he : OrthogonalIdempotents e) (s : Fi
     (fun h => absurd hi h)
 
 /- English proof (translation)
-Establish `he` using `h.1.toOrthogonalIdempotents`. Establish `hcomp` using `h.1.complete`. Use `choose f hf using h.2`. Use `set E := eS B e S with hEdef`. Establish `hE : E * E = E` using `eS_idem B he S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσE : B.σ E = E` using `sigma_eS B h S`. Establish `hfe : ∀ i ∈ Sᶜ, f i * e i = f i`. Introduce `i hi`. Establish `hiS` using `Finset.mem_compl.1 hi`. Take `⟨hid, -, -, -, h2⟩` from `hf i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(h2 hiS).2, mul_add, hid.eq, (h2 hiS).1, add_zero]`. Establish `hge : ∀ i ∈ Sᶜ, B.σ (f i) * e i = B.σ (f i)`. Introduce `i hi`. Establish `hiS` using `Finset.mem_compl.1 hi`. Take `⟨hid, -, -, -, h2⟩` from `hf i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(h2 hiS).2, mul_add, mul_comm (B.σ (f i)) (f i), (h2 hiS).1, zero_add, ← map_mul, hid.eq]`. Use `set F := ∑ i ∈ Sᶜ, f i with hFdef`. Use `set G := ∑ i ∈ Sᶜ, B.σ (f i) with hGdef`. Establish `hGσ : G = B.σ F` using `by rw [hGdef, hFdef, map_sum]`. Establish `hFF : F * F = F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hFdef, sum_mul_sum_diag B he _ f f hfe hfe]`. Conclude with `Finset.sum_congr rfl fun i _ => (hf i).1.eq`. Establish `hFG : F * G = 0`. Rewrite using `[hFdef, hGdef, sum_mul_sum_diag B he _ f _ hfe hge]`. Conclude with `Finset.sum_eq_zero fun i hi => ((hf i).2.2.2.2 (Finset.mem_compl.1 hi)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGG : G * G = G` using `by rw [hGσ, ← map_mul, hFF]`. Establish `hFE : F * E = 0`. Rewrite using `[hFdef, hEdef, eS, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => mul_eq_zero_of_idem B he (fun hij => Finset.mem_compl.1 hi (by rw [hij]; exact hj)) (hfe i hi) (he.idem j).eq`. Establish `hGE : G * E = 0` using `by rw [hGσ, ← hσE, ← map_mul, hFE, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFGsum : F + G = 1 - E`. Establish `h1 : F + G = ∑ i ∈ Sᶜ, e i`. Rewrite using `[hFdef, hGdef, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i hi => ((hf i).2.2.2.2 (Finset.mem_compl.1 hi)).2.symm`. Rewrite using `[h1, ← hcomp, ← Finset.sum_add_sum_compl S e, hEdef, eS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set w := y * F + G + E with hwdef`. Establish `hσw : B.σ w = y * G + F + E`. Rewrite using `[hwdef, map_add, map_add, map_mul, hy.2, hσE, hGσ, B.σ_σ]`. Establish `hw : w * B.σ w = y * (1 - E) + E`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσw, ← hFGsum]`. Take the linear combination `(y ^ 2 + 1) * hFG + y * hFF + (y + 1) * hFE + y * hGG + (y + 1) * hGE + hE`. Establish `hE' : (1 - E) * (1 - E) = 1 - E` using `by linear_combination hE`. Establish `hwwU : IsUnit (w * B.σ w)`. Use `twist_isUnit B hE' hy.1` as an intermediate fact.
-
-Rewrite `this` using `[sub_sub_cancel, ← hw]`. Then use the resulting hypothesis. Establish `hwU : IsUnit w` using `isUnit_of_mul_isUnit_left hwwU`. Establish `hsplit : y = (y * E + (1 - E)) * (w * B.σ w)`. Rewrite using `[hw]`. Take the linear combination `(y ^ 2 - 2 * y + 1) * hE`.
-
-Unfold `chi`. Rewrite using `[← hEdef]`. Use `conv_rhs => rw [hsplit]`. Rewrite using `[map_mul, eta_mul (norm_ne_zero_of_isUnit B (twist_isUnit B hE hy.1)) (norm_ne_zero_of_isUnit B hwwU), eta_norm_mul_sigma B hwU, mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_plus {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) {y : B.A} (hy : B.Plus y) :
     chi B e S y = K.eta (Algebra.norm K.E y) := by
@@ -274,7 +268,7 @@ theorem chi_plus {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) {y : B.A} (h
     eta_norm_mul_sigma B hwU, mul_one]
 
 /- English proof (translation)
-Introduce `K B ι _ _ e π S h`. Conclude with `⟨fun I x y hx hy => chi_mul B h.1.1.toOrthogonalIdempotents I hx hy, fun I w hw => chi_norm B h.1 I hw, fun I J _ hJ => chi_prod B h I J hJ, fun y hy => chi_plus B h.1 hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem chi_frame_props : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] [DecidableEq ι] (e π : ι → B.A)
     (S : Finset ι), IsFrame B e π S →

@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.allSixLaws.1.weil`.
+A detailed English derivation is pending.
 -/
 theorem weilSt : Out.WeilSt := GlobalTheory.allSixLaws.1.weil
 

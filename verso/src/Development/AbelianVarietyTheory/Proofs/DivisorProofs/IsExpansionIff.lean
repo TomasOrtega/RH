@@ -36,7 +36,7 @@ def ExpWith (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) (e : A
         (τ.sum fun d c => c * (∏ j, (d.1 j).fn (x j)) * ∏ i, (d.2 i).fn (y i)) = flatProd S t Φ β x y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ => ⟨fun _ => by rw [zero_smul]; exact zero_mem _, fun _ => by rw [zero_smul]; exact zero_mem _⟩, fun x u y v _ _ _ _ => by simp only [zero_smul, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 example (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) (e : AE D) : DepthOK S t Φ β e 0 :=
   ⟨fun _ _ _ _ _ => ⟨fun _ => by rw [zero_smul]; exact zero_mem _, fun _ => by rw [zero_smul]; exact zero_mem _⟩,

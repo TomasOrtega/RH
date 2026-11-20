@@ -23,7 +23,7 @@ abbrev UnrWDFam (N : NData R H what₂) (a : ℕ) : Type :=
     (∀ w, (p.1 w).unr ∧ (p.1 w).lpDim = a) ∧ ∀ τ, Multiset.card (p.2 τ) = a}
 
 /- English proof (translation)
-Take `⟨hu, he, hd⟩` from `WD.lpUnr_spec (h := N.plOm.2 w) ({-1} : Multiset ℂ) (by simp)`. Conclude with `⟨hu, he, hd.trans (Multiset.card_singleton _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lpUnr_negOne_spec (N : NData R H what₂) (w : PlE H) :
     (WD.lpUnr (N.plOm.2 w) {-1} : WDAt N w).unr ∧ (WD.lpUnr (N.plOm.2 w) {-1} : WDAt N w).frobEig = {-1} ∧
@@ -36,7 +36,7 @@ def negOneWDFam (N : NData R H what₂) : UnrWDFam N 1 :=
     fun w => ⟨(lpUnr_negOne_spec N w).1, (lpUnr_negOne_spec N w).2.2⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `hu : (χ.1.1 w).unr` using `(χ.2.1 w).1`. Establish `hd : (χ.1.1 w).lpDim = 1` using `(χ.2.1 w).2`. Establish `hc : Multiset.card (χ.1.1 w).frobEig = 1` using `((WD.unramified_laws (N.plOm.2 w)).2.2.2.2.2.2.2.2.2.2.2.2.1 _ hu).trans hd`. Conclude with `Multiset.card_eq_one.mp hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UnrWDFam.exists_frobEig {N : NData R H what₂} (χ : UnrWDFam N 1) (w : PlE H) :
     ∃ c, (χ.1.1 w).frobEig = {c} := by
@@ -190,7 +190,7 @@ def wdTieWD (N : NData R H what₂) (hE : IsEmpty N.Loc) (pl : ∀ k, N.PlG k �
     fun _ _ => Iff.rfl, fun _ _ => Iff.rfl, fun _ _ _ => rfl, fun _ _ => Iff.rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.g_prime k⟩ A.items₂ k (A.plGw k v) a = WD.lab (τ k) (t k v) (T.e _ a) := by classical let γ : Fin 2 → PlE H → G H.E N.Om := fun k => Function.extend (pl k) (t k) fun _ => 1 refine ⟨nAutWD N hE pl h1 h2 h3 τ γ, wdTieWD N hE pl h1 h2 h3 τ γ, rfl, fun k v a => ?_⟩ have hγ : γ k ( …`.
+Supply the required witnesses or components.
 -/
 theorem exists_nAut_wdTie (N : NData R H what₂) (hE : IsEmpty N.Loc) (pl : ∀ k, N.PlG k → PlE H)
     (h1 : ∀ k v, pl k v ∈ placesOver H.E (H.g k)) (h2 : ∀ k, Function.Injective (pl k))

@@ -26,13 +26,13 @@ variable {p : ℕ} [Fact p.Prime] {C : SCF p} {Λ : Type} [CommRing Λ] [StarRin
 omit [QuasiSeparated G.hom] in
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_eq (w : P.OmC) : ((p : ↥C.S) ^ n) • w = p ^ n • w := by
   rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Simplify using `only [pow_smul_eq]`. Use `⟨fun ⟨w, hw, e⟩ => ?_, fun ⟨a, ha, hv'⟩ => (hv.isLiftAt hadd hker ha).sub hv'⟩` and prove the remaining obligations. Take `⟨a, ha, hv⟩` from `hv`. Conclude with `⟨a, ha, hv.of_sub (neg_mem hw) (by rw [smul_neg, ← e, neg_sub])⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isVal_iff (hadd : ∀ a b, lv (a + b) = lv a * lv b) (hker : ∀ a, lv a = 1 → ∃ b, a = p ^ n • b) {t : P.T}
     {v v' : P.OmC} (hv : IsVal hφ lv h t v) :
@@ -43,11 +43,11 @@ theorem isVal_iff (hadd : ∀ a b, lv (a + b) = lv a * lv b) (hker : ∀ a, lv a
   exact ⟨a, ha, hv.of_sub (neg_mem hw) (by rw [smul_neg, ← e, neg_sub])⟩
 
 /- English proof (translation)
-Establish `e : P.latOm.toAddSubgroup.map (DistribSMul.toAddMonoidHom P.OmC ((p : ↥C.S) ^ n)) = (P.latOm.map (p ^ n • LinearMap.id)).toAddSubgroup` using `AddSubgroup.ext fun v => exists_congr fun w => and_congr_right fun _ => by`. Rewrite using `[DistribSMul.toAddMonoidHom_apply, pow_smul_eq]`. Both sides reduce to the same expression. Establish `key : fibLat hφ (preSub (cokernel.π (p ^ n • 𝟙 (omega G))) (spanSub fun i => h (b i))) = Submodule.span _ (Set.range f) ⊔ P.latOm.map (p ^ n • LinearMap.id)`. Use `le_antisymm (fibLat_preSub_spanSub_le hφ _ (fun w hw => ?_) fun i => ?_) (sup_le (Submodule.span_le.2 ?_) (Submodule.map_le_iff_le_comap.2 fun w hw => nsmul_mem_fibLat_preSub hφ _ hw))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_sup_right (Submodule.mem_map_of_mem (f := p ^ n • LinearMap.id) hw)`. Take `⟨t, ht⟩` from `(tate_free_of_card p _ _ P.card_torsion).2.1 n _ (htors (b i))`. Conclude with `⟨f t, Submodule.mem_sup_left (Submodule.subset_span (Set.mem_range_self t)), (hf t).isLiftAt hadd hker ht.symm⟩`. Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨a, -, ha⟩` from `hf t`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.mem_fibLat hφ (hb a)`. Rewrite using `[e, ospan_eq_span, ← Submodule.sup_toAddSubgroup, ← key]`. Conclude with `(inf_eq_right.2 fun _ hv => fibLat_le hφ _ hv).symm`.
+A detailed English derivation is pending.
 -/
 theorem fibLat_eq (hadd : ∀ a b, lv (a + b) = lv a * lv b) (hker : ∀ a, lv a = 1 → ∃ b, a = p ^ n • b)
     (htors : ∀ a, lv a ^ p ^ n = 1) {J : Type} [Fintype J] (b : J → La)
@@ -94,7 +94,7 @@ def latAt (M : Sub Z.om) : AddSubgroup ((htpTrue ct).OmV y) :=
   (fibLat (ct.isGrpPullback_htToMdl y) M).toAddSubgroup
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ letI := A.H.starRing fibLat_le (ct.isGrpPullback_htToMdl y) M`.
+A detailed English derivation is pending.
 -/
 theorem latAt_le (M : Sub Z.om) : latAt ct y M ≤ (htpTrue ct).om y :=
   letI : Fact p.Prime := ⟨ct.hp⟩
@@ -102,7 +102,7 @@ theorem latAt_le (M : Sub Z.om) : latAt ct y M ≤ (htpTrue ct).om y :=
   fibLat_le (ct.isGrpPullback_htToMdl y) M
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ letI := A.H.starRing hv.choose_spec.2.mem`.
+A detailed English derivation is pending.
 -/
 theorem IsValAt.mem {t : (htpTrue ct).Tp y} {v : (htpTrue ct).OmV y} (hv : IsValAt ct h y t v) : v ∈ (htpTrue ct).om y :=
   letI : Fact p.Prime := ⟨ct.hp⟩
@@ -134,7 +134,7 @@ variable (hn : p ^ n ∣ Z.i.l.A)
 include hn
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ letI := A.H.starRing exists_isVal (ct.isGrpPullback_htToMdl y) h.1 (levPt_add y.P _) fun q => ((levPt_spec y.P hn).1 q).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_val : ∃ f : (htpTrue ct).Tp y →+ (htpTrue ct).OmV y, ∀ t, IsValAt ct h y t (f t) :=
   letI : Fact p.Prime := ⟨ct.hp⟩
@@ -142,7 +142,7 @@ theorem exists_val : ∃ f : (htpTrue ct).Tp y →+ (htpTrue ct).OmV y, ∀ t, I
   exists_isVal (ct.isGrpPullback_htToMdl y) h.1 (levPt_add y.P _) fun q => ((levPt_spec y.P hn).1 q).1
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ letI := A.H.starRing isVal_iff (levPt_add y.P _) (fun a => ((levPt_spec y.P hn).2.1 a).1) hv`.
+A detailed English derivation is pending.
 -/
 theorem isValAt_iff {t : (htpTrue ct).Tp y} {v v' : (htpTrue ct).OmV y} (hv : IsValAt ct h y t v) :
     (∃ w ∈ (htpTrue ct).om y, v - v' = ((p : (ct.fld y).C) ^ n) • w) ↔ IsValAt ct h y t v' :=
@@ -151,7 +151,7 @@ theorem isValAt_iff {t : (htpTrue ct).Tp y} {v v' : (htpTrue ct).OmV y} (hv : Is
   isVal_iff (levPt_add y.P _) (fun a => ((levPt_spec y.P hn).2.1 a).1) hv
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ letI := A.H.starRing fibLat_eq (levPt_add y.P _) (fun a => ((levPt_spec y.P hn).2.1 a).1) (fun a => ((levPt_spec y.P hn).1 _).2 ⟨a, rfl⟩) _ (mem_imHT h) hf`.
+A detailed English derivation is pending.
 -/
 theorem latAt_omP {f : (htpTrue ct).Tp y → (htpTrue ct).OmV y} (hf : ∀ t, IsValAt ct h y t (f t)) :
     latAt ct y (omP h) = (htpTrue ct).om y ⊓ (Ospan (C := (ct.fld y).C) (Set.range f) ⊔
@@ -164,11 +164,11 @@ theorem latAt_omP {f : (htpTrue ct).Tp y → (htpTrue ct).OmV y} (hf : ∀ t, Is
 end Points
 
 /- English proof (translation)
-Use `letI : Fact p.Prime := ⟨ct.hp⟩`. Use `letI := A.H.starRing`. Take `⟨⟨i, z₁, z₂, z₃, z₄, z₅, z₆, z₇, z₈, z₉, z₁₀⟩, w₁, w₂, w₃, w₄, w₅, w₆, w₇, w₈, w₉, w₁₀⟩` from `Z`. Take `rfl : i = B.i` from `e`. Set `Z : ct.Mdl` to `⟨⟨B.i, z₁, z₂, z₃, z₄, z₅, z₆, z₇, z₈, z₉, z₁₀⟩, w₁, w₂, w₃, w₄, w₅, w₆, w₇, w₈, w₉, w₁₀⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `IsHT ct (HTm.pull Z (B := B) rfl h)`. Introduce `y t`. Set `y₀ : ct.Pt B` to `⟨y.C, y.P, y.z ≫ toBase Z B rfl, by`. Rewrite using `[Category.assoc, toBase_π, eqToHom_refl, Category.comp_id, y.z_π]⟩`. Take `⟨a, ha, hv⟩` from `hh y₀ t`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ha, IsLiftAt.pbMod (ct.isGrpPullback_htToMdl y₀) (isGrpPullback_toBaseG Z B rfl) (ct.isGrpPullback_htToMdl y) rfl ?_ hv⟩` and prove the remaining obligations. Use `B.tMap.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ((toBaseG_φ Z B rfl).trans (Category.comp_id _))).trans ?_)` and prove the remaining obligations. Conclude with `(ct.htToMdl_φ y).trans (ct.htToMdl_φ y₀).symm`. Conclude with `((ct.isGrpPullback_htToMdl y).comp (isGrpPullback_toBaseG Z B rfl)).1.w.trans (ct.isGrpPullback_htToMdl y₀).1.w.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsHT.pull {B : ct.Mdl} [IsIso B.π] (e : Z.i = B.i) {h : HTOn B n} (hh : IsHT ct h) : IsHT ct (pull Z e h) := by
   letI : Fact p.Prime := ⟨ct.hp⟩
@@ -190,17 +190,17 @@ theorem IsHT.pull {B : ct.Mdl} [IsIso B.π] (e : Z.i = B.i) {h : HTOn B n} (hh :
       (ct.isGrpPullback_htToMdl y₀).1.w.symm
 
 /- English proof (translation)
-The claim follows from `(ct.B.lvl (some n)).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem A_Xn (n : ℕ) : (ct.Xn n).i.l.A = κ.l.A * p ^ n := (ct.B.lvl (some n)).2.2.1
 
 /- English proof (translation)
-The claim follows from `A_Xn ct n ▸ dvd_mul_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_A (n : ℕ) : p ^ n ∣ (ct.Xn n).i.l.A := A_Xn ct n ▸ dvd_mul_left _ _
 
 /- English proof (translation)
-The claim follows from `Nat.pow_right_injective ct.hp.two_le (Nat.eq_of_mul_eq_mul_left κ.l.A_pos ((A_Xn ct n).symm.trans ((congrArg (·.l.A) h).trans (A_Xn ct m))))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_i_eq {n m : ℕ} (h : (ct.Xn n).i = (ct.Xn m).i) : n = m :=
   Nat.pow_right_injective ct.hp.two_le (Nat.eq_of_mul_eq_mul_left κ.l.A_pos
@@ -209,7 +209,7 @@ theorem eq_of_i_eq {n m : ℕ} (h : (ct.Xn n).i = (ct.Xn m).i) : n = m :=
 instance isIso_π_Xn (n : ℕ) : IsIso (ct.Xn n).π := ct.B.iso (some n)
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ Z', IsNBlow Z J Z'`. Conclude with `(blowUp_spec h).1`. Conclude with `congrArg (·.i) (dif_neg h : blowUp Z J = Z)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem blowUp_i (J : ct.Idl Z) : (ct.blowUp Z J).i = Z.i := by
   by_cases h : ∃ Z', IsNBlow Z J Z'
@@ -220,13 +220,13 @@ def htEval (h : HTOn (ct.Xn n) n) (y : ct.Pt (ct.Xn n)) : (htpTrue ct).Tp y →+
   (exists_val ct h y (pow_dvd_A ct n)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_val ct h y (pow_dvd_A ct n)).choose_spec t`.
+A detailed English derivation is pending.
 -/
 theorem isValAt_htEval (h : HTOn (ct.Xn n) n) (y : ct.Pt (ct.Xn n)) (t : (htpTrue ct).Tp y) :
     IsValAt ct h y t (htEval ct h y t) := (exists_val ct h y (pow_dvd_A ct n)).choose_spec t
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun y t => ((and_iff_right ((isValAt_htEval ct h y t).mem ct h y)).trans (isValAt_iff ct h y (pow_dvd_A ct n) (isValAt_htEval ct h y t))).symm`.
+A detailed English derivation is pending.
 -/
 theorem isHT_iff (h : HTOn (ct.Xn n) n) : IsHT ct h ↔ ∀ (y : ct.Pt (ct.Xn n)) (t : (htpTrue ct).Tp y),
     htEval ct h y t ∈ (htpTrue ct).om y ∧
@@ -238,14 +238,14 @@ def IsModelOf (Z : ct.Mdl) (n : ℕ) (h : HTOn (ct.Xn n) n) : Prop :=
   3 ≤ n ∧ IsHT ct h ∧ Z = ct.blowUp (ct.Xn n) (htIdl ct h)
 
 /- English proof (translation)
-The claim follows from `H.2.2 ▸ blowUp_i ct _`.
+A detailed English derivation is pending.
 -/
 theorem IsModelOf.i_eq {h : HTOn (ct.Xn n) n} (H : IsModelOf ct Z n h) : Z.i = (ct.Xn n).i := H.2.2 ▸ blowUp_i ct _
 
 def IsHTBlowup (Z' Z : ct.Mdl) : Prop := ∃ n h, Z = ct.Xn n ∧ IsModelOf ct Z' n h
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨h, H⟩ => ⟨n, h, rfl, H⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨m, h, e, H⟩`. Take `rfl` from `eq_of_i_eq ct (congrArg (·.i) e)`. Conclude with `⟨h, H⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHTBlowup_iff {Z' : ct.Mdl} : IsHTBlowup ct Z' (ct.Xn n) ↔ ∃ h, IsModelOf ct Z' n h := by
   refine ⟨?_, fun ⟨h, H⟩ => ⟨n, h, rfl, H⟩⟩
@@ -260,9 +260,9 @@ def htData (Z : ct.Mdl) : Σ n, HTOn Z n :=
     ⟨H.choose.1, pull Z (H.choose_spec.i_eq ct) H.choose.2⟩ else ⟨0, 0⟩
 
 /- English proof (translation)
-Take `⟨h₀, H₀⟩` from `(isHTBlowup_iff ct).1 H`. Establish `H₁ : ∃ d : Σ n, HTOn (ct.Xn n) n, IsModelOf ct Z d.1 d.2` using `⟨⟨n, h₀⟩, H₀⟩`. Establish `key : ∀ (d : Σ n, HTOn (ct.Xn n) n) (Hd : IsModelOf ct Z d.1 d.2), ∃ (h : HTOn (ct.Xn n) n) (H' : IsModelOf ct Z n h), (⟨d.1, pull Z (Hd.i_eq ct) d.2⟩ : Σ n, HTOn Z n) = ⟨n, pull Z (H'.i_eq ct) h⟩`. Introduce and unpack `⟨m, h⟩ Hd`. Take `rfl : n = m` from `eq_of_i_eq ct ((H₀.i_eq ct).symm.trans (Hd.i_eq ct))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h, Hd, rfl⟩`. Rewrite using `[htData, dif_pos H₁]`. Conclude with `key _ H₁.choose_spec`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htData_eq (H : IsHTBlowup ct Z (ct.Xn n)) :
     ∃ (h : HTOn (ct.Xn n) n) (H' : IsModelOf ct Z n h), htData ct Z = ⟨n, pull Z (H'.i_eq ct) h⟩ := by
@@ -281,7 +281,7 @@ def omSub (Z : ct.Mdl) : Sub Z.om := omP (htData ct Z).2
 def epsSub (Z : ct.Mdl) (σ : D.host.E →+* ℂ) : Sub Z.om := epsOm ct (htData ct Z).2 σ
 
 /- English proof (translation)
-Take `⟨h, H', e⟩` from `htData_eq ct H`. Rewrite using `[omSub, e]`. Conclude with `latAt_omP ct _ y (H'.i_eq ct ▸ pow_dvd_A ct n) (H'.2.1.pull ct _ y)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_omSub (H : IsHTBlowup ct Z (ct.Xn n)) (y : ct.Pt Z) :
     latAt ct y (omSub ct Z) = (htpTrue ct).om y ⊓ (Ospan (C := (ct.fld y).C) (Set.range ((htpTrue ct).ht y)) ⊔
@@ -330,7 +330,7 @@ instance : Module ↥y.C.S y.Om :=
   Module.compHom Γ((Scheme.Modules.pullback y.gen).obj Z.om, ⊤) (LieVB.cst ↥y.C.S)
 
 /- English proof (translation)
-Introduce `_ _` and use `e trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_gen {U : Z.X.Opens} (e : ⊤ ≤ y.z ⁻¹ᵁ U) : ⊤ ≤ y.gen ⁻¹ᵁ U := fun _ _ => e trivial
 
@@ -340,7 +340,7 @@ def lat (M : Sub Z.om) : AddSubgroup y.Om :=
   Ospan (C := ↥y.C.S) {v | ∃ (U : Z.X.Opens) (e : ⊤ ≤ y.z ⁻¹ᵁ U), ∃ s ∈ M.sec U, y.ev e s = v}
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.closure_mono fun _ ⟨a, ha, x, ⟨U, e, s, hs, hx⟩, hv⟩ => ⟨a, ha, x, ⟨U, e, s, h U hs, hx⟩, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem lat_mono {M M' : Sub Z.om} (h : ∀ U, M.sec U ≤ M'.sec U) : y.lat M ≤ y.lat M' :=
   AddSubgroup.closure_mono fun _ ⟨a, ha, x, ⟨U, e, s, hs, hx⟩, hv⟩ => ⟨a, ha, x, ⟨U, e, s, h U hs, hx⟩, hv⟩
@@ -364,7 +364,7 @@ def eLat (σ : D.host.E →+* ℂ) : AddSubgroup y.Om :=
   (y.lat (epsSub ct Z σ)).comap (DistribSMul.toAddMonoidHom _ (y.fK (dif ct Z σ : Z.i.c.F)))
 
 /- English proof (translation)
-Conclude with `EigenSplit.mem_eigenSub.1 (EigenSplit.proj_mem ((isSplitting_embK Z.i.c).map y.fK) y.actOm σ v) a`.
+A detailed English derivation is pending.
 -/
 theorem actOm_eOm (σ : D.host.E →+* ℂ) (a : 𝓞 D.host.E) (v : y.Om) :
     y.actOm a (y.eOm σ v) = y.fK (embK Z.i.c σ a) • y.eOm σ v := by
@@ -423,7 +423,7 @@ def eOmPIso (Z : ct.Mdl) (s : Bool) (τ : PsiT D) :
   @At.presIso _ _ _ _ _ _ _ ct Z _ (isFiniteQC_epsOm ct _ _)
 
 /- English proof (translation)
-The claim follows from `latAt_omP ct h y (pow_dvd_A ct n) (isValAt_htEval ct h y)`.
+A detailed English derivation is pending.
 -/
 theorem latticeAt_omega_eq_inf_hodgeTateSpan {n : ℕ} (h : HTOn (ct.Xn n) n) (y : ct.Pt (ct.Xn n)) :
     latAt ct y (omP h) = (htpTrue ct).om y ⊓ (Ospan (C := (ct.fld y).C) (Set.range (htEval ct h y)) ⊔
@@ -431,7 +431,7 @@ theorem latticeAt_omega_eq_inf_hodgeTateSpan {n : ℕ} (h : HTOn (ct.Xn n) n) (y
   latAt_omP ct h y (pow_dvd_A ct n) (isValAt_htEval ct h y)
 
 /- English proof (translation)
-Take `⟨h, H', e⟩` from `htData_eq ct H`. Conclude with `congrArg (fun d : Σ n, HTOn Z n => d.1 - 2) e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem htSES_k₀ {Z : ct.Mdl} {n : ℕ} (H : IsHTBlowup ct Z (ct.Xn n)) (τ : PsiT D) :
     At.SES.k₀ ((htmTrue ct).htSES Z τ) = n - 2 := by
@@ -439,26 +439,26 @@ theorem htSES_k₀ {Z : ct.Mdl} {n : ℕ} (H : IsHTBlowup ct Z (ct.Xn n)) (τ : 
   exact congrArg (fun d : Σ n, HTOn Z n => d.1 - 2) e
 
 /- English proof (translation)
-The claim follows from `y.1.lat_mono fun U => (Lat.isTop_top U).ge.trans' le_top`.
+A detailed English derivation is pending.
 -/
 example (Z : ct.Mdl) (y : (htmTrue ct).BPt Z) : (htmTrue ct).omPB y ≤ (htmTrue ct).omB y :=
   y.1.lat_mono fun U => (Lat.isTop_top U).ge.trans' le_top
 
 /- English proof (translation)
-Simplify using `using pow_smul_mem_omP h s`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 example (Z : ct.Mdl) (h : HTOn Z 0) (U : Z.X.Opens) (s : Γ(Z.om, U)) : s ∈ (omP h).sec U := by
   simpa using pow_smul_mem_omP h s
 
 /- English proof (translation)
-Introduce `H` and use `have ⟨_, H'⟩ := (isHTBlowup_iff ct).1 H absurd H'.1 (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (Z : ct.Mdl) : ¬ (htmTrue ct).IsHTBlowup Z (ct.Xn 2) := fun H =>
   have ⟨_, H'⟩ := (isHTBlowup_iff ct).1 H
   absurd H'.1 (by decide)
 
 /- English proof (translation)
-The claim follows from `have e : y.P.y ≫ (ct.Y Z.i).j = (spMap (intO ↥y.C.S).subtype ≫ y.z) ≫ Z.π := by rw [← y.P.ext, ← y.z_π, Category.assoc] ⟨y.P.y x, congr($e x)⟩`.
+A detailed English derivation is pending.
 -/
 example (Z : ct.Mdl) (y : ct.Pt Z) (x : Sp ↥y.C.S) : (IntPt.ofPt y).gen x ∈ Z.opn :=
   have e : y.P.y ≫ (ct.Y Z.i).j = (spMap (intO ↥y.C.S).subtype ≫ y.z) ≫ Z.π := by rw [← y.P.ext, ← y.z_π, Category.assoc]

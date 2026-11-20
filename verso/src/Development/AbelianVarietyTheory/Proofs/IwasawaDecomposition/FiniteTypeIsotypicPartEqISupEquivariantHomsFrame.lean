@@ -20,19 +20,17 @@ open GlobalTheory.CuspMult
 namespace GlobalTheory.IsotHom
 
 /- English proof (translation)
-Introduce `D V S θ M n P π`. Use `set e := GlobalTheory.KapIsot.eqv P with he`. Establish `hσ : ∀ κ (x : π.S), ((GlobalTheory.OccRowVec.finRep π).comp e.symm.toMonoidHom) (e κ) x = GlobalTheory.OccRowVec.finRep π κ x` using `fun κ x => by show GlobalTheory.OccRowVec.finRep π (e.symm (e κ)) x = _`. Rewrite using `[MulEquiv.symm_apply_apply]`. Establish `hact : ∀ κ (T : MMap M), principalLevelFrame.actM P M κ T = finRep M (e κ) T` using `fun κ T => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MultilinearMap.ext fun v => funext fun g => ?_` and prove the remaining obligations. Rewrite using `[principalLevelFrame.actM_apply, finRep_apply]`. Both sides reduce to the same expression. Establish `hle : principalLevelFrame.Minf θ P M ≤ allMaps θ M` using `iSup_le fun N => GlobalTheory.PartDims.mult_le θ M fun k hk => hk.elim`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup₂_le fun Φ hΦ => ?_` and prove the remaining obligations. Use `le_iSup₂_of_le (f := fun f (_ : f ∈ homInto ((GlobalTheory.OccRowVec.finRep π).comp e.symm.toMonoidHom) (finRep M) (allMaps θ M)) => LinearMap.range f) Φ ⟨fun s => hle (hΦ.2 ⟨s, rfl⟩), fun g s => ?_⟩ le_rfl` and prove the remaining obligations. Take `⟨κ, rfl⟩` from `e.surjective g`. Rewrite using `[hσ, ← hact]`. Conclude with `hΦ.1 κ s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `iSup₂_le fun f hf => ?_` and prove the remaining obligations. Establish `hfe : principalLevelFrame.IsEqvA (principalLevelFrame.actM P M) π f`. Introduce `κ x`. Establish `h1` using `hf.2 (e κ) x`. Rewrite `h1` using `[hσ, ← hact]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h1`. Establish `hfr : LinearMap.range f ≤ principalLevelFrame.Minf θ P M`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨N, hN, hfix⟩` from `π.smooth x x.2`. Take `⟨N, rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iSup_of_mem N (Submodule.subset_span ?_)` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 (hf.1 x)`. Use `⟨h1.aut, h1.cusp, ?_, h1.equiv, h1.cont⟩` and prove the remaining obligations. Introduce and unpack `v _ ⟨κ, hκ, rfl⟩ g`. Establish `h2` using `hfe κ x`.
-
-Rewrite `h2` using `[show (⟨Formalism.L2.NG.rt D.host.E n κ x, π.stable κ x x.2⟩ : π.S) = x from Subtype.ext (hfix κ hκ)]`. Rewrite using `[one_mul]`. Conclude with `(congrArg (fun T : MMap M => T v g) h2).symm`. Conclude with `le_iSup₂_of_le (f := fun (Φ : π.S →ₗ[ℂ] MMap M) (_ : principalLevelFrame.IsEqvA (principalLevelFrame.actM P M) π Φ ∧ LinearMap.range Φ ≤ principalLevelFrame.Minf θ P M) => LinearMap.range Φ) f ⟨hfe, hfr⟩ le_rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotIn_eq_iSup_homInto : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) {n : ℕ} (P : principalLevelFrame.RowPsi V n) (π : Formalism.L2.NG.FinTyp D.host.E n), principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π = ⨆ f ∈ homInto ((GlobalTheory.OccRowVec.finRep π).comp (GlobalTheory.KapIsot.eqv P).symm.toMonoidHom) (finRep M) (allMaps θ M), LinearMap.range f := by
   intro D V S θ M n P π

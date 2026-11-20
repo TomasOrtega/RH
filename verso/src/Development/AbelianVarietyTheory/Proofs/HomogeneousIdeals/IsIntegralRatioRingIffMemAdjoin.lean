@@ -32,19 +32,17 @@ def saturation (x : B) (hx : IsIntegral A x) : Subring B where
     exact ⟨n, by simpa using hn.neg⟩
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial B with hB | hB` into its components or cases. Rewrite using `[Subsingleton.elim b 0]`. Conclude with `zero_mem _`. Take `⟨p, hp, hz⟩` from `hb`. Establish `hr : ∀ r : saturation x hx, ∃ n : ℕ, IsIntegral A ((r : B) * x ^ n)` using `fun r => r.2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose n hn using hr`. Set `N` to `p.support.sup fun i => n (p.coeff i)`. Establish `hN : ∀ i k, k ≠ 0 → IsIntegral A ((p.coeff i : B) * (x ^ N) ^ k)`. Introduce `i k hk`. Distinguish the cases in `hi : i ∈ p.support`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : n (p.coeff i) ≤ N * k` using `(Finset.le_sup (f := fun i => n (p.coeff i)) hi).trans (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hk))`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le h1`. Rewrite using `[← pow_mul, hd, pow_add, ← mul_assoc]`. Conclude with `(hn _).mul (hx.pow _)`. Rewrite using `[notMem_support_iff.mp hi, ZeroMemClass.coe_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIntegral_zero`. Set `q` to `p.map (algebraMap (saturation x hx) B)`. Establish `hq : q.Monic` using `hp.map _`. Establish `hqz : q.eval b = 0` using `by rw [eval_map, hz]`. Establish `hq0 : q.natDegree ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Rewrite `hqz` using `[hq.natDegree_eq_zero.mp h]`. Simplify using `at hqz`. Use `⟨N, IsIntegral.of_aeval_monic_of_isIntegral_coeff (p := q.scaleRoots (x ^ N)) ((monic_scaleRoots_iff _).mpr hq) (by rwa [natDegree_scaleRoots]) ?_ fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, scaleRoots_eval_mul, hqz, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `isIntegral_zero`. Rewrite using `[coeff_scaleRoots]`. Break down `lt_trichotomy i q.natDegree with h | rfl | h` into its components or cases. Rewrite using `[coeff_map]`. Conclude with `hN _ _ (by omega)`.
-
-Simplify `isIntegral_one` using `[hq.coeff_natDegree]`. Simplify `isIntegral_zero` using `[coeff_eq_zero_of_natDegree_lt h]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_saturation_of_isIntegral {x : B} (hx : IsIntegral A x) {b : B}
     (hb : IsIntegral (saturation x hx) b) : b ∈ saturation x hx := by
@@ -108,17 +106,17 @@ def piece (n : ℕ) : Submodule o L where
 variable {o t}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_piece {n : ℕ} {a : L} : a ∈ piece o t n ↔ IsIntegral (cone o t) (C a * X ^ n) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨s, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem C_mul_X_mem_cone (s : σ) : C (t s) * X ∈ cone o t := Algebra.subset_adjoin ⟨s, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `IsIntegral.mul ha hb`. Rewrite using `[mem_piece, map_mul, pow_add, mul_mul_mul_comm]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mem_piece {m n : ℕ} {a b : L} (ha : a ∈ piece o t m) (hb : b ∈ piece o t n) :
     a * b ∈ piece o t (m + n) := by
@@ -126,28 +124,28 @@ theorem mul_mem_piece {m n : ℕ} {a b : L} (ha : a ∈ piece o t m) (hb : b ∈
   rwa [mem_piece, map_mul, pow_add, mul_mul_mul_comm]
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.mpr fun _ ha _ hb => mul_mem_piece ha hb`.
+A detailed English derivation is pending.
 -/
 theorem piece_mul_le (m n : ℕ) : piece o t m * piece o t n ≤ piece o t (m + n) :=
   Submodule.mul_le.mpr fun _ ha _ hb => mul_mem_piece ha hb
 
 /- English proof (translation)
-Rewrite using `[mem_piece, pow_one]`. Conclude with `isIntegral_algebraMap (x := (⟨_, C_mul_X_mem_cone s⟩ : cone o t))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_piece_one (s : σ) : t s ∈ piece o t 1 := by
   rw [mem_piece, pow_one]
   exact isIntegral_algebraMap (x := (⟨_, C_mul_X_mem_cone s⟩ : cone o t))
 
 /- English proof (translation)
-Simplify `isIntegral_one` using `[mem_piece]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_mem_piece_zero : (1 : L) ∈ piece o t 0 := by
   simpa [mem_piece] using isIntegral_one
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Submodule.one_le]`. Conclude with `one_mem_piece_zero`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_mul' ih (Submodule.span_le.mpr ?_)).trans (piece_mul_le n 1)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `mem_piece_one s`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_pow_le_piece (n : ℕ) : Submodule.span o (Set.range t) ^ n ≤ piece o t n := by
   induction n with
@@ -159,21 +157,19 @@ theorem span_pow_le_piece (n : ℕ) : Submodule.span o (Set.range t) ^ n ≤ pie
     exact mem_piece_one s
 
 /- English proof (translation)
-The claim follows from `span_pow_le_piece n (Submodule.pow_mem_pow _ (Submodule.subset_span (Set.mem_range_self s)) n)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_piece (s : σ) (n : ℕ) : t s ^ n ∈ piece o t n :=
   span_pow_le_piece n (Submodule.pow_mem_pow _ (Submodule.subset_span (Set.mem_range_self s)) n)
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction generalizing n with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Rewrite using `[coeff_C_mul, coeff_X]`. Use `split_ifs with h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `using Submodule.subset_span (R := o) (Set.mem_range_self (f := t) s)`. Simplify using the standard rewrite rules. Consider the case `algebraMap r`. Rewrite using `[Polynomial.algebraMap_apply, coeff_C]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => rw [coeff_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hx n) (hy n)`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[coeff_mul]`. Use `Submodule.sum_mem _ fun c hc => ?_` and prove the remaining obligations. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.mp hc, pow_add]`.
-
-Conclude with `Submodule.mul_mem_mul (hx _) (hy _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_span_pow {p : L[X]} (hp : p ∈ cone o t) (n : ℕ) :
     p.coeff n ∈ Submodule.span o (Set.range t) ^ n := by
@@ -202,9 +198,9 @@ def spread (L : Type*) [CommRing L] : L[X] →+* L[X][X] :=
   eval₂RingHom (C.comp C) (C X * X)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, coeff_add, hp, hq, add_mul]`. Consider the case `monomial m a`. Rewrite using `[spread, coe_eval₂RingHom, eval₂_monomial, mul_pow, ← C_pow, RingHom.comp_apply, ← mul_assoc, ← C_mul, coeff_C_mul_X_pow, coeff_monomial]`. Distinguish the cases in `h : n = m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_spread {L : Type*} [CommRing L] (p : L[X]) (n : ℕ) :
     (spread L p).coeff n = C (p.coeff n) * X ^ n := by
@@ -218,15 +214,15 @@ theorem coeff_spread {L : Type*} [CommRing L] (p : L[X]) (n : ℕ) :
     · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hp n`. Establish `h1 : ∀ s : cone o t, spread L s ∈ (mapRingHom (algebraMap (cone o t) L[X])).range`. Introduce and unpack `⟨s, hs⟩`. Proceed by induction on `hs using Algebra.adjoin_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Use `⟨C ⟨_, C_mul_X_mem_cone s⟩ * X, ?_⟩` and prove the remaining obligations. Simplify using `[spread, mul_assoc]`. Consider the case `algebraMap r`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨C (algebraMap o _ r), ?_⟩` and prove the remaining obligations. Simplify using `[spread]`. Consider the case `add x y _ _ hx hy => simpa only [map_add] using add_mem hx hy`. Consider the case `mul x y _ _ hx hy => simpa only [map_mul] using mul_mem hx hy`. Use `choose φ hφ using h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (mapRingHom (algebraMap (cone o t) L[X]))` using `Polynomial.map_injective _ Subtype.val_injective`. Set `ψ : cone o t →+* (cone o t)[X]` to `{ toFun := φ map_one' := hinj (by rw [hφ, map_one]; exact map_one _) map_zero' := hinj (by rw [hφ, map_zero]; exact map_zero _) map_add' := fun a b => hinj (by rw [map_add, hφ, hφ, hφ]; exact map_add _ _ _) map_mul' := fun a b => hinj (by rw [map_mul, hφ, hφ, hφ]; exact map_mul _ …`. Use `letI : Algebra (cone o t)[X] L[X][X] := Polynomial.algebra _ _`. Establish `h2 : IsIntegral (cone o t)[X] (spread L p)` using `hp.map_of_comp_eq ψ (spread L) (RingHom.ext fun s => hφ s)`. Rewrite using `[mem_piece, ← coeff_spread]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Polynomial.isIntegral_iff_isIntegral_coeff.mp h2 n`. Introduce `h`. Rewrite using `[p.as_sum_support_C_mul_X_pow]`. Conclude with `IsIntegral.sum _ fun n _ => h n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_cone_iff {p : L[X]} :
     IsIntegral (cone o t) p ↔ ∀ n, p.coeff n ∈ piece o t n := by
@@ -263,11 +259,11 @@ theorem isIntegral_cone_iff {p : L[X]} :
     exact IsIntegral.sum _ fun n _ => h n
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_piece, pow_zero, mul_one, Subalgebra.mem_toSubmodule, mem_integralClosure_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ s : cone o t, ((evalRingHom 0).comp (algebraMap (cone o t) L[X])) s ∈ (⊥ : Subalgebra o L)` using `fun s => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `coeff_mem_span_pow s.2 0` as an intermediate fact. Rewrite `this` using `[pow_zero, Submodule.mem_one, coeff_zero_eq_eval_zero]`. Conclude with `Algebra.mem_bot.mpr this`. Establish `h2 : IsIntegral (⊥ : Subalgebra o L) (evalRingHom 0 (C a))` using `h.map_of_comp_eq (RingHom.codRestrict _ _ h1) (evalRingHom 0) rfl`. Rewrite `h2` using `[coe_evalRingHom, eval_C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Algebra.IsIntegral o (⊥ : Subalgebra o L) := inferInstance`. Conclude with `isIntegral_trans a h2`. Introduce `h`. Conclude with `(h.map (CAlgHom (R := o) (A := L))).tower_top`.
+A detailed English derivation is pending.
 -/
 theorem piece_zero : piece o t 0 = (integralClosure o L).toSubmodule := by
   ext a
@@ -288,11 +284,11 @@ theorem piece_zero : piece o t 0 = (integralClosure o L).toSubmodule := by
     exact (h.map (CAlgHom (R := o) (A := L))).tower_top
 
 /- English proof (translation)
-Establish `h1 : ∀ s : cone o t, ((evalRingHom (t i)⁻¹).comp (algebraMap (cone o t) L[X])) s ∈ ratioRing o t i`. Introduce and unpack `⟨s, hs⟩`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Algebra.subset_adjoin ⟨s, by simp [div_eq_mul_inv]⟩`. Consider the case `algebraMap r => simpa using (ratioRing o t i).algebraMap_mem r`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `mul x y _ _ hx hy => simpa using mul_mem hx hy`. Establish `h2 : IsIntegral (ratioRing o t i) (evalRingHom (t i)⁻¹ (C a * X ^ n))` using `IsIntegral.map_of_comp_eq (RingHom.codRestrict _ _ h1) (evalRingHom _) rfl ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[div_eq_mul_inv]`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_div_of_mem_piece (i : σ) {n : ℕ} {a : L} (ha : a ∈ piece o t n) :
     IsIntegral (ratioRing o t i) (a / t i ^ n) := by
@@ -311,15 +307,15 @@ theorem isIntegral_div_of_mem_piece (i : σ) {n : ℕ} {a : L} (ha : a ∈ piece
   simpa [div_eq_mul_inv] using h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Establish `hx : IsIntegral (cone o t) (C (t i) * X)` using `isIntegral_algebraMap (x := (⟨_, C_mul_X_mem_cone i⟩ : cone o t))`. Establish `h1 : ∀ s : ratioRing o t i, (C.comp (algebraMap (ratioRing o t i) L)) s ∈ saturation _ hx`. Introduce and unpack `⟨s, hs⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use `mem_piece_one (o := o) (t := t) s` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mem_piece, pow_one]`. Express the relevant statement in the definitionally equal form `IsIntegral _ (C (t s / t i) * _)`. Rewrite using `[pow_one, ← mul_assoc, ← C_mul, div_mul_cancel₀ _ hi]` and apply the resulting hypothesis. Consider the case `algebraMap r`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, mul_one]`. Conclude with `isIntegral_algebraMap (x := algebraMap o (cone o t) r)`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `mul x y _ _ hx hy => simpa using mul_mem hx hy`. Take `⟨n, hn⟩` from `mem_saturation_of_isIntegral hx (hf.map_of_comp_eq (RingHom.codRestrict _ _ h1) C rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_piece, map_mul, map_pow, mul_assoc, ← mul_pow]` and apply the resulting hypothesis. Introduce and unpack `⟨n, hn⟩`. Simplify `isIntegral_div_of_mem_piece i hn` using `[hi]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_ratioRing_iff {i : σ} (hi : t i ≠ 0) {f : L} :
     IsIntegral (ratioRing o t i) f ↔ ∃ n, f * t i ^ n ∈ piece o t n := by
@@ -356,7 +352,7 @@ section Finite
 variable (o t) [IsDedekindDomain o] [CharZero L] [Algebra.EssFiniteType o L] [Finite σ]
 
 /- English proof (translation)
-Use `haveI : Algebra.FiniteType o (cone o t) := .adjoin_of_finite (Set.finite_range _)`. Use `haveI : Algebra.EssFiniteType o L[X] := .comp o L _`. Use `haveI : Algebra.EssFiniteType (cone o t) L[X] := .of_comp o _ _`. Conclude with `finite_integralClosure_of_essFiniteType_of_isReduced o _ _`.
+A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_cone :
     Module.Finite (cone o t) (integralClosure (cone o t) L[X]) := by
@@ -366,19 +362,19 @@ theorem finite_integralClosure_cone :
   exact finite_integralClosure_of_essFiniteType_of_isReduced o _ _
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `(finite_integralClosure_cone o t).fg_top`. Set `N : ℕ → Submodule o L` to `fun q => Submodule.span o ((fun g : integralClosure (cone o t) L[X] => (g : L[X]).coeff q) '' G)`. Use `⟨G.sup (fun g => g.1.natDegree) + 1, Nat.succ_pos _, N, fun q => Submodule.fg_span (G.finite_toSet.image _), fun q => Submodule.span_le.mpr ?_, fun q hq => Submodule.span_eq_bot.mpr ?_, fun n a ha => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `isIntegral_cone_iff.mp g.2 q`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `Finset.le_sup (f := fun g : integralClosure (cone o t) L[X] => (g : L[X]).natDegree) hg` as an intermediate fact. Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `key : ∀ p ∈ Submodule.span (cone o t) (G : Set (integralClosure (cone o t) L[X])), ∀ n, (p : L[X]).coeff n ∈ ⨆ c ∈ Finset.HasAntidiagonal.antidiagonal n, Submodule.span o (Set.range t) ^ c.1 * N c.2`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `n`. Use `Submodule.mem_iSup_of_mem (0, n) (Submodule.mem_iSup_of_mem (by simp) ?_)` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨g, hg, rfl⟩`. Consider the case `zero => intro n`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro n`. Simplify using `using add_mem (hx n) (hy n)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `smul s x _ hx`. Introduce `n`. Express the relevant statement in the definitionally equal form `((s : L[X]) * (x : L[X])).coeff n ∈ _`. Rewrite using `[coeff_mul]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `SetLike.le_def.mp ?_ (Submodule.mul_mem_mul (coeff_mem_span_pow s.2 d.1) (hx d.2))` and prove the remaining obligations. Rewrite using `[Submodule.mul_iSup]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_iSup]`. Use `iSup_le fun hc => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← mul_assoc, ← pow_add]`. Rewrite `hc`, `hd` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Conclude with `le_iSup₂_of_le (d.1 + c.1, c.2) (by rw [Finset.HasAntidiagonal.mem_antidiagonal]; omega) le_rfl`. Simplify using `using key ⟨_, ha⟩ (hG ▸ Submodule.mem_top) n`.
+A detailed English derivation is pending.
 -/
 theorem exists_generators : ∃ e : ℕ, 0 < e ∧ ∃ N : ℕ → Submodule o L, (∀ q, (N q).FG) ∧
     (∀ q, N q ≤ piece o t q) ∧ (∀ q, e < q → N q = ⊥) ∧ ∀ n, piece o t n ≤
@@ -423,7 +419,7 @@ theorem exists_generators : ∃ e : ℕ, 0 < e ∧ ∃ N : ℕ → Submodule o L
     simpa using key ⟨_, ha⟩ (hG ▸ Submodule.mem_top) n
 
 /- English proof (translation)
-Take `⟨e, -, N, hN, -, -, h⟩` from `exists_generators o t`. Use `Submodule.FG.of_le (Submodule.fg_biSup _ _ fun c _ => ?_) (h n)` and prove the remaining obligations. Conclude with `((Submodule.fg_span (Set.finite_range t)).pow _).mul (hN _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem piece_fg (n : ℕ) : (piece o t n).FG := by
   obtain ⟨e, -, N, hN, -, -, h⟩ := exists_generators o t
@@ -431,11 +427,9 @@ theorem piece_fg (n : ℕ) : (piece o t n).FG := by
   exact ((Submodule.fg_span (Set.finite_range t)).pow _).mul (hN _)
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `piece_fg o t e`. Establish `hfin : (insert 0 ((G : Set L) ∪ Set.range fun j => t j ^ e)).Finite` using `(G.finite_toSet.union (Set.finite_range _)).insert _`. Take `⟨n, z, -, hz⟩` from `hfin.fin_param`. Take `⟨k, -⟩ : (0 : L) ∈ Set.range z` from `hz ▸ Set.mem_insert _ _`. Take `⟨M, rfl⟩ : ∃ M, n = M + 1` from `⟨n - 1, by have := k.2; omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ j, ∃ k, z k = t j ^ e` using `fun j => show _ ∈ Set.range z from hz ▸ Set.mem_insert_of_mem _ (Or.inr ⟨j, rfl⟩)`. Use `choose c hc using hc`. Use `⟨M, z, c, ?_, hc⟩` and prove the remaining obligations. Rewrite using `[hz, Submodule.span_insert_zero, Submodule.span_union, hG, sup_eq_left, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
-
-Conclude with `pow_mem_piece j e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_spanning_tuple (e : ℕ) : ∃ (M : ℕ) (z : Fin (M + 1) → L) (c : σ → Fin (M + 1)),
     Submodule.span o (Set.range z) = piece o t e ∧ ∀ j, z (c j) = t j ^ e := by
@@ -455,11 +449,9 @@ theorem exists_spanning_tuple (e : ℕ) : ∃ (M : ℕ) (z : Fin (M + 1) → L) 
   exact pow_mem_piece j e
 
 /- English proof (translation)
-Take `⟨e, he, N, -, hN, hN', h⟩` from `exists_generators o t`. Use `⟨e, he, fun d hd => le_antisymm ((h _).trans (iSup₂_le fun c hc => ?_)) ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `hq : e < c.2`. Rewrite using `[hN' _ hq, Submodule.mul_bot]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Take `⟨m, hm⟩ : ∃ m, c.1 = m + 1` from `⟨c.1 - 1, by omega⟩`. Rewrite using `[hm, pow_succ', mul_assoc, show d = m + c.2 by omega]`. Conclude with `mul_le_mul' le_rfl ((mul_le_mul' (span_pow_le_piece m) (hN _)).trans (piece_mul_le _ _))`. Rewrite using `[add_comm]`.
-
-Conclude with `(mul_le_mul' (by simpa using span_pow_le_piece 1) le_rfl).trans (piece_mul_le 1 d)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_piece_succ_eq : ∃ e : ℕ, 0 < e ∧ ∀ d, e ≤ d →
     piece o t (d + 1) = Submodule.span o (Set.range t) * piece o t d := by
@@ -478,11 +470,11 @@ theorem exists_piece_succ_eq : ∃ e : ℕ, 0 < e ∧ ∀ d, e ≤ d →
       (piece_mul_le 1 d)
 
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `exists_piece_succ_eq o t`. Establish `h1 : ∀ d, e ≤ d → ∀ m, piece o t (d + m) = Submodule.span o (Set.range t) ^ m * piece o t d`. Introduce `d hd m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [← add_assoc, h _ (by omega), ih, pow_succ', mul_assoc]`. Use `⟨e, he, fun j hj => ?_⟩` and prove the remaining obligations. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ j hj ih`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', ← ih, Nat.succ_mul]`. Use `le_antisymm ?_ ((piece_mul_le _ _).trans (add_comm e _ ▸ le_rfl))` and prove the remaining obligations. Rewrite using `[h1 _ (Nat.le_mul_of_pos_left e hj)]`. Conclude with `mul_le_mul' (span_pow_le_piece e) le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_piece_mul_eq_pow : ∃ e : ℕ, 0 < e ∧ ∀ j, 0 < j →
     piece o t (j * e) = piece o t e ^ j := by
@@ -505,19 +497,17 @@ theorem exists_piece_mul_eq_pow : ∃ e : ℕ, 0 < e ∧ ∀ j, 0 < j →
 end Finite
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨n, hn⟩` from `(isIntegral_ratioRing_iff hi).mp hf`. Take `⟨m, hm⟩ : ∃ m, (n + 1) * e = n + m` from `Nat.exists_eq_add_of_le ((Nat.le_succ n).trans (Nat.le_mul_of_pos_right _ he))`. Establish `h1` using `mul_mem_piece hn (pow_mem_piece i m)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_assoc, ← pow_add, ← hm, hv _ n.succ_pos, ← hz]`. Establish `key : ∀ j, ∀ a ∈ Submodule.span o (Set.range z) ^ j, a / t i ^ (j * e) ∈ Algebra.adjoin o (Set.range fun k => z k / t i ^ e)`. Introduce `j a ha`. Proceed by induction on `ha using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => simpa using Subalgebra.algebraMap_mem _ r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y i hx hy ihx ihy => rw [add_div]`. Conclude with `add_mem ihx ihy`. Consider the case `mem_mul m hm j x hx ih`. Rewrite using `[Nat.succ_mul, pow_add, mul_comm (t i ^ _), mul_div_mul_comm]`. Use `mul_mem ?_ ih` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `clear ih hx`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin ⟨k, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_div]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_div_assoc]`. Conclude with `Subalgebra.smul_mem _ hx c`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify `key _ _ h1` using `[hi]`. Introduce `hf`. Establish `h : Algebra.adjoin o (Set.range fun k => z k / t i ^ e) ≤ (integralClosure (ratioRing o t i) L).restrictScalars o`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Conclude with `isIntegral_div_of_mem_piece i (hz ▸ Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `h hf`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_ratioRing_iff_mem_adjoin {τ : Type*} {z : τ → L} {e : ℕ} (he : 0 < e)
     (hz : Submodule.span o (Set.range z) = piece o t e)

@@ -5,13 +5,13 @@ namespace ReciprocityTheory.Cheb
 open Polynomial NumberField
 
 /- English proof (translation)
-Establish `hD : differentIdeal ℤ (𝓞 K) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hF` using `Ideal.finite_factors (I := differentIdeal ℤ (𝓞 K)) (by simpa using hD)`. Establish `hsub : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), {p : ℕ | p.Prime ∧ (p : 𝓞 K) ∈ v.asIdeal}.Subsingleton`. Introduce `v p ⟨hp, hpv⟩ q ⟨hq, hqv⟩`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcop : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).mpr hne`. Establish `hc : IsCoprime (p : 𝓞 K) (q : 𝓞 K)`. Use `(Nat.isCoprime_iff_coprime.mpr hcop).map (Int.castRingHom (𝓞 K))` as an intermediate fact. Simplify using `using this`. Take `⟨a, b, hab⟩` from `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : 𝓞 K) ∈ v.asIdeal` using `hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left a hpv) (v.asIdeal.mul_mem_left b hqv)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Use `(hF.biUnion (fun v _ => (hsub v).finite)).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, P, hPp, hpP, hnr⟩`. Establish `hP0 : P ≠ ⊥` using `fun h => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpP)`. Conclude with `Set.mem_biUnion (x := ⟨P, hPp, hP0⟩) (dvd_differentIdeal_iff.mpr hnr) ⟨hp, hpP⟩`.
+A detailed English derivation is pending.
 -/
 private theorem setOf_prime_ramified_finite (K : Type*) [Field K] [NumberField K] :
     {p : ℕ | p.Prime ∧ ∃ (P : Ideal (𝓞 K)) (_ : P.IsPrime), (p : 𝓞 K) ∈ P ∧
@@ -39,7 +39,7 @@ private theorem setOf_prime_ramified_finite (K : Type*) [Field K] [NumberField K
   exact Set.mem_biUnion (x := ⟨P, hPp, hP0⟩) (dvd_differentIdeal_iff.mpr hnr) ⟨hp, hpP⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `(setOf_prime_ramified_finite K).bddAbove`. Use `⟨N, fun p hp hpN P _ hpP => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `absurd (hN ⟨hp, P, inferInstance, hpP, h⟩) (not_le.mpr hpN)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_forall_isUnramifiedAt (K : Type*) [Field K] [NumberField K] :
     ∃ N : ℕ, ∀ p : ℕ, p.Prime → N < p → ∀ (P : Ideal (𝓞 K)) [P.IsPrime], (p : 𝓞 K) ∈ P →
@@ -50,17 +50,15 @@ theorem exists_forall_isUnramifiedAt (K : Type*) [Field K] [NumberField K] :
   exact absurd (hN ⟨hp, P, inferInstance, hpP, h⟩) (not_le.mpr hpN)
 
 /- English proof (translation)
-Introduce `hl2`. Establish `hlP : (l : 𝓞 K) ∈ P` using `Ideal.pow_le_self two_ne_zero hl2`. Establish `hl0 : (l : 𝓞 K) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hP0 : P ≠ ⊥` using `fun h => by`. Rewrite `hlP` using `[h, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hl0 hlP`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`. Establish `hle : Ideal.span {(l : ℤ)} ≤ P.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify `hlP` using `[Ideal.under, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hunder : Ideal.span {(l : ℤ)} = P.under ℤ` using `hmax.eq_of_le (Ideal.IsPrime.under ℤ P).ne_top hle`. Use `haveI : P.LiesOver (Ideal.span {(l : ℤ)}) := ⟨hunder⟩`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(l : ℤ)}) = Ideal.span {(l : 𝓞 K)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap0 : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(l : ℤ)}) ≠ ⊥`. Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl0`. Establish `hcount` using `Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count (Ideal.span {(l : ℤ)}) P hmap0`. Rewrite `hcount` using `[Ideal.ramificationIdx_eq_one_of_isUnramifiedAt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd : P ^ 2 ∣ Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(l : ℤ)})`. Rewrite using `[Ideal.dvd_iff_le, hmap, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hl2`. Establish `hP2 : P ^ 2 ≠ 0` using `pow_ne_zero _ (by simpa using hP0)`. Establish `hnf` using `(UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hP2 (by simpa using hmap0)).mp hdvd`.
-
-Establish `hc` using `Multiset.count_le_of_le P hnf`. Rewrite `hc` using `[← hcount, UniqueFactorizationMonoid.normalizedFactors_pow, UniqueFactorizationMonoid.normalizedFactors_irreducible (Ideal.prime_of_isPrime hP0 inferInstance).irreducible, normalize_eq]`. Simplify using `at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_sq_of_isUnramifiedAt {K : Type*} [Field K] [NumberField K] {l : ℕ}
     (hl : l.Prime) (P : Ideal (𝓞 K)) [P.IsPrime]
@@ -102,21 +100,19 @@ theorem natCast_notMem_sq_of_isUnramifiedAt {K : Type*} [Field K] [NumberField K
   simp at hc
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Establish `hl2` using `natCast_notMem_sq_of_isUnramifiedAt hl P`. Establish `hE` using `cyclotomic_comp_X_add_one_isEisensteinAt l`. Establish `hX1 : (X + 1 : ℤ[X]).Monic` using `by simpa using monic_X_add_C (1 : ℤ)`. Establish `hX1d : (X + 1 : ℤ[X]).natDegree = 1` using `by simpa using natDegree_X_add_C (1 : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : ((cyclotomic l ℤ).comp (X + 1)).Monic` using `(cyclotomic.monic l ℤ).comp hX1 (by rw [hX1d]; exact one_ne_zero)`. Establish `hg : ((cyclotomic l ℤ).comp (X + 1)).map (Int.castRingHom (𝓞 K)) = (cyclotomic l (𝓞 K)).comp (X + 1)`. Simplify using `[Polynomial.map_comp, map_cyclotomic]`. Establish `hdeg : (((cyclotomic l ℤ).comp (X + 1)).map (Int.castRingHom (𝓞 K))).natDegree = ((cyclotomic l ℤ).comp (X + 1)).natDegree` using `hmon.natDegree_map _`. Establish `hc0 : ((cyclotomic l ℤ).comp (X + 1)).coeff 0 = l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_zero_eq_eval_zero, eval_comp]`. Simplify using `[eval_one_cyclotomic_prime]`. Establish `hE' : ((cyclotomic l (𝓞 K)).comp (X + 1)).IsEisensteinAt P`. Rewrite using `[← hg]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hmon.map _).leadingCoeff]`. Conclude with `(Ideal.ne_top_iff_one P).mp (Ideal.IsPrime.ne_top inferInstance)`. Introduce `n hn`. Rewrite `hn` using `[hdeg]`. Rewrite using `[coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp (hE.mem hn)`. Rewrite using `[← hc, smul_eq_mul, map_mul, map_natCast]`. Conclude with `P.mul_mem_left _ hlP`. Rewrite using `[coeff_map, hc0, map_natCast]`. Conclude with `hl2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ((cyclotomic l (𝓞 K)).comp (X + 1)).natDegree`. Rewrite using `[← hg, hdeg, natDegree_comp, natDegree_cyclotomic, hX1d, mul_one, Nat.totient_prime hl]`. Conclude with `Nat.sub_pos_of_lt hl.one_lt`. Establish `hmon' : ((cyclotomic l (𝓞 K)).comp (X + 1)).Monic`. Rewrite using `[← hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmon.map _`. Establish `hirr1` using `hE'.irreducible inferInstance hmon'.isPrimitive hpos`. Establish `hcomp : (algEquivAevalXAddC (1 : 𝓞 K)) (cyclotomic l (𝓞 K)) = (cyclotomic l (𝓞 K)).comp (X + 1)`. Rewrite using `[algEquivAevalXAddC_apply, ← comp_eq_aeval, map_one]`. Establish `hirr2 : Irreducible (cyclotomic l (𝓞 K))`.
-
-Rewrite `hirr1` using `[← hcomp]`. Conclude with `(MulEquiv.irreducible_iff (algEquivAevalXAddC (1 : 𝓞 K)).toMulEquiv).mp hirr1`. Use `(Polynomial.Monic.irreducible_iff_irreducible_map_fraction_map (K := K) (cyclotomic.monic l (𝓞 K))).mp hirr2` as an intermediate fact. Rewrite `this` using `[map_cyclotomic]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cyclotomic_irreducible_of_isUnramifiedAt {K : Type*} [Field K] [NumberField K] {l : ℕ}
     (hl : l.Prime) (P : Ideal (𝓞 K)) [P.IsPrime] (hlP : (l : 𝓞 K) ∈ P)
@@ -166,7 +162,7 @@ theorem cyclotomic_irreducible_of_isUnramifiedAt {K : Type*} [Field K] [NumberFi
   rwa [map_cyclotomic] at this
 
 /- English proof (translation)
-Establish `h : (p : ℤ) ∈ P.under ℤ`. Rewrite using `[← Ideal.LiesOver.over (P := P) (p := Ideal.span {(p : ℤ)})]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify `h` using `[Ideal.under, Ideal.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_liesOver {K : Type*} [Field K] [NumberField K] {p : ℕ}
     (P : Ideal (𝓞 K)) [P.LiesOver (Ideal.span {(p : ℤ)})] : (p : 𝓞 K) ∈ P := by
@@ -176,7 +172,7 @@ theorem natCast_mem_of_liesOver {K : Type*} [Field K] [NumberField K] {p : ℕ}
   simpa [Ideal.under, Ideal.mem_comap] using h
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_forall_isUnramifiedAt K`. Conclude with `⟨N, fun p hp hpN P _ _ => hN p hp hpN P (natCast_mem_of_liesOver P)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_forall_isUnramifiedAt_of_liesOver (K : Type*) [Field K] [NumberField K] :
     ∃ N : ℕ, ∀ p : ℕ, p.Prime → N < p → ∀ (P : Ideal (𝓞 K)) [P.IsPrime]
@@ -185,9 +181,9 @@ theorem exists_forall_isUnramifiedAt_of_liesOver (K : Type*) [Field K] [NumberFi
   exact ⟨N, fun p hp hpN P _ _ => hN p hp hpN P (natCast_mem_of_liesOver P)⟩
 
 /- English proof (translation)
-Establish `hnu : ¬ IsUnit (l : 𝓞 K)`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ (S := 𝓞 K))`. Rewrite `h1` using `[show (l : 𝓞 K) = algebraMap ℤ (𝓞 K) (l : ℤ) by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`. Simplify using `at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hl.one_lt.ne' h1`. Take `⟨M, hM, hlM⟩` from `Ideal.exists_le_maximal (Ideal.span {(l : 𝓞 K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hlM' : (l : 𝓞 K) ∈ M` using `hlM (Ideal.mem_span_singleton_self _)`. Use `haveI := h M hlM'`. Conclude with `cyclotomic_irreducible_of_isUnramifiedAt hl M hlM'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cyclotomic_irreducible_of_forall_isUnramifiedAt {K : Type*} [Field K] [NumberField K]
     {l : ℕ} (hl : l.Prime)
@@ -207,7 +203,7 @@ theorem cyclotomic_irreducible_of_forall_isUnramifiedAt {K : Type*} [Field K] [N
   exact cyclotomic_irreducible_of_isUnramifiedAt hl M hlM'
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_forall_isUnramifiedAt K`. Conclude with `⟨N, fun l hl hlN => cyclotomic_irreducible_of_forall_isUnramifiedAt hl (fun P _ hP => hN l hl hlN P hP)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_forall_cyclotomic_irreducible (K : Type*) [Field K] [NumberField K] :
     ∃ N : ℕ, ∀ l : ℕ, l.Prime → N < l → Irreducible (cyclotomic l K) := by

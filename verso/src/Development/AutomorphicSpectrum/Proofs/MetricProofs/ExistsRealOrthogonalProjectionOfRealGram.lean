@@ -9,9 +9,9 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.ProjReal
 
 /- English proof (translation)
-Introduce `g k Hm _ u _ hproj hu z hz`. Take `⟨c, hc⟩` from `hproj z`. Use `⟨fun i => (c i).re, fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `hc j`. Simplify using `only [sub_dotProduct, sum_dotProduct, smul_dotProduct, smul_eq_mul] at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Complex.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.sub_re, Complex.re_sum, Complex.mul_re, hu, mul_zero, sub_zero, Complex.zero_re] at h'`. Simplify `h'` using `[Complex.sub_re, Complex.re_sum, Complex.mul_re, hu]`. Simplify using `[Complex.sub_im, Complex.im_sum, Complex.mul_im, hu, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem orthogonal_projection_real_coefficients :
     ∀ (g k : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ),

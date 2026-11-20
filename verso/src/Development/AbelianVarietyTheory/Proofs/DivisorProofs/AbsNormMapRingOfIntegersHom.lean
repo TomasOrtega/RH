@@ -4,15 +4,15 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hτinj : Function.Injective τ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Use extensionality with `n`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_intCast, map_intCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: ((n : 𝓞 K) : K) = 0` using `by rw [h]; rfl`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective ((algebraMap (𝓞 K) K).comp τ)` using `(RingOfIntegers.coe_injective (K := K)).comp hτinj`. Set `φ : E →+* K` to `IsFractionRing.lift hinj`. Use `letI : Algebra E K := φ.toAlgebra`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hmap : τ = algebraMap (𝓞 E) (𝓞 K)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `((algebraMap (𝓞 K) K).comp τ) x = φ (algebraMap (𝓞 E) E x)`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Establish `htower` using `Module.finrank_mul_finrank ℚ E K`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use `⟨⟨Module.finrank E K, htower.symm⟩, ?_⟩` and prove the remaining obligations. Establish `hq : Module.finrank ℚ K / Module.finrank ℚ E = Module.finrank E K`. Rewrite using `[← htower, Nat.mul_div_cancel_left _ hE]`. Rewrite using `[hq, hmap, Ideal.absNorm_algebraMap (𝓞 E) (𝓞 K) 𝔞, ← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 K) K]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_map_ringOfIntegers_hom (E K : Type) [Field E] [NumberField E] [Field K]
     [NumberField K] (τ : 𝓞 E →+* 𝓞 K) (𝔞 : Ideal (𝓞 E)) :

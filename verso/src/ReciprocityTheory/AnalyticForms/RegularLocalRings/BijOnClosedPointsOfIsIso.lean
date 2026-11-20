@@ -11,11 +11,11 @@ noncomputable section
 variable {W X : Scheme.{0}} {sW : W ⟶ Spec (.of ℂ)} {sX : X ⟶ Spec (.of ℂ)}
 
 /- English proof (translation)
-Establish `: JacobsonSpace W` using `LocallyOfFiniteType.jacobsonSpace sW`. Apply `isClosed_singleton_of_isLocallyClosed_singleton` to reduce the goal to its premises. Take `⟨t, ht, hteq⟩` from `isClosed_induced_iff.mp hx`. Use `⟨(V : Set W), t, V.isOpen, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨x.2, (Set.ext_iff.mp hteq x).mpr rfl⟩`. Introduce and unpack `⟨hzV, hzt⟩`. Establish `e : (⟨z, hzV⟩ : V) = x` using `(Set.ext_iff.mp hteq ⟨z, hzV⟩).mp hzt`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show z = x.1`. Conclude with `congrArg Subtype.val e`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_of_isClosed_open [LocallyOfFiniteType sW] (V : W.Opens) (x : V)
     (hx : IsClosed ({x} : Set V)) : IsClosed ({x.1} : Set W) := by
@@ -33,17 +33,15 @@ theorem isClosed_of_isClosed_open [LocallyOfFiniteType sW] (V : W.Opens) (x : V)
     exact congrArg Subtype.val e
 
 /- English proof (translation)
-Set `h` to `Scheme.homeoOfIso (asIso (π ∣_ U))`. Establish `hb : ∀ z, (h z).1 = π.base z.1` using `fun z => morphismRestrict_base_coe π U z`. Use `⟨fun x hx => ⟨isClosed_image_of_closed sW sX π hπ x hx.1, hx.2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x₁ hx₁ x₂ hx₂ he`. Establish `e1 : h ⟨x₁, hx₁.2⟩ = h ⟨x₂, hx₂.2⟩` using `Subtype.ext ((hb ⟨x₁, hx₁.2⟩).trans (he.trans (hb ⟨x₂, hx₂.2⟩).symm))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val (h.injective e1)`. Introduce `y hy`. Set `w` to `h.symm ⟨y, hy.2⟩`. Establish `hw : h w = ⟨y, hy.2⟩` using `h.apply_symm_apply _`. Establish `hcl : IsClosed ({h w} : Set _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isClosed_induced_iff.mpr ⟨{y}, hy.1, Set.ext fun z => ⟨fun hz => ?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Conclude with `Subtype.ext (hz.trans (congrArg Subtype.val hw).symm)`. Conclude with `(congrArg Subtype.val hz).trans (congrArg Subtype.val hw)`. Establish `hcw : IsClosed ({w} : Set _)`. Use `hcl.preimage h.continuous` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← Set.image_singleton, h.injective.preimage_image]`. Then use the resulting hypothesis. Establish `hW : JacobsonSpace W` using `LocallyOfFiniteType.jacobsonSpace sW`. Use `⟨w.1, ⟨?_, w.2⟩, (hb w).symm.trans (congrArg Subtype.val hw)⟩` and prove the remaining obligations. Apply `isClosed_singleton_of_isLocallyClosed_singleton` to reduce the goal to its premises. Take `⟨t, ht, hteq⟩` from `isClosed_induced_iff.mp hcw`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨((π ⁻¹ᵁ U : W.Opens) : Set W), t, (π ⁻¹ᵁ U).isOpen, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨w.2, (Set.ext_iff.mp hteq w).mpr rfl⟩`.
-
-Introduce and unpack `⟨hzV, hzt⟩`. Establish `e : (⟨z, hzV⟩ : ((π ⁻¹ᵁ U : W.Opens) : Set W)) = w` using `(Set.ext_iff.mp hteq ⟨z, hzV⟩).mp hzt`. Use `show z = w.1`. Conclude with `congrArg Subtype.val e`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijOn_closedPoints_of_isIso (π : W ⟶ X) (hπ : π ≫ sX = sW) [LocallyOfFiniteType sW]
     [LocallyOfFiniteType sX] (U : X.Opens) [IsIso (π ∣_ U)] :
@@ -81,11 +79,11 @@ theorem bijOn_closedPoints_of_isIso (π : W ⟶ X) (hπ : π ≫ sX = sW) [Local
       exact congrArg Subtype.val e
 
 /- English proof (translation)
-Establish `hiso : IsIso (π.stalkMap x)`. Set `x' : (π ⁻¹ᵁ U : W.Opens)` to `⟨x, hxU⟩`. Establish `h1 : IsIso ((π ∣_ U).stalkMap x')` using `by first`. Consider the case `exact inferInstance`. Consider the case `exact (IsOpenImmersion.iff_isIso_stalkMap.mp (inferInstance : IsOpenImmersion (π ∣_ U))).2 x'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `h2 : (MorphismProperty.isomorphisms CommRingCat) ((π ∣_ U).stalkMap x')` using `h1`. Conclude with `(MorphismProperty.isomorphisms CommRingCat).arrow_mk_iso_iff (morphismRestrictStalkMap π U x') |>.mp h2`. Take `⟨O, hxO, hO, q, F, hq, hF⟩` from `exists_ratio_core sW sX π hπ V hV u hu PW.V (fun l => PW.secHom (MvPolynomial.X l)) x hxW hxV hc (ConcreteCategory.bijective_of_isIso (π.stalkMap x)).2`. Use `⟨O ⊓ π ⁻¹ᵁ U, ⟨hxO, hxU⟩, ?_, q, F, hq, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨(hO hy.1).1, hy.2, (hO hy.1).2⟩`. Introduce `y hyW hyV hyO hcy`. Take `⟨h1, h2⟩` from `hF y hyW hyV hyO.1 hcy`. Use `⟨h1, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 l, PW.val_secHom y hyW hcy, eval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_inv (π : W ⟶ X) (hπ : π ≫ sX = sW) [LocallyOfFiniteType sW]
     [LocallyOfFiniteType sX] (U : X.Opens) [IsIso (π ∣_ U)] (PW : AffPres sW) (V : X.Opens)
@@ -120,17 +118,17 @@ theorem exists_coord_inv (π : W ⟶ X) (hπ : π ≫ sX = sW) [LocallyOfFiniteT
     rw [← h2 l, PW.val_secHom y hyW hcy, eval_X]
 
 /- English proof (translation)
-Establish `: IsAffine PW.V.toScheme` using `IsAffine.of_isIso PW.iso.hom`. Establish `hV : IsAffineOpen PW.V` using `this`. Set `u' : Fin PW.n → Γ(W, PW.V)` to `fun j => PW.secHom (MvPolynomial.X j)`. Establish `hu' : ∀ a : Γ(W, PW.V), ∃ F : MvPolynomial (Fin PW.n) ℂ, a = eval₂ (constSec sW PW.V) u' F`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, rfl⟩` from `PW.secHom_surjective a`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← MvPolynomial.eval₂_eta f]`. Rewrite using `[eval₂_comp_left]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Conclude with `PW.secHom_C c`. Establish `hxW' : (𝟙 W : W ⟶ W).base x ∈ PW.V` using `hxW`. Take `⟨O, hxO, hO, q, F, hq, hF⟩` from `exists_ratio_core sW sW (𝟙 W) (Category.id_comp _) PW.V hV u' hu' (PW.V ⊓ π ⁻¹ᵁ V) (fun t => π.appLE V (PW.V ⊓ π ⁻¹ᵁ V) inf_le_right (u t)) x ⟨hxW, hxV⟩ hxW' hc (by rw [Scheme.Hom.stalkMap_id]; exact fun z => ⟨z, rfl⟩)`. Establish `hcoord : ∀ (y : W) (hyW : y ∈ PW.V) (h : (𝟙 W : W ⟶ W).base y ∈ PW.V), IsClosed ({y} : Set W) → (fun a => val sW (u' a) ((𝟙 W : W ⟶ W).base y) h) = PW.coord y hyW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `y hyW h hcy`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `val sW (PW.secHom (MvPolynomial.X j)) y hyW = _`. Rewrite using `[PW.val_secHom y hyW hcy, eval_X]`. Use `⟨O, hxO, fun y hy => (hO hy).1, q, F, ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hcoord x hxW hxW' hc]`. Conclude with `hq`. Introduce `y hyW hyV hyO hcy`. Establish `hyW' : (𝟙 W : W ⟶ W).base y ∈ PW.V` using `hyW`. Take `⟨h1, h2⟩` from `hF y ⟨hyW, hyV⟩ hyW' hyO hcy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2` using `[hcoord y hyW hyW' hcy]`. Use `⟨h1, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 t, (val_comp sW sX π hπ inf_le_right (u t) y ⟨hyW, hyV⟩ hcy).2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord_fwd (π : W ⟶ X) (hπ : π ≫ sX = sW) [LocallyOfFiniteType sW]
     [LocallyOfFiniteType sX] (PW : AffPres sW) (V : X.Opens) {σ : Type} [Finite σ]

@@ -15,7 +15,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PeriodDet.exists_detGen_isDet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodsOfGoodReductionModel.lean&line=48#L48)
 -/

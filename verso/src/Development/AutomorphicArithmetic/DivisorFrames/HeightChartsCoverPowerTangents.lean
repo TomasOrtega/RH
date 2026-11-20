@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Simplify using `only [covMat, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem covMat_mulVec {K : Type} [CommRing K] {M N g r : ℕ} (T : Fin N → Fin M → K) (h : Fin M → Fin g → K)
     (A : Fin r → Fin g → K) (cf : Fin r → K) (k : Fin N) :
@@ -24,9 +24,9 @@ private theorem covMat_mulVec {K : Type} [CommRing K] {M N g r : ℕ} (T : Fin N
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `hlq : 0 < Real.log q` using `Real.log_pos hq`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Real.log_nonpos_iff hd.le, hl]`. Use `mul_nonneg h0 hlq.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Real.log_le_log_iff (by positivity) (by positivity), Real.log_mul (by positivity) hd.ne', Real.log_pow, Real.log_pow, hl]`. Use `mul_le_mul_of_nonneg_right hn hlq.le` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem delta_bounds {q d κ : ℝ} {n : ℕ} (hq : 1 < q) (hd : 0 < d) (hl : Real.log d = -(κ * Real.log q))
     (h0 : 0 ≤ κ) (hn : κ + 2 ≤ n) : d ≤ 1 ∧ q ^ 2 ≤ q ^ n * d := by
@@ -43,9 +43,9 @@ private theorem delta_bounds {q d κ : ℝ} {n : ℕ} (hq : 1 < q) (hd : 0 < d) 
     linarith
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hpn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Use `PadicComplex.norm_extends' (p := p) (p : ℚ_[p])` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hc` using `[norm_mul, norm_mul, hpn, inv_pow, ← one_div ((p : ℝ) ^ n), le_div_iff₀ (by positivity)]`. Establish `h1 : (p : ℝ) ^ 2 * ((p : ℝ)⁻¹ * ‖c‖) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (p : ℝ) ^ 2 * ((p : ℝ)⁻¹ * ‖c‖) = ‖c‖ * p` using `by field_simp`. Rewrite using `[← one_div, le_div_iff₀ hp0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -66,17 +66,17 @@ private theorem small {p : ℕ} [Fact p.Prime] {n : ℕ} {δ c : ℂ_[p]} (hδ :
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw X t F _ _ Y V ρ' ρ J K W p _ n hHT r f σ hEig M N a S κ hCut hκ0 hκn T P hCo v e y z yt hT j hj`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Take `⟨x, ch, hx, hK⟩` from `hHT v e y z yt hT`. Take `⟨δ, hδ0, hδl, hC⟩` from `hCut ((ioOf p e).comp (algebraMap F (AlgebraicClosure F)))`. Take `⟨hδ1, hδn⟩` from `delta_bounds hp1 (norm_pos_iff.2 hδ0) hδl hκ0 hκn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hind, hfr⟩` from `hEig v e y`. Rewrite `hind`, `hfr` using `[← hx]`. Take `⟨ex, hc, b, hb, hd, hpt, het, hA⟩` from `hK j hj`. Take `⟨A, hA1, hA2⟩` from `hA M r a f T (P j) (hCo j)`. Take `⟨c1, c2⟩` from `UpperTheory.tangent_combination_transitivity E H X t ℂ_[p] _ _ r _ _ A (fun i => GlobalTheory.LieMet.isTan_map _ rfl (hb.1 i)) hA1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2, s3⟩` from `UpperTheory.cut_lattice_norm_bound E H Dw p n _ _ b _ hpt _ M N r a _ δ A hC hδ0 hδ1 hδn (c2 hind) (fun i => het _ _ (hA1 i) _ (hfr i).2)`. Establish `eA` using `hA2 N S`. Use `⟨⟨δ, hδ0, hδl, ?_, fun cf => ?_⟩, fun j' hj' u hu k => ?_⟩` and prove the remaining obligations. Rewrite using `[eA]`. Conclude with `s1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eA, ← hx]`. Use `Iff.trans ?_ (s2 cf)` and prove the remaining obligations. Simplify using `only [latCo, Set.mem_setOf_eq, c1]`. Take `⟨ex', hc', b', hb', hd', -, -, hA'⟩` from `hK j' hj'`. Take `⟨A', hA1', hA2'⟩` from `hA' M r a f T (P j') (hCo j')`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1', -⟩` from `UpperTheory.tangent_combination_transitivity E H X t ℂ_[p] _ _ r _ _ A' (fun i => GlobalTheory.LieMet.isTan_map _ rfl (hb'.1 i)) hA1'`. Rewrite `hu` using `[eA]`. Rewrite using `[eA, hA2' N S, covMat_mulVec, covMat_mulVec, ← Finset.sum_sub_distrib]`. Take `⟨w, -, hw⟩` from `Guard.exists_comb (fun i => (hfr i).1) u`. Establish `hs` using `(s3 u hu).1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (b := (p : ℝ)⁻¹) ?_ (inv_lt_one_of_one_lt₀ hp1)` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, norm_sub_rev]`. Use `(mul_le_of_le_one_left (norm_nonneg _) (hC.1 k m)).trans (small hδ0 hδn ?_)` and prove the remaining obligations. Conclude with `UpperTheory.tangent_basis_change_torsion_character E H X t p n x _ _ ex ex' hb hb' (ch (a m)) _ _ (hd _) (hd' _) _ _ w ((c1 u w).1 hw) ((c1' u w).1 hw) (δ * p) hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.height_charts_cover_power_tangents :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X) (J : Type) (K : Charts Dw t V ρ' J) (W : Y.X.Opens) (p : ℕ) [Fact p.Prime] (n : ℕ), K.HTAt ρ W p n → ∀ (r : ℕ) (f : (∀ y : Y.X, Fin r → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))) (σ : 𝓞 E →+* F), EigFr t p ρ f σ → ∀ (M N : ℕ) (a : Fin M → Dw.La) (S : Fin N → Fin M → F) (κ : ℝ), CutAll Dw p σ a S κ → 0 ≤ κ → κ + 2 ≤ n → ∀ (T : Y.X → Matrix (Fin r) (Fin r) Y.Fn) (P : J → Matrix (Fin M) (Fin r) V.G.functionField), (∀ j, ChartCo t V ρ' (K.aff j) (K.e j) (fun m => K.h j (a m)) f T (P j)) → CutAt t V W p ρ K.U f (fun j => constM V S * P j) T κ := by

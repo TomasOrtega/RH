@@ -108,7 +108,7 @@ def AdmissibilitySecond : Prop :=
     ∀ f : PS k 1 d, B.nabVal k h w0 m f u P = B.nabVal k h' w0 m f u P
 
 /- English proof (translation)
-Unfold `IsRQ`. Use `⟨(algebraMap ℤ ℚ).injective_int, fun y => ⟨y.num, y.den, Nat.pos_of_ne_zero y.den_nz, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_intCast]`. Conclude with `Rat.den_mul_eq_num y`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRQ_int : IsRQ (R := ℤ) ℚ := by
   unfold IsRQ
@@ -134,7 +134,7 @@ def oactZero (R : Type) [CommRing R] : OAct ℤ (fglZero R) where
 def fbZero : FB ℤ 0 ℤ := FB.triv (fglZero ℤ) (oactZero ℤ)
 
 /- English proof (translation)
-Simplify using `only [Hset, Set.mem_setOf_eq]`. Conclude with `⟨0, 0, Prod.ext (funext fun i => i.elim0) (funext fun i => i.elim0)⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem zero_mem_Hset (h : PS ℚ 2 0) : (0 : (Fin 0 → ℚ) × (Fin 0 → ℚ)) ∈ Hset (R := ℤ) ℚ h := by
   simp only [Hset, Set.mem_setOf_eq]

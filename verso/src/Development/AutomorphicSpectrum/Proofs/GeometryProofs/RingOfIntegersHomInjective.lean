@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
 /- English proof (translation)
-Establish `hI : (RingHom.ker a).comap (algebraMap ℤ (𝓞 F)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Establish `h0 : ((n : ℤ) : R) = 0`. Establish `h1 : a (algebraMap ℤ (𝓞 F) n) = 0` using `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`. Establish `h2 : n = 0` using `by exact_mod_cast h0`. Simplify using `[h2]`. Conclude with `(RingHom.injective_iff_ker_eq_bot a).2 (Ideal.eq_bot_of_comap_eq_bot hI)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_hom_injective {F : Type} [Field F] [NumberField F] {R : Type} [Field R] [CharZero R]
     (a : 𝓞 F →+* R) : Function.Injective a := by
@@ -29,7 +29,7 @@ theorem ringOfIntegers_hom_injective {F : Type} [Field F] [NumberField F] {R : T
   exact (RingHom.injective_iff_ker_eq_bot a).2 (Ideal.eq_bot_of_comap_eq_bot hI)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsFractionRing.lift (ringOfIntegers_hom_injective a), RingHom.ext fun x => IsFractionRing.lift_algebraMap (ringOfIntegers_hom_injective a) x⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ringHom_extend {F : Type} [Field F] [NumberField F] {R : Type} [Field R] [CharZero R]
     (a : 𝓞 F →+* R) : ∃ κ : F →+* R, κ.comp (algebraMap (𝓞 F) F) = a :=
@@ -37,15 +37,15 @@ theorem exists_ringHom_extend {F : Type} [Field F] [NumberField F] {R : Type} [F
     RingHom.ext fun x => IsFractionRing.lift_algebraMap (ringOfIntegers_hom_injective a) x⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z hz`. Use `c.fin` as an intermediate fact. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Set `a : 𝓞 c.F →+* ℂ` to `(Spec.preimage (z ≫ 𝔐.f ≫ Y.s)).hom`. Establish `ha : z ≫ 𝔐.f ≫ Y.s = spMap a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨κ, hκ⟩` from `exists_ringHom_extend a`. Establish `hc : (z ≫ 𝔐.f) ≫ Y.s = spMap κ ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[Category.assoc, ha, ← hκ, Chg.spMap_comp']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `w : Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift (z ≫ 𝔐.f) (spMap κ) hc`. Establish `hw₁ : w ≫ pullback.fst _ _ = z ≫ 𝔐.f` using `pullback.lift_fst _ _ _`. Establish `hw₂ : w ≫ pullback.snd _ _ = spMap κ` using `pullback.lift_snd _ _ _`. Use `Y.jQ_open` as an intermediate fact. Establish `hr : Set.range w ⊆ Set.range Y.jQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, hw₁, Scheme.Hom.comp_apply]`. Establish `hu : u = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `hu` using the available equality. Conclude with `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _).2 hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : Sp ℂ ⟶ Xo.XF c` to `IsOpenImmersion.lift Y.jQ w hr`. Establish `hx : x ≫ Y.jQ = w` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨κ, x ≫ pullback.fst _ _, x, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, hx, hw₁]`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hx, hw₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (z : Sp ℂ ⟶ 𝔐.X), 𝔐.Interior z → ∃ (κ : c.F →+* ℂ) (p : Sp ℂ ⟶ Xo.X), IsOver 𝔐 z κ p := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z hz

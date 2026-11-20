@@ -21,37 +21,37 @@ open GlobalTheory.AllWt (exOf)
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Establish `ho : ⊤ ≤ z ⁻¹ᵁ M.off` using `fun s hs => (hz hs).1`. Establish `hi : ⊤ ≤ z ⁻¹ᵁ M.K.bundle.U i` using `fun s hs => (hz hs).2.1`. Establish `hk : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `fun s hs => (((common₀ X Z).pull M.σ).mem _ k _).1 (hz hs).2.2`. Establish `hfo : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `fun s hs => by`. Use `ho hs` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Take `⟨alg, hQex⟩` from `exists_chartFr (z ≫ toFlag M) hfo`. Take `⟨Q, hQ⟩` from `hQex k hk`. Establish `hzQ : z ≫ toFlag M = X.ptY Q` using `FlagCover.eq_ptY hQ.lies`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, v, hWP, hWv, hv, hinj⟩` from `GlobalTheory.T.exists_universal_first_order_deformation X K Q (hKS K Q)`. Establish `hW0 : spMap (TrivSqZeroExt.fstHom K K (TIx Dw (psiSet H) → K)).toRingHom ≫ X.ptY W = z ≫ toFlag M`. Establish `e : (TrivSqZeroExt.fstHom K K (TIx Dw (psiSet H) → K)).toRingHom = (TrivSqZeroExt.fstHom c.F K (TIx Dw (psiSet H) → K)).toRingHom` using `RingHom.ext fun _ => rfl`. Rewrite using `[hzQ, e]`. Conclude with `X.ptY_frMap hWP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', hW'1, hW'2, hW'3⟩` from `GlobalTheory.T.existsUnique_modification_lift_sqZero_flag M z ho (X.ptY W) hW0`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_jacobian_evalRingPoint_ne_zero M.K i z hi`. Establish `hW'O` using `hW'3 _ hi`. Establish `hpre : ∀ {R : Type} [CommRing R] (φ : TrivSqZeroExt K (TIx Dw (psiSet H) → K) →+* R), ⊤ ≤ (spMap φ ≫ W') ⁻¹ᵁ M.K.bundle.U i` using `fun φ s _ => hW'O (Set.mem_univ ((spMap φ).base s))`. Set `zv : TIx Dw (psiSet H) → (Sp (DualNumber K) ⟶ M.X)` to `fun b => spMap (GlobalTheory.FlagTan.dir c (Pi.single b (1 : K))).toRingHom ≫ W'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzv : ∀ b, ⊤ ≤ zv b ⁻¹ᵁ M.K.bundle.U i` using `fun b => hpre _`. Establish `hent : ∀ a b, (evalPt (zv b) _ (hzv b) (g a)).snd = (evalPt W' _ hW'O (g a)).snd b` using `fun a b => by`. Simplify using `only [zv]`. Rewrite using `[evalPt_spMap_comp _ W' _ hW'O]`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdet : (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) _ (hzv _) (g a)).snd).det ≠ 0`. Introduce `hd`. Take `⟨m, hm0, hm⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Set `m' : TIx Dw (psiSet H) → K` to `fun b => m ((tanOrd Dw).symm b)`. Take `⟨u, hu⟩` from `GlobalTheory.FlagTan.exists_frMap (GlobalTheory.FlagTan.dir c m') W`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P₀, hP₀⟩` from `GlobalTheory.FlagTan.exists_frMap (GlobalTheory.FlagTan.cst c K) Q`. Establish `key` using `GlobalTheory.T.eq_zero_tangent_of_jacobian_derivs_vanish M.K i z hi g hg (spMap (GlobalTheory.FlagTan.dir c m').toRingHom ≫ W') (hpre _) ?_ ?_ ?_`. Apply `hm0` to reduce the goal to its premises. Establish `hm'0 : m' = 0`. Use `hinj m' u P₀ hu hP₀ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← X.ptY_frMap hu, ← X.ptY_frMap hP₀, ← hW'1, ← hzQ, ← Category.assoc, key, Category.assoc]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `b`. Simplify `congrFun hm'0 (tanOrd Dw b)` using `[m']`. Rewrite using `[← Category.assoc, spectrumMap_comp, ← hW'2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 2`. Apply the tactic sequence `ext x <;> simp`. Establish `a1 : W' ≫ M.σ ≫ inc₀ X Z ≫ flagStr X = spMap (algebraMap c.F _)`. Rewrite using `[← Category.assoc M.σ, ← Category.assoc W']`. Conclude with `(congrArg (· ≫ flagStr X) hW'1).trans (ptY_str X W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `a2 : z ≫ M.σ ≫ inc₀ X Z ≫ flagStr X = spMap (algebraMap c.F K)`. Rewrite using `[← Category.assoc M.σ, ← Category.assoc z]`. Conclude with `(congrArg (· ≫ flagStr X) hzQ).trans (ptY_str X Q)`. Express the relevant statement in the definitionally equal form `(spMap _ ≫ W') ≫ M.σ ≫ inc₀ X Z ≫ flagStr X = spMap _ ≫ z ≫ M.σ ≫ inc₀ X Z ≫ flagStr X`. Rewrite using `[Category.assoc, a1, a2, spectrumMap_comp, spectrumMap_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg spMap (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Both sides reduce to the same expression. Introduce `a`. Rewrite using `[evalPt_spMap_comp _ W' _ hW'O]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun hm a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, hent] at this`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, GlobalTheory.FlagTan.snd_dir]`. Rewrite using `[← (tanOrd Dw).sum_comp]`. Simplify `this` using `[m']`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨alg, Q, Q, 1, v, zv, _, le_rfl, g, hi, hzv, hk, hQ, (GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c K).1 Q, hv, fun b => ?_, hdet, ?_⟩` and prove the remaining obligations. Simplify using `only [zv]`. Rewrite using `[Category.assoc, hW'1]`. Conclude with `X.ptY_frMap (hWv b)`. Simplify using `using hg`.
+A detailed English derivation is pending.
 -/
 theorem exists_datum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : FlagCover Y} {Z : Comp Xo c}
@@ -137,9 +137,9 @@ theorem exists_datum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   · simpa using hg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS i k K _ z hz`. Take `⟨alg, P, Q, t, v, zv, O, hO, g, hz', hzv, hk, hQ, ht, hv, hl, hd, hr⟩` from `exists_datum M hKS i k K z hz`. Use `⟨fun x y hx hy => mul_right_cancel₀ hd ((hx P Q t v zv O hO g hz' hzv hk hQ ht hv hl).trans (hy P Q t v zv O hO g hz' hzv hk hQ ht hv hl).symm), fun x hx h0 => hr ?_⟩` and prove the remaining obligations. Use `hx P Q t v zv O hO g hz' hzv hk hQ ht hv hl` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem ksRel_unique_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y}

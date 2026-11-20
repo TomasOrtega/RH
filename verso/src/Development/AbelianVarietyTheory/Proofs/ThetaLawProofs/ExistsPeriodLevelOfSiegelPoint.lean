@@ -18,19 +18,17 @@ namespace GlobalTheory.SiegelObject
 open GlobalTheory.TensorSiegel
 
 /- English proof (translation)
-Set `σ : Fin 1 × Fin g ≃ Fin g` to `Equiv.uniqueProd _ _`. Set `G : Matrix (Fin 1) (Fin 1) ℤ` to `1`. Establish `hG : (G.map (Int.cast : ℤ → ℝ)).PosDef`. Rewrite using `[show G.map (Int.cast : ℤ → ℝ) = 1 from Matrix.map_one _ Int.cast_zero Int.cast_one]`. Conclude with `Matrix.PosDef.one`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hper : ∀ x : Fin 1 → (Fin g ⊕ Fin g → ℤ), period σ τ x = per τ (x 0)` using `fun x => by`. Use function extensionality and compare the values at `i`. Conclude with `period_apply σ τ x 0 i`. Establish `hsum : ∀ x y : Fin 1 → (Fin g ⊕ Fin g → ℤ), ∑ u, ∑ v, G u v * omegaStd (x u) (y v) = omegaStd (x 0) (y 0)` using `fun x y => by simp [G]`. Set `EF : LinearMap.BilinForm ℤ (Fin 1 → (Fin g ⊕ Fin g → ℤ))` to `LinearMap.mk₂ ℤ (fun x y => omegaStd (x 0) (y 0)) (fun x x' y => by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [omegaStd, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun x y y' => by`. Simplify using `only [omegaStd, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring)`. Establish `hEF : Function.Bijective EF` using `bijective_tensor_omegaStd G (by simp [G]) EF fun x y => (hsum x y).symm`. Take `⟨h1, h2, h3⟩` from `period_isLattice σ hp`. Establish `him` using `im_formMatrix_period σ G hs hp`. Set `Q` to `(period σ τ).toIntLinearMap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `e` to `LinearEquiv.ofInjective Q h1`. Use `⟨LinearMap.range Q, formMatrix σ (G.map (Int.cast : ℤ → ℝ)) τ, e.symm.dualMap.toLinearMap ∘ₗ EF ∘ₗ e.symm.toLinearMap, h2, h3, formMatrix_isHermitian σ hG hp, fun z hz => formMatrix_pos σ hG hp hz, fun a b => ?_, e.symm.dualMap.bijective.comp (hEF.comp e.symm.bijective), fun z => …` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective a`. Take `⟨y, rfl⟩` from `e.surjective b`. Use `Eq.trans ?_ (him x y).symm` and prove the remaining obligations.
-
-Rewrite using `[hsum]`. Simplify using `[EF]`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨x 0, hx.symm.trans (hper x)⟩, fun ⟨a, ha⟩ => ⟨fun _ => a, (hper _).trans ha.symm⟩⟩`. Use `him (fun _ => a) (fun _ => b)` as an intermediate fact. Rewrite `this` using `[hsum, hper, hper]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_lattice_form {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (hs : τ.IsSymm)
     (hp : (τ.map Complex.im).PosDef) :
@@ -84,11 +82,11 @@ theorem exists_lattice_form {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (hs : τ
     rwa [hsum, hper, hper] at this
 
 /- English proof (translation)
-Introduce `hU _ g k τ hs hp`. Take `⟨Λ, Hm, Ef, h1, h2, h3, h4, h5, h6, hΛ, hω⟩` from `exists_lattice_form τ hs hp`. Take `⟨P, u, χ, hg, rfl, hAH, -⟩` from `GlobalTheory.principalTorus_algebraic g Λ Hm Ef h1 h2 h3 h4 h5 h6`. Take `⟨E', hE', -, -, -, -, hW⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hU P g u Hm χ hAH`. Use `⟨P, fun a => u.ex ((k : ℂ)⁻¹ • per τ a), hg, hs, hp, u, hΛ, fun n a b c hn hc => ?_, fun _ => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hW n ⟨per τ a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨per τ b, (hΛ _).2 ⟨b, rfl⟩⟩ c hn ?_` and prove the remaining obligations. Establish `h : E' ⟨per τ a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨per τ b, (hΛ _).2 ⟨b, rfl⟩⟩ = omegaStd a b`. Establish `h'` using `hE' ⟨per τ a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨per τ b, (hΛ _).2 ⟨b, rfl⟩⟩`. Rewrite `h'` using `[Subtype.coe_mk, Subtype.coe_mk, hω]`. Conclude with `Int.cast_injective h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_perLev_of_siegel : ThetaUnifAV → GlobalTheory.TorusAlgebraic → ∀ (g k : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ.IsSymm → (τ.map Complex.im).PosDef → ∃ (P : Out.PolAV (Sp ℂ)) (lev : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), PerLev P τ k lev := by
   intro hU _ g k τ hs hp

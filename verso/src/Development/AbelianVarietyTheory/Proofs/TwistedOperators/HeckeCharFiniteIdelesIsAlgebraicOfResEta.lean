@@ -37,9 +37,9 @@ noncomputable section
 namespace GlobalTheory.FinValAlg
 
 /- English proof (translation)
-Establish `hc : IsAlgebraic ℚ (starRingEnd ℂ z)` using `hz.algHom (starRingEnd ℂ).toRatAlgHom`. Establish `hn : IsAlgebraic ℚ (((‖z‖ : ℝ) : ℂ))`. Use `IsAlgebraic.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`. Conclude with `(mem_algebraicClosure_iff.1 (mul_mem (mem_algebraicClosure_iff.2 hc) (mem_algebraicClosure_iff.2 hz)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hz`, `hn`, the goal using `[← mem_algebraicClosure_iff]`. Conclude with `zpow_mem (div_mem hz hn) n`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_unit_zpow {z : ℂ} (hz : IsAlgebraic ℚ z) (n : ℤ) :
     IsAlgebraic ℚ ((z / ((‖z‖ : ℝ) : ℂ)) ^ n) := by
@@ -54,7 +54,7 @@ theorem isAlgebraic_unit_zpow {z : ℂ} (hz : IsAlgebraic ℚ z) (n : ℤ) :
 variable {D : D7}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id _ _) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_incA (e : D.host.E) : finPart D (incA D e) = (1 : Af D.host.F) ⊗ₜ[D.host.F] e := by
   change Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id _ _) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _
@@ -62,9 +62,9 @@ theorem finPart_incA (e : D.host.E) : finPart D (incA D e) = (1 : Af D.host.F) �
   rfl
 
 /- English proof (translation)
-Use `⟨(hι2 _).2 fun P => (hv P).le, (hι2 _).2 fun P => le_of_eq ?_⟩` and prove the remaining obligations. Establish `e : ι (finPart D ((z⁻¹ : (AE D)ˣ) : AE D)) * ι (finPart D (z : AE D)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`. Establish `e2 : ι (finPart D ((z⁻¹ : (AE D)ˣ) : AE D)) P * ι (finPart D (z : AE D)) P = 1`. Use `congrArg (fun w : FiniteAdeleRing (𝓞 D.host.E) D.host.E => w P) e` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `congrArg Valued.v e2` as an intermediate fact. Rewrite `this` using `[map_mul, hv, mul_one, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem int_of_val_eq_one (ι : Af D.host.F ⊗[D.host.F] D.host.E ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (hι2 : ∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) (z : (AE D)ˣ)
@@ -80,7 +80,7 @@ theorem int_of_val_eq_one (ι : Af D.host.F ⊗[D.host.F] D.host.E ≃+* FiniteA
   rwa [map_mul, hv, mul_one, map_one] at this
 
 /- English proof (translation)
-Establish `e : ((x ^ h * Units.map (incA D).toMonoidHom k : (AE D)ˣ) : AE D) = (x : AE D) ^ h * incA D (k : D.host.E)`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Rewrite using `[e, map_mul, map_pow, map_mul, map_pow, finPart_incA, hι1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_finPart_pow_mul (ι : Af D.host.F ⊗[D.host.F] D.host.E ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (hι1 : ∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x)
@@ -93,11 +93,11 @@ theorem ι_finPart_pow_mul (ι : Af D.host.F ⊗[D.host.F] D.host.E ≃+* Finite
   rw [e, map_mul, map_pow, map_mul, map_pow, finPart_incA, hι1]
 
 /- English proof (translation)
-Take `⟨ι, hι1, hι2, -⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨h, hh, hX⟩` from `Formalism.L2.Host.CharEx.classExp D.host.E`. Take `⟨a, a', haa, haa', ha⟩ : ∃ a a' : Af D.host.F ⊗[D.host.F] D.host.E, a * a' = 1 ∧ a' * a = 1 ∧ a = finPart D (x : AE D)` from `⟨_, _, by rw [← map_mul, Units.mul_inv, map_one], by rw [← map_mul, Units.inv_mul, map_one], rfl⟩`. Set `X : (AdeleRing (𝓞 D.host.E) D.host.E)ˣ` to `⟨((1 : InfiniteAdeleRing D.host.E), ι a), ((1 : InfiniteAdeleRing D.host.E), ι a'), Prod.ext (show (1 : InfiniteAdeleRing D.host.E) * 1 = 1 from mul_one _) (show ι a * ι a' = 1 by rw [← map_mul, haa, map_one]), Prod.ext (show (1 : InfiniteAdeleRing D.host.E) * 1 = 1 from mul_one …`. Take `⟨k, hk⟩` from `hX X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨h, hh, k, int_of_val_eq_one ι hι2 _ fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[ι_finPart_pow_mul ι hι1, ← ha]`. Establish `e : ((X ^ h * Neutral.B1.diagUnits D.host.E k : (AdeleRing (𝓞 D.host.E) D.host.E)ˣ) : AdeleRing (𝓞 D.host.E) D.host.E).2 = ι a ^ h * algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (k : D.host.E)`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e]`. Conclude with `hk P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_int (x : (AE D)ˣ) : ∃ h : ℕ, 0 < h ∧ ∃ k : D.host.Eˣ,
     finPart D (((x ^ h * Units.map (incA D).toMonoidHom k : (AE D)ˣ)) : AE D) ∈ intAE D ∧
@@ -130,7 +130,7 @@ namespace GlobalTheory.FinValAlg
 variable {D : D7}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id _ _) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infPart_incA (e : D.host.E) : infPart D (incA D e) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] e := by
   change Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id _ _) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _
@@ -138,19 +138,19 @@ theorem infPart_incA (e : D.host.E) : infPart D (incA D e) = (1 : Ainf D.host.F)
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Fam.ThC.fst_pairE a b`.
+A detailed English derivation is pending.
 -/
 theorem infPart_pairE (a : Ainf D.host.F ⊗[D.host.F] D.host.E) (b : Af D.host.F ⊗[D.host.F] D.host.E) :
     infPart D (Formalism.L2.Fam.ThC.pairE a b) = a := Formalism.L2.Fam.ThC.fst_pairE a b
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Fam.ThC.snd_pairE a b`.
+A detailed English derivation is pending.
 -/
 theorem finPart_pairE (a : Ainf D.host.F ⊗[D.host.F] D.host.E) (b : Af D.host.F ⊗[D.host.F] D.host.E) :
     finPart D (Formalism.L2.Fam.ThC.pairE a b) = b := Formalism.L2.Fam.ThC.snd_pairE a b
 
 /- English proof (translation)
-Use `Formalism.L2.Fam.ThC.ae_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, infPart_pairE, infPart_pairE, ← map_mul, Units.mul_inv]`. Rewrite using `[map_mul, finPart_pairE, finPart_pairE, mul_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairE_mul_eq_one (z : (AE D)ˣ) :
     Formalism.L2.Fam.ThC.pairE (infPart D (z : AE D)) 1 * Formalism.L2.Fam.ThC.pairE (infPart D ((z⁻¹ : (AE D)ˣ) : AE D)) 1 = 1 := by
@@ -159,7 +159,7 @@ theorem pairE_mul_eq_one (z : (AE D)ˣ) :
   · rw [map_mul, finPart_pairE, finPart_pairE, mul_one, map_one]
 
 /- English proof (translation)
-Use `Formalism.L2.Fam.ThC.ae_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, infPart_pairE, infPart_pairE, ← map_mul, Units.inv_mul]`. Rewrite using `[map_mul, finPart_pairE, finPart_pairE, mul_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairE_mul_eq_one' (z : (AE D)ˣ) :
     Formalism.L2.Fam.ThC.pairE (infPart D ((z⁻¹ : (AE D)ˣ) : AE D)) 1 * Formalism.L2.Fam.ThC.pairE (infPart D (z : AE D)) 1 = 1 := by
@@ -170,11 +170,11 @@ theorem pairE_mul_eq_one' (z : (AE D)ˣ) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨h, hh, k, h1, h2⟩` from `exists_pow_mul_int x`. Use `⟨h, hh, k, ?_⟩` and prove the remaining obligations. Generalize the expression as in `hz : x ^ h * Units.map (incA D).toMonoidHom k = z at h1 h2`. Establish `hiz : infPart D (z : AE D) = infPart D (incA D (k : D.host.E))`. Rewrite using `[← hz, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, hx, one_pow, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `m1` using `pairE_mul_eq_one z`. Establish `m2` using `pairE_mul_eq_one' z`. Take `⟨y, hyv, hyi⟩ : ∃ y : (AE D)ˣ, (y : AE D) = Formalism.L2.Fam.ThC.pairE (infPart D (z : AE D)) 1 ∧ ((y⁻¹ : (AE D)ˣ) : AE D) = Formalism.L2.Fam.ThC.pairE (infPart D ((z⁻¹ : (AE D)ˣ) : AE D)) 1` from `⟨⟨_, _, m1, m2⟩, rfl, rfl⟩`. Use `⟨y, y⁻¹ * z, by rw [hyv, finPart_pairE], ⟨?_, ?_, ?_⟩, by rw [hyv, infPart_pairE, hiz], by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, map_mul, hyi, infPart_pairE, ← map_mul, Units.inv_mul, map_one]`. Rewrite using `[Units.val_mul, map_mul, hyi, finPart_pairE, one_mul]`. Conclude with `h1`. Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul, map_mul, hyv, finPart_pairE, mul_one]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decomp (x : (AE D)ˣ) (hx : infPart D (x : AE D) = 1) :
     ∃ h : ℕ, 0 < h ∧ ∃ (k : D.host.Eˣ) (y u : (AE D)ˣ), finPart D (y : AE D) = 1 ∧ Formalism.L2.Pj.FinUnit u ∧
@@ -196,13 +196,13 @@ theorem exists_decomp (x : (AE D)ˣ) (hx : infPart D (x : AE D) = 1) :
   · rw [mul_inv_rev, inv_inv, Units.val_mul, map_mul, hyv, finPart_pairE, mul_one]; exact h2
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨e, -, e1, e2⟩` from `GlobalTheory.SplitCharExp.exists_real_hom hσ`. Set `wU : D.what₂.Tau → ℂˣ` to `fun τ => (y.isUnit.map ((θ τ).comp (infPart D))).unit`. Establish `hwU : ∀ τ, ((wU τ : ℂˣ) : ℂ) = θ τ (infPart D (y : AE D))` using `fun τ => rfl`. Set `f : (D.what₂.Tau → ℂ)ˣ →* (AE D)ˣ` to `Units.map e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf1 : ∀ W, finPart D ((f W : (AE D)ˣ) : AE D) = 1` using `fun W => e1 _`. Establish `hf2 : ∀ W τ, θ τ (infPart D ((f W : (AE D)ˣ) : AE D)) = (W : D.what₂.Tau → ℂ) τ` using `fun W τ => e2 _ τ`. Establish `hy' : y = ∏ τ, f (MulEquiv.piUnits.symm (Pi.mulSingle τ (wU τ)))`. Rewrite using `[← map_prod, ← map_prod, Finset.univ_prod_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `GlobalTheory.SplitCharExp.ext_of_chart hσ (by rw [hy, hf1]) fun τ => ?_` and prove the remaining obligations. Rewrite using `[hf2]`. Conclude with `(hwU τ).symm`. Establish `hc : ((χ y : Circle) : ℂ) = ∏ τ, ((χ (f (MulEquiv.piUnits.symm (Pi.mulSingle τ (wU τ)))) : Circle) : ℂ)` using `by show Circle.coeHom (χ y) = ∏ τ, Circle.coeHom (χ (f (MulEquiv.piUnits.symm (Pi.mulSingle τ (wU τ)))))`. Rewrite using `[← map_prod, ← map_prod, ← hy']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hs : ∀ τ', θ τ' (infPart D ((f (MulEquiv.piUnits.symm (Pi.mulSingle τ (wU τ))) : (AE D)ˣ) : AE D)) = (((Pi.mulSingle τ (wU τ) : D.what₂.Tau → ℂˣ) τ' : ℂˣ) : ℂ)` using `fun τ' => by rw [hf2]; rfl`. Rewrite using `[hn τ _ (hf1 _) fun τ' h => by rw [hs, Pi.mulSingle_eq_of_ne h, Units.val_one], hs, Pi.mulSingle_eq_same, hwU]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_prod {θ : InfFam D} (hθ : IsInfFam θ) {χ : (AE D)ˣ →* Circle} (nτ : D.what₂.Tau → ℤ)
     (hn : ∀ τ (x : (AE D)ˣ), finPart D (x : AE D) = 1 → (∀ τ', τ' ≠ τ → θ τ' (infPart D (x : AE D)) = 1) →
@@ -233,13 +233,11 @@ theorem char_eq_prod {θ : InfFam D} (hθ : IsInfFam θ) {χ : (AE D)ˣ →* Cir
   rw [hn τ _ (hf1 _) fun τ' h => by rw [hs, Pi.mulSingle_eq_of_ne h, Units.val_one], hs, Pi.mulSingle_eq_same, hwU]
 
 /- English proof (translation)
-Introduce `D θ χ n hθ hχ hr x hx`. Use `choose a ha using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D θ χ n τ hθ hχ hr`. Use `choose nτ hn2 hn using ha`. Establish `hn' : ∀ τ (x : (AE D)ˣ), finPart D (x : AE D) = 1 → (∀ τ', τ' ≠ τ → θ τ' (infPart D (x : AE D)) = 1) → ((χ x : Circle) : ℂ) = (θ τ (infPart D (x : AE D)) / (‖θ τ (infPart D (x : AE D))‖ : ℂ)) ^ nτ τ` using `fun τ => (hn τ).2 θ hθ`. Take `⟨h, hh, k, y, u, hy1, hu, hyi, e⟩` from `exists_decomp x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, m, hm, hum⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D χ hχ.1`. Establish `hyalg : IsAlgebraic ℚ ((χ y : Circle) : ℂ)`. Rewrite using `[char_eq_prod hθ nτ hn' y hy1, ← mem_algebraicClosure_iff]`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mem_algebraicClosure_iff, hyi, infPart_incA, (hθ τ).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isAlgebraic_unit_zpow (GlobalTheory.isAlgebraic_embedding_apply _ _) _`. Establish `e2 : χ x ^ (h * m) = χ y ^ m`. Use `congrArg (fun g => χ g ^ m) e` as an intermediate fact. Simplify using `only [map_mul, mul_pow, hum u hu, mul_one, hχ.2 k, one_pow, map_pow] at this`. Rewrite using `[pow_mul]`.
-
-Conclude with `this`. Use `IsAlgebraic.of_pow (Nat.mul_pos hh hm) ?_` and prove the remaining obligations. Rewrite using `[← Circle.coe_pow, e2, Circle.coe_pow, ← mem_algebraicClosure_iff]`. Conclude with `pow_mem (mem_algebraicClosure_iff.2 hyalg) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_infPart_eq_one : ∀ {D : D7} {θ : InfFam D} {χ : (Formalism.L2.Theta.AE D)ˣ →* Circle} {n : ℕ},
     IsInfFam θ → IsHeckeChar D χ → ResEta D χ n →
@@ -273,7 +271,7 @@ end
 end Reformulated
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FinValAlg.isAlgebraic_of_infPart_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinValAlg.finite_values_isAlgebraic : ∀ {D : D7} {θ : InfFam D} {χ : (Formalism.L2.Theta.AE D)ˣ →* Circle} {n : ℕ}, IsInfFam θ → IsHeckeChar D χ → ResEta D χ n →
     ∀ x : (Formalism.L2.Theta.AE D)ˣ, infPart D (x : Formalism.L2.Theta.AE D) = 1 → IsAlgebraic ℚ ((χ x : Circle) : ℂ) :=

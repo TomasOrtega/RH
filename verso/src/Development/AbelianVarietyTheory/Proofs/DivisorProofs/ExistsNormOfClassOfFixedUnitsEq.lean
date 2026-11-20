@@ -8,11 +8,11 @@ open scoped Classical
 namespace GlobalTheory.UnitLemma.InvAlg.ClRel
 
 /- English proof (translation)
-Introduce `K B x y h`. Establish `hsu : ∀ u : B.Aˣ, B.σ (u : B.A) * B.σ ((u⁻¹ : B.Aˣ) : B.A) = 1` using `fun u => by`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `heq : Equivalence (fun x y : {x : B.Aˣ // B.σ (x : B.A) = x} => ∃ u : B.Aˣ, (y.1 : B.A) = x.1 * (u * B.σ (u : B.A)))`. Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x y ⟨u, hu⟩`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `x y z ⟨u, hu⟩ ⟨v, hv⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `⟨u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, hu, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(heq.eqvGen_iff).mp (Quot.eqvGen_exact h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_of_mk_eq : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (x y : {x : B.Aˣ // B.σ (x : B.A) = x}), (Quot.mk _ x : B.Cl) = Quot.mk _ y → ∃ a : B.Aˣ, (y.1 : B.A) = x.1 * (a * B.σ a) := by
   intro K B x y h

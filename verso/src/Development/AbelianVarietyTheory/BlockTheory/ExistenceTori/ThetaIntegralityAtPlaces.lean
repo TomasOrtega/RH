@@ -52,13 +52,13 @@ def ThIntegral : Prop :=
     IsNab Xo c nab → ThIntegralAt Xo c nab
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left k, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (E : Type) [Field E] [NumberField E] (n k : ℕ) : GenLat.TrivAt (⟨stdLat E n⟩ : GenLat E n) k :=
   ⟨1, Nat.coprime_one_left k, by simp, by simp⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `h.2.2.2.1` as an intermediate fact. Conclude with `absurd (Nat.Coprime.eq_one_of_dvd this (Dvd.intro _ rfl)) (by decide)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (la : HeightOneSpectrum (𝓞 c.F)) (ℓ N : ℕ) (h : GoodPlace c la ℓ N) : ℓ ≠ 2 := by

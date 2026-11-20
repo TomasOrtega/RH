@@ -13,9 +13,9 @@ namespace PI.UnitaryGroupMassFormula.LSC
 namespace LatIs
 
 /- English proof (translation)
-Use `show Formalism.MainNotions.S.lamAf (F := I.F) I.L = _`. Unfold `Formalism.MainNotions.S.lamAf Formalism.UG.latS`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, x.2, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lamAf_eq (I : Formalism.MainNotions.S.AutInst) :
     I.Lf = Formalism.UG.latS (F := I.F) (Formalism.MainNotions.S.Af I.F) (Formalism.MainNotions.S.IntAf I.F I.E) I.L := by
@@ -30,7 +30,7 @@ theorem lamAf_eq (I : Formalism.MainNotions.S.AutInst) :
     exact ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `only [Size.latSet, Set.mem_setOf_eq, SetLike.mem_coe]`. Rewrite using `[lamAf_eq]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latSet_eq (I : Formalism.MainNotions.S.AutInst) (x : I.GA) :
     Size.latSet I x = (Formalism.UG.CS.globLat (F := I.F)
@@ -43,7 +43,7 @@ theorem latSet_eq (I : Formalism.MainNotions.S.AutInst) (x : I.GA) :
 end LatIs
 
 /- English proof (translation)
-Introduce `I x`. Establish `hL` using `Formalism.UG.P.global_lattice_isLattice_holds I.F I.E (Fin I.n) I.L (Module.Finite.iff_fg.2 I.L_fg) I.L_span (x.2 : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F))`. Conclude with `⟨_, hL.fg, hL.span_eq_top, LatIs.latSet_eq I x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lattice_isometry : LatIs := by
   intro I x

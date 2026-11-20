@@ -12,15 +12,15 @@ open PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Conclude with `entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hM.2) i j`.
+A detailed English derivation is pending.
 -/
 theorem inK_entry_le (M : M2 n) (hM : InK M) (i j : Fin n ⊕ Fin n) : ‖M i j‖ ≤ 1 := by
   exact entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hM.2) i j
 
 /- English proof (translation)
-Establish `hB : IsCompact (Set.pi univ fun _ : Fin n ⊕ Fin n => Set.pi univ fun _ : Fin n ⊕ Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hB.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `c1 : Continuous fun M : M2 n => Mᴴ * JJ n * M` using `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Establish `c2 : Continuous fun M : M2 n => Mᴴ * M` using `continuous_id.matrix_conjTranspose.matrix_mul continuous_id`. Conclude with `(isClosed_eq c1 continuous_const).inter (isClosed_eq c2 continuous_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM`. Simplify using `only [Set.mem_pi, Set.mem_univ, forall_const, Metric.mem_closedBall, dist_zero_right]`. Introduce `i j`. Conclude with `inK_entry_le M hM i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_inK : IsCompact {M : M2 n | InK M} := by
   have hB : IsCompact (Set.pi univ fun _ : Fin n ⊕ Fin n => Set.pi univ fun _ : Fin n ⊕ Fin n =>
@@ -39,19 +39,19 @@ theorem isCompact_inK : IsCompact {M : M2 n | InK M} := by
 def embK (k : KR n) : M2 n × (M2 n)ᵐᵒᵖ := Units.embedProduct (M2 n) (k : GR n).1
 
 /- English proof (translation)
-The claim follows from `Units.isEmbedding_embedProduct.comp (Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal)`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_embK : Topology.IsEmbedding (embK (n := n)) :=
   Units.isEmbedding_embedProduct.comp (Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal)
 
 /- English proof (translation)
-Use extensionality with `⟨A, B⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Establish `hK : InK (mR (k : GR n))` using `k.2`. Establish `hinv : ((((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)⁻¹ : GL (Fin n ⊕ Fin n) ℂ) : M2 n) = (mR (k : GR n))ᴴ` using `Units.inv_eq_of_mul_eq_one_left hK.2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨mR (k : GR n), hK, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`. Simplify using `only [embK, Units.embedProduct_apply, hinv]`. Both sides reduce to the same expression. Introduce and unpack `⟨M, hM, hMAB⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Establish `hM' : M * Mᴴ = 1` using `mul_eq_one_comm.1 hM.2`. Set `u : GL (Fin n ⊕ Fin n) ℂ` to `⟨M, Mᴴ, hM', hM.2⟩`. Set `g : GR n` to `⟨u, hM.1⟩`. Establish `hg : g ∈ KR n` using `hM`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hMAB]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem range_embK : Set.range (embK (n := n)) = (fun M : M2 n => (M, MulOpposite.op Mᴴ)) '' {M | InK M} := by
   ext ⟨A, B⟩
@@ -75,7 +75,7 @@ theorem range_embK : Set.range (embK (n := n)) = (fun M : M2 n => (M, MulOpposit
     rfl
 
 /- English proof (translation)
-Rewrite using `[isEmbedding_embK.isCompact_iff, Set.image_univ, range_embK]`. Conclude with `isCompact_inK.image (continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_conjTranspose))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KR : IsCompact (univ : Set (KR n)) := by
   rw [isEmbedding_embK.isCompact_iff, Set.image_univ, range_embK]

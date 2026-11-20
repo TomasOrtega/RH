@@ -17,7 +17,7 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Published.SemistableReductionSt`. Conclude with `fun p _ K _ P => _root_.GlobalTheory.SS.exists_semiAbelian_model_padic_polAV p K P`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SS.semistableReductionSt : _root_.GlobalTheory.Published.SemistableReductionSt := by
   unfold _root_.GlobalTheory.Published.SemistableReductionSt

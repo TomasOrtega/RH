@@ -15,17 +15,15 @@ noncomputable section
 namespace GlobalTheory.AdForm.VacBase
 
 /- English proof (translation)
-Introduce `B X I l Z w u A ψ θ hA i hi`. Take `⟨hstd, -, -, -⟩` from `GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi`. Establish `key` using `GlobalTheory.T.movedWeilVacuum_eq_vacuum_of_movedLattices (I.rec7 l Z) ψ θ _ _ _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) I.A.δ I.A.sc hstd (A.chr (i + 1)) (A.om i) (hA.om i hi) (A.vac i) (hA.vac i hi) 1 (one_mem _) 1 (one_mem _)`. Establish `S1 : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (N : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), Moves V hn 1 N → N = Formalism.L2.Col.stdLat D.host.E n` using `GlobalTheory.T.adelicTranslate_one_eq_standardLattice`. Establish `S2 : ∀ (D : D7) (μ : (AE D)ˣ →* Circle) (n : ℕ), ResEta D μ n → Even n → ∀ (V : HSp D) (x : (AE D)ˣ), IsDetRoot V 1 x → μ x = 1` using `GlobalTheory.T.character_eq_one_of_isDetRoot_of_even`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `S3 : ∀ F ∈ Formalism.L2.Th1.H.Th (HV I.A.sc) (alV (I.rec7 l Z).host.d I.A.sc) (LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (Formalism.L2.Col.stdLat (I.rec7 l Z).host.E (B.R.N i)) (Formalism.L2.Col.stdLat (I.rec7 l …` using `GlobalTheory.T.lattice_chain_standard_pair I l Z w i hi`. Distinguish the cases in `hex : Moves _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) 1 (Formalism.L2.Col.stdLat (I.rec7 l Z).host.E (B.R.N i)) ∧ Moves _ (rankN (I.rec7 l Z) (i + 1) hi) 1 (Formalism.L2.Col.stdLat (I.rec7 l Z).host.E (B.R.N (i + 1)))`. Take `⟨-, hmem, hne⟩` from `key _ _ hex.1 hex.2`. Take `⟨c, hc⟩` from `S3 _ hmem`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Conclude with `hc.trans (zero_smul _ _)`. Introduce `N N' hN hN' x y hx hy`. Take `rfl` from `S1 _ _ _ _ N hN`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `S1 _ _ _ _ N' hN'`. Establish `hx1 : A.chr (i + 1) x = 1` using `S2 _ _ _ (hA.om i hi).resS hstd.rk.2.2.1 _ x hx`. Establish `hy1 : A.chr (i + 1) y = 1` using `S2 _ _ _ (hA.om i hi).resT hstd.rk.2.2.2 _ y hy`. Rewrite using `[hx1, hy1]`. Use `show xiN θ _ _ _ _ I.A.δ I.A.sc _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hc.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Circle.coe_one, inv_one, mul_one]`. Both sides reduce to the same expression. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
-
-Introduce `N N' hN hN'`. Conclude with `absurd ⟨S1 _ _ _ _ N hN ▸ hN, S1 _ _ _ _ N' hN' ▸ hN'⟩ hex`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vacuum_reads_base : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∃ c₀ : ℂ, c₀ ≠ 0 ∧ A.MoveAt θ i hi c₀ 1 1 := by
   intro B X I l Z w u A ψ θ hA i hi

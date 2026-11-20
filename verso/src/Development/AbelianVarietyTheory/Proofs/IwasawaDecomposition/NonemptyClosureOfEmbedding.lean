@@ -22,13 +22,13 @@ section General
 variable {O S S' : Type} [CommRing O] [CommRing S] [CommRing S'] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_spMap {S'' : Type} [CommRing S''] (φ : S →+* S') (ψ : S' →+* S'') :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage w).hom, (Spec.map_preimage w).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap (w : Sp S' ⟶ Sp S) : ∃ φ : S →+* S', w = spMap φ :=
   ⟨(Spec.preimage w).hom, (Spec.map_preimage w).symm⟩
@@ -36,14 +36,14 @@ theorem exists_spMap (w : Sp S' ⟶ Sp S) : ∃ φ : S →+* S', w = spMap φ :=
 def IsPt (q : Sp S ⟶ PSpace O N) (v : Fin (N + 1) → S) : Prop := ∃ (g : O →+* S) (hv : _), q = pt g v hv
 
 /- English proof (translation)
-Take `⟨g, hv, rfl⟩` from `h`. Conclude with `⟨g, _, (pt_units_smul g hv u).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPt.smul {q : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q v) (u : Sˣ) : IsPt q (u • v) := by
   obtain ⟨g, hv, rfl⟩ := h
   exact ⟨g, _, (pt_units_smul g hv u).symm⟩
 
 /- English proof (translation)
-Take `⟨g, hv, rfl⟩` from `h`. Conclude with `⟨_, _, spMap_pt g v hv ψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPt.spMap {q : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q v) (ψ : S →+* S') :
     IsPt (spMap ψ ≫ q) (ψ ∘ v) := by
@@ -51,7 +51,7 @@ theorem IsPt.spMap {q : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q
   exact ⟨_, _, spMap_pt g v hv ψ⟩
 
 /- English proof (translation)
-Take `⟨g', hv, rfl⟩` from `h`. Rewrite `e` using `[pt_str]`. Take `rfl : g' = g` from `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Conclude with `⟨hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPt.exists_eq {q : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q v) {g : O →+* S}
     (e : q ≫ PSpace.str O N = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap g) : ∃ hv, q = pt g v hv := by
@@ -61,7 +61,7 @@ theorem IsPt.exists_eq {q : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : Is
   exact ⟨hv, rfl⟩
 
 /- English proof (translation)
-Take `⟨g, hv, rfl⟩` from `h'`. Rewrite `e` using `[pt_str]`. Conclude with `(h.exists_eq e).2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPt.eq {q q' : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q v) (h' : IsPt q' v)
     (e : q ≫ PSpace.str O N = q' ≫ PSpace.str O N) : q = q' := by
@@ -70,16 +70,16 @@ theorem IsPt.eq {q q' : Sp S ⟶ PSpace O N} {v : Fin (N + 1) → S} (h : IsPt q
   exact (h.exists_eq e).2
 
 /- English proof (translation)
-Take `⟨g, hv, -⟩` from `h`. Conclude with `span_range_eq_top_iff_ne_zero.1 hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsPt.ne_zero {K : Type} [Field K] {q : Sp K ⟶ PSpace O N} {v : Fin (N + 1) → K} (h : IsPt q v) : v ≠ 0 := by
   obtain ⟨g, hv, -⟩ := h
   exact span_range_eq_top_iff_ne_zero.1 hv
 
 /- English proof (translation)
-Use `Ideal.eq_top_of_isUnit_mem _ ?_ hc` and prove the remaining obligations. Establish `: v c = ∑ i, Q' c i * Q.mulVec v i`. Use `congrFun (Matrix.mulVec_mulVec v Q' Q) c` as an intermediate fact. Rewrite `this` using `[h, Matrix.one_mulVec]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_mulVec_eq_top {m n : ℕ} {Q : Matrix (Fin m) (Fin n) S} {Q' : Matrix (Fin n) (Fin m) S} (h : Q' * Q = 1)
     {v : Fin n → S} {c : Fin n} (hc : IsUnit (v c)) : Ideal.span (Set.range (Q.mulVec v)) = ⊤ := by
@@ -92,13 +92,13 @@ theorem span_mulVec_eq_top {m n : ℕ} {Q : Matrix (Fin m) (Fin n) S} {Q' : Matr
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec ψ Q v i`.
+A detailed English derivation is pending.
 -/
 theorem comp_mulVec {m n : ℕ} (ψ : S →+* S') (Q : Matrix (Fin m) (Fin n) S) (v : Fin n → S) :
     ψ ∘ Q.mulVec v = (Q.map ψ).mulVec (ψ ∘ v) := funext fun i => RingHom.map_mulVec ψ Q v i
 
 /- English proof (translation)
-Use `⟨((1 : Matrix _ _ S).updateCol c v).submatrix id (Equiv.swap 0 c), ?_, fun i => by simp⟩` and prove the remaining obligations. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_permute', ← Matrix.cramer_apply, Matrix.cramer_one]`. Simplify using `only [Module.End.one_apply, hc, mul_one]`. Conclude with `((Equiv.Perm.sign (Equiv.swap 0 c)).isUnit.map (Int.castRingHom S))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_col {r : ℕ} (v : Fin (r + 1) → S) (c : Fin (r + 1)) (hc : v c = 1) :
     ∃ P : Matrix (Fin (r + 1)) (Fin (r + 1)) S, IsUnit P ∧ ∀ i, P i 0 = v i := by
@@ -111,7 +111,7 @@ abbrev cellVec (R : Type) [CommRing R] {r : ℕ} (c : Fin (r + 1)) : Fin (r + 1)
   Fin.insertNth (α := fun _ => MvPolynomial (Fin r) R) c 1 MvPolynomial.X
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Function.ne_iff.1 hv`. Use `⟨c, MvPolynomial.eval₂Hom φ fun j => (v c)⁻¹ * v (c.succAbove j), (Units.mk0 _ hc)⁻¹, RingHom.ext fun x => by simp, funext fun i => ?_⟩` and prove the remaining obligations. Use `Fin.succAboveCases c ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Units.smul_def, inv_mul_cancel₀ (show v c ≠ 0 from hc)]`. Simplify using `[Units.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_cellVec {K : Type} [Field K] {r : ℕ} (φ : S →+* K) {v : Fin (r + 1) → K} (hv : v ≠ 0) :
     ∃ (c : Fin (r + 1)) (ψ : MvPolynomial (Fin r) S →+* K) (u : Kˣ),
@@ -127,7 +127,7 @@ instance subsingleton_sp (K : Type) [Field K] : Subsingleton (Sp K) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum K))
 
 /- English proof (translation)
-Take `⟨ψ, e⟩` from `exists_spMap (S' := (Sp S).residueField t) ((Sp S).fromSpecResidueField t)`. Conclude with `⟨_, inferInstance, ψ, fun p => e ▸ Scheme.fromSpecResidueField_apply t p⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_field_point (t : Sp S) :
     ∃ (K : Type) (_ : Field K) (ψ : S →+* K), ∀ p : Sp K, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ψ p = t := by
@@ -135,7 +135,7 @@ theorem exists_field_point (t : Sp S) :
   exact ⟨_, inferInstance, ψ, fun p => e ▸ Scheme.fromSpecResidueField_apply t p⟩
 
 /- English proof (translation)
-Take `⟨_, φ, e⟩` from `Charts.exists_fac { ι := Unit, R := fun _ => S, χ := fun _ => χ, opn := fun _ => inferInstance } w (Set.mem_iUnion.2 ⟨(), h ⟨_, rfl⟩⟩)`. Conclude with `⟨φ, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fac {X : Scheme.{0}} (χ : Sp S ⟶ X) [IsOpenImmersion χ] [IsLocalRing S'] (w : Sp S' ⟶ X)
     (h : Set.range w ⊆ Set.range χ) : ∃ φ : S →+* S', ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap φ ≫ χ = w := by
@@ -144,7 +144,7 @@ theorem exists_fac {X : Scheme.{0}} (χ : Sp S ⟶ X) [IsOpenImmersion χ] [IsLo
   exact ⟨φ, e⟩
 
 /- English proof (translation)
-Set `e` to `(asIso (f.stalkMap x)).commRingCatIsoToRingEquiv`. Conclude with `⟨fun ⟨h, h'⟩ => ⟨e.toMulEquiv.isDomain _, .of_equiv e.symm⟩, fun ⟨h, h'⟩ => ⟨e.symm.toMulEquiv.isDomain _, .of_equiv e⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem normal_stalk_iff {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f] (x : X) :
     (IsDomain (X.presheaf.stalk x) ∧ IsIntegrallyClosed (X.presheaf.stalk x)) ↔
@@ -154,14 +154,14 @@ theorem normal_stalk_iff {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f] (x
     fun ⟨h, h'⟩ => ⟨e.symm.toMulEquiv.isDomain _, .of_equiv e⟩⟩
 
 /- English proof (translation)
-The claim follows from `have (x : X) : _root_.IsReduced (X.presheaf.stalk x) := have := (h x).1; inferInstance isReduced_of_isReduced_stalk X`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_of_normal {X : Scheme.{0}} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : IsReduced X :=
   have (x : X) : _root_.IsReduced (X.presheaf.stalk x) := have := (h x).1; inferInstance
   isReduced_of_isReduced_stalk X
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Establish `: Algebra.Smooth S (MvPolynomial (Fin r) S)` using `⟨inferInstance, inferInstance⟩`. Conclude with `RingHom.smooth_algebraMap.2 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_spMap_C (r : ℕ) :
     Smooth (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (MvPolynomial.C : S →+* MvPolynomial (Fin r) S)) := by
@@ -179,7 +179,7 @@ variable {O : Type} [CommRing O] {Z : Scheme.{0}} (s : Z ⟶ Sp O) {C : Coc Z} {
 def gA (a : ch.ι) : O →+* ch.R a := (Spec.preimage (ch.χ a ≫ s)).hom
 
 /- English proof (translation)
-The claim follows from `(Spec.map_preimage _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sub_closure_chart_section (a : ch.ι) : ch.χ a ≫ s = spMap (gA s a) := (Spec.map_preimage _).symm
 
@@ -189,7 +189,7 @@ abbrev Av {S : Type} [CommRing S] (z : Sp S ⟶ Z) (α : C.A) (h : ⊤ ≤ z ⁻
 def Qm (a : ch.ι) : Matrix (Fin (N + 1)) (Fin (r + 1)) (ch.R a) := Av Em (ch.χ a) (D.α a) (D.le a) * D.M a
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Qm, Matrix.map_mul, Av, Av, Matrix.map_map, ev_spMap φ (ch.χ a) _ (D.le a) h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Qm_map {S : Type} [CommRing S] (a : ch.ι) (φ : ch.R a →+* S) {z : Sp S ⟶ Z} (e : spMap φ ≫ ch.χ a = z)
     (h : ⊤ ≤ z ⁻¹ᵁ C.B (D.α a)) : (Qm Em D a).map φ = Av Em z (D.α a) h * (D.M a).map φ := by
@@ -198,9 +198,9 @@ theorem Qm_map {S : Type} [CommRing S] (a : ch.ι) (φ : ch.R a →+* S) {z : Sp
   rfl
 
 /- English proof (translation)
-Take `⟨A', hA⟩` from `Em.linv (D.α a)`. Take `⟨M', hM⟩` from `GlobalTheory.T.exists_left_inverse_of_fibrewise_injective _ _ _ (D.M a) (D.inj a)`. Use `⟨M' * A'.map (ev (ch.χ a) _ (D.le a)), ?_⟩` and prove the remaining obligations. Establish `: A'.map (ev (ch.χ a) _ (D.le a)) * Av Em (ch.χ a) (D.α a) (D.le a) = 1`. Rewrite using `[Av, ← Matrix.map_mul, hA]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Qm, Matrix.mul_assoc, ← Matrix.mul_assoc (A'.map _), this, Matrix.one_mul, hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qm_linv (a : ch.ι) : ∃ Q' : Matrix (Fin (r + 1)) (Fin (N + 1)) (ch.R a), Q' * Qm Em D a = 1 := by
   obtain ⟨A', hA⟩ := Em.linv (D.α a)
@@ -212,7 +212,7 @@ theorem Qm_linv (a : ch.ι) : ∃ Q' : Matrix (Fin (r + 1)) (Fin (N + 1)) (ch.R 
   rw [Qm, Matrix.mul_assoc, ← Matrix.mul_assoc (A'.map _), this, Matrix.one_mul, hM]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Em.compat α β S z hα hβ`. Establish `: (Av Em z α hα).mulVec ((C.tr α β z hα hβ).mulVec ξ) = u • (Av Em z β hβ).mulVec ξ`. Rewrite using `[Matrix.mulVec_mulVec, Av, hu, Matrix.smul_mulVec, Units.smul_def]`. Rewrite using `[this]`. Conclude with `h.smul u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPt_tr {S : Type} [CommRing S] {q : Sp S ⟶ PSpace O N} (z : Sp S ⟶ Z) (α β : C.A)
     (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β) {ξ : Fin (C.n β) → S} (h : IsPt q ((Av Em z β hβ).mulVec ξ)) :
@@ -224,9 +224,9 @@ theorem isPt_tr {S : Type} [CommRing S] {q : Sp S ⟶ PSpace O N} (z : Sp S ⟶ 
   exact h.smul u
 
 /- English proof (translation)
-Establish `hz : ⊤ ≤ z ⁻¹ᵁ C.B (D.α a)` using `by rw [← e]; exact le_preimage_comp _ (D.le a)`. Establish `hz' : ⊤ ≤ z ⁻¹ᵁ C.B (D.α a')` using `by rw [← e']; exact le_preimage_comp _ (D.le a')`. Take `⟨P, hP⟩` from `D.glue a a' K φ φ' z e e' hz hz'`. Use `⟨P.mulVec v', ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Qm_map Em D a' φ' e' hz', ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `isPt_tr Em z (D.α a) (D.α a') hz hz' h`. Rewrite using `[Qm_map Em D a φ e hz]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem isPt_glue {K : Type} [Field K] {q : Sp K ⟶ PSpace O N} (a a' : ch.ι) (φ : ch.R a →+* K)
     (φ' : ch.R a' →+* K) {z : Sp K ⟶ Z} (e : spMap φ ≫ ch.χ a = z) (e' : spMap φ' ≫ ch.χ a' = z)
@@ -243,13 +243,13 @@ theorem isPt_glue {K : Type} [Field K] {q : Sp K ⟶ PSpace O N} (a a' : ch.ι) 
   simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hP]
 
 /- English proof (translation)
-The claim follows from `Fin.insertNth_apply_same _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cellVec_self (R : Type) [CommRing R] (c : Fin (r + 1)) : cellVec R c c = 1 :=
   Fin.insertNth_apply_same _ _ _
 
 /- English proof (translation)
-Take `⟨Q', hQ⟩` from `Qm_linv Em D a`. Use `span_mulVec_eq_top (Q' := Q'.map MvPolynomial.C) ?_ (c := c) (by rw [cellVec_self]; exact isUnit_one)` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hQ]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_hv (a : ch.ι) (c : Fin (r + 1)) :
     Ideal.span (Set.range (((Qm Em D a).map MvPolynomial.C).mulVec (cellVec (ch.R a) c))) = ⊤ := by
@@ -263,20 +263,20 @@ def cell (a : ch.ι) (c : Fin (r + 1)) : Sp (MvPolynomial (Fin r) (ch.R a)) ⟶ 
     (by rw [Category.assoc, sub_closure_chart_section, spMap_spMap, pt_str])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem cell_fst (a : ch.ι) (c : Fin (r + 1)) :
     cell s Em D a c ≫ pullback.fst _ _ = spMap MvPolynomial.C ≫ ch.χ a := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem cell_snd (a : ch.ι) (c : Fin (r + 1)) :
     cell s Em D a c ≫ pullback.snd _ _ = pt (MvPolynomial.C.comp (gA s a)) _ (cell_hv Em D a c) :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `(show IsPt _ _ from ⟨_, _, rfl⟩ : IsPt (pt (MvPolynomial.C.comp (gA s a)) _ (cell_hv Em D a c)) _).spMap ψ` as an intermediate fact. Rewrite `this` using `[comp_mulVec, Matrix.map_map]`. Rewrite using `[Category.assoc, cell_snd]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPt_cell {S : Type} [CommRing S] (a : ch.ι) (c : Fin (r + 1)) (ψ : MvPolynomial (Fin r) (ch.R a) →+* S) :
     IsPt ((spMap ψ ≫ cell s Em D a c) ≫ pullback.snd _ _)
@@ -287,11 +287,11 @@ theorem isPt_cell {S : Type} [CommRing S] (a : ch.ι) (c : Fin (r + 1)) (ψ : Mv
   exact this
 
 /- English proof (translation)
-Establish `hv : v ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2.ne_zero (Matrix.mulVec_zero _)`. Take `⟨c, ψ, u, hψ, hu⟩` from `exists_cellVec φ hv`. Establish `hfst : (spMap ψ ≫ cell s Em D a c) ≫ pullback.fst _ _ = x ≫ pullback.fst _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, cell_fst, ← Category.assoc, spMap_spMap, hψ, h1]`. Use `⟨c, ψ, pullback.hom_ext hfst ?_⟩` and prove the remaining obligations. Establish `h3` using `isPt_cell s Em D a c ψ`. Rewrite `h3` using `[hψ, hu, Units.smul_def, Matrix.mulVec_smul, ← Units.smul_def]`. Use `h3.eq (h2.smul u) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, ← pullback.condition]`. Simplify `congrArg (· ≫ s) hfst` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_cell {K : Type} [Field K] (a : ch.ι) (φ : ch.R a →+* K) {v : Fin (r + 1) → K}
     (x : Sp K ⟶ pullback s (PSpace.str O N)) (h1 : x ≫ pullback.fst _ _ = spMap φ ≫ ch.χ a)
@@ -311,11 +311,11 @@ theorem exists_cell {K : Type} [Field K] (a : ch.ι) (φ : ch.R a →+* K) {v : 
   simpa only [Category.assoc] using congrArg (· ≫ s) hfst
 
 /- English proof (translation)
-Take `⟨⟨a', c'⟩, t, rfl⟩` from `Set.mem_iUnion.1 hy`. Take `⟨K, _, ψ, hψ⟩` from `exists_field_point t`. Establish `hx : ∀ p, (spMap ψ ≫ cell s Em D a' c') p = cell s Em D a' c' t` using `fun p => by`. Rewrite using `[Scheme.Hom.comp_apply, hψ]`. Establish `hx1 : (spMap ψ ≫ cell s Em D a' c') ≫ pullback.fst _ _ = spMap (ψ.comp MvPolynomial.C) ≫ ch.χ a'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, cell_fst, ← Category.assoc, spMap_spMap]`. Take `⟨φ, hφ⟩` from `exists_fac (ch.χ a) ((spMap ψ ≫ cell s Em D a' c') ≫ pullback.fst _ _) (by rintro _ ⟨p, rfl⟩; rw [Scheme.Hom.comp_apply, hx]; exact ha)`. Take `⟨v, hv⟩` from `isPt_glue Em D a a' φ (ψ.comp MvPolynomial.C) hφ hx1.symm (isPt_cell s Em D a' c' ψ)`. Take `⟨c, ψ', e⟩` from `exists_cell s Em D a φ _ hφ.symm hv`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, spMap ψ' p, by rw [← Scheme.Hom.comp_apply, e, hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_cell {y : ↥(pullback s (PSpace.str O N))}
     (hy : y ∈ ⋃ k : Σ a : ch.ι, Fin (r + 1), Set.range (cell s Em D k.1 k.2)) {a : ch.ι}
@@ -334,9 +334,9 @@ theorem mem_range_cell {y : ↥(pullback s (PSpace.str O N))}
   exact ⟨c, spMap ψ' p, by rw [← Scheme.Hom.comp_apply, e, hx]⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, ha⟩`. Take `⟨c, hc⟩` from `mem_range_cell s Em D hy ha`. Conclude with `Set.mem_iUnion.2 ⟨c, hc⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨c, t, rfl⟩` from `Set.mem_iUnion.1 hy`. Use `⟨Set.mem_iUnion.2 ⟨⟨a, c⟩, t, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, cell_fst, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem union_inter (a : ch.ι) :
     (⋃ k : Σ a : ch.ι, Fin (r + 1), Set.range (cell s Em D k.1 k.2)) ∩
@@ -355,16 +355,16 @@ theorem union_inter (a : ch.ι) :
 end Main
 
 /- English proof (translation)
-Introduce `x` and use `(normal_stalk_iff χ x).2 (hZ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_sp_of_openImmersion {Z : Scheme.{0}} (hZ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z) {R : Type}
     [CommRing R] (χ : Sp R ⟶ Z) [IsOpenImmersion χ] : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R) :=
   fun x => (normal_stalk_iff χ x).2 (hZ _)
 
 /- English proof (translation)
-Establish `: IsZariskiLocalAtSource @Flat` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (fun k => (e k).opensRange) ?_ fun k => ?_` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 (hc.ge (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hk⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (e k).opensRange.ι = (e k).isoOpensRange.inv ≫ e k`. Rewrite using `[Iso.eq_inv_comp, Scheme.Hom.isoOpensRange_hom_ι]`. Rewrite using `[e1, Category.assoc]`. Conclude with `IsZariskiLocalAtSource.comp (h k) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_cover {X Y : Scheme.{0}} (F : X ⟶ Y) {J : Type} (T : J → Scheme.{0}) (e : ∀ k, T k ⟶ X)
     [∀ k, IsOpenImmersion (e k)] (hc : ⋃ k, Set.range (e k) = Set.univ) (h : ∀ k, Flat (e k ≫ F)) : Flat F := by
@@ -379,91 +379,79 @@ theorem flat_of_cover {X Y : Scheme.{0}} (F : X ⟶ Y) {J : Type} (T : J → Sch
     exact IsZariskiLocalAtSource.comp (h k) _
 
 /- English proof (translation)
-Take `⟨Em⟩` from `hEm`. Use `set p₁ := pullback.fst s (PSpace.str O N) with hp₁`. Use `set p₂ := pullback.snd s (PSpace.str O N) with hp₂`. Set `T : (Σ a : ch.ι, Fin (r + 1)) → Scheme.{0}` to `fun k => Sp (MvPolynomial (Fin r) (ch.R k.1))`. Establish `H` using `fun a => GlobalTheory.T.affine_chart_of_left_inverse_matrix O Z (pullback s (PSpace.str O N)) s N r p₁ p₂ (IsPullback.of_hasPullback _ _) (ch.R a) (ch.χ a) (gA s a) (Qm Em D a) (Qm_linv Em D a).choose (fun c => cell s Em D a c) inferInstance (sub_closure_chart_section s a) (Qm_li …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose U hU using fun a => (H a).2.1`. Use `choose T₀ hT₀c hT₀ using fun a => (H a).2.2`. Set `Ω : (pullback s (PSpace.str O N)).Opens` to `p₁ ⁻¹ᵁ (⨆ a, (ch.χ a).opensRange)`. Establish `hΩ : ∀ y, y ∈ Ω ↔ ∃ a, p₁ y ∈ Set.range (ch.χ a)` using `fun y => by show p₁ y ∈ (⨆ a, (ch.χ a).opensRange) ↔ _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hnT : ∀ k, ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (T k)` using `fun k => GlobalTheory.T.isNormal_mvPolynomial_of_isNormal (ch.R k.1) r (normal_sp_of_openImmersion hnorm (ch.χ k.1))`. Take `⟨Uu, j, e', hj, he', hje, hcov⟩` from `GlobalTheory.T.exists_closed_subscheme_open_pieces (pullback s (PSpace.str O N)) _ T (fun k => cell s Em D k.1 k.2) Ω (fun k => (H k.1).1 k.2) (fun k => isReduced_of_normal (hnT k)) (fun k => ⟨U k.1 k.2 ⊓ p₁ ⁻¹ᵁ (ch.χ k.1).opensRange, by`. Rewrite using `[hU, ← union_inter s Em D k.1]`. Use extensionality with `y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_inter_iff, TopologicalSpace.Opens.coe_inf, Scheme.Hom.coe_opensRange]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨h1, h3, h2⟩`. Introduce and unpack `⟨h1, h3, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨h1, h2⟩, h3⟩⟩)`. Use the proof step `⟨closure (⋃ k : Σ a : ch.ι, Fin (r + 1), Set.range (cell s Em D k.1 k.2)), isClosed_closure, by`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨subset_closure hy, (hΩ y).2 ?_⟩` and prove the remaining obligations. Take `⟨k, t, rfl⟩` from `Set.mem_iUnion.1 hy`. Use `⟨k.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, cell_fst, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨hy, hyΩ⟩`. Take `⟨a, ha⟩` from `(hΩ y).1 hyΩ`. Establish `hV : IsOpen (p₁ ⁻¹' Set.range (ch.χ a))` using `(p₁ ⁻¹ᵁ (ch.χ a).opensRange).isOpen`. Establish `h1` using `hV.inter_closure ⟨ha, hy⟩`. Rewrite `h1` using `[Set.inter_comm, union_inter s Em D a, hT₀ a]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : y ∈ T₀ a` using `closure_minimal Set.inter_subset_left (hT₀c a) h1`. Establish `h3 : y ∈ ⋃ c, Set.range (cell s Em D a c)` using `by rw [hT₀ a]; exact ⟨h2, ha⟩`. Take `⟨c, hc⟩` from `Set.mem_iUnion.1 h3`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, c⟩, hc⟩⟩`. Establish `hnU : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Uu` using `fun u => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, t, rfl⟩` from `Set.mem_iUnion.1 (hcov.ge (Set.mem_univ u))`. Conclude with `(normal_stalk_iff (e' k) t).1 (hnT k t)`. Establish `hflU : Flat (j ≫ Ω.ι ≫ p₁ ≫ s)` using `flat_of_cover _ T e' hcov fun k => by`. Rewrite using `[reassoc_of% (hje k), cell_fst_assoc]`. Use `haveI := hflat`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := smooth_spMap_C (S := ch.R k.1) r`. Use `haveI : Flat (spMap (MvPolynomial.C : ch.R k.1 →+* MvPolynomial (Fin r) (ch.R k.1))) := inferInstance`. Use `haveI : Flat (ch.χ k.1) := inferInstance`. Conclude with `inferInstance`. Establish `hstr : IsProjOver (PSpace.str O N)` using `⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Take `⟨Z', ν, e, hνfin, hnZ', hprojZ', hflZ', Hpb, hdense⟩` from `GlobalTheory.T.exists_finite_normal_flat_closure O _ Uu (p₁ ≫ s) Ω j (GlobalTheory.ProjSpace.isProjOver_pullback hproj hstr) hj hnU hflU`. Use `set f := ν ≫ p₁ with hf`. Use `set q := ν ≫ p₂ with hq`. Establish `hqs : q ≫ PSpace.str O N = f ≫ s`. Rewrite using `[hq, hf, Category.assoc, Category.assoc, pullback.condition]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsOpenImmersion e := MorphismProperty.of_isPullback Hpb.flip inferInstance`. Establish `hcellν : ∀ k {W : Scheme.{0}} (g : pullback s (PSpace.str O N) ⟶ W), e' k ≫ e ≫ ν ≫ g = cell s Em D k.1 k.2 ≫ g` using `fun k W g => by rw [← Category.assoc e ν g, ← Category.assoc (e' k), Hpb.w, hje k]`. Establish `hfac : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z'), Set.range w ⊆ Set.range e → ∃ (k : Σ a : ch.ι, Fin (r + 1)) (ψ : MvPolynomial (Fin r) (ch.R k.1) →+* K), spMap ψ ≫ e' k ≫ e = w`. Introduce `K _ w hw`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩` from `Set.mem_iUnion.1 (hcov.ge (Set.mem_univ (IsOpenImmersion.lift e w hw p)))`. Take `⟨ψ, hψ⟩` from `exists_fac (e' k) (IsOpenImmersion.lift e w hw) (by`. Introduce and unpack `_ ⟨p', rfl⟩`. Rewrite using `[Subsingleton.elim p' p])` and apply the resulting hypothesis. Conclude with `⟨k, ψ, by rw [← Category.assoc, hψ, IsOpenImmersion.lift_fac]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwf : ∀ (K : Type) [Field K] (k : Σ a : ch.ι, Fin (r + 1)) (ψ : MvPolynomial (Fin r) (ch.R k.1) →+* K), (spMap ψ ≫ e' k ≫ e) ≫ f = spMap (ψ.comp MvPolynomial.C) ≫ ch.χ k.1`. Introduce `K _ k ψ`. Simplify using `only [hf, Category.assoc]`. Rewrite using `[hcellν, cell_fst, ← Category.assoc, spMap_spMap]`. Establish `hptk : ∀ (K : Type) [Field K] (k : Σ a : ch.ι, Fin (r + 1)) (ψ : MvPolynomial (Fin r) (ch.R k.1) →+* K) (hk : ⊤ ≤ ((spMap ψ ≫ e' k ≫ e) ≫ f) ⁻¹ᵁ C.B (D.α k.1)), IsPt ((spMap ψ ≫ e' k ≫ e) ≫ q) ((Av Em ((spMap ψ ≫ e' k ≫ e) ≫ f) (D.α k.1) hk).mulVec (((D.M k.1).map (ψ.comp MvPolyn …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `K _ k ψ hk`. Use `isPt_cell s Em D k.1 k.2 ψ` as an intermediate fact. Rewrite `this` using `[Qm_map Em D k.1 _ (hwf K k ψ).symm hk, ← Matrix.mulVec_mulVec]`. Establish `hwq : (spMap ψ ≫ e' k ≫ e) ≫ q = (spMap ψ ≫ cell s Em D k.1 k.2) ≫ p₂`. Simplify using `only [hq, Category.assoc, hcellν]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hwq]`. Conclude with `this`. Establish `hkle : ∀ (K : Type) [Field K] (k : Σ a : ch.ι, Fin (r + 1)) (ψ : MvPolynomial (Fin r) (ch.R k.1) →+* K), ⊤ ≤ ((spMap ψ ≫ e' k ≫ e) ≫ f) ⁻¹ᵁ C.B (D.α k.1)` using `fun K _ k ψ => by`. Rewrite using `[hwf K k ψ]`. Conclude with `le_preimage_comp _ (D.le k.1)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨L, hL⟩` from `GlobalTheory.T.points_of_closure_in_projective_space O Z Z' s f C N Em q (Set.range e) hqs (isReduced_of_normal hnZ') hdense (fun K _ w hw α h => by`. Take `⟨k, ψ, rfl⟩` from `hfac K w hw`. Establish `h2` using `isPt_tr Em _ α (D.α k.1) h (hkle K k ψ) (hptk K k ψ (hkle K k ψ))`. Take `⟨g, hg⟩` from `exists_spMap ((spMap ψ ≫ e' k ≫ e) ≫ q ≫ PSpace.str O N)`. Take `⟨hv, he⟩` from `h2.exists_eq (by rw [Category.assoc]; exact hg)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨_, g, hv, he⟩)`. Establish `carr : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z') (α : C.A) (h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α) (ξ : Fin (C.n α) → K), L.Carries w α h ξ ↔ IsPt (w ≫ q) ((Av Em (w ≫ f) α h).mulVec ξ)`. Introduce `K _ w α h ξ`. Take `⟨g, hg⟩` from `exists_spMap (w ≫ f ≫ s)`. Rewrite using `[hL K w α h ξ g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, he⟩`. Conclude with `⟨g, hv, he⟩`. Introduce `hp`. Conclude with `hp.exists_eq (by rw [Category.assoc, hqs, hg])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcellν0 : ∀ k, e' k ≫ e ≫ ν = cell s Em D k.1 k.2` using `fun k => by rw [Hpb.w, hje k]`. Establish `hrange : Set.range e = ν ⁻¹' Ω`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, Hpb.w, Scheme.Hom.comp_apply]`. Use `Set.mem_range_self (f := Ω.ι) (j u)` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Introduce `hx`. Establish `hr : Set.range (Z'.fromSpecResidueField x ≫ ν) ⊆ Set.range Ω.ι`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Conclude with `hx`. Establish `hl` using `Hpb.lift_fst (Z'.fromSpecResidueField x) (IsOpenImmersion.lift Ω.ι _ hr) (IsOpenImmersion.lift_fac _ _ _).symm`. Take `⟨p⟩ : Nonempty (Spec (Z'.residueField x))` from `inferInstance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨Hpb.lift (Z'.fromSpecResidueField x) (IsOpenImmersion.lift Ω.ι _ hr) (IsOpenImmersion.lift_fac _ _ _).symm p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hl, Scheme.fromSpecResidueField_apply]`. Set `ch' : Charts Z'` to `Charts.mk (Σ a : ch.ι, Fin (r + 1)) (fun k => MvPolynomial (Fin r) (ch.R k.1)) (fun k => e' k ≫ e) (fun k => inferInstance)`. Establish `hcar : ch'.carrier = Set.range e`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨k, u, rfl⟩` from `Set.mem_iUnion.1 hx`. Conclude with `⟨e' k u, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Introduce and unpack `⟨u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, t, rfl⟩` from `Set.mem_iUnion.1 (hcov.ge (Set.mem_univ u))`. Conclude with `Set.mem_iUnion.2 ⟨k, t, Scheme.Hom.comp_apply _ _ _⟩`. Use `choose Pm hPm using fun k : Σ a : ch.ι, Fin (r + 1) => exists_isUnit_col (cellVec (ch.R k.1) k.2) k.2 (cellVec_self _ _)`. Use `haveI : Mono j := inferInstance`. Use `haveI := hνfin`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hproj' : IsProjOver (f ≫ s)` using `by rw [hf, Category.assoc]; exact hprojZ'`. Establish `hflat' : Flat (f ≫ s)` using `by rw [hf, Category.assoc]; exact hflZ'`. Use `⟨⟨Z', f, hproj', hnZ', hflat', L, ch', fun k => k.1, fun k => MvPolynomial.C, fun k => smooth_spMap_C r, fun k => ?_, Pm, fun k => (hPm k).1, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `show (e' k ≫ e) ≫ ν ≫ p₁ = _`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hcellν, cell_fst]`. Rewrite using `[hcar, hrange]`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, hΩ, Charts.carrier, Set.mem_iUnion, hf, Scheme.Hom.comp_apply]`. Rewrite using `[hcar]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hdense`. Introduce `k K _ ψ w hw h`. Substitute `hw` using the available equality. Establish `e1 : (fun i => ψ (Pm k i 0)) = ψ ∘ cellVec (ch.R k.1) k.2` using `funext fun i => by rw [(hPm k).2 i]; rfl`. Rewrite using `[carr, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hptk K k ψ h`. Introduce `a K _ φ v hv`. Establish `hQv : Ideal.span (Set.range (((Qm Em D a).map φ).mulVec v)) = ⊤`. Take `⟨Q', hQ⟩` from `Qm_linv Em D a`. Take `⟨c, hc⟩` from `Function.ne_iff.1 hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `span_mulVec_eq_top (Q' := Q'.map φ) ?_ (c := c) (isUnit_iff_ne_zero.2 hc)` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hQ]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `x : Sp K ⟶ pullback s (PSpace.str O N)` to `pullback.lift (spMap φ ≫ ch.χ a) (pt (φ.comp (gA s a)) _ hQv) (by rw [Category.assoc, sub_closure_chart_section, spMap_spMap, pt_str])`. Establish `hx1 : x ≫ p₁ = spMap φ ≫ ch.χ a` using `pullback.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx2 : IsPt (x ≫ p₂) (((Qm Em D a).map φ).mulVec v)` using `⟨_, hQv, pullback.lift_snd _ _ _⟩`. Take `⟨c, ψ, hψ⟩` from `exists_cell s Em D a φ x hx1 hx2`. Establish `hwν : (spMap ψ ≫ e' ⟨a, c⟩ ≫ e) ≫ ν = x`. Rewrite using `[Category.assoc, Category.assoc, hcellν0, hψ]`. Establish `key : ∀ w' : Sp K ⟶ Z', w' ≫ f = spMap φ ≫ ch.χ a → ((∀ h, L.Carries w' (D.α a) h (((D.M a).map φ).mulVec v)) ↔ w' ≫ ν = x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w' hw'`. Establish `h0 : ⊤ ≤ (w' ≫ f) ⁻¹ᵁ C.B (D.α a)` using `by rw [hw']; exact le_preimage_comp _ (D.le a)`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `h3` using `(carr K w' _ h0 _).1 (H h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[Matrix.mulVec_mulVec, ← Qm_map Em D a φ hw'.symm h0]`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `hw'.trans hx1.symm`. Rewrite using `[Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h3.eq hx2 ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hqs, ← Category.assoc, hw', Category.assoc x, ← pullback.condition, ← Category.assoc, hx1, Category.assoc]`. Introduce `hν h`. Rewrite using `[carr, Matrix.mulVec_mulVec, ← Qm_map Em D a φ hw'.symm h]`. Establish `: w' ≫ q = x ≫ p₂` using `by rw [hq, ← Category.assoc, hν]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hx2`. Establish `hwf' : (spMap ψ ≫ e' ⟨a, c⟩ ≫ e) ≫ f = spMap φ ≫ ch.χ a`. Rewrite using `[hf, ← Category.assoc, hwν, hx1]`. Use `⟨spMap ψ ≫ e' ⟨a, c⟩ ≫ e, ⟨hwf', (key _ hwf').2 hwν⟩, fun w' hw' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hν'` using `(key w' hw'.1).1 hw'.2`. Establish `hw0 : w' ≫ ν = (spMap ψ ≫ e' ⟨a, c⟩ ≫ j) ≫ Ω.ι`. Rewrite using `[hν', ← hψ, ← hje ⟨a, c⟩, Category.assoc, Category.assoc]`. Establish `hl` using `Hpb.lift_fst w' (spMap ψ ≫ e' ⟨a, c⟩ ≫ j) hw0`. Establish `hl2 : Hpb.lift w' (spMap ψ ≫ e' ⟨a, c⟩ ≫ j) hw0 ≫ j = (spMap ψ ≫ e' ⟨a, c⟩) ≫ j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Hpb.lift_snd, Category.assoc]`. Rewrite using `[← hl, (cancel_mono j).1 hl2, Category.assoc]`. Introduce `R K _ _ _ _ _ _ _ z α hz ξ hξ y hy hcarr`. Take `⟨c, hc⟩` from `hξ`. Take `⟨A', hA⟩` from `Em.linv α`.
-
-Establish `hv : Ideal.span (Set.range ((Av Em z α hz).mulVec ξ)) = ⊤`. Use `span_mulVec_eq_top (Q' := A'.map (ev z _ hz)) ?_ hc` and prove the remaining obligations. Rewrite using `[Av, ← Matrix.map_mul, hA]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Take `⟨g, hg⟩` from `exists_spMap (z ≫ s)`.
-
-Set `x : Sp R ⟶ pullback s (PSpace.str O N)` to `pullback.lift z (pt g _ hv) (by rw [hg, pt_str])`. Establish `h0 : ⊤ ≤ (y ≫ f) ⁻¹ᵁ C.B α` using `by rw [hy]; exact le_preimage_comp _ hz`. Establish `h1` using `(carr K y α h0 _).1 (hcarr h0)`. Establish `e1 : Av Em (y ≫ f) α h0 = (Av Em z α hz).map (algebraMap R K)`. Rewrite using `[Av, Av, Matrix.map_map, GlobalTheory.FlagMod.ev_congr hy _ h0 (le_preimage_comp _ hz), ev_spMap _ z _ hz]`.
-
-Both sides reduce to the same expression. Establish `h2 : IsPt (spMap (algebraMap R K) ≫ x ≫ p₂) ((Av Em (y ≫ f) α h0).mulVec fun i => algebraMap R K (ξ i))`. Establish `h3` using `(show IsPt (pt g _ hv) _ from ⟨g, hv, rfl⟩).spMap (algebraMap R K)`. Rewrite `h3` using `[comp_mulVec]`. Rewrite using `[e1]`.
-
-Establish `: x ≫ p₂ = pt g _ hv` using `pullback.lift_snd _ _ _`. Rewrite using `[this]`. Conclude with `h3`. Establish `hyν : y ≫ ν = spMap (algebraMap R K) ≫ x`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst]`. Conclude with `hy`. Rewrite using `[Category.assoc, Category.assoc]`. Use `h1.eq h2 ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hqs, ← Category.assoc, hy, Category.assoc, Category.assoc, Category.assoc, ← pullback.condition, pullback.lift_fst_assoc]`.
-
-Take `⟨z', ⟨hz', -⟩, -⟩` from `GlobalTheory.existsUnique_lift_spec_of_isLocalization (R := R) (R' := K) (nonZeroDivisors R) le_rfl ν y x hyν`. Conclude with `⟨z', hz'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_closure (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] (Z : Scheme.{0}) (s : Z ⟶ Sp O)
     (hproj : IsProjOver s) (hnorm : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z) (hflat : Flat s) (C : Coc Z) (N : ℕ)
@@ -706,7 +694,7 @@ theorem exists_closure (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O]
     exact ⟨z', hz'⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ Z s hproj hnorm hflat C N hEm ch r D` and use `exists_closure O Z s hproj hnorm hflat C N hEm ch r D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.nonempty_subClosure : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] (Z : Scheme.{0})
     (s : Z ⟶ Sp O), IsProjOver s → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → Flat s → ∀ (C : Coc Z) (N : ℕ),

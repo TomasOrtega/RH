@@ -16,20 +16,20 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `(Matrix.GeneralLinearGroup.det g).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero (g : GL (Fin n) F) : (g : Matrix (Fin n) (Fin n) F).det ≠ 0 :=
   (Matrix.GeneralLinearGroup.det g).ne_zero
 
 /- English proof (translation)
-Rewrite using `[ordDet, ordDet, ordDet, Units.val_mul, Matrix.det_mul, LocalField.ord_mul (det_ne_zero g) (det_ne_zero h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordDet_mul (g h : GL (Fin n) F) : ordDet (g * h) = ordDet g + ordDet h := by
   rw [ordDet, ordDet, ordDet, Units.val_mul, Matrix.det_mul,
     LocalField.ord_mul (det_ne_zero g) (det_ne_zero h)]
 
 /- English proof (translation)
-Rewrite using `[detPow_eq_qs_zpow, detPow_eq_qs_zpow, detPow_eq_qs_zpow, ordDet_mul, zpow_add₀ (qs_ne_zero s)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_mul (g h : GL (Fin n) F) (s : ℂ) :
     detPow (g * h) s = detPow g s * detPow h s := by
@@ -38,7 +38,7 @@ theorem detPow_mul (g h : GL (Fin n) F) (s : ℂ) :
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Subring.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `Subring.zsmul_mem _ (Subring.prod_mem _ fun i _ => hX _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_integer {X : Matrix (Fin n) (Fin n) F} (hX : ∀ i j, X i j ∈ 𝒪[F]) :
     X.det ∈ 𝒪[F] := by
@@ -48,15 +48,15 @@ theorem det_mem_integer {X : Matrix (Fin n) (Fin n) F} (hX : ∀ i j, X i j ∈ 
   exact Subring.zsmul_mem _ (Subring.prod_mem _ fun i _ => hX _ _) _
 
 /- English proof (translation)
-The claim follows from `(LocalField.mem_valBall_iff_le_ord h0).1 (LocalField.mem_valBall_zero_iff.2 hx)`.
+A detailed English derivation is pending.
 -/
 theorem ord_nonneg_of_mem_integer {x : F} (hx : x ∈ 𝒪[F]) (h0 : x ≠ 0) : 0 ≤ LocalField.ord x :=
   (LocalField.mem_valBall_iff_le_ord h0).1 (LocalField.mem_valBall_zero_iff.2 hx)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(mem_integralGL_iff F n).1 hk`. Establish `hd1` using `ord_nonneg_of_mem_integer (det_mem_integer h1) (det_ne_zero k)`. Establish `hd2` using `ord_nonneg_of_mem_integer (det_mem_integer h2) (det_ne_zero k⁻¹)`. Establish `hsum` using `ordDet_mul k k⁻¹`. Rewrite `hsum` using `[mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ordDet (1 : GL (Fin n) F) = 0`. Simplify using `[ordDet, LocalField.ord_one]`. Rewrite `hsum` using `[h0]`. Unfold `ordDet at hsum ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordDet_of_mem_integralGL {k : GL (Fin n) F} (hk : k ∈ integralGL F n) : ordDet k = 0 := by
   obtain ⟨h1, h2⟩ := (mem_integralGL_iff F n).1 hk
@@ -71,7 +71,7 @@ theorem ordDet_of_mem_integralGL {k : GL (Fin n) F} (hk : k ∈ integralGL F n) 
   omega
 
 /- English proof (translation)
-Rewrite using `[detPow_eq_qs_zpow, ordDet_of_mem_integralGL hk, zpow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_of_mem_integralGL {k : GL (Fin n) F} (hk : k ∈ integralGL F n) (s : ℂ) :
     detPow k s = 1 := by
@@ -80,9 +80,9 @@ theorem detPow_of_mem_integralGL {k : GL (Fin n) F} (hk : k ∈ integralGL F n) 
 variable (F n) in
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F).det` using `Units.continuous_val.matrix_det`. Establish `hset : {g : GL (Fin n) F | ordDet g = k} = (fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F).det) ⁻¹' ((LocalField.valBall F k : Set F) \ (LocalField.valBall F (k + 1) : Set F))`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_sdiff, SetLike.mem_coe, LocalField.mem_valBall_iff_le_ord (det_ne_zero g), ordDet]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hset]`. Establish `c1 : IsClopen (LocalField.valBall F k : Set F)` using `⟨LocalField.isClosed_valBall k, LocalField.isOpen_valBall k⟩`. Establish `c2 : IsClopen (LocalField.valBall F (k + 1) : Set F)` using `⟨LocalField.isClosed_valBall (k + 1), LocalField.isOpen_valBall (k + 1)⟩`. Conclude with `(c1.diff c2).preimage hcont`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClopen_shell (k : ℤ) : IsClopen {g : GL (Fin n) F | ordDet g = k} := by
   have hcont : Continuous fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F).det :=
@@ -104,27 +104,25 @@ theorem isClopen_shell (k : ℤ) : IsClopen {g : GL (Fin n) F | ordDet g = k} :=
 variable (F n) in
 
 /- English proof (translation)
-Establish `hϖ : (uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `hord : LocalField.ord (uniformizer F : F) = 1` using `LocalField.ord_uniformizer (irreducible_uniformizer F)`. Use `set B : ℤ := (A : ℤ) - ((n : ℤ) * A + k) with hB`. Set `box : ℤ → Set (Matrix (Fin n) (Fin n) F)` to `fun t => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (LocalField.valBall F t : Set F)`. Establish `hbox : ∀ t, IsCompact (box t)` using `fun t => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => LocalField.isCompact_valBall t`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsCompact (Units.embedProduct (Matrix (Fin n) (Fin n) F) ⁻¹' (box (-(A : ℤ)) ×ˢ (MulOpposite.unop ⁻¹' box B)))` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage ((hbox _).prod ((MulOpposite.opHomeomorph.symm.isCompact_preimage).2 (hbox B)))`. Use `hT.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `h1 : IsClosed {g : GL (Fin n) F | ∀ i j, (uniformizer F : F) ^ A * g i j ∈ 𝒪[F]}`. Establish `: {g : GL (Fin n) F | ∀ i j, (uniformizer F : F) ^ A * g i j ∈ 𝒪[F]} = ⋂ i, ⋂ j, (fun g : GL (Fin n) F => (uniformizer F : F) ^ A * g i j) ⁻¹' (𝒪[F] : Set F)`. Use extensionality with `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Rewrite using `[← LocalField.coe_valBall_zero]`. Apply the tactic sequence `exact (LocalField.isClosed_valBall 0).preimage (continuous_const.mul (continuous_entry F n i j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `h1.inter (isClopen_shell F n k).isClosed`. Introduce and unpack `g ⟨hA, hk⟩`. Simplify using `only [Set.mem_preimage, Set.mem_prod, Units.embedProduct_apply, MulOpposite.unop_op]`. Establish `hϖA : (uniformizer F : F) ^ (-(A : ℤ)) ∈ LocalField.valBall F (-(A : ℤ))`. Rewrite using `[LocalField.mem_valBall_iff_le_ord (zpow_ne_zero _ hϖ), LocalField.ord_zpow hϖ, hord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hϖA' : (uniformizer F : F) ^ A ∈ LocalField.valBall F (A : ℤ)`. Rewrite using `[LocalField.mem_valBall_iff_le_ord (pow_ne_zero _ hϖ), LocalField.ord_pow hϖ, hord]`. Simplify using the standard rewrite rules. Use `⟨fun i _ j _ => ?_, fun i _ j _ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h` using `LocalField.mul_mem_valBall hϖA (LocalField.mem_valBall_zero_iff.2 (hA i j))`. Rewrite `h` using `[add_zero, ← mul_assoc, ← zpow_natCast, ← zpow_add₀ hϖ, neg_add_cancel, zpow_zero, one_mul]`. Conclude with `h`. Set `Hm : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨_, hA i j⟩`. Use `set c : F := (uniformizer F : F) ^ A with hc`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `pow_ne_zero _ hϖ`. Establish `hH : (𝒪[F]).subtype.mapMatrix Hm = c • (g : Matrix (Fin n) (Fin n) F)`. Use extensionality with `i j`. Simplify using `[Hm, c]`. Establish `hdetG : IsUnit (g : Matrix (Fin n) (Fin n) F).det` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = c • ((𝒪[F]).subtype.mapMatrix Hm)⁻¹`. Rewrite using `[hH, Matrix.coe_units_inv, show c • (g : Matrix (Fin n) (Fin n) F) = (Units.mk0 c hc0) • (g : Matrix (Fin n) (Fin n) F) from rfl, Matrix.inv_smul' (A := (g : Matrix (Fin n) (Fin n) F)) (Units.mk0 c hc0) hdetG, Units.smul_def, Units.val_inv_eq_inv_val, Units.val_mk0, smul_smul, mu …`. Establish `hdetH : ((𝒪[F]).subtype.mapMatrix Hm).det = c ^ n * (g : Matrix (Fin n) (Fin n) F).det`. Rewrite using `[hH, Matrix.det_smul, Fintype.card_fin]`. Establish `hval : ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = c * ((c ^ n * (g : Matrix (Fin n) (Fin n) F).det)⁻¹ * ((Matrix.adjugate Hm i j : 𝒪[F]) : F))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv, Matrix.inv_def, ← RingHom.map_adjugate, Ring.inverse_eq_inv', hdetH]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, RingHom.mapMatrix_apply, Matrix.map_apply, Subring.coe_subtype]`. Use `show _ ∈ LocalField.valBall F B`. Rewrite using `[hval]`. Establish `hd : (c ^ n * (g : Matrix (Fin n) (Fin n) F).det)⁻¹ ∈ LocalField.valBall F (-((n : ℤ) * A + k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hne : c ^ n * (g : Matrix (Fin n) (Fin n) F).det ≠ 0` using `mul_ne_zero (pow_ne_zero _ hc0) (det_ne_zero g)`. Rewrite using `[LocalField.mem_valBall_iff_le_ord (inv_ne_zero hne), LocalField.ord_inv hne, LocalField.ord_mul (pow_ne_zero _ hc0) (det_ne_zero g), LocalField.ord_pow hc0, hc, LocalField.ord_pow hϖ, hord]`. Establish `: LocalField.ord (g : Matrix (Fin n) (Fin n) F).det = k` using `hk`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `h` using `LocalField.mul_mem_valBall hϖA' (LocalField.mul_mem_valBall hd (LocalField.mem_valBall_zero_iff.2 (Matrix.adjugate Hm i j).2))`. Establish `hB' : (A : ℤ) + (-((n : ℤ) * A + k) + 0) = B` using `by rw [hB]; ring`. Rewrite `h` using `[hB']`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_shell (A : ℕ) (k : ℤ) :
     IsCompact {g : GL (Fin n) F | (∀ i j, (uniformizer F : F) ^ A * g i j ∈ 𝒪[F]) ∧ ordDet g = k} := by
@@ -205,9 +203,9 @@ theorem isCompact_shell (A : ℕ) (k : ℤ) :
       exact h
 
 /- English proof (translation)
-Rewrite using `[← mem_valBall_iff_exists, LocalField.mem_valBall]`. Establish `hpow : LocalField.normalizedValuation F ((uniformizer F : F) ^ m) = WithZero.exp (-(m : ℤ))`. Rewrite using `[map_pow, LocalField.normalizedValuation_uniformizer (irreducible_uniformizer F), ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Rewrite using `[← hpow, LocalField.normalizedValuation_le_iff, map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_mul_of_valuation_le {y : F} {m : ℕ}
     (h : valuation F y ≤ valuation F (uniformizer F : F) ^ m) :
@@ -222,23 +220,21 @@ theorem exists_eq_pow_mul_of_valuation_le {y : F} {m : ℕ}
   exact h
 
 /- English proof (translation)
-Take `⟨r, A, hinv, hsupp⟩` from `hΦ.exists_invariant`. Establish `hk1 : ∀ k ∈ congruenceSubgroup F n (r + A), ∀ i j, ∃ a ∈ 𝒪[F], (k : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j = (uniformizer F : F) ^ (r + A) * a` using `fun k hk i j => exists_eq_pow_mul_of_valuation_le (((mem_congruenceSubgroup_iff F n).1 hk).2 i j)`. Establish `key : ∀ k ∈ congruenceSubgroup F n (r + A), ∀ X : Matrix (Fin n) (Fin n) F, (∀ i j, (uniformizer F : F) ^ A * X i j ∈ 𝒪[F]) → Φ ((k : Matrix (Fin n) (Fin n) F) * X) = Φ X ∧ Φ (X * (k : Matrix (Fin n) (Fin n) F)) = Φ X`. Introduce `k hk X hX`. Use `choose a ha hae using hk1 k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `: (k : Matrix (Fin n) (Fin n) F) * X = X + ((k : Matrix (Fin n) (Fin n) F) - 1) * X`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`. Rewrite using `[this, hinv X]`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ l, a i l * ((uniformizer F : F) ^ A * X l j), Subring.sum_mem _ fun l _ => Subring.mul_mem _ (ha i l) (hX l j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hae i l, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: X * (k : Matrix (Fin n) (Fin n) F) = X + X * ((k : Matrix (Fin n) (Fin n) F) - 1)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`. Rewrite using `[this, hinv X]`. Introduce `i j`. Use `⟨∑ l, ((uniformizer F : F) ^ A * X i l) * a l j, Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hX i l) (ha l j), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hae l j, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨r + A, fun k hk X => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hX : ∀ i j, (uniformizer F : F) ^ A * X i j ∈ 𝒪[F]`. Conclude with `key k hk X hX`. Establish `hΦX : Φ X = 0`. Assume the negation of the conclusion as `h`. Conclude with `hX (hsupp X h)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hk' : k⁻¹ ∈ congruenceSubgroup F n (r + A)` using `inv_mem hk`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hne`. Establish `hY` using `hsupp _ fun h => hne (by rw [h, hΦX])`. Use `(key k⁻¹ hk' _ hY).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[Units.inv_mul_cancel_left]`. Conclude with `hne this.symm`. Assume the negation of the conclusion as `hne`. Establish `hY` using `hsupp _ fun h => hne (by rw [h, hΦX])`. Use `(key k⁻¹ hk' _ hY).2` as an intermediate fact.
-
-Rewrite `this` using `[Units.mul_inv_cancel_right]`. Conclude with `hne this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSchwartzBruhat.exists_congruence_invariant {Φ : Matrix (Fin n) (Fin n) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) :
@@ -299,7 +295,7 @@ theorem IsSchwartzBruhat.exists_congruence_invariant {Φ : Matrix (Fin n) (Fin n
     exact hne this.symm
 
 /- English proof (translation)
-Set `e : Matrix (Fin n) (Fin n) F ≃ₜ Matrix (Fin n) (Fin n) F` to `{ toFun := fun X => (a : Matrix (Fin n) (Fin n) F) * X invFun := fun X => ((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * X left_inv := fun X => Units.inv_mul_cancel_left a X right_inv := fun X => Units.mul_inv_cancel_left a X continuous_toFun := continuous_const.mul continuo …`. Conclude with `⟨hΦ.1.comp_continuous e.continuous, hΦ.2.comp_homeomorph e⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem IsSchwartzBruhat.comp_mul_left {Φ : Matrix (Fin n) (Fin n) F → ℂ} (hΦ : IsSchwartzBruhat Φ)
     (a : GL (Fin n) F) : IsSchwartzBruhat fun X => Φ ((a : Matrix (Fin n) (Fin n) F) * X) := by
@@ -313,9 +309,9 @@ theorem IsSchwartzBruhat.comp_mul_left {Φ : Matrix (Fin n) (Fin n) F → ℂ} (
   exact ⟨hΦ.1.comp_continuous e.continuous, hΦ.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Establish `hL : 0 < Real.log (LocalField.residueCard F)` using `Real.log_pos hq`. Establish `hL' : (Real.log (LocalField.residueCard F) : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Use `⟨-(Complex.log x) / (Real.log (LocalField.residueCard F) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[qs, Complex.cpow_def_of_ne_zero (by exact_mod_cast LocalField.residueCard_ne_zero)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : Complex.log (LocalField.residueCard F : ℂ) = (Real.log (LocalField.residueCard F) : ℂ)`. Rewrite using `[Complex.ofReal_log (by positivity), Complex.ofReal_natCast]`. Rewrite using `[hlog, show (Real.log (LocalField.residueCard F) : ℂ) * -(-Complex.log x / (Real.log (LocalField.residueCard F) : ℂ)) = Complex.log x by field_simp]`. Conclude with `Complex.exp_log hx`. Rewrite using `[Complex.div_ofReal_re, Complex.neg_re, Complex.log_re, Real.logb, neg_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_qs_eq {x : ℂ} (hx : x ≠ 0) :
     ∃ s : ℂ, qs F s = x ∧ s.re = -Real.logb (LocalField.residueCard F) ‖x‖ := by
@@ -334,7 +330,7 @@ theorem exists_qs_eq {x : ℂ} (hx : x ≠ 0) :
   · rw [Complex.div_ofReal_re, Complex.neg_re, Complex.log_re, Real.logb, neg_div]
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Use `⟨-Real.logb (LocalField.residueCard F) ε, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_qs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_re_of_norm_qs_lt {ε : ℝ} (hε : 0 < ε) :
     ∃ s₁ : ℝ, ∀ s : ℂ, s₁ < s.re → ‖qs F s‖ < ε := by

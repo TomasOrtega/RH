@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `Submodule.mem_inf.2 ⟨A.sub_mem hy (h (A'.starProjection_apply_mem y)), A'.sub_starProjection_mem_orthogonal y⟩`. Introduce `w hw`. Rewrite using `[sub_sub_cancel]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (A'.starProjection_apply_mem y) (Submodule.mem_inf.1 hw).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProjection_inf_orthogonal_eq_sub {n : ℕ}
     (A A' : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (h : A' ≤ A) (y : EuclideanSpace ℂ (Fin n))
@@ -20,9 +20,9 @@ theorem starProjection_inf_orthogonal_eq_sub {n : ℕ}
       (Submodule.mem_inf.1 hw).2
 
 /- English proof (translation)
-Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Use `Submodule.mem_inf.2 ⟨C.starProjection_apply_mem v, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `z hz`. Rewrite using `[← Submodule.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.2 (h hz)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.inner_right_of_mem_orthogonal hz hv`. Introduce `w hw`. Conclude with `C.starProjection_inner_eq_zero v w (Submodule.mem_inf.1 hw).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem starProjection_inf_orthogonal_eq_of_mem_orthogonal {n : ℕ}
     (C C' : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (h : C' ≤ C) (v : EuclideanSpace ℂ (Fin n))
@@ -37,25 +37,21 @@ theorem starProjection_inf_orthogonal_eq_of_mem_orthogonal {n : ℕ}
     exact C.starProjection_inner_eq_zero v w (Submodule.mem_inf.1 hw).1
 
 /- English proof (translation)
-Establish `hmap : B'.map (D : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) = Cᗮ`. Establish `hinj : Function.Injective (D : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n))`. Introduce `a b hab`. Establish `h0 : ‖D (a - b)‖ = 0`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.coe_coe] at hab`. Rewrite using `[hab, sub_self, norm_zero]`. Rewrite `h0` using `[hD, norm_eq_zero, sub_eq_zero]`. Then use the resulting hypothesis. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.mem_orthogonal]`. Introduce `z hz`. Conclude with `hB' x hx z hz`. Rewrite using `[← (Submodule.equivMapOfInjective _ hinj B').finrank_eq]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.finrank_add_finrank_orthogonal'` to reduce the goal to its premises. Rewrite using `[finrank_euclideanSpace_fin]`. Conclude with `hdim`. Establish `hy1 : (A ⊓ A'ᗮ).starProjection y = y - A'.starProjection y` using `starProjection_inf_orthogonal_eq_sub A A' hA y hy`. Establish `hy1A : (A ⊓ A'ᗮ).starProjection y ∈ A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy1]`. Conclude with `A.sub_mem hy (hA (A'.starProjection_apply_mem y))`. Use `set w := D (T ((A ⊓ A'ᗮ).starProjection y)) with hw_def`. Establish `hw : w ∈ C'ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Conclude with `hB _ (hT _ hy1A) z hz`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbw⟩ : ∃ b ∈ B', D b = Cᗮ.starProjection w := by`. Establish `hmem : Cᗮ.starProjection w ∈ B'.map (D : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n))`. Rewrite using `[hmap]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Cᗮ.starProjection_apply_mem w`. Take `⟨b, hb, hbw⟩` from `hmem`. Conclude with `⟨b, hb, hbw⟩`. Establish `hmemB' : T (A'.starProjection y) + b ∈ B'` using `B'.add_mem (hT' _ (A'.starProjection_apply_mem y)) hb`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm, hy1, map_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `_ = ‖w - Cᗮ.starProjection w‖ := by`. Rewrite using `[← hD, map_sub, hbw]`.
-
-Use `_ = ‖C.starProjection w‖ := by`. Rewrite using `[Submodule.starProjection_orthogonal_val, sub_sub_cancel]`. Use `_ = ‖(C ⊓ C'ᗮ).starProjection w‖ := by`. Rewrite using `[starProjection_inf_orthogonal_eq_of_mem_orthogonal C C' hC w hw]`. Use `_ = ‖((C ⊓ C'ᗮ).starProjection ∘L (D ∘L T) ∘L (A ⊓ A'ᗮ).starProjection) y‖ := rfl`.
-
-Use `_ ≤ _ := ContinuousLinearMap.le_opNorm _ _`.
+A detailed English derivation is pending.
 -/
 theorem infDist_le_norm_block_mul (n : ℕ)
     (A A' B B' C C' : Submodule ℂ (EuclideanSpace ℂ (Fin n)))

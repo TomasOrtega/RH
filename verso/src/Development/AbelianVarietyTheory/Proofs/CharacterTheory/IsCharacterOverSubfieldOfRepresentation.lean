@@ -19,7 +19,7 @@ theorem transportRep_apply (ρ : Representation K G V) (e : V ≃ₗ[K] W) (g : 
     transportRep ρ e g w = e (ρ g (e.symm w)) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.trace_conj' (ρ g) e`.
+A detailed English derivation is pending.
 -/
 theorem character_transportRep [FiniteDimensional K V] [FiniteDimensional K W]
     (ρ : Representation K G V) (e : V ≃ₗ[K] W) (g : G) :
@@ -49,7 +49,7 @@ def transportSubOrderIso (ρ : Representation K G V) (e : V ≃ₗ[K] W) :
       exact h (show e v ∈ S from hv)
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Conclude with `(transportSubOrderIso ρ e).isSimpleOrder`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_transportRep (ρ : Representation K G V) (e : V ≃ₗ[K] W)
     (h : ρ.IsIrreducible) : (transportRep ρ e).IsIrreducible := by
@@ -58,11 +58,9 @@ theorem isIrreducible_transportRep (ρ : Representation K G V) (e : V ≃ₗ[K] 
 end
 
 /- English proof (translation)
-Introduce `K L _ _ _ G _ V _ _ _ ρ`. Use `set e : V ≃ₗ[K] (Fin (Module.finrank K V) → K) := (Module.finBasis K V).equivFun`. Establish `hchar : ∀ g, (_root_.GlobalTheory.BI.transportRep ρ e).character g = ρ.character g`. Introduce `g`. Conclude with `LinearMap.trace_conj' (ρ g) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Module.finrank K V, _root_.GlobalTheory.BI.transportRep ρ e, fun g => ?_⟩, fun hρ => ?_⟩` and prove the remaining obligations. Rewrite using `[hchar]`. Use `⟨Module.finrank K V, _root_.GlobalTheory.BI.transportRep ρ e, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hs : IsSimpleOrder (Subrepresentation ρ)` using `hρ`. Conclude with `(_root_.GlobalTheory.BI.transportSubOrderIso ρ e).isSimpleOrder_iff.mpr hs`.
-
-Rewrite using `[hchar]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep :
     ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (G : Type) [Group G] (V : Type)

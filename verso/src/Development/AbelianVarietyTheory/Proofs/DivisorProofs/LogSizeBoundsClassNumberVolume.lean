@@ -4,47 +4,45 @@ open Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f r L lrd lM lh w d D hf hr hL hfr hrd0 hrd hM0 hM hlh hd hdl hw hD`. Establish `f0 : 0 < f` using `by linarith`. Establish `r0 : 0 < r` using `by linarith`. Establish `L0 : 0 < L` using `by linarith`. Establish `l2a` using `Real.log_two_gt_d9`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2b` using `Real.log_two_lt_d9`. Establish `lf0 : 0 ≤ log f` using `log_nonneg hf`. Establish `lr2 : log 2 ≤ log r` using `log_le_log (by norm_num) hr`. Establish `lLL : log L ≤ L - 1` using `log_le_sub_one_of_pos L0`. Establish `hfL : 1 ≤ f * L` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l4 : log 4 = 2 * log 2`. Rewrite using `[show (4:ℝ) = 2^2 by norm_num, log_pow]; norm_num`. Establish `l8 : log 8 = 3 * log 2`. Rewrite using `[show (8:ℝ) = 2^3 by norm_num, log_pow]; norm_num`. Establish `l16 : log 16 = 4 * log 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (16:ℝ) = 2^4 by norm_num, log_pow]; norm_num`. Establish `l1024 : log 1024 = 10 * log 2`. Rewrite using `[show (1024:ℝ) = 2^10 by norm_num, log_pow]; norm_num`. Establish `l5 : log 5 ≤ 3 * log 2` using `l8 ▸ log_le_log (by norm_num) (by norm_num)`. Establish `l15 : log 5 + log 3 ≤ 4 * log 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← log_mul (by norm_num) (by norm_num), ← l16]`. Conclude with `log_le_log (by norm_num) (by norm_num)`. Establish `hfrd : f * lrd ≤ f * (2 * L)` using `mul_le_mul_of_nonneg_left hrd f0.le`. Establish `hfrd0 : 0 ≤ f * lrd` using `by positivity`. Establish `h1 : log (1 + f * lrd) ≤ 2 * L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: log (1 + f * lrd) ≤ log (4 * f * L)` using `log_le_log (by linarith) (by linarith)`. Rewrite `this` using `[log_mul (by positivity) L0.ne', log_mul (by norm_num) f0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : lh ≤ 9 * f * L`. Use `mul_le_mul_of_nonneg_left h1 f0.le` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfM : f * lM ≤ f * (30 * L)` using `mul_le_mul_of_nonneg_left hM f0.le`. Establish `r2 : 4 ≤ r ^ 2` using `by nlinarith`. Establish `c3 : log 2 + lh + 2*f*(r^2+1)*lM + f*(r^2-1)/2*lrd ≤ 80*f*r^2*L`. Establish `a` using `mul_le_mul_of_nonneg_left hfM (show 0 ≤ r^2+1 by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `mul_le_mul_of_nonneg_left hfrd (show 0 ≤ r^2-1 by linarith)`. Establish `c` using `mul_le_mul_of_nonneg_left r2 (show 0 ≤ f * L by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `lrL : log r ≤ L` using `by linarith`. Establish `hfr2 : 0 ≤ f * r ^ 2` using `by positivity`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4 : f*r^2/2*log r ≤ f*r^2*L`. Use `mul_le_mul_of_nonneg_left lrL hfr2` as an intermediate fact. Establish `: 0 ≤ f * r^2 * L` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `pi3` using `Real.pi_gt_three`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : log (1600*r^2/π) ≤ 10 * log 2 + 2 * L`. Establish `: log (1600*r^2/π) ≤ log (1024 * r^2)`. Apply `log_le_log (by positivity)` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ pi_pos]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[log_mul (by norm_num) (by positivity), log_pow, l1024]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD0 : 0 ≤ D`. Rewrite using `[hD]; have : 0 ≤ r - 1 := by linarith`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hD1 : D ≤ f * r ^ 2 / 2`. Rewrite using `[hD]; have : 0 ≤ f * r := by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : D * log (1600*r^2/π) ≤ f * r^2 / 2 * (9 * L)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `m1 : (1:ℝ) ≤ max 1 w` using `le_max_left _ _`. Establish `sd : 1 ≤ √d` using `Real.one_le_sqrt.mpr hd`. Establish `eM : 1 ≤ exp lM` using `one_le_exp hM0`. Establish `h4 : max 1 (exp lM*f*w*√d) ≤ exp lM*f*max 1 w*√d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `max_le` to reduce the goal to its premises. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le eM hf) m1) sd`. Use `gcongr`. Conclude with `le_max_right _ _`. Establish `h5 : log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) ≤ log 5 - log 2 + 37 * L + log (max 1 w)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) ≤ log (5*f*r*exp (3/2*lrd)*(exp lM*f*max 1 w*√d))`. Apply `log_le_log (by positivity)` to reduce the goal to its premises. Use `gcongr`. Establish `e : log (5*f*r*exp (3/2*lrd)*(exp lM*f*max 1 w*√d)) = log 5 + log f + log r + 3/2*lrd + (lM + log f + log (max 1 w) + log d / 2)`. Rewrite using `[log_mul (by positivity) (by positivity), log_mul (by positivity) (by positivity), log_mul (by positivity) (by positivity), log_mul (by positivity) (by positivity), log_mul (by positivity) (by positivity), log_mul (by positivity) (by positivity), log_mul (by positivity) (by posit …`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : 0 ≤ f^2 * r^2` using `by positivity`. Establish `hA : f * r^2 * L ≤ f^2 * r^2 * L`. Establish `: 0 ≤ f * r^2 * L` using `by positivity`. Use `mul_le_mul_of_nonneg_left hf this` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 4 ≤ f * r^2 * L`. Use `mul_le_mul_of_nonneg_left hfL (show 0 ≤ r^2 by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : f^2 * r^2 * L ≤ (f*r*L)^2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: 0 ≤ f^2 * r^2 * L` using `by positivity`. Use `mul_le_mul_of_nonneg_left hL this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨c1, by linarith, c3, by linarith, ?_, fun hw3 => ?_⟩` and prove the remaining obligations. Establish `h6 : log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) ≤ 39 * L + log (max 1 w)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left h6 hX` as an intermediate fact. Generalize the expression as in `log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) = Y at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7 : log (max 1 w) ≤ log 3 + 2 * L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : 1 ≤ exp (2 * L)` using `one_le_exp (by linarith)`. Establish `: log (max 1 w) ≤ log (3 * exp (2 * L))` using `log_le_log (by positivity) (max_le (by linarith) hw3)`. Rewrite `this` using `[log_mul (by norm_num) (by positivity), log_exp]`. Then use the resulting hypothesis. Establish `h6 : log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) ≤ 411/10 * L`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `mul_le_mul_of_nonneg_left h6 hX` as an intermediate fact. Generalize the expression as in `log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) = Y at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_size_bounds_class_number_volume : ∀ f r L lrd lM lh w d D : ℝ, 1 ≤ f → 2 ≤ r → 1 ≤ L → log f + log r ≤ L → 0 ≤ lrd → lrd ≤ 2*L → 0 ≤ lM → lM ≤ 30*L → lh ≤ f*lrd + 2*f*log (1 + f*lrd) → 1 ≤ d → log d / 2 ≤ lrd → 0 < w → D = f*r*(r-1)/2 → lh ≤ 9*f*L ∧ lh + 2*f*lM ≤ 69*f*L ∧ log 2 + lh + 2*f*(r^2+1)*lM + f*(r^2-1)/2*lrd ≤ 80*f*r^2*L ∧ log 2 + lh + 2*f*(r^2+1)*lM + f*(r^2-1)/2*lrd + f*r^2/2*log r ≤ 81*f*r^2*L ∧ 2 + D*log (1600*r^2/π) + (2*f*r)^2*log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) + (log 2 + lh + 2*f*(r^2+1)*lM + f*(r^2-1)/2*lrd) ≤ 242*(f*r*L)^2 + 4*f^2*r^2*log (max 1 w) ∧ (w ≤ 3*exp (2*L) → 2 + D*log (1600*r^2/π) + (2*f*r)^2*log (5*f*r*exp (3/2*lrd)*max 1 (exp lM*f*w*√d)) + (log 2 + lh + 2*f*(r^2+1)*lM + f*(r^2-1)/2*lrd) ≤ 250*f^2*r^2*L) := by
   intro f r L lrd lM lh w d D hf hr hL hfr hrd0 hrd hM0 hM hlh hd hdl hw hD

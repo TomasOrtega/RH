@@ -15,7 +15,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp e f, Fintype.sum_option]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma sum_eq_apply_none_add_sum_some_of_option_equiv {α ι M : Type*} [Fintype α] [Fintype ι]
     [AddCommMonoid M] (e : Option α ≃ ι) (f : ι → M) :
@@ -26,9 +26,9 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun b _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hu c) (norm_nonneg _)`. Use `_ = K * ∑ c, ∑ b, ‖Y c b‖ := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Repeatedly rewrite using `[Finset.mul_sum]`.
+A detailed English derivation is pending.
 -/
 private lemma sum_norm_sum_mul_matrix_le_mul_sum_norm_of_norm_le {α : Type*} [Fintype α] (u : α → ℂ)
     (Y : Matrix α α ℂ) (K : ℝ) (hu : ∀ c, ‖u c‖ ≤ K) :
@@ -47,61 +47,55 @@ open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 
 /- English proof (translation)
-Introduce `P Q P' Q' e j hj t ht`. Establish `ht0 : 0 < t` using `by linarith`. Use `⟨min 1 ((t - 1) / t), lt_min one_pos (div_pos (by linarith) ht0), ?_⟩` and prove the remaining obligations. Introduce `y a hy hact hrow hblk g`. Unfold `_root_.GlobalTheory.CompactDualQuot.IsBlockEmb at hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨h00, h0b, hc0, hcb⟩` from `hj g`. Use `set A := a.mat with hA`. Use `set D : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ := g.mat - 1 with hD`. Use `set S : ℝ := ∑ i, ‖y (e (some i))‖ with hS`. Use `set G : ℝ := ∑ c, ∑ b, ‖D c b‖ with hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set N : ℝ := ‖y (e none) - 1‖ with hN`. Establish `hgD : g.mat = 1 + D` using `by rw [hD, add_sub_cancel]`. Establish `hcol : ∀ k, A k (e none) = y k`. Introduce `k`. Rewrite using `[← hact]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.act, _root_.GlobalTheory.CompactDualQuot.baseVec, hA, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hpt : _root_.GlobalTheory.CompactDualQuot.ptGauge e y = N + 2 * S`. Unfold `_root_.GlobalTheory.CompactDualQuot.ptGauge`. Both sides reduce to the same expression. Establish `hgg : _root_.GlobalTheory.CompactDualQuot.gauge g = G`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.CompactDualQuot.gauge _root_.GlobalTheory.CompactDualQuot.l1`. Both sides reduce to the same expression. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hG0 : 0 ≤ G` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hN0 : 0 ≤ N` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyS : ∀ c, ‖y (e (some c))‖ ≤ S` using `fun c => Finset.single_le_sum (f := fun i => ‖y (e (some i))‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ c)`. Rewrite `hy` using `[hpt]`. Establish `hy1 : N + 2 * S < 1` using `hy.trans_le (min_le_left _ _)`. Establish `hyt : N + 2 * S < (t - 1) / t` using `hy.trans_le (min_le_right _ _)`. Establish `hts : 2 * t * S ≤ t - 1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(lt_div_iff₀ ht0).1 hyt` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hS1 : S ≤ 1 / 2` using `by linarith`. Establish `hc1 : 1 ≤ ‖1 + y (e none)‖`. Establish `h2 : (2 : ℂ) = (1 + y (e none)) - (y (e none) - 1)` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `norm_sub_le (1 + y (e none)) (y (e none) - 1)` as an intermediate fact. Rewrite `this` using `[← h2]`. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set E : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ := Matrix.of fun i c => (A - 1) (e (some i)) (e (some c)) with hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEn : ∀ i c, ‖E i c‖ ≤ ‖y (e (some i))‖ * ‖y (e (some c))‖`. Introduce `i c`. Establish `hEic : E i c = (A - 1) (e (some i)) (e (some c))` using `rfl`. Rewrite using `[hEic, hblk i c]`. Conclude with `div_le_self (by positivity) hc1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hAE : ∀ i c, A (e (some i)) (e (some c)) = (1 + E) i c`. Introduce `i c`. Simplify using `only [hE, Matrix.add_apply, Matrix.of_apply, Matrix.sub_apply, Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, Option.some.injEq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM0 : ∀ k, (a * j g).mat k (e none) = y k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Use `show (A * (j g).mat) k (e none) = y k`. Rewrite using `[Matrix.mul_apply, sum_eq_apply_none_add_sum_some_of_option_equiv e]`. Simplify using `[h00, hc0, hcol]`. Establish `hMb : ∀ k b, (a * j g).mat k (e (some b)) = ∑ c, A k (e (some c)) * g.mat c b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k b`. Use `show (A * (j g).mat) k (e (some b)) = _`. Rewrite using `[Matrix.mul_apply, sum_eq_apply_none_add_sum_some_of_option_equiv e]`. Simplify using `[h0b, hcb]`. Use `set u : Fin P' ⊕ Fin Q' → ℂ := fun c => A (e none) (e (some c)) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrowsum : ∀ b, ∑ c, A (e none) (e (some c)) * g.mat c b = u b + ∑ c, u c * D c b`. Introduce `b`. Rewrite using `[hgD]`. Simplify using `[Matrix.add_apply, mul_add, Finset.sum_add_distrib, Matrix.one_apply, hu]`. Establish `hblock : ∀ i b, ∑ c, A (e (some i)) (e (some c)) * g.mat c b - (1 : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) i b = (D + E + E * D) i b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i b`. Repeatedly rewrite using `[hAE]`. Rewrite using `[← Matrix.mul_apply, ← Matrix.sub_apply, hgD, show (1 + E) * (1 + D) - 1 = D + E + E * D by noncomm_ring]`. Establish `hgauge : _root_.GlobalTheory.CompactDualQuot.gauge (a * j g) = N + ∑ b, ‖u b + ∑ c, u c * D c b‖ + ∑ i, (‖y (e (some i))‖ + ∑ b, ‖(D + E + E * D) i b‖)`. Simplify using `only [_root_.GlobalTheory.CompactDualQuot.gauge, _root_.GlobalTheory.CompactDualQuot.l1, Matrix.sub_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [sum_eq_apply_none_add_sum_some_of_option_equiv e]`. Simplify using `only [hM0, hMb, hrowsum, ← hblock]`. Establish `h1 : ∀ i b, (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (e (some i)) (e (some b)) = (1 : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) i b`. Introduce `i b`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ b, (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (e none) (e (some b)) = 0`. Introduce `b`. Simplify using `[Matrix.one_apply]`. Establish `h3 : ∀ b, (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (e (some b)) (e none) = 0`. Introduce `b`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[Matrix.one_apply]`. Simplify using `only [h1, h2, h3, Matrix.one_apply_eq, sub_zero, hN]`. Establish `hL` using `sum_norm_sum_mul_matrix_le_mul_sum_norm_of_norm_le u D S fun c => (hrow c).le.trans (hyS c)`. Establish `huS : ∑ b, ‖u b‖ = S` using `Finset.sum_congr rfl fun b _ => hrow b`. Establish `hR_up : ∑ b, ‖u b + ∑ c, u c * D c b‖ ≤ S + S * G`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hR_lo : S - S * G ≤ ∑ b, ‖u b + ∑ c, u c * D c b‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_sub_distrib, huS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ ≤ ∑ b, ‖u b + ∑ c, u c * D c b‖ := Finset.sum_le_sum fun b _ => by`. Use `norm_sub_le (u b + ∑ c, u c * D c b) (∑ c, u c * D c b)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE1 : ∑ i, ∑ b, ‖E i b‖ ≤ S * S`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hED : ∑ i, ∑ b, ‖(E * D) i b‖ ≤ S * S * G`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sum_norm_sum_mul_matrix_le_mul_sum_norm_of_norm_le (fun c => E i c) D _ fun c => (hEn i c).trans (mul_le_mul_of_nonneg_left (hyS c) (norm_nonneg _))`. Use `_ = S * S * G := by rw [← Finset.sum_mul, ← Finset.sum_mul]`. Establish `hB_up : ∑ i, ∑ b, ‖(D + E + E * D) i b‖ ≤ G + S * S + S * S * G`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_apply, Matrix.add_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[norm_add_le (D i b + E i b) ((E * D) i b), norm_add_le (D i b) (E i b)]`. Use `_ = G + ∑ i, ∑ b, ‖E i b‖ + ∑ i, ∑ b, ‖(E * D) i b‖ := by`. Simplify using `only [Finset.sum_add_distrib, hG]`. Use `_ ≤ G + S * S + S * S * G := by linarith`. Establish `hB_lo : G - S * S - S * S * G ≤ ∑ i, ∑ b, ‖(D + E + E * D) i b‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_sub_distrib, hG]`. Use `_ ≤ ∑ i, ∑ b, ‖(D + E + E * D) i b‖ := Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun b _ => by`. Rewrite using `[Matrix.add_apply, Matrix.add_apply]`. Establish `h` using `norm_sub_le (D i b + E i b + (E * D) i b - E i b) ((E * D) i b)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h'` using `norm_sub_le (D i b + E i b + (E * D) i b) (E i b)`. Rewrite `h` using `[show D i b + E i b + (E * D) i b - E i b - (E * D) i b = D i b by ring]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hpt, hgg, hgauge, Finset.sum_add_distrib]`. Establish `k1` using `mul_le_mul_of_nonneg_right hts hG0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `k2` using `mul_le_mul_of_nonneg_right hts hS0`. Establish `k3` using `mul_nonneg ht0.le (mul_nonneg (mul_nonneg hS0 hG0) (by linarith : (0 : ℝ) ≤ 1 - S))`. Establish `k4` using `mul_nonneg (by linarith : (0 : ℝ) ≤ t - 1) hN0`. Establish `k5` using `mul_nonneg (by linarith : (0 : ℝ) ≤ t - 1) hS0`. Establish `k6` using `mul_nonneg (by linarith : (0 : ℝ) ≤ t - 1) (mul_nonneg hS0 hG0)`.
-
-Establish `k7` using `mul_nonneg (mul_nonneg hS0 hG0) (by linarith : (0 : ℝ) ≤ 1 - S)`. Establish `k8` using `mul_nonneg (by linarith : (0 : ℝ) ≤ t - 1) (mul_nonneg hS0 hS0)`. Prove the components needed by the constructor for the conclusion. Establish `key : N + 2 * S + G ≤ t * (N + 2 * S + G - S * G - S * S - S * S * G)`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ ht0.le` to reduce the goal to its premises. Rewrite using `[← hS]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hS]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SectionGaugeCompare.gauge_section_mul_block : ∀ (P Q P' Q' : ℕ)
     (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (j : _root_.Formalism.BasicNotions.UpqT P' Q' → _root_.Formalism.BasicNotions.UpqT P Q),

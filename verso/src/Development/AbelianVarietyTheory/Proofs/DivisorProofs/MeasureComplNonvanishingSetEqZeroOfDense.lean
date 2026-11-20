@@ -9,21 +9,19 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A Λ τ hτ hd`. Establish `hN : EXTNullStatement n` using `extNull n`. Establish `hiff : ∀ i y, y ∈ (A.chart i).source → (τ (A.pick y) y ≠ 0 ↔ τ i y ≠ 0)`. Introduce `i y hy`. Rewrite using `[hτ.2 (A.pick y) i y trivial (A.mem_pick y) hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[A.g_ne Λ (A.pick y) i y (A.mem_pick y) hy]`. Use `measure_null_of_locally_null _ fun y _ => ?_` and prove the remaining obligations. Establish `hys : y ∈ (A.chart (A.pick y)).source` using `A.mem_pick y`. Establish `hv` using `(A.chart (A.pick y)).map_source hys`. Take `⟨r, hr, hB⟩` from `Metric.isOpen_iff.1 (A.chart (A.pick y)).open_target _ hv`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hUo : IsOpen ((A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r)` using `(A.chart _).continuousOn.isOpen_inter_preimage (A.chart _).open_source Metric.isOpen_ball`. Establish `hyU : y ∈ (A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r` using `⟨hys, Metric.mem_ball_self hr⟩`. Establish `hF : DifferentiableOn ℂ (τ (A.pick y) ∘ (A.chart (A.pick y)).symm) (A.chart (A.pick y)).target`. Simplify using `using hτ.1 (A.pick y)`. Establish `hcont : ContinuousOn (τ (A.pick y)) (A.chart (A.pick y)).source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hF.continuousOn.comp (A.chart (A.pick y)).continuousOn (fun x hx => (A.chart (A.pick y)).map_source hx)` as an intermediate fact. Use `this.congr fun x hx => ?_` and prove the remaining obligations. Simplify using `[Function.comp, (A.chart (A.pick y)).left_inv hx]`. Establish `hTo : IsOpen (((A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r) ∩ τ (A.pick y) ⁻¹' {0}ᶜ)` using `(hcont.mono Set.inter_subset_left).isOpen_inter_preimage hUo isOpen_compl_singleton`. Use `⟨_, inter_mem_nhdsWithin _ (hUo.mem_nhds hyU), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null (t := ((A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r) \ (((A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r) ∩ τ (A.pick y) ⁻¹' {0}ᶜ)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxn, hxU⟩`. Use `⟨hxU, fun h => hxn ?_⟩` and prove the remaining obligations. Conclude with `(hiff _ x hxU.1).2 h.2`. Rewrite using `[A.mu_chart (A.pick y) _ (hUo.measurableSet.diff hTo.measurableSet) (Set.diff_subset.trans Set.inter_subset_left)]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `setLIntegral_measure_zero` to reduce the goal to its premises. Take `⟨y', hy'U, hy'M⟩` from `hd.inter_open_nonempty _ hUo ⟨y, hyU⟩`. Establish `hnull` using `hN (A.chart (A.pick y) y) r (τ (A.pick y) ∘ (A.chart (A.pick y)).symm) (hF.mono hB) ⟨A.chart (A.pick y) y', hy'U.2, by`. Simplify using `only [Function.comp, (A.chart _).left_inv hy'U.1]`. Conclude with `(hiff _ y' hy'U.1).1 hy'M⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `measure_mono_null ?_ hnull` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨hxU, hxn⟩, rfl⟩`. Use `⟨hxU.2, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Function.comp, (A.chart _).left_inv hxU.1]`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hxn ⟨hxU, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem zeroSet_null_of_dense_nz : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (Λ : La) (τ : ι → Y → ℂ), A.IsSec Λ τ → Dense (nz A τ) → A.mu (nz A τ)ᶜ = 0 := by
   intro n Y _ _ _ _ _ ι La _ A Λ τ hτ hd

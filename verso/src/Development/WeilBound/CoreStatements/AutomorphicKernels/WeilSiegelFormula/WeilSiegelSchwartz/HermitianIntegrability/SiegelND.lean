@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.PfWsf.Hand.Merge
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam ν φ hyp β hβ`. Take `⟨hr, hψ, hθ, hμ, hlam, hν, hφ, habs⟩` from `hyp`. Establish `hCM` using `GlobalTheory.DefiniteQuotient.cmExt D`. Establish `hJ` using `GlobalTheory.DefiniteQuotient.gram_hermND V`. Take `⟨μH, 𝓕, hμH, h𝓕, -⟩` from `GlobalTheory.Published.SiegelOneVector.exists_normalised D.sp.cm.sig V.gram hCM hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dx, db, hdx, hdb, hW⟩` from `GlobalTheory.T.exists_self_dual_siegel_weil_measures D r V ψ hψ μ hμ lam hlam`. Establish `hT : ∀ a b, D.sp.cm.sig (β.1 b a) = β.1 a b` using `fun a b => by`. Use `congrFun (congrFun β.2 a) b` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply, Matrix.map_apply]`. Establish `hInt` using `fun Φ hΦ => PositivityTheory.PfWsf.Hand.TupleUntupling.hermitian_unfolding_integral r V ψ hψ θ hθ μ hμ lam hlam hr dx hdx.1 db hdb.1 Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `PositivityTheory.PfWsf.Hand.CoreH.coreH D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr ψ hψ dx hdx db hdb hInt μH 𝓕 hμH h𝓕 _ (GlobalTheory.T.schwartz_function_schwartz_bruhat D θ hθ V.rank r φ hφ) β.1 hT hβ`. Rewrite using `[GlobalTheory.T.frame_integral_eq_theta_part_nondegenerate D r V θ hθ ν hν φ hφ habs μH 𝓕 hμH h𝓕 β hβ, hW φ β, hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem siegelND : PositivityTheory.GramSchwartzFunctions.BC.SiegelND := by
   intro D r V ψ θ μ lam ν φ hyp β hβ

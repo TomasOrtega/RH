@@ -16,65 +16,61 @@ noncomputable section
 namespace GlobalTheory.QLogTangent
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff' {O : Type} [CommRing O] (p : O) (n : ℕ) (x y : O) :
     x ≡ y [SMOD (Ideal.span {p} ^ n • ⊤ : Submodule O O)] ↔ p ^ n ∣ x - y := by
   rw [SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-The claim follows from `IsHausdorff.haus' x fun n => (smodEq_iff' p n x 0).2 (by simpa using h n)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dvd {O : Type} [CommRing O] (p : O) [IsHausdorff (Ideal.span {p}) O] (x : O)
     (h : ∀ n : ℕ, p ^ n ∣ x) : x = 0 :=
   IsHausdorff.haus' x fun n => (smodEq_iff' p n x 0).2 (by simpa using h n)
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF f hf`. Establish `hinj : Function.Injective (algebraMap O E)` using `hF.inj`. Establish `hlift : IsLift (RingHom.id O) c.μ` using `⟨c.isLaw.const, c.isLaw.unit, c.isLaw.comm, by simpa using c.isLaw⟩`. Establish `hser : ∀ {τ : Type} (F : MvPowerSeries τ E), In (⊤ : Ideal O) F → ∃ s : MvPowerSeries τ O, map (algebraMap O E) s = F`. Introduce `τ F hF'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose b _ hb using hF'`. Set `S : MvPowerSeries τ O` to `fun α => b α`. Conclude with `⟨S, by ext α; rw [coeff_map, hb α]; rfl⟩`. Establish `hminj : ∀ (s s' : MvPowerSeries (Fin d) O), map (algebraMap O E) s = map (algebraMap O E) s' → s = s'`. Introduce `s s' h`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `α`. Apply `hinj` to reduce the goal to its premises. Use `congrArg (coeff α) h` as an intermediate fact. Simplify `this` using `[coeff_map]`. Establish `hdef : ∀ k, ∃ s : MvPowerSeries (Fin d) O, map (algebraMap O E) s = defect c.μ k f` using `fun k => hser _ (GlobalTheory.QLogDefect.main p O O E (RingHom.id O) hF d c.μ hlift ⊤ f hf k).1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hser _ hf.2.2`. Use `choose s hs using hdef`. Set `a : ∀ n, G.A n` to `fun n => c.ev n (s (p ^ n))`. Establish `hprim : ∀ n, ∃ t : G.A n ⊗[O] G.A n, Coalgebra.comul (R` using `O) (a n) = a n ⊗ₜ[O] (1 : G.A n) + (1 : G.A n) ⊗ₜ[O] a n + ((p : O) ^ n) • t := by`. Introduce `n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.CobDefect.main O E d c.μ c.isLaw hinj f g (s (p ^ n)) (p ^ n) hf.1 hg (hs _)`. Use `⟨c.ev₂ n g, ?_⟩` and prove the remaining obligations. Use `show Coalgebra.comul (R := O) (c.ev n (s (p ^ n))) = _`. Rewrite using `[GlobalTheory.QLog.Chart.comul_ev p C v O hv G d c n, h1, map_sub, map_smul, GlobalTheory.EvTor.ev₂_at_nmul_pow_self p C v O hv G d c n, h2, map_zero, sub_zero, Nat.cast_pow]`. Establish `hcomp : ∀ n, ∃ b : G.A (n + 1), a (n + 1) = G.mulP n (a n) + ((p : O) ^ n) • b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Establish `h` using `GlobalTheory.DefectComp.main O E d c.μ c.isLaw hinj f hf.1 (p ^ n) p (s (p ^ n)) (s p) (s (p ^ n * p)) (hs _) (hs _) (hs _)`. Use `⟨c.ev (n + 1) (s p), ?_⟩` and prove the remaining obligations. Use `show c.ev (n + 1) (s (p ^ (n + 1))) = G.mulP n (c.ev n (s (p ^ n))) + _`. Rewrite using `[pow_succ, h, map_add, map_smul, GlobalTheory.EvP.ev_subst_nmul_p p C v O hv G d c n, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ n (φ ψ : CartierDual O (G.A n)), PDiv.dUnit O φ = PDiv.dUnit O ψ → (p : O) ^ n ∣ φ (a n) - ψ (a n)`. Introduce `n φ ψ h`. Take `⟨t, ht⟩` from `hprim n`. Conclude with `GlobalTheory.CotDualLin.dvd_sub_of_dUnit_eq O (G.A n) (a n) _ t ht φ ψ h`. Establish `dsurj : ∀ n (x : PDiv.Cot O (CartierDual O (G.A n))), ∃ φ : CartierDual O (G.A n), PDiv.dUnit O φ = x` using `fun n x => AugCot.d_surjective _ x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `haus : ∀ x : O, (∀ n : ℕ, (p : O) ^ n ∣ x) → x = 0` using `eq_zero_of_forall_dvd (p : O)`. Set `Good : G.dual.omega → O → Prop` to `fun w L => ∀ n (φ : CartierDual O (G.A n)), PDiv.dUnit O φ = w.1 n → (p : O) ^ n ∣ L - φ (a n)`. Establish `good_unique : ∀ w L L', Good w L → Good w L' → L = L'`. Introduce `w L L' h h'`. Use `sub_eq_zero.1 (haus _ fun n => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, hφ⟩` from `dsurj n (w.1 n)`. Use `dvd_sub (h n φ hφ) (h' n φ hφ)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `good_exists : ∀ w, ∃ L, Good w L`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose φ hφ using fun n => dsurj n (w.1 n)`. Establish `step : ∀ n, (p : O) ^ n ∣ φ (n + 1) (a (n + 1)) - φ n (a n)`. Introduce `n`. Take `⟨b, hb⟩` from `hcomp n`. Establish `h1 : PDiv.dUnit O (CartierDual.map (G.mulP n) (φ (n + 1))) = w.1 n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← w.2 n, ← hφ (n + 1)]`. Conclude with `(PDiv.cotMap_d (G.dual.res n) (φ (n + 1))).symm`. Establish `h2` using `key n _ _ (h1.trans (hφ n).symm)`. Rewrite `h2` using `[CartierDual.map_apply]`. Rewrite using `[hb, map_add, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : φ (n + 1) (G.mulP n (a n)) + (p : O) ^ n * φ (n + 1) b - φ n (a n) = (φ (n + 1) (G.mulP n (a n)) - φ n (a n)) + (p : O) ^ n * φ (n + 1) b` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_add h2 (dvd_mul_right _ _)`. Establish `cauchy : ∀ m n, m ≤ n → (p : O) ^ m ∣ φ n (a n) - φ m (a m)`. Introduce `m n hmn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Use `dvd_add ih ((pow_dvd_pow (p : O) hmn).trans (step n))` as an intermediate fact. Rewrite `this` using `[add_comm, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) (fun n => φ n (a n)) (fun {m n} hmn => (smodEq_iff' _ _ _ _).2 (dvd_sub_comm.1 (cauchy m n hmn)))`. Use `⟨L, fun n ψ hψ => ?_⟩` and prove the remaining obligations. Establish `h1` using `(smodEq_iff' _ _ _ _).1 (hL n)`. Establish `h2` using `key n _ _ ((hφ n).trans hψ.symm)`. Use `dvd_add (dvd_sub_comm.1 h1) h2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Use `choose Lf hLf using good_exists`. Establish `hgood_add : ∀ w w', Good (w + w') (Lf w + Lf w')`. Introduce `w w' n φ hφ`. Take `⟨φ1, h1⟩` from `dsurj n (w.1 n)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨φ2, h2⟩` from `dsurj n (w'.1 n)`. Establish `e : PDiv.dUnit O (φ1 + φ2) = PDiv.dUnit O φ`. Establish `ea : PDiv.dUnit O (φ1 + φ2) = PDiv.dUnit O φ1 + PDiv.dUnit O φ2` using `map_add (AugCot.d _) φ1 φ2`. Rewrite using `[ea, h1, h2, hφ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `k` using `key n _ _ e`. Use `dvd_add (dvd_add (hLf w n φ1 h1) (hLf w' n φ2 h2)) k` as an intermediate fact. Establish `e2 : (φ1 + φ2) (a n) = φ1 (a n) + φ2 (a n)` using `rfl`. Rewrite `this` using `[e2]`. Establish `e3 : Lf w - φ1 (a n) + (Lf w' - φ2 (a n)) + (φ1 (a n) + φ2 (a n) - φ (a n)) = Lf w + Lf w' - φ (a n)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[e3]`. Then use the resulting hypothesis. Establish `hgood_smul : ∀ (r : O) w, Good (r • w) (r * Lf w)`. Introduce `r w n φ hφ`. Take `⟨φ1, h1⟩` from `dsurj n (w.1 n)`. Establish `e : PDiv.dUnit O (r • φ1) = PDiv.dUnit O φ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `ea : PDiv.dUnit O (r • φ1) = r • PDiv.dUnit O φ1` using `map_smul (AugCot.d _) r φ1`. Rewrite using `[ea, h1, hφ]`. Both sides reduce to the same expression. Establish `k` using `key n _ _ e`. Use `dvd_add (dvd_mul_of_dvd_right (hLf w n φ1 h1) r) k` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : (r • φ1) (a n) = r * φ1 (a n)` using `rfl`. Rewrite `this` using `[e2]`. Establish `e3 : r * (Lf w - φ1 (a n)) + (r * φ1 (a n) - φ (a n)) = r * Lf w - φ (a n)` using `by ring`. Rewrite `this` using `[e3]`. Then use the resulting hypothesis. Set `l : G.dual.Lie` to `{ toFun := Lf map_add' := fun w w' => good_unique _ _ _ (hLf (w + w')) (hgood_add w w') map_smul' := fun r w => good_unique _ _ _ (hLf (r • w)) (hgood_smul r w) }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hisLie : ∀ l' : G.dual.Lie, c.IsLie f l' ↔ ∀ w, Good w (l' w)`. Introduce `l'`. Prove the components needed by the constructor for the conclusion. Introduce `h w n φ hφ`. Conclude with `h.2 n w φ (s (p ^ n)) hφ (hs _)`.
-
-Introduce `h`. Use `⟨fun n => In.top_iff.2 ⟨s (p ^ n), hs _⟩, fun n w φ s' hφ hs' => ?_⟩` and prove the remaining obligations. Establish `: s' = s (p ^ n)` using `hminj _ _ (hs'.trans (hs _).symm)`. Substitute `this` using the available equality. Conclude with `h w n φ hφ`.
-
-Use `⟨l, (hisLie l).2 fun w => hLf w, fun l' hl' => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.ext fun w => good_unique _ _ _ ((hisLie l').1 hl' w) (hLf w)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ f : MvPowerSeries (Fin d) E, QL c.μ ⊤ f → ∃! l : G.dual.Lie, c.IsLie f l := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF f hf

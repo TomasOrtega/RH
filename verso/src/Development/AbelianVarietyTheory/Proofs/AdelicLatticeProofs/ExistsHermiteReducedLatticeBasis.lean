@@ -11,7 +11,7 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin.HermiteReduction
 
 /- English proof (translation)
-Establish `hbdd : BddBelow (Set.range f)` using `⟨c, by rintro _ ⟨s, rfl⟩; exact hf s⟩`. Establish `hm : c ≤ ⨅ s, f s` using `le_ciInf hf`. Establish `hlt : ⨅ s, f s < 2 * ⨅ s, f s` using `by linarith`. Take `⟨s, hs⟩` from `exists_lt_of_ciInf_lt hlt`. Conclude with `⟨s, fun t => hs.trans_le (by linarith [ciInf_le hbdd t])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lt_two_mul {S : Type} [Nonempty S] (f : S → ℝ) (c : ℝ) (hc : 0 < c) (hf : ∀ s, c ≤ f s) :
     ∃ s, ∀ t, f s < 2 * f t := by
@@ -25,13 +25,13 @@ noncomputable def gramMinor {N : ℕ} (x : Matrix (Fin N) (Fin N) ℝ) (j : Fin 
   ((xᵀ * x).submatrix (Fin.castLE (Nat.lt_succ_iff.mp j.2)) (Fin.castLE (Nat.lt_succ_iff.mp j.2))).det
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `p`. Take `⟨q, hq'⟩` from `q`. Simplify using `only at hq h ⊢`. Substitute `hq` using the available equality. Rewrite using `[Fin.prod_univ_castSucc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_bij (fun i _ => Fin.castLE h i.castSucc) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Simplify using `[Fin.lt_def]`. Introduce `i _ j _ hij`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.ext (by simpa using congrArg Fin.val hij)`. Introduce `l hl`. Establish `hl' : (l : ℕ) < p` using `by simpa [Fin.lt_def] using hl`. Conclude with `⟨⟨l, hl'⟩, Finset.mem_univ _, Fin.ext rfl⟩`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem prod_castLE_succ {N : ℕ} (f : Fin N → ℝ) (p q : Fin N) (hq : (q : ℕ) = p + 1) (h : (q : ℕ) ≤ N) :
     ∏ i : Fin q, f (Fin.castLE h i) = (∏ l ∈ Finset.univ.filter (· < p), f l) * f p := by
@@ -53,11 +53,11 @@ theorem prod_castLE_succ {N : ℕ} (f : Fin N → ℝ) (p q : Fin N) (hq : (q : 
     rfl
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hn1, hm1, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hn0 i l h, zero_mul]`. Rewrite using `[hm0 l i h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases. Rewrite using `[hn0 i l h, zero_mul]`. Rewrite using `[hm0 l j (lt_of_lt_of_le hij h), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_upper {N : ℕ} (n m : Matrix (Fin N) (Fin N) ℝ) (hn1 : ∀ i, n i i = 1) (hn0 : ∀ i j, j < i → n i j = 0)
     (hm1 : ∀ i, m i i = 1) (hm0 : ∀ i j, j < i → m i j = 0) :
@@ -78,21 +78,19 @@ theorem mul_upper {N : ℕ} (n m : Matrix (Fin N) (Fin N) ℝ) (hn1 : ∀ i, n i
     · rw [hm0 l j (lt_of_lt_of_le hij h), mul_zero]
 
 /- English proof (translation)
-Use `set g := k * diagonal a * n with hg`. Establish `hpq : p < q` using `by rw [Fin.lt_def]; omega`. Establish `hqN : (q : ℕ) ≤ N` using `q.2.le`. Take `⟨h1, h2⟩` from `GlobalTheory.T.gram_minor_swap_adjacent_columns N k a n g (g.submatrix id (Equiv.swap p q)) p q hk hn1 hn0 hq rfl rfl`. Establish `hG : ∀ j : Fin (N + 1), gramMinor g j = ∏ i : Fin j, a (Fin.castLE (Nat.lt_succ_iff.mp j.2) i) ^ 2` using `fun j => GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `qq : Fin (N + 1)` to `⟨q, Nat.lt_succ_of_le hqN⟩`. Establish `hpos : ∀ j, 0 < gramMinor g j` using `fun j => by`. Rewrite using `[hG]`. Conclude with `Finset.prod_pos fun i _ => pow_pos (ha _) 2`. Establish `hrest : ∏ j ∈ Finset.univ.erase qq, gramMinor (g.submatrix id (Equiv.swap p q)) j = ∏ j ∈ Finset.univ.erase qq, gramMinor g j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hne : (j : ℕ) ≠ q` using `fun h => (Finset.mem_erase.mp hj).1 (Fin.ext h)`. Conclude with `h1 j (Nat.lt_succ_iff.mp j.2) hne`. Rewrite `hlt` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ qq), ← Finset.mul_prod_erase _ _ (Finset.mem_univ qq), hrest]`. Establish `hR : 0 < ∏ j ∈ Finset.univ.erase qq, gramMinor g j` using `Finset.prod_pos fun j _ => hpos j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hlt' : gramMinor g qq < 2 * gramMinor (g.submatrix id (Equiv.swap p q)) qq`. Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.mp hc`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc' hR.le]`. Establish `eG : gramMinor g qq = (∏ l ∈ Finset.univ.filter (· < p), a l ^ 2) * a p ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hG]`. Conclude with `prod_castLE_succ (fun i => a i ^ 2) p q hq _`. Establish `eG' : gramMinor (g.submatrix id (Equiv.swap p q)) qq = (∏ l ∈ Finset.univ.filter (· < p), a l ^ 2) * (a q ^ 2 + n p q ^ 2 * a p ^ 2)` using `h2 hqN`. Rewrite `hlt'` using `[eG, eG']`. Establish `hP : 0 < ∏ l ∈ Finset.univ.filter (· < p), a l ^ 2` using `Finset.prod_pos fun l _ => pow_pos (ha l) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hn : n p q ^ 2 ≤ 1 / 4`. Establish `h3` using `abs_le.mp (hν p q hpq)`. Use polynomial arithmetic with `[h3.1, h3.2]`. Establish `key : a p ^ 2 < 2 * (a q ^ 2 + n p q ^ 2 * a p ^ 2)`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `not_lt.mp hc`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hc' hP.le]`. Establish `hap` using `ha p`. Establish `haq` using `ha q`. Assume the negation of the conclusion as `hc`.
-
-Establish `hc'` using `not_le.mp hc`. Use polynomial arithmetic with `[mul_lt_mul'' hc' hc' (by positivity) (by positivity), mul_le_mul_of_nonneg_right hn (sq_nonneg (a p))]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ)
     (hk : kᵀ * k = 1) (ha : ∀ i, 0 < a i) (hn1 : ∀ i, n i i = 1) (hn0 : ∀ i j, j < i → n i j = 0)
@@ -145,25 +143,23 @@ theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ
     mul_le_mul_of_nonneg_right hn (sq_nonneg (a p))]
 
 /- English proof (translation)
-Introduce `N g hg`. Take `⟨c, hc, hcb⟩` from `GlobalTheory.T.gram_leading_minor_lower_bound_integral N g hg`. Set `S` to `{γ : Matrix (Fin N) (Fin N) ℤ // γ.det = 1 ∨ γ.det = -1}`. Establish `: Nonempty S` using `⟨⟨1, Or.inl Matrix.det_one⟩⟩`. Establish `hdet0 : ∀ γ : S, γ.1.det ≠ 0` using `fun γ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases γ.2 with h | h <;> rw [h] <;> norm_num`. Establish `hbound : ∀ γ : S, c ^ (N + 1) ≤ ∏ j, gramMinor (g * γ.1.map (Int.cast : ℤ → ℝ)) j`. Introduce `γ`. Combine the equalities or inequalities in the displayed calculation. Take `⟨γ0, hγ0⟩` from `exists_lt_two_mul (fun γ : S => ∏ j, gramMinor (g * γ.1.map (Int.cast : ℤ → ℝ)) j) (c ^ (N + 1)) (pow_pos hc _) hbound`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hgd : (g * γ0.1.map (Int.cast : ℤ → ℝ)).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Use `mul_ne_zero hg ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_det]`. Conclude with `hdet0 γ0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, a, n, hk, ha, hn1, hn0, hgk⟩` from `GlobalTheory.T.iwasawa_decomposition_real_matrix N _ hgd`. Take `⟨ν, hν1, hν0, hνb⟩` from `GlobalTheory.T.unipotent_upper_size_reduction N n hn1 hn0`. Establish `hνR1 : ∀ i, ν.map (Int.cast : ℤ → ℝ) i i = 1` using `fun i => by simp [hν1]`. Establish `hνR0 : ∀ i j, j < i → ν.map (Int.cast : ℤ → ℝ) i j = 0` using `fun i j h => by simp [hν0 i j h]`. Take `⟨hn'1, hn'0⟩` from `mul_upper n _ hn1 hn0 hνR1 hνR0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hνdet : ν.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j h => hν0 i j h)]`. Simplify using `[hν1]`. Establish `hγdet : (γ0.1 * ν).det = 1 ∨ (γ0.1 * ν).det = -1`. Rewrite using `[Matrix.det_mul, hνdet, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `γ0.2`. Establish `hmap : (γ0.1 * ν).map (Int.cast : ℤ → ℝ) = γ0.1.map (Int.cast : ℤ → ℝ) * ν.map (Int.cast : ℤ → ℝ)` using `Matrix.map_mul (f := Int.castRingHom ℝ)`. Establish `heq : g * (γ0.1 * ν).map (Int.cast : ℤ → ℝ) = k * diagonal a * (n * ν.map (Int.cast : ℤ → ℝ))`. Rewrite using `[hmap, ← Matrix.mul_assoc, hgk, Matrix.mul_assoc (k * diagonal a)]`. Establish `hΦ : ∏ j, gramMinor (k * diagonal a * (n * ν.map (Int.cast : ℤ → ℝ))) j = ∏ j, gramMinor (g * γ0.1.map (Int.cast : ℤ → ℝ)) j`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgk]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `gramMinor`. Rewrite using `[GlobalTheory.T.det_leading_minor_gram_iwasawa N k a _ hk hn'1 hn'0 j _, GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _]`. Use `⟨γ0.1 * ν, k, a, n * ν.map (Int.cast : ℤ → ℝ), hγdet, hk, ha, hn'1, hn'0, hνb, fun p q hq => ?_, heq⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpq : p ≠ q` using `fun h => by rw [h] at hq; omega`. Set `γ' : S` to `⟨(γ0.1 * ν).submatrix id (Equiv.swap p q), by`. Rewrite using `[Matrix.det_permute', Equiv.Perm.sign_swap hpq]`. Apply the tactic sequence `rcases hγdet with h | h <;> simp [h]⟩`. Establish `hsw : g * γ'.1.map (Int.cast : ℤ → ℝ) = (k * diagonal a * (n * ν.map (Int.cast : ℤ → ℝ))).submatrix id (Equiv.swap p q)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← heq]`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `le_of_swap k a _ hk ha hn'1 hn'0 hνb p q hq ?_` and prove the remaining obligations. Rewrite using `[hΦ, ← hsw]`.
-
-Conclude with `hγ0 γ'`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠ 0 → ∃ (γ : Matrix (Fin N) (Fin N) ℤ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), (γ.det = 1 ∨ γ.det = -1) ∧ kᵀ * k = 1 ∧ (∀ i, 0 < a i) ∧ (∀ i, n i i = 1) ∧ (∀ i j, j < i → n i j = 0) ∧ (∀ i j, i < j → |n i j| ≤ 1 / 2) ∧ (∀ p q : Fin N, (q : ℕ) = p + 1 → a p ≤ 2 * a q) ∧ g * γ.map (Int.cast : ℤ → ℝ) = k * diagonal a * n := by
   intro N g hg

@@ -10,9 +10,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := k) hA hB`. Establish `h : IsLift (RingEquiv.refl k) g.toRingEquiv` using `fun x => g.commutes x`. Establish `hm : ∀ x, g.toRingEquiv x ∈ B ↔ x ∈ A` using `fun x => by show g • x ∈ B ↔ _`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : ∀ x, g.toRingEquiv.symm x ∈ A ↔ x ∈ B` using `fun x => by`. Rewrite using `[← hm, RingEquiv.apply_symm_apply]`. Conclude with `⟨g, fun τ hτ => conjGal_mem_Ine h hm hτ, fun τ hτ => conjGal_mem_Dec h hm hτ, fun τ hτ => conjGal_mem_Dec h.symm hm' hτ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem locEmb_conj {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
     {A B : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hA : IsPlaceOver A v) (hB : IsPlaceOver B v) :
@@ -31,23 +31,21 @@ private theorem locEmb_conj {k Ω : Type} [Field k] [NumberField k] [Field Ω] [
     fun τ hτ => conjGal_mem_Dec h.symm hm' hτ⟩
 
 /- English proof (translation)
-Introduce `l _ Ω _ iA _ W A hA z hz hb`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `rfl : iA = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Take `⟨v, hAv, hv⟩` from `hA`. Take `⟨j, -, -, x, hx⟩` from `hb.above (algebraMap ℚ (Om l))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, i2, -, i4, i5, i6, -⟩` from `Loc.iotaFacts j`. Establish `h0 : (fun σ => z (Loc.iota j σ)) ∈ Loc.finiteCocycles (MonoidHom.id (GQ l)) ((Loc.colRep W).comp (Loc.iota j))` using `⟨⟨hz.1.comp i1.continuous, fun g h => (congrArg z (map_mul _ g h)).trans (hz.2 _ _)⟩, x, fun σ => hx ⟨(Loc.iota j σ, σ), fun y => (Loc.iota_spec j σ y).symm⟩⟩`. Take `⟨g, g1, g2, g3⟩` from `locEmb_conj hAv ((i6 v).2 hv)`. Set `ι : GQ l →* G ℚ Ω` to `(MulAut.conj g⁻¹).toMonoidHom.comp (Loc.iota j)`. Establish `hι : ∀ σ, ι σ = g⁻¹ * Loc.iota j σ * g` using `fun σ => by simp [ι]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous ι`. Establish `: (ι : GQ l → G ℚ Ω) = fun σ => g⁻¹ * Loc.iota j σ * g` using `funext hι`. Rewrite using `[this]`. Conclude with `(continuous_const.mul i1.continuous).mul continuous_const`. Use `⟨ι, hc, fun σ => ?_, fun s hs => ?_, fun σ hσ => ?_, fun σ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hι]`. Conclude with `g2 _ (by rw [← i2]; exact ⟨σ, rfl⟩)`. Establish `h1 : g * s * g⁻¹ ∈ Dec (F` using `ℚ) (Loc.placeJ j) := g3 s hs`. Rewrite `h1` using `[← i2]`. Take `⟨σ, hσ⟩` from `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨σ, by rw [hι, hσ]; group⟩`. Rewrite using `[hι]`. Conclude with `g1 _ (by rw [← i4]; exact ⟨σ, hσ, rfl⟩)`. Rewrite using `[hι, map_mul, map_mul, map_inv, mul_comm _ (cycZ ℚ Ω l (Loc.iota j σ)), inv_mul_cancel_right]`. Conclude with `DFunLike.congr_fun (i5 l) σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h1` using `Loc.z1fCoef (MonoidHom.id (GQ l)) ((Loc.colRep W).comp (Loc.iota j)) ((Loc.colRep W).comp ι) ((Loc.colRep W g⁻¹).restrictScalars ℚ_[l]) (LinearMap.continuous_on_pi (Loc.colRep W g⁻¹)) (fun σ y => by show Loc.colRep W g⁻¹ (Loc.colRep W (Loc.iota j σ) y) = Loc.colRep W (ι σ) (Loc.c …`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, hι, mul_inv_cancel_right]) _ h0`. Establish `hcob : ∀ σ, Loc.colRep W (ι σ) (z g⁻¹) - z g⁻¹ = z (ι σ * g⁻¹) - z (ι σ) - z g⁻¹` using `fun σ => by`. Rewrite using `[hz.2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : (fun σ => Loc.colRep W (ι σ) (z g⁻¹) - z g⁻¹) ∈ Loc.finiteCocycles (MonoidHom.id (GQ l)) ((Loc.colRep W).comp ι)`. Use `⟨⟨?_, fun a b => ?_⟩, z g⁻¹ ⊗ₜ 1, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[funext hcob]`. Conclude with `((hz.1.comp (hc.mul continuous_const)).sub (hz.1.comp hc)).sub continuous_const`. Use `show Loc.colRep W (ι (a * b)) (z g⁻¹) - z g⁻¹ = Loc.colRep W (ι a) (z g⁻¹) - z g⁻¹ + Loc.colRep W (ι a) (Loc.colRep W (ι b) (z g⁻¹) - z g⁻¹)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[Loc.actC, TensorProduct.sub_tmul]`. Establish `h3` using `Submodule.sub_mem _ h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `σ`. Use `show z (ι σ) = Loc.colRep W g⁻¹ (z (Loc.iota j σ)) - (Loc.colRep W (ι σ) (z g⁻¹) - z g⁻¹)`. Establish `e1` using `hz.2 g⁻¹ (Loc.iota j σ)`. Rewrite using `[hcob, hι, mul_inv_cancel_right, e1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem bk_locEmb : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (A : ValuationSubring Ω), OverL l A → ∀ z ∈ Z1 (Loc.colRep W), IsBK l (Loc.colRep W) z → ∃ ι : GQ l →* G ℚ Ω, Continuous ι ∧ (∀ σ, ι σ ∈ Dec (F := ℚ) A) ∧ (∀ s ∈ Dec (F := ℚ) A, ∃ σ, ι σ = s) ∧ (∀ σ ∈ Loc.Iq l, ι σ ∈ Ine (F := ℚ) A) ∧ (∀ σ, cycZ ℚ Ω l (ι σ) = Loc.cyc l l σ) ∧ (fun σ => z (ι σ)) ∈ Loc.finiteCocycles (MonoidHom.id (GQ l)) ((Loc.colRep W).comp ι) := by
   intro l _ Ω _ iA _ W A hA z hz hb

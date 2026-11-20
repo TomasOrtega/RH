@@ -19,7 +19,7 @@ private noncomputable def Da (θ : ℂ) (d : Fin 4 → A) : Fin 2 → Fin 2 → 
   ![![d 1, (2 : ℂ)⁻¹ • (d 2 + θ⁻¹ • d 3)], ![(2 : ℂ)⁻¹ • (d 2 - θ⁻¹ • d 3), d 0]]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `h 1 j`. Conclude with `(h 2 j).add_left ((h 3 j).smul_left θ)`. Conclude with `(h 2 j).sub_left ((h 3 j).smul_left θ)`. Conclude with `h 0 j`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma Xa_comm_coord (θ : ℂ) {x y : Fin 4 → A} (h : ∀ i j, Commute (x i) (y j)) (a b : Fin 2) (j : Fin 4) :
     Commute (Xa θ x a b) (y j) := by
@@ -30,9 +30,7 @@ private lemma Xa_comm_coord (θ : ℂ) {x y : Fin 4 → A} (h : ∀ i j, Commute
   · exact h 0 j
 
 /- English proof (translation)
-Establish `h'` using `Xa_comm_coord θ h a b`. Apply the tactic sequence `fin_cases c <;> fin_cases d`. Conclude with `h' 1`. Conclude with `(h' 2).add_right ((h' 3).smul_right θ)`. Conclude with `(h' 2).sub_right ((h' 3).smul_right θ)`.
-
-Conclude with `h' 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma Xa_comm (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (x j)) (a b c d : Fin 2) :
     Commute (Xa θ x a b) (Xa θ x c d) := by
@@ -44,7 +42,7 @@ private lemma Xa_comm (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (
   · exact h' 0
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `h 1 j`. Conclude with `((h 2 j).add_left ((h 3 j).smul_left θ⁻¹)).smul_left _`. Conclude with `((h 2 j).sub_left ((h 3 j).smul_left θ⁻¹)).smul_left _`. Conclude with `h 0 j`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma Da_comm_coord (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (x j)) (a b : Fin 2) (j : Fin 4) :
     Commute (Da θ x a b) (x j) := by
@@ -55,9 +53,7 @@ private lemma Da_comm_coord (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (
   · exact h 0 j
 
 /- English proof (translation)
-Establish `h'` using `Da_comm_coord θ h a b`. Apply the tactic sequence `fin_cases c <;> fin_cases d`. Conclude with `h' 1`. Conclude with `((h' 2).add_right ((h' 3).smul_right θ⁻¹)).smul_right _`. Conclude with `((h' 2).sub_right ((h' 3).smul_right θ⁻¹)).smul_right _`.
-
-Conclude with `h' 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma Da_comm (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (x j)) (a b c d : Fin 2) :
     Commute (Da θ x a b) (Da θ x c d) := by
@@ -69,7 +65,7 @@ private lemma Da_comm (θ : ℂ) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (
   · exact h' 0
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases e <;>`. Apply the tactic sequence `simp only [Xa, Da, Fin.zero_eta, Fin.mk_one, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, hw] <;>`. Apply the tactic sequence `simp <;> match_scalars <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Da_Xa (θ : ℂ) (hθ : θ ≠ 0) {x d : Fin 4 → A}
     (hw : ∀ i j, d i * x j = x j * d i + if i = j then 1 else 0) (a b c e : Fin 2) :
@@ -80,7 +76,7 @@ private lemma Da_Xa (θ : ℂ) (hθ : θ ≠ 0) {x d : Fin 4 → A}
     simp <;> match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `h32 : x 3 * x 2 = x 2 * x 3` using `h 3 2`. Substitute `hc` using the available equality. Simplify using `only [Xa, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_smul, h32]`. Apply the tactic sequence `match_scalars <;> ring`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Xa_det (θ c : ℂ) (hc : θ ^ 2 = c) {x : Fin 4 → A} (h : ∀ i j, Commute (x i) (x j)) :
     Xa θ x 0 1 * Xa θ x 1 0 - Xa θ x 0 0 * Xa θ x 1 1 = x 2 * x 2 - c • (x 3 * x 3) - x 1 * x 0 := by
@@ -91,7 +87,7 @@ private lemma Xa_det (θ c : ℂ) (hc : θ ^ 2 = c) {x : Fin 4 → A} (h : ∀ i
   match_scalars <;> ring
 
 /- English proof (translation)
-Establish `h32 : d 3 * d 2 = d 2 * d 3` using `h 3 2`. Substitute `hc` using the available equality. Simplify using `only [Da, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_smul, h32]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Da_det (θ c : ℂ) (hθ : θ ≠ 0) (hc : θ ^ 2 = c) {d : Fin 4 → A} (h : ∀ i j, Commute (d i) (d j)) :
     Da θ d 0 1 * Da θ d 1 0 - Da θ d 0 0 * Da θ d 1 1 =
@@ -103,7 +99,7 @@ private lemma Da_det (θ c : ℂ) (hθ : θ ≠ 0) (hc : θ ^ 2 = c) {d : Fin 4 
   match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Simplify using `only [Fin.sum_univ_two, Fin.sum_univ_four, Xa, Da, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_smul]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Xa_Da_sum (θ : ℂ) (hθ : θ ≠ 0) (x d : Fin 4 → A) :
     ∑ a, ∑ b, Xa θ x a b * Da θ d a b = ∑ i, x i * d i := by
@@ -114,13 +110,13 @@ private lemma Xa_Da_sum (θ : ℂ) (hθ : θ ≠ 0) (x d : Fin 4 → A) :
 end Abstract
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W O τ`. Take `⟨hsq, -, hθ⟩` from `(coordMk F E D).2.1 τ`. Establish `hx : ∀ i j, Commute (O.x (pl F τ) i) (O.x (pl F τ) j)` using `fun i j => (weyl F O _ _ i j).1`. Establish `hd : ∀ i j, Commute (O.d (pl F τ) i) (O.d (pl F τ) j)` using `fun i j => dComm F E D W O _ _ i j`. Establish `hw : ∀ i j, O.d (pl F τ) i * O.x (pl F τ) j = O.x (pl F τ) j * O.d (pl F τ) i + if i = j then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `using (weyl F O (pl F τ) (pl F τ) i j).2`. Establish `eX : O.X D τ = Xa (τ D.θ) (O.x (pl F τ))` using `rfl`. Establish `eD : O.DX D τ = Da (τ D.θ) (O.d (pl F τ))` using `rfl`. Rewrite using `[eX, eD]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a b c d => Xa_comm _ hx a b c d, fun a b c d => Da_comm _ hd a b c d, fun a b c d => Da_Xa _ hθ hw a b c d, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Xa_det _ _ hsq hx]`. Both sides reduce to the same expression. Rewrite using `[Da_det _ _ hθ hsq hd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Xa_Da_sum _ hθ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.weylX :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) (τ : E →+* ℂ),

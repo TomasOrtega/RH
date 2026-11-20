@@ -5,13 +5,11 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set A := LinearMap.toMatrix' φ with hA`. Establish `key : ((algebraMap K E).mapMatrix A).transpose * (cj.mapMatrix ((algebraMap K E).mapMatrix A)) = 1`. Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, hA, LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Finset.sum_eq_single i]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one, ← RingHom.map_det, ← RingHom.map_det, ← RingHom.map_det, hA, LinearMap.det_toMatrix']`.
-
-Conclude with `hd`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mul_conj_eq_one_of_preserves {K E : Type} [Field K] [Field E] [Algebra K E] (cj : E →+* E)
     {n : Type} [Fintype n] [DecidableEq n] (φ : (n → K) →ₗ[K] (n → K))
@@ -36,9 +34,9 @@ theorem det_mul_conj_eq_one_of_preserves {K E : Type} [Field K] [Field E] [Algeb
   exact hd
 
 /- English proof (translation)
-Use `det_mul_conj_eq_one_of_preserves (K := D.host.K) (E := D.host.E) (D.host.conj : D.host.E →+* D.host.E) _ ?_` and prove the remaining obligations. Introduce `v u`. Establish `h1` using `γ.isom (γ₀.g.symm v) (γ₀.g.symm u)`. Establish `h2` using `γ₀.isom (γ₀.g.symm v) (γ₀.g.symm u)`. Simplify using `only [LinearEquiv.apply_symm_apply] at h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1.trans h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem detRel_mul_conj_eq_one (D : D7) (γ₀ γ : IsoK D) :
     ((γ.detRel γ₀ : D.host.K) : D.host.E) * D.host.conj ((γ.detRel γ₀ : D.host.K) : D.host.E) = 1 := by

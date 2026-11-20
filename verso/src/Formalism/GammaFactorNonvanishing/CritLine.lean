@@ -35,7 +35,7 @@ theorem Formalism.VW.critLine (h : UpperTheory.EveryCharacter) (N : ℕ) [NeZero
   · exact h N χ s hgt (Or.inr hs1) hz
 
 /- English proof (authored)
-Take the trivial character of modulus 1, whose L-function equals the zeta function. The assumed nonvanishing for all characters therefore excludes zeta zeros with real part greater than 1/2 away from 1. Apply `Formalism.VW.rh_of_right` to obtain the Riemann Hypothesis.
+Take the trivial character of modulus 1, whose L-function equals the zeta function. The assumed nonvanishing for all characters therefore excludes zeta zeros with real part greater than 1/2 away from 1. The reduction for zeros of the zeta function now gives the Riemann Hypothesis.
 -/
 theorem Formalism.VW.rh_of_every (h : UpperTheory.EveryCharacter) : RiemannHypothesis :=
   Formalism.VW.rh_of_right fun s hs hs1 => by

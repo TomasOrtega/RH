@@ -8,7 +8,7 @@ import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.Avoid
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.ForSecondHalf.avoid`.
+A detailed English derivation is pending.
 -/
 theorem topAvoid : ReciprocityTheory.ChartRestriction.G.AI.I2.AvoidStatement :=
   GroundTheory.Heights₂.Heights.ForSecondHalf.avoid

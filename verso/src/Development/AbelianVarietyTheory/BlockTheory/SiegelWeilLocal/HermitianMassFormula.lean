@@ -121,7 +121,7 @@ def T2 (σ : E →ₐ[F] E) (r : ℕ) (T T' : 𝓞 F) (Z : Matrix (Fin (r + 1)) 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Unfold `TFE TF`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases h' : a = Fin.last r <;> simp [h']`. Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem TFE_herm (σ : E →ₐ[F] E) (r : ℕ) (T : 𝓞 F) (a b : Fin (r + 1)) :
     σ (TFE E r T b a) = TFE E r T a b := by
@@ -132,7 +132,7 @@ theorem TFE_herm (σ : E →ₐ[F] E) (r : ℕ) (T : 𝓞 F) (a b : Fin (r + 1))
   · simp [Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -140,7 +140,7 @@ theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Unfold `T2`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm a with a | a <;> rcases finSumFinEquiv.symm b with b | b <;>`. Simplify using `[cT, TFE_herm, sig_sig h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_hermitian {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (r : ℕ) (T T' : 𝓞 F)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin ((r + 1) + (r + 1))) :
@@ -265,13 +265,13 @@ def MassFormula : Prop :=
       mass Z = ENNReal.ofReal (AA * GlobalTheory.SgGlob.normInf (G Z) ^ (k - 1) * ∏' v, dens Z v))
 
 /- English proof (translation)
-Unfold `lev`. Rewrite using `[if_pos h₁]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 example (v : Pl F) (h₁ : ((2 : ℕ) : 𝓞 F) ∈ v.asIdeal) : lev 2 3 v = 2 := by
   unfold lev; rw [if_pos h₁]
 
 /- English proof (translation)
-Simplify using `[aEnt, Algebra.TensorProduct.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 example {v : Pl F} (δ : Fv F v) (r : ℕ) : aEnt E δ r (Fin.last r) = 1 := by
   simp [aEnt, Algebra.TensorProduct.one_def]

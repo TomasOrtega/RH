@@ -3,21 +3,19 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 open GlobalTheory.K4
 
 /- English proof (translation)
-Introduce `F K Kb Z _ _ _ _ _ _ _ _ _ η₀ hη₀`. Establish `key : ∀ g : Kb ≃ₐ[F] Kb, g ∈ geo F K Kb → ∀ k : K, g (algebraMap K Kb k) = algebraMap K Kb k`. Introduce `g hg k`. Establish `hg' : g ∈ (IsScalarTower.toAlgHom F K Kb).fieldRange.fixingSubgroup` using `hg`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg' _ (AlgHom.mem_fieldRange.2 ⟨k, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : geo F K Kb →* (Kb ≃ₐ[K] Kb)` to `{ toFun := fun g => AlgEquiv.ofRingEquiv (f := (g : Kb ≃ₐ[F] Kb).toRingEquiv) (key g g.2) map_one' := by ext; rfl map_mul' := by intro a b; ext; rfl }`. Establish `hr : ∀ g x, r g x = (g : Kb ≃ₐ[F] Kb) x` using `fun _ _ => rfl`. Establish `hrc : Continuous r`. Apply `continuous_of_continuousAt_one r` to reduce the goal to its premises. Introduce `U hU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hU` using `[map_one]`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff K Kb U).1 hU`. Set `b` to `Module.finBasis K E`. Set `S : Set Kb` to `Set.range (fun i => (b i : Kb))`. Use `haveI : Finite S := Set.finite_range _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hE' : FiniteDimensional F (IntermediateField.adjoin F S) := IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral)`. Rewrite using `[Filter.mem_map, mem_nhds_subtype]`. Use `⟨((IntermediateField.adjoin F S).fixingSubgroup : Set (Kb ≃ₐ[F] Kb)), (krullTopology_mem_nhds_one_iff F Kb _).2 ⟨_, hE', subset_rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Apply `hEU` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hlin : (r g).toLinearMap ∘ₗ E.val.toLinearMap = E.val.toLinearMap`. Use `b.ext (fun i => ?_)` and prove the remaining obligations. Use `show r g (b i : Kb) = (b i : Kb)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hr]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg _ (IntermediateField.subset_adjoin F S ⟨i, rfl⟩)`. Conclude with `congrArg (fun f => f ⟨x, hx⟩) hlin`. Use `⟨fun g => if h : g ∈ geo F K Kb then η₀ (r ⟨g, h⟩) else 0, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun g : geo F K Kb => (fun g => if h : g ∈ geo F K Kb then η₀ (r ⟨g, h⟩) else 0) (g : Kb ≃ₐ[F] Kb)) = η₀ ∘ r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Simplify using `[g.2]`. Rewrite using `[this]`. Conclude with `hη₀.comp_continuous hrc`. Introduce `g g' hg hgg'`.
-
-Simplify using `only [hg, dif_pos]`. Use `congr 1`. Use extensionality with `z`. Rewrite using `[hr]`. Conclude with `(hgg' z).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_isLocallyConstant_lift_to_geometric_galois :
     ∀ {F K Kb Z : Type} [Field F] [Field K] [Field Kb] [Algebra F K] [Algebra F Kb] [Algebra K Kb] [IsScalarTower F K Kb] [Algebra.IsAlgebraic F Kb] [Zero Z] (η₀ : (Kb ≃ₐ[K] Kb) → Z), IsLocallyConstant η₀ → ∃ η : (Kb ≃ₐ[F] Kb) → Z, IsLocallyConstant (fun g : geo F K Kb => η g) ∧ ∀ (g : Kb ≃ₐ[F] Kb) (g' : Kb ≃ₐ[K] Kb), g ∈ geo F K Kb → (∀ z, g' z = g z) → η g = η₀ g' := by

@@ -31,16 +31,16 @@ Both sides reduce to the same expression.
 theorem tensU_apply (x : ∀ i, Vl i) (p : Idx Vl) : tensU x p = ∏ i, ⟪bas Vl i (p i), x i⟫_ℂ := rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_sum_pi {κ : ι → Type} [∀ i, Fintype (κ i)] (f : ∀ i, κ i → ℂ) :
     ∏ i, ∑ j, f i j = ∑ p : (∀ i, κ i), ∏ i, f i (p i) := by
   rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply]`. Simplify using `only [tensU_apply, RCLike.inner_apply, map_prod]`. Establish `h : ∀ i, ⟪x i, y i⟫_ℂ = ∑ j, (starRingEnd ℂ) ⟪bas Vl i j, x i⟫_ℂ * ⟪bas Vl i j, y i⟫_ℂ`. Introduce `i`. Rewrite using `[← (bas Vl i).sum_inner_mul_inner (x i) (y i)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_conj_symm]`. Repeatedly rewrite using `[h, prod_sum_pi, ← Finset.prod_mul_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,11 +58,11 @@ theorem inner_tensU (x y : ∀ i, Vl i) : ⟪tensU x, tensU y⟫_ℂ = ∏ i, �
   ring
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[tensU_apply, PiLp.single_apply]`. Distinguish the cases in `hqp : q = p`. Substitute `hqp` using the available equality. Simplify using `only [if_true]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (bas Vl i).orthonormal.1 (q i)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hqp]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, q i ≠ p i := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hqp (funext hne)`. Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Conclude with `(bas Vl i).orthonormal.2 hi`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tensU_basis (p : Idx Vl) : tensU (fun i => bas Vl i (p i)) = EuclideanSpace.single p 1 := by
   ext q
@@ -82,9 +82,9 @@ theorem tensU_basis (p : Idx Vl) : tensU (fun i => bas Vl i (p i)) = EuclideanSp
     exact (bas Vl i).orthonormal.2 hi
 
 /- English proof (translation)
-Use `eq_top_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← (EuclideanSpace.basisFun (Idx Vl) ℂ).toBasis.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨fun i => bas Vl i (p i), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply, tensU_basis]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_tensU : Submodule.span ℂ (Set.range (tensU (Vl := Vl))) = ⊤ := by
   refine eq_top_iff.2 ?_
@@ -95,9 +95,9 @@ theorem span_tensU : Submodule.span ℂ (Set.range (tensU (Vl := Vl))) = ⊤ := 
   rw [OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply, tensU_basis]
 
 /- English proof (translation)
-Establish `hd : ∀ x, ⟪v - v', tensU x⟫_ℂ = 0` using `fun x => by`. Rewrite using `[← inner_conj_symm, inner_sub_right, h x, sub_self, map_zero]`. Establish `h0 : (innerSL ℂ (v - v')).toLinearMap = 0` using `LinearMap.ext_on_range span_tensU (fun x => by simpa using hd x)`. Establish `h2 : ⟪v - v', v - v'⟫_ℂ = 0`. Use `LinearMap.congr_fun h0 (v - v')` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ContinuousLinearMap.coe_coe, innerSL_apply_apply, LinearMap.zero_apply] at this`. Conclude with `this`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_inner_tensU {v v' : TV Vl} (h : ∀ x, ⟪tensU x, v⟫_ℂ = ⟪tensU x, v'⟫_ℂ) : v = v' := by
   have hd : ∀ x, ⟪v - v', tensU x⟫_ℂ = 0 := fun x => by
@@ -111,7 +111,7 @@ theorem eq_of_inner_tensU {v v' : TV Vl} (h : ∀ x, ⟪tensU x, v⟫_ℂ = ⟪t
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h2)
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.coe_inj.1 (LinearMap.ext_on_range span_tensU h)`.
+A detailed English derivation is pending.
 -/
 theorem clm_ext {T T' : TV Vl →L[ℂ] TV Vl} (h : ∀ x, T (tensU x) = T' (tensU x)) : T = T' :=
   ContinuousLinearMap.coe_inj.1 (LinearMap.ext_on_range span_tensU h)
@@ -123,7 +123,7 @@ def tensOp (A : ∀ i, Vl i →L[ℂ] Vl i) : TV Vl →L[ℂ] TV Vl :=
   LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (opMat A))
 
 /- English proof (translation)
-Simplify using `only [tensOp, LinearMap.coe_toContinuousLinearMap']`. Rewrite using `[Matrix.piLp_ofLp_toEuclideanLin, Matrix.toLin'_apply, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensOp_apply (A : ∀ i, Vl i →L[ℂ] Vl i) (v : TV Vl) (p : Idx Vl) :
     tensOp A v p = ∑ q, opMat A p q * v q := by
@@ -131,7 +131,7 @@ theorem tensOp_apply (A : ∀ i, Vl i →L[ℂ] Vl i) (v : TV Vl) (p : Idx Vl) :
   rw [Matrix.piLp_ofLp_toEuclideanLin, Matrix.toLin'_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← b.sum_repr' x]`. Rewrite using `[map_sum, inner_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_inner_op {V' : Type} [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (A : V' →L[ℂ] V')
     {m : Type} [Fintype m] (b : OrthonormalBasis m ℂ V') (u x : V') :
@@ -142,9 +142,9 @@ theorem sum_inner_op {V' : Type} [NormedAddCommGroup V'] [InnerProductSpace ℂ 
   rw [map_smul, inner_smul_right, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[tensOp_apply, tensU_apply]`. Simplify using `only [opMat, tensU_apply, ← Finset.prod_mul_distrib]`. Rewrite using `[← prod_sum_pi (fun i j => ⟪bas Vl i (p i), A i (bas Vl i j)⟫_ℂ * ⟪bas Vl i j, x i⟫_ℂ)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sum_inner_op (A i) (bas Vl i) _ _`.
+A detailed English derivation is pending.
 -/
 theorem tensOp_tensU (A : ∀ i, Vl i →L[ℂ] Vl i) (x : ∀ i, Vl i) :
     tensOp A (tensU x) = tensU (fun i => A i (x i)) := by
@@ -156,13 +156,13 @@ theorem tensOp_tensU (A : ∀ i, Vl i →L[ℂ] Vl i) (x : ∀ i, Vl i) :
   exact sum_inner_op (A i) (bas Vl i) _ _
 
 /- English proof (translation)
-The claim follows from `clm_ext fun x => by rw [tensOp_tensU]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem tensOp_one : tensOp (fun i => (1 : Vl i →L[ℂ] Vl i)) = 1 :=
   clm_ext fun x => by rw [tensOp_tensU]; rfl
 
 /- English proof (translation)
-The claim follows from `clm_ext fun x => by rw [ContinuousLinearMap.mul_apply, tensOp_tensU, tensOp_tensU, tensOp_tensU] rfl`.
+A detailed English derivation is pending.
 -/
 theorem tensOp_mul (A B : ∀ i, Vl i →L[ℂ] Vl i) :
     tensOp (fun i => A i * B i) = tensOp A * tensOp B :=
@@ -171,7 +171,7 @@ theorem tensOp_mul (A B : ∀ i, Vl i →L[ℂ] Vl i) :
     rfl
 
 /- English proof (translation)
-Establish `hQ : (ContinuousLinearMap.adjoint (tensOp A)) * tensOp A = 1` using `clm_ext fun y => by`. Use `eq_of_inner_tensU fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.adjoint_inner_right, tensOp_tensU, tensOp_tensU, ContinuousLinearMap.one_apply, inner_tensU, inner_tensU]`. Conclude with `Finset.prod_congr rfl fun i _ => hA i (x i) (y i)`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.mul_apply, hQ, ContinuousLinearMap.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_tensOp (A : ∀ i, Vl i →L[ℂ] Vl i) (hA : ∀ i (u w : Vl i), ⟪A i u, A i w⟫_ℂ = ⟪u, w⟫_ℂ)
     (u w : TV Vl) : ⟪tensOp A u, tensOp A w⟫_ℂ = ⟪u, w⟫_ℂ := by
@@ -184,11 +184,9 @@ theorem inner_tensOp (A : ∀ i, Vl i →L[ℂ] Vl i) (hA : ∀ i (u w : Vl i), 
     ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Establish `hrep : (fun s => tensOp (A s) v) = fun s => ∑ p, (tensOp (A s) v p) • EuclideanSpace.basisFun (Idx Vl) ℂ p`. Use function extensionality and compare the values at `s`. Use `conv_lhs => rw [← (EuclideanSpace.basisFun (Idx Vl) ℂ).sum_repr' (tensOp (A s) v)]`. Simplify using `only [EuclideanSpace.basisFun_inner]`. Rewrite using `[hrep]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousOn_finsetSum _ fun p _ => (show ContinuousOn (fun s => tensOp (A s) v p) S from ?_).smul continuousOn_const` and prove the remaining obligations. Simplify using `only [tensOp_apply]`. Use `continuousOn_finsetSum _ fun q _ => (show ContinuousOn (fun s => opMat (A s) p q) S from ?_).mul continuousOn_const` and prove the remaining obligations. Simplify using `only [opMat]`. Use `continuousOn_finsetProd _ fun i _ => ?_` and prove the remaining obligations.
-
-Conclude with `ContinuousOn.inner continuousOn_const (hA i _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_tensOp {X : Type*} [TopologicalSpace X] (A : X → ∀ i, Vl i →L[ℂ] Vl i) (S : Set X)
     (hA : ∀ i (y : Vl i), ContinuousOn (fun s => A s i y) S) (v : TV Vl) :

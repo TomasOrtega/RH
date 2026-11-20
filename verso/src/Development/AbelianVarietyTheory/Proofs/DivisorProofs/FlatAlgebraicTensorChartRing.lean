@@ -15,11 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Establish `hM : Submonoid.powers c.r ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors c.r_ne_zero`. Use `haveI : IsDomain (Localization.Away c.r) := IsLocalization.isDomain_localization hM`. Use `haveI : Module.Flat R (Localization.Away c.r) := IsLocalization.flat _ (Submonoid.powers c.r)`. Use `haveI : Module.Flat R c.C := Module.Flat.trans R (Localization.Away c.r) c.C`. Use `haveI : Algebra.IsAlgebraic R (Localization.Away c.r) := IsLocalization.isAlgebraic _ (Submonoid.powers c.r)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `haveI : Algebra.IsAlgebraic (Localization.Away c.r) c.C := ⟨fun x => (Algebra.IsIntegral.isIntegral (R := Localization.Away c.r) x).isAlgebraic⟩`. Use `haveI : Algebra.IsAlgebraic R c.C := Algebra.IsAlgebraic.trans R (Localization.Away c.r) c.C`. Use `⟨inferInstance, ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isAlgebraic_zero`.
-
-Consider the case `add x y hx hy => exact hx.add hy`. Consider the case `tmul x y`. Establish `hx` using `(Algebra.IsAlgebraic.isAlgebraic (R := R) x).algHom (Algebra.TensorProduct.includeLeft : c.C →ₐ[R] c.C ⊗[R] c.C)`. Establish `hy` using `(Algebra.IsAlgebraic.isAlgebraic (R := R) y).algHom (Algebra.TensorProduct.includeRight : c.C →ₐ[R] c.C ⊗[R] c.C)`. Simplify using `using hx.mul hy`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem PreChart.tensor_flat_isAlgebraic (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) :

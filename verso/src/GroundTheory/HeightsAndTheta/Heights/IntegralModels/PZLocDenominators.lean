@@ -11,31 +11,29 @@ noncomputable section
 namespace ZLocDenominators
 
 /- English proof (translation)
-Introduce `X f p U hU`. Establish `: IsAffineHom (baseChangeMap f (ZLoc p))` using `by set_option backward.isDefEq.respectTransparency.types false in`. Conclude with `MorphismProperty.pullback_fst _ _ inferInstance`. Use `set g := baseChangeMap f (ZLoc p) with hg`. Establish `hV : IsAffineOpen (g ⁻¹ᵁ U)` using `hU.preimage g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `b`. Set `φ : Γ(X, U) ⟶ Γ(baseChange f (ZLoc p), g ⁻¹ᵁ U)` to `g.appLE U (g ⁻¹ᵁ U) le_rfl`. Establish `hφ : g.app U = φ` using `Scheme.Hom.app_eq_appLE _`. Set `ιA : CommRingCat.of ℤ ⟶ Γ(X, U)` to `CommRingCat.ofHom (Int.castRingHom Γ(X, U))`. Set `h : CommRingCat.of ℤ ⟶ CommRingCat.of (ZLoc p)` to `CommRingCat.ofHom (Int.castRingHom (ZLoc p))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUf : hU.fromSpec ≫ f = Spec.map ιA` using `specZIsTerminal.hom_ext _ _`. Establish `key` using `IsAffineOpen.SpecMap_appLE_fromSpec g hU hV le_rfl`. Establish `Pgeo : IsPullback (Spec.map φ) (hV.fromSpec ≫ pullback.snd f (Spec.map h)) (Spec.map ιA) (Spec.map h)`. Establish `P` using `(isPullback_morphismRestrict g U).paste_vert (IsPullback.of_hasPullback f (Spec.map h))`. Rewrite using `[← hUf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `P.of_iso hV.isoSpec hU.isoSpec (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono hU.fromSpec, Category.assoc, Category.assoc, key, ← hU.isoSpec_inv_ι, ← hV.isoSpec_inv_ι]`. Simplify using `[morphismRestrict_ι]`. Rewrite using `[← hV.isoSpec_inv_ι]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hU.isoSpec_inv_ι]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Set `S : Submonoid ℤ` to `(Ideal.span {((p : ℕ) : ℤ)}).primeCompl`. Set `M : Submonoid Γ(X, U)` to `S.map (Int.castRingHom Γ(X, U))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L` to `Localization M`. Set `fZ : ZLoc p →+* L` to `IsLocalization.map (M := S) (S := ZLoc p) L (Int.castRingHom Γ(X, U)) (T := M) (Submonoid.le_comap_map _)`. Establish `H : fZ.comp (algebraMap ℤ (ZLoc p)) = (algebraMap Γ(X, U) L).comp (Int.castRingHom Γ(X, U))` using `IsLocalization.map_comp _`. Establish `Palg` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isLocalization (Int.castRingHom Γ(X, U)) fZ H S)`. Establish `hh : algebraMap ℤ (ZLoc p) = Int.castRingHom (ZLoc p)` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `Palg` using `[hh]`. Set `e` to `Pgeo.isoIsPullback _ _ Palg`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective e.hom`. Take `⟨χ, hχ⟩` from `Spec.map_surjective e.inv`. Establish `hcomp : CommRingCat.ofHom (algebraMap Γ(X, U) L) ≫ ψ = φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hψ]`. Conclude with `IsPullback.isoIsPullback_hom_fst _ _ Pgeo Palg`. Establish `hχψ : χ ≫ ψ = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, hψ, hχ, Iso.hom_inv_id, Spec.map_id]`. Establish `hφa : ∀ a, φ a = ψ (algebraMap Γ(X, U) L a)` using `fun a => by rw [← hcomp]; rfl`. Establish `hψa : ∀ b, ψ (χ b) = b` using `fun b => by`. Rewrite using `[← CommRingCat.comp_apply, hχψ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨a, m⟩, ham⟩` from `IsLocalization.surj M (χ b)`. Take `⟨n, hn, hnm⟩` from `Submonoid.mem_map.mp m.2`. Establish `hpn : ¬ ((p : ℕ) : ℤ) ∣ n` using `fun hd => hn (Ideal.mem_span_singleton.mpr hd)`. Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hpn (dvd_zero _)`. Establish `hb : b * (n : Γ(baseChange f (ZLoc p), g ⁻¹ᵁ U)) = φ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg ψ ham` as an intermediate fact. Rewrite `this` using `[map_mul, hψa, ← hφa, ← hφa, ← hnm]`. Simplify using `using this`. Use `⟨n.natAbs, Int.natAbs_pos.mpr hn0, fun hd => hpn (Int.natCast_dvd.mpr hd), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.natAbs_eq n with hn' | hn'` into its components or cases. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, mul_comm, hn']`. Simplify using the standard rewrite rules. Use `⟨-a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_neg, ← hb, mul_comm, hn']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proof : ZLocDenominators.Statement := by
   intro X f p U hU

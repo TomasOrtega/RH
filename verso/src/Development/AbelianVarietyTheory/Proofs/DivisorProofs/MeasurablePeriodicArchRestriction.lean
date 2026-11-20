@@ -15,23 +15,21 @@ noncomputable section
 namespace GlobalTheory.SobClass.ClassMeas
 
 /- English proof (translation)
-Use `set W : Set G := {w | w - ι (π w) ∈ K} with hW`. Establish `hp : Continuous fun w => w - ι (π w)` using `continuous_id.sub (hι.comp hπ)`. Establish `hV : MeasurableSet W` using `(hK.isClosed.preimage hp).measurableSet`. Establish `hsub : ∀ B : Set V, π ⁻¹' B ∩ W ⊆ (fun p : G × V => p.1 + ι p.2) '' (K ×ˢ B)` using `fun B w hw => ⟨(_, _), ⟨hw.2, hw.1⟩, sub_add_cancel _ _⟩`. Set `ν : Measure V` to `(μ.restrict W).map π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hν : ∀ A, MeasurableSet A → ν A = μ (π ⁻¹' A ∩ W)` using `fun A hA => by`. Rewrite using `[Measure.map_apply hπ.measurable hA, Measure.restrict_apply (hπ.measurable hA)]`. Establish `: IsFiniteMeasureOnCompacts ν` using `⟨fun A hA => by`. Rewrite using `[hν A hA.measurableSet]`. Conclude with `(measure_mono (hsub A)).trans_lt ((hK.prod hA).image (continuous_fst.add (hι.comp continuous_snd))).measure_lt_top⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ν.IsAddLeftInvariant` using `(forall_measure_preimage_add_iff ν).1 fun t A hA => by`. Rewrite using `[hν A hA, hν _ (measurable_const_add t hA), ← measure_preimage_add μ (ι t) (π ⁻¹' A ∩ W)]`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [hW, Set.mem_inter_iff, Set.mem_preimage, Set.mem_ofPred_eq, map_add, hπι, add_sub_add_left_eq_sub]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : NNReal, ν = c • ν₀` from `⟨_, Measure.isAddLeftInvariant_eq_smul ν ν₀⟩`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `h1` using `hν Set.univ MeasurableSet.univ`. Rewrite `h1` using `[hc, zero_smul, Set.preimage_univ, Set.univ_inter]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Measure.measure_pos_of_mem_nhds μ h0).ne h1`. Use `⟨c⁻¹, fun J _ t K' hK' hcov f hf x hm => ?_⟩` and prove the remaining obligations. Establish `e1 : ∫⁻ y, f (x + ι y) ∂ν = c * ∫⁻ y, f (x + ι y) ∂ν₀`. Rewrite using `[hc, lintegral_smul_measure]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : ∫⁻ y, f (x + ι y) ∂ν ≤ Fintype.card J * ∫⁻ w, f w ∂μ`. Set `S : J → Set G` to `fun j => {w | w - ι (π w) - t j ∈ K'}`. Establish `hS : ∀ j, MeasurableSet (S j)` using `fun j => (hK'.isClosed.preimage (hp.sub continuous_const)).measurableSet`. Establish `hWS : W ⊆ ⋃ j, S j` using `fun w hw => Set.mem_iUnion.2 (hcov _ hw)`. Rewrite using `[lintegral_map hm hπ.measurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lintegral_mono_set hWS).trans ((lintegral_iUnion_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[tsum_fintype, ← nsmul_eq_mul, ← Finset.card_univ]`. Use `Finset.sum_le_card_nsmul _ _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_congr_fun (g := fun w => f (x - t j + w)) (hS j) (fun w hw => by show f (x + ι (π w)) = f (x - t j + w)`. Rewrite using `[← hf _ _ hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use the proof step `abel)]`. Conclude with `(setLIntegral_le_lintegral _ _).trans (lintegral_add_left_eq_self f _).le`. Rewrite `e2` using `[e1]`. Rewrite using `[ENNReal.coe_inv hc0]`.
-
-Conclude with `(ENNReal.mul_le_iff_le_inv (ENNReal.coe_ne_zero.2 hc0) ENNReal.coe_ne_top).1 e2`.
+A detailed English derivation is pending.
 -/
 theorem slice_le {G V : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsAddHaarMeasure]
@@ -90,7 +88,7 @@ theorem slice_le {G V : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologic
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
@@ -101,9 +99,7 @@ theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
@@ -116,7 +112,7 @@ theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-Establish `: T2Space (FiniteAdeleRing (𝓞 F) F)` using `inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))`. Establish `: T2Space (InfiniteAdeleRing F)` using `inferInstanceAs (T2Space (∀ v : InfinitePlace F, v.Completion))`. Conclude with `inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
   have : T2Space (FiniteAdeleRing (𝓞 F) F) :=
@@ -126,13 +122,13 @@ theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
   exact inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_int : IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F} :=
   RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)
 
 /- English proof (translation)
-Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 F)), Algebra.norm_algebraMap]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_quot (m : ℕ) : Nat.card (𝓞 F ⧸ Ideal.span {(m : 𝓞 F)}) = m ^ Module.finrank ℤ (𝓞 F) := by
   rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton,
@@ -140,9 +136,9 @@ theorem card_quot (m : ℕ) : Nat.card (𝓞 F ⧸ Ideal.span {(m : 𝓞 F)}) = 
   simp
 
 /- English proof (translation)
-Take `⟨r, y, hy, e⟩` from `Formalism.UG.P.integral_adele_approximation_holds F (m : 𝓞 F) (by exact_mod_cast (by omega : m ≠ 0)) a ha`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, s * (m : 𝓞 F) = r - (Ideal.Quotient.mk (Ideal.span {(m : 𝓞 F)}) r).out := by`. Rewrite using `[← Ideal.mem_span_singleton', ← Ideal.Quotient.eq]`. Conclude with `(Quotient.out_eq _).symm`. Use `⟨Ideal.Quotient.mk _ r, y + algebraMap (𝓞 F) _ s, fun v => add_mem (hy v) (HeightOneSpectrum.coe_mem_adicCompletionIntegers v s), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F)) hs` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_natCast]`. Rewrite `e` using `[map_natCast]`. Rewrite using `[e]`. Take the linear combination `-this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_rep (m : ℕ) (hm : 1 ≤ m) (a : FiniteAdeleRing (𝓞 F) F) (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) :
     ∃ (q : 𝓞 F ⧸ Ideal.span {(m : 𝓞 F)}) (b : FiniteAdeleRing (𝓞 F) F), (∀ v, b v ∈ v.adicCompletionIntegers F) ∧
@@ -159,23 +155,19 @@ theorem exists_rep (m : ℕ) (hm : 1 ≤ m) (a : FiniteAdeleRing (𝓞 F) F) (ha
   linear_combination -this
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI := t2Space_adeleRing_of_numberField F`. Use `⟨Measure.addHaar, inferInstance, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : (κ → mixedEmbedding.mixedSpace F) →+ (κ → AF F)` to `AddMonoidHom.mk' (archInc F) archInc_add`. Set `π : (κ → AF F) →+ (κ → mixedEmbedding.mixedSpace F)` to `AddMonoidHom.mk' (fun z i => evI F (z i)) (fun z z' => funext fun i => map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (z i).1 (z' i).1)`. Establish `hι : Continuous ι` using `continuous_pi fun i => Continuous.prodMk ((continuous_ofMixed F).comp (continuous_apply i)) continuous_const`. Establish `hπ : Continuous π` using `continuous_pi fun i => (continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))`. Establish `hπι : ∀ y, π (ι y) = y` using `fun y => funext fun i => evI_archInc y i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `I : Set (FiniteAdeleRing (𝓞 F) F)` to `{a | ∀ v, a v ∈ v.adicCompletionIntegers F}`. Set `K : Set (κ → AF F)` to `Set.pi Set.univ fun _ => (({0} : Set (Ainf F)) ×ˢ I : Set (Ainf F × Af F))`. Establish `hK : IsCompact K` using `isCompact_univ_pi fun _ => isCompact_singleton.prod (GlobalTheory.AdeleCocompact.isCompact_integral F)`. Establish `h0 : {w | w - ι (π w) ∈ K} ∈ 𝓝 (0 : κ → AF F)`. Establish `ho : IsOpen (Set.pi Set.univ fun _ : κ => {a : AF F | a.2 ∈ I})` using `isOpen_set_pi Set.finite_univ fun _ _ => (isOpen_int F).preimage continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_superset (ho.mem_nhds fun i _ v => zero_mem _) fun w hw i _ => ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (w i).1 - (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F (w i).1) = 0`. Rewrite using `[RingEquiv.symm_apply_apply, sub_self]`. Use `show (w i).2 - 0 ∈ I`. Rewrite using `[sub_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `hw i trivial`. Use `haveI : BorelSpace (mixedEmbedding.mixedSpace F) := Prod.borelSpace`. Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`. Use `haveI : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Take `⟨c, hc⟩` from `slice_le (Measure.addHaar : Measure (κ → AF F)) volume ι π hι hπ hπι hK h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Module.finrank ℤ (𝓞 F) * Fintype.card κ, c, fun m hm f hf x hx => ?_⟩` and prove the remaining obligations. Establish `hcard` using `card_quot F m`. Use `haveI : Finite (𝓞 F ⧸ Ideal.span {(m : 𝓞 F)}) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `letI := Fintype.ofFinite (𝓞 F ⧸ Ideal.span {(m : 𝓞 F)})`. Establish `key` using `hc (κ → 𝓞 F ⧸ Ideal.span {(m : 𝓞 F)}) (fun q i => pairA F 0 (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) (q i).out)) ((fun a => (m : AF F) • a) '' K) (hK.image (continuous_const_smul _)) ?_ f ?_ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `key` using `[Fintype.card_fun, ← Nat.card_eq_fintype_card, hcard, ← pow_mul, ← mul_assoc]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[ENNReal.ofReal_mul c.coe_nonneg, ENNReal.ofReal_coe_nnreal, ← Nat.cast_pow, ENNReal.ofReal_natCast]`. Introduce `k hk choose q b hb e using fun i => exists_rep F m hm (k i).2 (hk i trivial).2`.
-
-Use `⟨q, fun i => pairA F 0 (b i), fun i _ => ⟨rfl, hb i⟩, funext fun i => Prod.ext ?_ (e i).symm⟩` and prove the remaining obligations. Establish `: (k i).1 = 0` using `(hk i trivial).1`. Use `show ((m : AF F)).1 * 0 = (k i).1 - 0`. Rewrite using `[this, mul_zero, sub_zero]`. Introduce and unpack `z _ ⟨a, ha, rfl⟩`.
-
-Use `hf z a fun i => ⟨?_, (ha i trivial).2⟩` and prove the remaining obligations. Establish `: (a i).1 = 0` using `(ha i trivial).1`. Rewrite using `[evI, this, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_meas : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ ∧ ∃ (a : ℕ) (C : ℝ), ∀ m : ℕ, 1 ≤ m → ∀ f : (κ → AF F) → ENNReal, (∀ x a' : κ → AF F, (∀ i, evI F (a' i) = 0 ∧ ∀ v, evFin F v (a' i) ∈ v.adicCompletionIntegers F) → f (x + (m : AF F) • a') = f x) → ∀ x : κ → AF F, Measurable (fun y : κ → mixedEmbedding.mixedSpace F => f (x + GlobalTheory.SobClass.archInc F y)) → ∫⁻ y : κ → mixedEmbedding.mixedSpace F, f (x + GlobalTheory.SobClass.archInc F y) ≤ ENNReal.ofReal (C * (m : ℝ) ^ a) * ∫⁻ z, f z ∂μ := by
   intro F _ _ κ _

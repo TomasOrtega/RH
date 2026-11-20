@@ -18,7 +18,7 @@ variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N0 : ℕ}
 def emb (s : Lt) : ℕ × Fin N0 → Lt × ℕ × Fin N0 := fun p => (s, p.1, p.2)
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [emb, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.2.1 h.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_inj (s : Lt) : Function.Injective (emb (N0 := N0) s) := by
   intro a b h
@@ -29,16 +29,16 @@ def res (s : Lt) (m : Lt × ℕ × Fin N0 →₀ ℕ) : ℕ × Fin N0 →₀ ℕ
   m.comapDomain (emb s) (emb_inj s).injOn
 
 /- English proof (translation)
-The claim follows from `Finsupp.comapDomain_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_apply (s : Lt) (m : Lt × ℕ × Fin N0 →₀ ℕ) (p : ℕ × Fin N0) :
     res s m p = m (emb s p) :=
   Finsupp.comapDomain_apply _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[res_apply, Finsupp.finsetSum_apply, Finset.sum_eq_single t]`. Conclude with `Finsupp.mapDomain_apply (emb_inj t) _ _`. Introduce `s _ hst`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, hq⟩`. Simplify using `only [emb, Prod.mk.injEq] at hq`. Conclude with `hst hq.1`. Introduce `h`. Conclude with `absurd (Finset.mem_univ t) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem res_sum (n : Lt → (ℕ × Fin N0 →₀ ℕ)) (t : Lt) :
     res t (∑ s, (n s).mapDomain (emb s)) = n t := by
@@ -54,7 +54,7 @@ theorem res_sum (n : Lt → (ℕ × Fin N0 →₀ ℕ)) (t : Lt) :
     exact absurd (Finset.mem_univ t) h
 
 /- English proof (translation)
-Simplify using `only [rename_monomial]`. Rewrite using `[monomial_sum_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_rename_monomial (n : Lt → (ℕ × Fin N0 →₀ ℕ)) :
     ∏ s, rename (emb s) (monomial (n s) (1 : ℤ)) =
@@ -63,9 +63,9 @@ theorem prod_rename_monomial (n : Lt → (ℕ × Fin N0 →₀ ℕ)) :
   rw [monomial_sum_one]
 
 /- English proof (translation)
-Unfold `nablaX minorX`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.map_det]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i k`. Simplify using `[emb]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem nablaX_eq (nu : Lt → YoungDiagram) (J : ColChoice N0 nu) :
     nablaX N0 nu J = ∏ s, rename (emb s) (∏ c : Fin ((nu s).rowLen 0), minorX ℤ N0 ((nu s).colLen c) (J s c)) := by
@@ -84,7 +84,7 @@ def Tmap (π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial
     ∏ s, rename (emb s) (π s (monomial (res s m) 1))
 
 /- English proof (translation)
-Establish `: (monomial m (1 : ℤ) : MvPolynomial (Lt × ℕ × Fin N0) ℤ) = basisMonomials (Lt × ℕ × Fin N0) ℤ m`. Rewrite using `[coe_basisMonomials]`. Rewrite using `[this, Tmap, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tmap_monomial (π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial (ℕ × Fin N0) ℤ))
     (m : Lt × ℕ × Fin N0 →₀ ℕ) :
@@ -95,21 +95,19 @@ theorem Tmap_monomial (π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ]
   rw [this, Tmap, Module.Basis.constr_basis]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ F : Finset Lt, ∀ h : Lt → MvPolynomial (ℕ × Fin N0) ℤ, (∀ s ∉ F, ∃ n, h s = monomial n 1) → Tmap π (∏ s, rename (emb s) (h s)) = ∏ s, rename (emb s) (π s (h s)) from H Finset.univ h (fun s hs => absurd (Finset.mem_univ s) hs)`. Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Introduce `h hh`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose n hn using fun s => hh s (by simp)`. Establish `: h = fun s => monomial (n s) 1` using `funext hn`. Substitute `this` using the available equality. Rewrite using `[prod_rename_monomial, Tmap_monomial]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_sum]`. Consider the case `insert a F haF ih`. Introduce `h hh`. Establish `key : ∀ g : MvPolynomial (ℕ × Fin N0) ℤ, Tmap π (rename (emb a) g * ∏ s ∈ Finset.univ.erase a, rename (emb s) (h s)) = rename (emb a) (π a g) * ∏ s ∈ Finset.univ.erase a, rename (emb s) (π s (h s))`. Set `A : MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial (Lt × ℕ × Fin N0) ℤ` to `Tmap π ∘ₗ LinearMap.mulRight ℤ (∏ s ∈ Finset.univ.erase a, rename (emb s) (h s)) ∘ₗ (rename (emb a)).toLinearMap`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial (Lt × ℕ × Fin N0) ℤ` to `LinearMap.mulRight ℤ (∏ s ∈ Finset.univ.erase a, rename (emb s) (π s (h s))) ∘ₗ (rename (emb a)).toLinearMap ∘ₗ π a`. Establish `hAB : A = B`. Use `(basisMonomials (ℕ × Fin N0) ℤ).ext fun u => ?_` and prove the remaining obligations. Rewrite using `[coe_basisMonomials]`. Simplify using `only [A, B, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `ih (Function.update h a (monomial u 1)) (by`. Introduce `s hs`. Distinguish the cases in `hsa : s = a`. Substitute `hsa` using the available equality. Conclude with `⟨u, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hsa]`. Conclude with `hh s (by simp [hsa, hs]))`. Rewrite `h1` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), ← Finset.mul_prod_erase _ (fun s => rename (emb s) (π s (Function.update h a (monomial u 1) s))) (Finset.mem_univ a)]`. Simplify using `only [Function.update_self] at h1`. Establish `e1 : ∏ s ∈ Finset.univ.erase a, rename (emb s) (Function.update h a (monomial u 1) s) = ∏ s ∈ Finset.univ.erase a, rename (emb s) (h s)` using `Finset.prod_congr rfl fun s hs => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hs)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ∏ s ∈ Finset.univ.erase a, rename (emb s) (π s (Function.update h a (monomial u 1) s)) = ∏ s ∈ Finset.univ.erase a, rename (emb s) (π s (h s))` using `Finset.prod_congr rfl fun s hs => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hs)]`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`. Introduce `g`. Conclude with `LinearMap.congr_fun hAB g`.
-
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), ← Finset.mul_prod_erase _ (fun s => rename (emb s) (π s (h s))) (Finset.mem_univ a)]`. Conclude with `key (h a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tmap_prod (π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial (ℕ × Fin N0) ℤ))
     (h : Lt → MvPolynomial (ℕ × Fin N0) ℤ) :
@@ -171,23 +169,19 @@ theorem Tmap_prod (π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvP
     exact key (h a)
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty (ColChoice N0 nu)`. Take `⟨J0⟩` from `hne`. It suffices to establish `H : ∀ F : Finset Lt, ∏ s ∈ F, rename (emb s) (g s) ∈ Submodule.span ℤ (Set.range fun J : ColChoice N0 nu => ∏ s ∈ F, rename (emb s) (∏ c : Fin ((nu s).rowLen 0), minorX ℤ N0 ((nu s).colLen c) (J s c))) by`. Establish `H1` using `H Finset.univ`. Establish `hf : (fun J : ColChoice N0 nu => ∏ s, rename (emb s) (∏ c : Fin ((nu s).rowLen 0), minorX ℤ N0 ((nu s).colLen c) (J s c))) = nablaX N0 nu`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun J => (nablaX_eq nu J).symm`. Rewrite `H1` using `[hf]`. Conclude with `H1`. Introduce `F`. Proceed by induction on `F using Finset.induction_on with`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `Submodule.subset_span ⟨J0, rfl⟩`. Consider the case `insert a F haF ih`. Rewrite using `[Finset.prod_insert haF]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : rename (emb a) (g a) ∈ Submodule.span ℤ (Set.range fun j : (∀ c : Fin ((nu a).rowLen 0), Fin ((nu a).colLen c) ↪o Fin N0) => rename (emb a) (∏ c : Fin ((nu a).rowLen 0), minorX ℤ N0 ((nu a).colLen c) (j c)))`. Use `Submodule.mem_map_of_mem (f := (rename (emb a)).toLinearMap) (hg a)` as an intermediate fact. Rewrite `this` using `[nablaSpan, Submodule.map_span, ← Set.range_comp]`. Conclude with `this`. Establish `hm` using `Submodule.mul_mem_mul ha ih`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hm` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, _, ⟨J, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `(∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N0) at J`. Use `⟨Function.update J a j, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ s ∈ insert a F, rename (emb s) (∏ c : Fin ((nu s).rowLen 0), minorX ℤ N0 ((nu s).colLen c) (Function.update J a j s c)) = rename (emb a) (∏ c : Fin ((nu a).rowLen 0), minorX ℤ N0 ((nu a).colLen c) (j c)) * ∏ s ∈ F, rename (emb s) (∏ c : Fin ((nu s).rowLen 0), minorX ℤ N0 ( …`. Rewrite using `[Finset.prod_insert haF, Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hsa : s ≠ a` using `fun h => haF (h ▸ hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Function.update_of_ne hsa]`. Establish `hex : ∃ s, IsEmpty (∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N0)`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne ⟨fun s => (hcon s).some⟩`.
-
-Take `⟨s, hs⟩` from `hex`. Establish `h0 : g s = 0`. Use `hg s` as an intermediate fact. Rewrite `this` using `[nablaSpan, Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `this`.
-
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ s) (by rw [h0, map_zero])]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem_span (nu : Lt → YoungDiagram) (g : Lt → MvPolynomial (ℕ × Fin N0) ℤ)
     (hg : ∀ s, g s ∈ nablaSpan ℤ N0 (nu s)) :
@@ -250,13 +244,13 @@ end SatP
 
 open SatP in
 /- English proof (translation)
-Introduce `hSB Lt _ _ N0 nu`. Use `choose Cm hCm using fun s => hSB ℤ N0 (nu s)`. Set `π : Lt → (MvPolynomial (ℕ × Fin N0) ℤ →ₗ[ℤ] MvPolynomial (ℕ × Fin N0) ℤ)` to `fun s => (nablaSpan ℤ N0 (nu s)).subtype ∘ₗ Submodule.projectionOnto _ _ (hCm s)`. Establish `hπmem : ∀ s x, π s x ∈ nablaSpan ℤ N0 (nu s)` using `fun s x => (Submodule.projectionOnto _ _ (hCm s) x).2`. Establish `hπfix : ∀ s x, x ∈ nablaSpan ℤ N0 (nu s) → π s x = x` using `fun s x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [π, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`. Rewrite using `[Submodule.projectionOnto_apply_left (hCm s) ⟨x, hx⟩]`. Use `⟨Tmap π, fun P => ?_, fun J => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.as_sum P, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: monomial m (coeff m P) = coeff m P • monomial m (1 : ℤ)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, LinearMap.map_smul, Tmap_monomial]`. Conclude with `Submodule.smul_mem _ _ (prod_mem_span nu _ fun s => hπmem s _)`. Rewrite using `[nablaX_eq, Tmap_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hπfix]`. Conclude with `Submodule.subset_span ⟨J s, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem projZ : ProjZ := by
   intro hSB Lt _ _ N0 nu

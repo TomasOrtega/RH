@@ -15,7 +15,7 @@ def Zp (p : ℕ) [Fact p.Prime] : Polynomial ℚ_[p] :=
     (Polynomial.X + Polynomial.C (-(p : ℚ_[p])))
 
 /- English proof (translation)
-Simplify using `only [Zp, mul_pow, Polynomial.C_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Zp_pow (n : ℕ) : Zp p ^ n = Polynomial.C ((p : ℚ_[p])⁻¹ ^ n) *
     (Polynomial.X ^ ((p - 1) * n) * (Polynomial.X + Polynomial.C (-(p : ℚ_[p]))) ^ n) := by
@@ -23,7 +23,7 @@ lemma Zp_pow (n : ℕ) : Zp p ^ n = Polynomial.C ((p : ℚ_[p])⁻¹ ^ n) *
   ring
 
 /- English proof (translation)
-Rewrite using `[Zp_pow, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow_mul']`. Use `split_ifs`. Rewrite using `[Polynomial.coeff_X_add_C_pow]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coeff_Zp_pow (n m : ℕ) : (Zp p ^ n).coeff m =
     if (p - 1) * n ≤ m then (p : ℚ_[p])⁻¹ ^ n *
@@ -35,17 +35,17 @@ lemma coeff_Zp_pow (n m : ℕ) : (Zp p ^ n).coeff m =
   · rw [mul_zero]
 
 /- English proof (translation)
-Simplify using `using Padic.norm_int_le_one (p := p) (m : ℤ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma norm_natCast_le_one' (m : ℕ) : ‖(m : ℚ_[p])‖ ≤ 1 := by
   simpa using Padic.norm_int_le_one (p := p) (m : ℤ)
 
 /- English proof (translation)
-Rewrite using `[coeff_Zp_pow, if_pos h]`. Use `set i := m - (p - 1) * n with hi`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.1.pos`. Distinguish the cases in `hin : i ≤ n`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, norm_inv, norm_neg, Padic.norm_p, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : (p : ℝ) ^ n = (p : ℝ) ^ i * (p : ℝ) ^ (n - i)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hin]`. Establish `hc` using `norm_natCast_le_one' (p := p) (n.choose i)`. Rewrite using `[hsplit, inv_pow]`. Establish `hpi : (0 : ℝ) < (p : ℝ) ^ (n - i)` using `pow_pos hp0 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega), Nat.cast_zero, mul_zero, mul_zero, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 lemma norm_coeff_Zp_pow_le (n m : ℕ) (h : (p - 1) * n ≤ m) :
     ‖(Zp p ^ n).coeff m‖ ≤ (p : ℝ) ^ (m - (p - 1) * n) := by
@@ -67,9 +67,9 @@ lemma norm_coeff_Zp_pow_le (n m : ℕ) (h : (p - 1) * n ≤ m) :
     positivity
 
 /- English proof (translation)
-Rewrite using `[coeff_Zp_pow]`. Use `split_ifs with h`. Establish `h1 : p * n < p * r` using `Nat.mul_lt_mul_of_pos_left hn hp.1.pos`. Establish `h2 : (p - 1) * n + n = p * n`. Rewrite using `[Nat.sub_mul, one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left n hp.1.pos)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.choose_eq_zero_of_lt (by omega), Nat.cast_zero, mul_zero, mul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma coeff_Zp_pow_lt (r n : ℕ) (hn : n < r) : (Zp p ^ n).coeff (p * r) = 0 := by
   rw [coeff_Zp_pow]
@@ -81,7 +81,7 @@ lemma coeff_Zp_pow_lt (r n : ℕ) (hn : n < r) : (Zp p ^ n).coeff (p * r) = 0 :=
   · rfl
 
 /- English proof (translation)
-Establish `h2 : (p - 1) * r + r = p * r`. Rewrite using `[Nat.sub_mul, one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left r hp.1.pos)]`. Rewrite using `[coeff_Zp_pow, if_pos (by omega)]`. Establish `h3 : p * r - (p - 1) * r = r` using `by omega`. Rewrite using `[h3, Nat.sub_self, pow_zero, Nat.choose_self, Nat.cast_one, mul_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma coeff_Zp_pow_self (r : ℕ) : (Zp p ^ r).coeff (p * r) = (p : ℚ_[p])⁻¹ ^ r := by
   have h2 : (p - 1) * r + r = p * r := by
@@ -91,11 +91,11 @@ lemma coeff_Zp_pow_self (r : ℕ) : (Zp p ^ r).coeff (p * r) = (p : ℚ_[p])⁻�
   rw [h3, Nat.sub_self, pow_zero, Nat.choose_self, Nat.cast_one, mul_one, mul_one]
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.1.one_le`. Distinguish the cases in `h : (p - 1) * n ≤ p * r`. Use `(norm_coeff_Zp_pow_le n (p * r) h).trans ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast]`. Apply `zpow_le_zpow_right₀ hp1` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : (p - 1) * r + r = p * r`. Rewrite using `[Nat.sub_mul, one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left r hp.1.pos)]`. Establish `h3 : (p - 1) * (r + 1) ≤ (p - 1) * n` using `Nat.mul_le_mul_left _ hn`. Rewrite `h3` using `[Nat.mul_add, mul_one]`. Move the coercions through the operations in `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_Zp_pow, if_neg h, norm_zero]`. Check the signs of the components of the expression.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 lemma norm_coeff_Zp_pow_gt (r n : ℕ) (hn : r < n) :
     ‖(Zp p ^ n).coeff (p * r)‖ ≤ (p : ℝ) ^ ((r : ℤ) - ((p - 1 : ℕ) : ℤ)) := by
@@ -114,15 +114,13 @@ lemma norm_coeff_Zp_pow_gt (r n : ℕ) (hn : r < n) :
     positivity
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.1.pos`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.1.one_lt`. Rewrite using `[← Finset.add_sum_erase s _ hr]`. Establish `hmain : ‖(Zp p ^ r).coeff (p * r) * a r‖ = (p : ℝ) ^ ((r : ℤ) - v)`. Rewrite using `[coeff_Zp_pow_self, norm_mul, har, norm_pow, norm_inv, Padic.norm_p, inv_inv, ← zpow_natCast, ← zpow_add₀ hp0.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hrest : ‖∑ n ∈ s.erase r, (Zp p ^ n).coeff (p * r) * a n‖ ≤ (p : ℝ) ^ ((r : ℤ) - ((p - 1 : ℕ) : ℤ))`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `n hn`. Establish `hnr : n ≠ r` using `Finset.ne_of_mem_erase hn`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Break down `lt_or_gt_of_ne hnr with hlt | hgt` into its components or cases. Rewrite using `[coeff_Zp_pow_lt r n hlt, norm_zero, zero_mul]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 
-Establish `hlt : (p : ℝ) ^ ((r : ℤ) - ((p - 1 : ℕ) : ℤ)) < (p : ℝ) ^ ((r : ℤ) - v)` using `zpow_lt_zpow_right₀ hp1 (by omega)`. Establish `hne : ‖(Zp p ^ r).coeff (p * r) * a r‖ ≠ ‖∑ n ∈ s.erase r, (Zp p ^ n).coeff (p * r) * a n‖`. Rewrite using `[hmain]`. Conclude with `(lt_of_le_of_lt hrest hlt).ne'`. Rewrite using `[Padic.add_eq_max_of_ne hne, hmain]`.
-
-Conclude with `max_eq_left (hrest.trans hlt.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core (r : ℕ) (s : Finset ℕ) (hr : r ∈ s) (a : ℕ → ℚ_[p]) (ha : ∀ n, ‖a n‖ ≤ 1)
     (v : ℕ) (hv : v < p - 1) (har : ‖a r‖ = (p : ℝ) ^ (-(v : ℤ))) :

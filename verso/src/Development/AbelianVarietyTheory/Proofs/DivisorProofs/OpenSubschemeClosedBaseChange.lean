@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hsp : IsClosedImmersion (spMap φ)` using `IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom φ) hφ`. Establish `hπ : IsClosedImmersion π` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsClosedImmersion) h.flip hsp`. Take `⟨t, ht, hts⟩` from `(IsClosedImmersion.isClosedEmbedding π).isInducing.isOpen_iff.mp U.isOpen`. Set `W : X.Opens` to `⟨t, ht⟩`. Establish `hW : π ⁻¹ᵁ W = U` using `Opens.ext hts`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Substitute `hW` using the available equality. Use `⟨W, π ∣_ W, morphismRestrict_ι π W, ?_⟩` and prove the remaining obligations. Conclude with `IsPullback.paste_vert (isPullback_morphismRestrict π W) h`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem openSubscheme_closedFibre_lift (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R')
     (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (U : X'.Opens)

@@ -9,9 +9,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Introduce `κ _ _ ι _ F _ P hP hd a ha`. Establish `hs : ∃ s : MRing ι F, IsMultiHomog s a ∧ s ∉ P`. Break down `ha with h1 | h2` into its components or cases. Conclude with `h1`. Conclude with `h2 P hP le_rfl`.
-
-Take `⟨s, hsa, hsP⟩` from `hs`. Conclude with `h κ ι F P hP hd (fun k => (a k : ℤ)) s 1 (_root_.GroundTheory.Heights₂.Heights.Model.isRegularSection_form hP.isPrime hsa hsP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SectionNef.glueBundles_second_of_first (h : _root_.GroundTheory.Heights₂.Heights.Model.SectionNef.Statement) :
     SectionNef.Statement := by
@@ -25,7 +23,7 @@ theorem SectionNef.glueBundles_second_of_first (h : _root_.GroundTheory.Heights�
     (_root_.GroundTheory.Heights₂.Heights.Model.isRegularSection_form hP.isPrime hsa hsP)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => SectionNef.glueBundles_second_of_first h.1, fun _ => ⟨_root_.GroundTheory.Heights₂.Heights.Model.SectionNef.proof, _root_.GroundTheory.Heights₂.Heights.Model.SectionNefGenerated.proof⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem SectionNef.equiv :
     (_root_.GroundTheory.Heights₂.Heights.Model.SectionNef.Statement ∧
@@ -36,7 +34,7 @@ theorem SectionNef.equiv :
       _root_.GroundTheory.Heights₂.Heights.Model.SectionNefGenerated.proof⟩⟩
 
 /- English proof (translation)
-The claim follows from `SectionNef.glueBundles_second_of_first _root_.GroundTheory.Heights₂.Heights.Model.SectionNef.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionNef.sectionNef_of_first : SectionNef.Statement :=
   SectionNef.glueBundles_second_of_first _root_.GroundTheory.Heights₂.Heights.Model.SectionNef.proof

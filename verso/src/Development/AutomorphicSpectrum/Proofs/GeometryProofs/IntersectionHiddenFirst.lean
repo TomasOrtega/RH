@@ -18,25 +18,25 @@ variable {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
 def Zp {n : ℕ} (a : Pt R n d) : Prop := ∀ i, constantCoeff (a i) = 0
 
 /- English proof (translation)
-Introduce `i` and use `by show constantCoeff (X (j, i) : PS R n d) = 0 simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_pt {n : ℕ} (j : Fin n) : Zp (pt R d j) := fun i => by
   show constantCoeff (X (j, i) : PS R n d) = 0
   simp
 
 /- English proof (translation)
-Introduce `i` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_zero {n : ℕ} : Zp (0 : Pt R n d) := fun i => by simp
 
 /- English proof (translation)
-Introduce `i` and use `constantCoeff_ev (CZ.cons ha CZ.nil) (hφ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_comp1 {n : ℕ} {φ : Pt R 1 d} {a : Pt R n d} (hφ : Zp φ) (ha : Zp a) : Zp (comp1 φ a) :=
   fun i => constantCoeff_ev (CZ.cons ha CZ.nil) (hφ i)
 
 /- English proof (translation)
-Introduce `i` and use `by have h : coeff (0 : Fin n × Fin d →₀ ℕ) (MvPowerSeries.map f (a i)) = f (coeff 0 (a i)) := coeff_map _ _ _ rw [coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, ha i, map_zero] at h exact h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_mP {n : ℕ} {a : Pt R n d} (ha : Zp a) : Zp (mP f a) := fun i => by
   have h : coeff (0 : Fin n × Fin d →₀ ℕ) (MvPowerSeries.map f (a i)) = f (coeff 0 (a i)) := coeff_map _ _ _
@@ -44,28 +44,28 @@ theorem zp_mP {n : ℕ} {a : Pt R n d} (ha : Zp a) : Zp (mP f a) := fun i => by
   exact h
 
 /- English proof (translation)
-Rewrite using `[map_ev' f (CZ.cons ha CZ.nil), mV_cons, mV_nil]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ev1 {n : ℕ} {a : Pt R n d} (ha : Zp a) (g : PS R 1 d) :
     MvPowerSeries.map f (ev ![a] g) = ev ![mP f a] (MvPowerSeries.map f g) := by
   rw [map_ev' f (CZ.cons ha CZ.nil), mV_cons, mV_nil]
 
 /- English proof (translation)
-Rewrite using `[map_ev' f (CZ.cons ha (CZ.cons hb CZ.nil)), mV_cons, mV_cons, mV_nil]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ev2 {n : ℕ} {a b : Pt R n d} (ha : Zp a) (hb : Zp b) (g : PS R 2 d) :
     MvPowerSeries.map f (ev ![a, b] g) = ev ![mP f a, mP f b] (MvPowerSeries.map f g) := by
   rw [map_ev' f (CZ.cons ha (CZ.cons hb CZ.nil)), mV_cons, mV_cons, mV_nil]
 
 /- English proof (translation)
-Rewrite using `[map_ev' f (CZ.cons ha (CZ.cons hb (CZ.cons hc CZ.nil))), mV_cons, mV_cons, mV_cons, mV_nil]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ev3 {n : ℕ} {a b c : Pt R n d} (ha : Zp a) (hb : Zp b) (hc : Zp c) (g : PS R 3 d) :
     MvPowerSeries.map f (ev ![a, b, c] g) = ev ![mP f a, mP f b, mP f c] (MvPowerSeries.map f g) := by
   rw [map_ev' f (CZ.cons ha (CZ.cons hb (CZ.cons hc CZ.nil))), mV_cons, mV_cons, mV_cons, mV_nil]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_ev1 f ha (φ i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mapPoint_comp1' {n : ℕ} (φ : Pt R 1 d) {a : Pt R n d} (ha : Zp a) :
     mP f (comp1 φ a) = comp1 (mP f φ) (mP f a) := by
@@ -75,20 +75,20 @@ theorem mapPoint_comp1' {n : ℕ} (φ : Pt R 1 d) {a : Pt R n d} (ha : Zp a) :
 variable {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Introduce `i` and use `constantCoeff_ev (CZ.cons ha (CZ.cons hb CZ.nil)) (B.G.const i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_add (B : Germ.FB R d O) {n : ℕ} {a b : Pt R n d} (ha : Zp a) (hb : Zp b) : Zp (B.G.add a b) :=
   fun i => constantCoeff_ev (CZ.cons ha (CZ.cons hb CZ.nil)) (B.G.const i)
 
 /- English proof (translation)
-The claim follows from `B.A.const a`.
+A detailed English derivation is pending.
 -/
 theorem zp_act (B : Germ.FB R d O) (a : O) : Zp (B.A.act a) := B.A.const a
 
 variable {f} {B : Germ.FB R d O} {C : Germ.FB S d O}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map f (ev ![a, b] (B.G.F i)) = ev ![mP f a, mP f b] (C.G.F i)`. Rewrite using `[h.F, map_ev2 f ha hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapPoint_add (h : IsMapOf f B C) {n : ℕ} {a b : Pt R n d} (ha : Zp a) (hb : Zp b) :
     mP f (B.G.add a b) = C.G.add (mP f a) (mP f b) := by
@@ -97,24 +97,22 @@ theorem mapPoint_add (h : IsMapOf f B C) {n : ℕ} {a b : Pt R n d} (ha : Zp a) 
   rw [h.F, map_ev2 f ha hb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(h.act a i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mapPoint_act (h : IsMapOf f B C) (a : O) : mP f (B.A.act a) = C.A.act a := by
   funext i
   exact (h.act a i).symm
 
 /- English proof (translation)
-Establish `hφ : Zp φ` using `I.c₁`. Establish `hψ : Zp ψ` using `I.c₂`. Use `⟨zp_mP f hφ, zp_mP f hψ, ?_, ?_, ⟨?_, ?_⟩, ?_, fun a => ?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (mP f) I.inv₁`. Rewrite `h` using `[mapPoint_comp1' f _ hψ, mapPoint_pt]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `congrArg (mP f) I.inv₂`. Rewrite `h` using `[mapPoint_comp1' f _ hφ, mapPoint_pt]`. Then use the resulting hypothesis. Establish `h` using `congrArg (MvPowerSeries.map f) I.ax.1`. Simplify `h` using `only [map_ev2 f zp_zero (zp_pt 0), mapPoint_zero f, mapPoint_pt, map_one]`. Establish `h` using `congrArg (MvPowerSeries.map f) I.ax.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `only [map_ev2 f (zp_pt 0) zp_zero, mapPoint_zero f, mapPoint_pt, map_one]`. Establish `h` using `congrArg (mP f) I.law`. Simplify using `only [mapPoint_comp1' f _ (zp_add _ (zp_pt _) (zp_pt _)), mapPoint_comp1' f _ (zp_pt _), mapPoint_add h₁ (zp_comp1 hφ (zp_pt _)) (zp_comp1 hφ (zp_pt _)), mapPoint_add h₂ (zp_pt _) (zp_pt _), mapPoint_pt] at h`. Simplify `h` using `only [mapPoint_comp1' f _ (zp_pt _), mapPoint_pt]`. Establish `h` using `congrArg (mP f) (I.act a)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[mapPoint_comp1' f _ (zp_act _ _), mapPoint_comp1' f _ hφ, mapPoint_act h₁, mapPoint_act h₂]`. Then use the resulting hypothesis. Establish `h` using `congrArg (MvPowerSeries.map f) I.ph1`. Simplify using `(maxDischargeDepth := 6) only [map_mul, map_ev2 f, map_ev3 f, mapPoint_comp1' f, mapPoint_add h₂, mapPoint_pt, ← h₁.ph1, ← h₂.ph1, hφ, zp_pt, zp_comp1, zp_add] at h`. Conclude with `h`. Establish `h` using `congrArg (MvPowerSeries.map f) I.ph2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `(maxDischargeDepth := 6) only [map_mul, map_ev2 f, map_ev3 f, mapPoint_comp1' f, mapPoint_add h₂, mapPoint_pt, ← h₁.ph2, ← h₂.ph2, hφ, zp_pt, zp_comp1, zp_add] at h`. Conclude with `h`. Establish `h` using `congrArg (MvPowerSeries.map f) I.sy`. Simplify using `(maxDischargeDepth := 6) only [map_mul, map_ev2 f, mapPoint_comp1' f, mapPoint_pt, ← h₁.sy, ← h₂.sy, hφ, zp_pt, zp_comp1] at h`. Conclude with `h`.
-
-Establish `h` using `congrArg (MvPowerSeries.map f) (I.ad a)`. Simplify using `(maxDischargeDepth := 6) only [map_mul, map_ev2 f, mapPoint_comp1' f, mapPoint_act h₂, mapPoint_pt, ← h₁.ad, ← h₂.ad, hφ, zp_pt, zp_comp1, zp_act] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIso_mP {B₂ : Germ.FB R d O} {C₂ : Germ.FB S d O} {φ ψ : Germ.Pt R 1 d} {lam : Germ.PS R 2 d}
     (h₁ : IsMapOf f B C) (h₂ : IsMapOf f B₂ C₂) (I : IsIso B B₂ φ ψ lam) :
@@ -158,7 +156,7 @@ end GlobalTheory.CompanionTheory.Ar.Flat.DegZ.IsoMap
 namespace GlobalTheory.CompanionTheory.Ar.Flat.DegZ
 
 /- English proof (translation)
-Introduce `R S _ _ f d O _ _ B B₂ C C₂ φ ψ lam h₁ h₂ I`. Conclude with `IsoMap.isIso_mP h₁ h₂ I`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_map : ∀ (R S : Type) [CommRing R] [CommRing S] (f : R →+* S) (d : ℕ) (O : Type) [CommRing O] [StarRing O]
     (B B₂ : Germ.FB R d O) (C C₂ : Germ.FB S d O) (φ ψ : Germ.Pt R 1 d) (lam : Germ.PS R 2 d),

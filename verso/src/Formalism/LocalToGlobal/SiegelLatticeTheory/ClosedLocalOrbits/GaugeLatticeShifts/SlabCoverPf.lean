@@ -15,31 +15,27 @@ namespace Formalism.L2.SG.Pf.SlabCoverPf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X Y u Ωs hKL hNeat hΩ`. Establish `hK` using `Y.hK`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨n, h, k, hn, hk, hy⟩`. Take `⟨ρ, ⟨γ, κ, hγκ⟩, -⟩` from `Y.colReps u h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hs0 : ((γ : X.B.I.GA))⁻¹ ∈ Srat X u` using `inv_mem (gam_srat X u _ γ.2)`. Take `⟨hn', -⟩` from `nfinConj_holds X u (iotaF X u γ)⁻¹ n hn`. Rewrite `hn'` using `[Subgroup.coe_inv, inv_inv, iotaF_coe]`. Take `⟨ν, hνS, hνK⟩` from `hSA D X Y u ρ _ hKL hn'`. Establish `hκ : (X.xu u)⁻¹ * (((κ : Hfin X u)) : X.B.I.Gf) * X.xu u ∈ X.K2` using `κ.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s1 : X.B.I.GA := ν * ((γ : X.B.I.GA))⁻¹ with hs1`. Take `⟨t, ht, htΩ⟩` from `(hΩ ρ).2.1 (s1 * y).1`. Take `⟨s2, hs2, hs21, hs2K⟩` from `hNL D X Y u ρ t ht`. Use `⟨s2 * s1, mul_mem hs2 (mul_mem hνS hs0), ρ, ?_, ?_⟩` and prove the remaining obligations. Use `show (s2 * s1 * y).1 ∈ Ωs ρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, Prod.fst_mul, hs21]`. Conclude with `htΩ`. Use `⟨_, hK.2.1 _ hs2K _ (hK.2.1 _ hνK _ (hK.2.1 _ hκ _ hk)), ?_⟩ show _ = (s2 * s1 * y).2` and prove the remaining obligations. Rewrite using `[hs1]`. Simplify using `only [Prod.snd_mul, Prod.snd_inv, hy, hγκ, Subgroup.coe_mul, iotaF_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `group`. Introduce `ρ ρ' y s hs hy hsy`. Take `⟨hy1, k, hk, hyk⟩` from `hy`. Take `⟨hsy1, k', hk', hsyk⟩` from `hsy`. Establish `hyk' : ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u * k = y.2` using `hyk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsyk' : ((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u * k' = s.2 * y.2` using `hsyk`. Establish `hg : (((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u)⁻¹ * s.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) ∈ X.K2`. Establish `e : (((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u)⁻¹ * s.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) = k' * k⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hyk', ← hsyk']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `_ = k' * k⁻¹ := by group`. Rewrite using `[e]`. Conclude with `hK.2.1 _ hk' _ (hK.2.2.1 _ hk)`. Take `⟨hs1, hs2⟩` from `sratComp_holds X u s hs`. Take `⟨ν, η, hνη, hνG, hν1, hν2, hη⟩` from `hRL D X u s (Subgroup.mem_inf.1 hs).1 hs1 hs2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ηg, hηg⟩ : ∃ ηg : Gam X u, ηg = ⟨η, hη⟩` from `⟨_, rfl⟩`. Establish `hs2e : s.2 = ν.2 * η.2` using `by rw [hνη]; rfl`. Take `⟨hn1, -⟩` from `nfinConj_holds X u ((Y.cs u).h ρ')⁻¹ ν.2 hν2`. Establish `hLD` using `levelDec_of_psiDd (X := X) (u := u) (hPD D X)`. Take `⟨h1, hh1⟩ : ∃ h1 : Hfin X u, h1 = ((Y.cs u).h ρ')⁻¹ * iotaF X u ηg * (Y.cs u).h ρ` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : (X.xu u)⁻¹ * ((((Y.cs u).h ρ')⁻¹ : Hfin X u) * ν.2 * ((((Y.cs u).h ρ')⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ * (h1 : X.B.I.Gf)) * X.xu u = (((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u)⁻¹ * s.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)`. Rewrite using `[hs2e, hh1]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, iotaF_coe, hηg]`. Use `group`. Establish `hh1K : (X.xu u)⁻¹ * (h1 : X.B.I.Gf) * X.xu u ∈ X.K2` using `(hLD _ hn1 h1 (e1 ▸ hg)).1`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρρ : ρ' = ρ`. Use `(Y.colReps u ((Y.cs u).h ρ)).unique ⟨ηg⁻¹, ⟨h1, hh1K⟩, ?_⟩ ⟨1, 1, by simp⟩` and prove the remaining obligations. Use `show (Y.cs u).h ρ = iotaF X u ηg⁻¹ * (Y.cs u).h ρ' * h1`. Rewrite using `[map_inv, hh1]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hρρ` using the available equality. Establish `hmem : ((Y.cs u).h ρ')⁻¹ * iotaF X u ηg * (Y.cs u).h ρ' ∈ Ku X u Y.hK`. Rewrite using `[← hh1]`. Conclude with `hh1K`. Establish `hη1 : ηg = 1` using `hNeat ((Y.cs u).h ρ') ηg hmem`.
-
-Establish `hη1' : η = 1`. Use `congrArg Subtype.val hη1` as an intermediate fact. Rewrite `this` using `[hηg]`. Conclude with `this`. Establish `hsν : s = ν` using `by rw [hνη, hη1', mul_one]`.
-
-Substitute `hsν` using the available equality. Establish `hsN` using `hNR D X Y u ρ' s hKL hνG hν1 hν2 hg`. Establish `hs1' : s.1 = 1` using `(hΩ ρ').2.2 y.1 hy1 s.1 hsN hsy1`. Conclude with `⟨hGF D X s hνG hs1', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem slabCoverC_of (hGF : GFInfInj) (hSA : NStrongApprox) (hNL : NLift) (hNR : NRatLam)
     (hRL : RatLeviC) (hPD : PsiDdC) : SlabCoverC := by
@@ -116,15 +112,15 @@ theorem slabCoverC_of (hGF : GFInfInj) (hSA : NStrongApprox) (hNL : NLift) (hNR 
     exact ⟨hGF D X s hνG hs1', rfl⟩
 
 /- English proof (translation)
-Introduce `D X s hs h1`. Express the relevant statement in the definitionally equal form `s ∈ X.B.I.GFset at hs`. Take `⟨γ, -, hinf, hfin⟩` from `hs`. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hv` using `hinf v`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hv` using `[h1, Pi.one_apply]`. Establish `hv' : (X.B.I.P v)⁻¹ * (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map ⇑(X.B.I.φ v) * X.B.I.P v = 1`. Rewrite using `[← hv]`. Simplify using `[uMat]`. Establish `hPu : IsUnit (X.B.I.P v).det` using `Matrix.isUnit_det_of_left_inverse hv'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map ⇑(X.B.I.φ v) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul, Matrix.mul_one]`. Use `_ = X.B.I.P v * ((X.B.I.P v)⁻¹ * (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map ⇑(X.B.I.φ v) * X.B.I.P v) * (X.B.I.P v)⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = 1 := by rw [hv', Matrix.mul_one, Matrix.mul_nonsing_inv _ hPu]`. Establish `hγ` using `Matrix.map_injective (f := ⇑(X.B.I.φ v)) (RingHom.injective _) (h2.trans (Matrix.map_one _ (map_zero _) (map_one _)).symm)`. Rewrite `hfin` using `[hγ, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `AutInst.fmat at hfin`. Establish `h2' : s.2 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hfin`. Conclude with `Prod.ext h1 h2'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_infinite_injective : GFInfInj := by
   intro D X s hs h1
@@ -157,7 +153,7 @@ theorem finite_infinite_injective : GFInfInj := by
   exact Prod.ext h1 h2'
 
 /- English proof (translation)
-Introduce `D X Y u ρ t ht`. Take `⟨x, n, hL, rfl, hn⟩` from `ht`. Establish `hi` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u _ x n hL hn`. Establish `hf` using `Formalism.L2.SG.Pf.nLamNfin_holds D X u _ x n hL hn`. Use `⟨x, Subgroup.mem_inf.2 ⟨Formalism.L2.SG.TermOp.ratLink_mem (X := X) hL, Subgroup.subset_closure ⟨fun v => (hi v).1, ⟨hf.1, hf.2.1⟩⟩⟩, rfl, (hNC D X Y u ρ x n hn hL).1⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nLift_of (hNC : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) : NLift := by
   intro D X Y u ρ t ht
@@ -168,9 +164,9 @@ theorem nLift_of (hNC : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) : NLi
     Subgroup.subset_closure ⟨fun v => (hi v).1, ⟨hf.1, hf.2.1⟩⟩⟩, rfl, (hNC D X Y u ρ x n hn hL).1⟩
 
 /- English proof (translation)
-Introduce `D X Y u ρ n hKL hn`. Use `set a : X.B.I.Gf := ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u`. Establish `hKo : IsOpen X.K2` using `(level_subgroup_isClopen X Y.hK hKL).isOpen`. Establish `hc : Continuous fun m : X.B.I.Gf => a⁻¹ * (m * n) * a` using `(continuous_const.mul (continuous_id.mul continuous_const)).mul continuous_const`. Establish `hninv : n⁻¹ ∈ X.NfinU u` using `(nfinGroup_holds (X := X) (u := u)).2 n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hνG, hν1, hν2, hνU⟩` from `hD D X u n⁻¹ hninv _ (hKo.preimage hc) (by show a⁻¹ * (n⁻¹ * n) * a ∈ X.K2; rw [inv_mul_cancel, mul_one, inv_mul_cancel]; exact Y.hK.1)`. Conclude with `⟨ν, Subgroup.mem_inf.2 ⟨hνG, Subgroup.subset_closure ⟨fun v => (hν1 v).1, ⟨hν2.1, hν2.2.1⟩⟩⟩, hνU⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nStrongApprox_of (hD : NDense) : NStrongApprox := by
   intro D X Y u ρ n hKL hn
@@ -184,7 +180,7 @@ theorem nStrongApprox_of (hD : NDense) : NStrongApprox := by
   exact ⟨ν, Subgroup.mem_inf.2 ⟨hνG, Subgroup.subset_closure ⟨fun v => (hν1 v).1, ⟨hν2.1, hν2.2.1⟩⟩⟩, hνU⟩
 
 /- English proof (translation)
-The claim follows from `slabCoverC_of finite_infinite_injective (nStrongApprox_of hD) (nLift_of hNC) nilradical_rational_lattice hRL hPD`.
+A detailed English derivation is pending.
 -/
 theorem slab_covering_of_strong_approx (hD : NDense) (hNC : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) (hRL : RatLeviC) (hPD : PsiDdC) :
     SlabCoverC :=

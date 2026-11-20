@@ -9,19 +9,17 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Introduce `A _ I T P _ W _ hP`. Set `Q` to `A ⧸ I`. Set `B` to `Localization.AtPrime W ⧸ I.map (algebraMap A (Localization.AtPrime W))`. Establish `hsub : (P.comap (algebraMap Q (Localization T))).primeCompl = Algebra.algebraMapSubmonoid Q W.primeCompl`. Establish `hmem : ∀ r : A, Ideal.Quotient.mk I r ∈ P.comap (algebraMap Q (Localization T)) ↔ r ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r`. Rewrite using `[← hP]`. Conclude with `Iff.rfl`. Establish `hIW : I ≤ W` using `fun r hr => by`. Rewrite using `[← hmem, Ideal.Quotient.eq_zero_iff_mem.2 hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.zero_mem _`. Use extensionality with `q`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `h1 : Ideal.Quotient.mk I r ∈ (P.comap (algebraMap Q (Localization T))).primeCompl ↔ r ∉ W` using `not_congr (hmem r)`. Rewrite using `[h1]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `⟨r, hr, rfl⟩`. Introduce and unpack `⟨r', hr', he⟩ hr`. Apply `hr'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: r' - r ∈ I` using `Ideal.Quotient.eq.1 he`. Simplify using `using W.add_mem (hIW this) hr`. Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P)`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization T (Localization.AtPrime P) P` as an intermediate fact. Rewrite `this` using `[IsLocalization.AtPrime, hsub]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `this`. Set `e` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P) B`. Use `⟨e.toRingEquiv, fun a => ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (Localization T) (Localization.AtPrime P) (algebraMap Q (Localization T) (Ideal.Quotient.mk I a)) = algebraMap Q (Localization.AtPrime P) (Ideal.Quotient.mk I a)` using `(IsScalarTower.algebraMap_apply Q (Localization T) (Localization.AtPrime P) _).symm`. Rewrite using `[h2]`.
-
-Conclude with `e.commutes (Ideal.Quotient.mk I a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalizationAtPrimeQuotient.proof : LocalizationAtPrimeQuotient.Statement.{u} := by
   intro A _ I T P _ W _ hP

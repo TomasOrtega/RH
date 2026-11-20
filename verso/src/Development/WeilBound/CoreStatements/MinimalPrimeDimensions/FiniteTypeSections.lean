@@ -16,9 +16,9 @@ namespace ChowFormHeightComparison₂.GenericDenseBound
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 /- English proof (translation)
-Establish `: IsProper p`. Take `⟨N, j, _, e⟩` from `hp`. Use `isProper_str (𝓞 K) N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hft : (algX p W).FiniteType` using `(HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ (show W ≤ p ⁻¹ᵁ ⊤ from le_top)).comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of (𝓞 K))).symm.commRingCatIsoToRingEquiv.surjective)`. Establish `h0 : (algebraMap ℤ (𝓞 K)).FiniteType` using `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `h1` using `hft.comp h0`. Rewrite `h1` using `[Subsingleton.elim ((algX p W).comp (algebraMap ℤ (𝓞 K))) (algebraMap ℤ Γ(X, W))]`. Conclude with `RingHom.finiteType_algebraMap.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteType_sections {K : Type} [Field K] [NumberField K] {X : Scheme.{0}} {p : X ⟶ Sp (𝓞 K)}
     (hp : IsProjOver p) {W : X.Opens} (hW : IsAffineOpen W) : Algebra.FiniteType ℤ Γ(X, W) := by
@@ -38,9 +38,7 @@ theorem finiteType_sections {K : Type} [Field K] [NumberField K] {X : Scheme.{0}
   exact RingHom.finiteType_algebraMap.1 h1
 
 /- English proof (translation)
-Break down `hQ.eq_or_lt with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Rewrite using `[Real.log_zero, mul_zero, neg_zero, Real.exp_zero, mul_one]`. Conclude with `h.trans (mul_le_of_le_one_right (Real.exp_pos _).le (pow_le_one₀ le_rfl zero_le_one))`. Rewrite using `[Real.exp_neg, Real.exp_nat_mul, Real.exp_log h0, mul_inv_le_iff₀ (pow_pos h0 τ)]`.
-
-Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem final_ineq {a Q t : ℝ} {τ : ℕ} (hQ : 0 ≤ Q) (h : a ≤ Real.exp (2 * (τ : ℝ) * t) * Q ^ τ) :
     a * Real.exp (-((τ : ℝ) * Real.log Q)) ≤ Real.exp (2 * (τ : ℝ) * t) := by
@@ -52,35 +50,29 @@ theorem final_ineq {a Q t : ℝ} {τ : ℕ} (hQ : 0 ≤ Q) (h : a ≤ Real.exp (
     exact h
 
 /- English proof (translation)
-Take `⟨N, n, b, g, A, c, gw, hF, -, hbc, hφ⟩` from `hM.fs`. Take `⟨U', hU', a, ha⟩` from `hr.exists_fnOf`. Establish `hyk : under y ∈ L.B.U k` using `mem_ptsIn.1 hy`. Take `⟨O, hO, hyO, hle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (memInf hU' hyk)`. Establish `hO' : IsAffineOpen O` using `hO`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle1 : O ≤ U'` using `hle.trans inf_le_left`. Establish `hle2 : O ≤ L.B.U k` using `hle.trans inf_le_right`. Establish `hyO' : y ∈ ptsIn p σ O` using `mem_ptsIn.2 hyO`. Establish `hg : genericPoint X ∈ O` using `gen_mem hyO`. Establish `: Nonempty O` using `⟨⟨_, hyO⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finiteType_sections hM.arith.isProjOver hO'` as an intermediate fact. Use `functionField_isFractionRing_of_isAffineOpen X O hO'` as an intermediate fact. Establish `halg : ∀ z : Γ(X, O), algebraMap Γ(X, O) X.functionField z = fnOf O hg z` using `fun _ => rfl`. Set `r : Option (Fin n) → Γ(X, O)` to `fun j => j.elim (resG X hle1 a) fun j => resG X hle2 ((s (gw j)).f k)`. Establish `hψw : ψ (ev w) ≠ 0` using `(map_ne_zero ψ).2 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set u := fnOf (L.B.U k) (gen_mem (mem_ptsIn.1 hy)) ((s w).f k) with hu`. Take `⟨σ', hσ', hineq⟩` from `bound_of_emb (Ω := X.functionField) (ψ.comp (algebraMap K Ω)) (algX p O) (fun z => by`. Rewrite using `[halg, RingHom.comp_apply, hM.base]`. Conclude with `(RingHom.congr_fun (fnOf_comp_algX p O hg) z).trans rfl)`. Use the proof step `(evHom hyO') r (fun _ v => ‖v none‖ ^ 2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun σ' v => Real.exp (2 * (τ : ℝ) * t) * (∑ a, ‖∑ j, (∑ m, σ' (c j m) * A σ' m a) * v (some j)‖ ^ 2) ^ τ)`. Use the proof step `(fun _ => by fun_prop) (fun _ => by fun_prop)`. Use the proof step `(fun ρ => by`. Establish `h1` using `hb N n b g A hF _ (ρ.comp ψ) rfl`. Establish `e0 : (ρ.comp ψ).comp (algebraMap K Ω) = ρ.comp (ψ.comp (algebraMap K Ω))` using `rfl`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e0]`. Generalize the expression as in `hσ' : ρ.comp (ψ.comp (algebraMap K Ω)) = σ' at h1 ⊢`. Establish `hσa : ∀ z, σ' z = ρ (ψ (algebraMap K Ω z))` using `fun z => by rw [← hσ']; rfl`. Use `set lam := ρ ((ψ (ev w))⁻¹ * u) with hlam`. Establish `e1 : ρ (algebraMap Γ(X, O) X.functionField (r none)) = ρ (ψ β) * lam ^ τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[halg]`. Use `show ρ (fnOf O hg (resG X hle1 a)) = _`. Rewrite using `[fnOf_resG, ha, hlam, ← map_pow ρ, ← map_mul ρ, mul_pow, mul_assoc]`. Establish `e2 : ∀ j, ρ (algebraMap Γ(X, O) X.functionField (r (some j))) = ρ (ψ (ev (gw j))) * lam` using `fun j => by`. Rewrite using `[halg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ρ (fnOf O hg (resG X hle2 ((s (gw j)).f k))) = _`. Rewrite using `[fnOf_resG, hlam, ← map_mul ρ]`. Use `congr 1`. Use `hM.ratio w (gw j) k (hle2 hg)` as an intermediate fact. Rewrite using `[← mul_assoc, mul_comm (ψ (ev (gw j))), mul_assoc, eq_inv_mul_iff_mul_eq₀ hψw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e3 : ∀ m, ρ (ψ (ev (b m))) = ∑ j, σ' (c j m) * ρ (ψ (ev (gw j)))` using `fun m => by`. Rewrite using `[hbc m]`. Simplify using `only [map_sum, map_smul, Algebra.smul_def, map_mul, hσa]`. Establish `e4 : ∀ a, ∑ j, (∑ m, σ' (c j m) * A σ' m a) * (ρ (ψ (ev (gw j))) * lam) = lam * ∑ m, A σ' m a * ρ (ψ (ev (b m)))` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e3, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Simplify using `only [e1, e2, e4, norm_mul, mul_pow, norm_pow, ← Finset.mul_sum]`. Establish `hS : 0 ≤ ∑ a, ‖∑ m, A σ' m a * ρ (ψ (ev (b m)))‖ ^ 2` using `by positivity`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `e5 : (Real.exp (τ * t) * GlobalTheory.Adelic.archSize (A σ') (fun i => (ρ.comp ψ) (ev (b i))) ^ τ) ^ 2 = Real.exp (2 * (τ : ℝ) * t) * (∑ a, ‖∑ m, A σ' m a * ρ (ψ (ev (b m)))‖ ^ 2) ^ τ`. Rewrite using `[mul_pow, ← Real.exp_nat_mul, ← pow_mul, mul_comm τ 2, pow_mul]`. Unfold `GlobalTheory.Adelic.archSize`. Simplify using `only [RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.sq_sqrt hS]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e5]`.
-
-Establish `h3` using `mul_le_mul_of_nonneg_right h2 (show 0 ≤ (‖lam‖ ^ τ) ^ 2 by positivity)`. Use `h3.trans_eq ?_` and prove the remaining obligations. Use the proof step `ring)`. Establish `hσ : σ'.comp (algebraMap (𝓞 K) K) = σ` using `hσ'.trans (RingHom.ext fun z => (ev_eq hyO' _).symm.trans (ev_algX hyO' z))`. Substitute `hσ` using the available equality.
-
-Rewrite using `[hφ σ' k y, ← ha, ratVal_fnOf (mem_ptsIn.2 hU')]`. Use `final_ineq (by positivity) ?_` and prove the remaining obligations. Establish `f1 : evHom hyO' (r none) = GlobalTheory.CxPts.ev p _ U' a y` using `(ev_eq hyO' _).symm.trans (ev_res hle1 hyO' a)`. Establish `f2 : ∀ j, evHom hyO' (r (some j)) = valR y.1 (L.B.U k) ((s (gw j)).f k)` using `fun j => (ev_eq hyO' _).symm.trans (ev_res hle2 hyO' _)`. Simplify using `only [f1, f2] at hineq`.
-
-Conclude with `hineq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_le_of_emb {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] {Nm : (K →+* ℂ) → V → ℝ} {W : Submodule (𝓞 K) V}

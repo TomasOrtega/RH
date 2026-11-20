@@ -16,9 +16,9 @@ theorem symmetricGroupCharacter_eq_cf {m : ℕ} (lam : Fin m → ℕ) (rho : Lis
   rfl
 
 /- English proof (translation)
-Introduce `m lam rho hlam hrho`. Rewrite using `[symmetricGroupCharacter_eq_cf]`. Use `(h2 m rho hrho lam hlam).trans ?_` and prove the remaining obligations. Distinguish the cases in `hs : ∑ i, lam i = rho.sum`. Rewrite using `[h1 m lam hlam, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[latticeWords_eq_empty_of_sum_ne _ _ hs, Finset.card_empty, Nat.cast_zero]`. Conclude with `Nat.cast_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CharacterBound.proof (h1 : CombTableEqWords.Statement) (h2 : CombCfBound.Statement) :
     CharacterBound.Statement := by

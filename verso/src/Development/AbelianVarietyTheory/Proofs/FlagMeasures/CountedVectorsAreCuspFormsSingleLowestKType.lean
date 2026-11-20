@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.RowCuspKType
 
 /- English proof (translation)
-Use `⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩` and prove the remaining obligations. Use `show (1 : I.Gf) ∈ I.Kset`. Simplify using `only [AutInst.Kset, Set.mem_ofPred_eq, OneMemClass.coe_one]`. Conclude with `one_mem _`. Simplify using `only [AutInst.fmat, OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_mulVec, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem one_mem_Kg_flag_measures (I : AutInst) (g : ℕ) : (1 : I.Gf) ∈ I.Kg g := by
   refine ⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩
@@ -30,17 +30,15 @@ private theorem one_mem_Kg_flag_measures (I : AutInst) (g : ℕ) : (1 : I.Gf) �
   · simp only [AutInst.fmat, OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_mulVec, smul_zero]
 
 /- English proof (translation)
-Take `⟨h1, hm, hn, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Use `set π : B.I.Gf → (B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund) := fun g => B.R (1, g) with hπ`. Establish `p1 : π 1 = 1` using `h1`. Establish `pm : ∀ a b, π (a * b) = π a * π b`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((1 : B.I.Ginf), a * b) = ((1 : B.I.Ginf), a) * (1, b)` using `by simp`. Simplify using `only [hπ, this, hm]`. Establish `pn : ∀ g v, ‖π g v‖ = ‖v‖` using `fun g v => hn _ v`. Establish `he : ∀ g, B.e (k * g) = B.e g`. Introduce `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `B.e_adm.2.2.2.2.2.1 g k hk 1 (one_mem_Kg_flag_measures B.I B.g)` as an intermediate fact. Simplify using `using this`. Use `ext1 y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `inner ℂ x (π k (B.Re y)) = _`. Rewrite using `[GlobalTheory.IdemProj.inner_rep π p1 pm pn, B.Re_spec.2, B.Re_spec.2]`. Establish `key : ∀ g, B.e g * inner ℂ (π k⁻¹ x) (B.R (1, g) y) = (fun g' => B.e g' * inner ℂ x (B.R (1, g') y)) (k * g)`. Introduce `g`. Establish `e1 : inner ℂ (π k⁻¹ x) (B.R (1, g) y) = inner ℂ x (π k (π g y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.IdemProj.inner_rep π p1 pm pn k x]`. Establish `e2 : π k (π g y) = B.R (1, k * g) y` using `by show π k (π g y) = π (k * g) y`. Rewrite using `[pm]`. Both sides reduce to the same expression. Simplify using `only [e1, e2, he]`.
-
-Repeatedly rewrite using `[key]`. Conclude with `MeasureTheory.integral_mul_left_eq_self (fun g' => B.e g' * inner ℂ x (B.R (1, g') y)) k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_comp_Re (B : RowsAut) (k : B.I.Gf) (hk : k ∈ B.I.Kg B.g) (hg : 1 ≤ B.g) :
     (B.R (1, k)).comp B.Re = B.Re := by
@@ -74,13 +72,13 @@ theorem level_comp_Re (B : RowsAut) (k : B.I.Gf) (hk : k ∈ B.I.Kg B.g) (hg : 1
   exact MeasureTheory.integral_mul_left_eq_self (fun g' => B.e g' * inner ℂ x (B.R (1, g') y)) k
 
 /- English proof (translation)
-Take `⟨hc, hb, hi⟩` from `GlobalTheory.Dec.PhMajProof.phMaj B d h hd hl`. Establish `hcond : ∀ v, rkR (B.I.ε v) = 0 ∨ 8 * Real.sqrt (rkR (B.I.ε v)) * (0 + 4 * B.I.n * rkR (B.I.ε v)) < h`. Introduce `v`. Break down `Nat.eq_zero_or_pos (rkR (B.I.ε v)) with h0 | hpos` into its components or cases. Conclude with `Or.inl h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Establish `hq : (0 : ℝ) < (rkR (B.I.ε v) : ℝ)` using `by exact_mod_cast hpos`. Establish `hnr : (1 : ℝ) ≤ (B.I.n : ℝ)` using `by exact_mod_cast hn`. Establish `hpow : ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) = Real.sqrt (rkR (B.I.ε v)) * (rkR (B.I.ε v) : ℝ)`. Rewrite using `[Real.sqrt_eq_rpow, show (3 : ℝ) / 2 = 1 / 2 + 1 by norm_num, Real.rpow_add hq, Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : 0 < Real.sqrt (rkR (B.I.ε v))` using `Real.sqrt_pos.mpr hq`. Establish `hv` using `hh v`. Rewrite `hv` using `[hpow]`. Establish `hpos' : 0 < Real.sqrt (rkR (B.I.ε v)) * (rkR (B.I.ε v) : ℝ) * (B.I.n : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hI` using `hi 0 le_rfl hcond`. Simplify using `only [zero_mul, Real.exp_zero, mul_one] at hI`. Conclude with `hI.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hb)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d) (hn : 1 ≤ B.I.n)
     (hh : ∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) (hl : LocDec B h) :
@@ -108,17 +106,15 @@ theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) 
   exact hI.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hb)
 
 /- English proof (translation)
-Introduce `B d h hd hK hg hh hl hbig T hT A hA`. Break down `Nat.eq_zero_or_pos B.I.n with hn0 | hnpos` into its components or cases. Introduce `W hW`. Establish `: IsEmpty (Fin B.I.n)` using `by rw [hn0]; infer_instance`. Conclude with `absurd (Submodule.eq_bot_of_subsingleton) hW.1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 1 ≤ B.I.n` using `hnpos`. Establish `hint` using `integrable_ph B d h hd hn hh hl`. Take `⟨-, hcomm, -, hT'⟩` from `GlobalTheory.GlobProj.globalProj_holds B d hd hint`. Establish `hfix : T (A (B.tens B.w)) = A (B.tens B.w)` using `(hT' T hT).2.1 A hA`. Take `⟨A₀, hA₀, hAe⟩` from `Submodule.mem_map.mp hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAe' : A = B.Re.comp A₀` using `by rw [← hAe]; rfl`. Substitute `hAe'` using the available equality. Establish `hA₀' : ∀ g : B.I.Ginf, A₀.comp (B.σs g) = (B.R (g, 1)).comp A₀` using `hA₀`. Establish `hhom : B.Re.comp A₀ ∈ B.I.HomS B.σs B.μf B.fund B.R` using `by show ∀ g : B.I.Ginf, (B.Re.comp A₀).comp (B.σs g) = (B.R (g, 1)).comp (B.Re.comp A₀)`. Introduce `g`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.comp_assoc, hA₀' g, ← ContinuousLinearMap.comp_assoc, hcomm g, ContinuousLinearMap.comp_assoc]`. Establish `hlev : ∀ k ∈ B.I.Kg B.g, B.R (1, k) ((B.Re.comp A₀) (B.tens B.w)) = (B.Re.comp A₀) (B.tens B.w)`. Introduce `k hk`. Rewrite using `[ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.comp_apply (B.R (1, k)) B.Re, level_comp_Re B k hk hg]`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_continuousRepresentative_bounded_evaluation B d hd hK hn hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfb⟩` from `hC _ hhom hlev`. Establish `hvan` using `GlobalTheory.T.realUnipotent_integral_discreteSeries_vanish B d h hd hK hl hh`. Use `(GlobalTheory.T.cuspidal_of_convolution_fixed_moderate_growth B d h hd hvan hl hbig T hT _ f (C * ‖(B.Re.comp A₀) (B.tens B.w)‖) ?_ hf ?_).2` and prove the remaining obligations. Simplify using `using hfix`. Introduce `x`.
-
-Conclude with `(hfb x).trans_eq (by ring)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_isCuspFn : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → (∀ v, Formalism.MainNotions.S.IsKTypeOf (B.I.ε v) (B.σ v) (Formalism.QuantumDeterminants.lowK (B.I.ε v) (B.lam v)) (Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v))) → 1 ≤ B.g → (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → LocDec B h → HBig B 40 h → ∀ T, B.I.IsRConv B.μf B.fund B.R (phe B d) T → ∀ A ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (A (B.tens B.w))) := by
   intro B d h hd hK hg hh hl hbig T hT A hA

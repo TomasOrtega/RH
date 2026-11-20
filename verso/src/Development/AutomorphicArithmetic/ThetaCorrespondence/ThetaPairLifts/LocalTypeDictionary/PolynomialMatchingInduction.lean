@@ -19,51 +19,43 @@ section Local
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 end Local
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM T v hv h hh Φ Φ' hPM`. Take `⟨m, m', f, φ, f', φ', hφ, hφ', hΦ, hΦ', hsum⟩` from `hPM`. Establish `hT` using `hM.triple`. Establish `ex` using `(_root_.GlobalTheory.T.theta_kernel_local_operator_action hP) F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hT) v`. Establish `ex'` using `(_root_.GlobalTheory.T.theta_kernel_local_operator_action hP) F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hT) v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.V.J) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ G.V (GlobalTheory.AdelicU.evFin F v)`. Introduce `u _`. Use `show u • ((1 : Matrix _ _ _) - 1) = 0`. Simplify using the standard rewrite rules. Establish `h1' : (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.V'.J) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ G.V' (GlobalTheory.AdelicU.evFin F v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u _`. Use `show u • ((1 : Matrix _ _ _) - 1) = 0`. Simplify using the standard rewrite rules. Establish `E1` using `fun x hx => (ex.1 1 h1 h hh x hx).exists`. Establish `E1'` using `fun x hx => (ex'.1 1 h1' h hh x hx).exists`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `loc : ((Fin a × Fin (a + a') → Fv F v) → ℂ) → (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun x => if hx : x ∈ GlobalTheory.WeilM.SB _ then (E1 x hx).choose else 0`. Set `loc' : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) → (Fin a' × Fin (a + a') → Fv F v) → ℂ` to `fun x => if hx : x ∈ GlobalTheory.WeilM.SB _ then (E1' x hx).choose else 0`. Establish `hloc : ∀ x ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), loc x ∈ GlobalTheory.WeilM.SB _ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om (1, h)) x (loc x)` using `fun x hx => by`. Simplify using `only [loc, dif_pos hx]`. Conclude with `(E1 x hx).choose_spec`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hloc' : ∀ x ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F v), loc' x ∈ GlobalTheory.WeilM.SB _ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om' (1, h)) x (loc' x)` using `fun x hx => by`. Simplify using `only [loc', dif_pos hx]`. Conclude with `(E1' x hx).choose_spec`. Establish `pre : ∀ y : Rf.Pi v, ∃ x ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), Rf.p v x = y` using `fun y => by`. Establish `hy : y ∈ (GlobalTheory.WeilM.SB _).map (Rf.p v)` using `by rw [hM.fin.onto v]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `pre' : ∀ y : Rf.Pi v, ∃ x ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F v), Rf.p' v x = y` using `fun y => by`. Establish `hy : y ∈ (GlobalTheory.WeilM.SB _).map (Rf.p' v)` using `by rw [hM.fin.onto' v]; trivial`. Conclude with `hy`. Set `A0 : Rf.Pi v → Rf.Pi v` to `fun y => Rf.p v (loc (pre y).choose)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K : ∀ x ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), A0 (Rf.p v x) = Rf.p v (loc x)`. Introduce `x hx`. Take `⟨hx0, hx0e⟩` from `(pre (Rf.p v x)).choose_spec`. Take `⟨x', hx', hx'e⟩` from `pre' (Rf.p v x)`. Establish `a1` using `hM.fin.equiv v h hh _ hx0 x' hx' _ (hloc _ hx0).1 _ (hloc' x' hx').1 (hloc _ hx0).2 (hloc' x' hx').2 (hx0e.trans hx'e.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `hM.fin.equiv v h hh x hx x' hx' _ (hloc x hx).1 _ (hloc' x' hx').1 (hloc x hx).2 (hloc' x' hx').2 hx'e.symm`. Conclude with `a1.trans a2.symm`. Establish `K' : ∀ x' ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F v), A0 (Rf.p' v x') = Rf.p' v (loc' x')`. Introduce `x' hx'`. Take `⟨x, hx, hxe⟩` from `pre (Rf.p' v x')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hxe, K x hx]`. Conclude with `hM.fin.equiv v h hh x hx x' hx' _ (hloc x hx).1 _ (hloc' x' hx').1 (hloc x hx).2 (hloc' x' hx').2 hxe`. Establish `Klin : ∀ x ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), ∀ y ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), ∀ c d : ℂ, loc (c • x + d • y) = c • loc x + d • loc y`. Introduce `x hx y hy c d`. Establish `hs : c • x + d • y ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v)` using `add_mem ((GlobalTheory.WeilM.SB _).smul_mem c hx) ((GlobalTheory.WeilM.SB _).smul_mem d hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `acts_lin_eq v (om (1, h)) hx hy (hloc x hx).2 (hloc y hy).2 c d (hloc _ hs).2`. Set `A : Rf.Pi v →ₗ[ℂ] Rf.Pi v` to `{ toFun := A0 map_add' := by`. Introduce `y z`. Take `⟨x, hx, rfl⟩` from `pre y`. Take `⟨w, hw, rfl⟩` from `pre z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← map_add, K _ (add_mem hx hw), K x hx, K w hw, ← map_add]`. Use `congr 1`. Simplify using `using Klin x hx w hw 1 1`. Use the proof step `map_smul' := by`. Introduce `c y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `pre y`. Rewrite using `[← map_smul, K _ ((GlobalTheory.WeilM.SB _).smul_mem c hx), K x hx, RingHom.id_apply, ← map_smul]`. Use `congr 1`. Simplify using `using Klin x hx x hx c 0 }`. Establish `hvT : ∀ w, w ∉ T → w ≠ v` using `fun w hw e => hw (e ▸ hv)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `evc : ∀ {n : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y G.W) (ρ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin (a + a') → Fv F w) → ℂ), (∀ …`. Introduce `n Y M ρ hρ hG`. Establish `e0 : ∀ᶠ w in Filter.cofinite, ρ w = M.vac w` using `Filter.eventually_cofinite.2 ((T.finite_toSet).subset fun w hw => by`. Assume the negation of the conclusion as `hc`. Conclude with `hw (hρ w hc))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `filter_upwards [e0, hG.std] with w e1 e2`. Rewrite using `[e1, e2]`. Set `φN : Fin m → ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin a × Fin (a + a') → Fv F w) → ℂ` to `fun i => Function.update (φ i) v (loc (φ i v))`. Set `φN' : Fin m' → ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ` to `fun j => Function.update (φ' j) v (loc' (φ' j v))`. Use `⟨m, m', f, φN, f', φN', fun i => ⟨(hφ i).1, fun w => ?_, fun w hw => ?_⟩, fun j => ⟨(hφ' j).1, fun w => ?_, fun w hw => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `only [φN, Function.update_self]`. Conclude with `(hloc _ ((hφ i).2.1 w)).1`. Simplify using `only [φN, Function.update_of_ne hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hφ i).2.1 w`. Simplify using `only [φN, Function.update_of_ne (hvT w hw)]`. Conclude with `(hφ i).2.2 w hw`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [φN', Function.update_self]`. Conclude with `(hloc' _ ((hφ' j).2.1 w)).1`. Simplify using `only [φN', Function.update_of_ne hw]`. Conclude with `(hφ' j).2.1 w`. Simplify using `only [φN', Function.update_of_ne (hvT w hw)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hφ' j).2.2 w hw`. Rewrite using `[hΦ, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `pure_update v (om (1, h)) (f i) (φ i) (hφ i).2.1 (evc G.M (φ i) (hφ i).2.2 hT.geo.hM) (hloc _ ((hφ i).2.1 v)).2`. Rewrite using `[hΦ', map_sum]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `pure_update v (om' (1, h)) (f' j) (φ' j) (hφ' j).2.1 (evc G.M' (φ' j) (hφ' j).2.2 hT.geo.hM') (hloc' _ ((hφ' j).2.1 v)).2`. Establish `key` using `congrArg (LinearMap.lTensor R.Pi (PiTensorProduct.map (Function.update (fun u : T => (LinearMap.id : Rf.Pi u.1 →ₗ[ℂ] Rf.Pi u.1)) ⟨v, hv⟩ A))) hsum`. Simplify using `only [map_sum, LinearMap.lTensor_tmul, PiTensorProduct.map_tprod] at key`. Establish `e1 : ∀ i, (fun u : T => Function.update (fun u : T => (LinearMap.id : Rf.Pi u.1 →ₗ[ℂ] Rf.Pi u.1)) ⟨v, hv⟩ A u (Rf.p u (φ i u))) = fun u : T => Rf.p u (φN i u)`.
-
-Introduce `i`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = ⟨v, hv⟩`. Substitute `hu` using the available equality. Simplify using `only [Function.update_self, φN]`.
-
-Conclude with `K _ ((hφ i).2.1 v)`. Establish `hu' : u.1 ≠ v` using `fun e => hu (Subtype.ext e)`. Simplify using `only [Function.update_of_ne hu, φN, Function.update_of_ne hu', LinearMap.id_apply]`. Establish `e2 : ∀ j, (fun u : T => Function.update (fun u : T => (LinearMap.id : Rf.Pi u.1 →ₗ[ℂ] Rf.Pi u.1)) ⟨v, hv⟩ A u (Rf.p' u (φ' j u))) = fun u : T => Rf.p' u (φN' j u)`. Introduce `j`.
-
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = ⟨v, hv⟩`. Substitute `hu` using the available equality. Simplify using `only [Function.update_self, φN']`. Conclude with `K' _ ((hφ' j).2.1 v)`.
-
-Establish `hu' : u.1 ≠ v` using `fun e => hu (Subtype.ext e)`. Simplify using `only [Function.update_of_ne hu, φN', Function.update_of_ne hu', LinearMap.id_apply]`. Simplify using `only [e1, e2] at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polynomial_matching_on_succ : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -205,7 +197,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThK.PolMatchStep.polynomial_matching_on_succ | exact _root_.GlobalTheory.ThK.PolMatchStep.polynomial_matching_on_succ | (intros; apply _root_.GlobalTheory.ThK.PolMatchStep.polynomial_matching_on_succ <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.polynomial_matching_induction : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

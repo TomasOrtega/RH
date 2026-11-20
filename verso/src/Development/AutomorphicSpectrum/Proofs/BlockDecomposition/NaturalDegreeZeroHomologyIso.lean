@@ -19,14 +19,14 @@ instance h0ι_mono (K : CochainComplex (ModuleCat.{0} R) ℕ) : Mono (h0ι K) :=
   infer_instance
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι`. Rewrite using `[Category.assoc, HomologicalComplex.iCycles_d, comp_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem h0ι_d (K : CochainComplex (ModuleCat.{0} R) ℕ) : h0ι K ≫ K.d 0 1 = 0 := by
   unfold GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι
   rw [Category.assoc, HomologicalComplex.iCycles_d, comp_zero]
 
 /- English proof (translation)
-Use `⟨K.liftCycles f 1 (CochainComplex.next ℕ 0) hf ≫ K.isoHomologyπ₀.hom, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι`. Rewrite using `[Category.assoc, Iso.hom_inv_id_assoc, HomologicalComplex.liftCycles_i]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem h0ι_lift (K : CochainComplex (ModuleCat.{0} R) ℕ) {A : ModuleCat.{0} R} (f : A ⟶ K.X 0)
     (hf : f ≫ K.d 0 1 = 0) : ∃ g : A ⟶ K.homology 0, g ≫ h0ι K = f := by
@@ -35,7 +35,7 @@ theorem h0ι_lift (K : CochainComplex (ModuleCat.{0} R) ℕ) {A : ModuleCat.{0} 
   rw [Category.assoc, Iso.hom_inv_id_assoc, HomologicalComplex.liftCycles_i]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι`. Rewrite using `[← Category.assoc, CochainComplex.isoHomologyπ₀_inv_naturality, Category.assoc, HomologicalComplex.cyclesMap_i, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem h0ι_naturality {K L : CochainComplex (ModuleCat.{0} R) ℕ} (φ : K ⟶ L) :
     HomologicalComplex.homologyMap φ 0 ≫ h0ι L = h0ι K ≫ φ.f 0 := by
@@ -44,19 +44,19 @@ theorem h0ι_naturality {K L : CochainComplex (ModuleCat.{0} R) ℕ} (φ : K ⟶
     HomologicalComplex.cyclesMap_i, Category.assoc]
 
 /- English proof (translation)
-Establish `hK : ∀ x, (K.d 0 1).hom ((GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι K).hom x) = 0` using `fun x => by`. Use `congrArg (fun φ => ModuleCat.Hom.hom φ x) (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_d K)` as an intermediate fact. Use `first`. Consider the case `exact this`. Consider the case `simpa using this`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hL : ∀ y, (L.d 0 1).hom ((GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L).hom y) = 0` using `fun y => by`. Use `congrArg (fun φ => ModuleCat.Hom.hom φ y) (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_d L)` as an intermediate fact. Use `first`. Consider the case `exact this`. Consider the case `simpa using this`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι K ≫ ε.hom) ≫ L.d 0 1 = 0`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use `first`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact (h _).1 (hK x)`. Consider the case `simpa using (h _).1 (hK x)`. Establish `h2 : (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L ≫ ε.inv) ≫ K.d 0 1 = 0`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Establish `hε : ε.hom.hom (ε.inv.hom ((GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L).hom y)) = (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L).hom y` using `by show (ε.inv ≫ ε.hom).hom _ = _`. Rewrite using `[ε.inv_hom_id]`. Both sides reduce to the same expression. Use `(h (ε.inv.hom ((GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L).hom y))).2 (by rw [hε]; exact hL y)` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `first`. Consider the case `exact this`. Consider the case `simpa using this`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_lift L (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι K ≫ ε.hom) h1`. Take `⟨f₂, hf₂⟩` from `GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_lift K (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L ≫ ε.inv) h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨f₁, f₂, ?_, ?_⟩, hf₁⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι K), Category.assoc, hf₂, ← Category.assoc, hf₁]`. Simplify using the standard rewrite rules. Rewrite using `[← cancel_mono (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι L), Category.assoc, hf₁, ← Category.assoc, hf₂]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_h0_iso (K L : CochainComplex (ModuleCat.{0} R) ℕ) (ε : K.X 0 ≅ L.X 0)
     (h : ∀ x : K.X 0, (K.d 0 1).hom x = 0 ↔ (L.d 0 1).hom (ε.hom.hom x) = 0) :
@@ -99,7 +99,7 @@ theorem exists_h0_iso (K L : CochainComplex (ModuleCat.{0} R) ℕ) (ε : K.X 0 �
     simp
 
 /- English proof (translation)
-Establish `r : (ComplexShape.up ℕ).Rel (k + 1) (k + 2)` using `rfl`. Use `haveI : Mono (hS.δ (k + 1) (k + 2) r) := (hS.homology_exact₃ (k + 1) (k + 2) r).mono_g (h₁.eq_of_src _ _)`. Use `haveI : Epi (hS.δ (k + 1) (k + 2) r) := (hS.homology_exact₁ (k + 1) (k + 2) r).epi_f (h₂.eq_of_tgt _ _)`. Use `haveI : IsIso (hS.δ (k + 1) (k + 2) r) := isIso_of_mono_of_epi _`. Conclude with `⟨asIso (hS.δ (k + 1) (k + 2) r)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_iso_of_middle_isZero {S : ShortComplex (CochainComplex (ModuleCat.{0} R) ℕ)}
     (hS : S.ShortExact) (k : ℕ) (h₁ : IsZero (S.X₂.homology (k + 1)))
@@ -114,13 +114,13 @@ theorem nonempty_iso_of_middle_isZero {S : ShortComplex (CochainComplex (ModuleC
   exact ⟨asIso (hS.δ (k + 1) (k + 2) r)⟩
 
 /- English proof (translation)
-Establish `hr : (ComplexShape.up ℕ).Rel 0 1` using `rfl`. Use `haveI : Epi (hS₁.δ 0 1 hr) := (hS₁.homology_exact₁ 0 1 hr).epi_f (z₁.eq_of_tgt _ _)`. Use `haveI : Epi (hS₂.δ 0 1 hr) := (hS₂.homology_exact₁ 0 1 hr).epi_f (z₂.eq_of_tgt _ _)`. Establish `hc₁` using `(hS₁.homology_exact₃ 0 1 hr).gIsCokernel`. Establish `hc₂` using `(hS₂.homology_exact₃ 0 1 hr).gIsCokernel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w' : HomologicalComplex.homologyMap S₂.g 0 ≫ eQ.inv = eI.inv ≫ HomologicalComplex.homologyMap S₁.g 0`. Rewrite using `[← cancel_epi eI.hom, ← Category.assoc, ← w]`. Simplify using the standard rewrite rules. Take `⟨φ, hφ⟩` from `CokernelCofork.IsColimit.desc' hc₁ (eQ.hom ≫ hS₂.δ 0 1 hr) (by show HomologicalComplex.homologyMap S₁.g 0 ≫ eQ.hom ≫ hS₂.δ 0 1 hr = 0`. Rewrite using `[← Category.assoc, w, Category.assoc, hS₂.comp_δ 0 1 hr, comp_zero])`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, hψ⟩` from `CokernelCofork.IsColimit.desc' hc₂ (eQ.inv ≫ hS₁.δ 0 1 hr) (by show HomologicalComplex.homologyMap S₂.g 0 ≫ eQ.inv ≫ hS₁.δ 0 1 hr = 0`. Rewrite using `[← Category.assoc, w', Category.assoc, hS₁.comp_δ 0 1 hr, comp_zero])`. Establish `hφ' : hS₁.δ 0 1 hr ≫ φ = eQ.hom ≫ hS₂.δ 0 1 hr` using `hφ`. Establish `hψ' : hS₂.δ 0 1 hr ≫ ψ = eQ.inv ≫ hS₁.δ 0 1 hr` using `hψ`. Use `⟨⟨φ, ψ, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cancel_epi (hS₁.δ 0 1 hr), ← Category.assoc, hφ', Category.assoc, hψ']`. Simplify using the standard rewrite rules. Rewrite using `[← cancel_epi (hS₂.δ 0 1 hr), ← Category.assoc, hψ', Category.assoc, hφ']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_iso_h1 {S₁ S₂ : ShortComplex (CochainComplex (ModuleCat.{0} R) ℕ)}
     (hS₁ : S₁.ShortExact) (hS₂ : S₂.ShortExact)
@@ -153,13 +153,13 @@ theorem nonempty_iso_h1 {S₁ S₂ : ShortComplex (CochainComplex (ModuleCat.{0}
     simp
 
 /- English proof (translation)
-Introduce `R _ 𝒜 _ _ T₁ T₂ _ _ ε hnat hker hres`. Establish `h0 : ∀ G, ∃ e : (T₁.obj G).homology 0 ≅ (T₂.obj G).homology 0, e.hom ≫ GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι (T₂.obj G) = GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι (T₁.obj G) ≫ (ε G).hom` using `fun G => GlobalTheory.CompanionTheory.Hodge.DimShift.exists_h0_iso _ _ (ε G) (hker G)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `G`. Take `⟨I, Q, i, p, w, hS₁, hS₂, hI⟩` from `hres G`. Break down `n with _ | _ | k` into its components or cases. Take `⟨e, -⟩` from `h0 G`. Conclude with `⟨e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨eI, heI⟩` from `h0 I`. Take `⟨eQ, heQ⟩` from `h0 Q`. Use `GlobalTheory.CompanionTheory.Hodge.DimShift.nonempty_iso_h1 hS₁ hS₂ (hI 0).1 (hI 0).2 eI eQ ?_` and prove the remaining obligations. Use `show HomologicalComplex.homologyMap (T₁.map p) 0 ≫ eQ.hom = eI.hom ≫ HomologicalComplex.homologyMap (T₂.map p) 0`. Rewrite using `[← cancel_mono (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι (T₂.obj Q))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, heQ, GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_naturality, reassoc_of% (GlobalTheory.CompanionTheory.Hodge.DimShift.h0ι_naturality (T₁.map p)), reassoc_of% heI, hnat]`. Take `⟨a⟩` from `GlobalTheory.CompanionTheory.Hodge.DimShift.nonempty_iso_of_middle_isZero hS₁ k (hI k).1 (hI (k + 1)).1`. Take `⟨b⟩` from `GlobalTheory.CompanionTheory.Hodge.DimShift.nonempty_iso_of_middle_isZero hS₂ k (hI k).2 (hI (k + 1)).2`. Take `⟨c⟩` from `ih (k + 1) (by omega) Q`. Conclude with `⟨a.symm ≪≫ c ≪≫ b⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem homology_nonempty_iso : ∀ {R : Type} [CommRing R] {𝒜 : Type 1} [Category.{0} 𝒜] [HasZeroMorphisms 𝒜]
     (T₁ T₂ : 𝒜 ⥤ CochainComplex (ModuleCat.{0} R) ℕ) [T₁.PreservesZeroMorphisms] [T₂.PreservesZeroMorphisms]

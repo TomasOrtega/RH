@@ -66,7 +66,7 @@ theorem rt_apply (h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n �
     Formalism.L2.NG.rt L n h f x = f (x * h) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[rt_apply, rt_apply, rt_apply, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_rt (g h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n → ℂ) :
     Formalism.L2.NG.rt L n g (Formalism.L2.NG.rt L n h f) = Formalism.L2.NG.rt L n (g * h) f := by
@@ -74,14 +74,14 @@ theorem rt_rt (g h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n →
   rw [rt_apply, rt_apply, rt_apply, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[rt_apply, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_one (f : Formalism.AUTREP.GAf L n → ℂ) : Formalism.L2.NG.rt L n 1 f = f := by
   funext x
   rw [rt_apply, mul_one]
 
 /- English proof (translation)
-Establish `h` using `Submodule.subset_span (R := ℂ) (Set.mem_range_self (f := fun h : Formalism.AUTREP.GAf L n => Formalism.L2.NG.rt L n h f) (1 : Formalism.AUTREP.GAf L n))`. Simplify using `only [rt_one] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem self_mem_cyc (f : Formalism.AUTREP.GAf L n → ℂ) : f ∈ cyc f := by
   have h := Submodule.subset_span (R := ℂ)
@@ -90,15 +90,15 @@ theorem self_mem_cyc (f : Formalism.AUTREP.GAf L n → ℂ) : f ∈ cyc f := by
   exact h
 
 /- English proof (translation)
-Conclude with `Submodule.subset_span ⟨h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rt_mem_cyc (f : Formalism.AUTREP.GAf L n → ℂ) (h : Formalism.AUTREP.GAf L n) : Formalism.L2.NG.rt L n h f ∈ cyc f := by
   exact Submodule.subset_span ⟨h, rfl⟩
 
 /- English proof (translation)
-Introduce `h g hg`. Establish `hle : cyc f ≤ (cyc f).comap (Formalism.L2.NG.rt L n h)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show Formalism.L2.NG.rt L n h (Formalism.L2.NG.rt L n k f) ∈ cyc f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rt_rt]`. Conclude with `rt_mem_cyc f _`. Conclude with `hle hg`.
+A detailed English derivation is pending.
 -/
 theorem cyc_stable (f : Formalism.AUTREP.GAf L n → ℂ) : IsStable (cyc f) := by
   intro h g hg
@@ -111,7 +111,7 @@ theorem cyc_stable (f : Formalism.AUTREP.GAf L n → ℂ) : IsStable (cyc f) := 
   exact hle hg
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hU k f hf`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cyc_le {f : Formalism.AUTREP.GAf L n → ℂ} {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (hU : IsStable U) (hf : f ∈ U) :
     cyc f ≤ U := by
@@ -120,13 +120,11 @@ theorem cyc_le {f : Formalism.AUTREP.GAf L n → ℂ} {U : Submodule ℂ (Formal
   exact hU k f hf
 
 /- English proof (translation)
-Set `S : Set (Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ))` to `{U | U ≤ cyc f ∧ IsStable U ∧ f ∉ U}`. Establish `h0 : (⊥ : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) ∈ S`. Use `⟨bot_le, fun h g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hg, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `hf`. Take `⟨U, -, hU⟩` from `zorn_le_nonempty₀ S (fun c hcS hc y hy => by`. Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir` using `hc.directedOn`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨sSup c, ⟨sSup_le fun z hz => (hcS hz).1, fun h g hg => ?_, fun hf' => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨z, hz, hgz⟩` from `(Submodule.mem_sSup_of_directed hne hdir).mp hg`. Conclude with `(Submodule.mem_sSup_of_directed hne hdir).mpr ⟨z, hz, (hcS hz).2.1 h g hgz⟩`. Take `⟨z, hz, hfz⟩` from `(Submodule.mem_sSup_of_directed hne hdir).mp hf'`. Conclude with `(hcS hz).2.2 hfz) ⊥ h0`.
-
-Use `⟨U, hU.prop.1, hU.prop.2.1, hU.prop.2.2, fun U' hUU' hU'c hU's hfU' => ?_⟩` and prove the remaining obligations. Conclude with `hU.eq_of_ge ⟨hU'c, hU's, hfU'⟩ hUU'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_coMax (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : ∃ U, IsCoMax f U := by
   classical
@@ -150,9 +148,9 @@ theorem exists_coMax (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : ∃
   exact hU.eq_of_ge ⟨hU'c, hU's, hfU'⟩ hUU'
 
 /- English proof (translation)
-Establish `hq : U.mkQ f ≠ 0`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ ((Formalism.AUTREP.GAf L n → ℂ) ⧸ U), φ (U.mkQ f) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff ℂ (U.mkQ f)).mp hcon)`. Use `⟨φ.comp U.mkQ, fun u hu => ?_, hφ⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero U).mpr hu, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ∉ U) :
     ∃ l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ, (∀ u ∈ U, l u = 0) ∧ l f ≠ 0 := by
@@ -172,7 +170,7 @@ theorem mc_apply (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) (f : F
     mc l f g = l (Formalism.L2.NG.rt L n g f) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[mc_apply, rt_apply, mc_apply, rt_rt]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem mc_rt (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) (h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n → ℂ) :
     mc l (Formalism.L2.NG.rt L n h f) = Formalism.L2.NG.rt L n h (mc l f) := by
@@ -180,7 +178,7 @@ theorem mc_rt (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) (h : Form
   rw [mc_apply, rt_apply, mc_apply, rt_rt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[mc_apply, Pi.zero_apply]`. Conclude with `hl _ (hU g u hu)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mc_eq_zero {l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ} {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (hU : IsStable U)
     (hl : ∀ u ∈ U, l u = 0) {u : Formalism.AUTREP.GAf L n → ℂ} (hu : u ∈ U) : mc l u = 0 := by
@@ -189,14 +187,14 @@ theorem mc_eq_zero {l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ} {U :
   exact hl _ (hU g u hu)
 
 /- English proof (translation)
-Simplify using `[heckeG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeG_apply {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n → ℂ) :
     heckeG s γ f = ∑ i ∈ s, Formalism.L2.NG.rt L n (γ i) f := by
   simp [heckeG]
 
 /- English proof (translation)
-Rewrite using `[heckeG_apply, heckeG_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mc_rt l (γ i) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mc_heckeG (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n)
     (f : Formalism.AUTREP.GAf L n → ℂ) : mc l (heckeG s γ f) = heckeG s γ (mc l f) := by
@@ -204,7 +202,7 @@ theorem mc_heckeG (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) {ι :
   exact Finset.sum_congr rfl fun i _ => mc_rt l (γ i) f
 
 /- English proof (translation)
-Introduce `κ hκ`. Rewrite using `[← mc_rt, hf κ hκ, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mc_typeVec (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) {J' : Set (Formalism.AUTREP.GAf L n)} {χ' : Formalism.AUTREP.GAf L n → ℂ}
     {f : Formalism.AUTREP.GAf L n → ℂ} (hf : IsTypeVec J' χ' f) : IsTypeVec J' χ' (mc l f) := by
@@ -215,7 +213,7 @@ def coMaxOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : Submodule �
   (exists_coMax f hf).choose
 
 /- English proof (translation)
-Conclude with `(exists_coMax f hf).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem coMaxOf_spec (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : IsCoMax f (coMaxOf f hf) := by
   exact (exists_coMax f hf).choose_spec
@@ -224,7 +222,7 @@ def lOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : (Formalism.AUTRE
   (exists_sep (coMaxOf f hf) f (coMaxOf_spec f hf).2.2.1).choose
 
 /- English proof (translation)
-Conclude with `(exists_sep (coMaxOf f hf) f (coMaxOf_spec f hf).2.2.1).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem lOf_spec (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) :
     (∀ u ∈ coMaxOf f hf, lOf f hf u = 0) ∧ lOf f hf f ≠ 0 := by
@@ -237,7 +235,7 @@ def SOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : Submodule ℂ (F
   (cyc f).map (qOf f hf)
 
 /- English proof (translation)
-Introduce `h x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Conclude with `Submodule.mem_map.mpr ⟨_, cyc_stable f h y hy, mc_rt _ h y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SOf_stable (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : IsStable (SOf f hf) := by
   intro h x hx
@@ -245,15 +243,15 @@ theorem SOf_stable (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : IsSta
   exact Submodule.mem_map.mpr ⟨_, cyc_stable f h y hy, mc_rt _ h y⟩
 
 /- English proof (translation)
-Conclude with `Submodule.mem_map_of_mem (self_mem_cyc f)`.
+A detailed English derivation is pending.
 -/
 theorem qOf_self_mem (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : qOf f hf f ∈ SOf f hf := by
   exact Submodule.mem_map_of_mem (self_mem_cyc f)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrFun h0 1`. Rewrite `h1` using `[Pi.zero_apply]`. Apply `(lOf_spec f hf).2` to reduce the goal to its premises. Establish `h2 : qOf f hf f 1 = lOf f hf (Formalism.L2.NG.rt L n 1 f)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, rt_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qOf_self_ne (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : qOf f hf f ≠ 0 := by
   intro h0
@@ -265,7 +263,7 @@ theorem qOf_self_ne (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : qOf 
   exact h1
 
 /- English proof (translation)
-Introduce `h`. Establish `hm` using `qOf_self_mem f hf`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `qOf_self_ne f hf hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SOf_ne (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : SOf f hf ≠ ⊥ := by
   intro h
@@ -274,17 +272,15 @@ theorem SOf_ne (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : SOf f hf 
   exact qOf_self_ne f hf hm
 
 /- English proof (translation)
-Establish `hUspec` using `coMaxOf_spec f hf`. Establish `hl` using `lOf_spec f hf`. Set `W : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)` to `S'.comap (qOf f hf) ⊓ cyc f`. Establish `hWst : IsStable W`. Introduce `h g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hg1, hg2⟩` from `Submodule.mem_inf.mp hg`. Use `Submodule.mem_inf.mpr ⟨?_, cyc_stable f h g hg2⟩` and prove the remaining obligations. Use `show qOf f hf (Formalism.L2.NG.rt L n h g) ∈ S'`. Rewrite using `[show qOf f hf (Formalism.L2.NG.rt L n h g) = Formalism.L2.NG.rt L n h (qOf f hf g) from mc_rt _ h g]`. Conclude with `hst h _ hg1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ∀ u ∈ coMaxOf f hf, qOf f hf u = 0` using `fun u hu => mc_eq_zero hUspec.2.1 hl.1 hu`. Establish `hUW : coMaxOf f hf ≤ W` using `fun u hu => Submodule.mem_inf.mpr ⟨by show qOf f hf u ∈ S'; rw [hq0 u hu]; exact S'.zero_mem, hUspec.1 hu⟩`. Distinguish the cases in `hfW : f ∈ W`. Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcW : cyc f ≤ W` using `cyc_le hWst hfW`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Conclude with `(Submodule.mem_inf.mp (hcW hy)).1`. Use `left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWU : W = coMaxOf f hf` using `hUspec.2.2.2 W hUW inf_le_right hWst hfW`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp (hle hx)`. Establish `hyW : y ∈ W` using `Submodule.mem_inf.mpr ⟨hx, hy⟩`.
-
-Rewrite `hyW` using `[hWU]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `hq0 y hyW`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SOf_irr (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (S' : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ))
     (hle : S' ≤ SOf f hf) (hst : ∀ h, ∀ g ∈ S', Formalism.L2.NG.rt L n h g ∈ S') : S' = ⊥ ∨ S' = SOf f hf := by
@@ -320,7 +316,7 @@ theorem SOf_irr (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (S' : Subm
     exact hq0 y hyW
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Take `⟨N, hN, hκ⟩` from `hsm y hy`. Use `⟨N, hN, fun κ hκN => ?_⟩` and prove the remaining obligations. Rewrite using `[show Formalism.L2.NG.rt L n κ (qOf f hf y) = qOf f hf (Formalism.L2.NG.rt L n κ y) from (mc_rt _ κ y).symm, hκ κ hκN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem SOf_smooth (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : ∀ g ∈ cyc f, IsSmoothF g) :
     ∀ x ∈ SOf f hf, ∃ N : ℕ, 0 < N ∧ ∀ κ, Formalism.L2.NG.Cong L n N κ → Formalism.L2.NG.rt L n κ x = x := by
@@ -332,15 +328,15 @@ theorem SOf_smooth (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : 
     hκ κ hκN]
 
 /- English proof (translation)
-Establish `cong_dvd : ∀ (a b : ℕ) (κ : Formalism.AUTREP.GAf L n), Formalism.L2.NG.Cong L n (a * b) κ → Formalism.L2.NG.Cong L n a κ`. Introduce `a b κ hκ`. Unfold `Formalism.L2.NG.Cong at hκ ⊢`. Use `⟨hκ.1, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `hκ.2 i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(b : _) * y, mul_mem (natCast_mem _ b) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hy', Nat.cast_mul, mul_assoc]`. Set `Sm : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)` to `{ carrier := {g | IsSmoothF g} zero_mem' := ⟨1, one_pos, fun κ _ => map_zero _⟩ add_mem' := by`. Introduce and unpack `a b ⟨N1, hN1, h1⟩ ⟨N2, hN2, h2⟩`. Use `⟨N1 * N2, Nat.mul_pos hN1 hN2, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, h1 κ (cong_dvd N1 N2 κ hκ), h2 κ (cong_dvd N2 N1 κ (by rw [mul_comm]; exact hκ))]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨N1, hN1, h1⟩`. Conclude with `⟨N1, hN1, fun κ hκ => by rw [map_smul, h1 κ hκ]⟩ }`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : cyc f ≤ Sm`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Take `⟨N, hN, hκ⟩` from `h0`. Take `⟨N', hN', hcon⟩` from `hc h N hN`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N', hN', fun κ hκ' => ?_⟩` and prove the remaining obligations. Rewrite using `[rt_rt, show κ * h = h * (h⁻¹ * κ * h) by group, ← rt_rt, hκ _ (hcon κ hκ')]`. Conclude with `hle hg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_smooth (hc : CongConj L n) {f : Formalism.AUTREP.GAf L n → ℂ} (h0 : IsSmoothF f) : ∀ g ∈ cyc f, IsSmoothF g := by
   have cong_dvd : ∀ (a b : ℕ) (κ : Formalism.AUTREP.GAf L n), Formalism.L2.NG.Cong L n (a * b) κ →
@@ -380,7 +376,7 @@ def finTypOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : ∀ g 
   irr := SOf_irr f hf
 
 /- English proof (translation)
-Use `⟨qOf_self_mem f hf, qOf_self_ne f hf, fun J' χ' ht => mc_typeVec _ ht, fun s γ a ha => ?_⟩` and prove the remaining obligations. Use `show heckeG s γ (mc (lOf f hf) f) = a • mc (lOf f hf) f`. Rewrite using `[← mc_heckeG, ha, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finTypOf_spec (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : ∀ g ∈ cyc f, IsSmoothF g) :
     qOf f hf f ∈ (finTypOf f hf hsm).S ∧ qOf f hf f ≠ 0 ∧
@@ -392,15 +388,15 @@ theorem finTypOf_spec (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm
   rw [← mc_heckeG, ha, map_smul]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hI`. Set `x' : π.S` to `⟨x, hx⟩`. Establish `hrt : ∀ h, ((T ⟨Formalism.L2.NG.rt L n h x, π.stable h x hx⟩ : π'.S) : Formalism.AUTREP.GAf L n → ℂ) = Formalism.L2.NG.rt L n h (T x')` using `fun h => hT h x' ⟨_, π.stable h x hx⟩ rfl`. Use `⟨T x', (T x').2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx0` to reduce the goal to its premises. Establish `h1 : T x' = 0` using `Subtype.ext h0`. Establish `h2` using `T.injective (h1.trans (map_zero T).symm)`. Conclude with `congrArg Subtype.val h2`. Introduce `κ hκ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrt κ]`. Establish `e : (⟨Formalism.L2.NG.rt L n κ x, π.stable κ x hx⟩ : π.S) = χ' κ • x'` using `Subtype.ext (ht κ hκ)`. Rewrite using `[e, map_smul]`. Both sides reduce to the same expression. Rewrite using `[heckeG_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (∑ i ∈ s, Formalism.L2.NG.rt L n (γ i) (T x' : Formalism.AUTREP.GAf L n → ℂ)) = ((T (∑ i ∈ s, (⟨Formalism.L2.NG.rt L n (γ i) x, π.stable (γ i) x hx⟩ : π.S)) : π'.S) : Formalism.AUTREP.GAf L n → ℂ)`. Rewrite using `[map_sum, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hrt (γ i)).symm`. Rewrite using `[e]`. Establish `e2 : (∑ i ∈ s, (⟨Formalism.L2.NG.rt L n (γ i) x, π.stable (γ i) x hx⟩ : π.S)) = a • x'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum, ← heckeG_apply, hh]`. Both sides reduce to the same expression. Rewrite using `[e2, map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iso_transfer {π π' : Formalism.L2.NG.FinTyp L n} (hI : π.Iso π') {J' : Set (Formalism.AUTREP.GAf L n)}
     {χ' : Formalism.AUTREP.GAf L n → ℂ} {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n) (a : ℂ)
@@ -491,9 +487,9 @@ variable {M : Mult.DSModel V Sp} {J : Set (GA D V)} {χ : GA D V → ℂ} {Sb : 
 variable {e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)}
 
 /- English proof (translation)
-Introduce `v k hk g`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.lev v k hk g`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mult_lev {T : Mult.MMap M} (hT : T ∈ Mult.Mult θ M J χ) : ∀ v, ∀ k ∈ J, ∀ g, T v (g * k) = χ k * T v g := by
   intro v k hk g
@@ -508,7 +504,7 @@ theorem mult_lev {T : Mult.MMap M} (hT : T ∈ Mult.Mult θ M J χ) : ∀ v, ∀
     ring
 
 /- English proof (translation)
-Unfold `pre`. Rewrite using `[dif_pos (P.onto γ hγ)]`. Conclude with `(P.onto γ hγ).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_spec (P : RowPsi V n) {γ : GA D V} (hγ : γ ∈ GfC V) : P.ψ (pre P γ) = γ := by
   unfold pre
@@ -516,7 +512,7 @@ theorem pre_spec (P : RowPsi V n) {γ : GA D V} (hγ : γ ∈ GfC V) : P.ψ (pre
   exact (P.onto γ hγ).choose_spec
 
 /- English proof (translation)
-Take `⟨T, hT, hT0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot c.2.2`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hT0 (MultilinearMap.ext fun v => funext fun g => hcon v g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_wit (c : Mult.IxFull θ M J χ Sb e) :
     ∃ T : Mult.MMap M, T ∈ Mult.partFull θ M J χ Sb c.1 ⊓ Mult.goodPart θ M J χ e ∧ ∃ v g0, T v g0 ≠ 0 := by
@@ -533,14 +529,14 @@ def witV (c : Mult.IxFull θ M J χ Sb e) : M.Vec := (exists_wit c).choose_spec.
 def witG (c : Mult.IxFull θ M J χ Sb e) : GA D V := (exists_wit c).choose_spec.2.choose_spec.choose
 
 /- English proof (translation)
-Conclude with `(exists_wit c).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem witT_mem (c : Mult.IxFull θ M J χ Sb e) :
     witT c ∈ Mult.partFull θ M J χ Sb c.1 ⊓ Mult.goodPart θ M J χ e := by
   exact (exists_wit c).choose_spec.1
 
 /- English proof (translation)
-Conclude with `(exists_wit c).choose_spec.2.choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem wit_ne (c : Mult.IxFull θ M J χ Sb e) : witT c (witV c) (witG c) ≠ 0 := by
   exact (exists_wit c).choose_spec.2.choose_spec.choose_spec
@@ -549,7 +545,7 @@ def srcOf (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) : Formalism.AUTREP.G
   fun h => witT c (witV c) (witG c * P.ψ h)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrFun h0 1`. Simplify using `only [srcOf, map_one, mul_one, Pi.zero_apply] at h1`. Conclude with `wit_ne c h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem srcOf_ne (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) : srcOf P c ≠ 0 := by
   intro h0
@@ -558,7 +554,7 @@ theorem srcOf_ne (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) : srcOf P c �
   exact wit_ne c h1
 
 /- English proof (translation)
-Introduce `κ hκ`. Use function extensionality and compare the values at `h`. Rewrite using `[rt_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [srcOf, map_mul, ← mul_assoc]`. Conclude with `mult_lev (Submodule.mem_inf.mp (Submodule.mem_inf.mp (witT_mem c)).1).1 (witV c) (P.ψ κ) hκ (witG c * P.ψ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem srcOf_type (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) :
     IsTypeVec (P.ψ ⁻¹' J) (fun κ => χ (P.ψ κ)) (srcOf P c) := by
@@ -570,7 +566,7 @@ theorem srcOf_type (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) :
     (witG c * P.ψ h)
 
 /- English proof (translation)
-Take `⟨N0, hN0, hκ⟩` from `hl`. Use `⟨N0, hN0, fun κ hκN => ?_⟩` and prove the remaining obligations. Establish `h1` using `srcOf_type P c κ (hκ κ hκN).1`. Simplify using `only [(hκ κ hκN).2, one_smul] at h1`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem srcOf_smooth (P : RowPsi V n) (hl : LevOK P J χ) (c : Mult.IxFull θ M J χ Sb e) : IsSmoothF (srcOf P c) := by
   obtain ⟨N0, hN0, hκ⟩ := hl
@@ -580,13 +576,13 @@ theorem srcOf_smooth (P : RowPsi V n) (hl : LevOK P J χ) (c : Mult.IxFull θ M 
   exact h1
 
 /- English proof (translation)
-Establish `hrep : ∀ γ ∈ R, γ ∈ GfC V`. Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hrep⟩` from `id hR`. Conclude with `fun γ hγ => (hrep.1 γ hγ).1`. Establish `hmem` using `Submodule.mem_inf.mp (Submodule.mem_inf.mp (witT_mem c)).1`. Establish `hker : witT c ∈ LinearMap.ker (Mult.heckeOn M R - c.1 Pr d • LinearMap.id)` using `(Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp hmem.2 Pr) d) R) hR`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : Mult.heckeOn M R (witT c) = c.1 Pr d • witT c`. Establish `h1` using `LinearMap.mem_ker.mp hker`. Rewrite `h1` using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hTvg : ∀ g, ∑ γ ∈ R, witT c (witV c) (g * γ) = c.1 Pr d * witT c (witV c) g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun T : Mult.MMap M => T (witV c) g) hT`. Simplify `h1` using `[Mult.heckeOn, Mult.postOn, Mult.heckeLin]`. Use function extensionality and compare the values at `h`. Rewrite using `[Hecke₃, heckeG_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [rt_apply, srcOf, map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hTvg]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[pre_spec P (hrep γ hγ), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem srcOf_hecke (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) {Pr : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ}
     {R : Finset (GA D V)} (hR : Mult.Hecke₂ V J χ Sb Pr d R) : Hecke₃ P R (srcOf P c) = c.1 Pr d • srcOf P c := by
@@ -616,7 +612,7 @@ def rowRep (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (c : 
   finTypOf (srcOf P c) (srcOf_ne P c) (cyc_smooth hc (srcOf_smooth P hl c))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `finTypOf_spec (srcOf P c) (srcOf_ne P c) (cyc_smooth hc (srcOf_smooth P hl c))`. Conclude with `⟨_, h1, h2, h3 _ _ (srcOf_type P c), fun Pr d R hR => h4 R (pre P) _ (srcOf_hecke P c hR)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowRep_spec (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (c : Mult.IxFull θ M J χ Sb e) :
     ∃ x ∈ (rowRep P hc hl c).S, x ≠ 0 ∧ IsTypeVec (P.ψ ⁻¹' J) (fun κ => χ (P.ψ κ)) x ∧
@@ -626,11 +622,11 @@ theorem rowRep_spec (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J 
   exact ⟨_, h1, h2, h3 _ _ (srcOf_type P c), fun Pr d R hR => h4 R (pre P) _ (srcOf_hecke P c hR)⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `Pr d`. Distinguish the cases in `hH : ∃ R, Mult.Hecke₂ V J χ Sb Pr d R`. Take `⟨R, hR⟩` from `hH`. Take `⟨x, hx, hx0, hxt, hxh⟩` from `rowRep_spec P hc hl c`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', hx0', hxt', hxh'⟩` from `rowRep_spec P hc hl c'`. Take `⟨y, hy, hy0, hyt, hyh⟩` from `iso_transfer hI R (pre P) (c.1 Pr d) hx hx0 hxt (hxh Pr d R hR)`. Take `⟨a, ha⟩` from `hS Pr d R hR (rowRep P hc hl c')`. Establish `e1 : c.1 Pr d • y = a • y` using `hyh.symm.trans (ha y hy hyt)`. Establish `e2 : c'.1 Pr d • x' = a • x'` using `(hxh' Pr d R hR).symm.trans (ha x' hx' hxt')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(smul_left_injective ℂ hy0 e1).trans (smul_left_injective ℂ hx0' e2).symm`. Rewrite using `[c.2.1 Pr d hH, c'.2.1 Pr d hH]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowRep_inj (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (hS : HeckeScalar P J χ Sb)
     (c c' : Mult.IxFull θ M J χ Sb e) (hI : (rowRep P hc hl c).Iso (rowRep P hc hl c')) : c = c' := by
@@ -648,7 +644,7 @@ theorem rowRep_inj (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J �
   · rw [c.2.1 Pr d hH, c'.2.1 Pr d hH]
 
 /- English proof (translation)
-Conclude with `⟨rowRep P hc hl, fun c c' h => rowRep_inj P hc hl hS c c' h, rowRep_spec P hc hl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowRepExists_of (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (hS : HeckeScalar P J χ Sb) :
     RowRepExists θ P M J χ Sb e := by

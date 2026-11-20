@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.DualForms
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hD 𝔪 h x hx`. Take `⟨Δ, ⟨-, hord⟩, hL⟩` from `hx`. Use `⟨fun i => segDual (Δ i), fun i j hij hp => hord i j hij ((GlobalTheory.T.segment_dual_precedes_iff hA _ _).1 hp), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Zcore.dualCl_eq_of hA (x i)]`. Conclude with `(hD (Δ i) (x i).rep (hL i)).of_equiv (IrrGL.equivOf _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_revOrdered_dual : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → LSegDual k →

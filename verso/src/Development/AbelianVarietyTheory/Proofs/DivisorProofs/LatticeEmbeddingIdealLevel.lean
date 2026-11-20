@@ -13,19 +13,17 @@ namespace GlobalTheory.BasePoint
 open GlobalTheory.AdjDatumNe in
 
 /- English proof (translation)
-Use `choose z hz using fun b : Fin n => hon fun i a => (B i * rectOne (k i) n r) b a`. Establish `heq : ∀ x y : La, (Submodule.Quotient.mk x : La ⧸ J) = Submodule.Quotient.mk y ↔ ∀ i ∈ P, ∀ a, ρ i a x = ρ i a y` using `fun x y => by`. Rewrite using `[Submodule.Quotient.eq, hker]`. Simplify using `only [map_sub, sub_eq_zero]`. Use `⟨fun b => Submodule.Quotient.mk (z b), eq_top_iff.2 fun q _ => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q choose c hc using fun b : Fin n => crt fun i => ∑ a', ρ i a' x * B' i (Fin.castLE hrn a') b`. Establish `: (Submodule.Quotient.mk x : La ⧸ J) = Submodule.Quotient.mk (∑ b, c b • z b)`. Use `(heq _ _).2 fun i hi a => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [hs, hc _ i hi, hz _ i hi, Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Establish `h1 : ∀ a', ∑ b, B' i (Fin.castLE hrn a') b * (B i * rectOne (k i) n r) b a = if a' = a then 1 else 0` using `fun a' => by`. Rewrite using `[← Matrix.mul_apply, ← Matrix.mul_assoc, hB, Matrix.one_mul]`. Simplify using `only [rectOne, Fin.ext_iff, Fin.val_castLE]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(Submodule.mkQ J) _ ∈ _`. Rewrite using `[map_sum]`. Conclude with `sum_mem fun b _ => by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[funext_iff]`. Simplify using `only [heq]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h i hi`. Establish `: (Matrix.of fun b a => ρ i a (x b)) = B i * rectOne (k i) n r` using `Matrix.ext fun b a => (h b i hi a).trans (hz b i hi a)`. Rewrite using `[this, ← Matrix.mul_assoc, hB, Matrix.one_mul]`. Introduce `h b i hi a`. Rewrite using `[hz b i hi a, ← h i hi, ← Matrix.mul_assoc, mul_eq_one_comm.1 (hB i), Matrix.one_mul]`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_point {O La ι : Type} [CommRing O] [AddCommGroup La] [Module O La] (P : Finset ι) (k : ι → Type)
     [∀ i, CommRing (k i)] (φ : ∀ i, O → k i) (crt : ∀ t : ∀ i, k i, ∃ c, ∀ i ∈ P, φ i c = t i) {n r : ℕ}
@@ -73,9 +71,9 @@ theorem exists_point {O La ι : Type} [CommRing O] [AddCommGroup La] [Module O L
 
 open GlobalTheory.AdjDatumNe Formalism.IndefR.Datum in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `b a`. Distinguish the cases in `hb : b.val < r`. Use `congrFun (congrFun h2 ⟨b.val, hb⟩) a` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `this` using `[topL, dif_pos ⟨b.2, a.2⟩, Matrix.one_apply]`. Simplify `this` using `only [rectOne, Fin.ext_iff]`. Rewrite using `[h1 b a (by omega) a.2, rectOne, if_neg (by omega)]`. Introduce and unpack `rfl`. Conclude with `⟨lowZero_rectOne _ _ _ _, topL_rectOne _ hrn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem low_top_iff {κ : Type} [Zero κ] [One κ] {n r : ℕ} (hrn : r ≤ n) (y : Matrix (Fin n) (Fin r) κ) :
     (LowZero r y ∧ topL r y = 1) ↔ y = rectOne κ n r := by
@@ -97,7 +95,7 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.pi_quotient_surjective (I := fun PP : P => PP.1.asIdeal) (fun x y hxy => HeightOneSpectrum.isCoprime_of_ne _ _ fun h => hxy (Subtype.ext h)) fun PP => t PP.1`. Conclude with `⟨c, fun PP h => hc ⟨PP, h⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem crt_places {E : Type} [Field E] [NumberField E] (P : Finset (Pl E)) (t : ∀ PP : Pl E, kP PP) :
     ∃ c : 𝓞 E, ∀ PP ∈ P, Ideal.Quotient.mk PP.asIdeal c = t PP := by
@@ -111,25 +109,23 @@ def pr (W : HSp D) (β : GL (Fin W.rank) (EAf D)) (x : Fin W.rank → D.host.E) 
   ∑ k, eToEAf D (∑ l, D.sp.cm.sig (x l) * W.gram l k) * β.val k a
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hβ`. Establish `fT : Formalism.L2.DIV.IsFrame β Λ` using `hβ.choose_spec.1`. Take `⟨n, s, s', hs, hss⟩` from `GlobalTheory.LatVacDual.dualFamily D W Λ hT`. Take `⟨s₁, hs₁⟩ : ∃ A : Matrix (Fin W.rank) (Fin n) D.host.E, A = Matrix.of fun a k => s k a` from `⟨_, rfl⟩`. Take `⟨s₂, hs₂⟩ : ∃ A : Matrix (Fin W.rank) (Fin n) D.host.E, A = Matrix.of fun a k => s' k a` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : s₁ * (s₂ᴴ * W.gram) = 1`. Substitute `hs₁ hs₂` using the available equality. Conclude with `Matrix.ext fun a j => (hss a j).trans (Matrix.one_apply).symm`. Establish `e2 : W.gram * s₁ * s₂ᴴ = 1`. Rewrite using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_eq_one_comm.1 (by rw [Matrix.mul_assoc]; exact e1)`. Establish `i2 : IsIntM ((β⁻¹).val * s₁.map (eToEAf D))` using `fun a k => by`. Rewrite using `[hs₁]`. Conclude with `(fT _).1 (Submodule.subset_span ⟨_, (hs k).1, rfl⟩) a`. Establish `i1 : ∀ k a, pr W β (s' k) a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun k a => GlobalTheory.PairIntegral.pair_mem_intAf D W β Λ hβ _ ((GlobalTheory.DatumFourier.mem_latG_one hβ _).2 (hs k).2) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpr : (Matrix.of fun k a => pr W β (s' k) a) = (s₂ᴴ * W.gram).map (eToEAf D) * β.val`. Rewrite using `[hs₂]`. Both sides reduce to the same expression. Use `⟨n, s', Matrix.of fun a k => ⟨_, i2 a k⟩, Matrix.of fun k a => ⟨_, i1 k a⟩, fun k => (hs k).2, ?_, fun _ _ => rfl, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h : ((β⁻¹).val * s₁.map (eToEAf D)) * (Matrix.of fun k a => pr W β (s' k) a) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[hpr, Matrix.mul_assoc, ← Matrix.mul_assoc (s₁.map _), ← Matrix.map_mul, e1, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.one_mul, Units.inv_mul]`. Use extensionality with `a a'`. Use `congrFun (congrFun h a) a'` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.mul_apply]`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use `choose c hc using fun k => (hT.2 (s k)).1 (hs k).1 y hy`. Establish `hc' : (fun k => (c k : D.host.E)) = star y ᵥ* (W.gram * s₁)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hc, hs₁]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.mul_apply, Finset.mul_sum, mul_assoc, Pi.star_apply, Matrix.of_apply]`. Use `⟨c, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `h : (fun k => (c k : D.host.E)) ᵥ* s₂ᴴ = star y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc', Matrix.vecMul_vecMul, e2, Matrix.vecMul_one]`. Use function extensionality and compare the values at `a`. Use `congrArg star (congrFun h a)` as an intermediate fact. Rewrite `this` using `[Pi.star_apply, star_star]`. Rewrite using `[← this, hs₂, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.vecMul, dotProduct, star_sum, star_mul', Matrix.conjTranspose_apply, star_star, Matrix.of_apply]`. Both sides reduce to the same expression. Establish `h1 : (fun a => pr W β y a) = (fun j => eToEAf D ((star y ᵥ* W.gram) j)) ᵥ* β.val` using `rfl`. Express the relevant statement in the definitionally equal form `_ = ((fun a => pr W β y a) ᵥ* ((β⁻¹).val * s₁.map (eToEAf D))) k`. Rewrite using `[h1, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, congrFun hc' k, ← Matrix.vecMul_vecMul]`.
-
-Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual (W : HSp D) (β : GL (Fin W.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E))
     (hβ : IsSDFrame W β Λ 1) : ∃ (n : ℕ) (s' : Fin n → Fin W.rank → D.host.E)
@@ -188,7 +184,7 @@ theorem exists_dual (W : HSp D) (β : GL (Fin W.rank) (EAf D)) (Λ : Submodule (
       simp only [Matrix.vecMul, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PairIntegral.pair_mem_intAf D W β Λ hβ _ ((GlobalTheory.DatumFourier.mem_latG_one hβ _).2 hy) a`.
+A detailed English derivation is pending.
 -/
 theorem pr_int {W : HSp D} {β : GL (Fin W.rank) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)}
     (hβ : IsSDFrame W β Λ 1) {y : Fin W.rank → D.host.E} (hy : y ∈ Λ) (a : Fin W.rank) :
@@ -196,7 +192,7 @@ theorem pr_int {W : HSp D} {β : GL (Fin W.rank) (EAf D)} {Λ : Submodule (𝓞 
   GlobalTheory.PairIntegral.pair_mem_intAf D W β Λ hβ _ ((GlobalTheory.DatumFourier.mem_latG_one hβ _).2 hy) a
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨_, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.normCc_mem_AA D, y, (GlobalTheory.DatumFourier.mem_latG_one hβ _).2 hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_latG {W : HSp D} {β : GL (Fin W.rank) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)}
     (hβ : IsSDFrame W β Λ 1) {y : Fin W.rank → D.host.E} (hy : y ∈ Λ) :
@@ -205,11 +201,9 @@ theorem smul_mem_latG {W : HSp D} {β : GL (Fin W.rank) (EAf D)} {Λ : Submodule
     (GlobalTheory.DatumFourier.mem_latG_one hβ _).2 hy, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, v, hv, rfl⟩` from `hx`. Take `⟨c, hc⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.int_of_mem_b D (Ideal.absNorm_mem D.host.𝔟) ha`. Rewrite using `[smul_smul, mul_comm, ← hc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.smul_mem c ((GlobalTheory.DatumFourier.mem_latG_one hβ _).1 hv)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Λ.smul_mem c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_latG {W : HSp D} {β : GL (Fin W.rank) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)}
     (hβ : IsSDFrame W β Λ 1) {y : Fin W.rank → D.host.E} (hy : y ∈ latG W 1) :
@@ -240,7 +234,7 @@ theorem rho_apply (PP : Pl D.host.E) (a : Fin W.rank) (x : La) :
     rho W β e ι hi PP a x = resS D.host.F PP ⟨_, hi x a⟩ := rfl
 
 /- English proof (translation)
-Establish `: (⟨_, hi (c • x) a⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = oToS D.host.F D.host.E c' * ⟨_, hi x a⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rowP W β e (ι (c • x)) a = eToEAf D (c' : D.host.E) * rowP W β e (ι x) a`. Rewrite using `[map_smul, show c • ι x = (c : D.host.E) • ι x from rfl, rowPairing_smul, h]`. Rewrite using `[rho_apply, rho_apply, this, map_mul, resS_oToS]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_smul (PP : Pl D.host.E) (a : Fin W.rank) (c c' : 𝓞 D.host.E)
     (h : (c' : D.host.E) = D.sp.cm.sig (c : D.host.E)) (x : La) :
@@ -252,9 +246,9 @@ theorem rho_smul (PP : Pl D.host.E) (a : Fin W.rank) (c c' : 𝓞 D.host.E)
   rw [rho_apply, rho_apply, this, map_mul, resS_oToS]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.AdjDatumNe.idemSum_res he`. Establish `: (⟨_, hi x a⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = oToS D.host.F D.host.E c * (⟨_, h1⟩ * ⟨_, hy⟩)`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rowP W β e (ι x) a = eToEAf D (c : D.host.E) * rowP W β e y a`. Rewrite using `[h, rowPairing_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `star_star _`. Rewrite using `[rho_apply, this, map_mul, map_mul, resS_oToS, h2 PP hPP, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_eq {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (PP : Pl D.host.E) (hPP : PP ∈ P) (a : Fin W.rank) (x : La)
     (c : 𝓞 D.host.E) (y : Fin W.rank → D.host.E) (hy : pr W β y a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
@@ -270,15 +264,13 @@ theorem rho_eq {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (PP : Pl D.host.E
   rw [rho_apply, this, map_mul, map_mul, resS_oToS, h2 PP hPP, one_mul]
 
 /- English proof (translation)
-Take `⟨n, s', A, B, hs, hAB, hB, -⟩` from `exists_dual W β Λ hβ`. Use `choose z hz using fun k => hι.2.ge (smul_mem_latG hβ (hs k))`. Establish `hu : ∀ PP : Pl D.host.E, ∃ u : kP PP, PP ∈ P → u * Ideal.Quotient.mk _ ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = 1` using `fun PP => by`. Distinguish the cases in `h : PP ∈ P`. Use `PP.isMaximal` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `Ideal.Quotient.exists_inv (mt Ideal.Quotient.eq_zero_iff_mem.1 (hN PP h))`. Conclude with `⟨u, fun _ => (mul_comm _ _).trans hu⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose u hu using hu`. Use `choose c hc using fun k => crt_places P fun PP => u PP * ∑ a', t PP a' * resS D.host.F PP (A a' k)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose c' hc' using fun k => exists_sig (c k)`. Use `⟨∑ k, c' k • z k, fun PP hPP a => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ k, rho W β e ι hi PP a (c' k • z k) = ∑ a', t PP a' * (resS D.host.F PP (A a' k) * resS D.host.F PP (B k a))`. Introduce `k`. Rewrite using `[rho_smul W β e ι hi PP a (c' k) (c k) (by rw [hc']; exact (star_star _).symm), rho_eq W β e ι hi he PP hPP a (z k) ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) (s' k) (pr_int hβ (hs k) a) (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Use `congr 1`. Conclude with `((congrArg _ (map_natCast (algebraMap (𝓞 D.host.E) D.host.E) _)).trans (map_natCast _ _)).symm),`. Use `hc k PP hPP, show (⟨_, pr_int hβ (hs k) a⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = B k a from Subtype.ext (hB k a).symm, mul_mul_mul_comm, hu PP hPP, one_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[map_sum]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, ← RingHom.map_mul, ← map_sum, ← Matrix.mul_apply, hAB, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by rw [if_neg hb, map_zero, mul_zero]) (by simp), if_pos rfl, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_onto {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (hβ : IsSDFrame W β Λ 1) (hι : LatEmb W ι)
     {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
@@ -314,25 +306,23 @@ theorem rho_onto {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (hβ
   rw [Finset.sum_eq_single a (fun b _ hb => by rw [if_neg hb, map_zero, mul_zero]) (by simp), if_pos rfl, map_one, mul_one]
 
 /- English proof (translation)
-Take `⟨n, s', A, B, hs, -, -, hy⟩` from `exists_dual W β Λ hβ`. Use `choose z hz using fun k => hι.2.ge (smul_mem_latG hβ (hs k))`. Establish `hcop : ∀ c : 𝓞 D.host.E, (∀ PP ∈ P, c ∈ PP.asIdeal) → c ∈ ∏ PP ∈ P, PP.asIdeal` using `fun c hc => by`. Rewrite using `[Ideal.prod_eq_iInf_of_pairwise_isCoprime fun x _ y _ h => HeightOneSpectrum.isCoprime_of_ne _ _ h]`. Simplify `hc` using `only [Submodule.mem_iInf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set N : ℕ := Ideal.absNorm D.host.ccK`. Use `set m : ℕ := Ideal.absNorm D.host.𝔟`. Establish `hm : ((m : ℕ) : D.host.E) • ι x ∈ Λ` using `smul_mem_of_latG hβ (hι.2.le (LinearMap.mem_range_self ι x))`. Establish `hcast : ∀ j : ℕ, ((j : 𝓞 D.host.E) : D.host.E) = j` using `fun j => map_natCast (algebraMap (𝓞 D.host.E) D.host.E) j`. Take `⟨c, hc1, hc2⟩` from `hy _ hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ k, c k ∈ ∏ PP ∈ P, PP.asIdeal` using `fun k => hcop _ fun PP hPP => by`. Establish `h1 : oToS D.host.F D.host.E (c k) = ∑ a, ⟨_, pr_int hβ hm a⟩ * A a k`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Conclude with `hc2 k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← resS_oToS (F := D.host.F), h1, map_sum]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `h2` using `rho_eq W β e ι hi he PP hPP a ((m : 𝓞 D.host.E) • x) 1 _ (pr_int hβ hm a) (by`. Rewrite using `[map_smul, show ((1 : 𝓞 D.host.E) : D.host.E) = 1 from rfl, map_one, one_smul, ← hcast]`. Use the proof step `rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[rho_smul W β e ι hi PP a m m (by rw [hcast, map_natCast]), hx PP hPP, mul_zero, map_one, one_mul]`. Rewrite using `[map_mul, ← h2, zero_mul]`. Establish `h3 : ((N * m : ℕ) : 𝓞 D.host.E) • x = ∑ k, τ (c k) • z k`. Use `hι.1 ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `(((N * m : ℕ) : 𝓞 D.host.E) : D.host.E) • ι x = _`. Rewrite using `[hcast, Nat.cast_mul, mul_smul, hc1, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hz, smul_comm, ← hτ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : ∀ PP : Pl D.host.E, ∃ u : kP PP, PP ∈ P → Ideal.Quotient.mk _ ((N * m : ℕ) : 𝓞 D.host.E) * u = 1` using `fun PP => by`. Distinguish the cases in `h : PP ∈ P`. Use `PP.isMaximal` as an intermediate fact. Establish `h4 : ((N * m : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun h5 => by`. Rewrite `h5` using `[Nat.cast_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Break down `PP.isPrime.mem_or_mem h5 with h5 | h5` into its components or cases. Conclude with `hP PP h (by rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h5)`. Take `⟨p, hp, hpP⟩` from `GlobalTheory.HalfCompare.exists_prime_under PP`. Conclude with `hP PP h ((hpP _).2 (((GlobalTheory.HalfCompare.prime_dvd_absNorm_halfDifferent D hp).1 ((hpP _).1 h5)).mul_right _))`. Take `⟨u, hu⟩` from `Ideal.Quotient.exists_inv (mt Ideal.Quotient.eq_zero_iff_mem.1 h4)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose u hu using hu`. Take `⟨v, hv⟩` from `crt_places P u`. Establish `h6 : 1 - ((N * m : ℕ) : 𝓞 D.host.E) * v ∈ ∏ PP ∈ P, PP.asIdeal` using `hcop _ fun PP hPP => by`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, map_mul, hv PP hPP, hu PP hPP, sub_self]`. Establish `h7 : x = τ (1 - ((N * m : ℕ) : 𝓞 D.host.E) * v) • x + τ v • ((N * m : ℕ) : 𝓞 D.host.E) • x`. Rewrite using `[smul_smul, ← add_smul, map_sub, map_one, map_mul, map_natCast, mul_comm, sub_add_cancel, one_smul]`. Rewrite using `[h7, h3]`. Conclude with `add_mem (Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ h6) trivial) (Submodule.smul_mem _ _ (sum_mem fun k _ => Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ (hc k)) trivial))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_ker {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (hβ : IsSDFrame W β Λ 1) (hι : LatEmb W ι)
     {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
@@ -393,15 +383,13 @@ theorem rho_ker {Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (hβ 
     (sum_mem fun k _ => Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ (hc k)) trivial))
 
 /- English proof (translation)
-Introduce `j a`. Establish `hmem : (Pi.single j 1 : Fin (Vc D i).rank → D.host.E) ∈ Λ`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hβ, ← GlobalTheory.SplitReps.hLat_one, hV.2]`. Introduce `k _`. Rewrite using `[Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Use `pr_int hβ hmem a using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pr, hV.1, Finset.sum_eq_single j, Finset.sum_eq_single j]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[hl]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_eq_zero, map_zero, zero_mul]`. Introduce `l _`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Rewrite using `[Matrix.one_apply_ne hk.symm, mul_zero]`.
-
-Simplify using `[hl]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntM_frame (i : Fin D.R.m) {β : GL (Fin (Vc D i).rank) (EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)} (hV : VStd D i) (hβ : IsSDFrame (Vc D i) β Λ 1) :
@@ -439,25 +427,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i hV H Dw l c ι I hι hh`. Establish `hQ : R.Q A.μ0 = ∅` using `Finset.eq_empty_of_forall_notMem fun PP hP => (hR.lev.Q_ram A.μ0 PP).2 (Or.inl hP) (by rw [hR.lev.xi_base]; exact fun _ _ => rfl)`. Take `⟨-, e, he, -⟩` from `hR.thP.vP i A.μ0`. Establish `he' : IsIdemSum e R.Pg` using `by rwa [hQ, Finset.union_empty] at he`. Establish `hP` using `fun PP (h : PP ∈ R.Pg) => hh.2.2 PP (Or.inl h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ` using `GlobalTheory.StdFrameInv.isIntM_inv D i _ _ hV (hR.lev.βV i)`. Establish `hβ'` using `isIntM_frame i hV (hR.lev.βV i)`. Establish `hi : ∀ x a, LevelDatum.rowP (Wc D i) (R.βW i) e (ι x) a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun x a => LevelDatum.rowP_int _ _ _ (hR.lev.βW i) e _ he' hP _ (hι.2.le (LinearMap.mem_range_self ι x)) a`. Establish `hτ : ∀ c, ((H.bar c : 𝓞 D.host.E) : D.host.E) = D.sp.cm.sig (c : D.host.E)` using `fun c => H.bar_eq c`. Establish `hrn : (Wc D i).rank ≤ (Vc D i).rank` using `(rank_Wc i).le.trans (r_le_V i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x1, h1, h2⟩` from `exists_point R.Pg (fun PP => Formalism.L2.DIV.kP PP) (fun PP c => Ideal.Quotient.mk PP.asIdeal (H.bar c)) (fun t => by`. Take `⟨c, hc⟩` from `crt_places R.Pg t`. Conclude with `⟨H.bar.symm c, fun PP h => by rw [RingEquiv.apply_symm_apply]; exact hc PP h⟩)`. Use the proof step `(rho (Wc D i) (R.βW i) e ι hi) (fun PP a c x => rho_smul _ _ _ _ hi PP a c _ (hτ c) x) (Mfr l • ⊤)`. Use the proof step `(fun x => ⟨fun hx PP hPP a => LevelDatum.residue_rowPairing_eq_zero _ _ e ι a (fun x => hi x a) (Mfr l) PP (fun c hc => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ H.bar.surjective).1 hc`. Rewrite `hb` using `[hh.1]`. Use `⟨b, Ideal.prod_le_inf.trans (Finset.inf_le hPP) hb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = star ((H.bar b : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[H.bar_eq]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(star_star _).symm) x hx,`. Use `fun hx => by`. Rewrite using `[Mfr, hh.1]`. Conclude with `rho_ker _ _ _ _ hi (hR.lev.βW i) hι he' hP _ hτ x hx⟩)`. Use the proof step `(rho_onto _ _ _ _ hi (hR.lev.βW i) hι he' fun PP h h' => hP PP h (by rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h'))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun PP => Matrix.of fun a b => Formalism.L2.DIV.resS D.host.F PP ⟨_, hβ' a b⟩)`. Use the proof step `(fun PP => Matrix.of fun a b => Formalism.L2.DIV.resS D.host.F PP ⟨_, hβ a b⟩)`. Use the proof step `(fun PP => by`. Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, ← RingHom.map_mul, ← map_sum]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: (∑ j, ⟨_, hβ a j⟩ * ⟨_, hβ' j b⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = if a = b then 1 else 0`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Use `(congrFun (congrFun (R.βV i).inv_mul a) b).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[this, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [map_one _, map_zero _]) hrn`. Use `⟨x1, h1, e, he, fun x => ?_⟩` and prove the remaining obligations.
-
-Take `⟨h3, h4⟩` from `LevelDatum.redM_uMat (Vc D i) (Wc D i) hV.1 _ hβ (R.βW i) e (fun b => ι (x b)) fun b a => hi (x b) a`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Establish `h5 : ((fun b => Submodule.Quotient.mk (x b)) = x1) ↔ ∀ PP ∈ R.Pg, LowZero (Wc D i).rank (redM PP (FWT.uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e fun b => ι (x b))) ∧ topL (Wc D i).rank (redM PP (FWT.uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e fun b => ι (x b))) = 1` using `(h2 x).trans (forall₂_congr fun PP _ => by`. Rewrite using `[low_top_iff hrn]`. Conclude with `Eq.congr_left (Matrix.ext fun b a => (h4 PP b a).symm))`.
-
-Rewrite using `[hQ, omegaQ, dif_pos (by simp), Finset.attach_empty, Finset.prod_empty, mul_one, omegaK, indPhi]`. Distinguish the cases in `h6 : (fun b => Submodule.Quotient.mk (x b)) = x1`. Rewrite using `[if_pos h6, if_pos (h5.1 h6), map_one]`. Rewrite using `[if_neg h6, if_neg (mt h5.2 h6), map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_phiIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), VStd D i → ∀ (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Geo.Tor.Level H) (c : Coeff l) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (I : Ideal (𝓞 D.host.E)), LatEmb (Wc D i) ι → HalfIs R A.μ0 l.Mb I → ∃ x1 : Fin (Vc D i).rank → LevQc Dw l, Submodule.span (𝓞 D.host.E) (Set.range x1) = ⊤ ∧ PhiIs R i c.F.val.toRingHom A.μ0 ι (Mfr l • ⊤) (indPhi c x1) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i hV H Dw l c ι I hι hh

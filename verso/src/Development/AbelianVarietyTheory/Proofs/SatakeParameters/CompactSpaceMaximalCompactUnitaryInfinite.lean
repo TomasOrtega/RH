@@ -5,7 +5,7 @@ open GlobalTheory.CuspRep
 namespace GlobalTheory.KinfCompactness
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (congrFun hM j) j) w`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply_eq, Finset.sum_apply, Pi.mul_apply, Pi.star_apply, Pi.one_apply, Complex.star_def, Complex.conj_mul'] at h`. Establish `h2 : ∑ x, ‖M x j w‖ ^ 2 = 1` using `by exact_mod_cast h`. Establish `h3 : ‖M i j w‖ ^ 2 ≤ 1` using `h2 ▸ Finset.single_le_sum (f := fun x => ‖M x j w‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (M i j w)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_entry_le_one {E : Type} [Field E] {a : ℕ} {M : Matrix (Fin a) (Fin a) (Cinf E)}
     (hM : star M * M = 1) (i j : Fin a) (w : NumberField.InfinitePlace E) : ‖M i j w‖ ≤ 1 := by
@@ -18,7 +18,7 @@ theorem norm_entry_le_one {E : Type} [Field E] {a : ℕ} {M : Matrix (Fin a) (Fi
   nlinarith [norm_nonneg (M i j w)]
 
 /- English proof (translation)
-Establish `e : (Matrix.unitaryGroup (Fin a) (Cinf E) : Set (Matrix (Fin a) (Fin a) (Cinf E))) = {M | star M * M = 1}`. Use extensionality with `M`. Conclude with `Matrix.mem_unitaryGroup_iff'`. Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_star.matrix_mul continuous_id) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_unitaryGroup (E : Type) [Field E] (a : ℕ) :
     IsClosed (Matrix.unitaryGroup (Fin a) (Cinf E) : Set (Matrix (Fin a) (Fin a) (Cinf E))) := by
@@ -29,9 +29,9 @@ theorem isClosed_unitaryGroup (E : Type) [Field E] (a : ℕ) :
   exact isClosed_eq (continuous_star.matrix_mul continuous_id) continuous_const
 
 /- English proof (translation)
-Set `B : Set (Matrix (Fin a) (Fin a) (Cinf E))` to `Set.univ.pi fun _ => Set.univ.pi fun _ => Set.univ.pi fun _ => Metric.closedBall (0 : ℂ) 1`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Establish `hsub : (Matrix.unitaryGroup (Fin a) (Cinf E) : Set (Matrix (Fin a) (Fin a) (Cinf E))) ⊆ B`. Introduce `M hM i _ j _ w _`. Simplify `norm_entry_le_one (Matrix.mem_unitaryGroup_iff'.1 hM) i j w` using `[Metric.mem_closedBall, dist_zero_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `isCompact_iff_compactSpace.1 (hB.of_isClosed_subset (isClosed_unitaryGroup E a) hsub)`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_Kinf (E : Type) [Field E] (a : ℕ) : CompactSpace (Kinf E a) := by
   let B : Set (Matrix (Fin a) (Fin a) (Cinf E)) :=

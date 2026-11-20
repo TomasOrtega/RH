@@ -16,13 +16,13 @@ namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
 /- English proof (translation)
-Take `⟨U, hU, hb, -⟩` from `exists_isAffineOpen_le b (le_preimage_top b)`. Establish `hlb : ⊤ ≤ (spMap l ≫ b) ⁻¹ᵁ U` using `le_preimage_comp _ b hb (le_preimage_top _)`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ U`. Establish `h1 : ⊤ ≤ (spMap k ≫ x) ⁻¹ᵁ U` using `h ▸ hlb`. Introduce `w _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subsingleton.elim w (spMap k (IsLocalRing.closedPoint C))]`. Conclude with `h1 (x := IsLocalRing.closedPoint C) trivial`. Establish `hv : ∀ f, k ((valMap x U hx).hom f) = l ((valMap b U hb).hom f)` using `fun f => by`. Rewrite using `[← valR_eq, ← valR_eq, ← valR_spMap_comp k x U hx, ← valR_spMap_comp l b U hb, h]`. Use `choose g hg using fun f => hint _ _ (hv f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Γ(X, U) →+* V` to `{ toFun := g map_one' := hi (by simp only [hg, map_one]) map_mul' := fun a c => hi (by simp only [hg, map_mul]) map_zero' := hi (by simp only [hg, map_zero]) map_add' := fun a c => hi (by simp only [hg, map_add]) }`. Establish `e1 : (CommRingCat.ofHom ψ : Γ(X, U) ⟶ CommRingCat.of V) ≫ CommRingCat.ofHom i = valMap x U hx`. Use extensionality with `f`. Conclude with `hg f`. Establish `e2 : (CommRingCat.ofHom ψ : Γ(X, U) ⟶ CommRingCat.of V) ≫ CommRingCat.ofHom j = valMap b U hb`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `f`. Conclude with `hl ((hc _).trans ((congrArg k (hg f)).trans (hv f)))`. Use `⟨Spec.map (CommRingCat.ofHom ψ : Γ(X, U) ⟶ CommRingCat.of V) ≫ hU.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, e1, specMap_valMap_fromSpec]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, e2, specMap_valMap_fromSpec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_of_inter {V K O C : Type} [CommRing V] [Field K] [CommRing O] [IsLocalRing O] [Field C]
     (i : V →+* K) (j : V →+* O) (k : K →+* C) (l : O →+* C) (hi : Function.Injective i) (hl : Function.Injective l)
@@ -56,7 +56,7 @@ theorem exists_point_of_inter {V K O C : Type} [CommRing V] [Field K] [CommRing 
   · rw [← Category.assoc, ← Spec.map_comp, e2, specMap_valMap_fromSpec]
 
 /- English proof (translation)
-Introduce `a b e` and use `Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) ((Over.w a).trans (Over.w b).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pushHom_inj_of_cartesian {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
@@ -64,29 +64,25 @@ theorem pushHom_inj_of_cartesian {S S' : Scheme.{0}} {G : Over S} {G' : Over S'}
   Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) ((Over.w a).trans (Over.w b).symm))
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ p _ y₀ u jV hj b hb`. Use `haveI := u.U.gen_hom`. Set `k : FractionRing u.V →+* PadicAlgCl p` to `algebraMap _ _`. Establish `hsq : gPt p ≫ spMap jV = spMap k ≫ jK u.V`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun φ => spMap φ) (RingHom.ext hj)`. Establish `hbw : b.left ≫ u.G.hom = spMap jV` using `Over.w b`. Set `T : Over (Sp (FractionRing u.V))` to `Over.mk (spMap k)`. Set `wl : Sp (PadicAlgCl p) ⟶ pullback u.G.hom (jK u.V)` to `pullback.lift (gPt p ≫ b.left) (spMap k) (by rw [Category.assoc, hbw, hsq])`. Establish `w1 : wl ≫ pullback.fst _ _ = gPt p ≫ b.left` using `pullback.lift_fst _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `w2 : wl ≫ pullback.snd _ _ = spMap k` using `pullback.lift_snd _ _ _`. Set `w : T ⟶ (Over.pullback (jK u.V)).obj u.G` to `Over.homMk wl w2`. Set `W : Over.mk (T.hom ≫ jK u.V) ⟶ Over.mk (spMap jV)` to `Over.homMk (gPt p) hsq`. Establish `hp` using `isGrpPullback_pullback u.G (jK u.V)`. Establish `e0 : pushHom hp T w = preHom W b` using `Over.OverMorphism.ext w1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w ^ (S.r * S.N) = 1` using `pushHom_inj_of_cartesian hp T (by`. Rewrite using `[map_pow, e0, ← map_pow, hb, map_one, map_one])`. Establish `hw' : (w ≫ u.U.gen.hom) ^ (S.r * S.N) = 1`. Rewrite using `[← MonObj.pow_comp, hw, MonObj.one_comp]`. Take `⟨a, ha, -⟩` from `ρ.pt_bij (PadicAlgCl p) (T.hom ≫ spMap u.yK) (pushHom u.cart T (w ≫ u.U.gen.hom)) (by rw [← map_pow, hw', map_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (spMap k ≫ spMap u.yK) ≫ (ρ.pt a).left = (wl ≫ u.U.gen.hom.left) ≫ u.φ` using `congrArg (fun z => z.left) ha`. Establish `hpa : (ρ.pt a).left ≫ ρ.P.A.hom = 𝟙 _` using `Over.w (ρ.pt a)`. Establish `hg : u.U.gen.hom.left ≫ u.A.A.hom = pullback.snd _ _` using `Over.w u.U.gen.hom`. Establish `hg' : u.U.gen.inv.left ≫ pullback.snd _ _ = u.A.A.hom` using `Over.w u.U.gen.inv`. Establish `hih : u.U.gen.inv.left ≫ u.U.gen.hom.left = 𝟙 _` using `congrArg (fun z => z.left) u.U.gen.inv_hom_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hhi : u.U.gen.hom.left ≫ u.U.gen.inv.left = 𝟙 _` using `congrArg (fun z => z.left) u.U.gen.hom_inv_id`. Take `⟨x', x1, x2⟩ : ∃ x' : Sp (FractionRing u.V) ⟶ u.A.A.left, x' ≫ u.φ = spMap u.yK ≫ (ρ.pt a).left ∧ x' ≫ u.A.A.hom = 𝟙 _` from `⟨u.cart.1.lift (spMap u.yK ≫ (ρ.pt a).left) (𝟙 _) (by`. Rewrite using `[Category.assoc, hpa, Category.id_comp]`. Conclude with `Category.comp_id _), u.cart.1.lift_fst _ _ _,`. Use the proof step `u.cart.1.lift_snd _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : spMap k ≫ x' = wl ≫ u.U.gen.hom.left`. Use `u.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, x1, ← Category.assoc]`. Conclude with `ha'`. Rewrite using `[Category.assoc, x2, Category.comp_id, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `((congrArg (wl ≫ ·) hg).trans w2).symm`. Set `x : Sp (FractionRing u.V) ⟶ pullback u.G.hom (jK u.V)` to `x' ≫ u.U.gen.inv.left`. Establish `hx : spMap k ≫ x = wl`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ u.U.gen.inv.left) hx').trans ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (wl ≫ ·) hhi).trans (Category.comp_id _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hxs : x ≫ pullback.snd _ _ = 𝟙 _` using `(Category.assoc _ _ _).trans ((congrArg (x' ≫ ·) hg').trans x2)`. Take `⟨hV, h1, h2⟩` from `exists_point_of_inter (algebraMap u.V (FractionRing u.V)) jV k (OO p).subtype (IsFractionRing.injective _ _) Subtype.val_injective hj (fun a c e => (u.norm_le a).1 ((mem_OO_iff _).1 (by`. Establish `e' : algebraMap _ (PadicAlgCl p) a = c` using `e`. Rewrite using `[e']`. Conclude with `c.2)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(x ≫ pullback.fst _ _) b.left (by rw [← Category.assoc, hx, w1])`. Use `⟨a, hV, x, ⟨?_, h1.symm, hxs, ?_⟩, h2⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_preimage (hV ≫ u.G.hom), ← Spec.map_id]`. Use `congr 1`. Establish `h3 : Spec.preimage (hV ≫ u.G.hom) ≫ CommRingCat.ofHom (algebraMap u.V (FractionRing u.V)) = CommRingCat.ofHom (algebraMap u.V (FractionRing u.V))`.
-
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_preimage, ← Category.assoc]`. Use `(congrArg (· ≫ u.G.hom) h1).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hxs, Category.id_comp]`. Use extensionality with `v`.
-
-Conclude with `IsFractionRing.injective u.V (FractionRing u.V) (congrArg (fun φ => φ.hom v) h3)`. Use `(Category.assoc _ _ _).trans (Eq.trans (congrArg (x' ≫ ·) ?_) x1)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ u.φ) hih).trans (Category.id_comp _))`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem torsion_integral_descends : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (jV : u.V →+* OO p), (∀ x, (jV x : PadicAlgCl p) = algebraMap (FractionRing u.V) _ (algebraMap u.V (FractionRing u.V) x)) → ∀ b : Over.mk (spMap jV) ⟶ u.G, b ^ (S.r * S.N) = 1 → ∃ (a : S.Gam) (hV : Sp u.V ⟶ u.G.left) (x : Sp (FractionRing u.V) ⟶ pullback u.G.hom (jK u.V)), (hV ≫ u.G.hom = 𝟙 _ ∧ x ≫ pullback.fst _ _ = jK u.V ≫ hV ∧ x ≫ pullback.snd _ _ = 𝟙 _ ∧ x ≫ u.U.gen.hom.left ≫ u.φ = spMap u.yK ≫ (ρ.pt a).left) ∧ spMap jV ≫ hV = b.left := by
   intro o Ω _ _ _ _ S ρ p _ y₀ u jV hj b hb

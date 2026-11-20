@@ -14,7 +14,7 @@ variable {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {n : ℕ}
   {Φv : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ} {g : HermR (Fv F v) σ n → ℂ} {T : HermR (Fv F v) σ n}
 
 /- English proof (translation)
-The claim follows from `isClosed_hermSet v σ n`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_herm (σ : E →ₐ[F] E) (n : ℕ) :
     IsClosed ((HermR (Fv F v) σ n : AddSubgroup (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) :
@@ -22,14 +22,14 @@ theorem isClosed_herm (σ : E →ₐ[F] E) (n : ℕ) :
   isClosed_hermSet v σ n
 
 /- English proof (translation)
-The claim follows from `(isClosed_herm (v := v) σ n).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_ballM (v := v) (p := n) (q := n) R)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_ballH (R : ℝ) : IsCompact {b : HermR (Fv F v) σ n | nM v b.1 ≤ R} :=
   (isClosed_herm (v := v) σ n).isClosedEmbedding_subtypeVal.isCompact_preimage
     (isCompact_ballM (v := v) (p := n) (q := n) R)
 
 /- English proof (translation)
-Establish `hc : IsClosed {b : HermR (Fv F v) σ n | nM v b.1 ≤ R}` using `isClosed_le ((continuous_nM (v := v) (p := n) (q := n)).comp continuous_subtype_val) continuous_const`. Conclude with `hc.measurableSet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_ballH (R : ℝ) : MeasurableSet {b : HermR (Fv F v) σ n | nM v b.1 ≤ R} := by
   have hc : IsClosed {b : HermR (Fv F v) σ n | nM v b.1 ≤ R} :=
@@ -37,15 +37,13 @@ theorem measurableSet_ballH (R : ℝ) : MeasurableSet {b : HermR (Fv F v) σ n |
   exact hc.measurableSet
 
 /- English proof (translation)
-Use `h.haar` as an intermediate fact. Unfold `nu2`. Use `set S : Set (Fin n → Fv F v ⊗[F] E) := {x | ∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + b.1.mulVec y'} with hS`. Establish `hsub : (L₁ : Set (Fin n → Fv F v ⊗[F] E)) ⊆ S` using `fun y hy => ⟨y, hy, 0, L₂.zero_mem, by simp⟩`. Establish `hpos : lam L₁ ≠ 0` using `(h.co₁.1.measure_pos lam ⟨0, L₁.zero_mem⟩).ne'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin1 : lam L₁ ≠ ⊤` using `h.co₁.2.measure_lt_top.ne`. Establish `hcS : IsCompact S`. Establish `e : S = (fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + b.1.mulVec p.2) '' ((L₁ : Set (Fin n → Fv F v ⊗[F] E)) ×ˢ (L₂ : Set (Fin n → Fv F v ⊗[F] E)))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Conclude with `⟨(y, y'), ⟨hy, hy'⟩, rfl⟩`. Introduce and unpack `⟨⟨y, y'⟩, ⟨hy, hy'⟩, rfl⟩`. Conclude with `⟨y, hy, y', hy', rfl⟩`. Rewrite using `[e]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h.co₁.2.prod h.co₂.2).image (continuous_fst.add (continuous_const.matrix_mulVec continuous_snd))`. Establish `hfinS : lam S ≠ ⊤` using `hcS.measure_lt_top.ne`. Establish `h1 : 1 ≤ lam S / lam L₁`. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hpos) (Or.inl hfin1), one_mul]`. Conclude with `measure_mono hsub`.
-
-Establish `h2` using `ENNReal.toReal_mono (ENNReal.div_ne_top hfinS hpos) h1`. Rewrite `h2` using `[ENNReal.toReal_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lattice_norm_ge_one (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (b : HermR (Fv F v) σ n) :
     1 ≤ nu2 lam L₁ L₂ b.1 := by
@@ -75,17 +73,17 @@ theorem lattice_norm_ge_one (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T
   rwa [ENNReal.toReal_one] at h2
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ d in 𝓝 (0 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)), ∀ y' ∈ (L₂ : Set (Fin n → Fv F v ⊗[F] E)), d.mulVec y' ∈ L₁`. Use `h.co₂.2.eventually_forall_of_forall_eventually fun y' _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1.mulVec p.2` using `continuous_fst.matrix_mulVec continuous_snd`. Establish `h0 : (fun p : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1.mulVec p.2) ((0 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)), y') ∈ (L₁ : Set (Fin n → Fv F v ⊗[F] E))`. Simplify using `only [Matrix.zero_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `L₁.zero_mem`. Conclude with `hc.continuousAt.preimage_mem_nhds (h.co₁.1.mem_nhds h0)`. Establish `key : ∀ b c : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (∀ y' ∈ (L₂ : Set (Fin n → Fv F v ⊗[F] E)), (c - b).mulVec y' ∈ L₁) → nu2 lam L₁ L₂ c = nu2 lam L₁ L₂ b`. Introduce `b c hcb`. Establish `e : ∀ x : Fin n → Fv F v ⊗[F] E, (∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + c.mulVec y') ↔ (∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + b.mulVec y')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Use `⟨y + (c - b).mulVec y', L₁.add_mem hy (hcb y' hy'), y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Use `⟨y - (c - b).mulVec y', L₁.sub_mem hy (hcb y' hy'), y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [nu2, e]`. Use `continuous_iff_continuousAt.2 fun b => ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun c : HermR (Fv F v) σ n => c.1 - b.1) (𝓝 b) (𝓝 0)`. Establish `h1 : Tendsto (fun c : HermR (Fv F v) σ n => c.1) (𝓝 b) (𝓝 b.1)` using `continuous_subtype_val.tendsto b`. Establish `h2` using `h1.sub_const b.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[sub_self]`. Then use the resulting hypothesis. Establish `hb` using `ht.eventually hev`. Conclude with `(continuousAt_const (y := nu2 lam L₁ L₂ b.1)).congr (hb.mono fun c hc => (key b.1 c.1 hc).symm)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lattice_norm (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
     Continuous fun b : HermR (Fv F v) σ n => nu2 lam L₁ L₂ b.1 := by
@@ -125,9 +123,9 @@ theorem continuous_lattice_norm (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv
   exact (continuousAt_const (y := nu2 lam L₁ L₂ b.1)).congr (hb.mono fun c hc => (key b.1 c.1 hc).symm)
 
 /- English proof (translation)
-Use `⟨∫ Y, ‖Φv Y‖ ∂μv, fun b => ?_⟩` and prove the remaining obligations. Unfold `uu jtR`. Rewrite using `[norm_mul, norm_psiV h.chr, mul_one]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[norm_mul, norm_psiV h.chr, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem uu_bound (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
     ∃ C, ∀ b, ‖uu σ J ψ v μv Φv T b‖ ≤ C := by
@@ -140,7 +138,7 @@ theorem uu_bound (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
   rw [norm_mul, norm_psiV h.chr, mul_one]
 
 /- English proof (translation)
-Unfold `trPair`. Use `continuous_const.mul ((IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))).comp ?_)` and prove the remaining obligations. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp hf)).mul ((continuous_apply i).comp ((continuous_apply j).comp hg))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem auxc_trPair {α : Type*} [TopologicalSpace α] {f g : α → Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
     (hf : Continuous f) (hg : Continuous g) : Continuous fun a => trPair (Fv F v) (f a) (g a) := by
@@ -152,7 +150,7 @@ private theorem auxc_trPair {α : Type*} [TopologicalSpace α] {f g : α → Mat
     ((continuous_apply i).comp ((continuous_apply j).comp hg))
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [gramR, hR, hform]`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_sigR v σ).comp ((continuous_apply i).comp (continuous_apply a))).mul continuous_const).mul ((continuous_apply j).comp (continuous_apply b))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem auxc_gramR (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     Continuous (fun X : Fin n → Fin M → Fv F v ⊗[F] E => gramR (Fv F v) σ J X) := by
@@ -163,11 +161,11 @@ private theorem auxc_gramR (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (F
     continuous_const).mul ((continuous_apply j).comp (continuous_apply b))
 
 /- English proof (translation)
-Establish `: μv.IsAddHaarMeasure` using `h.sdW.1`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → Fv F v ⊗[F] E))`. Establish `: SecondCountableTopology (HermR (Fv F v) σ n)` using `TopologicalSpace.Subtype.secondCountableTopology (HermR (Fv F v) σ n : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)))`. Establish `hψc : Continuous (psiV F ψ v)` using `continuous_psiV h.chr`. Establish `hΦc : Continuous Φv` using `h.sb.1.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgram` using `auxc_gramR (v := v) (n := n) σ J`. Establish `hjt : Continuous fun b : HermR (Fv F v) σ n => jtR (Fv F v) σ J (psiV F ψ v) μv Φv b`. Unfold `jtR`. Use `continuous_of_dominated (bound := fun Y => ‖Φv Y‖) (fun b => ?_) (fun b => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `(hΦc.mul (hψc.comp (auxc_trPair continuous_const hgram))).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Eventually.of_forall fun Y => by rw [norm_mul, norm_psiV h.chr, mul_one]`. Conclude with `hΦc.norm.integrable_of_hasCompactSupport h.sb.2.norm`. Conclude with `Eventually.of_forall fun Y => continuous_const.mul (hψc.comp (auxc_trPair continuous_subtype_val continuous_const))`. Unfold `uu`. Conclude with `hjt.mul (hψc.comp (auxc_trPair continuous_const continuous_subtype_val).neg)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uu (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
     Continuous (uu σ J ψ v μv Φv T) := by

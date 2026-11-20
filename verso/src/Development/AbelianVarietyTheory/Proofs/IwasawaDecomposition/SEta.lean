@@ -19,11 +19,11 @@ namespace GlobalTheory.StEta
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Introduce `hP hL hPt`. Use `((((((hPt.and (GlobalTheory.T.eta_eventually_agrees hP hL hPt)).and (GlobalTheory.T.star_closed_integral_lattice_all hP hL)).and (GlobalTheory.T.exponent_integral_all hP hL)).and (GlobalTheory.T.auxiliary_places_split_all hP hL)).and (GlobalTheory.T.chebotarev_split_all hP hL)).a …` and prove the remaining obligations. Introduce `K B f T w _ _ H P x l hB`. Take `⟨⟨⟨⟨⟨⟨h1, h2⟩, hst⟩, hex⟩, hsp⟩, hch⟩, h4⟩` from `H`. Establish `law` using `fun P₁ P₂ => GlobalTheory.CoefDuty.LargeRing.evO_laws (Dof x) (cfOf x) l.a.jE l.a.A l.mt.M l.c.ch l.c.tp.tup P₁ P₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hin : GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => (SumRepresentations.hypO D' → SumRepresentations.Conclusion41 D' ∧ AutomorphicSideWildInertia.ResidualIrreducibleGood D') ∧ GlobalTheory.BlockComplement.GaloisRepsCusp D'` using `(law _ _).1 ((law _ _).2.1 (fun D' h hO => ⟨(h.1 hO).1, (h.1 hO).2.1⟩) (h1 P x l)) (h4 P x l)`. Establish `hMt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q` using `by show MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * l.c.tp.xi μ) l.c.ch.Q`. Rewrite using `[l.c.xi_eq, l.c.Q_eq]`. Conclude with `l.mt.mt`. Establish `hm` using `(GlobalTheory.T.side_eigen_theta_match hP.cheb (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M l.c.ch l.c.tp l.c.side hMt (hst P x l) (hex P x l) (hsp P x l) (hch P x l) hB hin).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(law _ _).2.1 ?_ ((law _ _).1 hm (h2 P x l))` and prove the remaining obligations. Introduce `D' h`. Establish `hO : SumRepresentations.hypO D'` using `by have h' := h.1.1; unfold GlobalTheory.CoefDuty.Large at h'; exact h'.1`. Conclude with `⟨h.1.1, h.2 hO⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sEta : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PtSt hL → SEta hL := by
   intro hP hL hPt

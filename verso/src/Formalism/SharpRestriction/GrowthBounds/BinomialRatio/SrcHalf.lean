@@ -28,7 +28,7 @@ def SymIntAt (C0 CE1 CE2 : ℝ) : Prop :=
     InA (O := O) (symFam (KK O) X.p C0 CE1 CE2 X β s)
 
 /- English proof (translation)
-Simplify using `only [scale, Submodule.mem_map] at hx`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scale_one_mem {O Kf V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V] [Module Kf V]
     [Module O V] [IsScalarTower O Kf V] {M : Submodule O V} {x : V} (hx : x ∈ scale (1 : Kf) M) : x ∈ M := by
@@ -37,29 +37,27 @@ theorem scale_one_mem {O Kf V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [A
   simpa using hy
 
 /- English proof (translation)
-Introduce `X _ _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc hc1 φ hφ h Θ hΘ e he hsrc g hg hgE β hβ s hs`. Use `letI : Algebra (WF X.p X.n') O := algOfIdent jO φ`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Establish `St` using `hstd X hD1 hH hc`. Establish `hw0 : w ≠ 0` using `hS.2.1.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing O Kf := hS.1.frac_O`. Establish `hmar : 13 * X.k * X.N1 * X.Q * (X.c : ℝ) + 12 * (X.c : ℝ) ≤ X.m0 Cm`. Establish `hk : 0 ≤ X.k` using `by unfold Loc.k; positivity`. Establish `hQ : 0 ≤ X.Q` using `by unfold Loc.Q; positivity`. Establish `h1 : 0 ≤ X.k * X.N1 * X.Q * (X.c : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Loc.m0 m0G4 m1G4`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs' : ∀ j, s j ∈ (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (13 * X.k * X.N1 * X.Q * (X.c : ℝ) + 12 * (X.c : ℝ)) (β j)).SSZ O (r` using `X.m) := fun j => hM O X.p X.m _ _ _ (β j) _ _ hmar (hs j)`. Take `⟨F, hFP, hA, hcong, hg'⟩` from `h44 X O (dvrOfStd hS) (dvrOfStd_sq hS) hD1 hH hc (12 * (X.c : ℝ)) (Or.inr rfl) g hg β hβ s hs'`. Set `F' : ↥((Pol (KK O) (ι` to `X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O) := ⟨F, hFP⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F', ?_, hcong⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hΘ`. Use `set o := ∑ j, blockOrd X.p (X.seg C0 CE1 CE2 j) (β j) with ho`. Establish `hot : o ≤ ⌊X.t0 C0 Ct⌋₊` using `Nat.le_floor (ord_all St hCt β hβ)`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAo : InA (O` using `O) (((w ^ o : O) • F' : ↥((Pol (KK O) (ι := X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O)) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)) := by`. Establish `: (((w ^ o : O) • F' : ↥((Pol (KK O) (ι` using `X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O)) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)) = C (algebraMap O (KK O) ((dvrOfStd hS).w ^ o)) * F := by`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, MvPolynomial.algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hA`. Establish `hmem` using `(h1 _).1 hAo`. Rewrite `hmem` using `[map_smul]`. Rewrite using `[hsrc]`. Establish `hne : algebraMap O Kf w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O Kf)).2 hw0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ v : ↥(VHH (m` using `X.m) Kf X.TT X.aT X.bT), (algebraMap O Kf w ^ (-(⌊X.t0 C0 Ct⌋₊ : ℤ))) • ((w ^ ⌊X.t0 C0 Ct⌋₊ : O) • v) = v := by`. Introduce `v`. Rewrite using `[← algebraMap_smul Kf (w ^ ⌊X.t0 C0 Ct⌋₊) v, smul_smul, map_pow, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hne), one_smul]`. Use `⟨(w ^ (⌊X.t0 C0 Ct⌋₊ - o)) • ((w ^ o) • Θ F'), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show (algebraMap O Kf w ^ (-(⌊X.t0 C0 Ct⌋₊ : ℤ))) • ((w ^ (⌊X.t0 C0 Ct⌋₊ - o)) • ((w ^ o) • Θ F')) = Θ F'`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hot]`. Conclude with `key _`. Establish `hint : InWjRg X.p X.n' O w 1 (hhLetters X.TT) g F 0`. Introduce `mm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hI X O _ β s hs' mm`. Take `⟨b, hb⟩` from `hcong mm`. Use `⟨a + w ^ X.c * b, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (fun P => P) (sub_add_cancel (liftSubst X.p X.n' O w 1 (hhLetters X.TT) g F) (symFam (KK O) X.p C0 CE1 CE2 X β s))`. Rewrite using `[pow_zero, one_mul, map_add, ← ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (dvrOfStd hS).w = w` using `rfl`. Rewrite `hb` using `[this]`. Rewrite using `[← hb, ← MvPolynomial.coeff_add, add_sub_cancel]`. Use `(h2 g hg e hgE F' 0).1 hint` as an intermediate fact. Establish `h0 : (algebraMap O Kf w ^ ((0 : ℕ) : ℤ)) = 1` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `scale_one_mem this`. Use `(Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hh => ?_` and prove the remaining obligations. Take `⟨he', hsrc', hne⟩` from `hh`. Take `⟨g', hg'1, hg'E⟩` from `h3 e' he' (hsrc'.trans hsrc)`.
-
-Establish `hpl : ratPlane X.p X.n' 1 g' ≠ ratPlane X.p X.n' 1 g` using `fun heq => hne (hP X.p X.n' W Qq X.m φ h g g' e e' hS.1.frac_alt hg hg'1 hgE hg'E heq)`. Use `hg' g' hg'1 hpl` as an intermediate fact. Conclude with `(h2 g' hg'1 e' hg'E F' X.c).1 this`.
+A detailed English derivation is pending.
 -/
 theorem srcHalf_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ} (hCm : 13 ≤ Cm) (hCt : 30 ≤ Ct)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)

@@ -16,7 +16,7 @@ namespace GlobalTheory.NegWeil
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : hO S T (-x) (-y) = hO S T x y`. Unfold `hO`. Simplify using `only [Matrix.neg_apply, map_neg, mul_neg, neg_mul, neg_neg]`. Unfold `symplOH symplO`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_neg_neg (S T : HSp D) (x y : WO S T) : symplOH S T (-x) (-y) = symplOH S T x y := by
   have h : hO S T (-x) (-y) = hO S T x y := by
@@ -26,7 +26,7 @@ theorem symplOH_neg_neg (S T : HSp D) (x y : WO S T) : symplOH S T (-x) (-y) = s
   rw [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `heisO`. Simplify using `only [← symplOH_neg_neg S T x (-u), neg_neg, neg_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem heisO_refl (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) (f : WO S T → ℂ) :
     (fun x => heisO ψ S T u f (-x)) = heisO ψ S T (-u) (fun x => f (-x)) := by
@@ -35,7 +35,7 @@ theorem heisO_refl (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) (
   simp only [← symplOH_neg_neg S T x (-u), neg_neg, neg_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ratW]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ratW_neg (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ratW T S (-γ) = -ratW T S γ := by
@@ -43,20 +43,20 @@ theorem ratW_neg (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) 
   simp [ratW]
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_neg (S T : HSp D) (g : GA D S) (h : GA D T) (w : WO S T) : actO S T g h (-w) = -actO S T g h w := by
   unfold actO
   rw [Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Use `⟨fun γ w => ?_, ?_, hf.cont.comp continuous_neg, fun k L hL hL0 w => ?_⟩` and prove the remaining obligations. Use `hf.quasi (-γ) (-w)` as an intermediate fact. Rewrite `this` using `[ratW_neg]`. Establish `e : symplOH S T (-ratW T S γ) (-w) = symplOH S T (ratW T S γ) w` using `symplOH_neg_neg S T _ _`. Rewrite `this` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this, neg_add]`. Take `⟨U, hU, h⟩` from `hf.level`. Use `⟨U, hU, fun u hu hu0 => ?_⟩` and prove the remaining obligations. Establish `h0 : (-u).map (infPart D) = 0`. Rewrite using `[Matrix.map_neg _ (map_neg (infPart D)), hu0, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `heisO_refl ψ S T (-u) f` as an intermediate fact. Rewrite `this` using `[neg_neg, h (-u) (U.neg_mem hu) h0]`. Conclude with `this.symm`. Use `hf.smooth k (-L) hL.neg (fun t => by` as an intermediate fact. Rewrite using `[AddMonoidHom.neg_apply, Matrix.map_neg _ (map_neg (finPart D)), hL0, neg_zero]) (-w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [AddMonoidHom.neg_apply, neg_add]`.
+A detailed English derivation is pending.
 -/
 theorem theta_refl {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T fun x => f (-x) := by
@@ -78,11 +78,11 @@ theorem theta_refl {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T �
     simpa only [AddMonoidHom.neg_apply, neg_add] using this
 
 /- English proof (translation)
-Use `⟨fun γ w => ?_, ?_, hf.cont.const_smul c, fun k L hL hL0 w => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hf.quasi γ w]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, h⟩` from `hf.level`. Use `⟨U, hU, fun u hu hu0 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `w`. Use `congrFun (h u hu hu0) w` as an intermediate fact. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(hf.smooth k L hL hL0 w).const_smul c`.
+A detailed English derivation is pending.
 -/
 theorem theta_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (c : ℂ) :
     IsThetaFunO ψ S T (c • f) := by
@@ -123,21 +123,19 @@ theorem reflRep_apply {S T : HSp D} (om : WRep S T) (p : GA D S × GA D T) (f : 
     reflRep om p f = fun x => om p (fun y => f (-y)) (-x) := rfl
 
 /- English proof (translation)
-Use `⟨hw.std, hw.hecS, hw.hecT, hw.resS, hw.resT, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p f hf`. Conclude with `theta_refl (hw.om_pres p _ (theta_refl hf))`. Introduce `g h w₀ f hf`. Rewrite using `[reflRep_apply, reflRep_apply, heisO_refl, hw.om_heis _ _ _ _ (theta_refl hf), heisO_refl, actO_neg, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[reflRep_apply]`. Use `show om (γ, γ') (fun y => f (-y)) (-0) = f 0`. Rewrite using `[neg_zero, hw.om_aut γ hγ γ' hγ' _ (theta_refl hf), neg_zero]`. Introduce `f hf w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `hw.om_cont _ (theta_refl hf) (-w)`. Introduce `μ 𝓕 hμ h𝓕 p f hf haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Set `dE : WO S T ≃+ WO S T` to `AddEquiv.neg _`. Use `set ν : Measure (WO S T) := μ.map dE with hν`. Establish `hνH : ν.IsAddHaarMeasure` using `dE.isAddHaarMeasure_map μ continuous_neg continuous_neg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfm : Measurable (fun x : WO S T => -x)` using `continuous_neg.measurable`. Establish `hmp : MeasurePreserving (fun x : WO S T => -x) ν μ`. Use `⟨hfm, ?_⟩` and prove the remaining obligations. Rewrite using `[hν, Measure.map_map hfm (show Measurable dE from hfm)]`. Establish `: (fun x : WO S T => -x) ∘ dE = id` using `funext fun w => neg_neg w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, Measure.map_id]`. Establish `hemb : MeasurableEmbedding (fun x : WO S T => -x)` using `(Homeomorph.neg (WO S T)).measurableEmbedding`. Establish `hfd : IsAddFundamentalDomain (ratL T S) ((fun x : WO S T => -x) ⁻¹' 𝓕) ν`. Use `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := fun γ : ratL T S => -γ) neg_bijective ?_` and prove the remaining obligations. Introduce `γ x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show -(-(γ : WO S T) + x) = (γ : WO S T) + -x`. Rewrite using `[neg_add, neg_neg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [reflRep_apply, neg_neg]`. Use `_ = ∫⁻ z in (fun x : WO S T => -x) ⁻¹' 𝓕, ‖f (-z)‖ₑ ^ 2 ∂ν := hw.om_unit ν _ hνH hfd p _ (theta_refl hf)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ := hmp.setLIntegral_comp_preimage_emb hemb (fun w => ‖f w‖ₑ ^ 2) 𝓕`. Introduce `e he g h hg hh x y hx hy`. Take `⟨r, hr, H⟩` from `hw.om_split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun F => ℓ fun z => F (-z) map_add' := fun a b => by rw [← map_add]; rfl map_smul' := fun c a => by rw [← map_smul]; rfl }`.
-
-Establish `h1 : ℓ (fun z => om (g, h) (fun y => f (-y)) (-z)) = (r : ℂ) * (splitFacO χS χT x y : ℂ) * ℓ (fun z => f (- -z))` using `H ℓ' (fun u hu F hF => by show ℓ (fun z => heisO ψ S T u F (-z)) = ℓ fun z => F (-z)`. Rewrite using `[heisO_refl]`. Conclude with `hℓ (-u) (fun i j => by rw [Matrix.neg_apply, mul_neg, hu]) _ (theta_refl hF)) _ (theta_refl hf)`. Simplify using `only [neg_neg] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weil_refl {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hw : IsWeilDatumO ψ S T χS χT om) : IsWeilDatumO ψ S T χS χT (reflRep om) := by
@@ -193,9 +191,9 @@ theorem weil_refl {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
     exact h1
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton', ← Ideal.Quotient.eq, map_one, RingHom.map_det]`. Establish `: (Ideal.Quotient.mk (Ideal.span {ε})).mapMatrix M = (Ideal.Quotient.mk (Ideal.span {ε})).mapMatrix 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, ← Matrix.sub_apply, ← h i j]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[this, map_one, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sub_one {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (ε : R) (M : Matrix n n R)
     (h : ∀ i j, ε * (M - 1) i j = (M - 1) i j) : ∃ t, t * ε = M.det - 1 := by
@@ -208,14 +206,14 @@ theorem det_sub_one {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq 
   rw [this, map_one, Matrix.det_one]
 
 /- English proof (translation)
-Take the linear combination `e' * h1 - (1 - e - e') * ht - t * e1 - 2 * t * e2 - t * e3`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_identity {R : Type} [CommRing R] {e e' d d' t : R} (e1 : e * e = e) (e2 : e * e' = 0) (e3 : e' * e' = e')
     (h1 : d' * d = 1) (ht : t * (e + e') = d - 1) : d * (e' * d' + (1 - e')) = e * d + (1 - e) := by
   linear_combination e' * h1 - (1 - e - e') * ht - t * e1 - 2 * t * e2 - t * e3
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.ConjAdjWeil.det_inv_eq, ← Matrix.det_mul, GlobalTheory.MixModel.mt_inv_mul, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_det_mul (V : HSp D) (g : GA D V) : cA D (Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g).det = 1 := by
   rw [← GlobalTheory.ConjAdjWeil.det_inv_eq, ← Matrix.det_mul, GlobalTheory.MixModel.mt_inv_mul, Matrix.det_one]
@@ -226,27 +224,27 @@ Both sides reduce to the same expression.
 theorem detA_val (V : HSp D) (g : GA D V) : ((detA V g : (AE D)ˣ) : AE D) = (Formalism.L2.Theta.mt V g).det := rfl
 
 /- English proof (translation)
-Rewrite using `[hx, map_add, map_mul, map_sub, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_detAt {e : AE D} {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hx : IsDetAt e V g x) :
     cA D (x : AE D) = cA D e * cA D (Formalism.L2.Theta.mt V g).det + (1 - cA D e) := by
   rw [hx, map_add, map_mul, map_sub, map_one]
 
 /- English proof (translation)
-Rewrite using `[← map_mul, he.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_idem {e : AE D} (he : IsSplitIdem D e) : cA D e * cA D e = cA D e := by rw [← map_mul, he.1]
 
 /- English proof (translation)
-The claim follows from `det_sub_one _ _ hg`.
+A detailed English derivation is pending.
 -/
 theorem det_sub_one_of_suppAt {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e V g) :
     ∃ t, t * (e + cA D e) = (Formalism.L2.Theta.mt V g).det - 1 := det_sub_one _ _ hg
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `det_sub_one_of_suppAt hg`. Establish `h3` using `idem_identity he.1 he.2.1 (conj_idem he) (conj_det_mul V g) ht`. Rewrite `h3` using `[← conj_detAt hx]`. Establish `h4 : (Formalism.L2.Theta.mt V g).det * cA D (x : AE D) = x` using `h3.trans (Eq.symm hx)`. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, detA_val, Units.coe_map]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mul_conj {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} (hg : SuppAt e V g) {x : (AE D)ˣ}
     (hx : IsDetAt e V g x) : detA V g * Units.map (cA D).toMonoidHom x = x := by
@@ -259,7 +257,7 @@ theorem det_mul_conj {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} 
   exact h4
 
 /- English proof (translation)
-Use `congrArg χ (det_mul_conj he hg hx)` as an intermediate fact. Rewrite `this` using `[map_mul, GlobalTheory.ConjAdjWeil.chi_conj hR]`. Conclude with `mul_inv_eq_iff_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_det {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) {e : AE D} (he : IsSplitIdem D e) {V : HSp D}
     {g : GA D V} (hg : SuppAt e V g) {x : (AE D)ˣ} (hx : IsDetAt e V g x) : χ (detA V g) = χ x * χ x := by
@@ -280,17 +278,17 @@ theorem twistRep_apply {S T : HSp D} (χ : (AE D)ˣ →* Circle) (om : WRep S T)
     twistRep χ om p f = (((χ (detA S p.1))⁻¹ : Circle) : ℂ) • om p f := rfl
 
 /- English proof (translation)
-Use `⟨hw.std, hw.hecS, hH, hw.resS, hR, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p f hf`. Conclude with `theta_smul (hw.om_pres p f hf) _`. Introduce `g h w₀ f hf`. Rewrite using `[twistRep_apply, twistRep_apply, hw.om_heis _ _ _ _ hf]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[twistRep_apply, GlobalTheory.Eis.apply_detA hH hγ, Pi.smul_apply, hw.om_aut γ hγ γ' hγ' f hf]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `f hf w`. Establish `hc : Continuous fun p : GA D S × GA D T => (((χT (detA S p.1))⁻¹ : Circle) : ℂ)` using `continuous_subtype_val.comp ((hH.1.comp (GlobalTheory.Eis.continuous_detA.comp continuous_fst)).inv)`. Conclude with `hc.mul (hw.om_cont f hf w)`. Introduce `μ 𝓕 hμ hF p f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hw.om_unit μ 𝓕 hμ hF p f hf]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[twistRep_apply, Pi.smul_apply, smul_eq_mul, enorm_mul, ← ofReal_norm_eq_enorm (((χT (detA S p.1))⁻¹ : Circle) : ℂ), Circle.norm_coe, ENNReal.ofReal_one, one_mul]`. Introduce `e he g h hg hh x y hx hy`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, H⟩` from `hw.om_split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Establish `hfac : splitFacO χS χT x y = (χT (detA S g))⁻¹ * splitFacO χS χT⁻¹ x y`. Rewrite using `[chi_det hR he hg hx]`. Simplify using `only [splitFacO, MonoidHom.inv_apply, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `group`. Rewrite using `[twistRep_apply, map_smul, H ℓ hℓ f hf, hfac, Circle.coe_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem weil_twist {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hH : IsHeckeChar D χT) (hR : ResEta D χT T.rank)
@@ -327,9 +325,9 @@ theorem weil_twist {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
     ring
 
 /- English proof (translation)
-Introduce `D ψ A B χA χB om hw`. Use `⟨fun f hf => ?_, ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.CjNeg.theta_heis_neg D ψ hw.std A B).1 (fun x => f (-x))).2.2 (theta_refl hf)`. Establish `h1 : IsWeilDatumO ψ (negSp A) B χA⁻¹ χB⁻¹ (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjSource om)` using `GlobalTheory.ConjWeil.weil_conjSource D ψ A B χA χB om hw`. Use `⟨_, weil_twist hw.hecT hw.resT (weil_refl h1), fun g h f _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (fun y : WO A B => conj (f (- -y))) = f`. Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Use `show (fun x => (((χB (detA A (negEquiv A g)))⁻¹ : Circle) : ℂ) * conj (om (negEquiv A g, h) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (fun y : WO A B => conj (f (- -y)))) (-x))) = _`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_neg_datum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B), IsWeilDatumO ψ A B χA χB om → (∀ f : WO A B → ℂ, IsThetaFunO ψ A B f → IsThetaFunO ψ (negSp A) B fun x => conj (f (-x))) ∧ ∃ om' : WRep (negSp A) B, IsWeilDatumO ψ (negSp A) B χA⁻¹ χB om' ∧ ∀ (g : GA D (negSp A)) (h : GA D B) (f : WO A B → ℂ), IsThetaFunO ψ A B f → om' (g, h) (fun x => conj (f (-x))) = fun x => (((χB (detA A (negEquiv A g)))⁻¹ : Circle) : ℂ) * conj (om (negEquiv A g, h) f (-x)) := by
   intro D ψ A B χA χB om hw

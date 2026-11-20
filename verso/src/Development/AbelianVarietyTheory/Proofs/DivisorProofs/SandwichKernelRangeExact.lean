@@ -8,37 +8,35 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ h D`. Take `⟨hdom, -, hker, hsurj, hnu, hxi, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε`. Establish `hFG : D.F * D.G = mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))` using `(GlobalTheory.DetInv.datum_scalar_intertwine p C v O hv ε hε Γ h D).2.1`. Establish `hGF : D.G * D.F = mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))` using `D.G_mul_F`. Use `set f : Ainf p O →+* C := (algebraMap O C).comp (WittVector.fontaineTheta O p) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `hv.hom_inj`. Establish `hfnu : f (nu ε) ≠ 0`. Introduce `h0`. Apply `hnu` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[hf]`. Establish `hxiker : WittVector.fontaineTheta O p (xi ε) = 0`. Establish `: xi ε ∈ RingHom.ker (WittVector.fontaineTheta O p)`. Rewrite using `[hker]`. Conclude with `Ideal.subset_span rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hfmu : f (mu ε) = 0`. Rewrite using `[← xi_mul_nu, map_mul]`. Simplify using `[hf, hxiker]`. Establish `hnzd : xi ε ∈ nonZeroDivisors (Ainf p O)` using `mem_nonZeroDivisors_of_ne_zero hxi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hfrac : ∀ c : C, ∃ s t : Ainf p O, f s ≠ 0 ∧ c * f s = f t`. Introduce `c`. Distinguish the cases in `hc : v c ≤ 1`. Take `⟨a, ha⟩` from `hv.exists_of_le_one hc`. Take `⟨t, rfl⟩` from `hsurj a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨1, t, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[hf, ha]`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Establish `hle : v c⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Use `push_neg at hc`. Conclude with `inv_le_one_of_one_le₀ hc.le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `hv.exists_of_le_one hle`. Take `⟨s, rfl⟩` from `hsurj a`. Use `⟨s, 1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hf, ha, hc0]`. Simplify using `[hf, ha, hc0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdiv : ∃ s : Ainf p O, f s ≠ 0 ∧ ∀ r : Ainf p O, f r = 0 → xi ε ∣ s * r`. Use `⟨1, by simp, fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : WittVector.fontaineTheta O p r = 0`. Apply `hinj` to reduce the goal to its premises. Simplify `hr` using `[hf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : r ∈ RingHom.ker (WittVector.fontaineTheta O p)` using `h1`. Rewrite `h2` using `[hker, Ideal.mem_span_singleton]`. Simplify using `using h2`. Establish `hmuxi : mu ε = xi ε * nu ε` using `(xi_mul_nu ε).symm`. Establish `hcomp : ∀ X Y : Matrix (Fin h) (Fin h) (Ainf p O), X * Y = mu ε • 1 → ∀ z : Fin h → C, X.map f *ᵥ (Y.map f *ᵥ z) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `X Y hXY z`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hXY]`. Establish `: (mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))).map f = 0`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, hfmu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.zero_mulVec]`. Establish `hb : ∀ z, bC C D z = D.G.map f *ᵥ z` using `fun z => by`. Simplify using `[bC, redC, Matrix.toLin'_apply, hf]`. Establish `ha : ∀ z, alC C D z = D.F.map f *ᵥ z` using `fun z => by`. Simplify using `[alC, redC, Matrix.toLin'_apply, hf]`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, hb]`. Take `⟨y, hy⟩` from `GlobalTheory.DetInv.ker_map_subset_im_map (Ainf p O) C f (xi ε) (nu ε) h D.G D.F hnzd hfnu hfrac hdiv (by rw [hFG, hmuxi]) x hx`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y, by rw [ha, hy]⟩`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, hb, ha]`. Conclude with `hcomp D.G D.F hGF y`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, ha]`. Take `⟨y, hy⟩` from `GlobalTheory.DetInv.ker_map_subset_im_map (Ainf p O) C f (xi ε) (nu ε) h D.F D.G hnzd hfnu hfrac hdiv (by rw [hGF, hmuxi]) x hx`. Conclude with `⟨y, by rw [hb, hy]⟩`. Introduce and unpack `_ ⟨y, rfl⟩`.
-
-Rewrite using `[LinearMap.mem_ker, hb, ha]`. Conclude with `hcomp D.F D.G hFG y`.
+A detailed English derivation is pending.
 -/
 theorem ker_bC_eq_range_alC_and_ker_alC_eq_range_bC : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Γ : Type) [CommRing Γ] [Algebra ℤ_[p] Γ] (h : ℕ) (D : Datum ε h Γ), LinearMap.ker (bC C D) = LinearMap.range (alC C D) ∧ LinearMap.ker (alC C D) = LinearMap.range (bC C D) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ h D

@@ -27,11 +27,11 @@ variable {F : Type} [Group F] [TopologicalSpace F] [IsTopologicalGroup F] [Finty
 include hn hB in
 
 /- English proof (translation)
-Use `@ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ x : cohomology B (m + 1), x = 0`. Introduce `x`. Establish `hnx : n • x = 0` using `nsmul_cohomology_eq_zero B hB (m + 1) x`. Take `⟨U, hU⟩` from `exists_card_smul_eq_zero B (Nat.succ_ne_zero m) x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdvd : Nat.card (F ⧸ (U : Subgroup F)) ∣ 2`. Rewrite using `[← hcard, ← Nat.card_eq_fintype_card]`. Conclude with `Subgroup.card_quotient_dvd_card _`. Take `⟨d, hd⟩` from `hdvd`. Establish `h2x : 2 • x = 0` using `by rw [hd, mul_comm, mul_nsmul', hU, nsmul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm k 2, add_nsmul, one_nsmul, add_sub_cancel_left]`. Use `_ = 0 := by rw [hnx, mul_nsmul', h2x, nsmul_zero, sub_zero]`. Rewrite using `[hz x, hz y]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_of_card_two_of_odd [CompactSpace F] [TotallyDisconnectedSpace F]
     (hcard : Fintype.card F = 2) (m : ℕ) : IsZero (cohomology B (m + 1)) := by
@@ -55,9 +55,9 @@ omit [TopologicalSpace F] [IsTopologicalGroup F] [IsDiscreteRep B] in
 include hn hB in
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨k, hk⟩` from `hn`. Use `⟨(k + 1) • x, ?_⟩` and prove the remaining obligations. Rewrite using `[OrderTwo.norm_apply B hG hc, map_nsmul, hx c, ← add_nsmul]`. Establish `h : k + 1 + (k + 1) = n + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, add_nsmul, one_nsmul, hB, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm_of_orderTwo_of_odd {c : F} (hG : ∀ g : F, g = 1 ∨ g = c) (hc : c ≠ 1) :
     ∀ x ∈ B.ρ.invariants, ∃ m, B.ρ.norm m = x := by
@@ -78,7 +78,7 @@ variable {n : ℕ} (hn : Odd n) (A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutsi
 include hn hA in
 
 /- English proof (translation)
-Establish `key` using `isZero_cohomology_of_card_two_of_odd hn (Rep.res (gsRealFamily S ιr w).toMonoidHom A) hA ?hcard m`. Use `case hcard => exact card_realGal_eq_two w.1 w.2`. Conclude with `key`.
+Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_gsReal_of_odd (w : {v : InfinitePlace K.1 // v.IsReal}) (m : ℕ) :
     IsZero (cohomology (Rep.res (gsRealFamily S ιr w).toMonoidHom A) (m + 1)) := by
@@ -91,7 +91,7 @@ omit [IsDiscreteRep A] in
 include hn hA in
 
 /- English proof (translation)
-Establish `key` using `exists_norm_of_orderTwo_of_odd hn (Rep.res (gsRealFamily S ιr w).toMonoidHom A) hA (c := realConj w.1 w.2) ?hG ?hc`. Use `case hG => exact eq_one_or_eq_realConj w.1 w.2`. Use `case hc => exact realConj_ne_one w.1 w.2`. Conclude with `key`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_norm_gsReal_of_odd (w : {v : InfinitePlace K.1 // v.IsReal}) :
     ∀ x ∈ (Rep.res (gsRealFamily S ιr w).toMonoidHom A).ρ.invariants,
@@ -105,7 +105,7 @@ theorem exists_norm_gsReal_of_odd (w : {v : InfinitePlace K.1 // v.IsReal}) :
 include hn hA in
 
 /- English proof (translation)
-Use `isIso_tateForget (gsFinFamily S ιs) (gsRealFamily S ιr) A (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom A) (fun _ => 𝟙 _) (fun w => Rep.res (gsRealFamily S ιr w).toMonoidHom A) (fun _ => 𝟙 _) (fun w m => isZero_cohomology_gsReal_of_odd S ιr hn A hA w m) (fun w => exists_norm …` as an intermediate fact. Conclude with `(ConcreteCategory.isIso_iff_bijective _).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_tateForget_gs_of_odd (m : ℕ) :
     Function.Bijective (tateForget (gsFinFamily S ιs) (gsRealFamily S ιr) A
@@ -121,7 +121,7 @@ theorem bijective_tateForget_gs_of_odd (m : ℕ) :
 include hn hA in
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero => exact absurd hm (by norm_num)`. Consider the case `succ m => exact bijective_tateForget_gs_of_odd S ιr ιs hn A hA m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem bijective_tateForget_gs_of_odd' {m : ℕ} (hm : 1 ≤ m) :
     Function.Bijective (tateForget (gsFinFamily S ιs) (gsRealFamily S ιr) A
@@ -139,9 +139,9 @@ noncomputable instance fintypeRealPlaces (K : FiniteSubfield) : Fintype {v : Inf
   Fintype.ofFinite _
 
 /- English proof (translation)
-Introduce `x y h`. Establish `ex` using `H0Iso_hom_cohomologyMapAlong φ.toMonoidHom (continuous_toMonoidHom φ) (𝟙 _) x`. Establish `ey` using `H0Iso_hom_cohomologyMapAlong φ.toMonoidHom (continuous_toMonoidHom φ) (𝟙 _) y`. Rewrite `ex` using `[h]`. Establish `hxy' : (H0Iso M).hom.hom x = (H0Iso M).hom.hom y` using `Subtype.ext (ex.symm.trans ey)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem injective_resZero {G H : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (φ : H →ₜ* G)
@@ -159,7 +159,7 @@ theorem injective_resZero {G H : Type} [Group G] [TopologicalSpace G]
     _ = y := hom_apply_hom_apply_of_comp_eq (H0Iso M).hom_inv_id y
 
 /- English proof (translation)
-Introduce `x y hxy` and use `(‹Nonempty S›.elim fun v => injective_resZero (gsFinFamily S ιs v) M (congrFun hxy v))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem injective_ptRes_zero_gs [Nonempty S] (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
     [IsDiscreteRep M] : Function.Injective fun (x : cohomology M 0) v => ptRes (gsFinFamily S ιs) M v 0 x :=
@@ -179,7 +179,7 @@ omit [Fintype S] [NeZero N] in
 include hodd in
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.subsingleton_of_isZero (isZero_cohomology_gsReal_of_odd S ιr hodd (gsRoots S N) (nsmul_gsRoots S N) w 1)).elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem gsReal_two_eq_zero_of_odd (w : {v : InfinitePlace K.1 // v.IsReal})
     (x : cohomology (Rep.res (gsRealFamily S ιr w).toMonoidHom (gsRoots S N)) 2) : x = 0 :=
@@ -200,7 +200,7 @@ theorem gsOddTrace_apply (z : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRe
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h1 : (tateForget (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S N)) (fun _ => 𝟙 _) (fun w => Rep.res (gsRealFamily S ιr w).toMonoidHom (gsRoots S N)) (fun _ => 𝟙 _) 3).hom ((ptTLocalToCompact (gsFinFamily S ιs) ( …` using `congrArg (fun f => f.hom ξ) (tateLocalToCompact_tateForget (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S N)) (fun _ => 𝟙 _) (fun w => Rep.res (gsRealFamily S ιr w).toMonoidHom (gsRoots S N)) (fun _ => 𝟙 _) 2)`. Establish `h2 : ∑ w, gsRealInvRootsQZ S ιr N w (ξ.2 w) = 0` using `Finset.sum_eq_zero fun w _ => (congrArg (gsRealInvRootsQZ S ιr N w) (gsReal_two_eq_zero_of_odd S ιr hodd w (ξ.2 w))).trans (map_zero _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gsOddTrace_localToCompact
     (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2) :
@@ -230,7 +230,7 @@ set_option maxHeartbeats 1000000 in
 include hS in
 
 /- English proof (translation)
-Establish `hf` using `bijective_tateForget_gs_of_odd' S ιr ιs hodd (dualRep (gsRoots S N) M) (nsmul_dualRep_eq_zero (nsmul_gsRoots S N)) hs`. Establish `hγ` using `poitouTate_duality_gs S ιs hS (Or.inl hodd) M hM h`. Use `bijective_of_bijective_precomp _ _ (AddEquiv.ofBijective _ hf) (fun x y => ?_) hγ` and prove the remaining obligations. Conclude with `(gsOddTrace_apply S ιr ιs hS hodd _).trans (congrArg _ (tateForget_tateCompactCupRes (gsFinFamily S ιs) (gsRealFamily S ιr) (dualEvalPairing (gsRoots S N) M) _ y x))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bijective_tateCompactDualityMap_gs_of_odd (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
     [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, N • m = 0) {r s : ℕ} (h : r + s = 3) (hs : 1 ≤ s) :
@@ -246,7 +246,7 @@ theorem bijective_tateCompactDualityMap_gs_of_odd (M : Rep.{0} (ULift.{0} ℤ) (
 include hS hodd in
 
 /- English proof (translation)
-Establish `hD` using `nonempty_addEquiv_gsRoots_of_mem S hS`. Conclude with `{ nonempty_addEquiv := hD duality := @fun M _ _ hM r s h hs => bijective_tateCompactDualityMap_gs_of_odd S ιr ιs hS hodd M hM h hs finite_cohomology := fun M _ _ hM r hr => finite_cohomology_gs K S M (fun v hv => hS v (natCast_mem_of_natCard_mem v.isPrime hM hv)) r hr localToComp …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsOddTatePoitouTateHypotheses [Nonempty S] :
     TatePoitouTateHypotheses (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N)

@@ -13,7 +13,7 @@ universe u
 namespace HomogeneousCochainIso
 
 /- English proof (translation)
-Simplify using `only [Fin.succAbove, Fin.predAbove, Fin.lt_def, Fin.val_castSucc, apply_dite Fin.val, Fin.val_pred, Fin.coe_castPred, dite_eq_ite, apply_ite Fin.val, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hgi_val {n : ℕ} (i : Fin (n + 3)) (j : Fin (n + 2)) :
     ((i.succAbove j : ℕ) + (j.predAbove i : ℕ) = i + j + 1) ∨
@@ -23,7 +23,7 @@ theorem hgi_val {n : ℕ} (i : Fin (n + 3)) (j : Fin (n + 2)) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[← pow_add, ← pow_add]`. Break down `hgi_val i j with h | h` into its components or cases. Rewrite using `[h, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,11 +35,11 @@ theorem hgi_sign {n : ℕ} (i : Fin (n + 3)) (j : Fin (n + 2)) :
   · rw [← h, pow_succ]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [hd, Finset.smul_sum, smul_smul, Pi.zero_apply]`. Rewrite using `[← Finset.sum_product' (s := Finset.univ) (t := Finset.univ) (f := fun (i : Fin (n + 3)) (j : Fin (n + 2)) => ((-1 : ℤ) ^ (i : ℕ) * (-1) ^ (j : ℕ)) • F fun k => x (i.succAbove (j.succAbove k)))]`. Use `Finset.sum_involution (fun p _ => (p.1.succAbove p.2, p.2.predAbove p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Fin.succAbove_succAbove_succAbove_predAbove, hgi_sign, neg_smul]`. Conclude with `add_neg_cancel _`. Introduce and unpack `⟨i, j⟩ _ _ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Fin.succAbove_ne i j h.1`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Use `intros`. Conclude with `Finset.mem_univ _`. Introduce and unpack `⟨i, j⟩ _`. Simplify using `only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hd_hd {V X : Type u} [AddCommGroup V] (n : ℕ) (F : (Fin (n + 1) → X) → V) :
     hd (n + 1) (hd n F) = 0 := by
@@ -70,7 +70,7 @@ def hdL (R : Type u) [CommRing R] {V X : Type u} [AddCommGroup V] [Module R V] (
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Use `⟨?_, fun g x => ?_⟩` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun i _ => (continuous_const_smul ((-1 : ℤ) ^ (i : ℕ))).comp (hF.1.comp (continuous_pi fun j => continuous_apply (i.succAbove j)))`. Simplify using `only [hd, hF.2, map_sum, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hd_mem (M : TRep R G) (X : Type u) [TopologicalSpace X] [MulAction G X] (n : ℕ)
     (F : (Fin (n + 1) → X) → M.V) (hF : F ∈ hcoch M X n) : hd n F ∈ hcoch M X (n + 1) := by
@@ -85,7 +85,7 @@ def hcx (M : TRep R G) (X : Type u) [TopologicalSpace X] [MulAction G X] : Cx R 
   dd n F := Subtype.ext (hd_hd n F.1)
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.induction with`. Consider the case `zero => simp only [Fin.partialProd_zero]`. Conclude with `continuous_const`. Consider the case `succ i ih => simp only [Fin.partialProd_succ]`. Conclude with `ih.mul (continuous_apply i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_partialProd' {m : ℕ} (i : Fin (m + 1)) :
     Continuous fun g : Fin m → G => Fin.partialProd g i := by
@@ -97,7 +97,7 @@ def eFun (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (x : Fin (n + 1) �
   M.rho (x 0) (f fun i => (x i.castSucc)⁻¹ * x i.succ)
 
 /- English proof (translation)
-Use `⟨?_, fun g x => ?_⟩` and prove the remaining obligations. Conclude with `M.cont.comp (f := fun x : Fin (n + 1) → G => (x 0, f fun i => (x i.castSucc)⁻¹ * x i.succ)) ((continuous_apply 0).prodMk (hf.comp (continuous_pi fun i => ((continuous_apply _).inv).mul (continuous_apply _))))`. Simplify using `only [eFun, smul_eq_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eFun_mem (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (hf : Continuous f) :
     eFun M n f ∈ hcoch M G n := by
@@ -127,14 +127,14 @@ def eIso (M : TRep R G) (n : ℕ) : M.coch.X n ≃ₗ[R] hcoch M G n where
     rfl)
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul R]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem hgi_negpow (V : Type u) [AddCommGroup V] [Module R V] (k : ℕ) (v : V) :
     (-1 : R) ^ k • v = (-1 : ℤ) ^ k • v := by
   rw [← Int.cast_smul_eq_zsmul R]; push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Fin.castSucc_zero, mul_inv_cancel_left]`. Simplify using `only [eFun, Fin.succAbove_zero, Fin.succ_castSucc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eFun_zero (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (x : Fin (n + 2) → G) :
     eFun M n f (fun k => x (Fin.succAbove 0 k)) =
@@ -144,11 +144,11 @@ theorem eFun_zero (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (x : Fin 
   simp only [eFun, Fin.succAbove_zero, Fin.succ_castSucc]
 
 /- English proof (translation)
-Establish `key : (fun i : Fin n => (x (j.succ.succAbove i.castSucc))⁻¹ * x (j.succ.succAbove i.succ)) = Fin.contractNth j (· * ·) fun i => (x i.castSucc)⁻¹ * x i.succ`. Establish `hp : ∀ c, Fin.partialProd (fun i => (x i.castSucc)⁻¹ * x i.succ) c = (x 0)⁻¹ * x c`. Introduce `c`. Establish `h` using `congrFun (Fin.partialProd_left_inv x) c`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `eq_inv_mul_of_mul_eq h`. Use function extensionality and compare the values at `k`. Rewrite using `[← Fin.inv_partialProd_mul_eq_contractNth, ← Fin.succ_succAbove_succ, hp, hp]`. Simplify using `only [mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`. Simplify using `only [eFun, Fin.succ_succAbove_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`.
+A detailed English derivation is pending.
 -/
 theorem eFun_succ (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (x : Fin (n + 2) → G)
     (j : Fin (n + 1)) :
@@ -168,9 +168,9 @@ theorem eFun_succ (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) (x : Fin 
   rw [key]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[hd, Fin.sum_univ_succ, eFun_zero]`. Simplify using `only [eFun_succ, Fin.val_zero, pow_zero, one_smul, Fin.val_succ]`. Use `show M.rho (x 0) (dn M.rho n f _) = _`. Rewrite using `[dn_apply, map_add, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hgi_negpow, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eFun_dn (M : TRep R G) (n : ℕ) (f : (Fin n → G) → M.V) :
     eFun M (n + 1) (dn M.rho n f) = hd n (eFun M n f) := by
@@ -188,14 +188,14 @@ end HomogeneousCochainIso
 open HomogeneousCochainIso
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ M X _ _`. Conclude with `⟨hcx M X, fun n => LinearEquiv.refl R _, fun n a => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem homogExists_holds : HomogExistsStatement.{u} := by
   intro R _ G _ _ _ M X _ _
   exact ⟨hcx M X, fun n => LinearEquiv.refl R _, fun n a => rfl⟩
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ M`. Use `⟨eIso M, fun n a => ?_, fun n f x => rfl, fun n f g => ?_⟩` and prove the remaining obligations. Conclude with `eFun_dn M n a.1`. Use `show f.1 g = M.rho (Fin.partialProd g 0) (f.1 fun i => _)`. Simplify using `[Fin.partialProd_zero, Fin.partialProd_right_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homogIso_holds : HomogIsoStatement.{u} := by
   intro R _ G _ _ _ M

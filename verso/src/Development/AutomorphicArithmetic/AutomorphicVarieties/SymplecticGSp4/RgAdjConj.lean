@@ -12,9 +12,9 @@ open scoped Matrix TensorProduct
 namespace UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Use `⟨{ toFun := fun g => A g ∘ₗ p + (η g : k) • (A g ∘ₗ (LinearMap.id - p)) map_one' := ?_ map_mul' := fun g h => ?_ }, fun g x => rfl⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using `only [map_mul, Units.val_mul, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.id_apply, Module.End.mul_apply, map_add, map_smul, map_sub, hA, hp, sub_self, smul_zero, add_zero, mul_smul, smul_sub, smul_add, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 private theorem rg_twist {Γ k V : Type} [Group Γ] [CommRing k] [AddCommGroup V] [Module k V] (A : Representation k Γ V)
     (p : V →ₗ[k] V) (hp : ∀ x, p (p x) = p x) (hA : ∀ g x, p (A g x) = A g (p x)) (η : Γ →* kˣ) :
@@ -31,17 +31,15 @@ private theorem rg_twist {Γ k V : Type} [Group Γ] [CommRing k] [AddCommGroup V
     module
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : K, IsCMField.complexConj K x ≠ x := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `IsCMField.complexConj_ne_one K (AlgEquiv.ext hc)`. Use `set δ : K := x - IsCMField.complexConj K x with hδ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : δ ≠ 0` using `sub_ne_zero.2 hx.symm`. Establish `hδc : IsCMField.complexConj K δ = -δ` using `by simp [hδ]`. Establish `hsq : δ * δ ∈ maximalRealSubfield K` using `(IsCMField.complexConj_eq_self_iff K _).1 (by rw [map_mul, hδc]; ring)`. Take `⟨q, hq⟩` from `Af.surjective_algebraMap_real K h ⟨_, hsq⟩`. Establish `hq' : algebraMap ℚ K q = δ * δ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun y : maximalRealSubfield K => (y : K)) hq` as an intermediate fact. Simplify using `using this`. Use `set d : Ω := algebraMap K Ω δ with hd`. Establish `hd0 : d ≠ 0` using `by simpa [hd] using hδ0`. Establish `hdd : d * d = algebraMap ℚ Ω q` using `by rw [IsScalarTower.algebraMap_apply ℚ K Ω, hq', map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hne : -d ≠ d` using `fun e => hd0 (by linear_combination (-1 / 2 : Ω) * e)`. Establish `hpm : ∀ g : G ℚ Ω, g d = d ∨ g d = -d` using `fun g => by`. Establish `: g d * g d = d * d` using `by rw [← map_mul, hdd, AlgEquiv.commutes]`. Conclude with `mul_self_eq_mul_self_iff.1 this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨{ toFun := fun g => if g d = d then 1 else -1 map_one' := by simp map_mul' := fun g g' => ?_ }, fun s => ?_, fun c ⟨j, hj⟩ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hpm g with h1 | h1 <;> rcases hpm g' with h2 | h2 <;> simp [AlgEquiv.mul_apply, h1, h2, hne]`. Establish `: (s.restrictScalars ℚ) d = d` using `s.commutes δ`. Simplify using `[this]`. Establish `: c d = -d`.
-
-Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hd, ← map_neg (algebraMap K Ω), ← hδc]`. Conclude with `(IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K Ω)) δ).symm`. Simplify using `[this, hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rg_sign {K Ω : Type} [Field K] [NumberField K] [IsCMField K] (h : Module.finrank ℚ K = 2) [Field Ω]
     [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω] (k : Type) [Field k] :
@@ -87,11 +85,11 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : 
   [IsScalarTower ℚ_[l] C V] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul C V]
 
 /- English proof (translation)
-Establish `hc : ∀ g h, z (g * h) = z g + ρ' g (z h)` using `fun g h => by`. Rewrite using `[← hz (g * h), h1.2, map_add, hf, hz, hz]`. Use `⟨⟨h1.1, hc⟩, fun w hw => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, x, hx⟩` from `h2.away w hw`. Conclude with `⟨A, hA, f x, fun s hs => by rw [← hz, hx s hs, map_sub, hf]⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, hj, ⟨hc1, -⟩, x, hx⟩` from `h2.above τ`. Use `⟨j, hj, ⟨hc1, fun g h => hc g.1.1 h.1.1⟩, LinearMap.rTensor (Loc.Bcr l) (f.restrictScalars ℚ_[l]) x, fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y : V ⊗[ℚ_[l]] Loc.Bcr l, LinearMap.rTensor (Loc.Bcr l) (f.restrictScalars ℚ_[l]) (Loc.actC ((MonoidHom.snd _ _).comp (Af.decJ F j).subtype) (ρ.comp ((MonoidHom.fst _ _).comp (Af.decJ F j).subtype)) g y) = Loc.actC ((MonoidHom.snd _ _).comp (Af.decJ F j).subtype) (ρ'.comp …`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [Loc.actC, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[← key, ← map_sub, ← hx g, LinearMap.rTensor_tmul]`. Simplify using `[hz]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rg_bk {ρ ρ' : Representation C (G F Ω) V} (f : V →ₗ[C] V) (hf : ∀ g x, f (ρ g x) = ρ' g (f x))
     {z : G F Ω → V} (hz : ∀ g, f (z g) = z g) (h1 : z ∈ Z1 ρ) (h2 : Af.IsBK l ρ z) : z ∈ Z1 ρ' ∧ Af.IsBK l ρ' z := by
@@ -128,7 +126,7 @@ private def rgJ (k : Type) [CommRing k] : GL (Fin 4) k where
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rgJ, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rgJ_adj {k : Type} [CommRing k] (X : M4 k) : Xᵀ * (rgJ k : M4 k) = (rgJ k : M4 k) * adj X := by
   ext i j
@@ -145,9 +143,9 @@ Both sides reduce to the same expression.
 private theorem rgP_apply {k : Type} [Field k] (X : M4 k) : rgP k X = (2 : k)⁻¹ • (X - adj X) := rfl
 
 /- English proof (translation)
-Establish `h1 : adj (-adj X) = -X`. Rewrite using `[← neg_one_smul k, (grp k).2.2.2.1, (grp k).2.1, neg_one_smul]`. Use `show adj _ = -_`. Rewrite using `[rgP_apply, (grp k).2.2.2.1, sub_eq_add_neg, (grp k).2.2.1, h1, ← smul_neg]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 private theorem rgP_mem {k : Type} [Field k] (X : M4 k) : rgP k X ∈ sp4 k := by
   have h1 : adj (-adj X) = -X := by
@@ -158,14 +156,14 @@ private theorem rgP_mem {k : Type} [Field k] (X : M4 k) : rgP k X ∈ sp4 k := b
   abel
 
 /- English proof (translation)
-Establish `h' : adj X = -X` using `h`. Rewrite using `[rgP_apply, h', sub_neg_eq_add, ← two_smul k, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rgP_of_mem {k : Type} [Field k] [CharZero k] {X : M4 k} (h : X ∈ sp4 k) : rgP k X = X := by
   have h' : adj X = -X := h
   rw [rgP_apply, h', sub_neg_eq_add, ← two_smul k, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]
 
 /- English proof (translation)
-Establish `h1 : adj (r g) = (θ g : k) • r g⁻¹` using `(grp k).2.2.2.2.2.2.1 _ _ _ (hm g) (by rw [← map_mul]; simp)`. Establish `h2 : adj (r g⁻¹) = (θ g⁻¹ : k) • r g` using `(grp k).2.2.2.2.2.2.1 _ _ _ (hm g⁻¹) (by rw [← map_mul]; simp)`. Rewrite using `[(grp k).1, (grp k).1, h1, h2]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc, ← Units.val_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rg_adjConj {Γ k : Type} [Group Γ] [Field k] (r : Γ →* M4 k) (θ : Γ →* kˣ) (hm : ∀ g, IsGSp (θ g : k) (r g))
     (g : Γ) (X : M4 k) : adj (r g * X * r g⁻¹) = r g * adj X * r g⁻¹ := by
@@ -182,9 +180,9 @@ private theorem rg_ad {Γ k : Type} [Group Γ] [Field k] (r : Γ →* M4 k) (g :
     Loc.adGL r.toHomUnits g X = r g * X * r g⁻¹ := rfl
 
 /- English proof (translation)
-Use `show (r s)ᵀ * ((rgJ k : M4 k) * r c⁻¹) * r s' = (θ s : k) • ((rgJ k : M4 k) * r c⁻¹)`. Establish `h` using `hm s`. Unfold `IsGSp at h`. Establish `e : r c⁻¹ * r s' = r s * r c⁻¹`. Rewrite using `[← map_mul, ← map_mul, hs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`. Rewrite using `[mul_assoc, mul_assoc, e, ← mul_assoc, rgJ_adj, mul_assoc, ← mul_assoc (adj _), h, smul_mul_assoc, one_mul, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rg_pair {Γ k : Type} [Group Γ] [Field k] (r : Γ →* M4 k) (θ : Γ →* kˣ) (hm : ∀ g, IsGSp (θ g : k) (r g))
     (c s s' : Γ) (hs : s' = c * s * c⁻¹) :
@@ -200,13 +198,13 @@ private theorem rg_pair {Γ k : Type} [Group Γ] [Field k] (r : Γ →* M4 k) (�
   rw [mul_assoc, mul_assoc, e, ← mul_assoc, rgJ_adj, mul_assoc, ← mul_assoc (adj _), h, smul_mul_assoc, one_mul, mul_smul_comm]
 
 /- English proof (translation)
-Establish `hpp : ∀ X, rgP k (rgP k X) = rgP k X` using `fun X => rgP_of_mem (rgP_mem X)`. Establish `hpA : ∀ g X, rgP k (Loc.adGL r.toHomUnits g X) = Loc.adGL r.toHomUnits g (rgP k X)` using `fun g X => by`. Rewrite using `[rgP_apply, rgP_apply, map_smul, map_sub, rg_ad, rg_ad, rg_adjConj r θ hm]`. Take `⟨ρ, hρ⟩` from `rg_twist (Loc.adGL r.toHomUnits) (rgP k) hpp hpA η`. Use `⟨ρ, fun g X h => ?_, fun g X h => ?_, fun g X => ?_, fun g X Z h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρ, h, Units.val_one, one_smul, ← map_add, add_sub_cancel]`. Both sides reduce to the same expression. Rewrite using `[mul_inv_rev, inv_inv] show _ = -((r g * ((rgJ k)⁻¹ : GL _ _)) * Xᵀ * ((rgJ k : M4 k) * r g⁻¹))`. Establish `e : rgP k X - (X - rgP k X) = -adj X`. Rewrite using `[rgP_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `match_scalars <;> field_simp <;> ring`. Rewrite using `[hρ, h, Units.val_neg, Units.val_one, neg_one_smul, ← sub_eq_add_neg, ← map_sub, e, map_neg, rg_ad, mul_assoc _ Xᵀ, ← mul_assoc Xᵀ, rgJ_adj]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[hρ, hpp, sub_self, map_zero, smul_zero, add_zero, hpA]`. Establish `e1 : Z * r g⁻¹ = r g * rgP k X * r g⁻¹ - rgP k X`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← rgP_of_mem h1, h2, map_sub, hρ, map_add, map_smul, hpA, hpA, map_sub, hpp, sub_self, map_zero, smul_zero, add_zero, rg_ad]`. Use `congrArg (· * r g) e1` as an intermediate fact. Simplify using `only [sub_mul, mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one] at this`. Rewrite using `[this]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rg_alg {Γ k : Type} [Group Γ] [Field k] [CharZero k] (r : Γ →* M4 k) (θ : Γ →* kˣ)
     (hm : ∀ g, IsGSp (θ g : k) (r g)) (η : Γ →* kˣ) :
@@ -243,11 +241,11 @@ private theorem rg_alg {Γ k : Type} [Group Γ] [Field k] [CharZero k] (r : Γ �
 end UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD hP hAd N hN h1 h2 h3 ι r hr hirr haut r' hr' hfst`. Take `⟨hlev, θ, hθ, hdual, hθv⟩` from `level D hD N hN h1 h2 h3 r hr`. Take `⟨K, _, _, _, _, _, _, hK, hirrK⟩` from `irrK D hD r hr hirr`. Take `⟨hz, hbk, hsp⟩` from `tanBK D hD hP r hr r' hr' hfst`. Establish `hm : ∀ g, IsGSp (θ g : PadicAlgCl l) (r g)` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hθv]`. Conclude with `(ptIn D hD _ r hr).1 g`. Take `⟨η, hη1, hη2⟩` from `rg_sign (Ω := Ω) hK (PadicAlgCl l)`. Take `⟨ρ, ha, hb, hf, hd⟩` from `rg_alg r θ hm η`. Establish `hcc : ∃ j : Ω →+* ℂ, ∀ x, j (D.cc x) = starRingEnd ℂ (j x)` using `hD.isCC`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `had : Af.IsAdOf (r.toHomUnits.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω)) (θ.comp (AlgEquiv.restrictScalarsHom ℚ)) ρ` using `⟨D.cc, rgJ _ * (r.toHomUnits D.cc)⁻¹, hcc, fun s s' hs => rg_pair r θ hm D.cc _ _ hs, fun s X => ha _ X (hη1 s), fun X => hb _ X (hη2 _ hcc)⟩`. Establish `hv` using `hAd K hK 4 (by norm_num) l Ω ι r.toHomUnits _ θ hlev.cont haut hθ hdual hirrK ρ had`. Take `⟨hz', hbk'⟩` from `rg_bk (rgP _) hf (fun g => rgP_of_mem (hsp g)) hz hbk`. Take `⟨X, hX⟩` from `(mem_coboundaries1 _ _).1 (hv _ hz' hbk')`. Conclude with `⟨-rgP (PadicAlgCl l) X, (sp4 (PadicAlgCl l)).neg_mem (rgP_mem (k := PadicAlgCl l) X), fun g i j => congrFun (congrFun (hd g X _ (hsp g) (hX g)) i) j⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.rigid :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → Loc.LocalPublishedTheorems → Af.AdVanishQ → ∀ N : ℕ, 1 ≤ N → Af.KillsMu N D.ψ → Af.KillsMu N D.ξ → Af.KillsMu N D.om → ∀ ι r, D.EPt r → Irr r → Aut.IsAut4 ι r → D.RigidAt r := by

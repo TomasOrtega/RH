@@ -8,7 +8,7 @@ open GlobalTheory.ToricTransport (coordIn)
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_sq_eq_neg_of_discr_eq_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuadraticFieldExistsSqrtNegDiscr.lean&line=10#L10)
 -/

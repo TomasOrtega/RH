@@ -10,16 +10,16 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hG, h.closed, h.one_mem, h.mul_mem, h.inv_mem⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClosedSub_of_closedSubgroup {k r : ℕ} {S : Set (Mat k r)} (hG : S ⊆ GG k r)
     (h : Formalism.FourierDecayAlt.B2.IsClosedSubgroup S) : IsClosedSub k r S :=
   ⟨hG, h.closed, h.one_mem, h.mul_mem, h.inv_mem⟩
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Establish `cG : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (GG k r)` using `Formalism.FourierDecayAlt.P.B2x2.closedG k r`. Establish `cN : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (Nset k r)` using `Formalism.FourierDecayAlt.P.B2x2.closedN k r`. Establish `cW : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (UWset k r z)` using `Formalism.FourierDecayAlt.P.B2x3.closedW k r z`. Establish `sN : Nset k r ⊆ GG k r` using `fun g hg => hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sW : UWset k r z ⊆ GG k r` using `fun g hg => hg.1`. Establish `sS : Sset k r z ⊆ GG k r`. Introduce and unpack `s ⟨h, hh, n, hn, rfl⟩`. Conclude with `cG.mul_mem _ (sW hh) _ (sN hn)`. Conclude with `⟨isClosedSub_of_closedSubgroup subset_rfl cG, isClosedSub_of_closedSubgroup sN cN, isClosedSub_of_closedSubgroup sW cW, isClosedSub_of_closedSubgroup sS (GlobalTheory.BesselPeriodCompare.closedS hz), Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r z hz hT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closedSub_groups : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), inWb k r z → 0 < Tz k r z →
     IsClosedSub k r (GG k r) ∧ IsClosedSub k r (Nset k r) ∧ IsClosedSub k r (UWset k r z) ∧

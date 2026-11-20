@@ -15,17 +15,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ}
 
 /- English proof (translation)
-Establish `hc : cOf R (m2 + 1) = 0` using `by simp only [cOf]; omega`. Establish `h1 : ∀ s, LocE.fIdx R.k (cOf R (m2 + 1)) (R.N (m2 + 1)) s = s`. Apply the tactic sequence `intro s; rw [hc]; simp only [LocE.fIdx]; split_ifs <;> omega`. Establish `h2 : ∀ s, LocE.fIdx R.k 0 (R.N R.m - 1) s = s`. Apply the tactic sequence `intro s; simp only [LocE.fIdx]; split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h3 : ∀ n l, LocE.scE n (0 : ℕ → ℕ) l = 0`. Apply the tactic sequence `intro n l; simp only [LocE.scE]; split_ifs <;> simp`. Simplify using `only [LocE.entB, h1, h2, h3, sub_self, zpow_zero, mul_one]`. Establish `hv : ∀ v : Sp X.E (R.N R.m), ∀ (i : ℕ) (hi : i < R.N R.m - 1 + 0) (hi' : i < R.N R.m - 1), prXp X.E R v ⟨i, hi⟩ = v (Br.iC (N_m_succ R) ⟨i, hi'⟩)` using `fun _ _ _ _ => rfl`. Unfold `Loc.atN`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hp : p < R.N R.m - 1`. Establish `hp0 : p < R.N R.m - 1 + 0` using `hp`. Rewrite using `[dif_pos hp0]`. Distinguish the cases in `hq : p' < R.N (m2 + 1)`. Rewrite using `[dif_pos ⟨hp, hq⟩]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e : LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Loc.eN X.E (R.N (m2 + 1) + cOf R (m2 + 1)) p') = (Pi.single ⟨p', hq⟩ 1 : Sp X.E (R.N (m2 + 1)))`. Use function extensionality and compare the values at `i`. Simplify using `only [LinearMap.funLeft_apply, Loc.eN, Fin.val_castAdd, Pi.single_apply, Fin.ext_iff]`. Simplify using `only [LinearMap.comp_apply, e]`. Conclude with `hv _ _ _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (fun h => hq h.2)]`. Establish `e : LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Loc.eN X.E (R.N (m2 + 1) + cOf R (m2 + 1)) p') = 0`. Use function extensionality and compare the values at `i`. Simplify using `only [LinearMap.funLeft_apply, Loc.eN, Fin.val_castAdd, Pi.zero_apply]`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [LinearMap.comp_apply, e, map_zero, Pi.zero_apply]`. Rewrite using `[dif_neg (by omega), dif_neg (fun h => hp h.1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entB_topQ (hm : R.m = m2 + 2) (q : ℕ) (y : HomE X.E (R.N (m2 + 1)) (R.N R.m)) (p p' : ℕ) :
     LocE.entB q R.k (cOf R (m2 + 1)) (R.N (m2 + 1)) 0 (R.N R.m - 1) 0 0
@@ -66,13 +66,13 @@ def SuppQ (P : HeightOneSpectrum (𝓞 X.E)) (M : ℕ) (y : HomE X.E (R.N (m2 + 
     IntAt P ((qOf P : X.E) ^ M * y (Pi.single s 1) (Br.iL (N_m_succ R)))
 
 /- English proof (translation)
-Unfold `locTop at h`. Establish `hA` using `left_ne_zero_of_mul h`. Establish `hB` using `right_ne_zero_of_mul h`. Unfold `ftY at hB`. Rewrite `hB` using `[if_neg hP]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB'` using `cond_of_ite_ne_zero hB`. Unfold `PhiTop at hA`. Rewrite `hA` using `[if_neg hP]`. Unfold `LocE.PhiQ at hA`. Establish `hA'` using `cond_of_ite_ne_zero hA`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `s`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hi : i.1 < R.N R.m - 1 + 0` using `i.2`. Establish `hs : s.1 < R.N (m2 + 1) + cOf R (m2 + 1)` using `by have := s.2; omega`. Establish `e` using `hA'.1 i.1 s.1 hi hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[entB_topQ hm, dif_pos ⟨i.2, s.2⟩]`. Conclude with `e`. Establish `e` using `hB' s`. Rewrite `e` using `[LinearMap.comp_apply, atNL_last]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem suppQ_of_ne (hm : R.m = m2 + 2) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) {y : HomE X.E (R.N (m2 + 1)) (R.N R.m)}
     {y' : Sp X.E (R.N (m2 + 1))} (h : locTop Ch sel mu cst m2 P y y' ≠ 0) : SuppQ P.1 cst.M y := by
@@ -97,11 +97,11 @@ theorem suppQ_of_ne (hm : R.m = m2 + 2) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.v
     rwa [LinearMap.comp_apply, atNL_last] at e
 
 /- English proof (translation)
-Take `⟨hC, hL⟩` from `hy s`. Establish `hq : ((qOf P : ℕ) : X.E) ≠ 0` using `qOf_ne_zero`. Establish `hw : ((qOf P : X.E) ^ M) • y (Pi.single s 1) ∈ stdAt X.E (R.N R.m) P`. Rewrite using `[mem_stdAt]`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `idx_cases (N_m_succ R) i with ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `(intAt_pow (intAt_nat _) M).mul (hC j)`. Simplify `hL` using `only [Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `mem_stdAt.1 ((mem_prinCong.1 hκ) _ hw) l`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h2, ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem move_small {P : HeightOneSpectrum (𝓞 X.E)} {M e : ℕ} {κ : GLint X.E (R.N R.m) P} (hκ : κ ∈ prinCong _ P (2 * M + e))
     {y : HomE X.E (R.N (m2 + 1)) (R.N R.m)} (hy : SuppQ P M y) (s l) :
@@ -122,9 +122,9 @@ theorem move_small {P : HeightOneSpectrum (𝓞 X.E)} {M e : ℕ} {κ : GLint X.
   ring
 
 /- English proof (translation)
-Introduce `s`. Take `⟨hC, hL⟩` from `hy s`. Establish `hp : IntAt P ((qOf P : X.E) ^ (M + e))` using `intAt_pow (intAt_nat _) _`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e1⟩` from `move_small hκ hy s (Br.iC (N_m_succ R) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, e1]`. Conclude with `(hC i).add (hp.mul hz)`. Take `⟨z, hz, e1⟩` from `move_small hκ hy s (Br.iL (N_m_succ R))`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, e1, mul_add]`. Conclude with `hL.add ((intAt_pow (intAt_nat _) M).mul (hp.mul hz))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppQ_move {P : HeightOneSpectrum (𝓞 X.E)} {M e : ℕ} {κ : GLint X.E (R.N R.m) P} (hκ : κ ∈ prinCong _ P (2 * M + e))
     {y : HomE X.E (R.N (m2 + 1)) (R.N R.m)} (hy : SuppQ P M y) : SuppQ P M (κ.1.toLinearMap ∘ₗ y) := by
@@ -140,21 +140,19 @@ theorem suppQ_move {P : HeightOneSpectrum (𝓞 X.E)} {M e : ℕ} {κ : GLint X.
     exact hL.add ((intAt_pow (intAt_nat _) M).mul (hp.mul hz))
 
 /- English proof (translation)
-Use `choose w hw e using h`. Establish `hqI : IntAt P (qOf P : E)` using `intAt_nat _`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `ediv : ∀ p p', LocE.entB (qOf P) k₀ c' n' c n 0 0 x' p p' / (qOf P : E) = LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p' / (qOf P : E) + w p p'`. Introduce `p p'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Establish `c1 : (∀ p p', p < n + c → p' < n' + c' → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x' p p')) ↔ (∀ p p', p < n + c → p' < n' + c' → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p'))`. Prove the components needed by the constructor for the conclusion. Introduce `H p p' h1 h2`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `(H p p' h1 h2).add (intAt_neg (hqI.mul (hw p p')))`. Rewrite `h3` using `[e, add_neg_cancel_right]`. Then use the resulting hypothesis. Introduce `H p p' h1 h2`. Rewrite using `[e]`. Conclude with `(H p p' h1 h2).add (hqI.mul (hw p p'))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `c2 : (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x' p p' / (qOf P : E))) ↔ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p' / (qOf P : E)))`. Prove the components needed by the constructor for the conclusion. Introduce `H p p' h1 h2 h3`. Establish `h4` using `(H p p' h1 h2 h3).add (intAt_neg (hw p p'))`. Rewrite `h4` using `[ediv, add_neg_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `H p p' h1 h2 h3`. Rewrite using `[ediv]`. Conclude with `(H p p' h1 h2 h3).add (hw p p')`. Unfold `LocE.PhiQ`. Distinguish the cases in `H : (∀ p p', p < n + c → p' < n' + c' → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p')) ∧ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p' / (qOf P : E)))`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `H'` using `And.intro (c1.2 H.1) (c2.2 H.2)`. Rewrite using `[if_pos H, if_pos H']`. Apply `unitV_det_congr` to reduce the goal to its premises. Introduce `i j`. Establish `hi : IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x i.1 j.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hr : i.1 < n + c ∧ j.1 < n' + c'`. Conclude with `H.1 _ _ hr.1 hr.2`. Conclude with `hZ _ _ hr`. Use `⟨?_, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `hi.add (hqI.mul (hw _ _))`. Rewrite using `[e, add_sub_cancel_left, mul_div_cancel_left₀ _ hq]`. Conclude with `hw _ _`. Establish `H' : ¬ ((∀ p p', p < n + c → p' < n' + c' → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x' p p')) ∧ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x' p p' / (qOf P : E))))` using `fun H2 => H ⟨c1.1 H2.1, c2.1 H2.2⟩`. Rewrite using `[if_neg H, if_neg H']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem phiQ_congr_of_entB_congr {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
     (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' c n : ℕ) {x x' : HomE E (n' + c') (n + c)}
@@ -204,39 +202,35 @@ private theorem phiQ_congr_of_entB_congr {E K : Type} [Field E] [NumberField E] 
     rw [if_neg H, if_neg H']
 
 /- English proof (translation)
-Establish `hq : ((qOf P.1 : ℕ) : X.E) ≠ 0` using `qOf_ne_zero`. Establish `hqI : IntAt P.1 (qOf P.1 : X.E)` using `intAt_nat _`. Establish `hc2` using `c.2`. Establish `hmax : 2 * R.m + 2 * cst.M ≤ c.1` using `le_trans (le_max_right _ _) hc2`. Take `⟨e, he⟩ : ∃ e, c.1 = 2 * cst.M + e` from `⟨c.1 - 2 * cst.M, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he1 : 1 ≤ e` using `by omega`. Establish `hκ' : κ ∈ prinCong _ P.1 (2 * cst.M + e)` using `he ▸ hκ`. Establish `hκi : κ⁻¹ ∈ prinCong _ P.1 (2 * cst.M + e)` using `inv_mem hκ'`. Distinguish the cases in `hS : SuppQ P.1 cst.M y`. Use `choose z hz ez using fun s l => move_small hκ' hS s l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hS' : SuppQ P.1 cst.M (κ.1.toLinearMap ∘ₗ y)` using `suppQ_move hκ' hS`. Establish `hpw : (qOf P.1 : X.E) ^ (cst.M + e) = (qOf P.1 : X.E) * (qOf P.1 : X.E) ^ (cst.M + e - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Unfold `locTop`. Use `congr 1`. Unfold `PhiTop`. Rewrite using `[if_neg hP]`. Apply `phiQ_congr_of_entB_congr` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p p'`. Rewrite using `[entB_topQ hm, entB_topQ hm]`. Use `split_ifs with h`. Use `⟨(qOf P.1 : X.E) ^ (cst.M + e - 1) * z ⟨p', h.2⟩ (Br.iC (N_m_succ R) ⟨p, h.1⟩), (intAt_pow hqI _).mul (hz _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, ez, hpw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨0, intAt_zero, by simp⟩`. Introduce `p p' hp`. Rewrite using `[entB_topQ hm, dif_neg]`. Conclude with `intAt_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h; exact hp ⟨by have := h.1; omega, by have := h.2; omega⟩`. Unfold `ftY`. Rewrite using `[if_neg hP, if_neg hP]`. Establish `hA : ∀ i : Fin (R.N (m2 + 1)), IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y) (Pi.single i 1))`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_apply, atNL_last]`. Conclude with `(hS i).2`. Establish `hA' : ∀ i : Fin (R.N (m2 + 1)), IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ (κ.1.toLinearMap ∘ₗ y)) (Pi.single i 1))`. Introduce `i`. Rewrite using `[LinearMap.comp_apply, atNL_last]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hS' i).2`. Rewrite using `[if_pos hA, if_pos hA']`. Use `congr 1`. Establish `hsum : (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ (κ.1.toLinearMap ∘ₗ y)) y' = (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y) y' + ∑ j, ((qOf P.1 : X.E) ^ cst.M * y' j) * ((qOf P.1 : X.E) ^ e * z j (Br.iL (N_m_succ R)))`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, atNL_last]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show κ.1 (y y') = (κ.1.toLinearMap ∘ₗ y) y' from rfl, apply_eq_sum (κ.1.toLinearMap ∘ₗ y) y', apply_eq_sum y y' (Br.iL (N_m_succ R)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap]`. Rewrite using `[ez]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hepsI : IntAt P.1 (epsSg : X.E)`. Simplify using `only [epsSg]`. Use `push_cast`. Conclude with `intAt_neg intAt_one`. Establish `hBI : IntAt P.1 (∑ j, ((qOf P.1 : X.E) ^ cst.M * y' j) * ((qOf P.1 : X.E) ^ e * z j (Br.iL (N_m_succ R))))` using `intAt_sum _ fun j _ => (hy' j).mul ((intAt_pow hqI _).mul (hz _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hD'` using `hD`. Establish `hAD : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * ((epsSg : X.E) * (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y) y'))`. Establish `e2 : (qOf P.1 : X.E) ^ cst.D P * ((epsSg : X.E) * (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y) y') = (qOf P.1 : X.E) ^ (cst.D P - 2 * cst.M) * (epsSg : X.E) * ∑ j, ((qOf P.1 : X.E) ^ cst.M * y' j) * ((qOf P.1 : X.E) ^ cst.M * y (Pi.single j 1) (Br.iL (N_m_succ R)))`. Rewrite using `[LinearMap.comp_apply, atNL_last, apply_eq_sum y y', Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: cst.D P = (cst.D P - 2 * cst.M) + cst.M + cst.M` using `by omega`. Use `conv_lhs => rw [this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `((intAt_pow hqI _).mul hepsI).mul (intAt_sum _ fun j _ => (hy' j).mul (hS j).2)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsum, mul_add, hc.psi_add P _ _ hAD ((intAt_pow hqI _).mul (hepsI.mul hBI)), hc.psi_int P _ (hepsI.mul hBI), mul_one]`. Establish `h1 : locTop Ch sel mu cst m2 P y y' = 0`. Assume the negation of the conclusion as `h`. Conclude with `hS (suppQ_of_ne hm hP h)`. Establish `h2 : locTop Ch sel mu cst m2 P (κ.1.toLinearMap ∘ₗ y) y' = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Assume the negation of the conclusion as `h`. Establish `h3` using `suppQ_move hκi (suppQ_of_ne hm hP h)`. Establish `hh : (κ⁻¹).1 * κ.1 = 1` using `by rw [← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one]`. Establish `e3 : (κ⁻¹).1.toLinearMap ∘ₗ (κ.1.toLinearMap ∘ₗ y) = y`. Apply `LinearMap.ext` to reduce the goal to its premises.
-
-Introduce `v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap]`. Rewrite using `[← LinearEquiv.mul_apply, hh]`. Both sides reduce to the same expression. Rewrite `h3` using `[e3]`.
-
-Conclude with `hS h3`. Rewrite using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locTop_invQ (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (hD : 2 * cst.M ≤ cst.D P)
     (c : TopDepth R cst.M) {κ : GLint X.E (R.N R.m) P.1} (hκ : κ ∈ prinCong _ P.1 c.1)
@@ -335,9 +329,9 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n N : �
 
 omit [StarRing E] in
 /- English proof (translation)
-Introduce and unpack `⟨r, s, hs, h⟩`. Apply `hs` to reduce the goal to its premises. Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `e : algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E (r * ((qOf P : ℕ) : 𝓞 E))`. Rewrite using `[map_mul, ← h, map_natCast, mul_assoc, inv_mul_cancel₀ hq, mul_one]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FaithfulSMul.algebraMap_injective (𝓞 E) E e]`. Conclude with `Ideal.mul_mem_left _ _ qOf_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_intAt_inv_q : ¬ IntAt P ((qOf P : E)⁻¹) := by
   rintro ⟨r, s, hs, h⟩
@@ -349,17 +343,17 @@ theorem not_intAt_inv_q : ¬ IntAt P ((qOf P : E)⁻¹) := by
   exact Ideal.mul_mem_left _ _ qOf_mem
 
 /- English proof (translation)
-Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `hqc : ((qOf P : ℕ) : 𝓞 E) ^ c ∈ P.asIdeal` using `Ideal.pow_mem_of_mem _ qOf_mem c hc`. Establish `hs : (1 + ((qOf P : ℕ) : 𝓞 E) ^ c) ∉ P.asIdeal` using `fun h => one_notMem P (by simpa using P.asIdeal.sub_mem h hqc)`. Establish `ht0 : (1 + (qOf P : E) ^ c) ≠ 0`. Establish `: ((1 + qOf P ^ c : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hti : IntAt P (1 + (qOf P : E) ^ c)`. Simplify using `using IntAt.coe P (1 + ((qOf P : ℕ) : 𝓞 E) ^ c)`. Establish `hinv : IntAt P (1 + (qOf P : E) ^ c)⁻¹`. Unfold `IntAt`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨1, 1 + ((qOf P : ℕ) : 𝓞 E) ^ c, hs, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_one, map_pow, map_natCast]`. Conclude with `mul_inv_cancel₀ ht0`. Take `⟨g, hg⟩ : ∃ g : GLint E N P, g.1 = sumE hN 1 (Units.mk0 (1 + (qOf P : E) ^ c) ht0)` from `⟨⟨sumE hN 1 (Units.mk0 (1 + (qOf P : E) ^ c) ht0), fun x => by`. Rewrite using `[mem_stdAt_succ hN, mem_stdAt_succ hN, prH_sumE, sumE_last, Units.val_mk0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.coe_one, id_eq]`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h => hti.mul h⟩` and prove the remaining obligations. Establish `h'` using `hinv.mul h`. Rewrite using `[inv_mul_cancel_left₀ ht0] at h'⟩, rfl⟩` and apply the resulting hypothesis. Use `⟨g, mem_prinCong.2 fun x hx => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[mem_stdAt_succ hN]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sub, hg, prH_sumE]`. Simplify using `only [LinearEquiv.coe_one, id_eq, sub_self, smul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Pi.sub_apply, hg, sumE_last, Units.val_mk0, smul_eq_mul, show (1 + (qOf P : E) ^ c) * x (Br.iL hN) - x (Br.iL hN) = (qOf P : E) ^ c * x (Br.iL hN) by ring, inv_mul_cancel_left₀ (pow_ne_zero _ hq)]`. Conclude with `hx.2`. Establish `h2` using `((mem_stdAt_succ hN).1 h).2`. Rewrite `h2` using `[Pi.smul_apply, Pi.sub_apply, hg, sumE_last, Units.val_mk0, Pi.single_eq_same, smul_eq_mul, mul_one, add_sub_cancel_left, pow_succ, mul_inv, mul_comm ((qOf P : E) ^ c)⁻¹, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hq), mul_one]`. Conclude with `not_intAt_inv_q h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_prinCong_not_mem_stdAt {c : ℕ} (hc : 0 < c) :
     ∃ g ∈ prinCong N P c,
@@ -402,9 +396,9 @@ private lemma exists_prinCong_not_mem_stdAt {c : ℕ} (hc : 0 < c) :
     exact not_intAt_inv_q h2
 
 /- English proof (translation)
-Take `⟨g, hg, hg'⟩` from `exists_prinCong_not_mem_stdAt (E := E) (P := P) hN hc`. Establish `hle : K1 hN l (c + 1) ≤ K1 hN l c`. Unfold `K1`. Conclude with `sup_le_sup_left (prinCong_anti (Nat.le_succ c)) _`. Use `lt_of_le_of_ne hle fun e => hg' ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: g ∈ K1 hN l (c + 1)`. Rewrite using `[e]`. Conclude with `principalCongruence_le_levelGroup hN l c hg`. Conclude with `levelGroup_lastColumn_congruence hN l (c + 1) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelGroup_succ_lt {c : ℕ} (hc : 0 < c) : K1 hN l (c + 1) < K1 hN l c := by
   obtain ⟨g, hg, hg'⟩ := exists_prinCong_not_mem_stdAt (E := E) (P := P) hN hc
@@ -418,7 +412,7 @@ theorem levelGroup_succ_lt {c : ℕ} (hc : 0 < c) : K1 hN l (c + 1) < K1 hN l c 
   exact levelGroup_lastColumn_congruence hN l (c + 1) this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ne_top_of_lt (levelGroup_succ_lt hN l hc), ne_bot_of_gt (levelGroup_succ_lt hN l hc)⟩`.
+Supply the required witnesses or components.
 -/
 theorem levelGroup_ne_top_ne_bot {c : ℕ} (hc : 0 < c) : K1 hN l (c + 1) ≠ ⊤ ∧ K1 hN l c ≠ ⊥ :=
   ⟨ne_top_of_lt (levelGroup_succ_lt hN l hc), ne_bot_of_gt (levelGroup_succ_lt hN l hc)⟩
@@ -432,17 +426,15 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ} {u : Pr.Word}
 
 /- English proof (translation)
-Take `⟨y, hy, hYe⟩` from `hY`. Establish `hyY : y ∈ Y`. Rewrite using `[hYe, Set.mem_setOf_eq, sub_self]`. Conclude with `zero_mem _`. Establish `hv : repY Y ∈ Y` using `Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, hyY⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hr : repY Y = v at hv`. Establish `hv'` using `hv`. Rewrite `hv'` using `[hYe, Set.mem_setOf_eq]`. Establish `h1` using `(Submodule.mem_iInf _).1 hy P`. Establish `h2` using `(Submodule.mem_iInf _).1 hv' P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[Submodule.mem_comap]`. Simplify using `only [hP, if_false, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_apply] at h1 h2`. Rewrite `h1` using `[zpow_neg, inv_inv, zpow_natCast]`. Rewrite `h2` using `[zpow_natCast]`. Use `set q : 𝓞 X.E := ((qOf P.1 : ℕ) : 𝓞 X.E) with hq`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqE : (algebraMap (𝓞 X.E) X.E q) = (qOf P.1 : X.E)` using `by simp [hq]`. Establish `hqne : ((qOf P.1 : X.E) ^ cst.M) ≠ 0` using `pow_ne_zero _ qOf_ne_zero`. Establish `h3 : ((qOf P.1 : X.E) ^ cst.M) • v ∈ p.deco.1.at P.1`. Establish `e : ((qOf P.1 : X.E) ^ cst.M) • v = ((qOf P.1 : X.E) ^ cst.M) • y + (q ^ cst.M * q ^ cst.M) • (((qOf P.1 : X.E) ^ cst.M)⁻¹ • (v - y))`. Rewrite using `[← algebraMap_smul X.E (q ^ cst.M * q ^ cst.M), map_mul, map_pow, hqE, smul_smul, mul_assoc, mul_inv_cancel₀ hqne, mul_one, ← smul_add, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem h1 (Submodule.smul_mem _ _ h2)`. Establish `h4 : ((qOf P.1 : X.E) ^ cst.M) • (frsF sel mu p P).symm v ∈ stdAt X.E (R.N j) P.1`. Rewrite using `[← frsF_mem p P, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `h3`.
-
-Establish `h5` using `(mem_stdAt.1 h4) i`. Simplify `h5` using `only [Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem repY_intQ {j : ℕ} (p : ChPt (R := R) sel mu u j) {Y : Set (Sp X.E (R.N j))} (hY : Y ∈ ybSet sel mu cst p.deco.1.N)
     {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (i : Fin (R.N j)) :
@@ -478,23 +470,21 @@ theorem repY_intQ {j : ℕ} (p : ChPt (R := R) sel mu u j) {Y : Set (Sp X.E (R.N
   simpa only [Pi.smul_apply, smul_eq_mul] using h5
 
 /- English proof (translation)
-Use `set a : UF X.E (R.N R.m) × GLG X.E (R.N R.m) Pr.vGs × GLQ X.E (R.N R.m) _ := (1, 1, κ) with ha`. Establish `hdeco : (a • p').deco = p'.deco`. Rewrite using `[GlobalTheory.FramedForms.deco_smul]`. Conclude with `one_smul _ _`. Set `κ' : GLQ X.E (R.N R.m) (rowSG Pr sel mu)` to `fun P => if h : P.1 ∈ Pr.vGs then 1 else (κ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfr : frsF sel mu (a • p') = fun P => frsF sel mu p' P * (κ' P).1`. Use function extensionality and compare the values at `P`. Distinguish the cases in `h : P.1 ∈ Pr.vGs`. Simplify using `only [frsF, dif_pos h, κ', hdeco, OneMemClass.coe_one, mul_one]`. Simplify using `only [frsF, dif_neg h, κ', GlobalTheory.FramedForms.fr_smul, ha, OneMemClass.coe_one, one_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hred : ∀ P : rowSG Pr sel mu, redGL _ P.1 (κ' P) = 1`. Introduce `P`. Distinguish the cases in `h : P.1 ∈ Pr.vGs`. Simplify using `only [κ', dif_pos h, map_one]`. Simplify using `only [κ', dif_neg h, map_inv]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `hκ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩`. Conclude with `inv_eq_one.2 (redGL_of_prinCong (n := R.N R.m) (P := P.1) c.pos hk)`. Establish `hX : ∀ (hY : Y ∈ ybSet sel mu cst p.deco.1.N) x, XiTop Ch sel mu cst m2 p Y (a • p') x = XiTop Ch sel mu cst m2 p Y p' x`. Introduce `hY x`. Unfold `XiTop`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdeco, hfr]`. Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : P.1 ∈ Pr.vGs`. Simplify using `only [κ', dif_pos h, OneMemClass.coe_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [κ', dif_neg h] set k := κ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ with hk`. Establish `e : inFr (frsF sel mu p P) (frsF sel mu p' P * (k⁻¹).1) x = k.1.toLinearMap ∘ₗ inFr (frsF sel mu p P) (frsF sel mu p' P) x`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [inFr, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.mul_apply]`. Use `show _ = frsF sel mu p' P (k.1.symm (k.1 _))`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[e]`. Establish `hkm : k ∈ prinCong (R.N R.m) P.1 c.1` using `hκ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `locTop_invQ (P := P) (κ := k) hm hc h (hD P h) c hkm _ (repY_intQ p hY h)`. Unfold `topDegreeKTwo`. Use `split_ifs with hY`. Rewrite using `[hfr, hdeco]`. Unfold `kerOf`.
-
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hX hY x, hT p.deco.1.N (frsF sel mu p) p'.deco.1.N (frsF sel mu p') _ x κ' ⟨p.deco.2.lat, p.deco.2.uni⟩ ⟨p'.deco.2.lat, p'.deco.2.uni⟩ hred]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem k2top_invQ (hm : R.m = m2 + 2) (hc : cst.Ok) (hD : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P)
     (c : TopDepth R cst.M) {T : ChTh W sel mu u m2} (hT : TameFr T.top)

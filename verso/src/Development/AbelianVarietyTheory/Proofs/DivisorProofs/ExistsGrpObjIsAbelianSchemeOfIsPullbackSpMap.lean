@@ -8,13 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg R' _ σ X' s' φ h`. Establish `hsm : SmoothOfRelativeDimension g s'`. Use `smoothOfRelativeDimension_isStableUnderBaseChange (n := g)` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h hg`. Set `B` to `(Over.pullback (spMap σ)).obj A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : GrpObj B := Functor.grpObjObj`. Set `e : B ≅ Over.mk s'` to `Over.isoMk h.isoPullback.symm (by simp [B])`. Use `letI : GrpObj (Over.mk s') := GrpObj.ofIso e`. Use `⟨this, ?_, hsm⟩` and prove the remaining obligations. Establish `hc` using `hA.comm`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcB : IsCommMonObj B` using `Functor.isCommMonObj_obj`. Conclude with `{ comm := by`. Prove the components needed by the constructor for the conclusion. Use `show (β_ _ _).hom ≫ ((e.inv ⊗ₘ e.inv) ≫ μ[B] ≫ e.hom) = (e.inv ⊗ₘ e.inv) ≫ μ[B] ≫ e.hom`. Rewrite using `[← Category.assoc, ← BraidedCategory.braiding_naturality, Category.assoc, ← Category.assoc (β_ B B).hom, IsCommMonObj.mul_comm]`.
-
-Use `smooth := MorphismProperty.of_isPullback (P := @Smooth) h hA.smooth`. Use `proper := MorphismProperty.of_isPullback (P := @IsProper) h hA.proper`. Use `geomConnected := MorphismProperty.of_isPullback (P := @GeometricallyConnected) h hA.geomConnected }`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grpObj_isAbelianScheme_of_isPullback_spMap : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] (σ : R →+* R') (X' : Scheme.{0}) (s' : X' ⟶ Sp R') (φ : X' ⟶ A.left), IsPullback φ s' A.hom (spMap σ) → ∃ _ : GrpObj (Over.mk s'), IsAbelianScheme (Over.mk s') ∧ SmoothOfRelativeDimension g s' := by
   intro R _ A _ g hA hg R' _ σ X' s' φ h

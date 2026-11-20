@@ -36,11 +36,11 @@ noncomputable section
 namespace GlobalTheory.PrimeUnif
 
 /- English proof (translation)
-Break down `eq_or_ne I ⊥ with rfl | hI` into its components or cases. Set `K` to `FractionRing R`. Set `φ : R →+* PowerSeries K` to `(PowerSeries.C (R := K)).comp (algebraMap R K)`. Establish `hφ : Function.Injective φ` using `PowerSeries.C_injective.comp (IsFractionRing.injective R K)`. Use `⟨PowerSeries K, inferInstance, inferInstance, inferInstance, φ, ⟨inferInstance, ?_, charZero_of_injective_ringHom hφ⟩, hφ, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Use `eq_bot_iff.2 fun r hr => ?_` and prove the remaining obligations. Rewrite `hr` using `[Ideal.mem_comap, PowerSeries.maximalIdeal_eq_span_X, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`. Establish `: algebraMap R K r = 0` using `by simpa [φ] using hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(Ideal.mem_bot).2 (IsFractionRing.injective R K (this.trans (map_zero _).symm))`. Take `⟨V, _, _, hV, hc, φ, h1, h2⟩` from `exists_complete_discreteValuationRing_of_prime_lt ⊥ I (bot_lt_iff_ne_bot.2 hI)`. Establish `hφ : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 h1`. Conclude with `⟨V, inferInstance, inferInstance, inferInstance, φ, ⟨hV, hc, charZero_of_injective_ringHom hφ⟩, hφ, h2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cdvr (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (I : Ideal R) [I.IsPrime] :
     ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (φ : R →+* V), CDvr V ∧ Function.Injective φ ∧
@@ -62,15 +62,13 @@ theorem exists_cdvr (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [C
     exact ⟨V, inferInstance, inferInstance, inferInstance, φ, ⟨hV, hc, charZero_of_injective_ringHom hφ⟩, hφ, h2⟩
 
 /- English proof (translation)
-Take `⟨L, c, s, hs, hr, hc⟩` from `P₂`. Take `rfl : L = P₁.L` from `e`. Set `P₂ : CP G'` to `⟨P₁.L, c, s, hs, hr, hc⟩`. Establish `: Flat (G3 G').hom` using `by show Flat (pullback.fst G'.hom (pullback.fst G'.hom G'.hom ≫ G'.hom) ≫ G'.hom) infer_instance`. Establish `h1 : Function.Surjective (pullback.snd G'.hom (jK V)).appTop.hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : gen.hom.left ≫ A.A.hom = pullback.snd G'.hom (jK V)` using `Over.w gen.hom`. Establish `: IsIso gen.hom.left` using `((Over.forget _).mapIso gen).isIso_hom`. Establish `: IsIso gen.hom.left.appTop` using `inferInstanceAs (IsIso (gen.hom.left.app ⊤))`. Rewrite using `[← hw]`. Conclude with `surj_comp (ConcreteCategory.bijective_of_isIso gen.hom.left.appTop).2 (hG _ _ A.isAb).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `o : Over.mk (jK V) ⟶ G'` to `1`. Set `o₃ : Over.mk (jK V) ⟶ G3 G'` to `lift o (lift o o)`. Establish `es : ∀ (Z : Scheme.{0}) (r : Z ⟶ G'.left) (z : Z) (J), Good P₁.L.L z J → val P₁.sym r z J = val s r z J` using `ValueForm.gen_unique_of_injective P₁.L.isLB (fun _ _ _ => rfl) (pullback.fst G'.hom (jK V)) (ValueForm.app_generic_injective _) (pullback.snd _ _) (pullback.lift o.left (𝟙 _) ((Over.w o).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _) h1 P₁.sym_gen hs fun y J hJ => by`. Rewrite using `[pullback.lift_fst]`. Conclude with `(P₁.val_sym_one hJ).trans (P₂.val_sym_one hJ).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ec : ∀ (T : Over (Sp V)) (z : T.left) (J), Good P₁.L.L z J → ∀ x y u : T ⟶ G', cubV P₁.c z J x y u = cubV c z J x y u` using `fun T z J hJ x y u => ValueForm.gen_unique_of_injective P₁.L.isLB (φ := thφ G' (x3 G')) (ε := thε) (φ' := thφ G' (x3 G')) (ε' := thε) (fun _ _ _ => rfl) (pullback.fst (G3 G').hom (jK V)) (ValueForm.app_generic_injective _) (pullback.snd _ _) (pullback.lift o₃.left (𝟙 _) ((Over.w …`. Rewrite using `[pullback.lift_fst]`. Conclude with `((isCub_cubV P₁.c (T := Over.mk (jK V)) hJ).face 1 1).trans ((isCub_cubV c (T := Over.mk (jK V)) hJ).face 1 1).symm) _ _ z J hJ`. Use `⟨w, h.mul, h.gen, fun T z J' J hJ' hJ W hW => ?_⟩` and prove the remaining obligations. Take `⟨a₁, a₂, a₃⟩` from `h.vals T z J' J hJ' hJ W hW`.
-
-Conclude with `⟨a₁, fun x => (a₂ x).trans (congrArg (W x⁻¹ * ·) (es _ x.left z J' hJ')), fun x y u => (a₃ x y u).trans (congrArg (W (x * y * u) * W x * W y * W u * ·) (ec T z J' hJ' x y u))⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCPMap_of_eq (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] {A : PolAV (Sp (FractionRing V))}
     {G' : Over (Sp V)} [GrpObj G'] [IsCommMonObj G'] [Smooth G'.hom] (gen : (Over.pullback (jK V)).obj G' ≅ A.A)
@@ -135,7 +133,7 @@ def cmpWithPsi {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : 
   ⟨C.pb, C.wL, C.wL_map, C.β, C.pbB, C.v, C.v_gen, C.xe, C.c_pr, C.lev, C.map_le⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨preWithPsi psi h U, cmpWithPsi psi h C, hD, rfl, rfl, h₁, h₂, h₃⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_move {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left} (C : Cmp φ U U' F)
     (hD : IsPullDeg φ (withPsi D psi h) D') (D₂ : DegPre R) (e : D₂ = withPsi D psi h)
@@ -150,27 +148,27 @@ end Psi
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Set `G' : Over (Sp V)` to `(Over.pullback (spMap g)).obj G`. Establish `pb : IsGrpPullback G' G (spMap g) (pullback.fst G.hom (spMap g))` using `isGrpPullback_pullback G _`. Establish `hS' : IsSemiAbelian G'` using `IsSemiAbelian.pullback _ G hS`. Take `⟨P', w, hP', hw⟩` from `exists_cp_pull _ _ (spMap g) G G' _ pullback.condition (toBase_mul_pullback G _) P`. Establish `hW' : HypW G' P'.L.L` using `SymBaseChange.hypS_baseChange _ _ G G' _ _ _ _ P.L.isLB P'.L.isLB pb ⟨w, hw.gen⟩ hW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `gam : FractionRing R →+* FractionRing V` to `IsFractionRing.lift (g := (algebraMap V (FractionRing V)).comp g) ((IsFractionRing.injective V _).comp hg)`. Establish `hgam : ∀ r, gam (algebraMap R _ r) = algebraMap V _ (g r)` using `fun r => IsFractionRing.lift_algebraMap _ r`. Establish `sq : spMap gam ≫ jK R = jK V ≫ spMap g` using `(spMap_comp _ gam).symm.trans ((congrArg spMap (RingHom.ext hgam)).trans (spMap_comp g _))`. Take `⟨A', gA, pA, -, mA, tA⟩` from `hL.polBaseChange _ _ (spMap gam) A`. Establish `gpA : IsGrpPullback A'.A A.A (spMap gam) gA` using `⟨pA, fun T x y x₀ y₀ hx hy => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : x₀ = toBase pA.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = toBase pA.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[e₁, e₂, ← mA]`. Use the proof step `rfl⟩`. Establish `gpG : IsGrpPullback A.A G (jK R) (gen.inv.left ≫ pullback.fst G.hom (jK R))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMonHom gen.symm.hom` using `by show IsMonHom gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso gen.symm).comp (isGrpPullback_pullback G (jK R))).congr (Category.id_comp _) rfl`. Establish `gp' : IsGrpPullback ((Over.pullback (jK V)).obj G') G (spMap gam ≫ jK R) (pullback.fst G'.hom (jK V) ≫ pullback.fst G.hom (spMap g))` using `((isGrpPullback_pullback G' (jK V)).comp pb).congr sq.symm rfl`. Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp' (gpA.comp gpG)`. Establish `hgi : gen.inv.left ≫ gen.hom.left = 𝟙 _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `wA : LBIso (A'.L.pull eA.hom.left) (P'.L.L.pull (pullback.fst G'.hom (jK V)))`. Rewrite using `[hP']`. Use `LBIso.trans (pull_isLB A'.isLB _) (pull_isLB (pull_isLB A.isLB gA) eA.hom.left) (pull_isLB (pull_isLB P.L.isLB _) _) ((LBIso.symm tA).chartPull (Geo.Tor.chartPullPull A'.L _ _ rfl) (Geo.Tor.chartPullPull (A.L.pull gA) _ _ rfl)) ?_` and prove the remaining obligations. Use `LBIso.chartPull (h := eA.hom.left ≫ gA ≫ gen.inv.left) (Geo.Tor.chartPullLinComb A.L gA (fun _ => eA.hom.left) (fun _ => gen.hom.left) _ _ fun _ => ?_) (Geo.Tor.chartPullLinComb P.L.L _ _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => ?_) hA` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hgi, Category.comp_id]`. Rewrite using `[← heA]`. Simplify using `only [Category.assoc]`. Take `⟨wA, hwA⟩` from `wA`. Establish `hpr : IsProper (pullback.snd G'.hom (jK V))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : eA.hom.left ≫ A'.A.hom = pullback.snd G'.hom (jK V)` using `Over.w eA.hom`. Establish `: IsIso eA.hom.left` using `((Over.forget _).mapIso eA).isIso_hom`. Use `A'.isAb.proper` as an intermediate fact. Rewrite using `[← hw]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `m` to `IsLocalRing.maximalIdeal V`. Take `⟨E₀, hE₀⟩` from `hsp`. Set `k : R ⧸ I →+* V ⧸ m ^ (0 + 1)` to `Ideal.Quotient.lift I ((Ideal.Quotient.mk _).comp g) fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact hI ha)`. Take `⟨E₁, -, -, -, -, hE₁⟩` from `hL3.gtBaseChange _ _ (spMap k) E₀ _ hE₀`. Establish `hc : spMap k ≫ spMap (Ideal.Quotient.mk I) = thick V m 0 ≫ spMap g` using `(spMap_comp _ k).symm.trans (spMap_comp g (Ideal.Quotient.mk _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he, -⟩` from `grpPullback_iso (((isGrpPullback_pullback _ (spMap k)).comp (isGrpPullback_pullback G (spMap (Ideal.Quotient.mk I)))).congr hc rfl) ((isGrpPullback_pullback G' (thick V m 0)).comp pb)`. Use `E₁.free` as an intermediate fact. Use `E₁.finite` as an intermediate fact. Take `⟨Dat⟩` from `isGt_of_iso e hE₁`. Take `⟨Q₀, -⟩` from `exists_tq_of_gtDatum _ E₁ _ Dat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P₀, v, hP₀⟩` from `exists_isLevelCP m 0 P'`. Establish `hm : (m ^ (0 + 1)).IsMaximal` using `by rw [zero_add, pow_one]; infer_instance`. Establish `hS₀ : IsSemiAbelian (thickObj V m 0 G')` using `IsSemiAbelian.pullback _ G' hS'`. Establish `hb : Nonempty (BiTriv P₀.c Q₀.i)`. Use `letI : Field (V ⧸ m ^ (0 + 1)) := Ideal.Quotient.field _`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `@BiextTriv.main (V ⧸ m ^ (0 + 1)) _ E₁.X _ _ _ (thickObj V m 0 G') _ _ hS₀.smooth hS₀.geomConnected P₀.L P₀.c Q₀.i Q₀.i_hom`. Take `⟨w₀, -, hw₀, -, -, hp, -⟩` from `hW'`. Establish `hev` using `EvenTriv.exists_even_cubTriv hL hL2 V G' hS' hpr P' w₀ hw₀ hp _ _ E₁.X Q₀ P₀ _ _ (IsPullback.of_hasPullback G'.hom (thick V m 0)) v hP₀ hb`. Conclude with `⟨A', ⟨hV, hS', eA, mE, P', wA, hwA, E₁.X, Q₀, P₀, ⟨v, hP₀⟩, hev⟩, w, hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_setting (hL : Laws) (hL2 : Laws2) (hL3 : Laws3) {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (P : CP G) (hS : IsSemiAbelian G)
@@ -251,13 +249,13 @@ theorem exists_setting (hL : Laws) (hL2 : Laws2) (hL3 : Laws3) {R : Type} [CommR
   exact ⟨A', ⟨hV, hS', eA, mE, P', wA, hwA, E₁.X, Q₀, P₀, ⟨v, hP₀⟩, hev⟩, w, hw⟩
 
 /- English proof (translation)
-Introduce `hL hL2 hL3 hE hU R _ _ _ I hR hpi G _ _ P hS hW hsp hθ A gen hgen hA`. Use `hR.1.1` as an intermediate fact. Use `hR.2.2.1` as an intermediate fact. Establish `hI` using `hR.2.2.2.1`. Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `exists_cdvr R I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hV.1` as an intermediate fact. Establish `hB : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hle : I.map φ ≤ IsLocalRing.maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hc.ge`. Take `⟨A', s, w, hw⟩` from `exists_setting hL hL2 hL3 P hS hW hsp A gen hA hV φ hφ hc.ge`. Take `⟨D', U₀, hLG, -, -⟩` from `hU V A' _ s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U', hU'⟩` from `(GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre`. Take `⟨D, U, rfl, rfl⟩` from `GlobalTheory.T.exists_uniformization_data_complete_local_prime hL hL2 hL3 hE hU R I hR hpi G P hS hW hsp A gen hgen hA`. Use `s.semi.smooth` as an intermediate fact. Take `⟨w', hw'⟩` from `isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw`. Take `⟨C, -⟩` from `GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 hE R V I _ hR.1 hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A' G _ U U' _ (isGrpPullback_pullback G _) w' hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨psi, h, Dd, hD, e, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_degData_psi_of_section_nonzero_fibres hL hL2 hE R I hR V hV φ hφ hc D D' A A' G _ U U' U₀ _ C hU' hθ`. Take `⟨U₂, C₂, hD₂, eP, eg, k₁, k₂, k₃⟩` from `exists_move psi h C hD Dd.toPre e h₁ h₂ h₃`. Take `⟨U₁, -, hU₁, -⟩` from `GlobalTheory.UnifDescent.exists_unif_of_cmp hL hL2 hE R V I _ hR.1 hB hI.ne_top φ hφ hle Dd D' A A' G _ U₂ U' U₀ _ C₂ hD₂ hU' k₁ k₂ k₃`. Conclude with `⟨Dd, U₁, hU₁.2.1.symm.trans (congrArg CP.L eP), hU₁.1.symm.trans eg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif : Laws → Laws2 → Laws3 → Ega → USt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → IsPrincipalIdealRing (R ⧸ I) → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G), IsSemiAbelian G → HypW G P.L.L → SplitOver G I → ThetaNZ G P.L.L → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → ∃ (D : DegData R I) (U : Unif I D A G), U.LG = P.L ∧ U.gen = gen := by
   intro hL hL2 hL3 hE hU R _ _ _ I hR hpi G _ _ P hS hW hsp hθ A gen hgen hA

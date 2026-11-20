@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.EtaleTrace
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 theorem ltwo_fm (R : Type) [CommRing R] {X Y : Type} (g : X ⟶ Y) (x : X) :
     ((ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map g)).hom

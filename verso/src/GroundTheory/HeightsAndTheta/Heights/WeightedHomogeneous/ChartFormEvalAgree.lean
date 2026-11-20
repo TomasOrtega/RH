@@ -12,9 +12,9 @@ noncomputable section
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Take `⟨deg, metric, h1, h2, h3⟩` from `A'`. Simplify using `only at hdeg hmet h`. Substitute `hdeg` using the available equality. Take `⟨hind, C, hC⟩` from `h s`. Use `⟨fun z hz c c' d d' e e' he he' hc hc' ↦ ?_, C, fun z hz c d e he hc ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hmet z hz]`. Conclude with `hind z hz c c' d d' e e' he he' hc hc'`. Rewrite using `[← hmet z hz]`. Conclude with `hC z hz c d e he hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartForm_eval_agree (P : ArithVariety n) (A A' : HermLine n) (hdeg : A'.deg = A.deg)
     (hmet : ∀ z ∈ P.points ℂ, A'.metric z = A.metric z)
@@ -45,11 +45,11 @@ theorem chartForm_eval_agree (P : ArithVariety n) (A A' : HermLine n) (hdeg : A'
     exact hC z hz c d e he hc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P M k e`. Conclude with `hA ι n P (powDivStd M k) e`. Introduce `hB ι _ _ n P A s`. Establish `hdeg : (powDivStd (twistPow A 1 1 0) 1).deg = A.deg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Simplify using `[powDivStd, twistPow]`. Establish `hmet : ∀ z ∈ P.points ℂ, (powDivStd (twistPow A 1 1 0) 1).metric z = A.metric z`. Introduce `z hz`. Establish `hS` using `((HermLine.standard n).metric_pos z hz.1).ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [powDivStd, twistPow, Nat.cast_one, one_mul, mul_zero, neg_zero, Real.exp_zero, pow_one]`. Clear the denominators using the available nonvanishing facts. Conclude with `chartForm_eval_agree P A _ hdeg hmet (hB ι n P (twistPow A 1 1 0) 1) s`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem BoundedMonomials.equiv :
     GroundTheory.Heights₂.Heights.BoundedMonomials.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.BoundedMonomials.Statement := by

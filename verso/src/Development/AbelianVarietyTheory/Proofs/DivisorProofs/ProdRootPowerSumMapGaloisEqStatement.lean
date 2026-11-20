@@ -5,7 +5,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI GlobalTheory.Shin Semidirect
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.Shin.prod_rootSum_map_algEquiv) | (exact GlobalTheory.Shin.prod_rootSum_map_algEquiv) | (intros; apply GlobalTheory.Shin.prod_rootSum_map_algEquiv <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.prod_rootPowerSum_map_galois_eq : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (θ : AlgebraicClosure F' →* ℂ) (k : ℕ) (P : F'[X]), ∏ t : F' ≃ₐ[F] F', rootSum θ k (P.map (t : F' →+* F')) = ∏ j ∈ Finset.range (Module.finrank F F'), rootSum θ (k * Nat.card F ^ j) P := by
   first | (exact @GlobalTheory.Shin.prod_rootSum_map_algEquiv) | (exact GlobalTheory.Shin.prod_rootSum_map_algEquiv) | (intros; apply GlobalTheory.Shin.prod_rootSum_map_algEquiv  <;> assumption)

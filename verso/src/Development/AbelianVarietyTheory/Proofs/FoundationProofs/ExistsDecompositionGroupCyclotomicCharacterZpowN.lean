@@ -7,13 +7,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.CycDec
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hu : IsUnit (1 + (l : ℤ_[l]))`. Rewrite using `[← sub_neg_eq_add]`. Conclude with `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ fun h => PadicInt.irreducible_p.not_isUnit ((IsUnit.neg_iff _).1 h)`. Take `⟨u, hu⟩` from `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, fun n hn h => ?_⟩` and prove the remaining obligations. Establish `h1 : u ^ n.natAbs = 1`. Break down `Int.natAbs_eq n with e | e` into its components or cases. Rewrite using `[← zpow_natCast, ← e, h]`. Rewrite `h` using `[e, zpow_neg, inv_eq_one, zpow_natCast]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : (((1 + l) ^ n.natAbs : ℕ) : ℤ_[l]) = ((1 : ℕ) : ℤ_[l])`. Use `push_cast`. Rewrite using `[← hu, ← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Establish `h3` using `Nat.cast_injective h2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h3` using `[pow_eq_one_iff]`. Break down `h3 with h3 | h3` into its components or cases. Conclude with `hl.ne_zero (by omega)`. Conclude with `hn (Int.natAbs_eq_zero.1 h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_infinite_order (l : ℕ) [Fact l.Prime] :
     ∃ u : ℤ_[l]ˣ, ∀ n : ℤ, n ≠ 0 → u ^ n ≠ 1 := by
@@ -39,15 +39,15 @@ theorem exists_unit_infinite_order (l : ℕ) [Fact l.Prime] :
   · exact hn (Int.natAbs_eq_zero.1 h3)
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ v A hl hA n hn`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: Algebra.IsAlgebraic ℚ Ω` using `Algebra.IsAlgebraic.trans ℚ F Ω`. Establish `: IsAlgClosure ℚ Ω` using `⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`. Establish `hv : A.valuation (l : Ω) < 1`. Simplify using `using (hA _).2 hl`. Take `⟨u, hu⟩` from `exists_unit_infinite_order l`. Take `⟨σ, hσ, hσu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hv u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `K : IntermediateField ℚ Ω` to `(IsScalarTower.toAlgHom ℚ F Ω).fieldRange`. Establish `: FiniteDimensional ℚ K` using `(AlgEquiv.ofInjectiveField (IsScalarTower.toAlgHom ℚ F Ω)).toLinearEquiv.finiteDimensional`. Establish `: Finite ((Ω ≃ₐ[ℚ] Ω) ⧸ K.fixingSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ K.fixingSubgroup_isOpen`. Establish `: K.fixingSubgroup.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Take `⟨N, hN, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.FiniteIndex.index_ne_zero (H := K.fixingSubgroup)) σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `g : G F Ω` to `{ (σ ^ N).toRingEquiv with commutes' := fun x => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hmem _ ⟨x, rfl⟩ }`. Establish `hD : σ ^ N ∈ Dec (F` using `ℚ) A := (Dec (F := ℚ) A).pow_mem (Ine_le_Dec A hσ) N`. Establish `hc : cycZ F Ω l g = cycZ ℚ Ω l (σ ^ N)` using `rfl`. Use `⟨g, hD, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_pow, hσu, ← zpow_natCast, ← zpow_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu _ (mul_ne_zero (by exact_mod_cast hN.ne') hn)`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_Dec_cycZ_zpow_ne_one : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F))

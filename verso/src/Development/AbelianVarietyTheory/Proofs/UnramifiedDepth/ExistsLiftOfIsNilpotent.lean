@@ -15,15 +15,15 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `exists_isAffineOpen_pair f e (O := ⊤) trivial`. Use `exists_lift_of_smooth_of_isAffineOpen f hU hV hVU π s x₀ h ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : p ∈ Set.range (PrimeSpectrum.comap π.hom)`. Rewrite using `[range_comap_of_surjective _ _ hπ, (PrimeSpectrum.zeroLocus_eq_univ_iff _).2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `hn`. Introduce `a ha`. Conclude with `⟨n, by simpa [hn] using Ideal.pow_mem_pow ha n⟩`. Take `⟨p', rfl⟩` from `hp`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `e' : f (x₀ p') = s (Spec.map π p')` using `congr($h p')`. Establish `: s (Spec.map π p') ∈ U`. Rewrite using `[← e', he p']`. Conclude with `hVU hxV`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[he]`. Conclude with `hxV`. Introduce `R A _ _ _ _ _ _ p hp φ`. Establish `hs : Function.Surjective p` using `fun c => (hπ c).imp fun b hb => (hp b).trans hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Supply the required witnesses or components.
 
-Establish `hk : IsNilpotent (RingHom.ker p.toRingHom)`. Use `hn using 1` and compare the differences between its conclusion and the goal. Conclude with `Ideal.ext fun b => Eq.congr_left (hp b)`. Conclude with `⟨Algebra.FormallySmooth.liftOfSurjective φ p hs hk, Algebra.FormallySmooth.comp_liftOfSurjective φ p hs hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_of_isNilpotent {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] {B C : CommRingCat.{0}} (π : B ⟶ C)
     (hπ : Function.Surjective π) (hn : IsNilpotent (RingHom.ker π.hom)) (s : Spec B ⟶ S) (x₀ : Spec C ⟶ X)
@@ -58,9 +58,9 @@ theorem exists_lift_of_isNilpotent {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] {
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `φ.q_flat` as an intermediate fact. Use `φ.q_surj` as an intermediate fact. Use `φ.q_affine` as an intermediate fact. Use `(H1.torus_dim (Sp k) φ.X).smooth` as an intermediate fact. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback φ.i φ.q φ.isKernel).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact φ.q.left)⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this`.
+A detailed English derivation is pending.
 -/
 theorem smooth_q (φ : Fib k) : Smooth φ.q.left := by
   have := φ.q_flat

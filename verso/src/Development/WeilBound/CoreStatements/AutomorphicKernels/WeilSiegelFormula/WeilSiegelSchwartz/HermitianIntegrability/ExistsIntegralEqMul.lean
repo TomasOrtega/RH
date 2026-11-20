@@ -19,9 +19,9 @@ namespace PositivityTheory.PfWsf.Hand.TupleUntupling
 variable {D : D7}
 
 /- English proof (translation)
-Set `e : V ≃+ V'` to `{ toFun := f, invFun := g, left_inv := h1, right_inv := h2, map_add' := hadd }`. Use `haveI : (ν.map f).IsAddHaarMeasure := e.isAddHaarMeasure_map ν hc hc'`. Use `⟨((Measure.addHaarScalarFactor (ν.map f) μ : ℝ) : ℂ), fun u => ?_⟩` and prove the remaining obligations. Establish `h : ∫ y, u y ∂(ν.map f) = ∫ x, u (f x) ∂ν` using `integral_map_equiv ({ toEquiv := e.toEquiv, continuous_toFun := hc, continuous_invFun := hc' } : V ≃ₜ V').toMeasurableEquiv u`. Rewrite using `[← h]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [Measure.isAddLeftInvariant_eq_smul (ν.map f) μ]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_eq_mul {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [AddCommGroup V'] [TopologicalSpace V'] [IsTopologicalAddGroup V']
@@ -41,7 +41,7 @@ theorem exists_integral_eq_mul {V V' : Type} [AddCommGroup V] [TopologicalSpace 
   rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramR, untup, hR, Formalism.UG.hform, JR, GlobalTheory.StdUnn.inner, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (cA D (y i a)) * (incA D (V.gram i j) * y j b)`. Rewrite using `[mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -58,13 +58,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨k1, k2, k3, -, -, -⟩` from `lattice_Mx D V.rank r`. Use `haveI : IsTopologicalAddGroup (Mx D V.rank r) := k1`. Use `haveI : LocallyCompactSpace (Mx D V.rank r) := k2`. Use `haveI : SecondCountableTopology (Mx D V.rank r) := k3`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨j1, -, -, i4, i5⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Use `haveI : BorelSpace (Fin V.rank → AE D) := Pi.borelSpace`. Use `haveI : BorelSpace (Fin r → Fin V.rank → AE D) := Pi.borelSpace`. Take `⟨c, hc⟩` from `exists_integral_eq_mul (tupOf (D := D) (m := V.rank) (r := r)) untup untup_tupOf tupOf_untup (fun _ _ => rfl) (continuous_matrix fun i a => (continuous_apply i).comp (continuous_apply a)) (continuous_pi fun a => continuous_pi fun i => continuous_id.matrix_elem i a) dx hdx μ hμ`. Use `⟨c, fun Φ b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Unfold `starN Jt`. Rewrite using `[← hc]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Establish `hg` using `gramR_untup V (tupOf X)`. Express the relevant statement in the definitionally equal form `Φ X * ψ (_ * Algebra.trace _ _ (Matrix.trace (b.1 * gramR (AF D.host.F) D.sp.cm.sig V.gram (untup (tupOf X))))) = _`.
-
-Rewrite using `[hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem starN_hermE (V : HSp D) {r : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D V.rank r))
     (hμ : μ.IsAddHaarMeasure) (dx : Measure (Fin r → Fin V.rank → AE D)) (hdx : dx.IsAddHaarMeasure) :

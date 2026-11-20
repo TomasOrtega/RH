@@ -18,7 +18,7 @@ section Values
 variable {A : Type} [CommRing A] {B B₀ : Scheme.{0}}
 
 /- English proof (translation)
-Establish `e : u = Units.map (HolHom.evalHom x U h).toMonoidHom t` using `Units.ext (hu.trans (HolHom.valR_eq x U h _))`. Rewrite using `[e, ← map_zpow, HolHom.valR_eq x U h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_zpow (x : Sp A ⟶ B) (U : B.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (t : Γ(B, U)ˣ) (u : Aˣ)
     (hu : (u : A) = valR x U t.val) (n : ℤ) : valR x U (t ^ n).val = ((u ^ n : Aˣ) : A) := by
@@ -27,7 +27,7 @@ theorem valR_zpow (x : Sp A ⟶ B) (U : B.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (t :
   rfl
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨Set.mem_iInter.2 fun _ => h₀ hz, h hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_div {M : LB B} {M₀ : LB B₀} {φ : B ⟶ B₀} (x : Sp A ⟶ B) {k : M₀.ι} {m : M.ι}
     (h₀ : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ M₀.U k) (h : ⊤ ≤ x ⁻¹ᵁ M.U m) :
@@ -35,7 +35,7 @@ theorem le_div {M : LB B} {M₀ : LB B₀} {φ : B ⟶ B₀} (x : Sp A ⟶ B) {k
   fun _ hz => ⟨Set.mem_iInter.2 fun _ => h₀ hz, h hz⟩
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ LB.wchart M₀ (fun i => spMap ρ ≫ ψ i) k` using `fun z _ => Set.mem_iInter.2 fun i => Set.mem_iInter.1 (h (show spMap ρ z ∈ (⊤ : (Sp A₀).Opens) from trivial)) i`. Use `(HolHom.valR_res (𝟙 (Sp A)) _ _ h').trans ((HolHom.valR_comp (𝟙 (Sp A)) (spMap ρ) _ _).symm.trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (HolHom.valR_spMap ρ (𝟙 (Sp A₀)) _ h _)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.comp_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_pullGen {A₀ : Type} [CommRing A₀] (ρ : A₀ →+* A) {M₀ : LB B₀} {K : Type} [Fintype K]
     {ψ : K → (Sp A₀ ⟶ B₀)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb M₀ ψ ε)) (k : K → M₀.ι)
@@ -49,7 +49,7 @@ theorem valR_pullGen {A₀ : Type} [CommRing A₀] (ρ : A₀ →+* A) {M₀ : L
   rfl
 
 /- English proof (translation)
-Simplify using `only [Fin.prod_univ_four, Out.DegPre.famε, Out.DegPre.gtε, Matrix.cons_val, zpow_sub, zpow_neg, zpow_one, zpow_natCast]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem prod_factors {G : Type} [CommGroup G] (u : Fin 4 → G) (j : ℕ) :
     (∏ i, u i ^ Out.DegPre.famε j i) * ∏ i, ![u 1, u 2, u 0, u 3] i ^ Out.DegPre.gtε i = u 0 ^ j := by
@@ -66,9 +66,7 @@ section Points
 variable {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R) {T : Over (Sp R)} (b : T ⟶ D.P.A) (α : D.X)
 
 /- English proof (translation)
-Establish `h : ∀ p : 𝟙_ (Over (Sp R)) ⟶ D.P.A, b ≫ toUnit D.P.A ≫ p = toUnit T ≫ p` using `fun p => by`. Rewrite using `[← Category.assoc, comp_toUnit]`. Use `fin_cases i`. Conclude with `Category.comp_id _`. Express the relevant statement in the definitionally equal form `(b ≫ (𝟙 D.P.A * toUnit _ ≫ D.c α)).left = ((toUnit _ ≫ D.c α) * b).left`.
-
-Rewrite using `[MonObj.comp_mul, h, Category.comp_id, mul_comm]`. Conclude with `congrArg (·.left) (h _)`. Conclude with `congrArg (·.left) (h _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_famφB (i : Fin 4) : b.left ≫ D.famφB α i = D.gtφT T b α (![2, 0, 1, 3] i) := by
   have h : ∀ p : 𝟙_ (Over (Sp R)) ⟶ D.P.A, b ≫ toUnit D.P.A ≫ p = toUnit T ≫ p := fun p => by
@@ -90,9 +88,7 @@ variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) 
   (u : HolUnif D₀.P.A D₀.P.L n) {α₀ : D₀.X} {c : Fin n → ℂ}
 
 /- English proof (translation)
-Establish `e : Out.jFK (R` using `ℂ) ℂ ≫ Out.jK ℂ = 𝟙 (Sp ℂ) := by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `Spec.map_id _`. Express the relevant statement in the definitionally equal form `(Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ) ≫ p.left = _`. Rewrite using `[e]`.
-
-Conclude with `Category.id_comp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toUnit_comp_left {B : Over (Sp ℂ)} (p : 𝟙_ (Over (Sp ℂ)) ⟶ B) :
     (show Sp ℂ ⟶ _ from (toUnit (Out.TF (R := ℂ) ℂ) ≫ p).left) = p.left := by
@@ -104,9 +100,9 @@ theorem toUnit_comp_left {B : Over (Sp ℂ)} (p : 𝟙_ (Over (Sp ℂ)) ⟶ B) :
   exact Category.id_comp _
 
 /- English proof (translation)
-Establish `hb' : b₀ = toUnit _ ≫ u.ex z` using `Over.OverMorphism.ext (hb.trans (toUnit_comp_left _).symm)`. Establish `h0 : u.ex 0 = η[D₀.P.A]`. Rewrite using `[(u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]`. Use `fin_cases k`. Use `Eq.trans ?_ (toUnit_comp_left _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(toUnit _ ≫ D₀.c α₀ * b₀).left = (toUnit _ ≫ u.ex (c + z)).left`. Rewrite using `[hb', u.ex_add, MonObj.comp_mul, hc]`. Conclude with `(toUnit_comp_left _).trans (congrArg (·.left) hc.symm)`. Conclude with `hb`. Conclude with `(toUnit_comp_left _).trans (congrArg (·.left) h0.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtφ_eq (hc : u.ex c = D₀.c α₀) {b₀ : Out.TF (R := ℂ) ℂ ⟶ D₀.P.A} {z : Fin n → ℂ}
     (hb : (show Sp ℂ ⟶ _ from b₀.left) = (u.ex z).left) (k : Fin 4) :
@@ -125,7 +121,7 @@ theorem gtφ_eq (hc : u.ex c = D₀.c α₀) {b₀ : Out.TF (R := ℂ) ℂ ⟶ D
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Introduce `k` and use `by have h : ∀ p : 𝟙_ (Over (Sp ℂ)) ⟶ D₀.P.A, u.ex z ≫ toUnit D₀.P.A ≫ p = p := fun p => by rw [← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp] fin_cases k · exact Category.comp_id _ · change (u.ex z ≫ (𝟙 D₀.P.A * toUnit _ ≫ D₀.c α₀)).left = (u.ex (z + c)).left rw [M …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_famφB (hc : u.ex c = D₀.c α₀) (z : Fin n → ℂ) :
     IsLift u (D₀.famφB α₀) (u.ex z).left ![z, z + c, c, 0] := fun k => by
@@ -141,23 +137,21 @@ theorem isLift_famφB (hc : u.ex c = D₀.c α₀) (z : Fin n → ℂ) :
     rw [h, (u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-Establish `hφ : ∀ k, FormalValue.coordφ g α k ≫ φ = spMap ρ ≫ (u.ex (![c + z, c, z, 0] k)).left` using `fun k => (hg.1 k).trans (congrArg (spMap ρ ≫ ·) (gtφ_eq u hc hb k))`. Establish `hq : ∀ i, FormalValue.basePt g ≫ D.toPre.famφB α i = FormalValue.coordφ g α (![2, 0, 1, 3] i)` using `comp_famφB D.toPre g.b α`. Establish `ejf : ∀ i, jf i = jt (![2, 0, 1, 3] i)` using `fun i => hj.2.2 (.inr (.inl i)) (.inr (.inr _)) (hq i)`. Establish `ejM : jM = jt 2` using `hj.2.2 (.inl PUnit.unit) (.inr (.inr 2)) rfl`. Establish `h₀ : ⊤ ≤ (u.ex z).left ⁻¹ᵁ D₀.P.L.U j₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y _`. Take `rfl : y = spMap ρ (cpt S)` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `(congrArg (fun q => q (cpt S) ∈ D₀.P.L.U j₀) (hφ 2)).mp (mem_pull.1 (hM trivial).1)`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, ek⟩ : ∃ k : Fin 4 → D₀.P.L.ι, (∀ i, ⊤ ≤ (u.ex (![c + z, c, z, 0] i)).left ⁻¹ᵁ D₀.P.L.U (k i)) ∧ k 2 = j₀ := by`. Use `⟨![chartAt D₀.P.isLB (u.ex (c + z)).left, chartAt D₀.P.isLB (u.ex c).left, j₀, chartAt D₀.P.isLB (u.ex 0).left], fun i => ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Use `fin_cases i`. Use `exacts [le_chartAt D₀.P.isLB _, le_chartAt D₀.P.isLB _, h₀, le_chartAt D₀.P.isLB _]`. Substitute `ek ejM` using the available equality. Take `rfl : jf = fun i => jt (![2, 0, 1, 3] i)` from `funext ejf`. Establish `hd : ∀ i, ⊤ ≤ FormalValue.coordφ g α i ⁻¹ᵁ (LB.div (D₀.P.L.pull φ) D.toPre.P.L).U (fun _ => k i, jt i)` using `fun i => le_div _ (hφ i ▸ FormalValue.top_le_comp (hk i) _) (hj.2.1.trans (LB.wchart_le _ _ _ i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨t, ht, e₁⟩` from `hf (FormalValue.basePt g) (fun i => jt (![2, 0, 1, 3] i)) (fun i => k (![2, 0, 1, 3] i)) (Over.w g.b) (fun i => by rw [hq i]; exact hd _)`. Simplify using `only [hq] at ht`. Establish `lf` using `isLift_famφB u hc z`. Establish `lg : IsLift u (Out.DegPre.gtφ D₀ ℂ g₀.b α₀) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![c + z, c, z, 0]` using `fun i => (Category.id_comp _).trans (gtφ_eq u hc hb i)`. Establish `cf : ⊤ ≤ (u.ex z).left ⁻¹ᵁ D₀.P.L.wchart (D₀.famφB α₀) (fun i => k (![2, 0, 1, 3] i))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(lf.le_iff _).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `exacts [hk 2, add_comm c z ▸ hk 0, hk 1, hk 3]`. Establish `cg` using `(lg.le_iff k).2 hk`. Establish `e₂ : valR (FormalValue.basePt g ≫ φ) _ (s₀.f fun i => k (![2, 0, 1, 3] i)) = _` using `(congrArg (fun q => valR q _ (s₀.f fun i => k (![2, 0, 1, 3] i))) (hφ 2)).trans ((HolHom.valR_spMap ρ (u.ex z).left _ cf _).trans (congrArg ρ (valAt'_sec D₀.P.isLB s₀ lf cf)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : FormalValue.coordVal g α jt = _` using `(hg.2 jt k hd).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => valR_zpow _ _ (hd i) _ (![t 1, t 2, t 0, t 3] i) (by fin_cases i; exacts [ht 1, ht 2, ht 0, ht 3]) _) ((valR_pullGen ρ (g₀.s α₀) k cg).trans (congrArg ρ (valAt'_gen D₀.P.isLB (g₀.isGen α₀) lg cg))))`. Establish `e₄ : frameProd u (Out.DegPre.famε j) ![z, z + c, c, 0] (fun i => k (![2, 0, 1, 3] i)) * frameProd u Out.DegPre.gtε ![c + z, c, z, 0] k = u.fr (k 2) z ^ j`. Establish `n₀ : u.fr (k 0) (c + z) ≠ 0` using `u.fr_ne _ _ (hk 0)`. Establish `n₁ : u.fr (k 1) c ≠ 0` using `u.fr_ne _ _ (hk 1)`. Establish `n₂ : u.fr (k 2) z ≠ 0` using `u.fr_ne _ _ (hk 2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n₃ : u.fr (k 3) 0 ≠ 0` using `u.fr_ne _ _ (hk 3)`. Simplify using `only [frameProd, Fin.prod_univ_four, Out.DegPre.famε, Out.DegPre.gtε, Matrix.cons_val, zpow_sub₀ n₂, zpow_neg, zpow_one, zpow_natCast, add_comm z c]`. Clear the denominators using the available nonvanishing facts. Establish `e₅ : (t 0 : S) ^ j * ∏ i, ((![t 1, t 2, t 0, t 3] i ^ (-Out.DegPre.gtε i) : Sˣ) : S) = ((∏ i, t i ^ Out.DegPre.famε j i : Sˣ) : S)`. Rewrite using `[← Units.coe_prod, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← prod_factors t j]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel_right]`. Use `replace e₁ := e₁.trans (congrArg (κ r * ·) e₂)`. Use `(congrArg₂ (fun a b => a ^ j * (_ * b)) (ht 0).symm e₃).trans ?_` and prove the remaining obligations. Rewrite using `[← e₄]`. Simplify using `only [map_mul] at e₁ ⊢`.
-
-Rewrite `e₁` using `[← e₅]`. Unfold `FormalValue.famVal`. Take the linear combination `(ρ (genVal u D₀.P.isLB (g₀.s α₀) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![c + z, c, z, 0]) * ρ (frameProd u Out.DegPre.gtε ![c + z, c, z, 0] k)) * e₁`.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData R I} {S : Type} [CommRing S]
     [IsLocalRing S] (κ : R →+* S) (ρ : ℂ →+* S) {φ : D.toPre.P.A.left ⟶ D₀.P.A.left}
@@ -240,7 +234,7 @@ theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData
 end Core
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ j α s₀ f r hf v jM j₀ jf jt hj hM`. Establish `h` using `core Λ.u (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) (PowerSeries.C (R := ℂ)) W.w (Ξ.g v) (Λ.ex0 v) (Λ.ct α) (Λ.ex0_b v) (Ξ.g_rel v (Λ.ε α)) s₀ f r (fun p => hf _ p _) jM j₀ jf jt hj hM`. Rewrite `h` using `[Λ.arcDict_expZero_section v α]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) (j : ℕ) (α : Λ.A.X) (s₀ : a.D₀.SecB j (Λ.ε α)) (f : W.P.D.toPre.SecB j (W.e (Λ.ε α))) (r : ℂ⟦X⟧), (∀ (Z : Type) [CommRing Z] [IsLocalRing Z] (p : Sp Z ⟶ W.P.D.toPre.P.A.left) (κ : ℂ⟦X⟧ →+* Z) (jf : Fin 4 → W.P.D.toPre.P.L.ι) (j₀ : Fin 4 → a.D₀.P.L.ι), p ≫ W.P.D.toPre.P.A.hom = spMap κ → (∀ i, ⊤ ≤ (p ≫ W.P.D.toPre.famφB (W.e (Λ.ε α)) i) ⁻¹ᵁ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀ i, jf i)) → ∃ u : Fin 4 → Zˣ, (∀ i, (u i : Z) = valR (p ≫ W.P.D.toPre.famφB (W.e (Λ.ε α)) i) _ (W.w.s (fun _ => j₀ i, jf i)).val) ∧ (∏ i, u i ^ Out.DegPre.famε j i : Zˣ) * valR p (LB.wchart W.P.D.toPre.P.L (W.P.D.toPre.famφB (W.e (Λ.ε α))) jf) (f.f jf) = κ r * valR (p ≫ W.φ) (LB.wchart a.D₀.P.L (a.D₀.famφB (Λ.ε α)) j₀) (s₀.f j₀)) → ∀ v jM j₀ jf jt, FormalValue.CohCharts (Ξ.g v) (W.e (Λ.ε α)) jM jf jt → ⊤ ≤ (Ξ.g v).b.left ⁻¹ᵁ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀, jM) → valR (A := ℂ⟦X⟧) (Ξ.g v).b.left _ (W.w.s (fun _ => j₀, jM)).val ^ j * (FormalValue.famVal (Ξ.g v) f jf * FormalValue.coordVal (Ξ.g v) (W.e (Λ.ε α)) jt) = r * PowerSeries.C (Λ.fn j α s₀ v.2 * eTwoPi (v.1 α) * Λ.u.fr j₀ v.2 ^ j) := by
   intro _ _ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ j α s₀ f r hf v jM j₀ jf jt hj hM

@@ -9,9 +9,9 @@ section General
 variable {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `h1 : (M.adjugate *ᵥ (M *ᵥ x)) l = M.det * x l`. Rewrite using `[mulVec_mulVec, adjugate_mul, smul_mulVec, one_mulVec]`. Simplify using the standard rewrite rules. Establish `h2 : (M.adjugate *ᵥ (M *ᵥ x)) l = ∑ r, M.adjugate l r * (M *ᵥ x) r` using `rfl`. Rewrite using `[← h1, h2, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), add_sub_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.sum_mem fun r hr => I.mul_mem_left _ (h r (Finset.ne_of_mem_erase hr))`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_sub_adjugate_mul_mem (I : Ideal R) (M : Matrix n n R) (x : n → R) (i l : n)
     (h : ∀ r, r ≠ i → (M *ᵥ x) r ∈ I) :
@@ -24,7 +24,7 @@ theorem det_mul_sub_adjugate_mul_mem (I : Ideal R) (M : Matrix n n R) (x : n →
   exact I.sum_mem fun r hr => I.mul_mem_left _ (h r (Finset.ne_of_mem_erase hr))
 
 /- English proof (translation)
-Use `det_mul_sub_adjugate_mul_mem I M x l l fun r _ => h r` as an intermediate fact. Establish `h2` using `I.add_mem this (I.mul_mem_left (M.adjugate l l) (h l))`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_mul_mem (I : Ideal R) (M : Matrix n n R) (x : n → R) (l : n)
     (h : ∀ r, (M *ᵥ x) r ∈ I) : M.det * x l ∈ I := by
@@ -33,16 +33,16 @@ theorem det_mul_mem (I : Ideal R) (M : Matrix n n R) (x : n → R) (l : n)
   simpa using h2
 
 /- English proof (translation)
-Rewrite using `[adjugate_apply, adjugate_apply, updateRow_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjugate_updateRow (M : Matrix n n R) (i l : n) (v : n → R) :
     (M.updateRow i v).adjugate l i = M.adjugate l i := by
   rw [adjugate_apply, adjugate_apply, updateRow_idem]
 
 /- English proof (translation)
-Use `det_mul_sub_adjugate_mul_mem I (M.updateRow i (Pi.single j 1)) x i l (by` as an intermediate fact. Introduce `r hr`. Establish `: (M.updateRow i (Pi.single j 1) *ᵥ x) r = (M *ᵥ x) r`. Simplify using `[mulVec, updateRow_ne hr]`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h r hr)`. Rewrite `this` using `[adjugate_updateRow, ← adjugate_apply]`. Establish `e : (M.updateRow i (Pi.single j 1) *ᵥ x) i = x j`. Simplify using `[mulVec]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem adjugate_cross_mem (I : Ideal R) (M : Matrix n n R) (x : n → R) (i j l : n)
     (h : ∀ r, r ≠ i → (M *ᵥ x) r ∈ I) :
@@ -58,13 +58,13 @@ theorem adjugate_cross_mem (I : Ideal R) (M : Matrix n n R) (x : n → R) (i j l
   rwa [e] at this
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro s _`. Simplify using the standard rewrite rules. Consider the case `insert i S hi ih`. Introduce `s hs`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs`, the goal using `[Finset.sum_insert hi]`. Establish `h1 : s i * x i ∈ Ideal.span (x '' S)`. Rewrite using `[eq_neg_of_add_eq_zero_left hs]`. Conclude with `neg_mem (Ideal.sum_mem _ fun j hj => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, hj, rfl⟩))`. Take `⟨t, ht⟩` from `(Submodule.mem_span_image_finset_iff_exists_fun' R).1 (hx S i hi _ h1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul] at ht`. Establish `h2` using `ih (fun j => s j + t j * x i) (by`. Rewrite using `[← hs, ← ht, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring)`. Establish `h3 : ∑ j ∈ S, t j * (C i * x j - C j * x i) ∈ I` using `I.sum_mem fun j _ => I.mul_mem_left _ (hC i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h4` using `I.add_mem h2 h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← ht, Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_mem_of_syzygy (I : Ideal R) (x C : n → R)
     (hx : ∀ (S : Finset n) (i : n), i ∉ S → ∀ p : R, p * x i ∈ Ideal.span (x '' S) →
@@ -93,21 +93,21 @@ theorem sum_mul_mem_of_syzygy (I : Ideal R) (x C : n → R)
     exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset n, (Matrix.of (fun r j => if r ∈ S then c' r j else c r j)).det - c.det ∈ I`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `: Matrix.of (fun r j => if r ∈ (∅ : Finset n) then c' r j else c r j) = c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use extensionality with `r j`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules. Consider the case `insert i S hi ih => set M : Matrix n n R := Matrix.of (fun r j => if r ∈ S then c' r j else c r j) with hM`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `e1 : Matrix.of (fun r j => if r ∈ insert i S then c' r j else c r j) = M.updateRow i (c' i)`. Use extensionality with `r j`. Distinguish the cases in `hr : r = i`. Substitute `hr` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hM, hr, updateRow_ne hr]`. Establish `e2 : ∀ r, (M *ᵥ x) r = (c *ᵥ x) r`. Introduce `r`. Distinguish the cases in `hr : r ∈ S`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hM, mulVec, dotProduct, hr]`. Simplify using `[hM, mulVec, dotProduct, hr]`. Establish `h1` using `sum_mul_mem_of_syzygy I x (fun j => M.adjugate j i) hx (fun j l => adjugate_cross_mem I M x i j l fun r _ => e2 r ▸ hI r) Finset.univ (fun j => c' i j - M i j) (by`. Establish `a1 : ∑ j, c' i j * x j = (c *ᵥ x) i` using `by rw [h]; rfl`. Establish `a2 : ∑ j, M i j * x j = (c *ᵥ x) i` using `by rw [← e2]; rfl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_mul, Finset.sum_sub_distrib, a1, a2, sub_self])`. Establish `h2` using `I.add_mem h1 ih`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e1, det_eq_sum_mul_adjugate_row (M.updateRow i (c' i)) i, det_eq_sum_mul_adjugate_row M i]`. Simplify using `only [adjugate_updateRow, updateRow_self, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `key Finset.univ` as an intermediate fact. Establish `e : Matrix.of (fun r j => if r ∈ (Finset.univ : Finset n) then c' r j else c r j) = c'`. Use extensionality with `r j`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem det_sub_det_mem (I : Ideal R) (x : n → R)
     (hx : ∀ (S : Finset n) (i : n), i ∉ S → ∀ p : R, p * x i ∈ Ideal.span (x '' S) →
@@ -161,7 +161,7 @@ open MvPowerSeries
 variable {k : Type*} [CommRing k] {σ : Type*}
 
 /- English proof (translation)
-Take `⟨t, ht, c, rfl⟩` from `(Submodule.mem_span_image_iff_exists_fun _).1 hp`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Conclude with `X_pow_dvd_iff.1 (Dvd.intro_left _ rfl) m (hm j (ht j.2))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_mem_span_pow (N : ℕ) (S : Set σ) (p : MvPowerSeries σ k)
     (hp : p ∈ Ideal.span ((fun i => (X i : MvPowerSeries σ k) ^ N) '' S))
@@ -173,15 +173,13 @@ theorem coeff_eq_zero_of_mem_span_pow (N : ℕ) (S : Set σ) (p : MvPowerSeries 
   exact X_pow_dvd_iff.1 (Dvd.intro_left _ rfl) m (hm j (ht j.2))
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `p hp`. Establish `: p = 0` using `MvPowerSeries.ext fun m => hp m (by simp)`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `insert i S hi ih`. Introduce `p hp`. Set `q : MvPowerSeries σ k` to `fun m => if m i = 0 then coeff m p else 0`. Establish `hq : ∀ m, coeff m q = if m i = 0 then coeff m p else 0` using `fun _ => rfl`. Establish `h1 : q ∈ Ideal.span ((fun i => (X i : MvPowerSeries σ k)) '' (insert i S : Finset σ))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.span_mono (Set.image_mono (by simp)) (ih q fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[hq]`. Use `split_ifs with h`. Use `hp m fun j hj => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Use `exacts [h, hm j hj]`. Both sides reduce to the same expression. Establish `h2 : (X i : MvPowerSeries σ k) ∣ p - q` using `X_dvd_iff.2 fun m hm => by rw [map_sub, hq, if_pos hm, sub_self]`. Take `⟨r, hr⟩` from `h2`. Rewrite using `[eq_add_of_sub_eq hr]`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, by simp, rfl⟩)) h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_X_of_coeff (S : Finset σ) : ∀ p : MvPowerSeries σ k,
     (∀ m : σ →₀ ℕ, (∀ j ∈ S, m j = 0) → coeff m p = 0) →
@@ -211,7 +209,7 @@ theorem mem_span_X_of_coeff (S : Finset σ) : ∀ p : MvPowerSeries σ k,
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, by simp, rfl⟩)) h1
 
 /- English proof (translation)
-Use `mem_span_X_of_coeff S p fun m hm => ?_` and prove the remaining obligations. Use `coeff_eq_zero_of_mem_span_pow 1 S (p * X i) (by simpa using hp) (m + Finsupp.single i 1) (fun j hj => by` as an intermediate fact. Establish `hne : j ≠ i` using `fun h => hi (h ▸ hj)`. Simplify using `[hm j hj, Finsupp.single_eq_of_ne hne])`. Rewrite `this` using `[X_def, coeff_add_mul_monomial, mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_span_X_of_mul_X (S : Finset σ) (i : σ) (hi : i ∉ S) (p : MvPowerSeries σ k)
     (hp : p * X i ∈ Ideal.span ((fun i => (X i : MvPowerSeries σ k)) '' S)) :
@@ -227,17 +225,15 @@ theorem mem_span_X_of_mul_X (S : Finset σ) (i : σ) (hi : i ∉ S) (p : MvPower
 end PowerSeries
 
 /- English proof (translation)
-Introduce `hdet`. Use `set x : Fin g → MvPowerSeries (Fin g) k := fun i => MvPowerSeries.X i with hx`. Establish `hN' : ∀ i, x i ^ (N + 1) ∈ Ideal.span (Set.range f)` using `fun i => by`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ (hN i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose b hb using fun i => Ideal.mem_span_range_iff_exists_fun.1 (hN' i)`. Use `set I : Ideal (MvPowerSeries (Fin g) k) := Ideal.span ((fun i => x i ^ (N + 1)) '' Set.univ) with hI`. Establish `hxI : ∀ i, x i ^ (N + 1) ∈ I` using `fun i => Ideal.subset_span ⟨i, trivial, rfl⟩`. Set `B : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) k)` to `Matrix.of b`. Establish `hBf : ∀ i, (B *ᵥ f) i = x i ^ (N + 1)` using `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haf : a *ᵥ x = f` using `funext fun i => (hf i).symm`. Take `⟨u, hu⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hdet`. Establish `h1 : (B * a).det ∈ I`. Rewrite using `[det_mul, ← hu, Finset.mul_sum]`. Use `I.sum_mem fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm]`. Conclude with `I.mul_mem_left _ (det_mul_mem I B f j fun r => hBf r ▸ hxI r)`. Establish `h2` using `det_sub_det_mem I x mem_span_X_of_mul_X (B * a) (diagonal fun i => x i ^ N) (by`. Use function extensionality and compare the values at `i`. Rewrite using `[← mulVec_mulVec, haf, hBf, mulVec_diagonal, pow_succ])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun r => by rw [← mulVec_mulVec, haf, hBf]; exact hxI r)`. Establish `h3 : ∏ i, x i ^ N ∈ I`. Simplify `I.add_mem h2 h1` using `[det_diagonal]`. Establish `h4 : ∏ i, x i ^ N = MvPowerSeries.monomial (∑ i, Finsupp.single i N) (1 : k)`. Simplify using `only [hx, MvPowerSeries.X_pow_eq]`.
-
-Rewrite using `[MvPowerSeries.prod_monomial]`. Simplify using the standard rewrite rules. Establish `h5` using `coeff_eq_zero_of_mem_span_pow (N + 1) Set.univ _ h3 (∑ i, Finsupp.single i N) (fun j _ => by simp [Finsupp.finsetSum_apply, Finsupp.single_apply])`. Rewrite `h5` using `[h4, MvPowerSeries.coeff_monomial_same]`. Conclude with `one_ne_zero h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_notMem_span (k : Type) [Field k] (g N : ℕ) (f : Fin g → MvPowerSeries (Fin g) k)
     (a : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) k))

@@ -30,17 +30,17 @@ open GlobalTheory.UT
 namespace GlobalTheory.PELOfUnif
 
 /- English proof (translation)
-Establish `inj : ∀ {T : Over S'} {x y : T ⟶ P'.A}, pushPt hg.1.w x = pushPt hg.1.w y → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Set `act : O → (P'.A ⟶ P'.A)` to `fun a => Over.homMk (hg.1.lift (g ≫ (o.act a).left) P'.A.hom (by rw [Category.assoc, Over.w, hg.1.w])) (hg.1.lift_snd _ _ _)`. Establish `ha : ∀ a, (act a).left ≫ g = g ≫ (o.act a).left` using `fun a => hg.1.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ P'.A) a, pushPt hg.1.w (x ≫ act a) = pushPt hg.1.w x ≫ o.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `pm : ∀ {T : Over S'} (x y : T ⟶ P'.A), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Take `⟨w, gw'⟩` from `hw`. Use `⟨⟨⟨act, fun a => isMonHom_of_mul _ fun T x y => inj ?_, inj ?_, fun a b => inj ?_, fun a b => inj ?_⟩, fun a s => ?_⟩, ha⟩` and prove the remaining obligations. Use `o.hom a` as an intermediate fact. Rewrite using `[pa, pm, pm, pa, pa, MonObj.mul_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.id_comp (act 1), pa, o.map_one, Category.comp_id]`. Rewrite using `[← Category.id_comp (act (a * b)), pa, pa, ← Category.id_comp (act b), pa, o.map_mul, Category.assoc]`. Use `Eq.trans ?_ (pm (act a) (act b)).symm` and prove the remaining obligations. Rewrite using `[← Category.id_comp (act (a + b)), ← Category.id_comp (act a), ← Category.id_comp (act b), pa, pa, pa, o.map_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `GlobalTheory.NormRos.exists_gen_rosati hL _ _ (adj a)`. Set `V : (P'.A ⊗ P'.A).left.Opens` to `(P'.A ⊗ P'.A).hom ⁻¹ᵁ ⊤`. Set `T' : Over S'` to `Over.mk (V.ι ≫ (P'.A ⊗ P'.A).hom)`. Set `j : T' ⟶ P'.A ⊗ P'.A` to `Over.homMk V.ι rfl`. Set `m` to `lift (pushPt hg.1.w (j ≫ fst _ _)) (pushPt hg.1.w (j ≫ snd _ _))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := fun i => (V.ι ≫ rosatiφ P'.A (act a) (act (star a)) i) ≫ g) (ε' := rosatiε) (fun W _ k => by`. Establish `p₁` using `prod_ros (o.act a) (o.act (star a)) (pushPt hg.1.w (j ≫ fst _ _)) (pushPt hg.1.w (j ≫ snd _ _)) k`. Establish `p₂` using `prod_ros (act a) (act (star a)) (j ≫ fst _ _) (j ≫ snd _ _) (fun q => k (q ≫ g))`. Rewrite `p₂` using `[← comp_lift, lift_fst_snd, Category.comp_id]`. Rewrite `p₁` using `[← pa, ← pa, ← pm, ← pm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `p₁.trans p₂.symm) (LB.pullGen L _ _ t m.left) (pullGen_isGen _ _ _ _ ht m.left)`. Conclude with `⟨⊤, trivial, exists_down ((isGen_iff w).1 gw') hL P'.isLB t' ht'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_oAct {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     (hL : L.IsLB) (P' : PolAV S') (g : P'.A.left ⟶ G.left) (hg : IsGrpPullback P'.A G f g)
@@ -83,11 +83,11 @@ theorem exists_oAct {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [
     exact ⟨⊤, trivial, exists_down ((isGen_iff w).1 gw') hL P'.isLB t' ht'⟩
 
 /- English proof (translation)
-Use `U.gen_hom` as an intermediate fact. Establish `gp : IsGrpPullback A.A G (jK R) (U.gen.inv.left ≫ pullback.fst G.hom (jK R))`. Establish `: IsMonHom U.gen.symm.hom` using `by show IsMonHom U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G (jK R))).congr (Category.id_comp _) rfl`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hig : U.gen.hom.left ≫ U.gen.inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Establish `hw : LBIso A.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (h := U.gen.inv.left) (chartPullSec A.L _ _ hgi) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => rfl) U.ext`. Take `⟨o', ho'⟩` from `exists_oAct U.LG.isLB A _ gp hw o adj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o', fun a => Over.OverMorphism.ext (gp.1.hom_ext ?_ (by rw [Over.w, Over.w]))⟩` and prove the remaining obligations. Establish `a₁ : ((Over.pullback (jK R)).map (o.act a)).left ≫ pullback.fst G.hom (jK R) = pullback.fst G.hom (jK R) ≫ (o.act a).left` using `pullback.lift_fst _ _ _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, ho', reassoc_of% hig, Category.assoc, reassoc_of% hig, a₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oAct_unif {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -115,9 +115,9 @@ theorem exists_oAct_unif {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D :
     reassoc_of% hig, a₁]
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m, H.d + 1 = 4 * m` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `e : (H.d + 1) / 4 = m` using `by omega`. Establish `hm' : (H.d : NumberField.RingOfIntegers E) + 1 = 4 * m` using `by exact_mod_cast hm`. Rewrite using `[e, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator]`. Establish `h4 : (4 : NumberField.RingOfIntegers E) ≠ 0` using `by norm_num`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ h4` to reduce the goal to its premises. Take the linear combination `(-(2 * H.w0 + H.rt - 1)) * H.two_weight_eq_one_add_root - H.rt_sq + hm'`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem w0_mul_bar_w0_eq_d_add_one_div_four {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) :
     H.w0 * H.bar H.w0 = (((H.d + 1) / 4 : ℕ) : NumberField.RingOfIntegers E) := by
@@ -130,11 +130,11 @@ theorem w0_mul_bar_w0_eq_d_add_one_div_four {E : Type} [Field E] [NumberField E]
   linear_combination (-(2 * H.w0 + H.rt - 1)) * H.two_weight_eq_one_add_root - H.rt_sq + hm'
 
 /- English proof (translation)
-Introduce `hL h₁ h₂ h₃ h₄ E _ _ _ H R _ _ _ I hR t D A U hU`. Use `letI := H.starRing`. Establish `adj : ∀ a, LBIso (cubeLB t.G ![fst t.G t.G ≫ t.act.toRingAct.act a, snd t.G t.G] U.LG.L) (cubeLB t.G ![fst t.G t.G, snd t.G t.G ≫ t.act.toRingAct.act (star a)] U.LG.L)`. Rewrite using `[hU]`. Conclude with `t.adj`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `prim : LBIso U.LG.L (cubeLB t.G ![𝟙 t.G, t.act.toRingAct.act H.w0] U.LG.L)`. Rewrite using `[hU]`. Conclude with `t.prim`. Take `⟨oA, hA⟩` from `exists_oAct_unif U.toUnifPre t.act.toRingAct adj`. Take `⟨md, oD, lin⟩` from `GlobalTheory.T.exists_ring_action_degeneration_linear_uniformisation hL h₁ h₂ h₃ h₄ R I hR D A t.G t.semi U _ oA t.act.toRingAct hA adj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `H.d_mod`. Establish `w0` using `GlobalTheory.T.psiFunction_eq_theta_of_primitive_lineBundle hL h₁ h₂ h₃ h₄ R I hR D A t.G t.semi U _ oD oA t.act.toRingAct lin adj H.w0 ((H.d + 1) / 4) (by show H.w0 + H.bar H.w0 = 1; rw [GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel]) (w0_mul_bar_w0_eq_d …`. Set `P : PELUnif I t` to `{ D := D, mod := md, oD := oD, A := A, oA := oA, U := U, bundle := hU, lin := lin, w0 := w0 }`. Conclude with `⟨P, rfl, rfl, HEq.rfl, GlobalTheory.UT.torsionIso_of_pelUnif hL h₁ h₂ h₃ h₄ E H R I hR t P⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (t : SAB H (Sp R)) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (U : Unif I D A t.G), U.LG = t.PP → ∃ P : PELUnif I t, P.D = D ∧ P.A = A ∧ HEq P.U U ∧ P.TorsionIso := by
   intro hL h₁ h₂ h₃ h₄ E _ _ _ H R _ _ _ I hR t D A U hU

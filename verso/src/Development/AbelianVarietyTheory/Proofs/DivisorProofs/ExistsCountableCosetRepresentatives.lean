@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CovTop.VolUp.Reps
 
 /- English proof (translation)
-Use `⟨h.1, fun x hx => ?_, h.2.2⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h.2.1 x hx`. Conclude with `⟨3 • y, nsmul_mem hy 3, by rw [e, one_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKM_one_of_three {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (c : Gal(E/F)) (G : Matrix (Fin n) (Fin n) E) (L : Set (Fin n → E)) (k : Matrix (Fin n) (Fin n) (RA F E))
@@ -23,29 +23,25 @@ theorem isKM_one_of_three {F E : Type} [Field F] [NumberField F] [Field E] [Alge
   exact ⟨3 • y, nsmul_mem hy 3, by rw [e, one_smul]⟩
 
 /- English proof (translation)
-Introduce `D V Λ K₀ hKo hK1`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI := (GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V).2.1`. Set `H : Subgroup (GA D V)` to `K₀.comap (finE V)`. Establish `hHo : IsOpen (H : Set (GA D V))` using `hKo`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨e0, he0⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Set `jm : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram →* GA D V` to `(e0.symm.toMulEquiv.toMonoidHom).comp (MonoidHom.inr _ _)`. Establish `hj0 : ∀ k, e0 (jm k) = (1, k)` using `fun k => e0.apply_symm_apply _`. Establish `hfin : ∀ h : GA D V, finE V (jm (e0 h).2) = finE V h`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : finHom V (jm (e0 h).2) = finHom V h`. Use `Units.ext ?_` and prove the remaining obligations. Establish `a1` using `(he0 (jm (e0 h).2)).1`. Establish `a2` using `(he0 h).1`. Rewrite `a1` using `[hj0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `a1.symm.trans a2`. Rewrite using `[finE_eq, finE_eq, h1]`. Establish `hinf : ∀ k, jm k ∈ GfC V`. Introduce `k`. Establish `a1` using `(he0 (jm k)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `a1` using `[hj0]`. Conclude with `Units.ext a1.symm`. Establish `hmk : ∀ h : GA D V, DoubleCoset.mk (GQ V) H (jm (e0 h).2) = DoubleCoset.mk (GQ V) H h`. Introduce `h`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨1, one_mem _, (jm (e0 h).2)⁻¹ * h, ?_, by group⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show finE V ((jm (e0 h).2)⁻¹ * h) ∈ K₀`. Rewrite using `[map_mul, map_inv, hfin, inv_mul_cancel]`. Conclude with `one_mem _`. Set `g : DoubleCoset.Quotient (GQ V : Set (GA D V)) (H : Set (GA D V)) → GA D V` to `fun q => jm (e0 (Quotient.out q)).2`. Establish `hgj : ∀ q, DoubleCoset.mk (GQ V) H (g q) = q` using `fun q => (hmk _).trans (Quotient.out_eq' q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hJc : Countable (DoubleCoset.Quotient (GQ V : Set (GA D V)) (H : Set (GA D V)))`. Take `⟨s, hs, hd⟩` from `TopologicalSpace.exists_countable_dense (GA D V)`. Use `haveI := hs.to_subtype`. Establish `hsurj : Function.Surjective (fun x : s => DoubleCoset.mk (GQ V) H (x : GA D V))`. Introduce `q`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : IsOpen ((fun x => Quotient.out q * x) '' (H : Set (GA D V)))` using `isOpenMap_mul_left _ _ hHo`. Take `⟨x, hxs, ⟨k, hk, rfl⟩⟩` from `hd.exists_mem_open hU ⟨_, 1, one_mem _, mul_one _⟩`. Use `⟨⟨_, hxs⟩, ?_⟩` and prove the remaining obligations. Use `((DoubleCoset.eq _ _ _ _).2 ⟨1, one_mem _, k⁻¹, inv_mem hk, by group⟩).trans (Quotient.out_eq' q)` and prove the remaining obligations. Conclude with `hsurj.countable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨_, hJc, g, fun j => hinf _, fun i j hE => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, κ, hκ, he⟩` from `hE`. Take `⟨γ₀, hγ₀, hγf⟩` from `GlobalTheory.RepsInj.gq_of_isUA D V γ hγ`. Establish `hx : ((finHom V ((γ₀ * g i)⁻¹ * g j)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) = κ`. Establish `h1 : ((finHom V (γ₀ * g i)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) * κ = (finHom V (g j)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Units.val_mul, hγf, he]`. Rewrite using `[map_mul, map_inv, Units.val_mul, ← h1, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hxH : finE V ((γ₀ * g i)⁻¹ * g j) ∈ K₀`. Establish `h3` using `isKM_one_of_three _ _ _ _ hκ`. Rewrite `h3` using `[← hx]`.
-
-Conclude with `hK1 _ h3`. Establish `e : DoubleCoset.mk (GQ V) H (g i) = DoubleCoset.mk (GQ V) H (g j)` using `(DoubleCoset.eq _ _ _ _).2 ⟨γ₀, hγ₀, (γ₀ * g i)⁻¹ * g j, hxH, by group⟩`. Conclude with `(hgj i).symm.trans (e.trans (hgj j))`. Take `⟨γ, hγ, k, hk, e⟩` from `(DoubleCoset.eq _ _ _ _).1 (hgj (DoubleCoset.mk (GQ V) H h))`. Use `⟨DoubleCoset.mk (GQ V) H h, γ⁻¹, inv_mem hγ, ?_⟩` and prove the remaining obligations.
-
-Generalize the expression as in `g (DoubleCoset.mk (GQ V) H h) = x at e ⊢`. Substitute `e` using the available equality. Establish `e2 : x⁻¹ * γ⁻¹ * (γ * x * k) = k` using `by group`. Rewrite using `[e2]`. Conclude with `hk`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps : ∀ (D : D7) (V : HSp D) (Λ : Set (Fin V.rank → D.host.E)) (K₀ : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))), IsOpen {h : GA D V | finE V h ∈ K₀} → (∀ h : GA D V, IsKM (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) Λ 1 ((finHom V h).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) → finE V h ∈ K₀) → ∃ (J : Type) (_ : Countable J) (g : J → GA D V), (∀ j, g j ∈ GfC V) ∧ (∀ i j, UEquiv (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) Λ 3 ((finHom V (g i)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) ((finHom V (g j)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) → i = j) ∧ ∀ h : GA D V, ∃ j, ∃ γ ∈ GQ V, finE V ((g j)⁻¹ * γ * h) ∈ K₀ := by
   intro D V Λ K₀ hKo hK1

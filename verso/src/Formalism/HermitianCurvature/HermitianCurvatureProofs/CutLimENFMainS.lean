@@ -8,13 +8,11 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 noncomputable section
 
 /- English proof (translation)
-Take `⟨C1, H1⟩` from `h1 hA Cb`. Take `⟨C2, H2⟩` from `h2 Cb`. Take `⟨C3, H3⟩` from `h3 Cb`. Take `⟨C4, H4⟩` from `h4 Cb`. Use `⟨max (max C1 C2) (max C3 C4), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH`. Establish `mono : ∀ c, c ≤ max (max C1 C2) (max C3 C4) → NFHypS Cb c p f A₀ p₀ χ N` using `fun c hc => by`. Use `⟨?_, hH.2.1, hH.2.2⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hH.1`. Use `⟨a1, a2, a3, a4, le_trans ?_ a5, a6⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x => by ring`. Rewrite using `[e, e]`. Conclude with `mul_le_mul_of_nonneg_right hc hX`.
-
-Conclude with `limEvT_of_NF p χ _ Y N (fun w hw hN => H1 Wp Wq P p f A₀ p₀ χ Y N (mono C1 (le_max_of_le_left (le_max_left _ _))) w hw hN) (fun w hw hN => H2 Wp Wq P p f A₀ p₀ χ Y N (mono C2 (le_max_of_le_left (le_max_right _ _))).1 w hw hN) (fun w hw hN => H3 Wp Wq P p f A₀ p₀ χ Y N (mono C3 (l …`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limEvT_fpm_of_NFS (hA : P5.ThmPActual) (h1 : NFTopFormAllS) (h2 : NFTopPtwAll) (h3 : NFTopDomAllS)
     (h4 : NFTopIdAllS) (Cb : ℝ) :
@@ -48,7 +46,7 @@ theorem limEvT_fpm_of_NFS (hA : P5.ThmPActual) (h1 : NFTopFormAllS) (h2 : NFTopP
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_main2 hA Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_fpm_of_NFS hA h1 h2 h3 h4 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hJf hth1 hth2 hth3 hth4 hN2 hexp hWG hLG hI5 hBd`. Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hexp hWG hLG hI5 (hn Wp Wq P p f A₀ p₀ χ Y N ⟨⟨hχ, hCb, hf, hfA, hth4, hN2⟩, hJf, hJC Wp Wq P p f hf⟩) hBd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_main5 (hA : P5.ThmPActual) (h1 : NFTopFormAllS) (h2 : NFTopPtwAll) (h3 : NFTopDomAllS)
     (h4 : NFTopIdAllS) (hJC : NFJCutFF) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :

@@ -30,14 +30,14 @@ def cuspIntertwiners : Submodule ℂ (H →L[ℂ] Lp ℂ 2 (quotientMeasure Γ�
   smul_mem' c _ hT := ⟨Submodule.smul_mem _ c hT.1, fun v => Submodule.smul_mem _ c (hT.2 v)⟩
 
 /- English proof (translation)
-The claim follows from `T.2.1 x w`.
+A detailed English derivation is pending.
 -/
 theorem cuspIntertwiners_map (T : cuspIntertwiners μ σ) (x : normOneGL K n) (w : H) :
     T.1 (σ x w) = rightRegularRep Γ₁ μ x (T.1 w) :=
   T.2.1 x w
 
 /- English proof (translation)
-The claim follows from `congrArg (fun L : H →L[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ) => L v) (UnitaryRep.comp_integrated_of_mem_intertwiners σ μ T.2.1 (UnitaryRep.ccToL1 μ f))`.
+A detailed English derivation is pending.
 -/
 theorem cuspIntertwiners_integrated (T : cuspIntertwiners μ σ)
     (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) (v : H) :
@@ -47,7 +47,7 @@ theorem cuspIntertwiners_integrated (T : cuspIntertwiners μ σ)
     (UnitaryRep.comp_integrated_of_mem_intertwiners σ μ T.2.1 (UnitaryRep.ccToL1 μ f))
 
 /- English proof (translation)
-The claim follows from `Eq.subst (motive := fun φ => HasContRep μ φ (rconv Γ₁ μ f (T.1 v))) (cuspIntertwiners_integrated T f v).symm (hasContRep_rconv μ f (T.1 v))`.
+A detailed English derivation is pending.
 -/
 theorem hasContRep_intertwiner_integrated (T : cuspIntertwiners μ σ)
     (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) (v : H) :
@@ -56,7 +56,7 @@ theorem hasContRep_intertwiner_integrated (T : cuspIntertwiners μ σ)
     (cuspIntertwiners_integrated T f v).symm (hasContRep_rconv μ f (T.1 v))
 
 /- English proof (translation)
-The claim follows from `Eq.subst (motive := fun φ => HasContRep μ φ (fun y => rconv Γ₁ μ f (T.1 v) (y * x))) (cuspIntertwiners_map T x _).symm ((hasContRep_intertwiner_integrated T f v).translate x)`.
+A detailed English derivation is pending.
 -/
 theorem hasContRep_intertwiner_generator (T : cuspIntertwiners μ σ) (x : normOneGL K n)
     (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) (v : H) :
@@ -66,11 +66,11 @@ theorem hasContRep_intertwiner_generator (T : cuspIntertwiners μ σ) (x : normO
     (cuspIntertwiners_map T x _).symm ((hasContRep_intertwiner_integrated T f v).translate x)
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, f, v, -, rfl⟩` from `hw`. Conclude with `⟨_, hasContRep_intertwiner_generator T x f v⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨0, Eq.subst (motive := fun φ => HasContRep μ φ 0) (map_zero T.1).symm hasContRep_zero⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`. Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Conclude with `⟨F₁ + F₂, Eq.subst (motive := fun φ => HasContRep μ φ (F₁ + F₂)) (map_add T.1 w₁ w₂).symm (h₁.add h₂)⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c w _ h`. Take `⟨F, h⟩` from `h`. Conclude with `⟨c • F, Eq.subst (motive := fun φ => HasContRep μ φ (c • F)) (map_smul T.1 c w).symm (h.smul c)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasContRep (T : cuspIntertwiners μ σ) {w : H} (hw : w ∈ smoothSpan μ σ) :
     ∃ F, HasContRep μ (T.1 w) F := by
@@ -97,7 +97,7 @@ def whittakerAt (T : cuspIntertwiners μ σ) (w : H) : ℂ :=
   if h : ∃ F, HasContRep μ (T.1 w) F then whittakerOne h.choose 1 else 0
 
 /- English proof (translation)
-Establish `hex : ∃ F, HasContRep μ (T.1 w) F` using `⟨F, h⟩`. Rewrite using `[whittakerAt, dif_pos hex, hex.choose_spec.unique h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem whittakerAt_eq {T : cuspIntertwiners μ σ} {w : H} {F : normOneGL K n → ℂ}
     (h : HasContRep μ (T.1 w) F) : whittakerAt μ σ T w = whittakerOne F 1 := by
@@ -126,7 +126,7 @@ theorem whittakerOf_apply (T : cuspIntertwiners μ σ) (w : smoothSpan μ σ) :
     whittakerOf T w = whittakerAt μ σ T w := rfl
 
 /- English proof (translation)
-The claim follows from `whittakerAt_eq h`.
+A detailed English derivation is pending.
 -/
 theorem whittakerOf_mk (T : cuspIntertwiners μ σ) {a : H} (ha : a ∈ smoothSpan μ σ)
     {F : normOneGL K n → ℂ} (h : HasContRep μ (T.1 a) F) :
@@ -134,7 +134,7 @@ theorem whittakerOf_mk (T : cuspIntertwiners μ σ) {a : H} (ha : a ∈ smoothSp
   whittakerAt_eq h
 
 /- English proof (translation)
-Use `(whittakerOf_mk T _ (hasContRep_intertwiner_generator T x f v)).trans ?_` and prove the remaining obligations. Conclude with `(whittakerOne_mul_right _ 1 x).trans (congrArg _ (one_mul x))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem whittakerOf_generator (T : cuspIntertwiners μ σ) (x : normOneGL K n)
     {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ} (hf : IsSmoothTest f) (v : H) :
@@ -147,11 +147,9 @@ theorem whittakerOf_generator (T : cuspIntertwiners μ σ) (x : normOneGL K n)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨ν, hν, U, hU, β, hβ, hβc, hβu, g, rfl⟩` from `hf`. Take `⟨B, hB⟩` from `exists_norm_rconv_le_uniform μ ν hβ hβc hβu U hU g`. Set `L : H →ₗ[ℂ] ℂ` to `{ toFun := fun v => whittakerOne (rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 v)) 1 map_add' := fun v v' => by`. Establish `e : rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 (v + v')) = rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 v) + rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 v')`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(congrArg (fun φ => rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) φ y) (map_add T.1 v v')).trans (rconv_add Γ₁ μ _ _ _ y)`. Conclude with `(congrArg (fun F => whittakerOne F 1) e).trans (whittakerOne_add (continuous_rconv Γ₁ μ _ _) (continuous_rconv Γ₁ μ _ _) 1)`. Use the proof step `map_smul' := fun c v => by`. Establish `e : rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 (c • v)) = c • rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) (T.1 v)`. Use function extensionality and compare the values at `y`.
-
-Conclude with `(congrArg (fun φ => rconv Γ₁ μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)) φ y) (map_smul T.1 c v)).trans (rconv_smul Γ₁ μ _ _ _ y)`. Conclude with `(congrArg (fun F => whittakerOne F 1) e).trans (whittakerOne_smul c _ 1) }`. Use `AddMonoidHomClass.continuous_of_bound L (max B 0 * ‖T.1‖) fun v => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_whittakerOne_rconv_intertwiner (T : cuspIntertwiners μ σ)
     {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ} (hf : IsSmoothTest f) :
@@ -184,9 +182,9 @@ theorem continuous_whittakerOne_rconv_intertwiner (T : cuspIntertwiners μ σ)
     _ = max B 0 * ‖T.1‖ * ‖v‖ := (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `⟨fun X w => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `exists_hasContRep T w.2`. Establish `h : HasContRep μ (T.1 (σ (uOne X) w)) (fun y => F (y * uOne X))` using `Eq.subst (motive := fun φ => HasContRep μ φ (fun y => F (y * uOne X))) (cuspIntertwiners_map T (uOne X) w).symm (hF.translate (uOne X))`. Establish `h1 : (1 : normOneGL K n) * uOne X = uOne X * 1` using `(one_mul _).trans (mul_one _).symm`. Use `(whittakerOf_mk T _ h).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(whittakerOne_mul_right _ 1 (uOne X)).trans ((congrArg _ h1).trans ((whittakerOne_uOne_mul hF.1 hF.2.1 X 1).trans ?_))` and prove the remaining obligations. Conclude with `congrArg _ (whittakerAt_eq hF).symm`. Establish `e : ∀ v : H, whittakerOf T ⟨σ.integrated μ (UnitaryRep.ccToL1 μ f) v, integrated_mem_smoothSpan σ hf v⟩ = whittakerOne (rconv Γ₁ μ f (T.1 v)) 1` using `fun v => whittakerOf_mk T _ (hasContRep_intertwiner_integrated T f v)`. Conclude with `(continuous_whittakerOne_rconv_intertwiner T hf).congr fun v => (e v).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem whittakerOf_mem (T : cuspIntertwiners μ σ) : whittakerOf T ∈ whittakerFunctionals μ σ := by
   refine ⟨fun X w => ?_, fun f hf => ?_⟩
@@ -207,9 +205,9 @@ theorem whittakerOf_mem (T : cuspIntertwiners μ σ) : whittakerOf T ∈ whittak
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `key : ∀ v, T.1 v = 0`. Introduce `v`. Use `eq_zero_of_forall_whittakerOne_rconv_eq_zero μ (T.2.2 v) fun f hf x => ?_` and prove the remaining obligations. Establish `e` using `whittakerOf_generator T x hf v`. Establish `e2` using `LinearMap.congr_fun h ⟨σ x (σ.integrated μ (UnitaryRep.ccToL1 μ f) v), map_mem_smoothSpan σ x (integrated_mem_smoothSpan σ hf v)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.symm.trans e2`. Conclude with `Subtype.ext (ContinuousLinearMap.ext key)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_whittakerOf_eq_zero (T : cuspIntertwiners μ σ) (h : whittakerOf T = 0) :
     T = 0 := by
@@ -223,7 +221,7 @@ theorem eq_zero_of_whittakerOf_eq_zero (T : cuspIntertwiners μ σ) (h : whittak
   exact Subtype.ext (ContinuousLinearMap.ext key)
 
 /- English proof (translation)
-Establish `h : HasContRep μ ((T₁ + T₂).1 w) (F₁ + F₂)`. Rewrite using `[Submodule.coe_add, add_apply]`. Conclude with `h₁.add h₂`. Rewrite using `[whittakerAt_eq h, whittakerAt_eq h₁, whittakerAt_eq h₂, whittakerOne_add h₁.1 h₂.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittakerAt_add (T₁ T₂ : cuspIntertwiners μ σ) {w : H} {F₁ F₂ : normOneGL K n → ℂ}
     (h₁ : HasContRep μ (T₁.1 w) F₁) (h₂ : HasContRep μ (T₂.1 w) F₂) :
@@ -234,7 +232,7 @@ theorem whittakerAt_add (T₁ T₂ : cuspIntertwiners μ σ) {w : H} {F₁ F₂ 
   rw [whittakerAt_eq h, whittakerAt_eq h₁, whittakerAt_eq h₂, whittakerOne_add h₁.1 h₂.1]
 
 /- English proof (translation)
-Establish `h : HasContRep μ ((c • T₁).1 w) (c • F₁)`. Rewrite using `[Submodule.coe_smul, smul_apply]`. Conclude with `h₁.smul c`. Rewrite using `[whittakerAt_eq h, whittakerAt_eq h₁, whittakerOne_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittakerAt_smul (c : ℂ) (T₁ : cuspIntertwiners μ σ) {w : H} {F₁ : normOneGL K n → ℂ}
     (h₁ : HasContRep μ (T₁.1 w) F₁) :
@@ -246,7 +244,7 @@ theorem whittakerAt_smul (c : ℂ) (T₁ : cuspIntertwiners μ σ) {w : H} {F₁
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `exists_hasContRep T₁ hw`. Take `⟨F₂, h₂⟩` from `exists_hasContRep T₂ hw`. Conclude with `whittakerAt_add T₁ T₂ h₁ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem whittakerAt_add' (T₁ T₂ : cuspIntertwiners μ σ) {w : H} (hw : w ∈ smoothSpan μ σ) :
     whittakerAt μ σ (T₁ + T₂) w = whittakerAt μ σ T₁ w + whittakerAt μ σ T₂ w := by
@@ -256,7 +254,7 @@ theorem whittakerAt_add' (T₁ T₂ : cuspIntertwiners μ σ) {w : H} (hw : w �
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `exists_hasContRep T₁ hw`. Conclude with `whittakerAt_smul c T₁ h₁`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem whittakerAt_smul' (c : ℂ) (T₁ : cuspIntertwiners μ σ) {w : H} (hw : w ∈ smoothSpan μ σ) :
     whittakerAt μ σ (c • T₁) w = c * whittakerAt μ σ T₁ w := by
@@ -264,14 +262,14 @@ theorem whittakerAt_smul' (c : ℂ) (T₁ : cuspIntertwiners μ σ) {w : H} (hw 
   exact whittakerAt_smul c T₁ h₁
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun w => whittakerAt_add' T₁ T₂ w.2`.
+A detailed English derivation is pending.
 -/
 theorem whittakerOf_add (T₁ T₂ : cuspIntertwiners μ σ) :
     whittakerOf (T₁ + T₂ : cuspIntertwiners μ σ) = whittakerOf T₁ + whittakerOf T₂ :=
   LinearMap.ext fun w => whittakerAt_add' T₁ T₂ w.2
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun w => whittakerAt_smul' c T₁ w.2`.
+A detailed English derivation is pending.
 -/
 theorem whittakerOf_smul (c : ℂ) (T₁ : cuspIntertwiners μ σ) :
     whittakerOf (c • T₁ : cuspIntertwiners μ σ) = c • whittakerOf T₁ :=
@@ -285,7 +283,7 @@ def whittakerMap : cuspIntertwiners μ σ →ₗ[ℂ] whittakerFunctionals μ σ
   map_smul' c T₁ := Subtype.ext (whittakerOf_smul c T₁)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun T hT => ?_` and prove the remaining obligations. Conclude with `eq_zero_of_whittakerOf_eq_zero T (congrArg Subtype.val hT)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem whittakerMap_injective : Function.Injective (whittakerMap μ σ) := by
   refine (injective_iff_map_eq_zero _).2 fun T hT => ?_
@@ -295,7 +293,7 @@ set_option maxHeartbeats 2000000 in
 variable (μ σ) in
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.lift_rank_le_of_injective (whittakerMap μ σ) whittakerMap_injective`. Conclude with `Cardinal.lift_le_one_iff.1 (h1.trans (Cardinal.lift_le_one_iff.2 h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_cuspIntertwiners_le_one (h : Module.rank ℂ (whittakerFunctionals μ σ) ≤ 1) :
     Module.rank ℂ (cuspIntertwiners μ σ) ≤ 1 := by

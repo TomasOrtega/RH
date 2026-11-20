@@ -16,7 +16,7 @@ namespace GlobalTheory.TopAgree
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.DIV.frGL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frGL_mul' {n : ℕ} (β : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (y : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     Formalism.L2.DIV.frGL β y * β = β * Formalism.L2.DIV.intGL D.host.F D.host.E n y := by
@@ -25,15 +25,13 @@ theorem frGL_mul' {n : ℕ} (β : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (y : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (toEAf D)`. Use `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id`. Use `choose f hf using hs`. Establish `h1` using `hM (β.val.map f) (Matrix.ext fun i j => hf _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (β.val.map f).map p.π = β.val.map π'` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← hπ, hf]`. Both sides reduce to the same expression. Rewrite `h1` using `[Matrix.map_mul, h2]`. Establish `h3 : Formalism.IndefR.Lev.finE V (t⁻¹ * x * t) * β = β * Formalism.L2.DIV.intGL D.host.F D.host.E _ y`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `frGL_mul' β y`. Establish `h4 : (mt V (t⁻¹ * x * t)).map p.π * β.val.map π' = β.val.map π' * y.val.map (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)`. Establish `h5` using `congrArg (fun g : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D) => g.val.map π') h3`. Simplify using `only [Units.val_mul, Matrix.map_mul] at h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (Formalism.IndefR.Lev.finE V (t⁻¹ * x * t)).val.map π' = (mt V (t⁻¹ * x * t)).map p.π` using `Matrix.ext fun i j => hπ _`. Rewrite `h5` using `[h6]`. Conclude with `h5`. Establish `h7 : mt V x * mt V t = mt V t * mt V (t⁻¹ * x * t)`. Rewrite using `[← GlobalTheory.MixModel.mt_mul, ← GlobalTheory.MixModel.mt_mul, mul_assoc, mul_inv_cancel_left]`.
-
-Rewrite using `[← h1, ← Matrix.mul_assoc, ← Matrix.map_mul, h7, Matrix.map_mul, Matrix.mul_assoc, h4, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_moved (p : GlobalTheory.LocMod.Place D k) {π' : Formalism.IndefR.Lev.EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = p.π a) (V : HSp D)
     (t x : GA D V) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (y : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E))
@@ -65,11 +63,11 @@ theorem mul_moved (p : GlobalTheory.LocMod.Place D k) {π' : Formalism.IndefR.Le
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h` using `mul_moved (ofSplit q) (π' := π') hπ V t x β y hy hM`. Establish `hF : F.β = (F.β.submatrix id e.symm).submatrix id e`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.LevIdx.locHom_val]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(y.val.map (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) = Yn at h ⊢`. Generalize the expression as in `hMm : F.β.submatrix id e.symm = Mm at h hF`. Establish `key : ∀ (A : Matrix (Fin V.rank) (Fin V.rank) k) (B : Matrix (Fin V.rank) (Fin V.rank) k), A * B.submatrix id e = (A * B).submatrix id e` using `fun A B => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h' : (mt V x).map q.pr * Mm = Mm * Yn` using `h`. Establish `h2 : (mt V x).map q.pr * F.β = F.β * Yn.submatrix e e`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem locHom_eq {Y : Type} [Fintype Y] [DecidableEq Y] (q : SplitPt D k) {π' : Formalism.IndefR.Lev.EAf D →+* k}
     (hπ : ∀ a, π' (toEAf D a) = q.pr a) (V : HSp D) (t x : GA D V) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
@@ -104,9 +102,9 @@ namespace GlobalTheory.TopAgree
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `e : (GlobalTheory.StepData.LatFrame.refl k (GlobalTheory.StepData.Ix (κ ⊕ Fin (s + 1)) τ (s + 2))).conj.symm x = x`. Rewrite using `[MulEquiv.symm_apply_eq]`. Use extensionality with `i j`. Simplify using `[GlobalTheory.StepData.LatFrame.conj, GlobalTheory.StepData.LatFrame.refl, GlobalTheory.StepData.reGL_val]`. Use `show x ∈ ((GlobalTheory.StepData.parahoric (κ ⊕ Fin (s + 1)) (Fin (s + 2) × τ) δ hδ).toLevel.map (GlobalTheory.StepData.LatFrame.refl k _).conj).J ↔ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.StepData.Level.mem_map, e, GlobalTheory.StepData.mem_parahoric]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_twist_levTop {s : ℕ} {τ κ : Type} [Fintype τ] [DecidableEq τ] [Fintype κ] [DecidableEq κ] (δ : kˣ →* ℂˣ)
     (hδ : GlobalTheory.SplitWeil.IsTame δ) (ν : ℕ → kˣ →* ℂˣ) (x : GL (GlobalTheory.StepData.Ix (κ ⊕ Fin (s + 1)) τ (s + 2)) k) :
@@ -122,7 +120,7 @@ theorem mem_twist_levTop {s : ℕ} {τ κ : Type} [Fintype τ] [DecidableEq τ] 
   rfl
 
 /- English proof (translation)
-Establish `e : t⁻¹ * g⁻¹ * t = (t⁻¹ * g * t)⁻¹` using `by group`. Conclude with `((Formalism.L2.DIV.frGL β).map_inv y).trans ((congrArg (·⁻¹) hy).trans (((Formalism.IndefR.Lev.finE V).map_inv _).symm.trans (congrArg (Formalism.IndefR.Lev.finE V) e.symm)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frGL_inv {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {t g : GA D V}
     {y : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -135,15 +133,15 @@ theorem frGL_inv {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨π', hπ, hred, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D k q PP hPP`. Take `⟨y, hy⟩` from `hst`. Establish `h1` using `locHom_eq q hπ V t g β y hy F e hM`. Establish `h2` using `locHom_eq q hπ V t g⁻¹ β y⁻¹ (frGL_inv hy) F e hM`. Establish `hK : GlobalTheory.LevIdx.locHom q V F g ∈ GlobalTheory.SplitWeil.KO k _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.StepData.mem_KO.2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `hred.int _`. Rewrite using `[← (GlobalTheory.LevIdx.locHom q V F).map_inv, h2]`. Conclude with `hred.int _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Formalism.L2.DIV.redFn β PP (Formalism.IndefR.Lev.finE V (t⁻¹ * g * t)) = Formalism.UG.bc (resS D.host.F PP) y` using `(congrArg (Formalism.L2.DIV.redFn β PP) hy.symm).trans (redFn_frGL β PP y)`. Rewrite using `[h3, mem_blockTri, h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨hK, fun i j => (hred.ker _).1 (h (e (Sum.inr i)) (e (Sum.inl j)) ?_)⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[blk2, hl j, (hr i).not_gt]`. Introduce and unpack `⟨-, h⟩ i j hij`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Break down `i with i | i` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[blk2, hl i] at hij`. Break down `j with j | j` into its components or cases. Conclude with `(hred.ker _).2 (h i j)`. Simplify using `[blk2, (hr i).not_gt, (hr j).not_gt] at hij`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_iff {R S : Type} [Fintype R] [DecidableEq R] [Fintype S] [DecidableEq S] (q : SplitPt D k)
     (PP : Formalism.L2.DIV.Pl D.host.E) (hPP : Formalism.L2.NTheta.IsIdemAt q.e PP) (V : HSp D) (t g : GA D V)
@@ -181,13 +179,11 @@ theorem red_iff {R S : Type} [Fintype R] [DecidableEq R] [Fintype S] [DecidableE
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨e, he, hM⟩` from `G.frameTop`. Establish `hs` using `G.hs`. Establish `hk : D.R.r = D.R.k + (G.s + 1)`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use `(red_iff G.q PP G.idem c.T B.bT g B.βT G.FT e hM _ (fun a => ?_) (fun a => ?_) hst).trans ?_` and prove the remaining obligations. Rewrite using `[he, hk]`. Break down `a with a | a` into its components or cases. Conclude with `lt_of_lt_of_le a.2 (Nat.le_add_right _ _)`. Conclude with `Nat.add_lt_add_left a.2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, hk]`. Conclude with `(Nat.le_add_right _ _).trans (Nat.le_add_right _ _)`. Use `(mem_twist_levTop δ hδ η _).symm.trans ⟨fun h x hx => ?_, fun h => h _ ?_⟩` and prove the remaining obligations. Take `rfl` from `(GlobalTheory.LevIdx.eq_locHom_iff G.q c.T G.FT g x).1 hx`. Conclude with `h`.
-
-Conclude with `(GlobalTheory.LevIdx.eq_locHom_iff G.q c.T G.FT g _).2 rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem red_iff_levTop {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E} (G : QGeo v B PP)
     (δ : G.kˣ →* ℂˣ) (hδ : GlobalTheory.SplitWeil.IsTame δ) (η : ℕ → G.kˣ →* ℂˣ) (g : GA D c.T)
@@ -212,9 +208,9 @@ theorem red_iff_levTop {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {
     · exact (GlobalTheory.LevIdx.eq_locHom_iff G.q c.T G.FT g _).2 rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Take `⟨a, b, c, d⟩` from `mem_parLev.1 h2`. Conclude with `⟨⟨h1, mem_parLev.2 ⟨a, b, c, fun PP hP => absurd hP (Finset.notMem_empty PP)⟩, h3⟩, d⟩`. Introduce and unpack `⟨⟨h1, h2, h3⟩, d⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, c, -⟩` from `mem_parLev.1 h2`. Conclude with `⟨h1, mem_parLev.2 ⟨a, b, c, d⟩, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levS_split (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (kP PP)ˣ →* ℂˣ) (κ : GA D V) :
@@ -235,9 +231,9 @@ namespace GlobalTheory.TopAgree
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ t J hJ g`. Use `(mem_levTw g).trans ((levS_split _ (pk W).βX (datXP (pk W) (lvP W) t) (datSph W).xq _).trans ((and_congr_right fun hS => ?_).trans (and_congr_left fun _ => (mem_levSph g).symm)))` and prove the remaining obligations. Establish `key` using `fun i => red_iff_levTop (J.G i) (J.E i).δ (J.E i).tame (J.E i).η g (parLev_St hS.2.1)`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h i => (key i).1 (h _ (J.mem i))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h PP hP`. Take `⟨i, rfl⟩` from `hJ.surj PP hP`. Conclude with `(key i).2 (h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (t : W.P.T) (J : QJ a t), J.Reads → ∀ g, g ∈ levTw W a.g.bT t ↔ g ∈ levSph W a.g.bT ∧ ∀ i x, (mt (I.rec7 l Z).sp.X' g).map (J.G i).q.pr = (J.G i).FT.β * Units.val x * (J.G i).FT.γ → x ∈ ((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).levTop.J := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ t J hJ g

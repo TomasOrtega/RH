@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanRingCor
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.SpanRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SpanRing.coeff_det_generic_sum_mem_of_inRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCoeffDetGenericSumMemHeckeAlgebra.lean&line=52#L52)
 -/

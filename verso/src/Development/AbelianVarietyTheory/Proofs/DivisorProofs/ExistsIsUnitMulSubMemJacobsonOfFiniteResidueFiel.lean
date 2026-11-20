@@ -6,17 +6,15 @@ open IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set J : Ideal A := (⊥ : Ideal A).jacobson with hJ`. Establish `hm : ∀ m ∈ IsLocalRing.maximalIdeal O, algebraMap O A m ∈ J`. Introduce `m hm`. Rewrite using `[hJ, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `M ⟨-, hM⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: (M.comap (algebraMap O A)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Establish `h` using `IsLocalRing.eq_maximalIdeal this`. Establish `: m ∈ M.comap (algebraMap O A)` using `h ▸ hm`. Conclude with `this`. Establish `hfin : Module.Finite O (A ⧸ J)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ O J).toLinearMap Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin (R := O) (M := A ⧸ J)`. Establish `hsurj : Function.Surjective (IsLocalRing.residue O)` using `Ideal.Quotient.mk_surjective`. Set `f : (Fin n → IsLocalRing.ResidueField O) → A ⧸ J` to `fun y ↦ ∑ i, Function.surjInv hsurj (y i) • s i`. Establish `: Function.Surjective f`. Introduce `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq : q ∈ Submodule.span O (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hq`. Use `⟨fun i ↦ IsLocalRing.residue O (c i), ?_⟩` and prove the remaining obligations. Simplify using `only [f]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : Function.surjInv hsurj (IsLocalRing.residue O (c i)) - c i ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, Function.surjInv_eq hsurj, sub_self]`. Rewrite using `[← sub_eq_zero, ← sub_smul, Algebra.smul_def]`. Establish `h0 : algebraMap O (A ⧸ J) (Function.surjInv hsurj (IsLocalRing.residue O (c i)) - c i) = 0`. Rewrite using `[IsScalarTower.algebraMap_apply O A (A ⧸ J), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`.
-
-Conclude with `hm _ hd`. Rewrite using `[h0, zero_mul]`. Conclude with `Finite.of_surjective f this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quotient_jacobson_of_finite_residueField (O : Type) [CommRing O] [IsLocalRing O]
     [Finite (IsLocalRing.ResidueField O)] (A : Type) [CommRing A] [Algebra O A]
@@ -57,17 +55,15 @@ theorem finite_quotient_jacobson_of_finite_residueField (O : Type) [CommRing O] 
   exact Finite.of_surjective f this
 
 /- English proof (translation)
-Introduce `O _ _ _ A _ _ _ τ hτ θ hθ a ha hτa`. Use `set J : Ideal A := (⊥ : Ideal A).jacobson with hJ`. Establish `: Finite (A ⧸ J)` using `finite_quotient_jacobson_of_finite_residueField O A`. Establish `: IsReduced (A ⧸ J)`. Use `⟨fun x ⟨k, hk⟩ ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hk` using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.isRadical_jacobson ⊥ ⟨k, hk⟩)`. Establish `hτJ : J ≤ J.comap τ`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `*` using `[Ideal.mem_comap, hJ, Ideal.mem_jacobson_bot]`. Introduce `b`. Establish `h` using `(hx (τ b)).map τ`. Simplify `h` using `[hτ]`. Set `τ' : A ⧸ J →+* A ⧸ J` to `Ideal.quotientMap J τ hτJ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ' : ∀ x, τ' (Ideal.Quotient.mk J x) = Ideal.Quotient.mk J (τ x)` using `fun x ↦ Ideal.quotientMap_mk`. Establish `hinv : ∀ x, τ' (τ' x) = x`. Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hτ', hτ', hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `norm_surj_of_finite_reduced_involution (A ⧸ J) τ' hinv (Ideal.Quotient.mk J θ) (by rw [hτ', ← map_sub]; exact hθ.map _) (Ideal.Quotient.mk J a) (ha.map _) (by rw [hτ', hτa])`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨t, isUnit_of_isUnit_mk_of_le_jacobson le_rfl ?_, ?_⟩` and prove the remaining obligations. Establish `: IsUnit (τ' (Ideal.Quotient.mk J t) * Ideal.Quotient.mk J t)` using `hc ▸ ha.map _`. Conclude with `isUnit_of_mul_isUnit_right this`.
-
-Rewrite using `[← Ideal.Quotient.eq, map_mul, ← hτ', mul_comm, hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mul_sub_mem_jacobson_of_finite_residueField :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [Finite (IsLocalRing.ResidueField O)] (A : Type)

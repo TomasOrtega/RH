@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Finset
 
 /- English proof (translation)
-Unfold `RestTerms.flagIntegral`. Simplify using `only [coeff_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagIntegral_sum {ι : Type*} (f N : ℕ) (s : Finset ι)
     (P : ι → RestTerms.RootRing f N) :
@@ -17,7 +17,7 @@ theorem flagIntegral_sum {ι : Type*} (f N : ℕ) (s : Finset ι)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `f N A hA`. Take `⟨G, rfl⟩` from `h₂ f N A hA`. Rewrite using `[flagIntegral_sum]`. Use `Finset.sum_eq_zero fun i _ => h₁ f N ((i.1 : ℕ) + 1) i.2 (G i) (by omega) ?_` and prove the remaining obligations. Use `i.1.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

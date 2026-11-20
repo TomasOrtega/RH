@@ -7,19 +7,15 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.StrictHenselSplit
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `B _ _ _ _ hr`. Use `haveI : Module.Free A B := Module.free_of_flat_of_isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `haveI : Subsingleton B := (Module.finrank_eq_zero_iff_of_free A B).1 hr`. Conclude with `.of_subsingleton_top`. Consider the case `succ r ih`. Introduce `B _ _ _ _ hr`. Use `haveI : Module.Free A B := Module.free_of_flat_of_isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, ⟨f⟩⟩` from `Algebra.IsFiniteSplit.nonempty_algEquiv_fun (ResidueField A) (ResidueField A ⊗[A] B)`. Establish `hm : m = r + 1`. Establish `h1` using `Module.finrank_baseChange (R := ResidueField A) (S := A) (M' := B)`. Rewrite `h1` using `[f.toLinearEquiv.finrank_eq, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ₀ : B →ₐ[A] ResidueField A` to `(((Pi.evalAlgHom (ResidueField A) (fun _ : Fin m => ResidueField A) ⟨0, by omega⟩).comp f.toAlgHom).restrictScalars A).comp Algebra.TensorProduct.includeRight`. Take `⟨ε, -⟩` from `(GlobalTheory.EtaleHensel.bijective_residue_comp A B A).2 φ₀`. Take `⟨e, ⟨he, he1⟩, -⟩` from `GlobalTheory.existsUnique_mem_annihilator_ker ε`. Set `g : B ≃ₐ[A] A × (B ⧸ Ideal.span {e})` to `AlgEquiv.ofBijective _ (GlobalTheory.bijective_prod_quotient_of_mem_annihilator_ker he he1)`. Use `haveI : Algebra.Etale A (A × (B ⧸ Ideal.span {e})) := .of_equiv g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `haveI : Algebra.Etale A (B ⧸ Ideal.span {e}) := by algebraize [RingHom.snd A (B ⧸ Ideal.span {e})]`. Establish `: IsScalarTower A (A × (B ⧸ Ideal.span {e})) (B ⧸ Ideal.span {e})` using `IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `.comp A (A × (B ⧸ Ideal.span {e})) (B ⧸ Ideal.span {e})`. Use `haveI : Module.Finite A (B ⧸ Ideal.span {e}) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ A (Ideal.span {e})).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI : Module.Free A (B ⧸ Ideal.span {e}) := Module.free_of_flat_of_isLocalRing`.
-
-Establish `hC : Module.finrank A (B ⧸ Ideal.span {e}) = r`. Use `g.toLinearEquiv.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Take `⟨k, ⟨h⟩⟩` from `(ih (B ⧸ Ideal.span {e}) hC).nonempty_algEquiv_fun`.
-
-Establish `: Algebra.IsFiniteSplit A (Fin 1 ⊕ Fin k → A)` using `inferInstance`. Conclude with `.of_algEquiv ((AlgEquiv.sumArrowEquivProdArrow (Fin 1) (Fin k) A A).trans ((AlgEquiv.prodCongr (AlgEquiv.funUnique (ι := Fin 1) A A) h.symm).trans g.symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFiniteSplit_of_finrank_eq (A : Type) [CommRing A] [HenselianLocalRing A]
     [IsSepClosed (ResidueField A)] : ∀ (r : ℕ) (B : Type) [CommRing B] [Algebra A B]
@@ -69,7 +65,7 @@ theorem isFiniteSplit_of_finrank_eq (A : Type) [CommRing A] [HenselianLocalRing 
 end GlobalTheory.StrictHenselSplit
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _`. Conclude with `(GlobalTheory.StrictHenselSplit.isFiniteSplit_of_finrank_eq A _ B rfl).nonempty_algEquiv_fun`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.etale_finite_strictHenselian_split : ∀ (A B : Type) [CommRing A] [HenselianLocalRing A]
     [IsSepClosed (IsLocalRing.ResidueField A)] [CommRing B] [Algebra A B] [Algebra.Etale A B]
@@ -78,6 +74,6 @@ theorem GlobalTheory.etale_finite_strictHenselian_split : ∀ (A B : Type) [Comm
   exact (GlobalTheory.StrictHenselSplit.isFiniteSplit_of_finrank_eq A _ B rfl).nonempty_algEquiv_fun
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.etale_finite_strictHenselian_split`.
+A detailed English derivation is pending.
 -/
 example : ∀ (A B : Type) [CommRing A] [HenselianLocalRing A] [IsSepClosed (IsLocalRing.ResidueField A)] [CommRing B] [Algebra A B] [Algebra.Etale A B] [Module.Finite A B], ∃ n : ℕ, Nonempty (B ≃ₐ[A] (Fin n → A)) := GlobalTheory.etale_finite_strictHenselian_split

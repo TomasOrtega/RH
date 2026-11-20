@@ -12,35 +12,35 @@ def siegelGlueMat {s m : ℕ} (a : Matrix (Fin s) (Fin s) ℝ) (b : Matrix (Fin 
     (fun x => Fin.addCases (motive := fun _ => ℝ) (fun _ => 0) (fun y => b x y) j) i
 
 /- English proof (translation)
-Simplify using `[siegelGlueMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma siegelGlueMat_ll {s m : ℕ} (a : Matrix (Fin s) (Fin s) ℝ) (b : Matrix (Fin m) (Fin m) ℝ)
     (x y : Fin s) : siegelGlueMat a b (Fin.castAdd m x) (Fin.castAdd m y) = a x y := by
   simp [siegelGlueMat]
 
 /- English proof (translation)
-Simplify using `[siegelGlueMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma siegelGlueMat_lr {s m : ℕ} (a : Matrix (Fin s) (Fin s) ℝ) (b : Matrix (Fin m) (Fin m) ℝ)
     (x : Fin s) (y : Fin m) : siegelGlueMat a b (Fin.castAdd m x) (Fin.natAdd s y) = 0 := by
   simp [siegelGlueMat]
 
 /- English proof (translation)
-Simplify using `[siegelGlueMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma siegelGlueMat_rl {s m : ℕ} (a : Matrix (Fin s) (Fin s) ℝ) (b : Matrix (Fin m) (Fin m) ℝ)
     (x : Fin m) (y : Fin s) : siegelGlueMat a b (Fin.natAdd s x) (Fin.castAdd m y) = 0 := by
   simp [siegelGlueMat]
 
 /- English proof (translation)
-Simplify using `[siegelGlueMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma siegelGlueMat_rr {s m : ℕ} (a : Matrix (Fin s) (Fin s) ℝ) (b : Matrix (Fin m) (Fin m) ℝ)
     (x y : Fin m) : siegelGlueMat a b (Fin.natAdd s x) (Fin.natAdd s y) = b x y := by
   simp [siegelGlueMat]
 
 /- English proof (translation)
-Simplify using `only [gram]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma gram_apply_glue {n : ℕ} (d : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) ℝ) (i j : Fin n) :
     gram d u i j = ∑ k, u k i * d k * u k j := by
@@ -49,11 +49,11 @@ lemma gram_apply_glue {n : ℕ} (d : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) 
   simp [Matrix.mul_diagonal]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality. Conclude with `⟨1, one_pos, fun _ j => j.elim0⟩`. Use `set j0 : Fin m := ⟨0, hm⟩`. Establish `hS : 0 ≤ ∑ i, d₁ i` using `Finset.sum_nonneg (fun i _ => (h₁ i).le)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d₂ j0 / (1 + ∑ i, d₁ i), div_pos (h₂ j0) (by linarith), fun i j hj => ?_⟩` and prove the remaining obligations. Establish `hj' : j = j0` using `Fin.ext hj`. Substitute `hj'` using the available equality. Establish `hi : d₁ i ≤ ∑ k, d₁ k` using `Finset.single_le_sum (fun k _ => (h₁ k).le) (Finset.mem_univ i)`. Establish `hpos : 0 < 1 + ∑ k, d₁ k` using `by linarith`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hpos]`. Use `h₂ j0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma siegelGlue_scale {s m : ℕ} (d₁ : Fin s → ℝ) (d₂ : Fin m → ℝ) (h₁ : ∀ i, 0 < d₁ i)
     (h₂ : ∀ i, 0 < d₂ i) :
@@ -73,27 +73,25 @@ lemma siegelGlue_scale {s m : ℕ} (d₁ : Fin s → ℝ) (d₂ : Fin m → ℝ)
     nlinarith
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simpa using h₁.nonneg a`. Consider the case `right a => simpa using h₂.nonneg a`. Use `step p q h := by`. Proceed by induction on `p using Fin.addCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `left a`. Proceed by induction on `q using Fin.addCases with`. Consider the case `left b`. Simplify using `only [Fin.val_castAdd] at h`. Simplify using `using h₁.step a b h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `right b`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at h`. Use `a.isLt` as an intermediate fact. Simplify using `using hj a b (by omega)`. Consider the case `right a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `q using Fin.addCases with`. Consider the case `left b`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at h`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `right b`. Simplify using `only [Fin.val_natAdd] at h`. Simplify using `using h₂.step a b (by omega)`. Use `diag i := by`. Proceed by induction on `i using Fin.addCases with`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `left a => simpa using h₁.diag a`. Consider the case `right a => simpa using h₂.diag a`. Use `lower i j h := by`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left b`. Rewrite using `[siegelGlueMat_ll]`. Conclude with `h₁.lower a b (by rw [Fin.lt_iff_val_lt_val] at h ⊢; simpa using h)`. Consider the case `right b => simp`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `right a`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left b => simp`. Consider the case `right b`. Rewrite using `[siegelGlueMat_rr]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Conclude with `h₂.lower a b (by rw [Fin.lt_iff_val_lt_val] at h ⊢; simpa using h)`. Use `upper i j h := by`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `j using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `left b`. Rewrite using `[siegelGlueMat_ll]`. Conclude with `h₁.upper a b (by rw [Fin.lt_iff_val_lt_val] at h ⊢; simpa using h)`. Consider the case `right b => simp`. Consider the case `right a`.
-
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left b => simp`. Consider the case `right b`. Rewrite using `[siegelGlueMat_rr]`. Conclude with `h₂.upper a b (by rw [Fin.lt_iff_val_lt_val] at h ⊢; simpa using h)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isSiegel_glue {s m : ℕ} {e₁ : Fin s → ℝ} {u₁ : Matrix (Fin s) (Fin s) ℝ} {e₂ : Fin m → ℝ}
     {u₂ : Matrix (Fin m) (Fin m) ℝ} (h₁ : IsSiegel e₁ u₁) (h₂ : IsSiegel e₂ u₂)
@@ -157,7 +155,7 @@ lemma isSiegel_glue {s m : ℕ} {e₁ : Fin s → ℝ} {u₁ : Matrix (Fin s) (F
         exact h₂.upper a b (by rw [Fin.lt_iff_val_lt_val] at h ⊢; simpa using h)
 
 /- English proof (translation)
-The claim follows from `le_refl _ step _ _ _ := by simp diag := h.diag lower := h.lower upper := h.upper`.
+A detailed English derivation is pending.
 -/
 lemma isSiegel_zero_of {n : ℕ} {d : Fin n → ℝ} {u : Matrix (Fin n) (Fin n) ℝ} (h : IsSiegel d u) :
     IsSiegel (0 : Fin n → ℝ) u where
@@ -168,7 +166,7 @@ lemma isSiegel_zero_of {n : ℕ} {d : Fin n → ℝ} {u : Matrix (Fin n) (Fin n)
   upper := h.upper
 
 /- English proof (translation)
-The claim follows from `mul_nonneg ht (h.nonneg i) step p q hpq := by have := h.step p q hpq nlinarith diag := h.diag lower := h.lower upper := h.upper`.
+A detailed English derivation is pending.
 -/
 lemma isSiegel_smul_of {n : ℕ} {d : Fin n → ℝ} {u : Matrix (Fin n) (Fin n) ℝ} (h : IsSiegel d u)
     {t : ℝ} (ht : 0 ≤ t) : IsSiegel (fun i => t * d i) u where
@@ -181,15 +179,15 @@ lemma isSiegel_smul_of {n : ℕ} {d : Fin n → ℝ} {u : Matrix (Fin n) (Fin n)
   upper := h.upper
 
 /- English proof (translation)
-Introduce `s m d₁ u₁ d₂ u₂ h₁ h₂ p₁ p₂`. Take `⟨t, ht, hj⟩` from `siegelGlue_scale d₁ d₂ p₁ p₂`. Use `⟨t, Fin.append (0 : Fin s → ℝ) d₂, Fin.append (fun i => t * d₁ i) d₂, siegelGlueMat u₁ u₂, ht, isSiegel_glue (isSiegel_zero_of h₁) h₂ (fun i j _ => by simpa using (h₂.nonneg j)), isSiegel_glue (isSiegel_smul_of h₁ ht.le) h₂ hj, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Proceed by induction on `i using Fin.addCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `left a => simpa using mul_pos ht (p₁ a)`. Consider the case `right a => simpa using p₂ a`. Introduce `i j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gram_apply_glue, Fin.sum_univ_add]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[gram_apply_glue, Fin.sum_univ_add, gram_apply_glue, Finset.mul_sum]`. Simplify using `only [siegelGlueMat_ll, siegelGlueMat_rl, Fin.append_left, Fin.append_right, zero_mul, mul_zero, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i j`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;>`. Rewrite using `[gram_apply_glue, Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Rewrite using `[gram_apply_glue, Fin.sum_univ_add, gram_apply_glue]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem siegelData_glue_scaled : ∀ (s m : ℕ) (d₁ : Fin s → ℝ) (u₁ : Matrix (Fin s) (Fin s) ℝ) (d₂ : Fin m → ℝ) (u₂ : Matrix (Fin m) (Fin m) ℝ), IsSiegel d₁ u₁ → IsSiegel d₂ u₂ → (∀ i, 0 < d₁ i) → (∀ i, 0 < d₂ i) → ∃ (t : ℝ) (d d' : Fin (s + m) → ℝ) (u : Matrix (Fin (s + m)) (Fin (s + m)) ℝ), 0 < t ∧ IsSiegel d u ∧ IsSiegel d' u ∧ (∀ i, 0 < d' i) ∧ (∀ i j : Fin s, gram d u (Fin.castAdd m i) (Fin.castAdd m j) = 0 ∧ gram d' u (Fin.castAdd m i) (Fin.castAdd m j) = t * gram d₁ u₁ i j) ∧ (∀ (i : Fin s) (j : Fin m), gram d u (Fin.castAdd m i) (Fin.natAdd s j) = 0 ∧ gram d u (Fin.natAdd s j) (Fin.castAdd m i) = 0 ∧ gram d' u (Fin.castAdd m i) (Fin.natAdd s j) = 0 ∧ gram d' u (Fin.natAdd s j) (Fin.castAdd m i) = 0) ∧ ∀ i j : Fin m, gram d u (Fin.natAdd s i) (Fin.natAdd s j) = gram d₂ u₂ i j ∧ gram d' u (Fin.natAdd s i) (Fin.natAdd s j) = gram d₂ u₂ i j := by
   intro s m d₁ u₁ d₂ u₂ h₁ h₂ p₁ p₂

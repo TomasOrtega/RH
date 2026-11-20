@@ -17,132 +17,132 @@ universe u v
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-The claim follows from `composition_inverse_spec`.
+A detailed English derivation is pending.
 -/
 theorem compInvSpec : CompInvSpec.{u} := composition_inverse_spec
 /- English proof (translation)
-The claim follows from `composition_inverse_map`.
+A detailed English derivation is pending.
 -/
 theorem compInvMap : CompInvMap.{u, v} := composition_inverse_map
 /- English proof (translation)
-The claim follows from `integration_spec`.
+A detailed English derivation is pending.
 -/
 theorem integSpec : IntegSpec.{u} := integration_spec
 
 /- English proof (translation)
-The claim follows from `chartFlowNegation`.
+A detailed English derivation is pending.
 -/
 theorem flowNegUW : FlowNegUW.{u} := chartFlowNegation
 /- English proof (translation)
-The claim follows from `chordFormula`.
+A detailed English derivation is pending.
 -/
 theorem chordRegular : ChordRegular.{u} := chordFormula
 /- English proof (translation)
-The claim follows from `flowTranslation`.
+A detailed English derivation is pending.
 -/
 theorem flowTranslate : FlowTranslate.{u} := flowTranslation
 /- English proof (translation)
-The claim follows from `flowLogDerivative`.
+A detailed English derivation is pending.
 -/
 theorem flowLogDeriv : FlowLogDeriv.{u} := flowLogDerivative
 /- English proof (translation)
-The claim follows from `twoTorsionTranslation`.
+A detailed English derivation is pending.
 -/
 theorem flowTwoTorsion : FlowTwoTorsion.{u} := twoTorsionTranslation
 /- English proof (translation)
-The claim follows from `twoTorsionTranslationWeierstrassForm`.
+A detailed English derivation is pending.
 -/
 theorem flowTwoTorsionWp : FlowTwoTorsionWp.{u} := twoTorsionTranslationWeierstrassForm
 
 /- English proof (translation)
-The claim follows from `w_series_spec`.
+A detailed English derivation is pending.
 -/
 theorem wSerSpec : WSerSpec.{u} := w_series_spec
 /- English proof (translation)
-The claim follows from `w_series_factorization`.
+A detailed English derivation is pending.
 -/
 theorem wSerFactor : WSerFactor.{u} := w_series_factorization
 /- English proof (translation)
-The claim follows from `invariant_differential_units`.
+A detailed English derivation is pending.
 -/
 theorem unitSpec : UnitSpec.{u} := invariant_differential_units
 /- English proof (translation)
-The claim follows from `series_map`.
+A detailed English derivation is pending.
 -/
 theorem seriesMap : SeriesMap.{u, v} := series_map
 /- English proof (translation)
-The claim follows from `unit_flow`.
+A detailed English derivation is pending.
 -/
 theorem flowU : FlowU.{u} := unit_flow
 /- English proof (translation)
-The claim follows from `invariant_derivation_spec`.
+A detailed English derivation is pending.
 -/
 theorem dLSpec : DLSpec.{u} := invariant_derivation_spec
 /- English proof (translation)
-The claim follows from `invariant_flow`.
+A detailed English derivation is pending.
 -/
 theorem flowL : FlowL.{u} := invariant_flow
 /- English proof (translation)
-The claim follows from `iSerSpec_of wSerSpec wSerFactor unitSpec flowU flowNegUW`.
+A detailed English derivation is pending.
 -/
 theorem iSerSpec : ISerSpec.{u} := iSerSpec_of wSerSpec wSerFactor unitSpec flowU flowNegUW
 
 /- English proof (translation)
-The claim follows from `logSpec_of integSpec unitSpec`.
+A detailed English derivation is pending.
 -/
 theorem logSpec : LogSpec.{u} := logSpec_of integSpec unitSpec
 /- English proof (translation)
-The claim follows from `expSpec_of integSpec compInvSpec unitSpec`.
+A detailed English derivation is pending.
 -/
 theorem expSpec : ExpSpec.{u} := expSpec_of integSpec compInvSpec unitSpec
 /- English proof (translation)
-The claim follows from `chainZ_of integSpec compInvSpec unitSpec`.
+A detailed English derivation is pending.
 -/
 theorem chainZ : ChainZ.{u} := chainZ_of integSpec compInvSpec unitSpec
 /- English proof (translation)
-The claim follows from `logNeg_of integSpec compInvSpec unitSpec iSerSpec`.
+A detailed English derivation is pending.
 -/
 theorem logNeg : LogNeg.{u} := logNeg_of integSpec compInvSpec unitSpec iSerSpec
 /- English proof (translation)
-The claim follows from `flowZ_of expSpec chainZ`.
+A detailed English derivation is pending.
 -/
 theorem flowZ : FlowZ.{u} := flowZ_of expSpec chainZ
 /- English proof (translation)
-The claim follows from `wpODE_of expSpec chainZ`.
+A detailed English derivation is pending.
 -/
 theorem wpODE : WpODE.{u} := wpODE_of expSpec chainZ
 
 /- English proof (translation)
-The claim follows from `formal_group_map`.
+A detailed English derivation is pending.
 -/
 theorem fglMap : FglMap.{u, v} := formal_group_map
 /- English proof (translation)
-The claim follows from `formal_group_chord`.
+A detailed English derivation is pending.
 -/
 theorem fglChord : FglChord.{u} := formal_group_chord
 /- English proof (translation)
-The claim follows from `formal_group_sum`.
+A detailed English derivation is pending.
 -/
 theorem fglSum : FglSum.{u} := formal_group_sum
 
 /- English proof (translation)
-The claim follows from `tSpec_of iSerSpec`.
+A detailed English derivation is pending.
 -/
 theorem tSpec : TSpec.{u} := tSpec_of iSerSpec
 /- English proof (translation)
-The claim follows from `plusChord_of flowL`.
+A detailed English derivation is pending.
 -/
 theorem plusChord : PlusChord.{u} := plusChord_of flowL
 /- English proof (translation)
-The claim follows from `plusFlow_of dLSpec flowL`.
+A detailed English derivation is pending.
 -/
 theorem plusFlow : PlusFlow.{u} := plusFlow_of dLSpec flowL
 /- English proof (translation)
-The claim follows from `plusNeg_of iSerSpec`.
+A detailed English derivation is pending.
 -/
 theorem plusNeg : PlusNeg.{u} := plusNeg_of iSerSpec
 /- English proof (translation)
-The claim follows from `addition_map`.
+A detailed English derivation is pending.
 -/
 theorem plusMap : PlusMap.{u, v} := addition_map
 

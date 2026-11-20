@@ -7,13 +7,13 @@ open _root_.Neutral.B1
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Establish `: ProperSpace M` using `FiniteDimensional.proper ℚ_[p] M`. Establish `hc : IsCompact (Metric.closedBall (0 : M) ‖x‖)` using `isCompact_closedBall 0 ‖x‖`. Establish `hcont : Continuous (fun m : M => ‖x - (m : PadicAlgCl p)‖)` using `(continuous_const.sub continuous_subtype_val).norm`. Establish `hne : (Metric.closedBall (0 : M) ‖x‖).Nonempty` using `⟨0, Metric.mem_closedBall_self (norm_nonneg x)⟩`. Take `⟨m0, hm0, hmin⟩` from `hc.exists_isMinOn hne hcont.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmin' : ∀ m : M, m ∈ Metric.closedBall (0 : M) ‖x‖ → ‖x - (m0 : PadicAlgCl p)‖ ≤ ‖x - (m : PadicAlgCl p)‖` using `fun m hm => hmin hm`. Establish `hle0 : ‖x - (m0 : PadicAlgCl p)‖ ≤ ‖x‖`. Establish `h2` using `hmin' 0 (Metric.mem_closedBall_self (norm_nonneg x))`. Rewrite `h2` using `[ZeroMemClass.coe_zero, sub_zero]`. Then use the resulting hypothesis. Use `⟨m0, m0.2, fun m hm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hmx : ‖m‖ ≤ ‖x‖`. Conclude with `hmin' ⟨m, hm⟩ (by rw [mem_closedBall_zero_iff]; exact hmx)`. Rewrite `hmx` using `[not_le]`. Use `hle0.trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlt` using `[not_le]`. Establish `e : m = x - (x - m)` using `by ring`. Establish `h3 : ‖m‖ ≤ max ‖x‖ ‖x - m‖` using `by conv_lhs => rw [e]`. Conclude with `UnramifiedExtensions.norm_sub_le_max' _ _`. Conclude with `absurd (h3.trans (max_le le_rfl hlt.le)) (not_le.2 hmx)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_closest {M : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hM : FiniteDimensional ℚ_[p] M) (x : PadicAlgCl p) :
@@ -44,15 +44,15 @@ theorem exists_closest {M : IntermediateField ℚ_[p] (PadicAlgCl p)}
     exact absurd (h3.trans (max_le le_rfl hlt.le)) (not_le.2 hmx)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨m0, hm0, hmin⟩` from `exists_closest p hM x`. Assume the negation of the conclusion as `hxM`. Establish `hy0 : x - m0 ≠ 0` using `fun h0 => hxM (by rw [sub_eq_zero.1 h0]; exact hm0)`. Establish `hyL : x - m0 ∈ L` using `L.sub_mem hx (hML hm0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk, hyk⟩` from `h _ hyL`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hyk` using `[norm_zero, norm_eq_zero]`. Conclude with `hy0 hyk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hkn : 0 < ‖k‖` using `norm_pos_iff.2 hk0`. Establish `h1 : ‖(x - m0) / k‖ = 1` using `by rw [norm_div, hyk, div_self hkn.ne']`. Establish `hmem : IsLocalRing.residue (Obar p) ⟨(x - m0) / k, mem_Obar_iff.2 h1.le⟩ ∈ resK p L` using `(mem_resK_iff p L _).2 ⟨_, L.div_mem hyL (hML hk), rfl⟩`. Take `⟨z, hz, hzr⟩` from `(mem_resK_iff p M _).1 (hres hmem)`. Rewrite `hzr` using `[residue_eq_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hzr' : ‖(z : PadicAlgCl p) - (x - m0) / k‖ < 1` using `hzr`. Establish `hlt : ‖x - (m0 + k * (z : PadicAlgCl p))‖ < ‖x - m0‖`. Establish `e : x - (m0 + k * (z : PadicAlgCl p)) = -(k * ((z : PadicAlgCl p) - (x - m0) / k))`. Rewrite using `[mul_sub, mul_div_cancel₀ _ hk0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, norm_neg, norm_mul, hyk]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hlt (not_lt.2 (hmin _ (M.add_mem hm0 (M.mul_mem hk hz))))`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_of_resK_le_of_norm {M L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hM : FiniteDimensional ℚ_[p] M) (hML : M ≤ L) (hres : resK p L ≤ resK p M)
@@ -85,15 +85,15 @@ theorem le_of_resK_le_of_norm {M L : IntermediateField ℚ_[p] (PadicAlgCl p)}
   exact absurd hlt (not_lt.2 (hmin _ (M.add_mem hm0 (M.mul_mem hk hz))))
 
 /- English proof (translation)
-Establish `hd : 0 < Module.finrank ℚ_[p] K` using `Module.finrank_pos`. Establish `hL : FiniteDimensional ℚ_[p] L` using `Module.finite_of_finrank_pos (by rw [hdeg]; exact Nat.mul_pos hn hd)`. Take `⟨f, hf, hq, -⟩` from `qK_le_pow_finrank p K hK hL hKL`. Establish `hM : FiniteDimensional ℚ_[p] (Kn p K f)` using `finiteDimensional_Kn p K hK hf`. Establish `hML : Kn p K f ≤ L` using `Kn_le_of_qK p K hK hL hKL (n := f) (m := 1) (by rw [mul_one]; exact hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : resK p L ≤ resK p (Kn p K f)`. Establish `hfin : Finite (resK p L)` using `finite_resK p L hL`. Establish `hsub : (resK p (Kn p K f) : Set (kbar p)) ⊆ (resK p L : Set (kbar p))` using `resK_mono p hML`. Establish `hcard : (resK p L : Set (kbar p)).ncard ≤ (resK p (Kn p K f) : Set (kbar p)).ncard`. Establish `e1 : (resK p L : Set (kbar p)).ncard = qK p L` using `(Nat.card_coe_set_eq _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (resK p (Kn p K f) : Set (kbar p)).ncard = qK p (Kn p K f)` using `(Nat.card_coe_set_eq _).symm`. Rewrite using `[e1, e2, hq, qK_Kn p K hK hf]`. Establish `heq` using `Set.eq_of_subset_of_ncard_le hsub hcard (Set.toFinite _)`. Introduce `c hc`. Establish `: c ∈ (resK p (Kn p K f) : Set (kbar p))` using `by rw [heq]; exact hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hLM : L = Kn p K f` using `le_antisymm (le_of_resK_le_of_norm p hM hML hres (fun x hx => by`. Take `⟨y, hy, hxy⟩` from `h x hx`. Conclude with `⟨y, le_Kn p K f hy, hxy⟩)) hML`. Establish `hfn : f = n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `finrank_Kn p K hK hf`. Rewrite `h1` using `[← hLM, hdeg]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hd h1).symm`. Rewrite using `[hLM, hfn]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_Kn_of_norm (hK : FiniteDimensional ℚ_[p] K) {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hKL : K ≤ L) {n : ℕ} (hn : 0 < n)

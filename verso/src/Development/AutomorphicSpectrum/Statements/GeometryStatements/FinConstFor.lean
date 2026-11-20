@@ -28,7 +28,7 @@ def FinConstAll : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), FinConstFor H
 
 /- English proof (translation)
-Introduce `E _ _ _ H _` and use `h E H`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinConstAll.finConst (h : FinConstAll) : FinConst := fun E _ _ _ H _ => h E H
 

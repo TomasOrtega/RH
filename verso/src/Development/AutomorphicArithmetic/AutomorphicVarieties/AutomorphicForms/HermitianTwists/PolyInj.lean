@@ -2,13 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 
 open Polynomial in
 /- English proof (translation)
-Introduce `q hq j B B' h`. Establish `key : ∀ s : Multiset ℂ, (Multiset.map (fun b ↦ Polynomial.X - Polynomial.C ((q : ℂ) ^ j * b)) s).prod.roots = s.map (fun b ↦ (q : ℂ) ^ j * b)`. Introduce `s`. Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C (s.map (fun b ↦ (q : ℂ) ^ j * b)), Multiset.map_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hroots` using `congrArg Polynomial.roots h`. Rewrite `hroots` using `[key, key]`. Establish `hqC : ((q : ℂ) ^ j) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hq.ne')`. Establish `h1` using `Multiset.map_injective (mul_right_injective₀ hqC) hroots`. Unfold `UpperTheory.V.Af.algSat at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, ← Multiset.map_map] at h1`. Use `Multiset.map_injective (fun _ _ e ↦ Units.ext e) (Multiset.map_injective (mul_right_injective₀ ?_) h1)` and prove the remaining obligations. Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Use `first`. Consider the case `exact Complex.ofReal_ne_zero.mpr (Real.rpow_pos_of_pos hq' _).ne'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [hq.ne']`. Consider the case `exact_mod_cast (Real.rpow_pos_of_pos hq' _).ne'`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rn.polyInj :
     UpperTheory.V.Af.Rn.PolyInj := by

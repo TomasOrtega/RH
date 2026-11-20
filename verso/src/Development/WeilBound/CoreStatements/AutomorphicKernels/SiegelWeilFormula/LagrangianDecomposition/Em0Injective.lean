@@ -15,16 +15,16 @@ def i0 {N n : ℕ} (h : n + 1 = N) : Fin N := ⟨n, by omega⟩
 def em0 {N n : ℕ} (h : n + 1 = N) : Fin n → Fin N := fun i => ⟨i, by omega⟩
 
 /- English proof (translation)
-Introduce `a b e` and use `by simp only [em0, Fin.mk.injEq] at e exact Fin.ext e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem em0_injective {N n : ℕ} (h : n + 1 = N) : Function.Injective (em0 h) := fun a b e => by
   simp only [em0, Fin.mk.injEq] at e
   exact Fin.ext e
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hi`. Use `⟨⟨i.1, ?_⟩, Fin.ext rfl⟩` and prove the remaining obligations. Establish `: i.1 ≠ n` using `fun e => hi (Fin.ext e)`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `⟨k, rfl⟩ e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[em0, i0] at this`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ne_last_iff_mem_range {N n : ℕ} (h : n + 1 = N) (i : Fin N) : i ≠ i0 h ↔ i ∈ Set.range (em0 h) := by
   constructor

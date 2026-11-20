@@ -15,17 +15,15 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations. Use `set m := ∑ a, c a • frame (lf D F0) a with hm`. Establish `hbm : baseChange₂ D p m = ∑ a, ((D.s.atP p).ιE (c a) * (((hu p a).unit⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep)) • (tLoc Zd p γ).f a`. Rewrite using `[hm, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂, baseChangeAt_frame_eq Zd p γ (hu p), Units.smul_def, smul_smul]`. Establish `hspan : baseChange₂ D p m ∈ Submodule.span (D.s.atP p).Ep (Set.range (tLoc Zd p γ).f)`. Rewrite using `[hbm]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h2` using `(hprim p).2.2 _ (baseChange_mem_localLattice Zd hc p) hspan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h2`. Establish `hli` using `(hprim p).2.1`. Establish `hz : ∑ a, (((o a : (Zd.M p).L.O) : (D.s.atP p).Ep) - (D.s.atP p).ιE (c a) * (((hu p a).unit⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep)) • (tLoc Zd p γ).f a = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hbm, ← ho]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [sub_eq_zero]`. Both sides reduce to the same expression. Establish `h3` using `Fintype.linearIndependent_iff.1 hli _ hz (Fin.last D.R.rS)`. Establish `key : ∀ {a : (D.s.atP p).Ep} (h : IsUnit a), a = 1 → (((h.unit⁻¹ : ((D.s.atP p).Ep)ˣ)) : (D.s.atP p).Ep) = 1`. Introduce `a h ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `ha` using the available equality. Establish `: h.unit = 1` using `Units.ext (IsUnit.unit_spec h)`. Rewrite using `[this, inv_one, Units.val_one]`. Establish `hone` using `key (hu p (Fin.last D.R.rS)) (by rw [sgnP_last, frFac_last', mul_one])`. Rewrite `h3` using `[hone, mul_one, sub_eq_zero]`.
-
-Rewrite using `[← h3]`. Conclude with `(o (Fin.last D.R.rS)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_int (γ : TermDef.Term D u u' F0 what₂) {Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     (hprim : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ₂) (tLoc Zd p γ).f)
@@ -63,21 +61,21 @@ theorem coef_int (γ : TermDef.Term D u u' F0 what₂) {Λ₂ : Submodule (𝓞 
   exact (o (Fin.last D.R.rS)).2
 
 /- English proof (translation)
-Take `⟨f, hfz, hfX⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hzX inferInstance`. Set `ρ : Module.Dual D.host.E (VS D).V` to `(f F0.z)⁻¹ • f`. Establish `hρz : ρ F0.z = 1`. Simplify using `only [ρ, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ hfz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hρX : ∀ x ∈ Xsp (lf D F0), ρ x = 0` using `fun x hx => by`. Establish `h1 : f x ∈ (Xsp (lf D F0)).map f` using `⟨x, hx, rfl⟩`. Rewrite `h1` using `[hfX, Submodule.mem_bot]`. Simplify using `only [ρ, LinearMap.smul_apply, smul_eq_mul, h1, mul_zero]`. Establish `hρe : ∀ i : Fin D.R.rS, ρ (frame (lf D F0) i.castSucc) = 0` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frame_cs]`. Conclude with `hρX _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hρl : ρ (frame (lf D F0) (Fin.last D.R.rS)) = 1`. Establish `: frame (lf D F0) (Fin.last D.R.rS) = F0.z` using `by simp [frame, FlagG.fvec]`. Rewrite using `[this, hρz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v, hv⟩` from `BwdNA.riesz (VS D) ρ`. Set `U : Submodule D.host.E (VS D).V` to `Submodule.span D.host.E (Set.range (frame (lf D F0)))`. Establish `hint : ∀ m ∈ Λ₂, m ∈ U → IsIntegral ℤ ((VS D).hT m v)` using `fun m hm hmU => by`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hmU`. Establish `hρm : ρ m = c (Fin.last D.R.rS)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc, map_sum, Fin.sum_univ_castSucc]`. Simplify using `only [map_smul, smul_eq_mul, hρe, mul_zero, Finset.sum_const_zero, zero_add, hρl, mul_one]`. Rewrite using `[BwdNA.hsw (VS D) v m, hv, hρm]`. Conclude with `BwdNA.isInt_star (coef_int Zd γ hprim hu c (by rw [hc]; exact hm))`. Take `⟨w, hwΛ, hvw⟩` from `BwdNA.dual_sum (VS D) Λ₂ hΛ₂ hSD₂ U v hint`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : ∀ a, (VS D).hT w (frame (lf D F0) a) = ρ (frame (lf D F0) a)` using `fun a => by`. Establish `h0` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hvw _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[BwdNA.hsw (VS D) (frame (lf D F0) a) w, ← h0, ← BwdNA.hsw (VS D) (frame (lf D F0) a) v, hv]`. Use `⟨w, hwΛ, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range F0.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[BwdNA.hsw (VS D) w (F0.e i), ← frame_cs, hw, hρe, star_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul c x _ hx => rw [BwdNA.hT_smulL, hx, mul_zero]`. Establish `: frame (lf D F0) (Fin.last D.R.rS) = F0.z` using `by simp [frame, FlagG.fvec]`. Rewrite using `[← this, hw, hρl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_y (γ : TermDef.Term D u u' F0 what₂) {Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ₂ : Submodule.IsLattice D.host.E Λ₂) (hSD₂ : BwdNA.SD (VS D) Λ₂)

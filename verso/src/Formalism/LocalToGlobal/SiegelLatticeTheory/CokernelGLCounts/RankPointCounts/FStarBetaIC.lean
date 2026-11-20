@@ -19,9 +19,9 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 namespace BetaI
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `admissibility_witness_unitriangular Λ F F'`. Establish `hbt : (admXi D Λ F F').BlockTriangular id` using `fun i j hij => h1 i j hij`. Establish `hdet : (admXi D Λ F F').det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Invertible (admXi D Λ F F') := Matrix.invertibleOfIsUnitDet _ (by rw [hdet]; exact isUnit_one)`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hbt (Fin.castSucc_lt_last i)`.
+A detailed English derivation is pending.
 -/
 theorem xi_inv_last (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (i : Fin D.R.rS) :
@@ -34,7 +34,7 @@ theorem xi_inv_last (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} 
   exact Matrix.blockTriangular_inv_of_blockTriangular hbt (Fin.castSucc_lt_last i)
 
 /- English proof (translation)
-Use `show ∑ a, ((ξ a i.castSucc : 𝓞 D.host.E) : D.host.E) • frame G a ∈ Xsp G`. Rewrite using `[Fin.sum_univ_castSucc, h]`. Use `add_mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_) (by simp)` and prove the remaining obligations. Rewrite using `[frame_csG]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameAct_mem {T' : D.host.E} (G : LFlag (VS D) D.R.rS T')
     (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) (i : Fin D.R.rS)
@@ -53,11 +53,11 @@ theorem tf' (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (b : Fin (D.R.rS +
       baseChange₂ D p (frameAct (frame (repF γ)) (admXi D γ.lam (lf D F0) (repF γ))⁻¹ b) := rfl
 
 /- English proof (translation)
-Use `show ∀ w ∈ (locH Zd p).X (tLoc Zd p γ).f', (locH Zd p).h (baseChange₂ D p m) w = 0`. Introduce `w hw`. Rewrite using `[h_eq]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hw`. Simplify using `only`. Rewrite using `[tf', LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hm _ (frameAct_mem _ _ i (xi_inv_last γ.lam (lf D F0) (repF γ) i)), map_zero, mul_zero]`. Consider the case `zero => exact LocFacts.localForm_zero_right Zd p _`. Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right, ha, hb, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem bcP_perp_f' (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) {m : (VS D).V}
     (hm : m ∈ orth (VS D) (Xsp (repF γ))) :
@@ -97,11 +97,11 @@ def PinB : Prop :=
 variable {u u' F0 what₂}
 
 /- English proof (translation)
-Introduce `γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO p m hm hmo`. Establish `hloc` using `hB.2.2.2.1.2 p`. Establish `hL'` using `hloc.2.2.2.1`. Establish `hmp` using `bcP_perp_f' Zd p γ hmo`. Establish `hXmap` using `BwdBetaCut.Xsp_of_frame β₀ _ _ hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmo₂ : β₀ m ∈ orth (VS D) (Xsp (liftF F'₂))`. Rewrite using `[← hXmap, Formalism.L2.SG.Pf.orth_map_sat β₀ hiso]`. Conclude with `Submodule.mem_map_of_mem hmo`. Establish `hmp₂` using `baseChangeAt_perp' Zd p F'₂ hmo₂`. Establish `hin : (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p m, hmp⟩ ∈ (locH Zd p).Lset (tLoc Zd p γ).abelian₂ (tLoc Zd p γ).f'` using `⟨⟨_, hmp⟩, baseChange_mem_localLattice Zd hm p, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxΛ, hxe⟩` from `hL'.subset ⟨_, hin, rfl⟩`. Rewrite `hxe` using `[hP γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO p m hmp hmp₂ hmo]`. Use `⟨(x : Vp D p), hxΛ, ?_⟩` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).1 hxe.symm` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lsetB_of (hP : PinB Zd u u' F0 what₂) : LsetB Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO p m hm hmo

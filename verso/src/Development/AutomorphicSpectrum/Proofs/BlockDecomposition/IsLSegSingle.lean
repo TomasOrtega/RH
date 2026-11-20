@@ -5,13 +5,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.LocGL
 
 /- English proof (translation)
-Establish `hterm : ((Segment.single ρ hρ).term : Fin 1 → IrrGL k) = fun _ => ρ`. Use function extensionality and compare the values at `a`. Establish `ha : (a : ℕ) = 0`. Establish `h1 : (a : ℕ) < 1` using `a.isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show (Segment.single ρ hρ).first.nu ((a : ℕ) : ℂ) = ρ`. Rewrite using `[ha, Nat.cast_zero, show (Segment.single ρ hρ).first = ρ from Segment.first_ofFirst ρ hρ 1 one_pos, IrrGL.nu_zero]`. Establish `key : ∀ x : Fin 1 → IrrGL k, x = (fun _ => ρ) → ∀ hd : ∑ a, (x a).1 = ρ.1, IsCosocle ρ.rep (prodIrr x hd)`. Introduce `x hx hd`. Substitute `hx` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨φ⟩` from `nonempty_equiv_prodIrr_one ρ hd`. Conclude with `(isCosocle_self ρ.2.rep.irr).of_equiv (Representation.Equiv.refl _) φ`. Establish `hd : ∑ a : Fin 1, ((Segment.single ρ hρ).term a).1 = ρ.1`. Rewrite using `[hterm]`. Simplify using the standard rewrite rules.
-
-Conclude with `⟨hd, key _ hterm hd⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLSeg_single (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ρ : IrrGL k) (hρ : ρ.IsCusp) : IsLSeg (Segment.single ρ hρ) ρ.rep := by

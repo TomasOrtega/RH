@@ -5,11 +5,11 @@ open scoped ContDiff
 namespace GlobalTheory.WhitBump
 
 /- English proof (translation)
-Introduce `E _ _ _ n u _ hk`. Establish `hent` using `((GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff E n).1 hk).1`. Establish `hs : GlobalTheory.Whittaker.superDiag u ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 E) E`. Unfold `GlobalTheory.Whittaker.superDiag`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => hent i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hd : sFin E (GlobalTheory.Whittaker.superDiag u) ∈ GroundTheory.Global.invDifferentAdeles E` using `GroundTheory.Global.mem_invDifferentAdeles.mpr (GroundTheory.Global.mem_finiteInvDifferent_of_mem_integralFiniteAdeles hs)`. Unfold `psiFin`. Rewrite using `[GroundTheory.Global.adelicChar_of_mem_invDifferentAdeles hd]`. Establish `h0 : (sFin E (GlobalTheory.Whittaker.superDiag u)).1 = 0` using `rfl`. Rewrite using `[h0, map_zero, neg_zero, AddChar.map_zero_eq_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem psiFin_superDiag_eq_one_of_integral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ)
     (u : GL (Fin n) (Af E)), u ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n) →

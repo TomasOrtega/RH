@@ -8,7 +8,7 @@ open scoped Matrix
 namespace GlobalTheory.PointChern
 
 /- English proof (translation)
-Establish `hQP' : Q.map Polynomial.C * P.map Polynomial.C = 1`. Rewrite using `[← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : (1 : Matrix r r (Polynomial R)) - (Polynomial.X : Polynomial R) • (Q * M * P).map Polynomial.C = Q.map Polynomial.C * (1 - (Polynomial.X : Polynomial R) • M.map Polynomial.C) * P.map Polynomial.C`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hQP', Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[Matrix.charpolyRev, Matrix.charpolyRev, e, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, hQP', Matrix.det_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpolyRev_conj_of_mul_eq_one {R : Type*} [CommRing R] {r : Type*} [Fintype r] [DecidableEq r]
     (M P Q : Matrix r r R) (hQP : Q * P = 1) : (Q * M * P).charpolyRev = M.charpolyRev := by
@@ -22,7 +22,7 @@ theorem charpolyRev_conj_of_mul_eq_one {R : Type*} [CommRing R] {r : Type*} [Fin
     ← Matrix.det_mul, hQP', Matrix.det_one, one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[curvPoly, Matrix.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem curvPoly_eq_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) : curvPoly G v =
@@ -35,9 +35,9 @@ end GlobalTheory.PointChern
 namespace GlobalTheory.PointChern
 
 /- English proof (translation)
-Establish `h1 : ((((Real.sqrt c : ℝ) : ℂ) • gᵀ)ᴴᵀ) = ((Real.sqrt c : ℝ) : ℂ) • gᴴ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, Matrix.transpose_apply]`. Establish `h2 : ((Real.sqrt c : ℝ) : ℂ) * ((Real.sqrt c : ℝ) : ℂ) = (c : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hc.le]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq_changeFrame {r : Type} [Fintype r] (c : ℝ) (hc : 0 < c) (g K : Matrix r r ℂ) :
     (c : ℂ) • (g * K * gᴴ) = (((Real.sqrt c : ℝ) : ℂ) • gᵀ)ᵀ * K * (((Real.sqrt c : ℝ) : ℂ) • gᵀ)ᴴᵀ := by
@@ -48,19 +48,17 @@ theorem gram_eq_changeFrame {r : Type} [Fintype r] (c : ℝ) (hc : 0 < c) (g K :
   rw [h1, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, h2]
 
 /- English proof (translation)
-Introduce `n ι m R G K g c v hc hg hgu hK hKu hG`. Establish `key : ∀ τ, curvPoly (fun u => G u τ) v = ((((Real.sqrt (c τ) : ℝ) : ℂ) • (g v τ)ᵀ)⁻¹).map C * curvPoly (fun u => K u τ) v * ((((Real.sqrt (c τ) : ℝ) : ℂ) • (g v τ)ᵀ)).map C`. Introduce `τ`. Use `set A : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin (m τ)) (Fin (m τ)) ℂ := fun u => ((Real.sqrt (c τ) : ℝ) : ℂ) • (g u τ)ᵀ with hAdef`. Establish `hent : ∀ a b, (fun x => A x a b) = fun x => ((Real.sqrt (c τ) : ℝ) : ℂ) * g x τ b a` using `fun a b => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : MContDiffAt 2 A v` using `fun a b => by`. Rewrite using `[hent]`. Conclude with `contDiffAt_const.mul ((hg τ b a).contDiffAt.restrict_scalars ℝ)`. Establish `hAu : IsUnit (A v).det`. Simplify using `only [hAdef, Matrix.det_smul, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsUnit.mul (IsUnit.pow _ (Ne.isUnit ?_)) (hgu τ)` and prove the remaining obligations. Conclude with `(Real.sqrt_pos.2 (hc τ)).ne'` after adjusting the coercions. Establish `hA0 : ∀ᶠ x in 𝓝 v, ∀ η, mdbar A x η = 0`. Establish `hev : ∀ᶠ x in 𝓝 v, ∀ a b, AnalyticAt ℂ (fun w => g w τ b a) x` using `eventually_all.2 fun a => eventually_all.2 fun b => (hg τ b a).eventually_analyticAt`. Use `filter_upwards [hev] with x hx η`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `a b`. Rewrite using `[mdbar_apply, hent, GlobalTheory.dbar_eq_zero (((hx a b).differentiableAt).const_mul _)]`. Both sides reduce to the same expression. Establish `hGe : (fun u => G u τ) =ᶠ[𝓝 v] fun u => (A u)ᵀ * K u τ * (A u)ᴴᵀ` using `hG.mono fun u hu => by show G u τ = _; rw [hu τ]; exact gram_eq_changeFrame _ (hc τ) _ _`. Establish `hcurv : ∀ ξ η, curv (fun u => G u τ) v ξ η = (A v)⁻¹ * curv (fun u => K u τ) v ξ η * A v` using `fun ξ η => by rw [curv_congr hGe, curv_changeFrame (hK τ) (hKu τ) hA hAu hA0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Use `clear_value A`. Rewrite using `[curvPoly_eq_sum, curvPoly_eq_sum]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.map_mul, hcurv]`. Substitute `hAdef` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key2 : ∀ τ k, chernPoly (fun u => G u τ) v k = chernPoly (fun u => K u τ) v k`. Introduce `τ k`. Establish `hu : IsUnit (((Real.sqrt (c τ) : ℝ) : ℂ) • (g v τ)ᵀ).det`. Simplify using `only [Matrix.det_smul, Matrix.det_transpose]`. Use `IsUnit.mul (IsUnit.pow _ (Ne.isUnit ?_)) (hgu τ)` and prove the remaining obligations.
-
-Conclude with `(Real.sqrt_pos.2 (hc τ)).ne'` after adjusting the coercions. Rewrite using `[chernPoly, chernPoly, key, show ∀ (Q M P : Matrix (Fin (m τ)) (Fin (m τ)) (MvPolynomial (Fin n × Fin n) ℂ)), -(Q * M * P) = Q * (-M) * P from fun Q M P => by rw [Matrix.mul_neg, Matrix.neg_mul], charpolyRev_conj_of_mul_eq_one]`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [chernTop, key2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chernTop_changeFrame : ∀ {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial (ι × ℕ) ℝ) (G K g : ReciprocityTheory.L2DbarEstimates.V n → Mat m ℂ) (c : ι → ℝ) (v : ReciprocityTheory.L2DbarEstimates.V n), (∀ τ, 0 < c τ) → (∀ τ i j, AnalyticAt ℂ (fun w => g w τ i j) v) → (∀ τ, IsUnit (g v τ).det) → (∀ τ, MContDiffAt 2 (fun w => K w τ) v) → (∀ τ, IsUnit (K v τ).det) → (∀ᶠ w in 𝓝 v, ∀ τ, G w τ = (c τ : ℂ) • (g w τ * K w τ * (g w τ)ᴴ)) → chernTop R G v = chernTop R K v := by
   intro n ι m R G K g c v hc hg hgu hK hKu hG

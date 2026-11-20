@@ -26,7 +26,7 @@ variable {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTow
     {ρ : Representation LL G V} {ρ' : Representation LL G V'} (f : V →ₗ[LL] V')
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [crisMap, ιV]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ιV_crisMap (z : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V') (crisMap B f z) = crisMap BdR f (ιV PD (LL := LL) (V := V) z) := by
@@ -36,7 +36,7 @@ theorem ιV_crisMap (z : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [crisMap, mulVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem crisMap_mulVB (c : K₀) (z : V ⊗[Qp] B) :
     crisMap B f (mulVB (LL := LL) (V := V) (B := B) c z) = mulVB (LL := LL) (V := V') (B := B) c (crisMap B f z) := by
@@ -46,7 +46,7 @@ theorem crisMap_mulVB (c : K₀) (z : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[DcrisL, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DcrisL_iff (τ₀ : K₀ →ₐ[Qp] LL) (z : V ⊗[Qp] B) :
     z ∈ DcrisL PD ρ τ₀ ↔ z ∈ Dcris PD ρ ∧ ∀ c : K₀, mulVB (LL := LL) (V := V) (B := B) c z = τ₀ c • z := by
@@ -74,7 +74,7 @@ end P4Y
 section Rec
 
 /- English proof (translation)
-Introduce `l _ K LL hG hCA h5`. Conclude with `hL l K LL hCA h5`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem p4YL (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (hL : Formalism.MainNotions.UnusedSlot80.LevCoeff D HW F) :
     Formalism.MainNotions.ArcLiftingSetup.AtCaseA fun l _ K LL hG => Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration ((HW l).W K 1 LL hG) := by

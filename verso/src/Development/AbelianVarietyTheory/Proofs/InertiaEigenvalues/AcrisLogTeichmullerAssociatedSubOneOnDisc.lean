@@ -18,21 +18,21 @@ section Gen
 variable (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0)
 
 /- English proof (translation)
-Use `norm_toDisc_le (l := l) (u := u) (ρ := ρ) (z : A)` as an intermediate fact. Rewrite `this` using `[map_intCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_intCast_le (z : ℤ) : ‖(z : Disc l u ρ)‖ ≤ 1 := by
   have := norm_toDisc_le (l := l) (u := u) (ρ := ρ) (z : A)
   rwa [map_intCast] at this
 
 /- English proof (translation)
-Use `norm_toDisc_le (l := l) (u := u) (ρ := ρ) (z : A)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_natCast_le (z : ℕ) : ‖(z : Disc l u ρ)‖ ≤ 1 := by
   have := norm_toDisc_le (l := l) (u := u) (ρ := ρ) (z : A)
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[pow_succ', mul_assoc, DiscBasic.norm_l_mul l u ρ, ih, pow_succ']`. Clear the denominators using the available nonvanishing facts.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_lpow_mul (e : ℕ) (y : Disc l u ρ) : ‖((l : Disc l u ρ)) ^ e * y‖ = ‖y‖ / (l : ℝ) ^ e := by
   induction e with
@@ -42,15 +42,15 @@ theorem norm_lpow_mul (e : ℕ) (y : Disc l u ρ) : ‖((l : Disc l u ρ)) ^ e *
     field_simp
 
 /- English proof (translation)
-Use `haveI := DiscBasic.isUltrametricDist_disc l u ρ`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `hc` using `congrArg (Int.cast : ℤ → Disc l u ρ) hab`. Move the coercions through the operations in `at hc`. Establish `e : x = (a : Disc l u ρ) * ((l : Disc l u ρ) * x) + (b : Disc l u ρ) * ((n : Disc l u ρ) * x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-x) * hc`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(norm_mul_le _ _).trans (by nlinarith [norm_natCast_le l u ρ n, norm_nonneg x])`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hlt` using `[not_le]`. Establish `h1 : ‖(a : Disc l u ρ) * ((l : Disc l u ρ) * x)‖ ≤ ‖x‖ / l`. Rewrite using `[← DiscBasic.norm_l_mul l u ρ x]`. Conclude with `(norm_mul_le _ _).trans (by nlinarith [norm_intCast_le l u ρ a, norm_nonneg ((l : Disc l u ρ) * x)])`. Establish `h2 : ‖(b : Disc l u ρ) * ((n : Disc l u ρ) * x)‖ ≤ ‖(n : Disc l u ρ) * x‖` using `(norm_mul_le _ _).trans (by nlinarith [norm_intCast_le l u ρ b, norm_nonneg ((n : Disc l u ρ) * x)])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `IsUltrametricDist.norm_add_le_max ((a : Disc l u ρ) * ((l : Disc l u ρ) * x)) ((b : Disc l u ρ) * ((n : Disc l u ρ) * x))`. Rewrite `h3` using `[← e]`. Establish `h0` using `norm_nonneg ((n : Disc l u ρ) * x)`. Break down `le_max_iff.1 h3 with h4 | h4` into its components or cases. Establish `: ‖x‖ ≤ ‖x‖ / l` using `h4.trans h1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[le_div_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_coprime_mul (n : ℕ) (h : Nat.Coprime l n) (x : Disc l u ρ) : ‖(n : Disc l u ρ) * x‖ = ‖x‖ := by
   haveI := DiscBasic.isUltrametricDist_disc l u ρ
@@ -80,11 +80,11 @@ theorem norm_coprime_mul (n : ℕ) (h : Nat.Coprime l n) (x : Disc l u ρ) : ‖
     · linarith
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `hc` using `congrArg (Int.cast : ℤ → Disc l u ρ) hab`. Move the coercions through the operations in `at hc`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Establish `hn : ‖(a : Disc l u ρ) * (l : Disc l u ρ)‖ < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, DiscBasic.norm_l_mul l u ρ, div_lt_one (by linarith)]`. Combine the linear relations using `[norm_intCast_le l u ρ a]`. Establish `hu : IsUnit ((b : Disc l u ρ) * (n : Disc l u ρ))`. Use `⟨Units.oneSub _ hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_oneSub]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hc`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnit_coprime (n : ℕ) (h : Nat.Coprime l n) : IsUnit (n : Disc l u ρ) := by
   obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 h
@@ -101,7 +101,7 @@ theorem isUnit_coprime (n : ℕ) (h : Nat.Coprime l n) : IsUnit (n : Disc l u ρ
   exact isUnit_of_mul_isUnit_right hu
 
 /- English proof (translation)
-Take `⟨e, n', hd, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one`. Use `push_cast`. Conclude with `((isUnit_l_disc l u ρ).pow e).mul (isUnit_coprime l u ρ n' ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hd))`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast (n : ℕ) (hn : n ≠ 0) : IsUnit (n : Disc l u ρ) := by
   obtain ⟨e, n', hd, rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one
@@ -109,11 +109,11 @@ theorem isUnit_natCast (n : ℕ) (hn : n ≠ 0) : IsUnit (n : Disc l u ρ) := by
   exact ((isUnit_l_disc l u ρ).pow e).mul (isUnit_coprime l u ρ n' ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hd))
 
 /- English proof (translation)
-Take `⟨e, n', hd, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one`. Establish `hn' : n' ≠ 0` using `by rintro rfl; simp at hn`. Establish `hle : (l : ℝ) ^ e ≤ ((l ^ e * n' : ℕ) : ℝ)`. Use `push_cast`. Establish `: (1 : ℝ) ≤ n'` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hn'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[pow_pos (show (0 : ℝ) < l by exact_mod_cast hl.out.pos) e]`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ e` using `pow_pos (by exact_mod_cast hl.out.pos) e`. Establish `key : ‖((l ^ e * n' : ℕ) : Disc l u ρ) * x‖ = ‖x‖ / (l : ℝ) ^ e`. Use `push_cast`. Rewrite using `[mul_assoc, norm_lpow_mul, norm_coprime_mul l u ρ n' ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hd)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_natCast_mul (n : ℕ) (hn : n ≠ 0) (x : Disc l u ρ) : ‖x‖ ≤ n * ‖(n : Disc l u ρ) * x‖ := by
   obtain ⟨e, n', hd, rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one
@@ -137,15 +137,15 @@ end GlobalTheory.BSP.SeedT
 namespace GlobalTheory.BSP.SeedT
 
 /- English proof (translation)
-Use `set P : Ainf l := ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Ainf l) * μ ^ (k + 1) with hP`. Establish `h1 : ((n.factorial : ℕ) : Per.Acris0 l) * s = algebraMap (Ainf l) (Per.Acris0 l) P`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((n.factorial : ℕ) : Per.AinfP l) * (s : Per.AinfP l) = algebraMap (Ainf l) (Per.AinfP l) P`. Rewrite using `[hs, hP]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, map_mul, map_pow, map_natCast, map_neg, map_one]`. Establish `h2` using `congrArg (fun x => γ (algebraMap (Per.Acris0 l) (Per.Acris l) x)) h1`. Simplify using `only [map_mul, map_natCast] at h2`. Rewrite `h2` using `[show algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Ainf l) (Per.Acris0 l) P) = algebraMap (Ainf l) (Per.Acris l) P from (GlobalTheory.RingIface.tower l P).symm, hγ, hP]`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast, map_neg, map_one] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu` using `isUnit_natCast l (bk.ev X) bk.ρ₀ n.factorial (Nat.factorial_ne_zero n)`. Use `hu.mul_left_cancel (h2.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k + 1 ≤ n` using `Finset.mem_range.1 hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : k + 1 ∣ n.factorial` using `Nat.dvd_factorial (Nat.succ_pos k) hk'`. Establish `hv` using `isUnit_natCast l (bk.ev X) bk.ρ₀ (k + 1) (Nat.succ_ne_zero k)`. Establish `hq : ((n.factorial / (k + 1) : ℕ) : bk.DA bk.ρ₀) = ((n.factorial : ℕ) : bk.DA bk.ρ₀) * Ring.inverse ((k + 1 : ℕ) : bk.DA bk.ρ₀)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ring.mul_inverse_cancel _ hv, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((n.factorial / (k + 1) * (k + 1) : ℕ) : bk.DA bk.ρ₀) * Ring.inverse ((k + 1 : ℕ) : bk.DA bk.ρ₀) := by push_cast; ring`. Use `_ = _ := by rw [Nat.div_mul_cancel hd]`. Rewrite using `[hq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gamma_partial {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (γ : Per.Acris l →+* bk.DA bk.ρ₀)
     (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) (μ : Ainf l) (n : ℕ) (s : Per.Acris0 l)
@@ -185,35 +185,31 @@ theorem gamma_partial {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (
   ring
 
 /- English proof (translation)
-Introduce `l hl K bk C γ hγ hγn`. Use `haveI := DiscBasic.isUltrametricDist_disc l (bk.ev X) bk.ρ₀`. Use `set m := bk.iA (mu C.ε) with hm_def`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Establish `hm : ‖m‖ ≤ 1 / 3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.norm_teichmullerTiltMinusOne_le l K bk C.ε (core_isEps l C)`. Distinguish the cases in `h : l = 2`. Conclude with `(h2 h).trans (by norm_num)`. Establish `h3 : (3 : ℝ) ≤ l`. Use `hl.out.two_le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(show 3 ≤ l by omega)` after adjusting the coercions. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by norm_num) h3`. Use `set f : ℕ → bk.DA bk.ρ₀ := fun k => (-m) ^ (k + 1) * Ring.inverse ((k + 2 : ℕ) : bk.DA bk.ρ₀) with hf_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ k, ‖f k‖ ≤ (2 / 3 : ℝ) ^ (k + 1)`. Introduce `k`. Establish `hu` using `isUnit_natCast l (bk.ev X) bk.ρ₀ (k + 2) (by omega)`. Establish `e : ((k + 2 : ℕ) : bk.DA bk.ρ₀) * f k = (-m) ^ (k + 1)`. Rewrite using `[hf_def, mul_left_comm, Ring.mul_inverse_cancel _ hu, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_le_natCast_mul l (bk.ev X) bk.ρ₀ (k + 2) (by omega) (f k)`. Rewrite `h1` using `[e]`. Establish `h2 : ‖(-m) ^ (k + 1)‖ ≤ ‖m‖ ^ (k + 1)`. Rewrite using `[← norm_neg m]`. Conclude with `norm_pow_le' _ (Nat.succ_pos k)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖m‖ ^ (k + 1) ≤ (1 / 3 : ℝ) ^ (k + 1)` using `pow_le_pow_left₀ (norm_nonneg _) hm _`. Establish `h4 : ((k + 2 : ℕ) : ℝ) ≤ (2 : ℝ) ^ (k + 1)`. Establish `: k + 2 ≤ 2 ^ (k + 1)` using `Nat.lt_two_pow_self`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : Summable f`. Use `Summable.of_norm_bounded ((summable_geometric_of_lt_one (by norm_num) (by norm_num : (2 / 3 : ℝ) < 1)).mul_left (2 / 3)) fun k => ?_` and prove the remaining obligations. Rewrite using `[← pow_succ']`. Conclude with `hf k`. Use `set y := ∑' k, f k with hy_def`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hy : ‖y‖ ≤ 2 / 3` using `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by norm_num) fun k => (hf k).trans (pow_le_of_le_one (by norm_num) (by norm_num) (Nat.succ_ne_zero k))`. Establish `hunit : IsUnit (1 + y)`. Use `⟨Units.oneSub (-y) (by rw [norm_neg]; linarith), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_oneSub, sub_neg_eq_add]`. Use `set S : ℕ → bk.DA bk.ρ₀ := fun n => ∑ k ∈ Finset.range n, (-1) ^ k * m ^ (k + 1) * Ring.inverse ((k + 1 : ℕ) : bk.DA bk.ρ₀) with hS_def`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∀ n, S (n + 1) = m * (1 + ∑ k ∈ Finset.range n, f k)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hS_def]`. Consider the case `succ n ih`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : S (n + 1 + 1) = S (n + 1) + (-1) ^ (n + 1) * m ^ (n + 1 + 1) * Ring.inverse ((n + 1 + 1 : ℕ) : bk.DA bk.ρ₀)`. Simplify using `only [hS_def]`. Rewrite using `[Finset.sum_range_succ]`. Rewrite using `[e1, ih, Finset.sum_range_succ, hf_def]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[neg_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim1 : Tendsto (fun n => S (n + 1)) atTop (𝓝 (m * (1 + y)))`. Repeatedly rewrite using `[hS]`. Conclude with `(tendsto_const_nhds.add hsum.hasSum.tendsto_sum_nat).const_mul m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim2 : Tendsto (fun n => S (n + 1)) atTop (𝓝 (γ C.t))`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Establish `hlinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hε hlinv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `C.t_log r`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨s, hs1, z, hz⟩` from `hN (n + 1) (by omega)`. Establish `key` using `gamma_partial bk γ hγ (mu C.ε) (n + 1) s hs1`. Rewrite using `[dist_eq_norm, norm_sub_rev]`.
-
-Establish `e2 : γ C.t - S (n + 1) = (l : bk.DA bk.ρ₀) ^ r * γ z`. Rewrite using `[hS_def]`. Simplify using `only`. Rewrite using `[← key, ← map_sub, hz, map_mul, map_pow, map_natCast]`. Rewrite using `[e2, norm_lpow_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `heq : γ C.t = m * (1 + y)` using `tendsto_nhds_unique hlim2 hlim1`. Use `⟨hunit.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_assoc_mu : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l)
     (γ : Per.Acris l →+* bk.DA bk.ρ₀), (∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) →

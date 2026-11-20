@@ -19,9 +19,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes (Af singleV)
 open scoped TensorProduct Matrix Classical
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem`. Consider the case `exact _root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem`. Consider the case `(apply _root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommonSmulMembership.exists_common_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mul_of_fg {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (P : Submonoid O)
     {L L' : Submodule O M} (hL : L.FG) (h : ∀ v ∈ L, ∃ s ∈ P, s • v ∈ L') :
@@ -66,7 +66,7 @@ theorem idem_at (I : Ideal (𝓞 F)) (v : HeightOneSpectrum (𝓞 F)) :
     idem I v = if I ≤ v.asIdeal then 1 else 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[idem_at]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_int (I : Ideal (𝓞 F)) (v : HeightOneSpectrum (𝓞 F)) : idem I v ∈ v.adicCompletionIntegers F := by
   rw [idem_at]
@@ -74,13 +74,13 @@ theorem idem_int (I : Ideal (𝓞 F)) (v : HeightOneSpectrum (𝓞 F)) : idem I 
   exacts [one_mem _, zero_mem _]
 
 /- English proof (translation)
-The claim follows from `sub_mem (one_mem _) (idem_int I v)`.
+A detailed English derivation is pending.
 -/
 theorem idem_int' (I : Ideal (𝓞 F)) (v : HeightOneSpectrum (𝓞 F)) :
     (1 - idem I) v ∈ v.adicCompletionIntegers F := sub_mem (one_mem _) (idem_int I v)
 
 /- English proof (translation)
-Rewrite using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `v.valuation_of_algebraMap s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_coe (s : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v (algebraMap F (Af F) (s : F) v) = v.intValuation s := by
@@ -88,7 +88,7 @@ theorem val_coe (s : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
   exact v.valuation_of_algebraMap s
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, val_coe]`. Conclude with `v.intValuation_le_one s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_int (s : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
     algebraMap F (Af F) (s : F) v ∈ v.adicCompletionIntegers F := by
@@ -96,15 +96,13 @@ theorem coe_int (s : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
   exact v.intValuation_le_one s
 
 /- English proof (translation)
-Establish `h1 : ∀ v, ∃ s ∈ P, (algebraMap F (Af F) (s : F) * a) v ∈ v.adicCompletionIntegers F`. Introduce `v`. Break down `h v with h | ⟨s, hs, hv⟩` into its components or cases. Conclude with `⟨1, one_mem _, mul_mem (coe_int 1 v) h⟩`. Distinguish the cases in `h0 : Valued.v (a v) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, one_mem _, mul_mem (coe_int 1 v) ?_⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (h0.le.trans zero_le_one)`. Take `⟨n, hn⟩` from `exists_pow_lt₀ ((v.intValuation_lt_one_iff_mem s).2 hv) (Units.mk0 _ h0)⁻¹`. Use `⟨s ^ n, pow_mem hs n, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, mul_at, map_mul, val_coe, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[Units.val_inv_eq_inv_val, Units.val_mk0]`. Conclude with `(mul_le_mul_left hn.le _).trans (inv_mul_cancel₀ h0).le`. Use `choose s hs hv using h1`. Establish `hfin : {v | a v ∉ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 a.2`. Use `⟨∏ w ∈ hfin.toFinset, s w, prod_mem fun w _ => hs w, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hw : v ∈ hfin.toFinset`. Rewrite using `[← Finset.prod_erase_mul _ _ hw]`. Express the relevant statement in the definitionally equal form `(algebraMap F (Af F) (algebraMap (𝓞 F) F _) * a) v ∈ _`. Rewrite using `[map_mul, map_mul, mul_assoc]`. Conclude with `mul_mem (coe_int _ v) (hv v)`.
-
-Conclude with `mul_mem (coe_int _ v) (not_not.1 fun h => hw (hfin.mem_toFinset.2 h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_clear (P : Submonoid (𝓞 F)) (a : FiniteAdeleRing (𝓞 F) F)
     (h : ∀ v, a v ∈ v.adicCompletionIntegers F ∨ ∃ s ∈ P, s ∈ v.asIdeal) :
@@ -132,12 +130,12 @@ theorem exists_clear (P : Submonoid (𝓞 F)) (a : FiniteAdeleRing (𝓞 F) F)
   · exact mul_mem (coe_int _ v) (not_not.1 fun h => hw (hfin.mem_toFinset.2 h))
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.single_eq_same _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem single_same (v : HeightOneSpectrum (𝓞 F)) : singleV F v 1 v = 1 := RestrictedProduct.single_eq_same _ _ _
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.single_eq_of_ne _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem single_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) : singleV F v 1 w = 0 :=
   RestrictedProduct.single_eq_of_ne _ _ h
@@ -145,11 +143,11 @@ theorem single_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) : singleV F v
 variable {E : Type} [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Set `B` to `Algebra.TensorProduct.basis (Af F) (Module.Free.chooseBasis F E)`. Simplify using `only [← Algebra.smul_def] at h ⊢`. Use `B.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul]`. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `c v * B.repr x i v = 0`. Break down `h v with h | h` into its components or cases. Rewrite using `[h, zero_mul]`. Establish `h1` using `congrArg (fun z => B.repr z i v) h`. Simplify using `only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, mul_at] at h1`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[single_same, one_mul]`. Rewrite using `[h1]`. Conclude with `mul_zero _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill (c : Af F) (x : RA F E) (h : ∀ v, c v = 0 ∨ algebraMap (Af F) (RA F E) (singleV F v 1) * x = 0) :
     algebraMap (Af F) (RA F E) c * x = 0 := by
@@ -167,7 +165,7 @@ theorem kill (c : Af F) (x : RA F E) (h : ∀ v, c v = 0 ∨ algebraMap (Af F) (
     rw [h1]; exact mul_zero _
 
 /- English proof (translation)
-The claim follows from `hat_smul_int ha hz`.
+A detailed English derivation is pending.
 -/
 theorem hat_int {S : Set (Fin n → E)} {a : Af F} (ha : ∀ v, a v ∈ v.adicCompletionIntegers F)
     {z : Fin n → RA F E} (hz : z ∈ hat F S) : algebraMap (Af F) (RA F E) a • z ∈ hat F S := hat_smul_int ha hz
@@ -175,7 +173,7 @@ theorem hat_int {S : Set (Fin n → E)} {a : Af F} (ha : ∀ v, a v ∈ v.adicCo
 variable [NumberField E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : Af F) ⊗ₜ[F] (algebraMap F E (s : F) * x i) = (algebraMap F (Af F) (s : F) ⊗ₜ[F] (1 : E)) * ((1 : Af F) ⊗ₜ[F] x i)`. Rewrite using `[← Algebra.smul_def, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Algebra.smul_def, TensorProduct.smul_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fv_int (s : 𝓞 F) (x : Fin n → E) : fv F (algebraMap (𝓞 F) (𝓞 E) s • x) =
     algebraMap (Af F) (RA F E) (algebraMap F (Af F) (s : F)) • fv F x := by
@@ -185,13 +183,13 @@ theorem fv_int (s : 𝓞 F) (x : Fin n → E) : fv F (algebraMap (𝓞 F) (𝓞 
   rw [← Algebra.smul_def, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Algebra.smul_def, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Take `⟨h1, -, -, h4⟩` from `GlobalTheory.AdLat.hat_rational_points_and_approx F E n Λ hΛ hs`. Take `⟨_, ⟨s, hs, rfl⟩, H⟩` from `exists_mul_of_fg (P.map (algebraMap (𝓞 F) (𝓞 E))) (L' := Λ) hL fun x hx => by`. Take `⟨d, hd, hx'⟩` from `h4 (fv F x)`. Take `⟨s, hs, hv⟩` from `exists_clear P ((1 - idem I) * algebraMap F (Af F) (d : F)⁻¹) fun v => by`. Distinguish the cases in `hv : I ≤ v.asIdeal`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `left`. Rewrite using `[mul_at, sub_at, idem_at, if_pos hv, one_at, sub_self, zero_mul]`. Conclude with `zero_mem _`. Conclude with `Or.inr (hP v hv)`. Use `⟨_, ⟨s, hs, rfl⟩, (h1 _).1 ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[fv_int]`. Establish `e` using `add_mem (hat_int (coe_int s) (h _ (fv_mem_hat hx))) (hat_int hv hx')`. Use `e using 1` and compare the differences between its conclusion and the goal. Establish `hd' : (d : F) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Establish `hd2 : algebraMap (Af F) (RA F E) (algebraMap F (Af F) (d : F)⁻¹) * (d : RA F E) = 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap (Af F) (RA F E)), ← map_natCast (algebraMap F (Af F)), ← map_mul, ← map_mul, inv_mul_cancel₀ hd', map_one, map_one]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (RA F E), smul_smul, smul_smul, ← add_smul, map_mul, map_mul, mul_assoc, mul_assoc, hd2, map_sub, map_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨s, hs, H⟩`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul (P : Submonoid (𝓞 F)) (I : Ideal (𝓞 F))
     (hP : ∀ v : HeightOneSpectrum (𝓞 F), ¬ I ≤ v.asIdeal → ∃ s ∈ P, s ∈ v.asIdeal)
@@ -221,11 +219,9 @@ theorem exists_mul (P : Submonoid (𝓞 F)) (I : Ideal (𝓞 F))
   exact ⟨s, hs, H⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Rewrite using `[gen_eq, smul_comm, ← fv_int]`. Conclude with `hat_smul_int ha (fv_mem_hat (h x hx))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hat_mul {t : 𝓞 F} {L Λ : Submodule (𝓞 E) (Fin n → E)} (h : ∀ v ∈ L, algebraMap (𝓞 F) (𝓞 E) t • v ∈ Λ)
     {z : Fin n → RA F E} (hz : z ∈ hat F (L : Set (Fin n → E))) :
@@ -240,13 +236,11 @@ theorem hat_mul {t : 𝓞 F} {L Λ : Submodule (𝓞 E) (Fin n → E)} (h : ∀ 
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `hv1 : ∀ v : HeightOneSpectrum (𝓞 F), I ≤ v.asIdeal → Valued.v (algebraMap F (Af F) (t : F) v) = 1` using `fun v hv => by rw [val_coe]; exact v.intValuation_eq_one_iff.2 (ht v hv)`. Establish `hb : ∀ v : HeightOneSpectrum (𝓞 F), (if I ≤ v.asIdeal then (algebraMap F (Af F) (t : F) v)⁻¹ else 0) ∈ v.adicCompletionIntegers F` using `fun v => by split_ifs with hv`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv1 v hv, inv_one]`. Conclude with `zero_mem _`. Take `⟨b, hb1, hb2⟩ : ∃ b : Af F, (∀ v, b v ∈ v.adicCompletionIntegers F) ∧ ∀ v, b v = if I ≤ v.asIdeal then (algebraMap F (Af F) (t : F) v)⁻¹ else 0` from `⟨ofInt _ hb, hb, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : idem I = b * algebraMap F (Af F) (t : F)`. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Rewrite using `[mul_at, idem_at, hb2]`. Use `split_ifs with hv`. Use `(inv_mul_cancel₀ fun h0 => ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hv1 v hv` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`. Rewrite using `[zero_mul]`. Rewrite using `[e, map_mul, mul_smul]`.
-
-Conclude with `hat_int hb1 (hat_mul h hz)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mem (I : Ideal (𝓞 F)) {t : 𝓞 F} (ht : ∀ v : HeightOneSpectrum (𝓞 F), I ≤ v.asIdeal → t ∉ v.asIdeal)
     {L Λ : Submodule (𝓞 E) (Fin n → E)} (h : ∀ v ∈ L, algebraMap (𝓞 F) (𝓞 E) t • v ∈ Λ)
@@ -288,7 +282,7 @@ variable {D : D7} {k : ℕ}
 abbrev lf (a : Af D.host.F) : AfE D := algebraMap (Af D.host.F) (AfE D) a
 
 /- English proof (translation)
-Rewrite `h` using `[smul_sub, sub_eq_zero]`. Rewrite using `[← Matrix.smul_mulVec, h, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mulVec_of {R : Type} [CommRing R] (c : R) (N : Matrix (Fin k) (Fin k) R) (h : c • (N - 1) = 0)
     (u : Fin k → R) : c • (N *ᵥ u) = c • u := by
@@ -296,9 +290,9 @@ theorem smul_mulVec_of {R : Type} [CommRing R] (c : R) (N : Matrix (Fin k) (Fin 
   rw [← Matrix.smul_mulVec, h, Matrix.smul_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h1 : lf c • (N - 1).map (finPart D) = 0`. Use extensionality with `i j`. Use `kill c (finPart D ((N - 1) i j)) fun v => (h v).imp id fun H => ?_` and prove the remaining obligations. Use `congrArg (finPart D) (H (pairA D.host.F 0 (singleV D.host.F v 1)) ⟨_, rfl, single_same v, fun _ hv' => single_ne hv'⟩ i j)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2 : (N - 1).map (finPart D) = N.map (finPart D) - 1`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `h1` using `[h2]`. Conclude with `smul_mulVec_of _ _ h1 u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mulVec_eq (c : Af D.host.F) (N : Matrix (Fin k) (Fin k) (AE D))
     (h : ∀ v, c v = 0 ∨ ∀ ε, IsPlaceIdem D v ε → ∀ i j, algebraMap (AF D.host.F) (AE D) ε * (N - 1) i j = 0)
@@ -316,7 +310,7 @@ theorem smul_mulVec_eq (c : Af D.host.F) (N : Matrix (Fin k) (Fin k) (AE D))
   exact smul_mulVec_of _ _ h1 u
 
 /- English proof (translation)
-The claim follows from `smul_mulVec_eq _ _ (fun v => by by_cases hv : I ≤ v.asIdeal · exact Or.inr (h v hv) · exact Or.inl (if_neg hv)) u`.
+A detailed English derivation is pending.
 -/
 theorem trivAt_fmt {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : TrivAt V I g) (u) :
     lf (idem I) • (fmt V g *ᵥ u) = lf (idem I) • u :=
@@ -326,7 +320,7 @@ theorem trivAt_fmt {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : Tri
     · exact Or.inl (if_neg hv)) u
 
 /- English proof (translation)
-The claim follows from `smul_mulVec_eq _ _ (fun v => by by_cases hv : I ≤ v.asIdeal · refine Or.inr fun ε hε i j => ?_ have := congrArg (cA D) (h v hv ε hε i j) rw [map_mul, map_zero, Matrix.sub_apply, map_sub] at this have e : cA D (algebraMap (AF D.host.F) (AE D) ε) = algebraMap (AF D.host.F) (AE D) ε …`.
+A detailed English derivation is pending.
 -/
 theorem trivAt_fmtC {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : TrivAt V I g) (u) :
     lf (idem I) • (fmtC V g *ᵥ u) = lf (idem I) • u :=
@@ -348,7 +342,7 @@ theorem trivAt_fmtC {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : Tr
     · exact Or.inl (if_neg hv)) u
 
 /- English proof (translation)
-The claim follows from `smul_mulVec_eq _ _ (fun v => by by_cases hv : I ≤ v.asIdeal · left rw [sub_at, idem_at, if_pos hv, one_at, sub_self] · exact Or.inr (h v hv)) u`.
+A detailed English derivation is pending.
 -/
 theorem trivOff_fmt {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : TrivOff V I g) (u) :
     lf (1 - idem I) • (fmt V g *ᵥ u) = lf (1 - idem I) • u :=
@@ -359,7 +353,7 @@ theorem trivOff_fmt {V : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D V} (h : Tr
     · exact Or.inr (h v hv)) u
 
 /- English proof (translation)
-The claim follows from `(((GlobalTheory.Ker.isMov_laws D k Λ ⟨hΛ, hs⟩).2.2.2 g.1 g⁻¹.1 g.mul_inv).2 L hL h).1`.
+A detailed English derivation is pending.
 -/
 theorem full_of_mov {g : GL (Fin k) (AfE D)} {Λ L : Lt D.host.E k} (hΛ : Λ.FG)
     (hs : Submodule.span D.host.E (Λ : Set (Fin k → D.host.E)) = ⊤) (hL : L.FG) (h : IsMov g.1 Λ L) :
@@ -367,7 +361,7 @@ theorem full_of_mov {g : GL (Fin k) (AfE D)} {Λ L : Lt D.host.E k} (hΛ : Λ.FG
   (((GlobalTheory.Ker.isMov_laws D k Λ ⟨hΛ, hs⟩).2.2.2 g.1 g⁻¹.1 g.mul_inv).2 L hL h).1
 
 /- English proof (translation)
-Rewrite using `[← (GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E k L hL (full_of_mov hΛ hs hL h)).1 v]`. Conclude with `⟨fun ⟨u, hu, e⟩ => (h _).2 ⟨u, hu, e.symm⟩, fun H => let ⟨u, hu, e⟩ := (h _).1 H; ⟨u, hu, e.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eq_latOf {g : GL (Fin k) (AfE D)} {Λ L : Lt D.host.E k} (hΛ : Λ.FG)
     (hs : Submodule.span D.host.E (Λ : Set (Fin k → D.host.E)) = ⊤) (hL : L.FG) (h : IsMov g.1 Λ L) (v) :
@@ -376,11 +370,11 @@ theorem eq_latOf {g : GL (Fin k) (AfE D)} {Λ L : Lt D.host.E k} (hΛ : Λ.FG)
   exact ⟨fun ⟨u, hu, e⟩ => (h _).2 ⟨u, hu, e.symm⟩, fun H => let ⟨u, hu, e⟩ := (h _).1 H; ⟨u, hu, e.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨s, hsP, h1⟩` from `exists_mul P I hP hL hΛ hs fun z hz => by`. Take `⟨u, hu, rfl⟩` from `(h z).1 hz`. Use `ht u` as an intermediate fact. Express the relevant statement in the definitionally equal form `lf (idem I) • (g.1 *ᵥ u) ∈ _`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hat_int (idem_int I) hu`. Take `⟨t, htP, h2⟩` from `exists_mul P I hP hΛ hL (full_of_mov hΛ hs hL h) fun z hz => by`. Express the relevant statement in the definitionally equal form `lf (idem I) • z ∈ _`. Rewrite using `[← ht z]`. Conclude with `hat_int (idem_int I) ((h _).2 ⟨z, hz, rfl⟩)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s * t, mul_mem hsP htP, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm, mul_smul]`. Conclude with `Λ.smul_mem _ (h1 v hv)`. Rewrite using `[map_mul, mul_smul]`. Conclude with `L.smul_mem _ (h2 v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree_of_mov (P : Submonoid (𝓞 D.host.F)) (I : Ideal (𝓞 D.host.F))
     (hP : ∀ v : HeightOneSpectrum (𝓞 D.host.F), ¬ I ≤ v.asIdeal → ∃ s ∈ P, s ∈ v.asIdeal)
@@ -404,11 +398,11 @@ theorem agree_of_mov (P : Submonoid (𝓞 D.host.F)) (I : Ideal (𝓞 D.host.F))
   · rw [map_mul, mul_smul]; exact L.smul_mem _ (h2 v hv)
 
 /- English proof (translation)
-Establish `d (z : Fin k → AfE D) : lf (idem I) • z + lf (1 - idem I) • z = z`. Rewrite using `[← add_smul, ← map_add, add_sub_cancel, map_one, one_smul]`. Establish `key (u : Fin k → AfE D) : lf (1 - idem I) • (m₁ *ᵥ u) = lf (1 - idem I) • ((m₁ * m₂) *ᵥ u)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, ← Matrix.mulVec_smul, h₂]`. Introduce `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨u, hu, e⟩` from `(h w).1 hw`. Use `⟨lf (idem I) • w + lf (1 - idem I) • u, add_mem (a w hw) (hat_int (idem_int' I) hu), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, h₁, key, ← e, d]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[← d (m₁ *ᵥ u), h₁, key]`. Conclude with `add_mem (b u hu) (hat_int (idem_int' I) ((h _).2 ⟨u, hu, rfl⟩))`.
+Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mov_left {m₁ m₂ : Matrix (Fin k) (Fin k) (AfE D)} {Λ L : Lt D.host.E k} {I : Ideal (𝓞 D.host.F)}
     (h : IsMov (m₁ * m₂) Λ L) (h₁ : ∀ u, lf (idem I) • (m₁ *ᵥ u) = lf (idem I) • u)
@@ -431,7 +425,7 @@ theorem mov_left {m₁ m₂ : Matrix (Fin k) (Fin k) (AfE D)} {Λ L : Lt D.host.
 abbrev cf (D : D7) : AfE D →+* AfE D := (sg (Af D.host.F) (cF D)).toRingHom
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[D.host.F] ·) (star_star x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cf_cf (x : AfE D) : cf D (cf D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -440,7 +434,7 @@ theorem cf_cf (x : AfE D) : cf D (cf D x) = x := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fin_cA (x : AE D) : finPart D (cA D x) = cf D (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -449,9 +443,9 @@ theorem fin_cA (x : AE D) : finPart D (cA D x) = cf D (finPart D x) := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Matrix.one_apply_eq, ← Algebra.TensorProduct.one_def, mul_one]`. Both sides reduce to the same expression. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.one_apply_ne hb.symm, TensorProduct.tmul_zero, mul_zero, zero_mul]`. Conclude with `fun h => (h (Finset.mem_univ a)).elim`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hermA_one (x y : Fin k → AfE D) :
     hermA (cF D) (1 : Matrix (Fin k) (Fin k) D.host.E) x y = ∑ a, x a * cf D (y a) := by
@@ -463,9 +457,9 @@ theorem hermA_one (x y : Fin k → AfE D) :
   · exact fun h => (h (Finset.mem_univ a)).elim
 
 /- English proof (translation)
-Establish `e (x : Fin k → AfE D) (a) : (m.map (cf D) *ᵥ x) a = cf D ((m *ᵥ (cf D ∘ x)) a)`. Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(cf_cf _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrArg (cf D) (h (cf D ∘ x) (cf D ∘ y))` as an intermediate fact. Simplify using `only [hermA_one, map_sum, map_mul, e, Function.comp_apply, cf_cf] at this ⊢`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermA_conj {m : Matrix (Fin k) (Fin k) (AfE D)}
     (h : ∀ x y, hermA (cF D) 1 (m *ᵥ x) (m *ᵥ y) = hermA (cF D) 1 x y) (x y) :
@@ -482,21 +476,19 @@ theorem hermA_conj {m : Matrix (Fin k) (Fin k) (AfE D)}
 variable {S T : HSp D}
 
 /- English proof (translation)
-Set `g : GL (Fin S.rank) (AfE D)` to `Matrix.GeneralLinearGroup.map (cf D) (finHom S h)`. Establish `hg : g.1 = fmtC S h`. Use extensionality with `i j`. Conclude with `(fin_cA (mt S h i j)).symm`. Take `⟨hfg, hsd, -⟩` from `Base.stdL_mem_Vset (E := D.host.E) S.rank M`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : Submodule.span D.host.E (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) = ⊤`. Rewrite using `[stdL, Submodule.span_span_of_tower, ← (Pi.basisFun D.host.E (Fin S.rank)).span_eq]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[← hg]`. Establish `hint (z : D.host.E) : z ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ↔ IsIntegral ℤ z`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩`. Use `⟨hΛ, fun x => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu` using `(GlobalTheory.T.finitePart_preserves_form_det_norm_one D S h).1`. Rewrite `hu` using `[show S.gramᵀ = 1 by rw [C.m.gS, Matrix.transpose_one]]`. Establish `key` using `GlobalTheory.AdLat.latOf_selfDual D.host.F D.host.E S.rank (stdL D.host.E S.rank) (cF D) 1 1 g hfg hs (fun x => star_star x) (fun a b => by`. Rewrite using `[Matrix.one_apply, Matrix.one_apply, apply_ite (cF D), map_one, map_zero]`. Conclude with `if_congr eq_comm rfl rfl) (by simp) one_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use the proof step `(fun v => by simp only [hint]; exact (hsd v).symm) (hermA_conj hu) x`. Simplify using `only [hint, eq_latOf hfg hs hΛ hm] at key`. Conclude with `key.symm`. Set `P : Submonoid (𝓞 D.host.F)` to `{ carrier := {s | ∃ n : ℕ, 0 < n ∧ n.Coprime M ∧ s = n} one_mem' := ⟨1, one_pos, Nat.coprime_one_left M, Nat.cast_one.symm⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, ha', rfl⟩ ⟨b, hb, hb', rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨a * b, mul_pos ha hb, Nat.Coprime.mul_left ha' hb', (Nat.cast_mul a b).symm⟩ }`. Take `⟨_, ⟨s, hs0, hsM, rfl⟩, h1, h2⟩` from `agree_of_mov P (Ideal.span {(M : 𝓞 D.host.F)}) (fun v hv => by haveI := v.isPrime`. Take `⟨p, hp, e⟩` from `(Ideal.isPrime_int_iff.mp (Ideal.IsPrime.under ℤ v.asIdeal)).resolve_left (Ideal.under_ne_bot ℤ v.ne_bot)`. Establish `hpv : (p : 𝓞 D.host.F) ∈ v.asIdeal`. Establish `: (p : ℤ) ∈ v.asIdeal.under ℤ` using `e ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `⟨p, ⟨p, hp.pos, (Nat.Prime.coprime_iff_not_dvd hp).2 ?_, rfl⟩, hpv⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Use `hv ((Ideal.span_singleton_le_iff_mem _).2 ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`.
-
-Conclude with `Ideal.mul_mem_right _ _ hpv) hfg hs hΛ hm (hg ▸ trivAt_fmtC ht)`. Rewrite `h1`, `h2` using `[map_natCast]`. Conclude with `⟨s, hs0, hsM, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Vset (C : Ctx S T) {M : ℕ} {h : GA D S} {Λ : Lt D.host.E S.rank}
     (ht : TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h) (hΛ : Λ.FG) (hm : IsMov (fmtC S h) (stdL D.host.E S.rank) Λ) :
@@ -547,13 +539,13 @@ theorem mem_Vset (C : Ctx S T) {M : ℕ} {h : GA D S} {Λ : Lt D.host.E S.rank}
     exact ⟨s, hs0, hsM, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hcc, -, -, hG, hdet, -, -⟩` from `GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D T`. Establish `hE (x y : Fin T.rank → D.host.E) : EF C.X x y = -Algebra.trace ℚ D.host.E (D.host.xi0 * ∑ a, ∑ b, x a * T.gramᵀ a b * cF D (y b))`. Rewrite using `[EF_def, C.m.ka, C.m.gT, mul_div_cancel_left₀ _ two_ne_zero, neg_mul, map_neg]`. Both sides reduce to the same expression. Establish `hJ (Λ : Lt D.host.E T.rank) (x : Fin T.rank → D.host.E) : (∀ y ∈ Λ, (∑ a, ∑ b, x a * T.gramᵀ a b * cF D (y b)) ∈ D.host.AA * D.host.AAbar) ↔ ∀ y ∈ Λ, ∃ k : ℤ, EF C.X x y = k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Take `⟨n, hn⟩` from `trace_int_of_mem Formalism.IndefR.Fin.factPrincipalDatum D (H y hy)`. Conclude with `⟨-n, by rw [hE, hn, Int.cast_neg]⟩`. Introduce `H y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(GlobalTheory.Member.LatSelfDual.mem_iff_trace D _).2 fun a => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `H _ (Λ.smul_mem (Lev.bar a) hy)`. Rewrite `hn` using `[← Lev.EF_smul, hE]`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_neg, ← hn, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun z => Algebra.trace ℚ D.host.E (D.host.xi0 * z)) (GlobalTheory.Member.LatSelfDual.frameForm_smul_left T a x y).symm`. Use `⟨hL, fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.AdLat.latOf_selfDual D.host.F D.host.E T.rank C.X.Λ (cF D) T.gramᵀ (D.host.AA * D.host.AAbar) (finHom T g) C.X.Λ_fg C.X.Λ_span hcc hG hdet (mul_ne_zero (AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D) (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D)) (fun v => …`. Simplify using `only [eq_latOf (g := finHom T g) C.X.Λ_fg C.X.Λ_span hL hm] at key`. Conclude with `key.symm.trans (hJ L x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfD_of_mov (C : Ctx S T) {g : GA D T} {L : Lt D.host.E T.rank} (hL : L.FG)
     (hm : IsMov (fmt T g) C.X.Λ L) : SelfD C.X L := by
@@ -586,18 +578,16 @@ theorem selfD_of_mov (C : Ctx S T) {g : GA D T} {L : Lt D.host.E T.rank} (hL : L
   exact key.symm.trans (hJ L x)
 
 /- English proof (translation)
-The claim follows from `(IsCMField.ringOfIntegersComplexConj D.host.E).commutes s`.
+A detailed English derivation is pending.
 -/
 theorem bar_algebraMap (s : 𝓞 D.host.F) :
     Lev.bar (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s :=
   (IsCMField.ringOfIntegersComplexConj D.host.E).commutes s
 
 /- English proof (translation)
-Set `P : Submonoid (𝓞 D.host.F)` to `{ carrier := {s | IsCoprime (Ideal.span {s}) (C.under Lv)} one_mem' := Lev.cop_one mul_mem' := Lev.cop_mul }`. Take `⟨s, hs, h1, h2⟩` from `agree_of_mov (g := finHom T g) P (C.under Lv) (fun v hv => by`. Take `⟨a, ha, ha'⟩` from `SetLike.not_le_iff_exists.1 hv`. Take `⟨y, i, hi, e⟩` from `v.isMaximal.exists_inv ha'`. Conclude with `⟨i, Lev.cop_iff.2 ⟨1, y * a, Ideal.mul_mem_left _ _ ha, by linear_combination e⟩, hi⟩)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `C.X.Λ_fg C.X.Λ_span hL hm (trivAt_fmt ht)`. Use `⟨selfD_of_mov C hL hm, _, ?_, h1, h2⟩` and prove the remaining obligations. Take `⟨a, m, hm, e⟩` from `Lev.cop_iff.1 hs`. Establish `e'` using `congrArg (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) e`. Rewrite `e'` using `[map_add, map_mul, map_one]`.
-
-Conclude with `IsCoprime.mul_right (Lev.cop_iff.2 ⟨_, _, hm, e'⟩) (Lev.cop_iff.2 ⟨_, _, Lev.mem_conjI.2 (by rw [bar_algebraMap]; exact hm), e'⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lats (C : Ctx S T) (Lv : SW.Level C.X) {g : GA D T} {L : Lt D.host.E T.rank} (hL : L.FG)
     (hm : IsMov (fmt T g) C.X.Λ L) (ht : TrivAt T (C.under Lv) g) : L ∈ Lv.lats := by
@@ -618,15 +608,13 @@ theorem mem_lats (C : Ctx S T) (Lv : SW.Level C.X) {g : GA D T} {L : Lt D.host.E
     (Lev.cop_iff.2 ⟨_, _, Lev.mem_conjI.2 (by rw [bar_algebraMap]; exact hm), e'⟩)
 
 /- English proof (translation)
-Take `⟨-, hmul, hsplit, hinf, hlev⟩` from `(GlobalTheory.Ker.Grp.rational_points_and_parts D S T C).2.2.2 T`. Take `⟨a, ha, f, hf, rfl⟩` from `hsplit g`. Take `⟨f₁, hf₁, f₂, -, rfl, -, t₁, t₂⟩` from `hlev (C.under Lv) (Ideal.under_ne_bot _ Lv.ne_bot) f hf`. Rewrite `hm` using `[(hmul _ _).2.1, (hinf a ha).1, one_mul, (hmul _ _).2.1]`. Take `⟨-, s, hs, h1, h2⟩` from `hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E (Lev.bar s * s)).1 (by`. Express the relevant statement in the definitionally equal form `Lev.bar _ = _`. Rewrite using `[map_mul, Lev.bar_bar, mul_comm])`. Establish `ht' : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t = Lev.bar s * s` using `ht`. Establish `hc : IsCoprime (Ideal.span {Lev.bar s * s}) Lv.𝔪`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Lev.cop_mul ?_ hs.of_mul_right_left` and prove the remaining obligations. Take `⟨b, m, hm', e⟩` from `Lev.cop_iff.1 hs.of_mul_right_right`. Conclude with `Lev.cop_iff.2 ⟨Lev.bar b, Lev.bar m, Lev.mem_conjI.1 hm', by rw [← map_mul, ← map_add, e, map_one]⟩`. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 D.host.F), C.under Lv ≤ v.asIdeal → t ∉ v.asIdeal` using `fun v hv htv => by haveI := v.isPrime`. Take `⟨Q, hQ, hQp, e⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal Lv.𝔪 hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, m, hm', e'⟩` from `Lev.cop_iff.1 hc`. Rewrite `htv` using `[← e, Ideal.mem_comap, ht']`. Conclude with `hQp.ne_top ((Ideal.eq_top_iff_one _).2 (e' ▸ add_mem (Ideal.mul_mem_left _ _ htv) (hQ hm')))`. Use `⟨f₁, hf₁, t₁, mov_left hm (trivAt_fmt t₁) (trivOff_fmt t₂) (fun z hz => idem_mem _ hv (fun v hv => ?_) hz) fun z hz => idem_mem _ hv (fun v hv => ?_) hz⟩` and prove the remaining obligations. Rewrite using `[ht', mul_smul]`.
-
-Conclude with `C.X.Λ.smul_mem _ (h1 v hv)`. Rewrite using `[ht', mul_smul]`. Conclude with `L.smul_mem _ (h2 v hv)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_triv (C : Ctx S T) (Lv : SW.Level C.X) {g : GA D T} {L : Lt D.host.E T.rank}
     (hm : IsMov (fmt T g) C.X.Λ L) (hL : L ∈ Lv.lats) :
@@ -656,7 +644,7 @@ theorem exists_triv (C : Ctx S T) (Lv : SW.Level C.X) {g : GA D T} {L : Lt D.hos
   · rw [ht', mul_smul]; exact L.smul_mem _ (h2 v hv)
 
 /- English proof (translation)
-Introduce `_ _ _ C` and use `⟨fun _ _ _ _ ht hΛ hm => mem_Vset C ht hΛ hm, fun Lv _ _ hL hm => ⟨selfD_of_mov C hL hm, mem_lats C Lv hL hm, Ideal.under_ne_bot _ Lv.ne_bot, exists_triv C Lv hm⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mov_mem_lattices : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), (∀ (M : ℕ) (h : GA D S) (Λ : Lt D.host.E S.rank), 0 < M → TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h → Λ.FG → IsMov (fmtC S h) (stdL D.host.E S.rank) Λ → Λ ∈ Vset D.host.E S.rank M) ∧ ∀ (Lv : SW.Level C.X) (g : GA D T) (L : Lt D.host.E T.rank), L.FG → IsMov (fmt T g) C.X.Λ L → SelfD C.X L ∧ (TrivAt T (C.under Lv) g → L ∈ Lv.lats) ∧ C.under Lv ≠ ⊥ ∧ (L ∈ Lv.lats → ∃ g' ∈ GfC T, TrivAt T (C.under Lv) g' ∧ IsMov (fmt T g') C.X.Λ L) :=
   fun _ _ _ C => ⟨fun _ _ _ _ ht hΛ hm => mem_Vset C ht hΛ hm, fun Lv _ _ hL hm =>

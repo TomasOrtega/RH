@@ -15,7 +15,7 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealZeroFormEqSmoothFunction.lean&line=55#L55)
 -/

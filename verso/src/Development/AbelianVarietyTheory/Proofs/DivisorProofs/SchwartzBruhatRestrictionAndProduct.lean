@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.AdaptEv
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [ext0]`. Break down `eq k with i | j` into its components or cases. Conclude with `continuous_const`. Conclude with `continuous_apply j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_wittExtendByZero {R : Type} [TopologicalSpace R] [Zero R] {κ ι κ₁ : Type} (eq : κ ≃ ι ⊕ κ₁) :
     Continuous (ext0 (R := R) eq) := by
@@ -20,11 +20,11 @@ theorem continuous_wittExtendByZero {R : Type} [TopologicalSpace R] [Zero R] {κ
   · exact continuous_apply j
 
 /- English proof (translation)
-Establish `hl : Function.LeftInverse (fun (x : κ → R) j => x (eq.symm (Sum.inr j))) (ext0 (R` using `R) eq) := fun a => funext fun j => ext0_inr eq a j`. Use `⟨hl.isEmbedding (by fun_prop) (continuous_wittExtendByZero eq), ?_⟩` and prove the remaining obligations. Establish `: Set.range (ext0 (R` using `R) eq) = ⋂ i, (fun x : κ → R => x (eq.symm (Sum.inl i))) ⁻¹' {0} := by`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨fun ⟨a, ha⟩ i => ha ▸ ext0_inl eq a i, fun h => ⟨fun j => x (eq.symm (Sum.inr j)), funext fun k => ?_⟩⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `eq.symm.surjective k`. Break down `s with i | j` into its components or cases. Rewrite using `[ext0_inl, h]`. Rewrite using `[ext0_inr]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_singleton.preimage (continuous_apply _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_extend_by_zero {R : Type} [TopologicalSpace R] [Zero R] [T1Space R] {κ ι κ₁ : Type}
     (eq : κ ≃ ι ⊕ κ₁) : IsClosedEmbedding (ext0 (R := R) eq) := by
@@ -59,9 +59,9 @@ def blockHomeo {R : Type} [TopologicalSpace R] {κ ι κ₁ : Type} (eq : κ ≃
     · exact (continuous_apply j).comp continuous_snd
 
 /- English proof (translation)
-Introduce `R _ _ _ κ ι κ₁ _ _ _ eq`. Use `⟨fun g hg => ⟨hg.1.comp_continuous (continuous_wittExtendByZero eq), hg.2.comp_isClosedEmbedding (isClosedEmbedding_extend_by_zero eq)⟩, fun A hA φ hφ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hA.1.comp_continuous (f := fun (x : κ → R) i => x (eq.symm (Sum.inl i))) (by fun_prop)).mul (hφ.1.comp_continuous (f := fun (x : κ → R) j => x (eq.symm (Sum.inr j))) (by fun_prop))`. Establish `h : HasCompactSupport fun p : (ι → R) × (κ₁ → R) => A p.1 * φ p.2`. Use `HasCompactSupport.intro' (IsCompact.prod hA.2 hφ.2) ((isClosed_tsupport A).prod (isClosed_tsupport φ)) fun p hp => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Set.mem_prod, not_and_or]`. Break down `hp with hp | hp` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport hp, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hp, mul_zero]`. Conclude with `h.comp_homeomorph (blockHomeo eq)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_restrL_prodVac : ∀ {R : Type} [TopologicalSpace R] [Zero R] [T1Space R] {κ ι κ₁ : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁),
     (∀ g ∈ SB (κ → R), restrL eq g ∈ SB (κ₁ → R)) ∧ ∀ A ∈ SB (ι → R), ∀ φ ∈ SB (κ₁ → R), prodVac eq A φ ∈ SB (κ → R) := by

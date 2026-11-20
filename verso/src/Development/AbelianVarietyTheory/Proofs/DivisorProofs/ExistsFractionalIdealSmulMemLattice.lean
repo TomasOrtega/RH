@@ -8,13 +8,13 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ n L hL x hx`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : E →ₗ[𝓞 E] (Fin n → E)` to `(LinearMap.toSpanSingleton E (Fin n → E) x).restrictScalars (𝓞 E)`. Set `I : Submodule (𝓞 E) E` to `L.comap f`. Establish `hI : ∀ s, s ∈ I ↔ s • x ∈ L` using `fun s => by simp [I, f]`. Set `π : (Fin n → E) →ₗ[𝓞 E] E` to `LinearMap.proj (R := 𝓞 E) (φ := fun _ => E) i`. Establish `hfg : L.FG` using `Submodule.IsLattice.fg (A := E) (M := L)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hJ : IsFractional (𝓞 E)⁰ (L.map π)` using `FractionalIdeal.isFractional_of_fg (hfg.map π)`. Set `J : FractionalIdeal (𝓞 E)⁰ E` to `⟨L.map π, hJ⟩`. Establish `hle : I ≤ ((FractionalIdeal.spanSingleton (𝓞 E)⁰ (x i)⁻¹ * J : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E)`. Introduce `s hs`. Rewrite using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_singleton_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨s * x i, ?_, ?_⟩` and prove the remaining obligations. Use `show s * x i ∈ L.map π`. Conclude with `⟨s • x, (hI s).1 hs, by simp [π]⟩`. Clear the denominators using the available nonvanishing facts. Conclude with `⟨⟨I, FractionalIdeal.isFractional_of_le hle⟩, fun s => hI s⟩`.
+Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fractionalIdeal_smul_mem_lattice :
     ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.IsLattice E →

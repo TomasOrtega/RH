@@ -13,17 +13,17 @@ namespace GlobalTheory.FinalJoin
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin GlobalTheory.RunIn GlobalTheory.FinalJoin
 
 /- English proof (translation)
-Introduce `Z₀`. Use `⟨fun a b => max (Z₀ a b) (4 * b), ?_⟩` and prove the remaining obligations. Introduce `D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hP hx`. Establish `hx1 : Z₀ H.CA H.CK ≤ large₂.sc.x` using `(le_max_left _ _).trans hx`. Establish `hx2 : 4 * H.CK ≤ large₂.sc.x` using `(le_max_right _ _).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hd⟩` from `hP.hyp.2.1`. Rewrite `hd` using `[hP.tie.1]`. Establish `hA : 12 ≤ A2` using `hP.tie.2.2.2.2.2`. Establish `hC : 1000 ≤ C2` using `hd.1`. Establish `hL : 1 ≤ large₂.sc.L`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Scale.L`. Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hfr : (D.R.f : ℝ) * D.R.r ≤ zBase large₂`. Unfold `zBase`. Conclude with `le_mul_of_one_le_right (by positivity) hL`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxZ : large₂.sc.x ≤ zBase large₂` using `hP.hyp.1.1.trans hfr`. Establish `hZ1 : 1 ≤ zBase large₂` using `WeightFamilies.one_le_zBase large₂`. Establish `hZP : zBase large₂ ≤ WeightFamilies.PPv D large₂ C2 A2`. Unfold `WeightFamilies.PPv`. Establish `h1 : zBase large₂ ≤ zBase large₂ ^ A2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (le_mul_of_one_le_left (by linarith) (by linarith))`. Establish `hf8 : (8 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast D.eight_le_f`. Establish `hP1 : 1 ≤ WeightFamilies.PPv D large₂ C2 A2` using `hZ1.trans hZP`. Establish `hPP : WeightFamilies.PPv D large₂ C2 A2 ≤ WeightFamilies.PPv D large₂ C2 A2 ^ 2 * D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h1 : WeightFamilies.PPv D large₂ C2 A2 ≤ WeightFamilies.PPv D large₂ C2 A2 ^ 2` using `by nlinarith`. Conclude with `h1.trans (le_mul_of_one_le_right (by positivity) (by linarith))`. Establish `hfrd` using `pageRun_sq_le_rd_and_eight_le_rank D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hP`. Conclude with `⟨⟨hP.hyp, hP.page, hP.tie, indexBoundConstant_le_pagePolynomial_of_runConditions D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hP, hfrd.1, hfrd.2, three_le_DF_of_pageRun D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hP, hx2.trans (hxZ.trans (hZP.trans hPP))⟩, hx1.tran …`.
+A detailed English derivation is pending.
 -/
 theorem pageOK_of_pageRun_beyond : ∀ Z₀ : ℝ → ℝ → ℝ, ∃ x₀ : ℝ → ℝ → ℝ, ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), InR D j → PageRun large₂ X H C2 A2 CT ka wL wF Tn nP nW h0 → x₀ H.CA H.CK ≤ large₂.sc.x → PageOK large₂ X H C2 A2 CT ka wL wF Tn nP nW h0 ∧ Z₀ H.CA H.CK ≤ zBase large₂ := by
   intro Z₀

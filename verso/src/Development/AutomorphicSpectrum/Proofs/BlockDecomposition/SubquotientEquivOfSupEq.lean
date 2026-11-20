@@ -7,21 +7,19 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.RepSecondIso
 
 /- English proof (translation)
-Introduce `G V _ _ _ ρ A B E hEA hsup`. Establish `hEA' : E.toSubmodule ≤ A.toSubmodule` using `fun x hx => hEA hx`. Set `PE` to `Submodule.comap E.toSubmodule.subtype B.toSubmodule`. Set `PA` to `Submodule.comap A.toSubmodule.subtype B.toSubmodule`. Set `f : E.toSubmodule →ₗ[ℂ] A.toSubmodule ⧸ PA` to `PA.mkQ ∘ₗ Submodule.inclusion hEA'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : PE ≤ LinearMap.ker f`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Use `show Submodule.Quotient.mk (p := PA) (Submodule.inclusion hEA' x) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hx`. Set `φ` to `PE.liftQ f hf`. Establish `hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (Submodule.inclusion hEA' x)` using `fun _ => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective PE q`. Rewrite `hq` using `[LinearMap.mem_ker, hφ, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `hq`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `q`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective PA q`. Establish `ha : (a : V) ∈ E.toSubmodule ⊔ B.toSubmodule`. Rewrite using `[← Subrepresentation.toSubmodule_sup, hsup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.2`. Take `⟨e, he, b, hb, hab⟩` from `Submodule.mem_sup.mp ha`. Use `⟨Submodule.Quotient.mk ⟨e, he⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, Submodule.Quotient.eq]`. Use `show e - (a : V) ∈ B.toSubmodule`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hdiff : e - (a : V) = -b`. Rewrite using `[← hab]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdiff]`. Conclude with `B.toSubmodule.neg_mem hb`.
-
-Set `ψ` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Use `⟨Representation.Equiv.mk' ⟨φ, fun g => ?_⟩ ψ.symm (fun x => ψ.symm_apply_apply x) (fun y => ψ.apply_symm_apply y)⟩` and prove the remaining obligations. Conclude with `Submodule.linearMap_qext _ (LinearMap.ext fun x => rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subQuot_equiv_of_sup : ∀ {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (A B E : Subrepresentation ρ), E ≤ A → E ⊔ B = A →

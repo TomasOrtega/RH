@@ -14,17 +14,17 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `a q B ha hc hG`. Choose the witnesses or unpack the hypotheses as in `⟨α, rfl⟩ : ∃ α : Fin a → ℂˣ, Finset.univ.val.map α = B := by`. Proceed by induction on `B using Quotient.inductionOn with`. Consider the case `h l`. Establish `hl : l.length = a` using `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Substitute `hl` using the available equality. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Use `UpperTheory.Gal.crystallineComparison.genMul_of ℂˣ a α ?_` and prove the remaining obligations. Introduce `m hs hp`. Establish `hne` using `hG α rfl`.
+Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `DGen at hne`. Rewrite `hne` using `[map_mul]`. Establish `h3` using `right_ne_zero_of_mul hne`. Rewrite `h3` using `[map_prod]`. Establish `hle : ∀ i, m i < a + 1` using `fun i => Nat.lt_succ_of_le (hs ▸ Finset.single_le_sum (f := m) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : ((1 : Fin (a + 1)) : ℕ) = 1`. Rewrite using `[Fin.val_one', Nat.mod_eq_of_lt (by omega)]`. Distinguish the cases in `hm : (fun i => (⟨m i, hle i⟩ : Fin (a + 1))) = fun _ => 1`. Introduce `i`. Establish `h` using `congrArg Fin.val (congrFun hm i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hone]`. Conclude with `h`. It suffices to derive a contradiction. Establish `hmem : (fun i => (⟨m i, hle i⟩ : Fin (a + 1))) ∈ (Finset.univ : Finset (Fin a → Fin (a + 1))).filter (fun m => (∑ i, (m i : ℕ)) = a ∧ m ≠ fun _ => 1)` using `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hs, hm⟩`. Use `Finset.prod_ne_zero_iff.mp h3 _ hmem ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp' : ∏ i, (α i : ℂ) ^ m i = ∏ i, (α i : ℂ)`. Establish `h` using `congrArg Units.val hp`. Simplify `h` using `[Units.coe_prod]`. Simplify `sub_eq_zero.mpr hp'` using `[map_sub, map_prod, map_pow, MvPolynomial.aeval_X]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.dGenMul_of :
     DGenMul := by

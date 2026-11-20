@@ -6,13 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo.Cs
 
 /- English proof (translation)
-Establish `hQ0 : 0 < Q` using `lt_of_lt_of_le one_pos hQ`. Establish `hl : 0 ≤ Real.log Q` using `Real.log_nonneg hQ`. Establish `hp : Q ^ N = Real.exp (N * Real.log Q)`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hQ0]`. Establish `h1 : A * F - A * C ≤ N * Real.log Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hF hA` as an intermediate fact. Use `mul_le_mul_of_nonneg_right hN hl` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : x * Real.exp (A * F - A * C) ≤ K`. Use `le_trans ?_ h` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp]`. Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 h1) hx`. Establish `h3 : x = x * Real.exp (A * F - A * C) * (Real.exp (A * C) * Real.exp (-(A * F)))`. Rewrite using `[mul_assoc, ← Real.exp_add, ← Real.exp_add, show A * F - A * C + (A * C + -(A * F)) = 0 by ring, Real.exp_zero, mul_one]`. Rewrite using `[h3, mul_assoc K]`.
-
-Conclude with `mul_le_mul_of_nonneg_right h2 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_div_one_add_pow_succ_of_mul_le {x K Q A C F : ℝ} {N : ℕ} (hQ : 1 ≤ Q) (hA : 0 ≤ A) (hN : A * C ≤ N)
     (hF : F ≤ C * (1 + Real.log Q)) (hx : 0 ≤ x) (h : x * Q ^ N ≤ K) :
@@ -38,15 +36,15 @@ private theorem le_div_one_add_pow_succ_of_mul_le {x K Q A C F : ℝ} {N : ℕ} 
 open GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
   GroundTheory.Automorphic.CuspidalSpectrum in
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ f lam C hlam hf q α hα hR`. Take `⟨r, hr⟩` from `UpperTheory.V.Lit.Bor.oneReal E a Ξ`. Take `⟨hq1, hq2, -⟩` from `UpperTheory.V.Lit.Geo.qhtFacts E a`. Use `⟨|r|, abs_nonneg r, fun A hA X j l => ?_⟩` and prove the remaining obligations. Take `⟨he, hv⟩` from `UpperTheory.V.Lit.Geo.Cs.rapidEig E a U Ξ r hr q α hα X j l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `hR l X ⌈A * C⌉₊`. Use `⟨K * Real.exp (A * C), fun g => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hs⟩ : ∃ g₁ : KernelIndexFullLattice.G1 E a, splitCentre E a (lam g) * g₁.1 = g` from `⟨_, hlam.split g⟩`. Establish `hK'` using `hK g₁`. Establish `hq : qht g = qht (E` using `E) (a := a) g₁.1 := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq2 1 (lam g) g₁.1` as an intermediate fact. Rewrite `this` using `[map_one, one_mul, hs]`. Conclude with `this`. Establish `ha` using `UpperTheory.V.Lit.Bor.aInv E a _ _ he (lam g) g₁.1`. Rewrite `ha` using `[hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hK'` using `[← hq]`. Establish `hb` using `le_div_one_add_pow_succ_of_mul_le (hq1 g) hA (Nat.le_ceil (A * C)) (hf g) (norm_nonneg _) (le_trans (mul_le_mul_of_nonneg_right (norm_le_pi_norm _ j) (pow_nonneg (zero_le_one.trans (hq1 g)) _)) hK')`. Establish `hb' : ‖((l.map (lie E a)).prod (Bor.cmp j (α X))).1 g₁.1‖ ≤ K * Real.exp (A * C) * Real.exp (-(A * f g))`. Rewrite using `[← hv]`. Conclude with `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ‖Complex.exp (-(r : ℂ) * (lam g : ℂ))‖ ≤ Real.exp (|r| * |lam g|)`. Rewrite using `[Complex.norm_exp, Real.exp_le_exp, ← abs_mul]`. Simplify using `using neg_le_abs (r * lam g)`. Rewrite using `[ha, norm_mul, sub_eq_add_neg, Real.exp_add, mul_left_comm]`. Conclude with `mul_le_mul hc hb' (norm_nonneg _) (Real.exp_pos _).le`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.rapidAll :
     RapidAll := by

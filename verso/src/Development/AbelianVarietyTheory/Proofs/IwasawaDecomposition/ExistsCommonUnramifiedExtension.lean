@@ -5,11 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K L _ _ _ i j hf hu`. Use `letI : Algebra k K := i.toAlgebra`. Use `letI : Algebra k L := j.toAlgebra`. Use `haveI : Module.Finite k K := hf`. Use `haveI : Algebra.FormallyUnramified k K := hu`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Nontrivial (L ⊗[k] K) := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (L ⊗[k] K)`. Use `letI : Field (L ⊗[k] K ⧸ m) := Ideal.Quotient.field m`. Use `⟨L ⊗[k] K ⧸ m, inferInstance, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight : K →ₐ[k] L ⊗[k] K).toRingHom, algebraMap L (L ⊗[k] K ⧸ m), ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a show Ideal.Quotient.mk m (1 ⊗ₜ (algebraMap k K a)) = Ideal.Quotient.mk m (algebraMap L (L ⊗[k] K) (algebraMap k L a))`.
-
-Use `congr 1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply, Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Conclude with `RingHom.finite_algebraMap.mpr inferInstance`. Conclude with `(RingHom.formallyUnramified_algebraMap).mpr inferInstance`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compositum_finite_formallyUnramified : ∀ {k K L : Type} [Field k] [Field K] [Field L] (i : k →+* K) (j : k →+* L), i.Finite → i.FormallyUnramified → ∃ (M : Type) (_ : Field M) (u : K →+* M) (v : L →+* M), u.comp i = v.comp j ∧ v.Finite ∧ v.FormallyUnramified := by
   intro k K L _ _ _ i j hf hu

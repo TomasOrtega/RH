@@ -17,9 +17,9 @@ variable {d : SD σ} (R : RD d) {w : InfinitePlace F}
   {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Establish `h : ∀ p : (d.κ → AF F) × (d.κ → AF F), schr d.B.ψ p (a • Φ + Φ') = a • schr d.B.ψ p Φ + schr d.B.ψ p Φ'` using `fun p => by`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [SD.T, Darboux.rho, h, map_add, map_smul, Pi.add_apply, Pi.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD.T_lin (d : SD σ) (a : ℂ) (Φ Φ' : d.Fn) : d.T (a • Φ + Φ') = a • d.T Φ + d.T Φ' := by
   funext X
@@ -31,7 +31,7 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.SD.T_lin (d : SD σ) (a : ℂ)
   simp only [SD.T, Darboux.rho, h, map_add, map_smul, Pi.add_apply, Pi.smul_apply]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `hf`. Take `⟨φ', hφ'⟩` from `hg`. Conclude with `⟨a • φ + φ', by funext u; simp [← hφ, ← hφ']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSw_lin {m n : ℕ} {f g : (Fin m → Fin n → ℂ) → ℂ} (a : ℂ) (hf : IsSw f) (hg : IsSw g) : IsSw (a • f + g) := by
   obtain ⟨φ, hφ⟩ := hf
@@ -39,9 +39,9 @@ theorem isSw_lin {m n : ℕ} {f g : (Fin m → Fin n → ℂ) → ℂ} (a : ℂ)
   exact ⟨a • φ + φ', by funext u; simp [← hφ, ← hφ']⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨X₀, hX₀⟩ : ∃ X₀, Ψ X₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (funext hc)`. Use function extensionality and compare the values at `u`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z, hZ1, hZ2, hZ3⟩` from `R.loc_surj w X₀ u`. Use `congrFun h (X₀ + Z)` as an intermediate fact. Simplify using `only [RD.tens, hZ3, hΨ X₀ Z hZ1 hZ2] at this`. Conclude with `mul_right_cancel₀ hX₀ this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_cancel {Ψ : d.MF} (hΨ : d.IsAwayW w Ψ) (h0 : Ψ ≠ 0) {g g' : d.LF}
     (h : R.tens w g Ψ = R.tens w g' Ψ) : g = g' := by
@@ -56,13 +56,13 @@ theorem tens_cancel {Ψ : d.MF} (hΨ : d.IsAwayW w Ψ) (h0 : Ψ ≠ 0) {g g' : d
   exact mul_right_cancel₀ hX₀ this
 
 /- English proof (translation)
-The claim follows from `(hT.1 F E σ d).2.1 _ (hΨ.2.2 f hf)`.
+A detailed English derivation is pending.
 -/
 theorem exists_adm (hT : TAll) {Ψ : d.MF} (hΨ : R.GoodAway w Ψ) {f : d.LF} (hf : IsSw f) :
     ∃ Φ ∈ d.sch, d.T Φ = R.tens w f Ψ := (hT.1 F E σ d).2.1 _ (hΨ.2.2 f hf)
 
 /- English proof (translation)
-Introduce `y f hf`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Conclude with `R.tens_cancel hΨ.1 hΨ.2.1 (((hL y f hf).2 Ψ hΨ.1 Φ hΦ hT').symm.trans ((hL' y f hf).2 Ψ hΨ.1 Φ hΦ hT'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locOp_unique (hT : TAll) (hG : GoodAwayEx) {L' : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
     (hL : R.IsLocOp w L) (hL' : R.IsLocOp w L') : ∀ y f, IsSw f → L y f = L' y f := by
@@ -72,9 +72,9 @@ theorem locOp_unique (hT : TAll) (hG : GoodAwayEx) {L' : GR d.n → ((Fin d.m �
   exact R.tens_cancel hΨ.1 hΨ.2.1 (((hL y f hf).2 Ψ hΨ.1 Φ hΦ hT').symm.trans ((hL' y f hf).2 Ψ hΨ.1 Φ hΦ hT'))
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e` using `(hL 1 f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Rewrite `e` using `[map_one, map_one, Module.End.one_apply, hT']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(R.tens_cancel hΨ.1 hΨ.2.1 e).symm`.
+A detailed English derivation is pending.
 -/
 theorem locOp_one (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) : ∀ f, IsSw f → L 1 f = f := by
   intro f hf
@@ -85,9 +85,9 @@ theorem locOp_one (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) : ∀ f, Is
   exact (R.tens_cancel hΨ.1 hΨ.2.1 e).symm
 
 /- English proof (translation)
-Introduce `y y' f hf`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e1` using `(hL y' f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Establish `e2` using `(hL y (L y' f) (hL y' f hf).1).2 Ψ hΨ.1 _ (d.om_sch _ Φ hΦ) e1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(hL (y * y') f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Rewrite `e3` using `[map_mul, map_mul, Module.End.mul_apply]`. Conclude with `R.tens_cancel hΨ.1 hΨ.2.1 (e3.symm.trans e2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOp_mul (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
     ∀ y y' f, IsSw f → L (y * y') f = L y (L y' f) := by
@@ -101,13 +101,13 @@ theorem locOp_mul (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
   exact R.tens_cancel hΨ.1 hΨ.2.1 (e3.symm.trans e2)
 
 /- English proof (translation)
-Introduce `y a f g hf hg`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φf, hΦf, hTf⟩` from `R.exists_adm hT hΨ hf`. Take `⟨Φg, hΦg, hTg⟩` from `R.exists_adm hT hΨ hg`. Establish `hΦ : a • Φf + Φg ∈ d.sch` using `d.sch.add_mem (d.sch.smul_mem a hΦf) hΦg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTΦ : d.T (a • Φf + Φg) = R.tens w (a • f + g) Ψ`. Rewrite using `[d.T_lin, hTf, hTg]`. Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e` using `(hL y (a • f + g) (isSw_lin a hf hg)).2 Ψ hΨ.1 _ hΦ hTΦ`. Establish `ef` using `(hL y f hf).2 Ψ hΨ.1 Φf hΦf hTf`. Establish `eg` using `(hL y g hg).2 Ψ hΨ.1 Φg hΦg hTg`. Rewrite `e` using `[map_add, map_smul, d.T_lin, ef, eg]`. Apply `R.tens_cancel hΨ.1 hΨ.2.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← e]`. Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem locOp_lin (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
     ∀ y (a : ℂ) f g, IsSw f → IsSw g → L y (a • f + g) = a • L y f + L y g := by
@@ -132,9 +132,9 @@ theorem locOp_lin (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
   ring
 
 /- English proof (translation)
-Introduce `y b hb hy f hf`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e1` using `(hL y f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Establish `e2` using `((R.stepN w hT y b hb hy).2 Ψ hΨ.1).2 f hf Φ hΦ hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `R.tens_cancel hΨ.1 hΨ.2.1 (e1.symm.trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem locOp_nU (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
     ∀ (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ), bᴴ = b → mR y = nU b → ∀ f, IsSw f →
@@ -148,13 +148,13 @@ theorem locOp_nU (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
   exact R.tens_cancel hΨ.1 hΨ.2.1 (e1.symm.trans e2)
 
 /- English proof (translation)
-Establish `hinj : ∀ y y' : GR d.n, mR y = mR y' → y = y'` using `fun y y' h => Subtype.ext (Units.ext h)`. Use `⟨fun a => if h : IsUnit a.det ∧ ∃ y : GR d.n, mR y = mLoc a then (R.stepM w hT h.2.choose a h.1 h.2.choose_spec).choose else 1, fun a ha => ?_, fun y a ha hy f hf => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : IsUnit a.det ∧ ∃ y : GR d.n, mR y = mLoc a`. Simplify using `only`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(R.stepM w hT h.2.choose a h.1 h.2.choose_spec).choose_spec.1`. Simplify using `only`. Rewrite using `[dif_neg h]`. Conclude with `one_ne_zero`. Establish `h : IsUnit a.det ∧ ∃ y : GR d.n, mR y = mLoc a` using `⟨ha, y, hy⟩`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy0 : h.2.choose = y` using `hinj _ _ (h.2.choose_spec.trans hy.symm)`. Simplify using `only [dif_pos h]`. Establish `hs` using `(R.stepM w hT h.2.choose a h.1 h.2.choose_spec).choose_spec.2`. Rewrite using `[← hy0]`. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e1` using `(hL h.2.choose f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Establish `e2` using `(hs.2 Ψ hΨ.1).2 f hf Φ hΦ hT'`. Conclude with `R.tens_cancel hΨ.1 hΨ.2.1 (e1.symm.trans e2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locOp_mM (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) :
     ∃ c : Matrix (Fin d.n) (Fin d.n) ℂ → ℂ, (∀ a, IsUnit a.det → c a ≠ 0) ∧

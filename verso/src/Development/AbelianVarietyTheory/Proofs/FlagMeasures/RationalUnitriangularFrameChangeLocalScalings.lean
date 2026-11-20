@@ -15,21 +15,19 @@ namespace GlobalTheory.LocOver
 open Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BBTie
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy0, hint⟩` from `halg.exists_integral_multiple`. Take `⟨n, hn⟩ : ∃ n : ℕ, n = y.natAbs` from `⟨_, rfl⟩`. Establish `hn0 : n ≠ 0` using `by rw [hn]; exact Int.natAbs_ne_zero.2 hy0`. Establish `hint' : IsIntegral ℤ ((n : D.host.E) * x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.natAbs_eq y with h | h <;> rw [← hn] at h`. Establish `e : y • x = (n : D.host.E) * x`. Rewrite using `[zsmul_eq_mul, h, Int.cast_natCast]`. Rewrite using `[← e]`. Conclude with `hint`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : y • x = -((n : D.host.E) * x)`. Rewrite using `[zsmul_eq_mul, h, Int.cast_neg, Int.cast_natCast, neg_mul]`. Use `hint.neg` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : 𝓞 D.host.E` to `⟨(n : D.host.E) * x, hint'⟩`. Establish `hfin : {p : PlF D | Loc.resChar p ∣ n}.Finite`. Establish `hne : (Ideal.span {((n : ℕ) : 𝓞 D.host.F)} : Ideal (𝓞 D.host.F)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(Ideal.finite_factors hne).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`. Rewrite using `[Ideal.dvd_span_singleton, bt_natCast_mem_iff]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hfin.subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`. Assume the negation of the conclusion as `hnd`. Apply `hp` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, w', hw'O, hw'⟩` from `bt_nat_unit Z p n hnd`. Establish `hwO` using `bt_iota_int Z p w`. Establish `e : (D.s.atP p).ιE x = w' * (D.s.atP p).ιE (w : D.host.E)` using `by show _ = w' * (D.s.atP p).ιE ((n : D.host.E) * x)`. Rewrite using `[map_mul, map_natCast, ← mul_assoc, hw', one_mul]`. Rewrite using `[e]`.
-
-Conclude with `Subring.mul_mem _ hw'O hwO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_int_cofinite {D : D7} (Z : LocDat D) (x : D.host.E) :
     {p : PlF D | (D.s.atP p).ιE x ∉ (Z.M p).L.O}.Finite := by
@@ -72,17 +70,17 @@ theorem iota_int_cofinite {D : D7} (Z : LocDat D) (x : D.host.E) :
   exact Subring.mul_mem _ hw'O hwO
 
 /- English proof (translation)
-Introduce `D Z f g A hA hg`. Use `⟨fun p a b => Ring.inverse (frFac Z.δ p a) * frFac Z.δ p b * (D.s.atP p).ιE (A a b), ?_, ?_⟩` and prove the remaining obligations. Introduce `p`. Use `⟨⟨fun a b hab => ?_, fun a => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Simplify using `[hA.1 a b hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show Ring.inverse (frFac Z.δ p a) * frFac Z.δ p a * (D.s.atP p).ιE (A a a) = 1`. Rewrite using `[hA.2 a, map_one, mul_one, Ring.inverse_mul_cancel _ (bt_frFac_unit Z p a)]`. Simplify using `only [scaled]`. Rewrite using `[hg b, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[baseChange_smul₂, smul_smul, smul_smul]`. Use `congr 1`. Establish `h` using `Ring.inverse_mul_cancel _ (bt_frFac_unit Z p a)`. Take the linear combination `(-(frFac Z.δ p b * (D.s.atP p).ιE (A a b))) * h`. Establish `hD` using `locDiffC_holds D Z`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.Finite.biUnion (Set.finite_univ (α := Fin (D.R.rS + 1) × Fin (D.R.rS + 1))) (fun ab _ => iota_int_cofinite Z (A ab.1 ab.2))).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq, not_forall] at hp`. Take `⟨a, b, hab⟩` from `hp`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_univ, exists_true_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(a, b), ?_⟩` and prove the remaining obligations. Introduce `hι`. Apply `hab` to reduce the goal to its premises. Break down `lt_or_ge b a with h | h` into its components or cases. Simplify using `[hA.1 a b h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hkb⟩` from `bt_frFac_step Z p hD a b h`. Establish `e : Ring.inverse (frFac Z.δ p a) * frFac Z.δ p b * (D.s.atP p).ιE (A a b) = k * (D.s.atP p).ιE (A a b)`. Rewrite using `[hkb, mul_comm k, ← mul_assoc, Ring.inverse_mul_cancel _ (bt_frFac_unit Z p a), one_mul]`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ hk hι`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_scaled : ∀ (D : D7) (Z : LocDat D), ∀ (f g : Fin (D.R.rS + 1) → (VS D).V)
     (A : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E), Uni A → Chg f A g →

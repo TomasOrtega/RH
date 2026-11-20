@@ -9,23 +9,23 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Introduce `hP V M _ _ _ _ _ _ _ _ B hB K`. Use `set Φ : V × M → V × M := fun z => (z.1, z.2 - B z.1 z.2) with hΦdef`. Establish `hΦ : Function.HasTemperateGrowth Φ`. Set `B2 : V →L[ℝ] M →L[ℝ] V × M` to `(ContinuousLinearMap.compL ℝ M M (V × M) (ContinuousLinearMap.inr ℝ V M)).comp B`. Establish `h1 : Function.HasTemperateGrowth (fun z : V × M => B2 z.1 z.2)` using `B2.bilinear_hasTemperateGrowth (ContinuousLinearMap.fst ℝ V M).hasTemperateGrowth (ContinuousLinearMap.snd ℝ V M).hasTemperateGrowth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(ContinuousLinearMap.id ℝ (V × M)).hasTemperateGrowth.add h1.neg`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Apply the tactic sequence `ext <;> simp [Φ, B2, sub_eq_add_neg]`. Establish `hbd : ∃ (k : ℕ) (C : ℝ), ∀ z : V × M, ‖z‖ ≤ C * (1 + ‖Φ z‖) ^ k`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨2, 1 + ‖B‖, fun z => ?_⟩` and prove the remaining obligations. Take `⟨u, x⟩` from `z`. Use `set t := ‖Φ (u, x)‖ with ht`. Establish `hu : ‖u‖ ≤ t` using `norm_fst_le (Φ (u, x))`. Establish `hy : ‖x - B u x‖ ≤ t` using `norm_snd_le (Φ (u, x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x = (x - B u x) + B u (x - B u x)`. Rewrite using `[map_sub, hB, sub_zero, sub_add_cancel]`. Establish `hBu : ‖B u (x - B u x)‖ ≤ ‖B‖ * ‖u‖ * ‖x - B u x‖` using `B.le_opNorm₂ _ _`. Establish `hxle : ‖x‖ ≤ t + ‖B‖ * t * t`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_nonneg B` as an intermediate fact. Use `norm_nonneg u` as an intermediate fact. Use `norm_nonneg (x - B u x)` as an intermediate fact. Use polynomial arithmetic with `[mul_le_mul hu hy (norm_nonneg _) (le_trans (norm_nonneg _) hu)]`. Establish `ht0 : 0 ≤ t` using `norm_nonneg _`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB0` using `norm_nonneg B`. Rewrite using `[Prod.norm_def]`. Use `max_le ?_ ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `K' : 𝓢(V × M, ℂ)` to `SchwartzMap.compCLM ℂ hΦ hbd K`. Take `⟨L, hL⟩` from `hP V M K'`. Establish `hι : Function.HasTemperateGrowth (fun x : M => ((0 : V), x))`. Use `(ContinuousLinearMap.inr ℝ V M).hasTemperateGrowth using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hιb : ∃ (k : ℕ) (C : ℝ), ∀ x : M, ‖x‖ ≤ C * (1 + ‖((0 : V), x)‖) ^ k`. Use `⟨1, 1, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `norm_snd_le ((0 : V), x)`. Simplify using `only [pow_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨K', SchwartzMap.compCLM ℂ hι hιb L, fun u x => rfl, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L ((0 : V), x) = _`. Rewrite using `[hL]`. Simplify using `only [UpperTheory.V.Af.Smo.pft, Real.fourier_eq, inner_zero_right, neg_zero, AddChar.map_zero_eq_one, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.betaSch :
     UpperTheory.V.Af.Smo.PftSch → UpperTheory.V.Af.Smo.BetaSch := by

@@ -10,9 +10,9 @@ namespace GlobalTheory.TripleLocal
 open GlobalTheory.RowTie (WDTie)
 
 /- English proof (translation)
-Establish `h0 : (Ideal.span {((l : ℕ) : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 hl.out.ne_zero`. Rewrite using `[Filter.eventually_cofinite]`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hw` using `[Ideal.dvd_span_singleton]`.
+A detailed English derivation is pending.
 -/
 theorem frobConj_natCast_notMem (E : Type) [Field E] [NumberField E] (l : ℕ) [hl : Fact l.Prime] :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal := by
@@ -24,13 +24,11 @@ theorem frobConj_natCast_notMem (E : Type) [Field E] [NumberField E] (l : ℕ) [
   simpa [Ideal.dvd_span_singleton] using hw
 
 /- English proof (translation)
-Introduce `D T hD l _ ι a π s r r' h hc' hss' hm`. Establish `hall` using `(hm.and (D.naut.locG_unr_ae π)).and (frobConj_natCast_notMem D.host.E l)`. Establish `htr : ∀ g, ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace`. Introduce `g`. Use `congrFun (Continuous.ext_on (hD _ (Filter.eventually_cofinite.1 hall)) (h.cont.matrix_trace) (hc'.matrix_trace) ?_) g` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `σ ⟨w, hw, -, B, hB, hσ⟩`. Take `⟨⟨h1, hu⟩, hl⟩` from `not_not.1 hw`. Establish `e1` using `(h.frob hl hu).2 B σ hB hσ`. Establish `e2` using `h1 B σ hB hσ`. Establish `e : ((r σ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly = ((r' σ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly` using `Polynomial.map_injective ι.toRingHom ι.injective (e1.trans e2.symm)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Matrix.trace _ = Matrix.trace _`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Simplify using `[Matrix.trace]`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`.
-
-Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]`. Conclude with `GlobalTheory.TraceConj.conj_of_trace_eq _ _ a r r' h.ss hss' htr`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_frobMatch : ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), FrobDense D → ∀ (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : D.naut.CG a) (s : ℝ) (r r' : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)),

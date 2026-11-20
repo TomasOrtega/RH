@@ -10,18 +10,18 @@ namespace PI.KerDetFinW
 open PI.KerIso
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨N, map_natCast _ _⟩`.
+Supply the required witnesses or components.
 -/
 lemma natCast_mem_int {K : Type} [Field K] [NumberField K] (N : ℕ) :
     (N : K) ∈ (algebraMap (𝓞 K) K).range :=
   ⟨N, map_natCast _ _⟩
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `(IsFractionRing.isAlgebraic_iff ℤ ℚ K |>.mpr (.of_finite ℚ x)).exists_integral_multiple`. Establish `h1 : (y : K) * x ∈ (algebraMap (𝓞 K) K).range`. Use `⟨⟨y • x, hy⟩, ?_⟩` and prove the remaining obligations. Use `show y • x = _`. Rewrite using `[zsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℕ) : K) = (y : K)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `: ((y.natAbs : ℕ) : K) = -(y : K)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this, neg_mul]`. Conclude with `neg_mem h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_mem_int {K : Type} [Field K] [NumberField K] (x : K) :
     ∃ d : ℕ, 0 < d ∧ (d : K) * x ∈ (algebraMap (𝓞 K) K).range := by
@@ -42,7 +42,7 @@ lemma exists_nat_mul_mem_int {K : Type} [Field K] [NumberField K] (x : K) :
     rw [this, neg_mul]; exact neg_mem h1
 
 /- English proof (translation)
-Use `choose d hd0 hd using fun i => exists_nat_mul_mem_int (f i)`. Use `⟨∏ i, d i, Finset.prod_pos fun i _ => hd0 i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ i)`. Rewrite using `[hc, Nat.cast_mul, mul_comm (d i : K), mul_assoc]`. Conclude with `mul_mem (natCast_mem_int c) (hd i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_mem_int_fam {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
     (f : ι → K) : ∃ N : ℕ, 0 < N ∧ ∀ i, (N : K) * f i ∈ (algebraMap (𝓞 K) K).range := by
@@ -53,9 +53,9 @@ lemma exists_nat_mul_mem_int_fam {K : Type} [Field K] [NumberField K] {ι : Type
   exact mul_mem (natCast_mem_int c) (hd i)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hk`. Establish `hz : IsIntegral ℤ (algebraMap K E (algebraMap (𝓞 K) K z))` using `(RingOfIntegers.isIntegral_coe z).map (algebraMap K E).toIntAlgHom`. Use `(I : Submodule (𝓞 E) E).smul_mem (⟨_, hz⟩ : 𝓞 E) hy` as an intermediate fact. Establish `e : ((⟨_, hz⟩ : 𝓞 E) • y) = algebraMap K E (algebraMap (𝓞 K) K z) * y` using `Algebra.smul_def _ _`. Rewrite using `[← FractionalIdeal.mem_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `e.symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 lemma int_mul_mem {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {k : K} (hk : k ∈ (algebraMap (𝓞 K) K).range)
@@ -70,7 +70,7 @@ lemma int_mul_mem {K E : Type} [Field K] [NumberField K] [Field E] [NumberField 
   exact e.symm
 
 /- English proof (translation)
-Use `(I : Submodule (𝓞 E) E).smul_mem (c : 𝓞 E) hy` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, map_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nat_mul_mem {E : Type} [Field E] [NumberField E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (c : ℕ) {y : E} (hy : y ∈ I) :
@@ -80,9 +80,9 @@ lemma nat_mul_mem {E : Type} [Field E] [NumberField E]
   exact this
 
 /- English proof (translation)
-Establish `hbot : (I : Submodule (𝓞 E) E) ≠ ⊥` using `fun h => hI (FractionalIdeal.coeToSubmodule_eq_bot.1 h)`. Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Take `⟨d, hd0, z, hz⟩` from `exists_nat_mul_mem_int (y / a)`. Use `⟨d, hd0, ?_⟩` and prove the remaining obligations. Establish `hmem` using `(I : Submodule (𝓞 E) E).smul_mem z haI`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hmem` using `[Algebra.smul_def, hz]`. Establish `: (d : E) * (y / a) * a = (d : E) * y` using `by field_simp`. Rewrite `hmem` using `[this]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_mem_frac {E : Type} [Field E] [NumberField E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0) (y : E) :
@@ -98,7 +98,7 @@ lemma exists_nat_mul_mem_frac {E : Type} [Field E] [NumberField E]
   exact hmem
 
 /- English proof (translation)
-Use `choose d hd0 hd using fun i => exists_nat_mul_mem_frac I hI (f i)`. Use `⟨∏ i, d i, Finset.prod_pos fun i _ => hd0 i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ i)`. Rewrite using `[hc, Nat.cast_mul, mul_comm (d i : E), mul_assoc]`. Conclude with `nat_mul_mem I c (hd i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_mem_frac_fam {E : Type} [Field E] [NumberField E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0) {ι : Type} [Fintype ι]

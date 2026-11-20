@@ -20,9 +20,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.
 open Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn
 namespace GlobalTheory.ExpTie
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.T.parOf_hyp_at_pts _root_.GlobalTheory.T.exists_large_parameter_estimates_at_pts) (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.Glob …`. Use `_root_.GlobalTheory.ExpTie.atPts_mono H fun Fm x hx i p h j => ?_` and prove the remaining obligations. Take `⟨⟨⟨hH, hR⟩, ⟨hL, hB⟩⟩, ⟨hF, hW⟩⟩` from `h`. Take `⟨W, hOk, hlam, hbox, hT, hSp⟩` from `hW j`. Use `⟨parOf (Fm.L x i) j, W, ?_, hH j, hL j, hOk, hR j⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ k := rfl, m := rfl, t := rfl, f := rfl card := Nat.card_eq_fintype_card.trans (Fm.D x i).what₂.card_Tau Nr := rfl, x := rfl, log := rfl, b := rfl lam := hlam, forced := hF j, box := hbox, thick := hT, special := hSp, big := hB j }`.
+A detailed English derivation is pending.
 -/
 theorem numSt_alt : _root_.GlobalTheory.ExpTie.NumStAlt := by
   have H := _root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.T.parOf_hyp_at_pts _root_.GlobalTheory.T.exists_large_parameter_estimates_at_pts) (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.T.parameter_large_at_all_points _root_.GlobalTheory.T.parOf_height_lt_genus_at_pts))

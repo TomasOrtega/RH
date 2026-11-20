@@ -29,9 +29,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨c0, -, -, -, hβ, -⟩` from `BXiAsm.any_of hXi k r Wp Wq D A hA`. Take `⟨Ξ, hCB, hXi⟩` from `hXi k r Wp Wq D A hA`. Establish `hS` using `(Formalism.FourierDecayAlt.P.regularized_beta_bound_continuity_sesquilinear k r Wp Wq D Ξ A hA hCB hXi).2.2 (1, 1) ⟨by norm_num, by norm_num⟩`. Establish `h4 : ∀ {H : Mat k r → (Wq →L[ℂ] Wp)}, InCC A 5 H → InCC A 4 H` using `fun h => sq_inCC_mono le_rfl (by norm_num) h`. Establish `hcF' : InCC A 5 (c • F')` using `sq_inCC_smul c hF'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : InCC A 5 (F + c • F')` using `sq_inCC_add hF hcF'`. Rewrite using `[hβ _ _ hsum hG, hβ _ _ hF hG, hβ _ _ hF' hG, hβ _ _ hG hsum, hβ _ _ hG hF, hβ _ _ hG hF']`. Unfold `betaInf`. Rewrite using `[hS.1 _ _ _ (h4 hF) (h4 hcF') (h4 hG), hS.2.2.1 c _ _ (h4 hF') (h4 hG), hS.2.1 _ _ _ (h4 hG) (h4 hF) (h4 hcF'), hS.2.2.2 c _ _ (h4 hG) (h4 hF')]`. Apply the tactic sequence `constructor <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem beta_sesq (D : RealPlaceData k r Wp Wq) {A : ℝ} (hA : AB k r ≤ A) {F F' G : Mat k r → (Wq →L[ℂ] Wp)}
     (hF : InCC A 5 F) (hF' : InCC A 5 F') (hG : InCC A 5 G) (c : ℂ) :
@@ -52,9 +52,9 @@ theorem beta_sesq (D : RealPlaceData k r Wp Wq) {A : ℝ} (hA : AB k r ≤ A) {F
   constructor <;> ring
 
 /- English proof (translation)
-Take `⟨-, -, -, ⟨C, hB1⟩, -⟩` from `BXiAsm.any_of hXi k r Wp Wq D (B.AB k r) le_rfl`. Take `⟨c4, hc4⟩` from `hF (B.AB k r) 4`. Establish `hfin` using `(hB1 F F c4 c4 (hF _ 5) (hF _ 5) hc4 hc4).1`. Establish `hmeas : AEStronglyMeasurable (fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2) volume` using `rb_aesm D _ ((rb_contOn_bcW D).mul ((rb_contOn_J D F hF).norm.pow 2)) fun q h => by simp [h]`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun q => mul_nonneg (rb_bcWeight_nonneg _ _ q) (sq_nonneg _))]`. Conclude with `lt_of_le_of_ne le_top hfin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_weight_normSq (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) :
     Integrable (fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2) := by
@@ -70,11 +70,9 @@ theorem integrable_weight_normSq (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r 
   exact lt_of_le_of_ne le_top hfin
 
 /- English proof (translation)
-Establish `hmeas : AEStronglyMeasurable (fun q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D F' (B.gq D q))) (B.hsVec (B.JF D F (B.gq D q)))) volume`. Use `rb_aesm D _ ?_ fun q h => by simp [h]` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp_continuousOn (rb_contOn_bcW D)).mul ((rb_contOn_J D F' hF').inner (rb_contOn_J D F hF))`. Use `Integrable.mono' (((integrable_weight_normSq hXi D F hF).add (integrable_weight_normSq hXi D F' hF')).div_const 2) hmeas ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set b := bcWeight k r (Tz k r D.z) (Tz k r D.z') q`. Use `set u := ‖B.hsVec (B.JF D F (B.gq D q))‖`. Use `set v := ‖B.hsVec (B.JF D F' (B.gq D q))‖`. Establish `hb : 0 ≤ b` using `rb_bcWeight_nonneg _ _ q`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hb]`.
-
-Establish `h1 : ‖inner ℂ (B.hsVec (B.JF D F' (B.gq D q))) (B.hsVec (B.JF D F (B.gq D q)))‖ ≤ v * u` using `norm_inner_le_norm _ _`. Establish `h2 : v * u ≤ (u ^ 2 + v ^ 2) / 2` using `by nlinarith [sq_nonneg (u - v)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_weight_pair (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r → (Wq →L[ℂ] Wp))
     (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) (hF' : ∀ (A : ℝ) (m : ℕ), B.InCC A m F') :
@@ -100,11 +98,11 @@ theorem integrable_weight_pair (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r
     _ = (b * u ^ 2 + b * v ^ 2) / 2 := by ring
 
 /- English proof (translation)
-Rewrite using `[rb_form_eq]`. Set `f : Wd.Ix (Fin n) → (Fin r → ℂ) × ℂ → ℂ` to `fun a q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D (x' a) (B.gq D q))) (B.hsVec (B.JF D (x a) (B.gq D q)))`. Establish `hint : ∀ a, Integrable (f a)` using `fun a => integrable_weight_pair hXi D (x a) (x' a) (hx a) (hx' a)`. Establish `hae : (fun c : Fin r → ℂ => ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, P5.pairAt μ (Φ b) (Φ' b) c) =ᵐ[volume] fun c => ∑ b, (C1 : ℂ) * ∫ ζ, f b (c, ζ)` using `by filter_upwards [rb_ae_OmX] with c hc`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hpair (x b) (x' b) (Φ b) (Φ' b) (hΦ b) (hΦ' b) c hc, mul_left_comm, ← integral_const_mul]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[rb_weight hc]`. Both sides reduce to the same expression. Rewrite using `[integral_congr_ae hae, integral_finsetSum _ (fun b _ => ((hint b).integral_prod_left).const_mul _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, ← integral_prod _ (hint b)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -148,17 +146,15 @@ theorem form_eq_sum_beta (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r))
 end
 
 /- English proof (translation)
-Establish `hS` using `ma_hS P0 T s j w`. Establish `hAB : AB P0.k (P0.r - ↑j) ≤ A - 2 * (w.length : ℝ)`. Establish `h1` using `pd_thr_AB P0 j w.length A hA`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm5 : 5 + (2 * (P0.r - ↑j) + P0.k + 1) * w.length ≤ mm` using `pd_thr_mm P0 j w.length mm hmm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`. Establish `hin : ∀ {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}, InCC A mm F → InCC (A - 2 * (w.length : ℝ) + ((2 * w.length : ℕ) : ℝ)) (5 + (2 * (P0.r - ↑j) + P0.k + 1) * w.length) F` using `fun h => sq_inCC_mono (by push_cast; linarith) hm5 h`. Establish `hvec : ∀ v : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp), (∀ a, InCC A mm (v a)) → ∀ a, InCC (A - 2 * (w.length : ℝ)) 5 (D.actOp (D.RRlev T s j w) v a)`. Introduce `v hv a`. Rewrite using `[ma_actOp_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sq_inCC_sum Finset.univ (fun b => (D.RRlev T s j w a b) (v b)) (fun b _ => ma_inCC (hS a b) (hin (hv b)))`. Establish `hlow : ∀ {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}, InCC A mm F → InCC (A - 2 * (w.length : ℝ)) 5 F` using `fun h => sq_inCC_mono (by linarith) (by omega) h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) (x + c • x') a) (y a) = ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) x a) (y a) + c * ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) x' a) (y a)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hGV : ∀ g ∈ GV P0.k (P0.r - j), D.actOp (D.RRlev T s j w) (x + c • x') a g = (D.actOp (D.RRlev T s j w) x a + c • D.actOp (D.RRlev T s j w) x' a) g`. Introduce `g hg`. Use `show (∑ b, D.ap (D.RRlev T s j w a b) ((x + c • x') b)) g = (∑ b, D.ap (D.RRlev T s j w a b) (x b) + c • ∑ b, D.ap (D.RRlev T s j w a b) (x' b)) g`. Rewrite using `[Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, Finset.sum_apply, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `(hS a b).2.1 _ _ (x b) (x' b) c (hin (hx b)) (hin (hx' b)) g hg`. Rewrite using `[sq_beta_congr (T.bs j) hGV]`. Conclude with `(beta_sesq hXi (T.bs j) hAB (hvec x hx a) (hvec x' hx' a) (hlow (hy a)) c).1`. Use `show ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) ((x + c • x') a) = ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) (x a) + conj c * ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) (x' a)`.
-
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `(beta_sesq hXi (T.bs j) hAB (hlow (hx a)) (hlow (hx' a)) (hvec y hy a) c).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formLev_sesq {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
@@ -221,9 +217,9 @@ open MeasureTheory Formalism.REAL Formalism.QuantumDeterminants Formalism.Fourie
 open scoped ENNReal NNReal Matrix
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD hZ w F F' Φ Φ' ε hε hF hF' hΦ hΦ'`. Establish `hN` using `Formalism.FourierDecayAlt.P.module_regularity Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF`. Establish `hPic : ∀ a, ∀ y ∈ Q.DomR (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z', (P5.act (P5.RRi L st 0 (D.positionted w)) Φ a : Q.Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2 = Q.resG (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) (B.JF (T.bs j) (D.a …`. Introduce `a y hy`. Rewrite using `[Formalism.FourierDecayAlt.P.radial_module_action Wp Wq P0 T j X μ L st l0 hD w (fun b => B.JF (T.bs j) (F b)) Φ (fun b => Formalism.FourierDecayAlt.P.bessel_function_finite_class _ _ Wp Wq (T.bs j) (F b) ε hε (hF b)) hΦ a y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.FourierDecayAlt.P.bessel_module Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF a y hy).symm`. Establish `h` using `form_eq_sum_beta hXi (T.bs j) μ 1 (fun G G' Ψ Ψ' hΨ hΨ' c hc => pairAt_one (T.bs j) μ hZ G G' Ψ Ψ' hΨ hΨ' c hc) (D.actOp (D.RRlev T (M.sgn P0 l0) j w) F) F' (P5.act (P5.RRi L st 0 (D.positionted w)) Φ) Φ' (fun a => (hN a).2.1) (fun a => (hF' a).2.1) hPic hΦ'`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Simplify using `only [Complex.ofReal_one, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem form_const_one : Formalism.FourierDecayAlt.P.PBO.FormOne := by
   intro Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD hZ w F F' Φ Φ' ε hε hF hF' hΦ hΦ'
@@ -247,7 +243,7 @@ theorem form_const_one : Formalism.FourierDecayAlt.P.PBO.FormOne := by
 end one
 
 /- English proof (translation)
-The claim follows from `pb_radHead_of (form_const_one hXi) exists_zeta_normalized_haar (PBP.headPic_of (head_jacquet_of_letter_and_head head_letter_identity head_germ_smooth_extension))`.
+A detailed English derivation is pending.
 -/
 theorem radHead : KB.RadHead :=
   pb_radHead_of (form_const_one hXi) exists_zeta_normalized_haar
@@ -265,7 +261,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   (P0 : M.Par) (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter)
 
 /- English proof (translation)
-The claim follows from `(formLev_sesq hXi P0 T s j w _ _ le_rfl le_rfl x₁ x₂ y c (fun a => h₁ a _ _) (fun a => h₂ a _ _) (fun a => hy a _ _)).1`.
+A detailed English derivation is pending.
 -/
 theorem formLev_add_smul_left (x₁ x₂ y : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (h₁ : DecV x₁) (h₂ : DecV x₂) (hy : DecV y) :
@@ -274,7 +270,7 @@ theorem formLev_add_smul_left (x₁ x₂ y : Wd.Ix (Fin w.length) → B.Mat P0.k
     (fun a => h₂ a _ _) (fun a => hy a _ _)).1
 
 /- English proof (translation)
-The claim follows from `(formLev_sesq hXi P0 T s j w _ _ le_rfl le_rfl y₁ y₂ x c (fun a => h₁ a _ _) (fun a => h₂ a _ _) (fun a => hx a _ _)).2`.
+A detailed English derivation is pending.
 -/
 theorem formLev_add_smul_right (x y₁ y₂ : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hx : DecV x) (h₁ : DecV y₁) (h₂ : DecV y₂) :
@@ -283,7 +279,7 @@ theorem formLev_add_smul_right (x y₁ y₂ : Wd.Ix (Fin w.length) → B.Mat P0.
     (fun a => h₂ a _ _) (fun a => hx a _ _)).2
 
 /- English proof (translation)
-The claim follows from `| [], x₁, x₂, y, c, h₁, h₂, hy => formLev_add_smul_left hXi P0 T s j w x₁ x₂ y c h₁ h₂ hy | _ :: ys, x₁, x₂, y, c, h₁, h₂, hy => by simp only [KB.pairJ] have e1 := pairing_add_smul_left ys (fun e => x₁ (Fin.cons 1 e)) (fun e => x₂ (Fin.cons 1 e)) (fun e => y (Fin.cons 0 e)) c (de …`.
+A detailed English derivation is pending.
 -/
 theorem pairing_add_smul_left : ∀ (ys : List ℝ) (x₁ x₂ : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))
     (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ),
@@ -303,7 +299,7 @@ theorem pairing_add_smul_left : ∀ (ys : List ℝ) (x₁ x₂ : Wd.Ix (Fin (KB.
     ring
 
 /- English proof (translation)
-The claim follows from `| [], x, y₁, y₂, c, hx, h₁, h₂ => formLev_add_smul_right hXi P0 T s j w x y₁ y₂ c hx h₁ h₂ | _ :: ys, x, y₁, y₂, c, hx, h₁, h₂ => by simp only [KB.pairJ] have e1 := pairing_add_smul_right ys (fun e => x (Fin.cons 1 e)) (fun e => y₁ (Fin.cons 0 e)) (fun e => y₂ (Fin.cons 0 e)) c ( …`.
+A detailed English derivation is pending.
 -/
 theorem pairing_add_smul_right : ∀ (ys : List ℝ) (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))
     (y₁ y₂ : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ),
@@ -323,11 +319,11 @@ theorem pairing_add_smul_right : ∀ (ys : List ℝ) (x : Wd.Ix (Fin (KB.plusW y
     ring
 
 /- English proof (translation)
-Establish `hU : DecV (∑ i ∈ S', b i • u i)` using `by classical`. Proceed by induction on `S' using Finset.induction_on with`. Consider the case `empty => simpa using (decV_zero (k := P0.k) (ρ := P0.r - j) (Wp := Wp) (Wq := Wq))`. Consider the case `insert c t hc ih => rw [Finset.sum_insert hc]`. Conclude with `decV_add (decV_smul _ (hu c)) ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sesq_sum_left DecV DecV (fun x y => KB.pairJ (D.formLev T s j w) ys x y) decV_zero (fun _ _ => decV_add) (fun c _ => decV_smul c) (fun x₁ x₂ y c h₁ h₂ hy => pairing_add_smul_left hXi P0 T s j w ys x₁ x₂ y c h₁ h₂ hy) S a v hv _ hU]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[sesq_sum_right DecV DecV (fun x y => KB.pairJ (D.formLev T s j w) ys x y) decV_zero (fun _ _ => decV_add) (fun c _ => decV_smul c) (fun x y₁ y₂ c hx h₁ h₂ => pairing_add_smul_right hXi P0 T s j w ys x y₁ y₂ c hx h₁ h₂) _ (hv i) S' b u hu, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i' _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairing_sum_sum (ys : List ℝ) {ι ι' : Type} (S : Finset ι) (S' : Finset ι') (a : ι → ℂ) (b : ι' → ℂ)
     (v : ι → Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp))

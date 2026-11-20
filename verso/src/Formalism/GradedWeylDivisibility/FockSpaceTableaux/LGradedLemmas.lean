@@ -10,9 +10,9 @@ namespace Formalism.GradedWeylDivisibility
 def lgraded_wa {r n : ℕ} (a : Fin r) : Fin r × Fin n → ℕ := fun v => if v.1 = a then 1 else 0
 
 /- English proof (translation)
-Take `⟨b, j⟩` from `v`. Simplify using `only [rowGen, aeval_X, lgraded_wa]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, pow_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem lgraded_rowGen_X {r n : ℕ} (a : Fin r) (v : Fin r × Fin n) :
     rowGen ℚ a a (X v) = Polynomial.C (X v) * (1 + Polynomial.X) ^ (lgraded_wa (n := n) a v) := by
@@ -25,16 +25,16 @@ theorem lgraded_rowGen_X {r n : ℕ} (a : Fin r) (v : Fin r × Fin n) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[rowGen, aeval_C, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lgraded_rowGen_C {r n : ℕ} (a : Fin r) (c : ℚ) :
     rowGen ℚ a a (C c : MvPolynomial (Fin r × Fin n) ℚ) = Polynomial.C (C c) := by
   rw [rowGen, aeval_C, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction`. Use `next => rw [monomial_zero', lgraded_rowGen_C]`. Simplify using the standard rewrite rules. Use `next v k m _ _ ih =>`. Establish `hw : Finsupp.weight (lgraded_wa a) (Finsupp.single v k) = k * lgraded_wa a v`.
+Proceed by induction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_single_index]`. Rewrite using `[add_comm, monomial_add_single, map_mul, ih, map_pow, lgraded_rowGen_X, map_add, map_mul, map_pow, hw, mul_pow, ← pow_mul, pow_add, mul_comm (lgraded_wa a v) k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lgraded_rowGen_monomial {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →₀ ℕ) (c : ℚ) :
     rowGen ℚ a a (monomial m c) =
@@ -49,7 +49,7 @@ theorem lgraded_rowGen_monomial {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →�
     ring
 
 /- English proof (translation)
-Rewrite using `[rowDiv, lgraded_rowGen_monomial, Polynomial.coeff_C_mul, Polynomial.coeff_one_add_X_pow, Nat.choose_one_right, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lgraded_euler_monomial {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →₀ ℕ) (c : ℚ) :
     rowDiv ℚ a a 1 (monomial m c) = ((Finsupp.weight (lgraded_wa a) m : ℕ) : ℚ) • monomial m c := by
@@ -57,9 +57,9 @@ theorem lgraded_euler_monomial {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →�
     Nat.choose_one_right, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on'`. Use `next m' c' =>`. Rewrite using `[lgraded_euler_monomial, coeff_smul, coeff_monomial, smul_eq_mul]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `next p q hp hq =>`. Establish `hpq : rowDiv ℚ a a 1 (p + q) = rowDiv ℚ a a 1 p + rowDiv ℚ a a 1 q`. Simplify using `only [rowDiv, map_add, Polynomial.coeff_add]`. Rewrite using `[hpq, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgraded_coeff_euler {r n : ℕ} (a : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ)
     (m : Fin r × Fin n →₀ ℕ) :
@@ -76,9 +76,9 @@ theorem lgraded_coeff_euler {r n : ℕ} (a : Fin r) (f : MvPolynomial (Fin r × 
     rw [hpq, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, rowW, lgraded_wa]`. Simplify using `only [Finsupp.sum, Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `v _`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : v.1 = a`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lgraded_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r) :
     Finsupp.weight (rowW r n) m a = Finsupp.weight (lgraded_wa a) m := by
@@ -92,9 +92,9 @@ theorem lgraded_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on`. Use `next => intro g hg; exact ⟨g, hg, fun m => by simp⟩`. Use `next s T hs ih =>`. Introduce `g hg`. Take `⟨h, hh, hc⟩` from `ih g hg`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨rowDiv ℚ a a 1 h - (s : ℚ) • h, M.sub_mem (hM a a 1 h hh) (M.smul_mem _ hh), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_sub, coeff_smul, lgraded_coeff_euler, hc, Finset.prod_insert hs, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma exists_mem_coeff_eq_prod_weight_sub_mul_coeff {r n : ℕ} (M : Submodule ℚ (MvPolynomial (Fin r × Fin n) ℚ))
     (hM : RowDivClosed M) (a : Fin r) (T : Finset ℕ) : ∀ g ∈ M, ∃ h ∈ M, ∀ m, coeff m h =
@@ -110,15 +110,15 @@ private lemma exists_mem_coeff_eq_prod_weight_sub_mul_coeff {r n : ℕ} (M : Sub
     ring
 
 /- English proof (translation)
-Introduce `f hf hV t`. Take `⟨h, hh, hc⟩` from `exists_mem_coeff_eq_prod_weight_sub_mul_coeff M hM a (V.erase t) f hf`. Establish `key : weightedHomogeneousComponent (lgraded_wa a) t f = (∏ s ∈ V.erase t, ((t : ℚ) - (s : ℚ)))⁻¹ • h`. Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_smul, hc, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ f.support`. Establish `hmV` using `hV m hm split_ifs with hw`. Rewrite using `[hw]`. Establish `hne : (∏ s ∈ V.erase t, ((t : ℚ) - (s : ℚ))) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Establish `hst` using `(Finset.mem_erase.1 hs).1`. Conclude with `sub_ne_zero.2 (by exact_mod_cast hst.symm)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hne, one_mul]`. Establish `hmem : Finsupp.weight (lgraded_wa a) m ∈ V.erase t` using `Finset.mem_erase.2 ⟨hw, hmV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∏ s ∈ V.erase t, (((Finsupp.weight (lgraded_wa a) m : ℕ) : ℚ) - (s : ℚ)) = 0` using `Finset.prod_eq_zero hmem (sub_self _)`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite `hm` using `[mem_support_iff, not_not]`. Simplify using `[hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `M.smul_mem _ hh`.
+A detailed English derivation is pending.
 -/
 theorem lgraded_sep {r n : ℕ} (M : Submodule ℚ (MvPolynomial (Fin r × Fin n) ℚ)) (hM : RowDivClosed M)
     (a : Fin r) (V : Finset ℕ) :
@@ -153,9 +153,9 @@ theorem lgraded_sep {r n : ℕ} (M : Submodule ℚ (MvPolynomial (Fin r × Fin n
   exact M.smul_mem _ hh
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on`. Use `next => intro f hf; exact ⟨f, hf, fun m => by simp⟩`. Use `next b A hb ih =>`. Introduce `f hf`. Take `⟨h, hh, hc⟩` from `ih f hf`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨weightedHomogeneousComponent (lgraded_wa b) (μ b) h, lgraded_sep M hM b (h.support.image (Finsupp.weight (lgraded_wa b))) h hh (fun m hm => Finset.mem_image_of_mem _ hm) (μ b), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent, hc]`. Simplify using `only [Finset.mem_insert, forall_eq_or_imp]`. Apply the tactic sequence `by_cases h1 : Finsupp.weight (lgraded_wa b) m = μ b <;> simp [h1]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lgraded_multi {r n : ℕ} (M : Submodule ℚ (MvPolynomial (Fin r × Fin n) ℚ)) (hM : RowDivClosed M)
     (μ : Fin r → ℕ) (A : Finset (Fin r)) :

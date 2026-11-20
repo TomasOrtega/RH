@@ -26,9 +26,9 @@ theorem colM_apply (j : ℕ) (c : Fin n → k) (i l : Fin n) :
     colM j c i l = if i.val < j ∧ l.val = j then c i else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `only [mul_apply, colM_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : i.val < j ∧ a.val = j`. Distinguish the cases in `h2 : a.val < j ∧ l.val = j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd h2.1 (by omega)`. Simplify using `[h2]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colM_mul (j : ℕ) (c d : Fin n → k) : colM j c * colM j d = 0 := by
   ext i l
@@ -41,7 +41,7 @@ theorem colM_mul (j : ℕ) (c d : Fin n → k) : colM j c * colM j d = 0 := by
   · simp [h1]
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `only [colM_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colM_add (j : ℕ) (c d : Fin n → k) : colM j (c + d) = colM j c + colM j d := by
   ext i l
@@ -58,7 +58,7 @@ Both sides reduce to the same expression.
 theorem val_colU (j : ℕ) (c : Fin n → k) : (colU j c : Matrix (Fin n) (Fin n) k) = 1 + colM j c := rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Rewrite using `[Units.val_mul, val_colU, val_colU, val_colU, colM_add, add_mul, one_mul, mul_add, mul_one, colM_mul]`. Normalize the expressions using the abelian group laws.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem colU_add (j : ℕ) (c d : Fin n → k) : colU j (c + d) = colU j c * colU j d := by
   ext : 1
@@ -66,7 +66,7 @@ theorem colU_add (j : ℕ) (c d : Fin n → k) : colU j (c + d) = colU j c * col
   abel
 
 /- English proof (translation)
-Use extensionality with `: 1`. Rewrite using `[val_colU, Units.val_one]`. Establish `: colM j (0 : Fin n → k) = 0` using `by ext i l; simp [colM_apply]`. Rewrite using `[this, add_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem colU_zero (j : ℕ) : colU j (0 : Fin n → k) = 1 := by
   ext : 1
@@ -75,16 +75,16 @@ theorem colU_zero (j : ℕ) : colU j (0 : Fin n → k) = 1 := by
   rw [this, add_zero]
 
 /- English proof (translation)
-Use `(inv_eq_of_mul_eq_one_right ?_)` and prove the remaining obligations. Rewrite using `[← colU_add, add_neg_cancel, colU_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem colU_inv (j : ℕ) (c : Fin n → k) : (colU j c)⁻¹ = colU j (-c) := by
   refine (inv_eq_of_mul_eq_one_right ?_)
   rw [← colU_add, add_neg_cancel, colU_zero]
 
 /- English proof (translation)
-Rewrite using `[val_colU, add_mul, one_mul, Matrix.add_apply, mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (⟨j, hj⟩ : Fin n)]`. Apply the tactic sequence `simp only [colM_apply, and_true] split_ifs <;> simp`. Introduce `a _ ha`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ¬ (a.val = j)` using `fun h => ha (Fin.ext h)`. Simplify using `[colM_apply, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colU_mul_apply (j : ℕ) (hj : j < n) (c : Fin n → k) (M : Matrix (Fin n) (Fin n) k) (i l : Fin n) :
     ((colU j c : Matrix (Fin n) (Fin n) k) * M) i l = M i l + (if i.val < j then c i * M ⟨j, hj⟩ l else 0) := by
@@ -99,11 +99,11 @@ theorem colU_mul_apply (j : ℕ) (hj : j < n) (c : Fin n → k) (M : Matrix (Fin
   · simp
 
 /- English proof (translation)
-Use extensionality with `i l`. Rewrite using `[val_colU, GlobalTheory.RootUp.val_elem, Matrix.add_apply, Matrix.add_apply]`. Use `congr 1`. Rewrite using `[colM_apply, Matrix.single_apply]`. Distinguish the cases in `hi : i = r`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Distinguish the cases in `hl : l.val = j`. Establish `: (⟨j, hj⟩ : Fin n) = l` using `Fin.ext hl.symm`. Simplify using `[hr, hl, this]`. Establish `: (⟨j, hj⟩ : Fin n) ≠ l` using `fun h => hl (by rw [← h])`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hl, this]`. Establish `: r ≠ i` using `Ne.symm hi`. Simplify using `[Pi.single_apply, hi, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem colU_single_of_lt (j : ℕ) (hj : j < n) {r : Fin n} (hr : r.val < j) (a : k) :
     colU j (Pi.single r a) = GlobalTheory.RootUp.elem (i := r) (j := ⟨j, hj⟩) (fun h => by
@@ -123,7 +123,7 @@ theorem colU_single_of_lt (j : ℕ) (hj : j < n) {r : Fin n} (hr : r.val < j) (a
     simp [Pi.single_apply, hi, this]
 
 /- English proof (translation)
-Use extensionality with `i l`. Rewrite using `[val_colU, Units.val_one, Matrix.add_apply, colM_apply]`. Distinguish the cases in `hi : i = r`. Substitute `hi; simp [show ¬ i.val < j by omega]` using the available equality. Simplify using `[Pi.single_apply, hi]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem colU_single_of_ge (j : ℕ) {r : Fin n} (hr : j ≤ r.val) (a : k) : colU j (Pi.single r a) = 1 := by
   ext i l

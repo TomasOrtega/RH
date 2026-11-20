@@ -14,7 +14,7 @@ namespace GlobalTheory.Vert.Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `(genericPoint_spec Z₁.X).image f.f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.f.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec Z.X)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.map_genericPoint {Z Z₁ : Model O} (f : Hom Z₁ Z) :
     f.f (genericPoint Z₁.X) = genericPoint Z.X := by
@@ -31,7 +31,7 @@ def Hom.fnMap {Z Z₁ : Model O} (f : Hom Z₁ Z) : Z.fnFld →+* Z₁.fnFld :=
   ((Z.X.residueFieldCongr f.map_genericPoint).inv ≫ f.f.residueFieldMap (genericPoint Z₁.X)).hom
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem residueFieldCongr_Γevaluation {X : Scheme.{0}} {x y : X} (e : x = y) (a : Γ(X, ⊤)) :
     (X.residueFieldCongr e).hom (X.Γevaluation x a) = X.Γevaluation y a := by
@@ -39,7 +39,7 @@ theorem residueFieldCongr_Γevaluation {X : Scheme.{0}} {x y : X} (e : x = y) (a
   rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Hom.fnMap, fnConst, RingHom.comp_apply, CommRingCat.hom_comp, Scheme.residueFieldCongr_inv]`. Rewrite using `[residueFieldCongr_Γevaluation, Scheme.Γevaluation_naturality_apply]`. Conclude with `congrArg _ (appTop_const f.comp_str g)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.fnMap_comp_fnConst {Z Z₁ : Model O} (f : Hom Z₁ Z) :
     f.fnMap.comp Z.fnConst = Z₁.fnConst := by
@@ -50,7 +50,7 @@ theorem Hom.fnMap_comp_fnConst {Z Z₁ : Model O} (f : Hom Z₁ Z) :
   exact congrArg _ (appTop_const f.comp_str g)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun g hg => by_contra fun h0 => ?_` and prove the remaining obligations. Establish `h1 : genericPoint Z.X ∈ Z.X.basicOpen (Z.const g)` using `Z.gen_le_basicOpen h0 Z.genericPoint_mem_gen`. Conclude with `(Scheme.evaluation_ne_zero_iff_mem_basicOpen _ _ _ _).2 h1 hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnConst_injective (Z : Model O) : Function.Injective Z.fnConst := by
   refine (injective_iff_map_eq_zero _).2 fun g hg => by_contra fun h0 => ?_
@@ -59,7 +59,7 @@ theorem fnConst_injective (Z : Model O) : Function.Injective Z.fnConst := by
   exact (Scheme.evaluation_ne_zero_iff_mem_basicOpen _ _ _ _).2 h1 hg
 
 /- English proof (translation)
-Consider the cases of `f`. Consider the cases of `f'`. Consider the cases of `e`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem Hom.fnMap_congr {Z Z₁ : Model O} {f f' : Hom Z₁ Z} (e : f.f = f'.f) :
     f.fnMap = f'.fnMap := by
@@ -69,7 +69,7 @@ theorem Hom.fnMap_congr {Z Z₁ : Model O} {f f' : Hom Z₁ Z} (e : f.f = f'.f) 
   rfl
 
 /- English proof (translation)
-Substitute `e₁ e` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem residueFieldMap_comp_congr {X Y W : Scheme.{0}} (a : W ⟶ Y) (b : Y ⟶ X) (p₂ : W) (p₁ : Y)
     (p : X) (e₁ : a p₂ = p₁) (e : b p₁ = p) (e' : (a ≫ b) p₂ = p) :
@@ -80,7 +80,7 @@ theorem residueFieldMap_comp_congr {X Y W : Scheme.{0}} (a : W ⟶ Y) (b : Y ⟶
   simp
 
 /- English proof (translation)
-Simplify using `only [Hom.fnMap]`. Rewrite using `[← CommRingCat.hom_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (residueFieldMap_comp_congr g.f f.f _ _ _ g.map_genericPoint f.map_genericPoint (g.comp f).map_genericPoint)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.fnMap_comp {Z Z₁ Z₂ : Model O} (g : Hom Z₂ Z₁) (f : Hom Z₁ Z) :
     (g.comp f).fnMap = g.fnMap.comp f.fnMap := by
@@ -90,7 +90,7 @@ theorem Hom.fnMap_comp {Z Z₁ Z₂ : Model O} (g : Hom Z₂ Z₁) (f : Hom Z₁
     g.map_genericPoint f.map_genericPoint (g.comp f).map_genericPoint)
 
 /- English proof (translation)
-Rewrite using `[← Hom.fnMap_comp, ← Hom.fnMap_comp]`. Conclude with `Hom.fnMap_congr w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.fnMap_comp_eq {B B₁ B₂ Z : Model O} (f₁ : Hom B₁ B) (f₂ : Hom B₂ B) (h₁ : Hom Z B₁)
     (h₂ : Hom Z B₂) (w : h₁.f ≫ f₁.f = h₂.f ≫ f₂.f) :

@@ -12,13 +12,13 @@ open ValuativeRel Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `key : ∀ h ∈ GlobalTheory.SmGL.iwahori k (Fin n), ∀ i j, valuation k (h.val i j) ≤ 1`. Introduce and unpack `_ ⟨h, -, rfl⟩ i j`. Conclude with `(h.val i j).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨key g hg, key _ (inv_mem hg), (GlobalTheory.SmGL.mem_iwahori.1 hg).2⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Set `A : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = g.val` using `rfl`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (algebraMap 𝒪[k] k).mapMatrix B = (g⁻¹).val` using `rfl`. Establish `inj : Function.Injective ((algebraMap 𝒪[k] k).mapMatrix : Matrix (Fin n) (Fin n) 𝒪[k] → Matrix (Fin n) (Fin n) k)` using `Matrix.map_injective Subtype.val_injective`. Set `h : GL (Fin n) 𝒪[k]` to `⟨A, B, inj (by rw [map_mul, hA, hB, map_one]; exact g.mul_inv), inj (by rw [map_mul, hA, hB, map_one]; exact g.inv_mul)⟩`. Establish `hh : GeneralLinearGroup.map (algebraMap 𝒪[k] k) h = g` using `Units.ext hA`. Use `⟨h, (GlobalTheory.SmGL.mem_borel _).2 fun i j hij => ?_, hh⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show IsLocalRing.residue 𝒪[k] (A i j) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `(h3 i j hij).ne`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.mem_iw {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (g : GL (Fin n) k) :
@@ -49,7 +49,7 @@ private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.mem_iw {k : Typ
     exact (h3 i j hij).ne
 
 /- English proof (translation)
-Take `⟨h, -, rfl⟩` from `hg`. Establish `h1 : (GeneralLinearGroup.map (algebraMap 𝒪[k] k) h).val.det = algebraMap 𝒪[k] k h.val.det` using `((algebraMap 𝒪[k] k).map_det h.val).symm`. Rewrite using `[h1, ← (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `(GeneralLinearGroup.det h).isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.det_iw {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ GlobalTheory.SmGL.iwahori k (Fin n)) :
@@ -61,9 +61,9 @@ private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.det_iw {k : Typ
   exact (GeneralLinearGroup.det h).isUnit
 
 /- English proof (translation)
-Establish `hM` using `mul_mem hb ha`. Take `⟨h1, -, h3⟩` from `(mem_iw _).1 hM`. Establish `h0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Establish `hs : StrictMono fun i => valuation k ((ϖ ^ x i : kˣ) : k)`. Introduce `i j hij`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`. Conclude with `zpow_lt_zpow_right_of_lt_one₀ h0 hϖ (hx hij)`. Rewrite using `[Units.val_mul, Units.val_mul, mul_assoc, Matrix.charpoly_mul_comm, mul_assoc, ← Units.val_mul, GlobalTheory.SmGL.val_diagT]`. Conclude with `UpperTheory.separable_of_newton_polygon (valuation k) n _ hs (fun i => (map_ne_zero _).2 (Units.ne_zero _)) _ (Matrix.charpoly_monic _) (by simp) (UpperTheory.charpoly_coeff_valuation (valuation k) n _ _ h1 h3 (det_iw hM) hs fun i => Units.ne_zero _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.sep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) < 1) (x : Fin n → ℤ)
@@ -83,7 +83,7 @@ private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.sep {k : Type} 
     (UpperTheory.charpoly_coeff_valuation (valuation k) n _ _ h1 h3 (det_iw hM) hs fun i => Units.ne_zero _)
 
 /- English proof (translation)
-Establish `hK : IsCompact ((fun p : G × G => p.1 * t * p.2) '' ((I : Set G) ×ˢ (I : Set G)))` using `(hc.prod hc).image (by fun_prop)`. Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨a, ha, b, hb, rfl⟩` from `hf y h`. Conclude with `hy ⟨(a, b), ⟨ha, hb⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.supp {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (I : Subgroup G) (hc : IsCompact (I : Set G)) (t : G) (f : G → ℂ)
@@ -96,23 +96,21 @@ private theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.supp {G : Type}
   exact hy ⟨(a, b), ⟨ha, hb⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n w ϖ hϖ x hx`. Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Take `⟨hop, hc⟩` from `UpperTheory.iwahori_subgroup_open (w.adicCompletion E) n (GlobalTheory.SmGL.iwahori (w.adicCompletion E) (Fin n)) fun g => mem_iw g`. Establish `hne : ∀ t y, GlobalTheory.BCT.dcos n w t y ≠ 0 ↔ ∃ a ∈ GlobalTheory.BCT.iwGL n w, ∃ b ∈ GlobalTheory.BCT.iwGL n w, y = a * t * b`. Introduce `t y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.BCT.dcos`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `[h]`. Use `⟨⟨GlobalTheory.BCT.iwGL n w, hop, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨h, -, rfl⟩`. Establish `hO : ∀ z : 𝒪[w.adicCompletion E], (z : w.adicCompletion E) ∈ Formalism.UG.Ov E w`. Introduce `z`. Establish `hz : valuation (w.adicCompletion E) (z : w.adicCompletion E) ≤ 1` using `z.2`. Use `(Valuation.vle_one_iff (valuation _)).2 hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Conclude with `(Valuation.vle_one_iff (Valued.v)).1 this`. Set `φ : 𝒪[w.adicCompletion E] →+* Formalism.UG.Ov E w` to `(Subring.subtype _).codRestrict _ hO`. Use `show _ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E w)`. Conclude with `⟨GeneralLinearGroup.map φ h, Units.ext rfl⟩`. Conclude with `supp (G := GL (Fin n) (w.adicCompletion E)) _ hc (GlobalTheory.BCT.tdiag ϖ x) _ fun y hy => (hne _ y).1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `k hk y classical`. Unfold `GlobalTheory.BCT.dcos`. Use `⟨if_congr ⟨?_, ?_⟩ rfl rfl, if_congr ⟨?_, ?_⟩ rfl rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Conclude with `⟨k⁻¹ * a, mul_mem (inv_mem hk) ha, b, hb, by rw [mul_assoc, mul_assoc, ← mul_assoc a, ← h]; simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨k * a, mul_mem hk ha, b, hb, by simp only [mul_assoc]⟩`. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Conclude with `⟨a, ha, b * k⁻¹, mul_mem hb (inv_mem hk), by rw [← mul_assoc, ← h]; simp⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨a, ha, b * k, mul_mem hb hk, by simp only [mul_assoc]⟩`. Introduce `y hy`. Take `⟨a, ha, b, hb, rfl⟩` from `(hne _ y).1 hy`. Use `sep ϖ ?_ x hx ha hb` and prove the remaining obligations. Establish `h0 : Valued.v (ϖ : w.adicCompletion E) ≠ 0` using `by simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Valued.v (ϖ : w.adicCompletion E) < 1`. Unfold `Formalism.UG.ordL at hϖ`. Rewrite `hϖ` using `[dif_neg h0]`. Rewrite using `[← WithZero.coe_unzero h0, ← WithZero.coe_one, WithZero.coe_lt_coe, ← Multiplicative.toAdd_lt]`. Rewrite using `[toAdd_one]`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `(Valuation.vlt_one_iff (valuation _)).1 ((Valuation.vlt_one_iff Valued.v).2 h1)`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.DcosSep := by

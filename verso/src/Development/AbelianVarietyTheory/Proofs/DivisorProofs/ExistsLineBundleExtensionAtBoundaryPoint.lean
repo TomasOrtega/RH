@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.BdStalkExt
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `GlobalTheory.BdLocalExt.exists_extension_stalk g e x L hL`. Use `⟨N, hN, fun T a b hab => ?_⟩` and prove the remaining obligations. Set `t : T ⟶ pullback (e ≫ g) (S.fromSpecStalk x)` to `pullback.lift b (a ≫ pullback.snd g (S.fromSpecStalk x)) (by`. Rewrite using `[← Category.assoc, ← hab, Category.assoc, Category.assoc, pullback.condition])`. Establish `ha : a = t ≫ pullback.map (e ≫ g) (S.fromSpecStalk x) g (S.fromSpecStalk x) e (𝟙 _) (𝟙 _) (by simp) (by simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hab, Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_fst_assoc]`. Rewrite using `[Category.assoc, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Establish `hb : b = t ≫ pullback.fst (e ≫ g) (S.fromSpecStalk x)` using `(pullback.lift_fst _ _ _).symm`. Conclude with `LBIso.chartPull (chartPullSame N _ _ _ t fun _ => ha) (chartPullSame L _ _ _ t fun _ => hb) h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extension_test {S X Y : Scheme.{0}} (g : X ⟶ S) [Smooth g] [QuasiCompact g] (e : Y ⟶ X)
     [IsOpenImmersion e] (x : S) [IsRegularLocalRing (S.presheaf.stalk x)] (L : LB Y) (hL : L.IsLB) :
@@ -34,13 +34,9 @@ theorem exists_extension_test {S X Y : Scheme.{0}} (g : X ⟶ S) [Smooth g] [Qua
   exact LBIso.chartPull (chartPullSame N _ _ _ t fun _ => ha) (chartPullSame L _ _ _ t fun _ => hb) h
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ _ _ _ Z zs i OZ N d J S π j _ BD hU hpre tF _ G _ _ e hsa he _ x hx`. Take `⟨-, -, -, -, ⟨-, hproj, -⟩, -⟩` from `hU`. Use `haveI := hsa.smooth`. Use `haveI := hsa.quasiCompact`. Use `haveI : LocallyOfFiniteType (π ≫ zs) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, i', hi', hcomp⟩` from `hproj`. Use `haveI := hi'`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str c.F M`. Rewrite using `[← hcomp]`. Use `infer_instance`.
-
-Use `haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian (π ≫ zs)`. Take `⟨k, _, m, n, C, ξ, a, -, -, rfl, het, -⟩` from `hpre x hx`. Use `haveI : IsRegularLocalRing (ChartRing k m n) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin n)`. Use `haveI : IsRegularLocalRing (S.presheaf.stalk (ξ (closedPoint _))) := (GlobalTheory.RegSmooth.isRegularLocalRing_of_isEtaleCompletion _ het).1`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_isPullback (P := @IsOpenImmersion) he.1.flip inferInstance`.
-
-Conclude with `exists_extension_test G.hom e _ tF.PP.L tF.PP.isLB`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension_at_boundary : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∀ (tF : SAB H (Xo.XF c)), SABMap tF Xo.univ.t (pullback.fst _ _) → ∀ (G : Over S) [GrpObj G] [IsCommMonObj G] (e : tF.G.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback tF.G G j e → (∀ {k : Type} [Field k] {m n : ℕ} (C : MonoFam Xo c φ (ChartRing k m n)), IsTaut C → ∀ ξ : Sp (ChartRing k m n) ⟶ S, C.y ≫ j = jK _ ≫ ξ → ∀ (tK : SAB H (Sp (FractionRing (ChartRing k m n)))) (a : SABMap tK C.t (jK _)) (b : SABMap tK tF C.y), ∃ πC : C.t.G.left ⟶ G.left, IsGrpPullback C.t.G G ξ πC ∧ a.φ ≫ πC = b.φ ≫ e) → ∀ x : S, x ∉ Set.range j → ∃ N : LB (pullback G.hom (S.fromSpecStalk x)), N.IsLB ∧ ∀ (T : Scheme.{0}) (a : T ⟶ pullback G.hom (S.fromSpecStalk x)) (b : T ⟶ tF.G.left), a ≫ pullback.fst G.hom (S.fromSpecStalk x) = b ≫ e → LBIso (N.pull a) (tF.PP.L.pull b) := by
   intro E _ _ _ H Dw l Xo c φ _ _ _ Z zs i OZ N d J S π j _ BD hU hpre tF _ G _ _ e hsa he _ x hx

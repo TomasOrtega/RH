@@ -14,45 +14,39 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hCW, -, -, -, hHI, -, -, -, hClW, -⟩` from `h.1`. Introduce `k r Wp _ _ _ D X hD hX γ hγ`. Take `⟨-, -, hgW, -, hth_mul, hth_th, -, -, hμgbar⟩` from `stInvGroup h k r Wp D X hD hX γ hγ`. Distinguish the cases in `hWp : Subsingleton Wp`. Use `left`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y x' y'`. Establish `hy : y = 0` using `Subsingleton.elim _ _`. Simplify using `[hy]`. Establish `: Nontrivial Wp` using `not_subsingleton_iff_nontrivial.1 hWp`. Establish `hU : IsClosedSubgroup (UWset k r D.z)` using `hClW k r D.z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμW` using `D.haarW`. Establish `hme` using `MatrixSubsetMeasurability.me_val hU`. Establish `hleft : (MatrixSubsetMeasurability.nu hU D.μW).IsMulLeftInvariant` using `MatrixSubsetMeasurability.nu_left hμW`. Establish `hinvI : (MatrixSubsetMeasurability.nu hU D.μW).IsInvInvariant` using `MatrixSubsetMeasurability.nu_inv hHI hμW`. Establish `hmapnu : (MatrixSubsetMeasurability.nu hU D.μW).map (fun g : MatrixSubsetMeasurability.SG hU => g.1) = D.μW` using `MatrixSubsetMeasurability.map_nu hμW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνuniv : MatrixSubsetMeasurability.nu hU D.μW Set.univ = 1`. Establish `e` using `congrArg (fun m : Measure (Mt k r) => m Set.univ) hmapnu`. Simplify using `only [Measure.map_apply hme.measurable MeasurableSet.univ, Set.preimage_univ] at e`. Rewrite using `[e, hD.mass]`. Establish `hcpt : IsCompact {x : Mt k r | Matrix.of x ∈ UWset k r D.z}` using `hCW k r D.z D.z_mem D.T_pos`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace (MatrixSubsetMeasurability.SG hU)` using `isCompact_iff_compactSpace.1 hcpt`. Establish `hpos : (MatrixSubsetMeasurability.nu hU D.μW).IsOpenPosMeasure` using `isOpenPosMeasure_of_mulLeftInvariant_of_compact Set.univ isCompact_univ (by rw [hνuniv]; exact one_ne_zero)`. Establish `hfin : IsFiniteMeasure (MatrixSubsetMeasurability.nu hU D.μW)` using `⟨by rw [hνuniv]; exact ENNReal.one_lt_top⟩`. Take `⟨θ, hθ⟩ : ∃ θ : MatrixSubsetMeasurability.SG hU → MatrixSubsetMeasurability.SG hU, θ = fun g => (MatrixSubsetMeasurability.mk hU (gbar k r γ (MatrixSubsetMeasurability.mat g)) (hgW _ (MatrixSubsetMeasurability.mat_mem g)))⁻¹` from `⟨_, rfl⟩`. Establish `hmθ : ∀ g, MatrixSubsetMeasurability.mat (θ g) = th k r γ (MatrixSubsetMeasurability.mat g)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Simplify using `only [hθ]`. Rewrite using `[MatrixSubsetMeasurability.mat_inv, MatrixSubsetMeasurability.mat_mk]`. Both sides reduce to the same expression. Establish `hgc : Continuous fun A : Mat k r => gbar k r γ A`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun A : Mat k r => (embWb k r γ)⁻¹ * A` using `continuous_const.matrix_mul continuous_id`. Establish `h2 : Continuous fun A : Mat k r => (embWb k r γ)⁻¹ * A * embWb k r γ` using `h1.matrix_mul continuous_const`. Establish `h3 : Continuous fun A : Mat k r => ((embWb k r γ)⁻¹ * A * embWb k r γ).map (starRingEnd ℂ)` using `h2.matrix_map Complex.continuous_conj`. Establish `h4 : Continuous fun A : Mat k r => embWb k r γ * ((embWb k r γ)⁻¹ * A * embWb k r γ).map (starRingEnd ℂ)` using `continuous_const.matrix_mul h3`. Conclude with `h4.matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgbc : Continuous fun g : MatrixSubsetMeasurability.SG hU => MatrixSubsetMeasurability.mk hU (gbar k r γ (MatrixSubsetMeasurability.mat g)) (hgW _ (MatrixSubsetMeasurability.mat_mem g))`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Conclude with `hgc.comp MatrixSubsetMeasurability.continuous_mat`. Establish `hθc : Continuous θ`. Rewrite using `[hθ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hgbc.inv`. Establish `hθmul : ∀ a b, θ (a * b) = θ b * θ a`. Introduce `a b`. Apply `MatrixSubsetMeasurability.ext'` to reduce the goal to its premises. Rewrite using `[MatrixSubsetMeasurability.mat_mul, hmθ, hmθ, hmθ, MatrixSubsetMeasurability.mat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hth_mul _ (MatrixSubsetMeasurability.mat_mem a).1 _ (MatrixSubsetMeasurability.mat_mem b).1`. Establish `hθθ : ∀ g, θ (θ g) = g`. Introduce `g`. Apply `MatrixSubsetMeasurability.ext'` to reduce the goal to its premises. Rewrite using `[hmθ, hmθ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hth_th _ (MatrixSubsetMeasurability.mat_mem g).1`. Establish `hgF : Measurable fun x : Mt k r => fun i j => gbar k r γ (Matrix.of x) i j`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp (hgc.comp continuous_id))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hθμ : (MatrixSubsetMeasurability.nu hU D.μW).map θ = MatrixSubsetMeasurability.nu hU D.μW`. Establish `hval : (fun g : MatrixSubsetMeasurability.SG hU => g.1) ∘ θ = (invM ∘ fun x : Mt k r => fun i j => gbar k r γ (Matrix.of x) i j) ∘ fun g : MatrixSubsetMeasurability.SG hU => g.1`. Use function extensionality and compare the values at `g`. Conclude with `hmθ g`. Establish `key : ((MatrixSubsetMeasurability.nu hU D.μW).map θ).map (fun g : MatrixSubsetMeasurability.SG hU => g.1) = D.μW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.map_map hme.measurable hθc.measurable, hval, ← Measure.map_map (InvGrp.measurable_invM.comp hgF) hme.measurable, hmapnu, ← Measure.map_map InvGrp.measurable_invM hgF, hμgbar]`. Conclude with `hHI k r _ D.μW hU hμW`. Rewrite using `[← hme.comap_map ((MatrixSubsetMeasurability.nu hU D.μW).map θ), key]`. Both sides reduce to the same expression. Establish `hπc : Continuous fun g : MatrixSubsetMeasurability.SG hU => D.π (MatrixSubsetMeasurability.mat g)` using `D.π_cont.comp_continuous MatrixSubsetMeasurability.continuous_mat fun g => MatrixSubsetMeasurability.mat_mem g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρ1 : D.π (MatrixSubsetMeasurability.mat (1 : MatrixSubsetMeasurability.SG hU)) = 1`. Rewrite using `[MatrixSubsetMeasurability.mat_one]`. Conclude with `D.π_rep.1`. Establish `hρmul : ∀ a b : MatrixSubsetMeasurability.SG hU, D.π (MatrixSubsetMeasurability.mat (a * b)) = (D.π (MatrixSubsetMeasurability.mat a)).comp (D.π (MatrixSubsetMeasurability.mat b))`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MatrixSubsetMeasurability.mat_mul]`. Conclude with `D.π_rep.2 _ (MatrixSubsetMeasurability.mat_mem a) _ (MatrixSubsetMeasurability.mat_mem b)`. Establish `hρn : ∀ (g : MatrixSubsetMeasurability.SG hU) (v : Wp), ‖D.π (MatrixSubsetMeasurability.mat g) v‖ = ‖v‖` using `fun g v => D.π_unitary _ (MatrixSubsetMeasurability.mat_mem g) v`. Establish `hρc : ∀ v : Wp, Continuous fun g : MatrixSubsetMeasurability.SG hU => D.π (MatrixSubsetMeasurability.mat g) v` using `fun v => hπc.clm_apply continuous_const`. Establish `hmem : ∀ v w : Wp, MemLp (fun g : MatrixSubsetMeasurability.SG hU => ⟪w, D.π (MatrixSubsetMeasurability.mat g) v⟫_ℂ) 2 (MatrixSubsetMeasurability.nu hU D.μW)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v w`. Use `MemLp.of_bound (continuous_const.inner (hρc v)).aestronglyMeasurable (‖w‖ * ‖v‖) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hirr : ∀ S : Submodule ℂ Wp, IsClosed (S : Set Wp) → (∀ (g : MatrixSubsetMeasurability.SG hU), ∀ v ∈ S, D.π (MatrixSubsetMeasurability.mat g) v ∈ S) → S = ⊥ ∨ S = ⊤`. Introduce `S hS hinv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hD.irr S hS fun g hg v hv => ?_` and prove the remaining obligations. Establish `e` using `hinv (MatrixSubsetMeasurability.mk hU g hg) v hv`. Rewrite `e` using `[MatrixSubsetMeasurability.mat_mk]`. Then use the resulting hypothesis. Break down `schurDichotomy (MatrixSubsetMeasurability.SG hU) (MatrixSubsetMeasurability.nu hU D.μW) Wp θ (fun g => D.π (MatrixSubsetMeasurability.mat g)) hθc hθmul hθθ hθμ hρ1 hρmul hρn hρc hmem hirr with hL | ⟨C, hC1, hC2⟩` into its components or cases. Use `left`.
-
-Introduce `x y x' y'`. Rewrite using `[← hmapnu, hme.integral_map]`. Establish `e` using `hL x y x' y'`. Simplify using `only [hmθ] at e`. Conclude with `e`.
-
-Use `right`. Use `⟨C, fun g hg x y => ?_, fun g hg v => ?_⟩` and prove the remaining obligations. Establish `e` using `hC1 (MatrixSubsetMeasurability.mk hU g hg) x y`. Simplify using `only [hmθ, MatrixSubsetMeasurability.mat_mk] at e`. Conclude with `e`.
-
-Establish `e` using `hC2 (MatrixSubsetMeasurability.mk hU g hg) v`. Simplify using `only [MatrixSubsetMeasurability.mat_inv, hmθ, MatrixSubsetMeasurability.mat_mk] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stDichoW (h : UnitaryGroupStructuralFacts) : StDichoW := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hCW, -, -, -, hHI, -, -, -, hClW, -⟩ := h.1

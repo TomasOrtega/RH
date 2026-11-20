@@ -9,11 +9,11 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs
 namespace PositivityTheory.Rg.BcB.E.E3
 
 /- English proof (translation)
-Introduce `E _ _ _ N Q₁ Q₂ h₁ h₂`. Take `⟨hcpt, -, -, c, hc⟩` from `GlobalTheory.CompanionTheory.Size.sizeBasic GlobalTheory.CompanionTheory.Dblock.SzFinProof.szFin GlobalTheory.CompanionTheory.ConjAtPlaces.conjPlaces E N`. Take `⟨r₁, hr₁⟩` from `hcpt Q₁ h₁`. Take `⟨r₂, hr₂⟩` from `hcpt Q₂ h₂`. Establish `htor` using `GlobalTheory.CompanionTheory.TorNorm.torNorm GlobalTheory.CompanionTheory.LogAbs.logAbsBasic E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) ≤ 2 * Module.finrank ℚ E` using `by positivity`. Use `⟨|r₁| + |r₂| + 2 * |c| + 2 * Module.finrank ℚ E, by positivity, fun q₁ hq₁ q₂ hq₂ x => ?_⟩` and prove the remaining obligations. Establish `e₁` using `hc (q₁ * An.tor E x) q₂`. Establish `e₂` using `hc q₁ (An.tor E x)`. Establish `e₃` using `(htor.2 N x).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁` using `(hr₁ q₁ hq₁).trans (le_abs_self r₁)`. Establish `a₂` using `(hr₂ q₂ hq₂).trans (le_abs_self r₂)`. Establish `a₃` using `le_abs_self c`. Establish `hx : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `m₁ : 0 ≤ (|r₁| + |r₂| + 2 * |c|) * ‖x‖` using `mul_nonneg (by positivity) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

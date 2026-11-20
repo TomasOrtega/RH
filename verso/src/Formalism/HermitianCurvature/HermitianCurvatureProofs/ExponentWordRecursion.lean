@@ -14,7 +14,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [List.flatMap_cons, List.map_append, List.sum_append, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_sum_flatMap {α β M : Type*} [AddCommMonoid M] (L : List α) (f : α → List β) (h : β → M) :
     ((L.flatMap f).map h).sum = (L.map fun a => ((f a).map h).sum).sum := by
@@ -23,7 +23,7 @@ lemma list_sum_flatMap {α β M : Type*} [AddCommMonoid M] (L : List α) (f : α
   | cons a L ih => simp [List.flatMap_cons, List.map_append, List.sum_append, ih]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.sum_cons, List.map_cons, List.sum_cons]`. Conclude with `(norm_add_le _ _).trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_list_sum_le {α : Type*} (L : List α) (f : α → E) :
     ‖(L.map f).sum‖ ≤ (L.map fun a => ‖f a‖).sum := by
@@ -34,7 +34,7 @@ lemma norm_list_sum_le {α : Type*} (L : List α) (f : α → E) :
     exact (norm_add_le _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.sum_cons, List.map_cons, List.sum_cons]`. Conclude with `add_le_add (h a (by simp)) (ih (fun b hb => h b (by simp [hb])))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma list_sum_le {α : Type*} (L : List α) (f f' : α → ℝ) (h : ∀ a ∈ L, f a ≤ f' a) :
     (L.map f).sum ≤ (L.map f').sum := by
@@ -45,7 +45,7 @@ lemma list_sum_le {α : Type*} (L : List α) (f f' : α → ℝ) (h : ∀ a ∈ 
     exact add_le_add (h a (by simp)) (ih (fun b hb => h b (by simp [hb])))
 
 /- English proof (translation)
-Conclude with `List.sum_nonneg (fun x hx => by`. Take `⟨a, ha, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h a ha)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma list_sum_nonneg {α : Type*} (L : List α) (f : α → ℝ) (h : ∀ a ∈ L, 0 ≤ f a) : 0 ≤ (L.map f).sum := by
   exact List.sum_nonneg (fun x hx => by
@@ -53,7 +53,7 @@ lemma list_sum_nonneg {α : Type*} (L : List α) (f : α → ℝ) (h : ∀ a ∈
     exact h a ha)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [mul_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_sum_mul_left {α : Type*} (L : List α) (f : α → ℝ) (c : ℝ) :
     (L.map fun a => c * f a).sum = c * (L.map f).sum := by
@@ -62,7 +62,7 @@ lemma list_sum_mul_left {α : Type*} (L : List α) (f : α → ℝ) (c : ℝ) :
   | cons a L ih => simp [mul_add, ih]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', heq⟩` from `hf g₀ hg₀`. Conclude with `⟨U, fun g => a • f' g, hU, hgU, hf'.const_smul a, fun g hg hgv => by show a • f g = a • f' g`. Rewrite using `[heq g hg hgv]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 lemma ckOn_rsmul {f : Mat k r → E} {m : ℕ∞} (a : ℝ) (hf : CkOn m (GV k r) f) :
     CkOn m (GV k r) (fun g => a • f g) := by
@@ -73,18 +73,18 @@ lemma ckOn_rsmul {f : Mat k r → E} {m : ℕ∞} (a : ℝ) (hf : CkOn m (GV k r
     rw [heq g hg hgv]⟩
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma ckOn_zero {m : ℕ∞} : CkOn m (GV k r) (fun _ : Mat k r => (0 : E)) := by
   intro g₀ _
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `L hL g hg`. Establish `key : ∀ L' : List (ℝ × (Mat k r → E)), (∀ p ∈ L', CkOn ((1 : ℕ) : ℕ∞) (GV k r) p.2) → HasDerivAt (fun t : ℝ => (L'.map fun p => p.1 • p.2 (cv b X t g)).sum) ((L'.map fun p => p.1 • op b X p.2 g).sum) 0`. Introduce `L'`. Proceed by induction on `L' with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : E)`. Consider the case `cons p L' ih`. Introduce `h`. Establish `h1` using `hasDerivAt_cv (h p (by simp)) hX hg b 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[cv_zero]`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(h1.const_smul p.1).add (ih fun q hq => h q (by simp [hq]))`. Conclude with `(key L hL).deriv`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma op_listSum {b : Bool} {X : Mat k r} (hX : inLie k r X) :
     ∀ (L : List (ℝ × (Mat k r → E))), (∀ p ∈ L, CkOn ((1 : ℕ) : ℕ∞) (GV k r) p.2) →
@@ -108,16 +108,16 @@ lemma op_listSum {b : Bool} {X : Mat k r} (hX : inLie k r X) :
   exact (key L hL).deriv
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [vf, mulL, mulR, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma vf_sum (b : Bool) {ι : Type*} (s : Finset ι) (c : ι → ℝ) (Y : ι → Mat k r) (g : Mat k r) :
     vf b (∑ i ∈ s, c i • Y i) g = ∑ i ∈ s, c i • vf b (Y i) g := by
   cases b <;> simp [vf, mulL, mulR, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hf', heq⟩` from `hH g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Establish `hop : ∀ Z, inLie k r Z → op b Z H g = fderiv ℝ f' g (vf b Z g)` using `fun Z hZ => (hasDerivAt_ext (f := H) b hU hgU hg hd heq hZ).deriv`. Rewrite using `[hop X hX]`. Use `conv_lhs => rw [expandL hX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vf_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hop _ (Lt_unit i).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma op_expand {H : Mat k r → E} {X g : Mat k r} (b : Bool) (hX : inLie k r X)
     (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) (hg : g ∈ GV k r) :
@@ -142,11 +142,11 @@ def bw : List Bool → List (List (Bool × Mat k r))
   | b :: τ => (bw τ).flatMap fun w => (Finset.univ.toList : List (J k r)).map fun i => (b, Lt i) :: w
 
 /- English proof (translation)
-Introduce `τ`. Proceed by induction on `τ with`. Consider the case `nil`. Introduce `w' hw`. Simplify using `only [bw, List.mem_singleton] at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Substitute `hw` using the available equality. Both sides reduce to the same expression. Consider the case `cons b τ ih`. Introduce `w' hw`. Simplify using `only [bw, List.mem_flatMap, List.mem_map] at hw`.
+Substitute using the available equality. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw, i, -, rfl⟩` from `hw`. Simplify using `[ih w hw]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 lemma bw_tags : ∀ (τ : List Bool), ∀ w' ∈ bw (k := k) (r := r) τ, w'.map Prod.fst = τ := by
   intro τ
@@ -163,7 +163,7 @@ lemma bw_tags : ∀ (τ : List Bool), ∀ w' ∈ bw (k := k) (r := r) τ, w'.map
     simp [ih w hw]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Simplify using `only [expW, List.map_cons, bw, ← ih, List.map_flatMap, List.flatMap_map, List.map_map, Function.comp_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma expW_snd (w : List (Bool × Mat k r)) : (expW w).map Prod.snd = bw (w.map Prod.fst) := by
   induction w with
@@ -173,13 +173,11 @@ lemma expW_snd (w : List (Bool × Mat k r)) : (expW w).map Prod.snd = bw (w.map 
       Function.comp_def]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `p hp`. Simplify using `only [expW, List.mem_singleton] at hp`. Substitute `hp` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `cons x w ih`. Introduce `p hp`. Simplify using `only [expW, List.mem_flatMap, List.mem_map] at hp`. Take `⟨q, hq, i, -, rfl⟩` from `hp`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `ih q hq`. Use `⟨by simp [h1], ?_⟩` and prove the remaining obligations. Introduce `y hy`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `Lt_unit i`.
-
-Conclude with `h2 y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma expW_mem (w : List (Bool × Mat k r)) :
     ∀ p ∈ expW w, p.2.length = w.length ∧ ∀ y ∈ p.2, unitLie k r y.2 := by
@@ -203,15 +201,13 @@ lemma expW_mem (w : List (Bool × Mat k r)) :
 def Kc (k r : ℕ) : ℝ := 1 + ∑ i : J k r, ‖prj (Eb i)‖
 
 /- English proof (translation)
-Conclude with `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma one_le_Kc : 1 ≤ Kc k r := by
   exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => norm_nonneg _)
 
 /- English proof (translation)
-Establish `hco : |co X i| ≤ 1`. Unfold `co`. Use `split_ifs`. Conclude with `(Complex.abs_im_le_norm _).trans (hX.2 _ _)`. Conclude with `(Complex.abs_re_le_norm _).trans (hX.2 _ _)`.
-
-Rewrite using `[kc, abs_mul, abs_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma kc_le {X : Mat k r} (hX : unitLie k r X) (i : J k r) : |kc i X| ≤ Kc k r := by
   have hco : |co X i| ≤ 1 := by
@@ -227,11 +223,11 @@ lemma kc_le {X : Mat k r} (hX : unitLie k r X) (i : J k r) : |kc i X| ≤ Kc k r
     _ ≤ Kc k r := le_add_of_nonneg_left zero_le_one
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `p hp`. Simplify using `only [expW, List.mem_singleton] at hp`. Substitute `hp` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `cons x w ih`. Introduce `p hp`. Simplify using `only [expW, List.mem_flatMap, List.mem_map] at hp`. Take `⟨q, hq, i, -, rfl⟩` from `hp`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hq'` using `ih (fun y hy => hw y (by simp [hy])) q hq`. Establish `hk` using `kc_le (hw x (by simp)) i`. Simplify using `only [List.length_cons, pow_succ]`. Rewrite using `[abs_mul, mul_comm (Kc k r ^ _)]`. Conclude with `mul_le_mul hk hq' (abs_nonneg _) (by linarith [one_le_Kc (k := k) (r := r)])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma expW_coef (w : List (Bool × Mat k r)) (hw : ∀ y ∈ w, unitLie k r y.2) :
     ∀ p ∈ expW w, |p.1| ≤ Kc k r ^ w.length := by
@@ -252,31 +248,29 @@ lemma expW_coef (w : List (Bool × Mat k r)) (hw : ∀ y ∈ w, unitLie k r y.2)
     exact mul_le_mul hk hq' (abs_nonneg _) (by linarith [one_le_Kc (k := k) (r := r)])
 
 /- English proof (translation)
-Establish `hmono : ∀ {m n : ℕ} (F : Mat k r → E), n ≤ m → CkOn ((m : ℕ) : ℕ∞) (GV k r) F → CkOn ((n : ℕ) : ℕ∞) (GV k r) F`. Introduce `m n F hnm hF g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', heq⟩` from `hF g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast hnm), heq⟩`. Establish `hW_ck : ∀ w : List (Bool × Mat k r), AllLie w → ∀ (n : ℕ) (F : Mat k r → E), CkOn ((n + w.length : ℕ) : ℕ∞) (GV k r) F → CkOn ((n : ℕ) : ℕ∞) (GV k r) (W w F)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ n F hF`. Simplify `hF` using `[W]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons x w ih`. Introduce `hw n F hF`. Establish `hw' : AllLie w` using `fun y hy => hw y (by simp [hy])`. Establish `hlen : n + (x :: w).length = (n + 1) + w.length` using `by simp; omega`. Rewrite `hF` using `[hlen]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ckOn_op n x.1 (ih hw' (n + 1) F hF) (hw x (by simp))`. Establish `op_congr : ∀ (b : Bool) (Y : Mat k r) (H H' : Mat k r → E) (g : Mat k r), inLie k r Y → g ∈ GV k r → (∀ g' ∈ GV k r, H g' = H' g') → op b Y H g = op b Y H' g`. Introduce `b Y H H' g hY hg h`. Use `show deriv (fun t : ℝ => H (cv b Y t g)) 0 = deriv (fun t : ℝ => H' (cv b Y t g)) 0`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Conclude with `h _ (cv_mem hY hg t)`. Establish `swap : ∀ (L : List (ℝ × List (Bool × Mat k r))) (f : J k r → ℝ × List (Bool × Mat k r) → E), ∑ i, (L.map (f i)).sum = (L.map fun p => ∑ i, f i p).sum`. Introduce `L f`. Proceed by induction on `L with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `nil => simp`. Consider the case `cons p L ih => simp [Finset.sum_add_distrib, ih]`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `_ F _ g _`. Simplify using `[W, expW]`. Consider the case `cons x w ih`. Introduce `hw F hF g hg`. Establish `hx : inLie k r x.2` using `hw x (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw' : AllLie w` using `fun y hy => hw y (by simp [hy])`. Establish `hlen : (x :: w).length = 1 + w.length` using `by simp [add_comm]`. Rewrite `hF` using `[hlen]`. Establish `hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W w F)` using `hW_ck w hw' 1 F hF`. Establish `hFw : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) F` using `hmono F (by omega) hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ i, op x.1 (Lt i) (W w F) g = ((expW w).map fun p => p.1 • op x.1 (Lt i) (W p.2 F) g).sum`. Introduce `i`. Rewrite using `[op_congr x.1 (Lt i) (W w F) (fun g' => ((expW w).map fun p => p.1 • W p.2 F g').sum) g (Lt_unit i).1 hg (fun g' hg' => ih hw' F hFw g' hg')]`. Establish `hL` using `op_listSum (b := x.1) (Lt_unit i).1 ((expW w).map fun p => (p.1, W p.2 F)) ?_ g hg`. Simplify `hL` using `[List.map_map, Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hq`. Take `⟨hplen, hunit⟩` from `expW_mem w p hp`. Conclude with `hW_ck p.2 (fun y hy => (hunit y hy).1) 1 F (by rw [hplen]; exact hF)`. Use `show op x.1 x.2 (W w F) g = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[op_expand x.1 hx hH hg, Finset.sum_congr rfl (fun i _ => by rw [hterm i])]`. Establish `e1 : ∀ i, kc i x.2 • ((expW w).map fun p => p.1 • op x.1 (Lt i) (W p.2 F) g).sum = ((expW w).map fun p => kc i x.2 • p.1 • op x.1 (Lt i) (W p.2 F) g).sum` using `fun i => by`. Rewrite using `[List.smul_sum, List.map_map]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl (fun i _ => e1 i), swap, expW, list_sum_flatMap]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `p _`. Rewrite using `[List.map_map, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Use `show _ = (kc i x.2 * p.1) • op x.1 (Lt i) (W p.2 F) g`. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_expand : ∀ (w : List (Bool × Mat k r)), AllLie w → ∀ F : Mat k r → E,
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) F → ∀ g ∈ GV k r,
@@ -352,22 +346,20 @@ theorem W_expand : ∀ (w : List (Bool × Mat k r)), AllLie w → ∀ F : Mat k 
     rw [mul_smul]
 
 /- English proof (translation)
-Simplify using `[lr, Function.comp_def, List.map_const']`.
+Simplify using the standard rewrite rules.
 -/
 lemma lr_tags (u v : List (Mat k r)) :
     (lr u v).map Prod.fst = List.replicate u.length true ++ List.replicate v.length false := by
   simp [lr, Function.comp_def, List.map_const']
 
 /- English proof (translation)
-Establish `hta : (w'.take a).map Prod.fst = List.replicate a true`. Rewrite using `[List.map_take, h, List.take_left' (by simp)]`. Establish `hdr : (w'.drop a).map Prod.fst = List.replicate b false`. Rewrite using `[List.map_drop, h, List.drop_left' (by simp)]`. Establish `e1 : w'.take a = ((w'.take a).map Prod.snd).map (fun X => (true, X))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[List.map_map]`. Use `conv_lhs => rw [← List.map_id (w'.take a)]`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `y hy`. Establish `hy1 : y.1 ∈ (w'.take a).map Prod.fst` using `List.mem_map_of_mem hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy1` using `[hta]`. Use `show y = (true, y.2)`. Conclude with `Prod.ext (List.eq_of_mem_replicate hy1) rfl`. Establish `e2 : w'.drop a = ((w'.drop a).map Prod.snd).map (fun X => (false, X))`. Rewrite using `[List.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← List.map_id (w'.drop a)]`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `y hy`. Establish `hy1 : y.1 ∈ (w'.drop a).map Prod.fst` using `List.mem_map_of_mem hy`. Rewrite `hy1` using `[hdr]`.
-
-Use `show y = (false, y.2)`. Conclude with `Prod.ext (List.eq_of_mem_replicate hy1) rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lr, ← e1, ← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_lr_take_drop_of_map_fst_eq_replicate (w' : List (Bool × Mat k r)) (a b : ℕ)
     (h : w'.map Prod.fst = List.replicate a true ++ List.replicate b false) :
@@ -399,43 +391,37 @@ private lemma eq_lr_take_drop_of_map_fst_eq_replicate (w' : List (Bool × Mat k 
         rw [lr, ← e1, ← e2]
 
 /- English proof (translation)
-Introduce `k r E _ _ A F hF m`. Take `⟨hsm, hbd⟩` from `hF`. Set `Cw : List (Bool × Mat k r) → ℝ` to `fun w' => if h : ∃ uv : List (Mat k r) × List (Mat k r), (∀ X ∈ uv.1, unitLie k r X) ∧ (∀ X ∈ uv.2, unitLie k r X) ∧ w' = lr uv.1 uv.2 then max (Classical.choose (hbd h.choose.1 h.choose.2 h.choose_spec.1 h.choose_spec.2.1)) 0 else 0`. Establish `hCw0 : ∀ w', 0 ≤ Cw w'`. Introduce `w'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Cw]`. Use `split_ifs`. Conclude with `le_max_right _ _`. Conclude with `le_rfl`. Establish `hCw : ∀ (u v : List (Mat k r)), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → ∀ g ∈ GV k r, gN g ^ (A - C2.B0 r * ((u.length : ℝ) + v.length)) * ‖W (lr u v) F g‖ ≤ Cw (lr u v)`.
+Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Introduce `u v hu hv g hg`. Establish `h : ∃ uv : List (Mat k r) × List (Mat k r), (∀ X ∈ uv.1, unitLie k r X) ∧ (∀ X ∈ uv.2, unitLie k r X) ∧ lr u v = lr uv.1 uv.2` using `⟨(u, v), hu, hv, rfl⟩`. Simplify using `only [Cw]`. Rewrite using `[dif_pos h]`. Take `⟨hu0, hv0, heq⟩` from `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlen : (u.length : ℝ) + v.length = (h.choose.1.length : ℝ) + h.choose.2.length`. Establish `h1` using `congrArg List.length heq`. Simplify using `only [lr, List.length_append, List.length_map] at h1`. Conclude with `h1` after adjusting the coercions. Establish `hW : W (lr u v) F g = dLR h.choose.1 h.choose.2 F g` using `(congrArg (fun w => W w F g) heq).trans (congrFun (dLR_eq _ _ F) g).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspec` using `Classical.choose_spec (hbd h.choose.1 h.choose.2 hu0 hv0) g hg`. Rewrite using `[hlen, hW]`. Conclude with `hspec.trans (le_max_left _ _)`. Establish `hKc : 0 ≤ Kc k r` using `by linarith [one_le_Kc (k := k) (r := r)]`. Use `⟨∑ a ∈ Finset.range (m + 1), ∑ b ∈ Finset.range (m + 1), Kc k r ^ (a + b) * ((bw (k := k) (r := r) (List.replicate a true ++ List.replicate b false)).map Cw).sum, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', heq⟩` from `hsm g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast le_top), heq⟩`. Introduce `u v hu hv huv g hg`. Establish `hAll : AllLie (lr u v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [lr, List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu X hX).1`. Conclude with `(hv X hX).1`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hunit : ∀ y ∈ lr u v, unitLie k r y.2`. Introduce `y hy`. Simplify using `only [lr, List.mem_append, List.mem_map] at hy`. Break down `hy with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `hu X hX`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv X hX`. Establish `hlenlr : (lr u v).length = u.length + v.length` using `by simp [lr]`. Establish `hck : CkOn (((lr u v).length : ℕ) : ℕ∞) (GV k r) F` using `fun g₀ hg₀ => by`. Take `⟨U, f', hU, hgU, hf', heq⟩` from `hsm g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast le_top), heq⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hexp` using `W_expand (lr u v) hAll F hck g hg`. Establish `hgN : 1 ≤ gN g` using `one_le_gN hg`. Establish `hpos : 0 ≤ gN g ^ (A - C2.B0 r * (m : ℝ))` using `Real.rpow_nonneg (by linarith) _`. Establish `hmono : gN g ^ (A - C2.B0 r * (m : ℝ)) ≤ gN g ^ (A - C2.B0 r * ((u.length : ℝ) + v.length))`. Apply `Real.rpow_le_rpow_of_exponent_le hgN` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ C2.B0 r` using `by unfold C2.B0; positivity`. Establish `hle : ((u.length : ℝ) + v.length) ≤ m` using `by exact_mod_cast huv`. Use the polynomial consequences of the given equalities and inequalities. Establish `hterm : ∀ p ∈ expW (lr u v), gN g ^ (A - C2.B0 r * (m : ℝ)) * ‖p.1 • W p.2 F g‖ ≤ Kc k r ^ (u.length + v.length) * Cw p.2`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hplen, hpunit⟩` from `expW_mem (lr u v) p hp`. Establish `hcoef` using `expW_coef (lr u v) hunit p hp`. Rewrite `hcoef` using `[hlenlr]`. Establish `htags : p.2.map Prod.fst = List.replicate u.length true ++ List.replicate v.length false`. Establish `hm : p.2 ∈ bw ((lr u v).map Prod.fst)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← expW_snd]`. Conclude with `List.mem_map_of_mem hp`. Rewrite `hm` using `[lr_tags]`. Conclude with `bw_tags _ p.2 hm`. Establish `hsplit` using `eq_lr_take_drop_of_map_fst_eq_replicate p.2 u.length v.length htags`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu'' : ∀ X ∈ (p.2.take u.length).map Prod.snd, unitLie k r X`. Introduce `X hX`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hX`. Conclude with `hpunit y (List.mem_of_mem_take hy)`. Establish `hv'' : ∀ X ∈ (p.2.drop u.length).map Prod.snd, unitLie k r X`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `X hX`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hX`. Conclude with `hpunit y (List.mem_of_mem_drop hy)`. Establish `hlen'' : (((p.2.take u.length).map Prod.snd).length : ℝ) + ((p.2.drop u.length).map Prod.snd).length = (u.length : ℝ) + v.length`. Establish `h1` using `congrArg List.length hsplit`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [lr, List.length_append, List.length_map] at h1`. Rewrite `h1` using `[hplen, hlenlr]`. Rewrite using `[List.length_map, List.length_map]`. Conclude with `h1.symm` after adjusting the coercions. Establish `hb` using `hCw _ _ hu'' hv'' g hg`.
-
-Rewrite `hb` using `[← hsplit, hlen'']`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul hcoef _ (mul_nonneg hpos (norm_nonneg _)) (pow_nonneg hKc _)` to reduce the goal to its premises. Conclude with `(mul_le_mul_of_nonneg_right hmono (norm_nonneg _)).trans hb`.
-
-Rewrite using `[dLR_eq, hexp]`. Establish `hnn : ∀ a b, 0 ≤ Kc k r ^ (a + b) * ((bw (k` using `k) (r := r) (List.replicate a true ++ List.replicate b false)).map Cw).sum := fun a b => mul_nonneg (pow_nonneg hKc _) (list_sum_nonneg _ _ (fun w' _ => hCw0 w'))`. Establish `hu' : u.length ∈ Finset.range (m + 1)` using `Finset.mem_range.2 (by omega)`. Establish `hv' : v.length ∈ Finset.range (m + 1)` using `Finset.mem_range.2 (by omega)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[list_sum_mul_left, ← lr_tags, ← expW_snd, List.map_map]`. Both sides reduce to the same expression. Use `_ ≤ ∑ b ∈ Finset.range (m + 1), Kc k r ^ (u.length + b) * ((bw (k := k) (r := r) (List.replicate u.length true ++ List.replicate b false)).map Cw).sum := Finset.single_le_sum (f := fun b => Kc k r ^ (u.length + b) * ((bw (k := k) (r := r) (List.replicate u.length true ++ List.rep …`. Use `_ ≤ _ := Finset.single_le_sum (f := fun a => ∑ b ∈ Finset.range (m + 1), Kc k r ^ (a + b) * ((bw (k := k) (r := r) (List.replicate a true ++ List.replicate b false)).map Cw).sum) (fun a _ => Finset.sum_nonneg fun b _ => hnn a b) hu'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rule_A2_of_word_expansion : C2.SmoothClassInFiniteOrder := by
   intro k r E _ _ A F hF m
@@ -568,7 +554,7 @@ end Formalism.FourierDecayAlt.P.ListSumInequalities
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Conclude with `ListSumInequalities.rule_A2_of_word_expansion`.
+A detailed English derivation is pending.
 -/
 theorem rule_A2_derivatives : C2.SmoothClassInFiniteOrder := by
   exact ListSumInequalities.rule_A2_of_word_expansion

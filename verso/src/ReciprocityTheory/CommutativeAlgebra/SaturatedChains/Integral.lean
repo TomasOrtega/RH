@@ -3,7 +3,7 @@ import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.IsSaturatedChain
 namespace ReciprocityTheory.CA
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Ideal.exists_ideal_over_prime_of_isIntegral p I hI`. Consider the case `exact Ideal.exists_ideal_over_prime_of_isIntegral_of_isPrime p I hI`. Consider the case `(obtain ⟨Q, h1, h2, h3⟩ := Ideal.exists_ideal_over_prime_of_isIntegral p I hI`. Conclude with `⟨Q, h1, h2, h3⟩)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_prime_over_lemma {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Algebra.IsIntegral A B] (p : Ideal A) [p.IsPrime] (I : Ideal B)
@@ -16,19 +16,19 @@ private theorem exists_prime_over_lemma {A B : Type*} [CommRing A] [CommRing B] 
      exact ⟨Q, h1, h2, h3⟩)
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n, ∀ l : LTSeries (PrimeSpectrum A), l.length = n → ∃ l' : LTSeries (PrimeSpectrum B), l'.length = l.length ∧ l'.last.asIdeal.comap (algebraMap A B) = l.last.asIdeal by`. Conclude with `H _ l rfl`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Take `⟨Q, -, hQ, hQc⟩` from `exists_prime_over_lemma l.last.asIdeal ⊥ (by first`. Consider the case `(rw [Ideal.comap_bot_of_injective _ h]; exact bot_le)`. Consider the case `(intro y hy`. Rewrite `hy` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show y = 0 from h (by rw [hy, map_zero])]`. Conclude with `Ideal.zero_mem _))`. Use `⟨RelSeries.singleton _ ⟨Q, hQ⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hl]`. Simplify using `using hQc`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `l hl`. Establish `hne : l.length ≠ 0` using `by omega`. Take `⟨l', hlen, hlast⟩` from `ih l.eraseLast (by simp [hl])`. Establish `hlt : l.eraseLast.last < l.last` using `l.eraseLast_last_rel_last hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, hQle, hQ, hQc⟩` from `exists_prime_over_lemma l.last.asIdeal l'.last.asIdeal (by`. Rewrite using `[hlast]`. Conclude with `le_of_lt hlt)`. Establish `hlt' : l'.last < ⟨Q, hQ⟩`. Use `lt_of_le_of_ne hQle ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `heq`. Establish `hc` using `congrArg (fun q : PrimeSpectrum B => q.asIdeal.comap (algebraMap A B)) heq`. Simplify using `only at hc`. Rewrite `hc` using `[hlast, hQc]`. Conclude with `(ne_of_lt hlt) (PrimeSpectrum.ext hc)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨l'.snoc ⟨Q, hQ⟩ hlt', ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(simp [hlen, hl]; done)`. Consider the case `(simp [hlen, hl]; omega)`. Simplify using `using hQc`.
+A detailed English derivation is pending.
 -/
 theorem exists_ltSeries_lift_of_isIntegral {A B : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [Algebra.IsIntegral A B] (h : Function.Injective (algebraMap A B))
@@ -75,13 +75,11 @@ theorem exists_ltSeries_lift_of_isIntegral {A B : Type*} [CommRing A] [CommRing 
     · simpa using hQc
 
 /- English proof (translation)
-Establish `hmono : StrictMono (fun q : PrimeSpectrum B => (⟨q.asIdeal.comap (algebraMap A B), inferInstance⟩ : PrimeSpectrum A))`. Introduce `q q' hqq'`. Rewrite `hqq'`, the goal using `[← PrimeSpectrum.asIdeal_lt_asIdeal]`. Take `⟨x, hx, hx'⟩` from `SetLike.exists_of_lt hqq'`. Conclude with `Ideal.comap_lt_comap_of_integral_mem_sdiff (le_of_lt hqq') ⟨hx, hx'⟩ (Algebra.IsIntegral.isIntegral x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `first`. Consider the case `exact Order.krullDim_le_of_strictMono _ hmono`. Consider the case `(apply iSup_le`. Introduce `l'`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_iSup_of_le (l'.map _ hmono) le_rfl)`. Apply `iSup_le` to reduce the goal to its premises. Introduce `l`. Take `⟨l', hlen, -⟩` from `exists_ltSeries_lift_of_isIntegral hinj l`. Rewrite using `[← hlen]`.
-
-Conclude with `le_iSup (fun p : LTSeries (PrimeSpectrum B) => (p.length : WithBot ℕ∞)) l'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_isIntegral_of_injective {A B : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [Algebra.IsIntegral A B] (hinj : Function.Injective (algebraMap A B)) :
@@ -106,7 +104,7 @@ theorem ringKrullDim_eq_of_isIntegral_of_injective {A B : Type*} [CommRing A] [C
     exact le_iSup (fun p : LTSeries (PrimeSpectrum B) => (p.length : WithBot ℕ∞)) l'
 
 /- English proof (translation)
-Use `haveI : Algebra.IsIntegral (A ⧸ I.comap (algebraMap A B)) (B ⧸ I) := by first`. Consider the case `infer_instance`. Consider the case `exact Algebra.IsIntegral.quotient I`. Conclude with `ringKrullDim_eq_of_isIntegral_of_injective Ideal.algebraMap_quotient_injective`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_eq_quotient_comap_of_isIntegral {A B : Type*} [CommRing A]
     [CommRing B] [Algebra A B] [Algebra.IsIntegral A B] (I : Ideal B) :

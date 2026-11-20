@@ -14,17 +14,15 @@ open GlobalTheory.HeightCounting.Up (PrN)
 namespace GlobalTheory.PlaceRead
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `B : Module.Basis ι ℂ W` to `Module.Basis.mk hli hsp.ge`. Set `Φ : W →ₗ[ℂ] ℂ` to `B.constr ℂ (fun i => e (φ (b i)))`. Establish `key : ∀ x, Φ (f x) = e (φ x)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Establish `hx : x ∈ Submodule.span L (Set.range b)` using `b.mem_span x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `: f (b i) = B i` using `(Module.Basis.mk_apply hli hsp.ge i).symm`. Rewrite using `[this]`. Conclude with `B.constr_basis ℂ _ i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ, map_smul, hx, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`. Establish `hΦ : Φ = 0`. Use `LinearMap.ext_on hS fun y hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsub y hy`. Establish `: φ x = 0` using `hφ (Submodule.subset_span hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, this, map_zero, LinearMap.zero_apply]`. Apply `hφ0` to reduce the goal to its premises. Use extensionality with `x`. Use `key x` as an intermediate fact. Rewrite `this` using `[hΦ, LinearMap.zero_apply]`.
-
-Conclude with `e.injective (by rw [← this, LinearMap.zero_apply, map_zero])`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_preimage_eq_top {L V W ι : Type*} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup W] [Module ℂ W]
     (e : L →+* ℂ) (f : V →ₛₗ[e] W) (b : Module.Basis ι L V)
@@ -59,7 +57,7 @@ theorem span_preimage_eq_top {L V W ι : Type*} [Field L] [AddCommGroup V] [Modu
   exact e.injective (by rw [← this, LinearMap.zero_apply, map_zero])
 
 /- English proof (translation)
-Introduce `D w j`. Establish `h` using `D.what₂.jMt_basis (D.what₂.muTw w) j (Module.Free.chooseBasis _ _)`. Conclude with `span_preimage_eq_top D.what₂.embLL (D.what₂.jMt (D.what₂.muTw w) j) _ h.1 h.2 _ (D.what₂.MtLat (D.what₂.muTw w) j).span_top (fun y hy => D.what₂.MtLat_sub _ _ y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_latS : ∀ (D : D7) (w : D.what₂.places.Pl) (j : ℕ), Submodule.span D.what₂.LL (latS (D := D) w j) = ⊤ := by
   intro D w j

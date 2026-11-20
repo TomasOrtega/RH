@@ -13,53 +13,45 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF S₂ S₃ I₂ hI₂ C _ _ K _ _ p q j hp hj hpq σ ξ β hc hσ hβ`. Substitute `hσ` using the available equality. Take `⟨hco₂, hm₂⟩` from `co_B hF (Or.inl rfl) S₂`. Establish `hI₂' : S₂.mB ≤ (I₂ ⊔ S₂.lamId).radical` using `hI₂`. Use `show S₃.mB ≤ ((I₂.map β).comap p ⊔ S₃.lamId).radical`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hJP, hPp⟩`. Establish `hker : ∀ y, p y = 0 → y ∈ P`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hJP` to reduce the goal to its premises. Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap, hy]`. Conclude with `zero_mem _`. Establish `hPc : (P.map p).comap p = P`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.comap_map_of_surjective _ hp]`. Use `sup_eq_left.mpr ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hker y (by simpa using hy)`. Establish `hpull : ∀ y, p y ∈ P.map p → y ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[← hPc]`. Conclude with `hy`. Establish `hlam : S₃.lamId ≤ P` using `le_sup_right.trans hJP`. Establish `hqeq : ∀ y y' : S₃.B, q (S₃.inc y) = q (S₃.inc y') → y - y' ∈ P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y y' h`. Rewrite `h` using `[hpq, hpq]`. Conclude with `hker _ (by rw [map_sub, hj h, sub_self])`. Establish `hψ : ∀ v i g, β (S₂.ψB v i g) = p (S₃.ψB v (cor i) g)`. Introduce `v i g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[← hβ, ← hpq]`. Conclude with `congrArg (fun u : Kˣ => (u : K)) (hc.ψ v i g)`. Establish `hIP : I₂.map β ≤ P.map p`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Take `⟨y, hy⟩` from `hp (β b)`. Rewrite using `[Ideal.mem_comap, ← hy]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Apply `hJP` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap, hy]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Use `haveI : (P.map p).IsPrime := Ideal.map_isPrime_of_surjective hp (fun y hy => hker y hy)`. Establish `hQ : S₂.mB ≤ (P.map p).comap β`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hI₂'.trans ((Ideal.radical_mono ?_).trans_eq (Ideal.IsPrime.radical inferInstance))` and prove the remaining obligations. Use `sup_le (Ideal.map_le_iff_le_comap.mp hIP) ?_` and prove the remaining obligations. Unfold `Space.lamId`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgHom.commutes, ← AlgHom.commutes p]`. Conclude with `Ideal.mem_map_of_mem _ (hlam (by unfold Space.lamId; exact Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha)))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨v, i, g, hg, hΨ, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, map_sub, map_one, hψ, ← map_one p, ← map_sub]`. Conclude with `Ideal.mem_map_of_mem _ (hlam (by`. Unfold `Space.lamId`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨v, cor i, g, hg, hΨ, rfl⟩)))`. Establish `hlift : ∀ (b : S₂.B) (y : S₃.B), β b = p y → ∃ c, y - algebraMap O S₃.B c ∈ P`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b y hy`. Take `⟨a, ha⟩` from `@IsCO.res_surj O S₂.B _ _ _ _ hco₂ b`. Rewrite `ha` using `[hm₂]`. Use `⟨a, hpull _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, AlgHom.commutes, ← hy, ← AlgHom.commutes β, ← map_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hQ ha`. Establish `hmid : ∀ g : F.G0, S₃.aB g 1 - 1 ∈ P` using `frobenius_corner_middle_mem hF S₃ P hPp hlam (fun g h => hqeq _ _ (by rw [map_mul, map_mul]; exact UpperTheory.V.Fr.mid_mul _ hc.odd g h)) (fun v g => hqeq _ _ (hc.mid v g))`. Use `frobenius_corner_maximalIdeal_le hF (Or.inr rfl) S₃ P (le_sup_left.trans hlam) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨L, hL, hxL⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqx : q (S₃.inc x) ∈ (S₃.u.map (q : S₃.A →+* K)).mon 0`. Use `⟨L, hL, ?_⟩` and prove the remaining obligations. Establish `e : S₃.inc x = (L.map (fun s => S₃.u.r s.1 s.2.1 s.2.2)).prod`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_list_prod, List.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hxL`. Rewrite using `[e, map_list_prod, List.map_map]`. Both sides reduce to the same expression. Take `h0 | ⟨T, y, hy, hxy⟩` from `frobenius_corner_monomial _ _ hc 0 _ hqx`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using hqeq x 0 (by rw [h0, map_zero, map_zero])`. Take `⟨L₂, hL₂, rfl⟩` from `hy`. Establish `hy₂mon : ((L₂.map (fun s => S₂.u.r s.1 s.2.1 s.2.2)).prod : S₂.R) ∈ S₂.ρ.mon 0`. Use `⟨L₂, hL₂, ?_⟩` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_list_prod, List.map_map]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨b₂, hb₂⟩ : ∃ b₂ : S₂.B, S₂.inc b₂ = (L₂.map (fun s => S₂.u.r s.1 s.2.1 s.2.2)).prod` from `⟨⟨_, S₂.mon_mem hy₂mon⟩, Subtype.ext rfl⟩`. Establish `hyval : (L₂.map fun s => (S₂.u.map (ξ : S₂.A →+* K)).r s.1 s.2.1 s.2.2).prod = j (β b₂)`. Rewrite using `[← hβ, hb₂, map_list_prod, List.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y₃, hy₃⟩` from `hp (β b₂)`. Take `⟨c, hc'⟩` from `hlift b₂ y₃ hy₃.symm`. Establish `ht : (T.map fun g => (S₃.u.map (q : S₃.A →+* K)).r g 1 1).prod = j (p (T.map fun g => S₃.aB g 1).prod)`. Rewrite using `[← hpq, map_list_prod, map_list_prod, List.map_map, List.map_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmk : ∀ g, Ideal.Quotient.mk P (S₃.aB g 1) = 1` using `fun g => by`. Rewrite using `[← map_one (Ideal.Quotient.mk P)]`. Conclude with `Ideal.Quotient.eq.mpr (hmid g)`. Establish `ht1 : (T.map fun g => S₃.aB g 1).prod - 1 ∈ P`. Rewrite using `[← Ideal.Quotient.eq, map_one, map_list_prod, List.map_map]`.
-
-Simplify using `[Function.comp_def, hmk]`. Establish `hx2 : x - (T.map fun g => S₃.aB g 1).prod * y₃ ∈ P`. Use `hqeq _ _ ?_` and prove the remaining obligations. Rewrite using `[hxy, hyval, ht, hpq, map_mul p, map_mul j, hy₃]`. Use `⟨c, ?_⟩` and prove the remaining obligations.
-
-Establish `e : x - algebraMap O S₃.B c = (x - (T.map fun g => S₃.aB g 1).prod * y₃) + ((T.map fun g => S₃.aB g 1).prod - 1) * y₃ + (y₃ - algebraMap O S₃.B c)` using `by ring`. Rewrite using `[e]`. Conclude with `P.add_mem (P.add_mem hx2 (P.mul_mem_right _ ht1)) hc'`. Introduce `v i g fin_cases i`. Conclude with `hlift _ _ (hψ v 0 g)`.
-
-Use `⟨1, ?_⟩ show S₃.ψB v 1 g - algebraMap O S₃.B 1 ∈ P` and prove the remaining obligations. Rewrite using `[map_one]`. Establish `e : S₃.ψB v 1 g - 1 = (S₃.aB (F.loc0 v g) 1 - 1) - (S₃.aB (F.loc0 v g) 1 - S₃.ψB v 1 g)` using `by ring`. Rewrite using `[e]`. Conclude with `P.sub_mem (hmid _) (hqeq _ _ (hc.mid v g))`.
-
-Conclude with `hlift _ _ (hψ v 1 g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_lambda_surjective_injective_lift :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ (S₂ : Space O F 2) (S₃ : Space O F 3) (I₂ : Ideal S₂.B), S₂.FinLam I₂ → ∀ (C : Type) [CommRing C] [Algebra O C] (K : Type) [CommRing K] [Algebra O K] (p : S₃.B →ₐ[O] C) (q : S₃.A →ₐ[O] K) (j : C →ₐ[O] K), Function.Surjective p → Function.Injective j → (∀ b, q (S₃.inc b) = j (p b)) → ∀ (σ : NRep F 2 K) (ξ : S₂.A →ₐ[O] K) (β : S₂.B →ₐ[O] C), IsCorner (S₃.u.map (q : S₃.A →+* K)) σ → S₂.u.map (ξ : S₂.A →+* K) = σ → (∀ b, ξ (S₂.inc b) = j (β b)) → S₃.FinLam ((I₂.map β).comap p) := by
@@ -191,33 +183,27 @@ private theorem finite_lambda_surjective_injective_lift :
     · exact hlift _ _ (hψ v 1 g)
 
 /- English proof (translation)
-Take `⟨hcoB, -⟩` from `co_B hF (Or.inr rfl) S₃`. Use `haveI := hcoB`. Use `haveI hcoC : IsCO O C := co_quot O S₃.B C p hp`. Use `letI : Algebra C K := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower O C K := IsScalarTower.of_algebraMap_eq (fun x => (j.commutes x).symm)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjinj : Function.Injective (algebraMap C K)` using `hj`. Establish `hcone : Cone O C (S₃.u.map (q : S₃.A →+* K))` using `frobenius_corner_cone_map S₃.B S₃.A C K p (q : S₃.A →+* K) (fun c => hpq c) S₃.u (cone_u hF (Or.inr rfl) S₃).1`. Establish `hodd : ∀ (g : F.G0) (i k : Fin 3), Odd (w 3 i - w 3 k) → (S₃.u.map (q : S₃.A →+* K)).r g i k = 0`. Introduce `g i k h`. Use `show q (S₃.u.r g i k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.subset_span ⟨g, i, k, h, rfl⟩`. Take `⟨σ, hc⟩` from `exists_frobenius_corner _ hodd (frobenius_corner_units hF C K _ hcone)`. Take `⟨ξ, β, hξσ, hβ⟩` from `alg hF (Or.inl rfl) S₂ C K hjinj σ (frobenius_corner_mem_cone C K _ σ hc hcone)`. Use `⟨(I₂.map β).comap p, finite_lambda_surjective_injective_lift hF S₂ S₃ I₂ hI₂ C K p q j hp hj hpq σ ξ β hc hξσ hβ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P hP hTE`. Unfold `NRep.TE NRep.OffTri at hTE`. Take `⟨⟨hTP, hTM⟩, -, hee⟩` from `hTE`. Establish `hkerP : RingHom.ker q ≤ P` using `hker ▸ hee`. Use `haveI hP' : (P.map q).IsPrime := Ideal.map_isPrime_of_surjective hq hkerP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPc : (P.map q).comap q = P`. Rewrite using `[Ideal.comap_map_of_surjective _ hq]`. Conclude with `sup_eq_left.mpr hkerP`. Establish `hξr : ∀ g (a b : Fin 2), ξ (S₂.u.r g a b) = q (S₃.u.r g (cor a) (cor b))`. Introduce `g a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : (S₂.u.map (ξ : S₂.A →+* K)).r g a b = σ.r g a b` using `by rw [hξσ]`. Rewrite `e` using `[hc.r g a b]`. Conclude with `e`. Establish `hTI : S₂.u.TI ((P.map q).comap ξ)`. Unfold `NRep.TI NRep.OffTri`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Use `⟨⟨?_, ?_⟩, fun h => absurd h (by decide)⟩` and prove the remaining obligations. Introduce `h`. Apply `hTP` to reduce the goal to its premises. Rewrite using `[NRep.triP, Ideal.span_le]`. Introduce and unpack `_ ⟨g, i, k, hki, rfl⟩`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases k <;> first`. Consider the case `exact absurd hki (by decide)`. Consider the case `exact hee (Ideal.subset_span ⟨g, _, _, by decide, rfl⟩)`. Consider the case `(rw [← hPc]`. Establish `h1` using `h (Ideal.subset_span ⟨g, 1, 0, by decide, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Rewrite `h1` using `[Ideal.mem_comap, hξr]`. Conclude with `h1)`. Introduce `h`. Apply `hTM` to reduce the goal to its premises. Rewrite using `[NRep.triM, Ideal.span_le]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, i, k, hki, rfl⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> first`. Consider the case `exact absurd hki (by decide)`. Consider the case `exact hee (Ideal.subset_span ⟨g, _, _, by decide, rfl⟩)`. Consider the case `(rw [← hPc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `h (Ideal.subset_span ⟨g, 0, 1, by decide, rfl⟩)`. Rewrite `h1` using `[Ideal.mem_comap, hξr]`. Conclude with `h1)`. Establish `hT'` using `hT _ inferInstance hTI`. Establish `hle : I₂.map β ≤ (P.map q).comap j`.
-
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Establish `hb'` using `hT' hb`. Simplify using `only [Space.π, Ideal.mem_comap] at hb' ⊢`. Establish `e : j (β b) = ξ (S₂.inc b)` using `(hβ b).symm`.
-
-Rewrite using `[e]`. Conclude with `hb'`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap]`. Use `show S₃.inc x ∈ P`.
-
-Rewrite using `[← hPc, Ideal.mem_comap, hpq]`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_lambda_two_three_surjection_compat {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} (hF : F.Ok C₀) (S₂ : Space O F 2) (S₃ : Space O F 3)
@@ -297,9 +283,9 @@ private theorem finite_lambda_two_three_surjection_compat {l : ℕ} [Fact l.Prim
   exact hle hx
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF S₂ S₃ I₂ hI₂ hT`. Distinguish the cases in `htop : S₃.u.ee = ⊤`. Use `⟨⊤, ?_, ?_⟩` and prove the remaining obligations. Use `show S₃.mB ≤ _`. Rewrite using `[top_sup_eq, Ideal.radical_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_top`. Introduce `P hP hTE`. Conclude with `absurd (top_le_iff.mp (htop ▸ hTE.2.2)) hP.ne_top`. Use `haveI : Nontrivial (S₃.B ⧸ S₃.u.ee.comap S₃.inc) := Ideal.Quotient.nontrivial_iff.mpr (Ideal.comap_ne_top _ htop)`. Conclude with `finite_lambda_two_three_surjection_compat hF S₂ S₃ I₂ hI₂ hT (S₃.B ⧸ S₃.u.ee.comap S₃.inc) (S₃.A ⧸ S₃.u.ee) (Ideal.Quotient.mkₐ O _) (Ideal.Quotient.mkₐ O _) (Ideal.quotientMapₐ S₃.u.ee S₃.inc le_rfl) (Ideal.Quotient.mkₐ_surjective O _) (Ideal.Quotient.mkₐ_surjective O _) Ideal.q …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.l53 :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ (S₂ : Space O F 2) (S₃ : Space O F 3) (I₂ : Ideal S₂.B), S₂.FinLam I₂ → (∀ ξ : Ideal S₂.A, ξ.IsPrime → S₂.u.TI ξ → I₂ ≤ S₂.π ξ) → ∃ I₃ : Ideal S₃.B, S₃.FinLam I₃ ∧ ∀ ξ : Ideal S₃.A, ξ.IsPrime → S₃.u.TE ξ → I₃ ≤ S₃.π ξ := by

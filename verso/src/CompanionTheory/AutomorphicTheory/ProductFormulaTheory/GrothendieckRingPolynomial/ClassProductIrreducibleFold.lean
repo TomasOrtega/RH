@@ -14,14 +14,14 @@ namespace CompanionTheory.Groth
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[cl0, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem class_of_finite_length {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} (h : HasFiniteLength π) : cl0 π = clsGL π h := by
   rw [cl0, dif_pos h]
 
 /- English proof (translation)
-Distinguish the cases in `h : HasFiniteLength π`. Establish `h' : HasFiniteLength τ` using `h.of_equiv φ`. Rewrite using `[class_of_finite_length h, class_of_finite_length h', clsGL_congr φ h h']`. Establish `h' : ¬ HasFiniteLength τ` using `fun h' => h (h'.of_equiv φ.symm)`. Rewrite using `[cl0, cl0, dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem class_congr_iso {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W} (φ : π.Equiv τ) :
@@ -33,16 +33,16 @@ theorem class_congr_iso {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [
     rw [cl0, cl0, dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[class_of_finite_length x.2.rep.hasFiniteLength]`. Conclude with `(clsGL_irr x.2.rep _).trans (by rw [IrrCl.cl_rep]; rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_chosen_rep_basis (x : IrrGL k) : cl0 x.rep = sg x := by
   rw [class_of_finite_length x.2.rep.hasFiniteLength]
   exact (clsGL_irr x.2.rep _).trans (by rw [IrrCl.cl_rep]; rfl)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hxy' : x = y` using `funext fun i => hxy i`. Substitute `hxy'` using the available equality. Establish `hN : N = N'` using `hx.symm.trans hy`. Substitute `hN` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨Iff.rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem prodIrr_cast {h h' N N' : ℕ} (e : h = h') (x : Fin h → IrrGL k) (y : Fin h' → IrrGL k)
     (hxy : ∀ i, x i = y (Fin.cast e i)) (hx : ∑ a, (x a).1 = N) (hy : ∑ a, (y a).1 = N') :
@@ -56,9 +56,9 @@ theorem prodIrr_cast {h h' N N' : ℕ} (e : h = h') (x : Fin h → IrrGL k) (y :
   exact ⟨Iff.rfl, rfl⟩
 
 /- English proof (translation)
-Take `rfl : N = 0` from `by simpa using hd.symm`. Take `⟨φ⟩` from `GlobalTheory.LocGL.Tests.nonempty_equiv_prodIrr_zero x hd`. Establish `h1 : HasFiniteLength (IrrRep.det (k` using `k) (Fin 0) 1 isSmoothChar_one).ρ := (IrrRep.det (Fin 0) 1 isSmoothChar_one).hasFiniteLength`. Establish `hfl : HasFiniteLength (prodIrr x hd)` using `h1.of_equiv φ`. Use `⟨hfl, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← class_congr_iso φ]`. Conclude with `(class_of_finite_length h1).trans (clsGL_irr _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodIrr_zero {N : ℕ} (x : Fin 0 → IrrGL k) (hd : ∑ a, (x a).1 = N) :
     HasFiniteLength (prodIrr x hd) ∧ cl0 (prodIrr x hd) = GrothGL.unit k := by
@@ -72,7 +72,7 @@ theorem prodIrr_zero {N : ℕ} (x : Fin 0 → IrrGL k) (hd : ∑ a, (x a).1 = N)
   exact (class_of_finite_length h1).trans (clsGL_irr _ _)
 
 /- English proof (translation)
-Take `⟨φ⟩` from `nonempty_equiv_prodIrr_one x hd`. Conclude with `⟨x.2.rep.hasFiniteLength.of_equiv φ, (class_congr_iso φ).symm.trans (class_chosen_rep_basis x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prodIrr_one (x : IrrGL k) (hd : ∑ _ : Fin 1, x.1 = x.1) :
     HasFiniteLength (prodIrr (fun _ : Fin 1 => x) hd) ∧ cl0 (prodIrr (fun _ : Fin 1 => x) hd) = sg x := by
@@ -80,7 +80,7 @@ theorem prodIrr_one (x : IrrGL k) (hd : ∑ _ : Fin 1, x.1 = x.1) :
   exact ⟨x.2.rep.hasFiniteLength.of_equiv φ, (class_congr_iso φ).symm.trans (class_chosen_rep_basis x)⟩
 
 /- English proof (translation)
-Take `⟨h, hc⟩` from `hM r t U W π₁ π₂ h₁ h₂ s₁ s₂`. Conclude with `⟨h.of_equiv F, (class_congr_iso F).symm.trans hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem class_of_product_equiv (hM : MulCls k) {r t : ℕ} {U W X : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup X] [Module ℂ X] (π₁ : Representation ℂ (GL (Fin r) k) U)
@@ -91,7 +91,7 @@ theorem class_of_product_equiv (hM : MulCls k) {r t : ℕ} {U W X : Type} [AddCo
   exact ⟨h.of_equiv F, (class_congr_iso F).symm.trans hc⟩
 
 /- English proof (translation)
-Establish `hx1 : ∑ _ : Fin 1, x₀.1 = x₀.1` using `by simp`. Take `⟨F⟩` from `GlobalTheory.T.product_irreducible_append_equiv k 1 h x₀.1 (∑ a, (y a).1) (fun _ : Fin 1 => x₀) y hx1 hy happ`. Establish `H1` using `prodIrr_one x₀ hx1`. Establish `H3` using `class_of_product_equiv hM (prodIrr (fun _ : Fin 1 => x₀) hx1) (prodIrr y hy) _ F H1.1 hfl (isSmooth_prodIrr _ _) (isSmooth_prodIrr _ _)`. Conclude with `⟨H3.1, H3.2.trans (congrArg (fun a => mulR a (cl0 (prodIrr y hy))) H1.2)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem prodIrr_append_one (hM : MulCls k) {h : ℕ} (x₀ : IrrGL k) (y : Fin h → IrrGL k)
     (hy : ∑ a, (y a).1 = ∑ a, (y a).1) (hfl : HasFiniteLength (prodIrr y hy))
@@ -106,13 +106,13 @@ theorem prodIrr_append_one (hM : MulCls k) {h : ℕ} (x₀ : IrrGL k) (y : Fin h
   exact ⟨H3.1, H3.2.trans (congrArg (fun a => mulR a (cl0 (prodIrr y hy))) H1.2)⟩
 
 /- English proof (translation)
-Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`. Introduce `N x hd`. Take `⟨hfl, hc⟩` from `prodIrr_zero x hd`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨hfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Both sides reduce to the same expression. Consider the case `succ h ih`. Introduce `N x hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ∑ a, (Fin.tail x a).1 = ∑ a, (Fin.tail x a).1` using `rfl`. Establish `happ : ∑ a, (Fin.append (fun _ : Fin 1 => x 0) (Fin.tail x) a).1 = (x 0).1 + ∑ a, (Fin.tail x a).1`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Establish `H2` using `ih _ (Fin.tail x) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `H` using `prodIrr_append_one hM (x 0) (Fin.tail x) hy H2.1 happ`. Establish `hcast` using `prodIrr_cast (Nat.add_comm 1 h) (Fin.append (fun _ : Fin 1 => x 0) (Fin.tail x)) x (fun i => by rw [Fin.append_left_eq_cons, Function.comp_apply, Fin.cons_self_tail]) happ hd`. Use `⟨hcast.1.1 H.1, hcast.2.symm.trans (H.2.trans ?_)⟩` and prove the remaining obligations. Rewrite using `[H2.2, List.ofFn_succ, List.foldr_cons]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem class_product_irreducible_fold (hM : MulCls k) : ∀ (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N),
     HasFiniteLength (prodIrr x hd) ∧
@@ -142,7 +142,7 @@ theorem class_product_irreducible_fold (hM : MulCls k) : ∀ (h N : ℕ) (x : Fi
 variable (k) in
 
 /- English proof (translation)
-Introduce `n N x hd` and use `(class_product_irreducible_fold h n N x hd).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodList (h : MulCls k) : ProdList k :=
   fun n N x hd => (class_product_irreducible_fold h n N x hd).2

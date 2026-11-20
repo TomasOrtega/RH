@@ -76,7 +76,7 @@ def Packet66Rest (Q : Par D) : Prop :=
   ∃ G : In66 Q, G.PinDat ∧ G.PinTower ∧ G.HasData ∧ G.PinPts ∧ G.PinLat ∧ G.BaseChange
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T.G, h.datum_condition, h.tower, h.hasData_condition, h.points_condition, h.lattice_condition, h.bc66⟩`.
+Supply the required witnesses or components.
 -/
 theorem LawsP.packet66_rest {T : Top D} (h : LawsP T) : Packet66Rest T.Q :=
   ⟨T.G, h.datum_condition, h.tower, h.hasData_condition, h.points_condition, h.lattice_condition, h.bc66⟩

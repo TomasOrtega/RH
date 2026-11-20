@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.JoinExists
 
 /- English proof (translation)
-Introduce `h1 h2 hL D P X hA`. Establish `key : ∀ i : D.nd.Loc, ∃ Y : RowMod D P.rep (D.nd.j i), ∀ (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), GlobalTheory.NJoin.IsCanon X j hj Y`. Introduce `i`. Establish `hr` using `D.nd.j_range i`. Establish `hlt : D.nd.j i - 1 < D.R.m` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y, hY⟩` from `GlobalTheory.T.exists_canonical_module_successor h1 h2 hL D P X hA ⟨D.nd.j i - 1, hlt⟩ (D.nd.j i) (by simp only; omega)`. Use `⟨Y, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hj' : j = ⟨D.nd.j i - 1, hlt⟩` using `Fin.ext (by simp only; omega)`. Substitute `hj'` using the available equality. Conclude with `hY`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Use `choose Y hY using key`. Conclude with `⟨{ form := GlobalTheory.T.form_at_each_location hL D P X hA rowM := Y th := fun i j hj => (GlobalTheory.T.theta_module_of_canonical h1 h2 hL D P X hA i j hj (Y i) (hY i j hj)).some }⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Nonempty (Join P) := by
   intro h1 h2 hL D P X hA

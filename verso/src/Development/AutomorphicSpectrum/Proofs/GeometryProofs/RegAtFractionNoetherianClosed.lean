@@ -15,7 +15,7 @@ def stalkEquiv (h : IsCptGen ξ) (p : Cpt ξ) : X.presheaf.stalk p.1 ≃+* regAt
     ⟨fun _ _ hab => h.inj p (congrArg Subtype.val hab), (genMap ξ p).rangeRestrict_surjective⟩
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `p`. Establish `e` using `congrArg (fun f => (f ≫ Scheme.stalkClosedPointTo ξ).hom s) (X.presheaf.germ_stalkSpecializes hp hq)`. Simplify using `only [Category.assoc, CommRingCat.hom_comp, RingHom.comp_apply] at e`. Simplify using `only [genMap, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genMap_germ (p : Cpt ξ) (U : X.Opens) (hp : p.1 ∈ U) (hg : genPt ξ ∈ U) (s : Γ(X, U)) :
     genMap ξ p (X.presheaf.germ U p.1 hp s) =
@@ -28,15 +28,13 @@ theorem genMap_germ (p : Cpt ξ) (U : X.Opens) (hp : p.1 ∈ U) (hg : genPt ξ �
   exact e
 
 /- English proof (translation)
-Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (show p.1 ∈ (⊤ : X.Opens) from trivial)`. Establish `hgU : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Take `⟨t, rfl⟩` from `h.bij.2 z`. Express the relevant statement in the definitionally equal form `X.presheaf.stalk (genPt ξ) at t`. Set `x : U` to `⟨genPt ξ, hgU⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Set `_ : Algebra Γ(X, U) (X.presheaf.stalk (x : X))` to `TopCat.Presheaf.algebra_section_stalk X.presheaf x`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal` using `hU.isLocalization_stalk x`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.mk'_surjective (hU.primeIdealOf x).asIdeal.primeCompl (S := X.presheaf.stalk (x : X)) t`. Establish `hspec` using `IsLocalization.mk'_spec (X.presheaf.stalk (x : X)) a s`. Simplify using `only at hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hspec` using `[hs]`. Establish `hu : IsUnit (algebraMap Γ(X, U) (X.presheaf.stalk (x : X)) (s : Γ(X, U)))` using `IsLocalization.map_units _ s`. Establish `hne : (Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) (X.presheaf.stalk (x : X)) (s : Γ(X, U))) ≠ 0` using `(hu.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`. Use `⟨⟨genMap ξ p (X.presheaf.germ U p.1 hpU a), ⟨_, rfl⟩⟩, ⟨genMap ξ p (X.presheaf.germ U p.1 hpU (s : Γ(X, U))), ⟨_, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [genMap_germ p U hpU hgU]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hspec' : t * X.presheaf.germ U (genPt ξ) hgU (s : Γ(X, U)) = X.presheaf.germ U (genPt ξ) hgU a` using `hspec`. Establish `hne' : ((Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hgU (s : Γ(X, U))) : Ω) ≠ 0` using `hne`. Establish `key : (Scheme.stalkClosedPointTo ξ).hom t * (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hgU (s : Γ(X, U))) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hgU a)`. Rewrite using `[← congrArg (Scheme.stalkClosedPointTo ξ).hom hspec']`. Conclude with `(map_mul _ _ _).symm`.
-
-Conclude with `(eq_div_iff hne').2 key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div (h : IsCptGen ξ) (p : Cpt ξ) (z : Ω) :
     ∃ a b : regAt ξ p, z = (a : Ω) / (b : Ω) := by
@@ -71,7 +69,7 @@ theorem exists_div (h : IsCptGen ξ) (p : Cpt ξ) (z : Ω) :
   exact (eq_div_iff hne').2 key
 
 /- English proof (translation)
-Introduce `X Ω _ ξ h p`. Use `⟨?_, fun _ => isNoetherianRing_of_ringEquiv _ (stalkEquiv h p), fun _ => IsIntegrallyClosed.of_equiv (stalkEquiv h p)⟩` and prove the remaining obligations. Use `haveI : FaithfulSMul (regAt ξ p) Ω := (faithfulSMul_iff_algebraMap_injective (regAt ξ p) Ω).2 Subtype.val_injective`. Conclude with `IsFractionRing.of_field (regAt ξ p) Ω fun z => exists_div h p z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regAt_ring : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ p : Cpt ξ, IsFractionRing (regAt ξ p) Ω ∧ (IsNoetherianRing (X.presheaf.stalk p.1) → IsNoetherianRing (regAt ξ p)) ∧ (IsIntegrallyClosed (X.presheaf.stalk p.1) → IsIntegrallyClosed (regAt ξ p)) := by
   intro X Ω _ ξ h p

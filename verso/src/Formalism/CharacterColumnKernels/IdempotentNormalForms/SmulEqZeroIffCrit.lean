@@ -13,7 +13,7 @@ namespace IdempotentCriticalLength
 variable {O Λ : Type*} [CommRing O] [IsLocalRing O] [Ring Λ] [Algebra O Λ]
 
 /- English proof (translation)
-The claim follows from `Module.mem_annihilator.mp (IsSemisimpleModule.jacobson_le_annihilator (R := Λ) (M := V) ha) w`.
+A detailed English derivation is pending.
 -/
 lemma jac_smul {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     {a : Λ} (ha : a ∈ Ring.jacobson Λ) (w : V) : a • w = 0 :=
@@ -24,15 +24,15 @@ def Crit (O : Type*) [CommRing O] [IsLocalRing O] [Algebra O Λ] (ε x : Λ) : P
     c ∈ IsLocalRing.maximalIdeal O
 
 /- English proof (translation)
-Establish `e2 : ∀ c : O, (algebraMap O Λ c * ε) • v = algebraMap O Λ c • v`. Introduce `c`. Rewrite using `[mul_smul, hv]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `jac_smul hc v`. Establish `e1 : (ε * (y * x) * ε) • v = 0`. Rewrite using `[mul_smul, hv, mul_smul, mul_smul, hx, smul_zero, smul_zero]`. Rewrite `h1` using `[sub_smul, e1, e2, zero_sub, neg_eq_zero]`. Assume the negation of the conclusion as `hcm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit c`. Assume the negation of the conclusion as `hu'`. Conclude with `hcm hu'`. Conclude with `hv0 (((hu.map (algebraMap O Λ)).smul_eq_zero).mp h1)`. Introduce `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hx`. Take `⟨y, hy⟩` from `(IsSimpleModule.toSpanSingleton_surjective Λ hx) v`. Rewrite `hy` using `[LinearMap.toSpanSingleton_apply]`. Take `⟨c, hc'⟩` from `hii (y * x)`. Establish `h1` using `jac_smul hc' v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (ε * (y * x) * ε) • v = v`. Rewrite using `[mul_smul, hv, mul_smul, mul_smul, hy, hv]`. Rewrite `h1` using `[sub_smul, e1, e2, sub_eq_zero, jac_smul (hiii c (hc y c hc')) v]`. Conclude with `hv0 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smul_eq_zero_iff_crit {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     {ε : Λ} (hii : ∀ x : Λ, ∃ c : O, ε * x * ε - algebraMap O Λ c * ε ∈ Ring.jacobson Λ)
@@ -64,9 +64,9 @@ lemma smul_eq_zero_iff_crit {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimple
     exact hv0 h1
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hV`. Take `⟨s, hs⟩` from `hW`. Establish `hv : ε • (ε • t) = ε • t` using `by rw [← mul_smul, hε.eq]`. Establish `hu : ε • (ε • s) = ε • s` using `by rw [← mul_smul, hε.eq]`. Establish `hker : LinearMap.ker (LinearMap.toSpanSingleton Λ V (ε • t)) = LinearMap.ker (LinearMap.toSpanSingleton Λ W (ε • s))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Rewrite using `[smul_eq_zero_iff_crit hii hiii ht hv, smul_eq_zero_iff_crit hii hiii hs hu]`. Conclude with `⟨(LinearMap.quotKerEquivOfSurjective _ (IsSimpleModule.toSpanSingleton_surjective Λ ht)).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans (LinearMap.quotKerEquivOfSurjective _ (IsSimpleModule.toSpanSingleton_surjective Λ hs)))⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma nonempty_equiv {V W : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     [AddCommGroup W] [Module Λ W] [IsSimpleModule Λ W] {ε : Λ} (hε : IsIdempotentElem ε)

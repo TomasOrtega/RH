@@ -6,17 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Establish `hp : ∀ n : ℕ, ∀ v ∈ V, (T ^ n) v ∈ V`. Introduce `n v hv`. Proceed by induction on `n with`. Consider the case `zero => simpa using hv`. Consider the case `succ n ih => rw [pow_succ', Module.End.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hT _ ih`. Establish `hm : ∀ (n j : ℕ) (v : M), (T ^ n) v - v ∈ V → (T ^ (n * j)) v - v ∈ V`. Introduce `n j v hv`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih`. Use `add_mem (hp n _ ih) hv` as an intermediate fact. Rewrite using `[Nat.mul_succ, add_comm, pow_add, Module.End.mul_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[Submodule.mem_iSup_of_directed]`. Simplify using the standard rewrite rules. Introduce `a b`. Use `⟨a * b + a + b, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hm (a + 1) (b + 1) v (by simpa using hv)` as an intermediate fact. Rewrite `this` using `[show (a + 1) * (b + 1) = a * b + a + b + 1 by ring]`. Simplify using `using this`. Use `hm (b + 1) (a + 1) v (by simpa using hv)` as an intermediate fact. Rewrite `this` using `[show (b + 1) * (a + 1) = a * b + a + b + 1 by ring]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 private theorem spStab_per {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (V : Submodule A M)
     (T : Module.End A M) (hT : ∀ v ∈ V, T v ∈ V) (f : M) :
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 private theorem spStab_rp (b : Gp) (f : X.Fn A m) (g : Ga × Gp) : X.rp A m b f g = f (g * (1, b)) := rfl
 
 /- English proof (translation)
-Use `haveI : ((X.I.Nconj a).subgroupOf X.I.N).FiniteIndex := ⟨X.I.fin_N a ha⟩`. Use `haveI : Fintype (X.I.N ⧸ (X.I.Nconj a).subgroupOf X.I.N) := Fintype.ofFinite _`. Use `⟨X.I.N ⧸ (X.I.Nconj a).subgroupOf X.I.N, Finset.univ, fun q => (q.out : X.I.N) * a, fun f => ?_⟩` and prove the remaining obligations. Unfold `Frame.U Iwa.uOp`. Rewrite using `[finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spStab_U {a : Gp} (ha : a ∈ X.I.P) :
     ∃ (ι : Type) (s : Finset ι) (b : ι → Gp), ∀ f : X.Fn A m, X.U A m a f = ∑ i ∈ s, X.rp A m (b i) f := by
@@ -68,7 +68,7 @@ private theorem spStab_U {a : Gp} (ha : a ∈ X.I.P) :
   rw [finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[Frame.ra_apply, spStab_rp, spStab_rp, Frame.ra_apply]`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem spStab_comm (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) (b : Gp) (f : X.Fn A m) :
     X.ra τ u (X.rp A m b f) = X.rp A m b (X.ra τ u f) := by
@@ -77,7 +77,7 @@ private theorem spStab_comm (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) (b : Gp) (f
   simp [mul_assoc]
 
 /- English proof (translation)
-Take `⟨ι, s, b, h⟩` from `spStab_U X (A := A) (m := m) ha`. Rewrite using `[h, h, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => spStab_comm X τ u _ f`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spStab_commU (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m) :
     X.ra τ u (X.U A m a f) = X.U A m a (X.ra τ u f) := by
@@ -88,13 +88,13 @@ private theorem spStab_commU (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) {a : Gp} (
 variable [IsLocalRing A]
 
 /- English proof (translation)
-Simplify using `[Frame.valIn, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem spStab_val (k : ℕ) (f : X.Fn A m) : f ∈ X.valIn A m k ↔ ∀ g i, f g i ∈ maximalIdeal A ^ k := by
   simp [Frame.valIn, Submodule.mem_pi]
 
 /- English proof (translation)
-Take `⟨ι, s, b, h⟩` from `spStab_U X (A := A) (m := m) ha`. Rewrite using `[h]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite `hf`, the goal using `[spStab_val]`. Conclude with `fun g j => hf _ j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem spStab_valU (k : ℕ) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m) (hf : f ∈ X.valIn A m k) :
     X.U A m a f ∈ X.valIn A m k := by
@@ -105,7 +105,7 @@ private theorem spStab_valU (k : ℕ) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m)
   exact fun g j => hf _ j
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[spStab_val]`. Introduce `g i`. Rewrite using `[Frame.ra_apply]`. Simplify using `only [mulVec, dotProduct]`. Conclude with `Submodule.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hf _ j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem spStab_valra (τ : X.Ub →* GL (Fin m) A) (k : ℕ) (u : X.Ub) (f : X.Fn A m) (hf : f ∈ X.valIn A m k) :
     X.ra τ u f ∈ X.valIn A m k := by
@@ -116,7 +116,7 @@ private theorem spStab_valra (τ : X.Ub →* GL (Fin m) A) (k : ℕ) (u : X.Ub) 
   exact Submodule.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hf _ j)
 
 /- English proof (translation)
-Rewrite using `[Frame.Ord, Submodule.mem_inf, Submodule.mem_iInf]`. Conclude with `and_congr Iff.rfl (forall_congr' fun k => spStab_per _ _ (spStab_valU X k X.I.z_mem) f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spStab_ord (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub) (f : X.Fn A m) :
     f ∈ X.Ord τ θ U ↔ f ∈ X.Sp τ θ U ∧ ∀ k, ∃ n : ℕ, (X.U A m X.I.z ^ (n + 1)) f - f ∈ X.valIn A m k := by
@@ -124,9 +124,9 @@ private theorem spStab_ord (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (
   exact and_congr Iff.rfl (forall_congr' fun k => spStab_per _ _ (spStab_valU X k X.I.z_mem) f)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hf`. Use `⟨fun γ g => by rw [Frame.ra_apply, Frame.ra_apply, mul_assoc, h1], fun x hx => by rw [← spStab_comm, h2 x hx], fun t => by rw [← spStab_comm, h3, map_smul], fun k => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h4 k`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: X.rp A m y f - f ∈ X.valIn A m k` using `(spStab_val X k _).2 (hc y hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5` using `spStab_valra X τ k u _ this`. Rewrite `h5` using `[map_sub, spStab_comm]`. Conclude with `(spStab_val X k _).1 h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spStab_ambra (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (u : X.Ub) (f : X.Fn A m)
     (hf : f ∈ X.Amb m θ) : X.ra τ u f ∈ X.Amb m θ := by
@@ -141,21 +141,21 @@ private theorem spStab_ambra (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ)
   exact (spStab_val X k _).1 h5
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hf`. Take `⟨e1, -, -, e2, -⟩` from `uOpMul Gp X.I A _ (X.rp A m) a a ha ha f h2`. Use `⟨fun γ g => ?_, e1, fun t => ?_, fun k => ?_⟩` and prove the remaining obligations. Take `⟨ι, s, b, h⟩` from `spStab_U X (A := A) (m := m) ha`. Rewrite using `[h, Finset.sum_apply, Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [spStab_rp, spStab_rp, mul_assoc, h1]`. Unfold `Frame.U`. Rewrite using `[e2 t t.2, h3, map_smul]`. Take `⟨c1, hc1⟩` from `h4 k`. Take `⟨c2, hc2⟩` from `hθ k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max c1 c2, fun y hy g i => ?_⟩` and prove the remaining obligations. Set `φ : X.Fn A m →ₗ[A] X.Fn (A ⧸ maximalIdeal A ^ k) m` to `X.mapFn`. Establish `hφ : ∀ f g i, φ f g i = Ideal.Quotient.mk _ (f g i)` using `fun _ _ _ => rfl`. Establish `hnat : ∀ b f, φ (X.rp A m b f) = X.rp _ m b (φ f)` using `fun _ _ => rfl`. Establish `hfix : φ f ∈ fixd (X.rp (A ⧸ maximalIdeal A ^ k) m) (X.I.I1 (max c1 c2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨x, hx, t, ht, y, hy, rfl⟩` from `(iwMem Gp X.I _ w).2.1.1 hw`. Establish `a3 : X.rp _ m y (φ f) = φ f`. Use function extensionality and compare the values at `g i`. Rewrite using `[spStab_rp, hφ, hφ, Ideal.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc1 y (X.I.Nm_anti (le_max_left _ _) hy) g i`. Establish `a2 : X.rp _ m t (φ f) = φ f`. Establish `ht'` using `X.I.Tc_le _ ht`. Use `hc2 ⟨t, ht'⟩⁻¹ (inv_mem (X.I.Tc_anti (le_max_right _ _) ht))` as an intermediate fact. Rewrite using `[← hnat, h3 ⟨t, ht'⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g i`. Rewrite using `[hφ, hφ, Ideal.Quotient.eq]`. Establish `h6` using `Ideal.mul_mem_right (f g i) _ this`. Rewrite `h6` using `[map_inv]`. Use `h6 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, a3, a2, ← hnat, h2 x hx]`. Establish `h7` using `(uOpLevel Gp X.I _ _ (X.rp (A ⧸ maximalIdeal A ^ k) m) (max c1 c2)).1 a ha _ hfix y (Subgroup.mem_sup_right hy)`. Establish `h8` using `uOpNat Gp X.I A _ (X.rp A m) _ _ (X.rp (A ⧸ maximalIdeal A ^ k) m) φ.toAddMonoidHom a ha f (fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ _ = X.I.uOp _ a (φ f) at h8`. Rewrite `h7` using `[← h8]`. Establish `h9` using `congrFun (congrFun h7 g) i`. Rewrite `h9` using `[spStab_rp, hφ, hφ, Ideal.Quotient.eq]`. Conclude with `h9`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spStab_ambU (θ : X.I.T →* Aˣ) (hθ : X.I.ContChar θ) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m)
     (hf : f ∈ X.Amb m θ) : X.U A m a f ∈ X.Amb m θ := by
@@ -205,21 +205,21 @@ private theorem spStab_ambU (θ : X.I.T →* Aˣ) (hθ : X.I.ContChar θ) {a : G
 end
 
 /- English proof (translation)
-Introduce `Γ Ga Gp _ _ _ X A _ _ m τ θ hθ`. Establish `hSp : ∀ U, ∀ a ∈ X.I.P, ∀ f ∈ X.Sp τ θ U, X.U A m a f ∈ X.Sp τ θ U` using `fun U a ha f hf => ⟨spStab_ambU X θ hθ ha f hf.1, fun u hu => by rw [spStab_commU X τ u ha, hf.2 u hu]⟩`. Use `⟨fun a ha f hf => spStab_ambU X θ hθ ha f hf, fun u f hf => spStab_ambra X τ θ u f hf, fun a ha u f => spStab_commU X τ u ha f, fun U a ha => ⟨hSp U a ha, fun f hf => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[spStab_ord]`. Use `⟨hSp U a ha f hf.1, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hf.2 k`. Establish `hN : f ∈ fixd (X.rp A m) X.I.N` using `hf.1.1.2.1`. Establish `key : ∀ j : ℕ, (X.U A m X.I.z ^ j) f ∈ fixd (X.rp A m) X.I.N ∧ X.U A m a ((X.U A m X.I.z ^ j) f) = (X.U A m X.I.z ^ j) (X.U A m a f)`. Introduce `j`. Proceed by induction on `j with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨hN, rfl⟩`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih.2]`. Establish `b1` using `uOpMul Gp X.I A _ (X.rp A m) a X.I.z ha X.I.z_mem _ ih.1`. Establish `b2` using `uOpMul Gp X.I A _ (X.rp A m) X.I.z a X.I.z_mem ha _ ih.1`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨b2.1, b1.2.1.trans (Eq.trans ?_ b2.2.1.symm)⟩` and prove the remaining obligations. Rewrite using `[X.I.comm a (X.I.P_le a ha) X.I.z (X.I.P_le _ X.I.z_mem)]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← (key _).2, ← map_sub]`. Conclude with `spStab_valU X k ha _ hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U V K K' x hfin hfix f hf`. Use `letI : Fintype (MulAction.orbit K (x : X.Ub ⧸ K')) := hfin.fintype`. Establish `hdc : ∀ v, dc (X.ra τ) K K' x v = ∑ q : MulAction.orbit K (x : X.Ub ⧸ K'), X.ra τ (q : X.Ub ⧸ K').out v` using `fun v => by`. Rewrite using `[dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Rewrite `hf`, the goal using `[spStab_ord]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨?_, hfix f hf.1.2⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hdc]`. Conclude with `Submodule.sum_mem _ fun q _ => spStab_ambra X τ θ _ f hf.1.1`. Take `⟨n, hn⟩` from `hf.2 k`. Establish `key : ∀ (u : X.Ub) (j : ℕ), X.ra τ u ((X.U A m X.I.z ^ j) f) = (X.U A m X.I.z ^ j) (X.ra τ u f)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `u j`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih, spStab_commU X τ u X.I.z_mem]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hdc, map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← key, ← map_sub]`. Conclude with `spStab_valra X τ k _ _ hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.spStab :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] [IsCNL A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ), X.I.ContChar θ → (∀ a ∈ X.I.P, ∀ f ∈ X.Amb m θ, X.U A m a f ∈ X.Amb m θ) ∧ (∀ u, ∀ f ∈ X.Amb m θ, X.ra τ u f ∈ X.Amb m θ) ∧ (∀ a ∈ X.I.P, ∀ u f, X.ra τ u (X.U A m a f) = X.U A m a (X.ra τ u f)) ∧ (∀ U, ∀ a ∈ X.I.P, (∀ f ∈ X.Sp τ θ U, X.U A m a f ∈ X.Sp τ θ U) ∧ ∀ f ∈ X.Ord τ θ U, X.U A m a f ∈ X.Ord τ θ U) ∧ ∀ (U V K K' : Subgroup X.Ub) (x : X.Ub), (MulAction.orbit K (x : X.Ub ⧸ K')).Finite → (∀ f ∈ fixd (X.ra τ) V, dc (X.ra τ) K K' x f ∈ fixd (X.ra τ) U) → ∀ f ∈ X.Ord τ θ V, dc (X.ra τ) K K' x f ∈ X.Ord τ θ U := by

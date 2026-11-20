@@ -18,9 +18,9 @@ def cols (Fm : Matrix (Fin n) (Fin n) R) (r : ι) : Fin n → R := fun i => Fm i
 variable {e}
 
 /- English proof (translation)
-Establish `hle : Submodule.span R (cols e Fm '' S) ≤ LinearMap.ker ((LinearMap.proj (e s)).comp (Matrix.toLin' Fi))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Establish `hrs : e r ≠ e s` using `fun h' => hs (e.injective h' ▸ hr)`. Establish `h1 : (Fi *ᵥ cols e Fm r) (e s) = (Fi * Fm) (e s) (e r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, cols, Matrix.mul_apply]`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.comp_apply, Matrix.toLin'_apply, LinearMap.proj_apply, h1, hF, Matrix.one_apply_ne (Ne.symm hrs)]`. Use `hle hu` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.comp_apply, Matrix.toLin'_apply, LinearMap.proj_apply]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coord_zero {Fm Fi : Matrix (Fin n) (Fin n) R} (hF : Fi * Fm = 1) (S : Set ι) {u : Fin n → R}
     (hu : u ∈ Submodule.span R (cols e Fm '' S)) (s : ι) (hs : s ∉ S) : (Fi *ᵥ u) (e s) = 0 := by
@@ -37,7 +37,7 @@ theorem coord_zero {Fm Fi : Matrix (Fin n) (Fin n) R} (hF : Fi * Fm = 1) (S : Se
   rwa [LinearMap.mem_ker, LinearMap.comp_apply, Matrix.toLin'_apply, LinearMap.proj_apply] at this
 
 /- English proof (translation)
-Establish `hu : (g : Matrix (Fin n) (Fin n) R) *ᵥ cols e Fm r ∈ Submodule.span R (cols e Fm '' S)` using `(hg _).1 (Submodule.subset_span ⟨r, hr, rfl⟩)`. Establish `h1` using `coord_zero hF S hu s hs`. Rewrite `h1` using `[Matrix.mulVec_mulVec]`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec, dotProduct, cols, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem entry_zero {Fm Fi : Matrix (Fin n) (Fin n) R} (hF : Fi * Fm = 1) (S : Set ι) {g : GL (Fin n) R}
     (hg : g ∈ Formalism.UG.stabGL (Submodule.span R (cols e Fm '' S))) (s r : ι) (hr : r ∈ S) (hs : s ∉ S) :
@@ -60,13 +60,13 @@ def BUn (T : Matrix ι ι R) : Prop := BLo lev T ∧ ∀ s r, lev s = lev r → 
 def bd (T : Matrix ι ι R) : Matrix ι ι R := fun s r => if lev s = lev r then T s r else 0
 
 /- English proof (translation)
-Use extensionality with `s r`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hl : lev s = lev r`. Rewrite using `[← h, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [bd]`. Distinguish the cases in `h1 : lev s = lev t`. Rewrite using `[if_pos h1, if_pos (show lev t = lev r by omega)]`. Rewrite using `[if_neg h1, zero_mul]`. Break down `Nat.lt_or_ge (lev t) (lev s) with h2 | h2` into its components or cases.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hT s t h2, zero_mul]`. Rewrite using `[hTi t r (by omega), mul_zero]`. Establish `hsr : s ≠ r` using `fun h' => hl (by rw [h'])`. Rewrite using `[Matrix.one_apply_ne hsr]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [bd]`. Distinguish the cases in `h1 : lev s = lev t`. Rewrite using `[if_neg (show ¬ lev t = lev r by omega), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bd_mul {T Ti : Matrix ι ι R} (hT : BLo lev T) (hTi : BLo lev Ti) (h : T * Ti = 1) :
     bd lev T * bd lev Ti = 1 := by

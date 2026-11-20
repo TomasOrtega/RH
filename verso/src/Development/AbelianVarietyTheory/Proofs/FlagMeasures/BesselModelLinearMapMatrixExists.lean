@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.toV HidaSetting.crd crdOf`. Establish `hb : ∀ j : Fin X.B.I.n, (∑ i, X.ιE ((Pi.single j (1 : X.B.I.E) : Fin X.B.I.n → X.B.I.E) i) • X.bas i) = X.bas j`. Introduce `j`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hbj`. Simplify using `[Pi.single_apply, hbj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Simplify using `only [hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← X.bas.sum_repr y]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.of_apply, map_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem crd_map_mulVec (m : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
     X.crd (m y) = (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i) *ᵥ X.crd y := by
@@ -41,13 +41,13 @@ theorem crd_map_mulVec (m : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
   ring
 
 /- English proof (translation)
-Take `⟨-, hQ, -⟩` from `C.isT τ`. Use `⟨C.Qi τ * (X.B.I.P (vOf X τ))⁻¹ * (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map (X.B.I.φ (vOf X τ)) * X.B.I.P (vOf X τ) * C.Q τ, fun y => ?_⟩` and prove the remaining obligations. Establish `hP : (X.B.I.P (vOf X τ))⁻¹ * ((Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map (X.B.I.φ (vOf X τ)) * (X.B.I.P (vOf X τ) * (X.B.I.P (vOf X τ))⁻¹)) = (X.B.I.P (vOf X τ))⁻¹ * (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) …`. Distinguish the cases in `h : IsUnit (X.B.I.P (vOf X τ)).det`. Rewrite using `[Matrix.mul_nonsing_inv _ h, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.zero_mul, Matrix.zero_mul]`. Establish `hw : (fun i => X.B.I.φ (vOf X τ) (X.crd (m y) i)) = (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map (X.B.I.φ (vOf X τ)) *ᵥ (fun i => X.B.I.φ (vOf X τ) (X.crd y i))`. Rewrite using `[crd_map_mulVec m y]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e1 : ∀ z, GlobalTheory.TypeAsm.phiV C τ z = (C.Qi τ * (X.B.I.P (vOf X τ))⁻¹) *ᵥ (fun i => X.B.I.φ (vOf X τ) (X.crd z i))`. Introduce `z`. Unfold `GlobalTheory.TypeAsm.phiV Formalism.L2.SG.HidaSetting.rv`. Rewrite using `[Matrix.mulVec_mulVec]`. Rewrite using `[e1, e1, hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul, hP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiV_linMat (C : Choice X 1) (τ : D.what₂.Tau) (m : (VS D).V →ₗ[D.host.E] (VS D).V) :
     ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := by
@@ -83,7 +83,7 @@ end GlobalTheory.TypeAsm.GramPf
 namespace GlobalTheory.TypeAsm
 
 /- English proof (translation)
-Introduce `D X C τ m`. Conclude with `GramPf.phiV_linMat C τ m`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phiV_linMat_all : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau)
     (m : (VS D).V →ₗ[D.host.E] (VS D).V),

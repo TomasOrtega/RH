@@ -40,21 +40,21 @@ section Char
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CMVal.finPart_single, ← GlobalTheory.CMVal.finPart_single, GlobalTheory.CMVal.finPart_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_inv (ν : HChar E) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) :
     (ν⁻¹).loc w x = (ν.loc w x)⁻¹ := by
   rw [← GlobalTheory.CMVal.finPart_single, ← GlobalTheory.CMVal.finPart_single, GlobalTheory.CMVal.finPart_inv]
 
 /- English proof (translation)
-Use `forall_congr' fun x => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[loc_inv, inv_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unrAt_inv (ν : HChar E) (w : HeightOneSpectrum (𝓞 E)) : (ν⁻¹).UnrAt w ↔ ν.UnrAt w := by
   refine forall_congr' fun x => imp_congr_right fun _ => ?_
   rw [loc_inv, inv_eq_one]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CMVal.finPart_unifAt, ← GlobalTheory.CMVal.finPart_unifAt, GlobalTheory.CMVal.finPart_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_inv (ν : HChar E) (w : HeightOneSpectrum (𝓞 E)) : (ν⁻¹).val w = (ν.val w)⁻¹ := by
   rw [← GlobalTheory.CMVal.finPart_unifAt, ← GlobalTheory.CMVal.finPart_unifAt, GlobalTheory.CMVal.finPart_inv]

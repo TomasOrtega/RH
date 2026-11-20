@@ -4,12 +4,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockJointMultiplicity.L
 namespace PI.FJMX
 
 /- English proof (translation)
-The claim follows from `vecHW1_of PI.FJM.leftDiagonalActionFormula PI.FJM.leftOffDiagonalActionFormula`.
+A detailed English derivation is pending.
 -/
 theorem shapeVectorLeftHighestWeight : PI.FJM.VecHW1 := vecHW1_of PI.FJM.leftDiagonalActionFormula PI.FJM.leftOffDiagonalActionFormula
 
 /- English proof (translation)
-The claim follows from `vecHW2_of PI.FJM.rightDiagonalActionFormula PI.FJM.rightOffDiagonalActionFormula`.
+A detailed English derivation is pending.
 -/
 theorem shapeVectorRightHighestWeight : PI.FJM.VecHW2 := vecHW2_of PI.FJM.rightDiagonalActionFormula PI.FJM.rightOffDiagonalActionFormula
 

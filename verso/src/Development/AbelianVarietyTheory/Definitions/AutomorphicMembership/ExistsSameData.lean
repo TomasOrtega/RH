@@ -945,7 +945,7 @@ section Elim
 variable {R : Ranks} {H : Host R}
 
 /- English proof (translation)
-Take `@⟨aLL, ainstLL, aembLL, aplaces, aO, ainstO, aOtoLL, aTau, ainstTau, acard_Tau, aTup, amu0, amuStar, amuStar', amuAt, amuAt_conj, amuTw, amuTw_conj, amuAt_or, aEE, ainstEE, ainstEEi, ainstEEf, aDrows, aonb, aDall, adelp, adelp_le_one, aD_eq, aEE0, ainstEE0, ainstEE0i, ainstEE0f, …` from `r`. Simplify using `only at *`. Substitute `hTau` using the available equality. Substitute `hinstTau` using the available equality. Conclude with `⟨⟨aLL, ainstLL, aembLL, aplaces, aO, ainstO, aOtoLL, aTup, amu0, amuStar, amuStar', amuAt, amuAt_conj, amuTw, amuTw_conj, amuAt_or, aEE, ainstEE, ainstEEi, ainstEEf, aDrows, aonb, aDall, adelp, adelp_le_one, aD_eq, aEE0, ainstEE0, ainstEE0i, ainstEE0f, aD0, aonb0, aFT, ainstFT, a …`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_restRows (r₀ r : Rows.Data R)
     (hTau : HEq r₀.Tau r.Tau) (hinstTau : HEq r₀.instTau r.instTau) :
@@ -970,9 +970,9 @@ theorem exists_restRows (r₀ r : Rows.Data R)
     alamP, aIj, ajw, aetaJ, aetaJ_nonneg, ashaLen, ashaLen_nonneg⟩, rfl⟩
 
 /- English proof (translation)
-Take `@⟨aOm, ainstOm, aalgOm, aacOm, aplOm, aldat, asha_eq, aLoc, al, alPrime, aj, aj_range, amu, aw, aw_l, amu_w, aw_tw, alocs, alocs_mem, aO, ainstO, adomO, advrO, aalgO, afinO, atopO, atrO, aO_adic, aO_complete, aembK, aembK_w, aX, afinX, aneX, aT, aT_local, aT_sep, aMt, aacgMt, amo …` from `N`. Simplify using `only at *`. Substitute `hOm` using the available equality. Substitute `hinstOm` using the available equality. Substitute `halgOm` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hplOm` using the available equality. Substitute `hPlG` using the available equality. Substitute `hfinPlG` using the available equality. Conclude with `⟨⟨aldat, asha_eq, aLoc, al, alPrime, aj, aj_range, amu, aw, aw_l, amu_w, aw_tw, alocs, alocs_mem, aO, ainstO, adomO, advrO, aalgO, afinO, atopO, atrO, aO_adic, aO_complete, aembK, aembK_w, aX, afinX, aneX, aT, aT_local, aT_sep, aMt, aacgMt, amodMt, afreeMt, afinMt, aact, aact_inj …`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_restN {r₀ r : Rows.Data R} (N₀ : NData R H r₀) (N : NData R H r)
     (hOm : HEq N₀.Om N.Om) (hinstOm : HEq N₀.instOm N.instOm) (halgOm : HEq N₀.algOm N.algOm) (hplOm : HEq N₀.plOm N.plOm)
@@ -997,21 +997,21 @@ variable {r₀ r : Rows.Data R} [NumberField r₀.LL] [StarRing r₀.LL] [Number
   {L₀ : IntermediateField ℚ r₀.LL} {L : IntermediateField ℚ r.LL} {N₀ : NData R H r₀} {n : RestN N₀ r}
 
 /- English proof (translation)
-Take `@⟨acc, acc_cm, aTw, al, alPrime, aO0, acrO0, adomO0, advrO0, aalgO0, afinO0, aresO0_fin, atopO0, atrO0, aO0_adic, aemb0, aemb0b, aemb0b_conj, aO, acrO, adomO, advrO, aalgO, aO_inj, aO_l, atopO, atrO, aO_adic, aresO_ac, aO_complete, aOk, acrOk, adomOk, advrOk, aalgOk, aOk_inj, aOk …` from `X`. Simplify using `only at *`. Substitute `hcc` using the available equality. Substitute `hTw` using the available equality. Substitute `hl` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hO0` using the available equality. Substitute `hcrO0` using the available equality. Substitute `halgO0` using the available equality. Substitute `htopO0` using the available equality. Substitute `hO` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hcrO` using the available equality. Substitute `halgO` using the available equality. Substitute `hOk` using the available equality. Substitute `hcrOk` using the available equality. Substitute `halgOk` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hzk` using the available equality. Substitute `hpD` using the available equality. Substitute `hdelta` using the available equality. Substitute `hchi1` using the available equality. Substitute `hSig` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hfinSig` using the available equality. Substitute `hjS` using the available equality. Substitute `hside` using the available equality. Substitute `hrhoS` using the available equality. Substitute `hS0` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hB` using the available equality. Substitute `hacgB` using the available equality. Substitute `hmodB` using the available equality. Substitute `hTheta` using the available equality. Substitute `hhk` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hhEig` using the available equality. Substitute `hLam` using the available equality. Substitute `hsideL` using the available equality. Substitute `hRCG` using the available equality. Substitute `hgrpRCG` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hfinRCG` using the available equality. Substitute `hart` using the available equality. Substitute `hth` using the available equality. Conclude with `⟨⟨aemb0, aemb0b, aemb0b_conj, atopO, atrO, aO_adic, aThetaPsi, aThetaPsi_one, afinLam, ajL, as2, ajL_range, alamG, alamG_cont, alamG_unr, alamG_pD, alamG_anti, aXv, aXv_def, aqs, aqs_sq, aqs_conj, ares, ares_art, atwOf, atwSide, atwOf_l, atwO, atwO_emb, apsiL, apsiL_ord, apsiL_op …`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_restX (X₀ : NTw R H r₀ L₀ N₀) (X : NTw R H r L (overN N₀ r n))
     (hcc : HEq X₀.cc X.cc) (hTw : HEq X₀.Tw X.Tw) (hl : HEq X₀.l X.l) (hO0 : HEq X₀.O0 X.O0)
@@ -1045,17 +1045,17 @@ theorem exists_restX (X₀ : NTw R H r₀ L₀ N₀) (X : NTw R H r L (overN N�
     atwSide, atwOf_l, atwO, atwO_emb, apsiL, apsiL_ord, apsiL_open, apsiL_anti, apsiL_ram, apsiL_l, achi_tw⟩, rfl⟩
 
 /- English proof (translation)
-Take `@⟨aFm, aacgFm, amodFmK, amodFmO, atowFm, afdFm, aactG, aU, apsiU, aeAlg, aeLL0, aeAlg_def, aeAlg_idem, aeAlg_central, aBsup, aDat, ath, alev, athPsi, athPsi_one, athU, atwPsi, atwPsi_one, atwDel, adelU, adelU_unr, adelU_l, adelU_anti, adelU_open, adelU_res, adelU_conj, aMtV, aacg …` from `Y`. Simplify using `only at *`. Substitute `hFm` using the available equality. Substitute `hacgFm` using the available equality. Substitute `hmodFmK` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hmodFmO` using the available equality. Substitute `hactG` using the available equality. Substitute `hU` using the available equality. Substitute `hpsiU` using the available equality. Substitute `heAlg` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hBsup` using the available equality. Substitute `hDat` using the available equality. Substitute `hth` using the available equality. Substitute `hlev` using the available equality. Substitute `hthPsi` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hthU` using the available equality. Substitute `hdelU` using the available equality. Substitute `hMtV` using the available equality. Substitute `hacgMt` using the available equality. Substitute `hmodMtK` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hmodMtO` using the available equality. Substitute `hMtLat` using the available equality. Substitute `hthP` using the available equality. Substitute `hhkF` using the available equality. Substitute `hembB` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Conclude with `⟨⟨aeLL0, aeAlg_def, atwPsi, atwPsi_one, atwDel, aeH, aeH_idem⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_restY {X₀ : NTw R H r₀ L₀ N₀} {x : RestX X₀ r L n} (Y₀ : NExp R H r₀ L₀ N₀ X₀)
     (Y : NExp R H r L (overN N₀ r n) (overX X₀ r L n x))
@@ -1082,13 +1082,13 @@ end Elim
 set_option maxRecDepth 100000 in
 
 /- English proof (translation)
-Establish `hT` using `h.instTau`. Establish `hP : HEq D.nd.finPlG D'.nd.finPlG` using `Subsingleton.helim (congrArg (fun P : Fin 2 → Type => ∀ k, Fintype (P k)) (eq_of_heq h.gal.PlG)) _ _`. Take `⟨⟨⟨a1, a2, a3, n1, n2, n3, n4, n5⟩, x, y, br, -⟩, sp, Tau, eTau, hc, -, -, -, -, -, delta, B, acgB, modB, Theta, hk, Bsup, embB, thU, delU⟩` from `h`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `x`. Take `⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩` from `y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `clear ι e`. Take `@⟨aR, ahost, asp, avol, avol_pos, arows, aeTau, ahc, awordFin, au₀, ahcW, ahcW_base, ahcW_v, ahcW_b, ahcW_e, ahcW_first, ahcW_last, amem, anfLL, astarLL, atcLL, agalLL, astarLL_cx, adiv, adiv_good, aembE, aembE_φ₀, aconjF, aconjF_eq, aembE_conj, aLL0, aE_le_LL0, aO_int, aO_contai …` from `D'`. Simplify using `only at *`. Substitute `a1` using the available equality. Substitute `a2` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `a3` using the available equality. Substitute `sp` using the available equality. Take `⟨brows, rfl⟩` from `exists_restRows _ _ (heq_of_eq Tau) hT`. Substitute `eTau` using the available equality. Substitute `hc` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨bnd, rfl⟩` from `exists_restN _ _ n1 n2 n3 n4 n5 hP`. Take `⟨bntw, rfl⟩` from `exists_restX D.ntw antw xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD delta xchi1 xSig xfinSig xjS xside …`. Take `⟨bnexp, rfl⟩` from `exists_restY D.nexp anexp yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg Bsup yDat yth ylev ythPsi thU delU yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF embB`. Substitute `br` using the available equality. Conclude with `⟨⟨avol, avol_pos, brows, awordFin, au₀, ahcW, ahcW_base, ahcW_v, ahcW_b, ahcW_e, ahcW_first, ahcW_last, amem, anfLL, astarLL, atcLL, agalLL, astarLL_cx, adiv, adiv_good, aembE, aembE_φ₀, aconjF, aconjF_eq, aembE_conj, aLL0, aE_le_LL0, aO_int, aO_contains, aplEq, aval_eq, aram_eq, …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CopyTw.exists_rest {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) :
     ∃ r, D' = overD D r := by
@@ -1138,7 +1138,7 @@ theorem CopyTw.exists_rest {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {
     ajetL, ajetL', ajetW, ajetW_l, ajetTau, ajetW1, ajetW1_l, ajetTau1, ajetU1, ajetL1, ajetL1', agx, agat, agat_d⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨r, _⟩ := (CopyTw.refl D).exists_rest; ⟨r⟩`.
+A detailed English derivation is pending.
 -/
 example (D : D7) : Nonempty (Rest D) := let ⟨r, _⟩ := (CopyTw.refl D).exists_rest; ⟨r⟩
 
@@ -1207,14 +1207,14 @@ structure SameData (ρ : Setup D.ntw) (ρ' : Setup D'.ntw) : Prop where
   eG : ∀ i i', HEq i i' → ∀ (j : Fin D.R.m) (j' : Fin D'.R.m), (j : ℕ) = j' → ∀ b, HEq (ρ.eG i j b) (ρ'.eG i' j' b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameTwist.refl {A : Type} [CommGroup A] (t : Twist D A) : SameTwist t t := ⟨.rfl, .rfl, .rfl⟩
 
 /- English proof (translation)
-Consider the cases of `t`. Consider the cases of `t'`. Take `⟨h1, h2, h3⟩` from `h`. Consider the cases of `h1`. Consider the cases of `h2`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h3`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem SameTwist.eq {A : Type} [CommGroup A] {t t' : Twist D A} (h : SameTwist t t') : t = t' := by
   cases t; cases t'
@@ -1223,23 +1223,23 @@ theorem SameTwist.eq {A : Type} [CommGroup A] {t t' : Twist D A} (h : SameTwist 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .refl _, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameBase.refl {S T : HSp D} (B : Base S T) : SameBase B B :=
   ⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .refl _, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩
 
 /- English proof (translation)
-Take `⟨_, ⟨_, _, _, _, _, _, _, _, _, _⟩, ⟨_, _, _⟩, _, ⟨_, _, _, _, _, _⟩, _, _⟩` from `B`. Take `⟨_, ⟨_, _, _, _, _, _, _, _, _, _⟩, ⟨_, _, _⟩, _, ⟨_, _, _, _, _, _⟩, _, _⟩` from `B'`. Take `⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21⟩` from `h`. Establish `a` using `a13.eq`. Simplify using `only at *`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Consider the cases of `a0`. Consider the cases of `a1`. Consider the cases of `a2`. Consider the cases of `a3`. Consider the cases of `a4`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a5`. Consider the cases of `a6`. Consider the cases of `a7`. Consider the cases of `a8`. Consider the cases of `a9`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a10`. Consider the cases of `a11`. Consider the cases of `a12`. Consider the cases of `a14`. Consider the cases of `a15`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a16`. Consider the cases of `a17`. Consider the cases of `a18`. Consider the cases of `a19`. Consider the cases of `a20`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a21`. Consider the cases of `a`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem SameBase.eq {S T : HSp D} {B B' : Base S T} (h : SameBase B B') : B = B' := by
   obtain ⟨_, ⟨_, _, _, _, _, _, _, _, _, _⟩, ⟨_, _, _⟩, _, ⟨_, _, _, _, _, _⟩, _, _⟩ := B
@@ -1251,7 +1251,7 @@ theorem SameBase.eq {S T : HSp D} {B B' : Base S T} (h : SameBase B B') : B = B'
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact .refl _, .rfl, fun _ _ hi _ _ hj _ _ _ ht => by cases hi; cases Fin.ext hj; cases ht.eq; exact ⟨rfl, .rfl⟩, .rfl, fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameData.refl (ρ : Setup D.ntw) : SameData ρ ρ :=
   ⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact .refl _, .rfl,
@@ -1259,15 +1259,15 @@ theorem SameData.refl (ρ : Setup D.ntw) : SameData ρ ρ :=
     fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact .rfl⟩
 
 /- English proof (translation)
-Establish `hB : ρ.B = ρ'.B` using `funext fun i => funext fun j => funext fun b => (h.B i i .rfl j j rfl b).eq`. Establish `hC : ρ.Cl = ρ'.Cl` using `funext fun i => funext fun j => funext fun b => funext fun t => (h.Cl i i .rfl j j rfl b t t (.refl t)).1`. Establish `hr` using `fun i j b t => (h.Cl i i .rfl j j rfl b t t (.refl t)).2`. Establish `hg` using `fun i j b => h.eG i i .rfl j j rfl b`. Take `⟨h1, h2, h3, h4, h5, h6, -, h8, -, h10, -⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `@⟨⟨_, _⟩, _, _, _, _, _, _, _, f, r, _, g⟩` from `ρ`. Take `@⟨⟨_, _⟩, _, _, _, _, _, _, _, f', r', _, g'⟩` from `ρ'`. Simplify using `only at *`. Consider the cases of `h1`. Consider the cases of `h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h8`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h10`. Consider the cases of `hB`. Consider the cases of `hC`. Take `rfl : f = f'` from `Subsingleton.elim _ _`. Take `rfl : r = r'` from `funext fun i => funext fun j => funext fun b => funext fun t => eq_of_heq (hr i j b t)`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : g = g'` from `funext fun i => funext fun j => funext fun b => eq_of_heq (hg i j b)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem SameData.eq {ρ ρ' : Setup D.ntw} (h : SameData ρ ρ') : ρ = ρ' := by
   have hB : ρ.B = ρ'.B := funext fun i => funext fun j => funext fun b => (h.B i i .rfl j j rfl b).eq
@@ -1302,13 +1302,13 @@ def setupUp (ρ : Setup D.ntw) : Setup (overD D r).ntw :=
     ((fun (i : @Formalism.BasicNotions.NTw.Tw (Formalism.BasicNotions.D7.R D) (Formalism.BasicNotions.D7.host D) (Formalism.BasicNotions.D7.what₂ D) (Formalism.BasicNotions.D7.nfLL D) (Formalism.BasicNotions.D7.starLL D) (Formalism.BasicNotions.D7.LL0 D) (Formalism.BasicNotions.D7.nd D) (Formalism.BasicNotions.D7.ntw D)) (j : Fin (Formalism.BasicNotions.Ranks.m (Formalism.BasicNotions.D7.R D))) (b : Bool) (t : @GlobalTheory.ExportSeries.Twist (GlobalTheory.TwInputs.Move.overD D r) Circle Circle.instCommGroup) ↦ @GlobalTheory.SeriesTie.Setup.finCl D (Formalism.BasicNotions.D7.nd D) (Formalism.BasicNotions.D7.ntw D) ρ i j b (@GlobalTheory.TwInputs.Move.twistDn D r Circle Circle.instCommGroup t))) ((fun (i : @Formalism.BasicNotions.NTw.Tw (Formalism.BasicNotions.D7.R D) (Formalism.BasicNotions.D7.host D) (Formalism.BasicNotions.D7.what₂ D) (Formalism.BasicNotions.D7.nfLL D) (Formalism.BasicNotions.D7.starLL D) (Formalism.BasicNotions.D7.LL0 D) (Formalism.BasicNotions.D7.nd D) (Formalism.BasicNotions.D7.ntw D)) (j : Fin (Formalism.BasicNotions.Ranks.m (Formalism.BasicNotions.D7.R D))) (b : Bool) (t : @GlobalTheory.ExportSeries.Twist (GlobalTheory.TwInputs.Move.overD D r) Circle Circle.instCommGroup) ↦ @GlobalTheory.SeriesTie.Setup.rep D (Formalism.BasicNotions.D7.nd D) (Formalism.BasicNotions.D7.ntw D) ρ i j b (@GlobalTheory.TwInputs.Move.twistDn D r Circle Circle.instCommGroup t))) ((ρ.β)) ((ρ.eG))
 
 /- English proof (translation)
-The claim follows from `SameTwist.eq ⟨(h.Q), (h.chi), (h.res)⟩`.
+A detailed English derivation is pending.
 -/
 theorem sameTwist_dn {A : Type} [CommGroup A] {t : Twist D A} {t' : Twist (overD D r) A} (h : SameTwist t t') : t = twistDn r t' :=
   SameTwist.eq ⟨(h.Q), (h.chi), (h.res)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(HEq.refl B.F.ψ), (HEq.refl B.F.θ), (HEq.refl B.F.sT), (HEq.refl B.F.BS), (HEq.refl B.F.BT), (HEq.refl B.F.ΛS), (HEq.refl B.F.ΛT), (HEq.refl B.F.βS), (HEq.refl B.F.βT), (HEq.refl B.F.f₀), (HEq.refl B.G.Pg), (HEq.refl B.G.P), (HEq.refl B.G.mu), ⟨(HEq.refl B.de.Q), (HEq.refl B.de. …`.
+Supply the required witnesses or components.
 -/
 theorem sameBase_up {S T : HSp D} (B : Base S T) : SameBase B (baseUp r B) :=
   ⟨(HEq.refl B.F.ψ), (HEq.refl B.F.θ), (HEq.refl B.F.sT), (HEq.refl B.F.BS), (HEq.refl B.F.BT), (HEq.refl B.F.ΛS), (HEq.refl B.F.ΛT), (HEq.refl B.F.βS), (HEq.refl B.F.βT), (HEq.refl B.F.f₀), (HEq.refl B.G.Pg), (HEq.refl B.G.P), (HEq.refl B.G.mu),
@@ -1316,7 +1316,7 @@ theorem sameBase_up {S T : HSp D} (B : Base S T) : SameBase B (baseUp r B) :=
     (HEq.refl B.mu0), (HEq.refl B.eta)⟩
 
 /- English proof (translation)
-Establish `hB : ∀ (i i' : D.ntw.Tw), HEq i i' → ∀ (j j' : Fin D.R.m), (j : ℕ) = j' → ∀ b, SameBase (ρ.B i j b) (baseUp r (ρ.B i' j' b))` using `fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact sameBase_up r _`. Establish `hC : ∀ (i i' : D.ntw.Tw), HEq i i' → ∀ (j j' : Fin D.R.m), (j : ℕ) = j' → ∀ b (t : Twist D Circle) (t' : Twist (overD D r) Circle), SameTwist t t' → ρ.Cl i j b t = ρ.Cl i' j' b (twistDn r t') ∧ HEq (ρ.rep i j b t) (ρ.rep i' j' b (twistDn r t'))` using `fun _ _ hi _ _ hj _ _ _ ht => by cases hi; cases Fin.ext hj; cases sameTwist_dn r ht; exact ⟨rfl, .rfl⟩`. Establish `hG : ∀ (i i' : D.ntw.Tw), HEq i i' → ∀ (j j' : Fin D.R.m), (j : ℕ) = j' → ∀ b, HEq (ρ.eG i j b) (ρ.eG i' j' b)` using `fun _ _ hi _ _ hj _ => by cases hi; cases Fin.ext hj; exact .rfl`. Conclude with `⟨(HEq.refl ρ.rc.κ), (HEq.refl ρ.rc.art), (HEq.refl ρ.ch), (HEq.refl ρ.bad), (HEq.refl ρ.e), (HEq.refl ρ.ek), (hB), (HEq.refl ρ.om), (hC), (HEq.refl ρ.β), (hG)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sameData_up (ρ : Setup D.ntw) : SameData ρ (setupUp r ρ) := by
   have hB : ∀ (i i' : D.ntw.Tw), HEq i i' → ∀ (j j' : Fin D.R.m), (j : ℕ) = j' → ∀ b, SameBase (ρ.B i j b) (baseUp r (ρ.B i' j' b)) :=
@@ -1332,30 +1332,30 @@ theorem sameData_up (ρ : Setup D.ntw) : SameData ρ (setupUp r ρ) := by
 end Up
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.Q.symm, h.chi.symm, h.res.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameTwist.symm {A : Type} [CommGroup A] {t : Twist D A} {t' : Twist D' A} (h : SameTwist t t') : SameTwist t' t :=
   ⟨h.Q.symm, h.chi.symm, h.res.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.Q.trans h'.Q, h.chi.trans h'.chi, h.res.trans h'.res⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameTwist.trans {D'' : D7} {A : Type} [CommGroup A] {t : Twist D A} {t' : Twist D' A} {t'' : Twist D'' A} (h : SameTwist t t')
     (h' : SameTwist t' t'') : SameTwist t t'' := ⟨h.Q.trans h'.Q, h.chi.trans h'.chi, h.res.trans h'.res⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ψ.symm.trans h'.ψ, h.θ.symm.trans h'.θ, h.sT.symm.trans h'.sT, h.BS.symm.trans h'.BS, h.BT.symm.trans h'.BT, h.ΛS.symm.trans h'.ΛS, h.ΛT.symm.trans h'.ΛT, h.βS.symm.trans h'.βS, h.βT.symm.trans h'.βT, h.f₀.symm.trans h'.f₀, h.Pg.symm.trans h'.Pg, h.P.symm.trans h'.P, h.mu.symm …`.
+Supply the required witnesses or components.
 -/
 theorem SameBase.eq_of {S T : HSp D} {S' T' : HSp D'} {B : Base S T} {B₁ B₂ : Base S' T'} (h : SameBase B B₁) (h' : SameBase B B₂) :
     SameBase B₁ B₂ :=
   ⟨h.ψ.symm.trans h'.ψ, h.θ.symm.trans h'.θ, h.sT.symm.trans h'.sT, h.BS.symm.trans h'.BS, h.BT.symm.trans h'.BT, h.ΛS.symm.trans h'.ΛS, h.ΛT.symm.trans h'.ΛT, h.βS.symm.trans h'.βS, h.βT.symm.trans h'.βT, h.f₀.symm.trans h'.f₀, h.Pg.symm.trans h'.Pg, h.P.symm.trans h'.P, h.mu.symm.trans h'.mu, h.de.symm.trans h'.de, h.p.symm.trans h'.p, h.q.symm.trans h'.q, h.ap.symm.trans h'.ap, h.am.symm.trans h'.am, h.c.symm.trans h'.c, h.lam.symm.trans h'.lam, h.mu0.symm.trans h'.mu0, h.eta.symm.trans h'.eta⟩
 
 /- English proof (translation)
-Establish `u` using `sameData_up r ρ`. Use `SameData.eq ⟨h.κ.symm.trans u.κ, h.art.symm.trans u.art, h.ch.symm.trans u.ch, h.bad.symm.trans u.bad, h.e.symm.trans u.e, h.ek.symm.trans u.ek, fun i i' hi j j' hj b => ?_, h.om.symm.trans u.om, fun i i' hi j j' hj b t t' ht => ?_, h.β.symm.trans u.β, fun i i' hi j j' hj b => ?_ …` and prove the remaining obligations. Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Conclude with `(h.B ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b).eq_of (u.B ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Consider the cases of `ht.eq`. Establish `s : SameTwist (twistDn r t) t` using `⟨(HEq.refl t.Q), (HEq.refl t.chi), (HEq.refl t.res)⟩`. Establish `a` using `h.Cl ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b _ t s`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `u.Cl ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b _ t s`. Conclude with `⟨a.1.symm.trans c.1, a.2.symm.trans c.2⟩`. Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Conclude with `(h.eG ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b).symm.trans (u.eG ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b)`.
+Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem SameData.eq_up (r : Rest D) {ρ : Setup D.ntw} {ρ' : Setup (overD D r).ntw} (h : SameData ρ ρ') : ρ' = setupUp r ρ := by
   have u := sameData_up r ρ
@@ -1374,7 +1374,7 @@ theorem SameData.eq_up (r : Rest D) {ρ : Setup D.ntw} {ρ' : Setup (overD D r).
       (u.eG ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b)
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `⟨setupUp r ρ, sameData_up r ρ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CopyTw.exists_sameData {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) (ρ : Setup D.ntw) :
     ∃ ρ' : Setup D'.ntw, SameData ρ ρ' := by

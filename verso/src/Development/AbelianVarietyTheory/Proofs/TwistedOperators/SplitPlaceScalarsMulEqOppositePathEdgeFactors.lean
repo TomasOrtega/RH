@@ -19,23 +19,23 @@ namespace GlobalTheory.RowVacScalar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t ht j hj k hk w hw hs`. Establish `hK : inBasis (rank_vertex G t w (X` using `(j + 1, D.R.m)) ⟨hj.le, le_rfl⟩) (S.B.β (j + 1) D.R.m) w (finG (G.V (.grid (j + 1) D.R.m)) k) ∈ GlobalTheory.SplitWeil.KO (Kw w) _ := by`. Establish `h1` using `hk`. Simplify using `only [GridChoice.levRow, prodLev, Subgroup.mem_inf, Subgroup.mem_iInf] at h1`. Establish `h2` using `h1.1 ⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[Subgroup.mem_comap]`. Rewrite `h2` using `[GlobalTheory.LastRowLat.givenLevel_inner G t w (j + 1, D.R.m) (by simp) (by simp; have := D.R.two_le_m; omega)]`. Then use the resulting hypothesis. Establish `he : idemAt w * idemAt w = idemAt w` using `(Classical.epsilon_spec hs).1.1`. Establish `d1 : ∀ V : HSp D, detIdl (idemAt w) V 1 = 1` using `fun V => by`. Apply the tactic sequence `unfold detIdl; split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `dneg : detIdl (idemAt w) (negSp (G.V (.grid (j + 1) D.R.m))) (negGA _ (moved S j k)) = detIdl (idemAt w) (G.V (.grid (j + 1) D.R.m)) (moved S j k)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[detIdl_val he, detIdl_val he, mt_negGA]`. Establish `hpar : Odd (G.pS (.chi (j + 1) D.R.m)).rank ↔ Odd (G.pT (.chi j D.R.m)).rank`. Establish `r0` using `(rank_vertex G t w (X := (j, D.R.m)) ⟨by omega, le_rfl⟩).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2` using `(rank_vertex G t w (X := (j + 1 + 1, D.R.m)) ⟨by omega, le_rfl⟩).symm`. Express the relevant statement in the definitionally equal form `Odd (G.V (.grid (j + 1 + 1) D.R.m)).rank ↔ Odd (G.V (.grid j D.R.m)).rank`. Rewrite using `[r0, r2]`. Simplify using `only [Grid.rank, locGrid]`. Rewrite using `[show D.R.r + D.R.m * D.R.t + (j + 1 + 1) * sLen D = (D.R.r + D.R.m * D.R.t + j * sLen D) + 2 * sLen D by ring]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Nat.odd_add]`. Conclude with `⟨fun h => h.2 (even_two_mul _), fun h => ⟨fun _ => even_two_mul _, fun _ => h⟩⟩`. Establish `key : ∀ (a b η : (AE D)ˣ →* Circle) (n n' : ℕ), (Odd n ↔ Odd n') → ∀ x, (Formalism.IndefR.Lift.attChr a η n x)⁻¹ * Formalism.IndefR.Lift.attChr b η n' x = (a x)⁻¹ * b x`. Introduce `a b η n n' h x`. Unfold `Formalism.IndefR.Lift.attChr`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hn : Odd n`. Rewrite using `[if_pos hn, if_pos (h.1 hn), MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_rev, inv_inv, mul_comm (η x), mul_mul_mul_comm, mul_inv_cancel, mul_one]`. Rewrite using `[if_neg hn, if_neg (fun h' => hn (h.2 h'))]`. Establish `hχ : ∀ i, 1 ≤ i → i ≤ D.R.m → ∀ y, ((G.ch.chi i (GlobalTheory.LFun.locIdele D.host.F w y) : Circle) : ℂ) = (((G.ch.chiH i).loc w y : ℂˣ) : ℂ)` using `fun i h1 h2 y => by`. Use `congrArg (fun f => ((f y : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq (G.ch.chi_eq i h1 h2) w)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[GlobalTheory.LFun.locChar]`. Use `Eq.trans ?_ (GlobalTheory.T.oppositePath_edgeFactor_prod_integral_vertex (locGrid G t w) j hj _ hK).symm` and prove the remaining obligations. Simplify using `only [splitScal, GridData.toPair, splitFacO, map_one, d1, inv_one, one_mul, mul_one]`. Establish `eqS : detIdl (idemAt w) (G.pS (Pair.chi j D.R.m)) ((negGA (G.V (Node.grid (j + 1) D.R.m))) (moved S j k)) = detIdl (idemAt w) (G.V (.grid (j + 1) D.R.m)) (moved S j k)` using `dneg`. Establish `eqT : detIdl (idemAt w) (G.pT (Pair.chi (j + 1) D.R.m)) (moved S j k) = detIdl (idemAt w) (G.V (.grid (j + 1) D.R.m)) (moved S j k)` using `rfl`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eqS, eqT, GlobalTheory.T.determinantIdeleAtSplitPlace_moved_gridNode S t j hj k w hs, ← Circle.coe_mul]`. Rewrite using `[GridData.chrT, GridData.chrS]`. Rewrite using `[key (G.chr (Pair.chi j D.R.m)) (G.chr (Pair.chi (j + 1) D.R.m)) L.eta _ _ hpar.symm]`. Rewrite using `[Circle.coe_mul, Circle.coe_inv]`. Simplify using `only [GridData.chr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[hχ _ (by omega) (by omega), hχ _ (by omega) (by omega)]`. Simplify using `only [locGrid, Units.val_inv_eq_inv_val]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitScal_mul_eq_oppositePath : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T}, t ∈ U → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)),

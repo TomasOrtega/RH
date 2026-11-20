@@ -11,16 +11,16 @@ namespace GlobalTheory.Sloc.AdaptExpand
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_castSucc {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) :
     frame F (Fin.castSucc i) = F.fl.e i := by
   simp [frame, Formalism.MainNotions.S.FlagG.fvec]
 
 /- English proof (translation)
-Establish `hx' : x ∈ Submodule.span D.host.E (F.fl.e '' {i | i.1 < b.val})` using `hx`. Rewrite `hx'` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, rfl⟩` from `hx'`. Use `⟨l, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hl (Finsupp.mem_support_iff.2 h)` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
 Simplify using the standard rewrite rules.
 -/
@@ -39,9 +39,9 @@ theorem exists_coeff {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (b : Fin (D.R.rS
     intro i; simp
 
 /- English proof (translation)
-Take `⟨l, hl, rfl⟩` from `exists_coeff F b x hx`. Use `⟨Fin.snoc (α := fun _ => D.host.E) l 0, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Fin.snoc_castSucc]`. Conclude with `hl i (by simpa [Fin.le_def] using hc)`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[frame_castSucc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coeff_frame {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (b : Fin (D.R.rS + 1)) (x : (VS D).V)
     (hx : x ∈ Xflag F b.val) :
@@ -57,13 +57,13 @@ theorem exists_coeff_frame {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (b : Fin (
     simp [frame_castSucc]
 
 /- English proof (translation)
-Introduce `D T F0 F g hg Z p Af hAf`. Substitute `hAf` using the available equality. Establish `hu` using `fun c => Formalism.L2.SG.Pf.ScalarFramePf.isUnit_frFac Z p c`. Use `choose u hu0 hux using fun b => exists_coeff_frame F b _ (hg.2 b)`. Use `⟨fun a b => ((D.s.atP p).ιE (u b a) + if a = b then 1 else 0) * Ring.inverse (frFac Z.δ p a), fun a b hab => ?_, fun a => ?_, fun b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hu0 b a hab.le, (ne_of_lt hab).symm]`. Simplify using `[hu0 a a le_rfl]`. Establish `e1 : g (frame F0 b) = frame F b + ∑ c, u b c • frame F c`. Rewrite using `[← hux b]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_add, map_sum]`. Simplify using `only [baseChange_smul₂]`. Establish `e2 : ∀ a, (((D.s.atP p).ιE (u b a) + if a = b then 1 else 0) * Ring.inverse (frFac Z.δ p a)) • (frFac Z.δ p a • baseChange₂ D p (frame F a)) = (D.s.atP p).ιE (u b a) • baseChange₂ D p (frame F a) + if a = b then baseChange₂ D p (frame F a) else 0`. Introduce `a`. Rewrite using `[smul_smul, mul_assoc, Ring.inverse_mul_cancel _ (hu a), mul_one, add_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [e2, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem adapt_expand : ∀ (D : D7) {T : D.host.E} (F0 F : LFlag (VS D) D.R.rS T) (g : GV D), Adapt g F0 F → ∀ (Z : LocDat D) (p : PlF D) (Af : Fin (D.R.rS + 1) → Vp D p), Af = (fun a => frFac Z.δ p a • baseChange₂ D p (frame F a)) → ∃ B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep, (∀ a b, b < a → B a b = 0) ∧ (∀ a, B a a = Ring.inverse (frFac Z.δ p a)) ∧ ∀ b, baseChange₂ D p (g (frame F0 b)) = ∑ a, B a b • Af a := by
   intro D T F0 F g hg Z p Af hAf

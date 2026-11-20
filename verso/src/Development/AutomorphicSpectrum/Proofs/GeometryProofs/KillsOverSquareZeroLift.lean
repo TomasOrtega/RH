@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@CoverDenseAlt.kills_over_of_square_zero_ideal`.
+A detailed English derivation is pending.
 -/
 theorem killsOver_of_sq_zero : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (X : Type) [AddCommGroup X] (u : splitTorus S X ⟶ G) [IsMonHom u] (Y : AddSubgroup X) (B : Type) [CommRing B] [IsLocalRing B] (b : Sp B ⟶ S) (I : Ideal B), I ^ 2 = ⊥ → KillsOver u Y (spMap (Ideal.Quotient.mk I) ≫ b) → KillsOver u Y b :=
   @CoverDenseAlt.kills_over_of_square_zero_ideal

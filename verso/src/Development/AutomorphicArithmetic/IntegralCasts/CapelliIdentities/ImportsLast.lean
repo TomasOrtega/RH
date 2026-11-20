@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A M _ _ _ _ _`. Take `⟨n, p, hp⟩` from `Module.Finite.exists_fin' A M`. Take `⟨s, hs⟩` from `Module.projective_lifting_property p LinearMap.id hp`. Use `⟨n, fun i => p (fun j => if i = j then 1 else 0), fun i => (LinearMap.proj i).comp s, fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : p (s m) = m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hs m` as an intermediate fact. Simplify using `using this`. Establish `h2` using `LinearMap.pi_apply_eq_sum_univ p (s m)`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYhb1.main :
     ∀ (A M : Type) [inst : CommRing A] [inst_1 : AddCommGroup M] [inst_2 : _root_.Module A M] [Module.Finite A M]

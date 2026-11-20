@@ -7,9 +7,9 @@ universe u v
 namespace UpperTheory.Gal.CertificateRingHomMap
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq]`. Establish `hT : (fun j => Ideal.Quotient.mkₐ F I (T j)) = fun j => ((Ideal.Quotient.mkₐ F I).comp (Algebra.ofId F B)) (θ j)`. Use function extensionality and compare the values at `j`. Simplify using `only [AlgHom.comp_apply, Algebra.ofId_apply, Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Ideal.Quotient.eq.mpr (h j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem wop_sub_mem {F B J : Type*} [Field F] [CommRing B] [Algebra F B] (I : Ideal B)
     (T : J → B) (θ : J → F) (h : ∀ j, T j - algebraMap F B (θ j) ∈ I) (s : List J →₀ F) :
@@ -27,21 +27,19 @@ private theorem wop_sub_mem {F B J : Type*} [Field F] [CommRing B] [Algebra F B]
     _ = Ideal.Quotient.mk I (algebraMap F B (wop θ s)) := rfl
 
 /- English proof (translation)
-Set `A : Ideal B` to `{ carrier := {b | g b x = 0} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_add, LinearMap.add_apply, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `smul_mem' := by`. Introduce `c b hb`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul] at *`. Rewrite using `[map_mul, Module.End.mul_apply, hb, map_zero] }`. Establish `hmem : ∀ b : B, (∃ k : ℕ, ((g b) ^ k) x = 0) → b ∈ A.radical`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `b ⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show g (b ^ k) x = 0`. Rewrite using `[map_pow]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem' : ∀ b ∈ A.radical, ∃ k : ℕ, ((g b) ^ k) x = 0`. Introduce and unpack `b ⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : ∀ j, T' j - algebraMap F B (θ j) ∈ A.radical`. Introduce `j`. Apply `hmem` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hx j`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `hk`. Establish `hw` using `wop_sub_mem A.radical T' θ hT t`. Rewrite `hw` using `[h1, map_one]`. Take `⟨k, hk⟩` from `hmem' _ (A.radical.neg_mem hw)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `hk` using `[neg_sub, map_sub, map_one, map_wop]`. Establish `hid` using `h2.one_sub`. Consider the cases of `k with`. Consider the case `zero`. Simplify using `at hk`.
-
-Simplify using `[hk]`. Consider the case `succ m`. Rewrite `hk` using `[hid.pow_succ_eq m]`. Establish `hk2 : x - wop (fun j => g (T' j)) t x = 0` using `by simpa using hk`. Conclude with `(sub_eq_zero.mp hk2).symm`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fix_of_cert {F B W J : Type*} [Field F] [CommRing B] [Algebra F B] [AddCommGroup W]
     [Module F W] (g : B →ₐ[F] End F W) (T' : J → B) (θ : J → F) (t : List J →₀ F)
@@ -94,15 +92,15 @@ private theorem fix_of_cert {F B W J : Type*} [Field F] [CommRing B] [Algebra F 
 end UpperTheory.Gal.CertificateRingHomMap
 
 /- English proof (translation)
-Introduce and unpack `F _ W _ _ J T hc θ t ⟨h1, h2, h3⟩`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Rewrite using `[Submodule.mem_iInf]`. Introduce `j`.
+Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.End.mem_maxGenEigenspace]`. Take `⟨N, hN⟩` from `h3 j`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.algebraMap_eq_smul_one, ← Module.End.mul_apply, hN, LinearMap.zero_apply]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ a ∈ Set.range T, ∀ b ∈ Set.range T, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `hc i j`. Use `letI : CommRing (Algebra.adjoin F (Set.range T)) := Algebra.adjoinCommRingOfComm F hs`. Set `T' : J → Algebra.adjoin F (Set.range T)` to `fun j => ⟨T j, Algebra.subset_adjoin ⟨j, rfl⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `fix_of_cert (Algebra.adjoin F (Set.range T)).val T' θ t h1 h2 x ?_` and prove the remaining obligations. Introduce `j`. Establish `hj` using `(Submodule.mem_iInf _).mp hx j`. Rewrite `hj` using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, by rw [Algebra.algebraMap_eq_smul_one]; exact hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pCertProj_holds :
     UpperTheory.Gal.CertificateRingHomMap.CertProj.{u} := by

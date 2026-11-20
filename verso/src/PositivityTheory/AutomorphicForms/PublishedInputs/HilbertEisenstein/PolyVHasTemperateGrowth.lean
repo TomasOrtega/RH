@@ -24,7 +24,7 @@ def euclE : (Fin 2 → UpperTheory.V.TR.Rinf F) ≃L[ℝ] EuclideanSpace ℝ (Fi
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.real_norm_sq_eq, Fintype.sum_prod_type, Fin.sum_univ_two, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_euclE_sq (y : Fin 2 → UpperTheory.V.TR.Rinf F) :
     ‖euclE F y‖ ^ 2 = ∑ v, ((y 0 v) ^ 2 + (y 1 v) ^ 2) := by
@@ -36,7 +36,7 @@ def gaussV : 𝓢(Fin 2 → UpperTheory.V.TR.Rinf F, ℂ) :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (euclE F) (GroundTheory.Global.gaussianSchwartz _)
 
 /- English proof (translation)
-Simplify using `only [gaussV, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, norm_euclE_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gaussV_apply (y : Fin 2 → UpperTheory.V.TR.Rinf F) :
     gaussV F y = Complex.exp (-(Real.pi : ℂ) * ∑ v, (((y 0 v : ℝ) : ℂ) ^ 2 + ((y 1 v : ℝ) : ℂ) ^ 2)) := by
@@ -53,7 +53,7 @@ def linV (v : InfinitePlace F) : (Fin 2 → UpperTheory.V.TR.Rinf F) →L[ℝ] �
   Complex.ofRealCLM.comp (coordV F 0 v) + Complex.I • Complex.ofRealCLM.comp (coordV F 1 v)
 
 /- English proof (translation)
-Simplify using `[linV, coordV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linV_apply (v : InfinitePlace F) (y : Fin 2 → UpperTheory.V.TR.Rinf F) :
     linV F v y = ((y 0 v : ℝ) : ℂ) + Complex.I * ((y 1 v : ℝ) : ℂ) := by
@@ -62,11 +62,11 @@ theorem linV_apply (v : InfinitePlace F) (y : Fin 2 → UpperTheory.V.TR.Rinf F)
 def polyV (y : Fin 2 → UpperTheory.V.TR.Rinf F) : ℂ := ∏ v, linV F v y
 
 /- English proof (translation)
-Establish `h : ∀ s : Finset (InfinitePlace F), (fun y : Fin 2 → UpperTheory.V.TR.Rinf F => ∏ v ∈ s, linV F v y).HasTemperateGrowth`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `Function.HasTemperateGrowth.const (E := Fin 2 → UpperTheory.V.TR.Rinf F) (1 : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Establish `e : (fun y : Fin 2 → UpperTheory.V.TR.Rinf F => ∏ v ∈ insert a s, linV F v y) = (fun y => linV F a y) * (fun y => ∏ v ∈ s, linV F v y)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.prod_insert ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(linV F a).hasTemperateGrowth.mul ih`. Conclude with `h Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem polyV_hasTemperateGrowth : (polyV F).HasTemperateGrowth := by
   classical
@@ -89,7 +89,7 @@ def archS : 𝓢(Fin 2 → UpperTheory.V.TR.Rinf F, ℂ) :=
   SchwartzMap.smulLeftCLM ℂ (polyV F) (gaussV F)
 
 /- English proof (translation)
-Rewrite using `[archS, SchwartzMap.smulLeftCLM_apply_apply (polyV_hasTemperateGrowth F), gaussV_apply, smul_eq_mul, polyV, arch, Finset.prod_mul_distrib, Finset.mul_sum, Complex.exp_sum]`. Simplify using `only [linV_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem archS_apply (y : Fin 2 → UpperTheory.V.TR.Rinf F) : archS F y = arch (y 0) (y 1) := by
   rw [archS, SchwartzMap.smulLeftCLM_apply_apply (polyV_hasTemperateGrowth F), gaussV_apply,

@@ -11,17 +11,15 @@ open Formalism.BasicNotions Classical NumberField
 open Formalism.MainNotions.product_first_zeroth_parts (Ow tops wsum ten blk nfAll CSpan IntSpan Nm_succ wSh cTw)
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 D.what₂.LL) ∉ (D.plEq w).asIdeal` using `fun h => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Unfold `locW at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, h1, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, h1, by simp⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨d, hd, hy⟩` from `hy`. Take `⟨e, he, hz⟩` from `hz`. Use `⟨d * e, fun h => ((D.plEq w).isPrime.mem_or_mem h).elim hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hy`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul r y _ hy`. Take `⟨d, hd, hy⟩` from `hy`. Establish `hr : (D.plEq w).valuation D.what₂.LL (r : D.what₂.LL) ≤ 1` using `(D.val_nonneg_iff w r).1 r.2`. Take `⟨n, e, hne⟩` from `(D.plEq w).exists_primeCompl_mul_eq_of_integer (r : D.what₂.LL) hr`. Use `⟨d * e, fun h => ((D.plEq w).isPrime.mem_or_mem h).elim hd e.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: (d * (e : 𝓞 D.what₂.LL)) • r • y = n • d • y`. Rewrite using `[Subring.smul_def, ← algebraMap_smul D.what₂.LL (d * (e : 𝓞 D.what₂.LL)), ← algebraMap_smul D.what₂.LL n, ← algebraMap_smul D.what₂.LL d y, smul_smul, smul_smul, ← hne, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `L.smul_mem _ hy`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_locW (D : D7) (w : D.what₂.places.Pl) {V : Type} [AddCommGroup V] [Module D.what₂.LL V]
     [Module (𝓞 D.what₂.LL) V] [IsScalarTower (𝓞 D.what₂.LL) D.what₂.LL V] (L : Submodule (𝓞 D.what₂.LL) V) {x : V}
@@ -52,9 +50,9 @@ theorem exists_smul_mem_of_mem_locW (D : D7) (w : D.what₂.places.Pl) {V : Type
     rw [this]; exact L.smul_mem _ hy
 
 /- English proof (translation)
-Set `I : Ideal (𝓞 D.what₂.LL)` to `L.comap (LinearMap.toSpanSingleton (𝓞 D.what₂.LL) V x)`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hne`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.what₂.LL)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨d, hd, hdx⟩` from `exists_smul_mem_of_mem_locW D (D.plEq.symm v) L (hx _)`. Rewrite `hd` using `[Equiv.apply_symm_apply]`. Conclude with `hd (hIM (show d ∈ I from hdx))`. Establish `h1 : (1 : 𝓞 D.what₂.LL) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify `h1` using `[I]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locW (D : D7) {V : Type} [AddCommGroup V] [Module D.what₂.LL V]
     [Module (𝓞 D.what₂.LL) V] [IsScalarTower (𝓞 D.what₂.LL) D.what₂.LL V] (L : Submodule (𝓞 D.what₂.LL) V) {x : V}

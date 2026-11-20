@@ -8,13 +8,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound (recFields rec
 namespace GlobalTheory.ColumnNormCompare
 
 /- English proof (translation)
-Establish `hinj` using `D.R.toFrame.tau1_injective`. Establish `hP` using `factPlaces D.R.toFrame`. Establish `h0 : (D.eTau (tauPl D z) : D.R.GG) = Formalism.MainNotions.G.plGG D z` using `by simp [tauPl]`. Unfold `topsOf`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Unfold `Host.topPlaces`. Rewrite using `[Finset.mem_image]`. Take `⟨b, t⟩` from `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t', ht, h⟩`. Apply the tactic sequence `cases b <;> simp only [Formalism.MainNotions.G.plGG, if_true, if_false, Bool.false_eq_true] at h`. Conclude with `⟨rfl, (hinj h) ▸ ht⟩`. Conclude with `absurd h (hP.2 _ _)`. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, h2, ?_⟩` and prove the remaining obligations. Simplify using `only at h1`. Simplify using `[Formalism.MainNotions.G.plGG, h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_tops_rec (D : D7) (z : Bool × Formalism.MainNotions.G.HH D) :
     tauPl D z ∈ topsOf D.host D.eTau ↔ z.1 = false ∧ z.2 ∈ D.host.TT := by
@@ -39,17 +39,15 @@ theorem mem_tops_rec (D : D7) (z : Bool × Formalism.MainNotions.G.HH D) :
     simp [Formalism.MainNotions.G.plGG, h1]
 
 /- English proof (translation)
-Introduce and unpack `D large₂ EX ⟨n, hn⟩ u`. Establish `hfl : ((⌊D.s.Del⌋₊ : ℕ) : ℚ) = D.s.Del` using `by rw [hn, Nat.floor_natCast]`. Use `⟨⟨fun τ => ⟨D.hc τ, rfl⟩, BadPrimesPeriodBound.recWts_row EX, ?_, ?_⟩, fun z => mem_tops_rec D z, fun z => ⟨BadPrimesPeriodBound.recWts_row EX u _, fun i => ?_⟩⟩` and prove the remaining obligations. Introduce `a b τ h`. Conclude with `(D.hcW_first a τ h).trans (D.hcW_first b τ h).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b τ h`. Establish `h' : D.R.k - 1 < D.R.k` using `h`. Establish `h0 : 0 < D.R.k` using `by omega`. Conclude with `(D.hcW_last a τ h0).trans (D.hcW_last b τ h0).symm`. Use `show (D.hcW u (tauPl D z)).u i = _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `NumDatum.uW`. Take `⟨i, hi⟩` from `i`. Establish `hi' : i < D.R.k` using `hi`. Distinguish the cases in `h : 1 ≤ i ∧ i + 1 < D.R.k`. Rewrite using `[dif_pos h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, rfl⟩ : ∃ l, i = l + 1` from `⟨i - 1, by omega⟩`. Establish `hl : l < D.R.k - 2` using `by omega`. Establish `a` using `D.s.u_letter u (tauPl D z) l hl`. Rewrite `a` using `[D.hcW_v, ← hfl]`. Conclude with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[dif_neg h]`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality. Conclude with `D.hcW_first u _ hi'`. Establish `h1 : i = D.R.k - 1` using `by omega`.
-
-Substitute `h1` using the available equality. Conclude with `D.hcW_last u _ (by omega)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem weightTie_rec : ∀ (D : D7) (large₂ : SizeData₂ D) (EX : ErrX D), (∃ n : ℕ, D.s.Del = n) → ∀ (u : D.what₂.Word),
     PlaceLogThetaBounds.WeightTie (numDatumOfParameters D large₂) (Pr := recPrimes EX) (recWts EX) (plRec D) u (codeRec large₂ u) := by

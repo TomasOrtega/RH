@@ -10,9 +10,9 @@ open scoped UpperHalfPlane
 namespace GlobalTheory.CMCurveTest
 
 /- English proof (translation)
-Establish `h : ((((1 + d) / 4 : ℕ) : ℂ)) * 4 = 1 + d`. Establish `: (1 + d) / 4 * 4 = 1 + d` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h2 : ((√d : ℝ) : ℂ) ^ 2 = d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hw]`. Take the linear combination `h / 4 + Complex.I ^ 2 * h2 / 4 + (d : ℂ) * Complex.I_sq / 4`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem w_sq {d : ℕ} (h4 : d % 4 = 3) {w : ℂ} (hw : w = (1 + Complex.I * √d) / 2) :
     w ^ 2 + (((1 + d) / 4 : ℕ) : ℂ) = w := by
@@ -31,15 +31,15 @@ Both sides reduce to the same expression.
 theorem mul_eq_lift {S : Scheme.{0}} (P : Out.PolAV S) (a b : P.A ⟶ P.A) : a * b = lift a b ≫ μ[P.A] := rfl
 
 /- English proof (translation)
-Take `⟨K, _, _, h2, hr, hD, ⟨σ⟩, hτ⟩` from `cmCurve_hypotheses.2.2 d h7 hs h4`. Take `⟨τ, hτ⟩` from `hτ σ`. Take `⟨M, _, w, P, v, hw, hg, hv, -, ha, hn, hb⟩` from `h d h7 hs h4 K h2 hr`. Use `choose n hn0 hn using hn`. Take `⟨P', φ, -, u, -, -, -, hP, -⟩` from `(hn (algebraMap M ℂ) _).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hl⟩` from `ha P' φ hP u`. Use `⟨M, inferInstance, P, v, n, hg, hv, hn0, hn, ⟨P', φ, u, c, hP, hc, by simpa only [hw] using hl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hb n (fun s => (hn s _).2 rfl) σ τ hτ]`. Establish `e` using `(LFunction_one_and_mean_log_eta h2 hD (by omega) hχ σ hτ).2`. Establish `hh : (0 : ℝ) < classNumber K` using `by exact_mod_cast classNumber_pos K`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < √d` using `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < d))`. Establish `e1 : -((∑ C, -Real.log (4 * Real.pi * (τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)) / classNumber K) = Real.log (4 * Real.pi) + (∑ C, Real.log ((τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)) / classNumber K`. Establish `: ∀ C, Real.log (4 * Real.pi * (τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4) = Real.log (4 * Real.pi) + Real.log ((τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)` using `fun C => by`. Rewrite using `[_root_.mul_assoc (4 * Real.pi), Real.log_mul (by positivity) (mul_ne_zero (τ C).im_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.2 (ModularForm.eta_ne_zero (τ C).2))))]`. Simplify using `only [this, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (Fintype.card (ClassGroup (𝓞 K)) : ℝ) = classNumber K from rfl]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : Real.log (2 * Real.pi / √d) = Real.log (4 * Real.pi) - Real.log (2 * √d)`. Rewrite using `[← Real.log_div (by positivity) (by positivity)]`. Use `congr 1`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite using `[e1, Complex.ofReal_add, e, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mean_log_of_cmCurve (h : CMCurve) {d : ℕ} [NeZero d] (h7 : 7 ≤ d) (hs : Squarefree d) (h4 : d % 4 = 3)
     {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) :
@@ -90,9 +90,9 @@ def scaleVec {A : Over (Sp R)} (c : R) (v : epsR R ⟶ A) : epsR R ⟶ A :=
     ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl])
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(spMap (epsScaleR (f c)) ≫ v'.left) ≫ φ = spMap (Chart.dualMapR f) ≫ spMap (epsScaleR c) ≫ v.left`. Rewrite using `[Category.assoc, h, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isVecOver_scaleVec {R' : Type} [CommRing R'] {f : R →+* R'} {A : Over (Sp R)} {A' : Over (Sp R')}
     {φ : A'.left ⟶ A.left} {v : epsR R ⟶ A} {v' : epsR R' ⟶ A'} (h : IsVecOver f φ v v') (c : R) :
@@ -105,11 +105,9 @@ theorem isVecOver_scaleVec {R' : Type} [CommRing R'] {f : R →+* R'} {A : Over 
   ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
-
-Rewrite using `[h, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpectrum_dual_eq (x y : PrimeSpectrum (DualNumber ℂ)) : x = y := by
   have h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0 := fun z a => by
@@ -125,11 +123,11 @@ theorem primeSpectrum_dual_eq (x y : PrimeSpectrum (DualNumber ℂ)) : x = y := 
   rw [h, h]
 
 /- English proof (translation)
-Introduce `U hU f`. Establish `hU' : ⊤ ≤ v.left ⁻¹ᵁ U` using `fun x _ => by`. Use `hU (Set.mem_univ x)` as an intermediate fact. Establish `hx : (spMap (epsScaleR c)) x = x` using `primeSpectrum_dual_eq _ _`. Express the relevant statement in the definitionally equal form `v.left ((spMap (epsScaleR c)) x) ∈ U at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Rewrite using `[map_smul, ← h U hU' f]`. Establish `e : (scaleVec c v).left.appLE U ⊤ hU = v.left.appLE U ⊤ hU' ≫ (spMap (epsScaleR c)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (epsScaleR c)) v.left U ⊤ ⊤ hU' le_rfl).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun k => k.hom ((v.left.appLE U ⊤ hU').hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (epsScaleR c)))`. Rewrite using `[e]`. Use `(congrArg TrivSqZeroExt.snd e2).trans ?_` and prove the remaining obligations. Simplify using `[epsScaleR]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDiff_scaleVec {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {w : Fin g → ℂ}
     {v : epsR ℂ ⟶ A} (h : u.IsDiff w v) (c : ℂ) : u.IsDiff (c • w) (scaleVec c v) := by
@@ -150,9 +148,9 @@ theorem isDiff_scaleVec {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
   simp [epsScaleR]
 
 /- English proof (translation)
-Take `⟨P', φ, v', u, Hm, χ, w, h1, h2, h3, h4, rfl⟩` from `h`. Use `⟨P', φ, scaleVec (s c) v', u, Hm, χ, s c • w, h1, isVecOver_scaleVec h2 c, h3, isDiff_scaleVec u h4 _, ?_⟩` and prove the remaining obligations. Establish `: hermForm Hm (s c • w) (s c • w) = (‖s c‖ ^ 2 : ℝ) * hermForm Hm w w`. Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← _root_.mul_assoc, Complex.star_def, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, mul_comm (s c)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isLieNormSq_scaleVec {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {s : R →+* ℂ} {r : ℝ}
     (h : IsLieNormSq P v s r) (c : R) : IsLieNormSq P (scaleVec c v) s (‖s c‖ ^ 2 * r) := by
@@ -165,9 +163,9 @@ theorem isLieNormSq_scaleVec {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {s : R 
   ring
 
 /- English proof (translation)
-Establish `h2` using `isLieNormSq_scaleVec h 2`. Establish `h0` using `isLieNormSq_scaleVec h 0`. Rewrite `h2` using `[map_ofNat, Complex.norm_ofNat]`. Rewrite `h0` using `[map_zero, norm_zero]`. Evaluate the numerical expressions using `at h2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `⟨h2, h0⟩`.
+Supply the required witnesses or components.
 -/
 theorem two_smul_generator {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {s : R →+* ℂ} {r : ℝ}
     (h : IsLieNormSq P v s r) : IsLieNormSq P (scaleVec 2 v) s (4 * r) ∧ IsLieNormSq P (scaleVec 0 v) s 0 := by

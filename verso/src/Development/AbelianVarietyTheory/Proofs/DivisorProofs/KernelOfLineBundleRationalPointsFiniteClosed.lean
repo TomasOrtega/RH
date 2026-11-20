@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.KLFinite
 
 /- English proof (translation)
-Establish `: IsAffine Z` using `isAffine_of_isAffineHom f`. Use `letI : Algebra K Γ(Z, ⊤) := ((Scheme.ΓSpecIso (.of K)).inv ≫ f.appTop).hom.toAlgebra`. Establish `hmod : Module.Finite K Γ(Z, ⊤)` using `by show ((Scheme.ΓSpecIso (.of K)).inv ≫ f.appTop).hom.Finite`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `f.finite_appTop.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of K)).inv).2)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsArtinianRing Γ(Z, ⊤)` using `IsArtinianRing.of_finite K _`. Establish `: Finite (Spec (.of Γ(Z, ⊤)))` using `inferInstanceAs (Finite (PrimeSpectrum _))`. Conclude with `Finite.of_injective _ Z.isoSpec.hom.isOpenEmbedding.injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_isFinite {K : Type} [Field K] {Z : Scheme.{0}} (f : Z ⟶ Spec (CommRingCat.of K)) [IsFinite f] :
     Finite Z := by
@@ -35,11 +35,11 @@ theorem finite_of_isFinite {K : Type} [Field K] {Z : Scheme.{0}} (f : Z ⟶ Spec
   exact Finite.of_injective _ Z.isoSpec.hom.isOpenEmbedding.injective
 
 /- English proof (translation)
-Introduce `p`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `hD : (Out.translDiff A L x).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_zero_iff (pull_isLB hD _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg _ ?_).trans (map_zero _)` and prove the remaining obligations. Establish `e` using `congrArg (CechPic.pull (snd (𝟙_ _) A).left) h`. Rewrite `e` using `[pull_lam, map_zero, Category.comp_id, ← Category.assoc, comp_toUnit, GlobalTheory.PrimitiveOverField.lam_const, toUnit_unique (toUnit _) (fst (𝟙_ _) A)]`. Use `(cls_linComb hL _ _ hD).trans (Eq.trans ?_ e)` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`.
+A detailed English derivation is pending.
 -/
 theorem memKL_of_lam_eq_zero {K : Type} [Field K] {A : Over (Spec (CommRingCat.of K))} [GrpObj A] {L : LB A.left}
     (hL : L.IsLB) (x : 𝟙_ _ ⟶ A) (h : lam (cls L hL) (toUnit A ≫ x) (𝟙 A) = 0) : MemKL A L x := by
@@ -57,7 +57,7 @@ theorem memKL_of_lam_eq_zero {K : Type} [Field K] {A : Over (Spec (CommRingCat.o
   exact congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)
 
 /- English proof (translation)
-Establish `hx : x.left ≫ A.hom = 𝟙 _` using `Over.w x`. Establish `: IsClosedImmersion (x.left ≫ A.hom)` using `by rw [hx]; infer_instance`. Establish `: IsClosedImmersion x.left` using `IsClosedImmersion.of_comp x.left A.hom`. Establish `h` using `x.left.isClosedEmbedding.isClosedMap {IsLocalRing.closedPoint K} (by rw [show ({IsLocalRing.closedPoint K} : Set (Spec (CommRingCat.of K))) = Set.univ from Set.eq_univ_of_forall fun z => Subsingleton.elim (α := PrimeSpectrum K) _ _]; exact isClosed_univ)`. Conclude with `(congrArg IsClosed Set.image_singleton).mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_point {K : Type} [Field K] {A : Over (Spec (CommRingCat.of K))} [IsSeparated A.hom]
     (x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ A) : IsClosed ({x.left (IsLocalRing.closedPoint K)} : Set A.left) := by
@@ -72,9 +72,9 @@ theorem isClosed_point {K : Type} [Field K] {A : Over (Spec (CommRingCat.of K))}
 end GlobalTheory.KLFinite
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA L hL ha`. Take `⟨Z, i, -, hfin, -, hZ⟩` from `GlobalTheory.kernelFiniteFlat_holds K A hA L hL ha`. Establish `: Finite Z.left` using `GlobalTheory.KLFinite.finite_of_isFinite Z.hom`. Establish `: IsProper A.hom` using `hA.proper`. Establish `hr : (Set.range i.left).Finite` using `Set.finite_range _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hr.toFinset.filter (fun s => IsClosed ({s} : Set A.left)), fun s hs => (Finset.mem_filter.1 hs).2, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hZ _ x).1 (GlobalTheory.KLFinite.memKL_of_lam_eq_zero hL x hx)`. Use `Finset.mem_filter.2 ⟨hr.mem_toFinset.2 ⟨z.left (IsLocalRing.closedPoint K), ?_⟩, GlobalTheory.KLFinite.isClosed_point x⟩` and prove the remaining obligations. Rewrite using `[← hz, Over.comp_left]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.KLFinite.kl_finite : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB), Out.RelAmple A L → ∃ S : Finset A.left, (∀ s ∈ S, IsClosed ({s} : Set A.left)) ∧ ∀ x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ A, GlobalTheory.CechPic.lam (cls L hL) (toUnit A ≫ x) (𝟙 A) = 0 → x.left (IsLocalRing.closedPoint K) ∈ S := by
   intro K _ _ A _ hA L hL ha

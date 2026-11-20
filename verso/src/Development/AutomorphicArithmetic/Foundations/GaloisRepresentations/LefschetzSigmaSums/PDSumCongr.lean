@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Lefsc
 open UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `p _ G wt wt' s hw K f r K' φ`. Unfold `GlobalTheory.LKDef.dSumIrr`. Rewrite using `[mul_comm _ s, ← smul_eq_mul s, smul_finsum]`. Use `finsum_congr (fun q => ?_)` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, hw]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.dSumCongr_of :
     DSumCongr := by

@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 open NumberField GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Establish `h1` using `AddSubgroup.relIndex_mul_relIndex W (P ⊓ Q) P (le_inf hWP hWQ) inf_le_left`. Establish `h2` using `AddSubgroup.relIndex_mul_relIndex W (P ⊓ Q) Q (le_inf hWP hWQ) inf_le_right`. Rewrite `h1` using `[AddSubgroup.inf_relIndex_left]`. Rewrite `h2` using `[AddSubgroup.inf_relIndex_right]`. Establish `ht : W.relIndex (P ⊓ Q) ≠ 0` using `fun h => hQ (by rw [← h2, h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[genIndex, ← h1, ← h2, Nat.cast_mul, Nat.cast_mul, mul_div_mul_left]`. Conclude with `ht` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genIndex_eq_of_le {G : Type*} [AddCommGroup G] {W P Q : AddSubgroup G} (hWP : W ≤ P) (hWQ : W ≤ Q)
     (hQ : W.relIndex Q ≠ 0) : genIndex P Q = (W.relIndex P : ℝ) / (W.relIndex Q) := by
@@ -26,45 +26,41 @@ theorem genIndex_eq_of_le {G : Type*} [AddCommGroup G] {W P Q : AddSubgroup G} (
   exact_mod_cast ht
 
 /- English proof (translation)
-Introduce `Em _ _ K _ _ N I ρ v hv s`. Set `_ : Algebra Em K` to `s.toAlgebra`. Establish `hIfg : I.FG` using `fg_of_isNzFamily hv`. Take `⟨_, hvI, hli, hm⟩` from `hv`. Use `set J0 := Submodule.span (𝓞 Em) (Set.range v) with hJ0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set m := familyIndex I v with hmdef`. Establish `hm' : J0.toAddSubgroup.relIndex I.toAddSubgroup = m` using `rfl`. Rewrite `hm` using `[hm']`. Use `set e := Module.finrank Em K with he`. Establish `hdeg : Module.finrank ℚ K = Module.finrank ℚ Em * e` using `(Module.finrank_mul_finrank ℚ Em K).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnE : Module.finrank ℚ Em ≠ 0` using `Module.finrank_pos.ne'`. Establish `hE : LinearIndependent Em v` using `(LinearIndependent.iff_fractionRing (𝓞 Em) Em).1 hli`. Establish `hmE : (m : Em) ≠ 0` using `by exact_mod_cast hm`. Set `w : Fin ρ → Fin N → Em` to `fun a => (m : Em)⁻¹ • v a`. Establish `hw : LinearIndependent Em w` using `hE.units_smul (fun _ => Units.mk0 ((m : Em)⁻¹) (inv_ne_zero hmE))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvK : LinearIndependent K (fun a i => s (v a i))` using `(linearIndependent_algebraMap_comp_iff (R := Em) (S := K)).2 hE`. Establish `hwK : LinearIndependent K (fun a i => s (w a i))` using `(linearIndependent_algebraMap_comp_iff (R := Em) (S := K)).2 hw`. Establish `hvw : v = fun a => (m : 𝓞 Em) • w a`. Use function extensionality and compare the values at `a i`. Simplify using `[w, Algebra.smul_def, hmE]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmK : (m : K) ≠ 0` using `by exact_mod_cast hm`. Establish `hsvw : (fun a i => s (v a i)) = fun a => (m : 𝓞 K) • fun i => s (w a i)`. Use function extensionality and compare the values at `a i`. Simplify using `[w, Algebra.smul_def, hmK]`. Use `set B := Submodule.span (𝓞 Em) (Set.range w) with hB`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ0_eq : J0 = idealLat w (Ideal.span {(m : 𝓞 Em)})`. Rewrite using `[hJ0, ← idealLat_top, hvw, idealLat_smul, Ideal.mul_top]`. Establish `hB_eq : B = idealLat w ⊤` using `(idealLat_top w).symm`. Establish `hXJ0 : diffLat s J0 = idealLat (fun a i => s (v a i)) (extDifferent s)` using `diffLat_span s v`. Establish `hXJ0' : diffLat s J0 = idealLat (fun a i => s (w a i)) (Ideal.span {(m : 𝓞 K)} * extDifferent s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hXJ0, hsvw, idealLat_smul]`. Establish `hXB : diffLat s B = idealLat (fun a i => s (w a i)) (extDifferent s)` using `diffLat_span s w`. Establish `hF : familyLat s v = idealLat (fun a i => s (v a i)) ⊤` using `(idealLat_top _).symm`. Establish `hD : Ideal.absNorm (extDifferent s) = (discr Em).natAbs ^ e` using `absNorm_extDifferent s`. Establish `hDne : Ideal.absNorm (extDifferent s) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `extDifferent_ne_bot s`. Establish `iF : (diffLat s J0).toAddSubgroup.relIndex (familyLat s v).toAddSubgroup = Ideal.absNorm (extDifferent s) ^ ρ`. Establish `h` using `idealLat_relIndex hvK (le_top : extDifferent s ≤ ⊤)`. Rewrite `h` using `[Ideal.absNorm_top, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXJ0, hF, h]`. Establish `iB : J0.toAddSubgroup.relIndex B.toAddSubgroup = (m ^ Module.finrank ℚ Em) ^ ρ`. Establish `h` using `idealLat_relIndex hw (le_top : Ideal.span {(m : 𝓞 Em)} ≤ ⊤)`. Rewrite `h` using `[Ideal.absNorm_top, one_pow, mul_one, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Rewrite using `[hJ0_eq, hB_eq, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `iXB : (diffLat s J0).toAddSubgroup.relIndex (diffLat s B).toAddSubgroup = (m ^ Module.finrank ℚ K) ^ ρ`. Establish `h` using `idealLat_relIndex hwK (Ideal.mul_le_right : Ideal.span {(m : 𝓞 K)} * extDifferent s ≤ extDifferent s)`. Rewrite `h` using `[map_mul, mul_pow, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Rewrite using `[hXJ0', hXB]`. Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos (Nat.pos_of_ne_zero hDne) ρ) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ0I : J0 ≤ I` using `Submodule.span_le.2 (Set.range_subset_iff.2 hvI)`. Establish `hIB : I ≤ B`. Introduce `u hu`. Establish `hmu : m • u ∈ J0`. Establish `h` using `AddSubgroup.nsmul_index_mem (J0.toAddSubgroup.addSubgroupOf I.toAddSubgroup) ⟨u, hu⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Conclude with `h`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 Em)).1 hmu`. Use `(Submodule.mem_span_range_iff_exists_fun (𝓞 Em)).2 ⟨c, ?_⟩` and prove the remaining obligations. Establish `: ∑ a, c a • w a = (m : Em)⁻¹ • ∑ a, c a • v a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [w]`. Rewrite using `[smul_comm]`. Rewrite using `[this, hc, ← Nat.cast_smul_eq_nsmul Em, inv_smul_smul₀ hmE]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hBfg : B.FG` using `Submodule.fg_span (Set.finite_range w)`. Establish `hmulB` using `AddSubgroup.relIndex_mul_relIndex J0.toAddSubgroup I.toAddSubgroup B.toAddSubgroup hJ0I hIB`. Establish `hmulX` using `AddSubgroup.relIndex_mul_relIndex (diffLat s J0).toAddSubgroup (diffLat s I).toAddSubgroup (diffLat s B).toAddSubgroup (diffLat_mono s hJ0I) (diffLat_mono s hIB)`. Establish `hIBne : I.toAddSubgroup.relIndex B.toAddSubgroup ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hmulB` using `[h, mul_zero, iB]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hm) hmulB.symm`. Establish `hX1` using `diffLat_relIndex_le s hJ0I hIfg (by rw [hm']; exact hm)`. Establish `hX2` using `diffLat_relIndex_le s hIB hBfg hIBne`. Express the relevant statement in the definitionally equal form `_ ≤ _ ^ e at hX1 hX2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hprod : (diffLat s J0).toAddSubgroup.relIndex (diffLat s I).toAddSubgroup * (diffLat s I).toAddSubgroup.relIndex (diffLat s B).toAddSubgroup = (J0.toAddSubgroup.relIndex I.toAddSubgroup) ^ e * (I.toAddSubgroup.relIndex B.toAddSubgroup) ^ e`. Rewrite using `[hmulX, iXB, ← mul_pow, hmulB, iB, hdeg, ← pow_mul, ← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hBpos : 0 < (I.toAddSubgroup.relIndex B.toAddSubgroup) ^ e` using `pow_pos (Nat.pos_of_ne_zero hIBne) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `iXI : (diffLat s J0).toAddSubgroup.relIndex (diffLat s I).toAddSubgroup = m ^ e`. Rewrite using `[← hm']`. Break down `lt_or_eq_of_le hX1 with hlt | heq` into its components or cases. Conclude with `absurd hprod (ne_of_lt (Nat.mul_lt_mul_of_lt_of_le hlt hX2 hBpos))`. Conclude with `heq`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hWQ : diffLat s J0 ≤ familyLat s v`. Rewrite using `[hXJ0, hF]`. Conclude with `Submodule.map_mono (fun c _ => Submodule.mem_pi.2 fun i _ => Submodule.mem_top)`. Rewrite using `[genIndex_eq_of_le (diffLat_mono s hJ0I) hWQ (by rw [iF]; exact pow_ne_zero _ hDne), iXI, iF, hD]`. Establish `hexp : (Module.finrank ℚ K : ℝ) / Module.finrank ℚ Em = (e : ℝ)`.
-
-Rewrite using `[hdeg, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hexp, Real.rpow_natCast, div_pow]`. Establish `habs : ((discr Em).natAbs : ℝ) = |(discr Em : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
-
-Use `push_cast`. Rewrite using `[habs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem DifferentLatIndex.proof : DifferentLatIndex.Statement := by
   intro Em _ _ K _ _ N I ρ v hv s

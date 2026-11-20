@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.FlagCls
 
 /- English proof (translation)
-Use `T.invertibleOfIsUnitDet hT` as an intermediate fact. Establish `hb : T.BlockTriangular OrderDual.toDual` using `fun a b hab => hT' a b hab`. Conclude with `fun i j h => Matrix.blockTriangular_inv_of_blockTriangular hb h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lower_inv {r : ℕ} {K : Type} [CommRing K] {T : Matrix (Fin r) (Fin r) K} (hT : IsUnit T.det)
     (hT' : ∀ i j, i < j → T i j = 0) : ∀ i j, i < j → T⁻¹ i j = 0 := by
@@ -24,7 +24,7 @@ theorem lower_inv {r : ℕ} {K : Type} [CommRing K] {T : Matrix (Fin r) (Fin r) 
   exact fun i j h => Matrix.blockTriangular_inv_of_blockTriangular hb h
 
 /- English proof (translation)
-Establish `hb : T.BlockTriangular OrderDual.toDual` using `fun a b hab => hT a b hab`. Establish `hc : S.BlockTriangular OrderDual.toDual` using `fun a b hab => hS a b hab`. Conclude with `fun i j h => (hc.mul hb) h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lower_mul {r : ℕ} {K : Type} [CommRing K] {S T : Matrix (Fin r) (Fin r) K}
     (hS : ∀ i j, i < j → S i j = 0) (hT : ∀ i j, i < j → T i j = 0) : ∀ i j, i < j → (S * T) i j = 0 := by
@@ -33,11 +33,9 @@ theorem lower_mul {r : ℕ} {K : Type} [CommRing K] {S T : Matrix (Fin r) (Fin r
   exact fun i j h => (hc.mul hb) h
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin r, ∃ cf : Fin r → K, (∀ l : Fin r, i < l → cf l = 0) ∧ coordAt hM π hf y hWV hy (s i) = Matrix.vecMul cf A`. Introduce `i`. Take `⟨t, -, ht⟩` from `hs.2 i.succ`. Take `⟨cf, h1, h2⟩` from `hA.2 i.succ W hWV (t (Fin.last i)) hy`. Use `⟨cf, fun l hl => h1 l hl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2]`. Conclude with `congrArg _ (ht (Fin.last i)).symm`. Use `choose T h1 h2 using h`. Use `⟨Matrix.of T, h1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
-
-Conclude with `congrFun (h2 i) j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem FlagMat.adapted_eq {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ} {hM : IsVB M r} {π : Y ⟶ B}
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r} {V : B.Opens} {f : Fin r → Γ(M, V)} {hf : IsFrame f}
@@ -60,17 +58,17 @@ theorem FlagMat.adapted_eq {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ} {hM : Is
   exact congrFun (h2 i) j
 
 /- English proof (translation)
-Take `⟨W, s, hWV, hp, hs⟩` from `GlobalTheory.T.exists_local_adapted_sections Y _ r fl (y (IsLocalRing.closedPoint K)) (π ⁻¹ᵁ V) (hV (Set.mem_univ (IsLocalRing.closedPoint K)))`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ W` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hp).ge`. Establish `h0` using `GlobalTheory.T.flag_matrix_of_adapted_coordinates B Y M r hM π fl V f hf K y W hWV hy s hs`. Establish `key : ∀ A, FlagMat hM π fl hf y A → ∃ T : Matrix (Fin r) (Fin r) K, IsUnit T.det ∧ (∀ i j, i < j → T i j = 0) ∧ (Matrix.of fun i => coordAt hM π hf y hWV hy (s i)) = T * A`. Introduce `A hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, h1, h2⟩` from `hA.adapted_eq hWV hy hs`. Use `⟨T, ?_, h1, h2⟩` and prove the remaining obligations. Use `h0.1` as an intermediate fact. Rewrite `this` using `[h2, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, h0⟩, fun A A' hA hA' => ?_, fun K' _ ψ A hA => ?_⟩` and prove the remaining obligations. Take `⟨T, u, l, e⟩` from `key A hA`. Take `⟨T', u', l', e'⟩` from `key A' hA'`. Use `⟨T'⁻¹ * T, ?_, lower_mul (lower_inv u' l') l, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnit_nonsing_inv_det _ u').mul u`. Rewrite using `[Matrix.mul_assoc, ← e, e', ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ u', Matrix.one_mul]`. Take `⟨T, u, l, e⟩` from `key A hA`. Establish `hy' : ⊤ ≤ (spMap ψ ≫ y) ⁻¹ᵁ W` using `fun p _ => hy (Set.mem_univ _)`. Establish `h1` using `GlobalTheory.T.flag_matrix_of_adapted_coordinates B Y M r hM π fl V f hf K' (spMap ψ ≫ y) W hWV hy' s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : (Matrix.of fun i => coordAt hM π hf (spMap ψ ≫ y) hWV hy' (s i)) = (Matrix.of fun i => coordAt hM π hf y hWV hy (s i)).map ψ`. Use extensionality with `i j`. Conclude with `TangentOrigin.evalPt_spMap_comp ψ y W hy hy' _`. Establish `e2 : A.map ψ = (T⁻¹).map ψ * (Matrix.of fun i => coordAt hM π hf (spMap ψ ≫ y) hWV hy' (s i))`. Rewrite using `[e1, ← Matrix.map_mul, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ u, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Use `h1.mul ?_ fun i j h => ?_` and prove the remaining obligations. Use `(Matrix.isUnit_nonsing_inv_det _ u).map ψ` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Rewrite using `[Matrix.map_apply, lower_inv u l i j h, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMat_local (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B)
     (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f)

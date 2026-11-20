@@ -20,16 +20,16 @@ private theorem of_lmul (a : Matrix (Fin n) (Fin n) (Cinf E)) (x : Lie E n) :
     lmul (toL a) x = toL (a * Matrix.of x) := rfl
 
 /- English proof (translation)
-Rewrite using `[of_lmul, of_lmul, add_mul, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem lmul_one_add (a : Matrix (Fin n) (Fin n) (Cinf E)) (x : Lie E n) :
     lmul (toL (1 + a)) x = x + lmul (toL a) x := by
   rw [of_lmul, of_lmul, add_mul, one_mul]; rfl
 
 /- English proof (translation)
-Set `B0 : V →ₗ[ℝ] Lie E n →L[ℝ] Lie E n` to `{ toFun := fun u => lmul (toL (L u)) map_add' := fun u v => by ext1 x`. Rewrite using `[ContinuousLinearMap.add_apply, of_lmul, of_lmul, of_lmul, map_add, add_mul]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c u => by ext1 x`. Rewrite using `[ContinuousLinearMap.smul_apply, of_lmul, of_lmul, map_smul, smul_mul_assoc]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `rfl }`. Conclude with `⟨LinearMap.toContinuousLinearMap B0, fun _ _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_bil {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (L : V →ₗ[ℝ] Matrix (Fin n) (Fin n) (Cinf E)) :
@@ -45,7 +45,7 @@ private theorem exists_bil {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   exact ⟨LinearMap.toContinuousLinearMap B0, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Establish `hi : Function.Injective (LinearMap.mulLeft ℝ a)` using `(injective_iff_map_eq_zero _).2 fun y hy => h (toL y) hy`. Take `⟨b, hb⟩` from `LinearMap.injective_iff_surjective.1 hi 1`. Conclude with `IsUnit.of_mul_eq_one b hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_inj (a : Matrix (Fin n) (Fin n) (Cinf E)) (h : ∀ y : Lie E n, lmul (toL a) y = 0 → y = 0) :
     IsUnit a := by
@@ -87,7 +87,7 @@ private noncomputable def eta (m : Fin n) (ξ : Fin n → Cinf E) : EuclideanSpa
   WithLp.toLp 2 fun z => if z.1 ≤ m then -b.repr (ξ z.1) z.2 else 0
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `b.equivFun.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `v`. Simplify using `[eta, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem crd_eta (m : Fin n) (ξ : Fin n → Cinf E) {j : Fin n} (h : j ≤ m) : crd b j (eta b m ξ) = -ξ j := by
   change b.equivFun.symm _ = _
@@ -96,16 +96,16 @@ private theorem crd_eta (m : Fin n) (ξ : Fin n → Cinf E) {j : Fin n} (h : j �
   simp [eta, h]
 
 /- English proof (translation)
-The claim follows from `congrFun (b.equivFun.apply_symm_apply fun v => u (j, v)) v`.
+A detailed English derivation is pending.
 -/
 private theorem repr_crd (j : Fin n) (u : EuclideanSpace ℝ (Fin n × Fin d)) (v : Fin d) :
     b.repr (crd b j u) v = u (j, v) :=
   congrFun (b.equivFun.apply_symm_apply fun v => u (j, v)) v
 
 /- English proof (translation)
-Use `ext1 i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `only [colL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply]`. Distinguish the cases in `h : k ≤ m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `⟨-, h'⟩`. Rewrite `h` using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h' : k ≤ m ∧ _ => h h'.1), mul_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem colL_sq (m : Fin n) (u : EuclideanSpace ℝ (Fin n × Fin d)) : colL b m u * colL b m u = 0 := by
   ext1 i j
@@ -120,9 +120,9 @@ private theorem colL_sq (m : Fin n) (u : EuclideanSpace ℝ (Fin n × Fin d)) : 
   · rw [if_neg (fun h' : k ≤ m ∧ _ => h h'.1), mul_zero]
 
 /- English proof (translation)
-Use `ext1 i j`. Simplify using `only [rowM, rowL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.add_apply]`. Use `split_ifs with h`. Take `⟨rfl, h⟩` from `h`. Rewrite using `[map_sub, crd_eta b _ _ h, crd_eta b _ _ h]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem rowM_eq (m : Fin n) (ξ : Fin n → Cinf E) :
     rowM m ξ = 1 + rowL b m (eta b m ξ - eta b m ((1 : Matrix (Fin n) (Fin n) (Cinf E)) m)) := by
@@ -135,9 +135,9 @@ private theorem rowM_eq (m : Fin n) (ξ : Fin n → Cinf E) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type, dotLe, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j ≤ m`. Rewrite using `[if_pos h, H, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[eta, h, repr_crd, mul_comm]`. Simplify using `[eta, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem inner_eta (b' : Module.Basis (Fin d) ℝ (Cinf E))
     (H : ∀ x y, TG.tr E (x * y) = ∑ i, b'.repr x i * b.repr y i) (m : Fin n) (ξ : Fin n → Cinf E)
@@ -154,17 +154,15 @@ private theorem inner_eta (b' : Module.Basis (Fin d) ℝ (Cinf E))
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `h0 h1 h2 h3 h4 E _ _ n m _`. Take `⟨d, b, b', H⟩` from `h0 E`. Take `⟨B, hB⟩` from `exists_bil (colL b m)`. Take `⟨A, hA⟩` from `exists_bil (rowL b' m)`. Establish `hBB : ∀ u x, B u (B u x) = 0` using `fun u x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hB, hB, of_lmul, of_lmul]`. Express the relevant statement in the definitionally equal form `toL (colL b m u * (colL b m u * Matrix.of x)) = 0`. Rewrite using `[← mul_assoc, colL_sq, zero_mul]`. Both sides reduce to the same expression. Take `⟨h, he, hu, hG⟩` from `h1 _ _ A (eta b' m ((1 : Matrix (Fin n) (Fin n) (Cinf E)) m))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hrow : ∀ ξ y, y + A (eta b' m ξ - eta b' m ((1 : Matrix (Fin n) (Fin n) (Cinf E)) m)) y = lmul (toL (rowM m ξ)) y` using `fun ξ y => by rw [rowM_eq b', lmul_one_add, hA]`. Use `⟨fun ξ => h (eta b' m ξ), he, fun ξ hξ => isUnit_of_inj _ fun y hy => hu _ hξ y (by rw [hrow, hy]), fun α => ?_⟩` and prove the remaining obligations. Take `⟨G, hG⟩` from `hG α`. Take `⟨K, hK⟩` from `h2 _ _ G`. Take `⟨K', β, hK', hβ⟩` from `h3 _ _ B hBB K`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨β, fun w ξ hw hb hw' => ?_⟩` and prove the remaining obligations. Use `haveI : (volume : Measure (Cinf E)).IsAddHaarMeasure := inferInstance`. Use `haveI : (volume : Measure (Fin n → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `h4 _ _ (volume : Measure (Lie E n)) B hBB G K K' hK hK' w (eta b' m ξ) hw hb fun u x => by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, ← lmul_one_add, inner_eta b b' H]`. Conclude with `hw' (fun j => crd b j u) x`. Simplify using `only [hβ]`. Rewrite using `[this, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Simplify using `only [hG, hrow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.archStep :
     UpperTheory.V.Af.StrongMultiplicityOne.TrDual → UpperTheory.V.Af.Smo.SchTw → UpperTheory.V.Af.Smo.PftSch → UpperTheory.V.Af.Smo.BetaSch → UpperTheory.V.Af.Smo.BetaInt → UpperTheory.V.Af.StrongMultiplicityOne.ArchStep := by

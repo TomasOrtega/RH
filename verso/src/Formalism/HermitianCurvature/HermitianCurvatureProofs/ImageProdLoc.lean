@@ -15,13 +15,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-The claim follows from `Finset.mem_filter`.
+A detailed English derivation is pending.
 -/
 theorem mem_Wb_iff (S : C.HidaSetting E Wp Wq) (m : ℕ) (u : S.W) : u ∈ S.base.Wb m ↔ u ∈ S.base.Wall ∧ S.base.cnt u ≤ m :=
   Finset.mem_filter
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu`, the goal using `[mem_Wb_iff]`. Conclude with `⟨hu.1, hu.2.trans h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Wb_mono (S : C.HidaSetting E Wp Wq) {m m' : ℕ} (h : m ≤ m') : S.base.Wb m ⊆ S.base.Wb m' := by
   intro u hu
@@ -29,7 +29,7 @@ theorem Wb_mono (S : C.HidaSetting E Wp Wq) {m m' : ℕ} (h : m ≤ m') : S.base
   exact ⟨hu.1, hu.2.trans h⟩
 
 /- English proof (translation)
-Rewrite using `[← hθ.2.2]`. Conclude with `(Finset.sum_subset h fun u _ hu => hθ.2.1 u hu).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prob_sum_sub {W : Type} {A Wd : Finset W} {θ : W → ℝ} (hθ : TB.IsProb A θ) (h : A ⊆ Wd) :
     ∑ u ∈ Wd, θ u = 1 := by
@@ -37,13 +37,11 @@ theorem prob_sum_sub {W : Type} {A Wd : Finset W} {θ : W → ℝ} (hθ : TB.IsP
   exact (Finset.sum_subset h fun u _ hu => hθ.2.1 u hu).symm
 
 /- English proof (translation)
-Rewrite using `[blockPSD_iff]`. Use `JCx1.decay.psd_pull Y κ hκ (Y.disjSum Y) (Sum.elim id id) (by` as an intermediate fact. Introduce `x hx`. Break down `x with p | p` into its components or cases. Rewrite `hx` using `[Finset.inl_mem_disjSum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`. Rewrite `hx` using `[Finset.inr_mem_disjSum]`. Conclude with `hx)`. Use `PBB.psd_congr _ _ _ (fun x hx y hy => ?_) this` and prove the remaining obligations. Apply the tactic sequence `rcases x with p | p <;> rcases y with q | q`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite `hx` using `[Finset.inr_mem_disjSum]`. Rewrite `hy` using `[Finset.inl_mem_disjSum]`. Simplify using `only [blk, Sum.elim_inl, Sum.elim_inr, id]`.
-
-Conclude with `psd_herm Y κ hκ hy hx`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blockPSD_same {α : Type} (Y : Finset α) (κ : α → α → ℂ) (hκ : TB.PSDOn Y κ) : KB.BlockPSD Y Y κ κ κ := by
   rw [blockPSD_iff]
@@ -63,9 +61,9 @@ theorem blockPSD_same {α : Type} (Y : Finset α) (κ : α → α → ℂ) (hκ 
   · rfl
 
 /- English proof (translation)
-Use extensionality with `⟨a, x⟩`. Simplify using `only [Finset.mem_image, Finset.mem_product, Prod.exists, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, x', ⟨hh, hx'⟩, rfl, rfl⟩`. Conclude with `⟨⟨h, hh, rfl⟩, hx'⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h, hh, rfl⟩, hx⟩`. Conclude with `⟨h, x, ⟨hh, hx⟩, rfl, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_prod_loc {X : Type} (σ : E →+* ℂ) (Y : Finset (TB.Pt E)) (Xs : Finset X) :
     (Y ×ˢ Xs).image (fun p : TB.Pt E × X => (C.loc σ p.1, p.2)) = (Y.image (C.loc σ)) ×ˢ Xs := by
@@ -76,23 +74,19 @@ theorem image_prod_loc {X : Type} (σ : E →+* ℂ) (Y : Finset (TB.Pt E)) (Xs 
   · rintro ⟨⟨h, hh, rfl⟩, hx⟩; exact ⟨h, x, ⟨hh, hx⟩, rfl, rfl⟩
 
 /- English proof (translation)
-Establish `hloc : ∀ v, ∀ h ∈ Y.image (C.loc (S.σ v)), D.ptSize h = b - 1`. Introduce `v h hh`. Take `⟨h0, hh0, rfl⟩` from `Finset.mem_image.1 hh`. Rewrite using `[JCx1.needs.ptSize_loc]`. Conclude with `hY h0 hh0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsup : ∀ v, ∃ B : ℝ, ∀ h ∈ Y.image (C.loc (S.σ v)), ∀ t : ℂ, t ≠ 0 → ‖KB.gN S v ε (b + n - 2) (w'.1 v) (h ++ [(n - 1, t)]) (h ++ [(n - 1, t)])‖ ≤ B`. Introduce `v`. Establish `hs : ∀ h ∈ Y.image (C.loc (S.σ v)), LocSup S v ε (n - 1) b (w'.1 v) h`. Introduce `h hh`. Use `locSup_all S hpos hI hg v Λ (hLL v) (hGL v) (fun b s hb hs hbs => hΛ0 b s hb hs hbs v) ε hε (n - 1) (by omega) b hb (by omega) h (hloc v h hh) (w'.1 v) ⟨w', rfl⟩ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `PBB.len_le_cnt S w' v` as an intermediate fact. Establish `hk : (n - 1 - 1) * C.Kst ≤ n * C.Kst` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Use `choose! Bh hBh using hs`. Use `⟨∑ h ∈ Y.image (C.loc (S.σ v)), max (Bh h) 0, fun h hh t ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hBh h hh t ht` as an intermediate fact. Rewrite `this` using `[show b + (n - 1) - 1 = b + n - 2 by omega]`. Conclude with `this.trans ((le_max_left _ _).trans (Finset.single_le_sum (f := fun h => max (Bh h) 0) (fun _ _ => le_max_right _ _) hh))`. Establish `hG' : ∀ v, ∃ (Pu Pa : C.LPt × ℂ → C.LPt × ℂ → ℂ), (∀ h ∈ Y.image (C.loc (S.σ v)), ∀ h' ∈ Y.image (C.loc (S.σ v)), ContinuousOn (fun z => KB.gN S v ε (b + n - 1) (w'.1 v) (h ++ [(n, z)]) (h' ++ [(n, z)])) {0}ᶜ ∧ Integrable (fun z => KB.gN S v ε (b + n - 1) (w'.1 v) (h ++ [(n, z)]) …`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨h1, Pu, Pa, h2, h3, h4⟩` from `hGL v ε hε b n hb hn hbn (w'.1 v) ⟨w', rfl⟩ (Y.image (C.loc (S.σ v))) (hloc v) (hsup v)`. Conclude with `⟨Pu, Pa, h1, h2, h3, h4⟩`. Use `choose Pu Pa hcont hblk hB' hlim using hG'`. Use `choose Bs hBs using hsup`. Use `choose B' hB'' using hB'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mem : ∀ v, ∀ h ∈ Y, C.loc (S.σ v) h ∈ Y.image (C.loc (S.σ v))` using `fun v h hh => Finset.mem_image_of_mem _ hh`. Use `⟨fun v p q => Pu v (C.loc (S.σ v) p.1, p.2) (C.loc (S.σ v) q.1, q.2), fun v p q => Pa v (C.loc (S.σ v) p.1, p.2) (C.loc (S.σ v) q.1, q.2), fun v h hh h' hh' => hcont v _ (mem v h hh) _ (mem v h' hh'), ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `v Xs hXs`. Use `hblk v Xs hXs` as an intermediate fact. Rewrite `this` using `[← image_prod_loc (S.σ v) Y Xs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `PBB.blockPSD_pull (Y ×ˢ Xs) (fun p : TB.Pt E × ℂ => (C.loc (S.σ v) p.1, p.2)) _ _ _ this`. Use `⟨∑ v, (max (Bs v) 0 + max (B' v) 0), Finset.sum_nonneg fun v _ => by positivity, fun v h hh x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `((hBs v _ (mem v h hh) x⁻¹ (inv_ne_zero hx)).trans (le_max_left (Bs v) 0)).trans ?_` and prove the remaining obligations. Use `le_trans (le_add_of_nonneg_right (le_max_right (B' v) 0)) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v => max (Bs v) 0 + max (B' v) 0) (fun _ _ => by positivity) (Finset.mem_univ v)`.
-
-Use `((hB'' v _ (mem v h hh) x hx).trans (le_max_left (B' v) 0)).trans ?_` and prove the remaining obligations. Use `le_trans (le_add_of_nonneg_left (le_max_right (Bs v) 0)) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v => max (Bs v) 0 + max (B' v) 0) (fun _ _ => by positivity) (Finset.mem_univ v)`. Introduce `v h hh h' hh' σ`. Conclude with `(hlim v _ (mem v h hh) _ (mem v h' hh') σ).1`.
-
-Introduce `v h hh h' hh' σ`. Conclude with `(hlim v _ (mem v h hh) _ (mem v h' hh') σ).2.1`. Introduce `v h hh h' hh' σ`. Conclude with `(hlim v _ (mem v h hh) _ (mem v h' hh') σ).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_global (S : C.HidaSetting E Wp Wq) (hpos : C.ThmPPos S) (hI : KB.IntAll S) (hg : 0 < S.g)
     (Λ : ℕ → ℕ → Fin S.f → ℝ) (hLL : ∀ v, KB.LiftLoc S v fun b s => Λ b s v) (hGL : ∀ v, KB.GermLoc S v)

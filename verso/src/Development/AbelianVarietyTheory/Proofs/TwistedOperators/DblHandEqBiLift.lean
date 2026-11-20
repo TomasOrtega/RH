@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowChain
 
 /- English proof (translation)
-Introduce `D T L sc G Wl t M hM σ j hj vN`. Take `⟨χz, hz, hzr, -, hEven, hOdd⟩` from `GlobalTheory.T.thetaGrid_lastRow_column_characters_differ G Wl t`. Establish `hjOdd : (D.R.m - 1 - j) % 2 = 1` using `by omega`. Establish `hjEven : (D.R.m - 1 - (j + 1)) % 2 = 0` using `by omega`. Establish `hS₁` using `(hOdd j (by omega) hjOdd).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT₁` using `(hOdd j (by omega) hjOdd).2`. Establish `hS₂` using `(hEven (j + 1) (by omega) hjEven).1`. Establish `hT₂` using `(hEven (j + 1) (by omega) hjEven).2`. Conclude with `dbl_hand_of_chars G Wl t hM σ j hj χz hz hzr hS₁ hT₁ hS₂ hT₂ vN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dbl_hand_eq_biLift : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) {M : GlobalTheory.FunObj.Vol G}
     (hM : M.Is t) (σ j : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (vN : VolN (besDecAt G j (σ + 1) hj))

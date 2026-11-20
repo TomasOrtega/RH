@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.PoincarePull
 
 /- English proof (translation)
-Introduce `R _ A _ hA D _ Q q q' L hL aL P hP h₁ h₂`. Take `⟨H, hH, aH⟩` from `GlobalTheory.BirigidLift.exists_relAmple_prod hA hA hL aL hL aL`. Take `⟨a₁, a₂⟩` from `GlobalTheory.BirigidLift.additive_of_triv hA hA hH aH hP h₁ h₂`. Take `⟨x, hx, e⟩` from `GlobalTheory.BirigidLift.exists_hom q q'.additive hP a₁ a₂`. Use `⟨x, hx, fun T y ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `GlobalTheory.AbDual.triv_ev_iff hP (fst A T) (snd A T ≫ y)`. Rewrite `k` using `[GlobalTheory.BirigidLift.evc_of_cls q.isLB hP e, Category.assoc, ← GlobalTheory.AbDual.triv_ev_iff q.isLB]`. Use `k.trans ⟨fun h ↦ q.eq_one (y ≫ x) h, fun h ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[h, GlobalTheory.AbDual.triv_ev_iff q.isLB, MonObj.comp_one]`. Conclude with `GlobalTheory.AbDual.evc_one_right q.isLB q.zero _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_triv_iff : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →
     ∀ (D : Over (Sp R)) [GrpObj D] (Q : LB (A ⊗ D).left), GlobalTheory.AbDual.IsDual A D Q → GlobalTheory.AbDual.IsDual D A (GlobalTheory.AbDual.swap Q) →

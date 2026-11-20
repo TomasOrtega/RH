@@ -42,7 +42,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `u _`. Use `show u • ((1 : Matrix (Fin n) (Fin n) (AE F E)) - 1) = 0`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_uAt {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) :
     (1 : UA σ X.J) ∈ UAt σ X ev := by
@@ -51,7 +51,7 @@ theorem one_mem_uAt {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) {R : Type} [Z
   simp
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)` using `by show mat g * mat h - 1 = _ noncomm_ring`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_uAt {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R)
     {g h : UA σ X.J} (hg : g ∈ UAt σ X ev) (hh : h ∈ UAt σ X ev) : g * h ∈ UAt σ X ev := by
@@ -62,9 +62,9 @@ theorem mul_mem_uAt {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) {R : Type} [Z
   rw [e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : mat g⁻¹ * mat g = 1` using `by show ((g⁻¹ * g : UA σ X.J) : GL (Fin n) (AE F E)).1 = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_sub, h1, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_uAt {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R)
     {g : UA σ X.J} (hg : g ∈ UAt σ X ev) : g⁻¹ ∈ UAt σ X ev := by
@@ -101,7 +101,7 @@ def locOp {κ : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
   (R 0)⁻¹ • (LinearMap.funLeft ℂ ℂ (fun (t : κ → Fv F v) i => GlobalTheory.LatVac.liftV v (t i)) ∘ₗ T ∘ₗ tensL v R)
 
 /- English proof (translation)
-Establish `h1` using `hR.1 0 (fun i => GlobalTheory.LatVac.liftV v (t i)) fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v (t i) u hu`. Rewrite `h1` using `[zero_add]`. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tens_liftV {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {R : (κ → AF F) → ℂ} (φ : (κ → Fv F v) → ℂ)
     (hR : Rest (evFin F v) φ R) (t : κ → Fv F v) :
@@ -111,7 +111,7 @@ theorem tens_liftV {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideF
   simp only [tens, GlobalTheory.LatVac.evFin_liftV, h1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Use `h R hR` as an intermediate fact. Simplify using `only [locOp, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply]`. Express the relevant statement in the definitionally equal form `(R 0)⁻¹ • T (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)) = φ₁ t`. Rewrite using `[this, tens_liftV v φ₁ hR₁ t, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -141,11 +141,11 @@ theorem liftV_fst (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.
 open scoped Classical in
 
 /- English proof (translation)
-Set `L : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun (t : Fin n × Fin d → Fv F v) i => GlobalTheory.LatVac.liftV v (t i))`. Establish `hl : lam ∘ₗ L ∈ (GlobalTheory.WeilM.adeleClass F).adm (Fin n × Fin d)`. Introduce `g _`. Use `⟨lam (fun t => g (fun i => (GlobalTheory.LatVac.liftV v (t i)).2)) • ((BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Establish `e : L (GlobalTheory.WeilM.pureA F f g) = f 0 • (fun t => g (fun i => (GlobalTheory.LatVac.liftV v (t i)).2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [L, LinearMap.funLeft_apply, GlobalTheory.WeilM.pureA, liftV_fst, map_zero, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, e, map_smul, smul_eq_mul, _root_.smul_apply, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc` using `hW.2.2 (lam ∘ₗ L) hl _ hΦ`. Establish `h2 : Continuous fun x : UA σ X.J × UA σ W.J => (R 0)⁻¹ * (lam ∘ₗ L) (om x (tens (evFin F v) φ R))` using `continuous_const.mul hc`. Use `h2.congr fun x => ?_` and prove the remaining obligations. Simplify using `only [locOp, LinearMap.smul_apply, LinearMap.comp_apply, map_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem continuous_locOp {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} (hW : M.IsWeil B.ψ χX χW om) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
@@ -180,27 +180,27 @@ namespace GlobalTheory.SmoothAtPlace
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v hActs φ hφ`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hP.base.cm`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin n × Fin d) v`. Set `H` to `locGrp (σ := σ) X W v`. Set `V` to `GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ x ∈ H, ∀ ψ ∈ V, locOp v R (om x) ψ ∈ V ∧ Acts (evFin F v) (om x) ψ (locOp v R (om x) ψ)`. Introduce `x hx ψ hψ`. Take `⟨ψ₁, hψ₁, hA⟩` from `hActs x hx.1 hx.2 ψ hψ`. Rewrite using `[locOp_eq v hR0 (hR ψ hψ) (hR ψ₁ hψ₁) hA]`. Conclude with `⟨hψ₁, hA⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `S : UA σ X.J × UA σ W.J → Module.End ℂ V` to `fun x => if hx : x ∈ H then (locOp v R (om x)).restrict (fun ψ hψ => (key x hx ψ hψ).1) else LinearMap.id`. Establish `hS : ∀ x (hx : x ∈ H) (ψ : V), ((S x ψ : V) : (Fin n × Fin d → Fv F v) → ℂ) = locOp v R (om x) ψ`. Introduce `x hx ψ`. Simplify using `only [S, dif_pos hx]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hmul : ∀ x ∈ H, ∀ y ∈ H, S (x * y) = S x * S y`. Introduce `x hx y hy`. Use extensionality with `ψ : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hS _ (H.mul_mem hx hy), Module.End.mul_apply, hS _ hx, hS _ hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `key y hy ψ ψ.2`. Establish `h2` using `key x hx _ h1.1`. Use `locOp_eq v hR0 (hR ψ ψ.2) (hR _ h2.1) fun r hr => ?_` and prove the remaining obligations. Establish `hr' : Rest (evFin F v) (locOp v R (om y) ψ) r` using `⟨hr.1, by`. Rewrite using `[← h1.2 r hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil).pres y _ hr.2⟩`. Rewrite using `[map_mul, Module.End.mul_apply, h1.2 r hr, h2.2 r hr']`. Establish `hone : S 1 = 1`. Use extensionality with `ψ : 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS 1 H.one_mem]`. Conclude with `locOp_eq v hR0 (hR ψ ψ.2) (hR ψ ψ.2) fun r _ => by rw [map_one]; rfl`. Establish `hcont : ∀ (l : V →ₗ[ℂ] ℂ) (w : V), ContinuousOn (fun x => l (S x w)) (H : Set (UA σ X.J × UA σ W.J))`. Introduce `l w`. Take `⟨lam, hlam⟩` from `LinearMap.exists_extend l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(continuous_locOp hP.weil v R w.1 (hR w.1 w.2).2 lam).continuousOn.congr fun x hx => ?_` and prove the remaining obligations. Establish `: S x w = ⟨locOp v R (om x) w, (key x hx w w.2).1⟩` using `Subtype.ext (hS x hx w)`. Rewrite using `[this, ← hlam]`. Both sides reduce to the same expression. Establish `hbasis : ∀ U ∈ 𝓝 (1 : UA σ X.J × UA σ W.J), ∃ K : Subgroup (UA σ X.J × UA σ W.J), K ≤ H ∧ IsCompact (K : Set (UA σ X.J × UA σ W.J)) ∧ (∃ O : Set (UA σ X.J × UA σ W.J), IsOpen O ∧ (1 : UA σ X.J × UA σ W.J) ∈ O ∧ ∀ x ∈ O, x ∈ H → x ∈ K) ∧ (K : Set (UA σ X.J × UA σ W.J)) ⊆ U`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `U hU`. Rewrite `hU` using `[show (1 : UA σ X.J × UA σ W.J) = (1, 1) from rfl, nhds_prod_eq]`. Take `⟨U1, hU1, U2, hU2, hsub⟩` from `Filter.mem_prod_iff.1 hU`. Take `⟨K1, hK1H, hK1c, ⟨O1, hO1, h1O1, hO1K⟩, hK1U⟩` from `GlobalTheory.T.exists_compactSubgroup_unitaryPoints_supportedAtPlace hσ X v U1 hU1`. Take `⟨K2, hK2H, hK2c, ⟨O2, hO2, h1O2, hO2K⟩, hK2U⟩` from `GlobalTheory.T.exists_compactSubgroup_unitaryPoints_supportedAtPlace hσ W v U2 hU2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨K1.prod K2, fun x hx => ⟨hK1H _ hx.1, hK2H _ hx.2⟩, ?_, ⟨O1 ×ˢ O2, hO1.prod hO2, ⟨h1O1, h1O2⟩, fun x hx hxH => ⟨hO1K _ hx.1 hxH.1, hO2K _ hx.2 hxH.2⟩⟩, fun x hx => hsub ⟨hK1U hx.1, hK2U hx.2⟩⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hK1c.prod hK2c`. Take `⟨U, hU, hfix⟩` from `GlobalTheory.T.exists_nhds_fix_of_continuous_coefficients GlobalTheory.T.finiteDimensional_span_of_forall_linear_bounded H S hmul hone hcont hbasis ⟨φ, hφ⟩`. Use `⟨U, hU, fun x hxU hx1 hx2 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : x ∈ H` using `⟨hx1, hx2⟩`. Establish `e` using `congrArg Subtype.val (hfix x hxU hx)`. Rewrite `e` using `[hS x hx]`. Use `(key x hx φ hφ).2` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weil_smooth_at : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

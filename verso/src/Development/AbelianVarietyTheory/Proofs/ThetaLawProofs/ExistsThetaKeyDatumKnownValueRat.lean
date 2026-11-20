@@ -50,7 +50,7 @@ theorem isElliptic_cube_sub : (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℚ).IsEl
 /- English proof (authored)
 Start with the rational elliptic curve y² = x³ − x. Its elliptic key has genus one and known value equal to the discriminant. Take its gth key power to get genus g. The proposed known value is the gth power of the discriminant.
 
-After extension to ℂ, choose normal-form data for the original elliptic key. The discriminant formula gives its value in this normal form. The key power raises that value to the gth power by `Val.pow`. The base-change comparison and cancellation identify this normal form with the one for the given complex key of genus g, giving the required known value.
+After extension to ℂ, choose normal-form data for the original elliptic key. The discriminant formula gives its value in this normal form. The key power raises that value to the gth power by the formula for values of key powers. The base-change comparison and cancellation identify this normal form with the one for the given complex key of genus g, giving the required known value.
 -/
 theorem exists_known_rat : Out.Laws → ThetaUnifAV → ∀ g : ℕ, 1 ≤ g → ∃ y : KeyIn ℚ, y.P.g = g ∧ Known ℚ y := by
   intro _ hU g hg

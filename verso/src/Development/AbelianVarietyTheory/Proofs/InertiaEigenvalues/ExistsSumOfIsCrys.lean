@@ -22,9 +22,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Establish `hs` using `(GlobalTheory.RegularRing.isCrys_iff_span PD hf hu ρ).1 h`. Establish `hy : (TensorProduct.comm Qp B V).symm y ∈ Submodule.span B (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.DcrisK₀ PD ρ : Set (B ⊗[Qp] V))` using `hs ▸ Submodule.mem_top`. Take `⟨m, b, e, he⟩` from `Submodule.mem_span_set'.1 hy`. Use `⟨m, b, fun i => TensorProduct.comm Qp B V (e i : B ⊗[Qp] V), fun i => (e i).2, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (TensorProduct.comm Qp B V) he`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearEquiv.apply_symm_apply, map_sum]`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => GlobalTheory.Per.TiedIndep.comm_smul (LL := LL) _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_isCrys [IsDomain B] (hf : GlobalTheory.RegularRing.FracInv PD)
     (hu : GlobalTheory.RegularRing.LineUnit PD) [FiniteDimensional Qp LL] [FiniteDimensional LL V]
@@ -44,11 +44,11 @@ theorem exists_sum_of_isCrys [IsDomain B] (hf : GlobalTheory.RegularRing.FracInv
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P AI T hreg K LL V _ _ _ _ _ ρ h y`. Establish `: IsDomain P.R.B` using `GlobalTheory.RegularRing.isDomain_of_tied T K`. Use `LL.2` as an intermediate fact. Establish `e : ∀ (g : ↥(GK K)) z, (P.PD K).actB g z = P.actQ g z` using `fun g z => P.PD_actB K g z`. Use `exists_sum_of_isCrys (P.PD K) ?_ ?_ ρ h y` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hx h`. Use `GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K y x hx fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[e, e]`. Rewrite using `[mul_comm, h1, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb h`. Use `hreg K b hb fun g hg => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `h ⟨g, hg⟩`. Rewrite `hx` using `[e]`. Conclude with `⟨x, by rw [Algebra.smul_def]; exact hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tied_crisSpan : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → (∀ (K : FinExt l) (b : P.R.B), b ≠ 0 → (∀ g ∈ GK K, ∃ x : ℚ_[l], P.actQ g b = x • b) → IsUnit b) → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsCrys (P.PD K) ρ → ∀ y : V ⊗[ℚ_[l]] P.R.B, ∃ (m : ℕ) (b : Fin m → P.R.B) (d : Fin m → V ⊗[ℚ_[l]] P.R.B), (∀ i, d i ∈ Dcris (P.PD K) ρ) ∧ y = ∑ i, AlgebraTensorModule.map (LinearMap.id : V →ₗ[↥LL.1] V) (LinearMap.mulLeft ℚ_[l] (b i)) (d i) := by
   intro l _ P AI T hreg K LL V _ _ _ _ _ ρ h y

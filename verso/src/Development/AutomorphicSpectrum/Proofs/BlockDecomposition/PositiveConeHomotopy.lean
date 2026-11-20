@@ -11,19 +11,17 @@ namespace GlobalTheory.CompanionTheory.SuperHomot
 variable {I : Type} [Fintype I] [DecidableEq I]
 
 /- English proof (translation)
-Use `set f : (I → ℝ) → ℂ := U.indicator b with hf`. Establish `hfU : ∀ v ∈ U, f =ᶠ[nhds v] b` using `fun v hv => by filter_upwards [hU.mem_nhds hv] with x hx using indicator_of_mem hx _`. Establish `hfC : ∀ x, x ∉ C → f x = 0` using `fun x hx => by`. Distinguish the cases in `hxU : x ∈ U`. Rewrite using `[hf, indicator_of_mem hxU]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hz x hxU hx).self_of_nhds`. Rewrite using `[hf, indicator_of_notMem hxU]`. Establish `hf0 : ∀ v, v ∉ C → f =ᶠ[nhds v] 0` using `fun v hv => by filter_upwards [hC.isClosed.isOpen_compl.mem_nhds hv] with x hx using hfC x hx`. Establish `hfd : ContDiff ℝ 1 f`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v`. Distinguish the cases in `hv : v ∈ U`. Conclude with `(hb.contDiffAt (hU.mem_nhds hv)).congr_of_eventuallyEq (hfU v hv)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (hf0 v fun h => hv (hCU h))`. Establish `hcs : HasCompactSupport f` using `HasCompactSupport.intro hC hfC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : Integrable (fun v => fderiv ℝ f v w)`. Establish `h1 : Continuous fun v => fderiv ℝ f v w` using `(hfd.continuous_fderiv one_ne_zero).clm_apply continuous_const`. Use `h1.integrable_of_hasCompactSupport ((hcs.fderiv (𝕜 := ℝ)).mono ?_)` and prove the remaining obligations. Introduce `z hz'`. Rewrite `hz'`, the goal using `[Function.mem_support]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Apply `hz'` to reduce the goal to its premises. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `h0 : ∫ v, fderiv ℝ f v w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (μ := volume) (f := fun _ => (1 : ℂ)) (g := f) (v := w) (by simp) (by simpa using hi) (by simpa using hfd.continuous.integrable_of_hasCompactSupport hcs) (fun _ _ => differentiableAt_const _) (fun x _ => (hfd.differentiable one_ …`. Simplify using `using h`. Establish `h2 : ∫ v in C, fderiv ℝ f v w = ∫ v, fderiv ℝ f v w` using `setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by`. Rewrite using `[(hf0 x hx).fderiv_eq]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← h0, ← h2]`. Use `setIntegral_congr_fun hC.measurableSet fun v hv => ?_` and prove the remaining obligations. Rewrite using `[(hfU v (hCU hv)).fderiv_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_fderiv_eq_zero {U C : Set (I → ℝ)} (hU : IsOpen U) (hCU : C ⊆ U) (hC : IsCompact C)
     (b : (I → ℝ) → ℂ) (hb : ContDiffOn ℝ 1 b U)
@@ -66,23 +64,23 @@ theorem setIntegral_fderiv_eq_zero {U C : Set (I → ℝ)} (hU : IsOpen U) (hCU 
   rw [(hfU v (hCU hv)).fderiv_eq]
 
 /- English proof (translation)
-Use `set J := ∑ j, x j • c j with hJ`. Establish `hΓJ : Γ * J = -(J * Γ)`. Simplify using `only [hJ, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib, mul_smul_comm, smul_mul_assoc, hΓc, smul_neg]`. Establish `hanti : ∀ i, e i * J + J * e i = x i • 1`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hJ, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, ← Finset.sum_add_distrib, ← smul_add, hec]`. Simplify using the standard rewrite rules. Establish `h1 : ∀ i, tr (Γ * e i * Sv * J * (s • L1 i)) = tr (Γ * Sv * (e i * J * L1 i))`. Introduce `i`. Establish `h : Γ * e i * Sv * J * (s • L1 i) = Γ * (s • (e i * Sv)) * J * L1 i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_smul_comm, smul_mul_assoc, mul_assoc]`. Rewrite using `[h, ← hSe]`. Simplify using `only [mul_assoc]`. Establish `h2 : ∀ i, tr (Γ * e i * Sv * J * L2 i) = - tr (Γ * Sv * (J * (L2 i * e i)))`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show Γ * e i * Sv * J * L2 i = (Γ * e i) * (Sv * J * L2 i) by simp only [mul_assoc], htr]`. Establish `h : Sv * J * L2 i * (Γ * e i) = -(Γ * Sv * (J * (L2 i * e i)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, map_neg]`. Establish `hsum : ∑ i, L2 i * e i = -∑ i, e i * L1 i` using `eq_neg_of_add_eq_zero_right hch`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ i, tr (Γ * Sv * (J * (L2 i * e i))) = -∑ i, tr (Γ * Sv * (J * (e i * L1 i)))`. Rewrite using `[← map_sum, ← map_sum, ← map_neg, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, hsum]`. Simplify using `only [mul_neg]`. Establish `h4 : tr (Γ * Sv * ∑ i, x i • L1 i) = ∑ i, tr (Γ * Sv * (e i * J * L1 i)) + ∑ i, tr (Γ * Sv * (J * (e i * L1 i)))`. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_add]`. Rewrite using `[← map_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hanti i`. Rewrite using `[← mul_add]`. Use `congr 1`. Rewrite using `[← mul_assoc J, ← add_mul, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5 : tr (Γ * (∑ i, e i * Sv * c i) * k) = ∑ i, tr (Γ * e i * Sv * c i * k)`. Rewrite using `[← map_sum]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[h5, h4, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [mul_add, map_add, h1, h2, Finset.sum_add_distrib, Finset.sum_neg_distrib, h3, neg_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key_alg {W : Type*} [Ring W] [Algebra ℂ W] (tr : W →ₗ[ℂ] ℂ) (htr : ∀ X Y, tr (X * Y) = tr (Y * X))
     (e c L1 L2 : I → W) (Γ Sv k : W) (s : ℂ) (x : I → ℂ)
@@ -163,7 +161,7 @@ Both sides reduce to the same expression.
 theorem trC_apply (X : V →L[ℂ] V) : trC X = trL X := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.trace_mul_comm ℂ (X : V →ₗ[ℂ] V) (Y : V →ₗ[ℂ] V)`.
+A detailed English derivation is pending.
 -/
 theorem trC_mul_comm (X Y : V →L[ℂ] V) : trC (X * Y) = trC (Y * X) :=
   LinearMap.trace_mul_comm ℂ (X : V →ₗ[ℂ] V) (Y : V →ₗ[ℂ] V)
@@ -171,11 +169,11 @@ theorem trC_mul_comm (X Y : V →L[ℂ] V) : trC (X * Y) = trC (Y * X) :=
 def path (o : I → ℝ) (s : ℝ) (v : I → ℝ) : (I → ℝ) × (I → ℝ) := (s • v + (1 - s) • o, v)
 
 /- English proof (translation)
-Establish `hP : HasDerivAt (fun s => path o s v) (v - o, 0) s`. Establish `h1 : HasDerivAt (fun s : ℝ => s • v + (1 - s) • o) (v - o) s`. Establish `a : HasDerivAt (fun s : ℝ => s • v) v s` using `by simpa using (hasDerivAt_id s).smul_const v`. Establish `b : HasDerivAt (fun s : ℝ => (1 - s) • o) (-o) s`. Simplify using `using ((hasDerivAt_id s).const_sub 1).smul_const o`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h : HasDerivAt (fun s : ℝ => s • v + (1 - s) • o) (v + -o) s` using `a.add b`. Rewrite `h` using `[← sub_eq_add_neg]`. Then use the resulting hypothesis. Conclude with `h1.prodMk (hasDerivAt_const s v)`. Establish `hKP` using `hK.hasFDerivAt.comp_hasDerivAt s hP`. Establish `hm : HasDerivAt (fun s => Γ * S s * K (path o s v)) (Γ * deriv S s * K (path o s v) + Γ * S s * fderiv ℝ K (path o s v) (v - o, 0)) s` using `(hS.hasDerivAt.const_mul Γ).mul hKP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `trL.hasFDerivAt.comp_hasDerivAt s hm`. Rewrite `ht` using `[map_add]`. Conclude with `ht`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_A (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (S : ℝ → (V →L[ℂ] V)) (Γ : V →L[ℂ] V)
     (o v : I → ℝ) (s : ℝ) (hS : DifferentiableAt ℝ S s) (hK : DifferentiableAt ℝ K (path o s v)) :
@@ -199,15 +197,15 @@ theorem hasDerivAt_A (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (S : �
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `set Jd : (I → ℝ) →L[ℝ] (V →L[ℂ] V) := ∑ j, (ContinuousLinearMap.proj j : (I → ℝ) →L[ℝ] ℝ).smulRight (c j) with hJd`. Establish `hJa : ∀ x, Jd x = ∑ j, x j • c j` using `fun x => by simp [hJd, ContinuousLinearMap.sum_apply]`. Establish `hJ : HasFDerivAt (fun v => ∑ j, (v - o) j • c j) Jd v`. Establish `h` using `Jd.hasFDerivAt.comp v ((hasFDerivAt_id v).sub_const o)`. Establish `h2 : (⇑Jd ∘ fun x => id x - o) = fun v => ∑ j, (v - o) j • c j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[hJa]`. Rewrite `h` using `[h2]`. Simplify using `using h`. Use `set Pd : (I → ℝ) →L[ℝ] (I → ℝ) × (I → ℝ) := (s • ContinuousLinearMap.id ℝ (I → ℝ)).prod (ContinuousLinearMap.id ℝ (I → ℝ)) with hPd`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : HasFDerivAt (path o s) Pd v`. Establish `h` using `Pd.hasFDerivAt.add_const (x := v) (((1 - s) • o, 0) : (I → ℝ) × (I → ℝ))`. Establish `h2 : (fun x => Pd x + (((1 - s) • o, 0) : (I → ℝ) × (I → ℝ))) = path o s`. Use function extensionality and compare the values at `x`. Simplify using `[hPd, path]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[h2]`. Then use the resulting hypothesis. Establish `hKP` using `hK.hasFDerivAt.comp v hP`. Establish `hm` using `(hJ.const_mul A).mul' hKP`. Establish `ht0` using `(trL (V := V)).hasFDerivAt.comp v hm`. Establish `ht : HasFDerivAt (fun v => trL (A * (∑ j, (v - o) j • c j) * K (path o s v))) _ v` using `ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ht.fderiv]`. Simplify using `[hJa, hPd, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_b (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (A : V →L[ℂ] V) (c : I → (V →L[ℂ] V))
     (o v w : I → ℝ) (s : ℝ) (hK : DifferentiableAt ℝ K (path o s v)) :
@@ -238,9 +236,7 @@ theorem fderiv_b (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (A : V →
   simp [hJa, hPd, add_comm]
 
 /- English proof (translation)
-Establish `hp : ContDiff ℝ 1 (path o s : (I → ℝ) → _)`. Unfold `path`. Use `fun_prop`. Establish `hKc : ContDiffOn ℝ 1 (fun v => K (path o s v)) U` using `(hK.of_le (by simp)).comp hp.contDiffOn hm`. Establish `hJ : ContDiff ℝ 1 (fun v : I → ℝ => A * ∑ j, (v - o) j • c j)` using `by fun_prop`.
-
-Conclude with `trL.contDiff.comp_contDiffOn (hJ.contDiffOn.mul hKc)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_b {U : Set (I → ℝ)} (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (A : V →L[ℂ] V)
     (c : I → (V →L[ℂ] V)) (o : I → ℝ) (s : ℝ) (hK : ContDiffOn ℝ ∞ K (U ×ˢ U))
@@ -254,9 +250,9 @@ theorem contDiffOn_b {U : Set (I → ℝ)} (K : (I → ℝ) × (I → ℝ) → (
   exact trL.contDiff.comp_contDiffOn (hJ.contDiffOn.mul hKc)
 
 /- English proof (translation)
-Establish `h : (w, (0 : I → ℝ)) = ∑ i, w i • ((Pi.single i 1 : I → ℝ), (0 : I → ℝ))`. Use extensionality with `j`. Simplify using `[Prod.fst_sum, Finset.sum_apply, Pi.single_apply]`. Simplify using `[Prod.snd_sum]`. Rewrite using `[h, map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clm_fst_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (I → ℝ) × (I → ℝ) →L[ℝ] E) (w : I → ℝ) :
     L (w, 0) = ∑ i, w i • L (Pi.single i 1, 0) := by
@@ -270,43 +266,37 @@ theorem clm_fst_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (
 end Analytic
 
 /- English proof (translation)
-Introduce `I _ _ V _ _ _ e c S Γ U o K hU hconv ho hec hΓe hΓc hΓS hS hSe hSd hK hΓK hch hex`. Take `⟨C, hCU, hC, hsupp⟩` from `hex`. Establish `hUU : IsOpen (U ×ˢ U)` using `hU.prod hU`. Establish `hpath : ∀ s ∈ Icc (0 : ℝ) 1, ∀ v ∈ U, path o s v ∈ U ×ˢ U` using `fun s hs v hv => ⟨hconv hv ho hs.1 (by linarith [hs.2]) (by ring), hv⟩`. Establish `hKd : ∀ y ∈ U ×ˢ U, DifferentiableAt ℝ K y` using `fun y hy => (hK.contDiffAt (hUU.mem_nhds hy)).differentiableAt (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSdiff : Differentiable ℝ S` using `hS.differentiable (by simp)`. Establish `hSc : Continuous S` using `hS.continuous`. Establish `hdS : Continuous (deriv S)` using `hS.continuous_deriv (by simp)`. Establish `hPc : Continuous (fun p : ℝ × (I → ℝ) => path o p.1 p.2)`. Unfold `path`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Establish `hPv : ∀ s, Continuous (path o s : (I → ℝ) → _)` using `fun s => by`. Unfold `path`. Use `fun_prop`. Use `set D : ℝ → (I → ℝ) → ℂ := fun s v => trL (Γ * deriv S s * K (path o s v)) + trL (Γ * S s * fderiv ℝ K (path o s v) (v - o, 0)) with hD`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : ℝ → (I → ℝ) → ℂ := fun s v => trL (Γ * S s * K (path o s v)) with hA`. Establish `hDc : ContinuousOn (Function.uncurry D) (Icc 0 1 ×ˢ U)`. Establish `hmaps : MapsTo (fun p : ℝ × (I → ℝ) => path o p.1 p.2) (Icc 0 1 ×ˢ U) (U ×ˢ U)` using `fun p hp => hpath _ hp.1 _ hp.2`. Establish `hKc` using `hK.continuousOn.comp hPc.continuousOn hmaps`. Establish `hFc` using `(hK.continuousOn_fderiv_of_isOpen hUU (by simp)).comp hPc.continuousOn hmaps`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousOn (fun p : ℝ × (I → ℝ) => Γ * deriv S p.1) (Icc 0 1 ×ˢ U)` using `Continuous.continuousOn (by fun_prop)`. Establish `h2 : ContinuousOn (fun p : ℝ × (I → ℝ) => Γ * S p.1) (Icc 0 1 ×ˢ U)` using `Continuous.continuousOn (by fun_prop)`. Establish `h3 : ContinuousOn (fun p : ℝ × (I → ℝ) => ((p.2 - o, 0) : (I → ℝ) × (I → ℝ))) (Icc 0 1 ×ˢ U)` using `Continuous.continuousOn (by fun_prop)`. Conclude with `(trL.continuous.comp_continuousOn (h1.mul hKc)).add (trL.continuous.comp_continuousOn (h2.mul (hFc.clm_apply h3)))`. Establish `hFTC : ∀ v ∈ U, ∫ s in (0 : ℝ)..1, D s v = A 1 v - A 0 v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `v hv`. Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun s => A s v) (f' := fun s => D s v) (fun s hs => ?_) ?_` and prove the remaining obligations. Rewrite `hs` using `[uIcc_of_le zero_le_one]`. Conclude with `hasDerivAt_A K S Γ o v s (hSdiff s) (hKd _ (hpath s hs v hv))`. Use `ContinuousOn.intervalIntegrable_of_Icc zero_le_one ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hDc.comp (f := fun s : ℝ => (s, v)) (Continuous.continuousOn (by fun_prop)) (fun s hs => ⟨hs, hv⟩)`. Establish `hcomm : ∀ y ∈ U ×ˢ U, ∀ w, Γ * fderiv ℝ K y w = fderiv ℝ K y w * Γ`. Introduce `y hy w`. Establish `h1` using `(hKd y hy).hasFDerivAt.const_mul Γ`. Establish `h2` using `(hKd y hy).hasFDerivAt.mul_const' Γ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : (fun y => Γ * K y) = fun y => K y * Γ` using `funext hΓK`. Rewrite `h1` using `[h3]`. Establish `h4` using `congrArg (fun L => L w) (h1.unique h2)`. Simplify using `using h4`. Establish `hdiv : ∀ s ∈ Icc (0 : ℝ) 1, ∫ v in C, D s v = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s hs`. Use `set b : I → (I → ℝ) → ℂ := fun i v => trL (Γ * e i * S s * (∑ j, (v - o) j • c j) * K (path o s v)) with hb`. Establish `hbd : ∀ i, ContDiffOn ℝ 1 (b i) U` using `fun i => contDiffOn_b K (Γ * e i * S s) c o s hK (hpath s hs)`. Establish `hz : ∀ i, ∀ v ∈ U, v ∉ C → ∀ᶠ w in nhds v, b i w = 0`. Introduce `i v hv hvC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : ∀ᶠ y in nhds (path o s v), K y = 0` using `hsupp s hs v hv hvC`. Use `filter_upwards [((hPv s).tendsto v).eventually h] with w hw`. Simplify using `[hb, hw]`. Establish `hpt : ∀ v ∈ U, D s v = ∑ i, fderiv ℝ (b i) v (Pi.single i 1)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy` using `hpath s hs v hv`. Use `set y := path o s v with hydef`. Establish `hk` using `key_alg (trC (V := V)) trC_mul_comm e c (fun i => fderiv ℝ K y (Pi.single i 1, 0)) (fun i => fderiv ℝ K y (0, Pi.single i 1)) Γ (S s) (K y) (s : ℂ) (fun j => (((v - o) j : ℝ) : ℂ)) hec hΓc (hΓS s) (fun i => hSe s i) (fun i => hcomm y hy _) (hch y hy)`. Simplify using `only [Complex.coe_smul, trC_apply] at hk`. Establish `hfd : ∀ i, fderiv ℝ (b i) v (Pi.single i 1) = trL (Γ * e i * S s * c i * K y) + trL (Γ * e i * S s * (∑ j, (v - o) j • c j) * (s • fderiv ℝ K y (Pi.single i 1, 0) + fderiv ℝ K y (0, Pi.single i 1)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h` using `fderiv_b K (Γ * e i * S s) c o v (Pi.single i 1) s (hKd _ hy)`. Establish `h1 : (∑ j, (Pi.single i (1 : ℝ) : I → ℝ) j • c j) = c i`. Simplify using `[Pi.single_apply]`. Establish `h2 : fderiv ℝ K y (s • (Pi.single i 1 : I → ℝ), (Pi.single i 1 : I → ℝ)) = s • fderiv ℝ K y (Pi.single i 1, 0) + fderiv ℝ K y (0, Pi.single i 1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_smul, ← map_add]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h1, ← hydef, h2]`. Conclude with `h`. Simplify using `only [hfd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hk, hD]`. Simplify using `only`. Rewrite using `[hSd s, ← hydef, clm_fst_eq]`. Establish `hcalc : ∫ v in C, D s v = ∑ i, ∫ v in C, fderiv ℝ (b i) v (Pi.single i 1)`. Rewrite using `[setIntegral_congr_fun hC.measurableSet (fun v hv => hpt v (hCU hv))]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((((hbd i).continuousOn_fderiv_of_isOpen hU le_rfl).clm_apply continuousOn_const).mono hCU).integrableOn_compact hC`. Rewrite using `[hcalc]`. Conclude with `Finset.sum_eq_zero fun i _ => setIntegral_fderiv_eq_zero hU hCU hC (b i) (hbd i) (hz i) _`. Establish `hAc : ∀ s ∈ Icc (0 : ℝ) 1, ContinuousOn (A s) U` using `fun s hs => trL.continuous.comp_continuousOn (continuousOn_const.mul (hK.continuousOn.comp (hPv s).continuousOn (hpath s hs)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hint : Integrable (Function.uncurry D) ((volume.restrict (uIoc (0 : ℝ) 1)).prod (volume.restrict C))`. Rewrite using `[Measure.prod_restrict, uIoc_of_le zero_le_one]`. Establish `hc : IsCompact (Icc (0 : ℝ) 1 ×ˢ C)` using `isCompact_Icc.prod hC`. Establish `h : IntegrableOn (Function.uncurry D) (Icc (0 : ℝ) 1 ×ˢ C) (volume.prod volume)` using `(hDc.mono (prod_mono_right hCU)).integrableOn_compact hc`. Conclude with `h.mono_set (prod_mono_left Ioc_subset_Icc_self)`.
-
-Establish `hz1 : ∀ s ∈ Icc (0 : ℝ) 1, ∀ v ∈ U \ C, A s v = 0`. Introduce `s hs v hv`. Establish `h : K (path o s v) = 0` using `(hsupp s hs v hv.1 hv.2).self_of_nhds`. Simplify using `[hA, h]`. Establish `h0 : (0 : ℝ) ∈ Icc (0 : ℝ) 1` using `by simp`.
-
-Establish `h1 : (1 : ℝ) ∈ Icc (0 : ℝ) 1` using `by simp`. Establish `hgoal : ∫ v in U, A 1 v = ∫ v in U, A 0 v`. Rewrite using `[setIntegral_eq_of_subset_of_forall_diff_eq_zero hU.measurableSet hCU (hz1 1 h1), setIntegral_eq_of_subset_of_forall_diff_eq_zero hU.measurableSet hCU (hz1 0 h0), ← sub_eq_zero, ← integral_sub (((hAc 1 h1).mono hCU).integrableOn_compact hC) (((hAc 0 h0).mono hCU).integrableOn_com …`. Combine the equalities or inequalities in the displayed calculation. Establish `hp1 : ∀ v, path o 1 v = (v, v)` using `fun v => by simp [path]`.
-
-Establish `hp0 : ∀ v, path o 0 v = (o, v)` using `fun v => by simp [path]`. Simplify using `only [hA, hp1, hp0, trL_apply] at hgoal`. Conclude with `hgoal`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homot : PositivityTheory.RgBcC.Homot := by
   intro I _ _ V _ _ _ e c S Γ U o K hU hconv ho hec hΓe hΓc hΓS hS hSe hSd hK hΓK hch hex

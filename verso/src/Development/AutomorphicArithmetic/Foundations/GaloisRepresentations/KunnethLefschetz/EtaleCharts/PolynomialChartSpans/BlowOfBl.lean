@@ -15,7 +15,7 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSec
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Use `algebraize [φ]`. Set `` to `MvPolynomial.algebraMvPolynomial (σ := σ) (R := A) (S := B)`. Establish `hp : Algebra.IsPushout A (MvPolynomial σ A) B (MvPolynomial σ B)` using `inferInstance`. Use `haveI := hp.symm`. Conclude with `RingHom.Etale.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) h`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (h : φ.Etale) (σ : Type) :
     (MvPolynomial.map φ : MvPolynomial σ A →+* MvPolynomial σ B).Etale := by
@@ -26,9 +26,9 @@ private theorem etale_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B
   exact RingHom.Etale.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) h
 
 /- English proof (translation)
-Set `e : MvPolynomial (Fin n ⊕ Fin d) R ≃+* MvPolynomial (Fin d) (MvPolynomial (Fin n) R)` to `((MvPolynomial.renameEquiv R (Equiv.sumComm (Fin n) (Fin d))).trans (MvPolynomial.sumAlgEquiv R (Fin d) (Fin n))).toRingEquiv`. Establish `he : (e : MvPolynomial (Fin n ⊕ Fin d) R →+* MvPolynomial (Fin d) (MvPolynomial (Fin n) R)).Etale` using `RingHom.Etale.of_bijective (show Function.Bijective e from e.bijective)`. Establish `key : (MvPolynomial.eval₂Hom (ψ.comp φ) (Sum.elim (fun k => ψ (u k)) t) : MvPolynomial (Fin n ⊕ Fin d) R →+* C) = (MvPolynomial.eval₂Hom ψ t).comp ((MvPolynomial.map (MvPolynomial.eval₂Hom φ u)).comp (e : _ →+* _))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e]`. Apply the tactic sequence `rintro (i | j) <;> simp [e]`. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ he (etale_map _ hu _)) ht`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etale_sum {R B C : Type} [CommRing R] [CommRing B] [CommRing C] (φ : R →+* B) (ψ : B →+* C)
     {n d : ℕ} (u : Fin n → B) (t : Fin d → C)
@@ -52,9 +52,7 @@ private theorem etale_sum {R B C : Type} [CommRing R] [CommRing B] [CommRing C] 
   exact RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ he (etale_map _ hu _)) ht
 
 /- English proof (translation)
-Establish `h` using `etale_sum (algebraMap R (Sec Z c.U)) (secMap (p1 Z) c.h1).toRingHom c.u c.s c.coord.2 (dCoord R Z d c)`. Establish `e : ((secMap (p1 Z) c.h1).toRingHom.comp (algebraMap R (Sec Z c.U))) = Pb.strV (XX Z).hom c.N`. Use extensionality with `r`. Conclude with `(secMap (p1 Z) c.h1).commutes r`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_etale {R : Type} [CommRing R] {Z : Sch R} {d : ℕ} (c : DChart Z d) :
     (MvPolynomial.eval₂Hom (Pb.strV (XX Z).hom c.N) (Sum.elim (fun k => secMap (p1 Z) c.h1 (c.u k)) c.s) :
@@ -68,7 +66,7 @@ private theorem chart_etale {R : Type} [CommRing R] {Z : Sch R} {d : ℕ} (c : D
   exact h
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ker_app {R : Type} [CommRing R] {X Y : Sch R} (i : Y ⟶ X) (V : X.left.Opens) :
     RingHom.ker (i.left.app V).hom = RingHom.ker (secMap i (le_refl (i.left ⁻¹ᵁ V))).toRingHom := by
@@ -76,29 +74,19 @@ private theorem ker_app {R : Type} [CommRing R] {X Y : Sch R} (i : Y ⟶ X) (V :
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ Z W d _ _ π hπ`. Take `⟨-, hcl, hoff⟩` from `blOff R π hπ`. Take `⟨L, s, hdiv⟩` from `exDiv R d π hπ`. Establish `hloc : ∀ y : W.left, ∃ (V : W.left.Opens) (s : Γ(W.left, V)), y ∈ V ∧ IsAffineOpen V ∧ s ∈ nonZeroDivisors Γ(W.left, V) ∧ RingHom.ker ((exI π).left.app V).hom = Ideal.span {s}`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y ∈ iSup L.U` using `by rw [L.cov.cov]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `⟨L.U j, s j, hj, L.cov.aff j, hdiv.nzd j, (ker_app (exI π) (L.U j)).trans (hdiv.ker j)⟩`. Take `⟨D, f, f_nat, f_u, f_unit, hsup, het, hσ⟩` from `lineEx (exI π).left hloc`. Establish `hex : ∀ z : Z.left, ∃ c : DChart Z d, (dg Z).left z ∈ c.N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨U, u, hz, hc⟩` from `coordEx R Z d z`. Take `⟨c, -, -, h⟩` from `(dChartEx R Z d).1 U u hc z hz`. Conclude with `⟨c, h⟩`. Use `choose c hc using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompactSpace Z.left := QuasiCompact.compactSpace_of_compactSpace Z.hom`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun z => (((dg Z).left ⁻¹ᵁ (c z).N : Z.left.Opens) : Set Z.left)) (fun z => ((dg Z).left ⁻¹ᵁ (c z).N).isOpen) (fun z _ => Set.mem_iUnion.2 ⟨z, hc z⟩)`. Establish `hb : ∀ α : T, BChart π (c α).N (c α).s` using `fun α => (blChart R π hπ d (c α)).some`. Establish `hσ' : ∀ (α : T) (k : Fin d), ∃ σ : ((hb α).V k : Scheme.{0}) ⟶ D.Y, σ ≫ D.f = ((hb α).V k).ι ∧ f σ = ((hb α).V k).topIso.inv.hom (secMap π ((hb α).le k) ((c α).s k))`. Introduce `α k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, hk, -⟩` from `exChart R π d (c α) (hb α) k`. Conclude with `hσ ((hb α).V k) _ ((hb α).aff k) ((hb α).nzd k) ((ker_app (exI π) _).trans hk)`. Use `choose σ σ_f f_σ using hσ'`. Establish `hopen : IsOpen (Set.range (dg Z).left)ᶜ` using `by haveI : IsClosedImmersion (dg Z).left := by`. Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.diagonal Z.hom)`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Conclude with `(IsClosedImmersion.isClosedEmbedding (dg Z).left).isClosed_range.isOpen_compl`. Set `U : (XX Z).left.Opens` to `⟨_, hopen⟩`. Establish `hU : (U : Set (XX Z).left) = (Set.range (dg Z).left)ᶜ` using `rfl`. Take `⟨hiso, hpre⟩` from `hoff U hU`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨D, het, ⟨{ closed := by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.diagonal Z.hom)`. Use `infer_instance`. Use `f := fun a => f a`. Use `f_nat := f_nat`.
-
-Use `f_u := f_u`. Use `U := U`. Use `U_eq := hU`. Use `iso := hiso`. Use `unit := fun {V} a ha => f_unit a fun v hv => by`.
-
-Establish `h1 : (a ≫ D.f) v ∈ ((π.left ⁻¹ᵁ U : W.left.Opens) : Set W.left)`. Establish `h2` using `ha (show v ∈ (⊤ : V.Opens) from trivial)`. Simplify using `using h2`. Rewrite `h1` using `[hpre]`. Conclude with `h1 hv`.
-
-Use `loc := hsup`. Use `ι := T`. Use `V := fun α => (c α).N`. Use `cover := fun z _ => by`. Take `⟨w, hw⟩` from `Set.mem_iUnion.1 (hT (Set.mem_univ z))`.
-
-Take `⟨hwT, hw⟩` from `Set.mem_iUnion.1 hw`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨w, hwT⟩, hw⟩`. Use `c := fun α => { affine := (c α).aff n := d x := fun k => secMap (p1 Z) (c α).h1 ((c α).u k) t := (c α).s etale := chart_etale (c α) ker := (ker_app (dg Z) (c α).N).trans (c α).ker C := (hb α).V C_aff := (hb α).aff C_le := (hb α).le C_cover := (hb α).cov.ge u := (hb α).y surj := ( …`. Use `σ := σ`. Use `σ_f := σ_f`.
-
-Use `f_σ := f_σ }⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blowOfBl : BlowOfBl := by
   intro R _ _ Z W d _ _ π hπ

@@ -12,9 +12,7 @@ namespace GlobalTheory.HatNF.ZetaVanish
 open MeasureTheory Topology Filter in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Establish `h1 : Matrix.conjTranspose g * _root_.Formalism.QuantumDeterminants.Hpk k r * g = _root_.Formalism.QuantumDeterminants.Hpk k r` using `hg.1`. Establish `h2 : (_root_.Formalism.QuantumDeterminants.Hpk k r * Matrix.conjTranspose g * _root_.Formalism.QuantumDeterminants.Hpk k r) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq]`.
-
-Conclude with `Matrix.isUnit_det_of_left_inverse h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma isUnit_det_of_mem_Glev {k r : ℕ} {g : _root_.Formalism.FourierDecayAlt.Q.Mx k r}
     (hg : g ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r)) : IsUnit (Matrix.det g) := by
@@ -29,13 +27,11 @@ private lemma isUnit_det_of_mem_Glev {k r : ℕ} {g : _root_.Formalism.FourierDe
 open MeasureTheory Topology Filter in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `h0`. Establish `hnull : ∀ a ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r), μ (_root_.Formalism.QuantumDeterminants.lmulM a ⁻¹' V) = 0`. Introduce `a ha`. Rewrite using `[← Measure.map_apply (_root_.Formalism.FourierDecayAlt.P.B2x5.measurable_lmulM a) hV.measurableSet, hμ.left a ha, h0]`. Take `⟨t, hts, htc, hteq⟩` from `TopologicalSpace.isOpen_biUnion_countable (_root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r)) (fun a ↦ _root_.Formalism.QuantumDeterminants.lmulM a ⁻¹' V) (fun a _ ↦ hV.preimage (_root_.Formalism.QuantumDeterminants.BesselUnitaryEquiv.continuous_lmulM a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hU : μ (⋃ a ∈ t, _root_.Formalism.QuantumDeterminants.lmulM a ⁻¹' V) = 0` using `(measure_biUnion_null_iff htc).2 fun a ha ↦ hnull a (hts ha)`. Rewrite `hU` using `[hteq]`. Establish `hae : ∀ᵐ y ∂μ, y ∉ ⋃ a ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r), _root_.Formalism.QuantumDeterminants.lmulM a ⁻¹' V` using `measure_eq_zero_iff_ae_notMem.1 hU`. Establish `hfalse : ∀ᵐ _y ∂μ, False` using `by filter_upwards [hae, _root_.Formalism.FourierDecayAlt.P.B5.haar_ae hμ] with y hy hyU`. Apply `hy` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Set.mem_iUnion₂.2 ⟨Matrix.of g₀ * (Matrix.of y)⁻¹, _root_.Formalism.FourierDecayAlt.P.Qx3.glev_mul hg₀ (_root_.Formalism.FourierDecayAlt.Q.TInvW.glev_inv hyU), ?_⟩` and prove the remaining obligations. Use `show _root_.Formalism.QuantumDeterminants.lmulM _ y ∈ V`. Unfold `_root_.Formalism.QuantumDeterminants.lmulM`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_det_of_mem_Glev hyU), Matrix.mul_one]`. Conclude with `hgV`.
-
-Conclude with `hμ.ne_zero (ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 hfalse))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma haar_isOpen_ne_zero_of_mem_Glev {k r : ℕ} {μ : Measure (_root_.Formalism.QuantumDeterminants.Mt k r)}
     (hμ : _root_.Formalism.FourierDecayAlt.B.IsHaarOn (_root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r)) μ) {V : Set (_root_.Formalism.QuantumDeterminants.Mt k r)} (hV : IsOpen V)
@@ -67,53 +63,43 @@ private lemma haar_isOpen_ne_zero_of_mem_Glev {k r : ℕ} {μ : Measure (_root_.
 open MeasureTheory Topology Filter in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Use `set TT := _root_.Formalism.QuantumDeterminants.Tz k r z * _root_.Formalism.QuantumDeterminants.Tz k r z' with hTT`. Use `set ζf : _root_.Formalism.FourierDecayAlt.Q.Mx k r → ℂ := _root_.Formalism.FourierDecayAlt.Q.zetaL k r z z' (Fin.last r) with hζf`. Establish `hζc : Continuous ζf` using `(_root_.Formalism.FourierDecayAlt.P.Qx5.zetaL_contDiff k r z z' (Fin.last r)).continuous`. Establish `hzeta : ∀ g, _root_.Formalism.FourierDecayAlt.P5.zeta k r z z' g = ζf g` using `fun g ↦ rfl`. Establish `hH : ∀ g, _root_.Formalism.FourierDecayAlt.Q.GGl k r z z' g = Complex.normSq (ζf g) - TT` using `fun g ↦ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD : ∀ g, (c, g) ∈ _root_.Formalism.FourierDecayAlt.Q.DomR k r z z' ↔ c ∈ _root_.Formalism.QuantumDeterminants.OmX r ∧ g ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r) ∧ 0 < _root_.Formalism.FourierDecayAlt.Q.GGl k r z z' g` using `fun g ↦ Iff.rfl`. Take `⟨hc, hg₀G, hg₀H⟩` from `(hD g₀).1 hg₀`. Assume the negation of the conclusion as `hw`. Use `set w := h g₀ with hwdef`. Establish `hwpos : 0 < ‖w‖` using `norm_pos_iff.2 hw`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ζ₀ := ζf g₀ with hζ₀`. Use `set ε := (Complex.normSq ζ₀ - TT) / 2 with hε`. Establish `hg₀H' : 0 < Complex.normSq ζ₀ - TT` using `by rw [hζ₀, ← hH]; exact hg₀H`. Establish `hεpos : 0 < ε` using `by rw [hε]; linarith`. Use `set R := ‖ζ₀‖ + 1 with hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set K := {g | g ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r) ∧ ε ≤ _root_.Formalism.FourierDecayAlt.Q.GGl k r z z' g ∧ ‖ζf g‖ ≤ R} with hKdef`. Establish `hK : IsCompact K` using `_root_.Formalism.FourierDecayAlt.P5.HerB.isCompact_zeta_le z z' hz hz' hT hT' ε R`. Establish `hKD : K ⊆ {g | (c, g) ∈ _root_.Formalism.FourierDecayAlt.Q.DomR k r z z'}` using `fun g hg ↦ (hD g).2 ⟨hc, hg.1, lt_of_lt_of_le hεpos hg.2.1⟩`. Use `set K' := K ∩ h ⁻¹' {x | ‖w‖ / 2 ≤ ‖x - w‖} with hK'def`. Establish `hK'c : IsCompact K'` using `hK.of_isClosed_subset ((hcont.mono hKD).preimage_isClosed_of_isClosed hK.isClosed (isClosed_le continuous_const (continuous_norm.comp (continuous_sub_right w)))) Set.inter_subset_left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hCc : IsCompact (ζf '' K')` using `hK'c.image hζc`. Establish `hζ₀C : ζ₀ ∉ ζf '' K'`. Introduce and unpack `⟨y, ⟨hyK, hyh⟩, hy⟩`. Establish `hyw : h y = w` using `hfib y g₀ (hKD hyK) hg₀ (by rw [hzeta, hzeta, hy])`. Establish `: ‖w‖ / 2 ≤ ‖h y - w‖` using `hyh`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[hyw, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨δ₁, hδ₁, hball₁⟩` from `Metric.isOpen_iff.1 hCc.isClosed.isOpen_compl ζ₀ hζ₀C`. Use `set O := {ζ : ℂ | TT + ε < Complex.normSq ζ} ∩ {ζ | ‖ζ‖ < R} with hOdef`. Establish `hO : IsOpen O` using `(isOpen_lt continuous_const Complex.continuous_normSq).inter (isOpen_lt continuous_norm continuous_const)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hζ₀O : ζ₀ ∈ O`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show TT + ε < Complex.normSq ζ₀`. Rewrite using `[hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖ζ₀‖ < R`. Rewrite using `[hR]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ρ, hρ, hballO⟩` from `Metric.isOpen_iff.1 hO ζ₀ hζ₀O`. Use `set δ := min δ₁ ρ with hδdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : 0 < δ` using `lt_min hδ₁ hρ`. Set `b : ContDiffBump ζ₀` to `⟨δ / 4, δ / 2, by positivity, by linarith⟩`. Establish `hball : ∀ ζ, ζ ∈ tsupport b → ζ ∈ Metric.ball ζ₀ δ`. Introduce `ζ hζ`. Rewrite `hζ` using `[b.tsupport_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Metric.closedBall_subset_ball (show δ / 2 < δ by linarith) hζ`. Establish `hballC : Metric.ball ζ₀ δ ⊆ (ζf '' K')ᶜ` using `(Metric.ball_subset_ball (min_le_left _ _)).trans hball₁`. Establish `hballO' : Metric.ball ζ₀ δ ⊆ O` using `(Metric.ball_subset_ball (min_le_right _ _)).trans hballO`. Establish `hgood : ∀ g, g ∈ _root_.Formalism.FourierDecayAlt.Q.Glev k r (Fin.last r) → b (ζf g) ≠ 0 → g ∈ K ∧ ‖h g - w‖ < ‖w‖ / 2`. Introduce `g hg hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ζf g ∈ Metric.ball ζ₀ δ` using `hball _ (subset_tsupport _ hb)`. Establish `hO'` using `hballO' hmem`. Establish `h1 : TT + ε < Complex.normSq (ζf g)` using `hO'.1`. Establish `h2 : ‖ζf g‖ < R` using `hO'.2`. Establish `hgK : g ∈ K` using `⟨hg, by rw [hH]; linarith, le_of_lt h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨hgK, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hballC hmem ⟨g, ⟨hgK, le_of_not_gt hlt⟩, rfl⟩`. Establish `hre : ∀ g, ‖h g - w‖ < ‖w‖ / 2 → 0 < (star w * h g).re`. Introduce `g hg`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (star w * h g).re = (star w * w).re + (star w * (h g - w)).re`. Rewrite using `[← Complex.add_re, ← mul_add, add_sub_cancel]`. Establish `hww : (star w * w).re = ‖w‖ ^ 2`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `hlow : -(‖w‖ * ‖h g - w‖) ≤ (star w * (h g - w)).re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Complex.abs_re_le_norm (star w * (h g - w))`. Rewrite `h3` using `[norm_mul, norm_star]`. Combine the linear relations using `[neg_abs_le (star w * (h g - w)).re]`. Establish `h4 : ‖w‖ * ‖h g - w‖ ≤ ‖w‖ * (‖w‖ / 2)` using `mul_le_mul_of_nonneg_left hg.le hwpos.le`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hof : Continuous (fun y : _root_.Formalism.QuantumDeterminants.Mt k r ↦ (Matrix.of y : _root_.Formalism.FourierDecayAlt.Q.Mx k r))` using `continuous_id`. Use `set F : _root_.Formalism.QuantumDeterminants.Mt k r → ℂ := fun y ↦ ((b (ζf (Matrix.of y)) : ℝ) : ℂ) * h (Matrix.of y) with hFdef`. Establish `hint0 : ∫ y, F y ∂μ = 0` using `horth b b.contDiff b.hasCompactSupport (fun ζ hζ ↦ by`. Establish `h1 : TT + ε < Complex.normSq ζ` using `(hballO' (hball ζ hζ)).1`. Use `show TT < Complex.normSq ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use `set Kt : Set (_root_.Formalism.QuantumDeterminants.Mt k r) := {y | Matrix.of y ∈ K} with hKtdef`. Establish `hKt : IsCompact Kt` using `hK`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun S hS ↦ hμ.finite_compact S hS⟩`. Establish `hFc : ContinuousOn F Kt` using `(Complex.continuous_ofReal.comp (b.continuous.comp (hζc.comp hof))).continuousOn.mul ((hcont.mono hKD).comp hof.continuousOn fun y hy ↦ hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIon : IntegrableOn F Kt μ` using `hFc.integrableOn_compact hKt`. Establish `hae : F =ᵐ[μ] Kt.indicator F` using `by filter_upwards [_root_.Formalism.FourierDecayAlt.P.B5.haar_ae hμ] with y hy`. Distinguish the cases in `hyK : y ∈ Kt`. Rewrite using `[Set.indicator_of_mem hyK]`. Rewrite using `[Set.indicator_of_notMem hyK]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b (ζf (Matrix.of y)) = 0`. Assume the negation of the conclusion as `hb`. Conclude with `hyK (hgood _ hy hb).1`. Simplify using `[hFdef, hb0]`. Establish `hFint : Integrable F μ` using `((integrable_indicator_iff hKt.measurableSet).2 hIon).congr hae.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : _root_.Formalism.QuantumDeterminants.Mt k r → ℝ := fun y ↦ (star w * F y).re with hfdef`. Establish `hfint : Integrable f μ` using `(hFint.const_mul (star w)).re`. Establish `hfint0 : ∫ y, f y ∂μ = 0`. Establish `e` using `ContinuousLinearMap.integral_comp_comm Complex.reCLM (hFint.const_mul (star w))`. Simplify using `only [Complex.reCLM_apply] at e`.
-
-Rewrite using `[hfdef, e, integral_const_mul, hint0, mul_zero, Complex.zero_re]`. Establish `hfval : ∀ y, f y = b (ζf (Matrix.of y)) * (star w * h (Matrix.of y)).re`. Introduce `y`. Simplify using `only [hfdef, hFdef]`. Rewrite using `[mul_left_comm, Complex.re_ofReal_mul]`.
-
-Establish `hfnn : 0 ≤ᵐ[μ] f` using `by filter_upwards [_root_.Formalism.FourierDecayAlt.P.B5.haar_ae hμ] with y hy`. Rewrite using `[Pi.zero_apply, hfval]`. Distinguish the cases in `hb : b (ζf (Matrix.of y)) = 0`. Rewrite using `[hb, zero_mul]`. Conclude with `mul_nonneg (b.nonneg) (hre _ (hgood _ hy hb).2).le`.
-
-Establish `hf0 : f =ᵐ[μ] 0` using `(integral_eq_zero_iff_of_nonneg_ae hfnn hfint).1 hfint0`. Use `set V : Set (_root_.Formalism.QuantumDeterminants.Mt k r) := {y | ζf (Matrix.of y) ∈ Metric.ball ζ₀ (δ / 4)} with hVdef`. Establish `hVo : IsOpen V` using `Metric.isOpen_ball.preimage (hζc.comp hof)`. Establish `hg₀V : (g₀ : _root_.Formalism.QuantumDeterminants.Mt k r) ∈ V` using `Metric.mem_ball_self (by positivity)`. Use `haar_isOpen_ne_zero_of_mem_Glev hμ hVo (g₀ := g₀) hg₀G hg₀V ?_` and prove the remaining obligations.
-
-Use `measure_eq_zero_iff_ae_notMem.2 ?_` and prove the remaining obligations. Use `filter_upwards [hf0, _root_.Formalism.FourierDecayAlt.P.B5.haar_ae hμ] with y hy0 hyG hyV`. Establish `hb1 : b (ζf (Matrix.of y)) = 1` using `b.one_of_mem_closedBall (Metric.ball_subset_closedBall hyV)`. Establish `hpos` using `hre _ (hgood _ hyG (by rw [hb1]; exact one_ne_zero)).2`. Establish `: f y = 0` using `hy0`.
-
-Rewrite `this` using `[hfval, hb1, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma zetaFunction_vanish_of_orthogonal_bumps_lemma {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
     (hz : _root_.Formalism.QuantumDeterminants.inWb k r z) (hz' : _root_.Formalism.QuantumDeterminants.inWb k r z') (hT : 0 < _root_.Formalism.QuantumDeterminants.Tz k r z) (hT' : 0 < _root_.Formalism.QuantumDeterminants.Tz k r z')
@@ -260,9 +246,9 @@ private lemma zetaFunction_vanish_of_orthogonal_bumps_lemma {k r : ℕ} {z z' : 
 open MeasureTheory in
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs μ c h hμ hcont hfib horth g hg`. Establish `hT : 0 < _root_.Formalism.QuantumDeterminants.Tz P.k P.r Bs.z`. Take `⟨⟩` from `Bs`. Use the matching hypothesis. Establish `hT' : 0 < _root_.Formalism.QuantumDeterminants.Tz P.k P.r Bs.z'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use the matching hypothesis. Establish an intermediate fact.
 
-Take `⟨⟩` from `Bs`. Use the matching hypothesis. Conclude with `zetaFunction_vanish_of_orthogonal_bumps_lemma Bs.z_mem Bs.z'_mem hT hT' μ c h hμ hcont hfib horth g hg`.
+Extract witnesses or component facts from the available result. Use the matching hypothesis. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HatNF.ZetaVanish.zeta_vanish : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : _root_.Formalism.FourierDecayAlt.M.Par) (Bs : _root_.Formalism.FourierDecayAlt.B.RealPlaceData P.k P.r Wp Wq) (μ : Measure (_root_.Formalism.QuantumDeterminants.Mt P.k P.r)) (c : Fin P.r → ℂ) (h : _root_.Formalism.FourierDecayAlt.Q.Mx P.k P.r → ℂ), _root_.Formalism.FourierDecayAlt.B.IsHaarOn (_root_.Formalism.FourierDecayAlt.Q.Glev P.k P.r (Fin.last P.r)) μ → ContinuousOn h {g | (c, g) ∈ _root_.Formalism.FourierDecayAlt.Q.DomR P.k P.r Bs.z Bs.z'} → (∀ g g', (c, g) ∈ _root_.Formalism.FourierDecayAlt.Q.DomR P.k P.r Bs.z Bs.z' → (c, g') ∈ _root_.Formalism.FourierDecayAlt.Q.DomR P.k P.r Bs.z Bs.z' → _root_.Formalism.FourierDecayAlt.P5.zeta P.k P.r Bs.z Bs.z' g = _root_.Formalism.FourierDecayAlt.P5.zeta P.k P.r Bs.z Bs.z' g' → h g = h g') → (∀ φ : ℂ → ℝ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ → HasCompactSupport φ → tsupport φ ⊆ {ζ | _root_.Formalism.QuantumDeterminants.Tz P.k P.r Bs.z * _root_.Formalism.QuantumDeterminants.Tz P.k P.r Bs.z' < Complex.normSq ζ} → ∫ y : _root_.Formalism.QuantumDeterminants.Mt P.k P.r, ((φ (_root_.Formalism.FourierDecayAlt.P5.zeta P.k P.r Bs.z Bs.z' (Matrix.of y)) : ℝ) : ℂ) * h (Matrix.of y) ∂μ = 0) → ∀ g, (c, g) ∈ _root_.Formalism.FourierDecayAlt.Q.DomR P.k P.r Bs.z Bs.z' → h g = 0 := by
   intro Wp Wq _ _ _ _ _ _ P Bs μ c h hμ hcont hfib horth g hg

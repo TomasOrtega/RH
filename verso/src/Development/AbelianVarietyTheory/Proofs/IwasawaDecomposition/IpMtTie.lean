@@ -11,15 +11,15 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.IpMt
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z u a jM hmem hper`. Take `⟨j0, hinj, -, hmem0, hper0, hpos⟩` from `PerConj.period_conj I hOk hP l Z u a`. Establish `uniq : ∀ z ∈ (I.fm l u a).ptC, ∀ z' ∈ (I.fm l u a).ptC, (∀ w, (I.fm l u a).ipP z w = (I.fm l u a).ipP z' w) → z = z'`. Introduce `z hz z' hz' h`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `hpos _ (sub_mem hz hz') (sub_ne_zero.2 hne)`. Rewrite `h1` using `[map_sub (I.fm l u a).ipP, LinearMap.sub_apply, h, sub_self]`. Simplify using `at h1`. Establish `hj : ∀ G, I.jStd l u a G = jM G`. Introduce `G`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : ∃ z, z ∈ (I.fm l u a).ptC ∧ ∀ w, (I.per l u a).period w G = (I.fm l u a).ipP z w` using `⟨jM G, hmem G, fun w => hper w G⟩`. Establish `hs` using `Classical.epsilon_spec hex`. Conclude with `uniq _ hs.1 _ (hmem G) fun w => (hs.2 w).symm.trans (hper w G)`. Establish `hform : ∀ F G, I.ipMt l u a F G = (I.fm l u a).ipP (jM G) (jM F)`. Introduce `F G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TC.ipMt, hj, hj]`. Use `⟨hform, fun F hF => ?_⟩` and prove the remaining obligations. Establish `h0 : jM F = j0 F` using `uniq _ (hmem F) _ (hmem0 F) fun w => (hper w F).symm.trans (hper0 w F)`. Establish `hne : jM F ≠ 0`. Rewrite using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hF (hinj (h.trans (map_zero j0).symm))`. Rewrite using `[hform]`. Conclude with `hpos _ (hmem F) hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipMt_tie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (jM : (I.per l u a).Mt →ₛₗ[starRingEnd ℂ] (I.per l u a).Wrow), (∀ F, jM F ∈ (I.fm l u a).ptC) → (∀ w F, (I.per l u a).period w F = (I.fm l u a).ipP (jM F) w) → (∀ F G, I.ipMt l u a F G = (I.fm l u a).ipP (jM G) (jM F)) ∧ ∀ F, F ≠ 0 → 0 < (I.ipMt l u a F F).re := by
   intro B X I hOk hP l Z u a jM hmem hper
@@ -49,9 +49,9 @@ theorem ipMt_tie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.P
   exact hpos _ (hmem F) hne
 
 /- English proof (translation)
-Establish `hE : ∀ τ x, embAt B.embLL B.fields.emb τ (letI` using `B.fields.starE; star x) = starRingEnd ℂ (embAt B.embLL B.fields.emb τ x) := fun τ x => (GlobalTheory.Mem.FieldsLaws.fields_ok B).conjE _ x`. Establish `hH : ∀ b, (I.perIn u a).H b = ⊤` using `fun _ => rfl`. Establish `h` using `(ipMt_tie I hOk hP l Z u a (PerConj.jM (I.perIn u a) B.fields.emb B.embLL) (PerConj.jM_mem _ _ hE (l.per u a) hH) (PerConj.period_eq _ _ (l.ch u a) (l.per u a) (B.hcW u))).1 F G`. Use `h.trans ?_` and prove the remaining obligations. Use `(PerConj.petersson_apply B.fields.emb B.embLL (l.per u a) _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(PerConj.ipVal_cev _ _ _ _ _).trans (congrArg (fun p => pairB _ p _) (PerConj.polOf_cev _ _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ipMt_sum {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (F G : (I.perIn u a).Mt B.fields.emb B.embLL) :

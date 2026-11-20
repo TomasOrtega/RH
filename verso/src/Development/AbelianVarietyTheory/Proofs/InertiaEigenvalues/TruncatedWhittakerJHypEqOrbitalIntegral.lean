@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A μK hH f t ht`. Use `Unram.lcF (F := F) (E := E)` as an intermediate fact. Use `Unram.ultraF (F := F) (E := E)` as an intermediate fact. Take `⟨_, _, _, _, -⟩` from `GlobalTheory.JR.EtMeas.top_facts F A.K`. Establish `hme : MeasurableEmbedding (fun b : A.K => ht.unit • b)` using `(Homeomorph.smul ht.unit).measurableEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmap : Measure.map (fun b : A.K => ht.unit • b) μK = ((distribHaarChar A.K ht.unit : ENNReal))⁻¹ • μK`. Use extensionality with `S hS`. Rewrite using `[hme.map_apply, Measure.smul_apply, smul_eq_mul]`. Establish `h1` using `distribHaarChar_mul μK ht.unit⁻¹ S`. Rewrite using `[Set.preimage_smul, ← h1, map_inv, ENNReal.coe_inv (distribHaarChar_pos).ne']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∫ b, f (t * b) ∂μK = ∫ b, f b ∂(Measure.map (fun b : A.K => ht.unit • b) μK)`. Rewrite using `[hme.integral_map]`. Both sides reduce to the same expression. Rewrite using `[hint, hmap, integral_smul_measure]`. Simplify using `[Et.absK, ht, Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_integral : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (f : A.K → ℂ) (t : A.K), IsUnit t → ∫ b, f (t * b) ∂μK = ((A.absK t : ℂ))⁻¹ * ∫ s, f s ∂μK := by
   intro F E _ _ _ _ _ A μK hH f t ht
@@ -36,17 +36,17 @@ theorem scale_integral : ∀ (F E : Type) [NontriviallyNormedField F] [Nontrivia
   simp [Et.absK, ht, Complex.real_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ μK hH φ' z`. Use `Unram.lcF (F := F) (E := E)` as an intermediate fact. Use `Unram.ultraF (F := F) (E := E)` as an intermediate fact. Take `⟨_, _, _, _, -⟩` from `GlobalTheory.JR.EtMeas.top_facts F A.K`. Establish `: μK.IsNegInvariant` using `Measure.IsAddHaarMeasure.isNegInvariant_of_regular μK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h10 : ((wS A.K * nS z : SpecialLinearGroup (Fin 2) A.K) : Matrix (Fin 2) (Fin 2) A.K) 1 0 = -1` using `by show (!![0, 1; -1, 0] * !![1, z; 0, 1] : Matrix (Fin 2) (Fin 2) A.K) 1 0 = -1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h11 : ((wS A.K * nS z : SpecialLinearGroup (Fin 2) A.K) : Matrix (Fin 2) (Fin 2) A.K) 1 1 = -z` using `by show (!![0, 1; -1, 0] * !![1, z; 0, 1] : Matrix (Fin 2) (Fin 2) A.K) 1 1 = -z`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `heta : ∀ t : A.K, A.etaK (-t) = A.etaK t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t`. Unfold `Et.etaK`. Establish `hg : ∀ x y : F, ‖x‖ = ‖y‖ → eta x = eta y`. Introduce `x y h`. Unfold `eta`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`. Apply `hg` to reduce the goal to its premises. Use `show ‖Algebra.norm F (-t)‖ = ‖Algebra.norm F t‖`. Rewrite using `[show -t = algebraMap F A.K (-1) * t by simp, map_mul, Algebra.norm_algebraMap, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Unfold `Et.jHyp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [h10, h11]`. Use `(integral_neg_eq_self _ μK).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [mul_neg, mul_one, neg_neg, neg_mul, heta]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem jHyp_wn : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (φ' : A.K × A.K → ℂ) (z : A.K), A.jHyp μK ψ φ' (wS A.K * nS z) = ∫ t, (∫ b, φ' (b, t) * A.psiK ψ (t * z * b) ∂μK) * A.etaK t ∂μK := by
   intro F E _ _ _ _ _ A ψ μK hH φ' z
@@ -77,25 +77,23 @@ theorem jHyp_wn : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNorm
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ a ha`. Establish `hH : μK.IsAddHaarMeasure` using `hμ.1`. Establish `hnull : μK {t : A.K | ¬ IsUnit t} = 0` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.2.2.2.2.2.2.1 μK hH`. Establish `hae : ∀ᵐ t ∂μK, IsUnit t` using `ae_iff.2 (by simpa using hnull)`. Establish `hV : {v : A.K | ∀ t : A.K, IsUnit t → φ' ((a + v) * Ring.inverse t, t) = φ' (a * Ring.inverse t, t)} ∈ 𝓝 (0 : A.K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.eventually_testFunction_mul_inverse_unit_eq F E A φ' hφ a ha`. Establish `hc : Tendsto (fun v : A.K => a + v) (𝓝 0) (𝓝 a)`. Use `(continuous_add_left a).tendsto (0 : A.K)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Conclude with `hc h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `filter_upwards [GlobalTheory.T.eventually_dual_scaled_OK_subset_nhds F E A ψ hψ _ hV, self_mem_nhdsWithin] with c hc hc0`. Establish `hc0' : c ≠ 0` using `hc0`. Use `set M := {z : A.K | c • z ∈ A.OK} with hM`. Use `set N := {y : A.K | ∀ x : A.K, c • x ∈ A.OK → A.psiK ψ (x * y) = 1} with hN`. Take `⟨hNm, hvol⟩` from `GlobalTheory.T.volume_scaledIntegers_mul_volume_dual_eq_one F E A ψ hψ μK hμ c hc0'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hLam : A.abelian₂ μK ψ a (A.jHyp μK ψ φ') c = (((μK M).toReal : ℝ) : ℂ) * ∫ t, (∫ b, φ' (b, t) * N.indicator (fun _ => (1 : ℂ)) (t * b - a) ∂μK) * A.etaK t ∂μK`. Rewrite using `[← GlobalTheory.T.truncatedWhittakerIntegral_eq_volume_mul_integral_perp F E A ψ hψ μK hH φ' hφ a c hc0']`. Unfold `Et.abelian₂`. Simplify using `only [jHyp_wn F E A ψ μK hH φ']`. Establish `hin : ∀ t : A.K, IsUnit t → (∫ b, φ' (b, t) * N.indicator (fun _ => (1 : ℂ)) (t * b - a) ∂μK) = ((A.absK t : ℂ))⁻¹ * (φ' (a * Ring.inverse t, t) * (((μK N).toReal : ℝ) : ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Establish `h4` using `scale_integral F E A μK hH (fun s => φ' (Ring.inverse t * s, t) * N.indicator (fun _ => (1 : ℂ)) (s - a)) t ht`. Simplify using `only [Ring.inverse_mul_cancel_left t _ ht] at h4`. Rewrite using `[h4]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h5 : (fun s => φ' (Ring.inverse t * s, t) * N.indicator (fun _ => (1 : ℂ)) (s - a)) = fun s => φ' (a * Ring.inverse t, t) * N.indicator (fun _ => (1 : ℂ)) (s - a)`. Use function extensionality and compare the values at `s`. Distinguish the cases in `hs : s - a ∈ N`. Use `hc hs t ht` as an intermediate fact. Simplify using `only [add_sub_cancel] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_comm (Ring.inverse t) s, this]`. Simplify using `[Set.indicator_of_notMem hs]`. Rewrite using `[h5, integral_const_mul]`. Use `congr 1`. Establish `h6 : ∫ s, N.indicator (fun _ => (1 : ℂ)) (s - a) ∂μK = ∫ s, N.indicator (fun _ => (1 : ℂ)) s ∂μK` using `integral_sub_right_eq_self (fun s => N.indicator (fun _ => (1 : ℂ)) s) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h6, integral_indicator_const _ hNm]`. Rewrite using `[Complex.real_smul, mul_one]`. Both sides reduce to the same expression. Establish `horb : A.orbK μK φ' a = ∫ t, φ' (a * Ring.inverse t, t) * A.etaK t * ((A.absK t : ℂ))⁻¹ ∂μK`. Unfold `Et.orbK`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_eq_self_of_ae_mem (s := {t : A.K | IsUnit t}) hae]`. Rewrite using `[hLam, horb]`. Establish `h7 : ∫ t, (∫ b, φ' (b, t) * N.indicator (fun _ => (1 : ℂ)) (t * b - a) ∂μK) * A.etaK t ∂μK = (((μK N).toReal : ℝ) : ℂ) * ∫ t, φ' (a * Ring.inverse t, t) * A.etaK t * ((A.absK t : ℂ))⁻¹ ∂μK`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with t ht`. Rewrite using `[hin t ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h7, ← mul_assoc, hvol, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_jHyp_eq_orbK : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), SelfDual μK (A.kerK ψ) → ∀ φ', IsTest φ' → ∀ a : A.K, IsUnit a → ∀ᶠ c in 𝓝[≠] (0 : F), A.abelian₂ μK ψ a (A.jHyp μK ψ φ') c = A.orbK μK φ' a := by
   intro F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ a ha

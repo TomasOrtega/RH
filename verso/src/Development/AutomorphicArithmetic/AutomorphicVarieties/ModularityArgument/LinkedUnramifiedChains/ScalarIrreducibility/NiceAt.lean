@@ -30,11 +30,11 @@ private def nb (l : ℕ) [Fact l.Prime] : ValuationSubring (Qbar l) where
       exact inv_le_one_of_one_le₀ h
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `lt_of_le_of_ne x.2 fun e => h ?_` and prove the remaining obligations. Establish `hx : (x : Qbar l) ≠ 0` using `fun h0 => by simp [h0] at e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : (x : Qbar l)⁻¹ ∈ nb l`. Express the relevant statement in the definitionally equal form `‖(x : Qbar l)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, e, inv_one]`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ hx))`. Introduce `h hu`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h1` using `congrArg (fun t : nb l => ‖(t : Qbar l)‖) hy`. Simplify using `only [MulMemClass.coe_mul, norm_mul, OneMemClass.coe_one, norm_one] at h1`. Establish `h2 : ‖(y : Qbar l)‖ ≤ 1` using `y.2`. Use polynomial arithmetic with `[norm_nonneg (x : Qbar l), norm_nonneg (y : Qbar l)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem nb_max {l : ℕ} [Fact l.Prime] (x : nb l) : x ∈ maximalIdeal (nb l) ↔ ‖(x : Qbar l)‖ < 1 := by
   rw [mem_maximalIdeal, mem_nonunits_iff]
@@ -54,27 +54,25 @@ private theorem nb_max {l : ℕ} [Fact l.Prime] (x : nb l) : x ∈ maximalIdeal 
     nlinarith [norm_nonneg (x : Qbar l), norm_nonneg (y : Qbar l)]
 
 /- English proof (translation)
-Set `j : nb l →+* Qbar l` to `(nb l).subtype`. Establish `hj : Function.Injective j` using `Subtype.val_injective`. Set `rC : H →* Matrix (Fin n) (Fin n) (nb l)` to `{ toFun := fun s => Matrix.of fun a b => ⟨r s a b, hr s a b⟩ map_one' := by`. Use `Matrix.map_injective (f := j) hj ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `r 1 a b = ((1 : Matrix (Fin n) (Fin n) (nb l)).map j) a b`. Rewrite using `[map_one, Matrix.map_one _ (map_zero j) (map_one j)]`. Use the proof step `map_mul' := fun s t => by`. Use `Matrix.map_injective (f := j) hj ?_` and prove the remaining obligations. Establish `h : ∀ s, (Matrix.of fun a b => (⟨r s a b, hr s a b⟩ : nb l)).map j = r s` using `fun s => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Both sides reduce to the same expression. Use `(h _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r (s * t) = j.mapMatrix (_ * _)`. Rewrite using `[map_mul j.mapMatrix]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = Matrix.map _ _ * Matrix.map _ _`. Rewrite using `[h, h, map_mul] }`. Establish `hrC : ∀ s, j.mapMatrix (rC s) = r s` using `fun s => by`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `ψC : Fin n → H →* (nb l)ˣ` to `fun i => { toFun := fun s => ⟨⟨ψ i s, hψ i s⟩, ⟨ψ i s⁻¹, hψ i s⁻¹⟩, Subtype.ext (by simp), Subtype.ext (by simp)⟩ map_one' := by ext; simp map_mul' := fun s t => by ext; simp }`. Establish `hψC : ∀ i, W.pushCh j (ψC i) = ψ i` using `fun i => by`. Use extensionality with `s`. Both sides reduce to the same expression. Establish `hfl : W.HasFlag rC.toHomUnits ψC`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fr.flag_loc rC ψC g₀ (fun a b hab => ?_) ?_ fun g => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h1` using `(nb_max _).1 hn`. Conclude with `absurd (hu a b hab) (not_le.2 h1)`. Establish `hdg : (rC g₀).map (residue (nb l)) = Matrix.diagonal fun i => residue (nb l) (ψC i g₀ : (nb l)ˣ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.map_apply, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, nb_max]`. Conclude with `hd a`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.map_apply, residue_eq_zero_iff, nb_max]`. Conclude with `ho a b hab`. Rewrite using `[hdg, Matrix.charpoly_diagonal]`. Use `Matrix.map_injective (f := j) hj ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j.mapMatrix _ = j.mapMatrix 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Fr.ordProd_map, map_zero]`. Simplify using `only [hrC]`. Conclude with `hord g`. Take `⟨g, hg⟩` from `hfl`. Establish `key : ∀ s a b, (Matrix.GeneralLinearGroup.map j g * r.toHomUnits s * (Matrix.GeneralLinearGroup.map j g)⁻¹ : GL (Fin n) (Qbar l)) a b = j ((g * rC.toHomUnits s * g⁻¹ : GL (Fin n) (nb l)) a b)` using `fun s a b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : r.toHomUnits s = Matrix.GeneralLinearGroup.map j (rC.toHomUnits s)` using `Units.ext (hrC s).symm`. Rewrite using `[h1, ← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Use `⟨Matrix.GeneralLinearGroup.map j g, fun s => ⟨fun a b hab => ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[key, (hg s).1 a b hab, map_zero]`.
-
-Rewrite using `[key, (hg s).2 a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem flag_int {l : ℕ} [Fact l.Prime] {H : Type} [Group H] {n : ℕ} (r : H →* Matrix (Fin n) (Fin n) (Qbar l))
     (ψ : Fin n → H →* (Qbar l)ˣ) (g₀ : H) (hr : ∀ s i j, ‖r s i j‖ ≤ 1) (hψ : ∀ i s, ‖((ψ i s : (Qbar l)ˣ) : Qbar l)‖ ≤ 1)
@@ -141,9 +139,9 @@ private theorem flag_int {l : ℕ} [Fact l.Prime] {H : Type} [Group H] {n : ℕ}
     rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : a ^ (Fr.w n i - Fr.w n j) = 1` using `by rw [_root_.zpow_sub, h, mul_inv_cancel]`. Establish `h2 : Fr.w n i - Fr.w n j ∣ 2` using `by clear h h1 revert i j`. Apply the tactic sequence `rcases hn with rfl | rfl <;> decide`. Take `⟨c, hc⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply `ha` to reduce the goal to its premises. Establish `h3 : a ^ (2 : ℤ) = 1` using `by rw [hc, _root_.zpow_mul, h1, _root_.one_zpow]`. Conclude with `h3` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem w_ne {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (a : kˣ) (ha : a ^ 2 ≠ 1)
     (i j : Fin n) (hij : i ≠ j) : a ^ Fr.w n i ≠ a ^ Fr.w n j := by
@@ -163,20 +161,20 @@ section Pt
 variable {l : ℕ} [Fact l.Prime] {c : Coef l} {F : Fr.Frame l (ResidueField c.O)} {n : ℕ} (S : Fr.Space c.O F n)
 
 /- English proof (translation)
-The claim follows from `h.2 b ((res_eq_zero_iff c.O S.R _).1 hb)`.
+A detailed English derivation is pending.
 -/
 private theorem small_of_res (ξ : S.A →ₐ[c.O] Qbar l) (h : IntPt S ξ) (b : S.B) (hb : res c.O S.R (b : S.R) = 0) :
     ‖ξ (S.inc b)‖ < 1 :=
   h.2 b ((res_eq_zero_iff c.O S.R _).1 hb)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := c.O) (b : S.R)`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hn`. Establish `h1 : algebraMap c.O S.R a ∈ maximalIdeal S.R` using `fun h' => hn (isUnit_of_map_unit _ _ h')`. Conclude with `hb ((res_eq_zero_iff c.O S.R _).2 (by simpa using Ideal.add_mem _ ha h1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `hu.exists_right_inv`. Establish `e : ∀ t : c.O, ξ (algebraMap c.O S.A t) = algebraMap c.O (Qbar l) t` using `fun t => ξ.commutes t`. Establish `h1 : ‖algebraMap c.O (Qbar l) a‖ = 1`. Establish `h2 : ‖algebraMap c.O (Qbar l) a‖ ≤ 1` using `by rw [← e]; exact h.1 _`. Establish `h3 : ‖algebraMap c.O (Qbar l) a'‖ ≤ 1` using `by rw [← e]; exact h.1 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ‖algebraMap c.O (Qbar l) a‖ * ‖algebraMap c.O (Qbar l) a'‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ha', map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (algebraMap c.O (Qbar l) a), norm_nonneg (algebraMap c.O (Qbar l) a')]`. Establish `h5 : ‖ξ (S.inc (b - algebraMap c.O S.B a))‖ < 1` using `h.2 _ ha`. Rewrite `h5` using `[map_sub, map_sub, AlgHom.commutes, e]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Establish `h6` using `IsUltrametricDist.norm_add_le_max (ξ (S.inc b)) (-(ξ (S.inc b) - algebraMap c.O (Qbar l) a))`. Rewrite `h6` using `[norm_neg, ← sub_eq_add_neg, sub_sub_cancel, h1]`. Conclude with `absurd h6 (not_le.2 (max_lt (not_le.1 hn) h5))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem big_of_res (ξ : S.A →ₐ[c.O] Qbar l) (h : IntPt S ξ) (b : S.B) (hb : res c.O S.R (b : S.R) ≠ 0) :
     1 ≤ ‖ξ (S.inc b)‖ := by
@@ -201,13 +199,11 @@ private theorem big_of_res (ξ : S.A →ₐ[c.O] Qbar l) (h : IntPt S ξ) (b : S
   exact absurd h6 (not_le.2 (max_lt (not_le.1 hn) h5))
 
 /- English proof (translation)
-Establish `hb : ∀ i g, res c.O S.R (S.ψB v i g : S.R) = ((F.Ψ (F.loc v g) ^ Fr.w n i : (ResidueField c.O)ˣ) : ResidueField c.O)` using `fun i g => S.lift.2.1.2 v i g`. Establish `ha : ∀ g i, res c.O S.R (S.aB g i : S.R) = ((F.Ψ g ^ Fr.w n i : (ResidueField c.O)ˣ) : ResidueField c.O)` using `fun g i => S.lift.2.1.1 g i`. Use `flag_int _ _ g₀ (fun s i j => hV.1.1 _) (fun i s => hV.1.1 _) (fun i j hij => ?_) (fun i => ?_) (fun i j hij => hV.2 _ i j hij) fun g => (ptRep S ξ).ord v g` and prove the remaining obligations. Establish `h1` using `big_of_res S ξ hV.1 (S.ψB v i g₀ - S.ψB v j g₀) (by`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : res c.O S.R (S.ψB v i g₀ : S.R) = res c.O S.R (S.ψB v j g₀ : S.R)`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `h0`. Rewrite `h2` using `[hb, hb]`. Conclude with `w_ne hn _ hg i j hij (Units.ext h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_sub]`. Conclude with `h1`. Establish `h1` using `small_of_res S ξ hV.1 (S.aB (F.loc0 v g₀) i - S.ψB v i g₀) (by`. Express the relevant statement in the definitionally equal form `res c.O S.R ((S.aB (F.loc0 v g₀) i : S.R) - (S.ψB v i g₀ : S.R)) = 0`. Rewrite using `[map_sub, hb, ha, sub_eq_zero]`.
-
-Use the proof step `rfl)`. Rewrite `h1` using `[map_sub, map_sub]`. Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pt_flag (ξ : S.A →ₐ[c.O] Qbar l) (hV : VPt S ξ) (hn : n = 2 ∨ n = 3) (v : F.V) (g₀ : F.Gv v)
     (hg : F.Ψ (F.loc v g₀) ^ 2 ≠ 1) :
@@ -237,9 +233,9 @@ private theorem pt_flag (ξ : S.A →ₐ[c.O] Qbar l) (hV : VPt S ξ) (hn : n = 
 end Pt
 
 /- English proof (translation)
-Use `W.GDet.ext fun C _ _ x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ C (MonoidAlgebra.mapDomainRingHom C p x)).det = (W.GDet.repAlg τ C x).det`. Use `congr 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r`. Use extensionality with `i j`. Simplify using `[W.GDet.repAlg, h]`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (p : H →* G) (τ : H →* Matrix (Fin n) (Fin n) A)
@@ -255,9 +251,9 @@ private theorem det_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
     simp [W.GDet.repAlg, h]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i j, (g * ((K.tw ρ).toHomUnits.comp (G.φ v)) s * g⁻¹ : GL (Fin n) A) i j = ((K.κA A (G.φ v s) : Aˣ) : A) * (g * (ρ.r.comp (F.loc0 (K.e v))).toHomUnits (K.lam v s) * g⁻¹ : GL (Fin n) A) i j` using `fun i j => by`. Express the relevant statement in the definitionally equal form `((g : Matrix (Fin n) (Fin n) A) * (((K.κA A (G.φ v s) : Aˣ) : A) • ρ.r (K.π (G.φ v s))) * ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) i j = _ * ((g : Matrix (Fin n) (Fin n) A) * ρ.r (F.loc0 (K.e v) (K.lam v s)) * ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) i j`. Rewrite using `[K.lam_loc, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key, (hg _).1 i j hij, mul_zero]`. Rewrite using `[key, (hg _).2 i, mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tw_flag {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {F : Fr.Frame l (ResidueField O)} {n : ℕ} {G : W.GFrame l} {r : W.Resid G O n} (K : TwLink F r)
@@ -280,7 +276,7 @@ private theorem tw_flag {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoca
     rfl
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b)
     (ha : A.valuation (a : Ω) < 1) : A.valuation (b : Ω) < 1 := by
@@ -289,11 +285,9 @@ private theorem val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : 
   exact mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))
 
 /- English proof (translation)
-Establish `hl : ¬ A.valuation (l : Ω) < 1` using `fun h' => hA (val_dvd A ((dvd_mul_right l N).trans h) h')`. Establish `hg' : galEmb ℚ L Ω g ∈ Ine (F` using `ℚ) A := hg`. Establish `h1 : cycZ ℚ Ω l (galEmb ℚ L Ω g) = 1` using `(Base.places ℚ Ω l A).2.2.2 hl hg'`. Establish `h2 : Chr.cls ℚ Ω N (galEmb ℚ L Ω g) = 1` using `(Chr.clsFacts ℚ Ω N).2.2.2.2 A (fun h' => hA (val_dvd A ((dvd_mul_left N l).trans h) h')) hg'`. Establish `h3 : Chr.Psi l e (Chr.dirG ℚ Ω ψ) (galEmb ℚ L Ω g) = 1` using `by simp [Chr.Psi, Chr.dirG, chiO, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toUpl Ω L (W.resP L Ω g) ∈ k.p.ker`. Rewrite using `[k.p_ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨A, hl, hg', ?_, ?_⟩)` and prove the remaining obligations. Conclude with `(k.mem_range_resP _).1 ⟨_, rfl⟩`.
-
-Conclude with `(congrArg (Units.map (residue O).toMonoidHom) h3).trans (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unramified_at_base_place {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [IsLocalRing O] [Algebra ℤ_[l] O] {N M : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter O N) (h : l * N ∣ M)
@@ -315,7 +309,7 @@ private theorem unramified_at_base_place {Ω : Type} [Field Ω] [CharZero Ω] [I
   · exact (congrArg (Units.map (residue O).toMonoidHom) h3).trans (map_one _)
 
 /- English proof (translation)
-Use `⟨top_ne_bot, fun _ _ _ => Submodule.mem_top, fun U _ hU => h U fun g _ v hv => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hp g`. Conclude with `hU t v hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem irr_of_mat {Γ H k : Type} [Group Γ] [Group H] [Field k] {n : ℕ} [NeZero n] (ρ : Γ →* GL (Fin n) k) (p : H →* Γ)
     (hp : Function.Surjective p) (h : MatIrr ⊤ (W.mat ρ)) : Af.IsIrr (ρ.comp p) := by

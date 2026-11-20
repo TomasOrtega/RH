@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.KSChartRes
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ (Ideal.span_singleton_ne_top hn)`. Conclude with `h ⟨m, hm.isPrime⟩ (hsm (Ideal.mem_span_singleton_self _))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_of_comap_mem {A S : Type} [CommRing A] [CommRing S] (φ : A →+* S) (s : A)
     (h : ∀ x : PrimeSpectrum S, PrimeSpectrum.comap φ x ∈ PrimeSpectrum.basicOpen s) : IsUnit (φ s) := by
@@ -29,14 +29,14 @@ theorem isUnit_of_comap_mem {A S : Type} [CommRing A] [CommRing S] (φ : A →+*
   exact h ⟨m, hm.isPrime⟩ (hsm (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α : A →+* B) (β : B →+* C) :
     spMap β ≫ spMap α = spMap (β.comp α) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α : A →+* B) (β : B →+* C) :
     (dualMap β).comp (dualMap α) = dualMap (β.comp α) := by
@@ -44,23 +44,19 @@ theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α 
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t m tt n v' D DV Θ hD ⟨J, Wc, j, d, hsup, hj, hfld, hcomp, htest⟩`. Use `set s := (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i) with hs`. Use `set Wa := (Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) s with hWa`. Establish `hWV : ∀ i, Wc i ≤ t.G.hom ⁻¹ᵁ Wa.1` using `fun i => (le_iSup Wc i).trans (hsup.le.trans (t.G.hom.preimage_mono inf_le_left))`. Establish `hle : Wa.1 ≤ ⊤` using `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨J, Wc, j, d, ?_, hj, hfld, fun i h r => ?_, fun i i' O hO f S _ φ g₀ w hg₀ hO' hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hsup, top_inf_eq]`. Conclude with `congrArg _ (inf_idem _)`. Establish `e : ∀ x, (t.G.hom.appLE ⊤ (Wc i) h).hom x = (t.G.hom.appLE Wa.1 (Wc i) (hWV i)).hom (((Sp R).presheaf.map (homOfLE hle).op).hom x)` using `fun x => (congrArg (fun k => k.hom x) (t.G.hom.map_appLE (hWV i) (homOfLE hle).op)).symm`. Establish `hr : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom r) = r` using `Iso.hom_inv_id_apply _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, e, hcomp i (hWV i)]`. Use `hD ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom r)` as an intermediate fact. Rewrite `this` using `[hr]`. Conclude with `congrArg _ this`. Establish `hOW : O ≤ t.G.hom ⁻¹ᵁ (Wa.1 ⊓ (Sp R).basicOpen s)` using `hO.trans (inf_le_left.trans ((le_iSup Wc i).trans hsup.le))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (φ s)`. Use `isUnit_of_comap_mem φ s fun x => ?_` and prove the remaining obligations. Establish `hx : g₀ x ∈ O` using `hO' (show x ∈ (⊤ : (Sp S).Opens) from trivial)`. Establish `hV : t.G.hom (g₀ x) ∈ (Sp R).basicOpen s` using `(hOW hx).2`. Establish `e1 : t.G.hom (g₀ x) = (g₀ ≫ t.G.hom) x` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hV` using `[e1, hg₀]`. Establish `h2 : (spMap φ) x ∈ (GlobalTheory.LogKS.chart (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ⁻¹ᵁ (Sp R).basicOpen s` using `hV`. Express the relevant statement in the definitionally equal form `(spMap φ) x ∈ (isAffineOpen_top (Sp R)).fromSpec ⁻¹ᵁ (Sp R).basicOpen s at h2`. Rewrite `h2` using `[(isAffineOpen_top (Sp R)).fromSpec_preimage_basicOpen s]`. Conclude with `h2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Use `letI : Algebra Γ(Sp R, ⊤) Γ(Sp R, Wa.1) := ((Sp R).presheaf.map (homOfLE hle).op).hom.toAlgebra`. Establish `hl : IsLocalization.Away s Γ(Sp R, Wa.1)` using `(isAffineOpen_top (Sp R)).isLocalization_of_eq_basicOpen s (homOfLE hle) rfl`. Take `⟨ψ, hψ⟩ : ∃ ψ : Γ(Sp R, Wa.1) →+* S, ψ.comp ((Sp R).presheaf.map (homOfLE hle).op).hom = φ` from `⟨IsLocalization.Away.lift s hu, IsLocalization.lift_comp _⟩`. Substitute `hψ` using the available equality. Establish `hres : spMap ((Sp R).presheaf.map (homOfLE hle).op).hom ≫ GlobalTheory.LogKS.chart (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens) = GlobalTheory.LogKS.chart Wa` using `(isAffineOpen_top (Sp R)).map_fromSpec Wa.2 (homOfLE hle).op`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `htest i i' O hO f S ψ g₀ w ?_ hO' ?_` as an intermediate fact. Conclude with `this`. Rewrite using `[hg₀, ← hres, ← Category.assoc, spMap_comp']`. Introduce `a`. Take `⟨g', v'', h₁, h₂, h₃⟩` from `hw a`.
-
-Use `⟨g', v'', h₁, ?_, h₃⟩` and prove the remaining obligations. Rewrite using `[h₂]`. Simplify using `only`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp']`. Use `erw [spMap_comp']`.
-
-Use `erw [dualMap_comp']`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKS_top_of_basicOpen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (m : ℕ) (tt : Fin m → R) (n : ℕ) (v' : Fin n → TanM (𝟙 (Sp R)) t.G) (D : Derivation ℤ R R) (DV : Derivation ℤ Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1) Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1)) (Θ : Matrix (Fin n) (Fin n) R), (∀ r, DV (((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = ((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (D r))) → IsKS t ((Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) (fun a => spMap (dualMap (((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) ≫ (tv (v' a)).left) ⇑DV ((((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).mapMatrix Θ) → IsKS t ((Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens) (fun a => spMap (dualMap (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) ≫ (tv (v' a)).left) (fun r => (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (D ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom r))) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.mapMatrix Θ) := by
   intro E _ _ _ H R _ _ _ _ _ _ t m tt n v' D DV Θ hD ⟨J, Wc, j, d, hsup, hj, hfld, hcomp, htest⟩

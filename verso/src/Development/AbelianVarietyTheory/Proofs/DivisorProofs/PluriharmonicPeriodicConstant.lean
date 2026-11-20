@@ -6,23 +6,21 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hd : Differentiable ℝ f` using `hf.differentiable (by norm_num)`. Establish `hcd : Continuous (fderiv ℝ f)` using `hf.continuous_fderiv (by norm_num)`. Establish `hperd : ∀ l ∈ Λ, ∀ z, fderiv ℝ f (z + l) = fderiv ℝ f z`. Introduce `l hl z`. Establish `h1 : (fun w => f (w + l)) = f` using `funext fun w => hper l hl w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `fderiv_comp_add_right (𝕜 := ℝ) (f := f) (x := z) l`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`. Establish `hperd' : ∀ z, ∃ k ∈ K, fderiv ℝ f z = fderiv ℝ f k`. Introduce `z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, l, hl, rfl⟩` from `hcov z`. Conclude with `⟨k, hk, hperd l hl k⟩`. Establish `hconst : ∀ z, fderiv ℝ f z = fderiv ℝ f 0`. Introduce `z`. Use extensionality with `a`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `set φ : V → ℂ := fun z => ((fderiv ℝ f z a : ℝ) : ℂ) - Complex.I * ((fderiv ℝ f z (Complex.I • a) : ℝ) : ℂ) with hφ`. Establish `hφc : Continuous φ`. Establish `h1 : Continuous fun z => fderiv ℝ f z a` using `hcd.clm_apply continuous_const`. Establish `h2 : Continuous fun z => fderiv ℝ f z (Complex.I • a)` using `hcd.clm_apply continuous_const`. Conclude with `(Complex.continuous_ofReal.comp h1).sub (continuous_const.mul (Complex.continuous_ofReal.comp h2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hbd : Bornology.IsBounded (Set.range φ)`. Use `((hK.image hφc).isBounded).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨k, hk, hkw⟩` from `hperd' w`. Conclude with `⟨k, hk, by simp only [hφ, hkw]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hL` using `(hhol a).apply_eq_apply_of_bounded hbd z 0`. Use `congrArg Complex.re hL` as an intermediate fact. Simplify `this` using `[hφ]`. Establish `hne : K.Nonempty`. Take `⟨k, hk, _, _, _⟩` from `hcov 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨k, hk⟩`. Take `⟨z₀, -, hmax⟩` from `hK.exists_isMaxOn hne hd.continuous.continuousOn`. Establish `hglob : IsLocalMax f z₀`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Take `⟨k, hk, l, hl, rfl⟩` from `hcov z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hper l hl k]`. Conclude with `hmax hk`. Establish `h0 : ∀ z, fderiv ℝ f z = 0`. Introduce `z`. Rewrite using `[hconst z, ← hconst z₀]`.
-
-Conclude with `hglob.fderiv_eq_zero`. Introduce `z`. Conclude with `is_const_of_fderiv_eq_zero hd h0 z 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem periodic_const_of_holomorphic_differential
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : V → ℝ) (K Λ : Set V)

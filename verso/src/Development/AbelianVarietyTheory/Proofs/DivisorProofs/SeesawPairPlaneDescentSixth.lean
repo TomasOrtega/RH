@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.ThKTermCont
 
 /- English proof (translation)
-Establish `hσ : ∀ z, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_symm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
@@ -33,38 +31,38 @@ theorem form_symm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (a b w : Fin n → E) : form σ J (a + b) w = form σ J a w + form σ J b w := by
   simp only [form, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [form, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (c : E) (a w : Fin n → E) : form σ J (c • a) w = c * form σ J a w := by
   simp only [form, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, zero_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_zero_left {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (w : Fin n → E) : form σ J 0 w = 0 := by
   simp only [form, zero_dotProduct]
 
 /- English proof (translation)
-Set `L : ((E × E) × (Fin d₂ → E)) →ₗ[E] (Fin n → E)` to `{ toFun := fun p => p.1.1 • H.x + H.ι *ᵥ p.2 + p.1.2 • H.y map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Matrix.mulVec_add, add_smul]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c p => by`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Matrix.mulVec_smul, smul_eq_mul, mul_smul, RingHom.id_apply, smul_add] }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hyx : form σ J H.y H.x = 1` using `by rw [form_symm hcm hJ, hxy, map_one]`. Establish `hinjL : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨⟨s, t⟩, u⟩ hp`. Establish `hp' : s • H.x + H.ι *ᵥ u + t • H.y = 0` using `hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun v => form σ J v H.y) hp'`. Establish `h2` using `congrArg (fun v => form σ J v H.x) hp'`. Simplify using `only [form_add_left, form_smul_left, form_zero_left, hxy, hyy, (horth u).1, (horth u).2, hxx, hyx] at h1 h2`. Establish `hs : s = 0` using `by simpa using h1`. Establish `ht : t = 0` using `by simpa using h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hs ht` using the available equality. Establish `hu : H.ι *ᵥ u = H.ι *ᵥ 0` using `by simpa using hp'`. Use `hinj hu` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective L`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 hinjL` and prove the remaining obligations. Simplify using `only [Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨s, t⟩, u⟩, hp⟩` from `hsurj v`. Conclude with `⟨s, t, u, hp.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_plane {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) {n d₂ : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ i j, σ (J j i) = J i j) (H : Plane E n d₂)
@@ -102,29 +100,23 @@ theorem span_plane {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   exact ⟨s, t, u, hp.symm⟩
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hHc V₁ M₁ e hJ hM₁ hev μ 𝓕 hμ h𝓕 h1 Φ hΦ g`. Take `⟨hn, hxx, hyy, hxy, horth, hinj⟩` from `hHc`. Use `set z := Matrix.vecMulVec (incV F H.y) (incV F H'.x) with hz`. Take `⟨l₀, hl₀, hl₀'⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin d₂ × Fin d)`. Establish `hl₁` using `GlobalTheory.ThKEvAdm.comp_mem_adm F E σ B n d d₂ d X W V₁ W M M₁ H.ι 1 _ e hP.good hM₁ hev l₀ hl₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `GlobalTheory.ThKPointCont.comp_schrLin_mem_adm B.ψ hP.base.std (M.co.e z) _ hl₁`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hrho : ∀ Ψ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ z Ψ ∈ schA F (Fin n × Fin d)`. Establish `: schA F (Fin n × Fin d) ≤ (schA F (Fin n × Fin d)).comap (GlobalTheory.ThKPointCont.schrLin B.ψ (M.co.e z))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, g', hg', rfl⟩`. Take `⟨T, g'', hg'', hT⟩` from `GlobalTheory.ThetaHeisCLM.exists_schr_pureA_eq B.ψ hP.base.std (M.co.e z) hg'`. Use `show schr B.ψ (M.co.e z) (pureA F f g') ∈ schA F (Fin n × Fin d)`. Rewrite using `[hT f]`. Conclude with `Submodule.subset_span ⟨T f, g'', hg'', rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `fun Ψ hΨ => this hΨ`. Establish `hlval : ∀ Ψ ∈ schA F (Fin n × Fin d), ((l₀ ∘ₗ e) ∘ₗ GlobalTheory.ThKPointCont.schrLin B.ψ (M.co.e z)) Ψ = thetaSum F (e (M.co.rho B.ψ z Ψ))` using `fun Ψ hΨ => hl₀' _ (hev.maps _ (hrho Ψ hΨ))`. Set `K : unip σ X H → UA σ W.J → ℂ` to `fun u h => ((l₀ ∘ₗ e) ∘ₗ GlobalTheory.ThKPointCont.schrLin B.ψ (M.co.e z)) (om (u.1 * g, h) Φ)`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ X.J`. Take `⟨hTG', hLC', hSC', hT2'⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ W.J`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKc : Continuous fun q : unip σ X H × UA σ W.J => K q.1 q.2` using `(hP.weil.2.2 _ hl Φ hΦ).comp (((continuous_subtype_val.comp continuous_fst).mul continuous_const).prodMk continuous_snd)`. Establish `hKeq : ∀ (u : unip σ X H) h, thetaSum F (e (M.co.rho B.ψ z (om (u.1, 1) (om (g, h) Φ)))) = K u h`. Introduce `u h`. Establish `: om (u.1, 1) (om (g, h) Φ) = om (u.1 * g, h) Φ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(hlval _ (hS.pres _ Φ hΦ)).symm`. Establish `hinv : ∀ γ ∈ (ratU σ X.J).subgroupOf (unip σ X H), ∀ (u : unip σ X H) h, K (γ * u) h = K u h`. Introduce `γ hγ u h`. Establish `hsplit : om ((γ * u).1 * g, h) Φ = om (γ.1, 1) (om (u.1 * g, h) Φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, Subgroup.coe_mul, mul_assoc]`. Establish `hΨ : om (u.1 * g, h) Φ ∈ schA F (Fin n × Fin d)` using `hS.pres _ Φ hΦ`. Use `show ((l₀ ∘ₗ e) ∘ₗ _) (om ((γ * u).1 * g, h) Φ) = ((l₀ ∘ₗ e) ∘ₗ _) (om (u.1 * g, h) Φ)`. Rewrite using `[hsplit, hlval _ (hS.pres _ _ hΨ), hlval _ hΨ]`. Conclude with `GlobalTheory.T.seesaw_pair_plane_descent_thirteenth hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H ⟨hn, hxx, hyy, hxy, horth, hinj⟩ V₁ M₁ e hJ hM₁ hev γ.1 γ.2 (Subgroup.mem_subgroupOf.1 hγ) _ hΨ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hspan` using `span_plane hP.base.cm hP.herm.herm H hn hxx hyy hxy horth hinj`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.UnipHermCover.cocompact_herm F E σ hP.base.cm n d₂ X H hP.herm.herm hxx hyy hxy horth hspan`. Establish `hcov' : ∀ u : unip σ X H, ∃ γ ∈ (ratU σ X.J).subgroupOf (unip σ X H), γ * u ∈ C` using `fun u => by`. Take `⟨γ, hγ⟩` from `hcov u`. Conclude with `⟨γ.1, γ.2, by simpa [Subgroup.smul_def] using hγ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI := hTG'`.
-
-Use `haveI := hLC'`. Use `haveI := hSC'`. Use `haveI := hT2'`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) X.J`.
-
-Use `haveI : Countable ((ratU σ X.J).subgroupOf (unip σ X H)) := Function.Injective.countable (f := fun γ : (ratU σ X.J).subgroupOf (unip σ X H) => (⟨γ.1.1, γ.2⟩ : ratU σ X.J)) fun a b hab => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hab`. Use `haveI := hμ`.
-
-Use `haveI : FirstCountableTopology (UA σ W.J) := by first`. Consider the case `exact @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ hSC'`. Consider the case `exact @SecondCountableTopology.to_firstCountableTopology _ _ hSC'`. Establish `hm` using `GlobalTheory.Unf.EvalInv.mean_continuous hC hcov' h𝓕 K hKc hinv`. Simplify `hm.2` using `only [hKeq]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cont : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

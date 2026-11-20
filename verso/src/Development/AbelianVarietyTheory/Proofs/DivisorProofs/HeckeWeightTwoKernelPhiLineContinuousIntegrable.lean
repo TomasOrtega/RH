@@ -5,21 +5,21 @@ open NumberField Complex MeasureTheory
 namespace GlobalTheory.HeckeTwo.PhiLine
 
 /- English proof (translation)
-Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_line_sq (t y : ℝ) : ‖((t : ℂ) + (y : ℂ) * Complex.I)‖ ^ 2 = t ^ 2 + y ^ 2 := by
   rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
   simp; ring
 
 /- English proof (translation)
-Use `Complex.abs_im_le_norm ((t : ℂ) + (y : ℂ) * Complex.I)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem abs_le_norm_line (t y : ℝ) : |y| ≤ ‖((t : ℂ) + (y : ℂ) * Complex.I)‖ := by
   have := Complex.abs_im_le_norm ((t : ℂ) + (y : ℂ) * Complex.I)
   simpa using this
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hy this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_ne_zero (t y : ℝ) (hy : y ≠ 0) : ((t : ℂ) + (y : ℂ) * Complex.I) ≠ 0 := by
   intro h
@@ -28,7 +28,7 @@ theorem line_ne_zero (t y : ℝ) (hy : y ≠ 0) : ((t : ℂ) + (y : ℂ) * Compl
   exact hy this
 
 /- English proof (translation)
-The claim follows from `|y| ^ (-2 * σ.re) * (min 1 (y ^ 2))⁻¹ * (1 + t ^ 2)⁻¹ := by set w : ℂ := (t : ℂ) + (y : ℂ) * Complex.I with hw have hay : 0 < |y| := abs_pos.2 hy have hle : |y| ≤ ‖w‖ := abs_le_norm_line t y have hpos : 0 < ‖w‖ := lt_of_lt_of_le hay hle have hsq : ‖w‖ ^ 2 = t ^ 2 + y ^ 2 := norm_ …`.
+A detailed English derivation is pending.
 -/
 theorem norm_phi_le (σ : ℂ) (hσ : 0 < σ.re) (y : ℝ) (hy : y ≠ 0) (t : ℝ) :
     ‖GlobalTheory.HeckeTwo.phi σ ((t : ℂ) + (y : ℂ) * Complex.I)‖ ≤
@@ -57,9 +57,9 @@ theorem norm_phi_le (σ : ℂ) (hσ : 0 < σ.re) (y : ℝ) (hy : y ≠ 0) (t : �
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hw : Continuous (fun t : ℝ => ((t : ℂ) + (y : ℂ) * Complex.I))` using `by fun_prop`. Establish `hcont : Continuous (fun t : ℝ => GlobalTheory.HeckeTwo.phi σ ((t : ℂ) + (y : ℂ) * Complex.I))`. Unfold `GlobalTheory.HeckeTwo.phi`. Use `Continuous.mul ((hw.inv₀ fun t => line_ne_zero t y hy).pow 2) ?_` and prove the remaining obligations. Use `Continuous.cpow (Complex.continuous_ofReal.comp hw.norm) continuous_const ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t`. Conclude with `Complex.ofReal_mem_slitPlane.2 (lt_of_lt_of_le (abs_pos.2 hy) (abs_le_norm_line t y))`. Use `⟨hcont, ?_⟩` and prove the remaining obligations. Use `MeasureTheory.Integrable.mono' (integrable_inv_one_add_sq.const_mul (|y| ^ (-2 * σ.re) * (min 1 (y ^ 2))⁻¹)) hcont.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => norm_phi_le σ hσ y hy t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phi_line (σ : ℂ) (hσ : 0 < σ.re) (y : ℝ) (hy : y ≠ 0) :
     Continuous (fun t : ℝ => GlobalTheory.HeckeTwo.phi σ ((t : ℂ) + (y : ℂ) * Complex.I)) ∧
@@ -80,7 +80,7 @@ theorem phi_line (σ : ℂ) (hσ : 0 < σ.re) (y : ℝ) (hy : y ≠ 0) :
 end GlobalTheory.HeckeTwo.PhiLine
 
 /- English proof (translation)
-Introduce `σ hσ y hy` and use `GlobalTheory.HeckeTwo.PhiLine.phi_line σ hσ y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeTwo.phi_line_continuous_integrable : ∀ (σ : ℂ), 0 < σ.re → ∀ (y : ℝ), y ≠ 0 →
     Continuous (fun t : ℝ => GlobalTheory.HeckeTwo.phi σ ((t : ℂ) + (y : ℂ) * Complex.I)) ∧

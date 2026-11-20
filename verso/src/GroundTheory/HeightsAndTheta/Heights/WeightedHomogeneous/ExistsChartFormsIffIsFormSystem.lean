@@ -46,14 +46,14 @@ def toObjects (D : AddBlockData P) : Heights.AddBlockData P where
       exact hsum
 
 /- English proof (translation)
-Break down `D with ⟨deg, m, x, _, _, _⟩` into its components or cases. Simplify using `only [toObjects, ofObjects, RingEquiv.apply_symm_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 -/
 theorem ofObjects_toObjects (D : AddBlockData P) : ofObjects (toObjects D) = D := by
   rcases D with ⟨deg, m, x, _, _, _⟩
   simp only [toObjects, ofObjects, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `show funFieldEquiv P (D.elt j) * chartPow P c (-D.deg) = funFieldEquiv P (D.elt j / P.chartPow c D.deg)`. Rewrite using `[funFieldEquiv_div_chartPow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ξ_ofObjects (D : Heights.AddBlockData P) (c : (k : ι) → Fin (n k + 1))
     (j : Fin (D.size + 1)) : (ofObjects D).ξ c j = funFieldEquiv P (D.xi c j) := by
@@ -68,9 +68,9 @@ open _root_.GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.Add
 omit [Fintype ι] in
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδk⟩` from `h`. Establish `e : (fun k ↦ ((d k : ℤ) + a k).toNat) = δ`. Use function extensionality and compare the values at `k`. Use `hδk k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e]`. Conclude with `hδ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_toNat {f : MvPolynomial (Coord n) ℤ} {d : ι → ℕ} {a : ι → ℤ}
     (h : ∃ δ : ι → ℕ, IsWeightedHomogeneous (coordDeg n) f δ ∧ ∀ k, (δ k : ℤ) = d k + a k) :
@@ -88,7 +88,7 @@ namespace ChartForms
 variable {D : AddBlockData P}
 
 /- English proof (translation)
-The claim follows from `G.d_pos nonneg := G.dn_nonneg homog c j := by refine ⟨fun k ↦ ((G.d k : ℤ) + D.deg k).toNat, ?_, fun k ↦ ?_⟩ · by_cases hc : IsLive P c · exact G.g_homog c hc j · rw [G.g_dead c hc j] exact isWeightedHomogeneous_zero ℤ _ _ · have := G.dn_nonneg k show (((G.d k : ℤ) + D.deg k).toN …`.
+A detailed English derivation is pending.
 -/
 theorem isFormSystem (G : ChartForms D) : (toObjects D).IsFormSystem G.d G.g where
   pos := G.d_pos
@@ -109,7 +109,7 @@ theorem isFormSystem (G : ChartForms D) : (toObjects D).IsFormSystem G.d G.g whe
   dead c hc j := G.g_dead c hc j
 
 /- English proof (translation)
-The claim follows from `G.d_pos nonneg := G.dn_nonneg homog c j := G.isFormSystem.homog c j value c hc j := by apply (funFieldEquiv P).injective rw [map_mul, funFieldEquiv_mkF, funFieldEquiv_mkF] exact G.g_val c hc j dead c hc j := G.g_dead c hc j`.
+A detailed English derivation is pending.
 -/
 theorem isFormSystem_ofObjects {D : Heights.AddBlockData P} (G : ChartForms (ofObjects D)) :
     D.IsFormSystem G.d G.g where
@@ -153,7 +153,7 @@ def ofToObjects {d : ι → ℕ}
 end ChartForms
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨ChartForms.ofFormSystem h, rfl, rfl⟩`. Introduce and unpack `⟨G, rfl, rfl⟩`. Conclude with `G.isFormSystem_ofObjects`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isFormSystem_iff_exists_chartForms (D : Heights.AddBlockData P) (d : ι → ℕ)
     (g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ) :
@@ -165,7 +165,7 @@ theorem isFormSystem_iff_exists_chartForms (D : Heights.AddBlockData P) (d : ι 
     exact G.isFormSystem_ofObjects
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, rfl, rfl⟩`. Conclude with `G.isFormSystem`. Introduce `h`. Conclude with `⟨ChartForms.ofToObjects h, rfl, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chartForms_iff_isFormSystem (D : AddBlockData P) (d : ι → ℕ)
     (g : ((k : ι) → Fin (n k + 1)) → Fin (D.m + 1) → MvPolynomial (Coord n) ℤ) :
@@ -206,7 +206,7 @@ theorem hermLine_pow_metric (A : HermLine n) (m : ℕ) (z : Cone n ℂ) :
     (A.pow m).metric z = A.metric z ^ m := rfl
 
 /- English proof (translation)
-The claim follows from `(powChartForms n k₀ e).isFormSystem`.
+A detailed English derivation is pending.
 -/
 example (k₀ : ι) (e : ℕ) :
     (toObjects (powBlock n k₀ e)).IsFormSystem (powChartForms n k₀ e).d (powChartForms n k₀ e).g :=

@@ -9,9 +9,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarPolyhedralFan
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hO q ψ w ψ' hψ hc hs hint hpos`. Unfold `GlobalTheory.PolFan.IsPolyFan`. Introduce `X _ _ _ _ hX`. Take `⟨S, hSf, hS⟩` from `GlobalTheory.CompanionTheory.Ar.Fan.StarFiniteCover.isStarOf_finite_cover O bar hO q ψ w ψ' hψ hc hs X hX`. Use `⟨GlobalTheory.PolFan.StarFan.homog_of_cover O bar ψ' X ?_, GlobalTheory.T.superadditive_of_cells_cover_cone O bar ψ' X ?_, hint X hX, hpos X hX, ⟨S, hSf, hS⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `all_goals`. Introduce `B hB`. Take `⟨e, m, γ, c, h1, -, h3, h4⟩` from `hS B hB`. Conclude with `⟨e, m, γ, c, h1, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPolyFan_star : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ w ψ' : InvFun O), IsPolyFan bar q ψ → IsCentreSet bar q ψ w → IsStarOf bar q ψ w ψ' → (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℤ, ψ'.evalZ β = n) → (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → β ≠ 0 → 0 < ψ'.evalZ β) → IsPolyFan bar q ψ' := by
   intro O _ _ _ _ bar hO q ψ w ψ' hψ hc hs hint hpos

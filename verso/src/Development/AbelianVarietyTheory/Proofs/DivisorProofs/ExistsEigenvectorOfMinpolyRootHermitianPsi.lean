@@ -8,31 +8,27 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Introduce `p _ G P v w hw`. Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `hτ : algebraMap G.F ℂ = v.embedding` using `rfl`. Set `ψF : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := fun x => by show G.psi v (algebraMap G.F G.C x) = _`. Rewrite using `[G.psi_F, Matrix.algebraMap_eq_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Set `Ψ : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψF (fun a _ => Algebra.commute_algebraMap_left a _)`. Use `haveI : Nontrivial (Matrix (Fin G.n) (Fin G.n) ℂ) := by haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩ infer_instance`. Establish `hinj : Function.Injective Ψ` using `RingHom.injective (Ψ : ℂ ⊗[G.F] G.C →+* Matrix (Fin G.n) (Fin G.n) ℂ)`. Use `set Γ := G.psi v P.γ with hΓ`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΨ : ∀ k : ℕ, Ψ (1 ⊗ₜ ((P.γ : G.C) ^ k)) = Γ ^ k`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Establish `hli0` using `Module.Flat.linearIndependent_one_tmul (S := ℂ) (linearIndependent_pow (K := G.F) (P.γ : G.C))`. Establish `hli` using `hli0.map' Ψ.toLinearMap (LinearMap.ker_eq_bot.2 hinj)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli' : LinearIndependent ℂ (fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => Γ ^ (i : ℕ))`. Establish `e : (⇑Ψ.toLinearMap ∘ fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => (1 : ℂ) ⊗ₜ[G.F] ((P.γ : G.C) ^ (i : ℕ))) = fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => Γ ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Conclude with `hΨ i`. Rewrite `hli` using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hli`. Establish `hd : (minpoly G.F (P.γ : G.C)).natDegree = G.n` using `P.reg.1`. Establish `hint : IsIntegral G.F (P.γ : G.C)` using `Algebra.IsIntegral.isIntegral _`. Establish `hpm : P.pol.Monic` using `minpoly.monic hint`. Use `set Q := P.pol.map (algebraMap G.F ℂ) with hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQm : Q.Monic` using `hpm.map _`. Establish `hQdeg : Q.natDegree = G.n` using `by rw [hQ, hpm.natDegree_map]; exact P.reg.1`. Establish `hQΓ : Polynomial.aeval Γ Q = 0`. Rewrite using `[hQ, Polynomial.aeval_map_algebraMap]`. Establish `h : Polynomial.aeval (ψF (P.γ : G.C)) P.pol = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Polynomial.aeval_algHom_apply]`. Simplify using `[Pair.pol, minpoly.aeval]`. Conclude with `h`. Establish `hroot : Q.IsRoot w`. Rewrite using `[Polynomial.IsRoot, hQ, Polynomial.eval_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hdet : (Γ - algebraMap ℂ (Matrix (Fin G.n) (Fin G.n) ℂ) w).det ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hne x hx0` to reduce the goal to its premises. Rewrite `hx` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[hx, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `set R := Q /ₘ (Polynomial.X - Polynomial.C w) with hRdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQR : (Polynomial.X - Polynomial.C w) * R = Q` using `Polynomial.mul_divByMonic_eq_iff_isRoot.2 hroot`. Establish `hRΓ : Polynomial.aeval Γ R = 0`. Establish `h1` using `hQΓ`. Rewrite `h1` using `[← hQR, map_mul]`. Establish `hu : IsUnit (Polynomial.aeval Γ (Polynomial.X - Polynomial.C w))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Matrix.isUnit_iff_isUnit_det]`. Conclude with `isUnit_iff_ne_zero.2 hdet`. Conclude with `(hu.mul_right_eq_zero).1 h1`. Establish `hRd : R.natDegree = G.n - 1`. Rewrite using `[hRdef, Polynomial.natDegree_divByMonic _ (Polynomial.monic_X_sub_C w), hQdeg, Polynomial.natDegree_X_sub_C]`.
-
-Establish `hR0 : R ≠ 0`. Introduce `h`. Rewrite `hQR` using `[h, mul_zero]`. Conclude with `hQm.ne_zero hQR.symm`. Establish `hsum : ∑ i : Fin (minpoly G.F (P.γ : G.C)).natDegree, R.coeff i • Γ ^ (i : ℕ) = 0`.
-
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => R.coeff i • Γ ^ i), hd, ← hRΓ, Polynomial.aeval_eq_sum_range, hRd, Nat.sub_add_cancel G.n_pos]`. Establish `hc` using `Fintype.linearIndependent_iff.1 hli' (fun i => R.coeff i) hsum ⟨G.n - 1, by rw [hd]; have := G.n_pos; omega⟩`. Conclude with `hR0 (Polynomial.leadingCoeff_eq_zero.1 (by rw [Polynomial.leadingCoeff, hRd]; exact hc))`.
+A detailed English derivation is pending.
 -/
 theorem roots_eig : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (v : InfinitePlace G.F) (w : ℂ),
     P.pol.eval₂ v.embedding w = 0 → ∃ x : Fin G.n → ℂ, x ≠ 0 ∧ G.psi v P.γ *ᵥ x = w • x := by

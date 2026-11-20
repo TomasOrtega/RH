@@ -9,9 +9,9 @@ def levMat {g N : ℕ} (S : Finset (Fin N × Fin N)) (f : S → ZMod g) : Matrix
   fun a b => if h : (a, b) ∈ S then f ⟨(a, b), h⟩ else if a = b then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `a _`. Establish `: (a, a) ∉ S` using `fun h => lt_irrefl _ (hS _ h)`. Simplify using `[levMat, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Establish `hab' : b < a` using `hab`. Establish `: (a, b) ∉ S` using `fun h => lt_asymm hab' (hS _ h)`. Simplify using `[levMat, this, hab'.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem levMat_det {g N : ℕ} (S : Finset (Fin N × Fin N)) (hS : ∀ p ∈ S, p.1 < p.2) (f : S → ZMod g) :
     (levMat S f).det = 1 := by
@@ -26,15 +26,13 @@ theorem levMat_det {g N : ℕ} (S : Finset (Fin N × Fin N)) (hS : ∀ p ∈ S, 
     simp [levMat, this, hab'.ne']
 
 /- English proof (translation)
-Establish `e : {u : GG g N // (∀ a, u.val a a = 1) ∧ ∀ a b, a ≠ b → (a, b) ∉ S → u.val a b = 0} ≃ (S → ZMod g)` using `{ toFun := fun u p => u.1.val p.1.1 p.1.2 invFun := fun f => ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (levMat S f) (by rw [levMat_det S hS]; exact one_ne_zero), by`. Use `⟨fun a => ?_, fun a b hab h => ?_⟩` and prove the remaining obligations. Establish `: (a, a) ∉ S` using `fun h => lt_irrefl _ (hS _ h) show levMat S f a a = 1`. Simplify using `[levMat, this]`. Use `show levMat S f a b = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[levMat, h, hab]⟩`. Use `left_inv := fun u => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Use `show levMat S (fun p => u.1.val p.1.1 p.1.2) a b = u.1.val a b`. Unfold `levMat`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(u.2.1 a).symm`. Conclude with `(u.2.2 a b h2 h1).symm`. Use `right_inv := fun f => by`. Use function extensionality and compare the values at `p`. Use `show levMat S f p.1.1 p.1.2 = f p`.
-
-Simplify using `[levMat, p.2] }`. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_zmod]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem card_up_supp (g : ℕ) [Fact g.Prime] (N : ℕ) (S : Finset (Fin N × Fin N)) (hS : ∀ p ∈ S, p.1 < p.2) :
     Nat.card {u : GG g N // (∀ a, u.val a a = 1) ∧ ∀ a b, a ≠ b → (a, b) ∉ S → u.val a b = 0} = g ^ S.card := by
@@ -65,25 +63,23 @@ theorem card_up_supp (g : ℕ) [Fact g.Prime] (N : ℕ) (S : Finset (Fin N × Fi
   simp
 
 /- English proof (translation)
-Introduce `g _ N L`. Use `set U : Finset (Fin N × Fin N) := (Finset.univ ×ˢ Finset.univ).filter (fun p => p.1 < p.2) with hU`. Use `set R : Finset (Fin N × Fin N) := Finset.univ.filter (fun p => L.sharp = true ∧ L.s ≤ p.1 ∧ (p.1 : ℕ) < L.s + L.k ∧ (p.2 : ℕ) = L.s + L.k) with hR`. Establish `hUc : U.card = N * (N - 1) / 2`. Rewrite using `[hU, Finset.card_product_filter_lt, Nat.choose_two_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hRU : R ⊆ U`. Introduce `p hp`. Simplify using `only [hR, hU, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product] at hp ⊢`. Rewrite using `[Fin.lt_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hRc : R.card = if L.sharp = true then L.k else 0` using `by split_ifs with h`. Establish `hk` using `L.hk`. Use `symm`. Rewrite using `[← Finset.card_range L.k]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.card_bij (fun i hi => (⟨L.s + i, by have := Finset.mem_range.1 hi; omega⟩, ⟨L.s + L.k, hk⟩)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Simplify using `only [hR, Finset.mem_filter, Finset.mem_univ, true_and, h]`. Conclude with `⟨by omega, by omega, trivial⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi j hj hij`. Use `congrArg (fun p : Fin N × Fin N => (p.1 : ℕ)) hij` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `p hp`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hR, Finset.mem_filter, Finset.mem_univ, true_and, h] at hp`. Use `⟨p.1 - L.s, Finset.mem_range.2 (by omega), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply Prod.ext <;> apply Fin.ext <;> simp only <;> omega`. Simplify using `[hR, h]`. Establish `hM : ∀ u : GG g N, L.Mem u ↔ ((∀ a, u.val a a = 1) ∧ ∀ a b, a ≠ b → (a, b) ∉ U \ R → u.val a b = 0)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `u`. Simplify using `only [Lev.Mem, IsUp, hU, hR, Finset.mem_sdiff, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product, not_and, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨h1, fun a b hab h => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction.
 
-Break down `lt_or_gt_of_ne hab with h' | h'` into its components or cases. Assume the negation of the conclusion as `hne`. Conclude with `h h' (fun x1 x2 x3 x4 => hne (h3 x1 a b x2 x3 x4))`. Conclude with `h2 a b h'`. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨⟨h1, fun a b h => h2 a b h.ne' (fun h' => absurd h' (lt_asymm h))⟩, fun x1 a b x2 x3 x4 => ?_⟩` and prove the remaining obligations. Use `h2 a b (fun h => ?_) (fun _ h => h x1 x2 x3 x4)` and prove the remaining obligations. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight hM), card_up_supp g N (U \ R) (fun p hp => by`.
-
-Use `(Finset.mem_sdiff.1 hp).1` as an intermediate fact. Conclude with `(Finset.mem_filter.1 this).2), ← hRc, ← pow_add, Finset.card_sdiff_add_card_eq_card hRU, hUc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev_card : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ L : Lev g N,
     Nat.card {u // L.Mem u} * g ^ (if L.sharp = true then L.k else 0) = g ^ (N * (N - 1) / 2) := by

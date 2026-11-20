@@ -31,7 +31,7 @@ def prodEquiv (φ : K.E →+* K'.E) (B₁ B₂ : InvAlg K) (ψ : K'.E →+* (B�
   { RingEquiv.refl (B₁.A × B₂.A) with commutes' := fun _ => rfl }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem prodEquiv_isIso (φ : K.E →+* K'.E) (B₁ B₂ : InvAlg K) (ψ : K'.E →+* (B₁.prod B₂).A)
     (hψ : ∀ e, ψ (φ e) = algebraMap K.E (B₁.prod B₂).A e) (hσ : ∀ e, (B₁.prod B₂).σ (ψ e) = ψ (K'.c e)) :
@@ -39,16 +39,16 @@ theorem prodEquiv_isIso (φ : K.E →+* K'.E) (B₁ B₂ : InvAlg K) (ψ : K'.E 
   ⟨fun _ => rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext hu₁ hu₂`.
+A detailed English derivation is pending.
 -/
 theorem prod_unitary (B₁ B₂ : InvAlg K) (hu₁ : B₁.g * B₁.σ B₁.g = 1) (hu₂ : B₂.g * B₂.σ B₂.g = 1) :
     (B₁.prod B₂).g * (B₁.prod B₂).σ (B₁.prod B₂).g = 1 :=
   Prod.ext hu₁ hu₂
 
 /- English proof (translation)
-Take `⟨p₁, hp₁, e₁⟩` from `hi₁`. Take `⟨p₂, hp₂, e₂⟩` from `hi₂`. Use `⟨p₁ * p₂, hp₁.mul hp₂, ?_⟩` and prove the remaining obligations. Rewrite `e₁`, `e₂`, the goal using `[← aeval_def]`. Establish `h1 : (aeval (B₁.prod B₂).g (p₁ * p₂)).1 = aeval B₁.g (p₁ * p₂)` using `(aeval_algHom_apply (AlgHom.fst K.O B₁.A B₂.A) (B₁.prod B₂).g (p₁ * p₂)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (aeval (B₁.prod B₂).g (p₁ * p₂)).2 = aeval B₂.g (p₁ * p₂)` using `(aeval_algHom_apply (AlgHom.snd K.O B₁.A B₂.A) (B₁.prod B₂).g (p₁ * p₂)).symm`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h1, map_mul, e₁, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[h2, map_mul, e₂, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -69,35 +69,31 @@ theorem prod_integral (B₁ B₂ : InvAlg K) (hi₁ : IsIntegral K.O B₁.g) (hi
 end Assembly
 
 /- English proof (translation)
-Introduce `hL K B₁ B₂ hu₁ hu₂ hsep hi₁ hi₂ hl`. Establish `hsepP : (B₁.prod B₂).P.Separable` using `by rw [Orbit.prod_P]; exact hsep`. Establish `huP` using `prod_unitary B₁ B₂ hu₁ hu₂`. Establish `hiP` using `prod_integral B₁ B₂ hi₁ hi₂`. Take `⟨d, hd, hcard⟩` from `GlobalTheory.T.card_residueField_localOrder_unitary_prod K B₁ B₂ hu₁ hu₂ hsep hi₁ hi₂ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K', φ, hq, hc, hv, hodd, hfin, hz⟩` from `GlobalTheory.T.exists_unramified_odd_degree_quadratic_local_ext K d hd`. Establish `hU : IsUnrExt K K' d φ` using `⟨hq, hc, hv, hodd, hfin⟩`. Take `⟨ψ, hψ, hσ, hO, s, hs, hres⟩` from `GlobalTheory.T.exists_unramified_embedding_of_involution_algebra K (B₁.prod B₂) huP hsepP hiP hl d hcard K' φ hU hz`. Take `⟨Q, hQ1, hQ2⟩` from `GlobalTheory.T.charpoly_overExt_integral_reduction_pow K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO hl hsepP hiP s hres`. Establish `hiso` using `prodEquiv_isIso φ B₁ B₂ ψ hψ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ψ₁ := (RingHom.fst B₁.A B₂.A).comp ψ with hψ₁`. Use `set ψ₂ := (RingHom.snd B₁.A B₂.A).comp ψ with hψ₂`. Establish `h₁ : ∀ e, ψ₁ (φ e) = algebraMap K.E B₁.A e` using `fun e => congrArg Prod.fst (hψ e)`. Establish `h₁' : ∀ e, B₁.σ (ψ₁ e) = ψ₁ (K'.c e)` using `fun e => congrArg Prod.fst (hσ e)`. Establish `h₂ : ∀ e, ψ₂ (φ e) = algebraMap K.E B₂.A e` using `fun e => congrArg Prod.snd (hψ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂' : ∀ e, B₂.σ (ψ₂ e) = ψ₂ (K'.c e)` using `fun e => congrArg Prod.snd (hσ e)`. Use `set C₁ := overExt φ B₁ ψ₁ h₁ h₁' with hC₁`. Use `set C₂ := overExt φ B₂ ψ₂ h₂ h₂' with hC₂`. Establish `hPP : C₁.P * C₂.P = (overExt φ (B₁.prod B₂) ψ hψ hσ).P`. Rewrite using `[← Orbit.prod_P, ← hiso.charpoly_eq_of_isIso]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO₁ : ∀ y : K'.O, ψ₁ (algebraMap K'.O K'.E y) ∈ Algebra.adjoin K.O ({B₁.g} : Set B₁.A)`. Introduce `y`. Establish `key : ∀ w ∈ Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A), (w : B₁.A × B₂.A).1 ∈ Algebra.adjoin K.O ({B₁.g} : Set B₁.A)`. Introduce `w hw`. Proceed by induction on `hw using Algebra.adjoin_induction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `Algebra.self_mem_adjoin_singleton _ _`. Consider the case `algebraMap a => exact Subalgebra.algebraMap_mem _ a`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`. Consider the case `mul x z _ _ hx hz => exact mul_mem hx hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `key _ (hO y)`. Establish `hO₂ : ∀ y : K'.O, ψ₂ (algebraMap K'.O K'.E y) ∈ Algebra.adjoin K.O ({B₂.g} : Set B₂.A)`. Introduce `y`. Establish `key : ∀ w ∈ Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A), (w : B₁.A × B₂.A).2 ∈ Algebra.adjoin K.O ({B₂.g} : Set B₂.A)`. Introduce `w hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `Algebra.self_mem_adjoin_singleton _ _`. Consider the case `algebraMap a => exact Subalgebra.algebraMap_mem _ a`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `mul x z _ _ hx hz => exact mul_mem hx hz`. Conclude with `key _ (hO y)`. Establish `hO' : ∀ y : K'.O, (ψ₁.prod ψ₂) (algebraMap K'.O K'.E y) ∈ Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A)` using `fun y => hO y`. Establish `hQ : ∃ Q : K'.O[X], Q.map (algebraMap K'.O K'.E) = C₁.P * C₂.P ∧ Q.map (IsLocalRing.residue K'.O) = (X - C (IsLocalRing.residue K'.O (s : K'.O))) ^ Q.natDegree` using `⟨Q, hQ1.trans hPP.symm, hQ2⟩`. Establish `hsep' : (C₁.P * C₂.P).Separable`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPP]`. Conclude with `GlobalTheory.T.separable_charpoly_invAlgBaseChangeUnramified K K' d φ hU (B₁.prod B₂) ψ hψ hσ hsepP`. Establish `hId` using `GlobalTheory.T.unitLemma_residuallyUnipotent_cayleyTransform hL K' C₁ C₂ hu₁ hu₂ hsep' s hs hQ`. Establish `hst : ∀ (B : InvAlg K) (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e)), (∀ y : K'.O, ψ (algebraMap K'.O K'.E y) ∈ Algebra.adjoin K.O ({B.g} : Set B.A)) → (overExt φ B ψ hψ hσ).stSum = B.stSum`. Introduce `B ψ hψ hσ hO'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Unfold `InvAlg.stSum`. Conclude with `finsum_congr fun k => GlobalTheory.T.unramifiedBaseChange_latticeCount_eq K K' d φ hU B ψ hψ hσ hO' _`. Establish `hkap : InvAlg.kapSum C₁ C₂ = InvAlg.kapSum B₁ B₂`. Unfold `InvAlg.kapSum`. Use `finsum_congr fun k => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN : (C₁.prod C₂).N k.rep = (B₁.prod B₂).N k.rep`. Rewrite using `[← hiso.N_eq]`. Conclude with `GlobalTheory.T.unramifiedBaseChange_latticeCount_eq K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO _`. Rewrite using `[hN]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set x := (Quot.out k).1 with hx`. Establish `hfix : B₁.σ ((x : (C₁.prod C₂).A).1) = (x : (C₁.prod C₂).A).1` using `congrArg Prod.fst (Quot.out k).2`. Set `x₁ : B₁.Aˣ` to `Units.map (MonoidHom.fst B₁.A B₂.A) x`. Use `GlobalTheory.T.eta_gramDet_invAlgBaseChangeUnramified_odd K K' d φ hU hd B₁ ψ₁ h₁ h₁' x₁ hfix` as an intermediate fact. Conclude with `this`.
-
-Establish `hres'` using `GlobalTheory.T.val_resultant_eq_degree_mul_unramifiedExt K K' d φ hU hd B₁ B₂ ψ₁ ψ₂ h₁ h₁' h₂ h₂' hO' hsep s hQ`. Unfold `InvAlg.Identity at hId ⊢`. Rewrite `hId` using `[hkap, hst B₁ ψ₁ h₁ h₁' hO₁, hst B₂ ψ₂ h₂ h₂' hO₂]`. Rewrite using `[← hId, hres', hq]`. Use `congr 1`.
-
-Take `⟨m, rfl⟩` from `hd`. Use `push_cast`. Rewrite using `[show -((2 * (m : ℤ) + 1) * val K'.O (resultant C₁.P C₂.P)) = (2 * (m : ℤ) + 1) * (-val K'.O (resultant C₁.P C₂.P)) by ring, zpow_mul]`. Use `congr 1`. Rewrite using `[show (2 * (m : ℤ) + 1) = ((2 * m + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, Odd.neg_pow ⟨m, rfl⟩]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitLemma_local_of_lie_any : UnitLemmaLie → ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ B₁.g = 1 → B₂.g * B₂.σ B₂.g = 1 → (B₁.P * B₂.P).Separable → IsIntegral K.O B₁.g → IsIntegral K.O B₂.g → IsLocalRing (Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A)) → InvAlg.Identity B₁ B₂ := by
   intro hL K B₁ B₂ hu₁ hu₂ hsep hi₁ hi₂ hl

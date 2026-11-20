@@ -25,9 +25,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 open Classical in
 
 /- English proof (translation)
-Unfold `cycR`. Rewrite using `[finsum_mem_def]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Distinguish the cases in `hW : W ∈ divSupp P s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hW, GroundTheory.Heights₂.Heights.Inter.divCycle_apply_of_mem hW]`. Rewrite using `[Set.indicator_of_notMem hW, GroundTheory.Heights₂.Heights.Inter.divCycle_apply_of_not_mem hW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cycR_eq_finsum (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) → ℝ) (P : Ideal (MRing ι)) {n : ℕ}
     (L : Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (s : MRing ι) :
@@ -47,47 +47,39 @@ end MixedSectionInduction
 open MixedSectionInduction in
 
 /- English proof (translation)
-Introduce `K _ ι _ P P0 d M H II hII hd hP hP0 hMs hMn hMc hMW hHa hHs hHb hHc hAt q p hp hpos`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by omega⟩`. Express the relevant statement in the definitionally equal form `MixedKleiman.AtDim n at hAt`. Establish `hn : 1 ≤ n` using `by omega`. Take `⟨m, f, g, hm, hfg, hdiv, hbd⟩` from `hS K ι P P0 (n + 1) M H p q II hII (by omega) hP hP0 hMs hMn hMc hHa hHs hHb hHc hp hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hMsm : IsSmoothHerm M` using `hMs.1`. Establish `hHsm : IsSmoothHerm H` using `hHs.1`. Set `L : Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι` to `fun j => if (j : ℕ) = 0 then M else HermLine.zcomb M H (q : ℤ) (p : ℤ)`. Set `F : Fin (n + 1) → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι` to `fun j => if (j : ℕ) = 0 then M else HermLine.zcomb M H (q : ℤ) (p : ℤ)`. Establish `hLsp : ∀ j, IsSemipositiveRel P0 P (L j)` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [L]`. Use `split_ifs`. Conclude with `hMs`. Conclude with `SmallSectionMixedAlt.isSemipositiveRel_zcomb hMs hHs q p`. Establish `hFs : ∀ j, IsSmoothHerm (F j)` using `fun j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [F]`. Use `split_ifs`. Conclude with `hMsm`. Conclude with `ZCombLimit.isSmoothHerm_zcomb_int hMsm hHsm _ _`. Establish `hsnoc : ∀ X, Fin.snoc L X = Function.update F (Fin.last n) X`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `X`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, Function.update_self]`. Rewrite using `[Fin.snoc_castSucc, Function.update_of_ne (Fin.castSucc_lt_last i).ne]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hFN : Function.update F (Fin.last n) (HermLine.zcomb M H (q : ℤ) (p : ℤ)) = F`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self]`. Simplify using `only [F, Fin.val_last]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[Function.update_of_ne hj]`. Establish `hscale : II K ι P (n + 1) (Fin.snoc L (HermLine.zcomb M H ((m * q : ℕ) : ℤ) ((m * p : ℕ) : ℤ))) = (m : ℝ) * II K ι P (n + 1) F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1` using `ZCombLimit.fam_update_zcomb_int (hII K ι) hP F hFs (Fin.last n) hMsm hHsm ((m * q : ℕ) : ℤ) ((m * p : ℕ) : ℤ)`. Establish `e2` using `ZCombLimit.fam_update_zcomb_int (hII K ι) hP F hFs (Fin.last n) hMsm hHsm (q : ℤ) (p : ℤ)`. Rewrite `e2` using `[hFN]`. Rewrite using `[hsnoc, e1, e2]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpts : ∀ {W : Ideal (MRing ι)}, P ≤ W → mcPts W ⊆ mcPts P` using `fun hPW z hz => ⟨hz.1, fun f hf => hz.2 f (hPW hf)⟩`. Establish `hchar : ∀ W W' : Ideal (MRing ι), W ≤ W' → charOf W ≠ 0 → charOf W' ≠ 0`. Introduce `W W' hle hW hW'`. Apply `hW` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `charOf at hW' ⊢`. Rewrite `hW'`, the goal using `[Int.natAbs_eq_zero, ← Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero]`. Conclude with `le_bot_iff.mp (hW' ▸ Ideal.comap_mono hle)`. Take `⟨α, β, hfα, hgβ, hfP, hgP, hαβ⟩` from `hfg`. Establish `key : ∀ W ∈ divSupp P f, 0 ≤ (if IsHorizontal W then II K ι W n L else (geoNum n W (fun j => (L j).a) : ℝ) * Real.log (charOf W))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `W hW`. Take `⟨hH, hV⟩` from `divSuppArith K ι P n (HermLine.ofMetrics (fun k => fsMetric (ι k)) (fun k => (α k : ℤ))) f W hP ⟨α, fun _ => rfl, hfα, hfP⟩ hW`. Establish `hPW : P ≤ W` using `le_trans le_sup_left hW.1.1.2`. Use `split_ifs with hWh`. Establish `hWv` using `hH hWh`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hE K ι (II K ι) (hII K ι) W n M H q p hWv hMsm hHsm).2 hn]`. Use `Finset.sum_nonneg fun i hi => mul_nonneg (by positivity) ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`. Conclude with `hAt K ι W P0 M H (fun _ => 1) II hII hn hWv (hP0.trans hPW) ⟨hMsm, fun z hz => hMs.2 z (hpts hPW hz)⟩ (fun W' h1 h2 => hMn W' h1 (hPW.trans h2)) hMc (fun W' h1 h2 => hMW W' h1 (hPW.trans h2)) (by rw [hHa]; funext k; simp) ⟨hHsm, fun z hz => hHs.2 z (hpts hPW hz)⟩ (fun z hz => hHb …`. Distinguish the cases in `hc : charOf W = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hc]`. Establish `hg : 0 ≤ geoNum n W (fun j => (L j).a)`. Use `hK K ι W n _ (hV hWh).1 hc (hV hWh).2.2 fun j => ?_` and prove the remaining obligations. Introduce `W' h1 h2 h3`. Establish `hM' : 0 ≤ geoNum 1 W' (fun _ => M.a)` using `hMn W' h1 (hPW.trans h2) (hchar W W' h2 hc) h3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [L]`. Use `split_ifs`. Conclude with `hM'`. Use `show 0 ≤ geoNum 1 W' (fun _ => (q : ℤ) • M.a + (p : ℤ) • H.a)`. Rewrite using `[ShiftedNefBig.geoNum_one_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hH' : 0 ≤ geoNum 1 W' (fun _ => (p : ℤ) • H.a)` using `ProjLine.nefOnFibres_of_nonneg W' _ (fun k => by rw [hHa]; simp) W' h1 le_rfl (hchar W W' h2 hc) h3`. Conclude with `add_nonneg (mul_nonneg (Nat.cast_nonneg q) hM') hH'`. Conclude with `mul_nonneg (by exact_mod_cast hg) (Real.log_natCast_nonneg _)`. Establish `hcyc : cycR (II K ι) P L g ≤ cycR (II K ι) P L f`. Rewrite using `[cycR_eq_finsum, cycR_eq_finsum]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_le_finsum' ?_ ?_ fun W => ?_` and prove the remaining obligations. Conclude with `Set.Finite.subset (Finsupp.hasFiniteSupport (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P g)) fun W hW h => hW (by simp [h])`. Conclude with `Set.Finite.subset (Finsupp.hasFiniteSupport (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P f)) fun W hW h => hW (by simp [h])`. Establish `hle : ReciprocityTheory.ChartRestriction.G.Geo.divCycle P g W ≤ ReciprocityTheory.ChartRestriction.G.Geo.divCycle P f W` using `hdiv W`. Distinguish the cases in `hW : W ∈ divSupp P f`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hle) (key W hW)`. Establish `h0 : ReciprocityTheory.ChartRestriction.G.Geo.divCycle P f W = 0` using `GroundTheory.Heights₂.Heights.Inter.divCycle_apply_of_not_mem hW`. Rewrite `hle`, the goal using `[h0]`. Rewrite using `[Nat.le_zero.mp hle]`. Establish `hint : ptsIntegral P (pot L) (logNormRat (HermLine.zcomb M H ((m * q : ℕ) : ℤ) ((m * p : ℕ) : ℤ)) f g) ≤ 0`.
-
-Use `hI K ι P P0 n L _ hP0 hLsp fun z hz => ?_` and prove the remaining obligations. Establish `hpos` using `(HermLine.zcomb M H ((m * q : ℕ) : ℤ) ((m * p : ℕ) : ℤ)).pos z hz.1`. Unfold `logNormRat`. Use `Real.log_nonpos (by positivity) ((div_le_one hpos).mpr ?_)` and prove the remaining obligations. Distinguish the cases in `hg0 : ‖eval z (map (Int.castRingHom ℂ) g)‖ = 0`.
-
-Rewrite using `[hg0, div_zero]`. Conclude with `hpos.le`. Rewrite using `[div_le_iff₀ (lt_of_le_of_ne (norm_nonneg _) (Ne.symm hg0))]`. Combine the linear relations using `[hbd z hz]`. Establish `hNm : IsSmoothHerm (HermLine.zcomb M H ((m * q : ℕ) : ℤ) ((m * p : ℕ) : ℤ))` using `ZCombLimit.isSmoothHerm_zcomb_int hMsm hHsm _ _`.
-
-Establish `hrec` using `hR K ι (II K ι) (hII K ι) P n L _ f g hP (fun j => (hLsp j).1) hNm ⟨α, β, hfα, hgβ, hfP, hgP, hαβ⟩`. Rewrite `hrec` using `[hscale]`. Establish `hnn : 0 ≤ (m : ℝ) * II K ι P (n + 1) F`. Rewrite using `[hrec]`. Unfold `recRRat`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(mul_nonneg_iff_of_pos_left (by exact_mod_cast hm : (0 : ℝ) < m)).mp hnn`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MixedSectionStep.proof (hS : SmallSectionMixed.Statement) (hR : GroundTheory.Heights₂.Heights.Inter.RatR.Statement)
     (hI : IntegralAgainstPositive.Statement) (hK : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KleimanNefIntersectionNonneg)

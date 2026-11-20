@@ -22,7 +22,7 @@ def Ge (v : HeightOneSpectrum (𝓞 F)) (i : ℕ) (s : Fv F v) : Prop :=
 
 open Classical in
 /- English proof (translation)
-Unfold `rv Ge`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : s ≠ 0 ∧ Valued.v s ≤ ((Multiplicative.ofAdd (-(i : ℤ)) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[if_pos h, if_pos h]`. Rewrite using `[if_neg h, if_neg h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_eq (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) (s : Fv F v) :
     rv v e s = ∑' i : ℕ, if Ge v i s then e ^ i else 0 := by
@@ -33,13 +33,13 @@ theorem rv_eq (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) (s : Fv F v) :
   · rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ge_iff (v : HeightOneSpectrum (𝓞 F)) (i : ℕ) (s : Fv F v) :
     Ge v i s ↔ s ≠ 0 ∧ Valued.v s ≤ WithZero.exp (-(i : ℤ)) := Iff.rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ge_iff]`. Use `⟨h.1, h.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ge_mono {v : HeightOneSpectrum (𝓞 F)} {i j : ℕ} {s : Fv F v} (hij : i ≤ j) (h : Ge v j s) : Ge v i s := by
   rw [ge_iff] at h ⊢
@@ -48,7 +48,7 @@ theorem ge_mono {v : HeightOneSpectrum (𝓞 F)} {i j : ℕ} {s : Fv F v} (hij :
   omega
 
 /- English proof (translation)
-Rewrite using `[ge_iff, ge_iff, h]`. Establish `: s ≠ 0 ↔ s' ≠ 0`. Rewrite using `[← (Valued.v : Valuation (Fv F v) _).ne_zero_iff, ← (Valued.v : Valuation (Fv F v) _).ne_zero_iff (x := s'), h]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ge_congr {v : HeightOneSpectrum (𝓞 F)} {i : ℕ} {s s' : Fv F v} (h : Valued.v s = Valued.v s') :
     Ge v i s ↔ Ge v i s' := by
@@ -58,9 +58,9 @@ theorem ge_congr {v : HeightOneSpectrum (𝓞 F)} {i : ℕ} {s s' : Fv F v} (h :
   rw [this]
 
 /- English proof (translation)
-Distinguish the cases in `hs : s = 0`. Conclude with `⟨0, fun i _ h => h.1 hs⟩`. Establish `h0 : Valued.v s ≠ 0` using `(Valued.v : Valuation (Fv F v) _).ne_zero_iff.2 hs`. Use `⟨(-(Valued.v s).log).toNat, fun i hi h => ?_⟩` and prove the remaining obligations. Establish `h2` using `((ge_iff v i s).1 h).2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use `Int.self_le_toNat (-(Valued.v s).log)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_not_ge {v : HeightOneSpectrum (𝓞 F)} (s : Fv F v) : ∃ N : ℕ, ∀ i, N < i → ¬ Ge v i s := by
   by_cases hs : s = 0
@@ -74,7 +74,7 @@ theorem exists_not_ge {v : HeightOneSpectrum (𝓞 F)} (s : Fv F v) : ∃ N : �
 
 open Classical in
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_not_ge s`. Use `summable_of_finite_support ((Set.finite_Iic N).subset fun i hi => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (if_neg (hN i (not_le.1 h)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem summable_ge (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) (s : Fv F v) :
     Summable fun i : ℕ => if Ge v i s then e ^ i else 0 := by
@@ -86,17 +86,15 @@ theorem summable_ge (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) (s : Fv F v) :
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `h0 : Ge v 0 s`. Use `right`. Establish `hex : ∃ i, ¬ Ge v i s`. Take `⟨N, hN⟩` from `exists_not_ge s`. Conclude with `⟨N + 1, hN _ (Nat.lt_succ_self N)⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm : 0 < Nat.find hex`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h | h` into its components or cases. Conclude with `absurd (h ▸ Nat.find_spec hex) (not_not.2 h0)`. Conclude with `h`. Establish `key : ∀ i, Ge v i s ↔ i ≤ Nat.find hex - 1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Conclude with `Nat.find_spec hex (ge_mono (by omega) h)`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `not_not.1 (Nat.find_min hex (by omega))`. Use `⟨Nat.find hex - 1, key, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[rv_eq, tsum_eq_sum (s := Finset.range (Nat.find hex - 1 + 1))]`. Use `Finset.sum_congr rfl fun i hi => if_pos ((key i).2 (by simpa [Nat.lt_succ_iff] using hi))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Use `if_neg fun h => hi ?_` and prove the remaining obligations. Simplify `(key i).1 h` using `[Nat.lt_succ_iff]`. Use `left`. Use `⟨h0, fun e => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[rv_eq]`. Establish `: ∀ i, ¬ Ge v i s` using `fun i h => h0 (ge_mono (Nat.zero_le i) h)`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rv_form {v : HeightOneSpectrum (𝓞 F)} (s : Fv F v) :
     (¬ Ge v 0 s ∧ ∀ e, rv v e s = 0) ∨
@@ -131,11 +129,9 @@ theorem rv_form {v : HeightOneSpectrum (𝓞 F)} (s : Fv F v) :
     simp [this]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => left`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Break down `ih with ⟨h, hm⟩ | ⟨h, hm⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Use `right`. Rewrite using `[Finset.sum_range_succ, h, hm.neg_one_pow]`. Conclude with `⟨by norm_num, hm.add_one⟩`. Use `left`. Rewrite using `[Finset.sum_range_succ, h, hm.neg_one_pow]`.
-
-Conclude with `⟨by norm_num, hm.add_one⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_neg_one (m : ℕ) : (∑ i ∈ Finset.range m, (-1 : ℝ) ^ i = 0 ∧ Even m) ∨
     (∑ i ∈ Finset.range m, (-1 : ℝ) ^ i = 1 ∧ Odd m) := by
@@ -151,11 +147,11 @@ theorem sum_neg_one (m : ℕ) : (∑ i ∈ Finset.range m, (-1 : ℝ) ^ i = 0 �
       exact ⟨by norm_num, hm.add_one⟩
 
 /- English proof (translation)
-Establish `hn : (1 : ℝ) ≤ n + 1` using `by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith`. Break down `he with rfl | rfl | rfl` into its components or cases. Establish `h1 : ∑ i ∈ Finset.range (n + 1), (0 : ℝ) ^ i = 1`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `using hn`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Conclude with `⟨by positivity, le_refl _⟩`. Establish `h1 : ∑ i ∈ Finset.range (n + 1), (1 : ℝ) ^ i = n + 1` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Apply the tactic sequence `rcases sum_neg_one (n + 1) with ⟨h, -⟩ | ⟨h, -⟩ <;> rw [h]`. Conclude with `⟨le_refl _, by linarith⟩`. Conclude with `⟨by norm_num, hn⟩`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem sum_bounds {e : ℝ} (he : e = 0 ∨ e = 1 ∨ e = -1) (n : ℕ) :
     0 ≤ ∑ i ∈ Finset.range (n + 1), e ^ i ∧ ∑ i ∈ Finset.range (n + 1), e ^ i ≤ ∑ i ∈ Finset.range (n + 1), (1 : ℝ) ^ i := by
@@ -175,7 +171,7 @@ theorem sum_bounds {e : ℝ} (he : e = 0 ∨ e = 1 ∨ e = -1) (n : ℕ) :
     · exact ⟨by norm_num, hn⟩
 
 /- English proof (translation)
-Break down `rv_form s with ⟨-, h⟩ | ⟨n, -, h⟩` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Conclude with `(sum_bounds he n).1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rv_nonneg {v : HeightOneSpectrum (𝓞 F)} {e : ℝ} (he : e = 0 ∨ e = 1 ∨ e = -1) (s : Fv F v) : 0 ≤ rv v e s := by
   rcases rv_form s with ⟨-, h⟩ | ⟨n, -, h⟩
@@ -183,7 +179,7 @@ theorem rv_nonneg {v : HeightOneSpectrum (𝓞 F)} {e : ℝ} (he : e = 0 ∨ e =
   · rw [h]; exact (sum_bounds he n).1
 
 /- English proof (translation)
-Break down `rv_form s with ⟨-, h⟩ | ⟨n, -, h⟩` into its components or cases. Rewrite using `[h, h]`. Rewrite using `[h, h]`. Conclude with `(sum_bounds he n).2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rv_le {v : HeightOneSpectrum (𝓞 F)} {e : ℝ} (he : e = 0 ∨ e = 1 ∨ e = -1) (s : Fv F v) : rv v e s ≤ rv v 1 s := by
   rcases rv_form s with ⟨-, h⟩ | ⟨n, -, h⟩
@@ -191,13 +187,13 @@ theorem rv_le {v : HeightOneSpectrum (𝓞 F)} {e : ℝ} (he : e = 0 ∨ e = 1 �
   · rw [h, h]; exact (sum_bounds he n).2
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `fun h => by simp [h] at hs`. Establish `h0 : Ge v 0 s`. Rewrite using `[ge_iff]`. Use `⟨hs0, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : ¬ Ge v 1 s`. Introduce `h`. Use `((ge_iff v 1 s).1 h).2` as an intermediate fact. Rewrite `this` using `[hs, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at this`. Break down `rv_form s with ⟨h, -⟩ | ⟨n, hn, h⟩` into its components or cases. Conclude with `absurd h0 h`. Establish `: n = 0`. Assume the negation of the conclusion as `hc`.
+Evaluate the numerical expressions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Conclude with `h1 ((hn 1).2 (by omega))`. Substitute `this` using the available equality. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rv_unit {v : HeightOneSpectrum (𝓞 F)} (e : ℝ) {s : Fv F v} (hs : Valued.v s = 1) : rv v e s = 1 := by
   have hs0 : s ≠ 0 := fun h => by simp [h] at hs
@@ -221,7 +217,7 @@ theorem rv_unit {v : HeightOneSpectrum (𝓞 F)} (e : ℝ) {s : Fv F v} (hs : Va
     simp
 
 /- English proof (translation)
-Rewrite using `[rv_eq, rv_eq]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Simplify using `only [ge_congr (i := i) h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rv_congr {v : HeightOneSpectrum (𝓞 F)} (e : ℝ) {s s' : Fv F v} (h : Valued.v s = Valued.v s') :
     rv v e s = rv v e s' := by
@@ -232,7 +228,7 @@ theorem rv_congr {v : HeightOneSpectrum (𝓞 F)} (e : ℝ) {s s' : Fv F v} (h :
 
 open Classical in
 /- English proof (translation)
-Break down `rv_form s with ⟨h, h'⟩ | ⟨n, hn, h'⟩` into its components or cases. Rewrite using `[h', if_neg h]`. Rewrite using `[h', if_pos ((hn 0).2 (Nat.zero_le n)), Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rv_zero (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) : rv v 0 s = if Ge v 0 s then 1 else 0 := by
   rcases rv_form s with ⟨h, h'⟩ | ⟨n, hn, h'⟩
@@ -241,9 +237,9 @@ theorem rv_zero (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) : rv v 0 s = if Ge
     simp
 
 /- English proof (translation)
-Rewrite using `[ge_iff, ge_iff, map_mul, hu]`. Establish `h1 : (u : Fv F v) * s ≠ 0 ↔ s ≠ 0` using `by simp`. Rewrite using `[h1]`. Establish `h2 : WithZero.exp (-(i : ℤ)) = WithZero.exp (1 : ℤ) * WithZero.exp (-((i + 1 : ℕ) : ℤ))`. Rewrite using `[← WithZero.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, mul_le_mul_iff_right₀ (WithZero.exp_pos)]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem ge_shift {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ))
     (i : ℕ) (s : Fv F v) : Ge v (i + 1) s ↔ Ge v i ((u : Fv F v) * s) := by
@@ -259,9 +255,9 @@ theorem ge_shift {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[rv_eq v e s, (summable_ge v e s).tsum_eq_zero_add, rv_zero, rv_eq v e, ← tsum_mul_left]`. Use `congr 1`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : Ge v (i + 1) s`. Rewrite using `[if_pos h, if_pos ((ge_shift hu i s).1 h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (fun h' => h ((ge_shift hu i s).2 h'))]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rv_rec {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ))
     (e : ℝ) (s : Fv F v) : rv v e s = rv v 0 s + e * rv v e ((u : Fv F v) * s) := by
@@ -275,7 +271,7 @@ theorem rv_rec {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v 
     ring
 
 /- English proof (translation)
-Proceed by induction on `k generalizing s with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[ge_shift hu, ih, pow_succ, Units.val_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ge_pow {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ))
     (k : ℕ) (s : Fv F v) : Ge v k s ↔ Ge v 0 ((((u ^ k : (Fv F v)ˣ)) : Fv F v) * s) := by
@@ -287,9 +283,9 @@ theorem ge_pow {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[rv_eq]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[rv_zero]`. Distinguish the cases in `h : Ge v k s`. Rewrite using `[if_pos h, if_pos ((ge_pow hu k s).1 h), one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg fun h' => h ((ge_pow hu k s).2 h')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_one_series {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ))
     (s : Fv F v) : rv v 1 s = ∑' k : ℕ, rv v 0 ((((u ^ k : (Fv F v)ˣ)) : Fv F v) * s) := by
@@ -302,7 +298,7 @@ theorem rv_one_series {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Va
 
 open Classical in
 /- English proof (translation)
-Use `(summable_ge v 1 s).congr fun k => ?_` and prove the remaining obligations. Rewrite using `[rv_zero]`. Distinguish the cases in `h : Ge v k s`. Rewrite using `[if_pos h, if_pos ((ge_pow hu k s).1 h), one_pow]`. Rewrite using `[if_neg h, if_neg fun h' => h ((ge_pow hu k s).2 h')]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem summable_rv_shift {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu : Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ))
     (s : Fv F v) : Summable fun k : ℕ => rv v 0 ((((u ^ k : (Fv F v)ˣ)) : Fv F v) * s) := by
@@ -313,9 +309,9 @@ theorem summable_rv_shift {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ} (hu 
   · rw [if_neg h, if_neg fun h' => h ((ge_pow hu k s).2 h')]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hr : Valued.v (algebraMap F (Fv F v) π) = WithZero.exp (-1 : ℤ)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v π).trans hπ`. Establish `h0 : algebraMap F (Fv F v) π ≠ 0`. Introduce `h`. Rewrite `hr` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hr.symm`. Use `⟨(Units.mk0 _ h0)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, Units.val_mk0, hr, ← WithZero.exp_neg]`. Simplify using the standard rewrite rules. Simplify using `using hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_inv_uniformizer (v : HeightOneSpectrum (𝓞 F)) :
     ∃ u : (Fv F v)ˣ, Valued.v (u : Fv F v) = WithZero.exp (1 : ℤ) ∧ Valued.v ((u⁻¹ : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-1 : ℤ) := by
@@ -336,14 +332,14 @@ def Good (w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) : Prop :=
     ∀ s, w v s ≤ rv v 1 s
 
 /- English proof (translation)
-Introduce `v` and use `⟨fun _ _ h => rv_congr _ h, fun _ h => rv_unit _ h, fun _ => rv_nonneg (he v) _, fun _ => rv_le (he v) _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem good_rv {e : HeightOneSpectrum (𝓞 F) → ℝ} (he : ∀ v, e v = 0 ∨ e v = 1 ∨ e v = -1) :
     Good fun v => rv v (e v) :=
   fun v => ⟨fun _ _ h => rv_congr _ h, fun _ h => rv_unit _ h, fun _ => rv_nonneg (he v) _, fun _ => rv_le (he v) _⟩
 
 /- English proof (translation)
-Establish `ha' : Valued.v a ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v).1 ha`. Establish `hb' : Valued.v b ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v).1 hb`. Establish `h1 : Valued.v a * Valued.v b = 1` using `by rw [← map_mul, hab, map_one]`. Use `le_antisymm ha' ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_eq_one_of_mul {v : HeightOneSpectrum (𝓞 F)} {a b : Fv F v} (hab : a * b = 1)
     (ha : a ∈ v.adicCompletionIntegers F) (hb : b ∈ v.adicCompletionIntegers F) : Valued.v a = 1 := by
@@ -356,7 +352,7 @@ theorem val_eq_one_of_mul {v : HeightOneSpectrum (𝓞 F)} {a b : Fv F v} (hab :
     _ = Valued.v a := mul_one _
 
 /- English proof (translation)
-Use `filter_upwards [(a : AF F).2.2, ((a⁻¹ : (AF F)ˣ) : AF F).2.2] with v h1 h2`. Conclude with `val_eq_one_of_mul (IdeleGroup.finite_mul_inv a v) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_val_eq_one (a : (AF F)ˣ) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, Valued.v ((a : AF F).2 v) = 1 := by
@@ -364,7 +360,7 @@ theorem eventually_val_eq_one (a : (AF F)ˣ) :
   exact val_eq_one_of_mul (IdeleGroup.finite_mul_inv a v) h1 h2
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `hU : (fun y => x⁻¹ * y) ⁻¹' (IdeleGroup.standardOpenSubgroup F : Set (IdeleGroup F)) ∈ 𝓝 x` using `((IdeleGroup.isOpen_standardOpenSubgroup F).preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [(IdeleGroup.standardOpenSubgroup F).one_mem])`. Use `(continuousAt_const (y := f x)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU] with y hy`. Rewrite using `[← mul_inv_cancel_left x y, h x _ hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_inv {X : Type*} [TopologicalSpace X] (f : (AF F)ˣ → X)
     (h : ∀ a u, u ∈ IdeleGroup.standardOpenSubgroup F → f (a * u) = f a) : Continuous f := by
@@ -377,7 +373,7 @@ theorem continuous_of_inv {X : Type*} [TopologicalSpace X] (f : (AF F)ˣ → X)
   rw [← mul_inv_cancel_left x y, h x _ hy]
 
 /- English proof (translation)
-Establish `h` using `(IdeleGroup.mem_standardOpenSubgroup F).1 hu v`. Establish `h1` using `val_eq_one_of_mul (IdeleGroup.finite_mul_inv u v) h.1 h.2`. Rewrite using `[Units.val_mul, IdeleGroup.adele_snd_mul_apply, map_mul, h1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul_std (a u : (AF F)ˣ) (hu : u ∈ IdeleGroup.standardOpenSubgroup F) (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v (((a * u : (AF F)ˣ) : AF F).2 v) = Valued.v ((a : AF F).2 v) := by
@@ -386,9 +382,9 @@ theorem val_mul_std (a u : (AF F)ˣ) (hu : u ∈ IdeleGroup.standardOpenSubgroup
   rw [Units.val_mul, IdeleGroup.adele_snd_mul_apply, map_mul, h1, mul_one]
 
 /- English proof (translation)
-Establish `c0 : Continuous fun a : (AF F)ˣ => (a : AF F)` using `Units.continuous_val`. Establish `c1 : Continuous fun a : (AF F)ˣ => (a : AF F).1` using `continuous_fst.comp c0`. Establish `c2 : Continuous fun a : (AF F)ˣ => (a : AF F).2` using `continuous_snd.comp c0`. Unfold `PositivityTheory.Rg.Base1.pure`. Use `ENNReal.continuous_ofReal.comp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hG.comp c1).mul ?_).mul ?_` and prove the remaining obligations. Use `continuous_finset_prod _ fun v hv => (hg v hv).comp ?_` and prove the remaining obligations. Conclude with `(RestrictedProduct.continuous_eval v).comp c2`. Use `continuous_of_inv _ fun a u hu => finprod_congr fun x => ?_` and prove the remaining obligations. Conclude with `(hw x.1).1 _ _ (val_mul_std a u hu x.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pure (S : Finset (HeightOneSpectrum (𝓞 F))) {G : Ainf F → ℝ}
     {g w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (hG : Continuous G) (hg : ∀ v ∈ S, Continuous (g v)) (hw : Good w) :
@@ -411,7 +407,7 @@ def rest (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ) (g w : �
   G (a : AF F).1 * (∏ v ∈ S, g v ((a : AF F).2 v)) * ∏ᶠ (x : Off S) (_ : x ≠ x₀), w x.1 ((a : AF F).2 x.1)
 
 /- English proof (translation)
-Establish `h` using `eventually_cofinite.1 (eventually_val_eq_one a)`. Use `(h.preimage (Subtype.val_injective.injOn)).subset fun x hx => ?_` and prove the remaining obligations. Introduce `h1`. Conclude with `hx ((hw x.1).2.1 _ h1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_off {w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (hw : Good w) (a : (AF F)ˣ)
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -422,7 +418,7 @@ theorem finite_mulSupport_off {w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v �
   exact hx ((hw x.1).2.1 _ h1)
 
 /- English proof (translation)
-Unfold `PositivityTheory.Rg.Base1.pure rest`. Rewrite using `[← mul_finprod_cond_ne x₀ (finite_mulSupport_off hw a S)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pure_eq {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {g w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ}
     (hw : Good w) (x₀ : Off S) (a : (AF F)ˣ) :
@@ -433,7 +429,7 @@ theorem pure_eq {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {
   ring
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (mul_nonneg (hG _) (Finset.prod_nonneg fun v _ => hg v _)) (finprod_nonneg fun x => finprod_nonneg fun _ => (hw x.1).2.2.1 _)`.
+A detailed English derivation is pending.
 -/
 theorem rest_nonneg {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {g w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ}
     (hG : ∀ y, 0 ≤ G y) (hg : ∀ v y, 0 ≤ g v y) (hw : Good w) (x₀ : Off S) (a : (AF F)ˣ) : 0 ≤ rest S G g w x₀ a :=
@@ -441,7 +437,7 @@ theorem rest_nonneg {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → �
     (finprod_nonneg fun x => finprod_nonneg fun _ => (hw x.1).2.2.1 _)
 
 /- English proof (translation)
-Unfold `rest`. Use `congr 1`. Use `finprod_congr fun x => finprod_congr fun hx => ?_` and prove the remaining obligations. Rewrite using `[h x hx]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rest_congr {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {g w w' : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ}
     (x₀ : Off S) (h : ∀ x : Off S, x ≠ x₀ → w x.1 = w' x.1) (a : (AF F)ˣ) : rest S G g w x₀ a = rest S G g w' x₀ a := by
@@ -453,14 +449,14 @@ theorem rest_congr {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ
 abbrev emb (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v)ˣ) : (AF F)ˣ := IdeleGroup.finiteEmbedding v u
 
 /- English proof (translation)
-The claim follows from `one_mul (a : AF F).1`.
+A detailed English derivation is pending.
 -/
 theorem emb_fst (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v)ˣ) (a : (AF F)ˣ) :
     ((emb v u * a : (AF F)ˣ) : AF F).1 = (a : AF F).1 :=
   one_mul (a : AF F).1
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, IdeleGroup.adele_snd_mul_apply, IdeleGroup.coe_finiteEmbedding]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_snd_self (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v)ˣ) (a : (AF F)ˣ) :
     ((emb v u * a : (AF F)ˣ) : AF F).2 v = (u : Fv F v) * (a : AF F).2 v := by
@@ -468,7 +464,7 @@ theorem emb_snd_self (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v)ˣ) (a : (AF 
   simp
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, IdeleGroup.adele_snd_mul_apply, IdeleGroup.coe_finiteEmbedding]`. Simplify using `[IdeleGroup.finiteAdeleSingle_apply_of_ne h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_snd_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (u : (Fv F v)ˣ) (a : (AF F)ˣ) :
     ((emb v u * a : (AF F)ˣ) : AF F).2 w = (a : AF F).2 w := by
@@ -476,9 +472,9 @@ theorem emb_snd_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (u : (Fv F v
   simp [IdeleGroup.finiteAdeleSingle_apply_of_ne h]
 
 /- English proof (translation)
-Unfold `rest`. Establish `h1 : ∏ v ∈ S, g v (((emb x₀.1 u * a : (AF F)ˣ) : AF F).2 v) = ∏ v ∈ S, g v ((a : AF F).2 v)`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[emb_snd_ne (fun h => x₀.2 (by rw [← h]; exact hv))]`. Establish `h2 : ∏ᶠ (x : Off S) (_ : x ≠ x₀), w x.1 (((emb x₀.1 u * a : (AF F)ˣ) : AF F).2 x.1) = ∏ᶠ (x : Off S) (_ : x ≠ x₀), w x.1 ((a : AF F).2 x.1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `finprod_congr fun x => finprod_congr fun hx => ?_` and prove the remaining obligations. Rewrite using `[emb_snd_ne (fun h => hx (Subtype.ext h))]`. Rewrite using `[emb_fst, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rest_emb {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {g w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ}
     (x₀ : Off S) (u : (Fv F x₀.1)ˣ) (a : (AF F)ˣ) : rest S G g w x₀ (emb x₀.1 u * a) = rest S G g w x₀ a := by
@@ -493,32 +489,32 @@ theorem rest_emb {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} 
   rw [emb_fst, h1, h2]
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : (AF F)ˣ) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos (a : (AF F)ˣ) : 0 < md a := (IdeleGroup.ideleModule F a).2
 
 /- English proof (translation)
-Simplify using `[md, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_one : md (1 : (AF F)ˣ) = 1 := by
   simp [md, map_one]
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp IdeleGroup.continuous_ideleModule`.
+A detailed English derivation is pending.
 -/
 theorem continuous_md : Continuous (md (F := F)) :=
   continuous_subtype_val.comp IdeleGroup.continuous_ideleModule
 
 /- English proof (translation)
-Establish `h1 : md (emb v u⁻¹) = (Ideal.absNorm v.asIdeal : ℝ)⁻¹` using `ideleModule_finiteEmbedding_of_uniformizer hu`. Establish `h2 : md (emb v u) * md (emb v u⁻¹) = 1`. Rewrite using `[← md_mul, emb, emb, ← map_mul, mul_inv_cancel, map_one, md_one]`. Establish `h3 : (0 : ℝ) < Ideal.absNorm v.asIdeal`. Conclude with `(one_lt_absNorm_asIdeal v).trans' Nat.zero_lt_one` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Clear denominators, using `at h2` for the nonvanishing conditions. Conclude with `h2`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem md_emb {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ}
     (hu : Valued.v ((u⁻¹ : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-1 : ℤ)) : md (emb v u) = (Ideal.absNorm v.asIdeal : ℝ) := by
@@ -532,13 +528,11 @@ theorem md_emb {v : HeightOneSpectrum (𝓞 F)} {u : (Fv F v)ˣ}
   exact h2
 
 /- English proof (translation)
-Establish `h : ∀ a, f (c * a) * ENNReal.ofReal (md a ^ s) = ENNReal.ofReal (md c ^ (-s)) * (f (c * a) * ENNReal.ofReal (md (c * a) ^ s))`. Introduce `a`. Establish `h1 : md (c * a) ^ s = md c ^ s * md a ^ s`. Rewrite using `[md_mul, Real.mul_rpow (md_pos c).le (md_pos a).le]`. Establish `h2 : ENNReal.ofReal (md c ^ (-s)) * ENNReal.ofReal (md c ^ s) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg (md_pos c).le _), ← Real.rpow_add (md_pos c)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ENNReal.ofReal_mul (Real.rpow_nonneg (md_pos c).le _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by ring`. Unfold `zi`. Repeatedly rewrite using `[h]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`.
-
-Conclude with `lintegral_mul_left_eq_self (fun a => f a * ENNReal.ofReal (md a ^ s)) c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zi_shift (f : (AF F)ˣ → ℝ≥0∞) (c : (AF F)ˣ) (s : ℝ) :
     zi (fun a => f (c * a)) s = ENNReal.ofReal (md c ^ (-s)) * zi f s := by
@@ -566,13 +560,13 @@ section Step
 variable {S : Finset (HeightOneSpectrum (𝓞 F))} {G : Ainf F → ℝ} {g w W : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ}
 
 /- English proof (translation)
-The claim follows from `ENNReal.measurable_ofReal.comp (continuous_md.measurable.pow_const s)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_md_rpow (s : ℝ) : Measurable fun a : (AF F)ˣ => ENNReal.ofReal (md a ^ s) :=
   ENNReal.measurable_ofReal.comp (continuous_md.measurable.pow_const s)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [md_one]`. Consider the case `succ k ih => rw [pow_succ, md_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem md_pow (a : (AF F)ˣ) (k : ℕ) : md (a ^ k) = md a ^ k := by
   induction k with
@@ -580,13 +574,13 @@ theorem md_pow (a : (AF F)ˣ) (k : ℕ) : md (a ^ k) = md a ^ k := by
   | succ k ih => rw [pow_succ, md_mul, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨u, hu, hu'⟩` from `exists_inv_uniformizer x₀.1`. Establish `hq : (0 : ℝ) ≤ (Ideal.absNorm x₀.1.asIdeal : ℝ) ^ (-s)` using `by positivity`. Establish `key : ∀ a, PositivityTheory.Rg.Base1.pure S G g w a = PositivityTheory.Rg.Base1.pure S G g W a + PositivityTheory.Rg.Base1.pure S G g W (emb x₀.1 u * a)`. Introduce `a`. Establish `hR` using `rest_nonneg hG0 hg0 hW x₀ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pure_eq hw x₀ a, pure_eq hW x₀ a, pure_eq hW x₀ (emb x₀.1 u * a), rest_emb, emb_snd_self, rest_congr x₀ hne, h0, h1, ← ENNReal.ofReal_add (mul_nonneg hR (rv_nonneg (by simp) _)) (mul_nonneg hR (rv_nonneg (by simp) _)), ← mul_add]`. Use `congr 2`. Use `rv_rec hu (-1) ((a : AF F).2 x₀.1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : zi (PositivityTheory.Rg.Base1.pure S G g w) s = zi (PositivityTheory.Rg.Base1.pure S G g W) s + zi (fun a => PositivityTheory.Rg.Base1.pure S G g W (emb x₀.1 u * a)) s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `zi`. Establish `hm : Measurable fun a => PositivityTheory.Rg.Base1.pure S G g W a * ENNReal.ofReal (md a ^ s)` using `((continuous_pure S hG hg hW).measurable).mul (measurable_md_rpow s)`. Use `Eq.trans ?_ (lintegral_add_left hm _)` and prove the remaining obligations. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[key a, add_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, zi_shift, md_emb hu', ENNReal.ofReal_add zero_le_one hq, ENNReal.ofReal_one, add_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem step_neg (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (hw : Good w) (hW : Good W) (x₀ : Off S) (h0 : w x₀.1 = rv x₀.1 0) (h1 : W x₀.1 = rv x₀.1 (-1))
@@ -615,15 +609,15 @@ theorem step_neg (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S,
   rw [hz, zi_shift, md_emb hu', ENNReal.ofReal_add zero_le_one hq, ENNReal.ofReal_one, add_mul, one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu, hu'⟩` from `exists_inv_uniformizer x₀.1`. Establish `hcw` using `continuous_pure S hG hg hw`. Establish `key : ∀ a, PositivityTheory.Rg.Base1.pure S G g W a = ∑' k : ℕ, PositivityTheory.Rg.Base1.pure S G g w (emb x₀.1 (u ^ k) * a)`. Introduce `a`. Establish `hR` using `rest_nonneg hG0 hg0 hw x₀ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : ∀ k : ℕ, PositivityTheory.Rg.Base1.pure S G g w (emb x₀.1 (u ^ k) * a) = ENNReal.ofReal (rest S G g w x₀ a * rv x₀.1 0 ((((u ^ k : (Fv F x₀.1)ˣ)) : Fv F x₀.1) * (a : AF F).2 x₀.1))`. Introduce `k`. Rewrite using `[pure_eq hw x₀, rest_emb, emb_snd_self, h0]`. Repeatedly rewrite using `[hk]`. Rewrite using `[pure_eq hW x₀, ← rest_congr x₀ hne, h1, rv_one_series hu, ← tsum_mul_left, ENNReal.ofReal_tsum_of_nonneg (fun k => mul_nonneg hR (rv_nonneg (by simp) _)) ((summable_rv_shift hu _).mul_left _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : zi (PositivityTheory.Rg.Base1.pure S G g W) s = ∑' k : ℕ, zi (fun a => PositivityTheory.Rg.Base1.pure S G g w (emb x₀.1 (u ^ k) * a)) s`. Unfold `zi`. Establish `hm : ∀ k : ℕ, AEMeasurable (fun a => PositivityTheory.Rg.Base1.pure S G g w (emb x₀.1 (u ^ k) * a) * ENNReal.ofReal (md a ^ s)) (ideleMeasure F)` using `fun k => (Measurable.mul (hcw.comp (continuous_const.mul continuous_id)).measurable (measurable_md_rpow s)).aemeasurable`. Use `Eq.trans ?_ (lintegral_tsum hm)` and prove the remaining obligations. Use `lintegral_congr fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key a, ENNReal.tsum_mul_right]`. Rewrite using `[hz]`. Repeatedly rewrite using `[zi_shift]`. Rewrite using `[ENNReal.tsum_mul_right]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `tsum_congr fun k => ?_` and prove the remaining obligations. Establish `hq0 : (0 : ℝ) ≤ (Ideal.absNorm x₀.1.asIdeal : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[emb, map_pow, md_pow, ← emb, md_emb hu', ← ENNReal.ofReal_pow (Real.rpow_nonneg hq0 _), ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hq0, ← Real.rpow_mul hq0, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem step_pos (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (hw : Good w) (hW : Good W) (x₀ : Off S) (h0 : w x₀.1 = rv x₀.1 0) (h1 : W x₀.1 = rv x₀.1 1)
@@ -660,21 +654,21 @@ theorem step_pos (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S,
     ← Real.rpow_natCast, ← Real.rpow_mul hq0, ← Real.rpow_mul hq0, mul_comm]
 
 /- English proof (translation)
-Conclude with `one_lt_absNorm_asIdeal v` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_lt_q (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by
   exact_mod_cast one_lt_absNorm_asIdeal v
 
 /- English proof (translation)
-The claim follows from `Real.rpow_lt_one_of_one_lt_of_neg (one_lt_q v) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem q_lt_one (v : HeightOneSpectrum (𝓞 F)) {s : ℝ} (hs : 0 < s) : (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) < 1 :=
   Real.rpow_lt_one_of_one_lt_of_neg (one_lt_q v) (by linarith)
 
 /- English proof (translation)
-Break down `hε with rfl | rfl` into its components or cases. Establish `hx` using `q_lt_one x₀.1 hs`. Establish `hq : (0 : ℝ) ≤ (Ideal.absNorm x₀.1.asIdeal : ℝ) ^ (-s)` using `by positivity`. Establish `hr : ENNReal.ofReal ((Ideal.absNorm x₀.1.asIdeal : ℝ) ^ (-s)) < 1` using `ENNReal.ofReal_lt_one.2 hx`. Rewrite using `[step_pos hG hG0 hg hg0 hw hW x₀ h0 h1 hne s, ENNReal.tsum_geometric, one_mul, ENNReal.ofReal_sub 1 hq, ENNReal.ofReal_one, ← mul_assoc, ENNReal.mul_inv_cancel (tsub_pos_of_lt hr).ne' (by simp), one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[step_neg hG hG0 hg hg0 hw hW x₀ h0 h1 hne s]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem step (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (hw : Good w) (hW : Good W) (x₀ : Off S) {ε : ℝ} (hε : ε = 1 ∨ ε = -1) (h0 : w x₀.1 = rv x₀.1 0) (h1 : W x₀.1 = rv x₀.1 ε)
@@ -705,25 +699,25 @@ def wT (e : HeightOneSpectrum (𝓞 F) → ℝ) (S : Finset (HeightOneSpectrum (
   if ∃ hv : v ∉ S, (⟨v, hv⟩ : Off S) ∈ T then rv v (e v) else rv v 0
 
 /- English proof (translation)
-The claim follows from `if_pos ⟨x.2, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem wT_mem {T : Finset (Off S)} {x : Off S} (h : x ∈ T) : wT e S T x.1 = rv x.1 (e x.1) :=
   if_pos ⟨x.2, h⟩
 
 /- English proof (translation)
-The claim follows from `if_neg fun ⟨_, h'⟩ => h h'`.
+A detailed English derivation is pending.
 -/
 theorem wT_not {T : Finset (Off S)} {x : Off S} (h : x ∉ T) : wT e S T x.1 = rv x.1 0 :=
   if_neg fun ⟨_, h'⟩ => h h'
 
 /- English proof (translation)
-The claim follows from `if_neg fun ⟨_, h'⟩ => by simp at h'`.
+A detailed English derivation is pending.
 -/
 theorem wT_empty (v : HeightOneSpectrum (𝓞 F)) : wT e S ∅ v = rv v 0 :=
   if_neg fun ⟨_, h'⟩ => by simp at h'
 
 /- English proof (translation)
-Introduce `v`. Unfold `wT`. Use `split_ifs`. Conclude with `good_rv (e := e) (fun v => Or.inr (he v)) v`. Conclude with `good_rv (e := fun _ => 0) (fun _ => Or.inl rfl) v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem good_wT (he : ∀ v, e v = 1 ∨ e v = -1) (T : Finset (Off S)) : Good (wT e S T) := by
   intro v
@@ -733,7 +727,7 @@ theorem good_wT (he : ∀ v, e v = 1 ∨ e v = -1) (T : Finset (Off S)) : Good (
   · exact good_rv (e := fun _ => 0) (fun _ => Or.inl rfl) v
 
 /- English proof (translation)
-Establish `hx` using `q_lt_one v hs`. Establish `hq : (0 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ (-s)` using `by positivity`. Apply the tactic sequence `rcases hε with rfl | rfl <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factor_nonneg (v : HeightOneSpectrum (𝓞 F)) {ε : ℝ} (hε : ε = 1 ∨ ε = -1) {s : ℝ} (hs : 0 < s) :
     0 ≤ 1 - ε * (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) := by
@@ -742,9 +736,9 @@ theorem factor_nonneg (v : HeightOneSpectrum (𝓞 F)) {ε : ℝ} (hε : ε = 1 
   rcases hε with rfl | rfl <;> linarith
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x T hx ih`. Establish `hst` using `step (S := S) (G := G) (g := g) (w := wT e S T) (W := wT e S (insert x T)) hG hG0 hg hg0 (good_wT he T) (good_wT he _) x (he x.1) (wT_not hx) (wT_mem (Finset.mem_insert_self x T)) (fun y hy => by`. Distinguish the cases in `hyT : y ∈ T`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[wT_mem hyT, wT_mem (Finset.mem_insert_of_mem hyT)]`. Rewrite using `[wT_not hyT, wT_not (fun h => hyT ((Finset.mem_insert.1 h).resolve_left hy))]) hs`. Rewrite using `[Finset.prod_insert hx, ENNReal.ofReal_mul (factor_nonneg x.1 (he x.1) hs), mul_comm (ENNReal.ofReal _), mul_assoc, hst, ih]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zi_finite (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (he : ∀ v, e v = 1 ∨ e v = -1) {s : ℝ} (hs : 0 < s) (T : Finset (Off S)) :
@@ -764,7 +758,7 @@ theorem zi_finite (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S
       mul_assoc, hst, ih]
 
 /- English proof (translation)
-Unfold `PositivityTheory.Rg.Base1.pure`. Rewrite using `[finprod_congr h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_congr {w w' : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (a : (AF F)ˣ)
     (h : ∀ x : Off S, w x.1 ((a : AF F).2 x.1) = w' x.1 ((a : AF F).2 x.1)) :
@@ -773,9 +767,7 @@ theorem pure_congr {w w' : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (
   rw [finprod_congr h]
 
 /- English proof (translation)
-Establish `h1 : Good fun v : HeightOneSpectrum (𝓞 F) => rv v 1` using `good_rv (e := fun _ => 1) fun _ => Or.inr (Or.inl rfl)`. Unfold `PositivityTheory.Rg.Base1.pure`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left ?_ (mul_nonneg (hG0 _) (Finset.prod_nonneg fun v _ => hg0 v _)))` and prove the remaining obligations. Use `set U := (finite_mulSupport_off hw a S).toFinset ∪ (finite_mulSupport_off h1 a S).toFinset with hU`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := U) _ (fun x hx => by simp [hU, Set.Finite.mem_toFinset] at hx ⊢; exact Or.inl hx), finprod_eq_prod_of_mulSupport_subset (s := U) _ (fun x hx => by simp [hU, Set.Finite.mem_toFinset] at hx ⊢; exact Or.inr hx)]`.
-
-Conclude with `Finset.prod_le_prod (fun x _ => (hw x.1).2.2.1 _) (fun x _ => (hw x.1).2.2.2 _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_le {w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (hG0 : ∀ y, 0 ≤ G y) (hg0 : ∀ v y, 0 ≤ g v y)
     (hw : Good w) (a : (AF F)ˣ) :
@@ -790,9 +782,9 @@ theorem pure_le {w : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ} (hG0 : 
   exact Finset.prod_le_prod (fun x _ => (hw x.1).2.2.1 _) (fun x _ => (hw x.1).2.2.2 _)
 
 /- English proof (translation)
-Establish `h` using `eventually_cofinite.1 (eventually_val_eq_one a)`. Establish `h' : {x : Off S | ¬ Valued.v ((a : AF F).2 x.1) = 1}.Finite` using `h.preimage Subtype.val_injective.injOn`. Use `filter_upwards [eventually_ge_atTop h'.toFinset] with T hT`. Use `pure_congr a fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ T`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wT_mem hx]`. Establish `hv : Valued.v ((a : AF F).2 x.1) = 1`. Assume the negation of the conclusion as `hc`. Conclude with `hx (hT (h'.mem_toFinset.2 hc))`. Rewrite using `[wT_not hx, rv_unit _ hv, rv_unit _ hv]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_pure_eq (he : ∀ v, e v = 1 ∨ e v = -1) (a : (AF F)ˣ) :
     ∀ᶠ T : Finset (Off S) in atTop, PositivityTheory.Rg.Base1.pure S G g (wT e S T) a = PositivityTheory.Rg.Base1.pure S G g (fun v => rv v (e v)) a := by
@@ -808,7 +800,7 @@ theorem eventually_pure_eq (he : ∀ v, e v = 1 ∨ e v = -1) (a : (AF F)ˣ) :
     rw [wT_not hx, rv_unit _ hv, rv_unit _ hv]
 
 /- English proof (translation)
-Establish `h` using `Real.add_one_le_exp (2 * x)`. Establish `hp : 0 < Real.exp (-(2 * x))` using `Real.exp_pos _`. Establish `hm : Real.exp (2 * x) * Real.exp (-(2 * x)) = 1` using `by rw [← Real.exp_add]; simp`. Establish `h2 : 1 ≤ (1 - x) * Real.exp (2 * x)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exp_le_one_sub {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) : Real.exp (-(2 * x)) ≤ 1 - x := by
   have h := Real.add_one_le_exp (2 * x)
@@ -820,7 +812,7 @@ theorem exp_le_one_sub {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) : Real.exp (-
     _ = 1 - x := by rw [mul_assoc, hm, mul_one]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast one_lt_absNorm_asIdeal v`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem q_le_half (v : HeightOneSpectrum (𝓞 F)) {s : ℝ} (hs : 1 < s) : (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) ≤ 1 / 2 := by
   have h2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by exact_mod_cast one_lt_absNorm_asIdeal v
@@ -830,16 +822,16 @@ theorem q_le_half (v : HeightOneSpectrum (𝓞 F)) {s : ℝ} (hs : 1 < s) : (Ide
     _ ≤ 1 / 2 := by rw [one_div]; exact inv_anti₀ (by norm_num) h2
 
 /- English proof (translation)
-The claim follows from `(summable_absNorm_rpow_neg (L := F) hs).comp_injective Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem summable_off (S : Finset (HeightOneSpectrum (𝓞 F))) {s : ℝ} (hs : 1 < s) :
     Summable fun x : Off S => (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s) :=
   (summable_absNorm_rpow_neg (L := F) hs).comp_injective Subtype.val_injective
 
 /- English proof (translation)
-Establish `h` using `(summable_off S (s := 2) (by norm_num)).countable_support`. Establish `hu : Function.support (fun x : Off S => (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-(2 : ℝ))) = Set.univ`. Use extensionality with `x`. Simplify using `only [Function.mem_support, Set.mem_univ, iff_true]`. Conclude with `(Real.rpow_pos_of_pos (by linarith [one_lt_q x.1]) _).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hu]`. Conclude with `Set.countable_univ_iff.1 h`.
+A detailed English derivation is pending.
 -/
 theorem countable_off (S : Finset (HeightOneSpectrum (𝓞 F))) : Countable (Off S) := by
   have h := (summable_off S (s := 2) (by norm_num)).countable_support
@@ -851,21 +843,19 @@ theorem countable_off (S : Finset (HeightOneSpectrum (𝓞 F))) : Countable (Off
   exact Set.countable_univ_iff.1 h
 
 /- English proof (translation)
-Establish `hs0 : 0 < s` using `by linarith`. Establish `he1 : ∀ v : HeightOneSpectrum (𝓞 F), ((fun _ => 1 : HeightOneSpectrum (𝓞 F) → ℝ) v) = 1 ∨ ((fun _ => 1 : HeightOneSpectrum (𝓞 F) → ℝ) v) = -1` using `fun _ => Or.inl rfl`. Use `countable_off S` as an intermediate fact. Use `set tq := ∑' x : Off S, (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s) with htq`. Use `set p := Real.exp (-(2 * tq)) with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : 0 < p` using `Real.exp_pos _`. Establish `hZ0 : wT (fun _ => 1) S ∅ = fun v : HeightOneSpectrum (𝓞 F) => rv v 0` using `funext fun v => wT_empty v`. Establish `hbound : ∀ T : Finset (Off S), zi (PositivityTheory.Rg.Base1.pure S G g (wT (fun _ => 1) S T)) s ≤ (ENNReal.ofReal p)⁻¹ * zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) s`. Introduce `T`. Establish `h` using `zi_finite (S := S) (G := G) (g := g) (e := fun _ => 1) hG hG0 hg hg0 he1 hs0 T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hZ0]`. Establish `hle : p ≤ ∏ x ∈ T, (1 - (fun _ => (1 : ℝ)) x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))`. Establish `h1 : Real.exp (-(2 * ∑ x ∈ T, (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))) ≤ ∏ x ∈ T, (1 - (fun _ => (1 : ℝ)) x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`. Use `Finset.prod_le_prod (fun _ _ => (Real.exp_pos _).le) fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [one_mul]`. Conclude with `exp_le_one_sub (by positivity) (q_le_half x.1 hs)`. Use `le_trans ?_ h1` and prove the remaining obligations. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `(summable_off S hs).sum_le_tsum T (fun x _ => by positivity)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ENNReal.ofReal p ≤ ENNReal.ofReal (∏ x ∈ T, (1 - (fun _ => (1 : ℝ)) x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s)))` using `ENNReal.ofReal_le_ofReal hle`. Establish `hp1 : ENNReal.ofReal p ≠ 0` using `by simpa using hp0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hp1 ENNReal.ofReal_ne_top, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ (ENNReal.ofReal p)⁻¹ * (ENNReal.ofReal (∏ x ∈ T, (1 - (fun _ => (1 : ℝ)) x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))) * zi (PositivityTheory.Rg.Base1.pure S G g (wT (fun _ => 1) S T)) s) := by gcongr`. Use `_ = _ := by rw [h]`. Take `⟨u, hu⟩` from `exists_seq_tendsto (atTop : Filter (Finset (Off S)))`. Establish `hlim : ∀ a, Filter.liminf (fun n => PositivityTheory.Rg.Base1.pure S G g (wT (fun _ => 1) S (u n)) a * ENNReal.ofReal (md a ^ s)) atTop = PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 1) a * ENNReal.ofReal (md a ^ s)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `Tendsto.liminf_eq (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hu.eventually (eventually_pure_eq (S := S) (G := G) (g := g) (e := fun _ => 1) he1 a)] with n hn`. Rewrite using `[hn]`. Establish `hfat : ∫⁻ a, Filter.liminf (fun n => PositivityTheory.Rg.Base1.pure S G g (wT (fun _ => 1) S (u n)) a * ENNReal.ofReal (md a ^ s)) atTop ∂(ideleMeasure F) ≤ Filter.liminf (fun n => ∫⁻ a, PositivityTheory.Rg.Base1.pure S G g (wT (fun _ => 1) S (u n)) a * ENNReal.ofReal (md a ^ s) …` using `lintegral_liminf_le (fun n => (continuous_pure S hG hg (good_wT he1 _)).measurable.mul (measurable_md_rpow s))`. Rewrite `hfat` using `[hlim]`.
-
-Establish `hle : zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 1) s ≤ (ENNReal.ofReal p)⁻¹ * zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) s` using `hfat.trans (Filter.liminf_le_of_frequently_le' (Eventually.of_forall fun n => hbound (u n)).frequently)`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top ?_ hfin) hle` and prove the remaining obligations. Simplify using `using hp0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem zi_one_ne_top (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     {s : ℝ} (hs : 1 < s) (hfin : zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) s ≠ ⊤) :
@@ -921,17 +911,17 @@ theorem zi_one_ne_top (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v �
   simpa using hp0
 
 /- English proof (translation)
-Establish `hs0 : 0 < s` using `by linarith`. Use `countable_off S` as an intermediate fact. Establish `he' : ∀ v, e v = 0 ∨ e v = 1 ∨ e v = -1` using `fun v => Or.inr (he v)`. Establish `h1 : Good fun v : HeightOneSpectrum (𝓞 F) => rv v 1` using `good_rv (e := fun _ => 1) fun _ => Or.inr (Or.inl rfl)`. Establish `hZ0 : wT e S ∅ = fun v : HeightOneSpectrum (𝓞 F) => rv v 0` using `funext fun v => wT_empty v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `zi_one_ne_top hG hG0 hg hg0 hs hfin`. Establish `hT : Tendsto (fun T : Finset (Off S) => zi (PositivityTheory.Rg.Base1.pure S G g (wT e S T)) s) atTop (𝓝 (zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v (e v)) s))`. Use `tendsto_lintegral_filter_of_dominated_convergence (fun a => PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 1) a * ENNReal.ofReal (md a ^ s)) (Eventually.of_forall fun T => (continuous_pure S hG hg (good_wT he T)).measurable.mul (measurable_md_rpow s)) (Eventually.of_forall f …` and prove the remaining obligations. Conclude with `mul_le_mul_left (pure_le hG0 hg0 (good_wT he T) a) _`. Use `tendsto_const_nhds.congr' ?_ filter_upwards [eventually_pure_eq (S := S) (G := G) (g := g) he a] with T hT` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Establish `hsum : Summable fun x : Off S => -(e x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))`. Use `Summable.of_norm_bounded (summable_off S hs) fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))]`. Apply the tactic sequence `rcases he x.1 with h | h <;> simp [h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hmul : Multipliable fun x : Off S => 1 - e x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s)`. Use `Real.multipliable_one_add_of_summable hsum` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`. Establish `hP : Tendsto (fun T : Finset (Off S) => ENNReal.ofReal (∏ x ∈ T, (1 - e x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s)))) atTop (𝓝 (ENNReal.ofReal (∏' x : Off S, (1 - e x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s)))))` using `(ENNReal.continuous_ofReal.tendsto _).comp hmul.hasProd`. Establish `hne : zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v (e v)) s ≠ ⊤`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_top_of_le_ne_top hb (lintegral_mono fun a => ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_left (pure_le hG0 hg0 (good_rv he') a) _`. Establish `hprod` using `ENNReal.Tendsto.mul hP (Or.inr hne) hT (Or.inr ENNReal.ofReal_ne_top)`. Establish `hconst : (fun T : Finset (Off S) => ENNReal.ofReal (∏ x ∈ T, (1 - e x.1 * (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-s))) * zi (PositivityTheory.Rg.Base1.pure S G g (wT e S T)) s) = fun _ => zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) s`. Use function extensionality and compare the values at `T`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[zi_finite hG hG0 hg hg0 he hs0 T, hZ0]`. Rewrite `hprod` using `[hconst]`. Conclude with `tendsto_nhds_unique hprod tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem euler (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (he : ∀ v, e v = 1 ∨ e v = -1) {s : ℝ} (hs : 1 < s) (hfin : zi (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) s ≠ ⊤) :
@@ -977,7 +967,7 @@ theorem euler (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Co
   exact tendsto_nhds_unique hprod tendsto_const_nhds
 
 /- English proof (translation)
-The claim follows from `(continuous_pure S hG hg (good_rv fun v => Or.inr (he v))).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_pure_found (hG : Continuous G) (hg : ∀ v ∈ S, Continuous (g v)) (he : ∀ v, e v = 1 ∨ e v = -1) :
     Measurable (PositivityTheory.Rg.Base1.pure S G g fun v => rv v (e v)) :=
@@ -988,7 +978,7 @@ end Limit
 end Core
 
 /- English proof (translation)
-Introduce `F _ _ S G g e hG hG0 hg0 hg he`. Use `⟨?_, fun s hs hfin => euler hG hG0 hg hg0 he hs hfin⟩` and prove the remaining obligations. Establish `h : (measAF : MeasurableSpace (AF F)) = GroundTheory.Global.measurableSpace_adeleRing F` using `(GroundTheory.Global.borelSpace_adeleRing F).measurable_eq.symm`. Rewrite using `[h]`. Conclude with `measurable_pure_found hG hg he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio : Ratio := by
   intro F _ _ S G g e hG hG0 hg0 hg he

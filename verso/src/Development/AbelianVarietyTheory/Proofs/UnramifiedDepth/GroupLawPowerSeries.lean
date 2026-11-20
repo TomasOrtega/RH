@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChLaw
 
 /- English proof (translation)
-Establish `h : Ideal.span s ≤ nilradical S` using `Ideal.span_le.2 fun a ha => mem_nilradical.2 (hs a ha)`. Conclude with `mem_nilradical.1 (h hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma nil_of_mem_span {S : Type} [CommRing S] {s : Set S} (hs : ∀ a ∈ s, IsNilpotent a)
     {c : S} (hc : c ∈ Ideal.span s) : IsNilpotent c := by
@@ -18,21 +18,19 @@ private lemma nil_of_mem_span {S : Type} [CommRing S] {s : Set S} (hs : ∀ a �
   exact mem_nilradical.1 (h hc)
 
 /- English proof (translation)
-Introduce `_ h2 R₀ _ G _ _ g x ⟨h0, hnat, hinj, hsur⟩`. Establish `hex : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a b : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → ∃ c : Fin g → S, (∀ k, c k ∈ Ideal.span (Set.range a ∪ Set.range b)) ∧ (∀ k, IsNilpotent (c k)) ∧ x S a * x S b = x S c`. Introduce `S _ _ a b ha hb`. Use `set I : Ideal S := Ideal.span (Set.range a ∪ Set.range b) with hI`. Establish `hnil : ∀ c ∈ I, IsNilpotent c` using `fun c hc => nil_of_mem_span (by rintro _ (⟨i, rfl⟩ | ⟨i, rfl⟩); exacts [ha i, hb i]) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ c, c ∈ RingHom.ker (Ideal.Quotient.mkₐ R₀ I) ↔ c ∈ I` using `fun c => by`. Rewrite using `[RingHom.mem_ker, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hz : spMap (Ideal.Quotient.mkₐ R₀ I) ≫ (x S a * x S b) = 1`. Establish `ea : (fun i => Ideal.Quotient.mkₐ R₀ I (a i)) = 0` using `funext fun i => (hker _).2 (Ideal.subset_span (Or.inl ⟨i, rfl⟩))`. Establish `eb : (fun i => Ideal.Quotient.mkₐ R₀ I (b i)) = 0` using `funext fun i => (hker _).2 (Ideal.subset_span (Or.inr ⟨i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, hnat _ _ _ a ha, hnat _ _ _ b hb, ea, eb, h0, _root_.mul_one]`. Take `⟨c, hc, hzc⟩` from `hsur S (S ⧸ I) (Ideal.Quotient.mkₐ R₀ I) (Ideal.Quotient.mkₐ_surjective R₀ I) (fun c hc => hnil c ((hker c).1 hc)) _ hz`. Conclude with `⟨c, fun k => (hker _).1 (hc k), fun k => hnil _ ((hker _).1 (hc k)), hzc⟩`. Use `choose cc hc1 hc2 hc3 using hex`. Establish `hF : ∀ k : Fin g, ∃ f : MvPowerSeries (Fin g ⊕ Fin g) R₀, ∀ (S : Type) [CommRing S] [Algebra R₀ S] (u : Fin g ⊕ Fin g → S) (hu : ∀ i, IsNilpotent (u i)), cc S (fun i => u (Sum.inl i)) (fun i => u (Sum.inr i)) (fun _ => hu _) (fun _ => hu _) k = nEval f u`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Take `⟨f, hf⟩` from `h2 (R₀ := R₀) (κ := Fin g ⊕ Fin g) (fun S _ _ u => if hu : ∀ i, IsNilpotent (u i) then cc S (fun i => u (Sum.inl i)) (fun i => u (Sum.inr i)) (fun _ => hu _) (fun _ => hu _) k else 0) (by`. Introduce `S _ _ S' _ _ φ u hu`. Establish `hu' : ∀ i, IsNilpotent (φ (u i))` using `fun i => (hu i).map φ`. Simplify using `only [dif_pos hu, dif_pos hu']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hinj S' (fun j => φ (cc S (fun i => u (Sum.inl i)) (fun i => u (Sum.inr i)) (fun _ => hu _) (fun _ => hu _) j)) (cc S' (fun i => φ (u (Sum.inl i))) (fun i => φ (u (Sum.inr i))) (fun _ => hu' _) (fun _ => hu' _)) (fun j => (hc2 _ _ _ _ _ j).map φ) (hc2 _ _ _ _ _) (by` as an intermediate fact. Rewrite using `[← hnat _ _ φ _ (hc2 _ _ _ _ _), ← hc3, ← hc3, MonObj.comp_mul, hnat _ _ φ _ (fun _ => hu _), hnat _ _ φ _ (fun _ => hu _)])`. Conclude with `congrFun this k)`. Use `⟨f, fun S _ _ u hu => ?_⟩` and prove the remaining obligations. Use `hf S u hu` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [dif_pos hu]`. Use `choose F hF using hF`. Use `⟨F, fun S _ _ a b ha hb => ?_⟩` and prove the remaining obligations. Establish `e : fAdd F a b = cc S a b ha hb`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hu : ∀ i, IsNilpotent (Sum.elim a b i)`. Introduce and unpack `(i | i)`. Use `exacts [ha i, hb i]`. Conclude with `(hF k S (Sum.elim a b) hu).symm`. Rewrite using `[e]`.
-
-Conclude with `⟨hc1 S a b ha hb, hc3 S a b ha hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem groupLaw_powerSeries :
   (∀ {R₀ : Type} [CommRing R₀] {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ R₀) (S : Type) [CommRing S] [Algebra R₀ S] (a : κ → S),

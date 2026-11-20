@@ -5,45 +5,43 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R' O _ _ _ _ _ M _ _ _ _ N _ _ _ _ e he hN`. Use `letI : Module (R ⊗[ℤ] O) M := TensorProduct.Algebra.module`. Use `letI : Module (R' ⊗[ℤ] O) N := TensorProduct.Algebra.module`. Set `f : R ⊗[ℤ] O →ₐ[ℤ] R' ⊗[ℤ] O` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom ℤ R R') (AlgHom.id ℤ O)`. Use `letI : Algebra (R ⊗[ℤ] O) (R' ⊗[ℤ] O) := f.toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Module (R ⊗[ℤ] O) N := Module.compHom N f.toRingHom`. Use `haveI : IsScalarTower (R ⊗[ℤ] O) (R' ⊗[ℤ] O) N := ⟨fun a x n => mul_smul (f a) x n⟩`. Establish `hf : ∀ (r : R) (o : O), f (r ⊗ₜ o) = algebraMap R R' r ⊗ₜ o` using `fun r o => rfl`. Use `haveI : IsScalarTower R (R ⊗[ℤ] O) (R' ⊗[ℤ] O) := IsScalarTower.of_algebraMap_eq (fun r => rfl)`. Set `l : R' →ₗ[R] R' ⊗[ℤ] O` to `{ toFun := fun r' => r' ⊗ₜ 1 map_add' := fun x y => add_tmul x y 1 map_smul' := fun r r' => rfl }`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : (R ⊗[ℤ] O) ⊗[R] R' →ₗ[R ⊗[ℤ] O] R' ⊗[ℤ] O` to `LinearMap.liftBaseChange _ l`. Establish `hu : ∀ (r : R) (o : O) (r' : R'), u ((r ⊗ₜ o) ⊗ₜ r') = (algebraMap R R' r * r') ⊗ₜ o`. Introduce `r o r'`. Express the relevant statement in the definitionally equal form `f (r ⊗ₜ o) * (r' ⊗ₜ 1) = _`. Rewrite using `[hf, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Set `w : R' →ₗ[ℤ] O →ₗ[ℤ] (R ⊗[ℤ] O) ⊗[R] R'` to `LinearMap.mk₂ ℤ (fun r' o => ((1 : R) ⊗ₜ[ℤ] o) ⊗ₜ[R] r') (fun x y o => by simp [tmul_add]) (fun n x o => map_zsmul (TensorProduct.mk R (R ⊗[ℤ] O) R' ((1 : R) ⊗ₜ[ℤ] o)) n x) (fun x o o' => by simp [tmul_add, add_tmul]) (fun n x o => by`. Express the relevant statement in the definitionally equal form `(TensorProduct.mk R (R ⊗[ℤ] O) R').flip x (TensorProduct.mk ℤ R O 1 (n • o)) = n • (TensorProduct.mk R (R ⊗[ℤ] O) R').flip x (TensorProduct.mk ℤ R O 1 o)`. Rewrite using `[map_zsmul, map_zsmul])`. Set `v : R' ⊗[ℤ] O →ₗ[ℤ] (R ⊗[ℤ] O) ⊗[R] R'` to `TensorProduct.lift w`. Establish `hv : ∀ (r' : R') (o : O), v (r' ⊗ₜ o) = ((1 : R) ⊗ₜ[ℤ] o) ⊗ₜ[R] r'` using `fun r' o => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huv : ∀ y, u (v y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r' o`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hv, hu, map_one, _root_.one_mul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hvu : ∀ x, v (u x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a r'`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r o`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hu, ← Algebra.smul_def, hv, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Consider the case `add a b ha hb => rw [add_tmul, map_add, map_add, ha, hb]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hubij : Function.Bijective u` using `⟨fun a b hab => by rw [← hvu a, ← hvu b, hab], fun y => ⟨v y, huv y⟩⟩`. Use `haveI : Module.FaithfullyFlat (R ⊗[ℤ] O) (R' ⊗[ℤ] O) := Module.FaithfullyFlat.of_linearEquiv (R ⊗[ℤ] O) ((R ⊗[ℤ] O) ⊗[R] R') (LinearEquiv.ofBijective u hubij).symm`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hj : ∀ (a : R ⊗[ℤ] O) (m : M), e (1 ⊗ₜ (a • m)) = f a • e (1 ⊗ₜ m)`. Introduce `a m`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r o`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression.
 
-Rewrite using `[hf, TensorProduct.Algebra.smul_def, TensorProduct.Algebra.smul_def, ← he, TensorProduct.tmul_smul, ← algebraMap_smul R', map_smul]`. Consider the case `add a b ha hb => rw [add_smul, tmul_add, map_add, ha, hb, map_add, add_smul]`. Set `j : M →ₗ[R ⊗[ℤ] O] N` to `{ toFun := fun m => e (1 ⊗ₜ m) map_add' := fun x y => by simp [tmul_add] map_smul' := fun a m => hj a m }`. Set `Φ : (R' ⊗[ℤ] O) ⊗[R ⊗[ℤ] O] M →ₗ[R' ⊗[ℤ] O] N` to `LinearMap.liftBaseChange _ j`. Set `g : R' →+ M →+ (R' ⊗[ℤ] O) ⊗[R ⊗[ℤ] O] M` to `AddMonoidHom.mk' (fun r' => (TensorProduct.mk (R ⊗[ℤ] O) (R' ⊗[ℤ] O) M (r' ⊗ₜ[ℤ] (1 : O))).toAddMonoidHom) (by intro a b; ext m; simp [add_tmul])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `ψ : R' ⊗[R] M →+ (R' ⊗[ℤ] O) ⊗[R ⊗[ℤ] O] M` to `TensorProduct.liftAddHom g (by`. Introduce `r r' m`. Establish `hr : r • m = ((r ⊗ₜ[ℤ] (1 : O)) : R ⊗[ℤ] O) • m`. Rewrite using `[TensorProduct.Algebra.smul_def, one_smul]`. Simplify using `only [g, AddMonoidHom.mk'_apply, LinearMap.toAddMonoidHom_coe, TensorProduct.mk_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hr, ← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = f (r ⊗ₜ 1) * _`. Simplify using `only [hf, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, Algebra.smul_def])`. Establish `h1 : ∀ y, Φ (ψ y) = e y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r' m`. Simplify using `only [ψ, TensorProduct.liftAddHom_tmul, g, AddMonoidHom.mk'_apply, LinearMap.toAddMonoidHom_coe, TensorProduct.mk_apply, Φ, LinearMap.liftBaseChange_tmul]`.
+Treat this case separately. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `(r' ⊗ₜ[ℤ] (1 : O)) • e (1 ⊗ₜ m) = _`. Rewrite using `[TensorProduct.Algebra.smul_def, one_smul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`. Establish `h2 : ∀ z, ψ (e.symm (Φ z)) = z`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x m`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `tmul r' o`. Establish `hΦ : Φ ((r' ⊗ₜ[ℤ] o) ⊗ₜ m) = e (r' ⊗ₜ (o • m))`. Simplify using `only [Φ, LinearMap.liftBaseChange_tmul]`. Express the relevant statement in the definitionally equal form `(r' ⊗ₜ[ℤ] o) • e (1 ⊗ₜ m) = _`. Rewrite using `[TensorProduct.Algebra.smul_def, ← he, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]`. Simplify using `only [ψ, TensorProduct.liftAddHom_tmul, g, AddMonoidHom.mk'_apply, LinearMap.toAddMonoidHom_coe, TensorProduct.mk_apply]`. Establish `ho : o • m = (((1 : R) ⊗ₜ[ℤ] o) : R ⊗[ℤ] O) • m`. Rewrite using `[TensorProduct.Algebra.smul_def, one_smul]`. Rewrite using `[ho, ← TensorProduct.smul_tmul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `f (1 ⊗ₜ o) * _ = _`. Rewrite using `[hf, map_one, Algebra.TensorProduct.tmul_mul_tmul, _root_.one_mul, _root_.mul_one]`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective Φ` using `fun a b hab => by rw [← h2 a, ← h2 b, hab]`. Establish `hsurj : Function.Surjective Φ` using `fun n => ⟨ψ (e.symm n), by rw [h1, LinearEquiv.apply_symm_apply]⟩`. Establish `hb : IsBaseChange (R' ⊗[ℤ] O) j` using `IsBaseChange.of_equiv (LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩) fun m => by`. Express the relevant statement in the definitionally equal form `Φ (1 ⊗ₜ m) = j m`. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`.
-
-Use `haveI := hN`. Conclude with `FlatDescent.invertible_of_isBaseChange hb`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invertible_of_faithfullyFlat_baseChange_tensor_int :
     ∀ (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] [Module.FaithfullyFlat R R'] (M : Type) [AddCommGroup M]

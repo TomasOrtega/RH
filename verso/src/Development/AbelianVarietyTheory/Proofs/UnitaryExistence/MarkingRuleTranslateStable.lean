@@ -22,7 +22,7 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.2.1]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun w => one_mem _, v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markMove_finVec_mem {D : D7} (V : HSp D) (g : GA D V) {v : Fin V.rank → D.host.E} (hv : v ∈ latG V g) :
     finVec V v ∈ latGHat V g := by
@@ -30,7 +30,7 @@ theorem markMove_finVec_mem {D : D7} (V : HSp D) (g : GA D V) {v : Fin V.rank �
   exact AddSubgroup.subset_closure ⟨1, fun w => one_mem _, v, hv, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.1`. Rewrite `hy` using `[(GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1]`. Rewrite using `[← SetLike.mem_coe, h]`. Conclude with `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem markMove_mulVec_mem {D : D7} (V : HSp D) (g : GA D V)
     {y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ latGHat V 1) :
@@ -41,7 +41,7 @@ theorem markMove_mulVec_mem {D : D7} (V : HSp D) (g : GA D V)
   exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [finVec, Pi.add_apply, Pi.smul_apply, TensorProduct.tmul_add]`. Use `congr 1`. Conclude with `map_nsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) n (y i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem markMove_finVec_add_nsmul {D : D7} (V : HSp D) (x y : Fin V.rank → D.host.E) (n : ℕ) :
     finVec V (x + n • y) = finVec V x + n • finVec V y := by
@@ -51,13 +51,13 @@ theorem markMove_finVec_add_nsmul {D : D7} (V : HSp D) (x y : Fin V.rank → D.h
   exact map_nsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) n (y i)
 
 /- English proof (translation)
-The claim follows from `Matrix.mulVec_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem markMove_mulVec_nsmul {R : Type} [CommRing R] {m : ℕ} (A : Matrix (Fin m) (Fin m) R) (n : ℕ)
     (y : Fin m → R) : A *ᵥ (n • y) = n • (A *ᵥ y) := Matrix.mulVec_smul _ _ _
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem markMove_finHom_mul {D : D7} (V : HSp D) (g h : GA D V)
     (y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
@@ -67,35 +67,33 @@ theorem markMove_finHom_mul {D : D7} (V : HSp D) (g h : GA D V)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC h k γ hM`. Take `⟨hγ, hΛ, hmk⟩` from `hM`. Use `⟨fun γ₀ hγ₀ => ?_, fun u hu => ?_, fun u hu => ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `e : γ * γ₀⁻¹ * (γ₀ * h) = γ * h` using `by group`. Use `⟨mul_mem hγ (inv_mem hγ₀), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hΛ`. Rewrite using `[e]`. Conclude with `hmk`. Establish `e : γ * (h * u) = γ * h * u` using `(mul_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e1, e2⟩` from `(GlobalTheory.Member.latG_move D V).2.2.1 l.M (γ * h) u hu`. Use `⟨hγ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, e1]`. Conclude with `hΛ`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hw'⟩` from `hmk a ha`. Establish `hιa : C.ι a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • latG V 1`. Rewrite using `[← hC.iota.emb.2, ← Submodule.map_top, ← Submodule.map_smul'']`. Conclude with `Submodule.mem_map_of_mem ha`. Take `⟨y, hy, hy'⟩` from `((GlobalTheory.Member.AALev.congruences_agree D V u).2 l.M _).1 (((GlobalTheory.Member.finCong_iff_half_and_kfHalf D H l V).1 u).1 hu) _ hιa`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, e2]`. Use `⟨w - (finHom V (γ * h)).1 *ᵥ y, sub_mem hw (markMove_mulVec_mem V _ hy), ?_⟩` and prove the remaining obligations. Rewrite using `[markMove_finHom_mul, sub_eq_iff_eq_add'.1 hy', Matrix.mulVec_add, markMove_mulVec_nsmul, nsmul_sub, ← hw', sub_add_eq_sub_sub]`. Establish `e : finHom V (γ * (h * u)) = finHom V (γ * h)`. Establish `hu' : finHom V u = 1` using `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, map_mul _ _ u, hu', mul_one]`. Take `⟨e1, e2⟩` from `(GlobalTheory.Member.latG_move D V).2.1 _ _ e`. Use `⟨hγ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hΛ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e2, e]`. Conclude with `hmk`. Establish `hr` using `C.hr`. Substitute `hr` using the available equality. Take `⟨⟨hU, hS⟩, hcong, -⟩` from `(hC.base.gam k δ).1 hδ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hG : (C.M.X k).Gm = -V.gramᵀ` using `(hC.modelW k).1`. Rewrite `hU` using `[hG]`. Take `⟨r1, -, r3, -, r5⟩` from `GlobalTheory.Member.RatElt.rational_elements D V`. Take `⟨γ₁, hγ₁⟩` from `r3 δ hU`. Establish `hq : γ₁ ∈ GQ V` using `(r1 γ₁).2 ⟨δ, hγ₁⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨m1, m2⟩` from `(GlobalTheory.Member.latG_move D V).1 γ₁ δ (γ * h) hγ₁`. Take `⟨f1, f2⟩` from `r5 γ₁ δ hγ₁`. Establish `hΛ' : ∀ v, v ∈ (C.M.X k).Λ ↔ v ∈ latG V (γ * h)` using `fun v => by`. Rewrite using `[← SetLike.mem_coe, hΛ]`. Conclude with `⟨fun ⟨x, hx, e⟩ => (show x = v from e) ▸ hx, fun hv => ⟨v, hv, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΛ'' : ∀ v, v ∈ (C.M.X k).Λ ↔ v ∈ latG V (γ₁ * (γ * h))` using `fun v => by`. Establish `e : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `h0` using `((hS _).symm.trans (hΛ' (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v))).trans (m1 _)`. Rewrite `h0` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨γ₁, hq, ⟨mul_mem hq hγ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use extensionality with `v`. Rewrite using `[SetLike.mem_coe, hΛ'']`. Conclude with `⟨fun hv => ⟨v, hv, rfl⟩, fun ⟨x, hx, e⟩ => (show x = v from e) ▸ hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨w, hw, hw'⟩` from `hmk a ha`. Establish `hta : C.F.t k a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) (C.F.Di k).La)`. Establish `h1` using `Submodule.mem_map_of_mem (f := C.F.t k) ha`. Rewrite `h1` using `[Submodule.map_smul'']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mono le_rfl le_top h1`. Take `⟨b, hb⟩` from `hcong _ hta`. Rewrite using `[mul_assoc]`. Use `⟨(finHom V γ₁).1 *ᵥ w - finVec V (C.M.φ k b : Fin V.rank → D.host.E), sub_mem ((m2 w).1 hw) (markMove_finVec_mem V _ ((hΛ'' _).1 (C.M.φ k b).2)), ?_⟩` and prove the remaining obligations. Establish `hw2 : finVec V (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) - (finHom V (γ * h)).1 *ᵥ (finVec V (C.ι a)) = (l.M : ℕ) • w` using `hw'`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `f1 (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E)`. Rewrite `h3` using `[hb, markMove_finVec_add_nsmul]`. Use `show finVec V (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) - _ = _`. Rewrite using `[markMove_finHom_mul, nsmul_sub, ← markMove_mulVec_nsmul, ← hw2, Matrix.mulVec_sub, h3]`. Normalize the expressions using the abelian group laws.
-
-Use function extensionality and compare the values at `τ`. Establish `a1` using `((GlobalTheory.Member.Arch.archM_spec D V C.θ hC.inf).1 τ.1).2.1 γ₁ (γ * h)`. Establish `a2` using `f2 τ.1 (C.θ τ.1) (hC.inf τ.1)`. Use `show (archM V (C.θ τ.1) (γ₁ * γ * h) * C.x₀ τ.1 : Matrix _ _ ℂ) = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1 * (archM V (C.θ τ.1) (γ * h) * C.x₀ τ.1)`. Rewrite using `[mul_assoc γ₁, a1, a2, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mark_move : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ h k γ, C.Mark h k γ → (∀ γ₀ ∈ GQ V, C.Mark (γ₀ * h) k (γ * γ₀⁻¹)) ∧ (∀ u, FinCong V l.M u → C.Mark (h * u) k γ) ∧ (∀ u ∈ GinfC V, C.Mark (h * u) k γ) ∧ ∀ δ ∈ (C.M.X k).Γ, ∃ γ₁ ∈ GQ V, C.Mark h k (γ₁ * γ) ∧ C.fr (γ₁ * γ * h) k = lact δ (C.fr (γ * h) k) := by
   intro D H Dw l Xo c σ V r C hC h k γ hM

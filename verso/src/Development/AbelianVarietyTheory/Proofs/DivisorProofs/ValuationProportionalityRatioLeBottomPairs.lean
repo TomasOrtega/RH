@@ -19,23 +19,23 @@ namespace GlobalTheory.NormSum.LemmaC
 open GlobalTheory.NormVal
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hi`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem integralOver_cast {D : D7} {p m n : ℕ} (e : n = m) (h : GA D n) (hi : IntegralOver D p h) :
     IntegralOver D p (e ▸ h : GA D m) := by
   subst e; exact hi
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨h', rfl, id⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast_eq {D : D7} {p m n : ℕ} (e : n = m) (h' : GA D m) :
     ∃ h : GA D n, (e ▸ h : GA D m) = h' ∧ (IntegralOver D p h' → IntegralOver D p h) := by
   subst e; exact ⟨h', rfl, id⟩
 
 /- English proof (translation)
-Establish `hm : ((n : ℤ) : ℂ) ∈ Qbar` using `intCast_mem _ n`. Use `⟨hm, fun lam => ?_⟩` and prove the remaining obligations. Rewrite using `[lamC_of_mem lam hm]`. Establish `e1 : (⟨(n : ℂ), hm⟩ : Qbar) = (n : Qbar)` using `Subtype.ext (by simp)`. Rewrite using `[e1, map_intCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUltrametricDist.norm_intCast_le_one _ n`.
+A detailed English derivation is pending.
 -/
 theorem bd_intCast (p : ℕ) [Fact p.Prime] (n : ℤ) : Bd p 1 ((n : ℤ) : ℂ) := by
   have hm : ((n : ℤ) : ℂ) ∈ Qbar := intCast_mem _ n
@@ -48,47 +48,39 @@ theorem bd_intCast (p : ℕ) [Fact p.Prime] (n : ℤ) : Bd p 1 ((n : ℤ) : ℂ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D N B Q S del_vp b hI hE hC K _ _ _ σ w p _ hw δ t0 Q₁ Q₂ hQ₁ hQ₂ P₁ P₁' P₂ P₂' hs₁ hs₁' hs₂ hs₂' hd₁ hd₂ b₁ b₂ v M₁ M₂ hr₁ hr₂ hb₂ hv hv1 γ z z' hγ hz hz' hz0 hz0'`. Establish `hp : p.Prime` using `Fact.out`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.one_le`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Use `set e : ℝ := del_vp p with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℝ := (p : ℝ) ^ e with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hgam : ∀ {Q' : ℕ} (P : Pair D ⊤ δ t0 Q'), padicValNat p Q' ≤ padicValNat p Q → P.Small N B → ∀ g, Bd p r ((gam D P.J g : ℂ)⁻¹)` using `fun P hQ' hS g => by`. Take `⟨-, h2, -⟩` from `hC δ t0 p _ hQ' P hS`. Conclude with `(Bd.inv_nat (h2 g).1 dvd_rfl).mono (Real.rpow_le_rpow_of_exponent_le hp1 (h2 g).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hco : ∀ {Q' : ℕ} (P : Pair D ⊤ δ t0 Q'), padicValNat p Q' ≤ padicValNat p Q → P.Small N B → ∀ g, IntegralOver D p g → ∀ T, Bd p r (P.coord g T)` using `fun P hQ' hS g hg T => (hC δ t0 p _ hQ' P hS).2.2 g hg T`. Establish `hb₁ : b₁ ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : P₁.norm = 0`. Unfold `Pair.norm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun q => ?_` and prove the remaining obligations. Establish `: P₁.sq q.out = 0`. Unfold `Pair.sq`. Use `Finset.sum_eq_zero fun T _ => ?_` and prove the remaining obligations. Use `hr₁ q.out T` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `this` using `[zero_mul, map_eq_zero]`. Rewrite using `[this, norm_zero]`. Evaluate the numerical expressions. Rewrite using `[this, mul_zero]`. Apply `hz0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[hz, h0, map_zero, Complex.ofReal_zero]`. Establish `hγ0 : γ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hγ` using `[map_zero, zero_mul, zero_mul]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb₁ hγ`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Rewrite `hγ` using `[mul_zero]`. Conclude with `hb₁ hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : Bd p (r * (r * (1 * r))) ((P₁.norm : ℂ) * b₁⁻¹)`. Take `⟨h1, -, -⟩` from `hC δ t0 p Q₁ hQ₁ P₁ hs₁`. Use `choose s hs1 hs2 using h1`. Rewrite using `[(GlobalTheory.T.definiteThetaPair_terms_norms_independent_representatives D hI ⊤ δ t0 Q₁ P₁.crv P₁.pt0 P₁ P₁.level_pos).2.2.2.1 s hs1]`. Use `finsum_induction (fun x : ℝ => Bd p (r * (r * (1 * r))) ((x : ℂ) * b₁⁻¹)) ?_ (fun x y hx hy => ?_) (fun q => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `beta_reduce; rw [Complex.ofReal_zero, zero_mul]; exact Bd.zero (by positivity)`. Use `beta_reduce at hx hy ⊢`. Rewrite using `[Complex.ofReal_add, add_mul]`. Conclude with `hx.add hy`. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast, mul_assoc]`. Use `Bd.mul (hgam P₁ hQ₁ hs₁ _) ?_` and prove the remaining obligations. Unfold `Pair.sq`. Rewrite using `[Complex.ofReal_sum, Finset.sum_mul]`. Use `Finset.sum_induction _ _ (fun x y => Bd.add) (Bd.zero (by positivity)) (fun T _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((‖P₁.coord (s q) T‖ ^ 2 : ℝ) : ℂ) * b₁⁻¹ = P₁.coord (s q) T * ∑ T', (M₁ T T' : ℂ) * P₁'.coord (hd₁.symm ▸ s q) T'`. Rewrite using `[Complex.ofReal_pow, ← Complex.mul_conj', hr₁]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Use `(hco P₁ hQ₁ hs₁ _ (hs2 q) T).mul ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_induction _ _ (fun x y => Bd.add) (Bd.zero (by positivity)) (fun T' _ => ?_)` and prove the remaining obligations. Conclude with `(bd_intCast p _).mul (hco P₁' hQ₁ hs₁' _ (integralOver_cast hd₁.symm _ (hs2 q)) T')`. Establish `hB : Bd p (r * (r * (1 * r))) ((P₂'.norm : ℂ) * b₂)`. Take `⟨h1, -, -⟩` from `hC δ t0 p Q₂ hQ₂ P₂' hs₂'`. Use `choose s hs1 hs2 using h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(GlobalTheory.T.definiteThetaPair_terms_norms_independent_representatives D hI ⊤ δ t0 Q₂ P₂'.crv P₂'.pt0 P₂' P₂'.level_pos).2.2.2.1 s hs1]`. Use `finsum_induction (fun x : ℝ => Bd p (r * (r * (1 * r))) ((x : ℂ) * b₂)) ?_ (fun x y hx hy => ?_) (fun q => ?_)` and prove the remaining obligations. Use the proof step `beta_reduce; rw [Complex.ofReal_zero, zero_mul]; exact Bd.zero (by positivity)`. Use `beta_reduce at hx hy ⊢`. Rewrite using `[Complex.ofReal_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx.add hy`. Use `beta_reduce`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast, mul_assoc]`. Use `Bd.mul (hgam P₂' hQ₂ hs₂' _) ?_` and prove the remaining obligations. Unfold `Pair.sq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_sum, Finset.sum_mul]`. Use `Finset.sum_induction _ _ (fun x y => Bd.add) (Bd.zero (by positivity)) (fun T' _ => ?_)` and prove the remaining obligations. Take `⟨h, hh, hi⟩` from `exists_cast_eq (p := p) hd₂.symm (s q)`. Establish `e1 : ((‖P₂'.coord (s q) T'‖ ^ 2 : ℝ) : ℂ) * b₂ = (starRingEnd ℂ) (P₂'.coord (s q) T') * ∑ T, (M₂ T' T : ℂ) * (starRingEnd ℂ) (P₂.coord h T)`. Rewrite using `[← hr₂ h T', hh, Complex.ofReal_pow, ← Complex.mul_conj']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(hco P₂' hQ₂ hs₂' _ (hs2 q) T').conj.mul ?_` and prove the remaining obligations. Use `Finset.sum_induction _ _ (fun x y => Bd.add) (Bd.zero (by positivity)) (fun T _ => ?_)` and prove the remaining obligations. Conclude with `(bd_intCast p _).mul (hco P₂ hQ₂ hs₂ _ (hi (hs2 q)) T).conj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `set x : K := z * z' * γ⁻¹ with hx`. Establish `hx0 : x ≠ 0` using `mul_ne_zero (mul_ne_zero hz0 hz0') (inv_ne_zero hγ0)`. Establish `hσx : σ x = ((P₁.norm : ℂ) * b₁⁻¹) * ((P₂'.norm : ℂ) * b₂) * v`. Establish `hσγ : σ γ ≠ 0` using `(map_ne_zero σ).2 hγ0`. Rewrite using `[hx, map_mul, map_mul, map_inv₀, hz, hz', hγ]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hX : Bd p (r * (r * (1 * r)) * (r * (r * (1 * r))) * 1) (σ x)`. Rewrite using `[hσx]`. Conclude with `(hA.mul hB).mul ⟨hv, fun lam => (hv1 lam).le⟩`. Establish `hpow : r * (r * (1 * r)) * (r * (r * (1 * r))) * 1 = (p : ℝ) ^ (6 * e)`.
-
-Rewrite using `[mul_comm 6 e, Real.rpow_mul hp0.le, hr]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `GlobalTheory.PadicPlaceBound.neg_mul_vw_le_vw K σ x p w (6 * e) hx0 hw fun lam => (hX.2 lam).trans (le_of_eq hpow)`. Establish `hvx : (Formalism.DivisionValues.vw w x : ℝ) = Formalism.DivisionValues.vw w z + Formalism.DivisionValues.vw w z' - Formalism.DivisionValues.vw w γ`.
-
-Rewrite using `[hx, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (mul_ne_zero hz0 hz0') (inv_ne_zero hγ0), Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hz0 hz0', Formalism.DivisionValues.ValuationRepresentative.vw_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hE.wt_eq hp w hw]`. Rewrite `key` using `[hvx]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vw_le_of_bottom_pairs : ∀ (D : D7) (N : ℕ) (B : ℝ) (Q : ℕ) (S : Finset ℕ) (del_vp : ℕ → ℝ) (b : ℝ), GlobalTheory.NormSum.Inp D →
     GlobalTheory.NormSum.Exponents S del_vp b → GlobalTheory.NormSum.CoordInt D N B Q del_vp →

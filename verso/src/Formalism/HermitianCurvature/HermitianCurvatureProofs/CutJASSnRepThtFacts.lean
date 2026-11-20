@@ -19,15 +19,15 @@ variable {k r : ℕ}
 def InW (k r : ℕ) (z x : Fin (2 * r + k + 1) → ℂ) : Prop := inWb k r x ∧ herm (Hpk k r) x z = 0
 
 /- English proof (translation)
-The claim follows from `(P.Qx2.herm_star v w).symm`.
+A detailed English derivation is pending.
 -/
 theorem herm_swap (v w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) w v = star (herm (Hpk k r) v w) :=
   (P.Qx2.herm_star v w).symm
 
 /- English proof (translation)
-Establish `h` using `P.Qx2.herm_star (k := k) (r := r) z z`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Tz]`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem herm_alt {z : Fin (2 * r + k + 1) → ℂ} : herm (Hpk k r) z z = ((-(Tz k r z) : ℝ) : ℂ) := by
   have h := P.Qx2.herm_star (k := k) (r := r) z z
@@ -39,20 +39,20 @@ theorem herm_alt {z : Fin (2 * r + k + 1) → ℂ} : herm (Hpk k r) z z = ((-(Tz
     linarith
 
 /- English proof (translation)
-Rewrite using `[herm_alt]`. Conclude with `(neg_ne_zero.2 hT.ne')` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_zz_ne {z : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) : herm (Hpk k r) z z ≠ 0 := by
   rw [herm_alt]
   exact_mod_cast (neg_ne_zero.2 hT.ne')
 
 /- English proof (translation)
-Unfold `herm`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hw i hi, star_zero, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `SSn.wbP Hpk`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[if_pos hj]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj]`. Establish `h1 : ¬ (i.val < r ∧ i.val + j.val = 2 * r + k)` using `by omega`. Establish `h2 : ¬ (j.val < r ∧ i.val + j.val = 2 * r + k)` using `by omega`. Establish `h3 : ¬ (r ≤ i.val ∧ i.val ≤ r + k ∧ i = j)`. Introduce and unpack `⟨-, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h1, h2, h3]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem herm_wbP {y w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) :
     herm (Hpk k r) y w = herm (Hpk k r) (SSn.wbP k r y) w := by
@@ -74,25 +74,25 @@ theorem herm_wbP {y w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) :
       simp [h1, h2, h3]
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; simp only [SSn.wbP, Pi.add_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockProjection_add (x y : Fin (2 * r + k + 1) → ℂ) : SSn.wbP k r (x + y) = SSn.wbP k r x + SSn.wbP k r y := by
   funext i; simp only [SSn.wbP, Pi.add_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; simp only [SSn.wbP, Pi.smul_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockProjection_smul (c : ℂ) (x : Fin (2 * r + k + 1) → ℂ) : SSn.wbP k r (c • x) = c • SSn.wbP k r x := by
   funext i; simp only [SSn.wbP, Pi.smul_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i hi; unfold SSn.wbP; rw [if_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem blockProjection_mem_block (x : Fin (2 * r + k + 1) → ℂ) : inWb k r (SSn.wbP k r x) := by
   intro i hi; unfold SSn.wbP; rw [if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `SSn.prWv`. Rewrite using `[blockProjection_add, P.Qx8.herm_add_left', add_div, add_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem prWv_add (z x y : Fin (2 * r + k + 1) → ℂ) :
     SSn.prWv k r z (x + y) = SSn.prWv k r z x + SSn.prWv k r z y := by
@@ -101,7 +101,7 @@ theorem prWv_add (z x y : Fin (2 * r + k + 1) → ℂ) :
   abel
 
 /- English proof (translation)
-Unfold `SSn.prWv`. Rewrite using `[blockProjection_smul, P.Qx8.herm_smul_left', smul_add, smul_smul, mul_div_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prWv_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     SSn.prWv k r z (c • x) = c • SSn.prWv k r z x := by
@@ -109,21 +109,21 @@ theorem prWv_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : Fin (2 * r + 
   rw [blockProjection_smul, P.Qx8.herm_smul_left', smul_add, smul_smul, mul_div_assoc]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `[hx i hi, hy i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inWb_add {x y : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (hy : inWb k r y) : inWb k r (x + y) := by
   intro i hi; simp [hx i hi, hy i hi]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `[hx i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inWb_smul (c : ℂ) {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) : inWb k r (c • x) := by
   intro i hi; simp [hx i hi]
 
 /- English proof (translation)
-Use `⟨inWb_add (blockProjection_mem_block y) (inWb_smul _ hz), ?_⟩` and prove the remaining obligations. Unfold `SSn.prWv`. Rewrite using `[P.Qx8.herm_add_left', P.Qx8.herm_smul_left', herm_alt]`. Establish `: ((Tz k r z : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prWv_inW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (y : Fin (2 * r + k + 1) → ℂ) :
     InW k r z (SSn.prWv k r z y) := by
@@ -136,13 +136,13 @@ theorem prWv_inW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < T
   ring
 
 /- English proof (translation)
-Rewrite using `[herm_swap, hw.2, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_z_w {z w : Fin (2 * r + k + 1) → ℂ} (hw : InW k r z w) : herm (Hpk k r) z w = 0 := by
   rw [herm_swap, hw.2, star_zero]
 
 /- English proof (translation)
-Unfold `SSn.prWv`. Rewrite using `[P.Qx8.herm_add_left', P.Qx8.herm_smul_left', herm_z_w hw, mul_zero, add_zero, herm_wbP hw.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_prWv {z y w : Fin (2 * r + k + 1) → ℂ} (hw : InW k r z w) :
     herm (Hpk k r) y w = herm (Hpk k r) (SSn.prWv k r z y) w := by
@@ -150,7 +150,7 @@ theorem herm_prWv {z y w : Fin (2 * r + k + 1) → ℂ} (hw : InW k r z w) :
   rw [P.Qx8.herm_add_left', P.Qx8.herm_smul_left', herm_z_w hw, mul_zero, add_zero, herm_wbP hw.1]
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.SkewHermitianParts.complete hz (herm_zz_ne hT) hF hv.1]`. Rewrite using `[hv.2, zero_mul, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_sum_herm_smul_frame_of_inW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {F : Fin k → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) {v : Fin (2 * r + k + 1) → ℂ}
@@ -159,14 +159,14 @@ theorem eq_sum_herm_smul_frame_of_inW {z : Fin (2 * r + k + 1) → ℂ} (hz : in
   rw [hv.2, zero_mul, zero_smul, add_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF.1 p, hF.2.2 p z (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_inW {z : Fin (2 * r + k + 1) → ℂ} {m : ℕ} {F : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hF : Q.IsFrameOf k r [z] F) (p : Fin m) : InW k r z (F p) :=
   ⟨hF.1 p, hF.2.2 p z (by simp)⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [eq_sum_herm_smul_frame_of_inW hz hT hF (prWv_inW hz hT y)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← herm_prWv (frame_inW hF p)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_frame {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {F : Fin k → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) (y : Fin (2 * r + k + 1) → ℂ) :
@@ -176,9 +176,9 @@ theorem proj_frame {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 <
   rw [← herm_prWv (frame_inW hF p)]
 
 /- English proof (translation)
-Use `⟨fun p => P.CutBP.TNM.tc_inWb hh (hF.1 p), fun p q => ?_, fun p v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[P.Qx2.herm_uh hh.1]`. Conclude with `hF.2.1 p q`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hh.2.2, P.Qx2.herm_uh hh.1]`. Conclude with `hF.2.2 p _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem frame_uw {z : Fin (2 * r + k + 1) → ℂ} {h : B.Mat k r} (hh : h ∈ UWset k r z) {m : ℕ}
     {F : Fin m → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) : Q.IsFrameOf k r [z] (fun p => h *ᵥ F p) := by
@@ -190,7 +190,7 @@ theorem frame_uw {z : Fin (2 * r + k + 1) → ℂ} {h : B.Mat k r} (hh : h ∈ U
     exact hF.2.2 p _ (by simp)
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `P.Qx8.frame_exists hz hT`. Rewrite using `[← proj_frame hz hT (frame_uw hh hF), ← proj_frame hz hT hF, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[P.Qx2.herm_uh hh.1, Matrix.mulVec_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prWv_uw {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) {h : B.Mat k r}
     (hh : h ∈ UWset k r z) (y : Fin (2 * r + k + 1) → ℂ) :
@@ -207,13 +207,13 @@ section mat
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `ebM Q.unitB`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ebM_eq_unitB (v b : Fin (2 * r + k + 1) → ℂ) : ebM k r v b = Q.unitB (Hpk k r) ![v, b] 0 1 := by
   unfold ebM Q.unitB; simp
 
 /- English proof (translation)
-Rewrite using `[ebM_eq_unitB, P.Qx8.unitB_mulVec]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ebM_mulVec (v b x : Fin (2 * r + k + 1) → ℂ) : ebM k r v b *ᵥ x = herm (Hpk k r) x b • v := by
   rw [ebM_eq_unitB, P.Qx8.unitB_mulVec]; simp
@@ -225,43 +225,43 @@ theorem ebM_frame {m : ℕ} (F : Fin m → Fin (2 * r + k + 1) → ℂ) (p s : F
     ebM k r (F p) (F s) = Q.unitB (Hpk k r) F p s := rfl
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.add_mulVec, ebM_mulVec, smul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_add_left (v v' b : Fin (2 * r + k + 1) → ℂ) : ebM k r (v + v') b = ebM k r v b + ebM k r v' b := by
   apply P.Qx8.mat_ext; intro x; simp only [Matrix.add_mulVec, ebM_mulVec, smul_add]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.smul_mulVec, ebM_mulVec, smul_comm c]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_smul_left (c : ℂ) (v b : Fin (2 * r + k + 1) → ℂ) : ebM k r (c • v) b = c • ebM k r v b := by
   apply P.Qx8.mat_ext; intro x; simp only [Matrix.smul_mulVec, ebM_mulVec, smul_comm c]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.add_mulVec, ebM_mulVec, P.Qx8.herm_add_right', add_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_add_right (v b b' : Fin (2 * r + k + 1) → ℂ) : ebM k r v (b + b') = ebM k r v b + ebM k r v b' := by
   apply P.Qx8.mat_ext; intro x; simp only [Matrix.add_mulVec, ebM_mulVec, P.Qx8.herm_add_right', add_smul]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.smul_mulVec, ebM_mulVec, P.Qx8.herm_smul_right', smul_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_smul_right (c : ℂ) (v b : Fin (2 * r + k + 1) → ℂ) : ebM k r v (c • b) = star c • ebM k r v b := by
   apply P.Qx8.mat_ext; intro x; simp only [Matrix.smul_mulVec, ebM_mulVec, P.Qx8.herm_smul_right', smul_smul]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[ebM_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_zero_left (b : Fin (2 * r + k + 1) → ℂ) : ebM k r 0 b = 0 := by
   apply P.Qx8.mat_ext; intro x; simp [ebM_mulVec]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[ebM_mulVec, herm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ebM_zero_right (v : Fin (2 * r + k + 1) → ℂ) : ebM k r v 0 = 0 := by
   apply P.Qx8.mat_ext; intro x; simp [ebM_mulVec, herm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ebM_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ebM_add_left, ebM_smul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ebM_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : ι → Fin (2 * r + k + 1) → ℂ)
     (b : Fin (2 * r + k + 1) → ℂ) : ebM k r (∑ i ∈ s, c i • v i) b = ∑ i ∈ s, c i • ebM k r (v i) b := by
@@ -271,7 +271,7 @@ theorem ebM_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : ι → F
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ebM_add_left, ebM_smul_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ebM_zero_right]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ebM_add_right, ebM_smul_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ebM_sum_right {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : Fin (2 * r + k + 1) → ℂ)
     (b : ι → Fin (2 * r + k + 1) → ℂ) : ebM k r v (∑ i ∈ s, c i • b i) = ∑ i ∈ s, star (c i) • ebM k r v (b i) := by
@@ -281,7 +281,7 @@ theorem ebM_sum_right {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : Fin (2 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ebM_add_right, ebM_smul_right, ih]
 
 /- English proof (translation)
-Apply `P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ebM_mulVec, ebM_mulVec, Matrix.mulVec_smul]`. Use `congr 1`. Rewrite using `[← P.Qx2.herm_uh hh, P.Qx8.inv_mulVec_uh hh]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem ebM_conj {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (v b : Fin (2 * r + k + 1) → ℂ) :
     h * ebM k r v b * h⁻¹ = ebM k r (h *ᵥ v) (h *ᵥ b) := by
@@ -294,13 +294,13 @@ def GW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (Z : B.Mat k r) : Prop :=
   P.QrD.InLieW k r z (hpart1 (Hpk k r) Z) ∧ P.QrD.InLieW k r z (hpart2 (Hpk k r) Z)
 
 /- English proof (translation)
-Rewrite using `[ebM_eq_unitB]`. Establish `hB : ∀ a, inWb k r (![v, b] a)`. Introduce `a`. Use `fin_cases a`. Conclude with `hv.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb.1`. Establish `hl` using `P.Qx8.unitB_lie ![v, b] hB (Fin.last r) 0 1`. Establish `z1 : Q.unitB (Hpk k r) ![v, b] 0 1 *ᵥ z = 0`. Rewrite using `[P.Qx8.unitB_mulVec]`. Simplify using `[herm_z_w hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `z2 : Q.unitB (Hpk k r) ![v, b] 1 0 *ᵥ z = 0`. Rewrite using `[P.Qx8.unitB_mulVec]`. Simplify using `[herm_z_w hv]`. Use `⟨⟨hl.1, ?_⟩, ⟨hl.2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[P.Qx8.hpart1_unitB, Matrix.smul_mulVec, Matrix.sub_mulVec, z1, z2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[P.Qx8.hpart2_unitB, Matrix.smul_mulVec, Matrix.add_mulVec, z1, z2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GW_ebM {z v b : Fin (2 * r + k + 1) → ℂ} (hv : InW k r z v) (hb : InW k r z b) : GW k r z (ebM k r v b) := by
   rw [ebM_eq_unitB]
@@ -318,42 +318,42 @@ theorem GW_ebM {z v b : Fin (2 * r + k + 1) → ℂ} (hv : InW k r z v) (hb : In
   · rw [P.Qx8.hpart2_unitB, Matrix.smul_mulVec, Matrix.add_mulVec, z1, z2]; simp
 
 /- English proof (translation)
-Unfold `hpart1`. Rewrite using `[Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem hpart1_add (Z Z' : B.Mat k r) :
     hpart1 (Hpk k r) (Z + Z') = hpart1 (Hpk k r) Z + hpart1 (Hpk k r) Z' := by
   unfold hpart1; rw [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]; congr 1; abel
 
 /- English proof (translation)
-Unfold `hpart2`. Rewrite using `[Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem hpart2_add (Z Z' : B.Mat k r) :
     hpart2 (Hpk k r) (Z + Z') = hpart2 (Hpk k r) Z + hpart2 (Hpk k r) Z' := by
   unfold hpart2; rw [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]; congr 1; abel
 
 /- English proof (translation)
-Clear the denominators using the available nonvanishing facts. Simplify using `[Complex.I_sq]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 -/
 theorem inv_two_I : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2 := by
   field_simp; simp [Complex.I_sq]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_adjoint_smul (c : ℂ) (Z : B.Mat k r) :
     (Hpk k r)⁻¹ * (c • Z)ᴴ * Hpk k r = star c • ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) := by
   rw [Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Complex.star_def]; apply Complex.ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_re_im (c : ℂ) : star c = (c.re : ℂ) - (c.im : ℂ) * Complex.I := by
   rw [Complex.star_def]; apply Complex.ext <;> simp
 
 /- English proof (translation)
-Unfold `hpart1 hpart2`. Rewrite using `[hermitian_adjoint_smul, inv_two_I, star_re_im]`. Establish `hc : c = (c.re : ℂ) + (c.im : ℂ) * Complex.I` using `(Complex.re_add_im c).symm`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `(Z i j / 2) * hc`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hpart1_smul (c : ℂ) (Z : B.Mat k r) :
     hpart1 (Hpk k r) (c • Z) = (c.re : ℂ) • hpart1 (Hpk k r) Z + ((-c.im : ℝ) : ℂ) • hpart2 (Hpk k r) Z := by
@@ -366,9 +366,9 @@ theorem hpart1_smul (c : ℂ) (Z : B.Mat k r) :
   linear_combination (Z i j / 2) * hc
 
 /- English proof (translation)
-Unfold `hpart1 hpart2`. Rewrite using `[hermitian_adjoint_smul, inv_two_I, star_re_im]`. Establish `hc : c = (c.re : ℂ) + (c.im : ℂ) * Complex.I` using `(Complex.re_add_im c).symm`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-Complex.I / 2 * Z i j) * hc + ((c.im : ℂ) / 2 * (((Hpk k r)⁻¹ * Zᴴ * Hpk k r) i j - Z i j)) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hpart2_smul (c : ℂ) (Z : B.Mat k r) :
     hpart2 (Hpk k r) (c • Z) = (c.re : ℂ) • hpart2 (Hpk k r) Z + (c.im : ℂ) • hpart1 (Hpk k r) Z := by
@@ -381,7 +381,7 @@ theorem hpart2_smul (c : ℂ) (Z : B.Mat k r) :
     ((c.im : ℂ) / 2 * (((Hpk k r)⁻¹ * Zᴴ * Hpk k r) i j - Z i j)) * Complex.I_sq
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpart1_add]`. Conclude with `P.LieBracketMultiplication.lie_add h.1 h'.1`. Rewrite using `[hpart2_add]`. Conclude with `P.LieBracketMultiplication.lie_add h.2 h'.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GW_add {z : Fin (2 * r + k + 1) → ℂ} {Z Z' : B.Mat k r} (h : GW k r z Z) (h' : GW k r z Z') :
     GW k r z (Z + Z') := by
@@ -390,7 +390,7 @@ theorem GW_add {z : Fin (2 * r + k + 1) → ℂ} {Z Z' : B.Mat k r} (h : GW k r 
   · rw [hpart2_add]; exact P.LieBracketMultiplication.lie_add h.2 h'.2
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpart1_smul]`. Conclude with `P.LieBracketMultiplication.lie_add (P.LieBracketMultiplication.lie_smul h.1 _) (P.LieBracketMultiplication.lie_smul h.2 _)`. Rewrite using `[hpart2_smul]`. Conclude with `P.LieBracketMultiplication.lie_add (P.LieBracketMultiplication.lie_smul h.2 _) (P.LieBracketMultiplication.lie_smul h.1 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GW_smul {z : Fin (2 * r + k + 1) → ℂ} (c : ℂ) {Z : B.Mat k r} (h : GW k r z Z) : GW k r z (c • Z) := by
   refine ⟨?_, ?_⟩
@@ -405,7 +405,7 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [Fini
   {z : Fin (2 * r + k + 1) → ℂ} {π : B.Mat k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Unfold `P.QrD.ecOp`. Rewrite using `[hpart1_add, hpart2_add, (P.differential_operator_linear W k r z π hR _ _ h.1 h'.1).1, (P.differential_operator_linear W k r z π hR _ _ h.2 h'.2).1, smul_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ecOp_add (hR : Qr.IsRepW k r z π) {Z Z' : B.Mat k r} (h : GW k r z Z) (h' : GW k r z Z') :
     P.QrD.ecOp π (Z + Z') = P.QrD.ecOp π Z + P.QrD.ecOp π Z' := by
@@ -415,15 +415,15 @@ theorem ecOp_add (hR : Qr.IsRepW k r z π) {Z Z' : B.Mat k r} (h : GW k r z Z) (
   abel
 
 /- English proof (translation)
-Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_I_smul (x : W →L[ℂ] W) : Complex.I • Complex.I • x = -x := by
   rw [smul_smul, Complex.I_mul_I, neg_one_smul]
 
 /- English proof (translation)
-Unfold `P.QrD.ecOp`. Rewrite using `[hpart1_smul, hpart2_smul, (P.differential_operator_linear W k r z π hR _ _ (P.LieBracketMultiplication.lie_smul h.1 _) (P.LieBracketMultiplication.lie_smul h.2 _)).1, (P.differential_operator_linear W k r z π hR _ _ (P.LieBracketMultiplication.lie_smul h.2 _) (P.LieBracketMultip …`. Simplify using `only [← Complex.coe_smul]`. Use `conv_rhs => rw [(Complex.re_add_im c).symm]`. Simplify using `only [add_smul, smul_add, mul_smul, I_I_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem ecOp_smul (hR : Qr.IsRepW k r z π) (c : ℂ) {Z : B.Mat k r} (h : GW k r z Z) :
     P.QrD.ecOp π (c • Z) = c • P.QrD.ecOp π Z := by
@@ -440,7 +440,7 @@ theorem ecOp_smul (hR : Qr.IsRepW k r z π) (c : ℂ) {Z : B.Mat k r} (h : GW k 
   module
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `hpart1`. Simplify using `using P.LieBracketMultiplication.lie_zero (k := k) (r := r) (z := z)`. Unfold `hpart2`. Simplify using `using P.LieBracketMultiplication.lie_zero (k := k) (r := r) (z := z)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GW_zero : GW k r z 0 := by
   refine ⟨?_, ?_⟩
@@ -448,16 +448,16 @@ theorem GW_zero : GW k r z 0 := by
   · unfold hpart2; simpa using P.LieBracketMultiplication.lie_zero (k := k) (r := r) (z := z)
 
 /- English proof (translation)
-Unfold `P.QrD.ecOp hpart1 hpart2`. Simplify using `[P.SkewHermitianParts.dOp_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ecOp_zero : P.QrD.ecOp π (0 : B.Mat k r) = 0 := by
   unfold P.QrD.ecOp hpart1 hpart2
   simp [P.SkewHermitianParts.dOp_zero]
 
 /- English proof (translation)
-Establish `hG : ∀ t : Finset ι, GW k r z (∑ i ∈ t, c i • Z i)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using (GW_zero (k := k) (r := r) (z := z))`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `GW_add (GW_smul _ (hZ a)) ih`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ecOp_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ecOp_add hR (GW_smul _ (hZ a)) (hG s), ecOp_smul hR _ (hZ a), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ecOp_sum (hR : Qr.IsRepW k r z π) {ι : Type*} (s : Finset ι) (c : ι → ℂ) (Z : ι → B.Mat k r)
     (hZ : ∀ i, GW k r z (Z i)) : P.QrD.ecOp π (∑ i ∈ s, c i • Z i) = ∑ i ∈ s, c i • P.QrD.ecOp π (Z i) := by
@@ -473,9 +473,9 @@ theorem ecOp_sum (hR : Qr.IsRepW k r z π) {ι : Type*} (s : Finset ι) (c : ι 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ecOp_add hR (GW_smul _ (hZ a)) (hG s), ecOp_smul hR _ (hZ a), ih]
 
 /- English proof (translation)
-Establish `hg : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Establish `e : ∀ M : B.Mat k r, Hpk k r * (Hpk k r * M) = M`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, P.Qx2.hpk_sq', Matrix.one_mul]`. Establish `hinv : h⁻¹ = Hpk k r * hᴴ * Hpk k r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc hᴴ, hg, P.Qx2.hpk_sq']`. Rewrite using `[hinv, P.Qx2.hpk_inv]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, P.Qx2.hpk_h, Matrix.mul_assoc, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermitian_adjoint_conj_unitary {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (Z : B.Mat k r) :
     (Hpk k r)⁻¹ * (h * Z * h⁻¹)ᴴ * Hpk k r = h * ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) * h⁻¹ := by
@@ -489,21 +489,21 @@ theorem hermitian_adjoint_conj_unitary {h : B.Mat k r} (hh : h ∈ UH (Hpk k r))
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, P.Qx2.hpk_h, Matrix.mul_assoc, e]
 
 /- English proof (translation)
-Unfold `hpart1`. Rewrite using `[hermitian_adjoint_conj_unitary hh, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart1_conj {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (Z : B.Mat k r) :
     hpart1 (Hpk k r) (h * Z * h⁻¹) = h * hpart1 (Hpk k r) Z * h⁻¹ := by
   unfold hpart1; rw [hermitian_adjoint_conj_unitary hh, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul]
 
 /- English proof (translation)
-Unfold `hpart2`. Rewrite using `[hermitian_adjoint_conj_unitary hh, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart2_conj {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (Z : B.Mat k r) :
     hpart2 (Hpk k r) (h * Z * h⁻¹) = h * hpart2 (Hpk k r) Z * h⁻¹ := by
   unfold hpart2; rw [hermitian_adjoint_conj_unitary hh, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Unfold `P.QrD.ecOp`. Rewrite using `[hpart1_conj hh.1, hpart2_conj hh.1, (P.differential_operator_adjoint W k r z π hR _ hZ.1 h hh).2.2, (P.differential_operator_adjoint W k r z π hR _ hZ.2 h hh).2.2]`. Simplify using `only [ContinuousLinearMap.comp_add, ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ecOp_conj (hR : Qr.IsRepW k r z π) {h : B.Mat k r} (hh : h ∈ UWset k r z) {Z : B.Mat k r}
     (hZ : GW k r z Z) :
@@ -521,7 +521,7 @@ section gen
 variable {k r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, P.Qx8.herm_add_right', P.Qx8.herm_smul_right', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_right {ι : Type*} (s : Finset ι) (x : Fin (2 * r + k + 1) → ℂ) (c : ι → ℂ)
     (w : ι → Fin (2 * r + k + 1) → ℂ) :
@@ -533,7 +533,7 @@ theorem herm_sum_right {ι : Type*} (s : Finset ι) (x : Fin (2 * r + k + 1) →
     rw [Finset.sum_insert ha, Finset.sum_insert ha, P.Qx8.herm_add_right', P.Qx8.herm_smul_right', ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, P.Qx8.herm_add_left', P.Qx8.herm_smul_left', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_left {ι : Type*} (s : Finset ι) (x : Fin (2 * r + k + 1) → ℂ) (c : ι → ℂ)
     (w : ι → Fin (2 * r + k + 1) → ℂ) :
@@ -545,7 +545,7 @@ theorem herm_sum_left {ι : Type*} (s : Finset ι) (x : Fin (2 * r + k + 1) → 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, P.Qx8.herm_add_left', P.Qx8.herm_smul_left', ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `prWv_smul z 0 (0 : Fin (2 * r + k + 1) → ℂ)` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, prWv_add, prWv_smul, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem prWv_sum (z : Fin (2 * r + k + 1) → ℂ) {ι : Type*} (s : Finset ι) (c : ι → ℂ)
     (v : ι → Fin (2 * r + k + 1) → ℂ) :
@@ -558,9 +558,9 @@ theorem prWv_sum (z : Fin (2 * r + k + 1) → ℂ) {ι : Type*} (s : Finset ι) 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, prWv_add, prWv_smul, ih]
 
 /- English proof (translation)
-Establish `e : ∑ q, herm (Hpk k r) (F q) (G t) * star (herm (Hpk k r) (F q) (G u)) = herm (Hpk k r) (G u) (∑ q, herm (Hpk k r) (G t) (F q) • F q)`. Rewrite using `[herm_sum_right]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[herm_swap (F q) (G t), herm_swap (F q) (G u), star_star, mul_comm]`. Rewrite using `[e, ← eq_sum_herm_smul_frame_of_inW hz hT hF (frame_inW hG t)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG.2.1 u t`.
+A detailed English derivation is pending.
 -/
 theorem frame_gram {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {F G : Fin k → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) (hG : Q.IsFrameOf k r [z] G) (t u : Fin k) :
@@ -574,17 +574,15 @@ theorem frame_gram {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 <
   exact hG.2.1 u t
 
 /- English proof (translation)
-Establish `hexp : ∀ q, F q = ∑ t, herm (Hpk k r) (F q) (G t) • G t` using `fun q => eq_sum_herm_smul_frame_of_inW hz hT hG (frame_inW hF q)`. Establish `hGw : ∀ t, InW k r z (G t)` using `frame_inW hG`. Establish `hsum : ∀ (c : Fin k → ℂ), InW k r z (∑ t, c t • G t)`. Introduce `c`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun t _ => by simp [(hGw t).1 i hi]`. Rewrite using `[herm_sum_left]; exact Finset.sum_eq_zero fun t _ => by rw [(hGw t).2, mul_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hexp q]`. Rewrite using `[hL _ _ _ hGw (hsum _)]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hR _ _ _ (hGw t) hGw, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `_ = ∑ t, ∑ u, (∑ q, herm (Hpk k r) (F q) (G t) * star (herm (Hpk k r) (F q) (G u))) • S (G t) (G u) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `_ = ∑ t, S (G t) (G t) := by`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
-
-Repeatedly rewrite using `[frame_gram hz hT hF hG t]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_trace {M : Type*} [AddCommGroup M] [Module ℂ M] {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     (hT : 0 < Tz k r z) (S : (Fin (2 * r + k + 1) → ℂ) → (Fin (2 * r + k + 1) → ℂ) → M)
@@ -630,7 +628,7 @@ section smooth
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Set `L : E →ₗ[ℝ] ℂ` to `{ toFun := f, map_add' := hadd, map_smul' := fun c x => by rw [hsmul, RingHom.id_apply, Complex.real_smul] }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cd_lin (f : E → ℂ) (hadd : ∀ x y, f (x + y) = f x + f y) (hsmul : ∀ (c : ℝ) x, f (c • x) = (c : ℂ) * f x) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f := by
@@ -639,7 +637,7 @@ theorem cd_lin (f : E → ℂ) (hadd : ∀ x y, f (x + y) = f x + f y) (hsmul : 
   exact (LinearMap.toContinuousLinearMap L).contDiff
 
 /- English proof (translation)
-Use `⟨cd_lin _ (fun x y => by rw [hadd, P.Qx8.herm_add_left']) (fun c x => by rw [hsmul, P.Qx8.herm_smul_left']), cd_lin _ (fun x y => by rw [hadd, P.Qx8.herm_add_left', star_add]) (fun c x => by rw [hsmul, P.Qx8.herm_smul_left', star_mul', Complex.star_def, Complex.conj_ofReal])⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cd_herm {k r : ℕ} (g : E → Fin (2 * r + k + 1) → ℂ) (hadd : ∀ x y, g (x + y) = g x + g y)
     (hsmul : ∀ (c : ℝ) x, g (c • x) = (c : ℂ) • g x) (v : Fin (2 * r + k + 1) → ℂ) :
@@ -670,11 +668,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `set b := stdOrthonormalBasis ℂ Wq`. Establish `hexp : ∀ x, x = ∑ j, inner ℂ (b j) x • b j` using `fun x => (b.sum_repr' x).symm`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hexp (B₁ (b i))]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, inner_sum, inner_smul_right]`. Use `_ = ∑ j, ∑ i, inner ℂ (b j) (B₁ (b i)) * inner ℂ (U (b i)) (V (b j)) := Finset.sum_comm`. Use `_ = ∑ j, inner ℂ (U (B₂ (b j))) (V (b j)) := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [hexp (B₂ (b j))]`.
-
-Simplify using `only [map_sum, map_smul, sum_inner, inner_smul_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← inner_conj_symm, hB, inner_conj_symm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_move (U V : Wq →L[ℂ] Wp) (B₁ B₂ : Wq →L[ℂ] Wq) (hB : ∀ u v, inner ℂ (B₁ u) v = inner ℂ u (B₂ v)) :
     ∑ i, inner ℂ (U (stdOrthonormalBasis ℂ Wq i)) (V (B₁ (stdOrthonormalBasis ℂ Wq i))) =
@@ -696,7 +692,7 @@ theorem trace_move (U V : Wq →L[ℂ] Wp) (B₁ B₂ : Wq →L[ℂ] Wq) (hB : �
         rw [← inner_conj_symm, hB, inner_conj_symm]
 
 /- English proof (translation)
-Rewrite using `[P.Topx1.hsInner_eq, P.Topx1.hsInner_eq]`. Simplify using `only [sandw_apply, ContinuousLinearMap.comp_apply]`. Simplify using `only [← hA]`. Conclude with `trace_move (A₂.comp Y) X B₁ B₂ hB`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_sandw_adj (A₁ A₂ : Wp →L[ℂ] Wp) (B₁ B₂ : Wq →L[ℂ] Wq) (hA : ∀ u v, inner ℂ (A₂ u) v = inner ℂ u (A₁ v))
     (hB : ∀ u v, inner ℂ (B₁ u) v = inner ℂ u (B₂ v)) (X Y : Wq →L[ℂ] Wp) :
@@ -707,7 +703,7 @@ theorem hs_sandw_adj (A₁ A₂ : Wp →L[ℂ] Wp) (B₁ B₂ : Wq →L[ℂ] Wq)
   exact trace_move (A₂.comp Y) X B₁ B₂ hB
 
 /- English proof (translation)
-Simplify using `only [P.Topx1.hsInner_eq, ContinuousLinearMap.sum_apply, inner_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_sum_left {ι : Type*} (s : Finset ι) (T : ι → Wq →L[ℂ] Wp) (Y : Wq →L[ℂ] Wp) :
     B.hsInner (∑ i ∈ s, T i) Y = ∑ i ∈ s, B.hsInner (T i) Y := by
@@ -715,7 +711,7 @@ theorem hs_sum_left {ι : Type*} (s : Finset ι) (T : ι → Wq →L[ℂ] Wp) (Y
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [P.Topx1.hsInner_eq, ContinuousLinearMap.sum_apply, sum_inner]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_sum_right {ι : Type*} (s : Finset ι) (X : Wq →L[ℂ] Wp) (T : ι → Wq →L[ℂ] Wp) :
     B.hsInner X (∑ i ∈ s, T i) = ∑ i ∈ s, B.hsInner X (T i) := by
@@ -723,13 +719,13 @@ theorem hs_sum_right {ι : Type*} (s : Finset ι) (X : Wq →L[ℂ] Wp) (T : ι 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [P.Topx1.hsInner_eq, ContinuousLinearMap.smul_apply, inner_smul_right, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_smul_left (c : ℂ) (T Y : Wq →L[ℂ] Wp) : B.hsInner (c • T) Y = c * B.hsInner T Y := by
   simp only [P.Topx1.hsInner_eq, ContinuousLinearMap.smul_apply, inner_smul_right, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [P.Topx1.hsInner_eq, ContinuousLinearMap.smul_apply, inner_smul_left, Finset.mul_sum, Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_smul_right (c : ℂ) (X T : Wq →L[ℂ] Wp) : B.hsInner X (c • T) = star c * B.hsInner X T := by
   simp only [P.Topx1.hsInner_eq, ContinuousLinearMap.smul_apply, inner_smul_left, Finset.mul_sum, Complex.star_def]
@@ -742,9 +738,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext X x`. Simplify using `[sandw_apply]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `X x`. Simplify using `[sandw_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sandw_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (A : ι → Wp →L[ℂ] Wp) (B' : Wq →L[ℂ] Wq) :
     sandw (∑ i ∈ s, c i • A i) B' = ∑ i ∈ s, c i • sandw (A i) B' := by
@@ -756,9 +752,9 @@ theorem sandw_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (A : ι →
     ext X x; simp [sandw_apply]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext X x`. Simplify using `[sandw_apply]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `X x`. Simplify using `[sandw_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sandw_sum_right {ι : Type*} (s : Finset ι) (c : ι → ℂ) (A : Wp →L[ℂ] Wp) (B' : ι → Wq →L[ℂ] Wq) :
     sandw A (∑ i ∈ s, c i • B' i) = ∑ i ∈ s, c i • sandw A (B' i) := by
@@ -773,7 +769,7 @@ variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {z z' : Fin (2 * 
   {π : B.Mat k r → (Wp →L[ℂ] Wp)} {π' : B.Mat k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Unfold `tht`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← sandw_sum_left, ← ecOp_sum hR _ _ _ (fun p => GW_ebM (frame_inW hF p) (prWv_inW hz hT a)), ← ebM_sum_left, proj_frame hz hT hF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tht_form (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     {F F' : Fin k → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) (a a' : Fin (2 * r + k + 1) → ℂ)
@@ -787,9 +783,9 @@ theorem tht_form (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     ← ebM_sum_left, proj_frame hz hT hF]
 
 /- English proof (translation)
-Unfold `thtA`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `e` using `ecOp_sum hR Finset.univ (fun p => star (herm (Hpk k r) (ι *ᵥ F' q) (F p))) (fun p => ebM k r (SSn.prWv k r z a) (F p)) (fun p => GW_ebM (prWv_inW hz hT a) (frame_inW hF p))`. Rewrite `e` using `[← ebM_sum_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Complex.star_def] at e`. Rewrite using `[← sandw_sum_left, ← e, proj_frame hz hT hF]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem thtA_form (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     {F F' : Fin k → Fin (2 * r + k + 1) → ℂ} (hF : Q.IsFrameOf k r [z] F) (a a' : Fin (2 * r + k + 1) → ℂ)
@@ -806,9 +802,9 @@ theorem thtA_form (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π
   rw [← sandw_sum_left, ← e, proj_frame hz hT hF]
 
 /- English proof (translation)
-Rewrite using `[tht_form hz hT hR hF, tht_form hz hT hR hG]`. Use `frame_trace hz' hT' (fun v w => sandw (P.QrD.ecOp π (ebM k r (SSn.prWv k r z (ι *ᵥ v)) (SSn.prWv k r z a))) (P.QrD.ecOp π' (ebM k r (SSn.prWv k r z' a') w))) ?_ ?_ hF' hG'` and prove the remaining obligations. Introduce `c v w hv hw`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, prWv_sum, ebM_sum_left]`. Rewrite using `[ecOp_sum hR _ _ _ (fun i => GW_ebM (prWv_inW hz hT _) (prWv_inW hz hT a)), sandw_sum_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c v w hv hw`. Simplify using `only [ebM_sum_right]`. Rewrite using `[ecOp_sum hR' _ _ _ (fun i => GW_ebM (prWv_inW hz' hT' a') (hw i)), sandw_sum_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tht_indep (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -826,9 +822,9 @@ theorem tht_indep (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π
     rw [ecOp_sum hR' _ _ _ (fun i => GW_ebM (prWv_inW hz' hT' a') (hw i)), sandw_sum_right]
 
 /- English proof (translation)
-Rewrite using `[thtA_form hz hT hR hF, thtA_form hz hT hR hG]`. Use `frame_trace hz' hT' (fun v w => sandw (P.QrD.ecOp π (ebM k r (SSn.prWv k r z a) (SSn.prWv k r z (ι *ᵥ w)))) (P.QrD.ecOp π' (ebM k r v (SSn.prWv k r z' a')))) ?_ ?_ hF' hG'` and prove the remaining obligations. Introduce `c v w hv hw`. Simplify using `only [ebM_sum_left]`. Rewrite using `[ecOp_sum hR' _ _ _ (fun i => GW_ebM (hv i) (prWv_inW hz' hT' a')), sandw_sum_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c v w hv hw`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, prWv_sum, ebM_sum_right]`. Rewrite using `[ecOp_sum hR _ _ _ (fun i => GW_ebM (prWv_inW hz hT a) (prWv_inW hz hT _)), sandw_sum_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem thtA_indep (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -847,7 +843,7 @@ theorem thtA_indep (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z �
 
 omit [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-Establish `e` using `hR.1.2 _ (P.LieBracketMultiplication.uw_inv hh) _ hh`. Rewrite `e` using `[Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hh.1), hR.1.1]`. Use `congrArg (fun L : Wp →L[ℂ] Wp => L v) e` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_inv_cancel {zz : Fin (2 * r + k + 1) → ℂ} {ρ : B.Mat k r → (Wp →L[ℂ] Wp)} (hR : Qr.IsRepW k r zz ρ)
     {h : B.Mat k r} (hh : h ∈ UWset k r zz) (v : Wp) : ρ h⁻¹ (ρ h v) = v := by
@@ -857,7 +853,7 @@ theorem rep_inv_cancel {zz : Fin (2 * r + k + 1) → ℂ} {ρ : B.Mat k r → (W
   simpa using this.symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hh'), Matrix.mul_one, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_conj_cancel {h h' ι : B.Mat k r} (hh' : h' ∈ UH (Hpk k r)) (v : Fin (2 * r + k + 1) → ℂ) :
     (h * ι * h'⁻¹) *ᵥ (h' *ᵥ v) = h *ᵥ (ι *ᵥ v) := by
@@ -865,7 +861,7 @@ theorem mulVec_conj_cancel {h h' ι : B.Mat k r} (hh' : h' ∈ UH (Hpk k r)) (v 
     Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [sandw_apply, ContinuousLinearMap.comp_apply, rep_inv_cancel hR hh, rep_inv_cancel hR' hh']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sandw_conj (hR : Qr.IsRepW k r z π) (hR' : Qr.IsRepW k r z' π') {h h' : B.Mat k r} (hh : h ∈ UWset k r z)
     (hh' : h' ∈ UWset k r z') (E : Wp →L[ℂ] Wp) (E' : Wq →L[ℂ] Wq) (X : Wq →L[ℂ] Wp) :
@@ -875,11 +871,11 @@ theorem sandw_conj (hR : Qr.IsRepW k r z π) (hR' : Qr.IsRepW k r z' π') {h h' 
   simp only [sandw_apply, ContinuousLinearMap.comp_apply, rep_inv_cancel hR hh, rep_inv_cancel hR' hh']
 
 /- English proof (translation)
-Rewrite using `[tht_indep hz hT hR hz' hT' hR' hF (frame_uw hh hF) hF' (frame_uw hh' hF')]`. Use `conv_rhs => rw [← sandw_apply (π h) (π' h'⁻¹)]`. Unfold `tht`. Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, map_smul]`. Use `congr 1`. Rewrite using `[mulVec_conj_cancel hh'.1, P.Qx2.herm_uh hh.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prWv_uw hz hT hh, prWv_uw hz' hT' hh', ← ebM_conj hh.1, ← ebM_conj hh'.1, ecOp_conj hR hh (GW_ebM (frame_inW hF p) (prWv_inW hz hT a)), ecOp_conj hR' hh' (GW_ebM (prWv_inW hz' hT' a') (frame_inW hF' q)), sandw_conj hR hR' hh hh', sandw_apply]`. Conclude with `rfl`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tht_eqv (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -904,11 +900,11 @@ theorem tht_eqv (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
   exact rfl
 
 /- English proof (translation)
-Rewrite using `[thtA_indep hz hT hR hz' hT' hR' hF (frame_uw hh hF) hF' (frame_uw hh' hF')]`. Use `conv_rhs => rw [← sandw_apply (π h) (π' h'⁻¹)]`. Unfold `thtA`. Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, map_smul]`. Use `congr 1`. Rewrite using `[mulVec_conj_cancel hh'.1, P.Qx2.herm_uh hh.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prWv_uw hz hT hh, prWv_uw hz' hT' hh', ← ebM_conj hh.1, ← ebM_conj hh'.1, ecOp_conj hR hh (GW_ebM (prWv_inW hz hT a) (frame_inW hF p)), ecOp_conj hR' hh' (GW_ebM (frame_inW hF' q) (prWv_inW hz' hT' a')), sandw_conj hR hR' hh hh', sandw_apply]`. Conclude with `rfl`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thtA_eqv (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -933,16 +929,16 @@ theorem thtA_eqv (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
   exact rfl
 
 /- English proof (translation)
-Use extensionality with `X x`. Simplify using `[sandw_apply, mul_smul, smul_comm c d]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sandw_smul_smul (c d : ℂ) (A : Wp →L[ℂ] Wp) (B' : Wq →L[ℂ] Wq) :
     sandw (c • A) (d • B') = (c * d) • sandw A B' := by
   ext X x; simp [sandw_apply, mul_smul, smul_comm c d]
 
 /- English proof (translation)
-Unfold `tht`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prWv_smul, prWv_smul, ebM_smul_right, ebM_smul_left, ecOp_smul hR _ (GW_ebM (frame_inW hF p) (prWv_inW hz hT a)), ecOp_smul hR' _ (GW_ebM (prWv_inW hz' hT' a') (frame_inW hF' q)), sandw_smul_smul, smul_smul, smul_smul, Complex.star_def]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tht_phase (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -962,7 +958,7 @@ theorem tht_phase (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_herm_smul_frame_of_inW hz hT hF (prWv_inW hz hT a)]`. Rewrite using `[ebM_sum_right, ecOp_sum hR _ _ _ (fun s => GW_ebM (frame_inW hF p) (frame_inW hF s))]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← herm_prWv (frame_inW hF s)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eA (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π) {F : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hF : Q.IsFrameOf k r [z] F) (p : Fin k) (a : Fin (2 * r + k + 1) → ℂ) :
@@ -975,7 +971,7 @@ theorem eA (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π) {F : 
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_herm_smul_frame_of_inW hz hT hF (prWv_inW hz hT a)]`. Rewrite using `[ebM_sum_left, ecOp_sum hR _ _ _ (fun s => GW_ebM (frame_inW hF s) (frame_inW hF p))]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← herm_prWv (frame_inW hF s)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eA' (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π) {F : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hF : Q.IsFrameOf k r [z] F) (p : Fin k) (a : Fin (2 * r + k + 1) → ℂ) :
@@ -988,7 +984,7 @@ theorem eA' (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π) {F :
   rfl
 
 /- English proof (translation)
-Unfold `tht`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[eA hz hT hR hF p a, eA' hz' hT' hR' hF' q a', sandw_sum_left]`. Simplify using `only [sandw_sum_right, Finset.smul_sum, smul_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tht_expand (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -1003,7 +999,7 @@ theorem tht_expand (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z �
   simp only [sandw_sum_right, Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Unfold `thtA`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[eA' hz hT hR hF p a, eA hz' hT' hR' hF' q a', sandw_sum_left]`. Simplify using `only [sandw_sum_right, Finset.smul_sum, smul_smul, Complex.star_def]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thtA_expand (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -1018,9 +1014,9 @@ theorem thtA_expand (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z 
   simp only [sandw_sum_right, Finset.smul_sum, smul_smul, Complex.star_def]
 
 /- English proof (translation)
-Simplify using `only [tht_expand hz hT hR hz' hT' hR' hF hF']`. Establish `h1 : ∀ v w : Fin (2 * r + k + 1) → ℂ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => herm (Hpk k r) (x.2.2 *ᵥ w) v)` using `fun v w => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.2.2 *ᵥ w) (fun x y => by simp [Matrix.add_mulVec]) (fun c x => by`. Simplify using `only [Prod.smul_snd, ← Complex.coe_smul, Matrix.smul_mulVec]) v).1`. Establish `h2 : ∀ v, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => star (herm (Hpk k r) x.1 v))` using `fun v => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.1) (fun x y => rfl) (fun c x => by simp only [Prod.smul_fst, ← Complex.coe_smul]) v).2`. Establish `h3 : ∀ v, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => herm (Hpk k r) x.2.1 v)` using `fun v => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.2.1) (fun x y => rfl) (fun c x => by simp only [Prod.smul_snd, Prod.smul_fst, ← Complex.coe_smul]) v).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContDiff.sum fun p _ => ContDiff.sum fun q _ => ContDiff.sum fun s _ => ContDiff.sum fun t _ => ?_` and prove the remaining obligations. Conclude with `((h1 _ _).mul ((h2 _).mul (h3 _))).smul contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tht_smooth (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -1045,9 +1041,9 @@ theorem tht_smooth (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z �
   exact ((h1 _ _).mul ((h2 _).mul (h3 _))).smul contDiff_const
 
 /- English proof (translation)
-Simplify using `only [thtA_expand hz hT hR hz' hT' hR' hF hF']`. Establish `h1 : ∀ v w : Fin (2 * r + k + 1) → ℂ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => star (herm (Hpk k r) (x.2.2 *ᵥ w) v))` using `fun v w => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.2.2 *ᵥ w) (fun x y => by simp [Matrix.add_mulVec]) (fun c x => by`. Simplify using `only [Prod.smul_snd, ← Complex.coe_smul, Matrix.smul_mulVec]) v).2`. Establish `h2 : ∀ v, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => herm (Hpk k r) x.1 v)` using `fun v => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.1) (fun x y => rfl) (fun c x => by simp only [Prod.smul_fst, ← Complex.coe_smul]) v).1`. Establish `h3 : ∀ v, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => star (herm (Hpk k r) x.2.1 v))` using `fun v => (cd_herm (fun x : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) × B.Mat k r => x.2.1) (fun x y => rfl) (fun c x => by simp only [Prod.smul_snd, Prod.smul_fst, ← Complex.coe_smul]) v).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContDiff.sum fun p _ => ContDiff.sum fun q _ => ContDiff.sum fun s _ => ContDiff.sum fun t _ => ?_` and prove the remaining obligations. Conclude with `((h1 _ _).mul ((h2 _).mul (h3 _))).smul contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thtA_smooth (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hR' : Qr.IsRepW k r z' π')
@@ -1072,7 +1068,7 @@ theorem thtA_smooth (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z 
   exact ((h1 _ _).mul ((h2 _).mul (h3 _))).smul contDiff_const
 
 /- English proof (translation)
-Rewrite using `[tht_expand hz hT hR hz' hT' hR' hF hF', thtA_expand hz hT hR hz' hT' hR' hF hF']`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, hs_sum_left, hs_sum_right, hs_smul_left, hs_smul_right]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hs_sandw_adj _ (P.QrD.ecOp π (Q.unitB (Hpk k r) F s p)) _ (P.QrD.ecOp π' (Q.unitB (Hpk k r) F' q t)) (fun u v => P.Topx1.typ_EB_adj hR.1 hR.2 hu hF s p u v) (fun u v => P.Topx1.typ_EB_adj hR'.1 hR'.2 hu' hF' t q u v)]`. Simplify using `only [star_mul', star_star]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tht_adj (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖)
@@ -1094,9 +1090,9 @@ theorem tht_adj (hz : inWb k r z) (hT : 0 < Tz k r z) (hR : Qr.IsRepW k r z π)
 end main
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hPl Bw Bw' hBw hBw'`. Take `⟨hOK, hz, hz', hTe, hTe', hty, hty'⟩` from `hPl`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `hTe ▸ hOK.T_pos`. Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `hTe' ▸ hOK.T'_pos`. Establish `hR : Qr.IsRepW P.k P.r Bs.z Bs.π` using `⟨hty.2.1, hty.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR' : Qr.IsRepW P.k P.r Bs.z' Bs.π'` using `⟨hty'.2.1, hty'.2.2.1⟩`. Use `⟨tht_smooth hz hT hR hz' hT' hR' hBw hBw', thtA_smooth hz hT hR hz' hT' hR' hBw hBw', fun a a' ι A B' => tht_adj hz hT hR hty.2.2.2.1 hz' hT' hR' hty'.2.2.2.1 hBw hBw' a a' ι A B', fun h hh h' hh' a a' ι X => ⟨tht_eqv hz hT hR hz' hT' hR' hBw hBw' hh hh' a a' ι X, thtA_eqv hz hT …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem theta_facts_hold : ThtFacts := by
   intro Wp Wq _ _ _ _ _ _ P Bs hPl Bw Bw' hBw hBw'
@@ -1118,7 +1114,7 @@ end Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.TF
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep
 
 /- English proof (translation)
-The claim follows from `TF.theta_facts_hold`.
+A detailed English derivation is pending.
 -/
 theorem theta_facts_hold : ThtFacts := TF.theta_facts_hold
 

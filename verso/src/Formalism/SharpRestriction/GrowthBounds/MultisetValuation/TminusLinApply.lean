@@ -13,7 +13,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf)
 
 /- English proof (translation)
-Apply `Formalism.MainNotions.G.LatticeSystems.ef_edges_finite_gen` to reduce the goal to its premises. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[(P.setting v).res_card]`. Conclude with `pow_ne_zero _ (P.setting v).prime.ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edges_fin (v : Fin P.nV) (i : ℕ) (L : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) :
     {L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v) | IsEdge p (P.n' v) i ⟨L'', L⟩}.Finite := by
@@ -27,14 +27,14 @@ def EE (v : Fin P.nV) (i : ℕ) (L : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v
   (edges_fin P v i L).toFinset
 
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_EE {v : Fin P.nV} {i : ℕ} {L L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)} :
     L'' ∈ EE P v i L ↔ IsEdge p (P.n' v) i ⟨L'', L⟩ :=
   Set.Finite.mem_toFinset _
 
 /- English proof (translation)
-The claim follows from `finsum_mem_eq_finite_toFinset_sum _ (edges_fin P v i (L v))`.
+A detailed English derivation is pending.
 -/
 theorem Tminus_eq (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (L : P.Tup) :
     P.Tminus v i F L = ∑ L'' ∈ EE P v i (L v), F (Function.update L v L'') :=
@@ -58,13 +58,11 @@ Both sides reduce to the same expression.
     TminusLin P v i F = P.Tminus v i F := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2, h3, _, h5⟩`. Use `⟨h2, le_antisymm h3 ?_⟩` and prove the remaining obligations. Rewrite `h5` using `[Nat.mul_zero, pow_zero, Nat.card_eq_one_iff_unique]`. Establish `h6` using `(Submodule.Quotient.subsingleton_iff).1 h5.1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `: (⟨x, hx⟩ : L) ∈ Submodule.comap L.subtype L''`. Establish `h7 : Submodule.comap L.subtype L'' = ⊤` using `h6`. Rewrite using `[h7]`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Introduce and unpack `⟨h, rfl⟩`. Use `⟨h, h, le_rfl, fun x hx => Submodule.smul_mem _ _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_zero, pow_zero, Nat.card_eq_one_iff_unique]`. Establish `h7 : Submodule.comap (L''.subtype) L'' = ⊤` using `Submodule.comap_subtype_self L''`.
-
-Use `⟨(Submodule.Quotient.subsingleton_iff).2 h7, ⟨0⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem edge_zero_iff {v : Fin P.nV} {L L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)} :
     IsEdge p (P.n' v) 0 ⟨L'', L⟩ ↔ IsLattice (P.W v) L ∧ L'' = L := by
@@ -86,9 +84,9 @@ theorem edge_zero_iff {v : Fin P.nV} {L L'' : Submodule (P.W v) (Fin (P.m + 1) �
     refine ⟨(Submodule.Quotient.subsingleton_iff).2 h7, ⟨0⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Tminus_eq]`. Establish `: EE P v 0 (L v) = {L v}`. Use extensionality with `A`. Rewrite using `[mem_EE, edge_zero_iff, Finset.mem_singleton]`. Conclude with `⟨fun h => h.2, fun h => ⟨hL, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this, Finset.sum_singleton]`. Conclude with `congrArg F (Function.update_eq_self v L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tminus_zero_lat (v : Fin P.nV) (F : P.Tup → P.Xsp) (L : P.Tup) (hL : IsLattice (P.W v) (L v)) :
     P.Tminus v 0 F L = F L := by
@@ -101,9 +99,9 @@ theorem Tminus_zero_lat (v : Fin P.nV) (F : P.Tup → P.Xsp) (L : P.Tup) (hL : I
   exact congrArg F (Function.update_eq_self v L)
 
 /- English proof (translation)
-Rewrite using `[Tminus_eq]`. Establish `: EE P v i (L v) = ∅`. Use extensionality with `A`. Rewrite using `[mem_EE]`. Simplify using `only [Finset.notMem_empty, iff_false]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `fun h => hL h.2.1`. Rewrite using `[this, Finset.sum_empty]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tminus_not_lat (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (L : P.Tup) (hL : ¬ IsLattice (P.W v) (L v)) :
     P.Tminus v i F L = 0 := by
@@ -139,7 +137,7 @@ def TtLin (v : X.Pl) (i j : ℕ) : X.Fm j →ₗ[X.G.Kf] X.Fm j :=
   if i = 0 then LinearMap.id else ((p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) j i)) • TmLin X v i j
 
 /- English proof (translation)
-Unfold `TtLin Sys.Tt`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem TtLin_apply (v : X.Pl) (i j : ℕ) (F : X.Fm j) : TtLin X v i j F = X.Tt v i j F := by
   unfold TtLin Sys.Tt
@@ -149,7 +147,7 @@ def TtuLin (v : X.Pl) (u : ℕ → X.G.Kf) (i j : ℕ) : X.Fm j →ₗ[X.G.Kf] X
   ((∏ l ∈ Icc 1 j, u l) ^ (-(i : ℤ))) • TtLin X v i j
 
 /- English proof (translation)
-Unfold `TtuLin Sys.Ttu`. Rewrite using `[LinearMap.smul_apply, TtLin_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem TtuLin_apply (v : X.Pl) (u : ℕ → X.G.Kf) (i j : ℕ) (F : X.Fm j) :
     TtuLin X v u i j F = X.Ttu v u i j F := by
@@ -160,7 +158,7 @@ def ZopLin (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) : X.Fm j →ₗ[X.G.Kf] X
   ∑ l ∈ range (X.G.P.r + 1), ((-1 : X.G.Kf) ^ l * X.cl v m j l) • TtuLin X v u (X.G.P.r - l) j
 
 /- English proof (translation)
-Unfold `ZopLin Sys.Zop`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, TtuLin_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem ZopLin_apply (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) (F : X.Fm j) :
     ZopLin X v u m j F = X.Zop v u m j F := by
@@ -190,9 +188,9 @@ Both sides reduce to the same expression.
 @[simp] theorem yvLin_apply (v : X.Pl) (F : X.Fm 0) : yvLin X v F = X.yv v F := rfl
 
 /- English proof (translation)
-Establish `h1 : F c ∈ (X.Lv.lev j c).M` using `hF c (Set.mem_univ c)`. Unfold `Level.M Level.funMod at h1`. Establish `h2 : F c ∈ (⨅ (L : (X.Pj j).Tup) (_ : ¬ (X.Pj j).IsLatTup L), LinearMap.ker (LinearMap.proj (R` using `X.G.O) (φ := fun _ : (X.Pj j).Tup => (X.Pj j).Xsp) L)) := h1.1.2`. Rewrite `h2` using `[Submodule.mem_iInf]`. Establish `h3` using `h2 L`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Submodule.mem_iInf]`. Conclude with `h3 hL`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Int_zero_off {j : ℕ} {F : X.Fm j} (hF : F ∈ X.Int j) (c : X.Lv.comp j) (L : (X.Pj j).Tup)
     (hL : ¬ (X.Pj j).IsLatTup L) : F c L = 0 := by
@@ -206,9 +204,9 @@ theorem Int_zero_off {j : ℕ} {F : X.Fm j} (hF : F ∈ X.Int j) (c : X.Lv.comp 
   exact h3 hL
 
 /- English proof (translation)
-Unfold `Sys.FQ at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact Int_zero_off X hx c L hL`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => rw [Pi.add_apply, Pi.add_apply, hx, hy, add_zero]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [Pi.smul_apply, Pi.smul_apply, hx, smul_zero]`.
+Treat this case separately.
 -/
 theorem FQ_zero_off {j : ℕ} {F : X.Fm j} (hF : F ∈ X.FQ j) (c : X.Lv.comp j) (L : (X.Pj j).Tup)
     (hL : ¬ (X.Pj j).IsLatTup L) : F c L = 0 := by
@@ -220,7 +218,7 @@ theorem FQ_zero_off {j : ℕ} {F : X.Fm j} (hF : F ∈ X.FQ j) (c : X.Lv.comp j)
   | smul a x _ hx => rw [Pi.smul_apply, Pi.smul_apply, hx, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c L`. Use `show (X.Pj j).Tminus (X.vJ j v) 0 (F c) L = F c L`. Distinguish the cases in `hL : IsLattice ((X.Pj j).W (X.vJ j v)) (L (X.vJ j v))`. Conclude with `Tminus_zero_lat _ _ _ _ hL`. Rewrite using `[Tminus_not_lat _ _ _ _ _ hL, FQ_zero_off X hF c L fun h => hL (h _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tm_zero {j : ℕ} (v : X.Pl) {F : X.Fm j} (hF : F ∈ X.FQ j) : X.Tm v 0 j F = F := by
   funext c L
@@ -230,7 +228,7 @@ theorem Tm_zero {j : ℕ} (v : X.Pl) {F : X.Fm j} (hF : F ∈ X.FQ j) : X.Tm v 0
   · rw [Tminus_not_lat _ _ _ _ _ hL, FQ_zero_off X hF c L fun h => hL (h _)]
 
 /- English proof (translation)
-Unfold `Sys.ecal`. Rewrite using `[Tm_zero X v hF]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ecal_zero {j : ℕ} (v : X.Pl) {F : X.Fm j} (hF : F ∈ X.FQ j) : X.ecal v 0 j F = F := by
   unfold Sys.ecal

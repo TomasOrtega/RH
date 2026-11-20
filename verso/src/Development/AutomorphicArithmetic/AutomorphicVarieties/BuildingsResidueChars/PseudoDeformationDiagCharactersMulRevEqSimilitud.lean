@@ -4,31 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.S
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[adj_apply, h j.rev i.rev (Fin.rev_lt_rev.2 hij), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adj_tri {R : Type} [CommRing R] {A : M4 R} (h : IsUp A) : (adj A).BlockTriangular id := by
   intro i j hij
   rw [adj_apply, h j.rev i.rev (Fin.rev_lt_rev.2 hij), smul_zero]
 
 /- English proof (translation)
-Rewrite using `[adj_apply]`. Apply the tactic sequence `fin_cases i <;> simp [sgn]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_dg {R : Type} [CommRing R] (A : M4 R) (i : Fin 4) : adj A i i = A i.rev i.rev := by
   rw [adj_apply]
   fin_cases i <;> simp [sgn]
 
 /- English proof (translation)
-Introduce `O Γ _ _ Φ R _ a P hP v i`. Establish `hn : adj (P.n v) * P.n v = 1`. Establish `h` using `(hP.low v).1`. Unfold `IsGSp at h`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hn' : P.n v * adj (P.n v) = 1` using `mul_eq_one_comm.mp hn`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[PD.ψ, hn]`. Introduce `s hs t ht`. Establish `e : adj (P.n v) * P.r (s * t) * P.n v = (adj (P.n v) * P.r s * P.n v) * (adj (P.n v) * P.r t * P.n v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (P.n v) (adj (P.n v)), hn', Matrix.one_mul]`. Unfold `PD.ψ`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.V.Loc.SpFlag.tri_mul_diag (fun p q h => hP.flag v s hs p q h) (fun p q h => hP.flag v t ht p q h) i`. Introduce `s hs`. Establish `hB` using `hP.flag v s hs`. Establish `hg` using `hP.mult s`. Unfold `IsGSp at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : adj (adj (P.n v) * P.r s * P.n v) * (adj (P.n v) * P.r s * P.n v) = a (Φ.ν s) • 1`. Rewrite using `[UpperTheory.V.Loc.SpFlag.adj_mul, UpperTheory.V.Loc.SpFlag.adj_mul, UpperTheory.V.Loc.SpFlag.adj_adj]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (P.n v) (adj (P.n v)), hn', Matrix.one_mul, ← Matrix.mul_assoc (adj (P.r s)), hg]`. Simplify using `[hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `d` using `UpperTheory.V.Loc.SpFlag.tri_mul_diag (adj_tri hB) (fun p q h => hB p q h) i`. Rewrite `d` using `[e, adj_dg]`. Unfold `PD.ψ`. Rewrite using `[mul_comm, ← d]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.pseudoDeformation_diag_characters_mul_rev_eq_similitude :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) {R : Type} [CommRing R] (a : O →+* R) (P : PD Φ.ι Γ R), Φ.IsPair a P → ∀ (v : Φ.ι) (i : Fin 4), P.ψ v i 1 = 1 ∧ (∀ s ∈ Φ.Gv v, ∀ t ∈ Φ.Gv v, P.ψ v i (s * t) = P.ψ v i s * P.ψ v i t) ∧ ∀ s ∈ Φ.Gv v, P.ψ v i s * P.ψ v i.rev s = a (Φ.ν s) := by

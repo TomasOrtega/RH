@@ -17,18 +17,18 @@ namespace GlobalTheory.RowKernel
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Simplify using `[VF.MM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mm_zero : V.MM (0 : C) := by simp [VF.MM]
 
 /- English proof (translation)
-The claim follows from `V.v.map_lt_sum (by simp) h`.
+A detailed English derivation is pending.
 -/
 theorem mm_sum {ι : Type} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s, V.MM (f i)) : V.MM (∑ i ∈ s, f i) :=
   V.v.map_lt_sum (by simp) h
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v.map_mul]`. Establish `ha' : (0 : WithTop ℝ) ≤ V.v a` using `ha`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left ha')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   unfold VF.MM; rw [V.v.map_mul]
@@ -36,23 +36,23 @@ theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   exact lt_of_lt_of_le hb (le_add_of_nonneg_left ha')
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mm_int_mul hb ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_mul_int {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   rw [mul_comm]; exact mm_int_mul hb ha
 
 /- English proof (translation)
-The claim follows from `le_of_lt h`.
+A detailed English derivation is pending.
 -/
 theorem mm_ge {a : C} (h : V.MM a) : V.Ge 0 a := le_of_lt h
 
 /- English proof (translation)
-Simplify using `[VF.MM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem not_mm_one : ¬ V.MM (1 : C) := by simp [VF.MM]
 
 /- English proof (translation)
-Establish `h' : (0 : WithTop ℝ) ≤ V.v (a ^ n)` using `h`. Use `show (0 : WithTop ℝ) ≤ V.v a`. Rewrite `h'` using `[V.v.map_pow]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (nsmul_neg (not_le.mp hc) hn) (not_lt.mpr h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.Ge 0 (a ^ n)) : V.Ge 0 a := by
   have h' : (0 : WithTop ℝ) ≤ V.v (a ^ n) := h
@@ -62,7 +62,7 @@ theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.Ge 0 (a ^ n)) : V.Ge 0
   exact absurd (nsmul_neg (not_le.mp hc) hn) (not_lt.mpr h')
 
 /- English proof (translation)
-Use `show (0 : WithTop ℝ) ≤ V.v (a / b)`. Establish `e : V.v a = V.v (a / b) + V.v b` using `by rw [← V.v.map_mul, div_mul_cancel₀ a hb]`. Establish `hb' : V.v b ≠ ⊤` using `by simpa using hb`. Rewrite `h` using `[e]`. Conclude with `(WithTop.add_le_add_iff_right hb').mp (by simpa using h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ge_div {a b : C} (hb : b ≠ 0) (h : V.v b ≤ V.v a) : V.Ge 0 (a / b) := by
   show (0 : WithTop ℝ) ≤ V.v (a / b)
@@ -72,33 +72,31 @@ theorem ge_div {a b : C} (hb : b ≠ 0) (h : V.v b ≤ V.v a) : V.Ge 0 (a / b) :
   exact (WithTop.add_le_add_iff_right hb').mp (by simpa using h)
 
 /- English proof (translation)
-Take `⟨-, W, hW, hBW⟩` from `hB`. Set `F : Fin N ⊕ Fin M → {s // p s} → C` to `Sum.elim (fun ν s => A ν s.1) (fun μ s => W s.1 μ)`. Establish `hF : LinearIndependent C F`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ s, p s → ∑ ν, g (Sum.inl ν) * A ν s + ∑ μ, g (Sum.inr μ) * W s μ = 0`. Introduce `s hs`. Use `congrFun hg ⟨s, hs⟩` as an intermediate fact. Simplify `this` using `[F, Fintype.sum_sum_type, Finset.sum_apply]`. Establish `h2 : ∀ μ', g (Sum.inr μ') = -∑ ν, g (Sum.inl ν) * ∑ s, A ν s * B μ' s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `μ'`. Establish `h3 : ∑ s, (∑ ν, g (Sum.inl ν) * A ν s + ∑ μ, g (Sum.inr μ) * W s μ) * B μ' s = 0` using `Finset.sum_eq_zero fun s _ => by`. Distinguish the cases in `hs : p s`. Rewrite using `[h1 s hs, zero_mul]`. Rewrite using `[hBp μ' s hs, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∑ s, (∑ μ, g (Sum.inr μ) * W s μ) * B μ' s = g (Sum.inr μ')`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ μ, ∑ s, g (Sum.inr μ) * W s μ * B μ' s = g (Sum.inr μ) * if μ' = μ then 1 else 0`. Introduce `μ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hBW μ' μ, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Simplify using `[this]`. Establish `h5 : ∑ s, (∑ ν, g (Sum.inl ν) * A ν s) * B μ' s = ∑ ν, g (Sum.inl ν) * ∑ s, A ν s * B μ' s`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun ν _ => Finset.sum_congr rfl fun s _ => by ring`. Simplify using `only [add_mul, Finset.sum_add_distrib] at h3`. Rewrite `h3` using `[h4, h5]`. Take the linear combination `h3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h6 : ∀ ν, g (Sum.inl ν) = 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨ν1, hν1⟩` from `hc`. Take `⟨ν0, -, hmin⟩` from `Finset.exists_min_image Finset.univ (fun ν => V.v (g (Sum.inl ν))) ⟨ν1, Finset.mem_univ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : g (Sum.inl ν0) ≠ 0`. Introduce `h0`. Use `hmin ν1 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, V.v.map_zero, top_le_iff]`. Conclude with `hν1 (by simpa using this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hint : ∀ ν, V.Ge 0 (g (Sum.inl ν) / g (Sum.inl ν0))` using `fun ν => ge_div h0 (hmin ν (Finset.mem_univ _))`. Establish `key` using `hA (fun ν => g (Sum.inl ν) / g (Sum.inl ν0)) hint (fun s => by`. Distinguish the cases in `hs : p s`. Establish `e : ∑ ν, g (Sum.inl ν) / g (Sum.inl ν0) * A ν s = ∑ μ, (∑ ν, g (Sum.inl ν) / g (Sum.inl ν0) * ∑ s, A ν s * B μ s) * W s μ`. Establish `e1 : ∑ ν, g (Sum.inl ν) / g (Sum.inl ν0) * A ν s = (g (Sum.inl ν0))⁻¹ * ∑ ν, g (Sum.inl ν) * A ν s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun ν _ => by ring`. Establish `e2 : ∀ μ, (∑ ν, g (Sum.inl ν) / g (Sum.inl ν0) * ∑ s, A ν s * B μ s) = -((g (Sum.inl ν0))⁻¹ * g (Sum.inr μ))`. Introduce `μ`. Rewrite using `[h2 μ, mul_neg, neg_neg, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `Finset.sum_congr rfl fun ν _ => by ring`. Establish `e3 : ∑ μ, -((g (Sum.inl ν0))⁻¹ * g (Sum.inr μ)) * W s μ = -((g (Sum.inl ν0))⁻¹ * ∑ μ, g (Sum.inr μ) * W s μ)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun ν _ => by ring`. Simplify using `only [e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[e1, e3]`. Take the linear combination `(g (Sum.inl ν0))⁻¹ * h1 s hs`. Rewrite using `[e]`. Conclude with `mm_sum fun μ _ => mm_mul_int (mm_sum fun ν _ => mm_int_mul (hint ν) (hAB ν μ)) (hW s μ)`. Simplify using `only [hAp _ s hs, mul_zero, Finset.sum_const_zero]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mm_zero) ν0`. Simplify using `only [div_self h0] at key`. Conclude with `not_mm_one key`. Introduce `i`. Consider the cases of `i with`.
-
-Consider the case `inl ν => exact h6 ν`. Consider the case `inr μ => rw [h2 μ]`. Simplify using `[h6]`. Use `hF.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[Fintype.card_subtype]`.
+A detailed English derivation is pending.
 -/
 theorem card_add_le {σ : Type} [Fintype σ] (p : σ → Prop) [DecidablePred p] {N M : ℕ}
     (A : Fin N → σ → C) (B : Fin M → σ → C) (hA : IndepMod V A) (hAp : ∀ ν s, ¬ p s → A ν s = 0)
@@ -183,7 +181,7 @@ theorem card_add_le {σ : Type} [Fintype σ] (p : σ → Prop) [DecidablePred p]
   simpa [Fintype.card_subtype] using this
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[pow_succ]`. Conclude with `mm_int_mul ((mm_ge h).pow m) h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.MM a) : V.MM (a ^ n) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
@@ -191,19 +189,17 @@ theorem mm_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.MM a) : V.MM (a ^ n) := b
   exact mm_int_mul ((mm_ge h).pow m) h
 
 /- English proof (translation)
-Introduce `C _ V d _ I _ κ _ X hL hR H h2 hA g a ha N w x hgood hV hind`. Use `haveI := hL.closed`. Establish `hstep` using `CharacteristicFromRanks.alt_step X.big hR.big_compl hA`. Establish `hb1 : X.big (1 - g) (a + 1)` using `(hR.big_compl g (a + 1)).2 fun h => (hstep g a).1 h ha`. Establish `hb2 : ¬ X.big (1 - g) (a + 1 + 1)` using `fun h => (hstep (1 - g) (a + 1)).1 h hb1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, w', x', hgood', hsupp, hsat, hcard⟩` from `GlobalTheory.T.exists_saturated_good_vectors_small_corank C V d (I (1 - g)) (JJ I (1 - g)) (RawChart.cart (H (1 - g))) (a + 1)`. Establish `c1` using `hR.rk_big (1 - g) (a + 1) hb1`. Establish `c2` using `hR.rk_small (1 - g) (a + 1 + 1) hb2`. Establish `hl : V.l ≠ 0` using `V.l_prime.ne_zero`. Establish `hind' : IndepMod V (fun ν => (RawChart.cart (H g)).c0' (x ν))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc hmm`. Use `choose co hco using fun ν => IsAlgClosed.exists_pow_nat_eq (c ν) (Nat.pos_of_ne_zero hl)`. Establish `hcoi : ∀ ν, V.Ge 0 (co ν)` using `fun ν => ge_of_pow hl (by rw [hco]; exact hc ν)`. Establish `hG` using `Cart.Good.comb Finset.univ (fun ν _ => hcoi ν) (fun ν _ => hgood ν)`. Establish `h3` using `h2 hA g a ha _ _ hG (fun q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Cart.c0'_comb]`. Simplify using `only [hco]`. Conclude with `hmm q)`. Establish `h4` using `hind co hcoi (fun k => by simpa [Finset.sum_apply] using h3 k)`. Introduce `ν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hco ν]`. Conclude with `mm_pow hl (h4 ν)`. Establish `key` using `card_add_le (V := V) (fun c : I (1 - g) => X.ty (1 - g) c = a + 1) (fun ν => (RawChart.cart (H g)).c0' (x ν)) w' hind' (fun ν s hs => by`. Use `(hgood ν).1.2.2 1 (Sum.inr s) (by simpa [RawChart.cart, RawChart.tyC] using hs)` as an intermediate fact. Simplify using `[Cart.c0', this])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `hsat (fun μ s hs => hsupp μ s hs)`. Use the proof step `(fun ν μ => GlobalTheory.T.goodCurves_pairing_mem_maxIdeal C V d I κ X hL H g a (a + 1) (w ν) (x ν) (w' μ) (x' μ) (hgood ν) (hgood' μ) (hV ν))`. Establish `hcard' : X.n + X.j ≤ M + X.j'`. Rewrite using `[← c1, ← c2]`. Apply the tactic sequence `convert hcard <;> rfl`.
-
-Establish `key' : N + M ≤ X.n + X.j`. Rewrite using `[← c1]`. Use `key` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem independenceBoundCondition_of_rankMaximalCondition : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ), RLaw X V → X.RankHyp → ∀ H : ∀ g, X.CartHyp V g, RawChart.RankMaximalCondition H → RawChart.IndependenceBoundCondition H := by
   intro C _ V d _ I _ κ _ X hL hR H h2 hA g a ha N w x hgood hV hind

@@ -21,9 +21,9 @@ def nxt {r : ℕ} (t : Fin r → ℝ) (i : Fin r) : ℝ := if h : i.val + 1 < r 
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[rE, rE, rE, ← map_mul]`. Use `congr 1`. Use `Prod.ext ?_ (mul_one _).symm` and prove the remaining obligations. Use `show _ = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _`. Rewrite using `[← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rE_mul (a b : ℝ) : rE F E (a * b) = rE F E a * rE F E b := by
   rw [rE, rE, rE, ← map_mul]
@@ -35,7 +35,7 @@ theorem rE_mul (a b : ℝ) : rE F E (a * b) = rE F E a * rE F E b := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[rE, ← map_one (algebraMap (AF F) (AF F ⊗[F] E))]`. Use `congr 1`. Simplify using `only [GlobalTheory.TorusTheta.infScale, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rE_one : rE F E 1 = 1 := by
   rw [rE, ← map_one (algebraMap (AF F) (AF F ⊗[F] E))]

@@ -19,11 +19,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.exists_uM_of_mem k (i + t) (GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one k (i + t) (p * (GlobalTheory.BZMir.levi k (i + t) (GlobalTheory.BZMir.mirabolicProjection k (i + t) p))⁻¹) (by rw [map_mul, map_inv, GlobalTheory.Companion …`. Establish `hp : p = GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) y * GlobalTheory.BZMir.levi k (i + t) (GlobalTheory.BZMir.mirabolicProjection k (i + t) p)`. Rewrite using `[← hy, inv_mul_cancel_right]`. Take `⟨q, κ, hκ, hgq⟩` from `GlobalTheory.T.iwasawa_decomp_parabolic_maximal_compact k i t (GlobalTheory.BZMir.mirabolicProjection k (i + t) p)`. Take `⟨x, v, hxv⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.exists_top_mid k i t ((((q : GL (Fin (i + t)) k)⁻¹ : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k) *ᵥ y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hq, -⟩` from `GlobalTheory.T.levi_block_mem_parabolic k i t q`. Take `⟨hx, -⟩` from `GlobalTheory.T.unipotent_top_mem_parabolic k i t x`. Use `⟨GlobalTheory.BZMir.levi k (i + t) q * GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x), mul_mem hq hx, κ, hκ, v, ?_⟩` and prove the remaining obligations. Establish `key : GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) y * GlobalTheory.BZMir.levi k (i + t) q = GlobalTheory.BZMir.levi k (i + t) q * GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) ((((q : GL (Fin (i + t)) k)⁻¹ : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k) *ᵥ …`. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.levi_mul_uM, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, hgq, map_mul, ← mul_assoc (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) y), key, hxv, GlobalTheory.CompanionTheory.BZPsiPG.uM_add]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_hpg_mid_levi (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (p : Mir k (i + t)) :
@@ -53,9 +53,9 @@ theorem exists_hpg_mid_levi (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ a ha`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨h, hh, κ, hκ, v, rfl⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.FibKer.exists_hpg_mid_levi k i t p`. Establish `hfe : a.1.1.1 (h * (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v) * GlobalTheory.BZMir.levi k (i + t) κ)) = GlobalTheory.CompanionTheory.BZPsiPG.hRep τ σ ⟨h, hh⟩ (a.1.1.1 (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (G …` using `a.1.1.2 ⟨h, hh⟩ _`. Establish `hz : a.1.1.1 (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v) * GlobalTheory.BZMir.levi k (i + t) κ) = 0` using `congrFun (ha κ hκ) v`. Use `show a.1.1.1 _ = (0 : V ⊗[ℂ] W)`. Rewrite using `[hfe, hz, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fibV_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]

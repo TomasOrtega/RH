@@ -15,37 +15,35 @@ section loca3
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `Wz'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`. Establish `hd` using `det_ne_of_G hz hz' hG`. Establish `hm : omW k r z z' y ∈ Wsp k r z` using `prW_mem hz _`. Establish `hpos : 0 < (herm (Hpk k r) (omW k r z z' y) (omW k r z z' y)).re` using `posV hz hm.1 hm.2 (omW_ne hz hz' hy hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : herm (Hpk k r) (ev k r z z' y) (ev k r z z' y) = 1` using `nz_unit hpos`. Establish `heW : ev k r z z' y ∈ Wsp k r z` using `⟨nz_inWb hm.1, by unfold ev; rw [nz_herm_l, hm.2, mul_zero]⟩`. Establish `hΦW : ∀ u, Phi k r z z' y *ᵥ u ∈ Wsp k r z` using `fun u => by rw [Phi_mulVec]; exact prW_mem hz _`. Establish `hK5 : ∀ u ∈ D0.U0, herm (Hpk k r) (Phi k r z z' y *ᵥ u) (ev k r z z' y) = 0` using `fun u hu => by`. Unfold `ev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(nz_orth hpos _).2 (phi_perp hz hz' D0 hy hd hom' hu)`. Use `set A := Am k r z z' D0.nu y with hA`. Establish `hAu : ∀ u ∈ D0.U0, A *ᵥ u = Phi k r z z' y *ᵥ u` using `fun u hu => by`. Establish `huW` using `(D0.isotropic_subspace_eq u).1 hu`. Simplify using `only [hA, Am_mulVec, prW_of_mem huW.1, huW.2, zero_smul, sub_zero, sub_self, zero_add, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAx : ∀ x ∈ Xsp k r, A *ᵥ x = x` using `fun x hx => Am_fix _ _ _ _ (prW_of_mid (X_mid hx))`. Establish `hAnu : A *ᵥ D0.nu = ev k r z z' y`. Simplify using `only [hA, Am_mulVec, prW_of_mem D0.nu_mem, D0.nu_unit, one_smul, sub_self, mulVec_zero, zero_add]`. Establish `hAiso : ∀ v w, herm (Hpk k r) (A *ᵥ v) (A *ᵥ w) = herm (Hpk k r) v w`. Introduce `v w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `prW_mem hz v`. Establish `hp'` using `prW_mem hz w`. Establish `hv : herm (Hpk k r) v w = herm (Hpk k r) (v - prW k r z v) (w - prW k r z w) + herm (Hpk k r) (prW k r z v) (prW k r z w)` using `by conv_lhs => rw [← spa (prW k r z v) v, ← spa (prW k r z w) w]`. Rewrite using `[hm_add_l, hm_add_r, hm_add_r, perp_l hp' v, perp_r hp w]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p := prW k r z v with hpdef`. Use `set p' := prW k r z w with hp'def`. Use `set α := herm (Hpk k r) p D0.nu with hα`. Use `set β := herm (Hpk k r) p' D0.nu with hβ`. Establish `hp0 : p - α • D0.nu ∈ D0.U0` using `(D0.isotropic_subspace_eq _).2 ⟨Wsp_sub hp (Wsp_smul _ D0.nu_mem), by rw [hm_sub_l, hm_smul_l, D0.nu_unit, mul_one, sub_self]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0' : p' - β • D0.nu ∈ D0.U0` using `(D0.isotropic_subspace_eq _).2 ⟨Wsp_sub hp' (Wsp_smul _ D0.nu_mem), by rw [hm_sub_l, hm_smul_l, D0.nu_unit, mul_one, sub_self]⟩`. Establish `h0 : herm (Hpk k r) (p - α • D0.nu) D0.nu = 0` using `((D0.isotropic_subspace_eq _).1 hp0).2`. Establish `h0' : herm (Hpk k r) D0.nu (p' - β • D0.nu) = 0`. Rewrite using `[hm_symm _ hH_ct (p' - β • D0.nu) D0.nu, ((D0.isotropic_subspace_eq _).1 hp0').2, star_zero]`. Establish `hpp : herm (Hpk k r) p p' = herm (Hpk k r) (p - α • D0.nu) (p' - β • D0.nu) + α * star β` using `by conv_lhs => rw [← spa (α • D0.nu) p, ← spa (β • D0.nu) p']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm_add_l, hm_add_r, hm_add_r, hm_smul_r, hm_smul_l, hm_smul_l, hm_smul_r, h0, h0', D0.nu_unit]`. Expand and normalize the polynomial expressions, which then agree. Establish `f1 : herm (Hpk k r) (v - p) (Phi k r z z' y *ᵥ (p' - β • D0.nu)) = 0` using `perp_l (hΦW _) v`. Establish `f2 : herm (Hpk k r) (v - p) (ev k r z z' y) = 0` using `perp_l heW v`. Establish `f3 : herm (Hpk k r) (Phi k r z z' y *ᵥ (p - α • D0.nu)) (w - p') = 0` using `perp_r (hΦW _) w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `f4` using `phi_iso hz D0 hy hd hom' hp0 hp0'`. Establish `f5 : herm (Hpk k r) (Phi k r z z' y *ᵥ (p - α • D0.nu)) (ev k r z z' y) = 0` using `hK5 _ hp0`. Establish `f6 : herm (Hpk k r) (ev k r z z' y) (w - p') = 0` using `perp_r heW w`. Establish `f7 : herm (Hpk k r) (ev k r z z' y) (Phi k r z z' y *ᵥ (p' - β • D0.nu)) = 0`. Rewrite using `[hm_symm _ hH_ct _ (ev k r z z' y), hK5 _ hp0', star_zero]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, Am_mulVec, Am_mulVec, ← hpdef, ← hp'def, ← hα, ← hβ, hv, hpp]`. Simplify using `only [hm_add_l, hm_add_r, hm_smul_l, hm_smul_r, f1, f2, f3, f4, f5, f6, f7, he1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAU : A ∈ UWset k r z` using `⟨uh_of_herm _ hAiso, fun a => ⟨Am_fix _ _ _ _ (prW_of_mid (bvec_eI_mid a)), Am_fix _ _ _ _ (prW_of_mid (bvec_esI_mid a))⟩, Am_fix _ _ _ _ (prW_self hz)⟩`. Establish `hinv : Hpk k r * Aᴴ * Hpk k r = A⁻¹` using `(inv_uh hAU.1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hinv]`. Establish `haU : A⁻¹ ∈ UWset k r z` using `Wz.inv_mem A hAU`. Establish `hleft : ∀ v, A⁻¹ *ᵥ (A *ᵥ v) = v` using `fun v => by`. Rewrite using `[mulVec_mulVec, nonsing_inv_mul _ (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hAU.1), one_mulVec]`. Use `⟨haU, uh_mul _ haU.1 hy, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `zhat_UW haU Wz'.one_mem y`. Rewrite `e` using `[mul_one]`. Establish `: Gf k r z z' (A⁻¹ * y) = Gf k r z z' y` using `by unfold Gf Dmin; rw [e]`. Rewrite using `[this]`. Conclude with `hG`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `omW_UW hz haU Wz'.one_mem y`. Rewrite `e1` using `[mul_one]`. Establish `hsc : omW k r z z' y = ((Real.sqrt (herm (Hpk k r) (omW k r z z' y) (omW k r z z' y)).re : ℝ) : ℂ) • ev k r z z' y`. Unfold `ev nz`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.2 hpos).ne', Complex.ofReal_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, Real.sqrt_pos.2 hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Use `conv_lhs => rw [hsc]`. Rewrite using `[mulVec_smul, ← hAnu, hleft]`. Establish `e2` using `omW'_UW hz hz' haU Wz'.one_mem y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[mul_one, inv_one, one_mulVec]`. Conclude with `⟨t, ht, by rw [e2, hom']⟩`. Introduce `u hu`. Establish `hx` using `sub_prW_X hz (lift_orth hd u)`. Use `⟨_, hx, _, lift_X D0 hy hom' hu, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[aps, ← mulVec_mulVec]`. Establish `e3 : y *ᵥ (Lm k r z z' y *ᵥ u) = A *ᵥ (u + (y *ᵥ (Lm k r z z' y *ᵥ u) - prW k r z (y *ᵥ (Lm k r z z' y *ᵥ u))))`. Rewrite using `[mulVec_add, hAu u hu, hAx _ hx, Phi_mulVec, aps]`. Use `conv_lhs => rw [e3]`. Rewrite using `[hleft]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma locA_point {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z')
     (D0 : GfBaseD k r z z') {y : B.Mat k r} (hy : y ∈ B.GV k r) (hG : 0 < Gf k r z z' y) {t : ℝ} (ht : 0 < t)
@@ -142,17 +140,17 @@ lemma locA_point {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' 
     rw [hleft]
 
 /- English proof (translation)
-Introduce `k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀ O bf hO hg₀O hbf hbP`. Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `hY : Sm (fun g => g * bf g) O` using `s_mmul contDiffOn_id hbf`. Establish `hGr : ∀ (g β : B.Mat k r), β ∈ UWset k r z' → Gf k r z z' (g * β) = Gf k r z z' g`. Introduce `g β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `zhat_UW Wz.one_mem hβ g`. Rewrite `e` using `[one_mul]`. Unfold `Gf Dmin`. Rewrite using `[e]`. Set `fd : B.Mat k r → ℂ` to `fun g => (Zhat k r z z' (g * bf g)).det`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `fn : B.Mat k r → ℝ` to `fun g => (herm (Hpk k r) (omW k r z z' (g * bf g)) (omW k r z z' (g * bf g))).re`. Establish `cd : ContinuousOn fd O` using `(s_det (s_Zhat z z' hY)).continuousOn`. Establish `cn : ContinuousOn fn O` using `(s_re (s_herm _ (s_omW z z' hY) (s_omW z z' hY))).continuousOn`. Establish `hO1 : IsOpen (O ∩ fd ⁻¹' {0}ᶜ)` using `cd.isOpen_inter_preimage hO isOpen_compl_singleton`. Establish `hO' : IsOpen ((O ∩ fd ⁻¹' {0}ᶜ) ∩ fn ⁻¹' Set.Ioi 0)` using `(cn.mono Set.inter_subset_left).isOpen_inter_preimage hO1 isOpen_Ioi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(O ∩ fd ⁻¹' {0}ᶜ) ∩ fn ⁻¹' Set.Ioi 0, fun g => Hpk k r * (Am k r z z' D0.nu (g * bf g))ᴴ * Hpk k r, fun g hg => hg.1.1, hO', ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨hb0, -⟩` from `hbP g₀ hg₀O hg₀ hG₀`. Establish `hy0 : g₀ * bf g₀ ∈ B.GV k r` using `uh_mul _ hg₀ hb0.1`. Establish `hG0 : 0 < Gf k r z z' (g₀ * bf g₀)` using `by rw [hGr _ _ hb0]; exact hG₀`. Establish `hm : omW k r z z' (g₀ * bf g₀) ∈ Wsp k r z` using `prW_mem hz _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨hg₀O, det_ne_of_G hz hz' hG0⟩, posV hz hm.1 hm.2 (omW_ne hz hz' hy0 hG0)⟩`. Conclude with `s_mmul (s_mmul contDiffOn_const (s_ct (s_Am z z' D0.nu (hY.mono fun g hg => hg.1.1) (fun g hg => hg.1.2) (fun g hg => hg.2)))) contDiffOn_const`. Introduce `g hg hgG hgP beta_reduce`. Take `⟨hbU, t, ht, hom'⟩` from `hbP g hg.1.1 hgG hgP`. Establish `hy : g * bf g ∈ B.GV k r` using `uh_mul _ hgG hbU.1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : 0 < Gf k r z z' (g * bf g)` using `by rw [hGr _ _ hbU]; exact hgP`. Take `⟨h1, h2⟩` from `locA_point hz hz' D0 hy hG ht hom'`. Conclude with `⟨h1, by rw [Matrix.mul_assoc]; exact h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locA : LocA := by
   intro k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀ O bf hO hg₀O hbf hbP
@@ -188,7 +186,7 @@ theorem locA : LocA := by
     exact ⟨h1, by rw [Matrix.mul_assoc]; exact h2⟩
 
 /- English proof (translation)
-The claim follows from `gsFrames_of_loc locB locA`.
+A detailed English derivation is pending.
 -/
 theorem gram_schmidt_frames_local : GsFrames := gsFrames_of_loc locB locA
 

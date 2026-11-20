@@ -10,19 +10,19 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens Filter Top
 namespace GlobalTheory.CompanionTheory.UnrDens
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR m n hnm S T hS hT`. Establish `hq : (0 : ℝ) < q` using `by exact_mod_cast lt_trans zero_lt_one hR.one_lt`. Establish `hsq : n ^ 2 ≤ 2 * m * n` using `by nlinarith`. Take `⟨a, ha⟩ : ∃ a, 2 * m * n - n ^ 2 = a` from `⟨_, rfl⟩`. Establish `ha' : a + n ^ 2 = 2 * m * n` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsol : ∀ j : ℕ, (solCount σ ϖ S T (j + 1) : ℝ) = (q : ℝ) ^ a * (∏ i : Fin n, (1 - ((ε : ℝ) / q) ^ (m - (i : ℕ)))) * (q : ℝ) ^ (j * a)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[GlobalTheory.T.card_unimodular_hermitian_reps_level_one R σ ϖ q ε hR m n hnm S T hS hT, ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih`. Rewrite using `[GlobalTheory.T.unimodular_hermitian_reps_count_succ R σ ϖ q ε hR m n hnm S T hS hT (j + 1) (by omega), ha]`. Use `push_cast`. Rewrite using `[ih, add_mul, one_mul, pow_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdens : ∀ j : ℕ, densAt σ ϖ S T (j + 1) = ∏ i : Fin n, (1 - ((ε : ℝ) / q) ^ (m - (i : ℕ)))`. Introduce `j`. Unfold `densAt`. Establish `hM : Nat.card (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ (j + 1))) = q ^ (2 * (j + 1) * (m * n))` using `by show Nat.card (Fin m → Fin n → R ⧸ lev ϖ (j + 1)) = _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin, GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR (j + 1), ← pow_mul, ← pow_mul]`. Put the polynomial expressions in normal form. Rewrite using `[hsol j, GlobalTheory.T.card_hermitian_matrices_mod_pow R σ ϖ q ε hR n (j + 1), hM]`. Establish `he : a + j * a + (j + 1) * n ^ 2 = 2 * (j + 1) * (m * n)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpos : (0 : ℝ) < (q : ℝ) ^ (2 * (j + 1) * (m * n))` using `pow_pos hq _`. Use `push_cast`. Rewrite using `[div_eq_iff hpos.ne', ← he, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [Filter.eventually_ge_atTop 1] with k hk`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Conclude with `(hdens j).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unrFormula : PositivityTheory.PfSWUS.Loc.UnrFormula := by
   intro R _ σ ϖ q ε hR m n hnm S T hS hT

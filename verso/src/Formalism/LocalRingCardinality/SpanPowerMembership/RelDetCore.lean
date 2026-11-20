@@ -14,7 +14,7 @@ def detIdeal (L : Submodule (𝓞 E) (Fin N → E)) : Submodule (𝓞 E) E :=
   Submodule.span (𝓞 E) {x | ∃ v : Fin N → Fin N → E, (∀ j, v j ∈ L) ∧ x = (Matrix.of v).det}
 
 /- English proof (translation)
-Use extensionality with `i k`. Express the relevant statement in the definitionally equal form `(∑ l, γ k l * v i l) = ∑ l, v i l * γ k l`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem of_mulVec_eq (γ : Matrix (Fin N) (Fin N) E) (v : Fin N → Fin N → E) :
     Matrix.of (fun j => γ.mulVec (v j)) = Matrix.of v * γ.transpose := by
@@ -23,7 +23,7 @@ theorem of_mulVec_eq (γ : Matrix (Fin N) (Fin N) E) (v : Fin N → Fin N → E)
   exact Finset.sum_congr rfl fun l _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `detIdeal`. Conclude with `Submodule.subset_span ⟨v, hv, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem det_mem_detIdeal_lemma (L : Submodule (𝓞 E) (Fin N → E)) (v : Fin N → Fin N → E)
     (hv : ∀ j, v j ∈ L) : (Matrix.of v).det ∈ detIdeal L := by
@@ -31,9 +31,9 @@ private theorem det_mem_detIdeal_lemma (L : Submodule (𝓞 E) (Fin N → E)) (v
   exact Submodule.subset_span ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Establish `hle : detIdeal L ≤ (detIdeal L).comap (LinearMap.mulLeft (𝓞 E) γ.det)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Establish `h` using `det_mem_detIdeal_lemma L (fun j => γ.mulVec (v j)) (fun j => hγ _ (hv j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[of_mulVec_eq, Matrix.det_mul, Matrix.det_transpose, mul_comm]`. Then use the resulting hypothesis. Introduce `n hn`. Establish `h` using `hle hn`. Rewrite `h` using `[Submodule.mem_comap, LinearMap.mulLeft_apply, ← smul_eq_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem detIdeal_smul (γ : Matrix (Fin N) (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E))
     (hγ : ∀ x ∈ L, γ.mulVec x ∈ L) : ∀ n ∈ detIdeal L, γ.det • n ∈ detIdeal L := by
@@ -48,11 +48,11 @@ theorem detIdeal_smul (γ : Matrix (Fin N) (Fin N) E) (L : Submodule (𝓞 E) (F
   rwa [Submodule.mem_comap, LinearMap.mulLeft_apply, ← smul_eq_mul] at h
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨b, hbL, hbspan, hbli⟩ : ∃ b ⊆ (L : Set (Fin N → E)), Submodule.span E b = Submodule.span E (L : Set (Fin N → E)) ∧ LinearIndependent E ((↑) : b → Fin N → E) := by`. Conclude with `exists_linearIndependent E _`. Rewrite `hbspan` using `[hsp]`. Set `B : Module.Basis b E (Fin N → E)` to `Module.Basis.mk hbli (le_of_eq (by rw [Subtype.range_coe, hbspan]))`. Establish `: Finite b` using `Module.Finite.finite_basis B`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Fintype b := Fintype.ofFinite b`. Establish `hcard : Fintype.card b = N`. Rewrite using `[← Module.finrank_eq_card_basis B, Module.finrank_fin_fun]`. Set `e : b ≃ Fin N` to `Fintype.equivFinOfCardEq hcard`. Set `v : Fin N → Fin N → E` to `fun j => ((e.symm j : b) : Fin N → E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hvL : ∀ j, v j ∈ L` using `fun j => hbL (e.symm j).2`. Establish `hli : LinearIndependent E (fun j => Matrix.of v j)` using `hbli.comp e.symm e.symm.injective`. Establish `hdet : (Matrix.of v).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hli)).ne_zero`. Rewrite using `[Submodule.ne_bot_iff]`. Conclude with `⟨(Matrix.of v).det, det_mem_detIdeal_lemma L v hvL, hdet⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detIdeal_ne_bot (L : Submodule (𝓞 E) (Fin N → E))
     (hsp : Submodule.span E (L : Set (Fin N → E)) = ⊤) : detIdeal L ≠ ⊥ := by
@@ -79,19 +79,17 @@ theorem detIdeal_ne_bot (L : Submodule (𝓞 E) (Fin N → E))
   exact ⟨(Matrix.of v).det, det_mem_detIdeal_lemma L v hvL, hdet⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfg`. Take `⟨a, ha⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) (S.biUnion fun s => Finset.univ.image s)`. Establish `hL : ∀ x ∈ L, ∀ j, ∃ y : 𝓞 E, algebraMap (𝓞 E) E y = (a : 𝓞 E) • x j`. Establish `hle : L ≤ ⨅ j : Fin N, (1 : Submodule (𝓞 E) E).comap ((a : 𝓞 E) • (LinearMap.proj j : (Fin N → E) →ₗ[𝓞 E] E))`. Rewrite using `[← hS, Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.proj_apply, Submodule.mem_one]`. Introduce `j`. Conclude with `RingHom.mem_rangeS.mp (ha _ (Finset.mem_biUnion.mpr ⟨s, hs, Finset.mem_image.mpr ⟨j, Finset.mem_univ _, rfl⟩⟩))`. Introduce `x hx j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hle hx`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.proj_apply, Submodule.mem_one] at h`. Conclude with `h j`. Establish `hgen : ∀ v : Fin N → Fin N → E, (∀ j, v j ∈ L) → ∃ z : 𝓞 E, algebraMap (𝓞 E) E z = ((a : 𝓞 E) ^ N) • (Matrix.of v).det`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `choose y hy using fun i j => hL (v i) (hv i) j`. Establish `h1 : (algebraMap (𝓞 E) E (a : 𝓞 E)) • Matrix.of v = (algebraMap (𝓞 E) E).mapMatrix (Matrix.of y)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, hy, Algebra.smul_def]`. Establish `h2` using `congrArg Matrix.det h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.det_smul, Fintype.card_fin, ← RingHom.map_det]`. Conclude with `⟨(Matrix.of y).det, by rw [← h2, Algebra.smul_def, map_pow]⟩`. Establish `hle : detIdeal L ≤ (1 : Submodule (𝓞 E) E).comap (((a : 𝓞 E) ^ N) • (LinearMap.id : E →ₗ[𝓞 E] E))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, Submodule.mem_one]`. Conclude with `hgen v hv`. Establish `hfrac : IsFractional (nonZeroDivisors (𝓞 E)) (detIdeal L)`. Use `⟨(a : 𝓞 E) ^ N, pow_mem a.2 N, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h` using `hle hb`.
-
-Rewrite `h` using `[Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, Submodule.mem_one]`. Conclude with `RingHom.mem_rangeS.mpr h`. Conclude with `FractionalIdeal.fg_of_isNoetherianRing le_rfl ⟨detIdeal L, hfrac⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detIdeal_fg (L : Submodule (𝓞 E) (Fin N → E)) (hfg : L.FG) : (detIdeal L).FG := by
   classical
@@ -140,7 +138,7 @@ theorem detIdeal_fg (L : Submodule (𝓞 E) (Fin N → E)) (hfg : L.FG) : (detId
   exact FractionalIdeal.fg_of_isNoetherianRing le_rfl ⟨detIdeal L, hfrac⟩
 
 /- English proof (translation)
-Establish `h : IsIntegral (𝓞 E) γ.det` using `isIntegral_of_smul_mem_submodule (detIdeal L) (detIdeal_ne_bot L hsp) (detIdeal_fg L hfg) γ.det (detIdeal_smul γ L hγ)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Rewrite using `[← hy]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_det_of_stab (γ : Matrix (Fin N) (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E))
     (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin N → E)) = ⊤)
@@ -153,13 +151,11 @@ theorem isIntegral_det_of_stab (γ : Matrix (Fin N) (Fin N) E) (L : Submodule (�
   exact NumberField.RingOfIntegers.isIntegral_coe y
 
 /- English proof (translation)
-Establish `hint_r` using `isIntegral_det_of_stab γ L hfg hsp hγ`. Establish `hnorm : ∀ φ : E →+* ℂ, ‖φ γ.det‖ = 1`. Introduce `φ`. Establish `h1 : star γ.det * γ.det = 1` using `hu.1`. Establish `h2 : starRingEnd ℂ (φ γ.det) * φ γ.det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hstar, ← map_mul, h1, map_one]`. Establish `h4 : Complex.normSq (φ γ.det) = 1`. Establish `h` using `Complex.normSq_eq_conj_mul_self (z := φ γ.det)`. Rewrite `h` using `[h2]`. Conclude with `h` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : ‖φ γ.det‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `h4`. Use polynomial arithmetic with `[norm_nonneg (φ γ.det)]`. Take `⟨n, hn, h⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one (K := E) (A := ℂ) hint_r hnorm`.
-
-Conclude with `⟨n, hn, h⟩`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_root_of_unity_of_stab [StarRing E]
     (hstar : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x))

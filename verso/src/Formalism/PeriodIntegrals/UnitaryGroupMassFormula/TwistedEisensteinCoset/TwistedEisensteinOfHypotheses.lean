@@ -9,11 +9,11 @@ namespace PI.TwistedEisensteinNonvanishing.W
 open Loc LocE
 
 /- English proof (translation)
-Take `⟨hmul, hint, hout⟩` from `hpsi`. Distinguish the cases in `hz : IntAt P ((qOf P : E) ^ D * z)`. Establish `hz' : IntAt P ((qOf P : E) ^ D * (-z))`. Take `⟨r, s, hs, hrs⟩` from `hz`. Conclude with `⟨-r, s, hs, by rw [mul_neg, mul_neg, hrs, map_neg]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h0 : IntAt P 0` using `⟨0, 1, (Ideal.ne_top_iff_one _).mp P.isPrime.ne_top, by simp⟩`. Establish `h` using `hmul z (-z) hz hz'`. Rewrite `h` using `[add_neg_cancel, hint 0 h0]`. Introduce `hz0`. Rewrite `h` using `[hz0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h`. Rewrite using `[hout z hz]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {D : ℕ}
     {P : HeightOneSpectrum (𝓞 E)} {psi : E → K} (hpsi : PsiOk D P psi) (z : E) : psi z ≠ 0 := by
@@ -32,9 +32,9 @@ theorem psi_ne {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {D 
     exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨r1, s1, hs1, h1⟩` from `ha`. Take `⟨r2, s2, hs2, h2⟩` from `hb`. Use `⟨r1 * s2 + r2 * s1, s1 * s2, fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `P.isPrime.mem_or_mem h with h' | h'` into its components or cases. Conclude with `hs1 h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs2 h'`. Rewrite using `[map_mul, map_add, map_mul, map_mul, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma intAt_add_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {a b : E}
     (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) := by
@@ -48,7 +48,7 @@ private lemma intAt_add_twisted_eisenstein_coset {E : Type} [Field E] [NumberFie
     ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, hr⟩` from `h`. Conclude with `⟨-r, s, hs, by rw [mul_neg, hr, map_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma intAt_neg_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {a : E}
     (h : IntAt P a) : IntAt P (-a) := by
@@ -56,7 +56,7 @@ private lemma intAt_neg_twisted_eisenstein_coset {E : Type} [Field E] [NumberFie
   exact ⟨-r, s, hs, by rw [mul_neg, hr, map_neg]⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, hr⟩` from `h`. Use `⟨(qOf P : 𝓞 E) ^ k * r, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, ← hr]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma intAt_qOf_pow_mul {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} (k : ℕ) {a : E}
     (h : IntAt P a) : IntAt P ((qOf P : E) ^ k * a) := by
@@ -66,17 +66,17 @@ private lemma intAt_qOf_pow_mul {E : Type} [Field E] [NumberField E] {P : Height
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hgy : gy = 0`. Rewrite using `[hg, hgy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgx : gx ≠ 0`. Rewrite using `[hg]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hC hgy`. Establish `ix` using `hbx hgx`. Establish `iy` using `hby hgy`. Establish `lift : ∀ t : E, IntAt P ((qOf P : E) ^ j * t) → IntAt P ((qOf P : E) ^ D * t)`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `intAt_qOf_pow_mul (D - j) ht`. Rewrite `h` using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hjD]`. Then use the resulting hypothesis. Establish `i_cx` using `lift cx ix`. Establish `i_cy` using `lift cy iy`. Establish `i_c0 : IntAt P ((qOf P : E) ^ D * c0)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (qOf P : E) ^ D * c0 = (qOf P : E) ^ D * cy + -((qOf P : E) ^ D * cx)`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `intAt_add_twisted_eisenstein_coset i_cy (intAt_neg_twisted_eisenstein_coset i_cx)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i_ncy : IntAt P ((qOf P : E) ^ D * (-cy))`. Rewrite using `[mul_neg]`. Conclude with `intAt_neg_twisted_eisenstein_coset i_cy`. Establish `hsplit` using `hpsi.1 (-cy) c0 i_ncy i_c0`. Establish `e : -cy + c0 = -cx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsplit` using `[e]`. Rewrite using `[hsplit, hg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key_pt {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {D j : ℕ} (hjD : j ≤ D)
     {P : HeightOneSpectrum (𝓞 E)} {psi : E → K} (hpsi : PsiOk D P psi) {C gx gy : K} (hC : C ≠ 0)
@@ -115,7 +115,7 @@ theorem key_pt {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {D 
     ring
 
 /- English proof (translation)
-Simplify using `only [RS, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RS_mul {E K : Type} [Field E] [NumberField E] [Field K] (P : HeightOneSpectrum (𝓞 E)) {ι : Type}
     [Fintype ι] [DecidableEq ι] (A B : ℕ) (C : K) (H : (ι → E) → K) :
@@ -124,15 +124,15 @@ theorem RS_mul {E K : Type} [Field E] [NumberField E] [Field K] (P : HeightOneSp
   ring
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hTA E n' c' n c ρ hρ`. Take `⟨cT, hcT, hcov⟩` from `hCoV E K P hp hq hq0 (FC n' c' n c) L (Tr ρ 0)`. Take `⟨a', b', hab⟩` from `hcov j j`. Establish `key : ∀ (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : FC n' c' n c → E), G' (xx1 xj t) * psi (-chArg (xx1 xj t)) = (C * psi (chArg (ρ.toLinearMap ∘ₗ xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) (0 : FC n' c' n c → E)))) * (G (xx1 (resX ρ ∘ₗ xj) (L t + Tr ρ 0)) * psi (-chArg (xx1 (resX ρ …`. Introduce `xj t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ρ.toLinearMap ∘ₗ xx1 xj t = xx1 (resX ρ ∘ₗ xj) (L t + Tr ρ 0)`. Rewrite using `[hXX E n' c' n c ρ hρ xj t, hL t]`. Rewrite using `[← e1]`. Conclude with `key_pt hjD hpsi hC (hCeq _) (hCA E n' c' n c ρ hρ xj t) (fun h0 => hCB E P n' c' n c j _ (hS' _ h0)) (fun h0 => hCB E P n' c' n c j _ (hS _ h0))`. Take `⟨A0, B0, hAB⟩` from `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : (Fin n' → E) →ₗ[E] (Fin n → E), RS P j j (fun t : FC n' c' n c → E => G (xx1 y t) * psi (-chArg (xx1 y t))) ≠ 0 := by`. Take `⟨y, hy⟩` from `Function.ne_iff.1 (hAB (max A0 j) (max B0 j) (le_max_left _ _) (le_max_left _ _))`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply] at hy`. Rewrite using `[← hStab E K P hp hq hq0 _ j j _ (hH y) _ _ (le_max_right _ _) (le_max_right _ _)]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨xj, rfl⟩` from `hRX E n' n c ρ hρ y`. Take `⟨hg, heq⟩` from `hab _ (hH (resX ρ ∘ₗ xj))`. Use `⟨a', b', fun A' B' hA' hB' hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hz xj`. Simplify using `only [Pi.zero_apply] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[show (fun t : FC n' c' n c → E => G' (xx1 xj t) * psi (-chArg (xx1 xj t))) = fun t => (C * psi (chArg (ρ.toLinearMap ∘ₗ xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) (0 : FC n' c' n c → E)))) * (G (xx1 (resX ρ ∘ₗ xj) (L t + Tr ρ 0)) * psi (-chArg (xx1 (resX ρ ∘ₗ xj) (L t + Tr ρ 0)))) …`. Conclude with `mul_ne_zero (mul_ne_zero hC (psi_ne hpsi _)) (mul_ne_zero hcT hy) h1`.
+A detailed English derivation is pending.
 -/
 theorem core {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E))
     (hp : (Ideal.absNorm P.asIdeal).Prime) (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2)
@@ -183,23 +183,23 @@ theorem core {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] (P : 
   exact mul_ne_zero (mul_ne_zero hC (psi_ne hpsi _)) (mul_ne_zero hcT hy) h1
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ R P hp hq psi sq cq ξ hpsi hsq hcq i hi hal h h' hbal hbh hbh' hdc hne`. Take `⟨r, hr, κ, hκ, rfl⟩` from `hdc`. Establish `m1 : i ≤ i * (R.t + 1)` using `Nat.le_mul_of_pos_right i (Nat.succ_pos _)`. Establish `m2 : i + 1 ≤ (i + 1) * (R.t + 1)` using `Nat.le_mul_of_pos_right _ (Nat.succ_pos _)`. Establish `hk` using `R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : R.r = (R.k + (i + 1)) + cOf R (i + 1)`. Unfold `Ranks.r cOf`. Use linear arithmetic over natural numbers and integers. Establish `s3 : R.k + (i + 1) ≤ R.N (i + 1)`. Unfold `Ranks.N`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `s4 : R.r ≤ R.N i + cOf R i`. Unfold `Ranks.r Ranks.N cOf`. Use linear arithmetic over natural numbers and integers. Establish `s5 : R.k ≤ R.N i`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers. Establish `s6 : R.k ≤ R.N (i + 1)`. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `s7 : cOf R (i + 1) < cOf R i`. Unfold `cOf`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hq0 : ((qOf P : ℕ) : K) = 0`. It suffices to derive a contradiction.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Establish `hFC : Nonempty (FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)))` using `⟨⟨(⟨0, by omega⟩, ⟨R.N i + cOf R (i + 1), by omega⟩), by show IsFree (R.N i) (R.N (i + 1)) (cOf R (i + 1)) 0 (R.N i + cOf R (i + 1))`. Unfold `IsFree`. Use the proof step `omega⟩⟩`. Take `⟨A0, B0, hAB⟩` from `hne`. Use `hAB A0 (B0 + 1) le_rfl (Nat.le_succ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `xj`. Use `show (((qOf P : K) ^ (B0 + 1))⁻¹) ^ Fintype.card (FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1))) * _ = 0`. Rewrite using `[hq0, zero_pow (Nat.succ_ne_zero _), inv_zero, zero_pow Fintype.card_ne_zero, zero_mul]`. Establish `hρ : r⁻¹ ∈ R1 E (R.N (i + 1)) (cOf R (i + 1))` using `inv_mem hr`. Take `⟨C, hC, hCeq⟩` from `hOm E K P hp hq sq cq hsq hcq ξ R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (R.k + (i + 1)) s1 (Nat.le_add_right _ _) s3 s4 s5 hal h r κ hκ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨bh1, bh2⟩` from `hBE E P R (i + 1) h hbh`. Take `⟨bh1', -⟩` from `hBE E P R (i + 1) (r * h * κ) hbh'`. Take `⟨ba1, ba2⟩` from `hBE E P R i hal hbal`. Establish `hPhiS` using `hPS E K P (qOf P) ξ R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) s6 s5`. Establish `hPhiP` using `hPP E K P hp hq ξ R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gS` using `hGS E K P hp _ _ (locChar (qOf P) cq ξ⁻¹) (vP P (qOf P)) sq hal h _ (i + 1) hPhiS ba2 bh1`. Establish `gS'` using `hGS E K P hp _ _ (locChar (qOf P) cq ξ⁻¹) (vP P (qOf P)) sq hal (r * h * κ) _ (i + 1) hPhiS ba2 bh1'`. Establish `gP` using `hGP E K P hp _ _ (locChar (qOf P) cq ξ⁻¹) (vP P (qOf P)) sq hal h _ i hPhiP ba1 bh2`. Establish `hHg` using `hHG E K P hp (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) (2 * R.m) (i + 1) (by omega) psi hpsi _ gS gP`. Conclude with `core P hp hq hq0 hStab hCoV hXX hTA hRX hCA hCB (D := 2 * R.m) (j := i + 1) (by omega) hpsi _ _ r⁻¹ hρ C hC hCeq gS gS' hHg hne`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twisted_eisenstein_of_hypotheses (hStab : StabP) (hCoV : CoVP) (hOm : OmStepP) (hPS : PhiSuppP) (hPP : PhiPerP)
     (hBE : BddEntP) (hGS : GSuppP) (hGP : GPerP) (hHG : HGoodP) (hCB : ChArgBddP) (hXX : XXP)

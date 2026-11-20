@@ -14,33 +14,31 @@ open Pb HT
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Establish `hR : ∀ (α : ℕ) (φ' : Module.Dual K (Hdg M.q α (2 + 2 * d))), rhsF hC P Dt x φ' ∈ Sp P M n`. Introduce `α φ'`. Rewrite using `[← eid hC hS P hM Dt x φ']`. Unfold `lhsF Sp`. Apply the tactic sequence `refine Submodule.add_mem _ (Submodule.sum_mem _ fun s _ => ?_) (Submodule.sum_mem _ fun s _ => ?_) <;> split_ifs <;> first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `exact Submodule.zero_mem _`. Establish `hsum : ∀ G : Module.Dual K (Hdg M.q 0 0), ∑ s, P.h M 0 0 (M.toV 0 (Dt.b₀ s)) G = qC l Dt.N * kC K (G (oneH M.q))`. Introduce `G`. Establish `e1 : ∑ s, P.h M 0 0 (M.toV 0 (Dt.b₀ s)) G = P.h M 0 0 (∑ s, M.toV 0 (Dt.b₀ s)) G`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sum, AddMonoidHom.finsetSum_apply]`. Rewrite using `[e1, Dt.sum₀, P.lin, P.one M hM Dt.one Dt.hone]`. Set `vec : (Σ α : ℕ, Module.Dual K (Hdg M.q α (2 + 2 * d))) → (Fin Dt.m₀ → ℂ_[l])` to `fun p s => P.h M p.1 (2 + 2 * d) (M.toV _ (Dt.a₀ s)) p.2`. Establish `h1 : (fun _ => (1 : ℂ_[l])) ∈ Submodule.span ℂ_[l] (Set.range vec)`. Assume the negation of the conclusion as `hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨f, hf1, hf0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance`. Establish `hvan : ∀ p, f (vec p) = 0` using `fun p => by`. Establish `hm : f (vec p) ∈ (Submodule.span ℂ_[l] (Set.range vec)).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨p, rfl⟩)`. Rewrite `hm` using `[hf0]`. Conclude with `(Submodule.mem_bot _).mp hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `z : Fin Dt.m₀ → ℂ_[l]` to `fun s => f (fun j => if s = j then 1 else 0)`. Establish `hfz : ∀ y, f y = ∑ s, y s * z s` using `fun y => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f y]`. Simplify using `only [smul_eq_mul, z]`. Choose the witnesses or unpack the hypotheses as in `⟨S, _, b0, hb0⟩ : ∃ (S : Set (M.V (2 + 2 * d))) (_ : Fintype S) (b0 : Module.Basis (Fin Dt.m₀ ⊕ S) ℚ_[l] (M.V (2 + 2 * d))), ∀ s, b0 (Sum.inl s) = M.toV _ (Dt.a₀ s) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfi` using `Module.Finite.finite_basis (Module.Basis.sumExtend Dt.li)`. Use `⟨Module.Basis.sumExtendIndex Dt.li, ?_, Module.Basis.sumExtend Dt.li, fun s => ?_⟩` and prove the remaining obligations. Conclude with `@Fintype.ofFinite _ (@Finite.of_injective _ _ hfi Sum.inr Sum.inr_injective)`. Simplify using `only [Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `Fintype.equivFin (Fin Dt.m₀ ⊕ S)`. Set `b` to `b0.reindex e`. Set `z' : Fin (Fintype.card (Fin Dt.m₀ ⊕ S)) → ℂ_[l]` to `fun i => Sum.elim z (fun _ => 0) (e.symm i)`. Establish `hyp : ∀ (a : ℕ) (φ : Module.Dual K (Hdg M.q a (2 + 2 * d))), ∑ i, z' i * P.h M a (2 + 2 * d) (b i) φ = 0`. Introduce `a φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv` using `hvan ⟨a, φ⟩`. Rewrite `hv` using `[hfz]`. Simplify using `only [b, z', Module.Basis.reindex_apply]`. Rewrite using `[Equiv.sum_comp e.symm (fun j => Sum.elim z (fun _ => 0) j * P.h M a (2 + 2 * d) (b0 j) φ), Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zero_mul, Finset.sum_const_zero, add_zero, hb0]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eq.trans ?_ hv` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun s _ => mul_comm _ _`. Establish `hz' : z' = 0` using `hI b z' hyp`. Establish `hz : z = 0`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs` using `congrFun hz' (e (Sum.inl s))`. Simplify `hs` using `[z']`. Apply `hf1` to reduce the goal to its premises. Rewrite using `[hfz]`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Set `Φ : (Fin Dt.m₀ → ℂ_[l]) →ₗ[ℂ_[l]] GF M n` to `{ toFun := fun c β ψ => ∑ s, c s * P.h M 0 0 (M.toV 0 (Dt.b₀ s)) (Gx hC x ψ) map_add' := fun c c' => by`. Use function extensionality and compare the values at `β ψ`. Simplify using `[add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `β ψ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[Finset.mul_sum, mul_assoc] }`. Establish `hle : Submodule.span ℂ_[l] (Set.range vec) ≤ (Sp P M n).comap Φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hR p.1 p.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hmem` using `hle h1`. Rewrite `hmem` using `[Submodule.mem_comap]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `β ψ`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk, one_mul]`.
-
-Unfold `tgt`. Conclude with `(hsum _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem core (hC : CupLaws) (hS : Slant) (P : HTPre l K) {M : Model l K} (hM : M.Sm) {d : ℕ} (Dt : Dat hC P M d)
     (hfin : FiniteDimensional ℚ_[l] (M.V (2 + 2 * d))) (hI : P.Inj M (2 + 2 * d)) {a' n : ℕ} (x : Hdg M.q a' n) :

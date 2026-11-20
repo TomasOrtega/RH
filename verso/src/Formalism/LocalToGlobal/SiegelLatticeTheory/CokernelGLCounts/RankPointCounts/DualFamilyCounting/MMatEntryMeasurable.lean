@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)`. Consider the case `fun_prop`. Consider the case `continuity`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem uMat_continuous (v : InfinitePlace X.B.I.F) :
     Continuous fun s : X.B.I.Ginf => uMat (s v) := by
@@ -24,7 +24,7 @@ theorem uMat_continuous (v : InfinitePlace X.B.I.F) :
     | continuity
 
 /- English proof (translation)
-Simplify using `only [hJ]`. Use `first`. Consider the case `exact continuous_const.matrix_dotProduct (continuous_const.matrix_mulVec ((uMat_continuous X v).matrix_mulVec continuous_const))`. Consider the case `(have hu := uMat_continuous X v; fun_prop)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hJ_continuous (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → ℂ) :
     Continuous fun s : X.B.I.Ginf => hJ (X.B.I.ε v) x (uMat (s v) *ᵥ y) := by
@@ -35,21 +35,21 @@ theorem hJ_continuous (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → ℂ) :
     | (have hu := uMat_continuous X v; fun_prop)
 
 /- English proof (translation)
-The claim follows from `hJ_continuous X v (fV X v b) (eV X v a)`.
+A detailed English derivation is pending.
 -/
 theorem xMat_entry_continuous (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
     Continuous fun s => xMat X v s b a :=
   hJ_continuous X v (fV X v b) (eV X v a)
 
 /- English proof (translation)
-The claim follows from `hJ_continuous X v (fV X v b) (fV X v a)`.
+A detailed English derivation is pending.
 -/
 theorem aMat_entry_continuous (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
     Continuous fun s => aMat X v s b a :=
   hJ_continuous X v (fV X v b) (fV X v a)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_pi fun b => continuous_pi fun a => xMat_entry_continuous X v b a`. Consider the case `exact continuous_matrix fun b a => xMat_entry_continuous X v b a`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem xMat_continuous (v : InfinitePlace X.B.I.F) : Continuous fun s => xMat X v s := by
   first
@@ -57,9 +57,9 @@ theorem xMat_continuous (v : InfinitePlace X.B.I.F) : Continuous fun s => xMat X
     | exact continuous_matrix fun b a => xMat_entry_continuous X v b a
 
 /- English proof (translation)
-Establish `hx : Continuous fun s => xMat X v s` using `xMat_continuous X v`. Establish `ha : Continuous fun s => aMat X v s` using `by first`. Consider the case `exact continuous_pi fun b => continuous_pi fun a => aMat_entry_continuous X v b a`. Consider the case `exact continuous_matrix fun b a => aMat_entry_continuous X v b a`. Establish `hd : Measurable fun s => ((xMat X v s).det)⁻¹` using `hx.matrix_det.measurable.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [mMat, Matrix.mul_apply, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv]`. Use `Finset.measurable_sum _ fun c _ => ?_` and prove the remaining obligations. Conclude with `(hd.mul (hx.matrix_adjugate.matrix_elem b c).measurable).mul (ha.matrix_elem c a).measurable`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mMat_entry_measurable (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
     Measurable fun s => mMat X v s b a := by
@@ -74,9 +74,9 @@ theorem mMat_entry_measurable (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
   exact (hd.mul (hx.matrix_adjugate.matrix_elem b c).measurable).mul (ha.matrix_elem c a).measurable
 
 /- English proof (translation)
-Consider the cases of `t`. Use `first`. Consider the case `exact Complex.measurable_re.comp hf`. Consider the case `(simp only [reim, Bool.false_eq_true, if_false]; exact Complex.measurable_re.comp hf)`. Use `first`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Complex.measurable_im.comp hf`. Consider the case `(simp only [reim, if_true]; exact Complex.measurable_im.comp hf)`.
+A detailed English derivation is pending.
 -/
 theorem reim_measurable {α : Type} [MeasurableSpace α] {f : α → ℂ} (hf : Measurable f) (t : Bool) :
     Measurable fun x => reim (f x) t := by
@@ -89,9 +89,7 @@ theorem reim_measurable {α : Type} [MeasurableSpace α] {f : α → ℂ} (hf : 
       | (simp only [reim, if_true]; exact Complex.measurable_im.comp hf)
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => ?_` and prove the remaining obligations. Take `⟨v, c⟩` from `i`. Break down `c with ((⟨p, t⟩ | ⟨b, t⟩) | (⟨b, j, t⟩ | (⟨p, t⟩ | a)))` into its components or cases. Conclude with `reim_measurable (xMat_entry_continuous X v p.1.1 p.1.2).measurable t`. Conclude with `reim_measurable (hJ_continuous X v (fV X v b) (zV X u v)).measurable t`.
-
-Conclude with `reim_measurable (hJ_continuous X v (fV X v b) (X.wfr u v j)).measurable t`. Conclude with `reim_measurable (((mMat_entry_measurable X v p.1.1 p.1.2).sub (continuous_star.measurable.comp (mMat_entry_measurable X v p.1.2 p.1.1))).div_const 2) t`. Conclude with `Complex.measurable_im.comp (mMat_entry_measurable X v a a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem kap_measurable : Measurable (kap X u) := by
   refine measurable_pi_lambda _ fun i => ?_
@@ -105,7 +103,7 @@ theorem kap_measurable : Measurable (kap X u) := by
   · exact Complex.measurable_im.comp (mMat_entry_measurable X v a a)
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => (g - 1) *ᵥ w` using `by first`. Consider the case `exact (continuous_id.sub continuous_const).matrix_mulVec continuous_const`. Consider the case `fun_prop`. Conclude with `S.closed_of_finiteDimensional.preimage hc`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma isClosed_setOf_sub_one_mulVec_mem {n : ℕ} (w : Fin n → ℂ) (S : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ w ∈ S} := by
@@ -116,7 +114,7 @@ private lemma isClosed_setOf_sub_one_mulVec_mem {n : ℕ} (w : Fin n → ℂ) (S
   exact S.closed_of_finiteDimensional.preimage hc
 
 /- English proof (translation)
-Establish `h : {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} = ((⋂ a : Fin r, {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ e a ∈ spanLt e a.1}) ∩ {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ z ∈ spanLt e r}) ∩ ⋂ y : Fin n → ℂ, ⋂ (_ : ∀ a, hJ ε (e a) y = 0), {g : Matrix (Fin n) (Fin n) ℂ | (g - 1 …`. Use extensionality with `g`. Simplify using `only [InN, InS, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[h]`. Conclude with `((isClosed_iInter fun a => isClosed_setOf_sub_one_mulVec_mem _ _).inter (isClosed_setOf_sub_one_mulVec_mem _ _)).inter (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_setOf_sub_one_mulVec_mem _ _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isClosed_setOf_InN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} := by
@@ -132,7 +130,7 @@ private lemma isClosed_setOf_InN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r �
     (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_setOf_sub_one_mulVec_mem _ _)
 
 /- English proof (translation)
-Establish `h : ∀ v : InfinitePlace X.B.I.F, IsClosed {s : X.B.I.Ginf | InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat (s v))}` using `fun v => (isClosed_setOf_InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))).preimage (uMat_continuous X v)`. Establish `h2` using `isClosed_iInter h`. Simplify using `only [← Set.setOf_forall] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ninfU_closed : IsClosed (X.NinfU u) := by
   have h : ∀ v : InfinitePlace X.B.I.F, IsClosed {s : X.B.I.Ginf | InN (X.B.I.ε v)
@@ -144,15 +142,11 @@ theorem ninfU_closed : IsClosed (X.NinfU u) := by
   exact h2
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `only [boxN, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_univ_pi, Set.mem_Ico]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨v, i⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨hx, hy, hp, hm, hd⟩` from `h v`. Break down `i with ((⟨p, t⟩ | ⟨b, t⟩) | (⟨b, j, t⟩ | (⟨p, t⟩ | a)))` into its components or cases. Consider the cases of `t`. Conclude with `(hx p.1.1 p.1.2 p.2).1`. Conclude with `(hx p.1.1 p.1.2 p.2).2`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `t`. Conclude with `(hy b).1`. Conclude with `(hy b).2`. Consider the cases of `t`. Conclude with `(hp b j).1`.
-
-Conclude with `(hp b j).2`. Consider the cases of `t`. Conclude with `(hm p.1.1 p.1.2 p.2).1`. Conclude with `(hm p.1.1 p.1.2 p.2).2`. Conclude with `hd a`.
-
-Introduce `h v`. Conclude with `⟨fun b a hba => ⟨h (v, Sum.inl (Sum.inl (⟨(b, a), hba⟩, false))), h (v, Sum.inl (Sum.inl (⟨(b, a), hba⟩, true)))⟩, fun b => ⟨h (v, Sum.inl (Sum.inr (b, false))), h (v, Sum.inl (Sum.inr (b, true)))⟩, fun b j => ⟨h (v, Sum.inr (Sum.inl (b, j, false))), h (v, Sum.inr (Sum.inl (b, j, …`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem boxN_eq : boxN X u = X.NinfU u ∩ kap X u ⁻¹' Set.pi Set.univ (fun _ => Set.Ico (0 : ℝ) 1) := by
   ext s
@@ -188,7 +182,7 @@ def KapInj : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Set.InjOn (kap X u) (X.NinfU u)
 
 /- English proof (translation)
-Introduce `D X u`. Conclude with `⟨kap_measurable X u, (ninfU_closed X u).measurableSet, h D X u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem coordMeas_of (h : KapInj) : CoordMeas := by
   intro D X u
@@ -203,9 +197,9 @@ def LebHaar : Prop :=
     ∃ lam : Measure X.B.I.Ginf, IsHaarOnSet X.B.I (X.NinfU u) lam ∧ lam.map (kap X u) = volume
 
 /- English proof (translation)
-Use `le_antisymm (measure_mono Set.inter_subset_left) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun s hs => ?_` and prove the remaining obligations. Distinguish the cases in `h : s ∈ N`. Conclude with `Or.inl ⟨hs, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inr h`. Use `_ ≤ μ (P ∩ N) + μ Nᶜ := measure_union_le _ _`. Use `_ = μ (P ∩ N) := by rw [hN, add_zero]`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 private lemma measure_inter_eq_of_compl_null {α : Type*} [MeasurableSpace α] (μ : Measure α) {N : Set α}
     (hN : μ Nᶜ = 0) (P : Set α) : μ (P ∩ N) = μ P := by
@@ -219,11 +213,11 @@ private lemma measure_inter_eq_of_compl_null {α : Type*} [MeasurableSpace α] (
     _ = μ (P ∩ N) := by rw [hN, add_zero]
 
 /- English proof (translation)
-Introduce `D X u μ hμ`. Take `⟨lam, hlam, hmap⟩` from `hL D X u`. Take `⟨c, rfl⟩` from `hU D X u μ lam hμ hlam`. Establish `hkm : Measurable (kap X u)` using `kap_measurable X u`. Establish `hbm : MeasurableSet (Set.pi Set.univ (fun _ : InfinitePlace X.B.I.F × CIdx D.R.rS D.R.k => Set.Ico (0 : ℝ) 1))` using `MeasurableSet.univ_pi fun _ => measurableSet_Ico`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol : volume (Set.pi Set.univ (fun _ : InfinitePlace X.B.I.F × CIdx D.R.rS D.R.k => Set.Ico (0 : ℝ) 1)) = 1` using `by first`. Consider the case `(rw [volume_pi, Measure.pi_pi]; simp [Real.volume_Ico])`. Consider the case `simp [Real.volume_pi_Ico]`. Establish `hbox : lam (boxN X u) = 1`. Rewrite using `[boxN_eq, Set.inter_comm, measure_inter_eq_of_compl_null lam hlam.2.2.1, ← Measure.map_apply hkm hbm, hmap, hvol]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_smul, hmap, Measure.smul_apply, hbox, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordHaar_of (hU : HaarUnique) (hL : LebHaar) : CoordHaar := by
   intro D X u μ hμ
@@ -244,13 +238,13 @@ theorem coordHaar_of (hU : HaarUnique) (hL : LebHaar) : CoordHaar := by
   rw [Measure.map_smul, hmap, Measure.smul_apply, hbox, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `D X u μ FdN hμ hF`. Take `⟨hkm, -, hinj⟩` from `coordMeas_of hInj D X u`. Establish `hH` using `coordHaar_of hU hL D X u μ hμ`. Take `⟨hAm, hAv⟩` from `hC D X u FdN hF`. Establish `hpre : kap X u ⁻¹' (kap X u '' (FdN ∩ X.NinfU u)) ∩ X.NinfU u = FdN ∩ X.NinfU u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, hts⟩, hs⟩`. Rewrite using `[← hinj ht.2 hs hts]`. Conclude with `ht`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Conclude with `Set.mem_inter (Set.mem_image_of_mem _ hs) hs.2`. Establish `h2` using `measure_inter_eq_of_compl_null μ hμ.2.2.1 (kap X u ⁻¹' (kap X u '' (FdN ∩ X.NinfU u)))`. Rewrite `h2` using `[hpre]`. Establish `h3 : μ.map (kap X u) (kap X u '' (FdN ∩ X.NinfU u)) = μ (FdN ∩ X.NinfU u)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Measure.map_apply hkm hAm]`. Conclude with `h2.symm`. Rewrite `h3` using `[hH, Measure.smul_apply, hAv, smul_eq_mul]`. Rewrite using `[← measure_inter_eq_of_compl_null μ hμ.2.2.1 FdN, ← h3]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolN_of_four (hInj : KapInj) (hU : HaarUnique) (hL : LebHaar) (hC : CoordCovol) : CovolN := by
   intro D X u μ FdN hμ hF

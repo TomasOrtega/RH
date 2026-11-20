@@ -7,11 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `J _ _ D c hc B g hg`. Take `⟨-, hsurj⟩` from `(etFF_iff_spec g).1 hg`. Take `⟨j₀⟩` from `IsFiltered.nonempty (C := J)`. Take `⟨j, -, B', g', h, hgh, hcov⟩` from `GlobalTheory.EtaleCoverDescent.exists_etale_cover_model_of_isColimit J D c hc Unit (fun _ ↦ B) (fun _ ↦ g) (fun _ ↦ hg.1) (fun p ↦ by`. Take `⟨v, hv⟩` from `hsurj.surj p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(), v, hv⟩) j₀`. Use `⟨j, B' (), g' (), h (), ?_, (hgh ()).2⟩` and prove the remaining obligations. Rewrite using `[etFF_iff_spec]`. Use `⟨HasRingHomProperty.Spec_iff.2 (hgh ()).1, ⟨fun p ↦ ?_⟩⟩` and prove the remaining obligations. Take `⟨i, v, hv⟩` from `hcov p`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the cases of `i`. Conclude with `⟨v, hv⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem etFF_descends_of_isColimit :
     ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D),

@@ -11,9 +11,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `key : ∀ x : V, h x x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `h1` using `hd x hne φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ h1`. Conclude with `⟨fun x hx => key x (hx x), fun y hy => key y (hy y)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nondegenerate {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) : h.Nondegenerate := by
   have key : ∀ x : V, h x x = 0 → x = 0 := by
@@ -26,13 +26,13 @@ theorem nondegenerate {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) : 
   exact ⟨fun x hx => key x (hx x), fun y hy => key y (hy y)⟩
 
 /- English proof (translation)
-Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Take `⟨b, hb, -⟩` from `LocalSpans.exists_basis_locF hA₀ h𝔭`. Establish `hnd` using `nondegenerate hd`. Take `⟨bs, hbs⟩` from `Formalism.HermitianLatticesTheory.dualLattice_dualBasis h hnd b`. Use `choose n hn using fun j => exists_pow_smul_mem hA₀ h𝔭 hπ (bs j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ j, n j, fun k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.dualLattice_expand h hnd b bs hbs x]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 (hx (b j) (LocF.le_locF 𝔭 A₀ (hb j)))`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : n j ≤ ∑ j, n j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use `(mem_smul_iff_unif h𝔭 hπ hπ' A₀).2 ⟨(c * algebraMap F K (π : F) ^ (∑ j, n j - n j)) • (algebraMap F K (π : F) ^ n j • bs j), smul_mem_locF h𝔭 A₀ (by simpa using mul_mem_pK h𝔭 hc (unif_pow_mem_pK_zero hπ _)) (hn j), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Establish `: k + ∑ j, n j = k + (∑ j, n j - n j) + n j` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_dual_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
@@ -60,11 +60,11 @@ theorem exists_dual_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   rw [this, pow_add, pow_add]; ring
 
 /- English proof (translation)
-Take `⟨r1, h1⟩` from `exists_smul_le hA₀ hB₀ h𝔭`. Take `⟨r2, h2⟩` from `exists_smul_le hB₀ hA₀ h𝔭`. Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Establish `hπ0` using `unif_ne_zero (K := K) hπ'`. Use `⟨r1 + r2, fun d D hD y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy'` using `h2 ((mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨y, hy, rfl⟩)`. Take `⟨z, hz, e⟩` from `(mem_smul_iff_unif h𝔭 hπ hπ' A₀).1 (hD _ hy')`. Establish `hz'` using `h1 ((mem_smul_iff_unif h𝔭 hπ hπ' A₀).2 ⟨z, hz, rfl⟩)`. Use `(mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨_, hz', ?_⟩` and prove the remaining obligations. Apply `smul_right_injective V (pow_ne_zero r2 hπ0)` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show algebraMap F K (π : F) ^ r2 • D y = algebraMap F K (π : F) ^ r2 • _`. Rewrite using `[← map_smul, e, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_endL_le {A₀ B₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLattice K A₀)
     (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -86,11 +86,11 @@ theorem exists_endL_le {A₀ B₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsL
   rw [pow_add, pow_add]; ring
 
 /- English proof (translation)
-Take `⟨r2, h2⟩` from `exists_smul_le hB₀ hA₀ h𝔭`. Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Establish `hπ0` using `unif_ne_zero (K := K) hπ'`. Use `⟨r2 + r2, fun d s hs x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hx'` using `h2 ((mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨x, hx, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy'` using `h2 ((mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨y, hy, rfl⟩)`. Take `⟨c, hc, e⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 (hs _ hx' _ hy')`. Use `(mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, starRingEnd_apply, star_pow, MeanB.star_algebraMap hF]`. Apply `mul_left_cancel₀ (pow_ne_zero (r2 + r2) hπ0)` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `*` using `[pow_add, pow_add]`. Take the linear combination `e`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_sesqL_le (hF : IsFixF K F) {A₀ B₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)}
@@ -111,11 +111,11 @@ theorem exists_sesqL_le (hF : IsFixF K F) {A₀ B₀ : Submodule (𝓞 K) V}
   linear_combination e
 
 /- English proof (translation)
-Introduce and unpack `X ⟨hX, hX'⟩`. Use `⟨hX, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hx0 : x ∈ extP K 𝔭 ^ 0 • locF 𝔭 A₀` using `by rwa [pow_zero_smul]`. Establish `hy0 : y ∈ extP K 𝔭 ^ 0 • locF 𝔭 A₀` using `by rwa [pow_zero_smul]`. Establish `e : h (X x) (X y) - h x y = h (X x - x) y + h x (X y - y) + h (X x - x) (X y - y)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations. Simplify using `using form_mem_pK hF hA₀i h𝔭 (hX' x hx) hy0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using form_mem_pK hF hA₀i h𝔭 hx0 (hX' y hy)`. Conclude with `pK_anti 𝔭 (Nat.le_add_right k k) (form_mem_pK hF hA₀i h𝔭 (hX' x hx) (hX' y hy))`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nSub_le_sSub (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {A₀ : Submodule (𝓞 K) V}
     (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
@@ -133,7 +133,7 @@ theorem nSub_le_sSub (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {A₀ 
   · exact pK_anti 𝔭 (Nat.le_add_right k k) (form_mem_pK hF hA₀i h𝔭 (hX' x hx) (hX' y hy))
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_endL_le hA₀ hB₀ h𝔭`. Use `⟨1 + r, fun k hk X hX => mem_glSub_of_sub_mem hB₀ h𝔭 fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : ((X : V →ₗ[K] V) - LinearMap.id) ∈ endL (locF 𝔭 A₀) (extP K 𝔭 ^ (1 + r) • locF 𝔭 A₀)` using `fun x hx => smul_anti 𝔭 _ hk (hX.2 x hx)`. Use `hr 1 h1 y hy` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nSub_le_glSub {A₀ B₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLattice K A₀)
     (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :

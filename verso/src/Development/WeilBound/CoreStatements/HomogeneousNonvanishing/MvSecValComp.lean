@@ -15,7 +15,7 @@ noncomputable section Move
 variable {X X' : Scheme.{0}} {G : Over X} {G' : Over X'} [GrpObj G] [GrpObj G'] {f : X' ⟶ X} {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mv_one_left {Y : Scheme.{0}} (y : Y ⟶ X) : (1 : Over.mk y ⟶ G).left = y ≫ (η[G]).left := by
   rw [Hom.one_def]
@@ -23,7 +23,7 @@ theorem mv_one_left {Y : Scheme.{0}} (y : Y ⟶ X) : (1 : Over.mk y ⟶ G).left 
 
 omit [GrpObj G] [GrpObj G'] in
 /- English proof (translation)
-Use `⟨Over.homMk (a'.left ≫ φ) ?_, rfl⟩` and prove the remaining obligations. Establish `hw` using `Over.w a'`. Simplify using `only [Over.mk_hom] at hw ⊢`. Rewrite using `[Category.assoc, w, ← Category.assoc, hw, hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_push (w : φ ≫ G.hom = G'.hom ≫ f) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y : Y ⟶ X} (hy : y' ≫ f = y)
     (a' : Over.mk y' ⟶ G') : ∃ a : Over.mk y ⟶ G, a'.left ≫ φ = a.left := by
@@ -33,7 +33,7 @@ theorem mv_push (w : φ ≫ G.hom = G'.hom ≫ f) {Y : Scheme.{0}} {y' : Y ⟶ X
   rw [Category.assoc, w, ← Category.assoc, hw, hy]
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Conclude with `(h.2 (Over.mk y') a' b' a b ha.symm hb.symm).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mv_mul (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y : Y ⟶ X} (hy : y' ≫ f = y)
     {a' b' : Over.mk y' ⟶ G'} {a b : Over.mk y ⟶ G} (ha : a'.left ≫ φ = a.left) (hb : b'.left ≫ φ = b.left) :
@@ -42,7 +42,7 @@ theorem mv_mul (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y
   exact (h.2 (Over.mk y') a' b' a b ha.symm hb.symm).symm
 
 /- English proof (translation)
-Establish `hm` using `mv_mul h hy he he`. Rewrite `hm` using `[show (1 : Over.mk y' ⟶ G') * 1 = 1 from mul_one _, he]`. Establish `hee : e * e = e` using `(Over.OverMorphism.ext hm).symm`. Simplify using `using congrArg (· * e⁻¹) hee`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mv_one_lemma (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y : Y ⟶ X}
     (hy : y' ≫ f = y) (e : Over.mk y ⟶ G) (he : (1 : Over.mk y' ⟶ G').left ≫ φ = e.left) : e = 1 := by
@@ -52,7 +52,7 @@ private theorem mv_one_lemma (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' 
   simpa using congrArg (· * e⁻¹) hee
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `mv_push (φ := φ) h.1.w hy (1 : Over.mk y' ⟶ G')`. Rewrite using `[he, mv_one_lemma h hy e he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_one (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y : Y ⟶ X} (hy : y' ≫ f = y) :
     (1 : Over.mk y' ⟶ G').left ≫ φ = (1 : Over.mk y ⟶ G).left := by
@@ -60,9 +60,9 @@ theorem mv_one (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y
   rw [he, mv_one_lemma h hy e he]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, (a' ^ k).left ≫ φ = (a ^ k).left`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa only [pow_zero] using mv_one h hy`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `mv_mul h hy ih ha`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← key n, hn, mv_one h hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_pow (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y : Y ⟶ X} (hy : y' ≫ f = y)
     {a' : Over.mk y' ⟶ G'} {a : Over.mk y ⟶ G} (ha : a'.left ≫ φ = a.left) {n : ℕ} (hn : a' ^ n = 1) :
@@ -78,14 +78,14 @@ theorem mv_pow (h : IsGrpPullback G' G f φ) {Y : Scheme.{0}} {y' : Y ⟶ X'} {y
   rw [← key n, hn, mv_one h hy]
 
 /- English proof (translation)
-Use `mv_one h (y' := 𝟙 X') (y := f) (Category.id_comp f)` as an intermediate fact. Simplify `this` using `[mv_one_left]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mv_eta (h : IsGrpPullback G' G f φ) : (η[G']).left ≫ φ = f ≫ (η[G]).left := by
   have := mv_one h (y' := 𝟙 X') (y := f) (Category.id_comp f)
   simpa [mv_one_left] using this
 
 /- English proof (translation)
-Unfold `IsTanAt at ht ⊢`. Rewrite using `[← hv, ← Category.assoc, ht]`. Conclude with `mv_one h hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_tan (h : IsGrpPullback G' G f φ) {R : Type} [CommRing R] {x' : Sp R ⟶ X'} {x : Sp R ⟶ X}
     (hx : x' ≫ f = x) {v' : epsAt x' ⟶ G'} {v : epsAt x ⟶ G} (hv : v'.left ≫ φ = v.left) (ht : IsTanAt G' x' v') :
@@ -101,7 +101,7 @@ private theorem dualMap_lemma {R R' : Type} [CommRing R] [CommRing R'] (σ : R �
     dualMap σ a = TrivSqZeroExt.inl (σ a.fst) + TrivSqZeroExt.inr (σ a.snd) := rfl
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap_lemma, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mv_dual_alg {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') :
     spMap (dualMap σ) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R' (DualNumber R')) ≫ spMap σ := by
@@ -111,7 +111,7 @@ theorem mv_dual_alg {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') :
   ext <;> simp [dualMap_lemma, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[dualMap_lemma]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mv_dual_fst {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (dualMap σ) =
@@ -122,7 +122,7 @@ theorem mv_dual_fst {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') :
   simp [dualMap_lemma]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap_lemma]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mv_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (σ : R →+* R') (τ : R' →+* R'') :
     spMap (dualMap τ) ≫ spMap (dualMap σ) = spMap (dualMap (τ.comp σ)) := by
@@ -132,9 +132,9 @@ theorem mv_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
   ext <;> simp [dualMap_lemma]
 
 /- English proof (translation)
-Use `⟨Over.homMk (spMap (dualMap σ) ≫ v.left) ?_, rfl, ?_⟩` and prove the remaining obligations. Establish `hw` using `Over.w v`. Simplify using `only [epsAt, Over.mk_hom] at hw ⊢`. Rewrite using `[Category.assoc, hw, ← Category.assoc, mv_dual_alg, Category.assoc, hx]`. Introduce `ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IsTanAt at ht ⊢`. Simplify using `only [Over.homMk_left]`. Rewrite using `[← Category.assoc, mv_dual_fst, Category.assoc, ht, mv_one_left, mv_one_left, ← Category.assoc, hx]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_bc {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {x : Sp R ⟶ X} {x' : Sp R' ⟶ X}
     (hx : spMap σ ≫ x = x') (v : epsAt x ⟶ G) :
@@ -151,13 +151,13 @@ theorem mv_bc {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {x : Sp
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨q, hqs⟩` from `q`. Take `⟨q', hq's⟩` from `q'`. Express the relevant statement in the definitionally equal form `f q' = q at hq`. Substitute `hq hξ` using the available equality. Express the relevant statement in the definitionally equal form `ξ' (IsLocalRing.closedPoint Ω) ⤳ q' at hq's`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f (ξ' (IsLocalRing.closedPoint Ω)) ⤳ f q' at hqs`. Use `⟨(f.stalkMap q').hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[spMap]`. Express the relevant statement in the definitionally equal form `(X'.presheaf.stalkSpecializes hq's ≫ Scheme.stalkClosedPointTo ξ').hom.comp (f.stalkMap q').hom = (X.presheaf.stalkSpecializes hqs ≫ Scheme.stalkClosedPointTo (ξ' ≫ f)).hom`. Rewrite using `[← CommRingCat.hom_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `congrArg CommRingCat.Hom.hom` to reduce the goal to its premises. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Conclude with `(Scheme.Hom.stalkSpecializes_stalkMap f _ q' hq's).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = _ := Category.assoc _ _ _`. Introduce `hf`. Conclude with `ConcreteCategory.bijective_of_isIso (f.stalkMap q')`.
+A detailed English derivation is pending.
 -/
 theorem mv_stalk {ξ' : Sp Ω ⟶ X'} {ξ : Sp Ω ⟶ X} (hξ : ξ' ≫ f = ξ) (q' : Cpt ξ') (q : Cpt ξ) (hq : f q'.1 = q.1) :
     ∃ σ : X.presheaf.stalk q.1 →+* X'.presheaf.stalk q'.1,
@@ -186,7 +186,7 @@ theorem mv_stalk {ξ' : Sp Ω ⟶ X'} {ξ : Sp Ω ⟶ X} (hξ : ξ' ≫ f = ξ) 
     exact ConcreteCategory.bijective_of_isIso (f.stalkMap q')
 
 /- English proof (translation)
-Take `⟨σ, -, hσ, -⟩` from `mv_stalk hξ q' q hq`. Unfold `regAt`. Rewrite using `[← hσ]`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `⟨σ r, rfl⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mv_regAt_le {ξ' : Sp Ω ⟶ X'} {ξ : Sp Ω ⟶ X} (hξ : ξ' ≫ f = ξ) (q' : Cpt ξ') (q : Cpt ξ)
     (hq : f q'.1 = q.1) : regAt ξ q ≤ regAt ξ' q' := by
@@ -197,7 +197,7 @@ theorem mv_regAt_le {ξ' : Sp Ω ⟶ X'} {ξ : Sp Ω ⟶ X} (hξ : ξ' ≫ f = �
   exact ⟨σ r, rfl⟩
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Unfold `secVal`. Use `congr 1`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mv_secVal_comp {B : Type} [CommRing B] {Z Z' : Scheme.{0}} (x : Sp B ⟶ Z) (ψ : Z ⟶ Z') (y : Sp B ⟶ Z')
     (hy : x ≫ ψ = y) (W : Z'.Opens) (s : Γ(Z', W)) (h : ⊤ ≤ x ⁻¹ᵁ ψ ⁻¹ᵁ W) (h' : ⊤ ≤ y ⁻¹ᵁ W) :
@@ -207,9 +207,9 @@ theorem mv_secVal_comp {B : Type} [CommRing B] {Z Z' : Scheme.{0}} (x : Sp B ⟶
   congr 1
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `key : Scheme.Hom.appLE (spMap σ ≫ x) W ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of B')).hom = Scheme.Hom.appLE x W ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom ≫ CommRingCat.ofHom σ`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc]`. Use `congr 1`. Use `congrArg (fun g => g.hom s) key` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify `this` using `[secVal]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mv_secVal_bc {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') {Z : Scheme.{0}} (x : Sp B ⟶ Z)
     (y : Sp B' ⟶ Z) (hy : spMap σ ≫ x = y) (W : Z.Opens) (s : Γ(Z, W)) (h : ⊤ ≤ x ⁻¹ᵁ W) (h' : ⊤ ≤ y ⁻¹ᵁ W) :

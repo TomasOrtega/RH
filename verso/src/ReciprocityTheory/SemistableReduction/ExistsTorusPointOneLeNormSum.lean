@@ -10,7 +10,7 @@ noncomputable abbrev unitBallRing (K : Type*) [NormedField K] [IsUltrametricDist
   (NormedField.valuation (K := K)).valuationSubring
 
 /- English proof (translation)
-Use `first`. Consider the case `(change ‖x‖₊ ≤ 1 ↔ ‖x‖ ≤ 1`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one])`. Consider the case `(rw [unitBallRing, Valuation.mem_valuationSubring_iff]`. Simplify using `[NormedField.valuation_apply, ← NNReal.coe_le_coe])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unitBallRing {K : Type*} [NormedField K] [IsUltrametricDist K] (x : K) :
     x ∈ unitBallRing K ↔ ‖x‖ ≤ 1 := by
@@ -21,15 +21,13 @@ theorem mem_unitBallRing {K : Type*} [NormedField K] [IsUltrametricDist K] (x : 
      simp [NormedField.valuation_apply, ← NNReal.coe_le_coe])
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hx1 : ‖(x : K)‖ ≤ 1` using `(mem_unitBallRing (x : K)).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `hnu`. Use `lt_of_le_of_ne hx1 fun h1 => hnu ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : (x : K) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : (x : K)⁻¹ ∈ unitBallRing K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_unitBallRing, norm_inv, h1, inv_one]`. Establish `hm : x * ⟨(x : K)⁻¹, hinv⟩ = 1` using `Subtype.ext (by simp [hx0])`. Conclude with `⟨⟨x, ⟨(x : K)⁻¹, hinv⟩, hm, by rw [mul_comm]; exact hm⟩, rfl⟩`. Introduce `hlt hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun t : unitBallRing K => ‖(t : K)‖) hy`. Use `first`. Consider the case `simp only [MulMemClass.coe_mul, OneMemClass.coe_one, norm_mul, norm_one] at h`. Consider the case `simp at h`. Establish `hy1 : ‖(y : K)‖ ≤ 1` using `(mem_unitBallRing (y : K)).1 y.2`.
-
-Use polynomial arithmetic with `[norm_nonneg (x : K), norm_nonneg (y : K)]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem residue_eq_zero_iff_norm_lt_one {K : Type*} [NormedField K] [IsUltrametricDist K]
     (x : unitBallRing K) :
@@ -57,13 +55,13 @@ theorem residue_eq_zero_iff_norm_lt_one {K : Type*} [NormedField K] [IsUltrametr
     nlinarith [norm_nonneg (x : K), norm_nonneg (y : K)]
 
 /- English proof (translation)
-Introduce `hfin`. Establish `hrep : ∀ y ∈ {y : IsLocalRing.ResidueField (unitBallRing K) | ∃ x : unitBallRing K, (x : K) ∈ K₀ ∧ ‖(x : K)‖ = 1 ∧ IsLocalRing.residue _ x = y}, ∃ x : unitBallRing K, (x : K) ∈ K₀ ∧ ‖(x : K)‖ = 1 ∧ IsLocalRing.residue _ x = y` using `fun y hy => hy`. Use `choose! r hr using hrep`. Unfold `ResidueFieldInfiniteOn at hK₀`. Take `⟨x, hxK, hx1, hxs⟩` from `hK₀ (insert 0 (hfin.toFinset.image fun y => (r y : K)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : 1 ≤ ‖x‖` using `by simpa using hxs 0 (Finset.mem_insert_self _ _)`. Establish `hxn : ‖x‖ = 1` using `le_antisymm hx1 hx0`. Set `xb : unitBallRing K` to `⟨x, (mem_unitBallRing x).2 hx1⟩`. Establish `hmem : IsLocalRing.residue _ xb ∈ {y : IsLocalRing.ResidueField (unitBallRing K) | ∃ x : unitBallRing K, (x : K) ∈ K₀ ∧ ‖(x : K)‖ = 1 ∧ IsLocalRing.residue _ x = y}` using `⟨xb, hxK, hxn, rfl⟩`. Take `⟨-, -, hreq⟩` from `hr _ hmem`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : IsLocalRing.residue _ (xb - r (IsLocalRing.residue _ xb)) = 0`. Rewrite using `[map_sub, hreq, sub_self]`. Rewrite `h0` using `[residue_eq_zero_iff_norm_lt_one]`. Establish `h0' : ‖x - (r (IsLocalRing.residue _ xb) : K)‖ < 1` using `by simpa [xb] using h0`. Establish `h1` using `hxs (r (IsLocalRing.residue _ xb) : K) (Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨_, hfin.mem_toFinset.2 hmem, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem infinite_residues {K : Type*} [NormedField K] [IsUltrametricDist K] (K₀ : Subfield K)
     (hK₀ : ResidueFieldInfiniteOn (K₀ : Set K)) :
@@ -94,33 +92,31 @@ theorem infinite_residues {K : Type*} [NormedField K] [IsUltrametricDist K] (K�
   linarith
 
 /- English proof (translation)
-Set `N : ℕ` to `∑ χ ∈ F, ∑ i, (χ i).natAbs`. Establish `hN : ∀ χ ∈ F, ∀ i, 0 ≤ χ i + N`. Introduce `χ hχ i`. Establish `h1 : (χ i).natAbs ≤ ∑ j, (χ j).natAbs` using `Finset.single_le_sum (f := fun j => (χ j).natAbs) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : ∑ j, (χ j).natAbs ≤ N` using `Finset.single_le_sum (f := fun χ : Fin n → ℤ => ∑ j, (χ j).natAbs) (fun _ _ => Nat.zero_le _) hχ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `e : (Fin n → ℤ) → (Fin n →₀ ℕ)` to `fun χ => Finsupp.equivFunOnFinite.symm (fun i => (χ i + N).toNat)`. Establish `he : ∀ χ ∈ F, ∀ χ' ∈ F, e χ = e χ' → χ = χ'`. Introduce `χ hχ χ' hχ' h`. Use function extensionality and compare the values at `i`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `congrArg (fun f : Fin n →₀ ℕ => f i) h`. Simplify using `only [e, Finsupp.coe_equivFunOnFinite_symm] at h3`. Establish `h1` using `hN χ hχ i`. Establish `h2` using `hN χ' hχ' i`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Set `aO : (Fin n → ℤ) → unitBallRing K` to `fun χ => ⟨a χ, (mem_unitBallRing _).2 (ha χ)⟩`. Set `P : MvPolynomial (Fin n) (unitBallRing K)` to `∑ χ ∈ F, monomial (e χ) (aO χ)`. Establish `hcoeff : coeff (e χ₀) P = aO χ₀`. Simplify using `only [P, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single_of_mem χ₀ hχ₀]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `χ hχ hne`. Rewrite using `[if_neg]`. Conclude with `fun h => hne (he χ hχ χ₀ hχ₀ h)`. Establish `hQ : MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) P ≠ 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h4` using `congrArg (coeff (e χ₀)) h0`. Rewrite `h4` using `[coeff_map, hcoeff, coeff_zero, residue_eq_zero_iff_norm_lt_one]`. Conclude with `absurd ha₀ (ne_of_lt h4)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hyne⟩ : ∃ y ∈ Set.pi Set.univ (fun _ : Fin n => {y : IsLocalRing.ResidueField (unitBallRing K) | ∃ x : unitBallRing K, (x : K) ∈ K₀ ∧ ‖(x : K)‖ = 1 ∧ IsLocalRing.residue _ x = y}), eval y (MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) P) ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hQ (funext_set _ (fun _ => infinite_residues K₀ hK₀) (fun x hx => by`. Rewrite using `[hcon x hx, map_zero]))`. Use `choose σ hσK hσ1 hσr using fun i => hy i (Set.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun i => (σ i : K), fun i => ⟨hσK i, hσ1 i⟩, ?_⟩` and prove the remaining obligations. Establish `hr : IsLocalRing.residue (unitBallRing K) (eval σ P) ≠ 0`. Establish `hy' : y = fun i => IsLocalRing.residue (unitBallRing K) (σ i)`. Use function extensionality and compare the values at `fun i => (hσr i).symm`. Establish `h5 : eval y (MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) P) = IsLocalRing.residue (unitBallRing K) (eval σ P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eval_map, hy', MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, hom_eval₂, RingHom.comp_id]`. Rewrite `hyne` using `[h5]`. Then use the resulting hypothesis. Establish `hge : 1 ≤ ‖((eval σ P : unitBallRing K) : K)‖` using `not_lt.1 fun h => hr ((residue_eq_zero_iff_norm_lt_one _).2 h)`. Establish `hσ0 : ∀ i, (σ i : K) ≠ 0` using `fun i h => by`. Establish `h6` using `hσ1 i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h6` using `[h, norm_zero]`. Conclude with `zero_ne_one h6`. Establish `hval : ((eval σ P : unitBallRing K) : K) = ∑ χ ∈ F, a χ * ∏ i, (σ i : K) ^ (χ i + N).toNat`. Simplify using `only [P, map_sum, eval_monomial]`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using `[e, aO]`. Establish `hterm : ∀ χ ∈ F, ∏ i, (σ i : K) ^ (χ i + N).toNat = (∏ i, (σ i : K) ^ χ i) * ∏ i, (σ i : K) ^ N`. Introduce `χ hχ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (hN χ hχ i), zpow_add₀ (hσ0 i), zpow_natCast]`. Establish `hsum : ((eval σ P : unitBallRing K) : K) = (∑ χ ∈ F, a χ * ∏ i, (σ i : K) ^ χ i) * ∏ i, (σ i : K) ^ N`. Rewrite using `[hval, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Rewrite using `[hterm χ hχ, mul_assoc]`. Establish `hnorm1 : ‖∏ i, (σ i : K) ^ N‖ = 1`. Rewrite using `[norm_prod]`. Simplify using `[norm_pow, hσ1]`.
-
-Rewrite `hge` using `[hsum, norm_mul, hnorm1, mul_one]`. Conclude with `hge`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torus_point_one_le_norm_sum {K : Type*} [NormedField K] [IsUltrametricDist K]
     (K₀ : Subfield K) (hK₀ : ResidueFieldInfiniteOn (K₀ : Set K)) {n : ℕ}

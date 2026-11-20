@@ -17,7 +17,7 @@ open GlobalTheory.OpenOmega
 namespace GlobalTheory.OpenOmega
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨s, rfl⟩` from `GlobalTheory.SqZeroPt.surjective_sec_zeroSec R M t`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `Scheme.Hom.comp_apply (zeroSec R M).left z.left s`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_subset_range_unit {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {M : Type} [AddCommGroup M]
     [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (z : SpAlg R (TrivSqZeroExt R M) ⟶ G)
@@ -29,7 +29,7 @@ theorem range_subset_range_unit {R : Type} [CommRing R] {G : Over (Sp R)} [GrpOb
   exact Scheme.Hom.comp_apply (zeroSec R M).left z.left s
 
 /- English proof (translation)
-Introduce `M _ _ _ _ z z' hz hz' e`. Take `⟨U, V, hU, hB⟩` from `h n`. Conclude with `(hB (TrivSqZeroExt R M)).injOn ((range_subset_range_unit z.1 hz).trans hU) ((range_subset_range_unit z'.1 hz').trans hU) e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptInj_of_isOpenNearZero (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G]
     (GG : PDivGroup p R) (θ : TorsionMap G GG) (h : θ.IsOpenNearZero) (n : ℕ) : PtInj θ n := by

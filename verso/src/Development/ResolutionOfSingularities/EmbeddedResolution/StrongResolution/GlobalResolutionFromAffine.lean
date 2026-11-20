@@ -51,7 +51,7 @@ def IsCompatibleWithSmoothOfRelativeDimension (B : AffineResolutionRule.{u}) : P
     u ≫ pY = pV → IsPullbackBlowupSequence u (B k V pV) (B k Y pY)
 
 /- English proof (translation)
-Introduce `k _ _ Y V pY pV _ _ _ _ _ _ _ _ u r _ hu`. Conclude with `isPullbackBlowupSequence_affineResolutionRuleOfPrincipalization_of_smooth A hAlg hw hemb hsncE hsm hex hcmp k Y V pY pV u r hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompatibleWithSmoothOfRelativeDimension_affineResolutionRule (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -64,7 +64,7 @@ theorem isCompatibleWithSmoothOfRelativeDimension_affineResolutionRule (A : Prin
     k Y V pY pV u r hu
 
 /- English proof (translation)
-Establish `h : AlgebraicGeometry.SmoothOfRelativeDimension (r + 0) (f ≫ g)` using `inferInstance`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem smoothOfRelativeDimension_comp_zero {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (r : ℕ) [AlgebraicGeometry.SmoothOfRelativeDimension r f]
@@ -74,7 +74,7 @@ private theorem smoothOfRelativeDimension_comp_zero {A B C : Scheme.{u}} (f : A 
   simpa using h
 
 /- English proof (translation)
-Establish `h : AlgebraicGeometry.SmoothOfRelativeDimension (0 + r) (f ≫ g)` using `inferInstance`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem smoothOfRelativeDimension_zero_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (r : ℕ) [AlgebraicGeometry.SmoothOfRelativeDimension 0 f]
@@ -84,7 +84,7 @@ private theorem smoothOfRelativeDimension_zero_comp {A B C : Scheme.{u}} (f : A 
   simpa using h
 
 /- English proof (translation)
-Introduce and unpack `x ⟨w, hw, rfl⟩`. Simplify using `using e hw`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem opensImage_le_preimage {X Y : Scheme.{u}} (f : X ⟶ Y) (Z : X.Opens) (U₀ : Y.Opens)
     (W : Z.toScheme.Opens) (e : W ≤ (Z.ι ≫ f) ⁻¹ᵁ U₀) : Z.ι ''ᵁ W ≤ f ⁻¹ᵁ U₀ := by
@@ -92,13 +92,13 @@ private theorem opensImage_le_preimage {X Y : Scheme.{u}} (f : X ⟶ Y) (Z : X.O
   simpa using e hw
 
 /- English proof (translation)
-Establish `hL : MorphismProperty.RespectsLeft (@AlgebraicGeometry.SmoothOfRelativeDimension r : MorphismProperty Scheme.{u}) (MorphismProperty.isomorphisms Scheme.{u})`. Prove the components needed by the constructor for the conclusion. Introduce `X Y Z i hi f hf`. Establish `: CategoryTheory.IsIso i` using `hi`. Establish `: AlgebraicGeometry.IsOpenImmersion i` using `inferInstance`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 i` using `inferInstance`. Use `hf` as an intermediate fact. Conclude with `smoothOfRelativeDimension_zero_comp i f r`. Establish `hR : MorphismProperty.RespectsRight (@AlgebraicGeometry.SmoothOfRelativeDimension r : MorphismProperty Scheme.{u}) (MorphismProperty.isomorphisms Scheme.{u})`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X Y Z i hi f hf`. Establish `: CategoryTheory.IsIso i` using `hi`. Establish `: AlgebraicGeometry.IsOpenImmersion i` using `inferInstance`. Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 i` using `inferInstance`. Use `hf` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `smoothOfRelativeDimension_comp_zero f i r`. Conclude with `⟨⟩`.
+A detailed English derivation is pending.
 -/
 private theorem respectsIso_smoothOfRelativeDimension (r : ℕ) :
     MorphismProperty.RespectsIso
@@ -126,13 +126,13 @@ private theorem respectsIso_smoothOfRelativeDimension (r : ℕ) :
   exact ⟨⟩
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `htop : x ∈ (⊤ : X.Opens)` using `trivial`. Rewrite `htop` using `[← hU]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp htop`. Take `⟨H'⟩` from `H i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₀, hU₀, W, hW, hxW, e, hsm⟩` from `H' ⟨x, hi⟩`. Establish `e' : (U i).ι ''ᵁ W ≤ f ⁻¹ᵁ U₀` using `opensImage_le_preimage f (U i) U₀ W e`. Establish `hle : W ≤ (U i).ι ⁻¹ᵁ ((U i).ι ''ᵁ W)`. Introduce `w hw`. Conclude with `⟨w, hw, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `⟨U₀, hU₀, (U i).ι ''ᵁ W, hW.image_of_isOpenImmersion (U i).ι, ⟨⟨x, hi⟩, hxW, rfl⟩, e', ?_⟩` and prove the remaining obligations. Establish `h1` using `Scheme.Hom.appLE_comp_appLE (U i).ι f U₀ ((U i).ι ''ᵁ W) W e' hle`. Establish `h2` using `Scheme.Opens.ι_appLE (U i) ((U i).ι ''ᵁ W) W hle`. Establish `h3 : X.presheaf.map (homOfLE (le_refl ((U i).ι ''ᵁ W))).op = 𝟙 (X.presheaf.obj (Opposite.op ((U i).ι ''ᵁ W)))`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h23` using `h2.trans h3`. Establish `key : ((U i).ι ≫ f).appLE U₀ W e = f.appLE U₀ ((U i).ι ''ᵁ W) e'` using `h1.symm.trans ((congrArg (fun m => f.appLE U₀ ((U i).ι ''ᵁ W) e' ≫ m) h23).trans (Category.comp_id _))`. Conclude with `Eq.mp (congrArg (fun m => RingHom.IsStandardSmoothOfRelativeDimension r (CommRingCat.Hom.hom m)) key) hsm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smoothOfRelativeDimension_of_iSup_eq_top (r : ℕ) {X Y : Scheme.{u}} (f : X ⟶ Y)
     {ι : Type u} (U : ι → X.Opens) (hU : iSup U = ⊤)
@@ -163,9 +163,9 @@ private theorem smoothOfRelativeDimension_of_iSup_eq_top (r : ℕ) {X Y : Scheme
     RingHom.IsStandardSmoothOfRelativeDimension r (CommRingCat.Hom.hom m)) key) hsm
 
 /- English proof (translation)
-Use `respectsIso_smoothOfRelativeDimension r` as an intermediate fact. Use `AlgebraicGeometry.IsZariskiLocalAtSource.mk' ?_ ?_` and prove the remaining obligations. Introduce `X Y f U hf`. Use `hf` as an intermediate fact. Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 U.ι` using `inferInstance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smoothOfRelativeDimension_zero_comp U.ι f r`. Introduce `X Y f ι U hU H`. Conclude with `smoothOfRelativeDimension_of_iSup_eq_top r f U hU H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isZariskiLocalAtSource_smoothOfRelativeDimension (r : ℕ) :
     AlgebraicGeometry.IsZariskiLocalAtSource
@@ -180,9 +180,7 @@ private theorem isZariskiLocalAtSource_smoothOfRelativeDimension (r : ℕ) :
     exact smoothOfRelativeDimension_of_iSup_eq_top r f U hU H
 
 /- English proof (translation)
-Use `isZariskiLocalAtSource_smoothOfRelativeDimension r` as an intermediate fact. Establish `h : ∀ a : κ, AlgebraicGeometry.SmoothOfRelativeDimension r (φ.resLE (U (β a)) (V a) (hβ a) ≫ Sigma.ι (fun i => (U i).toScheme) (β a))`. Introduce `a`. Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 (Sigma.ι (fun i => (U i).toScheme) (β a))` using `inferInstance`. Conclude with `smoothOfRelativeDimension_comp_zero _ _ r`.
-
-Conclude with `AlgebraicGeometry.IsZariskiLocalAtSource.sigmaDesc h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X) (r : ℕ)
     [AlgebraicGeometry.SmoothOfRelativeDimension r φ] {ι κ : Type u}
@@ -199,11 +197,11 @@ theorem smoothOfRelativeDimension_opensCoprodMapOfRefinement {X' X : Scheme.{u}}
   exact AlgebraicGeometry.IsZariskiLocalAtSource.sigmaDesc h
 
 /- English proof (translation)
-Establish `hcX : CompactSpace ↥X` using `QuasiCompact.compactSpace_of_compactSpace f`. Establish `hcX' : CompactSpace ↥X'` using `QuasiCompact.compactSpace_of_compactSpace f'`. Take `⟨ι, hι, U, hUaff, hUtop⟩` from `exists_finite_affine_cover X`. Establish `: Finite ι` using `hι`. Take `⟨κ, hκ, V, β, hVaff, hβ, hVtop⟩` from `exists_finite_affine_cover_subordinate φ U hUtop`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Finite κ` using `hκ`. Establish `hWaff : AlgebraicGeometry.IsAffine (sigmaOpens X U)` using `isAffine_sigmaOpens X U hUaff`. Establish `hW'aff : AlgebraicGeometry.IsAffine (sigmaOpens X' V)` using `isAffine_sigmaOpens X' V hVaff`. Establish `hcW : CompactSpace ↥(sigmaOpens X U)` using `inferInstance`. Establish `hcW' : CompactSpace ↥(sigmaOpens X' V)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨sigmaOpens X U, sigmaOpensDesc X U ≫ f, sigmaOpensDesc X U, sigmaOpens X' V, sigmaOpensDesc X' V ≫ f', sigmaOpensDesc X' V, opensCoprodMapOfRefinement φ U V β hβ, hWaff, inferInstance, inferInstance, quasiCompact_of_compactSpace_of_subsingleton (sigmaOpensDesc X U ≫ f), inferIns …`.
+Supply the required witnesses or components.
 -/
 theorem exists_affine_etale_cover_of_smoothOfRelativeDimension {k : Type u} [Field k]
     {X X' : Scheme.{u}}
@@ -247,23 +245,23 @@ theorem exists_affine_etale_cover_of_smoothOfRelativeDimension {k : Type u} [Fie
     (by rw [← Category.assoc, opensCoprodMapOfRefinement_comp_sigmaOpensDesc, Category.assoc, hφ])⟩
 
 /- English proof (translation)
-Introduce `k _ _ X X' f f' _ _ _ _ _ _ φ r _ hφ`. Take `⟨W, q, c, W', q', c', ψ, hWaff, hWred, hqlft, hqqc, hcet, hcsurj, hcq, hW'aff, hW'red, hq'lft, hq'qc, hc'et, hc'surj, hc'q', hψsm, hψc, hψq⟩` from `exists_affine_etale_cover_of_smoothOfRelativeDimension f f' φ r hφ`. Use `hWaff` as an intermediate fact. Use `hWred` as an intermediate fact. Use `hqlft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hqqc` as an intermediate fact. Use `hcet` as an intermediate fact. Use `hcsurj` as an intermediate fact. Use `hW'aff` as an intermediate fact. Use `hW'red` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq'lft` as an intermediate fact. Use `hq'qc` as an intermediate fact. Use `hc'et` as an intermediate fact. Use `hc'surj` as an intermediate fact. Use `hψsm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmφ : AlgebraicGeometry.Smooth φ` using `AlgebraicGeometry.SmoothOfRelativeDimension.smooth r φ`. Establish `hsmψ : AlgebraicGeometry.Smooth ψ` using `AlgebraicGeometry.SmoothOfRelativeDimension.smooth r ψ`. Establish `hflatφ : AlgebraicGeometry.Flat φ` using `inferInstance`. Establish `hflatψ : AlgebraicGeometry.Flat ψ` using `inferInstance`. Establish `hflatc' : AlgebraicGeometry.Flat c'` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : ∀ y : ↥X, ∃ w, c w = y` using `fun y => hcsurj.surj y`. Establish `hc's : ∀ y : ↥X', ∃ w, c' w = y` using `fun y => hc'surj.surj y`. Establish `hA : IsStrictPullbackBlowupSeq c (B k W q) (R k X f)` using `hR k X f W q c hcq hcs`. Establish `hA' : IsStrictPullbackBlowupSeq c' (B k W' q') (R k X' f')` using `hR k X' f' W' q' c' hc'q' hc's`. Establish `hC : IsPullbackBlowupSequence ψ (B k W' q') (B k W q)` using `hB k W W' q q' ψ r hψq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsStrictPullbackBlowupSeq φ ((R k X f).baseChange φ) (R k X f)` using `isStrictPullbackSequenceOfBlowups_baseChange (R k X f) φ`. Establish `h2 : IsStrictPullbackBlowupSeq c' (((R k X f).baseChange φ).baseChange c') ((R k X f).baseChange φ)` using `isStrictPullbackSequenceOfBlowups_baseChange ((R k X f).baseChange φ) c'`. Establish `h3 : IsStrictPullbackBlowupSeq (c' ≫ φ) (((R k X f).baseChange φ).baseChange c') (R k X f)` using `h2.comp h1`. Establish `h4 : IsStrictPullbackBlowupSeq ψ ((B k W q).baseChange ψ) (B k W q)` using `isStrictPullbackSequenceOfBlowups_baseChange (B k W q) ψ`. Establish `h5 : IsStrictPullbackBlowupSeq (c' ≫ φ) ((B k W q).baseChange ψ) (R k X f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5' : IsStrictPullbackBlowupSeq (ψ ≫ c) ((B k W q).baseChange ψ) (R k X f)` using `h4.comp hA`. Rewrite `h5'` using `[hψc]`. Then use the resulting hypothesis. Establish `h6` using `h3.isomorphic h5`. Establish `h7` using `h6.withoutIsoBlowups`. Establish `h8 : IsPullbackBlowupSequence ψ ((B k W q).baseChange ψ).withoutIsoBlowups (B k W q)` using `h4.isPullbackSequenceOfBlowups_withoutIsoBlowups`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9` using `hC.isomorphic h8`. Establish `h10` using `h9.trans h7.symm`. Establish `h11` using `h2.withoutIsoBlowups`. Establish `h12` using `hA'.isomorphic_of_isomorphic h11 h10`. Establish `h13 : IsPullbackBlowupSequence φ ((R k X f).baseChange φ).withoutIsoBlowups (R k X f)` using `h1.isPullbackSequenceOfBlowups_withoutIsoBlowups`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h13.of_isomorphic h12.symm`.
+A detailed English derivation is pending.
 -/
 theorem isCompatibleWithSmoothMorphisms_of_isInducedByAffineRule (B : AffineResolutionRule.{u})
     (hB : IsCompatibleWithSmoothOfRelativeDimension B) (R : ResolutionRule.{u})
@@ -325,11 +323,11 @@ theorem isCompatibleWithSmoothMorphisms_of_isInducedByAffineRule (B : AffineReso
   exact h13.of_isomorphic h12.symm
 
 /- English proof (translation)
-Take `⟨W, q, g, hWaff, hWred, hqlft, hqqc, hget, hgsurj, hgq⟩` from `exists_affine_etale_cover_of_isReduced Y p`. Use `hWaff` as an intermediate fact. Use `hWred` as an intermediate fact. Use `hqlft` as an intermediate fact. Use `hqqc` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hget` as an intermediate fact. Use `hgsurj` as an intermediate fact. Establish `: AlgebraicGeometry.Flat g` using `inferInstance`. Establish `hsurj : ∀ y : ↥Y, ∃ w, g w = y` using `fun y => hgsurj.surj y`. Establish `h1 : IsStrictPullbackBlowupSeq g (B k W q) s` using `hc W q g hgq hsurj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsStrictPullbackBlowupSeq g (B k W q) (B k Y p)` using `hetale k Y W p q g hgq hsurj`. Conclude with `IsStrongResolution.of_isomorphic k Y p (h2.isomorphic_of_isomorphic h1 (SequenceOfBlowups.isomorphic_refl _)) (hres k Y p)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isStrongResolution_of_isInducedByAffineRule_of_isAffine (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -358,19 +356,17 @@ private theorem isStrongResolution_of_isInducedByAffineRule_of_isAffine (B : Aff
   exact IsStrongResolution.of_isomorphic k Y p (h2.isomorphic_of_isomorphic h1 (SequenceOfBlowups.isomorphic_refl _)) (hres k Y p)
 
 /- English proof (translation)
-Establish `hOI : ∀ i : X.affineCover.I₀, AlgebraicGeometry.IsOpenImmersion (X.affineCover.f i)` using `fun _ => inferInstance`. Establish `hA : ∀ i : X.affineCover.I₀, AlgebraicGeometry.IsAffine (X.affineCover.X i)` using `fun _ => inferInstance`. Establish `hRed : ∀ i : X.affineCover.I₀, AlgebraicGeometry.IsReduced (X.affineCover.X i)`. Introduce `i`. Use `hOI i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `inferInstance`. Establish `hLFT : ∀ i : X.affineCover.I₀, AlgebraicGeometry.LocallyOfFiniteType (X.affineCover.f i ≫ f)`. Introduce `i`. Use `hOI i` as an intermediate fact. Conclude with `inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqc : ∀ i : X.affineCover.I₀, AlgebraicGeometry.QuasiCompact (X.affineCover.f i ≫ f)`. Introduce `i`. Use `hA i` as an intermediate fact. Establish `: CompactSpace ↥(X.affineCover.X i)` using `inferInstance`. Conclude with `quasiCompact_of_compactSpace_of_subsingleton (X.affineCover.f i ≫ f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCharts : ∀ i : X.affineCover.I₀, AlgebraicGeometry.SmoothOfRelativeDimension 0 (X.affineCover.f i)`. Introduce `i`. Use `hOI i` as an intermediate fact. Conclude with `inferInstance`. Establish `d : LocalResolutionData k f (R k X f)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `{ cover := X.affineCover seq := fun i => haveI := hLFT i haveI := hqc i haveI := hRed i R k (X.affineCover.X i) (X.affineCover.f i ≫ f) isPullback := ?_ finiteType := hLFT isResolution := ?_ }` and prove the remaining obligations. Introduce `i`. Use `hLFT i` as an intermediate fact. Use `hqc i` as an intermediate fact. Use `hRed i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hCharts i` as an intermediate fact. Conclude with `hsmF k X (X.affineCover.X i) f (X.affineCover.f i ≫ f) (X.affineCover.f i) 0 rfl`. Introduce `i`. Use `hA i` as an intermediate fact. Use `hLFT i` as an intermediate fact.
-
-Use `hqc i` as an intermediate fact. Use `hRed i` as an intermediate fact. Conclude with `isStrongResolution_of_isInducedByAffineRule_of_isAffine B hres hetale k (X.affineCover.X i) (X.affineCover.f i ≫ f) (R k (X.affineCover.X i) (X.affineCover.f i ≫ f)) (hcomes k (X.affineCover.X i) (X.affineCover.f i ≫ f))`. Use `⟨d.smooth_lastStructMap_comp, d.isProper_lastStructMap, d.isIso_lastStructMap_restrict_smoothLocus, ?_, d.centersLieOver_smoothLocusComplement, d.isStrictNormalCrossingsDivisor_reducedInverseImage⟩` and prove the remaining obligations. Conclude with `d.dense_preimage_smoothLocus`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isStrongResolution_of_isInducedByAffineRule (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -445,9 +441,9 @@ private theorem isStrongResolution_of_isInducedByAffineRule (B : AffineResolutio
   exact d.dense_preimage_smoothLocus
 
 /- English proof (translation)
-Establish `hcen : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u}) (p : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.QuasiCompact p] [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsAffine Y] (i : ℕ), i < (B k Y p).length → (B k Y p).ce …`. Introduce `k _ _ Y p _ _ _ _ i hi`. Conclude with `AffineResolutionRule.center_ne_top B hopen k Y p i hi`. Establish `H` using `existsGluedBlowupSequence_of_center_ne_top B hcen hetale`. Take `⟨R, hcomes⟩ : ∃ R : ResolutionRule.{u}, ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u}) (p : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.QuasiCompact p] [AlgebraicGeometry.IsReduced Y], IsInducedByAffineRule B k Y p (R k Y p)` from `⟨fun k _ _ Y p _ _ _ => (H k Y p).choose, fun k _ _ Y p _ _ _ => (H k Y p).choose_spec.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsmF : IsCompatibleWithSmoothMorphisms R` using `isCompatibleWithSmoothMorphisms_of_isInducedByAffineRule B hsmooth R hcomes`. Use `⟨R, ?_, hsmF, inducedRuleCompatibleWithFieldExtension B hopen hfield R hcomes⟩` and prove the remaining obligations. Use `(isStrongResolutionRule_iff R).mpr ?_` and prove the remaining obligations. Introduce `k _ _ X f _ _ _`. Conclude with `isStrongResolution_of_isInducedByAffineRule B hres hetale R hcomes hsmF k X f`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem strongResolutionOfSingularitiesCharZero_of_affineResolutionRule (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -481,7 +477,7 @@ theorem strongResolutionOfSingularitiesCharZero_of_affineResolutionRule (B : Aff
   exact isStrongResolution_of_isInducedByAffineRule B hres hetale R hcomes hsmF k X f
 
 /- English proof (translation)
-The claim follows from `strongResolutionOfSingularitiesCharZero_of_affineResolutionRule (affineResolutionRuleOfPrincipalization A hemb hsncE hsm hex) haff (isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization A hAlg hw hemb hsncE hsm hex hcmp) (isCompatibleWithOpenImmersions_affineResoluti …`.
+A detailed English derivation is pending.
 -/
 theorem strongResolutionOfSingularitiesCharZero_of_principalizationAlgorithm (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})

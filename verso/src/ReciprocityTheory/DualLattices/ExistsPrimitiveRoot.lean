@@ -14,7 +14,7 @@ section Untilt
 variable {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private lemma pow_p_pow_eq (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n) (n : ℕ) :
     f n ^ p ^ n = f 0 := by
@@ -23,7 +23,7 @@ private lemma pow_p_pow_eq (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n) (n 
   | succ n ih => rw [pow_succ', pow_mul, hf, ih]
 
 /- English proof (translation)
-Use `show Perfection.teichmuller p (span {(p : O)}) x = f 0`. Conclude with `Perfection.teichmuller_spec fun n => ⟨f n, (hx n).symm, by rw [pow_p_pow_eq f hf n]⟩`.
+A detailed English derivation is pending.
 -/
 lemma untilt_eq_of_coeff (x : PreTilt O p) (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n)
     (hx : ∀ n, Perfection.coeff (ModP O p) p n x = Ideal.Quotient.mk (span {(p : O)}) (f n)) :
@@ -44,14 +44,14 @@ lemma coeff_ofRoots (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n) (n : ℕ) 
   rfl
 
 /- English proof (translation)
-The claim follows from `untilt_eq_of_coeff _ f hf (coeff_ofRoots f hf)`.
+A detailed English derivation is pending.
 -/
 lemma untilt_ofRoots (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n) :
     (ofRoots f hf).untilt = f 0 :=
   untilt_eq_of_coeff _ f hf (coeff_ofRoots f hf)
 
 /- English proof (translation)
-Apply `untilt_eq_of_coeff _ (fun n => f (n + 1)) (fun n => hf (n + 1))` to reduce the goal to its premises. Introduce `n`. Rewrite using `[← PreTilt.coeff_def, PreTilt.coeff_frobeniusEquiv_symm, PreTilt.coeff_def]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma untilt_symm_ofRoots (f : ℕ → O) (hf : ∀ n, f (n + 1) ^ p = f n) :
     ((_root_.frobeniusEquiv (PreTilt O p) p).symm (ofRoots f hf)).untilt = f 1 := by
@@ -68,7 +68,7 @@ variable (C : Type) [Field C] [IsAlgClosed C] (v : Valuation C NNReal)
   (O : Type) [CommRing O] [Algebra O C]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `h1 : 1 < v z ^ p` using `one_lt_pow₀ hlt hp.out.ne_zero`. Rewrite `h1` using `[← map_pow, h]`. Conclude with `absurd (hv.map_le_one w) (not_le.2 h1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma le_one_of_pow (hv : v.Integers O) {z : C} {w : O} (h : z ^ p = algebraMap O C w) :
     v z ≤ 1 := by
@@ -79,7 +79,7 @@ private lemma le_one_of_pow (hv : v.Integers O) {z : C} {w : O} (h : z ^ p = alg
   exact absurd (hv.map_le_one w) (not_le.2 h1)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O C x) hp.out.pos`. Take `⟨y, rfl⟩` from `hv.exists_of_le_one (le_one_of_pow C v O hv hz)`. Conclude with `⟨y, hv.hom_inj (by rw [map_pow, hz])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_root (hv : v.Integers O) (x : O) : ∃ y : O, y ^ p = x := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq (algebraMap O C x) hp.out.pos
@@ -87,9 +87,9 @@ lemma exists_root (hv : v.Integers O) (x : O) : ∃ y : O, y ^ p = x := by
   exact ⟨y, hv.hom_inj (by rw [map_pow, hz])⟩
 
 /- English proof (translation)
-Establish `: NeZero (p : C)` using `⟨Nat.cast_ne_zero.2 hp.out.ne_zero⟩`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic p C) (ne_of_gt (Polynomial.degree_cyclotomic_pos p C hp.out.pos))`. Establish `hzp : IsPrimitiveRoot z p` using `Polynomial.isRoot_cyclotomic_iff.1 hz`. Establish `hz1 : z ^ p = algebraMap O C 1` using `by rw [hzp.pow_eq_one, map_one]`. Take `⟨y, rfl⟩` from `hv.exists_of_le_one (le_one_of_pow C v O hv hz1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, (IsPrimitiveRoot.map_iff_of_injective hv.hom_inj).1 hzp⟩`.
+Supply the required witnesses or components.
 -/
 lemma exists_primitiveRoot [CharZero C] (hv : v.Integers O) :
     ∃ ζ : O, IsPrimitiveRoot ζ p := by
@@ -108,18 +108,16 @@ private def rootSeq (r : O → O) (c : O) : ℕ → O
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Use `choose r hr using exists_root (p := p) C v O hv`. Conclude with `⟨ofRoots (rootSeq O r p) (fun n => hr _), untilt_ofRoots _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pflat (hv : v.Integers O) : ∃ pflat : PreTilt O p, pflat.untilt = (p : O) := by
   choose r hr using exists_root (p := p) C v O hv
   exact ⟨ofRoots (rootSeq O r p) (fun n => hr _), untilt_ofRoots _ _⟩
 
 /- English proof (translation)
-Use `choose r hr using exists_root (p := p) C v O hv`. Take `⟨ζ, hζ⟩` from `exists_primitiveRoot (p := p) C v O hv`. Set `f : ℕ → O` to `fun n => Nat.casesOn n 1 (fun m => rootSeq O r ζ m)`. Establish `hf : ∀ n, f (n + 1) ^ p = f n`. Introduce `n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero => exact hζ.pow_eq_one`. Consider the case `succ m => exact hr _`. Use `⟨ofRoots f hf, ?_⟩` and prove the remaining obligations. Rewrite using `[untilt_symm_ofRoots]`.
-
-Conclude with `hζ`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eps [CharZero C] (hv : v.Integers O) :
     ∃ ε : PreTilt O p,

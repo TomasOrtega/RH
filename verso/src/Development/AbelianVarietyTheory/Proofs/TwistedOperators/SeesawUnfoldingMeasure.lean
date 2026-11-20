@@ -33,65 +33,57 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm`. Establish `hpsi` using `hO.psi`. Substitute `hpsi` using the available equality. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd Bs.ψ` using `hT.base.std`. Set `dF : ((Fin W.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ) → (WO W X → ℂ)` to `fun ΦD x => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ (cA.symm x) ΦD)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdat : ∀ ΦD f, IsDatum Γ.M Bs.ψ cA ΦD f → f = dF ΦD`. Introduce `ΦD f h`. Use function extensionality and compare the values at `x`. Use `h.2 (cA.symm x)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hdat' : ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), IsDatum Γ.M Bs.ψ cA ΦD (dF ΦD)`. Introduce `ΦD h`. Use `⟨h, fun u => ?_⟩` and prove the remaining obligations. Use `show _ = GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ (cA.symm (cA u)) ΦD)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddEquiv.symm_apply_apply]`. Establish `hS : ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank))`. Introduce `ΦD h`. Take `⟨_, _, hd⟩` from `hO.algA' ΦD h`. Conclude with `hd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `dF_sub : ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), ∀ ΨD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), dF (ΦD - ΨD) = dF ΦD - dF ΨD`. Introduce `ΦD h ΨD h'`. Conclude with `(hdat _ _ (GlobalTheory.SquareAgree.CoinvPass.isDatum_sub hstd (hdat' ΦD h) (hdat' ΨD h'))).symm`. Establish `dF_add : ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), ∀ ΨD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), dF (ΦD + ΨD) = dF ΦD + dF ΨD`. Introduce `ΦD h ΨD h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hdat _ _ (GlobalTheory.SquareAgree.CoinvPass.isDatum_add hstd (hdat' ΦD h) (hdat' ΨD h'))).symm`. Establish `dF_smul : ∀ (c : ℂ), ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), dF (c • ΦD) = c • dF ΦD`. Introduce `c ΦD h`. Conclude with `(hdat _ _ (GlobalTheory.SquareAgree.CoinvPass.isDatum_smul c (hdat' ΦD h))).symm`. Establish `dF_zero : dF 0 = 0` using `(hdat _ _ GlobalTheory.SquareAgree.CoinvPass.isDatum_zero).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAlgF : ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, dF ΦD ∈ algF Bs.ψ θ true A B`. Introduce `ΦD h`. Take `⟨Φ, hΦ, hd⟩` from `hO.algA' ΦD h`. Rewrite using `[← hdat _ _ hd]`. Conclude with `hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `inj : ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), ∀ ΨD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), dF ΦD = dF ΨD → ΦD = ΨD`. Introduce `ΦD h ΨD h' he`. Establish `h0` using `GlobalTheory.T.eq_zero_of_thetaDistribution_heisenbergTranslates Γ.M Bs.ψ hstd (ΦD - ΨD) (sub_mem h h') (fun u => by`. Use `congrFun (dF_sub ΦD h ΨD h') (cA u)` as an intermediate fact. Rewrite `this` using `[he, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : dF (ΦD - ΨD) (cA u) = GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ u (ΦD - ΨD))` using `by show GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ (cA.symm (cA u)) (ΦD - ΨD)) = _`. Rewrite using `[AddEquiv.symm_apply_apply]`. Rewrite using `[← e2, this]`. Use the proof step `rfl)`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `toS : ∀ ΦD ∈ GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), dF ΦD ∈ algF Bs.ψ θ true A B → ΦD ∈ algD Γ.M Bs.ψ Bs.emb`. Introduce `ΦD h hF`. Take `⟨ΨD, hΨ, hd⟩` from `hO.algA _ hF`. Rewrite using `[inj ΦD h ΨD (hS _ hΨ) (hdat _ _ hd)]`. Conclude with `hΨ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWf : ∀ h' ∈ GfC X, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, om (1, kapX X e hO.JX h') ΦD ∈ algD Γ.M Bs.ψ Bs.emb ∧ dF (om (1, kapX X e hO.JX h') ΦD) = ωA (1, h') (dF ΦD)`. Introduce `h' hh' ΦD hΦD`. Establish `hd` using `hO.weilA ΦD (dF ΦD) (hdat' ΦD (hS _ hΦD)) 1 h'`. Rewrite `hd` using `[GlobalTheory.LocWeilAct.conjU_one']`. Establish `e1` using `hdat _ _ hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨toS _ hd.1 ?_, e1.symm⟩` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `hm.mapA.stabX.1 h' hh' _ (hAlgF _ hΦD)`. Establish `hVf : ∀ g' ∈ GfC W, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW g', 1) ΦD ∈ algD Γ.M Bs.ψ Bs.emb ∧ dF (om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW g', 1) ΦD) = ωA (g', 1) (dF ΦD)`. Introduce `g' hg' ΦD hΦD`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd` using `hO.weilA ΦD (dF ΦD) (hdat' ΦD (hS _ hΦD)) g' 1`. Rewrite `hd` using `[GlobalTheory.KapXLine.kapX_one]`. Establish `e1` using `hdat _ _ hd`. Use `⟨toS _ hd.1 ?_, e1.symm⟩` and prove the remaining obligations. Rewrite using `[← e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hm.mapA.stabM.1 g' hg' _ (hAlgF _ hΦD)`. Set `K : Submodule ℂ ((Fin W.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ)` to `{ carrier := {ΦD | ΦD ∈ algD Γ.M Bs.ψ Bs.emb ∧ p (dF ΦD) = 0} add_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨add_mem ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[dF_add a (hS _ ha) b (hS _ hb), map_add, ha', hb', add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := ⟨zero_mem _, by rw [dF_zero, map_zero]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨ha, ha'⟩`. Use `⟨Submodule.smul_mem _ c ha, ?_⟩` and prove the remaining obligations. Rewrite using `[dF_smul c a (hS _ ha), map_smul, ha', smul_zero] }`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `memK : ∀ ΦD, ΦD ∈ K ↔ ΦD ∈ algD Γ.M Bs.ψ Bs.emb ∧ p (dF ΦD) = 0` using `fun _ => Iff.rfl`. Use `⟨K, ⟨⟨fun x hx => hx.1, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `v h hh ΦD ⟨hΦD, hp0⟩`. Take `⟨h', hh', rfl⟩` from `GlobalTheory.T.transposeGramUnitary_surjective_finitePlaceSupported D X e Γ.W hO.JX v h hh`. Take `⟨h1, h2⟩` from `hWf h' hh' ΦD hΦD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hm.mapA.eqf h' hh' _ (hAlgF _ hΦD), hp0, map_zero]`. Introduce and unpack `k hk ΦD ⟨hΦD, hp0⟩`. Establish `h1` using `GlobalTheory.T.seesaw_unfolding_square_integral hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm k hk ΦD hΦD`. Conclude with `⟨h1, GlobalTheory.T.p_eq_zero_of_kInf_right_translate hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm k hk ΦD hΦD _ _ (hdat' _ (hS _ hΦD)) (hdat' _ (hS _ h1)) hp0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `γ hγ ΦD ⟨hΦD, hp0⟩ Φ₁ hΦ₁ hder`. Conclude with `⟨hΦ₁, GlobalTheory.T.seesaw_unfolding_global_integral hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm γ hγ ΦD hΦD Φ₁ hΦ₁ hder _ _ (hdat' _ (hS _ hΦD)) (hdat' _ (hS _ hΦ₁)) hp0⟩`. Introduce `v g hg ΦD hΦD`. Establish `hg'` using `GlobalTheory.SquareAgree.CoinvPass.conjUInv_mem_GfC W Γ.V 1 one_ne_zero hO.JW v g hg`. Establish `eg : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (GlobalTheory.ConjUTransport.conjUInv W 1 one_ne_zero hO.JW g) = g` using `(GlobalTheory.ConjUTransport.conjEquiv W 1 one_ne_zero hO.JW).apply_symm_apply g`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨h1, h2⟩` from `hVf _ hg' ΦD hΦD`. Rewrite `h1`, `h2` using `[eg]`. Use `⟨sub_mem h1 hΦD, ?_⟩` and prove the remaining obligations. Rewrite using `[dF_sub _ (hS _ h1) _ (hS _ hΦD), map_sub, h2, hm.mapA.invf _ hg' _ (hAlgF _ hΦD), sub_self]`. Introduce `k hk ΦD hΦD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `GlobalTheory.T.seesaw_unfolding_compatible hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm k hk ΦD hΦD`. Use `⟨sub_mem h1 hΦD, ?_⟩` and prove the remaining obligations. Rewrite using `[dF_sub _ (hS _ h1) _ (hS _ hΦD), map_sub, GlobalTheory.T.seesaw_unfolding_inner_product hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm k hk ΦD hΦD _ _ (hdat' _ (hS _ hΦD)) (hdat' _ (hS _ h1)), sub_self]`. Introduce `γ hγ ΦD hΦD Φ₁ hΦ₁ hder`. Conclude with `⟨hΦ₁, GlobalTheory.T.seesaw_unfolding_swap hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm γ hγ ΦD hΦD Φ₁ hΦ₁ hder _ (hdat' _ (hS _ hΦ₁))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `hK`. Establish `hnt` using `hm.irred.1`. Establish `: ∃ Φ ∈ algF Bs.ψ θ true A B, p Φ ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hb : (algF Bs.ψ θ true A B).map p = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩`. Conclude with `(Submodule.mem_bot ℂ).2 (hc Φ hΦ)`. Rewrite `hb` using `[hm.mapA.onto]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `top_ne_bot hb`. Take `⟨Φ, hΦ, hp⟩` from `this`. Take `⟨ΦD, hΦD, hd⟩` from `hO.algA Φ hΦ`. Establish `hK' : ΦD ∈ K` using `hK ▸ hΦD`. Conclude with `hp (by rw [hdat _ _ hd]; exact hK'.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `N hN hKN`. Establish `hNS : ∀ ΦD ∈ N, ΦD ∈ algD Γ.M Bs.ψ Bs.emb` using `fun ΦD h => hN.1.1 h`. Set `NI : Submodule ℂ Pi` to `{ carrier := {y | ∃ ΦD ∈ N, p (dF ΦD) = y} add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, add_mem ha hb, by rw [dF_add a (hS _ (hNS _ ha)) b (hS _ (hNS _ hb)), map_add]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `zero_mem' := ⟨0, zero_mem _, by rw [dF_zero, map_zero]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨a, ha, rfl⟩`. Conclude with `⟨c • a, Submodule.smul_mem _ c ha, by rw [dF_smul c a (hS _ (hNS _ ha)), map_smul]⟩ }`. Establish `hirr` using `hm.irred.2 NI ?_ ?_`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `hirr with hb | ht` into its components or cases. Use `left`. Use `le_antisymm (fun ΦD hΦD => ⟨hNS _ hΦD, ?_⟩) hKN` and prove the remaining obligations. Establish `: p (dF ΦD) ∈ NI` using `⟨ΦD, hΦD, rfl⟩`. Rewrite `this` using `[hb]`.
-
-Conclude with `(Submodule.mem_bot ℂ).1 this`. Use `right`. Use `le_antisymm (fun ΦD h => hNS _ h) (fun ΦD hΦD => ?_)` and prove the remaining obligations. Establish `: p (dF ΦD) ∈ NI` using `by rw [ht]; trivial`. Take `⟨ΨD, hΨ, he⟩` from `this`.
-
-Establish `hd : ΦD - ΨD ∈ K` using `⟨sub_mem hΦD (hNS _ hΨ), by`. Rewrite using `[dF_sub _ (hS _ hΦD) _ (hS _ (hNS _ hΨ)), map_sub, he, sub_self]⟩`. Use `add_mem (hKN hd) hΨ` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce and unpack `g hg _ ⟨ΦD, hΦD, rfl⟩`.
-
-Use `⟨_, GlobalTheory.T.kapX_finite_action_mem_of_isStabW hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm N hN.1 g hg ΦD hΦD, ?_⟩` and prove the remaining obligations. Rewrite using `[(hWf g hg ΦD (hNS _ hΦD)).2, hm.mapA.eqf g hg _ (hAlgF _ (hNS _ hΦD))]`. Introduce and unpack `τ Y hY _ ⟨ΦD, hΦD, rfl⟩`. Take `⟨Φ₁D, hΦ₁D, Φ₁, hΦ₁, hd, hder⟩` from `GlobalTheory.T.seesaw_unfolding_positive hP D Bs.ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm N hN.1 τ Y hY ΦD hΦD (dF ΦD) (hdat' _ (hS _ (hNS _ hΦD)))`. Use `⟨Φ₁D, hΦ₁D, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hdat _ _ hd]`. Conclude with `hm.mapA.eql τ Y hY _ (hAlgF _ (hNS _ hΦD)) _ hΦ₁ hder`. Introduce `Φ _ ΦD hΦD hd`. Rewrite using `[hdat _ _ hd]`. Conclude with `⟨fun h => h.2, fun h => ⟨hΦD, h⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.kernel_maximal_thetaSubspace : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

@@ -11,9 +11,9 @@ namespace GlobalTheory.QuotStage
 open Matrix
 
 /- English proof (translation)
-Establish `hS : IsUnit (quotGram H).det` using `isUnit_det_quotGram hH hu`. Use `letI iA : Invertible H.toBlocks₁₁ := invertibleOfIsUnitDet _ hu`. Establish `hS' : IsUnit (H.toBlocks₂₂ - H.toBlocks₂₁ * ⅟H.toBlocks₁₁ * H.toBlocks₁₂).det`. Rewrite using `[invOf_eq_nonsing_inv]`. Conclude with `hS`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI iS : Invertible (H.toBlocks₂₂ - H.toBlocks₂₁ * ⅟H.toBlocks₁₁ * H.toBlocks₁₂) := invertibleOfIsUnitDet _ hS'`. Use `letI iH : Invertible (fromBlocks H.toBlocks₁₁ H.toBlocks₁₂ H.toBlocks₂₁ H.toBlocks₂₂) := fromBlocks₁₁Invertible _ _ _ _`. Establish `h1 : H⁻¹ = ⅟(fromBlocks H.toBlocks₁₁ H.toBlocks₁₂ H.toBlocks₂₁ H.toBlocks₂₂)`. Rewrite using `[invOf_eq_nonsing_inv, fromBlocks_toBlocks]`. Rewrite using `[h1, invOf_fromBlocks₁₁_eq, toBlocks_fromBlocks₂₂, ← invOf_eq_nonsing_inv (⅟ _), invOf_invOf, quotGram, invOf_eq_nonsing_inv]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotGram_eq_inv_toBlocks₂₂ {m l : Type} [Fintype m] [Fintype l] [DecidableEq m]
     [DecidableEq l] (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (hH : IsUnit H.det)
@@ -32,17 +32,17 @@ theorem quotGram_eq_inv_toBlocks₂₂ {m l : Type} [Fintype m] [Fintype l] [Dec
     quotGram, invOf_eq_nonsing_inv]
 
 /- English proof (translation)
-Introduce `m l n _ _ _ _ _ _`. Use `⟨fun K hK => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h11 : (K.submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)).toBlocks₁₁ = K.toBlocks₁₁` using `by ext; rfl`. Rewrite using `[quotGram, quotGram, h11, subGram]`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂, of_apply, Matrix.sub_apply, mul_apply, submatrix_apply, Sum.map_inl, Sum.map_inr, id]`. Establish `hKu : IsUnit K.det` using `(isUnit_iff_isUnit_det _).1 hK.isUnit`. Establish `hKs : IsUnit (subGram K).det` using `(isUnit_iff_isUnit_det _).1 (posDef_subGram hK).isUnit`. Establish `hQ` using `posDef_quotGram hK`. Establish `hQu : IsUnit (quotGram K).det` using `(isUnit_iff_isUnit_det _).1 hQ.isUnit`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQs : IsUnit (subGram (quotGram K)).det` using `(isUnit_iff_isUnit_det _).1 (posDef_subGram hQ).isUnit`. Establish `hB : (K⁻¹.toBlocks₂₂).PosDef` using `hK.inv.submatrix Sum.inr_injective`. Establish `hBu : IsUnit (K⁻¹.toBlocks₂₂).det` using `(isUnit_iff_isUnit_det _).1 hB.isUnit`. Establish `hQinv : (quotGram K)⁻¹ = K⁻¹.toBlocks₂₂`. Rewrite using `[quotGram_eq_inv_toBlocks₂₂ K hKu hKs, nonsing_inv_nonsing_inv _ hBu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK'` using `hK.submatrix (Equiv.sumAssoc m l n).injective`. Establish `hK'u : IsUnit (K.submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n)).det` using `(isUnit_iff_isUnit_det _).1 hK'.isUnit`. Establish `hK's : IsUnit (subGram (K.submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n))).det` using `(isUnit_iff_isUnit_det _).1 (posDef_subGram hK').isUnit`. Rewrite using `[quotGram_eq_inv_toBlocks₂₂ _ hQu hQs, hQinv, quotGram_eq_inv_toBlocks₂₂ _ hK'u hK's, inv_submatrix_equiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `m' l' _ _ _ e f K`. Establish `h11 : (K.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₁₁ = K.toBlocks₁₁.submatrix e e` using `by ext; rfl`. Establish `h12 : (K.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₁₂ = K.toBlocks₁₂.submatrix e f` using `by ext; rfl`. Establish `h21 : (K.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₂₁ = K.toBlocks₂₁.submatrix f e` using `by ext; rfl`. Establish `h22 : (K.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₂₂ = K.toBlocks₂₂.submatrix f f` using `by ext; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[quotGram, quotGram, h11, h12, h21, h22, inv_submatrix_equiv, submatrix_mul_equiv, submatrix_mul_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotStages : ∀ (m l n : Type) [Fintype m] [Fintype l] [Fintype n] [DecidableEq m] [DecidableEq l] [DecidableEq n], (∀ K : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ, K.PosDef → subGram (quotGram K) = quotGram (K.submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)) ∧ quotGram (quotGram K) = quotGram (K.submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n))) ∧ ∀ (m' l' : Type) [Fintype m'] [Fintype l'] [DecidableEq m'] (e : m' ≃ m) (f : l' → l) (K : Matrix (m ⊕ l) (m ⊕ l) ℂ), quotGram (K.submatrix (Sum.map e f) (Sum.map e f)) = (quotGram K).submatrix f f := by
   intro m l n _ _ _ _ _ _

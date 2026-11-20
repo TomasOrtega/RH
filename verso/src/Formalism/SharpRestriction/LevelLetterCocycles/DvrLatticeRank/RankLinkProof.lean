@@ -19,9 +19,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `e : toLA W T π' c S = toLA W T π' c ⊤ ∘ₗ TensorProduct.map LinearMap.id (Submodule.inclusion le_top)`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `x s`. Simplify using `[toLA, TensorProduct.map_tmul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.range_comp_le_range _ _`.
+A detailed English derivation is pending.
 -/
 theorem toLA_range_le (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n)
     (S : Submodule O (LcQ W T π' c)) :
@@ -35,7 +35,7 @@ theorem toLA_range_le (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n)
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-Unfold `LamLA`. Conclude with `Submodule.comap_mono (toLA_range_le W T π' c S)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lamLA_le (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
     (S : Submodule O (LcQ W T π' c)) : LamLA W T π' Eπ h' c S ≤ LamLA W T π' Eπ h' c ⊤ := by
@@ -43,7 +43,7 @@ theorem lamLA_le (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMo
   exact Submodule.comap_mono (toLA_range_le W T π' c S)
 
 /- English proof (translation)
-Unfold `InvL`. Conclude with `le_trans inf_le_left (lamLA_le W T π' Eπ h' c S)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem invL_le (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n)
     (h' : ℕ) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) :
@@ -58,9 +58,9 @@ def iota (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Pr
     simpa [Submodule.mem_comap] using hx)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[LinearMap.mem_ker]`. Unfold `iota at hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hy` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Simplify `hy` using `[Submodule.mem_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iota_inj (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n)
     (h' : ℕ) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) :
@@ -75,11 +75,9 @@ theorem iota_inj (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL
   simpa [Submodule.mem_comap] using hy
 
 /- English proof (translation)
-Introduce `S`. Take `⟨hfin, htf⟩` from `hQ`. Establish `hinj` using `iota_inj W T Pt π' Eπ h' c S`. Use `haveI : Module.Finite O (Formalism.MainNotions.N.Ln34.QL W T Pt π' Eπ h' c) := hfin`. Use `haveI : IsNoetherian O (Formalism.MainNotions.N.Ln34.QL W T Pt π' Eπ h' c) := isNoetherian_of_isNoetherianRing_of_finite O _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `haveI hfinI : Module.Finite O (IIrest W T Pt π' Eπ h' c S) := Module.Finite.of_injective (iota W T Pt π' Eπ h' c S) hinj`. Use `haveI : NoZeroSMulDivisors O (Formalism.MainNotions.N.Ln34.QL W T Pt π' Eπ h' c) := by`. Use `⟨fun {a q} h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`.
-
-Conclude with `Or.inr (htf a q ha h)`. Use `haveI : NoZeroSMulDivisors O (IIrest W T Pt π' Eπ h' c S) := Function.Injective.noZeroSMulDivisors _ hinj (map_zero _) (fun a x => map_smul _ a x)`. Conclude with `⟨hfinI, Module.free_of_finite_type_torsion_free', hR S⟩`.
+Prove the first alternative. Prove the second alternative. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rank_link_of_model [IsDomain O] [IsPrincipalIdealRing O] (T : LocLat G Qp LL O)
     (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
@@ -105,7 +103,7 @@ end Local
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D HW hM hR l _ hl K LL hG π' E hp T h' hh hC hJ c`. Use `haveI := Formalism.MainNotions.N.Ln34.GenPf.isDVR (D.loc l) LL`. Conclude with `rank_link_of_model _ T _ π' _ h' c (hM l hl K LL hG π' E hp h' hh T hC hJ c) (hR l hl K LL hG π' E hp T h' hh hC hJ c)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rank_link_holds : Formalism.MainNotions.N.Ln34.SecondPropositionOfRank := by
   intro D HW hM hR l _ hl K LL hG π' E hp T h' hh hC hJ c

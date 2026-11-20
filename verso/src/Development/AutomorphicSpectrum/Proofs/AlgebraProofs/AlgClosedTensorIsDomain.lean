@@ -6,7 +6,7 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.tensor_algebraically_closed_domain`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_tensor_of_algebraically_closed_constants :
     ∀ (K Ω C : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [Field C] [Algebra K C],

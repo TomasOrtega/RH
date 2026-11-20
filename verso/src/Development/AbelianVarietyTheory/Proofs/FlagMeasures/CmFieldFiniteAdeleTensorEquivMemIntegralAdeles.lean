@@ -25,11 +25,9 @@ open IsDedekindDomain
 namespace GlobalTheory.FixedConj
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hS : Subring.closure ({x | ∃ y : 𝓞 E, x = (y : E) ⊗ₜ[F₁] (1 : FiniteAdeleRing (𝓞 F₁) F₁)} ∪ {x | ∃ a : FiniteAdeleRing (𝓞 F₁) F₁, (∀ v, a v ∈ v.adicCompletionIntegers F₁) ∧ x = (1 : E) ⊗ₜ[F₁] a}) ≤ (Formalism.L2.Herm.intAf (↥F₁) E).comap (((GlobalTheory.StdFrame.tensCastR (rfl : …`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `z (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `show (Algebra.TensorProduct.comm (↥F₁) (FiniteAdeleRing (𝓞 F₁) F₁) E) ((Algebra.TensorProduct.comm (↥F₁) (FiniteAdeleRing (𝓞 F₁) F₁) E).symm ((y : E) ⊗ₜ[F₁] 1)) ∈ _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(y : E), ⟨y, rfl⟩⟩, rfl⟩)`. Use `show (Algebra.TensorProduct.comm (↥F₁) (FiniteAdeleRing (𝓞 F₁) F₁) E) ((Algebra.TensorProduct.comm (↥F₁) (FiniteAdeleRing (𝓞 F₁) F₁) E).symm ((1 : E) ⊗ₜ[F₁] a)) ∈ _`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
-
-Conclude with `hS hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_tensCastR_symm_mem_intAf {E : Type} [Field E] [NumberField E] {F₁ F₂ : Subfield E} (h : F₁ = F₂)
     (x : E ⊗[F₂] FiniteAdeleRing (𝓞 F₂) F₂)
@@ -56,7 +54,7 @@ theorem comm_tensCastR_symm_mem_intAf {E : Type} [Field E] [NumberField E] {F₁
   exact hS hx
 
 /- English proof (translation)
-Introduce `D hF a ha`. Conclude with `comm_tensCastR_symm_mem_intAf hF a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adeleEquiv_mem_intAf : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (a : ReciprocityTheory.Aut.AL D.host.E),
     a ∈ ReciprocityTheory.Aut.ALint D.host.E → GlobalTheory.FixedConj.adeleEquiv D hF a ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E := by

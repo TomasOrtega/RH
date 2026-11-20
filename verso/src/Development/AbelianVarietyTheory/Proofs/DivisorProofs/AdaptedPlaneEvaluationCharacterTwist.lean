@@ -17,21 +17,21 @@ namespace GlobalTheory.ThK.UnipCpt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hdec` using `fun z => GlobalTheory.UnipCocompact.exists_decomp hL hA z`. Take `⟨hn, hxx, hyy, hxy, horth, hgram, -⟩` from `hA`. Establish `hinj : ∀ u : Fin d₁ → E, H.ι *ᵥ u = 0 → u = 0`. Substitute `hn` using the available equality. Set `Φ : E × (Fin d₁ → E) × E →ₗ[E] (Fin (d₁ + 2) → E)` to `(LinearMap.smulRight LinearMap.id H.x).comp (LinearMap.fst E E ((Fin d₁ → E) × E)) + (Matrix.mulVecLin H.ι).comp ((LinearMap.fst E (Fin d₁ → E) E).comp (LinearMap.snd E E ((Fin d₁ → E) × E))) + (LinearMap.smulRight LinearMap.id H.y).comp ((LinearMap.snd E (Fin d₁ → E) E).comp (Li …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ s u r, Φ (s, u, r) = s • H.x + H.ι *ᵥ u + r • H.y` using `fun s u r => by simp [Φ]`. Establish `hsurj : Function.Surjective Φ` using `fun z => by`. Take `⟨s, t, u, rfl⟩` from `hdec z`. Conclude with `⟨(s, u, t), hΦ s u t⟩`. Establish `hΦinj : Function.Injective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp; omega)).mpr hsurj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `h0 : Φ (0, u, 0) = Φ (0, 0, 0)` using `by rw [hΦ, hΦ, hu]; simp`. Conclude with `congrArg (fun p : E × (Fin d₁ → E) × E => p.2.1) (hΦinj h0)`. Introduce `hd`. Take `⟨u, hu, hJu⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hι : ∀ v : Fin d₁ → E, form σ W.J (H.ι *ᵥ u) (H.ι *ᵥ v) = 0` using `fun v => by`. Establish `hσv : (fun i => σ ((H.ι *ᵥ v) i)) = H.ι.map σ *ᵥ (fun i => σ (v i))`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (σ : E →+* E) H.ι v i`. Simplify using `only [form]`. Rewrite using `[hσv, ← Matrix.vecMul_transpose, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hgram, hJu, zero_dotProduct]`. Establish `hall : ∀ z, form σ W.J (H.ι *ᵥ u) z = 0` using `fun z => by`. Take `⟨s, t, w, rfl⟩` from `hdec z`. Rewrite using `[GlobalTheory.UnipCocompact.form_add, GlobalTheory.UnipCocompact.form_add, GlobalTheory.UnipCocompact.form_smul, GlobalTheory.UnipCocompact.form_smul, (horth u).1, (horth u).2, hι w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrow : (H.ι *ᵥ u) ᵥ* W.J = 0` using `funext fun j => by`. Establish `h` using `hall (Pi.single j 1)`. Establish `hs : (fun i => σ ((Pi.single j (1 : E) : Fin d → E) i)) = Pi.single j 1` using `funext fun i => by`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Simplify using `only [form] at h`. Rewrite `h` using `[hs, Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hzero : H.ι *ᵥ u = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ (Matrix.exists_vecMul_eq_zero_iff.mp ⟨_, hne, hrow⟩)`. Conclude with `hu (hinj u hzero)`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_adapted (B : Base F E) {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H : Plane E d d₁}
     {i₀ i₁ : ℕ} (hσ : ∀ x, σ (σ x) = x) (hL : W.L.IsLattice E) (hJ : W.J.det ≠ 0)
@@ -82,11 +82,11 @@ theorem det_ne_zero_of_adapted (B : Base F E) {d d₁ : ℕ} {W : Spc F E d} {W�
   exact hu (hinj u hzero)
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hA _ e₀ _ χX χW om r s r' s' hP`. Establish `hcm` using `hP.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hW` using `hP.skew`. Establish `hJ : W.J.det ≠ 0` using `GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B d r' s' W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ₁ : W₁.J.det ≠ 0` using `det_ne_zero_of_adapted B hσ hW.lat hJ hA`. Take `⟨K, hK, hKu⟩` from `GlobalTheory.UnipCocptForm.cocompact_unip_form W W₁ H' hcm hW.skew hA.rank hA.xx hA.yy hA.xy hA.orth hA.gram hJ hJ₁`. Use `⟨K, hK, fun u => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγu⟩` from `hKu u`. Use `⟨γ⁻¹, ?_, by rwa [inv_inv]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ratU σ W.J).inv_mem (Subgroup.mem_subgroupOf.1 hγ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_reps : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

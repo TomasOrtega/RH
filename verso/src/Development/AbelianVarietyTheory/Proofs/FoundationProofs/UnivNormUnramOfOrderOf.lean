@@ -13,19 +13,19 @@ noncomputable section
 namespace GlobalTheory.KA.UnivNorm
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.norm_extends l (n : ℚ_[l])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_nat_eq {l : ℕ} [Fact l.Prime] (n : ℕ) : ‖(n : Qbar l)‖ = ‖(n : ℚ_[l])‖ := by
   rw [← PadicAlgCl.norm_extends l (n : ℚ_[l])]; simp
 
 /- English proof (translation)
-Rewrite using `[norm_nat_eq]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one {l : ℕ} [Fact l.Prime] : ‖(l : Qbar l)‖ < 1 := by
   rw [norm_nat_eq]; exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Rewrite using `[norm_nat_eq]`. Conclude with `Padic.norm_natCast_eq_one_iff.2 h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_nat_of_coprime {l : ℕ} [Fact l.Prime] {n : ℕ} (h : n.Coprime l) : ‖(n : Qbar l)‖ = 1 := by
   rw [norm_nat_eq]; exact Padic.norm_natCast_eq_one_iff.2 h.symm
@@ -33,7 +33,7 @@ theorem norm_nat_of_coprime {l : ℕ} [Fact l.Prime] {n : ℕ} (h : n.Coprime l)
 def Bd {l : ℕ} [Fact l.Prime] {n : Type} (δ : ℝ) (X : Matrix n n (Qbar l)) : Prop := ∀ i k, ‖X i k‖ ≤ δ
 
 /- English proof (translation)
-Introduce `i k` and use `by rw [Matrix.mul_apply] refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun j _ => ?_ rw [norm_mul]; exact mul_le_mul (hX i j) (hY j k) (norm_nonneg _) ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mul {l : ℕ} [Fact l.Prime] {n : Type} [Fintype n] {a b : ℝ} {X Y : Matrix n n (Qbar l)} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hX : Bd a X) (hY : Bd b Y) : Bd (a * b) (X * Y) := fun i k => by
@@ -42,38 +42,34 @@ theorem Bd.mul {l : ℕ} [Fact l.Prime] {n : Type} [Fintype n] {a b : ℝ} {X Y 
   rw [norm_mul]; exact mul_le_mul (hX i j) (hY j k) (norm_nonneg _) ha
 
 /- English proof (translation)
-Introduce `i k` and use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hX i k) (hY i k))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.add {l : ℕ} [Fact l.Prime] {n : Type} {a : ℝ} {X Y : Matrix n n (Qbar l)}
     (hX : Bd a X) (hY : Bd a Y) : Bd a (X + Y) := fun i k =>
   (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hX i k) (hY i k))
 
 /- English proof (translation)
-Establish `hinv : ∀ g, M g * M g⁻¹ = 1` using `fun g => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hinv' : ∀ g, M g⁻¹ * M g = 1` using `fun g => by rw [← map_mul, inv_mul_cancel, map_one]`. Set `N : ∀ ε : ℝ, 0 < ε → Subgroup Γ` to `fun ε hε => { carrier := {s | Bd ε (M s - 1)} one_mem' := fun i k => by simp [hε.le] mul_mem' := fun {a b} ha hb => by`. Establish `e : M (a * b) - 1 = M a * (M b - 1) + (M a - 1)` using `by rw [map_mul, mul_sub, mul_one]; abel`. Use `Bd.mul zero_le_one hε.le (h1 a) hb` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul]`. Use `show Bd ε _`. Rewrite using `[e]`. Conclude with `this.add ha`. Use the proof step `inv_mem' := fun {a} ha i k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : M a⁻¹ - 1 = -(M a⁻¹ * (M a - 1))` using `by rw [mul_sub, mul_one, hinv', neg_sub]`. Use `Bd.mul zero_le_one hε.le (h1 a⁻¹) ha i k` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[e, Matrix.neg_apply, norm_neg]`. Conclude with `this }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ∀ ε hε, (N ε hε).Normal` using `fun ε hε => ⟨fun a ha g => by`. Establish `e : M (g * a * g⁻¹) - 1 = M g * (M a - 1) * M g⁻¹`. Rewrite using `[map_mul, map_mul, mul_sub, sub_mul, mul_one, hinv]`. Use `Bd.mul (mul_nonneg zero_le_one hε.le) zero_le_one (Bd.mul zero_le_one hε.le (h1 g) ha) (h1 g⁻¹)` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show Bd ε _`. Rewrite using `[e]`. Conclude with `this⟩`. Establish `ho : ∀ ε hε, IsOpen (N ε hε : Set Γ)` using `fun ε hε => by`. Establish `e : (N ε hε : Set Γ) = ⋂ i, ⋂ k, (fun s => M s i k) ⁻¹' Metric.closedBall ((1 : Matrix n n (Qbar l)) i k) ε`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `s`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, Metric.mem_closedBall, dist_eq_norm]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => (IsUltrametricDist.isOpen_closedBall _ hε.ne').preimage (hc i k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : 0 < ‖(l : Qbar l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `step : ∀ ε hε, ε ≤ ‖(l : Qbar l)‖ → ∀ s ∈ N ε hε, s ∈ N (‖(l : Qbar l)‖ * ε) (mul_pos hc0 hε)`. Introduce `ε hε hle s hs`. Establish `h2 : Bd ‖(l : Qbar l)‖ (∑ i ∈ Finset.range l, M s ^ i)`. Establish `e : ∑ i ∈ Finset.range l, M s ^ i = ∑ i ∈ Finset.range l, (M (s ^ i) - 1) + (l : Matrix n n (Qbar l))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`. Use `Bd.add (fun i k => ?_) (fun i k => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.sum_apply]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc0.le fun j _ => (((N ε hε).pow_mem hs j) i k).trans hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [Matrix.natCast_apply]; split_ifs <;> simp`. Establish `h3 : s ^ l ∈ N _ (mul_pos hc0 hε)` using `by show Bd _ _`. Rewrite using `[map_pow, ← geom_sum_mul]`. Conclude with `Bd.mul hc0.le hε.le h2 hs`. Use `hn _ (mul_pos hc0 hε)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h4 : (QuotientGroup.mk s : Γ ⧸ N _ (mul_pos hc0 hε)) ^ l = 1` using `(QuotientGroup.eq_one_iff _).2 h3`. Establish `h5 : (QuotientGroup.mk s : Γ ⧸ N _ (mul_pos hc0 hε)) ^ (N _ (mul_pos hc0 hε)).index = 1` using `(QuotientGroup.eq_one_iff _).2 (Subgroup.pow_index_mem _ s)`. Conclude with `(QuotientGroup.eq_one_iff _).1 ((pow_eq_one_iff_of_coprime (hcop _ this (ho _ (mul_pos hc0 hε)))).1 ⟨h5, h4⟩)`. Use `⟨N _ hc0, hn _ hc0, ho _ hc0, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ k : ℕ, s ∈ N (‖(l : Qbar l)‖ ^ (k + 1)) (pow_pos hc0 _)` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `k with`. Consider the case `zero => show Bd _ _`. Rewrite using `[zero_add, pow_one]`. Conclude with `hs`. Consider the case `succ k ih`.
-
-Use `step _ (pow_pos hc0 _) (pow_le_of_le_one hc0.le norm_l_lt_one.le k.succ_ne_zero) s ih` as an intermediate fact. Use `show Bd _ _`. Rewrite using `[pow_succ']`. Conclude with `this`. Rewrite using `[← sub_eq_zero]`.
-
-Use extensionality with `i k`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 hne) (norm_l_lt_one (l := l))`. Conclude with `absurd ((hk m i k).trans (pow_le_pow_of_le_one hc0.le norm_l_lt_one.le m.le_succ)) (not_le.2 hm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_ker {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ} [Fact l.Prime] {n : Type} [Fintype n] [DecidableEq n]
     (M : Γ →* Matrix n n (Qbar l)) (hcop : ∀ U : Subgroup Γ, U.Normal → IsOpen (U : Set Γ) → U.index.Coprime l)
@@ -146,15 +142,13 @@ theorem exists_open_ker {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ} [
   exact absurd ((hk m i k).trans (pow_le_pow_of_le_one hc0.le norm_l_lt_one.le m.le_succ)) (not_le.2 hm)
 
 /- English proof (translation)
-Establish `hn1` using `norm_nat_of_coprime hN`. Establish `hn0 : (N.index : Qbar l) ≠ 0` using `fun h => by simp [h] at hn1`. Establish `: N.FiniteIndex` using `⟨fun h => hn0 (by simp [h])⟩`. Set `: Fintype (Γ ⧸ N)` to `Fintype.ofFinite _`. Establish `hq : ∀ a b : Γ, (a : Γ ⧸ N) = b → z b = z a` using `fun a b h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hc a (a⁻¹ * b)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, h0 _ (QuotientGroup.eq.1 h), Matrix.mulVec_zero, add_zero]`. Then use the resulting hypothesis. Use `set S := ∑ ω : Γ ⧸ N, z ω.out with hS`. Establish `key : ∀ g, (N.index : Qbar l) • z g + ρ g *ᵥ S = S` using `fun g => by`. Establish `e1 : ∑ ω : Γ ⧸ N, z (g * ω.out) = S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, ← Equiv.sum_comp (MulAction.toPerm g) fun ω : Γ ⧸ N => z ω.out]`. Use `Finset.sum_congr rfl fun ω _ => hq _ _ ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq', MulAction.toPerm_apply]`. Conclude with `(MulAction.Quotient.coe_smul_out N g ω).symm`. Use `conv_rhs => rw [← e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hc, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, hS, Matrix.mulVec_sum]`. Rewrite using `[Nat.cast_smul_eq_nsmul, Subgroup.index, Nat.card_eq_fintype_card]`. Use `⟨-((N.index : Qbar l)⁻¹ • S), fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, norm_neg, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, hn1, inv_one, one_mul, hS, Finset.sum_apply]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun ω _ => hz _ i`.
-
-Use `eq_sub_of_add_eq (key j)` as an intermediate fact. Rewrite using `[Matrix.mulVec_neg, Matrix.mulVec_smul, neg_sub_neg, ← smul_sub, ← this, inv_smul_smul₀ hn0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cob_of_index {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] (ρ : Γ → Matrix (Fin 2) (Fin 2) (Qbar l))
     (z : Γ → Fin 2 → Qbar l) (N : Subgroup Γ) (hN : N.index.Coprime l) (h0 : ∀ s ∈ N, z s = 0)
@@ -184,11 +178,11 @@ theorem exists_cob_of_index {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] (ρ 
     rw [Matrix.mulVec_neg, Matrix.mulVec_smul, neg_sub_neg, ← smul_sub, ← this, inv_smul_smul₀ hn0]
 
 /- English proof (translation)
-Establish `hm : ∀ d m c, (T ^ d) c = c → (T ^ (d * m)) c = c` using `fun d m c h => by`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [mul_add, mul_one, pow_add, Module.End.mul_apply, h, ih]`. Take `⟨_, ⟨E, hE, rfl⟩, hmax⟩` from `set_has_maximal_iff_noetherian.2 (inferInstance : IsNoetherian K C) {U | ∃ n, 0 < n ∧ U = LinearMap.eqLocus (T ^ n) LinearMap.id} ⟨_, 1, one_pos, rfl⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨E, hE, fun d hd c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : LinearMap.eqLocus (T ^ E) LinearMap.id ≤ LinearMap.eqLocus (T ^ (E * d)) LinearMap.id` using `fun x hx => hm E d x hx`. Establish `h2` using `eq_of_le_of_not_lt h1 (hmax _ ⟨E * d, mul_pos hE hd, rfl⟩)`. Establish `h3 : c ∈ LinearMap.eqLocus (T ^ (E * d)) LinearMap.id` using `by rw [mul_comm]; exact hm d E c hc`. Rewrite `h3` using `[← h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_fix {K C : Type} [Field K] [AddCommGroup C] [Module K C] [FiniteDimensional K C] (T : Module.End K C) :
     ∃ E, 0 < E ∧ ∀ d, 0 < d → ∀ c, (T ^ d) c = c → (T ^ E) c = c := by
@@ -206,7 +200,7 @@ theorem exists_pow_fix {K C : Type} [Field K] [AddCommGroup C] [Module K C] [Fin
   exact h3
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun b hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨f, h1, h2⟩` from `U.exists_le_ker_of_notMem h`. Conclude with `h1 (closure_minimal (t := {x | f x = 0}) h2 (isClosed_eq f.continuous_on_pi continuous_const) hb)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_submodule {l : ℕ} [Fact l.Prime] (U : Submodule (Qbar l) (Fin 2 → Qbar l)) :
     IsClosed (U : Set (Fin 2 → Qbar l)) := by
@@ -216,11 +210,11 @@ theorem isClosed_submodule {l : ℕ} [Fact l.Prime] (U : Submodule (Qbar l) (Fin
   exact h1 (closure_minimal (t := {x | f x = 0}) h2 (isClosed_eq f.continuous_on_pi continuous_const) hb)
 
 /- English proof (translation)
-Establish `h1 : ∀ x, ∀ t ∈ Subgroup.zpowers h, f (x * t) = f x` using `fun x t ht => by`. Take `⟨n, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 (mem_powers_iff_mem_zpowers.2 ht)`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ← mul_assoc, hf, ih (pow_mem (Subgroup.mem_zpowers h) n)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h2 : Function.Bijective fun p : (X ⧸ Subgroup.zpowers h) × Subgroup.zpowers h => p.1.out * (p.2 : X)`. Rewrite using `[Fintype.bijective_iff_surjective_and_card]`. Use `⟨fun x => ⟨(x, ⟨(x : X ⧸ Subgroup.zpowers h).out⁻¹ * x, QuotientGroup.eq.1 (QuotientGroup.out_eq' _)⟩), by simp⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [← Nat.card_eq_fintype_card, Nat.card_prod]`. Conclude with `(Subgroup.card_eq_card_quotient_mul_card_subgroup _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2.sum_comp f, Fintype.sum_prod_type, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ω _ => ?_` and prove the remaining obligations. Simplify using `only [h1 _ _ (Subtype.prop _), Finset.sum_const, Finset.card_univ, Fintype.card_zpowers]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_eq_orderOf_smul {X C : Type} [Group X] [Fintype X] [AddCommMonoid C] (h : X) (f : X → C)
     (hf : ∀ x, f (x * h) = f x) [Fintype (X ⧸ Subgroup.zpowers h)] :
@@ -241,9 +235,9 @@ theorem sum_eq_orderOf_smul {X C : Type} [Group X] [Fintype X] [AddCommMonoid C]
   simp only [h1 _ _ (Subtype.prop _), Finset.sum_const, Finset.card_univ, Fintype.card_zpowers]
 
 /- English proof (translation)
-Introduce `l _ Γ _ M _ Y h r s`. Proceed by induction on `r with`. Consider the case `zero`. Establish `: Subsingleton (ZMod (l ^ 0))` using `by rw [pow_zero]; infer_instance`. Establish `: Subsingleton (ZMod (l ^ 0))ˣ` using `⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Fintype.sum_subsingleton (fun x => Y 0 s x) 1).symm`. Consider the case `succ r ih`. Rewrite using `[ih, h r s]`. Conclude with `Finset.sum_fiberwise _ _ _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_level : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (M : Type) [AddCommMonoid M] (Y : ∀ r : ℕ, Γ → (ZMod (l ^ r))ˣ → M), (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ r s, Y 0 s 1 = ∑ x, Y r s x := by
   intro l _ Γ _ M _ Y h r s
@@ -257,9 +251,9 @@ theorem sum_level : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (M : Typ
     exact Finset.sum_fiberwise _ _ _
 
 /- English proof (translation)
-Introduce `Γ _ _ _ l _ ρ z I J γ hI hJI hγ hz hc h0 hJ hgen s hs`. Establish `h1 : z 1 = 0` using `hJ 1 J.one_mem`. Set `S : Subgroup Γ` to `{ carrier := {s | s ∈ I ∧ z s = 0} one_mem' := ⟨I.one_mem, h1⟩ mul_mem' := fun {a b} ha hb => ⟨I.mul_mem ha.1 hb.1, by rw [hc a ha.1 b hb.1, ha.2, hb.2]; simp⟩ inv_mem' := fun {a} ha => ⟨I.inv_mem ha.1, by`. Use `hc a⁻¹ (I.inv_mem ha.1) a ha.1` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, ha.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this.symm⟩ }`. Establish `hS : IsClosed (S : Set Γ)` using `hI.inter (isClosed_eq (continuous_pi hz) continuous_const)`. Conclude with `(Subgroup.topologicalClosure_minimal (Subgroup.zpowers γ ⊔ J) (t := S) (sup_le (Subgroup.zpowers_le.2 ⟨hγ, h0⟩) fun j hj => ⟨hJI hj, hJ j hj⟩) hS (hgen hs)).2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_gen : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (l : ℕ) [Fact l.Prime] (ρ : Γ →* GL (Fin 2) (Qbar l)) (z : Γ → Fin 2 → Qbar l) (I J : Subgroup Γ) (γ : Γ), IsClosed (I : Set Γ) → J ≤ I → γ ∈ I → (∀ i, Continuous fun s => z s i) → (∀ s ∈ I, ∀ t ∈ I, z (s * t) = z s + (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ z t) → z γ = 0 → (∀ j ∈ J, z j = 0) → I ≤ (Subgroup.zpowers γ ⊔ J).topologicalClosure → ∀ s ∈ I, z s = 0 := by
   intro Γ _ _ _ l _ ρ z I J γ hI hJI hγ hz hc h0 hJ hgen s hs
@@ -277,17 +271,15 @@ theorem eq_zero_of_gen : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTop
     (sup_le (Subgroup.zpowers_le.2 ⟨hγ, h0⟩) fun j hj => ⟨hJI hj, hJ j hj⟩) hS (hgen hs)).2
 
 /- English proof (translation)
-Introduce `Γ _ _ _ l _ ρ z J hcop hρc hρ1 hzc hz1 hc`. Establish `h1 : z 1 = 0` using `by simpa using hc 1 J.one_mem 1 J.one_mem`. Set `M : J →* Matrix (Fin 2 ⊕ Unit) (Fin 2 ⊕ Unit) (Qbar l)` to `{ toFun := fun s => Matrix.fromBlocks (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) (Matrix.of fun i _ => z s i) 0 1 map_one' := by`. Rewrite using `[← Matrix.fromBlocks_one]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use extensionality with `i k`. Simplify using `[h1]`. Use the proof step `map_mul' := fun s t => by`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Apply the tactic sequence `ext i k fin_cases i <;> simp [hc s s.2 t t.2, Matrix.mul_apply, Matrix.mulVec, dotProduct, add_comm]`. Simplify using the standard rewrite rules. Simplify using `}`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hn, ho, hN⟩` from `exists_open_ker M hcop (by`. Introduce and unpack `(i | i) (k | k)`. Conclude with `(hρc i k).comp continuous_subtype_val`. Conclude with `(hzc i).comp continuous_subtype_val`. Conclude with `continuous_const`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `continuous_const)`. Use the proof step `(by`. Introduce and unpack `s (i | i) (k | k)`. Conclude with `hρ1 s i k`. Conclude with `hz1 s i`.
-
-Simplify using `[M]`. Simplify using `[M])`. Take `⟨v, hv, hv'⟩` from `exists_cob_of_index (fun s : J => (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l))) (fun s => z s) N (hcop N hn ho) (fun s hs => funext fun i => by simpa [M] using congrFun (congrFun (hN s hs) (.inl i)) (.inr ())) (fun s => hz1 s) (fun s t => hc s s.2 t t.2)`. Conclude with `⟨v, hv, fun j hj => hv' ⟨j, hj⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cob_of_coprime : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (l : ℕ) [Fact l.Prime] (ρ : Γ →* GL (Fin 2) (Qbar l)) (z : Γ → Fin 2 → Qbar l) (J : Subgroup Γ), (∀ U : Subgroup J, U.Normal → IsOpen (U : Set J) → U.index.Coprime l) → (∀ i k, Continuous fun s => (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) i k) → (∀ s i k, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) i k‖ ≤ 1) → (∀ i, Continuous fun s => z s i) → (∀ s i, ‖z s i‖ ≤ 1) → (∀ s ∈ J, ∀ t ∈ J, z (s * t) = z s + (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ z t) → ∃ v : Fin 2 → Qbar l, (∀ i, ‖v i‖ ≤ 1) ∧ ∀ j ∈ J, z j = (ρ j : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ v - v := by
   intro Γ _ _ _ l _ ρ z J hcop hρc hρ1 hzc hz1 hc
@@ -326,19 +318,19 @@ theorem exists_cob_of_coprime : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ]
   exact ⟨v, hv, fun j hj => hv' ⟨j, hj⟩⟩
 
 /- English proof (translation)
-Introduce `Γ _ K _ X _ ρ κ Y I J γ φ N x v hY hκ hJI hγ hJ ⟨j₁, hj₁, e⟩ hv`. Use `set R : Γ → Matrix (Fin 2) (Fin 2) K := fun s => (ρ s : Matrix (Fin 2) (Fin 2) K) with hR`. Establish `hm : ∀ s t w, R (s * t) *ᵥ w = R s *ᵥ (R t *ᵥ w)` using `fun s t w => by`. Simplify using `only [hR, map_mul, Units.val_mul, Matrix.mulVec_mulVec]`. Establish `hp : ∀ n, R (γ ^ n) = R γ ^ n` using `fun n => by simp only [hR, map_pow, Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w, R 1 *ᵥ w = w` using `fun w => by simp [hR]`. Set `z : Γ → Fin 2 → K` to `fun t => Y t x - (R t *ᵥ v - v)`. Establish `hz0 : ∀ j ∈ J, z j = 0` using `fun j hj => sub_eq_zero.2 (hv j hj)`. Establish `hzc : ∀ s ∈ I, ∀ t, z (s * t) = z s + R s *ᵥ z t` using `fun s hs t => by`. Simplify using `only [z]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY s t x, hκ s hs, mul_one, hm, Matrix.mulVec_sub, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws. Establish `hzp : ∀ n, z (γ ^ n) = (∑ i ∈ Finset.range n, R γ ^ i) *ᵥ z γ` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hz0 1 J.one_mem`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ, hzc _ (I.pow_mem hγ n), ih, hp, Finset.sum_range_succ, Matrix.add_mulVec]`. Establish `key : ∀ s, φ * s * φ⁻¹ ∈ I → Y s (x * κ φ) - (R s *ᵥ (R φ⁻¹ *ᵥ (v + Y φ x)) - R φ⁻¹ *ᵥ (v + Y φ x)) = R φ⁻¹ *ᵥ z (φ * s * φ⁻¹)` using `fun s hs => by`. Establish `a1` using `hY φ s x`. Establish `a2` using `hY (φ * s * φ⁻¹) φ x`. Rewrite `a2` using `[inv_mul_cancel_right, hκ _ hs, mul_one, a1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a3 : Y s (x * κ φ) = R φ⁻¹ *ᵥ (Y (φ * s * φ⁻¹) x + R (φ * s * φ⁻¹) *ᵥ Y φ x - Y φ x)`. Rewrite using `[← a2, add_sub_cancel_left, ← hm, inv_mul_cancel, h1]`. Establish `a4 : ∀ w, R φ⁻¹ *ᵥ (R (φ * s * φ⁻¹) *ᵥ w) = R s *ᵥ (R φ⁻¹ *ᵥ w)` using `fun w => by`. Rewrite using `[← hm, ← hm, mul_assoc φ, inv_mul_cancel_left]`. Simplify using `only [z, a3, Matrix.mulVec_sub, Matrix.mulVec_add, a4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `⟨R φ⁻¹ *ᵥ (v + Y φ x), fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `key j (hJI (hJ j hj))` as an intermediate fact. Rewrite `this` using `[hz0 _ (hJ j hj), Matrix.mulVec_zero]`. Conclude with `sub_eq_zero.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key γ (e ▸ I.mul_mem (I.pow_mem hγ N) (hJI hj₁))` as an intermediate fact. Rewrite `this` using `[e, hzc _ (I.pow_mem hγ N), hz0 _ hj₁, Matrix.mulVec_zero, add_zero, hzp]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_norm : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (X : Type) [Monoid X] (ρ : Γ →* GL (Fin 2) K) (κ : Γ →* X) (Y : Γ → X → Fin 2 → K) (I J : Subgroup Γ) (γ φ : Γ) (N : ℕ) (x : X) (v : Fin 2 → K), ShCoc (fun s => (ρ s : Matrix (Fin 2) (Fin 2) K)) κ Y → (∀ s ∈ I, κ s = 1) → J ≤ I → γ ∈ I → (∀ j ∈ J, φ * j * φ⁻¹ ∈ J) → (∃ j ∈ J, φ * γ * φ⁻¹ = γ ^ N * j) → (∀ j ∈ J, Y j x = (ρ j : Matrix (Fin 2) (Fin 2) K) *ᵥ v - v) → ∃ v' : Fin 2 → K, (∀ j ∈ J, Y j (x * κ φ) = (ρ j : Matrix (Fin 2) (Fin 2) K) *ᵥ v' - v') ∧ Y γ (x * κ φ) - (((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ v' - v') = (((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * ∑ i ∈ Finset.range N, ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) ^ i) *ᵥ (Y γ x - (((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ v - v)) := by
   intro Γ _ K _ X _ ρ κ Y I J γ φ N x v hY hκ hJI hγ hJ ⟨j₁, hj₁, e⟩ hv
@@ -376,21 +368,19 @@ theorem exists_conj_norm : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (X : 
     exact this
 
 /- English proof (translation)
-Introduce `l _ u hu Wo T hT b a ha hrel hb`. Set `S : Module.End (Qbar l) ((Fin 2 → Qbar l) ⧸ Wo)` to `Wo.mapQ Wo (Matrix.toLin' T) fun w hw => hT w hw`. Take `⟨E, hE, hfix⟩` from `exists_pow_fix S`. Establish `h1 : ∀ r n x, Wo.mkQ (a r (x * u r ^ n)) = (S ^ n) (Wo.mkQ (a r x))` using `fun r n x => by`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ← mul_assoc, pow_succ', Module.End.mul_apply, ← ih]`. Conclude with `(Submodule.Quotient.eq Wo).2 (hrel r _)`. Establish `h2 : ∀ r x, Wo.mkQ (a r (x * u r ^ E)) = Wo.mkQ (a r x)` using `fun r x => by`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `hfix (orderOf (u r)) (orderOf_pos _) _ ?_` and prove the remaining obligations. Rewrite using `[← h1, pow_orderOf_eq_one, mul_one]`. Establish `hE0 : 0 < ‖(E : Qbar l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 hE.ne')`. Use `(isClosed_submodule Wo).closure_subset (Metric.mem_closure_iff.2 fun ε hε => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (mul_pos hE0 hε) (norm_l_lt_one (l := l))`. Take `⟨r, hr⟩` from `hu k`. Set `: Fintype ((ZMod (l ^ r))ˣ ⧸ Subgroup.zpowers (u r ^ E))` to `Fintype.ofFinite _`. Establish `h3` using `sum_eq_orderOf_smul (u r ^ E) (fun x => Wo.mkQ (a r x)) (h2 r)`. Use `set o := orderOf (u r ^ E) with ho`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := ∑ ω : (ZMod (l ^ r))ˣ ⧸ Subgroup.zpowers (u r ^ E), a r ω.out with hy`. Establish `h4 : l ^ k ∣ E * o` using `hr.trans (orderOf_dvd_of_pow_eq_one (by rw [pow_mul, pow_orderOf_eq_one]))`. Establish `h5 : ‖(o : Qbar l)‖ < ε`. Take `⟨m, hm⟩` from `h4`. Establish `: ‖(E : Qbar l)‖ * ‖(o : Qbar l)‖ ≤ ‖(l : Qbar l)‖ ^ k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← norm_mul, ← Nat.cast_mul, hm, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (IsUltrametricDist.norm_natCast_le_one _ m)`. Conclude with `lt_of_mul_lt_mul_left (this.trans_lt hk) hE0.le`. Use `⟨b - o • y, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[← map_sum, ← map_sum, ← map_nsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Wo.add_mem (hb r) ((Submodule.Quotient.eq Wo).1 h3)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[dist_eq_norm, sub_sub_cancel, ← Nat.cast_smul_eq_nsmul (Qbar l), norm_smul]`. Use `(mul_le_of_le_one_right (norm_nonneg _) ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_)).trans_lt h5` and prove the remaining obligations. Rewrite using `[hy, Finset.sum_apply]`.
-
-Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun ω _ => ha r _ i`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_orbit_sums : ∀ (l : ℕ) [Fact l.Prime] (u : ∀ r : ℕ, (ZMod (l ^ r))ˣ), (∀ k : ℕ, ∃ r, l ^ k ∣ orderOf (u r)) → ∀ (Wo : Submodule (Qbar l) (Fin 2 → Qbar l)) (T : Matrix (Fin 2) (Fin 2) (Qbar l)), (∀ w ∈ Wo, T *ᵥ w ∈ Wo) → ∀ (b : Fin 2 → Qbar l) (a : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), (∀ r x i, ‖a r x i‖ ≤ 1) → (∀ r x, a r (x * u r) - T *ᵥ a r x ∈ Wo) → (∀ r, b - ∑ x, a r x ∈ Wo) → b ∈ Wo := by
   classical
@@ -432,9 +422,9 @@ theorem mem_of_orbit_sums : ∀ (l : ℕ) [Fact l.Prime] (u : ∀ r : ℕ, (ZMod
     exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun ω _ => ha r _ i
 
 /- English proof (translation)
-Introduce `Γ _ K _ ρ J γ φ N ⟨j, hj, e⟩ u hu`. Establish `e1 : ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u - u = (((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) - 1) *ᵥ u` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e1, Matrix.mulVec_mulVec, Matrix.mul_assoc, geom_sum_mul, mul_sub, mul_one, Matrix.sub_mulVec]`. Use `congr 1`. Use `conv_lhs => rw [← hu j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_pow_eq_pow_val, ← map_pow, ← Units.val_mul, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, ← map_mul, mul_assoc, ← e, mul_assoc, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem frob_mulVec_cob : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (ρ : Γ →* GL (Fin 2) K) (J : Subgroup Γ) (γ φ : Γ) (N : ℕ), (∃ j ∈ J, φ * γ * φ⁻¹ = γ ^ N * j) → ∀ u : Fin 2 → K, (∀ j ∈ J, ((ρ j : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u = u) → (((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * ∑ i ∈ Finset.range N, ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) ^ i) *ᵥ (((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u - u) = ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u) - ((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u := by
   intro Γ _ K _ ρ J γ φ N ⟨j, hj, e⟩ u hu
@@ -447,15 +437,13 @@ theorem frob_mulVec_cob : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (ρ : 
     ← Units.val_mul, ← map_mul, ← map_mul, ← map_mul, mul_assoc, ← e, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `l hl N hN u hu k`. Establish `hp : l.Prime` using `hl.out`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hM : 0 < l ^ k * (l - 1)` using `mul_pos (pow_pos hp.pos k) (Nat.sub_pos_of_lt hp.one_lt)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := l ^ k * (l - 1) with hMd`. Use `set r := N ^ M + 1 with hr`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `h1 : orderOf (u r) ∣ l ^ (r - 1) * (l - 1)`. Rewrite using `[← Nat.totient_prime_pow hp (Nat.succ_pos _), ← ZMod.card_units_eq_totient]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `orderOf_dvd_card`. Take `⟨d₁, d₂, h2, h3, h4⟩` from `exists_dvd_and_dvd_of_dvd_mul h1`. Take `⟨a, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 h2`. Establish `h5 : a ≤ k`. Assume the negation of the conclusion as `h6`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h r (h4 ▸ (pow_dvd_pow l (not_le.1 h6).le).mul_right d₂)`. Establish `h6 : u r ^ M = 1` using `orderOf_dvd_iff_pow_eq_one.1 (h4 ▸ mul_dvd_mul (pow_dvd_pow l h5) h3)`. Establish `h7 : ((N ^ M : ℕ) : ZMod (l ^ r)) = ((1 : ℕ) : ZMod (l ^ r))`. Rewrite using `[Nat.cast_pow, ← hu r, ← Units.val_pow_eq_pow_val, h6, Units.val_one, Nat.cast_one]`. Establish `h8 : 1 < N ^ M` using `Nat.one_lt_pow hM.ne' hN`.
-
-Establish `h9` using `Nat.le_of_dvd (by omega) ((Nat.modEq_iff_dvd' h8.le).1 ((ZMod.natCast_eq_natCast_iff _ _ _).1 h7).symm)`. Establish `h10` using `Nat.lt_pow_self (n := r) hp.one_lt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_pow_dvd_orderOf : ∀ (l : ℕ) [Fact l.Prime] (N : ℕ), 2 ≤ N → ∀ (u : ∀ r : ℕ, (ZMod (l ^ r))ˣ), (∀ r, ((u r : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) = (N : ZMod (l ^ r))) → ∀ k : ℕ, ∃ r, l ^ k ∣ orderOf (u r) := by
   intro l hl N hN u hu k
@@ -483,7 +471,7 @@ theorem exists_pow_dvd_orderOf : ∀ (l : ℕ) [Fact l.Prime] (N : ℕ), 2 ≤ N
   omega
 
 /- English proof (translation)
-Use `show ‖∑ k, A i k * v k‖ ≤ 1`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hv k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulVec_le {l : ℕ} [Fact l.Prime] {A : Matrix (Fin 2) (Fin 2) (Qbar l)} {v : Fin 2 → Qbar l}
     (hA : ∀ i k, ‖A i k‖ ≤ 1) (hv : ∀ i, ‖v i‖ ≤ 1) (i : Fin 2) : ‖(A *ᵥ v) i‖ ≤ 1 := by
@@ -492,7 +480,7 @@ theorem norm_mulVec_le {l : ℕ} [Fact l.Prime] {A : Matrix (Fin 2) (Fin 2) (Qba
   rw [norm_mul]; exact mul_le_one₀ (hA i k) (norm_nonneg _) (hv k)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha (by rwa [norm_neg]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_le_one {l : ℕ} [Fact l.Prime] {a b : Qbar l} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a - b‖ ≤ 1 := by
   rw [sub_eq_add_neg]
@@ -512,7 +500,7 @@ def cobSp {Γ K : Type} [Group Γ] [Field K] (ρ : Γ → Matrix (Fin 2) (Fin 2)
     rw [Matrix.mulVec_smul, smul_sub]
 
 /- English proof (translation)
-Use `⟨v' - v, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_sub, eq_add_of_sub_eq (h j hj)]`. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_mem_cobSp {Γ K : Type} [Group Γ] [Field K] {ρ : Γ → Matrix (Fin 2) (Fin 2) K} {J : Subgroup Γ} {γ : Γ}
     {v v' : Fin 2 → K} (y : Fin 2 → K) (h : ∀ j ∈ J, ρ j *ᵥ v - v = ρ j *ᵥ v' - v') :
@@ -522,31 +510,27 @@ theorem sub_mem_cobSp {Γ K : Type} [Group Γ] [Field K] {ρ : Γ → Matrix (Fi
   · rw [Matrix.mulVec_sub]; abel
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ W c κ Y hκo hW hWO hYc hYO hSh hpush q hq`. Take `⟨B, hB⟩` from `exists_isPlaceOver (F := ℚ) Ω q`. Take `⟨φ, hφ⟩` from `exists_isFrob hB`. Take `⟨-, hJn, hJcop, -, ⟨γ, hγ⟩, hrel⟩` from `GlobalTheory.Published.TameQuotient_holds ℚ Ω l B q hB hq`. Take `⟨-, hcj, -⟩` from `hrel ⟨φ, hφ.1⟩ ⟨γ, Ine_le_Dec B hγ.1⟩ hφ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hJI` using `GlobalTheory.TameQuot.ineKer_le_Ine (F := ℚ) B l`. Establish `hγI` using `hγ.1`. Establish `hgen` using `hγ.2`. Use `set J := GlobalTheory.TameQuot.ineKer ℚ B l with hJ`. Establish `hc1 : ∀ j ∈ J, φ * j * φ⁻¹ ∈ J` using `fun j hj => hJn.conj_mem ⟨j, Ine_le_Dec B (hJI hj)⟩ hj ⟨φ, hφ.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : ∃ j ∈ J, φ * γ * φ⁻¹ = γ ^ normV q * j` using `⟨(γ ^ normV q)⁻¹ * (φ * γ * φ⁻¹), by simpa using hcj, by rw [mul_inv_cancel_left]⟩`. Establish `hκ : ∀ r, ∀ s ∈ Ine (F` using `ℚ) B, κ r s = 1 := fun r s hs => by`. Rewrite using `[← orderOf_eq_one_iff, hκo, GlobalTheory.StringRepresentationDecomposition.cycMod_eq_one_of_mem_Ine r hq hB hs, orderOf_one]`. Establish `hu : ∀ r, ((cycMod ℚ Ω l r φ : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) = (normV q : ZMod (l ^ r))` using `fun r => by`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow r ((cycZ ℚ Ω l φ : ℤ_[l]ˣ) : ℤ_[l]) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cycZ_of_isFrob hq hB hφ, map_natCast]`. Establish `hW1 : ∀ s i k, ‖mat W s i k‖ ≤ 1` using `fun s i k => norm_le_one_of_mem_coefO c ⟨_, hWO s i k⟩`. Establish `hY1 : ∀ r s x i, ‖Y r s x i‖ ≤ 1` using `fun r s x i => norm_le_one_of_mem_coefO c ⟨_, hYO r s x i⟩`. Establish `hWc : ∀ i k, Continuous fun s => mat W s i k` using `fun i k => Continuous.matrix_elem (A := fun s => mat W s) (Units.continuous_val.comp hW) i k`. Establish `hcoc : ∀ r x, ∀ s ∈ Ine (F` using `ℚ) B, ∀ t, Y r (s * t) x = Y r s x + mat W s *ᵥ Y r t x := fun r x s hs t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSh r s t x, hκ r s hs, mul_one]`. Establish `hmul : ∀ s t, mat W (s * t) = mat W s * mat W t` using `fun s t => by`. Simplify using `only [mat, map_mul, Units.val_mul]`. Use `choose v hv1 hv using fun r x => exists_cob_of_coprime (G ℚ Ω) l W (fun s => Y r s x) J hJcop hWc hW1 (hYc r x) (fun s i => hY1 r s x i) (fun s hs t _ => hcoc r x s (hJI hs) t)`. Establish `hb : Y 0 γ 1 - (mat W γ *ᵥ v 0 1 - v 0 1) ∈ cobSp (mat W) J γ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `mem_of_orbit_sums l (fun r => κ r φ) (fun k => by` and prove the remaining obligations. Simplify `exists_pow_dvd_orderOf l (normV q) (GlobalTheory.WeilDeligne.one_lt_normV q) (fun r => cycMod ℚ Ω l r φ) hu k) _` using `only [hκo]`. Use the proof step `(mat W φ⁻¹ * ∑ i ∈ Finset.range (normV q), mat W γ ^ i) ?_ _`. Use the proof step `(fun r x => Y r γ x - (mat W γ *ᵥ v r x - v r x)) ?_ ?_ ?_`. Introduce and unpack `_ ⟨u, hu', rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨mat W φ⁻¹ *ᵥ u, fun j hj => ?_, frob_mulVec_cob (G ℚ Ω) (Qbar l) W J γ φ _ hc2 u hu'⟩` and prove the remaining obligations. Establish `e : j * φ⁻¹ = φ⁻¹ * (φ * j * φ⁻¹)` using `by group`. Rewrite using `[Matrix.mulVec_mulVec, ← hmul, e, hmul, ← Matrix.mulVec_mulVec, hu' _ (hc1 j hj)]`. Introduce `r x i`. Conclude with `norm_sub_le_one (hY1 r γ x i) (norm_sub_le_one (norm_mulVec_le (hW1 γ) (hv1 r x) i) (hv1 r x i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r x`. Take `⟨v', h1, h2⟩` from `exists_conj_norm (G ℚ Ω) (Qbar l) _ W (κ r) (Y r) (Ine (F := ℚ) B) J γ φ (normV q) x (v r x) (hSh r) (hκ r) hJI hγI hc1 hc2 (hv r x)`. Establish `h3` using `sub_mem_cobSp (ρ := mat W) (γ := γ) (Y r γ (x * κ r φ)) (fun j hj => (hv r (x * κ r φ) j hj).symm.trans (h1 j hj))`. Rewrite `h3` using `[h2]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Establish `hs` using `sum_level l (G ℚ Ω) _ Y hpush r`. Establish `e : ∀ s, mat W s *ᵥ (∑ x, v r x) - ∑ x, v r x = ∑ x, (mat W s *ᵥ v r x - v r x)` using `fun s => by`. Rewrite using `[Matrix.mulVec_sum, Finset.sum_sub_distrib]`. Establish `h3` using `sub_mem_cobSp (ρ := mat W) (γ := γ) (J := J) (v := v 0 1) (v' := ∑ x, v r x) (Y 0 γ 1) (fun j hj => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hv 0 1 j hj]`. Conclude with `(hs j).trans (Finset.sum_congr rfl fun x _ => hv r x j hj))`. Rewrite using `[Finset.sum_sub_distrib, ← hs, ← e]`. Conclude with `h3`. Take `⟨w, hw, hb⟩` from `hb`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨B, hB, v 0 1 + w, fun s hs => sub_eq_zero.1 ?_⟩` and prove the remaining obligations. Use `eq_zero_of_gen (G ℚ Ω) l W (fun s => Y 0 s 1 - (mat W s *ᵥ (v 0 1 + w) - (v 0 1 + w))) (Ine (F := ℚ) B) J γ (isClosed_Ine B) hJI hγI (fun i => ?_) (fun s hs t _ => ?_) ?_ (fun j hj => ?_) hgen s hs` and prove the remaining obligations. Use `show Continuous fun s => Y 0 s 1 i - (∑ k, mat W s i k * (v 0 1 + w) k - (v 0 1 + w) i)`. Conclude with `(hYc 0 1 i).sub ((continuous_finset_sum _ fun k _ => (hWc i k).mul continuous_const).sub continuous_const)`. Use `show _ = _ + mat W s *ᵥ _`.
-
-Rewrite using `[hcoc 0 1 s hs t, hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws. Use `show Y 0 γ 1 - _ = 0`. Rewrite using `[eq_add_of_sub_eq hb, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
-
-Use `show Y 0 j 1 - _ = 0`. Rewrite using `[hv 0 1 j hj, Matrix.mulVec_add, hw j hj]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem univNorm_unram_of_orderOf : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (κ : ∀ r : ℕ, G ℚ Ω →* (ZMod (l ^ r))ˣ) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), (∀ r s, orderOf (κ r s) = orderOf (cycMod ℚ Ω l r s)) → Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (κ r) (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v := by
   intro l _ Ω _ _ _ W c κ Y hκo hW hWO hYc hYO hSh hpush q hq
@@ -619,14 +603,14 @@ theorem univNorm_unram_of_orderOf : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Fi
     rw [hv 0 1 j hj, Matrix.mulVec_add, hw j hj]; abel
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ W c Y` and use `univNorm_unram_of_orderOf l Ω W c (fun r => (cycMod ℚ Ω l r)⁻¹) Y (fun r s => by rw [MonoidHom.inv_apply, orderOf_inv])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem univNorm_unram : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (cycMod ℚ Ω l r)⁻¹ (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v :=
   fun l _ Ω _ _ _ W c Y => univNorm_unram_of_orderOf l Ω W c (fun r => (cycMod ℚ Ω l r)⁻¹) Y
     (fun r s => by rw [MonoidHom.inv_apply, orderOf_inv])
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ W c Y` and use `univNorm_unram_of_orderOf l Ω W c (fun r => cycMod ℚ Ω l r) Y (fun _ _ => rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem univNorm_unram' : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (cycMod ℚ Ω l r) (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v :=
   fun l _ Ω _ _ _ W c Y => univNorm_unram_of_orderOf l Ω W c (fun r => cycMod ℚ Ω l r) Y (fun _ _ => rfl)

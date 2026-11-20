@@ -15,7 +15,7 @@ namespace GlobalTheory.Twist.exists_transposeGram_coordinate_homeomorph_symplect
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.gram_det_ne_zero S)), Matrix.map_one _ φ.map_zero φ.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_map_mul_inv {R : Type*} [CommRing R] (S : HSp D) (φ : D.host.E →+* R) :
     S.gram.map φ * (S.gram⁻¹).map φ = 1 := by
@@ -23,7 +23,7 @@ theorem gram_map_mul_inv {R : Type*} [CommRing R] (S : HSp D) (φ : D.host.E →
     Matrix.map_one _ φ.map_zero φ.map_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.gram_det_ne_zero S)), Matrix.map_one _ φ.map_zero φ.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_inv_map_mul {R : Type*} [CommRing R] (S : HSp D) (φ : D.host.E →+* R) :
     (S.gram⁻¹).map φ * S.gram.map φ = 1 := by
@@ -60,7 +60,7 @@ theorem map_transpose_submatrix {A B : Type*} [Semiring A] [Semiring B] (φ : A 
     (u : Matrix m n A) (f : p → n) (g : q → m) : (uᵀ.submatrix f g).map φ = ((u.map φ)ᵀ).submatrix f g := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(HMul.hMul (xᵀ.submatrix e₂.symm e₁.symm) (S.gram.map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map φ = 0`. Rewrite using `[Matrix.map_mul, map_transpose_submatrix, h]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordsLin_map_zero {R : Type*} [Semiring R] (φ : AE D →+* R) (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank)
     (e₂ : Fin S'.rank ≃ Fin T.rank) (x : WO S' T') (h : x.map φ = 0) : (coordsLin S T S' T' e₁ e₂ x).map φ = 0 := by
@@ -69,7 +69,7 @@ theorem coordsLin_map_zero {R : Type*} [Semiring R] (φ : AE D →+* R) (S T S' 
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((HMul.hMul y ((S.gram⁻¹).map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))ᵀ).submatrix e₁ e₂).map φ = 0`. Rewrite using `[map_transpose_submatrix, Matrix.map_mul, h]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordsLin_symm_map_zero {R : Type*} [Semiring R] (φ : AE D →+* R) (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank)
     (e₂ : Fin S'.rank ≃ Fin T.rank) (y : WO S T) (h : y.map φ = 0) : ((coordsLin S T S' T' e₁ e₂).symm y).map φ = 0 := by
@@ -78,7 +78,7 @@ theorem coordsLin_symm_map_zero {R : Type*} [Semiring R] (φ : AE D →+* R) (S 
   simp
 
 /- English proof (translation)
-Use `⟨fun h => ?_, coordsLin_map_zero φ S T S' T' e₁ e₂ x⟩` and prove the remaining obligations. Use `coordsLin_symm_map_zero φ S T S' T' e₁ e₂ _ h` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coordsLin_map_zero_iff {R : Type*} [Semiring R] (φ : AE D →+* R) (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank)
     (e₂ : Fin S'.rank ≃ Fin T.rank) (x : WO S' T') : (coordsLin S T S' T' e₁ e₂ x).map φ = 0 ↔ x.map φ = 0 := by
@@ -87,9 +87,9 @@ theorem coordsLin_map_zero_iff {R : Type*} [Semiring R] (φ : AE D →+* R) (S T
   rwa [LinearEquiv.symm_apply_apply] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨((γ * S.gram⁻¹)ᵀ).submatrix e₁ e₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← (coordsLin S T S' T' e₁ e₂).symm_apply_apply x, ← hγ]`. Express the relevant statement in the definitionally equal form `(((γ * S.gram⁻¹)ᵀ).submatrix e₁ e₂).map (incA D) = ((HMul.hMul (γ.map (incA D)) ((S.gram⁻¹).map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))ᵀ).submatrix e₁ e₂`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_transpose_submatrix, Matrix.map_mul]`. Introduce and unpack `⟨γ, rfl⟩`. Use `⟨γᵀ.submatrix e₂.symm e₁.symm * S.gram, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(γᵀ.submatrix e₂.symm e₁.symm * S.gram).map (incA D) = (HMul.hMul ((γ.map (incA D))ᵀ.submatrix e₂.symm e₁.symm) (S.gram.map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Rewrite using `[Matrix.map_mul, map_transpose_submatrix]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordsLin_rat_iff (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank)
     (e₂ : Fin S'.rank ≃ Fin T.rank) (x : WO S' T') : coordsLin S T S' T' e₁ e₂ x ∈ ratL T S ↔ x ∈ ratL T' S' := by
@@ -107,7 +107,7 @@ theorem coordsLin_rat_iff (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank
     rw [Matrix.map_mul, map_transpose_submatrix]
 
 /- English proof (translation)
-Use `⟨coordsLin S T S' T' e₁ e₂, fun _ => rfl, fun _ => rfl, ?_, ?_, coordsLin_rat_iff S T S' T' e₁ e₂, coordsLin_map_zero_iff _ S T S' T' e₁ e₂, coordsLin_map_zero_iff _ S T S' T' e₁ e₂⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun u : WO S' T' => (HMul.hMul (uᵀ.submatrix e₂.symm e₁.symm) (S.gram.map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Conclude with `(continuous_id.matrix_transpose.matrix_submatrix _ _).matrix_mul continuous_const`. Express the relevant statement in the definitionally equal form `Continuous fun x : WO S T => ((HMul.hMul x ((S.gram⁻¹).map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))ᵀ).submatrix e₁ e₂`. Conclude with `((continuous_id.matrix_mul continuous_const).matrix_transpose).matrix_submatrix _ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem coordsLin_spec (D : D7) (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank) (e₂ : Fin S'.rank ≃ Fin T.rank) :
     ∃ L : WO S' T' ≃ₗ[AE D] WO S T,

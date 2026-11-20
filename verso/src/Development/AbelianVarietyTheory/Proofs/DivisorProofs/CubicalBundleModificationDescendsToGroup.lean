@@ -16,7 +16,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.CubeDesc
 
 /- English proof (translation)
-Take `⟨hN, -, hI, -⟩` from `hR`. Use `haveI := M.proper`. Conclude with `GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions R M.S G.left G'.left M.π G.hom β G'.hom inferInstance inferInstance (GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M).1 hf hp`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem app_bijective (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : AdmBase R (maximalIdeal R))
     (M : Modif R) (G' : Over M.S) (G : Over (Sp R)) (β : G'.left ⟶ G.left) (hf : Flat G.hom)
@@ -27,9 +27,9 @@ theorem app_bijective (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR :
     (GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M).1 hf hp
 
 /- English proof (translation)
-Use `haveI : CompactSpace G.left := by haveI := hG`. Conclude with `QuasiCompact.compactSpace_of_compactSpace G.hom`. Take `⟨z, hz, hzc⟩` from `(isClosed_closure (s := ({y} : Set G.left))).exists_closed_singleton ⟨y, subset_closure rfl⟩`. Establish `hyz : y ⤳ z` using `specializes_iff_mem_closure.2 hz`. Use `⟨z, hzc, hyz, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hyz.map G.hom.base.hom.continuous`. Rewrite `h` using `[hy]`. Establish `hc : IsClosed ({closedPoint R} : Set (PrimeSpectrum R))` using `isClosed_singleton_closedPoint R`. Establish `h'` using `specializes_iff_mem_closure.1 h`. Conclude with `hc.closure_subset h'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_closed_spec (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) (hG : QuasiCompact G.hom)
     (y : G.left) (hy : G.hom y = closedPoint R) :
@@ -47,11 +47,9 @@ theorem exists_closed_spec (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp
   exact hc.closure_subset h'
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G' _ _ hG' P' G _ _ β hG hpb θ O hO hθ`. Establish `hflat : Flat G.hom` using `by haveI := hG.smooth; infer_instance`. Establish `hbij` using `app_bijective R hR M G' G β hflat hpb.1`. Establish `hloc : ∀ y : G.left, ∃ V : G.left.Opens, y ∈ V ∧ ∃ t : LB.Gen (P'.L.L.pull (β ⁻¹ᵁ V).ι), t.IsGen`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : G.hom y = closedPoint R`. Take `⟨z, hzc, hyz, hz⟩` from `exists_closed_spec R G hG.quasiCompact y hy`. Take `⟨V, hzV, t⟩` from `GlobalTheory.T.exists_generator_descendedBundle_near_closedPoint R hR M G' hG' P' G β hG hpb θ O hO hθ z hzc hz`. Conclude with `⟨V, hyz.mem_open V.isOpen hzV, t⟩`. Conclude with `GlobalTheory.T.exists_generator_off_closedFibre_descended R hR M G' hG' P' G β hG hpb θ O hO hθ y hy`.
-
-Conclude with `GlobalTheory.T.exists_lineBundle_descent_bijective_app _ _ β hbij P'.L.L P'.L.isLB hloc`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cubicalBundle_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G M.π β → ∀ (θ : P'.L.L.Sec) (O : G.left.Opens), (∃ g ∈ O, G.hom g = closedPoint R) → (∀ g : G'.left, β g ∈ O → G.hom (β g) = closedPoint R → ∃ i, g ∈ G'.left.basicOpen (θ.f i)) → ∃ L : LB G.left, L.IsLB ∧ LBIso P'.L.L (L.pull β) := by
   intro R _ _ _ hR M G' _ _ hG' P' G _ _ β hG hpb θ O hO hθ

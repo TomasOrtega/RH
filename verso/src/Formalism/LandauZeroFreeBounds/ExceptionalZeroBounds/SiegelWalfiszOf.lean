@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hq : (1:ℝ) ≤ q`. Establish `h1 : 1 ≤ q` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Conclude with `h1` after adjusting the coercions. Apply `Real.log_pos` to reduce the goal to its premises. Establish `ht` using `abs_nonneg t`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 lemma log_analytic_conductor_pos (q : ℕ) [NeZero q] (t : ℝ) : 0 < Real.log ((q : ℝ) * (|t| + 2)) := by
   have hq : (1:ℝ) ≤ q := by
@@ -20,7 +20,7 @@ lemma log_analytic_conductor_pos (q : ℕ) [NeZero q] (t : ℝ) : 0 < Real.log (
   nlinarith
 
 /- English proof (translation)
-Unfold `InRegion at hs ⊢`. Establish `hL` using `log_analytic_conductor_pos q s.im`. Establish `h2 : c / Real.log (↑q * (|s.im| + 2)) ≤ c' / Real.log (↑q * (|s.im| + 2))` using `by first`. Consider the case `exact div_le_div_of_nonneg_right h hL.le`. Consider the case `exact (div_le_div_iff_of_pos_right hL).mpr h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -35,11 +35,11 @@ lemma zero_free_region_mono {c c' : ℝ} (h : c ≤ c') {q : ℕ} [NeZero q] {s 
   linarith
 
 /- English proof (translation)
-Unfold `InRegion at hs`. Establish `hL` using `log_analytic_conductor_pos q (β:ℂ).im`. Establish `h2 : (2:ℝ) ≤ (q:ℝ) * (|(β:ℂ).im| + 2)`. Establish `hq : (1:ℝ) ≤ q`. Establish `h1 : 1 ≤ q` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Establish `ht` using `abs_nonneg (β:ℂ).im`. Use the polynomial consequences of the given equalities and inequalities. Establish `hl2 : Real.log 2 ≤ Real.log ((q:ℝ) * (|(β:ℂ).im| + 2))` using `Real.log_le_log (by norm_num) h2`. Establish `hlt` using `Real.log_two_gt_d9`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c₁ / Real.log ((q:ℝ) * (|(β:ℂ).im| + 2)) ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hL]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : (β:ℂ).re = β` using `Complex.ofReal_re β`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma half_le_of_real_in_region {c₁ : ℝ} (h : c₁ ≤ 1 / 20) {q : ℕ} [NeZero q] {β : ℝ} (hs : InRegion c₁ q (β : ℂ)) :
     1 / 2 ≤ β := by
@@ -60,13 +60,13 @@ lemma half_le_of_real_in_region {c₁ : ℝ} (h : c₁ ≤ 1 / 20) {q : ℕ} [Ne
   linarith
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ s : ℂ, InRegion c₁ q s ∧ IsLZero χ s`. Take `⟨s, hs, hL⟩` from `h`. Take `⟨-, hχ1, him, hder, huniq⟩` from `hZ q χ s (zero_free_region_mono hle hs) hL`. Use `⟨{s.re}, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `β hβ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hβ` using `[Finset.mem_singleton]`. Substitute `hβ` using the available equality. Establish `hs' : s = ((s.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Rewrite using `[← hs']`. Conclude with `⟨hχ1, hs, hL.2, hder⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `s' hs' hL'`. Take `⟨-, hss⟩` from `huniq χ s' (zero_free_region_mono hle hs') hL'`. Use `⟨s.re, Finset.mem_singleton_self _, ?_⟩` and prove the remaining obligations. Rewrite using `[hss]`. Conclude with `Complex.ext (by simp) (by simp [him])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at h`. Use `⟨∅, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `s hs hL`. Conclude with `absurd hL (h s hs)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma exists_exceptional_zero_set (cZ c₁ : ℝ) (hle : c₁ ≤ cZ)
     (hZ : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ),
@@ -95,17 +95,15 @@ lemma exists_exceptional_zero_set (cZ c₁ : ℝ) (hle : c₁ ≤ cZ)
     exact absurd hL (h s hs)
 
 /- English proof (translation)
-Establish `hx0 : (0:ℝ) ≤ x` using `by linarith`. Establish `hlx : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `h1 : ‖psiChi χ x‖ ≤ x * Real.log x`. Unfold `psiChi`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `n hn`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Establish `hχ : ‖χ (n : ZMod q)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn1 : 1 ≤ n` using `(Finset.mem_Icc.mp hn).1`. Establish `hnx : (n:ℝ) ≤ x` using `le_trans (Nat.cast_le.mpr (Finset.mem_Icc.mp hn).2) (Nat.floor_le hx0)`. Establish `hΛ : ArithmeticFunction.vonMangoldt n ≤ Real.log n` using `ArithmeticFunction.vonMangoldt_le_log`. Establish `hlog : Real.log n ≤ Real.log x` using `Real.log_le_log (Nat.cast_pos.mpr (by omega)) hnx`. Establish `hΛ0 : 0 ≤ ArithmeticFunction.vonMangoldt n` using `ArithmeticFunction.vonMangoldt_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = ((Finset.Icc 1 ⌊x⌋₊).card : ℝ) * Real.log x := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ x * Real.log x := by`. Apply `mul_le_mul_of_nonneg_right _ hlx` to reduce the goal to its premises. Rewrite using `[Nat.card_Icc, Nat.add_sub_cancel]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.floor_le hx0`. Establish `h2 : ‖(if χ = 1 then (x : ℂ) else 0)‖ ≤ x` using `by split_ifs`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hx0]`. Rewrite using `[norm_zero]`. Conclude with `hx0`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma chebyshev_character_trivial_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (x : ℝ) (hx : 1 ≤ x) :
     ‖psiChi χ x - (if χ = 1 then (x : ℂ) else 0)‖ ≤ x * (Real.log x + 1) := by
@@ -144,21 +142,21 @@ lemma chebyshev_character_trivial_bound {q : ℕ} [NeZero q] (χ : DirichletChar
     _ = x * (Real.log x + 1) := by ring
 
 /- English proof (translation)
-Establish `hx0 : (0:ℝ) < x` using `by linarith`. Establish `hβ0 : (0:ℝ) < β` using `by linarith`. Establish `hlog : 0 < Real.log x` using `Real.log_pos (by linarith)`. Establish `hn : ‖(x : ℂ) ^ (β : ℂ) / (β : ℂ)‖ = x ^ β / β`. Rewrite using `[norm_div, Complex.norm_cpow_eq_rpow_re_of_pos hx0, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg hβ0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Establish `hq0 : (0:ℝ) < q` using `by linarith`. Establish `hA0 : A ≠ 0` using `hA.ne'`. Establish `h1 : q ^ (1 / (2 * A)) ≤ Real.sqrt (Real.log x)`. Rewrite using `[Real.sqrt_eq_rpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul hlog.le]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h2 : q ^ (-(1 / (2 * A))) = (q ^ (1 / (2 * A)))⁻¹` using `Real.rpow_neg hq0.le _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hs : 0 < Real.sqrt (Real.log x)` using `Real.sqrt_pos.mpr hlog`. Establish `hqa : 0 < q ^ (1 / (2 * A))` using `Real.rpow_pos_of_pos hq0 _`. Establish `h3 : cE / Real.sqrt (Real.log x) ≤ 1 - β`. Establish `h3a : cE * q ^ (-(1 / (2 * A))) ≤ 1 - β` using `by linarith`. Rewrite `h3a` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (β - 1) * Real.log x ≤ -cE * Real.sqrt (Real.log x)`. Establish `hsq : Real.sqrt (Real.log x) * Real.sqrt (Real.log x) = Real.log x` using `Real.mul_self_sqrt hlog.le`. Establish `h4a` using `(div_le_iff₀ hs).mp h3`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h5 : x ^ β ≤ x * Real.exp (-cE * Real.sqrt (Real.log x))`. Establish `e1 : x * Real.exp (-cE * Real.sqrt (Real.log x)) = Real.exp (Real.log x + -cE * Real.sqrt (Real.log x))`. Rewrite using `[Real.exp_add, Real.exp_log hx0]`. Rewrite using `[e1, Real.rpow_def_of_pos hx0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h6 : x ^ β / β ≤ 2 * x ^ β`. Rewrite using `[div_le_iff₀ hβ0]`. Establish `h6a` using `Real.rpow_pos_of_pos hx0 β`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear relations using `[h5, h6]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exceptional_zero_term_bound (x A q cE β : ℝ) (hx : 2 ≤ x) (hA : 0 < A) (hq : 1 ≤ q)
     (hqL : q ≤ Real.log x ^ A) (hcE : 0 < cE) (hβ1 : 1 / 2 ≤ β)
@@ -209,11 +207,11 @@ lemma exceptional_zero_term_bound (x A q cE β : ℝ) (hx : 2 ≤ x) (hA : 0 < A
   linarith [h5, h6]
 
 /- English proof (translation)
-Establish `ho` using `(isLittleO_rpow_exp_pos_mul_atTop (2 * A) hc).comp_tendsto Real.tendsto_sqrt_atTop`. Establish `hb` using `ho.bound (show (0:ℝ) < 1 / 2 by norm_num)`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.mp hb`. Use `⟨max N 0, le_max_right _ _, fun L hL hlt => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Establish `hLN : N ≤ L` using `le_trans (le_max_left _ _) hcon.le`. Establish `h2 : ‖Real.sqrt L ^ (2 * A)‖ ≤ 1 / 2 * ‖Real.exp (c * Real.sqrt L)‖` using `hN L hLN`. Establish `hs : Real.sqrt L ^ (2 * A) = L ^ A`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_mul hL.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (Real.exp_pos _).le, hs]`. Combine the linear relations using `[Real.exp_pos (c * Real.sqrt L)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma bounded_of_exp_sqrt_lt_pow (A c : ℝ) (hA : 0 < A) (hc : 0 < c) :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ L : ℝ, 0 < L → Real.exp (c * Real.sqrt L) < L ^ A → L ≤ U := by
@@ -233,35 +231,31 @@ lemma bounded_of_exp_sqrt_lt_pow (A c : ℝ) (hA : 0 < A) (hc : 0 < c) :
   linarith [Real.exp_pos (c * Real.sqrt L)]
 
 /- English proof (translation)
-Introduce `hP hZ hE A hA`. Take `⟨cZ, hcZ, hZ'⟩` from `hZ`. Use `set c₁ : ℝ := min cZ (1 / 20) with hc₁`. Establish `hc₁0 : 0 < c₁` using `lt_min hcZ (by norm_num)`. Establish `hc₁20 : c₁ ≤ 1 / 20` using `min_le_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₁Z : c₁ ≤ cZ` using `min_le_left _ _`. Take `⟨c, C, hc, hPC⟩` from `hP c₁ hc₁0 hc₁20`. Take `⟨cE, hcE, hEB⟩` from `hE (1 / (2 * A)) (by positivity)`. Take `⟨U, hU0, hU⟩` from `bounded_of_exp_sqrt_lt_pow A c hA hc`. Use `set cf : ℝ := min c cE with hcf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf0 : 0 < cf` using `lt_min hc hcE`. Establish `hK0 : 0 ≤ (U + 1) * Real.exp (cf * Real.sqrt U)` using `mul_nonneg (by linarith) (Real.exp_pos _).le`. Use `⟨cf, (max C 0 + 2) + (U + 1) * Real.exp (cf * Real.sqrt U), hcf0, ?_⟩` and prove the remaining obligations. Introduce `q _ χ x hx hqL`. Establish `hx0 : (0:ℝ) ≤ x` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : (1:ℝ) ≤ x` using `by linarith`. Establish `hlx : 0 < Real.log x` using `Real.log_pos (by linarith)`. Establish `hq1 : (1:ℝ) ≤ q`. Establish `h1 : 1 ≤ q` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ (max C 0 + 2) * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `mul_nonneg (mul_nonneg (by linarith [le_max_right C 0]) hx0) (Real.exp_pos _).le`. Establish `hK : 0 ≤ (U + 1) * Real.exp (cf * Real.sqrt U) * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `mul_nonneg (mul_nonneg hK0 hx0) (Real.exp_pos _).le`. Establish `hfin : ((max C 0 + 2) + (U + 1) * Real.exp (cf * Real.sqrt U)) * x * Real.exp (-cf * Real.sqrt (Real.log x)) = (max C 0 + 2) * x * Real.exp (-cf * Real.sqrt (Real.log x)) + (U + 1) * Real.exp (cf * Real.sqrt U) * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `by ring`. Rewrite using `[hfin]`. Distinguish the cases in `hsmall : Real.exp (c * Real.sqrt (Real.log x)) < Real.log x ^ A`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLU : Real.log x ≤ U` using `hU (Real.log x) hlx hsmall`. Establish `htriv` using `chebyshev_character_trivial_bound χ x hx1`. Establish `hsqU : Real.sqrt (Real.log x) ≤ Real.sqrt U` using `Real.sqrt_le_sqrt hLU`. Establish `he : 1 ≤ Real.exp (cf * Real.sqrt U) * Real.exp (-cf * Real.sqrt (Real.log x))`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Apply `Real.one_le_exp` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hxU : 0 ≤ x * (U + 1)` using `mul_nonneg hx0 (by linarith)`. Establish `s1 : x * (Real.log x + 1) ≤ x * (U + 1)` using `mul_le_mul_of_nonneg_left (by linarith) hx0`. Establish `s2 : x * (U + 1) ≤ x * (U + 1) * (Real.exp (cf * Real.sqrt U) * Real.exp (-cf * Real.sqrt (Real.log x)))` using `le_mul_of_one_le_right hxU he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `s3 : x * (U + 1) * (Real.exp (cf * Real.sqrt U) * Real.exp (-cf * Real.sqrt (Real.log x))) = (U + 1) * Real.exp (cf * Real.sqrt U) * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hsmall`. Establish `hqexp : (q:ℝ) ≤ Real.exp (c * Real.sqrt (Real.log x))` using `le_trans hqL hsmall`. Take `⟨B, hB⟩` from `exists_exceptional_zero_set cZ c₁ hc₁Z hZ' q χ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hmain` using `hPC q χ B x hB hx hqexp`. Establish `hsumB : ‖∑ β ∈ B, (x : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ 2 * x * Real.exp (-cE * Real.sqrt (Real.log x))`. Take `⟨hcard, hmem, -⟩` from `hB`. Break down `B.eq_empty_or_nonempty with hBe | ⟨β, hβ⟩` into its components or cases. Rewrite using `[hBe, Finset.sum_empty, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (by linarith) (Real.exp_pos _).le`. Establish `hBs : B = {β}` using `Finset.eq_singleton_iff_unique_mem.mpr ⟨hβ, fun b hb => Finset.card_le_one.mp hcard b hb β hβ⟩`. Rewrite using `[hBs, Finset.sum_singleton]`. Take `⟨hχ1, hreg, hL0, -⟩` from `hmem β hβ`. Establish `hβ1 : 1 / 2 ≤ β` using `half_le_of_real_in_region hc₁20 hreg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hχ2 : χ ^ 2 = 1` using `(hZ' q χ (β:ℂ) (zero_free_region_mono hc₁Z hreg) ⟨Or.inl hχ1, hL0⟩).1`. Establish `hβ2` using `hEB q χ β hχ2 hχ1 hL0`. Conclude with `exceptional_zero_term_bound x A q cE β hx hA hq1 hqL hcE hβ1 hβ2`. Establish `e1 : Real.exp (-c * Real.sqrt (Real.log x)) ≤ Real.exp (-cf * Real.sqrt (Real.log x))`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : cf ≤ c` using `min_le_left _ _`. Establish `h2` using `Real.sqrt_nonneg (Real.log x)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : Real.exp (-cE * Real.sqrt (Real.log x)) ≤ Real.exp (-cf * Real.sqrt (Real.log x))`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : cf ≤ cE` using `min_le_right _ _`. Establish `h2` using `Real.sqrt_nonneg (Real.log x)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hC : C * x * Real.exp (-c * Real.sqrt (Real.log x)) ≤ max C 0 * x * Real.exp (-cf * Real.sqrt (Real.log x))`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hE2 : 2 * x * Real.exp (-cE * Real.sqrt (Real.log x)) ≤ 2 * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `mul_le_mul_of_nonneg_left e2 (by linarith)`. Use `set S : ℂ := ∑ β ∈ B, (x : ℂ) ^ (β : ℂ) / (β : ℂ) with hS`. Use `set a : ℂ := psiChi χ x - (if χ = 1 then (x : ℂ) else 0) with ha`. Establish `htri : ‖a‖ ≤ ‖a + S‖ + ‖S‖`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hsplit : (max C 0 + 2) * x * Real.exp (-cf * Real.sqrt (Real.log x)) = max C 0 * x * Real.exp (-cf * Real.sqrt (Real.log x)) + 2 * x * Real.exp (-cf * Real.sqrt (Real.log x))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem siegel_walfisz_character_of : SiegelWalfiszOf := by
   intro hP hZ hE A hA

@@ -10,11 +10,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SplitPlaceTypes
 namespace GlobalTheory.TypeConjSplit
 
 /- English proof (translation)
-Introduce `D i ep hi u hu hU w hw hc τ₀ hτ`. Take `⟨-, h2, h3, -⟩` from `(GlobalTheory.SplitRowAll.splitRow_at D).2 i hi`. Establish `hUin : ∀ τ, EmbIn (N` using `D.nd) D.nbr i ep u hu τ := fun τ => (GlobalTheory.T.embTypeUe_iff_localEmbeddingInCMHalfType D i u hu ep τ).1 (hU τ)`. Establish `hwin : EmbIn (N` using `D.nd) D.nbr i ep w hw τ₀ := (GlobalTheory.T.embTypeUe_iff_localEmbeddingInCMHalfType D i w hw ep τ₀).1 hτ`. Apply the tactic sequence `rcases h3 u w hu hw hc with ⟨hpu, hpw⟩ | ⟨hpu, hpw⟩ <;> cases ep`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨τ⟩` from `hpu.1`. Conclude with `h2 u hu τ ⟨hpu.2 τ, hUin τ⟩`. Conclude with `h2 w hw τ₀ ⟨hwin, hpw.2 τ₀⟩`. Conclude with `h2 w hw τ₀ ⟨hpw.2 τ₀, hwin⟩`. Take `⟨τ⟩` from `hpu.1`.
-
-Conclude with `h2 u hu τ ⟨hUin τ, hpu.2 τ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ambTypeD_of_splitRow : ∀ (D : D7) (i : D.nd.Loc) (ep : Bool),
     GlobalTheory.IndefiniteRowSideFullHecke.SplitPlaceTypes.SplitRowPrime D.host (D.nd.l i) → EmbeddingTypes.ambTypeD (D := D) i ep := by

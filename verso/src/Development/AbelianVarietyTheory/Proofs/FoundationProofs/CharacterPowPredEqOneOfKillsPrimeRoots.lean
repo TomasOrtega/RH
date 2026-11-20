@@ -6,7 +6,7 @@ open scoped Matrix
 namespace GlobalTheory.KillsMuOrd
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_pow, h, ← pow_mul, pow_succ', mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_of_apply {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : G ℚ Ω) (ζ : Ω) (k : ℕ)
     (h : s ζ = ζ ^ k) : ∀ n : ℕ, (s ^ n) ζ = ζ ^ (k ^ n) := by
@@ -17,13 +17,13 @@ theorem pow_apply_of_apply {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : G ℚ Ω
     rw [pow_succ', AlgEquiv.mul_apply, ih, map_pow, h, ← pow_mul, pow_succ', mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : ζ = 1`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Establish `hord : orderOf ζ = l` using `orderOf_eq_prime hζ h1`. Establish `hprim : IsPrimitiveRoot ζ l` using `hord ▸ IsPrimitiveRoot.orderOf ζ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsζ : (s ζ) ^ l = 1` using `by rw [← map_pow, hζ, map_one]`. Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`. Take `⟨k, hk, hk'⟩` from `hprim.eq_pow_of_pow_eq_one hsζ`. Establish `hkl : ¬ l ∣ k`. Introduce and unpack `⟨j, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Establish `: s ζ = 1` using `by rw [← hk', pow_mul, hζ, one_pow]`. Conclude with `(map_eq_one_iff s s.injective).mp this`. Rewrite using `[pow_apply_of_apply s ζ k hk'.symm]`. Establish `hz : ((k : ZMod l)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]` and apply the resulting hypothesis. Establish `hf : ((k ^ (l - 1) : ℕ) : ZMod l) = ((1 : ℕ) : ZMod l)` using `by push_cast; exact ZMod.pow_card_sub_one_eq_one hz`. Rewrite `hf` using `[ZMod.natCast_eq_natCast_iff]`. Rewrite using `[← pow_mod_orderOf, hord, hf, Nat.one_mod_eq_one.mpr hl.out.one_lt.ne', pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_fixes {Ω : Type} [Field Ω] [Algebra ℚ Ω] (l : ℕ) [hl : Fact l.Prime] (s : G ℚ Ω) (ζ : Ω)
     (hζ : ζ ^ l = 1) : (s ^ (l - 1)) ζ = ζ := by
@@ -48,7 +48,7 @@ theorem pow_fixes {Ω : Type} [Field Ω] [Algebra ℚ Ω] (l : ℕ) [hl : Fact l
   rw [← pow_mod_orderOf, hord, hf, Nat.one_mod_eq_one.mpr hl.out.one_lt.ne', pow_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ l _ C _ χ s h`. Rewrite using `[← map_pow]`. Conclude with `h _ fun ζ hζ => pow_fixes l s ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charPow_sub_one_eq_one : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (l : ℕ) [Fact l.Prime] (C : Type) [Monoid C]
     (χ : G ℚ Ω →* C) (s : G ℚ Ω), KillsMu l χ → χ s ^ (l - 1) = 1 := by

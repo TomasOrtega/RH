@@ -14,31 +14,29 @@ def periods {V K : Type} [AddCommGroup V] (f : V → K) : AddSubgroup V where
   neg_mem' := fun {a} ha t => by rw [← ha (t + -a)]; simp
 
 /- English proof (translation)
-Take `⟨t₀, -, ht₀⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hS`. Establish `hsurj : ∀ v, ∃ t, T t + b = v` using `fun v => ⟨T.symm (v - b), by simp⟩`. Establish `hχ : χ ≠ 0`. Introduce and unpack `rfl`. Take `⟨t, rfl⟩` from `hsurj t₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `ht₀ (by rw [hT, zero_mul])`. Use `set M := periods f with hM`. Establish `hMf : ∀ v, ∀ u ∈ M, f (v + u) = f v` using `fun v u hu => hu v`. Establish `hLM : L ≤ M` using `fun u hu t => hf t u hu`. Establish `hTM : ∀ u, T u ∈ M ↔ u ∈ M` using `fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ t, f (T t + b + T u) = χ * f (t + u)` using `fun t => by`. Rewrite using `[← hT, map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h t`. Apply `mul_left_cancel₀ hχ` to reduce the goal to its premises. Rewrite using `[← e, hMf _ _ h, hT]`. Introduce `h v`. Take `⟨t, rfl⟩` from `hsurj v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hMf _ _ h, hT]`. Establish `hmap : M.map (T : V →+ V) = M`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(hTM u).2 hu`. Introduce `hv`. Conclude with `⟨T.symm v, (hTM _).1 (by simpa using hv), by simp⟩`. Establish `hout : ∀ v : V, f (QuotientAddGroup.mk v : V ⧸ M).out = f v` using `fun v => by`. Establish `h : -v + (QuotientAddGroup.mk v : V ⧸ M).out ∈ M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← QuotientAddGroup.eq]`. Simplify using the standard rewrite rules. Simplify using `using hMf v _ h`. Set `S' : Finset V` to `S.image fun s => (QuotientAddGroup.mk s : V ⧸ M).out`. Establish `hinj' : ∀ s ∈ S', ∀ s' ∈ S', s - s' ∈ M → s = s'` using `fun s hs s' hs' h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hs`. Take `⟨a', -, rfl⟩` from `Finset.mem_image.1 hs'`. Use `QuotientAddGroup.eq_iff_sub_mem.2 h` as an intermediate fact. Simplify using `only [QuotientAddGroup.out_eq'] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcov' : ∀ v, f v ≠ 0 → ∃ s ∈ S', v - s ∈ M` using `fun v hv => by`. Take `⟨s, hs, e⟩` from `hcov v hv`. Use `⟨_, Finset.mem_image_of_mem _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.eq_iff_sub_mem, QuotientAddGroup.out_eq', QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `hLM e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i1 : M.relIndex L ≠ 0` using `by rw [AddSubgroup.relIndex_eq_one.2 hLM]; exact one_ne_zero`. Establish `i2 : L.relIndex M ≠ 0` using `boxSum_ne_zero_invariant_affineChange.relIndex_ne_zero_of_cover L M (S.image fun s => s - t₀) fun k hk => by`. Take `⟨s, hs, e⟩` from `hcov (t₀ + k) (by rwa [hMf _ _ hk])`. Use `⟨_, Finset.mem_image_of_mem _ hs, ?_⟩` and prove the remaining obligations. Use `e using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h1` using `(sum_coset_reps_ne_zero_iff_commensurable.sum_reps_ne_zero_iff V K f L M S S' i1 i2 hf hMf hinj hcov hinj' hcov').1 hS`. Establish `h2` using `sum_coset_reps_ne_zero_iff_commensurable.finsum_quot_eq f M M S' le_rfl (by simp) hMf hinj' hcov'`. Rewrite `h2` using `[AddSubgroup.relIndex_self, Nat.cast_one, one_mul]`. Rewrite `h1` using `[← h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e : V ⧸ M ≃ V ⧸ M` to `(QuotientAddGroup.congr M M T hmap).toEquiv.trans (Equiv.addRight (QuotientAddGroup.mk b))`. Establish `he : ∀ c : V ⧸ M, f (e c).out = χ * f c.out` using `fun c => by`. Take `⟨v, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Establish `: e (QuotientAddGroup.mk v) = QuotientAddGroup.mk (T v + b)` using `rfl`. Rewrite using `[this, hout, hout, hT]`.
-
-Establish `h3 : ∑ᶠ c : V ⧸ M, f (e c).out = ∑ᶠ c : V ⧸ M, f c.out` using `finsum_comp_equiv (f := fun c : V ⧸ M => f c.out) e`. Simplify using `only [he] at h3`. Rewrite `h3` using `[← mul_finsum]`. Conclude with `mul_right_cancel₀ h1 (by rw [h3, one_mul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_eq_one_of_reps {V K : Type} [AddCommGroup V] [Field K] [CharZero K] (f : V → K) (L : AddSubgroup V)
     (S : Finset V) (hf : ∀ v, ∀ u ∈ L, f (v + u) = f v) (hinj : ∀ s ∈ S, ∀ s' ∈ S, s - s' ∈ L → s = s')
@@ -109,9 +107,9 @@ theorem eigen_eq_one_of_reps {V K : Type} [AddCommGroup V] [Field K] [CharZero K
   exact mul_right_cancel₀ h1 (by rw [h3, one_mul])
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ P hP ι _ _ f N hf T b χ hT hS`. Establish `hq` using `NormalFormAtPrime.qOf_ne_zero P`. Establish `h3` using `rationalFractions_represent_primeNormQuotient.valsQ_reps E P hP N N`. Use `eigen_eq_one_of_reps f (boxSum_ne_zero_invariant_affineChange.lat P ι ((qOf P : E) ^ N)⁻¹) (Fintype.piFinset fun _ : ι => LocE.valsQ E (qOf P) N N) (fun v u hu => ?_) (fun s hs s' hs' h => ?_) (fun v hv => ?_) T.toAddEquiv b χ hT (right_ne_zero_of_mul hS)` and prove the remaining obligations. Use `hf.2 v (((qOf P : E) ^ N)⁻¹ • u) hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hq), one_smul]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Conclude with `h3.1 _ (Fintype.mem_piFinset.1 hs i) _ (Fintype.mem_piFinset.1 hs' i) (h i)`. Use `choose s hs hs' using fun i => h3.2 (v i) (hf.1 v hv i)`. Conclude with `⟨s, Fintype.mem_piFinset.2 hs, hs'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eigen_eq_one : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K] (P : HeightOneSpectrum (𝓞 E)), GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (f : (ι → E) → K) (N : ℕ), FunBdd P N f → ∀ (T : (ι → E) ≃ₗ[E] (ι → E)) (b : ι → E) (χ : K), (∀ t, f (T t + b) = χ * f t) → boxSum P N N f ≠ 0 → χ = 1 := by
   intro E _ _ K _ _ P hP ι _ _ f N hf T b χ hT hS

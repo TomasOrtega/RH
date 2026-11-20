@@ -16,7 +16,7 @@ def funFieldEquiv (P : ArithVariety n) : P.FunField ≃+* FunField P :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-The claim follows from `(IsLocalization.algEquiv (nonZeroDivisors (CoordRing P)) P.FunField (FunField P)).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_algebraMap (P : ArithVariety n) (r : CoordRing P) :
     funFieldEquiv P (algebraMap (CoordRing P) P.FunField r) =
@@ -26,7 +26,7 @@ theorem funFieldEquiv_algebraMap (P : ArithVariety n) (r : CoordRing P) :
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `funFieldEquiv_algebraMap P _`.
+A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_mkF (P : ArithVariety n) (f : MvPolynomial (Coord n) ℤ) :
     funFieldEquiv P (P.mkF f) = val P f :=
@@ -35,7 +35,7 @@ theorem funFieldEquiv_mkF (P : ArithVariety n) (f : MvPolynomial (Coord n) ℤ) 
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `funFieldEquiv_mkF P _`.
+A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_mkF_X (P : ArithVariety n) (v : Coord n) :
     funFieldEquiv P (P.mkF (X v)) = genPt P v :=
@@ -44,7 +44,7 @@ theorem funFieldEquiv_mkF_X (P : ArithVariety n) (v : Coord n) :
 omit [Fintype ι] in
 
 /- English proof (translation)
-Rewrite using `[ArithVariety.chartCoord, map_div₀, funFieldEquiv_mkF_X, funFieldEquiv_mkF_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem funFieldEquiv_chartCoord (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (v : Coord n) :
     funFieldEquiv P (P.chartCoord c v) = genPt P v / genPt P ⟨v.1, c v.1⟩ := by
@@ -53,9 +53,9 @@ theorem funFieldEquiv_chartCoord (P : ArithVariety n) (c : (k : ι) → Fin (n k
 omit [Fintype ι] in
 
 /- English proof (translation)
-Establish `hmap` using `RingHom.map_closure (funFieldEquiv P).toRingHom (Set.range (P.chartCoord c))`. Establish `hrange : (funFieldEquiv P).toRingHom '' Set.range (P.chartCoord c) = Set.range fun p : Coord n ↦ genPt P p / genPt P ⟨p.1, c p.1⟩`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `funFieldEquiv_chartCoord P c v`. Rewrite `hmap` using `[hrange]`. Rewrite using `[chartRing, ReciprocityTheory.ChartRestriction.G.Geo.chartRingZ, Algebra.adjoin_int, ← hmap]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_image_chartRing (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) :
     funFieldEquiv P '' (P.chartRing c : Set P.FunField) = (chartRing P c : Set (FunField P)) := by
@@ -73,7 +73,7 @@ theorem funFieldEquiv_image_chartRing (P : ArithVariety n) (c : (k : ι) → Fin
 omit [Fintype ι] in
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, ← funFieldEquiv_image_chartRing]`. Conclude with `(funFieldEquiv P).injective.mem_set_image`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_mem_chartRing_iff (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1))
     (x : P.FunField) : funFieldEquiv P x ∈ chartRing P c ↔ x ∈ P.chartRing c := by
@@ -81,7 +81,7 @@ theorem funFieldEquiv_mem_chartRing_iff (P : ArithVariety n) (c : (k : ι) → F
   exact (funFieldEquiv P).injective.mem_set_image
 
 /- English proof (translation)
-Rewrite using `[ArithVariety.chartPow, chartPow, map_prod]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, funFieldEquiv_mkF_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem funFieldEquiv_chartPow (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (a : ι → ℤ) :
     funFieldEquiv P (P.chartPow c a) = chartPow P c a := by
@@ -90,7 +90,7 @@ theorem funFieldEquiv_chartPow (P : ArithVariety n) (c : (k : ι) → Fin (n k +
   rw [map_zpow₀, funFieldEquiv_mkF_X]
 
 /- English proof (translation)
-Rewrite using `[chartPow, chartPow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartPow_neg (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (a : ι → ℤ) :
     chartPow P c (-a) = (chartPow P c a)⁻¹ := by
@@ -99,7 +99,7 @@ theorem chartPow_neg (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (a : 
   rw [Pi.neg_apply, zpow_neg]
 
 /- English proof (translation)
-Rewrite using `[map_div₀, funFieldEquiv_chartPow, chartPow_neg, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem funFieldEquiv_div_chartPow (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (a : ι → ℤ)
     (x : P.FunField) :
@@ -109,9 +109,9 @@ theorem funFieldEquiv_div_chartPow (P : ArithVariety n) (c : (k : ι) → Fin (n
 omit [Fintype ι] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, g, df, dg, hf, hg, hd, hgP, hx⟩`. Use `⟨f, g, df, dg, hf, hg, hgP, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_div₀, funFieldEquiv_mkF, funFieldEquiv_mkF]`. Introduce and unpack `⟨f, g, df, dg, hf, hg, hgP, hd, hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨f, g, df, dg, hf, hg, hd, hgP, (funFieldEquiv P).injective ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_div₀, funFieldEquiv_mkF, funFieldEquiv_mkF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOfDegree_iff (P : ArithVariety n) (a : ι → ℤ) (x : P.FunField) :
     P.IsOfDegree a x ↔ IsHomogOfDeg P a (funFieldEquiv P x) := by
@@ -135,7 +135,7 @@ def GenSystem.ofIsHomogGenerators {P : ArithVariety n} {r : ℕ}
 omit [Fintype ι] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Γ.homog, Γ.span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem GenSystem.isHomogGenerators {P : ArithVariety n} (Γ : GenSystem P) :
     P.IsHomogGenerators Γ.f Γ.δ :=

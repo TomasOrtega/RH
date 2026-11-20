@@ -21,7 +21,7 @@ def WhitAtC (c : ℂ) (d : SD σ) (Φ : d.Fn) (x : d.G) : Prop :=
       (s0 d.m d.n) (c * d.orb T (d.om x Φ))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x nb lam 𝓖 hc ε w hw T hT`. Conclude with `h nb lam 𝓖 hc ε w hw T hT x`. Introduce `h nb lam 𝓖 hc ε w hw T hT x`. Conclude with `h x nb lam 𝓖 hc ε w hw T hT`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asc_whitAt_iff (c : ℂ) (d : SD σ) (Φ : d.Fn) : PositivityTheory.SiegelWeilFormula.WhitAt c d Φ ↔ ∀ x, WhitAtC c d Φ x := by
   constructor
@@ -77,16 +77,16 @@ def CoreX : Prop := ∀ (ok : ℕ → ℕ → Prop) (vac : Prop) (c : ℂ), TAll
 def DictAsmX : Prop := CellFormula → RelEx → HeightDict → MeasDict → ThetaDict → GenDictX
 
 /- English proof (translation)
-Introduce `Φ hΦ` and use `hE F E σ d _ _ (hS F E σ d Φ hΦ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eisAll_of (hS : SecK) (hE : EisWk) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (d : SD σ) : d.EisAll :=
   fun Φ hΦ => hE F E σ d _ _ (hS F E σ d Φ hΦ)
 
 /- English proof (translation)
-Introduce `Φ hΦ x hx`. Take `⟨R⟩` from `hR F E σ d`. Take `⟨k, cs, Φs, hs, rfl⟩` from `hP hT hF hPK F E σ d R Φ hΦ (hK F E σ d R Φ hΦ)`. Use `hL hT hTC hLB hU hS c F E σ d hE k cs Φs (fun i => (hs i).1) x (fun i => ?_)` and prove the remaining obligations. Take `⟨P, gf, hpg⟩` from `(hs i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hC F E σ d R hok hE (Φs i) (hs i).1 P gf hpg (fun h => absurd h hv) x hx`.
+A detailed English derivation is pending.
 -/
 theorem levi_kfin (ok : ℕ → ℕ → Prop) (vac : Prop) (hv : ¬ vac) (c : ℂ) (hT : TAll) (hTC : ThetaCoef) (hLB : LamBd)
     (hR : RDEx) (hF : FockMem) (hK : KFinPoly) (hPK : PolyKFin) (hS : SecK) (hU : Unfold) (hP : PureSpan)
@@ -101,7 +101,7 @@ theorem levi_kfin (ok : ℕ → ℕ → Prop) (vac : Prop) (hv : ¬ vac) (c : �
   exact hC F E σ d R hok hE (Φs i) (hs i).1 P gf hpg (fun h => absurd h hv) x hx
 
 /- English proof (translation)
-The claim follows from `hI hT c F E σ d d.KFin (fun Φ h => h.1) (hKK F E σ d) (levi_kfin ok vac hv c hT hTC hLB hR hF hK hPK hS hU hP hL hC d hok hE)`.
+A detailed English derivation is pending.
 -/
 theorem all_kfin (ok : ℕ → ℕ → Prop) (vac : Prop) (hv : ¬ vac) (c : ℂ) (hI : IwaRedC) (hT : TAll) (hTC : ThetaCoef)
     (hLB : LamBd) (hR : RDEx) (hF : FockMem) (hK : KFinPoly) (hPK : PolyKFin) (hS : SecK) (hU : Unfold)
@@ -116,7 +116,7 @@ def KFinK : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   (d : SD σ), ∀ Φ, d.KFin Φ → ∀ k ∈ d.K, d.KFin (d.om k Φ)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d hnm hE Φ hΦ nb lam 𝓖 hc ε w hw T hT' x`. Use `all_kfin (fun M n => n < M) False not_false 1 hI hT hTC hLB hR hF hK hPK hS hU hP hL (hC _ _ _ hT hA hS hU hW hD) hKK d hnm hE Φ hΦ x nb lam 𝓖 hc ε w hw T hT'` as an intermediate fact. Simplify `this` using `only [one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem whitK_of_X (hI : IwaRedC) (hP : PureSpan) (hL : LinRedC) (hC : CoreX) (hD : GenDictX) (hKK : KFinK)
     (hT : TAll) (hA : AuxiliaryPrimeFunction) (hR : RDEx) (hF : FockMem) (hK : KFinPoly) (hS : SecK) (hU : Unfold) (hW : Gen.WhitGenLt)
@@ -127,7 +127,7 @@ theorem whitK_of_X (hI : IwaRedC) (hP : PureSpan) (hL : LinRedC) (hC : CoreX) (h
   simpa only [one_mul] using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d hmn Φ hΦ`. Rewrite using `[asc_whitAt_iff]`. Conclude with `all_kfin (fun M n => M = n ∧ 1 ≤ M) False not_false 2 hI hT hTC hLB hR hF hK hPK hS hU hP hL (hC _ _ _ hT hA hS hU hW hD) hKK d ⟨hmn, d.ok.hm⟩ (eisAll_of hS hEW d) Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whitEq_of_X (hI : IwaRedC) (hP : PureSpan) (hL : LinRedC) (hC : CoreX) (hD : GenDictX) (hKK : KFinK)
     (hT : TAll) (hA : AuxiliaryPrimeFunction) (hR : RDEx) (hF : FockMem) (hK : KFinPoly) (hS : SecK) (hU : Unfold) (hEW : EisWk)
@@ -138,9 +138,9 @@ theorem whitEq_of_X (hI : IwaRedC) (hP : PureSpan) (hL : LinRedC) (hC : CoreX) (
     (hC _ _ _ hT hA hS hU hW hD) hKK d ⟨hmn, d.ok.hm⟩ (eisAll_of hS hEW d) Φ hΦ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R hmn Φ hΦ hvac`. Rewrite using `[asc_whitAt_iff]`. Establish `hE` using `eisAll_of hS hEW d`. Establish `hcore` using `hC _ _ _ hT hA hS hU hW hD`. Use `hI hT 0 F E σ d (fun Φ => Φ ∈ d.sch ∧ d.T Φ ∈ R.vac) (fun Φ h => h.1) (fun Φ h k hk => ⟨d.ok.dbl.weil.2.1.pres k Φ h.1, (hVK F E σ d R).1 Φ h.1 h.2 k hk⟩) ?_ Φ ⟨hΦ, hvac⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Φ' h' x hx`. Take `⟨k, cs, Φs, hs, rfl⟩` from `hV hT hF hPK hVK F E σ d R Φ' h'.1 h'.2`. Use `hL hT hTC hLB hU hS 0 F E σ d hE k cs Φs (fun i => (hs i).1) x (fun i => ?_)` and prove the remaining obligations. Take `⟨gf, hpg⟩` from `(hs i).2.2`. Conclude with `hcore F E σ d R ⟨hmn, d.ok.hm⟩ hE (Φs i) (hs i).1 _ gf hpg (fun _ => rfl) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem whitLow_of_X (hI : IwaRedC) (hV : VacSpan) (hL : LinRedC) (hC : CoreX) (hD : GenDictX) (hVK : VacK)
     (hT : TAll) (hA : AuxiliaryPrimeFunction) (hF : FockMem) (hS : SecK) (hU : Unfold) (hEW : EisWk) (hW : Gen.WhitGenLow)

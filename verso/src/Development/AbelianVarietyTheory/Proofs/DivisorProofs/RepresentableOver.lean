@@ -10,7 +10,7 @@ noncomputable def coverOf {T : Scheme.{0}} {J : Type} (Z : J → Scheme.{0}) (z 
   Scheme.Cover.mkOfCovers J Z z (fun p => hc p) hz
 
 /- English proof (translation)
-Use `choose Z z hz hp he using h`. Conclude with `Scheme.Cover.hom_ext (coverOf Z z hz (fun p => ⟨p, hp p⟩)) t t' he`.
+A detailed English derivation is pending.
 -/
 theorem hom_eq_of_local {T S : Scheme.{0}} (t t' : T ⟶ S)
     (h : ∀ p : T, ∃ (Z : Scheme.{0}) (z : Z ⟶ T), IsOpenImmersion z ∧ p ∈ Set.range z ∧
@@ -19,7 +19,7 @@ theorem hom_eq_of_local {T S : Scheme.{0}} (t t' : T ⟶ S)
   exact Scheme.Cover.hom_ext (coverOf Z z hz (fun p => ⟨p, hp p⟩)) t t' he
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Scheme.Cover.glueMorphisms (coverOf Z z hz hc) t (fun i k => ht i k _ _ _ pullback.condition), fun i => Scheme.Cover.ι_glueMorphisms (coverOf Z z hz hc) t _ i⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_glue {T S : Scheme.{0}} {J : Type} (Z : J → Scheme.{0}) (z : ∀ i, Z i ⟶ T)
     (hz : ∀ i, IsOpenImmersion (z i)) (hc : ∀ p : T, ∃ i, p ∈ Set.range (z i))
@@ -33,7 +33,7 @@ theorem exists_glue {T S : Scheme.{0}} {J : Type} (Z : J → Scheme.{0}) (z : �
 variable {S : Scheme.{0}} (F : (Over S)ᵒᵖ ⥤ Type 1)
 
 /- English proof (translation)
-Establish `: c = a ≫ b` using `Over.OverMorphism.ext (by simpa using h.symm)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem map_map {X Y Z : Over S} (a : X ⟶ Y) (b : Y ⟶ Z) (c : X ⟶ Z) (h : a.left ≫ b.left = c.left)
     (d : F.obj (op Z)) : F.map a.op (F.map b.op d) = F.map c.op d := by
@@ -42,7 +42,7 @@ theorem map_map {X Y Z : Over S} (a : X ⟶ Y) (b : Y ⟶ Z) (c : X ⟶ Z) (h : 
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: c = 𝟙 _` using `Over.OverMorphism.ext hc`. Substitute `this` using the available equality. Substitute `he` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem sig_eq {Y : Scheme.{0}} (r r' : Y ⟶ S) (h : r = r') (e : F.obj (op (Over.mk r)))
     (e' : F.obj (op (Over.mk r'))) (c : Over.mk r ⟶ Over.mk r') (hc : c.left = 𝟙 Y)
@@ -70,13 +70,13 @@ noncomputable def tot : Scheme.{0}ᵒᵖ ⥤ Type 1 where
 def el {V : Over S} (v : F.obj (op V)) : (tot F).obj (op V.left) := ⟨V.hom, v⟩
 
 /- English proof (translation)
-The claim follows from `eq_of_heq (Sigma.mk.inj h).2`.
+A detailed English derivation is pending.
 -/
 theorem el_inj {V : Over S} {v v' : F.obj (op V)} (h : el F v = el F v') : v = v' :=
   eq_of_heq (Sigma.mk.inj h).2
 
 /- English proof (translation)
-The claim follows from `sig_eq F (a.left ≫ V.hom) Y.hom (Over.w a) _ _ (Over.homMk (𝟙 _) (by simp)) rfl (map_map F _ _ _ (by simp) _)`.
+A detailed English derivation is pending.
 -/
 theorem map_el {Y V : Over S} (a : Y ⟶ V) (v : F.obj (op V)) :
     (tot F).map a.left.op (el F v) = el F (F.map a.op v) :=
@@ -84,14 +84,14 @@ theorem map_el {Y V : Over S} (a : Y ⟶ V) (v : F.obj (op V)) :
     (map_map F _ _ _ (by simp) _)
 
 /- English proof (translation)
-The claim follows from `congrArg Sigma.fst h`.
+A detailed English derivation is pending.
 -/
 theorem w_of_map_el {Y V : Over S} {a : Y.left ⟶ V.left} {v : F.obj (op V)} {y : F.obj (op Y)}
     (h : (tot F).map a.op (el F v) = el F y) : a ≫ V.hom = Y.hom :=
   congrArg Sigma.fst h
 
 /- English proof (translation)
-The claim follows from `congrArg Sigma.fst h`.
+A detailed English derivation is pending.
 -/
 theorem w_of_map_eq {Y : Scheme.{0}} {V V' : Over S} {a : Y ⟶ V.left} {b : Y ⟶ V'.left}
     {v : F.obj (op V)} {v' : F.obj (op V')}
@@ -99,7 +99,7 @@ theorem w_of_map_eq {Y : Scheme.{0}} {V V' : Over S} {a : Y ⟶ V.left} {b : Y �
   congrArg Sigma.fst h
 
 /- English proof (translation)
-Rewrite using `[map_el, map_el]`. Conclude with `⟨el_inj F, fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_eq_iff {Y V V' : Over S} (a : Y ⟶ V) (b : Y ⟶ V')
     (v : F.obj (op V)) (v' : F.obj (op V')) :
@@ -113,21 +113,19 @@ end GlobalTheory.RepOver
 open GlobalTheory.RepOver in
 
 /- English proof (translation)
-Introduce `S F hsep hglue Ix U x hmono hopen hcov`. Use `Exists.elim (GlobalTheory.T.representable_of_zariski_sheaf_open_charts_large (tot F) ?_ ?_ Ix (fun i => (U i).left) (fun i => el F (x i)) ?_ ?_ ?_) ?_` and prove the remaining obligations. Use `rotate_right`. Introduce and unpack `B ⟨⟨tB, dB⟩, huniv, j, hj, hc, hx⟩`. Use `⟨Over.mk tB, dB, fun T y => ?_, fun i => Over.homMk (j i) (w_of_map_el F (V := Over.mk tB) (hx i)), hj, hc, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hu⟩` from `huniv T.left (el F y)`. Use `⟨Over.homMk g (w_of_map_el F (V := Over.mk tB) hg), ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Conclude with `el_inj F ((map_el F _ dB).symm.trans hg)`. Conclude with `Over.OverMorphism.ext (hu g'.left ((map_el F g' dB).trans (congrArg (el F) hg')))`. Conclude with `el_inj F ((map_el F _ dB).symm.trans (hx i))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `T ⟨t, d⟩ ⟨t', d'⟩ h`. Take `rfl : t = t'` from `hom_eq_of_local t t' fun p => by`. Take `⟨Z, z, hz, hp, he⟩` from `h p`. Conclude with `⟨Z, z, hz, hp, congrArg Sigma.fst he⟩`. Take `rfl : d = d'` from `hsep (Over.mk t) d d' fun p => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, z, hz, hp, he⟩` from `h p`. Conclude with `⟨Over.mk (z ≫ t), Over.homMk z rfl, hz, hp, (map_eq_iff F _ _ d d').1 he⟩`. Both sides reduce to the same expression. Introduce `T J Z z y hz hc hy`. Take `⟨t, ht⟩` from `exists_glue Z z hz hc (fun i => (y i).1) (fun i k Y a b hab => congrArg Sigma.fst (hy i k Y a b hab))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `hglue (Over.mk t) J (fun i => Over.mk (y i).1) (fun i => Over.homMk (z i) (ht i)) (fun i => (y i).2) hz hc (fun i k Y a b hab => (map_eq_iff F a b _ _).1 (hy i k Y.left a.left b.left (congrArg (fun c => c.left) hab)))`. Conclude with `⟨⟨t, d⟩, fun i => (map_el F (Y := Over.mk (y i).1) (V := Over.mk t) (Over.homMk (z i) (ht i)) d).trans (congrArg (el F) (hd i))⟩`. Introduce `i Y u u' h`. Use `hmono i (Over.mk (u ≫ (U i).hom)) (Over.homMk u rfl) (Over.homMk u' (w_of_map_eq F h).symm) ((map_eq_iff F _ _ _ _).1 h)` as an intermediate fact. Conclude with `congrArg (fun c => c.left) this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `i T ⟨t, d⟩`. Take `⟨W, hW⟩` from `hopen i (Over.mk t) d`. Use `⟨W, fun Y a => Iff.trans ?_ (hW (Over.mk (a ≫ t)) (Over.homMk a rfl))⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Over.homMk u (w_of_map_eq F (V := Over.mk t) hu).symm, (map_eq_iff F _ _ _ _).1 hu⟩`. Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨u.left, (map_eq_iff F _ _ _ _).2 hu⟩`. Introduce and unpack `T ⟨t, d⟩ p`. Take `⟨i, Y, a, u, hp, h⟩` from `hcov (Over.mk t) d p`.
-
-Conclude with `⟨i, Y.left, a.left, u.left, hp, (map_eq_iff F _ _ _ _).2 h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RepOver.representable_over : ∀ (S : Scheme.{0}) (F : (Over S)ᵒᵖ ⥤ Type 1), (∀ (T : Over S) (y y' : F.obj (op T)), (∀ p : T.left, ∃ (Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left ∧ p ∈ Set.range z.left ∧ F.map z.op y = F.map z.op y') → y = y') → (∀ (T : Over S) (J : Type) (Z : J → Over S) (z : ∀ i, Z i ⟶ T) (y : ∀ i, F.obj (op (Z i))), (∀ i, IsOpenImmersion (z i).left) → (∀ p : T.left, ∃ i, p ∈ Set.range (z i).left) → (∀ (i k : J) (Y : Over S) (a : Y ⟶ Z i) (b : Y ⟶ Z k), a ≫ z i = b ≫ z k → F.map a.op (y i) = F.map b.op (y k)) → ∃ y₀ : F.obj (op T), ∀ i, F.map (z i).op y₀ = y i) → ∀ (Ix : Type) (U : Ix → Over S) (x : ∀ i, F.obj (op (U i))), (∀ (i : Ix) (Y : Over S) (u u' : Y ⟶ U i), F.map u.op (x i) = F.map u'.op (x i) → u = u') → (∀ (i : Ix) (T : Over S) (y : F.obj (op T)), ∃ W : T.left.Opens, ∀ (Y : Over S) (a : Y ⟶ T), (∃ u : Y ⟶ U i, F.map a.op y = F.map u.op (x i)) ↔ ∀ q, a.left q ∈ W) → (∀ (T : Over S) (y : F.obj (op T)) (p : T.left), ∃ (i : Ix) (Y : Over S) (a : Y ⟶ T) (u : Y ⟶ U i), p ∈ Set.range a.left ∧ F.map a.op y = F.map u.op (x i)) → ∃ (B : Over S) (x₀ : F.obj (op B)), (∀ (T : Over S) (y : F.obj (op T)), ∃! g : T ⟶ B, F.map g.op x₀ = y) ∧ ∃ j : ∀ i, U i ⟶ B, (∀ i, IsOpenImmersion (j i).left) ∧ (∀ p : B.left, ∃ i, p ∈ Set.range (j i).left) ∧ ∀ i, F.map (j i).op x₀ = x i := by
   intro S F hsep hglue Ix U x hmono hopen hcov

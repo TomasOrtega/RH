@@ -11,13 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CompanionTheory.HopfC
 
 /- English proof (translation)
-Introduce `hD R _ C _ F hS`. Take `⟨hex, hinj⟩` from `hS`. Take `⟨e₀, e₁, -, -, h₀, -, -, -, h₀₁, -, -⟩` from `hD R C F`. Use `⟨fun f hf => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hz` using `h₀₁ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hz` using `[hf, map_zero]`. Take `⟨r, hr⟩` from `(hex (e₀ f)).1 hz.symm`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Take `⟨T, rfl⟩ : ∃ T, c = ComposableArrows.mk₀ T` from `⟨_, ComposableArrows.ext₀ rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `(h₀ f T).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hr, Algebra.linearMap_apply, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `T`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `congrFun hr (ComposableArrows.mk₀ T)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stein_cn : DictSt → ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     Stein F → (∀ f : Cn F 0, dn F 0 f = 0 → ∃ r : R, f = r • (1 : Cn F 0)) ∧

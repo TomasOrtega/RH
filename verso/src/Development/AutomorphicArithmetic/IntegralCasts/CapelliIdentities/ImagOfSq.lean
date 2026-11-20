@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `c d hd h`. Establish `hd' : (0 : ℝ) < d` using `Nat.cast_pos.mpr hd`. Establish `h1 : c.re * c.re - c.im * c.im = -(d : ℝ)`. Use `congrArg Complex.re h` as an intermediate fact. Simplify `this` using `[pow_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : c.re * c.im + c.im * c.re = 0`. Use `congrArg Complex.im h` as an intermediate fact. Simplify `this` using `[pow_two]`. Establish `h3 : c.re * c.im = 0` using `by linarith [mul_comm c.re c.im]`. Establish `hre : c.re = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `h4`. Rewrite `h1` using `[h4]`. Use polynomial arithmetic with `[mul_self_nonneg c.re]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh67.imag_of_sq :
     ∀ {c : ℂ} {d : ℕ},

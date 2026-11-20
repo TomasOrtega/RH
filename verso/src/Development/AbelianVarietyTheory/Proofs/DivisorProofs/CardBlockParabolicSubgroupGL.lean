@@ -11,7 +11,7 @@ def blockMat {R : Type} [CommRing R] {a b : ℕ} (A : Matrix (Fin a) (Fin a) R) 
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B 0 D)
 
 /- English proof (translation)
-Rewrite using `[blockMat, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_blockMat {R : Type} [CommRing R] {a b : ℕ} (A : Matrix (Fin a) (Fin a) R) (B : Matrix (Fin a) (Fin b) R)
     (D : Matrix (Fin b) (Fin b) R) : (blockMat A B D).det = A.det * D.det := by
@@ -42,13 +42,13 @@ theorem blockParMk_val {R : Type} [CommRing R] {a b : ℕ}
     ((blockParMk x).1 : Matrix (Fin (a + b)) (Fin (a + b)) R) = blockMat x.1.1 x.2.2 x.2.1.1 := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, D, B⟩ ⟨A', D', B'⟩ h`. Establish `h1 : blockMat A.1 B D.1 = blockMat A'.1 B' D'.1`. Use `congrArg (fun g : blockPar R a (a + b) => (g.1 : Matrix (Fin (a + b)) (Fin (a + b)) R)) h` as an intermediate fact. Simplify `this` using `only [blockParMk_val]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(Matrix.reindex finSumFinEquiv finSumFinEquiv).injective h1`. Take `⟨hA, hB, -, hD⟩` from `Matrix.fromBlocks_inj.1 h2`. Conclude with `Prod.ext (Units.ext hA) (Prod.ext (Units.ext hD) hB)`. Introduce and unpack `⟨g, hg⟩ set M : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R := (Matrix.reindex finSumFinEquiv finSumFinEquiv).symm (g : Matrix (Fin (a + b)) (Fin (a + b)) R) with hM`. Establish `h0 : M.toBlocks₂₁ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `(mem_blockPar g).1 hg (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) (by simp) (by simp)`. Establish `hb : blockMat M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₂ = g`. Rewrite using `[blockMat, ← h0, Matrix.fromBlocks_toBlocks, hM, Equiv.apply_symm_apply]`. Establish `hu : IsUnit (M.toBlocks₁₁.det * M.toBlocks₂₂.det)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← det_blockMat _ M.toBlocks₁₂, hb]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Use `⟨(Matrix.GeneralLinearGroup.mk'' _ (isUnit_of_mul_isUnit_left hu), Matrix.GeneralLinearGroup.mk'' _ (isUnit_of_mul_isUnit_right hu), M.toBlocks₁₂), ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext hb)`.
+A detailed English derivation is pending.
 -/
 theorem blockParMk_bijective {R : Type} [CommRing R] {a b : ℕ} :
     Function.Bijective (blockParMk (R := R) (a := a) (b := b)) := by
@@ -76,9 +76,9 @@ theorem blockParMk_bijective {R : Type} [CommRing R] {a b : ℕ} :
     exact Subtype.ext (Units.ext hb)
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[Nat.add_sub_cancel_left, ← Nat.card_eq_of_bijective _ blockParMk_bijective, Nat.card_prod, Nat.card_prod, mul_assoc]`. Use `congr 2`. Use `show Nat.card (Fin a → Fin b → R) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, ← pow_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem card_blockPar (R : Type) [CommRing R] [Finite R] (a d : ℕ) (h : a ≤ d) :
     Nat.card (blockPar R a d) =

@@ -16,9 +16,9 @@ namespace GlobalTheory.EtaVal
 open scoped Pointwise
 
 /- English proof (translation)
-Rewrite using `[phiC_eq_sInf, phiC_eq_sInf, ← smul_eq_mul, ← Real.sInf_smul_of_nonneg ht]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, h1, h2, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨l b, ⟨l, h1, h2, rfl⟩, (map_smul l t b).symm⟩`. Introduce and unpack `⟨_, ⟨l, h1, h2, rfl⟩, rfl⟩`. Conclude with `⟨l, h1, h2, (map_smul l t b).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem phiC_smul_of_nonneg {E : Type} [Field E] [NumberField E] (cj : E → E) {X : Type} [AddCommGroup X]
     [Module (𝓞 E) X] (b : Formalism.MainNotions.ModuliIntegralCharts.SymB cj X) {t : ℝ} (ht : 0 ≤ t) :
@@ -33,7 +33,7 @@ theorem phiC_smul_of_nonneg {E : Type} [Field E] [NumberField E] (cj : E → E) 
     exact ⟨l, h1, h2, (map_smul l t b).symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ cj X X' _ _ _ _ e β' t ht`. Use `⟨t • pullS cj e β', fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pullS_apply cj e β' a b]`. Both sides reduce to the same expression. Rewrite using `[phiC_smul_of_nonneg cj _ ht, phiC_pull]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiC_smul_pull : ∀ (E : Type) [Field E] [NumberField E] (cj : E → E) (X X' : Type) [AddCommGroup X] [Module (𝓞 E) X] [AddCommGroup X'] [Module (𝓞 E) X'] (e : X ≃ₗ[𝓞 E] X') (β' : Formalism.MainNotions.ModuliIntegralCharts.SymB cj X') (t : ℝ), 0 ≤ t → ∃ β : Formalism.MainNotions.ModuliIntegralCharts.SymB cj X, (∀ a b, (β : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) a b = t * (β' : X' →ₗ[ℤ] X' →ₗ[ℤ] ℝ) (e a) (e b)) ∧ Formalism.MainNotions.ModuliIntegralCharts.phiC cj β = t * Formalism.MainNotions.ModuliIntegralCharts.phiC cj β' := by
   intro E _ _ cj X X' _ _ _ _ e β' t ht

@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.ChainStepCoef
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `p1` using `(nabs_pos' (GeneralLinearGroup.det g)).le`. Establish `p2` using `(nabs_pos' (GeneralLinearGroup.det g')).le`. Establish `hm : ∀ u v : kˣ, nabs k (u * v) = nabs k u * nabs k v` using `fun u v => by simp [nabs, map_mul]`. Establish `h1 : nabs k 1 = 1` using `by simp [nabs]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [om, map_mul, hm, Real.mul_rpow p1 p2, inv_one, Units.val_one, Matrix.one_mul, Units.val_mul, Matrix.mul_assoc, map_one, h1, Real.one_rpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (g g' : GL a k)
@@ -31,7 +31,7 @@ theorem om_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNon
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [om]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_smul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (g : GL a k)
@@ -42,7 +42,7 @@ theorem om_smul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
   ring
 
 /- English proof (translation)
-Unfold `ip`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `integral_const_mul c _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_smul_left {k : Type} [Field k] [MeasurableSpace k] (ν : Measure k) {m n : Type} [Fintype m] [Fintype n]
     (c : ℂ) (F G : Matrix m n k → ℂ) : ip ν (fun x => c * F x) G = c * ip ν F G := by
@@ -51,7 +51,7 @@ theorem ip_smul_left {k : Type} [Field k] [MeasurableSpace k] (ν : Measure k) {
   exact integral_const_mul c _
 
 /- English proof (translation)
-Unfold `ip`. Repeatedly rewrite using `[map_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,11 +65,11 @@ theorem ip_smul_right {k : Type} [Field k] [MeasurableSpace k] (ν : Measure k) 
   ring
 
 /- English proof (translation)
-Use `haveI := hν.1`. Establish `hμ' : ∀ x, ‖((μ₀ * ξ) x : ℂ)‖ = 1` using `fun x => by`. Simplify using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hξu x, hμn x]`. Establish `hL1` using `GlobalTheory.T.parahoricDatum_eigenvector_twoBlockParahoric k A D E ξ μ₀ hξt hμu`. Introduce `j hj d hd g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : (ξ d : ℂ) * starRingEnd ℂ (ξ d) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hξu d]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `ip_om_om k _ _ ν (μ₀ * ξ) hμ' j 1 (om (μ₀ * ξ) g 1 (datum ξ : Matrix (A ⊕ E) (A ⊕ D) k → ℂ)) (datum ξ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← om_mul, hL1 j hj d hd, ip_smul_right]`. Simplify using `only`. Rewrite using `[← h1, ← mul_assoc, hu, one_mul]`. Simplify using `only`. Rewrite using `[om_mul, hL1 j hj d hd, om_smul, ip_smul_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part1 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν)
@@ -94,9 +94,9 @@ theorem part1 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
     rw [om_mul, hL1 j hj d hd, om_smul, ip_smul_left]
 
 /- English proof (translation)
-Introduce `h`. Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Unfold `ip`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.zero_apply, om, inv_one, Units.val_one, Matrix.one_mul]`. Distinguish the cases in `h1 : InSupp z`. Establish `h2 : ¬ InSupp (z * (emb₂ k (Equiv.refl (A ⊕ D)) (x, y) : Matrix (A ⊕ D) (A ⊕ D) k))` using `fun h2 => hx (GlobalTheory.T.mem_integralGL_of_inParahoricDatumSupport_mul_blockDiag k A D E z x y h1 h2)`. Simplify using `[datum, h2]`. Simplify using `[datum, h1]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem part2 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] (ν : Measure k)
@@ -117,9 +117,9 @@ theorem part2 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
   · simp [datum, h1]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, mtor, val_torusElt, det_diagonal, Units.val_zpow_eq_zpow_val, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]`. Proceed by induction on `(Finset.univ : Finset D) using Finset.induction_on with`. Consider the case `empty => simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ (Units.ne_zero ϖ), ih]`.
+Treat this case separately.
 -/
 theorem det_mtor {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) (e : D → ℤ) :
@@ -133,7 +133,7 @@ theorem det_mtor {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   | insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ (Units.ne_zero ϖ), ih]
 
 /- English proof (translation)
-Rewrite using `[mtor, nabs_det_torusElt hϖ, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nabs_det_mtor {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] {ϖ : kˣ}
@@ -143,25 +143,23 @@ theorem nabs_det_mtor {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   simp
 
 /- English proof (translation)
-Use `haveI := hν.1`. Take `⟨hS, hV⟩` from `GlobalTheory.T.measure_parahoricDatumSupport k ν hν r D E`. Establish `q1 : 1 < Nat.card 𝓀[k]` using `Finite.one_lt_card`. Establish `q0 : (0 : ℝ) < resCard k` using `by unfold resCard; exact_mod_cast (lt_trans one_pos q1)`. Use `set Φ : Matrix (Fin r ⊕ E) (Fin r ⊕ D) k → ℂ := datum ξ with hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : GL (Fin r ⊕ D) k := mtor ϖ e with hm`. Use `set f : D → ℤ := fun i => -max 0 (-e i) with hf`. Use `set m' : GL (Fin r ⊕ D) k := mtor ϖ f with hm'`. Use `set S := {x : Matrix (Fin r ⊕ E) (Fin r ⊕ D) k | InSupp x} with hSdef`. Establish `h1 : nabs k 1 = 1` using `by simp [nabs]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hA : ∀ x, om μ m 1 Φ x * starRingEnd ℂ (Φ x) = ((μ (GeneralLinearGroup.det m) : ℂ) * ((nabs k (GeneralLinearGroup.det m) ^ ((Fintype.card (Fin r ⊕ E) : ℝ) / 2) : ℝ) : ℂ)) * (Φ (x * m.val) * starRingEnd ℂ (Φ x))`. Introduce `x`. Simplify using `only [om, inv_one, Units.val_one, Matrix.one_mul, map_one, h1, Real.one_rpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hB : ∀ x, Φ (x * m.val) * starRingEnd ℂ (Φ x) = S.indicator (fun _ => (1 : ℂ)) (x * m'.val)`. Introduce `x`. Conclude with `GlobalTheory.T.parahoricDatum_torus_integrand_eq_indicator k ϖ hϖ (Fin r) D E ξ hξu e x`. Establish `hC` using `integral_comp_mul_mul_volM ν m' (1 : GL (Fin r ⊕ E) k) (S.indicator (fun _ => (1 : ℂ)))`. Simplify using `only [Units.val_one, Matrix.one_mul, map_one, h1, Real.one_rpow, one_mul] at hC`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∫ x, S.indicator (fun _ => (1 : ℂ)) x ∂(volM ν (Fin r ⊕ E) (Fin r ⊕ D)) = (volM ν (Fin r ⊕ E) (Fin r ⊕ D)).real S • (1 : ℂ)`. Conclude with `integral_indicator_const (μ := volM ν (Fin r ⊕ E) (Fin r ⊕ D)) (1 : ℂ) hS`. Unfold `ip`. Repeatedly rewrite using `[hA, hB]`. Rewrite using `[integral_const_mul, hC, hI, hV, nabs_det_mtor hϖ, nabs_det_mtor hϖ, det_mtor, map_zpow, Units.val_zpow_eq_zpow_val]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsumZ : sumAbs e = ∑ i, e i - 2 * ∑ i, f i`. Unfold `sumAbs`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Break down `le_total 0 (e i) with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, max_eq_left (by omega)]; ring`. Rewrite using `[abs_of_nonpos h, max_eq_right (by omega)]; ring`. Establish `hsum : (sumAbs e : ℝ) = ∑ i, (e i : ℝ) - 2 * ∑ i, (f i : ℝ)`. Rewrite using `[hsumZ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ((resCard k : ℝ) ^ (-∑ i, e i)) ^ (((r + Fintype.card E : ℕ) : ℝ) / 2) * ((resCard k : ℝ) ^ (-∑ i, f i)) ^ (-((r + Fintype.card E : ℕ) : ℝ)) = (resCard k : ℝ) ^ ((-((r + Fintype.card E : ℕ) : ℝ) / 2) * (sumAbs e : ℝ))`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul q0.le, ← Real.rpow_mul q0.le, ← Real.rpow_add q0, hsum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (resCard k : ℂ) ^ (-((r + Fintype.card E : ℕ) : ℂ) / 2 * (sumAbs e : ℂ)) = (((resCard k : ℝ) ^ ((-((r + Fintype.card E : ℕ) : ℝ) / 2) * (sumAbs e : ℝ)) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow q0.le]`. Use `push_cast`.
-
-Put the polynomial expressions in normal form. Rewrite using `[hc, ← key]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Complex.real_smul, smul_eq_mul, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem part3 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν)
@@ -229,9 +227,9 @@ theorem part3 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν ϖ hϖ r t l ξ μ₀' hξu hξt hμu hμn μ' Φ c`. Establish `hE : Fintype.card (Blocks (l + 1) t) = (l + 1) * t` using `by simp [Blocks]`. Use `⟨part1 k ν hν (Fin r) (Blocks l t) (Blocks (l + 1) t) ξ μ₀' hξu hξt hμu hμn, fun x y => part2 k ν (Fin r) (Blocks l t) (Blocks (l + 1) t) ξ (μ₀' * ξ) x y, fun e => ?_⟩` and prove the remaining obligations. Use `part3 k ν hν ϖ hϖ r (Blocks l t) (Blocks (l + 1) t) ξ (μ₀' * ξ) hξu e` as an intermediate fact. Rewrite `this` using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem coef : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
   ∀ (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →

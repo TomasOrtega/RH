@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => ext i j`. Simplify using `[GDet.repAlg, Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem lift_eq {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [Algebra B C] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) C) (z : MonoidAlgebra B G) :
@@ -18,7 +18,7 @@ private theorem lift_eq {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [Alge
   | single g r => ext i j; simp [GDet.repAlg, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[lift_eq]`. Use `(d_ofRep (Fintype.card_fin n) (GDet.repAlg ρ C) _).2.2.2 ?_` and prove the remaining obligations. Rewrite using `[← d_toDet_ofRep.1 ρ, d_toDet_CH, ← h, g_chmap]`. Conclude with `TwoSidedIdeal.subset_span ⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_CH {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [Algebra B C] [Group G]
     (D : GDet n B G) (ρ : G →* Matrix (Fin n) (Fin n) C) (h : D.map (algebraMap B C) = GDet.ofRep ρ)
@@ -29,21 +29,21 @@ private theorem lift_CH {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [Alge
   exact TwoSidedIdeal.subset_span ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Introduce `n B C G _ _ _ _ _ _ _ _ _ J _ D ρ Z hm hc hD hZ`. Establish `key : ∀ z ∈ D.chBar Z, MonoidAlgebra.lift B _ G ρ z = 0`. Introduce `z hz`. Use extensionality with `a b`. Use `IsHausdorff.haus (I := J) inferInstance _ fun N => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Establish `hU : IsOpen (⋂ a, ⋂ b, {g : G | Ideal.Quotient.mk (J ^ N) (ρ g a b) = Ideal.Quotient.mk (J ^ N) (ρ 1 a b)})` using `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (hc a b N).isOpen_fiber _`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hU (by simp)`. Set `φ : MonoidAlgebra B G →+* Matrix (Fin n) (Fin n) (C ⧸ J ^ N)` to `(Ideal.Quotient.mk (J ^ N)).mapMatrix.comp (MonoidAlgebra.lift B _ G ρ).toRingHom`. Establish `hφ : ∀ y, φ y = (MonoidAlgebra.lift B _ G ρ y).map (Ideal.Quotient.mk (J ^ N))` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : D.chBar Z ≤ TwoSidedIdeal.ker φ`. Use `(iInf₂_le N H).trans ?_` and prove the remaining obligations. Rewrite using `[TwoSidedIdeal.span_le]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `_ ∈ TwoSidedIdeal.ker φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[TwoSidedIdeal.mem_ker]`. Break down `hy with ((hy | hy) | ⟨x, hx, rfl⟩) | ⟨h, hh, rfl⟩` into its components or cases. Rewrite using `[hφ, lift_CH D ρ hD y hy]`. Simplify using the standard rewrite rules. Rewrite using `[hφ, hZ y hy]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hx' : algebraMap B C x ∈ J ^ N` using `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hm) N (by rw [← Ideal.map_pow]; exact Ideal.mem_map_of_mem _ hx)`. Use extensionality with `i j`. Rewrite using `[hφ, MonoidAlgebra.lift_single, Matrix.map_apply, Matrix.smul_apply, Algebra.smul_def, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ hx'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_one, sub_eq_zero, ← φ.map_one]`. Use extensionality with `i j`. Use `Set.mem_iInter.1 (Set.mem_iInter.1 (hH hh) i) j` as an intermediate fact. Rewrite using `[hφ, hφ, map_one, MonoidAlgebra.lift_single, one_smul, ← ρ.map_one]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (congrFun ((TwoSidedIdeal.mem_ker φ).1 (hle hz)) a) b` as an intermediate fact. Rewrite `this` using `[hφ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Use `⟨RingCon.liftₐ _ (MonoidAlgebra.lift B _ G ρ) fun x y hxy => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `key _ ((TwoSidedIdeal.rel_iff _ _ _).1 hxy)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `MonoidAlgebra.lift B _ G ρ _ = _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.f_rep :
     ∀ {n : ℕ} {B C G : Type} [CommRing B] [IsLocalRing B] [CommRing C] [Algebra B C] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (J : Ideal C) [IsHausdorff J C] (D : GDet n B G) (ρ : G →* Matrix (Fin n) (Fin n) C) (Z : Set (MonoidAlgebra B G)), maximalIdeal B ≤ J.comap (algebraMap B C) → (∀ a b, AdicCont J fun g => ρ g a b) → D.map (algebraMap B C) = GDet.ofRep ρ → (∀ z ∈ Z, MonoidAlgebra.lift B _ G ρ z = 0) → ∃ r : D.CHQuot Z →ₐ[B] Matrix (Fin n) (Fin n) C, ∀ g, r (D.toQuot Z (MonoidAlgebra.single g 1)) = ρ g := by

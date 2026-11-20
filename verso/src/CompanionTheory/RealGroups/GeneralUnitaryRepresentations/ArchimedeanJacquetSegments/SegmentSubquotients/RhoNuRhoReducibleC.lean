@@ -15,14 +15,14 @@ namespace CompanionTheory.RgGu.NR
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `redCl_ofC k (someRed_of k (complementary_of signature) (compact k) (boundB k) (herm_ofB k (conjProd k) (conjDual k)) (prodModel k)) (cuspUnit k) (cuspPairIrr k)`.
+A detailed English derivation is pending.
 -/
 theorem redClC : RedCl k :=
   redCl_ofC k (someRed_of k (complementary_of signature) (compact k) (boundB k) (herm_ofB k (conjProd k) (conjDual k))
     (prodModel k)) (cuspUnit k) (cuspPairIrr k)
 
 /- English proof (translation)
-The claim follows from `rhoNuRho_ofC fun k _ _ _ _ => redClC k`.
+A detailed English derivation is pending.
 -/
 theorem rhoNuRhoReducibleC : CompanionTheory.Pf1.SegRepC.SegTwo.RhoNuRhoReducible := rhoNuRho_ofC fun k _ _ _ _ => redClC k
 

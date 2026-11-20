@@ -14,21 +14,21 @@ section Lin
 variable {n k : Type} [Fintype n] [DecidableEq n] [CommRing k]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_mulVec_inv_mulVec (X : GL n k) (v : n → k) :
     (X : Matrix n n k) *ᵥ (((X⁻¹ : GL n k) : Matrix n n k) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_inv_mulVec_mulVec (X : GL n k) (v : n → k) :
     ((X⁻¹ : GL n k) : Matrix n n k) *ᵥ ((X : Matrix n n k) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.val_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_conj_mulVec (X g : GL n k) (v : n → k) :
     ((X * g * X⁻¹ : GL n k) : Matrix n n k) *ᵥ v =
@@ -36,9 +36,9 @@ theorem gl_conj_mulVec (X g : GL n k) (v : n → k) :
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.val_mul, Units.val_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `h1` using `h ((X : Matrix n n k) *ᵥ w) (by rw [Matrix.dotProduct_mulVec]; exact hw)`. Rewrite `h1` using `[gl_conj_mulVec, gl_inv_mulVec_mulVec]`. Establish `h2` using `congrArg (fun u => ((X⁻¹ : GL n k) : Matrix n n k) *ᵥ u) h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h2` using `only [gl_inv_mulVec_mulVec]`. Introduce `h v hv`. Rewrite using `[gl_conj_mulVec, h _ (by rw [← Matrix.dotProduct_mulVec, gl_mulVec_inv_mulVec]; exact hv), gl_mulVec_inv_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_fix_hyperplane_iff (X g : GL n k) (a : n → k) :
     (∀ v, a ⬝ᵥ v = 0 → ((X * g * X⁻¹ : GL n k) : Matrix n n k) *ᵥ v = v) ↔
@@ -54,11 +54,11 @@ theorem conj_fix_hyperplane_iff (X g : GL n k) (a : n → k) :
       gl_mulVec_inv_mulVec]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w`. Take `⟨c, h1⟩` from `h ((X : Matrix n n k) *ᵥ w)`. Rewrite `h1` using `[gl_conj_mulVec, gl_inv_mulVec_mulVec]`. Establish `h2` using `congrArg (fun u => ((X⁻¹ : GL n k) : Matrix n n k) *ᵥ u) h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨c, by simpa only [Matrix.mulVec_sub, Matrix.mulVec_smul, gl_inv_mulVec_mulVec] using h2⟩`. Introduce `h v`. Take `⟨c, h1⟩` from `h (((X⁻¹ : GL n k) : Matrix n n k) *ᵥ v)`. Establish `h2` using `congrArg (fun u => (X : Matrix n n k) *ᵥ u) h1`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gl_conj_mulVec]`. Simplify `h2` using `only [Matrix.mulVec_sub, Matrix.mulVec_smul, gl_mulVec_inv_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_triv_mod_line_iff (X g : GL n k) (a : n → k) :
     (∀ v, ∃ c : k, ((X * g * X⁻¹ : GL n k) : Matrix n n k) *ᵥ v - v = c • a) ↔
@@ -77,7 +77,7 @@ theorem conj_triv_mod_line_iff (X g : GL n k) (a : n → k) :
     simpa only [Matrix.mulVec_sub, Matrix.mulVec_smul, gl_mulVec_inv_mulVec] using h2
 
 /- English proof (translation)
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Establish `h2` using `congrArg (fun u => u ᵥ* ((X⁻¹ : GL n k) : Matrix n n k)) h`. Simplify using `only [Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one, Matrix.zero_vecMul] at h2`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecMul_gl_ne_zero (X : GL n k) {a : n → k} (ha : a ≠ 0) : a ᵥ* (X : Matrix n n k) ≠ 0 := by
   intro h
@@ -88,7 +88,7 @@ theorem vecMul_gl_ne_zero (X : GL n k) {a : n → k} (ha : a ≠ 0) : a ᵥ* (X 
   exact h2
 
 /- English proof (translation)
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← gl_mulVec_inv_mulVec X a, h, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_inv_mulVec_ne_zero (X : GL n k) {a : n → k} (ha : a ≠ 0) :
     ((X⁻¹ : GL n k) : Matrix n n k) *ᵥ a ≠ 0 := by
@@ -97,14 +97,14 @@ theorem gl_inv_mulVec_ne_zero (X : GL n k) {a : n → k} (ha : a ≠ 0) :
   rw [← gl_mulVec_inv_mulVec X a, h, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj_gl (X g : GL n k) :
     Matrix.GeneralLinearGroup.det (X * g * X⁻¹) = Matrix.GeneralLinearGroup.det g := by
   rw [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
 
 /- English proof (translation)
-The claim follows from `if_congr h rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem ite_congr_of_iff {p q : Prop} {dp : Decidable p} {dq : Decidable q} {u v : ℂ} (h : p ↔ q) :
     @ite ℂ p dp u v = @ite ℂ q dq u v := if_congr h rfl rfl
@@ -112,17 +112,17 @@ theorem ite_congr_of_iff {p q : Prop} {dp : Decidable p} {dq : Decidable q} {u v
 end Lin
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i PP a ha tr ε x`. Establish `he : ∀ g PP', R.eG (x * g * x⁻¹) PP' = R.eG x PP' * R.eG g PP' * (R.eG x PP')⁻¹`. Introduce `g PP'`. Rewrite using `[map_mul, map_mul, map_inv]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : ∀ g, (∀ PP', PP' ≠ PP → R.eG (x * g * x⁻¹) PP' = 1) ↔ ∀ PP', PP' ≠ PP → R.eG g PP' = 1`. Introduce `g`. Use `forall_congr' fun PP' => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[he, conj_eq_one_iff]`. Establish `h2 : ∀ g, Matrix.GeneralLinearGroup.det (R.eG (x * g * x⁻¹) PP) = Matrix.GeneralLinearGroup.det (R.eG g PP)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[he]`. Conclude with `det_conj_gl _ _`. Consider the cases of `tr`. Use `⟨_, vecMul_gl_ne_zero (R.eG x PP) ha, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `conj_fix_hyperplane_iff (R.eG x PP) (R.eG g PP) a`. Rewrite `h3` using `[← he]`. Unfold `mirC`. Rewrite using `[h2]`. Use `ite_congr_of_iff (and_congr (h1 g) ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg Bool.false_ne_true, if_neg Bool.false_ne_true]`. Conclude with `h3`. Use `⟨_, gl_inv_mulVec_ne_zero (R.eG x PP) ha, fun g => ?_⟩` and prove the remaining obligations. Establish `h3` using `conj_triv_mod_line_iff (R.eG x PP) (R.eG g PP) a`. Rewrite `h3` using `[← he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `mirC`. Rewrite using `[h2]`. Use `ite_congr_of_iff (and_congr (h1 g) ?_)` and prove the remaining obligations. Rewrite using `[if_pos rfl, if_pos rfl]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mirC_conj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (PP : R.Pg) (a : Fin D.R.r → kP PP.1), a ≠ 0 → ∀ (tr : Bool) (ε : ℤ) (x : G), ∃ a' : Fin D.R.r → kP PP.1, a' ≠ 0 ∧ ∀ g, mirC R i PP a tr ε (x * g * x⁻¹) = mirC R i PP a' tr ε g := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i PP a ha tr ε x

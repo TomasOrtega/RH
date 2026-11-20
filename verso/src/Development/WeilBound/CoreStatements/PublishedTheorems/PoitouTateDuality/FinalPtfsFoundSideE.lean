@@ -20,7 +20,7 @@ variable {Kf : FiniteSubfield} [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicC
   {ev : (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[(v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) ≃* Dec (F := Kf.1) A}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(rvF_coe S u a).trans (by rw [hu])`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coe_rvF_of_eq {ζ : AlgebraicClosure ℚ}
     (u : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S))

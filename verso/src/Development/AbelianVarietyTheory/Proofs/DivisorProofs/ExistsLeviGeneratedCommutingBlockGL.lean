@@ -11,7 +11,7 @@ open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.Ind
 variable {F : Type} [Field F] {r d d' : ℕ}
 
 /- English proof (translation)
-Establish `e : Set.range (blockEnum b c h) = (block b c : Set (Fin r))` using `Finset.range_orderEmbOfFin _ h`. Rewrite using `[e]`. Simplify using `[block]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_range_blockEnum (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) (i : Fin r) :
     i ∈ Set.range (blockEnum b c h) ↔ b i = c := by
@@ -20,13 +20,13 @@ theorem mem_range_blockEnum (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card 
   simp [block]
 
 /- English proof (translation)
-Establish `h1 : (incl F e)ᵀ * incl F e' = 0`. Use extensionality with `a a'`. Simplify using `[incl, Matrix.mul_apply, Matrix.one_apply, h a a']`. Establish `h2 : (incl F e')ᵀ * incl F e = 0`. Use extensionality with `a a'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[incl, Matrix.mul_apply, Matrix.one_apply, (h a' a).symm]`. Establish `h3 : incl F e * (M - 1) * (incl F e)ᵀ * (incl F e' * (N - 1) * (incl F e')ᵀ) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incl F e)ᵀ, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : incl F e' * (N - 1) * (incl F e')ᵀ * (incl F e * (M - 1) * (incl F e)ᵀ) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incl F e')ᵀ, h2]`. Simplify using the standard rewrite rules. Simplify using `only [extendMat, MonoidHom.coe_mk, OneHom.coe_mk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_mul, mul_add, h3, h4, one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem extendMat_comm (e : Fin d ↪ Fin r) (e' : Fin d' ↪ Fin r) (h : ∀ a a', e a ≠ e' a')
     (M : Matrix (Fin d) (Fin d) F) (N : Matrix (Fin d') (Fin d') F) :
@@ -76,7 +76,7 @@ theorem leviRes_apply (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) (
       ((m : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (blockEnum b c h a) (blockEnum b c h a') := rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a a' => ?_)` and prove the remaining obligations. Rewrite using `[leviRes_apply, leviIncl_val, extendMat_in]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviRes_leviIncl (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) (g : GL (Fin d) F) :
     leviRes F b c h (leviIncl F b c h g) = g := by
@@ -84,9 +84,7 @@ theorem leviRes_leviIncl (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d
   rw [leviRes_apply, leviIncl_val, extendMat_in]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a a' => ?_)` and prove the remaining obligations. Rewrite using `[leviRes_apply, leviIncl_val, extendMat_out]`. Simplify using `[Matrix.one_apply]`. Use `left`. Rewrite using `[mem_range_blockEnum, blockEnum_mem b c' h']`.
-
-Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviRes_leviIncl_ne (b : Fin r → ℕ) {c c' : ℕ} (h : (block b c).card = d) (h' : (block b c').card = d')
     (hc : c' ≠ c) (g : GL (Fin d) F) : leviRes F b c' h' (leviIncl F b c h g) = 1 := by
@@ -98,7 +96,7 @@ theorem leviRes_leviIncl_ne (b : Fin r → ℕ) {c c' : ℕ} (h : (block b c).ca
     exact hc
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `extendMat_comm _ _ (fun a a' e => hc ?_) _ _` and prove the remaining obligations. Rewrite using `[← blockEnum_mem b c h a, e, blockEnum_mem b c' h']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviIncl_comm (b : Fin r → ℕ) {c c' : ℕ} (h : (block b c).card = d) (h' : (block b c').card = d')
     (hc : c ≠ c') (g : GL (Fin d) F) (g' : GL (Fin d') F) :
@@ -108,19 +106,17 @@ theorem leviIncl_comm (b : Fin r → ℕ) {c c' : ℕ} (h : (block b c).card = d
   rw [← blockEnum_mem b c h a, e, blockEnum_mem b c' h']
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Set.range b), ∀ m : levi F b, (∀ c : Set.range b, c ∉ s → leviRes F b c (h c) m = 1) → m ∈ ⨆ c : Set.range b, (leviIncl F b c (h c)).range`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: m = 1`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Distinguish the cases in `hij : b i = b j`. Set `c : Set.range b` to `⟨b i, i, rfl⟩`. Take `⟨a, ha⟩` from `(mem_range_blockEnum b c (h c) i).2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `(mem_range_blockEnum b c (h c) j).2 hij.symm`. Establish `h1` using `leviRes_apply b c (h c) m a a'`. Rewrite `h1` using `[hm c (Finset.notMem_empty _), ha, ha']`. Rewrite using `[← h1]`. Establish `: i = j ↔ a = a'` using `by rw [← (blockEnum b c (h c)).injective.eq_iff, ha, ha']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply, this]`. Rewrite using `[m.2 i j hij]`. Simplify using `[Matrix.one_apply_ne (fun e => hij (congrArg b e))]`. Rewrite using `[this]`. Conclude with `Subgroup.one_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert c s _ ih`. Introduce `m hm`. Establish `e : m = m * leviIncl F b c (h c) (leviRes F b c (h c) m)⁻¹ * leviIncl F b c (h c) (leviRes F b c (h c) m)` using `by simp`. Rewrite using `[e]`. Use `Subgroup.mul_mem _ (ih _ fun c' hc' => ?_) (Subgroup.mem_iSup_of_mem c ⟨_, rfl⟩)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hcc : c' = c`. Substitute `hcc` using the available equality. Rewrite using `[map_mul, leviRes_leviIncl, mul_inv_cancel]`. Rewrite using `[map_mul, leviRes_leviIncl_ne b _ _ (fun e => hcc (Subtype.ext e)), mul_one]`. Conclude with `hm c' (by simp [hcc, hc'])`.
-
-Use `Fintype.ofFinite (Set.range b)` as an intermediate fact. Conclude with `eq_top_iff.2 fun m _ => key Finset.univ m fun c hc => absurd (Finset.mem_univ c) hc`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSup_range_leviIncl (b : Fin r → ℕ) (d : Set.range b → ℕ)
     (h : ∀ c : Set.range b, (block b c).card = d c) :
@@ -163,7 +159,7 @@ theorem iSup_range_leviIncl (b : Fin r → ℕ) (d : Set.range b → ℕ)
   exact eq_top_iff.2 fun m _ => key Finset.univ m fun c hc => absurd (Finset.mem_univ c) hc
 
 /- English proof (translation)
-Introduce `F _ _ b d h` and use `⟨fun c => leviIncl F b c (h c), fun _ _ => rfl, iSup_range_leviIncl b d h, fun c c' hc x y => leviIncl_comm b (h c) (h c') (fun e => hc (Subtype.ext e)) x y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem levi_generated : ∀ (F : Type) [Field F] (r : ℕ) (b : Fin r → ℕ) (d : Set.range b → ℕ)
     (h : ∀ c : Set.range b, (block b c).card = d c), ∃ f : ∀ c : Set.range b, GL (Fin (d c)) F →* levi F b,

@@ -5,7 +5,7 @@ noncomputable section
 namespace Formalism.MainNotions.product_zeroth_first_parts
 
 /- English proof (translation)
-Introduce `I m`. Establish `hl : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Conclude with `(h I m).trans (Real.rpow_le_rpow_of_exponent_le hl (neg_le_neg hB))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kvalGe_anti {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l : ℕ) [Fact l.Prime] (nu : Lt → YoungDiagram)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) {B B' : ℝ} (hB : B' ≤ B) (h : KvalGe N0 N1 l nu Th B) :
@@ -15,7 +15,7 @@ theorem kvalGe_anti {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l : ℕ) [F
   exact (h I m).trans (Real.rpow_le_rpow_of_exponent_le hl (neg_le_neg hB))
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl`. Establish `h2` using `Real.logb_nonneg h1 (le_trans h1.le ha)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logb_add_one_nonneg {l : ℕ} (hl : 1 < l) {a : ℝ} (ha : (l : ℝ) ≤ a) : 0 ≤ Real.logb l a + 1 := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast hl
@@ -23,13 +23,13 @@ theorem logb_add_one_nonneg {l : ℕ} (hl : 1 < l) {a : ℝ} (ha : (l : ℝ) ≤
   linarith
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨fun L hL => ⟨?_, ?_⟩, fun L hL => ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `kvalGe_anti _ _ _ _ _ ?_ ((h1 L hL).1 a ha)` and prove the remaining obligations. Establish `hl : 1 < L.l` using `(Fact.out : L.l.Prime).one_lt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hX : 0 ≤ (L.d : ℝ) * L.N0 * L.N1 * (Real.logb L.l a + 1)` using `mul_nonneg (by positivity) (logb_add_one_nonneg hl ha.1)`. Establish `hCX` using `mul_le_mul_of_nonneg_right hC hX`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a ha k w E hk hw hE h1' h2'`. Use `kvalGe_anti _ _ _ _ _ ?_ ((h1 L hL).2 a ha k w E hk hw hE h1' h2')` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : 1 < L.l` using `(Fact.out : L.l.Prime).one_lt`. Establish `hX : 0 ≤ (L.d : ℝ) * L.N0 * L.N1 * (Real.logb L.l a + 1)` using `mul_nonneg (by positivity) (logb_add_one_nonneg hl ha.1)`. Establish `hCX` using `mul_le_mul_of_nonneg_right hC hX`. Establish `h3 : C * (∑ s, w s) / (L.l : ℝ) ≤ C' * (∑ s, w s) / (L.l : ℝ)` using `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hC (Finset.sum_nonneg fun s _ => (hw s).le)) (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `a ha`. Use `kvalGe_anti _ _ _ _ _ ?_ (h2 L hL a ha)` and prove the remaining obligations. Establish `hl : 1 < L.l` using `(Fact.out : L.l.Prime).one_lt`. Establish `hX : 0 ≤ (L.N0 : ℝ) * L.N1 * (Real.logb L.l a + 1)` using `mul_nonneg (by positivity) (logb_add_one_nonneg hl ha.1)`. Establish `hCX` using `mul_le_mul_of_nonneg_right hC hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

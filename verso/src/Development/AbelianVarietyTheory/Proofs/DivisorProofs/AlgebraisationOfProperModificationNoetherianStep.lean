@@ -11,15 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Introduce `R _ _ I W f hsep hlft hqc W' π U hπ hiso K hK hA' hAK t ht hp`. Use `haveI : IsLocallyNoetherian W := LocallyOfFiniteType.isLocallyNoetherian f`. Use `haveI : CompactSpace W := QuasiCompact.compactSpace_of_compactSpace f`. Establish `hsys' : IsSystem (π ≫ f) I (fun e => (t e).comap π)` using `fun e => by`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht e, Scheme.IdealSheafData.comap_sup, (GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support).1]`. Establish `hp' : ∀ e, IsProper (((t e).comap π).subschemeι ≫ π ≫ f)` using `fun e => by`. Establish `h1 : ((t e).comap π).subschemeι ≫ π ≫ f = ((t e).comapIso π).hom ≫ pullback.snd π (t e).subschemeι ≫ (t e).subschemeι ≫ f`. Rewrite using `[← Scheme.IdealSheafData.comapIso_hom_fst, Category.assoc, pullback.condition_assoc]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `infer_instance`. Take `⟨T', hT'p, hT'r⟩` from `hA' _ hsys' hp'`. Establish `hcov : ∀ x : W, ∃ V : W.affineOpens, x ∈ (V.1 : Set W)` using `fun x => by`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `⟨⟨V, hV⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun V : W.affineOpens => (V.1 : Set W)) (fun V => V.1.2) (fun x _ => Set.mem_iUnion.2 (hcov x))`. Use `choose k₀ hk₀ using GlobalTheory.T.idealSheaf_eq_of_reduction_agree_on_affineOpen R I W W' f π U hπ hiso K hK t ht`. Set `k` to `s.sup k₀`. Take `⟨T'', hT''p, hT''r⟩` from `GlobalTheory.T.algebraise_system_in_algebraising_closedSubscheme R I W f (K ^ k) (hAK k) t ht hp`. Use `⟨T'.map π ⊓ T'', GlobalTheory.T.isProper_inf_ideal_sheaf_image _ W W' f π hsep hlft T' T'' (by simpa using hT'p) hT''p, fun e => ?_⟩` and prove the remaining obligations.
-
-Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := s) (fun V => V.1) ?_ fun V => hk₀ V.1 k (Finset.le_sup V.2) T' T'' hT'r hT''r e` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨V, hV, hx⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV⟩, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem alg_of_modification : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R),
     ∀ (W : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)), IsSeparated f → LocallyOfFiniteType f →

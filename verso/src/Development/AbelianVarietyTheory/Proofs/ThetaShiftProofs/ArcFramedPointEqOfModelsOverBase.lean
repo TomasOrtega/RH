@@ -13,13 +13,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ArcQ
 
 /- English proof (translation)
-Use `Y.jQ_open` as an intermediate fact. Establish `w : (Out.jK (PowerSeries k) ≫ χ) ≫ Y.s = (Out.jK (PowerSeries k) ≫ spMap (PowerSeries.C (R` using `k)) ≫ spMap bF) ≫ spMap β := by`. Rewrite using `[Category.assoc, hχ, spMap_comp]`. Simplify using `only [Category.assoc]`. Take `⟨q⟩ : Nonempty (Sp S)` from `(inferInstance : Nonempty (PrimeSpectrum S))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hq : PowerSeries.X ∉ (spMap ι q).asIdeal` using `fun h => q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show ι PowerSeries.X ∈ q.asIdeal from h) hι)`. Take `⟨p₀, hp₀⟩` from `mem_range_jK _ hq`. Establish `hr : Set.range (pullback.lift _ _ w) ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = p₀` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing (PowerSeries k))) _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, pullback.lift_fst, Scheme.Hom.comp_apply, hp₀, ← Scheme.Hom.comp_apply, ← hz, Scheme.Hom.comp_apply]`. Conclude with `GlobalTheory.ThetaShiftProofs.j_mem_abLocus Y _`. Establish `hy` using `IsOpenImmersion.lift_fac Y.jQ _ hr`. Use `⟨IsOpenImmersion.lift Y.jQ _ hr, ?_, ?_⟩` and prove the remaining obligations. Unfold `Model.j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hy, pullback.lift_fst]`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hy, pullback.lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_lift {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {k : Type} [Field k] (bF : c.F →+* k) {O : Type} [CommRing O]
@@ -50,9 +50,9 @@ theorem exists_generic_lift {E : Type} [Field E] [NumberField E] [IsCMField E] {
   · rw [← Y.jQ_over, ← Category.assoc, hy, pullback.lift_snd]
 
 /- English proof (translation)
-Introduce `h1 h2 h5 E _ _ _ H Dw l Xo c k _ bF a V V' Y Y' χ χ' W W' hχ hχ' e th hth S _ _ _ ι y y' hι hy hy'`. Establish `hj : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`. Establish `hj' : Mono Y'.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y' (mono_spMap_subtype _)`. Take `⟨y₀, a₁, a₂⟩` from `exists_generic_lift bF Y χ hχ ι hι hy.choose hy.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1`. Take `⟨y₀', b₁, b₂⟩` from `exists_generic_lift bF Y' χ' hχ' ι hι hy'.choose hy'.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, hψ⟩` from `GlobalTheory.arc_rigidity_two_models_of_mono h1 h2 h5 E H Dw l Xo c k bF a _ _ _ _ Y Y' χ χ' W W' y₀ y₀' a₁ b₁ a₂ b₂`. Take `⟨ψ, hψ⟩` from `hψ hj`. Establish `hy₁` using `GlobalTheory.ArcQ.isArcFr_of_agree h1 h2 E H Dw l Xo c k bF a _ _ _ _ Y Y' χ χ' W W' ψ hψ y₀ a₁ b₁ hj e th hth S ι y hι hy`. Conclude with `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ Y' k _ _ χ' W' e th hth S ι y' hy').1 hj' y hy₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isArcFr_eq_of_overBase : Out.Laws → Out.Laws2 → Out.Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn Dw l (RingHom.id c.F) k bF) (V V' : ValuationSubring ℂ) (Y : Model Xo c (c.V V).subtype) (Y' : Model Xo c (c.V V').subtype) (χ : Sp (PowerSeries k) ⟶ Y.X) (χ' : Sp (PowerSeries k) ⟶ Y'.X) (W : Wit Y (a.restrict (c.V V).subtype) χ) (W' : Wit Y' (a.restrict (c.V V').subtype) χ'), χ ≫ Y.s = spMap (PowerSeries.C (R := k)) ≫ spMap (bF.comp (c.V V).subtype) → χ' ≫ Y'.s = spMap (PowerSeries.C (R := k)) ≫ spMap (bF.comp (c.V V').subtype) → ∀ (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR k)) (th : a.D₀.P.L.Sec), ThNZ th → ∀ (S : Type) [CommRing S] [Algebra c.F S] [Nontrivial S] (ι : PowerSeries k →+* S) (y y' : FrPt Xo c S), IsUnit (ι PowerSeries.X) → IsArcFr W e th ι y → IsArcFr W' e th ι y' → y = y' := by
   intro h1 h2 h5 E _ _ _ H Dw l Xo c k _ bF a V V' Y Y' χ χ' W W' hχ hχ' e th hth S _ _ _ ι y y' hι hy hy'

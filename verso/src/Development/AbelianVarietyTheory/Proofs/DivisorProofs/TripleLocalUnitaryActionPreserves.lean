@@ -28,7 +28,7 @@ local instance mV (v : Pl F) : MeasurableSpace (κ → Fv F v) := borel _
 local instance bV (v : Pl F) : BorelSpace (κ → Fv F v) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evFin (v : Pl F) : Continuous (evFin F v) :=
   (RestrictedProduct.continuous_eval v).comp continuous_snd
@@ -36,7 +36,7 @@ theorem continuous_evFin (v : Pl F) : Continuous (evFin F v) :=
 def prj (v : Pl F) (x : κ → AF F) : κ → Fv F v := fun i => evFin F v (x i)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (continuous_evFin v).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_prj (v : Pl F) : Continuous (prj (κ := κ) v) :=
   continuous_pi fun i => (continuous_evFin v).comp (continuous_apply i)
@@ -44,7 +44,7 @@ theorem continuous_prj (v : Pl F) : Continuous (prj (κ := κ) v) :=
 def lift (v : Pl F) (y : κ → Fv F v) : κ → AF F := fun i => GlobalTheory.EmbChart.atPlace v (y i)
 
 /- English proof (translation)
-Introduce `u hu`. Use function extensionality and compare the values at `i`. Use `show u * GlobalTheory.EmbChart.atPlace v (y i) = 0`. Rewrite using `[mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_lift (v : Pl F) (y : κ → Fv F v) : At (evFin F v) (lift v y) := by
   intro u hu
@@ -53,7 +53,7 @@ theorem at_lift (v : Pl F) (y : κ → Fv F v) : At (evFin F v) (lift v y) := by
   rw [mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[prj, lift, map_add, GlobalTheory.EmbChart.evFin_atPlace]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem prj_add_lift (v : Pl F) (x : κ → AF F) (y : κ → Fv F v) : prj v (x + lift v y) = prj v x + y := by
   funext i
@@ -62,11 +62,11 @@ theorem prj_add_lift (v : Pl F) (x : κ → AF F) (y : κ → Fv F v) : prj v (x
 def box (v : Pl F) (y₀ : κ → Fv F v) : Set (κ → Fv F v) := {y | ∀ k, y k - y₀ k ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.StdVacuum.indicator_mem_SB (κ := κ) v`. Establish `e : (box v y₀).indicator (1 : (κ → Fv F v) → ℂ) = ({x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F}.indicator 1) ∘ (Homeomorph.subRight y₀)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ box v y₀`. Establish `hm : (Homeomorph.subRight y₀) y ∈ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F}` using `fun k => by simpa using hy k`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hy, Function.comp_apply, Set.indicator_of_mem hm]`. Both sides reduce to the same expression. Establish `hm : (Homeomorph.subRight y₀) y ∉ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F}` using `fun h' => hy fun k => by simpa using h' k`. Rewrite using `[Set.indicator_of_notMem hy, Function.comp_apply, Set.indicator_of_notMem hm]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h.1.comp_continuous (Homeomorph.subRight y₀).continuous, h.2.comp_homeomorph _⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_box (v : Pl F) (y₀ : κ → Fv F v) : (box v y₀).indicator (1 : (κ → Fv F v) → ℂ) ∈ SB (κ → Fv F v) := by
   have h := GlobalTheory.StdVacuum.indicator_mem_SB (κ := κ) v
@@ -84,12 +84,12 @@ theorem sb_box (v : Pl F) (y₀ : κ → Fv F v) : (box v y₀).indicator (1 : (
   exact ⟨h.1.comp_continuous (Homeomorph.subRight y₀).continuous, h.2.comp_homeomorph _⟩
 
 /- English proof (translation)
-Introduce `k` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_box_self (v : Pl F) (y₀ : κ → Fv F v) : y₀ ∈ box v y₀ := fun k => by simp
 
 /- English proof (translation)
-Use extensionality with `y`. Apply the tactic sequence `by_cases hy : y ∈ box v y₀ <;> simp [hy]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem box_eq_fiber (v : Pl F) (y₀ : κ → Fv F v) :
     box v y₀ = (box v y₀).indicator (1 : (κ → Fv F v) → ℂ) ⁻¹' {1} := by
@@ -97,13 +97,13 @@ theorem box_eq_fiber (v : Pl F) (y₀ : κ → Fv F v) :
   by_cases hy : y ∈ box v y₀ <;> simp [hy]
 
 /- English proof (translation)
-Rewrite using `[box_eq_fiber]`. Conclude with `(sb_box v y₀).1.isOpen_fiber 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_box (v : Pl F) (y₀ : κ → Fv F v) : IsOpen (box v y₀) := by
   rw [box_eq_fiber]; exact (sb_box v y₀).1.isOpen_fiber 1
 
 /- English proof (translation)
-Establish `h` using `(sb_box v y₀).2`. Unfold `HasCompactSupport tsupport at h`. Rewrite `h` using `[Set.support_indicator, Function.support_one, Set.inter_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isCompact_closure_box (v : Pl F) (y₀ : κ → Fv F v) : IsCompact (closure (box v y₀)) := by
   have h := (sb_box v y₀).2
@@ -132,9 +132,7 @@ variable (v : Pl F) (r : (κ → AF F) → ℂ)
 
 include hS in
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Establish `hc` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (hS _ (sb_box v (prj v x₀)))`. Use `hc.continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [(continuous_prj v).continuousAt.preimage_mem_nhds ((isOpen_box v (prj v x₀)).mem_nhds (mem_box_self v _))] with x hx`. Use `show (box v (prj v x₀)).indicator (1 : (κ → Fv F v) → ℂ) (fun i => evFin F v (x i)) * r x = r x`.
-
-Rewrite using `[Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ box v (prj v x₀) from hx), Pi.one_apply, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_r : Continuous r := by
   refine continuous_iff_continuousAt.2 fun x₀ => ?_
@@ -150,7 +148,7 @@ def nu (μA : Measure (κ → AF F)) : Measure (κ → Fv F v) :=
 
 include hS in
 /- English proof (translation)
-Establish `hd : Measurable fun x => ‖r x‖ₑ ^ 2` using `((continuous_r v r hS).measurable.enorm).pow_const 2`. Rewrite using `[nu, lintegral_map hg (continuous_prj v).measurable]`. Conclude with `lintegral_withDensity_eq_lintegral_mul μA hd (hg.comp (continuous_prj v).measurable)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_nu (μA : Measure (κ → AF F)) {g : (κ → Fv F v) → ℝ≥0∞} (hg : Measurable g) :
     ∫⁻ y, g y ∂nu v r μA = ∫⁻ x, ‖r x‖ₑ ^ 2 * g (prj v x) ∂μA := by
@@ -160,7 +158,7 @@ theorem lintegral_nu (μA : Measure (κ → AF F)) {g : (κ → Fv F v) → ℝ�
 
 include hS in
 /- English proof (translation)
-Rewrite using `[lintegral_nu v r hS μA ((hψ.measurable.enorm).pow_const 2)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `show _ = ‖ψ (prj v x) * r x‖ₑ ^ 2`. Rewrite using `[enorm_mul, mul_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_nu_sq (μA : Measure (κ → AF F)) {ψ : (κ → Fv F v) → ℂ} (hψ : Continuous ψ) :
     ∫⁻ y, ‖ψ y‖ₑ ^ 2 ∂nu v r μA = ∫⁻ x, ‖tens (evFin F v) ψ r x‖ₑ ^ 2 ∂μA := by
@@ -171,9 +169,9 @@ theorem lintegral_nu_sq (μA : Measure (κ → AF F)) {ψ : (κ → Fv F v) → 
 
 include hr hS in
 /- English proof (translation)
-Use `⟨fun y => Measure.ext fun s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : MeasurableSet ((fun z => y + z) ⁻¹' s)` using `measurable_const_add y hs`. Rewrite using `[Measure.map_apply (measurable_const_add y) hs, ← lintegral_indicator_one hs, ← lintegral_indicator_one hs', lintegral_nu v r hS μA (measurable_one.indicator hs), lintegral_nu v r hS μA (measurable_one.indicator hs')]`. Use `conv_rhs => rw [← lintegral_add_left_eq_self _ (lift v y)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[add_comm (lift v y) x, hr x _ (at_lift v y), prj_add_lift]`. Distinguish the cases in `hx : y + prj v x ∈ s`. Rewrite using `[Set.indicator_of_mem (show prj v x ∈ (fun z => y + z) ⁻¹' s from hx), Set.indicator_of_mem (show prj v x + y ∈ s by rwa [add_comm])]; rfl`. Rewrite using `[Set.indicator_of_notMem (show prj v x ∉ (fun z => y + z) ⁻¹' s from hx), Set.indicator_of_notMem (show prj v x + y ∉ s by rwa [add_comm])]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_invariant (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] : (nu v r μA).IsAddLeftInvariant := by
   refine ⟨fun y => Measure.ext fun s hs => ?_⟩
@@ -191,7 +189,7 @@ theorem nu_invariant (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] : (nu 
       (show prj v x + y ∉ s by rwa [add_comm])]
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator_one (isOpen_box v y₀).measurableSet]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases hy : y ∈ box v y₀ <;> simp [hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nu_box_eq (μA : Measure (κ → AF F)) (y₀ : κ → Fv F v) :
     nu v r μA (box v y₀) = ∫⁻ y, ‖(box v y₀).indicator (1 : (κ → Fv F v) → ℂ) y‖ₑ ^ 2 ∂nu v r μA := by
@@ -201,7 +199,7 @@ theorem nu_box_eq (μA : Measure (κ → AF F)) (y₀ : κ → Fv F v) :
 
 include hS in
 /- English proof (translation)
-Rewrite using `[nu_box_eq, lintegral_nu_sq v r hS μA (sb_box v y₀).1.continuous]`. Establish `hL` using `GlobalTheory.T.adelic_schwartz_mem_L2 F κ μA inferInstance _ (hS _ (sb_box v y₀))`. Use `lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top two_ne_zero ENNReal.ofNat_ne_top hL.eLpNorm_lt_top` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nu_box_lt_top (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] (y₀ : κ → Fv F v) :
     nu v r μA (box v y₀) < ⊤ := by
@@ -212,18 +210,18 @@ theorem nu_box_lt_top (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] (y₀
 
 include hS in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => ⟨box v y, (isOpen_box v y).mem_nhds (mem_box_self v y), nu_box_lt_top v r hS μA y⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nu_locFin (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] : IsLocallyFiniteMeasure (nu v r μA) :=
   ⟨fun y => ⟨box v y, (isOpen_box v y).mem_nhds (mem_box_self v y), nu_box_lt_top v r hS μA y⟩⟩
 
 include hS in
 /- English proof (translation)
-Rewrite using `[nu_box_eq, lintegral_nu_sq v r hS μA (sb_box v _).1.continuous]`. Introduce `hz`. Establish `hc` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (hS _ (sb_box v (prj v x₀)))`. Establish `hcm : Continuous fun x => ‖tens (evFin F v) ((box v (prj v x₀)).indicator (1 : (κ → Fv F v) → ℂ)) r x‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp hc.enorm`. Rewrite `hz` using `[lintegral_eq_zero_iff hcm.measurable]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrFun ((Continuous.ae_eq_iff_eq μA hcm continuous_const).1 hz) x₀`. Establish `h2 : tens (evFin F v) ((box v (prj v x₀)).indicator (1 : (κ → Fv F v) → ℂ)) r x₀ = r x₀` using `by show (box v (prj v x₀)).indicator (1 : (κ → Fv F v) → ℂ) (prj v x₀) * r x₀ = r x₀`. Rewrite using `[Set.indicator_of_mem (mem_box_self v _), Pi.one_apply, one_mul]`. Rewrite `h1` using `[h2]`. Simplify using `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h0 h1`.
+A detailed English derivation is pending.
 -/
 theorem nu_box_ne_zero (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] {x₀ : κ → AF F} (h0 : r x₀ ≠ 0) :
     nu v r μA (box v (prj v x₀)) ≠ 0 := by
@@ -243,15 +241,15 @@ theorem nu_box_ne_zero (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] {x�
 
 include hr hS in
 /- English proof (translation)
-Use `haveI := nu_invariant v r hr hS μA`. Use `haveI := nu_locFin v r hS μA`. Take `⟨x₀, hx₀⟩` from `h0`. Use `set c := Measure.addHaarScalarFactor (nu v r μA) μ`. Establish `key : ∀ s : Set (κ → Fv F v), IsCompact (closure s) → nu v r μA s = (c : ℝ≥0∞) * μ s` using `fun s hs => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.measure_isAddInvariant_eq_smul_of_isCompact_closure _ μ hs]`. Both sides reduce to the same expression. Use `⟨c, ?_, ENNReal.coe_ne_top, fun ψ hψ => ?_⟩` and prove the remaining obligations. Introduce `hc`. Apply `nu_box_ne_zero v r hS μA hx₀` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key _ (isCompact_closure_box v _), hc, zero_mul]`. Rewrite using `[← lintegral_nu_sq v r hS μA hψ.1.continuous]`. Establish `hK : IsCompact (tsupport ψ)` using `hψ.2`. Establish `hres : (nu v r μA).restrict (tsupport ψ) = (c : ℝ≥0∞) • μ.restrict (tsupport ψ)`. Use extensionality with `s hs`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.restrict_apply hs, Measure.smul_apply, Measure.restrict_apply hs, smul_eq_mul]`. Conclude with `key _ (hK.of_isClosed_subset isClosed_closure (closure_minimal Set.inter_subset_right (isClosed_tsupport ψ)))`. Establish `hsupp : Function.support (fun y => ‖ψ y‖ₑ ^ 2) ⊆ tsupport ψ`. Introduce `y hy`. Apply `subset_tsupport` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hy` to reduce the goal to its premises. Simplify using `[h]`. Rewrite using `[← setLIntegral_eq_of_support_subset hsupp, ← setLIntegral_eq_of_support_subset (μ := μ) hsupp, hres, lintegral_smul_measure, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_const (μA : Measure (κ → AF F)) [μA.IsAddHaarMeasure] (h0 : ∃ x₀, r x₀ ≠ 0)
     (μ : Measure (κ → Fv F v)) [μ.IsAddHaarMeasure] :
@@ -290,19 +288,17 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.TensUniq.exists_sInf_ne_zero F κ`. Set `φs : ∀ w : Pl F, (κ → Fv F w) → ℂ` to `fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φs w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `Filter.Eventually.of_forall fun _ => rfl`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φs hstd`. Use `⟨r, hr, fun ψ hψ => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrt ψ]`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φs v ψ hstd)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB w`. Establish `e` using `congrFun (hrt (fun _ => 1)) 0`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, one_mul] at e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Establish `hI : (fun i : κ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((0 : κ → AF F) i)) = 0`. Use function extensionality and compare the values at `i`. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : AF F).1 = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `map_zero _`. Establish `hP : (∏ᶠ w, Function.update φs v (fun _ => 1) w fun i => evFin F w ((0 : κ → AF F) i)) = 1`. Use `finprod_eq_one_of_forall_eq_one fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hw]`. Simplify using `only [φs, Pi.zero_apply, map_zero]`. Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression.
-
-Rewrite using `[hI, hP, mul_one]`. Conclude with `hf`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_r (v : Pl F) : ∃ r : (κ → AF F) → ℂ, (∀ x z, At (evFin F v) z → r (x + z) = r x) ∧
     (∀ ψ ∈ SB (κ → Fv F v), tens (evFin F v) ψ r ∈ schA F κ) ∧ r 0 ≠ 0 := by
@@ -340,11 +336,11 @@ theorem exists_r (v : Pl F) : ∃ r : (κ → AF F) → ℂ, (∀ x z, At (evFin
 end GlobalTheory.LocalUnitaryL2
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v h _ φ hφ φ₁ hφ₁ hA μ hμ`. Use `letI : MeasurableSpace (Fin a × Fin (a + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin a × Fin (a + a') → AF F) := ⟨rfl⟩`. Use `letI : MeasurableSpace (Fin a × Fin (a + a') → Fv F v) := borel _`. Use `haveI : BorelSpace (Fin a × Fin (a + a') → Fv F v) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := hμ`. Take `⟨r, hr, hS, h0⟩` from `GlobalTheory.LocalUnitaryL2.exists_r (κ := Fin a × Fin (a + a')) v`. Set `μA : Measure (Fin a × Fin (a + a') → AF F)` to `Measure.addHaar`. Take `⟨c, hc0, hct, hc⟩` from `GlobalTheory.LocalUnitaryL2.exists_const v r hr hS μA ⟨0, h0⟩ μ`. Establish `hU` using `hT.weil.1.1.unit μA inferInstance h (tens (evFin F v) φ r) (hS φ hφ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAct : om (1, h) (tens (evFin F v) φ r) = tens (evFin F v) φ₁ r` using `hA r ⟨hr, hS φ hφ⟩`. Express the relevant statement in the definitionally equal form `∫⁻ x, ‖om (1, h) (tens (evFin F v) φ r) x‖ₑ ^ 2 ∂μA = _ at hU`. Rewrite `hU` using `[hAct, hc φ₁ hφ₁, hc φ hφ]`. Conclude with `(ENNReal.mul_right_inj hc0 hct).1 hU`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocalUnitaryL2.lintegral_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

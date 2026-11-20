@@ -5,16 +5,16 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[wd]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma wd_zero' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (x : Finset ι → E) (t : Finset ι) : wd (fun _ : ι => (0 : Module.End ℂ E)) x t = 0 := by
   simp [wd]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[GlobalTheory.WH.uni, inrE]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, a, rfl⟩`. Conclude with `⟨a, by simpa using h, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨by simpa using ha, a, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem uni_inter_map_inrE {β κ : Type} [LinearOrder β] [LinearOrder κ] [Fintype κ]
     (b : Finset β) (L : Finset κ) :
@@ -28,61 +28,53 @@ private theorem uni_inter_map_inrE {β κ : Type} [LinearOrder β] [LinearOrder 
     exact ⟨by simpa using ha, a, rfl⟩
 
 /- English proof (translation)
-Introduce `hU β κ E _ _ _ _ _ _ A w d hK n m hm c hc hlev hcz`. Use `set Q := Finset.map (inrE (β := β) (κ := κ)).toEmbedding Finset.univ with hQ`. Establish `hQc : ∀ (b : Finset β) (L : Finset κ), (uni b L ∩ Q).card = L.card`. Introduce `b L`. Rewrite using `[hQ, uni_inter_map_inrE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hl : (fun i : β => wOn Q w (inlE i)) = fun _ => 0`. Use function extensionality and compare the values at `i`. Establish `: inlE (κ` using `κ) i ∉ Q := by`. Simplify using `[hQ, inlE, inrE]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[wOn, this]`. Establish `hr : (fun l : κ => wOn Q w (inrE l)) = fun l => w (inrE l)`. Use function extensionality and compare the values at `l`. Establish `: inrE (β` using `β) l ∈ Q := by`. Simplify using `[hQ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[wOn, this]`. Establish `hdec : ∀ (x : Finset (β ⊕ₗ κ) → E) (b : Finset β) (L : Finset κ), wd (wOn Q w) x (uni b L) = (-1 : ℤ) ^ b.card • wd (fun l => w (inrE l)) (fun L' => x (uni b L')) L`. Introduce `x b L`. Rewrite using `[(hU β κ E (wOn Q w) x b L).1, hl, hr, wd_zero', zero_add]`. Establish `hmem : ∀ s, c s ∈ (if ((s.card : ℕ) : ℤ) = n then A s else ⊥)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `hc` as an intermediate fact. Simplify using `only [acx, Submodule.mem_pi, Set.mem_univ, true_implies] at this`. Conclude with `this s`. Establish `hY : ∀ b : Finset β, ∃ Y ∈ (colA A w b).C (m - 1), wd (fun l => w (inrE l)) Y = fun L => c (uni b L)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Establish `hz : (fun L => c (uni b L)) ∈ (colA A w b).Z m`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[colA, acx, Submodule.mem_pi]`. Introduce `L _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `show c (uni b L) ∈ (if ((L.card : ℕ) : ℤ) = m then A (uni b L) else ⊥)`. Distinguish the cases in `hL : ((L.card : ℕ) : ℤ) = m`. Rewrite using `[if_pos hL]`. Establish `h1` using `hmem (uni b L)`. Use `split_ifs at h1 with h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h1`. Rewrite `h1` using `[Submodule.mem_bot]`. Rewrite using `[h1]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[if_neg hL, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `hlev` to reduce the goal to its premises. Use `show ¬ (((uni b L ∩ Q).card : ℕ) : ℤ) = m`. Rewrite using `[show (uni b L ∩ Q).card = L.card by convert hQc b L]` and apply the resulting hypothesis. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `wd (fun l => w (inrE l)) (fun L => c (uni b L)) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `L`. Establish `h1 : (wd (wOn Q w)) c (uni b L) = 0`. Conclude with `congrFun hcz (uni b L)`. Rewrite `h1` using `[hdec]`. Simplify using `only [Pi.zero_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (fun v => (-1 : ℤ) ^ b.card • v) h1`. Simplify using `only [smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul, smul_zero] at h2`. Conclude with `h2`. Take `⟨Y, hY1, hY2⟩` from `hK b m hm hz`. Conclude with `⟨Y, hY1, hY2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose Y hYC hYD using hY`. Establish `hYmem : ∀ b L, Y b L ∈ (if ((L.card : ℕ) : ℤ) = m - 1 then A (uni b L) else ⊥)`. Introduce `b L`. Use `hYC b` as an intermediate fact. Rewrite `this` using `[colA, acx, Submodule.mem_pi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this L (Set.mem_univ _)`. Establish `hU2` using `fun s => (hU β κ E w c (lft s) (rgt s)).2.2.2.2 s`. Establish `hQs : ∀ s, (s ∩ Q).card = (rgt s).card`. Introduce `s`. Use `hQc (lft s) (rgt s)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[hU2 s]`. Conclude with `this`. Take `⟨y, hy⟩ : ∃ y : Finset (β ⊕ₗ κ) → E, ∀ s, y s = if (((lft s).card : ℕ) : ℤ) = n - m then (-1 : ℤ) ^ (lft s).card • Y (lft s) (rgt s) else 0` from `⟨_, fun s => rfl⟩`. Use `⟨y, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[acx, Submodule.mem_pi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s _`. Use `show y s ∈ (if ((s.card : ℕ) : ℤ) = n - 1 then A s else ⊥)`. Rewrite using `[hy]`. Establish `hs` using `hYmem (lft s) (rgt s)`. Rewrite `hs` using `[hU2 s]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard` using `(hU β κ E w c (lft s) (rgt s)).2.2.2.1`. Rewrite `hcard` using `[hU2 s]`. Distinguish the cases in `h1 : (((lft s).card : ℕ) : ℤ) = n - m`. Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : ((s.card : ℕ) : ℤ) = n - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_pos h2]`. Distinguish the cases in `h3 : (((rgt s).card : ℕ) : ℤ) = m - 1`. Rewrite `hs` using `[if_pos h3]`. Conclude with `zsmul_mem hs _`. Rewrite `hs` using `[if_neg h3, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs, smul_zero]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[if_neg h2, Submodule.mem_bot]`. Rewrite `hs` using `[if_neg, Submodule.mem_bot]`. Rewrite using `[hs, smul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h3`. Apply `h2` to reduce the goal to its premises. Rewrite using `[hcard]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[if_neg h1]`. Conclude with `Submodule.zero_mem _`. Introduce `s hs`. Rewrite using `[hy]`. Use `split_ifs with h1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hY0` using `hYmem (lft s) (rgt s)`. Rewrite `hY0` using `[if_neg]`. Rewrite `hY0` using `[Submodule.mem_bot]`. Rewrite using `[hY0, smul_zero]`. Introduce `h3`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Use `show (((s ∩ Q).card : ℕ) : ℤ) = m - 1`. Rewrite using `[hQs s]`. Conclude with `h3`. Both sides reduce to the same expression.
+Use symmetry to reverse the relation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `t`. Take `⟨b, L, rfl⟩ : ∃ b L, t = uni b L` from `⟨lft t, rgt t, (hU2 t).symm⟩`. Use `Eq.trans (b := (-1 : ℤ) ^ b.card • wd (fun l => w (inrE l)) (fun L' => y (uni b L')) L) ?_ ?_` and prove the remaining obligations. Use `hdec y b L` and compare the differences between its conclusion and the goal. Establish `hb2` using `hU β κ E w c b`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfun : (fun L' => y (uni b L')) = if (((b.card : ℕ) : ℤ) = n - m) then (-1 : ℤ) ^ b.card • Y b else 0`. Use function extensionality and compare the values at `L'`. Rewrite using `[hy, (hb2 L').2.1, (hb2 L').2.2.1]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hfun]`.
-
-Distinguish the cases in `hb : (((b.card : ℕ) : ℤ) = n - m)`. Rewrite using `[if_pos hb, map_zsmul, Pi.smul_apply, hYD, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hb, map_zero, Pi.zero_apply, smul_zero]`. Use `symm`.
-
-Distinguish the cases in `hL : ((L.card : ℕ) : ℤ) = m`. Establish `h5` using `hmem (uni b L)`. Rewrite `h5` using `[if_neg]`. Conclude with `(Submodule.mem_bot _).1 h5`. Introduce `hn`.
-
-Apply `hb` to reduce the goal to its premises. Rewrite `hn` using `[(hb2 L).2.2.2.1]`. Move the coercions through the operations in `at hn`. Use linear arithmetic over natural numbers and integers. Apply `hlev show ¬ ((((uni b L ∩ Q).card : ℕ) : ℤ) = m)` to reduce the goal to its premises.
-
-Rewrite using `[show (uni b L ∩ Q).card = L.card by convert hQc b L]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.colQEx_of :
     WdUni → ColQEx := by

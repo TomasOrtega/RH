@@ -25,14 +25,14 @@ def scal (s : k) (hs : s ≠ 0) : GL n k :=
     by rw [smul_mul_smul_comm, one_mul, inv_mul_cancel₀ hs, one_smul]⟩
 
 /- English proof (translation)
-Use `show (s⁻¹ • (1 : Matrix n n k)) *ᵥ x = _`. Rewrite using `[Matrix.smul_mulVec, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_inv_smul (s : k) (hs : s ≠ 0) (x : n → k) : (scal s hs : GL n k)⁻¹ • x = s⁻¹ • x := by
   show (s⁻¹ • (1 : Matrix n n k)) *ᵥ x = _
   rw [Matrix.smul_mulVec, one_mulVec]
 
 /- English proof (translation)
-Use `ext1`. Use `show h.val * (s • (1 : Matrix n n k)) = (s • (1 : Matrix n n k)) * h.val`. Rewrite using `[mul_smul_comm, mul_one, smul_mul_assoc, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_comm (s : k) (hs : s ≠ 0) (h : GL n k) : h * scal s hs = scal s hs * h := by
   ext1
@@ -45,9 +45,9 @@ def trv (b d : n) (t : k) (hbd : b ≠ d) : GL n k :=
    by rw [Matrix.transvection_mul_transvection_same b d hbd, neg_add_cancel, Matrix.transvection_zero]⟩
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Matrix.transvection, Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, Pi.single_apply]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.single_apply, ite_and]`. Distinguish the cases in `h : b = j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem transvection_mulVec' (b d : n) (t : k) (x : n → k) :
     Matrix.transvection b d t *ᵥ x = x + Pi.single b (t * x d) := by
@@ -60,7 +60,7 @@ theorem transvection_mulVec' (b d : n) (t : k) (x : n → k) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-The claim follows from `transvection_mulVec' b d (-t) x`.
+A detailed English derivation is pending.
 -/
 theorem trv_inv_smul (b d : n) (t : k) (hbd : b ≠ d) (x : n → k) :
     (trv b d t hbd)⁻¹ • x = x + Pi.single b (-t * x d) := transvection_mulVec' b d (-t) x
@@ -68,29 +68,25 @@ theorem trv_inv_smul (b d : n) (t : k) (hbd : b ≠ d) (x : n → k) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ i b d t g hbd hbi hg`. Establish `hinv : (g⁻¹ : GL n k).val = Matrix.transvection b d (-(t : k))`. Establish `h1 : (g⁻¹ : GL n k).val * g.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, Matrix.transvection_mul_transvection_same b d hbd, add_neg_cancel, Matrix.transvection_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [← mul_assoc, h1, one_mul]`. Establish `htO : (t : k) ∈ 𝒪[k]` using `t.2`. Use `Pair.ext fun x a => ?_` and prove the remaining obligations. Set `y : n → k` to `x + Pi.single b (-(t : k) * x d)`. Establish `hyj : ∀ j, y j = x j + (Pi.single b (-(t : k) * x d) : n → k) j` using `fun j => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : g⁻¹ • x = y` using `by show (g⁻¹ : GL n k).val *ᵥ x = _`. Rewrite using `[hinv, transvection_mulVec']`. Rewrite using `[Pair.smul_hasVal, hsm, stdPair_hasVal, stdPair_hasVal]`. Establish `hd : y d = x d` using `by rw [hyj]; simp [Pi.single_apply, Ne.symm hbd]`. Establish `hint : (∀ j, y j ∈ 𝒪[k]) ↔ ∀ j, x j ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy j`. Establish `hxd : x d ∈ 𝒪[k]` using `by rw [← hd]; exact hy d`. Establish `: x j = y j + (Pi.single b ((t : k) * x d) : n → k) j`. Rewrite using `[hyj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[this]`. Use `add_mem (hy j) ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `mul_mem htO hxd`. Conclude with `zero_mem _`. Introduce `hx j`. Rewrite using `[hyj, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `add_mem (hx j) (mul_mem (neg_mem htO) (hx d))`. Simplify using `using hx j`. Establish `hres : ∀ (hx : ∀ j, x j ∈ 𝒪[k]) (hy : ∀ j, y j ∈ 𝒪[k]), IsLocalRing.residue 𝒪[k] ⟨y i, hy i⟩ = IsLocalRing.residue 𝒪[k] ⟨x i, hx i⟩`. Introduce `hx hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Establish `hm : t ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `hbi.resolve_left (not_not.2 rfl)`. Establish `: (⟨y b, hy b⟩ : 𝒪[k]) - ⟨x b, hx b⟩ = -(t * ⟨x d, hx d⟩)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hyj, Pi.single_eq_same]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `neg_mem (Ideal.mul_mem_right _ _ hm)`. Establish `: (⟨y i, hy i⟩ : 𝒪[k]) - ⟨x i, hx i⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show y i - x i = 0`. Rewrite using `[hyj]`.
-
-Simplify using `[Pi.single_apply, Ne.symm hb]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, rfl⟩`.
-
-Conclude with `⟨hint.1 hy, (hres _ hy).symm⟩`. Introduce and unpack `⟨hx, rfl⟩`. Conclude with `⟨hint.2 hx, hres hx _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transvection_smul_stdPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (i b d : n) (t : 𝒪[k]) (g : GL n k), b ≠ d → (b ≠ i ∨ t ∈ IsLocalRing.maximalIdeal 𝒪[k]) → g.val = Matrix.transvection b d (t : k) → g • GlobalTheory.LatPair.stdPair k i = GlobalTheory.LatPair.stdPair k i := by
   intro k _ _ _ _ n _ _ i b d t g hbd hbi hg
@@ -156,35 +152,31 @@ theorem transvection_smul_stdPair : ∀ (k : Type) [Field k] [ValuativeRel k] [T
     exact ⟨hint.2 hx, hres hx _⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ P P' hn hst`. Take `⟨i⟩ : Nonempty n` from `Fintype.card_pos_iff.1 (by omega)`. Take `⟨h, hh⟩` from `MulAction.exists_smul_eq (GL n k) (stdPair k i) P`. Use `set Q := h⁻¹ • P' with hQ`. Use `clear_value Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstQ : ∀ g : GL n k, g • stdPair k i = stdPair k i → g • Q = Q`. Introduce `g hg`. Establish `h1 : (h * g * h⁻¹) • P = P` using `by rw [← hh, smul_smul, show h * g * h⁻¹ * h = h * g by group, mul_smul, hg]`. Establish `h2` using `(hst _).1 h1`. Rewrite using `[hQ, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcl : ∀ (x : n → k) (a : 𝓀[k]), Q.HasVal x a → ∀ (b d : n) (t : 𝒪[k]), b ≠ d → (b ≠ i ∨ t ∈ IsLocalRing.maximalIdeal 𝒪[k]) → Q.HasVal (x + Pi.single b ((t : k) * x d)) a`. Introduce `x a hx b d t hbd hbi`. Establish `hg : trv b d ((-t : 𝒪[k]) : k) hbd • stdPair k i = stdPair k i` using `transvection_smul_stdPair k n i b d (-t) _ hbd (hbi.imp id (fun h => (IsLocalRing.maximalIdeal 𝒪[k]).neg_mem_iff.2 h)) rfl`. Establish `h2 : (trv b d ((-t : 𝒪[k]) : k) hbd • Q).HasVal x a` using `by rw [hstQ _ hg]; exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `h2` using `[Pair.smul_hasVal, trv_inv_smul]`. Use `h2 using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlat : ∀ x ∈ Q.lat, ∀ (b d : n) (t : 𝒪[k]), b ≠ d → (b ≠ i ∨ t ∈ IsLocalRing.maximalIdeal 𝒪[k]) → x + Pi.single b ((t : k) * x d) ∈ Q.lat` using `fun x hx b d t hbd hbi => (hcl x _ (Q.hasVal_fn ⟨x, hx⟩) b d t hbd hbi).mem`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, hc0, hcb, hca⟩` from `GlobalTheory.T.localLattice_exists_scalar_bound_attained k n Q.lat Q.isLat ⟨i⟩`. Break down `GlobalTheory.T.transvectionStable_localLattice_shape k n i Q.lat c hn hc0 hlat hcb hca with hA | hB` into its components or cases. Use `swap`. Conclude with `(GlobalTheory.T.no_transvectionInvariant_pair_on_scaledKernel k n i Q c hn hc0 hB hcl).elim`. Take `⟨ε, hε0, hε⟩` from `GlobalTheory.T.transvectionInvariant_pair_functional_residue k n i Q c (by omega) hc0 hA hcl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `IsLocalRing.residue_surjective (R := 𝒪[k]) ε`. Establish `hwu : IsUnit w`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, hw]`. Conclude with `hε0`. Take `⟨u, hu⟩` from `hwu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `huw : (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) * (w : k) = 1`. Establish `h1 : ((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) * w = 1` using `by rw [← hu, Units.inv_mul]`. Establish `h2` using `congrArg (fun z : 𝒪[k] => (z : k)) h1`. Simplify using `using h2`. Establish `hw0 : (w : k) ≠ 0` using `fun h0 => by simp [h0] at huw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ y : k, (w : k) * y ∈ 𝒪[k] → y ∈ 𝒪[k]`. Introduce `y hy`. Establish `: y = (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) * ((w : k) * y)` using `by rw [← mul_assoc, huw, one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem (u⁻¹ : 𝒪[k]ˣ).val.2 hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `set s := c * (w : k)⁻¹ with hs_def`. Establish `hs : s ≠ 0` using `mul_ne_zero hc0 (inv_ne_zero hw0)`. Establish `key : ∀ y : k, s⁻¹ * y = (w : k) * (c⁻¹ * y)`. Introduce `y`. Rewrite using `[hs_def, mul_inv, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQs : Q = (scal s hs : GL n k) • stdPair k i`. Use `Pair.ext fun x a => ?_` and prove the remaining obligations. Rewrite using `[Pair.smul_hasVal, stdPair_hasVal, scal_inv_smul]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hQx`. Establish `hx : ∀ j, c⁻¹ * x j ∈ 𝒪[k]` using `(hA x).1 hQx.mem`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, key]`. Conclude with `mul_mem w.2 (hx j)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hQx.unique (hε x hx), ← hw, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Pi.smul_apply, smul_eq_mul, key]`. Use `push_cast`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨hx', rfl⟩`. Establish `hx : ∀ j, c⁻¹ * x j ∈ 𝒪[k]` using `fun j => hint _ (by have := hx' j; rwa [Pi.smul_apply, smul_eq_mul, key] at this)`. Use `hε x hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hw, ← map_mul]`.
-
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Pi.smul_apply, smul_eq_mul, key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨(scal s hs : GL n k), s, hs, rfl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_scalar_smul_of_stab : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (P P' : GlobalTheory.LatPair.Pair k n), 3 ≤ Fintype.card n → (∀ g : GL n k, g • P = P ↔ g • P' = P') → ∃ (g : GL n k) (s : k), s ≠ 0 ∧ g.val = s • (1 : Matrix n n k) ∧ P' = g • P := by
   intro k _ _ _ _ n _ _ P P' hn hst

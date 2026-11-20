@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hy : (y.asIdeal : Ideal A).IsPrime` using `y.isPrime`. Set `_ : Algebra A ((Sp A).presheaf.stalk y)` to `StructureSheaf.stalkAlgebra A y`. Establish `: IsLocalization.AtPrime ((Sp A).presheaf.stalk y) (y.asIdeal : Ideal A)` using `StructureSheaf.IsLocalization.to_stalk A y`. Conclude with `isDomain_and_isIntegrallyClosed_atPrime_of_isDomain (B := A) (y.asIdeal : Ideal A) ((Sp A).presheaf.stalk y)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_and_isIntegrallyClosed_stalk_Sp (A : Type) [CommRing A] [IsDomain A]
     [IsIntegrallyClosed A] (y : Sp A) :
@@ -25,9 +25,9 @@ theorem isDomain_and_isIntegrallyClosed_stalk_Sp (A : Type) [CommRing A] [IsDoma
     ((Sp A).presheaf.stalk y)
 
 /- English proof (translation)
-Introduce `k _ X s hs`. Establish `: Smooth s` using `hs`. Establish `hN : ∀ x : X, IsDomain (X.presheaf.stalk x) ∧ IsIntegrallyClosed (X.presheaf.stalk x)` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth s (fun y => isDomain_and_isIntegrallyClosed_stalk_Sp k y)`. Use `⟨?_, hN, ?_⟩` and prove the remaining obligations. Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hN x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`. Establish `: IsLocallyNoetherian (Sp k)` using `inferInstance`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian s`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (s : X ⟶ Sp k), Smooth s →

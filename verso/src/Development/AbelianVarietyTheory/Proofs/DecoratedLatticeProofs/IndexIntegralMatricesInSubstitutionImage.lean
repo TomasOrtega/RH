@@ -17,7 +17,7 @@ def mulRight (Y : Type) (G : Matrix Y' Y' K) : Matrix Y Y' K →ₗ[K] Matrix Y 
   LinearMap.pi fun i : Y => (Matrix.toLin' Gᵀ).comp (LinearMap.proj i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Gᵀ.mulVec (w i)) j = _`. Rewrite using `[Matrix.mulVec_transpose]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulRight_apply (G : Matrix Y' Y' K) (w : Matrix Y Y' K) : mulRight Y G w = w * G := by
   ext i j
@@ -26,7 +26,7 @@ theorem mulRight_apply (G : Matrix Y' Y' K) (w : Matrix Y Y' K) : mulRight Y G w
   rfl
 
 /- English proof (translation)
-Use `LinearMap.det_pi (R := K) (ι := Y) fun _ => Matrix.toLin' Gᵀ` as an intermediate fact. Rewrite `this` using `[LinearMap.det_toLin', Matrix.det_transpose, Finset.prod_const, Finset.card_univ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mulRight (G : Matrix Y' Y' K) : LinearMap.det (mulRight Y G) = G.det ^ Fintype.card Y := by
   have := LinearMap.det_pi (R := K) (ι := Y) fun _ => Matrix.toLin' Gᵀ
@@ -34,7 +34,7 @@ theorem det_mulRight (G : Matrix Y' Y' K) : LinearMap.det (mulRight Y G) = G.det
   exact this
 
 /- English proof (translation)
-Set `τ` to `Matrix.transposeLinearEquiv Y' Y K K`. Use `⟨mulRight Y G ∘ₗ ((τ : _ →ₗ[K] _) ∘ₗ mulRight Y' Hᵀ ∘ₗ (τ.symm : _ →ₗ[K] _)), fun w => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mulRight Y G (mulRight Y' Hᵀ wᵀ)ᵀ = _`. Rewrite using `[mulRight_apply, mulRight_apply, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose]`. Rewrite using `[LinearMap.det_comp, LinearMap.det_conj, det_mulRight, det_mulRight, Matrix.det_transpose]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mul_map (H : Matrix Y Y K) (G : Matrix Y' Y' K) :
     ∃ B : Matrix Y Y' K →ₗ[K] Matrix Y Y' K, (∀ w, B w = H * w * G) ∧
@@ -48,35 +48,31 @@ theorem exists_mul_map (H : Matrix Y Y K) (G : Matrix Y' Y' K) :
 end Det
 
 /- English proof (translation)
-Introduce `k _ _ _ _ Y Y' _ _ _ _ gk hk hE`. Set `M : Submodule 𝒪[k] (Matrix Y Y' k)` to `{ carrier := {x | ∀ r q, x r q ∈ 𝒪[k]} add_mem' := fun ha hb r q => add_mem (ha r q) (hb r q) zero_mem' := fun _ _ => zero_mem _ smul_mem' := fun c x hx r q => by`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Conclude with `mul_mem c.2 (hx r q) }`. Use `haveI : Submodule.IsLattice k M := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Prove the components needed by the constructor for the conclusion. Set `φ : Matrix Y Y' 𝒪[k] →ₗ[𝒪[k]] Matrix Y Y' k` to `(Algebra.linearMap 𝒪[k] k).mapMatrix`. Use `Submodule.FG.of_le (Submodule.fg_range φ) fun m hm => ⟨Matrix.of fun i j => ⟨m i j, hm i j⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `w _`. Rewrite using `[Matrix.matrix_eq_sum_single w]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : Matrix.single i j (1 : k) ∈ M` using `fun r q => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Use `Submodule.smul_mem _ (w i j) (Submodule.subset_span (R := k) h1)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨Bl, hBl, hd⟩` from `exists_mul_map (↑(hk⁻¹) : Matrix Y Y k) (↑gk : Matrix Y' Y' k)`. Establish `hbij : Function.Bijective Bl`. Use `Function.bijective_iff_has_inverse.2 ⟨fun w => (↑hk : Matrix Y Y k) * w * (↑(gk⁻¹) : Matrix Y' Y' k), fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(↑hk : Matrix Y Y k) * Bl w * (↑(gk⁻¹) : Matrix Y' Y' k) = w`. Rewrite using `[hBl]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = w := by rw [hk.mul_inv, gk.mul_inv, Matrix.one_mul, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `Bl ((↑hk : Matrix Y Y k) * w * (↑(gk⁻¹) : Matrix Y' Y' k)) = w`. Rewrite using `[hBl]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = w := by rw [hk.inv_mul, gk.inv_mul, Matrix.one_mul, Matrix.mul_one]`. Establish `hM : ∀ m ∈ M, Bl m ∈ M` using `fun m hm => show ∀ r q, (Bl m) r q ∈ 𝒪[k] by rw [hBl]; exact hE m hm`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, u, e1, e2⟩` from `GlobalTheory.SplitLinear.relIndex_comap_lattice M Bl hbij hM hp`. Establish `hq : Nat.card (𝒪[k] ⧸ Ideal.span {p}) = resCard k`. Rewrite using `[resCard, ← hp.maximalIdeal_eq]`. Both sides reduce to the same expression. Establish `hq0 : 0 < resCard k` using `Nat.card_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `set A := M.toAddSubgroup with hA`. Use `set Bs := AddSubgroup.comap Bl.toAddMonoidHom A with hBs`. Establish `hne : A.relIndex Bs ≠ 0` using `by rw [e2, hq]; exact pow_ne_zero _ hq0.ne'`. Use `haveI : (A.addSubgroupOf Bs).FiniteIndex := ⟨hne⟩`. Use `haveI : Finite (Bs ⧸ A.addSubgroupOf Bs) := AddSubgroup.finite_quotient_of_finiteIndex`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨R, hRc, hRB, hRu⟩` from `GlobalTheory.SplitLinear.exists_reps A Bs`. Establish `hmemB : ∀ w, w ∈ Bs ↔ ∀ r q, ((↑(hk⁻¹) : Matrix Y Y k) * w * (↑gk : Matrix Y' Y' k)) r q ∈ 𝒪[k]`. Introduce `w`. Express the relevant statement in the definitionally equal form `(∀ r q, (Bl w) r q ∈ 𝒪[k]) ↔ _`. Rewrite using `[hBl]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨R, ?_, fun v hv => (hmemB v).1 (hRB v hv), fun w hw => hRu w ((hmemB w).2 hw)⟩` and prove the remaining obligations. Establish `hpow : ∀ (x : kˣ) (n : ℕ), nabs k (x ^ n) = nabs k x ^ n`. Introduce `x n`. Simplify using `[nabs, map_pow]`. Establish `hinv : ∀ x : kˣ, nabs k x⁻¹ = (nabs k x)⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[nabs, map_inv]`. Establish `hp0 : (p : k) ≠ 0` using `fun h => hp.ne_zero (by exact_mod_cast h)`. Set `X : kˣ` to `Matrix.GeneralLinearGroup.det gk ^ Fintype.card Y * Matrix.GeneralLinearGroup.det hk⁻¹ ^ Fintype.card Y'`. Set `U : kˣ` to `Units.map (algebraMap 𝒪[k] k : 𝒪[k] →* k) u`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `P : kˣ` to `Units.mk0 (p : k) hp0`. Establish `hXU : X * U = P ^ m`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, ← hd]`. Conclude with `e1`.
-
-Establish `hU : nabs k U = 1`. Apply `nabs_eq_one_of_valuation_eq_one` to reduce the goal to its premises. Conclude with `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.mp u.isUnit`. Establish `hP : nabs k P = (resCard k : ℝ)⁻¹` using `nabs_uniformiser hp rfl`. Establish `key` using `congrArg (nabs k) hXU`.
-
-Rewrite `key` using `[GlobalTheory.SplitWeil.nabs_mul, GlobalTheory.SplitWeil.nabs_mul, hpow, hpow, hpow, hU, hP, map_inv, hinv, mul_one]`. Rewrite using `[hRc, e2, hq, Real.rpow_natCast, Real.rpow_neg (GlobalTheory.SplitWeil.nabs_pos k _).le, Real.rpow_natCast]`. Use `push_cast`. Establish `hq' : ((resCard k : ℝ)) ^ m = (((resCard k : ℝ))⁻¹ ^ m)⁻¹` using `by rw [inv_pow, inv_inv]`. Rewrite using `[hq', ← key, inv_pow (nabs k _), mul_inv, inv_inv, mul_comm]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_integral_image : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (gk : GL Y' k) (hk : GL Y k), Enl gk hk → ∃ R₀ : Finset (Matrix Y Y' k), (R₀.card : ℝ) = nabs k (Matrix.GeneralLinearGroup.det hk) ^ (Fintype.card Y' : ℝ) * nabs k (Matrix.GeneralLinearGroup.det gk) ^ (-(Fintype.card Y : ℝ)) ∧ (∀ v ∈ R₀, ∀ r q, ((↑(hk⁻¹) : Matrix Y Y k) * v * (↑gk : Matrix Y' Y' k)) r q ∈ 𝒪[k]) ∧ ∀ w : Matrix Y Y' k, (∀ r q, ((↑(hk⁻¹) : Matrix Y Y k) * w * (↑gk : Matrix Y' Y' k)) r q ∈ 𝒪[k]) → ∃! v, v ∈ R₀ ∧ ∀ r q, (w - v) r q ∈ 𝒪[k] := by
   intro k _ _ _ _ Y Y' _ _ _ _ gk hk hE

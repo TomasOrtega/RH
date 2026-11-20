@@ -13,9 +13,9 @@ open MeasureTheory Topology Filter NumberField Formalism.BasicNotions Formalism.
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Set `e1 : (κ → X) ≃ₜ (κ → Fin k → ℝ)` to `Homeomorph.piCongrRight fun _ => e`. Establish `h1 : ∀ x y, e1 (x + y) = e1 x + e1 y`. Introduce `x y`. Use function extensionality and compare the values at `i`. Conclude with `he (x i) (y i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `L` to `ContinuousLinearEquiv.ofFinrankEq (𝕜 := ℝ) (E := κ → Fin k → ℝ) (F := Fin (Module.finrank ℝ (κ → Fin k → ℝ)) → ℝ) (Module.finrank_fin_fun ℝ).symm`. Use `⟨_, e1.trans L.toHomeomorph, fun x y => ?_⟩` and prove the remaining obligations. Use `show L (e1 (x + y)) = L (e1 x) + L (e1 y)`. Rewrite using `[h1, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : ℕ}
     (e : X ≃ₜ (Fin k → ℝ)) (he : ∀ x y, e (x + y) = e x + e y) (κ : Type) [Fintype κ] :
@@ -30,9 +30,9 @@ theorem sq_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : ℕ}
   rw [h1, map_add]
 
 /- English proof (translation)
-Set `e1 : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `Homeomorph.piCongrRight fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).toHomeomorph`. Establish `h1 : ∀ x y, e1 (x + y) = e1 x + e1 y`. Introduce `x y`. Use function extensionality and compare the values at `v`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)).map_add _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `L` to `ContinuousLinearEquiv.ofFinrankEq (𝕜 := ℝ) (E := InfinitePlace F → ℝ) (F := Fin (Module.finrank ℝ (InfinitePlace F → ℝ)) → ℝ) (Module.finrank_fin_fun ℝ).symm`. Use `⟨_, e1.trans L.toHomeomorph, fun x y => ?_⟩` and prove the remaining obligations. Use `show L (e1 (x + y)) = L (e1 x) + L (e1 y)`. Rewrite using `[h1, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ (k : ℕ) (e : Ainf F ≃ₜ (Fin k → ℝ)), ∀ x y, e (x + y) = e x + e y := by
@@ -49,9 +49,9 @@ theorem sq_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
   rw [h1, map_add]
 
 /- English proof (translation)
-Set `R` to `Ainf F`. Set `b` to `Module.Free.chooseBasis R (R ⊗[F] E)`. Set `eL : (R ⊗[F] E) ≃ₗ[R] (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `b.equivFun`. Set `e0 : R ⊗[F] E ≃ₜ (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `{ toEquiv := eL.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap eL.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap eL.symm.toLinearMap }`. Take `⟨k0, eA, hA⟩` from `sq_coord_Ainf F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨k, e1, h1⟩` from `sq_coord_pi eA hA (Module.Free.ChooseBasisIndex R (R ⊗[F] E))`. Use `⟨k, e0.trans e1, fun x y => ?_⟩` and prove the remaining obligations. Use `show e1 (e0 (x + y)) = e1 (e0 x) + e1 (e0 y)`. Rewrite using `[show e0 (x + y) = e0 x + e0 y from eL.map_add x y, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
     [NumberField E] [Algebra F E] :
@@ -76,7 +76,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sq_sig_inv (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -85,7 +85,7 @@ theorem sq_sig_inv (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (si
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Use extensionality with `b d`. Simplify using `only [gramR, hR, Formalism.UG.hform, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_gramR_mat {m : ℕ} (Y : Matrix (Fin m) (Fin M) (R ⊗[F] E)) (K : Matrix (Fin M) (Fin M) (R ⊗[F] E))
     (hK : K = JR R J) : gramR R σ J Y = Y.map (sigR R σ) * K * Yᵀ := by
@@ -95,7 +95,7 @@ theorem sq_gramR_mat {m : ℕ} (Y : Matrix (Fin m) (Fin M) (R ⊗[F] E)) (K : Ma
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hY : (fun b i => ∑ c, a c b * Y c i) = aᵀ * Y`. Use extensionality with `b i`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[hY, sq_gramR_mat R σ J _ (JR R J) rfl, sq_gramR_mat R σ J Y (JR R J) rfl]`. Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_map, Matrix.mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_gramR_rmul {m : ℕ} (a : Matrix (Fin m) (Fin m) (R ⊗[F] E)) (Y : Matrix (Fin m) (Fin M) (R ⊗[F] E)) :
     gramR R σ J (fun b i => ∑ c, a c b * Y c i) = Formalism.UG.cT (sigR R σ) a * gramR R σ J Y * a := by
@@ -108,31 +108,27 @@ theorem sq_gramR_rmul {m : ℕ} (a : Matrix (Fin m) (Fin m) (R ⊗[F] E)) (Y : M
 end Gen
 
 /- English proof (translation)
-Use `set G := gramE σ J Y with hG`. Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hdet`. Use `set Tm : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := G.map (inclR (Ainf F)) with hTm`. Use `set Ti : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := G⁻¹.map (inclR (Ainf F)) with hTi`. Establish `hTTi : Tm * Ti = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.mul_nonsing_inv G hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTiT : Ti * Tm = 1`. Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.nonsing_inv_mul G hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set c : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := Formalism.UG.cT (sigR (Ainf F) σ) with hc`. Establish `hsig` using `sq_sig_inv (Ainf F) σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ∀ P, c (c P) = P` using `by intro P; ext i j; simp [hc, Formalism.UG.cT, hsig]`. Establish `hcadd : ∀ P Q, c (P + Q) = c P + c Q` using `by intro P Q; ext i j; simp [hc, Formalism.UG.cT]`. Establish `hcsub : ∀ P Q, c (P - Q) = c P - c Q` using `by intro P Q; ext i j; simp [hc, Formalism.UG.cT]`. Establish `hcmul : ∀ P Q, c (P * Q) = c Q * c P` using `fun P Q => Formalism.UG.cT_mul _ P Q`. Establish `hc1 : c 1 = 1` using `Formalism.UG.cT_one _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcT : c Tm = Tm`. Use extensionality with `i j`. Simplify using `only [hc, Formalism.UG.cT, hTm, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← hT i j]`. Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcTi : c Ti * Tm = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont_c : Continuous c` using `by show Continuous fun P : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) => (P.map (sigR (Ainf F) σ))ᵀ`. Conclude with `(continuous_id.matrix_map (continuous_sigRP (Ainf F) σ)).matrix_transpose`. Use `set Bq : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := fun h k => c (Ti * h) * Tm * (Ti * k) with hBq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Use `set Lq : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := fun h => h - c h with hLq`. Establish `hD : ∀ u, Bq Tm u + Bq u Tm + Lq u = u + u`. Introduce `u`. Simplify using `only [hBq, hLq]`. Rewrite using `[hTiT, hc1, Matrix.one_mul, Matrix.mul_one, ← Matrix.mul_assoc Tm Ti u, hTTi, Matrix.one_mul, hcmul Ti u, Matrix.mul_assoc (c u) (c Ti) Tm, hcTi, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Take `⟨g, hgc, hg0, hgev⟩` from `exists_local_solve e he Bq (by intro x x' y; simp only [hBq, Matrix.mul_add, hcadd, Matrix.add_mul]) (by intro x y y'; simp only [hBq, Matrix.mul_add]) (((hcont_c.comp (continuous_const.matrix_mul continuous_fst)).matrix_mul continuous_const).matrix_mul (continuous_const.matrix_m …`. Establish `hy0 : Bq Tm Tm + Lq Tm = Tm`. Simplify using `only [hBq, hLq]`. Rewrite using `[hTiT, hc1, Matrix.one_mul, Matrix.mul_one, hcT, sub_self, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hgc`, `hg0`, `hgev` using `[hy0]`. Use `⟨Subtype.val ⁻¹' {y | Bq (g y) (g y) + Lq (g y) = y}, fun T => Ti * g T.val, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.continuousAt.preimage_mem_nhds hgev`. Use `show Ti * g Tm = 1`. Rewrite using `[hg0, hTiT]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(continuous_const.matrix_mul continuous_id).continuousAt.comp (ContinuousAt.comp_of_eq hgc continuous_subtype_val.continuousAt rfl)`. Introduce `T hT'`. Establish `hT'' : Bq (g T.val) (g T.val) + Lq (g T.val) = T.val` using `hT'`. Use `show gramR (Ainf F) σ J (fun b i => ∑ c, (Ti * g T.val) c b * ratTup (Ainf F) Y c i) = T.val`. Rewrite using `[sq_gramR_rmul (Ainf F) σ J (Ti * g T.val) (ratTup (Ainf F) Y), gramR_ratTup]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h := g T.val`. Establish `hP : c (Bq h h) = Bq h h`. Simplify using `only [hBq]`. Rewrite using `[hcmul (c (Ti * h) * Tm) (Ti * h), hcmul (c (Ti * h)) Tm, hcc, hcT, Matrix.mul_assoc]`. Establish `hTh : c T.val = T.val`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `T.2 i j`. Establish `hLL : c (Lq h) = -(Lq h)`. Simplify using `only [hLq]`. Rewrite using `[hcsub, hcc]`.
-
-Normalize the expressions using the abelian group laws. Establish `h2 : Lq h + Lq h = 0`. Establish `e1` using `congrArg c hT''`. Rewrite `e1` using `[hcadd, hP, hLL, hTh]`. Establish `e2` using `add_left_cancel (hT''.trans e1.symm)`.
-
-Conclude with `eq_neg_iff_add_eq_zero.mp e2`. Establish `h0 : Lq h = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hT''` using `[h0, add_zero]`. Conclude with `hT''`.
+A detailed English derivation is pending.
 -/
 theorem sq_chart_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M m : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -225,9 +221,9 @@ theorem sq_chart_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     exact hT''
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : IsTotallyReal X.B.I.F := X.B.I.cm.totReal`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => star_star x`. Establish `hdet` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, eK, hK⟩` from `sq_coord_tens X.B.I.F X.B.I.E`. Take `⟨k1, e1, h1⟩` from `sq_coord_pi eK hK (Fin (D.R.rS + 1 + D.R.rS))`. Take `⟨N, eM, hM⟩` from `sq_coord_pi e1 h1 (Fin (D.R.rS + 1 + D.R.rS))`. Take `⟨Ω, a, h1', h2', h3', h4'⟩` from `sq_chart_core X.B.I.cm.sig hσ X.B.I.J (tupH (frameOf X u')) hT hdet eM hM`. Conclude with `⟨Ω, a, h1', h2', h3', fun T hT' => h4' T hT'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sqChart_holds : SqChart := by
   intro D X u' ψ hT μinf νinf fibInf hP

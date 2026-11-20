@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict.InterpolationCoefficientsInL2
 
 /- English proof (translation)
-Establish `h` using `(LinearIsometry.mk (U : K →ₗ[ℂ] K) hU).inner_map_map F G`. Express the relevant statement in the definitionally equal form `⟪U F, U G⟫_ℂ = _ at h`. Rewrite `h` using `[hF, inner_smul_left]`. Establish `h1 : c * (starRingEnd ℂ) c = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← h, ← mul_assoc, h1, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma inner_iso_eigen {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] (U : K →L[ℂ] K)
     (hU : ∀ x, ‖U x‖ = ‖x‖) {F : K} {c : ℂ} (hc : ‖c‖ = 1) (hF : U F = c • F) (G : K) :
@@ -30,14 +30,14 @@ lemma inner_iso_eigen {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ 
   rw [← h, ← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma rep_mul_apply {G K : Type*} [Monoid G] [NormedAddCommGroup K] [InnerProductSpace ℂ K] (ρ : G →* (K →L[ℂ] K))
     (a b : G) (F : K) : ρ (a * b) F = ρ a (ρ b F) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_one, ContinuousLinearMap.one_apply, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inner_rep_one {G K : Type*} [Monoid G] [NormedAddCommGroup K] [InnerProductSpace ℂ K] (ρ : G →* (K →L[ℂ] K))
     (F : K) : ⟪F, ρ 1 F⟫_ℂ = ((‖F‖ ^ 2 : ℝ) : ℂ) := by
@@ -49,7 +49,7 @@ section Local
 variable {n : ℕ} {ι : Type} [Fintype ι] {Hm : ι → Mt n} {q : ι → ℕ} {x₀ : ι → Mt n} {w : ι → Fin n → ℤ}
 
 /- English proof (translation)
-Take `⟨P, hP, hf⟩` from `hf`. Conclude with `⟨P, hP, fun u hu => (h u hu).trans (hf u hu)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma holFn_congr {f g : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (h : ∀ u ∈ UG Hm, g u = f u) :
     HolFn Hm q x₀ w g := by
@@ -57,9 +57,9 @@ lemma holFn_congr {f g : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (h : 
   exact ⟨P, hP, fun u hu => (h u hu).trans (hf u hu)⟩
 
 /- English proof (translation)
-Take `⟨P, ⟨hP1, hP2⟩, hf⟩` from `hf`. Use `⟨fun x => c * P x, ⟨hP1.const_mul c, fun x hx b hb => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hP2 x hx b hb]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[hf u hu]`.
+A detailed English derivation is pending.
 -/
 lemma holFn_const_mul {f : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (c : ℂ) :
     HolFn Hm q x₀ w fun u => c * f u := by
@@ -71,9 +71,9 @@ lemma holFn_const_mul {f : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (c 
     rw [hf u hu]
 
 /- English proof (translation)
-Take `⟨P, ⟨hP1, hP2⟩, hf⟩` from `hf`. Take `⟨Q, ⟨hQ1, hQ2⟩, hg⟩` from `hg`. Use `⟨fun x => P x - Q x, ⟨hP1.sub hQ1, fun x hx b hb => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hP2 x hx b hb, hQ2 x hx b hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[hf u hu, hg u hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma holFn_sub {f g : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (hg : HolFn Hm q x₀ w g) :
     HolFn Hm q x₀ w fun u => f u - g u := by
@@ -87,7 +87,7 @@ lemma holFn_sub {f g : (ι → Mt n) → ℂ} (hf : HolFn Hm q x₀ w f) (hg : H
 
 omit [Fintype ι] in
 /- English proof (translation)
-Introduce `τ`. Express the relevant statement in the definitionally equal form `(1 : Mt n)ᴴ * Hm τ * 1 = Hm τ`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma one_mem_UG : (1 : ι → Mt n) ∈ UG Hm := by
   intro τ
@@ -96,9 +96,9 @@ lemma one_mem_UG : (1 : ι → Mt n) ∈ UG Hm := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Introduce `τ`. Establish `h1 : (u τ)ᴴ * Hm τ * u τ = Hm τ` using `hu τ`. Establish `h2 : (u' τ)ᴴ * Hm τ * u' τ = Hm τ` using `hu' τ`. Express the relevant statement in the definitionally equal form `(u τ * u' τ)ᴴ * Hm τ * (u τ * u' τ) = Hm τ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hm τ := by rw [h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mul_mem_UG {u u' : ι → Mt n} (hu : u ∈ UG Hm) (hu' : u' ∈ UG Hm) : u * u' ∈ UG Hm := by
   intro τ
@@ -110,7 +110,7 @@ lemma mul_mem_UG {u u' : ι → Mt n} (hu : u ∈ UG Hm) (hu' : u' ∈ UG Hm) : 
     _ = Hm τ := by rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, Complex.norm_exp_ofReal_mul_I, _root_.one_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_prod_exp (w : Fin n → ℤ) (s : Fin n → ℝ) :
     ‖∏ a, Complex.exp ((s a : ℂ) * Complex.I) ^ w a‖ = 1 := by
@@ -119,7 +119,7 @@ lemma norm_prod_exp (w : Fin n → ℤ) (s : Fin n → ℝ) :
   rw [norm_zpow, Complex.norm_exp_ofReal_mul_I, _root_.one_zpow]
 
 /- English proof (translation)
-Unfold `torCh`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => norm_prod_exp _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_torCh (w : ι → Fin n → ℤ) (s : ι → Fin n → ℝ) : ‖torCh w s‖ = 1 := by
   unfold torCh
@@ -127,7 +127,7 @@ lemma norm_torCh (w : ι → Fin n → ℤ) (s : ι → Fin n → ℝ) : ‖torC
   exact Finset.prod_eq_one fun τ _ => norm_prod_exp _ _
 
 /- English proof (translation)
-Introduce `u hu` and use `sub_eq_zero.1 (GlobalTheory.HolDict.Uniq.eq_zero_of_torus_law n ι Hm q x₀ w hO _ (holFn_sub hf (holFn_const_mul hg c)) (fun u hu s => by beta_reduce; rw [hfl u hu, hgl u hu]; ring) (by beta_reduce; rw [hf1, hg1, mul_one, sub_self]) u hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma eq_const_mul [DecidableEq ι] (hO : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) {f g : (ι → Mt n) → ℂ} (c : ℂ)
     (hf : HolFn Hm q x₀ w f) (hg : HolFn Hm q x₀ w g)
@@ -145,33 +145,27 @@ end GlobalTheory.HolDict.InterpolationCoefficientsInL2
 open GlobalTheory.HolDict.InterpolationCoefficientsInL2 in
 
 /- English proof (translation)
-Introduce `D θ V S M w v hθ hS hW hv μ 𝓕 ρ hfin hreg J χ φ F hφ hF u₀ hu₀`. Use `(GlobalTheory.RealLift.exists_real_lift D θ V hθ).elim fun L hL => ?_` and prove the remaining obligations. Establish `hL1` using `hL.1`. Establish `hLmul` using `hL.2.1`. Establish `hUG` using `hL.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLinv` using `hL.2.2.2.2.1`. Establish `hB` using `(GlobalTheory.HolDict.holFn_coef_extVec D θ V S M w v hθ hS hW hv).1`. Establish `hBt` using `(GlobalTheory.HolDict.holFn_coef_extVec D θ V S M w v hθ hS hW hv).2`. Establish `hO : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ)` using `fun τ => ((GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.2.2 hS).1`. Establish `hU : ∀ τ, IsURepOn (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (M.rep τ)` using `fun τ => (GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htm : ∀ s, torEl (x0Mat M) s ∈ UG (gramAt D V)` using `fun s => by`. Simplify using `using TorusLaw.mul_torEl_mem hO s (one_mem_UG (Hm := gramAt D V))`. Establish `hL0 : L 1 = 1`. Establish `h` using `hLmul 1 one_mem_UG 1 one_mem_UG`. Rewrite `h` using `[mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (a := L 1) (by rw [← h, mul_one])`. Establish `horb : ∀ x, HolFn (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) w fun u => φ (x * L u)`. Introduce `x`. Take `⟨f, hf, hfx⟩` from `hφ.hol x`. Use `holFn_congr hf fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfx _ (hL1 u hu).1]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(hL1 u hu).2 τ`. Establish `htor : ∀ s x, φ (x * L (torEl (x0Mat M) s)) = torCh w s * φ x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s x`. Take `⟨h1, h2⟩` from `GlobalTheory.HolDict.smFn_and_killedFn_of_holFn _ _ _ _ _ _ hO _ (horb x)`. Use `GlobalTheory.HolDict.torus_law_of_killed _ _ _ _ _ _ hO _ h1 h2 1 one_mem_UG s` as an intermediate fact. Simplify `this` using `[hL0]`. Use `hφ.bdd.elim fun C hC => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `(GlobalTheory.HolDict.RepresentativeL2.repr_properties D V μ 𝓕 ρ hfin hreg).2.2`. Establish `hR3` using `hR.1`. Establish `hR4` using `hR.2.1`. Establish `hR5` using `hR.2.2.1`. Establish `hR6` using `hR.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρt : ∀ s, ρ (L (torEl (x0Mat M) s)) F = torCh w s • F`. Introduce `s`. Establish `h1` using `hR4 F φ (L (torEl (x0Mat M) s)) hF`. Establish `h2` using `hR5 F F φ φ (torCh w s - 1) hF hF`. Establish `e1 : (torCh w s - 1) • F + F = torCh w s • F` using `by rw [sub_smul, one_smul, sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (torCh w s - 1) • φ + φ = rTr V (L (torEl (x0Mat M) s)) φ`. Use function extensionality and compare the values at `x`. Simplify using `only [rTr, htor, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e1, e2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hR3 _ _ _ h1 h2`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin.fin`. Establish `hA : HolFn (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) w fun u => ⟪F, ρ (L u) F⟫_ℂ`. Establish `h` using `GlobalTheory.HolDict.holFn_integral _ _ _ _ _ w hO (GA D V) (μ.restrict 𝓕) (fun x u => star (φ x) * φ (x * L u)) (C * C) (fun x => holFn_const_mul (horb x) _) (fun x u _ => by`. Rewrite using `[norm_mul, norm_star]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul (hC _) (hC _) (norm_nonneg _) ((norm_nonneg _).trans (hC x)))`. Use the proof step `(fun u _ => (hR6 F _ φ _ hF (hR4 F φ (L u) hF)).1.aestronglyMeasurable)`. Conclude with `holFn_congr h fun u _ => (hR6 F _ φ _ hF (hR4 F φ (L u) hF)).2`. Establish `key` using `eq_const_mul hO ((‖F‖ ^ 2 : ℝ) : ℂ) hA hB (fun u hu s => ((congrArg (fun g => ⟪F, ρ g F⟫_ℂ) (hLmul _ (htm s) _ hu)).trans (congrArg (fun G => ⟪F, G⟫_ℂ) (rep_mul_apply ρ _ _ F))).trans (inner_iso_eigen _ (hreg.iso _) (norm_torCh w s) (hρt s) _)) (fun u hu s => by`. Establish `a2 : ∀ τ, ⟪(v τ : M.H τ), M.rep τ ((torEl (x0Mat M) s * u) τ) (v τ : M.H τ)⟫_ℂ = (∏ a, Complex.exp ((s τ a : ℂ) * Complex.I) ^ w τ a) * ⟪(v τ : M.H τ), M.rep τ (u τ) (v τ : M.H τ)⟫_ℂ`.
-
-Introduce `τ`. Use `(congrArg (fun T : M.H τ →L[ℂ] M.H τ => ⟪(v τ : M.H τ), T (v τ : M.H τ)⟫_ℂ) ((hU τ).1.2 _ (htm s τ) _ (hu τ))).trans ?_` and prove the remaining obligations. Conclude with `inner_iso_eigen _ ((hU τ).2.1 _ (htm s τ)) (norm_prod_exp _ _) (hBt s τ) _`. Conclude with `(Finset.prod_congr rfl fun τ _ => a2 τ).trans Finset.prod_mul_distrib)`. Use the proof step `((congrArg (fun g => ⟪F, ρ g F⟫_ℂ) hL0).trans (inner_rep_one ρ F))`.
-
-Use the proof step `(Finset.prod_eq_one fun τ _ => by`. Use `(congrArg (fun T : M.H τ →L[ℂ] M.H τ => ⟪(v τ : M.H τ), T (v τ : M.H τ)⟫_ℂ) (hU τ).1.1).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, (hv τ).1]`. Use the proof step `simp)`.
-
-Use `_ (hUG u₀)`. Conclude with `(congrArg (fun g => ⟪F, ρ g F⟫_ℂ) (hLinv u₀ hu₀)).symm.trans key`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HolDict.inner_reg_eq_coef_extremal : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (v : M.Vec), IsInfFam θ → HolShape M → WtIs M w → IsExtVec M v → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))), FinPair V μ 𝓕 → IsReg V μ 𝓕 ρ → ∀ (J : Set (GA D V)) (χ φ : GA D V → ℂ) F, HolForm θ M w J χ φ → Repr V μ 𝓕 F φ → ∀ u ∈ GinfC V, ⟪F, ρ u F⟫_ℂ = ((‖F‖ ^ 2 : ℝ) : ℂ) * ∏ τ, ⟪(v τ : M.H τ), M.rep τ (archM V (θ τ) u) (v τ : M.H τ)⟫_ℂ := by
   classical

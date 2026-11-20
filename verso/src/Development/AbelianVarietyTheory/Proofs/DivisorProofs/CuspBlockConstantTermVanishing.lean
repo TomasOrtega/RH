@@ -31,12 +31,12 @@ variable {m k p : Type} [Fintype m] [Fintype k] [Fintype p]
 def esum (M : Matrix m k ℂ) : ℝ := ∑ i, ∑ j, ‖M i j‖
 
 /- English proof (translation)
-Unfold `esum`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem esum_nonneg (M : Matrix m k ℂ) : 0 ≤ esum M := by unfold esum; positivity
 
 /- English proof (translation)
-Unfold `esum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun j _ => norm_add_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esum_add_le (M N : Matrix m k ℂ) : esum (M + N) ≤ esum M + esum N := by
   unfold esum
@@ -46,7 +46,7 @@ theorem esum_add_le (M N : Matrix m k ℂ) : esum (M + N) ≤ esum M + esum N :=
   exact Finset.sum_le_sum fun j _ => norm_add_le _ _
 
 /- English proof (translation)
-Unfold `esum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun j _ => norm_sub_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esum_sub_le (M N : Matrix m k ℂ) : esum (M - N) ≤ esum M + esum N := by
   unfold esum
@@ -56,9 +56,9 @@ theorem esum_sub_le (M N : Matrix m k ℂ) : esum (M - N) ≤ esum M + esum N :=
   exact Finset.sum_le_sum fun j _ => norm_sub_le _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SpectralLemmaSecond.main`. Consider the case `exact _root_.GlobalTheory.SpectralLemmaSecond.main`. Consider the case `(apply _root_.GlobalTheory.SpectralLemmaSecond.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpectralLemmaSecond.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SpectralLemmaSecond.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpectralLemmaSecond.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem esum_mul_le (M : Matrix m k ℂ) (N : Matrix k p ℂ) : esum (M * N) ≤ esum M * esum N := by
   first
@@ -70,7 +70,7 @@ theorem esum_mul_le (M : Matrix m k ℂ) (N : Matrix k p ℂ) : esum (M * N) ≤
   | (intros; exact _root_.GlobalTheory.SpectralLemmaSecond.main ..)
 
 /- English proof (translation)
-Unfold `esum`. Use `(Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => h i j).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem esum_le_of_entry (M : Matrix m k ℂ) {c : ℝ} (h : ∀ i j, ‖M i j‖ ≤ c) :
     esum M ≤ Fintype.card m * (Fintype.card k * c) := by
@@ -79,7 +79,7 @@ theorem esum_le_of_entry (M : Matrix m k ℂ) {c : ℝ} (h : ∀ i j, ‖M i j�
   simp
 
 /- English proof (translation)
-The claim follows from `esum_le_of_entry _ fun i j => by by_cases h : i = j · subst h; simp · simp [Matrix.one_apply_ne h]`.
+A detailed English derivation is pending.
 -/
 theorem esum_one_le [DecidableEq m] : esum (1 : Matrix m m ℂ) ≤ Fintype.card m * (Fintype.card m * 1) :=
   esum_le_of_entry _ fun i j => by
@@ -88,11 +88,11 @@ theorem esum_one_le [DecidableEq m] : esum (1 : Matrix m m ℂ) ≤ Fintype.card
     · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖Matrix.toEuclideanCLM (n := m) (𝕜 := ℂ) A‖ ≤ _`. Use `ContinuousLinearMap.opNorm_le_bound _ (esum_nonneg A) fun x => ?_` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_eq]`. Use `Real.sqrt_le_iff.2 ⟨mul_nonneg (esum_nonneg A) (norm_nonneg _), ?_⟩` and prove the remaining obligations. Use `(Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => norm_nonneg _).trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `esum`. Use `gcongr`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `: (Matrix.toEuclideanCLM (n` using `m) (𝕜 := ℂ) A x) i = ∑ j, A i j * x j := rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `gcongr`. Conclude with `PiLp.norm_apply_le x j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNorm_le_esum [DecidableEq m] (A : Matrix m m ℂ) : (GlobalTheory.AdelicU.opNorm A : ℝ) ≤ esum A := by
   change ‖Matrix.toEuclideanCLM (n := m) (𝕜 := ℂ) A‖ ≤ _
@@ -124,7 +124,7 @@ section Entries
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Set `g : Cinf E →+ ℂ` to `{ toFun := fun z => f (sInf E z) map_zero' := by simp map_add' := fun a b => by simp }`. Establish `hg : Continuous g` using `hf.comp ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × GlobalTheory.CuspRep.Af E))`. Set `L` to `g.toRealLinearMap hg`. Conclude with `⟨‖L‖, norm_nonneg _, fun z => L.le_opNorm z⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_bound_sInf (f : Ad E →+* ℂ) (hf : Continuous f) :
     ∃ L : ℝ, 0 ≤ L ∧ ∀ z : Cinf E, ‖f (sInf E z)‖ ≤ L * ‖z‖ := by
@@ -138,15 +138,15 @@ theorem exists_bound_sInf (f : Ad E →+* ℂ) (hf : Continuous f) :
   exact ⟨‖L‖, norm_nonneg _, fun z => L.le_opNorm z⟩
 
 /- English proof (translation)
-Take `⟨L, hL0, hL⟩` from `exists_bound_sInf f hf`. Use `⟨1 + L, by linarith, fun y a b => ?_⟩` and prove the remaining obligations. Establish `e : (infGL E d y).1 a b = (1 : Matrix (Fin d) (Fin d) (Ad E)) a b - sInf E ((1 : Matrix (Fin d) (Fin d) (Cinf E)) a b) + sInf E (y.1 a b)` using `rfl`. Establish `h1 : ‖f ((1 : Matrix (Fin d) (Fin d) (Ad E)) a b)‖ ≤ 1`. Distinguish the cases in `h : a = b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `h2 : ‖((1 : Matrix (Fin d) (Fin d) (Cinf E)) a b)‖ ≤ 1`. Distinguish the cases in `h : a = b`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => by simp`. Simplify using `[Matrix.one_apply_ne h]`. Establish `h3 : ‖y.1 a b‖ ≤ ‖toL y.val‖` using `(norm_le_pi_norm (toL y.val a) b).trans (norm_le_pi_norm (toL y.val) a)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ ‖toL (y⁻¹).val‖` using `norm_nonneg _`. Rewrite using `[e, map_add, map_sub]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add h1 ?_)) ?_)` and prove the remaining obligations. Conclude with `(hL _).trans (mul_le_mul_of_nonneg_left h2 hL0)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `(hL _).trans (mul_le_mul_of_nonneg_left h3 hL0)`. Use `_ ≤ (1 + L) * GlobalTheory.CuspRep.height y := by`. Unfold `GlobalTheory.CuspRep.height`. Use polynomial arithmetic with `[norm_nonneg (toL y.val)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_entry_bound (f : Ad E →+* ℂ) (hf : Continuous f) (d : ℕ) :
     ∃ c : ℝ, 1 ≤ c ∧ ∀ (y : GL (Fin d) (Cinf E)) (a b : Fin d), ‖f ((infGL E d y).1 a b)‖ ≤ c * GlobalTheory.CuspRep.height y := by
@@ -179,7 +179,7 @@ theorem exists_entry_bound (f : Ad E →+* ℂ) (hf : Continuous f) (d : ℕ) :
         nlinarith [norm_nonneg (toL y.val)]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CuspRep.height`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem height_inv' {d : ℕ} (y : GL (Fin d) (Cinf E)) : GlobalTheory.CuspRep.height y⁻¹ = GlobalTheory.CuspRep.height y := by
   unfold GlobalTheory.CuspRep.height; rw [inv_inv]; ring
@@ -198,7 +198,7 @@ section Block
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[Matrix.map_add, Matrix.map_mul, Matrix.map_sub, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_one_add_two_rank_perturbation {R T : Type} [CommRing R] [CommRing T] (p : R →+* T) {n d : ℕ}
     (A C : Matrix (Fin n) (Fin d) R) (B D : Matrix (Fin d) (Fin n) R) (P Q : Matrix (Fin d) (Fin d) R) :
@@ -211,11 +211,11 @@ variable {Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E} {j : Ainf F ⊗[F] E �
 include hΦ
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1` using `compFin_eq_zero u (Φ.symm ((infGL E d y).1 a b) - (1 : Matrix (Fin d) (Fin d) _) a b) fun w' _ => by`. Apply the tactic sequence `have h2 : GlobalTheory.CuspRep.pFin E ((infGL E d y).1 a b) = (1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Af E)) a b := gl_entry (pFin_infGL y) a b`. Rewrite using `[map_sub, map_sub, map_sub, fin_symm hΦ, h2, sub_eq_zero]`. Distinguish the cases in `e : a = b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`. Simplify using `only [Matrix.one_apply_ne e, map_zero]`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Use `h1.trans ?_` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`. Simplify using `only [Matrix.one_apply_ne e, map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_compFin_infGL (u : HeightOneSpectrum (𝓞 F)) {d : ℕ} (y : GL (Fin d) (Cinf E)) :
     ((infGL E d y).1.map Φ.symm).map (compFin F E u) = 1 := by
@@ -250,11 +250,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [IsTot
   {h : l + d ≤ r} {ι : GlobalTheory.CuspRep.GA E d →* GAd σ J}
 
 /- English proof (translation)
-Take `⟨Φ, j, -, -, -, hΦ, hM⟩` from `hι`. Establish `hM'` using `hM (infGL E d y)`. Rewrite `hM'` using `[← map_inv]`. Establish `hQ : (((infGL E d y⁻¹).1.map Φ.symm).map ((compFin F E v).comp (sigR (AF F) σ))) = 1`. Establish `e : (compFin F E v).comp (sigR (AF F) σ) = (sigR _ σ).comp (compFin F E v)` using `RingHom.ext (compFin_sigR σ v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, RingHom.coe_comp, ← Matrix.map_map, map_compFin_infGL hΦ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e1 : bc (compFin F E v) (matHom (AF F) σ J (ι (infGL E d y))) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(matHom (AF F) σ J (ι (infGL E d y))).1.map (compFin F E v) = 1`. Rewrite using `[hM', map_formula _ _ _ _ _ _ _ _ hQ, map_compFin_infGL hΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1]`. Conclude with `htOf_eq_one.2 ⟨normFin_one_le F v, by rw [inv_one]; exact normFin_one_le F v⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htFin_blockEmb_infGL (hι : IsBlockEmb σ J Xf Yf h ι) (v : HeightOneSpectrum (𝓞 F))
     (y : GL (Fin d) (Cinf E)) : htFin F v (bc (compFin F E v) (matHom (AF F) σ J (ι (infGL E d y)))) = 1 := by
@@ -288,23 +288,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [IsTot
   {h : l + d ≤ r} {ι : GlobalTheory.CuspRep.GA E d →* GAd σ J}
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨Φ, j, -, hΦc, -, -, hM⟩` from `hι`. Use `set θ := (infEmb τ).comp (compInf F E w) with hθ`. Establish `hθc : Continuous θ` using `GlobalTheory.Grow.continuous_infEmb_compInf F w τ`. Take `⟨c1, hc1, hb1⟩` from `exists_entry_bound (θ.comp Φ.symm.toRingHom) (hθc.comp hΦc) d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c2, hc2, hb2⟩` from `exists_entry_bound (θ.comp ((sigR (AF F) σ).comp Φ.symm.toRingHom)) (hθc.comp ((GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ).comp hΦc)) d`. Use `set A := (adMat F (blkCols h Xf)).map θ`. Use `set B := (adMat F (cT (σ : E →+* E) (blkCols h Yf) * J)).map θ`. Use `set C := (adMat F (blkCols h Yf)).map θ`. Use `set D := (adMat F (cT (σ : E →+* E) (blkCols h Xf) * J)).map θ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a1 : ℝ := d * (d * c1) + d * (d * 1)`. Use `set a2 : ℝ := d * (d * c2) + d * (d * 1)`. Establish `ha1 : 0 ≤ a1` using `add_nonneg (mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (by linarith))) (by positivity)`. Establish `ha2 : 0 ≤ a2` using `add_nonneg (mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (by linarith))) (by positivity)`. Use `⟨n * (n * 1) + esum A * a1 * esum B + esum C * a2 * esum D, add_nonneg (add_nonneg (by positivity) (mul_nonneg (mul_nonneg (esum_nonneg A) ha1) (esum_nonneg B))) (mul_nonneg (mul_nonneg (esum_nonneg C) ha2) (esum_nonneg D)), fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set hh := GlobalTheory.CuspRep.height y`. Establish `h1 : 1 ≤ hh` using `GlobalTheory.CuspRep.one_le_height y`. Use `set P' := ((infGL E d y).1.map Φ.symm).map θ`. Use `set Q' := (cT (sigR (AF F) σ) (((infGL E d y)⁻¹).1.map Φ.symm)).map θ`. Establish `eM : (matHom (AF F) σ J (ι (infGL E d y))).1.map θ = 1 + A * (P' - 1) * B + C * (Q' - 1) * D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, map_one_add_two_rank_perturbation]`. Establish `hP : ∀ a b, ‖P' a b‖ ≤ c1 * hh` using `fun a b => hb1 y a b`. Establish `hQ : ∀ a b, ‖Q' a b‖ ≤ c2 * hh` using `fun a b => by`. Use `hb2 y⁻¹ b a` as an intermediate fact. Rewrite `this` using `[map_inv, height_inv']`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e1d : esum (1 : Matrix (Fin d) (Fin d) ℂ) ≤ d * (d * 1)` using `by simpa using esum_one_le (m := Fin d)`. Establish `e1n : esum (1 : Matrix (Fin n) (Fin n) ℂ) ≤ n * (n * 1)` using `by simpa using esum_one_le (m := Fin n)`. Apply the tactic sequence `have eP : esum P' ≤ d * (d * (c1 * hh)) := by simpa using esum_le_of_entry P' hP`. Apply the tactic sequence `have eQ : esum Q' ≤ d * (d * (c2 * hh)) := by simpa using esum_le_of_entry Q' hQ`.
-
-Establish `hd1 : (d : ℝ) * (d * 1) ≤ d * (d * 1) * hh` using `le_mul_of_one_le_right (by positivity) h1`. Establish `k1 : esum P' + esum (1 : Matrix (Fin d) (Fin d) ℂ) ≤ a1 * hh`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : esum Q' + esum (1 : Matrix (Fin d) (Fin d) ℂ) ≤ a2 * hh`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `t1 : esum (A * (P' - 1) * B) ≤ esum A * (a1 * hh) * esum B` using `(esum_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((esum_mul_le _ _).trans (mul_le_mul_of_nonneg_left ((esum_sub_le _ _).trans k1) (esum_nonneg A))) (esum_nonneg B))`. Establish `t2 : esum (C * (Q' - 1) * D) ≤ esum C * (a2 * hh) * esum D` using `(esum_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((esum_mul_le _ _).trans (mul_le_mul_of_nonneg_left ((esum_sub_le _ _).trans k2) (esum_nonneg C))) (esum_nonneg D))`. Establish `t0 : esum (1 : Matrix (Fin n) (Fin n) ℂ) ≤ n * (n * 1) * hh` using `e1n.trans (le_mul_of_one_le_right (by positivity) h1)`. Establish `s1` using `esum_add_le (1 : Matrix (Fin n) (Fin n) ℂ) (A * (P' - 1) * B)`. Establish `s2` using `esum_add_le (1 + A * (P' - 1) * B) (C * (Q' - 1) * D)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_opNorm_blockEmb_infGL_le (hι : IsBlockEmb σ J Xf Yf h ι) (w : InfinitePlace F) (τ : EmbOver E w) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ y : GL (Fin d) (Cinf E),
@@ -385,15 +379,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [IsTot
   {h : l + d ≤ r} {ι : GlobalTheory.CuspRep.GA E d →* GAd σ J}
 
 /- English proof (translation)
-Use `choose K hK0 hK using exists_opNorm_blockEmb_infGL_le hι w`. Establish `hS : 0 ≤ ∑ τ, K τ` using `Finset.sum_nonneg fun τ _ => hK0 τ`. Use `⟨1 + ∑ τ, K τ, by linarith, fun y => ?_⟩` and prove the remaining obligations. Establish `hh1` using `GlobalTheory.CuspRep.one_le_height y`. Establish `hpos : 0 ≤ (1 + ∑ τ, K τ) * GlobalTheory.CuspRep.height y` using `by nlinarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ τ, K τ ≤ 1 + ∑ τ, K τ` using `fun τ => (Finset.single_le_sum (f := K) (fun τ _ => hK0 τ) (Finset.mem_univ τ)).trans (by linarith)`. Establish `key : ∀ y' : GL (Fin d) (Cinf E), GlobalTheory.CuspRep.height y' = GlobalTheory.CuspRep.height y → normInf F w ((bc (compInf F E w) (matHom (AF F) σ J (ι (infGL E d y')))).1) ≤ Real.toNNReal ((1 + ∑ τ, K τ) * GlobalTheory.CuspRep.height y)`. Introduce `y' hy'`. Use `(normInf_le_iff F w).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[← NNReal.coe_le_coe, Real.coe_toNNReal _ hpos]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(opNorm (((matHom (AF F) σ J (ι (infGL E d y'))).1.map (compInf F E w)).map (infEmb τ)) : ℝ) ≤ _`. Rewrite using `[Matrix.map_map]`. Use `(hK τ y').trans ?_` and prove the remaining obligations. Rewrite using `[hy']`. Conclude with `mul_le_mul_of_nonneg_right (hs τ) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (bc (compInf F E w) (matHom (AF F) σ J (ι (infGL E d y))))⁻¹ = bc (compInf F E w) (matHom (AF F) σ J (ι (infGL E d y⁻¹)))` using `by simp only [map_inv]`. Establish `h1 : (1 : ℝ≥0) ≤ Real.toNNReal ((1 + ∑ τ, K τ) * GlobalTheory.CuspRep.height y)`. Rewrite using `[← NNReal.coe_le_coe, Real.coe_toNNReal _ hpos, NNReal.coe_one]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hle : htInf F w (bc (compInf F E w) (matHom (AF F) σ J (ι (infGL E d y)))) ≤ Real.toNNReal ((1 + ∑ τ, K τ) * GlobalTheory.CuspRep.height y)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `max_le h1 (max_le (key y rfl) ?_)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `key y⁻¹ (height_inv' y)`. Conclude with `(NNReal.coe_le_coe.2 hle).trans (le_of_eq (Real.coe_toNNReal _ hpos))`.
+A detailed English derivation is pending.
 -/
 theorem exists_htInf_blockEmb_infGL_le (hι : IsBlockEmb σ J Xf Yf h ι) (w : InfinitePlace F) :
     ∃ c : ℝ, 1 ≤ c ∧ ∀ y : GL (Fin d) (Cinf E),
@@ -428,9 +422,9 @@ theorem exists_htInf_blockEmb_infGL_le (hι : IsBlockEmb σ J Xf Yf h ι) (w : I
   exact (NNReal.coe_le_coe.2 hle).trans (le_of_eq (Real.coe_toNNReal _ hpos))
 
 /- English proof (translation)
-Use `choose c hc1 hc using exists_htInf_blockEmb_infGL_le hι`. Use `⟨∏ w, c w, Finset.prod_nonneg fun w _ => by linarith [hc1 w], fun y => ?_⟩` and prove the remaining obligations. Establish `e : height σ J (ι (infGL E d y)) = ∏ w, htInf F w (bc (compInf F E w) (matHom (AF F) σ J (ι (infGL E d y))))`. Unfold `GlobalTheory.AdelicU.height heightGL`. Simplify using `only [htFin_blockEmb_infGL hι, finprod_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, NNReal.coe_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_height_blockEmb_infGL_le (hι : IsBlockEmb σ J Xf Yf h ι) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ y : GL (Fin d) (Cinf E),
@@ -455,15 +449,13 @@ end GlobalTheory.BlockForms.CuspGrowth
 open GlobalTheory.BlockForms.CuspGrowth in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ _ n J _ r Xf Yf _ K _ S l d h ι hι _ _ _ _ ψ hψ g₀ _ g`. Take `⟨N, hN⟩` from `hψ.1.growth`. Take `⟨C0, hC0⟩` from `hN [] (by simp)`. Take `⟨K', hK'0, hK'⟩` from `exists_height_blockEmb_infGL_le hι`. Use `set a : ℝ := (height σ J (ι g) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set b : ℝ := (height σ J g₀ : ℝ)`. Establish `ha : 0 ≤ a` using `NNReal.coe_nonneg _`. Establish `hb : 0 ≤ b` using `NNReal.coe_nonneg _`. Use `⟨max C0 0 * (a * K' * b) ^ N, Fintype.card (InfinitePlace F) * N, fun y => ?_⟩` and prove the remaining obligations. Use `set c := Fintype.card (InfinitePlace F)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ι (g * GlobalTheory.CuspRep.infGL E d y) * g₀ = ι g * ι (GlobalTheory.CuspRep.infGL E d y) * g₀` using `by rw [map_mul]`. Establish `hH : (height σ J (ι (g * GlobalTheory.CuspRep.infGL E d y) * g₀) : ℝ) ≤ a * (K' * GlobalTheory.CuspRep.height y ^ c) * b`. Rewrite using `[hx]`. Establish `e1 : (height σ J (ι g * ι (GlobalTheory.CuspRep.infGL E d y) * g₀) : ℝ) ≤ height σ J (ι g * ι (GlobalTheory.CuspRep.infGL E d y)) * b`. Conclude with `height_mul_le σ J (ι g * ι (GlobalTheory.CuspRep.infGL E d y)) g₀` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (height σ J (ι g * ι (GlobalTheory.CuspRep.infGL E d y)) : ℝ) ≤ a * height σ J (ι (GlobalTheory.CuspRep.infGL E d y))`. Conclude with `height_mul_le σ J (ι g) (ι (GlobalTheory.CuspRep.infGL E d y))` after adjusting the coercions. Conclude with `e1.trans (mul_le_mul_of_nonneg_right (e2.trans (mul_le_mul_of_nonneg_left (hK' y) ha)) hb)`. Establish `h0` using `hC0 (ι (g * GlobalTheory.CuspRep.infGL E d y) * g₀)`. Simplify using `only [List.foldr_nil] at h0`.
-
-Establish `hHn : 0 ≤ (height σ J (ι (g * GlobalTheory.CuspRep.infGL E d y) * g₀) : ℝ)` using `NNReal.coe_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BlockForms.growth_comp_blockEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

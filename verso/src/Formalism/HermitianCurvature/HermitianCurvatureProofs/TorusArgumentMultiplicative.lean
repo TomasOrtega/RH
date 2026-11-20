@@ -6,11 +6,11 @@ open scoped ComplexConjugate InnerProductSpace ComplexOrder
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `a b φ ψ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `C7.taS`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `C7.taS`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[C7.taS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torus_action_group : C7.TaGroup := by
   intro a b φ ψ
@@ -20,9 +20,9 @@ theorem torus_action_group : C7.TaGroup := by
   · simp [C7.taS]
 
 /- English proof (translation)
-Introduce `a b Dr ζ hDr hζ`. Establish `h` using `Complex.arg_mul_coe_angle hDr hζ`. Rewrite `h` using `[← Real.Angle.coe_add, Real.Angle.angle_eq_iff_two_pi_dvd_sub]`. Take `⟨m, hm⟩` from `h`. Establish `e : Complex.arg (Dr * ζ) = Complex.arg Dr + Complex.arg ζ + 2 * Real.pi * m` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `C7.taS`. Rewrite using `[← Complex.exp_add, e, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-(m * (a + b)), ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem torus_argument_multiplicative : C7.TaArgMul := by
   intro a b Dr ζ hDr hζ
@@ -36,11 +36,11 @@ theorem torus_argument_multiplicative : C7.TaArgMul := by
   push_cast; ring
 
 /- English proof (translation)
-Introduce `E E' _ _ _ _ _ _ U U' J₁ J₂`. Establish `hadj : ∀ J : E' →L[ℂ] E, ContinuousLinearMap.adjoint (C7.frameConj U U' J) = (U'.symm.toContinuousLinearEquiv : E' →L[ℂ] E') ∘L ContinuousLinearMap.adjoint J ∘L (U.toContinuousLinearEquiv : E →L[ℂ] E)`. Introduce `J`. Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Simplify using `only [C7.frameConj, ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv]`. Rewrite using `[← U'.inner_map_map, LinearIsometryEquiv.apply_symm_apply, ContinuousLinearMap.adjoint_inner_left, ← U.inner_map_map (x := x), LinearIsometryEquiv.apply_symm_apply]`. Establish `e : ((ContinuousLinearMap.adjoint (C7.frameConj U U' J₂) ∘L C7.frameConj U U' J₁ : E' →L[ℂ] E') : E' →ₗ[ℂ] E') = (U'.symm.toLinearEquiv).conj ((ContinuousLinearMap.adjoint J₂ ∘L J₁ : E' →L[ℂ] E') : E' →ₗ[ℂ] E')`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[hadj]`. Simplify using `[C7.frameConj, LinearEquiv.conj_apply]`. Rewrite using `[e, LinearMap.trace_conj']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hilbertSchmidt_frame : C7.HSFrame := by
   intro E E' _ _ _ _ _ _ U U' J₁ J₂
@@ -64,14 +64,14 @@ theorem hilbertSchmidt_frame : C7.HSFrame := by
   rw [e, LinearMap.trace_conj']
 
 /- English proof (translation)
-Introduce `ι _ _ A C hA hC`. Conclude with `hA.hadamard hC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schur_product_posSemidef : C7.SchurProductPSD := by
   intro ι _ _ A C hA hC
   exact hA.hadamard hC
 
 /- English proof (translation)
-Introduce `ι _ _ H _ _ V K K' hA`. Establish `hG : ((Matrix.gram ℂ V)ᵀ).PosSemidef` using `(Matrix.posSemidef_gram (𝕜 := ℂ) V).transpose`. Establish `hM` using `hA.hadamard hG`. Use `hM.dotProduct_mulVec_nonneg (fun _ => (1 : ℂ))` as an intermediate fact. Simplify `this` using `[dotProduct, mulVec, Matrix.hadamard_apply, Matrix.gram_apply, Matrix.transpose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem c7_form_mono : C7.FormMono := by
   intro ι _ _ H _ _ V K K' hA
@@ -81,22 +81,22 @@ theorem c7_form_mono : C7.FormMono := by
   simpa [dotProduct, mulVec, Matrix.hadamard_apply, Matrix.gram_apply, Matrix.transpose_apply] using this
 
 /- English proof (translation)
-Introduce `_` and use `c7_form_mono`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem c7_form_mono_of_schur : C7.FormMonoOfSchur := fun _ => c7_form_mono
 
 /- English proof (translation)
-Introduce `ι _ _ S _ K hK`. Set `P : Matrix S ι ℂ` to `Matrix.of fun s w => if (s : ι) = w then 1 else 0`. Use `hK.conjTranspose_mul_mul_same P using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w w'`. Simplify using `only [P, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hw : w ∈ S <;> by_cases hw' : w' ∈ S`. Rewrite using `[dif_pos ⟨hw, hw'⟩]`. Rewrite using `[Finset.sum_eq_single ⟨w', hw'⟩]`. Rewrite using `[Finset.sum_eq_single ⟨w, hw⟩]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `s _ hs`. Establish `: (s : ι) ≠ w` using `fun h => hs (Subtype.ext h)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Introduce `s _ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (s : ι) ≠ w'` using `fun h => hs (Subtype.ext h)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Use `all_goals`. Rewrite using `[dif_neg (by tauto)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s _`. Establish `: (s : ι) ≠ w'` using `fun h => hw' (h ▸ s.2)`. Simplify using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∀ t : S, (t : ι) ≠ w` using `fun t h => hw (h ▸ t.2)`. Simplify using `[this]`. Establish `: ∀ t : S, (t : ι) ≠ w` using `fun t h => hw (h ▸ t.2)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extend_by_zero_posSemidef : C7.ExtendZeroPSD := by
   intro ι _ _ S _ K hK
@@ -124,15 +124,15 @@ theorem extend_by_zero_posSemidef : C7.ExtendZeroPSD := by
   · have : ∀ t : S, (t : ι) ≠ w := fun t h => hw (h ▸ t.2); simp [this]
 
 /- English proof (translation)
-Introduce `K _ E E' R _ _ _ _ _ _ _ _ _ π π' ρ hπ hπ' _ hno J hJ φ hφ v x`. Establish `unit : ∀ {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] (σ : K →* (A →L[ℂ] A)), C7.IsUnitaryRep σ → ∀ k a b, ⟪σ k a, b⟫_ℂ = ⟪a, σ k⁻¹ b⟫_ℂ`. Introduce `A _ _ σ hσ k a b`. Establish `e : σ k (σ k⁻¹ b) = b`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← e]`. Conclude with `hσ k a (σ k⁻¹ b)`. Set `ψ : R →L[ℂ] E'` to `ContinuousLinearMap.adjoint J ∘L φ`. Establish `hψ : C7.Intertw ρ π' ψ`. Introduce `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `y`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `z`. Simplify using `only [ψ, ContinuousLinearMap.comp_apply]`. Rewrite using `[unit π' hπ', ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `DFunLike.congr_fun (hJ k⁻¹) z`. Establish `h2` using `DFunLike.congr_fun (hφ k) y`. Simplify using `only [ContinuousLinearMap.comp_apply] at h1 h2`. Rewrite using `[← h1, ← unit π hπ, h2]`. Establish `h0` using `hno ψ hψ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ⟪φ x, J v⟫_ℂ = ⟪ψ x, v⟫_ℂ`. Simplify using `only [ψ, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_left]`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem schur_isotypic_decomposition : C7.SchurIsotypic := by
   intro K _ E E' R _ _ _ _ _ _ _ _ _ π π' ρ hπ hπ' _ hno J hJ φ hφ v x

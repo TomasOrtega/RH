@@ -27,11 +27,11 @@ noncomputable section
 namespace GlobalTheory.PlaneComplement
 
 /- English proof (translation)
-Introduce `D S Λ q hΛ hneg hq h3`. Take `⟨x, hx0, hxx⟩` from `GlobalTheory.T.exists_isotropic_hermitianSpace_of_negativeIndex D S (q + 1) hneg (by omega) (by omega) h3`. Take `⟨y, hyy, hxy, hsp⟩` from `GlobalTheory.T.exists_hyperbolicPartner_splitting_selfDualLattice D S Λ x hΛ hx0 hxx`. Take `⟨S₁, Λ₁, ι, hPS, hSD, hs⟩` from `GlobalTheory.T.exists_selfDual_orthogonalComplement_hyperbolicPlane D S Λ x y (fun _ => (S.rank - 2 - q, q)) hΛ hxx hyy hxy hsp`. Establish `hrk : S.rank = S₁.rank + 2` using `hPS.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsig` using `GlobalTheory.T.hyperbolicPlaneComplement_negativeIndex_pred D S S₁ ι x y q hrk hPS.2.1 hxx hyy hxy (fun u => ⟨(hPS.2.2.2.2.2.1 u).1, (hPS.2.2.2.2.2.1 u).2⟩) hneg`. Establish `e : S.rank - 2 - q = S₁.rank - q` using `by omega`. Use `⟨S₁, Λ₁, ι, x, y, hPS, fun τ => ?_, hSD, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Simplify using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hsig τ`. Conclude with `hsig _`.
+A detailed English derivation is pending.
 -/
 theorem plane_split_complement : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (q : ℕ),
     IsSelfDualC S Λ → NegIdx S (q + 1) → q + 2 ≤ S.rank → 3 ≤ S.rank →

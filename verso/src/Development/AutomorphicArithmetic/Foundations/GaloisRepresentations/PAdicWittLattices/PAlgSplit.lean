@@ -13,14 +13,14 @@ private noncomputable def sec {A A' C J : Type} [CommRing A] [CommRing A'] [Comm
     Algebra.TensorProduct.lift (AlgHom.id C C) (τ j) fun _ _ => Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[sec]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma sec_tmul {A A' C J : Type} [CommRing A] [CommRing A'] [CommRing C] [Algebra A A'] [Algebra A C]
     (τ : J → (A' →ₐ[A] C)) (c : C) (b : A') (j : J) : sec τ (c ⊗ₜ b) j = c * τ j b := by
   simp [sec]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk54.tensor_hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 private lemma tensor_hom_ext {A A' C Ω : Type} [CommRing A] [CommRing A'] [CommRing C] [Algebra A A'] [Algebra A C]
     [CommRing Ω] {u v : C ⊗[A] A' →+* Ω} (h₁ : ∀ c : C, u (c ⊗ₜ 1) = v (c ⊗ₜ 1))
@@ -28,14 +28,14 @@ private lemma tensor_hom_ext {A A' C Ω : Type} [CommRing A] [CommRing A'] [Comm
   _root_.UpperTheory.Reformulated.B.Qk54.tensor_hom_ext h₁ h₂
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsEvaluation.exists_eval f`.
+A detailed English derivation is pending.
 -/
 private lemma exists_eval {C Ω J : Type} [CommRing C] [Field Ω] [Fintype J] (f : (J → C) →+* Ω) :
     ∃ j, ∀ v : J → C, f v = f (algebraMap C (J → C) (v j)) :=
   _root_.UpperTheory.Reformulated.B.ExistsEvaluation.exists_eval f
 
 /- English proof (translation)
-Use `letI : Algebra D E := (φ : D →+* E).toAlgebra`. Use `haveI : IsScalarTower C D E := IsScalarTower.of_algebraMap_eq' (φ.comp_algebraMap).symm`. Use `haveI : Algebra.Etale D E := Algebra.Etale.of_restrictScalars C D E`. Conclude with `hiso D E pts`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private lemma bij_of_pts (hiso : AlgIsoPts) {C D E : Type} [CommRing C] [CommRing D] [CommRing E] [Algebra C D]
     [Algebra C E] [Algebra.Etale C D] [Algebra.Etale C E] (φ : D →ₐ[C] E)
@@ -50,23 +50,23 @@ end UpperTheory.Gal.G3.AlgebraSplitting
 
 open UpperTheory.Gal.G3.AlgebraSplitting in
 /- English proof (translation)
-Introduce `hiso A A' C _ _ _ _ _ _ J _ τ h`. Use `⟨AlgEquiv.ofBijective (sec τ) (bij_of_pts hiso (sec τ) ?_), fun b j => ?_⟩` and prove the remaining obligations. Use `swap`. Simplify using `[sec_tmul]`. Introduce `Ω _ _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `x₀ : C →+* Ω` to `x.comp (Algebra.TensorProduct.includeLeftRingHom)`. Set `y₀ : A' →+* Ω` to `x.comp (Algebra.TensorProduct.includeRight : A' →ₐ[A] C ⊗[A] A').toRingHom`. Establish `hx₀ : ∀ c, x₀ c = x (c ⊗ₜ 1)` using `fun _ => rfl`. Establish `hy₀ : ∀ b, y₀ b = x (1 ⊗ₜ b)` using `fun _ => rfl`. Establish `compat : y₀.comp (algebraMap A A') = x₀.comp (algebraMap A C)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, hx₀, hy₀]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Take `⟨j, hj, huniq⟩` from `h Ω x₀ y₀ compat`. Establish `hτ : ∀ b, x₀ (τ j b) = y₀ b` using `fun b => congrArg (fun f : A' →+* Ω => f b) hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x₀.comp (Pi.evalRingHom (fun _ => C) j), ?_, ?_⟩` and prove the remaining obligations. Apply `tensor_hom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[sec_tmul, hx₀]`. Introduce `b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hτ b` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, Pi.evalRingHom_apply, sec_tmul, one_mul]`. Rewrite using `[this, hy₀]`. Introduce `y' hy'`. Establish `hy'd : ∀ d, y' (sec τ d) = x d` using `fun d => congrArg (fun f : C ⊗[A] A' →+* Ω => f d) hy'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j', hj'⟩` from `exists_eval y'`. Establish `hal : ∀ c : C, y' (algebraMap C (J → C) c) = x₀ c`. Introduce `c`. Rewrite using `[hx₀, ← hy'd]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[sec_tmul]`. Establish `hy'e : ∀ v : J → C, y' v = x₀ (v j')` using `fun v => by rw [hj', hal]`. Establish `hjj : j' = j`. Apply `huniq` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Use `hy'e (sec τ (1 ⊗ₜ b))` as an intermediate fact. Rewrite `this` using `[hy'd, sec_tmul, one_mul]`. Simplify `this.symm` using `[hy₀]`. Substitute `hjj` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `[hy'e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pAlgSplit :
     AlgIsoPts → AlgSplit := by

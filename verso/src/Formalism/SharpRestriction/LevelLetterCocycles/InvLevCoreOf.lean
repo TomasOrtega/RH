@@ -43,35 +43,31 @@ structure LevEv (W : LocWach PD LL O v n) (a : ZMod n) (s : ℕ) where
 attribute [instance] LevEv.fF LevEv.algOF
 
 /- English proof (translation)
-Introduce `_hA _hp a s T e hsT f hf hγ`. Take `⟨u, hu, hfu⟩` from `hf`. Take `⟨κ, v, hv, hfv⟩` from `hγ`. Set `L` to `hL a s`. Use `letI : Field L.F := L.fF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra O L.F := L.algOF`. Use `set D : LetA O n := ∏ t ∈ T, ps W t ^ e t with hDdef`. Use `set U : LetA O n := letE a * 1 * u with hUdef`. Establish `hDΔ : D ∈ W.AΔ` using `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (RatW.ps_mem W hπ t) _`. Establish `hUΔ : U ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) (W.AΔ.one_mem)) hu`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUe : letE a * U = U` using `by rw [hUdef, ← mul_assoc, ← mul_assoc, RatW.letE_idem]`. Establish `hp0 : ((PD.p : ℕ) : L.F) ≠ 0` using `L.hp`. Establish `hγE' : algebraMap (LetA O n) W.EE (W.γA W.gam D) * W.γE W.gam f = algebraMap (LetA O n) W.EE (W.γA W.gam U)`. Establish `h1 : W.γE W.gam (algebraMap (LetA O n) W.EE D * f) = W.γE W.gam (algebraMap (LetA O n) W.EE U)`. Rewrite using `[hfu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, W.γE_ext, W.γE_ext]`. Conclude with `h1`. Establish `hA : ((PD.p : ℕ) : LetA O n) ^ κ * (D * W.γA W.gam U - W.γA W.gam D * U) = W.γA W.gam D * (letE a * ps W s * v)`. Apply `W.EE_inj` to reduce the goal to its premises. Simplify using `only [lE] at hfv`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_sub, map_pow, map_natCast] at hfv ⊢`. Take the linear combination `(-(((PD.p : ℕ) : W.EE) ^ κ * algebraMap (LetA O n) W.EE D)) * hγE' + (((PD.p : ℕ) : W.EE) ^ κ * algebraMap (LetA O n) W.EE (W.γA W.gam D)) * hfu + algebraMap (LetA O n) W.EE (W.γA W.gam D) * hfv`. Establish `hevD : ∀ ζ, L.ev ζ D ≠ 0` using `fun ζ => by`. Rewrite using `[hDdef, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun t ht => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (L.ev_pt t (fun h => hsT (h ▸ ht)) ζ)`. Establish `hevA : ∀ ζ, L.ev ζ D * L.ev ζ (W.γA W.gam U) = L.ev ζ (W.γA W.gam D) * L.ev ζ U` using `fun ζ => by`. Establish `h1` using `congrArg (L.ev ζ) hA`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast, L.ev_ps, mul_zero, zero_mul] at h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ hp0))`. Set `h : Rs L.F PD.p s → L.F` to `fun ζ => L.ev ζ U / L.ev ζ D`. Establish `hinvΔ : ∀ δ ∈ W.DelF, ∀ ζ, h (powR L.F PD.p s (L.σ δ) ζ) = h ζ` using `fun δ hδ ζ => by`. Simplify using `only [h]`. Rewrite using `[← L.ev_γ, ← L.ev_γ, hUΔ δ hδ, hDΔ δ hδ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hinvγ : ∀ ζ, h (powR L.F PD.p s (L.σ W.gam) ζ) = h ζ` using `fun ζ => by`. Simplify using `only [h]`. Rewrite using `[← L.ev_γ, ← L.ev_γ]`. Establish `hγD : L.ev ζ (W.γA W.gam D) ≠ 0` using `by rw [L.ev_γ]; exact hevD _`. Rewrite using `[div_eq_div_iff hγD (hevD ζ)]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take the linear combination `hevA ζ`. Take `⟨c, hc⟩` from `hPC L.F PD.p s _ L.gen h (by`. Introduce and unpack `x (rfl | ⟨δ, hδ, rfl⟩)`. Use function extensionality and compare the values at `ζ`. Rewrite using `[precomp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hinvγ ζ`. Use function extensionality and compare the values at `ζ`. Rewrite using `[precomp_apply]`. Conclude with `hinvΔ δ hδ ζ)`. Establish `hUc : ∀ ζ, L.ev ζ U = c * L.ev ζ D` using `fun ζ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hc ζ` as an intermediate fact. Simplify using `only [h] at this`. Rewrite `this` using `[div_eq_iff (hevD ζ)]`. Conclude with `this`. Take `⟨κ1, x, hx⟩` from `L.rat U hUΔ D hDΔ hevD c hUc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `set g : LetA O n := ((PD.p : ℕ) : LetA O n) ^ κ1 * U - algebraMap O (LetA O n) x * D with hgdef`. Establish `hgΔ : g ∈ W.AΔ` using `W.AΔ.sub_mem (W.AΔ.mul_mem (W.AΔ.pow_mem (W.AΔ.natCast_mem _) _) hUΔ) (W.AΔ.mul_mem (W.AΔ.algebraMap_mem x) hDΔ)`. Establish `hg0 : ∀ ζ, L.ev ζ g = 0` using `fun ζ => by`. Rewrite using `[hgdef, map_sub, map_mul (L.ev ζ) (((PD.p : ℕ) : LetA O n) ^ κ1) U, map_mul (L.ev ζ) (algebraMap O (LetA O n) x) D, map_pow, map_natCast, L.ev_O, hUc ζ, ← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ2, w, hw, hgw⟩` from `L.div g hgΔ hg0`. Use `⟨κ1 + κ2, ((PD.p : ℕ) : O) ^ κ2 * x, w, hw, ?_⟩` and prove the remaining obligations. Establish `hlw : letE a * ps W s * w = ps W s * w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hlw, ← hgw]`.
-
-Establish `hO : algebraMap O W.EE (((PD.p : ℕ) : O) ^ κ2 * x) = algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ κ2 * x))` using `IsScalarTower.algebraMap_apply O (LetA O n) W.EE _`. Rewrite using `[hO]`. Simplify using `only [lE, hgdef]`. Establish `hUe' : letE a * (((PD.p : ℕ) : LetA O n) ^ κ1 * U - algebraMap O (LetA O n) x * D) = ((PD.p : ℕ) : LetA O n) ^ κ1 * U - letE a * algebraMap O (LetA O n) x * D`. Rewrite using `[mul_sub, mul_left_comm, hUe, mul_assoc]`.
-
-Rewrite using `[hUe']`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast] at hfu ⊢`. Take the linear combination `(((PD.p : ℕ) : W.EE) ^ (κ1 + κ2)) * hfu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem invLevCore_of (W : LocWach PD LL O v n) (hπ : W.π₀ ∈ W.AΔ) (hL : ∀ a s, LevEv W a s)
     (hPC : InvCut.PrecompConst) : CutU.InvLevCore W := by

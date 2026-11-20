@@ -69,11 +69,11 @@ def KeyFam (N : ℕ → ℕ) : Prop :=
   ∃ κ : Rule, Homog N κ ∧ Funct κ ∧ UnitSp κ ∧ ThetaOne κ ∧ ArchNorm N κ ∧ FamUnit κ ∧ FamHomog N κ ∧ ValUnit κ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hH, hF, hU, hT, hA⟩`. Use `⟨κ, ?_, hF, hU, hT, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂`. Simplify `hH K P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂` using `only [mul_one, Nat.mul_one]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Simplify `hA x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇` using `only [mul_one, Nat.mul_one]`. Introduce and unpack `⟨κ, hH, hF, hU, hT, hA⟩`. Use `⟨κ, ?_, hF, hU, hT, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hH K P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂` using `only [mul_one, Nat.mul_one]`. Introduce `x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Simplify `hA x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇` using `only [mul_one, Nat.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem keyFormula_iff :
     KeyFormula ↔ ∃ κ : Rule, Homog (fun _ => 1) κ ∧ Funct κ ∧ UnitSp κ ∧ ThetaOne κ ∧ ArchNorm (fun _ => 1) κ := by

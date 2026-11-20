@@ -7,9 +7,9 @@ open scoped TensorProduct DirectSum
 namespace GlobalTheory.OneFunctional
 
 /- English proof (translation)
-Use `Iso.symm ⟨PiTensorProduct.dualDistribEquiv, fun g t => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ s, (PiTensorProduct.dualDistribEquiv (R` using `ℂ) (M := V)) s = PiTensorProduct.dualDistrib s := fun _ => rfl`. Rewrite using `[hD, hD]`. It suffices to establish `h : PiTensorProduct.dualDistrib ∘ₗ (outer fun τ => (ρ τ).dual) g = (outer ρ).dual g ∘ₗ (PiTensorProduct.dualDistrib (R` using `ℂ) (M := V)) by`. Conclude with `LinearMap.congr_fun h t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun f => ?_)` and prove the remaining obligations. Use `PiTensorProduct.ext (MultilinearMap.ext fun m => ?_)` and prove the remaining obligations. Simplify using `[outer_apply, Representation.dual_apply, PiTensorProduct.map_tprod, Pi.inv_apply, Module.Dual.transpose_apply, LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_outer_dual (ι G : Type) [Fintype ι] [Group G] (V : ι → Type) [∀ τ, AddCommGroup (V τ)]
     [∀ τ, Module ℂ (V τ)] [∀ τ, FiniteDimensional ℂ (V τ)] (ρ : ∀ τ, Representation ℂ G (V τ)) :

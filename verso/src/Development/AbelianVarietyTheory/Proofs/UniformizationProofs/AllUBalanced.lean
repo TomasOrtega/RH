@@ -23,7 +23,7 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Take `⟨-, h1, h2, h3, h4⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Introduce `R _ _ _ I hI D A G _ _ hG U`. Conclude with `⟨GlobalTheory.RingActData.exists_oAct GlobalTheory.firstFiveLaws h1 h2 h3 h4 R I hI D A G hG U, GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle GlobalTheory.firstFiveLaws h1 h2 h3 h4 R I hI D A G hG U⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem allU_balanced : AllU fun {_} _ _ {_} {_} {_} {_} _ _ U => Cl.Balanced U := by
   obtain ⟨-, h1, h2, h3, h4⟩ := GlobalTheory.twistBaseChange_and_valuation_statements

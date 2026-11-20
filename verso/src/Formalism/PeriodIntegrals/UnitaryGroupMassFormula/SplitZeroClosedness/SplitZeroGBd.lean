@@ -9,13 +9,11 @@ namespace PI.SZGW
 open PI.BeDiagZp PI.BeDiagZp.Asm PI.BeDiagZp.ContPf
 
 /- English proof (translation)
-Establish `hN : ∀ n : ℕ, Simeq ((fun c : ℂ_[p] => MvPowerSeries.C c * (MvPowerSeries.C (zc u) * F)) (n : ℂ_[p])) 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp only [Nat.cast_zero, map_zero, zero_mul]`. Conclude with `simeq_refl 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `H2` using `simeq_add ih H`. Use `simeq_congr ?_ H2` and prove the remaining obligations. Simplify using `only [Nat.cast_succ, map_add, map_one, add_mul, one_mul, add_zero, sub_zero]`. Establish `hGs : CC fun c : ℂ_[p] => MvPowerSeries.C c * (MvPowerSeries.C (zc u) * F)` using `cc_mul cc_C (cc_const _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hu.exists_left_inv`. Establish `H3` using `hZS p τ _ hGs hN w`. Establish `e : zc w * zc u = 1` using `by rw [← zMul, hw, zOne]`. Use `simeq_congr ?_ H3` and prove the remaining obligations. Use `show MvPowerSeries.C (zc w) * (MvPowerSeries.C (zc u) * F) - 0 = F - 0`.
-
-Rewrite using `[← mul_assoc, ← map_mul, e, map_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Scale {p : ℕ} [Fact p.Prime] (hZS : ZpSimeq)
     (zMul : ∀ a b : ℤ_[p], zc (a * b) = zc a * zc b) (zOne : zc (1 : ℤ_[p]) = 1)
@@ -45,61 +43,61 @@ variable {p : ℕ} [Fact p.Prime] {l ex ph : PowerSeries ℂ_[p]}
 include hex hlex
 
 /- English proof (translation)
-The claim follows from `(IdentW.ident_holds p l ex hex hlex).1`.
+A detailed English derivation is pending.
 -/
 theorem hl0 : PowerSeries.constantCoeff l = 0 := (IdentW.ident_holds p l ex hex hlex).1
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a b ha hb).1`.
+A detailed English derivation is pending.
 -/
 theorem cA {σ : Type} (a b : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0)
     (hb : MvPowerSeries.constantCoeff b = 0) : MvPowerSeries.constantCoeff (add l ex a b) = 0 :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a b ha hb).1
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.1 c`.
+A detailed English derivation is pending.
 -/
 theorem cM {σ : Type} (c : ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) :
     MvPowerSeries.constantCoeff (mulBy l ex c a) = 0 :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.1 c
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a b ha hb).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem comm {σ : Type} (a b : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0)
     (hb : MvPowerSeries.constantCoeff b = 0) : add l ex a b = add l ex b a :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a b ha hb).2.2.1
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.1 c d`.
+A detailed English derivation is pending.
 -/
 theorem addM {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) (c d : ℂ_[p]) :
     add l ex (mulBy l ex c a) (mulBy l ex d a) = mulBy l ex (c + d) a :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.1 c d
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.1 c`.
+A detailed English derivation is pending.
 -/
 theorem addS {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) (c : ℂ_[p]) :
     add l ex (mulBy l ex c a) a = mulBy l ex (c + 1) a :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.1 c
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem mul1 {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) :
     mulBy l ex 1 a = a :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem mul0 {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) :
     mulBy l ex 0 a = 0 :=
   ((IdentW.ident_holds p l ex hex hlex).2 _ a a ha ha).2.2.2.2.2.2.2
 
 /- English proof (translation)
-Simplify using `only [be]`. Rewrite using `[comm hex hlex a b ha hb]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem bsym {σ : Type} (a b : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0)
     (hb : MvPowerSeries.constantCoeff b = 0) : be l ex ph a b = be l ex ph b a := by
@@ -108,7 +106,7 @@ theorem bsym {σ : Type} (a b : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.co
   abel
 
 /- English proof (translation)
-Establish `e` using `addM hex hlex a ha 1 0`. Rewrite `e` using `[mul1 hex hlex a ha, mul0 hex hlex a ha, add_zero, mul1 hex hlex a ha]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addZ {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) :
     add l ex a 0 = a := by
@@ -117,11 +115,11 @@ theorem addZ {σ : Type} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.cons
   exact e
 
 /- English proof (translation)
-Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![a, b, c] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `is : ∀ i, IntegralMv (![a, b, c] i)`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `H` using `power_series_diagonal_linear p (Fin 3) τ _ _ ![a, b, c] hs is hbi`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨hsX, -, hsA, hr⟩` from `OpsW.substOps_holds p l ex ph hex (hl0 hex hlex) (Fin 3) τ ![a, b, c] hs`. Establish `e1` using `(hr _ _ (cA hex hlex _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e2` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))).2.1`. Establish `e3` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e4` using `(hr _ _ (ccX (1 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hsA, e1, e2, e3, e4, hsX] at H`. Simplify using `using H`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem K2 (hbi : Simeq (be l ex ph (add l ex (Xv 0) (Xv 1)) (Xv 2) : MvPowerSeries (Fin 3) ℂ_[p])
       (be l ex ph (Xv 0) (Xv 2) + be l ex ph (Xv 1) (Xv 2)))
@@ -143,13 +141,13 @@ theorem K2 (hbi : Simeq (be l ex ph (add l ex (Xv 0) (Xv 1)) (Xv 2) : MvPowerSer
   simpa using H
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, mul0 hex hlex a ha]`. Conclude with `int0`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, ← addS hex hlex a ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![mulBy l ex (n : ℂ_[p]) a, a] i) = 0`. Introduce `i`. Use `fin_cases i`. Simplify using `using cM hex hlex (n : ℂ_[p]) a ha`. Simplify using `using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `is : ∀ i, IntegralMv (![mulBy l ex (n : ℂ_[p]) a, a] i)`. Introduce `i`. Use `fin_cases i`. Simplify using `using ih`. Simplify using `using ia`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H` using `intSubst_holds p (Fin 2) τ _ _ hs is hgrp`. Take `⟨hsX, -, -, hr⟩` from `OpsW.substOps_holds p l ex 0 hex (hl0 hex hlex) (Fin 2) τ _ hs`. Rewrite `H` using `[(hr _ _ (ccX (0 : Fin 2)) (ccX (1 : Fin 2))).2.1, hsX, hsX]`. Simplify using `using H`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Nint (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
     {τ : Type} (a : MvPowerSeries τ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) (ia : IntegralMv a)
@@ -172,13 +170,13 @@ theorem Nint (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) 
     simpa using H
 
 /- English proof (translation)
-Establish `c0 : MvPowerSeries.constantCoeff (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 0`. Establish `c1 : MvPowerSeries.constantCoeff (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 1`. Proceed by induction on `n with`. Consider the case `zero`. Establish `H` using `simeq_symm (K2 hex hlex hbi (0 : MvPowerSeries (Fin 2) ℂ_[p]) 0 (Xv 1) (map_zero _) (map_zero _) c1 int0 int0 (intX 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use `simeq_congr ?_ H` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, mul0 hex hlex _ c0, map_zero, zero_mul, sub_zero, addZ hex hlex (0 : MvPowerSeries (Fin 2) ℂ_[p]) (map_zero _)]`. Normalize the expressions using the abelian group laws. Consider the case `succ n ih`. Establish `cN` using `cM hex hlex (n : ℂ_[p]) _ c0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_succ, ← addS hex hlex _ c0]`. Establish `H` using `K2 hex hlex hbi _ _ _ cN c0 c1 (Nint hex hlex hgrp _ c0 (intX 0) n) (intX 0) (intX 1)`. Use `simeq_trans H ?_` and prove the remaining obligations. Establish `H2` using `simeq_add ih (simeq_refl (be l ex ph (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))`. Use `simeq_congr ?_ H2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_one, add_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lnat (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
     (hbi : Simeq (be l ex ph (add l ex (Xv 0) (Xv 1)) (Xv 2) : MvPowerSeries (Fin 3) ℂ_[p])
@@ -205,13 +203,13 @@ theorem Lnat (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) 
     rw [map_add, map_one, add_mul, one_mul]
 
 /- English proof (translation)
-Establish `hl` using `hl0 hex hlex`. Establish `c0 : MvPowerSeries.constantCoeff (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 0`. Establish `c1 : MvPowerSeries.constantCoeff (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 1`. Establish `hlx : MvPowerSeries.constantCoeff (PowerSeries.subst (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) l) = 0` using `constantCoeff_powerSeries_subst_eq_zero_diagonal_padic_substitution _ c0 l hl`. Establish `hly : MvPowerSeries.constantCoeff (PowerSeries.subst (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) l) = 0` using `constantCoeff_powerSeries_subst_eq_zero_diagonal_padic_substitution _ c1 l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : ∀ c : ℂ_[p], MvPowerSeries.constantCoeff (mulBy l ex c (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])) = 0` using `fun c => cM hex hlex c _ c0`. Establish `hM : CC fun c : ℂ_[p] => mulBy l ex c (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])`. Apply `cc_subst ex (fun c => by simp [hlx]) (cc_mul cc_C (cc_const _))` to reduce the goal to its premises. Establish `hA0 : ∀ c : ℂ_[p], MvPowerSeries.constantCoeff (add l ex (mulBy l ex c (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `fun c => cA hex hlex _ _ (hM0 c) c1`. Establish `hA : CC fun c : ℂ_[p] => (add l ex (mulBy l ex c (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `cc_subst ex (fun c => by simp [constantCoeff_powerSeries_subst_eq_zero_diagonal_padic_substitution _ (hM0 c) l hl, hly])` to reduce the goal to its premises. Conclude with `cc_add (cc_subst l hM0 hM) (cc_const _)`. Establish `hG : CC fun c : ℂ_[p] => (be l ex ph (mulBy l ex c (Xv 0)) (Xv 1) - MvPowerSeries.C c * be l ex ph (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])`. Use `cc_sub ?_ (cc_mul cc_C (cc_const _))` and prove the remaining obligations. Unfold `be phAt`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `cc_sub (cc_sub (cc_subst ph hA0 hA) (cc_subst ph hM0 hM)) (cc_const _)`. Establish `H` using `hZS p (Fin 2) _ hG (fun n => simeq_congr (by rw [sub_zero]) (Lnat hex hlex hgrp hbi n)) c`. Conclude with `simeq_congr (by rw [sub_zero]) H`.
+A detailed English derivation is pending.
 -/
 theorem Lzp (hZS : ZpSimeq) (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
     (hbi : Simeq (be l ex ph (add l ex (Xv 0) (Xv 1)) (Xv 2) : MvPowerSeries (Fin 3) ℂ_[p])
@@ -244,15 +242,13 @@ theorem Lzp (hZS : ZpSimeq) (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPower
   exact simeq_congr (by rw [sub_zero]) H
 
 /- English proof (translation)
-Establish `c0 : MvPowerSeries.constantCoeff (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 0`. Establish `c1 : MvPowerSeries.constantCoeff (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 1`. Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![(Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]), Xv 0] i) = 0`. Introduce `i`. Use `fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using c1`. Simplify using `using c0`. Establish `is : ∀ i, IntegralMv (![(Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]), Xv 0] i)`. Introduce `i`. Use `fin_cases i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (intX 1 : IntegralMv (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]))`. Simplify using `using (intX 0 : IntegralMv (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]))`. Establish `H` using `power_series_diagonal_linear p (Fin 2) (Fin 2) _ _ _ hs is (Lzp hex hlex hZS hgrp hbi c)`. Take `⟨hsX, hsC, -, hr⟩` from `OpsW.substOps_holds p l ex ph hex (hl0 hex hlex) (Fin 2) (Fin 2) _ hs`. Establish `e1` using `(hr _ _ (cM hex hlex (zc c) _ c0) c1).2.2.2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(hr _ _ c0 c0).2.2.1 (zc c)`. Establish `e3` using `(hr _ _ c0 c1).2.2.2.2`. Rewrite `H` using `[hsC, e1, e2, e3]`. Simplify using `only [hsX, Matrix.cons_val_zero, Matrix.cons_val_one] at H`. Rewrite `H` using `[bsym hex hlex _ _ (cM hex hlex _ _ c1) c0, bsym hex hlex _ _ c1 c0]`.
-
-Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lzp2 (hZS : ZpSimeq) (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
     (hbi : Simeq (be l ex ph (add l ex (Xv 0) (Xv 1)) (Xv 2) : MvPowerSeries (Fin 3) ℂ_[p])
@@ -281,9 +277,9 @@ theorem Lzp2 (hZS : ZpSimeq) (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowe
   exact H
 
 /- English proof (translation)
-Take `⟨zMul, zSub, zOne, -, -, -⟩` from `hZC p hp2`. Establish `D : Simeq (MvPowerSeries.C (zc (a - b)) * be l ex ph (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) 0`. Establish `H` using `simeq_trans (simeq_trans (simeq_symm (Lzp hex hlex hZS hgrp hbi a)) hc) (Lzp2 hex hlex hZS hgrp hbi b)`. Use `simeq_congr ?_ H` and prove the remaining obligations. Rewrite using `[zSub, map_sub, sub_mul, sub_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scale hZS zMul zOne _ (a - b) hu D`.
+A detailed English derivation is pending.
 -/
 theorem hB (hZS : ZpSimeq) (hZC : ZcFacts) (hp2 : p ≠ 2)
     (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
@@ -300,9 +296,9 @@ theorem hB (hZS : ZpSimeq) (hZC : ZcFacts) (hp2 : p ≠ 2)
   exact Scale hZS zMul zOne _ (a - b) hu D
 
 /- English proof (translation)
-Take `⟨-, -, -, zNeg, -, -⟩` from `hZC p hp2`. Establish `ccU : MvPowerSeries.constantCoeff (Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `ccX ()`. Establish `hlu` using `constantCoeff_powerSeries_subst_eq_zero_diagonal_padic_substitution _ ccU l (hl0 hex hlex)`. Establish `hMU : CC fun c : ℂ_[p] => mulBy l ex c (Xv () : MvPowerSeries Unit ℂ_[p])`. Apply `cc_subst ex (fun c => by simp [hlu]) (cc_mul cc_C (cc_const _))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `H` using `hZI p Unit _ hMU (fun n => Nint hex hlex hgrp _ ccU (intX ()) n) (-1)`. Rewrite `H` using `[zNeg]`. Conclude with `H`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iNeg (hZI : ZpInt) (hZC : ZcFacts) (hp2 : p ≠ 2)
     (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])) :
@@ -317,23 +313,21 @@ theorem iNeg (hZI : ZpInt) (hZC : ZcFacts) (hp2 : p ≠ 2)
   exact H
 
 /- English proof (translation)
-Take `⟨zMul, -, zOne, -, zTwo, uTwo⟩` from `hZC p hp2`. Establish `c0 : MvPowerSeries.constantCoeff (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 0`. Establish `c1 : MvPowerSeries.constantCoeff (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 1`. Establish `ccU : MvPowerSeries.constantCoeff (Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `ccX ()`. Establish `P1 : Simeq (be l ex ph (Xv ()) (mulBy l ex (-1) (Xv ())) : MvPowerSeries Unit ℂ_[p]) 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![(Xv () : MvPowerSeries Unit ℂ_[p]), mulBy l ex (-1) (Xv ())] i) = 0`. Introduce `i`. Use `fin_cases i`. Simplify using `using ccU`. Simplify using `using cM hex hlex (-1) _ ccU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `is : ∀ i, IntegralMv (![(Xv () : MvPowerSeries Unit ℂ_[p]), mulBy l ex (-1) (Xv ())] i)`. Introduce `i`. Use `fin_cases i`. Simplify using `using (intX () : IntegralMv (Xv () : MvPowerSeries Unit ℂ_[p]))`. Simplify using `using iNeg hex hlex hZI hZC hp2 hgrp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `H` using `power_series_diagonal_linear p (Fin 2) Unit _ _ _ hs is hB`. Take `⟨hsX, hsC, -, hr⟩` from `OpsW.substOps_holds p l ex ph hex (hl0 hex hlex) (Fin 2) Unit _ hs`. Establish `z : MvPowerSeries.subst ![(Xv () : MvPowerSeries Unit ℂ_[p]), mulBy l ex (-1) (Xv ())] (0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Use `hsC 0 (Xv 0)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `H` using `[(hr _ _ c0 c1).2.2.2.2, z]`. Simplify using `only [hsX, Matrix.cons_val_zero, Matrix.cons_val_one] at H`. Conclude with `H`. Establish `P0 : Simeq (be l ex ph 0 0 : MvPowerSeries Unit ℂ_[p]) 0`. Establish `hs : ∀ i : Fin 2, MvPowerSeries.constantCoeff ((fun _ => (0 : MvPowerSeries Unit ℂ_[p])) i) = 0` using `fun _ => map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `is : ∀ i : Fin 2, IntegralMv ((fun _ => (0 : MvPowerSeries Unit ℂ_[p])) i)` using `fun _ => int0`. Establish `H` using `power_series_diagonal_linear p (Fin 2) Unit _ _ _ hs is hB`. Take `⟨hsX, hsC, -, hr⟩` from `OpsW.substOps_holds p l ex ph hex (hl0 hex hlex) (Fin 2) Unit _ hs`. Establish `z : MvPowerSeries.subst (fun _ : Fin 2 => (0 : MvPowerSeries Unit ℂ_[p])) (0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Use `hsC 0 (Xv 0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite `H` using `[(hr _ _ c0 c1).2.2.2.2, z, hsX, hsX]`. Conclude with `H`. Establish `e0 : add l ex (Xv ()) (mulBy l ex (-1) (Xv ())) = (0 : MvPowerSeries Unit ℂ_[p])`. Use `addM hex hlex _ ccU 1 (-1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul1 hex hlex _ ccU, add_neg_cancel, mul0 hex hlex _ ccU]`. Conclude with `this`. Establish `e00 : add l ex (0 : MvPowerSeries Unit ℂ_[p]) 0 = 0` using `addZ hex hlex (0 : MvPowerSeries Unit ℂ_[p]) (map_zero _)`. Establish `Q : Simeq (MvPowerSeries.C (zc 2) * phAt ph (Xv ()) : MvPowerSeries Unit ℂ_[p]) 0`. Establish `H` using `simeq_add (simeq_add P1 P0) hphi`.
-
-Use `simeq_congr ?_ (simeq_symm H)` and prove the remaining obligations. Simplify using `only [be, e0, e00, zTwo, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Scale hZS zMul zOne _ 2 uTwo Q`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hPh (hZS : ZpSimeq) (hZI : ZpInt) (hZC : ZcFacts) (hp2 : p ≠ 2)
     (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
@@ -402,7 +396,7 @@ Both sides reduce to the same expression.
 -/
 theorem phAt_eq (a : MvPowerSeries σ ℂ_[p]) : PI.SplitZeroG.phAt ph a = phAt ph a := rfl
 /- English proof (translation)
-Simplify using `only [PI.SplitZeroG.be, be, add_eq, phAt_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_eq (a b : MvPowerSeries σ ℂ_[p]) : PI.SplitZeroG.be l ex ph a b = be l ex ph a b := by
   simp only [PI.SplitZeroG.be, be, add_eq, phAt_eq]
@@ -410,7 +404,7 @@ theorem be_eq (a b : MvPowerSeries σ ℂ_[p]) : PI.SplitZeroG.be l ex ph a b = 
 end Bridge
 
 /- English proof (translation)
-Establish `hB'` using `hB (ph := ph) hex hlex hZS hZC hp2 hgrp hbi a b hu hc`. Conclude with `⟨hB', hPh (ph := ph) hex hlex hZS hZI hZC hp2 hgrp hB' hphi⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem splitZeroG_bd (hZS : ZpSimeq) (hZI : ZpInt) (hZC : ZcFacts) {p : ℕ} [Fact p.Prime]
     {l ex ph : PowerSeries ℂ_[p]} (hex : PowerSeries.constantCoeff ex = 0)
@@ -428,9 +422,9 @@ theorem splitZeroG_bd (hZS : ZpSimeq) (hZI : ZpInt) (hZC : ZcFacts) {p : ℕ} [F
   exact ⟨hB', hPh (ph := ph) hex hlex hZS hZI hZC hp2 hgrp hB' hphi⟩
 
 /- English proof (translation)
-Introduce `p _ l ex ph _ hex hlex _ S hp2 _ _ hgrp hconj hbi hphi hα`. Take `⟨α, hαS, a, b, hab, hu⟩` from `hα`. Establish `hc : Simeq (be l ex ph (mulBy l ex (zc a) (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) (be l ex ph (Xv 0) (mulBy l ex (zc b) (Xv 1)))`. Establish `h` using `hconj α hαS`. Rewrite `h` using `[hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `splitZeroG_bd hZS hZI hZC hex hlex hp2 hgrp hbi hphi a b hu hc`.
+A detailed English derivation is pending.
 -/
 theorem splitZeroG_of (hZS : ZpSimeq) (hZI : ZpInt) (hZC : ZcFacts) : PI.SplitZeroG.SplitZeroG := by
   intro p _ l ex ph _ hex hlex _ S hp2 _ _ hgrp hconj hbi hphi hα

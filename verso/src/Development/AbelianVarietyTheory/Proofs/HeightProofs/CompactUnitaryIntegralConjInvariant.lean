@@ -24,16 +24,16 @@ open MeasureTheory
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous' {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] {f : KG ε → E} (hf : Continuous f) :
     Integrable f (muK ε) :=
   integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)
 
 /- English proof (translation)
-Establish `e : (fun k => φ k * star (φ k)) = fun k => ((Complex.normSq (φ k) : ℝ) : ℂ)`. Use function extensionality and compare the values at `k`. Conclude with `Complex.mul_conj (φ k)`. Rewrite `h` using `[e, integral_complex_ofReal, Complex.ofReal_eq_zero]`. Establish `hcs : Continuous fun k => Complex.normSq (φ k)` using `Complex.continuous_normSq.comp hc`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => Complex.normSq_nonneg (φ k)) (integrable_of_continuous' hcs)).1 h`. Establish `h2 : (fun k => Complex.normSq (φ k)) = 0` using `(Continuous.ae_eq_iff_eq (muK ε) hcs continuous_const).1 hae`. Use function extensionality and compare the values at `k`. Use `congrFun h2 k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_integral_mul_star {ε : Fin n → Bool} {φ : KG ε → ℂ} (hc : Continuous φ)
     (h : ∫ k, φ k * star (φ k) ∂(muK ε) = 0) : φ = 0 := by
@@ -49,33 +49,29 @@ theorem eq_zero_of_integral_mul_star {ε : Fin n → Bool} {φ : KG ε → ℂ} 
   simpa using this
 
 /- English proof (translation)
-Establish `hlow : lowV ε i ≤ polyV ε i`. Consider the cases of `i with`. Consider the case `zero => simp [lowV]`. Consider the case `succ j => simpa [lowV] using polyV_mono ε (Nat.le_succ j)`. Set `W : Submodule ℂ (KG ε → ℂ)` to `{ carrier := {p | p ∈ polyV ε i ∧ ∀ q ∈ lowV ε i, ∫ k, star (q k) * p k ∂(muK ε) = 0} add_mem' := by`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨add_mem ha hb, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hq'` using `continuous_of_mem (hlow hq)`. Establish `h1` using `integral_add (μ := muK ε) (f := fun k => star (q k) * a k) (g := fun k => star (q k) * b k) (integrable_of_continuous' (hq'.star.mul (continuous_of_mem ha))) (integrable_of_continuous' (hq'.star.mul (continuous_of_mem hb)))`. Simplify using `only [Pi.add_apply, mul_add]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ha' q hq, hb' q hq, add_zero]`. Use the proof step `zero_mem' := ⟨Submodule.zero_mem _, fun q _ => by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨ha, ha'⟩`. Use `⟨Submodule.smul_mem _ c ha, fun q hq => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Rewrite using `[integral_const_mul, ha' q hq, mul_zero] }`. Establish `hW : ∀ p, p ∈ W ↔ p ∈ polyV ε i ∧ ∀ q ∈ lowV ε i, ∫ k, star (q k) * p k ∂(muK ε) = 0` using `fun p => Iff.rfl`. Set `B : polyV ε i →ₗ[ℂ] Module.Dual ℂ (polyV ε i)` to `LinearMap.mk₂ ℂ (fun e p : polyV ε i => ∫ k, (e : KG ε → ℂ) k * (p : KG ε → ℂ) k ∂(muK ε)) (fun e e' p => by`. Establish `h1` using `integral_add (μ := muK ε) (f := fun k => (e : KG ε → ℂ) k * (p : KG ε → ℂ) k) (g := fun k => (e' : KG ε → ℂ) k * (p : KG ε → ℂ) k) (integrable_of_continuous' ((continuous_of_mem e.2).mul (continuous_of_mem p.2))) (integrable_of_continuous' ((continuous_of_mem e'.2).mul (continuou …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`. Conclude with `h1)`. Use the proof step `(fun c e p => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun e p p' => by`. Establish `h1` using `integral_add (μ := muK ε) (f := fun k => (e : KG ε → ℂ) k * (p : KG ε → ℂ) k) (g := fun k => (e : KG ε → ℂ) k * (p' : KG ε → ℂ) k) (integrable_of_continuous' ((continuous_of_mem e.2).mul (continuous_of_mem p.2))) (integrable_of_continuous' ((continuous_of_mem e.2).mul (continuous …`. Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`. Conclude with `h1)`. Use the proof step `(fun c e p => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Conclude with `integral_const_mul c _)`. Establish `hB : ∀ e p : polyV ε i, B e p = ∫ k, (e : KG ε → ℂ) k * (p : KG ε → ℂ) k ∂(muK ε)` using `fun _ _ => rfl`. Establish `hinj : Function.Injective B`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he`. Establish `h0` using `hB e ⟨_, star_mem e.2⟩`. Rewrite `h0` using `[he]`. Establish `hz : (e : KG ε → ℂ) = 0` using `eq_zero_of_integral_mul_star (continuous_of_mem e.2) h0.symm`. Conclude with `Subtype.ext hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective B` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank Subspace.dual_finrank_eq.symm).1 hinj`. Set `f : W →ₗ[ℂ] (KG ε → ℂ) ⧸ lowV ε i` to `(lowV ε i).mkQ ∘ₗ W.subtype`. Establish `hker : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hwl : (w : KG ε → ℂ) ∈ lowV ε i` using `(Submodule.Quotient.mk_eq_zero _).1 hw`. Establish `h0` using `((hW w).1 w.2).2 _ hwl`. Establish `hc : (fun k => star ((w : KG ε → ℂ) k) * (w : KG ε → ℂ) k) = fun k => (w : KG ε → ℂ) k * star ((w : KG ε → ℂ) k)` using `funext fun k => mul_comm _ _`. Rewrite `h0` using `[hc]`. Conclude with `Subtype.ext (eq_zero_of_integral_mul_star (continuous_of_mem ((hW w).1 w.2).1) h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Set `g : (KG ε → ℂ) →ₗ[ℂ] ℂ` to `(LinearMap.proj 1 : (KG ε → ℂ) →ₗ[ℂ] ℂ) ∘ₗ W.subtype ∘ₗ r ∘ₗ (lowV ε i).mkQ`. Establish `hgW : ∀ w ∈ W, g w = w 1`. Introduce `w hw`. Use `LinearMap.congr_fun hr ⟨w, hw⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, f, Submodule.subtype_apply] at this`. Simplify using `only [g, LinearMap.comp_apply, Submodule.subtype_apply, this, LinearMap.proj_apply]`. Establish `hgU : ∀ q ∈ lowV ε i, g q = 0`. Introduce `q hq`. Simplify using `only [g, LinearMap.comp_apply, (Submodule.Quotient.mk_eq_zero _).2 hq, Submodule.mkQ_apply, map_zero, LinearMap.proj_apply]`.
-
-Take `⟨e, he⟩` from `hsurj (g ∘ₗ (polyV ε i).subtype)`. Use `⟨e, e.2, fun q hq => ?_, fun p hp hpo => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun he ⟨q, hlow hq⟩` as an intermediate fact. Rewrite `this` using `[hB]`. Rewrite using `[this]`.
-
-Conclude with `hgU q hq`. Use `LinearMap.congr_fun he ⟨p, hp⟩` as an intermediate fact. Rewrite `this` using `[hB]`. Rewrite using `[this]`. Conclude with `hgW p ⟨hp, hpo⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isKer (ε : Fin n → Bool) (i : ℕ) : ∃ e, IsKer ε i e := by
   classical

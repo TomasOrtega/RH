@@ -13,15 +13,15 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E k val T hM`. Take `⟨m, c, w, g, ks, hks, hsum, -⟩` from `hM`. Establish `hmem : ∀ x : Mat n, x ∈ GLs n ↔ IsUnit x` using `(UpperTheory.RealTr.basic n).2.1`. Establish `hG : ∀ y : G n, (y : Mat n) ∈ GLs n` using `fun y => (hmem _).2 y.isUnit`. Establish `hfun : (fun y : G n => k (y : Mat n)) = fun y : G n => ∑ i, c i • ks i (y : Mat n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Conclude with `hsum _ (hG y)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ContinuousOn (ks i) (GLs n)` using `(hks i).2.1.continuousOn`. Conclude with `(hc.comp_continuous Units.continuous_val hG).const_smul (c i)`. Use `choose R hR using fun i => (hks i).2.2.1`. Use `HasCompactSupport.intro (K := {y : G n | lg (y : Mat n) ≤ ∑ i, |R i|}) (UpperTheory.RealTr.lgCpt n _) ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq, not_le] at hy`. Rewrite using `[hsum _ (hG y)]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hle : R i ≤ ∑ j, |R j|` using `(le_abs_self (R i)).trans (Finset.single_le_sum (f := fun j => |R j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i))`. Rewrite using `[hR i _ (hG y) (lt_of_le_of_lt hle hy), smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy k₁ k₂`. Establish `hu : IsUnit ((k₁ : Mat n) * y * (k₂ : Mat n))` using `((Unitary.toUnits k₁).isUnit.mul ((hmem y).1 hy)).mul (Unitary.toUnits k₂).isUnit`. Rewrite using `[hsum _ ((hmem _).2 hu), hsum _ hy, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hks i).2.2.2.1 y hy k₁ k₂, mul_smul_comm, smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.kerReg :
     ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V)) (val : Inf n → ℂ) (T : ℝ), IsMult μ E k val T → KerReg E k := by

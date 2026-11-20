@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ n η`. Establish `hs : ∀ _ : Fin n, (Set.range (algebraMap K Ω)).Infinite` using `fun _ => Set.infinite_range_of_injective (algebraMap K Ω).injective`. Use `MvPolynomial.funext_set (fun _ => Set.range (algebraMap K Ω)) hs ?_` and prove the remaining obligations. Introduce `x hx`. Use `choose u hu using fun m => hx m (Set.mem_univ m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : x = algebraMap K Ω ∘ u` from `funext fun m => (hu m).symm`. Establish `hl : eval (algebraMap K Ω ∘ u) (map (algebraMap K Ω) (normForm K L η)) = algebraMap K Ω (eval u (normForm K L η))`. Rewrite using `[eval_map]`. Express the relevant statement in the definitionally equal form `_ = algebraMap K Ω (eval₂ (RingHom.id K) u (normForm K L η))`. Rewrite using `[eval₂_comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hl, h K L n η u, Algebra.norm_eq_prod_embeddings]`. Simplify using `only [map_prod, map_sum, map_mul, eval_X, eval_C, Function.comp_apply]`. Use `Finset.prod_congr rfl fun σ _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NormFormEmbeddings.proof (h : NormFormEval.Statement) : NormFormEmbeddings.Statement := by
   intro K L Ω _ _ _ _ _ _ _ _ _ n η

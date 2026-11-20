@@ -26,14 +26,14 @@ namespace GlobalTheory.RowEx.BottomHecke
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2, h.3, h.4⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaFunO_stdLatSp {ψ : AddChar (AF D.host.F) ℂ} {S V : HSp D} (hV : V.gram = 1) {f : WO S V → ℂ} :
     IsThetaFunO ψ S (GlobalTheory.SplitVacAlg.stdLatSp V hV) f ↔ IsThetaFunO ψ S V f :=
   ⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2, h.3, h.4⟩⟩
 
 /- English proof (translation)
-The claim follows from `h.std hecS := h.hecS hecT := h.hecT resS := h.resS resT := h.resT om_pres := fun p f hf => (thetaFunO_stdLatSp hV).2 (h.om_pres p f ((thetaFunO_stdLatSp hV).1 hf)) om_heis := fun g h' w f hf => h.om_heis g h' w f ((thetaFunO_stdLatSp hV).1 hf) om_aut := fun γ hγ γ' hγ' f hf => h. …`.
+A detailed English derivation is pending.
 -/
 theorem weilDatumO_stdLatSp {ψ : AddChar (AF D.host.F) ℂ} {S V : HSp D} (hV : V.gram = 1) {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D V →* Module.End ℂ (WO S V → ℂ)} (h : IsWeilDatumO ψ S V χS χT om) :
@@ -54,11 +54,11 @@ theorem weilDatumO_stdLatSp {ψ : AddChar (AF D.host.F) ℂ} {S V : HSp D} (hV :
       ((thetaFunO_stdLatSp hV).1 hf)⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X hX t e he ϖ k α hα`. Take `⟨hg, hlat, -⟩` from `hX.stdW`. Establish `hS : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `isSelfDualC_neg' hX.is.rigA.1`. Establish `hT : IsSelfDualC (GlobalTheory.SplitVacAlg.stdLatSp WW hg) X.rW.Λ` using `hX.is.rigW.1`. Establish `hL : (X.rW.Λ : Set (Fin WW.rank → D.host.E)) = L0c D (GlobalTheory.SplitVacAlg.stdLatSp WW hg)` using `Set.ext fun y => (hlat y).trans (GlobalTheory.SplitVacAlg.mem_frameLattice_iff_integral_coords WW hg y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Δ, hΔ⟩` from `GlobalTheory.HeckeVacuum.exists_halfReps hS hT hL he hα`. Use `⟨Δ, fun x hx => GlobalTheory.SplitScalar.half_fin (GlobalTheory.SplitScalar.isSplitIdem_conj he) (hΔ.1 x hx).2, ?_⟩` and prove the remaining obligations. Establish `hW` using `weilDatumO_stdLatSp hg (hX.is.weil t)`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) (GlobalTheory.SplitVacAlg.stdLatSp WW hg) X.vac` using `(thetaFunO_stdLatSp hg).2 hX.is.isVac.2.theta`. Establish `h` using `GlobalTheory.HeckeVacuum.om_elt hW hS hT hL he hα hf hX.is.isVac.2.lat hΔ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : X.ω t (1, α) X.vac = ((X.ω t).toSgn true) ((GlobalTheory.Grid.ofSgn true A).symm 1, α) X.vac` using `rfl`. Rewrite using `[e1, map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacuum_hecke : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (t : T) (e : AE D) (he : IsSplitIdem D e)

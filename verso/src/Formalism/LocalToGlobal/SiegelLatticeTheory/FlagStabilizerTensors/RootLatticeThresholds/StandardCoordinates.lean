@@ -16,11 +16,11 @@ variable {D : D7} {X : HidaSetting D} (v : InfinitePlace X.B.I.F) {lam : ℂ} (h
 include hT in
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Use `Fin.lastCases ?_ (fun c => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Unfold `Formalism.QuantumDeterminants.fvec`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg (by simp), Matrix.mulVec_mulVec, hT.2.1, Matrix.one_mulVec, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul]`. Rewrite using `[Fin.snoc_castSucc]`. Establish `h1` using `(hT.2.2.2 c c rfl).1`. Unfold `Formalism.QuantumDeterminants.fvec Formalism.QuantumDeterminants.bvec`. Simplify using `only [Fin.coe_castSucc, Fin.is_lt, dif_pos, Fin.eta]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hl), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_eq (hl : lam ≠ 0) (b : Fin (D.R.rS + 1)) :
     Formalism.L2.SG.RealObj.frm X u' 1 v b =
@@ -41,19 +41,17 @@ theorem fam_eq (hl : lam ≠ 0) (b : Fin (D.R.rS + 1)) :
 include hT hl in
 
 /- English proof (translation)
-Establish `hQQi` using `hT.2.1`. Establish `hH` using `hT.2.2.1`. Establish `ha : p.1.1.1 < D.R.rS` using `by have := p.2.1; have := p.1.2.isLt; omega`. Establish `hrd : (D.host.rdE : ℂ) ≠ 0`. Use `Formalism.L2.SG.RealFrameCoordinates.frS_mul_rd D` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `this` using `[h, mul_zero]`. Conclude with `zero_ne_one this`. Use `set z' := Qi *ᵥ rv X.B.I v (X.zR u') with hz'`. Use `set f := Formalism.QuantumDeterminants.fvec D.R.k D.R.rS z' p.1.2 with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hfrm : Formalism.L2.SG.RealObj.frm X u' D.host.rdE v p.1.2 = ((D.host.rdE : ℂ) ^ (D.R.rS - p.1.2.val))⁻¹ • ((lam ^ (D.R.rS - p.1.2.val))⁻¹ • (Q *ᵥ f))`. Rewrite using `[← fam_eq v hT u' hl p.1.2]`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Establish `hfR : rv X.B.I v (X.fR ⟨p.1.1.1, ha⟩) = star (lam ^ (D.R.rS - p.1.1.1)) • (Q *ᵥ Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS ⟨p.1.1.1, ha⟩) 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hT.2.2.2 ⟨p.1.1.1, ha⟩ ⟨p.1.1.1, ha⟩ rfl).2, smul_smul, mul_inv_cancel₀, one_smul]`. Conclude with `star_ne_zero.2 (pow_ne_zero _ hl)`. Establish `hM : uMat ((γ v)⁻¹ * y * γ v) *ᵥ (Q *ᵥ f) = Q *ᵥ ((Qi * uMat ((γ v)⁻¹ * y * γ v) * Q) *ᵥ f)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc Q, ← Matrix.mul_assoc Q, hQQi, Matrix.one_mul]`. Establish `hQ : ∀ x v' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ, star (Q *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ (Q *ᵥ v')) = star x ⬝ᵥ (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS *ᵥ v')`. Introduce `x v'`. Rewrite using `[← Formalism.L2.SG.Pf.LTL.star_dot_conjT, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH]`. Unfold `Formalism.L2.SG.NGPin.stCoordV`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfrm, hfR, Matrix.mulVec_smul, Matrix.mulVec_smul, hM]`. Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, dotProduct_smul, dotProduct_smul, star_smul, smul_dotProduct, hQ, Pi.star_single, star_one, single_dotProduct, one_mul, Formalism.L2.SG.RealFrameCoordinates.hpk_esI]`. Simplify using `only [smul_eq_mul, star_star]`. Establish `h1 : (lam ^ (D.R.rS - p.1.2.val)) ≠ 0` using `pow_ne_zero _ hl`.
-
-Establish `h2 : ((D.host.rdE : ℂ) ^ (D.R.rS - p.1.2.val)) ≠ 0` using `pow_ne_zero _ hrd`. Rewrite using `[mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem stCoordV_gen (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (y : Formalism.REAL.UJ (X.B.I.ε v))
     (p : Formalism.L2.SG.RealObj.FreeE w) :
@@ -100,21 +98,19 @@ theorem stCoordV_gen (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (y : Fo
 include hT hl in
 
 /- English proof (translation)
-Establish `hQQi` using `hT.2.1`. Establish `hH` using `hT.2.2.1`. Use `set f := Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (Qi *ᵥ rv X.B.I v (X.zR u')) b with hf`. Establish `hHf : H *ᵥ (Q *ᵥ f) = Q *ᵥ f`. Use `fam_eq v hT u' hl b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Q *ᵥ f = lam ^ (D.R.rS - b.val) • Formalism.L2.SG.RealObj.frm X u' 1 v b`. Rewrite using `[this, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hl), one_smul]`. Rewrite using `[e, Matrix.mulVec_smul]`. Use `congr 1`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Use `Fin.lastCases ?_ (fun c => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `hz`. Rewrite using `[Fin.snoc_castSucc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he c`. Establish `hread : ∀ x : Fin X.B.I.n → ℂ, (Qi *ᵥ x) (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) = (lam ^ (D.R.rS - a.val))⁻¹ * hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) x`. Introduce `x`. Establish `hfR : rv X.B.I v (X.fR a) = star (lam ^ (D.R.rS - a.val)) • (Q *ᵥ Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) 1)`. Rewrite using `[(hT.2.2.2 a a rfl).2, smul_smul, mul_inv_cancel₀, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `star_ne_zero.2 (pow_ne_zero _ hl)`. Establish `hx : x = Q *ᵥ (Qi *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Rewrite using `[hfR]`. Use `conv_rhs => rw [hx]`. Unfold `hJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[star_smul, smul_dotProduct, ← Formalism.L2.SG.Pf.LTL.star_dot_conjT, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH, Pi.star_single, star_one, single_dotProduct, one_mul, Formalism.L2.SG.RealFrameCoordinates.hpk_esI, smul_eq_mul, star_star, ← mul_assoc, inv_mul_cancel₀ (pow_ne_z …`. Establish `hisom : ∀ x y : Fin X.B.I.n → ℂ, hJ (X.B.I.ε v) (H *ᵥ x) (H *ᵥ y) = hJ (X.B.I.ε v) x y`. Introduce `x y`. Unfold `hJ`. Rewrite using `[← Formalism.L2.SG.HermitianMatrixIdentities.star_dot_conjT' H x (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ (H *ᵥ y)), Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hHU]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinvJ : ∀ x : Fin X.B.I.n → ℂ, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (H⁻¹ *ᵥ x) = hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) x`. Introduce `x`. Establish `hx : H *ᵥ (H⁻¹ *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hHu, Matrix.one_mulVec]`. Rewrite using `[← hisom, hfa a, hx]`. Establish `e1 : (Qi * (H⁻¹ * M * H) * Q) *ᵥ f = Qi *ᵥ (H⁻¹ *ᵥ (M *ᵥ (Q *ᵥ f)))`.
-
-Simplify using `only [← Matrix.mulVec_mulVec, hHf]`. Establish `e2 : (Qi * M * Q) *ᵥ f = Qi *ᵥ (M *ᵥ (Q *ᵥ f))`. Simplify using `only [← Matrix.mulVec_mulVec]`. Rewrite using `[e1, e2, hread, hread, hinvJ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_conj (M H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)
     (hHU : Hᴴ * Formalism.REAL.Jm (X.B.I.ε v) * H = Formalism.REAL.Jm (X.B.I.ε v)) (hHu : IsUnit H.det)

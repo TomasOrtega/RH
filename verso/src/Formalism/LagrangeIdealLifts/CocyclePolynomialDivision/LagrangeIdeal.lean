@@ -7,11 +7,9 @@ namespace Formalism.LIFT
 open Polynomial
 
 /- English proof (translation)
-Distinguish the cases in `hG0 : G = 0`. Rewrite using `[hG0]`. Conclude with `dvd_zero _`. Establish `hle : S.val.map c ≤ G.roots`. Rewrite using `[Multiset.le_iff_subset (Multiset.Nodup.map_on (fun a ha b hb hab => hc ha hb hab) S.nodup)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Multiset.mem_map.mp hx`. Conclude with `(Polynomial.mem_roots hG0).mpr (hG a ha)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.map_map]`.
-
-Both sides reduce to the same expression. Use `_ ∣ (G.roots.map fun x => X - C x).prod := Multiset.prod_dvd_prod_of_le (Multiset.map_le_map hle)`. Use `_ ∣ G := Polynomial.prod_multiset_X_sub_C_dvd G`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_X_sub_C_dvd_of_injOn {R : Type} [CommRing R] [IsDomain R] {ι : Type}
     (S : Finset ι) (c : ι → R) (hc : Set.InjOn c S) (G : R[X])
@@ -33,27 +31,23 @@ theorem prod_X_sub_C_dvd_of_injOn {R : Type} [CommRing R] [IsDomain R] {ι : Typ
     _ ∣ G := Polynomial.prod_multiset_X_sub_C_dvd G
 
 /- English proof (translation)
-Introduce `R _ _ ℓ ι _ S₁ S₂ c w hdisj hw`. Use `set N := S₁.sup fun a => (∑ b ∈ S₂, w a b) + ∑ a' ∈ S₁.erase a, w a a' with hN`. Distinguish the cases in `hℓN : ℓ ^ N = 0`. Rewrite using `[hℓN, map_zero]`. Conclude with `Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hleN : ∀ a ∈ S₁, (∑ a' ∈ S₁.erase a, w a a') + ∑ b ∈ S₂, w a b ≤ N`. Introduce `a ha`. Rewrite using `[add_comm]`. Conclude with `Finset.le_sup (f := fun a => (∑ b ∈ S₂, w a b) + ∑ a' ∈ S₁.erase a, w a a') ha`. Establish `hval : ∀ a ∈ S₁, ∃ u : R, ℓ ^ N = ((∏ a' ∈ S₁.erase a, (c a - c a')) * ∏ b ∈ S₂, (c a - c b)) * u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `hassoc : Associated ((∏ a' ∈ S₁.erase a, (c a - c a')) * ∏ b ∈ S₂, (c a - c b)) (ℓ ^ ((∑ a' ∈ S₁.erase a, w a a') + ∑ b ∈ S₂, w a b))`. Rewrite using `[pow_add, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_pow_eq_pow_sum]`. Use `Associated.mul_mul (Associated.prod _ _ _ fun a' ha' => ?_) (Associated.prod _ _ _ fun b hb => ?_)` and prove the remaining obligations. Conclude with `hw a ha a' (Finset.mem_union_left _ (Finset.mem_of_mem_erase ha')) (Finset.ne_of_mem_erase ha').symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hw a ha b (Finset.mem_union_right _ hb) ?_` and prove the remaining obligations. Introduce `hab`. Substitute `hab` using the available equality. Conclude with `Finset.disjoint_left.mp hdisj ha hb`. Conclude with `(hassoc.dvd_iff_dvd_left).mpr (pow_dvd_pow ℓ (hleN a ha))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose! u hu using hval`. Establish `hinj : Set.InjOn c S₁`. Introduce `a ha a' ha' heq`. Assume the negation of the conclusion as `hne`. Establish `hw' : w a a' ≤ N` using `le_trans (Finset.single_le_sum (f := fun x => w a x) (fun _ _ => Nat.zero_le _) (Finset.mem_erase.mpr ⟨Ne.symm hne, ha'⟩)) (le_trans (Nat.le_add_right _ _) (hleN a ha))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpow : ℓ ^ w a a' ≠ 0`. Introduce `h0`. Apply `hℓN` to reduce the goal to its premises. Rewrite using `[← Nat.add_sub_cancel' hw', pow_add, h0, zero_mul]`. Use `(hw a ha a' (Finset.mem_union_left _ ha') hne).ne_zero_iff.mpr hpow` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this (by rw [heq, sub_self])`. Use `set F : R[X] := ∑ a ∈ S₁, C (u a) * ∏ a' ∈ S₁.erase a, (X - C (c a')) with hF`. Establish `hQ : (∏ a ∈ S₁, (X - C (c a))) ∣ F * ∏ b ∈ S₂, (X - C (c b)) - C (ℓ ^ N)`. Apply `prod_X_sub_C_dvd_of_injOn S₁ c hinj` to reduce the goal to its premises. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eval_sub, eval_mul, eval_C, hF, eval_finset_sum, Finset.sum_eq_single a]`. Simplify using `only [eval_mul, eval_C, eval_prod, eval_sub, eval_X]`. Rewrite using `[hu a ha]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a₀ _ hne`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[eval_mul, eval_prod, Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨Ne.symm hne, ha⟩) (by simp), mul_zero]`. Introduce `h`. Conclude with `absurd ha h`. Take `⟨k, hk⟩` from `hQ`. Establish `hC : C (ℓ ^ N) = F * ∏ b ∈ S₂, (X - C (c b)) - (∏ a ∈ S₁, (X - C (c a))) * k`.
-
-Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hC]`. Use `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ (Ideal.subset_span ?_)) (Ideal.mul_mem_right _ _ (Ideal.subset_span ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lagrangian_ideal_holds : LagrangeIdeal := by
   intro R _ _ ℓ ι _ S₁ S₂ c w hdisj hw
@@ -115,7 +109,7 @@ theorem lagrangian_ideal_holds : LagrangeIdeal := by
   · simp
 
 /- English proof (translation)
-Introduce `ℓ _ R _ _ S₁ S₂ c hdisj hw`. Conclude with `lagrangian_ideal_holds R (ℓ : R) ℤ S₁ S₂ c (fun a b => padicValInt ℓ (a - b)) hdisj hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lagrangian_ideal_integral_holds : LagrangeIdealInt := by
   intro ℓ _ R _ _ S₁ S₂ c hdisj hw

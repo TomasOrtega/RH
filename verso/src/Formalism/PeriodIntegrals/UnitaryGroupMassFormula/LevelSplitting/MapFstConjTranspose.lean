@@ -39,14 +39,14 @@ def crd (R : Type) [CommRing R] [Algebra F R] :
   (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun
 
 /- English proof (translation)
-Simplify using `[crd, Module.Basis.equivFun_symm_apply, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_symm (R : Type) [CommRing R] [Algebra F R] (c : Fin (Module.finrank F E) → R) :
     (crd (E := E) R).symm c = ∑ k, c k ⊗ₜ (Module.finBasis F E k) := by
   simp [crd, Module.Basis.equivFun_symm_apply, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (crd (E := E) (R1 × R2)).symm_apply_apply x]`. Rewrite using `[crd_symm, crd_symm, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fst_coordinates (x : (R1 × R2) ⊗[F] E) :
     p1 R1 R2 x = (crd R1).symm (fun k => (crd (R1 × R2) x k).1) := by
@@ -55,7 +55,7 @@ theorem fst_coordinates (x : (R1 × R2) ⊗[F] E) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (crd (E := E) (R1 × R2)).symm_apply_apply x]`. Rewrite using `[crd_symm, crd_symm, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem snd_coordinates (x : (R1 × R2) ⊗[F] E) :
     p2 R1 R2 x = (crd R2).symm (fun k => (crd (R1 × R2) x k).2) := by
@@ -67,7 +67,7 @@ def qq (a : R1 ⊗[F] E) (b : R2 ⊗[F] E) : (R1 × R2) ⊗[F] E :=
   (crd (R1 × R2)).symm (fun k => (crd R1 a k, crd R2 b k))
 
 /- English proof (translation)
-Unfold `qq`. Rewrite using `[fst_coordinates, LinearEquiv.apply_symm_apply]`. Conclude with `(crd R1).symm_apply_apply a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_pair (a : R1 ⊗[F] E) (b : R2 ⊗[F] E) : p1 R1 R2 (qq R1 R2 a b) = a := by
   unfold qq
@@ -75,7 +75,7 @@ theorem fst_pair (a : R1 ⊗[F] E) (b : R2 ⊗[F] E) : p1 R1 R2 (qq R1 R2 a b) =
   exact (crd R1).symm_apply_apply a
 
 /- English proof (translation)
-Unfold `qq`. Rewrite using `[snd_coordinates, LinearEquiv.apply_symm_apply]`. Conclude with `(crd R2).symm_apply_apply b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_pair (a : R1 ⊗[F] E) (b : R2 ⊗[F] E) : p2 R1 R2 (qq R1 R2 a b) = b := by
   unfold qq
@@ -83,7 +83,7 @@ theorem snd_pair (a : R1 ⊗[F] E) (b : R2 ⊗[F] E) : p2 R1 R2 (qq R1 R2 a b) =
   exact (crd R2).symm_apply_apply b
 
 /- English proof (translation)
-Apply `(crd (E := E) (R1 × R2)).injective` to reduce the goal to its premises. Unfold `qq`. Rewrite using `[LinearEquiv.apply_symm_apply, fst_coordinates, snd_coordinates, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qq_p (x : (R1 × R2) ⊗[F] E) : qq R1 R2 (p1 R1 R2 x) (p2 R1 R2 x) = x := by
   apply (crd (E := E) (R1 × R2)).injective
@@ -91,7 +91,7 @@ theorem qq_p (x : (R1 × R2) ⊗[F] E) : qq R1 R2 (p1 R1 R2 x) (p2 R1 R2 x) = x 
   rw [LinearEquiv.apply_symm_apply, fst_coordinates, snd_coordinates, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← qq_p R1 R2 x, ← qq_p R1 R2 y, h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_p {x y : (R1 × R2) ⊗[F] E} (h1 : p1 R1 R2 x = p1 R1 R2 y)
     (h2 : p2 R1 R2 x = p2 R1 R2 y) : x = y := by
@@ -100,7 +100,7 @@ theorem ext_p {x y : (R1 × R2) ⊗[F] E} (h1 : p1 R1 R2 x = p1 R1 R2 y)
 variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fst_conj_bis (x : (R1 × R2) ⊗[F] E) :
     p1 R1 R2 (sigR (R1 × R2) σ x) = sigR R1 σ (p1 R1 R2 x) := by
@@ -110,7 +110,7 @@ theorem fst_conj_bis (x : (R1 × R2) ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem snd_conj_alt (x : (R1 × R2) ⊗[F] E) :
     p2 R1 R2 (sigR (R1 × R2) σ x) = sigR R2 σ (p2 R1 R2 x) := by
@@ -130,7 +130,7 @@ Both sides reduce to the same expression.
 theorem snd_inclusion (e : E) : p2 R1 R2 (inclR (F := F) (R1 × R2) e) = inclR (F := F) R2 e := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, fst_conj_bis]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_fst_conj_transpose (P : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)) :
     (Formalism.UG.cT (sigR (R1 × R2) σ) P).map (p1 R1 R2) =
@@ -139,7 +139,7 @@ theorem map_fst_conj_transpose (P : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)
   simp [Formalism.UG.cT, fst_conj_bis]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, snd_conj_alt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_snd_conj_transpose (P : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)) :
     (Formalism.UG.cT (sigR (R1 × R2) σ) P).map (p2 R1 R2) =
@@ -148,14 +148,14 @@ theorem map_snd_conj_transpose (P : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)
   simp [Formalism.UG.cT, snd_conj_alt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `fst_inclusion R1 R2 (J i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_fst_form : (JR (F := F) (R1 × R2) J).map (p1 R1 R2) = JR (F := F) R1 J := by
   ext i j
   exact fst_inclusion R1 R2 (J i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `snd_inclusion R1 R2 (J i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_snd_form : (JR (F := F) (R1 × R2) J).map (p2 R1 R2) = JR (F := F) R2 J := by
   ext i j
@@ -165,21 +165,21 @@ def mlift (m : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) : Matrix (Fin M) (Fin M) ((
   Matrix.of fun i j => qq R1 R2 ((1 : Matrix (Fin M) (Fin M) (R1 ⊗[F] E)) i j) (m i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `fst_pair R1 R2 _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matrix_lift_fst (m : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) : (mlift R1 R2 m).map (p1 R1 R2) = 1 := by
   ext i j
   exact fst_pair R1 R2 _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `snd_pair R1 R2 _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matrix_lift_snd (m : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) : (mlift R1 R2 m).map (p2 R1 R2) = m := by
   ext i j
   exact snd_pair R1 R2 _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `ext_p R1 R2 (congrArg (· i j) h1) (congrArg (· i j) h2)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mext {P Q : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)} (h1 : P.map (p1 R1 R2) = Q.map (p1 R1 R2))
     (h2 : P.map (p2 R1 R2) = Q.map (p2 R1 R2)) : P = Q := by
@@ -187,7 +187,7 @@ theorem mext {P Q : Matrix (Fin M) (Fin M) ((R1 × R2) ⊗[F] E)} (h1 : P.map (p
   exact ext_p R1 R2 (congrArg (· i j) h1) (congrArg (· i j) h2)
 
 /- English proof (translation)
-Apply `mext` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, matrix_lift_fst, matrix_lift_fst, matrix_lift_fst, one_mul]`. Rewrite using `[Matrix.map_mul, matrix_lift_snd, matrix_lift_snd, matrix_lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mlift_mul (m m' : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) :
     mlift R1 R2 m * mlift R1 R2 m' = mlift R1 R2 (m * m') := by
@@ -196,7 +196,7 @@ theorem mlift_mul (m m' : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) :
   · rw [Matrix.map_mul, matrix_lift_snd, matrix_lift_snd, matrix_lift_snd]
 
 /- English proof (translation)
-Apply `mext` to reduce the goal to its premises. Rewrite using `[matrix_lift_fst, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[matrix_lift_snd, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mlift_one : mlift R1 R2 (1 : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) = 1 := by
   apply mext
@@ -208,9 +208,9 @@ def glift (u : GL (Fin M) (R2 ⊗[F] E)) : GL (Fin M) ((R1 × R2) ⊗[F] E) :=
     by rw [mlift_mul, u.mul_inv, mlift_one], by rw [mlift_mul, u.inv_mul, mlift_one]⟩
 
 /- English proof (translation)
-Establish `hg : HA.mat R2 σ J g ∈ HR R2 σ J` using `g.2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R2 σ) ((HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E))) * JR (F := F) R2 J * (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) = JR (F := F) R2 J at hg`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (R1 × R2) σ) (mlift R1 R2 (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E))) * JR (F := F) (R1 × R2) J * mlift R1 R2 (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) = JR (F := F) (R1 × R2) J`. Apply `mext` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_fst_conj_transpose, map_fst_form, matrix_lift_fst]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.one_apply]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_snd_conj_transpose, map_snd_form, matrix_lift_snd]`. Conclude with `hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glift_mem (g : HA R2 σ J) : glift R1 R2 (HA.mat R2 σ J g) ∈ HR (R1 × R2) σ J := by
   have hg : HA.mat R2 σ J g ∈ HR R2 σ J := g.2
@@ -243,9 +243,9 @@ theorem psiE_symm_eq :
     ⇑(psiE (F := F) (E := E) (M := M) R1 R2).symm = fun y i => qq R1 R2 (y.1 i) (y.2 i) := rfl
 
 /- English proof (translation)
-Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show p1 R1 R2 (Matrix.mulVec (mlift R1 R2 (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E))) x i) = p1 R1 R2 (x i)`. Rewrite using `[RingHom.map_mulVec, matrix_lift_fst, Matrix.one_mulVec]`. Both sides reduce to the same expression. Use `show p2 R1 R2 (Matrix.mulVec (mlift R1 R2 (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E))) x i) = Matrix.mulVec (HA.mat R2 σ J g : Matrix (Fin M) (Fin M) (R2 ⊗[F] E)) (fun k => p2 R1 R2 (x k)) i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[RingHom.map_mulVec, matrix_lift_snd]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem psi_lin (g : HA R2 σ J) (x : Fin M → (R1 × R2) ⊗[F] E) :
     psiE R1 R2 (lin (R1 × R2) σ J (lift R1 R2 σ J g) x) =

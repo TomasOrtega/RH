@@ -14,7 +14,7 @@ namespace Formalism.DworkPowerSeriesWeights
 open MvPolynomial
 
 /- English proof (translation)
-Unfold `minorProd`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma minorProd_map {R : Type u} [CommRing R] {σ τ : Type} {N0 N1 Cn : ℕ}
     (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R)
@@ -28,23 +28,21 @@ lemma minorProd_map {R : Type u} [CommRing R] {σ τ : Type} {N0 N1 Cn : ℕ}
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ N0 N1 Cn f hf hdet x hx p hp I`. Establish `hne : f.det ≠ 0`. Introduce `h`. Rewrite `hdet` using `[h, norm_zero]`. Conclude with `zero_ne_one hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : IsUnit f.det` using `isUnit_iff_ne_zero.mpr hne`. Set `X0 : Matrix (Fin N0) (Fin N0) K` to `Matrix.of x`. Set `γ : Matrix (Fin N0) (Fin N0) K` to `X0 * f⁻¹`. Establish `hγint : ∀ i k, ‖γ i k‖ ≤ 1`. Introduce `i k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖(X0 * f⁻¹) i k‖ ≤ 1`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hx i a) (norm_nonneg _) (norm_inv_entry_le_one f hf hdet a k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hγf : ∀ i a, (∑ k, γ i k * f k a) = x i a`. Introduce `i a`. Rewrite using `[← Matrix.mul_apply]`. Use `show (X0 * f⁻¹ * f) i a = x i a`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hunit, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Use `⟨minorProd (oldRowLow (N1 := N1) (fun i k => γ i k)) p hp I, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `minorProd_mem_opInt _ (fun i b => ?_) p hp I` and prove the remaining obligations. Unfold `oldRowLow`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `κ`. Rewrite using `[coeff_C_mul, coeff_X, norm_mul]`. Use `mul_le_one₀ (hγint i k) (norm_nonneg _) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[minorProd_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i b`. Unfold `oldRowLow`. Simplify using `only [map_sum, map_mul, aeval_X, algHom_C, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hγf i a, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Both sides reduce to the same expression.
-
-Introduce `mono hm a`. Conclude with `(monoShapeLow K N0 N1 N0 Cn (fun i k => γ i k) p hp I mono hm).2 a`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem one_row_bound : OneRow.{u} := by
   intro K _ _ N0 N1 Cn f hf hdet x hx p hp I
@@ -92,15 +90,13 @@ theorem one_row_bound : OneRow.{u} := by
     exact (monoShapeLow K N0 N1 N0 Cn (fun i k => γ i k) p hp I mono hm).2 a
 
 /- English proof (translation)
-Introduce `H _ _ TT c wt wt' f k b b' hcard hk hb hb' hc1 hc2 hwt hwt'`. Prove the components needed by the constructor for the conclusion. Establish `h1 : ∀ t, c t ≤ 4 * k * b' + (if t ∈ TT then 2 * b else 0)`. Introduce `t`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc2 t h`. Rewrite using `[add_zero]`. Conclude with `hc1 t h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : 0 ≤ f`. Establish `: (0 : ℝ) ≤ (Fintype.card H : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : 0 ≤ ∑ t, min (wt t) (wt' t)` using `Finset.sum_nonneg fun t _ => le_min (hwt t).1 (hwt' t)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (∑ t, min (wt t) (wt' t)) ≤ f * b'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[abs_mul, abs_neg, abs_of_nonneg (by linarith : 0 ≤ (k - 1) / 2), abs_of_nonneg h0]`.
-
-Establish `hfb : 0 ≤ f * b'` using `mul_nonneg hf hb'`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem base_size_bounds : SizesB := by
   intro H _ _ TT c wt wt' f k b b' hcard hk hb hb' hc1 hc2 hwt hwt'

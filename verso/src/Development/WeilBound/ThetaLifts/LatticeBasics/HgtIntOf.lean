@@ -11,15 +11,15 @@ open scoped Matrix TensorProduct NNReal
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Doubling GlobalTheory.WeilM Hgt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hY` and use `hgtEx_core hB hY (hK F E σ B n Y r s hB hY _ (isStab2_stab2 B))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hgtEx_of (hK : Stab2Cpt) : HgtEx := fun F E _ _ _ _ _ σ B n Y r s hB hY =>
   hgtEx_core hB hY (hK F E σ B n Y r s hB hY _ (isStab2_stab2 B))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e : t = g * t'` using `by rw [ht, ← Matrix.mul_assoc, hg, Matrix.one_mul] conv_rhs => rw [e, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, smul_smul]`. Rewrite using `[ht, Matrix.det_mul, map_mul]`. Use `congr 1`. Take the linear combination `(-(t.det * c t.det)) * hd`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[ht, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hgt.graph_alg {S ι : Type} [CommRing S] [Fintype ι] [DecidableEq ι] (c : S →+* S) {g g' t t' : Matrix ι ι S} (hg : g * g' = 1)
     (ht : t' = g' * t) (hd : g'.det * c g'.det = 1) :
@@ -33,23 +33,23 @@ theorem Hgt.graph_alg {S ι : Type} [CommRing S] [Fintype ι] [DecidableEq ι] (
   · rw [ht, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hY K a e hK ha he μ hμ`. Use `isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `t2Space_adeleRing' (F := F)` as an intermediate fact. Use `t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)` as an intermediate fact. Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul (AF F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (UA σ Y.J)` using `⟨rfl⟩`. Establish `cK` using `hC F E σ B n Y r s hB hY K hK`. Take `⟨⟨K', a', hK', ha', ca, a0⟩, e', ce, he'⟩` from `hgtEx_of hC F E σ B n Y r s hB hY`. Take `rfl : K = K'` from `Subgroup.ext fun k => (hK k).trans (hK' k).symm`. Take `rfl : a = a'` from `funext fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, t, hp, k, hk, rfl⟩` from `ha.iwa x`. Rewrite using `[ha.val p t hp k hk, ha'.val p t hp k hk]`. Take `rfl : e = e'` from `MonoidHom.ext fun x => Subtype.ext (Units.ext ((he x.1 x.2).trans (he' x.1 x.2).symm))`. Establish `cc : Continuous (cA (F` using `F) σ) := IsModuleTopology.continuous_of_linearMap (cA (F := F) σ).toLinearMap`. Set `T : G2 σ Y → Matrix (Fin n) (Fin n) (AE F E)` to `fun k => (mat2 k⁻¹ * diagCols (E := AE F E) (Fin n)).toRows₁`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T' : G2 σ Y → Matrix (Fin n) (Fin n) (AE F E)` to `fun k => (mat2 k⁻¹ * diagCols (E := AE F E) (Fin n)).toRows₂`. Establish `cm : Continuous fun k : G2 σ Y => (mat2 k⁻¹ * diagCols (E` using `AE F E) (Fin n)) := ((Units.continuous_val.comp continuous_subtype_val).comp continuous_inv).matrix_mul continuous_const`. Establish `cT : Continuous T` using `cm.matrix_submatrix _ _`. Establish `cT' : Continuous T'` using `cm.matrix_submatrix _ _`. Establish `: IsModuleTopology (AF F) (Matrix (Fin n) (Fin n) (AE F E))` using `inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin n → AE F E))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c` to `(Module.Free.chooseBasis (AF F) (Matrix (Fin n) (Fin n) (AE F E))).equivFun`. Take `⟨R, C, b, h1, h2, h3, h4⟩` from `count_ad (E := E) hB.cm.1 c (IsModuleTopology.continuous_of_linearMap c.toLinearMap) (IsModuleTopology.continuous_of_linearMap c.symm.toLinearMap) (UG (cA σ) (incM F Y.J)) (isClosed_eq (((Units.continuous_val.matrix_transpose).matrix_mul continuous_const).matrix_mul (Units.contin …`. Establish `key : ∀ g : UA σ Y.J, ∃ k ∈ K, ∃ t : GL (Fin n) (AE F E), a (e (1, g)) = absE F E (Matrix.GeneralLinearGroup.det t) ∧ T k = t.1 ∧ T' k = mat g⁻¹ * t.1` using `fun g => by`. Take `⟨p, t, hp, k, hk, h⟩` from `ha.iwa (e (1, g))`. Establish `e1 : k⁻¹ = e (1⁻¹, g⁻¹) * p` using `by rw [← Prod.inv_mk, map_inv, h]; group`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : (mat2 p * diagCols (E` using `AE F E) (Fin n)) = (diagCols (E := AE F E) (Fin n) * t.1) := hp`. Establish `e2 : (mat2 k⁻¹ * diagCols (E` using `AE F E) (Fin n)) = Matrix.fromRows t.1 (mat g⁻¹ * t.1) := by`. Rewrite using `[e1, show mat2 (e (1⁻¹, g⁻¹) * p) = mat2 (e (1⁻¹, g⁻¹)) * mat2 p from rfl, Matrix.mul_assoc, hp', he, inv_one, show mat (1 : UA σ Y.J) = 1 from rfl, diagCols, Matrix.fromRows_mul, Matrix.fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Conclude with `⟨k, hk, t, by rw [h, ha.val p t hp k hk], congrArg Matrix.toRows₁ e2, congrArg Matrix.toRows₂ e2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `integrable_of_count μ (ca.comp (ce.comp (Continuous.prodMk_right 1))).measurable (fun g => a0 _) (R := R) h1 (fun g => ?_) h2 b fun j => (measure_mono fun g hg => ?_).trans (h4 j)` and prove the remaining obligations. Take `⟨k, hk, t, e1, e2, -⟩` from `key g`. Conclude with `e1.trans_le (h3 _ ⟨k, hk, congrArg (fun x => Algebra.norm (AF F) (Matrix.det x)) e2⟩)`. Take `⟨k, hk, t, e1, e2, e3⟩` from `key g`. Establish `hd : (mat g⁻¹).det * (cA σ).toRingHom (mat g⁻¹).det = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.det (show (mat g⁻¹)ᵀ * incM F Y.J * (mat g⁻¹).map (cA σ) = incM F Y.J from (g⁻¹).2)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, show ((mat g⁻¹).map (cA σ)).det = (cA σ).toRingHom (mat g⁻¹).det from ((cA σ).toRingHom.map_det _).symm]`. Use `(isUnit_det_JR (R := AF F) (det_ne hY)).mul_left_cancel ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(incM F Y.J).det * _ = (incM F Y.J).det * _`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨q1, q2⟩` from `Hgt.graph_alg (cA σ).toRingHom (g := mat g) g.1.mul_inv e3 hd`. Establish `q : ∀ X : Matrix (Fin n) (Fin n) (AE F E), Algebra.norm (AF F) t.1.det • X = (t.1.det * (cA σ).toRingHom t.1.det) • X` using `fun X => by rw [← algebraMap_smul (AE F E), algebraMap_norm_eq hB.cm, ← cA_eq]; rfl`. Apply the tactic sequence `refine ⟨Matrix.GeneralLinearGroup.det t, ⟨k, hk, congrArg (fun x => Algebra.norm (AF F) (Matrix.det x)) e2⟩, e1 ▸ hg, .inl ⟨k, hk, Eq.symm ((q _).trans (q1.trans ?_))⟩, .inr ⟨k, hk, Eq.symm ((q _).trans (q2.trans ?_))⟩⟩ <;> rw [← e2] <;> rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hgtInt_of (hC : Stab2Cpt) : HgtInt := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY K a e hK ha he μ hμ

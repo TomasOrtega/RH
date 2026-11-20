@@ -23,7 +23,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by change φ (γ * x * α.gl g) = φ (x * α.gl g) rw [mul_assoc, h.1 γ hγ], h.2.comp (continuous_mul_right _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_mem_CA {A : HSp D} (α : Frame p A n) (g : GL n k) {φ : GA D A → ℂ} (h : φ ∈ CA A) : α.rep g φ ∈ CA A :=
   ⟨fun γ hγ x => by

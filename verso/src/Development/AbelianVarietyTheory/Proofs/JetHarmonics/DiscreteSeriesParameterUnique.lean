@@ -14,13 +14,13 @@ namespace DSInequiv
 open PI.DSInfCharCap
 
 /- English proof (translation)
-Establish `key : ∀ (a b : Fin n → ℝ), (∀ Y : ℂ, Formalism.QuantumDeterminants.capP (fun s => (a s : ℂ)) Y = Formalism.QuantumDeterminants.capP (fun s => (b s : ℂ)) Y) → Set.range a ⊆ Set.range b`. Introduce and unpack `a b e _ ⟨s, rfl⟩`. Establish `h0 : Formalism.QuantumDeterminants.capP (fun s => (a s : ℂ)) (-(a s : ℂ)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ s) (by simp)`. Rewrite `h0` using `[e]`. Take `⟨t, -, ht⟩` from `Finset.prod_eq_zero_iff.mp h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: (b t : ℂ) = (a s : ℂ)` using `by linear_combination ht`. Conclude with `this` after adjusting the coercions. Establish `hr : Set.range mu = Set.range mu'` using `Set.Subset.antisymm (key _ _ e) (key _ _ fun Y => (e Y).symm)`. Establish `h1 : StrictMono (fun s => -mu s)` using `fun a b hab => neg_lt_neg (h hab)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : StrictMono (fun s => -mu' s)` using `fun a b hab => neg_lt_neg (h' hab)`. Establish `hr' : Set.range (fun s => -mu s) = Set.range (fun s => -mu' s)`. Use `congrArg (fun S => Neg.neg '' S) hr` as an intermediate fact. Simplify using `only [← Set.range_comp] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(h1.range_inj h2).mp hr'` as an intermediate fact. Use function extensionality and compare the values at `s`. Conclude with `neg_injective (congrFun this s)`.
+A detailed English derivation is pending.
 -/
 lemma eq_of_capP {n : ℕ} (mu mu' : Fin n → ℝ) (h : StrictAnti mu) (h' : StrictAnti mu')
     (e : ∀ Y : ℂ, Formalism.QuantumDeterminants.capP (fun s => (mu s : ℂ)) Y = Formalism.QuantumDeterminants.capP (fun s => (mu' s : ℂ)) Y) :
@@ -59,9 +59,9 @@ def toReal (V : H ≃L[ℂ] H') : H ≃L[ℝ] H' :=
     continuous_invFun := V.symm.continuous }
 
 /- English proof (translation)
-Unfold `PI.PhMeasCore.dsig`. Establish `e : (fun t : ℝ => τ' (NormedSpace.exp ((t : ℂ) • X)) (V v)) = (toReal V) ∘ (fun t : ℝ => τ (NormedSpace.exp ((t : ℂ) • X)) v)`. Use function extensionality and compare the values at `t`. Conclude with `(hV _ (Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t) v).symm`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `deriv`. Rewrite using `[ContinuousLinearEquiv.comp_fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma dsig_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, V (τ g x) = τ' g (V x))
     (X : Matrix (Fin n) (Fin n) ℂ) (hX : Formalism.REAL.inG ε X) (v : H) :
@@ -77,11 +77,11 @@ lemma dsig_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → 
   rfl
 
 /- English proof (translation)
-Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `hH` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `hJ'` using `Formalism.REAL.f1alg_JJ_left ε`. Unfold `dsigC`. Rewrite using `[map_add, map_smul, dsig_equiv V hV, dsig_equiv V hV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.REAL.f1alg_inG_iff]`. Establish `hs : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`. Simplify using `[Complex.conj_I]`. Simplify using `only [thetaJ, conjTranspose_smul, hs, conjTranspose_sub, conjTranspose_neg, conjTranspose_mul, hH, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, hJ, hJ', Matrix.mul_one]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.REAL.f1alg_inG_iff]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Simplify using `only [thetaJ, conjTranspose_smul, hs, conjTranspose_add, conjTranspose_neg, conjTranspose_mul, hH, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, hJ, hJ', Matrix.mul_one]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dsigC_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, V (τ g x) = τ' g (V x))
     (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) : V (dsigC ε τ Y v) = dsigC ε τ' Y (V v) := by
@@ -105,7 +105,7 @@ lemma dsigC_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g →
     module
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons Y w ih => simp only [dsigCW]`. Rewrite using `[dsigC_equiv V hV, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma dsigCW_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, V (τ g x) = τ' g (V x))
     (w : List (Matrix (Fin n) (Fin n) ℂ)) (v : H) : V (dsigCW ε τ w v) = dsigCW ε τ' w (V v) := by
@@ -114,7 +114,7 @@ lemma dsigCW_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g �
   | cons Y w ih => simp only [dsigCW]; rw [dsigC_equiv V hV, ih]
 
 /- English proof (translation)
-Unfold `actU Finsupp.sum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, dsigCW_equiv V hV]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma actU_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, V (τ g x) = τ' g (V x))
     (p : FreeAlgebra ℂ (Fin n × Fin n)) (v : H) : V (actU ε τ p v) = actU ε τ' p (V v) := by
@@ -126,7 +126,7 @@ lemma actU_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hm, hF, hE⟩` from `hv g₀ hg₀`. Use `⟨U, fun g => V (F g), hU, hm, ?_, fun g hg hg' => ?_⟩` and prove the remaining obligations. Conclude with `((toReal V).contDiff).comp_contDiffOn hF`. Conclude with `(hV g hg' v).symm.trans (congrArg V (hE g hg hg'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma smooth_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, V (τ g x) = τ' g (V x))
     {v : H} (hv : v ∈ PI.PhMeasCore.smoothVecs (Formalism.REAL.Jm ε) τ) :
@@ -138,13 +138,11 @@ lemma smooth_equiv (V : H ≃L[ℂ] H') (hV : ∀ g, Formalism.REAL.inUJ ε g �
   · exact (hV g hg' v).symm.trans (congrArg V (hE g hg hg'))
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hmem : ∀ g : Matrix (Fin n) (Fin n) ℂ, gᴴ * A * g = A → PI.UpqRep.inUH B (P⁻¹ * g * P)`. Introduce `g hg`. Unfold `PI.UpqRep.inUH`. Establish `h1 : P * (P⁻¹ * g * P) = g * P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hA, conjTranspose_mul P]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Pᴴ * (gᴴ * A * g) * P := by rw [h1, conjTranspose_mul]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `_ = B := by rw [hg, hA]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun g => P⁻¹ * g * P map_add' := fun a b => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c a => by simp }`. Set `L'` to `LinearMap.toContinuousLinearMap L`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hm, hF, hE⟩` from `hv _ (hmem g₀ hg₀)`.
-
-Use `⟨L' ⁻¹' U, F ∘ L', hU.preimage L'.continuous, hm, hF.comp_continuousLinearMap L', fun g hg hg' => ?_⟩` and prove the remaining obligations. Conclude with `hE _ hg (hmem g hg')`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma smooth_conj {A B P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hA : Pᴴ * A * P = B) {v : H}
     (hv : PI.UpqRep.SmoothOnH B (fun g => τ g v)) :
@@ -171,7 +169,7 @@ lemma smooth_conj {A B P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hA : P�
   exact hE _ hg (hmem g hg')
 
 /- English proof (translation)
-Use `eq_of_capP mu mu' hm.1 hm'.1 fun Y => ?_` and prove the remaining obligations. Establish `e1` using `hc n ε mu H τ hm h v hv Y`. Establish `e2` using `hc n ε mu' H' τ' hm' h' (V v) (smooth_equiv V hV hv) Y`. Rewrite `e2` using `[← actU_equiv V hV, e1, map_smul]`. Conclude with `smul_left_injective ℂ (by simpa using h0) e2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_of_equiv (hc : DSInfCharCap) {mu mu' : Fin n → ℝ} (hm : Formalism.QuantumDeterminants.IsHCParam mu)
     (hm' : Formalism.QuantumDeterminants.IsHCParam mu') (h : PI.UpqRep.IsDS ε mu τ) (h' : PI.UpqRep.IsDS ε mu' τ')
@@ -184,7 +182,7 @@ lemma eq_of_equiv (hc : DSInfCharCap) {mu mu' : Fin n → ℝ} (hm : Formalism.Q
   exact smul_left_injective ℂ (by simpa using h0) e2
 
 /- English proof (translation)
-Use `show (a * b)ᴴ * PI.UpqRep.Jm ε * (a * b) = PI.UpqRep.Jm ε`. Establish `ha' : aᴴ * PI.UpqRep.Jm ε * a = PI.UpqRep.Jm ε` using `ha`. Establish `hb' : bᴴ * PI.UpqRep.Jm ε * b = PI.UpqRep.Jm ε` using `hb`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ PI.UpqRep.UJset ε) (hb : b ∈ PI.UpqRep.UJset ε) :
     a * b ∈ PI.UpqRep.UJset ε := by
@@ -195,9 +193,7 @@ lemma inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ PI.UpqRep.UJset ε
     _ = _ := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det Q).mp hQ`. Use `show (P * Q⁻¹)ᴴ * PI.UpqRep.Jm ε * (P * Q⁻¹) = PI.UpqRep.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP, ← hQ', conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cayley_quot {B P Q : Matrix (Fin n) (Fin n) ℂ} (hQ : IsUnit Q) (hP : Pᴴ * PI.UpqRep.Jm ε * P = B)
     (hQ' : Qᴴ * PI.UpqRep.Jm ε * Q = B) : P * Q⁻¹ ∈ PI.UpqRep.UJset ε := by
@@ -211,17 +207,17 @@ lemma cayley_quot {B P Q : Matrix (Fin n) (Fin n) ℂ} (hQ : IsUnit Q) (hP : P�
 end
 
 /- English proof (translation)
-Take `⟨S, hfin, hst, -, ⟨v, hvS, hv0, -⟩, -⟩` from `h.2.2.2.2.2.1`. Use `⟨v, ⟨S, hfin, hvS, ?_⟩, hv0⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hg, hgu⟩ x hx`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `hPP : star P * P = 1` using `Unitary.star_mul_self_of_mem hP.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP' : P * star P = 1` using `Unitary.mul_star_self_of_mem hP.2`. Establish `hinv : P⁻¹ = star P` using `Matrix.inv_eq_left_inv hPP`. Establish `hgu' : g ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hgu`. Establish `hu : P * g * star P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `Submonoid.mul_mem _ (Submonoid.mul_mem _ hP.2 hgu') (Unitary.star_mem hP.2)`. Establish `hJ : (P * g * star P)ᴴ * PI.UpqRep.Jm ε * (P * g * star P) = PI.UpqRep.Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : gᴴ * PI.UpqRep.Hpk k r * g = PI.UpqRep.Hpk k r` using `hg`. Establish `hc` using `hP.1.2`. Rewrite `hPP'`, the goal using `[Matrix.star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (P * Pᴴ) * PI.UpqRep.Jm ε * (P * Pᴴ) := by`. Rewrite using `[hc, hg', ← hc]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hPP']; simp`. Establish `hK : P * g * star P ∈ PI.UpqRep.Kset ε`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hu, ?_⟩` and prove the remaining obligations. Establish `h1 : (P * g * star P) * (P * g * star P)ᴴ = 1` using `Unitary.mul_star_self_of_mem hu`. Generalize the expression as in `P * g * star P = m at hJ h1`. Combine the equalities or inequalities in the displayed calculation. Use `hst _ hK x hx` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : P⁻¹ * (P * g * star P) * P = g`. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Simplify `this` using `only [e]`.
+Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_kfin {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} (R : Rep k r)
     {P : Mx k r} (hP : PI.UpqRep.IsCayleyU k r ε P) (h : PI.UpqRep.IsDS ε mu (fun g => R.σ (P⁻¹ * g * P))) :
@@ -260,23 +256,23 @@ lemma exists_kfin {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 *
   simpa only [e] using this
 
 /- English proof (translation)
-Introduce `hy k r ε mu mu' R R' hR hR' U hU`. Take `⟨hm, P, hP, h⟩` from `hR`. Take `⟨hm', Q, hQ, h'⟩` from `hR'`. Take `⟨v, hv, hv0⟩` from `exists_kfin R hP h`. Establish `hs` using `hy.1.2.2.1 k r ε mu R.H R.σ hm ⟨P, hP, h⟩ v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs'` using `smooth_conj (A := Formalism.REAL.Jm ε) hP.1.1 hP.1.2 hs`. Establish `hdP` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `hdQ` using `(Matrix.isUnit_iff_isUnit_det Q).mp hQ.1.1`. Establish `p1` using `Matrix.mul_nonsing_inv _ hdP`. Establish `q1` using `Matrix.mul_nonsing_inv _ hdQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `Matrix.nonsing_inv_mul _ hdP`. Establish `q2` using `Matrix.nonsing_inv_mul _ hdQ`. Establish `p3 : ∀ B : Mx k r, P⁻¹ * (P * B) = B` using `fun B => by rw [← Matrix.mul_assoc, p2, Matrix.one_mul]`. Establish `q3 : ∀ B : Mx k r, Q⁻¹ * (Q * B) = B` using `fun B => by rw [← Matrix.mul_assoc, q2, Matrix.one_mul]`. Establish `p4 : ∀ B : Mx k r, P * (P⁻¹ * B) = B` using `fun B => by rw [← Matrix.mul_assoc, p1, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `cayley_quot hQ.1.1 hP.1.2 hQ.1.2`. Establish `hb` using `cayley_quot hP.1.1 hQ.1.2 hP.1.2`. Take `⟨⟨hone, hmul⟩, -⟩` from `h'.2.2.1`. Use `set τ' : Mx k r → (R'.H →L[ℂ] R'.H) := fun g => R'.σ (Q⁻¹ * g * Q) with hτ'`. Establish `hmul' : ∀ a ∈ PI.UpqRep.UJset ε, ∀ b ∈ PI.UpqRep.UJset ε, ∀ x, τ' a (τ' b x) = τ' (a * b) x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb x`. Rewrite using `[hmul a ha b hb]`. Both sides reduce to the same expression. Establish `hab : (P * Q⁻¹) * (Q * P⁻¹) = 1` using `by simp only [Matrix.mul_assoc, q3, p1]`. Establish `hba : (Q * P⁻¹) * (P * Q⁻¹) = 1` using `by simp only [Matrix.mul_assoc, p3, q1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : R'.H ≃L[ℂ] R'.H` to `ContinuousLinearEquiv.equivOfInverse (τ' (P * Q⁻¹)) (τ' (Q * P⁻¹)) (fun x => by rw [hmul' _ hb _ ha, hba, hone]; rfl) (fun x => by rw [hmul' _ ha _ hb, hab, hone]; rfl)`. Use `eq_of_equiv hy.2.2.1 hm hm' h h' (U.toContinuousLinearEquiv.trans A) ?_ hs' hv0` and prove the remaining obligations. Introduce `g hg x`. Establish `hg' : g ∈ PI.UpqRep.UJset ε` using `hg`. Establish `hG : P⁻¹ * g * P ∈ GG k r` using `by show (P⁻¹ * g * P)ᴴ * PI.UpqRep.Hpk k r * (P⁻¹ * g * P) = PI.UpqRep.Hpk k r`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgg : gᴴ * PI.UpqRep.Jm ε * g = PI.UpqRep.Jm ε` using `hg`. Establish `hc` using `hP.1.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hc, conjTranspose_mul P]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = Pᴴ * (gᴴ * PI.UpqRep.Jm ε * g) * P := by`. Simplify using `only [Matrix.mul_assoc, p4, conjTranspose_mul g]`. Use `_ = _ := by rw [hgg, hc]`. Use `show τ' (P * Q⁻¹) (U (R.σ (P⁻¹ * g * P) x)) = τ' g (τ' (P * Q⁻¹) (U x))`. Establish `e : R'.σ (P⁻¹ * g * P) = τ' (Q * P⁻¹ * g * (P * Q⁻¹))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [hτ', Matrix.mul_assoc, q3, q2, Matrix.mul_one]`. Rewrite using `[hU _ hG, e, hmul' _ ha _ (inUJ_mul (inUJ_mul hb hg') ha), hmul' _ hg' _ ha]`. Use `congr 2`. Simplify using `only [Matrix.mul_assoc, q3, p4]`.
+A detailed English derivation is pending.
 -/
 theorem param_eq_of_equiv : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (mu' : Fin (2 * r + k + 1) → ℝ) (R R' : Rep k r), R.IsDS ε mu → R'.IsDS ε mu' → ∀ U : R.H ≃ₗᵢ[ℂ] R'.H, (∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x)) → mu = mu' := by
   intro hy k r ε mu mu' R R' hR hR' U hU

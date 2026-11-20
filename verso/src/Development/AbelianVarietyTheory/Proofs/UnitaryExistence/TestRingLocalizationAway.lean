@@ -10,13 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ p g`. Take `⟨h1, h2⟩` from `reduced_finiteType_iff_testRing K`. Take `⟨hft, hred⟩` from `h2 p`. Establish `hft1 : Algebra.FiniteType p.R (Localization.Away g)` using `IsLocalization.finiteType_of_monoid_fg (Submonoid.powers g) _`. Establish `hft' : Algebra.FiniteType K (Localization.Away g)` using `Algebra.FiniteType.trans hft hft1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred' : IsReduced (Localization.Away g)` using `isReduced_localizationPreserves (Submonoid.powers g) _ hred`. Take `⟨p', ⟨e⟩⟩` from `h1 (Localization.Away g) hft' hred'`. Use `⟨p', e.symm.toAlgHom.comp (IsScalarTower.toAlgHom K p.R (Localization.Away g)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away g) g).map e.symm`. Introduce `T _ _ ψ hψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : ∀ y : Submonoid.powers g, IsUnit (ψ y)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hψ.pow n`. Use `⟨(IsLocalization.liftAlgHom (M := Submonoid.powers g) (S := Localization.Away g) (f := ψ) hu).comp e.toAlgHom, ?_⟩` and prove the remaining obligations. Apply `AlgHom.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using `[IsLocalization.liftAlgHom]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem testRing_localizationAway :
     ∀ (K : Type) [Field K] (p : TRing K) (g : p.R), ∃ (p' : TRing K) (lam : p.R →ₐ[K] p'.R), IsUnit (lam g) ∧ ∀ (T : Type) [CommRing T] [Algebra K T] (ψ : p.R →ₐ[K] T), IsUnit (ψ g) → ∃ k : p'.R →ₐ[K] T, k.comp lam = ψ := by

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.FockTranslate
 
 /- English proof (translation)
-Establish `h6 : (Formalism.L2.Theta.mt V g).map (Formalism.L2.Theta.infPart D) = 1` using `congrArg Units.val (show Formalism.L2.Theta.infHom V g = 1 from hg)`. Unfold `Formalism.IndefR.Datum.compAt`. Rewrite using `[show (Formalism.L2.Theta.mt V g).map (fun a => θ τ (Formalism.L2.Theta.infPart D a)) = ((Formalism.L2.Theta.mt V g).map (Formalism.L2.Theta.infPart D)).map (θ τ) from (Matrix.map_map).symm, h6]`. Conclude with `Matrix.map_one _ (θ τ).map_zero (θ τ).map_one`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_fin {D : D7} (θ : InfFam D) (τ : D.what₂.Tau) {V : HSp D} (g : GA D V) (hg : g ∈ Formalism.L2.Theta.GfC V) :
     Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V g) = 1 := by
@@ -23,11 +23,11 @@ theorem compAt_fin {D : D7} (θ : InfFam D) (τ : D.what₂.Tau) {V : HSp D} (g 
   exact Matrix.map_one _ (θ τ).map_zero (θ τ).map_one
 
 /- English proof (translation)
-Introduce `D T L sc G W B t j hj f hf a k₁ b k₂`. Establish `hom` using `W.om_is (.top t j) hj`. Establish `hcomm : ∀ P, W.om (.top t j) ((k₁ : GA D (G.V (.top j))), (k₂ : GA D (G.V (.top (j + 1))))) (fockIn W B (.top t j) f P) = fockIn W B (.top t j) (W.om (.top t j) ((k₁ : GA D (G.V (.top j))), (k₂ : GA D (G.V (.top (j + 1))))) f) P`. Introduce `P`. Unfold `fockIn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `Formalism.IndefR.Eqv.KerDiag.comm_pureTensorO W.ψ_std W.θ W.θ_is _ _ _ _ _ (fun τ z g hg => ?_) hf P` and prove the remaining obligations. Rewrite using `[GlobalTheory.OrientedHeis.om_dRho hom W.θ_is _ _ τ z hg, compAt_fin W.θ τ _ k₂.2, compAt_fin W.θ τ _ (inv_mem k₁.2), Matrix.one_mul, Matrix.mul_one]`. Unfold `fockComp`. Use `congr 1`. Use function extensionality and compare the values at `M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `jetTab kerFin GridData.Weil.ker`. Simplify using `only [GridData.toPair, thetaKO, Subgroup.coe_mul]`. Rewrite using `[show ((a : GA D (G.V (.top j))) * k₁, (b : GA D (G.V (.top (j + 1)))) * k₂) = ((a : GA D (G.V (.top j))), (b : GA D (G.V (.top (j + 1))))) * ((k₁ : GA D (G.V (.top j))), (k₂ : GA D (G.V (.top (j + 1))))) from rfl, map_mul, Module.End.mul_apply, hcomm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem fockComp_translate : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : VertexFrames G) (t : T) (j : ℕ),
     j + 1 ≤ D.R.m → ∀ (f : WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) → ℂ),

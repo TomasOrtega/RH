@@ -30,13 +30,13 @@ def LatRetract : Prop :=
       ∀ G ∈ Submodule.span O (Set.range b'), ret G ∈ Submodule.span O (Set.range b)
 
 /- English proof (translation)
-Establish `hx : algebraMap O (KK O) z ≠ 0`. Simplify using `using (IsFractionRing.injective O (KK O)).ne hz`. Establish `key : ∀ ab : O × nonZeroDivisors O, algebraMap O (KK O) z * algebraMap O (KK O) (ab.2 : O) = algebraMap O (KK O) ab.1 → ((IsDiscreteValuationRing.addVal O ab.1).toNat : ℤ) - (IsDiscreteValuationRing.addVal O (ab.2 : O)).toNat = (IsDiscreteValuationRing.addVal O z).toNat`. Introduce and unpack `⟨a, b, hb⟩ h`. Establish `hb0 : (b : O) ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h' : z * b = a` using `IsFractionRing.injective O (KK O) (by simpa using h)`. Substitute `h'` using the available equality. Simplify using `only`. Rewrite using `[AddValuation.map_mul]`. Establish `t1 : IsDiscreteValuationRing.addVal O z ≠ ⊤`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `hz` using `[IsDiscreteValuationRing.addVal_eq_top_iff]`. Establish `t2 : IsDiscreteValuationRing.addVal O b ≠ ⊤`. Simplify `hb0` using `[IsDiscreteValuationRing.addVal_eq_top_iff]`. Rewrite using `[ENat.toNat_add t1 t2]`. Use `push_cast`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `ordW`. Rewrite using `[if_neg hx]`. Conclude with `congrArg _ (key _ (Classical.choose_spec (ordW._proof_1 (algebraMap O (KK O) z))))`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordW_alg_lemma {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (z : O)
     (hz : z ≠ 0) :
@@ -65,7 +65,7 @@ private theorem ordW_alg_lemma {O : Type*} [CommRing O] [IsDomain O] [IsDiscrete
   exact congrArg _ (key _ (Classical.choose_spec (ordW._proof_1 (algebraMap O (KK O) z))))
 
 /- English proof (translation)
-Use `⟨0, ?_, by simpa using hD⟩` and prove the remaining obligations. Unfold `vO vK`. Rewrite using `[ordW_alg_lemma (1 : O) one_ne_zero]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vLEO_one {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {D : ℝ} (hD : 0 ≤ D) :
     vLEO p (1 : O) D := by
@@ -75,11 +75,11 @@ theorem vLEO_one {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   simp
 
 /- English proof (translation)
-Take `⟨q1, e1, l1⟩` from `v1`. Take `⟨q2, e2, l2⟩` from `v2`. Rewrite `e1` using `[vO_eq h1]`. Rewrite `e2` using `[vO_eq h2]`. Establish `e1'` using `WithTop.coe_injective e1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2'` using `WithTop.coe_injective e2`. Establish `hv1 : IsDiscreteValuationRing.addVal O z1 ≠ ⊤` using `fun h => h1 (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`. Establish `hv2 : IsDiscreteValuationRing.addVal O z2 ≠ ⊤` using `fun h => h2 (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`. Use `⟨q1 + q2, ?_, by push_cast; linarith⟩` and prove the remaining obligations. Rewrite using `[vO_eq (mul_ne_zero h1 h2), IsDiscreteValuationRing.addVal_mul, ENat.toNat_add hv1 hv2, ← e1', ← e2']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vLEO_mul {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {z1 z2 : O}
     (h1 : z1 ≠ 0) (h2 : z2 ≠ 0) {D1 D2 : ℝ} (v1 : vLEO p z1 D1) (v2 : vLEO p z2 D2) :
@@ -99,7 +99,7 @@ theorem vLEO_mul {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   ring
 
 /- English proof (translation)
-Use `right`. Use `⟨fun k => x ((Fintype.equivFin ι).symm k), fun k => y ((Fintype.equivFin ι).symm k), fun k => hx _, fun k => hy _, z, 1, hz, hv, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `[Matrix.one_apply, h, (Fintype.equivFin ι).symm.injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factorsLE_of_fintype {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [AddCommGroup V] [Module O V] [AddCommGroup V'] [Module O V'] (p : ℕ) (be : V → V' → Kf)
@@ -114,7 +114,7 @@ theorem factorsLE_of_fintype {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDi
   simp [Matrix.one_apply, h, (Fintype.equivFin ι).symm.injective.eq_iff]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `⟨(w ^ (c - c')) • m, M.smul_mem _ hm, ?_⟩` and prove the remaining obligations. Simplify using `only [zpow_natCast, LinearMap.coe_restrictScalars, LinearMap.lsmul_apply]`. Rewrite using `[← algebraMap_smul Kf (w ^ (c - c')) m, smul_smul, map_pow, ← pow_add, Nat.add_sub_cancel' h]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_anti {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] (w : O) {c c' : ℕ} (h : c' ≤ c) (M : Submodule O X) :
@@ -129,7 +129,7 @@ section Clean
 variable {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ)
 
 /- English proof (translation)
-Unfold `CCL`. Conclude with `inf_le_inf_left _ (iInf_mono fun e' => iInf_mono fun _ => scale_anti R.w h _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem CCL_anti_c {c c' : ℕ} (h : c' ≤ c) (t : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     CCL R lam0 t c e ≤ CCL R lam0 t c' e := by
@@ -137,9 +137,9 @@ theorem CCL_anti_c {c c' : ℕ} (h : c' ≤ c) (t : ℕ) (e : Edge R.W R.Qq (m +
   exact inf_le_inf_left _ (iInf_mono fun e' => iInf_mono fun _ => scale_anti R.w h _)
 
 /- English proof (translation)
-Break down `h with rfl | ⟨x, y, hx, hy, z, M, hz, hv, hM⟩` into its components or cases. Conclude with `⟨Fin.elim0, Fin.elim0, 1, fun i => i.elim0, fun i => i.elim0, one_ne_zero, vLEO_one hD, fun i => i.elim0⟩`. Use `⟨x, fun j => ∑ l, M l j • y l, z, hx, fun j => A'.sum_mem fun l _ => A'.smul_mem _ (hy l), hz, hv, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[← hM i j]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [be, LinearMap.sum_apply, LinearMap.smul_apply, Algebra.smul_def, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wit_of_factors {A : Submodule R.O (Vsp R.Kf lam0)} {A' : Submodule R.O (Module.Dual R.Kf (Vsp R.Kf lam0))}
     {n : ℕ} {D : ℝ} (hD : 0 ≤ D) (h : FactorsLE p (be (Kf := R.Kf) p 1 lam0) A A' n D) :
@@ -156,9 +156,9 @@ theorem wit_of_factors {A : Submodule R.O (Vsp R.Kf lam0)} {A' : Submodule R.O (
     simp only [be, LinearMap.sum_apply, LinearMap.smul_apply, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `hG' : ∀ k k', ((p : R.Kf) ^ Ar 1 lam0) * v k' (u k) = algebraMap R.O R.Kf (G k k')`. Introduce `k k'`. Rewrite using `[← hG k k']`. Simplify using `only [be, map_smul, smul_eq_mul]`. Unfold `be`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Matrix.mul_apply, map_mul, smul_eq_mul, Algebra.smul_def, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k' _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hG' k k']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem be_mat {α β γ δ : Type*} [Fintype β] [Fintype γ] (u : β → Vsp R.Kf lam0)
     (v : γ → Module.Dual R.Kf (Vsp R.Kf lam0)) (G : Matrix β γ R.O)

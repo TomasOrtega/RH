@@ -148,9 +148,9 @@ def IsFracImage {O : Type} [CommRing O] (β : O →+* c.F) : Prop :=
   ∀ x : c.F, ∃ a s : O, β s ≠ 0 ∧ x * β s = β a
 
 /- English proof (translation)
-Introduce `x`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `⟨0, 1, by simp, by simp⟩`. Break down `(c.V W).mem_or_inv_mem x with h | h` into its components or cases. Conclude with `⟨⟨x, h⟩, 1, by simp, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, ⟨x⁻¹, h⟩, by simpa using hx, by simpa using mul_inv_cancel₀ hx⟩`.
+Supply the required witnesses or components.
 -/
 lemma isFracImage_V (W : ValuationSubring ℂ) : IsFracImage (c.V W).subtype := by
   intro x
@@ -161,7 +161,7 @@ lemma isFracImage_V (W : ValuationSubring ℂ) : IsFracImage (c.V W).subtype := 
   · exact ⟨1, ⟨x⁻¹, h⟩, by simpa using hx, by simpa using mul_inv_cancel₀ hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨a, s, hs, hx⟩` from `h x`. Establish `h1 : gam x * gam (β s) = gam' x * gam (β s)`. Rewrite using `[← map_mul, hx, hgam a, hgam s, ← map_mul, hx]`. Conclude with `mul_right_cancel₀ ((map_ne_zero gam).mpr hs) h1`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IsFracImage.ext {O K : Type} [CommRing O] [Field K] {β : O →+* c.F} (h : IsFracImage β)
     {gam gam' : c.F →+* K} (hgam : ∀ x, gam (β x) = gam' (β x)) : gam = gam' := by
@@ -212,27 +212,27 @@ variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β :
   {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
 
 /- English proof (translation)
-The claim follows from `x.frac.ext fun a => by rw [x.gam_over, x'.gam_over]`.
+A detailed English derivation is pending.
 -/
 lemma gam_unique (x x' : ArcInput D c β O' b) : x.gam = x'.gam :=
   x.frac.ext fun a => by rw [x.gam_over, x'.gam_over]
 
 /- English proof (translation)
-Rewrite using `[← x.gam_over]`. Use `congr 1`. Conclude with `Subtype.ext hr.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma gam_rt (x : ArcInput D c β O' b) (r : O) (hr : ((β r : c.F) : ℂ) = H.rt0) :
     x.gam (coeffRt c) = algebraMap O' (FractionRing O') (b r) := by
   rw [← x.gam_over]; congr 1; exact Subtype.ext hr.symm
 
 /- English proof (translation)
-Rewrite using `[← x.gam_over]`. Use `congr 1`. Conclude with `Subtype.ext hz.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma gam_zeta (x : ArcInput D c β O' b) (z : O) (hz : ((β z : c.F) : ℂ) = zeta l.A) :
     x.gam (coeffZeta c) = algebraMap O' (FractionRing O') (b z) := by
   rw [← x.gam_over]; congr 1; exact Subtype.ext hz.symm
 
 /- English proof (translation)
-The claim follows from `x.gam.charZero_iff x.gam.injective |>.mp inferInstance`.
+A detailed English derivation is pending.
 -/
 lemma charZero (x : ArcInput D c β O' b) : CharZero (FractionRing O') :=
   x.gam.charZero_iff x.gam.injective |>.mp inferInstance

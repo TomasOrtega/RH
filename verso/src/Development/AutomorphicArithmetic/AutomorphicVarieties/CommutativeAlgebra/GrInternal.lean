@@ -3,39 +3,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O X R _ _ _ _ _ W`. Establish `hhom` using `W.homog`. Unfold `IsHomog at hhom`. Establish `hK : ∀ (j : X) (f g : MvPowerSeries W.σ O), W.π f = W.π g → W.π (wcomp O W.wt j f) = W.π (wcomp O W.wt j g)`. Introduce `j f g hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : f - g ∈ RingHom.ker W.π`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[hfg]`. Establish `h2` using `hhom (f - g) hker j`. Rewrite `h2` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_sub] at h2`. Conclude with `sub_eq_zero.mp (by simpa using h2)`. Establish `hself : ∀ (j : X) (f : MvPowerSeries W.σ O), f ∈ wtPart O W.wt j → wcomp O W.wt j f = f`. Introduce `j f hf`. Use extensionality with `n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_wcomp]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hf n h).symm`. Establish `hoff : ∀ (i j : X) (f : MvPowerSeries W.σ O), f ∈ wtPart O W.wt i → i ≠ j → wcomp O W.wt j f = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j f hf hij`. Use extensionality with `n`. Rewrite using `[coeff_wcomp, map_zero]`. Use `split_ifs with h`. Conclude with `hf n (fun h' => hij (h'.symm.trans h))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Establish `hgr : ∀ (i : X) (y : W.A), y ∈ W.gr i ↔ y.1 ∈ W.part i` using `fun i y => Iff.rfl`. Establish `hpart : ∀ (i : X) (x : R), x ∈ W.part i ↔ ∃ f ∈ wtPart O W.wt i, W.π f = x`. Introduce `i x`. Conclude with `Submodule.mem_map`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `T : X → Submodule O W.A` to `fun j => { carrier := {y | ∀ f, W.π f = y.1 → W.π (wcomp O W.wt j f) = 0} add_mem' := by`. Introduce `a b ha hb f hf`. Take `⟨fa, hfa⟩` from `W.surj a.1`. Take `⟨fb, hfb⟩` from `W.surj b.1`. Establish `e : W.π f = W.π (fa + fb)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, map_add, hfa, hfb]`. Both sides reduce to the same expression. Rewrite using `[hK j f (fa + fb) e, map_add, map_add, ha fa hfa, hb fb hfb, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `f hf`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : W.π f = W.π 0`. Rewrite using `[hf, map_zero]`. Both sides reduce to the same expression. Rewrite using `[hK j f 0 e, map_zero, map_zero]`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c a ha f hf`. Take `⟨fa, hfa⟩` from `W.surj a.1`. Establish `e : W.π f = W.π (c • fa)`. Rewrite using `[hf, map_smul, hfa]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK j f (c • fa) e, map_smul, map_smul, ha fa hfa, smul_zero] }`. Establish `hT : ∀ (i j : X), i ≠ j → W.gr i ≤ T j`. Introduce `i j hij y hy f hf`. Take `⟨g, hg, hgy⟩` from `(hpart i y.1).mp ((hgr i y).mp hy)`. Rewrite using `[hK j f g (hf.trans hgy.symm), hoff i j g hg hij, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_def]`. Introduce `j`. Rewrite using `[Submodule.disjoint_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `x hx hx'`. Establish `hle : (⨆ i, ⨆ (_ : i ≠ j), W.gr i) ≤ T j` using `iSup₂_le fun i hij => hT i j hij`. Establish `hxT` using `hle hx'`. Take `⟨g, hg, hgx⟩` from `(hpart j x.1).mp ((hgr j x).mp hx)`. Establish `h0` using `hxT g hgx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hself j g hg, hgx]`. Conclude with `Subtype.ext h0`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, ha⟩ -`. Establish `hle : ∀ i, W.part i ≤ LinearMap.range W.A.val.toLinearMap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i x hx`. Conclude with `⟨⟨x, W.part_le_A hx⟩, rfl⟩`. Establish `hmap : Submodule.map W.A.val.toLinearMap (⨆ i, W.gr i) = ⨆ i, W.part i`. Rewrite using `[Submodule.map_iSup]`. Conclude with `iSup_congr fun i => Submodule.map_comap_eq_self (hle i)`.
-
-Establish `hmem : a ∈ Submodule.map W.A.val.toLinearMap (⨆ i, W.gr i)`. Rewrite using `[hmap]`. Conclude with `ha`. Take `⟨b, hb, hba⟩` from `hmem`. Establish `: b = ⟨a, ha⟩` using `Subtype.ext hba`.
-
-Rewrite using `[← this]`. Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.gr_internal :
     ∀ (O X R : Type) [CommRing O] [AddCommGroup X] [DecidableEq X] [CommRing R] [Algebra O R] (W : WPres O X R), DirectSum.IsInternal W.gr := by

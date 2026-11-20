@@ -15,27 +15,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ChiGrid in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d _ hfit w hw`. Take `⟨htw, hxi⟩` from `xiH_twisted p w hw`. Establish `hl : D.ntw.l (ex.nch.twI (D.plEq.symm w)) = D.what₂.places.resChar (D.plEq.symm w)` using `(hfit.1.setting.1 _ htw).1`. Establish `hQ` using `hfit.1.cond _ htw`. Establish `hlev` using `p.charW.base.lev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ PP ∈ twPl d.G (p.R.mu w), ((D.what₂.places.resChar (D.plEq.symm w) : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `PP hPP hlP`. Simplify using `only [twPl, GlobalTheory.FunObj.locPl, Finset.mem_filter, Finset.mem_union] at hPP`. Take `⟨hloc, hW0⟩` from `hPP`. Establish `hQt : PP ∈ p.R.toRealDat.toLevCh.Q (p.R.mu w)` using `hloc.resolve_left hW0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS1 : PP.under (𝓞 D.host.F) ∉ S1 D` using `fun h => hW0 (by`. Rewrite using `[d.G.pl.w_Q _ PP hQt h]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_insert_of_mem h))`. Establish `hram : ¬ (p.R.toRealDat.toLevCh.xiH (p.R.mu w)).UnrAt PP` using `(hlev.Q_ram _ PP).2 (Or.inl hQt)`. Rewrite `hram` using `[hxi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : (p.R.C.delAt (D.what₂.places.resChar (D.plEq.symm w))).UnrAt PP`. Establish `hψ : ¬ (p.Tp.psi (D.plEq.symm w)).UnrAt PP` using `fun h => hram (hd.mul h)`. Establish `hmem : PP ∈ ex.nch.Q (D.plEq.symm w)`. Assume the negation of the conclusion as `hn`. Conclude with `hψ (((p.Tp.psi_is _ htw).ram PP).2 hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : PP ∈ D.ntw.S0 (ex.nch.twI (D.plEq.symm w))` using `D.ntw.twistExcludedPlaces_contains_residueChar _ (by rw [hl]; exact hlP)`. Conclude with `Finset.disjoint_left.1 hQ.2.1 hmem hS0`. Establish `hover : ((D.host.pde : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal ∨ ((D.host.pde' : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Unfold `Formalism.L2.Host.CharFrame.delAt at hd`. Use `split_ifs at hd`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hd (p.R.C.isDel'.unr PP fun h' => h (Or.inr h'))`. Assume the negation of the conclusion as `h`. Conclude with `hd (p.R.C.isDel.unr PP fun h' => h (Or.inl h'))`. Apply `hS1` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[S1_mem_OmF]`. Break down `hover with h | h` into its components or cases. Use `right`. Use `right`. Use `left show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ PP.asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Use `right`. Use `right`. Use `right show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ PP.asIdeal`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hmem`. Rewrite `hmem` using `[Qn, Nat.cast_prod]`. Take `⟨PP, hPP, hin⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := w.isPrime)).1 hmem`. Establish `: NeZero PP.asIdeal` using `⟨PP.ne_bot⟩`. Establish `hq : (Ideal.absNorm (PP.asIdeal.under ℤ)).Prime` using `Nat.absNorm_under_prime PP.asIdeal`.
-
-Establish `: PP.asIdeal.LiesOver (Ideal.span {((Ideal.absNorm (PP.asIdeal.under ℤ) : ℕ) : ℤ)})` using `Int.liesOver_span_absNorm PP.asIdeal`. Rewrite `hin` using `[Ideal.absNorm_eq_pow_inertiaDeg' PP.asIdeal hq, Nat.cast_pow]`. Establish `hqw` using `w.isPrime.mem_of_pow_mem _ hin`. Establish `hqP : ((Ideal.absNorm (PP.asIdeal.under ℤ) : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `h : algebraMap ℤ (𝓞 D.host.E) ((Ideal.absNorm (PP.asIdeal.under ℤ) : ℕ) : ℤ) ∈ PP.asIdeal` using `Ideal.absNorm_mem (PP.asIdeal.under ℤ)`.
-
-Rewrite `h` using `[eq_intCast, Int.cast_natCast]`. Conclude with `h`. Establish `e` using `resChar_eq (D.plEq.symm w) hq (by rw [Equiv.apply_symm_apply]; exact hqw)`. Conclude with `key PP hPP (e ▸ hqP)`.
+A detailed English derivation is pending.
 -/
 theorem qn_not_mem : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ)

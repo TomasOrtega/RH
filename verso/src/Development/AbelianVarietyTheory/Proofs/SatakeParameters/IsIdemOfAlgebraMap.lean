@@ -45,7 +45,7 @@ variable {E}
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (singleV F v a) ⊗ₜ e = _`. Rewrite using `[GlobalTheory.AutFunCompare.evalV_singleV, Pi.single_eq_same]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evF_sgT_self (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) : evF E v (sgT E v y) = y := by
   classical
@@ -58,7 +58,7 @@ theorem evF_sgT_self (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) : ev
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul a e => show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleV F v a) ⊗ₜ e = _`. Rewrite using `[GlobalTheory.AutFunCompare.evalV_singleV, Pi.single_eq_of_ne h, TensorProduct.zero_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evF_sgT_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fv F v ⊗[F] E) : evF E w (sgT E v y) = 0 := by
   classical
@@ -71,14 +71,14 @@ theorem evF_sgT_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fv F v 
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.LatticeLocalGlobal.ext_components z z' h`.
+A detailed English derivation is pending.
 -/
 theorem evF_ext {z z' : Af F ⊗[F] E} (h : ∀ v, evF E v z = evF E v z') : z = z' :=
   GlobalTheory.LatticeLocalGlobal.ext_components z z' h
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F 1) ⊗ₜ x = (1 : Fv F v) ⊗ₜ x`. Rewrite using `[map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evF_finP_incl (v : HeightOneSpectrum (𝓞 F)) (x : E) :
     evF E v (finP F E (inclR (AF F) x)) = inclR (Fv F v) x := by
@@ -88,9 +88,7 @@ theorem evF_finP_incl (v : HeightOneSpectrum (𝓞 F)) (x : E) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `show (0 : Ainf F) ⊗ₜ (1 : E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v α ⊗ₜ (1 : E) = 1`. Rewrite using `[h1]`.
-
-Both sides reduce to the same expression. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w α ⊗ₜ (1 : E) = 0`. Rewrite using `[h2 w hw]`. Conclude with `TensorProduct.zero_tmul _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIdemOf_algebraMap {v : HeightOneSpectrum (𝓞 F)} {α : Af F} (h1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v α = 1)
     (h2 : ∀ w, w ≠ v → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w α = 0) :
@@ -140,14 +138,14 @@ theorem locMat_val (v : HeightOneSpectrum (𝓞 F)) (g : HA (AF F) hc.sig V.gram
     (locMat hc V v g).1 = (finMat hc.sig V.gram g).map (evF E v) := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projLoc hc V v (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V g)).2`.
+A detailed English derivation is pending.
 -/
 theorem locMat_mem (v : HeightOneSpectrum (𝓞 F)) (g : HA (AF F) hc.sig V.gram) :
     locMat hc V v g ∈ HR (Fv F v) hc.sig V.gram :=
   (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projLoc hc V v (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V g)).2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LatticeLocalGlobal.mem_latHat_iff F E V y`.
+A detailed English derivation is pending.
 -/
 theorem mem_lamHat_iff (y : Fin V.rank → Af F ⊗[F] E) :
     y ∈ lamHat F V ↔ ∀ v, (fun i => evF E v (y i)) ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := F) V v :=
@@ -165,13 +163,13 @@ attribute [local instance] IsCMField.starRing
 open GlobalTheory.SelfDualGenus
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `(Subring.closure_le (t := (locOrder v).toSubring)).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, rfl⟩`. Use `mul_mem ((locOrder v).algebraMap_mem ⟨a, ha⟩) (locEmb_mem_locOrder v x)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (LocAlg v) ⟨a, ha⟩ * locEmb v (x : E) = a ⊗ₜ (x : E)` using `by show (a ⊗ₜ 1 : LocAlg v) * (1 ⊗ₜ (x : E)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite `this` using `[e]`. Conclude with `this`. Introduce `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `Subring.subset_closure ⟨1, one_mem _, a, rfl⟩`. Consider the case `algebraMap r => exact Subring.subset_closure ⟨r, r.2, 1, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_ordAt_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (z : LocAlg v) :
     z ∈ ordAt E v ↔ z ∈ locOrder v := by
@@ -196,7 +194,7 @@ theorem mem_ordAt_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (z 
     | mul x y _ _ hx hy => exact mul_mem hx hy
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Pj.unramBridge_holds E fun P hP => by obtain ⟨θ, t, e1, e2⟩ := hc.cmUnram.2.2 P hP refine ⟨θ, ?_⟩ have : RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) θ = t := RingOfIntegers.ext e1.symm rwa [this]`.
+A detailed English derivation is pending.
 -/
 theorem unramified (hc : CMData (maximalRealSubfield E) E) :
     Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) :=
@@ -208,9 +206,9 @@ theorem unramified (hc : CMData (maximalRealSubfield E) E) :
     rwa [this]
 
 /- English proof (translation)
-Use `haveI := unramified hc`. Establish `hG : ∀ a b, ReciprocityTheory.ChartRestriction.G.FD.cc (V.gramᵀ a b) = V.gramᵀ b a` using `fun a b => V.herm.eq (V.frame b) (V.frame a)`. Establish `hd : V.gramᵀ.det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, h1, h2⟩` from `exists_orthonormal_frame hG hd (GlobalTheory.LocalConjugacy.isLattice_coordLat V V.L0 V.standardTuple_isLattice) (GlobalTheory.LocalConjugacy.selfDual_coordLat V V.L0 V.baseLattice_isUnimodular) v`. Use `⟨h, fun x => (GlobalTheory.LocalConjugacy.mem_latLoc_iff V v x).trans ((h2 x).trans (forall_congr' fun i => (mem_ordAt_iff v _).symm)), ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg Matrix.transpose h1`. Rewrite `h3` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, Matrix.transpose_one]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal (hc : CMData (maximalRealSubfield E) E) (V : HSpace E)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :

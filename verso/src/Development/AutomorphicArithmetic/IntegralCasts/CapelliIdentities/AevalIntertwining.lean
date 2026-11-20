@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ M N _ _ _ _ φ f f' h p`. Establish `hpow : ∀ (n : ℕ) (x : M), φ ((f ^ n) x) = (f' ^ n) (φ x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`. Proceed by induction on `p using Polynomial.induction_on' with`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `add p q hp hq`. Introduce `x`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a`. Introduce `x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine :
     ∀ {K : Type} [inst : Field K] {M N : Type} [inst_1 : AddCommGroup M]

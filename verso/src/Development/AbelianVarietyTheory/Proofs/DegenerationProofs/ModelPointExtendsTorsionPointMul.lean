@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnitTheta
 
 /- English proof (translation)
-Set `U : Over.mk ((baseOver B').hom ≫ f) ⟶ baseOver B` to `Over.homMk f (by simp)`. Establish `e` using `H.2 (baseOver B') x y (U ≫ h) (U ≫ h') hx.symm hy.symm`. Rewrite `e` using `[← MonObj.comp_mul]`. Conclude with `e.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpPullback_mul_section {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [GrpObj G] [GrpObj G']
     {f : B' ⟶ B} {φ : G'.left ⟶ G.left} (H : IsGrpPullback G' G f φ) (x y : baseOver B' ⟶ G')
@@ -26,9 +26,9 @@ theorem grpPullback_mul_section {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} 
   exact e.symm
 
 /- English proof (translation)
-Take `⟨x, x1, x2, x3⟩` from `ha`. Take `⟨y, y1, y2, y3⟩` from `hb`. Use `u.U.gen_hom` as an intermediate fact. Set `X : baseOver (Sp (FractionRing u.V)) ⟶ (Over.pullback (jK u.V)).obj u.G` to `Over.homMk x x2`. Set `Y : baseOver (Sp (FractionRing u.V)) ⟶ (Over.pullback (jK u.V)).obj u.G` to `Over.homMk y y2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨(X * Y).left, ?_, Over.w (X * Y), ?_⟩` and prove the remaining obligations. Conclude with `grpPullback_mul_section (isGrpPullback_pullback u.G (jK u.V)) X Y h h' x1 y1`. Rewrite using `[ρ.pt_add]`. Conclude with `grpPullback_mul_section (((isGrpPullback_of_iso u.U.gen).comp u.cart).congr (Category.id_comp _) rfl) X Y _ _ x3 y3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_mul (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ)
     [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (a b : S.Gam) (h h' : baseOver (Sp u.V) ⟶ u.G)

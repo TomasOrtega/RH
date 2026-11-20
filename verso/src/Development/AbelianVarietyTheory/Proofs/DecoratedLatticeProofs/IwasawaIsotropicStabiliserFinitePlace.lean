@@ -19,7 +19,7 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 namespace GlobalTheory.Core.Rk.IwFin
 
 /- English proof (translation)
-Introduce `D T T₀ r d _h2 v y`. Distinguish the cases in `hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `GlobalTheory.T.iwasawa_isotropic_stabiliser_split_place D T T₀ r d v hv y`. Conclude with `GlobalTheory.T.iwasawa_isotropicStabilizer_inertPlace D T T₀ r d v hv y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem iwasawa_fin : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r), (∀ v : FinPl D, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) → ∀ (v : FinPl D) (y : Gv T v), ∃ q k : Gv T v, emb D.sp.cm.sig T.gram v q ∈ stab d ∧ k ∈ stabLoc D.sp.cm.sig T.gram (frameLat T) v ∧ y = q * k := by
   intro D T T₀ r d _h2 v y

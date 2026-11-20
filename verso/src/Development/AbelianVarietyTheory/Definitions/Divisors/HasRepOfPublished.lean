@@ -15,7 +15,7 @@ namespace GlobalTheory.DualCon
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `hN' : (GlobalTheory.AbDual.ev N (fst A Y) (snd A Y ≫ y)).IsLB` using `pull_isLB h.isLB _`. Use `⟨hN', (isAdditive_iff hN').2 fun Z a a' t => ?_⟩` and prove the remaining obligations. Simplify using `only [evc_ev h.isLB (fst A Y) (snd A Y ≫ y) hN', lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff h.isLB).1 h.add Z a a' (t ≫ y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Fam.ev {T Y : Over S} {N : LB (A ⊗ T).left} (h : Fam A N) (y : Y ⟶ T) :
     Fam A (ev N (fst A Y) (snd A Y ≫ y)) := by
@@ -27,7 +27,7 @@ theorem Fam.ev {T Y : Over S} {N : LB (A ⊗ T).left} (h : Fam A N) (y : Y ⟶ T
 omit [GrpObj A] in
 
 /- English proof (translation)
-Introduce `_ _ _ _ Y _ u u' hs` and use `h Y u u' hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Inj.fibInj {U : Over S} {M : LB (A ⊗ U).left} (h : Inj A M) : FibInj A M :=
   fun _ _ _ _ Y _ u u' hs => h Y u u' hs

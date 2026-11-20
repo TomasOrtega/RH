@@ -11,7 +11,7 @@ namespace GlobalTheory.LvT.Built.SplitPts
 open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem.Col2 GlobalTheory.LvT GlobalTheory.LvT.Built
 
 /- English proof (translation)
-Take `⟨e, rfl⟩` from `(toGLm E n).surjective γ`. Use `⟨⟨e, fun x y => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← toGLm_mulVec e x, ← toGLm_mulVec e y]`. Use `show star ((toGLm E n e : Matrix (Fin n) (Fin n) E) *ᵥ x) ⬝ᵥ ((toGLm E n e : Matrix (Fin n) (Fin n) E) *ᵥ y) = star x ⬝ᵥ y`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h, Matrix.vecMul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ufGL {E : Type} [Field E] [StarRing E] {n : ℕ} (γ : GL (Fin n) E)
     (h : (γ : Matrix (Fin n) (Fin n) E)ᴴ * (γ : Matrix (Fin n) (Fin n) E) = 1) : ∃ g : UF E n, ufGL E n g = γ := by
@@ -22,7 +22,7 @@ theorem exists_ufGL {E : Type} [Field E] [StarRing E] {n : ℕ} (γ : GL (Fin n)
   rw [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h, Matrix.vecMul_one]
 
 /- English proof (translation)
-Introduce `w hw` and use `by ext x rw [mem_localization_gmap, mem_localization_gmap, h w hw]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameOff_gmap {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 E))}
     {N N' : Submodule (𝓞 E) (Sp E n)} (g : Sp E n ≃ₗ[E] Sp E n) (h : SameOff ST N N') :
@@ -34,15 +34,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
 
 /- English proof (translation)
-Introduce `hm`. Unfold `QE at hP`. Use `split_ifs at hP with hf`. Use `swap`. Simplify using `at hP`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Establish `hv' : v ∈ Qprime (mu : Chr X.F X.E X.K)` using `(Set.Finite.mem_toFinset hf).1 hv`. Establish `hg : GoodPl X.E S v`. Assume the negation of the conclusion as `hn`. Use `(Subgroup.mem_inf.1 mu.2).2` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hv' (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 this v) hn)`. Apply `hg.2.2` to reduce the goal to its premises. Establish `h1 : (p : 𝓞 X.F) ∈ v.asIdeal`. Rewrite using `[← hs v, Ideal.mem_under]`. Simplify using `using hm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((p : ℕ) : 𝓞 X.F ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h1`. Establish `h3` using `(ringChar.spec _ p).1 h2`. Establish `h4 : ringChar (𝓞 X.F ⧸ v.asIdeal) = p` using `((Nat.dvd_prime hp).1 h3).resolve_left CharP.ringChar_ne_one`.
-
-Use `show ringChar (𝓞 X.F ⧸ v.asIdeal) ∈ S`. Rewrite using `[h4]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem notMem_QE (hs : IsSel X sel) (mu : Tup X.F X.E X.K S) {P : HeightOneSpectrum (𝓞 X.E)}
     (hP : P ∈ QE sel (mu : Chr X.F X.E X.K)) {p : ℕ} (hp : p.Prime) (hS : p ∈ S) : (p : 𝓞 X.E) ∉ P.asIdeal := by
@@ -82,15 +80,13 @@ def offSetoid : Setoid (PtAt R sel mu cst u i) where
         h.2.2.2.trans h'.2.2.2⟩⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `ne_of_T_notMem hPr u ⟨P, hP⟩ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem off_of_notMem (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (h : (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) :
     ∀ P ∈ Pr.vT u, w ≠ P ∧ w ≠ conjPrime₂ P := fun P hP => ne_of_T_notMem hPr u ⟨P, hP⟩ h
 
 /- English proof (translation)
-Establish `h1 : ∀ w : rowSG Pr sel mu, localization₂ w.1.asIdeal N' = localization₂ w.1.asIdeal N` using `fun w => (h w.1 (off_of_notMem u hPr ((Finset.mem_union.1 w.2).elim (fun h => T_notMem_vGs hPr u ⟨w.1, h⟩) (hQ w.1)))).symm`. Unfold `ysAt`. Use `split_ifs`. Use `show ybSet sel mu cst N' = ybSet sel mu cst N`. Simplify using `only [ybSet, locLat, h1]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ys_congr (hPr : Pr.Ok) (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal)
     {N N' : Submodule (𝓞 X.E) (Sp X.E (R.N i))} (h : SameOff (Pr.vT u) N N') :
@@ -106,31 +102,25 @@ theorem ys_congr (hPr : Pr.Ok) (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (P
   · rfl
 
 /- English proof (translation)
-Introduce `X Pr R _ Ch sel S mu cst L G m2 u i hX hPr hs hT _ Tp`. Establish `hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal` using `fun w hw => notMem_QE hs mu hw (hPr.T_prime u) hT`. Establish `hM` using `moveHyp_of_ok hPr u`. Establish `hQ' : ∀ (P : Pr.vT u) (w : QE sel (mu : Chr X.F X.E X.K)), w.1 ≠ P.1 ∧ w.1 ≠ conjPrime₂ P.1` using `fun P w => ne_of_T_notMem hPr u P (hQ w.1 w.2)`. Establish `hy` using `ysAt_off (R := R) sel mu cst hPr u hQ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{ off := fun _ => offSetoid sel mu cst u i off_act := ?_ off_lat := fun _ _ _ h => h.1` and prove the remaining obligations. Use extensionality with `:= ?_`. Use `surj := ?_`. Use `off_up := ?_`. Use `off_dn := ?_`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `off_dia := ?_`. Use `dia_deco := ?_`. Use `gam_surj := ?_`. Use `T_mem := fun P hP => (T_unif hX hPr u ⟨P, hP⟩).1`. Use `T_nsq := fun P hP => (T_unif hX hPr u ⟨P, hP⟩).2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `nonconj := fun P hP Q hQ => (hM ⟨P, hP⟩).st ⟨Q, hQ⟩ }, fun _ _ _ => Iff.rfl⟩`. Introduce and unpack `b g p q ⟨h1, h2, h3, h4⟩`. Use `⟨sameOff_gmap g.1.1 h1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w x show (g.2.1.1 w).1.mulVec (p.1.1.deco.1.be w (g.1.1.symm x)) = (g.2.1.1 w).1.mulVec (q.1.1.deco.1.be w (g.1.1.symm x))`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w show g.1.1 * p.1.1.fr w * ((g.2.2.1 w)⁻¹).1 = g.1.1 * q.1.1.fr w * ((g.2.2.1 w)⁻¹).1`. Rewrite using `[h3]`. Use `show (fun v => g.1.1 v) '' p.1.2 = (fun v => g.1.1 v) '' q.1.2`. Rewrite using `[h4]`. Introduce and unpack `b p q ⟨-, h2, h3, h4⟩ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `congrArg Deco.N h`. Establish `hf` using `congrArg Deco.f h`. Conclude with `PtY.ext' (Subtype.ext (Deco.ext hN hf h2)) h3 h4`. Introduce `b p e he h`. Establish `hok` using `GlobalTheory.LvT.Pts.ok_of_agree p.1.1.deco.2 he fun w => h w.1 (off_of_notMem u hPr (T_notMem_vGs hPr u w))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `PtY.mv_spec p ⟨_, hok⟩ (fun w => (h w.1 (off_of_notMem u hPr (hQ w.1 w.2))).symm) (ys_congr sel mu cst u i hPr hQ h)`. Establish `e1` using `congrArg Subtype.val hm.1`. Use `⟨PtY.mv p ⟨_, hok⟩, ⟨?_, (congrArg Deco.be e1).symm, hm.2.1.symm, hm.2.2.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN` using `congrArg Deco.N e1`. Establish `hf` using `congrArg Deco.f e1`. Conclude with `Deco.ext hN hf (funext fun w => absurd w.2 (Finset.notMem_empty _))`. Introduce `b p P x hx hf`. Establish `hm` using `mv_up (Pr.T u) p P (hM P) (T_unif hX hPr u P) (hQ' P) (hy P) hx hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun w hw => ?_, (congrArg Deco.be hm.1).symm, hm.2.1.symm, hm.2.2.symm⟩` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun d : Deco X.E _ _ _ => localization₂ w.asIdeal d.N) hm.1).symm` and prove the remaining obligations. Conclude with `((upN_spec p.1.1.deco.2.lat p.1.1.deco.2.uni P.1 (hM P).ne hx).2.2.1 w (hw P.1 P.2).1 (hw P.1 P.2).2).localization_eq.symm`. Introduce `b p P g hg`. Establish `e : (tdatAt sel mu cst L Tp u i).deco b p = p.1.1.deco.1.res (Finset.empty_subset _)` using `Deco.ext rfl rfl (funext fun w => absurd w.2 (Finset.notMem_empty _))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hg` using `[e]`. Establish `hg'` using `dn_ok_of_res p.1.1.deco.2 P (hM P) (g := g) hg`. Establish `hm` using `mv_dn p P (hM P) (hQ' P) (hy P) hg'`. Use `⟨fun w hw => ?_, (congrArg Deco.be hm.1).symm, hm.2.1.symm, hm.2.2.symm⟩` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun d : Deco X.E _ _ _ => localization₂ w.asIdeal d.N) hm.1).symm` and prove the remaining obligations.
-
-Conclude with `((p.1.1.deco.2.dnN_spec P (hM P).ne).2.2.1 w (hw P.1 P.2).1 (hw P.1 P.2).2).localization_eq.symm`. Introduce `b p P a show SameOffPt sel mu cst u p (PtY.mv p (DecoSet.dia1 P a p.1.1.deco))`. Rewrite using `[PtY.mv_dia]`. Conclude with `⟨fun _ _ => rfl, rfl, rfl, rfl⟩`. Introduce `b p P P' a hne show (PtY.mv p (DecoSet.dia1 P a p.1.1.deco)).1.1.deco.1.f P' = p.1.1.deco.1.f P'`.
-
-Rewrite using `[PtY.mv_dia]`. Use function extensionality and compare the values at `x`. Use `show ((Pi.mulSingle P a : DiaG X.E (Pr.vT u)) P').1 * _ = _`. Rewrite using `[Pi.mulSingle_eq_of_ne hne, Units.val_one, one_mul]`. Introduce `b γ h`.
-
-Take `⟨g, hg⟩` from `exists_ufGL γ h`. Conclude with `⟨(g, 1, 1), hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_split : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (u : Pr.Word) (i : ℕ), X.Ok → Pr.Ok → IsSel X sel → Pr.T u ∈ S → L.Ok Ch sel mu cst G m2 → ∀ Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K)), ∃ sp : Split (tdatAt sel mu cst L Tp u i) (Pr.T u), ∀ b p q, (sp.off b).r p q ↔ SameOffPt sel mu cst u p q := by
   intro X Pr R _ Ch sel S mu cst L G m2 u i hX hPr hs hT _ Tp

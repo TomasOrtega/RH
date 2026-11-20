@@ -10,31 +10,27 @@ open scoped Matrix
 namespace GlobalTheory.MultSupp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a d ℓ _ ψv hψc hψ1 L hinv Ψ hΨ`. Establish `hlc : IsLocallyConstant ψv` using `SchrodingerSchwartzBruhat.GlobalTheory.CompanionTheory.SchrSB.isLocallyConstant_addChar ψv hψc`. Choose the witnesses or unpack the hypotheses as in `⟨t₀, ht₀⟩ : ∃ t, ψv t ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hψ1 (by ext t; simpa using h t)`. Establish `key : ∀ Y₀ : Matrix (Fin a) (Fin d) k, Matrix.vecMul ℓ Y₀ ≠ 0 → ∃ V : Set (Matrix (Fin a) (Fin d) k), IsOpen V ∧ Y₀ ∈ V ∧ ∀ g (hg : g ∈ SB (Matrix (Fin a) (Fin d) k)), (∀ Y, g Y ≠ 0 → Y ∈ V) → L ⟨g, hg⟩ = 0`. Introduce `Y₀ hY₀`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, Matrix.vecMul ℓ Y₀ j ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_neg at h`. Conclude with `hY₀ (funext h)`. Use `set z : Fin d → k := Pi.single j (t₀ / Matrix.vecMul ℓ Y₀ j) with hz`. Use `set f : Matrix (Fin a) (Fin d) k → ℂ := fun Y => ψv (ℓ ⬝ᵥ (Y *ᵥ z)) with hf`. Establish `hfc : Continuous (fun Y : Matrix (Fin a) (Fin d) k => ℓ ⬝ᵥ (Y *ᵥ z))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hflc : IsLocallyConstant f` using `hlc.comp_continuous hfc`. Establish `hf0 : f Y₀ = ψv t₀`. Simplify using `only [hf, Matrix.dotProduct_mulVec, hz, dotProduct_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_div_cancel₀ _ hj]`. Use `⟨f ⁻¹' {ψv t₀}, hflc.isOpen_fiber _, hf0, ?_⟩` and prove the remaining obligations. Introduce `g hg hsupp`. Establish `hfg : (fun Y => f Y * g Y) = (ψv t₀) • g`. Use function extensionality and compare the values at `Y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : g Y = 0`. Simplify using `[h]`. Establish `: f Y = ψv t₀` using `hsupp Y h`. Simplify using `[this]`. Establish `hmem : (fun Y => f Y * g Y) ∈ SB (Matrix (Fin a) (Fin d) k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hfg]`. Conclude with `Submodule.smul_mem _ _ hg`. Establish `h1` using `hinv z ⟨g, hg⟩ ⟨_, hmem⟩ rfl`. Establish `e : (⟨fun Y => f Y * g Y, hmem⟩ : SB (Matrix (Fin a) (Fin d) k)) = (ψv t₀) • ⟨g, hg⟩` using `Subtype.ext hfg`. Rewrite `h1` using `[e, LinearMap.map_smulₛₗ, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (starRingEnd ℂ) (ψv t₀) ≠ 1`. Introduce `h`. Apply `ht₀` to reduce the goal to its premises. Simplify using `using congrArg (starRingEnd ℂ) h`. Establish `h2 : ((starRingEnd ℂ) (ψv t₀) - 1) * L ⟨g, hg⟩ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hc)`. Establish `hΨ' : ∀ Y : Function.support Ψ.1, Matrix.vecMul ℓ (Y : Matrix (Fin a) (Fin d) k) ≠ 0` using `fun Y h => Y.2 (hΨ _ h)`. Use `choose V hVo hYV hVL using fun Y : Function.support Ψ.1 => key Y (hΨ' Y)`. Establish `hcl : IsClosed (Function.support Ψ.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: Function.support Ψ.1 = (Ψ.1 ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`. Conclude with `(Ψ.2.1.isOpen_fiber 0).isClosed_compl`. Establish `hcpt : IsCompact (Function.support Ψ.1)`. Use `Ψ.2.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `this`. Take `⟨t, ht⟩` from `hcpt.elim_finite_subcover (fun i : Function.support Ψ.1 => V i) hVo (fun Y hY => Set.mem_iUnion.2 ⟨⟨Y, hY⟩, hYV _⟩)`. Establish `hspan` using `GlobalTheory.CoverSB.mem_span_of_cover k (Fin a) (Fin d) t (fun i => V i.1) (fun i => hVo _) Ψ.1 Ψ.2 (fun Y hY => by`. Take `⟨i, hi, hYi⟩` from `Set.mem_iUnion₂.1 (ht hY)`.
-
-Conclude with `⟨⟨i, hi⟩, hYi⟩)`. Establish `hle : Submodule.span ℂ {g | g ∈ SB (Matrix (Fin a) (Fin d) k) ∧ ∃ i : t, ∀ Y, g Y ≠ 0 → Y ∈ V i.1} ≤ (LinearMap.ker L).map (SB (Matrix (Fin a) (Fin d) k)).subtype`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `g ⟨hg, i, hi⟩`. Conclude with `⟨⟨g, hg⟩, hVL i.1 g hg hi, rfl⟩`.
-
-Take `⟨x, hx, hxe⟩` from `hle hspan`. Establish `: x = Ψ` using `Subtype.ext hxe`. Rewrite using `[← this]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of_mult_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ) (ℓ : Fin a → k), ℓ ≠ 0 → ∀ (ψv : AddChar k ℂ), Continuous ψv → ψv ≠ 1 →
     ∀ L : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin d) k) →ₗ⋆[ℂ] ℂ,

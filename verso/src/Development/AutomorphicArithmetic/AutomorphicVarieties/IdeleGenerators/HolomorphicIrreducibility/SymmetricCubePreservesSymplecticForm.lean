@@ -16,7 +16,7 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 private def Rl (x y : K) : Prop := ‖y‖ ≤ 1 ∧ ‖x - y‖ < 1
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_le_max (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le h.2.le h.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Rl.left {x y : K} (h : Rl x y) : ‖x‖ ≤ 1 := by
   have := IsUltrametricDist.norm_add_le_max (x - y) y
@@ -24,7 +24,7 @@ private theorem Rl.left {x y : K} (h : Rl x y) : ‖x‖ ≤ 1 := by
   exact this.trans (max_le h.2.le h.1)
 
 /- English proof (translation)
-Use `⟨(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.1 h'.1), ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_add_comm]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h.2 h'.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Rl.add {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x + z) (y + w) := by
   refine ⟨(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.1 h'.1), ?_⟩
@@ -33,7 +33,7 @@ private theorem Rl.add {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x + z) (y 
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Use `⟨by simpa using h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show -x - -y = -(x - y) by ring, norm_neg]`. Conclude with `h.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Rl.neg {x y : K} (h : Rl x y) : Rl (-x) (-y) := by
   refine ⟨by simpa using h.1, ?_⟩
@@ -41,15 +41,15 @@ private theorem Rl.neg {x y : K} (h : Rl x y) : Rl (-x) (-y) := by
   exact h.2
 
 /- English proof (translation)
-Simplify `h.add h'.neg` using `only [sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Rl.sub {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x - z) (y - w) := by
   simpa only [sub_eq_add_neg] using h.add h'.neg
 
 /- English proof (translation)
-Use `⟨by rw [norm_mul]; exact mul_le_one₀ h.1 (norm_nonneg _) h'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show x * z - y * w = x * (z - w) + (x - y) * w by ring]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right h.left (norm_nonneg _) h'.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h.2 h'.1`.
+A detailed English derivation is pending.
 -/
 private theorem Rl.mul {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x * z) (y * w) := by
   refine ⟨by rw [norm_mul]; exact mul_le_one₀ h.1 (norm_nonneg _) h'.1, ?_⟩
@@ -61,7 +61,7 @@ private theorem Rl.mul {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x * z) (y 
     exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h.2 h'.1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Rl]`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Rl.pow {x y : K} (h : Rl x y) (n : ℕ) : Rl (x ^ n) (y ^ n) := by
   induction n with
@@ -69,7 +69,7 @@ private theorem Rl.pow {x y : K} (h : Rl x y) (n : ℕ) : Rl (x ^ n) (y ^ n) := 
   | succ n ih => rw [pow_succ, pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsUltrametricDist.norm_natCast_le_one K n, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem Rl.nat (n : ℕ) : Rl (n : K) n := ⟨IsUltrametricDist.norm_natCast_le_one K n, by simp⟩
 

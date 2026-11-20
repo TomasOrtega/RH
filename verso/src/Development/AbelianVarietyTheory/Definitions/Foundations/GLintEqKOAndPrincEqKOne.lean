@@ -36,25 +36,23 @@ Both sides reduce to the same expression.
 theorem dualConj_val (A x : GL m K) : (dualConj A x).1 = (A.1 * (x⁻¹).1 * (A⁻¹).1)ᵀ := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.ext_iff, dualConj_val, ← Matrix.transpose_inj, Matrix.transpose_transpose, Units.eq_mul_inv_iff_mul_eq, Units.eq_mul_inv_iff_mul_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_dualConj_iff {A x y : GL m K} : y = dualConj A x ↔ y.1ᵀ * A.1 * x.1 = A.1 := by
   rw [Units.ext_iff, dualConj_val, ← Matrix.transpose_inj, Matrix.transpose_transpose, Units.eq_mul_inv_iff_mul_eq,
     Units.eq_mul_inv_iff_mul_eq]
 
 /- English proof (translation)
-The claim follows from `((continuous_const.matrix_mul Units.continuous_coe_inv).matrix_mul continuous_const).matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dualConj_val [TopologicalSpace K] [IsTopologicalRing K] (A : GL m K) :
     Continuous fun x : GL m K => (dualConj A x).1 :=
   ((continuous_const.matrix_mul Units.continuous_coe_inv).matrix_mul continuous_const).matrix_transpose
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨⟨Matrix.of fun i j => ⟨_, h.1 i j⟩, Matrix.of fun i j => ⟨_, h.2 i j⟩, ?_, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨fun i j => (y.1 i j).2, fun i j => ((y⁻¹).1 i j).2⟩`. Use `Matrix.map_injective O.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`. Use `Matrix.map_injective O.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `x.inv_mul`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GLint_iff {O : Subring K} {x : GL m K} :
     x ∈ GLint m O ↔ (∀ i j, x.1 i j ∈ O) ∧ ∀ i j, (x⁻¹).1 i j ∈ O := by
@@ -71,14 +69,14 @@ theorem mem_GLint_iff {O : Subring K} {x : GL m K} :
     exact x.inv_mul
 
 /- English proof (translation)
-Introduce `_ _ e` and use `Units.ext (Matrix.map_injective hφ (congrArg Units.val e))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] {φ : A →+* B} (hφ : Function.Injective φ) :
     Function.Injective (bc (n := m) φ) := fun _ _ e =>
   Units.ext (Matrix.map_injective hφ (congrArg Units.val e))
 
 /- English proof (translation)
-Introduce `g` and use `by choose M hM using fun a b => IsLocalRing.residue_surjective (R := O) (g.1 a b) have hM' : (Matrix.of M).map (IsLocalRing.residue O) = g.1 := Matrix.ext hM have hdet : IsUnit (Matrix.of M).det := (isUnit_map_iff (IsLocalRing.residue O) _).1 (by rw [RingHom.map_det, RingHom.mapM …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bc_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] :
     Function.Surjective (bc (n := m) (IsLocalRing.residue O)) := fun g => by
@@ -105,52 +103,52 @@ def splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (u : Fin n → Fv F
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `funext fun _ => map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem splitVec_add (τ : E →ₐ[F] Fv F v) (y z : Fin n → Fv F v ⊗[F] E) :
     splitVec τ (y + z) = splitVec τ y + splitVec τ z := funext fun _ => map_add _ _ _
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `funext fun _ => map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem splitVec_smul (τ : E →ₐ[F] Fv F v) (c : Fv F v ⊗[F] E) (y : Fin n → Fv F v ⊗[F] E) :
     splitVec τ (c • y) = splitProj τ c • splitVec τ y := funext fun _ => map_mul _ _ _
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) M y i`.
+A detailed English derivation is pending.
 -/
 theorem splitVec_mulVec (τ : E →ₐ[F] Fv F v) (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (y : Fin n → Fv F v ⊗[F] E) : splitVec τ (M *ᵥ y) = M.map (splitProj τ) *ᵥ splitVec τ y :=
   funext fun i => RingHom.map_mulVec (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) M y i
 
 /- English proof (translation)
-The claim follows from `funext fun i => by simp [splitVec, splitIncl]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem splitVec_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (u : Fin n → Fv F v) :
     splitVec τ (splitIncl h τ u) = u := funext fun i => by simp [splitVec, splitIncl]
 
 /- English proof (translation)
-The claim follows from `funext fun i => by simp [splitVec, splitIncl]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem splitVec_comp_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (u : Fin n → Fv F v) :
     splitVec (τ.comp σ) (splitIncl h τ u) = 0 := funext fun i => by simp [splitVec, splitIncl]
 
 /- English proof (translation)
-The claim follows from `funext fun i => by simp [splitVec, splitIncl, splitIdem_comp]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem splitVec_splitIncl_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (u : Fin n → Fv F v) :
     splitVec τ (splitIncl h (τ.comp σ) u) = 0 := funext fun i => by simp [splitVec, splitIncl, splitIdem_comp]
 
 /- English proof (translation)
-The claim follows from `funext fun i => (splitIdem_mul h τ (y i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem splitIncl_splitVec (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (y : Fin n → Fv F v ⊗[F] E) :
     splitIncl h τ (splitVec τ y) = splitIdem h τ • y := funext fun i => (splitIdem_mul h τ (y i)).symm
 
 /- English proof (translation)
-The claim follows from `funext fun i => split_ext h τ (congrFun h1 i) (congrFun h2 i)`.
+A detailed English derivation is pending.
 -/
 theorem splitVec_ext (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {y z : Fin n → Fv F v ⊗[F] E}
     (h1 : splitVec τ y = splitVec τ z) (h2 : splitVec (τ.comp σ) y = splitVec (τ.comp σ) z) : y = z :=
@@ -181,14 +179,14 @@ Both sides reduce to the same expression.
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => congrArg τ (hJ.1 j i)`.
+A detailed English derivation is pending.
 -/
 theorem map_comp_conj (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v) : J.map (τ.comp σ) = (J.map τ)ᵀ :=
   Matrix.ext fun i j => congrArg τ (hJ.1 j i)
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => splitProj_inclR τ (J i j)`.
+A detailed English derivation is pending.
 -/
 theorem JR_map_splitProj (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v) :
     (JR (Fv F v) J).map (splitProj τ) = J.map τ := Matrix.ext fun i j => splitProj_inclR τ (J i j)
@@ -196,7 +194,7 @@ theorem JR_map_splitProj (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v
 omit [NumberField E] in
 
 /- English proof (translation)
-Simplify using `only [hLin, hR, Formalism.UG.hform, map_sum, map_mul, ← splitProj_comp, JR, Matrix.map_apply, splitProj_inclR, dotProduct, Matrix.mulVec, splitVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitProj_hLin (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v)
     (y x : Fin n → Fv F v ⊗[F] E) :
@@ -205,7 +203,7 @@ theorem splitProj_hLin (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (τ :
     dotProduct, Matrix.mulVec, splitVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[splitProj_hLin, comp_conj_conj h, map_comp_conj hJ, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitProj_comp_hLin (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v)
     (y x : Fin n → Fv F v ⊗[F] E) :
@@ -232,13 +230,13 @@ theorem splitHom_val (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `splitVec_mulVec τ _ y`.
+A detailed English derivation is pending.
 -/
 theorem splitVec_matHom_mulVec (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) (y : Fin n → Fv F v ⊗[F] E) :
     splitVec τ ((matHom _ σ J g).1 *ᵥ y) = (splitHom σ J τ g).1 *ᵥ splitVec τ y := splitVec_mulVec τ _ y
 
 /- English proof (translation)
-The claim follows from `splitVec_ext h τ (by simp [splitVec_matHom_mulVec]) (by simp [splitVec_matHom_mulVec])`.
+A detailed English derivation is pending.
 -/
 theorem matHom_mulVec_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) (u : Fin n → Fv F v) :
     (matHom _ σ J g).1 *ᵥ splitIncl h τ u = splitIncl h τ ((splitHom σ J τ g).1 *ᵥ u) :=
@@ -246,7 +244,7 @@ theorem matHom_mulVec_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, JR_map_splitProj]`. Use `congr 2`. Conclude with `Matrix.ext fun i j => (splitProj_comp τ σ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_unitary (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v)
     (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
@@ -259,7 +257,7 @@ theorem map_unitary (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (τ : E 
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hg : cT (sigR _ σ) (matHom _ σ J g).1 * JR (Fv F v) J * (matHom _ σ J g).1 = JR (Fv F v) J` using `g.2`. Rewrite using `[splitHom_val, splitHom_val, ← map_unitary, hg, JR_map_splitProj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitHom_unitary (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) :
     (splitHom σ J (τ.comp σ) g).1ᵀ * J.map τ * (splitHom σ J τ g).1 = J.map τ := by
@@ -269,7 +267,7 @@ theorem splitHom_unitary (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [← splitHom_unitary τ g]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec u', Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_splitHom (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) (u' u : Fin n → Fv F v) :
     ((splitHom σ J (τ.comp σ) g).1 *ᵥ u') ⬝ᵥ J.map τ *ᵥ ((splitHom σ J τ g).1 *ᵥ u) = u' ⬝ᵥ J.map τ *ᵥ u := by
@@ -279,14 +277,14 @@ theorem pairing_splitHom (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) (u' u : Fin
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `eq_dualConj_iff.2 (splitHom_unitary τ g)`.
+A detailed English derivation is pending.
 -/
 theorem splitHom_comp (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) :
     splitHom σ J (τ.comp σ) g = dualConj (splitGram hJ τ) (splitHom σ J τ g) :=
   eq_dualConj_iff.2 (splitHom_unitary τ g)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => split_ext h τ (congrFun₂ h1 i j) (congrFun₂ h2 i j)`.
+A detailed English derivation is pending.
 -/
 theorem splitMat_ext (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {M N : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
     (h1 : M.map (splitProj τ) = N.map (splitProj τ))
@@ -297,20 +295,20 @@ def splitPairMat (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (a b : Matrix (F
     Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := fun i j => (splitAlgEquiv h τ).symm (a i j, b i j)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => splitProj_symm h τ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem splitPairMat_map (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (a b : Matrix (Fin n) (Fin n) (Fv F v)) :
     (splitPairMat h τ a b).map (splitProj τ) = a := Matrix.ext fun _ _ => splitProj_symm h τ _
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => splitProj_comp_symm h τ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem splitPairMat_map_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v)
     (a b : Matrix (Fin n) (Fin n) (Fv F v)) :
     (splitPairMat h τ a b).map (splitProj (τ.comp σ)) = b := Matrix.ext fun _ _ => splitProj_comp_symm h τ _
 
 /- English proof (translation)
-The claim follows from `splitMat_ext h τ (by rw [Matrix.map_mul, splitPairMat_map, splitPairMat_map, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]) (by rw [Matrix.map_mul, splitPairMat_map_comp, splitPairMat_map_comp, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)])`.
+A detailed English derivation is pending.
 -/
 theorem splitPairMat_mul_inv (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (x y : GL (Fin n) (Fv F v)) :
     splitPairMat h τ x.1 y.1 * splitPairMat h τ (x⁻¹).1 (y⁻¹).1 = 1 :=
@@ -325,7 +323,7 @@ def splitPairGL (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (x y : GL (Fin n)
     splitPairMat_mul_inv h τ x⁻¹ y⁻¹⟩
 
 /- English proof (translation)
-Use `splitMat_ext h τ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_unitary, splitPairMat_map, splitPairMat_map_comp, JR_map_splitProj, e]`. Rewrite using `[map_unitary, comp_conj_conj h, splitPairMat_map, splitPairMat_map_comp, JR_map_splitProj, map_comp_conj hJ, ← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, ← Matrix.mul_assoc, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitPairMat_unitary (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v)
     {a b : Matrix (Fin n) (Fin n) (Fv F v)} (e : bᵀ * J.map τ * a = J.map τ) :
@@ -347,13 +345,13 @@ theorem matHom_splitLift (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →�
     matHom _ σ J (splitLift h hJ τ x) = splitPairGL h τ x (dualConj (splitGram hJ τ) x) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (splitPairMat_map h τ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem splitHom_splitLift (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v) (x : GL (Fin n) (Fv F v)) :
     splitHom σ J τ (splitLift h hJ τ x) = x := Units.ext (splitPairMat_map h τ _ _)
 
 /- English proof (translation)
-Introduce `g g' e` and use `matHom_injective _ σ J (Units.ext (splitMat_ext h τ (congrArg Units.val e) (by rw [← splitHom_val, ← splitHom_val, splitHom_comp hJ, splitHom_comp hJ, e])))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splitHom_injective (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v) :
     Function.Injective (splitHom σ J τ) := fun g g' e =>
@@ -361,7 +359,7 @@ theorem splitHom_injective (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →
     rw [← splitHom_val, ← splitHom_val, splitHom_comp hJ, splitHom_comp hJ, e])))
 
 /- English proof (translation)
-The claim follows from `have h1 := (isEmbedding_matHom (Fv F v) σ J).continuous Units.continuous_iff.2 ⟨(Units.continuous_val.comp h1).matrix_map (continuous_splitProj τ), (Units.continuous_coe_inv.comp h1).matrix_map (continuous_splitProj τ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_splitHom (τ : E →ₐ[F] Fv F v) : Continuous (splitHom σ J τ) :=
   have h1 := (isEmbedding_matHom (Fv F v) σ J).continuous
@@ -369,7 +367,7 @@ theorem continuous_splitHom (τ : E →ₐ[F] Fv F v) : Continuous (splitHom σ 
     (Units.continuous_coe_inv.comp h1).matrix_map (continuous_splitProj τ)⟩
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : GL (Fin n) (Fv F v) => splitPairMat h τ x.1 (dualConj (splitGram hJ τ) x).1` using `continuous_matrix fun i j => (continuous_splitAlgEquiv_symm h τ).comp ((Units.continuous_val.matrix_elem i j).prodMk ((continuous_dualConj_val _).matrix_elem i j))`. Conclude with `(isEmbedding_matHom (Fv F v) σ J).continuous_iff.2 (Units.continuous_iff.2 ⟨h1, (h1.comp continuous_inv).congr fun x => by`. Simplify using `only [Function.comp, map_inv, matHom_splitLift]`. Use the proof step `rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_splitLift (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v) :
     Continuous (splitLift h hJ τ) := by
@@ -407,13 +405,13 @@ Both sides reduce to the same expression.
 theorem splitEquiv_symm_apply (x : GL (Fin n) (Fv F v)) : (splitEquiv h hJ τ).symm x = splitLift h hJ τ x := rfl
 
 /- English proof (translation)
-The claim follows from `splitHom_comp hJ τ g`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_comp (g : GLoc σ J v) :
     splitEquiv h hJ (τ.comp σ) g = dualConj (splitGram hJ τ) (splitEquiv h hJ τ g) := splitHom_comp hJ τ g
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => splitProj_inclR τ (γ.1.1 i j)`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_ratLoc (γ : GRat σ J) : (splitEquiv h hJ τ (ratLoc σ J v γ)).1 = γ.1.1.map τ :=
   Matrix.ext fun i j => splitProj_inclR τ (γ.1.1 i j)
@@ -431,7 +429,7 @@ theorem splitEquivIn_apply (β : GL (Fin n) (Fv F v)) (g : GLoc σ J v) :
     splitEquivIn h hJ τ β g = β⁻¹ * splitHom σ J τ g * β := rfl
 
 /- English proof (translation)
-Use `(splitEquivIn h hJ τ β).apply_symm_apply x` as an intermediate fact. Rewrite `this` using `[splitEquivIn_apply]`. Generalize the expression as in `splitHom σ J τ _ = y at this`. Rewrite using `[← this]`. Use `group`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitHom_splitEquivIn_symm (β x : GL (Fin n) (Fv F v)) :
     splitHom σ J τ ((splitEquivIn h hJ τ β).symm x) = β * x * β⁻¹ := by
@@ -464,12 +462,12 @@ variable {τ : E →ₐ[F] Fv F v} {L : Submodule (𝓞 E) (Fin n → E)} {β : 
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_splitLat {u : Fin n → Fv F v} : u ∈ splitLat τ L ↔ ∃ y ∈ latLoc F L v, splitVec τ y = u := Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun hu => ⟨_, hu, splitVec_splitIncl h τ u⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[splitIncl_splitVec]`. Conclude with `(latLoc F L v).smul_mem ⟨_, splitIdem_mem h τ⟩ hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitIncl_mem_latLoc_iff (h : IsCMExt F E σ) {u : Fin n → Fv F v} :
     splitIncl h τ u ∈ latLoc F L v ↔ u ∈ splitLat τ L := by
@@ -481,7 +479,7 @@ theorem splitIncl_mem_latLoc_iff (h : IsCMExt F E σ) {u : Fin n → Fv F v} :
 variable (τ) in
 
 /- English proof (translation)
-Use `⟨fun hy => ⟨⟨y, hy, rfl⟩, ⟨y, hy, rfl⟩⟩, fun hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← (splitVecEquiv h τ).symm_apply_apply y]`. Conclude with `add_mem ((splitIncl_mem_latLoc_iff h).2 hy.1) ((splitIncl_mem_latLoc_iff h).2 hy.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latLoc_iff_split (h : IsCMExt F E σ) {y : Fin n → Fv F v ⊗[F] E} :
     y ∈ latLoc F L v ↔ splitVec τ y ∈ splitLat τ L ∧ splitVec (τ.comp σ) y ∈ splitLat (τ.comp σ) L := by
@@ -490,7 +488,7 @@ theorem mem_latLoc_iff_split (h : IsCMExt F E σ) {y : Fin n → Fv F v ⊗[F] E
   exact add_mem ((splitIncl_mem_latLoc_iff h).2 hy.1) ((splitIncl_mem_latLoc_iff h).2 hy.2)
 
 /- English proof (translation)
-Rewrite using `[← splitIncl_mem_latLoc_iff h, mem_latLoc_stdLattice]`. Simplify using `[mem_intLoc_iff_split h τ, splitIncl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_splitLat_stdLattice (h : IsCMExt F E σ) {u : Fin n → Fv F v} :
     u ∈ splitLat τ (stdLattice E n) ↔ ∀ i, u i ∈ v.adicCompletionIntegers F := by
@@ -498,7 +496,7 @@ theorem mem_splitLat_stdLattice (h : IsCMExt F E σ) {u : Fin n → Fv F v} :
   simp [mem_intLoc_iff_split h τ, splitIncl]
 
 /- English proof (translation)
-Rewrite using `[← splitIncl_mem_latLoc_iff h, hL]`. Express the relevant statement in the definitionally equal form `(∀ x ∈ latLoc F L v, hLin σ J (Fv F v) _ x ∈ intLoc F E v) ↔ _`. Simplify using `only [mem_intLoc_iff_split h τ, splitProj_comp_hLin h hJ, splitProj_hLin σ J τ, splitVec_splitIncl, splitVec_splitIncl_comp, Matrix.mulVec_zero, dotProduct_zero, zero_mem, true_and]`. Conclude with `⟨by rintro H _ ⟨x, hx, rfl⟩; exact H x hx, fun H x hx => H _ ⟨x, hx, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_splitLat_comp_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v)
     {u' : Fin n → Fv F v} :
@@ -511,7 +509,7 @@ theorem mem_splitLat_comp_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : Is
 
 omit [NumberField E] in
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hu`. Conclude with `⟨_, (mem_stabLoc.1 hg y).1 hy, splitVec_matHom_mulVec τ g y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitHom_mulVec_mem {g : GLoc σ J v} (hg : g ∈ stabLoc σ J L v) {u : Fin n → Fv F v} (hu : u ∈ splitLat τ L) :
     (splitHom σ J τ g).1 *ᵥ u ∈ splitLat τ L := by
@@ -520,7 +518,7 @@ theorem splitHom_mulVec_mem {g : GLoc σ J v} (hg : g ∈ stabLoc σ J L v) {u :
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitHom_inv_mulVec (g : GLoc σ J v) (u : Fin n → Fv F v) :
     (splitHom σ J τ g⁻¹).1 *ᵥ ((splitHom σ J τ g).1 *ᵥ u) = u := by
@@ -528,7 +526,7 @@ theorem splitHom_inv_mulVec (g : GLoc σ J v) (u : Fin n → Fv F v) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitHom_mulVec_inv (g : GLoc σ J v) (u : Fin n → Fv F v) :
     (splitHom σ J τ g).1 *ᵥ ((splitHom σ J τ g⁻¹).1 *ᵥ u) = u := by
@@ -537,7 +535,7 @@ theorem splitHom_mulVec_inv (g : GLoc σ J v) (u : Fin n → Fv F v) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `u` and use `⟨splitHom_mulVec_mem hg, fun hu => splitHom_inv_mulVec (τ := τ) g u ▸ splitHom_mulVec_mem (inv_mem hg) hu⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem splitHom_mem_stabGL {g : GLoc σ J v} (hg : g ∈ stabLoc σ J L v) : splitHom σ J τ g ∈ stabGL (splitLat τ L) :=
   fun u => ⟨splitHom_mulVec_mem hg, fun hu => splitHom_inv_mulVec (τ := τ) g u ▸ splitHom_mulVec_mem (inv_mem hg) hu⟩
@@ -545,9 +543,9 @@ theorem splitHom_mem_stabGL {g : GLoc σ J v} (hg : g ∈ stabLoc σ J L v) : sp
 variable (τ) in
 
 /- English proof (translation)
-Use `⟨splitHom_mem_stabGL, fun hg => mem_stabLoc.2 fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_latLoc_iff_split τ h, mem_latLoc_iff_split τ h, splitVec_matHom_mulVec, splitVec_matHom_mulVec, mem_splitLat_comp_iff h hJ hL, mem_splitLat_comp_iff h hJ hL]`. Use `and_congr (hg _) ⟨fun H u hu => ?_, fun H u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← splitHom_mulVec_inv (τ := τ) g u, pairing_splitHom]`. Conclude with `H _ ((hg _).2 (by rwa [splitHom_mulVec_inv]))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pairing_splitHom τ g]`. Conclude with `H _ ((hg u).1 hu)`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_iff_splitLat (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v)
     {g : GLoc σ J v} : g ∈ stabLoc σ J L v ↔ splitHom σ J τ g ∈ stabGL (splitLat τ L) := by
@@ -568,7 +566,7 @@ def IsSplitBasis : Prop :=
 
 variable (τ) in
 /- English proof (translation)
-Introduce `u` and use `by rw [Units.val_one, Matrix.one_mulVec, mem_splitLat_stdLattice h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSplitBasis_stdLattice (h : IsCMExt F E σ) : IsSplitBasis τ (stdLattice E n) 1 := fun u => by
   rw [Units.val_one, Matrix.one_mulVec, mem_splitLat_stdLattice h]
@@ -576,7 +574,7 @@ theorem isSplitBasis_stdLattice (h : IsCMExt F E σ) : IsSplitBasis τ (stdLatti
 variable (τ) in
 
 /- English proof (translation)
-Introduce `u` and use `by have e : (bc (compFin F E v) a).1 *ᵥ splitIncl h τ u = splitIncl h τ ((bc (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) (bc (compFin F E v) a)).1 *ᵥ u) := splitVec_ext h τ (by rw [splitVec_mulVec, splitVec_splitIncl, splitVec_splitIncl]; rfl) (by rw [splitVec_mulVec, splitVec_comp_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsLatticeFrame.isSplitBasis (h : IsCMExt F E σ) {a : GL (Fin n) (AF F ⊗[F] E)} (ha : IsLatticeFrame L a) :
     IsSplitBasis τ L (bc (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) (bc (compFin F E v) a)) := fun u => by
@@ -590,17 +588,17 @@ theorem IsLatticeFrame.isSplitBasis (h : IsCMExt F E σ) {a : GL (Fin n) (AF F �
 variable (τ L) in
 
 /- English proof (translation)
-The claim follows from `(Frames.exists_isLatticeFrame (F := F) L).elim fun _ ha => ⟨_, ha.isSplitBasis τ h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSplitBasis (h : IsCMExt F E σ) [Submodule.IsLattice E L] : ∃ β, IsSplitBasis τ L β :=
   (Frames.exists_isLatticeFrame (F := F) L).elim fun _ ha => ⟨_, ha.isSplitBasis τ h⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ i j : Fin n, (Pi.single j 1 : Fin n → Fv F v) i ∈ v.adicCompletionIntegers F` using `fun i j => by`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ M : Matrix (Fin n) (Fin n) (Fv F v), (∀ i j, M i j ∈ v.adicCompletionIntegers F) → ∀ u : Fin n → Fv F v, (∀ i, u i ∈ v.adicCompletionIntegers F) → ∀ i, (M *ᵥ u) i ∈ v.adicCompletionIntegers F` using `fun M hM u hu i => sum_mem fun j _ => mul_mem (hM i j) (hu j)`. Rewrite using `[mem_GLint_iff]`. Use `⟨fun H u => ⟨h2 _ H.1 u, fun hu => ?_⟩, fun H => ⟨fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Use `h2 _ H.2 _ hu` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `using (H _).1 (h1 · j) i`. Use `(H ((x⁻¹).1 *ᵥ Pi.single j 1)).2 (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `(h1 · j)) i`. Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_GLint_iff_mulVec {x : GL (Fin n) (Fv F v)} :
     x ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring ↔
@@ -624,7 +622,7 @@ theorem mem_GLint_iff_mulVec {x : GL (Fin n) (Fv F v)} :
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[hβ, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSplitBasis.mem_iff (hβ : IsSplitBasis τ L β) {u : Fin n → Fv F v} :
     u ∈ splitLat τ L ↔ ∀ i, ((β⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F := by
@@ -633,7 +631,7 @@ theorem IsSplitBasis.mem_iff (hβ : IsSplitBasis τ L β) {u : Fin n → Fv F v}
 omit [NumberField E] in
 
 /- English proof (translation)
-Simplify using `only [mem_GLint_iff_mulVec, IsSplitBasis, hβ.mem_iff, Units.val_mul, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem IsSplitBasis.iff_mem_GLint (hβ : IsSplitBasis τ L β) {β' : GL (Fin n) (Fv F v)} :
     IsSplitBasis τ L β' ↔ β⁻¹ * β' ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring := by
@@ -641,7 +639,7 @@ theorem IsSplitBasis.iff_mem_GLint (hβ : IsSplitBasis τ L β) {β' : GL (Fin n
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← hβ.iff_mem_GLint]`. Use `⟨fun H u => ?_, fun H u => ?_⟩` and prove the remaining obligations. Rewrite using `[hβ, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `H _`. Rewrite using `[hβ.mem_iff, H, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSplitBasis.mem_stabGL_iff (hβ : IsSplitBasis τ L β) {x : GL (Fin n) (Fv F v)} :
     x ∈ stabGL (splitLat τ L) ↔ β⁻¹ * x * β ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring := by
@@ -653,14 +651,14 @@ theorem IsSplitBasis.mem_stabGL_iff (hβ : IsSplitBasis τ L β) {x : GL (Fin n)
 variable (h : IsCMExt F E σ) (hJ : IsHermND σ J)
 
 /- English proof (translation)
-The claim follows from `(mem_stabLoc_iff_splitLat τ h hJ hL).trans hβ.mem_stabGL_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_iff_GLint (hL : IsSelfDualAt σ J L v) (hβ : IsSplitBasis τ L β) {g : GLoc σ J v} :
     g ∈ stabLoc σ J L v ↔ splitEquivIn h hJ τ β g ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring :=
   (mem_stabLoc_iff_splitLat τ h hJ hL).trans hβ.mem_stabGL_iff
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨g, rfl⟩` from `(splitEquivIn h hJ τ β).surjective x`. Rewrite using `[← mem_stabLoc_iff_GLint h hJ hL hβ]`. Conclude with `Subgroup.mem_map_iff_mem (splitEquivIn h hJ τ β).injective`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_stabLoc (hL : IsSelfDualAt σ J L v) (hβ : IsSplitBasis τ L β) :
     (stabLoc σ J L v).map (splitEquivIn h hJ τ β : GLoc σ J v →* GL (Fin n) (Fv F v)) =
@@ -696,7 +694,7 @@ def stabLocOne : Subgroup (GLoc σ J v) where
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabLocOne {g : GLoc σ J v} : g ∈ stabLocOne σ J τ L ↔ g ∈ stabLoc σ J L v ∧ ∀ u ∈ splitLat τ L,
     (splitHom σ J τ g).1 *ᵥ u - u ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) • splitLat τ L := Iff.rfl
@@ -704,13 +702,13 @@ theorem mem_stabLocOne {g : GLoc σ J v} : g ∈ stabLocOne σ J τ L ↔ g ∈ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `fun hu => Submodule.smul_induction_on (p := fun u => ∀ i, Valued.v (((β⁻¹).1 *ᵥ u) i) < 1) hu (fun c hc z hz i => ?_) fun y z hy hz i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Express the relevant statement in the definitionally equal form `Valued.v ((c : Fv F v) * _) < 1`. Rewrite using `[map_mul]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hβ.mem_iff.1 hz i)) (mem_maximalIdeal_iff_valued.1 hc)`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `Valuation.map_add_lt _ (hy i) (hz i)`. Introduce `hu`. Establish `e : u = ∑ i, (⟨_, (hu i).le⟩ : v.adicCompletionIntegers F) • (β.1 *ᵥ Pi.single i 1)` using `by conv_lhs => rw [← Matrix.one_mulVec u, ← β.mul_inv, ← Matrix.mulVec_mulVec, ← Finset.univ_sum_single ((β⁻¹).1 *ᵥ u), Matrix.mulVec_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((β⁻¹).1 *ᵥ u) i • (β.1 *ᵥ Pi.single i 1)`. Rewrite using `[← Matrix.mulVec_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[e]`. Use `sum_mem fun i _ => Submodule.smul_mem_smul (mem_maximalIdeal_iff_valued.2 (hu i)) ((hβ _).1 fun j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSplitBasis.mem_smul_iff (hβ : IsSplitBasis τ L β) {u : Fin n → Fv F v} :
     u ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) • splitLat τ L ↔
@@ -739,11 +737,11 @@ theorem IsSplitBasis.mem_smul_iff (hβ : IsSplitBasis τ L β) {u : Fin n → Fv
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : ∀ u, (β⁻¹).1 *ᵥ ((splitHom σ J τ g).1 *ᵥ u - u) = ((β⁻¹ * splitHom σ J τ g * β).1 - 1) *ᵥ ((β⁻¹).1 *ᵥ u)` using `fun u => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_right]`. Simplify using `only [mem_stabLocOne, hβ.mem_smul_iff, hβ.mem_iff, e]`. Use `and_congr_right fun _ => ⟨fun H i j => ?_, fun H u hu i => ?_⟩` and prove the remaining obligations. Use `H (β.1 *ᵥ Pi.single j 1) (fun l => by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Distinguish the cases in `e : l = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]) i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec _ (β⁻¹).1, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Use `Valuation.map_sum_lt (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))) one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hu j)) (H i j)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSplitBasis.mem_stabLocOne_iff (hβ : IsSplitBasis τ L β) {g : GLoc σ J v} :
     g ∈ stabLocOne σ J τ L ↔
@@ -765,7 +763,7 @@ theorem IsSplitBasis.mem_stabLocOne_iff (hβ : IsSplitBasis τ L β) {g : GLoc �
     exact lt_of_le_of_lt (mul_le_of_le_one_right' (hu j)) (H i j)
 
 /- English proof (translation)
-Rewrite using `[Units.ext_iff, Units.val_one, ← Matrix.map_one (IsLocalRing.residue (v.adicCompletionIntegers F)) (map_zero _) (map_one _), ← Matrix.map_one (v.adicCompletionIntegers F).subtype (map_zero _) (map_one _), ← Matrix.ext_iff]`. Conclude with `forall₂_congr fun i j => Ideal.Quotient.eq.trans mem_maximalIdeal_iff_valued`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_residue_eq_one_iff {y : GL (Fin n) (v.adicCompletionIntegers F)} :
     bc (IsLocalRing.residue (v.adicCompletionIntegers F)) y = 1 ↔
@@ -775,9 +773,9 @@ theorem bc_residue_eq_one_iff {y : GL (Fin n) (v.adicCompletionIntegers F)} :
   exact forall₂_congr fun i j => Ideal.Quotient.eq.trans mem_maximalIdeal_iff_valued
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨⟨y, rfl⟩, bc_residue_eq_one_iff.1 hy⟩`. Introduce and unpack `⟨hx, hy⟩`. Take `⟨y, rfl⟩ : ∃ y : GL (Fin n) (v.adicCompletionIntegers F), bc (v.adicCompletionIntegers F).subtype y = x` from `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(bc_residue_eq_one_iff (y := y)).2 hy`. Conclude with `⟨y, Subgroup.mem_comap.2 (Subgroup.mem_bot.2 h1), rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_princ_iff {x : GL (Fin n) (Fv F v)} :
     x ∈ princ (v.adicCompletionIntegers F).subtype (IsLocalRing.maximalIdeal _) ↔
@@ -798,14 +796,14 @@ def stabLocEquiv : stabLoc σ J L v ≃* GL (Fin n) (v.adicCompletionIntegers F)
       (MonoidHom.ofInjective (bc_injective (v.adicCompletionIntegers F).subtype_injective)).symm)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.apply_ofInjective_symm (bc_injective (v.adicCompletionIntegers F).subtype_injective) _`.
+A detailed English derivation is pending.
 -/
 theorem bc_stabLocEquiv (k : stabLoc σ J L v) :
     bc (v.adicCompletionIntegers F).subtype (stabLocEquiv h hJ hL hβ k) = splitEquivIn h hJ τ β k :=
   MonoidHom.apply_ofInjective_symm (bc_injective (v.adicCompletionIntegers F).subtype_injective) _
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x => x.1 i j) (bc_stabLocEquiv h hJ hL hβ k)`.
+A detailed English derivation is pending.
 -/
 theorem coe_stabLocEquiv (k : stabLoc σ J L v) (i j : Fin n) :
     ((stabLocEquiv h hJ hL hβ k).1 i j : Fv F v) = (splitEquivIn h hJ τ β k).1 i j :=
@@ -821,20 +819,20 @@ theorem splitRed_val (k : stabLoc σ J L v) :
     (splitRed h hJ hL hβ k).1 = (stabLocEquiv h hJ hL hβ k).1.map (IsLocalRing.residue _) := rfl
 
 /- English proof (translation)
-The claim follows from `(bc_residue_surjective _).comp (stabLocEquiv h hJ hL hβ).surjective`.
+A detailed English derivation is pending.
 -/
 theorem splitRed_surjective : Function.Surjective (splitRed h hJ hL hβ) :=
   (bc_residue_surjective _).comp (stabLocEquiv h hJ hL hβ).surjective
 
 /- English proof (translation)
-Rewrite using `[hβ.mem_stabLocOne_iff, and_iff_right k.2, ← splitEquivIn_apply h hJ, ← bc_stabLocEquiv h hJ hL hβ]`. Conclude with `bc_residue_eq_one_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitRed_eq_one_iff (k : stabLoc σ J L v) : splitRed h hJ hL hβ k = 1 ↔ k.1 ∈ stabLocOne σ J τ L := by
   rw [hβ.mem_stabLocOne_iff, and_iff_right k.2, ← splitEquivIn_apply h hJ, ← bc_stabLocEquiv h hJ hL hβ]
   exact bc_residue_eq_one_iff
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext (splitRed_eq_one_iff h hJ hL hβ)`.
+A detailed English derivation is pending.
 -/
 theorem ker_splitRed : (splitRed h hJ hL hβ).ker = (stabLocOne σ J τ L).subgroupOf (stabLoc σ J L v) :=
   Subgroup.ext (splitRed_eq_one_iff h hJ hL hβ)
@@ -847,7 +845,7 @@ variable {τ : E →ₐ[F] Fv F v} {L : Submodule (𝓞 E) (Fin n → E)} {β : 
   (h : IsCMExt F E σ) (hJ : IsHermND σ J)
 
 /- English proof (translation)
-Simplify using `only [dualConj_val, inv_one, Units.val_one, one_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualConj_one_val {K : Type} [Field K] (x : GL (Fin n) K) : (dualConj 1 x).1 = (x⁻¹).1ᵀ := by
   simp only [dualConj_val, inv_one, Units.val_one, one_mul, mul_one]
@@ -855,7 +853,7 @@ theorem dualConj_one_val {K : Type} [Field K] (x : GL (Fin n) K) : (dualConj 1 x
 include h in
 
 /- English proof (translation)
-Introduce `c` and use `by have e : ∀ u, ((dualConj 1 (splitGram hJ τ * β)).1 *ᵥ c) ⬝ᵥ J.map τ *ᵥ u = c ⬝ᵥ (β⁻¹).1 *ᵥ u := fun u => by rw [dualConj_one_val, Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← splitGram_val hJ, ← Units.val_mul, mul_inv_rev, inv_mul_cancel_right] …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsSplitBasis.dual (hL : IsSelfDualAt σ J L v) (hβ : IsSplitBasis τ L β) :
     IsSplitBasis (τ.comp σ) L (dualConj 1 (splitGram hJ τ * β)) := fun c => by
@@ -872,7 +870,7 @@ theorem IsSplitBasis.dual (hL : IsSelfDualAt σ J L v) (hβ : IsSplitBasis τ L 
   rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, dotProduct_single, mul_one] at this
 
 /- English proof (translation)
-Establish `e : ∀ x, dualConj (splitGram hJ τ) x = dualConj 1 (splitGram hJ τ * x * (splitGram hJ τ)⁻¹)` using `fun x => Units.ext (by`. Rewrite using `[dualConj_one_val, dualConj_val, mul_inv_rev, mul_inv_rev, inv_inv, ← mul_assoc, Units.val_mul, Units.val_mul])`. Rewrite using `[splitEquivIn_apply, splitEquivIn_apply, splitHom_comp hJ, e, ← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem splitEquivIn_comp (τ : E →ₐ[F] Fv F v) (β : GL (Fin n) (Fv F v)) (g : GLoc σ J v) :
     splitEquivIn h hJ (τ.comp σ) (dualConj 1 (splitGram hJ τ * β)) g = dualConj 1 (splitEquivIn h hJ τ β g) := by
@@ -886,7 +884,7 @@ theorem splitEquivIn_comp (τ : E →ₐ[F] Fv F v) (β : GL (Fin n) (Fv F v)) (
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨mul_mem (mul_mem hk hg.1) (inv_mem hk), fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg.2 _ (splitHom_mulVec_mem (inv_mem hk) hu)`. Establish `h2 : ∀ z ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) • splitLat τ L, (splitHom σ J τ k).1 *ᵥ z ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) • splitLat τ L` using `fun z hz => Submodule.smul_induction_on (p := fun z => (splitHom σ J τ k).1 *ᵥ z ∈ _) hz (fun c hc y hy => by rw [Matrix.mulVec_smul]; exact Submodule.smul_mem_smul hc (splitHom_mulVec_mem hk hy)) fun y z hy hz => by rw [Matrix.mulVec_add]; exact add_mem hy hz`. Establish `h3` using `h2 _ h1`. Rewrite `h3` using `[Matrix.mulVec_sub, splitHom_mulVec_inv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_stabLocOne {k g : GLoc σ J v} (hk : k ∈ stabLoc σ J L v) (hg : g ∈ stabLocOne σ J τ L) :
     k * g * k⁻¹ ∈ stabLocOne σ J τ L := by
@@ -909,9 +907,9 @@ include h in
 variable (J τ L) in
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_isSplitBasis τ L h`. Establish `hU : IsOpen {z : Fv F v | Valued.v z < 1}`. Simplify using `using Valued.isOpen_ball (Fv F v) 1`. Establish `e : (stabLocOne σ J τ L : Set (GLoc σ J v)) = (stabLoc σ J L v : Set (GLoc σ J v)) ∩ ⋂ i, ⋂ j, (fun g => ((β⁻¹ * splitHom σ J τ g * β).1 - 1) i j) ⁻¹' {z : Fv F v | Valued.v z < 1}` using `Set.ext fun g => by rw [Set.mem_inter_iff]; simp only [Set.mem_iInter]; exact hβ.mem_stabLocOne_iff`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(isOpen_stabLoc σ J L v).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hU.preimage ?_)` and prove the remaining obligations. Conclude with `((Units.continuous_val.comp ((continuous_const.mul (continuous_splitHom τ)).mul continuous_const)).sub continuous_const).matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_stabLocOne [Submodule.IsLattice E L] : IsOpen (stabLocOne σ J τ L : Set (GLoc σ J v)) := by
   obtain ⟨β, hβ⟩ := exists_isSplitBasis τ L h
@@ -933,7 +931,7 @@ section Ties
 open ValuativeRel in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v GLint (Fin n) (v.adicCompletionIntegers F).toSubring = GlobalTheory.SplitWeil.KO (Fv F v) (Fin n) ∧ princ (v.adicCompletionIntegers F).subtype (IsLocalRing.maximalIdeal _) = GlobalTheory.SplitWeil.KOne (Fv F v) (Fin n) := by letI := GlobalThe …`.
+A detailed English derivation is pending.
 -/
 theorem GLint_eq_KO_and_princ_eq_KOne (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     letI := GlobalTheory.LocalData.complRel v
@@ -979,9 +977,9 @@ Both sides reduce to the same expression.
 theorem chartEmb_apply (hπ : Chart e v π) (x : D.host.E) : chartEmb hπ x = π (incA D x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Establish `h1 : (a ⊗ₜ[D.host.F] x : AE D) = algebraMap (AF D.host.F) (AE D) a * incA D x` using `((Algebra.TensorProduct.tmul_mul_tmul a 1 1 x).trans (by rw [mul_one, one_mul])).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(congrArg π h1).trans ((map_mul π _ _).trans (congrArg (· * π (incA D x)) (hπ.2.2.1 a)))`.
+A detailed English derivation is pending.
 -/
 theorem chart_eq_splitProj (hπ : Chart e v π) (z : AE D) :
     π z = splitProj (chartEmb hπ) (compFin D.host.F D.host.E v z) := by
@@ -994,7 +992,7 @@ theorem chart_eq_splitProj (hπ : Chart e v π) (z : AE D) :
     exact (congrArg π h1).trans ((map_mul π _ _).trans (congrArg (· * π (incA D x)) (hπ.2.2.1 a)))
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[rho_val, splitEquivIn_apply, Units.val_mul, Units.val_mul]`. Use `congr 2`. Conclude with `Matrix.ext fun i j => chart_eq_splitProj hπ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rho_eq_splitEquivIn (hπ : Chart e v π) (V : HSp D) (hJ : IsHermND D.sp.cm.sig V.gram)
     (β : GL (Fin V.rank) (Fv D.host.F v)) (g : GA D V) :
@@ -1005,11 +1003,11 @@ theorem rho_eq_splitEquivIn (hπ : Chart e v π) (V : HSp D) (hJ : IsHermND D.sp
   exact Matrix.ext fun i j => chart_eq_splitProj hπ _
 
 /- English proof (translation)
-Use `split_ext (isCMExt_host D) (chartEmb hπ) ?_ ?_` and prove the remaining obligations. Use `(hπ.2.1 (1 - e)).2 (by rw [mul_sub, mul_one, he.1, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Rewrite using `[splitProj_splitIdem, ← chart_eq_splitProj, ← this]`. Establish `h1 : ∀ z : AE D, sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v z) = compFin D.host.F D.host.E v (cA D z)` using `fun z => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Rewrite using `[splitProj_comp_splitIdem, splitProj_comp, h1, ← chart_eq_splitProj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hπ.2.1 _).2 he.2.1`.
+A detailed English derivation is pending.
 -/
 theorem compFin_eq_splitIdem (he : IsSplitIdem D e) (hπ : Chart e v π) :
     compFin D.host.F D.host.E v e = splitIdem (isCMExt_host D) (chartEmb hπ) := by
@@ -1031,9 +1029,9 @@ end Chart
 section Inhab
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_cm_conj_ne h`. Take `⟨m, hm, he⟩` from `exists_integral_multiples ℤ ℚ ({σ x - x} : Finset E)`. Use `⟨⟨m • (σ x - x), he _ (Finset.mem_singleton_self _)⟩, fun e => ?_, ?_⟩` and prove the remaining obligations. Conclude with `smul_ne_zero hm (sub_ne_zero.2 hx) (congrArg Subtype.val e)`. Express the relevant statement in the definitionally equal form `σ (m • (σ x - x)) = -(m • (σ x - x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul, map_sub, cm_conj_conj h, ← smul_neg, neg_sub]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integer_conj_eq_neg (h : IsCMExt F E σ) : ∃ a : 𝓞 E, a ≠ 0 ∧ σ a = -a := by
   obtain ⟨x, hx⟩ := exists_cm_conj_ne h
@@ -1044,9 +1042,9 @@ theorem exists_integer_conj_eq_neg (h : IsCMExt F E σ) : ∃ a : 𝓞 E, a ≠ 
     rw [map_zsmul, map_sub, cm_conj_conj h, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Establish `h2` using `h.2.2.2 w.embedding a`. Rewrite `h2` using `[ha, map_neg]`. Establish `h3 : (w.embedding a).re = 0`. Use `congrArg Complex.re h2` as an intermediate fact. Rewrite `this` using `[Complex.neg_re, Complex.star_def, Complex.conj_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (w.embedding a).im ≠ 0` using `fun e => (map_ne_zero _).2 ha0 (Complex.ext h3 e)`. Rewrite using `[← InfinitePlace.norm_embedding_eq, map_add, map_one, map_mul, map_ofNat, ← Complex.one_lt_normSq_iff, Complex.normSq_apply]`. Simplify using `[h3, h4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_lt_infinitePlace (h : IsCMExt F E σ) {a : E} (ha0 : a ≠ 0) (ha : σ a = -a) (w : InfinitePlace E) :
     1 < w (1 + 2 * a) := by
@@ -1062,7 +1060,7 @@ theorem one_lt_infinitePlace (h : IsCMExt F E σ) {a : E} (ha0 : a ≠ 0) (ha : 
   simp [h3, h4]
 
 /- English proof (translation)
-Introduce `hu` and use `by have h1 := InfinitePlace.prod_eq_abs_norm (x : E) have h2 := isUnit_iff_norm.1 hu rw [RingOfIntegers.coe_norm] at h2 rw [h2, Rat.cast_one, ← Finset.prod_const_one (s := (Finset.univ : Finset (InfinitePlace E)))] at h1 exact (Finset.prod_lt_prod_of_nonempty (fun _ _ => one_pos) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnit_of_one_lt {x : 𝓞 E} (hx : ∀ w : InfinitePlace E, 1 < w x) : ¬ IsUnit x := fun hu => by
   have h1 := InfinitePlace.prod_eq_abs_norm (x : E)
@@ -1073,15 +1071,15 @@ theorem not_isUnit_of_one_lt {x : 𝓞 E} (hx : ∀ w : InfinitePlace E, 1 < w x
     (fun w _ => one_lt_pow₀ (hx w) InfinitePlace.mult_pos.ne') Finset.univ_nonempty).ne' h1
 
 /- English proof (translation)
-Take `⟨a, ha0, ha⟩` from `exists_integer_conj_eq_neg h`. Take `⟨s, hs⟩ : ∃ s : 𝓞 E →+* 𝓞 E, ∀ x, (s x : E) = σ x` from `⟨RingOfIntegers.mapRingHom (σ : E →+* E), fun _ => rfl⟩`. Establish `hsa : s a = -a` using `RingOfIntegers.ext ((hs a).trans ha)`. Establish `hlt : ∀ w : InfinitePlace E, 1 < w ((1 + 2 * a : 𝓞 E) : E)` using `one_lt_infinitePlace h (RingOfIntegers.coe_ne_zero_iff.2 ha0) ha`. Take `⟨P, hP, hle⟩` from `exists_max_ideal_of_mem_nonunits (not_isUnit_of_one_lt hlt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (1 + 2 * a : 𝓞 E) ≠ 0` using `fun e => by`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `hlt w` as an intermediate fact. Rewrite `this` using `[e]`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hs1 : s (1 - 2 * a) = 1 + 2 * a` using `by rw [map_sub, map_one, map_mul, map_ofNat, hsa]; ring`. Establish `hm : 1 - 2 * a ∈ P.comap s` using `by rwa [Ideal.mem_comap, hs1]`. Use `hP.isPrime` as an intermediate fact. Establish `hb : P ≠ ⊥` using `fun e => h0 (by rwa [e, Ideal.mem_bot] at hle)`. Establish `hb' : P.comap s ≠ ⊥` using `fun e => h0 (by rw [e, Ideal.mem_bot] at hm; rw [← hs1, hm, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq h (w := ⟨P, hP.isPrime, hb⟩) (w' := ⟨P.comap s, inferInstance, hb'⟩) (fun e => hP.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Establish `e' : P = P.comap s` using `congrArg HeightOneSpectrum.asIdeal e`. Rewrite `hm` using `[← e']`. Use `sub_mem hle (P.mul_mem_right a (add_mem hle hm)) using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring))) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use the proof step `(HeightOneSpectrum.ext (Ideal.ext fun c => by`. Establish `: s (algebraMap (𝓞 F) (𝓞 E) c) = algebraMap (𝓞 F) (𝓞 E) c` using `RingOfIntegers.ext ((hs _).trans (σ.commutes (c : F)))`. Express the relevant statement in the definitionally equal form `s (algebraMap (𝓞 F) (𝓞 E) c) ∈ P ↔ algebraMap (𝓞 F) (𝓞 E) c ∈ P`. Rewrite using `[this]))`. Conclude with `⟨_, ⟨τ⟩⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_split_place (h : IsCMExt F E σ) : ∃ v : HeightOneSpectrum (𝓞 F), Nonempty (E →ₐ[F] Fv F v) := by
   obtain ⟨a, ha0, ha⟩ := exists_integer_conj_eq_neg h
@@ -1115,13 +1113,13 @@ theorem exists_split_place (h : IsCMExt F E σ) : ∃ v : HeightOneSpectrum (�
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => by by_cases e : i = j <;> simp [Matrix.one_apply, e, eq_comm], by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHermND_one (σ : E →ₐ[F] E) (n : ℕ) : IsHermND σ (1 : Matrix (Fin n) (Fin n) E) :=
   ⟨fun i j => by by_cases e : i = j <;> simp [Matrix.one_apply, e, eq_comm], by simp⟩
 
 /- English proof (translation)
-Take `⟨v, ⟨τ⟩⟩` from `exists_split_place h`. Conclude with `⟨v, τ, isHermND_one σ n, isSelfDualAt_stdLattice_one σ v, isSplitBasis_stdLattice τ h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_split_data (h : IsCMExt F E σ) (n : ℕ) :
     ∃ (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] Fv F v), IsHermND σ (1 : Matrix (Fin n) (Fin n) E) ∧
@@ -1130,7 +1128,7 @@ theorem exists_split_data (h : IsCMExt F E σ) (n : ℕ) :
   exact ⟨v, τ, isHermND_one σ n, isSelfDualAt_stdLattice_one σ v, isSplitBasis_stdLattice τ h⟩
 
 /- English proof (translation)
-The claim follows from `haveI : IsCMField (CyclotomicField 4 ℚ) := IsCyclotomicExtension.Rat.isCMField _ (S := {4}) ⟨4, rfl, by norm_num⟩ exists_split_place (isCMExt_of_isCMField _)`.
+A detailed English derivation is pending.
 -/
 example : ∃ v : HeightOneSpectrum (𝓞 (maximalRealSubfield (CyclotomicField 4 ℚ))),
     Nonempty (CyclotomicField 4 ℚ →ₐ[maximalRealSubfield (CyclotomicField 4 ℚ)] Fv _ v) :=
@@ -1138,7 +1136,7 @@ example : ∃ v : HeightOneSpectrum (𝓞 (maximalRealSubfield (CyclotomicField 
   exists_split_place (isCMExt_of_isCMField _)
 
 /- English proof (translation)
-Establish `e : splitGram (isHermND_one σ n) τ = 1` using `Units.ext (Matrix.map_one _ (map_zero τ) (map_one τ))`. Rewrite using `[splitEquiv_comp, e, dualConj_one_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc σ (1 : Matrix (Fin n) (Fin n) E) v) :
     (splitEquiv h (isHermND_one σ n) (τ.comp σ) g).1 = ((splitEquiv h (isHermND_one σ n) τ g)⁻¹).1ᵀ := by
@@ -1146,7 +1144,7 @@ example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc σ (1 : Matrix 
   rw [splitEquiv_comp, e, dualConj_one_val]
 
 /- English proof (translation)
-Introduce `e` and use `by obtain ⟨k, hk⟩ := splitRed_surjective h (isHermND_one σ 2) (isSelfDualAt_stdLattice_one σ v) (isSplitBasis_stdLattice τ h) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![1, 1; 0, 1] (by simp)) rw [(splitRed_eq_one_iff _ _ _ _ k).2 (e.ge k.2)] at hk simpa using congrArg (fun x => …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
     stabLocOne σ 1 τ (stdLattice E 2) ≠ stabLoc σ (1 : Matrix (Fin 2) (Fin 2) E) (stdLattice E 2) v := fun e => by
@@ -1156,7 +1154,7 @@ example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
   simpa using congrArg (fun x => x.1 0 1) hk
 
 /- English proof (translation)
-Introduce `e` and use `by obtain ⟨p, hp⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (1 : ℤ)) have h0 : p ≠ 0 := fun e => WithZero.exp_ne_zero (hp.symm.trans ((congrArg _ e).trans (map_zero _))) obtain ⟨g, hg⟩ := (splitEquivIn h (isHermND_one σ 1) τ 1).surjective (Matrix.Gene …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
     stabLoc σ (1 : Matrix (Fin 1) (Fin 1) E) (stdLattice E 1) v ≠ ⊤ := fun e => by

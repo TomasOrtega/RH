@@ -8,7 +8,7 @@ namespace GlobalTheory
 open NumberField ReciprocityTheory.ChartRestriction.G.T0 ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Up.AlgT
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, j⟩` from `p`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `[ReciprocityTheory.MultiplicativeHeights.sImage, sImg, Fin.cycleRange_symm_zero]`. Simplify using `[ReciprocityTheory.MultiplicativeHeights.sImage, sImg, Fin.cycleRange_symm_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem genericSection_reindex {F : Type} [Field F] {D N : ℕ} (j₀ : Fin (N + 1)) (x : Fin N → F) :
     ReciprocityTheory.MultiplicativeHeights.sImage (D := D) x = sImg (D := D) j₀ x ∘
@@ -20,9 +20,9 @@ theorem genericSection_reindex {F : Type} [Field F] {D N : ℕ} (j₀ : Fin (N +
   · simp [ReciprocityTheory.MultiplicativeHeights.sImage, sImg, Fin.cycleRange_symm_succ]
 
 /- English proof (translation)
-Take `⟨hind, hfin⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS k F D N x hfg htr hJ`. Rewrite `hind`, `hfin` using `[genericSection_reindex j₀ x]`. Rewrite `hfin` using `[(Equiv.surjective _).range_comp]`. Use `⟨(algebraicIndependent_equiv _).1 hind, hfin, ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional (IntermediateField.adjoin k (Set.range (sImg (D` using `D) j₀ x))) (OmS F D N) := hfin`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: CharZero (IntermediateField.adjoin k (Set.range (sImg (D` using `D) j₀ x))) := charZero_of_injective_algebraMap (algebraMap k _).injective`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericSection_field {k F : Type} [Field k] [CharZero k] [Field F] [Algebra k F] {D N : ℕ}
     (j₀ : Fin (N + 1)) (x : Fin N → F) (hfg : (⊤ : IntermediateField k F).FG)

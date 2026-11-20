@@ -9,9 +9,9 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨a, b, hab⟩` from `(mem_normSub _ _ x).1 hx`. Use `(mem_normSub _ _ x).2 ⟨φ a, φ b, ?_⟩` and prove the remaining obligations. Establish `hab' : (x : F) = a ^ 2 - δ * b ^ 2` using `hab`. Rewrite using `[hab']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sub, map_mul, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSub_id_le_normSub {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) :
     normSub (RingHom.id F) δ ≤ normSub φ δ := by
@@ -23,7 +23,7 @@ theorem normSub_id_le_normSub {F L : Type} [Field F] [Field L] (φ : F →+* L) 
   simp [map_sub, map_mul, map_pow]
 
 /- English proof (translation)
-The claim follows from `le_inf (le_iInf₂ fun _ _ => normSub_id_le_normSub _ δ) (le_iInf fun _ => normSub_id_le_normSub _ δ)`.
+A detailed English derivation is pending.
 -/
 theorem normSub_id_le_locNorm (F : Type) [Field F] [NumberField F] (δ : F)
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -32,9 +32,9 @@ theorem normSub_id_le_locNorm (F : Type) [Field F] [NumberField F] (δ : F)
     (le_iInf fun _ => normSub_id_le_normSub _ δ)
 
 /- English proof (translation)
-Introduce `F _ _ δ S hS hδ hsq htop`. Take `⟨hne, hle⟩` from `GlobalTheory.T.two_mul_relIndex_normSub_sUnits_le F δ S hS hδ hsq`. Take `⟨-, hge⟩` from `GlobalTheory.T.two_pow_le_index_localNormsSqrtExtension F (δ : F) S δ.ne_zero`. Establish `h1 : (locNorm F δ S).index = (locNorm F δ S).relIndex (sUnits F S)`. Rewrite using `[← Subgroup.relIndex_top_right, ← htop, Subgroup.relIndex_sup_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (locNorm F δ S).relIndex (sUnits F S) ≤ (normSub (RingHom.id F) (δ : F)).relIndex (sUnits F S)` using `Subgroup.relIndex_le_of_le_left (normSub_id_le_locNorm F δ S) hne`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sUnits_sup_locNorm_ne_top : ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))), admitted F S → δ ∈ sUnits F S → ¬ IsSquare (δ : F) → sUnits F S ⊔ locNorm F δ S ≠ ⊤ := by
   intro F _ _ δ S hS hδ hsq htop

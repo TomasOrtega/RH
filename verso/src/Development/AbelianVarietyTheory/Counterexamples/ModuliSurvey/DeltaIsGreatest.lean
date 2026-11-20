@@ -14,7 +14,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 variable {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart u.D.toPre.P.isLB ((u.D.toPre.c χ).left (IsLocalRing.closedPoint u.V))`. Use `⟨fun _ => i, fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.mem_preimage]`. Conclude with `((IsLocalRing.specializes_closedPoint (R := u.V) x).map (u.D.toPre.c χ).left.continuous).mem_open (u.D.toPre.P.L.U i).isOpen hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart (χ : u.D.toPre.X) : ∃ j : PUnit → u.D.toPre.P.L.ι,
     ⊤ ≤ (u.D.toPre.c χ).left ⁻¹ᵁ u.D.toPre.P.L.U (j PUnit.unit) := by
@@ -26,22 +26,22 @@ theorem exists_chart (χ : u.D.toPre.X) : ∃ j : PUnit → u.D.toPre.P.L.ι,
     (u.D.toPre.c χ).left.continuous).mem_open (u.D.toPre.P.L.U i).isOpen hi
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_chart u χ`. Conclude with `(h j hj).symm.trans (h' j hj)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psiNorm_unique (χ : u.D.toPre.X) {r r' : ℝ} (h : u.PsiNorm χ r) (h' : u.PsiNorm χ r') : r = r' := by
   obtain ⟨j, hj⟩ := exists_chart u χ
   exact (h j hj).symm.trans (h' j hj)
 
 /- English proof (translation)
-Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Establish `hg' : (1:ℝ) ≤ S.g` using `by exact_mod_cast hg`. Establish `hN3 : (3:ℝ) < S.N`. Establish `h2g : (1:ℝ) ≤ (2:ℝ) ^ ((S.g:ℝ)/2)` using `Real.one_le_rpow (by norm_num) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hN4 : (4:ℝ) ≤ S.N`. Establish `h3 : 3 < S.N` using `by exact_mod_cast hN3`. Establish `h4 : 4 ≤ S.N` using `h3`. Conclude with `h4` after adjusting the coercions. Establish `h32 : (3/2:ℝ) ≤ (3/2:ℝ) ^ S.g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h12 : (1/2:ℝ) ≤ (2:ℝ) ^ ((S.g:ℝ)/2 - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : (3/4:ℝ) ≤ (S.g : ℝ) * (3 / 2 : ℝ) ^ S.g * (2 : ℝ) ^ ((S.g : ℝ) / 2 - 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hBN : (3:ℝ) ≤ ((S.g : ℝ) * (3 / 2 : ℝ) ^ S.g * (2 : ℝ) ^ ((S.g : ℝ) / 2 - 1)) * S.N`. Use the polynomial consequences of the given equalities and inequalities. Generalize the expression as in `(S.g : ℝ) * (3 / 2 : ℝ) ^ S.g * (2 : ℝ) ^ ((S.g : ℝ) / 2 - 1) = B at h2 hBN`. Generalize the expression as in `S.N ^ S.g * S.g.factorial = A at h2 ⊢`. Generalize the expression as in `S.r * S.N = M at h2 ⊢`.
+Use the polynomial consequences of the given equalities and inequalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hA0 : (0:ℝ) ≤ (A : ℝ)` using `Nat.cast_nonneg _`. Establish `hlt : ((6 * A : ℕ) : ℝ) < (M : ℝ)`. Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hBN hA0]`. Conclude with `hlt` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem big_third (S : ThetaSys o Ω) (hg : 1 ≤ S.g)
     (h1 : 1 + 2 * (S.g : ℝ) * (2 : ℝ) ^ ((S.g : ℝ) / 2) < S.N)

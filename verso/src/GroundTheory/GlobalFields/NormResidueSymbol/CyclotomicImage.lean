@@ -21,7 +21,7 @@ abbrev layer (m : ℕ+) : FiniteSubfield :=
   ⟨rootsOfUnityField m, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `adjoin.mono ℚ _ _ fun x (hx : x ^ (m : ℕ) = 1) ↦ by change x ^ ((m * n : ℕ+) : ℕ) = 1 rw [PNat.mul_coe, pow_mul, hx, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem rootsOfUnityField_le_mul (m n : ℕ+) :
     rootsOfUnityField m ≤ rootsOfUnityField (m * n : ℕ+) :=
@@ -33,16 +33,16 @@ def AgreesOn (m : ℕ+) (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (τ : maxCyclotomic ≃ₐ
   ∀ z (hz : z ∈ rootsOfUnityField m), g z = (τ ⟨z, rootsOfUnityField_le_maxCyclotomic m hz⟩ : ℚ̄)
 
 /- English proof (translation)
-The claim follows from `fun z hz ↦ h z (rootsOfUnityField_le_mul m n hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AgreesOn.of_mul {m n : ℕ+} {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} {τ : maxCyclotomic ≃ₐ[ℚ] maxCyclotomic}
     (h : AgreesOn (m * n) g τ) : AgreesOn m g τ :=
   fun z hz ↦ h z (rootsOfUnityField_le_mul m n hz)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `AlgEquiv.ext fun y ↦ Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_ideleSymbol_apply]`. Conclude with `(AlgEquiv.restrictNormal_commutes g (rootsOfUnityField m) y).trans (h y y.2)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Establish `h1` using `AlgEquiv.restrictNormal_commutes g (rootsOfUnityField m) ⟨z, hz⟩`. Rewrite `h1` using `[h]`. Conclude with `h1.symm.trans (coe_ideleSymbol_apply m x ⟨z, hz⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agreesOn_iff (m : ℕ+) (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (x : IdeleGroup ℚ) :
     AgreesOn m g (reciprocityMap (IdeleClassGroup.mk ℚ x)) ↔
@@ -58,11 +58,11 @@ theorem agreesOn_iff (m : ℕ+) (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (x : IdeleGroup �
     exact h1.symm.trans (coe_ideleSymbol_apply m x ⟨z, hz⟩)
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `cycRestrict_surjective τ`. Establish `hfix : σ⁻¹ * g ∈ maxCyclotomic.fixingSubgroup`. Rewrite using `[maxCyclotomic, mem_fixingSubgroup_adjoin_iff]`. Introduce and unpack `ζ ⟨n, hn, hζ⟩`. Establish `h1` using `h ⟨n, hn⟩ ζ (subset_adjoin ℚ _ hζ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[coe_cycRestrict_apply]`. Rewrite using `[AlgEquiv.mul_apply, h1, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Use `AlgEquiv.ext fun y ↦ Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_cycRestrict_apply, coe_cycRestrict_apply]`. Establish `h2` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hfix y y.2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cycRestrict_eq_of_forall_agreesOn {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} {τ : maxCyclotomic ≃ₐ[ℚ] maxCyclotomic}
     (h : ∀ m, AgreesOn m g τ) : cycRestrict g = τ := by
@@ -80,13 +80,11 @@ theorem cycRestrict_eq_of_forall_agreesOn {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} {τ : ma
     _ = σ y := by rw [h2]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ g₀ : ℚ̄ ≃ₐ[ℚ] ℚ̄, g₀.restrictNormal F.1 = t`. Take `⟨g₀, hg₀⟩` from `h`. Establish `e : {g : ℚ̄ ≃ₐ[ℚ] ℚ̄ | g.restrictNormal F.1 = t} = (fun g ↦ g₀⁻¹ * g) ⁻¹' (F.1.fixingSubgroup : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `g.restrictNormal F.1 = t ↔ g₀⁻¹ * g ∈ F.1.fixingSubgroup`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mem_fixingSubgroup_iff_restrictNormal_eq_one]`. Express the relevant statement in the definitionally equal form `_ ↔ AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := ℚ̄) F.1 (g₀⁻¹ * g) = 1`. Rewrite using `[map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `_ ↔ (g₀.restrictNormal F.1)⁻¹ * g.restrictNormal F.1 = 1`. Rewrite using `[hg₀, inv_mul_eq_one, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `F.1.fixingSubgroup_isClosed.preimage (continuous_const.mul continuous_id)`. Use `push Not at h`. Establish `e : {g : ℚ̄ ≃ₐ[ℚ] ℚ̄ | g.restrictNormal F.1 = t} = ∅` using `Set.eq_empty_of_forall_notMem fun g hg ↦ h g hg`. Rewrite using `[e]`.
-
-Conclude with `isClosed_empty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_setOf_restrictNormal_eq (F : FiniteSubfield) [IsGalois ℚ F.1]
     (t : F.1 ≃ₐ[ℚ] F.1) : IsClosed {g : ℚ̄ ≃ₐ[ℚ] ℚ̄ | g.restrictNormal F.1 = t} := by
@@ -115,7 +113,7 @@ def cycSymbol : IdeleClassGroup K.1 →* (maxCyclotomic ≃ₐ[ℚ] maxCyclotomi
   reciprocityMap.comp (ideleClassNorm ℚ K.1)
 
 /- English proof (translation)
-Rewrite using `[cycSymbol, MonoidHom.comp_apply, ideleClassNorm_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycSymbol_mk (x : IdeleGroup K.1) :
     cycSymbol K (IdeleClassGroup.mk K.1 x) =
@@ -123,13 +121,13 @@ theorem cycSymbol_mk (x : IdeleGroup K.1) :
   rw [cycSymbol, MonoidHom.comp_apply, ideleClassNorm_mk]
 
 /- English proof (translation)
-The claim follows from `continuous_reciprocityMap.comp (continuous_ideleClassNorm (K := ℚ) (L := K.1))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cycSymbol : Continuous (cycSymbol K) :=
   continuous_reciprocityMap.comp (continuous_ideleClassNorm (K := ℚ) (L := K.1))
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `RationalSymbol.ideleSymbol_diagonal_eq_one _ {(m : ℕ)} a`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_diagonal_le_ker_layer (m : ℕ+) :
     (diagonal ℚ).range ≤ (ideleSymbol ℚ (rootsOfUnityField m)).ker := by
@@ -142,7 +140,7 @@ def layerSymbol (m : ℕ+) :
     (ideleClassNorm ℚ K.1)
 
 /- English proof (translation)
-Rewrite using `[layerSymbol, MonoidHom.comp_apply, ideleClassNorm_mk, ideleClassSymbol_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem layerSymbol_mk (m : ℕ+) (x : IdeleGroup K.1) :
     layerSymbol K m (IdeleClassGroup.mk K.1 x) =
@@ -150,14 +148,14 @@ theorem layerSymbol_mk (m : ℕ+) (x : IdeleGroup K.1) :
   rw [layerSymbol, MonoidHom.comp_apply, ideleClassNorm_mk, ideleClassSymbol_mk]
 
 /- English proof (translation)
-The claim follows from `(continuous_ideleClassSymbol (range_diagonal_le_ker_layer m)).comp (continuous_ideleClassNorm (K := ℚ) (L := K.1))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_layerSymbol (m : ℕ+) : Continuous (layerSymbol K m) :=
   (continuous_ideleClassSymbol (range_diagonal_le_ker_layer m)).comp
     (continuous_ideleClassNorm (K := ℚ) (L := K.1))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K.1 c`. Rewrite using `[cycSymbol_mk, layerSymbol_mk, agreesOn_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem agreesOn_cycSymbol_iff (m : ℕ+) (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (c : IdeleClassGroup K.1) :
     AgreesOn m g (cycSymbol K c) ↔ g.restrictNormal (rootsOfUnityField m) = layerSymbol K m c := by
@@ -169,17 +167,15 @@ section Positive
 variable {F : Type*} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨t, ht⟩` from `t`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `hz0 : e.symm t ≠ 0` using `(map_ne_zero_iff _ e.symm.injective).2 ht.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (e.symm t) = t`. Rewrite using `[← InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `e.apply_symm_apply t`. Use `⟨w, Units.mk0 (e.symm t) hz0, Subtype.ext ?_, fun _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[ideleModule_infiniteEmbedding, Units.val_mk0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖e.symm t‖ = ‖e (e.symm t)‖`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm`. Rewrite using `[hn, RingEquiv.apply_symm_apply, Real.norm_of_nonneg ht.le]`. Simplify using `[InfinitePlace.mult, hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Units.val_mk0, he]`. Conclude with `ht`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`. Establish `hz0 : e.symm (Real.sqrt t : ℂ) ≠ 0` using `(map_ne_zero_iff _ e.symm.injective).2 (Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 ht))`. Establish `hw' : ¬ w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨w, Units.mk0 _ hz0, Subtype.ext ?_, fun h ↦ absurd h hw'⟩` and prove the remaining obligations. Rewrite using `[ideleModule_infiniteEmbedding, Units.val_mk0]`. Establish `hn : ‖e.symm (Real.sqrt t : ℂ)‖ = ‖e (e.symm (Real.sqrt t : ℂ))‖`. Rewrite using `[InfinitePlace.Completion.ringEquivComplexOfIsComplex_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _).symm`.
-
-Rewrite using `[hn, RingEquiv.apply_symm_apply, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg t)]`. Simplify using `[InfinitePlace.mult, hw', Real.sq_sqrt ht.le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_infiniteEmbedding_ideleModule_eq (t : {r : ℝ // 0 < r}) :
     ∃ (w : InfinitePlace F) (z : (w.Completion)ˣ),
@@ -217,7 +213,7 @@ theorem exists_infiniteEmbedding_ideleModule_eq (t : {r : ℝ // 0 < r}) :
     simp [InfinitePlace.mult, hw', Real.sq_sqrt ht.le]
 
 /- English proof (translation)
-Rewrite using `[ideleSymbol_infiniteEmbedding]`. Distinguish the cases in `hw : w.IsReal`. Take `⟨w'⟩` from `IdeleNorm.nonempty_infinitePlacesOver L w`. Rewrite using `[infiniteLocalSymbol_apply L w hw w' z, if_neg (not_lt.2 (hz hw).le)]`. Rewrite using `[infiniteLocalSymbol_of_not_isReal L w hw, MonoidHom.one_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleSymbol_infiniteEmbedding_eq_one (L : Type*) [Field L] [NumberField L] [Algebra F L]
     [IsGalois F L] [IsMulCommutative (L ≃ₐ[F] L)] (w : InfinitePlace F) (z : (w.Completion)ˣ)
@@ -232,7 +228,7 @@ theorem ideleSymbol_infiniteEmbedding_eq_one (L : Type*) [Field L] [NumberField 
 end Positive
 
 /- English proof (translation)
-Rewrite using `[ideleSymbol_ideleNorm, h]`. Conclude with `map_one (AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := (compositum K F).1) F.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleSymbol_ideleNorm_eq_one (F : FiniteSubfield) [IsGalois ℚ F.1]
     [IsMulCommutative (F.1 ≃ₐ[ℚ] F.1)] {x : IdeleGroup K.1}
@@ -241,13 +237,13 @@ theorem ideleSymbol_ideleNorm_eq_one (F : FiniteSubfield) [IsGalois ℚ F.1]
   exact map_one (AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := (compositum K F).1) F.1)
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Set `t : ℕ+ → Set (ℚ̄ ≃ₐ[ℚ] ℚ̄)` to `fun m ↦ (K.1.fixingSubgroup : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄)) ∩ {g | g.restrictNormal (rootsOfUnityField m) = layerSymbol K m c}`. Establish `hcl : ∀ m, IsClosed (t m)` using `fun m ↦ K.1.fixingSubgroup_isClosed.inter (isClosed_setOf_restrictNormal_eq (layer m) _)`. Establish `hne : ∀ m, (t m).Nonempty` using `fun m ↦ by`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K.1 c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, h⟩` from `exists_restrictNormal_eq_ideleSymbol K (layer m) x`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g.restrictNormal (rootsOfUnityField m) = _`. Rewrite using `[layerSymbol_mk]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdir : Directed (· ⊇ ·) t` using `fun m n ↦ by`. Use `⟨m * n, fun g hg ↦ ⟨hg.1, ?_⟩, fun g hg ↦ ⟨hg.1, ?_⟩⟩` and prove the remaining obligations. Conclude with `(agreesOn_cycSymbol_iff K m g c).1 ((agreesOn_cycSymbol_iff K _ g c).2 hg.2).of_mul`. Establish `h` using `(agreesOn_cycSymbol_iff K _ g c).2 hg.2`. Rewrite `h` using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(agreesOn_cycSymbol_iff K n g c).1 h.of_mul`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t hdir hne (fun m ↦ (hcl m).isCompact) hcl`. Rewrite `hg` using `[Set.mem_iInter]`. Conclude with `⟨g, (hg 1).1, cycRestrict_eq_of_forall_agreesOn fun m ↦ (agreesOn_cycSymbol_iff K m g c).2 (hg m).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_fixingSubgroup_cycRestrict_eq (c : IdeleClassGroup K.1) :
     ∃ g ∈ K.1.fixingSubgroup, cycRestrict g = cycSymbol K c := by
@@ -276,15 +272,15 @@ theorem exists_mem_fixingSubgroup_cycRestrict_eq (c : IdeleClassGroup K.1) :
     cycRestrict_eq_of_forall_agreesOn fun m ↦ (agreesOn_cycSymbol_iff K m g c).2 (hg m).2⟩
 
 /- English proof (translation)
-Set `s : ℕ+ → Set (IdeleClassGroup K.1)` to `fun m ↦ (IdeleClassGroup.normOneSubgroup K.1 : Set (IdeleClassGroup K.1)) ∩ layerSymbol K m ⁻¹' {g.restrictNormal (rootsOfUnityField m)}`. Establish `hone : IsClosed (IdeleClassGroup.normOneSubgroup K.1 : Set (IdeleClassGroup K.1))` using `isClosed_singleton.preimage (IdeleClassGroup.continuous_ideleModule K.1)`. Establish `hcl : ∀ m, IsClosed (s m)` using `fun m ↦ hone.inter (isClosed_singleton.preimage (continuous_layerSymbol K m))`. Establish `hco : ∀ m, IsCompact (s m)` using `fun m ↦ (IdeleClassGroup.isCompact_normOneSubgroup K.1).inter_right (isClosed_singleton.preimage (continuous_layerSymbol K m))`. Establish `hne : ∀ m, (s m).Nonempty` using `fun m ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_ideleSymbol_eq_restrictNormal K (layer m) hg`. Take `⟨w, z, hmod, hpos⟩` from `exists_infiniteEmbedding_ideleModule_eq (F := K.1) (IdeleGroup.ideleModule K.1 x)`. Establish `he : ideleSymbol ℚ (rootsOfUnityField m) (ideleNorm ℚ K.1 (infiniteEmbedding w z)) = 1` using `ideleSymbol_ideleNorm_eq_one K (layer m) (ideleSymbol_infiniteEmbedding_eq_one _ w z hpos)`. Use `⟨IdeleClassGroup.mk K.1 (x * (infiniteEmbedding w z)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IdeleClassGroup.ideleModule K.1 (IdeleClassGroup.mk K.1 _) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[IdeleClassGroup.ideleModule_mk, map_mul, map_inv, hmod, mul_inv_cancel]`. Express the relevant statement in the definitionally equal form `layerSymbol K m _ = _`. Rewrite using `[layerSymbol_mk, map_mul, map_inv, map_mul, map_inv, he, inv_one, mul_one]`. Conclude with `hx`. Establish `hdir : Directed (· ⊇ ·) s` using `fun m n ↦ by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m * n, fun c hc ↦ ⟨hc.1, ?_⟩, fun c hc ↦ ⟨hc.1, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(agreesOn_cycSymbol_iff K _ g c).2 (Set.mem_singleton_iff.1 hc.2).symm`. Conclude with `Set.mem_singleton_iff.2 ((agreesOn_cycSymbol_iff K m g c).1 h.of_mul).symm`. Establish `h` using `(agreesOn_cycSymbol_iff K _ g c).2 (Set.mem_singleton_iff.1 hc.2).symm`. Rewrite `h` using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_singleton_iff.2 ((agreesOn_cycSymbol_iff K n g c).1 h.of_mul).symm`. Take `⟨c, hc⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed s hdir hne hco hcl`. Rewrite `hc` using `[Set.mem_iInter]`. Conclude with `⟨c, (cycRestrict_eq_of_forall_agreesOn fun m ↦ (agreesOn_cycSymbol_iff K m g c).2 (Set.mem_singleton_iff.1 (hc m).2).symm).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cycSymbol_eq {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} (hg : g ∈ K.1.fixingSubgroup) :
     ∃ c : IdeleClassGroup K.1, cycSymbol K c = cycRestrict g := by
@@ -324,9 +320,9 @@ theorem exists_cycSymbol_eq {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} (hg : g ∈ K.1.fixing
     (agreesOn_cycSymbol_iff K m g c).2 (Set.mem_singleton_iff.1 (hc m).2).symm).symm⟩
 
 /- English proof (translation)
-Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Take `⟨g, hg, h⟩` from `exists_mem_fixingSubgroup_cycRestrict_eq K c`. Conclude with `⟨g, hg, h⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨g, hg, rfl⟩`. Take `⟨c, hc⟩` from `exists_cycSymbol_eq K hg`. Conclude with `⟨c, hc⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_cycSymbol : (cycSymbol K).range = K.1.fixingSubgroup.map cycRestrict := by
   ext τ
@@ -342,7 +338,7 @@ def cycDegree : (maxCyclotomic ≃ₐ[ℚ] maxCyclotomic) →* Multiplicative �
   unitsDegree.comp cycCharacter.toMonoidHom
 
 /- English proof (translation)
-Use `MonoidHom.ext fun σ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `unitsDegree (cycCharacter (cycRestrict σ)) = degree σ`. Rewrite using `[degree_apply, cycCharacter_cycRestrict]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycDegree_comp_cycRestrict : cycDegree.comp cycRestrict = degree := by
   refine MonoidHom.ext fun σ ↦ ?_
@@ -350,7 +346,7 @@ theorem cycDegree_comp_cycRestrict : cycDegree.comp cycRestrict = degree := by
   rw [degree_apply, cycCharacter_cycRestrict]
 
 /- English proof (translation)
-Rewrite using `[range_cycSymbol, Subgroup.map_map, cycDegree_comp_cycRestrict]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cycDegree_range_cycSymbol :
     (cycSymbol K).range.map cycDegree = K.1.fixingSubgroup.map degree := by

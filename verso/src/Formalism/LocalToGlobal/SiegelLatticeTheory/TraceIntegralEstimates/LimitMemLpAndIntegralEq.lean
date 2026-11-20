@@ -10,22 +10,22 @@ namespace Formalism.L2.S.Pv.SchurTens
 variable {X : Type*} [MeasurableSpace X] {μ : Measure X}
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_pow (norm_nonneg z), ofReal_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_sq_eq (z : ℂ) : ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2) := by
   rw [ENNReal.ofReal_pow (norm_nonneg z), ofReal_norm]
 
 /- English proof (translation)
-Conclude with `hu.norm.pow 2`.
+A detailed English derivation is pending.
 -/
 private theorem aestronglyMeasurable_norm_sq {u : X → ℂ} (hu : AEStronglyMeasurable u μ) :
     AEStronglyMeasurable (fun x => ‖u x‖ ^ 2) μ := by
   exact hu.norm.pow 2
 
 /- English proof (translation)
-Use `(memLp_two_iff_integrable_sq_norm hu).2 ⟨aestronglyMeasurable_norm_sq hu, ?_⟩` and prove the remaining obligations. Establish `e : ∀ x, ‖‖u x‖ ^ 2‖ₑ = ‖u x‖ₑ ^ 2` using `fun x => by`. Rewrite using `[Real.enorm_of_nonneg (by positivity), enorm_sq_eq]`. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Simplify using `only [e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem memLp_two_of_lintegral {u : X → ℂ} (hu : AEStronglyMeasurable u μ) (h : ∫⁻ x, ‖u x‖ₑ ^ 2 ∂μ < ⊤) :
     MemLp u 2 μ := by
@@ -37,7 +37,7 @@ theorem memLp_two_of_lintegral {u : X → ℂ} (hu : AEStronglyMeasurable u μ) 
   exact h
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ᵐ[μ] fun x => ‖u x‖ ^ 2` using `ae_of_all _ fun x => by`. Conclude with `sq_nonneg _`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae h0 (aestronglyMeasurable_norm_sq hu.1)]`. Use `congr 1`. Conclude with `lintegral_congr fun x => (enorm_sq_eq (u x)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lintegral_sq_eq {u : X → ℂ} (hu : MemLp u 2 μ) :
     ∫ x, ‖u x‖ ^ 2 ∂μ = (∫⁻ x, ‖u x‖ₑ ^ 2 ∂μ).toReal := by
@@ -48,14 +48,14 @@ theorem lintegral_sq_eq {u : X → ℂ} (hu : MemLp u 2 μ) :
   exact lintegral_congr fun x => (enorm_sq_eq (u x)).symm
 
 /- English proof (translation)
-The claim follows from `Complex.norm_conj z`.
+A detailed English derivation is pending.
 -/
 private theorem norm_conj_complex (z : ℂ) : ‖conj z‖ = ‖z‖ := Complex.norm_conj z
 
 /- English proof (translation)
-Establish `hu2` using `(memLp_two_iff_integrable_sq_norm hu.1).1 hu`. Establish `hv2` using `(memLp_two_iff_integrable_sq_norm hv.1).1 hv`. Establish `hm : AEStronglyMeasurable (fun x => u x * conj (v x)) μ` using `hu.1.mul (Complex.continuous_conj.comp_aestronglyMeasurable hv.1)`. Use `(hu2.add hv2).mono hm (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Use `show ‖u x * conj (v x)‖ ≤ ‖‖u x‖ ^ 2 + ‖v x‖ ^ 2‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_conj_complex, Real.norm_of_nonneg (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg (‖u x‖ - ‖v x‖), norm_nonneg (u x), norm_nonneg (v x), mul_nonneg (norm_nonneg (u x)) (norm_nonneg (v x))]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integrable_mul_conj {u v : X → ℂ} (hu : MemLp u 2 μ) (hv : MemLp v 2 μ) :
     Integrable (fun x => u x * conj (v x)) μ := by
@@ -70,7 +70,7 @@ theorem integrable_mul_conj {u v : X → ℂ} (hu : MemLp u 2 μ) (hv : MemLp v 
     mul_nonneg (norm_nonneg (u x)) (norm_nonneg (v x))]
 
 /- English proof (translation)
-Establish `h : 0 ≤ (t * a - b) ^ 2 / t` using `div_nonneg (sq_nonneg _) ht.le`. Establish `ht1 : t * t⁻¹ = 1` using `mul_inv_cancel₀ ht.ne'`. Establish `e : (t * a - b) ^ 2 / t = t * a ^ 2 - 2 * (a * b) + b ^ 2 / t`. Take the linear combination `(t * a ^ 2 - 2 * a * b) * ht1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem mul_le_weighted_sq_add_half {a b t : ℝ} (ht : 0 < t) : a * b ≤ (t * a ^ 2 + b ^ 2 / t) / 2 := by
   have h : 0 ≤ (t * a - b) ^ 2 / t := div_nonneg (sq_nonneg _) ht.le
@@ -80,11 +80,11 @@ private theorem mul_le_weighted_sq_add_half {a b t : ℝ} (ht : 0 < t) : a * b �
   linarith
 
 /- English proof (translation)
-Establish `hu2` using `(memLp_two_iff_integrable_sq_norm hu.1).1 hu`. Establish `hv2` using `(memLp_two_iff_integrable_sq_norm hv.1).1 hv`. Establish `hR : Integrable (fun x => (t * ‖u x‖ ^ 2 + ‖v x‖ ^ 2 / t) / 2) μ` using `((hu2.const_mul t).add (hv2.div_const t)).div_const 2`. Establish `h1 : ∫ x, (t * ‖u x‖ ^ 2 + ‖v x‖ ^ 2 / t) / 2 ∂μ = (∫ x, (t * ‖u x‖ ^ 2 + ‖v x‖ ^ 2 / t) ∂μ) / 2` using `integral_div _ _`. Establish `h2 : ∫ x, (t * ‖u x‖ ^ 2 + ‖v x‖ ^ 2 / t) ∂μ = ∫ x, t * ‖u x‖ ^ 2 ∂μ + ∫ x, ‖v x‖ ^ 2 / t ∂μ` using `integral_add (hu2.const_mul t) (hv2.div_const t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∫ x, t * ‖u x‖ ^ 2 ∂μ = t * ∫ x, ‖u x‖ ^ 2 ∂μ` using `integral_const_mul _ _`. Establish `h4 : ∫ x, ‖v x‖ ^ 2 / t ∂μ = (∫ x, ‖v x‖ ^ 2 ∂μ) / t` using `integral_div _ _`. Rewrite using `[← h4, ← h3, ← h2, ← h1]`. Use `(norm_integral_le_integral_norm _).trans (integral_mono (integrable_mul_conj hu hv).norm hR fun x => ?_)` and prove the remaining obligations. Use `show ‖u x * conj (v x)‖ ≤ (t * ‖u x‖ ^ 2 + ‖v x‖ ^ 2 / t) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_conj_complex]`. Conclude with `mul_le_weighted_sq_add_half ht`.
+A detailed English derivation is pending.
 -/
 theorem norm_integral_mul_conj_le {u v : X → ℂ} (hu : MemLp u 2 μ) (hv : MemLp v 2 μ) {t : ℝ} (ht : 0 < t) :
     ‖∫ x, u x * conj (v x) ∂μ‖ ≤ (t * ∫ x, ‖u x‖ ^ 2 ∂μ + (∫ x, ‖v x‖ ^ 2 ∂μ) / t) / 2 := by
@@ -107,9 +107,9 @@ theorem norm_integral_mul_conj_le {u v : X → ℂ} (hu : MemLp u 2 μ) (hv : Me
   exact mul_le_weighted_sq_add_half ht
 
 /- English proof (translation)
-Establish `hlim : ∀ x, Tendsto (fun m => ‖f m x - f n x‖ₑ ^ 2) atTop (𝓝 (‖F x - f n x‖ₑ ^ 2))`. Introduce `x`. Establish `h1 : Tendsto (fun m => f m x - f n x) atTop (𝓝 (F x - f n x))` using `(hpt x).sub_const _`. Establish `h2 : Tendsto (fun m => ‖f m x - f n x‖ₑ) atTop (𝓝 ‖F x - f n x‖ₑ)` using `(continuous_enorm.tendsto _).comp h1`. Conclude with `((ENNReal.continuous_pow 2).tendsto _).comp h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ m, AEMeasurable (fun x => ‖f m x - f n x‖ₑ ^ 2) μ` using `fun m => (((hf m).sub (hf n)).enorm).pow_const 2`. Establish `hfreq : ∃ᶠ m in atTop, ∫⁻ x, ‖f m x - f n x‖ₑ ^ 2 ∂μ ≤ ε` using `(eventually_atTop.2 ⟨N, h⟩).frequently`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem lintegral_enorm_sub_limit_sq_le {f : ℕ → X → ℂ} {F : X → ℂ}
     (hf : ∀ n, AEStronglyMeasurable (f n) μ)
@@ -134,25 +134,23 @@ private theorem lintegral_enorm_sub_limit_sq_le {f : ℕ → X → ℂ} {F : X �
     _ ≤ ε := liminf_le_of_frequently_le' hfreq
 
 /- English proof (translation)
-Establish `hfm : ∀ n, AEStronglyMeasurable (f n) μ` using `fun n => (hf2 n).1`. Take `⟨N₀, hN₀⟩` from `hC 1 one_pos`. Establish `h0` using `lintegral_enorm_sub_limit_sq_le hfm hpt N₀ N₀ (hN₀ N₀ le_rfl)`. Establish `hsub0 : MemLp (fun x => F x - f N₀ x) 2 μ` using `memLp_two_of_lintegral (hFm.sub (hf2 N₀).1) (lt_of_le_of_lt h0 ENNReal.one_lt_top)`. Establish `hF : MemLp F 2 μ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `hsub0.add (hf2 N₀)`. Use `hadd using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `hFg : Integrable (fun x => F x * conj (g x)) μ` using `integrable_mul_conj hF hg`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hF, hFg, ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun n => ∫ x, f n x * conj (g x) ∂μ) atTop (𝓝 (∫ x, F x * conj (g x) ∂μ))`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `δ hδ`. Take `⟨G, hGe⟩ : ∃ G, ∫ x, ‖g x‖ ^ 2 ∂μ = G` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hG : 0 ≤ G`. Rewrite using `[← hGe]`. Conclude with `integral_nonneg fun x => sq_nonneg _`. Establish `hc : 0 < G + 1` using `by linarith`. Establish `hB : 0 < δ ^ 2 / (2 * (G + 1))` using `div_pos (pow_pos hδ 2) (mul_pos two_pos hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hC (ENNReal.ofReal (δ ^ 2 / (2 * (G + 1)))) (ENNReal.ofReal_pos.2 hB)`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Use `show dist (∫ x, f n x * conj (g x) ∂μ) (∫ x, F x * conj (g x) ∂μ) < δ`. Establish `hsub : MemLp (fun x => F x - f n x) 2 μ` using `hF.sub (hf2 n)`. Establish `hlin` using `lintegral_enorm_sub_limit_sq_le hfm hpt n N (hN n hn)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∫ x, ‖F x - f n x‖ ^ 2 ∂μ ≤ δ ^ 2 / (2 * (G + 1))`. Rewrite using `[lintegral_sq_eq hsub]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hB.le hlin`. Establish `ht : 0 < (G + 1) / δ` using `div_pos hc hδ`. Establish `hbound` using `norm_integral_mul_conj_le hsub hg ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hbound` using `[hGe]`. Establish `hdiff : ∫ x, F x * conj (g x) ∂μ - ∫ x, f n x * conj (g x) ∂μ = ∫ x, (F x - f n x) * conj (g x) ∂μ`. Rewrite using `[← integral_sub hFg (integrable_mul_conj (hf2 n) hg)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dist_eq_norm, norm_sub_rev, hdiff]`. Establish `hδ0 : δ ≠ 0` using `hδ.ne'`. Establish `hc0 : G + 1 ≠ 0` using `hc.ne'`. Establish `h1 : (G + 1) / δ * ∫ x, ‖F x - f n x‖ ^ 2 ∂μ ≤ δ / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : G / ((G + 1) / δ) < δ`. Rewrite using `[div_div_eq_mul_div]`. Rewrite using `[div_lt_iff₀ hc]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `tendsto_nhds_unique hlim hL`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem limit_memLp_and_integral_eq (f : ℕ → X → ℂ) (F g : X → ℂ) (hf2 : ∀ n, MemLp (f n) 2 μ) (hFm : AEStronglyMeasurable F μ)
     (hg : MemLp g 2 μ) (hpt : ∀ x, Tendsto (fun n => f n x) atTop (𝓝 (F x)))

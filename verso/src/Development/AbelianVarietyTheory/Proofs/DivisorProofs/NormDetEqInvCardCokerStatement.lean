@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker) | (exact GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker) | (intros; apply GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.norm_det_eq_inv_card_coker : ∀ (l : ℕ) [Fact l.Prime] (T : Type) [AddCommGroup T] [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T] (φ : T →ₗ[ℤ_[l]] T) (a : ℕ), Nat.card (T ⧸ LinearMap.range φ) = l ^ a → ‖LinearMap.det φ‖ = (l : ℝ) ^ (-(a : ℤ)) := by
   first | (exact @GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker) | (exact GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker) | (intros; apply GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker  <;> assumption)

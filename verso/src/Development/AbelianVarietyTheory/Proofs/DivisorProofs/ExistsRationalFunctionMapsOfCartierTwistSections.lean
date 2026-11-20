@@ -16,20 +16,20 @@ variable {Y : Scheme.{0}} [IsIntegral Y]
 def chartEqn {D : CartierDiv Y} (i : (toLB D).ι) : Y.functionFieldˣ := (show EqnChart D from i).1.2
 
 /- English proof (translation)
-The claim follows from `(show EqnChart D from i).2.1`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_chart {D : CartierDiv Y} (i : (toLB D).ι) : genericPoint Y ∈ (toLB D).U i :=
   (show EqnChart D from i).2.1
 
 /- English proof (translation)
-The claim follows from `(show EqnChart D from i).2.2 x hx`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_chartEqn {D : CartierDiv Y} (i : (toLB D).ι) {x : Y} (hx : x ∈ (toLB D).U i) :
     D.IsEqn x (chartEqn i) :=
   (show EqnChart D from i).2.2 x hx
 
 /- English proof (translation)
-The claim follows from `fnOf_toLB_g i j h`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_g_chart {D : CartierDiv Y} (i j : (toLB D).ι) (h) :
     fnOf _ h ((toLB D).g i j).val = (chartEqn i : Y.functionField) / (chartEqn j : Y.functionField) :=
@@ -74,7 +74,7 @@ def ratOn (D : CartierDiv Y) (W : Y.Opens) :
     · rw [add_zero]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem ratOn_apply (D : CartierDiv Y) {W : Y.Opens} (h : genericPoint Y ∈ W)
     (a : sectionsOn (twist (GlobalTheory.structureModule Y) (toLB D)) W) :
@@ -83,9 +83,9 @@ theorem ratOn_apply (D : CartierDiv Y) {W : Y.Opens} (h : genericPoint Y ∈ W)
   dif_pos h
 
 /- English proof (translation)
-Use `set j := genChart D`. Establish `hij : genericPoint Y ∈ W ⊓ (toLB D).U i ⊓ (toLB D).U j` using `memInf (memInf h (gen_mem_chart i)) (gen_mem_chart j)`. Establish `e0 : resG Y (inf_le_left : W ⊓ (toLB D).U i ⊓ (toLB D).U j ≤ W ⊓ (toLB D).U i) (coordFn a i) = resG Y (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W ⊓ (toLB D).U i ⊓ (toLB D).U j ≤ (toLB D).U i ⊓ (toLB D).U j) ((toLB D).g i j).val * resG Y (le_inf (inf_le_left.trans in …` using `Twist.coord_rel (sectionsOn.toΓ _ _ a) i j _ _ _`. Establish `e` using `congrArg (fnOf (W ⊓ (toLB D).U i ⊓ (toLB D).U j) hij) e0`. Rewrite `e` using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, fnOf_g_chart]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ratOn_apply D h, e]`. Use `(chartEqn j).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `mul_comm _ _`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ratOn_mul (D : CartierDiv Y) {W : Y.Opens} (h : genericPoint Y ∈ W)
     (a : sectionsOn (twist (GlobalTheory.structureModule Y) (toLB D)) W) (i : (toLB D).ι) :
@@ -113,7 +113,7 @@ namespace GlobalTheory.Cartier
 variable {Y : Scheme.{0}} [IsIntegral Y]
 
 /- English proof (translation)
-Take `⟨i, hi⟩ : ∃ i, y ∈ (toLB D).U i` from `exists_chart (isLB_toLB D) y`. Use `⟨chartEqn i, isEqn_chartEqn i hi, ?_⟩` and prove the remaining obligations. Rewrite using `[ratOn_mul D (gen_mem hy) a i]`. Conclude with `regAt_fnOf (memInf hy hi) _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratOn_regularAt (D : CartierDiv Y) {W : Y.Opens}
     (a : sectionsOn (twist (GlobalTheory.structureModule Y) (toLB D)) W) {y : Y} (hy : y ∈ W) :
@@ -124,9 +124,9 @@ theorem ratOn_regularAt (D : CartierDiv Y) {W : Y.Opens}
   exact regAt_fnOf (memInf hy hi) _ _
 
 /- English proof (translation)
-Establish `key (i : (toLB D).ι) : ∃ b : Γ(Y, W ⊓ (toLB D).U i), fnOf _ (memInf h (gen_mem_chart i)) b = f * chartEqn i` using `exists_fnOf_eq _ fun x hx => (isEqn_chartEqn i hx.2).regularAt_iff.1 (hf x hx.1)`. Use `choose b hb using key`. Establish `hmem : b ∈ Twist.secGroup (GlobalTheory.structureModule Y) (toLB D) W` using `fun i j => fn_ext (U := W ⊓ (toLB D).U i ⊓ (toLB D).U j) fun hij => by show fnOf (W ⊓ (toLB D).U i ⊓ (toLB D).U j) hij (resG Y (inf_le_left : W ⊓ (toLB D).U i ⊓ (toLB D).U j ≤ W ⊓ (toLB D).U i) (b i)) = fnOf (W ⊓ (toLB D).U i ⊓ (toLB D).U j) hij (resG Y (le_inf (inf_le_left.trans …`. Rewrite using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, hb, hb, fnOf_g_chart]`. Use `(chartEqn j).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨(sectionsOn.toΓ _ _).symm (Twist.mkSec b hmem), ?_⟩` and prove the remaining obligations. Establish `e` using `ratOn_mul D h ((sectionsOn.toΓ _ _).symm (Twist.mkSec b hmem)) (genChart D)`. Conclude with `mul_right_cancel₀ (chartEqn (genChart D)).ne_zero (e.trans (hb _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ratOn_eq (D : CartierDiv Y) {W : Y.Opens} (h : genericPoint Y ∈ W)
     {f : Y.functionField} (hf : ∀ y ∈ W, D.RegularAt y f) :
@@ -152,7 +152,7 @@ theorem exists_ratOn_eq (D : CartierDiv Y) {W : Y.Opens} (h : genericPoint Y ∈
   exact mul_right_cancel₀ (chartEqn (genChart D)).ne_zero (e.trans (hb _))
 
 /- English proof (translation)
-Rewrite using `[ratOn_apply D h, ratOn_apply D (hle h)]`. Establish `e : coordFn (sectionsOn.res Γ(Y, ⊤) _ hle a) (genChart D) = resG Y (inf_le_inf_right _ hle) (coordFn a (genChart D))` using `rfl`. Rewrite using `[e, fnOf_resG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratOn_res (D : CartierDiv Y) {W W' : Y.Opens} (hle : W' ≤ W)
     (a : sectionsOn (twist (GlobalTheory.structureModule Y) (toLB D)) W) (h : genericPoint Y ∈ W') :
@@ -163,7 +163,7 @@ theorem ratOn_res (D : CartierDiv Y) {W W' : Y.Opens} (hle : W' ≤ W)
   rw [e, fnOf_resG]
 
 /- English proof (translation)
-Introduce `Y _ D` and use `⟨ratOn D, fun _ a _ hy => ratOn_regularAt D a hy, fun _ _ h hf => exists_ratOn_eq D h hf, fun _ _ hle a h => ratOn_res D hle a h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_ratOn_twist : ∀ (Y : Scheme.{0}) [IsIntegral Y] (D : CartierDiv Y), ∃ ρ : ∀ W : Y.Opens, sectionsOn (twist (GlobalTheory.structureModule Y) (toLB D)) W →+ Y.functionField, (∀ (W : Y.Opens) (a), ∀ y ∈ W, D.RegularAt y (ρ W a)) ∧ (∀ (W : Y.Opens) (f : Y.functionField), genericPoint Y ∈ W → (∀ y ∈ W, D.RegularAt y f) → ∃ a, ρ W a = f) ∧ ∀ (W W' : Y.Opens) (h : W' ≤ W) (a), genericPoint Y ∈ W' → ρ W' (sectionsOn.res Γ(Y, ⊤) _ h a) = ρ W a :=
   fun Y _ D => ⟨ratOn D, fun _ a _ hy => ratOn_regularAt D a hy,

@@ -20,7 +20,7 @@ open scoped ContDiff ComplexOrder
 namespace GlobalTheory.ChernFrame
 
 /- English proof (translation)
-Unfold `chernAt chernPoly curvPoly`. Simplify using `only [curv_congr h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem chernAt_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {H K : V n → Matrix r r ℂ} {v : V n}
     (h : H =ᶠ[𝓝 v] K) (j : ℕ) : chernAt H v j = chernAt K v j := by
@@ -28,7 +28,7 @@ theorem chernAt_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {H K : V 
   simp only [curv_congr h]
 
 /- English proof (translation)
-Unfold `delAt coefwise`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun L => L (coordVec a) • bas n S) (GlobalTheory.del_congr (f := fun x => (bas n).repr (α x) S) (g := fun x => (bas n).repr (β x) S) (h.mono fun x hx => congrArg (fun y => (bas n).repr y S) hx))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem delAt_congr {n : ℕ} {α β : V n → Alt n} {v : V n} (h : α =ᶠ[𝓝 v] β) : delAt α v = delAt β v := by
   unfold delAt coefwise
@@ -40,7 +40,7 @@ theorem delAt_congr {n : ℕ} {α β : V n → Alt n} {v : V n} (h : α =ᶠ[�
       (h.mono fun x hx => congrArg (fun y => (bas n).repr y S) hx))
 
 /- English proof (translation)
-Unfold `dbarAt coefwise`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun L => L (coordVec a) • bas n S) (GlobalTheory.dbar_congr (f := fun x => (bas n).repr (α x) S) (g := fun x => (bas n).repr (β x) S) (h.mono fun x hx => congrArg (fun y => (bas n).repr y S) hx))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dbarAt_congr {n : ℕ} {α β : V n → Alt n} {v : V n} (h : α =ᶠ[𝓝 v] β) : dbarAt α v = dbarAt β v := by
   unfold dbarAt coefwise
@@ -52,33 +52,29 @@ theorem dbarAt_congr {n : ℕ} {α β : V n → Alt n} {v : V n} (h : α =ᶠ[�
       (h.mono fun x hx => congrArg (fun y => (bas n).repr y S) hx))
 
 /- English proof (translation)
-Introduce `M _ n A ι _ _ κ U hUo hUc g hg G hGs hGp hGt j`. Establish `hop : ∀ i a, IsOpen ((A.e i).target ∩ (A.e i).symm ⁻¹' U a)` using `fun i a => (A.e i).isOpen_inter_preimage_symm (hUo a)`. Establish `hsm : ∀ i a p q, ContDiffOn ℝ ∞ (fun v => G a ((A.e i).symm v) p q) ((A.e i).target ∩ (A.e i).symm ⁻¹' U a)` using `fun i a p q => hGs a p q i`. Establish `hun : ∀ i a, ∀ v ∈ (A.e i).target ∩ (A.e i).symm ⁻¹' U a, IsUnit (G a ((A.e i).symm v)).det` using `fun i a v hv => (isUnit_iff_isUnit_det _).1 (hGp a _ hv.2).isUnit`. Establish `hpt : ∀ (x : A.Pt) a, x.pt ∈ U a → x.crd ∈ (A.e x.1.1).target ∩ (A.e x.1.1).symm ⁻¹' U a` using `fun x a ha => ⟨x.ch.map_source x.2, by simp only [mem_preimage]; rw [x.ch.left_inv x.2]; exact ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : ∀ a b (x : A.Pt), x.pt ∈ U a → x.pt ∈ U b → A.chern (G a) j x = A.chern (G b) j x`. Introduce `a b x ha hb`. Establish `hN : IsOpen ((A.e x.1.1).target ∩ (A.e x.1.1).symm ⁻¹' (U a ∩ U b))` using `(A.e x.1.1).isOpen_inter_preimage_symm ((hUo a).inter (hUo b))`. Establish `hsym : (A.e x.1.1).symm x.crd = x.pt` using `x.ch.left_inv x.2`. Establish `hx : x.crd ∈ (A.e x.1.1).target ∩ (A.e x.1.1).symm ⁻¹' (U a ∩ U b)` using `⟨x.ch.map_source x.2, by simp only [mem_preimage]; rw [hsym]; exact ⟨ha, hb⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : MContDiffAt 2 (fun v => G a ((A.e x.1.1).symm v)) x.crd` using `fun p q => ((hsm x.1.1 a p q).contDiffAt ((hop x.1.1 a).mem_nhds (hpt x a ha))).of_le (by norm_cast)`. Establish `hKu : IsUnit (G a ((A.e x.1.1).symm x.crd)).det` using `hun x.1.1 a _ (hpt x a ha)`. Establish `hA : ∀ p q, AnalyticAt ℂ (fun w => g a b ((A.e x.1.1).symm w) p q) x.crd` using `fun p q => GlobalTheory.SCV.analyticAt_of_differentiableOn (hg a b p q x.1.1) (hN.mem_nhds hx)`. Establish `hAu : IsUnit (g a b ((A.e x.1.1).symm x.crd)).det`. Rewrite using `[hsym]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(isUnit_iff_isUnit_det _).1 (hGp b _ hb).isUnit`. Rewrite `h2` using `[hGt a b x.pt ⟨ha, hb⟩, chg, det_mul, det_mul]`. Simplify using `using isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left h2)`. Establish `hev : (fun v => G b ((A.e x.1.1).symm v)) =ᶠ[𝓝 x.crd] fun v => chg (g a b ((A.e x.1.1).symm v)) (G a ((A.e x.1.1).symm v))` using `Filter.eventually_of_mem (hN.mem_nhds hx) fun v hv => hGt a b _ hv.2`. Conclude with `(GlobalTheory.T.chernFormOfGramMatrixAt_holomorphic_frameChange _ _ _ _ hK hKu hA hAu hev j).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hfr, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ i a, ∀ v ∈ (A.e i).target ∩ (A.e i).symm ⁻¹' U a, A.loc P i v = (chernAt (fun w => G a ((A.e i).symm w)) v j : Alt n)`. Introduce `i a v hv`. Rewrite using `[HolAtlas.loc, dif_pos hv.1, hP a ⟨(i, (A.e i).symm v), (A.e i).map_target hv.1⟩ hv.2]`. Use `show ((chernAt (fun w => G a ((A.e i).symm w)) ((A.e i) ((A.e i).symm v)) j : Ev n) : Alt n) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(A.e i).right_inv hv.1]`. Establish `hgerm : ∀ i a v, v ∈ (A.e i).target ∩ (A.e i).symm ⁻¹' U a → A.loc P i =ᶠ[𝓝 v] fun w => (chernAt (fun w' => G a ((A.e i).symm w')) w j : Alt n)` using `fun i a v hv => Filter.eventually_of_mem ((hop i a).mem_nhds hv) (hloc i a)`. Use `⟨⟨fun i S => ?_, fun x x' hxx => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `contDiffOn_of_locally_contDiffOn fun v hv => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hUc ((A.e i).symm v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hop i a, ⟨hv, ha⟩, ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.contDiffOn_chernFormOfGramMatrixAt_coefficients _ _ (hop i a) (hsm i a) (hun i a) j S).mono inter_subset_right).congr fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hloc i a w hw.2]`. Take `⟨a, ha⟩` from `hUc x.pt`. Establish `ha' : x'.pt ∈ U a` using `hxx ▸ ha`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP a x ha, hP a x' ha']`. Establish `hW : IsOpen (x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source)` using `x.ch.isOpen_inter_preimage_symm x'.ch.open_source`. Establish `hxW : x.crd ∈ x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source` using `⟨x.ch.map_source x.2, by simp only [mem_preimage]; rw [x.ch.left_inv x.2]; show x.pt ∈ _; rw [hxx]; exact x'.2⟩`. Establish `hφ : AnalyticAt ℂ (x'.ch ∘ x.ch.symm) x.crd` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (A.holo x.1.1 x'.1.1) (hW.mem_nhds hxW)`. Establish `hφv : (x'.ch ∘ x.ch.symm) x.crd = x'.crd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[x.ch.left_inv x.2]`. Use `show x'.ch x.pt = x'.ch x'.pt`. Rewrite using `[hxx]`. Establish `hH2 : MContDiffAt 2 (fun v => G a (x'.ch.symm v)) ((x'.ch ∘ x.ch.symm) x.crd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[hφv]`. Conclude with `fun p q => ((hsm x'.1.1 a p q).contDiffAt ((hop x'.1.1 a).mem_nhds (hpt x' a ha'))).of_le (by norm_cast)`. Establish `hHu : IsUnit (G a (x'.ch.symm ((x'.ch ∘ x.ch.symm) x.crd))).det`. Rewrite using `[hφv]`. Conclude with `hun x'.1.1 a _ (hpt x' a ha')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `GlobalTheory.T.chernFormOfGramMatrixAt_comp_holomorphic (fun v => G a (x'.ch.symm v)) (x'.ch ∘ x.ch.symm) x.crd hφ hH2 hHu j`. Rewrite `key` using `[hφv]`. Establish `hge : (fun v => G a (x.ch.symm v)) =ᶠ[𝓝 x.crd] fun w => G a (x'.ch.symm ((x'.ch ∘ x.ch.symm) w))` using `Filter.eventually_of_mem (hW.mem_nhds hxW) fun w hw => by`. Simplify using `only [Function.comp_apply]`. Rewrite using `[x'.ch.left_inv hw.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `show ((chernAt (fun v => G a (x.ch.symm v)) x.crd j : Ev n) : Alt n) = _`. Rewrite using `[chernAt_congr hge j, key]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `x`. Take `⟨a, ha⟩` from `hUc x.pt`.
-
-Use `show delAt (A.loc P x.1.1) x.crd = 0`. Rewrite using `[delAt_congr (hgerm _ a _ (hpt x a ha))]`. Conclude with `GlobalTheory.T.holomorphicDel_chernFormOfGramMatrix_eq_zero _ _ (hop _ a) (hsm _ a) (hun _ a) j _ (hpt x a ha)`. Use function extensionality and compare the values at `x`. Take `⟨a, ha⟩` from `hUc x.pt`.
-
-Use `show dbarAt (A.loc P x.1.1) x.crd = 0`. Rewrite using `[dbarAt_congr (hgerm _ a _ (hpt x a ha))]`. Conclude with `GlobalTheory.T.antiholomorphicDbar_chernFormOfGramMatrix_eq_zero _ _ (hop _ a) (hsm _ a) (hun _ a) j _ (hpt x a ha)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chern_frame_closed : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) {ι : Type} [Fintype ι] [DecidableEq ι] {κ : Type} (U : κ → Set M),
     (∀ a, IsOpen (U a)) → (∀ y, ∃ a, y ∈ U a) → ∀ (g : κ → κ → M → Matrix ι ι ℂ),

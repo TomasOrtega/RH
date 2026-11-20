@@ -40,7 +40,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `htop` using `data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0`. Rewrite using `[data_lowK_eq hgap hσ hD hV hc hVK S (htop ▸ le_top) hS, data_lowK_eq hgap hσ hD hV hc hVK S' (htop ▸ le_top) hS']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     (S S' : Submodule ℂ H) (hS : Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S)
@@ -53,7 +53,7 @@ theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap 
     data_lowK_eq hgap hσ hD hV hc hVK S' (htop ▸ le_top) hS']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (C : Submodule ℂ H) (hC : C = ⊤) : ∃ W : C ≃ₗᵢ[ℂ] H, ∀ y : C, W y = y :=
@@ -61,9 +61,9 @@ private theorem exists_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddCommG
     (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `htop` using `data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0`. Take `⟨U, hU⟩` from `sigLam_equiv_data hgap hP hv₀ hσ hD hV hc hVK hV0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `exists_linearIsometryEquiv_of_eq_top _ htop`. Use `⟨U.trans W, fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, hW]`. Conclude with `hU g hg x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
@@ -82,7 +82,7 @@ theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap
 end One
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_coe_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (C : Submodule ℂ H) (hC : C = ⊤) : ∃ W : C ≃ₗᵢ[ℂ] H, ∀ y : C, W y = y :=
@@ -90,11 +90,11 @@ private theorem exists_coe_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddC
     (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨V', hV', hV0', hVK', hc'⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS' hcas'`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Take `⟨-, -, hσ', hirr', -⟩` from `hDS'`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD'` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ'`. Take `⟨W, hW⟩` from `exists_coe_linearIsometryEquiv_of_eq_top _ (data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0)`. Take `⟨W', hW'⟩` from `exists_coe_linearIsometryEquiv_of_eq_top _ (data_closGen_eq_top hgap hσ' hD' hV' hc' hVK' hirr' hV0')`. Take `⟨U, hU⟩` from `data_unitary_equiv hgap hσ hD hV hc hVK hV0 hσ' hD' hV' hc' hVK' hV0'`. Establish `hWs : ∀ z : H, ((W.symm z : closGen (ReciprocityTheory.ChartRestriction.DS.smE ε σ) V) : H) = z` using `fun z => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hW]`. Conclude with `W.apply_symm_apply z`. Use `⟨(W.symm.trans U).trans W', fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, hW']`. Conclude with `hU g hg _ _ (by rw [hWs, hWs])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dsUnique_of_cas {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

@@ -6,11 +6,9 @@ open GlobalTheory.InertZeta
 namespace GlobalTheory.InertZeta.LeviSum
 
 /- English proof (translation)
-Apply `HasSum.of_nat_of_neg_add_one` to reduce the goal to its premises. Establish `e : ∀ n : ℕ, β ^ (n : ℤ) * y₀ ^ (n : ℤ).natAbs = (y₀ * β) ^ n` using `fun n => by`. Simplify using `[zpow_natCast, mul_pow, mul_comm]`. Simplify using `only [e]`. Conclude with `hasSum_geometric_of_norm_lt_one h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ n : ℕ, β ^ (-((n : ℤ) + 1)) * y₀ ^ (-((n : ℤ) + 1)).natAbs = y₀ / β * (y₀ / β) ^ n` using `fun n => by`. Rewrite using `[show (-((n : ℤ) + 1)) = -((n + 1 : ℕ) : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, show (-((n + 1 : ℕ) : ℤ)).natAbs = n + 1 by omega, div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`.
-
-Conclude with `(hasSum_geometric_of_norm_lt_one h2).mul_left (y₀ / β)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_geom (β y₀ : ℂ) (hβ : β ≠ 0) (h1 : ‖y₀ * β‖ < 1) (h2 : ‖y₀ / β‖ < 1) :
     HasSum (fun a : ℤ => β ^ a * y₀ ^ a.natAbs) ((1 - y₀ * β)⁻¹ + y₀ / β * (1 - y₀ / β)⁻¹) := by
@@ -28,7 +26,7 @@ theorem int_geom (β y₀ : ℂ) (hβ : β ≠ 0) (h1 : ‖y₀ * β‖ < 1) (h2
     exact (hasSum_geometric_of_norm_lt_one h2).mul_left (y₀ / β)
 
 /- English proof (translation)
-Establish `h : ((a.natAbs : ℕ) : ℤ) = 2 * (a.toNat : ℤ) - a` using `by omega`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hq, ← pow_mul, ← zpow_natCast]`. Use `congr 1`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, h]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -42,19 +40,19 @@ theorem q_pow (q : ℂ) (hq : q ≠ 0) (N : ℕ) (a : ℤ) :
   ring
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Use `set y₀ := (q : ℂ) ^ (N + 1) * X₀ with hy₀`. Establish `hA` using `int_geom β y₀ hβ (by rw [norm_mul]; exact h1) (by rw [norm_div, div_eq_mul_inv]; exact h2)`. Establish `sA : Summable (fun a : ℤ => ‖β ^ a * y₀ ^ a.natAbs‖)` using `summable_norm_iff.mpr hA.summable`. Establish `sB : Summable (fun b : Y => ‖((q : ℂ) ^ 2 * X₀) ^ l b * ψ b‖)` using `summable_norm_iff.mpr hZ.summable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sAB : Summable (fun p : ℤ × Y => (β ^ p.1 * y₀ ^ p.1.natAbs) * (((q : ℂ) ^ 2 * X₀) ^ l p.2 * ψ p.2))` using `summable_mul_of_summable_norm (f := fun a : ℤ => β ^ a * y₀ ^ a.natAbs) (g := fun b : Y => ((q : ℂ) ^ 2 * X₀) ^ l b * ψ b) sA sB`. Establish `hprod` using `(HasSum.mul (f := fun a : ℤ => β ^ a * y₀ ^ a.natAbs) (g := fun b : Y => ((q : ℂ) ^ 2 * X₀) ^ l b * ψ b) hA hZ sAB).mul_right (jFac q N X₀)`. Establish `n1 : 1 - y₀ * β ≠ 0` using `fun h => by`. Establish `e : ‖y₀ * β‖ = 1` using `by rw [← sub_eq_zero.mp h, norm_one]`. Rewrite `e` using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `n2 : 1 - y₀ / β ≠ 0` using `fun h => by`. Establish `e : ‖y₀ / β‖ = 1` using `by rw [← sub_eq_zero.mp h, norm_one]`. Rewrite `e` using `[norm_div, div_eq_mul_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hβy : β - y₀ ≠ 0` using `fun h => n2 (by rw [← sub_eq_zero.mp h, div_self hβ, sub_self])`. Establish `hβy' : -y₀ + β ≠ 0` using `by rwa [neg_add_eq_sub]`. Establish `n3 : 1 - y₀ ^ 2 ≠ 0` using `fun h => by`. Rewrite `h` using `[sub_eq_zero]`. Use `congrArg norm h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[norm_one, norm_pow]`. Use polynomial arithmetic with `[norm_nonneg y₀]`. Establish `ev : ((1 - y₀ * β)⁻¹ + y₀ / β * (1 - y₀ / β)⁻¹) * Z₀ * jFac q N X₀ = (1 - X₀) * (1 + q * X₀) * ((1 - y₀ * β)⁻¹ * (1 - y₀ / β)⁻¹) * Z₀`. Simplify using `only [jFac]`. Rewrite using `[← hy₀]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ev]`. Use `hprod using 1` and compare the differences between its conclusion and the goal. Use `case e'_3 => rfl`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Take `⟨a, b⟩` from `p`. Simplify using `only`. Rewrite using `[hy₀, mul_pow, ← q_pow (q : ℂ) hq0 N a, pow_add, pow_add, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (Y : Type) (q N : ℕ) (l : Y → ℕ) (ψ : Y → ℂ) (β X₀ Z₀ : ℂ) (hq : 1 ≤ q) (hβ : β ≠ 0)
     (hy : ‖(q : ℂ) ^ (N + 1) * X₀‖ < 1) (h1 : ‖(q : ℂ) ^ (N + 1) * X₀‖ * ‖β‖ < 1)
@@ -108,17 +106,17 @@ namespace GlobalTheory.InertZeta
 open LeviSum in
 
 /- English proof (translation)
-Introduce `Y C q N ℓ l φ₀ α X y Z hq hα hy hy1 hyα hyα' H hZ`. Substitute `hy` using the available equality. Establish `hg` using `core Y q N l φ₀ α X Z hq hα hy1 hyα hyα' hZ`. Establish `hfib : ∀ ab : ℤ × Y, HasSum (fun c => X ^ ℓ ab.1 ab.2 c * (α ^ ab.1 * (q : ℂ) ^ (-ab.1 * ((N : ℤ) + 1)) * φ₀ ab.2)) (((q : ℂ) ^ (2 * l ab.2 + (2 * N + 2) * ab.1.toNat) * X ^ (ab.1.natAbs + l ab.2) * jFac q N X) * (α ^ ab.1 * (q : ℂ) ^ (-ab.1 * ((N : ℤ) + 1)) * φ₀ ab.2))` using `fun ab => (H X hy1 ab.1 ab.2).mul_right _`. Establish `hXn : ‖(q : ℂ) ^ (N + 1) * ((‖X‖ : ℝ) : ℂ)‖ = ‖(q : ℂ) ^ (N + 1) * X‖`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_norm]`. Establish `hαn : ‖((‖α‖ : ℝ) : ℂ)‖ = ‖α‖` using `by rw [Complex.norm_real, Real.norm_eq_abs, abs_norm]`. Establish `hZn : Summable (fun b => ((q : ℂ) ^ 2 * ((‖X‖ : ℝ) : ℂ)) ^ l b * ((‖φ₀ b‖ : ℝ) : ℂ))`. Use `Complex.summable_ofReal.mpr (summable_norm_iff.mpr hZ.summable)` as an intermediate fact. Use `this using 2 with b` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Move the coercions through the operations in `[norm_mul, norm_pow, Complex.norm_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgn` using `core Y q N l (fun b => ((‖φ₀ b‖ : ℝ) : ℂ)) ((‖α‖ : ℝ) : ℂ) ((‖X‖ : ℝ) : ℂ) _ hq (by exact_mod_cast norm_ne_zero_iff.mpr hα) (hXn ▸ hy1) (by rw [hXn, hαn]; exact hyα) (by rw [hXn, hαn]; exact hyα') hZn.hasSum`. Establish `hfibn : ∀ ab : ℤ × Y, HasSum (fun c => ((‖X‖ : ℝ) : ℂ) ^ ℓ ab.1 ab.2 c * (((‖α‖ : ℝ) : ℂ) ^ ab.1 * (q : ℂ) ^ (-ab.1 * ((N : ℤ) + 1)) * ((‖φ₀ ab.2‖ : ℝ) : ℂ))) (((q : ℂ) ^ (2 * l ab.2 + (2 * N + 2) * ab.1.toNat) * ((‖X‖ : ℝ) : ℂ) ^ (ab.1.natAbs + l ab.2) * jFac q N ((‖X‖ : ℝ) : ℂ) …` using `fun ab => (H _ (hXn ▸ hy1) ab.1 ab.2).mul_right _`. Establish `hnorm : ∀ p : (ℤ × Y) × C, ((‖X ^ ℓ p.1.1 p.1.2 p.2 * (α ^ p.1.1 * (q : ℂ) ^ (-p.1.1 * ((N : ℤ) + 1)) * φ₀ p.1.2)‖ : ℝ) : ℂ) = ((‖X‖ : ℝ) : ℂ) ^ ℓ p.1.1 p.1.2 p.2 * (((‖α‖ : ℝ) : ℂ) ^ p.1.1 * (q : ℂ) ^ (-p.1.1 * ((N : ℤ) + 1)) * ((‖φ₀ p.1.2‖ : ℝ) : ℂ))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, norm_zpow, norm_zpow, Complex.norm_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hsum : Summable (fun p : (ℤ × Y) × C => X ^ ℓ p.1.1 p.1.2 p.2 * (α ^ p.1.1 * (q : ℂ) ^ (-p.1.1 * ((N : ℤ) + 1)) * φ₀ p.1.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← summable_norm_iff, summable_prod_of_nonneg (fun _ => norm_nonneg _)]`. Use `⟨fun ab => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.summable_ofReal]`. Conclude with `(funext fun c => (hnorm (ab, c)).symm) ▸ (hfibn ab).summable`. Rewrite using `[← Complex.summable_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hgn.summable.congr fun ab => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_tsum]`. Conclude with `((funext fun c => (hnorm (ab, c)).symm) ▸ (hfibn ab)).tsum_eq.symm`. Rewrite using `[hg.unique (hsum.hasSum.prod_fiberwise hfib)]`. Conclude with `hsum.hasSum`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step : Step := by
   intro Y C q N ℓ l φ₀ α X y Z hq hα hy hy1 hyα hyα' H hZ

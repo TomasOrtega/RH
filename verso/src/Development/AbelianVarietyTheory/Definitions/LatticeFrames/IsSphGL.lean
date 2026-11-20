@@ -128,7 +128,7 @@ def ForQ (D : D7) (Q : ∀ (_ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (_ : (A
 end Adelic
 
 /- English proof (translation)
-Simplify using `[cOne, mob]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : ℕ) (z : ℂˣ) (σ : ℂ) : cOne q z σ 0 = 1 := by simp [cOne, mob]
 

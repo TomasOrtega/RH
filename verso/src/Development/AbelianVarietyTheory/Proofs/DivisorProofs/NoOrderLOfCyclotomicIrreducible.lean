@@ -4,13 +4,13 @@ namespace GlobalTheory
 
 open Polynomial in
 /- English proof (translation)
-Introduce `E _ _ l N g hl hirr hN hg`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hmon : g.charpoly.Monic` using `Matrix.charpoly_monic g`. Establish `hdeg : g.charpoly.natDegree = N`. Simplify using `using Matrix.charpoly_natDegree_eq_dim g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hndvd : ¬ cyclotomic l E ∣ g.charpoly`. Introduce `h`. Establish `h1` using `Polynomial.natDegree_le_of_dvd h hmon.ne_zero`. Rewrite `h1` using `[Polynomial.natDegree_cyclotomic, Nat.totient_prime hl, hdeg]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).2 hndvd`. Establish `hev` using `congrArg (aeval g) hab`. Simplify using `only [map_add, map_mul, map_one, Matrix.aeval_self_charpoly, mul_zero, add_zero] at hev`. Establish `hcyc : aeval g (cyclotomic l E) * (g - 1) = 0`. Use `congrArg (aeval g) (Polynomial.cyclotomic_prime_mul_X_sub_one E l)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, aeval_X, map_one, map_pow] at this`. Rewrite using `[this, hg, sub_self]`. Establish `: g - 1 = 0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sub_eq_zero.1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem no_order_l_of_cyclotomic_irreducible :
     ∀ (E : Type) [Field E] [CharZero E] (l N : ℕ) (g : Matrix (Fin N) (Fin N) E),

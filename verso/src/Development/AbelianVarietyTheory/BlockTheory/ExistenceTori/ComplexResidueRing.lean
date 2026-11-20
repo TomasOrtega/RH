@@ -81,11 +81,11 @@ def IsComb (h : c.F ≤ c'.F) {m : ℕ} (b : Fin m → c'.F) (f : Fin m → Rul 
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Establish `key : ∀ (p : TRing c'.F) (y : FrPt Xo c' p.R), (∑ i, b i • ruleUp h (f i)) p y = ∑ i, algebraMap c'.F p.R (b i) * unRes (evR Xo c (f i) (ptDown h y))`. Introduce `p y`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use function extensionality and compare the values at `p y`. Rewrite using `[key, hf p y]`.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `hf p y`. Rewrite using `[hf, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComb_iff (h : c.F ≤ c'.F) {m : ℕ} (b : Fin m → c'.F) (f : Fin m → Rul Xo c) (f' : Rul Xo c') :
     IsComb h b f f' ↔ f' = ∑ i, b i • ruleUp h (f i) := by
@@ -128,7 +128,7 @@ def ActionExtends (h : c.F ≤ c'.F) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
       IsComb h b (fun i => (ρ g (f i) : Rul Xo c)) (ρ' g f' : Rul Xo c')
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hf` and use `hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : c.F ≤ c'.F) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     {G : Type} [Group G] : ActionExtends Xo h U a n (G := G) 1 1 :=

@@ -19,9 +19,9 @@ noncomputable def psi (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d) (Y : 𝔤) :
   (coordEquiv b).symm (subspaceProj 𝔤 ((𝔢).symm (exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (Y : 𝔸))))
 
 /- English proof (translation)
-Establish `hin : exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (((0 : 𝔤)) : 𝔸) ∈ (𝔢).target`. Establish `e : exp ((coordEquiv b x : 𝔤) : 𝔸) ∈ (𝔢).target` using `(𝔢).map_source hx`. Simplify using `using e`. Establish `hlog : ContDiffAt ℝ ∞ (𝔢).symm (exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (((0 : 𝔤)) : 𝔸))` using `(contDiffOn_expPartialHomeomorph_symm ℝ 𝔸).contDiffAt ((𝔢).open_target.mem_nhds hin)`. Establish `hm : ContDiff ℝ ∞ (fun p : E d × 𝔤 => exp ((coordEquiv b p.1 : 𝔤) : 𝔸) * exp (p.2 : 𝔸))` using `((contDiff_exp ℝ 𝔸).comp (𝔤.subtypeL.contDiff.comp ((coordEquiv b).contDiff.comp contDiff_fst))).mul ((contDiff_exp ℝ 𝔸).comp (𝔤.subtypeL.contDiff.comp contDiff_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(coordEquiv b).symm.contDiff.comp_contDiffAt (x, (0 : 𝔤)) ((subspaceProj 𝔤).contDiff.comp_contDiffAt (x, (0 : 𝔤)) (hlog.comp (x, (0 : 𝔤)) hm.contDiffAt))`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_psi (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
     (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ (𝔢).source) :
@@ -38,7 +38,7 @@ theorem contDiffAt_psi (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
     ((subspaceProj 𝔤).contDiff.comp_contDiffAt (x, (0 : 𝔤)) (hlog.comp (x, (0 : 𝔤)) hm.contDiffAt))
 
 /- English proof (translation)
-Simplify using `only [psi, ZeroMemClass.coe_zero, exp_zero, mul_one]`. Establish `e : (𝔢).symm (exp ((coordEquiv b x : 𝔤) : 𝔸)) = ((coordEquiv b x : 𝔤) : 𝔸)` using `(𝔢).left_inv hx`. Rewrite using `[e, subspaceProj_coe, ContinuousLinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_zero (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
     (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ (𝔢).source) : psi b x 0 = x := by
@@ -47,7 +47,7 @@ theorem psi_zero (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
   rw [e, subspaceProj_coe, ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hs : {Y : 𝔤 | (Y : 𝔸) ∈ (𝔢).source} ∈ 𝓝 (0 : 𝔤)` using `continuous_subtype_val.continuousAt.preimage_mem_nhds ((𝔢).open_source.mem_nhds (zero_mem_expPartialHomeomorph_source ℝ 𝔸))`. Use `filter_upwards [hs] with Y hY`. Simplify using `only [psi, coordEquiv_zero, ZeroMemClass.coe_zero, exp_zero, one_mul]`. Establish `e : (𝔢).symm (exp (Y : 𝔸)) = (Y : 𝔸)` using `(𝔢).left_inv hY`. Rewrite using `[e, subspaceProj_coe]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_origin_eventually (b : Module.Basis (Fin d) ℝ 𝔤) :
     psi b 0 =ᶠ[𝓝 (0 : 𝔤)] (coordEquiv b).symm := by
@@ -60,11 +60,11 @@ theorem psi_origin_eventually (b : Module.Basis (Fin d) ℝ 𝔤) :
   rw [e, subspaceProj_coe]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun Y : 𝔤 => exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (Y : 𝔸))` using `continuous_const.mul ((contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp continuous_subtype_val)`. Establish `h0 : exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (((0 : 𝔤)) : 𝔸) ∈ h.nhdOne`. Simplify using `using h.exp_mem_nhdOne hx`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds (h.isOpen_nhdOne.mem_nhds h0)] with Y hY`. Establish `hY' : exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (Y : 𝔸) ∈ h.nhdOne` using `hY`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (((h.expG (coordEquiv b x) * h.expG Y : G) : 𝔸ˣ) : 𝔸) = exp ((coordEquiv b x : 𝔤) : 𝔸) * exp (Y : 𝔸)` using `by simp`. Establish `hmem` using `h.symm_mem_lie (x := h.expG (coordEquiv b x) * h.expG Y) (by rw [hv]; exact hY')`. Rewrite `hmem` using `[hv]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Simplify using `only [psi, ContinuousLinearEquiv.apply_symm_apply, IsExpLieAlgebra.coe_expG]`. Rewrite using `[subspaceProj_of_mem hmem, h.exp_symm hY']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expG_psi (h : IsExpLieAlgebra G 𝔤) (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
     (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
@@ -91,7 +91,7 @@ namespace GlobalTheory.ExpCoordFrame
 open NormedSpace Filter Topology
 
 /- English proof (translation)
-Use `(contDiffAt_psi b x hx).comp (0 : 𝔤) ((contDiffAt_const (c := x)).prodMk contDiffAt_id)` as an intermediate fact. Conclude with `this.differentiableAt (by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableAt_psi {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] {𝔤 : Submodule ℝ 𝔸} {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (x : E d)
@@ -101,35 +101,29 @@ theorem differentiableAt_psi {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 
   exact this.differentiableAt (by simp)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r₁, hr₁, hball₁⟩ : ∃ r₁ > 0, Metric.ball (0 : E d) r₁ ⊆ {x | ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd} := by`. Establish `ho : IsOpen {x : E d | ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd}` using `h.isOpen_nhd.preimage (continuous_subtype_val.comp (coordEquiv b).continuous)`. Conclude with `Metric.isOpen_iff.1 ho 0 (by simpa [coordEquiv_zero] using h.zero_mem_nhd)`. Use `set A : E d → 𝔤 →L[ℝ] E d := fun x => fderiv ℝ (psi b x) 0 with hA`. Establish `hAx : ∀ x ∈ Metric.ball (0 : E d) r₁, ContDiffAt ℝ ∞ A x` using `fun x hx => (contDiffAt_psi b x (h.nhd_subset (hball₁ hx))).fderiv (contDiffAt_const (c := (0 : 𝔤))) (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set B : E d → E d →L[ℝ] E d := fun x => (A x).comp (coordEquiv b : E d →L[ℝ] 𝔤) with hB`. Establish `hA0 : A 0 = ((coordEquiv b).symm : 𝔤 →L[ℝ] E d)`. Simplify using `only [hA]`. Rewrite using `[(psi_origin_eventually b).fderiv_eq, ContinuousLinearEquiv.fderiv]`. Establish `hB0 : IsUnit (B 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: B 0 = 1`. Use extensionality with `v`. Simplify using `[hB, hA0]`. Rewrite using `[this]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBc : ContinuousAt B 0` using `((hAx 0 (Metric.mem_ball_self hr₁)).clm_comp contDiffAt_const).continuousAt`. Establish `hU : {x | IsUnit (B x)} ∈ 𝓝 (0 : E d)` using `hBc.preimage_mem_nhds (Units.isOpen.mem_nhds hB0)`. Take `⟨r₂, hr₂, hball₂⟩` from `Metric.mem_nhds_iff.1 hU`. Use `⟨min r₁ r₂, lt_min hr₁ hr₂, fun X j x => A x X j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx1 : x ∈ Metric.ball (0 : E d) r₁` using `Metric.ball_subset_ball (min_le_left _ _) hx`. Conclude with `((EuclideanSpace.proj j : E d →L[ℝ] ℝ).contDiff.comp_contDiffAt x ((hAx x hx1).clm_apply contDiffAt_const)).contDiffWithinAt`. Introduce `x hx ξ hξ`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx2 : x ∈ Metric.ball (0 : E d) r₂` using `Metric.ball_subset_ball (min_le_right _ _) hx`. Take `⟨u, hu⟩ : IsUnit (B x)` from `hball₂ hx2`. Use `set ℓ : 𝔤 →L[ℝ] ℝ := ∑ j, ξ j • ((EuclideanSpace.proj j : E d →L[ℝ] ℝ).comp (A x)) with hℓ`. Establish `hℓ0 : (ℓ : 𝔤 →ₗ[ℝ] ℝ) = 0` using `b.ext fun i => by`. Use `hcon i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hℓ, ContinuousLinearMap.coe_sum', ContinuousLinearMap.coe_coe, Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, smul_eq_mul, LinearMap.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_comm]; rfl`. Use `set X : 𝔤 := coordEquiv b (((u⁻¹ : (E d →L[ℝ] E d)ˣ) : E d →L[ℝ] E d) ξ)`. Establish `hX : A x X = ξ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : ((u : E d →L[ℝ] E d) * ↑u⁻¹) ξ = ξ` using `by rw [u.mul_inv]; rfl`. Rewrite `e1` using `[hu]`. Conclude with `e1`. Establish `h1 : ℓ X = ∑ j, ξ j * ξ j`. Simplify using `only [hℓ, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, smul_eq_mul, hX]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `h2 : ℓ X = 0`. Use `congrArg (fun L : 𝔤 →ₗ[ℝ] ℝ => L X) hℓ0` as an intermediate fact. Simplify using `using this`. Apply `hξ` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∑ j, ξ j * ξ j = 0` using `h1.symm.trans h2`. Use extensionality with `j`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => mul_self_nonneg (ξ j))).1 hs j (Finset.mem_univ _)` as an intermediate fact. Simplify using `using mul_self_eq_zero.1 this`. Introduce `f hf X x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : x ∈ Metric.ball (0 : E d) r₁` using `Metric.ball_subset_ball (min_le_left _ _) hx`. Establish `hxN : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd` using `hball₁ hx1`. Establish `hxS` using `h.nhd_subset hxN`. Use `set φ : E d → ℂ := fun y => f (h.expG (coordEquiv b y)) with hφ`. Establish `hφd : Differentiable ℝ φ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h.contDiff_comp_coordEquiv hf 1 b` as an intermediate fact. Simplify using `only [one_mul] at this`. Conclude with `this.differentiable (by simp)`. Establish `hev : (fun Y : 𝔤 => f (h.expG (coordEquiv b x) * h.expG Y)) =ᶠ[𝓝 0] φ ∘ psi b x` using `by filter_upwards [expG_psi h b x hxN] with Y hY`. Simplify using `[φ, hY]`.
-
-Establish `hdiff : DifferentiableAt ℝ (psi b x) 0` using `differentiableAt_psi b x hxS`. Establish `key : h.rightDeriv X f (h.expG (coordEquiv b x)) = fderiv ℝ φ x (A x X)`. Unfold `IsExpLieAlgebra.rightDeriv`. Rewrite using `[hev.fderiv_eq, fderiv_comp (0 : 𝔤) (by rw [psi_zero b x hxS]; exact hφd _) hdiff, psi_zero b x hxS]`. Both sides reduce to the same expression.
-
-Rewrite using `[key]`. Use `conv_lhs => rw [← (EuclideanSpace.basisFun (Fin d) ℝ).sum_repr (A x X)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Complex.real_smul, EuclideanSpace.basisFun_repr, EuclideanSpace.basisFun_apply]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leftInvariant_frame (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤)

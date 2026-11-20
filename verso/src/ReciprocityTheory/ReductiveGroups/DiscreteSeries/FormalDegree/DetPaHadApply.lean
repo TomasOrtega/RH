@@ -25,7 +25,7 @@ def detPaHad (s : Fin n → Fin n → ℂ) : (Fin n → Fin n → ℂ) →ₗ[�
   LinearMap.pi (fun i => (detPaRow (s i)).comp (LinearMap.proj i))
 
 /- English proof (translation)
-Unfold `detPaRow`. Rewrite using `[LinearMap.det_pi]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detPaRow_det (t : Fin n → ℂ) : LinearMap.det (detPaRow t) = ∏ j, t j := by
   unfold detPaRow
@@ -33,7 +33,7 @@ theorem detPaRow_det (t : Fin n → ℂ) : LinearMap.det (detPaRow t) = ∏ j, t
   simp
 
 /- English proof (translation)
-Unfold `detPaHad`. Rewrite using `[LinearMap.det_pi]`. Simplify using `[detPaRow_det]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detPaHad_det (s : Fin n → Fin n → ℂ) : LinearMap.det (detPaHad s) = ∏ i, ∏ j, s i j := by
   unfold detPaHad
@@ -41,19 +41,17 @@ theorem detPaHad_det (s : Fin n → Fin n → ℂ) : LinearMap.det (detPaHad s) 
   simp [detPaRow_det]
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Establish `hmem : U ∈ unitary (Matrix (Fin n) (Fin n) ℂ)` using `((pmat_isHermitian y).eigenvectorUnitary).2`. Establish `hU2 : U * Uᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.mul_star_self_of_mem hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set s : Fin n → Fin n → ℂ := fun i j => ((shc (pev y i - pev y j) : ℝ) : ℂ) with hs`. Set `H : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ` to `detPaHad s`. Set `T : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ` to `(detPaCj U Uᴴ).comp (H.comp (detPaCj Uᴴ U))`. Establish `hT : ∀ W, T W = shcAd y W`. Introduce `W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [T, H, LinearMap.comp_apply, detPaCj, LinearMap.coe_mk, AddHom.coe_mk, shcAd]`. Use `congr 2`. Establish `hC : shcAd y = ⇑(LinearMap.toContinuousLinearMap (T.restrictScalars ℝ))`. Use function extensionality and compare the values at `W`. Conclude with `(hT W).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hC, ContinuousLinearMap.fderiv, LinearMap.coe_toContinuousLinearMap, LinearMap.det_restrictScalars]`. Establish `hAB : LinearMap.det (detPaCj U Uᴴ) * LinearMap.det (detPaCj Uᴴ U) = 1`. Rewrite using `[← LinearMap.det_comp]`. Establish `: (detPaCj U Uᴴ).comp (detPaCj Uᴴ U) = LinearMap.id`. Use extensionality with `W : 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, detPaCj, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.id_apply]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hU2, Matrix.one_mul, Matrix.mul_assoc, hU2, Matrix.mul_one]`. Rewrite using `[this, LinearMap.det_id]`. Establish `hdet : LinearMap.det T = ∏ i, ∏ j, s i j`. Simplify using `only [T]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.det_comp, LinearMap.det_comp]`. Establish `hH : LinearMap.det H = ∏ i, ∏ j, s i j` using `detPaHad_det s`. Rewrite using `[hH, mul_left_comm, hAB, mul_one]`. Rewrite using `[hdet, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.norm_complex_apply, hs, Complex.normSq_ofReal, sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPa {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     LinearMap.det ((fderiv ℝ (shcAd y) 0 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) :

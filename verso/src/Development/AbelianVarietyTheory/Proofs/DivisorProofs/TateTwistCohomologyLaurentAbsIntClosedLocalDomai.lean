@@ -10,11 +10,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC.GmAic
 
 /- English proof (translation)
-Establish `key : ∀ {B B' : Type} [CommRing B] [CommRing B'] (g : B ≃+* B') (x : H R (sp B') F n), pull R (spMap (g : B →+* B')) F n (pull R (spMap (g.symm : B' →+* B)) F n x) = x`. Introduce `B B' _ _ g x`. Rewrite using `[← pull_comp]`. Establish `h : spMap (g : B →+* B') ≫ spMap (g.symm : B' →+* B) = 𝟙 _`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : CommRingCat.ofHom (g.symm : B' →+* B) ≫ CommRingCat.ofHom (g : B →+* B') = 𝟙 _`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[h', Spec.map_id, CategoryTheory.Functor.map_id]`. Rewrite using `[h, pull_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x y hxy => ?_, fun x => ⟨_, key e x⟩⟩` and prove the remaining obligations. Establish `hx` using `key e.symm x`. Establish `hy` using `key e.symm y`. Simplify using `only [RingEquiv.symm_symm] at hx hy`. Rewrite using `[← hx, ← hy, hxy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_spMap_bijective (R : Type) [CommRing R] {A A' : Type} [CommRing A] [CommRing A'] (e : A ≃+* A')
     (F : Shv R) (n : ℤ) : Function.Bijective (pull R (spMap (e : A →+* A')) F n) := by
@@ -50,9 +50,9 @@ def laurentEquiv (hC3 : C3) (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDoma
   exact (AddEquiv.ofBijective _ h1).trans (AddEquiv.ofBijective _ (pull_spMap_bijective _ e (tw q i) n))
 
 /- English proof (translation)
-Introduce `q _ T _ _ _ hA hq n i`. Use `haveI : IsAlgClosed (FractionRing T) := GlobalTheory.isAlgClosed_fractionRing_of_AIC T hA`. Establish `hqK : IsUnit (q : FractionRing T)`. Simplify using `using hq.map (algebraMap T (FractionRing T))`. Take `⟨h2, _⟩` from `GlobalTheory.T.tateTwistCohomology_laurentPolynomial_of_isAlgClosed q (FractionRing T) hqK n i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨e1⟩⟩` from `GlobalTheory.T.tateTwistCohomology_laurentPolynomial_of_isAlgClosed q (FractionRing T) hqK 1 i`. Use `⟨fun hn => ?_, ⟨(laurentEquiv GlobalTheory.T.etale_cohomology_ind_etale_base_change q T hA hq 1 i).trans e1⟩⟩` and prove the remaining obligations. Use `haveI := h2 hn`. Conclude with `(laurentEquiv GlobalTheory.T.etale_cohomology_ind_etale_base_change q T hA hq n i).injective.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) →
     ∀ n i : ℤ, (2 ≤ n → Subsingleton (Ht q (sp (LaurentPolynomial T)) n i)) ∧

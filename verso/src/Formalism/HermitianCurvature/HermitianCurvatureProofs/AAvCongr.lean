@@ -7,11 +7,11 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Ideal.span (rgen k r z' E), ∀ a : A, La (a * y) = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, hpq, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Rewrite using `[mul_sub, map_sub, hR a p q hpq, ← Algebra.commutes, ← Algebra.smul_def, map_smul, sub_self]`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul b x _ hx => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx (a * b)`. Simplify using `using key x hx 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem la_ideal {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] {k r : ℕ}
     {z' : Fin (2 * r + k + 1) → ℂ} {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A} {La : A →ₗ[ℂ] M}
@@ -29,7 +29,7 @@ theorem la_ideal {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module 
   simpa using key x hx 1
 
 /- English proof (translation)
-Use `la_ideal hR hx` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem la_congr {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] {k r : ℕ}
     {z' : Fin (2 * r + k + 1) → ℂ} {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A} {La : A →ₗ[ℂ] M}
@@ -38,11 +38,9 @@ theorem la_congr {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module 
   rwa [map_sub, sub_eq_zero] at this
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single e]`. Rewrite using `[if_pos he]`. Introduce `c _ hc split_ifs with hP`. Distinguish the cases in `hS : ∀ l, c l ∈ S`. Conclude with `absurd (huniq c hP hS) hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `push Not at hS`. Take `⟨l, hl⟩` from `hS`. Rewrite using `[Matrix.det_eq_zero_of_column_eq_zero l (fun a => by simp [hX a _ hl]), zero_smul]`. Both sides reduce to the same expression. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ e) h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_single {M : Type*} [AddCommGroup M] [Module ℂ M] {m N : ℕ} (P : (Fin m → Fin N) → Prop)
     [DecidablePred P] (X : Fin m → Fin N → ℂ) (S : Set (Fin N)) (hX : ∀ a p, p ∉ S → X a p = 0)
@@ -62,9 +60,9 @@ theorem sum_single {M : Type*} [AddCommGroup M] [Module ℂ M] {m N : ℕ} (P : 
   · intro h; exact absurd (Finset.mem_univ e) h
 
 /- English proof (translation)
-Establish `hcard : (Finset.image e Finset.univ).card = m`. Rewrite using `[Finset.card_image_of_injective _ he.injective]`. Simplify using the standard rewrite rules. Establish `hS' : ∀ l, c l ∈ Finset.image e Finset.univ`. Introduce `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hS l`. Rewrite using `[← hx]`. Conclude with `Finset.mem_image_of_mem e (Finset.mem_univ x)`. Rewrite using `[Finset.orderEmbOfFin_unique hcard hS' hc]`. Conclude with `(Finset.orderEmbOfFin_unique hcard (fun l => Finset.mem_image_of_mem e (Finset.mem_univ l)) he).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq_mono {α : Type} [LinearOrder α] {m : ℕ} (e c : Fin m → α) (he : StrictMono e) (hc : StrictMono c)
     (hS : ∀ l, c l ∈ Set.range e) : c = e := by
@@ -76,7 +74,7 @@ theorem uniq_mono {α : Type} [LinearOrder α] {m : ℕ} (e c : Fin m → α) (h
   exact (Finset.orderEmbOfFin_unique hcard (fun l => Finset.mem_image_of_mem e (Finset.mem_univ l)) he).symm
 
 /- English proof (translation)
-Establish `h` using `uniq_mono (fun l => key (e l)) (fun l => key (c l)) he hc (by`. Introduce `l; obtain ⟨x, hx⟩ := hS l; exact ⟨x, by simp only [hx]⟩)`. Use function extensionality and compare the values at `l`. Conclude with `hkey (congrFun h l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem uniq_key {N m : ℕ} (key : Fin N → ℕ) (hkey : Function.Injective key) (e c : Fin m → Fin N)
     (he : StrictMono (fun l => key (e l))) (hc : StrictMono (fun l => key (c l)))
@@ -86,27 +84,27 @@ theorem uniq_key {N m : ℕ} (key : Fin N → ℕ) (hkey : Function.Injective ke
   funext l; exact hkey (congrFun h l)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem AAx_congr {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) {m1 m2 : ℕ} (h : m1 = m2) (h1 : m1 ≤ r) (h2 : m2 ≤ r) (u : ℂ) :
     AAx k r E xi m1 h1 u = AAx k r E xi m2 h2 u := by subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem AAv_congr {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (y : Fin r → Fin (2 * r + k + 1) → ℂ) {m1 m2 : ℕ} (h : m1 = m2) (h1 : m1 ≤ r) (h2 : m2 ≤ r) (ell : ℂ) :
     AAv k r E y m1 h1 ell = AAv k r E y m2 h2 ell := by subst h; rfl
 
 /- English proof (translation)
-Unfold `sgnW`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgnW_sq (m : ℕ) : sgnW m * sgnW m = 1 := by
   unfold sgnW; rw [← pow_add, ← two_mul, pow_mul]; simp
 
 /- English proof (translation)
-Establish `hσ0 : σ ≠ 0` using `by intro h0; rw [h0, zero_mul] at hσ; exact zero_ne_one hσ`. Establish `hε0 : ε ≠ 0` using `by intro h0; rw [h0, zero_mul] at hε; exact zero_ne_one hε`. Establish `hεi : ε⁻¹ = ε` using `inv_eq_of_mul_eq_one_right hε`. Rewrite using `[mul_inv, mul_inv, mul_inv, hεi, inv_mul_cancel₀ hdh, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem scal_E (dh t σ ε : ℂ) (s' : ℕ) (hdh : dh ≠ 0) (ht : t ≠ 0) (hσ : σ * σ = 1) (hε : ε * ε = 1) :
     (dh * t ^ (s' + 1) * (ε * σ))⁻¹ * (dh * t ^ s' * σ) = ε * t⁻¹ * (dh⁻¹ * dh) := by
@@ -117,11 +115,11 @@ theorem scal_E (dh t σ ε : ℂ) (s' : ℕ) (hdh : dh ≠ 0) (ht : t ≠ 0) (h�
   field_simp
 
 /- English proof (translation)
-Unfold `AAx`. Rewrite using `[sum_single (fun c => StrictMono c) (fun a p => xi (Fin.castLE hi0 a) p) (Set.range (xR k r i0 hi0)) ?_ (xR k r i0 hi0) ?_ ?_]`. Use `congr 2`. Use extensionality with `a l`. Simplify using `only [Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hh a l`. Introduce `a p hp`. Apply `hz _ _ (by simp)` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt; push Not at hlt; apply hp; exact ⟨⟨p.val, hlt⟩, by ext; simp [xR, eI]⟩`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [xR, eI]`. Conclude with `hab`. Introduce `c hc hS`. Conclude with `uniq_mono _ _ (fun a b hab => by simp only [xR, eI]; exact hab) hc hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem AAx_head {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) (i0 : ℕ) (hi0 : i0 ≤ r) (h : Matrix (Fin i0) (Fin i0) ℂ) (u : ℂ)

@@ -8,11 +8,11 @@ namespace GlobalTheory.GaussWidths
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Use `set t : ℝ := Real.sqrt (c / Real.pi) with ht_def`. Establish `ht : t ≠ 0` using `(Real.sqrt_pos.2 (div_pos hc Real.pi_pos)).ne'`. Establish `ht2 : t ^ 2 = c / Real.pi` using `Real.sq_sqrt (div_pos hc Real.pi_pos).le`. Set `e : E ≃L[ℝ] E` to `(LinearEquiv.smulOfNeZero ℝ E t ht).toContinuousLinearEquiv`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e (GroundTheory.Global.gaussianSchwartz E), fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, Complex.ofReal_exp]`. Use `congr 1`. Establish `hey : e y = t • y` using `rfl`. Rewrite using `[hey, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, ht2]`. Establish `hpi : Real.pi ≠ 0` using `Real.pi_ne_zero`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_gauss_width (c : ℝ) (hc : 0 < c) :
     ∃ g : SchwartzMap E ℂ, ∀ y, g y = Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ)) := by
@@ -31,9 +31,9 @@ theorem exists_schwartz_gauss_width (c : ℝ) (hc : 0 < c) :
   field_simp
 
 /- English proof (translation)
-Introduce `g hg`. Establish `: g = K⁻¹ • u`. Use extensionality with `y`. Rewrite using `[SchwartzMap.smul_apply, hu, hg, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hK, one_mul]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem _ huM`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_smul {M : Submodule ℂ (SchwartzMap E ℂ)} (c : ℝ) (K : ℂ) (hK : K ≠ 0)
     (u : SchwartzMap E ℂ) (hu : ∀ y, u y = K * Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ)))
@@ -49,11 +49,11 @@ theorem mem_of_smul {M : Submodule ℂ (SchwartzMap E ℂ)} (c : ℝ) (K : ℂ) 
 variable [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Establish `hsc : 0 < s + c` using `by linarith`. Establish `key : ∀ a : E, Complex.exp (-((s * ‖a‖ ^ 2 : ℝ) : ℂ)) * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ)) = Complex.exp (-((s + c : ℝ) : ℂ) * (‖a‖ : ℂ) ^ 2 + ((2 * c : ℝ) : ℂ) * ((inner ℝ y a : ℝ) : ℂ)) * Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))`. Introduce `a`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[norm_sub_sq_real]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`. Rewrite using `[integral_mul_const, GaussianFourier.integral_cexp_neg_mul_sq_norm_add (by simpa using hsc) _ y, mul_assoc, ← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `h1 : ((s + c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hsc.ne'`. Move the coercions through the operations in `at h1 ⊢`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_gauss_mul_gauss (s c : ℝ) (hs : 0 < s) (hc : 0 < c) (y : E) :
     ∫ a : E, Complex.exp (-((s * ‖a‖ ^ 2 : ℝ) : ℂ)) * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ)) =
@@ -97,7 +97,7 @@ def ConvStable (M : Submodule ℂ (SchwartzMap E ℂ)) : Prop :=
         Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))) → u ∈ M
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[Complex.cpow_eq_zero_iff]`. Conclude with `(Complex.ofReal_ne_zero.2 hr.ne') h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpow_ne_zero_of_pos (r : ℝ) (hr : 0 < r) (z : ℂ) : ((r : ℂ)) ^ z ≠ 0 := by
   intro h
@@ -105,15 +105,13 @@ theorem cpow_ne_zero_of_pos (r : ℝ) (hr : 0 < r) (z : ℂ) : ((r : ℂ)) ^ z �
   exact (Complex.ofReal_ne_zero.2 hr.ne') h.1
 
 /- English proof (translation)
-Use `set s : ℝ := c * c' / (c - c') with hs_def`. Establish `hcc : 0 < c - c'` using `by linarith`. Establish `hs : 0 < s` using `div_pos (mul_pos hc hc') hcc`. Establish `hsc : s * c / (s + c) = c'`. Rewrite using `[hs_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨h, hh⟩` from `exists_schwartz_gauss_width (E := E) (s / 2) (by linarith)`. Take `⟨g', hg'⟩` from `exists_schwartz_gauss_width (E := E) c' hc'`. Use `set K : ℂ := ((Real.pi : ℂ) / ((s + c : ℝ) : ℂ)) ^ (Module.finrank ℝ E / 2 : ℂ)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : K ≠ 0`. Establish `: (Real.pi : ℂ) / ((s + c : ℝ) : ℂ) = ((Real.pi / (s + c) : ℝ) : ℂ)` using `by push_cast; rfl`. Simplify using `only [K, this]`. Conclude with `cpow_ne_zero_of_pos _ (div_pos Real.pi_pos (by linarith)) _`. Establish `huM : K • g' ∈ M` using `hconv (s / 2) c (by linarith) hc hP h (K • g') (fun y => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, hg', ← hsc, ← integral_gauss_mul_gauss s c hs hc y]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[hh]`. Simplify using `only [← Complex.exp_add]`.
-
-Use `congr 1`. Use `push_cast`. Use the proof step `ring)`. Conclude with `mem_of_smul c' K hK (K • g') (fun y => by rw [SchwartzMap.smul_apply, smul_eq_mul, hg']) huM`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem hasWidth_of_lt {M : Submodule ℂ (SchwartzMap E ℂ)} (hconv : ConvStable M) (c : ℝ)
     (hc : 0 < c) (hP : HasWidth M c) (c' : ℝ) (hc' : 0 < c') (hlt : c' < c) : HasWidth M c' := by
@@ -141,13 +139,13 @@ theorem hasWidth_of_lt {M : Submodule ℂ (SchwartzMap E ℂ)} (hconv : ConvStab
   exact mem_of_smul c' K hK (K • g') (fun y => by rw [SchwartzMap.smul_apply, smul_eq_mul, hg']) huM
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_schwartz_gauss_width (E := E) c hc`. Use `set K : ℂ := ((Real.pi : ℂ) / (c : ℂ)) ^ (Module.finrank ℝ E / 2 : ℂ)`. Establish `hK : K ≠ 0`. Establish `: (Real.pi : ℂ) / (c : ℂ) = ((Real.pi / c : ℝ) : ℂ)` using `by push_cast; rfl`. Simplify using `only [K, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cpow_ne_zero_of_pos _ (div_pos Real.pi_pos hc) _`. Use `mem_of_smul (Real.pi ^ 2 / c) K hK (𝓕 g) (fun w => ?_) (hF g (hP g hg))` and prove the remaining obligations. Establish `hfun : (g : E → ℂ) = fun v => Complex.exp (-(c : ℂ) * (‖v‖ : ℂ) ^ 2)`. Use function extensionality and compare the values at `v`. Rewrite using `[hg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[SchwartzMap.fourier_coe, hfun, fourier_gaussian_innerProductSpace (by simpa using hc)]`. Use `congr 2`. Establish `: (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem hasWidth_fourier {M : Submodule ℂ (SchwartzMap E ℂ)} (hF : ∀ f ∈ M, 𝓕 f ∈ M) (c : ℝ)
     (hc : 0 < c) (hP : HasWidth M c) : HasWidth M (Real.pi ^ 2 / c) := by
@@ -167,11 +165,11 @@ theorem hasWidth_fourier {M : Submodule ℂ (SchwartzMap E ℂ)} (hF : ∀ f ∈
   field_simp
 
 /- English proof (translation)
-Break down `lt_trichotomy c Real.pi with hlt | heq | hgt` into its components or cases. Conclude with `hasWidth_of_lt hconv Real.pi Real.pi_pos hπ c hc hlt`. Conclude with `heq ▸ hπ`. Establish `hc' : 0 < Real.pi ^ 2 / c` using `by positivity`. Establish `hlt : Real.pi ^ 2 / c < Real.pi`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[div_lt_iff₀ hc]`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `h1` using `hasWidth_fourier hF _ hc' (hasWidth_of_lt hconv Real.pi Real.pi_pos hπ _ hc' hlt)`. Establish `: Real.pi ^ 2 / (Real.pi ^ 2 / c) = c`. Use `Real.pi_pos.ne'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[this]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem hasWidth_all {M : Submodule ℂ (SchwartzMap E ℂ)} (hconv : ConvStable M)
     (hF : ∀ f ∈ M, 𝓕 f ∈ M) (hπ : HasWidth M Real.pi) (c : ℝ) (hc : 0 < c) : HasWidth M c := by
@@ -187,7 +185,7 @@ theorem hasWidth_all {M : Submodule ℂ (SchwartzMap E ℂ)} (hconv : ConvStable
     rwa [this] at h1
 
 /- English proof (translation)
-Introduce `g hg`. Establish `: g = G` using `by ext y; rw [hg, hG]`. Rewrite using `[this]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hasWidth_pi {M : Submodule ℂ (SchwartzMap E ℂ)} (G : SchwartzMap E ℂ)
     (hG : ∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ))) (hGM : G ∈ M) :
@@ -201,7 +199,7 @@ end GlobalTheory.GaussWidths
 namespace GlobalTheory.GaussWidths
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ M hM hℓ hF G hG hGM c hc g hg`. Conclude with `hasWidth_all (fun b c' hb hc' hP h u hu => hconvAll E M hM hℓ b c' hb hc' hP h u hu) hF (hasWidth_pi G hG hGM) c hc g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem all_widths_of_conv
     (hconvAll : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]

@@ -8,11 +8,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Establish `e : ∀ S : Set X, (S.encard : ℝ≥0∞) = ∑' x, S.indicator (fun _ => (1 : ℝ≥0∞)) x`. Introduce `S`. Rewrite using `[← ENNReal.tsum_set_one, tsum_subtype S (fun _ => (1 : ℝ≥0∞))]`. Simplify using `only [e]`. Rewrite using `[ENNReal.tsum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[tsum_eq_single (q x)]`. Simplify using `[Set.indicator]`. Introduce `z hz`. Establish `: ¬ q x = z` using `fun h => hz h.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Set.indicator, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem encard_eq_tsum_fiber {X Z : Type*} (q : X → Z) (Q : X → Prop) :
     (({x | Q x} : Set X).encard : ℝ≥0∞)
@@ -30,13 +30,13 @@ theorem encard_eq_tsum_fiber {X Z : Type*} (q : X → Z) (Q : X → Prop) :
     simp [Set.indicator, this]
 
 /- English proof (translation)
-Establish `h1 : ({z | (Quotient.mk'' z : MulAction.orbitRel.Quotient H X) = Quotient.mk'' x ∧ P z ∧ π z = π x} : Set X) = MulAction.orbit (↥(H ⊓ MulAction.stabilizer G (π x))) x`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Quotient.eq'', MulAction.orbitRel_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h, rfl⟩, -, hz⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h2` using `(hP h h.2 x hx).2`. Conclude with `⟨⟨h, h.2, h2.symm.trans hz⟩, rfl⟩`. Introduce and unpack `⟨⟨h, hh, hs⟩, rfl⟩`. Establish `h2` using `hP h hh x hx`. Conclude with `⟨⟨⟨h, hh⟩, rfl⟩, h2.1, h2.2.trans hs⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h2 : (H ⊓ MulAction.stabilizer G x).relIndex (H ⊓ MulAction.stabilizer G (π x)) = (MulAction.orbit (↥(H ⊓ MulAction.stabilizer G (π x))) x).ncard`. Rewrite using `[← MulAction.index_stabilizer, Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `⟨h, hh, hs⟩`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf, MulAction.mem_stabilizer_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun a => a.2, fun a => ⟨hh, a⟩⟩`. Rewrite using `[h1, h2]`. Rewrite `hfin` using `[h2]`. Conclude with `(Set.finite_of_ncard_ne_zero hfin).cast_ncard_eq.symm`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem encard_orbit_fiber {G X Y : Type*} [Group G] [MulAction G X] [MulAction G Y]
     (H : Subgroup G) (P : X → Prop) (π : X → Y)
@@ -69,31 +69,29 @@ theorem encard_orbit_fiber {G X Y : Type*} [Group G] [MulAction G X] [MulAction 
   exact (Set.finite_of_ncard_ne_zero hfin).cast_ncard_eq.symm
 
 /- English proof (translation)
-Introduce `G X Y _ _ _ H K0 P π _ hP hc`. Establish `hP' : ∀ h ∈ H, ∀ x, P x → P (h • x) ∧ π (h • x) = h • π x` using `fun h hh x hx => ⟨(hP h hh x hx).1, (hP h hh x hx).2.1⟩`. Simplify using `only [fun c : MulAction.orbitRel.Quotient H Y => encard_eq_tsum_fiber (fun z : X => (Quotient.mk'' z : MulAction.orbitRel.Quotient H X)) (fun x => P x ∧ π x = c.out), ← ENNReal.tsum_mul_left]`. Rewrite using `[ENNReal.tsum_comm]`. Use `tsum_congr fun o => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ z : X, (Quotient.mk'' z : MulAction.orbitRel.Quotient H X) = o → ∃ h ∈ H, h • z = o.out`. Introduce `z hz`. Establish `: (Quotient.mk'' o.out : MulAction.orbitRel.Quotient H X) = Quotient.mk'' z`. Rewrite using `[hz]`. Conclude with `Quotient.out_eq' o`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Quotient.eq'', MulAction.orbitRel_apply]`. Take `⟨h, hh⟩` from `this`. Conclude with `⟨h, h.2, hh⟩`. Use `split_ifs with ho`. Use `set c0 : MulAction.orbitRel.Quotient H Y := Quotient.mk'' (π o.out) with hc0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[tsum_eq_single c0]`. Establish `: (Quotient.mk'' c0.out : MulAction.orbitRel.Quotient H Y) = Quotient.mk'' (π o.out)` using `Quotient.out_eq' c0`. Rewrite `this` using `[Quotient.eq'', MulAction.orbitRel_apply]`. Take `⟨⟨h, hh⟩, hy⟩` from `this`. Establish `hy' : h • π o.out = c0.out` using `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Take `⟨p1, p2, p3⟩` from `hP h hh _ ho`. Establish `ho' : o = Quotient.mk'' (h • o.out)` using `by conv_lhs => rw [← Quotient.out_eq' o]`. Use `symm`. Rewrite using `[Quotient.eq'', MulAction.orbitRel_apply]`. Conclude with `⟨⟨h, hh⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← p3, ← hy', ← p2]`. Generalize the expression as in `h • o.out = x at p1 ho'`. Take `⟨a1, a2, a3, a4⟩` from `hc x p1`. Establish `hle : H ⊓ MulAction.stabilizer G x ≤ H ⊓ MulAction.stabilizer G (π x)`. Introduce and unpack `g ⟨g1, g2⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨g1, ?_⟩` and prove the remaining obligations. Establish `g3 : g • x = x` using `g2`. Use `(hP' g g1 x p1).2` as an intermediate fact. Rewrite `this` using `[g3]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, b, -⟩` from `invVol_mul_pos_le_conj K0 _ _ a3 a4 a1 a2`. Rewrite using `[ho', encard_orbit_fiber H P π hP' x p1 (Subgroup.relIndex_ne_zero_trans a2 a3), b hle, ENNReal.ofReal_mul' (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Introduce `c hne`. Establish `: ({x | (Quotient.mk'' x : MulAction.orbitRel.Quotient H X) = o ∧ P x ∧ π x = c.out} : Set X) = ∅`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨h1, h2, h3⟩`. Take `⟨h, hh, e⟩` from `hmem z h1`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hc0, ← e, (hP' h hh z h2).2, h3]`. Use `conv_lhs => rw [← Quotient.out_eq' c]`. Use `symm`. Rewrite using `[Quotient.eq'', MulAction.orbitRel_apply]`. Conclude with `⟨⟨h, hh⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `symm`. Use `ENNReal.tsum_eq_zero.2 fun c => ?_` and prove the remaining obligations. Establish `: ({x | (Quotient.mk'' x : MulAction.orbitRel.Quotient H X) = o ∧ P x ∧ π x = c.out} : Set X) = ∅`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨h1, h2, -⟩`. Take `⟨h, hh, e⟩` from `hmem z h1`. Conclude with `ho (e ▸ (hP' h hh z h2).1)`.
-
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mass_orbits_eq_tsum_fiber : ∀ {G X Y : Type} [Group G] [MulAction G X] [MulAction G Y] (H K0 : Subgroup G) (P : X → Prop) (π : X → Y), K0 ≤ H → (∀ h ∈ H, ∀ x, P x → P (h • x) ∧ π (h • x) = h • π x ∧ invVol K0 (H ⊓ MulAction.stabilizer G (h • x)) = invVol K0 (H ⊓ MulAction.stabilizer G x)) → (∀ x, P x → K0.relIndex (H ⊓ MulAction.stabilizer G x) ≠ 0 ∧ (H ⊓ MulAction.stabilizer G x).relIndex K0 ≠ 0 ∧ K0.relIndex (H ⊓ MulAction.stabilizer G (π x)) ≠ 0 ∧ (H ⊓ MulAction.stabilizer G (π x)).relIndex K0 ≠ 0) → (∑' o : MulAction.orbitRel.Quotient H X, if P o.out then ENNReal.ofReal (invVol K0 (H ⊓ MulAction.stabilizer G o.out)) else 0) = ∑' c : MulAction.orbitRel.Quotient H Y, ENNReal.ofReal (invVol K0 (H ⊓ MulAction.stabilizer G c.out)) * (({x | P x ∧ π x = c.out} : Set X).encard : ℝ≥0∞) := by
   intro G X Y _ _ _ H K0 P π _ hP hc

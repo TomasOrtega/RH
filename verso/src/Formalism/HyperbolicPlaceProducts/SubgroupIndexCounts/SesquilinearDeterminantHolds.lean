@@ -12,17 +12,15 @@ variable {V₁ V₂ : Type*} [NormedAddCommGroup V₁] [InnerProductSpace ℂ V�
   [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂]
 
 /- English proof (translation)
-Use `set a : Fin m → ℂ := fun l => B x (f l) with ha`. Use `set y : V₂ := ∑ l, a l • f l with hy`. Use `set S : ℝ := ∑ l, ‖a l‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun l _ => by positivity`. Establish `h1 : B x y = (S : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy, map_sum, hS]`. Use `push_cast`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, smul_eq_mul, Complex.conj_mul']`. Establish `h2 : ‖y‖ ^ 2 = S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@norm_sq_eq_re_inner ℂ, hy, hf.inner_sum, hS, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul']`. Use `norm_cast`. Establish `h3 : S ≤ c * ‖y‖`.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hB x y` as an intermediate fact. Rewrite `this` using `[h1, hx, mul_one, Complex.norm_real, Real.norm_of_nonneg hS0]`. Conclude with `this`. Establish `hy0 : 0 ≤ ‖y‖` using `norm_nonneg _`. Break down `hS0.eq_or_lt with h0 | h0` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h0]`. Check the signs of the components of the expression. Establish `h4 : S * S ≤ c ^ 2 * S`. Establish `h5 : 0 ≤ c * ‖y‖` using `le_trans hS0 h3`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `le_of_mul_le_mul_right h4 h0`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma row_sq_le (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) (c : ℝ) (hB : ∀ x y, ‖B x y‖ ≤ c * ‖x‖ * ‖y‖)
     {m : ℕ} (x : V₁) (hx : ‖x‖ = 1) (f : Fin m → V₂) (hf : Orthonormal ℂ f) :
@@ -56,7 +54,7 @@ lemma row_sq_le (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) (c : ℝ) (hB : �
     exact le_of_mul_le_mul_right h4 h0
 
 /- English proof (translation)
-Use `le_trans (Formalism.HadamardInequality.P.hadamard_inequality_holds m _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 lemma det_orth_sq_le (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) (c : ℝ) (hB : ∀ x y, ‖B x y‖ ≤ c * ‖x‖ * ‖y‖)
     {m : ℕ} (e : Fin m → V₁) (he : Orthonormal ℂ e) (f : Fin m → V₂) (hf : Orthonormal ℂ f) :
@@ -68,7 +66,7 @@ lemma det_orth_sq_le (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) (c : ℝ) (h
     _ = c ^ (2 * m) := by rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_mul]
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ g : Fin m → ℂ, ∑ k, g k • InnerProductSpace.gramSchmidtNormed ℂ u k = u i` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (by rw [InnerProductSpace.span_gramSchmidtNormed_range, InnerProductSpace.span_gramSchmidt]; exact Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `⟨InnerProductSpace.gramSchmidtNormed ℂ u, fun i k => (h i).choose k, InnerProductSpace.gramSchmidtNormed_orthonormal hu, fun i => (h i).choose_spec.symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma exists_orth_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {m : ℕ}
     (u : Fin m → V) (hu : LinearIndependent ℂ u) :
@@ -81,7 +79,7 @@ lemma exists_orth_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace �
     InnerProductSpace.gramSchmidtNormed_orthonormal hu, fun i => (h i).choose_spec.symm⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.gram_apply, hu i, hu j, he.inner_sum, Matrix.transpose_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, mul_comm]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma gram_eq_of_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {m : ℕ}
     (e : Fin m → V) (he : Orthonormal ℂ e) (A : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → V)
@@ -94,7 +92,7 @@ lemma gram_eq_of_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace �
   rfl
 
 /- English proof (translation)
-Rewrite using `[gram_eq_of_decomp e he A u hu, Matrix.det_transpose, Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_det_gram_of_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {m : ℕ}
     (e : Fin m → V) (he : Orthonormal ℂ e) (A : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → V)
@@ -104,7 +102,7 @@ lemma norm_det_gram_of_decomp {V : Type*} [NormedAddCommGroup V] [InnerProductSp
     norm_mul, norm_star, sq]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, hu i, hw j, Matrix.mul_apply]`. Simplify using `only [map_sum, LinearMap.map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, Matrix.mul_apply, Matrix.of_apply, Matrix.conjTranspose_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, starRingEnd_apply, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bmat_eq_of_decomp (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) {m : ℕ} (e : Fin m → V₁) (f : Fin m → V₂)
     (A C : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → V₁) (w : Fin m → V₂)
@@ -119,19 +117,19 @@ lemma bmat_eq_of_decomp (B : V₁ →ₗ[ℂ] V₂ →ₗ⋆[ℂ] ℂ) {m : ℕ}
   ring
 
 /- English proof (translation)
-Introduce `V₁ V₂ _ _ _ _ B c hB m u w`. Establish `hc : 0 ≤ c ^ (2 * m)` using `by rw [pow_mul]; positivity`. Distinguish the cases in `hu : LinearIndependent ℂ u`. Distinguish the cases in `hw : LinearIndependent ℂ w`. Take `⟨e, A, he, hA⟩` from `exists_orth_decomp u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨f, C, hf, hC⟩` from `exists_orth_decomp w hw`. Rewrite using `[bmat_eq_of_decomp B e f A C u w hA hC, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, norm_det_gram_of_decomp e he A u hA, norm_det_gram_of_decomp f hf C w hC, norm_mul, norm_mul, norm_star]`. Establish `h1` using `det_orth_sq_le B c hB e he f hf`. Combine the equalities or inequalities in the displayed calculation. Take `⟨g, hg, i0, hi0⟩` from `Fintype.not_linearIndependent_iff.1 hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hdet : (Matrix.of fun i j => B (u i) (w j)).det = 0`. Use `Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun j => star (g j), fun h0 => hi0 ?_, ?_⟩` and prove the remaining obligations. Use `congrFun h0 i0` as an intermediate fact. Simplify using `using this`. Use extensionality with `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Use `congrArg (B (u i)) hg` as an intermediate fact. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, smul_eq_mul, map_zero, starRingEnd_apply] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, norm_zero]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Check the signs of the components of the expression. Take `⟨g, hg, i0, hi0⟩` from `Fintype.not_linearIndependent_iff.1 hu`. Establish `hdet : (Matrix.of fun i j => B (u i) (w j)).det = 0`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.exists_vecMul_eq_zero_iff.1 ⟨g, fun h0 => hi0 (congrFun h0 i0), ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Use `congrArg (fun x => B x (w j)) hg` as an intermediate fact. Simplify using `only [map_sum, LinearMap.map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_zero, LinearMap.zero_apply] at this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[hdet, norm_zero]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem sesquilinear_determinant_holds : Formalism.SLP.SesqDet := by
   intro V₁ V₂ _ _ _ _ B c hB m u w

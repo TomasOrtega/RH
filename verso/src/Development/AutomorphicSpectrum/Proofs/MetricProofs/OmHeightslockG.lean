@@ -15,14 +15,14 @@ def blockG {p q : ℕ} (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) : Matrix (F
   (Matrix.fromBlocks (omBlock Γ)ᵀ⁻¹ 0 0 (wBlock Γ)).submatrix (blockEquiv p q).symm (blockEquiv p q).symm
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[wBlock, blockG, ← blockEquiv_inr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wBlock_blockG {p q : ℕ} (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) : wBlock (blockG Γ) = wBlock Γ := by
   ext a b
   simp [wBlock, blockG, ← blockEquiv_inr]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[omBlock, blockG, ← blockEquiv_inl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem omBlock_blockG {p q : ℕ} (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) :
     omBlock (blockG Γ) = (omBlock Γ)ᵀ⁻¹ := by
@@ -42,7 +42,7 @@ def dualFam (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω
   else 0
 
 /- English proof (translation)
-Unfold `FlagTie.wFrame colFrame`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (tie.eW τ b).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wFrame_mem (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H)
     (a : Fin D.p) : tie.wFrame F τ a ∈ 𝔐.Vgen (.inl τ) := by

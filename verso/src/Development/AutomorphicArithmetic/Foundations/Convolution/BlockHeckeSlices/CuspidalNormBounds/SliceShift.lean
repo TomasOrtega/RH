@@ -18,7 +18,7 @@ private def aV (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : 
   lev (Ad E) r s (zt E r v, 1)
 
 /- English proof (translation)
-Unfold `zt`. Rewrite using `[← map_mul]`. Conclude with `congrArg _ (Subtype.ext (Real.exp_add a b))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zt_add (a b : ℝ) : zt E r (a + b) = zt E r a * zt E r b := by
   unfold zt
@@ -26,27 +26,27 @@ private theorem zt_add (a b : ℝ) : zt E r (a + b) = zt E r a * zt E r b := by
   exact congrArg _ (Subtype.ext (Real.exp_add a b))
 
 /- English proof (translation)
-Unfold `zt`. Rewrite using `[show (⟨Real.exp 0, Real.exp_pos 0⟩ : {x : ℝ // 0 < x}) = 1 from Subtype.ext Real.exp_zero, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zt_zero : zt E r 0 = 1 := by
   unfold zt
   rw [show (⟨Real.exp 0, Real.exp_pos 0⟩ : {x : ℝ // 0 < x}) = 1 from Subtype.ext Real.exp_zero, map_one]
 
 /- English proof (translation)
-The claim follows from `centralSection_mul_comm _ g`.
+A detailed English derivation is pending.
 -/
 private theorem zt_comm (v : ℝ) (g : GA E r) : zt E r v * g = g * zt E r v :=
   centralSection_mul_comm _ g
 
 /- English proof (translation)
-Rewrite using `[aV, zt_zero]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aV_zero : aV E r s 0 = 1 := by
   rw [aV, zt_zero]
   exact map_one _
 
 /- English proof (translation)
-Unfold `AutomorphicForm.constantTerm`. Use `integral_congr_ae (.of_forall fun X => ?_)` and prove the remaining obligations. Use `show φ.1 (_ * g * h) = φ.1 (_ * (g * h))`. Rewrite using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ct_rt {n : ℕ} (h g : GA E n) (φ : Sm E n) :
     AutomorphicForm.constantTerm r (rt E n h φ).1 g = AutomorphicForm.constantTerm r φ.1 (g * h) := by
@@ -56,9 +56,9 @@ private theorem ct_rt {n : ℕ} (h g : GA E n) (φ : Sm E n) :
   rw [mul_assoc]
 
 /- English proof (translation)
-Unfold `slice`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Use `show AutomorphicForm.constantTerm r (rt E (r + s) (aV E r s v) φ).1 _ * _ = AutomorphicForm.constantTerm r φ.1 _ * _`. Rewrite using `[ct_rt, aV, ← map_mul]`. Use `congr 3`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ (mul_one _)` and prove the remaining obligations. Use `show zt E r t * _ * zt E r v = zt E r (t + v) * _`. Rewrite using `[zt_add, mul_assoc, mul_assoc, ← zt_comm v]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem shift (f : GA E r → ℂ) (t v : ℝ) (φ : Sm E (r + s)) (m : GA E s) :
     slice f t (rt E (r + s) (aV E r s v) φ).1 m = slice f (t + v) φ.1 m := by
@@ -72,7 +72,7 @@ private theorem shift (f : GA E r → ℂ) (t v : ℝ) (φ : Sm E (r + s)) (m : 
   rw [zt_add, mul_assoc, mul_assoc, ← zt_comm v]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspBoundSiegel.diagUnits_posIdele (E := E) r (Real.rpow_pos_of_pos (Real.exp_pos t) ((r * Module.finrank ℚ E : ℝ))⁻¹)`. Rewrite `h` using `[Real.log_rpow (Real.exp_pos t), Real.log_exp, mul_comm _ t]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zt_eq (t : ℝ) :
     zt E r t = GlobalTheory.UnitaryBC.splitCentre E r (t * ((r * Module.finrank ℚ E : ℝ))⁻¹) := by
@@ -82,16 +82,16 @@ private theorem zt_eq (t : ℝ) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[aV, zt_eq, PositivityTheory.Rg.Rs.SliceClasses.splitCentre_eq_aT, PositivityTheory.Rg.Rs.SliceClasses.lev_aT_left r s r le_rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem aV_eq (v : ℝ) :
     aV E r s v = PositivityTheory.Rg.Rs.aT E (r + s) r (v * ((r * Module.finrank ℚ E : ℝ))⁻¹) := by
   rw [aV, zt_eq, PositivityTheory.Rg.Rs.SliceClasses.splitCentre_eq_aT, PositivityTheory.Rg.Rs.SliceClasses.lev_aT_left r s r le_rfl]
 
 /- English proof (translation)
-Use `set c : ℝ := ((r * Module.finrank ℚ E : ℝ))⁻¹ with hc`. Establish `h` using `GlobalTheory.CompanionTheory.Conc.TorusDeriv.hasDerivAt_aT_right E r s F g (v * c)`. Establish `h2` using `h.scomp v ((hasDerivAt_id v).mul_const c)`. Simplify using `only [Function.comp_def, id, one_mul] at h2`. Establish `ej : ∀ y, (j1 E r s F).1 y = c • ((∑ τ : E →+* ℂ, ∑ i : Fin r, Eop (a` using `r + s) τ (Fin.castAdd s i) (Fin.castAdd s i)) F).1 y := fun y => by show (((r * Module.finrank ℚ E : ℕ) : ℂ)⁻¹) * _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.real_smul, hc, Complex.ofReal_inv, Complex.ofReal_mul, Complex.ofReal_natCast, Complex.ofReal_natCast, Nat.cast_mul]`. Simplify using `only [aV_eq, ← hc]`. Rewrite using `[ej]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasDeriv_aV (F : Sm E (r + s)) (g : GA E (r + s)) (v : ℝ) :
     HasDerivAt (fun x => F.1 (g * aV E r s x)) ((j1 E r s F).1 (g * aV E r s v)) v := by
@@ -109,7 +109,7 @@ private theorem hasDeriv_aV (F : Sm E (r + s)) (g : GA E (r + s)) (v : ℝ) :
   exact h2
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[lev, GlobalTheory.SmGL.val_emb₂]`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;>`. Apply the tactic sequence `simp [GlobalTheory.SmGL.stdSum, Matrix.diagonal_apply, Fin.ext_iff] <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lev_diag {R : Type} [CommRing R] (x : Fin (r + s) → Rˣ) :
     diagUnits (r + s) x = lev R r s (diagUnits r fun i => x (Fin.castAdd s i), diagUnits s fun i => x (Fin.natAdd r i)) := by
@@ -120,25 +120,23 @@ private theorem lev_diag {R : Type} [CommRing R] (x : Fin (r + s) → Rˣ) :
     simp [GlobalTheory.SmGL.stdSum, Matrix.diagonal_apply, Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem posIdele_eq {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (h : x = y) :
     posIdele (K := E) x hx = posIdele y hy := by subst h; rfl
 
 /- English proof (translation)
-Use `set c : ℝ := ((r * Module.finrank ℚ E : ℝ))⁻¹ with hc`. Establish `c0 : 0 ≤ c` using `by positivity`. Use `⟨Real.exp c ^ (2 * Fintype.card (InfinitePlace E)), by positivity, fun v hv => ?_⟩` and prove the remaining obligations. Use `set ρ : Fin (r + s) → ℝ := fun i => if (i : ℕ) < r then Real.exp (v * c) else 1 with hρd`. Establish `hρ : ∀ i, 0 < ρ i` using `fun i => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hρd]`. Use `split_ifs`. Conclude with `Real.exp_pos _`. Conclude with `one_pos`. Establish `e : aV E r s v = diagUnits (r + s) fun i => posIdele (K` using `E) (ρ i) (hρ i) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[lev_diag, aV]`. Use `congrArg _ (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `congrArg (diagUnits r) (funext fun i => ?_)` and prove the remaining obligations. Use `posIdele_eq (Real.rpow_pos_of_pos (Real.exp_pos _) _) _ ?_` and prove the remaining obligations. Simplify using `only [hρd, Fin.val_castAdd, i.2, if_true]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_mul]`. Use `symm`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e1 : posIdele (K` using `E) (ρ (Fin.natAdd r i)) (hρ _) = 1 := by`. Rewrite using `[← PositivityTheory.Rg.Rs.SliceClasses.A_posIdele_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `posIdele_eq _ _ ?_` and prove the remaining obligations. Simplify using `[hρd]`. Simplify using `[coe_diagUnits, e1, Matrix.one_apply, Matrix.diagonal_apply]`. Rewrite using `[e]`. Use `GroundTheory.Automorphic.CuspidalSpectrum.height_diagUnits_posIdele_le hρ (Real.one_le_exp c0) fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `b1 : |v * c| ≤ c`. Rewrite using `[abs_mul, abs_of_nonneg c0]`. Conclude with `mul_le_of_le_one_left c0 hv`. Simplify using `only [hρd]`. Use `split_ifs`.
-
-Rewrite using `[← Real.exp_neg]`. Conclude with `⟨Real.exp_le_exp.2 (abs_le.1 b1).2, Real.exp_le_exp.2 (by linarith [(abs_le.1 b1).1])⟩`. Simplify using `using Real.one_le_exp c0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem height_aV (hr : 0 < r) : ∃ H : ℝ, 0 ≤ H ∧ ∀ v : ℝ, |v| ≤ 1 → AutomorphicForm.height (aV E r s v) ≤ H := by
   set c : ℝ := ((r * Module.finrank ℚ E : ℝ))⁻¹ with hc
@@ -176,11 +174,11 @@ private theorem height_aV (hr : 0 < r) : ∃ H : ℝ, 0 ≤ H ∧ ∀ v : ℝ, |
   · simpa using Real.one_le_exp c0
 
 /- English proof (translation)
-Establish `K0 : 0 ≤ K` using `(norm_nonneg _).trans (hK 0 (by simp))`. Establish `hq : ∀ x : ℝ, |x| ≤ 1 → ‖(j1 E r s F).1 (g * aV E r s x) - (j1 E r s F).1 g‖ ≤ K * |x|`. Introduce `x hx`. Establish `h` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (s := Set.Icc (-1 : ℝ) 1) (C := K) (x := 0) (y := x) (f := fun x : ℝ => (j1 E r s F).1 (g * aV E r s x)) (f' := fun x => (j1 E r s (j1 E r s F)).1 (g * aV E r s x)) (fun x _ => (hasDeriv_aV (j1 E r s F) g x).hasDerivWithinAt) (fu …`. Simplify `h` using `[aV_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (s := Set.Icc (-|v|) |v|) (C := K * |v|) (x := 0) (y := v) (f := fun x : ℝ => F.1 (g * aV E r s x) - (x : ℂ) * (j1 E r s F).1 g) (f' := fun x => (j1 E r s F).1 (g * aV E r s x) - (j1 E r s F).1 g) (fun x _ => by`. Establish `h1` using `hasDeriv_aV F g x`. Establish `h2 : HasDerivAt (fun x : ℝ => (x : ℂ) * (j1 E r s F).1 g) ((j1 E r s F).1 g) x`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := x)).mul_const ((j1 E r s F).1 g)`. Conclude with `(h1.sub h2).hasDerivWithinAt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun x hx => (hq x ((abs_le.2 hx).trans hv)).trans (mul_le_mul_of_nonneg_left (abs_le.2 hx) K0))`. Use the proof step `(convex_Icc _ _) (by simp) (by simp [neg_abs_le, le_abs_self])`. Simplify using `only [aV_zero, mul_one, Complex.ofReal_zero, zero_mul, sub_zero, Real.norm_eq_abs] at h`. Rewrite using `[← sq_abs v]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem taylor (F : Sm E (r + s)) (g : GA E (r + s)) {K : ℝ}
     (hK : ∀ x : ℝ, |x| ≤ 1 → ‖(j1 E r s (j1 E r s F)).1 (g * aV E r s x)‖ ≤ K) {v : ℝ} (hv : |v| ≤ 1) :
@@ -210,7 +208,7 @@ private theorem taylor (F : Sm E (r + s)) (g : GA E (r + s)) {K : ℝ}
     _ = K * |v| ^ 2 := by ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((r * Module.finrank ℚ E : ℕ) : ℂ)⁻¹ • ∑ τ : E →+* ℂ, ∑ i : Fin r, genC τ (Fin.castAdd s i) (Fin.castAdd s i), by simp only [j1, map_smul, map_sum, uC_genC]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_casimir_center : ∃ u : UC E (r + s), j1 E r s = uC E (r + s) u :=
   ⟨((r * Module.finrank ℚ E : ℕ) : ℂ)⁻¹ • ∑ τ : E →+* ℂ, ∑ i : Fin r, genC τ (Fin.castAdd s i) (Fin.castAdd s i), by
@@ -220,31 +218,29 @@ end UpperTheory.ConvolutionTheory.BW
 
 open UpperTheory.ConvolutionTheory.BW in
 /- English proof (translation)
-Introduce `E _ _ _ S r s b t φ m hφ`. Establish `hsh : ∀ v, slice b.f.1 t (rt E (r + s) (aV E r s v) φ).1 m = slice b.f.1 (t + v) φ.1 m` using `fun v => shift _ t v φ m`. Use `⟨hsh, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hφ.growth`. Take `⟨u, hu⟩` from `exists_casimir_center (E := E) (r := r) (s := s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hN (u * u)`. Take `⟨H, H0, hH⟩` from `height_aV (E := E) (s := s) b.pos`. Take `⟨C, R, hCR⟩` from `(sliceBound E S r s b).1 N`. Establish `hc1` using `AutomorphicForm.one_le_heightConst (K := E) (n := r + s)`. Use `set c0 : ℝ := |B| * (AutomorphicForm.heightConst E (r + s) * H) ^ N with hc0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ (g : GA E (r + s)) (x : ℝ), |x| ≤ 1 → ‖(j1 E r s (j1 E r s φ)).1 (g * aV E r s x)‖ ≤ c0 * AutomorphicForm.height g ^ N`. Introduce `g x hx`. Establish `h1` using `hB (g * aV E r s x)`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, ← hu]`. Use `h1.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc0, mul_assoc, ← mul_pow]`. Use `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (AutomorphicForm.height_pos _).le ?_ N) (pow_nonneg (AutomorphicForm.height_pos _).le N) (abs_nonneg _)` and prove the remaining obligations. Use `(AutomorphicForm.height_mul_le _ _).trans ?_` and prove the remaining obligations. Establish `hg` using `(AutomorphicForm.height_pos g).le`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hj` using `Umg.j1 hφ`. Establish `hU : ∀ v : ℝ, Umg ((-1 : ℂ) • φ + (-(v : ℂ)) • j1 E r s φ)` using `fun v => (hφ.smul _).add (hj.smul _)`. Establish `hexp : ∀ v : ℝ, slice b.f.1 (t + v) φ.1 m - slice b.f.1 t φ.1 m - (v : ℂ) * slice b.f.1 t (j1 E r s φ).1 m = slice b.f.1 t (rt E (r + s) (aV E r s v) φ + ((-1 : ℂ) • φ + (-(v : ℂ)) • j1 E r s φ)).1 m`. Introduce `v`. Establish `h1` using `congrFun (slice_add b t (hφ.tr (aV E r s v)) (hU v)) m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (slice_add b t (hφ.smul (-1 : ℂ)) (hj.smul (-(v : ℂ)))) m`. Establish `h3` using `congrFun (slice_smul b t (-1 : ℂ) hφ) m`. Establish `h4` using `congrFun (slice_smul b t (-(v : ℂ)) hj) m`. Rewrite using `[h1]`. Simplify using `only [Pi.add_apply] at *`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3, h4, hsh]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbig : ∀ v : ℝ, |v| ≤ 1 → ‖slice b.f.1 (t + v) φ.1 m - slice b.f.1 t φ.1 m - (v : ℂ) * slice b.f.1 t (j1 E r s φ).1 m‖ ≤ (|C| * c0 * Real.exp (R * |t|) * AutomorphicForm.height m ^ N) * |v ^ 2|`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Establish `hb : ∀ g, ‖(rt E (r + s) (aV E r s v) φ + ((-1 : ℂ) • φ + (-(v : ℂ)) • j1 E r s φ)).1 g‖ ≤ (c0 * v ^ 2) * AutomorphicForm.height g ^ N`. Introduce `g`. Establish `h` using `taylor φ g (hK g) hv`. Establish `e : (rt E (r + s) (aV E r s v) φ + ((-1 : ℂ) • φ + (-(v : ℂ)) • j1 E r s φ)).1 g = φ.1 (g * aV E r s v) - φ.1 g - (v : ℂ) * (j1 E r s φ).1 g` using `by show φ.1 (g * aV E r s v) + ((-1 : ℂ) * φ.1 g + (-(v : ℂ)) * (j1 E r s φ).1 g) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `(hCR _ _ ((hφ.tr _).add (hU v)) hb t m).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc00 : 0 ≤ c0` using `mul_nonneg (abs_nonneg _) (pow_nonneg (mul_nonneg (by linarith) H0) _)`. Establish `hm` using `pow_nonneg (AutomorphicForm.height_pos m).le N`. Rewrite using `[abs_of_nonneg (sq_nonneg v)]`. Establish `: C * (c0 * v ^ 2) * Real.exp (R * |t|) * AutomorphicForm.height m ^ N = C * (c0 * Real.exp (R * |t|) * AutomorphicForm.height m ^ N * v ^ 2)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : |C| * c0 * Real.exp (R * |t|) * AutomorphicForm.height m ^ N * v ^ 2 = |C| * (c0 * Real.exp (R * |t|) * AutomorphicForm.height m ^ N * v ^ 2)` using `by ring`. Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`. Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Establish `hO : (fun h : ℝ => slice b.f.1 (t + h) φ.1 m - slice b.f.1 t φ.1 m - h • slice b.f.1 t (j1 E r s φ).1 m) =O[nhds 0] fun h : ℝ => h ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Asymptotics.IsBigO.of_bound (|C| * c0 * Real.exp (R * |t|) * AutomorphicForm.height m ^ N) ?_` and prove the remaining obligations. Establish `: ∀ᶠ h : ℝ in nhds 0, |h| ≤ 1`. Use `Metric.closedBall_mem_nhds (0 : ℝ) one_pos` as an intermediate fact. Use `filter_upwards [this] with h hh`. Simplify using `using hh`.
-
-Use `filter_upwards [this] with h hh`. Simplify `hbig h hh` using `[Complex.real_smul]`. Conclude with `hO.trans_isLittleO (Asymptotics.isLittleO_pow_id (by norm_num))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.sliceShift :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.SliceShift E := by

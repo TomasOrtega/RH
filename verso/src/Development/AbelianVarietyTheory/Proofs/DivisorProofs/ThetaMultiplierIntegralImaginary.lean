@@ -19,9 +19,9 @@ namespace GlobalTheory.ThetaLiouville
 open Matrix Complex
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (starRingEnd ℂ) (Hm i j) = Hm j i`. Use `hH.apply j i` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `only [Pi.star_apply, RCLike.star_def, Complex.conj_conj]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_form {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.IsHermitian) (w l : Fin g → ℂ) :
     l ⬝ᵥ Hm.mulVec (star w) = (starRingEnd ℂ) (w ⬝ᵥ Hm.mulVec (star l)) := by
@@ -36,9 +36,9 @@ theorem conj_form {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.IsHermiti
   ring
 
 /- English proof (translation)
-Take `⟨s, hs, hsp, hli⟩` from `exists_linearIndependent ℝ (Λ : Set (Fin g → ℂ))`. Set `b` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hsp, hΛ])`. Use `⟨s, b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.finite_basis b`. Introduce `i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.mk_apply]`. Conclude with `hs i.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_in {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ))
     (hΛ : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
@@ -58,31 +58,27 @@ namespace GlobalTheory.ThetaLiouville
 open Matrix Complex
 
 /- English proof (translation)
-Use `set u : Fin g → ℂ := Hm.mulVec (star w) with hu`. Set `ψ : (Fin g → ℂ) → ℂ` to `fun z => θ z * Complex.exp (-(Real.pi * (z ⬝ᵥ u)))`. Establish `hlin : Differentiable ℂ (fun z : Fin g → ℂ => z ⬝ᵥ u)`. Establish `: (fun z : Fin g → ℂ => z ⬝ᵥ u) = fun z => ∑ i, z i * u i` using `rfl`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Differentiable.fun_sum fun i _ => (differentiable_apply i).mul_const _`. Establish `hψ : Differentiable ℂ ψ` using `hθ.mul ((hlin.const_mul _).neg.cexp)`. Establish `hshift : ∀ l ∈ Λ, ∀ z, ψ (z + l) = ψ z * Complex.exp (Real.pi * (((2 * (w ⬝ᵥ Hm.mulVec (star l)).im : ℝ) : ℂ) * I))`. Introduce `l hl z`. Establish `hc` using `conj_form Hm hH w l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ψ, hper l hl z, add_dotProduct]`. Rewrite using `[hc]`. Use `set a := w ⬝ᵥ Hm.mulVec (star l)`. Establish `hsub : a - (starRingEnd ℂ) a = ((2 * a.im : ℝ) : ℂ) * I`. Rewrite using `[Complex.sub_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hsub]`. Rewrite using `[show -(↑Real.pi * (z ⬝ᵥ u + (starRingEnd ℂ) a)) = -(↑Real.pi * (z ⬝ᵥ u)) + (-(↑Real.pi * (starRingEnd ℂ) a)) by ring, Complex.exp_add, show (↑Real.pi * (a - (starRingEnd ℂ) a)) = ↑Real.pi * a + (-(↑Real.pi * (starRingEnd ℂ) a)) by ring, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : ∀ l ∈ Λ, ∀ z, ‖ψ (z + l)‖ = ‖ψ z‖`. Introduce `l hl z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hshift l hl z, norm_mul, Complex.norm_exp]`. Simplify using the standard rewrite rules. Take `⟨s, b, hfin, hbΛ⟩` from `exists_basis_in Λ hΛ`. Use `haveI : Fintype s := Fintype.ofFinite s`. Establish `hspan : ∀ x ∈ Submodule.span ℤ (Set.range b), x ∈ Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `hbΛ i`. Consider the case `zero => exact Λ.zero_mem`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => exact Λ.add_mem hx hy`. Consider the case `smul n x _ hx => exact Λ.toAddSubgroup.zsmul_mem hx n`. Establish `hcpt : IsCompact (closure (ZSpan.fundamentalDomain b))` using `(ZSpan.fundamentalDomain_isBounded b).isCompact_closure`. Take `⟨C, hC⟩` from `hcpt.exists_bound_of_continuousOn hψ.continuous.continuousOn`. Establish `hbd : Bornology.IsBounded (Set.range ψ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : z = ZSpan.fract b z + (ZSpan.floor b z : Fin g → ℂ)`. Rewrite using `[ZSpan.fract_apply]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hz, hnorm _ (hspan _ (ZSpan.floor b z).2)]`. Conclude with `hC _ (subset_closure (ZSpan.fract_mem_fundamentalDomain b z))`. Introduce `l hl`. Establish `hconst : ψ (0 + l) = ψ 0` using `hψ.apply_eq_apply_of_bounded hbd _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hconst` using `[hshift l hl 0]`. Establish `hψ0 : ψ 0 ≠ 0` using `mul_ne_zero (hθ0 0) (Complex.exp_ne_zero _)`. Establish `hexp : Complex.exp (Real.pi * (((2 * (w ⬝ᵥ Hm.mulVec (star l)).im : ℝ) : ℂ) * I)) = 1`. Use `hconst` as an intermediate fact. Rewrite `this` using `[mul_eq_left₀ hψ0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp hexp`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hI : (I : ℂ) ≠ 0` using `Complex.I_ne_zero`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
-
-Establish `h2 : ((w ⬝ᵥ Hm.mulVec (star l)).im : ℂ) = n`. Establish `: (Real.pi : ℂ) * 2 * I * ((w ⬝ᵥ Hm.mulVec (star l)).im : ℂ) = (Real.pi : ℂ) * 2 * I * n`. Move the coercions through the operations in `at hn`. Take the linear combination `hn`. Establish `h0 : (Real.pi : ℂ) * 2 * I ≠ 0` using `mul_ne_zero (mul_ne_zero hpi two_ne_zero) hI`.
-
-Conclude with `mul_left_cancel₀ h0 this`. Conclude with `h2` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem im_form_mem_int (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ))
     (hΛ : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤)

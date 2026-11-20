@@ -14,25 +14,19 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M 
 variable {r : ℕ}
 
 /- English proof (translation)
-Establish `hTO : algebraMap F E t.T ∈ M.L.O` using `Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O M.L ⟨t.T, hT⟩`. Establish `hTO' : algebraMap F E t.T' ∈ M.L.O` using `Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O M.L ⟨t.T', hT'⟩`. Establish `hgen : ∀ i j, H.h (H.MMfam t i) (H.MMfam t j) ∈ M.L.O`. Introduce `i j`. Establish `e` using `congrFun (congrFun (gramH_eqU H hg) i) j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [gramH, Matrix.of_apply] at e`. Rewrite using `[e]`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [gramC, Matrix.fromBlocks_apply₁₁, Matrix.of_apply] split_ifs`. Conclude with `neg_mem hTO`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Simplify using `only [gramC, Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`. Conclude with `cj_mem_O M.L (hint a b)`. Simplify using `only [gramC, Matrix.fromBlocks_apply₂₁, Matrix.transpose_apply]`. Conclude with `hint b a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [gramC, Matrix.fromBlocks_apply₂₂, Matrix.of_apply] split_ifs`. Conclude with `neg_mem hTO'`. Conclude with `zero_mem _`. Establish `hzero : ∀ y : V, H.h 0 y = 0`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h0` using `H.h_smul_left 0 0 y`. Rewrite `h0` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Establish `h1 : ∀ i, ∀ m ∈ MMo H t, H.h m (H.MMfam t i) ∈ M.L.O`. Introduce `i m hm`. Proceed by induction on `hm using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `hgen j i`. Consider the case `zero => rw [hzero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Subring.smul_def, H.h_smul_left]`. Conclude with `mul_mem c.2 hx`. Introduce `m hm m' hm'`.
-
-Establish `h2 : ∀ i, H.h (H.MMfam t i) m' ∈ M.L.O`. Introduce `i`. Rewrite using `[H.h_herm]`. Conclude with `cj_mem_O M.L (h1 i m' hm')`. Proceed by induction on `hm using Submodule.span_induction with`.
-
-Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `h2 j`. Consider the case `zero => rw [hzero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Subring.smul_def, H.h_smul_left]`. Conclude with `mul_mem c.2 hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mmInt_U {t : Term V M r} (hg : GoodU H t) (hT : t.T ∈ 𝒪[F]) (hT' : t.T' ∈ 𝒪[F])
     (hint : ∀ a b, H.Zhat t.f t.f' a b ∈ M.L.O) : MMInt H t := by
@@ -83,7 +77,7 @@ theorem mmInt_U {t : Term V M r} (hg : GoodU H t) (hT : t.T ∈ 𝒪[F]) (hT' : 
   | smul c x _ hx => rw [Subring.smul_def, H.h_smul_left]; exact mul_mem c.2 hx
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, PsiU_mk, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiU_symm_mk {t : Term V M r} (hg : GoodU H t) (Y : Ix r → M.L.O) :
     (PsiU H hg).symm (Submodule.Quotient.mk Y) =
@@ -91,11 +85,11 @@ theorem PsiU_symm_mk {t : Term V M r} (hg : GoodU H t) (Y : Ix r → M.L.O) :
   rw [LinearEquiv.symm_apply_eq, PsiU_mk, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Unfold `IsomD`. Prove the components needed by the constructor for the conclusion. Introduce `h Y W Y₂ W₂ hY hW`. Rewrite `hY`, `hW` using `[PsiU_symm_mk H hg₁, ← LinearEquiv.eq_symm_apply, PsiU_symm_mk H hg₂]`. Establish `key` using `h _ _ _ _ hY hW`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[h_eq_formCU H hg₂, h_eq_formCU H hg₁]`. Simplify `key` using `only [LinearEquiv.apply_symm_apply]`. Introduce `h x y x₂ y₂ hx hy`. Establish `hx' : PsiU H hg₂ (θ ((PsiU H hg₁).symm (Submodule.Quotient.mk (sharpEquiv H t₁ (unit_gramHU H hg₁) x)))) = Submodule.Quotient.mk (sharpEquiv H t₂ (unit_gramHU H hg₂) x₂)`. Rewrite using `[PsiU_symm_mk H hg₁, LinearEquiv.symm_apply_apply, hx, PsiU_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : PsiU H hg₂ (θ ((PsiU H hg₁).symm (Submodule.Quotient.mk (sharpEquiv H t₁ (unit_gramHU H hg₁) y)))) = Submodule.Quotient.mk (sharpEquiv H t₂ (unit_gramHU H hg₂) y₂)`. Rewrite using `[PsiU_symm_mk H hg₁, LinearEquiv.symm_apply_apply, hy, PsiU_mk]`. Rewrite using `[h_eq_formCU H hg₂, h_eq_formCU H hg₁]`. Conclude with `h _ _ _ _ hx' hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isomD_iffU {t₁ t₂ : Term V M r} (hg₁ : GoodU H t₁) (hg₂ : GoodU H t₂)
     (θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂) :
@@ -126,9 +120,9 @@ theorem isomD_iffU {t₁ t₂ : Term V M r} (hg₁ : GoodU H t₁) (hg₂ : Good
     exact h _ _ _ _ hx' hy'
 
 /- English proof (translation)
-Take `⟨u₁, hu₁⟩` from `hD₁`. Take `⟨u₂, hu₂⟩` from `hD₂`. Simplify using `only [kapU]`. Rewrite `hrel`, the goal using `[← hu₁, ← hu₂]`. Rewrite using `[Ring.inverse_unit, Ring.inverse_unit, Units.inv_mul_eq_iff_eq_mul, mul_left_comm, Units.eq_inv_mul_iff_mul_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hrel`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem kap_eq (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (hD₁ : IsUnit (H.Dl f₁ f₁' (r + 1)))
     (hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1)))
@@ -143,9 +137,9 @@ theorem kap_eq (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (hD₁ : IsUnit (H.Dl
   linear_combination -hrel
 
 /- English proof (translation)
-Unfold `HermSp.Dl`. Use `split_ifs with hl`. Rewrite using `[AlgEquiv.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [HermSp.Zhat, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.of_apply, AlgEquiv.mapMatrix_apply, Matrix.map_apply]`. Conclude with `H.h_herm _ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Dl_swap_eq_cj_Dl (f f' : Fin (r + 1) → V) (l : ℕ) :
     H.Dl f' f l = M.L.cj (H.Dl f f' l) := by
@@ -160,7 +154,7 @@ private theorem Dl_swap_eq_cj_Dl (f f' : Fin (r + 1) → V) (l : ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Dl_swap_eq_cj_Dl H f₁, Dl_swap_eq_cj_Dl H f₂, Dl_swap_eq_cj_Dl H f₂, Dl_swap_eq_cj_Dl H f₁, ← map_mul, ← map_mul, hrel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_swap (f₁ f₁' f₂ f₂' : Fin (r + 1) → V)
     (hrel : H.Dl f₁ f₁' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) :
@@ -171,17 +165,17 @@ theorem rel_swap (f₁ f₁' f₂ f₂' : Fin (r + 1) → V)
 end Parts
 
 /- English proof (translation)
-Rewrite using `[Set.image_image]`. Simplify using `only [hΨ₁]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h, Set.image_image]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hP]`. Introduce `h`. Use extensionality with `⟨x, y⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, hpq⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hm : (Ψ₂ (θ p.1), P₁ p.2) ∈ (fun p : A₂ × B₂ => (Ψ₂ p.1, P₂ p.2)) '' G₂`. Rewrite using `[← h]`. Conclude with `⟨p, hp, rfl⟩`. Take `⟨q, hq, hqe⟩` from `hm`. Simplify using `only [Prod.mk.injEq] at hqe hpq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hΨ₂ hqe.1`. Establish `h2` using `sep p hp q hq hqe.2`. Rewrite using `[← hpq.1, ← hpq.2, ← h1, ← h2]`. Conclude with `hq`. Introduce `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (Ψ₂ x, P₂ y) ∈ (fun p : A₁ × B₁ => (Ψ₂ (θ p.1), P₁ p.2)) '' G₁`. Rewrite using `[h]`. Conclude with `⟨(x, y), hq, rfl⟩`. Take `⟨p, hp, hpe⟩` from `hm`. Simplify using `only [Prod.mk.injEq] at hpe`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hΨ₂ hpe.1`. Establish `h2` using `sep p hp (x, y) hq hpe.2.symm`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨h1, h2.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem image_prod_map_eq_iff_image_transport_eq {A₁ A₂ B₁ B₂ C₁ C₂ D : Type*} (G₁ : Set (A₁ × B₁)) (G₂ : Set (A₂ × B₂))
     (Ψ₁ : A₁ → C₁) (Ψ₁' : C₁ → A₁) (hΨ₁ : ∀ a, Ψ₁' (Ψ₁ a) = a) (Ψ₂ : A₂ → C₂)
@@ -223,39 +217,33 @@ private theorem image_prod_map_eq_iff_image_transport_eq {A₁ A₂ B₁ B₂ C�
       exact ⟨h1, h2.symm⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hsplit r n V _ _ H _ t₁ f₂ f₂' φ φ' hyp hDr hD₂ hZ`. Take `⟨⟨⟨_, hF₁, hF₁', hD₁, hG₁, _⟩, _⟩, hK₂, hK₂', hId, hS, hS'⟩` from `hyp`. Take `⟨hiso, hiso', _, hom', hom, hrel⟩` from `hId`. Use `set t₂ : Term V M r := { abelian₂ := ⊥, f := f₂, f' := f₂', T := t₁.T, T' := t₁.T' } with ht₂`. Establish `hK₁ : MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hF₁.2.1, hF₁.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK₁' : MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hF₁'.2.1, hF₁'.2.2.1⟩`. Establish `hT : t₁.T ∈ 𝒪[F]` using `hF₁.2.2.2.1`. Establish `hT' : t₁.T' ∈ 𝒪[F]` using `hF₁'.2.2.2.1`. Establish `hG₁u` using `Formalism.L2.SG.LsDatumA.isUnit_Gdet H _ _ _ _ hG₁`. Establish `hN₁ : IsUnit (H.normE (H.Dl t₁.f t₁.f' (r + 1)))` using `hD₁.mul (hD₁.map M.L.cj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN₂ : IsUnit (H.normE (H.Dl f₂ f₂' (r + 1)))` using `hD₂.mul (hD₂.map M.L.cj)`. Establish `e` using `gdet_rel H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T' hrel`. Establish `hG₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T')`. Establish `hm : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T' * H.normE (H.Dl t₁.f t₁.f' (r + 1)))`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hN₂.mul hG₁u`. Conclude with `isUnit_of_mul_isUnit_left hm`. Establish `hg₁ : GoodU H t₁` using `⟨hsplit, hK₁, hK₁', hD₁, hG₁u⟩`. Establish `hg₂ : GoodU H t₂` using `⟨hsplit, hK₂, hK₂', hD₂, hG₂⟩`. Establish `hint₂ : MMInt H t₂` using `mmInt_U H hg₂ hT hT' hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD₁s : IsUnit (H.Dl t₁.f' t₁.f (r + 1))`. Rewrite using `[Dl_swap_eq_cj_Dl]`. Conclude with `hD₁.map _`. Establish `hD₂s : IsUnit (H.Dl f₂' f₂ (r + 1))`. Rewrite using `[Dl_swap_eq_cj_Dl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hD₂.map _`. Establish `hnu : nuU H t₂.f t₂.f' = nuU H t₁.f t₁.f'` using `by show nuU H f₂ f₂' = nuU H t₁.f t₁.f'`. Unfold `nuU`. Rewrite using `[h_omP_omPU H f₂ f₂' t₁.T' hK₂', h_omP_omPU H t₁.f t₁.f' t₁.T' hK₁', kap_eq H t₁.f t₁.f' f₂ f₂' hD₁ hD₂ hrel]`. Establish `hnu' : nuU H t₂.f' t₂.f = nuU H t₁.f' t₁.f` using `by show nuU H f₂' f₂ = nuU H t₁.f' t₁.f`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `nuU`. Rewrite using `[h_omP_omPU H f₂' f₂ t₁.T hK₂, h_omP_omPU H t₁.f' t₁.f t₁.T hK₁, kap_eq H t₁.f' t₁.f f₂' f₂ hD₁s hD₂s (rel_swap H _ _ _ _ hrel)]`. Establish `sends1 : ∀ {g₁ g₂ : Fin (r + 1) → V} (ψ : H.Wb g₁ →ₗ[E] H.Wb g₂) (v₁ v₂ : V) (h₁ : v₁ ∈ H.perp (H.X g₁)) (h₂ : v₂ ∈ H.perp (H.X g₂)), H.SendsTo ψ 1 1 v₁ v₂ → ψ (H.mkW g₁ ⟨v₁, h₁⟩) = H.mkW g₂ ⟨v₂, h₂⟩`. Introduce `g₁ g₂ ψ v₁ v₂ h₁ h₂ hs`. Simplify `hs ⟨v₁, h₁⟩ ⟨v₂, h₂⟩ rfl rfl` using `only [one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ∀ w, PcU H hg₂ (φ w) = PcU H hg₁ w`. Introduce `w`. Unfold `PcU`. Use `coordW_comp H φ hiso _ _ _ _ _ _ _ _ ?_ ?_ w` and prove the remaining obligations. Conclude with `sends1 _ _ _ _ _ hS`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sends_omP H φ hD₁ hD₂ hom'`. Establish `hc' : ∀ w, PcU' H hg₂ (φ' w) = PcU' H hg₁ w`. Introduce `w`. Unfold `PcU'`. Use `coordW_comp H φ' hiso' _ _ _ _ _ _ _ _ ?_ ?_ w` and prove the remaining obligations.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `sends_omP' H φ' hD₁ hD₂ hom`. Conclude with `sends1 _ _ _ _ _ hS'`. Establish `sep` using `gam_sepU H hg₁ hg₂ rfl hnu φ (sends1 _ _ _ _ _ hS) (sends_omP H φ hD₁ hD₂ hom')`. Establish `sep'` using `gam_sepU' H hg₁ hg₂ rfl hnu' φ' (sends1 _ _ _ _ _ hS') (sends_omP' H φ' hD₁ hD₂ hom)`. Set `eqv : (DDt H t₁ ≃ₗ[M.L.O] DDt H t₂) ≃ (DDc M.L.O (M.L.cj : E →+* E) (H.Zhat t₁.f t₁.f') (algebraMap F E t₁.T) (algebraMap F E t₁.T') ≃ₗ[M.L.O] DDc M.L.O (M.L.cj : E →+* E) (H.Zhat f₂ f₂') (algebraMap F E t₁.T) (algebraMap F E t₁.T'))` to `{ toFun := fun θ => ((PsiU H hg₁).symm.trans θ).trans (PsiU H hg₂) invFun := fun ψ => ((PsiU H hg₁).trans ψ).trans (PsiU H hg₂).symm left_inv := fun θ => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Use `right_inv := fun ψ => by`. Use extensionality with `x`. Simplify using `}`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr (Equiv.subtypeEquiv eqv ?_)` and prove the remaining obligations. Introduce `θ`. Simplify using `only [Theta, ThetaC, Set.mem_setOf_eq]`. Rewrite using `[isomD_iffU H hg₁ hg₂ θ]`. Establish `key` using `image_prod_map_eq_iff_image_transport_eq (Gam H t₁) (Gam H t₂) (PsiU H hg₁) (PsiU H hg₁).symm (PsiU H hg₁).symm_apply_apply (PsiU H hg₂) (PsiU H hg₂).injective (PcU H hg₁) (PcU H hg₂) θ φ hc sep`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `key'` using `image_prod_map_eq_iff_image_transport_eq (Gam' H t₁) (Gam' H t₂) (PsiU H hg₁) (PsiU H hg₁).symm (PsiU H hg₁).symm_apply_apply (PsiU H hg₂) (PsiU H hg₂).injective (PcU' H hg₁) (PcU' H hg₂) θ φ' hc' sep'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, hI, hGm, _⟩`. Take `⟨hA, hB⟩` from `hGm hsplit`. Use `⟨hI, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gam_imageU H hg₁]`. Use `Eq.trans ?_ (gam_imageU H hg₂)` and prove the remaining obligations. Conclude with `key.1 hA`. Rewrite using `[← gam_imageU' H hg₁]`. Use `Eq.trans ?_ (gam_imageU' H hg₂)` and prove the remaining obligations.
-
-Conclude with `key'.1 hB`. Introduce and unpack `⟨hI, hA, hB⟩`. Use `⟨hD₂, hint₂, hI, fun _ => ⟨?_, ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Use `key.2 ?_` and prove the remaining obligations. Rewrite using `[gam_imageU H hg₁]`.
-
-Conclude with `hA.trans (gam_imageU H hg₂).symm`. Use `key'.2 ?_` and prove the remaining obligations. Rewrite using `[gam_imageU' H hg₁]`. Conclude with `hB.trans (gam_imageU' H hg₂).symm`. Rewrite `hg` using `[hsplit]`.
-
-Consider the cases of `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem coordU_holds : CoordU := by
   intro F _ _ _ E _ _ _ _ M hsplit r n V _ _ H _ t₁ f₂ f₂' φ φ' hyp hDr hD₂ hZ

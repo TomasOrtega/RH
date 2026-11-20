@@ -13,31 +13,31 @@ section Num
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `only [dot, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_add_l (u v w : Fin n → ℝ) : dot (u + v) w = dot u w + dot v w := by
   simp only [dot, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_add_r (u v w : Fin n → ℝ) : dot u (v + w) = dot u v + dot u w := by
   simp only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [dot, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_comm' (u v : Fin n → ℝ) : dot u v = dot v u := by
   simp only [dot, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [dot, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_neg_r (u v : Fin n → ℝ) : dot u (-v) = - dot u v := by
   simp only [dot, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [dot, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dot_sum_r {k : ℕ} (u : Fin n → ℝ) (f : Fin k → Fin n → ℝ) :
     dot u (∑ i, f i) = ∑ i, dot u (f i) := by
@@ -45,27 +45,27 @@ private theorem dot_sum_r {k : ℕ} (u : Fin n → ℝ) (f : Fin k → Fin n →
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[dot, root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_root_r (u : Fin n → ℝ) (a b : Fin n) : dot u (root a b) = u a - u b := by
   simp [dot, root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `root`. Rewrite using `[neg_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem root_swap (a b : Fin n) : root b a = - root a b := by
   unfold root
   rw [neg_sub]
 
 /- English proof (translation)
-Unfold `nsq dot`. Conclude with `Finset.sum_nonneg fun a _ => mul_self_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem nsq_nonneg'' (u : Fin n → ℝ) : 0 ≤ nsq u := by
   unfold nsq dot
   exact Finset.sum_nonneg fun a _ => mul_self_nonneg _
 
 /- English proof (translation)
-Unfold `nsq`. Rewrite using `[dot_add_l, dot_add_r, dot_add_r, dot_comm' v u]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem nsq_add'' (u v : Fin n → ℝ) : nsq (u + v) = nsq u + 2 * dot u v + nsq v := by
   unfold nsq
@@ -73,16 +73,16 @@ private theorem nsq_add'' (u v : Fin n → ℝ) : nsq (u + v) = nsq u + 2 * dot 
   ring
 
 /- English proof (translation)
-Use `Real.sum_mul_le_sqrt_mul_sqrt Finset.univ u v` as an intermediate fact. Simplify `this` using `[nsq, dot, sq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dot_le_sqrt (u v : Fin n → ℝ) : dot u v ≤ √(nsq u) * √(nsq v) := by
   have := Real.sum_mul_le_sqrt_mul_sqrt Finset.univ u v
   simpa [nsq, dot, sq] using this
 
 /- English proof (translation)
-Establish `ha` using `nsq_nonneg'' u`. Establish `hb` using `nsq_nonneg'' v`. Establish `hs : 0 ≤ √(nsq u) + √(nsq v)` using `by positivity`. Rewrite using `[← Real.sqrt_sq hs]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[nsq_add'', add_sq, Real.sq_sqrt ha, Real.sq_sqrt hb]`. Use polynomial arithmetic with `[dot_le_sqrt u v]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem sqrt_nsq_add_le (u v : Fin n → ℝ) : √(nsq (u + v)) ≤ √(nsq u) + √(nsq v) := by
   have ha := nsq_nonneg'' u
@@ -94,7 +94,7 @@ private theorem sqrt_nsq_add_le (u v : Fin n → ℝ) : √(nsq (u + v)) ≤ √
   nlinarith [dot_le_sqrt u v]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[nsq, dot]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(sqrt_nsq_add_le _ _).trans (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℝ) :
     √(nsq (∑ i ∈ s, f i)) ≤ ∑ i ∈ s, √(nsq (f i)) := by
@@ -106,13 +106,13 @@ private theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n �
     exact (sqrt_nsq_add_le _ _).trans (by linarith)
 
 /- English proof (translation)
-Establish `key : ∀ x y t : Bool, x ≠ y → x ≠ t → y = t` using `by decide`. Establish `hex : ∀ t : Bool, ∃ c, ε c = t`. Introduce `t`. Distinguish the cases in `h : ε a = t`. Conclude with `⟨a, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨b, key _ _ _ hε h⟩`. Take `⟨c1, hc1⟩` from `hex true`. Take `⟨c2, hc2⟩` from `hex false`. Establish `hp : 0 < pOf ε` using `Finset.card_pos.2 ⟨c1, by simp [hc1]⟩`. Establish `hq : 0 < qOf ε` using `Finset.card_pos.2 ⟨c2, by simp [hc2]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpq : pOf ε + qOf ε = n`. Unfold `pOf qOf`. Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => ε a = true)` as an intermediate fact. Simplify using `using this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp` after adjusting the coercions. Conclude with `hq` after adjusting the coercions. Conclude with `hpq` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem pq_facts {a b : Fin n} (hε : ε a ≠ ε b) :
     1 ≤ (pOf ε : ℝ) ∧ 1 ≤ (qOf ε : ℝ) ∧ (pOf ε : ℝ) + (qOf ε : ℝ) = n := by
@@ -137,7 +137,7 @@ private theorem pq_facts {a b : Fin n} (hε : ε a ≠ ε b) :
   · exact_mod_cast hpq
 
 /- English proof (translation)
-Use `(Nat.cast_nonneg n : (0 : ℝ) ≤ n)` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_gt {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ}
     (hbig : 2 * (n : ℝ) < h) :
@@ -146,17 +146,17 @@ theorem gap_gt {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ}
   constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨γ, -, hνeq⟩` from `hν`. Establish `hcard : ∀ s : Finset (Fin n), (s.card : ℝ) ≤ n` using `fun s => by`. Use `Finset.card_le_univ s` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbound : ∀ a, -(n : ℝ) / 2 ≤ rhoC ε a ∧ rhoC ε a ≤ (n : ℝ) / 2`. Introduce `a`. Establish `h1` using `hcard (univ.filter fun b => a < b ∧ ε b = ε a)`. Establish `h2` using `hcard (univ.filter fun b => b < a ∧ ε b = ε a)`. Establish `h3` using `(Nat.cast_nonneg (univ.filter fun b => a < b ∧ ε b = ε a).card : (0 : ℝ) ≤ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(Nat.cast_nonneg (univ.filter fun b => b < a ∧ ε b = ε a).card : (0 : ℝ) ≤ _)`. Simplify using `only [rhoC]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hdot : -((j : ℝ) * n) ≤ dot (rhoC ε) ν`. Rewrite using `[hνeq, dot_sum_r]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dot_root_r]`. Establish `hle : ∀ i ∈ (univ : Finset (Fin j)), -(n : ℝ) ≤ rhoC ε (γ i).1 - rhoC ε (γ i).2` using `fun i _ => by`. Use `hbound (γ i).1` as an intermediate fact. Use `hbound (γ i).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum hle` as an intermediate fact. Simplify using `using this`. Establish `hjn : (j : ℝ) * n ≤ j * (h - n + 1)` using `mul_le_mul_of_nonneg_left (by linarith) (Nat.cast_nonneg j)`. Unfold `casValK at hc`. Establish `e1 : Λ + (2 : ℝ) • rhoC ε = (Λ + rhoC ε) + rhoC ε` using `by rw [two_smul]; abel`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Λ + ν + (2 : ℝ) • rhoC ε = ((Λ + rhoC ε) + rhoC ε) + ν` using `by rw [two_smul]; abel`. Establish `e3 : Λ + ν + rhoC ε = (Λ + rhoC ε) + ν` using `by abel`. Rewrite `hc` using `[e3, nsq_add'' (Λ + rhoC ε) ν]`. Rewrite using `[e1, e2, nsq_add'' ((Λ + rhoC ε) + rhoC ε) ν, dot_add_l (Λ + rhoC ε) (rhoC ε) ν]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vogan_num {Λ ν : Fin n → ℝ} {j : ℕ} (hj : 1 ≤ j) (hν : IsNCSum ε j ν) {h : ℝ}
     (hbig : 2 * (n : ℝ) < h)

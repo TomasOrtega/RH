@@ -13,7 +13,7 @@ variable {D : D7}
 section Same
 
 /- English proof (translation)
-Substitute `hr hj` using the available equality. Consider the cases of `hΛ`. Consider the cases of `hy`. Conclude with `⟨rfl, ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩, Iff.rfl, rfl, rfl⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem samePt_of_heq {r j p r' j' : ℕ} {Λ : ModuliIntegralCharts.Loc D r j p} {Λ' : ModuliIntegralCharts.Loc D r' j' p} (hr : r = r') (hj : j = j')
     (hΛ : HEq Λ Λ') {y : Λ.Pt Λ.YY} {y' : Λ'.Pt Λ'.YY} (hy : HEq y y') :
@@ -24,7 +24,7 @@ theorem samePt_of_heq {r j p r' j' : ℕ} {Λ : ModuliIntegralCharts.Loc D r j p
   exact ⟨rfl, ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩, Iff.rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Substitute `hr hj` using the available equality. Consider the cases of `hΛ`. Consider the cases of `hy`. Conclude with `hY`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem lat_of_heq {r j p r' j' : ℕ} {Λ : ModuliIntegralCharts.Loc D r j p} {Λ' : ModuliIntegralCharts.Loc D r' j' p} (hr : r = r') (hj : j = j')
     (hΛ : HEq Λ Λ') {y : Λ.Pt Λ.YY} {y' : Λ'.Pt Λ'.YY} (hy : HEq y y') {Y : Type} [AddCommGroup Y]
@@ -34,14 +34,14 @@ theorem lat_of_heq {r j p r' j' : ℕ} {Λ : ModuliIntegralCharts.Loc D r j p} {
   subst hr hj; cases hΛ; cases hy; exact hY
 
 /- English proof (translation)
-Substitute `hr hj` using the available equality. Consider the cases of `hΛ`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem pt_eq_of_heq {r j p r' j' : ℕ} {Λ : ModuliIntegralCharts.Loc D r j p} {Λ' : ModuliIntegralCharts.Loc D r' j' p} (hr : r = r') (hj : j = j')
     (hΛ : HEq Λ Λ') : Λ.Pt Λ.YY = Λ'.Pt Λ'.YY := by
   subst hr hj; cases hΛ; rfl
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Consider the cases of `hd`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem loc_heq_of_eq {P P' : ModuliIntegralCharts.Prov D} (hP : P = P') {d : P.Dat} {d' : P'.Dat} (hd : HEq d d') (p : ℕ) :
     HEq (P.loc d p) (P'.loc d' p) := by
@@ -61,27 +61,27 @@ def LocTie : Prop := ∀ j, 1 ≤ j → j < D.R.m → ∀ p,
 variable {h t K R k}
 
 /- English proof (translation)
-The claim follows from `(h.datum_condition j h1 hm).1.trans (datW_N D κ j).symm`.
+A detailed English derivation is pending.
 -/
 theorem rk_dat_eq (h : LawsP T) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) :
     T.G.P.rk (T.G.dat j) = (datW D κ j).N :=
   (h.datum_condition j h1 hm).1.trans (datW_N D κ j).symm
 
 /- English proof (translation)
-The claim follows from `(h.datum_condition j h1 hm).2.trans (datW_j D κ h1 hm.le).symm`.
+A detailed English derivation is pending.
 -/
 theorem jj_dat_eq (h : LawsP T) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) :
     T.G.P.jj (T.G.dat j) = (datW D κ j).j :=
   (h.datum_condition j h1 hm).2.trans (datW_j D κ h1 hm.le).symm
 
 /- English proof (translation)
-Introduce `j h1 hm p` and use `pt_eq_of_heq (rk_dat_eq h F.κg h1 hm) (jj_dat_eq h F.κg h1 hm) (H j h1 hm p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocTie.pts (H : LocTie h k) : PtsTie h k := fun j h1 hm p =>
   pt_eq_of_heq (rk_dat_eq h F.κg h1 hm) (jj_dat_eq h F.κg h1 hm) (H j h1 hm p)
 
 /- English proof (translation)
-The claim follows from `samePt_of_heq (rk_dat_eq h F.κg h1 hm) (jj_dat_eq h F.κg h1 hm) (H j h1 hm p) he`.
+A detailed English derivation is pending.
 -/
 theorem LocTie.samePt (H : LocTie h k) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {p : ℕ} {η : T.G.PY j p}
     {η' : ((k.at (datW D F.κg j)).pad.loc p).Pt ((k.at (datW D F.κg j)).pad.loc p).YY} (he : HEq η η') :
@@ -94,7 +94,7 @@ theorem LocTie.samePt (H : LocTie h k) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m)
   samePt_of_heq (rk_dat_eq h F.κg h1 hm) (jj_dat_eq h F.κg h1 hm) (H j h1 hm p) he
 
 /- English proof (translation)
-The claim follows from `lat_of_heq (rk_dat_eq h F.κg h1 hm) (jj_dat_eq h F.κg h1 hm) (H j h1 hm _) he (fun a b => A.beta a b) (h.lattice_condition j h1 hm la z hz η hr A)`.
+A detailed English derivation is pending.
 -/
 theorem LocTie.lat (H : LocTie h k) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {la : HeightOneSpectrum (𝓞 T.Q.c.F)}
     {z : PointsOfFlagModel.Pt (T.G.Tw j (WeightAlgebra.resCh la)) .yy} (hz : T.G.IsAlgPt j la z) {η : T.G.PY j (WeightAlgebra.resCh la)}
@@ -107,7 +107,7 @@ theorem LocTie.lat (H : LocTie h k) {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {l
     (h.lattice_condition j h1 hm la z hz η hr A)
 
 /- English proof (translation)
-Introduce `j h1 hm p` and use `by refine (loc_heq_of_eq hP (hd j h1 hm) p).trans ?_ show HEq ((k.at (dat (iW j))).pad.loc p) _ rw [hiW j h1 hm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocTie.localTie_of_provisional (K : CutSt C) (R : ResSt C) {I : Type} {dat : I → Dat D (Lv (ambOf T.Q h.pins.1))}
     {hI : ∀ i, (dat i).Indef} {iW : ℕ → I} (hiW : ∀ j, 1 ≤ j → j < D.R.m → dat (iW j) = datW D F.κg j)
@@ -118,7 +118,7 @@ theorem LocTie.localTie_of_provisional (K : CutSt C) (R : ResSt C) {I : Type} {d
   rw [hiW j h1 hm]
 
 /- English proof (translation)
-Introduce `H` and use `hη' ((H.samePt h1 hm he).2.2.1.1 hη)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {p : ℕ} {η : T.G.PY j p}
     {η' : ((k.at (datW D F.κg j)).pad.loc p).Pt ((k.at (datW D F.κg j)).pad.loc p).YY} (he : HEq η η')
@@ -126,7 +126,7 @@ example {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {p : ℕ} {η : T.G.PY j p}
   fun H => hη' ((H.samePt h1 hm he).2.2.1.1 hη)
 
 /- English proof (translation)
-Introduce `H` and use `hne (H.samePt h1 hm he).2.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {j : ℕ} (h1 : 1 ≤ j) (hm : j < D.R.m) {p : ℕ} {η : T.G.PY j p}
     {η' : ((k.at (datW D F.κg j)).pad.loc p).Pt ((k.at (datW D F.κg j)).pad.loc p).YY} (he : HEq η η')

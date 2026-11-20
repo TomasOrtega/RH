@@ -14,11 +14,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.FormsFamily
 
 /- English proof (translation)
-Take `⟨f, hf, h⟩` from `hsc K x`. Use `⟨f * g, by rw [map_mul]; exact mul_ne_zero hf hg, fun L _ y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[map_mul]`. Use `le_antisymm (hx ▸ h L y (left_ne_zero_of_mul hy)) ?_` and prove the remaining obligations. Take `⟨f', hf', h'⟩` from `hsc L y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h0 : f' * g ≠ 0` using `fun h0 => mul_ne_zero hf' (right_ne_zero_of_mul hy) (by rw [← map_mul, h0, map_zero])`. Establish `h1 : ¬ ∀ q ∈ P, q.IsPrime → f' * g ∈ q` using `fun h1 => h0 (hP _ h1)`. Use `push Not at h1`. Take `⟨q, hq, -, hq'⟩` from `h1`. Take `⟨K', _, x', rfl, rfl⟩` from `hρ q hq fun h2 => hq' (q.mul_mem_left _ h2)`.
-
-Conclude with `h' K' x' fun h2 => hq' (Ideal.mul_mem_right _ _ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_const_near {R α : Type} [CommRing R] [PartialOrder α] {P : Set (Ideal R)} (hP : DenseP P)
     (r : ∀ (K : Type) [Field K], (R →+* K) → α) (ρ : α) (g : R)
@@ -40,21 +38,19 @@ theorem exists_const_near {R α : Type} [CommRing R] [PartialOrder α] {P : Set 
   exact h' K' x' fun h2 => hq' (Ideal.mul_mem_right _ _ h2)
 
 /- English proof (translation)
-Introduce `R _ _ _ σ Hh _ _ p Q d P hP hcut q₀ hq₀`. Take `⟨K₀, _, x₀, I₀, rfl, hc₀⟩` from `hcut q₀ hq₀`. Establish `hI` using `component_mem_vanIdeal d p`. Take `⟨f₁, hf₁, h₁⟩` from `exists_const_near hP (fun K _ x => (dimDeg (vanIdeal d fun h i => x (p h i)) d : ℚ)) (Q.eval (d : ℚ)) 1 (fun K _ x => (exists_dimDeg_vanIdeal_le d p K x).imp fun f hf => ⟨hf.1, fun L _ y hy => Nat.cast_le.2 (hf.2 L y hy)⟩) (fun q hq _ => by`. Take `⟨K, _, x, I, hx, hc⟩` from `hcut q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨K, _, x, hx, dimDeg_eq_of_cutBy hc le_rfl⟩)`. Use `K₀ x₀ (by simp) (dimDeg_eq_of_cutBy hc₀ le_rfl)`. Establish `h₂` using `map_vanIdeal_of_const_away d p _ f₁ h₁`. Establish `h₃ : ∀ e ≥ d, ∃ g : R, x₀ g ≠ 0 ∧ ∀ (L : Type) [Field L] (y : R →+* L), y g ≠ 0 → (dimDeg ((vanIdeal d p).map (MvPolynomial.map y)) e : ℚ) = Q.eval (e : ℚ)`. Introduce `e he`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, h⟩` from `exists_const_near hP (fun K _ x => -(dimDeg ((vanIdeal d p).map (MvPolynomial.map x)) e : ℚ)) (-Q.eval (e : ℚ)) f₁ (fun K _ x => (exists_dimDeg_map_le _ hI e K x).imp fun f hf => ⟨hf.1, fun L _ y hy => neg_le_neg (Nat.cast_le.2 (hf.2 L y hy))⟩) (fun q hq hq' => by`. Take `⟨K, _, x, I, rfl, hc⟩` from `hcut q hq`. Conclude with `⟨K, _, x, rfl, by rw [h₂ K x hq', dimDeg_eq_of_cutBy hc he]⟩)`. Use `K₀ x₀ hf₁ (by rw [h₂ K₀ x₀ hf₁, dimDeg_eq_of_cutBy hc₀ he])`. Conclude with `⟨g, hg, fun L _ y hy => neg_injective (h L y hy)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h₄ : ∀ φ : ℕ → ℕ, ∃ g : R, x₀ g ≠ 0 ∧ ∀ (L : Type) [Field L] (y : R →+* L), y g ≠ 0 → φ = dimDeg ((vanIdeal d p).map (MvPolynomial.map y)) → ∀ e ≥ d, (φ e : ℚ) = Q.eval (e : ℚ)`. Introduce `φ`. Distinguish the cases in `hφ : ∀ e ≥ d, (φ e : ℚ) = Q.eval (e : ℚ)`. Conclude with `⟨1, by simp, fun _ _ _ _ _ => hφ⟩`. Use `push Not at hφ`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he, hne⟩` from `hφ`. Take `⟨g, hg, h⟩` from `h₃ e he`. Conclude with `⟨g, hg, fun L _ y hy hφ => absurd (hφ ▸ h L y hy) hne⟩`. Use `choose g hg h₅ using h₄`. Establish `hfin` using `GlobalTheory.T.finite_setOf_hilbertFunctions_fibres R σ (vanIdeal d p) hI`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `f : R` to `f₁ * ∏ φ ∈ hfin.toFinset, g φ`. Establish `h₆ : ∀ (L : Type) [Field L] (y : R →+* L), y f ≠ 0 → ∀ e ≥ d, (dimDeg (vanIdeal d fun h i => y (p h i)) e : ℚ) = Q.eval (e : ℚ)`. Introduce `L _ y hy`. Simplify using `only [f, map_mul, map_prod, ne_eq, mul_eq_zero, not_or] at hy`. Rewrite using `[← h₂ L y hy.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h₅ _ L y (Finset.prod_ne_zero_iff.1 hy.2 _ (hfin.mem_toFinset.2 ⟨L, _, y, rfl⟩)) rfl`. Establish `hf : f ∉ RingHom.ker x₀`. Rewrite using `[RingHom.mem_ker, map_mul, map_prod]`. Conclude with `mul_ne_zero hf₁ (Finset.prod_ne_zero_iff.2 fun φ _ => hg φ)`. Use `haveI : IsReduced (Localization.Away f) := isReduced_localizationPreserves (Submonoid.powers f) _ inferInstance`.
-
-Establish `h₇ : ∀ (L : Type) [Field L] (y : Localization.Away f →+* L), ∀ e ≥ d, (dimDeg (vanIdeal d fun h i => y (algebraMap R (Localization.Away f) (p h i))) e : ℚ) = Q.eval (e : ℚ)` using `fun L _ y => h₆ L (y.comp (algebraMap R _)) ((IsLocalization.Away.algebraMap_isUnit (S := Localization.Away f) f).map y).ne_zero`. Establish `h₈` using `map_vanIdeal_of_const d (fun h i => algebraMap R (Localization.Away f) (p h i)) _ fun L _ y => h₇ L y d le_rfl`. Conclude with `⟨f, hf, fun e he => projective_of_const _ (component_mem_vanIdeal d _) e (Q.eval (e : ℚ)) fun L _ y => by rw [h₈ L y]; exact h₇ L y e he, fun K _ x => h₈ K x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_away_projective_vanIdeal : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (σ Hh : Type) [Finite σ] [Finite Hh] (p : Hh → σ → R) (Q : Polynomial ℚ) (d : ℕ) (P : Set (Ideal R)), DenseP P → (∀ q ∈ P, ∃ (K : Type) (_ : Field K) (x : R →+* K) (I : Ideal (MvPolynomial σ K)), RingHom.ker x = q ∧ CutBy I Q d (fun h i => x (p h i))) → ∀ q₀ ∈ P, ∃ f : R, f ∉ q₀ ∧ (∀ e ≥ d, Module.Projective (Localization.Away f) (↥(MvPolynomial.homogeneousSubmodule σ (Localization.Away f) e) ⧸ ((vanIdeal d (fun h i => (algebraMap R (Localization.Away f)) (p h i))).restrictScalars (Localization.Away f)).comap (MvPolynomial.homogeneousSubmodule σ (Localization.Away f) e).subtype)) ∧ ∀ (K : Type) [Field K] (x : (Localization.Away f) →+* K), (vanIdeal d (fun h i => (algebraMap R (Localization.Away f)) (p h i))).map (MvPolynomial.map x) = vanIdeal d (fun h i => x ((algebraMap R (Localization.Away f)) (p h i))) := by
   intro R _ _ _ σ Hh _ _ p Q d P hP hcut q₀ hq₀

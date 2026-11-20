@@ -11,7 +11,7 @@ namespace GlobalTheory.TraitGen
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (Set.mem_iInter.1 hy PUnit.unit) PUnit.unit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem powPull_le (L : LB X) (m : ℕ) (χ : Y ⟶ X) (j : ((lbPow L m).pull χ).ι) :
     ((lbPow L m).pull χ).U j ≤ (L.pull χ).U (fun _ => j PUnit.unit PUnit.unit) := fun _ hy =>
@@ -21,7 +21,7 @@ def powPull (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.Gen (L.pull χ)) : LB.Ge
   s j := res (powPull_le L m χ j) (e.s (fun _ => j PUnit.unit PUnit.unit)) ^ m
 
 /- English proof (translation)
-The claim follows from `(map_pow _ _ _).trans (congrArg (· ^ m) (gm_res r z _ h _))`.
+A detailed English derivation is pending.
 -/
 theorem gm_powPull {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.Gen (L.pull χ)) (r : Z ⟶ Y) (z : Z)
     (j : ((lbPow L m).pull χ).ι) (h : r z ∈ ((lbPow L m).pull χ).U j) :
@@ -29,7 +29,7 @@ theorem gm_powPull {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.
   (map_pow _ _ _).trans (congrArg (· ^ m) (gm_res r z _ h _))
 
 /- English proof (translation)
-Use `(gm_pull_g (lbPow L m) χ r z j j' hj hj').trans ?_` and prove the remaining obligations. Use `(gm_linComb L (fun _ : PUnit => 𝟙 X) (fun _ => (m : ℤ)) (r ≫ χ) z (j PUnit.unit) (j' PUnit.unit) (Set.mem_iInter.1 hj PUnit.unit) (Set.mem_iInter.1 hj' PUnit.unit)).trans ?_` and prove the remaining obligations. Simplify using `only [trF, Fintype.prod_unique, Category.comp_id, zpow_natCast, zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gm_powPull_g {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (r : Z ⟶ Y) (z : Z)
     (j j' : ((lbPow L m).pull χ).ι) (hj : r z ∈ ((lbPow L m).pull χ).U j)
@@ -43,9 +43,9 @@ theorem gm_powPull_g {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (r : Z
   simp only [trF, Fintype.prod_unique, Category.comp_id, zpow_natCast, zpow_one]
 
 /- English proof (translation)
-Introduce `j j'`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hj` using `powPull_le L m χ j hy.1`. Establish `hj'` using `powPull_le L m χ j' hy.2`. Establish `ht` using `gen_trans (L := L) (φ := fun _ : PUnit => χ) (ε := fun _ => 1) (t := e) he (𝟙 Y) y hj hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(gm_res _ y _ hy _).trans ?_` and prove the remaining obligations. Use `(gm_powPull L m χ e (𝟙 Y) y j hy.1).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Rewrite using `[gm_powPull_g L m χ (𝟙 Y) y j j' hy.1 hy.2, gm_res _ y _ hy, gm_powPull L m χ e (𝟙 Y) y j' hy.2, ← mul_pow]`. Conclude with `congrArg (· ^ m) ht`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powPull_isGen (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.Gen (L.pull χ)) (he : e.IsGen) :
     (powPull L m χ e).IsGen := by
@@ -61,7 +61,7 @@ theorem powPull_isGen (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.Gen (L.pull χ
   exact congrArg (· ^ m) ht
 
 /- English proof (translation)
-The claim follows from `gm_powPull L m χ e r z _ (hJ.mem (fun _ : PUnit => χ) r)`.
+A detailed English derivation is pending.
 -/
 theorem val_powPull {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB.Gen (L.pull χ)) (r : Z ⟶ Y) (z : Z)
     (J : (Z ⟶ X) → (lbPow L m).ι) (hJ : Good (lbPow L m) z J) :
@@ -70,9 +70,9 @@ theorem val_powPull {Z : Scheme.{0}} (L : LB X) (m : ℕ) (χ : Y ⟶ X) (e : LB
   gm_powPull L m χ e r z _ (hJ.mem (fun _ : PUnit => χ) r)
 
 /- English proof (translation)
-Use `⟨powPull L m x e, powPull_isGen L m x e he, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ hV ψ gam hg χ hχ`. Take `⟨e₁, h₁, hv⟩` from `hx V hV ψ gam hg χ hχ`. Use `⟨powPull L m χ e₁, powPull_isGen L m χ e₁ h₁, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_powPull L m x e _ z J hJ, val_powPull L m χ e₁ _ z J hJ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ^ m) (hv z (fun ψ => J ψ PUnit.unit) fun ψ => Set.mem_iInter.1 (hJ ψ) PUnit.unit)`.
+A detailed English derivation is pending.
 -/
 theorem extAt_lbPow (X : Scheme.{0}) (L : LB X) (R : Type) [CommRing R] [IsDomain R] (x : Sp (FractionRing R) ⟶ X)
     (e : LB.Gen (L.pull x)) (m : ℕ) (he : e.IsGen) (hx : GlobalTheory.TraitGen.ExtAt L x e) :

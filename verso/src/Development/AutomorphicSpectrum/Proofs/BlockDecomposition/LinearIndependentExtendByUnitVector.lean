@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂.VecFree
 variable {K : Type} [CommRing K] {M n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_apply, Fin.sum_univ_succ]`. Simplify using `[vec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_vec_zero (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g : Fin (n + 1) → K) :
     (∑ a, g a • (vec α c X : Fin (n + 1) → Fin (M + 1) → K) a) 0
@@ -19,7 +19,7 @@ theorem sum_vec_zero (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g :
   simp [vec]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_apply, Fin.sum_univ_succ, Finset.sum_apply]`. Simplify using `[vec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_vec_succ (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g : Fin (n + 1) → K)
     (i : Fin M) :
@@ -29,17 +29,17 @@ theorem sum_vec_succ (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g :
   simp [vec]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff, Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw j`. Take `⟨β, hβ⟩` from `hα.exists_left_inv`. Establish `key` using `h (Fin.cons (-(∑ j : Fin n, w j * c j) * β) w) (by`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[sum_vec_zero]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Pi.zero_apply]`. Rewrite using `[mul_assoc, hβ]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_vec_succ]`. Simplify using `only [Fin.cons_succ, Pi.zero_apply]`. Rewrite using `[hw]`. Use the proof step `rfl) j.succ`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key`. Introduce `h w hw`. Establish `hs : ∀ j : Fin n, w j.succ = 0`. Use `h (fun j => w j.succ) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun hw i.succ` as an intermediate fact. Rewrite `this` using `[sum_vec_succ]`. Then use the resulting hypothesis. Establish `h0 : w 0 = 0`. Use `congrFun hw 0` as an intermediate fact. Rewrite `this` using `[sum_vec_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs, zero_mul, Finset.sum_const_zero, add_zero, Pi.zero_apply] at this`. Conclude with `(hα.mul_left_eq_zero).1 this`. Introduce `a`. Use `Fin.cases h0 hs a` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem linearIndependent_vec_iff (K : Type) [CommRing K] (M n : ℕ) (α : K) (hα : IsUnit α)
     (c : Fin n → K) (X : Fin n → Fin M → K) :

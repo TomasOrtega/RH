@@ -6,9 +6,9 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ n S hS E hE hst`. Take `⟨v, hvE, hv0, hv⟩` from `exists_common_eigenvector_mem (K := K) (V := Fin n → K) (fun A : S => Matrix.toLin' (A : Matrix (Fin n) (Fin n) K)) (fun i j v => by`. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec]`. Rewrite using `[(hS i i.2 j j.2).eq])`. Use `E hE (fun i v hv => by simpa [Matrix.toLin'_apply] using hst i i.2 v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, hvE, hv0, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `hv ⟨A, hA⟩`. Conclude with `⟨l, by simpa [Matrix.toLin'_apply] using hl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem matrix_exists_common_eigenvector_mem :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (n : ℕ) (S : Set (Matrix (Fin n) (Fin n) K)),

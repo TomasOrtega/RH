@@ -20,15 +20,15 @@ noncomputable def UpperTheory.Reformulated.B.IwahoriEntryBound.IwGL :
 namespace UpperTheory.Reformulated.B.IwahoriEntryBound.Helpers
 
 /- English proof (translation)
-Establish `hk` using `(Subgroup.mem_iInf.mp hh) ⟨(j : ℕ) + 1, by omega⟩`. Rewrite `hk` using `[Subgroup.mem_comap, MulAction.mem_stabilizer_iff]`. Establish `hx : (Pi.single j (1 : L) : Fin n → L) ∈ UpperTheory.Reformulated.B.IwahoriEntryBound.latK L n ((j : ℕ) + 1)`. Introduce `t`. Distinguish the cases in `ht : t = j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Apply the tactic sequence `have : Pi.single (M := fun _ => L) j (1 : L) t = 0 := Pi.single_eq_of_ne ht _ split_ifs <;> simp [this]`. Establish `hy` using `Set.smul_mem_smul_set (a := (Matrix.GeneralLinearGroup.toLin.toMonoidHom h)) hx`. Establish `hk' : Matrix.GeneralLinearGroup.toLin.toMonoidHom h • UpperTheory.Reformulated.B.IwahoriEntryBound.latK L n ((j : ℕ) + 1) = UpperTheory.Reformulated.B.IwahoriEntryBound.latK L n ((j : ℕ) + 1)` using `hk`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[hk']`. Establish `key : (Matrix.GeneralLinearGroup.toLin.toMonoidHom h) • (Pi.single j (1 : L) : Fin n → L) = (h : Matrix (Fin n) (Fin n) L) *ᵥ Pi.single j 1`. Both sides reduce to the same expression. Rewrite `hy` using `[key]`. Establish `e : ((h : Matrix (Fin n) (Fin n) L) *ᵥ Pi.single j 1) i = (h : Matrix (Fin n) (Fin n) L) i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec_single_one]`. Establish `hi` using `hy i`. Rewrite `hi` using `[e]`. Prove the components needed by the constructor for the conclusion. Use `split_ifs at hi with hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi`. Conclude with `hi.le`. Introduce `hlt`. Rewrite `hi` using `[if_neg (by omega)]`. Conclude with `hi`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma entry_bound {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
     {h : GL (Fin n) L} (hh : h ∈ UpperTheory.Reformulated.B.IwahoriEntryBound.IwGL L n) (i j : Fin n) :
@@ -68,17 +68,17 @@ end UpperTheory.Reformulated.B.IwahoriEntryBound.Helpers
 
 open UpperTheory.Reformulated.B.IwahoriEntryBound.Helpers in
 /- English proof (translation)
-Introduce `L _ _ n g hg i`. Establish `hg' : g⁻¹ ∈ UpperTheory.Reformulated.B.IwahoriEntryBound.IwGL L n` using `inv_mem hg`. Establish `hprod : ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (g : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hii` using `congrFun (congrFun hprod i) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hii` using `[Matrix.mul_apply, Matrix.one_apply_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Use `set a := ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i * (g : Matrix (Fin n) (Fin n) L) i i with ha`. Establish `hrest : Valued.v (∑ j ∈ Finset.univ.erase i, ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j * (g : Matrix (Fin n) (Fin n) L) j i) < 1`. Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises. Introduce `j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : j ≠ i` using `Finset.ne_of_mem_erase hj`. Rewrite using `[Valuation.map_mul]`. Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hne) with hlt | hlt` into its components or cases. Establish `h1` using `(entry_bound hg' i j).2 hlt`. Establish `h2` using `(entry_bound hg j i).1`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `(entry_bound hg' i j).1`. Establish `h2` using `(entry_bound hg j i).2 hlt`. Combine the equalities or inequalities in the displayed calculation. Establish `hva : 1 ≤ Valued.v a`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `Valuation.map_add_lt _ hc hrest` as an intermediate fact. Rewrite `this` using `[hii, Valuation.map_one]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgi` using `(entry_bound hg i i).1`. Establish `hinv` using `(entry_bound hg' i i).1`. Apply `le_antisymm hgi` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IwahoriEntryBound.main :
     ∀ {L : Type} [inst : Field L] [inst_1 : Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {g : GL (Fin n) L},

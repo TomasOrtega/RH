@@ -3,23 +3,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hOpen hUniq hGen _ Z S p _ A B _ _ w w' hw hw' Ω _ _ z z' hz`. Establish `hc : pullback.fst A.u B.u ≫ A.u = pullback.snd A.u B.u ≫ B.u` using `pullback.condition`. Establish `hP : IsPullback (pullback.fst p (pullback.fst A.u B.u ≫ A.u)) (pullback.snd p (pullback.fst A.u B.u ≫ A.u)) p (pullback.fst A.u B.u ≫ A.u)` using `IsPullback.of_hasPullback _ _`. Establish `hP' : IsPullback (pullback.fst p (pullback.fst A.u B.u ≫ A.u)) (pullback.snd p (pullback.fst A.u B.u ≫ A.u)) p (pullback.snd A.u B.u ≫ B.u)`. Rewrite using `[← hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Establish `eA : pullback.fst p (pullback.fst A.u B.u ≫ A.u) ≫ p = (pullback.snd p (pullback.fst A.u B.u ≫ A.u) ≫ pullback.fst A.u B.u) ≫ A.u`. Rewrite using `[Category.assoc]`. Conclude with `hP.w`. Establish `eB : pullback.fst p (pullback.fst A.u B.u ≫ A.u) ≫ p = (pullback.snd p (pullback.fst A.u B.u ≫ A.u) ≫ pullback.snd A.u B.u) ≫ B.u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc]`. Conclude with `hP'.w`. Set `C : Sq A.r` to `⟨pullback A.u B.u, pullback p (pullback.fst A.u B.u ≫ A.u), pullback.fst A.u B.u, A.pb.lift _ _ eA, pullback.snd p (pullback.fst A.u B.u ≫ A.u), IsPullback.of_right (by rw [A.pb.lift_fst]; exact hP) (A.pb.lift_snd _ _ _) A.pb⟩`. Set `C' : Sq B.r` to `⟨pullback A.u B.u, pullback p (pullback.fst A.u B.u ≫ A.u), pullback.snd A.u B.u, B.pb.lift _ _ eB, pullback.snd p (pullback.fst A.u B.u ≫ A.u), IsPullback.of_right (by rw [B.pb.lift_fst]; exact hP') (B.pb.lift_snd _ _ _) B.pb⟩`. Use `haveI : IsOpenImmersion C.u := inferInstanceAs (IsOpenImmersion (pullback.fst A.u B.u))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsOpenImmersion C'.u := inferInstanceAs (IsOpenImmersion (pullback.snd A.u B.u))`. Establish `h1 : IsNwt (pullback.snd p (pullback.fst A.u B.u ≫ A.u)) (w.comap C.v)` using `hOpen A.r w C hw`. Establish `h2 : IsNwt (pullback.snd p (pullback.fst A.u B.u ≫ A.u)) (w'.comap C'.v)` using `hOpen B.r w' C' hw'`. Use `haveI : IsFinite (pullback.snd p (pullback.fst A.u B.u ≫ A.u)) := MorphismProperty.of_isPullback hP ‹_›`. Establish `hE : w.comap C.v = w'.comap C'.v` using `hUniq _ _ _ h1.1 h2.1 {s | GenPt s} (hGen.1 _) fun Ω _ _ y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h1.2 Ω y hy, h2.2 Ω y hy]`. Establish `e1 : (z ≫ A.r) ≫ A.u = (z' ≫ B.r) ≫ B.u`. Rewrite using `[Category.assoc, Category.assoc, ← A.pb.w, ← B.pb.w, ← Category.assoc, ← Category.assoc, hz]`. Establish `e2 : (z ≫ A.v) ≫ p = pullback.lift (z ≫ A.r) (z' ≫ B.r) e1 ≫ pullback.fst A.u B.u ≫ A.u`. Rewrite using `[pullback.lift_fst_assoc, Category.assoc, Category.assoc, A.pb.w]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `z0 : gp Ω ⟶ pullback p (pullback.fst A.u B.u ≫ A.u)` to `pullback.lift (z ≫ A.v) (pullback.lift (z ≫ A.r) (z' ≫ B.r) e1) e2`. Establish `hz0 : z0 ≫ C.v = z`. Apply `A.pb.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(z0 ≫ A.pb.lift _ _ eA) ≫ A.v = _`. Rewrite using `[Category.assoc, A.pb.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `(z0 ≫ A.pb.lift _ _ eA) ≫ A.r = _`. Rewrite using `[Category.assoc, A.pb.lift_snd, pullback.lift_snd_assoc, pullback.lift_fst]`. Establish `hz0' : z0 ≫ C'.v = z'`. Apply `B.pb.hom_ext` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `(z0 ≫ B.pb.lift _ _ eB) ≫ B.v = _`. Rewrite using `[Category.assoc, B.pb.lift_fst, ← hz]`. Conclude with `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `(z0 ≫ B.pb.lift _ _ eB) ≫ B.r = _`. Rewrite using `[Category.assoc, B.pb.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`.
-
-Use `congrFun (congrFun (congrFun (congrFun hE Ω) ‹_›) ‹_›) z0` as an intermediate fact. Simplify `this` using `only [Wt.comap, hz0, hz0']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.nwtAgree_of :
     NwtOpen → WtUnique → GenBasic → MultBC → NwtAgree := by

@@ -7,13 +7,13 @@ open Formalism.L2.FormalSeriesBounds
 namespace GlobalTheory.GenEigen
 
 /- English proof (translation)
-Establish `hpow : ∀ (j : ℕ) b, u ^ j * b ∈ J → b ∈ J`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro b hb`. Simplify using `using hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ j ih`. Introduce `b hb`. Apply `hu` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← pow_succ]` and apply the resulting hypothesis.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow u (-N) k`. Apply `hpow k` to reduce the goal to its premises. Establish `e : u ^ k * y = c * ((u + N) * y) + ((-1) ^ k * y) * N ^ k`. Establish `: u ^ k = (u - -N) * c + (-N) ^ k` using `by rw [← hc]; ring`. Rewrite using `[this, neg_pow N]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.add_mem (J.mul_mem_left _ h) (J.mul_mem_left _ hN)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_add_nil {B : Type*} [CommRing B] (J : Ideal B) (u N y : B)
     (hu : ∀ b, u * b ∈ J → b ∈ J) (k : ℕ) (hN : N ^ k ∈ J) (h : (u + N) * y ∈ J) : y ∈ J := by
@@ -35,27 +35,25 @@ theorem mem_of_add_nil {B : Type*} [CommRing B] (J : Ideal B) (u N y : B)
   exact J.add_mem (J.mul_mem_left _ h) (J.mul_mem_left _ hN)
 
 /- English proof (translation)
-Establish `hε : a ε - p ε ∈ J`. Take `⟨y, hy⟩` from `h1`. Take `⟨k, hk⟩` from `hnil ε`. Establish `ha : a ε * a ε - a ε = l * a y` using `by simpa using congrArg a hy`. Establish `hp : p ε * p ε - p ε = l * p y` using `by simpa using congrArg p hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mem_of_add_nil J (2 * p ε - 1) (a ε - p ε) _ ?_ k hk ?_` and prove the remaining obligations. Introduce `b hb`. Apply `hreg (4 * y)` to reduce the goal to its premises. Establish `: p (1 + l * (4 * y)) * b = (2 * p ε - 1) * ((2 * p ε - 1) * b)`. Simplify using `only [map_add, map_mul, map_one, map_natCast, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-4 * b) * hp`. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ hb`. Establish `: (2 * p ε - 1 + (a ε - p ε)) * (a ε - p ε) = l * (a y - p y)`. Take the linear combination `ha - hp`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hS y`. Establish `ht : (a x ^ (l ^ d) - a x) - (p x ^ (l ^ d) - p x) ∈ J`. Take `⟨y, hy⟩` from `h2 x`. Take `⟨n, hn⟩` from `hlim`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ε * (a x ^ (l ^ d) - a x) = l * a y` using `by simpa using congrArg a hy`. Establish `hp : p ε * (p x ^ (l ^ d) - p x) = l * p y` using `by simpa using congrArg p hy`. Use `set s := a x ^ (l ^ d) - a x`. Use `set t := p x ^ (l ^ d) - p x`. Establish `h3 : a ε * (s - t) ∈ J`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: a ε * (s - t) = l * (a y - p y) - t * (a ε - p ε)`. Take the linear combination `ha - hp`. Rewrite using `[this]`. Conclude with `J.sub_mem (hS y) (J.mul_mem_left _ hε)`. Take `⟨j, hj⟩ : ∃ j, l ^ n = j + 1` from `⟨l ^ n - 1, by have := pow_pos hl n; omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[hj, map_pow]`. Establish `: s - t = (s - t) * (1 - a ε ^ (j + 1)) + a ε ^ j * (a ε * (s - t))` using `by ring`. Rewrite using `[this]`. Conclude with `J.add_mem (J.mul_mem_left _ hn) (J.mul_mem_left _ h3)`. Take `⟨H, hH⟩` from `Polynomial.powAddExpansion (p x) (a x - p x) (l ^ d)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hnil x`. Take `⟨d', rfl⟩ : ∃ d', d = d' + 1` from `⟨d - 1, by omega⟩`. Use `mem_of_add_nil J (((l ^ (d' + 1) : ℕ) : B) * p x ^ (l ^ (d' + 1) - 1) - 1) (H * (a x - p x)) _ ?_ k ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Apply `hreg (-((l : O) ^ d' * x ^ (l ^ (d' + 1) - 1)))` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: p (1 + l * (-((l : O) ^ d' * x ^ (l ^ (d' + 1) - 1)))) * b = -((((l ^ (d' + 1) : ℕ) : B) * p x ^ (l ^ (d' + 1) - 1) - 1) * b)`. Simplify using `only [map_add, map_mul, map_one, map_natCast, map_neg, map_pow, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `J.neg_mem hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Conclude with `J.mul_mem_left _ hk`. Establish `e : p x + (a x - p x) = a x` using `by ring`. Rewrite `hH` using `[e]`. Establish `: (((l ^ (d' + 1) : ℕ) : B) * p x ^ (l ^ (d' + 1) - 1) - 1 + H * (a x - p x)) * (a x - p x) = (a x ^ (l ^ (d' + 1)) - a x) - (p x ^ (l ^ (d' + 1)) - p x)`.
-
-Rewrite using `[hH]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem step {O B : Type*} [CommRing O] [CommRing B] (a p : O →+* B) (J : Ideal B)
     (l d : ℕ) (hl : 0 < l) (hd : 0 < d) (ε : O)
@@ -124,9 +122,9 @@ theorem step {O B : Type*} [CommRing O] [CommRing B] (a p : O →+* B) (J : Idea
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Establish `h0 : V.v (1 + e) = 0`. Establish `: V.v 1 < V.v e`. Rewrite using `[V.v.map_one]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)) he`. Rewrite using `[V.v.map_add_eq_of_lt_left this, V.v.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `VF.Ge at h ⊢`. Rewrite `h` using `[V.v.map_mul, h0, zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ge_of_one_add_mul {e z : C} {m : ℝ} (he : V.Ge 1 e) (h : V.Ge m ((1 + e) * z)) :
     V.Ge m z := by
@@ -139,7 +137,7 @@ theorem ge_of_one_add_mul {e z : C} {m : ℝ} (he : V.Ge 1 e) (h : V.Ge m ((1 + 
   rwa [V.v.map_mul, h0, zero_add] at h
 
 /- English proof (translation)
-Unfold `VF.Ge`. Proceed by induction on `V.v z using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe t => exact ⟨t, le_rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem exists_ge (z : C) : ∃ m : ℝ, V.Ge m z := by
   unfold VF.Ge
@@ -148,11 +146,11 @@ theorem exists_ge (z : C) : ∃ m : ℝ, V.Ge m z := by
   | coe t => exact ⟨t, le_rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `hne : V.v z ≠ ⊤`. Introduce `ht`. Establish `h1 : V.v (z * z⁻¹) = ⊤` using `by rw [V.v.map_mul, ht, top_add]`. Rewrite `h1` using `[mul_inv_cancel₀ hz, V.v.map_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithTop.zero_ne_top h1`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.mp hne`. Take `⟨k, hk⟩` from `exists_nat_gt (t - m)`. Use `h k` as an intermediate fact. Unfold `VF.Ge at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← ht]`. Establish `: m + k ≤ t` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_ge {z : C} (m : ℝ) (h : ∀ k : ℕ, V.Ge (m + k) z) : z = 0 := by
   by_contra hz
@@ -170,7 +168,7 @@ theorem eq_zero_of_forall_ge {z : C} (m : ℝ) (h : ∀ k : ℕ, V.Ge (m + k) z)
   linarith
 
 /- English proof (translation)
-The claim follows from `VF.Ge.sum fun j _ => (hM i j).mul_int (hz j)`.
+A detailed English derivation is pending.
 -/
 theorem ge_mulVec {κ : Type} [Fintype κ] {M : Matrix κ κ C} (hM : ∀ i j, V.Ge 0 (M i j))
     {z : κ → C} {m : ℝ} (hz : ∀ i, V.Ge m (z i)) (i : κ) : V.Ge m (M.mulVec z i) :=
@@ -193,33 +191,29 @@ def levelIdeal {κ : Type} [Fintype κ] [DecidableEq κ] {B : Type} [CommRing B]
     exact ge_mulVec (hΦ c) hb i
 
 /- English proof (translation)
-Set `P : O →+* Matrix κ κ C` to `(algebraMap C (Matrix κ κ C)).comp ψ`. Establish `hP : ∀ x, P x = ψ x • (1 : Matrix κ κ C)` using `fun x => Algebra.algebraMap_eq_smul_one (ψ x)`. Set `Φ : O ⊗[ℤ] O →+* Matrix κ κ C` to `(Algebra.TensorProduct.lift L.toIntAlgHom P.toIntAlgHom (fun x y => (Algebra.commutes (ψ y) (L x)).symm)).toRingHom`. Establish `hΦt : ∀ x y, Φ (x ⊗ₜ y) = ψ y • L x`. Introduce `x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `L x * P y = _`. Rewrite using `[hP, Matrix.mul_smul, mul_one]`. Establish `hΦ : ∀ b i j, V.Ge 0 (Φ b i j)`. Introduce `b`. Proceed by induction on `b using TensorProduct.induction_on with`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro i j`. Rewrite using `[map_zero]`. Conclude with `VF.Ge.zero 0`. Consider the case `tmul x y => intro i j`. Rewrite using `[hΦt]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(hψ y).mul_int (hL x i j)`. Consider the case `add a b ha hb => intro i j`. Rewrite using `[map_add]`. Conclude with `(ha i j).add (hb i j)`. Set `a : O →+* O ⊗[ℤ] O` to `Algebra.TensorProduct.includeLeftRingHom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `p : O →+* O ⊗[ℤ] O` to `(Algebra.TensorProduct.includeRight : O →ₐ[ℤ] O ⊗[ℤ] O).toRingHom`. Establish `ha : ∀ x, Φ (a x) = L x` using `fun x => by`. Express the relevant statement in the definitionally equal form `Φ (x ⊗ₜ 1) = _`. Rewrite using `[hΦt, map_one, one_smul]`. Establish `hp : ∀ x, Φ (p x) = ψ x • (1 : Matrix κ κ C)` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Φ (1 ⊗ₜ x) = _`. Rewrite using `[hΦt, map_one]`. Establish `mem : ∀ m b, b ∈ levelIdeal Φ hΦ w m ↔ ∀ i, V.Ge m ((Φ b).mulVec w i)` using `fun _ _ => Iff.rfl`. Take `⟨m0, hm0⟩ : ∃ m0 : ℝ, ∀ i, V.Ge m0 (w i)` from `by choose f hf using fun i => exists_ge (V := V) (w i)`. Take `⟨m0, hm0⟩` from `(Set.finite_range f).bddBelow`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨m0, fun i => (hf i).mono (hm0 ⟨i, rfl⟩)⟩`. Establish `key : ∀ (k : ℕ) y, a y - p y ∈ levelIdeal Φ hΦ w (m0 + k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[mem]`. Rewrite using `[Nat.cast_zero, add_zero]`. Conclude with `ge_mulVec (hΦ _) hm0`. Consider the case `succ k ih`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `step a p _ V.l d V.l_prime.pos hd ε h1 h2 ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y`. Rewrite using `[mem]`. Introduce `i`. Use `((mem _ _).1 (ih y) i).l_mul` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_natCast, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul C, Matrix.smul_mulVec]`. Conclude with `this.mono (by push_cast; linarith)`. Introduce `e b hb`. Rewrite `hb`, the goal using `[mem]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hb i` as an intermediate fact. Rewrite `this` using `[map_mul, hp, Matrix.smul_mul, one_mul, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, map_add, map_one, map_mul, map_natCast]`. Conclude with `ge_of_one_add_mul (by simpa using (hψ e).l_mul) this`. Introduce `y`. Take `⟨j, hj⟩` from `hnil y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨j, (mem _ _).2 fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_sub, ha, hp, hj]`. Conclude with `VF.Ge.zero _`. Take `⟨N, hN⟩` from `exists_nat_ge (m0 + (k + 1 : ℕ)) choose f hf using hlim N`. Take `⟨n, hn⟩` from `(Set.finite_range f).bddAbove`.
-
-Use `⟨n, (mem _ _).2 fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one, ha, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `(hf i n (hn ⟨i, rfl⟩)).mono hN`. Use function extensionality and compare the values at `i`. Use `eq_zero_of_forall_ge (V := V) m0 fun k => (mem _ _).1 (key k x) i` as an intermediate fact.
-
-Rewrite `this` using `[map_sub, ha, hp, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.sub_apply]`. Conclude with `sub_eq_zero.mp this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_of_gen_eigen (C : Type) [Field C] (V : VF C) (O : Type) [CommRing O] (κ : Type)
     [Fintype κ] [DecidableEq κ] (L : O →+* Matrix κ κ C) (hL : ∀ x i j, V.Ge 0 (L x i j))

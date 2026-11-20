@@ -16,19 +16,17 @@ def cosetBoxV (a : F) (r : κ → FiniteAdeleRing (𝓞 F) F) (v : HeightOneSpec
   {x | ∀ i, (algebraMap F (v.adicCompletion F) a)⁻¹ * (x i - (r i) v) ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `ha0 : algebraMap F (v.adicCompletion F) a ≠ 0` using `(map_ne_zero _).2 ha`. Set `P : Set (κ → Fv F v)` to `Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Set `f : (κ → Fv F v) → (κ → Fv F v)` to `fun x i => (algebraMap F (v.adicCompletion F) a)⁻¹ * (x i - (r i) v)`. Set `g : (κ → Fv F v) → (κ → Fv F v)` to `fun z i => algebraMap F (v.adicCompletion F) a * z i + (r i) v`. Establish `hf : Continuous f` using `continuous_pi fun i => continuous_const.mul ((continuous_apply i).sub continuous_const)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `continuous_pi fun i => (continuous_const.mul (continuous_apply i)).add continuous_const`. Establish `hS : cosetBoxV a r v = f ⁻¹' P`. Use extensionality with `x`. Simplify using `only [cosetBoxV, P, f, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq, SetLike.mem_coe]`. Establish `hPo : IsOpen P` using `isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPc : IsCompact P` using `isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v`. Establish `hcl : IsClopen (cosetBoxV a r v)`. Rewrite using `[hS]`. Conclude with `⟨hPc.isClosed.preimage hf, hPo.preimage hf⟩`. Establish `hco : IsCompact (cosetBoxV a r v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `(hPc.image hg).of_isClosed_subset hcl.isClosed ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨f x, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hS]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [f, g]`. Rewrite using `[mul_inv_cancel_left₀ ha0, sub_add_cancel]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ cosetBoxV a r v`. Use `filter_upwards [hcl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Both sides reduce to the same expression.
-
-Use `filter_upwards [hcl.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `only [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro' hco hcl.isClosed (fun y hy => Set.indicator_of_notMem hy _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indicator_cosetBoxV_mem_SB [Finite κ] {a : F} (ha : a ≠ 0) (r : κ → FiniteAdeleRing (𝓞 F) F)
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -72,13 +70,13 @@ theorem indicator_cosetBoxV_mem_SB [Finite κ] {a : F} (ha : a ≠ 0) (r : κ �
   · exact HasCompactSupport.intro' hco hcl.isClosed (fun y hy => Set.indicator_of_notMem hy _)
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ v in cofinite, (algebraMap F (FiniteAdeleRing (𝓞 F) F) a) v ∈ v.adicCompletionIntegers F` using `(algebraMap F (FiniteAdeleRing (𝓞 F) F) a).2`. Establish `h2 : ∀ᶠ v in cofinite, (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹) v ∈ v.adicCompletionIntegers F` using `(algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹).2`. Establish `h3 : ∀ᶠ v in cofinite, ∀ i, (r i) v ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (r i).2`. Use `filter_upwards [h1, h2, h3] with v hv1 hv2 hv3`. Establish `ha0 : algebraMap F (v.adicCompletion F) a ≠ 0` using `(map_ne_zero _).2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) a) v = algebraMap F (v.adicCompletion F) a` using `rfl`. Establish `e2 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹) v = (algebraMap F (v.adicCompletion F) a)⁻¹` using `by show algebraMap F (v.adicCompletion F) a⁻¹ = _`. Conclude with `map_inv₀ _ a`. Rewrite `hv1` using `[e1]`. Rewrite `hv2` using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [cosetBoxV, Set.mem_setOf_eq]`. Use `forall_congr' fun i => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hd : x i - (r i) v ∈ v.adicCompletionIntegers F`. Rewrite using `[← mul_inv_cancel_left₀ ha0 (x i - (r i) v)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hv1 h`. Establish `e : x i = (x i - (r i) v) + (r i) v` using `(sub_add_cancel _ _).symm`. Rewrite using `[e]`. Conclude with `add_mem hd (hv3 i)`. Conclude with `mul_mem hv2 (sub_mem h (hv3 i))`.
+A detailed English derivation is pending.
 -/
 theorem eventually_cosetBoxV_eq {a : F} (ha : a ≠ 0) (r : κ → FiniteAdeleRing (𝓞 F) F) [Finite κ] :
     ∀ᶠ v in cofinite, cosetBoxV a r v = {x | ∀ i, x i ∈ v.adicCompletionIntegers F} := by
@@ -108,15 +106,15 @@ theorem eventually_cosetBoxV_eq {a : F} (ha : a ≠ 0) (r : κ → FiniteAdeleRi
   · exact mul_mem hv2 (sub_mem h (hv3 i))
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a r ha`. Use `⟨fun v => Set.indicator (cosetBoxV a r v) 1, fun v => indicator_cosetBoxV_mem_SB ha r v, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_cosetBoxV_eq ha r] with v hv`. Rewrite using `[hv]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ v, (fun i => evalV F v (y i)) ∈ cosetBoxV a r v ↔ ∀ i, (algebraMap F (v.adicCompletion F) a)⁻¹ * ((y - r) i) v ∈ v.adicCompletionIntegers F` using `fun v => Iff.rfl`. Distinguish the cases in `hy : y - r ∈ scaledInt F κ a`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y | y - r ∈ scaledInt F κ a} from hy)]`. Establish `h1 : ∀ v, Set.indicator (cosetBoxV a r v) (1 : (κ → Fv F v) → ℂ) (fun i => evalV F v (y i)) = 1` using `fun v => by rw [Set.indicator_of_mem ((hmem v).2 fun i => hy i v)]; rfl`. Rewrite using `[finprod_congr h1, finprod_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (show y ∉ {y | y - r ∈ scaledInt F κ a} from hy)]`. Rewrite `hy` using `[mem_scaledInt]`. Use `push_neg at hy`. Take `⟨i, v, hv⟩` from `hy`. Use `symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `finprod_eq_zero _ v ?_ ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (fun h => hv ((hmem v).1 h i)) _`. Establish `hint : ∀ᶠ w in cofinite, ∀ i, evalV F w (y i) ∈ w.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (y i).2`. Use `(Filter.eventually_cofinite.1 ((eventually_cosetBoxV_eq ha r).and hint)).subset ?_` and prove the remaining obligations. Introduce `w hw h'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hw` to reduce the goal to its premises. Simplify using `only [Function.mem_mulSupport, not_not]`. Rewrite using `[h'.1, Set.indicator_of_mem (show (fun i => evalV F w (y i)) ∈ {x : κ → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} from h'.2)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indicator_coset_scaledInt_eq_finprod : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F)
     (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →

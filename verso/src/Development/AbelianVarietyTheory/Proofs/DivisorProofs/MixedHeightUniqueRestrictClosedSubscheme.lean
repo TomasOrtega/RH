@@ -13,7 +13,7 @@ namespace GlobalTheory.MixHt.Uniq
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-The claim follows from `HermLB.isometric_of_chart π h.le (fun x j j' hj hj' => h.g X (𝟙 X) x j j' hj hj') fun σ j y hy => ((h.φ σ j y hy).trans (add_zero _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isometric_of_refines {X : Scheme.{0}} {p : X ⟶ Sp k} {N L : HermLB p} {π : N.B.ι → L.B.ι}
     (h : TwistTop.Refines N L π 0) : N.Isometric L :=
@@ -21,7 +21,7 @@ theorem isometric_of_refines {X : Scheme.{0}} {p : X ⟶ Sp k} {N L : HermLB p} 
     fun σ j y hy => ((h.φ σ j y hy).trans (add_zero _)).symm
 
 /- English proof (translation)
-Use `Nat.card_eq_of_bijective (i.residueFieldMap z) ⟨(i.residueFieldMap z).hom.injective, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Z.residue_surjective z a`. Take `⟨c, rfl⟩` from `i.stalkMap_surjective z b`. Conclude with `⟨X.residue _ c, (ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i z) c :)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem card_residueField {X Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (z : Z) :
     Nat.card (X.residueField (i z)) = Nat.card (Z.residueField z) := by
@@ -35,19 +35,19 @@ end GlobalTheory.MixHt.Uniq
 open GlobalTheory.MixHt.Uniq in
 
 /- English proof (translation)
-Introduce `k _ X Y p q hp i _ hi m m' T T' hT hT' d`. Establish `hq : IsAmb q` using `hi ▸ hp.sub i`. Establish `DX` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp`. Establish `DY` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq`. Use `haveI : IsNoetherian Y := hq.isNoetherian`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `_ _ L L' _ y hy`. Establish `hy' : HasDim (i y) 0` using `(DX.2.2.2.2.1 Y i y 0).2 hy`. Rewrite using `[hT.zero L (i y) hy', hT'.zero L' y hy, card_residueField i y]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ e ih`. Introduce `hm hm' L L' hL y hy`. Establish `hW : IsAmb (cloι y ≫ q)` using `hq.sub (cloι y)`. Establish `hgen : HasDim (genericPoint (clo y)) (e + 1)` using `(DY.2.2.2.2.1 (clo y) (cloι y) (genericPoint (clo y)) (e + 1)).1 (by rw [cloι_genericPoint]; exact hy)`. Establish `hdim : topologicalKrullDim (clo y) = ((e + 1 : ℕ) : WithBot ℕ∞)` using `(DY.2.2.2.2.2 (clo y) (e + 1)).1 hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_isRatSec ((L' 0).pull (cloι y) rfl).isLB`. Establish `hij : (cloι y ≫ i) ≫ p = cloι y ≫ q` using `by rw [Category.assoc, hi]`. Establish `hiso : ∀ (A : HermLB p) (A' : HermLB q), (A.pull i hi).Isometric A' → (A.pull (cloι y ≫ i) hij).Isometric (A'.pull (cloι y) rfl)` using `fun A A' h => (isometric_of_refines (HermLB.refines_pull_pull A i hi (cloι y) rfl hij)).symm.trans (h.pull (cloι y) rfl)`. Establish `h1` using `hT'.recur (clo y) (cloι y ≫ q) (cloι y) rfl e hm' hdim (L' 0) (Fin.tail L') ((L' 0).pull (cloι y) rfl) (fun a => (L' a.succ).pull (cloι y) rfl) (HermLB.Isometric.refl _) (fun a => HermLB.Isometric.refl _) r hr`. Establish `h2` using `hT.recur (clo y) (cloι y ≫ q) (cloι y ≫ i) hij e hm hdim (L 0) (Fin.tail L) ((L' 0).pull (cloι y) rfl) (fun a => (L' a.succ).pull (cloι y) rfl) (hiso _ _ (hL 0)) (fun a => hiso _ _ (hL a.succ)) r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Fin.cons_self_tail, cloι_genericPoint]`. Rewrite `h2` using `[Fin.cons_self_tail, Scheme.Hom.comp_apply, cloι_genericPoint]`. Rewrite using `[h1, h2]`. Unfold `recVal`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ((((L' 0).pull (cloι y) rfl)).div hr).mult z = 0`. Simplify using `[hz]`. Establish `hz1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hz`. Establish `hzd : HasDim z e` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k (clo y) (cloι y ≫ q) hW e hdim).1 z).1 hz1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjz : HasDim (cloι y z) e` using `(DY.2.2.2.2.1 (clo y) (cloι y) z e).2 hzd`. Simplify using `only`. Rewrite using `[Scheme.Hom.comp_apply, ih (by omega) (by omega) (Fin.tail L) (Fin.tail L') (fun a => hL a.succ) _ hjz]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixHt.eq_of_isMix : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p →
     ∀ (i : Y ⟶ X) [IsClosedImmersion i] (hi : i ≫ p = q) (m m' : ℕ) T T', IsMix p m T → IsMix q m' T' →

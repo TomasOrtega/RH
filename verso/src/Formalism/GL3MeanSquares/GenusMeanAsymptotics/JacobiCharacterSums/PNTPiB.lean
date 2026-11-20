@@ -11,11 +11,11 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 /- English proof (translation)
-Rewrite using `[sum_mul_eq_sub_integral_mul₁ c (f := fun n ↦ (Real.log n)⁻¹) h0 h1, ← intervalIntegral.integral_of_le hX]`. Establish `int_deriv (f : ℝ → ℝ) : ∫ u in (2 : ℝ)..X, deriv (fun x ↦ (Real.log x)⁻¹) u * f u = ∫ u in (2 : ℝ)..X, -(f u / (u * Real.log u ^ 2))` using `intervalIntegral.integral_congr fun u _ ↦ by simp [field]`. Rewrite using `[int_deriv, intervalIntegral.integral_neg]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z ⟨_, _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: z ≠ 0` using `by linarith`. Apply the tactic sequence `have : Real.log z ≠ 0 := by apply Real.log_ne_zero_of_pos_of_ne_one <;> linarith`. Use `fun_prop`. Use `ContinuousOn.integrableOn_Icc fun z ⟨_, _⟩ ↦ ContinuousWithinAt.congr ?_ (fun _ _ ↦ Real.deriv_inv_log_apply) Real.deriv_inv_log_apply` and prove the remaining obligations. Establish `: z ≠ 0` using `by linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Real.log z ^ 2 ≠ 0`. Apply the tactic sequence `refine pow_ne_zero 2 <| Real.log_ne_zero_of_pos_of_ne_one ?_ ?_ <;> linarith`. Conclude with `ContinuousAt.continuousWithinAt <| by fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem abel_log (c : ℕ → ℝ) (h0 : c 0 = 0) (h1 : c 1 = 0) {X : ℝ} (hX : 2 ≤ X) :
     ∑ n ∈ Icc 0 ⌊X⌋₊, (Real.log n)⁻¹ * c n = (∑ n ∈ Icc 0 ⌊X⌋₊, c n) / Real.log X +
@@ -40,17 +40,15 @@ theorem abel_log (c : ℕ → ℝ) (h0 : c 0 = 0) (h1 : c 1 = 0) {X : ℝ} (hX :
     exact ContinuousAt.continuousWithinAt <| by fun_prop
 
 /- English proof (translation)
-Establish `hmeas : Measurable (fun t : ℝ => ∑ n ∈ Icc 0 ⌊t⌋₊, c n)` using `(measurable_from_nat (f := fun m => ∑ n ∈ Icc 0 m, c n)).comp Nat.measurable_floor`. Use `set B : ℝ := ∑ n ∈ Icc 0 ⌊b⌋₊, |c n| with hB`. Establish `hbound : IntervalIntegrable (fun t : ℝ => (∑ n ∈ Icc 0 ⌊t⌋₊, c n)) MeasureTheory.volume a b`. Use `IntervalIntegrable.mono_fun' (f := fun t => (∑ n ∈ Icc 0 ⌊t⌋₊, c n)) (g := fun _ => B) intervalIntegrable_const hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(MeasureTheory.ae_restrict_iff' measurableSet_uIoc).mpr (Filter.Eventually.of_forall fun t ht => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htb : t ≤ b`. Use `ht.2` as an intermediate fact. Simplify `this` using `[max_eq_right hab]`. Use `show ‖∑ n ∈ Icc 0 ⌊t⌋₊, c n‖ ≤ B`. Rewrite using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (Finset.abs_sum_le_sum_abs _ _) ?_` and prove the remaining obligations. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.Icc_subset_Icc le_rfl (Nat.floor_mono htb)) (fun _ _ _ => abs_nonneg _)`. Establish `hc : ContinuousOn (fun t : ℝ => 1 / (t * Real.log t ^ 2)) (Set.uIcc a b)`. Establish `hpos : ∀ t ∈ Set.uIcc a b, 2 ≤ t` using `fun t ht => le_trans (le_trans ha (le_min le_rfl hab)) ht.1`. Apply `ContinuousOn.div continuousOn_const` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ContinuousOn.mul continuousOn_id` to reduce the goal to its premises. Apply `ContinuousOn.pow` to reduce the goal to its premises. Conclude with `Real.continuousOn_log.mono (fun t ht => by simp; linarith [hpos t ht])`. Introduce `t ht`. Establish `h2` using `hpos t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (by linarith) (pow_ne_zero 2 (Real.log_pos (by linarith)).ne')`. Establish `he : (fun t : ℝ => (∑ n ∈ Icc 0 ⌊t⌋₊, c n) / (t * Real.log t ^ 2)) = fun t => (∑ n ∈ Icc 0 ⌊t⌋₊, c n) * (1 / (t * Real.log t ^ 2))`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
-
-Conclude with `hbound.mul_continuousOn hc`.
+A detailed English derivation is pending.
 -/
 theorem intervalIntegrable_sum_div (c : ℕ → ℝ) {a b : ℝ} (ha : 2 ≤ a) (hab : a ≤ b) :
     IntervalIntegrable (fun t => (∑ n ∈ Icc 0 ⌊t⌋₊, c n) / (t * Real.log t ^ 2)) MeasureTheory.volume a b := by
@@ -86,9 +84,7 @@ theorem intervalIntegrable_sum_div (c : ℕ → ℝ) {a b : ℝ} (ha : 2 ≤ a) 
   exact hbound.mul_continuousOn hc
 
 /- English proof (translation)
-Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Establish `h1 : ∀ t ∈ Set.uIcc a b, 1 < t` using `fun t ht => lt_of_lt_of_le (lt_min ha hb) ht.1`. Apply `ContinuousOn.div continuousOn_const` to reduce the goal to its premises. Conclude with `Real.continuousOn_log.mono (fun t ht => ne_of_gt (lt_trans zero_lt_one (h1 t ht)))`. Introduce `t ht`.
-
-Conclude with `ne_of_gt (Real.log_pos (h1 t ht))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intervalIntegrable_inv_log' {a b : ℝ} (ha : 1 < a) (hb : 1 < b) :
     IntervalIntegrable (fun t => 1 / Real.log t) MeasureTheory.volume a b := by
@@ -100,17 +96,15 @@ theorem intervalIntegrable_inv_log' {a b : ℝ} (ha : 1 < a) (hb : 1 < b) :
     exact ne_of_gt (Real.log_pos (h1 t ht))
 
 /- English proof (translation)
-Establish `h1X : 1 < X ^ β` using `Real.one_lt_rpow (by linarith) hβ`. Establish `h12 : 1 < (2 : ℝ) ^ β` using `Real.one_lt_rpow (by norm_num) hβ`. Establish `hsub : liX (X ^ β) - liX ((2 : ℝ) ^ β) = ∫ u in ((2 : ℝ) ^ β)..(X ^ β), 1 / Real.log u`. Unfold `liX`. Conclude with `intervalIntegral.integral_interval_sub_left (intervalIntegrable_inv_log' (by norm_num) h1X) (intervalIntegrable_inv_log' (by norm_num) h12)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub]`. Establish `key` using `intervalIntegral.integral_comp_mul_deriv' (a := 2) (b := X) (f := fun t : ℝ => t ^ β) (f' := fun t : ℝ => β * t ^ (β - 1)) (g := fun u : ℝ => 1 / Real.log u) ?_ ?_ ?_`. Rewrite using `[← key]`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Set.uIcc_of_le hX]`. Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Establish `hl : Real.log t ≠ 0` using `(Real.log_pos (by linarith [ht.1])).ne'`. Simplify using `only [Function.comp]`. Rewrite using `[Real.log_rpow ht0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le hX]`. Conclude with `Real.hasDerivAt_rpow_const (Or.inl (by linarith [ht.1]))`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[Set.uIcc_of_le hX]`. Establish `ht0 : t ≠ 0` using `by linarith [ht.1]`. Conclude with `(continuousAt_const.mul (Real.continuousAt_rpow_const t (β - 1) (Or.inl ht0))).continuousWithinAt`. Introduce and unpack `u ⟨t, ht, rfl⟩`. Rewrite `ht` using `[Set.uIcc_of_le hX]`.
-
-Establish `h1 : 1 < t ^ β` using `Real.one_lt_rpow (by linarith [ht.1]) hβ`. Conclude with `((continuousAt_const).div (Real.continuousAt_log (by linarith)) (Real.log_pos h1).ne').continuousWithinAt`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_rpow_div_log {β X : ℝ} (hβ : 0 < β) (hX : 2 ≤ X) :
     ∫ t in (2 : ℝ)..X, t ^ (β - 1) / Real.log t = liX (X ^ β) - liX ((2 : ℝ) ^ β) := by
@@ -147,11 +141,11 @@ theorem integral_rpow_div_log {β X : ℝ} (hβ : 0 < β) (hX : 2 ≤ X) :
 def Fm (K θ β t : ℝ) : ℝ := K * (t - θ * t ^ β / β)
 
 /- English proof (translation)
-Establish `hpos : ∀ t ∈ Set.Icc a b, 2 ≤ t` using `fun t ht => le_trans ha ht.1`. Apply `ContinuousOn.div` to reduce the goal to its premises. Unfold `Fm`. Apply `ContinuousOn.mul continuousOn_const` to reduce the goal to its premises. Apply `ContinuousOn.sub continuousOn_id` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ContinuousOn.div_const` to reduce the goal to its premises. Apply `ContinuousOn.mul continuousOn_const` to reduce the goal to its premises. Conclude with `ContinuousOn.rpow_const continuousOn_id (fun t ht => Or.inl (by simp; linarith [hpos t ht]))`. Apply `ContinuousOn.mul continuousOn_id` to reduce the goal to its premises. Apply `ContinuousOn.pow` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Real.continuousOn_log.mono (fun t ht => by simp; linarith [hpos t ht])`. Introduce `t ht`. Establish `h2` using `hpos t ht`. Conclude with `mul_ne_zero (by linarith) (pow_ne_zero 2 (Real.log_pos (by linarith)).ne')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_Fm_div_mul_log_sq (K θ β : ℝ) {a b : ℝ} (ha : 2 ≤ a) :
     ContinuousOn (fun t => Fm K θ β t / (t * Real.log t ^ 2)) (Set.Icc a b) := by
@@ -171,24 +165,24 @@ theorem continuousOn_Fm_div_mul_log_sq (K θ β : ℝ) {a b : ℝ} (ha : 2 ≤ a
     exact mul_ne_zero (by linarith) (pow_ne_zero 2 (Real.log_pos (by linarith)).ne')
 
 /- English proof (translation)
-Conclude with `(continuousOn_Fm_div_mul_log_sq K θ β ha).intervalIntegrable_of_Icc hab`.
+A detailed English derivation is pending.
 -/
 theorem intervalIntegrable_Fm_div_mul_log_sq (K θ β : ℝ) {a b : ℝ} (ha : 2 ≤ a) (hab : a ≤ b) :
     IntervalIntegrable (fun t => Fm K θ β t / (t * Real.log t ^ 2)) MeasureTheory.volume a b := by
   exact (continuousOn_Fm_div_mul_log_sq K θ β ha).intervalIntegrable_of_Icc hab
 
 /- English proof (translation)
-Establish `hder : ∀ t ∈ Set.uIcc 2 X, HasDerivAt (fun t => Fm K θ β t / Real.log t) (K * (1 / Real.log t) - K * θ * (t ^ (β - 1) / Real.log t) - Fm K θ β t / (t * Real.log t ^ 2)) t`. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le hX]`. Establish `h0 : t ≠ 0` using `by linarith [ht.1]`. Apply the tactic sequence `have h1 : Real.log t ≠ 0 := by apply Real.log_ne_zero_of_pos_of_ne_one <;> linarith [ht.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hp : HasDerivAt (fun t : ℝ => t ^ β) (β * t ^ (β - 1)) t` using `Real.hasDerivAt_rpow_const (Or.inl h0)`. Establish `hF : HasDerivAt (fun t => Fm K θ β t) (K * (1 - θ * (β * t ^ (β - 1)) / β)) t`. Unfold `Fm`. Conclude with `(((hasDerivAt_id t).sub ((hp.const_mul θ).div_const β)).const_mul K)`. Use `hF.div (Real.hasDerivAt_log h0) h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ0 : β ≠ 0` using `hβ.ne'`. Use `HasDerivAt.congr_deriv (f := fun t => Fm K θ β t / Real.log t) this ?_` and prove the remaining obligations. Generalize the expression as in `Fm K θ β t = F`. Clear the denominators using the available nonvanishing facts. Establish `hi1 : IntervalIntegrable (fun t => K * (1 / Real.log t)) MeasureTheory.volume 2 X` using `(intervalIntegrable_inv_log le_rfl hX).const_mul K`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi2' : IntervalIntegrable (fun t : ℝ => t ^ (β - 1) / Real.log t) MeasureTheory.volume 2 X`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le hX]`. Establish `h0 : t ≠ 0` using `by linarith [ht.1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have h1 : Real.log t ≠ 0 := by apply Real.log_ne_zero_of_pos_of_ne_one <;> linarith [ht.1]`. Conclude with `((Real.continuousAt_rpow_const t (β - 1) (Or.inl h0)).div (Real.continuousAt_log h0) h1).continuousWithinAt`. Establish `hi2` using `hi2'.const_mul (K * θ)`. Establish `hi3` using `intervalIntegrable_Fm_div_mul_log_sq K θ β le_rfl hX`. Establish `hftc` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hder ((hi1.sub hi2).sub hi3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hftc` using `[intervalIntegral.integral_sub (hi1.sub hi2) hi3, intervalIntegral.integral_sub hi1 hi2, intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, integral_rpow_div_log hβ hX]`. Establish `hli : ∫ t in (2 : ℝ)..X, 1 / Real.log t = liX X` using `rfl`. Rewrite `hftc` using `[hli]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Fm_parts (K θ : ℝ) {β X : ℝ} (hβ : 0 < β) (hX : 2 ≤ X) :
     Fm K θ β X / Real.log X + ∫ t in (2 : ℝ)..X, Fm K θ β t / (t * Real.log t ^ 2) =
@@ -228,11 +222,11 @@ theorem Fm_parts (K θ : ℝ) {β X : ℝ} (hβ : 0 < β) (hX : 2 ≤ X) :
   linarith
 
 /- English proof (translation)
-Establish `hb : 0 < β` using `by linarith`. Establish `htb : t ^ β ≤ t`. Use `Real.rpow_le_rpow_of_exponent_le ht hβ1` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `htpos : 0 ≤ t ^ β` using `Real.rpow_nonneg (by linarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `Fm`. Rewrite using `[abs_mul, abs_of_nonneg hK0]`. Establish `h3 : |θ * t ^ β / β| ≤ 2 * t`. Rewrite using `[abs_div, abs_mul, abs_of_nonneg htpos, abs_of_pos hb, div_le_iff₀ hb]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hθ htpos, abs_nonneg θ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : |t - θ * t ^ β / β| ≤ 3 * t`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem Fm_abs_le {K θ β t : ℝ} (hK0 : 0 ≤ K) (hK1 : K ≤ 1) (hθ : |θ| ≤ 1) (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1)
     (ht : 1 ≤ t) : |Fm K θ β t| ≤ 3 * t := by
@@ -254,13 +248,13 @@ theorem Fm_abs_le {K θ β t : ℝ} (hK0 : 0 ≤ K) (hK1 : K ≤ 1) (hθ : |θ| 
     _ = 3 * t := one_mul _
 
 /- English proof (translation)
-Unfold `liX`. Establish `h1 : (2 : ℝ) ^ (1 / 2 : ℝ) ≤ 2 ^ β` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) hβ`. Establish `h2 : (2 : ℝ) ^ β ≤ 2`. Simplify using `using Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) hβ1`. Establish `h3 : (1 : ℝ) < 2 ^ (1 / 2 : ℝ)` using `Real.one_lt_rpow (by norm_num) (by norm_num)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `intervalIntegral.norm_integral_le_of_norm_le_const (a := 2) (b := (2 : ℝ) ^ β) (f := fun t => 1 / Real.log t) (C := 4) ?_` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Use `_ = 4 := by norm_num`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite `ht` using `[Set.uIoc_of_ge h2]`. Establish `hl : Real.log 2 / 2 ≤ Real.log t`. Establish `: Real.log ((2 : ℝ) ^ (1 / 2 : ℝ)) ≤ Real.log t` using `Real.log_le_log (by positivity) (by linarith [ht.1])`. Rewrite using `[Real.log_rpow (by norm_num)] at this; linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl2` using `Real.log_two_gt_d9`. Establish `hl3 : 0 < Real.log t` using `by linarith`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), div_le_iff₀ hl3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem liX_two_rpow_abs {β : ℝ} (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1) : |liX ((2 : ℝ) ^ β)| ≤ 4 := by
   unfold liX
@@ -287,7 +281,7 @@ theorem liX_two_rpow_abs {β : ℝ} (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1) : |li
     linarith
 
 /- English proof (translation)
-The claim follows from `|∑ n ∈ Icc 0 ⌊X⌋₊, (Real.log n)⁻¹ * c n - K * (liX X - θ * liX (X ^ β))| ≤ 5 * D * X / Real.log X + 40 * √X := by have h0 : c 0 = 0 := le_antisymm (by simpa using hcΛ 0) (hc0 0) have h1 : c 1 = 0 := le_antisymm (by simpa using hcΛ 1) (hc0 1) have hX2 : 2 ≤ X := by linarith have h …`.
+A detailed English derivation is pending.
 -/
 theorem abel_core (c : ℕ → ℝ) (hc0 : ∀ n, 0 ≤ c n) (hcΛ : ∀ n, c n ≤ ArithmeticFunction.vonMangoldt n)
     {K θ β D X : ℝ} (hK0 : 0 ≤ K) (hK1 : K ≤ 1) (hθ : |θ| ≤ 1) (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1) (hX : 16 ≤ X)

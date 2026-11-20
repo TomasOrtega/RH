@@ -17,11 +17,11 @@ section General
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ i j, ∑ p, ∑ q, τ (N p i) * τ (G p q) * conj (τ (N q j)) = τ (G i j)` using `fun i j => by`. Use `congrArg τ (hN (Pi.single i 1) (Pi.single j 1))` as an intermediate fact. Simplify using `only [herm, cc, Matrix.mulVec_single_one, Matrix.col_apply, map_sum, map_mul, IsCMField.complexEmbedding_complexConj] at this`. Rewrite using `[this]`. Simplify using `[Pi.single_apply, apply_ite, ite_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : hermC τ G (N.map τ *ᵥ u) (N.map τ *ᵥ v) = ∑ j, ∑ i, u i * (∑ p, ∑ q, τ (N p i) * τ (G p q) * conj (τ (N q j))) * conj (v j)`. Simplify using `only [hermC, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun p _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun p _ => Finset.sum_comm, Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by ring` and prove the remaining obligations. Rewrite using `[e, Finset.sum_comm]`. Simplify using `only [key, hermC]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermC_mulVec (τ : E →+* ℂ) (G N : Matrix (Fin r) (Fin r) E)
     (hN : ∀ u v, herm G (N *ᵥ u) (N *ᵥ v) = herm G u v) (u v : Fin r → ℂ) :
@@ -44,17 +44,17 @@ theorem hermC_mulVec (τ : E →+* ℂ) (G N : Matrix (Fin r) (Fin r) E)
   simp only [key, hermC]
 
 /- English proof (translation)
-Establish `hu : ∀ t : E →+* ℂ, IsUnit (N.map t).det` using `fun t => by`. Establish `h` using `hN.map t`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `he : ∀ t : E →+* ℂ, Data.emb t (N *ᵥ v) = N.map t *ᵥ Data.emb t v` using `fun t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Unfold `perFr`. Distinguish the cases in `h1 : τ ∈ X.Ψ`. Rewrite using `[dif_pos h1, dif_pos ((hΨ _).1 h1)]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : X.p0 + i < r`. Rewrite using `[dif_pos h2, dif_pos (hp ▸ h2), hx τ h1, he, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul_cancel_right _ _ (hu _)]`. Simplify using `only [hp]`. Rewrite using `[dif_neg h2, dif_neg (hp ▸ h2)]`. Rewrite using `[dif_neg h1, dif_neg (fun h' => h1 ((hΨ _).2 h'))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h3 : conjEmb τ ∈ X.Ψ`. Rewrite using `[dif_pos h3, dif_pos ((hΨ _).1 h3)]`. Distinguish the cases in `h2 : X.p0 - 1 - i < r`. Rewrite using `[dif_pos h2, dif_pos (hp ▸ h2), hx _ h3, he]`. Establish `hc : ReciprocityTheory.ChartRestriction.G.FD.col (N.map (conjEmb τ) * mat x' ⟨conjEmb τ, (hΨ _).1 h3⟩) ⟨X.p0 - 1 - i, h2⟩ = N.map (conjEmb τ) *ᵥ ReciprocityTheory.ChartRestriction.G.FD.col (mat x' ⟨conjEmb τ, (hΨ _).1 h3⟩) ⟨X.p0 - 1 - i, h2⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[hc, hermC_mulVec _ _ _ hNu, hG]`. Simplify using `only [hp]`. Rewrite using `[dif_neg h2, dif_neg (hp ▸ h2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h3, dif_neg (fun h' => h3 ((hΨ _).2 h'))]`.
+A detailed English derivation is pending.
 -/
 theorem perFr_of_mat (X X' : Data E r) (hΨ : ∀ τ, τ ∈ X.Ψ ↔ τ ∈ X'.Ψ) (hp : X.p0 = X'.p0) (hG : X.Gm = X'.Gm)
     (N : Matrix (Fin r) (Fin r) E) (hN : IsUnit N.det) (hNu : ∀ u v, herm X.Gm (N *ᵥ u) (N *ᵥ v) = herm X.Gm u v)
@@ -103,7 +103,7 @@ section HidaSetting
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `t (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom V δ).1 i j)) = _`. Rewrite using `[show (matHom V δ).1 i j = (1 : AF D.host.F) ⊗ₜ[D.host.F] M i j from congrFun (congrFun hM i) j, Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `ht.1 _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archM_rat {V : HSp D} {δ : GA D V} {M : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     (hM : Formalism.L2.Theta.mt V δ = M.map (Formalism.L2.Theta.incA D)) {τ : D.host.E →+* ℂ}
@@ -116,21 +116,21 @@ theorem archM_rat {V : HSp D} {δ : GA D V} {M : Matrix (Fin V.rank) (Fin V.rank
   exact ht.1 _
 
 /- English proof (translation)
-Simplify using `only [archM, map_mul, Units.val_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archM_mul (V : HSp D) (t : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V t (a * b) = archM V t a * archM V t b := by
   simp only [archM, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[archM, show infHom V a = 1 from ha, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_fin (V : HSp D) (t : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) {a : GA D V} (ha : a ∈ GfC V) :
     archM V t a = 1 := by
   rw [archM, show infHom V a = 1 from ha, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, Matrix.mulVec, Matrix.neg_apply, Matrix.transpose_apply, Pi.star_apply, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by`. Rewrite using `[show star (v b) = cc (v b) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem herm_neg_transpose {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (u v : Fin n → D.host.E) :
     herm (-Jᵀ) u v = -(star v ⬝ᵥ J *ᵥ u) := by
@@ -156,11 +156,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.MixModel.rat_injective` to reduce the goal to its premises. Establish `h` using `mt_rel (Wc D i) δ`. Rewrite `h` using `[hM]`. Rewrite using `[GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `congrArg Matrix.det (Units.mul_inv (matHom (Wc D i) δ))`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one]`. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt (Wc D i) δ).det * _ = 1 at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e : (M.map (Formalism.L2.Theta.incA D)).det = Formalism.L2.Theta.incA D M.det` using `((Formalism.L2.Theta.incA D).map_det M).symm`. Rewrite `h1` using `[hM, e, h0, map_zero, zero_mul]`. Conclude with `zero_ne_one (GlobalTheory.MixModel.incA_injective (D := D) (by rw [map_zero, map_one]; exact h1))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_mt {i : Fin D.R.m} {δ : GA D (Wc D i)} {M : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E}
     (hM : Formalism.L2.Theta.mt (Wc D i) δ = M.map (Formalism.L2.Theta.incA D)) :
@@ -180,23 +180,21 @@ theorem unitary_of_mt {i : Fin D.R.m} {δ : GA D (Wc D i)} {M : Matrix (Fin (Wc 
     exact zero_ne_one (GlobalTheory.MixModel.incA_injective (D := D) (by rw [map_zero, map_one]; exact h1))
 
 /- English proof (translation)
-Establish `e : res T (sg0 D A) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `res_embLL T hTie.alg hTie.laws.pins.2.2.1`. Establish `hg : GoodEmb T.Q.c (res T (sg0 D A))` using `e ▸ T.toCore.good_σ₀`. Take `rfl : σ = res T (sg0 D A)` from `hσ.trans e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB0` using `(GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn D G Pl0 T0 A T R κ v₀ hMod hTie i _ hg hV).1`. Establish `hB : ∀ c t, t ∈ ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X c).Ψ → ∃ ρ, t = tauE D ρ` using `fun c t ht => (hB0 c t).1 ht`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hU` using `hTie.laws.unf _ hj _ hg`. Take `⟨hr, hmod⟩` from `hTie.laws.modelW _ hj _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr0` using `rank_Wc i`. Use `set N : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E := Matrix.reindex (finCongr hr0) (finCongr hr0) M with hN`. Use `set Gr : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E := Matrix.reindex (finCongr hr0) (finCongr hr0) (Wc D i).gram with hGr`. Establish `hGm : ∀ c, ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X c).Gm = -Grᵀ` using `fun c => by`. Rewrite using `[(hmod c).1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Establish `key : ∀ (W : HSp D) (hW : W = Wc D i) (hr' : W.rank = D.R.r), -(Matrix.reindex (finCongr hr') (finCongr hr') W.gram)ᵀ = -Grᵀ`. Introduce and unpack `W rfl hr'`. Both sides reduce to the same expression. Conclude with `key _ hV hr`. Take `⟨hun, hdet⟩` from `unitary_of_mt hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNu : Nᴴ * Gr * N = Gr`. Simplify using `only [hN, hGr, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hun]`. Establish `hNd : IsUnit N.det` using `by rw [hN, Matrix.det_reindex_self]; exact hdet`. Establish `hherm : ∀ c (u w : Fin D.R.r → D.host.E), herm ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X c).Gm (N *ᵥ u) (N *ᵥ w) = herm ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X c).Gm u w`. Introduce `c u w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hGm, herm_neg_transpose, herm_neg_transpose, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, hNu]`. Establish `hin : a ∈ GfC (Wc D i)`. Take `⟨k₁, k₂, rfl⟩` from `hS.2.2.2.2.2.2.1 a ha`. Take `⟨_e, _ϖ, _h1, _h2, _h3, hα⟩` from `hS.2.2.2.2.2.1`. Conclude with `mul_mem (mul_mem k₁.2.1 hα.1) k₂.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ : ∀ t, t ∈ ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X (dictW T i _ hV h).1).Ψ ↔ t ∈ ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X (dictW T i _ hV (h * a)).1).Ψ` using `fun t => by rw [(hU.2.1 _).2 t, (hU.2.1 _).2 t]`. Establish `hx : ∀ t (ht : t ∈ ((T.U ((i : ℕ) + 1) (res T (sg0 D A))).X (dictW T i _ hV h).1).Ψ), mat (dictW T i _ hV h).2 ⟨t, ht⟩ = N.map t * mat (dictW T i _ hV (h * a)).2 ⟨t, (hΨ t).1 ht⟩`. Introduce `t ht`. Take `⟨ρ, hρ⟩` from `hB _ t ht`. Rewrite using `[hfr ρ ⟨t, ht⟩ hρ, hfr' ρ _ hρ, hρ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : γ * h = (γ * γ'⁻¹) * (γ' * (h * a)) * a⁻¹` using `by group`. Rewrite using `[e1, archM_mul, archM_mul, archM_fin _ _ (inv_mem hin), Matrix.mul_one, archM_rat hM (hMod.inf ρ), Matrix.mul_assoc]`. Simplify using `only [hN, Matrix.reindex_apply]`. Rewrite using `[← Matrix.submatrix_mul_equiv _ _ _ (finCongr hr0).symm _]`. Both sides reduce to the same expression.
-
-Use `⟨fun u τ j => (perFr_of_mat _ _ hΨ ((hU.2.1 _).1.trans (hU.2.1 _).1.symm) ((hGm _).trans (hGm _).symm) N hNd (hherm _) _ _ hx u τ j).symm, hherm _, (hGm _).trans (hGm _).symm, (hmod _).2.trans (hmod _).2.symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem shift_core (hMod : R.IsModels) (hTie : TieIn T R κ v₀) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hσ : σ = T.σ₀)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
@@ -259,7 +257,7 @@ theorem shift_core (hMod : R.IsModels) (hTie : TieIn T R κ v₀) (i : Fin D.R.m
     (hherm _) _ _ hx u τ j).symm, hherm _, (hGm _).trans (hGm _).symm, (hmod _).2.trans (hmod _).2.symm⟩
 
 /- English proof (translation)
-Rewrite using `[(shift_core hMod hTie i σ hσ hV hS h ha hfr hfr' hM).1]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Simplify using `only [Matrix.reindex_apply, Matrix.mulVec, dotProduct, Matrix.submatrix_apply]`. Conclude with `Equiv.sum_comp (finCongr (rank_Wc i)).symm (fun n => M (Fin.cast (rank_Wc i).symm m) n * v n)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perFr_shift (hMod : R.IsModels) (hTie : TieIn T R κ v₀) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hσ : σ = T.σ₀)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
@@ -293,11 +291,11 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom}
 
 /- English proof (translation)
-Establish `he : ∀ τ : D.host.E →+* ℂ, Data.emb τ (q • v) = (q : ℂ) • Data.emb τ v` using `fun τ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Rat.smul_def]`. Use function extensionality and compare the values at `j`. Simplify using `only [perVec, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `perFr`. Use `split_ifs`. Rewrite using `[he, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul, map_ratCast]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perVec_qsmul (Wt : UnfAt U k x) (q : ℚ) (v : Fin r → D.host.E) :
     perVec Wt (q • v) = (q : ℂ) • perVec Wt v := by
@@ -315,7 +313,7 @@ theorem perVec_qsmul (Wt : UnfAt U k x) (q : ℚ) (v : Fin r → D.host.E) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, RCLike.star_def, Complex.conj_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_natCast_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (n m : ℕ) (z w : Fin g → ℂ) :
     hermForm Hm ((n : ℂ) • z) ((m : ℂ) • w) = (n : ℂ) * m * hermForm Hm z w := by
@@ -324,7 +322,7 @@ theorem hermForm_natCast_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (n m :
   ring
 
 /- English proof (translation)
-Simplify using `only [herm, cc, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_natCast_smul (G : Matrix (Fin r) (Fin r) D.host.E) (n m : ℕ) (u w : Fin r → D.host.E) :
     herm G ((n : D.host.E) • u) ((m : D.host.E) • w) = (n : D.host.E) * m * herm G u w := by
@@ -332,15 +330,15 @@ theorem herm_natCast_smul (G : Matrix (Fin r) (Fin r) D.host.E) (n m : ℕ) (u w
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Establish `hlat : ∀ a b, (hermForm Y.Hm (perVec Wt (Wt.φ k a : Fin r → D.host.E)) (perVec Wt (Wt.φ k b : Fin r → D.host.E))).im = ((Algebra.trace ℚ D.host.E (-(U.X k).ξ0 * herm (U.X k).Gm (Wt.φ k a : Fin r → D.host.E) (Wt.φ k b)) : ℚ) : ℝ)` using `fun a b => by`. Rewrite using `[perVec_lat, perVec_lat, Y.c1 a b, ← Wt.isom k a b]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨n, hn, hnu⟩` from `ReciprocityTheory.ChartRestriction.G.FD.LatticeSpanMembership.exists_nat_smul_mem (X := U.X k) u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hmw⟩` from `ReciprocityTheory.ChartRestriction.G.FD.LatticeSpanMembership.exists_nat_smul_mem (X := U.X k) w`. Establish `h` using `hlat ((Wt.φ k).symm ⟨_, hnu⟩) ((Wt.φ k).symm ⟨_, hmw⟩)`. Simplify using `only [LinearEquiv.apply_symm_apply] at h`. Establish `hs : ∀ (t : ℕ) (y : Fin r → D.host.E), (t : D.host.E) • y = (t : ℚ) • y` using `fun t y => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hs n u, hs m w, perVec_qsmul, perVec_qsmul, ← hs n u, ← hs m w, herm_natCast_smul]`. Simplify using `only [Rat.cast_natCast] at h`. Rewrite `h` using `[hermForm_natCast_smul]`. Establish `ht : Algebra.trace ℚ D.host.E (-(U.X k).ξ0 * ((n : D.host.E) * m * herm (U.X k).Gm u w)) = (n * m : ℚ) * Algebra.trace ℚ D.host.E (-(U.X k).ξ0 * herm (U.X k).Gm u w)`. Rewrite using `[show -(U.X k).ξ0 * ((n : D.host.E) * m * herm (U.X k).Gm u w) = ((n * m : ℚ) : ℚ) • (-(U.X k).ξ0 * herm (U.X k).Gm u w) by rw [Rat.smul_def]; push_cast; ring, map_smul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h` using `[ht]`. Establish `hnm : ((n : ℝ) * m) ≠ 0` using `by positivity`. Establish `h2 : ((n : ℂ) * m * hermForm Y.Hm (perVec Wt u) (perVec Wt w)).im = (n : ℝ) * m * (hermForm Y.Hm (perVec Wt u) (perVec Wt w)).im`. Rewrite using `[show ((n : ℂ) * m) = (((n : ℝ) * m : ℝ) : ℂ) by push_cast; ring, Complex.im_ofReal_mul]`. Rewrite `h` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Conclude with `mul_left_cancel₀ hnm h`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem im_hermForm_perVec (Wt : UnfAt U k x) (Y : UnitAt Wt) (u w : Fin r → D.host.E) :
     (hermForm Y.Hm (perVec Wt u) (perVec Wt w)).im =
@@ -374,15 +372,15 @@ theorem im_hermForm_perVec (Wt : UnfAt U k x) (Y : UnitAt Wt) (u w : Fin r → D
   exact mul_left_cancel₀ hnm h
 
 /- English proof (translation)
-Establish `hadd1 : ∀ (H : Matrix (Fin g) (Fin g) ℂ) z z' w, hermForm H (z + z') w = hermForm H z w + hermForm H z' w` using `fun H z z' w => by simp only [hermForm, add_dotProduct]`. Establish `hadd2 : ∀ (H : Matrix (Fin g) (Fin g) ℂ) z w w', hermForm H z (w + w') = hermForm H z w + hermForm H z w'` using `fun H z w w' => by simp only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`. Establish `hsm1 : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) z w, hermForm H (a • z) w = a * hermForm H z w` using `fun H a z w => by simp only [hermForm, smul_dotProduct, smul_eq_mul]`. Establish `hsm2 : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) z w, hermForm H z (a • w) = star a * hermForm H z w` using `fun H a z w => by simp only [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `key : ∀ z w, (hermForm Hm' z w).im = (hermForm Hm z w).im` using `fun z w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Establish `hw : w ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hw using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem b hb => exact him a ha b hb`. Consider the case `zero => simp [hermForm]`. Consider the case `add x y _ _ h1 h2 => simp only [hadd2, Complex.add_im, h1, h2]`. Consider the case `smul t x _ h1`. Rewrite using `[← Complex.coe_smul, hsm2, hsm2]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`. Consider the case `zero => simp [hermForm]`. Consider the case `add x y _ _ h1 h2 => simp only [hadd1, Complex.add_im, h1, h2]`. Consider the case `smul t x _ h1`. Rewrite using `[← Complex.coe_smul, hsm1, hsm1]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`. Use `Complex.ext ?_ (key z w)` and prove the remaining obligations. Use `key (Complex.I • z) w` as an intermediate fact. Rewrite `this` using `[hsm1, hsm1]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hermForm_eq_of_im_span {g : ℕ} (S : Set (Fin g → ℂ)) (hS : Submodule.span ℝ S = ⊤)
     (Hm Hm' : Matrix (Fin g) (Fin g) ℂ)
@@ -419,7 +417,7 @@ theorem hermForm_eq_of_im_span {g : ℕ} (S : Set (Fin g → ℂ)) (hS : Submodu
   simpa using this
 
 /- English proof (translation)
-Simplify using `[hermForm, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_single {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (j₁ j₂ : Fin g) :
     hermForm Hm (Pi.single j₁ 1) (Pi.single j₂ 1) = Hm j₁ j₂ := by
@@ -435,7 +433,7 @@ namespace GlobalTheory.HeckeFrameShift
 open NumberField ReciprocityTheory.ChartRestriction.G.FD Matrix GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hermForm_cast {g g' : ℕ} (hg : g' = g) (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (Hm.submatrix (Fin.cast hg) (Fin.cast hg)) (fun j => z (Fin.cast hg j)) (fun j => w (Fin.cast hg j)) =
@@ -449,7 +447,7 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {k k' : U.Comp} {x : (U.X k).dom} {x' : (U.X k').dom}
 
 /- English proof (translation)
-Simplify using `only [perVec]`. Rewrite using `[he j j' hj]`. Conclude with `hu _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perVec_of_perFr (Wt : UnfAt U k x) (Wt' : UnfAt U k' x') (he : ∀ (j : Fin Wt'.g) (j' : Fin Wt.g), (j : ℕ) = j' → Wt'.e j = Wt.e j')
     (u u' : Fin r → D.host.E) (hu : ∀ τ j, perFr (U.X k') x'.1 u τ j = perFr (U.X k) x.1 u' τ j)
@@ -459,11 +457,11 @@ theorem perVec_of_perFr (Wt : UnfAt U k x) (Wt' : UnfAt U k' x') (he : ∀ (j : 
   exact hu _ _
 
 /- English proof (translation)
-Establish `hg : Wt'.g = Wt.g`. Establish `e1` using `Fintype.card_congr Wt'.e`. Establish `e2` using `Fintype.card_congr Wt.e`. Simplify using `only [Fintype.card_fin] at e1 e2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hre : ∀ u, perVec Wt' u = fun j => perVec Wt (N *ᵥ u) (Fin.cast hg j)` using `fun u => funext fun j => hpv u j _ rfl`. Establish `hform : ∀ z w, hermForm Y'.Hm z w = hermForm (Y.Hm.submatrix (Fin.cast hg) (Fin.cast hg)) z w`. Use `hermForm_eq_of_im_span (Set.range Wt'.Pm) Wt'.per.2.2.2.1 _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b₁, rfl⟩ _ ⟨b₂, rfl⟩`. Rewrite using `[← perVec_lat Wt' b₁, ← perVec_lat Wt' b₂, im_hermForm_perVec, hre, hre, hermForm_cast hg, im_hermForm_perVec, hherm, hG, hξ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hform (Pi.single j₁ 1) (Pi.single j₂ 1)`. Rewrite `e` using `[hermForm_single, hermForm_single, Matrix.submatrix_apply]`. Rewrite using `[e]`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (by simpa)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hm_eq_of_shift (Wt : UnfAt U k x) (Y : UnitAt Wt) (Wt' : UnfAt U k' x') (Y' : UnitAt Wt')
     (N : Matrix (Fin r) (Fin r) D.host.E)
@@ -503,7 +501,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Take `⟨hcore, hherm, hG, hξ⟩` from `shift_core hMod hTie i σ hσ hV hS h ha hfr hfr' hM`. Establish `hfr0` using `perFr_shift hMod hTie i σ hσ hV hS h ha hfr hfr' hM`. Conclude with `⟨hfr0, fun v j j' hj => perVec_of_perFr Wt Wt' he _ _ (hfr0 v) j j' hj, hm_eq_of_shift Wt Y Wt' Y' _ (fun u j j' hj => perVec_of_perFr Wt Wt' he _ _ (hcore u) j j' hj) hherm hG hξ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frame_shift_witness (hMod : R.IsModels) (hTie : TieIn T R κ v₀) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hσ : σ = T.σ₀)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i)

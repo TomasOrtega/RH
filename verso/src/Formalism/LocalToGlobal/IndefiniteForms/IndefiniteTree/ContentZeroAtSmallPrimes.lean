@@ -11,11 +11,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {c : OnConst}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hg1t, hg2t, -, -, -⟩` from `hPg`. Take `⟨hg1, hg2, -, -, hsm⟩` from `tP`. Introduce `w h2 j`. Rewrite using `[tF w j]`. Use `show Nd.FjP (ι j) (plc w) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(content_prime_condition_holds Nd (ι j) (plc w)).2.1` to reduce the goal to its premises. Rewrite using `[← hg1]`. Conclude with `fun h => hg1t (h ▸ h2)`. Rewrite using `[← hg2]`. Conclude with `fun h => hg2t (h ▸ h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Prove the first alternative.
 
-Conclude with `Or.inl (hsm ▸ h2)`.
+A detailed English derivation is pending.
 -/
 theorem content_zero_at_small_primes (N : IndefNum Bs) (O : OnObj S P c) (Nd : NumDatum) (ι : Bs.J → ℕ)
     (hPg : LeafPage O) (tF : ContentEqualsDatumContent N Nd ι) (tP : TiePrimes O Nd) :

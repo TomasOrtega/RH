@@ -8,9 +8,9 @@ open scoped Pointwise
 namespace GlobalTheory.CompanionTheory.TorusCh.Signs
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `sMeet`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h1 : (Pi.single k y : Fin m → SignType) i = 0` using `Pi.single_eq_of_ne hjk _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[h1, Pi.single_eq_same]`. Apply the tactic sequence `by_cases hx : x = 0 <;> simp [hx]`. Establish `h1 : (Pi.single j x : Fin m → SignType) i = 0` using `Pi.single_eq_of_ne hij _`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sMeet_single_single {m : ℕ} {j k : Fin m} (hjk : j ≠ k) (x y : SignType) :
     sMeet (Pi.single j x) (Pi.single k y) = (0 : Fin m → SignType) := by
@@ -26,7 +26,7 @@ theorem sMeet_single_single {m : ℕ} {j k : Fin m} (hjk : j ≠ k) (x y : SignT
     simp
 
 /- English proof (translation)
-Introduce `i hi`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd (Pi.single_eq_of_ne hij _) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sLe_single {m : ℕ} (e : Fin m → SignType) (j : Fin m) : SLe (Pi.single j (e j)) e := by
   intro i hi
@@ -36,9 +36,9 @@ theorem sLe_single {m : ℕ} (e : Fin m → SignType) (j : Fin m) : SLe (Pi.sing
   · exact absurd (Pi.single_eq_of_ne hij _) hi
 
 /- English proof (translation)
-Introduce `i hi`. Establish `h1` using `congrFun h i`. Unfold `sMeet at h1`. Distinguish the cases in `h2 : e i = e' i`. Conclude with `h2.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[if_neg h2]`. Conclude with `absurd h1.symm hi`.
+A detailed English derivation is pending.
 -/
 theorem sLe_of_sMeet {m : ℕ} {e e' : Fin m → SignType} (h : sMeet e e' = e) : SLe e e' := by
   intro i hi
@@ -50,7 +50,7 @@ theorem sLe_of_sMeet {m : ℕ} {e e' : Fin m → SignType} (h : sMeet e e' = e) 
     exact absurd h1.symm hi
 
 /- English proof (translation)
-Use `revert x`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem eq_neg_one_of {x : SignType} : x ≠ 0 → x ≠ 1 → x = -1 := by
   revert x
@@ -59,25 +59,23 @@ theorem eq_neg_one_of {x : SignType} : x ≠ 0 → x ≠ 1 → x = -1 := by
 variable {R : Type} [CommRing R] (σ : R →+* R) {m : ℕ} (P : (Fin m → SignType) → R)
 
 /- English proof (translation)
-Use `set a : Fin m → Fin m → SignType := fun j => Pi.single j (e j) with ha`. Establish `h2 : ∀ j k, j ≠ k → P (a j) * P (a k) = 0`. Introduce `j k hjk`. Rewrite using `[← hmeet, ha]`. Simplify using `only`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sMeet_single_single hjk, hP0]`. Establish `h4 : ∀ j, P (a j) * P e = P (a j)` using `fun j => hle _ _ (sLe_single e j)`. Use `set q : R := ∑ j, P (a j) with hq`. Establish `h5 : ∀ j, P (a j) * q = P (a j)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq, Finset.mul_sum, Finset.sum_eq_single j (fun k _ hk => h2 j k hk.symm) (fun h => absurd (Finset.mem_univ j) h), hP2]`. Establish `hqq : q * q = q` using `by conv_lhs => rw [hq, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => h5 j`. Establish `hqe : q * P e = q` using `by conv_lhs => rw [hq, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => h4 j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hPe` using `hP2 e`. Use `set r : R := P e - q with hr`. Establish `hrr : r * r = r`. Rewrite using `[hr]`. Take the linear combination `hPe - 2 * hqe + hqq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hre : r * P e = r`. Rewrite using `[hr]`. Take the linear combination `hPe - hqe`. Establish `hrs : r * σ r = 0`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨e', he'⟩` from `hsurj r hrr hrs`. Establish `hm : sMeet e' e = e'` using `hinj (by rw [hmeet, he', hre])`. Establish `hse : SLe e' e` using `sLe_of_sMeet hm`. Establish `he0 : e' = 0`. Use function extensionality and compare the values at `j`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : e' j ≠ 0` using `hne`. Establish `hej : e j = e' j` using `hse j hne'`. Establish `hs : SLe (a j) e'`. Introduce `i hi`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[ha, hej]`. Conclude with `absurd (Pi.single_eq_of_ne hij _) hi`. Establish `h6 : P (a j) * r = P (a j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← he']`. Conclude with `hle _ _ hs`. Establish `h7 : P (a j) * r = 0`. Rewrite using `[hr, mul_sub, h4, h5, sub_self]`. Establish `h8 : a j = 0` using `hinj (by rw [hP0, ← h6, h7])`.
-
-Establish `h9` using `congrFun h8 j`. Simplify using `only [ha, Pi.single_eq_same, Pi.zero_apply] at h9`. Conclude with `hne' (hej ▸ h9)`. Establish `hr0 : r = 0` using `by rw [← he', he0, hP0]`. Conclude with `sub_eq_zero.1 hr0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem additive (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 0)
     (hsurj : ∀ p, p * p = p → p * σ p = 0 → ∃ e, P e = p) (hinj : Function.Injective P) (hP0 : P 0 = 0)
@@ -140,33 +138,29 @@ theorem additive (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 
   exact sub_eq_zero.1 hr0
 
 /- English proof (translation)
-Use `set δ : Fin m → SignType := Pi.single j 1 with hδ`. Establish `hδ0 : δ ≠ 0`. Introduce `h`. Establish `h1` using `congrFun h j`. Simplify using `[hδ] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set p : R := P δ with hp`. Use `set s : R := σ p with hs`. Establish `hpp : p * p = p` using `hP2 δ`. Establish `hps : p * s = 0` using `hiso δ`. Establish `hss : s * s = s` using `by rw [hs, ← map_mul, hpp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp : σ s = p` using `hσ p`. Establish `hsσ : s * σ s = 0` using `by rw [hsp, mul_comm, hps]`. Take `⟨e'', he''⟩` from `hsurj s hss hsσ`. Establish `hsupp : ∀ k, k ≠ j → e'' k = 0`. Introduce `k hkj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Use `set β : Fin m → SignType := Pi.single k (e'' k) with hβ`. Use `set c : Fin m → SignType := Function.update δ k (e'' k) with hc`. Establish `hδc : SLe δ c`. Introduce `i hi`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hik : i ≠ k`. Introduce and unpack `rfl`. Conclude with `hi (Pi.single_eq_of_ne hkj _)`. Conclude with `Function.update_of_ne hik _ _`. Establish `hβc : SLe β c`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `i hi`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[hβ, hc]`. Conclude with `absurd (Pi.single_eq_of_ne hik _) hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : p * σ (P β) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : P β * s = P β`. Rewrite using `[← he'']`. Conclude with `hle _ _ (sLe_single e'' k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : σ (P β) * p = σ (P β)`. Use `congrArg σ h2` as an intermediate fact. Rewrite `this` using `[map_mul, hsp]`. Then use the resulting hypothesis. Establish `h4 : σ (P β) = 0`. Rewrite using `[← h3, mul_comm, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h5 : P β = 0`. Rewrite using `[← hσ (P β), h4, map_zero]`. Establish `h6 : β = 0` using `hinj (by rw [h5, hP0])`. Establish `h7` using `congrFun h6 k`. Simplify using `only [hβ, Pi.single_eq_same, Pi.zero_apply] at h7`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hne h7`. Establish `hform : e'' = Pi.single j (e'' j)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hij, hsupp i hij]`. Establish `hne0 : e'' j ≠ 0`. Introduce `h0`. Establish `h1 : e'' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hform, h0]`. Simplify using the standard rewrite rules. Establish `h2 : s = 0` using `by rw [← he'', h1, hP0]`. Establish `h3 : p = 0` using `by rw [← hsp, h2, map_zero]`. Conclude with `hδ0 (hinj (by rw [hP0, ← hp, h3]))`.
-
-Establish `hne1 : e'' j ≠ 1`. Introduce `h1`. Establish `h2 : e'' = δ` using `by rw [hform, h1]`. Establish `h3 : s = p` using `by rw [← he'', h2]`. Establish `h4 : p = 0`.
-
-Establish `h5` using `hps`. Rewrite `h5` using `[h3, hpp]`. Then use the resulting hypothesis. Conclude with `hδ0 (hinj (by rw [hP0, ← hp, h4]))`. Establish `hm1` using `eq_neg_one_of hne0 hne1`. Rewrite using `[← hm1, ← hform, he'']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_single (hσ : ∀ x, σ (σ x) = x) (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 0)
     (hsurj : ∀ p, p * p = p → p * σ p = 0 → ∃ e, P e = p) (hinj : Function.Injective P) (hP0 : P 0 = 0)
@@ -250,7 +244,7 @@ end GlobalTheory.CompanionTheory.TorusCh.Signs
 namespace GlobalTheory.CompanionTheory.TorusCh
 
 /- English proof (translation)
-Introduce `R _ hc σ hσ m P hP2 hiso hsurj hinj hP0 hmeet hle`. Use `letI : CommRing R := { (inferInstance : Ring R) with mul_comm := hc }`. Conclude with `⟨fun e => Signs.additive σ P hP2 hiso hsurj hinj hP0 hmeet hle e, fun j => Signs.conj_single σ P hσ hP2 hiso hsurj hinj hP0 hle j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem isotropicIdempotent_signs : ∀ (R : Type) [Ring R], (∀ x y : R, x * y = y * x) → ∀ (σ : R →+* R), (∀ x, σ (σ x) = x) →
     ∀ (m : ℕ) (P : (Fin m → SignType) → R), (∀ e, P e * P e = P e) → (∀ e, P e * σ (P e) = 0) →

@@ -7,11 +7,11 @@ noncomputable section
 namespace GlobalTheory.ColFourier
 
 /- English proof (translation)
-Use `haveI := hν.1`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hh : (fun x => g (x + a)) ∈ SB (n → k)` using `⟨hg.1.comp_continuous (by fun_prop), hg.2.comp_homeomorph (Homeomorph.addRight a)⟩`. Establish `h1` using `(FourierPi.fourier_pi_of_conductor h hν hh).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [zero_add] at h1`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← integral_mul_const, ← integral_add_right_eq_self (fun x => g x * (ψ (x ⬝ᵥ y) : ℂ) * (ψ⁻¹ (y ⬝ᵥ a) : ℂ)) a]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[add_dotProduct, AddChar.map_add_eq_mul, AddChar.inv_apply', dotProduct_comm y a, mul_assoc, ← Circle.coe_mul, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem fourier_pi_inversion_at {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n : Type*} [Fintype n] [DecidableEq n]
@@ -37,13 +37,13 @@ theorem fourier_pi_inversion_at {k : Type*} [Field k] [ValuativeRel k] [Topologi
     ← Circle.coe_mul, mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A C _ _ _ ψ m hψ hm P Ξ hΞ`. Establish `hν : IsSelfDual ψ m` using `isSelfDual_of_isUnitVol m hψ hm`. Use `haveI := hν.1`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `X`. Establish `h0` using `comp_setCols_mem_SB hΞ P X`. Establish `hg : (fun x : (_ : A) × P → k => Ξ (setCols P X (Matrix.of fun i j => x ⟨i, j⟩))) ∈ SB ((_ : A) × P → k)` using `⟨h0.1.comp_continuous (f := fun x : (_ : A) × P → k => (Matrix.of fun i j => x ⟨i, j⟩ : Matrix A P k)) (continuous_pi fun i => continuous_pi fun j => continuous_apply _), HasCompactSupport.intro (h0.2.image (f := fun (U : Matrix A P k) (p : (_ : A) × P) => U p.1 p.2) (continuous_ …`. Establish `h1` using `fourier_pi_inversion_at hψ hν hg (fun p => X p.1 p.2)`. Establish `h2 : setCols P X (Matrix.of fun i (j : P) => X i j) = X` using `setCols_restrictCols P X`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [h2] at h1`. Rewrite using `[← h1, fourierInt_eq_pi]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[fourierInt_eq_pi]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h3 : (fun p : (_ : A) × P => setCols P X (Matrix.of fun i j => y ⟨i, j⟩) p.1 p.2) = y`. Use function extensionality and compare the values at `p`. Simplify using `[setCols, p.2.2]`. Simplify using `only [setCols_setCols, h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourierInt_inv_fourierInt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (A C : Type) [Fintype A] [DecidableEq A] [DecidableEq C] (ψ : AddChar k Circle) (m : Measure k), HasConductor ψ 1 → IsUnitVol m → ∀ (P : Finset C), ∀ Ξ ∈ SB (Matrix A C k), fourierInt ψ⁻¹ m P (fourierInt ψ m P Ξ) = Ξ := by
   intro k _ _ _ _ _ _ A C _ _ _ ψ m hψ hm P Ξ hΞ

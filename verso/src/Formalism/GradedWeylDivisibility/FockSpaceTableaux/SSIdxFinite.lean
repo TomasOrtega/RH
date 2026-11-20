@@ -5,9 +5,9 @@ open MvPolynomial
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `only [ssIdx, Set.mem_setOf_eq] at hm`. Rewrite using `[Set.mem_Iic]`. Introduce `v`. Take `⟨a, t⟩` from `v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show m (a, t) ≤ ν t`. Rewrite using `[← hm.2 t]`. Conclude with `Finset.single_le_sum (f := fun a' => m (a', t)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ldbasis_ssIdx_subset_Iic (k n : ℕ) (ν : Fin n → ℕ) :
     ssIdx k n ν ⊆ Set.Iic (Finsupp.equivFunOnFinite.symm (fun v : Fin k × Fin n => ν v.2)) := by
@@ -21,7 +21,7 @@ theorem ldbasis_ssIdx_subset_Iic (k n : ℕ) (ν : Fin n → ℕ) :
   exact Finset.single_le_sum (f := fun a' => m (a', t)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)
 
 /- English proof (translation)
-Introduce `k n ν`. Conclude with `(Set.finite_Iic _).subset (ldbasis_ssIdx_subset_Iic k n ν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem semistandard_index_finite : SSIdxFinite := by
   intro k n ν

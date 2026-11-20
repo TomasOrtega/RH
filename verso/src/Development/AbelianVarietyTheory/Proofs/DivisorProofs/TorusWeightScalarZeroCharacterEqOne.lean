@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y S _ φ x x' c _ h`. Establish `e : unitOn (c 0) = unitOn (1 : Sˣ)`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.unit_ext (X := (Over.mk (spMap φ)).left) (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (Over.mk (spMap φ)).left ⟶ Q.P.A.left => ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart Q.P.isLB (ψ y)`. Establish `hG : Good Q.P.L y J` using `hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `h 0 y J hG`. Rewrite `h0` using `[val_corr hG (Y.Φ _ x').s_zero, val_corr hG (Y.Φ _ x).s_zero, val_one, _root_.mul_one]`. Establish `h1 : unitOn (1 : Sˣ) = 1` using `map_one _`. Conclude with `h0.symm.trans ((congrArg (gm _ y ⊤) h1).trans (map_one _)).symm`. Conclude with `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S)).inv).1 (congrArg Units.val e))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weight_scalar_zero_eq_one : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (S : Type) [CommRing S] (φ : R →+* S) (x x' : Over.mk (spMap φ) ⟶ Y.H) (c : Q.X → Sˣ), x' ≫ Y.q = x ≫ Y.q → (∀ χ y J, Good Q.P.L y J → val ((Y.Φ _ x').s χ) (𝟙 _) y J = gm (𝟙 (Over.mk (spMap φ)).left) y ⊤ (unitOn (c χ)) * val ((Y.Φ _ x).s χ) (𝟙 _) y J) → c 0 = 1 := by
   intro R _ _ Q O _ _ _ oa Y S _ φ x x' c _ h

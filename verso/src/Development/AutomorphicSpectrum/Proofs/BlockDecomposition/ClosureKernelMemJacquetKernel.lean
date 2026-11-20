@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨n, a, rfl⟩` from `hw`. Take `⟨x, hx⟩` from `exists_uM_of_mem k i n.2`. Use `Submodule.subset_span ⟨⟨Multiplicative.ofAdd x, Subgroup.mem_top _⟩, a ⊗ₜ[ℂ] b, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : topRep τ W (Multiplicative.ofAdd x) (a ⊗ₜ[ℂ] b) = (τ (uM k i x) a) ⊗ₜ[ℂ] b` using `rfl`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[h1, hx, TensorProduct.sub_tmul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.add_tmul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem_twKer_topRep (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
@@ -47,9 +47,9 @@ theorem tmul_mem_twKer_topRep (k : Type) [Field k] [ValuativeRel k] [Topological
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i V W _ _ _ _ τ z hz`. Establish `hex : Function.Exact (twKer τ (MirUin k i) 1).subtype (twKer τ (MirUin k i) 1).mkQ` using `LinearMap.exact_subtype_mkQ _`. Take `⟨y, rfl⟩` from `(rTensor_exact W hex (Submodule.mkQ_surjective _) z).1 hz`. Use `clear hz`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul w b => exact tmul_mem_twKer_topRep k i τ w.2 b`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_twKer_topRep_of_clT_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (z : V ⊗[ℂ] W), clT τ W z = 0 → z ∈ twKer (topRep τ W) ⊤ 1 := by
   intro k _ _ _ _ i V W _ _ _ _ τ z hz

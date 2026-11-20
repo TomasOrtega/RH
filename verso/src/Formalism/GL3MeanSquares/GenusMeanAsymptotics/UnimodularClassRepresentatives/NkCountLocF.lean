@@ -12,21 +12,21 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-The claim follows from `localizedQuotients.nkCount_locF hF h L 𝔭 h𝔭 k n`.
+A detailed English derivation is pending.
 -/
 theorem nkCount_locF (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (n : 𝓞 F) : nkCount h (locF 𝔭 L) 𝔭 k n = nkCount h L 𝔭 k n :=
   localizedQuotients.nkCount_locF hF h L 𝔭 h𝔭 k n
 
 /- English proof (translation)
-The claim follows from `localizedQuotients.akCount_locF hF h L 𝔭 h𝔭 k`.
+A detailed English derivation is pending.
 -/
 theorem akCount_locF (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (h𝔭 : 𝔭.IsMaximal) (k : ℕ) : akCount h (locF 𝔭 L) 𝔭 k = akCount h L 𝔭 k :=
   localizedQuotients.akCount_locF hF h L 𝔭 h𝔭 k
 
 /- English proof (translation)
-The claim follows from `localizedQuotients.vd_locF hF h L h𝔭`.
+A detailed English derivation is pending.
 -/
 theorem vd_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -34,7 +34,7 @@ theorem vd_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFix
   localizedQuotients.vd_locF hF h L h𝔭
 
 /- English proof (translation)
-The claim follows from `firstFamilyOperatorEnd.nkCount_succ_fine hK hF hs hd hL hLi h𝔭 (localValuationFiltration.notMem_pow_vF h𝔭 hn) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem nkCount_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -44,9 +44,9 @@ theorem nkCount_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   firstFamilyOperatorEnd.nkCount_succ_fine hK hF hs hd hL hLi h𝔭 (localValuationFiltration.notMem_pow_vF h𝔭 hn) (by omega)
 
 /- English proof (translation)
-Establish `hn1` using `localValuationFiltration.notMem_pow_vF h𝔭 hn`. Establish `hn1' : n' ∉ 𝔭 ^ (vF 𝔭 n + 1)`. Introduce `h'`. Apply `hn1` to reduce the goal to its premises. Establish `hk' : 𝔭 ^ k ≤ 𝔭 ^ (vF 𝔭 n + 1)` using `Ideal.pow_le_pow_right (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Ideal.add_mem _ (hk' hc) h'` as an intermediate fact. Simplify using `using this`. Rewrite using `[firstFamilyOperatorEnd.alphaN_eq hK hF hs hd hL hLi h𝔭 hn1 (k := k) (by omega), firstFamilyOperatorEnd.alphaN_eq hK hF hs hd hL hLi h𝔭 hn1' (k := k) (by omega), firstFamilyOperatorEnd.nkCount_congr hF hs hd hL hLi h𝔭 hc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem alphaN_congr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -65,7 +65,7 @@ theorem alphaN_congr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     firstFamilyOperatorEnd.nkCount_congr hF hs hd hL hLi h𝔭 hc]
 
 /- English proof (translation)
-Use `⟨2 * (Ideal.absNorm 𝔭 : ℝ) ^ (2 * vd h L 𝔭 + 1), fun k n => ?_⟩` and prove the remaining obligations. Use `firstFamilyOperatorEnd.nkCount_le_nat hK hF hs hd hL hLi hm h𝔭 k n` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nkCount_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -77,9 +77,7 @@ theorem nkCount_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : Is
   exact_mod_cast this
 
 /- English proof (translation)
-Rewrite using `[firstFamilyOperatorEnd.alphaL_eq hK hF hs hd hL hLi h𝔭 (k := 2 * vd h L 𝔭 + 1) le_rfl]`. Establish `hN : 0 < Ideal.absNorm 𝔭` using `by haveI := h𝔭`. Conclude with `Nat.pos_of_ne_zero fun h0 => Ideal.IsMaximal.ne_bot_of_isIntegral_int 𝔭 (Ideal.absNorm_eq_zero_iff.mp h0)`. Apply `div_pos` to reduce the goal to its premises. Conclude with `firstFamilyOperatorEnd.akCount_pos hF hs hd hL hLi h𝔭 _` after adjusting the coercions.
-
-Apply `pow_pos` to reduce the goal to its premises. Conclude with `hN` after adjusting the coercions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem alphaL_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

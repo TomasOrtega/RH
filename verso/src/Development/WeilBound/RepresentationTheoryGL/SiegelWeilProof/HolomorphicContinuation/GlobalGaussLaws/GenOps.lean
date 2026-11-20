@@ -14,31 +14,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob.GenOpsH
 
 /- English proof (translation)
-Establish `hfr : IsUnit fr.det` using `hC.hfr.1`. Take `⟨w, hw⟩` from `hW D n`. Take `⟨yn, hyn⟩` from `OG.exists_nU n (-c) (by rw [Matrix.conjTranspose_neg, hc])`. Establish `hιn : ι yn = w⁻¹ * ι y * w` using `OG.iota_conj hC.hθ hC.hι w hw y yn c hyc hyn`. Establish `hιy : ι y = w * ι yn * w⁻¹` using `by rw [hιn]; group`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, A, A', hκ, hFT⟩` from `hF D n V ψ χ θ μ ω H l s ν τ ε fr ι hC w hw`. Take `⟨f0, hf0, hf00⟩` from `(hS V.rank n).2.2.2.2`. Establish `h0` using `hFT 0 (OG.awayCls_zero τ fr)`. Set `e : (Fin V.rank → Fin n → ℂ) → ℂ` to `fun u => Complex.exp (Complex.I * (tLoc l τ : ℂ) * ((-c) * gramX ε u).trace)`. Set `F' : ((Fin V.rank → Fin n → ℂ) → ℂ) → (Fin V.rank → Fin n → ℂ) → ℂ` to `fun f u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Fw : ((Fin V.rank → Fin n → ℂ) → ℂ) → (Fin V.rank → Fin n → ℂ) → ℂ` to `fun f u => κ * ftLoc ε (tLoc l τ) f u`. Establish `hc' : (-c)ᴴ = -c` using `by rw [Matrix.conjTranspose_neg, hc]`. Establish `hE : ∀ f, IsSch f → IsSch (fun u => e u * F' f u)` using `fun f hf => (hS V.rank n).2.2.2.1 ε (tLoc l τ) (-c) (F' f) hc' ((h0.2.2 f hf).2.1)`. Use `set γ : ℂ := Fw (F' f0) (0 : Matrix (Fin V.rank) (Fin n) ℂ) with hγdef`. Establish `hrelAll : ∀ Ψ (hΨ : AwayCls θ τ fr Ψ), ∀ x, Ψ x = γ * A (A' Ψ) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ hΨ`. Take `⟨hAΨ, hA'Ψ, hFΨ⟩` from `hFT Ψ hΨ`. Establish `kA` using `hFT (A' Ψ) hA'Ψ`. Establish `hcons : ∀ g (hg : IsSch g), tens θ τ fr g Ψ = tens θ τ fr (Fw (F' g)) (A (A' Ψ))`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k1g` using `(hFΨ g hg).2.2.2`. Establish `kcg` using `(kA.2.2 (F' g) ((hFΨ g hg).2.1)).2.2.1`. Establish `hΦ1 : ω w⁻¹ ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩ = ⟨tens θ τ fr (F' g) (A' Ψ), hA'Ψ.2 _ ((hFΨ g hg).2.1)⟩` using `Subtype.ext k1g`. Establish `hid : ω w (ω w⁻¹ ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩) = ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hid` using `[hΦ1]`. Rewrite using `[← kcg, hid]`. Introduce `x`. Take `⟨x', hx'1, hx'2, hx'3⟩` from `OG.exists_slice hC.hθ τ x (fr * (0 : Matrix (Fin V.rank) (Fin n) ℂ))`. Establish `h1` using `congrFun (hcons f0 hf0) x'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf00' : f0 (0 : Matrix (Fin V.rank) (Fin n) ℂ) = 1` using `hf00`. Rewrite `h1` using `[OG.tens_at τ hfr _ _ x' 0 hx'1, OG.tens_at τ hfr _ _ x' 0 hx'1, hf00', one_mul, hΨ.1 x' x hx'2 hx'3, kA.1.1 x' x hx'2 hx'3]`. Conclude with `h1`. Use `⟨κ, γ, hκ, ?_, fun f hf => ⟨(h0.2.2 f hf).2.1, (h0.2.2 f hf).1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Ψ, x₀, hΨ, hx₀⟩ hγ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hx₀ (by rw [hrelAll Ψ hΨ x₀, hγ, zero_mul])`. Introduce `Ψ hΨ f hf`. Take `⟨hAΨ, hA'Ψ, hFΨ⟩` from `hFT Ψ hΨ`. Establish `k1` using `(hFΨ f hf).2.2.2`. Establish `kA` using `hFT (A' Ψ) hA'Ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `kr` using `(kA.2.2 (fun u => e u * F' f u) (hE f hf)).2.2.1`. Establish `hrel` using `hrelAll Ψ hΨ`. Distinguish the cases in `hγ : γ = 0`. Establish `hΨ0 : Ψ = 0` using `funext fun x => by rw [hrel x, hγ, zero_mul]; rfl`. Substitute `hΨ0` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : (⟨tens θ τ fr f 0, hΨ.2 f hf⟩ : schwartzA θ V.rank n) = 0` using `Subtype.ext (by funext x; simp [tens])`. Rewrite using `[hz, map_zero]`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Establish `hstep : ω (ι y) ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ = ω w ⟨tens θ τ fr (fun u => e u * F' f u) (A' Ψ), hA'Ψ.2 _ (hE f hf)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hιy, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC yn (-c) hc' hyn, k1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tens, e, F', mul_assoc]`. Use function extensionality and compare the values at `x`. Rewrite using `[hstep, kr]`. Simplify using `only [tens]`. Rewrite using `[hrel x]`.
-
-Simplify using `only [e, F']`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gen_nbar (hU : UnipTau) (hW : WEx) (hS : SchOps) (hF : FTfact)
     {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}

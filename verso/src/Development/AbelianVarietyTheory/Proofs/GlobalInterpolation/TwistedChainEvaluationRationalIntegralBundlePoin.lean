@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc.PeriodEntriesOverColumns
 
 /- English proof (translation)
-Introduce `Q hQ Bd Lk`. Establish `h0 : Row0 Q (EvC fun D O => Formalism.L2.G.Adm2InU.TwistedPointIntegral D O.ex.tw)`. Apply `validForConstructedPointClasses_eventuallyWorkingClass` to reduce the goal to its premises. Use `EvP.of_all fun _ K _ β hβ => ?_` and prove the remaining obligations. Establish `hc : β.Is HasCols` using `hQ K β.X β.f β.T β.c hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView (fun D O => Formalism.L2.G.Adm2InU.TwistedPointIntegral D O.ex.tw) ?_ K β hc` and prove the remaining obligations. Introduce `B f T w Z O nch hv _ _`. Rewrite using `[hv.tw_eq]`. Conclude with `GlobalTheory.T.twistedPointRow_admissible_trueColumns w.I w.ok w.l Z w.l0`. Conclude with `h0.row Lk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_aPtTw_of_overCols : ∀ (Q : V4.Slot), OverCols Q → ∀ (Bd : BdT) (Lk : LkT Bd), PeriodEntriesOverColumns.TwistedPointAtBundlePoints Q Lk := by
   intro Q hQ Bd Lk

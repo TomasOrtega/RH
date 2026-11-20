@@ -40,7 +40,7 @@ section
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe49.exists_prime_mem w`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem (w : Plc E) : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 E) ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qe49.exists_prime_mem w
@@ -48,17 +48,17 @@ theorem exists_prime_mem (w : Plc E) : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 E) ∈
 def pr (w : Plc E) : ℕ := (exists_prime_mem w).choose
 
 /- English proof (translation)
-The claim follows from `(exists_prime_mem w).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pr_prime (w : Plc E) : (pr w).Prime := (exists_prime_mem w).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_prime_mem w).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem pr_mem (w : Plc E) : (pr w : 𝓞 E) ∈ w.asIdeal := (exists_prime_mem w).choose_spec.2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((pr w : ℕ) : 𝓞 E) (q : 𝓞 E)` using `((Nat.coprime_primes (pr_prime w) hq).2 hne).cast`. Take `⟨a, b, e⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ (pr_mem w)) (Ideal.mul_mem_left _ _ h)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pr_eq {w : Plc E} {q : ℕ} (hq : q.Prime) (h : (q : 𝓞 E) ∈ w.asIdeal) : pr w = q := by
   by_contra hne
@@ -67,9 +67,7 @@ theorem pr_eq {w : Plc E} {q : ℕ} (hq : q.Prime) (h : (q : 𝓞 E) ∈ w.asIde
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ (pr_mem w)) (Ideal.mul_mem_left _ _ h)))
 
 /- English proof (translation)
-Use `(Y.finite_toSet.biUnion (t := fun q => {w : Plc E | pr w = q}) fun q _ => ?_).subset fun w hw => by simpa using hw` and prove the remaining obligations. Distinguish the cases in `hq : q = 0`. Conclude with `Set.finite_empty.subset fun w hw => (pr_prime w).ne_zero (hw.trans hq)`. Use `(Ideal.finite_factors (I := Ideal.span {((q : ℕ) : 𝓞 E)}) ?_).subset fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
-
-Conclude with `hq` after adjusting the coercions. Conclude with `Ideal.dvd_span_singleton.2 (by have := pr_mem w; rwa [show pr w = q from hw] at this)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_pr (Y : Finset ℕ) : {w : Plc E | pr w ∈ Y}.Finite := by
   refine (Y.finite_toSet.biUnion (t := fun q => {w : Plc E | pr w = q}) fun q _ => ?_).subset fun w hw => by simpa using hw
@@ -82,7 +80,7 @@ theorem finite_pr (Y : Finset ℕ) : {w : Plc E | pr w ∈ Y}.Finite := by
 variable [IsCMField E]
 
 /- English proof (translation)
-Use `pr_eq (pr_prime w) ?_` and prove the remaining obligations. Establish `e : (CertificateRingHomMap.cj w).asIdeal = _` using `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (GlobalTheory.SplitPts.conjE E) w)`. Rewrite using `[e, Ideal.mem_comap, map_natCast]`. Conclude with `pr_mem w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_cj (w : Plc E) : pr (CertificateRingHomMap.cj w) = pr w := by
   refine pr_eq (pr_prime w) ?_
@@ -91,23 +89,23 @@ theorem pr_cj (w : Plc E) : pr (CertificateRingHomMap.cj w) = pr w := by
   exact pr_mem w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitPts.conjSrc_conjSrc_cm w`.
+A detailed English derivation is pending.
 -/
 theorem cj_cj (w : Plc E) : CertificateRingHomMap.cj (CertificateRingHomMap.cj w) = w := GlobalTheory.SplitPts.conjSrc_conjSrc_cm w
 
 /- English proof (translation)
-Introduce `y hy` and use `(h y hy).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameK_symm {x : E} {w w' : Plc E} (h : SameK x w w') : SameK x w' w := fun y hy => (h y hy).symm
 
 /- English proof (translation)
-Introduce `y hy` and use `(h y hy).trans (h' y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameK_trans {x : E} {w w' w'' : Plc E} (h : SameK x w w') (h' : SameK x w' w'') : SameK x w w'' :=
   fun y hy => (h y hy).trans (h' y hy)
 
 /- English proof (translation)
-The claim follows from `(pr_eq (pr_prime w) ((h _ (by simp)).1 (pr_mem w))).symm`.
+A detailed English derivation is pending.
 -/
 theorem pr_of_sameK {x : E} {w w' : Plc E} (h : SameK x w w') : pr w = pr w' :=
   (pr_eq (pr_prime w) ((h _ (by simp)).1 (pr_mem w))).symm
@@ -116,47 +114,43 @@ end
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hsq : ∀ w : Plc E, UsPl d w → ∃ _ : Fact (pr w).Prime, IsSquare (-(d : ℚ_[pr w]))` using `fun w hw => ⟨⟨pr_prime w⟩, hw.2 _ (pr_prime w) (pr_mem w)⟩`. Take `⟨A, hd0, hG, hgood, ⟨e, he0, he⟩, hP⟩` from `h.dat E l a d ha hd x hx (insert l ((H ∪ C).image pr)) (by`. Introduce `q hq`. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨inferInstance, hd.2.1⟩`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `hsq w (hQ w hw).1)`. Establish `hgQ : ∀ w ∈ H ∪ C, A.Good (pr w)` using `fun w hw => hgood _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hw))`. Establish `hgl : A.Good l` using `hgood _ (Finset.mem_insert_self _ _)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0` using `h.sides E A x hG l hl hgl.1 w₀ h0`. Establish `hSQ` using `fun w hw => h.sides E A x hG (pr w) (pr_prime w) (hgQ w hw).1 w (pr_mem w)`. Set `Up : Plc E → Prop` to `fun u => ∀ w ∈ H ∪ C, ¬ SameK x (CertificateRingHomMap.cj u) w`. Establish `hUp : ∀ u, IsSplitAt u → Up u ∨ Up (CertificateRingHomMap.cj u)`. Introduce `u _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Up, not_or, not_forall, not_not, cj_cj] at hc`. Take `⟨⟨w, hw, h1⟩, w', hw', h2⟩` from `hc`. Establish `e1 : pr w = pr w'` using `by rw [← pr_of_sameK h1, ← pr_of_sameK h2, pr_cj]`. Establish `h3 : SameK x u w` using `sameK_trans h2 (sameK_symm ((hQ w hw).2.2.2.2 w' hw' e1))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hSQ w hw).1 (sameK_trans (sameK_symm ((hSQ w hw).2.2.2.2.1 u w h3)) h1)`. Establish `hUp0 : Up w₀`. Introduce `w hw h1`. Establish `e1 : pr w = l` using `by rw [← pr_of_sameK h1, pr_cj, pr_eq hl h0]`. Conclude with `hS0.1 (sameK_trans h1 ((hQ w hw).2.2.2.1 e1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V⟩` from `h.vec E a l d ha.pos hd0 x hx U hU w₀ hS0.2.1 hTy Up hUp hUp0`. Establish `hfree : ∀ w ∈ H ∪ C, Free V w`. Introduce `w hw`. Take `⟨h1, h2⟩` from `V.sph w (hQ w hw).1.1 (hQ w hw).2.1 (hQ w hw).2.2.1`. Use `⟨(hQ w hw).1.1, h1, h2, fun u hu hs => ?_, (hSQ w hw).1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : ((pr w : ℕ) : 𝓞 E) ∈ u.asIdeal` using `by rw [← pr_of_sameK hs, pr_cj]; exact pr_mem u`. Conclude with `(V.shape.up u hu (h.sides E A x hG (pr w) (pr_prime w) (hgQ w hw).1 u hq).2.1).1 w hw hs`. Take `⟨g₀, hg₀⟩ : ∃ g₀, V.Φ g₀ ≠ 0` from `Function.ne_iff.1 V.form.ne`. Establish `hfin` using `Filter.eventually_cofinite.1 (h.cof E a g₀)`. Take `⟨p, hp, S, hpX, hsc⟩` from `hP ((H ∪ C).image pr ∪ (V.S ∪ hfin.toFinset).image pr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hoff : Off V p` using `⟨fun u hu hm => hpX (Finset.mem_union_right _ (Finset.mem_image.2 ⟨u, Finset.mem_union_left _ hu, pr_eq hp.out hm⟩)), g₀, hg₀, fun u hm => by_contra fun hn => hpX (Finset.mem_union_right _ (Finset.mem_image.2 ⟨u, Finset.mem_union_right _ (hfin.mem_toFinset.2 hn), pr_eq hp.out hm⟩ …`. Take `⟨F⟩` from `h.frame E A a p S ha`. Take `⟨r₀, hr₀, hrX, hrp, hspec⟩` from `h.spec E A a p S F x U w₀ Up V ha hsc hG hoff ⟨l, hl, hgl, h0⟩ ((H ∪ C).image pr)`. Take `⟨N, σ, hrN, hKN, hσ, hcomp⟩` from `h.site E A a p S F x U w₀ Up V hG hoff (H ∪ C) pr (fun w hw => ⟨pr_prime w, fun e => hpX (Finset.mem_union_left _ (Finset.mem_image.2 ⟨w, hw, e⟩)), hgQ w hw, pr_mem w, hfree w hw, (hQ w hw).2.2.2.2⟩) r₀ hr₀.pos ((Nat.coprime_primes hr₀ hp.out).2 hrp)`. Take `⟨hL1, hL2, hL3, -, -, -⟩` from `h.lev p S.D S.G S.L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hM1, hM2⟩` from `h.mem E A a p S F d x hd0 hx hG N`. Set `J : Type` to `{z : Mem S.L N × ℂ // Seen F V r₀ z.1 z.2 ∧ (IsDeckM z.1 ∨ ∃ (w : Plc E) (σ' : Site S N w) (i : ℕ), w ∉ H ∧ (∀ v hv, (σ v hv).Compat σ') ∧ IsTM F x σ' i z.1)}`. Set `g : J → Mem S.L N` to `fun j => j.1.1`. Set `θ : J → Qbar l` to `fun j => ι.symm j.1.2`. Take `⟨f, hf, hsp⟩` from `hspec N hrN hKN J g (fun j => j.1.2) fun j => j.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hanti, hexp⟩` from `h.exp E A a p S x U w₀ Up V d hd0 hx hG`. Establish `hdeck : ∀ (w : Plc E) (σ' : Site S N w), σ'.q ≠ r₀ → (∀ k ∈ σ'.K₀, Stab F V k) → Deck g θ σ'.K₀`. Introduce `w σ' hq hst k hk`. Establish `hk1 : k ∈ S.L.KN 1` using `((σ'.isLev k).1 hk).1`. Establish `hkr : k ∈ S.L.KN r₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hL2 _ _ _ _ σ'.isLev (hL3 r₀) (Ideal.mul_le_left.trans (Ideal.span_singleton_le_span_singleton.2 ?_)) hk` and prove the remaining obligations. Establish `hN0 : N.1 ≠ 0` using `by have := N.2.1; omega`. Conclude with `Nat.cast_dvd_cast (Nat.dvd_ordCompl_of_dvd_not_dvd hrN fun hd' => hq ((Nat.prime_dvd_prime_iff_eq σ'.atp.prime hr₀).1 hd'))`. Take `⟨m, hm, rfl⟩` from `hM1 k hk1`. Conclude with `⟨⟨(m, 1), Or.inl ⟨hm, hst _ hk, hkr, rfl⟩, Or.inl hm⟩, hm.1, hm.2.1, rfl, map_one ι.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpl : ∀ w : Plc E, IsPl (D` using `S.D) (RingEquiv.refl E) w w.asIdeal := fun w c c' e => by`. Take `rfl : c' = c` from `RingOfIntegers.ext e`. Conclude with `Iff.rfl`. Establish `hcong : ∀ (w : Plc E) (σ' : Site S N w), Free V w → σ'.q ≠ r₀ → (∀ k ∈ σ'.K₀, Stab F V k) → w ∉ H → (∀ v hv, (σ v hv).Compat σ') → ∀ B, SatU U w B → CongP ι a (D` using `S.D) (RingEquiv.refl E) g θ V.κ w B := by`. Introduce `w σ' hfr hq hst hw hc B hB`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `c : ℂ` to `((V.κ.val w : ℂˣ) : ℂ)⁻¹`. Set `ϑ : ℕ → Qbar l` to `fun i => ι.symm (satEig (Ideal.absNorm w.asIdeal) a B i * c ^ i)`. Use `⟨V.kap.unr w hfr.2.2.2.1, w.asIdeal, ϑ, hpl w, h.cong E A a p S F x hG N w σ' J _ g θ ϑ (hdeck w σ' hq hst) fun i hi => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hM2 w σ' i hi`. Conclude with `⟨⟨(m, (idx m : ℂ) * (satEig (Ideal.absNorm w.asIdeal) a B i * c ^ i)), Or.inr ⟨w, σ', i, B, hfr, hq, hst, hm, hB, rfl⟩, Or.inr ⟨w, σ', i, hw, hc, hm⟩⟩, hm, by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [θ, g, ϑ, c, map_mul, map_natCast]⟩`. Establish `hq0 : 0 < normV w` using `Nat.pos_of_ne_zero (by show Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot)`. Take `⟨e0, e1⟩` from `h.roots (normV w) a hq0 B (h.card E a U w B hB) 1 c (fun i => ι (ϑ i)) fun i _ => by`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ϑ, RingEquiv.apply_symm_apply, one_mul]`. Both sides reduce to the same expression. Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `e0` using `[h0, map_zero]`. Conclude with `zero_ne_one e0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0, ← e1]`. Simplify using `[crystallineComparison.heckePol, Polynomial.map_sum]`. Use `⟨{ p := p, D := S.D, G := S.G, L := S.L, sc := hsc, e := RingEquiv.refl E, n_eq := rfl, N := N, J := J, g := g, θ := θ, κ := V.κ, m := mOf x V.W V.jz, alg := V.kap.alg, lam := V.lam, anti := hanti, f := f, fn := hf, spec := by simpa only [θ, RingEquiv.apply_symm_apply] using hsp, …` and prove the remaining obligations. Use `⟨(finite_pr (E := E) ((N.1 * e * p).primeFactors ∪ V.S.image pr)).toFinset, fun w hw hus _ B hB => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Finset.mem_union, not_or] at hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN0 : N.1 ≠ 0` using `by have := N.2.1; omega`. Establish `hnd : ¬ pr w ∣ N.1 * e * p` using `fun hd' => hw.1 (Nat.mem_primeFactors.2 ⟨pr_prime w, hd', mul_ne_zero (mul_ne_zero hN0 he0.ne') hp.out.ne_zero⟩)`. Establish `hN : ¬ pr w ∣ N.1` using `fun hd' => hnd ((hd'.mul_right _).mul_right _)`. Take `⟨_, hs⟩` from `hsq w hus`. Establish `hgw : A.Good (pr w)` using `he (pr w) hs fun hd' => hnd ((hd'.mul_left _).mul_right _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ', hq, hK⟩` from `h.triv E A a p S x hG N (pr w) (pr_prime w) (fun e' => hnd (Dvd.intro_left _ (by rw [e']))) hgw hN w (pr_mem w)`. Establish `hnS : ∀ u ∈ V.S, pr u ≠ pr w` using `fun u hu e' => hw.2 (Finset.mem_image.2 ⟨u, hu, e'⟩)`. Use `hcong w σ' ⟨hus.1, fun hm => hnS w hm rfl, fun hm => hnS _ hm (pr_cj w), fun u hu hs' => hnS u hu ?_, (h.sides E A x hG _ (pr_prime w) hgw.1 w (pr_mem w)).1⟩ (fun e' => hN (by rw [← hq, e']; exact hrN)) (by rw [hK]; exact hKN) (fun hm => hN (hσ w (Finset.mem_union_left _ hm)).1) …` and prove the remaining obligations. Rewrite using `[← pr_cj u]`. Conclude with `pr_of_sameK hs'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hq, ← e', (hσ v hv).2.1]`. Conclude with `(hσ v hv).1`. Establish `hv'` using `Finset.mem_union_left C hv`. Establish `hq : (σ v hv').q ≠ r₀` using `fun e' => hrX (Finset.mem_image.2 ⟨v, hv', by rw [← e', (hσ v hv').2.1]⟩)`. Use `⟨V.kap.unr v (hfree v hv').2.2.2.1, ⟨v.asIdeal, hpl v, h.good E A a p S F x hG N v (σ v hv') J _ g θ (hdeck v _ hq (hσ v hv').2.2) fun j => j.2.2.imp_right ?_⟩, fun τ _ => ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `⟨w, σ', i, hw, hc, hm⟩`. Conclude with `⟨w, σ', i, fun e' => hw (e' ▸ hv), hc v hv', hm⟩`. Take `⟨s, hs, hj⟩` from `hexp τ`. Use `⟨s, fun _ y => hs y, fun lam hlam j hj' => ?_⟩` and prove the remaining obligations. Take `⟨hh, i, h1, h2⟩` from `hj lam hlam j hj'`.
-
-Conclude with `⟨(0 : Fin 1), hh, i, h1, h2⟩`. Establish `hw'` using `Finset.mem_union_right H hw`. Establish `hq : (σ w hw').q ≠ r₀` using `fun e' => hrX (Finset.mem_image.2 ⟨w, hw', by rw [← e', (hσ w hw').2.1]⟩)`. Conclude with `hcong w (σ w hw') (hfree w hw') hq (hσ w hw').2.2 (hHC w hw) (fun v hv => hcomp v hv w hw') B hB`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem master (h : All) {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ}
     (ha : Odd a) {d : ℕ} (hd : FieldOK E l d) {x : E} (hx : x ^ 2 = -(d : E)) {w₀ : Plc E} (h0 : ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal)
@@ -280,19 +274,19 @@ theorem master (h : All) {E : Type} [Field E] [NumberField E] [IsCMField E] {l :
     exact hcong w (σ w hw') (hfree w hw') hq (hσ w hw').2.2 (hHC w hw) (fun v hv => hcomp v hv w hw') B hB
 
 /- English proof (translation)
-Introduce `E _ _ _ l _ ι a ha d hd x hx T _ w₀ v' h0 hv hap h1 S U hU hTy _ hsph`. Establish `hl : l.Prime` using `Fact.out`. Establish `hus : ∀ w : Plc E, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → UsPl d w` using `fun w hw => ⟨by_contra fun hn => (hd.2.2.2 w hn).1 hw, fun q hq hm => by`. Take `rfl : q = l` from `(pr_eq hq hm).symm.trans (pr_eq hl hw)`. Conclude with `hd.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv0 : SameK x v' w₀` using `sameK_symm h1`. Establish `M` using `fun H C => master h ι ha hd hx h0 hU.1 hTy H C`. Use `⟨?_, fun w hw hlw hs => ?_, fun w hlw hk ha0 hav hs => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨P, hP, -⟩` from `M {v'} ∅ (by simp) (by`. Simplify using `only [Finset.union_empty, Finset.mem_singleton, forall_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hus _ hv, hap, hsph, fun _ => hv0, fun _ _ _ => Iff.rfl⟩)`. Conclude with `⟨P, hP _ (by simp)⟩`. Establish `hne : pr w ≠ l` using `fun e => hlw (e ▸ pr_mem w)`. Establish `hvl : pr v' = l` using `pr_eq hl hv`. Take `⟨P, hP, hC⟩` from `M {v'} {w} (by simp only [Finset.mem_singleton, forall_eq]; rintro rfl; exact hlw hv) (by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_union, Finset.mem_singleton, forall_eq_or_imp, forall_eq]`. Use `⟨⟨hus _ hv, hap, hsph, fun _ => hv0, fun _ _ _ => Iff.rfl, fun e => absurd (e.symm.trans hvl) hne⟩, hw, ?_, hs, fun e => absurd e hne, fun e => absurd (e.trans hvl) hne, fun _ _ _ => Iff.rfl⟩` and prove the remaining obligations. Introduce `e`. Use `hlw ?_` and prove the remaining obligations. Establish `h2 : ((l : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ (w₀.under (𝓞 (maximalRealSubfield E))).asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) _ ∈ w₀.asIdeal`. Simplify using `using h0`. Rewrite `h2` using `[← e]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) _ ∈ w.asIdeal at h2`. Simplify using `using h2)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨P, hP _ (by simp), hC _ (by simp)⟩`. Take `⟨P, hP, -⟩` from `M {v', w} ∅ (by simp) (by`. Simplify using `only [Finset.union_empty, Finset.mem_insert, Finset.mem_singleton, forall_eq_or_imp, forall_eq]`. Conclude with `⟨⟨hus _ hv, hap, hsph, fun _ => hv0, fun _ _ _ => Iff.rfl, fun _ => sameK_symm hk⟩, hus _ hlw, ha0, hs, fun _ => sameK_trans hk hv0, fun _ => hk, fun _ _ _ => Iff.rfl⟩)`. Conclude with `⟨P, hP _ (by simp), hP _ (by simp)⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hC⟩` from `M {v'} {w} (by simp only [Finset.mem_singleton, forall_eq]; rintro rfl; exact hav rfl) (by`. Simplify using `only [Finset.mem_union, Finset.mem_singleton, forall_eq_or_imp, forall_eq]`. Conclude with `⟨⟨hus _ hv, hap, hsph, fun _ => hv0, fun _ _ _ => Iff.rfl, fun _ => sameK_symm hk⟩, hus _ hlw, ha0, hs, fun _ => sameK_trans hk hv0, fun _ => hk, fun _ _ _ => Iff.rfl⟩)`. Conclude with `⟨P, hP _ (by simp), hC _ (by simp)⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem planEx_of (h : All) : PlanEx := by
   intro E _ _ _ l _ ι a ha d hd x hx T _ w₀ v' h0 hv hap h1 S U hU hTy _ hsph

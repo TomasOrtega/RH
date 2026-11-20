@@ -14,9 +14,9 @@ namespace GlobalTheory.RecOne
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed`. Consider the case `exact _root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed`. Consider the case `(apply _root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_residue_pow_pow_eq (l : ℕ) [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω) (hl1 : A.valuation (l : Ω) < 1) (xA : A) :
@@ -30,23 +30,21 @@ theorem exists_residue_pow_pow_eq (l : ℕ) [Fact l.Prime] {Ω : Type} [Field Ω
   | (intros; exact _root_.GlobalTheory.ResiduePowerFixed.residue_pow_fixed ..)
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ A hO a`. Establish `hl : l.Prime` using `Fact.out`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hl1 : A.valuation (l : Ω) < 1` using `GlobalTheory.Ord2.VanishNarrow.valuation_lt_one hO`. Take `⟨N, hN, hr⟩` from `exists_residue_pow_pow_eq l A hl1 (a : A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a ^ (l ^ (N - 1)), ?_⟩` and prove the remaining obligations. Establish `hb : ((a ^ (l ^ (N - 1)) : fixA A) : A) ^ l = (a : A) ^ (l ^ N)`. Rewrite using `[SubmonoidClass.coe_pow, ← pow_mul, ← pow_succ, Nat.sub_add_cancel hN]`. Rewrite using `[hb]`. Use `set cA : A := (a : A) - (a : A) ^ (l ^ N) with hcA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcfix : cA ∈ fixA A` using `(fixA A).sub_mem a.2 ((fixA A).pow_mem a.2 _)`. Establish `hcm : cA ∈ maximalIdeal A`. Rewrite using `[← residue_eq_zero_iff, hcA, map_sub, map_pow, hr, sub_self]`. Establish `hcv : A.valuation (cA : Ω) < 1`. Use `(A.valuation_lt_one_iff _).1 hcm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the argument to an intermediate assertion.
 
-Simplify using `using this`. It suffices to establish `h : ∃ z : A, cA = (l : A) * z by`. Take `⟨z, hz⟩` from `h`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, hcA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hvl0 : A.valuation (l : Ω) ≠ 0` using `(_root_.map_ne_zero _).2 hl0`. Distinguish the cases in `hc0 : (cA : Ω) = 0`. Conclude with `⟨0, by rw [mul_zero]; exact Subtype.ext hc0⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `GlobalTheory.InertiaFixedValue.valuation_eq_zpow_of_ine_fixed l Ω A hO (cA : Ω) hc0 (mem_fixA.1 hcfix)`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Rewrite `hk` using `[zpow_natCast]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite `hk` using `[pow_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hk hcv.ne`. Establish `hz : A.valuation ((cA : Ω) / (l : Ω)) ≤ 1`. Rewrite using `[map_div₀, hk, ← Nat.sub_add_cancel hn, pow_succ, mul_div_assoc, div_self hvl0, mul_one]`. Conclude with `pow_le_one' hl1.le _`. Use `⟨⟨(cA : Ω) / (l : Ω), (A.valuation_le_one_iff _).1 hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(cA : Ω) = (l : Ω) * ((cA : Ω) / (l : Ω))`. Rewrite using `[mul_div_cancel₀ _ hl0]`. It suffices to derive a contradiction. Rewrite `hk` using `[zpow_neg, zpow_natCast]`. Establish `e : A.valuation (cA : Ω) * A.valuation (l : Ω) ^ n = 1`.
-
-Rewrite using `[hk, inv_mul_cancel₀ (pow_ne_zero _ hvl0)]`. Establish `: A.valuation (cA : Ω) * A.valuation (l : Ω) ^ n ≤ A.valuation (cA : Ω)` using `mul_le_of_le_one_right' (pow_le_one' hl1.le _)`. Rewrite `this` using `[e]`. Conclude with `absurd hcv (not_lt.2 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixA_eq_pow_add_mul : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω), OverL l A → ∀ a : fixA A, ∃ (b : fixA A) (z : A), (a : A) = (b : A) ^ l + (l : A) * z := by

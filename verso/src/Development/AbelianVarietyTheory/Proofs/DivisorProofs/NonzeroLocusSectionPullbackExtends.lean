@@ -17,7 +17,7 @@ open GlobalTheory.PrimSec GlobalTheory.AbLaw
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-The claim follows from `M.ar.isIntegral; genericPoint M.X ∈ Set.range M.j := by haveI := M.ar.isIntegral have := M.ar.finite have := M.ar.isDomain haveI := HtSelfInter.charZero_residueField_genericPoint M.ar.charZero have h0 := Mean4O.asIdeal_eq_bot M.p (genericPoint M.X) have hr : genericPoint M.X ∈ Se …`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem_range (M : TrueGeo.Model Y) :
     haveI := M.ar.isIntegral; genericPoint M.X ∈ Set.range M.j := by
@@ -37,11 +37,11 @@ theorem genericPoint_mem_range (M : TrueGeo.Model Y) :
   rw [← hz, ← M.pb.isoPullback_inv_fst, Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Use `haveI := M.ar.isIntegral`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `genericPoint_mem_range M`. Establish `hb : M.X.basicOpen a ≠ ⊥` using `fun h => hne ((basicOpen_eq_bot_iff a).1 h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hb`. Establish `hη : genericPoint M.X ∈ M.X.basicOpen a` using `((genericPoint_spec M.X).mem_open_set_iff (M.X.basicOpen a).isOpen).2 ⟨x, trivial, hx⟩`. Establish `: y ∈ M.j ⁻¹ᵁ M.X.basicOpen a` using `by rw [Scheme.Hom.mem_preimage, hy]; exact hη`. Rewrite `this` using `[Scheme.preimage_basicOpen]`. Express the relevant statement in the definitionally equal form `y ∈ Y.X.basicOpen ((M.j.app W).hom a) at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ha, Scheme.basicOpen_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem app_injective (M : TrueGeo.Model Y) (W : M.X.Opens) : Function.Injective (M.j.app W).hom := by
   haveI := M.ar.isIntegral
@@ -58,11 +58,9 @@ theorem app_injective (M : TrueGeo.Model Y) (W : M.X.Opens) : Function.Injective
   exact this
 
 /- English proof (translation)
-Use `choose V hV b hx hb using h`. Establish `hc : U ≤ ⨆ x : U, V x.1 x.2` using `fun x hxU => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx x hxU⟩`. Take `⟨s, hs, -⟩` from `M.X.sheaf.existsUnique_gluing' (fun x : U => V x.1 x.2) U (fun x => homOfLE (hV x.1 x.2)) hc (fun x => b x.1 x.2) (fun x y => by`. Apply `app_injective M` to reduce the goal to its premises. Use `(app_rs M.j inf_le_left _).trans (Eq.trans ?_ (app_rs M.j inf_le_right _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, hb]`. Conclude with `(rs_rs _ _ _).trans (rs_rs _ _ _).symm)`. Use `⟨s, Y.X.sheaf.eq_of_locally_eq' (fun x : U => M.j ⁻¹ᵁ V x.1 x.2) (M.j ⁻¹ᵁ U) (fun x => homOfLE fun _ hy => hV x.1 x.2 hy) ?_ _ _ fun x => ?_⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨M.j y, hy⟩, hx _ hy⟩`.
-
-Conclude with `(app_rs M.j (hV x.1 x.2) s).symm.trans ((congrArg _ (hs x)).trans (hb x.1 x.2))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_extension (M : TrueGeo.Model Y) {U : M.X.Opens} (t : Γ(Y.X, M.j ⁻¹ᵁ U))
     (h : ∀ x ∈ U, ∃ (V : M.X.Opens) (hV : V ≤ U) (b : Γ(M.X, V)), x ∈ V ∧
@@ -88,27 +86,23 @@ end GlobalTheory.ModelSecExt
 open GlobalTheory.PrimSec GlobalTheory.AbLaw GlobalTheory.ModelSecExt in
 
 /- English proof (translation)
-Introduce `F _ _ Y M B hB t`. Use `haveI := M.ar.isIntegral`. Use `haveI := M.ar.isNoetherian`. Establish `hx : ∀ x : M.X, ∃ (i : B.ι) (W : M.X.Opens), IsAffineOpen W ∧ x ∈ W ∧ W ≤ B.U i`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show x ∈ ⨆ i, B.U i from hB.cover ▸ trivial)`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWU⟩` from `M.X.isBasis_affineOpens.exists_subset_of_mem_open hi (B.U i).isOpen`. Conclude with `⟨i, W, hW, hxW, hWU⟩`. Use `choose ci Wx hWa hxW hWle using hx`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun x => (Wx x : Set M.X)) (fun x => (Wx x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose π b hπ hb using fun x => exists_numerator M.pb (hWa x) (loc t (ci x) (hWle x))`. Set `c : 𝓞 F` to `∏ x ∈ S, π x`. Establish `hc : algebraMap (𝓞 F) F c ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `Finset.prod_ne_zero_iff.2 fun x _ => hπ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : ∀ x ∈ S, ∃ b' : Γ(M.X, Wx x), (M.j.app (Wx x)).hom b' = cst Y.str (M.j ⁻¹ᵁ Wx x) (algebraMap (𝓞 F) F c) * loc t (ci x) (hWle x)`. Introduce `x hxS`. Use `⟨cst M.p (Wx x) (∏ y ∈ S.erase x, π y) * b x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, app_cst M.pb.w, hb, ← mul_assoc, ← map_mul, ← map_mul, Finset.prod_erase_mul _ _ hxS]`. Use `choose! b' hb' using hb'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i, ∃ s : Γ(M.X, B.U i), (M.j.app (B.U i)).hom s = cst Y.str (M.j ⁻¹ᵁ B.U i) (algebraMap (𝓞 F) F c) * loc t i le_rfl`. Introduce `i`. Use `exists_extension M _ fun x hx => ?_` and prove the remaining obligations. Take `⟨z, hzS, hxz⟩` from `Set.mem_iUnion₂.1 (hS (Set.mem_univ x))`. Establish `hV : B.U i ⊓ Wx z ≤ B.U i` using `inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : B.U i ⊓ Wx z ≤ B.U (ci z)` using `inf_le_right.trans (hWle z)`. Use `⟨B.U i ⊓ Wx z, hV, rs M.X (le_inf hV hk) (B.g i (ci z)).val * rs M.X inf_le_right (b' z), ⟨hx, hxz⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, app_rs M.j (inf_le_right : B.U i ⊓ Wx z ≤ Wx z) (b' z), hb' z hzS, map_mul, rs_cst, rs_loc t (ci z) (hWle z) (inf_le_right : B.U i ⊓ Wx z ≤ Wx z), map_mul, rs_cst, rs_loc t i le_rfl hV, loc_trans t i (ci z) (le_rfl.trans hV) hk]`. Expand and normalize the polynomial expressions, which then agree. Use `choose s hs using key`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hunit : ∀ W : Y.X.Opens, IsUnit (cst Y.str W (algebraMap (𝓞 F) F c))` using `fun W => (IsUnit.mk0 _ hc).map _`. Use `⟨⟨s, fun i k => ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Apply `app_injective M` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(M.j.app _).hom (rs M.X inf_le_left (s i)) = (M.j.app _).hom (_ * rs M.X inf_le_right (s k))`. Rewrite using `[map_mul, app_rs, app_rs, hs, hs, map_mul, map_mul, rs_cst, rs_cst, rs_loc t _ _ inf_le_left, rs_loc t _ _ inf_le_right, loc_trans t i k _ inf_le_right, rs_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ i, y ∈ M.j ⁻¹ᵁ B.U i → (M.j y ∈ M.X.basicOpen (s i) ↔ y ∈ Y.X.basicOpen (t.f (fun _ => i)))`. Introduce `i hy`. Express the relevant statement in the definitionally equal form `y ∈ M.j ⁻¹ᵁ M.X.basicOpen (s i) ↔ _`. Rewrite using `[Scheme.preimage_basicOpen]`.
+Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `y ∈ Y.X.basicOpen ((M.j.app (B.U i)).hom (s i)) ↔ _`. Rewrite using `[hs, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (hunit _)]`. Conclude with `⟨fun h => (mem_basicOpen_rs _ _ hy).1 h.2, fun h => ⟨hy, (mem_basicOpen_rs _ _ hy).2 h⟩⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
-
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hy : y ∈ M.j ⁻¹ᵁ B.U i` using `M.X.basicOpen_le (s i) hi`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i, (hmem i hy).1 hi⟩`. Introduce `h`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`.
-
-Establish `hy : y ∈ M.j ⁻¹ᵁ B.U (k PUnit.unit)` using `Set.mem_iInter.1 (Y.X.basicOpen_le (t.f k) hk) PUnit.unit`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k PUnit.unit, (hmem (k PUnit.unit) hy).2 hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ModelSecExt.main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (B : LB M.X),
     B.IsLB → ∀ t : (B.pull M.j).Sec, ∃ s : B.Sec, ∀ y : Y.X,

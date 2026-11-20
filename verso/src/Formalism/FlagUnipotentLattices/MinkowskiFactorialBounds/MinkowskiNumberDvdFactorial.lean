@@ -9,13 +9,11 @@ open Matrix
 namespace Formalism.HermitianLatticeCounting.P
 
 /- English proof (translation)
-Introduce `ι _ r f D sg H₁ Hh hf hH hHh hD0 hsg hD`. Establish `hp0 : (0:ℝ) < (2 * H₁) ^ (2 * r)`. Establish `: (0:ℝ) < 2 * H₁` using `by linarith`. Check the signs of the components of the expression. Establish `h1 : ∀ v, D v ≤ (2 * H₁) ^ (2 * r) * sg v` using `fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `hD v` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ hp0]`. Rewrite using `[mul_comm]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hf, ← pow_mul, ← pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Hh * ∏ v, sg v ^ 2 := by`.
-
-Apply `mul_le_mul_of_nonneg_right hHh` to reduce the goal to its premises. Conclude with `Finset.prod_nonneg (fun v _ => by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem norm_singular_value_bound : Formalism.HermitianLatticeCounting.S6.NormSgBound := by
   intro ι _ r f D sg H₁ Hh hf hH hHh hD0 hsg hD
@@ -36,9 +34,9 @@ theorem norm_singular_value_bound : Formalism.HermitianLatticeCounting.S6.NormSg
         exact Finset.prod_nonneg (fun v _ => by positivity)
 
 /- English proof (translation)
-Introduce `f x k hf hx`. Establish `hx1 : (1:ℝ) ≤ x` using `by exact_mod_cast hx`. Establish `hx0 : (0:ℝ) < x` using `by linarith`. Establish `h1` using `Formalism.SLP.Final.omegaPow (2 * f) x (by omega) hx`. Establish `e : (((2 * f : ℕ) : ℝ)) = 2 * (f : ℝ)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, the goal using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_add hx0, Real.rpow_natCast, mul_comm]`. Use `_ ≤ (x : ℝ) ^ ((k : ℝ) + (1 + Real.logb 2 (2 * f))) := Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficient_field_bound : Formalism.HermitianLatticeCounting.S6.CfBound := by
   intro f x k hf hx
@@ -56,9 +54,9 @@ theorem coefficient_field_bound : Formalism.HermitianLatticeCounting.S6.CfBound 
         Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)
 
 /- English proof (translation)
-Introduce `E _ _ M _ _ _ _ f x hE hx`. Take `⟨h1, h2⟩` from `hS E M x hx`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hf : 1 ≤ f`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[hE]`. Establish `h3 : (({N : Submodule (NumberField.RingOfIntegers E) M | N.toAddSubgroup.index = x}.ncard : ℕ) : ℝ) ≤ ((2 * f : ℕ) : ℝ) ^ (Nat.primeFactorsList x).length * (x : ℝ) ^ Module.finrank (NumberField.RingOfIntegers E) M` using `by exact_mod_cast h2`. Conclude with `le_trans h3 (hC f x _ hf hx)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sublatticeCount_of (hS : Formalism.SLP.SubmoduleIndexCountO) (hC : Formalism.HermitianLatticeCounting.S6.CfBound) :
     Formalism.HermitianLatticeCounting.S6.SublatticeCount := by
@@ -75,13 +73,13 @@ lemma sublatticeCount_of (hS : Formalism.SLP.SubmoduleIndexCountO) (hC : Formali
   exact le_trans h3 (hC f x _ hf hx)
 
 /- English proof (translation)
-The claim follows from `sublatticeCount_of Formalism.SLP.Final.submoduleIndexCountO coefficient_field_bound`.
+A detailed English derivation is pending.
 -/
 theorem sublattice_count_alt : Formalism.HermitianLatticeCounting.S6.SublatticeCount :=
   sublatticeCount_of Formalism.SLP.Final.submoduleIndexCountO coefficient_field_bound
 
 /- English proof (translation)
-Introduce `k j D hD`. Rewrite using `[← Real.rpow_add hD]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponential_identity : Formalism.HermitianLatticeCounting.S6.ExpIdentity := by
   intro k j D hD
@@ -90,9 +88,9 @@ theorem exponential_identity : Formalism.HermitianLatticeCounting.S6.ExpIdentity
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `σ _`. Establish `h1 : ‖Equiv.Perm.sign σ • ∏ i, M (σ i) i‖ = ‖∏ i, M (σ i) i‖`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[h1, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (n.factorial : ℝ) * β ^ n := by`. Simplify using `[Fintype.card_perm]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_det_le (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (β : ℝ) (hM : ∀ i j, ‖M i j‖ ≤ β) :
     ‖M.det‖ ≤ (n.factorial : ℝ) * β ^ n := by
@@ -112,9 +110,9 @@ lemma norm_det_le (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (β : ℝ) (hM : �
         simp [Fintype.card_perm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert p s hp ih`. Rewrite using `[Finset.prod_insert hp]`. Apply `Nat.Coprime.mul_dvd_of_dvd_of_dvd _ (h p (Finset.mem_insert_self _ _)) (ih (fun q hq => hs q (Finset.mem_insert_of_mem hq)) (fun q hq => h q (Finset.mem_insert_of_mem hq)))` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.Coprime.prod_right` to reduce the goal to its premises. Introduce `q hq`. Apply `Nat.Coprime.pow` to reduce the goal to its premises. Conclude with `(Nat.coprime_primes (hs p (Finset.mem_insert_self _ _)) (hs q (Finset.mem_insert_of_mem hq))).2 (fun hpq => hp (hpq ▸ hq))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma prod_primepow_dvd (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) (e : ℕ → ℕ) (n : ℕ)
     (h : ∀ p ∈ s, p ^ e p ∣ n) : ∏ p ∈ s, p ^ e p ∣ n := by
@@ -132,17 +130,17 @@ lemma prod_primepow_dvd (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) (e : ℕ �
       (fun hpq => hp (hpq ▸ hq))
 
 /- English proof (translation)
-Introduce `N`. Unfold `minkowskiM`. Apply `prod_primepow_dvd _ (fun p hp => (Finset.mem_filter.1 hp).2)` to reduce the goal to its premises. Introduce `p hp`. Establish `hpp : p.Prime` using `(Finset.mem_filter.1 hp).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Fact.mk hpp` as an intermediate fact. Establish `hp2 : 2 ≤ p` using `hpp.two_le`. Rewrite using `[padicValNat_dvd_iff_le (Nat.factorial_ne_zero _)]`. Establish `hlog : Nat.log p (2 * N) < N + 2`. Distinguish the cases in `h0 : 2 * N = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Apply `Nat.log_lt_of_lt_pow h0` to reduce the goal to its premises. Establish `h1 : N < 2 ^ N` using `Nat.lt_two_pow_self`. Establish `h2 : 2 ^ (N + 2) = 4 * 2 ^ N` using `by ring`. Establish `h3 : 2 ^ (N + 2) ≤ p ^ (N + 2)` using `Nat.pow_le_pow_left hp2 _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[padicValNat_factorial hlog, Finset.sum_Ico_eq_sum_range]`. Unfold `minkowskiExp`. Establish `e : N + 2 - 1 = N + 1` using `by omega`. Rewrite using `[e]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Establish `hpos : 0 < p ^ (1 + i)` using `pow_pos (by omega) _`. Establish `hle : p ^ (1 + i) ≤ 2 * (p ^ i * (p - 1))`. Establish `h1 : p ≤ 2 * (p - 1)` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.mul_div_mul_left _ _ (by norm_num : 0 < 2)]`. Use `_ ≤ (2 * N) / p ^ (1 + i) := Nat.div_le_div_left hle hpos`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minkowski_number_dvd_factorial : Formalism.HermitianLatticeCounting.S6.MinkowskiDvdFactorial := by
   intro N
@@ -178,9 +176,9 @@ theorem minkowski_number_dvd_factorial : Formalism.HermitianLatticeCounting.S6.M
     _ ≤ (2 * N) / p ^ (1 + i) := Nat.div_le_div_left hle hpos
 
 /- English proof (translation)
-Introduce `hM hD s f G hG`. Establish `h1` using `(hM (2 * s * f) G hG).trans (hD (2 * s * f))`. Establish `h2` using `Nat.le_of_dvd (Nat.factorial_pos _) h1`. Establish `h3` using `h2.trans (Nat.factorial_le_pow _)`. Establish `e : 2 * (2 * s * f) = 4 * s * f` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[e]`. Conclude with `h3` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem automorphism_bound_of_hyp : Formalism.HermitianLatticeCounting.S6.AutBoundAsm := by
   intro hM hD s f G hG
@@ -192,37 +190,35 @@ theorem automorphism_bound_of_hyp : Formalism.HermitianLatticeCounting.S6.AutBou
   exact_mod_cast h3
 
 /- English proof (translation)
-Introduce `j m A A' Z hyp`. Set `B : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] EuclideanSpace ℂ (Fin m) →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => ∑ a, ∑ b, (A *ᵥ x.ofLp) a * Z a b * star ((A' *ᵥ y.ofLp) b)) (by`. Introduce `x x' y`. Simplify using `only [WithLp.ofLp_add, Matrix.mulVec_add, Pi.add_apply, add_mul, Finset.sum_add_distrib])`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c x y`. Simplify using `only [WithLp.ofLp_smul, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, mul_assoc])`. Use the proof step `(by`. Introduce `x y y'`. Simplify using `only [WithLp.ofLp_add, Matrix.mulVec_add, Pi.add_apply, star_add, mul_add, Finset.sum_add_distrib])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Introduce `c x y`. Simplify using `only [WithLp.ofLp_smul, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum, starRingEnd_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Use the proof step `ring)`. Establish `hBdef : ∀ x y, B x y = ∑ a, ∑ b, (A *ᵥ x.ofLp) a * Z a b * star ((A' *ᵥ y.ofLp) b)` using `fun _ _ => rfl`. Establish `hB1 : ∀ x y : EuclideanSpace ℂ (Fin m), ‖x‖ = 1 → ‖y‖ = 1 → ‖B x y‖ ≤ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `x y hx hy`. Rewrite using `[hBdef]`. Apply `hyp` to reduce the goal to its premises. Use `EuclideanSpace.norm_sq_eq x` as an intermediate fact. Rewrite `this` using `[hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm.le`. Use `EuclideanSpace.norm_sq_eq y` as an intermediate fact. Rewrite `this` using `[hy]`. Simplify using `using this.symm.le`. Establish `hB : ∀ x y, ‖B x y‖ ≤ 2 * ‖x‖ * ‖y‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Introduce `x y`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hy0 : ‖y‖ ≠ 0` using `norm_ne_zero_iff.2 hy`. Establish `h1` using `hB1 (((‖x‖ : ℂ))⁻¹ • x) (((‖y‖ : ℂ))⁻¹ • y) (by rw [norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hx0]) (by rw [norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hy0])`. Establish `e0 : B (((‖x‖ : ℂ))⁻¹ • x) (((‖y‖ : ℂ))⁻¹ • y) = (((‖x‖ : ℂ))⁻¹ * ((‖y‖ : ℂ))⁻¹) * B x y`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_inv₀, Complex.conj_ofReal, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e0, norm_mul, norm_mul, norm_inv, norm_inv, Complex.norm_real, Complex.norm_real, norm_norm, norm_norm]`. Establish `hxp : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `hyp' : 0 < ‖y‖` using `norm_pos_iff.2 hy`. Establish `e : ‖x‖⁻¹ * ‖y‖⁻¹ * ‖B x y‖ = ‖B x y‖ / (‖x‖ * ‖y‖)` using `by field_simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[e, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `u : Fin j → EuclideanSpace ℂ (Fin m)` to `fun i => WithLp.toLp 2 (fun l => star (A i l))`. Set `w : Fin j → EuclideanSpace ℂ (Fin m)` to `fun i => WithLp.toLp 2 (fun l => star (A' i l))`. Establish `hgram : ∀ (M : Matrix (Fin j) (Fin m) ℂ), Matrix.gram ℂ (fun i => (WithLp.toLp 2 (fun l => star (M i l)) : EuclideanSpace ℂ (Fin m))) = M * Mᴴ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `M`. Use extensionality with `i k`. Rewrite using `[Matrix.gram_apply, PiLp.inner_apply, Matrix.mul_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.conjTranspose_apply, mul_comm]`. Establish `hmv : ∀ (M : Matrix (Fin j) (Fin m) ℂ) (i a : Fin j), (M *ᵥ (fun l => star (M i l))) a = (M * Mᴴ) a i`. Introduce `M i a`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hmat : (Matrix.of fun i k => B (u i) (w k)) = (A * Aᴴ)ᵀ * Z * ((A' * A'ᴴ)ᴴ)ᵀ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i k`. Simplify using `only [Matrix.of_apply, hBdef, u, w, hmv]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply (M := (A * Aᴴ)ᵀ), Matrix.transpose_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Formalism.SLP.Final.sesqDet _ _ B 2 hB j u w`. Rewrite `h` using `[hmat, hgram A, hgram A', Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, Matrix.det_conjTranspose, norm_mul, norm_mul, norm_star]`. Use `set p := ‖(A * Aᴴ).det‖ with hp`. Use `set q := ‖(A' * A'ᴴ).det‖ with hq`. Use `set z := ‖Z.det‖ with hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hp0 : 0 ≤ p` using `norm_nonneg _`. Establish `hq0 : 0 ≤ q` using `norm_nonneg _`. Apply `le_of_pow_le_pow_left₀ two_ne_zero (by positivity)` to reduce the goal to its premises. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt hp0, Real.sq_sqrt hq0, ← pow_mul, mul_comm j 2]`. Distinguish the cases in `hpq : p * q = 0`.
-
-Rewrite using `[hpq, zero_mul]`. Check the signs of the components of the expression. Establish `hpos : 0 < p * q` using `lt_of_le_of_ne (mul_nonneg hp0 hq0) (Ne.symm hpq)`. Apply `le_of_mul_le_mul_left _ hpos` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exterior_power_bound : Formalism.HermitianLatticeCounting.S6.ExtPowerBound := by
   intro j m A A' Z hyp
@@ -321,15 +317,15 @@ theorem exterior_power_bound : Formalism.HermitianLatticeCounting.S6.ExtPowerBou
       _ = p * q * 2 ^ (2 * j) := by ring
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M6` using `by linarith`. Establish `hmE : M6 ≤ 2 * (M6 * L)`. Use `mul_le_mul_of_nonneg_left hL2 hM0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE32 : 32 ≤ M6 * L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hE0 : 0 ≤ M6 * L` using `by linarith`. Establish `hQQ : 0 ≤ Q * Q * (M6 * L)` using `mul_nonneg (mul_nonneg hQ hQ) hE0`. Establish `hCE0 : M6 * L ≤ C * (M6 * L)` using `le_mul_of_one_le_left hE0 hC`. Establish `e : (16 * C + Q * Q) * M6 * L = 16 * (C * (M6 * L)) + Q * Q * (M6 * L)` using `by ring`. Rewrite `hyp` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkk : kR * lam ≤ kR * kR` using `mul_le_mul_of_nonneg_left hlk hk0`. Establish `hQ32 : Q * Q ≤ Q * Q * (M6 * L)` using `le_mul_of_one_le_right (mul_nonneg hQ hQ) (by linarith)`. Use `⟨?_, ?_, ?_, hmE, by linarith, by linarith⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h' : kR < 8` using `not_le.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `mul_self_lt_mul_self hk0 h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `h`. Establish `h' : kR < m` using `not_le.1 h`. Use `mul_self_lt_mul_self hk0 h'` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `h`. Establish `h' : kR < Q` using `not_le.1 h`. Use `mul_self_lt_mul_self hk0 h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma fs_sizes (C m M6 Q L kR lam : ℝ) (hC : 1 ≤ C) (hM64 : 64 ≤ M6) (hmM : m * m ≤ M6)
     (hQ : 0 ≤ Q) (hL2 : 1 / 2 ≤ L) (hk0 : 0 ≤ kR) (hlk : lam ≤ kR)
@@ -363,15 +359,15 @@ lemma fs_sizes (C m M6 Q L kR lam : ℝ) (hC : 1 ≤ C) (hM64 : 64 ≤ M6) (hmM 
     linarith
 
 /- English proof (translation)
-Establish `hf0 : 0 ≤ fR` using `by linarith`. Establish `hk0 : 0 ≤ kR` using `by linarith`. Establish `hfl : 0 ≤ fR * lam` using `mul_nonneg hf0 hl0`. Establish `b0 : kR * lam ≤ kR * fR * lam`. Establish `h1` using `mul_nonneg (mul_nonneg hk0 hl0) (sub_nonneg.2 hf1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : kR * fR * lam - kR * lam = kR * lam * (fR - 1)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b2 : 2 * (C * M6 * fR * L) ≤ kR * fR * lam / 8`. Establish `h` using `mul_le_mul_of_nonneg_left hCE hf0`. Establish `e1 : 2 * (C * M6 * fR * L) = fR * (16 * C * (M6 * L)) / 8` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : fR * (kR * lam) = kR * fR * lam` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b3 : 2 * ((kR - 2) * fR * lC) ≤ kR * fR * lam / 8`. Establish `h1 : (kR - 2) * fR * (16 * lC) ≤ (kR - 2) * fR * lam` using `mul_le_mul_of_nonneg_left hlogC (mul_nonneg (by linarith) hf0)`. Establish `e1 : 2 * ((kR - 2) * fR * lC) = (kR - 2) * fR * (16 * lC) / 8` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (kR - 2) * fR * lam = kR * fR * lam - 2 * (fR * lam)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b4 : 8 * (fR * lam) ≤ kR * fR * lam`. Establish `h` using `mul_le_mul_of_nonneg_right hk8 hfl`. Establish `e : kR * (fR * lam) = kR * fR * lam` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : M6 + (C * M6 * fR * L + C * M6 * fR * L) + ((kR - 2) * fR * (lC - lam) + (kR - 2) * fR * (lC - lam)) = M6 + 2 * (C * M6 * fR * L) + 2 * ((kR - 2) * fR * lC) - 2 * (kR * fR * lam) + 4 * (fR * lam)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma fs_arith (C M6 L kR fR lam lC : ℝ) (hf1 : 1 ≤ fR) (hk8 : 8 ≤ kR) (hl0 : 0 ≤ lam)
     (hmE : M6 ≤ 2 * (M6 * L)) (hE16 : 16 * (M6 * L) ≤ kR * lam) (hCE : 16 * C * (M6 * L) ≤ kR * lam)
@@ -407,9 +403,9 @@ lemma fs_arith (C M6 L kR fR lam lC : ℝ) (hf1 : 1 ≤ fR) (hk8 : 8 ≤ kR) (hl
   linarith
 
 /- English proof (translation)
-Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Take `⟨t, rfl⟩ : ∃ t, k = j + 2 + t` from `⟨k - (j + 2), by omega⟩`. Establish `e1 : j + 2 + t - 1 - j = t + 1` using `by omega`. Establish `e2 : j + 2 + t - 2 = j + t` using `by omega`. Rewrite using `[e1, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma fs_exp (j k f : ℕ) (hj1 : 1 ≤ j) (hjk : j + 2 ≤ k) : (k - 2) * f ≤ j * (k - 1 - j) * f := by
   apply Nat.mul_le_mul_right
@@ -421,9 +417,9 @@ lemma fs_exp (j k f : ℕ) (hj1 : 1 ≤ j) (hjk : j + 2 ≤ k) : (k - 2) * f ≤
     _ = j * (t + 1) := by ring
 
 /- English proof (translation)
-Use `⟨Finset.sum_nonneg (fun j _ => by positivity), ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ j ∈ Finset.Icc 1 r, A * x ^ (j * (k - 1 - j) * f) ≤ A * x ^ ((k - 2) * f)`. Introduce `j hj`. Take `⟨hj1, hjr⟩` from `Finset.mem_Icc.1 hj`. Apply `mul_le_mul_of_nonneg_left _ hA0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `pow_le_pow_of_le_one hx0 hx1 (fs_exp j k f hj1 (by omega))`. Use `Finset.sum_le_card_nsmul (Finset.Icc 1 r) (fun j => A * x ^ (j * (k - 1 - j) * f)) _ hterm` as an intermediate fact. Rewrite `this` using `[Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fs_sum (A x : ℝ) (hA0 : 0 ≤ A) (hx0 : 0 ≤ x) (hx1 : x ≤ 1) (k r f : ℕ) (hk : r + 2 ≤ k) :
     0 ≤ ∑ j ∈ Finset.Icc 1 r, A * x ^ (j * (k - 1 - j) * f) ∧
@@ -439,29 +435,27 @@ lemma fs_sum (A x : ℝ) (hA0 : 0 ≤ A) (hx0 : 0 ≤ x) (hx1 : x ≤ 1) (k r f 
   exact this
 
 /- English proof (translation)
-Introduce `C hC`. Use `⟨16 * C + C ^ 32, by positivity, ?_⟩` and prove the remaining obligations. Introduce `k r f b d hb hf hd hyp`. Establish `hr0 : (0:ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hmr : ((2 * r + 2 : ℕ) : ℝ) = 2 * r + 2` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `hm : ((2 * r + 2 : ℕ) : ℝ) = m at hyp hmr ⊢`. Establish `hm2 : 2 ≤ m` using `by rw [hmr]; linarith`. Establish `hL2 : 1 / 2 ≤ Real.log b`. Establish `h1 : Real.log 2 ≤ Real.log b` using `Real.log_le_log (by norm_num) hb`. Establish `h2` using `Real.log_two_gt_d9`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Generalize the expression as in `Real.log b = L at hyp hL2 ⊢`. Establish `hf1 : (1:ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hk0 : (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hm6 : (64:ℝ) ≤ m ^ 6`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hm62 : m * m ≤ m ^ 6`. Rewrite using `[← sq]; exact pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `e32 : C ^ 32 = C ^ 16 * C ^ 16` using `by ring`. Rewrite `hyp` using `[e32]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hk8, hkm, hkC, hmE, hE16, hCE⟩` from `fs_sizes C m (m ^ 6) (C ^ 16) L k (Real.log k) hC hm6 hm62 (by positivity) hL2 hk0 (Real.log_le_self hk0) hyp`. Establish `hkpos : (0:ℝ) < k` using `by linarith`. Establish `hl0 : 0 ≤ Real.log (k:ℝ)` using `Real.log_nonneg (by linarith)`. Establish `hlogC : 16 * Real.log C ≤ Real.log (k:ℝ)`. Use `Real.log_le_log (by positivity) hkC` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_pow]`. Simplify using `using this`. Establish `hkN : 2 * r + 2 ≤ k`. Rewrite `hkm` using `[← hm]`. Conclude with `hkm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : 0 < C / (k:ℝ)` using `by positivity`. Establish `hx1 : C / (k:ℝ) ≤ 1`. Rewrite using `[div_le_one hkpos]`. Conclude with `le_trans (le_self_pow₀ hC (by norm_num)) hkC`. Take `⟨hS0, hS1⟩` from `fs_sum (Real.exp (C * m ^ 6 * f * L)) (C / (k:ℝ)) (Real.exp_pos _).le hx0.le hx1 k r f (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(∑ j ∈ Finset.Icc 1 r, Real.exp (C * m ^ 6 * f * L) * (C / (k:ℝ)) ^ (j * (k - 1 - j) * f)) = S at hS0 hS1 ⊢`. Establish `hxn : (C / (k:ℝ)) ^ ((k - 2) * f) = Real.exp ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ)))`. Establish `hncast : (((k - 2) * f : ℕ) : ℝ) = ((k:ℝ) - 2) * f`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 2 ≤ k)]; ring`. Rewrite using `[← hncast, ← Real.log_div (by positivity) hkpos.ne', Real.exp_nat_mul, Real.exp_log hx0]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hS1` using `[hxn]`. Establish `h2r : 2 * (r:ℝ) ^ 2 ≤ Real.exp (m ^ 6)`. Establish `h1 : 2 * (r:ℝ) ^ 2 ≤ m * m` using `by rw [hmr]; nlinarith`. Establish `h2` using `Real.add_one_le_exp (m ^ 6)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `har` using `fs_arith C (m ^ 6) L k f (Real.log k) (Real.log C) hf1 hk8 hl0 hmE hE16 hCE hlogC`. Establish `hmain : 2 * S ^ 2 ≤ Real.exp (-((k:ℝ) * f * Real.log k))`. Combine the equalities or inequalities in the displayed calculation. Use `pow_le_pow_left₀ hS0 hS1 2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = (2 * (r:ℝ) ^ 2) * ((Real.exp (C * m ^ 6 * f * L) * Real.exp (C * m ^ 6 * f * L)) * (Real.exp ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ))) * Real.exp ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ))))) := by ring`. Use `_ ≤ Real.exp (m ^ 6) * ((Real.exp (C * m ^ 6 * f * L) * Real.exp (C * m ^ 6 * f * L)) * (Real.exp ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ))) * Real.exp ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ))))) := mul_le_mul_of_nonneg_right h2r (by positivity)`. Use `_ = Real.exp (m ^ 6 + (C * m ^ 6 * f * L + C * m ^ 6 * f * L) + ((((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ)) + (((k:ℝ) - 2) * f) * (Real.log C - Real.log (k:ℝ)))) := by`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (-((k:ℝ) * f * Real.log k)) := Real.exp_le_exp.2 har`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem final_sum_bound : Formalism.HermitianLatticeCounting.S6.FinalSum := by
   intro C hC
@@ -542,27 +536,27 @@ section DetK
 variable {K U : Type} [Field K] [StarRing K] [AddCommGroup U] [Module K U]
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => intro w; exact ⟨fun a => a.elim0, 1, by simp, fun b => b.elim0, fun a => a.elim0⟩`. Consider the case `succ s ih`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g₀, L₀, hdet, hw₀, horth⟩` from `ih (fun b => w b.castSucc)`. Set `t : Fin s → K` to `fun c => h (w (Fin.last s)) (g₀ c) / h (g₀ c) (g₀ c)`. Set `gl : U` to `w (Fin.last s) - ∑ c, t c • g₀ c`. Set `g : Fin (s + 1) → U` to `Fin.lastCases (motive := fun _ => U) gl g₀`. Set `L : Matrix (Fin (s + 1)) (Fin (s + 1)) K` to `Matrix.of fun b c => Fin.lastCases (motive := fun _ => K) (Fin.lastCases (motive := fun _ => K) 1 t c) (fun b' => Fin.lastCases (motive := fun _ => K) 0 (L₀ b') c) b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hgc : ∀ c, g c.castSucc = g₀ c` using `by intro c; simp [g]`. Establish `hgl : g (Fin.last s) = gl` using `by simp [g]`. Establish `hLcc : ∀ b c, L b.castSucc c.castSucc = L₀ b c` using `by intro b c; simp [L]`. Establish `hLcl : ∀ b : Fin s, L b.castSucc (Fin.last s) = 0` using `by intro b; simp [L]`. Establish `hLlc : ∀ c : Fin s, L (Fin.last s) c.castSucc = t c` using `by intro c; simp [L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLll : L (Fin.last s) (Fin.last s) = 1` using `by simp [L]`. Establish `hglo : ∀ b, h gl (g₀ b) = 0`. Introduce `b`. Simplify using `only [gl, map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single b]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : h (g₀ b) (g₀ b) = 0`. Use `haniso _ h0` as an intermediate fact. Simplify using `[this]`. Simplify using `only [t]`. Rewrite using `[div_mul_cancel₀ _ h0, sub_self]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _ hc`. Rewrite using `[horth c b hc, mul_zero]`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ b) hb`. Use `⟨g, L, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_succ_column L (Fin.last s), Fin.sum_univ_castSucc]`. Simplify using `only [hLcl, hLll, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, mul_one]`. Establish `e : (L.submatrix (Fin.last s).succAbove (Fin.last s).succAbove) = L₀`. Use extensionality with `a b`. Simplify using `[Fin.succAbove_last, hLcc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ((-1 : K)) ^ ((Fin.last s : Fin (s+1)).val + (Fin.last s : Fin (s+1)).val) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e, hdet, e2, one_mul]`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun b' => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [hLlc, hLll, hgc, hgl, one_smul]`. Simplify using `[gl]`. Rewrite using `[Fin.sum_univ_castSucc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hLcc, hLcl, hgc, zero_smul, add_zero]`. Conclude with `hw₀ b'`. Introduce `a b hab`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a', rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨b', rfl⟩ | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgc, hgc]; exact horth a' b' (fun e => hab (by rw [e]))`. Rewrite using `[hgc, hgl, ← herm, hglo, star_zero]`. Rewrite using `[hgl, hgc]`. Conclude with `hglo b'`. Conclude with `absurd rfl hab`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gsK (h : U →ₗ[K] U →ₗ⋆[K] K) (herm : ∀ x y : U, star (h x y) = h y x)
     (haniso : ∀ x : U, h x x = 0 → x = 0) :
@@ -622,7 +616,7 @@ lemma gsK (h : U →ₗ[K] U →ₗ⋆[K] K) (herm : ∀ x y : U, star (h x y) =
       · exact absurd rfl hab
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hu, hw, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, map_smulₛₗ, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Finset.mul_sum, starRingEnd_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bmatK (h' : U →ₗ[K] U →ₗ⋆[K] K) {m : ℕ} (e f : Fin m → U) (A C : Matrix (Fin m) (Fin m) K)
     (u w : Fin m → U) (hu : ∀ i, u i = ∑ k, A i k • e k) (hw : ∀ j, w j = ∑ l, C j l • f l) :
@@ -634,7 +628,7 @@ lemma bmatK (h' : U →ₗ[K] U →ₗ⋆[K] K) {m : ℕ} (e f : Fin m → U) (A
   exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[herm_im σ h hσ herm x]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma herm_real (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x : K, σ (star x) = star (σ x))
     (herm : ∀ x y : U, star (h x y) = h y x) (x : U) : σ (h x x) = (((σ (h x x)).re : ℝ) : ℂ) := by
@@ -643,19 +637,19 @@ lemma herm_real (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀
   · simp [herm_im σ h hσ herm x]
 
 /- English proof (translation)
-Set `c : Fin s → K` to `fun a => h y (g a) / h (g a) (g a)`. Use `set y' : U := y - ∑ a, c a • g a with hy'`. Establish `h1 : ∀ b, h y' (g b) = 0`. Introduce `b`. Simplify using `only [hy', map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single b]`. Simplify using `only [c]`. Rewrite using `[div_mul_cancel₀ _ (hd b), sub_self]`. Introduce `a _ ha`. Rewrite using `[horth a b ha, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb`. Conclude with `absurd (Finset.mem_univ b) hb`. Establish `h2 : h y' y' = h y' y` using `by conv_lhs => rw [hy', (h y').map_sub, map_sum]`. Simplify using `[h1]`. Establish `h3 : h y' y = h y y - ∑ a, c a * h (g a) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hy', map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `h4 : ∀ a, (σ (c a * h (g a) y)).re = ‖σ (h (g a) y)‖ ^ 2 / (σ (h (g a) (g a))).re`. Introduce `a`. Simplify using `only [c]`. Rewrite using `[map_mul, map_div₀, ← herm (g a) y, hσ, herm_real σ h hσ herm (g a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set v := σ (h (g a) y) with hv`. Use `set dd := (σ (h (g a) (g a))).re with hdd`. Establish `e : star v * v = ((‖v‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq]`. Establish `e2 : star v / (dd : ℂ) * v = ((‖v‖ ^ 2 / dd : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, e]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e2, Complex.ofReal_re]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5` using `hnn y'`. Rewrite `h5` using `[h2, h3, map_sub, map_sum, Complex.sub_re, Complex.re_sum]`. Simplify using `only [h4] at h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma besselK (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x : K, σ (star x) = star (σ x))
     (herm : ∀ x y : U, star (h x y) = h y x) (hnn : ∀ x : U, 0 ≤ (σ (h x x)).re) {s : ℕ}
@@ -697,45 +691,45 @@ lemma besselK (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x
 end DetK
 
 /- English proof (translation)
-Introduce `K U _ _ _ _ σ h η hσ herm hpos hη s u w`. Establish `hnn : ∀ x : U, 0 ≤ (σ (h x x)).re`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `(hpos x hx).le`. Establish `haniso : ∀ x : U, h x x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Use `hpos x h0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx]`. Simplify using `at this`. Take `⟨g, Lu, hLu, hu, hgo⟩` from `gsK h herm haniso s u`. Take `⟨g', Lw, hLw, hw, hgo'⟩` from `gsK h herm haniso s w`. Set `β : U →ₗ[K] U →ₗ⋆[K] K` to `h.compl₂ (LinearMap.id - η)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hβ : ∀ x y, β x y = bEta h η x y` using `by intro x y; simp [β, bEta]`. Establish `e1 : (Matrix.of fun a b => bEta h η (u a) (w b)).det = (Matrix.of fun a b => bEta h η (g a) (g' b)).det`. Use `bmatK β g g' Lu Lw u w hu hw` as an intermediate fact. Simplify using `only [hβ] at this`. Rewrite using `[this, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hLu, hLw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2 : ∀ (v gg : Fin s → U) (L : Matrix (Fin s) (Fin s) K), L.det = 1 → (∀ i, v i = ∑ k, L i k • gg k) → (∀ a b, a ≠ b → h (gg a) (gg b) = 0) → (Matrix.of fun a b => h (v a) (v b)).det = ∏ a, h (gg a) (gg a)`. Introduce `v gg L hL hv ho`. Rewrite using `[bmatK h gg gg L L v v hv hv, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hL]`. Establish `: (Matrix.of fun k l => h (gg k) (gg l)) = Matrix.diagonal (fun a => h (gg a) (gg a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, ho a b hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.det_diagonal]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2 u g Lu hLu hu hgo, e2 w g' Lw hLw hw hgo']`. Establish `hn : ∀ gg : Fin s → U, ‖σ (∏ a, h (gg a) (gg a))‖ = ∏ a, (σ (h (gg a) (gg a))).re`. Introduce `gg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod, norm_prod]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[herm_real σ h hσ herm (gg a), Complex.norm_real, Real.norm_of_nonneg (by simpa using hnn (gg a))]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, hn]`. Use `set N : Matrix (Fin s) (Fin s) ℂ := Matrix.of fun a b => σ (bEta h η (g a) (g' b)) with hN`. Establish `hdetN : σ (Matrix.of fun a b => bEta h η (g a) (g' b)).det = N.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdetN]`. Establish `hP : 0 ≤ ∏ a, (σ (h (g a) (g a))).re` using `Finset.prod_nonneg (fun a _ => hnn _)`. Establish `hP' : 0 ≤ ∏ a, (σ (h (g' a) (g' a))).re` using `Finset.prod_nonneg (fun a _ => hnn _)`. Apply `le_of_pow_le_pow_left₀ two_ne_zero (by positivity)` to reduce the goal to its premises. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt hP, Real.sq_sqrt hP']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hz : ∃ a, g a = 0`. Take `⟨a, ha⟩` from `hz`. Establish `: N.det = 0` using `Matrix.det_eq_zero_of_row_eq_zero a (by intro b; simp [hN, ha, bEta])`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hz : ∀ a, g a ≠ 0` using `fun a ha => hz ⟨a, ha⟩`. Establish `hdpos : ∀ a, 0 < (σ (h (g a) (g a))).re` using `fun a => hpos _ (hz a)`. Establish `hd0 : ∀ a, h (g a) (g a) ≠ 0` using `fun a h0 => hz a (haniso _ h0)`. Use `set N' : Matrix (Fin s) (Fin s) ℂ := Matrix.diagonal (fun a => (((Real.sqrt (σ (h (g a) (g a))).re)⁻¹ : ℝ) : ℂ)) * N with hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNN : ‖N.det‖ ^ 2 = ‖N'.det‖ ^ 2 * ∏ a, (σ (h (g a) (g a))).re`. Rewrite using `[hN', Matrix.det_mul, Matrix.det_diagonal, norm_mul, mul_pow, norm_prod, ← Finset.prod_pow]`. Establish `: (∏ a, ‖(((Real.sqrt (σ (h (g a) (g a))).re)⁻¹ : ℝ) : ℂ)‖ ^ 2) * ∏ a, (σ (h (g a) (g a))).re = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `a _`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity), inv_pow, Real.sq_sqrt (hdpos a).le, inv_mul_cancel₀ (hdpos a).ne']`. Combine the equalities or inequalities in the displayed calculation. Establish `hpar : ∀ x : U, (σ (h (x - η x) (x - η x))).re ≤ 4 * (σ (h x x)).re`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : h (x - η x) (x - η x) + h (x + η x) (x + η x) = 4 * h x x`. Simplify using `only [map_sub, map_add, LinearMap.sub_apply, LinearMap.add_apply, hη]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (σ (h (x - η x) (x - η x) + h (x + η x) (x + η x))).re = (σ (4 * h x x)).re` using `by rw [e]`. Rewrite `h1` using `[σ.map_add, σ.map_mul, Complex.add_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (σ 4 * σ (h x x)).re = 4 * (σ (h x x)).re`. Establish `: σ 4 = ((4:ℝ) : ℂ)`. Rewrite using `[map_ofNat]`. Evaluate the numerical expressions. Rewrite using `[this, Complex.re_ofReal_mul]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[h2]`. Use `hnn (x + η x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH` using `Formalism.HadamardInequality.P.hadamard_inequality_holds s N'ᵀ`. Rewrite `hH` using `[Matrix.det_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrow : ∀ b, ∑ a, ‖N'ᵀ b a‖ ^ 2 ≤ 4 * (σ (h (g' b) (g' b))).re`. Introduce `b`. Use `le_trans (le_of_eq ?_) (le_trans (besselK σ h hσ herm hnn g hgo hd0 (g' b - η (g' b))) (hpar (g' b)))` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_apply, hN', Matrix.diagonal_mul, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (by positivity), inv_pow, Real.sq_sqrt (hdpos a).le, hN]`. Simplify using `only [Matrix.of_apply, bEta]`. Rewrite using `[inv_mul_eq_div]`. Establish `hfin : ‖N'.det‖ ^ 2 ≤ (2 ^ s) ^ 2 * ∏ a, (σ (h (g' a) (g' a))).re`. Use `le_trans hH ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, mul_comm s 2, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[hNN]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_form_bound_field : Formalism.HermitianLatticeCounting.S6.DetBBoundK := by
   intro K U _ _ _ _ σ h η hσ herm hpos hη s u w
@@ -847,7 +841,7 @@ theorem det_form_bound_field : Formalism.HermitianLatticeCounting.S6.DetBBoundK 
       _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `automorphism_bound_of_hyp hM minkowski_number_dvd_factorial`.
+A detailed English derivation is pending.
 -/
 theorem autBound_of_minkowskiBound (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound) : Formalism.HermitianLatticeCounting.S6.AutBound :=
   automorphism_bound_of_hyp hM minkowski_number_dvd_factorial

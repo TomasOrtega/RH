@@ -40,12 +40,12 @@ instance (a : O) : DiscreteTopology (Lev a) := ⟨rfl⟩
 def Lev.mk (a : O) : O →ₗ[O] Lev a := (Ideal.span {a} : Submodule O O).mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem Lev.mk_surjective (a : O) : Function.Surjective (Lev.mk a) := Submodule.mkQ_surjective _
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero _).trans Ideal.mem_span_singleton`.
+A detailed English derivation is pending.
 -/
 theorem Lev.mk_eq_zero (a x : O) : Lev.mk a x = 0 ↔ a ∣ x :=
   (Submodule.Quotient.mk_eq_zero _).trans Ideal.mem_span_singleton
@@ -58,12 +58,12 @@ structure IsLev (a : O) (θ : Γ →* Oˣ) (ρ : Representation O Γ M) : Prop w
   act : ∀ g m, ρ g m = (θ g : O) • m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ha, ⟨LinearEquiv.refl O _⟩, fun g m => scalRep_apply (Lev a) θ g m⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLev_lev {a : O} (ha : a ≠ 0) (θ : Γ →* Oˣ) : IsLev a θ (scalRep (Lev a) θ) := ⟨ha, ⟨LinearEquiv.refl O _⟩, fun g m => scalRep_apply (Lev a) θ g m⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ne, h.cyc, fun g m => h.act (φ g) m⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLev.comp {a : O} {θ : Γ →* Oˣ} {ρ : Representation O Γ M} (h : IsLev a θ ρ) {D : Type} [Group D] (φ : D →* Γ) :
     IsLev a (θ.comp φ) (ρ.comp φ : Representation O D M) := ⟨h.ne, h.cyc, fun g m => h.act (φ g) m⟩
@@ -74,14 +74,14 @@ def CobOn (θ : Γ →* Oˣ) (z : Γ → O) (D : Subgroup Γ) : Prop :=
   ∃ a : O, a ≠ 0 ∧ ∃ m : O, ∀ g ∈ D, a * z g = (θ g : O) * m - m
 
 /- English proof (translation)
-Take `⟨a, ha, m, hm⟩` from `h`. Conclude with `⟨a, ha, m, fun g hg => hm g (hD hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CobOn.mono {θ : Γ →* Oˣ} {z : Γ → O} {D D' : Subgroup Γ} (h : CobOn θ z D) (hD : D' ≤ D) : CobOn θ z D' := by
   obtain ⟨a, ha, m, hm⟩ := h
   exact ⟨a, ha, m, fun g hg => hm g (hD hg)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_ne_zero, 0, fun g hg => by simp [h g hg]⟩`.
+Supply the required witnesses or components.
 -/
 theorem cobOn_of_eq_zero [Nontrivial O] (θ : Γ →* Oˣ) {z : Γ → O} {D : Subgroup Γ} (h : ∀ g ∈ D, z g = 0) : CobOn θ z D :=
   ⟨1, one_ne_zero, 0, fun g hg => by simp [h g hg]⟩

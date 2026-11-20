@@ -21,11 +21,11 @@ namespace GlobalTheory.TensorAmple
 open GlobalTheory.CechPic GlobalTheory.HermTensorLB
 
 /- English proof (translation)
-Use `choose e he using fun i => (hperf (l i)).exists`. Set `f : M → (M →ₗ[O] O)` to `fun y => { toFun := fun x => h x y, map_add' := fun a b => hadd a b y, map_smul' := fun c a => hsmul c a y }`. Use `⟨Fintype.linearCombination O e, fun m => ?_⟩` and prove the remaining obligations. Use `(hperf (f (n • m))).unique (fun x => ?_) (fun x => rfl)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h x (n • m) = h x _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym (n • m), hsym (Fintype.linearCombination O e _), Fintype.linearCombination_apply]`. Express the relevant statement in the definitionally equal form `bar (f x (n • m)) = bar (f x _)`. Rewrite using `[map_sum, map_nsmul, map_sum, map_nsmul]`. Express the relevant statement in the definitionally equal form `n • bar (h m x) = ∑ i, bar (h (l i m • e i) x)`. Simplify using `only [hsmul, map_mul, ← hsym, ← he]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul, hl]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_leftInverse {O : Type} [CommRing O] (bar : O →+* O) {M : Type} [AddCommGroup M] [Module O M]
     (h : M → M → O) (hadd : ∀ m m' n, h (m + m') n = h m n + h m' n)
@@ -48,11 +48,11 @@ theorem exists_leftInverse {O : Type} [CommRing O] (bar : O →+* O) {M : Type} 
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `h₂` using `(cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 (laws.mulPull S P 2)`. Rewrite `h₂` using `[cls_linComb P.isLB, Fin.sum_univ_two]`. Establish `h₀ : pull (eSec P.A) (cls P.L P.isLB) = 0` using `(cls_eq_zero_iff (pull_isLB P.isLB _)).2 P.rigid`. Establish `h₁ : pull (1 : T ⟶ P.A).left (cls P.L P.isLB) = 0`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ h₀).trans (map_zero _)`. Establish `h₃` using `congrArg (pull x.left) h₂`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, map_add, map_zsmul, ← pull_comp, Category.comp_id, ← Over.comp_left, Out.mulA, MonObj.comp_pow, map_zero, pow_two, MonObj.comp_mul] at h₃`. Rewrite using `[lam, h₁, add_zero, ← sub_eq_zero, ← neg_eq_zero, ← h₃]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem lam_self (laws : Out.Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : Out.PolAV S) {T : Over S}
     (x : T ⟶ P.A) : lam (cls P.L P.isLB) x x = 2 • pull x.left (cls P.L P.isLB) := by
@@ -70,33 +70,31 @@ theorem lam_self (laws : Out.Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P :
   abel
 
 /- English proof (translation)
-Introduce `laws S _ P _ O _ bar M _ _ h _ _ A _ _ a b t w N N' hN hN' hT H hadj ⟨hbar, hadd, hsmul, hsym⟩ hperf ⟨n, k, l, hn, hl⟩ hw hiso`. Establish `hL` using `P.isLB`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨cub⟩` from `(laws.cube S P ⟨P.L, rig, hL, hrig⟩ rfl).1`. Establish `hΘ : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen` using `⟨cub.t, cub.isGen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `q` to `Out.powIsPowGrp P.A k`. Set `ψ` to `t.mapLeft (IsTensor.pow q a) (LinearMap.pi l)`. Set `p : Fin k → (A ⟶ P.A)` to `fun i => ψ ≫ q.pr i`. Establish `pl : ∀ i, IsLinearHom b a (p i)` using `fun i => (t.isLinearHom_mapLeft _ _).comp (isLinearHom_pr q a i)`. Establish `pm : ∀ i, IsMonHom (p i)` using `fun i => (pl i).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ m i, t.tmul m ≫ p i = a.act (l i m)` using `fun m i => by simp [p, ψ]`. Establish `am` using `a.hom`. Establish `adj : ∀ {T : Over S} (x y : T ⟶ P.A) (c : O), lam (cls P.L hL) (x ≫ a.act c) y = lam (cls P.L hL) x (y ≫ a.act (bar c))`. Introduce `T x y c`. Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).2 (hadj c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (pull (lift x y).left) ((cls_cube_two hL _ _ _).symm.trans (h₀.trans (cls_cube_two hL _ _ _)))`. Simplify `h'` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Establish `base : ∀ {T : Over S} (x y : T ⟶ P.A) (m m' : M), lam (cls N hN) (x ≫ t.tmul m) (y ≫ t.tmul m') = lam (cls P.L hL) (x ≫ a.act (h m m')) y`. Introduce `T x y m m'`. Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb hL _ _)).2 (H m m')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (pull (lift x y).left) ((cls_cube_two hN _ _ _).symm.trans (h₀.trans (cls_cube_two hL _ _ _)))`. Simplify `h'` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Establish `key : ∀ {T : Over S} (x y : T ⟶ A), n • lam (cls N hN) x y = ∑ i, lam (cls P.L hL) (x ≫ p i) (y ≫ p i)`. Introduce `T x y`. Proceed by induction on `x using t.induction_on with`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `one => simp only [MonObj.one_comp, lam_one_left, smul_zero, Finset.sum_const_zero]`. Consider the case `mul x x' hx hx'`. Simplify using `only [MonObj.mul_comp, lam_mul_left hN hT, lam_mul_left hL hΘ, smul_add, hx, hx', Finset.sum_add_distrib]`. Consider the case `tmul m x`. Proceed by induction on `y using t.induction_on with`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction.
 
-Consider the case `one => simp only [MonObj.one_comp, lam_one_right, smul_zero, Finset.sum_const_zero]`. Consider the case `mul y y' hy hy'`. Simplify using `only [MonObj.mul_comp, lam_mul_right hN hT, lam_mul_right hL hΘ, smul_add, hy, hy', Finset.sum_add_distrib]`. Consider the case `tmul m' y`. Set `φ : O →+ Pic T.left` to `AddMonoidHom.mk' (fun c => lam (cls P.L hL) (x ≫ a.act c) y) fun c d => by`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression.
 
-Simplify using `only [a.add, MonObj.comp_mul, lam_mul_left hL hΘ]`. Establish `hφ : ∀ c d, lam (cls P.L hL) (x ≫ a.act c) (y ≫ a.act d) = φ (c * bar d)`. Introduce `c d`. Use `adj (x ≫ a.act c) y (bar d)` as an intermediate fact. Rewrite `this` using `[hbar, Category.assoc, ← a.mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Simplify using `only [Category.assoc, hp, hφ, ← map_sum, ← hl, base, ← nsmul_eq_mul, map_nsmul]`. Both sides reduce to the same expression. Establish `dbl : ∀ x : A ⟶ P.A, 2 • lam (cls P.L hL) x (x ≫ a.act w) = 2 • pull x.left (cls P.L hL)`. Introduce `x`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_nsmul, ← lam_self laws P x]`. Use `nth_rw 2 [lam_comm]`. Rewrite using `[adj, ← lam_mul_right hL hΘ, ← MonObj.comp_mul, ← a.add, hw, a.one, Category.comp_id]`. Establish `hB : (Out.boxLB P.L q.pr).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hψB` using `pull_isLB hB ψ.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `final : LBIso (lbPow ((Out.boxLB P.L q.pr).pull ψ.left) 2) (lbPow N' (2 * n))`. Use `(cls_eq_iff (LB.isLB_linComb hψB _ _) (LB.isLB_linComb hN' _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hψB, cls_lbPow hN', cls_pull hB, cls_linComb hL, (cls_eq_iff hN' (LB.isLB_linComb hN _ _)).2 hiso]`. Use `erw [cls_cube_two hN]`. Rewrite using `[mul_smul, key, map_sum, Finset.smul_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, (pl i).comm, dbl, one_smul, ← pull_comp]`. Both sides reduce to the same expression. Take `⟨r, hr⟩` from `exists_leftInverse bar h hadd hsmul hsym hperf l hl`. Establish `hfin : IsFinite ψ.left` using `GlobalTheory.T.tensor_map_finite_of_split laws S P O M A a b t n k _ r hn hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsAbelianScheme A` using `t.isAbelianScheme P.isAb`. Establish `hG : IsAbelianScheme (Out.powObj P.A k)` using `(IsTensor.pow q a).isAbelianScheme P.isAb`. Establish `hid : IsFinite (𝟙 A : A ⟶ A).left` using `by rw [Over.id_left]; infer_instance`. Establish `a₁` using `(relAmple_finite_pow_iso S A _ ψ _ 1 one_pos hA hG hB hfin).1 (relAmple_boxLB S _ P.A k q P.L hL P.ample)`. Establish `a₂` using `(relAmple_finite_pow_iso S A A (𝟙 A) _ 2 two_pos hA hA hψB hid).2.1.2 a₁`.
-
-Establish `a₃` using `(relAmple_finite_pow_iso S A A (𝟙 A) _ 1 one_pos hA hA (LB.isLB_linComb hψB _ _) hid).2.2.2 _ (LB.isLB_linComb hN' _ _) final a₂`. Conclude with `(relAmple_finite_pow_iso S A A (𝟙 A) N' (2 * n) (by omega) hA hA hN' hid).2.1.1 a₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_tensor : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) [IsCommMonObj P.A] (O : Type) [CommRing O] (bar : O →+* O) (M : Type) [AddCommGroup M] [Module O M] (h : M → M → O) [Module.Finite O M] [Module.Projective O M] (A : Over S) [GrpObj A] [IsCommMonObj A] (a : OAct O P.A) (b : OAct O A) (t : IsTensor A b P.A a M) (w : O) (N N' : LB A.left), N.IsLB → N'.IsLB → (∃ tθ : LB.Gen (Theta A N), tθ.IsGen) → (∀ m n, LBIso (cubeLB A ![fst P.A P.A ≫ t.tmul m, snd P.A P.A ≫ t.tmul n] N) (cubeLB P.A ![fst P.A P.A ≫ a.act (h m n), snd P.A P.A] P.L)) → (∀ c, LBIso (cubeLB P.A ![fst P.A P.A ≫ a.act c, snd P.A P.A] P.L) (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ a.act (bar c)] P.L)) → ((∀ c, bar (bar c) = c) ∧ (∀ m m' n, h (m + m') n = h m n + h m' n) ∧ (∀ (c : O) m n, h (c • m) n = c * h m n) ∧ ∀ m n, h n m = bar (h m n)) → (∀ l : M →ₗ[O] O, ∃! n, ∀ m, l m = h m n) → (∃ (n k : ℕ) (l : Fin k → (M →ₗ[O] O)), 0 < n ∧ ∀ m m', (n : O) * h m m' = ∑ i, l i m * bar (l i m')) → w + bar w = 1 → LBIso N' (cubeLB A ![𝟙 A, b.act w] N) → Out.RelAmple A N' := by
   intro laws S _ P _ O _ bar M _ _ h _ _ A _ _ a b t w N N' hN hN' hT H hadj ⟨hbar, hadd, hsmul, hsym⟩ hperf

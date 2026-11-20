@@ -54,25 +54,21 @@ open GroundTheory.Heights₂.Heights.ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Take `⟨y₀, hy₀O, hgy₀⟩ : x ∈ g '' O` from `hXV ▸ ⟨hxX, hxV⟩`. Establish `hAd : ∀ y ∈ O, A (deriv g y) = 1`. Introduce `y hy`. Establish `h1 : HasDerivAt (fun t ↦ A (g t)) (A (deriv g y)) y` using `A.hasFDerivAt.comp_hasDerivAt y (hg y hy).differentiableAt.hasDerivAt`. Establish `h2 : HasDerivAt (fun t ↦ A (g t)) 1 y` using `(hasDerivAt_id' y).congr_of_eventuallyEq (eventually_of_mem (hO.mem_nhds hy) hAg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.unique h2`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, deriv g y₀ i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : deriv g y₀ = 0` using `funext h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hAd y₀ hy₀O` using `[h0]`. Use `set φ : ℂ → ℂ := fun y ↦ g y i with hφdef`. Establish `hφ : AnalyticOnNhd ℂ φ O` using `fun y hy ↦ ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n ↦ ℂ) i).analyticAt (g y)).comp (hg y hy)`. Establish `hφd : ∀ y ∈ O, HasDerivAt φ (deriv g y i) y` using `fun y hy ↦ hasDerivAt_pi.1 (hg y hy).differentiableAt.hasDerivAt i`. Use `set U : Set ℂ := O ∩ deriv φ ⁻¹' {0}ᶜ with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hU : IsOpen U` using `hφ.deriv.continuousOn.isOpen_inter_preimage hO isOpen_compl_singleton`. Establish `hy₀U : y₀ ∈ U` using `⟨hy₀O, by simpa [(hφd y₀ hy₀O).deriv] using hi⟩`. Establish `hs : HasStrictDerivAt φ (deriv g y₀ i) y₀`. Simplify `(hφ y₀ hy₀O).hasStrictDerivAt` using `[(hφd y₀ hy₀O).deriv]`. Use `set e := ((hs.hasStrictFDerivAt_equiv hi).toOpenPartialHomeomorph φ).restrOpen U hU with hedef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ y, e y = φ y` using `fun _ ↦ rfl`. Establish `hsrc : ∀ {y}, y ∈ e.source → y ∈ U` using `fun hy ↦ hy.2`. Establish `hy₀e : y₀ ∈ e.source` using `⟨(hs.hasStrictFDerivAt_equiv hi).mem_toOpenPartialHomeomorph_source, hy₀U⟩`. Use `⟨hxX, V ∩ A ⁻¹' e.source ∩ (fun z ↦ z i) ⁻¹' e.target, (hV.inter (e.open_source.preimage A.continuous)).inter (e.open_target.preimage (continuous_apply i)), ⟨⟨hxV, ?_⟩, ?_⟩, i, e.target, fun t ↦ g (e.symm t), e.open_target, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show A x ∈ e.source`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hgy₀, hAg y₀ hy₀O]`. Conclude with `hy₀e`. Use `show x i ∈ e.target`. Rewrite using `[← hgy₀, show g y₀ i = e y₀ from rfl]`. Conclude with `e.map_source hy₀e`.
+Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `hyt` using `hsrc (e.map_target ht)`. Establish `hder : HasDerivAt e (deriv φ (e.symm t)) (e.symm t)` using `(hφ _ hyt.1).differentiableAt.hasDerivAt`. Conclude with `((hg _ hyt.1).differentiableAt.comp t (e.hasDerivAt_symm ht hyt.2 hder).differentiableAt).differentiableWithinAt`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.right_inv ht`. Introduce and unpack `z ⟨⟨hzV, hzA⟩, hzi⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hzX`. Take `⟨y, hyO, rfl⟩ : z ∈ g '' O` from `hXV ▸ ⟨hzX, hzV⟩`.
-
-Establish `hye : y ∈ e.source` using `by simpa [hAg y hyO] using hzA`. Use `⟨hzi, ?_⟩` and prove the remaining obligations. Use `show g (e.symm (e y)) = g y`. Rewrite using `[e.left_inv hye]`. Introduce and unpack `⟨ht, hgz⟩`.
-
-Establish `hyO` using `(hsrc (e.map_target ht)).1`. Establish `: z ∈ X ∩ V` using `hXV ▸ ⟨_, hyO, hgz⟩`. Conclude with `this.1`.
+A detailed English derivation is pending.
 -/
 theorem coordinateGraphNear_of_chart {n : ℕ} {X : Set (Fin n → ℂ)} {x : Fin n → ℂ}
     (A : (Fin n → ℂ) →L[ℂ] ℂ) (O : Set ℂ) (V : Set (Fin n → ℂ)) (g : ℂ → Fin n → ℂ)
@@ -139,9 +135,9 @@ theorem coordinateGraphNear_of_chart {n : ℕ} {X : Set (Fin n → ℂ)} {x : Fi
       exact this.1
 
 /- English proof (translation)
-Introduce `n I q _ hdim`. Take `⟨N, hN, hNx⟩` from `GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre n I q hdim`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hN`. Use `⟨ε, hε, fun x hxZ hxb hxq ↦ ?_⟩` and prove the remaining obligations. Take `⟨A, O, V, g, hO, hV, hxV, hg, hAg, hZV⟩` from `hNx x ⟨hxZ, hball hxb⟩ hxq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `coordinateGraphNear_of_chart A O V g hO hV hxV hxZ hg hAg hZV`.
+A detailed English derivation is pending.
 -/
 theorem curveCoordinateGraph : CurveCoordinateGraph.Statement := by
   intro n I q _ hdim
@@ -152,17 +148,15 @@ theorem curveCoordinateGraph : CurveCoordinateGraph.Statement := by
   exact coordinateGraphNear_of_chart A O V g hO hV hxV hxZ hg hAg hZV
 
 /- English proof (translation)
-Establish `hG` using `curveCoordinateGraph`. Establish `hD` using `InjectiveHolomorphicDerivNeZero.proof`. Introduce `n I q hrad hdim`. Take `⟨ε, hε, hgraph⟩` from `hG n I q hrad hdim`. Use `⟨ε, hε, fun φ σ₀ δ hδ hφd hφi hφZ hφε hφq ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ₀ : σ₀ ∈ Metric.ball σ₀ δ` using `Metric.mem_ball_self hδ`. Take `⟨-, W, hWo, hxW, i, V, g, -, -, -, hW⟩` from `hgraph (φ σ₀) (hφZ hσ₀) hφε hφq`. Use `set f : ℂ → ℂ := fun σ ↦ φ σ i with hf`. Use `set D : Set ℂ := Metric.ball σ₀ δ ∩ φ ⁻¹' W with hDdef`. Establish `hDo : IsOpen D` using `hφd.continuousOn.isOpen_inter_preimage Metric.isOpen_ball hWo`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσD : σ₀ ∈ D` using `⟨hσ₀, hxW⟩`. Establish `hφg : ∀ σ ∈ D, g (f σ) = φ σ` using `fun σ hσ ↦ ((hW _ hσ.2).1 (hφZ hσ.1)).2`. Establish `hfd : DifferentiableOn ℂ f D` using `(differentiableOn_pi.1 hφd i).mono Set.inter_subset_left`. Establish `hfi : Set.InjOn f D` using `fun s hs t ht h ↦ hφi hs.1 ht.1 (by rw [← hφg s hs, ← hφg t ht, h])`. Establish `hfa : AnalyticAt ℂ f σ₀` using `hfd.analyticAt (hDo.mem_nhds hσD)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : deriv f σ₀ ≠ 0` using `hD D f hDo hfd hfi σ₀ hσD`. Use `set h := hfa.hasStrictDerivAt.localInverse f (deriv f σ₀) σ₀ hf' with hhdef`. Establish `hha : AnalyticAt ℂ h (f σ₀)` using `hfa.analyticAt_localInverse hf'`. Establish `hh0 : h (f σ₀) = σ₀` using `HasStrictFDerivAt.localInverse_apply_image ..`. Establish `hev : ∀ᶠ y in 𝓝 (f σ₀), AnalyticAt ℂ h y ∧ f (h y) = y ∧ h y ∈ D` using `hha.eventually_analyticAt.and ((hfa.hasStrictDerivAt.eventually_right_inverse hf').and (hha.continuousAt.preimage_mem_nhds (by rw [hh0]; exact hDo.mem_nhds hσD)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hTsub, hTo, hT⟩` from `mem_nhds_iff.1 hev`. Use `⟨W ∩ (fun z ↦ z i) ⁻¹' T, hWo.inter (hTo.preimage (continuous_apply i)), ⟨hxW, hT⟩, fun z ↦ h (z i), fun z hz ↦ ?_, fun z ⟨hzZ, hzW, hzT⟩ ↦ ?_⟩` and prove the remaining obligations. Conclude with `((hTsub hz.2).1.differentiableAt.comp z (differentiableAt_apply i z)).differentiableWithinAt`. Take `⟨-, hfh, hhD⟩` from `hTsub hzT`. Use `⟨h (z i), hhD.1, ?_, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[← hφg _ hhD, hfh]`. Conclude with `((hW z hzW).1 hzZ).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem puncturedCurveDiscInverse : PuncturedCurveDiscInverse.Statement := by
   have hG := curveCoordinateGraph
@@ -197,23 +191,23 @@ theorem puncturedCurveDiscInverse : PuncturedCurveDiscInverse.Statement := by
     exact ((hW z hzW).1 hzZ).2
 
 /- English proof (translation)
-The claim follows from `NormalCurveBranchOrder.proof NormalCurvePointDVR.proof GroundTheory.Heights₂.Heights.AutoClose.UniformiserBranchSimpleZero`.
+A detailed English derivation is pending.
 -/
 theorem normalCurveBranchOrder : NormalCurveBranchOrder.Statement :=
   NormalCurveBranchOrder.proof NormalCurvePointDVR.proof GroundTheory.Heights₂.Heights.AutoClose.UniformiserBranchSimpleZero
 
 /- English proof (translation)
-Establish `hdim' : ringKrullDim (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) = (1 : ℕ)`. Rewrite using `[M.ringKrullDim_eq, hdim]`. Establish `key : ∀ τ ∈ U, ∃ W : Set (Fin n ⊕ Fin M.m → ℂ), IsOpen W ∧ φ τ ∈ W ∧ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∩ W ⊆ φ '' U`. Introduce `τ hτ`. Take `⟨A, O, V, g, hO, hV, hwV, hg, hAg, hZV⟩` from `GroundTheory.Heights₂.Heights.AutoClose.NormalCurveRegularPoint (Fin n ⊕ Fin M.m) M.ideal (φ τ) M.isPrime M.isIntegrallyClosed hdim' (hφZ hτ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set D : Set (Fin 1 → ℂ) := U ∩ φ ⁻¹' V with hD`. Establish `hDo : IsOpen D` using `hφd.continuousOn.isOpen_inter_preimage hU hV`. Establish `hφg : ∀ σ ∈ D, ∃ y ∈ O, g y = φ σ` using `fun σ hσ ↦ by`. Establish `: φ σ ∈ g '' O` using `hZV ▸ ⟨hφZ hσ.1, hσ.2⟩`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgA : ∀ σ ∈ D, g (A (φ σ)) = φ σ` using `fun σ hσ ↦ by`. Take `⟨y, hy, hyφ⟩` from `hφg σ hσ`. Rewrite using `[← hyφ, hAg y hy]`. Establish `hhd : DifferentiableOn ℂ (fun σ ↦ A (φ σ)) D` using `A.differentiable.comp_differentiableOn (hφd.mono Set.inter_subset_left)`. Establish `hhi : Set.InjOn (fun σ ↦ A (φ σ)) D` using `fun s hs t ht h ↦ hφi hs.1 ht.1 (by rw [← hgA s hs, ← hgA t ht]; exact congrArg g h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpen ((fun σ ↦ A (φ σ)) '' D)` using `GroundTheory.Heights₂.Heights.AutoClose.injective_holomorphic_open_holds 1 D _ hDo hhd hhi`. Use `⟨V ∩ A ⁻¹' ((fun σ ↦ A (φ σ)) '' D), hV.inter (hopen.preimage A.continuous), ⟨hwV, τ, ⟨hτ, hwV⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzZ, hzV, σ, hσ, hσz⟩`. Take `⟨y, hy, rfl⟩ : z ∈ g '' O` from `hZV ▸ ⟨hzZ, hzV⟩`. Use `⟨σ, hσ.1, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hgA σ hσ]`. Establish `: A (φ σ) = y` using `hσz.trans (hAg y hy)`. Rewrite using `[this]`. Use `choose! W hWo hWm hWs using key`. Use `⟨⋃ τ ∈ U, W τ, isOpen_biUnion fun τ hτ ↦ hWo τ hτ, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨τ, hτ, rfl⟩`. Conclude with `⟨hφZ hτ, Set.mem_biUnion hτ (hWm τ hτ)⟩`. Introduce and unpack `z ⟨hzZ, hz⟩`. Take `⟨τ, hτ, hzW⟩` from `Set.mem_iUnion₂.1 hz`. Conclude with `hWs τ hτ ⟨hzZ, hzW⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normalModelOpenMappingCurve (n : ℕ) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J) (U : Set (Fin 1 → ℂ)) (φ : (Fin 1 → ℂ) → Fin n ⊕ Fin M.m → ℂ)
@@ -272,35 +266,29 @@ def BranchLiftCurve : Prop :=
 
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets in
 /- English proof (translation)
-Establish `hR` using `RiemannExtensionAnalytic.proof`. Establish `hB` using `GroundTheory.Heights₂.Heights.AutoClose.branchOffHypersurface_holds`. Establish `hP` using `NormalModelProper.proof`. Establish `hO` using `normalModelOpenMappingCurve`. Introduce `n J p M γ hJ hdim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Δ := Metric.ball (0 : Fin 1 → ℂ) γ.radius with hΔ`. Establish `hγd : DifferentiableOn ℂ γ.toFun Δ` using `γ.differentiableOn`. Establish `hγZ : ∀ τ ∈ Δ, γ.toFun τ ∈ zeroSetIn J` using `fun τ hτ => γ.mapsTo hτ`. Use `choose a b hbJ hab using M.birational`. Establish `hpoly : ∀ q : MvPolynomial (Fin n) ℂ, Differentiable ℂ (fun z : Fin n → ℂ => eval z q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq`. Simplify using `only [eval_add]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Simplify using `only [eval_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`. Establish `hcomp : ∀ q, DifferentiableOn ℂ (fun τ => eval (γ.toFun τ) q) Δ` using `fun q => (hpoly q).comp_differentiableOn hγd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : (Fin 1 → ℂ) → ℂ := fun τ => eval (γ.toFun τ) (∏ i, b i) with hg`. Establish `hBJ : (∏ i, b i) ∉ J` using `fun h => by`. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hJ)).1 h`. Conclude with `hbJ i hi`. Establish `hgne : ∀ V, IsOpen V → V ⊆ Δ → V.Nonempty → ∃ t ∈ V, g t ≠ 0` using `fun V hV hVΔ hne => hB n 1 J _ V γ.toFun hJ hdim hBJ hV hne (hγd.mono hVΔ) (γ.injOn.mono hVΔ) fun τ hτ => hγZ τ (hVΔ hτ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbne : ∀ τ, g τ ≠ 0 → ∀ i, eval (γ.toFun τ) (b i) ≠ 0` using `fun τ hτ i h => hτ (by simp only [hg, map_prod]; exact Finset.prod_eq_zero (Finset.mem_univ i) h)`. Use `set f : Fin M.m → (Fin 1 → ℂ) → ℂ := fun i τ => eval (γ.toFun τ) (a i) / eval (γ.toFun τ) (b i)`. Establish `hgraph : ∀ τ ∈ Δ, g τ ≠ 0 → (Sum.elim (γ.toFun τ) fun i => f i τ) ∈ zeroSetIn M.ideal` using `fun τ hτ hgτ => M.graph_mem_zeroSetIn a b hab _ (hγZ τ hτ) (hbne τ hgτ)`. Establish `hfd : ∀ i, DifferentiableOn ℂ (f i) (Δ ∩ {t | g t ≠ 0})` using `fun i τ hτ => by`. Establish `h1` using `(hcomp (a i) τ hτ.1).mono (Set.inter_subset_left (t := {t | g t ≠ 0}))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hcomp (b i) τ hτ.1).mono (Set.inter_subset_left (t := {t | g t ≠ 0}))`. Use `show DifferentiableWithinAt ℂ (fun τ => eval (γ.toFun τ) (a i) / eval (γ.toFun τ) (b i)) _ τ`. Simplify using `only [div_eq_mul_inv]`. Conclude with `h1.mul (h2.inv (hbne τ hτ.2 i))`. Establish `hbdd : ∀ i, ∀ τ ∈ Δ, ∃ N ∈ 𝓝 τ, Bornology.IsBounded (f i '' (N ∩ Δ ∩ {t | g t ≠ 0}))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i τ hτ`. Take `⟨ε, hε, hεΔ⟩` from `Metric.isOpen_iff.1 Metric.isOpen_ball τ hτ`. Establish `hsub : Metric.closedBall τ (ε / 2) ⊆ Δ` using `(Metric.closedBall_subset_ball (by linarith)).trans hεΔ`. Establish `hK : Bornology.IsBounded (γ.toFun '' Metric.closedBall τ (ε / 2))` using `((isCompact_closedBall τ (ε / 2)).image_of_continuousOn (hγd.continuousOn.mono hsub)).isBounded`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (hP n J M _ hK)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨Metric.closedBall τ (ε / 2), Metric.closedBall_mem_nhds τ (by linarith), isBounded_iff_forall_norm_le.2 ⟨C, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨ht, htΔ⟩, hgt⟩, rfl⟩`. Establish `hw` using `hC _ ⟨hgraph t htΔ hgt, ⟨t, ht, rfl⟩⟩`. Conclude with `(norm_le_pi_norm (Sum.elim (γ.toFun t) fun i => f i t) (Sum.inr i)).trans hw`. Use `choose F hFd hFeq using fun i => hR 1 Δ g (f i) Metric.isOpen_ball ((hpoly _).comp_differentiableOn hγd) hgne (hfd i) (hbdd i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `set Γ : (Fin 1 → ℂ) → Fin n ⊕ Fin M.m → ℂ := fun τ => Sum.elim (γ.toFun τ) fun i => F i τ with hΓ`. Establish `hΓd : DifferentiableOn ℂ Γ Δ`. Use `differentiableOn_pi.2 fun s => ?_` and prove the remaining obligations. Break down `s with j | i` into its components or cases. Simplify `differentiableOn_pi.1 hγd j` using `[hΓ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hFd i` using `[hΓ]`. Establish `hdense : Δ ⊆ closure (Δ ∩ {t | g t ≠ 0})`. Introduce `τ hτ`. Rewrite using `[mem_closure_iff]`. Introduce `o ho hτo`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨t, ⟨hto, htΔ⟩, hgt⟩` from `hgne (o ∩ Δ) (ho.inter Metric.isOpen_ball) Set.inter_subset_right ⟨τ, hτo, hτ⟩`. Conclude with `⟨t, hto, htΔ, hgt⟩`. Establish `hΓZ : ∀ τ ∈ Δ, Γ τ ∈ zeroSetIn M.ideal`. Introduce `τ hτ q hq`. Establish `heq : Set.EqOn (fun t => eval (Γ t) q) (fun _ => (0 : ℂ)) (Δ ∩ {t | g t ≠ 0})`.
-
-Introduce `t ht`. Establish `hΓt : Γ t = Sum.elim (γ.toFun t) fun i => f i t`. Simplify using `only [hΓ]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `hFeq i ht`. Simplify using `only [hΓt]`. Conclude with `hgraph t ht.1 ht.2 q hq`. Conclude with `heq.of_subset_closure ((MvPolynomial.continuous_eval q).comp_continuousOn hΓd.continuousOn) continuousOn_const Set.inter_subset_left hdense hτ`. Establish `hΓinj : Set.InjOn Γ Δ` using `fun s hs t ht hst => γ.injOn hs ht (by`.
-
-Use `congrArg firstCoords hst` as an intermediate fact. Conclude with `this)`. Use `⟨Γ, hΓd, fun τ hτ => ⟨hΓZ τ hτ, rfl⟩, fun V hV hVo => ?_⟩` and prove the remaining obligations. Conclude with `hO n J M V Γ hJ hdim hVo (hΓd.mono hV) (hΓinj.mono hV) fun τ hτ => hΓZ τ (hV hτ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem branchLiftCurve : BranchLiftCurve := by
   have hR := RiemannExtensionAnalytic.proof
@@ -391,15 +379,15 @@ theorem branchLiftCurve : BranchLiftCurve := by
   exact hO n J M V Γ hJ hdim hVo (hΓd.mono hV) (hΓinj.mono hV) fun τ hτ => hΓZ τ (hV hτ)
 
 /- English proof (translation)
-Establish `hD` using `PrimeBranchDimOne.proof`. Establish `hL` using `branchLiftCurve`. Establish `hA` using `NormalModelPlace.proof`. Establish `hO` using `normalCurveBranchOrder`. Introduce `n J q c hJ hdim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdim1` using `hD n J q c hJ hdim`. Take `⟨M⟩` from `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof n J hJ`. Take `⟨Γ, hΓd, hΓ, -⟩` from `hL n J q M c hJ hdim1`. Establish `hr` using `c.radius_pos`. Establish `h0 : (0 : Fin 1 → ℂ) ∈ Metric.ball 0 c.radius` using `Metric.mem_ball_self hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn Γ (Metric.ball 0 c.radius)` using `fun a ha b hb hab ↦ c.injOn ha hb (by rw [← (hΓ a ha).2, ← (hΓ b hb).2, hab])`. Take `⟨P, hP⟩` from `hA n J q M (Γ 0) hJ (hΓ 0 h0).1 ((hΓ 0 h0).2.trans c.map_zero)`. Use `⟨P, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hP f, hO n J M (Γ 0) c.radius Γ hJ hdim1 hr hΓd hinj (fun τ hτ ↦ (hΓ τ hτ).1) rfl]`. Unfold `branchOrder`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `analyticOrderAt_congr` to reduce the goal to its premises. Use `filter_upwards [Metric.ball_mem_nhds (0 : ℂ) hr] with τ hτ`. Establish `hτ' : (fun _ ↦ τ : Fin 1 → ℂ) ∈ Metric.ball (0 : Fin 1 → ℂ) c.radius`. Rewrite `hτ`, the goal using `[mem_ball_zero_iff]`. Conclude with `(pi_norm_const_le τ).trans_lt hτ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[eval_rename, ← (hΓ _ hτ').2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem primeBranchPlace : PrimeBranchPlace.Statement := by
   have hD := PrimeBranchDimOne.proof
@@ -429,19 +417,19 @@ theorem primeBranchPlace : PrimeBranchPlace.Statement := by
   rfl
 
 /- English proof (translation)
-Establish `hC` using `GroundTheory.Heights₂.Heights.AutoClose.BranchInCurveComponent`. Establish `hO` using `GroundTheory.Heights₂.Heights.AutoClose.SameOrdersLiftCentre`. Establish `hL` using `branchLiftCurve`. Introduce `n I q c c' _ hdim hord`. Take `⟨J, hJmin, hJdim, hev⟩` from `hC n I q c hdim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hJ : J.IsPrime` using `hJmin.1.1`. Establish `htop : ∀ f ∈ J, branchOrder c f = ⊤` using `fun f hf ↦ by`. Use `analyticOrderAt_eq_top.2 ?_` and prove the remaining obligations. Establish `hι : Tendsto (fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)) (𝓝 0) (𝓝 0)` using `(continuous_pi fun _ ↦ continuous_id).tendsto' _ _ rfl`. Use `filter_upwards [hι.eventually hev] with τ hτ using hτ f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev'` using `c'.eventually_mem_zeroSet J fun f hf ↦ (hord f).symm.trans (htop f hf)`. Take `⟨ε, hε, hεJ⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Take `⟨ε', hε', hεJ'⟩` from `Metric.eventually_nhds_iff_ball.1 hev'`. Set `γ` to `c.restrictInto J ε hε hεJ`. Set `γ'` to `c'.restrictInto J ε' hε' hεJ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨M⟩` from `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof n J hJ`. Take `⟨Γ, hΓd, hΓ, -⟩` from `hL n J q M γ hJ hJdim`. Take `⟨Γ', hΓ'd, hΓ', hΓ'o⟩` from `hL n J q M γ' hJ hJdim`. Establish `hw : Γ 0 = Γ' 0` using `hO n J q M γ γ' Γ Γ' hJ hJdim hΓd hΓ hΓ'd hΓ' hord`. Take `⟨U, hUo, hU⟩` from `hΓ'o _ subset_rfl Metric.isOpen_ball`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fin 1 → ℂ) ∈ Metric.ball 0 γ.radius` using `Metric.mem_ball_self γ.radius_pos`. Establish `hΓ0U : Γ 0 ∈ U`. Rewrite using `[hw]`. Conclude with `(hU ▸ Set.mem_image_of_mem Γ' (Metric.mem_ball_self γ'.radius_pos)).2`. Establish `hcont : ContinuousAt Γ 0` using `hΓd.continuousOn.continuousAt (Metric.ball_mem_nhds 0 γ.radius_pos)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnear : ∀ᶠ τ in 𝓝[≠] (0 : Fin 1 → ℂ), τ ≠ 0 ∧ τ ∈ Metric.ball 0 γ.radius ∧ Γ τ ∈ U` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Metric.ball_mem_nhds 0 γ.radius_pos), nhdsWithin_le_nhds (hcont.preimage_mem_nhds (hUo.mem_nhds hΓ0U))] with τ h1 h2 h3 using ⟨h1, h2, h3⟩`. Take `⟨τ, hτ0, hτ, hτU⟩` from `hnear.exists`. Take `⟨τ', hτ', hτ'eq⟩ : Γ τ ∈ Γ' '' Metric.ball 0 γ'.radius` from `hU ▸ ⟨(hΓ τ hτ).1, hτU⟩`. Establish `hτc : τ ∈ Metric.ball 0 c.radius` using `Metric.ball_subset_ball (min_le_right _ _) hτ`. Use `⟨c.toFun τ, ⟨⟨τ, hτc, rfl⟩, ⟨τ', Metric.ball_subset_ball (min_le_right _ _) hτ', ?_⟩⟩, fun hq ↦ hτ0 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(hΓ' τ' hτ').2`. Establish `e2` using `(hΓ τ hτ).2`. Rewrite `e1` using `[hτ'eq]`. Conclude with `e1.symm.trans e2`. Conclude with `c.injOn hτc (Metric.mem_ball_self c.radius_pos) (hq.trans c.map_zero.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameOrderBranchesMeet : SameOrderBranchesMeet.Statement := by
   have hC := GroundTheory.Heights₂.Heights.AutoClose.BranchInCurveComponent
@@ -484,7 +472,7 @@ theorem sameOrderBranchesMeet : SameOrderBranchesMeet.Statement := by
   · exact c.injOn hτc (Metric.mem_ball_self c.radius_pos) (hq.trans c.map_zero.symm)
 
 /- English proof (translation)
-The claim follows from `PrimePlaceBranchExists.proof (NormalModelPointOfPlace.proof NormalisationModelLocalization.full ModelLocalizationMaximalPoint.proof LocalizationAtPrimeQuotient.proof) GroundTheory.Heights₂.Heights.AutoClose.NormalModelDisc NormalModelProjectionLocallyInjective.proof normalCurveBr …`.
+A detailed English derivation is pending.
 -/
 theorem primePlaceBranchExists : PrimePlaceBranchExists.Statement :=
   PrimePlaceBranchExists.proof
@@ -493,7 +481,7 @@ theorem primePlaceBranchExists : PrimePlaceBranchExists.Statement :=
     GroundTheory.Heights₂.Heights.AutoClose.NormalModelDisc NormalModelProjectionLocallyInjective.proof normalCurveBranchOrder
 
 /- English proof (translation)
-The claim follows from `PlaceHasBranch.proof (PlaceBranchExists.proof GroundTheory.Heights₂.Heights.AutoClose.PlaceOnComponent primePlaceBranchExists) (PuncturedBranchInOneBranch.proof (BranchImageNhdOffCentre.proof GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre)) (PuncturedBranchSameOrde …`.
+A detailed English derivation is pending.
 -/
 theorem placeHasBranch : PlaceHasBranch.Statement :=
   PlaceHasBranch.proof
@@ -503,7 +491,7 @@ theorem placeHasBranch : PlaceHasBranch.Statement :=
     (PuncturedBranchSameOrder.proof puncturedCurveDiscInverse)
 
 /- English proof (translation)
-The claim follows from `BranchNormalisation.proof GroundTheory.Heights₂.Heights.AutoClose.BranchGermDimOne (BranchPlace.proof BranchInComponent.proof primeBranchPlace MinimalPrimePlace.proof) sameOrderBranchesMeet placeHasBranch GroundTheory.Heights₂.Heights.AutoClose.OrdDeterminesPlace CurveResidueDegr …`.
+A detailed English derivation is pending.
 -/
 theorem branchNormalisation : BranchNormalisation.Statement :=
   BranchNormalisation.proof GroundTheory.Heights₂.Heights.AutoClose.BranchGermDimOne

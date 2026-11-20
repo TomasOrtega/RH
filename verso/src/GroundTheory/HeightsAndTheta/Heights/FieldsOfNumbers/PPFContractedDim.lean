@@ -15,7 +15,7 @@ section Drop
 variable {K : Type*} {ι : K → Type*} {F : Type*} [Field F]
 
 /- English proof (translation)
-Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hPQ) (Ideal.Quotient.factor_surjective hPQ) (r := Ideal.Quotient.mk P f) ?_ ?_` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hfQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_add_one_le {P Q : Ideal (MRing ι F)} [P.IsPrime] (hPQ : P ≤ Q)
     {f : MRing ι F} (hfP : f ∉ P) (hfQ : f ∈ Q) :
@@ -27,7 +27,7 @@ theorem ringKrullDim_add_one_le {P Q : Ideal (MRing ι F)} [P.IsPrime] (hPQ : P 
     exact hfQ
 
 /- English proof (translation)
-Use `lt_of_le_of_lt (ringKrullDim_quotient_le Q) ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`. Conclude with `WithBot.coe_lt_coe.mpr (ENat.natCast_lt_top _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_lt_top [Finite K] [∀ k, Finite (ι k)] (Q : Ideal (MRing ι F)) :
     ringKrullDim (MRing ι F ⧸ Q) < ⊤ := by
@@ -45,14 +45,14 @@ def killBlocks (T : Finset K) : MRing ι F →ₐ[F] MRing ι F :=
   aeval fun v => if v.1 ∈ T then 0 else X v
 
 /- English proof (translation)
-Simplify using `[killBlocks]`.
+Simplify using the standard rewrite rules.
 -/
 theorem killBlocks_X (T : Finset K) (v : Σ k, ι k) :
     killBlocks (F := F) T (X v) = if v.1 ∈ T then 0 else X v := by
   simp [killBlocks]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[killBlocks_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem killBlocks_empty : killBlocks (ι := ι) (F := F) (∅ : Finset K) = AlgHom.id F _ := by
   apply MvPolynomial.algHom_ext
@@ -60,9 +60,9 @@ theorem killBlocks_empty : killBlocks (ι := ι) (F := F) (∅ : Finset K) = Alg
   simp [killBlocks_X]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, killBlocks_X]`. Distinguish the cases in `hv : v.1 ∈ T`. Simplify using `[hv, h hv]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hv, killBlocks_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem killBlocks_comp {T T' : Finset K} (h : T ⊆ T') :
     (killBlocks (ι := ι) (F := F) T').comp (killBlocks T) = killBlocks T' := by
@@ -74,9 +74,9 @@ theorem killBlocks_comp {T T' : Finset K} (h : T ⊆ T') :
   · simp [hv, killBlocks_X]
 
 /- English proof (translation)
-Rewrite using `[killBlocks, aeval_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, algebraMap_eq]`. Use `congr 1`. Conclude with `Finsupp.prod_congr fun v hv => by rw [if_neg (h v hv)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [not_forall, not_not] at h`. Take `⟨v, hv, hT⟩` from `h`. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero hv ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[if_pos hT, zero_pow (Finsupp.mem_support_iff.mp hv)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killBlocks_monomial (T : Finset K) (d : (Σ k, ι k) →₀ ℕ) (c : F) :
     killBlocks T (monomial d c) =
@@ -93,9 +93,9 @@ theorem killBlocks_monomial (T : Finset K) (d : (Σ k, ι k) →₀ ℕ) (c : F)
     rw [if_pos hT, zero_pow (Finsupp.mem_support_iff.mp hv)]
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial d' c`. Rewrite using `[killBlocks_monomial, apply_ite (coeff d), coeff_zero, coeff_monomial]`. Distinguish the cases in `hd : d' = d`. Substitute `hd` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hd]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq, coeff_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_killBlocks (T : Finset K) (q : MRing ι F) (d : (Σ k, ι k) →₀ ℕ) :
     coeff d (killBlocks T q) = if ∀ v ∈ d.support, v.1 ∉ T then coeff d q else 0 := by
@@ -112,9 +112,9 @@ theorem coeff_killBlocks (T : Finset K) (q : MRing ι F) (d : (Σ k, ι k) →�
     split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finset.sum_eq_zero_iff]`. Use `forall₂_congr fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, blockWeight, Pi.single_apply, mul_ite, mul_one, mul_zero]`. Use `Finsupp.mem_support_iff.mp hv` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h hk`. Rewrite `h` using `[if_pos hk.symm]`. Conclude with `this h`. Introduce `h`. Rewrite using `[if_neg (fun hk => h hk.symm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_apply_eq_zero_iff (d : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blockWeight ι) d k = 0 ↔ ∀ v ∈ d.support, v.1 ≠ k := by
@@ -130,13 +130,13 @@ theorem weight_apply_eq_zero_iff (d : (Σ k, ι k) →₀ ℕ) (k : K) :
     rw [if_neg (fun hk => h hk.symm)]
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_killBlocks]`. Distinguish the cases in `hd : coeff d p = 0`. Apply the tactic sequence `split_ifs <;> simp [hd]`. Establish `hw : Finsupp.weight (blockWeight ι) d = b` using `hp hd`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `key : (∀ v ∈ d.support, v.1 ∉ T) ↔ ∀ k ∈ T, b k = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Rewrite using `[← hw, weight_apply_eq_zero_iff]`. Introduce `v hv hvk`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h v hv (hvk ▸ hk)`. Introduce `h v hv hvT`. Use `h v.1 hvT` as an intermediate fact. Rewrite `this` using `[← hw, weight_apply_eq_zero_iff]`. Conclude with `this v hv rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : ∀ k ∈ T, b k = 0`. Rewrite using `[if_pos (key.mpr hb), if_pos hb]`. Rewrite using `[if_neg (fun h => hb (key.mp h)), if_neg hb, coeff_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killBlocks_of_isMultiHomog (T : Finset K) {p : MRing ι F} {b : K → ℕ}
     (hp : IsMultiHomog p b) : killBlocks T p = if ∀ k ∈ T, b k = 0 then p else 0 := by
@@ -160,9 +160,7 @@ theorem killBlocks_of_isMultiHomog (T : Finset K) {p : MRing ι F} {b : K → �
     · rw [if_neg (fun h => hb (key.mp h)), if_neg hb, coeff_zero]
 
 /- English proof (translation)
-Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) q, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp q), map_sum]`. Use `Ideal.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[killBlocks_of_isMultiHomog T (weightedHomogeneousComponent_isWeightedHomogeneous b q)]`. Use `split_ifs`. Conclude with `hQ q hq b`.
-
-Conclude with `Q.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killBlocks_mem_of_isMultiHomogIdeal {Q : Ideal (MRing ι F)} (hQ : IsMultiHomogIdeal Q)
     (T : Finset K) {q : MRing ι F} (hq : q ∈ Q) : killBlocks T q ∈ Q := by
@@ -178,19 +176,17 @@ def killIdeal (Q : Ideal (MRing ι F)) (T : Finset K) : Ideal (MRing ι F) :=
   Q.comap (killBlocks T)
 
 /- English proof (translation)
-Use `choose i hi using hrel`. Establish `hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T'`. Introduce `T T' h q hq`. Express the relevant statement in the definitionally equal form `killBlocks T' q ∈ Q`. Rewrite using `[← killBlocks_comp h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hQ T' _ hq`. Establish `hprime : ∀ T, (killIdeal Q T).IsPrime` using `fun T => Ideal.comap_isPrime _ _`. Establish `hchain : ∀ T : Finset K, ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q)`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `empty`. Establish `: killIdeal Q (∅ : Finset K) = Q`. Use extensionality with `q`. Simplify using `[killIdeal, killBlocks_empty]`. Rewrite using `[this, Finset.card_empty, Nat.cast_zero, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `insert k T hk ih`. Use `hprime T` as an intermediate fact. Establish `hstep` using `ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T)) (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩) (by`. Express the relevant statement in the definitionally equal form `killBlocks T (X ⟨k, i k⟩) ∉ Q`. Rewrite using `[killBlocks_X, if_neg hk]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi k)`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q`. Rewrite using `[killBlocks_X, if_pos (Finset.mem_insert_self k T)]`. Conclude with `Q.zero_mem)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc, add_comm (1 : WithBot ℕ∞)]`. Use `_ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr`. Use `_ ≤ _ := ih`. Use `hprime Finset.univ` as an intermediate fact.
-
-Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MRing ι F ⧸ killIdeal Q Finset.univ)`. Use `hchain Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_le_ringKrullDim [Fintype K] {Q : Ideal (MRing ι F)} [hQp : Q.IsPrime]
     (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q) :

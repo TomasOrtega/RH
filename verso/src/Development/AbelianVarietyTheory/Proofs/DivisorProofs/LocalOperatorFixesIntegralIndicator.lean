@@ -14,18 +14,18 @@ open scoped GlobalTheory.VacAny
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `filter_upwards [a.2.2] with v hv`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem eventually_evFin_mem (a : AF F) : ∀ᶠ v in cofinite, evFin F v a ∈ v.adicCompletionIntegers F := by
   filter_upwards [a.2.2] with v hv
   exact hv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr]`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Establish `hs : ∀ i, (x + w.1) i ∈ v.adicCompletionIntegers F` using `fun i => add_mem (hx i) (h1 i)`. Establish `hd : ∀ a b : κ → Fv F v, (∀ i, a i ∈ v.adicCompletionIntegers F) → (∀ i, b i ∈ v.adicCompletionIntegers F) → a ⬝ᵥ b ∈ v.adicCompletionIntegers F` using `fun a b ha hb => sum_mem fun i _ => mul_mem (ha i) (hb i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem (show x + w.1 ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hs), Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), hψ _ (add_mem (hd _ _ hx h2') (mul_mem h2 (hd _ _ h1 h2')))]`. Simplify using the standard rewrite rules. Establish `hs : ¬ ∀ i, (x + w.1) i ∈ v.adicCompletionIntegers F` using `fun h => hx fun i => by`. Use `sub_mem (h i) (h1 i)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Set.indicator_of_notMem (show x + w.1 ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hs), Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_indicator {κ : Type} [Fintype κ] (v : Pl F) (ψ₀ : AddChar (Fv F v) ℂ)
     (hψ : ∀ y ∈ v.adicCompletionIntegers F, ψ₀ y = 1) (h2 : ⅟(2 : Fv F v) ∈ v.adicCompletionIntegers F)
@@ -51,11 +51,9 @@ theorem schr_indicator {κ : Type} [Fintype κ] (v : Pl F) (ψ₀ : AddChar (Fv 
       Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), mul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ hψ u`. Establish `hO` using `(GlobalTheory.PsiStdCond.psi_std_conductor F ψ hψ).1`. Establish `h2` using `eventually_evFin_mem (F := F) (⅟(2 : AF F))`. Establish `hc1 : ∀ᶠ v in cofinite, ∀ k, evFin F v ((M.co.e u).1 k) ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun k => eventually_evFin_mem _`. Establish `hc2 : ∀ᶠ v in cofinite, ∀ k, evFin F v ((M.co.e u).2 k) ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun k => eventually_evFin_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hO, h2, hc1, hc2] with v hv h2v h1v h2v'`. Rewrite using `[(locOp_rho M.co hψ.1 v u (GlobalTheory.StdVacuum.indicator_mem_SB v)).2]`. Use `schr_indicator v _ (fun y hy => ?_) (by rwa [GlobalTheory.VacAny.evFin_invOf_two] at h2v) _ h1v h2v'` and prove the remaining obligations. Establish `h` using `(hv 1).2 (one_mem _) y hy`. Rewrite `h` using `[one_mul]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_locOp_rho_indicator : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ), IsStd ψ →

@@ -12,13 +12,13 @@ section Derivations
 variable {k H : Type*} [CommRing k] [CommRing H]
 
 /- English proof (translation)
-Establish `key : ∀ m j : ℕ, x ^ m * D x ^ j = 0 → IsNilpotent (D x)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro j h; exact ⟨j, by simpa using h⟩`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `j h`. Establish `h1` using `congr(D $h)`. Rewrite `h1` using `[Derivation.leibniz, Derivation.leibniz_pow D x (m + 1), map_zero]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel] at h1`. Establish `h2 : ((m + 1 : ℕ) : H) * (x ^ m * D x ^ (2 * j + 1)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(D x ^ j) * h1 - D (D x ^ j) * h`. Establish `hu : IsUnit ((m + 1 : ℕ) : H)`. Establish `: IsUnit ((m + 1 : ℕ) : ℚ)`. Rewrite using `[isUnit_iff_ne_zero]`. Conclude with `Nat.succ_ne_zero m` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.map (algebraMap ℚ H)`. Conclude with `ih _ (hu.mul_right_eq_zero.1 h2)`. Take `⟨n, hn⟩` from `hx`. Conclude with `key n 0 (by simp [hn])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isNilpotent_derivation_apply [Algebra k H] [Algebra ℚ H] (D : Derivation k H H) {x : H}
     (hx : IsNilpotent x) : IsNilpotent (D x) := by
@@ -42,15 +42,15 @@ theorem isNilpotent_derivation_apply [Algebra k H] [Algebra ℚ H] (D : Derivati
   exact key n 0 (by simp [hn])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y _`. Simplify using `using h0 y`. Consider the case `succ n ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[pow_succ]`. Use `Submodule.mul_induction_on hy (fun b hb a ha ↦ ?_) (fun a b ha hb ↦ ?_)` and prove the remaining obligations. Establish `e : E (b * a) - ((n + 1 : ℕ) : H) * (b * a) = b * (E a - a) + (E b - n * b) * a`. Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[show n + 1 + 1 = n + 2 from rfl, pow_add]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hb (h1 a ha)`. Rewrite using `[pow_succ I (n + 1)]`. Conclude with `Ideal.mul_mem_mul (ih b hb) ha`. Establish `e : E (a + b) - ((n + 1 : ℕ) : H) * (a + b) = (E a - ((n + 1 : ℕ) : H) * a) + (E b - ((n + 1 : ℕ) : H) * b)`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem derivation_sub_nsmul_mem_pow [Algebra k H] (I : Ideal H) (E : Derivation k H H)
     (h0 : ∀ y, E y ∈ I) (h1 : ∀ y ∈ I, E y - y ∈ I ^ 2) (n : ℕ) :
@@ -89,9 +89,9 @@ theorem invariantDerivation_apply (φ : H →ₗ[k] k)
     invariantDerivation φ hφ y = TensorProduct.rid k H (φ.lTensor H (comul y)) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ s : H ⊗[k] H, counit (R` using `k) (TensorProduct.rid k H (φ.lTensor H s)) = φ (TensorProduct.lid k H ((counit (R := k)).rTensor H s)) := by`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `add s s' h h' => simp only [map_add, h, h']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [mul_comm]`. Rewrite using `[invariantDerivation_apply, key]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem counit_invariantDerivation (φ : H →ₗ[k] k)
     (hφ : ∀ a b, φ (a * b) = counit (R := k) a * φ b + counit (R := k) b * φ a) (y : H) :
@@ -113,31 +113,27 @@ section Cartier
 variable {k H : Type*} [Field k] [CommRing H]
 
 /- English proof (translation)
-Use `set I := RingHom.ker (counitAlgHom k H) with hI`. Establish `hmem : ∀ y, y ∈ I ↔ counit (R` using `k) y = 0 := fun y ↦ by simp [hI, RingHom.mem_ker]`. Establish `: IsNoetherianRing H` using `Algebra.FiniteType.isNoetherianRing k H`. Set `p : H →ₗ[k] H` to `LinearMap.id - Algebra.linearMap k H ∘ₗ counit`. Establish `hp : ∀ y, p y = y - algebraMap k H (counit y)` using `fun y ↦ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpI : ∀ y, p y ∈ I` using `fun y ↦ by simp [hmem, hp]`. Set `q : H →ₗ[k] H ⧸ I ^ 2` to `(Ideal.Quotient.mkₐ k (I ^ 2)).toLinearMap ∘ₗ p`. Establish `hq : ∀ y, q y = Ideal.Quotient.mk (I ^ 2) (p y)` using `fun y ↦ rfl`. Establish `hqmul : ∀ a b, q (a * b) = counit (R` using `k) a • q b + counit (R := k) b • q a := by`. Introduce `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, ← map_smul, ← map_add, hq, hq, Ideal.Quotient.eq]`. Establish `: p (a * b) - p (counit (R` using `k) a • b + counit (R := k) b • a) = p a * p b := by`. Simplify using `only [hp, map_add, map_smul, counit_mul, smul_eq_mul, map_mul, Algebra.smul_def, counit_algebraMap, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, sq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_mul (hpI a) (hpI b)`. Establish `hfin : Module.Finite k (LinearMap.range q)`. Take `⟨s, hs⟩ : I.FG` from `IsNoetherian.noetherian I`. Establish `hle : LinearMap.range q ≤ Submodule.span k (q '' s)`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : q y = q (p y)`. Rewrite using `[hq, hq, hp (p y), (hmem _).1 (hpI y)]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ z ∈ I, q z ∈ Submodule.span k (q '' s)`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite `hz` using `[← hs]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x hx' hx`. Establish `: x ∈ I` using `hs ▸ hx'`. Rewrite using `[smul_eq_mul, hqmul, (hmem x).1 this, zero_smul, add_zero]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[h1]`. Conclude with `h2 _ (hpI y)`. Establish `: Module.Finite k (Submodule.span k (q '' s))` using `Module.Finite.span_of_finite k (s.finite_toSet.image _)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Set `b` to `Module.finBasis k (LinearMap.range q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose z hz using fun i ↦ (b i).2`. Set `φ : _ → H →ₗ[k] k` to `fun i ↦ b.coord i ∘ₗ q.rangeRestrict`. Establish `hφ : ∀ i a c, φ i (a * c) = counit (R` using `k) a * φ i c + counit (R := k) c * φ i a := by`. Introduce `i a c`. Establish `: q.rangeRestrict (a * c) = counit (R` using `k) a • q.rangeRestrict c + counit (R := k) c • q.rangeRestrict a := Subtype.ext (hqmul a c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [φ, LinearMap.comp_apply, this, map_add, map_smul, smul_eq_mul]`. Use `⟨_, fun i ↦ p (z i), fun i ↦ invariantDerivation (φ i) (hφ i), fun i ↦ hpI _, fun y hy ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ i, φ i y • p (z i) - y ∈ I ^ 2`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h2` using `congr(($(b.sum_repr (q.rangeRestrict y)) : H ⧸ I ^ 2))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, ← hz] at h2`. Establish `h3 : Ideal.Quotient.mk (I ^ 2) y = q y`. Rewrite using `[hq, hp, (hmem y).1 hy]`. Simplify using the standard rewrite rules. Rewrite using `[h3, map_sum]`.
-
-Conclude with `h2`. Establish `h2 : ∑ i, p (z i) * p (invariantDerivation (φ i) (hφ i) y) ∈ I ^ 2` using `Ideal.sum_mem _ fun i _ ↦ by rw [sq]; exact Ideal.mul_mem_mul (hpI _) (hpI _)`. Use `add_mem h2 h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← add_sub_assoc, ← Finset.sum_add_distrib]`. Use `congr 2 with i`.
-
-Rewrite using `[hp (invariantDerivation _ _ _), counit_invariantDerivation, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_derivations_sum_sub_mem_sq [Bialgebra k H] [Algebra.FiniteType k H] :
     ∃ (n : ℕ) (x : Fin n → H) (D : Fin n → Derivation k H H),
@@ -210,15 +206,13 @@ theorem exists_derivations_sum_sub_mem_sq [Bialgebra k H] [Algebra.FiniteType k 
   ring
 
 /- English proof (translation)
-Take `⟨m, x, D, hx, hD⟩` from `exists_derivations_sum_sub_mem_sq (k := k) (H := H)`. Use `set I := RingHom.ker (counitAlgHom k H) with hI`. Use `letI : Algebra ℚ H := ((algebraMap k H).comp (algebraMap ℚ k)).toAlgebra`. Set `E : Derivation k H H` to `∑ i, x i • D i`. Establish `hE : ∀ y, E y = ∑ i, x i * D i y` using `fun y ↦ by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr($(map_sum (Derivation.coeFnAddMonoidHom (R := k) (A := H) (M := H)) (fun i ↦ x i • D i) Finset.univ) y)` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Conclude with `this`. Establish `hn` using `derivation_sub_nsmul_mem_pow I E (fun y ↦ by rw [hE]; exact Ideal.sum_mem _ fun i _ ↦ Ideal.mul_mem_right _ _ (hx i)) (fun y hy ↦ by rw [hE]; exact hD y hy)`. Proceed by induction on `n generalizing y with`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Simplify `(hy.map (counitAlgHom k H)).eq_zero` using `[hI, RingHom.mem_ker]`. Establish `h1 : E y ∈ I ^ (n + 1)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE, pow_succ']`. Conclude with `Ideal.sum_mem _ fun i _ ↦ Ideal.mul_mem_mul (hx i) (ih (isNilpotent_derivation_apply _ hy))`. Establish `h2 : (n : H) * y ∈ I ^ (n + 1)` using `by simpa using sub_mem h1 (hn n y (ih hy))`. Establish `hu : IsUnit (n : H)`. Establish `: IsUnit (n : k)`.
-
-Rewrite using `[isUnit_iff_ne_zero]`. Conclude with `hpos.ne'` after adjusting the coercions. Simplify using `using this.map (algebraMap k H)`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ker_counit_pow_of_isNilpotent [CharZero k] [Bialgebra k H] [Algebra.FiniteType k H]
     (n : ℕ) {y : H} (hy : IsNilpotent y) : y ∈ RingHom.ker (counitAlgHom k H) ^ n := by
@@ -251,9 +245,9 @@ theorem mem_ker_counit_pow_of_isNilpotent [CharZero k] [Bialgebra k H] [Algebra.
     exact (Ideal.unit_mul_mem_iff_mem _ hu).1 h2
 
 /- English proof (translation)
-Establish `: IsNoetherianRing H` using `Algebra.FiniteType.isNoetherianRing k H`. Take `⟨r, hr⟩` from `((RingHom.ker (counitAlgHom k H)).mem_iInf_smul_pow_eq_bot_iff y).1 <| by`. Rewrite using `[Submodule.mem_iInf]`. Introduce `n`. Simplify using `using mem_ker_counit_pow_of_isNilpotent n hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨1 - r, ?_, ?_⟩` and prove the remaining obligations. Establish `: counit (R` using `k) (r : H) = 0 := r.2`. Simplify using `[this]`. Rewrite `hr` using `[smul_eq_mul]`. Rewrite using `[sub_mul, hr, one_mul, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_counit_eq_one_mul_eq_zero_of_isNilpotent [CharZero k] [Bialgebra k H]
     [Algebra.FiniteType k H] {y : H} (hy : IsNilpotent y) :
@@ -276,13 +270,13 @@ section Translation
 variable {k H : Type*} [CommRing k] [CommRing H] [HopfAlgebra k H]
 
 /- English proof (translation)
-Set `u : WithConv (H →ₐ[k] H)` to `toConv ((Algebra.ofId k H).comp χ)`. Set `v : WithConv (H →ₐ[k] H)` to `u⁻¹`. Set `e : WithConv (H →ₐ[k] H)` to `toConv (AlgHom.id k H)`. Establish `hu' : ∀ f : H →ₐ[k] H, f.comp u.ofConv = u.ofConv` using `fun f ↦ by`. Use extensionality with `y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[u]`. Establish `hv' : ∀ f : H →ₐ[k] H, f.comp v.ofConv = v.ofConv` using `fun f ↦ by`. Express the relevant statement in the definitionally equal form `f.comp (u.ofConv.comp _) = u.ofConv.comp _`. Rewrite using `[← AlgHom.comp_assoc, hu']`. Establish `he : ∀ f : H →ₐ[k] H, f.comp e.ofConv = f` using `fun f ↦ rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨AlgEquiv.ofAlgHom (e * u).ofConv (e * v).ofConv ?_ ?_, fun y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_convMul_distrib, he, hv', toConv_ofConv, toConv_ofConv, mul_inv_cancel_right]`. Rewrite using `[AlgHom.comp_convMul_distrib, he, hu', toConv_ofConv, toConv_ofConv, inv_mul_cancel_right]`. Establish `h` using `AlgHom.comp_convMul_distrib (counitAlgHom k H) e u`. Establish `h1 : toConv ((counitAlgHom k H).comp e.ofConv) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.convOne_def]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, one_mul]`. Use `congr($h y).trans ?_` and prove the remaining obligations. Simplify using `[u]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_algEquiv_counit_comp_eq (χ : H →ₐ[k] k) :
     ∃ τ : H ≃ₐ[k] H, ∀ y, counit (R := k) (τ y) = χ y := by
@@ -312,13 +306,13 @@ section Reduced
 variable (k H : Type*) [Field k] [CharZero k] [CommRing H] [HopfAlgebra k H]
 
 /- English proof (translation)
-Use `⟨fun y hy ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hA : (Ideal.span {y}).annihilator ≠ ⊤`. Introduce `h`. Establish `: (1 : H) ∈ (Ideal.span {y}).annihilator` using `h ▸ Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hne (by simpa using Submodule.mem_annihilator.1 this y (Ideal.mem_span_singleton_self y))`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hA`. Use `letI := Ideal.Quotient.field m`. Establish `: Module.Finite k (H ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing k (H ⧸ m)`. Set `e : k ≃ₐ[k] H ⧸ m` to `.ofBijective (Algebra.ofId k _) IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `exists_algEquiv_counit_comp_eq (e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ k m))`. Take `⟨s, hs, hsy⟩` from `exists_counit_eq_one_mul_eq_zero_of_isNilpotent (k := k) (hy.map τ)`. Establish `h1 : τ.symm s * y = 0` using `τ.injective (by simpa using hsy)`. Establish `h2 : τ.symm s ∈ m` using `hle (by`. Rewrite using `[Ideal.span, Submodule.mem_annihilator_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1)`. Establish `h3` using `hτ (τ.symm s)`. Rewrite `h3` using `[τ.apply_symm_apply, hs]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 h2] at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isReduced_of_hopfAlgebra_of_isAlgClosed [IsAlgClosed k] [Algebra.FiniteType k H] :
     IsReduced H := by
@@ -343,7 +337,7 @@ theorem isReduced_of_hopfAlgebra_of_isAlgClosed [IsAlgClosed k] [Algebra.FiniteT
   simp [Ideal.Quotient.eq_zero_iff_mem.2 h2] at h3
 
 /- English proof (translation)
-Use `isReduced_of_hopfAlgebra_of_isAlgClosed (AlgebraicClosure k) (AlgebraicClosure k ⊗[k] H)` as an intermediate fact. Conclude with `isReduced_of_injective (Algebra.TensorProduct.includeRight : H →ₐ[k] AlgebraicClosure k ⊗[k] H) (Algebra.TensorProduct.includeRight_injective (algebraMap k _).injective)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_hopfAlgebra [Algebra.FiniteType k H] : IsReduced H := by
   have := isReduced_of_hopfAlgebra_of_isAlgClosed (AlgebraicClosure k) (AlgebraicClosure k ⊗[k] H)
@@ -352,7 +346,7 @@ theorem isReduced_of_hopfAlgebra [Algebra.FiniteType k H] : IsReduced H := by
     (Algebra.TensorProduct.includeRight_injective (algebraMap k _).injective)
 
 /- English proof (translation)
-The claim follows from `have := isReduced_of_hopfAlgebra k H etale_of_isReduced_of_perfectField k H`.
+A detailed English derivation is pending.
 -/
 theorem etale_of_hopfAlgebra [Module.Finite k H] : Algebra.Etale k H :=
   have := isReduced_of_hopfAlgebra k H
@@ -367,7 +361,7 @@ open CategoryTheory AlgebraicGeometry
 universe u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, Spec.fullyFaithful.map_preimage (X := .op Γ(G, ⊤)) (Y := .op R) (G.isoSpec.inv ≫ G ↘ Spec R)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hopfAlgebra_sections (R : CommRingCat.{u}) (G : Scheme.{u}) [G.Over (Spec R)]
     [GrpObj (G.asOver (Spec R))] [IsAffine G] :
@@ -381,11 +375,9 @@ variable {k : Type u} [Field k] [CharZero k] {G : Scheme.{u}} (f : G ⟶ Spec (.
   [GrpObj (Over.mk f)]
 
 /- English proof (translation)
-Use `letI : G.Over (Spec (.of k)) := ⟨f⟩`. Use `letI : GrpObj (G.asOver (Spec (.of k))) := ‹GrpObj (Over.mk f)›`. Take `⟨_, h⟩` from `exists_hopfAlgebra_sections (.of k) G`. Use `replace h : Spec.map (CommRingCat.ofHom (algebraMap k Γ(G, ⊤))) = G.isoSpec.inv ≫ f := h`. Establish `: Algebra.FiniteType k Γ(G, ⊤)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap k Γ(G, ⊤))))`. Rewrite using `[h]`. Use `infer_instance`. Rewrite `h1` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.1 h1`.
-
-Use `isReduced_of_hopfAlgebra k Γ(G, ⊤)` as an intermediate fact. Conclude with `isReduced_of_isAffine_isReduced G`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_grpObj_of_isAffine [IsAffine G] [LocallyOfFiniteType f] : IsReduced G := by
   letI : G.Over (Spec (.of k)) := ⟨f⟩
@@ -401,9 +393,9 @@ theorem isReduced_of_grpObj_of_isAffine [IsAffine G] [LocallyOfFiniteType f] : I
   exact isReduced_of_isAffine_isReduced G
 
 /- English proof (translation)
-Establish `: GeometricallyReduced f`. Use `⟨geometrically_iff_of_commRing_of_isClosedUnderIsomorphisms.2 fun K _ _ ↦ ?_⟩` and prove the remaining obligations. Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap k K).injective`. Set `g : Spec (.of K) ⟶ Spec (.of k)` to `Spec.map (CommRingCat.ofHom <| algebraMap k K)`. Set `: GrpObj (Over.mk (Limits.pullback.snd f g))` to `Over.grpObjMkPullbackSnd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `isReduced_of_grpObj_of_isAffine (Limits.pullback.snd f g)`. Conclude with `smooth_of_grpObj f`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_grpObj_of_isAffine [IsAffine G] [LocallyOfFiniteType f] : Smooth f := by
   have : GeometricallyReduced f := by
@@ -415,11 +407,9 @@ theorem smooth_of_grpObj_of_isAffine [IsAffine G] [LocallyOfFiniteType f] : Smoo
   exact smooth_of_grpObj f
 
 /- English proof (translation)
-Establish `: IsAffine G` using `isAffine_of_isAffineHom f`. Use `isReduced_of_grpObj_of_isAffine f` as an intermediate fact. Take `⟨φ, hφ⟩` from `Spec.map_surjective (G.isoSpec.inv ≫ f)`. It suffices to establish `h : Etale (Spec.map φ) by`. Establish `e : f = G.isoSpec.hom ≫ Spec.map φ` using `by rw [hφ, Iso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `infer_instance`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`. Establish `h1 : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Rewrite `h1` using `[IsFinite.SpecMap_iff]`.
-
-Use `algebraize [φ.hom]`. Conclude with `etale_of_isReduced_of_perfectField k Γ(G, ⊤)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_grpObj_of_isFinite [IsFinite f] : Etale f := by
   have : IsAffine G := isAffine_of_isAffineHom f
@@ -435,9 +425,9 @@ theorem etale_of_grpObj_of_isFinite [IsFinite f] : Etale f := by
   exact etale_of_isReduced_of_perfectField k Γ(G, ⊤)
 
 /- English proof (translation)
-Set `f : Spec (.of H) ⟶ Spec (.of k)` to `Spec.map (CommRingCat.ofHom (algebraMap k H))`. Use `letI : GrpObj (Over.mk f) := instGrpObjSpecAsOverSpec (R := CommRingCat.of k) (A := CommRingCat.of H)`. Establish `: LocallyOfFiniteType f` using `locallyOfFiniteType_specOverSpec (R := CommRingCat.of k) (A := CommRingCat.of H)`. Establish `h` using `smooth_of_grpObj_of_isAffine f`. Rewrite `h` using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingHom.smooth_algebraMap.1 h`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_hopfAlgebra (k H : Type u) [Field k] [CharZero k] [CommRing H] [HopfAlgebra k H]
     [Algebra.FiniteType k H] : Algebra.Smooth k H := by
@@ -463,7 +453,7 @@ variable {K}
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_closureIdeal [Algebra V H] {J : Ideal (K ⊗[V] H)} {x : H} :
     x ∈ closureIdeal K J ↔ (1 : K) ⊗ₜ[V] x ∈ J := Iff.rfl
@@ -473,9 +463,9 @@ section Algebra
 variable [Algebra V H] [IsFractionRing V K] (J : Ideal (K ⊗[V] H))
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : a • x ∈ closureIdeal K J` using `Ideal.Quotient.eq_zero_iff_mem.1 hx`. Rewrite `h1` using `[mem_closureIdeal]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap V (K ⊗[V] H) a)`. Rewrite using `[IsScalarTower.algebraMap_apply V K (K ⊗[V] H)]`. Conclude with `(IsLocalization.map_units K ⟨a, ha⟩).map _`. Rewrite `h1` using `[TensorProduct.tmul_smul, Algebra.smul_def, Ideal.unit_mul_mem_iff_mem _ hu]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_quotient_closureIdeal : Submodule.torsion V (H ⧸ closureIdeal K J) = ⊥ := by
   rw [eq_bot_iff]
@@ -494,7 +484,7 @@ instance isTorsionFree_quotient_closureIdeal [IsDomain V] :
   Submodule.isTorsionFree_iff_torsion_eq_bot.2 (torsion_quotient_closureIdeal J)
 
 /- English proof (translation)
-Use `letI : Algebra H (K ⊗[V] H) := Algebra.TensorProduct.rightAlgebra`. Use `IsLocalization.tensorRight (R := V) (S := H) K (nonZeroDivisors V)` as an intermediate fact. Conclude with `IsLocalization.map_under (Algebra.algebraMapSubmonoid H (nonZeroDivisors V)) (K ⊗[V] H) J`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_closureIdeal :
     (closureIdeal K J).map (Algebra.TensorProduct.includeRight : H →ₐ[V] K ⊗[V] H) = J := by
@@ -516,7 +506,7 @@ theorem baseChangeQuotientClosureIdealEquiv_tmul (a : K) (x : H) :
       Ideal.Quotient.mk J (a ⊗ₜ x) := rfl
 
 /- English proof (translation)
-The claim follows from `IsDedekindDomain.flat_iff_torsion_eq_bot.2 (torsion_quotient_closureIdeal J)`.
+A detailed English derivation is pending.
 -/
 theorem flat_quotient_closureIdeal_of_isDedekindDomain [IsDedekindDomain V] :
     Module.Flat V (H ⧸ closureIdeal K J) :=
@@ -532,19 +522,17 @@ variable {V K H : Type*} [CommRing V] [Field K] [Algebra V K] [CommRing H]
 variable [HopfAlgebra V H] [IsFractionRing V K] (J : Ideal (K ⊗[V] H)) [J.IsHopfIdeal K]
 
 /- English proof (translation)
-Establish `h` using `Submodule.IsCoideal.counit_eq_zero (I := J.restrictScalars K) hx`. Apply `IsFractionRing.injective V K` to reduce the goal to its premises. Simplify `h` using `[Algebra.smul_def]`. Use `antipode_mem x hx := by`. Establish `h` using `Ideal.IsHopfIdeal.antipode_mem (R := K) (I := J) hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Use `map_mkQ_comul_eq_zero x hx := by`. Establish `h` using `Submodule.IsCoideal.map_mkQ_comul_eq_zero (I := J.restrictScalars K) hx`. Set `Q` to `(K ⊗[V] H) ⧸ J.restrictScalars K`. Set `P` to `H ⧸ closureIdeal K J`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `π : H →ₗ[V] P` to `(Ideal.Quotient.mkₐ V (closureIdeal K J)).toLinearMap`. Set `ι : P →ₗ[V] Q` to `((closureIdeal K J).restrictScalars V).liftQ ((J.restrictScalars K).mkQ.restrictScalars V ∘ₗ TensorProduct.mk V K H 1) (fun y hy ↦ (Submodule.Quotient.mk_eq_zero _).2 hy)`. Establish `hι : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((Submodule.Quotient.mk_eq_zero (J.restrictScalars K)).1 hy)`. Establish `hinj : Function.Injective (TensorProduct.map ι ι)`. Establish `: Module.Flat V K` using `IsLocalization.flat K (nonZeroDivisors V)`. Establish `: Module.Flat V Q` using `Module.Flat.trans V K Q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← LinearMap.rTensor_comp_lTensor, LinearMap.coe_comp]`. Conclude with `(Module.Flat.rTensor_preserves_injective_linearMap ι hι).comp (Module.Flat.lTensor_preserves_injective_linearMap ι hι)`. Express the relevant statement in the definitionally equal form `TensorProduct.map π π (comul x) = 0`. Apply `hinj` to reduce the goal to its premises. Apply `(IsLocalization.moduleTensorEquiv (nonZeroDivisors V) K Q Q).symm.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_zero, map_zero, ← h, Algebra.TensorProduct.includeRight_apply, TensorProduct.comul_tmul]`. Generalize the expression as in `comul (R := V) x = t`. Proceed by induction on `t with`. Consider the case `zero => simp only [map_zero, TensorProduct.tmul_zero]`. Consider the case `add a b ha hb => simp only [map_add, TensorProduct.tmul_add, ha, hb]`.
-
-Consider the case `tmul a b`. Simplify using `only [CommSemiring.comul_apply, TensorProduct.map_tmul, TensorProduct.AlgebraTensorModule.tensorTensorTensorComm_tmul]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isHopfIdeal_closureIdeal_of_flat [Module.Flat V (H ⧸ closureIdeal K J)] :
     (closureIdeal K J).IsHopfIdeal V where
@@ -589,7 +577,7 @@ theorem isHopfIdeal_closureIdeal_of_flat [Module.Flat V (H ⧸ closureIdeal K J)
       rfl
 
 /- English proof (translation)
-The claim follows from `have := flat_quotient_closureIdeal_of_isDedekindDomain J isHopfIdeal_closureIdeal_of_flat J`.
+A detailed English derivation is pending.
 -/
 theorem isHopfIdeal_closureIdeal_of_isDedekindDomain [IsDedekindDomain V] :
     (closureIdeal K J).IsHopfIdeal V :=
@@ -601,7 +589,7 @@ end HopfClosure
 section Surjections
 
 /- English proof (translation)
-The claim follows from `RingHom.surjective_of_epi_of_finite f hf`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_epi_of_finite {R S : CommRingCat} (f : R ⟶ S) [CategoryTheory.Epi f]
     (hf : f.hom.Finite) : Function.Surjective f :=
@@ -612,7 +600,7 @@ end Surjections
 section Examples
 
 /- English proof (translation)
-The claim follows from `hx antipode_mem x hx := by have hx' : counit (R := R) x = 0 := hx change counit (R := R) (antipode R x) = 0 simpa using hx' map_mkQ_comul_eq_zero x hx := by have hx' : counit (R := R) x = 0 := hx set π := ((RingHom.ker (counitAlgHom R H)).restrictScalars R).mkQ with hπ have h1 : …`.
+A detailed English derivation is pending.
 -/
 theorem isHopfIdeal_ker_counit (R H : Type*) [CommRing R] [CommRing H] [HopfAlgebra R H] :
     (RingHom.ker (counitAlgHom R H)).IsHopfIdeal R where
@@ -641,17 +629,17 @@ theorem isHopfIdeal_ker_counit (R H : Type*) [CommRing R] [CommRing H] [HopfAlge
       TensorProduct.tmul_zero]
 
 /- English proof (translation)
-The claim follows from `etale_of_hopfAlgebra _ _`.
+A detailed English derivation is pending.
 -/
 example : Algebra.Etale ℚ (AddMonoidAlgebra ℚ (ZMod 3)) := etale_of_hopfAlgebra _ _
 
 /- English proof (translation)
-The claim follows from `smooth_of_hopfAlgebra _ _`.
+A detailed English derivation is pending.
 -/
 example : Algebra.Smooth ℚ (AddMonoidAlgebra ℚ ℤ) := smooth_of_hopfAlgebra _ _
 
 /- English proof (translation)
-The claim follows from `have := isHopfIdeal_ker_counit ℚ (ℚ ⊗[ℤ] AddMonoidAlgebra ℤ (ZMod 3)) isHopfIdeal_closureIdeal_of_isDedekindDomain _`.
+A detailed English derivation is pending.
 -/
 example : (closureIdeal (V := ℤ) ℚ
     (RingHom.ker (counitAlgHom ℚ (ℚ ⊗[ℤ] AddMonoidAlgebra ℤ (ZMod 3))))).IsHopfIdeal ℤ :=

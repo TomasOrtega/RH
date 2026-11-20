@@ -11,9 +11,9 @@ section CSMat
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `hgen : ∀ a b : ι → ℂ, star a ⬝ᵥ b = inner ℂ (WithLp.toLp 2 a : EuclideanSpace ℂ ι) (WithLp.toLp 2 b : EuclideanSpace ℂ ι)`. Introduce `a b`. Simplify using `[PiLp.inner_apply, dotProduct, mul_comm]`. Rewrite using `[hgen u v, hgen u u, hgen v v, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Use `set x : EuclideanSpace ℂ ι := WithLp.toLp 2 u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set y : EuclideanSpace ℂ ι := WithLp.toLp 2 v`. Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) x y`. Simplify using `only [norm_pow, RCLike.norm_ofReal, abs_norm, Complex.norm_real, norm_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cs_dot (u v : ι → ℂ) : ‖star u ⬝ᵥ v‖ ^ 2 ≤ ‖star u ⬝ᵥ u‖ * ‖star v ⬝ᵥ v‖ := by
   have hgen : ∀ a b : ι → ℂ, star a ⬝ᵥ b =
@@ -29,7 +29,7 @@ theorem cs_dot (u v : ι → ℂ) : ‖star u ⬝ᵥ v‖ ^ 2 ≤ ‖star u ⬝�
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `key : ∀ x y : ι → ℂ, star x ⬝ᵥ (s • (Qᴴ * Q)) *ᵥ y = s * (star (Q *ᵥ x) ⬝ᵥ (Q *ᵥ y))`. Introduce `x y`. Rewrite using `[smul_mulVec, dotProduct_smul, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, smul_eq_mul]`. Simplify using `only [key, norm_mul, hs, one_mul]`. Conclude with `cs_dot _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cs_factor (Q : Matrix ι ι ℂ) (s : ℂ) (hs : ‖s‖ = 1) (a b : ι → ℂ) :
     ‖star a ⬝ᵥ (s • (Qᴴ * Q)) *ᵥ b‖ ^ 2 ≤
@@ -45,24 +45,22 @@ theorem cs_factor (Q : Matrix ι ι ℂ) (s : ℂ) (hs : ‖s‖ = 1) (a b : ι 
 end CSMat
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_eq_conjTranspose {m p : Type} (M : Matrix m p ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
   simp [Formalism.UG.cT, conjTranspose_apply]
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Rewrite `hP` using `[cT_eq_conjTranspose]`. Establish `h1 : (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ * (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ = 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← conjTranspose_mul, h1, conjTranspose_one]`. Establish `hM : G.reindex e e = ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ * Formalism.UG.Jpq p q * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Rewrite using `[← hP]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, h1, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc]`. Break down `hpq with rfl | rfl` into its components or cases. Use `⟨e, ((P⁻¹ : GL (Fin p ⊕ Fin 0) ℂ) : Matrix (Fin p ⊕ Fin 0) (Fin p ⊕ Fin 0) ℂ), 1, by simp, ?_⟩` and prove the remaining obligations. Establish `hJ : Formalism.UG.Jpq p 0 = 1`. Use extensionality with `(i | i) (j | j)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Conclude with `i.elim0`. Rewrite using `[hM, hJ, Matrix.mul_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨e, ((P⁻¹ : GL (Fin 0 ⊕ Fin q) ℂ) : Matrix (Fin 0 ⊕ Fin q) (Fin 0 ⊕ Fin q) ℂ), -1, by simp, ?_⟩` and prove the remaining obligations. Establish `hJ : Formalism.UG.Jpq 0 q = -1`. Use extensionality with `(i | i) (j | j)`. Conclude with `i.elim0`. Conclude with `i.elim0`.
-
-Conclude with `j.elim0`. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Rewrite using `[hM, hJ, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_one, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_of_sig {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (p q : ℕ) (h : Formalism.UG.HasSignature G p q)
     (hpq : q = 0 ∨ p = 0) :
@@ -110,7 +108,7 @@ open Formalism.BasicNotions
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, HSpace.gram, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hT_expand (S : HSpace E) (x y : S.V) :
     S.hT x y = ∑ i, ∑ j, star (S.frame.repr x i) * (S.gram i j * S.frame.repr y j) := by
@@ -122,7 +120,7 @@ theorem hT_expand (S : HSpace E) (x y : S.V) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hT_expand]`. Simplify using `only [dotProduct, mulVec, Matrix.map_apply, Pi.star_apply, map_sum, map_mul, hstar, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_hT (S : HSpace E) (φ : E →+* ℂ) (hstar : ∀ a, φ (star a) = star (φ a)) (x y : S.V) :
     φ (S.hT x y) = star (fun i => φ (S.frame.repr x i)) ⬝ᵥ (S.gram.map φ) *ᵥ (fun j => φ (S.frame.repr y j)) := by
@@ -131,9 +129,9 @@ theorem phi_hT (S : HSpace E) (φ : E →+* ℂ) (hstar : ∀ a, φ (star a) = s
     Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[reindex_apply, submatrix_mulVec_equiv]`. Establish `hb : (b ∘ e.symm) ∘ e.symm.symm = b`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Function.comp_apply, Pi.star_apply]`. Conclude with `Equiv.sum_comp e.symm (fun i => star (a i) * (G *ᵥ b) i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_reindex {m ι : Type} [Fintype m] [Fintype ι] (e : m ≃ ι) (G : Matrix m m ℂ) (a b : m → ℂ) :
     star (a ∘ e.symm) ⬝ᵥ (G.reindex e e) *ᵥ (b ∘ e.symm) = star a ⬝ᵥ G *ᵥ b := by
@@ -146,7 +144,7 @@ theorem dot_reindex {m ι : Type} [Fintype m] [Fintype ι] (e : m ≃ ι) (G : M
   exact Equiv.sum_comp e.symm (fun i => star (a i) * (G *ᵥ b) i)
 
 /- English proof (translation)
-Introduce `φ x y`. Apply the tactic sequence `obtain ⟨e, Q, s, hs, hG⟩ := factor_of_sig (S.gram.map φ) (S.sig φ).1 (S.sig φ).2 (hsig φ) (by rcases hdef φ with h | h <;> simp [h])`. Simplify using `only [phi_hT S φ (hstar φ)]`. Rewrite using `[← dot_reindex e, ← dot_reindex e, ← dot_reindex e, hG]`. Conclude with `cs_factor Q s hs _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csAt_of_definite (S : HSpace E) (hstar : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hdef : S.IsDefinite) : CSAt S := by
@@ -158,7 +156,7 @@ theorem csAt_of_definite (S : HSpace E) (hstar : ∀ (φ : E →+* ℂ) a, φ (s
   exact cs_factor Q s hs _ _
 
 /- English proof (translation)
-Introduce `φ x y`. Rewrite using `[← hι x y, ← hι x x, ← hι y y]`. Conclude with `h φ (ι x) (ι y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csAt_of_isomEmb (S S' : HSpace E) (ι : S.V →ₗ[E] S'.V) (hι : HSpace.IsIsomEmb S S' ι) (h : CSAt S') :
     CSAt S := by
@@ -175,19 +173,19 @@ open Formalism.BasicNotions Formalism.MainNotions.flipTwoThree
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Conclude with `@NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ _ D.host.isCMField_hostE _ φ a`.
+A detailed English derivation is pending.
 -/
 theorem host_star (D : D7) (φ : D.host.E →+* ℂ) (a : D.host.E) : φ (star a) = star (φ a) := by
   exact @NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ _ D.host.isCMField_hostE _ φ a
 
 /- English proof (translation)
-The claim follows from `csAt_of_definite (D.sp.X i) (host_star D) (D.sp.X_sig i) (D.sp.X_def i hi)`.
+A detailed English derivation is pending.
 -/
 theorem csAt_X (D : D7) (i : ℕ) (hi : i ≤ D.R.m) : CSAt (D.sp.X i) :=
   csAt_of_definite (D.sp.X i) (host_star D) (D.sp.X_sig i) (D.sp.X_def i hi)
 
 /- English proof (translation)
-The claim follows from `csAt_of_isomEmb D.sp.X' (D.sp.X D.R.m) D.sp.iX' D.sp.iX'_isom (csAt_X D D.R.m le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem csAt_X' (D : D7) : CSAt D.sp.X' :=
   csAt_of_isomEmb D.sp.X' (D.sp.X D.R.m) D.sp.iX' D.sp.iX'_isom (csAt_X D D.R.m le_rfl)
@@ -196,7 +194,7 @@ def FrameCoordAt (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (S : HSpace D.host.E
   ShortFrame S q (msRho D u C₀ n) ∧ CoordCount S q (msRho D u C₀ n) (coordinateLogBound D u C₀ n)
 
 /- English proof (translation)
-The claim follows from `msCount_of_short D C₀ hC fun u => ⟨fun i hi => ⟨((h u).1 i hi).1, csAt_X D i hi, ((h u).1 i hi).2⟩, ⟨(h u).2.1, csAt_X' D, (h u).2.2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem msCount_of_frames (D : D7) (C₀ : ℝ) (hC : 3 ≤ C₀)
     (h : ∀ u : D.what₂.Word,
@@ -206,7 +204,7 @@ theorem msCount_of_frames (D : D7) (C₀ : ℝ) (hC : 3 ≤ C₀)
     ⟨fun i hi => ⟨((h u).1 i hi).1, csAt_X D i hi, ((h u).1 i hi).2⟩, ⟨(h u).2.1, csAt_X' D, (h u).2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `Link1F_of_count fun eps Fm hH hT => by obtain ⟨C₀, hC, x0, h0⟩ := h eps Fm hH hT exact ⟨C₀, by linarith, x0, fun x hx hx1 i => msCount_of_frames _ C₀ hC (h0 x hx hx1 i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Link1F_of_frames
     (h : ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps), (∀ (x : ℝ) (i : Fm.Ix x), Formalism.L2.Herm.FullTied (Fm.D x i)) →

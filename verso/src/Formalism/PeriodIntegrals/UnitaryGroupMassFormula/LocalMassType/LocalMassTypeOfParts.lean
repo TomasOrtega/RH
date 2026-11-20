@@ -29,9 +29,9 @@ def StepCT : Prop :=
     μS (KSv σ J v P Λ) = μS0 (stabilizerCompact σ J v Λ P) * sdE (E := E) ψ v (UIdx r) (UO v r)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v r g P Λ T μG μS μS0 Fr hP hEta hL hg hgv hN ha`. Establish `hPr : IsPrim v Λ (locF v (ratTup (F` using `F) (Fv F v) (F0 P))) := by`. Use `Fr.2.2.2.2.2.2.2.2.2` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `key` using `LocMassOrdSC.stepC_at σ J ψ v P Λ μG μS μS0 1 Fr (LocMassOrdSC.measConj σ J v Λ Fr.2.2.1 1) (LocMassOrdSC.measurable_unipotent_orbit v r) (unipSplitF PI.LocMassTypS.split_reduction (PI.LocMassTypL.latStd_of PI.LocMassTypS.split_reduction) σ J ψ v P Λ T Fr.1 hP Fr.2.2.1 Fr.2.2.2.1 …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨s, hs, hsx⟩` from `hKU σ J ψ v g P Λ T μS0 ⟨Fr.1, hP, Fr.2.2.1, Fr.2.2.2.1, hg, hgv, hN, hEta, hPr, hL, Fr.2.2.2.2.2.2.1, ha⟩ x hx`. Conclude with `⟨s, hsx, by simpa using hs⟩)`. Rewrite `key` using `[KSv_eq, stabilizer_compact_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stepCT_of (hKU : KUnip1) : StepCT := by
   intro F E _ _ _ _ _ σ n J ψ v r g P Λ T μG μS μS0 Fr hP hEta hL hg hgv hN ha
@@ -49,15 +49,15 @@ theorem stepCT_of (hKU : KUnip1) : StepCT := by
   rwa [KSv_eq, stabilizer_compact_eq] at key
 
 /- English proof (translation)
-Introduce `hStd T T' hP hP' hSD hUn hGL hg hgv hN hEta hκ μG hμG μS hμS hTie μS' hμS' hTie' hPr hPr'`. Establish `hL` using `hG v Λ hGL`. Take `⟨κ, hκK, hκc⟩` from `hκ`. Take `⟨μS0, hμS0, hCm, hPU⟩` from `hTie`. Take `⟨μS0', hμS0', hCm', hPU'⟩` from `hTie'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `Fr : LocMassOrdW.FrameHyp σ J ψ v P Λ μG μS μS0 1` using `⟨hStd, ⟨T, hP⟩, hSD, hUn, hμG, hμS, hμS0, hCm, hPU, by rw [one_smul]; exact hPr⟩`. Establish `Fr' : LocMassOrdW.FrameHyp σ J ψ v P' Λ μG μS' μS0' 1` using `⟨hStd, ⟨T', hP'⟩, hSD, hUn, hμG, hμS', hμS0', hCm', hPU', by rw [one_smul]; exact hPr'⟩`. Establish `ha : (μS0 (stabilizerCompact σ J v Λ P)).toReal ≠ 0`. Rewrite using `[← stabilizer_compact_eq]`. Conclude with `LocMassOrdND.nondegenerate_lattice σ J ψ v P Λ μG μS μS0 1 Fr hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : (μS0' (stabilizerCompact σ J v Λ P')).toReal ≠ 0`. Rewrite using `[← stabilizer_compact_eq]`. Conclude with `LocMassOrdND.nondegenerate_lattice σ J ψ v P' Λ μG μS' μS0' 1 Fr' hL`. Establish `h1` using `hC σ J ψ v g P Λ T μG μS μS0 Fr hP hEta hL hg hgv hN ha`. Establish `h2` using `hC σ J ψ v g P' Λ T' μG μS' μS0' Fr' hP' hEta hL hg hgv hN ha'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1r` using `congrArg ENNReal.toReal h1`. Establish `h2r` using `congrArg ENNReal.toReal h2`. Rewrite `h1r`, `h2r` using `[ENNReal.toReal_mul]`. Establish `hu` using `PI.LocMassTypU.unitary_local_mass_identity σ J ψ v (r := r) g hStd hg hgv`. Rewrite using `[hu, h1r, h2r]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `hOm σ J ψ v g P P' Λ T T' κ μG μS0 μS0' hStd hP hP' hSD hUn hg hgv hN hEta hκK hκc hμG hμS0 hCm hμS0' hCm' hPr hPr' hL ha ha'`. Establish `hi` using `hIdx σ J ψ v g P Λ T μG μS0 hStd hP hSD hUn hg hgv hN hEta hPr hμG hL hμS0 ha`. Conclude with `arith _ _ _ _ _ _ _ _ _ _ hM rfl rfl hi ha ha' (PI.LocMassTypU.positivity_of_local_mass σ J ψ v g hStd hg hgv)`.
+A detailed English derivation is pending.
 -/
 theorem local_mass_type_formula (hOm : StepOm) (hC : StepCT) (hIdx : StepIdx) (hG : LatOfGlob)
     {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
@@ -90,7 +90,7 @@ theorem local_mass_type_formula (hOm : StepOm) (hC : StepCT) (hIdx : StepIdx) (h
   exact arith _ _ _ _ _ _ _ _ _ _ hM rfl rfl hi ha ha' (PI.LocMassTypU.positivity_of_local_mass σ J ψ v g hStd hg hgv)
 
 /- English proof (translation)
-The claim follows from `local_mass_type_formula (stepOm_ofK (stepW_of PI.LocMassTypS.split_reduction (PI.LocMassTypL.latStd_of PI.LocMassTypS.split_reduction) saturated_split_lattice transitiveOverLocalRings) PI.LocMassTypM.orbit_measure hRK LocMassOrdSF.orbit_measure_sFinite) (stepCT_of hKU) (PI.LocMas …`.
+A detailed English derivation is pending.
 -/
 theorem local_mass_type_of_parts (hRK : RightK) (hKU : KUnip1)
     {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

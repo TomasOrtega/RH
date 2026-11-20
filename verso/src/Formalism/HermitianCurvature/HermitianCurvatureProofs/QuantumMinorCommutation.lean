@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.QuantumMinorCommutation
 open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 /- English proof (translation)
-Rewrite using `[neg_one_pow_eq_pow_mod_two, h, ← neg_one_pow_eq_pow_mod_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sgn_congr {a b : ℕ} (h : a % 2 = b % 2) : (-1 : ℤ) ^ a = (-1) ^ b := by
   rw [neg_one_pow_eq_pow_mod_two, h, ← neg_one_pow_eq_pow_mod_two]
@@ -23,7 +23,7 @@ section alg
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
 
 /- English proof (translation)
-Unfold `Tm`. Use `Commute.add_right ?_ h` and prove the remaining obligations. Use `split_ifs`. Conclude with `(Algebra.commutes v x).symm`. Conclude with `Commute.zero_right x`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_Tm (v : ℂ) (a b : Fin n) (x : A) (h : Commute x (E a b)) : Commute x (Tm E v a b) := by
   unfold Tm
@@ -33,9 +33,9 @@ theorem commute_Tm (v : ℂ) (a b : Fin n) (x : A) (h : Commute x (E a b)) : Com
   · exact Commute.zero_right x
 
 /- English proof (translation)
-Unfold `Tm`. Establish `h : (if a = b then algebraMap ℂ A v else 0) * x = x * (if a = b then algebraMap ℂ A v else 0)` using `by split_ifs`. Conclude with `Algebra.commutes v x`. Simplify using the standard rewrite rules. Rewrite using `[add_mul, mul_add, h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem Tm_comm (v : ℂ) (a b : Fin n) (x : A) :
     Tm E v a b * x - x * Tm E v a b = E a b * x - x * E a b := by
@@ -48,9 +48,9 @@ theorem Tm_comm (v : ℂ) (a b : Fin n) (x : A) :
   abel
 
 /- English proof (translation)
-Unfold `qminor`. Use `Commute.sum_right _ _ _ (fun σ _ => ?_)` and prove the remaining obligations. Use `Commute.mul_right (Int.commute_cast x _) ?_` and prove the remaining obligations. Use `Commute.list_prod_right _ _ (fun y hy => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `(List.mem_ofFn' _ _).1 hy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `commute_Tm E _ _ _ x (h _ _)`.
+A detailed English derivation is pending.
 -/
 theorem commute_qminor {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (x : A)
     (h : ∀ s s', Commute x (E (a s) (b s'))) : Commute x (qminor E a b u) := by
@@ -62,13 +62,13 @@ theorem commute_qminor {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (x : A)
   exact commute_Tm E _ _ _ x (h _ _)
 
 /- English proof (translation)
-Establish `h` using `quantumMinorRowSkew_holds A n (m + 1) E a b (Fin.cycleRange l₀).symm u`. Establish `hs : ((Equiv.Perm.sign (Fin.cycleRange l₀).symm : ℤˣ) : ℤ) = (-1) ^ (l₀ : ℕ)`. Rewrite using `[Equiv.Perm.sign_symm, Fin.sign_cycleRange]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : qminor E a b u = (((-1 : ℤ) ^ (l₀ : ℕ) : ℤ) : A) * qminor E (a ∘ (Fin.cycleRange l₀).symm) b u`. Rewrite using `[h, ← mul_assoc, ← Int.cast_mul, ← pow_add, sgn_congr (b := 0) (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[h2, expansion_first_line A n m E hE _ b u, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (a ∘ (Fin.cycleRange l₀).symm) 0 = a l₀`. Simplify using `[Fin.cycleRange_symm_zero]`. Establish `h1 : (a ∘ (Fin.cycleRange l₀).symm) ∘ Fin.succ = a ∘ l₀.succAbove`. Use function extensionality and compare the values at `k`. Simplify using `[Fin.cycleRange_symm_succ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, h1, ← mul_assoc, ← Int.cast_mul, ← pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowExp (hE : GlRel E) {m : ℕ} (a b : Fin (m + 1) → Fin n) (l₀ : Fin (m + 1)) (u : ℂ) :
     qminor E a b u = ∑ l : Fin (m + 1), (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) *
@@ -91,13 +91,13 @@ theorem rowExp (hE : GlRel E) {m : ℕ} (a b : Fin (m + 1) → Fin n) (l₀ : Fi
   rw [h0, h1, ← mul_assoc, ← Int.cast_mul, ← pow_add]
 
 /- English proof (translation)
-Establish `h` using `quantumMinorColSkew_holds A n (m + 1) E hE a b (cycleToLast m l₀) u`. Establish `hs : ((Equiv.Perm.sign (cycleToLast m l₀) : ℤˣ) : ℤ) = (-1) ^ (m - (l₀ : ℕ))`. Rewrite using `[sign_cycleToLast]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : qminor E a b u = (((-1 : ℤ) ^ (m - (l₀ : ℕ)) : ℤ) : A) * qminor E a (b ∘ cycleToLast m l₀) u`. Rewrite using `[h, ← mul_assoc, ← Int.cast_mul, ← pow_add, sgn_congr (b := 0) (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[h2, expansion_last_column A n m E a _ u, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (b ∘ cycleToLast m l₀) (Fin.last m) = b l₀`. Simplify using `[cycleToLast_last]`. Establish `h1 : (b ∘ cycleToLast m l₀) ∘ Fin.castSucc = b ∘ l₀.succAbove`. Use function extensionality and compare the values at `k`. Simplify using `[cycleToLast_castSucc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hl` using `l₀.isLt`. Rewrite using `[h0, h1, ← mul_assoc, ← Int.cast_mul, ← pow_add, sgn_congr (a := m - (l₀ : ℕ) + (m + (l : ℕ))) (b := (l₀ : ℕ) + (l : ℕ)) (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem colExp (hE : GlRel E) {m : ℕ} (a b : Fin (m + 1) → Fin n) (l₀ : Fin (m + 1)) (u : ℂ) :
     qminor E a b u = ∑ l : Fin (m + 1), (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) *
@@ -122,11 +122,11 @@ theorem colExp (hE : GlRel E) {m : ℕ} (a b : Fin (m + 1) → Fin n) (l₀ : Fi
     sgn_congr (a := m - (l₀ : ℕ) + (m + (l : ℕ))) (b := (l₀ : ℕ) + (l : ℕ)) (by omega)]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← eq_sub_iff_add_eq', rowExp E hE a b l₀ u, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Establish `hM : Commute (y (a l₀)) (qminor E (a ∘ l₀.succAbove) (b ∘ l.succAbove) u)`. Use `commute_qminor E _ _ u _ (fun s s' => ?_)` and prove the remaining obligations. Use `hy ((a ∘ l₀.succAbove) s) ((b ∘ l.succAbove) s') (a l₀)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg (show (a ∘ l₀.succAbove) s ≠ a l₀ from hne s), sub_eq_zero]`. Conclude with `this.symm`. Establish `hT : Tm E (u - (m : ℂ)) (a l₀) (b l) * y (a l₀) - y (a l₀) * Tm E (u - (m : ℂ)) (a l₀) (b l) = -y (b l)`. Rewrite using `[Tm_comm, hy, if_pos rfl]`. Establish `hc : y (a l₀) * (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) = (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) * y (a l₀)` using `(Int.commute_cast _ _).eq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : y (b l) = y (a l₀) * Tm E (u - (m : ℂ)) (a l₀) (b l) - Tm E (u - (m : ℂ)) (a l₀) (b l) * y (a l₀)`. Rewrite using `[← neg_sub, hT, neg_neg]`. Rewrite using `[← mul_assoc (y (a l₀)), hc, mul_assoc _ (y (a l₀)), mul_assoc _ _ (y (a l₀)), mul_assoc _ _ (y (a l₀)), ← hM.eq, ← mul_sub]`. Use `congr 1`. Rewrite using `[hT', sub_mul, mul_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorVec_gen (hE : GlRel E) (y : Fin n → A) (hy : IsVec E y) {m : ℕ} (a b : Fin (m + 1) → Fin n)
     (l₀ : Fin (m + 1)) (hne : ∀ k, a (l₀.succAbove k) ≠ a l₀) (u : ℂ) :
@@ -153,11 +153,11 @@ theorem minorVec_gen (hE : GlRel E) (y : Fin n → A) (hy : IsVec E y) {m : ℕ}
   rw [hT', sub_mul, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[colExp E hE a b l₀ u, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Establish `hM : Commute (η (b l₀)) (qminor E (a ∘ l.succAbove) (b ∘ l₀.succAbove) u)`. Use `commute_qminor E _ _ u _ (fun s s' => ?_)` and prove the remaining obligations. Use `hη ((a ∘ l.succAbove) s) ((b ∘ l₀.succAbove) s') (b l₀)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg (show (b ∘ l₀.succAbove) s' ≠ b l₀ from hne s'), sub_eq_zero]`. Conclude with `this.symm`. Establish `hT : Tm E (u - (m : ℂ)) (a l) (b l₀) * η (b l₀) - η (b l₀) * Tm E (u - (m : ℂ)) (a l) (b l₀) = η (a l)`. Rewrite using `[Tm_comm, hη, if_pos rfl]`. Establish `hc : η (b l₀) * (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) = (((-1 : ℤ) ^ ((l₀ : ℕ) + (l : ℕ)) : ℤ) : A) * η (b l₀)` using `(Int.commute_cast _ _).eq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc (η (b l₀)), hc, mul_assoc _ (η (b l₀)), ← mul_assoc (η (b l₀)), hM.eq, mul_assoc _ _ (η (b l₀)), mul_assoc _ _ (η (b l₀)), mul_assoc _ (η (b l₀)), ← mul_sub, ← mul_sub, hT]`.
+A detailed English derivation is pending.
 -/
 theorem minorCov_gen (hE : GlRel E) (η : Fin n → A) (hη : IsCov E η) {m : ℕ} (a b : Fin (m + 1) → Fin n)
     (l₀ : Fin (m + 1)) (hne : ∀ k, b (l₀.succAbove k) ≠ b l₀) (u : ℂ) :
@@ -181,7 +181,7 @@ theorem minorCov_gen (hE : GlRel E) (η : Fin n → A) (hη : IsCov E η) {m : �
 end alg
 
 /- English proof (translation)
-Unfold `Fin.succAbove`. Simplify using `only [Fin.lt_def, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sa_val {m : ℕ} (q : Fin (m + 1)) (l : Fin m) :
     ((q.succAbove l : Fin (m + 1)) : ℕ) = if (l : ℕ) < (q : ℕ) then (l : ℕ) else (l : ℕ) + 1 := by
@@ -190,13 +190,13 @@ theorem sa_val {m : ℕ} (q : Fin (m + 1)) (l : Fin m) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `funext (skip_succ_identity m q)`.
+A detailed English derivation is pending.
 -/
 theorem skip_one_eq_succAbove {m : ℕ} (q : Fin (m + 1)) : (skip1 q : Fin m → Fin (m + 1)) = q.succAbove :=
   funext (skip_succ_identity m q)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Function.comp, skip2, Fin.coe_min, Fin.coe_max, sa_val]`. Apply the tactic sequence `split_ifs <;> simp only [] <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_comp {m : ℕ} (q : Fin (m + 2)) (l : Fin (m + 1)) :
     (q.succAbove ∘ l.succAbove : Fin m → Fin (m + 2)) = skip2 (min (q.succAbove l) q) (max (q.succAbove l) q) := by
@@ -206,9 +206,9 @@ theorem skip_comp {m : ℕ} (q : Fin (m + 2)) (l : Fin (m + 1)) :
   split_ifs <;> simp only [] <;> omega
 
 /- English proof (translation)
-Unfold `eps`. Rewrite using `[sa_val]`. Use `split_ifs`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eps_sa {m : ℕ} (q : Fin (m + 1)) (l : Fin m) :
     eps (q.succAbove l) q * (-1) ^ ((q.succAbove l : Fin (m + 1)) : ℕ) = (-1) ^ (l : ℕ) := by
@@ -220,7 +220,7 @@ theorem eps_sa {m : ℕ} (q : Fin (m + 1)) (l : Fin m) :
   · rw [pow_succ]; ring
 
 /- English proof (translation)
-Establish `h` using `minorVec_gen E hE y hy id id j (fun k => Fin.succAbove_ne j k) w`. Simplify using `only [id, Function.id_comp] at h`. Simplify using `only [skip_one_eq_succAbove]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detVec_succ {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m + 1) → Fin (m + 1) → A)
     (y : Fin (m + 1) → A) (hE : GlRel E) (hy : IsVec E y) (w : ℂ) (j : Fin (m + 1)) :
@@ -233,9 +233,9 @@ theorem detVec_succ {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m + 
   exact h
 
 /- English proof (translation)
-Take `⟨l₀, rfl⟩` from `Fin.exists_succAbove_eq hip`. Establish `h` using `minorCov_gen E hE η hη q.succAbove p.succAbove l₀ (fun k => fun hk => Fin.succAbove_ne l₀ k (Fin.succAbove_right_injective hk)) u`. Rewrite using `[skip_one_eq_succAbove, skip_one_eq_succAbove, h, Fin.sum_univ_succAbove _ q, if_pos rfl, zero_add]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[if_neg (Fin.succAbove_ne q l), skip_comp, skip_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[pow_add, pow_add, ← eps_sa q l, ← eps_sa p l₀]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem minorCov_succ {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m + 2) → Fin (m + 2) → A)
     (η : Fin (m + 2) → A) (hE : GlRel E) (hη : IsCov E η) (u : ℂ) (q p i : Fin (m + 2)) (hip : i ≠ p) :
@@ -256,7 +256,7 @@ theorem minorCov_succ {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m 
 end Formalism.FourierDecayAlt.P.QuantumMinorCommutation
 
 /- English proof (translation)
-Introduce `A _ _ t E y hE hy w j`. Consider the cases of `t with`. Consider the case `zero => exact j.elim0`. Consider the case `succ m => exact Formalism.FourierDecayAlt.P.QuantumMinorCommutation.detVec_succ E y hE hy w j`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem Formalism.FourierDecayAlt.P.quantum_determinant_vector : Formalism.FourierDecayAlt.Qr.DetVec := by
   intro A _ _ t E y hE hy w j
@@ -265,13 +265,13 @@ theorem Formalism.FourierDecayAlt.P.quantum_determinant_vector : Formalism.Fouri
   | succ m => exact Formalism.FourierDecayAlt.P.QuantumMinorCommutation.detVec_succ E y hE hy w j
 
 /- English proof (translation)
-Introduce `A _ _ t E η hE hη u q p i`. Distinguish the cases in `hip : i = p`. Rewrite using `[if_pos hip, sub_eq_zero]`. Use `(Formalism.FourierDecayAlt.P.QuantumMinorCommutation.commute_qminor E _ _ u _ (fun s s' => ?_)).eq.symm` and prove the remaining obligations. Use `hη (Formalism.FourierDecayAlt.Q.skip1 q s) (Formalism.FourierDecayAlt.Q.skip1 p s') i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : Formalism.FourierDecayAlt.Q.skip1 p s' ≠ i`. Rewrite using `[hip]`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Unfold `Formalism.FourierDecayAlt.Q.skip1 at h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs at h' <;> simp only [] at h' <;> omega`. Rewrite `this` using `[if_neg hne, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[if_neg hip] match t, E, η, hE, hη, q, p, i, hip with`. Consider the case `0, _, _, _, _, q, _, _, _ => exact q.elim0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `1, _, _, _, _, _, p, i, hip => exact absurd (Subsingleton.elim i p) hip`. Consider the case `m + 2, E, η, hE, hη, q, p, i, hip => exact Formalism.FourierDecayAlt.P.QuantumMinorCommutation.minorCov_succ E η hE hη u q p i hip`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.quantum_minor_covariance : Formalism.FourierDecayAlt.Qr.MinorCov := by
   intro A _ _ t E η hE hη u q p i

@@ -12,7 +12,7 @@ namespace Formalism.L2.KerInert.RepFrame
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.sum_tau_trace D`.
+A detailed English derivation is pending.
 -/
 theorem trace_tau_sum (D : D7) : TraceTau D := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.sum_tau_trace D
 
@@ -21,11 +21,9 @@ section Rank
 variable (D : D7)
 
 /- English proof (translation)
-Use `choose k hk hkB using fun x : Fin N' × Fin N => Formalism.L2.KerInert.FrLocB.nat_mult (D := D) (B x.1 x.2)`. Use `⟨∏ x, k x, Finset.prod_pos fun x _ => hk x, fun i j => ?_⟩` and prove the remaining obligations. Establish `h` using `Finset.mul_prod_erase Finset.univ k (Finset.mem_univ (i, j))`. Establish `he : ((∏ x, k x : ℕ) : D.host.E) * B i j = ((∏ x ∈ Finset.univ.erase (i, j), k x : ℕ) : D.host.E) * ((k (i, j) : D.host.E) * B i j)`. Rewrite using `[← h, Nat.cast_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Establish `hi : IsIntegral ℤ ((∏ x ∈ Finset.univ.erase (i, j), k x : ℕ) : D.host.E)`. Use `isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := ((∏ x ∈ Finset.univ.erase (i, j), k x : ℕ) : ℤ))` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `hi.mul (hkB (i, j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_nat_integral {N N' : ℕ} (B : Matrix (Fin N') (Fin N) D.host.E) :
     ∃ n : ℕ, 0 < n ∧ ∀ i j, IsIntegral ℤ ((n : D.host.E) * B i j) := by
@@ -45,9 +43,9 @@ theorem exists_nat_integral {N N' : ℕ} (B : Matrix (Fin N') (Fin N) D.host.E) 
 variable {D}
 
 /- English proof (translation)
-Take `⟨s, hs, c, hc⟩` from `hb.2.2 y hy`. Establish `hs0 : (s : D.host.K) ≠ 0`. Conclude with `Formalism.L2.KerInert.FrLocB.ne_zero_of_coprime p hs` after adjusting the coercions. Establish `h1 : (s : D.host.K) • y ∈ Submodule.span D.host.K (Set.range b)`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul D.host.E, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.KerInert.IntegralOrthonormalChange.smul_eq_K D _ (c i : D.host.K).2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h2` using `Submodule.smul_mem _ (s : D.host.K)⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_of_locBasis {p : ℕ} [hp : Fact p.Prime] {N N' r : ℕ}
     {Y : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E}
@@ -65,11 +63,11 @@ theorem mem_span_of_locBasis {p : ℕ} [hp : Fact p.Prime] {N N' r : ℕ}
   rwa [smul_smul, inv_mul_cancel₀ hs0, one_smul] at h2
 
 /- English proof (translation)
-Take `⟨M, hM, hlow⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.YY_lower D L L' hL hL'`. Introduce `B _`. Take `⟨n, hn, hnB⟩` from `exists_nat_integral D B`. Establish `hA : ∀ i j, IsIntegral ℤ (((n : D.host.E) • B) i j)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnB i j`. Establish `h1` using `mem_span_of_locBasis hb (hlow _ hA)`. Rewrite `h1` using `[Int.cast_smul_eq_zsmul, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul D.host.K, ← Int.cast_smul_eq_zsmul D.host.K, smul_smul]`. Establish `hMn : ((M : D.host.K) * (n : D.host.K)) ≠ 0` using `mul_ne_zero (by exact_mod_cast hM) (by exact_mod_cast hn.ne')`. Establish `h2` using `Submodule.smul_mem _ ((M : D.host.K) * (n : D.host.K))⁻¹ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hMn, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem span_top_of_locBasis {p : ℕ} [Fact p.Prime] {N N' r : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -90,9 +88,9 @@ theorem span_top_of_locBasis {p : ℕ} [Fact p.Prime] {N N' r : ℕ}
   rwa [smul_smul, inv_mul_cancel₀ hMn, one_smul] at h2
 
 /- English proof (translation)
-Establish `hbas` using `Module.Basis.mk hb.1 (span_top_of_locBasis L L' hL hL' hb)`. Establish `h1` using `Module.finrank_eq_card_basis hbas`. Rewrite `h1` using `[Module.finrank_matrix, Fintype.card_fin, Fintype.card_fin]`. Rewrite using `[Fintype.card_prod, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, Formalism.L2.Ker.cardTau D]`. Rewrite `h1` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rank_of_locBasis {p : ℕ} [Fact p.Prime] {N N' r : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -113,7 +111,7 @@ variable {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.S
     (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
 
 /- English proof (translation)
-Introduce `j L0 hL0 La' hLa' _ b hb` and use `rank_of_locBasis _ _ (hadm j L0 hL0 La' hLa').2.2.1 (hadm j L0 hL0 La' hLa').2.2.2 b hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rankTie_of (hadm : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1),
       (X.Pj (j + 1)).IsLatTup La'.2 → Formalism.MainNotions.TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La')) :

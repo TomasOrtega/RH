@@ -3,11 +3,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 namespace ReciprocityTheory.ChartRestriction.G.AI
 
 /- English proof (translation)
-Establish `h` using `hI (Equiv.swap (⟨a, ha⟩ : Fin n) ⟨b, hb⟩) (fun j => f j)`. Use `h.symm.trans (congrArg I (funext fun j => ?_))` and prove the remaining obligations. Use `show f ((Equiv.swap (⟨a, ha⟩ : Fin n) ⟨b, hb⟩ j : Fin n) : ℕ) = f (if (j : ℕ) = a then b else if (j : ℕ) = b then a else j)`. Use `congrArg f ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (j : ℕ) = a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1]`. Establish `hj : j = ⟨a, ha⟩` using `Fin.ext h1`. Simplify using `[hj]`. Distinguish the cases in `h2 : (j : ℕ) = b`. Rewrite using `[if_neg h1, if_pos h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj : j = ⟨b, hb⟩` using `Fin.ext h2`. Simplify using `[hj]`. Establish `h1' : j ≠ ⟨a, ha⟩` using `fun h => h1 (congrArg Fin.val h)`. Establish `h2' : j ≠ ⟨b, hb⟩` using `fun h => h2 (congrArg Fin.val h)`. Rewrite using `[if_neg h1, if_neg h2, Equiv.swap_apply_of_ne_of_ne h1' h2']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_swap_nat {V : Type*} [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (I : MultilinearMap ℝ (fun _ : Fin n => V) ℝ) (hI : IsSymmForm I) (f : ℕ → V) (a b : ℕ)
@@ -38,9 +38,9 @@ def consWord {VW : Type*} (k i : ℕ) (x x₁ x₂ a : VW) : ℕ → VW :=
     if j < 1 + 2 * k then x₂ else a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[consWord]`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[consWord]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp only [Fin.cons_succ, consWord, word, Fin.val_succ] split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_cons_word {VW : Type*} (D k i : ℕ) (hk : 1 ≤ k) (x x₁ x₂ a : VW) :
     (Fin.cons x (Fin.cons x (word D k i x₁ x₂ a)) : Fin (D + 2) → VW) =
@@ -54,7 +54,7 @@ theorem cons_cons_word {VW : Type*} (D k i : ℕ) (hk : 1 ≤ k) (x x₁ x₂ a 
       split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use `(symm_swap_nat I hI (consWord k i x₁ x₁ x₂ a) 0 2 (by omega) (by omega)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [consWord, interp]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symm_consWord_left {V : Type*} [AddCommGroup V] [Module ℝ V] {D : ℕ}
     (I : MultilinearMap ℝ (fun _ : Fin (D + 2) => V) ℝ) (hI : IsSymmForm I) (k i : ℕ) (hi : i < k)
@@ -67,9 +67,9 @@ theorem symm_consWord_left {V : Type*} [AddCommGroup V] [Module ℝ V] {D : ℕ}
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use `(symm_swap_nat I hI (consWord k i x₂ x₁ x₂ a) 1 (2 * i + 1) (by omega) (by omega)).trans ?_` and prove the remaining obligations. Use `(symm_swap_nat I hI (fun m => consWord k i x₂ x₁ x₂ a (if m = 1 then 2 * i + 1 else if m = 2 * i + 1 then 1 else m)) 2 (2 * i + 2) (by omega) (by omega)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [consWord, interp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symm_consWord_right {V : Type*} [AddCommGroup V] [Module ℝ V] {D : ℕ}
     (I : MultilinearMap ℝ (fun _ : Fin (D + 2) => V) ℝ) (hI : IsSymmForm I) (k i : ℕ) (hi : i < k)
@@ -86,17 +86,17 @@ theorem symm_consWord_right {V : Type*} [AddCommGroup V] [Module ℝ V] {D : ℕ
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Introduce `D S k hk hkD`. Establish `hstep : ∀ i ∈ Finset.range k, S.Φ (word D k i (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A)) = S.IW (fun j => interp k (i + 1) (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j) - S.IW (fun j => interp k i (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[← S.diag, cons_cons_word D k i hk, cons_cons_word D k i hk, symm_consWord_left S.IW S.symmW k i hi hkD, symm_consWord_right S.IW S.symmW k i hi hkD]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ i ∈ Finset.range k, S.Φ (word D k i (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A)) = S.IW (fun j => interp k k (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j) - S.IW (fun j => interp k 0 (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j)`. Rewrite using `[Finset.sum_congr rfl hstep]`. Conclude with `Finset.sum_range_sub (fun m => S.IW (fun j => interp k m (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j)) k`. Establish `hzero : S.IW (fun j => interp k 0 (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j) = 0`. Establish `h` using `S.comp_right_eq_zero_alt (fun j : Fin (D + 2) => if (j : ℕ) < 1 + 2 * k then S.ξ else S.A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [interp]`. Apply the tactic sequence `split_ifs <;> first | rfl | exact S.base | omega`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hfun : (Fin.cons (S.p₂ S.ξ) (fun j => S.p₁ (mix (2 * k) S.ξ S.A j)) : Fin (D + 2) → S.VW) = fun j : Fin (D + 2) => interp k k (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) (j : ℕ)`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[interp]`. Rewrite using `[Fin.cons_succ, Fin.val_succ] show S.p₁ (if (j : ℕ) < 2 * k then S.ξ else S.A) = (if (j : ℕ) + 1 = 0 then S.p₂ S.ξ else if (j : ℕ) + 1 < 1 + 2 * k then S.p₁ S.ξ else if (j : ℕ) + 1 < 1 + 2 * k then S.p₂ S.ξ else S.p₁ S.A)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ¬((j : ℕ) + 1 = 0)` using `by omega`. Distinguish the cases in `h : (j : ℕ) < 2 * k`. Establish `h1 : (j : ℕ) + 1 < 1 + 2 * k` using `by omega`. Rewrite using `[if_pos h, if_neg h0, if_pos h1]`. Establish `h1 : ¬((j : ℕ) + 1 < 1 + 2 * k)` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h0, if_neg h1, if_neg h1]`. Establish `htop : S.I (mix (2 * k) S.ξ S.A) = -S.IW (fun j => interp k k (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A) j)`. Rewrite using `[← S.cons_comp_left, show -(S.p₂ S.ξ) = (-1 : ℝ) • S.p₂ S.ξ by simp, MultilinearMap.cons_smul, neg_one_smul, hfun]`. Rewrite using `[hsum, hzero, htop, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aPrime_thm : APrimeStatement := by
   intro D S k hk hkD

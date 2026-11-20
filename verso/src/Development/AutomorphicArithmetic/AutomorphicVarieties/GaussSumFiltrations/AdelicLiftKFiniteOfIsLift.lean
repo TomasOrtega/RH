@@ -10,9 +10,9 @@ namespace GlobalTheory.HilbertThetaSeries.LiftCpt
 open UpperHalfPlane hiding I
 
 /- English proof (translation)
-Establish `hdet : x.val.det = 1` using `by rw [Matrix.det_fin_two, hc, hd]; linear_combination h1`. Establish `hp : 0 < x.val.det` using `by rw [hdet]; exact one_pos`. Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_smul_of_det_pos (by simpa using hp), div_eq_iff (denom_ne_zero _ _), num, denom, hc, hd, coe_I]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(x.val 0 1 : ℂ) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rot_smul_I (x : GL (Fin 2) ℝ) (h1 : x.val 0 0 ^ 2 + x.val 0 1 ^ 2 = 1) (hc : x.val 1 0 = -x.val 0 1)
     (hd : x.val 1 1 = x.val 0 0) : x • UpperHalfPlane.I = UpperHalfPlane.I := by
@@ -24,7 +24,7 @@ theorem rot_smul_I (x : GL (Fin 2) ℝ) (h1 : x.val 0 0 ^ 2 + x.val 0 1 ^ 2 = 1)
   linear_combination (x.val 0 1 : ℂ) * Complex.I_sq
 
 /- English proof (translation)
-Establish `hD : (a * d - b * c - 1) * (a * d - b * c + 1) = 0`. Take the linear combination `(c ^ 2 + d ^ 2) * h1 + h2 - (a * c + b * d) * h3`. Break down `mul_eq_zero.1 hD with h | h` into its components or cases. Conclude with `Or.inl ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`. Conclude with `Or.inr ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem orth_cases {a b c d : ℝ} (h1 : a ^ 2 + b ^ 2 = 1) (h2 : c ^ 2 + d ^ 2 = 1)
     (h3 : a * c + b * d = 0) : (c = -b ∧ d = a) ∨ (c = b ∧ d = -a) := by
@@ -40,7 +40,7 @@ def sg (s : InfinitePlace F → Bool) : InfinitePlace F → ℝ := fun v => if s
 
 omit [NumberField F] in
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [sg, Pi.mul_apply, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_mul (s : InfinitePlace F → Bool) : sg s * sg s = 1 := by
   funext v
@@ -56,13 +56,13 @@ def epsG (s : InfinitePlace F → Bool) : GL (Fin 2) (InfinitePlace F → ℝ) w
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `hp : Pos x` using `fun v => by`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, hc v, hd v]`. Use polynomial arithmetic with `[h1 v]`. Establish `ha : act x (fun _ => UpperHalfPlane.I) = fun _ => UpperHalfPlane.I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun v => rot_smul_I (cmp v x) (h1 v) (hc v) (hd v)`. Use `⟨sl k x (fun _ => 1) (fun _ => UpperHalfPlane.I), Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Establish `hF : ∀ f : Hn F → ℂ, sl k x f (fun _ => UpperHalfPlane.I) = sl k x (fun _ => 1) (fun _ => UpperHalfPlane.I) * f (fun _ => UpperHalfPlane.I)` using `fun f => by`. Simplify using `only [sl, sl0, ha]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← TR.infGL_mul_finGL g]`. Generalize the expression as in `Matrix.GeneralLinearGroup.map (TR.pInf F) g = y`. Generalize the expression as in `Matrix.GeneralLinearGroup.map (pFin F) g = u`. Take `⟨τ, hτ⟩` from `(GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin F 1).2 y`. Establish `e : ∀ y : GL (Fin 2) (InfinitePlace F → ℝ), φ.1 (TR.infGL F 2 y * finGL F 2 u) = φ.1 (TR.infGL F 2 (toInf τ * y) * finGL F 2 (toFin τ * u))` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hφ.1 τ, (GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin F τ).1, map_mul, map_mul, mul_assoc, mul_assoc, ← mul_assoc (finGL F 2 (toFin τ)), ← TR.infGL_comm, mul_assoc]`. Take `⟨q1, -, -, q2, -⟩` from `SlashCocycle.slash_cocycle F k (toInf τ * y) x (Ψ (toFin τ * u)) hτ hp`. Rewrite using `[TR.rt_apply]`. Express the relevant statement in the definitionally equal form `_ = _ * φ.1 _`. Rewrite using `[mul_assoc, ← TR.infGL_comm, ← mul_assoc, ← map_mul, e, e y, ← mul_assoc, hφ.2 _ q1, hφ.2 _ hτ, q2, hF]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rot_rt (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : TR.Sm F 2) (hφ : IsLift k Ψ φ.1)
     (x : GL (Fin 2) (InfinitePlace F → ℝ)) (h1 : ∀ v, x.val 0 0 v ^ 2 + x.val 0 1 v ^ 2 = 1)
@@ -93,25 +93,23 @@ theorem rot_rt (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : TR.Sm F
   rw [mul_assoc, ← TR.infGL_comm, ← mul_assoc, ← map_mul, e, e y, ← mul_assoc, hφ.2 _ q1, hφ.2 _ hτ, q2, hF]
 
 /- English proof (translation)
-Introduce `F _ _ _ k Ψ φ hφ`. Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun s => TR.rt F 2 (TR.infGL F 2 (epsG s)) φ))` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun s => TR.rt F 2 (TR.infGL F 2 (epsG s)) φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`. Use `set x : GL (Fin 2) (InfinitePlace F → ℝ) := Unitary.toUnits r with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : TR.cptRep F 2 r φ = TR.rt F 2 (TR.infGL F 2 x) φ` using `rfl`. Establish `hr : ∀ v i j, x.val i 0 v * x.val j 0 v + x.val i 1 v * x.val j 1 v = if i = j then 1 else 0`. Introduce `v i j`. Establish `h` using `congrArg (fun m => m i j v) r.2.2`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_apply, Matrix.one_apply, Pi.add_apply, Pi.mul_apply, star_trivial] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ite_apply]`. Conclude with `h`. Establish `h1 : ∀ v, x.val 0 0 v ^ 2 + x.val 0 1 v ^ 2 = 1` using `fun v => by`. Use `hr v 0 0` as an intermediate fact. Simplify using `only [if_true] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `this`. Establish `h2 : ∀ v, x.val 1 0 v ^ 2 + x.val 1 1 v ^ 2 = 1` using `fun v => by`. Use `hr v 1 1` as an intermediate fact. Simplify using `only [if_true] at this`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : ∀ v, x.val 0 0 v * x.val 1 0 v + x.val 0 1 v * x.val 1 1 v = 0` using `fun v => by simpa using hr v 0 1`. Express the relevant statement in the definitionally equal form `TR.cptRep F 2 r φ ∈ _`. Rewrite using `[e]`. Use `clear_value x`. Set `s : InfinitePlace F → Bool` to `fun v => decide (x.val 1 0 v = -x.val 0 1 v ∧ x.val 1 1 v = x.val 0 0 v)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hv : (epsG s * x).val = !![sg s * x.val 0 0, sg s * x.val 0 1; x.val 1 0, x.val 1 1]`. Use extensionality with `i j : 2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsG, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hs : ∀ v, x.val 1 0 v = -(sg s v * x.val 0 1 v) ∧ x.val 1 1 v = sg s v * x.val 0 0 v` using `fun v => by`. Distinguish the cases in `h : x.val 1 0 v = -x.val 0 1 v ∧ x.val 1 1 v = x.val 0 0 v`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: sg s v = 1` using `by simp only [sg, s, decide_eq_true_eq]; exact if_pos h`. Rewrite using `[this, one_mul, one_mul]`. Conclude with `h`. Establish `: sg s v = -1` using `by simp only [sg, s, decide_eq_true_eq]; exact if_neg h`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(orth_cases (h1 v) (h2 v) (h3 v)).resolve_left h` as an intermediate fact. Conclude with `⟨by linear_combination this.1, by linear_combination this.2⟩`. Take `⟨c, hc⟩` from `rot_rt k Ψ φ hφ (epsG s * x) (fun v => by`. Establish `q : sg s v * sg s v = 1` using `congrFun (sg_mul s) v`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(sg s v * x.val 0 0 v) ^ 2 + (sg s v * x.val 0 1 v) ^ 2 = 1`. Take the linear combination `(x.val 0 0 v ^ 2 + x.val 0 1 v ^ 2) * q + h1 v)`. Use the proof step `(fun v => by rw [hv]; exact (hs v).1) (fun v => by rw [hv]; exact (hs v).2)`. Establish `e2 : x = epsG s * (epsG s * x)`. Rewrite using `[← mul_assoc, show epsG s * epsG s = 1 from Units.ext (epsG s).val_inv, one_mul]`.
-
-Rewrite using `[e2, map_mul, map_mul, Module.End.mul_apply, hc, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_cpt_finite : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : TR.Sm F 2), IsLift k Ψ φ.1 → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun r => TR.cptRep F 2 r φ)) := by
   intro F _ _ _ k Ψ φ hφ
@@ -169,7 +167,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite | exact GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite | (intros; apply GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelic_lift_kFinite_of_isLift : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : TR.Sm F 2), IsLift k Ψ φ.1 → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun r => TR.cptRep F 2 r φ)) := by
   first | exact @GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite | exact GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite | (intros; apply GlobalTheory.HilbertThetaSeries.LiftCpt.lift_cpt_finite <;> assumption)

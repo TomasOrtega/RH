@@ -19,11 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `Ω _ T T' Q P' f f' G' _ a₁ a₂ h₁ h₂ hL`. Take `⟨P₀, φ, hφ, hL₀⟩` from `exists_pol_baseChange Q f`. Take `⟨e, he, hea⟩` from `grpPullback_iso h₁ hφ`. Use `haveI := he`. Establish `hinv : IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : φ = e.inv.left ≫ a₁`. Rewrite using `[← hea, ← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left, Category.id_comp]`. Establish `hiso : IsIso e.hom.left` using `⟨⟨e.inv.left, by rw [← Over.comp_left, e.hom_inv_id, Over.id_left], by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]⟩⟩`. Use `⟨P₀, φ, e.inv.left ≫ a₂, e.hom.left, hiso, hea, ?_, hφ, ?_, hL₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, e.hom_inv_id, Over.id_left, Category.id_comp]`.
-
-Conclude with `((isGrpPullback_of_iso e.symm).comp h₂).congr (Category.id_comp _) rfl`. Conclude with `LBIso.trans P₀.isLB (pull_isLB Q.isLB _) (pull_isLB P'.isLB _) hL₀ (GenSpread.lbIso_pull_comp e.inv.left hφ' rfl hL)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polAV_common_pullback : ∀ (Ω : Type) [Field Ω] (T T' : Scheme.{0}) (Q : PolAV T) (P' : PolAV T') (f : Sp Ω ⟶ T) (f' : Sp Ω ⟶ T') (G' : Over (Sp Ω)) [GrpObj G'] (a₁ : G'.left ⟶ Q.A.left) (a₂ : G'.left ⟶ P'.A.left), IsGrpPullback G' Q.A f a₁ → IsGrpPullback G' P'.A f' a₂ → LBIso (Q.L.pull a₁) (P'.L.pull a₂) → ∃ (P₀ : PolAV (Sp Ω)) (a : P₀.A.left ⟶ Q.A.left) (a' : P₀.A.left ⟶ P'.A.left) (e : G'.left ⟶ P₀.A.left), IsIso e ∧ e ≫ a = a₁ ∧ e ≫ a' = a₂ ∧ IsGrpPullback P₀.A Q.A f a ∧ IsGrpPullback P₀.A P'.A f' a' ∧ LBIso P₀.L (Q.L.pull a) ∧ LBIso P₀.L (P'.L.pull a') := by
   intro Ω _ T T' Q P' f f' G' _ a₁ a₂ h₁ h₂ hL

@@ -5,23 +5,19 @@ import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
 open NumberField Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `R H I _ φ hu hs z hz`. Use `haveI : IsGalois ℚ H.E := H.galois`. Take `⟨i₀, -, -⟩` from `hu H.φ₀`. Establish `hfix : ∀ g : R.Psi, H.sigmaOf (g : R.GG) H.sqd = H.sqd` using `fun g => by`. Use `(H.galE_mem_Psi_iff _).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : H.galE (H.sigmaOf (g : R.GG)) = g` using `H.gal.apply_symm_apply _`. Rewrite using `[h]`. Conclude with `g.2`. Establish `hex : ∀ i, ∃ g : R.Psi, ∀ x, φ i₀ (H.sigmaOf (g : R.GG) x) = φ i x` using `fun i => by`. Take `⟨σ, hσ⟩` from `ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) (K := H.E) (φ i₀) (φ i) (Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, φ i₀ (σ.symm x) = φ i x` using `fun x => RingHom.congr_fun hσ x`. Establish `h2 : σ.symm H.sqd = H.sqd` using `(φ i₀).injective ((h1 _).trans (hs i i₀))`. Use `⟨⟨H.galE σ.symm, (H.galE_mem_Psi_iff _).2 h2⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `h : H.sigmaOf (H.galE σ.symm) = σ.symm` using `H.gal.symm_apply_apply _`. Use `show φ i₀ (H.sigmaOf (H.galE σ.symm) x) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, h1]`. Use `choose f hf using hex`. Establish `hinj : Function.Injective f` using `fun i j hij => by`. Establish `h : φ i = φ j` using `RingHom.ext fun x => by rw [← hf i, ← hf j, hij]`. Conclude with `(hu (φ i)).unique (Or.inl rfl) (Or.inl h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective f` using `fun g => by`. Take `⟨i, hi, -⟩` from `hu ((φ i₀).comp (H.sigmaOf (g : R.GG) : H.E →+* H.E))`. Break down `hi with hi | hi` into its components or cases. Use `⟨i, Subtype.ext (H.gal.symm.injective ?_)⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun x => (φ i₀).injective ?_` and prove the remaining obligations.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hf i x).trans (RingHom.congr_fun hi x).symm`. It suffices to derive a contradiction. Establish `h1 : φ i₀ (H.sigmaOf (g : R.GG) H.sqd) = (starRingEnd ℂ) (φ i H.sqd)` using `RingHom.congr_fun hi H.sqd`. Establish `hc : H.conj H.sqd = -H.sqd` using `H.conj_sqd`. Establish `h2 : φ i (H.conj H.sqd) = (starRingEnd ℂ) (φ i H.sqd)` using `H.conjE_apply (φ i) H.sqd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hfix, ← h2, hc, map_neg, hs i₀ i]`. Establish `h3 : φ i H.sqd = 0` using `by linear_combination h1 / 2`. Conclude with `H.sqd_ne_zero ((map_eq_zero (φ i)).1 h3)`. Establish `h1` using `UpperTheory.Mu.prod_emb H (Equiv.ofBijective f ⟨hinj, hsurj⟩) hz`. Establish `h2 : H.φ₀ (∏ i, H.sigmaOf (f i : R.GG) z) = H.φ₀ 1`.
-
-Rewrite using `[map_prod, map_one]`. Conclude with `h1`. Establish `h3` using `congrArg (φ i₀) (H.φ₀.injective h2)`. Rewrite `h3` using `[map_prod, map_one]`. Rewrite using `[← h3]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => (hf i z).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.prod_CMType_embeddings_root_of_unity_eq_one :
     ∀ (R : Ranks) (H : Host R) (I : Type) [Fintype I] (φ : I → H.E →+* ℂ),

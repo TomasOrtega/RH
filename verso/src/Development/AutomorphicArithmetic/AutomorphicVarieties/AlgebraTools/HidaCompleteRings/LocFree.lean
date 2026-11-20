@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open IsLocalRing UpperTheory.V.Hi
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ n ih => intro y hy`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (ih y hy)`.
+A detailed English derivation is pending.
 -/
 private theorem pres_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (N : Submodule A M)
     (T : Module.End A M) (h : ∀ y ∈ N, T y ∈ N) (n : ℕ) : ∀ y ∈ N, (T ^ n) y ∈ N := by
@@ -14,9 +14,7 @@ private theorem pres_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
   | succ n ih => intro y hy; rw [pow_succ', Module.End.mul_apply]; exact h _ (ih y hy)
 
 /- English proof (translation)
-Introduce `y hy`. Use `Submodule.smul_induction_on hy (fun r hr n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr (h n hn)`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pres_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (N : Submodule A M)
     (I : Ideal A) (T : Module.End A M) (h : ∀ y ∈ N, T y ∈ N) : ∀ y ∈ I • N, T y ∈ I • N := by
@@ -26,7 +24,7 @@ private theorem pres_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M
   · rw [map_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[LinearMap.sub_apply, Module.algebraMap_end_apply]`. Conclude with `sub_mem (h y hy) (N.smul_mem c hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pres_sub {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (N : Submodule A M)
     (T : Module.End A M) (c : A) (h : ∀ y ∈ N, T y ∈ N) :
@@ -36,33 +34,31 @@ private theorem pres_sub {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
   exact sub_mem (h y hy) (N.smul_mem c hy)
 
 /- English proof (translation)
-Introduce `A M ι _ _ _ _ Y _ op a h`. Take `⟨e, -, he, hmem, hcomm⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locIdem A M ι Y op a h`. Establish `hLY : locPart Y op a ≤ Y` using `inf_le_left`. Establish `hee : ∀ y : Y, e (e y) = e y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, he.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heL : ∀ y : Y, (e y : M) ∈ locPart Y op a` using `fun y => (hmem _).2 (hee y)`. Establish `hc : ∀ j (y : Y), e ⟨op j y, h.1 j y y.2⟩ = ⟨op j (e y), h.1 j _ (e y).2⟩`. Introduce `j y`. Use `hcomm ((op j).restrict (h.1 j)) (fun i t ht => by` as an intermediate fact. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1 : ∀ w : Y, (t w : M) = op i w` using `ht`. Simplify using `only [Module.End.mul_apply, h1, LinearMap.restrict_coe_apply]`. Conclude with `h.2 j i z z.2)`. Conclude with `(LinearMap.congr_fun this y).symm`. Establish `hst : ∀ i, ∀ y ∈ locPart Y op a, op i y ∈ locPart Y op a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i y hy`. Establish `h1` using `(hmem ⟨y, hLY hy⟩).1 hy`. Use `(hmem ⟨op i y, h.1 i y (hLY hy)⟩).2 ?_` and prove the remaining obligations. Establish `h2` using `hc i ⟨y, hLY hy⟩`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [h1]`. Set `E : Y →ₗ[A] locPart Y op a` to `LinearMap.codRestrict _ (Y.subtype ∘ₗ e) heL`. Establish `hE : E ∘ₗ Submodule.inclusion hLY = LinearMap.id`. Use extensionality with `x`. Conclude with `congrArg (fun w : Y => (w : M)) ((hmem ⟨x, hLY x.2⟩).1 x.2)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin : Module.Finite A (locPart Y op a)` using `Module.Finite.of_surjective E fun x => ⟨_, LinearMap.congr_fun hE x⟩`. Establish `hkey : ∀ (I : Ideal A), ∀ w ∈ locPart Y op a, w ∈ I • Y → w ∈ I • locPart Y op a`. Introduce `I w hw hw'`. Establish `h0 : ∀ y ∈ I • (⊤ : Submodule A Y), (e y : M) ∈ I • locPart Y op a`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_induction_on hy (fun r hr n _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr (heL n)`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `h0 ⟨w, hLY hw⟩ ((Submodule.mem_smul_top_iff I Y _).2 hw')`. Rewrite `h1` using `[(hmem ⟨w, hLY hw⟩).1 hw]`. Then use the resulting hypothesis. Use `⟨⟨hst, fun i j y hy => h.2 i j y (hLY hy)⟩, ?_, hfin, ?_, fun hP => ?_⟩` and prove the remaining obligations. Use `le_antisymm inf_le_left fun x hx => ⟨hx, ?_⟩` and prove the remaining obligations. Establish `hx2` using `hx.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at hx2 ⊢`. Introduce `i k`. Establish `hmono : Monotone fun n : ℕ => (maximalIdeal A ^ k • Y).comap ((op i - algebraMap A (Module.End A M) (a i)) ^ n)`. Use `monotone_nat_of_le_succ fun n y hy => ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `pres_smul Y _ _ (pres_sub Y _ _ (h.1 i)) _ hy`. Take `⟨n, hn⟩` from `(Submodule.mem_iSup_of_directed _ hmono.directed_le).1 (hx2 i k)`. Use `Submodule.mem_iSup_of_mem n ?_` and prove the remaining obligations. Conclude with `hkey _ _ (pres_pow _ _ (pres_sub _ _ _ (hst i)) n x hx) hn`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(LinearMap.ker e).map Y.subtype, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `x hx ⟨y, hy, rfl⟩`. Establish `h1` using `(hmem y).1 hx`. Establish `h2 : e y = 0` using `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h2, map_zero]`. Use `le_antisymm (sup_le hLY (Submodule.map_subtype_le _ _)) fun x hx => ?_` and prove the remaining obligations. Establish `: x = (e ⟨x, hx⟩ : M) + Y.subtype (⟨x, hx⟩ - e ⟨x, hx⟩)` using `by simp`. Rewrite using `[this]`. Use `Submodule.add_mem_sup (heL _) ⟨_, ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e _ = 0`. Rewrite using `[map_sub, hee, sub_self]`. Introduce and unpack `i x ⟨y, hy, rfl⟩`. Establish `h2 : e y = 0` using `hy`. Use `⟨⟨op i y, h.1 i y y.2⟩, ?_, rfl⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `e _ = 0`. Rewrite using `[hc]`. Simplify using `[h2]`. Use `haveI : Module.Projective A (locPart Y op a) := Module.Projective.of_split _ _ hE`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locFree :
     ∀ (A M ι : Type) [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M] (Y : Submodule A M) [Module.Finite A Y] (op : ι → Module.End A M) (a : ι → A), CommOn Y op → CommOn (locPart Y op a) op ∧ locPart (locPart Y op a) op a = locPart Y op a ∧ Module.Finite A (locPart Y op a) ∧ (∃ Z : Submodule A M, Disjoint (locPart Y op a) Z ∧ locPart Y op a ⊔ Z = Y ∧ ∀ i, ∀ z ∈ Z, op i z ∈ Z) ∧ (Module.Projective A Y → Module.Free A (locPart Y op a)) := by

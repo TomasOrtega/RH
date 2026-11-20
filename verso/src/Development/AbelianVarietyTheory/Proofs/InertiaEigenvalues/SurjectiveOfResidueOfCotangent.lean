@@ -4,15 +4,15 @@ open IsLocalRing Matrix TensorProduct
 namespace GlobalTheory.LocalSurj
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a ∈ Ideal.span (f '' ((m ^ n : Ideal R) : Set R)) at ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨x, hx, by simp⟩`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨x, hx, hx'⟩` from `hy`. Take `⟨x', hx2, hx2'⟩` from `hz`. Use `⟨x + x', add_mem hx hx2, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y + z - f (x + x') = (y - f x) + (z - f x')` using `by rw [map_add]; ring`. Rewrite using `[this]`. Conclude with `add_mem hx' hx2'`. Consider the case `smul c y _ hy`. Take `⟨x, hx, hx'⟩` from `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hm c`. Use `⟨s * x, Ideal.mul_mem_left _ _ hx, ?_⟩` and prove the remaining obligations. Establish `: c • y - f (s * x) = c * (y - f x) + (c - f s) * f x`. Rewrite using `[smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `add_mem (Ideal.mul_mem_left _ _ hx') ?_` and prove the remaining obligations. Rewrite using `[pow_succ', Ideal.map_mul]`. Conclude with `Ideal.mul_mem_mul hs (Ideal.mem_map_of_mem f hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_map_pow_succ {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
     (m : Ideal R) (hm : ∀ z : A, ∃ r, z - f r ∈ m.map f) (n : ℕ) (a : A)
@@ -52,7 +52,7 @@ noncomputable def approx {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
       rwa [map_add, ← sub_sub]⟩
 
 /- English proof (translation)
-Simplify using `only [approx, add_sub_cancel_left]`. Conclude with `(exists_sub_mem_map_pow_succ f m hm n _ (approx f m hm a n).2).choose_spec.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem approx_succ_sub {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
     (m : Ideal R) (hm : ∀ z : A, ∃ r, z - f r ∈ m.map f) (a : A) (n : ℕ) :
@@ -61,9 +61,9 @@ theorem approx_succ_sub {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
   exact (exists_sub_mem_map_pow_succ f m hm n _ (approx f m hm a n).2).choose_spec.1
 
 /- English proof (translation)
-Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hkn ih`. Establish `e : (approx f m hm a (n + 1)).1 - (approx f m hm a k).1 = ((approx f m hm a (n + 1)).1 - (approx f m hm a n).1) + ((approx f m hm a n).1 - (approx f m hm a k).1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.pow_le_pow_right hkn (approx_succ_sub f m hm a n)) ih`.
+A detailed English derivation is pending.
 -/
 theorem approx_sub_mem {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
     (m : Ideal R) (hm : ∀ z : A, ∃ r, z - f r ∈ m.map f) (a : A) {k n : ℕ} (h : k ≤ n) :
@@ -78,15 +78,15 @@ theorem approx_sub_mem {R A : Type} [CommRing R] [CommRing A] (f : R →+* A)
     exact add_mem (Ideal.pow_le_pow_right hkn (approx_succ_sub f m hm a n)) ih
 
 /- English proof (translation)
-Use `set m := maximalIdeal R`. Establish `hle : maximalIdeal A ≤ m.map f`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) (IsNoetherian.noetherian _) ?_ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Simplify `hcot` using `[pow_two, Ideal.smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hm : ∀ z : A, ∃ r, z - f r ∈ m.map f` using `fun z => (hres z).imp fun r hr => hle hr`. Establish `hmap : m.map f ≤ maximalIdeal A`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Conclude with `map_nonunit f x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨L, hL⟩` from `hc.prec' (fun n => (approx f m hm a n).1) (fun {k n} h => by`. Rewrite using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, ← neg_mem_iff, neg_sub]`. Conclude with `approx_sub_mem f m hm a h)`. Use `⟨L, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_comm, ← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal A) (maximalIdeal.isMaximal A).ne_top, Ideal.mem_iInf]`. Introduce `n`. Establish `h1` using `(approx f m hm a n).2`. Establish `h2` using `hL n`. Rewrite `h2` using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : a - f L = (a - f (approx f m hm a n).1) + f ((approx f m hm a n).1 - L)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(Ideal.map_pow f m n ▸ Ideal.pow_right_mono hmap n) (add_mem h1 (Ideal.mem_map_of_mem f h2))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem surjective_of_residue_of_cotangent (R A : Type) [CommRing R] [IsLocalRing R] [CommRing A]
     [IsLocalRing A] [IsNoetherianRing A] (f : R →+* A)

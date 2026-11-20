@@ -10,19 +10,19 @@ namespace PI.WBL.Cv
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions PI.BesselLine PI.WBL
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ σ hσ`. Take `⟨P, ⟨⟨-, hPJ⟩, hPu⟩, hDS⟩` from `hσ`. Take `⟨-, -, ⟨⟨h1, hmul⟩, hnorm, -⟩, -⟩` from `hDS`. Establish `hQ1 : Pᴴ * P = 1` using `by first`. Consider the case `exact Unitary.star_mul_self_of_mem hPu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Matrix.mem_unitaryGroup_iff'.mp hPu`. Consider the case `exact hPu.1`. Establish `hQ2 : P * Pᴴ = 1` using `by first`. Consider the case `exact Unitary.mul_star_self_of_mem hPu`. Consider the case `exact Matrix.mem_unitaryGroup_iff.mp hPu`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hPu.2`. Establish `hinv : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv hQ1`. Establish `hQ1' : ∀ x : Mx k r, Pᴴ * (P * x) = x` using `fun x => by rw [← mul_assoc, hQ1, one_mul]`. Establish `hQ2' : ∀ x : Mx k r, P * (Pᴴ * x) = x` using `fun x => by rw [← mul_assoc, hQ2, one_mul]`. Establish `hc : ∀ h : Mx k r, P⁻¹ * (P * h * Pᴴ) * P = h` using `fun h => by`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hinv, mul_assoc, hQ1', hQ1, mul_one]`. Establish `hc2 : ∀ a b : Mx k r, P⁻¹ * (P * a * Pᴴ * (P * b * Pᴴ)) * P = a * b` using `fun a b => by`. Simplify using `only [hinv, mul_assoc, hQ1', hQ1, mul_one]`. Establish `hmem : ∀ a ∈ UH (Hpk k r), P * a * Pᴴ ∈ UJset ε`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Use `show (P * a * Pᴴ)ᴴ * Formalism.REAL.Jm ε * (P * a * Pᴴ) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, mul_assoc]`. Use `_ = P * (Pᴴ * Formalism.REAL.Jm ε * P) * Pᴴ := by rw [hPJ, ha']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = Formalism.REAL.Jm ε := by simp only [mul_assoc, hQ2, mul_one, hQ2']`. Establish `h1' : σ (P⁻¹ * 1 * P) = 1` using `h1`. Establish `hmul' : ∀ x ∈ UJset ε, ∀ y ∈ UJset ε, σ (P⁻¹ * (x * y) * P) = (σ (P⁻¹ * x * P)).comp (σ (P⁻¹ * y * P))` using `hmul`. Establish `hnorm' : ∀ g ∈ UJset ε, ∀ v : H, ‖σ (P⁻¹ * g * P) v‖ = ‖v‖` using `hnorm`. Use `⟨?_, fun a ha b hb => ?_, fun a ha x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1'` using `[mul_one, hinv, hQ1]`. Then use the resulting hypothesis. Establish `e` using `hmul' _ (hmem a ha) _ (hmem b hb)`. Rewrite `e` using `[hc2, hc, hc]`. Then use the resulting hypothesis. Establish `e` using `hnorm' _ (hmem a ha) x`. Rewrite `e` using `[hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sigAll : SigAll := by
   intro k r ε lam H _ _ σ hσ

@@ -12,20 +12,20 @@ noncomputable def endBaseChangeMap :
   (LinearMap.baseChangeHom A S Λ Λ).liftBaseChange S
 
 /- English proof (translation)
-Simplify using `[endBaseChangeMap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma endBaseChangeMap_tmul (s : S) (f : Module.End A Λ) :
     endBaseChangeMap A S Λ (s ⊗ₜ f) = s • f.baseChange S := by
   simp [endBaseChangeMap]
 
 /- English proof (translation)
-Set `ι` to `Module.Free.ChooseBasisIndex A Λ`. Set `b` to `Module.Free.chooseBasis A Λ`. Set `bS` to `Algebra.TensorProduct.basis S b`. Set `e₁ : S ⊗[A] Module.End A Λ ≃ₗ[S] S ⊗[A] Matrix ι ι A` to `(LinearMap.toMatrix b b).baseChange A S _ _`. Set `e₂` to `(matrixEquivTensor ι A S).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e₃` to `LinearMap.toMatrix bS bS`. Establish `h : ∀ x, e₃ (endBaseChangeMap A S Λ x) = e₂ (e₁ x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul s f`. Simplify using `[e₁, e₂, e₃, bS, endBaseChangeMap_tmul, matrixEquivTensor_apply_symm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `: (endBaseChangeMap A S Λ : _ → _) = e₃.symm ∘ e₂ ∘ e₁`. Use function extensionality and compare the values at `x`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[← h x]`. Rewrite using `[this]`. Conclude with `e₃.symm.bijective.comp (e₂.bijective.comp e₁.bijective)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma endBaseChangeMap_bijective [Module.Free A Λ] [Module.Finite A Λ] :
     Bijective (endBaseChangeMap A S Λ) := by
@@ -58,11 +58,11 @@ noncomputable def envBaseChange :
     (TensorProduct.congr (LinearEquiv.refl S _) (opBaseChange A S Λ))
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [tmul_add, map_add, hy, hz]`. Consider the case `tmul a b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Consider the case `tmul t y`. Simplify using `[envBaseChange, opBaseChange, endBaseChangeMap_tmul, AlgebraTensorModule.distribBaseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul, smul_tmul', mul_comm, mul_left_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma mulLeftRight_envBaseChange (x : S ⊗[A] (Λ ⊗[A] Λᵐᵒᵖ)) :
     AlgHom.mulLeftRight S (S ⊗[A] Λ) (envBaseChange A S Λ x) =
@@ -86,15 +86,15 @@ lemma mulLeftRight_envBaseChange (x : S ⊗[A] (Λ ⊗[A] Λᵐᵒᵖ)) :
           smul_tmul', mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Use `haveI : Module.Finite A Λ := inferInstance`. Use `{ toProjective := inferInstance, toFinite := inferInstance, toFaithfulSMul := ?_, bij := ?_ }` and prove the remaining obligations. Break down `subsingleton_or_nontrivial S with hS | hS` into its components or cases. Conclude with `⟨fun _ => Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial A := (algebraMap A S).domain_nontrivial haveI : Nontrivial Λ := by`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hΛ`. Rewrite `hΛ` using `[not_nontrivial_iff_subsingleton]`. Establish `: (0 : A) = 1` using `FaithfulSMul.eq_of_smul_eq_smul (α := Λ) fun _ => Subsingleton.elim _ _`. Conclude with `zero_ne_one this`. Set `b` to `Module.Free.chooseBasis A Λ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `bS` to `Algebra.TensorProduct.basis S b`. Take `⟨i⟩` from `b.index_nonempty`. Use `⟨fun {s₁ s₂} h => ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => bS.repr x i) (h (bS i))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Bijective ((AlgHom.mulLeftRight A Λ).toLinearMap.lTensor S)`. Set `e` to `LinearEquiv.ofBijective (AlgHom.mulLeftRight A Λ).toLinearMap IsAzumaya.bij`. Establish `: (AlgHom.mulLeftRight A Λ).toLinearMap.lTensor S = (e.lTensor S : _ →ₗ[A] _)` using `rfl`. Rewrite using `[this]`. Conclude with `(e.lTensor S).bijective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (AlgHom.mulLeftRight S (S ⊗[A] Λ) : _ → _) = (endBaseChangeMap A S Λ ∘ (AlgHom.mulLeftRight A Λ).toLinearMap.lTensor S) ∘ (envBaseChange A S Λ).symm`. Use function extensionality and compare the values at `y`. Simplify using `[← mulLeftRight_envBaseChange]`. Rewrite using `[hc]`. Conclude with `((endBaseChangeMap_bijective A S Λ).comp hφ).comp (envBaseChange A S Λ).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem isAzumaya_baseChange [IsAzumaya A Λ] [Module.Free A Λ] :
     IsAzumaya S (S ⊗[A] Λ) := by

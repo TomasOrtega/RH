@@ -10,9 +10,9 @@ def powInf {B : Type} [CommRing B] (ϖ : B) : Ideal B := ⨅ n : ℕ, Ideal.span
 variable {B : Type} [CommRing B] [IsLocalRing B] {ϖ : B}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `hn : ϖ ^ n ∈ nonZeroDivisors B` using `pow_mem hϖ n`. Establish `e : (b * ϖ - 1) * ϖ ^ n = 0` using `by linear_combination hb`. Establish `e1 : b * ϖ - 1 = 0` using `(mem_nonZeroDivisors_iff.1 hn).2 _ e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ϖ ∈ maximalIdeal B` using `by rw [hm]; exact Ideal.mem_span_singleton_self ϖ`. Conclude with `(mem_maximalIdeal _).1 hmem (isUnit_iff_exists_inv.2 ⟨b, by rw [mul_comm]; exact sub_eq_zero.1 e1⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_not_mem_span_succ (hm : maximalIdeal B = Ideal.span {ϖ}) (hϖ : ϖ ∈ nonZeroDivisors B) (n : ℕ) :
     ϖ ^ n ∉ Ideal.span {ϖ ^ (n + 1)} := by
@@ -25,13 +25,13 @@ theorem pow_not_mem_span_succ (hm : maximalIdeal B = Ideal.span {ϖ}) (hϖ : ϖ 
   exact (mem_maximalIdeal _).1 hmem (isUnit_iff_exists_inv.2 ⟨b, by rw [mul_comm]; exact sub_eq_zero.1 e1⟩)
 
 /- English proof (translation)
-Establish `hex : ∃ n, ¬ ϖ ^ n ∣ x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (Ideal.mem_iInf.2 fun n => Ideal.mem_span_singleton.2 (h n))`. Take `⟨N, hN, hmin⟩ : ∃ N, ¬ ϖ ^ N ∣ x ∧ ∀ m < N, ϖ ^ m ∣ x` from `⟨Nat.find hex, Nat.find_spec hex, fun m hm => not_not.1 (Nat.find_min hex hm)⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hex`. Establish `hN0 : N ≠ 0`. Introduce `h0`. Apply `hN` to reduce the goal to its premises. Rewrite using `[h0, pow_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `one_dvd x`. Take `⟨u, hu⟩ : ϖ ^ (N - 1) ∣ x` from `hmin _ (Nat.sub_lt (Nat.pos_of_ne_zero hN0) one_pos)`. Establish `hu' : IsUnit u`. Assume the negation of the conclusion as `hu'`. Establish `hmem : u ∈ Ideal.span {ϖ}` using `by rw [← hm]; exact (mem_maximalIdeal u).2 hu'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 hmem`. Apply `hN` to reduce the goal to its premises. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hc, ← mul_assoc, ← pow_succ, Nat.sub_add_cancel (Nat.pos_of_ne_zero hN0)]`. Conclude with `⟨N - 1, hu'.unit, by rw [hu, IsUnit.unit_spec, mul_comm]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_mul_pow (hm : maximalIdeal B = Ideal.span {ϖ}) (x : B) (hx : x ∉ powInf ϖ) :
     ∃ (n : ℕ) (u : Bˣ), x = u * ϖ ^ n := by
@@ -56,13 +56,11 @@ theorem exists_unit_mul_pow (hm : maximalIdeal B = Ideal.span {ϖ}) (x : B) (hx 
   exact ⟨N - 1, hu'.unit, by rw [hu, IsUnit.unit_spec, mul_comm]⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`. Introduce `h`. Conclude with `pow_not_mem_span_succ hm hϖ 0 (by simpa using Ideal.mem_iInf.1 h 1)`. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨m, u, rfl⟩` from `exists_unit_mul_pow hm a h.1`. Take `⟨k, v, rfl⟩` from `exists_unit_mul_pow hm b h.2`. Establish `hmem` using `Ideal.mem_iInf.1 hab (m + k + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `pow_not_mem_span_succ hm hϖ (m + k)` to reduce the goal to its premises. Establish `e1 : (u : B) * ϖ ^ m * (v * ϖ ^ k) = ((u * v : Bˣ) : B) * ϖ ^ (m + k)` using `by push_cast; ring`. Establish `e : ϖ ^ (m + k) = (((u * v)⁻¹ : Bˣ) : B) * ((u : B) * ϖ ^ m * (v * ϖ ^ k))`. Rewrite using `[e1, Units.inv_mul_cancel_left]`. Rewrite using `[e]`.
-
-Conclude with `Ideal.mul_mem_left _ _ hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_powInf (hm : maximalIdeal B = Ideal.span {ϖ}) (hϖ : ϖ ∈ nonZeroDivisors B) :
     (powInf ϖ).IsPrime := by
@@ -84,29 +82,25 @@ theorem isPrime_powInf (hm : maximalIdeal B = Ideal.span {ϖ}) (hϖ : ϖ ∈ non
     exact Ideal.mul_mem_left _ _ hmem
 
 /- English proof (translation)
-Introduce `B _ _ ϖ hm hϖ h0`. Use `haveI := isPrime_powInf hm hϖ`. Establish `hp0 : Ideal.Quotient.mk (powInf ϖ) ϖ ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `pow_not_mem_span_succ hm hϖ 1 (by simpa using Ideal.mem_iInf.1 h 2)`. Establish `hnu : ∀ a : B, ¬ IsUnit a → ∃ c, Ideal.Quotient.mk (powInf ϖ) a = Ideal.Quotient.mk (powInf ϖ) ϖ * Ideal.Quotient.mk (powInf ϖ) c`. Introduce `a ha`. Establish `hmem : a ∈ Ideal.span {ϖ}` using `by rw [← hm]; exact (mem_maximalIdeal a).2 ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨c, by rw [← hc, map_mul, mul_comm]⟩`. Establish `hpu : ¬ IsUnit (Ideal.Quotient.mk (powInf ϖ) ϖ)`. Introduce and unpack `⟨w, hw⟩`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (w⁻¹ : (B ⧸ powInf ϖ)ˣ).val`. Establish `e : Ideal.Quotient.mk (powInf ϖ) (ϖ * c) = Ideal.Quotient.mk (powInf ϖ) 1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hc, ← hw, Units.mul_inv, map_one]`. Establish `h1` using `Ideal.mem_iInf.1 (Ideal.Quotient.eq.1 e) 1`. Rewrite `h1` using `[pow_one]`. Establish `h2 : (1 : B) ∈ Ideal.span {ϖ}`. Use `Ideal.sub_mem _ (Ideal.mul_mem_right c _ (Ideal.mem_span_singleton_self ϖ)) h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `pow_not_mem_span_succ hm hϖ 0 (by simpa using h2)`. Establish `hirr : Irreducible (Ideal.Quotient.mk (powInf ϖ) ϖ)`. Use `irreducible_iff.2 ⟨hpu, fun a b hab => ?_⟩` and prove the remaining obligations. Take `⟨a', rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Take `⟨b', rfl⟩` from `Ideal.Quotient.mk_surjective b`. Distinguish the cases in `ha : IsUnit a'`. Conclude with `Or.inl (ha.map _)`. Take `⟨c, hc⟩` from `hnu a' ha right`. Rewrite `hab` using `[hc, mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `mul_left_cancel₀ hp0 ((mul_one _).trans hab)`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, by rw [mul_comm]; exact e.symm⟩`. Establish `hfac : ∀ {x : B ⧸ powInf ϖ}, x ≠ 0 → ∃ n, Associated (Ideal.Quotient.mk (powInf ϖ) ϖ ^ n) x`. Introduce `x hx`. Take `⟨x', rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hx' : x' ∉ powInf ϖ` using `fun h => hx (Ideal.Quotient.eq_zero_iff_mem.2 h)`. Take `⟨n, u, rfl⟩` from `exists_unit_mul_pow hm x' hx'`. Use `⟨n, Units.map (Ideal.Quotient.mk (powInf ϖ)).toMonoidHom u, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : IsDiscreteValuationRing (B ⧸ powInf ϖ) := IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hirr, hfac⟩`. Establish `hle : powInf ϖ ≤ RingHom.ker (residue B)`. Introduce `a ha`. Rewrite using `[RingHom.mem_ker, residue_eq_zero_iff, hm]`. Simplify using `using Ideal.mem_iInf.1 ha 1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : CharZero (B ⧸ powInf ϖ)` using `RingHom.charZero (Ideal.Quotient.lift (powInf ϖ) (residue B) hle)`. Establish `hloc : IsLocalHom (Ideal.Quotient.mk (powInf ϖ))` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Take `⟨c, hc⟩` from `hnu a h`. Rewrite `ha` using `[hc]`.
-
-Conclude with `hpu (isUnit_of_mul_isUnit_left ha)⟩`. Take `⟨W, _, _, _, g, hW, hinj, hg⟩` from `GlobalTheory.LocalCompletion.exists_cDvr_embedding (B ⧸ powInf ϖ) inferInstance inferInstance (IsDiscreteValuationRing.ringKrullDim_eq_one _) hc0`. Use `⟨W, inferInstance, inferInstance, inferInstance, g.comp (Ideal.Quotient.mk (powInf ϖ)), hW, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hloc`. Use `haveI := hg`.
-
-Use `infer_instance`. Introduce `h`. Conclude with `hp0 (hinj (by rw [map_zero]; exact h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cDvr_localHom : ∀ (B : Type) [CommRing B] [IsLocalRing B] (ϖ : B), maximalIdeal B = Ideal.span {ϖ} →
     ϖ ∈ nonZeroDivisors B → CharZero (ResidueField B) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W)

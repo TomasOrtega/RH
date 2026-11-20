@@ -22,7 +22,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [NeZero n] (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[((hQ hK T.V T.ρ hT).2 τ).2.2 a, hτ]`. Unfold `Formalism.MainNotions.WachCoordinates.FilLev`. Simplify using `only [Nat.cast_zero, sub_zero, pow_zero]`. Use `congr 1`. Conclude with `Submodule.map_id _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rk_filLev_eq (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n) (τ : K →ₐ[Qp] LL)
@@ -35,7 +35,7 @@ theorem rk_filLev_eq (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formali
   exact Submodule.map_id _
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.DeltaInvariantLattices.ιDi`. Rewrite using `[← hτ]`. Conclude with `rk_DcrisL_map W hK hQ T hT τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_ιDi_eq (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n) (τ : K →ₐ[Qp] LL)
@@ -48,7 +48,7 @@ theorem rk_ιDi_eq (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism
 variable {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ}
 
 /- English proof (translation)
-Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hK`. Use `⟨(W.emb i).comp (e.symm : K →ₐ[Qp] K₀), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `show W.emb i (e.symm (IsScalarTower.toAlgHom Qp K₀ K x)) = W.emb i x`. Rewrite using `[show IsScalarTower.toAlgHom Qp K₀ K x = e x from rfl, e.symm_apply_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_embedding_extending_emb (hK : Function.Bijective (algebraMap K₀ K)) (i : ZMod n) :
     ∃ τ : K →ₐ[Qp] LL, τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = W.emb i := by
@@ -59,13 +59,13 @@ private theorem exists_embedding_extending_emb (hK : Function.Bijective (algebra
   rw [show IsScalarTower.toAlgHom Qp K₀ K x = e x from rfl, e.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨-, hp11, -, -, -, -, -, -, hbig, -⟩` from `hS`. Establish `hp : (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hp11`. Establish `hlam : 0 ≤ Formalism.MainNotions.RamifiedCoefficientChains.lam PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η)`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.lam`. Break down `Nat.eq_zero_or_pos (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) with h0 | h0` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ 2 * ((Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η : ℕ) : ℝ)`. Establish `: (1 : ℝ) ≤ ((Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η : ℕ) : ℝ)` using `by exact_mod_cast h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.logb_nonneg (by linarith : (1 : ℝ) < PD.p) this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 0 ≤ Formalism.MainNotions.RamifiedCoefficientChains.aR PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η)`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.aR`. Establish `h1 : 0 ≤ ((Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η : ℕ) : ℝ) * (2 * (PD.p : ℝ) - 1) / ((PD.p : ℝ) - 1) ^ 2` using `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (by linarith)) (sq_nonneg _)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `hbig i`. Establish `: (η : ℝ) ≤ (b i : ℝ)` using `by linarith`. Establish `: η ≤ b i` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem eta_le_b_add_of_SetCS (hS : Formalism.MainNotions.RamifiedCoefficientChains.SetCS W d T₁ T₂ F b S η m) (i : ZMod n) : η ≤ b i + S := by
   obtain ⟨-, hp11, -, -, -, -, -, -, hbig, -⟩ := hS
@@ -90,23 +90,21 @@ private theorem eta_le_b_add_of_SetCS (hS : Formalism.MainNotions.RamifiedCoeffi
   omega
 
 /- English proof (translation)
-Establish `hK : Function.Bijective (algebraMap K₀ K)` using `hS.1.1`. Establish `hT2 : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hsum` using `hS.2.2.2.2.2.2.2.1`. Take `⟨τ, hτ⟩` from `exists_embedding_extending_emb W hK i`. Rewrite using `[rk_filLev_eq W hK hQ T₂ hT2 i τ hτ, rk_filLev_eq W hK hQ T₂ hT2 i τ hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hfd : FiniteDimensional LL ↥(DdRE PD T₂.ρ τ) := ((hQ hK T₂.V T₂.ρ hT2).2 τ).1`. Establish `hfdF : ∀ a : ℤ, FiniteDimensional LL ↥(FildR PD T₂.ρ τ a)` using `fun a => Submodule.finiteDimensional_of_le (show FildR PD T₂.ρ τ a ≤ DdRE PD T₂.ρ τ from inf_le_left)`. Use `haveI := hfdF (-(η : ℤ))`. Use `haveI := hfdF 0`. Establish `hNA : FildR PD T₂.ρ τ 0 ≤ FildR PD T₂.ρ τ (-(η : ℤ))` using `rk_fildR_anti (PD := PD) (ρ := T₂.ρ) (τ := τ) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker ((FildR PD T₂.ρ τ 0).mkQ.domRestrict (FildR PD T₂.ρ τ (-(η : ℤ))))`. Rewrite `hrk` using `[LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ, (Submodule.comapSubtypeEquivOfLe hNA).finrank_eq]`. Establish `htel : ∀ k : ℕ, (finrank LL ↥(FildR PD T₂.ρ τ (-(k : ℤ))) : ℤ) - finrank LL ↥(FildR PD T₂.ρ τ 0) = ∑ j ∈ Finset.range k, multV PD T₂.ρ τ (-((j : ℤ) + 1))`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, ← ih]`. Unfold `Formalism.WeaklyAdmissibleFiltrations.multV`. Establish `e1 : (-((k : ℤ) + 1) + 1) = -(k : ℤ)` using `by ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (-(((k + 1 : ℕ)) : ℤ)) = -((k : ℤ) + 1)` using `by push_cast; ring`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Set `emb : ℕ ↪ ℤ` to `⟨fun j : ℕ => -((j : ℤ) + 1), fun x y h => by have h' : -((x : ℤ) + 1) = -((y : ℤ) + 1) := h; omega⟩`. Establish `hsub : (Finset.range η).map emb ⊆ Finset.Icc (-(η : ℤ)) (η : ℤ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Rewrite `ha` using `[Finset.mem_map]`. Take `⟨j, hj, rfl⟩` from `ha`. Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[Finset.mem_Icc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `show -(η : ℤ) ≤ -((j : ℤ) + 1) ∧ -((j : ℤ) + 1) ≤ (η : ℤ)`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∑ j ∈ Finset.range η, multV PD T₂.ρ τ (-((j : ℤ) + 1)) ≤ ∑ a ∈ Finset.Icc (-(η : ℤ)) (η : ℤ), multV PD T₂.ρ τ a`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hsum i τ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `htel η`. Establish `hz : ((finrank LL ↥((FildR PD T₂.ρ τ (-(η : ℤ))).map (FildR PD T₂.ρ τ 0).mkQ) : ℕ) : ℤ) + finrank LL ↥(FildR PD T₂.ρ τ 0) = finrank LL ↥(FildR PD T₂.ρ τ (-(η : ℤ)))`. Conclude with `hrk` after adjusting the coercions. Establish `: ((finrank LL ↥((FildR PD T₂.ρ τ (-(η : ℤ))).map (FildR PD T₂.ρ τ 0).mkQ) : ℕ) : ℤ) ≤ m`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem rk_evenQ₂ (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (hS : Formalism.MainNotions.RamifiedCoefficientChains.SetCS W d T₁ T₂ F b S η m) (i : ZMod n)
@@ -167,21 +165,21 @@ theorem rk_evenQ₂ (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisE
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hK : Function.Bijective (algebraMap K₀ K)` using `hS.1.1`. Establish `hT2 : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hηb` using `eta_le_b_add_of_SetCS W hS i`. Take `⟨τ, hτ⟩` from `exists_embedding_extending_emb W hK i`. Rewrite using `[rk_ιDi_eq W hK hQ T₂ hT2 i τ hτ, rk_filLev_eq W hK hQ T₂ hT2 i τ hτ a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional LL ↥(DdRE PD T₂.ρ τ) := ((hQ hK T₂.V T₂.ρ hT2).2 τ).1`. Establish `hJ` using `rk_jumps₂ W hE hC hQ hS i τ hτ`. Take `⟨lo, hlo⟩` from `rk_fildR_lo (PD := PD) (ρ := T₂.ρ) (τ := τ)`. Establish `key : ∀ k : ℕ, lo + k ≤ a → FildR PD T₂.ρ τ (lo + k) = DdRE PD T₂.ρ τ`. Introduce `k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using `using hlo lo le_rfl`. Consider the case `succ k ih`. Introduce `hk`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hk`. Establish `h1 : lo + (k : ℤ) ≤ a` using `by linarith`. Establish `hnj : ¬ Formalism.WeaklyAdmissibleFiltrations.IsJumpV PD T₂.ρ τ (lo + k)`. Introduce `hj`. Establish `hw` using `hJ _ hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS at hw`. Rewrite `hw` using `[if_pos hi]`. Break down `hw with hw | hw` into its components or cases. Use `hw.1` as an intermediate fact. Move the coercions through the operations in `at this ha`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `hw.1` as an intermediate fact. Move the coercions through the operations in `at ha`. Use linear arithmetic over natural numbers and integers. Unfold `Formalism.WeaklyAdmissibleFiltrations.IsJumpV at hnj`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_neg at hnj`. Use `push_cast`. Rewrite using `[← add_assoc, hnj, ih h1]`. Break down `le_or_gt a lo with h | h` into its components or cases. Rewrite using `[hlo a h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : lo + (((a - lo).toNat : ℕ) : ℤ) = a` using `by omega`. Rewrite using `[← hk, key _ (le_of_eq hk)]`.
+A detailed English derivation is pending.
 -/
 theorem rk_low₂ (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (hS : Formalism.MainNotions.RamifiedCoefficientChains.SetCS W d T₁ T₂ F b S η m) (i : ZMod n)

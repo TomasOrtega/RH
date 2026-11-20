@@ -18,13 +18,13 @@ def mP (w : Pl F) (c : ℕ) : AddSubgroup (w.adicCompletion F) :=
     (w.adicCompletionIntegers F).subtype.toAddMonoidHom
 
 /- English proof (translation)
-Establish `key : ∀ k : GL (Fin 2) (w.adicCompletionIntegers F), k ∈ ((mirab _).comap (Matrix.GeneralLinearGroup.map (n` using `Fin 2) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)))) ↔ k 1 0 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c ∧ k 1 1 - 1 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c := fun k => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.eq, map_one]`. Express the relevant statement in the definitionally equal form `![0, 1] ᵥ* _ = ![0, 1] ↔ _`. Rewrite using `[funext_iff, Fin.forall_fin_two]`. Simplify using `[Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨h1, h2⟩` from `(key k).1 hk`. Use `⟨fun a b => (k a b).2, fun a b => ?_, ⟨_, h1, rfl⟩, ⟨_, h2, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((k⁻¹ : GL (Fin 2) (w.adicCompletionIntegers F)) a b).2`. Introduce and unpack `⟨ha, hb, ⟨y, hy, e⟩, ⟨y', hy', e'⟩⟩`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `Fin 2) (w.adicCompletionIntegers F).subtype) := fun x y h => Matrix.ext fun a b => Subtype.ext (congrFun (congrFun h a) b)`. Set `k : GL (Fin 2) (w.adicCompletionIntegers F)` to `⟨Matrix.of fun a b => ⟨g a b, ha a b⟩, Matrix.of fun a b => ⟨(g⁻¹ : GL (Fin 2) (w.adicCompletion F)) a b, hb a b⟩, inj (by rw [map_mul, map_one]; exact g.mul_inv), inj (by rw [map_mul, map_one]; exact g.inv_mul)⟩`. Use `⟨k, (key k).2 ⟨?_, ?_⟩, Units.ext rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show k 1 0 = y from Subtype.ext e.symm]`. Conclude with `hy`. Rewrite using `[show k 1 1 - 1 = y' from Subtype.ext e'.symm]`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parahoricTimesPrincipalCongruence_iff {w : Pl F} {c : ℕ} {g : GL (Fin 2) (w.adicCompletion F)} :
     g ∈ K1 w c ↔ (∀ a b, g a b ∈ w.adicCompletionIntegers F) ∧
@@ -55,32 +55,32 @@ theorem mem_parahoricTimesPrincipalCongruence_iff {w : Pl F} {c : ℕ} {g : GL (
     · rw [show k 1 1 - 1 = y' from Subtype.ext e'.symm]; exact hy'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨x, hx⟩, by simp, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mP_zero {w : Pl F} {x : w.adicCompletion F} (hx : x ∈ w.adicCompletionIntegers F) : x ∈ mP w 0 :=
   ⟨⟨x, hx⟩, by simp, rfl⟩
 
 /- English proof (translation)
-Simplify using `[Ohat, Subring.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_O {x : Af F} : x ∈ Ohat F ↔ ∀ w : Pl F, pLoc F w x ∈ w.adicCompletionIntegers F := by
   simp [Ohat, Subring.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[mem_O]`. Simplify using `only [HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_Ov {x : Af F} : x ∈ Ohat F ↔ ∀ w : Pl F, Valued.v (pLoc F w x) ≤ 1 := by
   rw [mem_O]; simp only [HeightOneSpectrum.mem_adicCompletionIntegers]
 
 /- English proof (translation)
-The claim follows from `mem_Ov.1 hx w`.
+A detailed English derivation is pending.
 -/
 theorem v_le {x : Af F} (hx : x ∈ Ohat F) (w : Pl F) : Valued.v (pLoc F w x) ≤ 1 := mem_Ov.1 hx w
 
 /- English proof (translation)
-Simplify using `only [K0, Kc, Subgroup.mem_iInf, Subgroup.mem_comap, mem_parahoricTimesPrincipalCongruence_iff, ← map_inv, mem_O]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i j w => (h w).1 i j, fun i j w => (h w).2.1 i j⟩`. Introduce and unpack `⟨h1, h2⟩ w`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i j => h1 i j w, fun i j => h2 i j w, mem_mP_zero (h1 1 0 w), mem_mP_zero (sub_mem (h1 1 1 w) (one_mem _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem integral_transvection_mem_slIntegers_conjugate_zero {g : GF F} :
     g ∈ K0 F ↔ (∀ i j, g.val i j ∈ Ohat F) ∧ ∀ i j, (g⁻¹ : GF F).val i j ∈ Ohat F := by
@@ -93,7 +93,7 @@ theorem integral_transvection_mem_slIntegers_conjugate_zero {g : GF F} :
       mem_mP_zero (sub_mem (h1 1 1 w) (one_mem _))⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `by rw [integral_transvection_mem_slIntegers_conjugate_zero] simp only [Kc, Subgroup.mem_iInf, Subgroup.mem_comap, mem_parahoricTimesPrincipalCongruence_iff, ← map_inv] at hg exact ⟨fun i j => mem_O.2 fun w => (hg w).1 i j, fun i j => mem_O.2 fun w => (hg w).2.1 i j⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Kc_le (c : Pl F → ℕ) : Kc c ≤ K0 F := fun g hg => by
   rw [integral_transvection_mem_slIntegers_conjugate_zero]
@@ -101,7 +101,7 @@ theorem Kc_le (c : Pl F → ℕ) : Kc c ≤ K0 F := fun g hg => by
   exact ⟨fun i j => mem_O.2 fun w => (hg w).1 i j, fun i j => mem_O.2 fun w => (hg w).2.1 i j⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n hn g => by obtain ⟨z, rfl⟩ := hn have := Subgroup.mem_center_iff.1 (zc_center z) g exact ⟨z, by rw [this, mul_inv_cancel_right]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem zc_normal : ((zc F).range).Normal :=
   ⟨fun n hn g => by
@@ -110,9 +110,9 @@ theorem zc_normal : ((zc F).range).Normal :=
     exact ⟨z, by rw [this, mul_inv_cancel_right]⟩⟩
 
 /- English proof (translation)
-Use `zc_normal (F := F)` as an intermediate fact. Express the relevant statement in the definitionally equal form `h ∈ Kc c ⊔ (zc F).range ↔ _`. Rewrite using `[Subgroup.mem_sup_of_normal_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, _, ⟨z, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k, hk, z, rfl⟩`. Introduce and unpack `⟨k, hk, z, rfl⟩`. Conclude with `⟨k, hk, _, ⟨z, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Hc (c : Pl F → ℕ) (h : GF F) : h ∈ Hc c ↔ ∃ k ∈ Kc c, ∃ z, h = k * zc F z := by
   have := zc_normal (F := F)
@@ -125,22 +125,20 @@ theorem mem_Hc (c : Pl F → ℕ) (h : GF F) : h ∈ Hc c ↔ ∃ k ∈ Kc c, �
     exact ⟨k, hk, _, ⟨z, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (h 0 0) (h 1 1)) (mul_mem (h 0 1) (h 1 0))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {g : GF F} (h : ∀ i j, g.val i j ∈ Ohat F) : g.val.det ∈ Ohat F := by
   rw [Matrix.det_fin_two]
   exact sub_mem (mul_mem (h 0 0) (h 1 1)) (mul_mem (h 0 1) (h 1 0))
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `integral_transvection_mem_slIntegers_conjugate_zero.1 hk`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hd2` using `v_le (det_mem h2) w`. Establish `hdd : k.val.det * (k⁻¹ : GF F).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Valued.v (pLoc F w k.val.det) * Valued.v (pLoc F w (k⁻¹ : GF F).val.det) = 1`. Rewrite using `[← map_mul, ← map_mul, hdd, map_one, map_one]`. Express the relevant statement in the definitionally equal form `Valued.v (pLoc F w k.val.det) = 1`. Conclude with `le_antisymm (v_le (det_mem h1) w) (e1 ▸ mul_le_of_le_one_right' hd2)`. Establish `e : k.val 1 0 * (k⁻¹ : GF F).val 0 1 + k.val 1 1 * (k⁻¹ : GF F).val 1 1 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun (Units.mul_inv k) 1) 1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]`. Conclude with `this`. Establish `hv : Valued.v (pLoc F w (k.val 1 0) * pLoc F w ((k⁻¹ : GF F).val 0 1) + pLoc F w (k.val 1 1) * pLoc F w ((k⁻¹ : GF F).val 1 1)) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_add, e, map_one, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (max_le (v_le (h1 1 0) w) (v_le (h1 1 1) w)) ?_` and prove the remaining obligations. Use `hv.ge.trans ((Valuation.map_add _ _ _).trans (max_le_max ?_ ?_))` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_right' (v_le (h2 0 1) w)`. Rewrite using `[map_mul]`.
-
-Conclude with `mul_le_of_le_one_right' (v_le (h2 1 1) w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k_prop {k : GF F} (hk : k ∈ K0 F) (w : Pl F) :
     Valued.v (pLoc F w ((Matrix.GeneralLinearGroup.det k : (Af F)ˣ) : Af F)) = 1 ∧
@@ -167,16 +165,16 @@ theorem k_prop {k : GF F} (hk : k ∈ K0 F) (w : Pl F) :
     · rw [map_mul]; exact mul_le_of_le_one_right' (v_le (h2 1 1) w)
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+A detailed English derivation is pending.
 -/
 theorem val_pLoc (w : Pl F) (x : F) :
     Valued.v (pLoc F w (algebraMap F (Af F) x)) = w.valuation F x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x
 
 /- English proof (translation)
-Rewrite using `[mem_Ov]`. Simplify using `only [val_pLoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Conclude with `HeightOneSpectrum.valuation_le_one w (⟨t, h⟩ : 𝓞 F)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨r, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F t h`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem int_iff (t : F) : IsIntegral ℤ t ↔ algebraMap F (Af F) t ∈ Ohat F := by
   rw [mem_Ov]
@@ -189,11 +187,11 @@ theorem int_iff (t : F) : IsIntegral ℤ t ↔ algebraMap F (Af F) t ∈ Ohat F 
     exact RingOfIntegers.isIntegral_coe r
 
 /- English proof (translation)
-Establish `hU : IsOpen {z : Af F | a - z ∈ Ohat F}` using `isOpen_Ohat.preimage (f := fun z : Af F => a - z) (by fun_prop)`. Take `⟨x, hx⟩` from `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F).exists_mem_open hU ⟨a, by simp⟩`. Take `⟨m, hm0, hm⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x)).exists_integral_multiple`. Use `⟨m.natAbs, Int.natAbs_ne_zero.2 hm0, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap F (Af F) (m • x) ∈ Ohat F` using `mem_Ohat.2 (GroundTheory.Global.algebraMap_integers_mem_integralFiniteAdeles F ⟨_, hm⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `add_mem h1 (mul_mem (intCast_mem (Ohat F) m) hx)`. Establish `h3 : (m : Af F) * a ∈ Ohat F`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `Int.natAbs_eq m with h | h` into its components or cases. Rewrite `h3` using `[h]`. Simplify using `using h3`. Rewrite `h3` using `[h]`. Simplify using `using neg_mem h3`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem af_den (a : Af F) : ∃ n : ℕ, n ≠ 0 ∧ (n : Af F) * a ∈ Ohat F := by
   have hU : IsOpen {z : Af F | a - z ∈ Ohat F} :=
@@ -214,7 +212,7 @@ theorem af_den (a : Af F) : ∃ n : ℕ, n ≠ 0 ∧ (n : Af F) * a ∈ Ohat F :
   · rw [h] at h3; simpa using neg_mem h3
 
 /- English proof (translation)
-Use `choose n hn0 hn using fun p : Fin 2 × Fin 2 => af_den (g.val p.1 p.2)`. Use `⟨∏ p, n p, Finset.prod_ne_zero_iff.2 fun p _ => hn0 p, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_univ (i, j))`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((n (i, j) : ℕ) : Af F), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ k) (hn (i, j))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_ex (g : GF F) : ∃ N : ℕ, N ≠ 0 ∧ ∀ i j, (N : Af F) * g.val i j ∈ Ohat F := by
   choose n hn0 hn using fun p : Fin 2 × Fin 2 => af_den (g.val p.1 p.2)
@@ -224,11 +222,11 @@ theorem den_ex (g : GF F) : ∃ N : ℕ, N ≠ 0 ∧ ∀ i j, (N : Af F) * g.val
   exact mul_mem (natCast_mem _ k) (hn (i, j))
 
 /- English proof (translation)
-Establish `hu1 : (u : Af F) ∈ Ohat F` using `mem_Ov.2 fun w => (hu w).le`. Establish `hu2 : ((u⁻¹ : (Af F)ˣ) : Af F) ∈ Ohat F`. Use `mem_Ov.2 fun w => ?_` and prove the remaining obligations. Establish `: Valued.v (pLoc F w (u : Af F)) * Valued.v (pLoc F w ((u⁻¹ : (Af F)ˣ) : Af F)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hu w, one_mul]`. Conclude with `this.le`. Use `⟨integral_transvection_mem_slIntegers_conjugate_zero.2 ⟨fun i j => ?_, fun i j => ?_⟩, fun t ht => integral_transvection_mem_slIntegers_conjugate_zero.2 ⟨fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [zc, hu1]`. Apply the tactic sequence `rw [show (zc F u)⁻¹ = zc F u⁻¹ from (map_inv (zc F) u).symm] fin_cases i <;> fin_cases j <;> simp [-map_inv, zc, hu2]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `change (!![(u : Af F), t; 0, 1] : Matrix (Fin 2) (Fin 2) (Af F)) i j ∈ Ohat F fin_cases i <;> fin_cases j <;> simp [hu1, ht]`. Apply the tactic sequence `change (!![((u⁻¹ : (Af F)ˣ) : Af F), -(((u⁻¹ : (Af F)ˣ) : Af F) * t); 0, 1] : Matrix (Fin 2) (Fin 2) (Af F)) i j ∈ Ohat F fin_cases i <;> fin_cases j <;> simp [hu2, mul_mem hu2 ht]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unit_scalar_mem_maximal_compact {u : (Af F)ˣ} (hu : ∀ w : Pl F, Valued.v (pLoc F w (u : Af F)) = 1) :
     zc F u ∈ K0 F ∧ ∀ t ∈ Ohat F, aff u t ∈ K0 F := by
@@ -253,7 +251,7 @@ end UpperTheory.Esk.CompactSubgroupMembership
 
 open UpperTheory.Esk.CompactSubgroupMembership in
 /- English proof (translation)
-Introduce `F _ _`. Conclude with `⟨fun g => integral_transvection_mem_slIntegers_conjugate_zero, fun x => mem_Ov, Kc_le, mem_Hc, fun k hk w => k_prop hk w, int_iff, den_ex, fun u hu => unit_scalar_mem_maximal_compact hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Esk.aMem : UpperTheory.Esk.AMem := by
   intro F _ _

@@ -43,18 +43,18 @@ variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
 omit [IsAlgClosure K Ω] [IsAlgClosure L Ω] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgEquiv.ext fun z => (hσ z).trans (resWeil_apply h h' σ' z).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_resWeil_of_agree (h : IsPlaceOver A v) (h' : IsPlaceOver A v') {σ' : Weil h'} {σ : Weil h}
     (hσ : ∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) : σ = resWeil h h' σ' :=
   Subtype.ext (AlgEquiv.ext fun z => (hσ z).trans (resWeil_apply h h' σ' z).symm)
 
 /- English proof (translation)
-Take `⟨m, n, a, b, j, rfl, rfl, hn, hj, hspan⟩` from `hXY`. Use `⟨m, n, a.twist ξ' hξ', b.twist ξ hξ, j, (WD.lpTwist_mk _ _ _).symm, (WD.lpTwist_mk _ _ _).symm, hn, fun σ' σ hσ u => ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `eq_resWeil_of_agree h h' hσ`. Simplify using `only [WDRep.twist_ρ, LinearMap.smul_apply, map_smul, hj σ' σ hσ u, hres, ← e]`. Rewrite using `[eq_top_iff, ← hspan]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, u⟩, rfl⟩`. Establish `e : b.ρ g (j u) = ((ξ g : ℂ))⁻¹ • (b.twist ξ hξ).ρ g (j u)`. Rewrite using `[WDRep.twist_ρ, LinearMap.smul_apply, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Use `show b.ρ g (j u) ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(g, u), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem induces_lpTwist (h : IsPlaceOver A v) (h' : IsPlaceOver A v') {X : WD h'} {Y : WD h}
     (hXY : Induces X Y) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) (ξ' : Weil h' →* ℂˣ) (hξ' : IsSmooth ξ')
@@ -81,7 +81,7 @@ section Twist
 open Polynomial
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, Multiset.map_add, Multiset.prod_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_map_finsetSum {ι : Type*} (s : Finset ι) (M : ι → Multiset ℂ) (f : ℂ → ℂ[X]) :
     ((∑ i ∈ s, M i).map f).prod = ∏ i ∈ s, ((M i).map f).prod := by
@@ -91,7 +91,7 @@ theorem prod_map_finsetSum {ι : Type*} (s : Finset ι) (M : ι → Multiset ℂ
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, Multiset.map_add, Multiset.prod_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Multiset.filter_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem filter_finsetSum {ι : Type*} (s : Finset ι) (M : ι → Multiset ℂ) (p : ℂ → Prop) [DecidablePred p] :
     (∑ i ∈ s, M i).filter p = ∑ i ∈ s, (M i).filter p := by
@@ -101,7 +101,7 @@ theorem filter_finsetSum {ι : Type*} (s : Finset ι) (M : ι → Multiset ℂ) 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Multiset.filter_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Multiset.map_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_finsetSum {ι : Type*} (s : Finset ι) (M : ι → Multiset ℂ) (f : ℂ → ℂ) :
     (∑ i ∈ s, M i).map f = ∑ i ∈ s, (M i).map f := by
@@ -114,7 +114,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a => rw [WD.lpTwist_mk, WD.eig_mk, WD.eig_mk, WDRep.twist_ρ, GlobalTheory.RowTie.EigTwist.roots_charpoly_smul]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem eig_lpTwist (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) (σ : Weil h) :
     (x.lpTwist ξ hξ).eig σ = (x.eig σ).map (· * (ξ σ : ℂ)) := by
@@ -122,7 +122,7 @@ theorem eig_lpTwist (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) (σ 
   | hP n a => rw [WD.lpTwist_mk, WD.eig_mk, WD.eig_mk, WDRep.twist_ρ, GlobalTheory.RowTie.EigTwist.roots_charpoly_smul]
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a => rw [WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, h1, Units.val_one, one_smul]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem charPol_lpTwist_of_eq_one (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) {σ : Weil h} (h1 : ξ σ = 1) :
     (x.lpTwist ξ hξ).charPol σ = x.charPol σ := by
@@ -130,7 +130,7 @@ theorem charPol_lpTwist_of_eq_one (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsS
   | hP n a => rw [WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, h1, Units.val_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[prod_map_finsetSum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.map_add, Multiset.prod_add, Multiset.map_nsmul, Multiset.map_nsmul, Multiset.prod_nsmul, Multiset.prod_nsmul, ← WD.charPol_eq_prod, ← WD.charPol_eq_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_charPol_eq {r : ℕ} (p q : Fin r → ℕ) (x y : Fin r → WD h) (σ : Weil h) :
     ∏ i, (x i).charPol σ ^ p i * (y i).charPol σ ^ q i =

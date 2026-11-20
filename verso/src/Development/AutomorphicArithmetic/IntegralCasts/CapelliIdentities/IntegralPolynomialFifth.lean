@@ -16,7 +16,7 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.Is
         (@OfNat.ofNat Real (nat_lit 1) (@One.toOfNat1 Real Real.instOne))
 
 /- English proof (translation)
-Introduce `p inst`. Conclude with `Valued.isTopologicalDivisionRing`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux2 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
@@ -32,7 +32,7 @@ theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux2 :
   exact Valued.isTopologicalDivisionRing
 
 /- English proof (translation)
-Introduce `p inst`. Conclude with `NormedField.instCompletableTopField`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux3 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
@@ -46,7 +46,7 @@ theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux3 :
   exact NormedField.instCompletableTopField
 
 /- English proof (translation)
-Introduce `p inst`. Conclude with `Valued.toIsUniformAddGroup`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux4 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
@@ -322,9 +322,7 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.In
             F)
 
 /- English proof (translation)
-Introduce `p inst σ i n`. Express the relevant statement in the definitionally equal form `‖(MvPowerSeries.coeff n (MvPowerSeries.X i : MvPowerSeries σ ℂ_[p]) : ℂ_[p])‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `norm_one.le`.
-
-Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.intMv_X.{u_1} :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)] {σ : Type u_1} (i : σ),

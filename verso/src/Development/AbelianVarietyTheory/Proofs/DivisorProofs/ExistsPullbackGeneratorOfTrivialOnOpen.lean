@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Distinguish the cases in `h : g (f z) ∈ U`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, gm_val g (f z) U h, gm_val (f ≫ g) z U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply f _ z h _).trans rfl`. Establish `h' : (f ≫ g) z ∉ U` using `h`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [gm, dif_neg h, dif_neg h', MonoidHom.one_apply, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem stalkMap_gm {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (u : Γ(X, U)ˣ) :
     Units.map (f.stalkMap z).hom.toMonoidHom (gm g (f z) U u) = gm (f ≫ g) z U u := by
@@ -25,13 +25,13 @@ theorem stalkMap_gm {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U 
     simp only [gm, dif_neg h, dif_neg h', MonoidHom.one_apply, map_one]
 
 /- English proof (translation)
-Introduce `X Y e V L hV ⟨t, ht⟩`. Establish `hle : ∀ a : L.ι, e ⁻¹ᵁ L.U a ≤ V.ι ''ᵁ (L.pull (V.ι ≫ e)).U (fun _ => a)`. Introduce `a y hy`. Take `⟨v, rfl⟩ : y ∈ Set.range V.ι` from `by rw [Scheme.Opens.range_ι]; exact hV a y hy`. Conclude with `V.ι.apply_mem_image_iff.2 (mem_pull.2 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => res (hle a) (GlobalTheory.GlueLineBundle.imU V.ι _ (t.s fun _ => a)), ?_⟩` and prove the remaining obligations. Introduce `y a b ha hb`. Take `⟨v, rfl⟩ : y ∈ Set.range V.ι` from `by rw [Scheme.Opens.range_ι]; exact hV a y ha`. Establish `key : ∀ c : L.ι, e (V.ι v) ∈ L.U c → gm V.ι v (e ⁻¹ᵁ L.U c) (res (hle c) (GlobalTheory.GlueLineBundle.imU V.ι _ (t.s fun _ => c))) = gm (𝟙 V.toScheme) v _ (t.s fun _ => c)`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (𝟙 V.toScheme) v ∈ (L.pull (V.ι ≫ e)).U (fun _ => c)` using `mem_pull.2 hc`. Rewrite using `[gm_res V.ι v (hle c) (show V.ι v ∈ e ⁻¹ᵁ L.U c from hc)]`. Use `GlobalTheory.GlueLineBundle.gm_imU V.ι (𝟙 V.toScheme) v _ hm (t.s fun _ => c)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (Units.map (V.ι.stalkMap v).hom.toMonoidHom)` using `Units.map_injective (asIso (V.ι.stalkMap v)).commRingCatIsoToRingEquiv.injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, stalkMap_gm, stalkMap_gm, stalkMap_gm, Category.comp_id]`. Use `beta_reduce`. Rewrite using `[key a ha, key b hb, (isGen_iff_germ t).1 ht v (fun _ => a) (fun _ => b) (mem_pull.2 ha) (mem_pull.2 hb), gm_pull_g L (V.ι ≫ e) (𝟙 V.toScheme) v (fun _ => a) (fun _ => b) (mem_pull.2 ha) (mem_pull.2 hb), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigOn_of_triv_open : ∀ (X Y : Scheme.{0}) (e : Y ⟶ X) (V : Y.Opens) (L : LB X),
     (∀ (a : L.ι) (y : Y), e y ∈ L.U a → y ∈ V) → Triv (L.pull (V.ι ≫ e)) → ∃ r : RigD e L, RigOn e L r := by

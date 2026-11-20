@@ -26,14 +26,14 @@ theorem chi_apply (ψ : AddChar (Ad E) ℂ) (w : Pl E) (y : w.adicCompletion E) 
     chi ψ w y = ψ (sFin E (sLoc E w y)) := rfl
 
 /- English proof (translation)
-The claim follows from `hψ.cont.comp ((continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E)).comp (CuspSub.continuous_sLoc w))`.
+A detailed English derivation is pending.
 -/
 theorem chi_cont {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (w : Pl E) : Continuous (chi ψ w) :=
   hψ.cont.comp ((continuous_const.prodMk continuous_id : Continuous fun x : Af E =>
     ((0, x) : InfiniteAdeleRing E × Af E)).comp (CuspSub.continuous_sLoc w))
 
 /- English proof (translation)
-Unfold `lastE`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lastE_loc (w : Pl E) {k : ℕ} (y : UnipotentBlockColumnIndex a k k → w.adicCompletion E) :
     lastE k (fun t => sFin E (sLoc E w (y t))) = sFin E (sLoc E w (lastE k y)) := by
@@ -43,7 +43,7 @@ theorem lastE_loc (w : Pl E) {k : ℕ} (y : UnipotentBlockColumnIndex a k k → 
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert t T ht ih => rw [Finset.sum_insert ht]`. Conclude with `hadd _ _ (hsm _ _ (hf t)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_of {X : Type} [AddCommMonoid X] [Module ℂ X] (P : X → Prop) (h0 : P 0)
     (hadd : ∀ x y, P x → P y → P (x + y)) (hsm : ∀ (c : ℂ) x, P x → P (c • x)) {ι : Type}
@@ -58,31 +58,29 @@ end UnipotentCharacter
 open UnipotentCharacter in
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 /- English proof (translation)
-Introduce `hS2 hS9 hS10 hG0 hG5 hG5b E _ _ _ a ψ hψ S Y Y' hY hY' n m w hw hmw hSt`. Take `⟨φ, hφY, φ', hφY', hsm, hsm', hlev, hlev', h1, hWh⟩` from `hSt`. Take `⟨-, -, i3, i4, i5, -, -, i8, -, i10, -⟩` from `hG0 E a`. Take `⟨g5a, g5r, -, g5c⟩` from `hG5 E a ψ hψ`. Take `⟨b1, b2, b3, b4, b5⟩` from `hG5b E a S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s10dec, -, -, s10blk1, -⟩` from `hS10 (w.adicCompletion E) a (m w + 1)`. Establish `hpoly : PolyBd (repI E a)` using `⟨1, 0, zero_le_one, fun g x => by`. Rewrite using `[pow_zero, mul_one, one_mul]`. Conclude with `le_of_eq (norm_Rt (infGL E a g) x)⟩`. Take `⟨s0, sadd, ssmul, -, -, -⟩` from `hS2 (InfinitePlace E) a (XB E a) (repI E a) hpoly`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `U : Set (GL (Fin a) (w.adicCompletion E))` to `{u | repW a w u φ = φ} ∩ {u | repW a w u φ' = φ'}`. Establish `hU : U ∈ 𝓝 (1 : GL (Fin a) (w.adicCompletion E))` using `Filter.inter_mem (hlev w hw) (hlev' w hw)`. Establish `hne : ∃ x, chi ψ w x ≠ 1`. Take `⟨y, hy⟩` from `hψ.loc w`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨T, c, η, r, hη1, hr1, hrMir, -, -, hmain⟩` from `hS9 (w.adicCompletion E) a (m w) hmw (chi ψ w) (chi_cont hψ w) hne (XB E a) (repW a w) U hU`. Establish `inS : ∀ u, InS S (fl a w u : GA E a)` using `fun u v hv => i5 w v u (fun e => hv (e ▸ hw))`. Establish `stab : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ u, ∀ x ∈ Z, repW a w u x ∈ Z` using `fun Z hZ u x hx => hZ.stable _ (inS u) x hx`. Establish `memZ : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ x ∈ Z, ∑ t ∈ T, c t • repW a w t x ∈ Z` using `fun Z hZ x hx => Z.sum_mem fun t _ => Z.smul_mem _ (stab Z hZ t x hx)`. Establish `smZ : ∀ x : XB E a, SmV (repI E a) x → SmV (repI E a) (∑ t ∈ T, c t • repW a w t x)` using `fun x hx => sum_of _ s0 sadd ssmul T c _ fun t => b1 _ x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `levZ : ∀ x : XB E a, Lev S x → Lev S (∑ t ∈ T, c t • repW a w t x)` using `fun x hx => sum_of _ b5 b4 b3 T c _ fun t => b2 _ x hx`. Establish `key : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ x ∈ Z, (∀ u ∈ U, repW a w u x = x) → ∀ g' : GA E a, cLoc w g' = 1 → ∀ h, GlobalTheory (m w + 1) h → Wh ψ (∑ t ∈ T, c t • repW a w t x) (g' * fl a w h) = η h * Wh ψ x (g' * fl a w (r h))`. Introduce `Z hZ x hx hxU g' hg' h hh`. Take `⟨Λ, hΛ⟩` from `g5a g'`. Establish `hcond : ∀ z ∈ Z, ∀ y : UnipotentBlockColumnIndex a (m w + 1) (m w + 1) → w.adicCompletion E, (Λ : XB E a →ₗ[ℂ] ℂ) (repW a w (blkU y) z) = chi ψ w (lastE (m w + 1) y) * (Λ : XB E a →ₗ[ℂ] ℂ) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz y`. Use `show Λ _ = _ * Λ _`. Rewrite using `[hΛ _ (hZ.good _ (stab Z hZ _ z hz)), hΛ _ (hZ.good _ hz), repW_apply, g5r, i8 w g' hg', i10, (g5c z (hZ.good _ hz)).2.2 (m w + 1) (Nat.succ_pos _), lastE_loc, chi_apply]`. Use `hmain x hxU Z (stab Z hZ) hx (Λ : XB E a →ₗ[ℂ] ℂ) hcond h hh` as an intermediate fact. Express the relevant statement in the definitionally equal form `Λ _ = η h * Λ _ at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hΛ _ (hZ.good _ (stab Z hZ _ _ (memZ Z hZ x hx))), hΛ _ (hZ.good _ (stab Z hZ _ _ hx)), repW_apply, repW_apply, g5r, g5r]`. Conclude with `this`. Use `⟨_, memZ Y hY φ hφY, _, memZ Y' hY' φ' hφY', smZ φ hsm, smZ φ' hsm', levZ φ hlev, levZ φ' hlev', ?_, ?_⟩` and prove the remaining obligations. Use `key Y hY φ hφY (fun u hu => hu.1) 1 (map_one _) 1 s10blk1` as an intermediate fact. Rewrite `this` using `[hr1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_one, mul_one] at this`. Rewrite using `[this]`. Conclude with `mul_ne_zero hη1 h1`. Introduce `g hg`. Take `⟨hgI, hgL⟩` from `hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgw : Mir (m w + 1) (cLoc w g)` using `by simpa using hgL w`. Take `⟨y, h, hh, hdec⟩` from `s10dec _ hgw`. Use `set g' : GA E a := g * (fl a w (cLoc w g))⁻¹ with hg'def`. Establish `hg' : cLoc w g' = 1` using `by rw [hg'def, map_mul, map_inv, i4, mul_inv_cancel]`. Establish `red : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ x ∈ Z, (∀ u ∈ U, repW a w u x = x) → Wh ψ (∑ t ∈ T, c t • repW a w t x) g = ψ (lastE (m w + 1) fun t => sFin E (sLoc E w (y t))) * (η h * Wh ψ x (g' * fl a w (r h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `Z hZ x hx hxU`. Establish `e : g = blkU (fun t => sFin E (sLoc E w (y t))) * (g' * fl a w h)`. Rewrite using `[← i10, ← mul_assoc, ← i8 w g' hg', mul_assoc, ← map_mul, ← hdec, hg'def, inv_mul_cancel_right]`. Rewrite using `[e, (g5c _ (hZ.good _ (memZ Z hZ x hx))).2.2 (m w + 1) (Nat.succ_pos _), key Z hZ x hx hxU g' hg' h hh]`. Rewrite using `[red Y hY φ hφY (fun u hu => hu.1), red Y' hY' φ' hφY' (fun u hu => hu.2)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hη : η h = 0`. Rewrite using `[hη]`. Simplify using the standard rewrite rules. Use `congr 2`. Use `hWh _ ⟨?_, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, hg'def, map_mul, map_inv, i3, i3, inv_one, mul_one, mul_one]`. Conclude with `hgI`. Break down `eq_or_ne v w with rfl | hv` into its components or cases. Rewrite using `[map_mul, hg', i4, one_mul]`. Conclude with `hrMir h hh hη`.
-
-Rewrite using `[map_mul, hg'def, map_mul, map_inv, i5 w v _ hv, i5 w v _ hv, inv_one, mul_one, mul_one]`. Simplify `hgL v` using `[hv]`.
+A detailed English derivation is pending.
 -/
 theorem whittaker_expansion_cuspidal : S2 → S9 → MirabolicColumnBlock → G0 → G5 → G5b → G7 := by
   intro hS2 hS9 hS10 hG0 hG5 hG5b E _ _ _ a ψ hψ S Y Y' hY hY' n m w hw hmw hSt

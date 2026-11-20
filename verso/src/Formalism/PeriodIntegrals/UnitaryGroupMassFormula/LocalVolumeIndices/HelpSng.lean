@@ -14,9 +14,9 @@ variable (I : AutInst) (p : HeightOneSpectrum (𝓞 I.F))
 abbrev eP : Af I.F ⊗[I.F] I.E := chi I p ⊗ₜ[I.F] (1 : I.E)
 
 /- English proof (translation)
-Use `show singleV I.F p (a * b) = singleV I.F p a * singleV I.F p b`. Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Comp_mul_apply]`. Distinguish the cases in `h : v = p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [Comp_single_same]`. Simplify using `only [Comp_single_ne I p v h, mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HelpSng_sL_mul (a b : Fv I.F p) : sL I p (a * b) = sL I p a * sL I p b := by
   show singleV I.F p (a * b) = singleV I.F p a * singleV I.F p b
@@ -33,9 +33,9 @@ private theorem localTheta_tmul (a : Fv I.F p) (b : I.E) :
     thetaP I p (a ⊗ₜ[I.F] b) = sL I p a ⊗ₜ[I.F] b := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_mul, map_zero]`. Consider the case `tmul a b`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [mul_zero, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul c d`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, localTheta_tmul, localTheta_tmul, localTheta_tmul, Algebra.TensorProduct.tmul_mul_tmul, HelpSng_sL_mul]`. Consider the case `add y1 y2 h1 h2 => simp only [mul_add, map_add, h1, h2]`. Consider the case `add x1 x2 h1 h2 => simp only [add_mul, map_add, h1, h2]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem HelpSng_theta_mul (x y : Fv I.F p ⊗[I.F] I.E) :
     thetaP I p (x * y) = thetaP I p x * thetaP I p y := by
@@ -51,16 +51,16 @@ theorem HelpSng_theta_mul (x y : Fv I.F p ⊗[I.F] I.E) :
   | add x1 x2 h1 h2 => simp only [add_mul, map_add, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def, localTheta_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HelpSng_theta_one : thetaP I p 1 = eP I p := by
   rw [Algebra.TensorProduct.one_def, localTheta_tmul]
   rfl
 
 /- English proof (translation)
-Establish `h1 : inclR (Fv I.F p) x = (1 : Fv I.F p) ⊗ₜ[I.F] x` using `rfl`. Establish `h2 : inclR (Af I.F) x = (1 : Af I.F) ⊗ₜ[I.F] x` using `rfl`. Rewrite using `[h1, h2, localTheta_tmul]`. Use `show sL I p 1 ⊗ₜ[I.F] x = (chi I p ⊗ₜ[I.F] (1 : I.E)) * ((1 : Af I.F) ⊗ₜ[I.F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem HelpSng_theta_inclR (x : I.E) :
     thetaP I p (inclR (Fv I.F p) x) = eP I p * inclR (Af I.F) x := by
@@ -78,9 +78,9 @@ private theorem tensMap_tmul_lemma_2 (v : HeightOneSpectrum (𝓞 I.F)) (a : Af 
     tensMap (E := I.E) (evalV I.F v) (a ⊗ₜ[I.F] b) = evalV I.F v a ⊗ₜ[I.F] b := rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b`. Rewrite using `[localTheta_tmul, tensMap_tmul_lemma_2]`. Use `show singleV I.F p a p ⊗ₜ[I.F] b = a ⊗ₜ[I.F] b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Comp_single_same]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HelpSng_eval_theta (t : Fv I.F p ⊗[I.F] I.E) :
     tensMap (E := I.E) (evalV I.F p) (thetaP I p t) = t := by
@@ -93,9 +93,9 @@ theorem HelpSng_eval_theta (t : Fv I.F p ⊗[I.F] I.E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b`. Rewrite using `[localTheta_tmul, tensMap_tmul_lemma_2]`. Use `show singleV I.F p a v ⊗ₜ[I.F] b = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Comp_single_ne I p v hv, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HelpSng_eval_theta_ne (v : HeightOneSpectrum (𝓞 I.F)) (hv : v ≠ p) (t : Fv I.F p ⊗[I.F] I.E) :
     tensMap (E := I.E) (evalV I.F v) (thetaP I p t) = 0 := by
@@ -108,7 +108,7 @@ theorem HelpSng_eval_theta_ne (v : HeightOneSpectrum (𝓞 I.F)) (hv : v ≠ p) 
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Use `show tensMap (E := I.E) (evalV I.F p) (chi I p ⊗ₜ[I.F] (1 : I.E)) = 1`. Rewrite using `[tensMap_tmul_lemma_2]`. Use `show singleV I.F p 1 p ⊗ₜ[I.F] (1 : I.E) = 1`. Rewrite using `[Comp_single_same, Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HelpSng_eval_e : tensMap (E := I.E) (evalV I.F p) (eP I p) = 1 := by
   show tensMap (E := I.E) (evalV I.F p) (chi I p ⊗ₜ[I.F] (1 : I.E)) = 1
@@ -117,7 +117,7 @@ theorem HelpSng_eval_e : tensMap (E := I.E) (evalV I.F p) (eP I p) = 1 := by
   rw [Comp_single_same, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Use `show tensMap (E := I.E) (evalV I.F v) (chi I p ⊗ₜ[I.F] (1 : I.E)) = 0`. Rewrite using `[tensMap_tmul_lemma_2]`. Use `show singleV I.F p 1 v ⊗ₜ[I.F] (1 : I.E) = 0`. Rewrite using `[Comp_single_ne I p v hv, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HelpSng_eval_e_ne (v : HeightOneSpectrum (𝓞 I.F)) (hv : v ≠ p) :
     tensMap (E := I.E) (evalV I.F v) (eP I p) = 0 := by
@@ -127,9 +127,9 @@ theorem HelpSng_eval_e_ne (v : HeightOneSpectrum (𝓞 I.F)) (hv : v ≠ p) :
   rw [Comp_single_ne I p v hv, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [mul_zero, map_zero]`. Consider the case `tmul a b`. Rewrite using `[localTheta_tmul]`. Use `show (chi I p ⊗ₜ[I.F] (1 : I.E)) * (sL I p a ⊗ₜ[I.F] b) = sL I p a ⊗ₜ[I.F] b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, show chi I p = sL I p 1 from rfl, ← HelpSng_sL_mul, one_mul]`. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HelpSng_e_theta (t : Fv I.F p ⊗[I.F] I.E) : eP I p * thetaP I p t = thetaP I p t := by
   induction t using TensorProduct.induction_on with
@@ -142,20 +142,20 @@ theorem HelpSng_e_theta (t : Fv I.F p ⊗[I.F] I.E) : eP I p * thetaP I p t = th
   | add x y hx hy => simp only [mul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, HelpSng_e_theta, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_complement_mul (t : Fv I.F p ⊗[I.F] I.E) : (1 - eP I p) * thetaP I p t = 0 := by
   rw [sub_mul, one_mul, HelpSng_e_theta, sub_self]
 
 /- English proof (translation)
-Establish `h` using `HelpSng_e_theta I p 1`. Rewrite `h` using `[HelpSng_theta_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem HelpSng_e_idem : eP I p * eP I p = eP I p := by
   have h := HelpSng_e_theta I p 1
   rwa [HelpSng_theta_one] at h
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, HelpSng_e_idem, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_complement_idem : (1 - eP I p) * (1 - eP I p) = 1 - eP I p := by
   rw [sub_mul, one_mul, mul_sub, mul_one, HelpSng_e_idem, sub_self, sub_zero]
@@ -167,14 +167,14 @@ private theorem sigR_tmul_lemma_3 {R : Type} [CommRing R] [Algebra I.F R] (a : R
     sigR R I.cm.sig (a ⊗ₜ[I.F] b) = a ⊗ₜ[I.F] I.cm.sig b := rfl
 
 /- English proof (translation)
-Use `show sigR (Af I.F) I.cm.sig (chi I p ⊗ₜ[I.F] (1 : I.E)) = chi I p ⊗ₜ[I.F] (1 : I.E)`. Rewrite using `[sigR_tmul_lemma_3, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HelpSng_sig_e : sigR (Af I.F) I.cm.sig (eP I p) = eP I p := by
   show sigR (Af I.F) I.cm.sig (chi I p ⊗ₜ[I.F] (1 : I.E)) = chi I p ⊗ₜ[I.F] (1 : I.E)
   rw [sigR_tmul_lemma_3, map_one]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rw [localTheta_tmul, sigR_tmul_lemma_3, sigR_tmul_lemma_3, localTheta_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem HelpSng_sig_theta (t : Fv I.F p ⊗[I.F] I.E) :
     sigR (Af I.F) I.cm.sig (thetaP I p t) = thetaP I p (sigR (Fv I.F p) I.cm.sig t) := by
@@ -188,7 +188,7 @@ def mixM {m o : Type} (A : Matrix m o (Af I.F ⊗[I.F] I.E)) (K : Matrix m o (Fv
   (1 - eP I p) • A + K.map (thetaP I p)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mixM, Matrix.mul_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_sum, Finset.mul_sum, HelpSng_theta_mul]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Take the linear combination `(A i k * B k j) * idempotent_complement_idem I p + A i k * idempotent_complement_mul I p (L k j) + B k j * idempotent_complement_mul I p (K i k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem HelpSng_mix_mul {m o q : Type} [Fintype o] (A : Matrix m o (Af I.F ⊗[I.F] I.E))
     (K : Matrix m o (Fv I.F p ⊗[I.F] I.E)) (B : Matrix o q (Af I.F ⊗[I.F] I.E))
@@ -203,9 +203,9 @@ theorem HelpSng_mix_mul {m o q : Type} [Fintype o] (A : Matrix m o (Af I.F ⊗[I
     B k j * idempotent_complement_mul I p (K i k)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mixM, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[HelpSng_theta_one]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem HelpSng_mix_one {m : Type} [DecidableEq m] :
     mixM I p (1 : Matrix m m (Af I.F ⊗[I.F] I.E)) (1 : Matrix m m (Fv I.F p ⊗[I.F] I.E)) = 1 := by
@@ -216,7 +216,7 @@ theorem HelpSng_mix_one {m : Type} [DecidableEq m] :
   · rw [map_zero]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show (1 - eP I p) * inclR (Af I.F) (I.J i j) + thetaP I p (inclR (Fv I.F p) (I.J i j)) = inclR (Af I.F) (I.J i j)`. Rewrite using `[HelpSng_theta_inclR]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem HelpSng_JR_split :
     mixM I p (JR (Af I.F) I.J) (JR (Fv I.F p) I.J) = JR (Af I.F) I.J := by
@@ -227,7 +227,7 @@ theorem HelpSng_JR_split :
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show sigR (Af I.F) I.cm.sig (mixM I p A K j i) = mixM I p (Formalism.UG.cT (sigR (Af I.F) I.cm.sig) A) (Formalism.UG.cT (sigR (Fv I.F p) I.cm.sig) K) i j`. Simplify using `only [mixM, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, HelpSng_sig_e, HelpSng_sig_theta]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HelpSng_cT_mix {m o : Type} (A : Matrix m o (Af I.F ⊗[I.F] I.E))
     (K : Matrix m o (Fv I.F p ⊗[I.F] I.E)) :
@@ -241,7 +241,7 @@ theorem HelpSng_cT_mix {m o : Type} (A : Matrix m o (Af I.F ⊗[I.F] I.E))
   rfl
 
 /- English proof (translation)
-Use `show ((1 : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)).map (sigR (Af I.F) I.cm.sig))ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HelpSng_cT_one :
     Formalism.UG.cT (sigR (Af I.F) I.cm.sig) (1 : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)) = 1 := by
@@ -255,7 +255,7 @@ def sngGL (k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : GL (Fin I.n) (Af I.F ⊗[
   inv_val := by rw [HelpSng_mix_mul, Matrix.one_mul, Units.inv_mul, HelpSng_mix_one]
 
 /- English proof (translation)
-Establish `hK : Formalism.UG.cT (sigR (Fv I.F p) I.cm.sig) ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) * JR (Fv I.F p) I.J * ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fi …` using `k.2`. Use `show Formalism.UG.cT (sigR (Af I.F) I.cm.sig) (mixM I p 1 _) * JR (Af I.F) I.J * mixM I p 1 _ = JR (Af I.F) I.J`. Use `conv_lhs => rw [← HelpSng_JR_split I p]`. Rewrite using `[HelpSng_cT_mix, HelpSng_mix_mul, HelpSng_mix_mul, hK, HelpSng_cT_one, Matrix.one_mul, Matrix.mul_one, HelpSng_JR_split]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HelpSng_unitary (k : HA (Fv I.F p) I.cm.sig I.J) :
     sngGL I p (HA.mat (Fv I.F p) I.cm.sig I.J k) ∈ HR (Af I.F) I.cm.sig I.J := by
@@ -273,7 +273,7 @@ def sngHA (k : HA (Fv I.F p) I.cm.sig I.J) : HA (Af I.F) I.cm.sig I.J :=
   ⟨sngGL I p (HA.mat (Fv I.F p) I.cm.sig I.J k), HelpSng_unitary I p k⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (mixM I p 1 ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Fv I.F p ⊗[I.F] I.E))).map (tensMap (E := I.E) (evalV I.F p)) = ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin …`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, mixM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, HelpSng_eval_e, HelpSng_eval_theta, sub_self, zero_mul, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HelpSng_piV_same (k : HA (Fv I.F p) I.cm.sig I.J) : piV I p (sngHA I p k) = k := by
   apply Subtype.ext
@@ -287,9 +287,9 @@ theorem HelpSng_piV_same (k : HA (Fv I.F p) I.cm.sig I.J) : piV I p (sngHA I p k
     map_sub, map_one, HelpSng_eval_e, HelpSng_eval_theta, sub_self, zero_mul, zero_add]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (mixM I p 1 ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Fv I.F p ⊗[I.F] I.E))).map (tensMap (E := I.E) (evalV I.F v)) = 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, mixM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, HelpSng_eval_e_ne I p v hv, HelpSng_eval_theta_ne I p v hv, sub_zero, one_mul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases eq_or_ne i j with h | h <;> simp [Matrix.one_apply, h]`.
+A detailed English derivation is pending.
 -/
 theorem HelpSng_piV_ne (k : HA (Fv I.F p) I.cm.sig I.J) (v : HeightOneSpectrum (𝓞 I.F)) (hv : v ≠ p) :
     piV I v (sngHA I p k) = 1 := by
@@ -304,9 +304,9 @@ theorem HelpSng_piV_ne (k : HA (Fv I.F p) I.cm.sig I.J) (v : HeightOneSpectrum (
   rcases eq_or_ne i j with h | h <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Use `Subgroup.mem_iInf.mpr (fun v => ?_)` and prove the remaining obligations. Use `show HA.mat (Fv I.F v) I.cm.sig I.J (piV I v (sngHA I p k)) ∈ Kloc v (I.L : Set (Fin I.n → I.E))`. Distinguish the cases in `hv : v = p`. Substitute `hv` using the available equality. Rewrite using `[HelpSng_piV_same]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Rewrite using `[HelpSng_piV_ne I p k v hv]`. Conclude with `Subgroup.one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem HelpSng_mem_Kf (k : HA (Fv I.F p) I.cm.sig I.J)
     (hk : k ∈ Kv I.cm.sig I.J (I.L : Set (Fin I.n → I.E)) p) :
@@ -321,7 +321,7 @@ theorem HelpSng_mem_Kf (k : HA (Fv I.F p) I.cm.sig I.J)
     exact Subgroup.one_mem _
 
 /- English proof (translation)
-Introduce `I p k hk`. Conclude with `⟨sngHA I p k, HelpSng_mem_Kf I p k hk, HelpSng_piV_same I p k, fun v hv => HelpSng_piV_ne I p k v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem single_component_surjective : SngSurj := by
   intro I p k hk

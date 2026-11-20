@@ -9,17 +9,15 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `R _ P U _ hPU F F' hF hF' hFF'`. Establish `hP` using `h R P U hPU`. Use `set S : Set (Ideal R) := {G | G.IsPrime ∧ P ≤ G ∧ G ≤ U} with hS`. Use `set T : Set (Ideal (localQuot P U)) := {p | p.IsPrime} with hT`. Establish `h1 : ∑ᶠ G, F G = ∑ᶠ G ∈ S, F G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← finsum_mem_univ]`. Apply `finsum_mem_inter_support_eq'` to reduce the goal to its premises. Introduce `G hG`. Conclude with `⟨fun _ => hF G hG, fun _ => Set.mem_univ G⟩`. Establish `h2 : ∑ᶠ p, F' p = ∑ᶠ p ∈ T, F' p`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← finsum_mem_univ]`. Apply `finsum_mem_inter_support_eq'` to reduce the goal to its premises. Introduce `p hp`. Conclude with `⟨fun _ => hF' p hp, fun _ => Set.mem_univ p⟩`. Establish `hbij : S.BijOn (fun G => G.map (localQuotMap P U)) T`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun G hG => (hP.1 G hG.1 hG.2.1 hG.2.2).1, ?_, ?_⟩` and prove the remaining obligations. Introduce `G₁ hG₁ G₂ hG₂ he`. Establish `e₁` using `(hP.1 G₁ hG₁.1 hG₁.2.1 hG₁.2.2).2`. Establish `e₂` using `(hP.1 G₂ hG₂.1 hG₂.2.1 hG₂.2.2).2`. Simplify using `only at he`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e₁, ← e₂, he]`. Introduce `p hp`. Take `⟨hle, hleU, hmap⟩` from `hP.2 p hp`. Conclude with `⟨p.comap (localQuotMap P U), ⟨by have : p.IsPrime := hp; exact Ideal.comap_isPrime _ p, hle, hleU⟩, hmap⟩`. Rewrite using `[h1, h2]`.
-
-Conclude with `finsum_mem_eq_of_bijOn _ hbij fun G hG => hFF' G hG.1 hG.2.1 hG.2.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalQuotFinsum.proof (h : LocalQuotPrimes.Statement.{u}) : LocalQuotFinsum.Statement.{u} := by
   intro R _ P U _ hPU F F' hF hF' hFF'

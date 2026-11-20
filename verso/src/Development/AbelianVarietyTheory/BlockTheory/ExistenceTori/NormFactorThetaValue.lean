@@ -47,7 +47,7 @@ def InKer {n : ℕ} (N : ℕ) (Lm : Submodule (𝓞 E) (Fin n → E))
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `h.2.2 ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ (single_mem_stdMod j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_single_mem_inter {n M N : ℕ} {Λ : Lat E n} (h : Λ.Admissible M N) (j : Fin n) :
     N • (Pi.single j 1 : Fin n → E) ∈ Λ.inter := by
@@ -57,7 +57,7 @@ theorem nsmul_single_mem_inter {n M N : ℕ} {Λ : Lat E n} (h : Λ.Admissible M
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `(nsmul_single_mem_inter h j).2`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_single_mem {n M N : ℕ} {Λ : Lat E n} (h : Λ.Admissible M N) (j : Fin n) :
     N • (Pi.single j 1 : Fin n → E) ∈ Λ.L := (nsmul_single_mem_inter h j).2
@@ -178,7 +178,7 @@ def ProductClaim (nab : NabV Xo c) : Prop :=
       ThValFun Xo c nab y Λ N 1 (blockFun c φ₁ φ₂) (a₁ + a₂) (blockMul c P₁ P₂) (v₁ * v₂)
 
 /- English proof (translation)
-Use `⟨fun _ => one_pow _, fun f i => Finset.prod_eq_one fun j _ => ?_⟩` and prove the remaining obligations. Use `haveI := Xo.univ.t.act.hom (f ⟨_, nsmul_single_mem h j⟩ i)`. Conclude with `MonObj.one_comp _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_inZ {n N : ℕ} {Λ : Lat E n} (h : Λ.Admissible l.M N) {T : Over Xo.X} :
     InZ Xo h (fun _ => (1 : T ⟶ Xo.univ.t.G)) := by

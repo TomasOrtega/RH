@@ -24,7 +24,7 @@ def IsJumpMultiset (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (J : Mult
   FiniteDimensional LL ↥(DdRE PD ρ τ) ∧ ∀ a : ℤ, multV PD ρ τ a = (J.count a : ℤ)
 
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `(h.2 a).symm.trans (h'.2 a)` after adjusting the coercions.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem IsJumpMultiset.unique {ρ : Representation LL G V} {τ : K →ₐ[Qp] LL} {J J' : Multiset ℤ}
     (h : IsJumpMultiset PD ρ τ J) (h' : IsJumpMultiset PD ρ τ J') : J = J' := by
@@ -71,11 +71,9 @@ def blockJumpsF {eps : ℝ} (Fm : FamP eps) (_CH : ℝ) : Prop :=
 def blockJumpsClosed (𝒞 : FamClass) : Prop := Closed 𝒞 (fun Fm CH => blockJumpsF Fm CH)
 
 /- English proof (translation)
-Establish `hn : (blockJumps t).Nodup` using `(Multiset.nodup_range t).map Nat.cast_injective`. Establish `hm : a ∈ blockJumps t ↔ 0 ≤ a ∧ a < t`. Simplify using `only [blockJumps, Multiset.mem_map, Multiset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h0, h1⟩`. Conclude with `⟨a.toNat, by omega, by omega⟩`. Use `split_ifs with h`. Conclude with `Multiset.count_eq_one_of_mem hn (hm.2 h)`.
-
-Conclude with `Multiset.count_eq_zero.2 (fun h' => h (hm.1 h'))`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem count_blockJumps (t : ℕ) (a : ℤ) :
     (blockJumps t).count a = if 0 ≤ a ∧ a < t then 1 else 0 := by
@@ -92,7 +90,7 @@ theorem count_blockJumps (t : ℕ) (a : ℤ) :
   · exact Multiset.count_eq_zero.2 (fun h' => h (hm.1 h'))
 
 /- English proof (translation)
-Take `⟨J, h1, h2⟩` from `h i r ρ π hπ hr hs w hw τ`. Rewrite using `[h1.2, h2.2, Multiset.count_add, count_blockJumps]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem blockJumps_at.mult {D : D7} (h : blockJumps_at D) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

@@ -17,7 +17,7 @@ def MV (p q w : ℕ) (lam2 : Fin q → ℕ) : AddSubgroup (VQ p q w lam2) :=
     (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype.toAddMonoidHom
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_MV (p q w : ℕ) (lam2 : Fin q → ℕ) (v : VQ p q w lam2) :
     v ∈ MV p q w lam2 ↔ (v : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ∈
@@ -33,7 +33,7 @@ def MW (p q w : ℕ) (lam2 : Fin q → ℕ) : AddSubgroup (rationalBlockModuleSe
       (rationalBlockModuleSetting p q w lam2).W.subtype).toAddMonoidHom)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_MW (p q w : ℕ) (lam2 : Fin q → ℕ) (u : (rationalBlockModuleSetting p q w lam2).W) :
     u ∈ MW p q w lam2 ↔ (((u : VQ p q w lam2)) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ∈ LevZ p q w lam2 :=
@@ -50,14 +50,14 @@ def xiOf {p q : ℕ} (ξ : Fin (p + q) → ℤ) : (Fin p ⊕ Fin q → ℤ) →+
 def lamOf (p q w : ℕ) (lam2 : Fin q → ℕ) : Fin p ⊕ Fin q → ℤ := fun a => (LD.blockWt p q w lam2 (idx p q a) : ℤ)
 
 /- English proof (translation)
-Use `Fintype.sum_equiv finSumFinEquiv _ _ fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `cases a <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_idx {p q : ℕ} (f : Fin (p + q) → ℤ) : ∑ a : Fin p ⊕ Fin q, f (idx p q a) = ∑ a, f a := by
   refine Fintype.sum_equiv finSumFinEquiv _ _ fun a => ?_
   cases a <;> rfl
 
 /- English proof (translation)
-Use `show ∑ a, ξ (idx p q a) * (((fun a => (lam (idx p q a) : ℤ)) - fun a => (μ (idx p q a) : ℤ)) a) = _`. Simplify using `only [Pi.sub_apply]`. Conclude with `sum_idx (fun a => ξ a * ((lam a : ℤ) - (μ a : ℤ)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xiOf_depth2 {p q : ℕ} (ξ : Fin (p + q) → ℤ) (lam μ : Fin (p + q) → ℕ) :
     xiOf ξ ((fun a => (lam (idx p q a) : ℤ)) - fun a => (μ (idx p q a) : ℤ)) = LD.depth2 ξ lam μ := by

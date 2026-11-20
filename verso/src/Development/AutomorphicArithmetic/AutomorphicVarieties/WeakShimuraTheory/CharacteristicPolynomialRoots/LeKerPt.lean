@@ -29,7 +29,7 @@ theorem Link.pt_apply {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDet
     (b : B.B) : Link.pt φ y b = y (algebraMap X.B X.A (φ b)) := rfl
 
 /- English proof (translation)
-Introduce `b hb`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Link.pt φ y b = 0`. Rewrite using `[Link.pt_apply]`. Conclude with `hy (φ b) (Ideal.mem_map_of_mem _ hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Link.le_ker_pt {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDeterminantRing K.r} (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l)
     (J₀ : Ideal B.B) (hy : ∀ b ∈ J₀.map φ, y (algebraMap X.B X.A b) = 0) : J₀ ≤ RingHom.ker (Link.pt φ y) := by

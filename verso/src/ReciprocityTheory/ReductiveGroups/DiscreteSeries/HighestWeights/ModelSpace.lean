@@ -20,7 +20,7 @@ def rtr (ε : Fin n → Bool) (k : KG ε) : (KG ε → ℂ) →ₗ[ℂ] (KG ε �
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show f (x * (k₁ * k₂)) = f (x * k₁ * k₂)`. Rewrite using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtr_mul (ε : Fin n → Bool) (k₁ k₂ : KG ε) (f : KG ε → ℂ) : rtr ε (k₁ * k₂) f = rtr ε k₁ (rtr ε k₂ f) := by
   funext x
@@ -28,7 +28,7 @@ theorem rtr_mul (ε : Fin n → Bool) (k₁ k₂ : KG ε) (f : KG ε → ℂ) : 
   rw [mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show f (x * 1) = f x`. Rewrite using `[mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtr_one (ε : Fin n → Bool) (f : KG ε → ℂ) : rtr ε 1 f = f := by
   funext x
@@ -39,16 +39,14 @@ def Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) : Submodule ℂ (KG ε → ℂ
   Submodule.span ℂ (Set.range fun k : KG ε => rtr ε k (f0K ε m))
 
 /- English proof (translation)
-Establish `h : rtr ε 1 (f0K ε m) ∈ Vsp ε m` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `h` using `[rtr_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem highest_weight_fn_mem_space (ε : Fin n → Bool) (m : Fin n → ℤ) : f0K ε m ∈ Vsp ε m := by
   have h : rtr ε 1 (f0K ε m) ∈ Vsp ε m := Submodule.subset_span ⟨1, rfl⟩
   rwa [rtr_one] at h
 
 /- English proof (translation)
-Establish `h : Vsp ε m ≤ (Vsp ε m).comap (rtr ε k)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k', rfl⟩`. Use `show rtr ε k (rtr ε k' (f0K ε m)) ∈ Vsp ε m`. Rewrite using `[← rtr_mul]`.
-
-Conclude with `Submodule.subset_span ⟨k * k', rfl⟩`. Conclude with `h hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtr_mem (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m) :
     rtr ε k f ∈ Vsp ε m := by
@@ -67,9 +65,7 @@ def polyK (ε : Fin n → Bool) (D : ℕ) : Submodule ℂ (KG ε → ℂ) :=
   (MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ D).map (evalK ε).toLinearMap
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on`. Use `next a => simp [evalK]`. Use `next p q hp hq => rw [map_add, map_add, Pi.add_apply, hp, hq]`. Use `next p i hp =>`. Rewrite using `[map_mul, map_mul, Pi.mul_apply, hp]`.
-
-Simplify using `[evalK]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalK_apply (ε : Fin n → Bool) (Q : MvPolynomial (Fin n × Fin n) ℂ) (x : KG ε) :
     evalK ε Q x = MvPolynomial.aeval (fun p : Fin n × Fin n => toMK x p.1 p.2) Q := by
@@ -89,9 +85,9 @@ Both sides reduce to the same expression.
 theorem toMK_mul' (ε : Fin n → Bool) (x k : KG ε) : toMK (x * k) = toMK x * toMK k := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show evalK ε Q (x * k) = evalK ε (MvPolynomial.bind₁ (rsub ε k) Q) x`. Rewrite using `[evalK_apply, evalK_apply, MvPolynomial.aeval_bind₁]`. Use `congrArg (fun g => MvPolynomial.aeval g Q) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[rsub, toMK_mul', Matrix.mul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem rtr_evalK (ε : Fin n → Bool) (k : KG ε) (Q : MvPolynomial (Fin n × Fin n) ℂ) :
     rtr ε k (evalK ε Q) = evalK ε (MvPolynomial.bind₁ (rsub ε k) Q) := by
@@ -103,7 +99,7 @@ theorem rtr_evalK (ε : Fin n → Bool) (k : KG ε) (Q : MvPolynomial (Fin n × 
   simp [rsub, toMK_mul', Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [rsub]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun l _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.totalDegree_X, MvPolynomial.totalDegree_C]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem totalDegree_rsub (ε : Fin n → Bool) (k : KG ε) (p : Fin n × Fin n) :
     (rsub ε k p).totalDegree ≤ 1 := by
@@ -113,11 +109,11 @@ theorem totalDegree_rsub (ε : Fin n → Bool) (k : KG ε) (p : Fin n × Fin n) 
   simp [MvPolynomial.totalDegree_X, MvPolynomial.totalDegree_C]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun d hd => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.bind₁_monomial]`. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`. Use `(MvPolynomial.totalDegree_finset_prod _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (MvPolynomial.le_totalDegree hd)` and prove the remaining obligations. Rewrite using `[Finsupp.sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(MvPolynomial.totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem totalDegree_bind₁_le {σ τ : Type*} (g : σ → MvPolynomial τ ℂ) (hg : ∀ i, (g i).totalDegree ≤ 1)
     (Q : MvPolynomial σ ℂ) : (MvPolynomial.bind₁ g Q).totalDegree ≤ Q.totalDegree := by
@@ -137,7 +133,7 @@ theorem totalDegree_bind₁_le {σ τ : Type*} (g : σ → MvPolynomial τ ℂ) 
     _ = d i := mul_one _
 
 /- English proof (translation)
-Rewrite using `[rtr_evalK]`. Conclude with `Submodule.mem_map_of_mem ((MvPolynomial.mem_restrictTotalDegree ..).mpr (totalDegree_bind₁_le _ (totalDegree_rsub ε k) Q))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtr_polyK (ε : Fin n → Bool) (k : KG ε) (Q : MvPolynomial (Fin n × Fin n) ℂ) :
     rtr ε k (evalK ε Q) ∈ polyK ε Q.totalDegree := by
@@ -151,9 +147,9 @@ def f0P (ε : Fin n → Bool) (m : Fin n → ℤ) : MvPolynomial (Fin n × Fin n
     (fun b : {b : Fin n // ε b = ε a ∧ b ≤ a} => (b : Fin n))).det ^ (mexp ε m a).toNat
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[evalK_apply]`. Use `show _ = f0 ε m (toMK k)`. Simplify using `only [f0P, f0, blkMinor, map_prod, map_pow]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalK_f0P (ε : Fin n → Bool) (m : Fin n → ℤ) : evalK ε (f0P ε m) = f0K ε m := by
   funext k
@@ -168,7 +164,7 @@ theorem evalK_f0P (ε : Fin n → Bool) (m : Fin n → ℤ) : evalK ε (f0P ε m
   simp [Matrix.mvPolynomialX]
 
 /- English proof (translation)
-Use `⟨(f0P ε m).totalDegree, Submodule.span_le.mpr ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show rtr ε k (f0K ε m) ∈ polyK ε _`. Rewrite using `[← evalK_f0P]`. Conclude with `rtr_polyK ε k (f0P ε m)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vsp_le_polyK (ε : Fin n → Bool) (m : Fin n → ℤ) : ∃ D : ℕ, Vsp ε m ≤ polyK ε D := by
   refine ⟨(f0P ε m).totalDegree, Submodule.span_le.mpr ?_⟩
@@ -178,7 +174,7 @@ theorem Vsp_le_polyK (ε : Fin n → Bool) (m : Fin n → ℤ) : ∃ D : ℕ, Vs
   exact rtr_polyK ε k (f0P ε m)
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `Vsp_le_polyK ε m`. Use `haveI : FiniteDimensional ℂ (polyK ε D) := by`. Unfold `polyK`. Use `infer_instance`. Conclude with `Submodule.finiteDimensional_of_le hD`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) : FiniteDimensional ℂ (Vsp ε m) := by
   obtain ⟨D, hD⟩ := Vsp_le_polyK ε m
@@ -188,9 +184,7 @@ theorem finiteDimensional_Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) : Finite
   exact Submodule.finiteDimensional_of_le hD
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on`. Use `next a => simp`. Use `next p q hp hq =>`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
-
-Use `next p i hp =>`. Establish `hX : Differentiable ℂ (fun M : Matrix (Fin n) (Fin n) ℂ => M i.1 i.2)` using `by fun_prop`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `hp.mul hX`.
+Proceed by induction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_aeval_entries (Q : MvPolynomial (Fin n × Fin n) ℂ) :
     Differentiable ℂ (fun M : Matrix (Fin n) (Fin n) ℂ =>
@@ -207,7 +201,7 @@ theorem differentiable_aeval_entries (Q : MvPolynomial (Fin n × Fin n) ℂ) :
     exact hp.mul hX
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `Vsp_le_polyK ε m`. Establish `h' : f ∈ (MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ D).map (evalK ε).toLinearMap` using `hD hf`. Take `⟨Q, -, rfl⟩` from `Submodule.mem_map.mp h'`. Conclude with `⟨fun M => MvPolynomial.aeval (fun p : Fin n × Fin n => M p.1 p.2) Q, differentiable_aeval_entries Q, fun k => evalK_apply ε Q k⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Vsp_holo (ε : Fin n → Bool) (m : Fin n → ℤ) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m) :
     ∃ F : Matrix (Fin n) (Fin n) ℂ → ℂ, Differentiable ℂ F ∧ ∀ k, f k = F (toMK k) := by
@@ -218,7 +212,7 @@ theorem Vsp_holo (ε : Fin n → Bool) (m : Fin n → ℤ) {f : KG ε → ℂ} (
     differentiable_aeval_entries Q, fun k => evalK_apply ε Q k⟩
 
 /- English proof (translation)
-Take `⟨F, hF, hfF⟩` from `Vsp_holo ε m hf`. Establish `hfe : f = fun k => F (toMK k)` using `funext hfF`. Rewrite using `[hfe]`. Use `hF.continuous.comp ?_` and prove the remaining obligations. Use `fun_prop`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m) :
     Continuous f := by
@@ -229,19 +223,17 @@ theorem continuous_of_mem_Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) {f : KG 
   fun_prop
 
 /- English proof (translation)
-Establish `hc : HasDerivAt (fun t : ℝ => toMK (kcurve ε X t)) X 0`. Establish `hk : ∀ t : ℝ, toMK (kcurve ε X t) = NormedSpace.exp ((t : ℝ) • X)` using `fun t => by`. Unfold `kcurve`. Rewrite using `[dif_pos hX, Classical.choose_spec (exists_curve ε hX) t, Complex.coe_smul]`. Simplify using `only [hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `letI iR : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := NormedAlgebra.restrictScalars ℝ ℂ _`. Use `haveI : @CompleteSpace (Matrix (Fin n) (Fin n) ℂ) (@PseudoMetricSpace.toUniformSpace _ (@MetricSpace.toPseudoMetricSpace _ (@NormedRing.toMetricSpace _ iR))) := by`. Conclude with `FiniteDimensional.complete ℂ _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ (toMK x))`. Establish `hin : HasDerivAt (fun t : ℝ => L (toMK (kcurve ε X t))) (L X) 0` using `L.hasFDerivAt.comp_hasDerivAt 0 hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : toMK (kcurve ε X 0) = 1`. Unfold `kcurve`. Rewrite using `[dif_pos hX, Classical.choose_spec (exists_curve ε hX) 0]`. Simplify using the standard rewrite rules. Establish `hLx : L (toMK (kcurve ε X 0)) = toMK x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `mul_one _`. Establish `hF'` using `((hF (toMK x)).hasFDerivAt.restrictScalars ℝ)`. Rewrite `hF'` using `[← hLx]`. Establish `hcomp` using `hF'.comp_hasDerivAt (0 : ℝ) hin`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfun : (fun t : ℝ => f (x * kcurve ε X t)) = fun t => F (L (toMK (kcurve ε X t)))`. Use function extensionality and compare the values at `t`. Rewrite using `[hfF, toMK_mul']`. Both sides reduce to the same expression. Rewrite using `[hfun]`.
-
-Rewrite `hcomp` using `[hLx]`. Conclude with `hcomp`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_mem_Vsp (ε : Fin n → Bool) (m : Fin n → ℤ) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m)
     {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Differentiable ℂ F) (hfF : ∀ k, f k = F (toMK k))

@@ -60,14 +60,14 @@ def vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : L
     exact ha ((nonzeroLocus_secScale _ _).le hx).2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : LB X}
     {m : ℕ} (t : Fin m → M.Sec) (x : X) (c : Fin m → k) :
     c ∈ vanishAt t x ↔ x ∉ nonzeroLocus (comb t c) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_vanishAt, not_not, comb_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, map_one, one_smul]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_notMem_vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)]
     {M : LB X} {m : ℕ} (t : Fin m → M.Sec) {x : X} {i : Fin m} (hx : x ∈ nonzeroLocus (t i)) :

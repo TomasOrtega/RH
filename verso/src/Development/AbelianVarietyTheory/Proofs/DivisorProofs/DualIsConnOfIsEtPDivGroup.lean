@@ -8,15 +8,15 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG n χ hχ`. Establish `: IsReduced (G.A n)` using `hG n`. Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Establish `roots : ∀ r : ℕ, ∀ a : G.A n, ∃ b : G.A n, a = b ^ p ^ r`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `r with`. Consider the case `zero => exact fun a => ⟨a, by simp⟩`. Consider the case `succ r ih`. Introduce `a`. Take `⟨c, rfl⟩` from `ih a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `GlobalTheory.T.exists_pow_char_eq_of_isReduced_finite' p k (G.A n) c`. Conclude with `⟨b, by rw [← pow_mul, pow_succ, mul_comm]⟩`. Establish `h1 : χ 1 = 0`. Establish `hc` using `(RingHom.mem_ker).1 hχ`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p ^ n, ?_⟩` and prove the remaining obligations. Apply `CartierDual.ext_apply` to reduce the goal to its premises. Introduce `a`. Take `⟨b, rfl⟩` from `roots n a`. Rewrite using `[GlobalTheory.T.cartierDual_convPow_primePow_apply_pow p k hp G n n χ b, PDivGroup.mulBy_pow_self, Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero, zero_pow (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem PDivGroup.dual_isConn_of_isEt (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (G : PDivGroup p k) : G.IsEt → G.dual.IsConn := by

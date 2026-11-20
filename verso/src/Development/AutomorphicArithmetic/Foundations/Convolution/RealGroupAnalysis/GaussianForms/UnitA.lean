@@ -7,17 +7,15 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Introduce `F _ _ x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Establish `hinf : ∀ w, (a : A F).1 w * ((a⁻¹ : (A F)ˣ) : A F).1 w = 1` using `fun w => congrArg (fun z : A F => z.1 w) a.mul_inv`. Establish `hfin : ∀ v, (a : A F).2 v * ((a⁻¹ : (A F)ˣ) : A F).2 v = 1` using `fun v => congrArg (fun z : A F => z.2 v) a.mul_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun w h => ?_, fun v h => ?_, ?_⟩` and prove the remaining obligations. Use `hinf w` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`. Use `hfin v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`. Use `filter_upwards [(a : A F).2.2, ((a⁻¹ : (A F)ˣ) : A F).2.2] with v h3 h4`. Establish `hm` using `congrArg Valued.v (hfin v)`. Rewrite `hm` using `[map_mul, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `le_antisymm h3 ?_` and prove the remaining obligations. Rewrite using `[← hm]`. Conclude with `mul_le_of_le_one_right' h4`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hmem : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, (x.2 v)⁻¹ ∈ v.adicCompletionIntegers F` using `by filter_upwards [h3] with v hv`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Valued.v (x.2 v)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hv, inv_one]`. Set `y : A F` to `(fun w => (x.1 w)⁻¹, ⟨fun v => (x.2 v)⁻¹, hmem⟩)`. Use `IsUnit.of_mul_eq_one y (Prod.ext (funext fun w => ?_) ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ (h1 w)`.
-
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `mul_inv_cancel₀ (h2 v)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.unitA :
     ∀ (F : Type) [Field F] [NumberField F] (x : A F), IsUnit x ↔ (∀ w, x.1 w ≠ 0) ∧ (∀ v, x.2 v ≠ 0) ∧ ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, Valued.v (x.2 v) = 1 := by

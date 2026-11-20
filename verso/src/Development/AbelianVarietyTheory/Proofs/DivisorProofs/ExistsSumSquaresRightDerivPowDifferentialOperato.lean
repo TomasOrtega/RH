@@ -10,7 +10,7 @@ open scoped ContDiff
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Simplify using `only [apOp, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem apOp_sum_coef {d : ℕ} {ι : Type} (s : Finset ι) (m : ℕ) (a : ι → (n : ℕ) → (Fin n → Fin d) → E d → ℂ)
     (u : E d → ℂ) (x : E d) :
@@ -21,7 +21,7 @@ theorem apOp_sum_coef {d : ℕ} {ι : Type} (s : Finset ι) (m : ℕ) (a : ι �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [symb, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symb_sum_coef {d : ℕ} {ι : Type} (s : Finset ι) (m : ℕ) (a : ι → (n : ℕ) → (Fin n → Fin d) → E d → ℂ)
     (x ξ : E d) :
@@ -30,23 +30,21 @@ theorem symb_sum_coef {d : ℕ} {ι : Type} (s : Finset ι) (m : ℕ) (a : ι �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b r c ⟨hc, _, hder⟩ k`. Use `set U : Set (E d) := Metric.ball 0 r with hUdef`. Establish `hU : IsOpen U` using `Metric.isOpen_ball`. Establish `hchart : ∀ f : G → ℂ, h.IsSmoothFun f → ContDiff ℝ ∞ (fun y : E d => f (h.expG (coordEquiv b y)))`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h.contDiff_comp_coordEquiv hf 1 b`. Establish `step : ∀ (X : 𝔤) (f : G → ℂ), h.IsSmoothFun f → ∀ v : E d → ℂ, (∀ y ∈ U, f (h.expG (coordEquiv b y)) = v y) → ∀ x ∈ U, h.rightDeriv X f (h.expG (coordEquiv b x)) = ∑ j, (c X j x : ℂ) * fderiv ℝ v x (ev j)`. Introduce `X f hf v hv x hx`. Rewrite using `[hder f hf X x hx]`. Establish `e : (fun y : E d => f (h.expG (coordEquiv b y))) =ᶠ[nhds x] v` using `Filter.eventually_of_mem (hU.mem_nhds hx) hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.fderiv_eq]`. Establish `hcC : ∀ i j, ContDiffOn ℝ ∞ (fun y => ((c (b i) j y : ℝ) : ℂ)) U` using `fun i j => Complex.ofRealCLM.contDiff.comp_contDiffOn (hc (b i) j)`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨fun _ _ _ => 1, fun _ _ => contDiffOn_const, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x ξ`. Simplify using `[symb]`. Introduce `f x _`. Simplify using `[apOp_zero_one]`. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hsa, hap⟩` from `ih`. Use `choose a1 ha1 hs1 hap1 using fun i : Fin d => GlobalTheory.VFComp.vectorField_comp d (2 * k) U hU a (fun j y => ((c (b i) j y : ℝ) : ℂ)) ha (hcC i)`. Use `choose a2 ha2 hs2 hap2 using fun i : Fin d => GlobalTheory.VFComp.vectorField_comp d (2 * k + 1) U hU (a1 i) (fun j y => ((c (b i) j y : ℝ) : ℂ)) (ha1 i) (hcC i)`. Establish `e2 : 2 * (k + 1) = 2 * k + 1 + 1` using `by ring`. Use `⟨fun n w y => ∑ i, a2 i n w y, fun n w => ContDiffOn.sum fun i _ => ha2 i n w, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x ξ`. Rewrite using `[symb_sum_coef, e2]`. Simplify using `only [hs2, hs1, hsa]`. Use `push_cast`. Rewrite using `[pow_succ', Finset.sum_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `f x hx`. Rewrite using `[apOp_sum_coef, e2, pow_succ', Module.End.mul_apply]`. Use `set g := ((∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) ^ k) f with hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sum_apply, Finset.sum_apply, Submodule.coe_sum, Module.End.mul_apply, IsExpLieAlgebra.coe_rightDerivEnd]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hf0` using `hchart _ f.2`. Establish `h1 : ∀ y ∈ U, h.rightDeriv (b i) (g : G → ℂ) (h.expG (coordEquiv b y)) = apOp (2 * k + 1) (a1 i) (fun y => (f : G → ℂ) (h.expG (coordEquiv b y))) y`. Introduce `y hy`.
-
-Rewrite using `[step (b i) _ g.2 _ (fun z hz => hap f z hz) y hy]`. Conclude with `hap1 i _ hf0.contDiffOn y hy`. Rewrite using `[step (b i) _ (h.isSmoothFun_rightDeriv g.2 (b i)) _ h1 x hx]`. Conclude with `hap2 i _ hf0.contDiffOn x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apOp_sumSq_pow : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (r : ℝ) (c : 𝔤 → Fin d → E d → ℝ), ((∀ X j, ContDiffOn ℝ ∞ (c X j) (Metric.ball 0 r)) ∧ (∀ x ∈ Metric.ball (0 : E d) r, ∀ ξ : E d, ξ ≠ 0 → ∃ i, ∑ j, c (b i) j x * ξ j ≠ 0) ∧ ∀ f : G → ℂ, h.IsSmoothFun f → ∀ X : 𝔤, ∀ x ∈ Metric.ball (0 : E d) r, h.rightDeriv X f (h.expG (coordEquiv b (x))) = ∑ j, (c X j x : ℂ) * fderiv ℝ (fun y => f (h.expG (coordEquiv b (y)))) x (ev j)) → ∀ k : ℕ, ∃ a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ, (∀ n w, ContDiffOn ℝ ∞ (a n w) (Metric.ball 0 r)) ∧ (∀ x ξ : E d, symb (2 * k) a x ξ = (((∑ i, (∑ j, c (b i) j x * ξ j) ^ 2) ^ k : ℝ) : ℂ)) ∧ ∀ f : h.smoothFuns (F := ℂ), ∀ x ∈ Metric.ball (0 : E d) r, (((∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) ^ k) f : G → ℂ) (h.expG (coordEquiv b (x))) = apOp (2 * k) a (fun y => (f : G → ℂ) (h.expG (coordEquiv b (y)))) x := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b r c ⟨hc, _, hder⟩ k

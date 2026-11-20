@@ -19,7 +19,7 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 namespace GlobalTheory.OneMapRef
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Take `⟨_, hm⟩` from `L.modelW j hj σ hσ`. Take `⟨_, _, -, hd⟩` from `L.dictU j hj σ hσ`. Take `⟨_, g, e, F, ik, φ, th, -, -, h1, h2⟩` from `L.adPin j hj σ hσ`. Conclude with `⟨hm, hd.2.2.2.1, (L.muUnit j hj σ hσ).2.2.2, g, e, F, ik, φ, th, h1, h2⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem laws_cast {D : D7} {T : CoreJ D} (L : LawsJ T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+* ℂ}
     (hσ : GoodEmb T.Q.c σ) {W : HSp D} (hV : T.V j σ = W) (hr : W.rank = D.R.r) :
@@ -41,7 +41,7 @@ theorem laws_cast {D : D7} {T : CoreJ D} (L : LawsJ T) {j : ℕ} (hj : InR D j) 
   exact ⟨hm, hd.2.2.2.1, (L.muUnit j hj σ hσ).2.2.2, g, e, F, ik, φ, th, h1, h2⟩
 
 /- English proof (translation)
-Use `⟨Equiv.ofBijective (fun ρ => ⟨tauE D ρ, (hΨ _).2 (hp.2.2.2 ρ)⟩) ⟨fun a b h => ?_, fun τ => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 (congrArg Subtype.val h)))`. Take `⟨t, ht⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi Q hp τ.1 ((hΨ _).1 τ.2)`. Conclude with `⟨t, Subtype.ext ht.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_type_equiv {D : D7} (Q : Par D) (hp : Q.PinHost) (Ψ : Finset (D.host.E →+* ℂ))
     (hΨ : ∀ τ : D.host.E →+* ℂ, τ ∈ Ψ ↔ τ (Q.H.rt : D.host.E) = Q.H.rt0) :

@@ -7,7 +7,7 @@ noncomputable def disc (C : Type) [Field C] (n : ℕ) : MvPolynomial (Fin n × F
   resultant (charpoly.univ C (Fin n)) (derivative (charpoly.univ C (Fin n))) n (n - 1)
 
 /- English proof (translation)
-Establish `h` using `charpoly.univ_map_eval₂Hom (Fin n) (RingHom.id C) (fun p : Fin n × Fin n => x p.1 p.2)`. Establish `hx : (Matrix.of (fun p : Fin n × Fin n => x p.1 p.2).curry) = x` using `by ext i j; rfl`. Rewrite `h` using `[hx]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univ_map_ev {C : Type} [Field C] {n : ℕ} (x : Mat C n) :
     (charpoly.univ C (Fin n)).map (MvPolynomial.eval (fun p : Fin n × Fin n => x p.1 p.2)) = x.charpoly := by
@@ -17,7 +17,7 @@ theorem univ_map_ev {C : Type} [Field C] {n : ℕ} (x : Mat C n) :
   exact h
 
 /- English proof (translation)
-Unfold `ev disc`. Rewrite using `[← resultant_map_map, ← derivative_map, univ_map_ev]`. Establish `h1 : x.charpoly.natDegree = n` using `by simpa using charpoly_natDegree_eq_dim x`. Rewrite using `[natDegree_derivative, h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_disc {C : Type} [Field C] [CharZero C] {n : ℕ} (x : Mat C n) :
     ev x (disc C n) = resultant x.charpoly (derivative x.charpoly) := by
@@ -31,7 +31,7 @@ end LateralTheory.DivDb.SepPolyProof
 namespace LateralTheory.DivDb
 open LateralTheory.DivDb.SepPolyProof in
 /- English proof (translation)
-Introduce `C _ _ n`. Use `⟨disc C n, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_disc, Ne, resultant_eq_zero_iff]`. Establish `h0 : x.charpoly ≠ 0` using `(charpoly_monic x).ne_zero`. Simplify using `only [ne_eq, h0, not_false_eq_true, true_or, true_and, not_not]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

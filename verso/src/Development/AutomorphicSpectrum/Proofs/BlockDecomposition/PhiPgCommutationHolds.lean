@@ -24,7 +24,7 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {i t : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem mcast_spec {a b : ℕ} (h : a = b) (Y : MRep k a) :
     ∃ e : Y.V ≃ₗ[ℂ] (mcast h Y).V, ∀ x v, e (Y.ρ x v) = (mcast h Y).ρ (castM k h x) (e v) := by
@@ -32,14 +32,14 @@ theorem mcast_spec {a b : ℕ} (h : a = b) (Y : MRep k a) :
   exact ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem dpowM_castM {a b : ℕ} (h : a = b) (s : ℝ) (x : Mir k a) : dpowM b s (castM k h x) = dpowM a s x := by
   subst h
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mExt_mcast {a b : ℕ} (h : a = b) {A B C : MRep k a} (H : MExt A B C) :
     MExt (mcast h A) (mcast h B) (mcast h C) := by
@@ -47,7 +47,7 @@ theorem mExt_mcast {a b : ℕ} (h : a = b) {A B C : MRep k a} (H : MExt A B C) :
   exact H
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem phiN_mcast (ψ : AddChar k Circle) {a b : ℕ} (h : a = b) (h' : a + 1 = b + 1) (X : MRep k (a + 1)) :
     phiN ψ (mcast h' X) = mcast h (phiN ψ X) := by
@@ -55,7 +55,7 @@ theorem phiN_mcast (ψ : AddChar k Circle) {a b : ℕ} (h : a = b) (h' : a + 1 =
   rfl
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mcast_mcast {a b c : ℕ} (h₁ : a = b) (h₂ : b = c) (h₃ : a = c) (X : MRep k a) :
     mcast h₂ (mcast h₁ X) = mcast h₃ X := by
@@ -70,7 +70,7 @@ theorem evX_cInd {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ) (g p
     evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) p = evX f (p * g) := rfl
 
 /- English proof (translation)
-Simplify using `only [intC, evX_cInd, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem intC_translate (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g y : Mir k ((i + 1) + t + 1)) :
@@ -78,7 +78,7 @@ theorem intC_translate (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep 
   simp only [intC, evX_cInd, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [intO, evX_cInd, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem intO_translate {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g y : Mir k ((i + 1) + t + 1)) :
@@ -88,7 +88,7 @@ theorem intO_translate {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ
 abbrev XR (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) : MRep k ((i + 1) + t + 1) := prodPGn (i := i + 1) (t := t + 1) τ σ
 
 /- English proof (translation)
-Simplify using `only [eC, map_mul, Units.val_mul, intC_translate, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eC_translate (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (x m : Mir k ((i + 1) + t)) :
@@ -97,7 +97,7 @@ theorem eC_translate (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k 
   simp only [eC, map_mul, Units.val_mul, intC_translate, smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [eO, map_mul, Units.val_mul, intO_translate, smul_smul, mul_comm, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eO_translate (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (x m : Mir k (i + (t + 1))) :
@@ -154,13 +154,13 @@ def mirabolicRestriction (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRe
       (cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)).subtype
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `Subtype.ext (Subtype.ext (Subtype.ext hab))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jC_inj (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) : Function.Injective (jC τ σ) :=
   fun _ _ hab => Subtype.ext (Subtype.ext (Subtype.ext hab))
 
 /- English proof (translation)
-Introduce `a b hab` and use `by refine Subtype.ext (Subtype.ext (Subtype.ext ?_)) funext m have h2 : (a : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)).1.1.1 ((castM k hh).symm (castM k hh m)) = (b : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)).1.1.1 ((castM k hh).symm (castM k hh m)) := congrFun hab (castM k hh m) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jO0_inj (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hh : i + (t + 1) = (i + 1) + t) :
     Function.Injective (mirabolicRestriction ψ τ σ hh) := fun a b hab => by
@@ -196,11 +196,9 @@ theorem eOl_apply (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i 
     eOl ψ hψ τ σ hτ hσ hh f m = eO ψ f ((castM k hh).symm m) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show eO ψ f ((castM k hh).symm (x * m)) = ((dpowM ((i + 1) + t) (-1 / 2) m : ℂˣ) : ℂ) • eO ψ (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (sEmb k ((i + 1) + t) m) f) ((castM k hh).symm x)`. Establish `e1` using `map_mul (castM k hh).symm x m`. Establish `e2` using `eO_translate ψ f ((castM k hh).symm x) ((castM k hh).symm m)`. Establish `e3 : castM k hh ((castM k hh).symm m) = m` using `MulEquiv.apply_symm_apply _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : dpowM (i + (t + 1)) (-1 / 2) ((castM k hh).symm m) = dpowM ((i + 1) + t) (-1 / 2) m`. Use `dpowM_castM (k := k) hh (-1 / 2) ((castM k hh).symm m)` as an intermediate fact. Rewrite `this` using `[e3]`. Conclude with `this.symm`. Establish `e6` using `congrArg (fun g => eO ψ (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (sEmb k ((i + 1) + t) g) f) ((castM k hh).symm x)) e3`.
-
-Establish `e7 : ((dpowM (i + (t + 1)) (-1 / 2) ((castM k hh).symm m) : ℂˣ) : ℂ) = ((dpowM ((i + 1) + t) (-1 / 2) m : ℂˣ) : ℂ)` using `congrArg _ e4`. Conclude with `(congrArg (eO ψ f) e1).trans (e2.trans (congrArg₂ (· • ·) e7 e6))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aO_eOl (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ)
     (hσ : IsSmooth σ.ρ) (hh : i + (t + 1) = (i + 1) + t) (m : Mir k ((i + 1) + t)) (f : XS τ σ) :
@@ -223,7 +221,7 @@ theorem aO_eOl (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1
   exact (congrArg (eO ψ f) e1).trans (e2.trans (congrArg₂ (· • ·) e7 e6))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Conclude with `eC_translate ψ f x m`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem aC_eCl (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ)
     (hσ : IsSmooth σ.ρ) (m : Mir k ((i + 1) + t)) (f : XS τ σ) :
@@ -234,23 +232,17 @@ theorem aC_eCl (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hh : i + (t + 1) = (i + 1) + t` using `by omega`. Take `⟨hUn, hθ, hCc, hHC, hCU, hdir⟩` from `GlobalTheory.T.mirabolic_cell_structure_data k ψ hψ i t`. Take `⟨e, he⟩` from `mcast_spec hh (RO ψ τ σ)`. Set `jOl : (mcast hh (RO ψ τ σ)).V →ₗ[ℂ] (Mir k ((i + 1) + t) → (phiN ψ τ).V ⊗[ℂ] σ.V)` to `mirabolicRestriction ψ τ σ hh ∘ₗ e.symm.toLinearMap`. Establish `hjOl : Function.Injective jOl` using `(jO0_inj ψ τ σ hh).comp e.symm.injective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hes : ∀ (m : Mir k ((i + 1) + t)) v, e.symm ((mcast hh (RO ψ τ σ)).ρ m v) = (RO ψ τ σ).ρ ((castM k hh).symm m) (e.symm v)`. Introduce `m v`. Rewrite using `[LinearEquiv.symm_apply_eq, he, MulEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hjOe : ∀ m v, jOl ((mcast hh (RO ψ τ σ)).ρ m v) = rightReg ℂ _ _ m (jOl v)`. Introduce `m v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show mirabolicRestriction ψ τ σ hh (e.symm _) = _`. Rewrite using `[hes]`. Use function extensionality and compare the values at `x`. Use `show (e.symm v : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)).1.1.1 ((castM k hh).symm x * (castM k hh).symm m) = (e.symm v : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)).1.1.1 ((castM k hh).symm (x * m))`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.twisted_jacquet_closed_open_sequence (HPG k (i + 1) (t + 1)) (sigX τ σ) (MirUin k ((i + 1) + t + 1)) hUn (mirChar k ψ ((i + 1) + t)) hθ hdir (sEmb k ((i + 1) + t)) (dpowM ((i + 1) + t) (-1 / 2)) (phiN ψ (n := (i + 1) + t) (XR' τ σ)).ρ (fun m f => rho_eq ψ τ σ m f) …`. Use function extensionality and compare the values at `m`. Conclude with `congrFun (GlobalTheory.T.open_evaluation_equivariant k i t ψ hψ τ σ hτ hσ u f) _)`. Use the proof step `(fun m f => aC_eCl ψ hψ τ σ hτ hσ m f)`. Use the proof step `(fun m f => aO_eOl ψ hψ τ σ hτ hσ hh m f)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use the proof step `(fun f => by`. Take `⟨y, hy⟩` from `GlobalTheory.T.closed_evaluation_induced k i t ψ hψ τ σ hτ hσ f`. Conclude with `⟨y, hy⟩)`. Use the proof step `(fun f hf => by`. Take `⟨y, hy⟩` from `GlobalTheory.T.open_evaluation_induced k i t ψ hψ τ σ hτ hσ f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨e y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Establish `e1 : e.symm (e y) = y` using `e.symm_apply_apply y`. Conclude with `(congrArg (fun z => mirabolicRestriction ψ τ σ hh z m) e1).trans (congrFun hy _))`. Use the proof step `(fun v => GlobalTheory.T.closed_evaluation_surjective k i t ψ hψ τ σ hτ hσ v)`.
-
-Use the proof step `(fun v => by`. Take `⟨f, hf, hy⟩` from `GlobalTheory.T.open_evaluation_surjective k i t ψ hψ τ σ hτ hσ (e.symm v)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Conclude with `congrFun hy _)`.
-
-Use the proof step `(fun f hf => GlobalTheory.T.closed_evaluation_vanishing_on_open k i t ψ τ σ hτ hσ f hf)`. Use the proof step `(fun f h0 p hp => GlobalTheory.T.average_vanishes_closed_cell k i t ψ hψ τ σ hτ hσ f h0 p hp)`. Use the proof step `(fun f h0 p hp => GlobalTheory.T.average_vanishes_open_cell k i t ψ hψ τ σ hτ hσ f (by`. Use function extensionality and compare the values at `m`. Use `congrFun h0 (castM k hh m)` as an intermediate fact.
-
-Rewrite `this` using `[eOl_apply, MulEquiv.symm_apply_apply]`. Conclude with `this) p hp)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiPG_core (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
@@ -309,9 +301,9 @@ theorem phiPG_core (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ) (τ
       exact this) p hp)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ _ i t τ σ hτ hσ`. Establish `h0 : (i + 1) + t = i + t + 1` using `by omega`. Establish `H` using `mExt_mcast h0 (phiPG_core ψ hψ i t τ σ hτ hσ)`. Rewrite `H` using `[mcast_mcast _ _ (by omega : i + (t + 1) = i + t + 1), ← ro_eq, ← xr_eq, ← rc_eq]`. Rewrite using `[phiN_mcast ψ h0 (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem phiPG : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], PhiPG k := by
   intro k _ _ _ _ ψ hψ _ i t τ σ hτ hσ

@@ -16,7 +16,7 @@ section Frame
 variable {E : Type} [Field E] {n r : ℕ} {S : E →+* E} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `[Matrix.mul_apply, cT, pre]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_pre_mul (S : E →+* E) (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (s : Fin r) :
     cT S (pre X s) * J = (cT S X * J).submatrix (Fin.castLE s.2) id := by
@@ -24,7 +24,7 @@ theorem cT_pre_mul (S : E →+* E) (J : Matrix (Fin n) (Fin n) E) (X : Matrix (F
   simp [Matrix.mul_apply, cT, pre]
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `[Matrix.mul_apply, pre]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_pre (A : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (s : Fin r) :
     A * pre X s = (A * X).submatrix id (Fin.castLE s.2) := by
@@ -32,7 +32,7 @@ theorem mul_pre (A : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (s
   simp [Matrix.mul_apply, pre]
 
 /- English proof (translation)
-Introduce `e`. Apply `hi` to reduce the goal to its premises. Establish `: (j : ℕ) = i` using `congrArg Fin.val e`. Establish `hj` using `j.2`. Conclude with `Fin.le_def.2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem castLE_ne {s i : Fin r} (hi : ¬ i ≤ s) (j : Fin (s.val + 1)) : Fin.castLE s.2 j ≠ i := by
   intro e
@@ -42,13 +42,13 @@ theorem castLE_ne {s i : Fin r} (hi : ¬ i ≤ s) (j : Fin (s.val + 1)) : Fin.ca
   exact Fin.le_def.2 (by omega)
 
 /- English proof (translation)
-Break down `β with _ | b | b` into its components or cases. Simplify using `[frameLev] at h`. Establish `hb : b ≤ s`. Assume the negation of the conclusion as `hb`. Simplify using `[frameLev, hb] at h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `hlt : b.val < s.val + 1` using `Nat.lt_succ_of_le (Fin.le_def.1 hb)`. Set `P : Matrix (Fin (s.val + 1)) (Fin r) E` to `single ⟨b.val, hlt⟩ b (1 : E)`. Use `⟨P * (cT S Y * J), ?_⟩` and prove the remaining obligations. Establish `e : X * (single b b (1 : E) : Matrix (Fin r) (Fin r) E) = pre X s * P`. Use extensionality with `k j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hj : j = b`. Substitute `hj` using the available equality. Simplify using `[P, pre, Matrix.mul_apply, Matrix.single_apply]`. Simplify using `[P, Matrix.mul_apply, Matrix.single_apply, Ne.symm hj]`. Simplify using `only [frameIdem]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.mul_assoc]`. Apply the tactic sequence `by_cases hb : b ≤ s <;> simp [frameLev, hb] at h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_frameIdem_eq_pre_mul (s : Fin r) {β : FrameIx r} (h : frameLev s β = 2) :
     ∃ Q : Matrix (Fin (s.val + 1)) (Fin n) E, frameIdem S J X Y β = pre X s * Q := by
@@ -71,13 +71,13 @@ theorem exists_frameIdem_eq_pre_mul (s : Fin r) {β : FrameIx r} (h : frameLev s
   · by_cases hb : b ≤ s <;> simp [frameLev, hb] at h
 
 /- English proof (translation)
-Break down `α with _ | a | a` into its components or cases. Simplify using `[frameLev] at h`. Apply the tactic sequence `by_cases ha : a ≤ s <;> simp [frameLev, ha] at h`. Establish `ha : a ≤ s`. Assume the negation of the conclusion as `ha`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[frameLev, ha] at h`. Establish `hlt : a.val < s.val + 1` using `Nat.lt_succ_of_le (Fin.le_def.1 ha)`. Set `P : Matrix (Fin r) (Fin (s.val + 1)) E` to `single a ⟨a.val, hlt⟩ (1 : E)`. Use `⟨Y * P, ?_⟩` and prove the remaining obligations. Establish `e : (single a a (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S X * J) = P * (cT S (pre X s) * J)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[cT_pre_mul]`. Use extensionality with `i l`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[P, Matrix.mul_apply, Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[P, Matrix.mul_apply, Matrix.single_apply, Ne.symm hi]`. Simplify using `only [frameIdem]`. Rewrite using `[Matrix.mul_assoc, e, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frameIdem_eq_mul_form (s : Fin r) {α : FrameIx r} (h : frameLev s α = 0) :
     ∃ Q : Matrix (Fin n) (Fin (s.val + 1)) E, frameIdem S J X Y α = Q * (cT S (pre X s) * J) := by
@@ -104,13 +104,13 @@ variable (hxx : cT S X * J * X = 0) (hxy : cT S X * J * Y = 1) (hyx : cT S Y * J
 include hxx hxy hyx
 
 /- English proof (translation)
-Rewrite using `[mul_pre]`. Break down `α with _ | i | i` into its components or cases. Establish `: (1 - X * (cT S Y * J) - Y * (cT S X * J)) * X = 0`. Rewrite using `[Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hyx, Matrix.mul_one, Matrix.mul_assoc, hxx, Matrix.mul_zero, sub_self, sub_zero]`. Simplify using `only [frameIdem, this]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hi : ¬ i ≤ s`. Introduce `hi`. Simplify using `[frameLev, hi] at h`. Establish `: X * (single i i (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S Y * J) * X = X * (single i i (1 : E) : Matrix (Fin r) (Fin r) E)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc _ _ X, hyx, Matrix.mul_one]`. Use extensionality with `k j`. Simplify using `only [frameIdem, this, Matrix.submatrix_apply, id]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, (castLE_ne hi j).symm]`. Establish `: Y * (single i i (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S X * J) * X = 0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc _ _ X, hxx, Matrix.mul_zero]`. Simplify using `only [frameIdem, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem frameIdem_mul_pre (s : Fin r) {α : FrameIx r} (h : frameLev s α = 1) : frameIdem S J X Y α * pre X s = 0 := by
   rw [mul_pre]
@@ -135,15 +135,15 @@ theorem frameIdem_mul_pre (s : Fin r) {α : FrameIx r} (h : frameLev s α = 1) :
     rfl
 
 /- English proof (translation)
-Establish `e : ∀ A : Matrix (Fin n) (Fin n) E, (cT S (pre X s) * J) * A = ((cT S X * J) * A).submatrix (Fin.castLE s.2) id` using `fun A => by`. Rewrite using `[cT_pre_mul]`. Use extensionality with `i l`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `β with _ | i | i` into its components or cases. Establish `: (cT S X * J) * (1 - X * (cT S Y * J) - Y * (cT S X * J)) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc _ X, hxx, Matrix.zero_mul, ← Matrix.mul_assoc _ Y, hxy, Matrix.one_mul, sub_zero, sub_self]`. Simplify using `only [frameIdem, this]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `: (cT S X * J) * (X * (single i i (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S Y * J)) = 0`. Rewrite using `[Matrix.mul_assoc X, ← Matrix.mul_assoc _ X, hxx, Matrix.zero_mul]`. Simplify using `only [frameIdem, this]`. Both sides reduce to the same expression. Establish `hi : ¬ i ≤ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `hi`. Simplify using `[frameLev, hi] at h`. Establish `: (cT S X * J) * (Y * (single i i (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S X * J)) = (single i i (1 : E) : Matrix (Fin r) (Fin r) E) * (cT S X * J)`. Rewrite using `[Matrix.mul_assoc Y, ← Matrix.mul_assoc _ Y, hxy, Matrix.one_mul]`. Use extensionality with `j l`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [frameIdem, this, Matrix.submatrix_apply, id]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, (castLE_ne hi j).symm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_mul_frameIdem (s : Fin r) {β : FrameIx r} (h : frameLev s β = 1) :
     (cT S (pre X s) * J) * frameIdem S J X Y β = 0 := by
@@ -175,9 +175,9 @@ theorem form_mul_frameIdem (s : Fin r) {β : FrameIx r} (h : frameLev s β = 1) 
 end Frame
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨b, hb⟩` from `h3 (fun l => Q l j) (funext fun a => congrFun (congrFun hQ a) j)`. Establish `e1 : P.map t * C.map t = 0`. Rewrite using `[← Matrix.map_mul, hP]`. Conclude with `Matrix.map_zero _ (map_zero _)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (P.map t * M * Q.map t) i j = (P.map t *ᵥ (M *ᵥ fun l => t (Q l j))) i`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e2, hb, Matrix.mulVec_mulVec, e1, Matrix.zero_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_mul_mul_map_eq_zero {E : Type} [Field E] {n k : ℕ} (t : E →+* ℂ) {C : Matrix (Fin n) (Fin k) E}
     {T : Matrix (Fin k) (Fin n) E} {M : Matrix (Fin n) (Fin n) ℂ}
@@ -200,21 +200,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {r : ℕ}
 
 /- English proof (translation)
-Establish `hg : m ∈ GlobalTheory.UAut.unipSet σ J C fun _ => 0`. Use `(GlobalTheory.UAut.mem_unipFlag hJ (GlobalTheory.SiegelSet.sigma_sigma h) hC _).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.UAut.unipFlag_const]`. Conclude with `hm`. Take `⟨A, hA, e1⟩` from `GlobalTheory.UAut.lower_iff.1 hg.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ((matHom _ σ J m).1 - 1) * adMat F C = 0`. Rewrite using `[e1, show A = 0 from Matrix.ext fun j i => hA j i le_rfl, Matrix.mul_zero]`. Establish `h2 : adMat F (cT (σ : E →+* E) C * J) * ((matHom _ σ J m).1 - 1) = 0`. Establish `e : (matHom _ σ J m).1 * adMat F C = adMat F C * (1 : Matrix (Fin r) (Fin r) (AF F ⊗[F] E))`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.mul_one]`. Establish `e2` using `GlobalTheory.UAut.form_mul_of_mul_cols e`. Establish `hi : (matHom _ σ J m⁻¹).1 * (matHom _ σ J m).1 = 1` using `Units.inv_mul m.1`. Rewrite `e2` using `[Formalism.UG.cT_one, Matrix.one_mul]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `conv_lhs => rw [← e2, Matrix.mul_assoc, hi, Matrix.mul_one]`. Set `φ` to `(infEmb τ).comp (compInf F E w)`. Establish `h0 : ∀ x : E, φ (inclR (F` using `F) (AF F) x) = τ.1 x := fun x => by`. Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w 1 ⊗ₜ[F] x) = _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : archMat σ J τ (projArch σ J w m) - 1 = ((matHom _ σ J m).1 - 1).map φ`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Establish `hZ : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), (adMat F Z).map φ = Z.map τ.1` using `fun Z => Matrix.ext fun i j => h0 _`. Rewrite using `[hM]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hZ, ← Matrix.map_mul, h1]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Rewrite using `[← hZ, ← Matrix.map_mul, h2]`. Conclude with `Matrix.map_zero _ (map_zero _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `hg.2 x hx`. Use `⟨fun i => φ (a i), ?_⟩` and prove the remaining obligations. Establish `e3` using `congrArg (fun v : Fin n → AF F ⊗[F] E => fun i => φ (v i)) ha`. Rewrite using `[show (fun i => τ.1 (x i)) = fun i => φ (inclR (F := F) (AF F) (x i)) from funext fun i => (h0 _).symm, ← hZ]`. Use function extensionality and compare the values at `i`.
-
-Establish `l1` using `RingHom.map_mulVec φ ((matHom _ σ J m).1 - 1) (fun i => inclR (F := F) (AF F) (x i)) i`. Establish `l2` using `RingHom.map_mulVec φ (adMat F C) a i`. Conclude with `l1.symm.trans ((congrFun e3 i).trans l2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem arch_of_mem_unipRad (h : IsCMExt F E σ) (hJ : IsHermND σ J) {C : Matrix (Fin n) (Fin r) E}
     (hC : GlobalTheory.UAut.IsIsoCols σ J C) {m : GAd σ J} (hm : m ∈ unipRad σ J C) (w : InfinitePlace F) (τ : EmbOver E w) :
@@ -265,13 +263,13 @@ theorem arch_of_mem_unipRad (h : IsCMExt F E σ) (hJ : IsHermND σ J) {C : Matri
 end Unip
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma h`. Establish `yx : cT (σ : E →+* E) Y * J * X = 1`. Use `congrArg (cT (σ : E →+* E)) hW.xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, show cT (σ : E →+* E) (cT (σ : E →+* E) X) = X from Matrix.ext fun i j => hσ _, GlobalTheory.UAut.cT_form hJ, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (pre X s)` using `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ s.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `arch_of_mem_unipRad h hJ hC hm w τ`. Establish `hβ : frameLev s β ≤ 2`. Apply the tactic sequence `rcases β with _ | b | b <;> simp only [frameLev] <;> try split_ifs`. Apply the tactic sequence `all_goals omega`. Distinguish the cases in `e2 : frameLev s β = 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `exists_frameIdem_eq_pre_mul (S := (σ : E →+* E)) (J := J) (Y := Y) s e2`. Rewrite using `[hQ, Matrix.map_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((pre X s).map τ.1), h1, Matrix.zero_mul, Matrix.mul_zero]`. Distinguish the cases in `e0 : frameLev s α = 0`. Take `⟨Q, hQ⟩` from `exists_frameIdem_eq_mul_form (S := (σ : E →+* E)) (J := J) (X := X) (Y := Y) s e0`. Rewrite using `[hQ, Matrix.map_mul, Matrix.mul_assoc (Q.map τ.1), h2, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hα : frameLev s α = 1` using `by omega`. Establish `hβ' : frameLev s β = 1`. Establish `: frameLev s β ≠ 0` using `by omega`. Use linear arithmetic over natural numbers and integers. Conclude with `map_mul_mul_map_eq_zero τ.1 h3 (frameIdem_mul_pre hW.xx hW.xy yx s hα) (form_mul_frameIdem hW.xx hW.xy yx s hβ')`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem frameIdem_mul_unipRad_mul_frameIdem (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)

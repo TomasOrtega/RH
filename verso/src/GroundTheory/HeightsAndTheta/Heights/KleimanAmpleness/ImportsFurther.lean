@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver)
 
 /- English proof (translation)
-Establish `key : ∀ (F : Type) [Field F] (Ω : Type) [Field Ω] [Algebra F Ω] (N : ℕ) (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (k₀ : K) (e : ι k₀ ≃ Fin (N + 1)) (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k …`. Introduce `F _ Ω _ _ N K _ _ ι _ y k₀ e K' _ _ ι' _ y' k₀' e' hm hm' hx β β' hs hnef W' hW' hle' hrel'`. Take `⟨hP, hPle, hPrel⟩` from `(hC F K' ι' Ω y' k₀' N e' _ hx hm' 1).1 W' hW' hle' hrel'`. Take `⟨W, hW, hle, hrel, hWP⟩` from `(hC F K ι Ω y k₀ N e _ rfl hm 1).2 _ hP hPle hPrel`. Rewrite using `[← hN F Ω N K ι y k₀ e K' ι' y' k₀' e' hm hm' hx β β' hs W W' hW hle hrel hW' hle' hrel' hWP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnef W hW hle hrel`. Introduce `F _ Ω _ _ N K _ _ ι _ y k₀ e K' _ _ ι' _ y' k₀' e' hm hm' hx β β' hs`. Conclude with `⟨key F Ω N K ι y k₀ e K' ι' y' k₀' e' hm hm' hx β β' hs, key F Ω N K' ι' y' k₀' e' K ι y k₀ e hm' hm hx.symm β' β fun c => (hs c).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ModelChangeNef.proof (hC : ModelCurves.Statement) (hN : ModelCurveNum.Statement) :
     ModelChangeNef.Statement := by

@@ -9,21 +9,19 @@ open scoped Formalism.Per
 namespace GlobalTheory.Pst.StLat
 
 /- English proof (translation)
-Introduce `l _ ϖ hϖ`. Take `⟨_, _, -, -, hK, -⟩` from `GlobalTheory.AinfChecks.padicComplex l`. Establish `hk : RingHom.ker (Per.θ l) = Ideal.span {((l : ℕ) : Per.Ainf l) - Per.tm ϖ}` using `(hK ϖ hϖ).1`. Take `⟨-, hker, hA, -⟩` from `thetaP_facts l`. Establish `hu` using `GlobalTheory.RingBasics.isUnit_l l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ a : Per.Ainf l, Per.θ l a = 0 → algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l`. Introduce `a ha`. Rewrite using `[← hker, RingHom.mem_ker, hA, ha]`. Both sides reduce to the same expression. Establish `h0 : Per.θ l (((l : ℕ) : Per.Ainf l) - Per.tm ϖ) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: ((l : ℕ) : Per.Ainf l) - Per.tm ϖ ∈ RingHom.ker (Per.θ l)`. Rewrite using `[hk]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `this`. Establish `hlb : ((l : ℕ) : Per.AinfP l) * beta ϖ = -algebraMap (Per.Ainf l) (Per.AinfP l) (((l : ℕ) : Per.Ainf l) - Per.tm ϖ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[l_mul_beta, map_sub, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `le_antisymm (fun y hy => ?_) ?_` and prove the remaining obligations. Rewrite `hy` using `[← hker, RingHom.mem_ker]`. Take `⟨n, a, h⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast]`. Establish `ha : Per.θ l a = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hA, ← h, map_mul, hy, zero_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : a ∈ Ideal.span {((l : ℕ) : Per.Ainf l) - Per.tm ϖ}` using `hk ▸ ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 h2`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ (hu.pow n), h, map_mul]`. Establish `: algebraMap (Per.Ainf l) (Per.AinfP l) (((l : ℕ) : Per.Ainf l) - Per.tm ϖ) = -(((l : ℕ) : Per.AinfP l) * beta ϖ)` using `by rw [hlb, neg_neg]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ (neg_mem (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `h3 : ((l : ℕ) : Per.AinfP l) * beta ϖ ∈ Per.kerP l`. Rewrite using `[hlb]`. Conclude with `neg_mem (hmem _ h0)`.
-
-Establish `h4 : linv l * (((l : ℕ) : Per.AinfP l) * beta ϖ) = beta ϖ`. Rewrite using `[← mul_assoc, mul_comm (linv l), mul_linv, one_mul]`. Rewrite using `[← h4]`. Conclude with `Ideal.mul_mem_left _ _ h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_localizedTheta_eq_span_beta : ∀ (l : ℕ) [Fact l.Prime] (ϖ : Per.Fl l), ϖ.untilt = ((l : ℕ) : Per.OC l) →
     Per.kerP l = Ideal.span {beta ϖ} := by

@@ -7,7 +7,7 @@ namespace GlobalTheory.ScaledIdealIndex
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (AddMonoidHom.mulLeft (a : k))` using `fun y => ⟨((a⁻¹ : kˣ) : k) * y, by simp [← mul_assoc]⟩`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_comap_mulLeft (a : kˣ) (H K : AddSubgroup k) :
     (H.comap (AddMonoidHom.mulLeft (a : k))).relIndex (K.comap (AddMonoidHom.mulLeft (a : k))) =
@@ -17,11 +17,11 @@ theorem relIndex_comap_mulLeft (a : kˣ) (H K : AddSubgroup k) :
   rw [AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hs]
 
 /- English proof (translation)
-Set `f : 𝒪[k] →+ k` to `(𝒪[k]).subtype.toAddMonoidHom`. Establish `hr : f.range = (𝒪[k]).toAddSubgroup`. Use extensionality with `x`. Simplify using `[f]`. Set `g : 𝒪[k] →+ 𝓀[k]` to `(IsLocalRing.residue 𝒪[k]).toAddMonoidHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hk : L.comap f = g.ker`. Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_comap, AddMonoidHom.mem_ker, g, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, hL]`. Both sides reduce to the same expression. Establish `hs : Function.Surjective g` using `Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hr, ← AddSubgroup.index_comap, hk, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hs]`. Simplify using `[resCard]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem relIndex_maxIdeal (L : AddSubgroup k) (hL : ∀ x, x ∈ L ↔ valuation k x < 1) :
     L.relIndex (𝒪[k]).toAddSubgroup = resCard k := by
@@ -44,20 +44,20 @@ variable (L : AddSubgroup k) (hL : ∀ x, x ∈ L ↔ valuation k x < 1)
 include hL
 
 /- English proof (translation)
-Simplify using `[hL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_comap_mulLeft (a : kˣ) (x : k) :
     x ∈ L.comap (AddMonoidHom.mulLeft (a : k)) ↔ valuation k ((a : k) * x) < 1 := by
   simp [hL]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[hL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comap_mulLeft_one : L.comap (AddMonoidHom.mulLeft ((1 : kˣ) : k)) = L := by
   ext x; simp [hL]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[hL, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comap_mulLeft_mul (a b : kˣ) :
     L.comap (AddMonoidHom.mulLeft ((a * b : kˣ) : k)) =
@@ -65,7 +65,7 @@ theorem comap_mulLeft_mul (a b : kˣ) :
   ext x; simp [hL, mul_assoc]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_comap_mulLeft L hL]`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, mul_assoc, map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le' (pow_le_one₀ zero_le' hϖ)) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_mulLeft_le_pow (ϖ : kˣ) (hϖ : valuation k (ϖ : k) ≤ 1) (a : kˣ) (j : ℕ) :
     L.comap (AddMonoidHom.mulLeft (a : k)) ≤ L.comap (AddMonoidHom.mulLeft ((ϖ ^ j * a : kˣ) : k)) := by
@@ -75,9 +75,9 @@ theorem comap_mulLeft_le_pow (ϖ : kˣ) (hϖ : valuation k (ϖ : k) ≤ 1) (a : 
   exact lt_of_le_of_lt (mul_le_of_le_one_left zero_le' (pow_le_one₀ zero_le' hϖ)) hx
 
 /- English proof (translation)
-Establish `hpos : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Establish `e : L = (𝒪[k]).toAddSubgroup.comap (AddMonoidHom.mulLeft ((ϖ⁻¹ : kˣ) : k))`. Use extensionality with `x`. Rewrite using `[hL]`. Simplify using `only [AddSubgroup.mem_comap, AddMonoidHom.coe_mulLeft, Subring.mem_toAddSubgroup, Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_mul_le_iff₀ hpos, mul_one, hϖ, le_uniformizer_iff]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem relIndex_unif (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) :
     (L.comap (AddMonoidHom.mulLeft ((ϖ⁻¹ : kˣ) : k))).relIndex L = resCard k := by
@@ -94,15 +94,15 @@ theorem relIndex_unif (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) :
     _ = resCard k := by rw [relIndex_comap_mulLeft, relIndex_maxIdeal L hL]
 
 /- English proof (translation)
-Establish `h1 : valuation k (ϖ : k) ≤ 1` using `hϖ ▸ uniformizer_lt_one.le`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, neg_zero, zpow_zero, comap_mulLeft_one L hL, pow_zero, AddSubgroup.relIndex_self]`. Consider the case `succ n ih`. Establish `ea : ϖ ^ (-((n + 1 : ℕ) : ℤ)) = ϖ⁻¹ * ϖ ^ (-(n : ℤ))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← zpow_neg_one, ← zpow_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `eb : ϖ ^ (-(n : ℤ)) = ϖ ^ (1 : ℕ) * ϖ ^ (-((n + 1 : ℕ) : ℤ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[ea, pow_one, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `hle : L.comap (AddMonoidHom.mulLeft ((ϖ ^ (-((n + 1 : ℕ) : ℤ)) : kˣ) : k)) ≤ L.comap (AddMonoidHom.mulLeft ((ϖ ^ (-(n : ℤ)) : kˣ) : k))`. Rewrite using `[eb]`. Conclude with `comap_mulLeft_le_pow L hL ϖ h1 _ 1`. Establish `hle2 : L.comap (AddMonoidHom.mulLeft ((ϖ ^ (-(n : ℤ)) : kˣ) : k)) ≤ L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `comap_mulLeft_le_pow L hL ϖ h1 (ϖ ^ (-(n : ℤ))) n` as an intermediate fact. Rewrite `this` using `[← zpow_natCast, ← zpow_add, add_neg_cancel, zpow_zero, comap_mulLeft_one L hL]`. Then use the resulting hypothesis. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ hle hle2, ih, pow_succ, mul_comm]`. Use `congr 1`. Establish `e1 : L.comap (AddMonoidHom.mulLeft ((ϖ ^ (-(n : ℤ)) : kˣ) : k)) = L.comap (AddMonoidHom.mulLeft (((1 : kˣ) * ϖ ^ (-(n : ℤ)) : kˣ) : k))` using `by rw [one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ea, e1, comap_mulLeft_mul L hL, comap_mulLeft_mul L hL, relIndex_comap_mulLeft, comap_mulLeft_one L hL, relIndex_unif L hL ϖ hϖ]`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_unif_pow (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) (n : ℕ) :
     (L.comap (AddMonoidHom.mulLeft ((ϖ ^ (-(n : ℤ)) : kˣ) : k))).relIndex L = resCard k ^ n := by
@@ -134,15 +134,15 @@ end GlobalTheory.ScaledIdealIndex
 namespace GlobalTheory.ScaledIdealIndex
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ hϖ c L P hL hP`. Establish `h1 : valuation k (ϖ : k) ≤ 1` using `hϖ ▸ uniformizer_lt_one.le`. Establish `hPe : P = L.comap (AddMonoidHom.mulLeft ((ϖ ^ c : kˣ) : k))`. Use extensionality with `x`. Rewrite using `[hP, mem_comap_mulLeft L hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.inf_relIndex_left, AddSubgroup.inf_relIndex_right]`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Establish `hLP : L ≤ P`. Use `comap_mulLeft_le_pow L hL ϖ h1 1 n` as an intermediate fact. Rewrite `this` using `[mul_one, comap_mulLeft_one L hL, ← zpow_natCast, ← hPe]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[AddSubgroup.relIndex_eq_one.2 hLP, mul_one, Int.natAbs_natCast]`. Establish `eL : L = L.comap (AddMonoidHom.mulLeft (((ϖ ^ (-(n : ℤ)) * ϖ ^ (n : ℤ) : kˣ)) : k))`. Rewrite using `[← zpow_add, neg_add_cancel, zpow_zero, comap_mulLeft_one L hL]`. Establish `eP : P = L.comap (AddMonoidHom.mulLeft ((((1 : kˣ) * ϖ ^ (n : ℤ) : kˣ)) : k))`. Rewrite using `[one_mul, hPe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← eL, ← eP]`. Use `_ = resCard k ^ n := by`. Rewrite using `[comap_mulLeft_mul L hL, comap_mulLeft_mul L hL, relIndex_comap_mulLeft, comap_mulLeft_one L hL, relIndex_unif_pow L hL ϖ hϖ n]`. Establish `hPL : P ≤ L`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `comap_mulLeft_le_pow L hL ϖ h1 (ϖ ^ (-(n : ℤ))) n` as an intermediate fact. Rewrite `this` using `[← zpow_natCast, ← zpow_add, add_neg_cancel, zpow_zero, comap_mulLeft_one L hL, ← hPe]`. Then use the resulting hypothesis. Rewrite using `[AddSubgroup.relIndex_eq_one.2 hPL, one_mul, Int.natAbs_neg, Int.natAbs_natCast, hPe, relIndex_unif_pow L hL ϖ hϖ n]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_scaled_maxIdeal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →

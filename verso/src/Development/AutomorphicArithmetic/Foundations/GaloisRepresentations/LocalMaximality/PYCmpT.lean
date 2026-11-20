@@ -13,34 +13,34 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   (x : Fin (d + 1) → Fˣ) (j2 : K →ₐ[ℂ] K')
 
 /- English proof (translation)
-Simplify using `[pk]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pk_single {d : ℕ} (i : Fin (d + 1)) : pk ({i} : Finset (Fin (d + 1))) = i := by
   simp [pk]
 
 /- English proof (translation)
-Simplify using `only [pk, dif_pos h]`. Conclude with `Finset.min'_mem _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pk_mem' {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk I ∈ I := by
   simp only [pk, dif_pos h]
   exact Finset.min'_mem _ _
 
 /- English proof (translation)
-Simplify using `[Sys.r, Sys.u, n10, gT]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma r_eq (i j : Fin (d + 1)) (l : Fin d) :
     (sysY x j2 d).r n10 (gT x j2) i j l = (((sysY x j2 d).X l.succ * ((sysY x j2 d).X i)⁻¹ : K'ˣ) : K') := by
   simp [Sys.r, Sys.u, n10, gT]
 
 /- English proof (translation)
-Rewrite using `[r_eq]`. Simplify using `[sysY, tt, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma r_zero (j : Fin (d + 1)) (l : Fin d) : (sysY x j2 d).r n10 (gT x j2) 0 j l = tt K' x l := by
   rw [r_eq]
   simp [sysY, tt, div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[r_eq]`. Conclude with `hg.memX I J hJ i hi _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma r_mem (hg : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hJ : J.Nonempty) {i : Fin (d + 1)} (hi : i ∈ I)
     (j : Fin (d + 1)) (l : Fin d) : (sysY x j2 d).r n10 (gT x j2) i j l ∈ RY (xv x) j2 I J := by
@@ -48,9 +48,9 @@ private lemma r_mem (hg : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hJ :
   exact hg.memX I J hJ i hi _
 
 /- English proof (translation)
-Use `(hKE F K K' d x j2 h0 (Fin d) _ I J hI (fun l => r_mem x j2 hg hJ (pk_mem' hI) _ l)).1 ?_` and prove the remaining obligations. Introduce `e hv`. Take `⟨e0, ho⟩` from `hPt F K K' d x j2 h0 I J (pk I) (pk_mem' hI) (pk J) (pk_mem' hJ) e hv`. Use `⟨e0, ho, fun l => ⟨Pi.single l 1, fun l' => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Take `rfl` from `ho.1`. Simplify using `[pk_single, r_zero, Pi.single_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma kos_ke (hKE : YKE) (hPt : PtT) (h0 : Y0 x j2) (hg : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))}
     (hI : I.Nonempty) (hJ : J.Nonempty) :
@@ -67,7 +67,7 @@ private lemma kos_ke (hKE : YKE) (hPt : PtT) (h0 : Y0 x j2) (hg : (sysY x j2 d).
     simp [pk_single, r_zero, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m hm c hc`. Establish `e` using `hRS K' (DR ℂ K') (sysY x j2 d).act (Fin d) ((sysY x j2 d).M I J) ((sysY x j2 d).u n10 (pk I) (pk J)) ((sysY x j2 d).r n10 (gT x j2) (pk I) (pk J)) (gT x j2) (fun _ => rfl) m c`. Conclude with `e.2.2.1.2 (hk m hm (e.2.1.1 hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma col_ke (hRS : RS) {I J : Finset (Fin (d + 1))}
     (hk : KE (kos (sysY x j2 d).act ((sysY x j2 d).M I J) ((sysY x j2 d).r n10 (gT x j2) (pk I) (pk J))) d) :
@@ -78,7 +78,7 @@ private lemma col_ke (hRS : RS) {I J : Finset (Fin (d + 1))}
   exact e.2.2.1.2 (hk m hm (e.2.1.1 hc))
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (by rintro y ⟨b, hb, v, hv, rfl⟩ exact ⟨b, h hb, v, fun j => h (hv j), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private lemma omB_mono' {L : Type} [Field L] [Algebra ℂ L] {B B' : Subalgebra ℂ L} (h : B ≤ B') (q : ℕ) :
     omB ℂ L B q ≤ omB ℂ L B' q :=
@@ -87,11 +87,9 @@ private lemma omB_mono' {L : Type} [Field L] [Algebra ℂ L] {B B' : Subalgebra 
     exact ⟨b, h hb, v, fun j => h (hv j), rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, v, hv, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨a * b, mul_mem ha hb, v, hv, by rw [smul_smul]⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add _ _ _ _ h1 h2`. Rewrite using `[smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul c y _ h1`. Rewrite using `[smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ c h1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma omB_smul' {L : Type} [Field L] [Algebra ℂ L] {B : Subalgebra ℂ L} {q : ℕ} {a : L} (ha : a ∈ B)
     {y : DR ℂ L} (hy : y ∈ omB ℂ L B q) : a • y ∈ omB ℂ L B q := by
@@ -108,9 +106,9 @@ private lemma omB_smul' {L : Type} [Field L] [Algebra ℂ L] {B : Subalgebra ℂ
     exact Submodule.smul_mem _ c h1
 
 /- English proof (translation)
-Introduce `c0 hc`. Establish `e` using `hRS K' (DR ℂ K') (sysY x j2 d).act (Fin d) ((sysY x j2 d).M {i} {j}) ((sysY x j2 d).u n10 (pk {i}) (pk {j})) ((sysY x j2 d).r n10 (gT x j2) (pk {i}) (pk {j})) (gT x j2) (fun _ => rfl) d c0`. Use `e.2.2.1.2 ?_` and prove the remaining obligations. Use `(hKE F K K' d x j2 h0 (Fin d) _ {i} {j} ⟨i, by simp⟩ (fun l => r_mem x j2 hg ⟨j, by simp⟩ (pk_mem' ⟨i, by simp⟩) _ l)).2.1 _ _ (e.2.1.1 hc) ?_` and prove the remaining obligations. Introduce `e' hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e0, ho⟩` from `hPt F K K' d x j2 h0 {i} {j} (pk {i}) (pk_mem' ⟨i, by simp⟩) (pk {j}) (pk_mem' ⟨j, by simp⟩) e' hv`. Conclude with `absurd (Finset.singleton_injective ho.1) hi`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma off_col (hKE : YKE) (hPt : PtT) (hRS : RS) (h0 : Y0 x j2) (hg : (sysY x j2 d).Good)
     {i j : Fin (d + 1)} (hi : i ≠ 0) :
@@ -127,15 +125,13 @@ private lemma off_col (hKE : YKE) (hPt : PtT) (hRS : RS) (h0 : Y0 x j2) (hg : (s
   exact absurd (Finset.singleton_injective ho.1) hi
 
 /- English proof (translation)
-Introduce `he`. Take `⟨z, hz⟩` from `hFZ F K K' d x j2 Fx A hY e0 he`. Take `⟨j', rfl⟩` from `Fin.exists_succ_eq.2 hj`. Establish `h1 : Val (rB ℂ K (xv x) {0}) z.1 (algebraMap F K (xv x j'.succ / xv x 0)) 0`. Use `(hVB K (rB ℂ K (xv x) {0}) z.1).2.2.1 ⟨_, tco_mem ℂ K (xv x) j'⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[z.2 j']`. Then use the resulting hypothesis. Establish `h2` using `(hz _ _ h1).2`. Establish `hw : (((sysY x j2 d).Y 0 * ((sysY x j2 d).Y j'.succ)⁻¹ : K'ˣ) : K') ∈ RY (xv x) j2 {0} {j'.succ}` using `hg.memY {0} {j'.succ} ⟨0, by simp⟩ j'.succ (by simp) 0`. Establish `h3` using `(ho.2.2 _ _).1 ((hVB K' (RY (xv x) j2 {0} {j'.succ}) e).2.2.1 ⟨_, hw⟩)`. Take `⟨ev, hev⟩` from `(hVB K' (rB ℂ K' (xv x) {0}) e0.1).2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, q1⟩` from `(hev _ _).1 h2`. Take `⟨p2, q2⟩` from `(hev _ _).1 h3`. Establish `hm : (⟨_, p1⟩ * ⟨_, p2⟩ : loc (rB ℂ K' (xv x) {0}) e0.1) = 1` using `Subtype.ext (by show j2 (algebraMap F K (xv x j'.succ / xv x 0)) * (((sysY x j2 d).Y 0 * ((sysY x j2 d).Y j'.succ)⁻¹ : K'ˣ) : K') = 1`. Establish `ha : j2 (algebraMap F K (x j'.succ : F)) ≠ 0` using `by simp`. Establish `hb : j2 (algebraMap F K (x 0 : F)) ≠ 0` using `by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sysY, xv, map_div₀, Units.val_mul, Units.val_inv_eq_inv_val]`. Simplify using the standard rewrite rules. Use the proof step `field_simp)`. Use `congrArg ev hm` as an intermediate fact. Rewrite `this` using `[map_mul, q1, map_one, zero_mul]`.
-
-Conclude with `zero_ne_one this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma no_fix (hFZ : FixZ) (hVB : ValBasic) (Fx : Finset (fib ℂ K' (xv x)))
     (A : fib ℂ K' (xv x) → Matrix (Fin d) (Fin d) ℂ) (hY : Y1 x j2 Fx A) (hg : (sysY x j2 d).Good)
@@ -166,17 +162,17 @@ private lemma no_fix (hFZ : FixZ) (hVB : ValBasic) (Fx : Finset (fib ℂ K' (xv 
   exact zero_ne_one this
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `hY.covY.exists_isTop`. Establish `hdt : dtS K' x Finset.univ ∈ omB ℂ K' (rB ℂ K' (xv x) {0}) d`. Use `(hDt F K' d x hY.covY τ hτ).2.1 Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis. Establish `hle : rB ℂ K' (xv x) {0} ≤ RY (xv x) j2 {0} {j}` using `le_sup_left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs1 : ∀ B : Subalgebra ℂ K', (-1 : K') ^ d ∈ B` using `fun B => pow_mem (neg_mem (one_mem _)) _`. Establish `hyM : (((-1 : K') ^ d * (h : K')) • dtS K' x Finset.univ) ∈ (sysY x j2 d).M {0} {j}` using `omB_smul' (mul_mem (hs1 _) (hle h.2)) (omB_mono' hle d hdt)`. Use `(hKE F K K' d x j2 hY.toY0 (Fin d) _ {0} {j} ⟨0, by simp⟩ (fun l => r_mem x j2 hg ⟨j, by simp⟩ (Finset.mem_singleton_self 0) _ l)).2.2 _ hyM ?_` and prove the remaining obligations. Introduce `e hv`. Take `⟨e0, ho⟩` from `hPt F K K' d x j2 hY.toY0 {0} {j} 0 (by simp) j (by simp) e hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hn` using `no_fix x j2 hFZ hVB Fx A hY hg hj e e0 ho`. Establish `hval : Val (rB ℂ K' (xv x) {0}) e0.1 (h : K') 0`. Use `(hVB K' (rB ℂ K' (xv x) {0}) e0.1).2.2.1 h` as an intermediate fact. Rewrite `this` using `[hh e0 hn]`. Then use the resulting hypothesis. Take `⟨a, ha, hs⟩` from `hLM F K' d x hY.covY hY.red e0 h hval`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hle2 : RY (xv x) j2 {0} {j} ≤ loc (RY (xv x) j2 {0} {j}) e` using `(hVB K' _ e).1`. Rewrite using `[hs, Finset.mul_sum, Finset.sum_smul]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Establish `hal : a l ∈ loc (RY (xv x) j2 {0} {j}) e`. Rewrite using `[ho.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha l`. Establish `hm : ((-1 : K') ^ d * a l) • dtS K' x Finset.univ ∈ omB ℂ K' (loc (RY (xv x) j2 {0} {j}) e) d` using `omB_smul' (mul_mem (hs1 _) hal) (omB_mono' (hle.trans hle2) d hdt)`. Establish `he : ((-1 : K') ^ d * (a l * tt K' x l)) • dtS K' x Finset.univ = (sysY x j2 d).act ((sysY x j2 d).r n10 (gT x j2) 0 j l) (((-1 : K') ^ d * a l) • dtS K' x Finset.univ)`. Express the relevant statement in the definitionally equal form `_ = ((sysY x j2 d).r n10 (gT x j2) 0 j l) • (((-1 : K') ^ d * a l) • dtS K' x Finset.univ)`. Rewrite using `[r_zero, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem ⟨l, rfl⟩ (Submodule.mem_map_of_mem hm))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma y_sm (hKE : YKE) (hPt : PtT) (hFZ : FixZ) (hLM : LocMax) (hVB : ValBasic) (hDt : DtBasic)
     (Fx : Finset (fib ℂ K' (xv x))) (A : fib ℂ K' (xv x) → Matrix (Fin d) (Fin d) ℂ) (hY : Y1 x j2 Fx A)
@@ -219,15 +215,15 @@ private lemma y_sm (hKE : YKE) (hPt : PtT) (hFZ : FixZ) (hLM : LocMax) (hVB : Va
   exact Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem ⟨l, rfl⟩ (Submodule.mem_map_of_mem hm))
 
 /- English proof (translation)
-Introduce `c0 hc hv`. Establish `hcol : (sysY x j2 d).colCx n10 (gT x j2) {0} {j} = kosT (sysY x j2 d).act ((sysY x j2 d).M {0} {j}) ((sysY x j2 d).u n10 0 j) (gT x j2)`. Simplify using `[Sys.colCx, pk_single]`. Rewrite `hc`, the goal using `[hcol]`. Establish `e` using `hRS K' (DR ℂ K') (sysY x j2 d).act (Fin d) ((sysY x j2 d).M {0} {j}) ((sysY x j2 d).u n10 0 j) ((sysY x j2 d).r n10 (gT x j2) 0 j) (gT x j2) (fun _ => rfl) d c0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `e.2.2.1.2 ?_` and prove the remaining obligations. Establish `hk` using `kos_ke x j2 hKE hPt hY.toY0 hg (I := {0}) (J := {j}) ⟨0, by simp⟩ ⟨j, by simp⟩`. Rewrite `hk` using `[pk_single, pk_single]`. Use `hK2 K' (DR ℂ K') (sysY x j2 d).act (Fin d) ((sysY x j2 d).R {0} {j}) ((sysY x j2 d).M {0} {j}) ((sysY x j2 d).r n10 (gT x j2) 0 j) d (OrderIso.refl (Fin d)).toOrderEmbedding (hg.stab {0} {j} ⟨0, by simp⟩ ⟨j, by simp⟩) (fun l => r_mem x j2 hg ⟨j, by simp⟩ (Finset.mem_singleton_sel …` and prove the remaining obligations. Establish `himg : img (OrderIso.refl (Fin d)).toOrderEmbedding = Finset.univ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `l`. Simplify using `[img]`. Rewrite using `[himg]`. Establish `hu : (∏ l ∈ (Finset.univ : Finset (Fin d)), (sysY x j2 d).u n10 0 j l) = (sysY x j2 d).X 0 ^ d`. Simplify using `[Sys.u, n10]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hX : algebraMap F K' (x 0) = (((sysY x j2 d).X 0 : K'ˣ) : K')` using `rfl`. Establish `hval : unsc (sysY x j2 d).act ((sysY x j2 d).u n10 0 j) c0 Finset.univ = ((-1 : K') ^ d * (h : K')) • dtS K' x Finset.univ`. Express the relevant statement in the definitionally equal form `((((∏ l ∈ (Finset.univ : Finset (Fin d)), (sysY x j2 d).u n10 0 j l)⁻¹ : K'ˣ) : K')) • c0 Finset.univ = _`. Rewrite using `[hv, hu, smul_smul, hX]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `((sysY x j2 d).X 0).ne_zero` as an intermediate fact. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hval]`. Conclude with `y_sm x j2 hKE hPt hFZ hLM hVB hDt Fx A hY hg h hh hj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma zero_col (hKE : YKE) (hPt : PtT) (hK2 : KoszulBoundaryOfComponentMemIdeal) (hRS : RS) (hFZ : FixZ) (hLM : LocMax) (hVB : ValBasic)
     (hDt : DtBasic) (Fx : Finset (fib ℂ K' (xv x))) (A : fib ℂ K' (xv x) → Matrix (Fin d) (Fin d) ℂ)
@@ -269,31 +265,29 @@ private lemma zero_col (hKE : YKE) (hPt : PtT) (hK2 : KoszulBoundaryOfComponentM
   exact y_sm x j2 hKE hPt hFZ hLM hVB hDt Fx A hY hg h hh hj
 
 /- English proof (translation)
-Establish `h0` using `hY.toY0`. Establish `hg` using `(hRY F K K' d x j2 h0).2.1 d`. Take `⟨Ξ, hΞ, htop, hval⟩` from `hXi F K K' d x j2 h0 h`. Establish `hB` using `hBas d K' (DR ℂ K') (sysY x j2 d) (Fin d) n10 (gT x j2) ((d : ℤ) + 2)`. Establish `hc' : c - Ξ ∈ ((sysY x j2 d).cx n10 (gT x j2)).Z (d + 2)` using `sub_mem hc hΞ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAdm : (sysY x j2 d).admitted n10 (gT x j2)` using `fun i j l => r_mem x j2 hg ⟨j, by simp⟩ (by simp) _ l`. Establish `hb : c - Ξ ∈ ((sysY x j2 d).cx n10 (gT x j2)).B (d + 2)`. Use `hL1 d K' (DR ℂ K') (sysY x j2 d) (Fin d) n10 (gT x j2) _ hg hAdm (fun I J hI hJ => col_ke x j2 hRS (kos_ke x j2 hKE hPt h0 hg hI hJ)) _ hc' ?_ ?_` and prove the remaining obligations. Introduce `b L hL`. Conclude with `absurd (Finset.card_le_univ L) (by simpa using hL)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I J hI hJ hcard`. Establish `h2 : I.card + J.card = 2`. Move the coercions through the operations in `at hcard`. Use linear arithmetic over natural numbers and integers. Establish `hp1` using `hI.card_pos`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2` using `hJ.card_pos`. Take `⟨i, rfl⟩` from `Finset.card_eq_one.1 (show I.card = 1 by omega)`. Take `⟨j, rfl⟩` from `Finset.card_eq_one.1 (show J.card = 1 by omega)`. Establish `hz : col (c - Ξ) (uni {i} {j}) ∈ ((sysY x j2 d).colCx n10 (gT x j2) {i} {j}).Z (d : ℤ)`. Use `hB.2.2.2.2.1 _ hc' {i} {j} ⟨i, by simp⟩ ⟨j, by simp⟩ (by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I' J' L hlt`. Use `hB.1 _ hc'.1 I' J' L ?_` and prove the remaining obligations. Break down `I'.eq_empty_or_nonempty with hI' | hI'` into its components or cases. Conclude with `Or.inl hI'`. Break down `J'.eq_empty_or_nonempty with hJ' | hJ'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl hJ')`. Establish `q1` using `hI'.card_pos`. Establish `q2` using `hJ'.card_pos`. Simplify using `only [Finset.card_singleton] at hlt`. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (d : ℤ) + 2 - (({i} : Finset (Fin (d + 1))).card : ℤ) - (({j} : Finset (Fin (d + 1))).card : ℤ) = d`. Simplify using `only [Finset.card_singleton]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `hzero : col (c - Ξ) (uni {0} {0}) = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `L`. Distinguish the cases in `hL : L = Finset.univ`. Substitute `hL` using the available equality. Express the relevant statement in the definitionally equal form `c _ - Ξ _ = 0`. Rewrite using `[hc0, hval 0, sub_self]`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hB.1 _ hc'.1 {0} {0} L (Or.inr (Or.inr ?_))` and prove the remaining obligations. Introduce `hne`. Apply `hL` to reduce the goal to its premises. Rewrite using `[← Finset.card_eq_iff_eq_univ, Fintype.card_fin]`. Simplify using `only [Finset.card_singleton] at hne`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Move the coercions through the operations in `at hne`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hzero]`. Conclude with `zero_mem _`. Establish `hcz : col c (uni {0} {j}) Finset.univ = 0` using `congrFun (hc1 0 j (Or.inr hj)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg` using `neg_mem hz`. Use `neg_mem_iff.1 (zero_col x j2 hKE hPt hK2 hRS hFZ hLM hVB hDt Fx A hY hg h hh hj _ hneg ?_)` and prove the remaining obligations. Rewrite using `[← hval j]`. Express the relevant statement in the definitionally equal form `-(col c (uni {0} {j}) Finset.univ - Ξ _) = _`. Rewrite using `[hcz, zero_sub, neg_neg]`.
-
-Conclude with `off_col x j2 hKE hPt hRS h0 hg hi _ hz`. Establish `ht` using `hB.2.2.2.1 _ hb`. Rewrite using `[← htop]`. Conclude with `ht`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma main_core (hXi : YXi) (hKE : YKE) (hPt : PtT) (hL1 : CechKoszulSystemBoundaryCriterion) (hBas : SysBasic) (hK2 : KoszulBoundaryOfComponentMemIdeal) (hRS : RS)
     (hLM : LocMax) (hFZ : FixZ) (hVB : ValBasic) (hRY : RYBasic) (hDt : DtBasic)
@@ -375,7 +369,7 @@ end
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `hXi _ hKE hPt hL1 hBas _ hK2 hRS hLM hFZ hVB hRY hDt _ F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY h hh c hc hc0 hc1`. Conclude with `main_core x j2 hXi hKE hPt hL1 hBas hK2 hRS hLM hFZ hVB hRY hDt Fx A hY h hh c hc hc0 hc1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.yCmpT_of :
     YXi → YCols → YKE → PtT → CechKoszulSystemBoundaryCriterion → SysBasic → SysOk → KoszulBoundaryOfComponentMemIdeal → RS → LocMax → FixZ → ValBasic → RYBasic → DtBasic → OmLoc → YCmpT := by

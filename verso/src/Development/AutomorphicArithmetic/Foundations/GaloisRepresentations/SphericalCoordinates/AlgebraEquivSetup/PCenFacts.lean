@@ -7,13 +7,13 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hS E _ _ _ A n _ x hx q hq hsp w hw z hz`. Take `⟨-, -, -, h4, -⟩` from `hS E A x hx q hq hsp w hw`. Establish `hscal : ∀ (u : Plc E) (a : GL (Fin n) (u.adicCompletion E)), comp u z * a = a * comp u z`. Introduce `u a`. Distinguish the cases in `h : UpperTheory.Gal.CertificateRingHomMap.SameK x (UpperTheory.Gal.CertificateRingHomMap.cj u) w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, (hz u).1 h, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Rewrite using `[(hz u).2 h, one_mul, mul_one]`. Use `⟨fun g => UpperTheory.Gal.CertificateRingHomMap.guf_ext ?_ fun u => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hscal]`. Use `(hz u).2 fun h => hu ?_` and prove the remaining obligations. Establish `h'` using `h4 _ h`. Establish `e : (UpperTheory.Gal.CertificateRingHomMap.cj u).asIdeal = _` using `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (GlobalTheory.SplitPts.conjE E) u)`. Rewrite `h'` using `[e, Ideal.mem_comap, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pCenFacts :
     Sides → CenFacts := by

@@ -15,7 +15,7 @@ def colMat {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) : Matrix (Var ι 
   fun w v => if w.1 = v.1 ∧ w.2.1 = v.2.1 then g v.1 w.2.2 v.2.2 else 0
 
 /- English proof (translation)
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.JointHarm.FMul.lsub_X, colSub, aeval_X]`. Take `⟨τ, r, c⟩` from `v`. Simplify using `only [colMat, Fintype.sum_prod_type, ite_and, apply_ite C, map_zero, ite_mul, zero_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colSub_eq_lsub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) :
     (colSub g : Pol ι d a →ₐ[ℂ] Pol ι d a) = GlobalTheory.JointHarm.FMul.lsub (colMat g) := by
@@ -26,7 +26,7 @@ theorem colSub_eq_lsub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `w v`. Simplify using `only [colMat, conjTranspose_apply]`. Distinguish the cases in `h : v.1 = w.1 ∧ v.2.1 = w.2.1`. Rewrite using `[if_pos h, if_pos ⟨h.1.symm, h.2.symm⟩, h.1]`. Rewrite using `[if_neg h, if_neg fun h' => h ⟨h'.1.symm, h'.2.symm⟩, star_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem colMat_conjTranspose {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) :
     (colMat (d := d) g)ᴴ = colMat fun τ => (g τ)ᴴ := by
@@ -37,9 +37,9 @@ theorem colMat_conjTranspose {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ)
   · rw [if_neg h, if_neg fun h' => h ⟨h'.1.symm, h'.2.symm⟩, star_zero]
 
 /- English proof (translation)
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply]`. Unfold `colSub`. Rewrite using `[aeval_X, aeval_X, map_sum]`. Simplify using `only [map_mul, aeval_C, aeval_X, algebraMap_eq, Matrix.mul_apply, map_sum, Finset.mul_sum, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colSub_comp {d a : ℕ} (h g : ι → Matrix (Fin a) (Fin a) ℂ) :
     (colSub h : Pol ι d a →ₐ[ℂ] Pol ι d a).comp (colSub g) = colSub fun τ => h τ * g τ := by
@@ -53,7 +53,7 @@ theorem colSub_comp {d a : ℕ} (h g : ι → Matrix (Fin a) (Fin a) ℂ) :
   ring
 
 /- English proof (translation)
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[colSub, aeval_X, Finset.sum_eq_single v.2.2]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
@@ -68,9 +68,9 @@ theorem colSub_one {d a : ℕ} : (colSub (fun _ => (1 : Matrix (Fin a) (Fin a) �
   · simp
 
 /- English proof (translation)
-Introduce `ι _ a d u P Q`. Rewrite using `[← Formalism.L2.DIV.fockL_apply, ← Formalism.L2.DIV.fockL_apply, colSub_eq_lsub, GlobalTheory.JointHarm.FMul.fockL_lsub_adj, ← colSub_eq_lsub, colMat_conjTranspose, ← colSub_eq_lsub, ← AlgHom.comp_apply, colSub_comp]`. Establish `hu : (fun τ => (u τ : Matrix (Fin a) (Fin a) ℂ)ᴴ * (u τ : Matrix (Fin a) (Fin a) ℂ)) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 (u τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, colSub_one, AlgHom.id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem fockS_colSub_unitary : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (u : ι → Matrix.unitaryGroup (Fin a) ℂ)
     (P Q : GlobalTheory.MinorFrame.Pol ι d a),

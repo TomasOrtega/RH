@@ -7,17 +7,15 @@ open MeasureTheory Matrix
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `n h y hy`. Use `set y' : Fin n → ℂ := fun i => y i with hy'def`. Establish `hy' : y' ≠ 0`. Introduce `hz`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Conclude with `congrFun hz i`. Use `set φ : (Fin n → ℂ) → ℝ := fun w => fsLog (HermNorm.std n) (nrmv (HermNorm.std n) w) y' with hφ`. Establish `hrw : (fun v => fsLog h (nrmv h v) (h.pointOf y)) = fun v => φ (h.mat *ᵥ v)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h2 n h v y`. Take `⟨hint, hle, hmean⟩` from `h3 n y' hy'`. Establish `habs : (fun w => |φ w|) = fun w => -φ w`. Use function extensionality and compare the values at `w`. Conclude with `abs_of_nonpos (hle w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeanAbs : ⨍ v in ballH h, |φ (h.mat *ᵥ v)| = (harmonic (n - 1) : ℝ) / 2`. Rewrite using `[(h1 n h (fun w => |φ w|)).2, habs, average_neg, hmean]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨_, hfin⟩` from `h4 n h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrw]`. Conclude with `(h1 n h φ).1.mpr hint`. Simplify using `only [show ∀ v, fsLog h (nrmv h v) (h.pointOf y) = φ (h.mat *ᵥ v) from fun v => h2 n h v y]`. Rewrite using `[← measure_smul_setAverage _ hfin.ne, hmeanAbs, smul_eq_mul, measureReal_def]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hrw, (h1 n h φ).2]`. Conclude with `hmean`.
+A detailed English derivation is pending.
 -/
 theorem FsLogAverage.proof (h1 : BallAverageLinear.Statement) (h2 : FsLogPointOf.Statement)
     (h3 : SphereMeanLinearBall.Statement) (h4 : BallVolume.Statement) : FsLogAverage.Statement := by

@@ -10,11 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.InertAll
 
 /- English proof (translation)
-Use `⟨hε, fun ⟨e, he, heq⟩ => ?_⟩` and prove the remaining obligations. Establish `k` using `hns e he`. Establish `e0 : e = 0`. Rewrite `k` using `[← heq, mul_add, he.1, he.2.1, add_zero]`. Conclude with `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `heq` using `[e0, map_zero, zero_add]`. Take `⟨α, rfl, h1, -⟩` from `hε`. Establish `hinj : Function.Injective (algebraMap (AF D.host.F) (AE D))` using `Algebra.TensorProduct.includeLeft_injective (S := D.host.F) (algebraMap D.host.F D.host.E).injective`. Establish `: pairA D.host.F 0 α = 0` using `hinj (by rw [map_zero]; exact heq.symm)`. Establish `: α = 0` using `congrArg Prod.snd this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[this, map_zero]`. Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 theorem nonSplitAt_of_forall (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F) (hε : IsPlaceIdem D v ε)
     (hns : ∀ e, IsSplitIdem D e → e * algebraMap (AF D.host.F) (AE D) ε = 0) : GlobalTheory.WeilParts.NonSplitAt D v ε := by
@@ -33,17 +33,17 @@ theorem nonSplitAt_of_forall (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (�
   exact zero_ne_one h1
 
 /- English proof (translation)
-Introduce `x hx i1 i2` and use `hχ x (by linear_combination (-1 : AE D) * hx) i1 i2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unramAt_of_unrAtV (D : D7) (ε : AF D.host.F) (χ : (AE D)ˣ →* Circle) (hχ : Formalism.IndefR.WeilFull.UnrAtV ε χ) : GlobalTheory.WeilParts.UnramAt ε χ :=
   fun x hx i1 i2 => hχ x (by linear_combination (-1 : AE D) * hx) i1 i2
 
 /- English proof (translation)
-Introduce `ψ S T χS χT om H _ _ ΛS ΛT hS hT βS βT hβS hβT v ε hε _ hns uS uT g h sg sh hg hh f hf hvac`. Establish `hv : GlobalTheory.WeilParts.NonSplitAt D v ε` using `nonSplitAt_of_forall D v ε hε hns`. Establish `hst : ∀ u, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v) ↔ actO S T g h u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v)` using `fun u => GlobalTheory.LatStab.mem_latO_iff_actO_mem D S T ΛS ΛT βS βT hS.1 hT.1 hβS hβT g h hg hh _ u`. Establish `hfix : ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v), heisO ψ S T u f = f`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, ha2⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hv`. Establish `h1 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, ha2, GlobalTheory.VecInvInert.idem_smul_eq hε hu]`. Establish `h2` using `hvac.1 (a • u) (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a ha u hu)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ H.std S T ΛS ΛT hS hT χS χT om hη H v ε hv (unramAt_of_unrAtV D ε χS uS) (unramAt_of_unrAtV D ε χT uT) g h sg sh hst f hf hfix`.
+A detailed English derivation is pending.
 -/
 theorem inertAllO_of_eta (D : D7) (hη : ∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) : Formalism.IndefR.WeilFull.InertAllO D := by
   intro ψ S T χS χT om H _ _ ΛS ΛT hS hT βS βT hβS hβT v ε hε _ hns uS uT g h sg sh hg hh f hf hvac
@@ -62,7 +62,7 @@ theorem inertAllO_of_eta (D : D7) (hη : ∃ η, GlobalTheory.WeilParts.IsEtaTil
   exact GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ H.std S T ΛS ΛT hS hT χS χT om hη H v ε hv (unramAt_of_unrAtV D ε χS uS) (unramAt_of_unrAtV D ε χT uT) g h sg sh hst f hf hfix
 
 /- English proof (translation)
-Introduce `D` and use `inertAllO_of_eta D (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inertAllO : ∀ D : D7, Formalism.IndefR.WeilFull.InertAllO D :=
   fun D => inertAllO_of_eta D (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D)

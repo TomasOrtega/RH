@@ -8,11 +8,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Introduce `k _ A _ _ _ _ C _ _ _ _ f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[kerIdeal_of_surjective hf]`. Establish `hs : Function.Surjective (counitAlgHom k A)` using `fun c => ⟨algebraMap k A c, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `e : (A ⧸ augIdeal k A) ≃ₐ[k] k` to `Ideal.quotientKerAlgEquivOfSurjective hs`. Rewrite using `[e.toLinearEquiv.finrank_eq, Module.finrank_self]`. Introduce `h`. Establish `hL` using `GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k A C f`. Rewrite `hL` using `[h, mul_one]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htop : LinearMap.range (f : C →ₐ[k] A).toLinearMap = ⊤` using `Submodule.eq_top_of_finrank_eq hL.symm`. Introduce `a`. Establish `ha : a ∈ LinearMap.range (f : C →ₐ[k] A).toLinearMap` using `htop ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `ha`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_iff_finrank_quot_kerIdeal_eq_one :
     ∀ (k : Type) [Field k] (A : Type) [CommRing A] [HopfAlgebra k A] [IsCocomm k A]

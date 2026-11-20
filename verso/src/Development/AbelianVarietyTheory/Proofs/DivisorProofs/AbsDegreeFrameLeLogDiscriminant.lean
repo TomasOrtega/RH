@@ -27,21 +27,19 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 open ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.LieHt GlobalTheory.LieRead GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.Mean4 GlobalTheory.CovHt GlobalTheory.TrueGeo GlobalTheory.Toroidal
 
 /- English proof (translation)
-Take `⟨j, o, e, he, hL, hE⟩` from `UpperTheory.semi_fibre_point_gives_model_object D O y hy K F ι hT`. Establish `hg : F.P₀.g = (letters O.S.Dw).length`. Take `⟨-, -, -, -, -, -, -, e, -⟩` from `hT`. Conclude with `e`. Establish `hfull` using `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `o.t.semi.comm`. Establish `c₀` using `F.semi.comm`. Establish `c₂ : IsCommMonObj F.P₀.A` using `GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback F.fib`. Establish `hp : O.S.Dw.mult τ.1 = O.S.Dw.p` using `by unfold Datum.mult; rw [if_pos τ.2]`. Establish `hq : O.S.Dw.mult (conjEmb τ.1) = O.S.Dw.q` using `by unfold Datum.mult; rw [if_neg (conj_not_mem τ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `GlobalTheory.T.eigenbasis_signature_exists _ O.A.H O.S.Dw O.κ.l O.κ.c K j o τ.1 τ.2`. Rewrite `hx` using `[← hp, ← hq]`. Establish `key : ∀ ρ : D.host.E →+* ℂ, (∃ x : Fin (O.S.Dw.mult ρ) → (epsR K ⟶ o.t.G), EigenvectorLieDegree.IsEigBasis o.t.act ((EigenvectorLieDegree.embIn O.κ.c j ρ).comp (algebraMap (𝓞 D.host.E) D.host.E)) x) → ∃ r, IsEigData o.t (EigenvectorLieDegree.embIn O.κ.c j ρ) (O.S.Dw.mult ρ) r (fu …`. Introduce and unpack `ρ ⟨x, hx⟩`. Take `⟨hi, hl, -, -⟩` from `UpperTheory.lie_lattice_successive_vectors_span D O K F hg hfull ρ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose w hw using fun i : Fin (O.S.Dw.mult ρ) => ((GlobalTheory.LieComb.lieComb_algebra K F.P₀.A _ F.v F.basis.1).1 (stepVec O F ρ i)).exists`. Establish `hI` using `UpperTheory.lie_combinations_independent_under_iso K F.P₀.A o.t.G e he _ _ F.v _ w F.basis hi hw`. Establish `hB` using `UpperTheory.eigen_basis_of_independent_eigenvectors K _ o.t.G o.t.act _ _ x _ hx (hE ρ w hw) hI`. Establish `hF` using `UpperTheory.lie_combination_has_integral_model _ O.A.H K F o.t e he _ _ w hi hw`. Establish `hA` using `UpperTheory.hermitian_lie_combination_integral_model _ O.A.H K F o.t e he hL h hh _ _ w hi hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose a ha using fun 𝔓 => exists_gen hI (hF 𝔓).1`. Use `⟨ordOf a, ⟨_, hB, fun 𝔓 => locOrd_of_gen hI (ha 𝔓), hA⟩, fun σ => ?_, fun 𝔓 b M hb hM => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, _, _, _, _, _, -, -, -, h, -⟩` from `hA σ`. Conclude with `h`. Conclude with `(eq_of_locOrd hI (ha 𝔓) ((hF 𝔓).2 b M (hl ▸ hb) hM)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, d, p, m⟩` from `key _ hx.1`. Take `⟨r', d', p', m'⟩` from `key _ hx.2`. Take `⟨hi, -, fg, sp⟩` from `UpperTheory.lie_lattice_successive_vectors_span D O K F hg hfull τ.1`. Take `⟨hi', -, fg', sp'⟩` from `UpperTheory.lie_lattice_successive_vectors_span D O K F hg hfull (conjEmb τ.1)`. Establish `h1` using `(GlobalTheory.T.degree_determinant_line_two_hermitianLattices K h _ _ fg fg' _ _ hi sp hi' sp' 1 one_ne_zero (r - r') (fun 𝔓 b M b' M' a₁ a₂ a₃ a₄ => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.sub_apply, m 𝔓 b M a₁ a₂, m' 𝔓 b' M' a₃ a₄]`. Simplify using `[vAdd])).2`. Rewrite using `[← h1, ← GlobalTheory.FlatRow.adDeg_sq, ← (hδ j o _ _ _ _ d d').2]`. Use `congr 1`. Use function extensionality and compare the values at `σ`.
-
-Rewrite using `[map_one, norm_one, one_mul, div_pow, Real.sq_sqrt (p σ).le, Real.sq_sqrt (p' σ).le, Pi.div_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deg_sub_deg {D : D7} (O : Setup D) (y : Pt O.s) (hy : below y.y ∉ genBd O.s.T.Z) {K : Type} [Field K]
     [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (hT : FibTie O y F ι) (h : HermFam K (Fin F.P₀.g → K))
@@ -98,17 +96,15 @@ private theorem deg_sub_deg {D : D7} (O : Setup D) (y : Pt O.s) (hy : below y.y 
   rw [map_one, norm_one, one_mul, div_pow, Real.sq_sqrt (p σ).le, Real.sq_sqrt (p' σ).le, Pi.div_apply]
 
 /- English proof (translation)
-Establish `hg : F.P₀.g = (letters O.S.Dw).length`. Take `⟨-, -, -, -, -, -, -, e, -⟩` from `hT`. Conclude with `e`. Establish `hfull` using `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).1`. Establish `hp : O.S.Dw.mult τ.1 = O.S.Dw.p` using `by unfold Datum.mult; rw [if_pos τ.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : O.S.Dw.mult (conjEmb τ.1) = O.S.Dw.q` using `by unfold Datum.mult; rw [if_neg (conj_not_mem τ)]`. Establish `hdeg : ∀ ρ, ∀ k ≤ O.S.Dw.mult ρ, deg h (stepLat O F ρ k) = ∑ i ∈ Finset.range k, stepGrDeg O F h ρ i`. Introduce `ρ k hk`. Proceed by induction on `k with`. Consider the case `zero => simp [stepLat_zero, HadamardFrameExtension.deg_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih => rw [GlobalTheory.T.filtration_degree_recursion D O K F h hg hfull ρ k (by omega), ih (by omega), Finset.sum_range_succ]`. Establish `hind : ArIn.ind ∅ = fun _ => false` using `by funext p; simp [ArIn.ind]`. Establish `h1 : ∀ ρ i, i < O.S.Dw.mult ρ → (adlOf (O.Φ.C _) (O.met.hm _) (Finsupp.single ((fun _ => false), none, .inl (ρ, i)) 1)).ht (basePt O.Φ y) = stepGrDeg O F h ρ i`. Introduce `ρ i hi`. Take `⟨x, P, hc⟩` from `hO`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.hm_eq, ← hind]`. Conclude with `GlobalTheory.LieRead.ht_single_eq_stepGrDeg O x y hy F ι h hT hh ρ i hi`. Apply the tactic sequence `have e : detSym O.S.Dw (fun _ => false) none τ.1 = ∑ i ∈ Finset.range (O.S.Dw.p + O.S.Dw.q), Finsupp.single (if i < O.S.Dw.p then (((fun _ => false), none, .inl (τ.1, i)) : Sym D.host.E) else ((fun _ => false), none, .inl (conjEmb τ.1, O.S.Dw.p + O.S.Dw.q - 1 - i))) (if i < O.S.D …`. Apply the tactic sequence `rw [e, GlobalTheory.HtAdd.ht_adlOf_sum D O hO A T H hR _ _ _ _ _ (fun i _ => by split_ifs <;> exact ⟨rfl, rfl⟩), hdeg _ _ le_rfl, hdeg _ _ le_rfl, hp, hq, Finset.sum_range_add, sub_eq_add_neg, ← Finset.sum_neg_distrib, ← Finset.sum_range_reflect (fun i => -stepGrDeg O F h (conjEm …`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun i hi => ?_) (Finset.sum_congr rfl fun i hi => ?_)` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[if_pos hi, if_pos hi, h1 _ _ (hp ▸ hi), Int.cast_one, one_mul]`. Rewrite `hi` using `[Finset.mem_range]`. Establish `e : O.S.Dw.p + O.S.Dw.q - 1 - (O.S.Dw.p + i) = O.S.Dw.q - 1 - i` using `by omega`. Rewrite using `[if_neg (by omega), if_neg (by omega), e, h1 _ _ (by omega)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ht_det {D : D7} (O : Setup D) (hO : O.Core) {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (hR : O.Reads A T H)
     (y : Pt O.s) (hy : below y.y ∉ genBd O.s.T.Z) {K : Type} [Field K]
@@ -151,7 +147,7 @@ private theorem ht_det {D : D7} (O : Setup D) (hO : O.Core) {A : SlopeTestRemain
     simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨inferInstance, χ, hχ, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_char (E : Type) [Field E] [NumberField E] {a b : ℕ} (h : a = b) [NeZero b]
     (χ : DirichletCharacter ℂ b) (hχ : GlobalTheory.IsKroneckerChar χ) :
@@ -164,13 +160,11 @@ end SlopeTestRemainingChoices
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 /- English proof (translation)
-Introduce `hP hH hSW`. Use `⟨7, GlobalTheory.FrameDegSize.bound_of_value fun D O hO hf A T H hR c τ => ?_⟩` and prove the remaining obligations. Use `haveI : Fact D.host.d.Prime := ⟨D.host.hyp.2.1⟩`. Use `haveI : NeZero D.host.d := ⟨D.host.hyp.2.1.ne_zero⟩`. Establish `hd3 : D.host.d % 4 = 3` using `by have := D.host.hyp.2.2.2.1; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, χ, hχ, e⟩` from `exists_char D.host.E O.A.d_eq (chiK D) (GlobalTheory.isKroneckerChar_quadraticChar hd3)`. Take `⟨hb, hbd⟩` from `GlobalTheory.ShFam.KitCheck.innerPt_spec O.Φ c`. Take `⟨y, rfl, hy⟩` from `GlobalTheory.Mean4O.OnModel.exists_baseOn (O := O) c hb`. Establish `hint : GlobalTheory.TrueGeo.below y.y ∉ GlobalTheory.Toroidal.genBd O.s.T.Z`. Rewrite using `[← π_basePt (Φ := O.Φ) y, basePt, hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hbd`. Take `⟨K, _, _, F, ι, -, hT⟩` from `GlobalTheory.T.interior_point_semi_fibration hP hH D O hO hf A T H hR y ((hR.ht.int y).2 hint)`. Take `⟨h, hh⟩` from `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).2.1`. Establish `h1` using `ht_det O hO hR y hint F ι hT h hh ⟨_, O.A.cm τ⟩`. Rewrite `h1` using `[basePt, hy]`.
-
-Use `h1.trans (deg_sub_deg O y hint F ι hT h hh ⟨_, O.A.cm τ⟩ fun j o => ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `GlobalTheory.PointDiff.diff_all (GlobalTheory.T.flat_degree_from_prismatic hSW hP hP.q2 hP.q3 hP.q4) (GlobalTheory.FlatRow.isHostField D _ O.A.d_eq) χ hχ (GlobalTheory.RankOneDatum.exists_datum_of_rt D O.A.H O.A.rt_eq O.A.cmHost_rootComplex_eq_pm_sqrt) ((one_le_two.trans O.S.two_ …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.abs_degree_frame_le_log_discriminant : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∃ C₁ : ℝ, OnObj fun D O _ _ _ _ =>
     ∀ (c : O.Y.Comp) (τ : D.what₂.Tau), |GlobalTheory.ShFam.Pad.degFrame O.s O.Φ O.met.hm c τ| ≤

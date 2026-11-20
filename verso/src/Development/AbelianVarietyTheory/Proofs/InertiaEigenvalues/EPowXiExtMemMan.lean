@@ -13,17 +13,17 @@ variable {a : ℕ} [NeZero a] {e : ℕ} [NeZero e] [Module.Free ℤ_[l] O] [Modu
   [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [YD, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [← map_mul]`. Rewrite using `[← map_sum]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `τ`. Establish `hw' : ∀ k, w τ k ∈ Rpi O K l e` using `fun k => invL_S_le_Rpi l e (mem_tot.1 hw τ k)`. Establish `hb' : ∀ k, E K l e ^ α * P.xi (fun _ => Pi.single k 1) τ i ∈ Rpi O K l e` using `fun k => mem_Rpi_of_mem_Man (hb (fun _ => Pi.single k 1)) τ i`. Establish `hx : ∀ k, P.xi (fun _ => Pi.single k 1) τ i = P.xiMat τ i k` using `fun k => by`. Rewrite using `[P.xi_apply, P.xiExt_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (cst (fun _ => Pi.single k 1 : P.D) : Vec K a ι) τ = Pi.single k 1`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `C ((Pi.single k 1 : ι → K) j) = _`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hs : E K l e ^ α * P.xiExt w τ i = ∑ k, w τ k * (E K l e ^ α * P.xi (fun _ => Pi.single k 1) τ i)`. Simplify using `only [hx, P.xiExt_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : (∑ k, w τ k * (E K l e ^ α * P.xi (fun _ => Pi.single k 1) τ i)) ∈ Rpi O K l e` using `Subalgebra.sum_mem _ fun k _ => mul_mem (hw' k) (hb' k)`. Rewrite using `[hs, hatR_of_mem (O := O) hm, Finset.sum_apply]`. Simplify using `only [Pi.mul_apply, hatR_of_mem (O := O) (hw' _), hatR_of_mem (O := O) (hb' _), ← map_mul]`. Rewrite using `[← map_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem YD_xiExt (P : PhiMod O K l e a ι) (α : ℕ)
     (hb : ∀ d : P.D, E K l e ^ α • P.xi d ∈ P.Man) {w : Vec K a ι} (hw : w ∈ P.Mext (invL l (S O K e))) :
@@ -63,7 +63,7 @@ theorem YD_xiExt (P : PhiMod O K l e a ι) (α : ℕ)
 omit [NeZero a] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Use `mem_tot.2 fun τ i => ?_` and prove the remaining obligations. Conclude with `HasK.C_mem (d τ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cst_mem_Mext (P : PhiMod O K l e a ι) (d : P.D) : (cst d : Vec K a ι) ∈ P.Mext (invL l (S O K e)) := by
   refine mem_tot.2 fun τ i => ?_
@@ -72,9 +72,9 @@ theorem cst_mem_Mext (P : PhiMod O K l e a ι) (d : P.D) : (cst d : Vec K a ι) 
 omit [NeZero a] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Use `mem_tot.2 fun τ j => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `mem_tot.1 hw τ j`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h3 : (((l : S O K e) : K⟦X⟧)) ^ n = C ((l : K) ^ n)` using `by simp`. Establish `h` using `descN_mem_S e i hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h3, ← smul_eq_C_mul, map_smul, smul_eq_C_mul, ← h3]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem descN_mem_Mext (P : PhiMod O K l e a ι) (i : ℕ) (w : Vec K a ι) (hw : w ∈ P.Mext (invL l (S O K e))) :
     (fun τ j => descN K i (w τ j)) ∈ P.Mext (invL l (S O K e)) := by
@@ -86,13 +86,11 @@ theorem descN_mem_Mext (P : PhiMod O K l e a ι) (i : ℕ) (w : Vec K a ι) (hw 
   rwa [h3, ← smul_eq_C_mul, map_smul, smul_eq_C_mul, ← h3] at h
 
 /- English proof (translation)
-Establish `h1 : P.xiExt w ∈ P.MMl` using `((GlobalTheory.BK.xi_trivialises_invL_S O K l e a ι P).2 w).2 hw`. Use `P.mem_Man.2 (mem_tot.2 fun τ i => ?_)` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `P.mem_extc.1 (mem_tot.1 h1 τ)`. Establish `hc : ∀ k, E K l e ^ α * P.mx τ i k ∈ A O K` using `fun k => by`. Establish `hv : (Pi.single τ ((P.mx τ).col k) : Vec K a ι) ∈ P.L` using `mem_tot.2 fun σ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[Pi.single_eq_of_ne hσ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `h2` using `mem_tot.1 (hα _ hv) τ i`. Rewrite `h2` using `[Pi.smul_apply, Pi.single_eq_same]`. Then use the resulting hypothesis. Rewrite using `[Pi.smul_apply, h, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Subalgebra.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc]`. Conclude with `mul_mem (invL_S_le_Rpi l e (le_away _ _ (A_le_S l e (hc k)))) (invL_S_le_Rpi l e (hm k))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_pow_xiExt_mem_Man (P : PhiMod O K l e a ι) (α : ℕ) (hα : ∀ v ∈ P.L, E K l e ^ α • v ∈ P.M)
     (w : Vec K a ι) (hw : w ∈ P.Mext (invL l (S O K e))) : E K l e ^ α • P.xiExt w ∈ P.Man := by
@@ -115,11 +113,11 @@ theorem E_pow_xiExt_mem_Man (P : PhiMod O K l e a ι) (α : ℕ) (hα : ∀ v �
   exact mul_mem (invL_S_le_Rpi l e (le_away _ _ (A_le_S l e (hc k)))) (invL_S_le_Rpi l e (hm k))
 
 /- English proof (translation)
-Establish `hb : ∀ d : P.D, E K l e ^ α • P.xi d ∈ P.Man` using `fun d => hman _ (cst_mem_Mext P d)`. Rewrite using `[YD_xiExt t ϖ P α hb hw, map_sum]`. Simplify using `only [YD_xiExt t ϖ P α hb (hdesc _ w hw), hρ, hor, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `J.sum_mem fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `J.mul_mem_left (c * YD t ϖ (E K l e ^ α • P.xi (fun _ => Pi.single k 1)) j) (hscal (fun τ => w τ k) fun τ => mem_tot.1 hw τ k)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_sub, Finset.mul_sum]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem taylor_vec (P : PhiMod O K l e a ι) (α : ℕ)
     (hdesc : ∀ (i : ℕ) (w : Vec K a ι), w ∈ P.Mext (invL l (S O K e)) →

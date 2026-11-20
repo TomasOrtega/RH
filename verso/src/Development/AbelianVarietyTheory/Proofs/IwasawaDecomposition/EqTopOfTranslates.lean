@@ -32,23 +32,21 @@ def KEquiv (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel
 variable {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
 /- English proof (translation)
-Establish `hU` using `(M.ds τ).2.2.1`. Set `P : Submodule ℂ (M.H τ)` to `Submodule.span ℂ {y | ∃ k ∈ Formalism.REAL.Kset (M.ε τ), y = M.σ τ k ((v : M.sm τ) : M.H τ)}`. Establish `hvL : ((v : M.sm τ) : M.H τ) ∈ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `v.2`. Establish `hPle : P ≤ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(h2 τ).2.1 k hk _ hvL)`. Establish `hmul : ∀ a ∈ Formalism.REAL.Kset (M.ε τ), ∀ b ∈ Formalism.REAL.Kset (M.ε τ), a * b ∈ Formalism.REAL.Kset (M.ε τ)`. Introduce `a ha b hb`. Use `⟨mul_mem ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Formalism.REAL.Kset (M.ε τ)` using `⟨one_mem _, by simp⟩`. Establish `hst : IsKStableOn (M.ε τ) (M.σ τ) P`. Introduce `g hg y hy`. Use `Submodule.span_induction (p := fun y _ => M.σ τ g y ∈ P) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨g * k, hmul g hg k hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hU.1.2 _ (kset_uj hg) _ (kset_uj hk)]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Conclude with `P.zero_mem`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `P.add_mem hx hy`. Introduce `a x _ hx`. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `P.smul_mem a hx`. Establish `hP : P = lowKSub (M.ε τ) (M.lam τ) (M.σ τ)`. Use `((h2 τ).2.2.1 P hPle hst).resolve_left fun h0 => hv ?_` and prove the remaining obligations. Establish `: M.σ τ 1 ((v : M.sm τ) : M.H τ) ∈ P` using `Submodule.subset_span ⟨1, hone, rfl⟩`. Rewrite `this` using `[h0, hU.1.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext this)`. Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `hu : ((u : M.sm τ) : M.H τ) ∈ P` using `hP ▸ u.2`. Establish `key : ∀ y (hy : y ∈ P), (⟨⟨y, h1 τ (hPle hy)⟩, hPle hy⟩ : lowT M τ) ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, hk, e⟩` from `hy`. Conclude with `hN k hk _ e`.
-
-Consider the case `zero => exact N.zero_mem`. Consider the case `add x y _ _ hx hy => exact N.add_mem hx hy`. Consider the case `smul a x _ hx => exact N.smul_mem a hx`. Conclude with `key _ hu`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_top_of_translates (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) (τ : D.what₂.Tau) (N : Submodule ℂ (lowT M τ))
     (v : lowT M τ) (hv : v ≠ 0)
@@ -97,9 +95,9 @@ theorem eq_top_of_translates (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSide
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset D.what₂.Tau, B (s.piecewise v v₀) ∈ N`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hB`. Consider the case `insert τ s hτ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e0 : s.piecewise v v₀ τ = v₀ τ` using `Finset.piecewise_eq_of_notMem _ _ _ hτ`. Use `eq_top_of_translates h1 h2 τ (N.comap (B.toLinearMap (s.piecewise v v₀) τ)) (v₀ τ) (h0 τ) fun k hk u hu => hK τ k hk _ u (by rw [e0]; exact hu) ih` as an intermediate fact. Rewrite using `[Finset.piecewise_insert]`. Conclude with `(this.ge Submodule.mem_top : v τ ∈ N.comap (B.toLinearMap (s.piecewise v v₀) τ))`. Simplify using `using key Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_translates (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {Y : Type} [AddCommGroup Y] [Module ℂ Y]
     (B : MultilinearMap ℂ (fun τ => lowT M τ) Y) (N : Submodule ℂ Y) (v₀ : ∀ τ, lowT M τ) (h0 : ∀ τ, v₀ τ ≠ 0)

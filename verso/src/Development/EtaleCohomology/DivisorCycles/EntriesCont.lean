@@ -5,7 +5,7 @@ namespace LateralTheory.DivDb.DegAll₂
 open LateralTheory.DivDb
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => (hφ.matrix_elem p.1 p.2)`.
+A detailed English derivation is pending.
 -/
 theorem entries_cont {Γ K : Type} [TopologicalSpace Γ] [TopologicalSpace K] {N : ℕ}
     {φ : Γ → Mat K N} (hφ : Continuous φ) :
@@ -13,7 +13,7 @@ theorem entries_cont {Γ K : Type} [TopologicalSpace Γ] [TopologicalSpace K] {N
   continuous_pi fun p => (hφ.matrix_elem p.1 p.2)
 
 /- English proof (translation)
-Use `((MvPolynomial.continuous_eval f).comp (entries_cont hφ)).congr ?_` and prove the remaining obligations. Introduce `g`. Rewrite using `[MvPolynomial.aeval_eq_eval₂Hom, Algebra.algebraMap_self]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem poly_cont {Γ K : Type} [TopologicalSpace Γ] [Field K] [TopologicalSpace K]
     [IsTopologicalRing K] {N : ℕ} {φ : Γ → Mat K N} (hφ : Continuous φ) (f : MP K N) :
@@ -28,9 +28,9 @@ end LateralTheory.DivDb.DegAll₂
 namespace LateralTheory.DivDb
 
 /- English proof (translation)
-Introduce `Γ K _ _ _ _ _ _ N n ρ hρ S hS hSd g`. Take `⟨𝓕, h𝓕⟩` from `hP K N n`. Rewrite using `[h𝓕 K]`. Introduce `f hf`. Establish `key` using `Continuous.ext_on hS (DegAll₂.poly_cont hρ f) continuous_const (fun s hs => ((h𝓕 K _).1 (hSd s hs)) f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrFun key g`.
+A detailed English derivation is pending.
 -/
 theorem DegAll_of (hP : DegPoly) : DegAll := by
   intro Γ K _ _ _ _ _ _ N n ρ hρ S hS hSd g

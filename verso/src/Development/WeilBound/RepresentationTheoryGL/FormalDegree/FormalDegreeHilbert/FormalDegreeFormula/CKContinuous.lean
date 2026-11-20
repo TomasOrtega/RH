@@ -12,15 +12,15 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(continuous_const.inner ((CompactHaarProbability.cont_op T).clm_apply continuous_const)).norm`.
+A detailed English derivation is pending.
 -/
 theorem cK_continuous {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : Continuous (cK T) :=
   (continuous_const.inner ((CompactHaarProbability.cont_op T).clm_apply continuous_const)).norm
 
 /- English proof (translation)
-Establish `h : T.op k⁻¹ * T.op k = 1` using `CompactHaarProbability.op_inv_mul T k`. Establish `hs : star (T.op k) * T.op k = 1` using `Unitary.star_mul_self_of_mem (T.τ k).prop`. Establish `h2 : ‖T.op k v‖ ^ 2 = ‖v‖ ^ 2`. Rewrite using `[← @inner_self_eq_norm_sq ℂ, ← @inner_self_eq_norm_sq ℂ]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.mul_apply, hs, ContinuousLinearMap.one_apply]`. Use `h` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (T.op k v), norm_nonneg v, sq_nonneg (‖T.op k v‖ - ‖v‖), sq_nonneg (‖T.op k v‖ + ‖v‖)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem op_norm {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k : KG ε) (v : T.V) : ‖T.op k v‖ = ‖v‖ := by
   have h : T.op k⁻¹ * T.op k = 1 := CompactHaarProbability.op_inv_mul T k
@@ -34,7 +34,7 @@ theorem op_norm {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k 
   nlinarith [norm_nonneg (T.op k v), norm_nonneg v, sq_nonneg (‖T.op k v‖ - ‖v‖), sq_nonneg (‖T.op k v‖ + ‖v‖)]
 
 /- English proof (translation)
-Unfold `cK`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem cK_le_one {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k : KG ε) : cK T k ≤ 1 := by
   unfold cK
@@ -44,7 +44,7 @@ theorem cK_le_one {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (
 abbrev CPair (ε : Fin n → Bool) : Type := {p : Fin n × Fin n // p.1 < p.2 ∧ ε p.1 = ε p.2}
 
 /- English proof (translation)
-Establish `e1 : ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), f a b = ∏ x ∈ univ.filter (fun x : Fin n × Fin n => x.1 < x.2 ∧ ε x.1 = ε x.2), f x.1 x.2`. Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type]`. Repeatedly rewrite using `[Finset.prod_filter]`. Rewrite using `[e1, ← Finset.prod_subtype (univ.filter (fun x : Fin n × Fin n => x.1 < x.2 ∧ ε x.1 = ε x.2)) (fun x => by simp) (fun x : Fin n × Fin n => f x.1 x.2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_cpair (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), f a b = ∏ p : CPair ε, f p.1.1 p.1.2 := by
@@ -56,31 +56,27 @@ theorem prod_cpair (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     (fun x => by simp) (fun x : Fin n × Fin n => f x.1 x.2)]
 
 /- English proof (translation)
-Introduce `n ε lam hl T TD`. Use `haveI : CompactSpace (KG ε) := compactSpace_KG ε`. Use `set F : ℝ := (∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ) with hF`. Establish `hFpos : 0 < F` using `by positivity`. Set `α : CPair ε → ℝ` to `fun p => lam p.1.1 - lam p.1.2 + (nab ε p.1.1 p.1.2 : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β : CPair ε → ℝ` to `fun p => ((p.1.2 : ℕ) : ℝ) - ((p.1.1 : ℕ) : ℝ)`. Establish `hα : ∀ p, 0 < α p` using `fun p => by`. Use `hl.1 p.2.1` as an intermediate fact. Establish `: (0 : ℝ) ≤ nab ε p.1.1 p.1.2` using `Nat.cast_nonneg _`. Simplify using `only [α]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hβ : ∀ p, 0 ≤ β p` using `fun p => by`. Establish `: ((p.1.1 : ℕ) : ℝ) < ((p.1.2 : ℕ) : ℝ)` using `by exact_mod_cast p.2.1`. Simplify using `only [β]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmom : ∀ t : ℕ, ∫⁻ k, ENNReal.ofReal (cK T k ^ 2) * ENNReal.ofReal ((cK TD k ^ 2) ^ t) ∂(dk ε) = ENNReal.ofReal (F / ∏ p, (α p + t * β p))`. Introduce `t`. Take `⟨Tt⟩` from `kType_exists ε (lamT lam t) (isHCParam_lamT hl t)`. Establish `e : ∀ k, ENNReal.ofReal (cK T k ^ 2) * ENNReal.ofReal ((cK TD k ^ 2) ^ t) = ENNReal.ofReal (cK Tt k ^ 2)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _), hP n ε lam hl T TD t Tt k]`. Put the polynomial expressions in normal form. Repeatedly rewrite using `[e]`. Establish `hint : Integrable (fun k => cK Tt k ^ 2) (dk ε)` using `((cK_continuous Tt).pow 2).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun k => sq_nonneg _)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hs` using `kschur_coef Tt Tt.w Tt.w`. Rewrite `hs` using `[Tt.w_norm]`. Establish `h7` using `lemma7 Tt`. Establish `hd : (0 : ℝ) < Module.finrank ℂ Tt.V`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial Tt.V` using `⟨⟨Tt.w, 0, fun h => by have := Tt.w_norm; rw [h, norm_zero] at this; exact zero_ne_one this⟩⟩`. Conclude with `Module.finrank_pos` after adjusting the coercions. Establish `hI : ∫ k, cK Tt k ^ 2 ∂(dk ε) = (Module.finrank ℂ Tt.V : ℝ)⁻¹`. Unfold `cK`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hI, h7, prod_cpair ε (fun a b => lamT lam t a - lamT lam t b + (nab ε a b : ℝ))]`. Establish `e2 : ∀ p : CPair ε, lamT lam t p.1.1 - lamT lam t p.1.2 + (nab ε p.1.1 p.1.2 : ℝ) = α p + t * β p`. Introduce `p`. Simplify using `only [lamT_apply, Dvec, α, β]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`. Rewrite using `[inv_div]`. Establish `h0` using `hmom 0`. Simplify using `only [pow_zero, ENNReal.ofReal_one, mul_one, Nat.cast_zero, zero_mul, add_zero] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos` using `hW (KG ε) (dk ε) (fun k => ENNReal.ofReal (cK T k ^ 2)) (fun k => cK TD k ^ 2) (CPair ε) α β F 0 ((cK_continuous T).pow 2).measurable.ennreal_ofReal ((cK_continuous TD).pow 2).measurable (fun k => ⟨sq_nonneg _, by have h1 := cK_le_one TD k; have h2 : 0 ≤ cK TD k := norm_nonneg _; …`. Use `set s : Set (KG ε) := {k | 0 < cK TD k ^ 2} with hs`. Establish `hsm : MeasurableSet s` using `measurableSet_lt measurable_const ((cK_continuous TD).pow 2).measurable`. Establish `hsum` using `lintegral_add_compl (fun k => ENNReal.ofReal (cK T k ^ 2)) (μ := dk ε) hsm`. Rewrite `hsum` using `[hpos, h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hz : ∫⁻ k in sᶜ, ENNReal.ofReal (cK T k ^ 2) ∂(dk ε) = 0`. Establish `hne : ENNReal.ofReal (F / ∏ p, α p) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeas : Measurable fun k => ENNReal.ofReal (cK T k ^ 2)`. Conclude with `((cK_continuous T).pow 2).measurable.ennreal_ofReal`.
-
-Use `replace hz := (lintegral_eq_zero_iff hmeas).1 hz`. Rewrite `hz` using `[Filter.EventuallyEq, ae_restrict_iff' hsm.compl]`. Use `filter_upwards [hz] with k hk h0k`. Establish `hk'` using `hk (by simp [hs, h0k])`. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at hk'`.
-
-Use polynomial arithmetic with `[sq_nonneg (cK T k), norm_nonneg (⟪T.w, T.op k T.w⟫_ℂ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem kNull_of (hW : MomW) (hP : CoefPow) : KNull := by
   intro n ε lam hl T TD

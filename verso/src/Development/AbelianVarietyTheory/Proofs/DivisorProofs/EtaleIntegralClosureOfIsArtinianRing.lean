@@ -7,9 +7,7 @@ open IsLocalRing
 namespace GlobalTheory.PurityProd
 
 /- English proof (translation)
-Set `e : A ≃ₐ[A] Localization.AtPrime (maximalIdeal A)` to `IsLocalization.atUnits A (maximalIdeal A).primeCompl (fun x hx => by`. Simplify `IsLocalRing.notMem_maximalIdeal.mp hx)` using `[IsUnit.mem_submonoid_iff]`. Use `haveI : Algebra.Etale A (Localization.AtPrime (maximalIdeal A)) := Algebra.Etale.of_equiv e`. Use `haveI : Algebra.Etale A (TensorProduct A (Localization.AtPrime (maximalIdeal A)) B) := Algebra.Etale.comp A (Localization.AtPrime (maximalIdeal A)) _`. Set `f : TensorProduct A (Localization.AtPrime (maximalIdeal A)) B ≃ₐ[A] B` to `(Algebra.TensorProduct.congr e.symm AlgEquiv.refl).trans (Algebra.TensorProduct.lid A B)`.
-
-Conclude with `Algebra.Etale.of_equiv f`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_of_etale_atMaximal {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [Algebra A B]
     (h : Algebra.Etale (Localization.AtPrime (maximalIdeal A))
@@ -26,9 +24,9 @@ theorem etale_of_etale_atMaximal {A B : Type} [CommRing A] [IsLocalRing A] [Comm
   exact Algebra.Etale.of_equiv f
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralPi.main`. Consider the case `exact _root_.GlobalTheory.IntegralPi.main`. Consider the case `(apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralPi.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralPi.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_apply {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
     [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (x : ∀ i, R i) (hx : ∀ i, IsIntegral O (x i)) :
@@ -42,7 +40,7 @@ theorem isIntegral_of_forall_apply {O : Type} [CommRing O] {ι : Type} [Finite �
   | (intros; exact _root_.GlobalTheory.IntegralPi.main ..)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Algebra.FormallyEtale.pi_iff C).mp inferInstance i, Algebra.FinitePresentation.of_finiteType.mp inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem etale_of_etale_pi {R : Type} [CommRing R] [IsNoetherianRing R] {ι : Type} [Finite ι]
     (C : ι → Type) [∀ i, CommRing (C i)] [∀ i, Algebra R (C i)] [∀ i, Module.Finite R (C i)]
@@ -55,35 +53,27 @@ end GlobalTheory.PurityProd
 namespace GlobalTheory.PurityProd
 
 /- English proof (translation)
-Introduce `A E _ _ _ _ hred hart hnz hfin hq`. Distinguish the cases in `hm : (maximalIdeal A).height ≤ 1`. Conclude with `etale_of_etale_atMaximal (hq (maximalIdeal A) hm)`. Take `⟨hdom, hint⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing A`. Use `haveI := hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Fintype (MaximalSpectrum E) := Fintype.ofFinite _`. Use `letI (I : MaximalSpectrum E) : Field (E ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Set `F : MaximalSpectrum E → Type` to `fun I => E ⧸ I.asIdeal`. Set `ψ : E ≃ₐ[A] (∀ I, F I)` to `(IsArtinianRing.equivPi E).restrictScalars A`. Set `C : MaximalSpectrum E → Type` to `fun I => integralClosure A (F I)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Set `Ψ : integralClosure A E →ₐ[A] ∀ I, C I` to `AlgHom.pi fun I => ((Pi.evalAlgHom A F I).comp (ψ.toAlgHom.comp (integralClosure A E).val)).codRestrict (integralClosure A (F I)) fun x => x.2.map ((Pi.evalAlgHom A F I).comp ψ.toAlgHom)`. Establish `hΨ : Function.Bijective Ψ`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ψ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Conclude with `congrArg Subtype.val (congrFun hxy I)`. Introduce `l`. Use `⟨⟨ψ.symm fun I => (l I).1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isIntegral_of_forall_apply (fun I => ((l I : F I))) fun I => (l I).2).map ψ.symm.toAlgHom`. Use function extensionality and compare the values at `I`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ψ (ψ.symm fun I => (l I).1) I = (l I).1`. Rewrite using `[AlgEquiv.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φ : integralClosure A E ≃ₐ[A] ∀ I, C I` to `AlgEquiv.ofBijective Ψ hΨ`. Establish `hinjF : ∀ I, Function.Injective (algebraMap A (F I))`. Introduce `I`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ψ.symm (Pi.single I 1) ≠ 0`. Introduce `h0`. Use `congrArg ψ h0` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply, map_zero]`. Conclude with `one_ne_zero (by simpa using congrFun this I : (1 : F I) = 0)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h0 : a • ψ.symm (Pi.single I 1) = 0`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_smul, AlgEquiv.apply_symm_apply, map_zero]`. Use function extensionality and compare the values at `J`. Distinguish the cases in `hJ : J = I`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hJ` using the available equality. Simplify using `[Algebra.smul_def, ha]`. Simplify using `[hJ]`. Break down `smul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h hne`. Use `haveI hfaith : ∀ I, FaithfulSMul A (C I) := fun I => by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `a b hab`. Apply `hinjF I` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg Subtype.val hab`. Use `haveI hfC : ∀ I, FaithfulSMul (C I) (F I) := fun I => (faithfulSMul_iff_algebraMap_injective _ _).mpr Subtype.val_injective`. Use `haveI hintC : ∀ I, IsIntegrallyClosed (C I) := fun I => IsIntegrallyClosed.of_isIntegrallyClosedIn (C I) (F I)`. Use `haveI hfinC : ∀ I, Module.Finite A (C I) := fun I => Module.Finite.of_surjective ((Pi.evalAlgHom A C I).toLinearMap.comp Φ.toLinearMap) (by`. Introduce `c`.
-
-Take `⟨x, hx⟩` from `Φ.surjective (Pi.single I c)`. Conclude with `⟨x, by simp [hx]⟩)`. Use `haveI : ∀ I, Algebra.Etale A (C I) := by`. Introduce `I`. Establish `key` using `GlobalTheory.T.etale_of_etale_height_one_of_regularLocalRing A (C I)`.
-
-Use `key ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `IsRegularLocalRing.spanFinrank_maximalIdeal`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim]`. Conclude with `(le_of_lt (not_le.mp hm))` after adjusting the coercions. Introduce `hf`.
-
-Apply `hm` to reduce the goal to its premises. Rewrite using `[(IsLocalRing.isField_iff_maximalIdeal_eq).mp hf, Ideal.height_bot]`. Conclude with `zero_le_one`. Introduce `p _ hp`. Establish `h1` using `hq p (le_of_eq hp)`.
-
-Set `G : TensorProduct A (Localization.AtPrime p) (integralClosure A E) ≃ₐ[Localization.AtPrime p] ∀ J, TensorProduct A (Localization.AtPrime p) (C J)` to `(Algebra.TensorProduct.congr AlgEquiv.refl Φ).trans (Algebra.TensorProduct.piRight A (Localization.AtPrime p) (Localization.AtPrime p) C)`. Use `haveI : Algebra.Etale (Localization.AtPrime p) (∀ J, TensorProduct A (Localization.AtPrime p) (C J)) := Algebra.Etale.of_equiv G`. Conclude with `etale_of_etale_pi (fun J => TensorProduct A (Localization.AtPrime p) (C J)) this I`. Conclude with `Algebra.Etale.of_equiv Φ.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_integralClosure_of_isArtinianRing : ∀ (A E : Type) [CommRing A] [IsRegularLocalRing A]
     [CommRing E] [Algebra A E], IsReduced E → IsArtinianRing E → NoZeroSMulDivisors A E →

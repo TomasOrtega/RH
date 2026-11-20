@@ -11,31 +11,29 @@ noncomputable section
 namespace GlobalTheory.IntFam
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D k hk α mu s hs`. Take `⟨v, hv⟩` from `exists_gen_of_local (V := R) D.P.L D.P.isLB (IntGen.basePts D (𝟙_ _) α mu) (IntGen.baseExp k)`. Take `⟨u₀, hu₀, vu₀⟩` from `IntGen.exists_genT D (𝟙_ _) (𝟙_ _) (toUnit _) k α mu v hv`. Take `⟨r₁, r₂, h₁, h₂, hr⟩` from `IntGen.multK_frac D k α mu v hv`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : R, r₁ = r₂ * a := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`. Take `⟨ξ⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨J, hJ, hJc⟩` from `GlobalTheory.PeriodBalance.exists_good_integral ξ D.P.isLB D.P.A.hom`. Take `⟨u, hu⟩` from `hs ξ J hJ hJc`. Establish `e` using `hr _ (𝟙 _) ξ J hJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσ : 𝟙 (TK R).left ≫ (toUnit (TK R)).left = jK R`. Rewrite using `[Category.id_comp]`. Conclude with `Over.w (toUnit (TK R))`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : Rˣ, (val v (𝟙 _ ≫ (toUnit (TK R)).left) ξ J).val = GlobalTheory.PeriodBalance.cst ξ w := by`. Rewrite using `[hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PeriodBalance.unit_gm ξ _ (Set.mem_iInter.2 fun i => ?_) _` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨q, hq⟩ : ∃ q : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A, IntGen.basePts D (𝟙_ _) α mu i = q.left := by fin_cases i <;> exact ⟨_, rfl⟩`. Use `hJc (IntGen.basePts D (𝟙_ _) α mu i) (by rw [hq]; exact Over.w q)` as an intermediate fact. Conclude with `this`. Establish `g : ∀ c : R, gs (𝟙 (TK R).left ≫ jK R) ξ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) = GlobalTheory.PeriodBalance.cst ξ c` using `fun c => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.id_comp, gs_eq (jK R) ξ ⊤ trivial, GlobalTheory.PeriodBalance.cst_eq]`. Both sides reduce to the same expression. Rewrite `e` using `[g, g, hw]`. Establish `e2 : GlobalTheory.PeriodBalance.cst ξ (r₂ ^ k * ((u : R) * s)) = GlobalTheory.PeriodBalance.cst ξ ((r₁ * w) ^ k)`. Rewrite using `[map_mul, map_pow, ← hu, ← mul_pow, e, map_pow, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `GlobalTheory.PeriodBalance.cst_injective ξ e2`. Establish `e5 : r₁ ^ k = r₂ ^ k * ((u : R) * s * ((w⁻¹ : Rˣ) : R) ^ k)`. Establish `hwk : ((w : R) * ((w⁻¹ : Rˣ) : R)) ^ k = 1` using `by rw [Units.mul_inv, one_pow]`. Take the linear combination `(-(((w⁻¹ : Rˣ) : R)) ^ k) * e3 - r₁ ^ k * hwk`. Use `hR` as an intermediate fact.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj` using `IsFractionRing.injective R (FractionRing R)`. Establish `hr₂ : algebraMap R (FractionRing R) r₂ ≠ 0` using `(map_ne_zero_iff _ inj).2 h₂`. Establish `hr₂k : algebraMap R (FractionRing R) (r₂ ^ k) ≠ 0` using `(map_ne_zero_iff _ inj).2 (pow_ne_zero _ h₂)`. Establish `hx : (algebraMap R (FractionRing R) r₁ / algebraMap R (FractionRing R) r₂) ^ k = algebraMap R (FractionRing R) ((u : R) * s * ((w⁻¹ : Rˣ) : R) ^ k)`. Rewrite using `[div_pow, ← map_pow, ← map_pow, e5, map_mul, mul_div_cancel_left₀ _ hr₂k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral R (algebraMap R (FractionRing R) r₁ / algebraMap R (FractionRing R) r₂)` using `IsIntegral.of_pow (by omega) (hx ▸ isIntegral_algebraMap)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨y, inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hy, mul_div_cancel₀ _ hr₂]`. Use `⟨u₀, a, hu₀, fun u hu hc Z r z J hJ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : gs r z ⊤ (scal (DegPre.BF D (FractionRing R)).hom r₂) * (val u r z J).val = gs r z ⊤ (scal (DegPre.BF D (FractionRing R)).hom r₁) * (val u₀ (r ≫ (toUnit (TF (R` using `R) (FractionRing R)) ▷ D.P.A).left) z J).val := by`. Set `T' : Over (Spec (CommRingCat.of R))` to `Over.mk (r ≫ (DegPre.BF D (FractionRing R)).hom)`. Set `ρ : T' ⟶ DegPre.BF D (FractionRing R)` to `Over.homMk r rfl`. Set `κ : T' ⟶ TK R` to `Over.homMk ((ρ ≫ fst _ _).left ≫ jFK (R := R) (FractionRing R)) ((Category.assoc _ _ _).trans (Over.w (ρ ≫ fst _ _)))`. Establish `e₁` using `(gen_fe (D := D) (F := FractionRing R) GlobalTheory.globalFns_holds k mu α).2 u hu hc T' ρ z J hJ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `vu₀ T' (ρ ≫ toUnit (TF (R := R) (FractionRing R)) ▷ D.P.A) z J hJ`. Establish `e₃ : val (DegPre.famMult D (FractionRing R) k mu α) (ρ ≫ fst _ _).left z J = val (IntGen.multK D k mu α) κ.left z J` using `val_pull hJ _ _ _`. Establish `e₄` using `hr _ κ.left z J hJ`. Establish `e₅ : κ.left ≫ jK R = r ≫ (DegPre.BF D (FractionRing R)).hom` using `Over.w κ`. Establish `e₆ : κ.left ≫ (toUnit (TK R)).left = ((ρ ≫ toUnit (TF (R` using `R) (FractionRing R)) ▷ D.P.A) ≫ toUnit _).left := congrArg (fun q => q.left) (toUnit_unique (κ ≫ toUnit (TK R)) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₇ : (ρ ≫ toUnit (TF (R` using `R) (FractionRing R)) ▷ D.P.A) ≫ snd _ _ = ρ ≫ DegPre.prB D (FractionRing R) := by`. Rewrite using `[Category.assoc, whiskerRight_snd]`. Establish `g : ∀ c : R, gs r z ⊤ (scal (DegPre.BF D (FractionRing R)).hom c) = gs (r ≫ (DegPre.BF D (FractionRing R)).hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)` using `fun c => gs_pull r (DegPre.BF D (FractionRing R)).hom z ⊤ trivial _`. Rewrite `e₄` using `[e₅, e₆]`. Rewrite `e₁` using `[e₃, uVal, ← Category.assoc, comp_cP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e₂` using `[e₇]`. Rewrite using `[g, g]`. Conclude with `IntGen.frac_mul e₁ e₂ e₄`. Establish `sm : scal (DegPre.BF D (FractionRing R)).hom (r₂ * a) = scal (DegPre.BF D (FractionRing R)).hom r₂ * scal (DegPre.BF D (FractionRing R)).hom a`. Simplify using `only [Out.scal, map_mul]`.
-
-Rewrite `key` using `[ha, sm, gs_mul r z ⊤ trivial, mul_assoc]`. Conclude with `(GlobalTheory.FieldChange.isUnit_scal D h₂ r z).mul_left_cancel key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intGen : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsIntegrallyClosed R → ∀ (D : DegPre R) (k : ℕ), 1 ≤ k →
     ∀ (α mu : D.X) (s : R),

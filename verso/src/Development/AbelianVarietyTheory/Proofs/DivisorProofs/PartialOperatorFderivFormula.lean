@@ -15,7 +15,7 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
 /- English proof (translation)
-Establish `e : (padL (κ'` using `κ') (h + h') : κ ⊕ κ' → V) = padL h + padL h' := by`. Apply the tactic sequence `funext i; cases i <;> simp [padL]`. Use extensionality with `z`. Rewrite using `[SchwartzMap.add_apply, pd_apply, pd_apply, pd_apply, e, map_add]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pd_padL_add (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (h h' : κ → V) :
     pd (padL (κ' := κ') (h + h')) f = pd (padL h) f + pd (padL h') f := by
@@ -25,7 +25,7 @@ theorem pd_padL_add (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (h h' : κ → V) :
   rw [SchwartzMap.add_apply, pd_apply, pd_apply, pd_apply, e, map_add]
 
 /- English proof (translation)
-Establish `e : (padL (κ'` using `κ') (c • h) : κ ⊕ κ' → V) = c • padL h := by`. Apply the tactic sequence `funext i; cases i <;> simp [padL]`. Use extensionality with `z`. Rewrite using `[SchwartzMap.smul_apply, pd_apply, pd_apply, e, map_smul, Complex.real_smul, smul_eq_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pd_padL_smul (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (c : ℝ) (h : κ → V) :
     pd (padL (κ' := κ') (c • h)) f = (c : ℂ) • pd (padL h) f := by
@@ -65,15 +65,13 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
 /- English proof (translation)
-Take `⟨s', C, hC, hP⟩` from `clm_sup_bound P {((0 : ℕ), (0 : ℕ))}`. Use `set M : ℝ := s'.sup (fun m : ℕ × ℕ => SchwartzMap.seminorm ℂ m.1 (m.2 + 2)) f`. Establish `hM : 0 ≤ M` using `by positivity`. Establish `hb : ∀ h : κ → V, ‖P (sliceR f (x + h)) y - P (sliceR f x) y - xPart P f x y h‖ ≤ C * M * ‖h‖ ^ 2`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set D := sliceR f (x + h) - sliceR f x - sliceR (pd (padL (κ' := κ') h) f) x`. Establish `e : P (sliceR f (x + h)) y - P (sliceR f x) y - xPart P f x y h = P D y`. Simplify using `only [D, xPart_apply, map_sub, SchwartzMap.sub_apply]`. Rewrite using `[e]`. Establish `h1 : ‖P D y‖ ≤ ({((0 : ℕ), (0 : ℕ))} : Finset (ℕ × ℕ)).sup (schwartzSeminormFamily ℂ (κ₁' → V) ℂ) (P D)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `SchwartzMap.norm_le_seminorm ℂ (P D) y` using `[schwartzSeminormFamily]`. Establish `h2 : s'.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) D ≤ ‖h‖ ^ 2 * M`. Use `Seminorm.finset_sup_apply_le (by positivity) fun i hi => ?_` and prove the remaining obligations. Use `(GlobalTheory.SliceTaylor.seminorm_slice_taylor_le V κ κ' f i.1 i.2 x h).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Seminorm.le_finset_sup_apply (p := fun m : ℕ × ℕ => (SchwartzMap.seminorm ℂ m.1 (m.2 + 2) : Seminorm ℂ (SchwartzMap (κ ⊕ κ' → V) ℂ))) (x := f) hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Use `Asymptotics.IsBigO.trans_isLittleO ?_ (Asymptotics.isLittleO_norm_pow_id one_lt_two)` and prove the remaining obligations. Use `Asymptotics.IsBigO.of_bound (C * M) (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
-
-Use `(hb h).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_sliceR_apply (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x : κ → V) (y : κ₁' → V) :
@@ -112,9 +110,7 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl i => simp only [Sum.elim_inl]`. Use `fun_prop`. Consider the case `inr j => simp only [Sum.elim_inr]`.
-
-Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_elim_pair :
     Continuous (fun p : (κ → V) × (κ₁' → V) => (Sum.elim p.1 p.2 : κ ⊕ κ₁' → V)) := by
@@ -124,16 +120,16 @@ theorem continuous_elim_pair :
   | inr j => simp only [Sum.elim_inr]; fun_prop
 
 /- English proof (translation)
-Simplify using `[qOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qOp_elim (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x : κ → V) (y : κ₁' → V) : qOp P f (Sum.elim x y) = P (sliceR f x) y := by
   simp [qOp]
 
 /- English proof (translation)
-Use `continuous_clm_apply.2 fun h => ?_` and prove the remaining obligations. Establish `e : (fun p : (κ → V) × (κ₁' → V) => xPart P f p.1 p.2 h) = fun p => qOp P (pd (padL (κ'` using `κ') h) f) (Sum.elim p.1 p.2) := by`. Use function extensionality and compare the values at `p`. Rewrite using `[qOp_elim, xPart_apply]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_qOp V κ κ' κ₁' P _).comp continuous_elim_pair`.
+A detailed English derivation is pending.
 -/
 theorem continuous_xPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) :
@@ -146,9 +142,9 @@ theorem continuous_xPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap 
   exact (continuous_qOp V κ κ' κ₁' P _).comp continuous_elim_pair
 
 /- English proof (translation)
-Use `continuous_clm_apply.2 fun w => ?_` and prove the remaining obligations. Establish `e : (fun p : (κ → V) × (κ₁' → V) => fderiv ℝ (P (sliceR f p.1)) p.2 w) = fun p => qOp ((pd w).comp P) f (Sum.elim p.1 p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[qOp_elim, ContinuousLinearMap.comp_apply, pd_apply]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_qOp V κ κ' κ₁' _ _).comp continuous_elim_pair`.
+A detailed English derivation is pending.
 -/
 theorem continuous_yPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) :
@@ -165,7 +161,7 @@ def splitL : (κ ⊕ κ₁' → V) →L[ℝ] (κ → V) × (κ₁' → V) :=
     (ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ ⊕ κ₁' => V) (Sum.inr j))
 
 /- English proof (translation)
-Set `F : (κ → V) → (κ₁' → V) → ℂ` to `fun x y => P (sliceR f x) y`. Establish `key` using `hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := splitL s) (f := F) (f₁ := fun x y => xPart P f x y) (f₂ := fun x y => fderiv ℝ (P (sliceR f x)) y) (Filter.Eventually.of_forall fun v => hasFDerivAt_sliceR_apply P f v.1 v.2) (Filter.Eventually.of_forall fun v => ((P (sliceR f v.1)) …`. Establish `h2` using `key.hasFDerivAt.comp s ((splitL (V := V) (κ := κ) (κ₁' := κ₁')).hasFDerivAt (x := s))`. Conclude with `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_qOp (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (s : κ ⊕ κ₁' → V) :
@@ -185,7 +181,7 @@ end GlobalTheory.SliceOpDeriv
 
 open GlobalTheory.SliceSchwartz GlobalTheory.SliceOp in
 /- English proof (translation)
-Introduce `V _ _ _ κ κ' κ₁' _ _ _ P f`. Use `⟨fun s => (GlobalTheory.SliceOpDeriv.hasFDerivAt_qOp P f s).differentiableAt, fun s v => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.SliceOpDeriv.hasFDerivAt_qOp P f s).fderiv]`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.coprod_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.SliceOp.differentiable_qOp_and_fderiv : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ),

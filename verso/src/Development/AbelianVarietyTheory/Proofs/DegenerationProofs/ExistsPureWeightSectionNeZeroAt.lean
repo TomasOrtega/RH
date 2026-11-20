@@ -11,7 +11,7 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `hL hL2 k _ _ Φ N hN π α x`. Take `⟨s, hs⟩` from `GlobalTheory.TwistNoBasePoint.exists_sec_twist hL hL2 k π.PB (N * 1) (by omega) _ (x ≫ Φ.D.q ≫ π.β.hom)`. Take `⟨φ, hφ, h⟩` from `(GlobalTheory.T.pureWeightSection_to_twistedPolarisationPower k Φ N 1 π α (by omega) le_rfl).2 s`. Conclude with `⟨φ, hφ, (h x).2 hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FibPre.exists_pure_ne_zero_at :
     Out.Laws → Out.Laws2 → (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (N : ℕ), 4 ≤ N → Φ.Pol N → ∀ (α : Φ.E.X) (x : Φ.Pt), ∃ φ : (Φ.H 1).Sec, Φ.Pure α φ ∧ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ) := by

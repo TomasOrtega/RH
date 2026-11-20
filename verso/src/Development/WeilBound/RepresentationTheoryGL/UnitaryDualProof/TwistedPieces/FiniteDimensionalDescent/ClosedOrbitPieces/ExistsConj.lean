@@ -17,40 +17,38 @@ section Lc
 variable {r : ℕ} (s : Fin r → Matrix (Fin N) (Fin N) k)
 
 /- English proof (translation)
-Simplify using `only [lc, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_add (v w : Fin r → k) : lc s (v + w) = lc s v + lc s w := by
   simp only [lc, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [lc, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_sub (v w : Fin r → k) : lc s (v - w) = lc s v - lc s w := by
   simp only [lc, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [lc, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_smul (c : k) (v : Fin r → k) : lc s (c • v) = c • lc s v := by
   simp only [lc, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [lc, Finset.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lc_sum {ι : Type*} (T : Finset ι) (v : ι → Fin r → k) : lc s (∑ t ∈ T, v t) = ∑ t ∈ T, lc s (v t) := by
   simp only [lc, Finset.sum_apply, Finset.sum_smul]
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[lc, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_single (j : Fin r) : lc s (Pi.single j 1) = s j := by
   simp [lc, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [lc, Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, hmul, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Use `conv_lhs => arg 2`. Use extensionality with `x`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_comm`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_mul (c : Fin r → Fin r → Fin r → k) (hmul : ∀ j j', s j * s j' = ∑ t, c j j' t • s t) (v w : Fin r → k) :
     lc s v * lc s w = lc s (fun t => ∑ j, ∑ j', v j * w j' * c j j' t) := by
@@ -64,13 +62,11 @@ end Lc
 variable {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {χ : k[X]} {q : ℕ} (D : SData Z χ q)
 
 /- English proof (translation)
-Take `⟨hm, hu, -⟩` from `D.spec x hx hχ`. Use `set P := Submodule.span k (Set.range fun j => pe (D.a j) x) with hP`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) k) ∈ P`. Rewrite using `[← hu]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPP : P * P ≤ P`. Rewrite using `[hP, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨a, ⟨i, rfl⟩, b, ⟨j, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `pe (D.a i) x * pe (D.a j) x ∈ P`. Rewrite using `[hm i j]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)`. Establish `hmul : ∀ a b, a ∈ P → b ∈ P → a * b ∈ P` using `fun a b ha hb => hPP (Submodule.mul_mem_mul ha hb)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hle : Algebra.adjoin k (Set.range fun j => pe (D.a j) x) ≤ P.toSubalgebra h1 hmul` using `Algebra.adjoin_le Submodule.subset_span`. Conclude with `Subalgebra.toSubmodule.monotone hle`.
-
-Rewrite using `[Submodule.span_le]`. Conclude with `Algebra.subset_adjoin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sx_span {x : Matrix (Fin N) (Fin N) k} (hx : x ∈ Bz Z) (hχ : aeval x χ = 0) :
     (Sx D x).toSubmodule = Submodule.span k (Set.range fun j => pe (D.a j) x) := by
@@ -94,7 +90,7 @@ theorem sx_span {x : Matrix (Fin N) (Fin N) k} (hx : x ∈ Bz Z) (hχ : aeval x 
     exact Algebra.subset_adjoin
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Take `⟨h1, h2, h3, -, -, h6, -, -, h9, h10, h11, h12, -, h14⟩` from `D.spec x hx hχ`. Conclude with `⟨h1, h2, h3, h6, h9, h10, h11, h12, h14⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem lc_kappa_complete_orthogonal_primitive_idempotents {x : Matrix (Fin N) (Fin N) k} (hx : x ∈ Bz Z) (hχ : aeval x χ = 0)
     (s : Fin D.r → Matrix (Fin N) (Fin N) k) (hs : s = fun j => pe (D.a j) x) :
@@ -112,39 +108,33 @@ private theorem lc_kappa_complete_orthogonal_primitive_idempotents {x : Matrix (
   exact ⟨h1, h2, h3, h6, h9, h10, h11, h12, h14⟩
 
 /- English proof (translation)
-Take `⟨hx₀B, hx₀χ, hx₀τ⟩` from `h₀`. Take `⟨hxB, hxχ, hxτ⟩` from `h`. Use `set s0 : Fin D.r → Matrix (Fin N) (Fin N) k := fun j => pe (D.a j) x₀ with hs0`. Use `set s : Fin D.r → Matrix (Fin N) (Fin N) k := fun j => pe (D.a j) x with hs`. Take `⟨m0, u0, c0, n0, i0, hsum0, o0, prim0, k0⟩` from `lc_kappa_complete_orthogonal_primitive_idempotents D hx₀B hx₀χ s0 hs0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m1, u1, -, -, i1, -, o1, -, k1⟩` from `lc_kappa_complete_orthogonal_primitive_idempotents D hxB hxχ s hs`. Establish `hr0 : ∀ t, (lc s0 (D.κ t)).rank = τ t` using `fun t => congrFun hx₀τ t`. Establish `hr1 : ∀ t, (lc s (D.κ t)).rank = τ t` using `fun t => congrFun hxτ t`. Establish `hne : ∀ t, lc s0 (D.κ t) ≠ 0 ↔ lc s (D.κ t) ≠ 0`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ne_zero_iff_rank, ne_zero_iff_rank, hr0, hr1]`. Establish `hker : ∀ v, lc s0 v = 0 ↔ lc s v = 0`. Introduce `v`. Rewrite using `[k0, k1]`. Conclude with `forall_congr' fun t => imp_congr_left (hne t)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan0` using `sx_span D hx₀B hx₀χ`. Establish `memSpan : ∀ y, y ∈ Sx D x₀ ↔ y ∈ Submodule.span k (Set.range s0)`. Introduce `y`. Rewrite using `[← Subalgebra.mem_toSubmodule, hspan0]`. Establish `memS : ∀ y, y ∈ Sx D x₀ ↔ ∃ v, lc s0 v = y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `y`. Rewrite using `[memSpan, Submodule.mem_span_range_iff_exists_fun]`. Both sides reduce to the same expression. Establish `hcomm : ∀ a ∈ Sx D x₀, ∀ b ∈ Sx D x₀, a * b = b * a`. Introduce `a ha b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨v, rfl⟩` from `(memS a).1 ha`. Take `⟨w, rfl⟩` from `(memS b).1 hb`. Simplify using `only [lc, Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => congrArg₂ (· • ·) (mul_comm _ _) (c0 _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hred : IsReduced (Sx D x₀)`. Use `⟨fun a ha => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `n0 a.1 ((memSpan a.1).1 a.2) (ha.map (Sx D x₀).val)`. Use `letI : CommRing (Sx D x₀) := cr_commRing ⟨hcomm, hred⟩`. Use `choose vOf hvOf using fun a : Sx D x₀ => (memS a.1).1 a.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (a : Sx D x₀) v, lc s0 v = a.1 → lc s (vOf a) = lc s v`. Introduce `a v hv`. Establish `h0 : lc s0 (vOf a - v) = 0` using `by rw [lc_sub, hvOf, hv, sub_self]`. Rewrite using `[← sub_eq_zero, ← lc_sub]`. Conclude with `(hker _).1 h0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `F : Sx D x₀ →ₗ[k] Matrix (Fin N) (Fin N) k` to `{ toFun := fun a => lc s (vOf a) map_add' := fun a b => by show lc s (vOf (a + b)) = lc s (vOf a) + lc s (vOf b)`. Rewrite using `[key (a + b) (vOf a + vOf b) (by rw [lc_add, hvOf, hvOf]; rfl), lc_add]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[key (c • a) (c • vOf a) (by rw [lc_smul, hvOf]; rfl), lc_smul] }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `ρ' : Sx D x₀ →ₐ[k] Matrix (Fin N) (Fin N) k` to `AlgHom.ofLinearMap F (by show lc s (vOf 1) = 1`. Rewrite using `[key 1 D.u (by rw [u0]; rfl), u1])`. Use the proof step `(fun a b => by show lc s (vOf (a * b)) = lc s (vOf a) * lc s (vOf b)`. Rewrite using `[lc_mul s D.c m1, key (a * b) (fun t => ∑ j, ∑ j', vOf a j * vOf b j' * D.c j j' t) (by rw [← lc_mul s0 D.c m0 (vOf a) (vOf b), hvOf, hvOf]; rfl)])`. Establish `hρ' : ∀ a, ρ' a = lc s (vOf a)` using `fun a => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hEmem : ∀ t, lc s0 (D.κ t) ∈ Sx D x₀` using `fun t => (memS _).2 ⟨_, rfl⟩`. Establish `hrk : ∀ e : Sx D x₀, IsIdempotentElem e → ((Sx D x₀).val e).rank = (ρ' e).rank`. Introduce `e he`. Establish `he1 : IsIdempotentElem e.1` using `congrArg Subtype.val he`. Establish `hpart : ∀ t, e.1 * lc s0 (D.κ t) = 0 ∨ e.1 * lc s0 (D.κ t) = lc s0 (D.κ t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `t`. Establish `hc : Commute e.1 (lc s0 (D.κ t))` using `hcomm _ e.2 _ (hEmem t)`. Use `prim0 t _ ((memSpan _).1 (Subalgebra.mul_mem _ e.2 (hEmem t))) (IsIdempotentElem.mul_of_commute hc he1 (i0 t)) ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, (i0 t).eq]`. Use `set T' := Finset.univ.filter (fun t => e.1 * lc s0 (D.κ t) ≠ 0) with hT'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfe : e.1 = ∑ t ∈ T', lc s0 (D.κ t)`. Rewrite using `[hT', Finset.sum_filter]`. Use `conv_lhs => rw [← mul_one e.1, ← hsum0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs with h'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hpart t with h | h` into its components or cases. Conclude with `absurd h h'`. Conclude with `h`. Conclude with `not_not.1 h'`. Establish `hrep : lc s0 (∑ t ∈ T', D.κ t) = e.1`.
-
-Rewrite using `[lc_sum]`. Conclude with `hfe.symm`. Establish `r0 : (∑ t ∈ T', lc s0 (D.κ t)).rank = ∑ t ∈ T', (lc s0 (D.κ t)).rank` using `(rank_sum_orth (fun t => lc s0 (D.κ t)) i0 o0 T').2`. Establish `r1 : (∑ t ∈ T', lc s (D.κ t)).rank = ∑ t ∈ T', (lc s (D.κ t)).rank` using `(rank_sum_orth (fun t => lc s (D.κ t)) i1 o1 T').2`. Use `show e.1.rank = (lc s (vOf e)).rank`.
-
-Rewrite using `[key e _ hrep, lc_sum, r1]`. Use `conv_lhs => rw [hfe]`. Rewrite using `[r0]`. Simplify using `only [hr0, hr1]`. Take `⟨g, hg⟩` from `hO N (Sx D x₀) hred (Sx D x₀).val ρ' hrk`.
-
-Use `⟨g, fun j => ?_⟩` and prove the remaining obligations. Establish `hmem : s0 j ∈ Sx D x₀` using `(memS _).2 ⟨Pi.single j 1, lc_single s0 j⟩`. Establish `e1` using `hg ⟨s0 j, hmem⟩`. Rewrite `e1` using `[hρ', key _ (Pi.single j 1) (lc_single s0 j), lc_single]`. Conclude with `e1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAttachedHodgeS_conj_mapRep (hO : OrbHom k) (hZ : CR Z) {τ : Fin D.m → ℕ} {x₀ x : Matrix (Fin N) (Fin N) k}
     (h₀ : x₀ ∈ piece D τ) (h : x ∈ piece D τ) :

@@ -41,7 +41,7 @@ def CutOffShape.Statement : Prop :=
     ∀ y, eval y Q ≠ 0 → Tendsto (fun k => logLogCut Q k y) atTop (𝓝 1)
 
 /- English proof (translation)
-Use `⟨Real.exp_pos _, Real.exp_lt_one_iff.2 (neg_neg_of_pos (Real.exp_pos _))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cutLevel_mem (k : ℕ) : 0 < cutLevel k ∧ cutLevel k < 1 := by
   refine ⟨Real.exp_pos _, Real.exp_lt_one_iff.2 (neg_neg_of_pos (Real.exp_pos _))⟩

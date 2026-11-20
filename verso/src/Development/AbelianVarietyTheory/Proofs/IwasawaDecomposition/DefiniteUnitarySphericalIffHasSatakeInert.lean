@@ -29,7 +29,7 @@ def transport {G H : Type} [Group G] [TopologicalSpace G] [Group H] [Topological
     rwa [P.symm_apply_apply] at this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `σ.ρ (P.symm (P g)) v = _`. Rewrite using `[P.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_apply {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H] (P : G ≃ₜ* H)
     (σ : SmIrr G) (g : G) (v : σ.V) : (transport P σ).ρ (P g) v = σ.ρ g v := by
@@ -37,13 +37,13 @@ theorem transport_apply {G H : Type} [Group G] [TopologicalSpace G] [Group H] [T
   rw [P.symm_apply_apply]
 
 /- English proof (translation)
-Use `⟨(transport P σ).smooth, fun K ho hc => ?_⟩` and prove the remaining obligations. Set `K' : Subgroup G` to `K.comap P.toMulEquiv.toMonoidHom`. Use `show FiniteDimensional ℂ (fixed (σ.ρ.comp P.symm.toMulEquiv.toMonoidHom) K)`. Establish `e : fixed (σ.ρ.comp P.symm.toMulEquiv.toMonoidHom) K = fixed σ.ρ K'`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LGrp.mem_fixed, GlobalTheory.LGrp.mem_fixed]`. Prove the components needed by the constructor for the conclusion. Introduce `hx k hk`. Use `hx (P k) hk` as an intermediate fact. Express the relevant statement in the definitionally equal form `σ.ρ (P.symm (P k)) x = x at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[P.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `hx k hk`. Conclude with `hx (P.symm k) (by change P (P.symm k) ∈ K; rwa [P.apply_symm_apply])`. Rewrite using `[e]`. Use `h.2 K' (ho.preimage P.continuous) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (K' : Set G) = P.toHomeomorph ⁻¹' (K : Set H)` using `rfl`. Rewrite using `[this]`. Conclude with `P.toHomeomorph.isCompact_preimage.2 hc`.
+A detailed English derivation is pending.
 -/
 theorem isAdmissible_transport {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
     (P : G ≃ₜ* H) (σ : SmIrr G) (h : IsAdmissible σ.ρ) : IsAdmissible (transport P σ).ρ := by
@@ -87,33 +87,29 @@ end GlobalTheory.InertSatake
 open GlobalTheory.InertSatake in
 
 /- English proof (translation)
-Introduce `E _ _ _ n π w hun hns`. Take `⟨π, rfl⟩` from `AU.mk_surjective π`. Use `show IsUnramU π.V w ↔ ∃ α, π.IsSat w α`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, h0, hfix⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, ϖ, q, hs, hU⟩` from `GlobalTheory.T.unramified_nonsplit_exists_conj_involution_uniformiser E w hun hns`. Take `⟨e, he⟩` from `GlobalTheory.T.fixedPlace_unitaryLocalPoints_equiv_localUnitaryGroup E n w s hs hU.2.1`. Take `⟨b, hbK, hb⟩` from `GlobalTheory.LFun.InertChart.exists_congr_antiJ hU (one_mem (GlobalTheory.LFun.KGL w n)) (by rw [Units.val_one, cT_one])`. Set `P : locU n w ≃ₜ* GU s n` to `e.trans (conjEquiv s b hb)`. Establish `hP : ∀ x : locU n w, ((P x : GU s n) : GL (Fin n) (w.adicCompletion E)) = b⁻¹ * cLoc w x.1 * b` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b⁻¹ * (e x : GL (Fin n) _) * b = _`. Rewrite using `[he]`. Take `⟨σ0, hadm, hcomp⟩` from `GlobalTheory.T.exists_admissible_localComponent_definiteUnitary E n π w`. Take `⟨r, -, -, hr⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w`. Take `⟨-, f, hf0, hfm, hf⟩` from `hcomp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `F : σ0.ρ.IntertwiningMap (π.rep.comp (locU n w).subtype)` to `⟨f.codRestrict _ hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => by`. Use `congrArg Subtype.val (DFunLike.congr_fun h v)` as an intermediate fact. Conclude with `this)`. Establish `htop` using `(GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor (UA E n) (locU n w) π.V σ0.V σ0.V π.rep (locU n w).subtype σ0.ρ σ0.ρ π.isIrreducible_rep σ0.irred σ0.irred (fun g => ⟨r g, fun y => hr g y⟩) F hF0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v, hv0, hv⟩` from `GlobalTheory.CuspRep.LocSph.exists_fixed_of_mem_iSup (π.rep.comp (locU n w).subtype) σ0.ρ σ0.irred (fun i : σ0.ρ.IntertwiningMap (π.rep.comp (locU n w).subtype) => i.toLinearMap) (fun i g u => Representation.IntertwiningMap.isIntertwining _ _ i g u) {x | cLoc w x.1 ∈ GlobalTheory …`. Set `σ1` to `transport P σ0`. Establish `hsph : GlobalTheory.LGrp.IsSpherical σ1.ρ (KU s n)`. Use `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, hv0⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `P.surjective k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[transport_apply]`. Use `hv x ?_` and prove the remaining obligations. Establish `h1 : ((P x : GU s n) : GL (Fin n) (w.adicCompletion E)) ∈ GLint (Fin n) (intL (w.adicCompletion E))` using `(Set.ext_iff.1 (GlobalTheory.LFun.IntPtsUnitary.coe_KU s n) (P x)).1 hk`. Establish `h2 : cLoc w x.1 = b * (P x : GL (Fin n) (w.adicCompletion E)) * b⁻¹` using `by rw [hP]; group`. Use `show cLoc w x.1 ∈ GlobalTheory.LFun.KGL w n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `mul_mem (mul_mem hbK h1) (inv_mem hbK)`. Take `⟨α, hα⟩` from `GlobalTheory.T.exists_satake_parameter_spherical_unramifiedUnitary E w ϖ s q n hU σ1.V σ1.ρ σ1.irred (isAdmissible_transport P σ0 hadm) hsph`. Use `⟨α, s, ϖ, q, hs, hU, b, hbK, by have h := hb; rw [Units.val_one, Matrix.mul_one] at h; exact h, P.toMulEquiv.toMonoidHom, hP, σ1, ⟨σ1.irred, f, hf0, hfm, fun x u => ?_⟩, hα⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (σ0.ρ (P.symm (P x)) u) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[P.symm_apply_apply]`. Conclude with `hf x u`. Introduce and unpack `⟨α, s, ϖ, q, hs, hU, b, hbK, hb, p, hp, σ, ⟨-, f, hf0, hfm, hf⟩, hsat⟩`. Take `⟨e, he⟩` from `GlobalTheory.T.fixedPlace_unitaryLocalPoints_equiv_localUnitaryGroup E n w s hs hU.2.1`. Establish `hb1 : cT s b.1 * 1 * b.1 = antiJ _ n` using `by rwa [Matrix.mul_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective p` using `fun g => by`. Set `P` to `e.trans (conjEquiv s b hb1)`. Establish `hP : ((P (P.symm g) : GU s n) : GL (Fin n) (w.adicCompletion E)) = b⁻¹ * cLoc w (P.symm g).1 * b`. Express the relevant statement in the definitionally equal form `b⁻¹ * (e _ : GL (Fin n) _) * b = _`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨P.symm g, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← hP, P.apply_symm_apply]`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hsat.1`. Establish `hfv : f v ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hker` using `((CuspRep.isIrreducible_iff _).1 σ.irred).2 (LinearMap.ker f) fun g u hu => by`. Take `⟨x, rfl⟩` from `hsurj g`. Rewrite using `[LinearMap.mem_ker, hf, LinearMap.mem_ker.1 hu, map_zero]`. Break down `hker with h1 | h1` into its components or cases. Establish `m : v ∈ LinearMap.ker f` using `LinearMap.mem_ker.2 h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `m` using `[h1]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 m)`. Conclude with `hf0 (LinearMap.ker_eq_top.1 h1)`. Use `⟨f v, hfm v, hfv, fun x hx hk => ?_⟩` and prove the remaining obligations. Establish `hpk : p ⟨x, hx⟩ ∈ KU s n`.
-
-Use `(Set.ext_iff.1 (GlobalTheory.LFun.IntPtsUnitary.coe_KU s n) _).2 ?_` and prove the remaining obligations. Use `show ((p ⟨x, hx⟩ : GU s n) : GL (Fin n) (w.adicCompletion E)) ∈ GLint (Fin n) (intL _)`. Rewrite using `[hp]`. Conclude with `mul_mem (mul_mem (inv_mem hbK) hk) hbK`. Use `(hf ⟨x, hx⟩ v).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.LGrp.mem_fixed.1 hv _ hpk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertSatake.sph_iff_isSat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AU E n)
     (w : HeightOneSpectrum (𝓞 E)), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal → ¬ IsSplitAt w →

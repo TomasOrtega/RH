@@ -18,9 +18,9 @@ variable {E 𝔸 : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedRing
   [CompleteSpace 𝔸]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact contDiff_exp`. Consider the case `exact NormedSpace.contDiff_exp`. Consider the case `exact (NormedSpace.analyticOnNhd_exp (𝕂 := ℝ)).contDiff`. Consider the case `exact (analyticOnNhd_exp (𝕂 := ℝ)).contDiff`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact contDiff_iff_contDiffAt.mpr fun x => (analyticAt_exp_of_mem_ball (𝕂 := ℝ) x (by simp [expSeries_radius_eq_top])).contDiffAt`. Consider the case `exact contDiff_iff_contDiffAt.mpr fun x => (NormedSpace.analyticAt_exp_of_mem_ball (𝕂 := ℝ) x (by simp [NormedSpace.expSeries_radius_eq_top])).contDiffAt`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem contDiff_exp_alg : ContDiff ℝ 1 (NormedSpace.exp : 𝔸 → 𝔸) := by
   first
@@ -34,7 +34,7 @@ theorem contDiff_exp_alg : ContDiff ℝ 1 (NormedSpace.exp : 𝔸 → 𝔸) := b
       (NormedSpace.analyticAt_exp_of_mem_ball (𝕂 := ℝ) x (by simp [NormedSpace.expSeries_radius_eq_top])).contDiffAt
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ((contDiff_exp_alg (𝔸 := 𝔸)).differentiable one_ne_zero x).hasFDerivAt`. Consider the case `exact ((contDiff_exp_alg (𝔸 := 𝔸)).differentiable le_rfl x).hasFDerivAt`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_exp_alg (x : 𝔸) :
     HasFDerivAt (NormedSpace.exp : 𝔸 → 𝔸) (fderiv ℝ (NormedSpace.exp : 𝔸 → 𝔸) x) x := by
@@ -43,7 +43,7 @@ theorem hasFDerivAt_exp_alg (x : 𝔸) :
   | exact ((contDiff_exp_alg (𝔸 := 𝔸)).differentiable le_rfl x).hasFDerivAt
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s : ℝ => x + s • W) W 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const W).const_add x`. Establish `h2` using `(hasFDerivAt_exp_alg (x + (0 : ℝ) • W)).comp_hasDerivAt (0 : ℝ) h1`. Rewrite `h2` using `[zero_smul, add_zero]`. Conclude with `h2.unique h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_exp_eq {x W D : 𝔸} (h : HasDerivAt (fun s : ℝ => NormedSpace.exp (x + s • W)) D 0) :
     fderiv ℝ (NormedSpace.exp : 𝔸 → 𝔸) x W = D := by
@@ -54,11 +54,11 @@ theorem fderiv_exp_eq {x W D : 𝔸} (h : HasDerivAt (fun s : ℝ => NormedSpace
   exact h2.unique h
 
 /- English proof (translation)
-Set `e : 𝔸 ≃L[ℝ] 𝔸` to `(LinearEquiv.ofInjectiveEndo (fderiv ℝ (NormedSpace.exp : 𝔸 → 𝔸) (f z) : 𝔸 →ₗ[ℝ] 𝔸) hi).toContinuousLinearEquiv`. Establish `he : (e : 𝔸 →L[ℝ] 𝔸) = fderiv ℝ (NormedSpace.exp : 𝔸 → 𝔸) (f z)`. Use extensionality with `v`. Both sides reduce to the same expression. Establish `hd : HasFDerivAt (NormedSpace.exp : 𝔸 → 𝔸) (e : 𝔸 →L[ℝ] 𝔸) (f z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `hasFDerivAt_exp_alg _`. Establish `hc : ContDiffAt ℝ 1 (NormedSpace.exp : 𝔸 → 𝔸) (f z)` using `contDiff_exp_alg.contDiffAt`. Establish `h1` using `hc.to_localInverse hd one_ne_zero`. Establish `h2` using `(hc.hasStrictFDerivAt' hd one_ne_zero).eventually_left_inverse`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ContDiffAt.comp z (g := hc.localInverse hd one_ne_zero) h1 hg`. Use `h3.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hf.eventually h2] with w hw`. Conclude with `hw.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_exp [FiniteDimensional ℝ 𝔸] {f : E → 𝔸} {z : E} (hf : ContinuousAt f z)
     (hg : ContDiffAt ℝ 1 (fun w => NormedSpace.exp (f w)) z)
@@ -84,9 +84,7 @@ end Gen
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `shc`. Use `split_ifs with h`. Conclude with `one_pos`. Break down `lt_or_gt_of_ne h with hu | hu` into its components or cases. Conclude with `div_pos_of_neg_of_neg (Real.sinh_neg_iff.mpr hu) hu`.
-
-Conclude with `div_pos (Real.sinh_pos_iff.mpr hu) hu`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem shc_pos' (u : ℝ) : 0 < shc u := by
   unfold shc
@@ -97,7 +95,7 @@ theorem shc_pos' (u : ℝ) : 0 < shc u := by
     · exact div_pos (Real.sinh_pos_iff.mpr hu) hu
 
 /- English proof (translation)
-Unfold `Jac`. Conclude with `Finset.prod_pos (fun a _ => Finset.prod_pos (fun b _ => shc_pos' _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem jac_pos' {ε : Fin n → Bool} (y : PCoord ε → ℂ) : 0 < Jac y := by
   unfold Jac
@@ -120,7 +118,7 @@ def crdLin (ε : Fin n → Bool) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] (PCoor
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ab`. Use `show pmat z ab.1.1 ab.1.2 = z ab`. Simplify using `only [pmat]`. Rewrite using `[dif_pos ab.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : crdLin ε (pmat z) = z := by
   funext ab
@@ -145,13 +143,11 @@ def shcAdLin {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     simp only [Matrix.smul_mul, Matrix.smul_apply, Matrix.of_apply, mul_smul_comm]
 
 /- English proof (translation)
-Unfold `shcAd at h`. Use `set U : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `h1 : Uᴴ * U = 1` using `(pmat_isHermitian y).eigenvectorUnitary.2.1`. Establish `h2 : U * Uᴴ = 1` using `(pmat_isHermitian y).eigenvectorUnitary.2.2`. Use `set S := Matrix.of (fun i j => ((shc (pev y i - pev y j) : ℝ) : ℂ) * (Uᴴ * W * U) i j) with hS`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : S = 0`. Establish `: Uᴴ * (U * S * Uᴴ) * U = S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← this, h, Matrix.mul_zero, Matrix.zero_mul]`. Establish `h4 : Uᴴ * W * U = 0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h5 : S i j = 0` using `by rw [h3]; rfl`. Rewrite `h5` using `[hS, Matrix.of_apply, mul_eq_zero]`. Break down `h5 with h5 | h5` into its components or cases. Conclude with `absurd (Complex.ofReal_eq_zero.1 h5) (shc_pos' _).ne'`.
-
-Conclude with `h5`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem shcAd_eq_zero {ε : Fin n → Bool} (y : PCoord ε → ℂ) {W : Matrix (Fin n) (Fin n) ℂ}
     (h : shcAd y W = 0) : W = 0 := by
@@ -178,7 +174,7 @@ theorem shcAd_eq_zero {ε : Fin n → Bool} (y : PCoord ε → ℂ) {W : Matrix 
     _ = 0 := by rw [h4, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite using `[two_smul]`. Use `first`. Consider the case `exact Matrix.exp_add_of_commute _ _ (Commute.refl X)`. Consider the case `exact Matrix.exp_add_of_commute (Commute.refl X)`. Consider the case `exact NormedSpace.exp_add_of_commute (Commute.refl X)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exp_two (X : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp ((2 : ℝ) • X) = NormedSpace.exp X * NormedSpace.exp X := by
@@ -189,9 +185,9 @@ theorem exp_two (X : Matrix (Fin n) (Fin n) ℂ) :
   | exact NormedSpace.exp_add_of_commute (Commute.refl X)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `actR_spec hg z`. Establish `hk1 : (toMK k)ᴴ * toMK k = 1` using `k.2.1.1`. Establish `hz : (NormedSpace.exp (pmat z))ᴴ = NormedSpace.exp (pmat z)` using `(pmat_isHermitian z).exp`. Establish `hw : (NormedSpace.exp (pmat (actR g z)))ᴴ = NormedSpace.exp (pmat (actR g z))` using `(pmat_isHermitian _).exp`. Establish `h1 : (NormedSpace.exp (pmat z) * g)ᴴ * (NormedSpace.exp (pmat z) * g) = (toMK k * NormedSpace.exp (pmat (actR g z)))ᴴ * (toMK k * NormedSpace.exp (pmat (actR g z)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Both sides reduce to the same expression. Rewrite `h1` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hz, hw, Matrix.mul_assoc _ (toMK k)ᴴ, ← Matrix.mul_assoc (toMK k)ᴴ, hk1, Matrix.one_mul]`. Rewrite using `[exp_two, exp_two, ← h1]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_two_actR {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (z : PCoord ε → ℂ) :
@@ -220,7 +216,7 @@ def crdC (ε : Fin n → Bool) : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (PCoord ε
   LinearMap.toContinuousLinearMap (crdLin ε)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (pmatC ε).contDiff`. Consider the case `exact ContinuousLinearMap.contDiff (pmatC ε)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pmat_contDiff (ε : Fin n → Bool) : ContDiff ℝ 1 (fun z : PCoord ε → ℂ => pmat z) := by
   first
@@ -228,9 +224,9 @@ theorem pmat_contDiff (ε : Fin n → Bool) : ContDiff ℝ 1 (fun z : PCoord ε 
   | exact ContinuousLinearMap.contDiff (pmatC ε)
 
 /- English proof (translation)
-Use `choose k hk using actR_spec hg`. Establish `h1 : Continuous (fun z => (k z, actR g z))`. Rewrite using `[(polarM_isClosedEmbedding ε).isEmbedding.continuous_iff]`. Establish `h2 : (polarM ∘ fun z => (k z, actR g z)) = fun z => NormedSpace.exp (pmat z) * g`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hk z).symm`. Rewrite using `[h2]`. Conclude with `((contDiff_exp_alg.comp (pmat_contDiff ε)).mul contDiff_const).continuous`. Conclude with `continuous_snd.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem actR_continuous {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     Continuous (actR (ε := ε) g) := by
@@ -244,9 +240,9 @@ theorem actR_continuous {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (
   exact continuous_snd.comp h1
 
 /- English proof (translation)
-Apply `fderiv_exp_eq` to reduce the goal to its premises. Establish `h` using `hasDerivAt_exp_two y W`. Establish `e : (fun s : ℝ => NormedSpace.exp ((2 : ℂ) • pmat y + (s : ℂ) • W)) = fun s : ℝ => NormedSpace.exp ((2 : ℝ) • pmat y + s • W)`. Use function extensionality and compare the values at `s`. Rewrite using `[two_smul, two_smul, Complex.coe_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_exp_two {ε : Fin n → Bool} (y : PCoord ε → ℂ) (W : Matrix (Fin n) (Fin n) ℂ) :
     fderiv ℝ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)
@@ -261,7 +257,7 @@ theorem fderiv_exp_two {ε : Fin n → Bool} (y : PCoord ε → ℂ) (W : Matrix
   exact h
 
 /- English proof (translation)
-Establish `hu : IsUnit (NormedSpace.exp X)` using `Matrix.isUnit_exp X`. Conclude with `hu.mul_left_cancel (hu.mul_right_cancel h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_cancel {A B X : Matrix (Fin n) (Fin n) ℂ}
     (h : NormedSpace.exp X * A * NormedSpace.exp X = NormedSpace.exp X * B * NormedSpace.exp X) :
@@ -270,9 +266,9 @@ theorem conj_cancel {A B X : Matrix (Fin n) (Fin n) ℂ}
   exact hu.mul_left_cancel (hu.mul_right_cancel h)
 
 /- English proof (translation)
-Introduce `W1 W2 hW`. Establish `h0 : fderiv ℝ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) ((2 : ℝ) • pmat y) (W1 - W2) = 0`. Rewrite using `[map_sub, hW, sub_self]`. Rewrite `h0` using `[fderiv_exp_two]`. Establish `h1 : shcAd y (W1 - W2) = 0` using `conj_cancel (X := pmat y) (by rw [h0, Matrix.mul_zero, Matrix.zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp (shcAd_eq_zero y h1)`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_exp_two_inj {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     Function.Injective (fderiv ℝ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)
@@ -287,9 +283,9 @@ theorem fderiv_exp_two_inj {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
   exact sub_eq_zero.mp (shcAd_eq_zero y h1)
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ 1 (fun z : PCoord ε → ℂ => (2 : ℝ) • pmat (actR g z))`. Use `contDiff_iff_contDiffAt.2 fun z => contDiffAt_of_exp ?_ ?_ (fderiv_exp_two_inj _)` and prove the remaining obligations. Conclude with `(((pmat_contDiff ε).continuous.comp (actR_continuous hg)).const_smul (2 : ℝ)).continuousAt`. Conclude with `(((contDiff_const (c := gᴴ)).mul (contDiff_exp_alg.comp ((pmat_contDiff ε).const_smul (2 : ℝ)))).mul (contDiff_const (c := g))).contDiffAt.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => exp_two_actR hg w)`. Establish `h2` using `((crdC ε).contDiff.comp h1).const_smul (1 / 2 : ℝ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `actR g z = (1 / 2 : ℝ) • crdLin ε ((2 : ℝ) • pmat (actR g z))`. Rewrite using `[map_smul, crd_pmat, smul_smul]`. Evaluate the numerical expressions.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem actR_contDiff' {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ContDiff ℝ 1 (actR (ε := ε) g) := by
@@ -308,15 +304,13 @@ theorem actR_contDiff' {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h
   norm_num
 
 /- English proof (translation)
-Establish `hg` using `exp_pmat_inUJ y`. Establish `hY : (NormedSpace.exp (pmat y))ᴴ = NormedSpace.exp (pmat y)` using `(pmat_isHermitian y).exp`. Establish `hD` using `((actR_contDiff' hg).differentiable one_ne_zero 0).hasFDerivAt`. Use `set D := fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0`. Establish `h1` using `((pmatC ε).hasFDerivAt.comp 0 hD).const_smul (2 : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (fderiv ℝ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) ((2 : ℝ) • pmat y)) ((2 : ℝ) • pmat (actR (NormedSpace.exp (pmat y)) (0 : PCoord ε → ℂ)))`. Rewrite using `[actR_exp_zero]`. Conclude with `hasFDerivAt_exp_alg _`. Establish `h3` using `HasFDerivAt.comp (0 : PCoord ε → ℂ) h2 h1`. Establish `h4` using `((pmatC ε).hasFDerivAt (x := 0)).const_smul (2 : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : HasFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) ((2 : ℝ) • pmatC ε (0 : PCoord ε → ℂ))`. Rewrite using `[map_zero, smul_zero]`. Conclude with `hasFDerivAt_exp_zero`. Establish `h6` using `((HasFDerivAt.comp (0 : PCoord ε → ℂ) h5 h4).const_mul (NormedSpace.exp (pmat y))).mul_const' (NormedSpace.exp (pmat y))`. Establish `h7` using `h3.unique (h6.congr_of_eventuallyEq (Filter.Eventually.of_forall fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `exp_two_actR hg z` as an intermediate fact. Rewrite `this` using `[hY]`. Conclude with `this))`. Establish `h8` using `congrArg (fun T => T v) h7`. Establish `h9 : fderiv ℝ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) ((2 : ℝ) • pmat y) ((2 : ℝ) • pmat (D v)) = NormedSpace.exp (pmat y) * ((2 : ℝ) • pmat v) * NormedSpace.exp (pmat y)` using `h8`.
-
-Rewrite `h9` using `[fderiv_exp_two]`. Establish `h10 : shcAdLin y ((2 : ℝ) • pmat (D v)) = (2 : ℝ) • pmat v` using `conj_cancel h9`. Rewrite `h10` using `[map_smul]`. Conclude with `smul_right_injective _ (two_ne_zero (α := ℝ)) h10`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shcAd_fderiv_actR {ε : Fin n → Bool} (y v : PCoord ε → ℂ) :
     shcAd y (pmat (fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 v)) = pmat v := by
@@ -353,7 +347,7 @@ theorem shcAd_fderiv_actR {ε : Fin n → Bool} (y v : PCoord ε → ℂ) :
 end Op
 
 /- English proof (translation)
-The claim follows from `|LinearMap.det ((fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))| * Jac y = 1 := by let S : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ) := LinearMap.toContinuousLinearMap (crdLin ε ∘ₗ shcAdLin y ∘ₗ pmatLi …`.
+A detailed English derivation is pending.
 -/
 theorem jacBase' {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     |LinearMap.det ((fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 :

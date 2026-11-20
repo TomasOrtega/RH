@@ -8,11 +8,11 @@ open GlobalTheory.DefLift
 namespace GlobalTheory.RowSupport
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [← Complex.exp_nat_mul] at h`. Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Establish `h2 : (a : ℝ) = b + k * (2 * Real.pi)`. Use `congrArg Complex.im hk` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Distinguish the cases in `h0 : k = 0`. Substitute `h0` using the available equality. Conclude with `(by simpa using h2 : (a : ℝ) = b)` after adjusting the coercions. It suffices to derive a contradiction.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h3 : (2 * k : ℤ) ≠ 0` using `mul_ne_zero two_ne_zero h0`. Use `(irrational_pi.intCast_mul h3).ne_int ((a : ℤ) - b) ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_I_pow_injective : Function.Injective fun e : ℕ => Complex.exp Complex.I ^ e := by
   intro a b h
@@ -40,11 +40,11 @@ def scal (m : ℕ) : Matrix.unitaryGroup (Fin m) ℂ :=
 
 open Classical in
 /- English proof (translation)
-Establish `hv : ∀ v : ι × Fin m × Fin n, (∑ i, ∑ c, ((if v.1 = τ then (scal m : Matrix (Fin m) (Fin m) ℂ) else 1) i v.2.1 * (1 : Matrix (Fin n) (Fin n) ℂ) v.2.2 c) • (MvPolynomial.X (v.1, i, c) : Pol ι m n)) = (if v.1 = τ then Complex.exp Complex.I else 1) • MvPolynomial.X v`. Introduce and unpack `⟨ρ, j, d⟩`. Distinguish the cases in `h : ρ = τ`. Simplify using `[h, scal, Matrix.one_apply, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Simplify using `[h, Matrix.one_apply, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `rowSub subst`. Rewrite using `[AlgHom.toLinearMap_apply, MvPolynomial.aeval_monomial, map_one, one_mul, MvPolynomial.monomial_eq, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [hv, smul_pow]`. Rewrite using `[Finset.prod_smul, ← Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowSub_scal {ι : Type} [Fintype ι] {m n : ℕ} (τ : ι) (α : ι × Fin m × Fin n →₀ ℕ) :
     rowSub n τ (scal m) (MvPolynomial.monomial α 1) =
@@ -67,15 +67,15 @@ theorem rowSub_scal {ι : Type} [Fintype ι] {m n : ℕ} (τ : ι) (α : ι × F
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hfin : ∀ τ, ∃ d : ℕ, ∀ e : ℕ, Module.End.HasEigenvalue (LinearMap.dualMap (π τ (scal m)) : Module.End ℂ (Module.Dual ℂ X)) (Complex.exp Complex.I ^ e)⁻¹ → e ≤ d`. Introduce `τ`. Establish `h1` using `Module.End.finite_hasEigenvalue (LinearMap.dualMap (π τ (scal m)) : Module.End ℂ (Module.Dual ℂ X))`. Establish `h2` using `h1.preimage (f := fun e : ℕ => (Complex.exp Complex.I ^ e)⁻¹) (inv_injective.comp exp_I_pow_injective).injOn`. Take `⟨d, hd⟩` from `h2.bddAbove`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, fun e he => hd he⟩`. Use `choose d hd using hfin`. Use `⟨∑ τ, d τ, fun α hα => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hdeg : α.degree = ∑ τ, ∑ v, if v.1 = τ then α v else 0`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules. Use `absurd hα (not_lt.2 ?_)` and prove the remaining obligations. Rewrite using `[hdeg]`. Use `Finset.sum_le_sum fun τ _ => hd τ _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.End.hasEigenvalue_of_hasEigenvector (x := β (MvPolynomial.monomial α 1)) ⟨?_, hne⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Use extensionality with `x`. Use `h τ (scal m) (MvPolynomial.monomial α 1) x` as an intermediate fact. Rewrite `this` using `[rowSub_scal, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.dualMap_apply, LinearMap.smul_apply, smul_eq_mul, eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ (Complex.exp_ne_zero _))]`. Use `this` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_degree_bound (ι : Type) [Fintype ι] (m n : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X]
     (π : ι → Matrix.unitaryGroup (Fin m) ℂ → Module.End ℂ X) (β : Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ)

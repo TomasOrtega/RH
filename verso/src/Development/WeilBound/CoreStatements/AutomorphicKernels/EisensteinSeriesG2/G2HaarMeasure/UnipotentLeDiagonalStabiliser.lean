@@ -26,14 +26,14 @@ theorem matrixRep_one {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} : mat2 (1 :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Units.inv_mul a.1`.
+A detailed English derivation is pending.
 -/
 theorem matrix_inv_mul_doubled {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (a : G2 σ Y) : mat2 a⁻¹ * mat2 a = 1 :=
   Units.inv_mul a.1
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold `diagCols`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem diagCols_eq {n : ℕ} : diagCols (E := AE F E) (Fin n) =
     Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (1 : Matrix (Fin n) (Fin n) (AE F E)) := by
@@ -41,7 +41,7 @@ theorem diagCols_eq {n : ℕ} : diagCols (E := AE F E) (Fin n) =
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[diagCols_eq]`. Conclude with `unip_iff_blk (mat2 g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_iff {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (g : G2 σ Y) :
     ((mat2 g - 1) * diagCols (E := AE F E) (Fin n) = 0 ∧
@@ -75,7 +75,7 @@ def eltA (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) (Z : Matrix (Fin n) (Fin
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] x) = (1 : AF F) ⊗ₜ[F] σ x`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (x : E) :
     cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := by
@@ -84,7 +84,7 @@ theorem cA_inclR (σ : E →ₐ[F] E) (x : E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_cA (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with

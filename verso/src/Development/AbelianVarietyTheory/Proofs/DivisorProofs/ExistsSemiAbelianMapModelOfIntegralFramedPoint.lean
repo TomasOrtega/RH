@@ -14,17 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T io`. Use `letI := io.toAlgebra`. Introduce `y x hx G t' m1 m2`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f, ∃ m' : SABMap s' s g, m'.φ = m.φ`. Introduce `S S' s s' f g h m`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`. Take `⟨m1', hm1⟩` from `tr (GlobalTheory.FlagMod.frX_fst y).symm m1`. Take `⟨ρ, hρ⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m0.toSABMap m1'`. Take `⟨a, ha⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m ρ`.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `tr hx.symm a`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨pull⟩⟩ : ∃ G₂ : SAB H (Sp T.V), Nonempty (SABMap G₂ Y.t x) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull x Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨c2, hc2⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ pull a'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨k, n, hk, hn⟩` from `sab_extensions_iso E H Dw l Xo T.V T.Fr y.x G G₂ t' t' m1 m2 m1 c2`. Establish `hk1 : k.φ = 𝟙 _`. Apply `m1.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.id_comp]`. Conclude with `hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Conclude with `k.cart.1.w.trans (Category.comp_id _)`. Take `⟨b, hb⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ pull n`. Take `⟨ψ, hψ⟩` from `tr (Category.id_comp x) b`. Use `⟨ψ, ρ.φ, by rw [← hρ, hm1], ρ.cart.1.w, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← ha, ← ha', hc2, hψ, hb, ← Category.assoc, hn, hk1, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sabMap_model_of_integral_frPt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr), letI := io.toAlgebra; ∀ (y : FrPt Xo c T.Fr) (x : Sp T.V ⟶ Y.X), spMap (algebraMap T.V T.Fr) ≫ x = GlobalTheory.FlagMod.frX y ≫ Y.j → ∀ (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (m1 : SABMap t' Xo.univ.t y.x) (m2 : SABMap t' G (spMap (algebraMap T.V T.Fr))), ∃ (ψ : SABMap G Y.t x) (ρ : t'.G.left ⟶ Y.oF.t.G.left), ρ ≫ Y.m0.toSABMap.φ = m1.φ ∧ ρ ≫ Y.oF.t.G.hom = t'.G.hom ≫ GlobalTheory.FlagMod.frX y ∧ ρ ≫ Y.m.φ = m2.φ ≫ ψ.φ := by
   intro E _ _ _ H Dw l Xo c O _ β Y T io

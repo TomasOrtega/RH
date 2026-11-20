@@ -5,7 +5,7 @@ import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.
 namespace CompanionTheory.WaveGrid
 
 /- English proof (translation)
-The claim follows from `weighted_bound_rotated_uniform_of_hypsG (CompanionTheory.PieriExpansion.hypsG_of_zuck CompanionTheory.Zuck.zuckerman_gap)`.
+A detailed English derivation is pending.
 -/
 theorem weighted_bound_rotated_uniform : Formalism.MainNotions.RotatedPoints.WeightedBoundRotatedUniform :=
   weighted_bound_rotated_uniform_of_hypsG (CompanionTheory.PieriExpansion.hypsG_of_zuck CompanionTheory.Zuck.zuckerman_gap)

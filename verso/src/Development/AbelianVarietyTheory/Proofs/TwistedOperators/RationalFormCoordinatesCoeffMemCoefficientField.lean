@@ -16,9 +16,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Use `show levFn R.βX (Lev.flag1L (R.datXt t)) _ ∈ GlobalTheory.RationalValues.unitsIn M`. Unfold `levFn`. Use `mul_mem (mul_mem ?_ (prod_mem fun PP hPP => prod_mem fun c hc => ?_)) (prod_mem fun PP hPP => ?_)` and prove the remaining obligations. Establish `h1 : ∀ x, ext1 (Lev.flag1L (R.datXt t)).P.H (Lev.flag1L (R.datXt t)).P.chi x = 1` using `fun x => Lev.subgroupCharExtension_one_apply _ x`. Rewrite using `[h1]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Establish `hc' : c < D.R.m` using `Finset.mem_range.1 hc`. Conclude with `show R.chi ((⟨c, hc'⟩ : Fin D.R.m) + 1 : ℕ) PP _ ∈ GlobalTheory.RationalValues.unitsIn M from hχ ⟨c, hc'⟩ PP hPP _`. Conclude with `inv_mem (show R.xiR t PP _ ∈ GlobalTheory.RationalValues.unitsIn M from hξ PP hPP _)`.
+A detailed English derivation is pending.
 -/
 theorem typeX_mem (R : RealDat D A Ks) (t : T) (M : Subfield ℂ)
     (hχ : ∀ i : Fin D.R.m, ∀ PP ∈ R.Pg, ∀ x, ((R.chi ((i : ℕ) + 1) PP x : ℂˣ) : ℂ) ∈ M)
@@ -43,11 +43,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F hS _ _ t x y m`. Take `⟨gram, c₀, c₁, hT, hco⟩` from `ch.S.co_is`. Establish `hc` using `hS.core`. Take `⟨k, v, hv⟩` from `GlobalTheory.RationalValues.exists_ext_eq (R.B.R t).pres c₀ (GlobalTheory.RationalValues.coef_mem (hT.coefR t)) (GlobalTheory.RationalValues.rho_mem hT.mapR) x (toXf y)`. Establish `h0 : (R.HX t).e (R.jX t x) (toXf y) = (((levEnv D.sp.X' R.βX (R.datXt t)).χ k : ℂˣ) : ℂ) • c₀ v` using `(congrFun (hc.models.jX t x) (toXf y)).trans hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `i0 : Fin D.R.m` using `⟨0, by have := D.R.two_le_m; omega⟩`. Take `⟨a, ha⟩` from `typeX_mem R t D.what₂.embLL.fieldRange (GlobalTheory.RationalValues.chiVal_of_chiW R hc.grp.chiW) (GlobalTheory.RationalValues.xiR_mem R hc.lev hc.fam.pl_onto hc.fam.muVal hT.ok i0 t) k`. Establish `h1 : ch.S.formC t (R.jX t x) y = ch.S.co (c₀ (a • v))`. Rewrite using `[SumChoice.formC, h0, map_smulₛₗ, ha]`. Rewrite using `[h1, hco, ← MvPolynomial.map_rename, MvPolynomial.coeff_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coeff_formC_mem : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A),

@@ -11,47 +11,43 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `X _ μ lam cnt a ka r h`. Use `h.isProbability` as an intermediate fact. Take `⟨θ, hθ⟩ : ∃ θ : ℝ, θ = 1 / 12` from `⟨_, rfl⟩`. Establish `hθ0 : 0 < θ` using `by rw [hθ]; norm_num`. Establish `hθ1 : θ ≤ 1` using `by rw [hθ]; norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ12 : 12 * θ = 1` using `by rw [hθ]; norm_num`. Establish `hr` using `h.r_pos`. Establish `ha0 : a ≠ 0` using `by have := h.one_le_a; omega`. Use `set m := meanCount μ cnt r with hm`. Establish `hm0 : 0 ≤ m` using `integral_nonneg (h.cnt_nonneg r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∀ j : ℕ, (12 : ℝ) ^ j * θ ^ j = 1` using `fun j => by`. Rewrite using `[← mul_pow, hθ12, one_pow]`. Establish `hpt : ∀ (j : ℕ) (z : X), lam z < r → θ ^ (j + 1) * r ≤ lam z → cnt r z ≤ (3 * 12 ^ (j + 1)) ^ a`. Introduce `j z hlt hle`. Establish `hl` using `h.lam_pos z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hl]`. Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-(3 * r)) * hprod (j + 1)`. Use `_ ≤ 3 * 12 ^ (j + 1) * lam z := by gcongr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ k : ℕ, (36 * 12 ^ (k + 1) : ℝ) ^ a * meanCount μ cnt (θ ^ (k + 1) * r) ≤ 1 / 4 * (1 / 2) ^ k * m`. Introduce `k`. Establish `hy0 : 0 < θ ^ (k + 1)` using `pow_pos hθ0 _`. Establish `hy1 : θ ^ (k + 1) ≤ 1` using `pow_le_one₀ hθ0.le hθ1`. Rewrite using `[h.scaling _ _ hy0 hr, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right ?_ hm0` and prove the remaining obligations. Establish `hka : (θ ^ (k + 1)) ^ ka ≤ (θ ^ (k + 1)) ^ (3 * a)`. Rewrite using `[← Real.rpow_natCast (θ ^ (k + 1)) (3 * a)]`. Apply `Real.rpow_le_rpow_of_exponent_ge hy0 hy1` to reduce the goal to its premises. Use `h.three_a_le_ka` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : (36 * 12 ^ (k + 1) : ℝ) ^ a * (θ ^ (k + 1)) ^ (3 * a) = (36 * (θ ^ (k + 1)) ^ 2) ^ a`. Rewrite using `[pow_mul, ← mul_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(36 * (θ ^ (k + 1)) ^ 2) * hprod (k + 1)`. Establish `hsq : 36 * (θ ^ (k + 1)) ^ 2 = 1 / 4 * (θ ^ 2) ^ k`. Establish `: θ ^ 2 = 1 / 144` using `by rw [hθ]; norm_num`. Rewrite using `[← pow_mul, show (k + 1) * 2 = 2 + 2 * k by ring, pow_add, pow_mul, this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ2 : θ ^ 2 ≤ 1 / 2` using `by rw [hθ]; norm_num`. Establish `hs1 : 1 / 4 * (θ ^ 2) ^ k ≤ 1 / 4 * (1 / 2) ^ k` using `by gcongr`. Establish `hs2 : 1 / 4 * (θ ^ 2) ^ k ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : ℕ → Set X` to `fun N => {z | θ ^ (N + 1) * r ≤ lam z}`. Establish `hSmeas : ∀ N, MeasurableSet (S N)` using `fun N => measurableSet_le measurable_const h.lam_meas`. Establish `hSmono : Monotone S`. Introduce `N M hNM z hz`. Simplify using `only [S, Set.mem_ofPred_eq] at hz ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: θ ^ (M + 1) ≤ θ ^ (N + 1)` using `pow_le_pow_of_le_one hθ0.le hθ1 (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hSunion : ⋃ N, S N = Set.univ`. Use `Set.eq_univ_of_forall fun z => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (div_pos (h.lam_pos z) hr) (show θ < 1 by rw [hθ]; norm_num)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Set.mem_iUnion.2 ⟨n, ?_⟩` and prove the remaining obligations. Simplify using `only [S, Set.mem_ofPred_eq]`. Establish `h1 : θ ^ (n + 1) ≤ θ ^ n` using `pow_le_pow_of_le_one hθ0.le hθ1 (by omega)`. Rewrite `hn` using `[lt_div_iff₀ hr]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ N, ∫ z in S N, cnt r z ∂μ ≤ 36 ^ a + m / 2`. Introduce `N`. Use `set G : X → ℝ := fun z => 36 ^ a + ∑ i ∈ range N, (36 * 12 ^ (i + 1) : ℝ) ^ a * cnt (θ ^ (i + 1) * r) z with hG`. Establish `hint : ∀ i : ℕ, Integrable (cnt (θ ^ (i + 1) * r)) μ` using `fun i => h.integrable _ (mul_pos (pow_pos hθ0 _) hr)`. Establish `hGi : Integrable G μ` using `(integrable_const _).add (integrable_finsetSum _ fun i _ => (hint i).const_mul _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum_nonneg : ∀ z, 0 ≤ ∑ i ∈ range N, (36 * 12 ^ (i + 1) : ℝ) ^ a * cnt (θ ^ (i + 1) * r) z` using `fun z => sum_nonneg fun i _ => mul_nonneg (by positivity) (h.cnt_nonneg _ _)`. Establish `hG0 : ∀ z, 0 ≤ G z` using `fun z => add_nonneg (by positivity) (hsum_nonneg z)`. Establish `hle : ∀ z ∈ S N, cnt r z ≤ G z`. Introduce `z hz`. Simplify using `only [S, Set.mem_ofPred_eq] at hz`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `le_or_gt r (lam z) with hrl | hlr` into its components or cases. Rewrite using `[h.zero r hr z hrl]`. Conclude with `hG0 z`. Establish `hex : ∃ j, θ ^ (j + 1) * r ≤ lam z` using `⟨N, hz⟩`. Use `set j := Nat.find hex with hj`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hjle : j ≤ N` using `Nat.find_min' hex hz`. Establish `hjspec : θ ^ (j + 1) * r ≤ lam z` using `Nat.find_spec hex`. Break down `Nat.eq_zero_or_eq_succ_pred j with hj0 | hjs` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `set k := j.pred`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hk : k < N` using `by omega`. Establish `hnot : ¬ θ ^ (k + 1) * r ≤ lam z` using `Nat.find_min hex (by omega)`. Establish `hone : 1 ≤ cnt (θ ^ (k + 1) * r) z` using `h.one _ (mul_pos (pow_pos hθ0 _) hr) (mul_le_of_le_one_left hr.le (pow_le_one₀ hθ0.le hθ1)) z (lt_of_not_ge hnot)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hjs, Nat.succ_eq_add_one]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (36 * 12 ^ (k + 1) : ℝ) ^ a * cnt (θ ^ (k + 1) * r) z := le_mul_of_one_le_right (by positivity) hone`. Use `_ ≤ ∑ i ∈ range N, (36 * 12 ^ (i + 1) : ℝ) ^ a * cnt (θ ^ (i + 1) * r) z := single_le_sum (f := fun i => (36 * 12 ^ (i + 1) : ℝ) ^ a * cnt (θ ^ (i + 1) * r) z) (fun i _ => mul_nonneg (by positivity) (h.cnt_nonneg _ _)) (mem_range.2 hk)`. Use `_ ≤ G z := le_add_of_nonneg_left (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGint : ∫ z, G z ∂μ = 36 ^ a + ∑ i ∈ range N, (36 * 12 ^ (i + 1) : ℝ) ^ a * meanCount μ cnt (θ ^ (i + 1) * r)`. Rewrite using `[hG, integral_add (integrable_const _) (integrable_finsetSum _ fun i _ => (hint i).const_mul _), integral_finsetSum _ fun i _ => (hint i).const_mul _]`. Simplify using `[integral_const_mul, meanCount]`. Establish `hgeo : ∑ i ∈ range N, (36 * 12 ^ (i + 1) : ℝ) ^ a * meanCount μ cnt (θ ^ (i + 1) * r) ≤ m / 2`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_sum]; exact sum_congr rfl fun i _ => by ring`. Use `_ ≤ 1 / 4 * m * 2 := by gcongr; exact sum_geometric_two_le N`. Use `_ = m / 2 := by ring`. Combine the equalities or inequalities in the displayed calculation. Establish `ht` using `tendsto_setIntegral_of_monotone hSmeas hSmono (by rw [hSunion]; exact (h.integrable r hr).integrableOn)`.
-
-Rewrite `ht` using `[hSunion, Measure.restrict_univ]`. Establish `hfin : m ≤ 36 ^ a + m / 2` using `le_of_tendsto' ht hbound`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MeanCountBound.proof : MeanCountBound.Statement := by
   intro X _ μ lam cnt a ka r h

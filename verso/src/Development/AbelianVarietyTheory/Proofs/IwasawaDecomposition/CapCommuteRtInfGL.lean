@@ -11,9 +11,9 @@ section Algebra
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj`. Consider the case `exact _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj`. Consider the case `(apply _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qdet_ad {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (P Q : Matrix (Fin n) (Fin n) ℂ)
     (hQP : Q * P = 1) (u : ℂ) :
@@ -27,13 +27,13 @@ theorem qdet_ad {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (P Q : Matr
   | (intros; exact _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj ..)
 
 /- English proof (translation)
-Establish `hp : ∀ {t : ℕ} (x y : Fin t → A), (∀ k, R * x k = y k * R) → R * (List.ofFn x).prod = (List.ofFn y).prod * R`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x y h`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[← mul_assoc, h, mul_assoc, ih _ _ (fun k => h k.succ), mul_assoc]`. Simplify using `only [qdet, qminor, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← (Int.cast_commute _ R).eq, mul_assoc, mul_assoc, hp]`. Introduce `k`. Simplify using `only [Tm, mul_add, add_mul, h]`. Use `split_ifs`. Rewrite using `[Algebra.commutes]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem qdet_semiconj {n : ℕ} (E E' : Fin n → Fin n → A) (R : A) (h : ∀ a b, R * E a b = E' a b * R) (u : ℂ) :
     R * qdet E u = qdet E' u * R := by
@@ -60,9 +60,9 @@ end Algebra
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart φ.1 (g * infGL E a y)) (oneL E a) (toL X) = fderiv ℝ (chart (fun x => φ.1 (x * infGL E a y)) g) (oneL E a) (toL (y.val * X * (y⁻¹).val))`. Establish `hd : DifferentiableAt ℝ (chart φ.1 g) (toL y.val)` using `(contDiffAt_chart φ.2 g (val_mem_invSet y)).differentiableAt (by simp)`. Establish `e1 : lmul (toL y.val) (oneL E a) = toL y.val` using `mul_one y.val`. Establish `e2 : rmul (toL y.val) (oneL E a) = toL y.val` using `one_mul y.val`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chart_mul, chart_rt_inf, fderiv_comp _ (by rw [e1]; exact hd) (lmul (toL y.val)).differentiableAt, fderiv_comp _ (by rw [e2]; exact hd) (rmul (toL y.val)).differentiableAt, e1, e2, ContinuousLinearMap.fderiv, ContinuousLinearMap.fderiv]`. Conclude with `congrArg (fun Z => fderiv ℝ (chart φ.1 g) (toL y.val) (toL Z)) (Units.inv_mul_cancel_right (y.val * X) y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_lie (y : GL (Fin a) (Cinf E)) (X : Matrix (Fin a) (Fin a) (Cinf E)) :
     rt E a (infGL E a y) * lie E a (toL X) = lie E a (toL (y.val * X * (y⁻¹).val)) * rt E a (infGL E a y) := by
@@ -81,7 +81,7 @@ theorem rt_lie (y : GL (Fin a) (Cinf E)) (X : Matrix (Fin a) (Fin a) (Cinf E)) :
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Unfold `atEmb coord`. Distinguish the cases in `hw : w = InfinitePlace.mk τ`. Apply the tactic sequence `subst hw; split_ifs <;> simp`. Simplify using `[Pi.single_eq_of_ne hw]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mul_atEmb (τ : E →+* ℂ) (x : Cinf E) (z : ℂ) : x * atEmb τ z = atEmb τ (coord τ x * z) := by
   classical
@@ -92,11 +92,11 @@ theorem mul_atEmb (τ : E →+* ℂ) (x : Cinf E) (z : ℂ) : x * atEmb τ z = a
   · simp [Pi.single_eq_of_ne hw]
 
 /- English proof (translation)
-Rewrite using `[lieS_apply, rt_lie]`. Use `congr 1`. Establish `e : y.val * Matrix.single i j (atEmb τ z) * (y⁻¹).val = ∑ k, ∑ l, Matrix.single k l (atEmb τ (coord τ (y.val k i) * coord τ ((y⁻¹).val j l) * z))`. Rewrite using `[Matrix.matrix_eq_sum_single (y.val * Matrix.single i j (atEmb τ z) * (y⁻¹).val)]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[← map_mul, ← mul_atEmb]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, mul_right_comm]`. Rewrite using `[e]`. Set `L : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] Module.End ℂ (Sm E a)` to `lie E a`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `key : ∀ f : Fin a → Fin a → Matrix (Fin a) (Fin a) (Cinf E), L (∑ k, ∑ l, f k l) = ∑ k, ∑ l, L (f k l)` using `fun f => by simp only [map_sum]`. Conclude with `key _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rt_lieS (y : GL (Fin a) (Cinf E)) (τ : E →+* ℂ) (i j : Fin a) (z : ℂ) :
     rt E a (infGL E a y) * lieS E a i j (atEmb τ z) =
@@ -118,11 +118,11 @@ theorem rt_lieS (y : GL (Fin a) (Cinf E)) (τ : E →+* ℂ) (i j : Fin a) (z : 
   exact key _
 
 /- English proof (translation)
-Rewrite using `[Eop, mul_smul_comm, mul_sub, mul_smul_comm, rt_lieS, rt_lieS, ← smul_mul_assoc, ← sub_mul, ← smul_mul_assoc]`. Use `congr 1`. Simplify using `only [Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Generalize the expression as in `coord τ (y.val k i) * coord τ ((y⁻¹).val j l) = c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Establish `hL : ∀ w : ℂ, lieS E a k l (atEmb τ w) = (w.re : ℂ) • lieS E a k l (atEmb τ 1) + (w.im : ℂ) • lieS E a k l (atEmb τ Complex.I)` using `fun w => by`. Rewrite using `[atEmb_eq τ w, map_add, map_smul, map_smul]`. Both sides reduce to the same expression. Rewrite using `[hL (c * 1), hL (c * Complex.I), Eop]`. Use `conv_rhs => rw [← Complex.re_add_im c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one, Complex.mul_I_re, Complex.mul_I_im, Complex.ofReal_neg]`. Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `((c.im : ℂ) / 2) * Complex.I_mul_I`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rt_Eop (y : GL (Fin a) (Cinf E)) (τ : E →+* ℂ) (i j : Fin a) :
     rt E a (infGL E a y) * Eop τ i j =
@@ -144,9 +144,9 @@ theorem rt_Eop (y : GL (Fin a) (Cinf E)) (τ : E →+* ℂ) (i j : Fin a) :
   · linear_combination ((c.im : ℂ) / 2) * Complex.I_mul_I
 
 /- English proof (translation)
-Introduce `E _ _ _ a τ u y`. Establish `h` using `qdet_semiconj _ _ _ (rt_Eop y τ) (u + ((a : ℂ) - 1) / 2)`. Establish `hQP : ((y⁻¹).val.map (coord τ)) * (y.val.map (coord τ)) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `qdet_ad _ (glRel_Eop τ) _ _ hQP (u + ((a : ℂ) - 1) / 2)`. Simplify using `only [Matrix.map_apply] at h2`. Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cap_commute_rt_infGL : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (τ : E →+* ℂ) (u : ℂ)
     (y : GL (Fin a) (Cinf E)), Commute (cap (a := a) τ u) (rt E a (infGL E a y)) := by

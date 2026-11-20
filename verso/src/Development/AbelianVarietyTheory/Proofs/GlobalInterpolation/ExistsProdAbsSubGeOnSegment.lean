@@ -6,21 +6,21 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Introduce `N x a δ hδ`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Conclude with `⟨a, le_rfl, by linarith, by simp⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `he : (2 : ℝ) < Real.exp 1` using `lt_trans (by norm_num) Real.exp_one_gt_d9`. Establish `he0 : (0 : ℝ) < Real.exp 1` using `by linarith`. Use `set m : ℝ := δ / (2 * Real.exp 1) with hm`. Establish `hm0 : 0 < m` using `by positivity`. Set `P : ℝ[X]` to `∏ i : Fin N, (C (Real.exp 1) * X + C ((a + δ / 2 - x i) / m))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlc : P.leadingCoeff = Real.exp 1 ^ N`. Simplify using `only [P, leadingCoeff_prod, leadingCoeff_linear he0.ne']`. Simplify using the standard rewrite rules. Establish `hdeg : P.degree ≤ N`. Establish `: P.degree = ∑ _i : Fin N, (1 : WithBot ℕ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P, degree_prod, degree_linear he0.ne']`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hb : ∀ t ∈ Set.Icc (-1 : ℝ) 1, |P.eval t| ≤ 1`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hcon (a + δ / 2 + δ / 2 * t) (by nlinarith [ht.1]) (by nlinarith [ht.2])`. Establish `h2 : |P.eval t| = (∏ i, |a + δ / 2 + δ / 2 * t - x i|) / m ^ N`. Simplify using `only [P, eval_prod, Finset.abs_prod]`. Establish `: ∀ i : Fin N, |eval t (C (Real.exp 1) * X + C ((a + δ / 2 - x i) / m))| = |a + δ / 2 + δ / 2 * t - x i| / m`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: eval t (C (Real.exp 1) * X + C ((a + δ / 2 - x i) / m)) = (a + δ / 2 + δ / 2 * t - x i) / m`. Simplify using `only [eval_add, eval_mul, eval_C, eval_X, hm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, abs_div, abs_of_pos hm0]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.prod_div_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[h2, div_le_one (by positivity)]`. Conclude with `h1.le`. Establish `h3` using `Polynomial.Chebyshev.leadingCoeff_le_of_forall_abs_le_one hdeg hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hlc]`. Establish `h4 : (2 : ℝ) ^ (N - 1) ≤ 2 ^ N` using `pow_le_pow_right₀ (by norm_num) (Nat.sub_le _ _)`. Establish `h5 : (2 : ℝ) ^ N < Real.exp 1 ^ N` using `pow_lt_pow_left₀ he (by norm_num) hN.ne'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_prod_abs_sub_ge_on_segment : ∀ (N : ℕ) (x : Fin N → ℝ) (a δ : ℝ), 0 < δ →
     ∃ r : ℝ, a ≤ r ∧ r ≤ a + δ ∧ (δ / (2 * Real.exp 1)) ^ N ≤ ∏ i, |r - x i| := by

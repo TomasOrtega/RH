@@ -21,7 +21,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 omit [NeZero N] in
 
 /- English proof (translation)
-Introduce `p hp` and use `exists_compactDualityHypotheses_gs S ιs _ p _ (Nat.prime_of_mem_primeFactors hp) rfl (mem_of_natCast_dvd_mem S hS (Nat.dvd_of_mem_primeFactors hp)) _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gsBaseCase : ∀ p ∈ N.primeFactors, ∃ U₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),
     CompactDualityHypotheses (gsFinFamily S ιs) (p ^ N.factorization p) (gsRoots S (p ^ N.factorization p))
@@ -37,7 +37,7 @@ variable (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDis
 include hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).bijective_compactDualityMap M hM h`.
+A detailed English derivation is pending.
 -/
 theorem poitouTate_duality_gs {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactDualityMap (gsFinFamily S ιs) (gsRoots S N) h (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M) :=
@@ -46,7 +46,7 @@ theorem poitouTate_duality_gs {r s : ℕ} (h : r + s = 3) :
 include hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).sha M hM`.
+A detailed English derivation is pending.
 -/
 theorem poitouTate_sha_gs :
     Finite (ptSha (gsFinFamily S ιs) M 1) ∧ Finite (ptSha (gsFinFamily S ιs) (dualRep (gsRoots S N) M) 2) ∧
@@ -57,7 +57,7 @@ theorem poitouTate_sha_gs :
 include hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).nineTerm M hM`.
+A detailed English derivation is pending.
 -/
 theorem poitouTate_nineTerm_gs :
     Function.Injective (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom ∧

@@ -59,9 +59,7 @@ def oneBlockForms {e r : ℕ} (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) :
   fun p ↦ Pi.single (oneBlockIndex e r p).2 ((om (oneBlockIndex e r p).1 : 𝓞 K) : K)
 
 /- English proof (translation)
-Establish `h : LinearIndependent ℚ (fun j : Fin m ↦ (Pi.single j (1 : ℚ) : Fin m → ℚ))`. Establish `e : (fun j : Fin m ↦ (Pi.single j (1 : ℚ) : Fin m → ℚ)) = ⇑(Pi.basisFun ℚ (Fin m))`. Use function extensionality and compare the values at `j`. Conclude with `(Pi.basisFun_apply _ _ j).symm`. Rewrite using `[e]`.
-
-Conclude with `(Pi.basisFun ℚ (Fin m)).linearIndependent`. Conclude with `h.restrict_scalars' ℤ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_int_single (m : ℕ) :
     LinearIndependent ℤ (fun j : Fin m ↦ (Pi.single j (1 : ℚ) : Fin m → ℚ)) := by
@@ -74,19 +72,19 @@ theorem linearIndependent_int_single (m : ℕ) :
   exact h.restrict_scalars' ℤ
 
 /- English proof (translation)
-Use `⟨linearIndependent_int_single _, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩ v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hx`. Use `⟨if j = i then 1 else 0, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, by rw [map_add, ha, hb, dotProduct_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩`. Introduce `φ hφ`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : ∀ j, ∃ a : ℤ, φ j = a`. Introduce `j`. Take `⟨a, ha⟩` from `hφ (Pi.single j 1) (Submodule.subset_span ⟨j, rfl⟩)`. Use `⟨Rat.ringOfIntegersEquiv a, ?_⟩` and prove the remaining obligations. Establish `h1 : φ ⬝ᵥ (Pi.single j 1 : Fin (r + 1) → ℚ) = φ j` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← ha]`. Use `(Rat.ringOfIntegersEquiv.symm_apply_apply a)` as an intermediate fact. Use `conv_lhs => rw [← this]`. Simplify using the standard rewrite rules. Use `choose a ha using hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsum : φ = ∑ j, a j • (Pi.single j (1 : ℚ) : Fin (r + 1) → ℚ)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, ha]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratStandard_isDualBasis (r : ℕ) :
     IsDualBasis (HermLattice.standard ℚ (r + 1)).lattice
@@ -127,11 +125,11 @@ theorem ratStandard_isDualBasis (r : ℕ) :
     exact Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Introduce `σ w _`. Express the relevant statement in the definitionally equal form `∏ _u : Unit, l2Norm (latticePoint _ σ w ()) = Real.sqrt (star w ⬝ᵥ ((1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) *ᵥ w)).re`. Rewrite using `[Fintype.prod_unique, l2Norm, one_mulVec]`. Use `congr 1`. Establish `h1 : ∀ p, latticePoint (fun j : Fin (r + 1) ↦ (Pi.single j (1 : ℚ) : Fin (r + 1) → ℚ)) σ w () p = w p`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `p`. Simplify using `[latticePoint, Pi.single_apply]`. Simplify using `only [h1]`. Rewrite using `[dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem ratStandard_latticeMetricAgrees (r : ℕ) :
     LatticeMetricAgrees (fun j : Fin (r + 1) ↦ (Pi.single j (1 : ℚ) : Fin (r + 1) → ℚ))
@@ -167,23 +165,21 @@ def ratDoubled (r : ℕ) : HermLattice ℚ (r + 1) where
   conj := fun _ ↦ by simp
 
 /- English proof (translation)
-Use `⟨?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `congrFun hg i` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩ v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨if j = i then 1 else 0, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, ha, hb, dotProduct_add]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩`. Introduce `φ hφ`. Establish `hj : ∀ j, ∃ a : ℤ, φ j = a / 2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨a, ha⟩` from `hφ (Pi.single j 2) (Submodule.subset_span ⟨j, rfl⟩)`. Use `⟨Rat.ringOfIntegersEquiv a, ?_⟩` and prove the remaining obligations. Establish `h1 : φ ⬝ᵥ (Pi.single j 2 : Fin (r + 1) → ℚ) = φ j * 2` using `by simp`. Establish `h2 : algebraMap (𝓞 ℚ) ℚ a = (Rat.ringOfIntegersEquiv a : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Rat.ringOfIntegersEquiv.symm_apply_apply a` as an intermediate fact. Use `conv_lhs => rw [← this]`. Simplify using the standard rewrite rules. Rewrite `ha` using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `choose a ha using hj`. Establish `hsum : φ = ∑ j, a j • (Pi.single j (1 / 2 : ℚ) : Fin (r + 1) → ℚ)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, ha, div_eq_mul_inv]`. Rewrite using `[hsum]`.
-
-Conclude with `Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratDoubled_isDualBasis (r : ℕ) :
     IsDualBasis (ratDoubled r).lattice
@@ -230,13 +226,13 @@ theorem ratDoubled_isDualBasis (r : ℕ) :
     exact Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Introduce `σ w _`. Express the relevant statement in the definitionally equal form `2 * ∏ _u : Unit, l2Norm (latticePoint _ σ w ()) = Real.sqrt (star w ⬝ᵥ ((1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) *ᵥ w)).re`. Establish `h1 : latticePoint (fun j : Fin (r + 1) ↦ (Pi.single j (1 / 2 : ℚ) : Fin (r + 1) → ℚ)) σ w () = fun p ↦ (1 / 2 : ℂ) * w p`. Use function extensionality and compare the values at `p`. Establish `h0 : σ (1 / 2) = 1 / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[eq_ratCast σ (1 / 2)]`. Evaluate the numerical expressions. Express the relevant statement in the definitionally equal form `∑ j, σ ((Pi.single p (1 / 2 : ℚ) : Fin (r + 1) → ℚ) j) * w j = _`. Rewrite using `[Finset.sum_eq_single p (fun j _ hj ↦ by simp [hj]) (by simp), Pi.single_eq_same, h0]`. Rewrite using `[Fintype.prod_unique, h1, vectorL2Norm_const_mul, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : l2Norm w = Real.sqrt (star w ⬝ᵥ w).re`. Rewrite using `[l2Norm]`. Use `congr 1`. Rewrite using `[dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ratDoubled_latticeMetricAgrees (r : ℕ) :
     LatticeMetricAgrees (fun j : Fin (r + 1) ↦ (Pi.single j (1 / 2 : ℚ) : Fin (r + 1) → ℚ))

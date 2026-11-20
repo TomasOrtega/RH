@@ -5,31 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW I hI σ hσ`. Use `haveI : Algebra.FiniteType (𝒜 0) A := (ft_holds O A 𝒜 x hW).1`. Set `p : A →ₗ[O] 𝒜 0` to `(DirectSum.component O ℤ (fun i => 𝒜 i) 0).comp (DirectSum.decomposeLinearEquiv 𝒜).toLinearMap`. Establish `hpa : ∀ a : A, p a = DirectSum.decompose 𝒜 a 0` using `fun a => rfl`. Establish `pz : ∀ {i : ℤ} {u : A}, u ∈ 𝒜 i → i ≠ 0 → p u = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i u hu hi`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hpa]`. Simplify using `using DirectSum.decompose_of_mem_ne 𝒜 hu hi`. Establish `ps : ∀ {u : A} (hu : u ∈ 𝒜 0), p u = ⟨u, hu⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hpa]`. Conclude with `DirectSum.decompose_of_mem_same 𝒜 hu`. Use `set J : Ideal A := I ⊔ Ideal.map (algebraMap (𝒜 0) A) (RingHom.ker σ) with hJ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hgen : ∀ c : 𝒜 0, σ c = 0 → ∀ a : A, σ (p (a * (c : A))) = 0`. Introduce `c hc a`. Proceed by induction on `a using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `homogeneous a`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hm : (a : A) * c ∈ 𝒜 (_ + 0)` using `SetLike.mul_mem_graded a.2 c.2`. Name the introduced variables `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Establish `hm' : (a : A) * c ∈ 𝒜 0` using `by simpa using hm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[ps hm', show (⟨(a : A) * c, hm'⟩ : 𝒜 0) = ⟨a, a.2⟩ * c from rfl, map_mul, hc, mul_zero]`. Rewrite using `[pz hm (by simpa using hi), map_zero]`. Consider the case `add u v hu hv => rw [add_mul, map_add, map_add, hu, hv, add_zero]`. Establish `hJ0 : ∀ y ∈ J, σ (p y) = 0`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.mp hy`. Use `clear hy`. Establish `h1 : σ (p u) = 0`. Apply `hσ` to reduce the goal to its premises. Rewrite using `[hpa]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `hI 0 hu`. Establish `h2 : ∀ a : A, σ (p (a * v)) = 0`. Unfold `Ideal.map at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨c, hc, rfl⟩` from `hw`. Conclude with `hgen c hc`. Consider the case `zero => simp`. Consider the case `add w w' _ _ hw hw'`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, map_add, map_add, hw, hw', add_zero]`. Consider the case `smul a' w _ hw`. Introduce `a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hw (a * a')`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `h2 1`. Rewrite `h3` using `[one_mul]`. Rewrite using `[map_add, map_add, h1, h3, add_zero]`. Take `⟨ξ, hξ1, hξ2, -⟩` from `ns_holds O (𝒜 0) A K σ J 1 (fun b hb => Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hb)) (by`. Introduce `b n hb hmem`.
-
-Apply `hb` to reduce the goal to its premises. Rewrite `hmem` using `[one_pow, mul_one]`. Use `hJ0 _ hmem` as an intermediate fact. Rewrite using `[show (algebraMap (𝒜 0) A b) = (b : A) from rfl, ps b.2] at this)` and apply the resulting hypothesis. Use `⟨ξ, fun u hu => hξ2 u (Ideal.mem_sup_left hu), ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `b`. Conclude with `hξ1 b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.tsp_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

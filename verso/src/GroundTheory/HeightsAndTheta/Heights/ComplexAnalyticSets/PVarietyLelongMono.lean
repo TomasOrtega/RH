@@ -13,11 +13,11 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `: Ring.KrullDimLE 0 (MvPolynomial (Fin n) ℂ ⧸ J)` using `Ring.krullDimLE_iff.2 (le_of_eq hdim)`. Establish `hmax : J.IsMaximal` using `Ideal.Quotient.maximal_of_isField _ Ring.KrullDimLE.isField_of_isDomain`. Take `⟨p, hp⟩` from `(MvPolynomial.isMaximal_iff_eq_vanishingIdeal_singleton (K := ℂ)).1 hmax`. Establish `hcoord : ∀ w ∈ zeroSetEuc J, ∀ i, w i = p i`. Introduce `w hw i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (X i - C (p i) : MvPolynomial (Fin n) ℂ) ∈ J`. Rewrite using `[hp, MvPolynomial.mem_vanishingIdeal_singleton_iff]`. Simplify using the standard rewrite rules. Use `hw _ hmem` as an intermediate fact. Simplify using `only [map_sub, eval_X, eval_C] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 this`. Introduce `y hy`. Use extensionality with `i`. Rewrite using `[hcoord y hy i, hcoord z hz i]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroSetEuc_subsingleton_of_dim_zero {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (hJ : J.IsPrime)
     (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ((0 : ℕ) : WithBot ℕ∞))
@@ -39,17 +39,17 @@ theorem zeroSetEuc_subsingleton_of_dim_zero {n : ℕ} (J : Ideal (MvPolynomial (
   rw [hcoord y hy i, hcoord z hz i]
 
 /- English proof (translation)
-Introduce `n d J hJ hdim z hz r s hr hrs`. Break down `d with _ | d` into its components or cases. Establish `hsub` using `zeroSetEuc_subsingleton_of_dim_zero J hJ hdim hz`. Establish `hpt : ∀ ρ : ℝ, 0 < ρ → zeroSetEuc J ∩ Metric.ball z ρ = {z}`. Introduce `ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => hsub y h.1`. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hz, Metric.mem_ball_self hρ⟩`. Rewrite using `[hpt r hr, hpt s (hr.trans_le hrs)]`. Simplify using `[Measure.hausdorffMeasure_zero_singleton]`. Take `⟨A, hA⟩` from `hN n (d + 1) J hdim`. Take `⟨c, hc, hWc⟩` from `hW d`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hball : ∀ ρ : ℝ, (fun x : Fin n → ℂ => WithLp.toLp 2 x) ⁻¹' Metric.ball z ρ = euclBall (WithLp.ofLp z) ρ`. Introduce `ρ`. Use extensionality with `y`. Rewrite using `[Set.mem_preimage, mem_euclBall_iff, Metric.mem_ball]`. Establish `hμ : ∀ ρ : ℝ, μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball z ρ) = ENNReal.ofReal (c * ∫ y, chartDens J A ((euclBall (WithLp.ofLp z) ρ).indicator fun _ => 1) (fun _ => euclPot) y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ρ`. Rewrite using `[← hball ρ]`. Conclude with `(hWc n J A hJ hdim hA _ measurableSet_ball Metric.isBounded_ball).2`. Establish `key` using `hM n d J A (WithLp.ofLp z) r s hJ hdim hA hr hrs`. Rewrite using `[hμ r, hμ s, ← ENNReal.ofReal_mul (pow_nonneg (hr.le.trans hrs) _), ← ENNReal.ofReal_mul (pow_nonneg hr.le _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem VarietyLelongMono.proof (hN : ComplexSets.LinearNoetherNormalization.Statement)
     (hW : VarWirtinger.Statement) (hM : VarLelongMono.Statement) : VarietyLelongMono.Statement := by

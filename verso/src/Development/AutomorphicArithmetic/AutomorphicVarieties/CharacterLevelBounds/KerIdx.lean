@@ -6,15 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Use `set K : Subgroup U := U'.subgroupOf U with hK`. Establish `hfi : K.FiniteIndex` using `⟨by rw [hK]; exact h0⟩`. Use `haveI : Finite (U ⧸ K) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI : Fintype (U ⧸ K) := Fintype.ofFinite _`. Use `⟨Finset.univ.image (fun q : U ⧸ K => ((Quotient.out q : U) : G)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx`. Take `⟨q, rfl⟩` from `hx`. Conclude with `(Quotient.out q).2`. Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, Subgroup.relIndex, ← hK, Subgroup.index]`. Introduce `u hu`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (⟨u, hu⟩ : U)`. Establish `hkU' : ((k : U) : G) ∈ U'` using `Subgroup.mem_subgroupOf.mp k.2`. Establish `hout : ((Quotient.out (QuotientGroup.mk (⟨u, hu⟩ : U) : U ⧸ K) : U) : G) ∈ Subgroup.closure ((Finset.univ.image (fun q : U ⧸ K => ((Quotient.out q : U) : G)) : Finset G) : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subgroup.subset_closure` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `heq : u = ((Quotient.out (QuotientGroup.mk (⟨u, hu⟩ : U) : U ⧸ K) : U) : G) * ((k : U) : G)⁻¹`. Use `congrArg (fun x : U => (x : G)) hk` as an intermediate fact. Simplify using `only [Subgroup.coe_mul] at this`.
-
-Rewrite using `[this]`. Use `group`. Rewrite using `[heq]`. Conclude with `Subgroup.mul_mem_sup hout (U'.inv_mem hkU')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_reps {G : Type} [Group G] (U' U : Subgroup G) (h0 : U'.relIndex U ≠ 0) :
     ∃ T : Finset G, (T : Set G) ⊆ U ∧ T.card ≤ U'.relIndex U ∧ U ≤ Subgroup.closure (T : Set G) ⊔ U' := by
@@ -45,9 +43,9 @@ private theorem exists_reps {G : Type} [Group G] (U' U : Subgroup G) (h0 : U'.re
     exact Subgroup.mul_mem_sup hout (U'.inv_mem hkU')
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ G _ _ _ θ hθ U' U h hab n hn hd`. Take `⟨T, hT, hc, hU⟩` from `exists_reps U' U (ne_zero_of_dvd_ne_zero hn hd)`. Establish `key` using `UpperTheory.V.Base.kerResAb O G (QO l O) (twist₂ l θ) hθ (UpperTheory.V.Base.qoFacts l O).1 (fun g => ⟨((θ g : Oˣ) : O), fun _ => rfl⟩) U' U h hab T hT (hU.trans (Subgroup.le_topologicalClosure _))`. Use `key.trans ?_` and prove the remaining obligations. Establish `: (T.card : ℕ∞) ≤ (n : ℕ∞)` using `by exact_mod_cast hc.trans (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.kerIdx :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* Oˣ), ContAction (twist₂ l θ) →

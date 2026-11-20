@@ -26,12 +26,12 @@ def halfMx (a : AE D) (m n : ℕ) : AddSubgroup (Mx D m n) where
     rw [mul_neg, hx i j]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_halfMx {a : AE D} {m n : ℕ} {t : Mx D m n} : t ∈ halfMx a m n ↔ IsHalf a t := Iff.rfl
 
 /- English proof (translation)
-Establish `: (halfMx a m n : Set (Mx D m n)) = ⋂ i, ⋂ j, {t : Mx D m n | a * t i j = t i j}`. Use extensionality with `t`. Simplify using `only [SetLike.mem_coe, mem_halfMx, IsHalf, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (continuous_const.mul ((continuous_apply j).comp (continuous_apply i))) ((continuous_apply j).comp (continuous_apply i))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_halfMx (a : AE D) (m n : ℕ) : IsClosed (halfMx a m n : Set (Mx D m n)) := by
   have : (halfMx a m n : Set (Mx D m n)) = ⋂ i, ⋂ j, {t : Mx D m n | a * t i j = t i j} := by
@@ -83,14 +83,14 @@ namespace GlobalTheory.HalfAverage
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, ht i _]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_mul {a : AE D} {m n k : ℕ} {t : Mx D m n} (ht : IsHalf a t) (M : Matrix (Fin n) (Fin k) (AE D)) :
     IsHalf a (HMul.hMul t M : Mx D m k) := fun i j => by
   simp only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, ht i _]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun k _ => by rw [mul_left_comm, ht k j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_isHalf {a : AE D} {m n : ℕ} {t : Mx D m n} (ht : IsHalf a t) (M : Matrix (Fin m) (Fin m) (AE D)) :
     IsHalf a (HMul.hMul M t : Mx D m n) := fun i j => by
@@ -107,7 +107,7 @@ theorem leftMul_coe (a : AE D) {m n : ℕ} (M : Matrix (Fin m) (Fin m) (AE D)) (
     (leftMul a M t : Mx D m n) = HMul.hMul M (t : Mx D m n) := rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem restEmb_add (V W : HSp D) {r : ℕ} (K : Matrix (Fin r) (Fin V.rank) D.host.E) (t t' : Mx D W.rank r) :
     restEmb V W K (t + t') = restEmb V W K t + restEmb V W K t' := Matrix.add_mul _ _ _

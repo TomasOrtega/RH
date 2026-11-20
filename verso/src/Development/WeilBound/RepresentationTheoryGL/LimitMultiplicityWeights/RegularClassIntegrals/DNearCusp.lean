@@ -13,21 +13,21 @@ noncomputable section
 namespace MainStatements.WeightKernel.Dec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW Cm c U hCm hc hU s`. Establish `hσ` using `sigma_sigma hCM`. Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (pre X s)` using `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ s.2`. Set `Cf : Set (GFin σ J)` to `(fun z : GAd σ J => projFin σ J z) '' Cm`. Establish `hCf : IsCompact Cf` using `hCm.image (continuous_projFin σ J)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Uf : Set (GFin σ J)` to `ofFin σ J ⁻¹' (U : Set (GAd σ J))`. Establish `hUf : Uf ∈ 𝓝 (1 : GFin σ J)` using `(hU.preimage (continuous_ofFin σ J)).mem_nhds (by simp only [Set.mem_preimage, map_one]; exact U.one_mem)`. Set `Wn : Set (GFin σ J)` to `{x | ∀ h ∈ Cf, h⁻¹ * x * h ∈ Uf}`. Establish `hWn : Wn ∈ 𝓝 (1 : GFin σ J)` using `conj_mem_nhds hCf hUf`. Take `⟨Q, hQ, hQm⟩` from `GlobalTheory.T.unipotent_radical_compact_fundamental_domain F E σ hCM n J hJ _ (pre X s) hC Wn hWn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M₁, hM₁, hM₁b⟩` from `GlobalTheory.T.torus_conjugate_unipotent_bounded F E σ hCM n J hJ r X Y hW Q c hQ hc s`. Take `⟨C₀, hC₀, hC₀b⟩` from `exists_bound_archMat (σ := σ) (J := J) hCm`. Use `⟨C₀ * M₁, mul_nonneg hC₀ hM₁, ?_⟩` and prove the remaining obligations. Introduce `t ht a ha k hk m hm`. Take `⟨γ, hγ, q, hqQ, hqU, hqW, rfl⟩` from `hQm m hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hγU : γ ∈ unipRad σ J (pre X s)`. Use `mul_mem hm (inv_mem hqU)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hfa : projFin σ J a = 1` using `mem_infPts.1 ha.1`. Use `⟨γ, ⟨hγ, hγU⟩, ofInf σ J (projInf σ J ((a * k)⁻¹ * q * (a * k))), ofFin σ J (projFin σ J ((a * k)⁻¹ * q * (a * k))), ⟨mem_infPts.2 (projFin_ofInf σ J _), ?_⟩, ?_, mem_finPts.2 (projInf_ofFin σ J _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w τ i j`. Establish `hN` using `hM₁b q hqQ hqU t ht a ha w τ`. Establish `ev : (a * k)⁻¹ * q * (a * k) = k⁻¹ * (a⁻¹ * q * a) * k` using `by group`. Establish `hB : archMat σ J τ (projArch σ J w k⁻¹) * archMat σ J τ (projArch σ J w k) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : archMat σ J τ (projArch σ J w (ofInf σ J (projInf σ J ((a * k)⁻¹ * q * (a * k))))) - 1 = archMat σ J τ (projArch σ J w k⁻¹) * (archMat σ J τ (projArch σ J w (a⁻¹ * q * a)) - 1) * archMat σ J τ (projArch σ J w k)`. Rewrite using `[projArch_ofInf, projInfArch_projInf, ev, map_mul (projArch σ J w) _ k, map_mul (projArch σ J w) k⁻¹, map_mul (archMat σ J τ), map_mul (archMat σ J τ), Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hB]`. Rewrite using `[key]`. Use `(GlobalTheory.CuspGeo.norm_mul_mul_apply_le _ _ _ _ hN i j).trans ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc C₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hC₀b k hk w τ i j) (div_nonneg hM₁ (ratio_pos ht s).le)`. Establish `hh : projFin σ J k ∈ Cf` using `⟨k, hk, rfl⟩`. Establish `e : projFin σ J ((a * k)⁻¹ * q * (a * k)) = (projFin σ J k)⁻¹ * projFin σ J q * projFin σ J k`. Simplify using `only [map_mul, map_inv, hfa, one_mul]`. Use `hqW _ hh` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← e]`. Conclude with `this`. Rewrite using `[mul_assoc (γ * (a * k)), ofInf_projInf_mul_ofFin_projFin] group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nearCusp : NearCusp := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW Cm c U hCm hc hU s

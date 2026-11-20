@@ -11,21 +11,21 @@ def killed (d : ℕ) [NeZero d] (s : ℕ) : Finset (ZMod d) :=
   Finset.univ.filter fun x => s • x = 0
 
 /- English proof (translation)
-Simplify using `[killed]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_killed {d : ℕ} [NeZero d] {s : ℕ} {x : ZMod d} : x ∈ killed d s ↔ s • x = 0 := by
   simp [killed]
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_ne_zero (NeZero.ne d)`. Establish `hs : 0 < s` using `Nat.pos_of_mul_pos_right (h ▸ hd)`. Establish `he : 0 < e` using `Nat.pos_of_mul_pos_left (h ▸ hd)`. Use extensionality with `x`. Rewrite using `[mem_killed, Finset.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : ((s * x.val : ℕ) : ZMod d) = 0`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ← nsmul_eq_mul, hx]`. Rewrite `h1` using `[ZMod.natCast_eq_zero_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : s * e ∣ s * x.val` using `by rw [h]; exact h1`. Take `⟨j, hj⟩` from `Nat.dvd_of_mul_dvd_mul_left hs h2`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_range]`. Establish `h3` using `ZMod.val_lt x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hj]`. Assume the negation of the conclusion as `hc`. Establish `: e * s ≤ e * j` using `Nat.mul_le_mul_left _ (not_lt.mp hc)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← hj, ZMod.natCast_zmod_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨j, -, rfl⟩`. Rewrite using `[nsmul_eq_mul, ← Nat.cast_mul, ← mul_assoc, h, Nat.cast_mul, ZMod.natCast_self, zero_mul]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 lemma killed_eq_image {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) :
     killed d s = (Finset.range s).image fun j => ((e * j : ℕ) : ZMod d) := by
@@ -53,7 +53,7 @@ lemma killed_eq_image {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) :
     rw [nsmul_eq_mul, ← Nat.cast_mul, ← mul_assoc, h, Nat.cast_mul, ZMod.natCast_self, zero_mul]
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_ne_zero (NeZero.ne d)`. Establish `he : 0 < e` using `Nat.pos_of_mul_pos_left (h ▸ hd)`. Apply `ZMod.val_cast_of_lt` to reduce the goal to its premises. Rewrite using `[← h, mul_comm s e]`. Conclude with `Nat.mul_lt_mul_of_pos_left hj he`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_mul {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) {j : ℕ} (hj : j < s) :
     ((e * j : ℕ) : ZMod d).val = e * j := by
@@ -64,9 +64,9 @@ lemma val_mul {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) {j : ℕ} (hj : j
   exact Nat.mul_lt_mul_of_pos_left hj he
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_ne_zero (NeZero.ne d)`. Establish `he : 0 < e` using `Nat.pos_of_mul_pos_left (h ▸ hd)`. Introduce `i hi j hj hij`. Establish `hi' : i < s` using `by simpa using hi`. Establish `hj' : j < s` using `by simpa using hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg ZMod.val hij` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[val_mul h hi', val_mul h hj']`. Conclude with `Nat.eq_of_mul_eq_mul_left he this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma injOn_mul {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) :
     Set.InjOn (fun j => ((e * j : ℕ) : ZMod d)) (Finset.range s : Set ℕ) := by
@@ -81,13 +81,13 @@ lemma injOn_mul {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) :
   exact Nat.eq_of_mul_eq_mul_left he this
 
 /- English proof (translation)
-Rewrite using `[killed_eq_image h, Finset.card_image_of_injOn (injOn_mul h), Finset.card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma card_killed {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) : (killed d s).card = s := by
   rw [killed_eq_image h, Finset.card_image_of_injOn (injOn_mul h), Finset.card_range]
 
 /- English proof (translation)
-Rewrite using `[killed_eq_image h, Finset.sum_image (injOn_mul h)]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[val_mul h (Finset.mem_range.mp hj), pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_killed {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) (q : ℕ) :
     ∑ x ∈ killed d s, q ^ x.val = ∑ j ∈ Finset.range s, (q ^ e) ^ j := by
@@ -96,13 +96,11 @@ lemma sum_killed {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) (q : ℕ) :
   rw [val_mul h (Finset.mem_range.mp hj), pow_mul]
 
 /- English proof (translation)
-Establish `hdvd : Nat.card H ∣ d`. Use `AddSubgroup.card_addSubgroup_dvd_card H` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `hdvd`. Establish `hsub : Finset.univ.filter (· ∈ H) ⊆ killed d (Nat.card H)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hy' : y ∈ H` using `(Finset.mem_filter.mp hy).2`. Rewrite using `[mem_killed]`. Establish `: Nat.card H • (⟨y, hy'⟩ : H) = 0` using `card_nsmul_eq_zero'`. Conclude with `congrArg Subtype.val this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (Finset.univ.filter (· ∈ H)).card = Nat.card H`. Rewrite using `[← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun y => by simp)`. Use `Finset.eq_of_subset_of_card_le hsub (by rw [hc, card_killed he.symm])` as an intermediate fact. Rewrite using `[← this]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mem_iff_mem_killed {d : ℕ} [NeZero d] (H : AddSubgroup (ZMod d)) (x : ZMod d) :
     x ∈ H ↔ x ∈ killed d (Nat.card H) := by
@@ -125,7 +123,7 @@ lemma mem_iff_mem_killed {d : ℕ} [NeZero d] (H : AddSubgroup (ZMod d)) (x : ZM
   simp
 
 /- English proof (translation)
-Establish `h1 : q ^ d ≡ 1 [MOD q ^ d - 1]` using `((Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ hq)).mpr dvd_rfl).symm`. Use `conv_rhs => rw [← Nat.mod_add_div m d, pow_add, pow_mul]`. Use `(h1.pow (m / d)).mul_left (q ^ (m % d))` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma pow_mod_modEq (q d m : ℕ) (hq : 1 ≤ q) : q ^ (m % d) ≡ q ^ m [MOD q ^ d - 1] := by
   have h1 : q ^ d ≡ 1 [MOD q ^ d - 1] :=
@@ -135,7 +133,7 @@ lemma pow_mod_modEq (q d m : ℕ) (hq : 1 ≤ q) : q ^ (m % d) ≡ q ^ m [MOD q 
   simpa using this.symm
 
 /- English proof (translation)
-Rewrite using `[Finset.vadd_finset_def, Finset.sum_image (fun x _ y _ hxy => by simpa using hxy), Finset.sum_mul]`. Use `Nat.ModEq.sum fun x _ => ?_` and prove the remaining obligations. Rewrite using `[vadd_eq_add, ZMod.val_add, ← pow_add, add_comm]`. Conclude with `(pow_mod_modEq q d _ hq).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_vadd_modEq {d : ℕ} [NeZero d] (q : ℕ) (hq : 1 ≤ q) (g : ZMod d) (I : Finset (ZMod d)) :
     (∑ x ∈ I, q ^ x.val) * q ^ g.val ≡ ∑ x ∈ g +ᵥ I, q ^ x.val [MOD q ^ d - 1] := by
@@ -146,9 +144,9 @@ lemma sum_vadd_modEq {d : ℕ} [NeZero d] (q : ℕ) (hq : 1 ≤ q) (g : ZMod d) 
   exact (pow_mod_modEq q d _ hq).symm
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Finset.mem_vadd_finset.mp hy`. Establish `hz' : z +ᵥ I = I` using `(mem_iff_mem_killed _ z).mpr hz`. Establish `: z +ᵥ x ∈ z +ᵥ I` using `Finset.vadd_mem_vadd_finset hx`. Rewrite `this` using `[hz']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[add_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma vadd_killed_subset {d : ℕ} [NeZero d] (I : Finset (ZMod d)) {x : ZMod d} (hx : x ∈ I) :
     x +ᵥ killed d (Nat.card (AddAction.stabilizer (ZMod d) I)) ⊆ I := by
@@ -160,7 +158,7 @@ lemma vadd_killed_subset {d : ℕ} [NeZero d] (I : Finset (ZMod d)) {x : ZMod d}
   simpa [add_comm] using this
 
 /- English proof (translation)
-Use `AddSubgroup.card_addSubgroup_dvd_card (AddAction.stabilizer (ZMod d) I)` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma card_stabilizer_dvd {d : ℕ} [NeZero d] (I : Finset (ZMod d)) :
     Nat.card (AddAction.stabilizer (ZMod d) I) ∣ d := by
@@ -168,11 +166,11 @@ lemma card_stabilizer_dvd {d : ℕ} [NeZero d] (I : Finset (ZMod d)) :
   rwa [Nat.card_zmod] at this
 
 /- English proof (translation)
-Take `⟨e', he'⟩` from `card_stabilizer_dvd (killed d s)`. Establish `h1 : killed d s ⊆ killed d (Nat.card (AddAction.stabilizer (ZMod d) (killed d s)))`. Introduce `y hy`. Rewrite using `[← mem_iff_mem_killed, AddAction.mem_stabilizer_iff]`. Use `Finset.eq_of_subset_of_card_le ?_ (by rw [Finset.card_vadd_finset])` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `Finset.mem_vadd_finset.mp hz`. Rewrite `*` using `[mem_killed]`. Rewrite using `[vadd_eq_add, nsmul_add, hy, hw, add_zero]`. Establish `h2` using `vadd_killed_subset (killed d s) (x := 0) (by simp [mem_killed])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Finset.card_le_card h1`. Establish `h4` using `Finset.card_le_card h2`. Rewrite `h4` using `[Finset.card_vadd_finset]`. Rewrite `h3`, `h4` using `[card_killed h, card_killed he'.symm]`. Conclude with `dvd_of_eq (le_antisymm h3 h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_card_stabilizer_killed {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d) :
     s ∣ Nat.card (AddAction.stabilizer (ZMod d) (killed d s)) := by
@@ -193,15 +191,13 @@ lemma le_card_stabilizer_killed {d : ℕ} [NeZero d] {s e : ℕ} (h : s * e = d)
   exact dvd_of_eq (le_antisymm h3 h4)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (ZMod.val : ZMod d → ℕ)` using `ZMod.val_injective d`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun I _ => I.image ZMod.val) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `I hI`. Rewrite using `[Finset.mem_powersetCard, Finset.card_image_of_injective _ hinj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y hy => ?_, (Finset.mem_filter.mp hI).2⟩` and prove the remaining obligations. Take `⟨x, -, rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `Finset.mem_range.mpr (ZMod.val_lt x)`. Introduce `I _ J _ hIJ`. Conclude with `Finset.image_injective hinj hIJ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `J hJ`. Rewrite `hJ` using `[Finset.mem_powersetCard]`. Establish `hJ' : (J.image (fun n : ℕ => (n : ZMod d))).image ZMod.val = J`. Rewrite using `[Finset.image_image]`. Use `(Finset.image_congr (g := id) fun n hn => ?_).trans Finset.image_id` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ZMod.val_cast_of_lt (Finset.mem_range.mp (hJ.1 hn))`. Use `⟨J.image (fun n : ℕ => (n : ZMod d)), ?_, hJ'⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.card_image_of_injective _ hinj, hJ', hJ.2]`.
-
-Introduce `I _`. Rewrite using `[Finset.sum_image fun x _ y _ h => hinj h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_finset_zmod {d : ℕ} [NeZero d] (s : ℕ) (f : ℕ → ℤ) (q : ℕ) :
     ∑ I : Finset (ZMod d), (if I.card = s then f (∑ x ∈ I, q ^ x.val) else 0)
@@ -230,11 +226,11 @@ lemma sum_finset_zmod {d : ℕ} [NeZero d] (s : ℕ) (f : ℕ → ℤ) (q : ℕ)
     rw [Finset.sum_image fun x _ y _ h => hinj h]
 
 /- English proof (translation)
-Establish `he : 0 < e` using `Nat.pos_of_mul_pos_left (h ▸ hd)`. Establish `hqe : 2 ≤ q ^ e` using `le_trans hq (Nat.le_self_pow he.ne' q)`. Take `⟨m, hm⟩ : ∃ m, q ^ e = m + 1` from `⟨q ^ e - 1, by omega⟩`. Establish `hm0 : 0 < m` using `by omega`. Establish `hg` using `geom_sum_mul_add m s`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : q ^ d - 1 = (∑ j ∈ Finset.range s, (m + 1) ^ j) * m`. Rewrite using `[← h, mul_comm s e, pow_mul, hm, ← hg]`. Simplify using the standard rewrite rules. Rewrite `hl` using `[hN, hm]`. Establish `h2` using `(Nat.modEq_iff_dvd' (by nlinarith)).mp hl.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : l * (m + 1) - l = l * m` using `by rw [mul_add]; omega`. Rewrite `h2` using `[h3]`. Take `⟨k, hk⟩` from `Nat.dvd_of_mul_dvd_mul_right hm0 h2`. Conclude with `⟨k, by rw [hm, hk, mul_comm]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_eq_mul_geom {q d s e l : ℕ} (hq : 2 ≤ q) (hd : 0 < d) (h : s * e = d)
     (hl : l * q ^ e ≡ l [MOD q ^ d - 1]) :
@@ -258,39 +254,37 @@ end PeriodDvd
 open PeriodDvd in
 
 /- English proof (translation)
-Use `haveI : NeZero d := ⟨hd.ne'⟩`. Establish `hq1 : 1 ≤ q` using `by omega`. Proceed by induction on `s using Nat.strong_induction_on generalizing e l with`. Consider the case `_ s ih`. Establish `hs : 0 < s` using `Nat.pos_of_mul_pos_right (hse ▸ hd)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_eq_mul_geom hq hd hse hl`. Rewrite `hk` using `[← sum_killed hse]`. Use `set h : Finset (ZMod d) → ℤ := fun I => if I.card = s then a (k * ∑ x ∈ I, q ^ x.val) else 0 with hh`. Establish `hmod : ∀ (g : ZMod d) (I : Finset (ZMod d)), (k * ∑ x ∈ I, q ^ x.val) * q ^ g.val ≡ k * ∑ x ∈ g +ᵥ I, q ^ x.val [MOD q ^ d - 1]`. Introduce `g I`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `(sum_vadd_modEq q hq1 g I).mul_left k`. Establish `hhinv : ∀ (g : ZMod d) (I : Finset (ZMod d)), h (g +ᵥ I) = h I`. Introduce `g I`. Simplify using `only [hh, Finset.card_vadd_finset]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv _ _ _ (hmod g I)]`. Establish `htot : (d : ℤ) ∣ ∑ I, h I`. Use `sum_finset_zmod (d := d) s (fun n => a (k * n)) q` as an intermediate fact. Rewrite using `[hh, this]`. Conclude with `hsum k s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set O := AddAction.orbit (ZMod d) (killed d s) with hO`. Establish `hoff : (d : ℤ) ∣ ∑ I, (if I ∈ O then 0 else h I)`. Use `card_dvd_sum_of_invariant_of_card_stabilizer_dvd (ZMod d) (Finset (ZMod d)) (fun I => if I ∈ O then 0 else h I) ?_ ?_` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Then use the resulting hypothesis. Introduce `g I`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: g +ᵥ I ∈ O ↔ I ∈ O`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `AddAction.mem_orbit_of_mem_orbit (-g) hg` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `fun hI => AddAction.mem_orbit_of_mem_orbit g hI`. Simplify using `only [this, hhinv]`. Introduce `I`. Distinguish the cases in `hI : I ∈ O`. Simplify using `[hI]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hI, if_false]`. Distinguish the cases in `hc : I.card = s`. Use `swap`. Simplify using `[hh, hc]`. Take `⟨x, hx⟩ : I.Nonempty` from `Finset.card_pos.mp (hc ▸ hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Take `⟨e', he'⟩` from `card_stabilizer_dvd I`. Establish `hsub` using `vadd_killed_subset I hx`. Establish `hle` using `Finset.card_le_card hsub`. Rewrite `hle` using `[Finset.card_vadd_finset, card_killed he'.symm, hc]`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hh, hc, if_true]`. Use `ih _ hlt e' _ he'.symm ?_` and prove the remaining obligations. Establish `hmem : (e' : ZMod d) +ᵥ I = I`. Use `(mem_iff_mem_killed (AddAction.stabilizer (ZMod d) I) _).mpr ?_` and prove the remaining obligations. Rewrite using `[mem_killed, nsmul_eq_mul, ← Nat.cast_mul, ← he', ZMod.natCast_self]`.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hmod (e' : ZMod d) I`. Rewrite `h1` using `[hmem, ZMod.val_natCast]`. Conclude with `((pow_mod_modEq q d e' hq1).mul_left _).symm.trans h1`. It suffices to derive a contradiction. Apply `hI` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsub` using `[heq]`. Use `Finset.eq_of_subset_of_card_le hsub (by rw [Finset.card_vadd_finset, card_killed hse, hc])` as an intermediate fact. Conclude with `⟨x, this⟩`. Establish `hon : ∑ I, (if I ∈ O then h I else 0) = (Nat.card O : ℤ) * a l`. Rewrite using `[← Finset.sum_filter, Finset.sum_congr rfl (g := fun _ => a l), Finset.sum_const, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun y => by simp)`. Introduce `I hI`. Take `⟨g, rfl⟩ : I ∈ O` from `(Finset.mem_filter.mp hI).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `h (g +ᵥ killed d s) = _`. Rewrite using `[hhinv]`. Simplify using `only [hh, card_killed hse, if_true, hk]`. Establish `hsplit : ∑ I, h I = ∑ I, (if I ∈ O then h I else 0) + ∑ I, (if I ∈ O then 0 else h I)`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `htot` using `[hsplit, hon]`. Establish `h1 : (d : ℤ) ∣ (Nat.card O : ℤ) * a l` using `(dvd_add_left hoff).mp htot`. Establish `hG : d = Nat.card O * Nat.card (AddAction.stabilizer (ZMod d) (killed d s))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hO, Nat.card_congr (AddAction.orbitEquivQuotientStabilizer (ZMod d) (killed d s)), ← AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup, Nat.card_zmod]`. Establish `hO0 : (Nat.card O : ℤ) ≠ 0`. Introduce `h0`. Establish `: Nat.card O = 0` using `by exact_mod_cast h0`. Rewrite `hG` using `[this, zero_mul]`.
-
-Use linear arithmetic over natural numbers and integers. Establish `h2 : (Nat.card O : ℤ) * (Nat.card (AddAction.stabilizer (ZMod d) (killed d s)) : ℤ) ∣ (Nat.card O : ℤ) * a l`. Rewrite using `[← Nat.cast_mul, ← hG]`. Conclude with `h1`. Conclude with `(Int.natCast_dvd_natCast.mpr (le_card_stabilizer_killed hse)).trans ((mul_dvd_mul_iff_left hO0).mp h2)`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_period_of_dvd_sum_powersetCard (q d : ℕ) (a : ℕ → ℤ) (hq : 2 ≤ q) (hd : 0 < d)
     (hinv : ∀ k l i : ℕ, k * q ^ i ≡ l [MOD q ^ d - 1] → a k = a l)

@@ -5,9 +5,9 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Rewrite using `[Subgroup.strictPeriods_eq_zmultiples_one_of_T_mem]`. Conclude with `AddSubgroup.mem_zmultiples 1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ModularGroup.T ∈ Gamma1 N`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ModularGroup.T]`. Use `show ModularGroup.T ∈ Gamma0 l`. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Simplify using `[ModularGroup.T]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_strictPeriods_lev (N l : ℕ) :
     (1 : ℝ) ∈ ((lev N l : Subgroup SL(2, ℤ)) : Subgroup (GL (Fin 2) ℝ)).strictPeriods := by
@@ -22,7 +22,7 @@ theorem one_mem_strictPeriods_lev (N l : ℕ) :
       simp [ModularGroup.T]
 
 /- English proof (translation)
-Introduce `N l k _ f τ`. Establish `h1` using `one_mem_strictPeriods_lev N l`. Use `haveI : Fact (IsCusp OnePoint.infty ((lev N l : Subgroup SL(2, ℤ)) : Subgroup (GL (Fin 2) ℝ))) := ⟨Subgroup.isCusp_of_mem_strictPeriods one_pos h1⟩`. Conclude with `ModularForm.hasSum_qExpansion f one_pos h1 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev_hasSum_coef : ∀ (N l : ℕ) (k : ℤ), 0 < N → ∀ (f : ModularForm (lev N l) k) (τ : ℍ),
     HasSum (fun m => coef ⇑f m • Function.Periodic.qParam 1 τ ^ m) (f τ) := by

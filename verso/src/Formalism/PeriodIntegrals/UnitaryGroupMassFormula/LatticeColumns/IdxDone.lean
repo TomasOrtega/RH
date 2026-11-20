@@ -7,7 +7,7 @@ namespace PIW.MassDataColumns
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge Formalism.L2.SG.TypedSets
 
 /- English proof (translation)
-The claim follows from `idxProdH_of level_components_surjective level_membership_local`.
+A detailed English derivation is pending.
 -/
 theorem global_index_eq_prod_local : IdxProdH := idxProdH_of level_components_surjective level_membership_local
 
@@ -17,14 +17,14 @@ def LocRedRest : Prop :=
       MassDataIdxSteps.StResZ X p ∧ HLatGL X u p ∧ HImU X hb u p
 
 /- English proof (translation)
-The claim follows from `locRedH_of fun X hb hK u hT hL p => ⟨(h X hb hK u hT hL p).1, (h X hb hK u hT hL p).2.1, hKerIn_of_levelSubgroupCharacter_of_normalized X hb hK hL u p, (h X hb hK u hT hL p).2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem locRedH_of_rest (h : LocRedRest) : LocRedH :=
   locRedH_of fun X hb hK u hT hL p =>
     ⟨(h X hb hK u hT hL p).1, (h X hb hK u hT hL p).2.1, hKerIn_of_levelSubgroupCharacter_of_normalized X hb hK hL u p, (h X hb hK u hT hL p).2.2⟩
 
 /- English proof (translation)
-The claim follows from `idxCountStep_of global_index_eq_prod_local (locRedH_of_rest h)`.
+A detailed English derivation is pending.
 -/
 theorem idxCountStep_of_rest (h : LocRedRest) : IdxCountStep :=
   idxCountStep_of global_index_eq_prod_local (locRedH_of_rest h)

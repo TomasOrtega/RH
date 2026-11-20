@@ -20,7 +20,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [invApply, _root_.mul_inv_rev, Subgroup.coe_mul, Pi.mul_apply, Units.val_mul, Matrix.mulVec_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem invApply_mul {h : HermitianForm F E W} {v : Basis ι E W} (a b : archUnitary h v)
     (y : InfinitePlace E → ι → ℂ) : invApply (a * b) y = invApply b (invApply a y) := by
@@ -31,7 +31,7 @@ theorem invApply_mul {h : HermitianForm F E W} {v : Basis ι E W} (a b : archUni
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `funext fun w => mem_vecFixGroup.1 (inv_mem hx) w`.
+A detailed English derivation is pending.
 -/
 theorem invApply_of_mem_vecFixGroup {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W}
     {x : archUnitary h v} (hx : x ∈ vecFixGroup h v x₀) : invApply x (vecAt v x₀) = vecAt v x₀ :=
@@ -40,9 +40,9 @@ theorem invApply_of_mem_vecFixGroup {h : HermitianForm F E W} {v : Basis ι E W}
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Unfold `Majorant.len`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hk'` using `inv_mem hk`. Rewrite `hk'` using `[Majorant.stab, Subgroup.mem_subgroupOf]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA` using `mem_unitaryGroupMatrix.1 ((Subgroup.mem_pi _).1 hk' w (Set.mem_univ w))`. Use `set A : Matrix ι ι ℂ := (((k⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) with hA_def`. Establish `hA' : Aᴴ * M.P w * A = M.P w` using `hA`. Simplify using `only [invApply]`. Rewrite using `[← hA_def, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_invApply_of_mem_stab {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     {k : archUnitary h v} (hk : k ∈ M.stab) (y : InfinitePlace E → ι → ℂ) :
@@ -63,7 +63,7 @@ theorem len_invApply_of_mem_stab {h : HermitianForm F E W} {v : Basis ι E W} (M
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Establish `e` using `archEmbed_smul_vecAt h v (γ : h.unitaryGroup) x₀`. Rewrite `e` using `[show (γ : h.unitaryGroup) • x₀ = x₀ from MulAction.mem_stabilizer_iff.1 hγ]`. Conclude with `fun w => congrFun e w`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vecStabGroup_le_vecFixGroup [NumberField F] [IsTotallyReal F] [IsTotallyComplex E]
     (h : HermitianForm F E W) (v : Basis ι E W) (La : AddSubgroup W) (x₀ : W) :
@@ -74,7 +74,7 @@ theorem vecStabGroup_le_vecFixGroup [NumberField F] [IsTotallyReal F] [IsTotally
   exact fun w => congrFun e w
 
 /- English proof (translation)
-Rewrite using `[ae_all_iff]`. Introduce `w`. Establish `h0 : volume ((fun b : κ → ℂ => b w) ⁻¹' {0}) = 0` using `Measure.pi_eval_preimage_null _ (measure_singleton 0)`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with b hb`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_forall_ne_zero (κ : Type*) [Fintype κ] : ∀ᵐ b : κ → ℂ, ∀ w, b w ≠ 0 := by
   rw [ae_all_iff]
@@ -85,23 +85,21 @@ theorem ae_forall_ne_zero (κ : Type*) [Fintype κ] : ∀ᵐ b : κ → ℂ, ∀
   exact hb
 
 /- English proof (translation)
-Introduce `M μ _ D La x₀ hLa hx₀ hne hiso`. Take `⟨ν, κ, τ, hν, -, hκ, hτm, hτ, hμ⟩` from `h₂ M μ x₀ hne hiso`. Take `⟨FD₀, hFD₀, h0, htop⟩` from `h₃ D La x₀ hLa hx₀ hne hiso ν hν`. Use `⟨ν FD₀, h0, htop, fun FD hFD t ht => ?_⟩` and prove the remaining obligations. Use `set y₀ := vecAt v x₀ with hy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set wt : (InfinitePlace E → ℂ) → ℝ≥0∞ := fun b => ∏ w, ‖b w‖ₑ ^ (2 * (finrank E W - 2)) with hwt`. Use `set S := {g : archUnitary h v | M.len (invApply g y₀) < t} with hS_def`. Use `set T := {b : InfinitePlace E → ℂ | M.len (fun w => b w • y₀ w) < t} with hT_def`. Establish `hS : MeasurableSet S` using `measurableSet_below M y₀ t`. Establish `: SecondCountableTopology (vecStabGroup h v La x₀)` using `TopologicalSpace.Subtype.secondCountableTopology _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: DiscreteTopology (vecStabGroup h v La x₀)`. Use `ArchLatticeDiscrete.proof h v La hLa.isLattice` as an intermediate fact. Establish `hle : vecStabGroup h v La x₀ ≤ archLatticeGroup h v La`. Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨(γ : h.unitaryGroup), γ.2, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`. Establish `: Countable (vecStabGroup h v La x₀)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `s : (InfinitePlace E → ℂ) × M.stab → archUnitary h v` to `fun y => τ y.1 * y.2`. Establish `hwtm : Measurable wt` using `Finset.measurable_prod _ fun w _ => (measurable_pi_apply w).enorm.pow_const _`. Establish `hsm' : Measurable s` using `(hτm.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : Measurable fun p : vecFixGroup h v x₀ × ((InfinitePlace E → ℂ) × M.stab) => (p.1 : archUnitary h v) * s p.2` using `(measurable_subtype_coe.comp measurable_fst).mul (hsm'.comp measurable_snd)`. Establish `hform : ∀ f : archUnitary h v → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μ = ∫⁻ y, ∫⁻ x, f (x * s y) ∂ν ∂((volume.withDensity wt).prod κ)`. Introduce `f hf`. Establish `hin : Measurable fun y => ∫⁻ x : vecFixGroup h v x₀, f (x * s y) ∂ν` using `(hf.comp hsm).lintegral_prod_left'`. Rewrite using `[hμ f hf, lintegral_prod _ hin.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hwtm hin.lintegral_prod_right']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hf : Measurable (S.indicator (1 : archUnitary h v → ℝ≥0∞))` using `measurable_one.indicator hS`. Establish `hinv : ∀ x : vecFixGroup h v x₀, ∀ g, S.indicator (1 : archUnitary h v → ℝ≥0∞) (x * g) = S.indicator 1 g`. Introduce `x g`. Establish `hx : invApply (x : archUnitary h v) y₀ = y₀` using `invApply_of_mem_vecFixGroup x.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [hS_def, Set.indicator_apply, Set.mem_ofPred_eq, invApply_mul, hx, Pi.one_apply]`. Establish `key` using `h₁ M μ (vecFixGroup h v x₀) ν ((volume.withDensity wt).prod κ) s hsm hform (vecStabGroup h v La x₀) (vecStabGroup_le_vecFixGroup h v La x₀) FD FD₀ hFD hFD₀ _ hf hinv`. Rewrite using `[Set.inter_comm, ← Measure.restrict_apply hS, ← lintegral_indicator_one hS, key]`. Use `congr 1`. Establish `hmS : Measurable fun y => S.indicator (1 : archUnitary h v → ℝ≥0∞) (s y)` using `hf.comp hsm'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_prod _ hmS.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hwtm hmS.lintegral_prod_right']`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_forall_ne_zero (InfinitePlace E)] with b hb`. Establish `hk : ∀ k : M.stab, S.indicator (1 : archUnitary h v → ℝ≥0∞) (s (b, k)) = T.indicator 1 b`. Introduce `k`.
-
-Simplify using `only [s, Set.indicator_apply, hS_def, hT_def, Set.mem_ofPred_eq, invApply_mul, hτ b hb, len_invApply_of_mem_stab M k.2, Pi.one_apply]`. Simplify using `only [Pi.mul_apply, hk, lintegral_const, measure_univ, mul_one]`. Distinguish the cases in `hbT : b ∈ T`. Simplify using `[Set.indicator_of_mem hbT]`. Simplify using `[Set.indicator_of_notMem hbT]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UnfoldingTorus.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : ∀ M : Majorant h v,

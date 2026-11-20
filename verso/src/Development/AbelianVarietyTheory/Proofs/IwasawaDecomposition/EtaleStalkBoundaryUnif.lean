@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.ChartTrait
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X R _ _ _ ξ t m P hR _ _ hT W _ _ _ hW ϖ hϖ f tW mW PW hχ be _ hmon`. Distinguish the cases in `hf : IsLocalHom f`. Take `⟨e, he⟩` from `GlobalTheory.ChartCentre.exists_equiv_formAt X ξ t m P hR hT W hW ϖ hϖ (spMap f ≫ ξ) tW mW PW hχ be hmon W hW (RingHom.id W) f Function.injective_id inferInstance hf (by rw [← Category.assoc, GlobalTheory.Ex.UnifModel.spMap_comp (d := f) fun _ => rfl])`. Conclude with `⟨e.toLinearMap, e.surjective, he⟩`. Take `⟨ρ, hρ, hc⟩` from `GlobalTheory.FarTrait.exists_quot_coord X ξ t m P hR hT hW f hf (fun p => hχ ⟨p, rfl⟩) tW mW PW`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ, hρ, fun y => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(GlobalTheory.PeriodFormCompare.exists_psiCoord_iff P.D.toPre y).2 (GlobalTheory.PeriodFormCompare.psiIn_top P.D y)`. Take `⟨u, n, hn, hcW⟩` from `hmon (ρ y)`. Use `⟨r, n 0, hr, by simpa using hn 0, (hc y r _ hr hcW).trans ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `associated_unit_mul_left _ _ u.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem exists_surjective_formAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X : GMod Xo c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X.X) (t : SAB H (Sp R)), SABMap t X.t ξ → ∀ (P : PELUnif (maximalIdeal R) t), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (f : R →+* W) (tW : SAB H (Sp W)), SABMap tW X.t (spMap f ≫ ξ) → ∀ (PW : PELUnif (maximalIdeal W) tW), Set.range (jK W ≫ spMap f ≫ ξ) ⊆ Set.range X.j → ∀ be ∈ levelForms H 1 PW.D.toPre.X, IsMonomial PW.D.toPre ![ϖ] ![be] → ∃ e : P.D.toPre.X →ₗ[𝓞 E] PW.D.toPre.X, Function.Surjective e ∧ FormAt P.D.toPre f ϖ (be.compl₁₂ e.toAddMonoidHom.toIntLinearMap e.toAddMonoidHom.toIntLinearMap) := by
   intro E _ _ _ H D l Xo c X R _ _ _ ξ t m P hR _ _ hT W _ _ _ hW ϖ hϖ f tW mW PW hχ be _ hmon

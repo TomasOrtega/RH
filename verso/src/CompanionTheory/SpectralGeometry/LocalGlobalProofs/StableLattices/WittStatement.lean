@@ -12,19 +12,19 @@ variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Mod
   {s : L →+* L} {h : V → V → L} {δ : L} {l : ℕ}
 
 /- English proof (translation)
-Simplify using `using hh.2.1 0 x 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_zero_right (hh : IsHerm s h) (x : V) : h x 0 = 0 := by
   simpa using hh.2.1 0 x 0
 
 /- English proof (translation)
-Rewrite using `[hh.2.2.1 x 0, h_zero_right hh, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_zero_left (hh : IsHerm s h) (x : V) : h 0 x = 0 := by
   rw [hh.2.2.1 x 0, h_zero_right hh, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using h_zero_right hh x`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hh.1, hh.2.1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem h_sum_right (hh : IsHerm s h) {ι : Type} (t : Finset ι) (x : V) (c : ι → L) (v : ι → V) :
     h x (∑ i ∈ t, c i • v i) = ∑ i ∈ t, c i * h x (v i) := by
@@ -48,7 +48,7 @@ theorem pairMap_apply (e f : Fin l → V) (p : (Fin l → L) × (Fin l → L)) :
     pairMap e f p = ∑ i, p.1 i • e i + ∑ i, p.2 i • f i := rfl
 
 /- English proof (translation)
-Rewrite using `[pairMap_apply, hh.1, h_sum_right hh, h_sum_right hh]`. Simplify using `[he, hef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_e (hh : IsHerm s h) {e f : Fin l → V} (he : ∀ i j, h (e i) (e j) = 0)
     (hef : ∀ i j, h (e i) (f j) = if i = j then δ else 0) (j : Fin l)
@@ -57,9 +57,9 @@ theorem pair_e (hh : IsHerm s h) {e f : Fin l → V} (he : ∀ i j, h (e i) (e j
   simp [he, hef]
 
 /- English proof (translation)
-Establish `hfe : ∀ i, h (f j) (e i) = if i = j then s δ else 0`. Introduce `i`. Rewrite using `[hh.2.2.1 (e i) (f j), hef]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[pairMap_apply, hh.1, h_sum_right hh, h_sum_right hh]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hf, hfe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_f (hh : IsHerm s h) {e f : Fin l → V} (hf : ∀ i j, h (f i) (f j) = 0)
     (hef : ∀ i j, h (e i) (f j) = if i = j then δ else 0) (j : Fin l)
@@ -72,9 +72,9 @@ theorem pair_f (hh : IsHerm s h) {e f : Fin l → V} (hf : ∀ i j, h (f i) (f j
   simp [hf, hfe]
 
 /- English proof (translation)
-Establish `e1 : ∀ j, h (pairMap e f p) (e j) = s (p.2 j * δ)` using `fun j => by`. Rewrite using `[hh.2.2.1 (e j), pair_e hh he hef]`. Establish `e2 : ∀ j, h (pairMap e f p) (f j) = s (p.1 j * s δ)` using `fun j => by`. Rewrite using `[hh.2.2.1 (f j), pair_f hh hf hef]`. Rewrite using `[pairMap_apply e f r, hh.1, h_sum_right hh, h_sum_right hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e1, e2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_form (hh : IsHerm s h) {e f : Fin l → V} (he : ∀ i j, h (e i) (e j) = 0)
     (hf : ∀ i j, h (f i) (f j) = 0) (hef : ∀ i j, h (e i) (f j) = if i = j then δ else 0)
@@ -89,9 +89,9 @@ theorem pair_form (hh : IsHerm s h) {e f : Fin l → V} (he : ∀ i j, h (e i) (
   simp only [e1, e2]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun p hp => ?_` and prove the remaining obligations. Establish `hb : ∀ j, p.2 j = 0` using `fun j => by`. Use `pair_e hh he hef j p` as an intermediate fact. Rewrite `this` using `[hp, h_zero_right hh]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_right hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : ∀ j, p.1 j = 0` using `fun j => by`. Use `pair_f hh hf hef j p` as an intermediate fact. Rewrite `this` using `[hp, h_zero_right hh]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_right ((map_ne_zero s).2 hd)`. Conclude with `Prod.ext (funext ha) (funext hb)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairMap_injective (hh : IsHerm s h) (hd : δ ≠ 0) {e f : Fin l → V}
     (he : ∀ i j, h (e i) (e j) = 0) (hf : ∀ i j, h (f i) (f j) = 0)
@@ -109,13 +109,11 @@ theorem pairMap_injective (hh : IsHerm s h) (hd : δ ≠ 0) {e f : Fin l → V}
   exact Prod.ext (funext ha) (funext hb)
 
 /- English proof (translation)
-Take `⟨he, hf, hef, hW, -, hdec⟩` from `F`. Take `⟨a, b, w, hw, rfl⟩` from `hdec x`. Establish `hx : ∑ i, a i • e i + ∑ i, b i • f i = pairMap e f (a, b)` using `rfl`. Rewrite `h1`, `h2`, the goal using `[hx]`. Establish `hb : ∀ j, b j = 0` using `fun j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h1 j` as an intermediate fact. Rewrite `this` using `[hh.1, pair_e hh he hef, (hW w hw j).1, add_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right hd`. Establish `ha : ∀ j, a j = 0` using `fun j => by`. Use `h2 j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hh.1, pair_f hh hf hef, (hW w hw j).2, add_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right ((map_ne_zero s).2 hd)`. Establish `h0 : pairMap e f (a, b) = 0`. Rewrite using `[pairMap_apply]`. Simplify using `[ha, hb]`.
-
-Rewrite using `[h0, zero_add]`. Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_perp (hh : IsHerm s h) (hd : δ ≠ 0) {e f : Fin l → V} {W : Submodule L V}
     (F : IsFrame h δ e f W) (x : V) (h1 : ∀ i, h (e i) x = 0) (h2 : ∀ i, h (f i) x = 0) : x ∈ W := by
@@ -138,9 +136,9 @@ theorem mem_of_perp (hh : IsHerm s h) (hd : δ ≠ 0) {e f : Fin l → V} {W : S
   exact hw
 
 /- English proof (translation)
-Use `letI : StarRing L := { star := s star_involutive := hs star_mul := fun a b => by rw [map_mul, mul_comm] star_add := map_add s }`. Establish `hadd : ∀ x y z, h (x + y) z = h x z + h y z` using `fun x y z => by`. Rewrite using `[hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1, ← hh.2.2.1]`. Establish `hsm : ∀ (c : L) x z, h (c • x) z = s c * h x z` using `fun c x z => by`. Rewrite using `[hh.2.2.1 z (c • x), hh.2.1, map_mul, ← hh.2.2.1]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `B : V →ₗ⋆[L] V →ₗ[L] L` to `LinearMap.mk₂'ₛₗ (starRingEnd L) (RingHom.id L) h hadd (fun c x z => hsm c x z) hh.1 (fun c x z => hh.2.1 c x z)`. Establish `hB : ∀ x y, B x y = h x y` using `fun _ _ => rfl`. Take `⟨g, hg, hgφ⟩` from `witt_extension_theorem L V B (fun x y => (hh.2.2.1 x y).symm) (fun x hx => hh.2.2.2 x hx) U φ hinj hiso`. Conclude with `⟨g, hg, hgφ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem extend_isom [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = x) (hh : IsHerm s h)
     (U : Submodule L V) (φ : U →ₗ[L] V) (hinj : Function.Injective φ)
@@ -163,17 +161,17 @@ theorem extend_isom [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = 
   exact ⟨g, hg, hgφ⟩
 
 /- English proof (translation)
-Take `⟨he, hf, hef, -, -, -⟩` from `F`. Take `⟨he', hf', hef', -, -, -⟩` from `F'`. Establish `hι : Function.Injective (Fin.castLE hl)` using `Fin.castLE_injective hl`. Establish `he2 : ∀ i j, h (e' (Fin.castLE hl i)) (e' (Fin.castLE hl j)) = 0` using `fun i j => he' _ _`. Establish `hf2 : ∀ i j, h (f' (Fin.castLE hl i)) (f' (Fin.castLE hl j)) = 0` using `fun i j => hf' _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hef2 : ∀ i j, h (e' (Fin.castLE hl i)) (f' (Fin.castLE hl j)) = if i = j then δ else 0`. Introduce `i j`. Rewrite using `[hef']`. Simplify using `only [hι.eq_iff]`. Establish `Tinj` using `pairMap_injective hh hd he hf hef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `T'inj` using `pairMap_injective (e := fun i => e' (Fin.castLE hl i)) (f := fun i => f' (Fin.castLE hl i)) hh hd he2 hf2 hef2`. Set `T : ((Fin l → L) × (Fin l → L)) →ₗ[L] V` to `pairMap e f`. Set `T' : ((Fin l → L) × (Fin l → L)) →ₗ[L] V` to `pairMap (fun i => e' (Fin.castLE hl i)) (fun i => f' (Fin.castLE hl i))`. Set `E` to `LinearEquiv.ofInjective T Tinj`. Establish `hφE : ∀ p, (T' ∘ₗ E.symm.toLinearMap) (E p) = T' p` using `fun p => by simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hEv : ∀ p, ((E p : LinearMap.range T) : V) = T p` using `fun p => rfl`. Take `⟨g, hg, hgφ⟩` from `extend_isom hs hh (LinearMap.range T) (T' ∘ₗ E.symm.toLinearMap) (T'inj.comp E.symm.injective) (by`. Introduce `x y`. Take `⟨p, rfl⟩` from `E.surjective x`. Take `⟨r, rfl⟩` from `E.surjective y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφE, hφE, hEv, hEv]`. Conclude with `(pair_form hh he2 hf2 hef2 p r).trans (pair_form hh he hf hef p r).symm)`. Establish `hgT : ∀ p, g (T p) = T' p` using `fun p => by`. Use `hgφ (E p)` as an intermediate fact. Rewrite `this` using `[hφE, hEv]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, hg, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hgT (Pi.single i 1, 0)` as an intermediate fact. Simplify `this` using `[T, T', pairMap_apply, Pi.single_apply]`. Use `hgT (0, Pi.single i 1)` as an intermediate fact. Simplify `this` using `[T, T', pairMap_apply, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isom [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = x) (hh : IsHerm s h)
     (hd : δ ≠ 0) {l' : ℕ} (hl : l ≤ l') {e f : Fin l → V} {W : Submodule L V}
@@ -216,23 +214,21 @@ theorem exists_isom [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = 
     simpa [T, T', pairMap_apply, Pi.single_apply] using this
 
 /- English proof (translation)
-Take `⟨g, hg, ge, gf⟩` from `exists_isom hs hh hd hl F F'`. Establish `hmove : ∀ y x, h y (g.symm x) = h (g y) x` using `fun y x => by`. Use `hg y (g.symm x)` as an intermediate fact. Simplify using `using this.symm`. Establish `heq : l = l'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hlt : l < l'` using `lt_of_le_of_ne hl hne`. Set `j : Fin l'` to `⟨l, hlt⟩`. Establish `hj : ∀ i : Fin l, j ≠ Fin.castLE hl i` using `fun i hji => by`. Use `congrArg Fin.val hji` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[j] at this`. Use linear arithmetic over natural numbers and integers. Establish `hx : g.symm (e' j) ∈ W`. Use `mem_of_perp hh hd F _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[hmove, ge]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F'.1 _ _`. Rewrite using `[hmove, gf, hh.2.2.1 (e' j), F'.2.2.1, if_neg (hj i), map_zero]`. Establish `h0 : g.symm (e' j) = 0`. Use `F.2.2.2.2.1 _ hx ?_` and prove the remaining obligations. Rewrite using `[hmove]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using F'.1 j j`. Establish `he0 : e' j = 0` using `by simpa using h0`. Use `F'.2.2.1 j j` as an intermediate fact. Rewrite `this` using `[he0, h_zero_left hh, if_pos rfl]`. Conclude with `hd this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `heq` using the available equality. Use `⟨Equiv.refl _, g, hg, fun i => ge i, fun i => gf i, fun w => ⟨fun hw => ?_, fun hw => ?_⟩⟩` and prove the remaining obligations. Use `mem_of_perp hh hd F' _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Use `ge i` as an intermediate fact. Establish `hi : e' i = g (e i)` using `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hi, hg]`. Conclude with `(F.2.2.2.1 w hw i).1`. Use `gf i` as an intermediate fact. Establish `hi : f' i = g (f i)` using `this.symm`. Rewrite using `[hi, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(F.2.2.2.1 w hw i).2`. Use `mem_of_perp hh hd F _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[← hg, show g (e i) = e' i from ge i]`. Conclude with `(F'.2.2.2.1 _ hw i).1`. Rewrite using `[← hg, show g (f i) = f' i from gf i]`.
-
-Conclude with `(F'.2.2.2.1 _ hw i).2`.
+A detailed English derivation is pending.
 -/
 theorem frame_core [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = x) (hh : IsHerm s h)
     (hd : δ ≠ 0) {l' : ℕ} (hl : l ≤ l') {e f : Fin l → V} {W : Submodule L V}
@@ -283,9 +279,9 @@ theorem frame_core [CharZero L] [FiniteDimensional L V] (hs : ∀ x, s (s x) = x
       exact (F'.2.2.2.1 _ hw i).2
 
 /- English proof (translation)
-Introduce `L _ _ _ _ s hs δ hδ V _ _ _ h hh l l' e f W e' f' W' F F'`. Break down `le_total l l' with hl | hl` into its components or cases. Conclude with `frame_core hs.1 hh hδ.1 hl F F'`. Take `⟨q, g, hg, ge, gf, hw⟩` from `frame_core hs.1 hh hδ.1 hl F' F`. Use `⟨q.symm, g.symm, fun x y => ?_, fun i => ?_, fun i => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hg (g.symm x) (g.symm y)` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[LinearEquiv.symm_apply_eq, ge, q.apply_symm_apply]`. Rewrite using `[LinearEquiv.symm_apply_eq, gf, q.apply_symm_apply]`. Simplify using `using (hw (g.symm w)).symm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stWitt : StWitt := by
   intro L _ _ _ _ s hs δ hδ V _ _ _ h hh l l' e f W e' f' W' F F'

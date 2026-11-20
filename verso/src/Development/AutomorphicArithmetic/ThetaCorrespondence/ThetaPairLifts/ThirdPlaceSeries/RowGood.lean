@@ -38,7 +38,7 @@ variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
 def LinkedAt (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (r : V4.Slot → LkT _root_.GlobalTheory.Fc.BundleCondition → Prop) : Prop :=
   Lg1 KPx (IsBuiltE p.s) (IsGoodE p.s) fun S => r S (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p)
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ => True, largeBaseProperty_true, h.strengthen fun _ _ _ _ _ t => t.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem LinkedAt.of_row {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {H : ∀ 𝒜 : FamClass, RawSel _root_.GlobalTheory.Fc.BundleCondition 𝒜 → Prop} (h : Row (IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) H) :
     _root_.GlobalTheory.Fc.RL.LinkedAt p fun S L => Row S L H :=

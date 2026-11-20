@@ -13,7 +13,7 @@ open GlobalTheory
 namespace GlobalTheory.HSCore
 
 /- English proof (translation)
-Use `(h F X.toGeo hn hb X.T).trans ?_` and prove the remaining obligations. Rewrite using `[X.d_eq_finrank]`. Conclude with `Submodule.finrank_mono (X.global_le X.T le_rfl)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem share_le_of_rankLow (h : RankLow) (F : Type) [Field F] [NumberField F] (X : Data F)
     (hn : IsNef F X.LA) (hb : IsBig F X.LA) : (X.R : ℤ) * X.del ≤ X.d := by
@@ -22,7 +22,7 @@ theorem share_le_of_rankLow (h : RankLow) (F : Type) [Field F] [NumberField F] (
   exact_mod_cast Submodule.finrank_mono (X.global_le X.T le_rfl)
 
 /- English proof (translation)
-Introduce `q` and use `share_le_of_rankLow (GlobalTheory.T.globalSectionRankLowerBound_of_hilbertSamuel q)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem share_le : Quoted → ∀ (F : Type) [Field F] [NumberField F] (X : Data F),
     IsNef F X.LA → IsBig F X.LA → (X.R : ℤ) * X.del ≤ X.d :=

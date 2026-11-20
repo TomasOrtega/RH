@@ -22,25 +22,25 @@ def Hc (φ : (Fin D → ℂ) → ℝ) (z w : Fin D → ℂ) (ζ : ℂ) : ℂ →
   (Pc w).comp ((fderiv ℝ (fderiv ℝ φ) (z + ζ • w)).comp (L0 w))
 
 /- English proof (translation)
-Simplify using `[L0]`.
+Simplify using the standard rewrite rules.
 -/
 lemma complexLine_apply (w : Fin D → ℂ) (a : ℂ) : L0 w a = a • w := by simp [L0]
 
 /- English proof (translation)
-Simplify using `[Pc, L0]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Pc_apply (w : Fin D → ℂ) (T : (Fin D → ℂ) →L[ℝ] ℝ) (a : ℂ) : Pc w T a = T (a • w) := by
   simp [Pc, L0]
 
 /- English proof (translation)
-Simplify using `[Hc, Pc, L0]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hc_apply (φ : (Fin D → ℂ) → ℝ) (z w : Fin D → ℂ) (ζ a b : ℂ) :
     Hc φ z w ζ a b = fderiv ℝ (fderiv ℝ φ) (z + ζ • w) (a • w) (b • w) := by
   simp [Hc, Pc, L0]
 
 /- English proof (translation)
-The claim follows from `((hasFDerivAt_id ζ).smul_const w).const_add z`.
+A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_line (z w : Fin D → ℂ) (ζ : ℂ) :
     HasFDerivAt (fun ζ : ℂ => z + ζ • w) (L0 w) ζ :=
@@ -49,7 +49,7 @@ lemma hasFDerivAt_line (z w : Fin D → ℂ) (ζ : ℂ) :
 variable {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ}
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt φ (fderiv ℝ φ (z + ζ • w)) (z + ζ • w)` using `((hφ.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hζ)).hasFDerivAt`. Use `(hd.comp ζ (hasFDerivAt_line z w ζ)).congr_fderiv ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun a => ?_` and prove the remaining obligations. Simplify using `[Gc, Pc_apply, complexLine_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma line_hasFDerivAt_g (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fin D → ℂ) {ζ : ℂ}
     (hζ : z + ζ • w ∈ U) : HasFDerivAt (fun ζ : ℂ => φ (z + ζ • w)) (Gc φ z w ζ) ζ := by
@@ -60,7 +60,7 @@ lemma line_hasFDerivAt_g (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fi
   simp [Gc, Pc_apply, complexLine_apply]
 
 /- English proof (translation)
-Establish `h2 : ContDiffOn ℝ 1 (fderiv ℝ φ) U` using `hφ.fderiv_of_isOpen hU (by norm_num)`. Establish `hd : HasFDerivAt (fderiv ℝ φ) (fderiv ℝ (fderiv ℝ φ) (z + ζ • w)) (z + ζ • w)` using `((h2.differentiableOn one_ne_zero).differentiableAt (hU.mem_nhds hζ)).hasFDerivAt`. Conclude with `(Pc w).hasFDerivAt.comp ζ (hd.comp ζ (hasFDerivAt_line z w ζ))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma line_hasFDerivAt_G (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fin D → ℂ) {ζ : ℂ}
     (hζ : z + ζ • w ∈ U) : HasFDerivAt (Gc φ z w) (Hc φ z w ζ) ζ := by
@@ -70,7 +70,7 @@ lemma line_hasFDerivAt_G (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fi
   exact (Pc w).hasFDerivAt.comp ζ (hd.comp ζ (hasFDerivAt_line z w ζ))
 
 /- English proof (translation)
-Establish `h2 : ContDiffOn ℝ 1 (fderiv ℝ φ) U` using `hφ.fderiv_of_isOpen hU (by norm_num)`. Establish `h3 : ContinuousOn (fderiv ℝ (fderiv ℝ φ)) U` using `h2.continuousOn_fderiv_of_isOpen hU le_rfl`. Establish `hl : Continuous (fun ζ : ℂ => z + ζ • w)` using `by fun_prop`. Conclude with `continuousOn_const.clm_comp ((h3.comp hl.continuousOn (fun ζ h => h)).clm_comp continuousOn_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma line_contOn_H (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fin D → ℂ) :
     ContinuousOn (Hc φ z w) {ζ : ℂ | z + ζ • w ∈ U} := by
@@ -81,7 +81,7 @@ lemma line_contOn_H (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U) (z w : Fin D �
     ((h3.comp hl.continuousOn (fun ζ h => h)).clm_comp continuousOn_const)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[circleMap]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma circ_smul (r θ : ℝ) (w : Fin D → ℂ) :
     circleMap 0 r θ • w = circleMap 0 1 θ • ((r:ℂ) • w) := by
@@ -90,23 +90,23 @@ lemma circ_smul (r θ : ℝ) (w : Fin D → ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `D U φ hU hφ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hsub⟩`. Use `⟨hφ, fun z hz w => ?_⟩` and prove the remaining obligations. Use `set V := {ζ : ℂ | z + ζ • w ∈ U} with hV`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hVo : IsOpen V` using `hU.preimage (by fun_prop)`. Establish `h0 : (0:ℂ) ∈ V` using `by simpa [V] using hz`. Take `⟨R, hR0, hR⟩` from `Metric.isOpen_iff.mp hVo 0 h0`. Establish `hR' : closedBall (0:ℂ) (R/2) ⊆ V` using `(closedBall_subset_ball (by linarith)).trans hR`. Establish `key` using `lap_nonneg_of_sub_mean (V := V) (g := fun ζ => φ (z + ζ • w)) (G := Gc φ z w) (H := Hc φ z w) (fun ζ hζ => line_hasFDerivAt_g hU hφ z w hζ) (fun ζ hζ => line_hasFDerivAt_G hU hφ z w hζ) (line_contOn_H hU hφ z w) (by linarith : (0:ℝ) < R/2) hR' ?_`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[Hc_apply, Hc_apply]`. Simplify using `only [zero_smul, add_zero, one_smul] at key`. Unfold `levi`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `r hr`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z + ζ • ((r:ℂ) • w) ∈ U`. Introduce `ζ hζ`. Rewrite using `[smul_smul]`. Apply `hR'` to reduce the goal to its premises. Rewrite using `[mem_closedBall, dist_zero_right, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg ζ, hr.2]`. Establish `h1` using `(hsub z ((r:ℂ) • w) hmem).2`. Simplify using `only [zero_smul, add_zero]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Real.circleAverage_def, Real.circleAverage_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `intervalIntegral.integral_congr (fun θ _ => ?_)` and prove the remaining obligations. Simplify using `only [circ_smul r θ w]`. Introduce and unpack `⟨-, hlev⟩`. Use `⟨hφ.continuousOn.upperSemicontinuousOn, fun z w hdisc => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set V := {ζ : ℂ | z + ζ • w ∈ U} with hV`. Establish `hB : closedBall (0:ℂ) 1 ⊆ V` using `fun ζ hζ => hdisc ζ (by simpa using hζ)`. Establish `hcont : Continuous fun θ => φ (z + circleMap 0 1 θ • w)` using `hφ.continuousOn.comp_continuous (continuous_const.add ((continuous_circleMap 0 1).smul continuous_const)) (fun θ => hdisc _ (by simp))`. Use `⟨hcont.intervalIntegrable 0 (2*π), ?_⟩` and prove the remaining obligations. Establish `key` using `le_circleAverage_of_lap_nonneg (V := V) (g := fun ζ => φ (z + ζ • w)) (G := Gc φ z w) (H := Hc φ z w) (fun ζ hζ => line_hasFDerivAt_g hU hφ z w hζ) (fun ζ hζ => line_hasFDerivAt_G hU hφ z w hζ) (line_contOn_H hU hφ z w) zero_le_one hB ?_`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using key`. Introduce `x hx θ`. Rewrite using `[Hc_apply, Hc_apply]`. Use `hlev _ (hB hx) (circleMap 0 1 θ • w)` as an intermediate fact. Unfold `levi at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[smul_smul, mul_comm Complex.I]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem plurisubharmonicIffLeviNonneg_holds : IsPsh_iff_isLeviPshStatement := by
   intro D U φ hU hφ
@@ -172,13 +172,13 @@ open MeasureTheory Metric Set Filter Topology Real
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `(hf.comp (continuous_circleMap 0 1)).intervalIntegrable _ _`.
+A detailed English derivation is pending.
 -/
 lemma ci_of_cont {f : ℂ → ℝ} (hf : Continuous f) : CircleIntegrable f 0 1 :=
   (hf.comp (continuous_circleMap 0 1)).intervalIntegrable _ _
 
 /- English proof (translation)
-Establish `h : DiffContOnCl ℂ (fun ζ : ℂ => a + ζ * b) (ball (0:ℂ) |(1:ℝ)|)` using `(by fun_prop : Differentiable ℂ (fun ζ : ℂ => a + ζ * b)).diffContOnCl`. Simplify using `using h.circleAverage`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma avg_affine (a b : ℂ) : Real.circleAverage (fun ζ : ℂ => a + ζ * b) 0 1 = a := by
   have h : DiffContOnCl ℂ (fun ζ : ℂ => a + ζ * b) (ball (0:ℂ) |(1:ℝ)|) :=
@@ -186,7 +186,7 @@ lemma avg_affine (a b : ℂ) : Real.circleAverage (fun ζ : ℂ => a + ζ * b) 0
   simpa using h.circleAverage
 
 /- English proof (translation)
-Establish `hi : CircleIntegrable (fun ζ : ℂ => a + ζ * b) 0 1` using `((by fun_prop : Continuous (fun ζ : ℂ => a + ζ * b)).comp (continuous_circleMap 0 1)).intervalIntegrable _ _`. Set `L : ℂ →L[ℝ] ℝ` to `Complex.reCLM.comp ((ContinuousLinearMap.mul ℂ ℂ c).restrictScalars ℝ)`. Establish `h` using `L.circleAverage_comp_comm hi`. Rewrite `h` using `[avg_affine]`. Simplify `h` using `[L, Function.comp_def]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma avg_re_affine (a b c : ℂ) :
     Real.circleAverage (fun ζ : ℂ => (c * (a + ζ * b)).re) 0 1 = (c * a).re := by
@@ -199,11 +199,11 @@ lemma avg_re_affine (a b c : ℂ) :
   simpa [L, Function.comp_def] using h
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Rewrite using `[norm_zero]`. Conclude with `Real.circleAverage_nonneg_of_nonneg fun _ _ => norm_nonneg _`. Establish `h1 : ‖a‖ ^ 2 = Real.circleAverage (fun ζ : ℂ => ((starRingEnd ℂ) a * (a + ζ * b)).re) 0 1`. Rewrite using `[avg_re_affine, Complex.conj_mul']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`. Establish `h2 : Real.circleAverage (fun ζ : ℂ => ((starRingEnd ℂ) a * (a + ζ * b)).re) 0 1 ≤ Real.circleAverage (fun ζ : ℂ => ‖a‖ * ‖a + ζ * b‖) 0 1`. Use `Real.circleAverage_mono (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop)) fun x _ => (Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Establish `h3 : Real.circleAverage (fun ζ : ℂ => ‖a‖ * ‖a + ζ * b‖) 0 1 = ‖a‖ * Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖) 0 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Real.circleAverage_fun_smul (a := ‖a‖) (f := fun ζ : ℂ => ‖a + ζ * b‖) (c := 0) (R := 1)` using `[smul_eq_mul]`. Establish `hpos : 0 < ‖a‖` using `norm_pos_iff.2 ha`. Use `le_of_mul_le_mul_left ?_ hpos` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma le_avg_norm (a b : ℂ) : ‖a‖ ≤ Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖) 0 1 := by
   rcases eq_or_ne a 0 with rfl | ha
@@ -227,11 +227,11 @@ lemma le_avg_norm (a b : ℂ) : ‖a‖ ≤ Real.circleAverage (fun ζ : ℂ => 
   nlinarith
 
 /- English proof (translation)
-Establish `key : ∀ x : ℂ, (2 * (starRingEnd ℂ) a * x).re - ‖a‖ ^ 2 ≤ ‖x‖ ^ 2`. Introduce `x`. Use `sq_nonneg (x.re - a.re)` as an intermediate fact. Use `sq_nonneg (x.im - a.im)` as an intermediate fact. Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.re_ofNat, Complex.im_ofNat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hE : Real.circleAverage (fun ζ : ℂ => (2 * (starRingEnd ℂ) a * (a + ζ * b)).re - ‖a‖ ^ 2) 0 1 = ‖a‖ ^ 2`. Rewrite using `[Real.circleAverage_fun_sub (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop)), avg_re_affine, Real.circleAverage_const]`. Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.re_ofNat, Complex.im_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hE]`. Conclude with `Real.circleAverage_mono (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop)) fun x _ => key _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_avg_sq (a b : ℂ) : ‖a‖ ^ 2 ≤ Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖ ^ 2) 0 1 := by
   have key : ∀ x : ℂ, (2 * (starRingEnd ℂ) a * x).re - ‖a‖ ^ 2 ≤ ‖x‖ ^ 2 := by
@@ -253,9 +253,9 @@ lemma le_avg_sq (a b : ℂ) : ‖a‖ ^ 2 ≤ Real.circleAverage (fun ζ : ℂ =
     fun x _ => key _
 
 /- English proof (translation)
-Establish `e : (fun θ => Finset.univ.sup' Finset.univ_nonempty (fun j => f j θ)) = Finset.univ.sup' Finset.univ_nonempty f`. Use function extensionality and compare the values at `θ`. Rewrite using `[Finset.sup'_apply]`. Rewrite using `[e]`. Use `Finset.sup'_induction _ _ (p := fun g => IntervalIntegrable g volume a b) ?_ (fun j _ => hf j)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg h hh`. Conclude with `⟨hg.1.sup hh.1, hg.2.sup hh.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma ii_sup' {ι : Type} [Fintype ι] [Nonempty ι] (f : ι → ℝ → ℝ) {a b : ℝ}
     (hf : ∀ j, IntervalIntegrable (f j) volume a b) :
@@ -279,20 +279,20 @@ namespace ReciprocityTheory.AnForm.A
 open MeasureTheory Metric Set Filter Topology Real PshInh
 
 /- English proof (translation)
-The claim follows from `PshLap.plurisubharmonicIffLeviNonneg_holds`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_iff_isLeviPsh_thm : IsPsh_iff_isLeviPshStatement := PshLap.plurisubharmonicIffLeviNonneg_holds
 
 /- English proof (translation)
-Introduce `D`. Establish `hsq : IsPsh (Set.univ : Set (Fin D → ℂ)) (fun z => ∑ j, ‖z j‖ ^ 2)`. Use `⟨(by fun_prop : Continuous (fun z : Fin D → ℂ => ∑ j, ‖z j‖ ^ 2)).continuousOn.upperSemicontinuousOn, fun z w _ => ⟨ci_of_cont (by fun_prop), ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Real.circleAverage_fun_sum (fun j _ => ci_of_cont (by fun_prop))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_le_sum fun j _ => le_avg_sq (z j) (w j)`. Establish `hnorm : IsPsh (Set.univ : Set (Fin D → ℂ)) (fun z => ‖z‖)`. Use `⟨continuous_norm.continuousOn.upperSemicontinuousOn, fun z w _ => ⟨ci_of_cont (by fun_prop), ?_⟩⟩` and prove the remaining obligations. Use `show ‖z‖ ≤ Real.circleAverage (fun ζ : ℂ => ‖z + ζ • w‖) 0 1`. Break down `isEmpty_or_nonempty (Fin D) with hD | hD` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subsingleton.elim z 0, norm_zero]`. Conclude with `Real.circleAverage_nonneg_of_nonneg fun _ _ => norm_nonneg _`. Take `⟨j, -, hj⟩` from `Finset.exists_mem_eq_sup Finset.univ Finset.univ_nonempty (fun b => ‖z b‖₊)`. Establish `hzj : ‖z‖ = ‖z j‖` using `by rw [Pi.norm_def, hj]; rfl`. Rewrite using `[hzj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(le_avg_norm (z j) (w j)).trans (Real.circleAverage_mono (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop)) fun ζ _ => ?_)` and prove the remaining obligations. Simplify using `using norm_le_pi_norm (z + ζ • w) j`. Establish `hC : ContDiffOn ℝ 2 (fun z : Fin D → ℂ => ∑ j, ‖z j‖ ^ 2) Set.univ` using `(ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)).contDiffOn`. Use `⟨hsq, hnorm, (PshLap.plurisubharmonicIffLeviNonneg_holds D _ _ isOpen_univ hC).1 hsq, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨-, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(h2 0 (Pi.single 0 1) (fun _ _ => Set.mem_univ _)).2`. Rewrite using `[Real.circleAverage_const_on_circle (a := (-1:ℝ)) (fun x hx => by`. Simplify using `only [mem_sphere_iff_norm, sub_zero, abs_one] at hx`. Simplify using `[hx])] at h`. Evaluate the numerical expressions using `at h`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isPshInhabit_thm : IsPshInhabitStatement := by
   intro D
@@ -327,11 +327,11 @@ theorem isPshInhabit_thm : IsPshInhabitStatement := by
   norm_num at h
 
 /- English proof (translation)
-Introduce `D ι _ _ U u hU hu`. Use `⟨?_, fun z w hdisc => ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Establish `: ∀ j, ∀ᶠ x' in 𝓝[U] x, u j x' < y` using `fun j => (hu j).1 x hx y (lt_of_le_of_lt (Finset.le_sup' (fun j => u j x) (Finset.mem_univ j)) hy)`. Use `filter_upwards [Filter.eventually_all.2 this] with x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Finset.sup'_lt_iff _).2 fun j _ => hx' j`. Establish `hci : ∀ j, CircleIntegrable (fun ζ : ℂ => u j (z + ζ • w)) 0 1` using `fun j => ((hu j).2 z w hdisc).1`. Establish `hcs : CircleIntegrable (fun ζ : ℂ => Finset.univ.sup' Finset.univ_nonempty (fun j => u j (z + ζ • w))) 0 1` using `ii_sup' (fun j θ => u j (z + circleMap 0 1 θ • w)) hci`. Use `⟨hcs, ?_⟩` and prove the remaining obligations. Take `⟨j, -, hj⟩` from `Finset.exists_mem_eq_sup' Finset.univ_nonempty (fun j => u j z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hj]`. Use `((hu j).2 z w hdisc).2.trans (Real.circleAverage_mono (hci j) hcs fun ζ _ => ?_)` and prove the remaining obligations. Conclude with `Finset.le_sup' (fun j => u j (z + ζ • w)) (Finset.mem_univ j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPsh_sup_thm : IsPsh_supStatement := by
   intro D ι _ _ U u hU hu
@@ -354,18 +354,18 @@ theorem isPsh_sup_thm : IsPsh_supStatement := by
     exact Finset.le_sup' (fun j => u j (z + ζ • w)) (Finset.mem_univ j)
 
 /- English proof (translation)
-The claim follows from `PshMean.plurisubharmonicLocallyIntegrable_holds`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_locallyIntegrable_thm : IsPsh_locallyIntegrableStatement :=
   PshMean.plurisubharmonicLocallyIntegrable_holds
 
 /- English proof (translation)
-The claim follows from `PshMean.subMeanValuePolydisc_holds`.
+A detailed English derivation is pending.
 -/
 theorem subMeanPolydisc_thm : SubMeanPolydiscStatement := PshMean.subMeanValuePolydisc_holds
 
 /- English proof (translation)
-The claim follows from `PshMol.circleInvariantMollifierExists_holds`.
+A detailed English derivation is pending.
 -/
 theorem mollifierInhabit_thm : MollifierInhabitStatement := PshMol.circleInvariantMollifierExists_holds
 

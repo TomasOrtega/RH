@@ -114,9 +114,9 @@ def FactHCMono : Prop := ∀ (R : Ranks) (P : HCParam R),
   (∀ j : Fin R.m, ∀ h : j.1 + 1 < R.m, -P.b ⟨j.1 + 1, h⟩ < -P.e j)
 
 /- English proof (translation)
-Introduce `R P`. Establish `ht : (0 : ℚ) ≤ R.t` using `by positivity`. Use `⟨fun i => ⟨P.u_gt_v i, P.v_gt_u i⟩, P.u_last_gt, fun j => ?_, fun j h => ?_⟩` and prove the remaining obligations. Use `P.gap_be j` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `P.gap_eb j h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem factHCMono : FactHCMono := by
   intro R P

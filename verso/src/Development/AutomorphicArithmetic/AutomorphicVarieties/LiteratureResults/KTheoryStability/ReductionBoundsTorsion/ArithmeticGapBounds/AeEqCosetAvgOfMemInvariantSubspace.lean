@@ -9,7 +9,7 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KB.SpectralGap.PGap
 
 /- English proof (translation)
-Establish `h' : (B.subgroupOf E).index * (E.subgroupOf K).index = (B.subgroupOf K).index` using `Subgroup.relIndex_mul_relIndex B E K hBE hEK`. Rewrite `h` using `[← h']`. Conclude with `⟨left_ne_zero_of_mul h, right_ne_zero_of_mul h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem idx_ne {Λ : Type} [Group Λ] {B E K : Subgroup Λ} (hBE : B ≤ E) (hEK : E ≤ K)
     (h : (B.subgroupOf K).index ≠ 0) : (B.subgroupOf E).index ≠ 0 ∧ (E.subgroupOf K).index ≠ 0 := by
@@ -19,7 +19,7 @@ theorem idx_ne {Λ : Type} [Group Λ] {B E K : Subgroup Λ} (hBE : B ≤ E) (hEK
   exact ⟨left_ne_zero_of_mul h, right_ne_zero_of_mul h⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `htop : B.subgroupOf E = ⊤` using `Subgroup.subgroupOf_eq_top.mpr (fun g hg => hc g hg)`. Rewrite `h` using `[htop, Subgroup.index_top]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_not_mem {Λ : Type} [Group Λ] {B E : Subgroup Λ} (h : 25 ≤ (B.subgroupOf E).index) :
     ∃ g ∈ E, g ∉ B := by
@@ -30,7 +30,7 @@ theorem exists_not_mem {Λ : Type} [Group Λ] {B E : Subgroup Λ} (h : 25 ≤ (B
   omega
 
 /- English proof (translation)
-Introduce `g' hg'`. Distinguish the cases in `h : g' ∈ E`. Conclude with `hEG h`. Take `⟨e, he, e', he', rfl⟩` from `htwo g hgK hgE g' hg' h`. Conclude with `G.mul_mem (G.mul_mem (hEG he) hgG) (hEG he')`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twoTr_le {Λ : Type} [Group Λ] {E K G : Subgroup Λ} (htwo : TwoTr E K) (hEG : E ≤ G)
     {g : Λ} (hgK : g ∈ K) (hgE : g ∉ E) (hgG : g ∈ G) : K ≤ G := by
@@ -41,7 +41,7 @@ theorem twoTr_le {Λ : Type} [Group Λ] {E K G : Subgroup Λ} (htwo : TwoTr E K)
     exact G.mul_mem (G.mul_mem (hEG he) hgG) (hEG he')
 
 /- English proof (translation)
-The claim follows from `|I| ≤ 1 / 5 * (Real.sqrt X * Real.sqrt Y) := by set s := Real.sqrt X with hs_def set r := Real.sqrt Y with hr_def have hs : 0 ≤ s := Real.sqrt_nonneg _ have hr : 0 ≤ r := Real.sqrt_nonneg _ have hXs : X = s ^ 2 := (Real.sq_sqrt hX).symm have hYr : Y = r ^ 2 := (Real.sq_sqrt hY).s …`.
+A detailed English derivation is pending.
 -/
 theorem t_trick {I X Y : ℝ} (hX : 0 ≤ X) (hY : 0 ≤ Y) (h : ∀ t : ℝ, 0 < t → |I| ≤ (t * X + Y / t) / 10) :
     |I| ≤ 1 / 5 * (Real.sqrt X * Real.sqrt Y) := by
@@ -86,46 +86,46 @@ variable {Λ S : Type} [Group Λ] [Countable Λ] [Group S] [MeasurableSpace S] [
 include μ hU hj hBK hi
 
 /- English proof (translation)
-The claim follows from `(hU Λ S μ j hj B K hBK hi).1 u hu`.
+A detailed English derivation is pending.
 -/
 theorem u_inv {u : S → ℝ} (hu : LInv j B u) : LInv j K (avg j B K u) :=
   (hU Λ S μ j hj B K hBK hi).1 u hu
 
 /- English proof (translation)
-The claim follows from `(hU Λ S μ j hj B K hBK hi).2.1 u hu`.
+A detailed English derivation is pending.
 -/
 theorem u_id {u : S → ℝ} (hu : LInv j K u) : avg j B K u = u :=
   (hU Λ S μ j hj B K hBK hi).2.1 u hu
 
 /- English proof (translation)
-The claim follows from `(hU Λ S μ j hj B K hBK hi).2.2.1 u hu`.
+A detailed English derivation is pending.
 -/
 theorem u_meas {u : S → ℝ} (hu : Measurable u) : Measurable (avg j B K u) :=
   (hU Λ S μ j hj B K hBK hi).2.2.1 u hu
 
 /- English proof (translation)
-The claim follows from `(hU Λ S μ j hj B K hBK hi).2.2.2.1 E hBE hEK u hu`.
+A detailed English derivation is pending.
 -/
 theorem u_trans {E : Subgroup Λ} (hBE : B ≤ E) (hEK : E ≤ K) {u : S → ℝ} (hu : LInv j B u) :
     avg j E K (avg j B E u) = avg j B K u :=
   (hU Λ S μ j hj B K hBK hi).2.2.2.1 E hBE hEK u hu
 
 /- English proof (translation)
-The claim follows from `((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).1`.
+A detailed English derivation is pending.
 -/
 theorem u_dom {D : Set S} (hD : IsFundamentalDomain (K.map j) D μ) :
     ∃ D' : Set S, IsFundamentalDomain (B.map j) D' μ :=
   ((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).1
 
 /- English proof (translation)
-The claim follows from `(((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').1`.
+A detailed English derivation is pending.
 -/
 theorem u_measure {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) : μ D' = (B.subgroupOf K).index * μ D :=
   (((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').1
 
 /- English proof (translation)
-The claim follows from `((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).1`.
+A detailed English derivation is pending.
 -/
 theorem u_int_iff {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) {u : S → ℝ} (hm : Measurable u) (hu : LInv j B u) :
@@ -133,7 +133,7 @@ theorem u_int_iff {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
   ((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).1
 
 /- English proof (translation)
-The claim follows from `(((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).2 hint).2`.
+A detailed English derivation is pending.
 -/
 theorem u_int_eq {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) {u : S → ℝ} (hm : Measurable u) (hu : LInv j B u)
@@ -142,7 +142,7 @@ theorem u_int_eq {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
   (((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).2 hint).2
 
 /- English proof (translation)
-The claim follows from `(((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).2 hint).1`.
+A detailed English derivation is pending.
 -/
 theorem u_int_avg {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) {u : S → ℝ} (hm : Measurable u) (hu : LInv j B u)
@@ -150,9 +150,9 @@ theorem u_int_avg {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
   (((((hU Λ S μ j hj B K hBK hi).2.2.2.2 D hD).2 D' hD').2 u hm hu).2 hint).1
 
 /- English proof (translation)
-Establish `hB : LInv j B u` using `fun γ hγ x => hu γ (hBK hγ) x`. Establish `habs : LInv j K (fun y => |u y|)`. Introduce `γ hγ x`. Simplify using `only [hu γ hγ x]`. Rewrite using `[u_int_iff μ hU hj hBK hi hD hD' hm hB, u_id μ hU hj hBK hi habs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `IntegrableOn`. Repeatedly rewrite using `[← Real.norm_eq_abs]`. Conclude with `integrable_norm_iff hm.aestronglyMeasurable`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_iff_inv {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) {u : S → ℝ} (hm : Measurable u) (hu : LInv j K u) :
@@ -167,7 +167,7 @@ theorem int_iff_inv {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
   exact integrable_norm_iff hm.aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hB : LInv j B u` using `fun γ hγ x => hu γ (hBK hγ) x`. Rewrite using `[u_int_eq μ hU hj hBK hi hD hD' hm hB hint, u_id μ hU hj hBK hi hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem int_eq_inv {D D' : Set S} (hD : IsFundamentalDomain (K.map j) D μ)
     (hD' : IsFundamentalDomain (B.map j) D' μ) {u : S → ℝ} (hm : Measurable u) (hu : LInv j K u)
@@ -190,7 +190,7 @@ def R (E : Subgroup Λ) : Set (HL j B μ DB) :=
 def W (E : Subgroup Λ) : Submodule ℝ (HL j B μ DB) := (Submodule.span ℝ (R j B μ DB E))ᗮ
 
 /- English proof (translation)
-The claim follows from `Submodule.isClosed_orthogonal _`.
+A detailed English derivation is pending.
 -/
 theorem W_closed (E : Subgroup Λ) : IsClosed (W j B μ DB E : Set (HL j B μ DB)) :=
   Submodule.isClosed_orthogonal _
@@ -198,7 +198,7 @@ theorem W_closed (E : Subgroup Λ) : IsClosed (W j B μ DB E : Set (HL j B μ DB
 end Sub
 
 /- English proof (translation)
-The claim follows from `MemLp.integrable_mul (p := 2) (q := 2) hu hv`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_mul {S : Type} [MeasurableSpace S] {μ : Measure S} {D : Set S} {u v : S → ℝ}
     (hu : MemLp u 2 (μ.restrict D)) (hv : MemLp v 2 (μ.restrict D)) :
@@ -215,15 +215,15 @@ variable {Λ S : Type} [Group Λ] [Countable Λ] [Group S] [MeasurableSpace S] [
 include hU hj hDB
 
 /- English proof (translation)
-Take `⟨hm, hinv, hL⟩` from `hu`. Establish `hmA : Measurable (avg j B E u)` using `u_meas μ hU hj hBE hi hm`. Establish `hEinv : LInv j E (avg j B E u)` using `u_inv μ hU hj hBE hi hinv`. Establish `hBinv : LInv j B (avg j B E u)` using `fun γ hγ x => hEinv γ (hBE hγ) x`. Use `⟨hmA, hBinv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : IntegrableOn (fun y => u y ^ 2) DB μ` using `hL.integrable_sq`. Establish `hsqinv : LInv j B (fun y => u y ^ 2)`. Introduce `γ hγ x`. Simplify using `only [hinv γ hγ x]`. Establish `hsqm : Measurable (fun y => u y ^ 2)` using `hm.pow_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : IntegrableOn (avg j B E fun y => |u y ^ 2|) DE μ` using `(u_int_iff μ hU hj hBE hi hDE hDB hsqm hsqinv).1 hsq`. Establish `habs : (fun y => |u y ^ 2|) = fun y => u y ^ 2` using `funext fun y => abs_of_nonneg (sq_nonneg _)`. Rewrite `h1` using `[habs]`. Establish `h2 : IntegrableOn (fun x => avg j B E u x ^ 2) DE μ`. Use `Integrable.mono' h1 (hmA.pow_const 2).aestronglyMeasurable ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `avg_sq_le j hi u x`. Establish `hsqE : LInv j E (fun x => avg j B E u x ^ 2)`. Introduce `γ hγ x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hEinv γ hγ x]`. Establish `h3 : IntegrableOn (fun x => avg j B E u x ^ 2) DB μ` using `(int_iff_inv μ hU hj hBE hi hDE hDB (hmA.pow_const 2) hsqE).2 h2`. Conclude with `(memLp_two_iff_integrable_sq hmA.aestronglyMeasurable).2 h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem good_avg {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index ≠ 0) {DE : Set S}
     (hDE : IsFundamentalDomain (E.map j) DE μ) {u : S → ℝ} (hu : Good j B μ DB u) :
@@ -255,13 +255,13 @@ theorem good_avg {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index 
   exact (memLp_two_iff_integrable_sq hmA.aestronglyMeasurable).2 h3
 
 /- English proof (translation)
-Take `⟨ham, hainv, haL⟩` from `ha`. Take `⟨hrm, hrinv, hrL⟩` from `hr`. Take `⟨hsm, hsinv, hsL⟩` from `hr'`. Establish `haB : LInv j B a` using `fun γ hγ x => haE γ (hBE hγ) x`. Establish `hint1 : IntegrableOn (fun x => a x * r x) DB μ` using `integrableOn_mul haL hrL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint2 : IntegrableOn (fun x => a x * avg j B E r x) DB μ` using `integrableOn_mul haL hsL`. Establish `hsE : LInv j E (avg j B E r)` using `u_inv μ hU hj hBE hi hrinv`. Establish `harB : LInv j B (fun x => a x * r x)`. Introduce `γ hγ x`. Simplify using `only [haB γ hγ x, hrinv γ hγ x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `haE2 : LInv j E (fun x => a x * avg j B E r x)`. Introduce `γ hγ x`. Simplify using `only [haE γ hγ x, hsE γ hγ x]`. Establish `e1 : ∫ x in DB, a x * r x ∂μ = (B.subgroupOf E).index * ∫ x in DE, avg j B E (fun y => a y * r y) x ∂μ` using `u_int_eq μ hU hj hBE hi hDE hDB (ham.mul hrm) harB hint1`. Establish `e2 : ∫ x in DB, a x * avg j B E r x ∂μ = (B.subgroupOf E).index * ∫ x in DE, a x * avg j B E r x ∂μ` using `int_eq_inv μ hU hj hBE hi hDE hDB (ham.mul hsm) haE2 hint2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [avg_mul_left j haE r] at e1`. Repeatedly rewrite using `[mul_sub]`. Rewrite using `[integral_sub hint1 hint2, e1, e2, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_zero {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index ≠ 0) {DE : Set S}
     (hDE : IsFundamentalDomain (E.map j) DE μ) {a r : S → ℝ} (ha : Good j B μ DB a) (haE : LInv j E a)
@@ -291,13 +291,13 @@ theorem ip_zero {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index �
   rw [integral_sub hint1 hint2, e1, e2, sub_self]
 
 /- English proof (translation)
-Unfold `W`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨r, hr, hr', rfl⟩` from `hx`. Establish `hd : Good j B μ DB (fun x => r x - avg j B E r x)` using `⟨hr.1.sub hr'.1, fun γ hγ x => by simp only [hr.2.1 γ hγ x, hr'.2.1 γ hγ x], hr.2.2.sub hr'.2.2⟩`. Rewrite using `[cls_inner hd hu]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := ip_zero hU hj hDB hBE hi hDE hu huE hr hr'`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [inner_smul_left, hx, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_W_of_inv {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index ≠ 0) {DE : Set S}
     (hDE : IsFundamentalDomain (E.map j) DE μ) {u : S → ℝ} (hu : Good j B μ DB u) (huE : LInv j E u) :
@@ -321,13 +321,13 @@ theorem mem_W_of_inv {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).in
   | smul c x _ hx => rw [inner_smul_left, hx, mul_zero]
 
 /- English proof (translation)
-Establish `hA : Good j B μ DB (avg j B E u)` using `good_avg hU hj hDB hBE hi hDE hu`. Establish `hAE : LInv j E (avg j B E u)` using `u_inv μ hU hj hBE hi hu.2.1`. Establish `hd : Good j B μ DB (fun x => u x - avg j B E u x)` using `⟨hu.1.sub hA.1, fun γ hγ x => by simp only [hu.2.1 γ hγ x, hA.2.1 γ hγ x], hu.2.2.sub hA.2.2⟩`. Establish `hR : cls j B μ DB (fun x => u x - avg j B E u x) ∈ R j B μ DB E` using `⟨u, hu, hA, rfl⟩`. Establish `h1 : ⟪cls j B μ DB (fun x => u x - avg j B E u x), cls j B μ DB u⟫_ℝ = 0` using `(Submodule.mem_orthogonal _ _).1 hW _ (Submodule.subset_span hR)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ⟪cls j B μ DB (fun x => u x - avg j B E u x), cls j B μ DB (avg j B E u)⟫_ℝ = 0`. Rewrite using `[cls_inner hd hA]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := ip_zero hU hj hDB hBE hi hDE hA hAE hu hA`. Establish `hdd : cls j B μ DB (fun x => u x - avg j B E u x) = cls j B μ DB u - cls j B μ DB (avg j B E u)` using `cls_sub hu hA`. Establish `h3 : ⟪cls j B μ DB (fun x => u x - avg j B E u x), cls j B μ DB (fun x => u x - avg j B E u x)⟫_ℝ = 0` using `by nth_rewrite 2 [hdd]`. Rewrite using `[inner_sub_right, h1, h2, sub_self]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[inner_self_eq_zero, hdd, sub_eq_zero]`. Conclude with `(cls_eq_iff hu hA).1 h3`.
+A detailed English derivation is pending.
 -/
 theorem ae_eq_cosetAvg_of_mem_invariantSubspace {E : Subgroup Λ} (hBE : B ≤ E) (hi : (B.subgroupOf E).index ≠ 0) {DE : Set S}
     (hDE : IsFundamentalDomain (E.map j) DE μ) {u : S → ℝ} (hu : Good j B μ DB u)
@@ -357,15 +357,13 @@ theorem ae_eq_cosetAvg_of_mem_invariantSubspace {E : Subgroup Λ} (hBE : B ≤ E
   exact (cls_eq_iff hu hA).1 h3
 
 /- English proof (translation)
-Establish `hiE : (B.subgroupOf E).index ≠ 0` using `(idx_ne hBE hEK hiK).1`. Establish `hBK : B ≤ K` using `hBE.trans hEK`. Unfold `W`. Apply `Submodule.orthogonal_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `f ⟨r, hr, hr', rfl⟩`. Establish `hK1 : Good j B μ DB (avg j B K r)` using `good_avg hU hj hDB hBK hiK hDK hr`. Establish `hK2 : Good j B μ DB (avg j B K (avg j B E r))` using `good_avg hU hj hDB hBK hiK hDK hr'`. Establish `htow : avg j B K (avg j B E r) = avg j B K r`. Rewrite using `[← u_trans μ hU hj hBK hiK hBE hEK hr'.2.1, u_id μ hU hj hBE hiE (u_inv μ hU hj hBE hiE hr.2.1), u_trans μ hU hj hBK hiK hBE hEK hr.2.1]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : Good j B μ DB (fun x => r x - avg j B K r x)` using `⟨hr.1.sub hK1.1, fun γ hγ x => by simp only [hr.2.1 γ hγ x, hK1.2.1 γ hγ x], hr.2.2.sub hK1.2.2⟩`. Establish `hd2 : Good j B μ DB (fun x => avg j B E r x - avg j B K (avg j B E r) x)` using `⟨hr'.1.sub hK2.1, fun γ hγ x => by simp only [hr'.2.1 γ hγ x, hK2.2.1 γ hγ x], hr'.2.2.sub hK2.2.2⟩`. Establish `heq : cls j B μ DB (fun x => r x - avg j B E r x) = cls j B μ DB (fun x => r x - avg j B K r x) - cls j B μ DB (fun x => avg j B E r x - avg j B K (avg j B E r) x)`. Rewrite using `[← cls_sub hd1 hd2]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[htow]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ ∈ Submodule.span ℝ (R j B μ DB K)`. Rewrite using `[heq]`.
-
-Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨r, hr, hK1, rfl⟩) (Submodule.subset_span ⟨avg j B E r, hr', hK2, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_anti {E K : Subgroup Λ} (hBE : B ≤ E) (hEK : E ≤ K) (hiK : (B.subgroupOf K).index ≠ 0)
     {DE DK : Set S} (hDE : IsFundamentalDomain (E.map j) DE μ)

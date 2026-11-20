@@ -14,14 +14,14 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [herm, Pi.add_apply, HermitianPairingAlgebra.cc_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_add_right' (G : Matrix (Fin r) (Fin r) E) (x y y' : Fin r → E) :
     herm G x (y + y') = herm G x y + herm G x y' := by
   simp only [herm, Pi.add_apply, HermitianPairingAlgebra.cc_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, HermitianPairingAlgebra.herm_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma herm_sum_left' (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
     (f : ι → Fin r → E) (y : Fin r → E) : herm G (∑ i ∈ s, f i) y = ∑ i ∈ s, herm G (f i) y := by
@@ -31,7 +31,7 @@ lemma herm_sum_left' (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, HermitianPairingAlgebra.herm_add_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm, cc]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, herm_add_right', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma herm_sum_right' (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
     (f : ι → Fin r → E) (x : Fin r → E) : herm G x (∑ i ∈ s, f i) = ∑ i ∈ s, herm G x (f i) := by
@@ -41,7 +41,7 @@ lemma herm_sum_right' (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, herm_add_right', ih]
 
 /- English proof (translation)
-Repeatedly rewrite using `[herm_sum_left', HermitianPairingAlgebra.herm_smul_left, herm_sum_right', HermitianPairingAlgebra.herm_smul_right, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_comb (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (p q : Fin n → E) (f : Fin n → Fin r → E) :
     herm G (∑ i, p i • f i) (∑ j, q j • f j) = ∑ i, ∑ j, p i * herm G (f i) (f j) * cc (q j) := by
@@ -54,37 +54,33 @@ def hxi (G : Matrix (Fin r) (Fin r) E) (ξ : Fin r → E) : (Fin r → E) →ₗ
   map_smul' a x := HermitianTraceFormVanishing.herm_smul_left G a x ξ
 
 /- English proof (translation)
-Use `set f := hxi X.Gm ξ with hf`. Establish `hfx : ∀ x, f x = herm X.Gm x ξ` using `fun _ => rfl`. Establish `hw : (fun b => cc (ξ b)) ≠ 0`. Introduce `h`. Apply `hξ0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Establish `hb` using `congrFun h b`. Simplify using `only [Pi.zero_apply, cc] at hb`. Simplify using `using hb`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, (X.Gm *ᵥ fun b => cc (ξ b)) a ≠ 0 := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw (Matrix.eq_zero_of_mulVec_eq_zero X.Gm_det (funext h))`. Establish `hfa : f (Pi.single a 1) ≠ 0`. Rewrite using `[hfx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ha using 1` and compare the differences between its conclusion and the goal. Simplify using `[herm, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hsurj : Function.Surjective f` using `fun y => ⟨(y / f (Pi.single a 1)) • Pi.single a 1, by rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hfa]⟩`. Use `set K := LinearMap.ker f with hK`. Establish `hξK : ξ ∈ K` using `by rw [LinearMap.mem_ker, hfx]; exact hξξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : Module.finrank E (LinearMap.range f) = 1`. Rewrite using `[LinearMap.range_eq_top.mpr hsurj, finrank_top, Module.finrank_self]`. Establish `hKr : Module.finrank E K = r - 1`. Use `LinearMap.finrank_range_add_finrank_ker f` as an intermediate fact. Rewrite `this` using `[hrange, Module.finrank_fin_fun]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 1 + Module.finrank E K = r` using `this`. Use linear arithmetic over natural numbers and integers. Establish `hKpos : 0 < Module.finrank E K`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hξ0` to reduce the goal to its premises. Establish `: ξ ∈ (⊥ : Submodule E (Fin r → E))` using `h ▸ hξK`. Simplify using `using this`. Establish `hr2 : 2 ≤ r` using `by omega`. Use `set ξK : K := ⟨ξ, hξK⟩ with hξKdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hξK0 : ξK ≠ 0` using `fun h => hξ0 (congrArg Subtype.val h)`. Use `set S : Submodule E K := E ∙ ξK with hS`. Establish `hQ : Module.finrank E (K ⧸ S) = r - 2`. Establish `h0` using `Submodule.finrank_quotient_add_finrank S`. Establish `h1 : Module.finrank E S = 1` using `by rw [hS]; exact finrank_span_singleton hξK0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h0` using `[h1, hKr]`. Establish `h2 : Module.finrank E (K ⧸ S) + 1 = r - 1` using `h0`. Use linear arithmetic over natural numbers and integers. Set `bQ` to `Module.finBasisOfFinrankEq E (K ⧸ S) hQ`. Set `βK : Fin (r - 2) → K` to `fun k => (Submodule.Quotient.mk_surjective S (bQ k)).choose`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβK : ∀ k, Submodule.Quotient.mk (p` using `S) (βK k) = bQ k := fun k => (Submodule.Quotient.mk_surjective S (bQ k)).choose_spec`. Establish `hdecK : ∀ y : K, ∃ (c : Fin (r - 2) → E) (e : E), y = ∑ k, c k • βK k + e • ξK`. Introduce `y`. Use `set c := bQ.repr (Submodule.Quotient.mk y) with hc`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmk : Submodule.Quotient.mk (p` using `S) (∑ k, c k • βK k) = ∑ k, c k • bQ k := by`. Establish `h` using `map_sum S.mkQ (fun k => c k • βK k) Finset.univ`. Simplify using `only [Submodule.mkQ_apply, Submodule.Quotient.mk_smul, hβK] at h`. Conclude with `h`. Establish `hq : Submodule.Quotient.mk (p` using `S) y = Submodule.Quotient.mk (∑ k, c k • βK k) := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmk, hc, bQ.sum_repr]`. Rewrite `hq` using `[Submodule.Quotient.eq]`. Establish `hq' : y - ∑ k, c k • βK k ∈ E ∙ ξK` using `hq`. Take `⟨e, he⟩` from `Submodule.mem_span_singleton.mp hq'`. Conclude with `⟨e, by rw [he]; abel⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun k => (βK k : Fin r → E), fun k => (βK k).2, ?_, ?_⟩` and prove the remaining obligations. Establish `hspan : ⊤ ≤ Submodule.span E (Set.range (Fin.cons ξK βK : Fin (r - 2 + 1) → K))`. Introduce `y _`. Take `⟨c, e, rfl⟩` from `hdecK y`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨k.succ, by simp⟩`. Conclude with `Submodule.subset_span ⟨0, by simp⟩`. Establish `hli` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan (by rw [Fintype.card_fin, hKr]; omega)`. Establish `hmap` using `hli.map' K.subtype (Submodule.ker_subtype K)`. Establish `heq : (K.subtype ∘ (Fin.cons ξK βK : Fin (r - 2 + 1) → K)) = (Fin.cons ξ (fun k => (βK k : Fin r → E)) : Fin (r - 2 + 1) → Fin r → E)`.
-
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) i <;> simp [ξK]`. Conclude with `heq ▸ hmap`. Introduce `x hx`. Establish `hxK : x ∈ K` using `by rw [LinearMap.mem_ker, hfx]; exact hx`.
-
-Take `⟨c, e, he⟩` from `hdecK ⟨x, hxK⟩`. Use `⟨c, e, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val he` as an intermediate fact. Simplify `this` using `[ξK]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_beta (X : Data E r) {ξ : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0) (hξ0 : ξ ≠ 0) :
     ∃ β : Fin (r - 2) → Fin r → E, (∀ k, herm X.Gm (β k) ξ = 0) ∧
@@ -202,7 +198,7 @@ def LBsub {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E) : Submodule 
     exact X.L'.smul_mem a he
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_LBsub {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E) (c : Fin n → E) :
     c ∈ LBsub X β ξ ↔ ∃ e : E, ∑ k, c k • β k + e • ξ ∈ X.L' := Iff.rfl

@@ -11,15 +11,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LeibTrivBlock
 
 /- English proof (translation)
-Set `f : V →ₗ[ℂ] cIndSpace H σ` to `{ toFun := fun v => ⟨⟨⟨fun x => L (π x v), fun p x => by`. Use `Eq.trans ?_ (law p _).symm` and prove the remaining obligations. Use the proof step `simp⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hπ v).mem_nhds (by simp)) fun g hg => by`. Establish `hg' : π g v = v` using `hg`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show L (π (x * g) v) = L (π x v)`. Simplify using `[hg'])⟩,`. Use the proof step `⟨{1}, isCompact_singleton, fun g _ => ⟨g, hH g, 1, rfl, by simp⟩⟩⟩`. Use the proof step `map_add' := fun v w => Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => by simp)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c v => Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => by simp))) }`. Establish `hb : Function.Bijective f`. Use `⟨fun v w h => ?_, fun φ => ⟨L.symm (φ.1.1.1 1), Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => ?_)))⟩⟩` and prove the remaining obligations. Establish `h1 : L (π 1 v) = L (π 1 w)` using `congrArg (fun φ => φ.1.1.1 1) h`. Simplify using `using h1`.
-
-Establish `h1` using `φ.1.1.2 ⟨x, hH x⟩ 1`. Rewrite `h1` using `[mul_one]`. Use `(law ⟨x, hH x⟩ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[L.apply_symm_apply]`. Conclude with `h1.symm`.
-
-Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective f hb) fun g => LinearMap.ext fun v => Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => by show L (π x (π g v)) = L (π (x * g) v) simp)))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_cInd {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (H : Subgroup G) (σ : Representation ℂ H W)
@@ -56,7 +52,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 instance subsingleton_GL0 : Subsingleton (GL (Fin 0) k) := ⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[absPow]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem absPow_zero_apply (s : ℂ) (hs : s = 0) (x : kˣ) : absPow k s x = 1 := by
   subst hs
@@ -64,16 +60,16 @@ theorem absPow_zero_apply (s : ℂ) (hs : s = 0) (x : kˣ) : absPow k s x = 1 :=
   simp [absPow]
 
 /- English proof (translation)
-Simplify using `only [dpow, detChar, MonoidHom.comp_apply]`. Conclude with `absPow_zero_apply _ (by simp [hs]) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dpow_eq_one (n : ℕ) (s : ℝ) (hs : s = 0) (g : GL (Fin n) k) : dpow n s g = 1 := by
   simp only [dpow, detChar, MonoidHom.comp_apply]
   exact absPow_zero_apply _ (by simp [hs]) _
 
 /- English proof (translation)
-Establish `hb : ∀ x, blk e x = false`. Introduce `x`. Unfold `blk`. Break down `e.symm x with ⟨_ | _, c⟩` into its components or cases. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Conclude with `c.elim0`. Introduce `a b hlt`. Establish `h1` using `hb a`. Establish `h2` using `hb b`. Simplify using `[h1, h2] at hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_parab_zero {r : ℕ} {n : Type} [Fintype n] [DecidableEq n] (e : (Σ x, Two (Fin r) (Fin 0) x) ≃ n)
     (g : GL n k) : g ∈ parab k e := by
@@ -89,7 +85,7 @@ theorem mem_parab_zero {r : ℕ} {n : Type} [Fintype n] [DecidableEq n] (e : (Σ
   simp [h1, h2] at hlt
 
 /- English proof (translation)
-Establish `h` using `deltaHalf_two (k := k) (a := Fin r) (b := Fin 0) ((leviTwo k (Fin r) (Fin 0)).symm z)`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[h, absPow_zero_apply _ (by simp), Subsingleton.elim ((leviTwo k (Fin r) (Fin 0)).symm z).2 1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_zero {r : ℕ} (z : Levi k (Two (Fin r) (Fin 0))) : deltaHalf k (Two (Fin r) (Fin 0)) z = 1 := by
   have h := deltaHalf_two (k := k) (a := Fin r) (b := Fin 0) ((leviTwo k (Fin r) (Fin 0)).symm z)
@@ -98,9 +94,9 @@ theorem deltaHalf_zero {r : ℕ} (z : Levi k (Two (Fin r) (Fin 0))) : deltaHalf 
   simp
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [ePG_false_last]`. Simplify using the standard rewrite rules. Consider the case `cast c`. Simplify using `[ePG, finSumFinEquiv_symm_apply_castSucc]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[finSumFinEquiv_apply_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ePG_zero_val (i : ℕ) (b : Fin (i + 1)) : (ePG i 0 ⟨false, b⟩ : Fin (i + 0 + 1)).val = b.val := by
   induction b using Fin.lastCases with
@@ -111,9 +107,9 @@ theorem ePG_zero_val (i : ℕ) (b : Fin (i + 1)) : (ePG i 0 ⟨false, b⟩ : Fin
     rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[leviProj_apply]`. Establish `: ∀ c : Fin (i + 1), two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0)) ⟨false, c⟩ = c` using `fun c => by`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[two, stdSum]`. Rewrite using `[this, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviProj_std_false {i : ℕ} (p : parab k (two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0)))) :
     (leviProj k (two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0))) p false : GL (Fin (i + 1)) k) = (p : GL (Fin (i + 1 + 0)) k) := by
@@ -126,9 +122,9 @@ theorem leviProj_std_false {i : ℕ} (p : parab k (two (stdSum (rfl : (i + 1) + 
   rw [this, this]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (leviProj k (ePG i 0) (hpgIncl k i 0 h) false : GL (Fin (i + 1)) k).val a b = _`. Rewrite using `[leviProj_apply]`. Establish `: ∀ c : Fin (i + 1), ePG i 0 ⟨false, c⟩ = c` using `fun c => Fin.ext (ePG_zero_val i c)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pgProj_fst {i : ℕ} (h : HPG k i 0) :
     (((pgProj k i 0 h).1 : Mir k i) : GL (Fin (i + 1)) k) = ((h : Mir k (i + 0)) : GL (Fin (i + 0 + 1)) k) := by
@@ -146,7 +142,7 @@ def actFst {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
   (extTensor π₁ π₂).comp (MonoidHom.inl _ _)
 
 /- English proof (translation)
-Simplify using `[actFst, extTensor_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actFst_tmul {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin n) k) V) (π₂ : Representation ℂ (GL (Fin 0) k) W) (g : GL (Fin n) k) (v : V) (w : W) :
@@ -154,7 +150,7 @@ theorem actFst_tmul {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddC
   simp [actFst, extTensor_tmul]
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_extTensor h₁ h₂) _ (by show Continuous fun g : GL (Fin n) k => (g, (1 : GL (Fin 0) k)) exact continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_actFst {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π₁ : Representation ℂ (GL (Fin n) k) V} {π₂ : Representation ℂ (GL (Fin 0) k) W}
@@ -164,11 +160,9 @@ theorem isSmooth_actFst {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [
     exact continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-Establish `key : ((BZRes.tE V W).toLinearMap ∘ₗ piTensor (twoRep π₁ π₂) (leviProj k (two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0))) p)) = (actFst π₁ π₂ (p : GL (Fin (i + 1 + 0)) k)) ∘ₗ (BZRes.tE V W).toLinearMap`. Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Use `show BZRes.tE V W (piTensor (twoRep π₁ π₂) (leviProj k (two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0))) p) (PiTensorProduct.tprod ℂ x)) = actFst π₁ π₂ (p : GL (Fin (i + 1 + 0)) k) (BZRes.tE V W (PiTensorProduct.tprod ℂ x))`. Rewrite using `[piTensor_tprod]`. Use `(Exponents.boolTensorEquiv_tprod _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg _ (Exponents.boolTensorEquiv_tprod x).symm)` and prove the remaining obligations. Rewrite using `[actFst_tmul, ← leviProj_std_false p]`. Use `show π₁ _ (x false) ⊗ₜ[ℂ] π₂ _ (x true) = _`. Rewrite using `[Subsingleton.elim (leviProj k (two (stdSum (rfl : (i + 1) + 0 = (i + 1) + 0))) p true : GL (Fin 0) k) 1, map_one]`. Both sides reduce to the same expression.
-
-Conclude with `LinearMap.congr_fun key y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tE_piTensor {i : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin (i + 1)) k) V) (π₂ : Representation ℂ (GL (Fin 0) k) W)
@@ -190,7 +184,7 @@ theorem tE_piTensor {i : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddC
   exact LinearMap.congr_fun key y
 
 /- English proof (translation)
-Use `WordProd.OneBlockProd.nonempty_equiv_parInd _ (isSmooth_actFst h₁ h₂) (mem_parab_zero _) deltaHalf_zero (BZRes.tE V W).symm fun p v => ?_` and prove the remaining obligations. Apply `(BZRes.tE V W).injective` to reduce the goal to its premises. Rewrite using `[tE_piTensor, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_actFst_equiv_prod2 {i : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin (i + 1)) k) V) (π₂ : Representation ℂ (GL (Fin 0) k) W)
@@ -203,9 +197,9 @@ theorem nonempty_actFst_equiv_prod2 {i : ℕ} {V W : Type} [AddCommGroup V] [Mod
   rw [tE_piTensor, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v w`. Rewrite using `[actFst_tmul, MonoidHom.comp_apply, extTensor_tmul, ← pgProj_fst h, Subsingleton.elim (pgProj k i 0 h).2 1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[twist_apply, hχ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpg_act {i : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin (i + 1)) k) V) (π₂ : Representation ℂ (GL (Fin 0) k) W)
@@ -220,9 +214,9 @@ theorem hpg_act {i : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommG
     simp [twist_apply, hχ]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i n π₁ π₂ h h' h₁ h₂`. Substitute `h'` using the available equality. Take `⟨E₁⟩` from `nonempty_actFst_equiv_prod2 π₁.ρ π₂.ρ h₁ h₂`. Establish `hs : IsSmooth ((actFst π₁.ρ π₂.ρ : Representation ℂ (GL (Fin (i + 0 + 1)) k) (π₁.V ⊗[ℂ] π₂.V)).comp (Mir k (i + 0)).subtype)` using `isSmooth_comp (isSmooth_actFst h₁ h₂) _ continuous_subtype_val`. Take `⟨E₂⟩` from `nonempty_equiv_cInd (HPG k i 0) ((extTensor (mtw (gres π₁) (((0 : ℕ) : ℝ) / 2)).ρ (π₂.tw (-((i + 1 : ℕ) : ℝ) / 2)).ρ).comp (pgProj k i 0)) hs (fun g => mem_parab_zero _ _) (LinearEquiv.refl ℂ _) (fun g x => hpg_act π₁.ρ π₂.ρ _ _ (fun a => dpow_eq_one _ _ (by simp) _) g x)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Representation.Equiv.trans (Representation.Equiv.mk E₁.symm.toLinearEquiv fun g => ?_) E₂⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `eint E₁.symm _ v`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem miso_gres_prod_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (i n : ℕ) (π₁ : GRep k (i + 1)) (π₂ : GRep k 0) (h : (i + 1) + 0 = n + 1) (h' : i + 0 = n),

@@ -26,9 +26,9 @@ variable {k k' G : Type u} [CommRing k] [CommRing k'] [Group G] [TopologicalSpac
   (he : ∀ (g : G) (a : A), e (A.ρ g a) = A'.ρ g (e a))
 
 /- English proof (translation)
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Establish `key` using `cohomologyAddEquivOfEquiv_mapAlong e he (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (B := Rep.res (φ v).toMonoidHom A) (B' := Rep.res (φ v).toMonoidHom A') e (fun _ a => he _ a) (𝟙 _) (𝟙 _) (fun _ => rfl) n x`. Rewrite using `[← key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(cohomologyAddEquivOfEquiv (A := Rep.res (φ v).toMonoidHom A) (A' := Rep.res (φ v).toMonoidHom A') e (fun _ a => he _ a) n).injective (h.trans (map_zero _).symm)`. Introduce `h`. Rewrite using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff (n : ℕ) (x : cohomology A n) :
     cohomologyAddEquivOfEquiv e he n x ∈ shaSubmodule φ A' n ↔ x ∈ shaSubmodule φ A n := by
@@ -54,9 +54,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M] (hM : ∀ m : M, ℓ • m = 0)
 
 /- English proof (translation)
-Set `E` to `cohomologyZModEquiv ℓ M hM r`. Establish `hmem : ∀ x, x ∈ ptSha φ M r ↔ E x ∈ shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r` using `fun x => by`. Rewrite using `[mem_ptSha_iff_mem_shaSubmodule]`. Conclude with `(mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff φ (zmodRepOfTorsionEquiv ℓ M hM) (fun _ _ => rfl) r x).symm`. Establish `hc : Nat.card (ptSha φ M r) = Nat.card (shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r)` using `Nat.card_congr (E.toEquiv.subtypeEquiv hmem)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (cohomology (zmodRepOfTorsion ℓ M hM) r)` using `Finite.of_equiv _ E.toEquiv`. Rewrite using `[hc, natCard_eq_pow_finrank_zmod ℓ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_ptSha_eq_pow_finrank (r : ℕ) [Finite (cohomology M r)] :
     Nat.card (ptSha φ M r) = ℓ ^ Module.finrank (ZMod ℓ) (shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r) := by
@@ -97,7 +97,7 @@ theorem kummerModNZMod_apply (i : ℕ) (y : ModN (cohomology (Rep.res N.subtype 
   rfl
 
 /- English proof (translation)
-The claim follows from `(cohomologyAddEquivOfEquiv (A := Rep.res N.subtype T) (A' := Rep.res N.subtype (zmodRepOfTorsion ℓ T hT)) (zmodRepOfTorsionEquiv ℓ T hT) (fun _ _ => rfl) (i + 1)).injective.comp (kummerModNHom_injective N hS i)`.
+A detailed English derivation is pending.
 -/
 theorem kummerModNZMod_injective (i : ℕ) : Function.Injective (kummerModNZMod N hS hT i) :=
   (cohomologyAddEquivOfEquiv (A := Rep.res N.subtype T) (A' := Rep.res N.subtype (zmodRepOfTorsion ℓ T hT))
@@ -106,9 +106,9 @@ theorem kummerModNZMod_injective (i : ℕ) : Function.Injective (kummerModNZMod 
 variable [N.Normal] [CompactSpace N]
 
 /- English proof (translation)
-Set `_` to `conjActionOf N (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) (QuotientGroup.ker_mk' N).le O i`. Use `⟨fun q x => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `H y`. Establish `hs : (g : G ⧸ N) • y = (cohomologyConj O N i g).hom y` using `conjActionOf_smul N (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) (QuotientGroup.ker_mk' N).le O i g y`. Rewrite using `[modNRep_mk, hs, cohomologyConjRep_mk, kummerModNZMod_apply, kummerModNZMod_apply, kummerModNHom_cohomologyConj]`. Conclude with `cohomologyAddEquivOfEquiv_cohomologyConj (A := T) (A' := zmodRepOfTorsion ℓ T hT) (zmodRepOfTorsionEquiv ℓ T hT) (fun _ _ => rfl) N (i + 1) g _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntertwiningMap_kummerModNZMod (i : ℕ) :
     (letI := conjActionOf N (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) (QuotientGroup.ker_mk' N).le O i;
@@ -130,9 +130,9 @@ theorem isIntertwiningMap_kummerModNZMod (i : ℕ) :
 omit [N.Normal] [CompactSpace N] in
 
 /- English proof (translation)
-Use `set E := cohomologyAddEquivOfEquiv (A := Rep.res N.subtype T) (A' := Rep.res N.subtype (zmodRepOfTorsion ℓ T hT)) (zmodRepOfTorsionEquiv ℓ T hT) (fun _ _ => rfl) (i + 1)`. Take `⟨y', rfl⟩` from `E.surjective y`. Use `(mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff ψ (A := Rep.res N.subtype T) (A' := Rep.res N.subtype (zmodRepOfTorsion ℓ T hT)) (zmodRepOfTorsionEquiv ℓ T hT) (fun _ _ => rfl) (i + 1) y').trans ?_` and prove the remaining obligations. Use `(mem_ptSha_iff_mem_shaSubmodule ψ _ y').symm.trans ((hsha y').trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨z, by rw [kummerModNZMod_apply, hz]⟩`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z, E.injective (by rw [← hz, kummerModNZMod_apply])⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_shaSubmodule_iff_mem_range_kummerModNZMod {ι : Type} {Hv : ι → Type} [∀ v, Group (Hv v)]
     [∀ v, TopologicalSpace (Hv v)] [∀ v, IsTopologicalGroup (Hv v)] (ψ : ∀ v, Hv v →ₜ* N) (i : ℕ)
@@ -166,9 +166,9 @@ abbrev gsRootsZMod : Rep.{0} (ZMod ℓ) (galUnramifiedOutside K.1 ℚ̄ S) :=
   zmodRepOfTorsion ℓ (gsRoots S ℓ) (nsmul_galRootsOfUnity_eq_zero ℓ)
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Take `⟨f⟩` from `nonempty_addEquiv_gsRoots_of_mem S (n := ℓ) fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (gsRootsZMod S ℓ) = ℓ ^ 1`. Rewrite using `[pow_one]`. Conclude with `(Nat.card_congr f.toEquiv).trans (Nat.card_zmod ℓ)`. Establish `: Finite (gsRootsZMod S ℓ)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hℓ.ne_zero)`. Conclude with `finrank_eq_of_natCard_zmod ℓ hcard`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_gsRootsZMod {S} (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1 := by
@@ -198,9 +198,7 @@ abbrev gsH1SUnitsModRep :
   modNRep _ _ ℓ
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Establish `hP : (((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index : ℕ) : ZMod ℓ) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hℓ).1 hcop.symm`.
-
-Conclude with `finrank_shaSubmodule_eq_finrank_invariants (gsFinFamily S ιs) (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M hT hM (finrank_gsRootsZMod ℓ hℓS) hP 2 (gsH1SUnitsModRep ℓ hL) (kummerModNZMod _ (gsKummer_shortExact S ℓ hℓS) (nsmul_galRootsOfUnity_eq_zero ℓ) 1) (isIntertwiningMap_kummerMod …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_shaSubmodule_two_eq_finrank_invariants (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hK : Odd ℓ ∨ IsTotallyComplex L.1)
@@ -229,9 +227,9 @@ theorem finrank_shaSubmodule_two_eq_finrank_invariants (hℓS : ∀ v ∉ S, ((�
       (mem_ptSha_mackey_iff_exists_kummerModN hL ιs hℓ hℓS hK))
 
 /- English proof (translation)
-Establish `: Finite (zmodRepOfTorsion ℓ M hMℓ)` using `inferInstanceAs (Finite M)`. Establish `hS' : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Apply `hℓS v h` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : Nat.card M = ℓ ^ Module.finrank (ZMod ℓ) (zmodRepOfTorsion ℓ M hMℓ)` using `natCard_eq_pow_finrank_zmod ℓ (zmodRepOfTorsion ℓ M hMℓ)`. Rewrite `hv` using `[hc, Nat.cast_pow]`. Conclude with `v.isPrime.mem_of_pow_mem _ hv`. Use `finite_cohomology_gs K S M hS' 2 le_rfl` as an intermediate fact. Conclude with `natCard_ptSha_eq_pow_finrank (gsFinFamily S ιs) ℓ M hMℓ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCard_ptSha_two_gs [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]

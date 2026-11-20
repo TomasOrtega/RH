@@ -4,7 +4,7 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hM i k h, zero_mul]`. Rewrite using `[hN k i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -19,21 +19,21 @@ theorem lu_diag_mul_upper {R : Type} [CommRing R] {m : ℕ} (M N : Matrix (Fin m
   · simp
 
 /- English proof (translation)
-Introduce `R _ m A₁ A₂ N₁ U N₀ h1 h2 hN1 hN1d hU hUd hN0 hN0d h`. Establish `hA : ∀ i j, i < j → (A₁ * A₂) i j = 0`. Introduce `i j hij`. Rewrite using `[mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k _`. Break down `lt_or_ge i k with hk | hk` into its components or cases. Rewrite using `[h1 i k hk, zero_mul]`. Rewrite using `[h2 k j (lt_of_le_of_lt hk hij), mul_zero]`. Establish `hbt : N₁.BlockTriangular id` using `fun i j hij => hN1 i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : N₁.det = 1`. Rewrite using `[det_of_upperTriangular hbt]`. Simplify using `[hN1d]`. Use `letI : Invertible N₁ := invertibleOfIsUnitDet N₁ (by rw [hdet]; exact isUnit_one)`. Establish `hinv : N₁⁻¹.BlockTriangular id` using `blockTriangular_inv_of_blockTriangular hbt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hinv' : ∀ i j, j < i → N₁⁻¹ i j = 0` using `fun i j hij => hinv hij`. Establish `hinvd : ∀ i, N₁⁻¹ i i = 1`. Introduce `i`. Use `congrFun (congrFun (mul_inv_of_invertible N₁) i) i` as an intermediate fact. Rewrite `this` using `[lu_diag_mul_upper N₁ N₁⁻¹ hN1 hinv' i, hN1d, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hV : ∀ i j, j < i → (U * N₀) i j = 0`. Establish `: (U * N₀).BlockTriangular id` using `BlockTriangular.mul (fun i j hij => hU i j hij) (fun i j hij => hN0 i j hij)`. Conclude with `fun i j hij => this hij`. Establish `hVd : ∀ i, (U * N₀) i i = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[lu_diag_mul_upper U N₀ hU hN0 i, hUd, hN0d, one_mul]`. Establish `hAeq : A₁ * A₂ = U * N₀ * N₁⁻¹`. Rewrite using `[← h, mul_inv_cancel_right_of_invertible]`. Establish `hA1 : A₁ * A₂ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Rewrite using `[hA i j hij, one_apply_ne (ne_of_lt hij)]`. Substitute `hij` using the available equality. Rewrite using `[hAeq, lu_diag_mul_upper _ _ hV hinv' i, hVd, hinvd, one_mul, one_apply_eq]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAeq, one_apply_ne (ne_of_gt hij)]`. Establish `: (U * N₀ * N₁⁻¹).BlockTriangular id` using `BlockTriangular.mul (fun a b hab => hV a b hab) hinv`. Conclude with `this hij`. Rewrite `h` using `[hA1, one_mul]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lu_unique : ∀ (R : Type) [CommRing R] (m : ℕ) (A₁ A₂ N₁ U N₀ : Matrix (Fin m) (Fin m) R),
     (∀ i j, i < j → A₁ i j = 0) → (∀ i j, i < j → A₂ i j = 0) → (∀ i j, j < i → N₁ i j = 0) →

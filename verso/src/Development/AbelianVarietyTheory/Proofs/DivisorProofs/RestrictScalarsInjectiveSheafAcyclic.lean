@@ -13,9 +13,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoinducedShea
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R S _ _ φ I _ P n hn`. Take `⟨J, hJ, i, r, hir⟩` from `GlobalTheory.T.injective_etaleSheaf_retract_of_coinduced R S φ I`. Take `⟨C, ε, hC0, hCi, hqi, hCz⟩` from `GlobalTheory.T.exists_coinducedSheaf_injectiveResolution_freeExact R S φ J (GlobalTheory.T.moduleInjective_hom_free_etaleSheaf_injective R J)`. Establish `h1 : Subsingleton (HK R (sgl ((free R).obj P)) ((restr φ).obj ((coind φ).obj J)) n)`. Take `⟨e⟩` from `GlobalTheory.T.etaleHypercohomology_iso_of_injective_resolution R _ C ε hC0 hCi hqi (sgl ((free R).obj P)) n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hCz P n hn` as an intermediate fact. Conclude with `e.injective.subsingleton`. Establish `h2 : Subsingleton (HK R (sgl ((free R).obj P)) ((restr φ).obj I) n)` using `GlobalTheory.T.subsingleton_etaleHypercohomology_of_retract R _ _ ((restr φ).map i) ((restr φ).map r) (by rw [← Functor.map_comp, hir]; exact (restr φ).map_id I) _ n h1`. Take `⟨e, -, -⟩` from `GlobalTheory.T.exists_natural_homotopyEquiv_chains_constant_presheaf R`. Conclude with `(GlobalTheory.T.quasiIso_hypercohomology_bijective R (e P).hom ((restr φ).obj I) n).1.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.restr_injective_acyclic : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (I : Shv S) [Injective I]
     (P : PSh) (n : ℤ), 0 < n → Subsingleton (H R (disc.obj P) ((restr φ).obj I) n) := by

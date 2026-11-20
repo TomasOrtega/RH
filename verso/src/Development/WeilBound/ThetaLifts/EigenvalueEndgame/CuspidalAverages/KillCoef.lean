@@ -12,21 +12,21 @@ variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Mea
   {a : G} {lam : Measure X} [IsProbabilityMeasure lam] {φ c : G → ℂ}
 
 /- English proof (translation)
-Establish `nb : ∀ {x z M}, ‖z‖ ≤ M → ‖e x * z‖ ≤ M` using `fun {x z M} h => by`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (ne x)).trans h`. Use `kill_ind Measure.haar hC hn (l := 0) (by simp) (fun φ _ => ∀ V ∈ 𝓝 (1 : G), (∀ z ∈ V, ∀ i, y 0 * ∫ x, e x * φ (n x * (b i * z)) ∂lam = y i * ∫ x, e x * φ (n x * z) ∂lam) → ∫ x, e x * φ (n x * 1) ∂lam = 0) (fun φ c _ ⟨M, hM⟩ V hV H => ?_) (fun φ c h h1 V hV H => ?_) m φ c h hm V h …` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `((hy.atTop_mul_const (norm_pos_iff.2 h0)).eventually_gt_atTop (‖y 0‖ * M)).exists`. Rewrite `hi` using `[← norm_mul, ← H 1 (mem_of_mem_nhds hV) i, norm_mul]`. Use `hi.not_ge (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Simplify using `using norm_integral_le_of_norm_le_const (μ := lam) (.of_forall fun x => nb (hM (n x * (b i * 1))))`. Use `h.cont` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w : G → ℂ` to `fun g => ∫ x, e x * φ (n x * g) ∂lam`. Establish `cw : Continuous w` using `continuous_iff_continuousAt.2 fun g => by`. Take `⟨K, hK, hx⟩` from `exists_compact_mem_nhds g`. Take `⟨M, hM⟩` from `h.bound hC hK`. Conclude with `continuousAt_of_dominated (bound := fun _ => M) (.of_forall fun y => Continuous.aestronglyMeasurable (by fun_prop)) (eventually_of_mem hx fun y hy => .of_forall fun u => nb (hM u y hy)) (integrable_const M) (.of_forall fun u => Continuous.continuousAt (by fun_prop))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V', hV', hs⟩` from `exists_nhds_one_split hV`. Use `Bump.zero Measure.haar w cw 1 fun U hU => ?_` and prove the remaining obligations. Take `⟨η, hη, h2⟩` from `h1 _ (inter_mem hU hV')`. Establish `fub : ∀ g, ∫ x, e x * conv Measure.haar η φ (n x * g) ∂lam = conv Measure.haar η w g` using `fun g => by`. Simplify using `only [conv, w, ← integral_mul_const, ← integral_const_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(integral_integral_swap ?_).symm` and prove the remaining obligations. Take `⟨M, hM⟩` from `h.bound hC (hη.cpt.isCompact.image (continuous_const_mul g))`. Use `hη.cont` as an intermediate fact. Use `Integrable.mono' ((hη.cont.integrable_of_hasCompactSupport hη.cpt).mul_prod (integrable_const M)) (Continuous.aestronglyMeasurable (by fun_prop)) (.of_forall fun z => nb ?_)` and prove the remaining obligations. Distinguish the cases in `hy : z.1 ∈ tsupport η`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [norm_mul, Complex.norm_real, Real.norm_of_nonneg (hη.nonneg _)]`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ _ ⟨_, hy, rfl⟩) (hη.nonneg _)`. Simplify using `[image_eq_zero_of_notMem_tsupport hy]`. Use `⟨η, ⟨hη.cont, hη.cpt, hη.sub.trans Set.inter_subset_left, hη.nonneg, hη.one⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fub]`. Use `h2 V' hV' fun z hz i => ?_` and prove the remaining obligations. Rewrite using `[fub, fub, conv, conv, ← integral_const_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hu : u ∈ tsupport η`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_assoc (b i)]`. Conclude with `congrArg (· * _) (H _ (hs z hz u (hη.sub hu).2) i)`. Simplify using `[image_eq_zero_of_notMem_tsupport hu]`.
+A detailed English derivation is pending.
 -/
 theorem kill_coef (hC : Cusp Γ n a) (hn : Continuous n) {e : X → ℂ} (ce : Continuous e) (ne : ∀ x, ‖e x‖ ≤ 1) (b : ℕ → G) {y : ℕ → ℂ}
     (hy : Tendsto (fun i => ‖y i‖) atTop atTop) {m : ℕ} (h : Dat Γ n a lam 0 φ c) (hm : Gr a m φ) {V : Set G} (hV : V ∈ 𝓝 1)

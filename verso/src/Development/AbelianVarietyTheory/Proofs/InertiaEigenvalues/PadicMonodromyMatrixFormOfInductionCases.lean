@@ -4,21 +4,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 open scoped Formalism.Per
 
 /- English proof (translation)
-Establish `hx : ∃ x, 0 < f x`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hf (funext fun z => (Finset.sum_eq_zero_iff_of_nonpos fun z _ => hc z).1 h0 z (Finset.mem_univ _))`. Establish `hy : ∃ y, f y < 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hf (funext fun z => (Finset.sum_eq_zero_iff_of_nonneg fun z _ => hc z).1 h0 z (Finset.mem_univ _))`. Take `⟨x, hx⟩` from `hx`. Take `⟨y, hy⟩` from `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxy : x ≠ y` using `fun e => by rw [e] at hx; omega`. Establish `e1 : ∀ (g : α → ℤ), ∑ z, g z * eps x y z = g y - g x`. Introduce `g`. Establish `: ∀ z, g z * eps x y z = (if z = y then g y else 0) - (if z = x then g x else 0)`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Unfold `eps`. Distinguish the cases in `a : z = x`. Substitute `a` using the available equality. Simplify using `[hxy]`. Distinguish the cases in `b : z = y`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `b` using the available equality. Simplify using `[a]`. Simplify using `[a, b]`. Simplify using `[this, Finset.sum_sub_distrib]`. Establish `ex : eps x y x = -1` using `by simp [eps]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ey : eps x y y = 1` using `by simp [eps, hxy.symm]`. Use `⟨x, y, hxy, ?_, ?_⟩` and prove the remaining obligations. Use `e1 fun _ => 1` as an intermediate fact. Simplify using `only [one_mul] at this`. Rewrite using `[Finset.sum_add_distrib, h0, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `a` using `e1 f`. Establish `b` using `e1 (eps x y)`. Establish `: ∑ z, (f z + eps x y z) ^ 2 = ∑ z, f z ^ 2 + 2 * ∑ z, f z * eps x y z + ∑ z, eps x y z * eps x y z`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun z _ => by ring`. Rewrite using `[this, a, b, ex, ey]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PMon.arith {α : Type} [Fintype α] [DecidableEq α] (f : α → ℤ) (h0 : ∑ z, f z = 0) (hf : f ≠ 0) :
     ∃ x y, x ≠ y ∧ ∑ z, (f z + eps x y z) = 0 ∧ ∑ z, (f z + eps x y z) ^ 2 < ∑ z, f z ^ 2 := by
@@ -59,17 +57,15 @@ theorem GlobalTheory.PMon.arith {α : Type} [Fintype α] [DecidableEq α] (f : �
     omega
 
 /- English proof (translation)
-Introduce `hF hT hS hR hM l _ P AI T`. It suffices to establish `H : ∀ (N : ℕ) (n : Type) [Fintype n] [DecidableEq n], Fintype.card n = N → ∀ (K : FinExt l) (r : ℕ) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)), IsRat r ρ → AdmDR P ρ → AdmSt P ρ from fun n _ _ K r ρ => H _ n rfl K r ρ`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N IH`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n _ _ hn K r ρ hρ hd`. Take `⟨w, hw⟩` from `(hF l P AI T n K r ρ hρ).1 hd`. Take `⟨K', r', ρ', w', h1, h2, h3, h4⟩` from `hT l P AI T n K r ρ w hρ hw`. Apply `h4` to reduce the goal to its premises. It suffices to establish `G : ∀ (S : ℕ) (σ : ↥(GK K') →* GL n ↥(MaximalUnramifiedExtension l)) (v : Fin r' → n → ℤ), IsRat r' σ → Framed P σ v → ∑ z : Fin r' × n, v z.1 z.2 = 0 → (∑ z : Fin r' × n, v z.1 z.2 ^ 2).toNat = S → AdmSt P σ from G _ ρ' w' h1 h2 (by rw [Fintype.sum_prod_type]; exact h3) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the argument to an intermediate assertion.
 
-Introduce `S`. Proceed by induction on `S using Nat.strong_induction_on with`. Consider the case `_ S IS`. Introduce `σ v a1 a2 a3 a4`. Distinguish the cases in `hv : (fun z : Fin r' × n => v z.1 z.2) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `: v = 0` using `funext fun m => funext fun j => congrFun hv (m, j)`. Substitute `this` using the available equality. Conclude with `hS l P AI T n K' r' σ a1 a2`. Distinguish the cases in `hs : Splits r' σ`. Conclude with `hR l P AI T n K' r' σ a1 ((hF l P AI T n K' r' σ a1).2 ⟨v, a2⟩) hs fun a _ _ ha τ b1 b2 => IH _ (hn ▸ ha) a rfl K' r' τ b1 b2`.
+Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hxy, c1, c2⟩` from `GlobalTheory.PMon.arith _ a3 hv`. Take `⟨τ, b1, b2, b3⟩` from `hM l P AI T n K' r' σ v x y hxy a1 a2 hs`. Use `b3 (IS _ ?_ τ _ b1 b2 c1 rfl)` and prove the remaining obligations. Establish `p : 0 ≤ ∑ z : Fin r' × n, (v z.1 z.2 + eps x y z) ^ 2` using `Finset.sum_nonneg fun z _ => sq_nonneg _`. Use `show (∑ z : Fin r' × n, (v z.1 z.2 + eps x y z) ^ 2).toNat < S`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PMon.matThm_of_steps : FrameEx → TwistStep → SenStep → RedStep → ModStep → MatThm := by
   intro hF hT hS hR hM l _ P AI T

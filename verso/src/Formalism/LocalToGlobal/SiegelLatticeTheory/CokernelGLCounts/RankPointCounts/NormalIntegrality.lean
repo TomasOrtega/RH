@@ -42,21 +42,21 @@ section Hyp
 variable (Λ : Submodule (𝓞 D.host.E) (VS D).V) (X : Submodule D.host.E (VS D).V) (y0 : (VS D).V)
 
 /- English proof (translation)
-Establish `hl0 : l • y0 ∈ Λ ⊔ X.restrictScalars (𝓞 D.host.E)` using `hl`. Establish `hm0 : m • y0 ∈ Λ ⊔ X.restrictScalars (𝓞 D.host.E)` using `hm`. Take `⟨a1, ha1, x1, hx1, e1⟩` from `Submodule.mem_sup.mp hl0`. Take `⟨a2, ha2, x2, hx2, e2⟩` from `Submodule.mem_sup.mp hm0`. Establish `hx1' : x1 ∈ X` using `by simpa using hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx2' : x2 ∈ X` using `by simpa using hx2`. Establish `hy1 : ∀ x ∈ X, (VS D).hT x y0 = 0` using `fun x hx => horth x hx`. Establish `hxx : (VS D).hT x2 x1 = 0` using `hiso x1 hx1' x2 hx2'`. Establish `hsym : starRingEnd D.host.E ((VS D).hT x1 y0) = (VS D).hT y0 x1` using `by first`. Consider the case `exact (VS D).herm x1 y0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (VS D).herm.eq x1 y0`. Establish `hy2 : (VS D).hT y0 x1 = 0`. Rewrite using `[← hsym, hy1 x1 hx1', map_zero]`. Establish `ea1 : a1 = l • y0 - x1` using `by rw [← e1]; abel`. Establish `ea2 : a2 = m • y0 - x2` using `by rw [← e2]; abel`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : (VS D).hT x2 a1 = 0`. Rewrite using `[ea1, map_sub, map_smul, hy1 x2 hx2', hxx]`. Simplify using the standard rewrite rules. Establish `c2 : (VS D).hT a2 x1 = 0`. Rewrite using `[ea2, map_sub, LinearMap.sub_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy2, hxx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e : brS (VS D) (l • y0) (m • y0) = (VS D).hT a2 a1` using `by show (VS D).hT (m • y0) (l • y0) = _`. Rewrite using `[← e1, ← e2]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[c1, c2, hxx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `ha1d : a1 ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ`. Rewrite using `[show Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ from hun]`. Conclude with `ha1`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at ha1d`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2` using `(Submodule.mem_iInf _).mp ha1d a2`. Establish `h3` using `(Submodule.mem_iInf _).mp h2 ha2`. Establish `h4` using `Submodule.mem_comap.mp h3`. Take `⟨c, hc⟩` from `Submodule.mem_one.mp h4`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem pair_int (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     (hiso : ∀ x ∈ X, ∀ x' ∈ X, brS (VS D) x x' = 0) (horth : ∀ x ∈ X, brS (VS D) y0 x = 0)

@@ -24,9 +24,9 @@ open Classical
 namespace GlobalTheory.PlaceComm
 
 /- English proof (translation)
-Introduce `D θ V hθ τ τ' hne`. Use `⟨fun g hg h hh f => ?_, fun g hg X hX f => ?_, fun X hX Y hY f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [rTr]`. Rewrite using `[mul_assoc, mul_assoc, GlobalTheory.AvgOtherPlace.atTau_comm hθ (Ne.symm hne) hg hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Mem.RealTranslate.Rder_rTr hθ (GlobalTheory.Mem.RealTranslate.isRealPt_atTau hθ τ hg) hX, GlobalTheory.AvgOtherPlace.adAt_atTau_of_ne hθ (Ne.symm hne) hg]`. Conclude with `GlobalTheory.DerBracket.Rder_comm hθ hf.smooth hne hX hY`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_comm : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D),
     IsInfFam (D := D) θ → ∀ τ τ' : D.what₂.Tau, τ ≠ τ' →

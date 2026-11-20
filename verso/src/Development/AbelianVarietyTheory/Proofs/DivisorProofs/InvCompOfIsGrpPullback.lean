@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.SymSpread
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom h G') (𝟙 G'))`. Simplify `e` using `[pushHom, pushPt, Hom.inv_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_comp_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) :

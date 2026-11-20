@@ -6,9 +6,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Take `⟨s, t, hs, hr, ht⟩` from `h`. Take `⟨s', t', hs', hr', ht'⟩` from `h'`. Use `⟨s * s', t * t', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hs hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, ht, ht']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lead_mul {R C : Type} [CommRing R] [Field C] (f : R →+* C) (ξ r r' : R) (n n' : ℕ)
     (c c' : C) (h : Lead f ξ r n c) (h' : Lead f ξ r' n' c') :
@@ -22,13 +22,13 @@ theorem lead_mul {R C : Type} [CommRing R] [Field C] (f : R →+* C) (ξ r r' : 
   · rw [map_mul, map_mul, ht, ht']; ring
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ C _ _ ε Λ _ _ ψ N N' Δ Δ' a a' c c' h1 h2 h3 h4`. Take `⟨hd, g, hg, hgd⟩` from `h1`. Take `⟨hd', g', hg', hgd'⟩` from `h2`. Use `⟨⟨?_, g * g', ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_dvd_mul hd hd'`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`. Conclude with `mul_dvd_mul hgd hgd'`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `σ f hf`. Take `⟨ha, hc, hl⟩` from `h3 σ f hf`. Take `⟨ha', hc', hl'⟩` from `h4 σ f hf`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.mul_apply]`. Conclude with `mul_ne_zero hc hc'`. Simplify `lead_mul _ _ _ _ _ _ _ _ hl hl'` using `only [Pi.add_apply, Pi.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detData_mul : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (C : Type) [Field C] [Algebra O C] (ε : PreTilt O p) (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (ψ : RL p O Λ →+* RL p O Λ) (N N' : ℕ) (Δ Δ' : RL p O Λ) (a a' : (Λ →+* O) → ℕ) (c c' : (Λ →+* O) → C), IsDetElt ε ψ N Δ → IsDetElt ε ψ N' Δ' → HasOrders C ε N Δ a c → HasOrders C ε N' Δ' a' c' → IsDetElt ε ψ (N + N') (Δ * Δ') ∧ HasOrders C ε (N + N') (Δ * Δ') (a + a') (c * c') := by
   intro p _ O _ _ _ C _ _ ε Λ _ _ ψ N N' Δ Δ' a a' c c' h1 h2 h3 h4

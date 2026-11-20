@@ -11,7 +11,7 @@ noncomputable def deg {A B : Type} [Field A] [Field B] (f : A →+* B) : ℕ :=
   @Module.finrank A B _ _ f.toAlgebra.toModule
 
 /- English proof (translation)
-Use `algebraize [f, g, g.comp f]`. Conclude with `(Module.finrank_mul_finrank A B C).symm`.
+A detailed English derivation is pending.
 -/
 theorem deg_comp {A B C : Type} [Field A] [Field B] [Field C] (f : A →+* B) (g : B →+* C) :
     deg (g.comp f) = deg f * deg g := by
@@ -19,7 +19,7 @@ theorem deg_comp {A B C : Type} [Field A] [Field B] [Field C] (f : A →+* B) (g
   exact (Module.finrank_mul_finrank A B C).symm
 
 /- English proof (translation)
-Establish `: (algebraMap A B).toAlgebra = i` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `deg`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_algebraMap (A B : Type) [Field A] [Field B] [i : Algebra A B] :
     deg (algebraMap A B) = Module.finrank A B := by
@@ -28,18 +28,16 @@ theorem deg_algebraMap (A B : Type) [Field A] [Field B] [i : Algebra A B] :
   rw [this]
 
 /- English proof (translation)
-Use `letI := (f : A →+* B).toAlgebra`. Conclude with `Algebra.finrank_eq_one_iff_bijective_algebraMap.mpr f.bijective`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem deg_equiv {A B : Type} [Field A] [Field B] (f : A ≃+* B) : deg (f : A →+* B) = 1 := by
   letI := (f : A →+* B).toAlgebra
   exact Algebra.finrank_eq_one_iff_bijective_algebraMap.mpr f.bijective
 
 /- English proof (translation)
-Use `algebraize [f₁, f₂]`. Use `haveI : Module.Finite B K₁ := Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h₁)`. Use `haveI : Module.Finite B K₂ := Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h₂)`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (TensorProduct B K₁ K₂)`. Use `letI := Ideal.Quotient.field m`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a₁ : K₁ →ₐ[B] (TensorProduct B K₁ K₂ ⧸ m)` to `(Ideal.Quotient.mkₐ B m).comp Algebra.TensorProduct.includeLeft`. Set `a₂ : K₂ →ₐ[B] (TensorProduct B K₁ K₂ ⧸ m)` to `(Ideal.Quotient.mkₐ B m).comp Algebra.TensorProduct.includeRight`. Establish `e₁ : a₁.toRingHom.comp f₁ = algebraMap B _` using `a₁.comp_algebraMap`. Establish `e₂ : a₂.toRingHom.comp f₂ = algebraMap B _` using `a₂.comp_algebraMap`. Use `⟨TensorProduct B K₁ K₂ ⧸ m, inferInstance, a₁.toRingHom, a₂.toRingHom, e₁.trans e₂.symm, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e₁, deg_algebraMap]`. Conclude with `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compositum (B K₁ K₂ : Type) [Field B] [Field K₁] [Field K₂] (f₁ : B →+* K₁)
     (f₂ : B →+* K₂) (h₁ : deg f₁ ≠ 0) (h₂ : deg f₂ ≠ 0) :
@@ -62,11 +60,11 @@ theorem exists_compositum (B K₁ K₂ : Type) [Field B] [Field K₁] [Field K�
 
 open IntermediateField Polynomial in
 /- English proof (translation)
-Rewrite using `[mem_adjoin_simple_iff]`. Introduce and unpack `⟨r, s, h⟩`. Establish `ht0 : t ≠ 0` using `fun h0 => ht (h0 ▸ isAlgebraic_zero)`. Establish `hs : aeval (t ^ 2) s ≠ 0` using `fun h0 => ht0 (by rw [h, h0, div_zero])`. Rewrite `h` using `[eq_div_iff hs]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (X * expand M 2 s : M[X]) = expand M 2 r`. Apply `transcendental_iff_injective.mp ht` to reduce the goal to its premises. Simplify using `only [map_mul, aeval_X, expand_aeval]`. Conclude with `h`. Establish `hs0 : s ≠ 0` using `fun h0 => hs (by simp [h0])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg natDegree h2`. Rewrite `h3` using `[natDegree_X_mul ((expand_ne_zero (by norm_num)).mpr hs0), natDegree_expand, natDegree_expand]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_mem_adjoin_sq {M K : Type} [Field M] [Field K] [Algebra M K] {t : K}
     (ht : Transcendental M t) : t ∉ M⟮t ^ 2⟯ := by
@@ -88,15 +86,11 @@ theorem not_mem_adjoin_sq {M K : Type} [Field M] [Field K] [Algebra M K] {t : K}
 open IntermediateField in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F K`. Establish `hne : Nonempty s`. Assume the negation of the conclusion as `hc`. Use `haveI : IsEmpty s := not_nonempty_iff.mp hc`. Use `haveI : Algebra.IsAlgebraic F K := hs.isEmpty_iff_isAlgebraic.mp inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite F K := Algebra.finite_of_essFiniteType_of_isAlgebraic`. Conclude with `Module.finrank_pos.ne' h`. Take `⟨t⟩` from `hne`. Set `M` to `adjoin F (((↑) : s → K) '' {t}ᶜ)`. Use `⟨M, t, transcendental_adjoin_iff.mpr (hs.1.transcendental_adjoin (by simp)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Use `haveI : Algebra.EssFiniteType M K := Algebra.EssFiniteType.of_comp F _ K`. Use `haveI : Algebra.EssFiniteType M⟮(t : K)⟯ K := Algebra.EssFiniteType.of_comp M _ K`. Use `haveI : Algebra.IsAlgebraic M⟮(t : K)⟯ K := by`. Establish `hle : Algebra.adjoin F (Set.range ((↑) : s → K)) ≤ (M⟮(t : K)⟯.restrictScalars F).toSubalgebra`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨u, rfl⟩`. Distinguish the cases in `hu : u = t`. Substitute `hu` using the available equality. Conclude with `mem_adjoin_simple_self M (u : K)`. Conclude with `M⟮(t : K)⟯.algebraMap_mem ⟨u, subset_adjoin _ _ ⟨u, hu, rfl⟩⟩`.
-
-Conclude with `⟨fun x => (hs.isAlgebraic.isAlgebraic x).tower_top_of_subalgebra_le hle⟩`. Conclude with `Algebra.finite_of_essFiniteType_of_isAlgebraic`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_transcendental (F K : Type) [Field F] [Field K] [Algebra F K]
     [Algebra.EssFiniteType F K] (h : Module.finrank F K = 0) :
@@ -128,23 +122,21 @@ theorem exists_transcendental (F K : Type) [Field F] [Field K] [Algebra F K]
 open IntermediateField in
 
 /- English proof (translation)
-Establish `ht2 : Transcendental M (t ^ 2)` using `ht.pow (by norm_num)`. Set `e : M⟮t ^ 2⟯ ≃ₐ[M] M⟮t⟯` to `(RatFunc.algEquivOfTranscendental _ ht2).symm.trans (RatFunc.algEquivOfTranscendental _ ht)`. Establish `hle : M⟮t ^ 2⟯ ≤ M⟮t⟯` using `adjoin_simple_le_iff.mpr (pow_mem (mem_adjoin_simple_self M t) 2)`. Set `c : M⟮t ^ 2⟯ →+* M⟮t⟯` to `(inclusion hle : M⟮t ^ 2⟯ →ₐ[M] M⟮t⟯)`. Set `b` to `algebraMap M⟮t⟯ K`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hb : deg b ≠ 0` using `by rw [deg_algebraMap]; exact Module.finrank_pos.ne'`. Establish `hbc : b.comp c = algebraMap M⟮t ^ 2⟯ K` using `rfl`. Establish `hfin2 : Module.Finite M⟮t ^ 2⟯ K`. Establish `hi : IsIntegral M⟮t ^ 2⟯ t` using `IsIntegral.of_pow (n := 2) (by norm_num) (isIntegral_algebraMap (x := AdjoinSimple.gen M (t ^ 2)))`. Use `haveI := adjoin.finiteDimensional hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : M⟮t⟯ ≤ (M⟮t ^ 2⟯⟮t⟯).restrictScalars M` using `adjoin_simple_le_iff.mpr (mem_adjoin_simple_self M⟮t ^ 2⟯ t)`. Use `letI : Algebra M⟮t⟯ M⟮t ^ 2⟯⟮t⟯ := (inclusion hle').toRingHom.toAlgebra`. Use `haveI : IsScalarTower M⟮t⟯ M⟮t ^ 2⟯⟮t⟯ K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite M⟮t ^ 2⟯⟮t⟯ K := Module.Finite.of_restrictScalars_finite M⟮t⟯ _ _`. Conclude with `Module.Finite.trans M⟮t ^ 2⟯⟮t⟯ K`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : deg (b.comp c) ≠ 0` using `by rw [hbc, deg_algebraMap]; exact Module.finrank_pos.ne'`. Establish `h₂ : deg (b.comp (e.toRingEquiv : M⟮t ^ 2⟯ →+* M⟮t⟯)) = deg b`. Rewrite using `[deg_comp, deg_equiv, one_mul]`. Establish `hc : deg c ≠ 1`. Introduce `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := c.toAlgebra`. Take `⟨y, hy⟩` from `(Algebra.finrank_eq_one_iff_bijective_algebraMap.mp hc).2 (AdjoinSimple.gen M t)`. Establish `: (y : K) = t` using `congrArg Subtype.val hy`. Establish `hy2` using `y.2`. Rewrite `hy2` using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_mem_adjoin_sq ht hy2`. Take `⟨Ω, _, j₁, j₂, hj, hd⟩` from `exists_compositum _ K K _ _ h₁ (h₂.trans_ne hb)`. Establish `hd'` using `congrArg deg hj`. Rewrite `hd'` using `[deg_comp _ j₁, deg_comp _ j₂, h₂, deg_comp, mul_comm (deg c), mul_assoc]`. Establish `hd2` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hb) hd'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k₁ : deg j₁ ≠ 0`. Rewrite `hd` using `[deg_comp]`. Conclude with `right_ne_zero_of_mul hd`. Establish `k₂ : deg j₂ ≠ 0`. Rewrite `hd` using `[hj, deg_comp]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `right_ne_zero_of_mul hd`. Use `⟨Ω, inferInstance, j₁, j₂, ?_, k₁, k₂, fun hh => hc ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h1 : (b.comp c) (algebraMap M _ x) = algebraMap M K x` using `rfl`. Establish `h2 : (b.comp (e.toRingEquiv : M⟮t ^ 2⟯ →+* M⟮t⟯)) (algebraMap M _ x) = algebraMap M K x` using `(congrArg b (e.commutes x)).trans rfl`.
-
-Use `RingHom.congr_fun hj (algebraMap M _ x)` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply j₂, h1, h2]`. Conclude with `this`. Rewrite `hd2` using `[← hh]`. Conclude with `(Nat.mul_eq_right k₁).mp hd2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_two_embeddings_of_transcendental {M K : Type} [Field M] [Field K] [Algebra M K]
     {t : K} (ht : Transcendental M t) (hfin : Module.Finite M⟮t⟯ K) :
@@ -205,9 +197,7 @@ theorem exists_two_embeddings_of_transcendental {M K : Type} [Field M] [Field K]
     exact (Nat.mul_eq_right k₁).mp hd2
 
 /- English proof (translation)
-Use `algebraize [φ]`. Take `⟨M, t, ht, hfin⟩` from `exists_transcendental F K h`. Take `⟨Ω, _, j₁, j₂, hj, hd⟩` from `exists_two_embeddings_of_transcendental ht hfin`. Use `⟨Ω, inferInstance, j₁, j₂, ?_, hd⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Conclude with `RingHom.congr_fun hj (algebraMap F M x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_two_embeddings {F K : Type} [Field F] [Field K] (φ : F →+* K)
     (hφ : φ.EssFiniteType) (h : deg φ = 0) :
@@ -221,7 +211,7 @@ theorem exists_two_embeddings {F K : Type} [Field F] [Field K] (φ : F →+* K)
   exact RingHom.congr_fun hj (algebraMap F M x)
 
 /- English proof (translation)
-Rewrite `h` using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp]`. Establish `h' : (⟨g w, g.residueFieldMap w ≫ ψ⟩ : (y : Y) × (Y.residueField y ⟶ CommRingCat.of Ω)) = ⟨y, j⟩` using `(Scheme.SpecToEquivOfField Ω Y).symm.injective h`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj h'`. Take `rfl` from `eq_of_heq h2`. Conclude with `⟨rfl, deg_comp (g.residueFieldMap w).hom ψ.hom⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem deg_eq_of_fieldPoint {W Y : Scheme.{0}} (g : W ⟶ Y) (w : W) (y : Y) {Ω : Type} [Field Ω]
     (ψ : W.residueField w ⟶ CommRingCat.of Ω) (j : Y.residueField y ⟶ CommRingCat.of Ω)
@@ -237,26 +227,22 @@ theorem deg_eq_of_fieldPoint {W Y : Scheme.{0}} (g : W ⟶ Y) (w : W) (y : Y) {�
   exact ⟨rfl, deg_comp (g.residueFieldMap w).hom ψ.hom⟩
 
 /- English proof (translation)
-The claim follows from `(W.evaluation ⊤ w trivial).hom.charZero`.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_residueField {W : Scheme.{0}} (w : W) [CharZero (W.residueField w)] :
     CharZero Γ(W, ⊤) :=
   (W.evaluation ⊤ w trivial).hom.charZero
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hm`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (π (genericPoint Y))`. Establish `hr : Set.range i = closure {π (genericPoint Y)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₁.def.symm`. Use `haveI : Surjective (Limits.pullback.snd i π) := ⟨by`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd, hr]`. Conclude with `Set.eq_univ_of_forall fun y => ((genericPoint_specializes y).map π.continuous).mem_closure⟩`. Use `haveI := isIso_of_isClosedImmersion_of_surjective (Limits.pullback.snd i π)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩ : ∃ g : Y ⟶ Z, g ≫ i = π` from `⟨inv (Limits.pullback.snd i π) ≫ Limits.pullback.fst i π, by`. Rewrite using `[Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc]⟩`. Establish `hg : g (genericPoint Y) = genericPoint Z` using `i.isClosedEmbedding.injective hi.symm`. Establish `hm' : g.residueDegree (genericPoint Y) ≠ 0`. Rewrite `hm` using `[CurveDegreesCompare.residueDegree_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `right_ne_zero_of_mul hm`. Use `haveI := hY.flat`. Use `haveI := DimCover.charZero_residueField (q ≫ spMap (Int.castRingHom k))`. Use `haveI := (g.residueFieldMap (genericPoint Y)).hom.charZero`. Establish `hc : CharZero Γ(Z, ⊤)` using `charZero_of_residueField (g (genericPoint Y))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hZ⟩` from `hX.exists_dim_eq i`. Choose the witnesses or unpack the hypotheses as in `⟨d, rfl⟩ : ∃ d', d = d' + 1 := by`. Use `Nat.exists_eq_succ_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hX.dim_ne_zero i hc hZ`.
-
-Establish `hA` using `hX.of_isClosedImmersion i hc hZ`. Establish `h1` using `DimCover.topologicalKrullDim_eq k Z Y (i ≫ p) q d hA hY.isProjOver hY.flat g (by rw [← hπ, Category.assoc]) hg hm'`. Establish `h2 : topologicalKrullDim (closure ({(g ≫ i) (genericPoint Y)} : Set X)) = topologicalKrullDim Z`. Rewrite using `[← hr]`. Conclude with `(i.isClosedEmbedding.isEmbedding.toHomeomorph.isHomeomorph.topologicalKrullDim_eq _).symm`.
-
-Rewrite `hd` using `[h2, hZ, ← h1, hY.dim_eq]`. Conclude with `lt_irrefl _ hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueDegree_eq_zero {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral Y]
     {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D e : ℕ} (hX : IsArithVar p D) (hY : IsArithVar q e)
@@ -301,25 +287,21 @@ theorem residueDegree_eq_zero {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsInte
   exact lt_irrefl _ hd
 
 /- English proof (translation)
-Substitute `hπ` using the available equality. Use `haveI := CommonModel.isProper_of_isProjOver hX.isProjOver`. Use `haveI := CommonModel.isProper_of_isProjOver hY.isProjOver`. Use `haveI : LocallyOfFiniteType π := locallyOfFiniteType_of_comp π p`. Take `⟨Ω, _, j₁, j₂, hj, k₁, k₂, k₃⟩` from `exists_two_embeddings (π.residueFieldMap (genericPoint Y)).hom (LocallyOfFiniteType.stalkMap π (genericPoint Y)).residueFieldMap h0`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a₁ : Y.residueField (genericPoint Y) ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom j₁`. Set `a₂ : Y.residueField (genericPoint Y) ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom j₂`. Establish `ha : π.residueFieldMap (genericPoint Y) ≫ a₁ = π.residueFieldMap (genericPoint Y) ≫ a₂` using `CommRingCat.hom_ext hj`. Set `c : Spec (CommRingCat.of Ω) ⟶ Limits.pullback π π` to `Limits.pullback.lift (Spec.map a₁ ≫ Y.fromSpecResidueField _) (Spec.map a₂ ≫ Y.fromSpecResidueField _) (by`. Simplify using `only [Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ha])`. Take `⟨W, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (c (IsLocalRing.closedPoint Ω))`. Establish `hc` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField Ω _ c`. Take `⟨e₁, d₁⟩` from `deg_eq_of_fieldPoint (Limits.pullback.fst π π) _ _ _ a₁ (by rw [hc]; exact Limits.pullback.lift_fst _ _ _)`. Take `⟨e₂, d₂⟩` from `deg_eq_of_fieldPoint (Limits.pullback.snd π π) _ _ _ a₂ (by rw [hc]; exact Limits.pullback.lift_snd _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `deg j₁ = _ at d₁`. Express the relevant statement in the definitionally equal form `deg j₂ = _ at d₂`. Establish `r : ∀ g : Limits.pullback π π ⟶ Y, (i ≫ g).residueDegree (genericPoint W) = g.residueDegree (c (IsLocalRing.closedPoint Ω))` using `fun g => by`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, Published.residueDegree_of_isClosedImmersion i, hi, mul_one]`. Establish `g₁ : (i ≫ Limits.pullback.fst π π) (genericPoint W) = genericPoint Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply, hi, e₁]`. Establish `g₂ : (i ≫ Limits.pullback.snd π π) (genericPoint W) = genericPoint Y`. Rewrite using `[Scheme.Hom.comp_apply, hi, e₂]`. Establish `n₁ : (i ≫ Limits.pullback.fst π π).residueDegree (genericPoint W) ≠ 0`. Rewrite using `[r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k₁` using `[d₁]`. Conclude with `left_ne_zero_of_mul k₁`. Establish `n₂ : (i ≫ Limits.pullback.snd π π).residueDegree (genericPoint W) ≠ 0`. Rewrite using `[r]`. Rewrite `k₂` using `[d₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul k₂`. Establish `hproj : IsProjOver ((i ≫ Limits.pullback.fst π π) ≫ π ≫ p)`. Use `ProjSpace.isProjOver_comp_of_isClosedImmersion (i ≫ Limits.pullback.mapDesc π π p) (ProjSpace.isProjOver_pullback hY.isProjOver hY.isProjOver)` as an intermediate fact. Establish `e : Limits.pullback.mapDesc π π p ≫ Limits.pullback.fst (π ≫ p) (π ≫ p) = Limits.pullback.fst π π` using `(Limits.pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Rewrite `this` using `[Category.assoc, ← Category.assoc (Limits.pullback.mapDesc π π p), e]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]` and apply the resulting hypothesis. Establish `hflat : Flat (((i ≫ Limits.pullback.fst π π) ≫ π ≫ p) ≫ spMap (Int.castRingHom k))`. Rewrite using `[flat_int_iff_charZero]`. Use `haveI := hY.flat`. Use `haveI : CharZero (Y.residueField ((i ≫ Limits.pullback.fst π π) (genericPoint W))) := g₁.symm ▸ DimCover.charZero_residueField ((π ≫ p) ≫ spMap (Int.castRingHom k))`.
-
-Use `haveI := (RingHom.charZero_iff ((i ≫ Limits.pullback.fst π π).residueFieldMap (genericPoint W)).hom.injective).mp this`. Conclude with `charZero_of_residueField (genericPoint W)`. Use `⟨W, inferInstance, i ≫ Limits.pullback.fst π π, i ≫ Limits.pullback.snd π π, ?_, ⟨hY.isDomain, hY.finite, inferInstance, hproj, hflat, DimCover.topologicalKrullDim_eq k Y W _ _ e hY hproj hflat _ rfl g₁ n₁⟩, g₁, g₂, n₁, n₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, Limits.pullback.condition]`. Rewrite using `[r, r]`.
-
-Introduce `hh`. Conclude with `k₃ (by rw [d₁, d₂, hh])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_two_covers {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral Y]
     {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D e : ℕ} (hX : IsArithVar p D) (hY : IsArithVar q e)
@@ -390,11 +372,11 @@ theorem exists_two_covers {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral
     exact k₃ (by rw [d₁, d₂, hh])
 
 /- English proof (translation)
-Introduce `H k _ X Y _ p q D e hX hY π hπ hd L`. Take `⟨W, _, p₁, p₂, hp, hW, g₁, g₂, n₁, n₂, hne⟩` from `exists_two_covers hX hY π hπ (residueDegree_eq_zero hX hY π hπ hd)`. Take `⟨h, hh⟩` from `(H.arExists k Y q e hY).1 (L.pull π hπ)`. Establish `ha : (L.pull π hπ).IsSelfInter (h (genericPoint Y))` using `⟨h, hh, rfl⟩`. Establish `hq : p₂ ≫ q = p₁ ≫ q` using `by rw [← hπ, ← Category.assoc, ← hp, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (g : W ⟶ Y) (hg : g ≫ q = p₁ ≫ q) (r : W ⟶ X) (hr : r ≫ p = p₁ ≫ q), g ≫ π = r → g (genericPoint W) = genericPoint Y → g.residueDegree (genericPoint W) ≠ 0 → (L.pull r hr).IsSelfInter (g.residueDegree (genericPoint W) * h (genericPoint Y))`. Introduce and unpack `g hg _ hr rfl h1 h2`. Take `⟨f, hf, hf'⟩` from `(H.arProj k Y W q _ e hY hW g hg h1 h2).1 _ _ ha`. Conclude with `⟨f, (L.refines_pull_pull π hπ g hg hr).isArithHeight hW hf, hf'⟩`. Establish `hr : (p₁ ≫ π) ≫ p = p₁ ≫ q` using `by rw [Category.assoc, hπ]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `HermLB.IsSelfInter.unique hW (key p₁ rfl _ hr rfl g₁ n₁) (key p₂ hq _ hr hp.symm g₂ n₂)` as an intermediate fact. Break down `mul_eq_mul_right_iff.mp this with h1 | h1` into its components or cases. Conclude with `absurd (Nat.cast_injective h1) hne`. Conclude with `h1 ▸ ha`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isSelfInter_zero_of_dim_lt : GlobalTheory.Published.ArCalc →
     ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k)
@@ -420,7 +402,7 @@ theorem isSelfInter_zero_of_dim_lt : GlobalTheory.Published.ArCalc →
   · exact h1 ▸ ha
 
 /- English proof (translation)
-Introduce `P` and use `isSelfInter_zero_of_dim_lt P.p4`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSelfInter_zero_of_classicalTheorems : Hypotheses2 →
     ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k)

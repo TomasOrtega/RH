@@ -6,7 +6,7 @@ open CategoryTheory Limits CochainComplex CochainComplex.HomComplex GlobalTheory
 namespace LateralTheory.E.LeafNegPf
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsZero ((((chainsN R).obj E).extend ComplexShape.embeddingDownNat).X n)`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `i`. Express the relevant statement in the definitionally equal form `-(i : ℤ) ≠ n`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n) :
     IsZero (((chains R).obj E).X n) := by
@@ -17,7 +17,7 @@ theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n) :
   omega
 
 /- English proof (translation)
-Unfold `res`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (hn : n < 0) :
     IsZero ((res R F).X n) := by
@@ -25,7 +25,7 @@ theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (hn : n < 0) :
   exact CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Apply `mappingCone.ext_from _ (p + 1) p rfl` to reduce the goal to its premises. Conclude with `(chains_isZero R U (p + 1) (by omega)).eq_of_src _ _`. Conclude with `(chains_isZero R E p hp).eq_of_src _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cone_isZero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (p : ℤ) (hp : 0 < p) :
     IsZero ((mappingCone ((chains R).map f)).X p) := by
@@ -35,7 +35,7 @@ theorem cone_isZero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (p : ℤ) 
   · exact (chains_isZero R E p hp).eq_of_src _ _
 
 /- English proof (translation)
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hq : q < 0`. Conclude with `(res_isZero R F q hq).eq_of_tgt _ _`. Conclude with `(cone_isZero R f p (by omega)).eq_of_src _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem cochain_eq_zero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : Shv R) (m : ℤ) (hm : m < 0)
     (z : Cochain (mappingCone ((chains R).map f)) (res R F) m) : z = 0 := by
@@ -46,9 +46,9 @@ theorem cochain_eq_zero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : S
   · exact (cone_isZero R f p (by omega)).eq_of_src _ _
 
 /- English proof (translation)
-Introduce `R _ U E f F m hm`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Take `⟨x, rfl⟩` from `CohomologyClass.mk_surjective a`. Take `⟨y, rfl⟩` from `CohomologyClass.mk_surjective b`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : x = y` using `by ext1`. Rewrite using `[cochain_eq_zero R f F m hm (x : Cochain _ _ m), cochain_eq_zero R f F m hm (y : Cochain _ _ m)]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafNeg_of : LateralTheory.E.LeafDegCut.LeafNeg := by
   intro R _ U E f F m hm

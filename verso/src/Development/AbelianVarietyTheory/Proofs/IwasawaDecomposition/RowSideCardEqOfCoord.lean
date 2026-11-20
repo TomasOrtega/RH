@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `bC : Module.Basis X.RR.ι ℂ EE` to `Module.Basis.mk X.jEE_basis.1 X.jEE_basis.2.ge`. Set `bL : Module.Basis (Fin d) D.what₂.LL X.RR.V` to `(Pi.basisFun D.what₂.LL (Fin d)).map e`. Establish `e1 : Fin n ≃ X.RR.ι` using `b.toBasis.indexEquiv bC`. Establish `e2 : X.RR.ι ≃ Fin d` using `X.RR.b.indexEquiv bL`. Simplify using `using Fintype.card_congr (e1.trans e2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rowSide_card_eq_of_coord {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
     [FiniteDimensional ℂ EE] (X : RowSide D EE) {n d : ℕ} (b : OrthonormalBasis (Fin n) ℂ EE)
@@ -18,7 +18,7 @@ theorem rowSide_card_eq_of_coord {D : D7} {EE : Type} [NormedAddCommGroup EE] [I
   simpa using Fintype.card_congr (e1.trans e2)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A P0 ψ0 Ps ψs Zs S0 S1 X0 Dc I`. Conclude with `⟨rowSide_card_eq_of_coord (RowSide.sharp D) D.what₂.onb I.eRR, rowSide_card_eq_of_coord X0.s D.what₂.onb0 I.eRR0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem drows_eq_and_d0_eq : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (Ps : Subgroup G) (ψs : Ps →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S0 : IndefData (A.side P0 ψ0 Zs)) (S1 : IndefData (A.side Ps ψs Zs)) (X0 : BaseLevelRowSide D) (Dc : DefCols (A.side Ps ψs Zs)) (I : DivisionCompatibilityData D A P0 ψ0 Ps ψs Zs S0 S1 X0 Dc), D.what₂.Drows = S1.D ∧ D.what₂.D0 = S0.D := by
   intro D G _ _ Pl0 T A P0 ψ0 Ps ψs Zs S0 S1 X0 Dc I

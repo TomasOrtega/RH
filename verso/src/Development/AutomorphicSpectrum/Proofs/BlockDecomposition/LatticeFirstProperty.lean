@@ -8,15 +8,15 @@ namespace GlobalTheory.CompanionTheory.LatticeCoset
 variable {F : Type} [Field F] [ValuativeRel F] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Use `⟨fun i j => (k.1 i j).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((k⁻¹).1 i j).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Set `O` to `(ValuativeRel.valuation F).integer`. Set `A : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨(h : Matrix (Fin n) (Fin n) F) i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨((h⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j, h2 i j⟩`. Establish `hA : A.map O.subtype = (h : Matrix (Fin n) (Fin n) F)` using `by ext i j; rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : B.map O.subtype = ((h⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `by ext i j; rfl`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) O => M.map O.subtype)` using `Matrix.map_injective Subtype.val_injective`. Establish `hAB : A * B = 1`. Apply `inj` to reduce the goal to its premises. Use `show (A * B).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, hA, hB, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBA : B * A = 1`. Apply `inj` to reduce the goal to its premises. Use `show (B * A).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_unitGL_iff (h : GL (Fin n) F) :
     h ∈ unitGL (n := Fin n) F ↔
@@ -49,7 +49,7 @@ theorem mem_unitGL_iff (h : GL (Fin n) F) :
     rfl
 
 /- English proof (translation)
-Introduce and unpack `v ⟨w, hw, rfl⟩`. Use `⟨((g⁻¹ * g' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).mulVec w, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (h i j) (hw j)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeOf_subset_of_integral (g g' : GL (Fin n) F)
     (h : ∀ i j, ((g⁻¹ * g' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ intO F) :
@@ -61,11 +61,11 @@ theorem latticeOf_subset_of_integral (g g' : GL (Fin n) F)
   · rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `hs : ∀ k, (Pi.single j (1 : F) : Fin n → F) k ∈ intO F`. Introduce `k`. Break down `eq_or_ne k j with rfl | hk` into its components or cases. Rewrite using `[Pi.single_eq_same]`. Conclude with `Subring.one_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `Subring.zero_mem _`. Take `⟨w', hw', he⟩` from `h ⟨Pi.single j 1, hs, rfl⟩`. Establish `key : ((g⁻¹ * g' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).mulVec (Pi.single j 1) = w'`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, he, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi` using `congrFun key i`. Rewrite `hi` using `[Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `((g⁻¹ * g' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = w' i at hi`. Rewrite using `[hi]`. Conclude with `hw' i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_latticeOf_subset (g g' : GL (Fin n) F)
     (h : latticeOf g' ⊆ latticeOf g) (i j : Fin n) :
@@ -86,11 +86,11 @@ theorem integral_of_latticeOf_subset (g g' : GL (Fin n) F)
   exact hw' i
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n g g'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mem_unitGL_iff]`. Use `⟨integral_of_latticeOf_subset g g' h.symm.subset, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_rev, inv_inv]`. Conclude with `integral_of_latticeOf_subset g' g h.subset`. Introduce `hm`. Rewrite `hm` using `[mem_unitGL_iff]`. Take `⟨h1, h2⟩` from `hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_rev, inv_inv]`. Conclude with `Set.Subset.antisymm (latticeOf_subset_of_integral g' g h2) (latticeOf_subset_of_integral g g' h1)`.
+A detailed English derivation is pending.
 -/
 theorem latticeOf_eq_iff : PositivityTheory.Rg.Tf.Loc.L1 := by
   intro F _ _ _ _ n g g'

@@ -30,7 +30,7 @@ open scoped ContDiff Topology
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.SchurEquiv.schurF_equivariant) | (exact GlobalTheory.SchurEquiv.schurF_equivariant) | (intros; apply GlobalTheory.SchurEquiv.schurF_equivariant <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Tx.schur_function_whittaker_equivariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, β (u * g) = GlobalTheory.JSW.psiN u * β g) → (∀ u ∈ GlobalTheory.JSW.NA E (r + 1), ∀ g, b₁ (u * g) = GlobalTheory.JSW.psiN u * b₁ g) → ∀ u ∈ GlobalTheory.JSW.NA E (m + r + 1 + 1), ∀ g, schurF β b₁ χ (u * g) = GlobalTheory.JSW.psiN u * schurF β b₁ χ g := by
   first | (exact @GlobalTheory.SchurEquiv.schurF_equivariant) | (exact GlobalTheory.SchurEquiv.schurF_equivariant) | (intros; apply GlobalTheory.SchurEquiv.schurF_equivariant <;> assumption)
@@ -42,7 +42,7 @@ open scoped ContDiff Topology
 set_option maxHeartbeats 1000000 in
 
 /- English proof (citation)
-Apply `GlobalTheory.SchurExtCpt.exists_compact_support` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSchurFunctionCompactSupportModuloUnipotent.lean&line=124#L124)
 -/
@@ -59,7 +59,7 @@ open scoped ContDiff Topology
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.SchurExt.schurF_mul_finGL_eq) | (exact GlobalTheory.SchurExt.schurF_mul_finGL_eq) | (intros; apply GlobalTheory.SchurExt.schurF_mul_finGL_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Tx.schur_function_smooth_right_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, β (g * finGL E (m + 1) u) = β g) → (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, β h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) → (∃ U : Subgroup (GL (Fin (r + 1)) (Af E)), IsOpen (U : Set (GL (Fin (r + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, b₁ (g * finGL E (r + 1) u) = b₁ g) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → ∃ W ∈ 𝓝 (1 : GL (Fin (m + r + 1 + 1)) (Af E)), ∀ k ∈ W, finGL E (m + r + 1 + 1) k ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S → ∀ x ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S, schurF β b₁ χ (x * finGL E (m + r + 1 + 1) k) = schurF β b₁ χ x := by
   first | (exact @GlobalTheory.SchurExt.schurF_mul_finGL_eq) | (exact GlobalTheory.SchurExt.schurF_mul_finGL_eq) | (intros; apply GlobalTheory.SchurExt.schurF_mul_finGL_eq <;> assumption)
@@ -73,57 +73,57 @@ open scoped Topology
 namespace GlobalTheory.SchurExt.Parts
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_smooth_whittakerBump_adelicGL`.
+A detailed English derivation is pending.
 -/
 theorem L_glob : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ b : GA E (a + 1) → ℂ, b 1 = 1 ∧ (∀ u ∈ GlobalTheory.JSW.NA E (a + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) ∧ (∃ C : Set (GA E (a + 1)), IsCompact C ∧ ∀ p, b p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (a + 1), u⁻¹ * p ∈ C) ∧ (∃ U : Subgroup (GL (Fin (a + 1)) (Af E)), IsOpen (U : Set (GL (Fin (a + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, b (g * finGL E (a + 1) u) = b g) ∧ ∀ g, ContDiffOn ℝ ∞ (chart b g) (invSet E (a + 1)) := GlobalTheory.T.exists_smooth_whittakerBump_adelicGL
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Tx.schur_function_whittaker_equivariant`.
+A detailed English derivation is pending.
 -/
 theorem L_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, β (u * g) = GlobalTheory.JSW.psiN u * β g) → (∀ u ∈ GlobalTheory.JSW.NA E (r + 1), ∀ g, b₁ (u * g) = GlobalTheory.JSW.psiN u * b₁ g) → ∀ u ∈ GlobalTheory.JSW.NA E (m + r + 1 + 1), ∀ g, schurF β b₁ χ (u * g) = GlobalTheory.JSW.psiN u * schurF β b₁ χ g := GlobalTheory.Tx.schur_function_whittaker_equivariant
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Tx.schur_function_compact_support_modulo_unipotent`.
+A detailed English derivation is pending.
 -/
 theorem L_cpt : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, β h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → HasCompactSupport χ → ∃ C : Set (GA E (m + r + 1 + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S (m + r + 1), schurF β b₁ χ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + r + 1 + 1), u⁻¹ * p ∈ C := GlobalTheory.Tx.schur_function_compact_support_modulo_unipotent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Tx.schur_function_smooth_right_invariant`.
+A detailed English derivation is pending.
 -/
 theorem L_inv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, β (g * finGL E (m + 1) u) = β g) → (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, β h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) → (∃ U : Subgroup (GL (Fin (r + 1)) (Af E)), IsOpen (U : Set (GL (Fin (r + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, b₁ (g * finGL E (r + 1) u) = b₁ g) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → ∃ W ∈ 𝓝 (1 : GL (Fin (m + r + 1 + 1)) (Af E)), ∀ k ∈ W, finGL E (m + r + 1 + 1) k ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S → ∀ x ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S, schurF β b₁ χ (x * finGL E (m + r + 1 + 1) k) = schurF β b₁ χ x := GlobalTheory.Tx.schur_function_smooth_right_invariant
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.contDiffOn_chart_schurComplementExtension`.
+A detailed English derivation is pending.
 -/
 theorem L_smooth : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∀ g, ContDiffOn ℝ ∞ (chart β g) (invSet E (m + 1))) → (∀ g, ContDiffOn ℝ ∞ (chart b₁ g) (invSet E (r + 1))) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → ContDiff ℝ ∞ χ → ∀ g, ContDiffOn ℝ ∞ (chart (schurF β b₁ χ) g) (invSet E (m + r + 1 + 1)) := GlobalTheory.T.contDiffOn_chart_schurComplementExtension
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.schurComplementExtensionFunction_blockDiag_apply`.
+A detailed English derivation is pending.
 -/
 theorem L_block : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), ∀ h : GA E (m + 1), schurF β b₁ χ (GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h) = β h * b₁ 1 * (χ 0 : ℂ) := GlobalTheory.T.schurComplementExtensionFunction_blockDiag_apply
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicGLProjections_upperUnitriangular_genericChar`.
+A detailed English derivation is pending.
 -/
 theorem L_projNA : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), ∀ u ∈ GlobalTheory.JSW.NA E a, prS S a u ∈ GlobalTheory.JSW.NA E a ∧ prO S a u ∈ GlobalTheory.JSW.NA E a ∧ GlobalTheory.JSW.psiN (prS S a u) * GlobalTheory.JSW.psiN (prO S a u) = GlobalTheory.JSW.psiN u := GlobalTheory.T.adelicGLProjections_upperUnitriangular_genericChar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicGLProjections_on_supportedAtPlaces`.
+A detailed English derivation is pending.
 -/
 theorem L_projSupS : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), (∀ g ∈ GlobalTheory.JSW.supS E a S, prS S a g = g ∧ prO S a g = 1) ∧ ∀ g, prS S a g ∈ GlobalTheory.JSW.supS E a S := GlobalTheory.T.adelicGLProjections_on_supportedAtPlaces
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicGLProjections_mul_infiniteAdelicGL`.
+A detailed English derivation is pending.
 -/
 theorem L_projInf : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GA E a) (y : GL (Fin a) (Cinf E)), prS S a (g * infGL E a y) = prS S a g * infGL E a y ∧ prO S a (g * infGL E a y) = prO S a g := GlobalTheory.T.adelicGLProjections_mul_infiniteAdelicGL
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eventually_adelicGLProjections_finite_near_one`.
+A detailed English derivation is pending.
 -/
 theorem L_projFin : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (V V' : Set (GL (Fin a) (Af E))), V ∈ 𝓝 (1 : GL (Fin a) (Af E)) → V' ∈ 𝓝 (1 : GL (Fin a) (Af E)) → ∀ᶠ k in 𝓝 (1 : GL (Fin a) (Af E)), (∃ k' ∈ V, prS S a (finGL E a k) = finGL E a k') ∧ ∃ k'' ∈ V', prO S a (finGL E a k) = finGL E a k'' := GlobalTheory.T.eventually_adelicGLProjections_finite_near_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.blockDiagGL_mem_adelicGLSupportedAtFinitePlaces`.
+A detailed English derivation is pending.
 -/
 theorem L_blockSupS : ∀ (E : Type) [Field E] [NumberField E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S := GlobalTheory.T.blockDiagGL_mem_adelicGLSupportedAtFinitePlaces
 
@@ -131,23 +131,21 @@ end GlobalTheory.SchurExt.Parts
 open GlobalTheory.SchurExt.Parts
 
 /- English proof (translation)
-Introduce `E _ _ _ m r S β hβN hβC hβU hβS`. Take `⟨b₁, h1one, h1N, h1C, h1U, h1S⟩` from `L_glob E r`. Take `⟨Φ, hΦ1, hΦN, -, ⟨UΦ, hUΦo, hUΦ⟩, -⟩` from `GlobalTheory.WhitBump.exists_bump E (m + r + 1) S`. Set `f : ContDiffBump (0 : Fin (r + 1) → Fin (m + 1) → Cinf E)` to `⟨1, 2, one_pos, one_lt_two⟩`. Take `⟨C, hC, hCp⟩` from `L_cpt E m r S β b₁ f hβC h1C f.hasCompactSupport`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hWk⟩` from `L_inv E m r S β b₁ f hβU hβC h1U h1C`. Use `⟨extB S β b₁ f Φ, ?_, ⟨C, hC, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu g`. Take `⟨h1, h2, h3⟩` from `L_projNA E (m + r + 1 + 1) S u hu`. Simplify using `only [extB, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[L_equiv E m r β b₁ f hβN h1N _ h1, hΦN _ h2, ← h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp hne`. Take `⟨e1, e2⟩` from `(L_projSupS E _ S).1 p hp.1`. Use `hCp p hp fun h0 => hne ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [extB, e1, e2, h0, zero_mul]`. Set `U : Subgroup (GL (Fin (m + r + 1 + 1)) (Af E))` to `{ carrier := {k | ∀ g, extB S β b₁ f Φ (g * finGL E _ k) = extB S β b₁ f Φ g} mul_mem' := fun {a b} ha hb g => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, ← mul_assoc, hb, ha]`. Use the proof step `one_mem' := fun g => by simp only [map_one, mul_one]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `inv_mem' := fun {a} ha g => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `ha (g * finGL E _ a⁻¹)` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Conclude with `this.symm }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨U, Subgroup.isOpen_of_mem_nhds U (g := 1) ?_, fun u hu g => hu g⟩` and prove the remaining obligations. Establish `hV' : (UΦ : Set _) ∈ 𝓝 (1 : GL (Fin (m + r + 1 + 1)) (Af E))` using `hUΦo.mem_nhds UΦ.one_mem`. Use `filter_upwards [L_projFin E _ S W _ hW hV'] with k hk`. Take `⟨⟨k', hk'W, hk'⟩, ⟨k'', hk''V, hk''⟩⟩` from `hk`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [extB, map_mul, hk', hk'']`. Rewrite using `[hWk k' hk'W (hk' ▸ (L_projSupS E _ S).2 _) _ ((L_projSupS E _ S).2 g), hUΦ k'' hk''V]`. Introduce `g`. Establish `hs` using `(L_smooth E m r β b₁ f hβS h1S h1C f.contDiff (prS S _ g)).mul (contDiffOn_const (c := Φ (prO S _ g)))`. Use `hs.congr fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : IsUnit (Matrix.of x)` using `hx`. Take `⟨e1, e2⟩` from `L_projInf E _ S g hx'.unit`. Simplify using `only [chart, dif_pos hx', extB, e1, e2]`. Introduce `h hh`. Take `⟨e1, e2⟩` from `(L_projSupS E _ S).1 _ (L_blockSupS E m r S h hh)`.
-
-Establish `hf0 : f 0 = 1` using `f.one_of_mem_closedBall (Metric.mem_closedBall_self f.rIn_pos.le)`. Simplify using `only [extB, e1, e2, hΦ1, mul_one, L_block, h1one, hf0, Complex.ofReal_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SchurExt.exists_ext : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (β : GA E (m + 1) → ℂ),

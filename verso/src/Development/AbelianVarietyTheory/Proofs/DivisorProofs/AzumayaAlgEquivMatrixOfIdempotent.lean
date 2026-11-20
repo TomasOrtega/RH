@@ -26,11 +26,11 @@ theorem leftIdealMulAlgHom_apply_coe (e l : Λ) (p : LinearMap.range (LinearMap.
     ((leftIdealMulAlgHom A e l p : LinearMap.range (LinearMap.mulRight A e)) : Λ) = l * p := rfl
 
 /- English proof (translation)
-Take `⟨N, a, b, hab⟩` from `h`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `l hl`. Establish `h0 : ∀ y : Λ, l * (y * e) = 0`. Introduce `y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `leftIdealMulAlgHom_apply_coe (A := A) e l ⟨y * e, y, rfl⟩` as an intermediate fact. Rewrite `this` using `[hl]`. Simplify using `using this.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by simp only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by simp [h0]`.
+A detailed English derivation is pending.
 -/
 theorem leftIdealMulAlgHom_injective (e : Λ)
     (h : ∃ (N : ℕ) (a b : Fin N → Λ), ∑ i, a i * e * b i = 1) :
@@ -49,11 +49,11 @@ theorem leftIdealMulAlgHom_injective (e : Λ)
     _ = 0 := by simp [h0]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, fun y => by simp⟩`. Consider the case `tmul a b`. Take `⟨c, hc⟩` from `hc b.unop`. Use `⟨c • a, fun y => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AlgHom.mulLeftRight_apply]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `add s t hs ht`. Take `⟨l, hl⟩` from `hs`. Take `⟨m, hm⟩` from `ht`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l + m, fun y => by rw [map_add, LinearMap.add_apply, add_mul, hl, hm, add_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mul_eq_mulLeftRight_of_corner (e : Λ)
     (hc : ∀ y : Λ, ∃ c : A, e * y * e = c • e) (t : Λ ⊗[A] Λᵐᵒᵖ) :
@@ -72,11 +72,11 @@ theorem exists_mul_eq_mulLeftRight_of_corner (e : Λ)
     exact ⟨l + m, fun y => by rw [map_add, LinearMap.add_apply, add_mul, hl, hm, add_mul]⟩
 
 /- English proof (translation)
-Introduce `f`. Take `⟨t, ht⟩` from `(IsAzumaya.bij (R := A) (A := Λ)).2 ((LinearMap.range (LinearMap.mulRight A e)).subtype ∘ₗ f ∘ₗ (LinearMap.mulRight A e).rangeRestrict)`. Take `⟨l, hl⟩` from `exists_mul_eq_mulLeftRight_of_corner e hc t`. Use `⟨l, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨_, y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[leftIdealMulAlgHom_apply_coe]`. Express the relevant statement in the definitionally equal form `l * (y * e) = _`. Rewrite using `[← hl y, ht]`. Establish `h1 : (LinearMap.mulRight A e).rangeRestrict (y * e) = ⟨LinearMap.mulRight A e y, y, rfl⟩` using `by ext; simp [mul_assoc, he.eq]`. Simplify using `only [LinearMap.comp_apply, h1, Submodule.subtype_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨z, hz⟩` from `(f ⟨LinearMap.mulRight A e y, y, rfl⟩).2`. Rewrite using `[← hz]`. Simplify using `[mul_assoc, he.eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leftIdealMulAlgHom_surjective [IsAzumaya A Λ] (e : Λ) (he : IsIdempotentElem e)
     (hc : ∀ y : Λ, ∃ c : A, e * y * e = c • e) :
@@ -102,11 +102,9 @@ theorem leftIdealMulAlgHom_surjective [IsAzumaya A Λ] (e : Λ) (he : IsIdempote
 end Corner
 
 /- English proof (translation)
-Introduce `A _ _ Λ _ _ _ _ n hn e he hc hs`. Set `P` to `LinearMap.range (LinearMap.mulRight A e)`. Set `φ : Λ ≃ₐ[A] Module.End A P` to `AlgEquiv.ofBijective (leftIdealMulAlgHom A e) ⟨leftIdealMulAlgHom_injective e hs, leftIdealMulAlgHom_surjective e he hc⟩`. Use `haveI : Module.Projective A P := Module.Projective.of_split P.subtype (LinearMap.mulRight A e).rangeRestrict (by`. Use extensionality with `⟨_, y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc, he.eq])`. Use `haveI : Module.Finite A P := Module.Finite.range _`. Use `haveI : Module.Free A P := Module.free_of_flat_of_isLocalRing`. Establish `hr : Module.finrank A P = n`. Establish `h1` using `φ.toLinearEquiv.finrank_eq`.
-
-Rewrite `h1` using `[hn, Module.finrank_linearMap, ← sq]`. Conclude with `(Nat.pow_left_injective two_ne_zero h1).symm`. Conclude with `⟨φ.trans (LinearMap.toMatrixAlgEquiv (Module.finBasisOfFinrankEq A P hr))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem azumaya_algEquiv_matrix_of_idempotent :
     ∀ (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type) [Ring Λ] [Algebra A Λ] [IsAzumaya A Λ]

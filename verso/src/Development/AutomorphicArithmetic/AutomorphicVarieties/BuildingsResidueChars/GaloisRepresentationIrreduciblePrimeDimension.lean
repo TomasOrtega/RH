@@ -15,13 +15,9 @@ private theorem linRep_apply {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : �
     linRep r g v = (r g : Matrix (Fin n) (Fin n) k).mulVec v := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, h⟩ haveI : Nontrivial (Subrepresentation (linRep r)) := ⟨⊤, ⊥, fun h' => h0 (congrArg Subrepresentation.toSubmodule h')⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Break down `h S.toSubmodule le_top (fun g v hv => S.apply_mem_toSubmodule g hv) with h1 | h1` into its components or cases. Use `left`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subrepresentation.toSubmodule_injective h1`. Use `right`. Conclude with `Subrepresentation.toSubmodule_injective h1`. Introduce `h`. Use `⟨fun h0 => ?_, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩` and prove the remaining obligations.
-
-Conclude with `bot_ne_top (α := Subrepresentation (linRep r)) (Subrepresentation.toSubmodule_injective h0.symm)`. Break down `h.eq_bot_or_eq_top (⟨W, fun g v hv => hW g v hv⟩ : Subrepresentation (linRep r)) with h1 | h1` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule h1`. Use `right`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule h1`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem isIrr_iff {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) :
     IsIrr r ↔ (linRep r).IsIrreducible := by
@@ -41,7 +37,7 @@ private theorem isIrr_iff {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ �
       · right; exact congrArg Subrepresentation.toSubmodule h1
 
 /- English proof (translation)
-Take `⟨h0, -, h⟩` from `h`. Use `⟨h0, fun _ _ _ => Submodule.mem_top, fun W hle hW => h W hle ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, g, rfl⟩ v hv`. Conclude with `hW g v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem isIrr_comp_of_range {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k)
     (φ : Γ' →* Γ) (h : IsIrr (r.comp φ.range.subtype)) : IsIrr (r.comp φ) := by
@@ -51,19 +47,19 @@ private theorem isIrr_comp_of_range {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Fi
   exact hW g v hv
 
 /- English proof (translation)
-Introduce `Γ Γ' k _ _ _ _ _ n r φ hN hp hn hr`. Apply `isIrr_comp_of_range` to reduce the goal to its premises. Rewrite using `[isIrr_iff]`. Assume the negation of the conclusion as `hred`. Use `haveI : φ.range.FiniteIndex := ⟨hp.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hcomm : commutator Γ ≤ φ.range` using `by haveI : Fact (φ.range.index).Prime := ⟨hp⟩ haveI : IsCyclic (Γ ⧸ φ.range) := isCyclic_of_prime_card (p := φ.range.index) rfl`. Rewrite using `[commutator, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[← QuotientGroup.eq_one_iff]`. Rewrite using `[← QuotientGroup.mk'_apply, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI := IsCyclic.commGroup (α := Γ ⧸ φ.range)`. Conclude with `mul_comm _ _`. Take `⟨η, hη, hker, e, he⟩` from `UpperTheory.V.AlgebraTools.twistOfRed k Γ (Fin n → k) (linRep r) φ.range (Nat.cast_ne_zero.mpr hp.ne_zero) hcomm ((isIrr_iff r).mp hr) hred`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `hr.1 (Subsingleton.elim _ _)`. Apply `hη` to reduce the goal to its premises. Use extensionality with `g`. Establish `h1 : η g ^ φ.range.index = 1`. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hker (Subgroup.pow_index_mem _ g)`. Establish `h2 : η g ^ n = 1`. Establish `hl : linRep r g ∘ₗ (e : (Fin n → k) →ₗ[k] (Fin n → k)) = (η g : k) • ((e : (Fin n → k) →ₗ[k] (Fin n → k)) ∘ₗ linRep r g)` using `LinearMap.ext fun v => he g v`. Establish `hd` using `congrArg LinearMap.det hl`. Rewrite `hd` using `[LinearMap.det_smul, LinearMap.det_comp, LinearMap.det_comp, Module.finrank_fin_fun]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu : IsUnit (LinearMap.det (linRep r g))` using `((Group.isUnit g).map (linRep r)).map LinearMap.det`. Establish `hue : IsUnit (LinearMap.det (e : (Fin n → k) →ₗ[k] (Fin n → k)))` using `e.isUnit_det'`. Establish `hne` using `mul_ne_zero hue.ne_zero hu.ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Units.val_pow_eq_pow_val, ← hd, Units.val_one, one_mul, mul_comm]`. Establish `hc : Nat.Coprime φ.range.index n` using `Nat.coprime_of_lt_prime hn0 hn hp`. Use `pow_gcd_eq_one.mpr ⟨h1, h2⟩` as an intermediate fact. Rewrite `this` using `[hc, pow_one]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_representation_irreducible_prime_dimension :
     UpperTheory.V.Af.Sol.IrrPrime := by

@@ -42,9 +42,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRowAdel
 
 /- English proof (translation)
-Introduce `i σ`. Establish `h` using `GlobalTheory.T.fockForm_minorProduct_eq_prod_hookProducts D (Wc D i).rank (Vc D i).rank (pW D i) (qW D i) (aPlAt D i σ) (aMiAt D i σ) (fun ρ => (GlobalTheory.T.liftRows_antitone_signature_rank D i σ ρ).2.2.1.le) (fun ρ => by`. Take `⟨-, -, hpq, hWV⟩` from `GlobalTheory.T.liftRows_antitone_signature_rank D i σ ρ`. Conclude with `⟨by omega, by omega⟩)`. Use the proof step `(fun ρ => ⟨(GlobalTheory.T.liftRows_antitone_signature_rank D i σ ρ).1, (GlobalTheory.T.liftRows_antitone_signature_rank D i σ ρ).2.1⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[deltaAtEmb]`.
+A detailed English derivation is pending.
 -/
 theorem deltaNorm_all (D : D7) : DeltaNorm D := by
   intro i σ
@@ -57,7 +57,7 @@ theorem deltaNorm_all (D : D7) : DeltaNorm D := by
   simpa [deltaAtEmb] using h
 
 /- English proof (translation)
-Introduce `hCusp hWS _hSWc hDbl hUnr hBZ hFD D G _ _ Pl0 T A Ks _ _ _ R F hL hStd`. Establish `hHM : GlobalTheory.IndefiniteRowSideFullHecke.MatrixMinorProducts.HarmonicModule` using `GlobalTheory.HarmModule.harmonicModule_of GlobalTheory.FockDecay.harmonicDecay GlobalTheory.CartanInt.coshIntegral`. Establish `hLoc : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralGL.LocalIntegralSingleBlock` using `GlobalTheory.SingleBlock.localIntegralSingleBlock`. Establish `hPM : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D` using `GlobalTheory.PlaceTensor.placeModels D`. Conclude with `GlobalTheory.T.adelicLift_scalar_of_innerProductFormula R F (GlobalTheory.T.adelicLift_mem_cuspForm_multiplicitySpace hCusp R F) (GlobalTheory.T.finiteDatum_sourceLevelCharacter_law hLoc R F hPM) (GlobalTheory.T.twistedThetaLift_innerProductFormula_of_hypotheses hCusp hWS (Global …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adelC_of_siegelWeil_of_doubling : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent →
     GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness →

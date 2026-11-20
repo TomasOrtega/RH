@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.FlagMod GlobalTheory.FlagPlucker
 namespace GlobalTheory.FlagPlucker.Sep
 
 /- English proof (translation)
-Unfold `initSpan`. Use `congr 2`. Use extensionality with `j`. Simplify using `only [Set.mem_setOf_eq, lt_min_iff, j.2, and_true]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem initSpan_min {S N : Type} [CommRing S] [AddCommGroup N] [Module S N] {d : ℕ} (v : Fin d → N) (i : ℕ) :
     initSpan S v i = initSpan S v (min i d) := by
@@ -20,17 +20,17 @@ theorem initSpan_min {S N : Type} [CommRing S] [AddCommGroup N] [Module S N] {d 
   simp only [Set.mem_setOf_eq, lt_min_iff, j.2, and_true]
 
 /- English proof (translation)
-Break down `n with _ | N` into its components or cases. Conclude with `Subsingleton.elim _ _`. Rewrite using `[initSpan_min (fun j r => P' r j) i, initSpan_min (fun j r => P r j) i]`. Break down `hmi : min i d with _ | m` into its components or cases. Unfold `initSpan`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e0 : {j : Fin d | (j : ℕ) < 0} = ∅` using `Set.eq_empty_of_forall_notMem fun j hj => Nat.not_lt_zero _ hj`. Rewrite using `[e0, Set.image_empty, Set.image_empty]`. Establish `hm : m < d` using `by have := min_le_right i d; omega`. Establish `hr : ∀ Q : Matrix (Fin (N + 1)) (Fin d) K, initSpan K (fun j r => Q r j) (m + 1) = Submodule.span K (Set.range fun l : Fin (m + 1) => (fun j r => Q r j) (Fin.castLE hm l))`. Introduce `Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `initSpan`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨j, hj⟩, rfl⟩`. Introduce and unpack `⟨l, rfl⟩`. Conclude with `⟨_, show ((Fin.castLE hm l : Fin d) : ℕ) < m + 1 from l.2, rfl⟩`. Rewrite using `[hr, hr]`. Take `⟨u, hu⟩` from `h ⟨m, hm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hind : LinearIndependent K fun l : Fin (m + 1) => (fun j r => P r j) (Fin.castLE hm l)` using `hP.comp _ (Fin.castLE_injective _)`. Use `(((GlobalTheory.FlagEmb.PlkSpan.main K N (m + 1) _ _).2 hind).2 ⟨u, ?_⟩).2` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Simplify using `only [GlobalTheory.FlagEmb.plk, id, Pi.smul_apply, smul_eq_mul]`. Establish `e : ∀ Q : Matrix (Fin (N + 1)) (Fin d) K, (Matrix.of fun l l' : Fin (m + 1) => (fun j r => Q r j) (Fin.castLE hm l) (GlobalTheory.FlagEmb.plE N (m + 1) q l')) = (Q.submatrix (GlobalTheory.FlagEmb.plE N (m + 1) q) (Fin.castLE hm)).transpose`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q`. Use `ext`. Both sides reduce to the same expression. Rewrite using `[e, e, Matrix.det_transpose, Matrix.det_transpose]`. Conclude with `hu _`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initSpan_cols_eq {K : Type} [Field K] {n d : ℕ} (P P' : Matrix (Fin n) (Fin d) K)
     (hP : LinearIndependent K (fun j r => P r j))
@@ -81,7 +81,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Z : Scheme.{0}} {π : Z ⟶ Y.X}
 
 /- English proof (translation)
-Unfold `initSpan`. Rewrite using `[Submodule.map_span, Set.image_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem initSpan_comp {S N N' : Type} [CommRing S] [AddCommGroup N] [Module S N] [AddCommGroup N'] [Module S N']
     {d : ℕ} (L : N →ₗ[S] N') (v : Fin d → N) (i : ℕ) : initSpan S (L ∘ v) i = (initSpan S v i).map L := by
@@ -89,9 +89,9 @@ theorem initSpan_comp {S N N' : Type} [CommRing S] [AddCommGroup N] [Module S N]
   rw [Submodule.map_span, Set.image_comp]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `hh : ⊤ ≤ (z ≫ π) ⁻¹ᵁ (Mc.U ⊓ (F.M k).U)` using `le_preimage_inf hM (F.inM hz rfl)`. Rewrite using `[Frames.vecAt, ← vec_chg Mc (F.M k).toMChart (z ≫ π) hM (F.inM hz rfl) hh]`. Use `congr 1`. Use function extensionality and compare the values at `r`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[plkU, Matrix.map_mul, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Conclude with `congrArg₂ (· * ·) (ev_appLE z π _ hzU hh _).symm (ev_res z _ hzU hz _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecAt_eq_vec (F : Frames Y π) (Mc : MChart Y) (k : F.J) {S : Type} [CommRing S] (z : Sp S ⟶ Z)
     (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) {x : Sp S ⟶ Y.X} (hx : z ≫ π = x) (hM : ⊤ ≤ x ⁻¹ᵁ Mc.U)
@@ -108,9 +108,9 @@ theorem vecAt_eq_vec (F : Frames Y π) (Mc : MChart Y) (k : F.J) {S : Type} [Com
   exact congrArg₂ (· * ·) (ev_appLE z π _ hzU hh _).symm (ev_res z _ hzU hz _).symm
 
 /- English proof (translation)
-Establish `e : plkIdx Mc m (Fin.succ (Fintype.equivFin _ r)) = some r` using `by simp [plkIdx]`. Simplify using `only [plkLoc, e]`. Rewrite using `[valF, dif_pos hj]`. Use `show ev a _ hj ((g.appLE _ _ _).hom _) = _`. Rewrite using `[ev_appLE a g _ hj hU, plkMinor, RingHom.map_det]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem valF_plkLoc (F : Frames Y π) (Mc : MChart Y) {T : Scheme.{0}} (g : T ⟶ Z) (hg : ⊤ ≤ (g ≫ π) ⁻¹ᵁ Mc.U)
     (σ : E →+* ℂ) (m : Fin (Dw.mult σ)) {K : Type} [Field K] (a : Sp K ⟶ T) (k : F.J)
@@ -130,19 +130,19 @@ end GlobalTheory.FlagPlucker.Sep
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y Z π F Mc T g hg t htf ht R _ f K _ a a' hπ hP`. Establish `hx' : (a' ≫ g) ≫ π = (a ≫ g) ≫ π` using `by simpa only [Category.assoc] using hπ.symm`. Use `⟨hx', fun σ i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_isLocalRing F.cover (a ≫ g)`. Take `⟨k', hk'⟩` from `exists_chart_of_isLocalRing F.cover (a' ≫ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM : ⊤ ≤ ((a ≫ g) ≫ π) ⁻¹ᵁ Mc.U` using `fun p _ => hg (Set.mem_univ (a p))`. Establish `hM' : ⊤ ≤ ((a' ≫ g) ≫ π) ⁻¹ᵁ Mc.U` using `fun p _ => hg (Set.mem_univ (a' p))`. Establish `hU : ⊤ ≤ (a ≫ g) ⁻¹ᵁ (F.U k ⊓ π ⁻¹ᵁ Mc.U)` using `le_preimage_inf hk hM`. Establish `hU' : ⊤ ≤ (a' ≫ g) ⁻¹ᵁ (F.U k' ⊓ π ⁻¹ᵁ Mc.U)` using `le_preimage_inf hk' hM'`. Establish `e1 : F.vecAt k (a ≫ g) hk rfl σ = (vec Mc _ hM).toLinearMap ∘ fun j r => (plkU F Mc k σ).map (ev (a ≫ g) _ hU) r j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun j => Sep.vecAt_eq_vec F Mc k (a ≫ g) hk rfl hM hU σ j`. Establish `e2 : F.vecAt k' (a' ≫ g) hk' hx' σ = (vec Mc _ hM).toLinearMap ∘ fun j r => (plkU F Mc k' σ).map (ev (a' ≫ g) _ hU') r j`. Use function extensionality and compare the values at `fun j => Sep.vecAt_eq_vec F Mc k' (a' ≫ g) hk' hx' hM hU' σ j`. Rewrite using `[F.step_eq k' _ hk' hx', F.step_eq k _ hk rfl, e1, e2, Sep.initSpan_comp, Sep.initSpan_comp]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Sep.initSpan_cols_eq _ _ ?_ ?_ i` and prove the remaining obligations. Use `F.linearIndependent_vecAt k (a ≫ g) hk rfl σ` as an intermediate fact. Rewrite `this` using `[e1]`. Conclude with `this.of_comp _`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj : ⊤ ≤ a ⁻¹ᵁ ((F.LL (ind σ m)).pull g).U (fun _ => k)`. Conclude with `fun p _ => Set.mem_iInter.2 fun _ => hk (Set.mem_univ p)`. Establish `hj' : ⊤ ≤ a' ⁻¹ᵁ ((F.LL (ind σ m)).pull g).U (fun _ => k')`. Conclude with `fun p _ => Set.mem_iInter.2 fun _ => hk' (Set.mem_univ p)`. Establish `c1` using `GlobalTheory.ZH.SecImm.crd_toProj f (t σ m) (ht σ m) a _ hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `GlobalTheory.ZH.SecImm.crd_toProj f (t σ m) (ht σ m) a' _ hj'`. Rewrite `c2` using `[← hP σ m]`. Take `⟨u, hu⟩` from `GlobalTheory.ZH.CrdCalc.crd_unique c1 c2`. Use `⟨u, fun r => ?_⟩` and prove the remaining obligations. Establish `e` using `hu (Fin.succ (Fintype.equivFin _ r))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [htf σ m] at e`. Rewrite `e` using `[Sep.valF_plkLoc F Mc g hg σ m a k hj hU r, Sep.valF_plkLoc F Mc g hg σ m a' k' hj' hU' r]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagPlucker.Sep.step_eq_of_toProj_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) (Mc : MChart Y) {T : Scheme.{0}} (g : T ⟶ Z) (hg : ⊤ ≤ (g ≫ π) ⁻¹ᵁ Mc.U) (t : ∀ (σ : E →+* ℂ) (m : Fin (Dw.mult σ)), Fin (plkNum Mc m + 1) → ((F.LL (ind σ m)).pull g).Sec), (∀ σ m q, (t σ m q).f = plkLoc F Mc g hg σ m q) → ∀ (ht : ∀ σ m, ⨆ q, nonzeroLocus (t σ m q) = ⊤) {R : Type} [CommRing R] (f : T ⟶ Sp R) (K : Type) [Field K] (a a' : Sp K ⟶ T), a ≫ g ≫ π = a' ≫ g ≫ π → (∀ σ m, a ≫ GlobalTheory.ProjSpace.toProj f (t σ m) (ht σ m) = a' ≫ GlobalTheory.ProjSpace.toProj f (t σ m) (ht σ m)) → ∃ hx' : (a' ≫ g) ≫ π = (a ≫ g) ≫ π, ∀ σ (i : ℕ), F.step (a' ≫ g) hx' σ i = F.step (a ≫ g) rfl σ i := by
   intro E _ _ _ H Dw l Xo c O _ β Y Z π F Mc T g hg t htf ht R _ f K _ a a' hπ hP

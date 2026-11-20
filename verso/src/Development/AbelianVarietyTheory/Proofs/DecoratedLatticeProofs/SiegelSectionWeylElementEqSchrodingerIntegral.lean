@@ -19,13 +19,11 @@ namespace GlobalTheory.Core.Rk.WeylValue
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := hν.1`. Set `e : Matrix (Fin m) (Fin n) D.host.E ≃ ratMx D m n` to `Equiv.ofBijective (fun ξ => ⟨rat ξ, rat_mem ξ⟩) ⟨fun a b h => rat_injective (congrArg Subtype.val h), fun g => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨ξ, hξ⟩` from `mem_ratMx.1 g.2`. Conclude with `⟨ξ, Subtype.ext hξ⟩⟩`. Establish `h1 : ∀ x, F x = ∑' g : ratMx D m n, φ (g +ᵥ x)` using `fun x => by`. Rewrite using `[← (hF x).tsum_eq, ← e.tsum_eq]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (x + rat ξ) = φ (rat ξ + x)`. Rewrite using `[add_comm]`. Simplify using `only [h1]`. Rewrite using `[hν.2.1.integral_eq_tsum'' φ hφ]`. Use `integral_tsum (fun g => ?_) ?_` and prove the remaining obligations.
-
-Conclude with `((hφ.comp_add_left (g : Mx D m n)).aestronglyMeasurable).restrict`. Rewrite using `[← hν.2.1.lintegral_eq_tsum'' fun x => ‖φ x‖ₑ]`. Conclude with `hφ.2.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_periodise {m n : ℕ} {ν : Measure (Mx D m n)} {𝓨 : Set (Mx D m n)}
     (hν : IsCovolOne (ratMx D m n) ν 𝓨) (φ F : Mx D m n → ℂ) (hφ : Integrable φ ν)
@@ -53,9 +51,9 @@ theorem integral_periodise {m n : ℕ} {ν : Measure (Mx D m n)} {𝓨 : Set (Mx
     exact hφ.2.ne
 
 /- English proof (translation)
-Establish `h0 : ((dblDec A).j0 ⬝ (dblDec A).p0 : Mx D (dblSp A).rank (dblSp A).rank) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => Fin.elim0 k`. Establish `h1` using `(dblDec A).sum_eq_one`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, add_zero]`. Establish `h2` using `hw.2`. Rewrite `h2` using `[← Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_one ((dblDec A).pY ⬝ mt (dblSp A) w), ← h1, Matrix.mul_add, ← Matrix.mul_assoc _ (dblDec A).jY, h2, Matrix.zero_mul, add_zero, lowC]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pY_weyl (A : HSp D) {w : GA D (dblSp A)} (hw : IsWeyl A w) :
     ((dblDec A).pY ⬝ mt (dblSp A) w : Mx D A.rank (dblSp A).rank) = lowC A w ⬝ (dblDec A).pX := by
@@ -72,13 +70,13 @@ theorem pY_weyl (A : HSp D) {w : GA D (dblSp A)} (hw : IsWeyl A w) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D ψ A B χB omh hω ν 𝓨 hν f hf w hw`. Establish `hp` using `pY_weyl A hw`. Establish `hm : lowC A w ∈ ratMx D A.rank A.rank` using `ratMx_mul (rat_mem _) (ratMx_mul ((mem_GQ_iff _ _).1 hw.1) (rat_mem _))`. Set `n : Mx D A.rank A.rank` to `(dblDec A).pX ⬝ (mt (dblSp A) w⁻¹ ⬝ (dblDec A).jY)`. Establish `hn : n ∈ ratMx D A.rank A.rank` using `ratMx_mul (rat_mem _) (ratMx_mul ((mem_GQ_iff _ _).1 (inv_mem hw.1)) (rat_mem _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmn : lowC A w * n = 1` using `by show lowC A w ⬝ ((dblDec A).pX ⬝ (mt (dblSp A) w⁻¹ ⬝ (dblDec A).jY)) = 1`. Rewrite using `[← Matrix.mul_assoc, ← hp, Matrix.mul_assoc, ← Matrix.mul_assoc (mt (dblSp A) w), mt_mul_inv, Matrix.one_mul, HypDec.pY_jY]`. Establish `h1 : ∀ z : WO A B, omh (w, 1) f (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr A B z) = f ((dblDec A).extX B (z ⬝ lowC A w))` using `fun z => by`. Rewrite using `[GlobalTheory.RatSubst.om_rat_left_apply D ψ _ _ _ _ omh hω f hf w hw.1, actO_eq, inv_inv, mt_one, Matrix.one_mul, ← extY_dblDec, HypDec.extY_apply, HypDec.extX_apply, Matrix.mul_assoc, hp, Matrix.mul_assoc]`. Establish `hper : ∀ γ ∈ ratMx D B.rank A.rank, ∀ a, f ((dblDec A).extX B (γ + a)) = f ((dblDec A).extX B a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ hγ a`. Take `⟨δ, hδ⟩ : (dblDec A).extX B γ ∈ ratMx D _ _` from `ratMx_mul hγ (rat_mem _)`. Establish `h` using `hf.quasi δ ((dblDec A).extX B a)`. Rewrite `h` using `[show ratW B (dblSp A) δ = (dblDec A).extX B γ from hδ, HypDec.symplOH_extX_extX, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[map_add, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `swSec GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero`. Simplify using `only [h1]`. Use `(GlobalTheory.LeviGLRes.covolOne_integral_mul_right hν (lowC A w) n (mul_eq_one_comm.1 hmn) hmn hm hn (fun a => f ((dblDec A).extX B a)) hper).trans ?_` and prove the remaining obligations. Conclude with `integral_periodise hν _ _ (GlobalTheory.T.doubledPairSchrodingerFunction_continuous_integrable D ψ hω.std A B ν 𝓨 hν f hf).2 fun x => (GlobalTheory.T.doubledTheta_eq_sum_schrodingerFunction_periodisation D ψ hω.std A B ν 𝓨 hν f hf x).2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem swSec_weyl : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ w, IsWeyl A w → swSec A B omh ν 𝓨 f w = ∫ x, sch ψ A B ν 𝓨 f x ∂ν := by
   intro D ψ A B χB omh hω ν 𝓨 hν f hf w hw

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MulMatMemUnita
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JR.MeasTransport.map_isIsom_eq_pi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMapIsIsomSelfDualMeasureKerLEqPiHaar.lean&line=174#L174)
 -/

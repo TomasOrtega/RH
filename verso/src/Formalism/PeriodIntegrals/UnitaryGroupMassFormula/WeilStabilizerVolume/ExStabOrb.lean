@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.Or
 namespace PI.VolStabW
 
 /- English proof (translation)
-The claim follows from `exStab_of_orb orbTup_holds hI hF hN`.
+A detailed English derivation is pending.
 -/
 theorem exStab_of_nu (hI : NuInv) (hF : NuFin) (hN : NuNeZero) : ExStab :=
   exStab_of_orb orbTup_holds hI hF hN

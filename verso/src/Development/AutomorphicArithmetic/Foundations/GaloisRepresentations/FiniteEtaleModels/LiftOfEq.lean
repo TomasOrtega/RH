@@ -18,9 +18,9 @@ section Core
 variable {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `c hc m _`. Take `⟨d, hd⟩` from `ha c hc`. Conclude with `⟨d • m, by rw [smul_smul, hd, mul_smul, Nat.cast_smul_eq_nsmul]⟩`. Introduce and unpack `x y ⟨z, hz⟩ ⟨z', hz'⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z + z', by rw [smul_add, hz, hz', smul_add]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem kill {a : A} {N : ℕ} {I : Ideal A} (ha : ∀ x ∈ I, (N : A) ∣ a * x) {w : M}
     (hw : w ∈ (I • ⊤ : Submodule A M)) : ∃ z : M, a • w = N • z := by
@@ -39,7 +39,7 @@ private theorem ef_nsmul (EF : LinearMap.BilinForm ℤ M) (N : ℕ) (x y : M) :
   simp
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `hc`. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul, ef_nsmul]`. Conclude with `Dvd.intro _ rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dvd_left (EF : LinearMap.BilinForm ℤ M) {N : ℕ} {c : A} (hc : (N : A) ∣ c) (x y : M) :
     (N : ℤ) ∣ EF (c • x) y := by
@@ -48,7 +48,7 @@ private theorem dvd_left (EF : LinearMap.BilinForm ℤ M) {N : ℕ} {c : A} (hc 
   exact Dvd.intro _ rfl
 
 /- English proof (translation)
-Use `alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem skew (EF : LinearMap.BilinForm ℤ M) (alt : ∀ x, EF x x = 0) (x y : M) :
     EF x y = - EF y x := by
@@ -59,21 +59,19 @@ private theorem skew (EF : LinearMap.BilinForm ℤ M) (alt : ∀ x, EF x x = 0) 
 variable (bar : A ≃+* A) (EF : LinearMap.BilinForm ℤ M)
 
 /- English proof (translation)
-Establish `hee : (N : A) ∣ ε * bar ε` using `h3 _ h2`. Establish `hsq : (N : A) ∣ ε * ε - ε`. Take `⟨d, hd⟩` from `h3 _ h1`. Conclude with `⟨-d, by linear_combination -hd⟩`. Establish `cross : ∀ x y, (N : ℤ) ∣ EF (ε • g x) (bar ε • k y) - EF (ε • x) y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x y`. Take `⟨z, hz⟩` from `kill h3 (hhg x)`. Establish `e1 : EF (ε • g x) (bar ε • k y) = EF (ε • ε • g x) (k y)` using `(adj ε _ _).symm`. Take `⟨a, ha⟩` from `hk (ε • ε • g x) y`. Establish `e2 : h (ε • ε • g x) = N • (ε • z) + (ε * ε - ε) • x + ε • x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, smul_comm N ε z, ← hz]`. Use `module`. Take `⟨b, hb⟩` from `dvd_left EF hsq x y`. Rewrite `ha` using `[e2]`. Simplify using `only [map_add, LinearMap.add_apply, ef_nsmul] at ha`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `⟨EF (ε • z) y + b - a, by linear_combination hb - ha⟩`. Take `⟨a₁, h₁⟩` from `dvd_left EF hee (g x) (g y)`. Take `⟨a₂, h₂⟩` from `dvd_left EF hee (k x) (k y)`. Take `⟨a₃, h₃⟩` from `cross x y`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₄, h₄⟩` from `cross y x`. Take `⟨a₅, h₅⟩` from `dvd_left EF h4 x y`. Establish `f₁ : EF (ε • g x) (ε • g y) = EF ((ε * bar ε) • g x) (g y)`. Rewrite using `[mul_comm, mul_smul, adj (bar ε), hbb]`. Establish `f₂ : EF (bar ε • k x) (bar ε • k y) = EF ((ε * bar ε) • k x) (k y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, adj ε]`. Establish `f₃ : EF (bar ε • k x) (ε • g y) = - EF (ε • g y) (bar ε • k x)` using `skew EF alt _ _`. Establish `f₄ : EF (ε • y) x = - EF (bar ε • x) y`. Rewrite using `[adj (bar ε), hbb]`. Conclude with `skew EF alt _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₅ : EF ((ε + bar ε - 1) • x) y = EF (ε • x) y + EF (bar ε • x) y - EF x y`. Rewrite using `[sub_smul, add_smul, one_smul]`. Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[f₁, f₂, f₃, h₁, h₂]`.
-
-Conclude with `⟨a₁ + a₂ + a₃ - a₄ + a₅, by linear_combination h₃ - h₄ + h₅ - f₅ - f₄⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iso_step (hbb : ∀ c, bar (bar c) = c) (alt : ∀ x, EF x x = 0)
     (adj : ∀ (c : A) (x y : M), EF (c • x) y = EF x (bar c • y))
@@ -120,7 +118,7 @@ private theorem iso_step (hbb : ∀ c, bar (bar c) = c) (alt : ∀ x, EF x x = 0
   exact ⟨a₁ + a₂ + a₃ - a₄ + a₅, by linear_combination h₃ - h₄ + h₅ - f₅ - f₄⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hk`. Use `⟨b • z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, map_smul, smul_add, smul_add, smul_comm N b z, smul_comm ε c, smul_comm b c]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem lin_step (N : ℕ) (ε b : A) (g : M →ₗ[A] M) (k : M →+ M)
     (c : A) (x : M) (hk : ∃ z, k (c • x) = c • k x + N • z) :
@@ -131,9 +129,9 @@ private theorem lin_step (N : ℕ) (ε b : A) (g : M →ₗ[A] M) (k : M →+ M)
   abel
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hv ?_ ?_` and prove the remaining obligations. Introduce `c hc m _`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hc Submodule.mem_top`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 private theorem smul_le (I : Ideal A) (h : M →ₗ[A] M) {v : M} (hv : v ∈ (I • ⊤ : Submodule A M)) :
     h v ∈ (I • ⊤ : Submodule A M) := by
@@ -146,7 +144,7 @@ private theorem smul_le (I : Ideal A) (h : M →ₗ[A] M) {v : M} (hv : v ∈ (I
     exact add_mem hx hy
 
 /- English proof (translation)
-Establish `e : h' y - h y = h ((g (h' y) - y) - (g (h y) - y)) - (h (g (h' y - h y)) - (h' y - h y))`. Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (smul_le u h (sub_mem (hgh' y) (hgh y))) (hhg _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem diff_mem (u : Ideal A) (g h h' : M →ₗ[A] M)
     (hhg : ∀ x, h (g x) - x ∈ (u • ⊤ : Submodule A M))
@@ -160,17 +158,17 @@ private theorem diff_mem (u : Ideal A) (g h h' : M →ₗ[A] M)
   exact sub_mem (smul_le u h (sub_mem (hgh' y) (hgh y))) (hhg _)
 
 /- English proof (translation)
-Establish `hmid : ∃ z, bar ε • (k' x - k x) = 0 + N • z`. Use `nd _ fun y => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `kill h3 (diff_mem u g h h' hhg hgh hgh' y)`. Take `⟨a, ha⟩` from `hk (ε • y) x`. Take `⟨b, hb⟩` from `hk' (ε • y) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e₁ : EF (bar ε • (k' x - k x)) y = EF (k' x) (ε • y) - EF (k x) (ε • y)`. Rewrite using `[adj (bar ε), hbb]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Establish `e₂ : EF (h' (ε • y)) x - EF (h (ε • y)) x = (N : ℤ) * EF w x`. Establish `e₀ : h' (ε • y) - h (ε • y) = ε • (h' y - h y)` using `by simp only [map_smul, smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ef_nsmul, ← hw, ← e₀]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[e₁, skew EF alt (k' x), skew EF alt (k x)]`. Conclude with `⟨b - a - EF w x, by linear_combination hb - ha - e₂⟩`. Take `⟨z, hz⟩` from `hmid`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hεε`. Establish `hd' : bar ε' - bar ε = (N : A) * bar d`. Rewrite using `[← map_sub, hd, map_mul, map_natCast]`. Use `⟨d • g x + bar d • k' x + z, ?_⟩` and prove the remaining obligations. Establish `e₁ : ε' = ε + (N : A) * d` using `by linear_combination hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂ : bar ε' = bar ε + (N : A) * bar d` using `by linear_combination hd'`. Rewrite `hz` using `[zero_add]`. Establish `e₃ : bar ε • k' x = bar ε • k x + N • z`. Rewrite using `[← hz, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e₂, add_smul, e₃, e₁, add_smul, mul_smul, mul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, smul_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem tow_step (alt : ∀ x, EF x x = 0) (hbb : ∀ c, bar (bar c) = c)
     (adj : ∀ (c : A) (x y : M), EF (c • x) y = EF x (bar c • y))
@@ -213,7 +211,7 @@ private theorem tow_step (alt : ∀ x, EF x x = 0) (hbb : ∀ c, bar (bar c) = c
   abel
 
 /- English proof (translation)
-Establish `e : (ε • v + b • w) - v = b • w - (1 - ε) • v` using `by module`. Rewrite using `[e]`. Conclude with `sub_mem (Submodule.smul_mem_smul h2 Submodule.mem_top) (Submodule.smul_mem_smul h1 Submodule.mem_top)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_step (𝔟 : Ideal A) (ε b : A) (h1 : 1 - ε ∈ 𝔟) (h2 : b ∈ 𝔟) (v w : M) :
     (ε • v + b • w) - v ∈ (𝔟 • ⊤ : Submodule A M) := by
@@ -224,7 +222,7 @@ private theorem lev_step (𝔟 : Ideal A) (ε b : A) (h1 : 1 - ε ∈ 𝔟) (h2 
 end Core
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Conclude with `liftUnit A M u 𝔞 hu hf g₀`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem lift_of_eq (A M : Type) [CommRing A] [IsDedekindDomain A] [AddCommGroup M] [Module A M]
     [Module.Finite A M] [Module.Projective A M] (u 𝔞 : Ideal A) (hu : u ≠ ⊥) (hf : ∃ f : ℕ, u ^ f ≤ 𝔞)
@@ -235,35 +233,27 @@ private theorem lift_of_eq (A M : Type) [CommRing A] [IsDedekindDomain A] [AddCo
   exact liftUnit A M u 𝔞 hu hf g₀
 
 /- English proof (translation)
-Introduce `q _ D hm r hr 𝔞 hf g₀`. Take `⟨hbij, hproj, hfin⟩` from `mOne q D hm`. Take `⟨ε, hε⟩` from `idem q D r hr`. Use `letI : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)`. Use `haveI : IsScalarTower (𝓞 D.F) D.O D.La := ⟨fun a b x => by rw [Algebra.smul_def, mul_smul]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite (𝓞 D.F) D.O := Module.Finite.of_surjective (Algebra.linearMap _ _) hbij.2`. Use `haveI : Module.Finite (𝓞 D.F) D.La := Module.Finite.trans D.O D.La`. Use `haveI : Module.Projective (𝓞 D.F) D.La := by`. Set `ρ : D.O ≃+* 𝓞 D.F` to `(RingEquiv.ofBijective (algebraMap (𝓞 D.F) D.O) hbij).symm`. Use `letI i₁ : RingHomInvPair (ρ : D.O →+* 𝓞 D.F) (ρ.symm : 𝓞 D.F →+* D.O) := RingHomInvPair.of_ringEquiv ρ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `letI i₂ : RingHomInvPair (ρ.symm : 𝓞 D.F →+* D.O) (ρ : D.O →+* 𝓞 D.F) := RingHomInvPair.symm _ _`. Set `e₂ : D.La ≃ₛₗ[(ρ : D.O →+* 𝓞 D.F)] D.La` to `{ AddEquiv.refl D.La with map_smul' := fun c x => by`. Express the relevant statement in the definitionally equal form `c • x = algebraMap (𝓞 D.F) D.O (ρ c) • x`. Use `congr 1`. Conclude with `((RingEquiv.ofBijective (algebraMap (𝓞 D.F) D.O) hbij).apply_symm_apply c).symm }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.Projective.of_equiv (σ' := (ρ.symm : 𝓞 D.F →+* D.O)) e₂`. Establish `hbb : ∀ c, D.bar (D.bar c) = c` using `fun c => hbij.1 (by`. Use `D.star_star (algebraMap _ _ c)` as an intermediate fact. Rewrite `this` using `[D.star_F, MulOpposite.unop_op, D.star_F, MulOpposite.unop_op]`. Conclude with `this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `adjA : ∀ (c : 𝓞 D.F) (x y : D.La), D.EF (c • x) y = D.EF x (D.bar c • y)` using `fun c x y => by`. Use `D.adj (algebraMap _ _ c) x y` as an intermediate fact. Rewrite `this` using `[D.star_F, MulOpposite.unop_op]`. Conclude with `this`. Establish `hP : (wSub D 𝔞 1).restrictScalars (𝓞 D.F) = 𝔞 • (⊤ : Submodule (𝓞 D.F) D.La)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ ((Submodule.restrictScalars_mem _ _ _).1 hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, z, rfl⟩`. Conclude with `Submodule.smul_mem_smul (by rwa [pow_one] at hc) Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `add_mem ha hb`. Introduce `b a _ ha`. Take `⟨c, rfl⟩` from `hbij.2 b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Submodule.smul_mem _ c ha`. Use `Submodule.smul_le.2 fun c hc x _ => ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨c, by rwa [pow_one], x, rfl⟩`. Establish `hu : ES.uIdeal D r ≠ ⊥`. Introduce `h0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1` using `ES.p_mem_uIdeal D r`. Rewrite `h1` using `[h0, Ideal.mem_bot]`. Conclude with `(Fact.out : q.Prime).ne_zero (Nat.cast_eq_zero.1 h1)`. Set `e₀` to `Submodule.Quotient.restrictScalarsEquiv (𝓞 D.F) (wSub D 𝔞 1)`. Take `⟨g, h, hg, hgh⟩` from `lift_of_eq (𝓞 D.F) D.La (ES.uIdeal D r) 𝔞 hu hf _ hP (e₀.trans ((g₀.restrictScalars (𝓞 D.F)).trans e₀.symm))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : ∀ x, (wSub D 𝔞 1).mkQ (g x) = g₀ ((wSub D 𝔞 1).mkQ x)` using `fun x => by`. Establish `he : ∀ y, e₀ (Submodule.Quotient.mk y) = Submodule.Quotient.mk y` using `fun _ => rfl`. Use `congrArg e₀ (hg x)` as an intermediate fact. Simplify `this` using `[he]`. Set `hO : ℕ → (D.La →ₗ[D.O] D.La)` to `fun e => { toFun := h e map_add' := map_add _ map_smul' := fun c x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `hbij.2 c`. Conclude with `map_smul (h e) a x }`. Use `choose k hk hkl using fun e => (adj q D e).2.1 (hO e)`. Establish `hcast : ∀ e : ℕ, ((q ^ e : ℕ) : 𝓞 D.F) = (q : 𝓞 D.F) ^ e` using `fun e => by push_cast; rfl`. Use `⟨fun e => AddMonoidHom.mk' (fun x => ε e • g x + D.bar (ε e) • k e x) fun x y => by` and prove the remaining obligations.
-
-Simplify using `only [map_add, smul_add]`. Use the proof step `abel, fun e => ?_⟩`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hε e`. Rewrite `h4`, `h5` using `[← hcast]`. Establish `h3' : ∀ x ∈ ES.uIdeal D r ^ e, ((q ^ e : ℕ) : 𝓞 D.F) ∣ ε e * x` using `fun x hx => by`.
-
-Rewrite using `[hcast]`. Conclude with `h3 x hx`. Use `⟨fun c x => ?_, fun x y => ?_, fun x => ?_, fun hq x => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hbij.2 c`. Conclude with `lin_step (q ^ e) (ε e) (D.bar (ε e)) g (k e) a x (hkl e _ x)`.
-
-Conclude with `iso_step D.bar D.EF hbb D.alt adjA (q ^ e) _ (ε e) g (h e) (k e) h1 h2 h3' h4 (fun x => (hgh e x).2) (hk e) x y`. Conclude with `tow_step D.bar D.EF D.alt hbb adjA (q ^ e) _ (ε e) (ε (e + 1)) g (h e) (h (e + 1)) (k e) (k (e + 1)) h3' h5 (fun x => (hgh e x).2) (fun x => (hgh e x).1) (fun x => Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ e)) (hgh (e + 1) x).1) (hk e) (fun x y => dvd_trans (b …`. Establish `hle` using `h6 𝔞 hf hq`. Establish `hmem` using `lev_step 𝔞 (ε e) (D.bar (ε e)) (hle h1) (hle h2) (g x) (k e x)`. Rewrite `hmem` using `[← hP]`.
-
-Rewrite using `[← hg' x]`. Conclude with `(Submodule.Quotient.eq _).2 hmem`.
+A detailed English derivation is pending.
 -/
 theorem qSys : QSys := by
   intro q _ D hm r hr 𝔞 hf g₀

@@ -5,13 +5,13 @@ open Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f r m L lE lh lG hf hr hm hm0 hL hE hE0 hlog hlh hlG`. Establish `hf0 : 0 < f` using `by linarith`. Establish `hL0 : 0 < L` using `by linarith`. Establish `hfE0 : 0 ≤ f * lE` using `mul_nonneg hf0.le hE0`. Establish `hfE : f * lE ≤ f * (2 * L)` using `mul_le_mul_of_nonneg_left hE hf0.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfL : 32 ≤ f * L` using `by nlinarith`. Establish `h1 : log (1 + f * lE) ≤ log (f * (3 * L))` using `log_le_log (by linarith) (by nlinarith)`. Establish `h2 : log (f * (3 * L)) = log f + log (3 * L)` using `log_mul hf0.ne' (by positivity)`. Establish `h3 : log (3 * L) ≤ 3 * L - 1` using `log_le_sub_one_of_pos (by positivity)`. Establish `h4 : log (1 + f * lE) ≤ 4 * L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 2 * f * log (1 + f * lE) ≤ 2 * f * (4 * L)` using `mul_le_mul_of_nonneg_left h4 (by positivity)`. Establish `h6 : lh ≤ 10 * (f * L)` using `by nlinarith`. Establish `h7 : (m + 5) * lh ≤ (m + 5) * (10 * (f * L))` using `mul_le_mul_of_nonneg_left h6 (by linarith)`. Establish `h8 : (m + 5) * (10 * (f * L)) ≤ (r / 2 + 5) * (10 * (f * L))` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h9 : f * r ^ 2 * 4 ≤ f * r ^ 2 * L` using `mul_le_mul_of_nonneg_left hL (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : 8 * L ≤ f * L` using `mul_le_mul_of_nonneg_right hf hL0.le`. Establish `h11 : 5 * r + 200 ≤ r ^ 2 / 2` using `by nlinarith`. Establish `h12 : (5 * r + 200) * (f * L) ≤ r ^ 2 / 2 * (f * L)` using `mul_le_mul_of_nonneg_right h11 (by linarith)`. Establish `h13 : 0 ≤ f ^ 2 * L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_sizes_le_ring_polynomial :
     ∀ (f r m L lE lh lG : ℝ), 8 ≤ f → 62 ≤ r → 2 * m ≤ r → 0 ≤ m → 4 ≤ L → lE ≤ 2 * L → 0 ≤ lE →

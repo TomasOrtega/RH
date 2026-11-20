@@ -53,7 +53,7 @@ def kapU (hU : SameUlocJ hi S Uloc) (p : ℕ) : awayG D.sp.cm.sig (D.sp.X (i + 1
       exact Subgroup.mem_map.2 ⟨_, ha.2 v hv, rfl⟩)
 
 /- English proof (translation)
-Use `show bc (prV (E := D.host.E) v) (glue _ _ (_, _)) = 1`. Rewrite using `[bc_glue_one _ _ _ (epsP_over D.host.F p D.host.E v hv)]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapU_over (hU : SameUlocJ hi S Uloc) (p : ℕ) (a : awayG D.sp.cm.sig (D.sp.X (i + 1)).gram Uloc p)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hv : ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal) :
@@ -63,7 +63,7 @@ theorem kapU_over (hU : SameUlocJ hi S Uloc) (p : ℕ) (a : awayG D.sp.cm.sig (D
   exact map_one _
 
 /- English proof (translation)
-Use `show bc (prV (E := D.host.E) v) (glue _ _ (_, _)) = _`. Rewrite using `[bc_glue_zero _ _ _ (epsP_off D.host.F p D.host.E v hv)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kapU_off (hU : SameUlocJ hi S Uloc) (p : ℕ) (a : awayG D.sp.cm.sig (D.sp.X (i + 1)).gram Uloc p)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hv : ((p : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) :
@@ -76,11 +76,11 @@ theorem kapU_off (hU : SameUlocJ hi S Uloc) (p : ℕ) (a : awayG D.sp.cm.sig (D.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨n, hn, hc⟩` from `hfin`. Take `⟨ψ, hψ⟩` from `GlobalTheory.Port.exists_char (O := (D.gat u w hg).O) D.what₂.embLL e (S.chi.comp (kapU hi S hU (D.what₂.places.resChar w))) (fun a => hrat _) ⟨n, hn, fun a => hc _⟩`. Use `⟨ψ, fun a κ hκp hκo => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hrat κ`. Establish `hχ : S.chi κ = S.chi (kapU hi S hU (D.what₂.places.resChar w) a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : S.chi (κ * (kapU hi S hU (D.what₂.places.resChar w) a)⁻¹) = 1`. Use `S.chi_triv _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Distinguish the cases in `hv : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Rewrite using `[hκp v hv, kapU_over hi S hU _ a v hv, inv_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκo v hv, kapU_off hi S hU _ a v hv, mul_inv_cancel]`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis. Conclude with `⟨r, hr, hψ a r (hr.trans (congrArg (fun z : ℂˣ => (z : ℂ)) hχ))⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem exists_psiTiedJ (hU : SameUlocJ hi S Uloc) (e : D.what₂.LL →+* (D.gat u w hg).Kf)
     [IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf]
@@ -107,7 +107,7 @@ end GlobalTheory.Mem.Top.KerTwPsi
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ ∀ (hμ : (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0), ∀ (tt : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes n.tp t.C (w.tw Z)), TC.StdTw w.I w.l Z w.l0 tt → ∀ j (hj : j + 1 ≤ (w.D Z).R.m) (β : tt.ch.Ch u ((w.D Z).what₂.muAt v) (j + 1)), ∃ …`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.Top.KerTwPsi.psi_tied : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch) (Y : DivX (w.D Z)),

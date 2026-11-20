@@ -20,7 +20,7 @@ def daT (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) : Matrix (F
   J * daB x * M * (Formalism.UG.cT σ (daB y) * J)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Formalism.UG.hform, daB, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem da_gram (x y : Fin k → Fin n → A) (i j : Fin k) :
     (Formalism.UG.cT σ (daB x) * J * daB y) i j = Formalism.UG.hform σ J (x i) (y j) := by
@@ -29,7 +29,7 @@ theorem da_gram (x y : Fin k → Fin n → A) (i j : Fin k) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Formalism.UG.hform, daB, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem da_mulVec (y : Fin k → Fin n → A) (v : Fin n → A) (i : Fin k) :
     ((Formalism.UG.cT σ (daB y) * J) *ᵥ v) i = Formalism.UG.hform σ J (y i) v := by
@@ -38,16 +38,16 @@ theorem da_mulVec (y : Fin k → Fin n → A) (v : Fin n → A) (i : Fin k) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, hrow, daB, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem da_row (y : Fin k → Fin n → A) (j : Fin k) (q : Fin n) :
     (Formalism.UG.cT σ (daB y) * J) j q = hrow σ J (y j) q := by
   simp only [Matrix.mul_apply, Formalism.UG.cT, hrow, daB, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, daP, Matrix.mul_apply, da_row, daB, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by`. Simplify using `only [hrow, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem da_sum (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
     ∑ i, ∑ j, M i j • Matrix.vecMulVec (x i) (hrow σ J (y j)) = daP σ J x y M := by
@@ -60,7 +60,7 @@ theorem da_sum (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
     ring
 
 /- English proof (translation)
-Unfold `sMat`. Simplify using `only [Finset.sum_add_distrib, da_sum, add_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem da_sMat (b bs : Fin k → Fin n → A) (C D : Matrix (Fin k) (Fin k) A) :
     sMat σ J b bs C D = 1 + daP σ J b bs (C - 1) + daP σ J bs b (D - 1) := by
@@ -70,7 +70,7 @@ theorem da_sMat (b bs : Fin k → Fin n → A) (C D : Matrix (Fin k) (Fin k) A) 
 variable {σ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem da_cT_cT (hσ : ∀ a, σ (σ a) = a) {m p : Type} (M : Matrix m p A) :
     Formalism.UG.cT σ (Formalism.UG.cT σ M) = M := by
@@ -78,7 +78,7 @@ theorem da_cT_cT (hσ : ∀ a, σ (σ a) = a) {m p : Type} (M : Matrix m p A) :
   simp [Formalism.UG.cT, hσ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem da_cT_add {m p : Type} (M N : Matrix m p A) :
     Formalism.UG.cT σ (M + N) = Formalism.UG.cT σ M + Formalism.UG.cT σ N := by
@@ -86,7 +86,7 @@ theorem da_cT_add {m p : Type} (M N : Matrix m p A) :
   simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem da_cT_sub {m p : Type} (M N : Matrix m p A) :
     Formalism.UG.cT σ (M - N) = Formalism.UG.cT σ M - Formalism.UG.cT σ N := by
@@ -94,9 +94,9 @@ theorem da_cT_sub {m p : Type} (M N : Matrix m p A) :
   simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, σ (J i j) = J j i` using `fun i j => by`. Establish `h` using `congrFun (congrFun hJ j) i`. Simplify `h` using `[Formalism.UG.cT]`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hσ, hJ']`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem da_herm (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y : Fin n → A) :
     Formalism.UG.hform σ J x y = σ (Formalism.UG.hform σ J y x) := by
@@ -108,7 +108,7 @@ theorem da_herm (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem da_smul_l (c : A) (x y : Fin n → A) :
     Formalism.UG.hform σ J (c • x) y = σ c * Formalism.UG.hform σ J x y := by
@@ -116,7 +116,7 @@ theorem da_smul_l (c : A) (x y : Fin n → A) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem da_smul_r (c : A) (x y : Fin n → A) :
     Formalism.UG.hform σ J x (c • y) = c * Formalism.UG.hform σ J x y := by
@@ -124,7 +124,7 @@ theorem da_smul_r (c : A) (x y : Fin n → A) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use extensionality with `p i`. Simplify using `only [daB, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Conclude with `(congrFun (hx i) p).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem da_smulB (c : A) (x : Fin k → Fin n → A) (hx : ∀ i, x i = c • x i) : c • daB x = daB x := by
   ext p i
@@ -132,9 +132,9 @@ theorem da_smulB (c : A) (x : Fin k → Fin n → A) (hx : ∀ i, x i = c • x 
   exact (congrFun (hx i) p).symm
 
 /- English proof (translation)
-Unfold `daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (c • daB x) * (M * N) * (Formalism.UG.cT σ (daB y) * J) := by`. Rewrite using `[hm]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = daB x * (M * N) * (Formalism.UG.cT σ (daB y) * J) := by rw [hx]`.
+A detailed English derivation is pending.
 -/
 theorem da_PP (x y : Fin k → Fin n → A) (c : A) (hm : Formalism.UG.cT σ (daB y) * J * daB x = c • 1)
     (hx : c • daB x = daB x) (M N : Matrix (Fin k) (Fin k) A) :
@@ -149,7 +149,7 @@ theorem da_PP (x y : Fin k → Fin n → A) (c : A) (hm : Formalism.UG.cT σ (da
     _ = daB x * (M * N) * (Formalism.UG.cT σ (daB y) * J) := by rw [hx]
 
 /- English proof (translation)
-Unfold `daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hm]; simp`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parabolic_product_zero (x y x' y' : Fin k → Fin n → A) (hm : Formalism.UG.cT σ (daB y) * J * daB x' = 0)
     (M N : Matrix (Fin k) (Fin k) A) :
@@ -161,7 +161,7 @@ theorem parabolic_product_zero (x y x' y' : Fin k → Fin n → A) (hm : Formali
     _ = 0 := by rw [hm]; simp
 
 /- English proof (translation)
-Unfold `daP`. Simplify using `only [Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem da_P_add (x y : Fin k → Fin n → A) (M N : Matrix (Fin k) (Fin k) A) :
     daP σ J x y (M + N) = daP σ J x y M + daP σ J x y N := by
@@ -169,14 +169,14 @@ theorem da_P_add (x y : Fin k → Fin n → A) (M N : Matrix (Fin k) (Fin k) A) 
   simp only [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cT_mul_lemma {m p q : Type} [Fintype p] (X : Matrix m p A) (Y : Matrix p q A) :
     Formalism.UG.cT σ (X * Y) = Formalism.UG.cT σ Y * Formalism.UG.cT σ X := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `daP daT`. Simplify using `only [cT_mul_lemma]`. Rewrite using `[da_cT_cT hσ, show Formalism.UG.cT σ J = J from hJ]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem da_cTP (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y : Fin k → Fin n → A)
     (M : Matrix (Fin k) (Fin k) A) :
@@ -187,7 +187,7 @@ theorem da_cTP (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `daP daT`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem da_JP (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
     J * daP σ J x y M = daT σ J x y M := by
@@ -195,9 +195,9 @@ theorem da_JP (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[da_cTP J hσ hJ]`. Unfold `daT daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * (c • daB y) * (Formalism.UG.cT σ M * N) * (Formalism.UG.cT σ (daB y') * J) := by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = J * daB y * (Formalism.UG.cT σ M * N) * (Formalism.UG.cT σ (daB y') * J) := by rw [hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem da_TRI (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y x' y' : Fin k → Fin n → A) (c : A)
     (hm : Formalism.UG.cT σ (daB x) * J * daB x' = c • 1) (hy : c • daB y = daB y) (M N : Matrix (Fin k) (Fin k) A) :
@@ -213,7 +213,7 @@ theorem da_TRI (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y
     _ = J * daB y * (Formalism.UG.cT σ M * N) * (Formalism.UG.cT σ (daB y') * J) := by rw [hy]
 
 /- English proof (translation)
-Rewrite using `[da_cTP J hσ hJ]`. Unfold `daT daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hm]; simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_triple_zero (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y x' y' : Fin k → Fin n → A)
     (hm : Formalism.UG.cT σ (daB x) * J * daB x' = 0) (M N : Matrix (Fin k) (Fin k) A) :
@@ -226,9 +226,9 @@ theorem transfer_triple_zero (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsH
     _ = 0 := by rw [hm]; simp
 
 /- English proof (translation)
-Unfold `daT daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * (c • daB y) * (M * N) * (Formalism.UG.cT σ (daB y') * J) := by`. Rewrite using `[hm]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = J * daB y * (M * N) * (Formalism.UG.cT σ (daB y') * J) := by rw [hy]`.
+A detailed English derivation is pending.
 -/
 theorem da_TP (x y x' y' : Fin k → Fin n → A) (c : A)
     (hm : Formalism.UG.cT σ (daB x) * J * daB x' = c • 1) (hy : c • daB y = daB y) (M N : Matrix (Fin k) (Fin k) A) :
@@ -243,7 +243,7 @@ theorem da_TP (x y x' y' : Fin k → Fin n → A) (c : A)
     _ = J * daB y * (M * N) * (Formalism.UG.cT σ (daB y') * J) := by rw [hy]
 
 /- English proof (translation)
-Unfold `daT daP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hm]; simp`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_product_zero (x y x' y' : Fin k → Fin n → A)
     (hm : Formalism.UG.cT σ (daB x) * J * daB x' = 0) (M N : Matrix (Fin k) (Fin k) A) :
@@ -257,37 +257,37 @@ theorem transfer_product_zero (x y x' y' : Fin k → Fin n → A)
 end DAlg
 
 /- English proof (translation)
-Introduce `A _ σ n k J ε b bs hσ hJ hfr`. Take `⟨hεε, hεσ, hb, hbs, hbb⟩` from `hfr`. Establish `hx1 : ε • daB b = daB b` using `da_smulB ε b hb`. Establish `hx2 : σ ε • daB bs = daB bs` using `da_smulB (σ ε) bs hbs`. Establish `hm1 : Formalism.UG.cT σ (daB bs) * J * daB b = ε • (1 : Matrix (Fin k) (Fin k) A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[da_gram, hbb i j, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hm2 : Formalism.UG.cT σ (daB b) * J * daB bs = σ ε • (1 : Matrix (Fin k) (Fin k) A)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[da_gram, da_herm J hσ hJ, hbb j i, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hm3 : Formalism.UG.cT σ (daB bs) * J * daB bs = 0`. Use extensionality with `i j`. Rewrite using `[da_gram, Matrix.zero_apply, hbs i, hbs j, da_smul_l, da_smul_r, hσ, ← mul_assoc, hεσ, zero_mul]`. Establish `hm4 : Formalism.UG.cT σ (daB b) * J * daB b = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[da_gram, Matrix.zero_apply, hb i, hb j, da_smul_l, da_smul_r, ← mul_assoc, mul_comm (σ ε) ε, hεσ, zero_mul]`. Establish `hPP : ∀ M N, daP σ J b bs M * daP σ J b bs N = daP σ J b bs (M * N)` using `fun M N => da_PP J b bs ε hm1 hx1 M N`. Establish `hQQ : ∀ M N, daP σ J bs b M * daP σ J bs b N = daP σ J bs b (M * N)` using `fun M N => da_PP J bs b (σ ε) hm2 hx2 M N`. Establish `hPQ : ∀ M N, daP σ J b bs M * daP σ J bs b N = 0` using `fun M N => parabolic_product_zero J b bs bs b hm3 M N`. Establish `hQP : ∀ M N, daP σ J bs b M * daP σ J b bs N = 0` using `fun M N => parabolic_product_zero J bs b b bs hm4 M N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : Formalism.UG.cT σ (1 : Matrix (Fin k) (Fin k) A) = 1`. Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Establish `hc1n : Formalism.UG.cT σ (1 : Matrix (Fin n) (Fin n) A) = 1`. Unfold `Formalism.UG.cT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Establish `hTadd : ∀ (x y : Fin k → Fin n → A) (M N : Matrix (Fin k) (Fin k) A), daT σ J x y (M + N) = daT σ J x y M + daT σ J x y N`. Introduce `x y M N`. Unfold `daT`. Simplify using `only [Matrix.mul_add, Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hT0 : ∀ x y : Fin k → Fin n → A, daT σ J x y 0 = 0`. Introduce `x y`. Unfold `daT`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `C D y hy`. Establish `h0 : ∀ (x y' : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A), (∀ j, Formalism.UG.hform σ J (y' j) y = 0) → daP σ J x y' M *ᵥ y = 0`. Introduce `x y' M hz`. Unfold `daP`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : (Formalism.UG.cT σ (daB y') * J) *ᵥ y = 0`. Use extensionality with `i`. Rewrite using `[da_mulVec]`. Conclude with `hz i`. Rewrite using `[hz', Matrix.mulVec_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[da_sMat, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, h0 b bs _ (fun j => (hy j).2), h0 bs b _ (fun j => (hy j).1), add_zero, add_zero]`. Introduce `C₁ D₁ C₂ D₂`. Rewrite using `[da_sMat, da_sMat, da_sMat]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, hPP, hQQ, hPQ, hQP, add_zero]`. Rewrite using `[show C₁ * C₂ - 1 = (C₁ - 1) + (C₂ - 1) + (C₁ - 1) * (C₂ - 1) by noncomm_ring, show D₁ * D₂ - 1 = (D₁ - 1) + (D₂ - 1) + (D₁ - 1) * (D₂ - 1) by noncomm_ring, da_P_add, da_P_add, da_P_add, da_P_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Introduce `C D hC hD`. Establish `hP : daP σ J b bs (C - 1) = 0`. Unfold `daP`. Rewrite using `[← hx1, Matrix.smul_mul, ← Matrix.mul_smul, hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hQ : daP σ J bs b (D - 1) = 0`. Unfold `daP`. Rewrite using `[← hx2, Matrix.smul_mul, ← Matrix.mul_smul, hD]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[da_sMat, hP, hQ, add_zero, add_zero]`. Introduce `C C' hCC`. Establish `hDt : (C'.map σ)ᵀ = Formalism.UG.cT σ C'` using `rfl`. Rewrite using `[hDt, da_sMat]`. Establish `hZ1 : (C - 1) + Formalism.UG.cT σ (Formalism.UG.cT σ C' - 1) + Formalism.UG.cT σ (Formalism.UG.cT σ C' - 1) * (C - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[da_cT_sub, da_cT_cT hσ, hc1, show C - 1 + (C' - 1) + (C' - 1) * (C - 1) = C' * C - 1 by noncomm_ring, hCC, sub_self]`. Establish `hZ2 : (Formalism.UG.cT σ C' - 1) + Formalism.UG.cT σ (C - 1) + Formalism.UG.cT σ (C - 1) * (Formalism.UG.cT σ C' - 1) = 0`. Rewrite using `[da_cT_sub, hc1, show Formalism.UG.cT σ C' - 1 + (Formalism.UG.cT σ C - 1) + (Formalism.UG.cT σ C - 1) * (Formalism.UG.cT σ C' - 1) = Formalism.UG.cT σ C * Formalism.UG.cT σ C' - 1 by noncomm_ring, ← cT_mul_lemma, hCC, hc1, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[da_cT_add, da_cT_add, hc1n]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, da_cTP J hσ hJ, da_JP, da_TP J b bs bs b (σ ε) hm2 hx2, da_TP J bs b b bs ε hm1 hx1, transfer_product_zero J b bs b bs hm4, transfer_product_zero J bs b bs b hm3, add_zero, hTadd]`. Normalize the expressions using the abelian group laws. Use `_ = J := by rw [hZ1, hZ2, hT0, hT0, add_zero, add_zero]`.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem idxDAlg : IdxDAlg := by
   intro A _ σ n k J ε b bs hσ hJ hfr

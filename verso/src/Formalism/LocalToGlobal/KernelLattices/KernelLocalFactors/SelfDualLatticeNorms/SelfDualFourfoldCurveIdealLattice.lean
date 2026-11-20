@@ -13,7 +13,7 @@ open Formalism.L2.Th1.F (cmTheta)
 open Formalism.L2.Th1.GD (LocNorm)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hb`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [cmTheta]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d = cmTheta 1 d + (k : ℂ) := by
   obtain ⟨k, rfl⟩ := hb
@@ -23,9 +23,9 @@ theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d 
   ring
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨k, hk⟩` from `cmTheta_odd b hb d`. Rewrite using `[hk, add_smul]`. Use `Λ.add_mem (h x hx) ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.zsmul_mem hx k`.
+A detailed English derivation is pending.
 -/
 theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgroup V) (d : ℕ)
     (h : ∀ x ∈ Λ, cmTheta 1 d • x ∈ Λ) (b : ℤ) (hb : Odd b) : ∀ x ∈ Λ, cmTheta b d • x ∈ Λ := by
@@ -37,9 +37,9 @@ theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgr
   exact Λ.zsmul_mem hx k
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb`. Take `⟨k, rfl⟩` from `Int.not_odd_iff_even.1 hb`. Establish `h1` using `h.1`. Establish `h8` using `h.2.2.1`. Establish `h2 : (d : ℤ) = 4 * ((a : ℤ) * c - k * k)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (k + k) ^ 2 = 4 * (k * k)` using `by ring`. Rewrite `h1` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Generalize the expression as in `(a : ℤ) * c - k * k = t at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem odd_of_cmOK {a : ℕ} {b c : ℤ} {d : ℕ} (h : CmOK a b c d) : Odd b := by
   by_contra hb
@@ -54,17 +54,15 @@ theorem odd_of_cmOK {a : ℕ} {b c : ℤ} {d : ℕ} (h : CmOK a b c d) : Odd b :
   omega
 
 /- English proof (translation)
-Establish `key : ∀ (x : n → ℂ) (y : Fin 4 × n → ℂ), altE (matH (blk4 h)) (CmData.embA 0 x) y = altE (matH h) x (slice 0 y)`. Introduce `x y`. Simplify using `only [altE, matrixForm_fourfoldBlock, CmData.slice_embA]`. Rewrite using `[Finset.sum_eq_single (0 : Fin 4)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : CmData.embA 0 x ∈ dualLat (matH (blk4 h)) (pow4 Λ)`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx (slice 0 y) (hy 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m, by rw [key, hm]⟩`. Rewrite `h1` using `[hsd]`. Establish `h2` using `h1 0`. Rewrite `h2` using `[CmData.slice_embA, if_pos rfl]`. Then use the resulting hypothesis. Introduce `hx y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : CmData.embA 0 x ∈ dualLat (matH (blk4 h)) (pow4 Λ)`. Rewrite using `[hsd]`. Conclude with `CmData.embA_mem Λ 0 hx`. Take `⟨m, hm⟩` from `h1 _ (CmData.embA_mem Λ 0 hy)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hm` using `[key, CmData.slice_embA, if_pos rfl]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitianSelfDual_of_fourfoldBlock {n : Type} [Fintype n] (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ))
     (hsd : IsSelfDual (matH (blk4 h)) (pow4 Λ)) : IsSelfDual (matH h) Λ := by
@@ -97,17 +95,17 @@ theorem hermitianSelfDual_of_fourfoldBlock {n : Type} [Fintype n] (h : Matrix n 
     exact hm
 
 /- English proof (translation)
-Establish `hsda` using `CmData.selfDual_img _ _ g₀ hg₀ _ (CmData.isSelfDual_matH_blk4_pow4 h Λ hsd)`. Establish `hsta : ∀ x ∈ imgLat (g₀ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ), cmTheta b₀ dK • x ∈ imgLat (g₀ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)`. Introduce and unpack `x ⟨x', hx', rfl⟩`. Use `⟨cmTheta b₀ dK • x', fun a' => hst _ (hx' a'), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨u, huiso, hufix, j1, jl, j2⟩` from `localStandard a₀ b₀ c₀ dK ha hdK lam hlam hcm (Fin 4 × n) _ hsda hsta i1 i2 p Fact.out`. Establish `hκu` using `hκ u huiso j1 jl j2`. Rewrite `j1`, `jl`, `j2` using `[← KR.imgLat_trans]`. Establish `hg₁ : IsIsom (matH (blk4 h)) (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) ((g₀.trans u : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `huiso (g₀ x) (g₀ y)`. Establish `h0` using `hg₀ x y`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply] at h0 h1 ⊢`. Rewrite using `[h1, h0]`. Establish `D0` using `stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hcm.1 hcm.2.1 hcm.2.2.1 n h Λ g₀ hg₀ hsd hst i1 i2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `D1` using `stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hcm.1 hcm.2.1 hcm.2.2.1 n h Λ (g₀.trans u) hg₁ hsd hst j1 j2`. Establish `hcomp : g₀.symm.trans (g₀.trans u) = u`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hfix : ∀ x, (g₀.trans u) x = g₀ x → x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1 : g₀ x = 0` using `hufix _ hx`. Simplify using `using congrArg g₀.symm h1`. Rewrite `hκu` using `[← hcomp]`. Take `⟨c, hc8, hc⟩` from `kernelRatio _ _ n h Λ _ _ g₀ (g₀.trans u) D0 D1 hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g₀.trans u, κ * c, hg₁, jl, j2, (KR.norm_mul_eq_one ι κ c _ hc8 hκu).le, by rw [hθ, hc, smul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem locNorm_of_kappa (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hcm : CmOK a₀ b₀ c₀ dK) {n : Type} [Fintype n] [DecidableEq n] (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ))
@@ -166,7 +164,7 @@ section Base
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
 /- English proof (translation)
-Establish `h` using `((B.latAll hcc hδ (base_linkage_nonempty D cc δ B)).1 2 2 _ _ (Formalism.MainNotions.GlobalTheoryTheory.Inhab.Adm_std D 2 2 even_two even_two)).1`. Rewrite `h` using `[show TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = _ from B.areaOK, show TaylorLogMetric.La D B.tor _ _ = _ from B.lat0OK 2 2]`. Establish `h2` using `SO.selfDual_img _ _ (SO.reix D.what₂.Tau) (SO.reix_isom B.L D.what₂.Tau) _ h`. Rewrite `h2` using `[SO.reix_pow]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_fourfold_curveIdeal_lattice (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (matH (blk4 (hOne B.L D.what₂.Tau))) (pow4 B.lamM) := by
@@ -178,14 +176,14 @@ theorem selfDual_fourfold_curveIdeal_lattice (hcc : TaylorLogMetric.IsCurveIdeal
   exact h2
 
 /- English proof (translation)
-The claim follows from `hermitianSelfDual_of_fourfoldBlock _ _ (selfDual_fourfold_curveIdeal_lattice B hcc hδ)`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_lamM (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (matH (hOne B.L D.what₂.Tau)) B.lamM :=
   hermitianSelfDual_of_fourfoldBlock _ _ (selfDual_fourfold_curveIdeal_lattice B hcc hδ)
 
 /- English proof (translation)
-Use `stable_of_one _ _ (fun x hx => ?_) b hb` and prove the remaining obligations. Use `SO.lamMM_smul (AR.om D) hx` as an intermediate fact. Rewrite `this` using `[← SO.theta_eq]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_lamM (b : ℤ) (hb : Odd b) : ∀ x ∈ B.lamM, cmTheta b D.host.d • x ∈ B.lamM := by
   refine stable_of_one _ _ (fun x hx => ?_) b hb
@@ -194,11 +192,11 @@ theorem stable_lamM (b : ℤ) (hb : Odd b) : ∀ x ∈ B.lamM, cmTheta b D.host.
   exact this
 
 /- English proof (translation)
-Take `⟨hL, hω⟩` from `hB`. Establish `hS : StdData B.L B.ω₀ (hOne B.L D.what₂.Tau) B.lamM (alphaQ B.cq (matH (hOne B.L D.what₂.Tau))) (alphaQ B.cq (stdH B.L (Fin 4 × D.what₂.Tau))) B.gC` using `B.stdOK hcc hδ`. Establish `hsd` using `selfDual_lamM B hcc hδ`. Establish `hst` using `stable_lamM B b₀ (odd_of_cmOK hcm)`. Establish `h2 : tens4 B.thMM = B.kappa • kernel4 B.L B.ω₀ B.lamM (alphaQ (Real.sqrt D.host.d / 2) (stdH B.L (Fin 4 × D.what₂.Tau))) B.gC` using `(B.thMM_spec (B.stdOK hcc hδ)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iso` using `hS.isom`. Establish `i1` using `hS.idx₁`. Establish `i2` using `hS.idx₂`. Unfold `Base.KappaAt Base.latA at hK`. Unfold `Base.LocNormMM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[hω]`. Rewrite `h2`, `hK`, `iso`, `i1`, `i2`, `hsd`, the goal using `[hL]`. Conclude with `locNorm_of_kappa a₀ b₀ c₀ D.host.d ha hd lam hlam hcm _ _ B.gC iso hsd hst i1 i2 B.kappa B.thMM h2 p ι hK`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locNormMM_of (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀)
     (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (hcm : CmOK a₀ b₀ c₀ D.host.d) (hB : B.IsCm a₀ b₀ ha hd lam hlam)
@@ -226,9 +224,9 @@ section Transport
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `: R.symm (R x) = x` using `R.symm_apply_apply x`. Use `show R.symm (R x) ∈ Λ`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `hy`. Conclude with `⟨R.symm y, hy, R.apply_symm_apply y⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_imgLat (R : V ≃ₗ[ℂ] W) (Λ : AddSubgroup V) (y : W) : y ∈ imgLat (R : V →ₗ[ℂ] W) Λ ↔ R.symm y ∈ Λ := by
   constructor
@@ -241,13 +239,13 @@ theorem mem_imgLat (R : V ≃ₗ[ℂ] W) (Λ : AddSubgroup V) (y : W) : y ∈ im
     exact ⟨R.symm y, hy, R.apply_symm_apply y⟩
 
 /- English proof (translation)
-Rewrite using `[mem_imgLat, R.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_mem_imgLat (R : V ≃ₗ[ℂ] W) (Λ : AddSubgroup V) (x : V) : R x ∈ imgLat (R : V →ₗ[ℂ] W) Λ ↔ x ∈ Λ := by
   rw [mem_imgLat, R.symm_apply_apply]
 
 /- English proof (translation)
-Establish `h1 : H' (R z) (R x) = H z x` using `hR z x`. Establish `h2 : H' (R x) (R x) = H x x` using `hR x x`. Unfold `opU`. Rewrite using `[← map_add, hF, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opU_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIsom H H' (R : V →ₗ[ℂ] W)) (F : V → ℂ) (F' : W → ℂ)
     (hF : ∀ x, F' (R x) = F x) (x z : V) : opU H' (R x) F' (R z) = opU H x F z := by
@@ -257,13 +255,11 @@ theorem opU_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIsom H 
   rw [← map_add, hF, h1, h2]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Conclude with `(apply_mem_imgLat R _ y).2 (h.1 y hy)`. Introduce `x hx y hy hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', rfl⟩` from `Finset.mem_map.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_map.1 hy`. Establish `h1 : R (x' - y') ∈ imgLat (R : V →ₗ[ℂ] W) Λ₁`. Rewrite using `[map_sub]`. Conclude with `hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h.2.1 x' hx' y' hy' ((apply_mem_imgLat R _ _).1 h1)]`. Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `h.2.2 (R.symm y) ((mem_imgLat R _ y).1 hy)`. Use `⟨R x, Finset.mem_map.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_imgLat, map_sub, R.symm_apply_apply]`.
-
-Conclude with `hxy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReps_map (R : V ≃ₗ[ℂ] W) {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (h : IsReps Λ₁ Λ₂ S) :
     IsReps (imgLat (R : V →ₗ[ℂ] W) Λ₁) (imgLat (R : V →ₗ[ℂ] W) Λ₂) (S.map R.toEquiv.toEmbedding) := by
@@ -285,16 +281,16 @@ theorem isReps_map (R : V ≃ₗ[ℂ] W) {Λ₁ Λ₂ : AddSubgroup V} {S : Fins
     exact hxy
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_map_map_of_injective Λ₁ Λ₂ (f := (R : V →ₗ[ℂ] W).toAddMonoidHom) R.injective`.
+A detailed English derivation is pending.
 -/
 theorem relIdx_map (R : V ≃ₗ[ℂ] W) (Λ₁ Λ₂ : AddSubgroup V) :
     relIdx (imgLat (R : V →ₗ[ℂ] W) Λ₁) (imgLat (R : V →ₗ[ℂ] W) Λ₂) = relIdx Λ₁ Λ₂ :=
   AddSubgroup.relIndex_map_map_of_injective Λ₁ Λ₂ (f := (R : V →ₗ[ℂ] W).toAddMonoidHom) R.injective
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ show α' (R x) = 1 ∨ α' (R x) = -1`. Rewrite using `[hα]`. Conclude with `h.1 x hx`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ show α' (R x + R y) = α' (R x) * α' (R y) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H' (R x) (R y) : ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : altE H' (R x) (R y) = altE H x y`. Unfold `altE`. Rewrite using `[show H' (R x) (R y) = H x y from hR x y]`. Rewrite using `[← map_add, hα, hα, hα, h1]`. Conclude with `h.2 x hx y hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiChar_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIsom H H' (R : V →ₗ[ℂ] W)) (Λ : AddSubgroup V)
     (α : V → ℂ) (α' : W → ℂ) (hα : ∀ x, α' (R x) = α x) (h : IsSemiChar H Λ α) :
@@ -313,7 +309,7 @@ theorem semiChar_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIs
     exact h.2 x hx y hy
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩ z`. Take `⟨z, rfl⟩` from `R.surjective z`. Use `show α' (R x) * opU H' (R x) F' (R z) = F' (R z)`. Rewrite using `[hα, opU_map H H' R hR F F' hF, hF]`. Conclude with `h x hx z`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedBy_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIsom H H' (R : V →ₗ[ℂ] W)) (Λ : AddSubgroup V)
     (α : V → ℂ) (α' : W → ℂ) (hα : ∀ x, α' (R x) = α x) (F : V → ℂ) (F' : W → ℂ) (hF : ∀ x, F' (R x) = F x)
@@ -325,9 +321,9 @@ theorem fixedBy_map (H : Sesq V) (H' : Sesq W) (R : V ≃ₗ[ℂ] W) (hR : IsIso
   exact h x hx z
 
 /- English proof (translation)
-Take `⟨S, hSr⟩` from `(repsExist V Λ₁ Λ₂ hidx).1`. Rewrite using `[interReps V H hH Λ₁ Λ₂ α hS F hF S hSr z, interReps W H' hH' _ _ α' (semiChar_map H H' R hR Λ₂ α α' hα hS) F' (fixedBy_map H H' R hR Λ₁ α α' hα F F' hF' hF) _ (isReps_map R hSr) (R z), relIdx_map]`. Use `congr 1`. Unfold `sumU`. Rewrite using `[Finset.sum_map]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show α' (R x) * opU H' (R x) F' (R z) = _`. Rewrite using `[hα, opU_map H H' R hR F F' hF']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_map (H : Sesq V) (H' : Sesq W) (hH : IsHerm H) (hH' : IsHerm H') (R : V ≃ₗ[ℂ] W)
     (hR : IsIsom H H' (R : V →ₗ[ℂ] W)) (Λ₁ Λ₂ : AddSubgroup V) (α : V → ℂ) (α' : W → ℂ) (hα : ∀ x, α' (R x) = α x)
@@ -362,7 +358,7 @@ def rx {n n' : Type} (e : n' ≃ n) : (n → ℂ) ≃ₗ[ℂ] (n' → ℂ) where
 def e4 {n n' : Type} (e : n' ≃ n) : Fin 4 × n' ≃ Fin 4 × n := Equiv.prodCongr (Equiv.refl _) e
 
 /- English proof (translation)
-Rewrite using `[matH_apply, matH_apply, ← Equiv.sum_comp e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem matH_rx (e : n' ≃ n) (h : Matrix n n ℂ) (x y : n → ℂ) :
     matH (h.submatrix e e) (rx e x) (rx e y) = matH h x y := by
@@ -372,23 +368,23 @@ theorem matH_rx (e : n' ≃ n) (h : Matrix n n ℂ) (x y : n → ℂ) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w w'`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem block_fourfold_submatrix_reindex (e : n' ≃ n) (h : Matrix n n ℂ) : blk4 (h.submatrix e e) = (blk4 h).submatrix (e4 e) (e4 e) := by
   funext w w'
   rfl
 
 /- English proof (translation)
-Rewrite using `[stdH_apply, stdH_apply, ← Equiv.sum_comp e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdH_rx (L : PeriodPair) (e : n' ≃ n) (x y : n → ℂ) : stdH L n' (rx e x) (rx e y) = stdH L n x y := by
   rw [stdH_apply, stdH_apply, ← Equiv.sum_comp e]
   rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_imgLat, mem_stdLat, mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz j`. Conclude with `hz (e.symm j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz i`. Use `hz (e i)` as an intermediate fact. Simplify `this` using `[rx]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stdLat_rx (L : PeriodPair) (e : n' ≃ n) : stdLat L n' = imgLat (rx e : (n → ℂ) →ₗ[ℂ] (n' → ℂ)) (stdLat L n) := by
   ext z
@@ -401,7 +397,7 @@ theorem stdLat_rx (L : PeriodPair) (e : n' ≃ n) : stdLat L n' = imgLat (rx e :
     simpa [rx] using this
 
 /- English proof (translation)
-Unfold `F0 prodFn`. Rewrite using `[← Equiv.prod_comp e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaSeries_reindex_invariant (L : PeriodPair) (ω₀ : ℂ) (e : n' ≃ n) (x : n → ℂ) : F0 L ω₀ n' (rx e x) = F0 L ω₀ n x := by
   unfold F0 prodFn
@@ -409,9 +405,9 @@ theorem thetaSeries_reindex_invariant (L : PeriodPair) (ω₀ : ℂ) (e : n' ≃
   rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_imgLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz a`. Conclude with `(mem_imgLat (rx e) Λ _).1 (hz a)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz a`. Conclude with `(mem_imgLat (rx e) Λ _).2 (hz a)`.
+A detailed English derivation is pending.
 -/
 theorem fourth_power_image_reindex (e : n' ≃ n) (Λ : AddSubgroup (n → ℂ)) :
     pow4 (imgLat (rx e : (n → ℂ) →ₗ[ℂ] (n' → ℂ)) Λ) = imgLat (rx (e4 e) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n' → ℂ)) (pow4 Λ) := by
@@ -424,7 +420,7 @@ theorem fourth_power_image_reindex (e : n' ≃ n) (Λ : AddSubgroup (n → ℂ))
     exact (mem_imgLat (rx e) Λ _).2 (hz a)
 
 /- English proof (translation)
-Unfold `hOne`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hOne_rx (L : PeriodPair) (e : n' ≃ n) : (hOne L n).submatrix e e = hOne L n' := by
   unfold hOne
@@ -432,19 +428,19 @@ theorem hOne_rx (L : PeriodPair) (e : n' ≃ n) : (hOne L n).submatrix e e = hOn
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨g₁, ε, hI, hidx, hidx2, hε, hten⟩` from `hN`. Establish `hidx1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0` using `fun h0 => hidx (h0 ▸ dvd_zero p)`. Establish `hSD` using `stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hcm.1 hcm.2.1 hcm.2.2.1 n h Λ g₁ hI hsd hst hidx1 hidx2`. Establish `hR4 : IsIsom (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n')) (rx (e4 e) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n' → ℂ))` using `fun x y => stdH_rx _ (e4 e) x y`. Establish `himg : imgLat (((rx (e4 e)).symm.trans (g₁.trans (rx (e4 e))) : (Fin 4 × n' → ℂ) ≃ₗ[ℂ] (Fin 4 × n' → ℂ)) : (Fin 4 × n' → ℂ) →ₗ[ℂ] (Fin 4 × n' → ℂ)) (pow4 (imgLat (rx e : (n → ℂ) →ₗ[ℂ] (n' → ℂ)) Λ)) = imgLat (rx (e4 e) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n' → ℂ)) (imgLat (g₁ : (Fin 4 …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fourth_power_image_reindex]`. Use extensionality with `y`. Rewrite using `[mem_imgLat, mem_imgLat, mem_imgLat, mem_imgLat]`. Simplify using the standard rewrite rules. Use `⟨(rx (e4 e)).symm.trans (g₁.trans (rx (e4 e))), ε, ?_, ?_, ?_, hε, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y`. Take `⟨x, rfl⟩` from `(rx (e4 e)).surjective x`. Take `⟨y, rfl⟩` from `(rx (e4 e)).surjective y`. Rewrite using `[block_fourfold_submatrix_reindex, matH_rx]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[stdH_rx]`. Conclude with `hI x y`. Rewrite using `[himg, stdLat_rx _ (e4 e), relIdx_map]`. Conclude with `hidx`. Rewrite using `[himg, stdLat_rx _ (e4 e), relIdx_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `hidx2`. Use function extensionality and compare the values at `z`. Take `⟨z, rfl⟩` from `(rx (e4 e)).surjective z`. Establish `h1 : tens4 (fun z => θ ((rx e).symm z)) (rx (e4 e) z) = tens4 θ z`. Unfold `tens4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show θ ((rx e).symm (rx e (slice a z))) = θ (slice a z)`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[h1, hten]`. Simplify using `only [Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Unfold `kernel4`. Rewrite using `[himg, stdLat_rx _ (e4 e)]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `(inter_map _ _ (stdHBasic _ _).2.1 (stdHBasic _ _).2.1 (rx (e4 e)) hR4 _ _ _ _ (fun x => alphaQRules.1 _ _ _ _ _ hR4 _ x) hSD.betaSemi hidx1 _ _ (fun x => thetaSeries_reindex_invariant _ _ (e4 e) x) (product_theta_mem' _ _ _ hSD.per hSD.half _ hSD.betaStd).1.2 (g₁ z)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locNorm_reindex (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hcm : CmOK a₀ b₀ c₀ dK) (e : n' ≃ n) (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ))
@@ -506,12 +502,12 @@ def lamMX : AddSubgroup (X.Tau → ℂ) := B.lamM.comap (LinearEquiv.funCongrLef
 def thMMX : (X.Tau → ℂ) → ℂ := fun z => B.thMM fun τ => z (s.iT.symm τ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lamMX (z : X.Tau → ℂ) : z ∈ lamMX s B ↔ (fun τ => z (s.iT.symm τ)) ∈ B.lamM := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_imgLat]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem lamMX_eq : lamMX s B = imgLat (rx s.iT : (D.what₂.Tau → ℂ) →ₗ[ℂ] (X.Tau → ℂ)) B.lamM := by
   ext z
@@ -519,7 +515,7 @@ theorem lamMX_eq : lamMX s B = imgLat (rx s.iT : (D.what₂.Tau → ℂ) →ₗ[
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[← hOne_rx B.L s.iT]`. Conclude with `matH_rx s.iT _ x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isom_rx : IsIsom (matH (hOne B.L D.what₂.Tau)) (matH (hOne B.L X.Tau)) (rx s.iT : (D.what₂.Tau → ℂ) →ₗ[ℂ] (X.Tau → ℂ)) := by
   intro x y
@@ -527,7 +523,7 @@ theorem isom_rx : IsIsom (matH (hOne B.L D.what₂.Tau)) (matH (hOne B.L X.Tau))
   exact matH_rx s.iT _ x y
 
 /- English proof (translation)
-Rewrite using `[lamMX_eq]`. Conclude with `CmData.selfDual_img _ _ (rx s.iT) (isom_rx s B) _ (selfDual_lamM B hcc hδ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_lamMX (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (matH (hOne B.L X.Tau)) (lamMX s B) := by
@@ -535,15 +531,15 @@ theorem selfDual_lamMX (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLo
   exact CmData.selfDual_img _ _ (rx s.iT) (isom_rx s B) _ (selfDual_lamM B hcc hδ)
 
 /- English proof (translation)
-Introduce `_ hx` and use `stable_lamM B b hb _ hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stable_lamMX (b : ℤ) (hb : Odd b) : ∀ x ∈ lamMX s B, cmTheta b D.host.d • x ∈ lamMX s B :=
   fun _ hx => stable_lamM B b hb _ hx
 
 /- English proof (translation)
-Rewrite using `[lamMX_eq, thIsom _ _ _ _ (rx s.iT) (isom_rx s B)]`. Establish `h1 : (fun v => thMMX s B (rx s.iT v)) = B.thMM`. Use function extensionality and compare the values at `v`. Use `show B.thMM ((rx s.iT).symm (rx s.iT v)) = B.thMM v`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (fun v => alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B.L X.Tau)) (rx s.iT v)) = alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B.L D.what₂.Tau))`. Use function extensionality and compare the values at `v`. Conclude with `alphaQRules.1 _ _ _ _ _ (isom_rx s B) _ v`. Rewrite using `[h1, h2]`. Conclude with `(B.thMM_spec (B.stdOK hcc hδ)).1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thMMX_mem (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     thMMX s B ∈ Th (matH (hOne B.L X.Tau)) (alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B.L X.Tau))) (lamMX s B) := by
@@ -560,7 +556,7 @@ theorem thMMX_mem (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetr
   exact (B.thMM_spec (B.stdOK hcc hδ)).1
 
 /- English proof (translation)
-Establish `h` using `locNorm_reindex a₀ b₀ c₀ D.host.d ha hd lam hlam hcm s.iT (hOne B.L D.what₂.Tau) B.lamM (selfDual_lamM B hcc hδ) (stable_lamM B b₀ (odd_of_cmOK hcm)) B.thMM p ι (locNormMM_of B hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hB p ι hK)`. Rewrite `h` using `[hOne_rx, ← lamMX_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locNorm_thMMX (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀)
     (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (hcm : CmOK a₀ b₀ c₀ D.host.d) (hB : B.IsCm a₀ b₀ ha hd lam hlam)

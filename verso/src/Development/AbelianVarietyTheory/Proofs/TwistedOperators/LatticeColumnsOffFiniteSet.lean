@@ -21,23 +21,21 @@ namespace GlobalTheory.StairCols
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hσ : ∀ x : D.host.E, (D.sp.cm.sig : D.host.E →+* D.host.E) ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = x`. Introduce `x`. Conclude with `star_star x`. Establish `hG : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.gram = B.gram`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `B.herm.eq (B.frame j) (B.frame i)`. Establish `hmul : ∀ {m n q : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (N : Matrix (Fin n) (Fin q) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (M * N) = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) N * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M`. Introduce `m n q M N`. Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `hinv : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M) = M`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `m n M`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hσ]`. Establish `hperp : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) d.a * B.gram * frameMat B A d.ι = 0`. Establish `h` using `congrArg (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E)) d.perp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hmul, hmul, hinv, hG]`. Rewrite using `[Matrix.mul_assoc, h]`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`. Use `⟨fun k => (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) d.a * B.gram) p.rev k, fun i => ?_, fun q => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrFun (congrFun hperp p.rev) i`. Rewrite `h` using `[Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `h`. Establish `h` using `congrFun (congrFun d.gram p.rev) q`. Rewrite `h` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `show (if p.rev.1 + q.1 + 1 = c then (if p.rev = q then ε else (1 : D.host.E)) else 0) = _`. Distinguish the cases in `hq : q = p`. Rewrite using `[hq]`. Establish `hc : p.rev.1 + p.1 + 1 = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_rev]`. Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hc, if_neg hp, if_pos rfl]`. Establish `hne : ¬ (p.rev.1 + q.1 + 1 = c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hs`. Apply `hq` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite `hs` using `[Fin.val_rev]`. Use `p.isLt` as an intermediate fact.
-
-Use `q.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, if_neg hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c) (hp : p.rev ≠ p) :
     ∃ l : Fin B.rank → D.host.E, (∀ i, ∑ k, l k * frameMat B A d.ι k i = 0) ∧
@@ -93,9 +91,9 @@ theorem exists_coord {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrtho
       rw [if_neg hne, if_neg hq]
 
 /- English proof (translation)
-Establish `swap : ∀ {n : ℕ} (M : Matrix (Fin B.rank) (Fin n) D.host.E) (w : Fin n → D.host.E), ∑ k, l k * (M *ᵥ w) k = ∑ j, (∑ k, l k * M k j) * w j`. Introduce `n M w`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, swap, h0, h1, zero_mul, Finset.sum_const_zero, zero_add, ite_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem coord_apply {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c) (l : Fin B.rank → D.host.E)
     (h0 : ∀ i, ∑ k, l k * frameMat B A d.ι k i = 0) (h1 : ∀ q, ∑ k, l k * d.a k q = if q = p then 1 else 0)
@@ -113,14 +111,14 @@ theorem coord_apply {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthog
     Finset.sum_const_zero, zero_add, ite_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_single_apply {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (p : Fin n) (w : D.host.E) (k : Fin m) :
     (M *ᵥ Pi.single p w) k = M k p * w := by
   simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IdeleAA.tmul_eq, GlobalTheory.IdeleAA.tmul_eq, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem incA_mul_tmul (e : D.host.E) (x : AF D.host.F) (b : D.host.E) :
     incA D e * (x ⊗ₜ[D.host.F] b) = x ⊗ₜ[D.host.F] (e * b) := by
@@ -129,17 +127,17 @@ theorem incA_mul_tmul (e : D.host.E) (x : AF D.host.F) (b : D.host.E) :
   ring
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨l, h0, h1⟩` from `GlobalTheory.StairCols.exists_coord d p hp`. Establish `hφ : latMul B s (d.lat Λ 𝔟) (· = v) ≤ (idV (𝔞 * 𝔟 p) v).comap (AddMonoidHom.mk' (fun y : Fin B.rank → AE D => ∑ k, incA D (l k) * y k) (fun x y => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]))`. Apply `(AddSubgroup.closure_le _).2` to reduce the goal to its premises. Introduce and unpack `y ⟨α, hα, hsupp, e, he, x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Take `⟨z, hz, u, hu, rfl⟩` from `hx`. Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_comap, AddMonoidHom.mk'_apply]`. Establish `hsum : ∑ k, incA D (l k) * pairA D.host.F 0 α ⊗ₜ[D.host.F] (e * (frameMat B A d.ι *ᵥ z + d.a *ᵥ u) k) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (e * u p)`. Simplify using `only [GlobalTheory.StairCols.incA_mul_tmul, ← TensorProduct.tmul_sum]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← GlobalTheory.StairCols.coord_apply d p l h0 h1 z u, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, hsupp, e * u p, FractionalIdeal.mul_mem_mul (hs e he) (hu p), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht` using `hφ hmem`. Rewrite `ht` using `[AddSubgroup.mem_comap, AddMonoidHom.mk'_apply]`. Establish `hread : ∑ k, incA D (l k) * (t * incA D (d.a k p)) = t`. Establish `hl` using `h1 p`. Rewrite `hl` using `[if_pos rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_ = t := by rw [hl, map_one, mul_one]`. Rewrite `ht` using `[hread]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem col_mem_imp {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c) (hp : p.rev ≠ p)
     (Λ : Lat A) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
@@ -184,19 +182,19 @@ def lineMap {n : ℕ} (w : Fin n → AE D) : AE D →+ (Fin n → AE D) where
   map_add' x y := funext fun k => add_mul _ _ _
 
 /- English proof (translation)
-Apply `(AddSubgroup.closure_le _).2` to reduce the goal to its premises. Introduce and unpack `y ⟨α, hα, hsupp, e, he, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Establish `key : (fun k => pairA D.host.F 0 α ⊗ₜ[D.host.F] (d.a k p * e)) ∈ latMul B s (d.lat Λ 𝔟) (· = v)`. Use `FractionalIdeal.mul_induction_on (C := fun e => (fun k => pairA D.host.F 0 α ⊗ₜ[D.host.F] (d.a k p * e)) ∈ latMul B s (d.lat Λ 𝔟) (· = v)) he ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx y hy`. Take `⟨x', hx', o, rfl⟩` from `hs' x hx`. Establish `hoy : (o : D.host.E) * y ∈ 𝔟 p`. Establish `h` using `Submodule.smul_mem (𝔟 p : Submodule (𝓞 D.host.E) D.host.E) o hy`. Rewrite `h` using `[Algebra.smul_def]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmem : d.a *ᵥ Pi.single p ((o : D.host.E) * y) ∈ d.lat Λ 𝔟` using `by show ∃ z ∈ Λ, ∃ u : Fin c → D.host.E, (∀ q, u q ∈ 𝔟 q) ∧ d.a *ᵥ Pi.single p ((o : D.host.E) * y) = frameMat B A d.ι *ᵥ z + d.a *ᵥ u`. Use `⟨0, Λ.zero_mem, Pi.single p ((o : D.host.E) * y), fun q => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hoy`. Rewrite using `[Pi.single_eq_of_ne hq]`. Conclude with `(𝔟 q).zero_mem`. Rewrite using `[Matrix.mulVec_zero, zero_add]`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨α, hα, hsupp, x', hx', _, hmem, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.StairCols.mulVec_single_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hx hy`. Establish `hsum` using `add_mem hx hy`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.add_apply, mul_add, TensorProduct.tmul_add]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `show pairA D.host.F 0 α ⊗ₜ[D.host.F] e * incA D (d.a k p) = _`. Rewrite using `[mul_comm, GlobalTheory.StairCols.incA_mul_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem_of {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c)
     (Λ : Lat A) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
@@ -244,7 +242,7 @@ theorem col_mem_of {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogo
   rw [mul_comm, GlobalTheory.StairCols.incA_mul_tmul]
 
 /- English proof (translation)
-Use `⟨GlobalTheory.StairCols.col_mem_imp d p hp Λ 𝔟 𝔞 s hs v t, fun ht => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.StairCols.col_mem_of d p Λ 𝔟 𝔞 s hs' v ht`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem col_mem_iff {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c) (hp : p.rev ≠ p)
     (Λ : Lat A) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
@@ -255,15 +253,15 @@ theorem col_mem_iff {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthog
   exact GlobalTheory.StairCols.col_mem_of d p Λ 𝔟 𝔞 s hs' v ht
 
 /- English proof (translation)
-Establish `hc0 : ((c : D.host.F) : D.host.E) ≠ 0` using `GlobalTheory.IdeleAA.coe_ne_zero v c hc`. Establish `hcoe : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c : 𝓞 D.host.E) : D.host.E) = ((c : D.host.F) : D.host.E)` using `rfl`. Establish `hcI : ((c : D.host.F) : D.host.E) ∈ (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, hI, by rw [← hcoe]⟩`. Establish `hI0 : (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hcI` using `[h0, FractionalIdeal.mem_zero_iff]`. Conclude with `hc0 hcI`. Apply `le_antisymm` to reduce the goal to its premises. Apply `(AddSubgroup.closure_le _).2` to reduce the goal to its premises. Introduce and unpack `y ⟨α, hα, hsupp, b, hb, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcb : ((c : D.host.F) : D.host.E) * b ∈ 𝔞`. Establish `hm` using `FractionalIdeal.mul_mem_mul hcI hb`. Rewrite `hm` using `[← mul_assoc, mul_inv_cancel₀ hI0, one_mul]`. Then use the resulting hypothesis. Establish `heq : pairA D.host.F 0 α ⊗ₜ[D.host.F] b = pairA D.host.F 0 (GlobalTheory.IdeleAA.gam v c * α) ⊗ₜ[D.host.F] (((c : D.host.F) : D.host.E) * b)`. Rewrite using `[← GlobalTheory.IdeleAA.pair_scale v c α hsupp, inv_mul_cancel_left₀ hc0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `AddSubgroup.subset_closure ⟨_, GlobalTheory.IdeleAA.gam_mul_int v c hc hα, GlobalTheory.IdeleAA.gam_mul_supp v c α, _, hcb, rfl⟩`. Apply `idV_mono` to reduce the goal to its premises. Introduce `a ha`. Establish `h1 : (1 : D.host.E) ∈ ((I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[FractionalIdeal.mem_inv_iff hI0]`. Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`. Simplify using `using FractionalIdeal.mul_mem_mul h1 ha`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem idV_inv_mul (I : Ideal (𝓞 D.host.E)) (v : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c ∉ v.asIdeal)
     (hI : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ I) (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) :
@@ -301,19 +299,17 @@ theorem idV_inv_mul (I : Ideal (𝓞 D.host.E)) (v : GlobalTheory.FinPl.Pl D) (c
     simpa using FractionalIdeal.mul_mem_mul h1 ha
 
 /- English proof (translation)
-Establish `hsep : ∀ u ∈ P.S0, ∃ c : 𝓞 D.host.F, c ∈ u.asIdeal ∧ c ∉ v.asIdeal`. Introduce `u hu`. Establish `hne : u ≠ v` using `fun h => hv (h ▸ hu)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Establish `hle : u.asIdeal ≤ v.asIdeal` using `fun c hc => hcon c hc`. Conclude with `HeightOneSpectrum.ext (u.isMaximal.eq_of_le v.isPrime.ne_top hle)`. Use `choose! f hfu hfv using hsep`. Use `⟨∏ u ∈ P.S0, f u ^ P.depth sc u, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hmem`. Take `⟨u, hu, hpow⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := v.isPrime)).1 hmem`. Conclude with `hfv u hu (v.isPrime.mem_of_pow_mem _ hpow)`. Establish `hmod : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (∏ u ∈ P.S0, f u ^ P.depth sc u) ∈ P.modul sc`. Rewrite using `[map_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show _ ∈ ∏ u ∈ P.S0, (P.w u).asIdeal ^ P.depth sc u`. Apply `Ideal.prod_mem_prod` to reduce the goal to its premises. Introduce `u hu`. Rewrite using `[map_pow]`. Apply `Ideal.pow_mem_pow` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hover` using `P.w_over u hu`. Establish `h1 : f u ∈ ((P.w u).under (𝓞 D.host.F)).asIdeal`. Rewrite using `[hover]`. Conclude with `hfu u hu`. Conclude with `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsm` using `Ideal.smul_mem_pointwise_smul D.host.conj _ _ hmod`. Establish `hcoe : ∀ x : 𝓞 D.host.F, ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = ((x : D.host.F) : D.host.E)` using `fun _ => rfl`. Establish `hfix : ∀ x : 𝓞 D.host.F, D.host.conj • algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x`. Introduce `x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
-
-Use `show D.host.conj ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[hcoe x]`. Conclude with `GlobalTheory.IdeleAA.conj_F x`. Rewrite `hsm` using `[hfix]`. Conclude with `hsm`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_modulBar {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D} (hv : v ∉ P.S0) :
     ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ P.modulBar sc := by
@@ -361,11 +357,11 @@ theorem exists_mem_modulBar {T : Type} {L : LevCh D T} (P : Places L) (sc : Cons
     exact hsm
 
 /- English proof (translation)
-Take `⟨hc, he, -⟩` from `h`. Establish `hi` using `i.isLt`. Use `⟨Fin.castLE (by omega) i, rfl, ?_, fun t => ?_⟩` and prove the remaining obligations. Introduce `hrev`. Establish `hv` using `congrArg Fin.val hrev`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hv` using `[Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `k show t * incA D (d.e k i) = _`. Rewrite using `[he]`. Use `show t * incA D ((-D.host.xi0) ^ (i.1 + 1) * a.a k _) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem wittDecompositionColumns_auxiliaryVectors {A B B₀ : HSp D} {c ρ : ℕ} {a : HermitianOrthogonalExtensionData A B c (-1)} {d : HypDec B B₀ ρ} (h : IsAuxiliaryVectorWittDec a d) (i : Fin ρ) :
     ∃ p : Fin c, p.1 = i.1 ∧ p.rev ≠ p ∧
@@ -384,17 +380,17 @@ theorem wittDecompositionColumns_auxiliaryVectors {A B B₀ : HSp D} {c ρ : ℕ
     rw [map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h v hv`. Introduce `i a _ha`. Take `⟨p, hpi, hp, hpB⟩` from `GlobalTheory.StairCols.wittDecompositionColumns_auxiliaryVectors (hF.hB ρ h) i`. Take `⟨q, hqi, hq, hqJ⟩` from `GlobalTheory.StairCols.wittDecompositionColumns_auxiliaryVectors (hF.hJ ρ h) i`. Establish `hLB : G.Λ (.grid (2 * ρ + 2) 0) = (G.colDec (2 * ρ + 2) (by omega) h).lat (G.Λ (.core (2 * ρ + 2))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1))` using `G.sp.colLat _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLJ : G.Λ (.grid (2 * ρ + 1) 0) = (G.colDec (2 * ρ + 1) (by omega) (by omega)).lat (G.Λ (.core (2 * ρ + 1))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1))` using `G.sp.colLat _ _ _`. Establish `hs1 : ∀ x ∈ ({1} : Set D.host.E), x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.one_mem_one _`. Establish `hs1' : ∀ x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E), ∃ y ∈ ({1} : Set D.host.E), ∃ o : 𝓞 D.host.E, x = y * (o : D.host.E)`. Introduce `x hx`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Conclude with `⟨1, Set.mem_singleton 1, o, by rw [one_mul]; exact ho.symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsA' : ∀ x ∈ D.host.AA, ∃ y ∈ {x | x ∈ D.host.AA}, ∃ o : 𝓞 D.host.E, x = y * (o : D.host.E)` using `fun x hx => ⟨x, hx, 1, by simp⟩`. Use `show colMul (F.dB ρ h).jX i a ∈ latMul _ {1} _ (· = v) ↔ colMul (F.dJ ρ h).jX i a ∈ latMul _ {x | x ∈ D.host.AA} _ (· = v)`. Rewrite using `[hpB, hqJ, hLB, hLJ, GlobalTheory.StairCols.col_mem_iff _ p hp _ _ 1 {1} hs1 hs1' v, GlobalTheory.StairCols.col_mem_iff _ q hq _ _ D.host.AA {x | x ∈ D.host.AA} (fun x hx => hx) hsA' v]`. Take `⟨c, hc, hcm⟩` from `GlobalTheory.StairCols.exists_mem_modulBar G.pl sc hv`. Establish `hst : (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) p = ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹ * (D.host.AA * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) q)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Establish `hn : 2 * ρ + 2 - 1 - p.1 = (2 * ρ + 1 - 1 - q.1) + 1` using `by omega`. Establish `hpq : p.1 = q.1` using `hpi.trans hqi.symm`. Use `show 1 * ((G.pl.stA sc) ^ (2 * ρ + 2 - 1 - p.1) * ((G.pl.stAbar sc) ^ (p.1 + 1))⁻¹) = _ * (_ * ((G.pl.stA sc) ^ (2 * ρ + 1 - 1 - q.1) * ((G.pl.stAbar sc) ^ (q.1 + 1))⁻¹))`. Rewrite using `[hn, hpq, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show G.pl.stA sc = D.host.AA * ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹ from rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hst, GlobalTheory.StairCols.idV_inv_mul _ v c hc hcm]`.
+A detailed English derivation is pending.
 -/
 theorem colsAt_xZero : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, ColsAt (F.dB ρ h) (xZero (F.dJ ρ h)) (G.Λ (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) v := by
   intro D hD T L μ0 hL sc G W M hM F hF ρ h v hv

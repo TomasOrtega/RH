@@ -14,7 +14,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.AbsRange
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => exact le_trans ih (le_max_right _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem one_le_foldr_max (L : List ℝ) : 1 ≤ L.foldr max 1 := by
   induction L with
@@ -22,9 +22,9 @@ theorem one_le_foldr_max (L : List ℝ) : 1 ≤ L.foldr max 1 := by
   | cons a L ih => exact le_trans ih (le_max_right _ _)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp at hx`. Consider the case `cons a L ih`. Break down `List.mem_cons.1 hx with h | h` into its components or cases. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `le_max_left _ _`. Conclude with `le_trans (ih h) (le_max_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem le_foldr_max (L : List ℝ) (x : ℝ) (hx : x ∈ L) : x ≤ L.foldr max 1 := by
   induction L with
@@ -35,19 +35,19 @@ theorem le_foldr_max (L : List ℝ) (x : ℝ) (hx : x ∈ L) : x ≤ L.foldr max
     · exact le_trans (ih h) (le_max_right _ _)
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hg0 : 0 < g` using `by linarith`. Establish `hθ'0 : 0 < θ'` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hθ'`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : r * (k + 1) + r * (r - 1) = r * k + r ^ 2`. Consider the cases of `r with`. Consider the case `zero => simp`. Consider the case `succ n => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (2 * v) ^ (-((r : ℝ) * k)) = ((2 * v) ^ (r * k))⁻¹`. Rewrite using `[Real.rpow_neg (by positivity), ← Real.rpow_natCast]; push_cast; rfl`. Establish `e3 : 2 * ka / g / (2 * Real.pi) = (v * g)⁻¹`. Rewrite using `[hka]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e4 : (2 * v) ^ (-((r : ℝ) * k)) * θ * 2 ^ (r * (k + 1) + r * (r - 1)) / (θ' * (2 * ka / g / (2 * Real.pi)) ^ N) = (θ * θ'⁻¹ * (2 ^ (r ^ 2) * (v * g) ^ N)) * v⁻¹ ^ (r * k)`. Rewrite using `[e1, e2, e3, pow_add, mul_pow 2 v, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e4]`. Establish `h1 : θ'⁻¹ ≤ b ^ X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `inv_anti₀ (Real.rpow_pos_of_pos hb0 _) hθ'` as an intermediate fact. Rewrite `this` using `[Real.rpow_neg hb0.le, inv_inv]`. Then use the resulting hypothesis. Establish `h2 : (v * g) ^ N ≤ (b * b ^ (2 * Cg)) ^ (r ^ 2)`. Use `le_trans (pow_le_pow_right₀ (one_le_mul_of_one_le_of_one_le hv hg) hN) ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (by positivity) (mul_le_mul (by linarith) hgb hg0.le hb0.le) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (2 : ℝ) ^ (r ^ 2) ≤ b ^ (r ^ 2)` using `pow_le_pow_left₀ (by norm_num) hb _`. Establish `h4 : v⁻¹ ^ (r * k) ≤ v⁻¹ ^ e` using `pow_le_pow_of_le_one (by positivity) (inv_le_one_of_one_le₀ hv) he`. Establish `e5 : b ^ (2 * X + (2 + 2 * Cg) * (r : ℝ) ^ 2) = b ^ X * b ^ X * (b ^ (r ^ 2) * (b * b ^ (2 * Cg)) ^ (r ^ 2))`. Rewrite using `[← mul_pow, ← mul_assoc, ← Real.rpow_add hb0, Real.rpow_add hb0 (2 * X), Real.rpow_mul hb0.le (2 + 2 * Cg), Real.rpow_add hb0 2, Real.rpow_two, two_mul X, sq b, ← Real.rpow_natCast _ (r ^ 2)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e5]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_le (r k N e : ℕ) (b v g θ θ' ka X Cg : ℝ) (hb : 2 ≤ b) (hv : 1 ≤ v) (hvb : 2 * v ≤ b) (hg : 1 ≤ g)
     (hgb : g ≤ b ^ (2 * Cg)) (hka : ka = Real.pi / v) (hθ0 : 0 < θ) (hθ : θ ≤ b ^ X) (hθ' : b ^ (-X) ≤ θ')
@@ -89,25 +89,23 @@ theorem ratio_le (r k N e : ℕ) (b v g θ θ' ka X Cg : ℝ) (hb : 2 ≤ b) (hv
   gcongr
 
 /- English proof (translation)
-Establish `hb1 : 1 ≤ b` using `le_trans (Real.one_le_exp (by norm_num)) hb`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (4 * r : ℝ) ≤ b ^ m`. Establish `a1 : Real.exp m ≤ b ^ m`. Rewrite using `[← Real.exp_one_rpow]`. Conclude with `Real.rpow_le_rpow (Real.exp_pos 1).le hb hm0`. Establish `a2 : (r : ℝ) + 1 + 1 ≤ Real.exp (r + 1)` using `Real.add_one_le_exp _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : Real.exp m = Real.exp (r + 1) * Real.exp (r + 1)` using `by rw [← Real.exp_add, hm]; ring_nf`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (4 * r : ℝ) ^ (44 * r ^ 3) ≤ b ^ (44 * (m * (r : ℝ) ^ 3))`. Use `le_trans (pow_le_pow_left₀ (by positivity) h1 _) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb0.le]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Establish `h3 : (b ^ (M * m)) ^ (24 * r ^ 3) = b ^ (24 * M * (m * (r : ℝ) ^ 3))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb0.le]`. Use `push_cast`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Establish `h4 : De ^ (14 * r ^ 2) ≤ De ^ (C * (r : ℝ) ^ 3)`. Rewrite using `[← Real.rpow_natCast]`. Use `Real.rpow_le_rpow_of_exponent_le hDe ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `: (r : ℝ) ^ 2 ≤ (r : ℝ) ^ 3` using `pow_le_pow_right₀ hr' (by norm_num)`. Conclude with `mul_le_mul hC1 this (by positivity) (by linarith)`. Establish `h5 : (8 * Real.pi * Real.exp 1 / k) ^ (r * (k - 2 - r)) ≤ (C / k) ^ (r * (k - 2 - r))` using `by gcongr`. Establish `h6 : b ^ (A * (m * (r : ℝ) ^ 3)) * b ^ (44 * (m * (r : ℝ) ^ 3)) * b ^ (24 * M * (m * (r : ℝ) ^ 3)) ≤ (b ^ (C * m)) ^ (C * (r : ℝ) ^ 3)`. Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_mul hb0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Establish `t : 0 ≤ m * (r : ℝ) ^ 3` using `by positivity`. Establish `c : A + 44 + 24 * M ≤ C * C` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right c t` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hC0 : 0 ≤ C` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Unfold `absBd`. Rewrite using `[h3]`. Use `mul_le_mul hQ ?_ (by positivity) (by positivity)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Use `_ = (b ^ (A * (m * (r : ℝ) ^ 3)) * b ^ (44 * (m * (r : ℝ) ^ 3)) * b ^ (24 * M * (m * (r : ℝ) ^ 3))) * De ^ (C * (r : ℝ) ^ 3) * (C / (k * v)) ^ (r * (k - 2 - r)) * (Dd ^ (k - 2 - r))⁻¹ := by`. Rewrite using `[show C / (k * v) = C / k * v⁻¹ by rw [← div_div, div_eq_mul_inv], mul_pow]; ring`. Use `_ ≤ _ := by`. Rewrite using `[Real.mul_rpow (by positivity) (by linarith)]`.
-
-Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem absBd_le (r k : ℕ) (b v Q A De Dd C M m : ℝ) (hr : 1 ≤ r) (hm : m = 2 * r + 2) (hb : Real.exp 1 ≤ b)
     (hv : 0 < v) (hM : 0 ≤ M) (hDe : 1 ≤ De) (hD : 0 ≤ Dd)
@@ -164,31 +162,31 @@ theorem absBd_le (r k : ℕ) (b v Q A De Dd C M m : ℝ) (hr : 1 ≤ r) (hm : m 
         gcongr
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 C1 CMo`. Use `⟨8 * |C1| + 2 * |Cg| + 46 + 24 * max CMo 0 + 8 * Real.pi * Real.exp 1, fun C hC => ⟨4, ?_⟩⟩` and prove the remaining obligations. Introduce `Cn D large₂ C' Cl hBig hMom hZ τ w w' hTT θ hθ W hW lam' hlam S hS γ p hp θ' hθ' νR hνR hDr`. Take `⟨hrd, -, hm4⟩` from `hBig`. Establish `hm4' : 4 ≤ D.R.m` using `by exact_mod_cast hm4`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, hb, hm, -, -, -, hk, hv, -, hka, hvb, hg, hgb, -⟩` from `GlobalTheory.T.amplitudeSizeConsequences_of_wordIndependentHyps D large₂ C' Cl Cg cb Cu cT CT C0 hrd hZ`. Establish `hb2 : 2 ≤ large₂.sc.b` using `by linarith`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hv0 : 0 < D.host.v` using `by linarith`. Establish `hg0 : 0 < gg D` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ0 : 0 < θ` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hθ.1`. Establish `hθ'0 : 0 < θ'` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hθ'.1`. Establish `hpi` using `Real.pi_pos`. Establish `hka0 : 0 < D.host.ka` using `by rw [hka]; positivity`. Establish `hr : 1 ≤ D.R.rS` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : 2 * D.R.rS + 6 ≤ D.R.k`. Establish `: D.R.m * 2 ≤ D.R.m ^ 4`. Rewrite using `[show D.R.m ^ 4 = D.R.m * D.R.m ^ 3 by ring]`. Conclude with `Nat.mul_le_mul_left _ (le_trans (by norm_num) (Nat.pow_le_pow_left hm4' 3))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨hM1, hM2⟩` from `GlobalTheory.T.majorantMomentBound_both_sides D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm4' hMom hZ τ w w' hTT θ hθ W hW lam' hlam S hS`. Take `⟨-, -, hμN, hS1, hS2⟩` from `GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W lam' S hθ0 hv0 hTT hW hS`. Rewrite `hS1`, `hS2` using `[hμN]`. Establish `hDr' : Dr D.R.k D.R.rS W.z W.z' γ = ‖DminN W.z W.z' γ D.R.rS‖`. Unfold `Dr DminN; rw [dif_pos (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hTF : TwoFl D.R.k D.R.rS W.z W.z' γ` using `⟨hS1.1, hS2.1, hS1.2.1, hS2.2.1, hp.1, hp.2.2, by rw [hDr']; exact norm_ne_zero_iff.2 hDr⟩`. Take `⟨hends, -, -, -, hD0, -⟩` from `GlobalTheory.T.cellPoint_blockEnds_leadingMinors D W.z W.z' γ p hS1.1 hS2.1 hS1.2.1 hS2.2.1 hp`. Use `set De : ℝ := ((ptBlockEnds p).map fun l => max 1 ‖DminN W.z W.z' γ l‖⁻¹).foldr max 1 with hDe`. Establish `hDe1 : 1 ≤ De` using `one_le_foldr_max _`. Establish `hOK : DeOK D.R.k D.R.rS W.z W.z' γ De`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hDe1, fun l _ hl => ?_⟩` and prove the remaining obligations. Establish `e : Dmin D.R.k D.R.rS W.z W.z' γ l = DminN W.z W.z' γ l.val`. Unfold `DminN`. Rewrite using `[dif_pos l.2]`. Rewrite `hl`, the goal using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos l.val with h0 | h0` into its components or cases. Rewrite using `[h0, hD0]`. Simplify using `using hDe1`. Conclude with `le_trans (le_max_right 1 _) (le_foldr_max _ _ (List.mem_map.2 ⟨l.val, (hends l.val h0).1 hl, rfl⟩))`. Take `⟨p', μR, hroot, hquot⟩` from `hνR`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hN, hnorm⟩` from `GlobalTheory.T.rootMeasure_eq_normalFormRootMeasure D W.z W.z' p' γ μR θ' hTF hroot hθ'0.le (by positivity)`. Establish `hM0 : 0 ≤ max CMo 0` using `le_max_right _ _`. Establish `hH : 1 ≤ large₂.sc.b ^ (max CMo 0 * D.R.m)` using `Real.one_le_rpow (by linarith) (by positivity)`. Take `⟨hint, hbd⟩` from `GlobalTheory.T.amplitude_absolutelyConvergent_operatorNorm_le D.R.k D.R.rS W.z W.z' W.π W.π' _ _ W.μG W.μW W.μW' W.νS W.νS' _ νR S.Φ S.Φ' γ S.cN _ _ _ De hr hk' (by positivity) (by positivity) hH hS1 hS2 hM1 hM2 hTF hOK hnorm hquot`. Use `⟨hint, le_trans hbd ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hDr']`. Establish `hmr : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by exact_mod_cast hm`. Establish `hr' : (1 : ℝ) ≤ D.R.rS` using `by exact_mod_cast hr`. Establish `a1` using `abs_nonneg C1`. Establish `a2` using `abs_nonneg Cg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a3 : 0 ≤ 8 * Real.pi * Real.exp 1` using `by positivity`. Use `absBd_le D.R.rS D.R.k large₂.sc.b D.host.v _ (8 * |C1| + 2 * |Cg| + 2) De _ C (max CMo 0) D.R.m hr hmr hb.le hv0 hM0 hDe1 (norm_nonneg _) ?_ (by linarith) (by linarith) (by linarith)` and prove the remaining obligations. Use `le_trans (ratio_le D.R.rS D.R.k _ (D.R.rS * (D.R.k - 2 - D.R.rS)) large₂.sc.b D.host.v (gg D) θ θ' D.host.ka _ Cg hb2 hv hvb hg hgb hka hθ0 hθ.2 hθ'.1 hN (Nat.mul_le_mul_left _ (by omega))) ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le (by linarith) ?_) (by positivity)` and prove the remaining obligations. Establish `r3 : (D.R.rS : ℝ) ≤ (D.R.rS : ℝ) ^ 3` using `le_self_pow₀ hr' (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r23 : (D.R.rS : ℝ) ^ 2 ≤ (D.R.rS : ℝ) ^ 3` using `pow_le_pow_right₀ hr' (by norm_num)`. Establish `m0 : (1 : ℝ) ≤ D.R.m` using `by linarith`. Establish `b1 : (D.R.m : ℝ) ^ 2 ≤ 4 * (D.R.m * (D.R.rS : ℝ) ^ 3)`. Establish `: (D.R.m : ℝ) ≤ 4 * (D.R.rS : ℝ) ^ 3` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : (D.R.rS : ℝ) ^ 2 ≤ D.R.m * (D.R.rS : ℝ) ^ 3` using `by nlinarith`. Establish `c1 : C1 * (D.R.m : ℝ) ^ 2 ≤ |C1| * (4 * (D.R.m * (D.R.rS : ℝ) ^ 3))` using `mul_le_mul (le_abs_self _) b1 (by positivity) a1`. Establish `c2 : Cg * (D.R.rS : ℝ) ^ 2 ≤ |Cg| * (D.R.m * (D.R.rS : ℝ) ^ 3)` using `mul_le_mul (le_abs_self _) b2 (by positivity) a2`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem abs_range : ∀ Cg cb Cu cT CT C0 C1 CMo : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, ∃ m₀ : ℝ, ∀ Cn : ℝ,
     ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), Big D large₂ Cl m₀ → MomIn D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 25 CMo →

@@ -19,9 +19,9 @@ open GlobalTheory.FinChart
 open Matrix in
 
 /- English proof (translation)
-Unfold `mean`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : cutoff (q ξ) = 0`. Simplify using `only [h0, mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `show f ξ * _ = g ξ * _`. Rewrite using `[h ξ (cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' h0))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_congr_cutoff {d : ℕ} (q f g : (Fin d → ℂ) → ℝ) (h : ∀ ξ, q ξ < 1 → f ξ = g ξ) :
     mean q f = mean q g := by
@@ -36,35 +36,31 @@ theorem mean_congr_cutoff {d : ℕ} (q f g : (Fin d → ℂ) → ℝ) (h : ∀ �
 open Matrix in
 
 /- English proof (translation)
-Introduce `k _ Y p σ d _ _ R a E ψ ha hE hψ`. Establish `key : ∀ y, ∃ W : Set (CxPts p σ), IsOpen W ∧ y ∈ W ∧ ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ y' ∈ W, CxPts.CInfAt (fun z => rho a E ψ z t) y'`. Introduce `y`. Take `⟨c, hy, hloc⟩` from `hψ y`. Set `N : Set ((Fin d → ℂ) × (Fin d → ℂ))` to `{q | q.1 ∈ c.finChart.target ∧ E c (c.finChart.symm q.1) q.2 ∈ c.e.source}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G : (Fin d → ℂ) × (Fin d → ℂ) → Fin d → ℂ` to `fun q => c.finChart (E c (c.finChart.symm q.1) q.2)`. Set `q : (Fin d → ℂ) → (Fin d → ℂ) → ℝ` to `fun z ξ => a c (c.finChart.symm z) ξ`. Set `L : (Fin d → ℂ) × (Fin d → ℂ) →L[ℝ] V d × V d` to `(toV d).toContinuousLinearMap.prodMap (toV d).toContinuousLinearMap`. Establish `hU : IsOpen c.finChart.target` using `c.finChart.open_target`. Establish `hz₀ : c.finChart y ∈ c.finChart.target` using `c.finChart.map_source hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFy : c.finChart.symm (c.finChart y) = y` using `c.finChart.left_inv hy`. Establish `hN : IsOpen N`. Establish `hc : ContinuousOn (fun q : (Fin d → ℂ) × (Fin d → ℂ) => E c (c.finChart.symm q.1) q.2) (c.finChart.target ×ˢ univ)` using `(hE.cont c).comp L.continuous.continuousOn fun q hq => ⟨hq.1, mem_univ _⟩`. Use `hc.isOpen_inter_preimage (hU.prod isOpen_univ) c.e.open_source` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Set.ext fun q => ⟨fun h => ⟨⟨h.1, trivial⟩, h.2⟩, fun h => ⟨h.1.1, h.2⟩⟩`. Establish `h0N : (c.finChart y, (0 : Fin d → ℂ)) ∈ N` using `⟨hz₀, by show E c (c.finChart.symm (c.finChart y)) 0 ∈ c.e.source`. Rewrite using `[hFy, hE.zero c y hy]`. Conclude with `hy⟩`. Establish `hGs : ContDiffOn ℝ ∞ G N` using `(toV d).symm.contDiff.comp_contDiffOn ((hE.smooth c c).comp L.contDiff.contDiffOn fun q hq => ⟨hq.1, hq.2⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : G (c.finChart y, 0) = c.finChart y` using `by show c.finChart (E c (c.finChart.symm (c.finChart y)) 0) = c.finChart y`. Rewrite using `[hFy, hE.zero c y hy]`. Establish `hder : HasFDerivAt (fun ξ => G (c.finChart y, ξ)) (ContinuousLinearMap.id ℝ (Fin d → ℂ)) 0`. Establish `hd : DifferentiableAt ℝ (fun ξ => G (c.finChart y, ξ)) 0` using `((hGs.contDiffAt (hN.mem_nhds h0N)).differentiableAt (by simp)).comp (0 : Fin d → ℂ) (differentiableAt_const _ |>.prodMk differentiableAt_id)`. Use `hd.hasFDerivAt using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(ContinuousLinearMap.ext fun ξ => ?_).symm` and prove the remaining obligations. Establish `h1` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) ((hasDerivAt_id (0 : ℝ)).smul_const ξ) (by simp)`. Establish `h2` using `(toV d).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `hj` using `hE.jets c y hy (toV d ξ) 1`. Rewrite `hj` using `[iteratedDeriv_one, jet_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun t : ℝ => c.e (E c y (t • (toV d ξ).ofLp))) = (toV d) ∘ (fun ξ => G (c.finChart y, ξ)) ∘ (fun t : ℝ => id t • ξ)`. Use function extensionality and compare the values at `t`. Use `show _ = toV d (c.finChart (E c (c.finChart.symm (c.finChart y)) (t • ξ)))`. Rewrite using `[hFy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `hj` using `[e, h2.deriv]`. Simplify using `using (toV d).injective hj`. Take `⟨hM, -, hform⟩` from `MatSmooth.matIn_smooth_unit_form k Y p σ d R a ha c`. Establish `hq : ContDiffOn ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => q p.1 p.2) (c.finChart.target ×ˢ univ)`. Establish `hexpr : ContDiffOn ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => ((p.2 ᵥ* matIn a c (toV d p.1)) ⬝ᵥ star p.2).re) (c.finChart.target ×ˢ univ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.vecMul, dotProduct, Pi.star_apply]`. Use `Complex.reCLM.contDiff.comp_contDiffOn (ContDiffOn.sum fun i _ => (ContDiffOn.sum fun j _ => ?_).mul ?_)` and prove the remaining obligations. Conclude with `((contDiff_apply ℝ ℂ j).comp contDiff_snd).contDiffOn.mul ((hM j i).comp ((toV d).contDiff.comp contDiff_fst).contDiffOn fun p hp => hp.1)`. Conclude with `(Complex.conjCLE.contDiff.comp ((contDiff_apply ℝ ℂ i).comp contDiff_snd)).contDiffOn`. Use `hexpr.congr fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hform (toV d p.1) hp.1 (toV d p.2)` as an intermediate fact. Rewrite using `[← Complex.ofReal_re (q p.1 p.2)]`. Conclude with `congrArg Complex.re this`. Establish `hhom : ∀ z ∈ c.finChart.target, ∀ (t : ℝ) ξ, q z (t • ξ) = t ^ 2 * q z ξ` using `fun z hz => (continuous_and_smul ha (c.finChart.map_target hz)).2`. Establish `hpos : ∀ z ∈ c.finChart.target, ∀ ξ, ξ ≠ 0 → 0 < q z ξ` using `fun z hz ξ hξ => ha.2 c _ (c.finChart.map_target hz) ξ hξ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨δ, hδ, U', hU'o, hzU', hU'U, hmem, hsm⟩` from `GlobalTheory.T.exponential_chart_smooth_form d c.finChart.target N G q (c.finChart y) hU hz₀ hN h0N hGs hG0 hder hq hhom hpos`. Use `⟨c.e.source ∩ c.finChart ⁻¹' U', c.finChart.isOpen_inter_preimage hU'o, ⟨hy, hzU'⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with t ht y' hy'`. Use `cInfAt_of_chart (c.finChart.isOpen_inter_preimage hU'o) c ?_ hy'.1 hy'` and prove the remaining obligations. Use `(c.contDiffOn_finChart_iff ∞ _ _).1 (((hsm _ hloc t ht.1 ht.2).mono ?_).congr ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `z hz`. Use `hz.2.2` as an intermediate fact. Rewrite `this` using `[mem_preimage, c.finChart.right_inv hz.1]`. Then use the resulting hypothesis. Introduce `z hz`. Establish `hzU : z ∈ U'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hz.2.2` as an intermediate fact. Rewrite `this` using `[mem_preimage, c.finChart.right_inv hz.1]`. Then use the resulting hypothesis. Use `show rho a E ψ (c.finChart.symm z) t = _`. Rewrite using `[rho_eq ha hE ψ hz.2.1 t, rhoIn]`. Use `mean_congr_cutoff _ _ _ fun ξ hξ => ?_` and prove the remaining obligations.
-
-Establish `hm` using `(hmem z hzU t ht.1 ht.2 ξ hξ).2`. Use `show _ = ψ (c.finChart.symm (c.finChart (E c (c.finChart.symm z) (t • ξ))))`. Rewrite using `[c.finChart.left_inv hm]`. Use `choose W hWo hyW hev using key`. Take `⟨s, -, hs⟩` from `(isCompact_univ (X := CxPts p σ)).elim_nhds_subcover W fun y _ => (hWo y).mem_nhds (hyW y)`.
-
-Establish `hall : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ y ∈ s, ∀ y' ∈ W y, CxPts.CInfAt (fun z => rho a E ψ z t) y'` using `(eventually_all_finset s).2 fun y _ => hev y`. Take `⟨δ, hδ, hδs⟩` from `(nhdsGT_basis_of_exists_gt ⟨1, one_pos⟩).eventually_iff.1 hall`. Use `⟨δ, hδ, fun t ht0 htδ y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hyi⟩` from `mem_iUnion₂.1 (hs (mem_univ y))`. Conclude with `hδs ⟨ht0, htδ⟩ i hi y hyi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rho_cInfAt : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] [CompactSpace (CxPts p σ)] (R : AnRead p σ d) (a : ChartForm p σ d) (E : ChartMap p σ d) (ψ : CxPts p σ → ℝ), IsKaehlerForm R a → IsExph a E → (∀ y, ∃ c : AlgChart p σ d, y ∈ c.e.source ∧ MeasureTheory.LocallyIntegrableOn (ψ ∘ c.finChart.symm) c.finChart.target MeasureTheory.volume) → ∃ δ : ℝ, 0 < δ ∧ ∀ t : ℝ, 0 < t → t < δ → ∀ y, CxPts.CInfAt (fun z => rho a E ψ z t) y := by
   intro k _ Y p σ d _ _ R a E ψ ha hE hψ

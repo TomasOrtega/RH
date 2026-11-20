@@ -25,13 +25,13 @@ noncomputable section
 namespace GlobalTheory.LevelUp
 
 /- English proof (translation)
-Set `π : CommRingCat.of (DualNumber k) ⟶ CommRingCat.of k` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom`. Establish `hπ : Function.Surjective π` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hn : IsNilpotent (RingHom.ker π.hom)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha c hc`. Establish `ha' : a.fst = 0` using `ha`. Establish `hc' : c.fst = 0` using `hc`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hc']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `IsClosedImmersion.spec_of_surjective π hπ` as an intermediate fact. Use `FormallyUnramified.hom_ext (Spec.map π) (isNilpotent_ker_specMap π hn) f ?_ (h.trans (by simp only [Geo.Tor.constPt, Category.assoc]))` and prove the remaining obligations. Establish `e : Spec.map π ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Geo.Tor.constPt, ← Category.assoc, e, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_constPt_of_formallyUnramified {k : Type} [Field k] {X Y : Scheme.{0}} (f : X ⟶ Y) [FormallyUnramified f]
     (x : Sp (DualNumber k) ⟶ X) (h : x ≫ f = Geo.Tor.constPt (x ≫ f)) : x = Geo.Tor.constPt x := by
@@ -56,9 +56,9 @@ theorem eq_constPt_of_formallyUnramified {k : Type} [Field k] {X Y : Scheme.{0}}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l l₂ : Level H}
 
 /- English proof (translation)
-Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Break down `hx with rfl | rfl` into its components or cases. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_algebraMap (x := (H.d : ℚ))).neg`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.of_pow l.A_pos ?_` and prove the remaining obligations. Rewrite using `[show zeta l.A ^ l.A = 1 from (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_KA (l : Level H) : FiniteDimensional ℚ (KA l) := by
   refine IntermediateField.finiteDimensional_adjoin fun x hx => ?_
@@ -71,7 +71,7 @@ theorem finiteDimensional_KA (l : Level H) : FiniteDimensional ℚ (KA l) := by
     exact isIntegral_one
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @FormallyUnramified)]`. Use `finiteDimensional_KA l₂` as an intermediate fact. Establish `: Algebra.FormallyUnramified ℚ (KA l₂)` using `Algebra.FormallyUnramified.of_isSeparable ℚ (KA l₂)`. Set `_ : Algebra (KA l) (KA l₂)` to `j.toAlgebra`. Conclude with `Algebra.FormallyUnramified.of_restrictScalars ℚ (KA l) (KA l₂)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_spMap (j : KA l →+* KA l₂) : FormallyUnramified (spMap j) := by
   rw [HasRingHomProperty.Spec_iff (P := @FormallyUnramified)]
@@ -81,7 +81,7 @@ theorem formallyUnramified_spMap (j : KA l →+* KA l₂) : FormallyUnramified (
   exact Algebra.FormallyUnramified.of_restrictScalars ℚ (KA l) (KA l₂)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨o, ⟨ObjComp.objMapId o⟩⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_obj_of_eq {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s s' : S ⟶ Sp B} (e : s = s')
     (o : Obj D l b s) : ∃ o' : Obj D l b s', Nonempty (ObjMap o' o (𝟙 S)) := by
@@ -89,7 +89,7 @@ theorem exists_obj_of_eq {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}}
   exact ⟨o, ⟨ObjComp.objMapId o⟩⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨m⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem nonempty_objMap_of_eq {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'}
     {S S' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {o : Obj D l b s} {o' : Obj D l b' s'} {f g : S' ⟶ S}
@@ -98,11 +98,11 @@ theorem nonempty_objMap_of_eq {B B' : Type} [CommRing B] [CommRing B'] {b : Base
   exact ⟨m⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ObjMaps.exists_sab_comp m u.toSABMap`. Establish `hn' : n.cm.F = u.cm.F ≫ m.cm.F` using `hn`. Use `⟨⟨n, fun a => ?_, fun a => ?_⟩, hn⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(o'.eta a ^ (l₂.M / l.M)).left ≫ n.cm.F = _`. Rewrite using `[hn']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ObjComp.sec_comp (h₁ a) ?_` and prove the remaining obligations. Rewrite using `[← ObjLower.map_nsmul_of_add _ o'.eta_add, ← ObjLower.map_nsmul_of_add _ o₂.eta_add]`. Conclude with `u.eta _`. Express the relevant statement in the definitionally equal form `(o'.etaA a ^ (l₂.A / l.A)).left ≫ n.cm.F = _`. Rewrite using `[hn']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ObjComp.sec_comp (h₂ a) ?_` and prove the remaining obligations. Rewrite using `[← ObjLower.map_nsmul_of_add _ o'.etaA_add, ← ObjLower.map_nsmul_of_add _ o₂.etaA_add]`. Conclude with `u.etaA _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_objMap_lower {B : Type} [CommRing B] {b : Base l B} {b₂ : Base l₂ B} {S S₂ T : Scheme.{0}}
     {s : S ⟶ Sp B} {s₂ : S₂ ⟶ Sp B} {t : T ⟶ Sp B} {o : Obj D l b s} {o₂ : Obj D l₂ b₂ s₂} {o' : Obj D l₂ b₂ t}
@@ -132,25 +132,23 @@ namespace GlobalTheory
 open LevelUp
 
 /- English proof (translation)
-Introduce `hL _ E _ _ _ H D l l₂ hpq hd ⟨Xo⟩`. Establish `hA : l.A ∣ l₂.A` using `hd.2.2`. Set `j` to `levelFieldIncl hA`. Set `b` to `baseOfFinerLevel hA`. Establish `hρ : b.ρ = (baseKA l₂).ρ` using `baseOfFinerLevel_rho hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hζ : b.ζ = (baseKA l₂).ζ ^ (l₂.A / l.A)` using `baseOfFinerLevel_zeta hA`. Establish `jρ : j (baseKA l).ρ = b.ρ` using `levelFieldIncl_rho hA`. Establish `jζ : j (baseKA l).ζ = b.ζ` using `levelFieldIncl_zeta hA`. Take `⟨o₁, ⟨m₀⟩⟩` from `obj_pull E H D l _ _ (baseKA l) b j _ _ Xo.s (pullback.snd Xo.s (spMap j)) (pullback.fst Xo.s (spMap j)) jρ jζ pullback.condition Xo.univ`. Take `⟨S₂, π, o₂, m, hfin, het, -, ⟨h₁, h₂⟩, huniv⟩` from `GlobalTheory.T.exists_finiteEtale_deeper_level_cover hL E H D l l₂ _ b (baseKA l₂) _ _ o₁ hpq hd hρ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsm : SmoothOfRelativeDimension D.dim (pullback.snd Xo.s (spMap j))` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth`. Use `⟨{ X := S₂, s := π ≫ pullback.snd Xo.s (spMap j), qproj := ?_, smooth := ?_, univ := o₂, rep := ?_, unram := ?_ }⟩` and prove the remaining obligations. Conclude with `isQProjOver_comp_of_isFinite_noetherian _ _ _ _ _ hfin ((isQProjOver_baseChange_and_finite_restrict _ _ j _ Xo.s).1 Xo.qproj)`. Establish `: SmoothOfRelativeDimension (0 + D.dim) (π ≫ pullback.snd Xo.s (spMap j))` using `inferInstance`. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S t hS o`. Take `⟨f₀, ⟨hf₀, ⟨n⟩⟩, hu₀⟩` from `moduli_rep_of_base ObjMaps.id_comp_cancel E H D l Xo _ b j S t (ObjLower.lower o hd hρ hζ) hS jρ jζ`. Take `⟨f, hf₁, hf₂⟩ : ∃ f : S ⟶ pullback Xo.s (spMap j), f ≫ pullback.fst _ _ = f₀ ∧ f ≫ pullback.snd _ _ = t` from `⟨pullback.lift f₀ t hf₀, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Substitute `hf₁ hf₂` using the available equality. Take `⟨m', -⟩` from `ObjComp.objMap_cancel m₀ n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, ⟨hh, u, -⟩, hu⟩` from `huniv S f o m'.toSABMap ⟨m'.eta, m'.etaA⟩`. Use `⟨h, ⟨by rw [← Category.assoc, hh], ⟨u⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hg, ⟨v⟩⟩`. Take `⟨w, hw⟩` from `exists_objMap_lower hd hρ hζ m h₁ h₂ v`. Take `⟨w', -⟩` from `ObjComp.objMap_comp m₀ w`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : g ≫ π = f`. Use `pullback.hom_ext (hu₀ _ ⟨?_, ⟨w'⟩⟩) (by rw [Category.assoc, hg])` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← hg]`. Simplify using `only [Category.assoc]`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu g ⟨rfl, v, hw.symm.trans ?_⟩` and prove the remaining obligations. Conclude with `obj_rigid_closed hL E H D l _ _ b b _ _ _ _ o₁ (ObjLower.lower o hd hρ hζ) (g ≫ π) (Or.inl hS) w.toSABMap m'.toSABMap fun a => ⟨_, w.eta a, m'.eta a⟩`. Introduce and unpack `k _ x o ⟨u⟩ ⟨u'⟩`. Establish `hj` using `formallyUnramified_spMap j`. Establish `hp : FormallyUnramified (pullback.fst Xo.s (spMap j))` using `(HasRingHomProperty.isStableUnderBaseChange (P := @FormallyUnramified.{0}) RingHom.FormallyUnramified.isStableUnderBaseChange).of_isPullback (IsPullback.of_hasPullback _ _).flip hj`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : FormallyUnramified (π ≫ pullback.fst Xo.s (spMap j))` using `MorphismProperty.comp_mem @FormallyUnramified _ _ inferInstance hp`. Use `eq_constPt_of_formallyUnramified (π ≫ pullback.fst Xo.s (spMap j)) x ?_` and prove the remaining obligations. Take `⟨w, -⟩` from `exists_objMap_lower hd hρ hζ m h₁ h₂ u`. Take `⟨w', -⟩` from `exists_objMap_lower hd hρ hζ m h₁ h₂ u'`. Establish `e : (x ≫ π ≫ pullback.snd Xo.s (spMap j)) ≫ spMap j = (x ≫ π ≫ pullback.fst Xo.s (spMap j)) ≫ Xo.s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Category.assoc, pullback.condition]`. Take `⟨o', ⟨i⟩⟩` from `exists_obj_of_eq e (objRestrictBase j (ObjLower.lower o hd hρ hζ) jρ jζ)`. Set `i' : ObjMap o' (ObjLower.lower o hd hρ hζ) (𝟙 _)` to `⟨i.toSABMap, i.eta, i.etaA⟩`. Take `⟨n, -⟩` from `ObjComp.objMap_comp (ObjComp.objMap_comp m₀ w).choose i'`. Take `⟨n', -⟩` from `ObjComp.objMap_comp (ObjComp.objMap_comp m₀ w').choose i'`.
-
-Conclude with `Xo.unram k _ o' (nonempty_objMap_of_eq (by simp only [Category.assoc, Category.id_comp]) n) (nonempty_objMap_of_eq (by simp only [Geo.Tor.constPt, Category.assoc, Category.id_comp]) n')`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_moduli_of_dvd : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H), 1 ≤ D.p + D.q → l.Dvd l₂ → Nonempty (Moduli D l) → Nonempty (Moduli D l₂) := by
   intro hL _ E _ _ _ H D l l₂ hpq hd ⟨Xo⟩

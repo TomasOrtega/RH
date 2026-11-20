@@ -3,61 +3,57 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ Γ G V _ _ T W β a χ hΓG hT0 hTT hβ ha hχ hχc hsep J c hJ`. Take `⟨A, hA⟩ : ∃ A : Submodule ℂ (V →ₗ[ℂ] V), A = Submodule.span ℂ (T '' (G : Set X))` from `⟨_, rfl⟩`. Establish `hTA : ∀ y ∈ G, T y ∈ A` using `fun y hy => hA ▸ Submodule.subset_span ⟨y, hy, rfl⟩`. Establish `hmulT : ∀ y ∈ G, ∀ g ∈ A, T y * g ∈ A`. Introduce `y hy g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hg` using `[hA]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨z, hz, rfl⟩` from `hg`. Establish `e : T y * T z = β y z • T (y + z)` using `by ext v; simp [hTT]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `A.smul_mem _ (hTA _ (G.add_mem hy hz))`. Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => rw [mul_add]`. Conclude with `A.add_mem hf hg`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul r f _ hf => rw [mul_smul_comm]`. Conclude with `A.smul_mem r hf`. Establish `hmul : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A`. Introduce `f hf g hg`. Rewrite `hf` using `[hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨y, hy, rfl⟩ := hf`. Conclude with `hmulT y hy g hg`. Consider the case `zero => simp`. Consider the case `add f f' _ _ h h' => rw [add_mul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `A.add_mem h h'`. Consider the case `smul r f _ h => rw [smul_mul_assoc]`. Conclude with `A.smul_mem r h`. Establish `hone : (1 : V →ₗ[ℂ] V) ∈ A`. Establish `e : (1 : V →ₗ[ℂ] V) = T 0` using `by ext v; simp [hT0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hTA 0 G.zero_mem`. Establish `hκ : ∀ L ∈ A, ∃ κ : X →₀ ℂ, (∀ y ∈ κ.support, y ∈ G) ∧ ∀ u, ∑ y ∈ κ.support, κ y • T y u = L u`. Introduce `L hL`. Rewrite `hL` using `[hA, Finsupp.mem_span_image_iff_linearCombination]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl, rfl⟩` from `hL`. Use `⟨l, fun y hy => (Finsupp.mem_supported _ _).1 hl hy, fun u => ?_⟩` and prove the remaining obligations. Simplify using `[Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`. Establish `hshift : ∀ x0 x, x - x0 ∈ Γ → ∀ v ∈ W, T x v = ((β x0 (x - x0))⁻¹ * a (x - x0)) • T x0 v`. Introduce `x0 x h v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hTT x0 (x - x0) v`. Establish `e : x0 + (x - x0) = x` using `by abel`. Rewrite `h1` using `[(ha _ h).2 v hv, map_smul, e]`. Rewrite using `[mul_smul, h1, smul_smul, inv_mul_cancel₀ (hβ _ _), one_smul]`. Establish `hcls : ∀ x0 (c : X → ℂ), ∀ v ∈ W, ∑ x ∈ J, (if x - x0 ∈ Γ then c x else 0) • T x v = (∑ x ∈ J, if x - x0 ∈ Γ then c x * ((β x0 (x - x0))⁻¹ * a (x - x0)) else 0) • T x0 v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x0 c v hv`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[mul_smul, ← hshift x0 x h v hv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hQ : ∀ γ ∈ Γ, ∀ k : ℂ, ∀ c : X → ℂ, ∀ v ∈ W, ((a γ)⁻¹ • T γ - k • (1 : V →ₗ[ℂ] V)) (∑ x ∈ J, c x • T x v) = ∑ x ∈ J, (c x * (χ x γ - k)) • T x v`. Introduce `γ hγ k c v hv`. Establish `hb : ∀ x, T γ (T x v) = (χ x γ * a γ) • T x v`. Introduce `x`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[hχ γ hγ x v, (ha γ hγ).2 v hv, map_smul, smul_smul]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sum, map_smul, hb, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [smul_smul, ← sub_smul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(ha γ hγ).1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hQA : ∀ γ ∈ Γ, ∀ k : ℂ, ((a γ)⁻¹ • T γ - k • (1 : V →ₗ[ℂ] V)) ∈ A` using `fun γ hγ k => A.sub_mem (A.smul_mem _ (hTA γ (hΓG hγ))) (A.smul_mem _ hone)`. Establish `hproj : ∀ x0 ∈ G, ∀ n : ℕ, ∀ c : X → ℂ, (J.filter (fun x => c x ≠ 0 ∧ x - x0 ∉ Γ)).card = n → ∃ L ∈ A, ∃ s : ℂ, s ≠ 0 ∧ ∀ v ∈ W, L (∑ x ∈ J, c x • T x v) = s • ∑ x ∈ J, (if x - x0 ∈ Γ then c x else 0) • T x v`. Introduce `x0 hx0 n`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `c hn`. Distinguish the cases in `hS : ∃ x1 ∈ J, c x1 ≠ 0 ∧ x1 - x0 ∉ Γ`. Take `⟨x1, hx1J, hcx1, hx1⟩` from `hS`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨γ, hγ, hne⟩` from `hsep x1 (hJ x1 hx1J) x0 hx0 hx1`. Take `⟨c', hc'⟩ : ∃ c' : X → ℂ, c' = fun x => c x * (χ x γ - χ x1 γ)` from `⟨_, rfl⟩`. Establish `hsub : J.filter (fun x => c' x ≠ 0 ∧ x - x0 ∉ Γ) ⊂ J.filter (fun x => c x ≠ 0 ∧ x - x0 ∉ Γ)`. Rewrite using `[Finset.ssubset_iff_of_subset]`. Use `⟨x1, by simp [hx1J, hcx1, hx1], ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[hc']`. Introduce `x hx`. Simplify using `only [Finset.mem_filter] at hx ⊢`. Conclude with `⟨hx.1, fun h => hx.2.1 (by simp [hc', h]), hx.2.2⟩`. Take `⟨L', hL', s', hs', hL'eq⟩` from `ih _ (hn ▸ Finset.card_lt_card hsub) c' rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨L' * ((a γ)⁻¹ • T γ - χ x1 γ • (1 : V →ₗ[ℂ] V)), hmul _ hL' _ (hQA γ hγ _), s' * (χ x0 γ - χ x1 γ), mul_ne_zero hs' (sub_ne_zero.2 (Ne.symm hne)), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hQ γ hγ _ c v hv, show (∑ x ∈ J, (c x * (χ x γ - χ x1 γ)) • T x v) = ∑ x ∈ J, c' x • T x v by rw [hc'], hL'eq v hv, mul_smul]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs with h`. Establish `hχx : χ x γ = χ x0 γ` using `by simpa using hχc x0 γ hγ (x - x0) h`. Simplify using `only [hc', smul_smul, hχx, mul_comm]`. Simplify using the standard rewrite rules. Use `push_neg at hS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨1, hone, 1, one_ne_zero, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.one_apply, one_smul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : c x = 0`. Simplify using `[hc]`. Conclude with `absurd (hS x hx hc) h`. Establish `main : ∀ n : ℕ, ∀ c : X → ℂ, (J.filter (fun x => c x ≠ 0)).card = n → (∀ v ∈ W, ∑ x ∈ J, c x • T x v = 0) ∨ ∃ L ∈ A, ∀ v ∈ W, L (∑ x ∈ J, c x • T x v) = v`. Introduce `n`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `c hn`. Distinguish the cases in `hS : ∃ x0 ∈ J, c x0 ≠ 0`. Take `⟨x0, hx0J, hcx0⟩` from `hS`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hx0` using `hJ x0 hx0J`. Take `⟨d, hd⟩ : ∃ d : ℂ, d = ∑ x ∈ J, if x - x0 ∈ Γ then c x * ((β x0 (x - x0))⁻¹ * a (x - x0)) else 0` from `⟨_, rfl⟩`. Distinguish the cases in `hd0 : d = 0`. Take `⟨c'', hc''⟩ : ∃ c'' : X → ℂ, c'' = fun x => if x - x0 ∈ Γ then 0 else c x` from `⟨_, rfl⟩`. Establish `hsub : J.filter (fun x => c'' x ≠ 0) ⊂ J.filter (fun x => c x ≠ 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.ssubset_iff_of_subset]`. Use `⟨x0, by simp [hx0J, hcx0], ?_⟩` and prove the remaining obligations. Simplify using `[hc'']`. Introduce `x hx`. Simplify using `only [Finset.mem_filter] at hx ⊢`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx.1, fun h => hx.2 ?_⟩` and prove the remaining obligations. Simplify using `[hc'', h]`. Establish `heq : ∀ v ∈ W, ∑ x ∈ J, c x • T x v = ∑ x ∈ J, c'' x • T x v`. Introduce `v hv`. Establish `h1` using `hcls x0 c v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← hd, hd0, zero_smul]`. Combine the equalities or inequalities in the displayed calculation. Break down `ih _ (hn ▸ Finset.card_lt_card hsub) c'' rfl with h | ⟨L, hL, hLeq⟩` into its components or cases. Conclude with `Or.inl fun v hv => by rw [heq v hv]; exact h v hv`. Conclude with `Or.inr ⟨L, hL, fun v hv => by rw [heq v hv]; exact hLeq v hv⟩`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Take `⟨L, hL, s, hs, hLeq⟩` from `hproj x0 hx0 _ c rfl`. Use `Or.inr ⟨(((s * d) * β (-x0) x0)⁻¹ • T (-x0)) * L, hmul _ (A.smul_mem _ (hTA _ (G.neg_mem hx0))) _ hL, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, LinearMap.smul_apply, hLeq v hv, hcls x0 c v hv, ← hd, map_smul, map_smul, hTT, neg_add_cancel, hT0, smul_smul, smul_smul, smul_smul]`. Establish `hβ'` using `hβ (-x0) x0`. Establish `e : ((s * d) * β (-x0) x0)⁻¹ * s * d * β (-x0) x0 = 1`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, one_smul]`. Use `push_neg at hS`. Conclude with `Or.inl fun v _ => Finset.sum_eq_zero fun x hx => by simp [hS x hx]`. Break down `main _ c rfl with h | ⟨L, hL, hLeq⟩` into its components or cases.
-
-Conclude with `Or.inl h`. Take `⟨κ, hκG, hκeq⟩` from `hκ L hL`. Conclude with `Or.inr ⟨κ, hκG, fun v hv => by rw [hκeq, hLeq v hv]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isolate_abstract : ∀ (X : Type) [AddCommGroup X] (Γ G : AddSubgroup X) (V : Type) [AddCommGroup V] [Module ℂ V] (T : X → V →ₗ[ℂ] V) (W : Set V) (β : X → X → ℂ) (a : X → ℂ) (χ : X → X → ℂ), Γ ≤ G → (∀ v, T 0 v = v) → (∀ x y v, T x (T y v) = β x y • T (x + y) v) → (∀ x y, β x y ≠ 0) → (∀ γ ∈ Γ, a γ ≠ 0 ∧ ∀ v ∈ W, T γ v = a γ • v) → (∀ γ ∈ Γ, ∀ x v, T γ (T x v) = χ x γ • T x (T γ v)) → (∀ x, ∀ γ ∈ Γ, ∀ γ' ∈ Γ, χ (x + γ') γ = χ x γ) → (∀ x ∈ G, ∀ y ∈ G, x - y ∉ Γ → ∃ γ ∈ Γ, χ x γ ≠ χ y γ) → ∀ (J : Finset X) (c : X → ℂ), (∀ x ∈ J, x ∈ G) → (∀ v ∈ W, ∑ x ∈ J, c x • T x v = 0) ∨ ∃ κ : X →₀ ℂ, (∀ y ∈ κ.support, y ∈ G) ∧ ∀ v ∈ W, ∑ y ∈ κ.support, κ y • T y (∑ x ∈ J, c x • T x v) = v := by
   intro X _ Γ G V _ _ T W β a χ hΓG hT0 hTT hβ ha hχ hχc hsep J c hJ

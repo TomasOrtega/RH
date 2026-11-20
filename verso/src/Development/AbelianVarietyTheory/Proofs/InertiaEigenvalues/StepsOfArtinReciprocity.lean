@@ -30,7 +30,7 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.Pass
 
 /- English proof (translation)
-Introduce `hA` and use `⟨GlobalTheory.CentralIdem.centralIdemCoeff, GlobalTheory.T.central_elements_from_idempotent_coeffs, GlobalTheory.T.typePrimeCompletionDegreeOneCount_proof, GlobalTheory.T.type_parameter_squarefree, GlobalTheory.T.typeFamily_potentiallyCrystalline_common_tame_extension, GlobalTheo …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stepsNoCut_of_artin : GlobalTheory.Published.GlobalArtinReciprocity → StepsNoCut := fun hA =>
   ⟨GlobalTheory.CentralIdem.centralIdemCoeff, GlobalTheory.T.central_elements_from_idempotent_coeffs, GlobalTheory.T.typePrimeCompletionDegreeOneCount_proof, GlobalTheory.T.type_parameter_squarefree, GlobalTheory.T.typeFamily_potentiallyCrystalline_common_tame_extension,

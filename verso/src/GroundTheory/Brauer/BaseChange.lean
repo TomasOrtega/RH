@@ -14,7 +14,7 @@ section Equivalence
 variable {K : Type u} [Field K] (L : Type u) [Field L] [Algebra K L]
 
 /- English proof (translation)
-Take `⟨n, m, hn, hm, ⟨e⟩⟩` from `h`. Conclude with `⟨n, m, hn, hm, ⟨(baseChangeMatrix K L A (Fin n)).symm.trans <| (Algebra.TensorProduct.congr (AlgEquiv.refl : L ≃ₐ[L] L) e).trans <| baseChangeMatrix K L B (Fin m)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsBrauerEquivalent.baseChange {A B : CSA.{u, v} K} (h : IsBrauerEquivalent A B) :
     IsBrauerEquivalent (baseChangeCSA L A) (baseChangeCSA L B) := by
@@ -52,7 +52,7 @@ theorem baseChange_mk (A : CSA.{u, u} K) :
     baseChange K L ⟦A⟧ = ⟦baseChangeCSA L A⟧ := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h A => exact Quotient.sound <| isBrauerEquivalent_of_algEquiv (baseChangeCSATower L M A)`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 -/
 theorem baseChange_comp (M : Type u) [Field M] [Algebra K M] [Algebra L M]
     [IsScalarTower K L M] :
@@ -62,7 +62,7 @@ theorem baseChange_comp (M : Type u) [Field M] [Algebra K M] [Algebra L M]
   | h A => exact Quotient.sound <| isBrauerEquivalent_of_algEquiv (baseChangeCSATower L M A)
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (baseChange_comp K L M) x`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_baseChange (M : Type u) [Field M] [Algebra K M] [Algebra L M]
     [IsScalarTower K L M] (x : BrauerGroup.{u, u} K) :
@@ -81,18 +81,18 @@ noncomputable def relBrauer : Subgroup (BrauerGroup.{u, u} K) :=
 variable {K L}
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_relBrauer_iff (x : BrauerGroup.{u, u} K) :
     x ∈ relBrauer K L ↔ baseChange K L x = 1 :=
   MonoidHom.mem_ker
 
 /- English proof (translation)
-Rewrite using `[mem_relBrauer_iff, baseChange_mk, BrauerGroup.one_def, Quotient.eq]`. Express the relevant statement in the definitionally equal form `IsBrauerEquivalent (baseChangeCSA L A) (oneCSA L) ↔ _`. Establish `: IsArtinianRing (baseChangeCSA L A)` using `IsArtinianRing.of_finite L _`. Take `⟨k, hk, D, _, _, _, ⟨e⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite L (baseChangeCSA L A)`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨g⟩` from `(isBrauerEquivalent_iff_nonempty_algEquiv e ((matrixFinOneAlgEquiv (K := L) L).symm)).mp h`. Conclude with `⟨k, ⟨e.trans g.mapMatrix⟩⟩`. Introduce and unpack `⟨n, ⟨f⟩⟩`. Establish `hn : n ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `one_ne_zero (f.injective (Subsingleton.elim _ _) : (1 : L ⊗[K] A) = 0)`. Establish `: NeZero n` using `⟨hn⟩`. Conclude with `isBrauerEquivalent_of_algEquiv_matrix (C := L) f ((matrixFinOneAlgEquiv (K := L) L).symm)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mk_mem_relBrauer_iff (A : CSA.{u, u} K) :
     ⟦A⟧ ∈ relBrauer K L ↔

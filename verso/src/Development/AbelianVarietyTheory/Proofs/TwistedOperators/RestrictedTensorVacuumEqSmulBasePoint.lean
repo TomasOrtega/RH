@@ -14,37 +14,35 @@ namespace GlobalTheory.VacuumLine
 open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ hb f hf hlat hfock`. Establish `hne : f₀ ≠ 0` using `GlobalTheory.PlaceTensor.base_ne_zero hb`. Take `⟨hS, hT, dS, dT, hψ, hθ, ht₀, hl₀, hF₀, -⟩` from `hb`. Establish `hψn : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Take `⟨ρ, hρc, hρ1, hρ2⟩` from `GlobalTheory.FockCompare.exists_real_chart D θ hθ (GlobalTheory.CMTypePlaces.places_bijective D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.RealChart.exists_chart D θ hθ ρ hρc hρ1 hρ2`. Take `⟨hdual, hdec, heig⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ dS dT`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛ`. Establish `hinf : ∀ u ∈ Λ, u.map (infPart D) = 0` using `fun u hu => GlobalTheory.VacUnique.latO_inf S T _ _ _ hu`. Establish `key : ∀ u ∈ Λ, ∃ ε : ℂ, (ε = 1 ∨ ε = -1) ∧ heisO ψ S T u f = ε • f ∧ heisO ψ S T u f₀ = ε • f₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Take `⟨ε, hε, h⟩` from `heig f hlat u hu`. Conclude with `⟨ε, hε, h f hlat, h f₀ hl₀⟩`. Establish `ext : ∀ w, ∃ z : RW T S, ∃ a : ℂ, f w = a * f (iotaW σ T S z) ∧ f₀ w = a * f₀ (iotaW σ T S z)`. Introduce `w`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, z, u, hu, rfl⟩` from `GlobalTheory.VacUnique.exists_decomp hσ hdec w`. Take `⟨ε, -, h1, h2⟩` from `key u hu`. Use `⟨z, ψ (-symplOH S T (ratW T S γ) (iotaW σ T S z + u)) * ε, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf.1 γ, GlobalTheory.VacUnique.apply_real_add hσ hψ (hinf u hu) h1 z]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht₀.1 γ, GlobalTheory.VacUnique.apply_real_add hσ hψ (hinf u hu) h2 z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ∀ γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E, ∃ N : ℕ, 0 < N ∧ N • finRat S T γ ∈ Λ` using `GlobalTheory.T.scaled_finite_matrix_mem_lattice D S T ΛS ΛT dS.1 dT.1`. Establish `hLd` using `GlobalTheory.T.rationalPoints_finitePart_selfDual_lattice_iff D S T ψ Λ hψ hinf hdual hdec hN`. Take `⟨hJ, hanti, hinv, hpos⟩` from `GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `c : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ` to `fun v => if hv : finRat S T (-v) ∈ Λ then ψ (-symplOH S T (ratW T S v) (finRat S T (-v))) * (key _ hv).choose else 1`. Establish `hc : ∀ v, ‖c v‖ = 1`. Introduce `v`. Simplify using `only [c]`. Use `split_ifs with hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[norm_mul, hψn, one_mul]`. Apply the tactic sequence `rcases (key _ hv).choose_spec.1 with h | h <;> rw [h] <;> simp`. Simplify using the standard rewrite rules. Establish `hfd` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ hσ ψ hψ S T sS sT f hf hfock`. Establish `hfd₀` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ hσ ψ hψ S T sS sT f₀ ht₀ hF₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span ℝ (Set.range (infRat S T)) = ⊤`. Use `GlobalTheory.FockCompare.span_piW_ratW_eq_top D θ σ hσ T S` as an intermediate fact. Simplify `this` using `[GlobalTheory.VacUnique.piW_ratW hθ]`. Establish `hli` using `GlobalTheory.T.not_linearIndependent_alt (RW T S) (jO S T sS sT) (omO S T) hJ hanti hinv hpos (Matrix (Fin T.rank) (Fin S.rank) D.host.E) (infRat S T) (GlobalTheory.VacUnique.infRat_injective S T) hspan (Λ.comap (finRat S T)) (fun x => by simpa using hN x) (fun x => by simpa usin …`. Use `case fock => exact Fin.forall_fin_two.2 ⟨hfd₀.2, hfd.2⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case quasi =>`. Introduce `k v hv z`. Establish `hv' : finRat S T (-v) ∈ Λ`. Rewrite using `[map_neg]`. Conclude with `Λ.neg_mem (AddSubgroup.mem_comap.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hcv : c v = ψ (-symplOH S T (ratW T S v) (finRat S T (-v))) * (key _ hv').choose`. Simplify using `only [c, dif_pos hv']`. Take `⟨-, h1, h2⟩` from `(key _ hv').choose_spec`. Establish `e1` using `GlobalTheory.VacUnique.apply_add_infRat hσ hψ hf v h1 z`. Establish `e2` using `GlobalTheory.VacUnique.apply_add_infRat hσ hψ ht₀ v h2 z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ho : (omO S T z (infRat S T v) : ℂ) = ((-omO S T (infRat S T v) z : ℝ) : ℂ)` using `by rw [hanti]`. Rewrite using `[hcv, ho]`. Use `fin_cases k`. Conclude with `e2`. Conclude with `e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Rewrite `hli` using `[LinearIndependent.pair_iff]`. Use `push_neg at hli`. Take `⟨s, t, hst, hne0⟩` from `hli`. Establish `hpt : ∀ z, s * f₀ (iotaW σ T S z) + t * f (iotaW σ T S z) = 0` using `fun z => by`. Use `congrFun hst z` as an intermediate fact.
+It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Distinguish the cases in `ht : t = 0`. It suffices to derive a contradiction. Establish `hs : s ≠ 0` using `fun hs => hne0 hs ht`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `w`. Take `⟨z, a, -, h2⟩` from `ext w`. Use `hpt z` as an intermediate fact. Rewrite `this` using `[ht, zero_mul, add_zero]`. Rewrite using `[h2, (mul_eq_zero.1 this).resolve_left hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Use `⟨-s / t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Take `⟨z, a, h1, h2⟩` from `ext w`. Use `hpt z` as an intermediate fact.
-
-Rewrite using `[Pi.smul_apply, smul_eq_mul, h1, h2, div_mul_eq_mul_div, eq_div_iff ht]`. Take the linear combination `a * this`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_base : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ), IsBase ψ θ S T sS sT ΛS ΛT f₀ → ∀ f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) f → (∀ ρ, IsFockVacAt (heisO ψ S T) θ ρ (cplxO (sS ρ) (sT ρ)) f) → ∃ c : ℂ, f = c • f₀ := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ hb f hf hlat hfock

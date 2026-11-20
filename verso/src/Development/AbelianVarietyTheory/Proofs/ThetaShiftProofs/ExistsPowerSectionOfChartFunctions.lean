@@ -41,13 +41,13 @@ section General
 variable {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun _ => h`.
+A detailed English derivation is pending.
 -/
 theorem mem_chart_one {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {k : L.ι} (h : r z ∈ L.U k) :
     r z ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k) := Set.mem_iInter.2 fun _ => h
 
 /- English proof (translation)
-Establish `le : ∀ j : Fin 1 → L.ι, LB.wchart L (fun _ : Fin 1 => 𝟙 X) j ≤ L.U (j 0)` using `fun j y hy => Set.mem_iInter.1 hy 0`. Use `⟨⟨fun j => resG X (le j) (s.f (j 0)), fun (i j : Fin 1 → L.ι) => fn_ext fun y hy => ?_⟩, fun Z r z k h => gs_res r z (le fun _ => k) (mem_chart_one r z h) _⟩` and prove the remaining obligations. Use `((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y (le i) hy.1 _)).trans ((gs_compat s (𝟙 X) y (le i hy.1) (le j hy.2)).trans (Eq.symm ((gs_mul (𝟙 X) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 X) y _ hy _).trans (congrArg Units.val ?_)) ((gs_res (𝟙 X) y _ hy _).trans (gs_res ( …` and prove the remaining obligations. Use `(gm_linComb L _ _ (𝟙 X) y i j hy.1 hy.2).trans ?_` and prove the remaining obligations. Simplify using `[Geo.Tor.trF]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_powerSection_of_chartFunctions (s : L.Sec) : ∃ t : H0 L 1, ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (k : L.ι), r z ∈ L.U k →
     gs r z (LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k)) (t.f fun _ => k) = gs r z (L.U k) (s.f k) := by
@@ -62,7 +62,7 @@ theorem exists_powerSection_of_chartFunctions (s : L.Sec) : ∃ t : H0 L 1, ∀ 
   simp [Geo.Tor.trF]
 
 /- English proof (translation)
-Rewrite using `[gs_eq (𝟙 X) x U hx]`. Conclude with `X.mem_basicOpen f x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_iff_gs {U : X.Opens} (f : Γ(X, U)) {x : X} (hx : x ∈ U) :
     x ∈ X.basicOpen f ↔ IsUnit (gs (𝟙 X) x U f) := by
@@ -70,7 +70,7 @@ theorem mem_basicOpen_iff_gs {U : X.Opens} (f : Γ(X, U)) {x : X} (hx : x ∈ U)
   exact X.mem_basicOpen f x hx
 
 /- English proof (translation)
-Establish `hm : r z ∈ V ⊓ L.U j ⊓ L.U j'` using `⟨⟨hV, h⟩, h'⟩`. Establish `e` using `congrArg (gs r z _) (hs j j')`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_res _ z _ hm, gs_unit _ z (L.U j ⊓ L.U j') ⟨h, h'⟩]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_secOn {V : X.Opens} {s : ∀ j, Γ(X, V ⊓ L.U j)} (hs : s ∈ secOn L V) {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z)
     {j j' : L.ι} (hV : r z ∈ V) (h : r z ∈ L.U j) (h' : r z ∈ L.U j') :
@@ -81,7 +81,7 @@ theorem gs_secOn {V : X.Opens} {s : ∀ j, Γ(X, V ⊓ L.U j)} (hs : s ∈ secOn
     gs_unit _ z (L.U j ⊓ L.U j') ⟨h, h'⟩] at e
 
 /- English proof (translation)
-Introduce `j j'` and use `fn_ext fun y hy => by have h₁ : (𝟙 X : X ⟶ X) y ∈ W ⊓ L.U j := hy.1 have h₂ : (𝟙 X : X ⟶ X) y ∈ W ⊓ L.U j' := ⟨hy.1.1, hy.2⟩ exact ((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y _ h₁ _)).trans ((gs_secOn hs (𝟙 X) y (hW hy.1.1) hy.1.2 hy.2).trans (Eq.symm ((gs_mul (𝟙 X) y _ hy _ _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem res_mem_secOn {V W : X.Opens} (hW : W ≤ V) {s : ∀ j, Γ(X, V ⊓ L.U j)} (hs : s ∈ secOn L V) :
     (fun j => resG X (inf_le_inf_right _ hW) (s j)) ∈ secOn L W := fun j j' => fn_ext fun y hy => by
@@ -93,17 +93,17 @@ theorem res_mem_secOn {V W : X.Opens} (hW : W ≤ V) {s : ∀ j, Γ(X, V ⊓ L.U
         ((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y _ h₂ _))))))
 
 /- English proof (translation)
-Establish `le : ∀ j, F ⁻¹ᵁ L.U j ≤ F ⁻¹ᵁ (V ⊓ L.U j)` using `fun j x hx => ⟨hV x, hx⟩`. Establish `ev : ∀ y j, F y ∈ L.U j → gs (𝟙 _) y _ ((F.appLE _ _ (le j)).hom (s j)) = gs F y _ (s j)` using `fun y j h => (gs_appLE F _ _ (le j) (𝟙 _) y h _).trans (by rw [Category.id_comp])`. Take `⟨t₀, ht₀⟩` from `sec_down ((isGen_iff w).1 hw) hL hL' (fun j => (F.appLE _ _ (le j)).hom (s j)) fun y j j' h h' => (ev y j h).trans ((gs_secOn hs F y (hV y) h h').trans (congrArg _ (ev y j' h').symm))`. Take `⟨t, ht⟩` from `exists_powerSection_of_chartFunctions t₀`. Establish `key : ∀ y j k, F y ∈ L.U j → y ∈ L'.U k → gs F y _ (s j) = (Geo.Tor.gw w (𝟙 _) y j k).val * gs (𝟙 X') y (LB.wchart L' (fun _ : Fin 1 => 𝟙 X') (fun _ => k)) (t.f fun _ => k)` using `fun y j k hj hk => (ev y j hj).symm.trans ((ht₀ _ (𝟙 _) y j k hj hk).trans (congrArg _ (ht _ (𝟙 _) y k hk).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ev₂ : ∀ (R : Type) [CommRing R] (p : X' ⟶ Sp R) (r : R) (σ : H0 L' 1) (j : L.ι) (k : L'.ι) (W : X'.Opens) (h₁ : W ≤ F ⁻¹ᵁ (V ⊓ L.U j)) (h₂ : W ≤ (LB.div (L.pull F) L').U (fun _ => j, k)) (h₃ : W ≤ LB.wchart L' (fun _ : Fin 1 => 𝟙 X') (fun _ => k)) (y : X'), y ∈ W → gs (𝟙 _) y W ( …` using `fun R _ p r σ j k W h₁ h₂ h₃ y hy => ⟨(gs_appLE F _ _ h₁ (𝟙 _) y hy _).trans (by rw [Category.id_comp]), ((gs_mul (𝟙 _) y W hy _ _).trans (congrArg₂ (· * ·) ((gs_mul (𝟙 _) y W hy _ _).trans (congrArg₂ (· * ·) ((gs_res (𝟙 _) y h₂ hy _).trans (gs_unit (𝟙 _) y _ (h₂ hy) _)) (gs_cons …`. Use `⟨t, fun y => ⟨fun h => ?_, fun ⟨j, h⟩ => ?_⟩, fun R _ p r σ => ⟨fun h k => ?_, fun h j k W h₁ h₂ h₃ => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk, hu⟩` from `(SectionBaseChange.mem_nonzeroLocus t _).1 h`. Take `⟨k, rfl⟩ : ∃ k', k = fun _ => k'` from `⟨k 0, funext fun i => congrArg k (Subsingleton.elim i 0)⟩`. Take `⟨j, hj⟩` from `exists_chart hL (F y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj' : F y ∈ V ⊓ L.U j` using `⟨hV y, hj⟩`. Use `⟨j, (mem_basicOpen_iff_gs _ hj').2 ((isUnit_gs_iff F y _ hj' _).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[key y j k hj (Set.mem_iInter.1 hk 0)]`. Conclude with `(Units.isUnit _).mul hu`. Establish `hj : F y ∈ V ⊓ L.U j` using `X.basicOpen_le _ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_chart hL' y`. Establish `hu` using `(isUnit_gs_iff F y _ hj _).2 ((mem_basicOpen_iff_gs _ hj).1 h)`. Rewrite `hu` using `[key y j k hj.2 hk]`. Conclude with `(SectionBaseChange.mem_nonzeroLocus t _).2 ⟨fun _ => k, mem_chart_one (𝟙 _) y hk, isUnit_of_mul_isUnit_right hu⟩`. Take `⟨k, rfl⟩ : ∃ k', k = fun _ => k'` from `⟨k 0, funext fun i => congrArg k (Subsingleton.elim i 0)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hL (F y)`. Establish `hk : y ∈ L'.U k` using `Set.mem_iInter.1 hy 0`. Take `⟨a₁, a₂⟩` from `ev₂ R p r σ j k ((L.pull F).U (fun _ => j) ⊓ L'.U k) (fun z hz => ⟨hV z, mem_pull.1 hz.1⟩) le_rfl (fun z hz => mem_chart_one (𝟙 _) z hz.2) y ⟨mem_pull.2 hj, hk⟩`. Establish `e` using `(key y j k hj hk).symm.trans (a₁.symm.trans ((congrArg _ (h j k _ _ _ _)).trans a₂))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `((Units.mul_right_inj _).1 e).trans (Eq.symm ((gs_mul (𝟙 X') y _ hy _ _).trans (congrArg₂ (· * ·) (gs_constFn p _ (𝟙 X') y hy r) rfl)))`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨a₁, a₂⟩` from `ev₂ R p r σ j k W h₁ h₂ h₃ y hy`. Conclude with `a₁.trans ((key y j k (h₁ hy).2 (h₂ hy).2).trans ((congrArg _ (secIsMul_gs h (𝟙 X') y _ (h₃ hy))).trans a₂.symm))`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull_secOn {w : LB.Iso L' (L.pull F)} (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB) {V : X.Opens}
     (hV : ∀ y, F y ∈ V) {s : ∀ j, Γ(X, V ⊓ L.U j)} (hs : s ∈ secOn L V) : ∃ t : H0 L' 1,
@@ -158,9 +158,9 @@ theorem exists_pull_secOn {w : LB.Iso L' (L.pull F)} (hw : w.IsGen) (hL : L.IsLB
       ((congrArg _ (secIsMul_gs h (𝟙 X') y _ (h₃ hy))).trans a₂.symm))
 
 /- English proof (translation)
-Take `⟨V₀, hV₀, θ₀, hθ₀, -, nz⟩` from `hP x`. Take `⟨g, i, rfl, hb⟩` from `nz x hV₀`. Take `⟨a, ha, -⟩` from `h.2 (V ⊓ V₀) inf_le_left _ (res_mem_secOn (G.hom.preimage_mono inf_le_right) hθ₀)`. Establish `h₀ : g ∈ G.hom ⁻¹ᵁ V₀ ⊓ L.U i` using `G.left.basicOpen_le _ hb`. Establish `hm : (𝟙 G.left : _ ⟶ _) g ∈ G.hom ⁻¹ᵁ (V ⊓ V₀) ⊓ L.U i` using `⟨⟨hx, hV₀⟩, h₀.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gs (𝟙 _) g _) (ha i)`. Rewrite `e` using `[gs_res _ g _ hm, gs_mul _ g _ hm, gs_res _ g _ hm]`. Conclude with `⟨g, i, rfl, (mem_basicOpen_iff_gs _ (show g ∈ G.hom ⁻¹ᵁ V ⊓ L.U i from ⟨hx, h₀.2⟩)).2 (isUnit_of_mul_isUnit_right (e ▸ (mem_basicOpen_iff_gs _ h₀).1 hb))⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem IsPushGen.exists_mem_basicOpen {G : Over X} {L : LB G.left} (hP : PushInvertible G L) {V : X.Opens}
     {θ : ∀ i, Γ(G.left, G.hom ⁻¹ᵁ V ⊓ L.U i)} (h : IsPushGen G L V θ) {x : X} (hx : x ∈ V) :
@@ -183,7 +183,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {B₀ : Scheme.{0}}
   {w : LB.Iso D.P.L (M₀.pull φ)} {th : M₀.Sec}
 
 /- English proof (translation)
-Use `show (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c 0)).left = (𝟙 D.P.A : _ ⟶ _).left`. Use `congr 1`. Conclude with `(congrArg (𝟙 D.P.A * ·) (cPoint_zero (D := D) D.P.A)).trans (_root_.mul_one _)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem famφB_zero_one : D.famφB 0 1 = 𝟙 D.P.A.left := by
   show (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c 0)).left = (𝟙 D.P.A : _ ⟶ _).left
@@ -191,11 +191,11 @@ theorem famφB_zero_one : D.famφB 0 1 = 𝟙 D.P.A.left := by
   exact (congrArg (𝟙 D.P.A * ·) (cPoint_zero (D := D) D.P.A)).trans (_root_.mul_one _)
 
 /- English proof (translation)
-Establish `ev : ∀ (j : Fin 4 → D.P.L.ι) (j₀ : M₀.ι) (V : D.P.A.left.Opens) (h₁ : V ≤ LB.wchart D.P.L (D.famφB 0) j) (h₂ : V ≤ (LB.div (M₀.pull φ) D.P.L).U (fun _ => j₀, j 1)) (h₃ : V ≤ φ ⁻¹ᵁ M₀.U j₀) (y : D.P.A.left), y ∈ V → gs (𝟙 _) y V ((φ.appLE _ _ h₃).hom (th.f j₀)) = gs φ y _ (th.f j₀ …` using `fun j j₀ V h₁ h₂ h₃ y hy => ⟨(gs_appLE φ _ _ h₃ (𝟙 _) y hy _).trans (by rw [Category.id_comp]), (gs_mul (𝟙 _) y V hy _ _).trans (congrArg₂ (· * ·) ((gs_res (𝟙 _) y h₂ hy _).trans (gs_unit (𝟙 _) y _ (h₂ hy) _)) (gs_res (𝟙 _) y h₁ hy _))⟩`. Establish `e₁ : 𝟙 _ ≫ D.famφB 0 1 = 𝟙 D.P.A.left` using `(Category.id_comp _).trans famφB_zero_one`. Use `⟨fun h y J j₀ hJ hy => ?_, fun h j j₀ V h₁ h₂ h₃ hc => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Set `j : Fin 4 → D.P.L.ι` to `fun k => J (𝟙 _ ≫ D.famφB 0 k)`. Establish `hj : j 1 = J (𝟙 _)` using `congrArg J e₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `V` to `LB.wchart D.P.L (D.famφB 0) j ⊓ ((M₀.pull φ).U (fun _ => j₀) ⊓ D.P.L.U (j 1))`. Establish `hm : y ∈ V` using `⟨hJ.mem _ (𝟙 _), mem_pull.2 hy, hj ▸ hJ (𝟙 _)⟩`. Take `⟨a₁, a₂⟩` from `ev j j₀ V inf_le_left inf_le_right (fun z hz => mem_pull.1 hz.2.1) y hm`. Use `a₁.symm.trans ((congrArg _ (h j j₀ V _ _ _ fun k k' e => congrArg (fun q => J (𝟙 _ ≫ q)) e)).trans (a₂.trans ?_))` and prove the remaining obligations. Rewrite using `[hj]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨a₁, a₂⟩` from `ev j j₀ V h₁ h₂ h₃ y hy`. Take `⟨J, hJ, hj⟩` from `exists_good D.P.L D.P.isLB y (fun k => 𝟙 _ ≫ D.famφB 0 k) j (fun k k' e => hc k k' (by simpa using e)) (fun k => Set.mem_iInter.1 (h₁ hy) k)`. Rewrite using `[a₁, a₂, h y J j₀ hJ (h₃ hy), sval_of t _ y J j hj, ← hj 1, e₁]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullTerm_iff {t : D.SecB 1 0} : IsPullTerm D φ w th t ↔ ∀ (y : D.P.A.left) J j₀, Good D.P.L y J →
     φ y ∈ M₀.U j₀ → gs φ y _ (th.f j₀) = (Geo.Tor.gw w (𝟙 _) y j₀ (J (𝟙 _))).val * sval t (𝟙 _) y J := by
@@ -224,9 +224,9 @@ theorem isPullTerm_iff {t : D.SecB 1 0} : IsPullTerm D φ w th t ↔ ∀ (y : D.
     rw [a₁, a₂, h y J j₀ hJ (h₃ hy), sval_of t _ y J j hj, ← hj 1, e₁]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `sec_pull_down ((isGen_iff w).1 hw) hM D.P.isLB th`. Take `⟨s', hs'⟩` from `exists_powerSection_of_chartFunctions s`. Take `⟨t, ht⟩` from `exists_sec D.P.isLB (φ' := D.famφB 0) (ε' := DegPre.famε 1) (fun U _ h => by rw [prod_fam_zero]; simp) s'`. Use `⟨t, isPullTerm_iff.2 fun y J j₀ hJ hy => ?_⟩` and prove the remaining obligations. Establish `e` using `hs _ (𝟙 _) y j₀ _ hy (hJ (𝟙 _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.id_comp]`. Rewrite using `[e, ht _ _ y J hJ, sval_of s' _ y J (fun _ => J (𝟙 _)) (fun _ => by rw [Category.id_comp]), hs' _ _ y _ (hJ (𝟙 _))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isPullTerm (hw : w.IsGen) (hM : M₀.IsLB) (th : M₀.Sec) : ∃ t, IsPullTerm D φ w th t := by
   obtain ⟨s, hs⟩ := sec_pull_down ((isGen_iff w).1 hw) hM D.P.isLB th
@@ -240,7 +240,7 @@ theorem exists_isPullTerm (hw : w.IsGen) (hM : M₀.IsLB) (th : M₀.Sec) : ∃ 
     hs' _ _ y _ (hJ (𝟙 _))]
 
 /- English proof (translation)
-The claim follows from `sec_ext' D.P.isLB fun y J hJ => by obtain ⟨j₀, hy⟩ := exists_chart hM (φ y) exact (Units.mul_right_inj _).1 ((isPullTerm_iff.1 h y J j₀ hJ hy).symm.trans (isPullTerm_iff.1 h' y J j₀ hJ hy))`.
+A detailed English derivation is pending.
 -/
 theorem IsPullTerm.unique (hM : M₀.IsLB) {t t' : D.SecB 1 0} (h : IsPullTerm D φ w th t)
     (h' : IsPullTerm D φ w th t') : t = t' := sec_ext' D.P.isLB fun y J hJ => by
@@ -248,7 +248,7 @@ theorem IsPullTerm.unique (hM : M₀.IsLB) {t t' : D.SecB 1 0} (h : IsPullTerm D
   exact (Units.mul_right_inj _).1 ((isPullTerm_iff.1 h y J j₀ hJ hy).symm.trans (isPullTerm_iff.1 h' y J j₀ hJ hy))
 
 /- English proof (translation)
-Take `⟨j₀, hj, hu⟩` from `(SectionBaseChange.mem_nonzeroLocus th _).1 hy`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Establish `hu'` using `(isUnit_gs_iff φ y _ hj _).2 hu`. Rewrite `hu'` using `[isPullTerm_iff.1 h y J j₀ hJ hj]`. Conclude with `(SectionBaseChange.mem_nonzeroLocus t _).2 ⟨_, hJ.mem _ (𝟙 _), isUnit_of_mul_isUnit_right hu'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPullTerm.mem_nonzeroLocus {t : D.SecB 1 0} (h : IsPullTerm D φ w th t) {y : D.P.A.left}
     (hy : φ y ∈ nonzeroLocus th) : y ∈ nonzeroLocus t := by
@@ -264,13 +264,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Use `W.t.semi.geomConnected` as an intermediate fact. Take `⟨σ, fam, h₀, h₁, h₂, h₃, h₄, h₅⟩` from `exists_theta hG hS hI W.P.U th hth`. Use `⟨σ, fam, h₀, h₁, h₂, h₃, h₄, fun s r h => (h₅ s r h).1, ?_, fun w₂ hw₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[W.P.bundle]`. Take `⟨w₂, h, h', -⟩` from `W.m.lin`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w₂, h, h'⟩`. Establish `main : ∀ (V : Y.X.Opens) (s : ∀ j, Γ(Y.t.G.left, Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j)), ⊤ ≤ χ ⁻¹ᵁ V → s ∈ secOn Y.t.PP.L (Y.t.G.hom ⁻¹ᵁ V) → (∃! r : R, PullsToMul W.t.G.hom W.m.φ w₂ (Y.t.G.hom ⁻¹ᵁ V) s r σ) ∧ ∀ r : R, PullsToMul W.t.G.hom W.m.φ w₂ (Y.t.G.hom ⁻¹ᵁ V) s r σ → (IsUnit r ↔ …` using `fun V s hV hs => by`. Take `⟨s', hz, hp⟩` from `exists_pull_secOn hw₂ Y.t.PP.isLB W.P.U.LG.isLB (V := Y.t.G.hom ⁻¹ᵁ V) (fun y => (congrArg (fun q => q y ∈ V) W.m.cart.1.w).mpr (hV (x := W.t.G.hom y) trivial)) hs`. Use `⟨by simpa only [hp] using h₄ s', fun r hr => (h₅ s' r ((hp _ _ _ _).1 hr)).2.trans ⟨fun ⟨g, hg, hn⟩ => ?_, fun ⟨g, j, hg, hn⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `(hz g).1 hn`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, j, (congrArg (fun q => q g) W.m.cart.1.w).trans (congrArg χ hg), hj⟩`. Take `⟨g', rfl, hg'⟩` from `Scheme.exists_preimage_of_isPullback W.m.cart.1 g (closedPoint R) hg`. Conclude with `⟨g', hg', (hz g').2 ⟨j, hn⟩⟩`. Use `⟨main, fun hP => ⟨?_, fun V θ hV hθ => ?_⟩⟩` and prove the remaining obligations. Take `⟨V, hV, θ, hθ, hg, -⟩` from `hP (χ (closedPoint R))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, θ, (Scheme.preimage_eq_top_of_closedPoint_mem χ hV).ge, hθ, hg⟩`. Take `⟨⟨r, hr, -⟩, hu⟩` from `main V θ hV hθ.1`. Take `⟨v, rfl⟩` from `(hu r hr).2 (hθ.exists_mem_basicOpen hP (hV (x := closedPoint R) trivial))`. Conclude with `⟨v, hr⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_theta_arc (hG : GlobalFnsSt) (hS : SecBaseChangeSt) {Y : Model Xo c β} {O' : Type} [CommRing O']
     [IsDomain O'] {b : O →+* O'} {a : ArcIn D l β O' b} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
@@ -324,7 +324,7 @@ theorem exists_theta_arc (hG : GlobalFnsSt) (hS : SecBaseChangeSt) {Y : Model Xo
     exact ⟨v, hr⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_isPullTerm W.spec.2.1 a.D₀.P.isLB th₀`. Use `⟨⟨t, ht, fun t' h => h.unique a.D₀.P.isLB ht⟩, fun th h hn y => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀, hn₀⟩` from `hn (spMap f y)`. Take `⟨x, rfl, hx⟩` from `Scheme.exists_preimage_of_isPullback W.spec.1.1 x₀ y hx₀`. Conclude with `⟨x, hx, h.mem_nonzeroLocus hn₀⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_pullTerm {Y : Model Xo c β} {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
     {a : ArcIn D l β O' b} {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {f : O' →+* R} {u : R}
@@ -345,7 +345,7 @@ namespace GlobalTheory
 open GlobalTheory.ThetaUnit
 
 /- English proof (translation)
-Use `⟨exists_theta_arc hG hS ?_ W, existsUnique_pullTerm W⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, PowerSeries.constantCoeff_X]`. Conclude with `not_isUnit_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_generates_along_arc (hG : GlobalFnsSt) (hS : SecBaseChangeSt)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}

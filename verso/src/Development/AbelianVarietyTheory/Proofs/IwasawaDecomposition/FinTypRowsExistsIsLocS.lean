@@ -24,31 +24,25 @@ namespace GlobalTheory.RowLocalRows
 open Formalism.IndefR.principalLevelFrame
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨Φ, ⟨hΦe, hΦC⟩, hΦne⟩ : ∃ Φ : π.S →ₗ[ℂ] A, (IsEqvA ρ π Φ ∧ LinearMap.range Φ ≤ C) ∧ LinearMap.range Φ ≠ ⊥ := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Unfold `isotIn`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `iSup_eq_bot.2 fun Φ => iSup_eq_bot.2 fun hΦ => hcon Φ hΦ`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot]`. Set `S' : Submodule ℂ (GAf D.host.E n → ℂ)` to `(LinearMap.ker Φ).map π.S.subtype`. Establish `hS'le : S' ≤ π.S`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `f ⟨k, _, rfl⟩`. Conclude with `k.2`. Establish `hS'st : ∀ h, ∀ f ∈ S', NG.rt D.host.E n h f ∈ S'`. Introduce and unpack `h f ⟨k, hk, rfl⟩`. Use `⟨⟨NG.rt D.host.E n h k, π.stable h k k.2⟩, ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show Φ _ = 0`. Rewrite using `[hΦe h k, LinearMap.mem_ker.1 hk, map_zero]`. Break down `π.irr S' hS'le hS'st with h0 | hall` into its components or cases. Rewrite using `[eq_bot_iff]`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (k : GAf D.host.E n → ℂ) ∈ S'` using `⟨k, hk, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`. It suffices to derive a contradiction. Apply `hΦne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `a ⟨y, rfl⟩`. Establish `: (y : GAf D.host.E n → ℂ) ∈ S'` using `by rw [hall]; exact y.2`. Take `⟨k, hk, hky⟩` from `this`. Rewrite using `[show y = k from Subtype.ext hky.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(Submodule.mem_bot ℂ).2 (LinearMap.mem_ker.1 hk)`. Use `set F := Submodule.span ℂ {f | f ∈ π.S ∧ ∀ κ, NG.Cong D.host.E n N κ → NG.rt D.host.E n κ f = f} with hF`. Use `set T := Submodule.span ℂ {x | x ∈ C ∧ ∀ κ, NG.Cong D.host.E n N κ → ρ κ x = x} with hT`. Use `hadm N hN` as an intermediate fact. Establish `hFS : F ≤ π.S` using `Submodule.span_le.2 fun f hf => hf.1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Establish `hFT : ∀ f (hf : f ∈ F), Φ ⟨f, hFS hf⟩ ∈ T`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Use `Submodule.subset_span ⟨hΦC ⟨_, rfl⟩, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hΦe κ]`. Use `congr 1`. Conclude with `Subtype.ext (hx.2 κ hκ)`. Consider the case `zero`. Establish `: (⟨0, hFS F.zero_mem⟩ : π.S) = 0` using `rfl`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Conclude with `T.zero_mem`. Consider the case `add x y hx hy ihx ihy`. Establish `: (⟨x + y, hFS (F.add_mem hx hy)⟩ : π.S) = ⟨x, hFS hx⟩ + ⟨y, hFS hy⟩` using `rfl`. Rewrite using `[this, map_add]`.
-
-Conclude with `T.add_mem ihx ihy`. Consider the case `smul a x hx ih`. Establish `: (⟨a • x, hFS (F.smul_mem a hx)⟩ : π.S) = a • ⟨x, hFS hx⟩` using `rfl`. Rewrite using `[this, map_smul]`. Conclude with `T.smul_mem a ih`.
-
-Set `g : F →ₗ[ℂ] T` to `LinearMap.codRestrict T (Φ ∘ₗ Submodule.inclusion hFS) (fun f => hFT f f.2)`. Establish `hg : Function.Injective g`. Introduce `a b hab`. Establish `h1 : Φ (Submodule.inclusion hFS a) = Φ (Submodule.inclusion hFS b)` using `congrArg Subtype.val hab`. Conclude with `Submodule.inclusion_injective hFS (hinj h1)`.
-
-Conclude with `Module.Finite.of_injective g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixed_fd_of_isotIn {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A]
     (ρ : GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A)
@@ -124,21 +118,17 @@ section Conj
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Use `set S1 := Submodule.span ℂ {f | f ∈ π.S ∧ ∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f} with hS1`. Use `set S2 := Submodule.span ℂ {f | f ∈ (FinTyp.conjT π).S ∧ ∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f} with hS2`. Establish `hmap : ∀ f ∈ S1, (fun g => star (f g)) ∈ S2`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Use `Submodule.subset_span ⟨?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[conjT_S, mem_conjSub]`. Simplify using `using hx.1`. Rewrite using `[← conj_rt, hx.2 κ hκ]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `: (fun g => star ((0 : GAf L n → ℂ) g)) = 0`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `S2.zero_mem`. Consider the case `add x y _ _ hx hy`. Establish `: (fun g => star ((x + y) g)) = (fun g => star (x g)) + (fun g => star (y g))`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `S2.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: (fun g => star ((a • x) g)) = star a • (fun g => star (x g))`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[mul_comm]`. Rewrite using `[this]`. Conclude with `S2.smul_mem _ hx`. Set `c : S1 →ₗ[ℝ] S2` to `{ toFun := fun f => ⟨fun g => star ((f : GAf L n → ℂ) g), hmap f f.2⟩ map_add' := fun a b => Subtype.ext (funext fun g => by simp) map_smul' := fun r a => Subtype.ext (funext fun g => by simp) }`. Establish `hc : Function.Injective c`.
-
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `congrFun (congrArg Subtype.val hab) g` as an intermediate fact. Conclude with `star_injective this`.
-
-Use `haveI : FiniteDimensional ℝ S2 := Module.Finite.trans ℂ S2`. Use `haveI : FiniteDimensional ℝ S1 := Module.Finite.of_injective c hc`. Conclude with `Module.Finite.of_restrictScalars_finite ℝ ℂ S1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixed_fd_of_conjT (π : NG.FinTyp L n) (N : ℕ)
     (h : FiniteDimensional ℂ ↥(Submodule.span ℂ
@@ -187,19 +177,19 @@ theorem fixed_fd_of_conjT (π : NG.FinTyp L n) (N : ℕ)
   exact Module.Finite.of_restrictScalars_finite ℝ ℂ S1
 
 /- English proof (translation)
-Set `c : π.S → (FinTyp.conjT π).S` to `fun f => ⟨fun g => star ((f : GAf L n → ℂ) g), by rw [conjT_S, mem_conjSub]; simpa using f.2⟩`. Establish `hc : ∀ f : π.S, ((c f : (FinTyp.conjT π).S) : GAf L n → ℂ) = fun g => star ((f : GAf L n → ℂ) g)` using `fun _ => rfl`. Use `⟨fun x y => starRingEnd ℂ (B' (c x) (c y)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y z a`. Establish `e : c (y + a • z) = c y + (starRingEnd ℂ a) • c z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Simplify using `[hc, mul_comm]`. Simplify using `only`. Rewrite using `[e, hlin, map_add, map_mul, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Simplify using `only`. Rewrite using `[hherm (c x) (c y)]`. Introduce `x hx`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.conj_re]`. Apply `hpos` to reduce the goal to its premises. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Use `congrFun (congrArg Subtype.val h0) g` as an intermediate fact. Rewrite `this` using `[hc]`. Simplify using `using this`. Introduce `h x y x' y' hx hy`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Use `congr 1`. Apply `hinv h` to reduce the goal to its premises. Rewrite using `[hc, hc, hx]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc, hc, hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_of_conjT (π : NG.FinTyp L n) (B' : (FinTyp.conjT π).S → (FinTyp.conjT π).S → ℂ)
     (hlin : ∀ x y z (c : ℂ), B' x (y + c • z) = B' x y + c * B' x z)
@@ -256,17 +246,17 @@ open Formalism.IndefR.principalLevelFrame Formalism.IndefR.Mult
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hH hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP _ _ σ s`. Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)`. Use `set π := principalLevelFrame.rowRepR R.θ (Y.eFT σ) with hπ`. Establish `hne : isotIn (D` using `D) (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (FinTyp.conjT π) ≠ ⊥ := by`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb` to reduce the goal to its premises. Unfold `isotE isotL`. Rewrite using `[h, inf_bot_eq]`. Establish `hM` using `hP.char.base.models`. Establish `hθ : IsInfFam R.θ` using `hM.inf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSig : (Yc D 0).SigOK` using `D.sp.Y_sig 0`. Establish `hcc` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Establish `hfd : ∀ j, j < D.R.m → (R.νY A3.A.μ0 j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY A3.A.μ0 j) (R.νY A3.A.μ0 j)`. Introduce `j hj`. Distinguish the cases in `h : j + 1 < D.R.m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `hM.νY A3.A.μ0 j h` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Use `hM.νY' A3.A.μ0` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hHaar, hFD⟩` from `hfd 0 Y.hm`. Establish `hSA : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`. Establish `hHA : HCAll D` using `fun V _ S θ M J χ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ 0 ∅).1`. Take `⟨hlin, hherm, hpos⟩` from `GlobalTheory.FinTypesRows.minf_sesq (M := R.MY 0) (θ := R.θ) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0) Y.PY hSA hSig hθ hHaar hFD`. Take `⟨B', h1, h2, h3, h4⟩` from `GlobalTheory.finTyp_invariant_form_of_isotIn D D.R.r _ (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (ipM (R.MY 0) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0)) hlin hherm hpos (fun h x hx => GlobalTheory.FinTypesRows.minf_stable Y.PY hcc h hx) (fun h x hx y hy => GlobalTheory.T.schur_pair …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, k1, k2, k3, k4⟩` from `form_of_conjT π B' h1 h2 h3 h4`. Establish `hadm : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {x | x ∈ Minf R.θ Y.PY (R.MY 0) ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → actM Y.PY (R.MY 0) κ x = x})` using `fun N hN => GlobalTheory.FinTypesRows.minf_adm (M := R.MY 0) Y.PY hHA hSig hθ (GlobalTheory.FinTypesRows.levN_open Y.PY Y.stdPsi.1) N hN`. Establish `hfix : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ π.S ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → NG.rt D.host.E D.R.r κ f = f})` using `fun N hN => fixed_fd_of_conjT π N (fixed_fd_of_isotIn _ _ hadm _ hne N hN)`. Take `⟨W, hWS, hW0, hst, hirr⟩` from `GlobalTheory.T.exists_irreducible_subspace_trivialOutside_splitPlace D.host.E D.R.r π B k1 k2 k3 k4 hfix s`. Conclude with `GlobalTheory.RowLocal.isLocS_of_irr π s W hWS hW0 hst hirr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finTyp_rows_exists_isLocS : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (σ : D.what₂.FT) (s : SplitPlace D.host.E), ∃ τ, GlobalTheory.HeightCounting.IsLocS (principalLevelFrame.rowRepR R.θ (Y.eFT σ)).S s τ := by
   intro hH hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP _ _ σ s

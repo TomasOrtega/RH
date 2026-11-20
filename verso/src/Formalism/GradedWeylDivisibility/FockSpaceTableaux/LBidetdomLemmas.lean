@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `m hm`. Rewrite `hm` using `[Finset.prod_empty, mem_support_iff, coeff_one]`. Use `split_ifs at hm with h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[hF0]`. Conclude with `absurd rfl hm`. Consider the case `insert i s hi ih`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[Finset.prod_insert hi]`. Take `⟨a, ha, c, hc, rfl⟩` from `Finset.mem_add.mp (support_mul _ _ hm)`. Rewrite using `[hFa, Finset.sum_insert hi]`. Conclude with `Nat.add_le_add (hb i (mem_insert_self _ _) a ha) (ih (fun j hj => hb j (mem_insert_of_mem hj)) c hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_prod_le_of_additive {σ ι R : Type*} [CommSemiring R] [DecidableEq ι] [DecidableEq σ]
     (F : (σ →₀ ℕ) → ℕ) (hF0 : F 0 = 0) (hFa : ∀ a b, F (a + b) = F a + F b)
@@ -34,11 +34,11 @@ theorem support_prod_le_of_additive {σ ι R : Type*} [CommSemiring R] [Decidabl
       (ih (fun j hj => hb j (mem_insert_of_mem hj)) c hc)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `m hm`. Rewrite `hm` using `[Finset.prod_empty, mem_support_iff, coeff_one]`. Use `split_ifs at hm with h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[hF0]`. Conclude with `absurd rfl hm`. Consider the case `insert i s hi ih`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[Finset.prod_insert hi]`. Take `⟨a, ha, c, hc, rfl⟩` from `Finset.mem_add.mp (support_mul _ _ hm)`. Rewrite using `[hFa, Finset.sum_insert hi, hb i (mem_insert_self _ _) a ha, ih (fun j hj => hb j (mem_insert_of_mem hj)) c hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_prod_eq_of_additive {σ ι R : Type*} [CommSemiring R] [DecidableEq ι] [DecidableEq σ]
     (F : (σ →₀ ℕ) → ℕ) (hF0 : F 0 = 0) (hFa : ∀ a b, F (a + b) = F a + F b)
@@ -60,22 +60,22 @@ theorem support_prod_eq_of_additive {σ ι R : Type*} [CommSemiring R] [Decidabl
       ih (fun j hj => hb j (mem_insert_of_mem hj)) c hc]
 
 /- English proof (translation)
-Simplify using `[rowDeg, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDeg_add {r n : ℕ} (m m' : Fin r × Fin n →₀ ℕ) (a : Fin r) :
     rowDeg (m + m') a = rowDeg m a + rowDeg m' a := by
   simp [rowDeg, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[rowDeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDeg_zero {r n : ℕ} (a : Fin r) : rowDeg (0 : Fin r × Fin n →₀ ℕ) a = 0 := by
   simp [rowDeg]
 
 /- English proof (translation)
-Unfold `rowDeg`. Simplify using `only [Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDeg_single {r n : ℕ} (b a : Fin r) (s : Fin n) :
     rowDeg (Finsupp.single (b, s) 1) a = if b = a then 1 else 0 := by
@@ -90,20 +90,20 @@ def rowPart {r n : ℕ} (k : ℕ) (m : Fin r × Fin n →₀ ℕ) : ℕ :=
   ∑ a : Fin r with a.val < k, rowDeg m a
 
 /- English proof (translation)
-Simplify using `[rowPart, rowDeg_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowPart_zero {r n : ℕ} (k : ℕ) : rowPart k (0 : Fin r × Fin n →₀ ℕ) = 0 := by
   simp [rowPart, rowDeg_zero]
 
 /- English proof (translation)
-Simplify using `[rowPart, rowDeg_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowPart_add {r n : ℕ} (k : ℕ) (m m' : Fin r × Fin n →₀ ℕ) :
     rowPart k (m + m') = rowPart k m + rowPart k m' := by
   simp [rowPart, rowDeg_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `rowPart`. Simplify using `only [rowDeg_single]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowPart_single {r n : ℕ} (k : ℕ) (b : Fin r) (s : Fin n) :
     rowPart k (Finsupp.single (b, s) 1 : Fin r × Fin n →₀ ℕ) = if b.val < k then 1 else 0 := by
@@ -116,20 +116,20 @@ theorem rowPart_single {r n : ℕ} (k : ℕ) (b : Fin r) (s : Fin n) :
 def rowTot {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) : ℕ := ∑ a : Fin r, rowDeg m a
 
 /- English proof (translation)
-Simplify using `[rowTot, rowDeg_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowTot_zero {r n : ℕ} : rowTot (0 : Fin r × Fin n →₀ ℕ) = 0 := by
   simp [rowTot, rowDeg_zero]
 
 /- English proof (translation)
-Simplify using `[rowTot, rowDeg_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowTot_add {r n : ℕ} (m m' : Fin r × Fin n →₀ ℕ) :
     rowTot (m + m') = rowTot m + rowTot m' := by
   simp [rowTot, rowDeg_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `rowTot`. Simplify using `only [rowDeg_single]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowTot_single {r n : ℕ} (b : Fin r) (s : Fin n) :
     rowTot (Finsupp.single (b, s) 1 : Fin r × Fin n →₀ ℕ) = 1 := by
@@ -139,20 +139,20 @@ theorem rowTot_single {r n : ℕ} (b : Fin r) (s : Fin n) :
   simp
 
 /- English proof (translation)
-The claim follows from `support_monomial_subset`.
+A detailed English derivation is pending.
 -/
 theorem support_X_subset' {σ R : Type*} [CommSemiring R] (v : σ) :
     (X v : MvPolynomial σ R).support ⊆ {Finsupp.single v 1} :=
   support_monomial_subset
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `k`. Establish `h` using `support_prod_eq_of_additive (rowPart k) (rowPart_zero k) (rowPart_add k) Finset.univ (fun i : Fin s => (X (I (σ i), Fin.castLE hs i) : MvPolynomial (Fin r × Fin n) R)) (fun i => if (I (σ i)).val < k then 1 else 0) (by`. Introduce `i _ m' hm'`. Use `support_X_subset' (R := R) _ hm'` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality. Conclude with `rowPart_single k _ _) m hm`. Rewrite using `[h, Equiv.sum_comp σ (fun p => if (I p).val < k then 1 else 0), Finset.sum_boole]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `support_prod_eq_of_additive rowTot rowTot_zero rowTot_add Finset.univ (fun i : Fin s => (X (I (σ i), Fin.castLE hs i) : MvPolynomial (Fin r × Fin n) R)) (fun _ => 1) (by`. Introduce `i _ m' hm'`. Use `support_X_subset' (R := R) _ hm'` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rowTot_single _ _) m hm`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem initMinor_term_support {R : Type*} [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n)
     (σ : Equiv.Perm (Fin s)) (m : Fin r × Fin n →₀ ℕ)
@@ -184,19 +184,17 @@ theorem initMinor_term_support {R : Type*} [CommRing R] {r n s : ℕ} (I : Fin s
     rw [h]; simp
 
 /- English proof (translation)
-Distinguish the cases in `hI : Function.Injective I`. Unfold `initMinor at hm`. Rewrite `hm` using `[Matrix.det_apply]`. Establish `h1` using `support_sum hm`. Rewrite `h1` using `[Finset.mem_biUnion]`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨σ, -, hσ⟩` from `h1`. Rewrite `hσ` using `[Units.smul_def]`. Establish `hσ'` using `support_smul hσ`. Simplify using `only [Matrix.of_apply] at hσ'`. Take `⟨hp, ht⟩` from `initMinor_term_support I hs σ m hσ'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => ?_, ht⟩` and prove the remaining obligations. Rewrite using `[hp k]`. Use `le_min ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn I` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp'`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and] at hp' ⊢`. Conclude with `hp'`. Introduce `p _ q _ h`. Conclude with `hI h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. It suffices to derive a contradiction.
 
-Use `_ = min r k := Fin.card_filter_val_lt`. Use `_ ≤ k := min_le_right _ _`. Combine the equalities or inequalities in the displayed calculation. It suffices to derive a contradiction. Simplify using `only [Function.Injective, not_forall] at hI`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨p, q, hpq, hne⟩` from `hI`. Establish `h0 : initMinor R I hs = 0`. Unfold `initMinor`. Apply `Matrix.det_zero_of_row_eq hne` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
-
-Simplify using `[hpq]`. Rewrite `hm` using `[h0, support_zero]`. Conclude with `Finset.notMem_empty _ hm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initMinor_support {R : Type*} [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n)
     (m : Fin r × Fin n →₀ ℕ) (hm : m ∈ (initMinor R I hs).support) :
@@ -237,11 +235,11 @@ theorem initMinor_support {R : Type*} [CommRing R] {r n s : ℕ} (I : Fin s → 
     exact Finset.notMem_empty _ hm
 
 /- English proof (translation)
-Unfold `shapeDeg`. Repeatedly rewrite using `[Finset.card_filter]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k' _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_boole, Finset.filter_filter]`. Establish `e : #{t : Fin n | t.val < k ∧ t.val < sz k'} = #{t : Fin n | t.val < min k (sz k')}`. Use `congr 1`. Use extensionality with `t`. Simplify using `[lt_min_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.cast_id, e, Fin.card_filter_val_lt]`. Use `hsz k'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_min_eq_shapeDeg {n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (k : ℕ) :
     ∑ k' : Fin K, min k (sz k') = ∑ t : Fin n with t.val < k, shapeDeg sz t := by

@@ -50,15 +50,15 @@ def lastFib {m : ℕ} (C : Matrix (Fin (m + 1)) (Fin (m + 1)) K) : Submodule (�
   (lam C).comap (LinearMap.single (𝓞 K) (fun _ : Fin (m + 1) => K) (Fin.last m))
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : intVec K m = (⊤ : Submodule (𝓞 K) (Fin m → 𝓞 K)).map (LinearMap.compLeft (Algebra.linearMap (𝓞 K) K) (Fin m))`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, Submodule.mem_top, true_and]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hv choose o ho using hv`. Conclude with `⟨o, funext fun i => ho i⟩`. Introduce and unpack `⟨o, rfl⟩ i`. Conclude with `⟨o i, rfl⟩`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ i, v i • (Pi.single i (1 : K) : Fin m → K)`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : j = i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLat_intVec (m : ℕ) : IsLat (intVec K m) := by
   refine ⟨?_, ?_⟩

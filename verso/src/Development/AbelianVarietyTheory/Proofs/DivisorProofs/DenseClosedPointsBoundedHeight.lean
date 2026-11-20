@@ -13,11 +13,11 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo
 namespace GlobalTheory.CovHt
 
 /- English proof (translation)
-Introduce `_ _ D O hO c`. Establish `hamp` using `hO.ample_ab c`. Take `⟨x, P, h⟩` from `hO`. Establish `e` using `h.ab_eq`. Establish `hmod : ∃ (M : Model (O.var c)) (L : GlobalTheory.HermLB M.p) (q : ℕ+), (O.met.ab c).Induced M L q 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, L, q, hi, -⟩` from `P.ab_model c`. Conclude with `⟨M, L, q, e ▸ hi⟩`. Establish `hsm : ∀ σ, (cxSt D.what₂.LL).mSmooth (O.var c) σ (O.met.ab c).D ((O.met.ab c).m σ)`. Rewrite using `[e]`. Conclude with `P.ab_smooth c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, f, hU, hK⟩` from `GlobalTheory.T.regular_functions_bound_close_points _ _ _ (O.met.ab c) hamp hmod hsm`. Take `⟨S, hcl, hd, hreg, a, b, hb, hloc⟩` from `GlobalTheory.T.dense_points_regular_bounded_values _ (O.var c) N f hU`. Take `⟨K, hK'⟩` from `hK a b hb`. Conclude with `⟨S, hcl, hd, K, fun y hy => hK' y (hcl y hy) (hreg y hy) (hloc y hy).1 (hloc y hy).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem denseBoundedHtAb : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp,
     ∃ S : Set (O.var c).X, (∀ b ∈ S, IsClosed ({b} : Set (O.var c).X)) ∧ Dense S ∧

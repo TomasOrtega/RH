@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.GeometryOfNumber
 open scoped ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun a _ _ => Finsupp.equivFunOnFinite.symm a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _ ha`. Rewrite using `[MvPolynomial.mem_support_iff]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Simplify using `[h]`. Introduce `a _ _ b _ _ h`. Conclude with `Finsupp.equivFunOnFinite.symm.injective h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd hne`. Use `⟨Finsupp.equivFunOnFinite d, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`. Establish `h` using `hg (MvPolynomial.mem_support_iff.1 hd)`. Rewrite `h` using `[Finsupp.weight_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Finsupp.sum_fintype]`. Simplify using `using hne`. Simplify using the standard rewrite rules. Introduce `a _ _`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_eq_sum_adt {D N : ℕ} {S : Type*} [CommRing S] (g : MvPolynomial (Fin (D + 1)) ℤ)
     (hg : g.IsHomogeneous N) (y : Fin (D + 1) → S) :
@@ -47,7 +47,7 @@ theorem aeval_eq_sum_adt {D N : ℕ} {S : Type*} [CommRing S] (g : MvPolynomial 
     simp
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ w ∂(sphProb (D + 1)), sqN w = 1`. Rewrite using `[ae_iff]`. Conclude with `sphProb_compl_sphere D`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_sphProb_le {D : ℕ} (F : (Fin (D + 1) → ℂ) → ℝ) (hF0 : ∀ w, 0 ≤ F w) {B : ℝ}
     (hB : ∀ w, sqN w = 1 → F w ≤ B) : ∫ w, F w ∂(sphProb (D + 1)) ≤ B := by
@@ -67,7 +67,7 @@ def adtEnum (D N : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) 
   ((Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm i).1
 
 /- English proof (translation)
-Conclude with `(Fintype.sum_equiv (Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm _ (fun x => f x.1) fun _ => rfl).trans (Finset.sum_coe_sort _ f)`.
+A detailed English derivation is pending.
 -/
 theorem sum_adtEnum {M : Type*} [AddCommMonoid M] (D N : ℕ) (f : (Fin (D + 1) → ℕ) → M) :
     ∑ i, f (adtEnum D N i) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, f a := by
@@ -79,9 +79,9 @@ def monoDiag (D N δ : ℕ) : Matrix (Fin (δ * (Finset.Nat.antidiagonalTuple (D
   Matrix.diagonal fun p => ((monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2) : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[monoDiag, Matrix.posDef_diagonal_iff]`. Introduce `p`. Establish `h : 0 < monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)`. Unfold `monoNormSq`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem monoDiag_posDef (D N δ : ℕ) : (monoDiag D N δ).PosDef := by
   rw [monoDiag, Matrix.posDef_diagonal_iff]
@@ -92,11 +92,11 @@ theorem monoDiag_posDef (D N δ : ℕ) : (monoDiag D N δ).PosDef := by
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `hpos : ∀ a : Fin (D + 1) → ℕ, 0 < monoNormSq a` using `fun a => by`. Unfold `monoNormSq`. Check the signs of the components of the expression. Establish `hdet : (monoDiag D N δ).det.re = ∏ p : Fin (δ * (Finset.Nat.antidiagonalTuple (D + 1) N).card), monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)`. Rewrite using `[monoDiag, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, Real.log_prod fun p _ => (hpos _).ne']`. Rewrite using `[← finProdFinEquiv.sum_comp (fun p => Real.log (monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)))]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, sum_adtEnum D N (fun a => Real.log (monoNormSq a)), chiP]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neg_log_det_monoDiag (D N δ : ℕ) :
     -(1 / 2) * Real.log (monoDiag D N δ).det.re = δ * chiP D N := by

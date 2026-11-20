@@ -9,17 +9,17 @@ namespace LateralTheory.E.LeafKunEmptyPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `ModuleCat.isZero_iff_subsingleton.mp (Sheaf.isTerminalOfBotCover F U (Scheme.bot_mem_grothendieckTopology U)).isZero`.
+A detailed English derivation is pending.
 -/
 theorem sec_sub (F : Shv R) (U : Scheme.{0}) [IsEmpty U] : Subsingleton (Sec F U) :=
   ModuleCat.isZero_iff_subsingleton.mp (Sheaf.isTerminalOfBotCover F U (Scheme.bot_mem_grothendieckTopology U)).isZero
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `α β`. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `h : IsEmpty ((Opposite.unop U : Scheme.{0}) : Type)`. Use `haveI := hM _ h`. Conclude with `Subsingleton.elim _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsEmpty (Opposite.unop U ⟶ Z) := ⟨fun f => h ⟨fun y => isEmptyElim (f.base y)⟩⟩`. Establish `hs : Subsingleton (((freeP R).obj (yoneda.obj Z)).obj U)`. Express the relevant statement in the definitionally equal form `Subsingleton (ULift.{1} (Opposite.unop U ⟶ Z) →₀ ULift.{1} R)`. Use `infer_instance`. Rewrite using `[Subsingleton.elim x 0, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_freePresheaf_hom_of_isEmpty (Z : Scheme.{0}) [IsEmpty Z] (M : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R))
     (hM : ∀ U : Scheme.{0}, IsEmpty U → Subsingleton (M.obj (op U))) :
@@ -35,7 +35,7 @@ theorem subsingleton_freePresheaf_hom_of_isEmpty (Z : Scheme.{0}) [IsEmpty Z] (M
     rw [Subsingleton.elim x 0, map_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Establish `h1` using `subsingleton_freePresheaf_hom_of_isEmpty (R := R) Z ((sheafToPresheaf Scheme.etaleTopology _).obj ((free R).obj (yoneda.obj Z))) (fun U hU => by haveI := hU; exact sec_sub _ U)`. Apply `((sheafificationAdjunction Scheme.etaleTopology _).homEquiv ((freeP R).obj (yoneda.obj Z)) ((free R).obj (yoneda.obj Z))).injective` to reduce the goal to its premises. Conclude with `h1.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem free_zero (Z : Scheme.{0}) [IsEmpty Z] : IsZero ((free R).obj (yoneda.obj Z)) := by
   rw [IsZero.iff_id_eq_zero]
@@ -46,9 +46,7 @@ theorem free_zero (Z : Scheme.{0}) [IsEmpty Z] : IsZero ((free R).obj (yoneda.ob
   exact h1.elim _ _
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ j : ℕ, ComplexShape.embeddingDownNat.f j = p`. Take `⟨j, hj⟩` from `h`. Establish `hz : IsZero (((chainsN R).obj (sch.obj Z)).X j)` using `free_zero (R := R) Z`. Conclude with `hz.of_iso (HomologicalComplex.extendXIso ((chainsN R).obj (sch.obj Z)) ComplexShape.embeddingDownNat hj)`. Use `push Not at h`.
-
-Conclude with `HomologicalComplex.isZero_extend_X ((chainsN R).obj (sch.obj Z)) ComplexShape.embeddingDownNat p h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chains_zero (Z : Scheme.{0}) [IsEmpty Z] (p : ℤ) : IsZero (((chains R).obj (sch.obj Z)).X p) := by
   by_cases h : ∃ j : ℕ, ComplexShape.embeddingDownNat.f j = p
@@ -59,9 +57,9 @@ theorem chains_zero (Z : Scheme.{0}) [IsEmpty Z] (p : ℤ) : IsZero (((chains R)
     exact HomologicalComplex.isZero_extend_X ((chainsN R).obj (sch.obj Z)) ComplexShape.embeddingDownNat p h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨a, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective y`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Cocycle.ext` to reduce the goal to its premises. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Conclude with `(chains_zero (R := R) Z p).eq_of_src _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem H_sub (Z : Scheme.{0}) [IsEmpty Z] (F : Shv R) (n : ℤ) : Subsingleton (H R (sch.obj Z) F n) := by
   constructor; intro x y

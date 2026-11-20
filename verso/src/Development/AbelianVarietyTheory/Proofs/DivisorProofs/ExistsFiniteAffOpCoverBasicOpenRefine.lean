@@ -8,19 +8,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalCha
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _`. Establish `hB` using `X.isBasis_affineOpens`. Establish `hx : ∀ x : X, ∃ U' : X.Opens, IsAffineOpen U' ∧ x ∈ U'`. Introduce `x`. Take `⟨U', hU', hxU', -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp hB) (show x ∈ (⊤ : X.Opens) from trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U', hU', hxU'⟩`. Use `choose W₀ hW₀a hW₀x using hx`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : X => (W₀ x : Set X)) (fun x => (W₀ x).isOpen) (fun x _ => Set.mem_iUnion.mpr ⟨x, hW₀x x⟩)`. Use `⟨t, inferInstance, fun x => ⟨W₀ x.1, hW₀a x.1, ⟨⟨x.1, hW₀x x.1⟩⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `U`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcov : ∀ x : X, ∃ i : t, x ∈ W₀ i.1`. Introduce `x`. Take `⟨i, hi, hxi⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `⟨⟨i, hi⟩, hxi⟩`. Use `choose ix hix using hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ x : U.1, ∃ f : Γ(X, U.1), X.basicOpen f ≤ U.1 ⊓ W₀ (ix x.1).1 ∧ (x : X) ∈ X.basicOpen f`. Introduce `x`. Conclude with `U.2.1.exists_basicOpen_le (V := U.1 ⊓ W₀ (ix x.1).1) ⟨x.1, ⟨x.2, hix x.1⟩⟩ x.2`. Use `choose f hfle hfx using hf`. Take `⟨s, hs⟩` from `U.2.1.isCompact.elim_finite_subcover (fun x : U.1 => (X.basicOpen (f x) : Set X)) (fun x => (X.basicOpen (f x)).isOpen) (fun x hx => Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hfx ⟨x, hx⟩⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Set `e` to `s.equivFin`. Use `⟨s.card, fun k => f (e.symm k).1, fun k => ⟨X.basicOpen (f (e.symm k).1), U.2.1.basicOpen _, ⟨⟨(e.symm k).1.1, hfx _⟩⟩⟩, ?_, fun k => ⟨rfl, ⟨ix (e.symm k).1.1, le_trans (hfle _) inf_le_right⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← U.2.1.iSup_basicOpen_eq_self_iff]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup_le fun g => X.basicOpen_le g.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hxU`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.mp (hs hxU)`. Establish `: (x : X) ∈ ((⨆ g : Set.range (fun k => f (e.symm k).1), X.basicOpen (g : Γ(X, U.1)) : X.Opens) : Set X)`. Rewrite using `[TopologicalSpace.Opens.coe_iSup]`. Use `Set.mem_iUnion.mpr ⟨⟨f y, ⟨e ⟨y, hy⟩, by simp⟩⟩, hxy⟩` and prove the remaining obligations.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_affOp_cover_basicOpen_refine :
     ∀ (X : Scheme.{0}) [IsIntegral X] [CompactSpace X], ∃ (ι : Type) (_ : Finite ι) (W : ι → AffOp X), ∀ U : AffOp X, ∃ (m : ℕ) (a : Fin m → Γ(X, U.1)) (V : Fin m → AffOp X), Ideal.span (Set.range a) = ⊤ ∧ ∀ k, (V k).1 = X.basicOpen (a k) ∧ ∃ i, (V k).1 ≤ (W i).1 := by

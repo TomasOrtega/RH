@@ -16,7 +16,7 @@ open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTh
 namespace GlobalTheory.USep.Coef
 
 /- English proof (translation)
-Establish `h1 : f ((v ^ n : Vˣ) : V) = ((Units.map f.toMonoidHom (v ^ n) : Kˣ) : K)` using `rfl`. Rewrite using `[h1, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_units_zpow {V K : Type} [CommRing V] [Field K] (f : V →+* K) (v : Vˣ) (n : ℤ) :
     f ((v ^ n : Vˣ) : V) = f v ^ n := by
@@ -25,19 +25,17 @@ theorem ev_units_zpow {V K : Type} [CommRing V] [Field K] (f : V →+* K) (v : V
   rfl
 
 /- English proof (translation)
-Introduce `N₁ hN V₁ _ _ _ hV hunit D hpe htb X C _ e u mo hmo hT K _ _ ev k₀ hk₀ τ₀ m N s ε hs hτ hmo2 W₀ _ ib hB hib mu c`. Take `⟨θ, b, t, χt, s₀, G, hθ, hb, ht, hχt, hs₀, hG, hGf⟩` from `GlobalTheory.T.integral_squaredThetaTerms_torusCoordinates N₁ hN V₁ hV hunit D hpe htb X C e u mo hmo hT τ₀ m N s ε hs hτ hmo2`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.T.integral_expression_values_at_descended_point N₁ hN V₁ hV hunit D X C e τ₀ θ hθ b hb t ht χt hχt G hGf K ev k₀ hk₀ W₀ ib hB hib`. Take `⟨-, -, -, -, -, -, -, -, -, c₀, hc₀⟩` from `hT`. Establish `hc₀' : u 0 c₀ * mo 0 = 1` using `hc₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm0 : mo 0 ^ 2 = 1`. Establish `h` using `hmo2 0`. Simplify using `only [map_zero, LinearMap.map_zero₂, zpow_zero, Finset.prod_const_one] at h`. Conclude with `IsFractionRing.injective V₁ (FractionRing V₁) (by simpa using h)`. Establish `hu0 : u 0 c₀ ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (· ^ 2) hc₀'`. Simplify `h` using `only [mul_pow, hm0, _root_.mul_one, one_pow]`. Establish `hP0 : ((∏ k, (hs k).unit ^ ε (.inr k) (e 0) (e 0) : V₁ˣ) : V₁) = 1`. Simplify using `only [map_zero, LinearMap.map_zero₂, zpow_zero, Finset.prod_const_one, Units.val_one]`. Establish `h0 : s₀ = G 0 c₀`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hG 0 c₀`. Rewrite `h` using `[hu0, _root_.one_mul, hP0, _root_.one_mul]`. Conclude with `h`. Take `⟨r₀, hr₀, e₀⟩` from `hΛ 0 c₀`. Take `⟨r, hr, e₁⟩` from `hΛ mu c`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev0 : ev s₀ ≠ 0` using `(hs₀.map ev).ne_zero`. Establish `hΛr₀ : Λ * r₀ ≠ 0` using `by rw [← e₀, ← h0]; exact hev0`. Establish `hr₀0 : r₀ ≠ 0` using `right_ne_zero_of_mul hΛr₀`. Establish `hΛ0 : Λ ≠ 0` using `left_ne_zero_of_mul hΛr₀`. Use `⟨r / r₀, k₀.div_mem hr hr₀, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg ev (hG mu c)`. Rewrite `h` using `[map_mul, map_mul, map_pow, e₁, h0, e₀, Units.coe_prod, map_prod]`. Simplify using `only [ev_units_zpow, IsUnit.unit_spec] at h`. Clear the denominators using the available nonvanishing facts. Apply `mul_left_cancel₀ hΛ0` to reduce the goal to its premises.
-
-Take the linear combination `h`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coef_sq_mem_monomial : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁), D.PsiEven → D.TauBimult → ∀ (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁), (∀ mu, mo mu ≠ 0 ∧ ∃ c, IsUnit (u mu c)) → GlobalTheory.Poinc.Sep.IsThetaTerms D N₁ e (fun mu c => u mu c * mo mu) → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → ∀ (τ₀ : GlobalTheory.UChart.Gens D) (m N : ℕ) (s : Fin m ⊕ Fin N → V₁) (ε : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ D.X), (∀ k, IsUnit (s (.inr k))) → GlobalTheory.UChart.TauIn D τ₀ (fun k => s (finSumFinEquiv.symm k)) (fun k => ε (finSumFinEquiv.symm k)) → (∀ mu, algebraMap V₁ (FractionRing V₁) (mo mu) ^ 2 = ∏ k, algebraMap V₁ (FractionRing V₁) (s (.inl k)) ^ ε (.inl k) (e mu) (e mu)) → ∀ (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁), GlobalTheory.UChart.FromBase D τ₀ ib → (∀ a, ev (ib a) ∈ k₀) → ∀ mu c, ∃ r ∈ k₀, ev (u mu c) ^ 2 = r * ∏ k, ev (s (.inr k)) ^ ε (.inr k) (e mu) (e mu) := by
   intro N₁ hN V₁ _ _ _ hV hunit D hpe htb X C _ e u mo hmo hT K _ _ ev k₀ hk₀ τ₀ m N s ε hs hτ hmo2 W₀ _ ib hB hib mu c

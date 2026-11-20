@@ -18,12 +18,12 @@ def OS : Submodule (v.adicCompletionIntegers F) (Fv F v ⊗[F] E) :=
     ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_OEv (x : Fv F v ⊗[F] E) : x ∈ OEv (E := E) v ↔ x ∈ OS (E := E) v := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[sc, Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mul (a b : Fv F v) : sc (E := E) v (a * b) = sc (E := E) v a * sc (E := E) v b := by
   simp [sc, Algebra.TensorProduct.tmul_mul_tmul]
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem sc_one : sc (E := E) v (1 : Fv F v) = 1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sc, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => rw [mul_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sc_mul_eq_smul (c : Fv F v) (x : Fv F v ⊗[F] E) : sc (E := E) v c * x = c • x := by
   induction x using TensorProduct.induction_on with
@@ -43,7 +43,7 @@ theorem sc_mul_eq_smul (c : Fv F v) (x : Fv F v ⊗[F] E) : sc (E := E) v c * x 
   | add x y hx hy => rw [mul_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_OEv]`. Rewrite using `[sc_mul_eq_smul]`. Use `(OS (E := E) v).smul_mem (⟨c, hc⟩ : v.adicCompletionIntegers F) hx` as an intermediate fact. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sc_mul_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {x : Fv F v ⊗[F] E}
     (hx : x ∈ OEv (E := E) v) : sc (E := E) v c * x ∈ OEv (E := E) v := by
@@ -53,17 +53,15 @@ theorem sc_mul_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {x : Fv 
   exact this
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) (v := v)).mpr hc`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one_mem {c : Fv F v} (hc : Valued.v c ≤ 1) : c ∈ v.adicCompletionIntegers F :=
   (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) (v := v)).mpr hc
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`. Conclude with `zero_ne_one hc`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hi : Valued.v c⁻¹ ≤ 1` using `by rw [map_inv₀, hc, inv_one]`. Use `sc_mul_mem (E := E) v (val_le_one_mem v hi) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← sc_mul, inv_mul_cancel₀ hc0, sc_one, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
-
-Conclude with `sc_mul_mem (E := E) v (val_le_one_mem v hc.le) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unit_mul_mem_iff {c : Fv F v} (hc : Valued.v c = 1) (x : Fv F v ⊗[F] E) :
     sc (E := E) v c * x ∈ OEv (E := E) v ↔ x ∈ OEv (E := E) v := by
@@ -78,7 +76,7 @@ theorem unit_mul_mem_iff {c : Fv F v} (hc : Valued.v c = 1) (x : Fv F v ⊗[F] E
     exact sc_mul_mem (E := E) v (val_le_one_mem v hc.le) h
 
 /- English proof (translation)
-Unfold `alp`. Use `split_ifs`. Rewrite using `[map_pow, map_inv₀, hd, inv_one, one_pow]`. Conclude with `map_one _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_alp (hd : Valued.v (dV v) = 1) (r : ℕ) (a : Fin (r + 1)) : Valued.v (alp v r a) = 1 := by
   unfold alp
@@ -87,18 +85,18 @@ theorem val_alp (hd : Valued.v (dV v) = 1) (r : ℕ) (a : Fin (r + 1)) : Valued.
   · exact map_one _
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.mpr hg`.
+A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero {g : ℕ} (hg : g ≠ 0) : (g : Fv F v) ≠ 0 := Nat.cast_ne_zero.mpr hg
 
 /- English proof (translation)
-The claim follows from `_root_.natCast_mem (v.adicCompletionIntegers F) g`.
+A detailed English derivation is pending.
 -/
 theorem natCast_memO (g : ℕ) : (g : Fv F v) ∈ v.adicCompletionIntegers F :=
   _root_.natCast_mem (v.adicCompletionIntegers F) g
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_lt_absNorm : 1 < Ideal.absNorm v.asIdeal := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
@@ -106,9 +104,9 @@ theorem one_lt_absNorm : 1 < Ideal.absNorm v.asIdeal := by
   omega
 
 /- English proof (translation)
-Unfold `absV at h`. Use `split_ifs at h with h0`. Conclude with `absurd h zero_ne_one`. Establish `hN : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast one_lt_absNorm v`. Establish `hk : Multiplicative.toAdd (WithZero.unzero h0) = 0` using `(zpow_eq_one_iff_right₀ (by positivity) hN.ne').mp h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : WithZero.unzero h0 = 1`. Rewrite using `[← ofAdd_toAdd (WithZero.unzero h0), hk, ofAdd_zero]`. Rewrite using `[← WithZero.coe_unzero h0, hu, WithZero.coe_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_absV {x : Fv F v} (h : absV v x = 1) : Valued.v x = 1 := by
   unfold absV at h
@@ -126,19 +124,17 @@ end VolTU
 open VolTU in
 
 /- English proof (translation)
-Establish `key : ∀ (q : UIdx r) (y : Fv F v ⊗[F] E), sc (E` using `E) v ((alp v r q.1.1)⁻¹ * alp v r q.1.2) * y ∈ OEv (E := E) v ↔ y ∈ OEv (E := E) v := by`. Introduce `q y`. Apply `unit_mul_mem_iff` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv₀, val_alp v hd, val_alp v hd, inv_one, one_mul]`. Establish `e : ∀ (a b : Fv F v) (y : Fv F v ⊗[F] E), sc (E` using `E) v (a * b * (g : Fv F v)⁻¹) * y = sc (E := E) v (a * b) * (sc (E := E) v (g : Fv F v)⁻¹ * y) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b y`. Rewrite using `[sc_mul, mul_assoc]`. Establish `hg0` using `natCast_ne_zero v hg`. Establish `hgO` using `natCast_memO v g`. Establish `sw : ∀ y : Fv F v ⊗[F] E, y * sc (E` using `E) v (g : Fv F v)⁻¹ ∈ OS (E := E) v ↔ sc (E := E) v (g : Fv F v)⁻¹ * (-y) ∈ OS (E := E) v := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[mul_neg, Submodule.neg_mem_iff, mul_comm]`. Use extensionality with `p`. Simplify using `only [deepCongruenceVolume, VolTUSet, UO, Set.mem_setOf_eq, e, key]`. Simplify using `only [mem_OEv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[sw, neg_sub]`. Conclude with `h3 q`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h3⟩`. Establish `h3' : ∀ q, sc (E` using `E) v (g : Fv F v)⁻¹ * (p.1 q - p.2 q) ∈ OS (E := E) v := fun q => by`. Rewrite using `[← neg_sub, ← sw]`. Conclude with `h3 q`. Use `⟨h1, fun q => ?_, h3'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(OS (E := E) v).smul_mem (⟨(g : Fv F v), hgO⟩ : v.adicCompletionIntegers F) (h3' q)`. Establish `h5 : p.1 q - p.2 q ∈ OS (E` using `E) v := by`. Establish `h6 : (g : Fv F v) • (sc (E` using `E) v (g : Fv F v)⁻¹ * (p.1 q - p.2 q)) ∈ OS (E := E) v := h4`. Rewrite `h6` using `[← sc_mul_eq_smul, ← mul_assoc, ← sc_mul, mul_inv_cancel₀ hg0, sc_one, one_mul]`. Then use the resulting hypothesis. Establish `h7 : p.2 q = p.1 q - (p.1 q - p.2 q)` using `by abel`.
-
-Rewrite using `[h7]`. Conclude with `(OS (E := E) v).sub_mem (h1 q) h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volTUOEq_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (hd : Valued.v (dV v) = 1) {g : ℕ} (hg : g ≠ 0) (r : ℕ) :

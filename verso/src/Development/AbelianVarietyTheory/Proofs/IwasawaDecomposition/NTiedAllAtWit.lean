@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Introduce `hL p K q`. Take `⟨I, hE, hG, hC⟩` from `q.x.good.tw`. Establish `hch` using `q.core.a.chr_eq`. Establish `hc : Formalism.L2.NChoiceTied (q.w.D q.Z) q.O.ex.nch I (Formalism.L2.avDesign (q.w.D q.Z))`. Establish `c` using `q.core.a.all.choice`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact { twI_conj := c.twI_conj, sd_place := c.sd_place, emb_side := c.emb_side, sd_conj := c.sd_conj, one := c.one, good := fun w hw h => hC w hw h, conj := c.conj }`. Consider the case `exact { twI_conj := c.twI_conj, sd_place := c.sd_place, emb_side := c.emb_side, sd_conj := c.sd_conj, one := c.one, conj := c.conj }`. Use `⟨I, { q.core.a.all with choice := hc }, hE, hG, hch, rfl, rfl, rfl, rfl, rfl, HEq.rfl, HEq.rfl, rfl⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nTiedAll_atWit : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL) (K : Ctx) (q : WPt p.s K), ∃ (I : TwIn (q.w.D q.Z)) (n : Formalism.L2.NormalizedTwistCompatibility (q.w.D q.Z) q.O.ex.nch I), I.E = twEOf q.O.ex.xd ∧ DQ.GoodAllAt (q.w.D q.Z) q.O.ex.nch I ∧ (⟨n.cf, n.tp⟩ : Σ c : CharFrame (q.w.D q.Z), TupTied (q.w.D q.Z) c q.O.ex.nch) = ⟨TC.cf q.w.I q.w.l q.Z, q.x.n.tp⟩ ∧ n.gal = q.core.a.all.gal ∧ n.n = q.core.a.all.n ∧ n.exp = q.core.a.all.exp ∧ n.chiD = q.core.a.all.chiD ∧ n.twF = q.core.a.all.twF ∧ HEq n.types q.core.a.all.types ∧ HEq n.cover q.core.a.all.cover ∧ n.plB = q.core.a.all.plB := by
   intro hL p K q

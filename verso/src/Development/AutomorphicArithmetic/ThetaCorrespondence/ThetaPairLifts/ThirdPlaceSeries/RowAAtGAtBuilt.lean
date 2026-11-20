@@ -8,9 +8,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
 namespace GlobalTheory.Fc
 /- English proof (translation)
-Use `⟨fun _ _ _ _ _ => True, largeBaseProperty_true, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.holds_at_bundlePoints_of_trueColumns _ Lk fun K X f T c h => ?_` and prove the remaining obligations. Use `positionOf_mono (P := GoodE 𝒮) ?_ K X f T c h.1` and prove the remaining obligations. Introduce and unpack `K B f T w Z c ⟨⟨b, -⟩, -⟩`. Use `⟨(GlobalTheory.Svd.builtC_hasPart 𝒮).1 K B f T w Z c ⟨b⟩, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : RX K B f T w Z c.Wt c.O.p0 b.what₂` using `hR ▸ b.rx`. Conclude with `GlobalTheory.T.rowFormsMatchPeriodMap_of_furtherProperties K B f T w Z c.Wt c.O.p0 b.what₂ hx a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_aAtG_at_built_alt (𝒮 : Slots) (hR : 𝒮.Rx = RX) (Lk : LkT _root_.GlobalTheory.Fc.BundleCondition) :
     Lg1 KPx (IsBuiltE 𝒮) (IsGoodE 𝒮) fun S => AllBundlePointProperties.ArithmeticConditionAtBundlePoints S Lk := by

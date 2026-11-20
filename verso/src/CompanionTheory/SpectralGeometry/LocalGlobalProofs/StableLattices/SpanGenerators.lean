@@ -16,9 +16,9 @@ section general
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Lie at *`. Establish `h1 : Pᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, hQP, conjTranspose_one]`. Establish `c1 : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Pᴴ * (Qᴴ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `c2 : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Q * (P * Z) = Z` using `fun Z => by`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Establish `: (P * X * Q)ᴴ * A + A * (P * X * Q) = Qᴴ * (Xᴴ * B + B * X) * Q`. Rewrite using `[← hQ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul, c1, c2]`. Rewrite using `[this, hX, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_conj {A B P Q X : Matrix (Fin n) (Fin n) ℂ} (hQ : Qᴴ * B * Q = A) (hQP : Q * P = 1)
     (hX : Lie B X) : Lie A (P * X * Q) := by
@@ -34,7 +34,7 @@ theorem lie_conj {A B P Q X : Matrix (Fin n) (Fin n) ℂ} (hQ : Qᴴ * B * Q = A
   rw [this, hX, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Unfold `Lie at *`. Establish `: (X - Y)ᴴ * A + A * (X - Y) = (Xᴴ * A + A * X) - (Yᴴ * A + A * Y)`. Rewrite using `[conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hX, hY, sub_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_sub {A X Y : Matrix (Fin n) (Fin n) ℂ} (hX : Lie A X) (hY : Lie A Y) : Lie A (X - Y) := by
   unfold Lie at *
@@ -43,7 +43,7 @@ theorem lie_sub {A X Y : Matrix (Fin n) (Fin n) ℂ} (hX : Lie A X) (hY : Lie A 
   rw [this, hX, hY, sub_zero]
 
 /- English proof (translation)
-Unfold `Lie at *`. Establish `: (X + Y)ᴴ * A + A * (X + Y) = (Xᴴ * A + A * X) + (Yᴴ * A + A * Y)`. Rewrite using `[conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hX, hY, add_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_add {A X Y : Matrix (Fin n) (Fin n) ℂ} (hX : Lie A X) (hY : Lie A Y) : Lie A (X + Y) := by
   unfold Lie at *
@@ -59,7 +59,7 @@ def pr (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if outer k r i then ⟨2 * r + k - i.val, by omega⟩ else i
 
 /- English proof (translation)
-Unfold `pr`. Distinguish the cases in `h : outer k r i`. Rewrite using `[if_pos h, if_pos (show i.val ≤ r ∨ r + k ≤ i.val from h)]`. Rewrite using `[if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_val (i : Fin (2 * r + k + 1)) :
     (pr k r i).val = if i.val ≤ r ∨ r + k ≤ i.val then 2 * r + k - i.val else i.val := by
@@ -69,7 +69,7 @@ theorem pr_val (i : Fin (2 * r + k + 1)) :
   · rw [if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Use `i.isLt` as an intermediate fact. Simplify using `only [pr_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_pr (i : Fin (2 * r + k + 1)) : pr k r (pr k r i) = i := by
   apply Fin.ext
@@ -78,7 +78,7 @@ theorem pr_pr (i : Fin (2 * r + k + 1)) : pr k r (pr k r i) = i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Simplify using `only [Hq, outer, Fin.ext_iff, pr_val]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hq_apply (i j : Fin (2 * r + k + 1)) : Hq k r i j = if j = pr k r i then 1 else 0 := by
   have := i.isLt
@@ -86,7 +86,7 @@ theorem hq_apply (i j : Fin (2 * r + k + 1)) : Hq k r i j = if j = pr k r i then
   split_ifs <;> first | omega | rfl
 
 /- English proof (translation)
-Rewrite using `[hq_apply]`. Use `if_congr ⟨fun h => ?_, fun h => ?_⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[h, pr_pr]`. Rewrite using `[h, pr_pr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hq_apply' (i j : Fin (2 * r + k + 1)) : Hq k r i j = if i = pr k r j then 1 else 0 := by
   rw [hq_apply]
@@ -95,9 +95,9 @@ theorem hq_apply' (i j : Fin (2 * r + k + 1)) : Hq k r i j = if i = pr k r j the
   · rw [h, pr_pr]
 
 /- English proof (translation)
-Establish `h : ∀ i j, (Xᴴ * Hq k r + Hq k r * X) i j = star (X (pr k r j) i) + X (pr k r i) j`. Introduce `i j`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Use `congr 1`. Simplify using `[hq_apply' _ j, conjTranspose_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[hq_apply i]`. Unfold `Lie`. Rewrite using `[← Matrix.ext_iff]`. Simplify using `only [h, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lie_hq_iff (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Lie (Hq k r) X ↔ ∀ i j, star (X (pr k r j) i) + X (pr k r i) j = 0 := by
@@ -115,19 +115,19 @@ def mask {n : ℕ} (p : Fin n → Fin n → Prop) (X : Matrix (Fin n) (Fin n) �
   fun i j => by classical exact if p i j then X i j else 0
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem mask_pos {n : ℕ} {p : Fin n → Fin n → Prop} {X : Matrix (Fin n) (Fin n) ℂ} {i j : Fin n} (h : p i j) :
     mask p X i j = X i j := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem mask_neg {n : ℕ} {p : Fin n → Fin n → Prop} {X : Matrix (Fin n) (Fin n) ℂ} {i j : Fin n} (h : ¬ p i j) :
     mask p X i j = 0 := if_neg h
 
 /- English proof (translation)
-Rewrite `*` using `[lie_hq_iff]`. Introduce `i j`. Distinguish the cases in `h : p (pr k r j) i`. Rewrite using `[mask_pos h, mask_pos (hp i j h), hX]`. Rewrite using `[mask_neg h, mask_neg (fun h' => h (hp j i h'))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -141,7 +141,7 @@ theorem lie_mask {p : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Prop}
   · rw [mask_neg h, mask_neg (fun h' => h (hp j i h'))]; simp
 
 /- English proof (translation)
-Rewrite `*` using `[lie_hq_iff]`. Introduce `i j`. Conclude with `hX (pr k r i) (pr k r j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lie_swap {X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hX : Lie (Hq k r) X) : Lie (Hq k r) (X.submatrix (pr k r) (pr k r)) := by
@@ -150,7 +150,7 @@ theorem lie_swap {X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   exact hX (pr k r i) (pr k r j)
 
 /- English proof (translation)
-Unfold `Lie`. Rewrite using `[conjTranspose_smul, conjTranspose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, ← add_smul, ha, zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_scalar {a : ℂ} (ha : star a + a = 0) : Lie (Hq k r) (a • (1 : Matrix (Fin (2 * r + k + 1)) _ ℂ)) := by
   unfold Lie
@@ -161,7 +161,7 @@ def blk (k r : ℕ) (i j : Fin (2 * r + k + 1)) : Prop :=
   (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [up, outer, Fin.lt_def, pr_val] at *`. Apply the tactic sequence `split_ifs at * <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_pr (i j : Fin (2 * r + k + 1)) (h : up k r (pr k r j) i) : up k r (pr k r i) j := by
   have := i.isLt
@@ -170,7 +170,7 @@ theorem up_pr (i j : Fin (2 * r + k + 1)) (h : up k r (pr k r j) i) : up k r (pr
   split_ifs at * <;> omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [blk, pr_val] at *`. Apply the tactic sequence `split_ifs at * <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_pr (i j : Fin (2 * r + k + 1)) : blk k r (pr k r j) i ↔ blk k r (pr k r i) j := by
   have := i.isLt
@@ -179,27 +179,25 @@ theorem blk_pr (i j : Fin (2 * r + k + 1)) : blk k r (pr k r j) i ↔ blk k r (p
   split_ifs at * <;> omega
 
 /- English proof (translation)
-Establish `p0 : pr k r (wI k r 0) = wI k r (Fin.last k)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[pr_val, wI]`. Use linear arithmetic over natural numbers and integers. Establish `p1 : pr k r (wI k r (Fin.last k)) = wI k r 0` using `by rw [← p0, pr_pr]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set a := Y (wI k r 0) (wI k r (Fin.last k)) with ha`. Establish `ha' : star a + a = 0`. Use `(lie_hq_iff Y).1 hY (wI k r (Fin.last k)) (wI k r (Fin.last k))` as an intermediate fact. Rewrite `this` using `[p1]`. Then use the resulting hypothesis. Use `set U := mask (up k r) Y with hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lU : Lie (Hq k r) U` using `lie_mask up_pr hY`. Use `set B := mask (blk k r) (U + U.submatrix (pr k r) (pr k r) + a • 1) with hB`. Establish `lB : Lie (Hq k r) B` using `lie_mask (fun i j => (blk_pr i j).1) (lie_add (lie_add lU (lie_swap lU)) (lie_scalar ha'))`. Use `set A := mask (fun i j => up k r i j ∧ ¬ blk k r i j) Y with hA`. Establish `lA : Lie (Hq k r) A` using `lie_mask (fun i j h => ⟨up_pr i j h.1, fun h' => h.2 ((blk_pr i j).2 h')⟩) hY`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨B, A, Y - B - A, lB, lA, lie_sub (lie_sub hY lB) lA, fun i j h => mask_neg h, fun i => ?_, fun i j h => mask_neg h, fun i j h => ?_, by abel⟩` and prove the remaining obligations. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Establish `b0 : blk k r i (wI k r 0)` using `⟨hi, by simp [wI]⟩`. Establish `b1 : blk k r i (wI k r (Fin.last k))` using `⟨hi, by simp [wI]⟩`. Establish `u0 : ∀ l : Fin (2 * r + k + 1), r ≤ l.val → U l (wI k r 0) = 0` using `fun l hl => mask_neg (by simp only [up, wI, Fin.lt_def, Fin.val_zero]; omega)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hpi : r ≤ (pr k r i).val := by rw [pr_val]; split_ifs <;> omega`. Establish `ud : U (wI k r (Fin.last k)) (wI k r (Fin.last k)) = 0` using `mask_neg (by simp [up])`. Establish `ua : U (wI k r 0) (wI k r (Fin.last k)) = a` using `mask_pos (by simp only [up, outer, wI, Fin.lt_def, Fin.val_zero, Fin.val_last]; omega)`. Establish `hne : wI k r 0 ≠ wI k r (Fin.last k)`. Simplify using `only [wI, Ne, Fin.ext_iff, Fin.val_zero, Fin.val_last]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hB, mask_pos b0, mask_pos b1]`. Simplify using `only [Matrix.add_apply, submatrix_apply, p0, p1, u0 i hi.1, u0 _ hpi, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `h0 : i = wI k r 0`. Rewrite using `[h0, p0, ud, ua]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`. Distinguish the cases in `h1 : i = wI k r (Fin.last k)`. Rewrite using `[h1, p1, ud, ua]`. Simplify using `[hne.symm]`. Establish `: pr k r i = i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [wI, Fin.ext_iff, Fin.val_zero, Fin.val_last] at h0 h1`. Rewrite using `[pr_val, if_neg (by omega)]`. Rewrite using `[this]`. Simplify using `[h0, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hB, mask_neg (fun h => hi h.1), mask_neg (fun h => hi h.1)]`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply]`. Distinguish the cases in `hb : blk k r i j`. Establish `h2 : ¬ up k r (pr k r i) (pr k r j)`. Simplify using `only [up, blk, outer, Fin.lt_def, pr_val] at *`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at * <;> omega`. Rewrite using `[hA, mask_neg (fun h' => h'.2 hb), hB, mask_pos hb]`. Simplify using `only [Matrix.add_apply, submatrix_apply, Matrix.smul_apply, hU, mask_pos h, mask_neg h2, Matrix.one_apply_ne (ne_of_lt h.1)]`. Simplify using the standard rewrite rules. Rewrite using `[hA, mask_pos ⟨h, hb⟩, hB, mask_neg hb]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_hq (hk : 1 ≤ k) {Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hY : Lie (Hq k r) Y) :
     ∃ B A C : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ,
@@ -259,27 +257,27 @@ theorem span_hq (hk : 1 ≤ k) {Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k
     · rw [hA, mask_pos ⟨h, hb⟩, hB, mask_neg hb]; simp
 
 /- English proof (translation)
-Introduce `k r z P hk hΓ Y hY`. Take `⟨hP, hf, ρ, -, hz⟩` from `hΓ`. Take `⟨Q, hPQ, hQP⟩` from `iso_exists_inv hP hq_sq`. Establish `hQ` using `iso_inv hP hPQ`. Establish `hinv : P⁻¹ = Q` using `Matrix.inv_eq_right_inv hPQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bP` using `block_of_fix hP (fun a => ⟨hpk_e a, hpk_es a⟩) (fun a => ⟨hq_e a, hq_es a⟩) hf`. Establish `bQ` using `block_of_fix hQ (fun a => ⟨hq_e a, hq_es a⟩) (fun a => ⟨hpk_e a, hpk_es a⟩) (fun a => ⟨fix_inv hQP (hf a).1, fix_inv hQP (hf a).2⟩)`. Take `⟨B, A, C, lB, lA, lC, hB, hB0, hA, hC, e⟩` from `span_hq hk (lie_conj hP hPQ hY)`. Establish `col : ∀ j : Fin (2 * r + k + 1), (j.val < r ∨ r + k < j.val) → B *ᵥ bvec j = 0`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Simplify using `only [bvec, mulVec_single_one, Matrix.col_apply, Pi.zero_apply]`. Conclude with `hB i j (fun h => by have := h.2; omega)`. Establish `key : ∀ i j, (P * A * Q) i j = ∑ p, ∑ l, P i l * A l p * Q p j`. Introduce `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `⟨P * B * Q, P * A * Q, P * C * Q, ⟨lie_conj hQ hQP lB, fun a => ⟨?_, ?_⟩, ?_⟩, ⟨lie_conj hQ hQP lA, fun a i hi => ?_, fun i j hj1 hj2 hi => ?_⟩, ⟨lie_conj hQ hQP lC, fun i j h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, fix_inv hQP (hf a).1, col _ (Or.inl a.isLt), mulVec_zero]`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, fix_inv hQP (hf a).2, col _ (Or.inr (by have := a.isLt; simp only [esI]; omega)), mulVec_zero]`. Establish `: B *ᵥ (bvec (wI k r 0) - bvec (wI k r (Fin.last k))) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `only [mulVec_sub, bvec, mulVec_single_one, Matrix.col_apply, Pi.zero_apply, Pi.sub_apply, hB0 i, sub_self]`. Rewrite using `[hz, mulVec_smul, mulVec_mulVec, Matrix.mul_assoc, hQP, Matrix.mul_one, ← mulVec_mulVec, this, mulVec_zero, smul_zero]`. Rewrite using `[key]`. Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha` using `a.isLt`. Distinguish the cases in `hp : p = eI k r a`. Substitute `hp` using the available equality. Distinguish the cases in `hl : a.val ≤ l.val`. Rewrite using `[hA l _ (fun h => by have := h.1.1; simp only [eI, Fin.lt_def] at this; omega)]; simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: i ≠ l` using `by rintro rfl; exact hl hi`. Rewrite using `[(bP l (Or.inl (by omega)) i).1, if_neg this]; simp`. Rewrite using `[(bQ (eI k r a) (Or.inl ha) p).1, if_neg hp]`. Simplify using the standard rewrite rules. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p.val < r ∨ r + k < p.val`. Establish `: j ≠ p` using `by rintro rfl; omega`. Rewrite using `[(bQ p hp j).2, if_neg this]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : r ≤ l.val`. Rewrite using `[hA l p (fun h => h.2 (by have := h.1.1; simp only [blk, Fin.lt_def] at *; omega))]; simp`. Establish `: i ≠ l` using `by rintro rfl; exact hl hi`. Rewrite using `[(bP l (Or.inl (by omega)) i).1, if_neg this]; simp`. Establish `: P⁻¹ * (P * C * Q) * P = C`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hQP, Matrix.one_mul, Matrix.mul_assoc, hQP, Matrix.mul_one]`. Rewrite using `[this]`. Conclude with `hC i j h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.add_mul, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.mul_add, ← e]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hPQ, Matrix.one_mul, Matrix.mul_assoc, hPQ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanG : SpanG := by
   intro k r z P hk hΓ Y hY

@@ -17,7 +17,7 @@ open LinearMap (lsmul)
 def Z1 : Submodule R (M × M) := LinearMap.ker ((lsmul R M s).coprod (lsmul R M t))
 
 /- English proof (translation)
-Simplify using `[Z1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Z1_iff_cocycle {z : M × M} : z ∈ Z1 s t ↔ s • z.1 + t • z.2 = 0 := by
   simp [Z1]
@@ -97,11 +97,11 @@ theorem gK_mk (z : Z1 (M := M) s t) :
     gK s t (Submodule.Quotient.mk z) = cK s t z := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[fK_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ((bd s t y : Z1 (M` using `M) s t) : M × M) = ((a : M), 0) := by rw [hy, iK_coe]`. Rewrite `h0` using `[bd_coe]`. Establish `h1 : t • y = (a : M)` using `congrArg Prod.fst h0`. Establish `h2 : -(s • y) = 0` using `congrArg Prod.snd h0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨y, by simpa using h2⟩, Subtype.ext h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem fK_inj : Function.Injective (fK (M := M) s t) := by
   rw [injective_iff_map_eq_zero]
@@ -117,11 +117,11 @@ theorem fK_inj : Function.Injective (fK (M := M) s t) := by
   exact ⟨⟨y, by simpa using h2⟩, Subtype.ext h1⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨y, hy⟩`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h1 : t • (Submodule.Quotient.mk b : M ⧸ LinearMap.range (lsmul R M s)) = 0` using `hy`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨a, ha⟩` from `h1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ha' : s • a = t • b` using `ha`. Use `⟨Submodule.Quotient.mk ⟨(-a, b), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Z1_iff_cocycle]`. Simplify using `[ha']`. Rewrite using `[gK_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem gK_surj : Function.Surjective (gK (M := M) s t) := by
   rintro ⟨y, hy⟩
@@ -135,15 +135,15 @@ theorem gK_surj : Function.Surjective (gK (M := M) s t) := by
   · rw [gK_mk]; exact Subtype.ext rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[gK_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Submodule.Quotient.mk z.1.2 : M ⧸ LinearMap.range (lsmul R M s)) = 0`. Rewrite using `[← cK_coe, h]`. Both sides reduce to the same expression. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨y0, hy0⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy0' : s • y0 = z.1.2` using `hy0`. Establish `hz` using `(mem_Z1_iff_cocycle s t).1 z.2`. Establish `ha : s • (z.1.1 + t • y0) = 0`. Rewrite using `[smul_add, smul_comm s t y0, hy0', hz]`. Use `⟨Submodule.Quotient.mk ⟨z.1.1 + t • y0, by simpa using ha⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fK_mk, Submodule.Quotient.eq]`. Use `⟨y0, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[bd_coe, Submodule.coe_sub, iK_coe, hy0']`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp`. Introduce and unpack `⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hx]`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[fK_mk, gK_mk]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[cK_coe, iK_coe]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -281,38 +281,38 @@ variable {F G : GMod B R k} (h : DirectSum.IsInternal F.gr)
 include h
 
 /- English proof (translation)
-The claim follows from `SetLike.coe_mem _`.
+A detailed English derivation is pending.
 -/
 theorem cmp_mem (m : Deg k) (x : F.M) : cmp h m x ∈ F.gr m := SetLike.coe_mem _
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `DirectSum.decompose_of_mem_same _ hx`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cmp_same {m : Deg k} {x : F.M} (hx : x ∈ F.gr m) : cmp h m x = x := by
   let _ := h.chooseDecomposition
   exact DirectSum.decompose_of_mem_same _ hx
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `DirectSum.decompose_of_mem_ne _ hx hne`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cmp_ne {m m' : Deg k} {x : F.M} (hx : x ∈ F.gr m') (hne : m' ≠ m) : cmp h m x = 0 := by
   let _ := h.chooseDecomposition
   exact DirectSum.decompose_of_mem_ne _ hx hne
 
 /- English proof (translation)
-The claim follows from `cmp_same h (F.gr m).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem cmp_zero (m : Deg k) : cmp h m 0 = 0 := cmp_same h (F.gr m).zero_mem
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Simplify using `[cmp, DirectSum.decompose_add]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 -/
 theorem cmp_add (m : Deg k) (x y : F.M) : cmp h m (x + y) = cmp h m x + cmp h m y := by
   let _ := h.chooseDecomposition
   simp [cmp, DirectSum.decompose_add]
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Rewrite using `[← DirectSum.sum_support_decompose F.gr x]`. Conclude with `sum_mem (fun m _ => hx m)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_cmp (S : AddSubmonoid F.M) {x : F.M} (hx : ∀ m, cmp h m x ∈ S) : x ∈ S := by
   classical
@@ -321,9 +321,9 @@ theorem mem_of_cmp (S : AddSubmonoid F.M) {x : F.M} (hx : ∀ m, cmp h m x ∈ S
   exact sum_mem (fun m _ => hx m)
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ i, F.gr i` using `h.submodule_iSup_eq_top ▸ Submodule.mem_top`. Use `Submodule.iSup_induction F.gr (motive := fun x => cmp hG m (φ x) = φ (cmp h m x)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Distinguish the cases in `hi : i = m`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[cmp_same h hx, cmp_same hG (hφ _ _ hx)]`. Rewrite using `[cmp_ne h hx hi, cmp_ne hG (hφ _ _ hx) hi, map_zero]`. Rewrite using `[map_zero, cmp_zero, cmp_zero, map_zero]`. Introduce `x y hx hy`. Rewrite using `[map_add, cmp_add, cmp_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_map (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (hφ : IsGrMap φ)
     (m : Deg k) (x : F.M) : cmp hG m (φ x) = φ (cmp h m x) := by
@@ -340,9 +340,9 @@ theorem cmp_map (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (hφ :
     rw [map_add, cmp_add, cmp_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Conclude with `hφ m x`. Introduce `hx`. Establish `hx' : φ x ∈ G.gr m` using `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: cmp h m x = x` using `inj (by rw [← cmp_map h hG φ hφ, cmp_same hG hx'])`. Rewrite using `[← this]`. Conclude with `cmp_mem h m x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_of_inj (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (hφ : IsGrMap φ)
     (inj : Function.Injective φ) (m : Deg k) :
@@ -357,9 +357,9 @@ theorem comap_of_inj (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (
     exact cmp_mem h m x
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, rfl⟩` from `surj y`. Use `⟨cmp h m x, cmp_mem h m x, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show φ (cmp h m x) = φ x`. Rewrite using `[← cmp_map h hG φ hφ, cmp_same hG hy]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hφ m x hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_of_surj (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (hφ : IsGrMap φ)
     (surj : Function.Surjective φ) (m : Deg k) :
@@ -375,7 +375,7 @@ theorem map_of_surj (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (h
     exact hφ m x hx
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 fun x hx => hx.1)` and prove the remaining obligations. Introduce `x hx`. Use `mem_of_cmp h (Submodule.span R _).toAddSubmonoid (fun m => Submodule.subset_span ?_)` and prove the remaining obligations. Use `⟨?_, m, cmp_mem h m x⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, ← cmp_map h hG φ hφ, LinearMap.mem_ker.1 hx, cmp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHomSub_ker (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (hφ : IsGrMap φ) :
     F.IsHomSub (LinearMap.ker φ) := by
@@ -386,7 +386,7 @@ theorem isHomSub_ker (hG : DirectSum.IsInternal G.gr) (φ : F.M →ₗ[R] G.M) (
   rw [LinearMap.mem_ker, ← cmp_map h hG φ hφ, LinearMap.mem_ker.1 hx, cmp_zero]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 fun x hx => hx.1)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `mem_of_cmp h ((Submodule.span R _).comap φ).toAddSubmonoid (fun m => Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨⟨_, rfl⟩, m, hφ _ _ (cmp_mem h m x)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem isHomSub_range (φ : F.M →ₗ[R] G.M) (hφ : IsGrMap φ) :
     G.IsHomSub (LinearMap.range φ) := by
@@ -421,17 +421,15 @@ def gprod (F G : GMod B R k) : GMod B R k where
   gr m := (F.gr m).prod (G.gr m)
 
 /- English proof (translation)
-Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s v hv h0 i hi`. Establish `h1` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero _).1 hP.submodule_iSupIndep s (fun i => (v i).1) (fun i hi => (hv i hi).1) (by rw [← Prod.fst_sum, h0]; rfl) i hi`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero _).1 hP'.submodule_iSupIndep s (fun i => (v i).2) (fun i hi => (hv i hi).2) (by rw [← Prod.snd_sum, h0]; rfl) i hi`. Conclude with `Prod.ext h1 h2`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, b⟩ -`. Establish `ha : ((a, 0) : M × M') ∈ ⨆ i, (P i).prod (P' i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : a ∈ ⨆ i, P i` using `hP.submodule_iSup_eq_top ▸ Submodule.mem_top`. Use `Submodule.iSup_induction P (motive := fun a => ((a, 0) : M × M') ∈ ⨆ i, (P i).prod (P' i)) h ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Conclude with `Submodule.mem_iSup_of_mem i ⟨hx, zero_mem _⟩`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x y hx hy`. Use `add_mem hx hy` as an intermediate fact. Simplify using `using this`. Establish `hb : ((0, b) : M × M') ∈ ⨆ i, (P i).prod (P' i)`. Establish `h : b ∈ ⨆ i, P' i` using `hP'.submodule_iSup_eq_top ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.iSup_induction P' (motive := fun b => ((0, b) : M × M') ∈ ⨆ i, (P i).prod (P' i)) h ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Conclude with `Submodule.mem_iSup_of_mem i ⟨zero_mem _, hx⟩`. Conclude with `zero_mem _`. Introduce `x y hx hy`.
-
-Use `add_mem hx hy` as an intermediate fact. Simplify using `using this`. Use `add_mem ha hb` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem internal_prod' {ι A M M' : Type} [DecidableEq ι] [CommRing A] [AddCommGroup M]
     [AddCommGroup M'] [Module A M] [Module A M'] (P : ι → Submodule A M) (P' : ι → Submodule A M')
@@ -474,14 +472,14 @@ theorem internal_prod' {ι A M M' : Type} [DecidableEq ι] [CommRing A] [AddComm
     simpa using this
 
 /- English proof (translation)
-The claim follows from `internal_prod' F.gr G.gr hF hG`.
+A detailed English derivation is pending.
 -/
 theorem internal_prod {F G : GMod B R k} (hF : DirectSum.IsInternal F.gr)
     (hG : DirectSum.IsInternal G.gr) : DirectSum.IsInternal (gprod F G).gr :=
   internal_prod' F.gr G.gr hF hG
 
 /- English proof (translation)
-Introduce `ha hx` and use `⟨hF.smul_mem ha hx.1, hG.smul_mem ha hx.2⟩ internal := internal_prod hF.internal hG.internal fin := by have := hF.fin have := hG.fin exact Module.Finite.prod`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isGr_prod (𝒜 : Deg k → Submodule B R) {F G : GMod B R k} (hF : F.IsGr 𝒜) (hG : G.IsGr 𝒜) :
     (gprod F G).IsGr 𝒜 where
@@ -493,7 +491,7 @@ theorem isGr_prod (𝒜 : Deg k → Submodule B R) {F G : GMod B R k} (hF : F.Is
     exact Module.Finite.prod
 
 /- English proof (translation)
-Unfold `secs`. Use `congr 1`. Use extensionality with `s`. Use `show (∃ d, (d, s) ∈ ts) ↔ (∃ d, (d, s) ∈ ts')`. Simplify using `only [hp.mem_iff]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secs_perm {ts ts' : List (Deg k × R)} (hp : ts.Perm ts') : secs ts = secs ts' := by
   unfold secs
@@ -503,9 +501,9 @@ theorem secs_perm {ts ts' : List (Deg k × R)} (hp : ts.Perm ts') : secs ts = se
   simp only [hp.mem_iff]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Use `⟨N, hN.trans (sup_le (hJ.trans le_sup_left) ?_)⟩` and prove the remaining obligations. Rewrite using `[secs, Ideal.span_le]`. Introduce and unpack `x ⟨d0, hx⟩`. Break down `List.mem_cons.1 hx with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hxs : x = s` using `(Prod.mk.inj h).2`. Rewrite using `[hxs]`. Conclude with `Ideal.mem_sup_left hs`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨d0, h⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_tail_of_cons_mem [IsLocalRing B] (𝒜 : Deg k → Submodule B R) {d : Deg k} {s : R}
     {l : List (Deg k × R)} {J J' : Ideal R} (h : admitted 𝒜 ((d, s) :: l) J) (hJ : J ≤ J')
@@ -521,9 +519,9 @@ theorem admissible_tail_of_cons_mem [IsLocalRing B] (𝒜 : Deg k → Submodule 
   · exact Ideal.mem_sup_right (Ideal.subset_span ⟨d0, h⟩)
 
 /- English proof (translation)
-Introduce `r hr`. Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `show Submodule.Quotient.mk (r • x) = 0`. Rewrite using `[Module.mem_annihilator.1 hr x]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
   intro r hr
@@ -534,7 +532,7 @@ theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
   rfl
 
 /- English proof (translation)
-Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem self_mem_quot (F : GMod B R k) (s : R) : s ∈ (F.quot s).Ann := by
   refine Module.mem_annihilator.2 (fun y => ?_)
@@ -542,7 +540,7 @@ theorem self_mem_quot (F : GMod B R k) (s : R) : s ∈ (F.quot s).Ann := by
   exact (Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩
 
 /- English proof (translation)
-Introduce `r hr`. Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (Module.mem_annihilator.1 hr y.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ann_le_ann (F : GMod B R k) (s : R) (d : Deg k) : F.Ann ≤ (F.ann s d).Ann := by
   intro r hr
@@ -550,7 +548,7 @@ theorem ann_le_ann (F : GMod B R k) (s : R) (d : Deg k) : F.Ann ≤ (F.ann s d).
   exact Subtype.ext (Module.mem_annihilator.1 hr y.1)
 
 /- English proof (translation)
-Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (LinearMap.mem_ker.1 y.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem self_mem_ann (F : GMod B R k) (s : R) (d : Deg k) : s ∈ (F.ann s d).Ann := by
   refine Module.mem_annihilator.2 (fun y => ?_)
@@ -576,9 +574,9 @@ theorem koszul_homology_eq (F : GMod B R k) (s t : R) (d d' : Deg k) :
       (B1 (M := F.M) s t) := rfl
 
 /- English proof (translation)
-Introduce `r hr`. Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hz : r • z = 0` using `Subtype.ext (Prod.ext (Module.mem_annihilator.1 hr z.1.1) (Module.mem_annihilator.1 hr z.1.2))`. Use `show Submodule.Quotient.mk (r • z) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ann_le_koszul_ann (F : GMod B R k) (s t : R) (d d' : Deg k) : F.Ann ≤ (H1 F s t d d').Ann := by
   intro r hr
@@ -591,11 +589,9 @@ theorem ann_le_koszul_ann (F : GMod B R k) (s t : R) (d d' : Deg k) : F.Ann ≤ 
   rfl
 
 /- English proof (translation)
-Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨-z.1.2, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hz` using `(mem_Z1_iff_cocycle s t).1 z.2`. Rewrite using `[bd_coe]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show t • (-z.1.2) = s • z.1.1`. Rewrite using `[smul_neg, neg_eq_iff_add_eq_zero, add_comm]`. Conclude with `hz`. Use `show -(s • (-z.1.2)) = s • z.1.2`.
-
-Rewrite using `[smul_neg, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_mem_koszul_ann (F : GMod B R k) (s t : R) (d d' : Deg k) : s ∈ (H1 F s t d d').Ann := by
   refine Module.mem_annihilator.2 (fun y => ?_)
@@ -610,9 +606,9 @@ theorem fst_mem_koszul_ann (F : GMod B R k) (s t : R) (d d' : Deg k) : s ∈ (H1
     rw [smul_neg, neg_neg]
 
 /- English proof (translation)
-Use `Module.mem_annihilator.2 (fun y => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨z.1.1, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hz` using `(mem_Z1_iff_cocycle s t).1 z.2`. Rewrite using `[bd_coe]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show -(s • z.1.1) = t • z.1.2`. Rewrite using `[neg_eq_iff_add_eq_zero]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_mem_annihilator_H1 (F : GMod B R k) (s t : R) (d d' : Deg k) : t ∈ (H1 F s t d d').Ann := by
   refine Module.mem_annihilator.2 (fun y => ?_)
@@ -631,13 +627,13 @@ section Main
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `hsh` using `(hGr k X F hF).2.1`. Establish `hK : (gprod (F.shift d) (F.shift d')).IsGr X.𝒜` using `isGr_prod X.𝒜 (hsh d) (hsh d')`. Establish `hZ : (gprod (F.shift d) (F.shift d')).IsHomSub (Z1 (M` using `F.M) s t) := isHomSub_ker (F := gprod (F.shift d) (F.shift d')) (G := F) hK.internal hF.internal ((LinearMap.lsmul X.R F.M s).coprod (LinearMap.lsmul X.R F.M t)) (by`. Introduce and unpack `m ⟨a, b⟩ ⟨ha, hb⟩`. Establish `h1 : s • a ∈ F.gr (d + (m - d))` using `hF.smul_mem hs ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : t • b ∈ F.gr (d' + (m - d'))` using `hF.smul_mem ht hb`. Rewrite `h1`, `h2` using `[add_sub_cancel]`. Conclude with `add_mem h1 h2)`. Establish `hKZ` using `((hGr k X _ hK).1 _ hZ).1`. Establish `hB : ((gprod (F.shift d) (F.shift d')).sub (Z1 (M` using `F.M) s t)).IsHomSub (B1 (M := F.M) s t) := isHomSub_range (F := F.shift (d + d')) (G := (gprod (F.shift d) (F.shift d')).sub (Z1 (M := F.M) s t)) (hsh (d + d')).internal (bd (M := F.M) s t) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m x hx`. Establish `hx' : x ∈ F.gr (m - (d + d'))` using `hx`. Establish `h1 : t • x ∈ F.gr (d' + (m - (d + d')))` using `hF.smul_mem ht hx'`. Establish `h2 : s • x ∈ F.gr (d + (m - (d + d')))` using `hF.smul_mem hs hx'`. Establish `e1 : d' + (m - (d + d')) = m - d` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : d + (m - (d + d')) = m - d'` using `by abel`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Conclude with `⟨h1, neg_mem h2⟩)`. Conclude with `((hGr k X _ hKZ).1 _ hB).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem koszul_homology_isGraded (hGr : RuleGr) (X : HidaSetting k) (F : X.Mod) (hF : F.IsGr X.𝒜) {s t : X.R}
     {d d' : Deg k} (hs : s ∈ X.𝒜 d) (ht : t ∈ X.𝒜 d') : (H1 F s t d d').IsGr X.𝒜 := by
@@ -714,9 +710,9 @@ def isoAA (hGr : RuleGr) (X : HidaSetting k) (F : X.Mod) (hF : F.IsGr X.𝒜) {s
       exact hx')
 
 /- English proof (translation)
-Establish `hA1 : admitted X.𝒜 l (H1 F s t d d').Ann` using `admissible_tail_of_cons_mem X.𝒜 (admissible_tail_of_cons_mem X.𝒜 hA (ann_le_koszul_ann F s t d d') (fst_mem_koszul_ann F s t d d')) le_rfl (snd_mem_annihilator_H1 F s t d d')`. Establish `hA2 : admitted X.𝒜 l (H1 F t s d' d).Ann` using `admissible_tail_of_cons_mem X.𝒜 (admissible_tail_of_cons_mem X.𝒜 hA (ann_le_koszul_ann F t s d' d) (snd_mem_annihilator_H1 F t s d' d)) le_rfl (fst_mem_koszul_ann F t s d' d)`. Establish `e1` using `hE1 k X l _ _ _ hl ((hGr k X _ ((hGr k X F hF).2.2 d s hs).2).2.2 d' t ht).1 (koszul_homology_isGraded hGr X F hF hs ht) ((hGr k X _ ((hGr k X F hF).2.2 d s hs).1).2.2 d' t ht).2 (sesK hGr X F hF hs ht) hA1`. Establish `e2` using `hE1 k X l _ _ _ hl ((hGr k X _ ((hGr k X F hF).2.2 d' t ht).2).2.2 d s hs).1 (koszul_homology_isGraded hGr X F hF ht hs) ((hGr k X _ ((hGr k X F hF).2.2 d' t ht).1).2.2 d s hs).2 (sesK hGr X F hF ht hs) hA2`. Use `filter_upwards [e1, e2] with m h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `hIso k X l _ _ (isoH hGr X F hF hs ht) m`. Establish `i2` using `hIso k X l _ _ (isoQQ hGr X F hF hs ht) m`. Establish `i3` using `hIso k X l _ _ (isoAA hGr X F hF hs ht) m`. Simplify using `only [chi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem swap_eq (hGr : RuleGr) (hIso : RuleIso) (hE1 : EulerAdditivityExactSequence) (X : HidaSetting k)
     (l : List (Deg k × X.R)) (F : X.Mod) (hF : F.IsGr X.𝒜) {s t : X.R} {d d' : Deg k}
@@ -755,17 +751,17 @@ section Main
 open E2
 
 /- English proof (translation)
-Introduce `hGr _ hIso hE1 k X ts ts' F hV hp`. Proceed by induction on `hp generalizing F with`. Consider the case `nil => intro _ _`. Conclude with `Eventually.of_forall (fun _ => rfl)`. Consider the case `cons x hp ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, s⟩` from `x`. Introduce `hF hA`. Establish `hs : s ∈ X.𝒜 d` using `(hV (d, s) (List.mem_cons_self ..)).2`. Establish `hl : Valid X.𝒜 _` using `fun p hp' => hV p (List.mem_cons_of_mem _ hp')`. Establish `hq` using `(hGr k X F hF).2.2 d s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `ih (F.quot s) hl hq.1 (admissible_tail_of_cons_mem X.𝒜 hA (ann_le_quot F s) (self_mem_quot F s))`. Establish `e2` using `ih (F.ann s d) hl hq.2 (admissible_tail_of_cons_mem X.𝒜 hA (ann_le_ann F s d) (self_mem_ann F s d))`. Use `filter_upwards [e1, e2] with m h1 h2`. Simplify using `only [chi, h1, h2]`. Consider the case `swap x y l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d', t⟩` from `x`. Take `⟨d, s⟩` from `y`. Introduce `hF hA`. Establish `hs : s ∈ X.𝒜 d` using `(hV (d, s) (List.mem_cons_self ..)).2`. Establish `ht : t ∈ X.𝒜 d'` using `(hV (d', t) (List.mem_cons_of_mem _ (List.mem_cons_self ..))).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hl : Valid X.𝒜 l` using `fun p hp' => hV p (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hp'))`. Conclude with `swap_eq hGr hIso hE1 X l F hF hs ht hl hA`. Consider the case `@trans l₁ l₂ l₃ hp1 hp2 ih1 ih2`. Introduce `hF hA`. Establish `hV2 : Valid X.𝒜 l₂` using `fun p hp' => hV p (hp1.mem_iff.2 hp')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hA2 : admitted X.𝒜 l₂ F.Ann`. Take `⟨N, hN⟩` from `hA`. Conclude with `⟨N, by rw [← secs_perm hp1]; exact hN⟩`. Use `filter_upwards [ih1 F hV hF hA, ih2 F hV2 hF hA2] with m h1 h2`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_rule_two_of_graded_finite_iso : RuleGr → RuleFin → RuleIso → EulerAdditivityExactSequence → EulerIndependenceOfOrder := by
   intro hGr _ hIso hE1 k X ts ts' F hV hp

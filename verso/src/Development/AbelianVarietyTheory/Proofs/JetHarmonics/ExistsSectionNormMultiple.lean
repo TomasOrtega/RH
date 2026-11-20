@@ -16,13 +16,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.GeneratorsCompare
 namespace GlobalTheory.RigPullExists
 
 /- English proof (translation)
-Establish `h1` using `h.pull (snd T G).left`. Rewrite `h1` using `[← fsum_comp]`. Take `⟨X0, hX0⟩` from `h1.gen Lr.isLB (K' := Fin 2) ![(snd T G).left, (snd T G ≫ f).left] ![N, -k] (by`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Conclude with `(Category.comp_id _).symm`. Use the proof step `rfl)`. Establish `ha : eSec G ≫ f.left = eSec G`. Simplify using `only [eSec, ← Over.comp_left, IsMonHom.one_hom]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : (ptSecT G (1 : T ⟶ G)).left ≫ (snd T G).left = T.hom ≫ eSec G` using `NormTheta.ptSec_snd`. Establish `hu' : (ptSecT G (1 : T ⟶ G)).left ≫ (snd T G ≫ f).left = T.hom ≫ eSec G`. Rewrite using `[Over.comp_left, ← Category.assoc, hu, Category.assoc]`. Conclude with `congrArg (T.hom ≫ ·) ha`. Take `⟨α, hα, hn⟩` from `exists_normalized_to Lr.isLB _ _ X0 hX0 (fst T G).left (ptSecT G (1 : T ⟶ G)).left NormTheta.ptSec_fst _ _ _ (NormTheta.rigT_isGen (T := T) Lr.rigGen (N - k)) (by`.
-
-Simplify using `only [fsum, Fin.sum_univ_two, Fin.sum_univ_one, Matrix.cons_val_zero, Matrix.cons_val_one, hu, hu', ← Finsupp.single_add, sub_eq_add_neg])`. Take `⟨σ₁, hσ⟩` from `VVRank.exists_isTwistPull G (ψ := T ◁ f) (hm := whiskerLeft_snd _ _) Lr.isLB hα σ`. Conclude with `⟨σ₁, α, hα, hn, hσ⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isRigPull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) (f : G ⟶ G)
     [IsMonHom f] (k N : ℤ)
@@ -50,9 +48,7 @@ theorem exists_isRigPull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj 
   exact ⟨σ₁, α, hα, hn, hσ⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ E _ _ _ H t P F _ _ a N hN _ k σ`. Use `letI := H.starRing`. Use `haveI := t.act.hom a`. Use `exists_isRigPull P.U.LG (t.act.act a) _ _ ?_ σ` and prove the remaining obligations. Rewrite using `[P.bundle]`.
-
-Conclude with `PullGenG.hasGen_pull t.PP t.cub t.act.toRingAct H.w0 a N hN (t.adj a) t.prim k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (F : Type) [Field F] [Algebra (FractionRing V) F], letI := H.starRing; ∀ (a : 𝓞 E) (N : ℕ), a * star a = (N : 𝓞 E) → 0 < N → ∀ (k : ℕ) (σ : LB.Sec (LPow t.G P.U.LG.L (k : ℤ) (TF (R := V) F))), ∃ σ₁ : LB.Sec (LPow t.G P.U.LG.L ((k * N : ℕ) : ℤ) (TF (R := V) F)), RigidNormaliserGenerators.IsRigPull t.G P.U.LG (t.act.act a) (k : ℤ) ((k * N : ℕ) : ℤ) σ σ₁ := by
   intro V _ _ _ E _ _ _ H t P F _ _ a N hN _ k σ

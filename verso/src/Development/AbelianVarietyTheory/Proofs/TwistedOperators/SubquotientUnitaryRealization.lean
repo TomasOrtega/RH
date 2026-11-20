@@ -26,7 +26,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {X : Type} [NormedAddCommGroup X] [Inne
 def sqSpace (Z Y : Submodule ℂ X) : Submodule ℂ X := Y.topologicalClosure ⊓ (Z.topologicalClosure)ᗮ
 
 /- English proof (translation)
-The claim follows from `Y.isClosed_topologicalClosure.inter (Submodule.isClosed_orthogonal _)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_sqSpace (Z Y : Submodule ℂ X) : IsClosed (sqSpace Z Y : Set X) :=
   Y.isClosed_topologicalClosure.inter (Submodule.isClosed_orthogonal _)

@@ -7,22 +7,20 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base.N
 def formV {m : ℕ} (u v : Fin m → ℝ) : ℝ := ∑ s : Fin m, (-1) ^ (s.val + 1) * u s * v s
 
 /- English proof (translation)
-Unfold `formV`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem formV_symm {m : ℕ} (u v : Fin m → ℝ) : formV u v = formV v u := by
   unfold formV
   exact Finset.sum_congr rfl fun s _ => by ring
 
 /- English proof (translation)
-Establish `habs : ∀ j ∈ univ.erase s, |x s - x j| = (if j < s then -1 else 1) * (x s - x j)`. Introduce `j hj`. Establish `hjs : j ≠ s` using `Finset.ne_of_mem_erase hj`. Use `split_ifs with h`. Establish `h1 : x s < x j` using `hx h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_neg (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : s < j` using `lt_of_le_of_ne (not_lt.1 h) (Ne.symm hjs)`. Establish `h1 : x j < x s` using `hx h2`. Rewrite using `[abs_of_pos (by linarith)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : ((univ.erase s).filter (fun j => j < s)).card = s.val`. Establish `he : (univ.erase s).filter (fun j => j < s) = Finset.Iio s`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, and_true, Finset.mem_Iio]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨ne_of_lt h, h⟩⟩`. Rewrite using `[he, Fin.card_Iio]`. Establish `hprod : ∏ j ∈ univ.erase s, |x s - x j| = (-1) ^ s.val * ∏ j ∈ univ.erase s, (x s - x j)`. Rewrite using `[Finset.prod_congr rfl habs, Finset.prod_mul_distrib, Finset.prod_ite, Finset.prod_const, Finset.prod_const, one_pow, mul_one, hc]`. Rewrite using `[← hprod]`.
-
-Conclude with `Finset.prod_pos fun j hj => abs_pos.2 (sub_ne_zero.2 (hx.injective.ne (Finset.ne_of_mem_erase hj).symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_prod {m : ℕ} (x : Fin m → ℝ) (hx : StrictAnti x) (s : Fin m) :
     0 < (-1) ^ s.val * ∏ j ∈ univ.erase s, (x s - x j) := by
@@ -52,15 +50,13 @@ theorem sign_prod {m : ℕ} (x : Fin m → ℝ) (hx : StrictAnti x) (s : Fin m) 
     abs_pos.2 (sub_ne_zero.2 (hx.injective.ne (Finset.ne_of_mem_erase hj).symm))
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn x ((univ : Finset (Fin m)) : Set (Fin m))` using `fun a _ b _ h => hx h`. Establish `hdeg : (Polynomial.X ^ k : Polynomial ℝ).degree < ((univ : Finset (Fin m)).card : WithBot ℕ)`. Rewrite using `[card_univ, Fintype.card_fin, Polynomial.degree_X_pow]`. Conclude with `hk` after adjusting the coercions. Establish `hI` using `Lagrange.eq_interpolate hinj hdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (fun p : Polynomial ℝ => p.coeff (m - 1)) hI`. Apply the tactic sequence `try simp only at hc`. Rewrite `hc` using `[Lagrange.interpolate_apply, Polynomial.finset_sum_coeff]`. Establish `hb : ∀ s : Fin m, (Lagrange.basis univ x s).coeff (m - 1) = (∏ j ∈ univ.erase s, (x s - x j))⁻¹`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Lagrange.basis, Lagrange.basisDivisor]`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, Polynomial.coeff_C_mul]`. Establish `hmon : (∏ j ∈ univ.erase s, (Polynomial.X - Polynomial.C (x j))).Monic` using `Polynomial.monic_prod_of_monic _ _ fun j _ => Polynomial.monic_X_sub_C _`. Establish `hnd : (∏ j ∈ univ.erase s, (Polynomial.X - Polynomial.C (x j))).natDegree = m - 1`. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ fun j _ => Polynomial.monic_X_sub_C _]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Polynomial.natDegree_X_sub_C, card_erase_of_mem]`. Rewrite using `[← hnd, hmon.coeff_natDegree, mul_one, prod_inv_distrib]`. Simplify using `only [Polynomial.coeff_C_mul, hb, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.coeff_X_pow] at hc`. Establish `e : (m - 1 = k) ↔ (k + 1 = m)` using `by omega`. Simplify using `only [e] at hc`.
-
-Conclude with `hc.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_pow_mul_inv_prod_sub_eq_ite {m : ℕ} (x : Fin m → ℝ) (hx : Function.Injective x) (k : ℕ)
     (hk : k < m) :
@@ -92,17 +88,17 @@ private theorem sum_pow_mul_inv_prod_sub_eq_ite {m : ℕ} (x : Fin m → ℝ) (h
   exact hc.symm
 
 /- English proof (translation)
-Establish `hP : ∀ s, 0 < (-1) ^ s.val * ∏ j ∈ univ.erase s, (x s - x j)` using `fun s => sign_prod x hx s`. Establish `hPne : ∀ s, ∏ j ∈ univ.erase s, (x s - x j) ≠ 0` using `fun s h => by`. Establish `h1` using `hP s`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `lt_irrefl _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : ∀ s, 0 < (-1) ^ s.val / ∏ j ∈ univ.erase s, (x s - x j)` using `fun s => by`. Establish `h1 : (-1 : ℝ) ^ s.val / ∏ j ∈ univ.erase s, (x s - x j) = ((-1) ^ s.val * ∏ j ∈ univ.erase s, (x s - x j)) / (∏ j ∈ univ.erase s, (x s - x j)) ^ 2`. Use `hPne s` as an intermediate fact. Use `first`. Consider the case `(field_simp; done)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(field_simp; ring)`. Rewrite using `[h1]`. Conclude with `div_pos (hP s) (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 (hPne s))))`. Use `⟨fun s => Real.sqrt ((-1) ^ s.val / ∏ j ∈ univ.erase s, (x s - x j)), fun s => (Real.sqrt_pos.2 (hq s)).ne', fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ s : Fin (2 * r + 1), (-1 : ℝ) ^ (s.val + 1) * (x s ^ i * Real.sqrt ((-1) ^ s.val / ∏ j ∈ univ.erase s, (x s - x j))) * (x s ^ j * Real.sqrt ((-1) ^ s.val / ∏ j ∈ univ.erase s, (x s - x j))) = -(x s ^ (i + j) * (∏ j ∈ univ.erase s, (x s - x j))⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Establish `hs` using `Real.mul_self_sqrt (hq s).le`. Establish `hne` using `hPne s`. Break down `Nat.even_or_odd s.val with he | ho` into its components or cases. Rewrite `hs` using `[he.neg_one_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he.neg_one_pow, (he.add_one).neg_one_pow, pow_add]`. Take the linear combination `(-(x s ^ i * x s ^ j)) * hs`. Rewrite `hs` using `[ho.neg_one_pow]`. Rewrite using `[ho.neg_one_pow, (ho.add_one).neg_one_pow, pow_add]`. Take the linear combination `(x s ^ i * x s ^ j) * hs`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [formV]`. Rewrite using `[Finset.sum_congr rfl fun s _ => hterm s, Finset.sum_neg_distrib, sum_pow_mul_inv_prod_sub_eq_ite x hx.injective (i + j) (by omega)]`. Distinguish the cases in `h : i + j = 2 * r`. Rewrite using `[if_pos h, if_pos (by omega)]`. Rewrite using `[if_neg h, if_neg (by omega), neg_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cyclic (r : ℕ) (x : Fin (2 * r + 1) → ℝ) (hx : StrictAnti x) :
     ∃ c : Fin (2 * r + 1) → ℝ, (∀ s, c s ≠ 0) ∧ ∀ i j : ℕ, i + j ≤ 2 * r →
@@ -146,11 +142,11 @@ theorem exists_cyclic (r : ℕ) (x : Fin (2 * r + 1) → ℝ) (hx : StrictAnti x
   · rw [if_neg h, if_neg (by omega), neg_zero]
 
 /- English proof (translation)
-Establish `hW : IsUnit (Matrix.vandermonde x)ᵀ.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.det_vandermonde_ne_zero_iff.2 hx).isUnit`. Use `⟨fun s => ((Matrix.vandermonde x)ᵀ⁻¹ *ᵥ y) s / ((-1) ^ (s.val + 1) * c s), fun i => ?_⟩` and prove the remaining obligations. Establish `hw : (Matrix.vandermonde x)ᵀ *ᵥ ((Matrix.vandermonde x)ᵀ⁻¹ *ᵥ y) = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hW, Matrix.one_mulVec]`. Use `conv_rhs => rw [← hw]`. Simplify using `only [formV, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.vandermonde_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h1 : ((-1 : ℝ) ^ (s.val + 1) * c s) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (hc s)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `h2` using `hc s`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_dual {m : ℕ} (x c : Fin m → ℝ) (hx : Function.Injective x) (hc : ∀ s, c s ≠ 0)
     (y : Fin m → ℝ) : ∃ v : Fin m → ℝ, ∀ i : Fin m, formV v (fun s => x s ^ i.val * c s) = y i := by
@@ -171,7 +167,7 @@ theorem exists_dual {m : ℕ} (x c : Fin m → ℝ) (hx : Function.Injective x) 
   | (field_simp; ring)
 
 /- English proof (translation)
-Simplify using `only [formV, mul_sub, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun s _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formV_sub_sum {m r : ℕ} (u w : Fin m → ℝ) (k : Fin r → ℝ) (g : Fin r → Fin m → ℝ) :
     formV (fun s => u s - ∑ b, k b * g b s) w = formV u w - ∑ b, k b * formV (g b) w := by
@@ -181,35 +177,33 @@ theorem formV_sub_sum {m r : ℕ} (u w : Fin m → ℝ) (k : Fin r → ℝ) (g :
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun s _ => by ring
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `exists_cyclic r x hx`. Set `g : ℕ → Fin (2 * r + 1) → ℝ` to `fun i s => x s ^ i * c s`. Establish `hG : ∀ i j : ℕ, i + j ≤ 2 * r → formV (g i) (g j) = if i + j = 2 * r then -1 else 0` using `hc`. Establish `hdual : ∀ a : Fin r, ∃ v : Fin (2 * r + 1) → ℝ, ∀ i : Fin (2 * r + 1), formV v (g i.val) = if i.val = a.val then 1 else 0` using `fun a => exists_dual x c hx.injective hc0 _`. Use `choose f' hf' using hdual`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : Fin r → Fin (2 * r + 1) → ℝ` to `fun a => g a.val`. Set `z : Fin (2 * r + 1) → ℝ` to `g r`. Set `Q : Fin r → Fin r → ℝ` to `fun a b => formV (f' a) (f' b)`. Set `f : Fin r → Fin (2 * r + 1) → ℝ` to `fun a s => f' a s - ∑ b, (1 / 2 * Q a b) * e b s`. Establish `hee : ∀ a b : Fin r, formV (e a) (e b) = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Express the relevant statement in the definitionally equal form `formV (g a.val) (g b.val) = 0`. Rewrite using `[hG _ _ (by omega), if_neg (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hez : ∀ a : Fin r, formV (e a) z = 0`. Introduce `a`. Use `a.isLt` as an intermediate fact. Express the relevant statement in the definitionally equal form `formV (g a.val) (g r) = 0`. Rewrite using `[hG _ _ (by omega), if_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzz : formV z z = -1`. Express the relevant statement in the definitionally equal form `formV (g r) (g r) = -1`. Rewrite using `[hG _ _ (by omega), if_pos (by omega)]`. Establish `hf'e : ∀ a b : Fin r, formV (f' a) (e b) = if a = b then 1 else 0`. Introduce `a b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hf' a ⟨b.val, by omega⟩`. Express the relevant statement in the definitionally equal form `formV (f' a) (g b.val) = _`. Rewrite using `[show formV (f' a) (g b.val) = if b.val = a.val then 1 else 0 from h]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => hab (Fin.ext h'.symm)), if_neg hab]`. Establish `hf'z : ∀ a : Fin r, formV (f' a) z = 0`. Introduce `a`. Use `a.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hf' a ⟨r, by omega⟩`. Express the relevant statement in the definitionally equal form `formV (f' a) (g r) = 0`. Rewrite using `[show formV (f' a) (g r) = if r = a.val then 1 else 0 from h, if_neg (by omega)]`. Establish `hfe : ∀ a b : Fin r, formV (f a) (e b) = if a = b then 1 else 0`. Introduce `a b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : formV (f a) (e b) = formV (f' a) (e b) - ∑ c, (1 / 2 * Q a c) * formV (e c) (e b)` using `formV_sub_sum _ _ _ _`. Rewrite using `[h1, hf'e]`. Simplify using `[hee]`. Establish `hfz : ∀ a : Fin r, formV (f a) z = 0`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : formV (f a) z = formV (f' a) z - ∑ c, (1 / 2 * Q a c) * formV (e c) z` using `formV_sub_sum _ _ _ _`. Rewrite using `[h1, hf'z]`. Simplify using `[hez]`. Establish `hff : ∀ a b : Fin r, formV (f a) (f b) = 0`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : formV (f a) (f b) = formV (f' a) (f b) - ∑ c, (1 / 2 * Q a c) * formV (e c) (f b)` using `formV_sub_sum _ _ _ _`. Establish `h2 : formV (f' a) (f b) = Q b a - ∑ d, (1 / 2 * Q b d) * formV (e d) (f' a)`. Rewrite using `[formV_symm]`. Conclude with `formV_sub_sum _ _ _ _`. Establish `h3 : ∀ c, formV (e c) (f b) = if b = c then 1 else 0` using `fun c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[formV_symm, hfe]`. Establish `h4 : ∀ d, formV (e d) (f' a) = if a = d then 1 else 0` using `fun d => by`. Rewrite using `[formV_symm, hf'e]`. Rewrite using `[h1, h2]`. Simplify using `only [h3, h4, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : Q b a = Q a b` using `formV_symm _ _`. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨e, f, z, hee, hff, hfe, hez, hfz, hzz, fun a s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x s * (x s ^ a.val * c s) = if h : a.val + 1 < r then g (a.val + 1) s else g r s`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `split_ifs with h`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : a.val + 1 = r` using `by omega`. Establish `hp : x s ^ r = x s ^ (a.val + 1)` using `by rw [hr]`. Express the relevant statement in the definitionally equal form `x s * (x s ^ a.val * c s) = x s ^ r * c s`.
-
-Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frame (r : ℕ) (x : Fin (2 * r + 1) → ℝ) (hx : StrictAnti x) :
     ∃ (e f : Fin r → Fin (2 * r + 1) → ℝ) (z : Fin (2 * r + 1) → ℝ),

@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.KeyOriginEnlarge
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.TorsorFieldPoint.formallyUnramified_of_isZTorsor B D q hq act h`. Take `⟨hfin, hproj, _, _⟩` from `h`. Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Algebra.FinitePresentation B D := Algebra.FinitePresentation.of_finiteType.mp inferInstance`.
-
-Conclude with `Algebra.Etale.of_formallyUnramified_of_flat`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem etale_of_isZTorsor (B D : Type) [CommRing B] [IsNoetherianRing B] [CommRing D] [Algebra B D]
     (q : ℕ) (hq : 0 < q) (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D))
@@ -34,11 +32,9 @@ theorem etale_of_isZTorsor (B D : Type) [CommRing B] [IsNoetherianRing B] [CommR
   exact Algebra.Etale.of_formallyUnramified_of_flat
 
 /- English proof (translation)
-Introduce `q A _ _ _ _ _ _ EA _ _ _ _ _ QA _ DA _ _ actA hq _ htor`. Use `haveI : IsNoetherianRing EA := Algebra.FiniteType.isNoetherianRing (Polynomial A) EA`. Take `⟨_, _⟩` from `GlobalTheory.etale_localization_atPrime_isDomain_isIntegrallyClosed (Polynomial A) EA QA`. Use `set R := Localization.AtPrime QA`. Use `haveI : Module.Finite (GlobalTheory.LocAcyc.GenFib A R) DA := htor.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := etale_of_isZTorsor _ DA q hq actA htor`. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A R DA`. Use `haveI : Module.Finite R (GlobalTheory.KeyOriginNoeth.closure A R DA) := GlobalTheory.T.finite_integralClosureOverGenericFibre_of_etale A R DA`. Use `haveI : Algebra.FinitePresentation R (GlobalTheory.KeyOriginNoeth.closure A R DA) := Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Take `⟨m, hm, hE⟩` from `GlobalTheory.T.exists_etale_away_of_isEtaleAt R (GlobalTheory.KeyOriginNoeth.closure A R DA) (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) (fun Q _ hQ => GlobalTheory.T.closure_prime_regular_height A R DA Q (fun a ha => hQ _ ⟨a, mem_nonZeroDivisors_of_ne_zero ha, rfl⟩))`.
-
-Take `⟨a, ha, rfl⟩` from `hm`. Use `⟨a, nonZeroDivisors.ne_zero ha, fun P _ hP => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.etale_localization_atPrime_tensor_of_etale_away' R _ _ hE P hP`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_closureEtaleAt : ∀ (q : ℕ) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [Algebra.EssFiniteType ℤ A]

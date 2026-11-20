@@ -20,7 +20,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 /- English proof (translation)
-Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) h.flip ‹Flat j›`. Establish `: Surjective φ` using `MorphismProperty.of_isPullback (P := @Surjective) h.flip ‹Surjective j›`. Use `Flat.epi_of_flat_of_surjective φ` as an intermediate fact. Conclude with `Over.OverMorphism.ext ((cancel_epi φ).mp hfg)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ActDescent.over_hom_ext {X Y : Over S} {X' : Scheme.{0}} {φ : X' ⟶ X.left} {p : X' ⟶ U}
     (h : IsPullback φ p X.hom j) {f g : X ⟶ Y} (hfg : φ ≫ f.left = φ ≫ g.left) : f = g := by
@@ -34,7 +34,7 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 omit [Flat j] [Surjective j] in
 /- English proof (translation)
-Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ActDescent.pullback_map_left_fst {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback j).map a).left ≫ pullback.fst Y.hom j = pullback.fst X.hom j ≫ a.left := by
@@ -45,7 +45,7 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 variable (j) in
 /- English proof (translation)
-Introduce `a b hab`. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext (IsPullback.of_hasPullback X.hom j)` to reduce the goal to its premises. Rewrite using `[← _root_.GlobalTheory.ActDescent.pullback_map_left_fst, ← _root_.GlobalTheory.ActDescent.pullback_map_left_fst, hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ActDescent.pullback_map_injective (X Y : Over S) :
     Function.Injective ((Over.pullback j).map : (X ⟶ Y) → _) := by
@@ -57,13 +57,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 /- English proof (translation)
-Establish `hT : IsPullback (pullback.fst T.hom j) (pullback.snd T.hom j) T.hom j` using `IsPullback.of_hasPullback _ _`. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext hT` to reduce the goal to its premises. Set `T' : Over U` to `(Over.pullback j).obj T`. Set `ρ : Over.mk (T'.hom ≫ j) ⟶ T` to `Over.homMk (pullback.fst T.hom j) (by simp [T', pullback.condition])`. Set `up : (T ⟶ G) → (T' ⟶ G')` to `fun z => Over.homMk (hG.1.lift (pullback.fst T.hom j ≫ z.left) T'.hom (by simp [T', pullback.condition])) (hG.1.lift_snd _ _ _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hup : ∀ z : T ⟶ G, (up z).left ≫ φ = pullback.fst T.hom j ≫ z.left` using `fun z => hG.1.lift_fst _ _ _`. Establish `hpush : ∀ z : T ⟶ G, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hG T' (up z) = ρ ≫ z` using `fun z => Over.OverMorphism.ext (by exact hup z)`. Establish `hpushH : ∀ z : T ⟶ G, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hH T' (up z ≫ f') = ρ ≫ z ≫ f`. Introduce `z`. Use `ext1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((up z).left ≫ f'.left) ≫ ψ = pullback.fst T.hom j ≫ z.left ≫ f.left`. Rewrite using `[Category.assoc, hf, ← Category.assoc, hup, Category.assoc]`. Express the relevant statement in the definitionally equal form `(ρ ≫ (x * y) ≫ f).left = (ρ ≫ (x ≫ f * y ≫ f)).left`. Rewrite using `[MonObj.comp_mul ρ (x ≫ f), ← hpushH x, ← hpushH y, ← map_mul, ← MonObj.mul_comp, ← Category.assoc, MonObj.comp_mul ρ x y, ← hpush x, ← hpush y, ← map_mul]`. Express the relevant statement in the definitionally equal form `((up x * up y).left ≫ φ) ≫ f.left = ((up x * up y) ≫ f').left ≫ ψ`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, hf]`.
+A detailed English derivation is pending.
 -/
 private theorem mul_comp_of_descends_monHom {G H : Over S} [GrpObj G] [GrpObj H]
     {G' H' : Over U} [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
@@ -99,9 +99,9 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 
 /- English proof (translation)
-Establish `key` using `mul_comp_of_descends_monHom hG hH f' f hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : 𝟙_ (Over S) ⟶ G) ≫ f = 1`. Establish `h` using `key (𝟙_ (Over S)) 1 1`. Rewrite `h` using `[_root_.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.mp h.symm`. Simplify `h1` using `[Hom.one_def]`. Establish `h` using `key _ (fst G G) (snd G G)`. Simplify `h` using `[Hom.mul_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ActDescent.isMonHom_descend {G H : Over S} [GrpObj G] [GrpObj H]
     {G' H' : Over U} [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
@@ -120,15 +120,15 @@ theorem _root_.GlobalTheory.ActDescent.isMonHom_descend {G H : Over S} [GrpObj G
 omit [Flat j] [Surjective j] in
 
 /- English proof (translation)
-Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hG.1.w`. Set `ρ` to `pushHom hG G'`. Establish `key : ∀ (x : G' ⟶ G') (f : G ⟶ G), x.left ≫ φ = φ ≫ f.left ↔ ρ x = φ₀ ≫ f` using `fun x f => ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (fun z => z.left) h⟩`. Establish `h0 : i.act 0 = 1`. Use `i.add 0 0` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hneg : ∀ x, i.act (-x) = (i.act x)⁻¹` using `fun x => eq_inv_of_mul_eq_one_left (by rw [← i.add, neg_add_cancel, h0])`. Establish `hc : c ∈ Subring.closure s` using `hs ▸ Subring.mem_top c`. Proceed by induction on `hc using Subring.closure_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact hi x hx`. Consider the case `zero => exact ⟨1, (key _ _).2 (by rw [h0, map_one, MonObj.comp_one])⟩`. Consider the case `one => exact ⟨𝟙 _, by rw [i.one, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf⟩` from `hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hy`. Conclude with `⟨f * g, (key _ _).2 (by rw [i.add, map_mul, MonObj.comp_mul, (key _ _).1 hf, (key _ _).1 hg])⟩`. Consider the case `neg x _ hx`. Take `⟨f, hf⟩` from `hx`. Conclude with `⟨f⁻¹, (key _ _).2 (by rw [hneg, map_inv, GrpObj.comp_inv, (key _ _).1 hf])⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨f, hf⟩` from `hx`. Take `⟨g, hg⟩` from `hy`. Conclude with `⟨f ≫ g, by`. Rewrite using `[i.mul, Over.comp_left, Over.comp_left, Category.assoc, hg, ← Category.assoc, hf, Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_descend {O : Type} [CommRing O] {G : Over S} [GrpObj G] {G' : Over U} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hG : IsGrpPullback G' G j φ) (i : OAct O G') {s : Set O}
@@ -167,13 +167,13 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 
 /- English proof (translation)
-Use `choose g hg using hi`. Establish `hpb` using `hG.1`. Establish `hmon : ∀ x, IsMonHom (g x)` using `fun x => haveI := i.hom x _root_.GlobalTheory.ActDescent.isMonHom_descend hG hG (i.act x) (g x) (hg x)`. Use `⟨⟨g, hmon, ?_, ?_, ?_⟩, hg⟩` and prove the remaining obligations. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext hpb` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, i.one]`. Simplify using the standard rewrite rules. Introduce `a b`. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext hpb` to reduce the goal to its premises. Rewrite using `[← hg, i.mul, Over.comp_left, Over.comp_left, Category.assoc, hg, ← Category.assoc, hg, Category.assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext hpb` to reduce the goal to its premises. Set `ρ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hpb.w`. Establish `hpush : ∀ c, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hG G' (i.act c) = ρ ≫ g c` using `fun c => Over.OverMorphism.ext (by exact hg c)`. Express the relevant statement in the definitionally equal form `(ρ ≫ g (a + b)).left = (ρ ≫ (g a * g b)).left`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, ← hpush, ← hpush, ← hpush, ← map_mul, i.add]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ActDescent.exists_oAct {O : Type} [CommRing O] {G : Over S} [GrpObj G]
     {G' : Over U} [GrpObj G'] {φ : G'.left ⟶ G.left} (hG : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G j φ)
@@ -209,23 +209,23 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {U S : Scheme.{0}} {j : U ⟶ S} [Flat j] [Surjective j] in
 
 /- English proof (translation)
-Introduce `O _ J a K₀ K _ _ i A₀ A _ _ _ φ act act₀ hgen hG hact`. Use `haveI : Flat (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap i) := by unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap; infer_instance`. Use `haveI : Surjective (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap i) := by unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap; infer_instance`. Set `ρ : Over.mk (A.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap i) ⟶ A₀` to `Over.homMk φ hG.1.w`. Establish `hiff : ∀ (z : A ⟶ A) (g : A₀ ⟶ A₀), z.left ≫ φ = φ ≫ g.left → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hG A z = ρ ≫ g` using `fun z g h => Over.OverMorphism.ext (by exact h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hback : ∀ (z : A ⟶ A) (g : A₀ ⟶ A₀), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hG A z = ρ ≫ g → z.left ≫ φ = φ ≫ g.left` using `fun z g h => by`. Establish `h'` using `congrArg (fun m => m.left) h`. Conclude with `h'`. Establish `h0 : act.act 0 = 1`. Establish `h` using `act.add 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`. Establish `hD : ∀ c, ∃ g : A₀ ⟶ A₀, (act.act c).left ≫ φ = φ ≫ g.left`. Introduce `c`. Establish `hc : c ∈ Subring.closure (Set.range a)` using `hgen ▸ Subring.mem_top c`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `hc using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨act₀ k, hact k⟩`. Consider the case `zero`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Use `⟨1, hback _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[h0, map_one, MonObj.comp_one]`. Consider the case `one`. Conclude with `⟨𝟙 _, by simp [act.one]⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `hx`. Take `⟨g', hg'⟩` from `hy`. Use `⟨g * g', hback _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[act.add, map_mul, hiff _ _ hg, hiff _ _ hg', MonObj.comp_mul]`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `hx`. Establish `hneg : act.act (-x) = (act.act x)⁻¹`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← act.add, add_neg_cancel, h0]`. Use `⟨g⁻¹, hback _ _ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hneg, map_inv, hiff _ _ hg, GrpObj.comp_inv]`. Consider the case `mul x y _ _ hx hy`. Take `⟨g, hg⟩` from `hx`. Take `⟨g', hg'⟩` from `hy`. Use `⟨g ≫ g', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[act.mul, Over.comp_left, Over.comp_left, Category.assoc, hg', ← Category.assoc, hg, Category.assoc]`. Take `⟨r, hr⟩` from `_root_.GlobalTheory.ActDescent.exists_oAct hG act hD`. Use `⟨r, fun k => ?_, hr⟩` and prove the remaining obligations. Apply `_root_.GlobalTheory.ActDescent.over_hom_ext hG.1` to reduce the goal to its premises. Rewrite using `[← hr, hact]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.oAct_descend_of_generators : ∀ (O : Type) [CommRing O] (J : Type) (a : J → O) (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (A₀ : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K₀)) (A : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) [GrpObj A₀] [GrpObj A] [IsCommMonObj A₀] (φ : A.left ⟶ A₀.left) (act : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O A) (act₀ : J → (A₀ ⟶ A₀)), Subring.closure (Set.range a) = ⊤ → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback A A₀ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap i) φ → (∀ j, (act.act (a j)).left ≫ φ = φ ≫ (act₀ j).left) → ∃ r : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O A₀, (∀ j, r.act (a j) = act₀ j) ∧ ∀ c, (act.act c).left ≫ φ = φ ≫ (r.act c).left := by
   intro O _ J a K₀ K _ _ i A₀ A _ _ _ φ act act₀ hgen hG hact

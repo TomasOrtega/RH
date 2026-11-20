@@ -14,7 +14,7 @@ def rootRingToReal (f N j k : ℕ) (h : N = j + k) : RootRing f N →+* Indefini
   (rename (R := ℝ) (Prod.map id (finCongr h))).toRingHom.comp (MvPolynomial.map (algebraMap ℚ ℝ))
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [rootRingToReal, RingHom.comp_apply, map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem rootRingToReal_X (f N j k : ℕ) (h : N = j + k) (v : Fin f × Fin N) :
     rootRingToReal f N j k h (X v) = X (v.1, finCongr h v.2) := by
@@ -22,16 +22,16 @@ Apply the tactic sequence `simp only [rootRingToReal, RingHom.comp_apply, map_X,
     rename_X] <;> rfl
 
 /- English proof (translation)
-Simplify using `[rootRingToReal]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem rootRingToReal_C (f N j k : ℕ) (h : N = j + k) (q : ℚ) :
     rootRingToReal f N j k h (C q) = C (q : ℝ) := by
   simp [rootRingToReal]
 
 /- English proof (translation)
-Rewrite using `[rootRingToReal, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, IsHomogeneous.rename_isHomogeneous_iff (Function.Injective.prodMap Function.injective_id (finCongr h).injective)]`. Prove the components needed by the constructor for the conclusion. Introduce `hP d hd`. Apply `hP` to reduce the goal to its premises. Rewrite using `[coeff_map]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero_iff _ (algebraMap ℚ ℝ).injective).mpr hd`. Introduce `hP`. Conclude with `hP.map _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rootRingToReal_isHomogeneous_iff (f N j k : ℕ) (h : N = j + k) (P : RootRing f N) (n : ℕ) :
     (rootRingToReal f N j k h P).IsHomogeneous n ↔ P.IsHomogeneous n := by
@@ -47,22 +47,22 @@ theorem rootRingToReal_isHomogeneous_iff (f N j k : ℕ) (h : N = j + k) (P : Ro
     exact hP.map _
 
 /- English proof (translation)
-Simplify using `[vandermondeOf, map_prod, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_vandermondeOf {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ}
     (v : Fin m → R) : φ (vandermondeOf v) = vandermondeOf (fun i => φ (v i)) := by
   simp [vandermondeOf, map_prod, map_sub]
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun a b : Fin m => v a ^ (m - 1 - (b : ℕ))) = (Matrix.vandermonde v).submatrix id Fin.revPerm`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.val_rev]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hW : Matrix.vandermonde (fun i => v (Fin.revPerm i)) = (Matrix.vandermonde v).submatrix Fin.revPerm id`. Use extensionality with `a b`. Simplify using `[Matrix.vandermonde_apply]`. Rewrite using `[GroundTheory.Heights₂.Heights.vandermonde, hM, Matrix.det_permute', ← Matrix.det_permute, ← hW, Matrix.det_vandermonde]`. Establish `key : ∀ g : Fin m → Fin m → R, ∏ i, ∏ l ∈ Ioi i, g i l = ∏ i, ∏ l, if i < l then g i l else 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Use `prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[vandermondeOf, key, key]`. Use `conv_rhs => rw [Finset.prod_comm]`. Use `Fintype.prod_equiv Fin.revPerm _ _ (fun i => ?_)` and prove the remaining obligations. Use `Fintype.prod_equiv Fin.revPerm _ _ (fun l => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.revPerm_apply, Fin.rev_lt_rev]`.
+A detailed English derivation is pending.
 -/
 theorem vandermondeOf_eq_vandermonde {R : Type*} [CommRing R] {m : ℕ} (v : Fin m → R) :
     vandermondeOf v = GroundTheory.Heights₂.Heights.vandermonde v := by
@@ -94,7 +94,7 @@ theorem vandermondeOf_eq_vandermonde {R : Type*} [CommRing R] {m : ℕ} (v : Fin
   simp [Fin.revPerm_apply, Fin.rev_lt_rev]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[blockPowerSum, IndefiniteRowSideFullHecke.RestTerms.psumAt]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem rootRingToReal_blockPowerSum (f N j k : ℕ) (h : N = j + k) (m : ℕ) (τ : Fin f) :
     rootRingToReal f N j k h (blockPowerSum f N m τ) = IndefiniteRowSideFullHecke.RestTerms.psumAt f j k m τ := by
@@ -102,7 +102,7 @@ theorem rootRingToReal_blockPowerSum (f N j k : ℕ) (h : N = j + k) (m : ℕ) (
   simp [blockPowerSum, IndefiniteRowSideFullHecke.RestTerms.psumAt]
 
 /- English proof (translation)
-Simplify using `only [smallPowerSum, yRoot, SmallBlock.sign, yIndex, map_sum, map_pow, map_mul, rootRingToReal_C, rootRingToReal_X, IndefiniteRowSideFullHecke.RestTerms.smallPsum, if_true, Rat.cast_one, C_1, one_mul]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem rootRingToReal_smallPowerSum_last (f r a m : ℕ) (τ : Fin f) :
     rootRingToReal f (r + a) a r (Nat.add_comm r a) (smallPowerSum f r a .last m τ) =
@@ -113,7 +113,7 @@ theorem rootRingToReal_smallPowerSum_last (f r a m : ℕ) (τ : Fin f) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [smallPowerSum, yRoot, SmallBlock.sign, yIndex, map_sum, map_pow, map_mul, rootRingToReal_C, rootRingToReal_X, IndefiniteRowSideFullHecke.RestTerms.smallPsum, Bool.false_eq_true, if_false, Rat.cast_neg, Rat.cast_one, C_neg, C_1, neg_one_mul, map_neg]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem rootRingToReal_smallPowerSum_first (f r a m : ℕ) (τ : Fin f) :
     rootRingToReal f (r + a) r a rfl (smallPowerSum f r a .first m τ) =
@@ -125,7 +125,7 @@ theorem rootRingToReal_smallPowerSum_first (f r a m : ℕ) (τ : Fin f) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.RestTerms.muClass, smallBlockMu, map_sum]`. Use `sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← rootRingToReal_smallPowerSum_last]`. Simplify using `[smallPowerSum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootRingToReal_smallBlockMu_last (f r a : ℕ) :
     rootRingToReal f (r + a) a r (Nat.add_comm r a) (smallBlockMu f r a .last) =
@@ -136,7 +136,7 @@ theorem rootRingToReal_smallBlockMu_last (f r a : ℕ) :
   simp [smallPowerSum]
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.RestTerms.muClass, smallBlockMu, map_sum]`. Use `sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← rootRingToReal_smallPowerSum_first]`. Simplify using `[smallPowerSum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootRingToReal_smallBlockMu_first (f r a : ℕ) :
     rootRingToReal f (r + a) r a rfl (smallBlockMu f r a .first) =
@@ -147,9 +147,9 @@ theorem rootRingToReal_smallBlockMu_first (f r a : ℕ) :
   simp [smallPowerSum]
 
 /- English proof (translation)
-Simplify using `only [fibreClass, IndefiniteRowSideFullHecke.RestTerms.fibClass, if_true, map_prod, map_mul, map_vandermondeOf]`. Use `prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[vandermondeOf_eq_vandermonde, vandermondeOf_eq_vandermonde]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `simp only [yRoot, SmallBlock.sign, yIndex, map_mul, rootRingToReal_C, rootRingToReal_X, Rat.cast_one, C_1, one_mul] <;> rfl`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `simp only [zRoot, zIndex, rootRingToReal_X] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rootRingToReal_fibreClass_last (f r a : ℕ) :
     rootRingToReal f (r + a) a r (Nat.add_comm r a) (fibreClass f r a .last) =
@@ -165,9 +165,9 @@ theorem rootRingToReal_fibreClass_last (f r a : ℕ) :
     simp only [zRoot, zIndex, rootRingToReal_X] <;> rfl
 
 /- English proof (translation)
-Simplify using `only [fibreClass, IndefiniteRowSideFullHecke.RestTerms.fibClass, Bool.false_eq_true, if_false, map_prod, map_mul, map_vandermondeOf]`. Use `prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[vandermondeOf_eq_vandermonde, vandermondeOf_eq_vandermonde]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `simp only [yRoot, SmallBlock.sign, yIndex, map_mul, rootRingToReal_C, rootRingToReal_X, Rat.cast_neg, Rat.cast_one, C_neg, C_1, neg_one_mul, map_neg] <;> rfl`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `simp only [zRoot, zIndex, rootRingToReal_X] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rootRingToReal_fibreClass_first (f r a : ℕ) :
     rootRingToReal f (r + a) r a rfl (fibreClass f r a .first) =
@@ -184,7 +184,7 @@ theorem rootRingToReal_fibreClass_first (f r a : ℕ) :
     simp only [zRoot, zIndex, rootRingToReal_X] <;> rfl
 
 /- English proof (translation)
-Rewrite using `[restPolynomial, IndefiniteRowSideFullHecke.RestTerms.restPoly, map_mul, map_pow, rootRingToReal_smallBlockMu_last, rootRingToReal_fibreClass_last, IndefiniteRowSideFullHecke.RestTerms.nDim, show f * a * r = f * (r * a) by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem rootRingToReal_restPolynomial_last (f r a : ℕ) :
     rootRingToReal f (r + a) a r (Nat.add_comm r a) (restPolynomial f r a .last) =
@@ -193,7 +193,7 @@ theorem rootRingToReal_restPolynomial_last (f r a : ℕ) :
     rootRingToReal_fibreClass_last, IndefiniteRowSideFullHecke.RestTerms.nDim, show f * a * r = f * (r * a) by ring]
 
 /- English proof (translation)
-Rewrite using `[restPolynomial, IndefiniteRowSideFullHecke.RestTerms.restPoly, map_mul, map_pow, rootRingToReal_smallBlockMu_first, rootRingToReal_fibreClass_first, IndefiniteRowSideFullHecke.RestTerms.nDim, Nat.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootRingToReal_restPolynomial_first (f r a : ℕ) :
     rootRingToReal f (r + a) r a rfl (restPolynomial f r a .first) =
@@ -202,7 +202,7 @@ theorem rootRingToReal_restPolynomial_first (f r a : ℕ) :
     rootRingToReal_fibreClass_first, IndefiniteRowSideFullHecke.RestTerms.nDim, Nat.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.RestTerms.degPoly, map_mul, map_pow, rootRingToReal_smallBlockMu_last, rootRingToReal_fibreClass_last, IndefiniteRowSideFullHecke.RestTerms.nDim, show f * a * r = f * (r * a) by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem rootRingToReal_degreePolynomial_last (f r a : ℕ) :
     rootRingToReal f (r + a) a r (Nat.add_comm r a)
@@ -212,7 +212,7 @@ theorem rootRingToReal_degreePolynomial_last (f r a : ℕ) :
     rootRingToReal_fibreClass_last, IndefiniteRowSideFullHecke.RestTerms.nDim, show f * a * r = f * (r * a) by ring]
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.RestTerms.degPoly, map_mul, map_pow, rootRingToReal_smallBlockMu_first, rootRingToReal_fibreClass_first, IndefiniteRowSideFullHecke.RestTerms.nDim, Nat.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootRingToReal_degreePolynomial_first (f r a : ℕ) :
     rootRingToReal f (r + a) r a rfl
@@ -222,22 +222,22 @@ theorem rootRingToReal_degreePolynomial_first (f r a : ℕ) :
     rootRingToReal_fibreClass_first, IndefiniteRowSideFullHecke.RestTerms.nDim, Nat.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow _ _`.
+A detailed English derivation is pending.
 -/
 theorem blockPowerSum_isHomogeneous (f N m : ℕ) (τ : Fin f) :
     (blockPowerSum f N m τ).IsHomogeneous m :=
   IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow _ _
 
 /- English proof (translation)
-Use `⟨?_, fun m τ => homogeneousComponent_isHomogeneous _ _⟩` and prove the remaining obligations. Establish `hle : ∀ m, m ≤ N → ∀ τ : Fin f, m ≤ topDegree f N + 1`. Introduce `m hm τ`. Establish `hf : 0 < f` using `τ.pos`. Establish `h1 : N - 1 ≤ N * (N - 1) / 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`. Break down `N with _ | n` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [Nat.add_sub_cancel]`. Break down `n with _ | n` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : N * (N - 1) / 2 ≤ topDegree f N` using `Nat.le_mul_of_pos_left _ hf`. Use linear arithmetic over natural numbers and integers. Unfold `IsPowerSumDecomposition at hQ ⊢`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Establish `hcomp : homogeneousComponent (topDegree f N + 1) F = F`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 hF), if_pos rfl]`. Use `conv_lhs => rw [← hcomp, hQ]`. Simplify using `only [map_sum]`. Use `sum_congr rfl fun m hm => sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HomogeneousComponentMul.proof _ _ _ _ _ _ (blockPowerSum_isHomogeneous f N m τ), if_pos (hle m (Finset.mem_Icc.1 hm).2 τ)]`.
+A detailed English derivation is pending.
 -/
 theorem isPowerSumDecomposition_homogeneousComponent (f N : ℕ) (F : RootRing f N)
     (Q : ℕ → Fin f → RootRing f N) (hF : F.IsHomogeneous (topDegree f N + 1))

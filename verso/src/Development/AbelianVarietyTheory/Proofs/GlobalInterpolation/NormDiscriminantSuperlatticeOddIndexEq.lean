@@ -9,7 +9,7 @@ open scoped ComplexConjugate
 namespace GlobalTheory.MomDisc
 
 /- English proof (translation)
-Establish `h1 : P.derivWeierstrassP (w - 2 * w) = P.derivWeierstrassP w` using `P.derivWeierstrassP_sub_coe w ⟨2 * w, h⟩`. Rewrite `h1` using `[show w - 2 * w = -w by ring, P.derivWeierstrassP_neg]`. Take the linear combination `-h1 / 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem deriv_half (P : PeriodPair) {w : ℂ} (h : 2 * w ∈ P.lattice) : P.derivWeierstrassP w = 0 := by
   have h1 : P.derivWeierstrassP (w - 2 * w) = P.derivWeierstrassP w :=
@@ -18,7 +18,7 @@ theorem deriv_half (P : PeriodPair) {w : ℂ} (h : 2 * w ∈ P.lattice) : P.deri
   linear_combination -h1 / 2
 
 /- English proof (translation)
-Rewrite using `[← P.derivWeierstrassP_sq w hw, deriv_half P h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cubic_root (P : PeriodPair) {w : ℂ} (h2 : 2 * w ∈ P.lattice) (hw : w ∉ P.lattice) :
     4 * P.weierstrassP w ^ 3 - P.g₂ * P.weierstrassP w - P.g₃ = 0 := by
@@ -26,11 +26,11 @@ theorem cubic_root (P : PeriodPair) {w : ℂ} (h2 : 2 * w ∈ P.lattice) (hw : w
   ring
 
 /- English proof (translation)
-Establish `e1 : 4 * (a ^ 2 + a * b + b ^ 2) = g2`. Establish `h : (a - b) * (4 * (a ^ 2 + a * b + b ^ 2) - g2) = 0` using `by linear_combination ha - hb`. Take the linear combination `(mul_eq_zero.mp h).resolve_left hab`. Establish `e2 : 4 * (a ^ 2 + a * c + c ^ 2) = g2`. Establish `h : (a - c) * (4 * (a ^ 2 + a * c + c ^ 2) - g2) = 0` using `by linear_combination ha - hc`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(mul_eq_zero.mp h).resolve_left hac`. Establish `hs : a + b + c = 0`. Establish `h : (b - c) * (a + b + c) = 0` using `by linear_combination (e1 - e2) / 4`. Conclude with `(mul_eq_zero.mp h).resolve_left hbc`. Establish `hc' : c = -a - b` using `by linear_combination hs`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg3 : g3 = 4 * a ^ 3 - g2 * a` using `by linear_combination -ha`. Rewrite using `[hg3, ← e1, hc']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem disc_of_roots {g2 g3 a b c : ℂ} (ha : 4 * a ^ 3 - g2 * a - g3 = 0) (hb : 4 * b ^ 3 - g2 * b - g3 = 0)
     (hc : 4 * c ^ 3 - g2 * c - g3 = 0) (hab : a - b ≠ 0) (hac : a - c ≠ 0) (hbc : b - c ≠ 0) :
@@ -50,35 +50,33 @@ theorem disc_of_roots {g2 g3 a b c : ℂ} (ha : 4 * a ^ 3 - g2 * a - g3 = 0) (hb
   ring
 
 /- English proof (translation)
-Establish `hNz : (0 : ℤ) < (N : ℤ)` using `by exact_mod_cast Nat.pos_of_ne_zero hN0`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0`. Set `F : Finset ℂ` to `((Finset.Ico (0 : ℤ) N) ×ˢ (Finset.Ico (0 : ℤ) N)).image (fun ij : ℤ × ℤ => ((ij.1 : ℂ) * L.ω₁ + (ij.2 : ℂ) * L.ω₂) / N)`. Establish `hF : ∀ x ∈ L'.lattice, ∃ f ∈ F, x - f ∈ L.lattice`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, hab⟩` from `PeriodPair.mem_lattice.mp (hN x hx)`. Use `⟨(((a % (N : ℤ) : ℤ) : ℂ) * L.ω₁ + ((b % (N : ℤ) : ℤ) : ℂ) * L.ω₂) / N, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.mem_image.mpr ⟨(a % (N : ℤ), b % (N : ℤ)), ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_product, Finset.mem_Ico]`. Conclude with `⟨⟨Int.emod_nonneg _ hNz.ne', Int.emod_lt_of_pos _ hNz⟩, ⟨Int.emod_nonneg _ hNz.ne', Int.emod_lt_of_pos _ hNz⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `PeriodPair.mem_lattice.mpr ⟨a / (N : ℤ), b / (N : ℤ), ?_⟩` and prove the remaining obligations. Establish `ea : (a : ℂ) = (N : ℂ) * ((a / (N : ℤ) : ℤ) : ℂ) + ((a % (N : ℤ) : ℤ) : ℂ)`. Establish `h` using `Int.ediv_mul_add_emod a N`. Conclude with `(by linear_combination -h : a = (N : ℤ) * (a / (N : ℤ)) + a % (N : ℤ))` after adjusting the coercions. Establish `eb : (b : ℂ) = (N : ℂ) * ((b / (N : ℤ) : ℤ) : ℂ) + ((b % (N : ℤ) : ℤ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Int.ediv_mul_add_emod b N`. Conclude with `(by linear_combination -h : b = (N : ℤ) * (b / (N : ℤ)) + b % (N : ℤ))` after adjusting the coercions. Establish `hx' : x = ((a : ℂ) * L.ω₁ + (b : ℂ) * L.ω₂) / N` using `eq_div_of_mul_eq hNc (by rw [hab]; ring)`. Rewrite using `[hx', ea, eb, div_sub_div_same, eq_div_iff hNc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S` to `L.lattice.toAddSubgroup`. Set `r : ℂ → ℂ` to `fun f => Quotient.out (QuotientAddGroup.mk f : ℂ ⧸ S)`. Establish `hr : ∀ f, f - r f ∈ L.lattice`. Introduce `f`. Establish `e : (QuotientAddGroup.mk (r f) : ℂ ⧸ S) = QuotientAddGroup.mk f` using `Quotient.out_eq _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h : -(r f) + f ∈ L.lattice` using `QuotientAddGroup.eq.mp e`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hr2 : ∀ f g, f - g ∈ L.lattice → r f = r g`. Introduce `f g h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : (QuotientAddGroup.mk f : ℂ ⧸ S) = QuotientAddGroup.mk g`. Apply `QuotientAddGroup.eq.mpr` to reduce the goal to its premises. Establish `h' : -f + g ∈ L.lattice` using `by convert neg_mem h using 1; ring`. Conclude with `h'`. Conclude with `congrArg Quotient.out e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(F.filter (fun f => f ∈ L'.lattice ∧ f ∉ L.lattice)).image r, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.mp ht`. Take `⟨-, hf1, hf2⟩` from `Finset.mem_filter.mp hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `sub_mem hf1 (hLL (hr f))`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Apply `hf2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `add_mem (hr f) h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `t ht t' ht' h`. Take `⟨f, -, rfl⟩` from `Finset.mem_image.mp ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨g, -, rfl⟩` from `Finset.mem_image.mp ht'`. Apply `hr2` to reduce the goal to its premises. Establish `h'` using `add_mem (add_mem (hr f) h) (neg_mem (hr g))`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Distinguish the cases in `hxL : x ∈ L.lattice`. Conclude with `Or.inl hxL`. Use `right`. Take `⟨f, hfF, hxf⟩` from `hF x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨r f, Finset.mem_image.mpr ⟨f, Finset.mem_filter.mpr ⟨hfF, ?_, ?_⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `sub_mem hx (hLL hxf)`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `hf`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `hxL` to reduce the goal to its premises. Establish `h` using `add_mem hxf hf`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `add_mem hxf (hr f)`.
-
-Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_reps (L L' : PeriodPair) (N : ℕ) (hN0 : N ≠ 0) (hLL : L.lattice ≤ L'.lattice)
     (hN : ∀ x ∈ L'.lattice, (N : ℂ) * x ∈ L.lattice) :
@@ -158,11 +156,11 @@ theorem exists_reps (L L' : PeriodPair) (N : ℕ) (hN0 : N ≠ 0) (hLL : L.latti
 variable {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Establish `hc0 : M.c ≠ 0`. Establish `h` using `hOk`. Unfold `GlobalTheory.MomOne.Mdl.Ok at h`. Conclude with `h.1`. Establish `hxd` using `(GlobalTheory.MomOne.TorsionReduction.torsion_integral_and_distinct q M n hOk hc).2 p p' hp hp' h1 h2 h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ‖M.ι (M.c ^ 2)‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero M.ι).mpr (pow_ne_zero 2 hc0))`. Establish `e : M.ι (M.x p) - M.ι (M.x p') = M.ι (M.L.weierstrassP p - M.L.weierstrassP p') / M.ι (M.c ^ 2)`. Rewrite using `[← map_sub, ← map_div₀]`. Use `congr 1`. Unfold `GlobalTheory.MomOne.Mdl.x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hxd` using `[e, norm_div, div_eq_one_iff_eq hne]`. Conclude with `hxd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dist_eq (M : Mdl q) (hOk : M.Ok) {n : ℕ} (hc : Nat.Coprime n q) {p p' : ℂ}
     (hp : (n : ℂ) * p ∈ M.L.lattice) (hp' : (n : ℂ) * p' ∈ M.L.lattice) (h1 : p ∉ M.L.lattice)
@@ -186,37 +184,37 @@ theorem dist_eq (M : Mdl q) (hOk : M.Ok) {n : ℕ} (hc : Nat.Coprime n q) {p p' 
   exact hxd
 
 /- English proof (translation)
-Establish `hc0 : M.c ≠ 0`. Establish `h` using `hOk`. Unfold `GlobalTheory.MomOne.Mdl.Ok at h`. Conclude with `h.1`. Establish `hγ : ‖M.ι (M.c ^ 2)‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero M.ι).mpr (pow_ne_zero 2 hc0))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ((2 * N : ℕ) : ℂ) * w' ∈ M.L.lattice`. Establish `h` using `hN _ (hLL hw'2)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hpw : ((2 * N : ℕ) : ℂ) * w ∈ M.L.lattice`. Establish `h` using `hN _ (hLL hw2)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hw'L : w' ∉ M.L.lattice` using `fun h => hw' (hLL h)`. Establish `hwL : w ∉ M.L.lattice` using `fun h => hw (hLL h)`. Establish `hA : ∀ t ∈ T, ‖M.ι (M.L.weierstrassP w' - M.L.weierstrassP t)‖ = ‖M.ι (M.c ^ 2)‖`. Introduce `t ht`. Establish `ht1` using `(T1 t ht).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ((2 * N : ℕ) : ℂ) * t ∈ M.L.lattice`. Establish `h` using `add_mem (hN t ht1) (hN t ht1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `dist_eq M hOk hc hp hpt hw'L (T1 t ht).2 ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hw'` to reduce the goal to its premises. Establish `h'` using `sub_mem (hLL h) ht1`. Use `h' using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Apply `hw'` to reduce the goal to its premises. Establish `h'` using `add_mem (hLL h) ht1`. Use `h' using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hB : ∀ t ∈ T, ‖M.ι (M.L.weierstrassP w' - M.L.weierstrassP (w + t))‖ = ‖M.ι (M.c ^ 2)‖`. Introduce `t ht`. Establish `ht1` using `(T1 t ht).1`. Establish `hpt : ((2 * N : ℕ) : ℂ) * (w + t) ∈ M.L.lattice`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `add_mem (hN _ (hLL hw2)) (add_mem (hN t ht1) (hN t ht1))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `dist_eq M hOk hc hp hpt hw'L ?_ ?_ ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `h'` using `sub_mem (hLL h) ht1`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h'` using `sub_mem (sub_mem (hLL h) ht1) (hLL hw'2)`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h'` using `sub_mem (neg_mem (hLL h)) ht1`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hC : ‖M.ι (M.L.weierstrassP w' - M.L.weierstrassP w)‖ = ‖M.ι (M.c ^ 2)‖`. Use `dist_eq M hOk hc hp hpw hw'L hwL ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h'` using `sub_mem (hLL h) (hLL hw'2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h'` using `neg_mem (hLL h)`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hprod` using `GlobalTheory.T.weierstrassP_superlattice_half_period_prod M.L L' T w hLL T1 T2 T3 hw2 hw w' hw'`. Establish `hn` using `congrArg (fun z => ‖M.ι z‖) hprod`. Simplify using `only [map_mul, map_prod, norm_mul, norm_prod] at hn`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[Finset.prod_congr rfl hA, Finset.prod_congr rfl hB, hC, Finset.prod_const]`. Conclude with `⟨mul_right_cancel₀ (pow_ne_zero _ hγ) hn, hC⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key (M : Mdl q) (L' : PeriodPair) (N : ℕ) (hOk : M.Ok) (hc : Nat.Coprime (2 * N) q)
     (hLL : M.L.lattice ≤ L'.lattice) (hN : ∀ x ∈ L'.lattice, (N : ℂ) * x ∈ M.L.lattice)
@@ -293,9 +291,9 @@ theorem key (M : Mdl q) (L' : PeriodPair) (N : ℕ) (hOk : M.Ok) (hc : Nat.Copri
   exact ⟨mul_right_cancel₀ (pow_ne_zero _ hγ) hn, hC⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨k, rfl⟩` from `hodd`. Apply `hu` to reduce the goal to its premises. Establish `h3 : (k : ℂ) * (2 * u) ∈ L.lattice`. Establish `h4` using `nsmul_mem h2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[nsmul_eq_mul]`. Then use the resulting hypothesis. Establish `h5` using `sub_mem (hN u h) h3`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma notMem_lattice_of_two_mul_mem_of_odd_index {L L' : PeriodPair} {N : ℕ} (hodd : Odd N)
     (hN : ∀ x ∈ L'.lattice, (N : ℂ) * x ∈ L.lattice) {u : ℂ} (h2 : 2 * u ∈ L.lattice)
@@ -310,35 +308,35 @@ private lemma notMem_lattice_of_two_mul_mem_of_odd_index {L L' : PeriodPair} {N 
   convert h5 using 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `q hq M L' N hq2 hOk hN hLL hNL`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[Nat.coprime_zero_left]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hodd : Odd N`. Establish `h2 : Nat.Coprime N 2` using `Nat.Coprime.coprime_dvd_right (dvd_mul_right 2 q) hN`. Break down `Nat.even_or_odd N with he | ho` into its components or cases. It suffices to derive a contradiction. Establish `h3 : 2 ∣ Nat.gcd N 2` using `Nat.dvd_gcd (even_iff_two_dvd.mp he) dvd_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h3` using `[Nat.Coprime.gcd_eq_one h2]`. Use linear arithmetic over natural numbers and integers. Conclude with `ho`. Establish `hNq : Nat.Coprime N q` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left q 2) hN`. Establish `h2q : Nat.Coprime 2 q` using `(Nat.coprime_primes Nat.prime_two hq.out).mpr (Ne.symm hq2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Nat.Coprime (2 * N) q` using `Nat.Coprime.mul_left h2q hNq`. Establish `hc0 : M.c ≠ 0`. Establish `h` using `hOk`. Unfold `GlobalTheory.MomOne.Mdl.Ok at h`. Conclude with `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : ‖M.ι (M.c ^ 2)‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero M.ι).mpr (pow_ne_zero 2 hc0))`. Establish `nz : ∀ {x : ℂ}, ‖M.ι x‖ = ‖M.ι (M.c ^ 2)‖ → x ≠ 0`. Introduce `x hx h0`. Apply `hγ` to reduce the goal to its premises. Rewrite using `[← hx, h0, map_zero, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, T1, T2, T3⟩` from `exists_reps M.L L' N hN0 hLL hNL`. Establish `hω₁` using `M.L.ω₁_mem_lattice`. Establish `hω₂` using `M.L.ω₂_mem_lattice`. Establish `a1 : 2 * (M.L.ω₁ / 2) ∈ M.L.lattice` using `by convert hω₁ using 1; ring`. Establish `a2 : 2 * (M.L.ω₂ / 2) ∈ M.L.lattice` using `by convert hω₂ using 1; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `a3 : 2 * ((M.L.ω₁ + M.L.ω₂) / 2) ∈ M.L.lattice`. Use `add_mem hω₁ hω₂ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `n1 : M.L.ω₁ / 2 ∉ M.L.lattice` using `M.L.ω₁_div_two_notMem_lattice`. Establish `n2 : M.L.ω₂ / 2 ∉ M.L.lattice` using `M.L.ω₂_div_two_notMem_lattice`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `n3 : (M.L.ω₁ + M.L.ω₂) / 2 ∉ M.L.lattice`. Introduce `h`. Establish `h'` using `(PeriodPair.mul_ω₁_add_mul_ω₂_mem_lattice (L := M.L) (α := 1 / 2) (β := 1 / 2)).not.mpr (by norm_num)`. Apply `h'` to reduce the goal to its premises. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `d21 : 2 * (M.L.ω₂ / 2 - M.L.ω₁ / 2) ∈ M.L.lattice`. Use `sub_mem hω₂ hω₁ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e21 : M.L.ω₂ / 2 - M.L.ω₁ / 2 ∉ M.L.lattice`. Introduce `h`. Apply `n3` to reduce the goal to its premises. Use `add_mem h hω₁ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `d31 : 2 * ((M.L.ω₁ + M.L.ω₂) / 2 - M.L.ω₁ / 2) ∈ M.L.lattice`. Use `hω₂ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `e31 : (M.L.ω₁ + M.L.ω₂) / 2 - M.L.ω₁ / 2 ∉ M.L.lattice`. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `n2` to reduce the goal to its premises. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `d32 : 2 * ((M.L.ω₁ + M.L.ω₂) / 2 - M.L.ω₂ / 2) ∈ M.L.lattice`. Use `hω₁ using 1` and compare the differences between its conclusion and the goal.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e32 : (M.L.ω₁ + M.L.ω₂) / 2 - M.L.ω₂ / 2 ∉ M.L.lattice`. Introduce `h`. Apply `n1` to reduce the goal to its premises. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `m1` using `notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL a1 n1`. Establish `m2` using `notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL a2 n2`. Establish `m3` using `notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL a3 n3`. Establish `k12` using `key M L' N hOk hc hLL hNL T T1 T2 T3 a2 a1 m2 m1 (notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL d21 e21)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k13` using `key M L' N hOk hc hLL hNL T T1 T2 T3 a3 a1 m3 m1 (notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL d31 e31)`. Establish `k23` using `key M L' N hOk hc hLL hNL T T1 T2 T3 a3 a2 m3 m2 (notMem_lattice_of_two_mul_mem_of_odd_index hodd hNL d32 e32)`. Rewrite using `[disc_of_roots (cubic_root L' (hLL a1) m1) (cubic_root L' (hLL a2) m2) (cubic_root L' (hLL a3) m3) (nz k12.1) (nz k13.1) (nz k23.1), disc_of_roots (cubic_root M.L a1 n1) (cubic_root M.L a2 n2) (cubic_root M.L a3 n3) (nz k12.2) (nz k13.2) (nz k23.2)]`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow, k12.1, k13.1, k23.1, k12.2, k13.2, k23.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_disc_eq : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (L' : PeriodPair) (N : ℕ), q ≠ 2 → M.Ok → Nat.Coprime N (2 * q) →
     M.L.lattice ≤ L'.lattice → (∀ x ∈ L'.lattice, (N : ℂ) * x ∈ M.L.lattice) →

@@ -8,23 +8,21 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory.RootDVR
 
 /- English proof (translation)
-Introduce `p hp m hm`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq ((p : ℚ) : AlgebraicClosure ℚ) (by omega : 0 < m)`. Set `K` to `IntermediateField.adjoin ℚ ({y} : Set (AlgebraicClosure ℚ))`. Use `haveI : FiniteDimensional ℚ K := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`. Use `haveI : NumberField K := ⟨⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : K` to `⟨y, IntermediateField.subset_adjoin ℚ _ rfl⟩`. Establish `hx : x ^ m = (p : K)` using `Subtype.ext (by simpa [x] using hy)`. Establish `hxint : IsIntegral ℤ x`. Use `⟨X ^ m - C (p : ℤ), monic_X_pow_sub_C _ (by omega), ?_⟩` and prove the remaining obligations. Simplify using `[hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : 𝓞 K` to `⟨x, hxint⟩`. Establish `ha : a ^ m = (p : 𝓞 K)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `first`. Consider the case `(rw [RingOfIntegers.coe_pow]; exact hx)`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(push_cast; exact hx)`. Consider the case `(simp only [map_pow, map_natCast]; exact hx)`. Consider the case `exact hx`. Establish `hP0 : (Ideal.span {(p : ℤ)}).IsMaximal` using `Int.ideal_span_isMaximal_of_prime p`. Establish `hker : RingHom.ker (algebraMap ℤ (𝓞 K)) ≤ Ideal.span {(p : ℤ)}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (algebraMap ℤ (𝓞 K)).injective_int]`. Conclude with `bot_le`. Take `⟨P, hPmax, hPc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral _ hker`. Establish `hpP : (p : 𝓞 K) ∈ P`. Establish `: (p : ℤ) ∈ P.comap (algebraMap ℤ (𝓞 K))` using `hPc ▸ Ideal.subset_span rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `using this`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨P, hPmax.isPrime, fun h => by`. Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast hpP)⟩`. Set `O` to `v.valuationSubringAtPrime K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdvr : IsDiscreteValuationRing O` using `(isDiscreteValuationRing_and_finite_residueField_valuationSubringAtPrime K v (Ring.HasFiniteQuotients.finiteQuotient v.ne_bot)).1`. Use `haveI : IsLocalization v.asIdeal.primeCompl O := Localization.subalgebra.isLocalization_ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `hpO : (p : O) ∈ maximalIdeal O`. Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff O v.asIdeal (p : 𝓞 K)).mpr hpP` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hres : CharP (ResidueField O) p`. Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)]`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hpO`. Use `⟨O, inferInstance, inferInstance, hdvr, ⟨fun u w h => by` and prove the remaining obligations.
-
-Establish `h'` using `congrArg (fun z : O => (z : K)) h`. Conclude with `h'⟩, hres,` after adjusting the coercions. Use `algebraMap (𝓞 K) O a, ?_⟩`. Rewrite using `[← map_pow, ha, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvr_pow_eq_prime : ∀ (p : ℕ) [Fact p.Prime] (m : ℕ), 1 ≤ m → ∃ (O : Type) (_ : CommRing O)
     (_ : IsDomain O) (_ : IsDiscreteValuationRing O) (_ : CharZero O) (_ : CharP (ResidueField O) p)

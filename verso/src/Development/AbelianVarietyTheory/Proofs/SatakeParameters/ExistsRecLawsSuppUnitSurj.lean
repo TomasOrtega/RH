@@ -15,7 +15,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.eig_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eig_lpOfChar (ξ : Weil h →* ℂˣ) (hξ : WeilDeligne.IsSmooth ξ) (σ : Weil h) :
     (WD.lpOfChar h ξ hξ).eig σ = {(ξ σ : ℂ)} := by
@@ -23,9 +23,9 @@ theorem eig_lpOfChar (ξ : Weil h →* ℂˣ) (hξ : WeilDeligne.IsSmooth ξ) (�
   simp
 
 /- English proof (translation)
-Take `⟨φ⟩` from `hc`. Establish `h1 : IsSmoothChar (detChar (Fin 1) χ)` using `(isSmooth_ofChar_iff _).1 ((IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).isSmooth c.smooth)`. Establish `h2 : Continuous (Matrix.GeneralLinearGroup.scalar (R` using `w.adicCompletion E) (Fin 1)) := Units.continuous_map (continuous_matrix fun i j => by`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `using continuous_id')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : (detChar (Fin 1) χ).comp (Matrix.GeneralLinearGroup.scalar (Fin 1)) = χ`. Use `MonoidHom.ext fun z => congrArg χ ?_` and prove the remaining obligations. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Conclude with `⟨h3 ▸ h1.comp _ h2, congrArg (Sigma.mk 1) (IrrRep.cl_eq_iff.2 ⟨φ⟩)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem cls_eq_ofChar (χ : (w.adicCompletion E)ˣ →* ℂˣ) (c : Irr (w.adicCompletion E) 1)
     (hc : Nonempty (c.π.Equiv (detRep (Fin 1) χ))) :
@@ -42,9 +42,9 @@ theorem cls_eq_ofChar (χ : (w.adicCompletion E)ˣ →* ℂˣ) (c : Irr (w.adicC
   exact ⟨h3 ▸ h1.comp _ h2, congrArg (Sigma.mk 1) (IrrRep.cl_eq_iff.2 ⟨φ⟩)⟩
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `H`. Introduce `n s π d σ hs g`. Establish `h1` using `(hasSupport_of_isCuspSupport hs).of_equiv (equivRep (toIrrRep π))`. Establish `h2` using `H.supp (cls (toIrrRep π)) _ h1 g`. Rewrite `h2` using `[Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem IsRec.recSupp {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) :
     RecSupp fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
@@ -56,9 +56,9 @@ theorem IsRec.recSupp {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc
   exact h2
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `H`. Introduce `χ c hu hc g α hα`. Take `⟨hχ, e⟩` from `cls_eq_ofChar χ c hc`. Simplify using `only [e, H.one, eig_lpOfChar, Multiset.mem_singleton] at hα`. Rewrite using `[hα]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu _`.
+A detailed English derivation is pending.
 -/
 theorem IsRec.recUnit {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) :
     RecUnit fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
@@ -70,7 +70,7 @@ theorem IsRec.recUnit {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc
   exact hu _
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `H`. Substitute `hy` using the available equality. Take `⟨π, hπ⟩` from `H.exists_rep y`. Conclude with `⟨Irr.ofIrrRep π, hπ⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsRec.surj {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (n : ℕ) (y : WD h)
     (hy : y.lpDim = n) : ∃ π : Irr (w.adicCompletion E) n, rc (cls (toIrrRep π)) = y := by

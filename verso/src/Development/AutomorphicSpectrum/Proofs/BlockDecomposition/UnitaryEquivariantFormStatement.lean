@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EqForm.eqFormU | exact GlobalTheory.CompanionTheory.EqForm.eqFormU | (intros; apply GlobalTheory.CompanionTheory.EqForm.eqFormU <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unitary_equivariant_form : PositivityTheory.SphericalProduct.EqFormU := by
   first | exact @GlobalTheory.CompanionTheory.EqForm.eqFormU | exact GlobalTheory.CompanionTheory.EqForm.eqFormU | (intros; apply GlobalTheory.CompanionTheory.EqForm.eqFormU <;> assumption)

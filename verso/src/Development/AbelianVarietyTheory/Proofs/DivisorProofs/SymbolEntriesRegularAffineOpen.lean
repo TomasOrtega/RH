@@ -13,11 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Heat.SymReg
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ a, ∑ e, ∑ i, ∑ j, x i * y j * (L a e * u a i * w e j) := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = ∑ a, ∑ e, ∑ j, ∑ i, L a e * (x i * u a i) * (y j * w e j) := by`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sum_bilin_regroup {I₁ I₂ J₁ J₂ R : Type} [Fintype I₁] [Fintype I₂] [Fintype J₁] [Fintype J₂] [CommRing R]
     (x : I₁ → R) (y : I₂ → R) (L : J₁ → J₂ → R) (u : J₁ → I₁ → R) (w : J₂ → I₂ → R) :
@@ -38,19 +36,17 @@ theorem sum_sum_bilin_regroup {I₁ I₂ J₁ J₂ R : Type} [Fintype I₁] [Fin
         exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `K _ _ P₀ n v dd hinv F _ ψ ξ _ _ δ hδ Λ W hW hξW hΛ a e`. Set `φ : Γ(P₀.A.left, W) →+* F` to `(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.comp (ξ.appLE W ⊤ hξW).hom`. Establish `hφ : ∀ f, valR ξ W f = φ f` using `fun f => by`. Unfold `valR`. Rewrite using `[dif_pos hξW]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hδ' : ∀ b x, φ (dd b W x) = δ b (φ x)` using `fun b x => by`. Rewrite using `[← hφ, ← hφ]`. Conclude with `hδ b W x hξW`. Take `⟨N, g, f, hgf⟩` from `GlobalTheory.T.exists_dual_oneForms_invariantFields_affineOpen K P₀ n v dd hinv W hW a`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N', g', f', hgf'⟩` from `GlobalTheory.T.exists_dual_oneForms_invariantFields_affineOpen K P₀ n v dd hinv W hW e`. Use `choose h hh using fun (i : Fin N) (j : Fin N') => hΛ (f i) (f' j)`. Establish `hh' : ∀ i j, φ (h i j) = ∑ a', ∑ e', Λ a' e' * δ a' (φ (f i)) * δ e' (φ (f' j))`. Introduce `i j`. Rewrite using `[← hφ, hh]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hφ]`. Establish `key : ∀ b, ∑ i, φ (g i) * δ b (φ (f i)) = if a = b then 1 else 0`. Introduce `b`. Use `congrArg φ (hgf b)` as an intermediate fact. Simplify using `only [map_sum, map_mul, hδ'] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [this]; split_ifs <;> simp`. Establish `key' : ∀ b, ∑ j, φ (g' j) * δ b (φ (f' j)) = if e = b then 1 else 0`. Introduce `b`. Use `congrArg φ (hgf' b)` as an intermediate fact. Simplify using `only [map_sum, map_mul, hδ'] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [this]; split_ifs <;> simp`. Use `⟨∑ i, ∑ j, g i * g' j * h i j, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `only [map_sum, map_mul, hh']`. Rewrite using `[sum_sum_bilin_regroup (fun i => φ (g i)) (fun j => φ (g' j)) Λ (fun a' i => δ a' (φ (f i))) (fun e' j => δ e' (φ (f' j)))]`.
-
-Simplify using `only [key, key', mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entry_regular : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV (Sp K)) (n : ℕ) (v : Module.Basis (Fin n) K (TanM (𝟙 (Sp K)) P₀.A)) (dd : Fin n → Fld P₀.A.left), (∀ a, IsInv P₀.A (v a) (dd a)) → ∀ (F : Type) [Field F] (ψ : K →+* F) (ξ : Sp F ⟶ P₀.A.left), ξ ≫ P₀.A.hom = spMap ψ → (∀ O (f : Γ(P₀.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0) → ∀ (δ : Fin n → Derivation ℤ F F), (∀ a O f, ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O (dd a O f) = δ a (valR ξ O f)) → ∀ (Λ : Matrix (Fin n) (Fin n) F) (W : P₀.A.left.Opens), IsAffineOpen W → ⊤ ≤ ξ ⁻¹ᵁ W → (∀ f f' : Γ(P₀.A.left, W), ∃ h : Γ(P₀.A.left, W), valR ξ _ h = ∑ a, ∑ e, Λ a e * δ a (valR ξ _ f) * δ e (valR ξ _ f')) → ∀ a e, ∃ h : Γ(P₀.A.left, W), valR ξ W h = Λ a e := by
   intro K _ _ P₀ n v dd hinv F _ ψ ξ _ _ δ hδ Λ W hW hξW hΛ a e

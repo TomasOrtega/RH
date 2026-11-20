@@ -15,7 +15,7 @@ variable {D : D7}
 def IsFundU {ρ : ℕ} (v : VolU D ρ) (𝓤 : Set (UX D ρ)) : Prop := IsFundamentalDomain (UXQ D ρ) 𝓤 v.ν
 
 /- English proof (translation)
-The claim follows from `v.unit.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFundU {ρ : ℕ} (v : VolU D ρ) : ∃ 𝓤, IsFundU v 𝓤 ∧ v.ν 𝓤 = 1 := v.unit.2
 

@@ -4,9 +4,9 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ x a b hx hab`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← NumberField.InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`. Use `set φ : K →+* ℝ := NumberField.InfinitePlace.embedding_of_isReal hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg φ hx`. Simplify using `only [map_add, map_mul, map_pow, map_intCast, map_zero] at h`. Establish `hab' : ((a : ℝ)) ^ 2 < 4 * (b : ℝ)` using `by exact_mod_cast hab`. Use polynomial arithmetic with `[sq_nonneg (2 * φ x + (a : ℝ))]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem totallyComplex_of_root_quadratic_neg_disc :
     ∀ (K : Type) [Field K] [NumberField K] (x : K) (a b : ℤ), x ^ 2 + (a : K) * x + (b : K) = 0 →

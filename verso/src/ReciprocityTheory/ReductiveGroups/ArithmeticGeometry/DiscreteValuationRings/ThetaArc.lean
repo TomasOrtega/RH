@@ -19,19 +19,19 @@ section H0
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Introduce `y hy` and use `by simpa using Set.mem_iInter.1 hy 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem h0_le (j : Fin 1 → L.ι) : LB.wchart L (fun _ : Fin 1 => 𝟙 X) j ≤ L.U (j 0) := fun y hy => by
   simpa using Set.mem_iInter.1 hy 0
 
 /- English proof (translation)
-Introduce `y hy` and use `Set.mem_iInter.2 fun _ => by simpa using hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le_weighted_chart_single (i : L.ι) : L.U i ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) fun _ => i := fun y hy =>
   Set.mem_iInter.2 fun _ => by simpa using hy
 
 /- English proof (translation)
-Simplify using `[trF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transition_factor_single_identity (y : X) (j j' : Fin 1 → L.ι) : trF (L := L) (fun _ : Fin 1 => 𝟙 X) (fun _ => ((1 : ℕ) : ℤ)) (𝟙 X) y j j' =
     gm (𝟙 X) y (L.U (j 0) ⊓ L.U (j' 0)) (L.g (j 0) (j' 0)) := by
@@ -56,11 +56,9 @@ def secOfH0 (σ : H0 L 1) : LB.Sec L where
       ((gs_res _ y inf_le_right hm _).trans (gs_res _ y (chart_le_weighted_chart_single i') hm.2 _))))))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hb0 : ∀ i, b.f i = 0` using `fun i => fn_ext fun y hy => by`. Rewrite using `[hne i y hy]`. Unfold `gs`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression. Take `⟨a, -, hu⟩` from `hb b`. Establish `h0` using `hu 0 fun i => by rw [hb0 i, mul_zero]`.
-
-Establish `h1` using `hu 1 fun i => by rw [hb0 i, mul_zero]`. Conclude with `zero_ne_one (h0.trans h1.symm)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_gen {K : Type} [Field K] {p : X ⟶ Sp K} {b : LB.Sec L}
     (hb : ∀ s : LB.Sec L, ∃! a : K, ∀ i, s.f i = constFn p _ a * b.f i) : ∃ i, ∃ y ∈ L.U i, gs (𝟙 X) y _ (b.f i) ≠ 0 := by
@@ -84,15 +82,15 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {D : D
   (U : Unif (maximalIdeal R) D A G)
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section hT A`. Take `⟨i, y, hy, hne⟩` from `ne_zero_of_gen hb`. Take `⟨w, hw⟩` from `LBIso.symm U.ext`. Establish `hL` using `U.LG.isLB`. Take `⟨s', hs'⟩` from `sec_pull_down ((isGen_iff w).1 hw) A.isLB (pull_isLB hL _) b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_sec hL (φ := fun _ : PUnit => pullback.fst G.hom (jK R)) (ε := fun _ => 1) (φ' := fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε' := fun _ => ((1 : ℕ) : ℤ)) (fun V _ h => by simp) s'`. Take `⟨F, ⟨r, hr, σ, f, h₁, -, -⟩, -⟩` from `(U.expand 1 le_rfl).1 s`. Use `⟨σ, fun h0 => hne ?_⟩` and prove the remaining obligations. Set `ρ` to `U.gen.inv.left`. Establish `e : ρ ≫ U.gen.hom.left = 𝟙 _` using `congrArg (fun q => q.left) U.gen.inv_hom_id`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose J hJ using fun χ : A.A.left ⟶ G.left => exists_chart hL (χ y)`. Establish `m` using `Good.mem hJ (fun _ : Fin 1 => pullback.fst G.hom (jK R)) ρ`. Establish `m'` using `Good.mem hJ (fun _ : PUnit => pullback.fst G.hom (jK R)) ρ`. Establish `k` using `hs' _ ρ y i _ ((congrArg (fun q => q y ∈ A.L.U i) e).mpr hy) m'`. Rewrite `k` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have k₂ := congrArg (gs ρ y _) (h₁ (fun _ => J (ρ ≫ pullback.fst G.hom (jK R))) (fun _ => J (ρ ≫ pullback.fst G.hom (jK R))) (by rintro (a | a) (c | c) _ <;> rfl))`. Establish `mm : ρ y ∈ LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => J (ρ ≫ pullback.fst G.hom (jK R))) ⊓ LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R) ≫ 𝟙 _) (fun _ => J (ρ ≫ pullback.fst G.hom (jK R)))` using `⟨m, m⟩`. Establish `k₀` using `(gs_zero ρ y _ mm).symm.trans ((congrArg (gs ρ y _) ((map_zero _).symm.trans (congrArg _ ((map_zero _).symm.trans (congrArg _ (h0 _).symm))))).trans k₂)`. Establish `k₃` using `(k₀.trans (gs_mul ρ y _ mm _ _)).trans (congrArg₂ (· * ·) (gs_constFn (pullback.snd G.hom (jK R) ≫ jK R) _ ρ y mm r) ((gs_res ρ y inf_le_left mm _).trans (hs _ ρ y J hJ)))`. Establish `hu : IsUnit (cst (ρ ≫ pullback.snd G.hom (jK R) ≫ jK R) y r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, (cst_comp _ (algebraMap R (FractionRing R)) y r : cst (_ ≫ jK R) y r = _)]`. Conclude with `IsUnit.of_mul_eq_one _ ((cst_mul _ y _ (algebraMap R (FractionRing R) r)⁻¹).symm.trans (by`. Rewrite using `[mul_inv_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hr), cst_one]))`. Conclude with `k.trans ((congrArg _ ((hu.mul_right_eq_zero).1 k₃.symm)).trans (mul_zero _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero (hT : SecTwistSt) : ∃ σ : H0 U.LG.L 1, ¬ ∀ j, σ.f j = 0 := by
   obtain ⟨b, hb⟩ := principalPolarisation_exists_unique_section hT A

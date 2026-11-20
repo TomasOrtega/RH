@@ -22,11 +22,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace Psi
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
 /- English proof (translation)
-Establish `hf : finOne F • M.trace = 0` using `by rw [← Matrix.trace_smul, hM, Matrix.trace_zero]`. Establish `hf' : finOne F * d.tt M = 0`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt`. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, hf, map_zero]`. Rewrite using `[d.std.2.2 _ (Place.at_of_finOne hf'), Dense.trace_evI d.cm.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt`. Rewrite using `[Dense.ext_trace d.cm (d.B.emb w), Dense.piInf_cA d.cm]`. Establish `: piInf (d.B.emb w) M.trace = (d.cw w M).trace` using `by simp [Matrix.trace, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_tt_arch_k (M : Mx F E d.n d.n) (hM : finOne F • M = 0) :
     d.B.ψ (d.tt M) = Complex.exp (-(2 * Real.pi * Complex.I) * ((∑ w, 2 * ((d.cw w M).trace).re : ℝ) : ℂ)) := by
@@ -43,31 +43,31 @@ theorem psi_tt_arch_k (M : Mx F E d.n d.n) (hM : finOne F • M = 0) :
   rw [this, Complex.add_re, Complex.star_def, Complex.conj_re]
   ring
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, GlobalTheory.RealScalar.piInf_realAd_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_realAd_k (w : InfinitePlace F) {p q : Type} (t : ℝ) (Y : Matrix p q (AE F E)) :
     d.cw w (realAd F t • Y) = (t : ℂ) • d.cw w Y := by
   ext i j
   simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, GlobalTheory.RealScalar.piInf_realAd_smul]
 /- English proof (translation)
-The claim follows from `(_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_tw_k R W).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tw_spec_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W : Mx F E d.m d.n) :
     finOne F • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W = 0 ∧ ∀ w, d.cw w (_root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) = (-(((R.sg w : ℤ) : ℂ) * R.ζ)) • d.cw w W :=
   (_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_tw_k R W).choose_spec
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) : ((R.sg w : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h]
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.cw_gram_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.cw_realAd_k, (_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.tw_spec_k R W).2, _root_.PositivityTheory.SiegelWeilFormula.KW.cw_loc_k R w W, _root_.PositivityTheory.Siegel …`. Establish `h3 : ((R.fr w).1 * (Matrix.of (R.loc w X)).map star).map star = (R.fr w).1.map star * Matrix.of (R.loc w X)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `_root_.PositivityTheory.SiegelWeilFormula.KW.zeta_ne_k R`. Establish `e` using `_root_.PositivityTheory.SiegelWeilFormula.KW.frJ_k R w`. Simplify using `only [Matrix.transpose_smul, Matrix.smul_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul]`. Establish `h4 : ((Matrix.of (R.loc w W)).map star)ᵀ = (Matrix.of (R.loc w W))ᴴ` using `rfl`. Rewrite using `[h4]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(t : ℂ)) * _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.sg_sq_k R w`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cw_gram_tw_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) (w : InfinitePlace F) :
     d.cw w (d.gram (realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) X) =
@@ -91,7 +91,7 @@ theorem cw_gram_tw_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W :
         field_simp
         linear_combination (-(t : ℂ)) * _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.sg_sq_k R w
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem re_trace_loc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (W X : Mx F E d.m d.n) :
     (((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w X)).trace).re =
@@ -101,9 +101,9 @@ theorem re_trace_loc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   simp [Complex.mul_re]
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k, PiLp.inner_apply, EuclideanSpace.equiv, real_inner_eq_re_inner, RCLike.inner_apply, conj_trivial]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_arc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W X : Mx F E d.m d.n) :
     ⟪_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k R W, _root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k R X⟫_ℝ =
@@ -119,7 +119,7 @@ theorem inner_arc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W X 
   simp
   ring
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram`. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, smul_comm, (_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.tw_spec_k R W).1]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fin_gram_tw_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) :
     finOne F • d.gram (realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) X = 0 := by
@@ -127,7 +127,7 @@ theorem fin_gram_tw_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W 
   rw [← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, smul_comm, (_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.tw_spec_k R W).1]
   simp
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.spf_k symp`. Rewrite using `[hTens_trace, neg_one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem spf_eq_k (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     _root_.PositivityTheory.SiegelWeilFormula.KFP.spf_k d x y = Algebra.trace (AF F) (AE F E)
@@ -135,7 +135,7 @@ theorem spf_eq_k (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
   unfold _root_.PositivityTheory.SiegelWeilFormula.KFP.spf_k symp
   rw [hTens_trace, neg_one_mul]
 /- English proof (translation)
-Rewrite using `[Dense.trace_evI d.cm.1]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Dense.ext_trace d.cm (d.B.emb w), Dense.piInf_cA d.cm, Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_evI_trace_k (z : AE F E) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (Algebra.trace (AF F) (AE F E) z)) =
@@ -145,11 +145,11 @@ theorem trace_evI_trace_k (z : AE F E) :
   rw [Dense.ext_trace d.cm (d.B.emb w), Dense.piInf_cA d.cm, Complex.add_re, Complex.star_def, Complex.conj_re]
   ring
 /- English proof (translation)
-Establish `hf : finOne F * Algebra.trace (AF F) (AE F E) z = 0`. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, hz, map_zero]`. Establish `hf' : finOne F * -(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z) = 0`. Rewrite using `[mul_neg, mul_left_comm, hf, mul_zero, neg_zero]`. Rewrite using `[d.std.2.2 _ (Place.at_of_finOne hf')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Establish `e : evI F (-(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z)) = -(algebraMap ℝ (mixedEmbedding.mixedSpace F) (⅟2) * evI F (Algebra.trace (AF F) (AE F E) z))`. Rewrite using `[← evI_half, ← Dense.evI_mul]`. Conclude with `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) _`. Rewrite using `[e, map_neg, ← Algebra.smul_def, LinearMap.map_smul, _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.trace_evI_trace_k, smul_eq_mul, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_neg_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[invOf_eq_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_neg_half_trace_k (z : AE F E) (hz : finOne F • z = 0) :
     d.B.ψ (-(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z)) =
@@ -170,9 +170,9 @@ theorem psi_neg_half_trace_k (z : AE F E) (hz : finOne F • z = 0) :
   rw [invOf_eq_inv]
   ring
 /- English proof (translation)
-Establish `h` using `congrArg (fun x => x.map (d.B.emb w).1) R.hε`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at h`. Establish `cst : (d.b.1.map σ).map (d.B.emb w).1 = (d.b.1.map (d.B.emb w).1).map star`. Use extensionality with `i j`. Conclude with `d.cm.2.2.2 (d.B.emb w).1 (d.b.1 i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[cst]`. Use extensionality with `i j`. Use `congrFun (congrFun h (Sum.inr i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.toCols₁, Matrix.toCols₂, Matrix.one_apply, Matrix.smul_apply, apply_ite]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frame_hermForm_real_sign (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) :
     ((d.b.1.toCols₂).map (d.B.emb w).1)ᵀ * (dbl d.Y.J).map (d.B.emb w).1 *
@@ -186,30 +186,30 @@ theorem frame_hermForm_real_sign (R : _root_.PositivityTheory.SiegelWeilFormula.
   have := congrFun (congrFun h (Sum.inr i)) (Sum.inl j)
   simpa [Matrix.mul_apply, Matrix.toCols₁, Matrix.toCols₂, Matrix.one_apply, Matrix.smul_apply, apply_ite] using this
 /- English proof (translation)
-Apply the tactic sequence `rcases R.hζ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_zeta_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : ((R.ε : ℤ) : ℂ) * star R.ζ * R.ζ⁻¹ = -1 := by
   rcases R.hζ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]
 /- English proof (translation)
-Simplify using `[Matrix.trace, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_trace_k (w : InfinitePlace F) {ι : Type} [Fintype ι] (M : Matrix ι ι (AE F E)) : piInf (d.B.emb w) M.trace = (d.cw w M).trace := by
   simp [Matrix.trace, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, map_sum]
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dbl_incM_k : dbl (incM F d.Y.J) = incM F (dbl d.Y.J) := by
   ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.piInf_trace_k]`. Establish `hcw : d.cw w (((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ) = (((s : ℂ) • d.cw w W) * ((d.b.1.toCols₂).map (d.B.emb w).1)ᵀ)ᵀ * d. …`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.dbl_incM_k]`. Establish `c1` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.cw_realAd_k (d := d) w s W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.cw_realAd_k (d := d) w t (_root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W)`. Establish `c3` using `(_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.tw_spec_k R W).2 w`. Establish `c4` using `_root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d w d.A.J`. Establish `c5` using `_root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d w d.b.1.toCols₁`. Establish `c6` using `_root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d w d.b.1.toCols₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c7` using `_root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d w (dbl d.Y.J)`. Establish `c8` using `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_cA_k d w ((realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) * (incM F d.b.1.toCols₁)ᵀ)`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, Matrix.map_mul, Matrix.transpose_map] at c1 c2 c3 c4 c5 c6 c7 c8`. Rewrite using `[c8, c1, c2, c3, c4, c5, c6, c7, smul_smul]`. Rewrite using `[hcw, trace_line, _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.frame_hermForm_real_sign, Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, ← _root_.PositivityTheory.SiegelWeilFormula.KW.cw_gram_k, R.cw_gram w W, Matrix.trace_smu …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `_root_.PositivityTheory.SiegelWeilFormula.KW.zeta_ne_k R`. Establish `e` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.eps_zeta_k R`. Establish `sq` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.sg_sq_k R w`. Use `push_cast`. Simplify using `only [star_mul', star_neg, Complex.star_def, Complex.conj_ofReal, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Complex.star_def]`. Take the linear combination `(-(s : ℂ) * t * (((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w W)).trace) * ((R.sg w : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ)) * e + ((s : ℂ) * t * ((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w W)).trace) * sq`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem piInf_hT_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (W : Mx F E d.m d.n) (s t : ℝ) (w : InfinitePlace F) :
     piInf (d.B.emb w) ((((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J *
@@ -247,9 +247,9 @@ end Psi
 open Psi
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.psi_tt_arch_k _ (_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.fin_gram_tw_k R W t X), _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.inner_arc_k]`. Use `congr 1`. Establish `e : ∀ w, ((d.cw w (d.gram (realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) X)).trace).re = -t * ∑ i, ∑ j, ((R.loc w W i j).re * (R.loc w X i j).re + (R.loc w W i j).im * (R.loc w X i j).im)` using `fun w => by`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.cw_gram_tw_k, Matrix.trace_smul, smul_eq_mul, ← _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.re_trace_loc_k]`. Simplify using `[Complex.mul_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [← Finset.sum_neg_distrib, ← Finset.mul_sum]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem psi_tw'_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (t : ℝ) (X : Mx F E d.m d.n) :
     d.B.ψ (d.tt (d.gram (realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) X)) =
@@ -266,11 +266,11 @@ theorem psi_tw'_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {W : Mx
   simp only [← Finset.sum_neg_distrib, ← Finset.mul_sum]
   ring_nf
 /- English proof (translation)
-Establish `hx : finOne F • ((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ) = 0`. Rewrite using `[← Matrix.smul_mul, smul_comm, hW, smul_zero, Matrix.zero_mul]`. Establish `hz : finOne F • (-(((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ).trace) = 0`. Rewrite using `[smul_neg, ← Matrix.trace_smul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.spf_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.psi_neg_half_trace_k _ hz]`. Use `congr 1`. Establish `e : ∀ w, (piInf (d.B.emb w) (-(((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ).trace)).re = -(s * t) * ∑ i, ∑ j, ((R.loc w W i j).r …`. Introduce `w`. Rewrite using `[map_neg, _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.piInf_hT_k, ← _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.re_trace_loc_k, Complex.neg_re, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, ← _root_.PositivityTheory.SiegelWeilFormula.KFP.Psi.inner_arc_k, real_inner_self_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_sp'_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (s t : ℝ) :
     d.B.ψ (-(⅟(2 : AF F) * _root_.PositivityTheory.SiegelWeilFormula.KFP.spf_k d ((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)

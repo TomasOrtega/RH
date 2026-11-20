@@ -20,7 +20,7 @@ noncomputable section
 namespace VarietySlabMeasure
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.injective, h.finite⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFiniteLinProj_of {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (h : ComplexSets.IsFiniteProjection J A) :
@@ -28,9 +28,9 @@ theorem isFiniteLinProj_of {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
   ⟨h.injective, h.finite⟩
 
 /- English proof (translation)
-Take `⟨-, hfin, hle⟩` from `ComplexSets.FibreBound.proof n d J _ hJ hd hA (WithLp.ofLp x)`. Combine the equalities or inequalities in the displayed calculation. Use `Set.encard_le_encard_of_injOn (f := fun z : EuclideanSpace ℂ (Fin n) => WithLp.ofLp z) ?_ (fun a _ b _ h => WithLp.ofLp_injective 2 h)` and prove the remaining obligations. Introduce and unpack `z ⟨⟨hz, -⟩, hx⟩`. Conclude with `⟨hz, congrArg WithLp.ofLp hx⟩`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `_ = ((ComplexSets.fibre J (U.submatrix s id) (WithLp.ofLp x)).ncard : ℕ∞) := hfin.cast_ncard_eq.symm`. Use `_ ≤ _ := by exact_mod_cast hle`.
+A detailed English derivation is pending.
 -/
 theorem fibreCount_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : J.IsPrime)
     (hd : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d) {U : Matrix (Fin n) (Fin n) ℂ}
@@ -51,33 +51,27 @@ theorem fibreCount_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : J
 end VarietySlabMeasure
 
 /- English proof (translation)
-Introduce `n d J u hJ hdim hu R`. Break down `hdim.lt_or_eq with hlt | heq` into its components or cases. Use `⟨1, 1, one_pos, one_pos, fun ε _ _ => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨U, hU, hfin⟩` from `(hG n d J hJ heq).2.2 1 (fun _ => 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ s : Fin d → Fin n, StrictMono s → ComplexSets.IsFiniteProjection J (U.submatrix s id)` using `fun s hs => by`. Simplify using `using hfin 0 ⟨s, hs.injective⟩`. Establish `hQ : ∀ s : Fin d → Fin n, ∃ Q : MvPolynomial (Fin d) ℂ, StrictMono s → Q ≠ 0 ∧ ∀ z ∈ zeroSetEuc J, ‖z‖ ≤ R → ‖eval ((U.submatrix s id).mulVec fun j => z j) Q‖ ≤ ‖∑ j, u j * z j‖`. Introduce `s`. Distinguish the cases in `hs : StrictMono s`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨Q, hQ0, hb⟩` from `IndefiniteRowSideFullHecke.ComplexSets.SlabBound.affine n d J (U.submatrix s id) u hJ (VarietySlabMeasure.isFiniteLinProj_of (hA s hs)) hu`. Take `⟨C, hC⟩` from `hb R`. Establish `hK : (0 : ℝ) < max C 1` using `lt_max_of_lt_right one_pos`. Use `⟨MvPolynomial.C ((max C 1 : ℝ) : ℂ)⁻¹ * Q, fun _ => ⟨?_, fun z hz hzR => ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (by simpa using hK.ne') hQ0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_mul, eval_C, norm_mul, norm_inv, Complex.norm_of_nonneg hK.le, inv_mul_le_iff₀ hK]`. Conclude with `(hC z hz hzR).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))`. Conclude with `⟨0, fun h => absurd h hs⟩`. Use `choose Q hQ using hQ`. Establish `hR' : ∀ s : Fin d → Fin n, ∃ R' : ℝ, 0 < R' ∧ ∀ z : EuclideanSpace ℂ (Fin n), ‖z‖ ≤ R → ‖rowsProj U s z‖ < R'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `s`. Establish `hc : Continuous (rowsProj U s)`. Unfold `rowsProj`. Use `fun_prop`. Take `⟨K, hK⟩` from `(isCompact_closedBall (0 : EuclideanSpace ℂ (Fin n)) R).exists_bound_of_continuousOn hc.continuousOn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨max K 0 + 1, by positivity, fun z hz => ?_⟩` and prove the remaining obligations. Use `hK z (mem_closedBall_zero_iff.mpr hz)` as an intermediate fact. Combine the linear relations using `[le_max_left K 0]`. Use `choose R' hR'0 hR' using hR'`. Establish `hS : ∀ s : Fin d → Fin n, ∃ C α : ℝ, 0 < C ∧ 0 < α ∧ (StrictMono s → ∀ η : ℝ, 0 < η → η ≤ 1 → μH[((2 * d : ℕ) : ℝ)] {x : EuclideanSpace ℂ (Fin d) | x ∈ Metric.ball 0 (R' s) ∧ ‖eval (fun i => x i) (Q s)‖ ≤ η} ≤ ENNReal.ofReal (C * η ^ α))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `s`. Distinguish the cases in `hs : StrictMono s`. Take `⟨C, α, hC, hα, hb⟩` from `hP d (Q s) (hQ s hs).1 (R' s) (hR'0 s)`. Conclude with `⟨C, α, hC, hα, fun _ => hb⟩`. Conclude with `⟨1, 1, one_pos, one_pos, fun h => absurd h hs⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose C α hC hα hS using hS`. Use `set T := Finset.univ.filter (fun s : Fin d → Fin n => StrictMono s) with hT`. Choose the witnesses or unpack the hypotheses as in `⟨α₀, hα₀, hα₀le⟩ : ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ s ∈ T, α₀ ≤ α s := by`. Distinguish the cases in `hne : T.Nonempty`. Conclude with `⟨T.inf' hne α, (Finset.lt_inf'_iff hne).2 fun s _ => hα s, fun s hs => Finset.inf'_le _ hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨1, one_pos, fun s hs => absurd ⟨s, hs⟩ hne⟩`. Use `set N : (Fin d → Fin n) → ℕ := fun s => ComplexSets.projDegree J (U.submatrix s id)`. Establish `hNC : 0 ≤ ∑ s ∈ T, (N s : ℝ) * C s` using `Finset.sum_nonneg fun s _ => mul_nonneg (Nat.cast_nonneg _) (hC s).le`. Use `⟨∑ s ∈ T, (N s : ℝ) * C s + 1, α₀, by linarith, hα₀, fun ε hε hε1 => ?_⟩` and prove the remaining obligations. Use `set B : Set (EuclideanSpace ℂ (Fin n)) := {z | ‖z‖ ≤ R ∧ ‖∑ j, u j * z j‖ ≤ ε}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB : MeasurableSet B`. Establish `hc : Continuous fun z : EuclideanSpace ℂ (Fin n) => ‖∑ j, u j * z j‖` using `by fun_prop`. Conclude with `(measurableSet_le continuous_norm.measurable measurable_const).inter (measurableSet_le hc.measurable measurable_const)`. Establish `hεα : 0 < ε ^ α₀` using `Real.rpow_pos_of_pos hε _`. Establish `hterm : ∀ s ∈ T, (⨆ x : EuclideanSpace ℂ (Fin d), (({z | z ∈ zeroSetEuc J ∩ B ∧ rowsProj U s z = x}.encard : ℕ∞) : ℝ≥0∞)) * μH[((2 * d : ℕ) : ℝ)] (rowsProj U s '' (zeroSetEuc J ∩ B)) ≤ ENNReal.ofReal ((N s : ℝ) * C s * ε ^ α₀)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 
-Introduce `s hs`. Establish `hs' : StrictMono s` using `(Finset.mem_filter.mp hs).2`. Rewrite using `[mul_assoc, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Use `gcongr`. Use `iSup_le fun x => ?_` and prove the remaining obligations.
-
-Use `VarietySlabMeasure.fibreCount_le hJ heq (hA s hs') B x` as an intermediate fact. Conclude with `ENat.toENNReal_le.mpr this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨hz, hzR, hzε⟩, rfl⟩`.
-
-Conclude with `⟨mem_ball_zero_iff.mpr (hR' s z hzR), ((hQ s hs').2 z hz hzR).trans hzε⟩`. Use `_ ≤ ENNReal.ofReal (C s * ε ^ α s) := hS s hs' ε hε hε1`. Use `_ ≤ _ := ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_ge hε hε1 (hα₀le s hs)) (hC s).le)`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
-
-Rewrite using `[← Finset.sum_mul, add_mul, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem VarietySlabMeasure.proof (hG : ComplexSets.FiniteProjectionsGeneric.Statement)
     (hW : VarietyProjectionMass.Statement) (hP : IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.Statement) :

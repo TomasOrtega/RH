@@ -11,17 +11,17 @@ open GlobalTheory.CompactFockAction GlobalTheory.IndefiniteRowSideFullHecke.Rais
 def sgnP {k : ℕ} (p : ℕ) : Fin k → Bool := fun a => decide (a.val < p)
 
 /- English proof (translation)
-Take `⟨ε, hε, hG, hs⟩` from `h`. Establish `hd : Matrix.diagonal (fun a => (ε a : ℂ)) = Formalism.REAL.Jm (sgnP (k` using `k) p) := by`. Unfold `Formalism.REAL.Jm sgnP`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `hε a with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Simplify using `[h1, h2]`. Establish `: ¬ a.val < p` using `by omega`. Simplify using `[h1, this]`. Establish `hsq : Matrix.diagonal (fun a => (ε a : ℂ)) * Matrix.diagonal (fun a => (ε a : ℂ)) = 1`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases hε a with ⟨h1, _⟩ | ⟨h1, _⟩ <;> simp [h1]`. Establish `hdet : (Matrix.diagonal (fun a => (ε a : ℂ))).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `h0`. Use `congrArg Matrix.det hsq` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hB : B.det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hG, Matrix.det_mul, h0, mul_zero]`. Establish `hU : IsUnit B.det` using `isUnit_iff_ne_zero.2 hB`. Establish `h1 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hU`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hU`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hd, ← hs, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onb_facts {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : IsONBasis G s B p) :
     B * B⁻¹ = 1 ∧ B⁻¹ * B = 1 ∧ s = B * Formalism.REAL.Jm (sgnP p) * B⁻¹ := by
@@ -55,9 +55,9 @@ theorem onb_facts {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : 
   rw [← hd, ← hs, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply `h.2 i j` to reduce the goal to its premises. Introduce `hiff`. Apply `hij` to reduce the goal to its premises. Unfold `sgnP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Conclude with `decide_eq_decide.2 hiff`.
+A detailed English derivation is pending.
 -/
 theorem isBlock_of_isKMat {k p : ℕ} {κ : Matrix (Fin k) (Fin k) ℂ} (h : IsKMat p κ) : IsBlock (sgnP p) κ := by
   intro i j hij
@@ -68,9 +68,9 @@ theorem isBlock_of_isKMat {k p : ℕ} {κ : Matrix (Fin k) (Fin k) ℂ} (h : IsK
   exact decide_eq_decide.2 hiff
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter fun i : Fin k => i.val < p).card = p`. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin k))) (p := fun i : Fin k => i.val < p)`. Rewrite `h2` using `[Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `e`. Simplify using `only [sgnP, decide_eq_false_iff_not, Bool.false_eq_true, if_false]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [sgnP, decide_eq_true_eq, if_true]`. Conclude with `h1`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_sgnP {k p : ℕ} (hp : p ≤ k) (e : Bool) :
     (Finset.univ.filter fun i : Fin k => sgnP p i = e).card = if e then p else k - p := by
@@ -86,7 +86,7 @@ theorem card_sgnP {k p : ℕ} (hp : p ≤ k) (e : Bool) :
     exact h1
 
 /- English proof (translation)
-Unfold `signBlockDeterminant detPos`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.subtypeEquivRight (fun a : Fin k => (by simp [sgnP] : sgnP p a = true ↔ a.val < p)))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem signBlockDeterminant_positive_eq {k p : ℕ} (κ : Matrix (Fin k) (Fin k) ℂ) : signBlockDeterminant (sgnP p) true κ = detPos p κ := by
   unfold signBlockDeterminant detPos
@@ -94,7 +94,7 @@ theorem signBlockDeterminant_positive_eq {k p : ℕ} (κ : Matrix (Fin k) (Fin k
   rfl
 
 /- English proof (translation)
-Unfold `signBlockDeterminant detNeg`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.subtypeEquivRight (fun a : Fin k => (by simp [sgnP] : sgnP p a = false ↔ ¬ a.val < p)))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem signBlockDeterminant_negative_eq {k p : ℕ} (κ : Matrix (Fin k) (Fin k) ℂ) : signBlockDeterminant (sgnP p) false κ = detNeg p κ := by
   unfold signBlockDeterminant detNeg
@@ -102,13 +102,13 @@ theorem signBlockDeterminant_negative_eq {k p : ℕ} (κ : Matrix (Fin k) (Fin k
   rfl
 
 /- English proof (translation)
-Introduce `n m GS sS BS κS GT sT BT κT pS pT hpS hpT hBS hBT hκS hκT`. Take `⟨h1S, h2S, hsS⟩` from `onb_facts hBS`. Take `⟨h1T, h2T, hsT⟩` from `onb_facts hBT`. Establish `hu : κS * κSᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hκS.1`. Establish `hinv : (BS * κS * BS⁻¹)⁻¹ = BS * κSᴴ * BS⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h2S, Matrix.mul_one, hu, Matrix.mul_one, h1S]`. Rewrite using `[hinv, hsS, hsT, detPlus_conj h2S h2T]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `bS` using `isBlock_of_isKMat hκS`. Establish `bT` using `isBlock_of_isKMat hκT`. Establish `bS' : IsBlock (sgnP pS) κSᴴ` using `fun i j e => by`. Rewrite using `[Matrix.conjTranspose_apply, bS j i (Ne.symm e), star_zero]`. Rewrite using `[detPlus_block bS' bT, prod_bool _ fun e => signBlockDeterminant (sgnP pS) e κSᴴ, prod_bool _ fun e => signBlockDeterminant (sgnP pT) e κT, card_sgnP hpT, card_sgnP hpT, card_sgnP hpS, card_sgnP hpS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ih` using `fun e => signBlockDeterminant_mul_eq_one_of_mul_eq_one e bS hu`. Rewrite using `[eq_inv_of_mul_eq_one_right (ih true), eq_inv_of_mul_eq_one_right (ih false)]`. Simplify using `only [if_true, Bool.false_eq_true, if_false, signBlockDeterminant_positive_eq, signBlockDeterminant_negative_eq, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem detPlus_onb : ∀ {n m : ℕ} (GS sS BS κS : Matrix (Fin n) (Fin n) ℂ) (GT sT BT κT : Matrix (Fin m) (Fin m) ℂ)
     (pS pT : ℕ), pS ≤ n → pT ≤ m → IsONBasis GS sS BS pS → IsONBasis GT sT BT pT → IsKMat pS κS → IsKMat pT κT →

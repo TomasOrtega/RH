@@ -10,15 +10,15 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (Nat.cast_ne_zero.2 hl.out.ne_zero)`.
+A detailed English derivation is pending.
 -/
 lemma norm_l_pos (l : ℕ) [hl : Fact l.Prime] : 0 < ‖(l : ℂ_[l])‖ :=
   norm_pos_iff.2 (Nat.cast_ne_zero.2 hl.out.ne_zero)
 
 /- English proof (translation)
-Establish `h : ‖(((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l])‖ = ‖(l : ℚ_[l])‖` using `PadicComplex.norm_extends' l _`. Establish `h2 : (((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l]) = (l : ℂ_[l])`. Simplify using the standard rewrite rules. Rewrite `h` using `[h2]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`.
+A detailed English derivation is pending.
 -/
 lemma norm_l_lt_one (l : ℕ) [hl : Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := by
   have h : ‖(((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l])‖ = ‖(l : ℚ_[l])‖ := PadicComplex.norm_extends' l _
@@ -29,11 +29,11 @@ lemma norm_l_lt_one (l : ℕ) [hl : Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := b
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq ((l : ℂ_[l]) ^ q.num) q.pos`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hπ` using `norm_l_pos l`. Establish `h1 : ‖c‖ ^ q.den = ‖(l : ℂ_[l])‖ ^ q.num`. Rewrite using `[← norm_pow, hc, norm_zpow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hden : (q.den : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 q.den_nz`. Establish `h2 : (‖(l : ℂ_[l])‖ ^ (q : ℝ)) ^ q.den = ‖(l : ℂ_[l])‖ ^ q.num`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hπ.le, ← Real.rpow_intCast]`. Use `congr 1`. Establish `: (q : ℝ) = (q.num : ℝ) / (q.den : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `(Rat.num_div_den q).symm` after adjusting the coercions. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Conclude with `(pow_left_inj₀ (norm_nonneg c) (Real.rpow_nonneg hπ.le _) q.den_nz).1 (h1.trans h2.symm)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma exists_norm_eq_rpow_rat (l : ℕ) [hl : Fact l.Prime] (q : ℚ) :
     ∃ c : ℂ_[l], ‖c‖ = ‖(l : ℂ_[l])‖ ^ (q : ℝ) := by
@@ -53,13 +53,11 @@ lemma exists_norm_eq_rpow_rat (l : ℕ) [hl : Fact l.Prime] (q : ℚ) :
   exact (pow_left_inj₀ (norm_nonneg c) (Real.rpow_nonneg hπ.le _) q.den_nz).1 (h1.trans h2.symm)
 
 /- English proof (translation)
-Establish `hπ` using `norm_l_pos l`. Establish `hπ1` using `norm_l_lt_one l`. Break down `hx.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `Real.rpow_nonneg hπ.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `set t : ℝ := Real.logb ‖(l : ℂ_[l])‖ x with ht`. Establish `hxt : ‖(l : ℂ_[l])‖ ^ t = x` using `Real.rpow_logb hπ hπ1.ne h0`. Rewrite `hlt` using `[← hxt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htb : t < b` using `(Real.rpow_lt_rpow_left_iff_of_base_lt_one hπ hπ1).1 hlt`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn htb`. Take `⟨c, hc⟩` from `exists_norm_eq_rpow_rat l q`. Establish `h1 : x ≤ ‖c‖` using `h c (by`. Rewrite using `[hc]`.
-
-Conclude with `Real.rpow_le_rpow_of_exponent_ge hπ hπ1.le hq2.le)`. Rewrite `h1` using `[hc, ← hxt]`. Conclude with `absurd h1 (not_le.2 ((Real.rpow_lt_rpow_left_iff_of_base_lt_one hπ hπ1).2 hq1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_rpow_of_forall_norm (l : ℕ) [hl : Fact l.Prime] (b x : ℝ) (hx : 0 ≤ x)
     (h : ∀ c : ℂ_[l], ‖(l : ℂ_[l])‖ ^ b ≤ ‖c‖ → x ≤ ‖c‖) : x ≤ ‖(l : ℂ_[l])‖ ^ b := by
@@ -81,9 +79,9 @@ lemma le_rpow_of_forall_norm (l : ℕ) [hl : Fact l.Prime] (b x : ℝ) (hx : 0 �
   exact absurd h1 (not_le.2 ((Real.rpow_lt_rpow_left_iff_of_base_lt_one hπ hπ1).2 hq1))
 
 /- English proof (translation)
-Introduce `l _ d N0 N1 _ hl hd hev K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize a ha hsa hN0 hsat δ hδ`. Use `le_rpow_of_forall_norm l _ _ (norm_nonneg _) fun c hc => ?_` and prove the remaining obligations. Establish `hmem` using `hW l d N0 N1 hl hd hev K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize a ha hsa hN0 hsat c hc`. Establish `hcpos : 0 < ‖c‖` using `lt_of_lt_of_le (Real.rpow_pos_of_pos (norm_l_pos l) _) hc`. Establish `h1` using `hδ _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_smul, norm_smul, norm_inv]`. Rewrite `h1` using `[inv_mul_le_iff₀ hcpos, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem thmAEntry_of (hW : ThmAWeyl) : ThmAEntry := by
   intro l _ d N0 N1 _ hl hd hev K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size
@@ -97,7 +95,7 @@ theorem thmAEntry_of (hW : ThmAWeyl) : ThmAEntry := by
   rwa [inv_mul_le_iff₀ hcpos, mul_one] at h1
 
 /- English proof (translation)
-The claim follows from `thmAEntry_of (thmAWeyl_of thmAGauss)`.
+A detailed English derivation is pending.
 -/
 theorem theorem_A_matrix_entries : ThmAEntry := thmAEntry_of (thmAWeyl_of thmAGauss)
 

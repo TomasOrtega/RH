@@ -15,15 +15,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.ChernPoly
 
 /- English proof (translation)
-Introduce `Y L H φ ψ hφ hψ`. Take `⟨hc, ht, _, A, hA⟩` from `GlobalTheory.T.complexPoints_smoothProjVariety_compact_manifold Y`. Use `hc` as an intermediate fact. Use `ht` as an intermediate fact. Establish `hφs : φ.IsSmooth (AnRead.all Y.str (RingHom.id ℂ) Y.dim)` using `(Weight.isCInf_iff_isSmooth _).1 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : ψ.IsSmooth (AnRead.all Y.str (RingHom.id ℂ) Y.dim)` using `(Weight.isCInf_iff_isSmooth _).1 hψ`. Establish `hΦ : IsPotential A φ.locPot` using `hφs.isPotential hA`. Establish `hΨ : IsPotential A ψ.locPot` using `hψs.isPotential hA`. Take `⟨P, hP⟩` from `GlobalTheory.T.exists_polynomial_mongeAmpereMass_add_zsmul Y.dim _ A (fun _ => φ.locPot) (fun _ => ψ.locPot) (fun _ => hΦ) (fun _ => hΨ)`. Use `⟨P, ?_, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y L φ hφ).2 A hA, ← (by simpa using hP 0 : mInt A (fun _ => φ.locPot + ψ.locPot.zsmul 0) (fun _ => 1) = P.eval 0)]`. Use `SameForm.mInt_eq (fun _ => ?_) _` and prove the remaining obligations. Use `(Weight.sameForm_of_eq φ hA (isPotentialAdd A _ _ hΦ (isPotentialZsmul A 0 _ hΨ)) (fun x => ⟨pick φ.isLB x, mem_pick φ.isLB x, fun z => ?_⟩)).symm` and prove the remaining obligations. Use `show φ.φ (pick φ.isLB x) z / 2 = φ.locPot.φ x z + ((0 : ℤ) : ℝ) * ψ.locPot.φ x z`. Rewrite using `[Weight.locPot_φ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hT : (φ.tens (ψ.pow m)).IsCInf` using `hφ.tens (hψ.zpow m)`. Rewrite using `[(GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y _ _ hT).2 A hA, show ((m : ℕ) : ℝ) = (((m : ℕ) : ℤ) : ℝ) by push_cast; rfl, ← hP m]`. Use `SameForm.mInt_eq (fun _ => ?_) _` and prove the remaining obligations. Use `Weight.sameForm_of_eq _ hA (isPotentialAdd A _ _ hΦ (isPotentialZsmul A m _ hΨ)) (fun x => ⟨(pick φ.isLB x, fun _ => pick ψ.isLB x), mem_ptsIn_inf.2 ⟨mem_pick φ.isLB x, mem_pow_iff.2 (mem_pick ψ.isLB x)⟩, fun z => ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (φ.φ (pick φ.isLB x) z + (ψ.zpow m).φ (fun _ => pick ψ.isLB x) z) / 2 = φ.locPot.φ x z + ((m : ℤ) : ℝ) * ψ.locPot.φ x z`. Rewrite using `[Weight.zpow_φ, Weight.locPot_φ, Weight.locPot_φ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chernInt_tens_pow_poly : ∀ (Y : Var ℂ) (L H : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L)
     (ψ : Weight Y.str (RingHom.id ℂ) H), φ.IsCInf → ψ.IsCInf → ∃ P : Polynomial ℝ,

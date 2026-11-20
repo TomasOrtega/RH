@@ -7,25 +7,21 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Introduce `Y Z π _ _ hK`. Use `letI := fieldK π hK`. Use `letI := algKL π`. Take `⟨U, hU, hζU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := ⊤) (x := genPt π) trivial`. Establish `hηU : genericPoint Y ∈ π ⁻¹ᵁ U` using `hζU`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV : IsAffineOpen (π ⁻¹ᵁ U)` using `hU.preimage π`. Use `haveI : Nonempty (π ⁻¹ᵁ U) := ⟨⟨_, hηU⟩⟩`. Set `f : Γ(Z, U) →+* Z.presheaf.stalk (genPt π)` to `(Z.presheaf.germ U (genPt π) hζU).hom`. Set `φ : Γ(Y, π ⁻¹ᵁ U) →+* Y.functionField` to `(Y.presheaf.germ (π ⁻¹ᵁ U) (genericPoint Y) hηU).hom`. Set `g : Γ(Z, U) →+* Γ(Y, π ⁻¹ᵁ U)` to `(π.app U).hom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsq : ∀ a, algebraMap (Z.presheaf.stalk (genPt π)) Y.functionField (f a) = φ (g a)` using `fun a => Scheme.Hom.germ_stalkMap_apply π U _ hζU a`. Establish `hfin : g.Finite` using `IsFinite.finite_app π U hU`. Use `letI : Algebra Γ(Z, U) Γ(Y, π ⁻¹ᵁ U) := g.toAlgebra`. Use `haveI : Module.Finite Γ(Z, U) Γ(Y, π ⁻¹ᵁ U) := hfin`. Use `letI : Algebra Γ(Y, π ⁻¹ᵁ U) Y.functionField := φ.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsFractionRing Γ(Y, π ⁻¹ᵁ U) Y.functionField := functionField_isFractionRing_of_isAffineOpen Y _ hV`. Establish `hint : ∀ b, IsIntegral (Z.presheaf.stalk (genPt π)) (φ b)`. Introduce `b`. Take `⟨p, hp, hpb⟩` from `Algebra.IsIntegral.isIntegral (R := Γ(Z, U)) b`. Use `⟨p.map f, hp.map f, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (algebraMap (Z.presheaf.stalk (genPt π)) Y.functionField).comp f = φ.comp g` using `RingHom.ext hsq`. Establish `hpb' : p.eval₂ g b = 0` using `hpb`. Rewrite using `[Polynomial.eval₂_map, e, ← Polynomial.hom_eval₂, hpb', map_zero]`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := Γ(Z, U)) (M := Γ(Y, π ⁻¹ᵁ U))`. Use `haveI : Finite (φ '' (s : Set Γ(Y, π ⁻¹ᵁ U))) := (s.finite_toSet.image φ).to_subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : FiniteDimensional (Z.presheaf.stalk (genPt π)) (IntermediateField.adjoin (Z.presheaf.stalk (genPt π)) (φ '' (s : Set Γ(Y, π ⁻¹ᵁ U))))` using `IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨b, -, rfl⟩`. Conclude with `hint b)`. Establish `hmem : ∀ b, φ b ∈ IntermediateField.adjoin (Z.presheaf.stalk (genPt π)) (φ '' (s : Set Γ(Y, π ⁻¹ᵁ U)))`. Introduce `b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hb : b ∈ Submodule.span Γ(Z, U) (s : Set Γ(Y, π ⁻¹ᵁ U))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `e : φ (a • x) = algebraMap (Z.presheaf.stalk (genPt π)) Y.functionField (f a) * φ x`. Rewrite using `[hsq, Algebra.smul_def, map_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hx`. Establish `htop : IntermediateField.adjoin (Z.presheaf.stalk (genPt π)) (φ '' (s : Set Γ(Y, π ⁻¹ᵁ U))) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations.
-
-Take `⟨b, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Y, π ⁻¹ᵁ U)) x`. Conclude with `div_mem (hmem b) (hmem c)`. Establish `h2 : FiniteDimensional (Z.presheaf.stalk (genPt π)) (⊤ : IntermediateField (Z.presheaf.stalk (genPt π)) Y.functionField)` using `htop ▸ hF`. Conclude with `LinearEquiv.finiteDimensional IntermediateField.topEquiv.toLinearEquiv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_functionField : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite π] [IsIntegral Y]
     (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π))),

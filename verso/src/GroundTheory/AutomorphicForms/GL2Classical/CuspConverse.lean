@@ -16,9 +16,9 @@ open AdelicGLn AutomorphicForm GroundTheory.Global ModularForm
 local notation "𝔸f" => FiniteAdeleRing (𝓞 ℚ) ℚ
 
 /- English proof (translation)
-Use `UpperHalfPlane.isOpenEmbedding_coe.isEmbedding.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: ((↑) ∘ fun t : ℝ => t +ᵥ z) = fun t : ℝ => (t : ℂ) + (z : ℂ)`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, coe_vadd]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_vadd_upperHalfPlane (z : ℍ) : Continuous fun t : ℝ => t +ᵥ z := by
   refine UpperHalfPlane.isOpenEmbedding_coe.isEmbedding.continuous_iff.2 ?_
@@ -29,11 +29,11 @@ theorem continuous_vadd_upperHalfPlane (z : ℍ) : Continuous fun t : ℝ => t +
   fun_prop
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `hw : 0 < w.im`. Establish `hw' : 0 < (w + M).im` using `by simpa using hw`. Simplify using `only [Function.comp_apply, ofComplex_apply_of_im_pos hw', ofComplex_apply_of_im_pos hw]`. Rewrite using `[← hper ⟨w, hw⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `[coe_vadd, add_comm]`. Use `push Not at hw`. Establish `hw' : (w + M).im ≤ 0` using `by simpa using hw`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]`.
+A detailed English derivation is pending.
 -/
 theorem periodic_comp_ofComplex_of_vadd {F : ℍ → ℂ} {M : ℝ} (hper : ∀ z : ℍ, F (M +ᵥ z) = F z) :
     Function.Periodic (F ∘ ofComplex) M := by
@@ -50,9 +50,9 @@ theorem periodic_comp_ofComplex_of_vadd {F : ℍ → ℂ} {M : ℝ} (hper : ∀ 
     simp [ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]
 
 /- English proof (translation)
-Establish `hfper` using `periodic_comp_ofComplex_of_vadd hper`. Establish `han` using `analyticAt_cuspFunction_zero hM hfper hhol hbdd`. Establish `e : (cuspFunction M F ∘ fun τ : ℍ => Function.Periodic.qParam M τ) = F`. Use function extensionality and compare the values at `τ`. Simplify using `using eq_cuspFunction τ hM.ne' hfper`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `han.continuousAt.tendsto.comp (qParam_tendsto_atImInfty hM)` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_atImInfty_of_periodic_of_mdifferentiable {F : ℍ → ℂ} {M : ℝ} (hM : 0 < M)
     (hper : ∀ z : ℍ, F (M +ᵥ z) = F z) (hhol : MDiff F) (hbdd : IsBoundedAtImInfty F) :
@@ -65,15 +65,13 @@ theorem tendsto_atImInfty_of_periodic_of_mdifferentiable {F : ℍ → ℂ} {M : 
   simpa [e] using han.continuousAt.tendsto.comp (qParam_tendsto_atImInfty hM)
 
 /- English proof (translation)
-Use `set c := cuspFunction M F 0`. Establish `ht` using `tendsto_atImInfty_of_periodic_of_mdifferentiable hM hper hhol hbdd`. It suffices to establish `hc : c = 0 by`. Rewrite using `[IsZeroAtImInfty, ZeroAtFilter, ← hc]`. Conclude with `ht`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations. Rewrite using `[zero_add]`. Take `⟨A, hA⟩` from `(atImInfty_mem _).1 (ht.eventually (Metric.closedBall_mem_nhds c hε))`. Establish `hY : 0 < max A 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set z₀ : ℍ := ⟨(max A 1 : ℝ) * Complex.I, by simp [hY]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbound : ∀ t : ℝ, ‖F (t +ᵥ z₀) - c‖ ≤ ε`. Introduce `t`. Establish `hz : A ≤ (t +ᵥ z₀).im`. Rewrite using `[vadd_im]`. Use `show A ≤ ((max A 1 : ℝ) * Complex.I).im`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `hA _ hz` as an intermediate fact. Simplify `this` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `hcont : Continuous fun t : ℝ => F (t +ᵥ z₀)` using `hhol.continuous.comp (continuous_vadd_upperHalfPlane z₀)`. Establish `hint' : ∫ t in (0 : ℝ)..M, (F (t +ᵥ z₀) - c) = -(M • c)`.
-
-Rewrite using `[intervalIntegral.integral_sub (hcont.intervalIntegrable _ _) intervalIntegrable_const, hint z₀, intervalIntegral.integral_const, sub_zero, zero_sub]`. Establish `hle : ‖∫ t in (0 : ℝ)..M, (F (t +ᵥ z₀) - c)‖ ≤ ε * |M - 0|` using `intervalIntegral.norm_integral_le_of_norm_le_const fun t _ => hbound t`. Rewrite `hle` using `[hint', norm_neg, norm_smul, Real.norm_eq_abs, sub_zero, abs_of_pos hM]`. Conclude with `le_of_mul_le_mul_left (by linarith [hle] : M * ‖c‖ ≤ M * ε) hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZeroAtImInfty_of_integral_vadd_eq_zero {F : ℍ → ℂ} {M : ℝ} (hM : 0 < M)
     (hper : ∀ z : ℍ, F (M +ᵥ z) = F z) (hhol : MDiff F) (hbdd : IsBoundedAtImInfty F)
@@ -107,7 +105,7 @@ theorem isZeroAtImInfty_of_integral_vadd_eq_zero {F : ℍ → ℂ} {M : ℝ} (hM
   exact le_of_mul_le_mul_left (by linarith [hle] : M * ‖c‖ ≤ M * ε) hM
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h z => integral_vadd_eq_zero hhol hM hper h z, isZeroAtImInfty_of_integral_vadd_eq_zero hM hper hhol hbdd⟩`.
+Supply the required witnesses or components.
 -/
 theorem isZeroAtImInfty_iff_integral_vadd_eq_zero {F : ℍ → ℂ} {M : ℝ} (hM : 0 < M)
     (hper : ∀ z : ℍ, F (M +ᵥ z) = F z) (hhol : MDiff F) (hbdd : IsBoundedAtImInfty F) :
@@ -118,29 +116,25 @@ theorem isZeroAtImInfty_iff_integral_vadd_eq_zero {F : ℍ → ℂ} {M : ℝ} (h
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Use `set φ : AdelicGL ℚ 2 → ℂ := ↑(liftEquiv N k f)`. Establish `hφ : IsWeightLevel N k φ` using `(liftEquiv N k f).2`. Use `set w := finiteDiagonal ℚ 2 δ⁻¹`. Take `⟨M, hM, hconj⟩` from `exists_level_conj N w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero M` using `⟨hM.ne'⟩`. Establish `hw : w = finiteDiagonal ℚ 2 δ⁻¹ * 1` using `(mul_one _).symm`. Establish `hMmem : algebraMap ℚ 𝔸f (M : ℚ) ∈ levelIdeal M` using `⟨1, one_mem _, by simp⟩`. Establish `hmem : finiteDiagonal ℚ 2 (δ * unipRat M * δ⁻¹) ∈ Gamma0Level N`. Use `finiteDiagonal_conj_mem hconj (one_mem _) hw hMmem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Use `set F := (f : ℍ → ℂ) ∣[k] toReal δ`. Establish `hper : ∀ z : ℍ, F ((M : ℝ) +ᵥ z) = F z`. Introduce `z`. Use `slash_periodic hf (M : ℚ) hmem z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Use `⟨M, hM, hper, fun z => ?_⟩` and prove the remaining obligations. Use `set h := borelGL z`. Establish `hpos : 0 < h.det.val` using `det_borelGL_pos z`. Establish `hδR : 0 < (toReal δ).det.val` using `by rw [det_toReal]; exact_mod_cast hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdne : ((toReal δ).det.val : ℂ) ^ (k - 1) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hδR.ne')`. Use `set j := denom h ((UpperHalfPlane.I : ℍ) : ℂ)`. Use `set C : ℂ := (((toReal δ).det.val : ℂ) ^ (k - 1))⁻¹ * (Real.sqrt (toReal δ).det.val : ℂ) ^ k * ((j / (‖j‖ : ℂ)) ^ (-k) * (Real.sqrt (h • UpperHalfPlane.I).im : ℂ) ^ k)`. Establish `hj : j = 1` using `denom_borelGL z _`. Establish `hhI : h • UpperHalfPlane.I = z` using `borelGL_smul_I z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : C ≠ 0`. Establish `h1 : (Real.sqrt (toReal δ).det.val : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 hδR).ne'` after adjusting the coercions. Establish `h2 : (Real.sqrt (h • UpperHalfPlane.I).im : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 (h • UpperHalfPlane.I).im_pos).ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [C, hj, norm_one, Complex.ofReal_one, div_one, _root_.one_zpow, one_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (inv_ne_zero hdne) (zpow_ne_zero _ h1)) (zpow_ne_zero _ h2)`. Establish `key : ∀ t : ℝ, archLift k f (toReal δ * (unipReal t * h)) = C * F (t +ᵥ z)`. Introduce `t`. Establish `hy : 0 < (unipReal t * h).det.val`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Units.val_mul, det_unipReal, one_mul]`. Conclude with `hpos`. Establish `h1` using `archLift_mul_left (k := k) (f : ℍ → ℂ) hδR hy`. Rewrite `h1` using `[archLift_unipReal_mul F hpos t]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hdne |>.2 h1, ← hhI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [C, j]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ t : ℝ, φ (realEmb (unipReal t * h) * finEmb ℚ 2 w) = C * F (t +ᵥ z)`. Introduce `t`. Rewrite using `[hw, hφ.apply_realEmb_mul_finiteDiagonal δ⁻¹ _ (one_mem _), map_inv, inv_inv, ← key t]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `adelicLift_realEmb hf ?_` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul]`. Use `mul_pos hδR ?_` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, det_unipReal, one_mul]`. Conclude with `hpos`.
-
-Use `⟨levelConstant M * C, mul_ne_zero (by exact_mod_cast (levelConstant_pos M).ne') hC, ?_⟩` and prove the remaining obligations. Rewrite using `[constantTerm_realEmb_mul_finEmb_of_conj hφ h hconj]`. Repeatedly rewrite using `[hint]`. Rewrite using `[intervalIntegral.integral_const_mul, Complex.real_smul]`. Simplify using `only [C]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem constantTerm_liftEquiv_finiteDiagonal_inv
     (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (δ : GL (Fin 2) ℚ)
@@ -210,9 +204,9 @@ theorem constantTerm_liftEquiv_finiteDiagonal_inv
   ring
 
 /- English proof (translation)
-Establish `hc : IsCusp (toReal δ • (OnePoint.infty : OnePoint ℝ)) (Gamma0 N : Subgroup (GL (Fin 2) ℝ))`. Rewrite using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff]`. Use `⟨δ • OnePoint.infty, ?_⟩` and prove the remaining obligations. Rewrite using `[← Rat.coe_castHom, OnePoint.map_smul, OnePoint.map_infty]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `f.bdd_at_cusps' hc (toReal δ) rfl`.
+A detailed English derivation is pending.
 -/
 theorem isBoundedAtImInfty_slash_toReal (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) : IsBoundedAtImInfty ((f : ℍ → ℂ) ∣[k] toReal δ) := by
@@ -224,9 +218,9 @@ theorem isBoundedAtImInfty_slash_toReal (f : ModularForm (Gamma0 N : Subgroup (G
   exact f.bdd_at_cusps' hc (toReal δ) rfl
 
 /- English proof (translation)
-Take `⟨M, hM, hper, hct⟩` from `constantTerm_liftEquiv_finiteDiagonal_inv f.toSlashInvariantForm δ hδ`. Use `isZeroAtImInfty_of_integral_vadd_eq_zero (M := M) (by exact_mod_cast hM) hper (f.holo'.slash k (toReal δ)) (isBoundedAtImInfty_slash_toReal f δ) fun z => ?_` and prove the remaining obligations. Take `⟨c, hc, he⟩` from `hct z`. Establish `h0` using `hcusp 1 one_pos (by norm_num) (realEmb (borelGL z) * finEmb ℚ 2 (finiteDiagonal ℚ 2 δ⁻¹))`. Rewrite `h0` using `[he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h0).resolve_left hc`.
+A detailed English derivation is pending.
 -/
 theorem isZeroAtImInfty_slash_of_isCuspidal (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) (δ : GL (Fin 2) ℚ)
@@ -240,11 +234,11 @@ theorem isZeroAtImInfty_slash_of_isCuspidal (f : ModularForm (Gamma0 N : Subgrou
   exact (mul_eq_zero.1 h0).resolve_left hc
 
 /- English proof (translation)
-Rewrite using `[isCuspForm_iff]`. Introduce `c hc`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff']`. Take `⟨σ, rfl⟩` from `hc`. Rewrite using `[OnePoint.isZeroAt_iff rfl, ← toReal_mapGL]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `isZeroAtImInfty_slash_of_isCuspidal f hcusp _ ?_` and prove the remaining obligations. Establish `h1` using `det_toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ)`. Establish `h2 : (toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ)).det.val = 1`. Rewrite using `[toReal_mapGL]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : ((Matrix.SpecialLinearGroup.mapGL ℚ σ).det.val : ℚ) = 1` using `by exact_mod_cast h1.symm`. Rewrite using `[h3]`. Conclude with `one_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) : IsCuspForm f := by
@@ -264,7 +258,7 @@ theorem isCuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Subgroup
   exact one_pos
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `isCuspForm_of_isCuspidal_liftEquiv f hcusp`. Conclude with `⟨F, congrArg (fun g : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => (g : ℍ → ℂ)) hF⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) :
@@ -273,9 +267,9 @@ theorem exists_cuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Sub
   exact ⟨F, congrArg (fun g : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => (g : ℍ → ℂ)) hF⟩
 
 /- English proof (translation)
-Use `⟨isCuspForm_of_isCuspidal_liftEquiv f, fun ⟨F, hF⟩ => ?_⟩` and prove the remaining obligations. Establish `e : f.toSlashInvariantForm = F.toSlashInvariantForm`. Substitute `hF` using the available equality. Both sides reduce to the same expression. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCuspidal_liftEquiv_cuspForm F`.
+A detailed English derivation is pending.
 -/
 theorem isCuspidal_liftEquiv_iff_isCuspForm (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) ↔ IsCuspForm f := by

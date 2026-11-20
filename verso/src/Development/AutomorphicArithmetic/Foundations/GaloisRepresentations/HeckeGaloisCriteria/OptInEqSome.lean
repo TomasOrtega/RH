@@ -116,9 +116,9 @@ open Classical in
 def optIn {X : Type} (S : Set X) (o : Option X) : Option S := o.bind fun x => if h : x ∈ S then some ⟨x, h⟩ else none
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `none => simp [optIn]`. Consider the case `some y`. Simplify using `only [optIn, Option.bind_some, Option.some.injEq]`. Use `split_ifs with h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Subtype.ext_iff]`. Simplify using `only [false_iff]`. Introduce and unpack `rfl`. Conclude with `h x.2`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem optIn_eq_some {X : Type} {S : Set X} {o : Option X} {x : S} : optIn S o = some x ↔ o = some x.1 := by
   cases o with
@@ -219,7 +219,7 @@ def layCut (D : D7) (c : CutD D) : Lay0 D :=
     mtpar_tie := fun i => D.mtpar_tie i.1 }
 
 /- English proof (translation)
-Establish `z : ∀ (i : {i // c.keep i}) (x : c.Xs i.1), x ∈ ZN (layCut D c).nd (layCut D c).naut i ↔ x.1 ∈ ZN D.nd D.naut i.1` using `fun i x => exists_congr fun P => and_congr optIn_eq_some Iff.rfl`. Use `⟨fun i x => ?_, fun i x => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.mem_subtype.trans (D.Z_tie i.1 x.1)).trans (z i x).symm`. Use `(Finset.mem_subtype.trans (D.Zgood_tie i.1 x.1)).trans (and_congr (z i x).symm ?_)` and prove the remaining obligations. Conclude with `exists_congr fun Sig => and_congr (exists_congr fun P => and_congr optIn_eq_some.symm Iff.rfl) Iff.rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem layerCut_admissible (D : D7) (c : CutD D) : (layCut D c).ZOk := by
   classical

@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `X _ _ _ _ μ U ι hm hU hc hmaps hinv h0 hfin K hK`. Rewrite using `[MeasureTheory.Measure.map_apply hm hK.measurableSet]`. Establish `hcomp : IsCompact (ι '' (K ∩ U))` using `(hK.inter_right hU).image_of_continuousOn (hc.mono Set.inter_subset_right)`. Establish `hsub : ι ⁻¹' K ⊆ ι '' (K ∩ U) ∪ Uᶜ`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hxU : x ∈ U`. Conclude with `Or.inl ⟨ι x, ⟨hx, hmaps x hxU⟩, hinv x hxU⟩`. Conclude with `Or.inr hxU`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.involution_map_compact_finite :
     ∀ (X : Type) [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [OpensMeasurableSpace X] (μ : MeasureTheory.Measure X) (U : Set X) (ι : X → X), Measurable ι → IsClosed U → ContinuousOn ι U → (∀ x ∈ U, ι x ∈ U) → (∀ x ∈ U, ι (ι x) = x) → μ Uᶜ = 0 → (∀ K : Set X, IsCompact K → μ K < ⊤) → ∀ K : Set X, IsCompact K → (μ.map ι) K < ⊤ := by

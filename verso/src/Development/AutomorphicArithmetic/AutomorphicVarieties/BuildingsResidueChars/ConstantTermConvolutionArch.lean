@@ -6,17 +6,15 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n r _ _ μ _ φ ψ D hφ hD hDc hψ g`. Take `⟨C, hC, hFC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Set `f : (UPos n r → AdeleRing (𝓞 K) K) × archGroup K n → ℂ` to `fun p => φ (unipGL p.1 * g * infEmb K n p.2) * D p.2`. Establish `hfc : Continuous f`. Use `Continuous.mul (hφ.comp ?_) (hD.comp continuous_snd)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((continuous_unipGL.comp continuous_fst).mul continuous_const).mul (continuous_infEmb.comp continuous_snd)`. Establish `hint : Integrable f (((unipMeasure K n r).restrict (unipFundamentalDomain K n r)).prod μ)`. Establish `h1 : IntegrableOn f (C ×ˢ tsupport D) ((unipMeasure K n r).prod μ)` using `hfc.continuousOn.integrableOn_compact (hC.prod hDc)`. Establish `h2 : IntegrableOn f (unipFundamentalDomain K n r ×ˢ Set.univ) ((unipMeasure K n r).prod μ)`. Use `h1.of_forall_diff_eq_zero (measurableSet_unipFundamentalDomain.prod MeasurableSet.univ) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨X, y⟩ ⟨⟨hX, -⟩, hn⟩`. Establish `hy : y ∉ tsupport D` using `fun hy => hn ⟨hFC hX, hy⟩`. Use `show φ (unipGL X * g * infEmb K n y) * D y = 0`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, mul_zero]`. Establish `h3 : ((unipMeasure K n r).restrict (unipFundamentalDomain K n r)).prod μ = ((unipMeasure K n r).prod μ).restrict (unipFundamentalDomain K n r ×ˢ Set.univ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[h3]`. Conclude with `h2`. Establish `key` using `integral_integral_swap (f := fun X y => φ (unipGL X * g * infEmb K n y) * D y) hint`. Use `show ∫ X in unipFundamentalDomain K n r, ψ (unipGL X * g) ∂unipMeasure K n r = ∫ y, (∫ X in unipFundamentalDomain K n r, φ (unipGL X * (g * infEmb K n y)) ∂unipMeasure K n r) * D y ∂μ`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hψ]`. Use `key.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ∫ X in unipFundamentalDomain K n r, φ (unipGL X * g * infEmb K n y) * D y ∂unipMeasure K n r = (∫ X in unipFundamentalDomain K n r, φ (unipGL X * (g * infEmb K n y)) ∂unipMeasure K n r) * D y`. Rewrite using `[← integral_mul_const]`.
-
-Repeatedly rewrite using `[mul_assoc]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.constantTerm_convolution_arch :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (μ : Measure (archGroup K n)) [μ.IsHaarMeasure] (φ ψ : AdelicGLn.AdelicGL K n → ℂ) (D : archGroup K n → ℂ), Continuous φ → Continuous D → HasCompactSupport D → (∀ g, ψ g = ∫ y, φ (g * infEmb K n y) * D y ∂μ) → ∀ g, constantTerm r ψ g = ∫ y, constantTerm r φ (g * infEmb K n y) * D y ∂μ := by

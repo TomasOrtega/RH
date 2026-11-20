@@ -21,19 +21,15 @@ noncomputable section
 namespace GlobalTheory.UU.MulDegree
 
 /- English proof (translation)
-Introduce `k _ _ B _ g n hB hg hn0 _ _ x`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Use `haveI := hB.comm`. Use `haveI := hB.smooth`. Use `haveI := hB.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : GeometricallyIntegral B.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`. Use `haveI : IsIntegral B.left := GeometricallyIntegral.isIntegral_of_subsingleton B.hom`. Establish `hq : 1 ≤ n ^ 2` using `Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ hn0)`. Use `haveI : IsMonHom (𝟙 B ^ n : B ⟶ B) := GlobalTheory.AbLaw.MulN.isMonHom_mulA B n`. Use `haveI : Surjective (𝟙 B ^ n : B ⟶ B).left := (GlobalTheory.flat_and_surjective_of_isFinite_grpEnd k B (𝟙 B ^ n)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, -, hD⟩` from `GlobalTheory.DegKer.exists_mapDeg_of_isFinite _ _ (𝟙 B ^ n : B ⟶ B).left inferInstance inferInstance`. Establish `hrank : ∀ y : B.left, (𝟙 B ^ n : B ⟶ B).left.finrank y = D` using `fun y => GlobalTheory.SemiAbelianTower.finrank_eq_of_mapDeg _ hD y`. Rewrite using `[hrank x]`. Establish `hproj` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k B hB`. Take `⟨H, m, s, hH, hs, hsym⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmpleBy k B hB hproj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, hr⟩ : ∃ r : LB.Gen (H.pull (eSec B)), r.IsGen` from `DVR.exists_gen_of_isLB_local (V := k) _ (pull_isLB hH _)`. Take `⟨M, hM⟩` from `(GlobalTheory.T.abelianScheme_cubical_bundle_exists_and_maps hG _ B hB).1 ⟨H, r, hH, hr⟩ (GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety hG k B hB hproj H hH) hsym`. Establish `hiso : LBIso (AbLaw.pw H ((n ^ 2 : ℕ) : ℤ)) (H.pull (𝟙 B ^ n).left)`. Establish `h` using `GlobalTheory.T.lbIso_pw_sq_pull_pow_of_isLocalRing k B M n`. Rewrite `h` using `[hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `h`. Establish `hφ : (𝟙 B ^ n).left ≫ B.hom = B.hom` using `Over.w _`. Take `⟨hfin, hmono, c, C, hc1, hgrow⟩` from `GlobalTheory.VeryAmpleGrowth.finite_monotone_growth k B.left B.hom g hg H m s hH hs`. Establish `e` using `GlobalTheory.UU.TorsionCount.nonempty_secEquiv B.hom _ hφ hH (n ^ 2) hiso`.
-
-Take `⟨a, ha⟩` from `GlobalTheory.T.finrank_sections_pullback_finite_flat_degree_bounds k B.left B.left B.hom (𝟙 B ^ n).left H m s hH hs D hrank hfin fun t => by`. Take `⟨e⟩` from `e t`. Use `haveI := hfin (n ^ 2 * t)`. Conclude with `Module.Finite.equiv e`. Rewrite using `[pow_mul]`.
-
-Use `GlobalTheory.UU.degree_eq_pow_of_growth (fun t : ℕ => Module.finrank k (SecOnR B.hom (AbLaw.pw H t) ⊤)) g c C a _ (n ^ 2) hc1 hq hmono hgrow fun t => ?_` and prove the remaining obligations. Take `⟨e₁⟩` from `e (t + a)`. Take `⟨e₂⟩` from `e t`. Conclude with `⟨(ha t).1.trans e₁.finrank_eq.ge, e₂.finrank_eq.le.trans (ha t).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_mul_eq : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → n ≠ 0 → ∀ [IsFinite (𝟙 B ^ n : B ⟶ B).left] [Flat (𝟙 B ^ n : B ⟶ B).left], ∀ x : B.left, (𝟙 B ^ n : B ⟶ B).left.finrank x = n ^ (2 * g) := by
   intro k _ _ B _ g n hB hg hn0 _ _ x

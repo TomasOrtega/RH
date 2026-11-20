@@ -21,7 +21,7 @@ def degZeroLoc (P : Ideal (MRing ι F)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι
       algebraMap (MRing ι F ⧸ P) _ (Ideal.Quotient.mk P g)}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨b, f, g, hf, hg, hgP, hg𝒲, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_degZeroLoc (P : Ideal (MRing ι F)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι F)))
     {b : K → ℕ} {f g : MRing ι F} (hf : IsMultiHomog f b) (hg : IsMultiHomog g b) (hgP : g ∉ P)
@@ -42,9 +42,9 @@ def fibrePrimes (P' : Ideal (MRing ι' F)) (W : Ideal (MRing (fun k => ι' (j k)
   {W' | IsMultiProjPrime W' ∧ P' ≤ W' ∧ contractPrime j W' = W}
 
 /- English proof (translation)
-Unfold `degZeroLoc`. Rewrite using `[AlgHom.map_adjoin, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩, rfl⟩`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Use `⟨Function.extend j b 0, rename (blockIncl j ι') f, rename (blockIncl j ι') g, isMultiHomog_rename j ι' hf, isMultiHomog_rename j ι' hg, hgP, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `W' ⟨-, -, hc⟩ hgW'`. Apply `hgW W (Set.mem_singleton W)` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `hgW'`. Rewrite using `[map_div₀, contractFracMap_algebraMap, contractFracMap_algebraMap]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_degZeroLoc_le (P' : Ideal (MRing ι' F)) [P'.IsPrime]
     (W : Ideal (MRing (fun k => ι' (j k)) F)) :

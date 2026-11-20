@@ -16,11 +16,9 @@ namespace GeneratedProductNonneg
 variable {F : Type} [Field F] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `key : ∀ s : MRingOver F ι, ReciprocityTheory.ChartRestriction.G.Geo.divCycle V s W ≠ 0 → V ≤ W`. Introduce `s hs`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.divCycle at hs`. Rewrite `hs` using `[Finsupp.ofSupportFinite_coe]`. Use `split_ifs at hs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_sup_left.trans h.1.1.2`. Conclude with `absurd rfl hs`. Rewrite `hW` using `[Finsupp.mem_support_iff, ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply, Finsupp.mapRange_apply]`. Distinguish the cases in `hf : ReciprocityTheory.ChartRestriction.G.Geo.divCycle V f W = 0`. Use `key g fun h => hW ?_` and prove the remaining obligations.
-
-Rewrite using `[hf, h]`. Simplify using the standard rewrite rules. Conclude with `key f hf`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_of_mem_support_ratDiv {V : Ideal (MRingOver F ι)} {f g : MRingOver F ι} {W : Ideal (MRingOver F ι)}
     (hW : W ∈ (ratDiv V f g).support) : V ≤ W := by
@@ -42,11 +40,11 @@ theorem le_of_mem_support_ratDiv {V : Ideal (MRingOver F ι)} {f g : MRingOver F
 end GeneratedProductNonneg
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ I V m β hI hV hgen`. Proceed by induction on `m generalizing V with`. Consider the case `zero => choose i hi using hV.1.2.2`. Rewrite using `[hI.1 V β i hV hi]`. Conclude with `Int.natCast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Take `⟨f, g, hs, heff⟩` from `hE F K ι V (β (Fin.last m)) hV.1 (hgen (Fin.last m))`. Establish `e` using `hI.2 V m (Fin.init β) (β (Fin.last m)) f g hV hs`. Rewrite `e` using `[Fin.snoc_init_self]`. Rewrite using `[e, cycEval]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.sum_nonneg fun W hW => mul_nonneg (heff W) ?_` and prove the remaining obligations. Take `⟨α, γ, hf, hg, hfV, hgV, -⟩` from `hs`. Establish `hWm : IsProjVarF W m` using `KleimanNefF.isProjVarF_of_mem_support hV ((NumbersDVR.VocabMultiHomog.proof F K ι f α).1 hf) ((NumbersDVR.VocabMultiHomog.proof F K ι g γ).1 hg) hfV hgV hW`. Establish `hle : V ≤ W` using `GeneratedProductNonneg.le_of_mem_support_ratDiv hW`. Conclude with `ih W (Fin.init β) hWm fun j => hR F K ι V W _ hle (hgen _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GeneratedProductNonneg.proof (hR : GeneratedRestrict.Statement)
     (hE : GeneratedEffectiveSection.Statement) : GeneratedProductNonneg.Statement := by

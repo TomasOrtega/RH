@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Formalism.L2
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.sameAt_of_localized_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSameAtOfLocalizationEq.lean&line=44#L44)
 -/

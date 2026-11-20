@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem toS_neg (g : (step X (χ s)).V) : toS X χ s (-g) = -toS X χ s g := rfl
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (toS X χ s) toS_add) g univ`.
+A detailed English derivation is pending.
 -/
 theorem toS_sum (g : Fin (m + 1) → (step X (χ s)).V) : toS X χ s (∑ c, g c) = ∑ c, toS X χ s (g c) :=
   map_sum (AddMonoidHom.mk' (toS X χ s) toS_add) g univ
@@ -61,33 +61,33 @@ def coeY (G : Fin (m + 1) → (step X (χ s)).V) : Fin (m + 1) → Fin (m + 1) �
   fun c => ((toS X χ s (G c) : ↥(stepSub X (χ s))) : Fin (m + 1) → X.V)
 
 /- English proof (translation)
-Introduce `G G' h` and use `funext fun c => (Subtype.ext (congrFun h c) : toS X χ s (G c) = toS X χ s (G' c))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeY_injective : Function.Injective (coeY (X := X) (χ := χ) (s := s)) := fun G G' h =>
   funext fun c => (Subtype.ext (congrFun h c) : toS X χ s (G c) = toS X χ s (G' c))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem coeY_add (G G') : coeY (X := X) (χ := χ) (s := s) (G + G') = coeY G + coeY G' := by
   funext c; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem coeY_smul (r : ℂ) (G) : coeY (X := X) (χ := χ) (s := s) (r • G) = r • coeY G := by
   funext c; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem coeY_sub (G G') : coeY (X := X) (χ := χ) (s := s) (G - G') = coeY G - coeY G' := by
   funext c; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[right_casimir_apply]`. Establish `h : omD (step X (χ s)) G a = -∑ c, (step X (χ s)).E a c (G c)`. Simplify using `[omD, ReciprocityTheory.ChartRestriction.DS.Lap.Capelli.eeVd, LinearMap.pi_apply, LinearMap.sum_apply]`. Use `show ((toS X χ s (omD (step X (χ s)) G a) : ↥(stepSub X (χ s))) : Fin (m + 1) → X.V) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, toS_neg, toS_sum, Submodule.coe_neg, Submodule.coe_sum]`. Simplify using `only [toS_E]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coe_omD (G : Fin (m + 1) → (step X (χ s)).V) :
     coeY (omD (step X (χ s)) G) = y2 X (coeY G) := by
@@ -101,9 +101,9 @@ theorem coe_omD (G : Fin (m + 1) → (step X (χ s)).V) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing G with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, coeY_sub, coeY_smul, coe_omD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_pow (β : ℂ) (k : ℕ) (G : Fin (m + 1) → (step X (χ s)).V) :
     coeY (((omD (step X (χ s)) - β • 1) ^ k) G) = ((y2 X - β • 1) ^ k) (coeY G) := by
@@ -133,15 +133,15 @@ def phi0 (hS : ScalChar X χ) : X.V →ₗ[ℂ] (Fin (m + 1) → (step X (χ s))
     rw [Pi.single_smul, map_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem coe_projection_scalar_character (hS : ScalChar X χ) (v : X.V) : coeY (phi0 χ s hS v) = fun c => Pr X χ s (Pi.single c v) := by
   funext c; rfl
 
 /- English proof (translation)
-Apply `coeY_injective` to reduce the goal to its premises. Rewrite using `[coe_omD, coeY_smul, coe_projection_scalar_character]`. Use function extensionality and compare the values at `a`. Rewrite using `[right_casimir_apply]`. Simplify using `only [← Pr_tensE]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_sum, sum_tensE_single, map_add, map_smul, Pr_om, om_Pr hS, ← add_smul, ← neg_smul, Pi.smul_apply]`. Use `congr 1`. Unfold `cn`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omega_projection_scalar_character (hS : ScalChar X χ) (v : X.V) :
     omD (step X (χ s)) (phi0 χ s hS v) = (-(χ s + 1) - cn (m + 1)) • phi0 χ s hS v := by
@@ -155,7 +155,7 @@ theorem omega_projection_scalar_character (hS : ScalChar X χ) (v : X.V) :
   unfold cn; push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.DS.Lap.Capelli.tensVd, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensVd_apply {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M)
     (a b : Fin n) (f : Fin n → M) (d : Fin n) :
@@ -165,7 +165,7 @@ theorem tensVd_apply {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ} (E : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[tensE_apply, Pi.add_apply]`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `by_cases hi : i = d <;> by_cases hb : b = d <;> by_cases ha : i = a <;> simp_all`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensE_single (a b d : Fin (m + 1)) (v : X.V) :
     tensE X a b (Pi.single d v) = Pi.single d (X.E a b v) + if b = d then Pi.single a v else 0 := by

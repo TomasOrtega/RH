@@ -12,11 +12,11 @@ open scoped TensorProduct
 namespace UpperTheory.Lit.Mix
 
 /- English proof (translation)
-Introduce `hBZ _ hH k _ _ _ _ r t μ V _ _ W _ _ σ π hrt hμs hμu hσs hσi hσu hπs hπi hθ`. Establish `hb` using `GlobalTheory.ThetaLiftGL.compactOpen_basis k (r + t)`. Establish `hIi : (prod₂ σ (detRep (Fin t) μ)).IsIrreducible` using `UpperTheory.Lit.Mix.top (GlobalTheory.geometricLemma_of_filtration hBZ GlobalTheory.geometricLemmaFiltration_unconditional) hBZ hZ k r t V σ μ hrt hσs hσi hσu hμs hμu`. Establish `hIs : IsSmooth (prod₂ σ (detRep (Fin t) μ))` using `isSmooth_prod₂ _ _`. Establish `hπa : IsAdmissible π` using `(hBZ k).1 (Fin (r + t)) W π hπs hπi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIa : IsAdmissible (prod₂ σ (detRep (Fin t) μ))` using `(hBZ k).1 (Fin (r + t)) _ _ hIs hIi`. Establish `hθI : ThetaPair μ σ (prod₂ σ (detRep (Fin t) μ))` using `GlobalTheory.T.theta_pair_det_twist hBZ k r t μ V σ hrt hμs hμu hσs hσi hσu`. Establish `hq : OmQuot μ σ (contra π)` using `GlobalTheory.T.theta_pair_contragredient_quotient k r (r + t) μ V W σ π hμs hπa hθ`. Establish `hqI : OmQuot μ σ (contra (prod₂ σ (detRep (Fin t) μ)))` using `GlobalTheory.T.theta_pair_contragredient_quotient k r (r + t) μ V _ σ _ hμs hIa hθI`. Establish `hc` using `GlobalTheory.T.smoothContragredient_irreducible_and_reflexive (GL (Fin (r + t)) k) hb W _ π (prod₂ σ (detRep (Fin t) μ)) hπa hIa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `GlobalTheory.T.smoothContragredient_irreducible_and_reflexive (GL (Fin (r + t)) k) hb _ W (prod₂ σ (detRep (Fin t) μ)) π hIa hπa`. Take `⟨e⟩` from `(hH k r (r + t) μ hμs).1 V _ _ σ (contra π) (contra (prod₂ σ (detRep (Fin t) μ))) hσs hσi (isSmooth_contra π) (hc.1 hπi) (isSmooth_contra _) (hc'.1 hIi) hq hqI`. Conclude with `hc.2.2 ⟨e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaLift_of_zel (hZ : ZelevinskyPolynomialRing) : BernsteinZelevinskyFiniteness → BernsteinUnitaryProductIrreducible → HoweDualityGL →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ)
@@ -44,7 +44,7 @@ theorem thetaLift_of_zel (hZ : ZelevinskyPolynomialRing) : BernsteinZelevinskyFi
   exact hc.2.2 ⟨e⟩
 
 /- English proof (translation)
-The claim follows from `thetaLift_of_zel hZ`.
+A detailed English derivation is pending.
 -/
 example (hZ : ZelevinskyPolynomialRing) : type_of% @GlobalTheory.T.theta_correspondence_large_rank := thetaLift_of_zel hZ
 

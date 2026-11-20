@@ -9,25 +9,21 @@ open scoped SchwartzMap Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ B T U Q hT hT0 hU hU0 hB hB0 hTρ hUρ hTi hUi hTc hUd`. Establish `hUinv : ∀ t f, U (-t) (U t f) = f` using `fun t f => by rw [← hU, neg_add_cancel, hU0]`. Establish `hUinv' : ∀ t f, U t (U (-t) f) = f` using `fun t f => by rw [← hU, add_neg_cancel, hU0]`. Establish `key : ∀ t, ∃ c : ℂ, ∀ f, T t f = c • U t f`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.exists_scalar_of_commute_schrodingerOperators l ((T t).comp (U (-t))) (fun f => by simp only [LinearMap.comp_apply]; rw [hTi, hUi]) (fun w f f₁ h => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hTρ t (B (-t) w) (U (-t) f) (U (-t) f₁) (hUρ (-t) w f f₁ h), ← hB, add_neg_cancel, hB0])`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations. Use `hc (U t f)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, hUinv] at this`. Conclude with `this`. Use `choose lam hlam using key`. Use `set f₀ : Sch l := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l)`. Establish `hf₀ : f₀ 0 ≠ 0` using `by simp [f₀]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl0 : lam 0 = 1`. Establish `h` using `hlam 0 f₀`. Rewrite `h` using `[hT0, hU0]`. Establish `h2` using `congrArg (fun g : Sch l => g 0) h`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (lam 0 - 1) * f₀ 0 = 0` using `by linear_combination -h2`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right hf₀)`. Establish `hlmul : ∀ s t, lam (s + t) = lam s * lam t`. Introduce `s t`. Establish `h1` using `hlam (s + t) (U (-(s + t)) f₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[hUinv', hT, hlam t, map_smul, hlam s, ← hU, hUinv', smul_smul]`. Establish `h2` using `congrArg (fun g : Sch l => g 0) h1`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at h2`. Establish `: (lam s * lam t - lam (s + t)) * f₀ 0 = 0` using `by linear_combination h2`. Conclude with `(sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right hf₀)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ContinuousAt (fun t => U t f₀ 0) 0` using `(hUd f₀ 0).continuousAt`. Establish `hd0 : U 0 f₀ 0 ≠ 0` using `by rw [hU0]; exact hf₀`. Establish `hlc : ContinuousAt lam 0`. Establish `hq : ContinuousAt (fun t => T t f₀ 0 / U t f₀ 0) 0` using `((hTc f₀ 0).continuousAt).div hd hd0`. Use `hq.congr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `filter_upwards [hd.eventually_ne hd0] with t ht`. Rewrite using `[hlam t f₀, SchwartzMap.smul_apply, smul_eq_mul, mul_div_assoc, div_self ht, mul_one]`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_hasDerivAt_zero_of_continuousAt_of_map_add lam hl0 hlmul hlc`. Use `⟨c, fun f y => ?_⟩` and prove the remaining obligations. Establish `hfun : (fun t => T t f y) = fun t => lam t * U t f y`.
-
-Use function extensionality and compare the values at `t`. Rewrite using `[hlam t f, SchwartzMap.smul_apply, smul_eq_mul]`. Rewrite using `[hfun]`. Establish `h` using `hc.mul (hUd f y)`. Rewrite `h` using `[hl0, hU0, one_mul, add_comm]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famChar_hasDerivAt : ∀ (l : Type) [Fintype l] (B : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (T U : ℝ → Sch l →ₗ[ℂ] Sch l) (Q : Sch l → EuclideanSpace ℝ l → ℂ), (∀ s t f, T (s + t) f = T s (T t f)) → (∀ f, T 0 f = f) → (∀ s t f, U (s + t) f = U s (U t f)) → (∀ f, U 0 f = f) → (∀ s t w, B (s + t) w = B s (B t w)) → (∀ w, B 0 w = w) → (∀ t w (f f₁ : Sch l), ⇑f₁ = rhoFun w ⇑f → ⇑(T t f₁) = rhoFun (B t w) ⇑(T t f)) → (∀ t w (f f₁ : Sch l), ⇑f₁ = rhoFun w ⇑f → ⇑(U t f₁) = rhoFun (B t w) ⇑(U t f)) → (∀ t f, ∫ x, ‖T t f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2) → (∀ t f, ∫ x, ‖U t f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2) → (∀ f y, Continuous fun t => T t f y) → (∀ f y, HasDerivAt (fun t => U t f y) (Q f y) 0) → ∃ c : ℂ, ∀ f y, HasDerivAt (fun t => T t f y) (Q f y + c * f y) 0 := by
   intro l _ B T U Q hT hT0 hU hU0 hB hB0 hTρ hUρ hTi hUi hTc hUd

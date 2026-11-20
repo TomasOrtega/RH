@@ -44,9 +44,9 @@ def RatPV (x : Sp K ⟶ A.left) : Prop := DefOver k₀ (x ≫ β)
 variable {f β ev k₀}
 
 /- English proof (translation)
-Introduce and unpack `T g rfl`. Establish `hw : ∀ x : T ⟶ A, (x.left ≫ β) ≫ B₀.hom = T.hom ≫ spMap f` using `fun x => by`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x]`. Set `F : (T ⟶ A) → (Over.mk (T.hom ≫ spMap f) ⟶ B₀)` to `fun x => Over.homMk (x.left ≫ β) (hw x)`. Set `G : (Over.mk (T.hom ≫ spMap f) ⟶ B₀) → (T ⟶ A)` to `fun y => Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hFG : ∀ y, F (G y) = y` using `fun y => Over.OverMorphism.ext (h.1.lift_fst _ _ _)`. Establish `hGF : ∀ x, G (F x) = x` using `fun x => Over.OverMorphism.ext (h.1.hom_ext (h.1.lift_fst _ _ _) ((h.1.lift_snd _ _ _).trans (Over.w x).symm))`. Conclude with `⟨MulEquiv.mk ⟨F, G, hGF, hFG⟩ (fun x y => Over.OverMorphism.ext (h.2 T x y (F x) (F y) rfl rfl).symm), fun x => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ptsVia_of (h : IsGrpPullback A B₀ (spMap f) β) : PtsVia f β := by
   rintro T g rfl
@@ -62,23 +62,21 @@ theorem ptsVia_of (h : IsGrpPullback A B₀ (spMap f) β) : PtsVia f β := by
     fun x => rfl⟩
 
 /- English proof (translation)
-Use `set E := Over.mk (spMap ev) with hE`. Use `set fK := (fst E A).left with hfK`. Use `set s := (snd E A).left with hs`. Establish `hw : s ≫ A.hom = fK ≫ spMap ev` using `(Over.w (snd E A)).trans (Over.w (fst E A)).symm`. Establish `hf : ∀ a, (ev.comp f) a ∈ k₀` using `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h2 : spMap ev ≫ spMap f = spMap (ev.comp f)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨Φ₀, hΦ₀⟩` from `hP (Over.mk (fK ≫ spMap ev)) (fK ≫ spMap (ev.comp f)) (by show (fK ≫ spMap ev) ≫ spMap f = _`. Rewrite using `[Category.assoc, h2])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨Φ₁, hΦ₁⟩` from `hP (Over.mk (fK ≫ spMap σ.toRingHom ≫ spMap ev)) (fK ≫ spMap (ev.comp f)) (by show (fK ≫ spMap σ.toRingHom ≫ spMap ev) ≫ spMap f = _`. Rewrite using `[Category.assoc, Category.assoc, h2, spMap_conj k₀ _ hf σ hσ])`. Set `qpt : Over.mk (fK ≫ spMap ev) ⟶ A` to `Over.homMk s hw`. Set `σD` to `Φ₁.symm (Φ₀ qpt)`. Set `a0 : Over.mk (fK ≫ spMap σ.toRingHom ≫ spMap ev) ⟶ E` to `Over.homMk (fK ≫ spMap σ.toRingHom) (Category.assoc _ _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σt : (E ⊗ A).left ⟶ (E ⊗ A).left` to `(lift a0 σD).left`. Establish `hfst : σt ≫ fK = fK ≫ spMap σ.toRingHom` using `congrArg (fun z => z.left) (lift_fst a0 σD)`. Establish `hsnd : σt ≫ s = σD.left` using `congrArg (fun z => z.left) (lift_snd a0 σD)`. Establish `hproj : σt ≫ s ≫ β = s ≫ β`. Rewrite using `[reassoc_of% hsnd, ← hΦ₁ σD, MulEquiv.apply_symm_apply, hΦ₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `⟨σt, ⟨hfst, hproj⟩, fun x hx hdef => ?_⟩` and prove the remaining obligations. Establish `hEh : (E ⊗ A).hom = fK ≫ spMap ev` using `(Over.w (fst E A)).symm`. Set `T : Over (Sp V₁)` to `Over.mk (spMap σ.toRingHom ≫ spMap ev)`. Set `m1 : T ⟶ E ⊗ A` to `Over.homMk (x ≫ σt) (by show (x ≫ σt) ≫ (E ⊗ A).hom = spMap σ.toRingHom ≫ spMap ev`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEh, Category.assoc, reassoc_of% hfst, reassoc_of% hx])`. Set `m2 : T ⟶ E ⊗ A` to `Over.homMk (spMap σ.toRingHom ≫ x) (by show (spMap σ.toRingHom ≫ x) ≫ (E ⊗ A).hom = spMap σ.toRingHom ≫ spMap ev`. Rewrite using `[hEh, Category.assoc, reassoc_of% hx])`. Establish `hm : m1 = m2`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Over.OverMorphism.ext show (x ≫ σt) ≫ fK = (spMap σ.toRingHom ≫ x) ≫ fK` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfst, reassoc_of% hx, Category.assoc, hx, Category.comp_id]`. Take `⟨Φ₂, hΦ₂⟩` from `hP T (spMap (ev.comp f)) (by show (spMap σ.toRingHom ≫ spMap ev) ≫ spMap f = _`. Rewrite using `[Category.assoc, h2, spMap_conj k₀ _ hf σ hσ])`. Apply `Φ₂.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ₂, hΦ₂]`. Use `show ((x ≫ σt) ≫ s) ≫ β = ((spMap σ.toRingHom ≫ x) ≫ s) ≫ β`. Take `⟨P₀, hP₀⟩` from `hdef`. Simplify using `only [Category.assoc] at hP₀ ⊢`.
-
-Rewrite using `[hproj, ← hP₀, ← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`. Conclude with `congrArg (fun m => m.left) hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjV (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) (σ : K ≃+* K) (hσ : ∀ a ∈ k₀, σ a = a) :
     ∃ σt, IsConjV β ev σ σt ∧ ∀ x : Sp K ⟶ (Over.mk (spMap ev) ⊗ A).left,
@@ -134,12 +132,12 @@ theorem exists_conjV (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) (σ : K 
   exact congrArg (fun m => m.left) hm
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `h.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratMV_snd : RatMV β ev k₀ (snd (Over.mk (spMap ev)) A).left := fun _ _ _ h => h.2
 
 /- English proof (translation)
-Introduce `σ hσ σt h` and use `by obtain ⟨P₀, hP₀⟩ := hx show σt ≫ ((fst (Over.mk (spMap ev)) A).left ≫ x.left) ≫ β = ((fst (Over.mk (spMap ev)) A).left ≫ x.left) ≫ β simp only [Category.assoc] rw [reassoc_of% h.1] erw [← hP₀] congr 1 rw [← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratMV_const (x : Over.mk (spMap ev) ⟶ A) (hx : RatPV β k₀ x.left) :
     RatMV β ev k₀ (fst (Over.mk (spMap ev)) A ≫ x).left := fun σ hσ σt h => by
@@ -152,7 +150,7 @@ theorem ratMV_const (x : Over.mk (spMap ev) ⟶ A) (hx : RatPV β k₀ x.left) :
   rw [← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]
 
 /- English proof (translation)
-Introduce `σ hσ σt h` and use `by have hf : ∀ a, (ev.comp f) a ∈ k₀ := hk have h2 : spMap ev ≫ spMap f = spMap (ev.comp f) := by simp only [spMap, ← Spec.map_comp]; rfl obtain ⟨Φ, hΦ⟩ := hP (Over.mk (spMap ev) ⊗ A) ((fst (Over.mk (spMap ev)) A).left ≫ spMap (ev.comp f)) (by rw [← h2, ← Category.assoc] exact co …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratMV_mul (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) {x y : Over.mk (spMap ev) ⊗ A ⟶ A}
     (hx : RatMV β ev k₀ x.left) (hy : RatMV β ev k₀ y.left) : RatMV β ev k₀ (x * y).left := fun σ hσ σt h => by
@@ -176,7 +174,7 @@ theorem ratMV_mul (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) {x y : Over
   rw [map_mul, MonObj.comp_mul, e hx, e hy]
 
 /- English proof (translation)
-Use `ratMV_const 1 h1` as an intermediate fact. Rewrite `this` using `[MonObj.comp_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratMV_one (h1 : RatPV β k₀ (1 : Over.mk (spMap ev) ⟶ A).left) :
     RatMV β ev k₀ (1 : Over.mk (spMap ev) ⊗ A ⟶ A).left := by
@@ -184,7 +182,7 @@ theorem ratMV_one (h1 : RatPV β k₀ (1 : Over.mk (spMap ev) ⟶ A).left) :
   rwa [MonObj.comp_one] at this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `ratMV_one h1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ratMV_mul hP hk ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ratMV_pow (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) (h1 : RatPV β k₀ (1 : Over.mk (spMap ev) ⟶ A).left)
     {x : Over.mk (spMap ev) ⊗ A ⟶ A} (hx : RatMV β ev k₀ x.left) (n : ℕ) : RatMV β ev k₀ (x ^ n).left := by
@@ -193,11 +191,9 @@ theorem ratMV_pow (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) (h1 : RatPV
   | succ n ih => rw [pow_succ]; exact ratMV_mul hP hk ih hx
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `hP (Over.mk (spMap ev)) (spMap ev ≫ spMap f) rfl`. Establish `e` using `hΦ 1`. Rewrite `e` using `[map_one]`. Use `show DefOver k₀ (_ ≫ β)`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : spMap ev ≫ spMap f = spMap (ev.comp f)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `show DefOver k₀ ((spMap ev ≫ spMap f) ≫ (η[B₀]).left)`. Rewrite using `[h2]`.
-
-Conclude with `defOver_comp k₀ (defOver_spMap k₀ _ hk) _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratPV_one (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) : RatPV β k₀ (1 : Over.mk (spMap ev) ⟶ A).left := by
   obtain ⟨Φ, hΦ⟩ := hP (Over.mk (spMap ev)) (spMap ev ≫ spMap f) rfl
@@ -214,15 +210,13 @@ theorem ratPV_one (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) : RatPV β 
 variable {L : LB A.left} {X₂ : Scheme.{0}} {L₂ : LB X₂} {I : Type} [Fintype I] {π : I → (A.left ⟶ X₂)} {e : I → ℤ}
 
 /- English proof (translation)
-Take `⟨U, hU, vU⟩` from `exists_transport u hu φ ε`. Establish `hA` using `DVR.linComb_isLB L hL φ ε`. Establish `hB` using `DVR.linComb_isLB L₂ hL₂ (fun p : Ix × I => φ p.1 ≫ π p.2) (fun p => ε p.1 * e p.2)`. Take `⟨s', hs'⟩` from `DVR.FlatBC.exists_isoRel hA hB hU s`. Take `⟨κ, hκ, hval⟩` from `galois_values k₀ hk₀ _ _ s' (fun x => x ≫ (fst (Over.mk (spMap ev)) A).left = 𝟙 _ ∧ RatPV β k₀ (x ≫ (snd (Over.mk (spMap ev)) A).left)) (fun t' => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `GlobalTheory.MBLow.lbIso_sec_onto _ _ _ U hA hB hU t'`. Take `⟨c, hc⟩` from `h1 t`. Use `⟨c, fun x hx z J₂ hJ₂ => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : Sp K ⟶ A.left => exists_chart hL (χ z)`. Rewrite using `[vU t t' (fun i k => ht (i, k)) _ x z J J₂ hJ hJ₂, vU s s' hs' _ x z J J₂ hJ hJ₂, hc x hx.1 z J hJ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_left_comm _ _ _)`. Use the proof step `(fun σ hσ => by`. Take `⟨σt, hc, hfix⟩` from `exists_conjV hP hk σ hσ`. Use `⟨σt, fun p => ?_, fun x hx => hfix x hx.1 hx.2⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hπ _ _ _ ((Category.assoc _ _ _).trans (hφ p.1 σ hσ σt hc)) p.2)`. Use `⟨κ, hκ, fun p hp z J J₂ hJ hJ₂ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, he⟩` from `hval (lift (𝟙 _) p).left ⟨congrArg (fun m => m.left) (lift_fst (𝟙 _) p), by`. Establish `e : (lift (𝟙 _) p).left ≫ (snd (Over.mk (spMap ev)) A).left = p.left` using `congrArg (fun m => m.left) (lift_snd (𝟙 _) p)`. Conclude with `e ▸ hp⟩ z J₂ hJ₂`.
-
-Conclude with `⟨c, hc, (vU s s' hs' _ _ z J J₂ hJ hJ₂).symm.trans he⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem galois_secV [IsAlgClosed K] (hk₀ : IsAlgClosed k₀) (hP : PtsVia f β) (hk : ∀ a, ev (f a) ∈ k₀) (hL : L.IsLB)
     (hL₂ : L₂.IsLB) (u : LB.Iso L (LB.LinComb L₂ π e)) (hu : u.IsGen)
@@ -281,15 +275,13 @@ structure DescV (f : W₀ →+* V₁) (β : D.P.A.left ⟶ B₀.left) (ev : V₁
 variable {u : LB.Iso D.P.L (LB.LinComb L₂ π e)}
 
 /- English proof (translation)
-Take `⟨t, ht, vt⟩` from `G.out D.P.isLB φ ε hP`. Take `⟨κ, hκ, hval⟩` from `galois_secV H.hk₀ H.hP H.hk D.P.isLB H.hL₂ u H.hu H.hπ φ ε hφ (genSec t ht) (fun s => by`. Take `⟨w, hw⟩` from `exists_sec D.P.isLB (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ hh => by simp [Fintype.prod_sum_type, ← Finset.prod_mul_distrib]) (pullMulSec s (𝟙 _) (LB.invGen D.P.L _ _ t) (DVR.invGen_isGen _ _ _ _ ht))`. Establish `le : (⊤ : (Over.mk (spMap ev) ⊗ D.P.A).left.Opens) ≤ LB.wchart D.P.L (K` using `PEmpty) (Y := (Over.mk (spMap ev) ⊗ D.P.A).left) PEmpty.elim PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Take `⟨a, ha⟩` from `surj_fst GlobalTheory.abelianSchemeLaws_all.1.globalFns D.P.isAb (Over.mk (spMap ev)) (((Over.mk (spMap ev) ⊗ D.P.A).left.presheaf.map (homOfLE le).op).hom (w.f PEmpty.elim))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom a, fun x hx z J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁` using `hw _ x z J hJ`. Rewrite `e₁` using `[sval_pullMulSec _ _ _ _ _ z hJ, Category.comp_id, val_inv, sval_of w _ z J PEmpty.elim (fun k => k.elim)]`. Rewrite using `[sval_genSec _ _ _ z hJ, ← gs_appTop_of_section x _ hx z a]`. Use `erw [ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (· * _) ((gs_res x z le trivial _).trans e₁).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, Units.inv_mul, _root_.mul_one])`. Take `⟨c₀, hc₀, e₀⟩` from `hval 1 (ratPV_one H.hP H.hk) z J J₂ hJ hJ₂`. Take `⟨c, hc, e₁⟩` from `hval p hp z J J₂ hJ hJ₂`. Rewrite `e₀`, `e₁` using `[sval_genSec _ _ _ z hJ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a₀` using `(hP _ (fun ψ => om (Z := Sp K) u z J J₂ ((lift (𝟙 (Over.mk (spMap ev))) (1 : _ ⟶ D.P.A)).left ≫ ψ))).symm.trans (h₀ _ (om (Z := Sp K) u z J J₂))`. Establish `b₀` using `(vt _ (lift (𝟙 _) 1) z J hJ).trans (h₁ z J hJ)`. Use `erw [a₀, b₀] at e₀`. Establish `k1 : κ * c₀ = 1` using `(toStk z).injective (by rw [← e₀, map_one]; exact _root_.mul_one _)`. Use `⟨κ * c, k₀.mul_mem (eq_inv_of_mul_eq_one_left k1 ▸ k₀.inv_mem hc₀) hc, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← e₁, hP, Units.val_mul]`. Conclude with `congrArg₂ (· * ·) rfl (congrArg Units.val (vt _ (lift (𝟙 _) p) z J hJ).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_genV (H : DescV f β ev k₀ u) {P v} (G : SymFrame.GRep D.P.L (Over.mk (spMap ev) ⊗ D.P.A) P v)
     {Ix : Type} [Fintype Ix] (φ : Ix → ((Over.mk (spMap ev) ⊗ D.P.A).left ⟶ D.P.A.left)) (ε : Ix → ℤ)
@@ -332,9 +324,9 @@ theorem galois_genV (H : DescV f β ev k₀ u) {P v} (G : SymFrame.GRep D.P.L (O
   exact congrArg₂ (· * ·) rfl (congrArg Units.val (vt _ (lift (𝟙 _) p) z J hJ).symm)
 
 /- English proof (translation)
-Establish `r₃ : RatMV β ev k₀ _` using `ratMV_snd`. Establish `h1` using `ratPV_one (A := D.P.A) H.hP H.hk`. Establish `key` using `galois_genV H (SymFrame.grep_kap (D := D) κ hκ.1 (snd (Over.mk (spMap ev)) D.P.A)) ![(snd (Over.mk (spMap ev)) D.P.A).left, (snd (Over.mk (spMap ev)) D.P.A ^ n).left, (1 : Over.mk (spMap ev) ⊗ D.P.A ⟶ D.P.A).left] ![(n : ℤ) ^ 2, -1, 1 - (n : ℤ) ^ 2] (fun k => by fin_cases k exact …`. Simplify using `only [← Over.comp_left, MonObj.comp_pow, MonObj.comp_one, lift_snd, one_pow]`. Use the proof step `group)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun z J hJ => by`. Simplify using `only [lift_snd]`. Conclude with `SymFrame.normd_one hκ hJ) y hy z J J₂ hJ hJ₂`. Simplify using `only [← Over.comp_left, MonObj.comp_pow, MonObj.comp_one, lift_snd] at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kap_memV (H : DescV f β ev k₀ u) {n : ℕ} (κ : LB.Gen (kapLB D (𝟙 D.P.A ^ n) (n ^ 2) 1)) (hκ : Normd κ)
     (y : Over.mk (spMap ev) ⟶ D.P.A) (hy : RatPV β k₀ y.left) (z : Sp K) (J J₂) (hJ : Good D.P.L z J)

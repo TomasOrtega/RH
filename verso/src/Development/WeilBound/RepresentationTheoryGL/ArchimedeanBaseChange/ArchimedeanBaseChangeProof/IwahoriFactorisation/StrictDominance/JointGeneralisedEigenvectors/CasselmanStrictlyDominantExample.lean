@@ -40,9 +40,9 @@ def IsLowUniM {L : Type} [Field L] {n : ℕ} (g : GL (Fin n) L) : Prop :=
   (∀ i j : Fin n, i < j → (g : Matrix (Fin n) (Fin n) L) i j = 0) ∧ ∀ i : Fin n, (g : Matrix (Fin n) (Fin n) L) i i = 1
 
 /- English proof (translation)
-Unfold `twKer jacSub`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, MonoidHom.one_apply, Units.val_one, one_smul]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, v, rfl⟩`. Conclude with `⟨n, (hP _).1 n.2, v, rfl⟩`. Introduce and unpack `⟨u, hu, v, rfl⟩`. Conclude with `⟨⟨u, (hP _).2 hu⟩, v, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twKer_eq_jacSub {G : Type} [Group G] [TopologicalSpace G] (D : CassData G) (P : G → Prop)
     (hP : ∀ g, g ∈ D.N ↔ P g) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) :

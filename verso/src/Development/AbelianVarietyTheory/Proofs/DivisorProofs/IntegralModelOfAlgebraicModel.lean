@@ -17,7 +17,7 @@ open GlobalTheory.LatVal GlobalTheory.LatJet
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `hPC hST hDR hDC hPM h31 _`. Introduce `E _ _ _ _ I _ d φ _ hd _ _ _ 𝔣 Λ h𝔣 hΛ l _ Q hQ hQl y hy _ lam Ω hΩ`. Conclude with `GlobalTheory.T.cm_field_lattice_prime_condition hPC hDR hDC hPM h31 E I d φ hd 𝔣 Λ h𝔣 hΛ l Q hQ hQl y hy lam Ω hΩ (GlobalTheory.T.cm_field_lattice_base_condition hPC hST hDR hDC hPM E I d φ hd 𝔣 Λ h𝔣 hΛ l Q hQ hQl y hy lam Ω hΩ)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem modelInt : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.SerreTateGoodReductionSt → GlobalTheory.Published.AbelianDeRham →
     GlobalTheory.Published.AbelianDualCrystal → GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.Statement → ModelAlg → ModelInt := by

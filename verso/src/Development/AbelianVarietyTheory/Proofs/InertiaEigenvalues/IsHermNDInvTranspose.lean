@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdelicModulus.Row
 
 /- English proof (translation)
-Establish `hJK : J * K = 1` using `mul_eq_one_comm.1 hKJ`. Establish `h1 : (K * Formalism.UG.cT s g * J) * g = 1`. Rewrite using `[Matrix.mul_assoc K, Matrix.mul_assoc K, hg, hKJ]`. Establish `h2 : g * (K * Formalism.UG.cT s g * J) = 1` using `mul_eq_one_comm.1 h1`. Establish `h3 : g * (K * Formalism.UG.cT s g) = K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `congrArg Matrix.transpose h3`. Rewrite `h4` using `[Matrix.transpose_mul, Matrix.transpose_mul]`. Conclude with `h4`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpose_unitary {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (s : A →+* A) {J K g : Matrix n n A} (hKJ : K * J = 1)
@@ -30,11 +30,11 @@ theorem transpose_unitary {A : Type} [CommRing A] {n : Type} [Fintype n] [Decida
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hu : IsUnit J.det` using `hJ.2.isUnit`. Establish `hm : J.map (σ : E →+* E) = Jᵀ`. Use extensionality with `i j`. Conclude with `hJ.1 j i`. Establish `h1 : (J⁻¹).map (σ : E →+* E) * Jᵀ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm, ← Matrix.map_mul, Matrix.nonsing_inv_mul J hu]`. Simplify using the standard rewrite rules. Establish `h2 : (Jᵀ)⁻¹ = (J⁻¹).map (σ : E →+* E)` using `Matrix.inv_eq_left_inv h1`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrFun (congrFun h2 i) j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← Matrix.transpose_nonsing_inv]`. Conclude with `h3.symm`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_nonsing_inv_det J hu).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_inv_transpose {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : IsHermND σ J) : IsHermND σ (J⁻¹)ᵀ := by
@@ -58,9 +58,9 @@ def transposeGL {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (
     by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Establish `hu : IsUnit J.det` using `hJ.2.isUnit`. Establish `hKJ : JR (F` using `F) R J⁻¹ * JR (F := F) R J = 1 := by`. Unfold `JR`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul J hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hg : Formalism.UG.cT (sigR R σ) (HA.mat R σ J g).1 * JR (F` using `F) R J * (HA.mat R σ J g).1 = JR (F := F) R J := (show HR R σ J from g).2`. Conclude with `⟨(⟨transposeGL (HA.mat R σ J g), transpose_unitary (sigR R σ) hKJ hg⟩ : HR R σ (J⁻¹)ᵀ), rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_transpose (R : Type) [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (g : HA R σ J) :
@@ -75,9 +75,9 @@ theorem exists_transpose (R : Type) [CommRing R] [Algebra F R] {σ : E →ₐ[F]
   exact ⟨(⟨transposeGL (HA.mat R σ J g), transpose_unitary (sigR R σ) hKJ hg⟩ : HR R σ (J⁻¹)ᵀ), rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ g μ hμ`. Take `⟨g', hg'⟩` from `exists_transpose (AF F) hJ g`. Establish `h` using `PI.VolSemiDirect.W.Cj.unipotent_modulus_holds F E σ hσ M _ (isHermND_inv_transpose hJ) g' μ hμ`. Establish `e : (fun x => Matrix.vecMul x ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))) = fun x => ((HA.mat (AF F) σ (J⁻¹)ᵀ g').1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)).mulVec x`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hg', Matrix.mulVec_transpose]`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_vecMul_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (g : HA (AF F) σ J) (μ : Measure (Fin M → AF F ⊗[F] E)), μ.IsAddHaarMeasure → μ.map (fun x => Matrix.vecMul x ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))) = μ := by
   intro F E _ _ _ _ _ σ hσ M J hJ g μ hμ

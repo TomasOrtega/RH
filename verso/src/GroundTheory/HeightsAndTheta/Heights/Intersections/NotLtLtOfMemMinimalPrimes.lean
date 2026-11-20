@@ -14,7 +14,7 @@ section MixedDisc
 variable {D : ℕ}
 
 /- English proof (translation)
-Unfold `mixedDisc`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun S => ?_` and prove the remaining obligations. Rewrite using `[Equiv.finsetCongr_apply, Finset.card_map, Finset.sum_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mixedDisc_comp_perm (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (σ : Equiv.Perm (Fin D)) :
     mixedDisc (A ∘ σ) = mixedDisc A := by
@@ -25,7 +25,7 @@ theorem mixedDisc_comp_perm (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (σ : Equ
   rfl
 
 /- English proof (translation)
-Unfold `maDensity`. Rewrite using `[show (fun k => cxHessian ((φ ∘ σ) k) z) = (fun k => cxHessian (φ k) z) ∘ σ from rfl, mixedDisc_comp_perm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem maDensity_comp_perm (φ : Fin D → (Fin D → ℂ) → ℝ) (σ : Equiv.Perm (Fin D)) (z : Fin D → ℂ) :
     maDensity (φ ∘ σ) z = maDensity φ z := by
@@ -42,11 +42,9 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with h`. Unfold `ptsIntegralAt`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun w => finsum_congr fun _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hγ`. Use `congr 1`. Conclude with `maDensity_comp_perm (fun j y' => φ j (hγ.choose y')) σ y`.
-
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_comp_perm (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
     (σ : Equiv.Perm (Fin e)) (g : ((Σ k, ι k) → ℂ) → ℝ) :
@@ -71,17 +69,15 @@ section Krull
 variable {R : Type*} [CommRing R] [IsNoetherianRing R]
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.isPrime`. Establish `h1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`. Use `set q := Ideal.Quotient.mk V`. Establish `hker : RingHom.ker q = V` using `Ideal.mk_ker`. Establish `hW'm : (W'.map q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [hker]; exact hVW'.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWm : (W.map q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [hker]; exact hVW'.le.trans hW'W.le)`. Establish `hlt : W'.map q < W.map q`. Use `lt_of_le_of_ne (Ideal.map_mono hW'W.le) fun he => hW'W.ne ?_` and prove the remaining obligations. Use `congrArg (Ideal.comap q) he` as an intermediate fact. Rewrite `this` using `[Ideal.comap_map_of_surjective' q Ideal.Quotient.mk_surjective, Ideal.comap_map_of_surjective' q Ideal.Quotient.mk_surjective, hker, sup_eq_left.mpr hVW'.le, sup_eq_left.mpr (hVW'.le.trans hW'W.le)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `h0 : (W'.map q).height = 0`. Establish `h3` using `h2.trans h1`. Generalize the expression as in `(W'.map q).height = a at h3`. Consider the cases of `a with`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `top => simp at h3`. Consider the case `coe a => norm_cast at h3 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `: IsDomain (R ⧸ V)` using `Ideal.Quotient.isDomain V`. Rewrite `h0` using `[Ideal.height_eq_zero_iff_eq_bot]`.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hVW'.ne` to reduce the goal to its premises. Apply `le_antisymm hVW'.le` to reduce the goal to its premises. Introduce `y hy`. Establish `: q y ∈ W'.map q` using `Ideal.mem_map_of_mem q hy`. Rewrite `this` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
-
-Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_lt_lt_of_mem_minimalPrimes' {V W W' : Ideal R} [V.IsPrime] [W'.IsPrime] {x : R}
     (hW : W ∈ (V ⊔ Ideal.span {x}).minimalPrimes) (hVW' : V < W') (hW'W : W' < W) : False := by
@@ -117,9 +113,9 @@ theorem not_lt_lt_of_mem_minimalPrimes' {V W W' : Ideal R} [V.IsPrime] [W'.IsPri
   exact this
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1`. Use `⟨⟨hWp, sup_le (le_sup_left.trans hW.1.2) (Ideal.span_le.mpr (by simpa using htW))⟩, fun q hq hqW => ?_⟩` and prove the remaining obligations. Establish `: q.IsPrime` using `hq.1`. Establish `hPq : P < q` using `lt_of_le_of_ne (le_sup_left.trans hq.2) fun he => htP (he ▸ hq.2 (le_sup_right (a := P) (Ideal.subset_span rfl)))`. Break down `hqW.lt_or_eq with hlt | heq` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(not_lt_lt_of_mem_minimalPrimes' hW hPq hlt).elim`. Conclude with `heq.ge`.
+A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_mem {P W : Ideal R} [P.IsPrime] {s t : R}
     (hW : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes) (htP : t ∉ P) (htW : t ∈ W) :
@@ -141,14 +137,14 @@ section Cycles
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_minimalPrimes_of_mem hW.1 htP htW, hW.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_divSupp_of_mem {P W : Ideal (MRing ι)} [P.IsPrime] {s t : MRing ι}
     (hW : W ∈ divSupp P s) (htP : t ∉ P) (htW : t ∈ W) : W ∈ divSupp P t :=
   ⟨mem_minimalPrimes_of_mem hW.1 htP htW, hW.2⟩
 
 /- English proof (translation)
-Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Rewrite using `[if_pos h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem divCycle_apply_of_mem {P W : Ideal (MRing ι)} {s : MRing ι} (h : W ∈ divSupp P s) :
     divCycle P s W = multAt (P ⊔ Ideal.span {s}) W := by
@@ -157,7 +153,7 @@ theorem divCycle_apply_of_mem {P W : Ideal (MRing ι)} {s : MRing ι} (h : W ∈
   rw [if_pos h]
 
 /- English proof (translation)
-Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Rewrite using `[if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem divCycle_apply_of_not_mem {P W : Ideal (MRing ι)} {s : MRing ι} (h : W ∉ divSupp P s) :
     divCycle P s W = 0 := by
@@ -166,11 +162,11 @@ theorem divCycle_apply_of_not_mem {P W : Ideal (MRing ι)} {s : MRing ι} (h : W
   rw [if_neg h]
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P s), Finsupp.sum]`. Establish `h1 : ∀ W ∈ (divSupp_finite P s).toFinset, (multAt (P ⊔ Ideal.span {s}) W : ℝ) * f W = (divCycle P s W : ℝ) * f W`. Introduce `W hW`. Rewrite `hW` using `[Set.Finite.mem_toFinset]`. Rewrite using `[divCycle_apply_of_mem hW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h1]`. Use `symm`. Use `Finset.sum_subset (fun W hW => ?_) (fun W _ hW => ?_)` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(Finsupp.mem_support_iff.mp hW) (divCycle_apply_of_not_mem h)`. Rewrite using `[Finsupp.notMem_support_iff.mp hW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_divSupp_eq_sum (P : Ideal (MRing ι)) (s : MRing ι) (f : Ideal (MRing ι) → ℝ) :
     ∑ᶠ W ∈ divSupp P s, (multAt (P ⊔ Ideal.span {s}) W : ℝ) * f W =
@@ -194,7 +190,7 @@ theorem finsum_divSupp_eq_sum (P : Ideal (MRing ι)) (s : MRing ι) (f : Ideal (
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P s), finsum_cond_eq_sum_of_cond_iff g (t := (divSupp_finite P s).toFinset.filter IsHorizontal) (fun {x} _ => by simp), Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_hor_eq (P : Ideal (MRing ι)) (s : MRing ι) (g : Ideal (MRing ι) → ℝ) :
     (∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), g W) =
@@ -205,7 +201,7 @@ theorem finsum_hor_eq (P : Ideal (MRing ι)) (s : MRing ι) (g : Ideal (MRing ι
       (fun {x} _ => by simp), Finset.sum_filter]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_sum_index (fun _ => by simp) (fun _ _ _ => by push_cast; ring)]`. Use `Finsupp.sum_congr fun W _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun U _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -222,7 +218,7 @@ theorem sum_cycle_comp {α : Type*} (F : α →₀ ℕ) (G : α → α →₀ �
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hmax : (W.comap (C : ℤ →+* MRing ι)).IsMaximal` using `Ideal.IsPrime.isMaximal (Ideal.comap_isPrime _ _) hv`. Conclude with `(hmax.eq_of_le (Ideal.comap_isPrime (C : ℤ →+* MRing ι) U).ne_top (Ideal.comap_mono hWU)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_eq_of_vertical {W U : Ideal (MRing ι)} [W.IsPrime] [U.IsPrime] (hv : ¬ IsHorizontal W)
     (hWU : W ≤ U) : U.comap (C : ℤ →+* MRing ι) = W.comap (C : ℤ →+* MRing ι) := by
@@ -233,31 +229,31 @@ theorem comap_eq_of_vertical {W U : Ideal (MRing ι)} [W.IsPrime] [U.IsPrime] (h
 end Cycles
 
 /- English proof (translation)
-Introduce `K _ ι _ I P n L A A' s s' hR hP hL hA hA' hs hs' hd`. Establish `: P.IsPrime` using `hP.2.1.1`. Take `⟨b, hb, hsb, hsP⟩` from `id hs`. Take `⟨b', hb', hsb', hsP'⟩` from `id hs'`. Use `set c : Ideal (MRing ι) → ℝ := fun U => if IsHorizontal U then I U n L else (geoNum n U (fun j => (L j).a) : ℝ) * Real.log (charOf U) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (B B' : HermLine ι) (u u' : MRing ι) (e' : K → ℕ), IsSectionOn P B u → IsSmoothHerm B' → (∀ k, B'.a k = e' k) → IsMultiHomog u' e' → (∀ W ∈ divSupp P u, u' ∉ W) → ∀ W ∈ divSupp P u, (if IsHorizontal W then I W (n + 1) (Fin.snoc L B') else (geoNum (n + 1) W (fun j => ((Fin …`. Introduce `B B' u u' e' hsec hB' hB'e hu'e hno W hW`. Establish `hdiv` using `divSuppArith K ι P (n + 1) B u W hP hsec hW`. Establish `hu'W : u' ∉ W` using `hno W hW`. Establish `: W.IsPrime` using `hW.1.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hh : IsHorizontal W`. Rewrite using `[if_pos hh, if_pos hh, hR W L B' u' (hdiv.1 hh) hL hB' ⟨e', hB'e, hu'e, hu'W⟩, show recR I W L B' u' = (∑ᶠ U ∈ divSupp W u', (multAt (W ⊔ Ideal.span {u'}) U : ℝ) * c U) - arInt W u' B' L from rfl, finsum_divSupp_eq_sum]`. Rewrite using `[if_neg hh, if_neg hh, sub_zero]`. Take `⟨hWm, hWp, hWd⟩` from `hdiv.2 hh`. Establish `ha : (fun j => ((Fin.snoc L B' : Fin (n + 1) → HermLine ι) j).a) = Fin.snoc (fun j => (L j).a) (fun k => (e' k : ℤ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[hB'e]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, hCut K ι W n (fun j => (L j).a) e' u' hWm hWp hWd hu'e hu'W, ← finsum_divSupp_eq_sum W u' c, finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite W u'), finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite W u'), Int.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun U hU => ?_` and prove the remaining obligations. Rewrite `hU` using `[Set.Finite.mem_toFinset]`. Establish `: U.IsPrime` using `hU.1.1.1`. Establish `hWU : W ≤ U` using `le_sup_left.trans hU.1.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm` using `comap_eq_of_vertical hh hWU`. Establish `hUh : ¬ IsHorizontal U`. Unfold `IsHorizontal`. Rewrite using `[hcm]`. Conclude with `hh`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hch : charOf U = charOf W` using `congrArg (fun J : Ideal ℤ => (Submodule.IsPrincipal.generator J).natAbs) hcm`. Rewrite using `[hc]`. Simplify using `only [if_neg hUh, hch]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'W : ∀ W ∈ divSupp P s, s' ∉ W` using `fun W hW h => hd W hW (mem_divSupp_of_mem hW hsP' h)`. Establish `hsW' : ∀ W ∈ divSupp P s', s ∉ W` using `fun W hW h => hd W (mem_divSupp_of_mem hW hsP h) hW`. Establish `side : ∀ (B B' : HermLine ι) (u u' : MRing ι) (e' : K → ℕ), IsSectionOn P B u → IsSmoothHerm B' → (∀ k, B'.a k = e' k) → IsMultiHomog u' e' → (∀ W ∈ divSupp P u, u' ∉ W) → recR I P (Fin.snoc L B') B u = ((divCycle P u).sum fun W m => m • divCycle W u').sum (fun U k => (k : ℝ) * c …`. Introduce `B B' u u' e' hsec hB' hB'e hu'e hno`. Establish `hperm : (Fin.cons (fun z => Real.log (B'.h z)) (pot L) : Fin (n + 1) → _) = (fun j z => Real.log (((Fin.snoc L B' : Fin (n + 1) → HermLine ι) j).h z)) ∘ (finRotate (n + 1)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `h0 : (finRotate (n + 1)).symm 0 = Fin.last n` using `(Equiv.symm_apply_eq _).mpr finRotate_last.symm`. Simplify using `[h0]`. Establish `h1 : (finRotate (n + 1)).symm j.succ = j.castSucc` using `(Equiv.symm_apply_eq _).mpr (Fin.ext (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coe_finRotate_of_ne_last (Fin.castSucc_lt_last j).ne]`. Use the proof step `simp))`. Simplify using `[h1]`. Both sides reduce to the same expression. Establish `hint : arInt P u B (Fin.snoc L B') = ptsIntegral P (Fin.cons (fun z => Real.log (B'.h z)) (pot L)) (logNorm B u)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hperm, ptsIntegral_comp_perm]`. Both sides reduce to the same expression. Establish `hrec : recR I P (Fin.snoc L B') B u = (∑ᶠ W ∈ divSupp P u, (multAt (P ⊔ Ideal.span {u}) W : ℝ) * ((divCycle W u').sum (fun U m => (m : ℝ) * c U) - (if IsHorizontal W then arInt W u' B' L else 0))) - arInt P u B (Fin.snoc L B')`. Unfold `recR`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `finsum_congr fun W => finsum_congr fun hW => ?_` and prove the remaining obligations. Rewrite using `[key B B' u u' e' hsec hB' hB'e hu'e hno W hW]`. Establish `hhor : (∑ᶠ W ∈ divSupp P u, if IsHorizontal W then (multAt (P ⊔ Ideal.span {u}) W : ℝ) * ptsIntegral W (pot L) (logNorm B' u') else 0) = ∑ᶠ W ∈ divSupp P u, (multAt (P ⊔ Ideal.span {u}) W : ℝ) * (if IsHorizontal W then arInt W u' B' L else 0)` using `finsum_congr fun W => finsum_congr fun _ => by rw [mul_ite, mul_zero]; rfl`. Rewrite using `[hrec, hint, finsum_divSupp_eq_sum, finsum_hor_eq, hhor, finsum_divSupp_eq_sum]`. Simplify using `only [mul_sub, Finsupp.sum_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sum_cycle_comp]`. Rewrite using `[side A A' s s' b' hs hA' hb' hsb' hs'W, side A' A s' s b hs' hA hb hsb hsW', hCyc K ι P n A A' s s' hP hs hs' hd]`. Establish `h` using `hPL2 K ι P n L A A' s s' hP hL hA hA' hs hs' (fun W h1 h2 _ => hd W h1 h2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Swap.of_cycles (hCut : GeoNumCut.Statement) (hPL2 : SectionSpaceSymmetry)
     (hCyc : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ)
@@ -366,7 +362,7 @@ theorem Swap.of_cycles (hCut : GeoNumCut.Statement) (hPL2 : SectionSpaceSymmetry
   linarith
 
 /- English proof (translation)
-The claim follows from `Swap.of_cycles hCut hPL2 fun K _ ι _ P n _ _ s s' hP hs hs' hd => hCyc K ι P (n + 2) hs.choose hs'.choose s s' hP hs.choose_spec.2.1 hs'.choose_spec.2.1 hs.choose_spec.2.2 hs'.choose_spec.2.2 hd`.
+A detailed English derivation is pending.
 -/
 theorem Swap.proof (hCyc : SwapCycles.Statement) (hCut : GeoNumCut.Statement) (hPL2 : SectionSpaceSymmetry) :
     Swap.Statement :=

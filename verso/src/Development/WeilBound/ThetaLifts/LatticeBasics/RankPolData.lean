@@ -27,11 +27,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {om : Rep σ X W}
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Set `p : SInf F (Fin n × Fin d) →ₗ[ℂ] ((Fin n × Fin d → Af F) → ℂ) →ₗ[ℂ] Fn F n d` to `LinearMap.mk₂ ℂ (fun f g => pureA F f g) (fun _ _ _ => funext fun _ => add_mul _ _ _) (fun _ _ _ => funext fun _ => mul_assoc _ _ _) (fun _ _ _ => funext fun _ => mul_add _ _ _) (fun _ _ _ => funext fun _ => mul_left_comm _ _ _)`. Establish `le : PolData B M ≤ Submodule.map₂ p (M.Pol B.ψ B.emb) (SB _)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨f, hf, φ, h1, h2, rfl⟩`. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA hM φ h1 h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e f ▸ Submodule.apply_mem_map₂ p hf hg)`. Use `(Submodule.rank_mono le).trans ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map₂_eq_range_lift_comp_mapIncl]`. Use `(LinearMap.rank_le_domain _).trans ?_` and prove the remaining obligations. Rewrite using `[rank_tensorProduct']`.
-
-Conclude with `(mul_le_mul' h (GlobalTheory.CompanionTheory.Ar.RT.Inj.Rank.rank_SB_le _)).trans Cardinal.aleph0_mul_aleph0.le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_polData (hM : M.IsGood B.ψ) (h : Module.rank ℂ (M.Pol B.ψ B.emb) ≤ ℵ₀) : Module.rank ℂ (PolData B M) ≤ ℵ₀ := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F
@@ -56,19 +54,17 @@ def Il {χ χ' : Chr F E} (hw : M.IsWeil B.ψ χ χ' om) (hc : ∀ Φ ∈ schA F
   map_smul' c Φ := funext (PositivityTheory.ThKG.I_smul M om c Φ)
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem I_rt (Φ : Fn F n d) (g h : UA σ W.J) : M.I om (om (1, g) Φ) h = M.I om Φ (h * g) := by
   simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 (c.fin _ _ hμ hD).ne`. Establish `ii : ∀ x y, Integrable (fun g => u y g * star (u' x g)) (μ.restrict D)` using `fun x y => by`. Establish `h` using `(hc y).mul (hc' x).star`. Take `⟨C, hC⟩` from `c.bdd h fun γ hγ g => by simp only [Pi.mul_apply, hi y γ hγ, hi' x γ hγ]`. Conclude with `Integrable.of_bound h.aestronglyMeasurable C (Eventually.of_forall hC)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := c.cnt`. Use `haveI := c.right μ hμ`. Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => pet μ D (u y) (u' x)) (fun x x' y => ?_) (fun a x y => ?_) (fun x y y' => ?_) (fun a x y => ?_), fun _ _ => rfl, fun g x y => ?_⟩` and prove the remaining obligations. Rewrite using `[pet, pet, pet, ← integral_add (ii x y) (ii x' y)]`. Simplify using `[mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pet, ← integral_const_mul, mul_left_comm]`. Rewrite using `[pet, pet, pet, ← integral_add (ii x y) (ii x y')]`. Simplify using `[add_mul]`. Simplify using `[pet, ← integral_const_mul, mul_assoc]`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, pet, he, he']`.
-
-Conclude with `PositivityTheory.ThKF.L2.integral_right hD (fun h => u y h * star (u' x h)) (fun γ hγ h => by rw [hi y γ hγ, hi' x γ hγ]) g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_form {J : Matrix (Fin n) (Fin n) E} (c : Cpt σ J) {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hμ : μ.IsHaarMeasure)
     (hD : IsFundamentalDomain (ratU σ J) D μ) {P : Type} [AddCommGroup P] [Module ℂ P] {u u' : P →ₗ[ℂ] (UA σ J → ℂ)}
@@ -93,13 +89,11 @@ theorem exists_form {J : Matrix (Fin n) (Fin n) E} (c : Cpt σ J) {μ : Measure 
     exact PositivityTheory.ThKF.L2.integral_right hD (fun h => u y h * star (u' x h)) (fun γ hγ h => by rw [hi y γ hγ, hi' x γ hγ]) g
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4⟩` from `H u (by simp)`. Take `⟨b1, b2, b3, b4⟩` from `H v (by simp)`. Take `⟨c1, c2, c3, c4⟩` from `H v' (by simp)`. Take `⟨b, eb, ib⟩` from `exists_form cW hμ hD b1 c1 b2 c2 ρ b3 c3`. Take `⟨c, ec, ic⟩` from `exists_form cW hμ hD a1 a1 a2 a2 ρ a3 a3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ω, hΩ, cov⟩` from `cW.cov`. Use `cW.lc` as an intermediate fact. Use `cW.t2` as an intermediate fact. Take `⟨lam, hl⟩` from `line ρ u a1 a3 hr K k1 k2 hΩ (fun g => (cov g).elim fun γ hγ => ⟨_, hγ.2, fun x => (a2 x γ hγ.1 g).symm⟩) b c ib ic (fun x y => by rw [ec, ec, pet, pet, ← integral_conj]; simp [mul_comm]) (fun x => by`. Rewrite using `[ec, pet, show (fun h => u x h * star (u x h)) = fun h => ((‖u x h‖ ^ 2 : ℝ) : ℂ) from`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun h => by simp [Complex.mul_conj'], integral_complex_ofReal]`. Conclude with `integral_nonneg fun _ => by positivity)`. Use the proof step `(fun x hx => cW.eq_zero hμ hD (a1 x) (a2 x) (ec x x ▸ hx))`. Use the proof step `(fun x hx => LinearMap.ext fun y => by rw [eb, c4 x hx]; simp [pet])`. Use the proof step `(fun x hx => LinearMap.ext fun y => by rw [LinearMap.flip_apply, eb, b4 x hx]; simp [pet])`.
-
-Use the proof step `(fun x hx => LinearMap.ext fun y => by rw [LinearMap.flip_apply, ec, a4 x hx]; simp [pet]) irr`. Conclude with `⟨lam, fun x y => by rw [← eb, ← ec, hl]⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_cpt {J : Matrix (Fin n) (Fin n) E} (cW : Cpt σ J) {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hμ : μ.IsHaarMeasure)
     (hD : IsFundamentalDomain (ratU σ J) D μ) {P : Type} [AddCommGroup P] [Module ℂ P] {u v v' : P →ₗ[ℂ] (UA σ J → ℂ)}
@@ -133,25 +127,23 @@ end Herm
 
 open Herm in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf h hp hq μ D hμ hD s t s' t'`. Establish `T` using `h.triple`. Establish `cW` using `hC F E σ B _ G.W _ _ T.base (Or.inr T.geo.hW) (by omega)`. Take `⟨K, k1, k2⟩` from `hK F E σ B _ G.W _ _ T.base (Or.inr T.geo.hW) (by omega)`. Take `⟨-, m2, m3⟩` from `hM F E σ B a a' G X om om' R Rf h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨st1, st2⟩` from `hS F E σ B a a' G X om om' R Rf h hp hq`. Take `⟨f1, f2⟩` from `hF F E σ B a a' G X om om' R Rf h`. Establish `z0 : (0 : Fn F a (a + a') × Fn F a' (a + a')) ∈ pairs B G X R Rf` using `⟨zero_mem _, X.T, le_rfl, 0, 0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, by simp⟩`. Set `P : Submodule ℂ (Fn F a (a + a') × Fn F a' (a + a'))` to `{ carrier := pairs B G X R Rf zero_mem' := z0 add_mem' := fun hx hy => by simpa using st1 _ hx _ hy 1 smul_mem' := fun c x hx => by simpa using st1 _ z0 _ hx c }`. Establish `s1 : ∀ y : P, y.1.1 ∈ schA F _` using `fun y => PositivityTheory.ThKG.polData_le T.geo.hM (m3 _ _ y.2.1 y.2.2).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `s2 : ∀ y : P, y.1.2 ∈ schA F _` using `fun y => PositivityTheory.ThKG.polData_le T.geo.hM' (m3 _ _ y.2.1 y.2.2).2.1`. Set `I₁` to `Il T.weil fun Φ hΦ => ((hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T) (Or.inr (by omega))).1 Φ hΦ).1`. Set `I₂` to `Il T.weil' fun Φ hΦ => ((hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T) (Or.inr (by omega))).1 Φ hΦ).1`. Set `j₂` to `(LinearMap.snd ℂ _ _ ∘ₗ P.subtype).codRestrict _ s2`. Set `io : ℂ → ℂ → P →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `fun s t => s • I₁ ∘ₗ (LinearMap.fst ℂ _ _ ∘ₗ P.subtype).codRestrict _ s1 + t • I₂ ∘ₗ j₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `eio : ∀ s t y, io s t y = comb G om om' s t y.1` using `fun _ _ _ => rfl`. Establish `e01 : ∀ y, io 0 1 y = G.M'.I om' y.1.2` using `fun y => by simp [eio, comb]`. Set `ρ : UA σ G.W.J →* Module.End ℂ P` to `{ toFun := fun g => ((om (1, g)).prodMap (om' (1, g))).restrict fun y hy => st2 y hy g map_one' := LinearMap.ext fun y => Subtype.ext (show (om 1 y.1.1, om' 1 y.1.2) = y.1 by simp) map_mul' := fun g g' => LinearMap.ext fun y => Subtype.ext (show (om (1, g * g') y.1.1, om' (1, g * …`. Simplify using `only [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]) }`. Establish `he : ∀ s t g y x, io s t (ρ g y) x = io s t y (x * g)` using `fun s t g y x => show s * G.M.I om (om (1, g) y.1.1) x + t * G.M'.I om' (om' (1, g) y.1.2) x = _ by rw [I_rt, I_rt]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `cc : ∀ s t y, Continuous (io s t y)` using `fun s t y => (((hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T)).1 (Or.inr (by omega)) _ (s1 y)).const_smul s).add (((hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T)).1 (Or.inr (by omega)) _ (s2 y)).const_smul t)`. Establish `ci : ∀ s t y, ∀ γ ∈ ratU σ G.W.J, ∀ g, io s t y (γ * g) = io s t y g` using `fun s t y γ hγ g => by`. Establish `b1` using `((hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T)).1 _ (s1 y)).2.1 1 (one_mem _) γ hγ`. Establish `b2` using `((hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T)).1 _ (s2 y)).2.1 1 (one_mem _) γ hγ`. Simplify using `only [one_mul] at b1 b2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [eio, comb, Pi.add_apply, Pi.smul_apply, Model.I, b1, b2]`. Establish `nul : ∀ s t (y : P), PolMatch B G X R Rf y.1.1 0 → io s t y = 0` using `fun s t y hy => by`. Use `st1 _ y.2 (y.1.1, 0) ⟨zero_mem _, hy⟩ (-1)` as an intermediate fact. Apply the tactic sequence `rw [show y.1 + (-1 : ℂ) • (y.1.1, 0) = (0, y.1.2) by ext <;> simp] at this`. Rewrite using `[eio, comb, f1 _ hy, f2 _ y.2.1 this.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `irr : ∀ N : Submodule ℂ P, LinearMap.ker (io 0 1) ≤ N → (∀ g, ∀ x ∈ N, ρ g x ∈ N) → (∀ y ∈ N, PolMatch B G X R Rf y.1.1 0) ∨ N = ⊤` using `fun N h1 h2 => (hJ F E σ B a a' G X om om' R Rf h hp hq (N.map P.subtype) (by rintro _ ⟨y, -, rfl⟩; exact y.2) (fun y hy h0 => ⟨⟨y, hy⟩, h1 (nul 0 1 ⟨y, hy⟩ h0), rfl⟩) (by rintro _ ⟨y, hy, rfl⟩ g; exact ⟨_, h2 g y hy, rfl⟩)).imp (fun h y hy => h _ ⟨y, hy, rfl⟩) fun h => eq_top_if …`. Take `⟨z, hz, e⟩` from `h y.2`. Conclude with `(Subtype.ext e : z = y) ▸ hz`. Establish `ker : ∀ s t y, io 0 1 y = 0 → io s t y = 0` using `fun s t y hy => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(irr _ le_rfl fun g x hx => funext fun z => ?_).elim (fun h => nul s t y (h y hy)) fun h0 => ?_` and prove the remaining obligations. Rewrite using `[he, show io 0 1 x = 0 from hx]`. Both sides reduce to the same expression. Take `⟨Φ', r1, r2⟩` from `(hN F E σ B a a' G X om om' T).2 hq`. Take `⟨Φ, hΦ⟩` from `m2 Φ' r1.1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd ((e01 ⟨(Φ, Φ'), r1.2, hΦ⟩).symm.trans (h0.ge trivial)) r2`. Establish `le : LinearMap.range (io 0 1) ≤ ((PolData B G.M').comap (schA F _).subtype).map I₂`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨j₂ y, (m3 _ _ y.2.1 y.2.2).2.1, (e01 y).symm⟩`. Apply the tactic sequence `obtain ⟨lam, hl⟩ := line_cpt cW hμ hD (u := io 0 1) (v := io s t) (v' := io s' t') ρ (by rintro _ (rfl | rfl | rfl) <;> exact ⟨cc _ _, ci _ _, he _ _, ker _ _⟩) ((Submodule.rank_mono le).trans ((rank_map_le _ _).trans ((Submodule.comapSubtypeEquivOfLe (PositivityTheory.ThKG.polDa …`.
-
-Conclude with `⟨lam, fun y hy y' hy' => hl ⟨y, hy⟩ ⟨y', hy'⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hermLine_of (hC : CptAll) (hK : CptOpen) (hR : PolRank) (hS : PairsStable) (hJ : PairsIrr) (hF : Factor) (hN : NonZeroAn)
     (hW : WeilConv) (hB : ThetaBasic) (hI : PositivityTheory.ThKF.ICont) (hM : MatchEx) : HermLine := by

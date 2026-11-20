@@ -10,7 +10,7 @@ noncomputable section
 namespace PIW.HCFdeg
 
 /- English proof (translation)
-The claim follows from `formal_degree_of_schur_unimodular stSchur stBdd stOrthOf stUnimod`.
+A detailed English derivation is pending.
 -/
 theorem formal_degree_abstract_form : StableSubspaceMobius := formal_degree_of_schur_unimodular stSchur stBdd stOrthOf stUnimod
 

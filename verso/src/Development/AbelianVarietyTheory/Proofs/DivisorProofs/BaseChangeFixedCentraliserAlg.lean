@@ -9,15 +9,15 @@ open scoped TensorProduct Classical
 open GlobalTheory.FinClsLoc.BaseChangeCent in
 
 /- English proof (translation)
-Introduce `p _ G β Y L _ _ ι hinj hrange K _ _`. Establish `hmap : ∀ z, Algebra.TensorProduct.map (AlgHom.id K K) ι z = (ι.toLinearMap.lTensor K) z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul k l => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hex : Function.Exact ι.toLinearMap (phi G β Y ((β⁻¹ : G.Cˣ) : G.C))`. Introduce `c`. Express the relevant statement in the definitionally equal form `_ ↔ c ∈ Set.range ι`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[phi_apply, hrange c, Prod.mk_eq_zero, sub_eq_zero, sub_eq_zero]`. Both sides reduce to the same expression. Establish `hex'` using `Module.Flat.lTensor_exact K hex`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Module.Flat.lTensor_preserves_injective_linearMap (M := K) ι.toLinearMap hinj` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a b hab`. Apply `this` to reduce the goal to its premises. Rewrite using `[← hmap, ← hmap, hab]`. Introduce `x`. Establish `e1 : x ∈ Set.range (Algebra.TensorProduct.map (AlgHom.id K K) ι) ↔ x ∈ Set.range (ι.toLinearMap.lTensor K)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> rintro ⟨z, rfl⟩ <;> exact ⟨z, by rw [hmap]⟩`. Rewrite using `[e1, ← hex' x, ← (TensorProduct.prodRight ℚ ℚ K G.C G.C).map_eq_zero_iff, lTensor_phi, Prod.mk_eq_zero, sub_eq_zero, sub_eq_zero]`. Conclude with `and_congr Iff.rfl Iff.rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinClsLoc.baseChange_fixedCentraliser_alg :
   ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β Y : G.Cˣ) (L : Type) [Ring L] [Algebra ℚ L] (ι : L →ₐ[ℚ] G.C),

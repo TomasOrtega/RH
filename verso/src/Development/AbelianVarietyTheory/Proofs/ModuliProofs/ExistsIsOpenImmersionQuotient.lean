@@ -28,7 +28,7 @@ namespace GlobalTheory
 namespace QuotModel
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `hs`. Establish `P` using `GlobalTheory.ProjSpace.isPullback_baseChange N b`. Establish `hf : IsFinite (GlobalTheory.ProjSpace.baseChange N b)` using `MorphismProperty.of_isPullback P.flip hb`. Use `GlobalTheory.T.isProjOver_comp_finite O' (PSpace O' N) X (i ≫ GlobalTheory.ProjSpace.baseChange N b) (PSpace.str O' N) inferInstance ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩` as an intermediate fact. Rewrite `this` using `[Category.assoc, P.w, ← Category.assoc]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isProjOver_comp_spMap {O O' : Type} [CommRing O] [CommRing O'] (b : O' →+* O) {X : Scheme.{0}}
     (s : X ⟶ Sp O) (hb : IsFinite (spMap b)) (hs : IsProjOver s) : IsProjOver (s ≫ spMap b) := by
@@ -40,13 +40,11 @@ theorem isProjOver_comp_spMap {O O' : Type} [CommRing O] [CommRing O'] (b : O' �
   rwa [Category.assoc, P.w, ← Category.assoc] at this
 
 /- English proof (translation)
-Establish `hinj : Function.Injective b`. Establish `: Function.Injective ((algebraMap O F).comp b)`. Rewrite using `[h]`. Conclude with `k.injective.comp (IsFractionRing.injective O' F')`. Conclude with `Function.Injective.of_comp (f := algebraMap O F) this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hfin : b.Finite` using `(IsFinite.SpecMap_iff _).mp hb`. Use `letI := b.toAlgebra`. Use `letI := ((algebraMap O F).comp b).toAlgebra`. Establish `: IsScalarTower O' O F` using `.of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite O' O` using `hfin`. Establish `: FaithfulSMul O' O` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Establish `: Nontrivial O'` using `b.domain_nontrivial`. Establish `: Algebra.IsAlgebraic O' O` using `inferInstance`. Establish `h1 : IsLocalization (Algebra.algebraMapSubmonoid O (nonZeroDivisors O')) F` using `inferInstance`.
-
-Establish `h2 : IsLocalization ((nonZeroDivisors O').map b) F` using `h1`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isLocalization b k h.symm (nonZeroDivisors O'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_fractionField {O O' F F' : Type} [CommRing O] [CommRing O'] [Field F] [Field F'] [IsDomain O]
     [Algebra O F] [IsFractionRing O F] [Algebra O' F'] [IsFractionRing O' F'] (b : O' →+* O) (k : F' →+* F)
@@ -72,17 +70,17 @@ theorem isPullback_fractionField {O O' F F' : Type} [CommRing O] [CommRing O'] [
     (CommRingCat.isPushout_of_isLocalization b k h.symm (nonZeroDivisors O'))
 
 /- English proof (translation)
-Establish `hst : ∀ g (y : Y), y ∈ j.opensRange → (τ g).hom y ∈ j.opensRange`. Introduce and unpack `g _ ⟨u, rfl⟩`. Conclude with `⟨(ρ₀ g).hom u, by rw [← Scheme.Hom.comp_apply, ← hj, Scheme.Hom.comp_apply]⟩`. Take `⟨V, hV⟩` from `(quotient_isIntegral_surjective_orbits Γ Y Y' τ φ hφ).2.2.2.2 j.opensRange (by`. Introduce `g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Use `⟨fun h => ?_, hst g y⟩` and prove the remaining obligations. Establish `h1` using `hst g⁻¹ _ h`. Establish `e : (τ g).hom ≫ (τ g⁻¹).hom = 𝟙 Y`. Rewrite using `[map_inv]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(τ g).hom_inv_id`. Rewrite using `[← Scheme.Hom.comp_apply, e] at h1)` and apply the resulting hypothesis. Set `φ' : U ⟶ V` to `IsOpenImmersion.lift V.ι (j ≫ φ) (by`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: j u ∈ φ ⁻¹ᵁ V` using `by rw [hV]; exact ⟨u, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `this)`. Establish `e : φ' ≫ V.ι = j ≫ φ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `P : IsPullback φ' j V.ι φ` using `IsOpenImmersion.isPullback _ _ _ _ e.symm (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.opensRange_ι, hV])`. Establish `hφ'` using `(quotient_flat_baseChange Γ Y Y' U V τ φ φ' j V.ι hφ P inferInstance).2 ρ₀ fun g => ⟨by rw [← cancel_mono V.ι, Category.assoc, e, ← Category.assoc, ← hj, Category.assoc, hφ.2.1], (hj g).symm⟩`. Take `⟨a, ha, -⟩` from `quotient_existsUnique_comp_eq Γ U U' ρ₀ r hr V φ' hφ'.2.1`. Take `⟨a', ha', -⟩` from `quotient_existsUnique_comp_eq Γ U V ρ₀ φ' hφ' U' r hr.2.1`. Establish `: IsIso a` using `⟨a', (quotient_existsUnique_comp_eq Γ U U' ρ₀ r hr U' r hr.2.1).unique (by rw [← Category.assoc, ha, ha']) (Category.comp_id _), (quotient_existsUnique_comp_eq Γ U V ρ₀ φ' hφ' V φ' hφ'.2.1).unique (by rw [← Category.assoc, ha', ha]) (Category.comp_id _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a ≫ V.ι, inferInstance, by rw [← Category.assoc, ha, e], ?_⟩` and prove the remaining obligations. Establish `hr' : Set.range (a ≫ V.ι) = V`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, a.surjective.range_comp, Scheme.Opens.range_ι]`. Rewrite using `[hr']`. Conclude with `congrArg SetLike.coe hV`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOpenImmersion_quotient (Γ : Type) [Group Γ] [Finite Γ] (Y Y' U U' : Scheme.{0}) (τ : Γ →* Aut Y)
     (ρ₀ : Γ →* Aut U) (φ : Y ⟶ Y') (r : U ⟶ U') (j : U ⟶ Y) [IsOpenImmersion j]
@@ -127,35 +125,33 @@ theorem exists_isOpenImmersion_quotient (Γ : Type) [Group Γ] [Finite Γ] (Y Y'
 end QuotModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H U F O _ _ c t β Γ _ _ C U' F' O' _ _ c' β' b k r ρ₀ ρ hβ hβ' hbk hb hrc hr hρ`. Take `⟨⟨_, _⟩, -, hF⟩` from `hβ`. Take `⟨⟨_, _⟩, -, hF'⟩` from `hβ'`. Use `letI := β.toAlgebra`. Use `letI := β'.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨hN, hC, hS, hpre, hfl, hdom, hqc⟩` from `genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Establish `hdom' : IsDominant C.j` using `hdom`. Take `⟨hinj, Pb⟩` from `QuotModel.isPullback_fractionField (F := F) (F' := F') b k hbk hb`. Use `replace Pb : IsPullback (spMap β) (spMap k) (spMap b) (spMap β') := Pb`. Establish `hred : IsReduced C.X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ x : C.X, _root_.IsReduced (C.X.presheaf.stalk x)` using `fun x => by`. Use `(C.normal x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk _`. Establish `hjs : C.j ≫ C.s ≫ spMap b = r ≫ c' ≫ spMap β'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Cpt.j, Category.assoc, pullback.condition_assoc, ← Category.assoc, C.jQ_over, Pb.w, reassoc_of% hrc]`. Establish `hinv : ∀ g, (ρ g).hom ≫ C.s ≫ spMap b = C.s ≫ spMap b` using `fun g => ext_of_isDominant C.j (by rw [← Category.assoc, hρ, Category.assoc, hjs, ← Category.assoc, hr.2.1])`. Establish `hproj` using `QuotModel.isProjOver_comp_spMap b C.s hb C.proj`. Establish `hq : IsQProjOver C.s`. Take `⟨N, i, hi, e⟩` from `C.proj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, i, inferInstance, inferInstance, e⟩`. Take `⟨X', π, hπ⟩` from `exists_quotient_of_finite_group Γ C.X ρ fun x => by`. Take `⟨V, hV, h, -⟩` from `exists_isAffineOpen_le_of_isQProjOver O C.X C.s hq (Set.range fun g => (ρ g).hom x) ⊤ (Set.finite_range _) (Set.subset_univ _)`. Conclude with `⟨V, hV, fun g => h ⟨g, rfl⟩⟩`. Take `⟨s', hs', -⟩` from `quotient_existsUnique_comp_eq Γ C.X X' ρ π hπ _ _ hinv`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hprop : IsProper (π ≫ s')`. Take `⟨N, i, hi, e⟩` from `hproj`. Use `isProper_str O' N` as an intermediate fact. Rewrite using `[hs', ← e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin` using `(GlobalTheory.T.quotient_isFinite_and_descends_finiteness_properties Γ C.X X' ρ π hπ _ s' inferInstance).1`. Take `⟨-, hnorm, hflat⟩` from `GlobalTheory.T.quotient_isReduced_isNormal_flat_of_invariant_sections Γ C.X X' ρ π hπ`. Establish `hbf : Flat (spMap b)`. Rewrite using `[Flat.SpecMap_iff]`. Use `letI := b.toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: FaithfulSMul O' O` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Conclude with `RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat O' O)`. Establish `hs'f : Flat s'` using `hflat O' s' (by rw [hs']; have := C.flat; infer_instance)`. Establish `hβf : Flat (spMap β')`. Rewrite using `[Flat.SpecMap_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat F' (nonZeroDivisors O'))`. Establish `hβm : IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of O) (S := F) (nonZeroDivisors O)`. Set `p` to `pullback.fst C.s (spMap β)`. Set `p'` to `pullback.fst s' (spMap β')`. Establish `hpm : IsPreimmersion p` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hβm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `φ : pullback C.s (spMap β) ⟶ pullback s' (spMap β')` to `pullback.lift (p ≫ π) (pullback.snd _ _ ≫ spMap k) (by`. Rewrite using `[Category.assoc, hs', pullback.condition_assoc, Pb.w, Category.assoc])`. Establish `e1 : φ ≫ p' = p ≫ π` using `pullback.lift_fst _ _ _`. Establish `e2 : φ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap k` using `pullback.lift_snd _ _ _`. Establish `P : IsPullback φ p p' π`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `IsPullback.of_right ?_ e1 (IsPullback.of_hasPullback s' (spMap β')).flip` and prove the remaining obligations. Rewrite using `[e2, hs']`. Conclude with `((IsPullback.of_hasPullback C.s (spMap β)).paste_vert Pb).flip`. Take `⟨⟨τ, hτ⟩, hφ⟩` from `quotient_flat_baseChange Γ C.X X' _ _ ρ π φ p p' hπ P inferInstance`. Use `replace hφ := hφ τ hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `C.jQ_open` as an intermediate fact. Take `⟨j', hj', e3, e4⟩` from `QuotModel.exists_isOpenImmersion_quotient Γ _ _ U U' τ ρ₀ φ r C.jQ hφ hr fun g => by`. Rewrite using `[← cancel_mono p, Category.assoc, (hτ g).2, ← Category.assoc, Category.assoc (ρ₀ g).hom]`. Conclude with `hρ g`. Establish `e5 : r ≫ j' ≫ p' = C.j ≫ π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[reassoc_of% e3, e1, Cpt.j, Category.assoc]`. Use `⟨X', π, s', j', hπ, hfin, hs', hnorm hN C.normal, GlobalTheory.T.isProjOver_finite_group_quotient Γ C.X X' ρ π hπ O' s' (hs' ▸ hproj), hs'f, ?_, hj', ?_, e5, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(quotient_existsUnique_comp_eq Γ U U' ρ₀ r hr _ (r ≫ c') fun g => ?_).unique ?_ rfl` and prove the remaining obligations. Rewrite using `[← Category.assoc, hr.2.1]`. Rewrite using `[reassoc_of% e3, e2, ← Category.assoc, C.jQ_over, hrc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hsurj` using `(quotient_isIntegral_surjective_orbits Γ _ _ τ φ hφ).2.1`. Establish `hd : Dense (φ '' Set.range C.jQ)` using `φ.surjective.denseRange.dense_image φ.continuous C.jQ_dense`. Conclude with `hd.mono (by rw [← e4]; exact Set.image_preimage_subset _ _)`. Introduce and unpack `⟨u, hu⟩`. Take `⟨y, hy, rfl⟩` from `Scheme.exists_preimage_of_isPullback P (j' u) x (by rw [← hu, Scheme.Hom.comp_apply])`.
-
-Establish `: y ∈ Set.range C.jQ` using `by rw [← e4]; exact ⟨u, hy.symm⟩`. Take `⟨v, rfl⟩` from `this`. Conclude with `⟨v, Scheme.Hom.comp_apply _ _ _⟩`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨r u, by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, e5]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_quotient_model_scheme : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (Γ : Type) [Group Γ] [Finite Γ] (C : Cpt c t β) (U' : Scheme.{0}) (F' O' : Type) [Field F'] [CommRing O'] (c' : U' ⟶ Sp F') (β' : O' →+* F') (b : O' →+* O) (k : F' →+* F) (r : U ⟶ U') (ρ₀ : Γ →* Aut U) (ρ : Γ →* Aut C.X), IsDedFrac β → IsDedFrac β' → β.comp b = k.comp β' → IsFinite (spMap b) → r ≫ c' = c ≫ spMap k → (IsAffineHom r ∧ (∀ g, (ρ₀ g).hom ≫ r = r) ∧ ∀ V : U'.Opens, Function.Injective (r.app V).hom ∧ ∀ f : Γ(U, r ⁻¹ᵁ V), (∀ g (h : r ⁻¹ᵁ V ≤ (ρ₀ g).hom ⁻¹ᵁ (r ⁻¹ᵁ V)), ((ρ₀ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (r.app V).hom) → (∀ g, C.j ≫ (ρ g).hom = (ρ₀ g).hom ≫ C.j) → ∃ (X' : Scheme.{0}) (π : C.X ⟶ X') (s' : X' ⟶ Sp O') (jQ : U' ⟶ pullback s' (spMap β')), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(C.X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) ∧ IsFinite π ∧ π ≫ s' = C.s ≫ spMap b ∧ Geo.Tor.IsNormalScheme X' ∧ IsProjOver s' ∧ Flat s' ∧ jQ ≫ pullback.snd _ _ = c' ∧ IsOpenImmersion jQ ∧ Dense (Set.range jQ) ∧ r ≫ jQ ≫ pullback.fst _ _ = C.j ≫ π ∧ ∀ x : C.X, π x ∈ Set.range (jQ ≫ pullback.fst s' (spMap β')) ↔ x ∈ Set.range C.j := by
   intro E _ _ _ H U F O _ _ c t β Γ _ _ C U' F' O' _ _ c' β' b k r ρ₀ ρ hβ hβ' hbk hb hrc hr hρ

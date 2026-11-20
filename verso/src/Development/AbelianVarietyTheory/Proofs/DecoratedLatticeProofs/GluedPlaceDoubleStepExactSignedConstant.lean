@@ -21,9 +21,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `Finset.card_bij (fun P _ => g⁻¹ • P) ?_ ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite `hP`, the goal using `[mem_withLat]`. Rewrite using `[Pair.smul_lat, hP, inv_smul_smul]`. Introduce `P _ P' _ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `MulAction.injective g⁻¹ h`. Introduce `P hP`. Use `⟨g • P, ?_, inv_smul_smul g P⟩` and prove the remaining obligations. Rewrite `hP`, the goal using `[mem_withLat]`. Rewrite using `[Pair.smul_lat, hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_withLat_smul (g : GL n k) (L : Submodule 𝒪[k] (n → k)) :
     (withLat (g • L)).card = (withLat L).card := by
@@ -39,14 +39,14 @@ theorem card_withLat_smul (g : GL n k) (L : Submodule 𝒪[k] (n → k)) :
     rw [Pair.smul_lat, hP]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n k) Q₀ Q`. Rewrite using `[← hg, Pair.smul_lat, card_withLat_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_withLat_eq (Q Q₀ : Pair k n) : (withLat Q.lat).card = (withLat Q₀.lat).card := by
   obtain ⟨g, hg⟩ := MulAction.exists_smul_eq (GL n k) Q₀ Q
   rw [← hg, Pair.smul_lat, card_withLat_smul]
 
 /- English proof (translation)
-The claim follows from `Finset.card_pos.2 ⟨Q, mem_withLat.2 rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_withLat_pos (Q : Pair k n) : 0 < (withLat Q.lat).card :=
   Finset.card_pos.2 ⟨Q, mem_withLat.2 rfl⟩
@@ -58,7 +58,7 @@ def pairCount (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
   if h : Nonempty (Pair k n) then (withLat h.some.lat).card else 1
 
 /- English proof (translation)
-Unfold `pairCount`. Use `split_ifs with h`. Conclude with `card_withLat_pos _`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairCount_pos : 0 < pairCount k n := by
   unfold pairCount
@@ -67,7 +67,7 @@ theorem pairCount_pos : 0 < pairCount k n := by
   · exact one_pos
 
 /- English proof (translation)
-Unfold `pairCount`. Rewrite using `[dif_pos ⟨Q⟩]`. Conclude with `card_withLat_eq _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_withLat_eq_pairCount (Q : Pair k n) : (withLat Q.lat).card = pairCount k n := by
   unfold pairCount
@@ -83,83 +83,75 @@ namespace GlobalTheory.FinPl.VertexExactCount
 open Classical in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ p q ψ χ hχ hIs`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := secondCountable k`. Take `⟨e, he, HC⟩` from `GlobalTheory.T.splitPlace_lineComponents_contraction D k p ψ χ hIs`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ν, hν, -⟩` from `exists_isUnitVol k`. Set `ε : 𝓀[k]ˣ` to `if e = 1 then 1 else -1`. Establish `hεe : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1)`. Distinguish the cases in `h1 : e = 1`. Conclude with `Or.inl ⟨h1, if_pos h1⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr ⟨he.resolve_left h1, if_neg h1⟩`. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Break down `hεe with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n n' n'' _ _ _ _ _ _`. Take `⟨r₁, e₁, hr₁, HS⟩` from `GlobalTheory.T.gluedPlaceSourceConstant_proof D k p n n' q χ hχ`. Use `⟨r₁ * (pairCount k n : ℝ), e₁, mul_pos hr₁ (Nat.cast_pos.2 pairCount_pos), ?_⟩` and prove the remaining obligations. Introduce `P Q R σ B J B' s₁ s₂ l vL hu₁ hu₂ α α₀ β γ γ₀ hα hγ L₁ L₂ L₂' L₃ f₁ Ξ₁ Ξ₁' f₂ Ξ₂ Ξ₂' o₁ o₁' o₂ o₂' φ hφ`. Establish `hψ : IsStdChar D ψ (-1)` using `s₁.weil₀.std`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχc : Continuous χ`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h1 : Continuous fun a => psiE ψ (p.sec a)` using `hψ.1.1.comp (ht.comp p.cont_sec)`. Establish `h2 : (fun a => ((χ a : Circle) : ℂ)) = fun a => psiE ψ (p.sec a)` using `funext hIs`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Continuous (fun a => ((χ a : Circle) : ℂ))`. Rewrite using `[h2]`. Conclude with `h1`. Take `⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₁.weil₀`. Take `⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₂.weil₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vS₁` using `uS₁ hu₁.2`. Establish `vT₁` using `uT₁ hu₁.1`. Establish `vS₂` using `uS₂ hu₂.2`. Establish `vT₂` using `uT₂ hu₂.1`. Take `⟨-, D2, -⟩` from `GlobalTheory.T.gluedLattice_finite_expansions_localField k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `μ : Measure (n → k)` to `Measure.pi fun _ => ν`. Establish `I0 : fpair χ e μ (vecInd Q.lat) (dualInd Q.lat) ≠ 0` using `Comm.fpair_ne_zero χ hχc e he μ Q.lat`. Establish `hvec` using `Comm.vecInd_mem Q.lat`. Establish `hdual` using `Comm.dualInd_mem Q.lat`. Set `col : ∀ Ψ : Matrix n n' k → ℂ, Ψ ∈ SB (Matrix n n' k) → ∀ a : (n → k) → ℂ, a ∈ SB (n → k) → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Ψ hΨ a ha => ⟨tensCol Ψ a, Comm.tensCol_mem hΨ ha⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `row : ∀ Ψ : Matrix n'' n k → ℂ, Ψ ∈ SB (Matrix n'' n k) → ∀ b : (n → k) → ℂ, b ∈ SB (n → k) → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Ψ hΨ b hb => ⟨tensRow Ψ b, Comm.tensRow_mem hΨ hb⟩`. Establish `one_emb : ∀ {S₀ A L : HSp D} (o : OrthDec S₀ A L), o.emb (1, 1) = 1` using `fun o => map_one o.emb`. Take `⟨U₁, a₁, b₁, t₁⟩` from `overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2`. Take `⟨U₂, a₂, b₂, t₂⟩` from `overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2`. Take `⟨Θ, hΘ⟩` from `exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (v : caSub B.A) (Ψ₁ : Matrix n n' k → ℂ) (h₁ : Ψ₁ ∈ SB (Matrix n n' k)) (Ψ₂ : Matrix n'' n k → ℂ) (h₂ : Ψ₂ ∈ SB (Matrix n'' n k)) (a a' b b' : (n → k) → ℂ) (ha : a ∈ SB (n → k)) (ha' : a' ∈ SB (n → k)) (hb : b ∈ SB (n → k)) (hb' : b' ∈ SB (n → k)), fpair χ e μ a' b' • (Θ …`. Introduce `v Ψ₁ h₁ Ψ₂ h₂ a a' b b' ha ha' hb hb'`. Rewrite using `[hΘ, hΘ]`. Conclude with `HC n n' n'' σ B J B' s₁ s₂ l vL α α₀ β γ γ₀ hα hγ μ L₁ L₂ L₂' L₃ f₁ _ _ f₂ _ _ Ψ₁ Ψ₂ a a' b b' ha ha' hb hb' (a₁ (col Ψ₁ h₁ a ha)) (a₁ (col Ψ₁ h₁ a' ha')) (a₂ (row Ψ₂ h₂ b hb)) (a₂ (row Ψ₂ h₂ b' hb')) v.1 v.2`. Establish `hFF : ∀ A : Pair k n', IsContAut B.A (FFStar q (resChar χ hχ q) φ A)` using `fun A => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `(FFStar q (resChar χ hχ q) (fun P₂ => (⟨φ P₂, hφ.2.2 P₂⟩ : caSub B.A)) A).2` as an intermediate fact. Rewrite `this` using `[val_FFStar']`. Then use the resulting hypothesis. Set `v' : caSub B.A` to `⟨_, hFF P⟩`. Set `x : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Q' => col (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (charInd (resChar χ hχ q) Q') (charInd_mem' _ Q')`. Set `xv : Pair k n' → Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun A Q' => col (phiOne A Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem A Q') (vecInd Q.lat) hvec`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `yd : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Q'' => row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (dualInd Q.lat) hdual`. Set `y₀ : SB (Matrix (n'' ⊕ Fin 1) n k)` to `row (latInd Q.lat R.ker) (latInd_mem_SB _ _) (dualInd Q.lat) hdual`. Set `y : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Q'' => row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)`. Establish `h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = ((r₁ : ℂ) * chrPow s₁.χW (p.idele q.unit) e₁) • hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂` using `lift_step s₁ s₂ l vL (hFF P) U₁ t₁ (withLat Q.lat) x Ξ₁ Ξ₂ (HS ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line B.cpt B.vA s₁.χV s₁.χW s₁.om₀ s₁.weil₀ hu₁.1 hu₁.2 α α₀ β hα P Q.lat L₁ L₂ f₁ Ξ₁ (fun Q' => U₁ (x Q')) o₁ (fun Q' _ => a₁ (x Q')) φ hφ)`. Establish `hΞ₂ : Ξ₂ = U₂ (y₀ + ∑ Q'' ∈ withLat Q.lat, y Q'')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[b₂ ⟨_, o₂.2.2.2.1⟩ Ξ₂ o₂]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_sum]`. Conclude with `D2 R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') y₀).1 = 0` using `fun Q' hQ' => by`. Use `key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (latInd Q.lat R.ker) (latInd_mem_SB _ _) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual` as an intermediate fact. Establish `hf` using `GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'`. Rewrite `hf` using `[mem_withLat.1 hQ']`. Rewrite `this` using `[hf, zero_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 this).resolve_left I0`. Establish `t1 : ∀ Q' ∈ withLat Q.lat, ∑ Q'' ∈ withLat Q.lat, (Θ v' (x Q') (y Q'')).1 = (Θ v' (xv P Q') (yd (ε • Q'))).1`. Introduce `Q' hQ'`. Establish `hQ'l : Q'.lat = Q.lat` using `mem_withLat.1 hQ'`. Establish `hmem : ε • Q' ∈ withLat Q.lat` using `mem_withLat.2 (by rw [Pair.dia_lat, hQ'l])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single_of_mem (ε • Q') hmem]`. Use `key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (phiOne (ε • Q') R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (cosetInd q (ε • Q').lat (ε …` as an intermediate fact. Rewrite `this` using `[(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l]`. Conclude with `smul_right_injective _ I0 this`. Introduce `Q'' hQ'' hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ''l : Q''.lat = Q.lat` using `mem_withLat.1 hQ''`. Use `key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (cosetInd q Q''.lat Q''.red) (du …` as an intermediate fact. Rewrite `this` using `[(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left I0`. Establish `hmove : ∀ (Q₀ : Pair k n) (g : GL n k), g • Q.lat = Q.lat → (Θ v' (xv P (g • Q₀)) (yd (g • ε • Q₀))).1 = (Θ v' (xv P Q₀) (yd (ε • Q₀))).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `Q₀ g hgL`. Establish `hdet` using `GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.valuation_det_of_fix Q.lat hgL`. Establish `hgL' : g⁻¹ • Q.lat = Q.lat` using `by conv_lhs => rw [← hgL]`. Conclude with `inv_smul_smul g Q.lat`. Establish `e1 : s₁.om₀ (α₀.gl 1, β.gl g) (U₁ (xv P Q₀)) = U₁ (xv P (g • Q₀))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `b₁ _ _ ?_` and prove the remaining obligations. Use `(lin₁ _ _ α₀ β L₁ L₂ f₁ _ _ (a₁ (xv P Q₀))).1 1 g` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Establish `hl : ((lS₁ (Matrix.GeneralLinearGroup.det (1 : GL (n' ⊕ Fin 1) k)) : ℂˣ) : ℂ) = 1` using `by simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : ((lT₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `by rw [vT₁ _ hdet]; rfl`. Use `show tensCol (phiOne P (g • Q₀)) (vecInd Q.lat) z = _ * _ * tensCol (phiOne P Q₀) (vecInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, show (1 : GL (n' ⊕ Fin 1) k) = GlobalTheory.RootEx.embX 1 (1 : GL n' k) from (map_one _).symm, tensCol_subst' (vecInd Q.lat) ((g⁻¹ : GL n k) : Matrix n n k) (1 : GL n' k) (Ψ' := phiOne P (g • Q₀)) (fun x => by`. Use `phiOne_smul (P := P) (Q := Q₀) (x := x) (1 : GL n' k) g` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(vecInd_mulVec hgL' w).symm`. Establish `e2 : s₂.om₀ (β.gl g, γ₀.gl 1) (U₂ (yd (ε • Q₀))) = U₂ (yd (g • ε • Q₀))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `b₂ _ _ ?_` and prove the remaining obligations. Use `(lin₂ _ _ β γ₀ L₂' L₃ f₂ _ _ (a₂ (yd (ε • Q₀)))).1 g 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Establish `hl : ((lS₂ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `by rw [vS₂ _ hdet]; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ((lT₂ (Matrix.GeneralLinearGroup.det (1 : GL (n'' ⊕ Fin 1) k)) : ℂˣ) : ℂ) = 1` using `by simp`. Use `show tensRow (phiOne (g • ε • Q₀) R) (dualInd Q.lat) z = _ * _ * tensRow (phiOne (ε • Q₀) R) (dualInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, show (1 : GL (n'' ⊕ Fin 1) k) = GlobalTheory.RootEx.embX 1 (1 : GL n'' k) from (map_one _).symm, tensRow_subst' (dualInd Q.lat) (1 : GL n'' k) (g : Matrix n n k) (Ψ' := phiOne (g • ε • Q₀) R) (fun x => by`. Use `phiOne_smul (P := ε • Q₀) (Q := R) (x := x) g (1 : GL n'' k)` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(dualInd_vecMul hgL w).symm`. Establish `e3` using `Comm.doubleThetaUnfolding_equivariant_unitaryGroups s₁ s₂ l vL (hFF P) (t₁ (xv P Q₀)) (t₂ (yd (ε • Q₀))) 1 (β.gl g) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[one_emb, one_emb]`. Rewrite using `[hΘ, hΘ, ← e1, ← e2, map_one α₀.gl, map_one γ₀.gl]`. Rewrite using `[show (fun x : GA D B.A => FFStar q (resChar χ hχ q) φ P (x * 1)) = FFStar q (resChar χ hχ q) φ P from`. Use function extensionality and compare the values at `fun x => by rw [mul_one]] at e3`. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[mul_one]`. Establish `hall : ∀ Q' ∈ withLat Q.lat, (Θ v' (xv P Q') (yd (ε • Q'))).1 = (Θ v' (xv P (ε⁻¹ • Q)) (yd (ε • ε⁻¹ • Q))).1`. Introduce `Q' hQ'`. Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n k) (ε⁻¹ • Q) Q'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hgL : g • Q.lat = Q.lat`. Use `congrArg Pair.lat hg` as an intermediate fact. Rewrite `this` using `[Pair.smul_lat, Pair.dia_lat, mem_withLat.1 hQ']`. Conclude with `this`. Use `hmove (ε⁻¹ • Q) g hgL` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hg, smul_comm g ε (ε⁻¹ • Q), hg]`. Conclude with `this`. Establish `hid : ∀ Y', s₂.om₀ (1, 1) Y' = Y'` using `fun Y' => by`. Rewrite using `[show ((1 : GA D J.W₀), (1 : GA D B'.V₀)) = 1 from rfl, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hsrc : ∀ (g : GL n' k), valuation k ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = 1 → ∀ A A' : Pair k n', hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ (g • A)) (U₁ (xv (g • A') Q)) (U₂ (yd Q)) = hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ A) (U₁ (xv A' Q)) (U₂ (yd Q))`. Introduce `g hdet A A'`. Establish `e1 : s₁.om₀ (α₀.gl (GlobalTheory.RootEx.embX 1 g), β.gl 1) (U₁ (xv A' Q)) = U₁ (xv (g • A') Q)`. Use `b₁ _ _ ?_` and prove the remaining obligations. Use `(lin₁ _ _ α₀ β L₁ L₂ f₁ _ _ (a₁ (xv A' Q))).1 (GlobalTheory.RootEx.embX 1 g) 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Establish `hl : ((lS₁ (Matrix.GeneralLinearGroup.det (GlobalTheory.RootEx.embX 1 g)) : ℂˣ) : ℂ) = 1`. Rewrite using `[det_embX_one', vS₁ _ hdet]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ((lT₁ (Matrix.GeneralLinearGroup.det (1 : GL n k)) : ℂˣ) : ℂ) = 1` using `by simp`. Use `show tensCol (phiOne (g • A') Q) (vecInd Q.lat) z = _ * _ * tensCol (phiOne A' Q) (vecInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, tensCol_subst' (vecInd Q.lat) (((1 : GL n k)⁻¹ : GL n k) : Matrix n n k) g (Ψ' := phiOne (g • A') Q) (fun x => by`. Use `phiOne_smul (P := A') (Q := Q) (x := x) g (1 : GL n k)` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Establish `e3` using `Comm.doubleThetaUnfolding_equivariant_unitaryGroups s₁ s₂ l vL (hFF A) (t₁ (xv A' Q)) (t₂ (yd Q)) (α.gl g) 1 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e3` using `[one_emb, Comm.emb_gl hα g, hid]`. Establish `e4 : FFStar q (resChar χ hχ q) φ (g • A) = fun x => FFStar q (resChar χ hχ q) φ A (x * α.gl g)` using `FFStar_mem_EqForm q _ hφ.1 g A`. Rewrite using `[e4, ← e1, map_one β.gl, e3]`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g₁, hg₁a, hg₁b, hg₁d⟩ : ∃ g₁ : GL n' k, g₁ • P = ε • P ∧ g₁ • (ε • P) = P ∧ valuation k ((Matrix.GeneralLinearGroup.det g₁ : kˣ) : k) = 1 := by`. Break down `hεe with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `⟨1, by rw [h, one_smul, one_smul], by rw [h, one_smul, one_smul], by simp⟩`. Use `⟨-1, by rw [neg_one_smul_pair, h], ?_, val_det_neg_one⟩` and prove the remaining obligations. Rewrite using `[neg_one_smul_pair, h, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `hfin : (Θ v' (xv P (ε⁻¹ • Q)) (yd (ε • ε⁻¹ • Q))).1 = hand0 s₁ s₂ l vL (dia ε (FFStar q (resChar χ hχ q) φ) P) Ξ₁' Ξ₂'`. Rewrite using `[hΘ, b₁ (xv P Q) Ξ₁' o₁', b₂ (yd Q) Ξ₂' o₂', dia_apply, smul_inv_smul]`. Establish `hx : xv P (ε⁻¹ • Q) = xv (ε • P) Q`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show tensCol (phiOne P (ε⁻¹ • Q)) _ = tensCol (phiOne (ε • P) Q) _`. Use `phiOne_dia (P := P) (Q := ε⁻¹ • Q) ε` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Rewrite using `[this]`. Rewrite using `[hx]`.
-
-Use `hsrc g₁ hg₁d P (ε • P)` as an intermediate fact. Rewrite `this` using `[hg₁a, hg₁b]`. Conclude with `this.symm`. Establish `hexp : hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) (U₂ (y₀ + ∑ Q'' ∈ withLat Q.lat, y Q'')) = ∑ Q' ∈ withLat Q.lat, ((Θ v' (x Q') y₀).1 + ∑ Q'' ∈ withLat Q.lat, (Θ v' (x Q') (y Q'')).1)`. Use `(hΘ v' _ _).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[map_sum, LinearMap.sum_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun Q' _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sum, Submodule.coe_add, Submodule.coe_sum]`. Rewrite using `[h2, hΞ₂, hexp, Finset.sum_congr rfl fun Q' hQ' => by rw [t0 Q' hQ', zero_add, t1 Q' hQ', hall Q' hQ'], Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hfin, card_withLat_eq_pairCount Q]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vertexExact (D : D7) : VertexExact D := by
   intro k _ _ _ _ p q ψ χ hχ hIs

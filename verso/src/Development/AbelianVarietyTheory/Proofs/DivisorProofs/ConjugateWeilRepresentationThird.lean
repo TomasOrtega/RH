@@ -19,13 +19,13 @@ namespace GlobalTheory.GalOne
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ClsInt.integral_eq_classSum_of_le D S β L ν 𝓕 hp hs hν hL J' Cl h hle hN hy hh (fun x => thetaKO om x g (Λ (c.ext f x))) ?_ ?_]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [ext_fin c hc f (hh k)]`. Introduce `γ hγ x`. Establish `e : (γ * x, g) = ((γ, 1) : GA D S × GA D T) * (x, g)` using `by rw [Prod.mk_mul_mk, one_mul]`. Simplify using `only [thetaKO]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ThetaIntegrand.ext_invariant c hf γ hγ, e, map_mul]`. Conclude with `hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ (hΛ _))`. Introduce `u hu x`. Use `(GlobalTheory.LiftUnfold.exists_fin_mul_real S u).elim fun k hk0 => hk0.2.elim fun a ha0 => ?_` and prove the remaining obligations. Establish `hk` using `hk0.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `ha0.1`. Establish `e` using `ha0.2.2`. Establish `hk' : fin S k ∈ (levEnv S β L).J` using `by rw [e]; exact hu`. Establish `h1 : c.ρ k⁻¹ = 1` using `hc.1 _ (inv_mem hk)`. Establish `h2 : (finHom S).rangeRestrict a = 1` using `Subtype.ext (MonoidHom.mem_ker.1 ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.LiftUnfold.form_right (Bridge.ratF S) c.coef.ρ hf ⟨fin S k, hk'⟩`. Establish `h4` using `GlobalTheory.LiftUnfold.integrand_right om c.ρ (finHom S).rangeRestrict Λ f u k a ha0.2.1 (χ' ⟨fin S k, hk'⟩) h1 h2 h3 (hΛk k hk hk') (hΛa a ha) x g`. Conclude with `congrFun h4 0`.
+A detailed English derivation is pending.
 -/
 theorem integral_theta_chi {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (hs : S.SigOK)

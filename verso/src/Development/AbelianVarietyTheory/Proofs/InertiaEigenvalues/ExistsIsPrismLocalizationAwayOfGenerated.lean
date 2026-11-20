@@ -12,7 +12,7 @@ namespace GlobalTheory.BSP
 variable {l : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_pow]`. Use `congr 1`. Simplify using `only [adI, Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast, hI]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem adI_pow_eq_map_of_map_I {B C : Obj l R} (h : Hom B C) (hI : B.I.map h.f = C.I) (m : ℕ) :
     adI C ^ m = (adI B ^ m).map h.f := by
@@ -21,17 +21,15 @@ theorem adI_pow_eq_map_of_map_I {B C : Obj l R} (h : Hom B C) (hI : B.I.map h.f 
   simp only [adI, Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast, hI]
 
 /- English proof (translation)
-Establish `hJ : ∀ m, adI L.Q ^ m = (adI B ^ m).map L.inl.f` using `adI_pow_eq_map_of_map_I L.inl (hrig _ _ _)`. Use `⟨fun m => ?_, fun Q a ha => ?_⟩` and prove the remaining obligations. Use `letI := (qmap L.inl m).toAlgebra`. Establish `hmap : ∀ b : B.A, algebraMap (B.A ⧸ adI B ^ m) (L.Q.A ⧸ adI L.Q ^ m) (Ideal.Quotient.mk _ b) = Ideal.Quotient.mk _ (L.inl.f b)` using `fun b => rfl`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, k, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit (algebraMap (B.A ⧸ adI B ^ m) (L.Q.A ⧸ adI L.Q ^ m) (Ideal.Quotient.mk _ s ^ k))`. Rewrite using `[map_pow, hmap]`. Conclude with `(L.unit.map _).pow k`. Introduce `z`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨k, b, hkb⟩` from `L.surj c m`. Use `⟨⟨Ideal.Quotient.mk _ b, ⟨Ideal.Quotient.mk _ s ^ k, k, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ c * algebraMap (B.A ⧸ adI B ^ m) (L.Q.A ⧸ adI L.Q ^ m) (Ideal.Quotient.mk _ s ^ k) = algebraMap (B.A ⧸ adI B ^ m) (L.Q.A ⧸ adI L.Q ^ m) (Ideal.Quotient.mk _ b)`. Rewrite using `[map_pow, hmap, hmap, ← map_pow, ← map_mul, Ideal.Quotient.eq, hJ, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hkb`. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hxy` using `[hmap, hmap, Ideal.Quotient.eq, hJ, ← map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `L.ker (a - b) m hxy`. Use `⟨⟨Ideal.Quotient.mk _ s ^ k, k, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ s ^ k * Ideal.Quotient.mk _ a = Ideal.Quotient.mk _ s ^ k * Ideal.Quotient.mk _ b`. Rewrite using `[← map_pow, ← map_mul, ← map_mul, Ideal.Quotient.eq, ← mul_sub]`. Conclude with `hk`.
-
-Take `⟨c, hc, -⟩` from `L.univ Q a ha`. Conclude with `⟨c, hc⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLoc_of_locP (hrig : ∀ (B B' : Obj l R) (f : Hom B B'), B.I.map f.f = B'.I)
     {B : Obj l R} {s d : B.A} (L : LocP B s d) : IsLoc s L.inl := by
@@ -67,7 +65,7 @@ theorem isLoc_of_locP (hrig : ∀ (B B' : Obj l R) (f : Hom B B'), B.I.map f.f =
     exact ⟨c, hc⟩
 
 /- English proof (translation)
-Introduce `l _ R _ B s d hg`. Take `⟨L⟩` from `GlobalTheory.T.nonempty_completedLocalizationPrism l R B s d hg`. Conclude with `⟨L.Q, L.inl, isLoc_of_locP (GlobalTheory.T.prism_hom_map_ideal_eq l R) L, L.I_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLoc : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B : Obj l R) (s d : B.A), GenAway B s d →
     ∃ (C : Obj l R) (h : Hom B C), IsLoc s h ∧ C.I = Ideal.span {h.f d} := by

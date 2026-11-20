@@ -17,7 +17,7 @@ def actE {Γ W : Type} [Group Γ] [AddCommGroup W] [Module ℂ W] (ρ : Represen
   LinearMap.GeneralLinearGroup.toLinearEquiv (ρ.asGroupHom g)
 
 /- English proof (translation)
-Use `show ρ g x = ρ h (ρ g y)`. Rewrite using `[e, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem actE_eq_of_conj_related {Γ W : Type} [Group Γ] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ Γ W) (g h : Γ) {x y : W}
     (e : x = ρ (g⁻¹ * h * g) y) : actE ρ g x = ρ h (actE ρ g y) := by
@@ -27,7 +27,7 @@ theorem actE_eq_of_conj_related {Γ W : Type} [Group Γ] [AddCommGroup W] [Modul
   group
 
 /- English proof (translation)
-Use `push_cast`. Use `group`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem block_frame_conjugation_identity {H : Type} [Group H] (S : Subgroup H) (g h : S) (a : H) :
     ((g : H) * a)⁻¹ * h * (g * a) = a⁻¹ * ((g⁻¹ * h * g : S) : H) * a := by
@@ -35,12 +35,12 @@ theorem block_frame_conjugation_identity {H : Type} [Group H] (S : Subgroup H) (
   group
 
 /- English proof (translation)
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem inv_aux {H : Type} [Group H] (g a h : H) : a⁻¹ * (g⁻¹ * h) = (g * a)⁻¹ * h := by group
 
 /- English proof (translation)
-Establish `hm : m.real x ∈ NG.TypeSp m.wt.ρ m.J m.χ` using `m.real_range ▸ LinearMap.mem_range_self _ x`. Conclude with `(congrArg (m.real x) (mul_inv_cancel_left _ h).symm).trans (hm.1.1 g _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_apply_eq_actE_real_inv_mul {μ j} (m : MtReal D μ j) (x) (g : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) (h : Formalism.AUTREP.GAf D.host.E D.R.nV) :
     m.real x h = actE m.wt.ρ g (m.real x ((g : Formalism.AUTREP.GAf D.host.E D.R.nV)⁻¹ * h)) := by
@@ -81,7 +81,7 @@ theorem shift_a (A : Agree X M rep) (g : Fin D.R.m → ReciprocityTheory.Aut.GQ 
     (shift A g).a j = g j * A.a j := rfl
 
 /- English proof (translation)
-Rewrite using `[A.real μ hμ, A'.real μ hμ, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, hP, ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem real_eq {M' : MtFam D} (A : Agree X M rep) (A' : Agree X M' rep) (hP : A.PV = A'.PV) (ha : A.a = A'.a)
     {μ} (hμ : Used0 D μ) (j : Fin D.R.m) (x) (h) :
@@ -90,7 +90,7 @@ theorem real_eq {M' : MtFam D} (A : Agree X M rep) (A' : Agree X M' rep) (hP : A
   rw [A.real μ hμ, A'.real μ hμ, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, hP, ha]
 
 /- English proof (translation)
-Apply `(M μ (j.1 + 1) (by omega) (by omega)).real_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Rewrite using `[A.real μ hμ, hx _ ((A.PV j).into _), map_zero, map_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_fin (A : Agree X M rep) {μ} (hμ : Used0 D μ) (j : Fin D.R.m) (x : D.what₂.Mt μ (j.1 + 1))
     (hx : ∀ g ∈ GfC (Vc D j), X.fn hμ j x g = 0) : x = 0 := by
@@ -100,11 +100,11 @@ theorem eq_zero_of_fin (A : Agree X M rep) {μ} (hμ : Used0 D μ) (j : Fin D.R.
   rfl
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `A.iso_rep σ`. Take `⟨T', hT'⟩` from `A.iso_rep σ'`. Apply `X.eFT.injective` to reduce the goal to its premises. Apply `rowRepR_inj X.R.θ` to reduce the goal to its premises. Use `revert T hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Introduce `T hT`. Use `⟨T.symm.trans T', fun k f f' e => ?_⟩` and prove the remaining obligations. Apply `hT'` to reduce the goal to its premises. Establish `hm` using `(rep σ').stable k _ (T.symm f).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hT k (T.symm f) ⟨_, hm⟩ rfl`. Establish `h4 : T (T.symm f) = f` using `T.apply_symm_apply f`. Establish `h3 : T ⟨_, hm⟩ = f'` using `Subtype.ext (h2.trans ((congrArg (fun z : (X.rep σ).S => NG.rt D.host.E D.R.r k z.1) h4).trans e.symm))`. Conclude with `congrArg Subtype.val (T.symm_apply_eq.2 h3.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_inj (A : Agree X M rep) (σ σ' : D.what₂.FT) (h : rep σ = rep σ') : σ = σ' := by
   obtain ⟨T, hT⟩ := A.iso_rep σ
@@ -123,9 +123,9 @@ theorem rep_inj (A : Agree X M rep) (σ σ' : D.what₂.FT) (h : rep σ = rep σ
   exact congrArg Subtype.val (T.symm_apply_eq.2 h3.symm)
 
 /- English proof (translation)
-Take `⟨e, c, -, -, -, -, -, h6⟩` from `h`. Introduce `y y' hy`. Apply `(X.IL.jMj j).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h6, ← h6]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun z => PiTensorProduct.lift (e z)) hy`.
+A detailed English derivation is pending.
 -/
 theorem canon_phi_inj (j : Fin D.R.m) (Y : GlobalTheory.NPin.RowMod D rep (j.1 + 1)) (h : IsCanon X j rfl Y) :
     Function.Injective Y.φ := by

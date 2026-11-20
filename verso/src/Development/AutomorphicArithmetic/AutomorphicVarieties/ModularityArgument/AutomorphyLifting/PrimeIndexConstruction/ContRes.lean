@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S2
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Conclude with `(galEmbTop ℚ F Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_res {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω)
     [NumberField F] : Continuous (resQ F) := by
@@ -18,9 +18,9 @@ private theorem cont_res {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
   exact (galEmbTop ℚ F Ω).1.continuous
 
 /- English proof (translation)
-Introduce `hq`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `e : (a : Ω) * p + (b : Ω) * q = 1` using `by exact_mod_cast congrArg (Int.cast (R := Ω)) hab`. Establish `hz : ∀ (z : ℤ) (x : Ω), A.valuation x < 1 → A.valuation (z * x) < 1` using `fun z x hx => by`. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right ((A.valuation_le_one_iff _).2 (intCast_mem A z)) zero_le hx`. Use `A.valuation.map_add_lt (hz a _ hp) (hz b _ hq)` as an intermediate fact. Rewrite `this` using `[e, map_one]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_both {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q : ℕ} (h : p.Coprime q)
     (hp : A.valuation (p : Ω) < 1) : ¬ A.valuation (q : Ω) < 1 := by
@@ -35,29 +35,25 @@ private theorem not_both {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q :
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l hl c D T k₀ _ _ φ ι H C`. Establish `hl2 : l ≠ 2` using `H.good.l_odd`. Take `⟨hsp, w, w', hne, hw, hw', hpl⟩` from `UpperTheory.quadratic_field_split_prime_two_places Ω k₀ H.deg l hl.out H.spl`. Take `⟨hsp2, u, -, -, hu, -, -⟩` from `UpperTheory.quadratic_field_split_prime_two_places Ω k₀ H.deg 2 Nat.prime_two H.sp2`. Use `haveI : IsAlgClosure k₀ Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : ∀ g : G ℚ Ω, D.ξ g = 1 → up D.ξ g = 1` using `fun g hg => by`. Express the relevant statement in the definitionally equal form `Units.map _ (D.ξ g) = 1`. Rewrite using `[hg, map_one]`. Establish `lift : ∀ g : G T.F Ω, resQ T.F g ∈ k₀.fixingSubgroup → ∃ s : G k₀ Ω, resQ k₀ s = resQ T.F g` using `fun g hg => ⟨k₀.fixingSubgroupEquiv ⟨_, hg⟩, rfl⟩`. Take `⟨Au, hAu⟩` from `exists_isPlaceOver Ω u`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAu2 : Au.valuation ((2 : ℕ) : Ω) < 1`. Establish `h` using `(hAu _).2 hu`. Rewrite `h` using `[show algebraMap k₀ Ω (((2 : ℕ) : 𝓞 k₀) : k₀) = ((2 : ℕ) : Ω) from map_natCast ((algebraMap k₀ Ω).comp (algebraMap (𝓞 k₀) k₀)) 2]`. Then use the resulting hypothesis. Take `⟨g, hg, hg4⟩` from `H.two.big2 Au (by simpa using hAu2)`. Rewrite `hg4` using `[Ne, C.al]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `lift g (H.sp2 Au hAu2 hg.1)`. Establish `hsI : s ∈ Ine (F` using `k₀) Au := by`. Establish `h1 : resQ T.F g ∈ Ine (F` using `ℚ) Au := ⟨hg.1, hg.2⟩`. Rewrite `h1` using `[← hs]`. Conclude with `⟨h1.1, h1.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨k, t, π, r, hk, ht, hkl, -, hc, hi, ha, hd, hr, ⟨haw, hrw⟩, hab⟩` from `hP k₀ Ω l hl2 (by rw [H.deg]; exact even_two) hsp ι ((up D.ξ).comp (resQ k₀)) (Subgroup.isOpen_mono (H₁ := D.ξ.ker.comap (resQ k₀)) (fun x hx => hker _ hx) (H.good.xi_open.preimage (cont_res k₀))) (fun x hx => by`. Establish `h1 : IsConj (resQ k₀ x) D.cc` using `UpperTheory.complex_conjugations_are_conjugate Ω _ _ hx H.good.isCC`. Establish `h2 : D.ξ (resQ k₀ x) = -1`. Rewrite using `[← H.good.xi_odd]`. Conclude with `isConj_iff_eq.1 (D.ξ.map_isConj h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Units.map _ (D.ξ (resQ k₀ x)) = -1`. Rewrite using `[h2]`. Conclude with `Units.ext (by simp))`. Use the proof step `(fun A hA x hx => hker _ (H.two.xi A (fun p hp => by`. Rewrite using `[Finset.mem_singleton.1 hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_both A ((Nat.coprime_primes hl.out Nat.prime_two).2 hl2) hA) ⟨hx.1, hx.2⟩))`. Use the proof step `⟨u, Au, (hsp2 u hu).1, hAu, fun h => hg4 (by`. Establish `h1 : up D.ξ (resQ k₀ s) = 1` using `h hsI`. Rewrite using `[← hs, h1]`. Simplify using `[Cong])⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `⟨s ^ 2, by`. Rewrite using `[map_pow, ← pow_mul, MonoidHom.comp_apply, hs]`. Conclude with `hg4⟩`. Use the proof step `(fun A hA => by`. Take `⟨x, hx, hx4⟩` from `H.two.bigL A hA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx4` using `[Ne, C.al]`. Take `⟨y, hy⟩` from `lift x (H.spl A hA hx)`. Establish `h1 : resQ T.F x ∈ Dec (F` using `ℚ) A := hx`. Rewrite `h1` using `[← hy]`. Use `⟨y ^ 4, pow_mem (show y ∈ Dec (F := k₀) A from h1) 4, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_pow, MonoidHom.comp_apply, hy]`. Conclude with `hx4)`. Use the proof step `{w} ⟨w, rfl, hw⟩ ⟨w', hne.symm, hw'⟩`. Take `⟨h1, h1'⟩` from `(hab w hw).1 rfl`. Take `⟨h2, h2'⟩` from `(hab w' hw').2 hne.symm`.
-
-Take `⟨he, he'⟩` from `UpperTheory.exists_ringHom_to_localField_inducing_place k₀ l ι`. Take `⟨τ, hτ⟩` from `he w hw`. Take `⟨τ', hτ'⟩` from `he w' hw'`. Use `⟨k, t, r, And.symm ⟨hrw, ?_⟩⟩` and prove the remaining obligations. Use `⟨hk, ht, hkl, hc, hi, ⟨π, ha, _, _, fun h => hne (he' w w' τ τ' hτ hτ' h), h1' τ hτ, h2' τ' hτ'⟩, hd, hr, haw, fun A A' hA x hx hAA => ?_⟩` and prove the remaining obligations.
-
-Break down `hpl A A' hA x hx hAA with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Conclude with `Or.inl ⟨h1 A a, h2 A' b⟩`. Conclude with `Or.inr ⟨h2 A a, h1 A' b⟩`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Birth.mixOfP :
     MixSeedP → MixOfP := by

@@ -9,9 +9,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Rewrite using `[totallyDisconnectedSpace_iff_connectedComponent_zero]`. Use `Set.eq_singleton_iff_unique_mem.mpr ⟨mem_connectedComponent, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hr : (Valued.v : Valuation (v.adicCompletion F) _).restrict x ≠ 0` using `(Valuation.zero_iff _).not.mpr hne`. Establish `hc` using `Valued.isClopen_ball (R := v.adicCompletion F) ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : v.adicCompletion F) ∈ {y | (Valued.v : Valuation (v.adicCompletion F) _).restrict y < (Valued.v : Valuation (v.adicCompletion F) _).restrict x}`. Simplify using `only [Set.mem_ofPred_eq, map_zero]`. Conclude with `pos_iff_ne_zero.mpr hr`. Establish `h1` using `hc.connectedComponent_subset h0 hx`. Conclude with `(lt_irrefl ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem td_adic {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     TotallyDisconnectedSpace (v.adicCompletion F) := by
@@ -31,7 +31,7 @@ private theorem td_adic {F : Type} [Field F] [NumberField F] (v : HeightOneSpect
   exact (lt_irrefl ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)) h1
 
 /- English proof (translation)
-Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), TotallyDisconnectedSpace (v.adicCompletion F) := fun v => td_adic v`. Use `⟨isTotallyDisconnected_of_image (f := fun (x : FiniteAdeleRing (𝓞 F) F) v => x v) (continuous_pi fun v => RestrictedProduct.continuous_eval v).continuousOn (fun x y h => Subtype.ext (funext fun v => congrFun h v)) (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem td_fin (F : Type) [Field F] [NumberField F] :
     TotallyDisconnectedSpace (FiniteAdeleRing (𝓞 F) F) := by
@@ -43,9 +43,9 @@ private theorem td_fin (F : Type) [Field F] [NumberField F] :
     (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩
 
 /- English proof (translation)
-Use `haveI := td_fin F`. Establish `hb : TopologicalSpace.IsTopologicalBasis {s : Set (Fin 2 → FiniteAdeleRing (𝓞 F) F) | IsClopen s}` using `loc_compact_Haus_tot_disc_of_zero_dim`. Use `TopologicalSpace.isTopologicalBasis_of_isOpen_of_nhds (fun T hT => hT.2) ?_` and prove the remaining obligations. Introduce `x U hx hU`. Take `⟨K, hKc, hxK, hKU⟩` from `exists_compact_subset hU hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hxC, hCU⟩` from `hb.exists_subset_of_mem_open hxK isOpen_interior`. Conclude with `⟨C, ⟨hKc.of_isClosed_subset hC.isClosed (hCU.trans interior_subset), hC.isOpen⟩, hxC, hCU.trans (interior_subset.trans hKU)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem basis_fin (F : Type) [Field F] [NumberField F] :
     TopologicalSpace.IsTopologicalBasis
@@ -65,7 +65,7 @@ section
 variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_symm : Continuous (TR.infEq F).symm :=
   continuous_pi fun w =>
@@ -73,7 +73,7 @@ private theorem cont_symm : Continuous (TR.infEq F).symm :=
       (continuous_apply w)
 
 /- English proof (translation)
-The claim follows from `(cont_symm F).comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 private theorem cont_pInf : Continuous (TR.pInf F) := (cont_symm F).comp continuous_fst
 
@@ -84,19 +84,19 @@ private noncomputable def ec (y : (Fin 2 × InfinitePlace F → ℝ) × (Fin 2 �
   fun i => ((TR.infEq F (fun w => y.1 (i, w)), y.2 i) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => (continuous_apply p.2).comp ((cont_pInf F).comp (continuous_apply p.1))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_xc : Continuous (xc F) :=
   continuous_pi fun p => (continuous_apply p.2).comp ((cont_pInf F).comp (continuous_apply p.1))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_fin : Continuous (finPartPi : (Fin 2 → A F) → Fin 2 → FiniteAdeleRing (𝓞 F) F) :=
   continuous_pi fun i => continuous_snd.comp (continuous_apply i)
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `((TR.continuous_infEq F).comp (continuous_pi fun w => (continuous_apply (i, w)).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_ec : Continuous (ec F) := by
   refine continuous_pi fun i => ?_
@@ -104,7 +104,7 @@ private theorem cont_ec : Continuous (ec F) := by
     (continuous_apply (i, w)).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `TR.ad_ext ?_ rfl` and prove the remaining obligations. Conclude with `(TR.infEq F).symm_apply_apply _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ec_xc (v : Fin 2 → A F) : ec F (xc F v, finPartPi v) = v := by
   funext i
@@ -112,9 +112,9 @@ private theorem ec_xc (v : Fin 2 → A F) : ec F (xc F v, finPartPi v) = v := by
   exact (TR.infEq F).symm_apply_apply _
 
 /- English proof (translation)
-Establish `h : (fun v : Fin 2 → A F => ((∑ p, t p * xc F v p : ℝ) : ℂ)) = ∑ p, (t p : ℂ) • (fun v : Fin 2 → A F => ((TR.pInf F (v p.1) p.2 : ℝ) : ℂ))`. Use function extensionality and compare the values at `v`. Simplify using `[Finset.sum_apply, xc]`. Establish `h1 : (fun v : Fin 2 → A F => ((∑ p, t p * xc F v p : ℝ) : ℂ)) ∈ polyOn F (Fin 2)`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.sum_mem _ fun p _ => Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin (show _ ∈ {g : (Fin 2 → A F) → ℂ | ∃ i w, g = fun v => ((TR.pInf F (v i) w : ℝ) : ℂ)} from ⟨p.1, p.2, rfl⟩)`. Conclude with `Subalgebra.pow_mem _ h1 n`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem poly_mem (t : Fin 2 × InfinitePlace F → ℝ) (n : ℕ) :
     (fun v : Fin 2 → A F => ((∑ p, t p * xc F v p : ℝ) : ℂ) ^ n) ∈ polyOn F (Fin 2) := by
@@ -129,7 +129,7 @@ private theorem poly_mem (t : Fin 2 × InfinitePlace F → ℝ) (n : ℕ) :
   exact Subalgebra.pow_mem _ h1 n
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sum_xc (v : Fin 2 → A F) : ∑ p, |xc F v p| = sz v := by
   rw [Fintype.sum_prod_type]; rfl
@@ -137,15 +137,15 @@ private theorem sum_xc (v : Fin 2 → A F) : ∑ p, |xc F v p| = sz v := by
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ Ω _ ν r ρ hr hint hmom q hq hq1`. Establish `hρ : Integrable ρ ν` using `by simpa using hint 0`. Establish `hX : Measurable fun ω => xc F (r ω)` using `(cont_xc F).measurable.comp hr`. Establish `hs : Measurable fun ω => (finPartPi (r ω) : Fin 2 → FiniteAdeleRing (𝓞 F) F)` using `(cont_fin F).measurable.comp hr`. Establish `hT : ∀ (T : Set (Fin 2 → FiniteAdeleRing (𝓞 F) F)) (S : Set (Fin 2 × InfinitePlace F → ℝ)), MeasurableSet S → IsCompact T → IsOpen T → ∫ ω, S.indicator 1 (xc F (r ω)) * (T.indicator 1 (finPartPi (r ω)) * ρ ω) ∂ν = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T S hS hTc hTo`. Establish `hi : Measurable fun ω => T.indicator (1 : (Fin 2 → FiniteAdeleRing (𝓞 F) F) → ℂ) (finPartPi (r ω))` using `(measurable_one.indicator hTo.measurableSet).comp hs`. Establish `hib : ∀ ω, ‖T.indicator (1 : (Fin 2 → FiniteAdeleRing (𝓞 F) F) → ℂ) (finPartPi (r ω))‖ ≤ 1`. Introduce `ω`. Apply the tactic sequence `by_cases h : finPartPi (r ω) ∈ T <;> simp [h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hI : ∀ g : Ω → ℂ, Integrable g ν → Integrable (fun ω => T.indicator (1 : (Fin 2 → FiniteAdeleRing (𝓞 F) F) → ℂ) (finPartPi (r ω)) * g ω) ν` using `fun g hg => hg.bdd_mul hi.aestronglyMeasurable (Eventually.of_forall hib)`. Use `charZero Ω _ ν _ _ hX (hI ρ hρ) ?_ S hS` and prove the remaining obligations. Use `momChar Ω _ ν _ _ hX (fun R => ?_) (fun n t => ?_)` and prove the remaining obligations. Simplify using `only [sum_xc]`. Use `(hI _ (hint R)).congr (Eventually.of_forall fun ω => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Use `hmom _ (poly_mem F t n) T hTc hTo` as an intermediate fact. Rewrite using `[← this]`. Use `integral_congr_ae (Eventually.of_forall fun ω => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : Measurable fun y => q (ec F y)` using `hq.comp (cont_ec F).measurable`. Use `prodExt Ω _ _ ν (fun ω => xc F (r ω)) (fun ω => finPartPi (r ω)) ρ (basis_fin F) hX hs hρ (fun S T hS hTc hTo => hT T S hS hTc hTo) _ hQ (fun y => hq1 _)` as an intermediate fact. Simplify `this` using `only [ec_xc]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.momAdel :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r : Ω → Fin 2 → A F) (ρ : Ω → ℂ), Measurable r →

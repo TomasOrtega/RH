@@ -14,13 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LBExtDVR
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `haveI : IsLocalization.Away ϖ K := by`. Use `IsLocalization.Away.mk ϖ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `IsUnit.mk0 _ (by`. Simplify using `using (IsFractionRing.injective R K).ne_iff.2 hϖ.ne_zero)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨⟨x, y, hy⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors R) z`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hy) hϖ`. Use `⟨n, x * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only at h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, ← h, hu, _root_.mul_assoc, ← map_mul, ← map_pow]`. Use `congr 2`. Rewrite using `[mul_right_comm, Units.mul_inv, _root_.one_mul]`. Introduce `x y h`. Conclude with `⟨0, by rw [IsFractionRing.injective R K h]⟩`.
-
-Conclude with `IsOpenImmersion.of_isLocalization ϖ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] :
@@ -44,9 +42,7 @@ theorem isOpenImmersion_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R
   exact IsOpenImmersion.of_isLocalization ϖ
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ X Y s t a hs hq hpb L hL`. Use `haveI := isOpenImmersion_spMap_fractionRing R K`. Establish `ha : IsOpenImmersion a` using `MorphismProperty.of_isPullback hpb.flip this`. Use `haveI : IsRegularRing R := inferInstance`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`.
-
-Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s`. Establish `key : ∀ x : X, IsDomain (X.presheaf.stalk x) ∧ UniqueFactorizationMonoid (X.presheaf.stalk x)` using `fun x => by haveI : IsRegularRing (X.presheaf.stalk x) := GlobalTheory.ExtendRig.isRegularRing_stalk GlobalTheory.isRegularRing_of_smooth R s x haveI : IsRegularLocalRing (X.presheaf.stalk x) := IsRegularLocalRing.of_isRegularRing_of_isLocalRing _ haveI : IsDomain (X.presheaf.sta …`. Conclude with `⟨inferInstance, GlobalTheory.uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing GlobalTheory.exists_hasProjectiveDimensionLE_of_isRegularLocalRing GlobalTheory.isPrincipal_map_away_of_hasProjectiveDimensionLE _⟩`. Conclude with `GlobalTheory.exists_lineBundle_extension_of_isDomain X Y a ha (fun x => (key x).1) (fun x => (key x).2) L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lineBundle_extension_genericFibre : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (X Y : Scheme.{0}) (s : X ⟶ Sp R) (t : Y ⟶ Sp K) (a : Y ⟶ X), Smooth s → QuasiCompact s → IsPullback a t s (spMap (algebraMap R K)) → ∀ L : LB Y, L.IsLB → ∃ M : LB X, M.IsLB ∧ LBIso (M.pull a) L := by
   intro R K _ _ _ _ _ _ X Y s t a hs hq hpb L hL

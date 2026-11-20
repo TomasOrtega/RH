@@ -11,9 +11,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarT
 
 omit [StarRing K] in
 /- English proof (translation)
-Use `choose c hc using fun j => (Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 (hx j)`. Establish `hrepr : ∀ j i, b.repr (x j) i = algebraMap (𝓞 K) K (c j i)`. Introduce `j i`. Rewrite using `[← hc j]`. Simplify using `[← algebraMap_smul K, map_sum, Finsupp.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Matrix.of fun i j => c j i).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, Basis.det_apply]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Basis.toMatrix_apply, hrepr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_det_span (b : Basis (Fin (finrank K V)) K V) {x : Fin (finrank K V) → V}
     (hx : ∀ i, x i ∈ Submodule.span (𝓞 K) (Set.range b)) :
@@ -30,11 +30,11 @@ theorem exists_det_span (b : Basis (Fin (finrank K V)) K V) {x : Fin (finrank K 
   simp [Basis.toMatrix_apply, hrepr]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `discrIdeal_le b ?_` and prove the remaining obligations. Introduce `x hx z hz`. Take `⟨d, hd⟩` from `exists_det_span b hx`. Establish `hz' : z = conjO K d * g₀ * d`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Apply the tactic sequence `have e1 : algebraMap (𝓞 K) K (conjO K d) = star (algebraMap (𝓞 K) K d) := by first | rfl | simp [conjO]`. Rewrite using `[hz, map_mul, map_mul, e1, hd, hg]`. Rewrite using `[hz', Ideal.mem_span_singleton]`. Conclude with `⟨conjO K d * d, by ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `mem_discrIdeal b (fun i => Submodule.subset_span (Set.mem_range_self i)) ?_` and prove the remaining obligations. Rewrite using `[Basis.det_self, hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem discrIdeal_span {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis (Fin (finrank K V)) K V) {g₀ : 𝓞 K}
     (hg : algebraMap (𝓞 K) K g₀ = gdet h b) :
@@ -57,11 +57,11 @@ theorem discrIdeal_span {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis (Fin (finr
 
 omit [StarRing K] in
 /- English proof (translation)
-Establish `hm : ∀ w : InfinitePlace K, w.mult = 2`. Introduce `w`. Establish `hw : ¬ w.IsReal`. Rewrite using `[InfinitePlace.not_isReal_iff_isComplex]`. Conclude with `IsTotallyComplex.isComplex w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[InfinitePlace.mult, hw]`. Establish `hp` using `InfinitePlace.prod_eq_abs_norm (algebraMap (𝓞 K) K g₀)`. Simplify using `only [hm] at hp`. Rewrite using `[Ideal.absNorm_span_singleton, ← Finset.prod_pow, hp, Nat.cast_natAbs]`. Establish `h3` using `Algebra.coe_norm_int g₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Use `norm_cast`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem absNorm_span_singleton_eq [IsTotallyComplex K] (g₀ : 𝓞 K) :
     (Ideal.absNorm (Ideal.span {g₀}) : ℝ) =
@@ -80,15 +80,15 @@ theorem absNorm_span_singleton_eq [IsTotallyComplex K] (g₀ : 𝓞 K) :
   norm_cast
 
 /- English proof (translation)
-Use `haveI : IsTotallyComplex K := hK.1`. Establish `hint : ∀ i j, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = h (b i) (b j)` using `fun i j => Submodule.mem_one.1 (hLi _ (hb i) _ (hb j))`. Use `choose c hc using hint`. Establish `hg : algebraMap (𝓞 K) K (Matrix.of fun i j => c i j).det = gdet h b`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `gdet`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hc]`. Establish `hle : Submodule.span (𝓞 K) (Set.range b) ≤ L` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hb i)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩ : ∃ n, (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup = n` from `⟨_, rfl⟩`. Rewrite `hidx`, the goal using `[hn]`. Establish `hN` using `absNorm_discrIdeal_of_le hK hLi b n (Submodule.span (𝓞 K) (Set.range b)) hle hn hidx`. Rewrite `hN` using `[discrIdeal_span b hg]`. Establish `hS` using `absNorm_span_singleton_eq (Matrix.of fun i j => c i j).det`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hS` using `[hg]`. Establish `hprod : (0 : ℝ) ≤ ∏ w : InfinitePlace K, w (gdet h b)` using `Finset.prod_nonneg (fun w _ => w.1.nonneg _)`. Establish `key : ((n : ℝ) * Real.sqrt (Ideal.absNorm (discrIdeal h L) : ℝ)) ^ 2 = (∏ w : InfinitePlace K, w (gdet h b)) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt (Nat.cast_nonneg _), ← hS, hN]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `normD`. Rewrite using `[← Real.sqrt_sq hprod, ← key, Real.sqrt_sq (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normD_mul_relIndex (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     {L : Submodule (𝓞 K) V} (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (b : Basis (Fin (finrank K V)) K V)

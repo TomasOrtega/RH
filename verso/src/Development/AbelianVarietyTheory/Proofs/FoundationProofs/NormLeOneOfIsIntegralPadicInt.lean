@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 namespace GlobalTheory.PadicIntegralNorm
 
 /- English proof (translation)
-Take `⟨p, hpm, hpx⟩` from `hx`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h0 : (0 : ℝ) < ‖x‖` using `zero_lt_one.trans hlt`. Rewrite `hpx` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hpm.coeff_natDegree, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxn : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, algebraMap R K (p.coeff i) * x ^ i`. Take the linear combination `hpx`. Establish `hterm : ∀ i ∈ Finset.range p.natDegree, ‖algebraMap R K (p.coeff i) * x ^ i‖ < ‖x‖ ^ p.natDegree`. Introduce `i hi`. Rewrite using `[norm_mul, norm_pow]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Break down `(Finset.range p.natDegree).eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite `hxn` using `[he, Finset.sum_empty, neg_zero]`. Establish `h1 : ‖x ^ p.natDegree‖ = 0` using `by rw [hxn, norm_zero]`. Rewrite `h1` using `[norm_pow]`.
+Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_pos h0 _).ne' h1`. Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty hne (fun i => algebraMap R K (p.coeff i) * x ^ i)`. Establish `h2` using `congrArg norm hxn`. Rewrite `h2` using `[norm_neg, norm_pow]`. Combine the linear relations using `[hterm i hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {R K : Type*} [CommRing R] [NormedField K] [IsUltrametricDist K] [Algebra R K]
     (hR : ∀ r : R, ‖algebraMap R K r‖ ≤ 1) (x : K) (hx : IsIntegral R x) : ‖x‖ ≤ 1 := by
@@ -41,7 +41,7 @@ theorem norm_le_one_of_isIntegral {R K : Type*} [CommRing R] [NormedField K] [Is
     linarith [hterm i hi]
 
 /- English proof (translation)
-Use `norm_le_one_of_isIntegral (R := ℤ_[l]) (fun r => ?_) x hx` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Formalism.ConjugateSelfDual.Qbar l), norm_algebraMap']`. Conclude with `PadicInt.norm_le_one r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_padicInt {l : ℕ} [inst : Fact (Nat.Prime l)] (x : Formalism.ConjugateSelfDual.Qbar l)
     (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ (1 : ℝ) := by

@@ -25,27 +25,23 @@ namespace GlobalTheory.CompHt
 open GlobalTheory.HodgeTateCompare GlobalTheory.EigenLieCompare GlobalTheory.EigenSplit GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel ReciprocityTheory.ChartRestriction.G.Pdiv TensorProduct in
 
 /- English proof (translation)
-Introduce `hPr E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T io y₀ hy k kO P ψ z hPO hFr σ`. Take `⟨-, -, hcok, hshape⟩` from `GlobalTheory.HTKernel.hodgeTateKernelAtPoint hPr p C v O (𝓞 E) P`. Establish `hW : P.W = Submodule.span C (Set.range P.bLie)` using `hshape.2.2.2.2.2.2`. Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v P.integers`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing O C := P.integers.isFractionRing`. Use `haveI := (GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ _ ⟨P.D⟩).1`. Take `⟨-, -, hb⟩` from `Point.omega_free_finite_bijective p C v O (𝓞 E) P`. Establish `hp : algebraMap O C ((p : O) ^ 2) ≠ 0`. Rewrite using `[map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hinj : Function.Injective P.bLie`. Introduce `x y hxy`. Establish `h0 : ∀ t, (P.al₀ t).1 x = (P.al₀ t).1 y` using `fun t => P.integers.hom_inj (by`. Rewrite using `[← P.pairV_bLie, ← P.pairV_bLie, hxy])`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h1 : ∀ z, (P.al z).1 x = (P.al z).1 y` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, Submodule.coe_add, Pi.add_apply, hz, hz']`. Consider the case `tmul c t => simp only [Point.al_tmul, Submodule.coe_smul, Pi.smul_apply, h0]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hb.1 (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `hcok f`. Establish `h2` using `h1 z`. Rewrite `h2` using `[hz]`. Conclude with `mul_left_cancel₀ (fun h => hp (by rw [h, map_zero])) h2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : P.eigW (embInt c P.integers σ) = Submodule.span C (P.wRec (embInt c P.integers σ) : Set P.V)`. Use `le_antisymm ?_ (Submodule.span_le.2 fun w hw => ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hwτ⟩`. Rewrite `hw` using `[hW]`. Take `⟨s, hs, x, hx⟩` from `GlobalTheory.HodgeTateEigenRank.exists_smul_mem_of_mem_span (C := C) P.latLie hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : algebraMap O C s ≠ 0` using `fun h => hs (P.integers.hom_inj (by rw [h, map_zero]))`. Establish `hxτ : P.bLie x ∈ P.eigV (embInt c P.integers σ)`. Rewrite using `[hx, ← algebraMap_smul C s]`. Conclude with `Submodule.smul_mem _ _ hwτ`. Establish `hx' : AvDefs.IsEig P.Gt P.oGt (embInt c P.integers σ) x` using `fun a => hinj (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P.bLie_act, P.bLie_scale, mem_eigenSub.1 hxτ a, RingHom.comp_apply, algebraMap_smul])`. Establish `: w = (algebraMap O C s)⁻¹ • P.bLie x`. Rewrite using `[hx, ← algebraMap_smul C s, smul_smul, inv_mul_cancel₀ hs', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨x, hx'⟩, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h` using `P.wRec_le _ hw`. Use `⟨?_, h.2⟩` and prove the remaining obligations. Rewrite using `[hW]`. Conclude with `Submodule.subset_span h.1`. Take `⟨x, hx⟩` from `TieFrame.exists_lieTie_of_frMap E H Dw l Xo c p C v O T io y₀ k kO P ψ z hPO hFr`.
-
-Establish `hli` using `linearIndependent_evLie_of_lieTie E H Dw l Xo c p C v O T io y₀ k kO P ψ z hPO hFr σ (x σ) (hx σ)`. Establish `hht : HTChar p v P.Gt`. Use `letI := io.toAlgebra`. Conclude with `htChar_of_pointOver E H Dw l Xo c p C v O T io y₀ hy k.toRingHom kO P ψ hPO`. Establish `hbl` using `(alC_surjective_and_linearIndependent_bLie p C v O (𝓞 E) P hht).2 _ _ hli`.
-
-Establish `hsp` using `RecSpan.span_bLie_eq_wRec E H Dw l Xo c p C v O T io y₀ k kO P ψ z hPO hFr σ (x σ) (hx σ)`. Rewrite using `[hE, ← hsp, Submodule.span_span_of_tower, finrank_span_eq_card hbl, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eigW_embInt_eq_mult : GlobalTheory.CovTop.Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]

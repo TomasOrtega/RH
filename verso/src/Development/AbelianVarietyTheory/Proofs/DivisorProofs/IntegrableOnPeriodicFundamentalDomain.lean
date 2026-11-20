@@ -8,15 +8,13 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨hdisc, hZ⟩` from `hM`. Set `b` to `Module.Free.chooseBasis ℤ M`. Set `bR` to `b.ofZLatticeBasis ℝ M`. Establish `hspan : Submodule.span ℤ (Set.range bR) = M` using `b.ofZLatticeBasis_span ℝ M`. Establish `hF : IsAddFundamentalDomain (Submodule.span ℤ (Set.range bR)) (ZSpan.fundamentalDomain bR) volume` using `ZSpan.isAddFundamentalDomain bR volume`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hF` using `[hspan]`. Use `haveI : VAddInvariantMeasure M (Fl g) volume := ⟨fun c s _ => by show volume ((fun x => (c : Fl g) + x) ⁻¹' s) = volume s`. Conclude with `measure_preimage_add _ _ _⟩`. Establish `hbdd : Bornology.IsBounded (ZSpan.fundamentalDomain bR)` using `ZSpan.fundamentalDomain_isBounded bR`. Establish `hDfin : volume D ≠ ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD.measure_eq hF]`. Conclude with `hbdd.measure_lt_top.ne`. Establish `hcpt : IsCompact (φ '' closure (ZSpan.fundamentalDomain bR))` using `hbdd.isCompact_closure.image hφ`. Take `⟨C, hC⟩` from `hcpt.isBounded.exists_norm_le`. Establish `hbound : ∀ x, ‖φ x‖ ≤ C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `hfl : ((ZSpan.floor bR x : Submodule.span ℤ (Set.range bR)) : Fl g) ∈ M` using `hspan.le (ZSpan.floor bR x).2`. Establish `hx : φ x = φ (ZSpan.fract bR x)`. Rewrite using `[← hper _ hfl (ZSpan.fract bR x), ZSpan.fract_apply, sub_add_cancel]`. Rewrite using `[hx]`.
-
-Conclude with `hC _ ⟨_, subset_closure (ZSpan.fract_mem_fundamentalDomain bR x), rfl⟩`. Conclude with `Measure.integrableOn_of_bounded hDfin hφ.aestronglyMeasurable (Filter.Eventually.of_forall hbound)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_periodic_of_isLat {g : ℕ} {V : Type} [NormedAddCommGroup V]
     (M : Submodule ℤ (Fl g)) (hM : IsLat M) (D : Set (Fl g))

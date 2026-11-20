@@ -4,7 +4,7 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiClos
 namespace DiscreteGroups.T1.G
 
 /- English proof (translation)
-The claim follows from `piInv_of piClosureInv`.
+A detailed English derivation is pending.
 -/
 theorem piInv : PositivityTheory.Rg.BcB.Desc.PiInv := piInv_of piClosureInv
 

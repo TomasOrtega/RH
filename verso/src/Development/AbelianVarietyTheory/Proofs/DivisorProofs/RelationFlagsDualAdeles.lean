@@ -23,7 +23,7 @@ namespace GlobalTheory.RelGlue
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Conclude with `⟨h1, fun x hx => h2 x (hU hx), fun i z hz => h3 i z (hU hz), fun v hv e y hy z yt hz hyt hU' => h4 v hv e y hy z yt hz hyt fun w hw => hU (hU' hw)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frameOn_mono {C : CxSt F} {g : ℕ} {V : Cover Y} {W : Y.X.Opens} {U U' : V.X.Opens}
     {H : Matrix (Fin (g + g)) (Fin g) V.G.functionField} {d : Y.X → Fin g → Y.Fnˣ} {T : Y.X → Matrix (Fin g) (Fin g) Y.Fn}
@@ -35,9 +35,9 @@ theorem frameOn_mono {C : CxSt F} {g : ℕ} {V : Cover Y} {W : Y.X.Opens} {U U' 
     fun v hv e y hy z yt hz hyt hU' => h4 v hv e y hy z yt hz hyt fun w hw => hU (hU' hw)⟩
 
 /- English proof (translation)
-Introduce `i j`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left l => simpa [ConstLat.compl] using hU i l`. Consider the case `right l`. Simplify using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_right, Matrix.mul_apply, Matrix.transpose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_induction _ (RegAt x) (fun a b ha hb => ha.add hb) (regAt_zero x) fun m _ => ?_` and prove the remaining obligations. Conclude with `(hJ i m).mul (hL _ m)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regAt_compl {X : Scheme.{0}} [IsIntegral X] (x : X) {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) X.functionField)
     (L : Matrix (Fin g) (Fin (g + g)) X.functionField) (Ji : Matrix (Fin (g + g)) (Fin (g + g)) X.functionField)
@@ -52,9 +52,9 @@ theorem regAt_compl {X : Scheme.{0}} [IsIntegral X] (x : X) {g : ℕ} (U : Matri
     exact (hJ i m).mul (hL _ m)
 
 /- English proof (translation)
-Establish `h0 : V.φ (a : Y.Fn) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`. Establish `h0' : ((c : V.G.functionFieldˣ) : V.G.functionField) ≠ 0` using `Units.ne_zero _`. Establish `e : V.φ (b : Y.Fn) * ((c⁻¹ : V.G.functionFieldˣ) : V.G.functionField) = V.φ ((b : Y.Fn) * a) * (V.φ a * c)⁻¹`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `(V.unitAt_φ hba).mul hac.inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_dual {V : Cover Y} {z : V.G} {b a : Y.Fnˣ} {c : V.G.functionFieldˣ}
     (hba : UnitAt (V.π z) ((b : Y.Fn) * a)) (hac : UnitAt z (V.φ a * c)) :
@@ -67,11 +67,11 @@ theorem unitAt_dual {V : Cover Y} {z : V.G} {b a : Y.Fnˣ} {c : V.G.functionFiel
   rw [e]; exact (V.unitAt_φ hba).mul hac.inv
 
 /- English proof (translation)
-Establish `hπ : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Establish `hu' : UnitAt (V.π (below z)) (genAt (B l).D (below y.1) * genAt (A l.rev).D (below y.1))`. Rewrite using `[hπ]`. Conclude with `hAB.1 l _`. Establish `n1 : e.w (valAt y.1 (genAt (B l).D (below y.1) * genAt (A l.rev).D (below y.1))) ≠ 0` using `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero (hAB.1 l _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : e.w (valAt z (V.φ (genAt (A l.rev).D (below y.1)) * (c : V.G.functionField))) ≠ 0` using `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero hu)`. Establish `key : V.φ (genAt (B l).D (below y.1)) * ((c⁻¹ : V.G.functionFieldˣ) : V.G.functionField) = V.φ (genAt (B l).D (below y.1) * genAt (A l.rev).D (below y.1)) * (V.φ (genAt (A l.rev).D (below y.1)) * c)⁻¹`. Establish `h0 : V.φ (genAt (A l.rev).D (below y.1) : Y.Fn) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`. Establish `h0' : ((c : V.G.functionFieldˣ) : V.G.functionField) ≠ 0` using `Units.ne_zero _`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[key, SmallSec.valAt_mul (V.unitAt_φ hu').regAt hu.inv.regAt, GlobalTheory.LineNorm.Neg.valAt_inv hu, V.valAt_φ z hu'.regAt, hz, map_mul, map_inv₀, Real.log_mul n1 (inv_ne_zero n2), Real.log_inv, ← hlg, hAB.2 l v hv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lg_dual {C : CxSt F} {g : ℕ} {A B : Fin g → Adl C Y} {p : ℕ} (hAB : DualAt A B p) (V : Cover Y)
     {v : HeightOneSpectrum (𝓞 F)} (hv : resP v = p) (e : Ext v) (y : AlgPt Y) (z : Sp (AlgebraicClosure F) ⟶ V.G)
@@ -98,33 +98,31 @@ theorem lg_dual {C : CxSt F} {g : ℕ} {A B : Fin g → Adl C Y} {p : ℕ} (hAB 
   ring
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A A' B B' p n hp hn hAB hAB' hR k`. Take `⟨k', hk'⟩` from `GlobalTheory.T.valuation_power_bounds (F := F) p n k hp hn`. Take `⟨V, W, ι, U0, H0, d, T, J, P, Q, hJ, hPQ, hW, hcov, hT, hLA, hLA', hch, hiso⟩` from `hR k'`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_constant_embedding_cover V`. Establish `hfr : ∀ x : {x : V.X // ¬ IsUnit (p : V.X.presheaf.stalk x)}, ∃ (a : ι) (U : V.X.Opens) (Um Um' : Matrix (Fin (g + g)) (Fin g) V.X.functionField) (Lf Lf' : Matrix (Fin g) (Fin (g + g)) V.X.functionField) (c c' : Fin g → V.G.functionFieldˣ), U ≤ U0 a ∧ x.1 ∈ U ∧ FrameOn V W U (H0 …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨a, ha⟩` from `hcov x.1 x.2`. Take `⟨U1, Um, Lf, c, h1, hx1, hf1⟩` from `GlobalTheory.T.chart_regular_triangular_base A p hp V W hW (U0 a) (H0 a) d T hT hLA (hch a).1 (hch a).2.1 x.1 ha x.2`. Take `⟨U2, Um', Lf', c', h2, hx2, hf2⟩` from `GlobalTheory.T.chart_regular_triangular_base A' p hp V W hW (U0 a) _ d T hT hLA' (hch a).2.2.1 (hch a).2.2.2 x.1 ha x.2`. Conclude with `⟨a, U1 ⊓ U2, Um, Um', Lf, Lf', c, c', inf_le_left.trans h1, ⟨hx1, hx2⟩, frameOn_mono hf1 inf_le_left, frameOn_mono hf2 inf_le_right⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose a U Um Um' Lf Lf' c c' hU hxU hf hf' using hfr`. Establish `hPQX : P.map κ * Q.map κ = 1`. Establish `h` using `congrArg κ.mapMatrix hPQ.1`. Simplify `h` using `only [map_mul, map_one, RingHom.mapMatrix_apply]`. Establish `hdetJ : IsUnit (J.map (Int.castRingHom V.X.functionField)).det`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `RingHom.map_det (Int.castRingHom V.X.functionField) J`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`. Conclude with `hJ.map _`. Establish `hJJ : J.map (Int.castRingHom V.X.functionField) * (J.map (Int.castRingHom V.X.functionField))⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdetJ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJJ' : ((Q.map κ).transpose * J.map (Int.castRingHom V.X.functionField) * Q.map κ) * (P.map κ * (J.map (Int.castRingHom V.X.functionField))⁻¹ * (P.map κ).transpose) = 1`. Establish `hQP : Q.map κ * P.map κ = 1` using `mul_eq_one_comm.1 hPQX`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hQP, Matrix.one_mul, ← Matrix.mul_assoc (J.map (Int.castRingHom V.X.functionField)), hJJ, Matrix.one_mul, ← Matrix.transpose_mul, hPQX, Matrix.transpose_one]`. Establish `hreg` using `fun x hx => GlobalTheory.T.second_lattice_regular_at_p V κ J p n P Q hp hJ hPQ x hx`. Establish `hdet : ∀ x, ∀ x' ∈ U x, ¬ IsUnit (p : V.X.presheaf.stalk x') → UnitAt x' (compl (Um x) (Lf x) (J.map (Int.castRingHom V.X.functionField))⁻¹).det` using `fun x => GlobalTheory.T.cover_chart_left_inverse_regular A p hp V W hW (U x) (H0 (a x)) d T (Um x) (Lf x) (c x) _ _ (hf x) hJJ (fun x' _ hx' i j => ⟨(hreg x' hx' i j).2.2.2.2, (hreg x' hx' i j).2.2.1⟩) (fun v hv e y hy z yt hz hyt hU' i j => (GlobalTheory.T.cover_chart_minor_deco …`. Establish `hdet' : ∀ x, ∀ x' ∈ U x, ¬ IsUnit (p : V.X.presheaf.stalk x') → UnitAt x' (compl (Um' x) (Lf' x) (P.map κ * (J.map (Int.castRingHom V.X.functionField))⁻¹ * (P.map κ).transpose)).det` using `fun x => GlobalTheory.T.cover_chart_left_inverse_regular A' p hp V W hW (U x) _ d T (Um' x) (Lf' x) (c' x) _ _ (hf' x) hJJ' (fun x' _ hx' i j => ⟨(hreg x' hx' i j).1, (hreg x' hx' i j).2.1⟩) (fun v hv e y hy z yt hz hyt hU' i j => (GlobalTheory.T.cover_chart_lattice_transform A' …`. Use `⟨hn, V, W, {x : V.X // ¬ IsUnit (p : V.X.presheaf.stalk x)}, U, fun x => compl (Um x) (Lf x) (J.map (Int.castRingHom V.X.functionField))⁻¹, fun x => compl (Um' x) (Lf' x) (P.map κ * (J.map (Int.castRingHom V.X.functionField))⁻¹ * (P.map κ).transpose), fun x i => Sum.elim (c x) (f …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `(hPQ.2.1 i j).1.map κ.toIntAlgHom`. Establish `h2` using `(hPQ.2.1 i j).2.map κ.toIntAlgHom`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ (κ ((n : F) * P i j)) at h1`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ (κ ((n : F) * Q i j)) at h2`. Rewrite `h1`, `h2` using `[map_mul, map_natCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Conclude with `⟨h1, h2⟩`. Use `⟨fun i j => ⟨regAt_compl x' _ _ _ (fun i j => ((hf x).2.1 x' hx' hpx' i j).1) (fun i j => ((hf x).2.1 x' hx' hpx' j i).2) (fun i j => (hreg x' hpx' i j).2.2.1) i j, regAt_compl x' _ _ _ (fun i j => ((hf' x).2.1 x' hx' hpx' i j).1) (fun i j => ((hf' x).2.1 x' hx' hpx' j i).2) (fun …` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Simplify using `only [finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`.
+Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(hf x).2.2.1 i z hz, (hf' x).2.2.1 i z hz⟩`. Consider the case `right l`. Simplify using `only [finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]`. Conclude with `⟨unitAt_dual (hAB.1 l _) ((hf x).2.2.1 l.rev z hz), unitAt_dual (hAB'.1 l _) ((hf' x).2.2.1 l.rev z hz)⟩`. Introduce `v hv e y hy z yt hz hyt x hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Establish `hPin : V.j (below z) ∈ U x`. Establish `e2 : V.j (below z) = yt ((spMap e.O.subtype) (IsLocalRing.closedPoint (AlgebraicClosure F)))`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ = _`. Rewrite using `[← hyt]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `hx trivial`. Establish `h1` using `((hf x).2.2.2 v hv e y hy z yt hz hyt hx).1`. Establish `h2` using `((hf' x).2.2.2 v hv e y hy z yt hz hyt hx).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `⟨fun i => ?_, fun b hb i => GlobalTheory.T.cover_chart_lattice_transform_inverse A A' p n k k' hp hn V W U0 H0 d T J P Q κ hκ hJ hPQ hiso hLA hLA' (a x) (a b) (U x) (U b) (Um' x) (Um b) (Lf' x) (Lf b) (c' x) (c b) (hU x) (hU b) (hch (a x)).1 (hf' x) (hf b) (hdet' x) v hv e y hy z …` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Simplify using `only [finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`. Conclude with `⟨h1 i, h2 i⟩`.
+Supply the required witnesses or components. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `right l`. Simplify using `only [finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]`. Establish `hu` using `(hf x).2.2.1 l.rev (below z) hPin`. Establish `hu'` using `(hf' x).2.2.1 l.rev (below z) hPin`. Rewrite `hu`, `hu'` using `[hπ]`.
-
-Conclude with `⟨lg_dual hAB V hv e y z hz l _ hu (h1 l.rev), lg_dual hAB' V hv e y z hz l _ hu' (h2 l.rev)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relFlag_glue : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A A' B B' : Fin g → Adl C Y) (p n : ℕ),
     p.Prime → n ≠ 0 → DualAt A B p → DualAt A' B' p → (∀ k, RelData A A' p n k) →

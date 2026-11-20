@@ -20,7 +20,7 @@ abbrev Un (n : ℕ) : Type := Matrix.unitaryGroup (Fin n) ℂ
 def skw (Z : (Mn n)) : (Mn n) := (1 / 2 : ℂ) • (Z - Zᴴ)
 
 /- English proof (translation)
-Simplify using `only [skw, conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]`. Rewrite using `[← smul_neg, neg_sub]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skw_skew (Z : (Mn n)) : (skw Z)ᴴ = -skw Z := by
   simp only [skw, conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]
@@ -28,21 +28,21 @@ theorem skw_skew (Z : (Mn n)) : (skw Z)ᴴ = -skw Z := by
   simp
 
 /- English proof (translation)
-Rewrite using `[skw, hX, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem skw_of_skew {X : (Mn n)} (hX : Xᴴ = -X) : skw X = X := by
   rw [skw, hX, sub_neg_eq_add, ← two_smul ℂ, smul_smul]
   norm_num
 
 /- English proof (translation)
-Simplify using `only [skw, conjTranspose_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skw_add (Z W : (Mn n)) : skw (Z + W) = skw Z + skw W := by
   simp only [skw, conjTranspose_add]
   module
 
 /- English proof (translation)
-Establish `e : s • Z = (s : ℂ) • Z` using `(Complex.coe_smul s Z).symm`. Simplify using `only [skw, e, conjTranspose_smul, Complex.star_def, Complex.conj_ofReal]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skw_real (s : ℝ) (Z : (Mn n)) : skw (s • Z) = (s : ℂ) • skw Z := by
   have e : s • Z = (s : ℂ) • Z := (Complex.coe_smul s Z).symm
@@ -50,32 +50,32 @@ theorem skw_real (s : ℝ) (Z : (Mn n)) : skw (s • Z) = (s : ℂ) • skw Z :=
   module
 
 /- English proof (translation)
-Simplify using `[skw, conjTranspose_smul, hX, Complex.star_def, Complex.conj_I]`.
+Simplify using the standard rewrite rules.
 -/
 theorem skw_I {X : (Mn n)} (hX : Xᴴ = -X) : skw (Complex.I • X) = 0 := by
   simp [skw, conjTranspose_smul, hX, Complex.star_def, Complex.conj_I]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_smul, hX, Complex.star_def, Complex.conj_ofReal, smul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem real_skew {X : (Mn n)} (hX : Xᴴ = -X) (s : ℝ) : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X) := by
   rw [conjTranspose_smul, hX, Complex.star_def, Complex.conj_ofReal, smul_neg]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_add, hX, hY, neg_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_skew {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y) : (X + Y)ᴴ = -(X + Y) := by
   rw [conjTranspose_add, hX, hY, neg_add]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, hX, hY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bracket_skew {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y) : (X * Y - Y * X)ᴴ = -(X * Y - Y * X) := by
   rw [conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, hX, hY]
   simp
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_mul, conjTranspose_mul, hX, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Simplify using `[Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_skew (k : (Un n)) {X : (Mn n)} (hX : Xᴴ = -X) :
     ((k : (Mn n)) * X * star (k : (Mn n)))ᴴ = -((k : (Mn n)) * X * star (k : (Mn n))) := by
@@ -83,7 +83,7 @@ theorem conj_skew (k : (Un n)) {X : (Mn n)} (hX : Xᴴ = -X) :
   simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose, ← Matrix.exp_conjTranspose, real_skew hX, ← Matrix.exp_add_of_commute _ _ (Commute.refl ((t : ℂ) • X)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_mem {X : (Mn n)} (hX : Xᴴ = -X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -94,13 +94,13 @@ theorem exp_mem {X : (Mn n)} (hX : Xᴴ = -X) (t : ℝ) :
 def eU (X : (Mn n)) (hX : Xᴴ = -X) (t : ℝ) : (Un n) := ⟨NormedSpace.exp ((t : ℂ) • X), exp_mem hX t⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [eU, NormedSpace.exp_zero])`.
+A detailed English derivation is pending.
 -/
 theorem eU_zero (X : (Mn n)) (hX : Xᴴ = -X) : eU X hX 0 = 1 :=
   Subtype.ext (by simp [eU, NormedSpace.exp_zero])
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show NormedSpace.exp (((s + t : ℝ) : ℂ) • X) = NormedSpace.exp ((s : ℂ) • X) * NormedSpace.exp ((t : ℂ) • X)`. Rewrite using `[Complex.ofReal_add, add_smul, Matrix.exp_add_of_commute]`. Conclude with `((Commute.refl X).smul_left _).smul_right _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eU_add (X : (Mn n)) (hX : Xᴴ = -X) (s t : ℝ) : eU X hX (s + t) = eU X hX s * eU X hX t := by
   apply Subtype.ext
@@ -109,15 +109,15 @@ theorem eU_add (X : (Mn n)) (hX : Xᴴ = -X) (s t : ℝ) : eU X hX (s + t) = eU 
   exact ((Commute.refl X).smul_left _).smul_right _
 
 /- English proof (translation)
-The claim follows from `inv_eq_of_mul_eq_one_right (by rw [← eU_add, add_neg_cancel, eU_zero])`.
+A detailed English derivation is pending.
 -/
 theorem eU_neg (X : (Mn n)) (hX : Xᴴ = -X) (s : ℝ) : (eU X hX s)⁻¹ = eU X hX (-s) :=
   inv_eq_of_mul_eq_one_right (by rw [← eU_add, add_neg_cancel, eU_zero])
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Set `_` to `Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `hc : CompleteSpace (Mn n)` using `FiniteDimensional.complete ℝ _`. Simplify using `only [Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) X t).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem eU_continuous (X : (Mn n)) (hX : Xᴴ = -X) : Continuous (eU X hX) := by
   refine Continuous.subtype_mk ?_ _
@@ -135,7 +135,7 @@ variable {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [FiniteDimensiona
 def dA (X : (Mn n)) (hX : Xᴴ = -X) : H →L[ℂ] H := deriv (fun t : ℝ => ρ (eU X hX t)) 0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem dA_congr {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y) (h : X = Y) : dA ρ X hX = dA ρ Y hY := by
   subst h
@@ -144,11 +144,9 @@ theorem dA_congr {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y) (h : X = Y) : 
 variable {ρ}
 
 /- English proof (translation)
-Establish `h0 : (fun t : ℝ => ρ (eU X hX t)) 0 = 1` using `by simp [eU_zero]`. Take `⟨A, hA⟩` from `Formalism.FourierDecayAlt.P.one_parameter_differentiable H (fun t : ℝ => ρ (eU X hX t)) h0 (fun s t => by show ρ (eU X hX (s + t)) = _`. Rewrite using `[eU_add, map_mul]`. Use the proof step `rfl) (hρ.comp (eU_continuous X hX))`. Establish `hAd : dA ρ X hX = A`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hA 0).deriv`. Establish `h0' : ρ (eU X hX 0) = 1` using `h0`. Rewrite `h` using `[h0']`. Conclude with `h.trans (ContinuousLinearMap.id_comp A)`. Rewrite using `[hAd]`.
-
-Conclude with `Formalism.FourierDecayAlt.P.GroupGeneratedByExp.group_eq_exp _ A h0 hA t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_exp (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) (t : ℝ) :
     ρ (eU X hX t) = NormedSpace.exp (t • dA ρ X hX) := by
@@ -167,9 +165,9 @@ theorem rho_exp (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) (t : ℝ) :
   exact Formalism.FourierDecayAlt.P.GroupGeneratedByExp.group_eq_exp _ A h0 hA t
 
 /- English proof (translation)
-Establish `: CompleteSpace H` using `FiniteDimensional.complete ℂ H`. Establish `hd` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) B (0 : ℝ)`. Rewrite `hd` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Unfold `dA`. Rewrite using `[funext h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.deriv`.
+A detailed English derivation is pending.
 -/
 theorem dA_eq_of {X : (Mn n)} {hX : Xᴴ = -X} {B : H →L[ℂ] H}
     (h : ∀ t : ℝ, ρ (eU X hX t) = NormedSpace.exp (t • B)) : dA ρ X hX = B := by
@@ -181,7 +179,7 @@ theorem dA_eq_of {X : (Mn n)} {hX : Xᴴ = -X} {B : H →L[ℂ] H}
   exact hd.deriv
 
 /- English proof (translation)
-Establish `: CompleteSpace H` using `FiniteDimensional.complete ℂ H`. Establish `hd` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (dA ρ X hX) (0 : ℝ)`. Rewrite `hd` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Rewrite using `[funext (rho_exp hρ X hX)]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDeriv_dA (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) :
     HasDerivAt (fun t : ℝ => ρ (eU X hX t)) (dA ρ X hX) 0 := by
@@ -192,7 +190,7 @@ theorem hasDeriv_dA (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) :
   exact hd
 
 /- English proof (translation)
-Use `dA_eq_of fun t => ?_` and prove the remaining obligations. Establish `e : eU ((s : ℂ) • X) h t = eU X hX (t * s)` using `Subtype.ext (by simp only [eU, smul_smul, Complex.ofReal_mul])`. Rewrite using `[e, rho_exp hρ, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dA_smul (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) (s : ℝ) (h : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X)) :
     dA ρ ((s : ℂ) • X) h = s • dA ρ X hX := by
@@ -202,11 +200,11 @@ theorem dA_smul (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) (s : ℝ) (h
   rw [e, rho_exp hρ, mul_smul]
 
 /- English proof (translation)
-Establish `: CompleteSpace H` using `FiniteDimensional.complete ℂ H`. Use `dA_eq_of fun t => ?_` and prove the remaining obligations. Set `u : ℕ → (Un n)` to `fun k => (eU X hX (((k : ℝ)⁻¹) * t) * eU Y hY (((k : ℝ)⁻¹) * t)) ^ k`. Establish `hu : Tendsto u atTop (𝓝 (eU (X + Y) h t))`. Rewrite using `[tendsto_subtype_rng]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Formalism.FourierDecayAlt.P.GroupGeneratedByExp.trotterMx n ((t : ℂ) • X) ((t : ℂ) • Y)`. Rewrite `h1` using `[← smul_add]`. Use `h1.congr fun k => ?_` and prove the remaining obligations. Simplify using `only [u, eU, smul_smul, Complex.ofReal_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h2` using `(hρ.tendsto _).comp hu`. Establish `h3` using `Formalism.FourierDecayAlt.P.GroupGeneratedByExp.trotter (t • dA ρ X hX) (t • dA ρ Y hY)`. Rewrite `h3` using `[← smul_add]`. Use `tendsto_nhds_unique h2 (h3.congr fun k => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, u, map_pow, map_mul, rho_exp hρ, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dA_add (hρ : Continuous ρ) {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y) (h : (X + Y)ᴴ = -(X + Y)) :
     dA ρ (X + Y) h = dA ρ X hX + dA ρ Y hY := by
@@ -227,13 +225,11 @@ theorem dA_add (hρ : Continuous ρ) {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ 
   simp only [Function.comp, u, map_pow, map_mul, rho_exp hρ, smul_smul]
 
 /- English proof (translation)
-Establish `hd` using `hasDeriv_dA hρ X hX`. Set `L : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)` to `(ContinuousLinearMap.compL ℂ H H H (ρ k)).comp ((ContinuousLinearMap.compL ℂ H H H).flip (ρ k⁻¹))`. Establish `h2` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `h3 : (fun t : ℝ => ρ (eU ((k : (Mn n)) * X * star (k : (Mn n))) h t)) = (L.restrictScalars ℝ) ∘ fun t : ℝ => ρ (eU X hX t)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : eU ((k : (Mn n)) * X * star (k : (Mn n))) h t = k * eU X hX t * k⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show NormedSpace.exp ((t : ℂ) • ((k : (Mn n)) * X * star (k : (Mn n)))) = (k : (Mn n)) * NormedSpace.exp ((t : ℂ) • X) * star (k : (Mn n))`. Establish `hi : (k : (Mn n))⁻¹ = star (k : (Mn n))` using `Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff.1 k.2)`. Establish `hu : IsUnit (k : (Mn n))` using `IsUnit.of_mul_eq_one _ (Matrix.mem_unitaryGroup_iff.1 k.2)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hi, ← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e, map_mul, map_mul]`. Both sides reduce to the same expression. Unfold `dA`. Rewrite using `[h3]`.
-
-Conclude with `h2.deriv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dA_conj (hρ : Continuous ρ) (k : (Un n)) {X : (Mn n)} (hX : Xᴴ = -X)
     (h : ((k : (Mn n)) * X * star (k : (Mn n)))ᴴ = -((k : (Mn n)) * X * star (k : (Mn n)))) :
@@ -259,7 +255,7 @@ theorem dA_conj (hρ : Continuous ρ) (k : (Un n)) {X : (Mn n)} (hX : Xᴴ = -X)
   exact h2.deriv
 
 /- English proof (translation)
-The claim follows from `((ContinuousLinearMap.apply ℂ H w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDeriv_dA hρ X hX)`.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv_apply (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) (w : H) :
     HasDerivAt (fun t : ℝ => ρ (eU X hX t) w) (dA ρ X hX w) 0 :=
@@ -276,13 +272,13 @@ def dB (hρ : Continuous ρ) : (Mn n) →ₗ[ℝ] (H →L[ℂ] H) where
     exact dA_congr ρ _ _ (skw_real s Z)
 
 /- English proof (translation)
-The claim follows from `dA_congr ρ _ _ (skw_of_skew hX)`.
+A detailed English derivation is pending.
 -/
 theorem dB_skew (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) : dB hρ X = dA ρ X hX :=
   dA_congr ρ _ _ (skw_of_skew hX)
 
 /- English proof (translation)
-Use `show dA ρ (skw (Complex.I • X)) _ = 0`. Establish `h0` using `real_skew hX 0`. Establish `e : skw (Complex.I • X) = ((0 : ℝ) : ℂ) • X` using `by rw [skw_I hX]; simp`. Rewrite using `[dA_congr ρ _ h0 e, dA_smul hρ hX 0 h0, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dB_I (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) : dB (ρ := ρ) hρ (Complex.I • X) = 0 := by
   show dA ρ (skw (Complex.I • X)) _ = 0
@@ -314,16 +310,16 @@ def gL (hρ : Continuous ρ) : (Mn n) →ₗ[ℂ] (H →L[ℂ] H) where
     match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring
 
 /- English proof (translation)
-Use `show dB hρ X - Complex.I • dB hρ (Complex.I • X) = _`. Rewrite using `[dB_I hρ hX, smul_zero, sub_zero, dB_skew hρ hX]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gL_skew (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) : gL hρ X = dA ρ X hX := by
   show dB hρ X - Complex.I • dB hρ (Complex.I • X) = _
   rw [dB_I hρ hX, smul_zero, sub_zero, dB_skew hρ hX]
 
 /- English proof (translation)
-Establish `ha` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) A (0 : ℝ)`. Establish `hb` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (-A) (0 : ℝ)`. Establish `h` using `(ha.mul_const B).mul hb`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul, mul_one, mul_neg] at h`. Rewrite `h` using `[← sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem ring_conj {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] (A B : 𝔸) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp (s • A) * B * NormedSpace.exp (s • (-A))) (A * B - B * A) 0 := by
@@ -335,9 +331,9 @@ theorem ring_conj {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [Comp
   exact h
 
 /- English proof (translation)
-Set `_` to `Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `hc : CompleteSpace (Mn n)` using `FiniteDimensional.complete ℝ _`. Establish `h` using `ring_conj X Y`. Establish `h1` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.coe_smul]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (Mn n) →ₗ[ℝ] E) (X Y : (Mn n)) :
     HasDerivAt (fun s : ℝ => L (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X))))
@@ -351,13 +347,11 @@ theorem lin_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (Mn 
   exact h1
 
 /- English proof (translation)
-Establish `: CompleteSpace H` using `FiniteDimensional.complete ℂ H`. Establish `h1` using `lin_conj (dB (ρ := ρ) hρ) X Y`. Establish `h2` using `ring_conj (dA ρ X hX) (dA ρ Y hY)`. Establish `e : (fun s : ℝ => dB (ρ` using `ρ) hρ (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X)))) = fun s : ℝ => NormedSpace.exp (s • dA ρ X hX) * dA ρ Y hY * NormedSpace.exp (s • (-dA ρ X hX)) := by`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hs : NormedSpace.exp ((s : ℂ) • (-X)) = star ((eU X hX s : (Un n)) : (Mn n))`. Establish `h3 : ((eU X hX s)⁻¹ : (Un n)).1 = star ((eU X hX s : (Un n)) : (Mn n))` using `rfl`. Rewrite using `[← h3, eU_neg]`. Use `show _ = NormedSpace.exp (((-s : ℝ) : ℂ) • X)`. Rewrite using `[Complex.ofReal_neg, neg_smul, smul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk` using `conj_skew (eU X hX s) hY`. Use `show dB hρ (((eU X hX s : (Un n)) : (Mn n)) * Y * NormedSpace.exp ((s : ℂ) • (-X))) = _`. Rewrite using `[hs, dB_skew hρ hk, dA_conj hρ _ hY hk, eU_neg, rho_exp hρ, rho_exp hρ, smul_neg, neg_smul]`. Rewrite `h1` using `[e]`. Rewrite using `[← dB_skew hρ h]`.
-
-Conclude with `h1.unique h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dA_bracket (hρ : Continuous ρ) {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Yᴴ = -Y)
     (h : (X * Y - Y * X)ᴴ = -(X * Y - Y * X)) :
@@ -381,7 +375,7 @@ theorem dA_bracket (hρ : Continuous ρ) {X Y : (Mn n)} (hX : Xᴴ = -X) (hY : Y
   exact h1.unique h2
 
 /- English proof (translation)
-Use `⟨skw Z, skw ((-Complex.I) • Z), skw_skew _, skw_skew _, ?_⟩` and prove the remaining obligations. Simplify using `only [skw, conjTranspose_smul, star_neg, Complex.star_def, Complex.conj_I, neg_neg]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp <;> norm_num`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem decomp (Z : (Mn n)) : ∃ P Q : (Mn n), Pᴴ = -P ∧ Qᴴ = -Q ∧ Z = P + Complex.I • Q := by
   refine ⟨skw Z, skw ((-Complex.I) • Z), skw_skew _, skw_skew _, ?_⟩
@@ -389,7 +383,7 @@ theorem decomp (Z : (Mn n)) : ∃ P Q : (Mn n), Pᴴ = -P ∧ Qᴴ = -Q ∧ Z = 
   match_scalars <;> ring_nf <;> simp <;> norm_num
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expand {R : Type} [Ring R] [Algebra ℂ R] (P Q P' Q' : R) :
     (P + Complex.I • Q) * (P' + Complex.I • Q') - (P' + Complex.I • Q') * (P + Complex.I • Q) =
@@ -399,9 +393,9 @@ theorem expand {R : Type} [Ring R] [Algebra ℂ R] (P Q P' Q' : R) :
   match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring
 
 /- English proof (translation)
-Establish `key : ∀ {X Y : (Mn n)}, Xᴴ = -X → Yᴴ = -Y → gL (ρ` using `ρ) hρ (X * Y - Y * X) = gL hρ X * gL hρ Y - gL hρ Y * gL hρ X := by`. Introduce `X Y hX hY`. Rewrite using `[gL_skew hρ (bracket_skew hX hY), gL_skew hρ hX, gL_skew hρ hY, dA_bracket hρ hX hY]`. Take `⟨P, Q, hP, hQ, rfl⟩` from `decomp Z`. Take `⟨P', Q', hP', hQ', rfl⟩` from `decomp W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : gL (ρ` using `ρ) hρ (P + Complex.I • Q) = gL hρ P + Complex.I • gL hρ Q := by rw [map_add, map_smul]`. Establish `e2 : gL (ρ` using `ρ) hρ (P' + Complex.I • Q') = gL hρ P' + Complex.I • gL hρ Q' := by rw [map_add, map_smul]`. Rewrite using `[expand P Q P' Q', e1, e2, expand (gL hρ P) (gL hρ Q) (gL hρ P') (gL hρ Q'), map_add, map_add, map_add, map_smul, map_smul, map_smul, key hP hP', key hP hQ', key hQ hP', key hQ hQ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_bracket (hρ : Continuous ρ) (Z W : (Mn n)) :
     gL (ρ := ρ) hρ (Z * W - W * Z) = gL hρ Z * gL hρ W - gL hρ W * gL hρ Z := by
@@ -424,9 +418,9 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDime
   {ρ : (Un n) →* (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `h` using `(hasDeriv_apply hρ X hX x).inner ℂ (hasDeriv_apply hρ X hX y)`. Establish `hc : (fun t : ℝ => ⟪ρ (eU X hX t) x, ρ (eU X hX t) y⟫_ℂ) = fun _ => ⟪x, y⟫_ℂ`. Use function extensionality and compare the values at `fun t => (LinearMap.norm_map_iff_inner_map_map (ρ (eU X hX t))).1 (hiso _) x y`. Establish `h1 : HasDerivAt (fun t : ℝ => ⟪ρ (eU X hX t) x, ρ (eU X hX t) y⟫_ℂ) (⟪ρ (eU X hX 0) x, dA ρ X hX y⟫_ℂ + ⟪dA ρ X hX x, ρ (eU X hX 0) y⟫_ℂ) 0` using `h`. Rewrite `h1` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1.unique (hasDerivAt_const (0 : ℝ) ⟪x, y⟫_ℂ)`. Rewrite `h2` using `[eU_zero, map_one]`. Simplify using `only [ContinuousLinearMap.one_apply] at h2`. Take the linear combination `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dA_skewAdj (hρ : Continuous ρ) (hiso : ∀ k v, ‖ρ k v‖ = ‖v‖) {X : (Mn n)} (hX : Xᴴ = -X) (x y : H) :
     ⟪dA ρ X hX x, y⟫_ℂ = -⟪x, dA ρ X hX y⟫_ℂ := by
@@ -442,9 +436,9 @@ theorem dA_skewAdj (hρ : Continuous ρ) (hiso : ∀ k v, ‖ρ k v‖ = ‖v‖
   linear_combination h2
 
 /- English proof (translation)
-Take `⟨P, Q, hP, hQ, rfl⟩` from `decomp Z`. Establish `eH : (P + Complex.I • Q)ᴴ = (-1 : ℂ) • P + Complex.I • Q`. Rewrite using `[conjTranspose_add, conjTranspose_smul, hP, hQ, Complex.star_def, Complex.conj_I]`. Simplify using the standard rewrite rules. Rewrite using `[eH]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_smul, gL_skew hρ hP, gL_skew hρ hQ, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, dA_skewAdj hρ hiso hP x y, dA_skewAdj hρ hiso hQ x y, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gL_adj (hρ : Continuous ρ) (hiso : ∀ k v, ‖ρ k v‖ = ‖v‖) (Z : (Mn n)) (x y : H) :
     ⟪gL hρ Z x, y⟫_ℂ = ⟪x, gL hρ Zᴴ y⟫_ℂ := by
@@ -461,11 +455,9 @@ theorem gL_adj (hρ : Continuous ρ) (hiso : ∀ k v, ‖ρ k v‖ = ‖v‖) (Z
 end Inner
 
 /- English proof (translation)
-Establish `m : ∀ p q r s : Fin n, (Matrix.single p q (1 : ℂ) * Matrix.single r s 1 : (Mn n)) = if q = r then Matrix.single p s 1 else 0`. Introduce `p q r s`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single_apply]`. Use `split_ifs with h3 h4`.
-
-Conclude with `absurd (h3.2.trans h4.1.symm) h`. Apply the tactic sequence `all_goals simp`. Rewrite using `[m, m]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_bracket (a b c d : Fin n) :
     (Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 : (Mn n)) =
@@ -486,15 +478,15 @@ theorem single_bracket (a b c d : Fin n) :
   rw [m, m]
 
 /- English proof (translation)
-Introduce `n H _ _ _ ρ hρ hiso`. Set `R` to `ContinuousLinearMap.toLinearMapRingHom (R₁ := ℂ) (M₁ := H)`. Use `⟨fun a b => R (gL hρ (Matrix.single a b 1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Establish `h` using `congrArg R (gL_bracket hρ (Matrix.single a b 1) (Matrix.single c d 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[single_bracket]`. Simplify using `only [map_sub, map_mul] at h`. Use `beta_reduce`. Rewrite using `[← h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b x y`. Establish `h` using `gL_adj hρ hiso (Matrix.single a b 1) x y`. Rewrite `h` using `[Matrix.conjTranspose_single, star_one]`. Then use the resulting hypothesis. Introduce `X γ hX hγ w`. Take `rfl : γ = eU X hX` from `funext fun t => Subtype.ext (hγ t)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : gL hρ X = ∑ a, ∑ b, X a b • gL hρ (Matrix.single a b 1)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `e : (∑ a, ∑ b, X a b • R (gL hρ (Matrix.single a b 1)) w) = dA ρ X hX w`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gL_skew hρ hX, hs]`. Simplify using `[R, ContinuousLinearMap.sum_apply]`. Simplify using `only [e]`. Conclude with `hasDeriv_apply hρ X hX w`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivative_of_rep : ∀ {n : ℕ} (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (ρ : Matrix.unitaryGroup (Fin n) ℂ →* (H →L[ℂ] H)), Continuous ρ → (∀ k v, ‖ρ k v‖ = ‖v‖) →

@@ -9,33 +9,29 @@ namespace GlobalTheory.Cyc
 open PowerSeries in
 
 /- English proof (translation)
-Use `set y := f X with hy`. Set `g : ℕ → O⟦X⟧` to `fun n => ∑ i ∈ Finset.range n, y ^ i * X ^ (n - 1 - i)`. Establish `hg : ∀ n, g n * (y - X) = y ^ n - X ^ n` using `fun n => geom_sum₂_mul y X n`. Establish `hgd : ∀ n, (X : O⟦X⟧) ^ (n - 1) ∣ g n`. Introduce `n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`. Establish `e : n - 1 = i + (n - 1 - i)` using `by omega`. Use `conv_lhs => rw [e, pow_add]`. Conclude with `mul_dvd_mul (pow_dvd_pow_of_dvd hf i) dvd_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `P : ℕ → O⟦X⟧` to `fun N => ∑ n ∈ Finset.range N, C (coeff n a) * g n`. Establish `hP : ∀ m k, (X : O⟦X⟧) ^ m ∣ P (m + 1 + k) - P (m + 1)`. Introduce `m k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Establish `e : P (m + 1 + (k + 1)) - P (m + 1) = (P (m + 1 + k) - P (m + 1)) + C (coeff (m + 1 + k) a) * g (m + 1 + k)`. Simplify using `only [P, ← add_assoc, Finset.sum_range_succ _ (m + 1 + k)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `dvd_add ih (Dvd.dvd.mul_left ((pow_dvd_pow _ (by omega)).trans (hgd _)) _)`. Set `b : O⟦X⟧` to `PowerSeries.mk fun m => coeff m (P (m + 2))`. Establish `hb : ∀ N, (X : O⟦X⟧) ^ N ∣ P (N + 1) - b`. Introduce `N`. Rewrite using `[X_pow_dvd_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `m hm`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hm`. Use `X_pow_dvd_iff.mp (hP (m + 1) k) m (by omega)` as an intermediate fact. Rewrite `this`, the goal using `[map_sub]`. Rewrite using `[coeff_mk, show m + k + 1 + 1 = m + 1 + 1 + k by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hr : ∀ N, ∃ r : O⟦X⟧, a = ∑ n ∈ Finset.range N, C (coeff n a) * X ^ n + X ^ N * r`. Introduce `N`. Establish `: (X : O⟦X⟧) ^ N ∣ a - ∑ n ∈ Finset.range N, C (coeff n a) * X ^ n`. Rewrite using `[X_pow_dvd_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `m hm`. Simplify using `[coeff_X_pow, hm]`. Take `⟨r, hr⟩` from `this`. Conclude with `⟨r, by rw [← hr]; ring⟩`. Establish `hN : ∀ N, (X : O⟦X⟧) ^ N ∣ f a - a - (y - X) * P N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `N`. Take `⟨r, hr⟩` from `hr N`. Establish `h1 : f a = ∑ n ∈ Finset.range N, C (coeff n a) * y ^ n + y ^ N * f r` using `by conv_lhs => rw [hr]`. Simplify using `only [map_add, map_sum, map_mul, map_pow, ← hy]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `f.commutes _`. Establish `h2 : (y - X) * P N = ∑ n ∈ Finset.range N, C (coeff n a) * y ^ n - ∑ n ∈ Finset.range N, C (coeff n a) * X ^ n`. Simplify using `only [P, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, ← hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : f a - a - (y - X) * P N = y ^ N * f r - X ^ N * r`. Rewrite using `[h2, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-hr`. Rewrite using `[h3]`. Conclude with `dvd_sub (Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hf N) _) (dvd_mul_right _ _)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use extensionality with `m`.
-
-Establish `: (X : O⟦X⟧) ^ (m + 1) ∣ f a - a - (y - X) * b`. Establish `e : f a - a - (y - X) * b = (f a - a - (y - X) * P (m + 1 + 1)) + (y - X) * (P (m + 1 + 1) - b)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_add ((pow_dvd_pow _ (by omega)).trans (hN _)) (Dvd.dvd.mul_left (hb _) _)`. Use `X_pow_dvd_iff.mp this m (by omega)` as an intermediate fact.
-
-Rewrite `this` using `[map_sub]`. Conclude with `sub_eq_zero.mp this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_sub_dvd {O : Type} [CommRing O] (f : O⟦X⟧ →ₐ[O] O⟦X⟧) (hf : (X : O⟦X⟧) ∣ f X)
     (a : O⟦X⟧) : f X - X ∣ f a - a := by
@@ -109,11 +105,11 @@ theorem algHom_sub_dvd {O : Type} [CommRing O] (f : O⟦X⟧ →ₐ[O] O⟦X⟧)
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (Polynomial.X : Polynomial ℤ) 1`. Establish `h1 : (∑ k ∈ Finset.range p, (1 + Polynomial.X : Polynomial ℤ) ^ k) = Polynomial.X ^ (p - 1) + (p : Polynomial ℤ) * r`. Apply `mul_right_cancel₀ (Polynomial.X_ne_zero (R := ℤ))` to reduce the goal to its premises. Establish `h` using `geom_sum_mul (1 + Polynomial.X : Polynomial ℤ) p`. Establish `e : (Polynomial.X : Polynomial ℤ) ^ p = Polynomial.X ^ (p - 1) * Polynomial.X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.one_le]`. Rewrite `hr` using `[add_comm Polynomial.X, one_pow, e]`. Rewrite `h` using `[hr]`. Take the linear combination `h`. Use `⟨Polynomial.aeval x r, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (Polynomial.aeval x) h1` as an intermediate fact. Simplify `this` using `[map_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem geom_sum_one_add_prime {R : Type} [CommRing R] {p : ℕ} (hp : p.Prime) (x : R) :
     ∃ r, ∑ k ∈ Finset.range p, (1 + x) ^ k = x ^ (p - 1) + (p : R) * r := by
@@ -134,26 +130,26 @@ theorem geom_sum_one_add_prime {R : Type} [CommRing R] {p : ℕ} (hp : p.Prime) 
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cyc.act_laws l O).1 c`.
+A detailed English derivation is pending.
 -/
 theorem act_X_eq (c : ℤ_[l]) : act l O c PowerSeries.X = cyc l O c := (GlobalTheory.Cyc.act_laws l O).1 c
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.Cyc.act_laws l O).2.1, (GlobalTheory.Cyc.act_laws l O).2.1, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comm' (c c' : ℤ_[l]) (a) : act l O c (act l O c' a) = act l O c' (act l O c a) := by
   rw [(GlobalTheory.Cyc.act_laws l O).2.1, (GlobalTheory.Cyc.act_laws l O).2.1, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[act_X_eq, (GlobalTheory.Cyc.act_laws l O).2.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_nat_X (k : ℕ) : act l O (k : ℤ_[l]) PowerSeries.X = (1 + PowerSeries.X) ^ k - 1 := by
   rw [act_X_eq, (GlobalTheory.Cyc.act_laws l O).2.2.2.1]
 
 /- English proof (translation)
-Establish `: (PowerSeries.X : PowerSeries O) ^ 2 ∣ cyc l O c - PowerSeries.C (algebraMap ℤ_[l] O c) * PowerSeries.X`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Use `interval_cases m`. Simplify using `[cyc_const]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[(GlobalTheory.Cyc.act_laws l O).2.2.2.2.1]`. Take `⟨b, hb⟩` from `this`. Conclude with `⟨b, by linear_combination hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cyc_eq_X_mul (c : ℤ_[l]) :
     ∃ b, cyc l O c = PowerSeries.X * (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * b) := by
@@ -168,7 +164,7 @@ theorem cyc_eq_X_mul (c : ℤ_[l]) :
   exact ⟨b, by linear_combination hb⟩
 
 /- English proof (translation)
-Establish `h` using `geom_sum_mul (1 + XX l O s) l`. Unfold `QQ`. Take the linear combination `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem XX_mul_QQ (s : ℕ) : XX l O s * QQ l O s = (1 + XX l O s) ^ l - 1 := by
   have h := geom_sum_mul (1 + XX l O s) l
@@ -176,16 +172,16 @@ theorem XX_mul_QQ (s : ℕ) : XX l O s * QQ l O s = (1 + XX l O s) ^ l - 1 := by
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[XX_mul_QQ, XX, add_sub_cancel, ← pow_mul, ← pow_succ, Nat.sub_add_cancel hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem XX_mul_QQ' (s : ℕ) (hs : 1 ≤ s) :
     XX l O s * QQ l O s = (1 + PowerSeries.X) ^ l ^ s - 1 := by
   rw [XX_mul_QQ, XX, add_sub_cancel, ← pow_mul, ← pow_succ, Nat.sub_add_cancel hs]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, ih]`. Simplify using `only [map_sub, map_pow, map_add, map_one, phi, act_nat_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_sub_cancel, ← pow_mul, ← pow_succ']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_pow_X (n : ℕ) :
     (phi l O ^ n) PowerSeries.X = (1 + PowerSeries.X) ^ l ^ n - 1 := by
@@ -197,19 +193,19 @@ theorem phi_pow_X (n : ℕ) :
     rw [add_sub_cancel, ← pow_mul, ← pow_succ']
 
 /- English proof (translation)
-The claim follows from `(act l O c).commutes x`.
+A detailed English derivation is pending.
 -/
 theorem act_C (c : ℤ_[l]) (x : O) : act l O c (PowerSeries.C x) = PowerSeries.C x :=
   (act l O c).commutes x
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `cyc_eq_X_mul l O c`. Establish `h1 : PowerSeries.X * QQ l O 1 = act l O (l : ℤ_[l]) PowerSeries.X`. Use `XX_mul_QQ' l O 1 le_rfl` as an intermediate fact. Rewrite using `[act_nat_X]`. Simplify `this` using `[XX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `act_comm' l O c l PowerSeries.X`. Rewrite `h2` using `[← h1, map_mul, act_X_eq, hb]`. Simplify using `only [map_mul, map_add, act_C, ← h1] at h2`. Establish `hU : IsUnit (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * b)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using c.isUnit.map (algebraMap ℤ_[l] O)`. Take `⟨v, hv⟩` from `hU.exists_right_inv`. Establish `h3 : (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * b) * act l O c (QQ l O 1) = QQ l O 1 * (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * QQ l O 1 * act l O (l : ℤ_[l]) b)`. Apply `PowerSeries.X_mul_cancel` to reduce the goal to its premises. Take the linear combination `h2`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨v * (QQ l O 1 * act l O (l : ℤ_[l]) b - b), ?_⟩` and prove the remaining obligations. Take the linear combination `v * h3 + (QQ l O 1 - act l O c (QQ l O 1)) * hv`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem act_QQ_one (c : ℤ_[l]ˣ) :
     ∃ b, act l O c (QQ l O 1) = QQ l O 1 * (1 + PowerSeries.X * b) := by
@@ -234,27 +230,25 @@ theorem act_QQ_one (c : ℤ_[l]ˣ) :
   linear_combination v * h3 + (QQ l O 1 - act l O c (QQ l O 1)) * hv
 
 /- English proof (translation)
-Introduce `l _ O _ _ s hs`. Establish `hp : l.Prime` using `Fact.out`. Establish `hψ : act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) PowerSeries.X = XX l O s` using `act_nat_X l O _`. Establish `hψQ : act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) (QQ l O 1) = QQ l O s`. Establish `: XX l O 1 = PowerSeries.X` using `by simp [XX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [QQ, this, map_sum, map_pow, map_add, map_one, hψ]`. Establish `h0 : PowerSeries.constantCoeff (XX l O s) = 0` using `by simp [XX]`. Use `⟨?_, phi_pow_X l O _, ?_, ?_, ?_, fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[XX_mul_QQ' l O s hs, XX]`. Simplify using `only [map_sub, map_pow, map_add, map_one, phi, act_nat_X]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_sub_cancel, ← pow_mul, ← pow_succ', Nat.sub_add_cancel hs]`. Simplify using `[QQ, map_sum, h0]`. Take `⟨r, hr⟩` from `geom_sum_one_add_prime hp (XX l O s)`. Take `⟨t, ht⟩` from `exists_add_pow_prime_pow_eq hp (PowerSeries.X : PowerSeries O) 1 (s - 1)`. Establish `h1 : (l : PowerSeries O) ∣ XX l O s - PowerSeries.X ^ l ^ (s - 1)` using `⟨PowerSeries.X * t, by rw [XX, add_comm, ht]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `h1.trans (sub_dvd_pow_sub_pow _ _ (l - 1))`. Use `⟨q + r, ?_⟩` and prove the remaining obligations. Rewrite using `[QQ, hr, pow_mul]`. Take the linear combination `hq`. Establish `: XX l O s ∣ QQ l O s - l`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e : QQ l O s - l = ∑ k ∈ Finset.range l, ((1 + XX l O s) ^ k - 1)`. Simplify using `[QQ, Finset.sum_sub_distrib]`. Rewrite using `[e]`. Use `Finset.dvd_sum fun k _ => ?_` and prove the remaining obligations. Simplify using `using sub_one_dvd_pow_sub_one (1 + XX l O s) k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨b, hb⟩` from `this`. Conclude with `⟨b, by linear_combination hb⟩`. Take `⟨b, hb⟩` from `cyc_eq_X_mul l O c`. Use `⟨act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hψ, act_comm', act_X_eq, hb]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_add, act_C, hψ]`. Take `⟨b, hb⟩` from `act_QQ_one l O c`. Use `⟨act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hψQ, act_comm', hb]`. Simplify using `only [map_mul, map_add, map_one, hψ, hψQ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u w hu a`. Establish `hX : PowerSeries.X ∣ act l O u PowerSeries.X`. Rewrite using `[act_X_eq, PowerSeries.X_dvd_iff]`. Conclude with `cyc_const l O u`. Use `Dvd.dvd.trans ?_ (algHom_sub_dvd (act l O u) hX a)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `cyc_eq_X_mul l O w`. Establish `h1 : cyc l O (((l ^ s : ℕ) : ℤ_[l]) * w) = XX l O s * QQ l O s * act l O ((l ^ s : ℕ) : ℤ_[l]) (PowerSeries.C (algebraMap ℤ_[l] O w) + PowerSeries.X * b)`. Rewrite using `[← act_X_eq, ← (GlobalTheory.Cyc.act_laws l O).2.1, act_X_eq l O w, hb, map_mul, act_nat_X, XX_mul_QQ' l O s hs]`. Establish `h2 : cyc l O u + 1 = (cyc l O ((1 : ℕ) : ℤ_[l]) + 1) * (cyc l O (((l ^ s : ℕ) : ℤ_[l]) * w) + 1)`. Simplify using `only [cyc, sub_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[← map_mul, ← PowerSeries.binomialSeries_add, hu]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h2` using `[(GlobalTheory.Cyc.act_laws l O).2.2.2.1, h1]`. Rewrite using `[act_X_eq]`.
-
-Conclude with `⟨(1 + PowerSeries.X) * act l O ((l ^ s : ℕ) : ℤ_[l]) (PowerSeries.C (algebraMap ℤ_[l] O w) + PowerSeries.X * b), by linear_combination h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem XX_QQ_properties : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O], ∀ s : ℕ, 1 ≤ s → phi l O (XX l O s) = XX l O s * QQ l O s ∧ (phi l O ^ (s - 1)) PowerSeries.X = XX l O s ∧ PowerSeries.constantCoeff (QQ l O s) = (l : O) ∧ (∃ b, QQ l O s = PowerSeries.X ^ (l ^ (s - 1) * (l - 1)) + (l : PowerSeries O) * b) ∧ (∃ b, QQ l O s = (l : PowerSeries O) + XX l O s * b) ∧ (∀ c : ℤ_[l]ˣ, (∃ b, act l O c (XX l O s) = XX l O s * (PowerSeries.C (algebraMap ℤ_[l] O c) + XX l O s * b)) ∧ ∃ b, act l O c (QQ l O s) = QQ l O s * (1 + XX l O s * b)) ∧ ∀ (u w : ℤ_[l]), u = 1 + (l : ℤ_[l]) ^ s * w → ∀ a, ∃ b, act l O u a - a = XX l O s * QQ l O s * b := by
   intro l _ O _ _ s hs

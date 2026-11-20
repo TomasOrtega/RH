@@ -15,27 +15,25 @@ def lowSpan (e : (Σ i, Fin (d i)) ≃ Fin a) (c : Fin s) : Submodule k (Fin a �
   GlobalTheory.LowerBlockFlag.f0 e c
 
 /- English proof (translation)
-Establish `hex : ∃ u ∈ GlobalTheory.SmGL.unipRad k e, u ≠ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne ((Subgroup.eq_bot_iff_forall _).2 h)`. Take `⟨u, hu, hu1⟩` from `hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hij : ∃ i j, (u : Matrix (Fin a) (Fin a) k) i j ≠ (1 : Matrix (Fin a) (Fin a) k) i j`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu1 (Units.ext (Matrix.ext h))`. Take `⟨i, j, hij⟩` from `hij`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨hp, hd⟩` from `GlobalTheory.SmGL.mem_unipRad.1 hu`. Establish `hlt : GlobalTheory.SmGL.blk e i < GlobalTheory.SmGL.blk e j`. Break down `lt_trichotomy (GlobalTheory.SmGL.blk e i) (GlobalTheory.SmGL.blk e j) with h | h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨⟨b, i'⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', j'⟩, rfl⟩` from `e.surjective j`. Simplify using `only [GlobalTheory.SmGL.blk_apply] at h`. Substitute `h` using the available equality. Apply `hij` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Simplify using `[Matrix.one_apply]`. It suffices to derive a contradiction. Apply `hij` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SmGL.mem_parab.1 hp i j h, one_apply_ne (by rintro rfl; exact lt_irrefl _ h)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨lowSpan e (GlobalTheory.SmGL.blk e i), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hb`. Establish `hm : Pi.single i (1 : k) ∈ lowSpan e (GlobalTheory.SmGL.blk e i)` using `fun p hp' => Pi.single_eq_of_ne (by rintro rfl; exact lt_irrefl _ hp') _`. Rewrite `hm` using `[hb]`. Simplify using `using congrFun ((Submodule.mem_bot k).1 hm) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ht`. Establish `hm : Pi.single j (1 : k) ∈ lowSpan e (GlobalTheory.SmGL.blk e i)` using `ht ▸ Submodule.mem_top`. Use `hm j hlt` as an intermediate fact. Simplify using `at this`. Introduce `g h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ p q, ¬ (GlobalTheory.SmGL.blk e p < GlobalTheory.SmGL.blk e q) → ((g : Matrix (Fin a) (Fin a) k) - 1) p q = 0`. Introduce `p q hpq`. Establish `hcol : ((g : Matrix (Fin a) (Fin a) k) - 1) p q = (((g : Matrix (Fin a) (Fin a) k) - 1) *ᵥ Pi.single q 1) p`. Simplify using `[Matrix.mulVec_single_one]`. Rewrite using `[hcol]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hq : GlobalTheory.SmGL.blk e q ≤ GlobalTheory.SmGL.blk e i`. Rewrite using `[h2 _ (fun r hr => Pi.single_eq_of_ne (by rintro rfl; exact absurd hq (not_le.2 hr)) _)]`. Both sides reduce to the same expression. Conclude with `h1 _ p (lt_of_lt_of_le (not_le.1 hq) (not_lt.1 hpq))`. Establish `hg : ∀ p q, (g : Matrix (Fin a) (Fin a) k) p q = (1 : Matrix (Fin a) (Fin a) k) p q + ((g : Matrix (Fin a) (Fin a) k) - 1) p q`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p q`. Simplify using the standard rewrite rules. Use `GlobalTheory.SmGL.mem_unipRad.2 ⟨GlobalTheory.SmGL.mem_parab.2 fun p q hqp => ?_, fun b p q => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, key p q (not_lt.2 hqp.le), one_apply_ne (by rintro rfl; exact lt_irrefl _ hqp), add_zero]`. Rewrite using `[hg, key _ _ (by simp), add_zero]`.
-
-Simplify using `[Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub (k : Type) [Field k] (a s : ℕ) (d : Fin s → ℕ) (e : (Σ i, Fin (d i)) ≃ Fin a)
     (hne : GlobalTheory.SmGL.unipRad k e ≠ ⊥) :

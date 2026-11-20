@@ -13,15 +13,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ P hq ι _ _ f N hf A B hA hB`. Establish `hqK : (qOf P : K) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne_zero`. Unfold `boxSum`. Use `weighted_sum_piFinset ι E K (fun g => (∀ a, g a ≠ 0 → IntAt P ((qOf P : E) ^ N * a)) ∧ ∀ a u, IntAt P u → g (a + (qOf P : E) ^ N * u) = g a) _ _ _ _ ?_ f ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[sum_valsQ_of_invariant E P K g N h2 A B hB, sum_valsQ_eq_of_support_intAt E P hq K g N h1 A N hA]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hB`. Rewrite using `[Nat.add_sub_cancel_left, pow_add]`. Clear the denominators using the available nonvanishing facts. Introduce `t i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun a ha => ?_, fun a u hu => ?_⟩` and prove the remaining obligations. Simplify using `using hf.1 _ ha i`. Establish `e : Function.update t i (a + (qOf P : E) ^ N * u) = Function.update t i a + ((qOf P : E) ^ N) • (Pi.single i u : ι → E)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Simplify using `only [e]`. Use `hf.2 _ _ fun j => ?_` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hu`. Simplify `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P` using `[hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem boxSum_eq_of_funBdd : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K] (P : HeightOneSpectrum (𝓞 E)), (qOf P).Prime → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (f : (ι → E) → K) (N : ℕ), FunBdd P N f → ∀ A B : ℕ, N ≤ A → N ≤ B → boxSum P A B f = boxSum P N N f := by
   intro E _ _ K _ _ P hq ι _ _ f N hf A B hA hB

@@ -20,14 +20,14 @@ namespace CrystallineSemistableComparison.D
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1 : (1 : A.Acr 0) = 0` using `by simpa using A.pow_l_acr 0`. Rewrite using `[← mul_one x, h1, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem acr_zero_eq (A : PAlg l) (x : A.Acr 0) : x = 0 := by
   have h1 : (1 : A.Acr 0) = 0 := by simpa using A.pow_l_acr 0
   rw [← mul_one x, h1, mul_zero]
 
 /- English proof (translation)
-The claim follows from `des_span (testι l) (AcrF l 0) {s} (fun _ _ => Or.inr fun A x => by have hx : x = 0 := acr_zero_eq l A x rw [hx, smul_zero]) s (Ideal.subset_span rfl)`.
+A detailed English derivation is pending.
 -/
 theorem des_Acr_zero (s : Acris l) : Des (AcrF l 0) s :=
   des_span (testι l) (AcrF l 0) {s} (fun _ _ => Or.inr fun A x => by
@@ -35,11 +35,11 @@ theorem des_Acr_zero (s : Acris l) : Des (AcrF l 0) s :=
     rw [hx, smul_zero]) s (Ideal.subset_span rfl)
 
 /- English proof (translation)
-Take `⟨N, _, _, M, τ, hN, hτ, hn⟩` from `h1`. Establish `h0` using `des_tens l h N M hN k`. Set `σ : Ainf l →+* Ob l` to `WittVector.constantCoeff`. Establish `e1 : Des (toPf l ⋙ tensF l (Ob l) N ⋙ ModuleCat.restrictScalars σ) (rtW l k)`. Use `(des_semi σ (testι l) (toPf l ⋙ tensF l (Ob l) N ⋙ ModuleCat.restrictScalars σ) (toPf l ⋙ tensF l (Ob l) N) (fun A => AddMonoidHom.id _) (fun A a x => rfl) (fun A => Function.bijective_id) (fun f x => rfl) (rtW l k)).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : σ (rtW l k) = rt l k` using `(rtW_dvd l k).2`. Rewrite using `[hc]`. Conclude with `h0`. Use `(des_semi (algebraMap (Ainf l) (Acris l)) (testι l) (toPf l ⋙ tensF l (Ob l) N ⋙ ModuleCat.restrictScalars σ) (AcrF l 1) (fun A => (τ A).toAddMonoidHom) (fun A a x => ?_) (fun A => (τ A).bijective) (fun f x => hn _ _ f x) (rtW l k)).1 e1` and prove the remaining obligations. Use `(hτ A a x).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = A.cris 1 (algebraMap (Ainf l) (Acris l) a) * τ A x`. Rewrite using `[A.cris_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem des_Acr_one (h : ObFacts l) (h1 : RAcr1 l) (k : ℕ) :
     Des (AcrF l 1) (algebraMap (Ainf l) (Acris l) (rtW l k)) := by
@@ -58,26 +58,26 @@ theorem des_Acr_one (h : ObFacts l) (h1 : RAcr1 l) (k : ℕ) :
   rw [A.cris_algebraMap]; rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem mkAcr_surj (A : PAlg l) (m : ℕ) : Function.Surjective (A.mkAcr m) := Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Conclude with `congrArg (· * z) (A.cris_algebraMap m a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acr_smul_eq (A : PAlg l) (m : ℕ) (a : Ainf l) (z : A.Acr m) :
     (algebraMap (Ainf l) (Acris l) a) • z = A.mkAcr m (algebraMap A.W A.Acr0 (A.sW a)) * z := by
   rw [Algebra.smul_def]; exact congrArg (· * z) (A.cris_algebraMap m a)
 
 /- English proof (translation)
-The claim follows from `des_span (testι l) F {a} (fun c hc => Or.inl (by rw [Set.mem_singleton_iff.1 hc]; exact ha)) b (Ideal.mem_span_singleton.2 hab)`.
+A detailed English derivation is pending.
 -/
 theorem des_span_dvd {R : Type} [CommRing R] (F : PAlg l ⥤ ModuleCat.{0} R) (a b : R) (hab : a ∣ b) (ha : Des F a) : Des F b :=
   des_span (testι l) F {a} (fun c hc => Or.inl (by rw [Set.mem_singleton_iff.1 hc]; exact ha)) b
     (Ideal.mem_span_singleton.2 hab)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `mkAcr_surj l A 1 x`. Rewrite using `[acr_smul_eq, acr_smul_eq, ← map_mul, hmk, hmk, ← map_mul, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem seq_smul (n : ℕ) (A : PAlg l) (α : A.Acr 1 →+ A.Acr (n + 1))
     (hmk : ∀ y : A.Acr0, α (A.mkAcr 1 y) = A.mkAcr (n + 1) ((l : A.Acr0) ^ n * y)) (a : Ainf l) (x : A.Acr 1) :
@@ -86,7 +86,7 @@ theorem seq_smul (n : ℕ) (A : PAlg l) (α : A.Acr 1 →+ A.Acr (n + 1))
   rw [acr_smul_eq, acr_smul_eq, ← map_mul, hmk, hmk, ← map_mul, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `mkAcr_surj l A 1 x`. Express the relevant statement in the definitionally equal form `α' ((PAlg.pdOk_hom f).acr 1 (A.mkAcr 1 y)) = (PAlg.pdOk_hom f).acr (n + 1) (α (A.mkAcr 1 y))`. Rewrite using `[hmk, PAlg.PdOk.acr_mk, PAlg.PdOk.acr_mk, hmk']`. Simplify using `only [map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem seq_nat (n : ℕ) {A B : PAlg l} (f : A ⟶ B) (α : A.Acr 1 →+ A.Acr (n + 1)) (α' : B.Acr 1 →+ B.Acr (n + 1))
     (hmk : ∀ y : A.Acr0, α (A.mkAcr 1 y) = A.mkAcr (n + 1) ((l : A.Acr0) ^ n * y))
@@ -98,14 +98,14 @@ theorem seq_nat (n : ℕ) {A B : PAlg l} (f : A ⟶ B) (α : A.Acr 1 →+ A.Acr 
   simp only [map_mul, map_pow, map_natCast]
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨y, rfl⟩ := mkAcr_surj l A n x exact ⟨A.mkAcr (n + 1) y, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem red_surj (A : PAlg l) (n : ℕ) : Function.Surjective (A.red (Nat.le_succ n)) := fun x => by
   obtain ⟨y, rfl⟩ := mkAcr_surj l A n x
   exact ⟨A.mkAcr (n + 1) y, rfl⟩
 
 /- English proof (translation)
-Take `⟨α, hαmk, hαe⟩` from `h2 n`. Set `σ` to `algebraMap (Ainf l) (Acris l)`. Use `(des_ses σ σ σ (testι l) (AcrF l 1) (AcrF l (n + 1)) (AcrF l n) (fun A => α A) (fun A => ((redF l (Nat.le_succ n)).app A).hom.toAddMonoidHom) (fun A a x => seq_smul l n A (α A) (hαmk A) a x) (fun A a x => ((redF l (Nat.le_succ n)).app A).hom.map_smul (σ a) x) (fun {A B} f x => se …` as an intermediate fact. Conclude with `des_span_dvd l _ _ _ (map_dvd σ (rtW_dvd l k).1) this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem des_Acr_succ (h2 : RAcrSeq l) (n : ℕ)
     (h1k : ∀ k, Des (AcrF l 1) (algebraMap (Ainf l) (Acris l) (rtW l k)))
@@ -124,7 +124,7 @@ theorem des_Acr_succ (h2 : RAcrSeq l) (n : ℕ)
   exact des_span_dvd l _ _ _ (map_dvd σ (rtW_dvd l k).1) this
 
 /- English proof (translation)
-Establish `h0 : (l : A.Un n) ^ n = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ n})), ← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Use `(Algebra.smul_def (A := A.Un n) _ x).trans ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_natCast, h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem un_kill (A : PAlg l) (n : ℕ) (x : (UnF l n).obj A) : ((l : Ainf l) ^ n) • x = 0 := by
   have h0 : (l : A.Un n) ^ n = 0 := by
@@ -134,7 +134,7 @@ theorem un_kill (A : PAlg l) (n : ℕ) (x : (UnF l n).obj A) : ((l : Ainf l) ^ n
   rw [map_pow, map_natCast, h0, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[acr_smul_eq]`. Simplify using `only [map_pow, map_natCast]`. Rewrite using `[A.pow_l_acr, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem acr_kill (A : PAlg l) (n : ℕ) (x : A.Acr n) : algebraMap (Ainf l) (Acris l) ((l : Ainf l) ^ n) • x = 0 := by
   rw [acr_smul_eq]
@@ -142,16 +142,16 @@ theorem acr_kill (A : PAlg l) (n : ℕ) (x : A.Acr n) : algebraMap (Ainf l) (Acr
   rw [A.pow_l_acr, zero_mul]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (acr_kill l A n x.1)`.
+A detailed English derivation is pending.
 -/
 theorem fil_kill (A : PAlg l) (n r : ℕ) (x : (FilF l n r).obj A) :
     algebraMap (Ainf l) (Acris l) ((l : Ainf l) ^ n) • x = 0 :=
   Subtype.ext (acr_kill l A n x.1)
 
 /- English proof (translation)
-Establish `hm` using `Ideal.mem_map_of_mem σ hs`. Rewrite `hm` using `[Ideal.map_span]`. Use `des_span (testι l) F _ ?_ _ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Break down `hb with rfl | ⟨k, rfl⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr hk`. Conclude with `Or.inl (hr k)`.
+Prove the second alternative. Prove the first alternative.
 -/
 theorem des_of_map {R : Type} [CommRing R] (F : PAlg l ⥤ ModuleCat.{0} R) (σ : Ainf l →+* R) (n : ℕ)
     (hk : ∀ (A : PAlg l) (x : F.obj A), σ ((l : Ainf l) ^ n) • x = 0) (hr : ∀ k, Des F (σ (rtW l k)))
@@ -165,7 +165,7 @@ theorem des_of_map {R : Type} [CommRing R] (F : PAlg l ⥤ ModuleCat.{0} R) (σ 
   · exact Or.inl (hr k)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing k with`. Consider the case `zero => exact des_Acr_zero l _`. Consider the case `succ n ih => exact des_Acr_succ l h2 n (des_Acr_one l h h1) ih k`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem des_Acr (h : ObFacts l) (h1 : RAcr1 l) (h2 : RAcrSeq l) (n k : ℕ) :
     Des (AcrF l n) (algebraMap (Ainf l) (Acris l) (rtW l k)) := by
@@ -174,13 +174,13 @@ theorem des_Acr (h : ObFacts l) (h1 : RAcr1 l) (h2 : RAcrSeq l) (n k : ℕ) :
   | succ n ih => exact des_Acr_succ l h2 n (des_Acr_one l h h1) ih k
 
 /- English proof (translation)
-The claim follows from `des_Fil_of l h (fun n k => des_Acr l h.1 h.2.1 h.2.2.1 n k) n r k`.
+A detailed English derivation is pending.
 -/
 theorem des_Fil (h : RIn l) (n r k : ℕ) : Des (FilF l n r) (algebraMap (Ainf l) (Acris l) (rtW l k)) :=
   des_Fil_of l h (fun n k => des_Acr l h.1 h.2.1 h.2.2.1 n k) n r k
 
 /- English proof (translation)
-Introduce `s hs n` and use `by have hw := wm_span l h.1 s hs n refine ⟨?_, ?_, fun r => ?_⟩ · exact des_of_map l (UnF l n) (RingHom.id _) n (fun A x => un_kill l A n x) (des_Un l h.1 h.2.2.2.1 n) s hw · exact des_of_map l (AcrF l n) (algebraMap _ _) n (fun A x => acr_kill l A n x) (des_Acr l h.1 h.2.1 h.2.2 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem out_of_rin (h : RIn l) : Out l := fun s hs n => by
   have hw := wm_span l h.1 s hs n

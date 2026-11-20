@@ -97,7 +97,7 @@ def PropZSlope : Prop :=
         ValConst f ϖ D sig M n
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Z f D hD sig hs`. Take `⟨ρ, hρ⟩` from `h O ϖ hϖ Z f D hD sig hs`. Use `⟨ρ.den, ρ.num, ρ.den_pos, hρ _ _ ρ.den_pos ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `(Rat.mul_den_eq_num ρ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PropZSlope.propZ (h : PropZSlope) : PropZ := by
   intro O _ _ _ ϖ hϖ Z f D hD sig hs
@@ -112,7 +112,7 @@ def trivLB (Z : Scheme.{0}) : LB Z where
   g := fun _ _ => 1
 
 /- English proof (translation)
-Establish `key : ∀ (W : Y.Opens) (k : K) (hh : W ≤ φ k ⁻¹ᵁ (D.U (i k) ⊓ D.U (j k))), res hh (pullU (φ k) _ (D.g (i k) (j k))) ^ (ε k) = 1`. Introduce `W k hh`. Rewrite using `[h1, map_one, map_one, one_zpow]`. Conclude with `@Finset.prod_eq_one K (Γ(Y, D.wchart φ i ⊓ D.wchart φ j)ˣ) _ _ _ (fun k _ => key _ k _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linComb_g_one {Y Z : Scheme.{0}} (D : LB Z) (h1 : ∀ a b, D.g a b = 1) {K : Type}
     [Fintype K] (φ : K → (Y ⟶ Z)) (ε : K → ℤ) (i j : K → D.ι) :
@@ -124,7 +124,7 @@ theorem linComb_g_one {Y Z : Scheme.{0}} (D : LB Z) (h1 : ∀ a b, D.g a b = 1) 
   exact @Finset.prod_eq_one K (Γ(Y, D.wchart φ i ⊓ D.wchart φ j)ˣ) _ _ _ (fun k _ => key _ k _)
 
 /- English proof (translation)
-The claim follows from `isIntegrallyClosed_of_isLocalization _ z.asIdeal.primeCompl z.asIdeal.primeCompl_le_nonZeroDivisors`.
+A detailed English derivation is pending.
 -/
 theorem normal_stalk (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     (z : PrimeSpectrum A) : IsIntegrallyClosed ((Spec.structureSheaf A).presheaf.stalk z) :=
@@ -132,11 +132,11 @@ theorem normal_stalk (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     z.asIdeal.primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-Use `⟨inferInstance, fun z => ?_, inferInstance, inferInstance, ?_, ⟨?_, ?_, ?_⟩, ⟨⟨fun _ => 1⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `normal_stalk O z`. Establish `: ConnectedSpace (Spec (CommRingCat.of (IsLocalRing.ResidueField O)))` using `inferInstance`. Set `e` to `pullback.snd (𝟙 (Spec (.of O))) (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))`. Conclude with `(Scheme.homeoOfIso (asIso e)).symm.surjective.connectedSpace (Scheme.homeoOfIso (asIso e)).symm.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[trivLB]`. Introduce `i`. Conclude with `map_one _`. Introduce `i j k`. Express the relevant statement in the definitionally equal form `res _ 1 * res _ 1 = res _ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `i j`. Use `(map_one _).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) (linComb_g_one (trivLB _) (fun _ _ => rfl) _ _ i j) (map_one _)).trans (one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem hyp_spec (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     Hyp (𝟙 (Spec (.of O))) (trivLB _) := by

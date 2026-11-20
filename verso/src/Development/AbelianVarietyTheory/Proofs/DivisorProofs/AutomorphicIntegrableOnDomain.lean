@@ -14,21 +14,17 @@ namespace GlobalTheory.RightTransFD
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HermUnimod.exists_anti hcm`. Establish `hJ' : IsHermND σ (δ • J.map σ)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hσδ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJ j i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, show J.map σ = (σ : E →+* E).mapMatrix J from rfl, ← RingHom.map_det]`. Conclude with `mul_ne_zero (pow_ne_zero _ hδ) ((map_ne_zero _).2 hd)`. Establish `heq : GlobalTheory.WeilM.UG (cA σ) (incM F J) = HR (AF F) σ (δ • J.map σ)` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) hσ hδ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : UA σ J ≃* HA (AF F) σ (δ • J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (AF F) σ (δ • J.map σ)) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (HA (AF F) σ (δ • J.map σ)) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ (δ • J.map σ)))`. Use `haveI : ContinuousMul (UA σ J) := ⟨by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (fun p : UA σ J × UA σ J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`. Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))⟩`. Use `haveI : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ e he he'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : (μ.map e).IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ hσ hδ hσδ hJ' (μ.map e)`. Establish `hem : Measurable e` using `he.measurable`. Establish `hem' : Measurable e.symm` using `he'.measurable`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hmg : Measurable fun y : HA (AF F) σ (δ • J.map σ) => y * e g` using `(continuous_mul_right (e g)).measurable`.
-
-Establish `h1 : (μ.map e).map e.symm = μ`. Rewrite using `[Measure.map_map hem' hem]`. Establish `: (e.symm ∘ e : UA σ J → UA σ J) = id` using `funext fun x => e.symm_apply_apply x`. Rewrite using `[this, Measure.map_id]`. Establish `h2 : ((μ.map e).map (fun y => y * e g)).map e.symm = μ.map (· * g)`.
-
-Rewrite using `[Measure.map_map hmg hem, Measure.map_map hem' (hmg.comp hem)]`. Use `congr 1`. Rewrite using `[← h2, hR.map_mul_right_eq_self (e g), h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_skewND {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {m : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (hd : J.det ≠ 0) (μ : Measure (UA σ J)) [μ.IsHaarMeasure] :
@@ -76,9 +72,7 @@ theorem isMulRightInvariant_skewND {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {
   rw [← h2, hR.map_mul_right_eq_self (e g), h1]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm m JY hJ hd μ 𝓕 hμ h𝓕 F₁ hF₁ x`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnipCT.topFacts σ JY`. Use `haveI : BorelSpace (UA σ JY) := ⟨rfl⟩`. Use `haveI : μ.IsMulRightInvariant := isMulRightInvariant_skewND hcm JY hJ hd μ`. Use `haveI : Countable (ratU σ JY) := GlobalTheory.UnipCT.countable_ratU (σ := σ) JY`.
-
-Conclude with `⟨fun hi => GlobalTheory.ThetaCplV.integrableOn_mul_right h𝓕 F₁ hF₁ hi x, GlobalTheory.ThetaCplV.setIntegral_mul_right h𝓕 F₁ hF₁ x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_mul_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (m : ℕ) (JY : Matrix (Fin m) (Fin m) E), (∀ i j, σ (JY j i) = -JY i j) → JY.det ≠ 0 → ∀ (μ : Measure (UA σ JY)) (𝓕 : Set (UA σ JY)), μ.IsHaarMeasure → IsFundamentalDomain (ratU σ JY) 𝓕 μ → ∀ F₁ : UA σ JY → ℂ, (∀ γ ∈ ratU σ JY, ∀ h, F₁ (γ * h) = F₁ h) → ∀ x : UA σ JY, (IntegrableOn F₁ 𝓕 μ → IntegrableOn (fun h => F₁ (h * x)) 𝓕 μ) ∧ ∫ h in 𝓕, F₁ (h * x) ∂μ = ∫ h in 𝓕, F₁ h ∂μ := by
   intro F E _ _ _ _ _ σ hcm m JY hJ hd μ 𝓕 hμ h𝓕 F₁ hF₁ x

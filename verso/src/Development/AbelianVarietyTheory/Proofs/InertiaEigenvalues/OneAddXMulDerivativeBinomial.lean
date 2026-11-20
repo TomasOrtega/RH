@@ -17,13 +17,13 @@ open PowerSeries
 section Algebra
 
 /- English proof (translation)
-Establish `hc : ∀ (f : L⟦X⟧) (n : ℕ), coeff n ((1 + X) * d⁄dX L f) = coeff (n + 1) f * (n + 1) + coeff n f * n`. Introduce `f n`. Rewrite using `[add_mul, one_mul, map_add, coeff_derivative]`. Consider the cases of `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n => rw [coeff_succ_X_mul, coeff_derivative]`. Simplify using the standard rewrite rules. Use extensionality with `n`. Rewrite using `[hc, coeff_C_mul]`. Simplify using `only [binomialSeries_coeff, ← Algebra.algebraMap_eq_smul_one]`.
+Treat this case separately. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `Ring.descPochhammer_eq_factorial_smul_choose c (n + 1)`. Rewrite `h1` using `[descPochhammer_succ_right, Polynomial.smeval_mul, Ring.descPochhammer_eq_factorial_smul_choose]`. Simplify using `only [Polynomial.smeval_sub, Polynomial.smeval_X, Polynomial.smeval_natCast, pow_one, pow_zero, nsmul_eq_mul, mul_one, Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one] at h1`. Establish `h2` using `congrArg (algebraMap ℤ_[l] L) h1`. Simplify using `only [map_mul, map_sub, map_add, map_natCast, map_one] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : (n.factorial : L) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Take the linear combination `-h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_add_X_mul_derivative_binomial {l : ℕ} [Fact l.Prime] (L : Type) [Field L] [CharZero L]
     [Algebra ℤ_[l] L] (c : ℤ_[l]) :
@@ -49,7 +49,7 @@ theorem one_add_X_mul_derivative_binomial {l : ℕ} [Fact l.Prime] (L : Type) [F
   linear_combination -h2
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `h` using `congrArg (coeff n) (derivative_exp L)`. Rewrite `h` using `[coeff_derivative]`. Rewrite using `[coeff_derivative, coeff_C_mul, coeff_rescale, coeff_rescale, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivative_rescale_exp (L : Type) [Field L] [Algebra ℚ L] (a : L) :
     d⁄dX L (rescale a (exp L)) = C a * rescale a (exp L) := by
@@ -60,9 +60,9 @@ theorem derivative_rescale_exp (L : Type) [Field L] [Algebra ℚ L] (a : L) :
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih`. Establish `h1` using `congrArg (coeff n) hf`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (coeff n) hg`. Rewrite `h1`, `h2` using `[coeff_derivative, coeff_C_mul]`. Establish `h3 : ((n : L) + 1) ≠ 0` using `by exact_mod_cast n.succ_ne_zero`. Apply `mul_right_cancel₀ h3` to reduce the goal to its premises. Rewrite using `[h1, h2, ih]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ode_unique {L : Type} [Field L] [CharZero L] (a : L) {f g : L⟦X⟧} (hf : d⁄dX L f = C a * f)
     (hg : d⁄dX L g = C a * g) (h0 : constantCoeff f = constantCoeff g) : f = g := by
@@ -78,7 +78,7 @@ theorem ode_unique {L : Type} [Field L] [CharZero L] (a : L) {f g : L⟦X⟧} (h
     rw [h1, h2, ih]
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_rescale_exp (L : Type) [Field L] [Algebra ℚ L] (a : L) :
     constantCoeff (rescale a (exp L)) = 1 := by
@@ -88,19 +88,19 @@ variable {l : ℕ} [Fact l.Prime] {O L : Type} [CommRing O] [Field L] [CharZero 
   [Algebra ℤ_[l] L] [Algebra O L] [IsScalarTower ℤ_[l] O L]
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (rescale m (exp L) - 1) = 0`. Rewrite using `[map_sub, constantCoeff_rescale_exp, map_one, sub_self]`. Establish `hs : HasSubst (rescale m (exp L) - 1)` using `HasSubst.of_constantCoeff_zero' h0`. Set `g : L⟦X⟧ →ₐ[L] L⟦X⟧` to `substAlgHom hs`. Establish `gX : g X = rescale m (exp L) - 1` using `substAlgHom_X hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `gC : ∀ r : L, g (C r) = C r` using `fun r => g.commutes r`. Establish `e : ∀ a, g a = subst (rescale m (exp L) - 1) a` using `fun a => congrFun (coe_substAlgHom hs) a`. Establish `hfg : (f : O⟦X⟧ →+* L⟦X⟧) = (g : L⟦X⟧ →+* L⟦X⟧).comp (PowerSeries.map (algebraMap O L))`. Use `GlobalTheory.Fon.ps_hom_ext (fun r => ?_) ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (C r) = g (PowerSeries.map (algebraMap O L) (C r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_C, gC]`. Rewrite using `[← PowerSeries.algebraMap_apply, ← f.commutes]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `f X = g (PowerSeries.map (algebraMap O L) X)`. Rewrite using `[map_X, gX, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Fon.eq_zero_of_pow_dvd ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `constantCoeff (f X) = 0`. Rewrite using `[hf, h0]`. Establish `h1 : f (binomialSeries O w) = g (binomialSeries L w)`. Use `RingHom.congr_fun hfg (binomialSeries O w)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.Fon.map_binomialSeries (algebraMap O L) (fun z => (IsScalarTower.algebraMap_apply ℤ_[l] O L z).symm) w]`. Conclude with `this`. Rewrite using `[h1]`. Use `ode_unique _ ?_ (derivative_rescale_exp L _) ?_` and prove the remaining obligations. Establish `h2` using `congrArg g (one_add_X_mul_derivative_binomial L w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_mul, map_mul, map_add, map_one, gX, gC]`. Establish `h3 : d⁄dX L (g (binomialSeries L w)) = g (d⁄dX L (binomialSeries L w)) * (C m * rescale m (exp L))`. Rewrite using `[e, e, derivative_subst hs, map_sub, derivative_rescale_exp]`. Simplify using the standard rewrite rules. Rewrite using `[h3, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(C m) * h2`. Take `⟨b, hb⟩ : (X : L⟦X⟧) ∣ binomialSeries L w - 1` from `X_dvd_iff.2 (by simp)`. Rewrite using `[sub_eq_iff_eq_add.1 hb, map_add, map_mul, map_one, gX, map_add, map_mul, h0, constantCoeff_rescale_exp]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_binomial_of_exp (f : O⟦X⟧ →ₐ[O] L⟦X⟧) (m : L) (hf : f X = rescale m (exp L) - 1) (w : ℤ_[l]) :
     f (binomialSeries O w) = rescale (m * algebraMap ℤ_[l] L w) (exp L) := by
@@ -142,9 +142,9 @@ theorem map_binomial_of_exp (f : O⟦X⟧ →ₐ[O] L⟦X⟧) (m : L) (hf : f X 
     simp
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hc`. Establish `hnat : ∀ k : ℕ, f (binomialSeries O (k : ℤ_[l])) = C (ζ ^ k) * rescale (k : L) (exp L)`. Introduce `k`. Rewrite using `[binomialSeries_nat, map_pow, map_add, map_one, hf, add_sub_cancel, mul_pow, exp_pow_eq_rescale_exp, map_pow]`. Establish `h1` using `map_binomial_of_exp (f.comp (GlobalTheory.Fon.gam O ((l ^ j : ℕ) : ℤ_[l]))) ((l ^ j : ℕ) : L) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, GlobalTheory.Fon.gam_X, map_sub, hnat, hζ, map_one, map_one, one_mul]) w`. Rewrite `h1` using `[AlgHom.comp_apply, GlobalTheory.Fon.gam_binomialSeries]`. Establish `h2 : c = (a : ℤ_[l]) + ((l ^ j : ℕ) : ℤ_[l]) * w` using `by push_cast; linear_combination hw`. Rewrite using `[GlobalTheory.Fon.gam_X, map_sub, map_one, h2, binomialSeries_add, map_mul, h1, hnat, mul_assoc, exp_mul_exp_eq_exp_add, map_add, map_mul, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_gam_X (f : O⟦X⟧ →ₐ[O] L⟦X⟧) (ζ : L) (hf : f X = C ζ * exp L - 1) (j a : ℕ)
     (hζ : ζ ^ l ^ j = 1) (c : ℤ_[l]) (hc : (l : ℤ_[l]) ^ j ∣ c - a) :
@@ -176,11 +176,9 @@ variable {l : ℕ} [Fact l.Prime] {O L : Type} [CommRing O] [Field L] [CharZero 
   [Algebra ℤ_[l] L] [Algebra O L] [IsScalarTower ℤ_[l] O L] {v : AddValuation L (WithTop ℚ)}
 
 /- English proof (translation)
-Establish `h' : (ζ ^ a) ^ l ^ j = 1` using `by rw [← pow_mul, mul_comm, pow_mul, h, one_pow]`. Establish `hr : ∀ y : L⟦X⟧, rescaleAlgHom (algebraMap ℤ_[l] L c) y = rescale (algebraMap ℤ_[l] L c) y` using `fun y => by simp [rescaleAlgHom, rescale_eq, MvPowerSeries.rescaleAlgHom_apply]`. Use `(H (C (ζ ^ a) * rescale (algebraMap ℤ_[l] L c) (exp L) - 1) ⟨j, by` as an intermediate fact. Rewrite using `[map_sub, map_mul, constantCoeff_rescale_exp, constantCoeff_C, mul_one, map_one, sub_add_cancel, h']⟩).1.unique (y₁ := f.comp (GlobalTheory.Fon.gam O c))`. Use the proof step `(y₂ := ((rescaleAlgHom (algebraMap ℤ_[l] L c)).restrictScalars O).comp g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `(map_gam_X f ζ hf j a h c hc) (by`. Express the relevant statement in the definitionally equal form `rescaleAlgHom _ (g X) = _`. Rewrite using `[hg, map_sub, map_mul, map_one, hr (exp L)]`. Use `congr 2`. Conclude with `(rescaleAlgHom _).commutes _)`.
-
-Conclude with `(AlgHom.congr_fun this b).trans (hr _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ev_gam (H : EvLaw l (O := O) v inferInstance) {ζ : L} {j a : ℕ} (h : ζ ^ l ^ j = 1) (c : ℤ_[l])
     (hc : (l : ℤ_[l]) ^ j ∣ c - a) {f g : O⟦X⟧ →ₐ[O] L⟦X⟧} (hf : f X = C ζ * exp L - 1)
@@ -203,13 +201,11 @@ theorem ev_gam (H : EvLaw l (O := O) v inferInstance) {ζ : L} {j a : ℕ} (h : 
 omit [Fact l.Prime] [CharZero L] [Algebra ℤ_[l] O] [Algebra ℤ_[l] L] [IsScalarTower ℤ_[l] O L] in
 
 /- English proof (translation)
-Set `z : L → L` to `fun ζ => if ∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j) then ζ else 1`. Establish `hz : ∀ ζ, ∃ j : ℕ, (constantCoeff (C (z ζ) * exp L - 1) + 1) ^ l ^ j = 1`. Introduce `ζ`. Rewrite using `[map_sub, map_mul, constantCoeff_exp, constantCoeff_C, mul_one, map_one, sub_add_cancel]`. Distinguish the cases in `h : ∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [z, if_pos h]`. Conclude with `h.imp fun j hj => hj.pow_eq_one`. Simplify using `[z, if_neg h]`. Establish `hex : ∀ ζ : Set.range z, ∃ ev : O⟦X⟧ →ₐ[O] L⟦X⟧, ev X = C (ζ : L) * exp L - 1`. Introduce and unpack `⟨_, ζ, rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(H _ (hz ζ)).1.exists`. Use `choose ev hev using hex`. Use `⟨fun ζ => ev ⟨z ζ, ζ, rfl⟩, fun ζ h => ?_, fun ζ h => ?_, fun ζ => ?_⟩` and prove the remaining obligations. Simplify using `only [hev, z, if_pos h]`. Use `congrArg ev (Subtype.ext ?_)` and prove the remaining obligations.
-
-Simplify using `only [z, if_neg h, ite_self]`. Simplify using `only [hev]`. Conclude with `hz ζ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ev (H : EvLaw l (O := O) v inferInstance) : ∃ ev : L → (O⟦X⟧ →ₐ[O] L⟦X⟧),
     (∀ ζ, (∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j)) → ev ζ X = C ζ * exp L - 1) ∧
@@ -237,7 +233,7 @@ theorem exists_ev (H : EvLaw l (O := O) v inferInstance) : ∃ ev : L → (O⟦X
 omit [CharZero L] [Algebra ℚ L] [Algebra ℤ_[l] L] in
 
 /- English proof (translation)
-Establish `h' : (ζ ^ a) ^ l ^ j = 1` using `by rw [← pow_mul, mul_comm, pow_mul, h.pow_eq_one, one_pow]`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow (Fact.out : l.Prime)).1 (orderOf_dvd_of_pow_eq_one h')`. Conclude with `⟨k, hk ▸ IsPrimitiveRoot.orderOf _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_primitive_pow {ζ : L} {j : ℕ} (h : IsPrimitiveRoot ζ (l ^ j)) (a : ℕ) :
     ∃ k : ℕ, IsPrimitiveRoot (ζ ^ a) (l ^ k) := by
@@ -253,15 +249,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra Qp L] [TopologicalSpace L] {n s : ℕ}
 
 /- English proof (translation)
-Establish `hc' : ∀ g, algebraMap O L (Γ.χΓ g : O) = algebraMap ℤ_[l] L (c g : ℤ_[l])` using `fun g => by rw [← hc, ← IsScalarTower.algebraMap_apply]`. Take `⟨ev, hX, hjunk, hnorm⟩` from `exists_ev H`. Use `⟨{ φ₀ := GlobalTheory.Fon.phi0 l O q₀ := GlobalTheory.Fon.qq l O q₀_def := by rw [hp]; exact GlobalTheory.Fon.X_mul_qq _ _ φ₀_X := GlobalTheory.Fon.cyclotomicFrobeniusPowerSeries_X_eq_mul_quotient _ _ γ₀ := (GlobalTheory.Fon.gamHom O).comp ((Units.coeHom ℤ_[l]).comp c) γ₀_comm := …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev ζ (a i) = 0`. Rewrite using `[h, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Introduce `i ζ h`. Use `⟨exp L, constantCoeff_exp, derivative_exp _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 + ev ζ X = _`. Rewrite using `[hX ζ h, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Introduce and unpack `g i ζ _ j a h hj rfl f`. Rewrite `hj`, the goal using `[hc']`. Conclude with `ev_gam H h.pow_eq_one _ (hv _ j a hj) (hX ζ ⟨j, h⟩) (hX _ (exists_primitive_pow h a)) (f i)`. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `i ζ ⟨j, h⟩ f`. Use `ev_gam H h.pow_eq_one (l : ℤ_[l]) (a := l) (by simp) (hX ζ ⟨j, h⟩) (hX _ (exists_primitive_pow h l)) (f (i - 1))` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Fon.gam_l, map_natCast]`. Conclude with `this`. Rewrite using `[hp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i ζ h`. Rewrite using `[hjunk ζ h]`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_wSer_of_evLaw [NeZero n] [IsHausdorff (Ideal.span {(l : O)}) O] (Γ : WGam PD L O v n s)
     (hp : PD.p = l) (c : Γ.Gam →* ℤ_[l]ˣ) (hc : ∀ g, algebraMap ℤ_[l] O (c g : ℤ_[l]) = (Γ.χΓ g : O))
@@ -325,15 +321,13 @@ section Local
 variable {l : ℕ} [Fact l.Prime] (LL : FinExt l)
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hn : l ^ j ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Establish `h1 : ‖ζ‖ = 1`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`. Set `S : Subring (Om l)` to `(Valued.v : Valuation (Om l) NNReal).integer`. Establish `hS : ∀ x : Om l, x ∈ S ↔ ‖x‖ ≤ 1` using `fun x => by`. Rewrite using `[Valuation.mem_integer_iff, PadicAlgCl.valuation_def, ← NNReal.coe_le_coe]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp ((⟨ζ, (hS _).2 h1.le⟩ : S) - 1) 1 j`. Establish `h2` using `congrArg S.subtype hr`. Simplify using `only [map_add, map_mul, map_pow, map_sub, map_one, map_natCast, sub_add_cancel, one_pow, mul_one] at h2`. Express the relevant statement in the definitionally equal form `ζ ^ l ^ j = (ζ - 1) ^ l ^ j + 1 + l * (ζ - 1) * (r : Om l) at h2`. Establish `h3 : (ζ - 1) ^ l ^ j = -(l * (ζ - 1) * (r : Om l))` using `by linear_combination h - h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ‖(l : Om l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Establish `h4 : ‖ζ - 1‖ ≤ 1` using `(hS _).1 (S.sub_mem ((hS _).2 h1.le) S.one_mem)`. Establish `h5 : ‖ζ - 1‖ ^ l ^ j < 1`.
-
-Rewrite using `[← norm_pow, h3, norm_neg, norm_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (by positivity) (mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hl h4) ((hS _).1 r.2)`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hn).1 h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_one_lt {ζ : Om l} {j : ℕ} (h : ζ ^ l ^ j = 1) : ‖ζ - 1‖ < 1 := by
   have hp : l.Prime := Fact.out
@@ -363,9 +357,9 @@ theorem norm_sub_one_lt {ζ : Om l} {j : ℕ} (h : ζ ^ l ^ j = 1) : ‖ζ - 1�
 variable {LL}
 
 /- English proof (translation)
-Rewrite `h` using `[← WithTop.coe_natCast, (NormVal.locPrime_v_normalised l P LL).2.1, ← map_natCast (algebraMap ℤ_[l] ↥LL.1), ← map_sub]`. Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[l] (Om l) ((c - a : ℤ_[l]) : ℚ_[l])‖ ≤ _ at h`. Rewrite `h` using `[PadicAlgCl.norm_extends]`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_def]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Real.rpow_intCast]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dvd_of_le_v (P : LocPrime l) (c : ℤ_[l]) (j a : ℕ)
     (h : (j : WithTop ℚ) ≤ P.v LL (algebraMap ℤ_[l] ↥LL.1 c - (a : ↥LL.1))) : (l : ℤ_[l]) ^ j ∣ c - a := by
@@ -378,7 +372,7 @@ theorem dvd_of_le_v (P : LocPrime l) (c : ℤ_[l]) (j a : ℕ)
   rw [← Real.rpow_intCast]; simp
 
 /- English proof (translation)
-Take `⟨hn, -, -⟩` from `GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc`. Set `f : GQ l →* ℤ_[l]` to `{ toFun := fun g => ⟨(P.χQ g : ℚ_[l]), (hn g).le⟩ map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(P.χQ (a * b) : ℚ_[l]) = (P.χQ a : ℚ_[l]) * (P.χQ b : ℚ_[l])`. Rewrite using `[map_mul, Units.val_mul]) }`. Conclude with `⟨f.toHomUnits, fun g => rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem exists_integral_chi (P : LocPrime l) :
     ∃ χ : GQ l →* ℤ_[l]ˣ, ∀ g, (((χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = (P.χQ g : ℚ_[l]) := by
@@ -392,13 +386,11 @@ private theorem exists_integral_chi (P : LocPrime l) :
   exact ⟨f.toHomUnits, fun g => rfl⟩
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_integral_chi P`. Establish `hO : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Establish `hZ : Function.Injective (algebraMap ℤ_[l] ↥(OL LL))`. Introduce `x y h`. Establish `h1` using `congrArg (algebraMap ↥(OL LL) ↥LL.1) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l], IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] _ y]`. Conclude with `Subtype.ext ((algebraMap ℚ_[l] ↥LL.1).injective h1)`. Establish `hex : ∀ g : Γ.Gam, ∃ c : ℤ_[l]ˣ, algebraMap ℤ_[l] ↥(OL LL) (c : ℤ_[l]) = (Γ.χΓ g : ↥(OL LL))`. Introduce `g`. Take `⟨σ, rfl⟩` from `Γ.resΓ_onto g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨χ σ, hO ?_⟩` and prove the remaining obligations. Rewrite using `[Γ.χΓ_res, P.PD_χ, ← hχ, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l]]`. Both sides reduce to the same expression. Use `choose c hc using hex`. Conclude with `⟨MonoidHom.mk' c fun g h => Units.ext (hZ (by`.
-
-Rewrite using `[Units.val_mul, map_mul, hc, hc, hc, map_mul, Units.val_mul])), hc⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_padic_char {P : LocPrime l} {K : FinExt l} {s : ℕ} (Γ : GamS P K s LL) :
     ∃ c : Γ.Gam →* ℤ_[l]ˣ, ∀ g, algebraMap ℤ_[l] ↥(OL LL) (c g : ℤ_[l]) = (Γ.χΓ g : ↥(OL LL)) := by
@@ -423,11 +415,11 @@ theorem exists_padic_char {P : LocPrime l} {K : FinExt l} {s : ℕ} (Γ : GamS P
 end Local
 
 /- English proof (translation)
-Introduce and unpack `x ⟨j, hj⟩`. Establish `h1 : (((constantCoeff x + 1 : ↥LL.1)) : Om l) ^ l ^ j = 1`. Conclude with `congrArg (fun x : ↥LL.1 => (x : Om l)) hj` after adjusting the coercions. Establish `h2` using `norm_sub_one_lt h1`. Establish `h3 : (((constantCoeff x + 1 : ↥LL.1)) : Om l) - 1 = ((constantCoeff x : ↥LL.1) : Om l)` using `by push_cast; ring`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Use `⟨(GlobalTheory.HWL.SeriesEval.existsUnique_ev l LL x h2).1, fun ev hev a k r => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.HWL.SeriesEval.existsUnique_ev l LL x h2).2 ev hev a k`. Establish `hl : (0 : ℝ) < (l : ℝ) ^ (-((r : ℚ) : ℝ))` using `Real.rpow_pos_of_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Take `⟨m₀, hm⟩` from `Metric.tendsto_atTop.1 h _ hl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m₀, fun m hm' => ?_⟩` and prove the remaining obligations. Rewrite using `[← WithTop.coe_natCast, (NormVal.locPrime_v_normalised l P LL).2.1]`. Use `(hm m hm').le` as an intermediate fact. Rewrite `this` using `[dist_comm, dist_eq_norm]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evLaw_integers {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l) :
     EvLaw l (O := ↥(OL LL)) (P.v LL) (OL LL).toAlgebra := by
@@ -450,9 +442,9 @@ theorem evLaw_integers {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l)
   exact this
 
 /- English proof (translation)
-Introduce `l _ P K s LL _ Γ`. Take `⟨_, hcomp, -, hu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Establish `: IsHausdorff (Ideal.span {(l : ↥(OL LL))}) ↥(OL LL)` using `⟨fun x hx => IsHausdorff.haus (I := IsLocalRing.maximalIdeal ↥(OL LL)) inferInstance x fun k => (hx k).mono (Submodule.smul_mono_left (Ideal.pow_right_mono ((Ideal.span_singleton_le_iff_mem _).2 hu) k))⟩`. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `(P.PD K).finK₀`. Establish `: NeZero (Module.finrank ℚ_[l] ↥(K0 K))` using `⟨Module.finrank_pos.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_padic_char Γ`. Use `nonempty_wSer_of_evLaw Γ (P.PD_p K) c hc (dvd_of_le_v P) ?_` and prove the remaining obligations. Use `evLaw_integers P LL using 1` and compare the differences between its conclusion and the goal. Conclude with `Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem nonempty_wSer : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ Γ : GamS P K s LL, Nonempty (WSer Γ) := by
   intro l _ P K s LL _ Γ

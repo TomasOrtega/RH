@@ -32,15 +32,13 @@ def IsGridFr (W : G.Weil) (X : Node) (A : Fr (G.V X)) : Prop :=
   ∀ τ, A.onb τ = W.onb X τ ∧ A.cart τ = W.cart X τ
 
 /- English proof (translation)
-Use `choose ε hε using W.onb_is X hX`. Establish `hu : ∀ τ, IsUnit (W.onb X τ)` using `fun τ => by`. Establish `h1 : IsUnit ((W.onb X τ)ᴴ * gramAt D (G.V X) τ * W.onb X τ)`. Rewrite using `[(hε τ).1]`. Apply the tactic sequence `refine ⟨⟨Formalism.REAL.Jm (ε τ), Formalism.REAL.Jm (ε τ), ?_, ?_⟩, rfl⟩ <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Apply the tactic sequence `subst h; cases h' : ε τ a <;> simp [Formalism.REAL.Jm, Matrix.mul_apply, Matrix.diagonal_apply, h', Matrix.one_apply]`. Simplify using `[Formalism.REAL.Jm, Matrix.mul_apply, Matrix.diagonal_apply, h, Matrix.one_apply]`. Rewrite `h1`, the goal using `[Matrix.isUnit_iff_isUnit_det]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right h1`. Use `⟨⟨ε, fun τ => (W.onb X τ)⁻¹, fun τ => (Matrix.isUnit_nonsing_inv_iff).2 (hu τ), fun τ => ?_⟩, fun τ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hd : IsUnit (W.onb X τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hu τ)`. Rewrite using `[← (hε τ).1, Matrix.conjTranspose_nonsing_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ (by simpa [Matrix.det_conjTranspose] using hd.star), Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Establish `hd : IsUnit (W.onb X τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hu τ) show ((W.onb X τ)⁻¹)⁻¹ = W.onb X τ`. Conclude with `Matrix.nonsing_inv_nonsing_inv _ hd`. Establish `hd : IsUnit (W.onb X τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hu τ) show ((W.onb X τ)⁻¹)⁻¹ * Formalism.REAL.Jm (ε τ) * (W.onb X τ)⁻¹ = W.cart X τ`.
-
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd, ← (hε τ).2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGridFr (W : G.Weil) {X : Node} (hX : X.InRange D.R.m) : ∃ A : Fr (G.V X), IsGridFr W X A := by
   choose ε hε using W.onb_is X hX

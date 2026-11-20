@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq | exact GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq | (intros; apply GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ordQ_mapDomain_residuePlace_transport : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (Q : Subring L) (u : Q)
   (S E : Place cL) (ψ : S.ring →+* K) (F : Place cK),

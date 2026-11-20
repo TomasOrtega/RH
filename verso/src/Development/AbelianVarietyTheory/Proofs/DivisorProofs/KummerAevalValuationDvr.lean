@@ -5,7 +5,7 @@ open Polynomial IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a hp => simp [hp, pow_succ, ← mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem kummer_residue_aeval (T V : Type) [CommRing T] [IsLocalRing T] [CommRing V] [IsLocalRing V]
     [Algebra T V] [IsLocalHom (algebraMap T V)] (γ : V) (p : T[X]) :
@@ -16,23 +16,21 @@ theorem kummer_residue_aeval (T V : Type) [CommRing T] [IsLocalRing T] [CommRing
   | monomial n a hp => simp [hp, pow_succ, ← mul_assoc]
 
 /- English proof (translation)
-Use `set γ' := residue V γ with hγ'`. Use `set f : (ResidueField T)[X] := X ^ k - C (residue T u) with hf`. Establish `hkκ : ((k : ℕ) : ResidueField T) ≠ 0`. Use `(hk.map (residue T)).ne_zero` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : residue T u ≠ 0` using `(hu.map (residue T)).ne_zero`. Establish `hsep : f.Separable` using `separable_X_pow_sub_C _ hkκ hu'`. Establish `hfγ : aeval γ' f = 0`. Use `congrArg (residue V) hγ` as an intermediate fact. Simplify using `only [map_pow] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hf, hγ', this]`. Establish `hhm : aeval γ' (h.map (residue T)) = 0`. Rewrite using `[hγ', ← kummer_residue_aeval]`. Conclude with `(residue_eq_zero_iff _).mpr hm`. Take `⟨νb, hνb⟩` from `minpoly.dvd (ResidueField T) γ' hfγ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨qb, hqb⟩` from `minpoly.dvd (ResidueField T) γ' hhm`. Establish `hνne : aeval γ' νb ≠ 0`. Introduce `h0`. Establish `hcop : IsCoprime (minpoly (ResidueField T) γ') νb` using `Separable.isCoprime (hνb ▸ hsep)`. Take `⟨a, b, hab⟩` from `hcop`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `congrArg (aeval γ') hab` as an intermediate fact. Simplify using `[minpoly.aeval, h0] at this`. Take `⟨ν, rfl⟩` from `map_surjective (residue T) residue_surjective νb`. Take `⟨q, rfl⟩` from `map_surjective (residue T) residue_surjective qb`. Use `set D : T[X] := h * ν - q * (X ^ k - C u) with hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hDm : D.map (residue T) = 0`. Establish `e1 : (X ^ k - C u).map (residue T) = f` using `by simp [hf]`. Rewrite using `[hD, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_mul, e1, hνb, hqb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDI : D ∈ Ideal.span {C ϖ}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: D ∈ Ideal.map (C : T →+* T[X]) (maximalIdeal T)`. Rewrite using `[Ideal.mem_map_C_iff]`. Introduce `n`. Rewrite using `[← residue_eq_zero_iff, ← coeff_map, hDm, coeff_zero]`. Rewrite `this` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hDI`. Use `⟨ν, r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← residue_ne_zero_iff_isUnit, kummer_residue_aeval]`. Conclude with `hνne`. Use `congrArg (aeval γ) hr` as an intermediate fact.
-
-Simplify using `only [hD, map_mul, map_sub, map_pow, aeval_X, aeval_C, hγ, sub_self, mul_zero, sub_zero] at this`. Rewrite using `[← this, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_step_one (T V : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Algebra T V]
@@ -88,19 +86,17 @@ theorem kummer_step_one (T V : Type) [CommRing T] [IsDomain T] [IsDiscreteValuat
     rw [← this, mul_comm]
 
 /- English proof (translation)
-Introduce `T V _ _ _ _ _ _ _ _ hinj γ ϖ u k hϖ hu hk hk0 hγ h`. Distinguish the cases in `h0 : aeval γ h = 0`. Conclude with `Or.inl h0`. Use `right`. Establish `hϖV : ¬ IsUnit (algebraMap T V ϖ)` using `fun h' => hϖ.not_isUnit (isUnit_of_map_unit _ _ h')`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `H : ∀ x : V, ∀ h : T[X], aeval γ h = x → x ≠ 0 → ∃ (a : ℕ) (h' c : T[X]), IsUnit (aeval γ c) ∧ IsUnit (aeval γ h') ∧ aeval γ c * aeval γ h = algebraMap T V ϖ ^ a * aeval γ h' from H _ h rfl h0`. Introduce `x`. Use `(wellFounded_dvdNotUnit (α := V)).induction (C := fun x => ∀ h : T[X], aeval γ h = x → x ≠ 0 → ∃ (a : ℕ) (h' c : T[X]), IsUnit (aeval γ c) ∧ IsUnit (aeval γ h') ∧ aeval γ c * aeval γ h = algebraMap T V ϖ ^ a * aeval γ h') x ?_` and prove the remaining obligations. Introduce `x ih h hx hx0`. Substitute `hx` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hunit : IsUnit (aeval γ h)`. Conclude with `⟨0, h, 1, by simp, hunit, by simp⟩`. Establish `hm : aeval γ h ∈ maximalIdeal V` using `(mem_maximalIdeal _).mpr hunit`. Take `⟨ν, r, hν, hr⟩` from `kummer_step_one T V γ ϖ u k hϖ hu hk hk0 hγ h hm`. Establish `hr0 : aeval γ r ≠ 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Rewrite `hr` using `[h', mul_zero]`. Conclude with `mul_ne_zero hx0 hν.ne_zero hr`. Establish `hdvd : DvdNotUnit (aeval γ r) (aeval γ h)`. Use `⟨hr0, algebraMap T V ϖ * ↑hν.unit⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `hu'`. Conclude with `hϖV (isUnit_of_mul_isUnit_left hu')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, IsUnit.mul_val_inv, mul_one]`. Use `_ = _ := by rw [hr]; ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨a, h', c, hc, hh', he⟩` from `ih _ hdvd r rfl hr0`. Use `⟨a + 1, h', c * ν, ?_, hh', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `hc.mul hν`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap T V ϖ * (aeval γ c * aeval γ r) := by rw [hr]; ring`. Use `_ = _ := by rw [he]; ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kummer_valuation : ∀ (T V : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [Algebra T V] [IsLocalHom (algebraMap T V)],

@@ -18,11 +18,11 @@ theorem loc_coe_algebraMap (r : 𝓞 F) :
     ((algebraMap (𝓞 F) (𝓞 E) r : 𝓞 E) : E) = algebraMap F E (r : F) := rfl
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Conclude with `⟨hx.1, hx.2 (starO x) (starO_coe x)⟩`. Consider the case `one`. Establish `h1 : starO (1 : 𝓞 E) = 1` using `map_one (starOHom (E := E))`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `⟨PP.isPrime.ne_top ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one), PP.isPrime.ne_top ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one)⟩`. Consider the case `mul x y _ _ hx hy`. Establish `hm : starO (x * y) = starO x * starO y` using `map_mul (starOHom (E := E)) x y`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => (PP.isPrime.mem_or_mem h).elim hx.1 hy.1, fun h => (PP.isPrime.mem_or_mem h).elim hx.2 hy.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_hcompl_prop (PP : Pl E) (s : 𝓞 E) (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := E) PP.asIdeal) :
     s ∉ PP.asIdeal ∧ starO s ∉ PP.asIdeal := by
@@ -43,21 +43,17 @@ theorem loc_hcompl_prop (PP : Pl E) (s : 𝓞 E) (hs : s ∈ Formalism.Hermitian
 end LocEqSec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n PP L`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `Formalism.HermitianLatticesTheory.locBasic_mem_locS.mp hx`. Take `⟨hs1, hs2⟩` from `loc_hcompl_prop PP s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set m : 𝓞 E := s * starO s with hm`. Establish `hfix : star ((m : 𝓞 E) : E) = (m : E)` using `by show star ((s : E) * ((starO s : 𝓞 E) : E)) = (s : E) * ((starO s : 𝓞 E) : E)`. Rewrite using `[starO_coe, star_mul', star_star, mul_comm]`. Take `⟨a, ha⟩` from `(hc.fixed (m : E)).1 hfix`. Establish `hint : IsIntegral ℤ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral ℤ (algebraMap F E a)` using `by rw [ha]; exact m.2`. Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h2`. Use `set r : 𝓞 F := ⟨a, hint⟩ with hr`. Establish `hrm : algebraMap (𝓞 F) (𝓞 E) r = m`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[loc_coe_algebraMap]`. Conclude with `ha`. Establish `hmp : m ∉ PP.asIdeal` using `fun h => (PP.isPrime.mem_or_mem h).elim hs1 hs2`. Use `Formalism.HermitianLatticesTheory.locBasic_mem_locS.mpr ⟨m, ⟨r, ?_, hrm⟩, ?_⟩` and prove the remaining obligations. Use `show r ∉ (underPl F PP).asIdeal`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[underPl_asIdeal, Ideal.mem_comap, hrm]`. Conclude with `hmp`. Rewrite using `[hm, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hsx`. Apply `Formalism.HermitianLatticesTheory.locBasic_locS_le_of_le` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨r, hr, rfl⟩`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Establish `hr' : algebraMap (𝓞 F) (𝓞 E) r ∉ PP.asIdeal`. Introduce `h`. Apply `hr` to reduce the goal to its premises.
-
-Use `show r ∈ (underPl F PP).asIdeal`. Rewrite using `[underPl_asIdeal, Ideal.mem_comap]`. Conclude with `h`. Use `⟨hr', fun t ht htp => hr' ?_⟩` and prove the remaining obligations. Establish `hfix : star (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)) = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)` using `(hc.fixed _).2 ⟨(r : F), rfl⟩`.
-
-Rewrite `ht` using `[hfix]`. Establish `: t = algebraMap (𝓞 F) (𝓞 E) r` using `FaithfulSMul.algebraMap_injective (𝓞 E) E ht`. Rewrite using `[← this]`. Conclude with `htp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localEquality_holds : LocEq := by
   intro F E _ _ _ _ _ _ hc n PP L
@@ -108,7 +104,7 @@ section CommensSec
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨y, hy, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) s`. Use `⟨y, hy, fun x hx => ⟨⟨_, hint x hx⟩, ?_⟩⟩` and prove the remaining obligations. Use `show (y • x : E) = _`. Rewrite using `[zsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commens_denoms (s : Finset E) :
     ∃ d : ℤ, d ≠ 0 ∧ ∀ x ∈ s, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = (d : E) * x := by
@@ -120,27 +116,25 @@ theorem commens_denoms (s : Finset E) :
 end CommensSec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n N hN`. Take `⟨s, hs⟩` from `hN.fg`. Take `⟨d1, hd1, h1⟩` from `commens_denoms (s.biUnion fun x => Finset.univ.image x)`. Establish `hA : ∀ y ∈ N, ((d1 : 𝓞 E)) • y ∈ stdLat E n`. Establish `hle : N ≤ (stdLat E n).comap (((d1 : 𝓞 E)) • LinearMap.id)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs, Submodule.span_le]`. Introduce `x hx`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[stdLat, Submodule.mem_pi]`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_one]`. Take `⟨o, ho⟩` from `h1 (x i) (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩⟩)`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, Pi.smul_apply, Algebra.smul_def, map_intCast]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hle hy` as an intermediate fact. Simplify `this` using `only [Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hB : ∀ i : Fin n, Pi.single i (1 : E) ∈ Submodule.span E (N : Set (Sp E n))`. Introduce `i`. Rewrite using `[hN.span_eq_top]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Use `choose f t ht _ hsum using fun i => Submodule.mem_span_iff_exists_finset_subset.1 (hB i)`. Take `⟨d2, hd2, h2⟩` from `commens_denoms (Finset.univ.biUnion fun i => (t i).image (f i))`. Establish `hsingle : ∀ i : Fin n, ((d2 : 𝓞 E)) • Pi.single i (1 : E) ∈ N`. Introduce `i`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum i, Finset.smul_sum]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `a ha`. Take `⟨o, ho⟩` from `h2 (f i a) (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_image.2 ⟨a, ha, rfl⟩⟩)`. Establish `e : ((d2 : 𝓞 E)) • (f i a • a) = o • a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.cast_smul_eq_zsmul, ← Int.cast_smul_eq_zsmul E, smul_smul, ← ho, algebraMap_smul]`. Rewrite using `[e]`. Conclude with `N.smul_mem o (ht i ha)`. Establish `hC : ∀ y ∈ stdLat E n, ((d2 : 𝓞 E)) • y ∈ N`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[stdLat, Submodule.mem_pi]`. Use `choose o ho using fun i => Submodule.mem_one.1 (hy i (Set.mem_univ i))`. Establish `ey : y = ∑ i, o i • Pi.single i (1 : E)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, ← ho j, Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ey, Finset.smul_sum]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[smul_comm]`. Conclude with `N.smul_mem (o i) (hsingle i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨((d1 * d2 : ℤ) : 𝓞 F), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero hd1 hd2` after adjusting the coercions. Introduce `y hy`. Rewrite using `[map_intCast, Int.cast_mul, mul_comm, mul_smul]`. Conclude with `(stdLat E n).smul_mem _ (hA y hy)`.
-
-Introduce `y hy`. Rewrite using `[map_intCast, Int.cast_mul, mul_smul]`. Conclude with `N.smul_mem _ (hC y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commensurable_holds : Commens := by
   intro F E _ _ _ _ _ n N hN

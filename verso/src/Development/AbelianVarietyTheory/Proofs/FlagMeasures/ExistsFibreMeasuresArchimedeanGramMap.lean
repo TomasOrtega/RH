@@ -24,15 +24,15 @@ namespace GlobalTheory.ArchGramFibre
 open Formalism.L2.SG.Sub PI.VolFromSW PI.AdicCompletionValuation PI.VolStabS
 
 /- English proof (translation)
-Establish `: IsTotallyReal F` using `hCM.1`. Take `⟨k, eK, hK⟩` from `exists_coord_tens F E`. Take `⟨k1, e1, h1⟩` from `exists_coord_pi eK hK (Fin M)`. Take `⟨n, eV, hV⟩` from `exists_coord_pi e1 h1 (Fin a)`. Take `⟨k2, e2, h2⟩` from `exists_coord_pi eK hK (Fin a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, eM, hM⟩` from `exists_coord_pi e2 h2 (Fin a)`. Establish `hdiv : ∀ n : ℕ, 0 < n → ∀ S ∈ HermR (Ainf F) σ a, ∃ T ∈ HermR (Ainf F) σ a, n • T = S`. Introduce `n hn S hS`. Set `c : Ainf F ⊗[F] E` to `algebraMap F (Ainf F ⊗[F] E) (1 / n)`. Establish `hsc : sigR (Ainf F) σ c = c` using `(Algebra.TensorProduct.map (AlgHom.id F (Ainf F)) σ).commutes _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨c • S, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, hsc]`. Rewrite using `[hS i j]`. Establish `hc1 : (n : Ainf F ⊗[F] E) * c = 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [c]`. Rewrite using `[← map_natCast (algebraMap F (Ainf F ⊗[F] E)) n, ← map_mul]`. Establish `: (n : F) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[mul_one_div_cancel this, map_one]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, ← mul_assoc, hc1, one_mul]`. Take `⟨m, eH, hH⟩` from `exists_coord_sub (X := Matrix (Fin a) (Fin a) (Ainf F ⊗[F] E)) eM hM (HermR (Ainf F) σ a) (isClosed_HermR (Ainf F) σ a) hdiv`. Conclude with `⟨n, m, eV, eH, hV, hH⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_real_coords (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M a : ℕ) :
@@ -66,29 +66,25 @@ theorem exists_real_coords (F E : Type) [Field F] [NumberField F] [Field E] [Num
   exact ⟨n, m, eV, eH, hV, hH⟩
 
 /- English proof (translation)
-Introduce `X hX S`. Use `semisimpleTens_holds F E σ hCM` as an intermediate fact. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabS.sigma_invol σ hCM.2.2.2`. Set `s` to `sigR (Ainf F) σ`. Set `Z : Fin a → Fin M → Ainf F ⊗[F] E` to `fun i => Matrix.vecMul (fun l => s (X i l)) (JR (F := F) (Ainf F) J)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hZh : ∀ i y, hR (Ainf F) σ J (X i) y = ∑ k, Z i k * y k`. Introduce `i y`. Simplify using `only [hR, Formalism.UG.hform, Z, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hJu : IsUnit (JR (F` using `F) (Ainf F) J).det := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `RingHom.map_det (inclR (F := F) (E := E) (Ainf F)) J`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Use `show IsUnit (J.map (inclR (Ainf F))).det`. Rewrite using `[← e]`. Conclude with `(isUnit_iff_ne_zero.2 hJ.2).map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZ : LinearIndependent (Ainf F ⊗[F] E) Z`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Set `v : Fin M → Ainf F ⊗[F] E` to `fun l => ∑ i, g i * s (X i l)`. Establish `hv0 : Matrix.vecMul v (JR (F` using `F) (Ainf F) J) = 0 := by`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun hg j` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Z, Matrix.vecMul, dotProduct, Finset.mul_sum, Pi.zero_apply] at this`. Simplify using `only [Matrix.vecMul, dotProduct, v, Finset.sum_mul, Pi.zero_apply]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`. Establish `hv : v = 0`. Use `congrArg (fun u => Matrix.vecMul u (JR (F := F) (Ainf F) J)⁻¹) hv0` as an intermediate fact. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hJu, Matrix.vecMul_one, Matrix.zero_vecMul] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hX0 : ∑ i, s (g i) • X i = 0`. Use function extensionality and compare the values at `l`. Use `congrArg s (congrFun hv l)` as an intermediate fact. Simplify using `only [v, map_sum, map_mul, s, sigR_invol (Ainf F) σ hσ, Pi.zero_apply, map_zero] at this`. Simplify `this` using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `Fintype.linearIndependent_iff.1 hX _ hX0 i` as an intermediate fact. Establish `e2` using `congrArg s this`. Simplify using `only [s, sigR_invol (Ainf F) σ hσ, map_zero] at e2`. Conclude with `e2`. Set `half : Ainf F ⊗[F] E` to `algebraMap F (Ainf F ⊗[F] E) (1/2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : half + half = 1`. Simplify using `only [half, ← map_add]`. Evaluate the numerical expressions. Apply the tactic sequence `first | rfl | exact Algebra.TensorProduct.one_def.symm`. Establish `hsh : s half = half` using `(Algebra.TensorProduct.map (AlgHom.id F (Ainf F)) σ).commutes _`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ j, ∃ w : Fin M → Ainf F ⊗[F] E, ∀ i, ∑ k, Z i k * w k = half * (S : Matrix (Fin a) (Fin a) (Ainf F ⊗[F] E)) i j` using `fun j => exists_dual_of_linIndep Z hZ _`. Use `choose Y hY using hw`. Use `⟨Y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Establish `h1 : hR (Ainf F) σ J (X i) (Y j) = half * (S : Matrix _ _ _) i j` using `by rw [hZh]; exact hY j i`.
-
-Establish `h2 : hR (Ainf F) σ J (Y i) (X j) = half * (S : Matrix _ _ _) i j`. Rewrite using `[← hR_herm (Ainf F) σ hσ J hJ.1 (X j) (Y i), hZh, hY i j]`. Simplify using `only [map_mul]`. Rewrite using `[show sigR (Ainf F) σ half = half from hsh, S.2 i j]`. Use `show hR (Ainf F) σ J (X i) (Y j) + hR (Ainf F) σ J (Y i) (X j) = _`.
-
-Rewrite using `[h1, h2, ← add_mul, hh, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramB_surj_of_free (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M a : ℕ)
@@ -157,19 +153,19 @@ theorem gramB_surj_of_free (F E : Type) [Field F] [NumberField F] [Field E] [Num
   rw [h1, h2, ← add_mul, hh, one_mul]
 
 /- English proof (translation)
-Take `⟨n, m, eV, eH, hV, hH⟩` from `exists_real_coords F E σ hCM M a`. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabS.sigma_invol σ hCM.2.2.2`. Set `Q : (Fin a → Fin M → Ainf F ⊗[F] E) → HermR (Ainf F) σ a` to `gramH (Ainf F) σ hσ J hJ.1`. Set `β : (Fin a → Fin M → Ainf F ⊗[F] E) → (Fin a → Fin M → Ainf F ⊗[F] E) → HermR (Ainf F) σ a` to `fun X Y => ⟨gramB (Ainf F) σ J X Y, gramB_mem (Ainf F) σ hσ J hJ.1 X Y⟩`. Establish `hβc : Continuous (fun p : (Fin a → Fin M → Ainf F ⊗[F] E) × (Fin a → Fin M → Ainf F ⊗[F] E) => β p.1 p.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(continuous_gramB (Ainf F) σ J).subtype_mk _`. Establish `hβa : ∀ x y z, β (x + y) z = β x z + β y z`. Introduce `x y z`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show gramB (Ainf F) σ J (x + y) z i j = gramB (Ainf F) σ J x z i j + gramB (Ainf F) σ J y z i j`. Simplify using `only [gramB, Pi.add_apply, PI.VolStabS.hR_add_left, PI.VolStabS.hR_add_right]`. Normalize the expressions using the abelian group laws. Establish `hβs : ∀ x y, β x y = β y x`. Introduce `x y`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `only [β, gramB]`. Conclude with `add_comm _ _`. Establish `hQ : ∀ x, β x x = Q x + Q x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression. Take `⟨hC, hD⟩` from `quadCoord_holds _ _ n m eV eH Q β hV hH hβc hβa hβs hQ`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨n, m, eV, eH, fun y => eH (Q (eV.symm y)), hV, hH, hC, fun X => ?_, fun X hX => ?_⟩` and prove the remaining obligations. Simplify using `[Q, gramH]`. Introduce `t`. Take `⟨Y, hY⟩` from `gramB_surj_of_free F E σ hCM M a J hJ X hX (eH.symm t)`. Use `⟨eV Y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD X Y]`. Establish `: β X Y = eH.symm t` using `Subtype.ext hY`. Rewrite using `[this, Homeomorph.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_submersion_coords (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M a : ℕ)
@@ -209,13 +205,13 @@ theorem exists_submersion_coords (F E : Type) [Field F] [NumberField F] [Field E
     rw [this, Homeomorph.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨n, m, eV, eH, f', hV, hH, hC, hG, hS⟩` from `exists_submersion_coords F E σ hCM M a J hJ`. Establish `: ContinuousAdd (Fin a → Fin M → Ainf F ⊗[F] E)` using `⟨by`. Establish `e : (fun p : (Fin a → Fin M → Ainf F ⊗[F] E) × (Fin a → Fin M → Ainf F ⊗[F] E) => p.1 + p.2) = fun p => eV.symm (eV p.1 + eV p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[← hV, Homeomorph.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use the proof step `fun_prop⟩`. Establish `: ContinuousAdd (HermR (Ainf F) σ a)` using `⟨by`. Establish `e : (fun p : HermR (Ainf F) σ a × HermR (Ainf F) σ a => p.1 + p.2) = fun p => eH.symm (eH p.1 + eH p.2)`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hH, Homeomorph.symm_apply_apply]`. Rewrite using `[e]`. Use the proof step `fun_prop⟩`. Establish `hμ' : (μ.map eV).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map μ (AddMonoidHom.mk' eV hV) eV.continuous eV.surjective (eV.map_cocompact).le`. Establish `hν' : (ν.map eH).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map ν (AddMonoidHom.mk' eH hH) eH.continuous eH.surjective (eH.map_cocompact).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD` using `submDens_holds n m _ _ hμ' hν' f' hC`. Use `densAll_transport μ ν (gramR (Ainf F) σ J) Subtype.val _ eV eH f' Subtype.val_injective (fun X => hG X) (densAll_mono hD ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨X, hX, rfl⟩`. Conclude with `hS X hX`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gram_densities (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M a : ℕ)
@@ -247,7 +243,7 @@ theorem gram_densities (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   exact hS X hX
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M a J hJ μ ν hμ hν`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabS.sigma_invol σ hCM.2.2.2`. Conclude with `fib_of_tens PI.VolStabS.DiscreteGroups.fibOfDens_holds (tensFacts_of σ hσ J hJ.1 a (Ainf F) (isOpen_units_Ainf F) (lip_ainf F)) μ ν hμ hν (gram_densities F E σ hCM M a J hJ μ ν hμ hν)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fibreFamily : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M a : ℕ) (J : Matrix (Fin M) (Fin M) E),

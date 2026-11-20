@@ -8,29 +8,25 @@ open UpperTheory.V.Lit.Dr
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hY l hl q η hη hd`. Take `⟨hgauge, hinv⟩` from `hl`. Establish `hmem : ∀ s, ContDiffOn ℝ ∞ ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ p ∉ G.Y, (η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s p = 0` using `η.2`. Establish `hmem' : ∀ s, ContDiffOn ℝ ∞ (((G.dOm q) η : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ p ∉ G.Y, ((G.dOm q) η : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p = 0` using `((G.dOm q) η).2`. Set `w : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)` to `fun s => G.Y.indicator (pull (l s) ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hwmem : w ∈ G.Om q` using `by show ∀ s, ContDiffOn ℝ ∞ (w s) G.Y ∧ ∀ p ∉ G.Y, w s p = 0`. Introduce `s`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(pullB V (Fin d → ℂ) G.Y G.isOpen hY (l s) (hgauge s) q _ (hmem s).1).1.congr ?_` and prove the remaining obligations. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [w, Set.indicator_of_mem hp]`. Introduce `p hp`. Simplify using `only [w, Set.indicator_of_notMem hp]`. Use `⟨⟨w, hwmem⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show (G.tr q γ) (w ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) p)) = w s p`. Distinguish the cases in `hp : p ∈ G.Y`. Establish `hp' : (G.ρ γ⁻¹) p ∈ G.Y` using `G.maps _ _ hp`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, Set.indicator_of_mem hp, Set.indicator_of_mem hp']`. Conclude with `pullEquiv Γ V S d G hY l ⟨hgauge, hinv⟩ q η hη γ s p hp`. Establish `hback : (G.ρ γ) ((G.ρ γ⁻¹) p) = p`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp' : (G.ρ γ⁻¹) p ∉ G.Y`. Introduce `h`. Conclude with `hp (hback ▸ G.maps γ _ h)`. Simplify using `only [w, Set.indicator_of_notMem hp, Set.indicator_of_notMem hp', map_zero]`. Introduce `s p hp v i hv show w s p v = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [w, Set.indicator_of_mem hp]`. Conclude with `(pullA V (Fin d → ℂ) G.Y G.isOpen hY (l s) (hgauge s) q _).1 p hp v i hv`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show G.Y.indicator (extDeriv (w s)) p = ((G.dOm q) η : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set u := ((G.dOm q) η : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s with hu_def`. Establish `hu : u = G.Y.indicator (extDeriv ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s))` using `rfl`. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[Set.indicator_of_mem hp]`. Establish `hev : w s =ᶠ[nhds p] pull (l s) ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)` using `by filter_upwards [G.isOpen.mem_nhds hp] with x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [w, Set.indicator_of_mem hx]`. Rewrite using `[hev.extDeriv_eq, (pullB V (Fin d → ℂ) G.Y G.isOpen hY (l s) (hgauge s) q _ (hmem s).1).2 p hp]`. Establish `hq : l s p • p ∈ G.Y` using `hY _ ((hgauge s).2.1 p hp) p hp`. Establish `hpu : pull (l s) (extDeriv ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)) p = pull (l s) u p`. Simplify using `only [pull, hu, Set.indicator_of_mem hq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : minSmoothness ℝ 2 ≤ (∞ : WithTop ℕ∞)`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top`. Establish `hclosed : ∀ x ∈ G.Y, extDeriv u x = 0`. Introduce `x hx`.
-
-Establish `hev2 : u =ᶠ[nhds x] extDeriv ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)` using `by filter_upwards [G.isOpen.mem_nhds hx] with y hy`. Rewrite using `[hu, Set.indicator_of_mem hy]`. Rewrite using `[hev2.extDeriv_eq]`. Conclude with `extDeriv_extDeriv_apply ((hmem s).1.contDiffAt (G.isOpen.mem_nhds hx)) hsm`. Establish `hhom` using `homog V (Fin d → ℂ) G.Y G.isOpen hY (q + 1) u (hmem' s).1 (hd s) hclosed`.
-
-Rewrite using `[hpu, (pullA V (Fin d → ℂ) G.Y G.isOpen hY (l s) (hgauge s) (q + 1) u).2 (hd s) hhom p hp]`. Rewrite using `[Set.indicator_of_notMem hp]`. Conclude with `((hmem' s).2 p hp).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Dr.retract :
     Retract := by

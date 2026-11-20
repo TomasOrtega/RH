@@ -11,7 +11,7 @@ variable {F G V W V₁ V₂ : Type} [Field F] [Group G] [AddCommGroup V] [Module
   [AddCommGroup W] [Module F W] [AddCommGroup V₁] [Module F V₁] [AddCommGroup V₂] [Module F V₂]
 
 /- English proof (translation)
-Take `⟨k, hk'⟩` from `LinearMap.exists_extend ((LinearMap.ker g).liftQ h hk ∘ₗ g.quotKerEquivRange.symm.toLinearMap)`. Use `⟨k, fun v => ?_⟩` and prove the remaining obligations. Use `congr($hk' (g.quotKerEquivRange (Submodule.Quotient.mk v)))` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor (g : V →ₗ[F] V₁) (h : V →ₗ[F] W) (hk : ∀ v, g v = 0 → h v = 0) :
     ∃ k : V₁ →ₗ[F] W, ∀ v, k (g v) = h v := by
@@ -36,7 +36,7 @@ def subComap {ρ : Representation F G V} {ρ₁ : Representation F G V₁} (p : 
     exact S.apply_mem_toSubmodule g hv⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨v, h hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem subMap_mono {ρ : Representation F G V} {ρ₁ : Representation F G V₁}
     (p : ρ.IntertwiningMap ρ₁) {S T : Subrepresentation ρ} (h : S ≤ T) : subMap p S ≤ subMap p T := by
@@ -44,7 +44,7 @@ theorem subMap_mono {ρ : Representation F G V} {ρ₁ : Representation F G V₁
   exact ⟨v, h hv, rfl⟩
 
 /- English proof (translation)
-Introduce `_ hv` and use `h hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subComap_mono {ρ : Representation F G V} {ρ₁ : Representation F G V₁}
     (p : ρ.IntertwiningMap ρ₁) {S T : Subrepresentation ρ₁} (h : S ≤ T) :
@@ -56,15 +56,13 @@ def Step (σ : Representation F G W) {ρ : Representation F G V} (S T : Subrepre
     ∀ v ∈ S.toSubmodule, (f v = 0 ↔ v ∈ T.toSubmodule)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e⟩`. Take `⟨f, hf⟩` from `LinearMap.exists_extend (e.toLinearEquiv.toLinearMap ∘ₗ Submodule.mkQ _)`. Establish `hf' : ∀ v (hv : v ∈ S.toSubmodule), f v = e.toLinearEquiv (Submodule.Quotient.mk ⟨v, hv⟩)` using `fun v hv => congr($hf ⟨v, hv⟩)`. Use `⟨f, fun w => ?_, fun g v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `e.toLinearEquiv.surjective w`. Take `⟨⟨v, hv⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨v, hv, hf' v hv⟩`. Rewrite using `[hf' v hv, hf' _ (S.apply_mem_toSubmodule g hv)]`. Conclude with `e.toIntertwiningMap.isIntertwining _ _ g (Submodule.Quotient.mk ⟨v, hv⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf' v hv, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression. Introduce and unpack `⟨f, h1, h2, h3⟩`. Establish `hs : Function.Surjective (f ∘ₗ S.toSubmodule.subtype)` using `fun w => by`. Take `⟨v, hv, rfl⟩` from `h1 w`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨v, hv⟩, rfl⟩`. Establish `hk : T.toSubmodule.comap S.toSubmodule.subtype = LinearMap.ker (f ∘ₗ S.toSubmodule.subtype)`. Use extensionality with `v`. Conclude with `(h3 v.1 v.2).symm`. Use `⟨.mk ((Submodule.quotEquivOfEq _ _ hk).trans (LinearMap.quotKerEquivOfSurjective _ hs)) fun g => ?_⟩` and prove the remaining obligations.
-
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Conclude with `h2 g v.1 v.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step_iff {σ : Representation F G W} {ρ : Representation F G V} {S T : Subrepresentation ρ} :
     Nonempty ((subQuot S T).Equiv σ) ↔ Step σ S T := by
@@ -95,7 +93,7 @@ theorem step_iff {σ : Representation F G W} {ρ : Representation F G V} {S T : 
     exact h2 g v.1 v.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => S (A.orderEmbOfFin rfl i), fun i => T (A.orderEmbOfFin rfl i), fun _ => h1 _, fun _ _ h => h2 _ _ ((A.orderEmbOfFin rfl).strictMono h), fun _ => step_iff.2 (h3 _ (A.orderEmbOfFin_mem rfl _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem occurs_of_finset {σ : Representation F G W} {ρ : Representation F G V} {r : ℕ}
     (A : Finset (Fin r)) (S T : Fin r → Subrepresentation ρ) (h1 : ∀ i, T i ≤ S i)
@@ -106,7 +104,7 @@ theorem occurs_of_finset {σ : Representation F G W} {ρ : Representation F G V}
     fun _ => step_iff.2 (h3 _ (A.orderEmbOfFin_mem rfl _))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`.
+Supply the required witnesses or components.
 -/
 theorem occurs_zero (σ : Representation F G W) (ρ : Representation F G V) : OccursTimes σ ρ 0 :=
   ⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩
@@ -117,19 +115,17 @@ variable {σ : Representation F G W} {ρ : Representation F G V} {ρ₁ : Repres
   {ρ₂ : Representation F G V₂} (ι : ρ₁.IntertwiningMap ρ) (p : ρ.IntertwiningMap ρ₂)
 
 /- English proof (translation)
-Take `⟨f, h1, h2, h3⟩` from `h`. Set `R : Subrepresentation σ` to `⟨(subComap ι S).toSubmodule.map (f ∘ₗ ι.toLinearMap), by`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Use `⟨ρ₁ g u, (subComap ι S).apply_mem_toSubmodule g hu, ?_⟩` and prove the remaining obligations. Use `show f (ι (ρ₁ g u)) = σ g (f (ι u))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ι.isIntertwining, h2 g (ι u) hu]⟩`. Break down `eq_bot_or_eq_top R with hR | hR` into its components or cases. Use `right`. Take `⟨k, hk⟩` from `exists_factor (p.toLinearMap ∘ₗ S.toSubmodule.subtype) (f ∘ₗ S.toSubmodule.subtype) (by`. Introduce and unpack `⟨v, hv⟩ h0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `hker v h0`. Establish `: f (ι u) ∈ R.toSubmodule` using `⟨u, hv, rfl⟩`. Rewrite `this` using `[hR]`. Conclude with `this)`. Establish `hk' : ∀ v ∈ S.toSubmodule, k (p v) = f v` using `fun v hv => hk ⟨v, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨k, fun w => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h1 w`. Conclude with `⟨p v, ⟨v, hv, rfl⟩, hk' v hv⟩`. Introduce and unpack `g _ ⟨v, hv, rfl⟩ show k (ρ₂ g (p v)) = σ g (k (p v))`. Rewrite using `[← p.isIntertwining, hk' v hv, hk' _ (S.apply_mem_toSubmodule g hv), h2 g v hv]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Conclude with `⟨v, (h3 v hv).1 ((hk' v hv).symm.trans h0), rfl⟩`. Introduce and unpack `⟨t, ht, h0⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h0]`. Conclude with `(hk' t (hTS ht)).trans ((h3 t (hTS ht)).2 ht)`. Use `left`. Use `⟨f ∘ₗ ι.toLinearMap, fun w => ?_, fun g u hu => ?_, fun u hu => h3 _ hu⟩` and prove the remaining obligations. Establish `: w ∈ R.toSubmodule` using `by rw [hR]; trivial`.
-
-Conclude with `this`. Use `show f (ι (ρ₁ g u)) = σ g (f (ι u))`. Rewrite using `[ι.isIntertwining, h2 g (ι u) hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_dichotomy (hσ : σ.IsIrreducible) (hker : ∀ v, p v = 0 → ∃ u, ι u = v)
     {S T : Subrepresentation ρ} (hTS : T ≤ S) (h : Step σ S T) :
@@ -171,13 +167,13 @@ theorem step_dichotomy (hσ : σ.IsIrreducible) (hker : ∀ v, p v = 0 → ∃ u
       rw [ι.isIntertwining, h2 g (ι u) hu]
 
 /- English proof (translation)
-Take `⟨f, h1, h2, h3⟩` from `h`. Take `⟨k, hk⟩` from `exists_factor ι.toLinearMap f (fun v hv => by`. Establish `: v = 0` using `hι (hv.trans (map_zero ι).symm)`. Rewrite using `[this, map_zero])`. Establish `hk' : ∀ v, k (ι v) = f v` using `hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k, fun w => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h1 w`. Conclude with `⟨ι v, ⟨v, hv, rfl⟩, hk v⟩`. Introduce and unpack `g _ ⟨v, hv, rfl⟩ show k (ρ g (ι v)) = σ g (k (ι v))`. Rewrite using `[← ι.isIntertwining, hk', hk', h2 g v hv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[hk, h3 v hv]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨v, h, rfl⟩`. Introduce and unpack `⟨t, ht, h0⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(hι h0 : t = v) ▸ ht`.
+A detailed English derivation is pending.
 -/
 theorem step_map (hι : Function.Injective ι) {S T : Subrepresentation ρ₁} (h : Step σ S T) :
     Step σ (subMap ι S) (subMap ι T) := by
@@ -200,9 +196,9 @@ theorem step_map (hι : Function.Injective ι) {S T : Subrepresentation ρ₁} (
       exact (hι h0 : t = v) ▸ ht
 
 /- English proof (translation)
-Take `⟨f, h1, h2, h3⟩` from `h`. Use `⟨f ∘ₗ p.toLinearMap, fun w => ?_, fun g u hu => ?_, fun u hu => h3 _ hu⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h1 w`. Take `⟨u, rfl⟩` from `hp v`. Conclude with `⟨u, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `show f (p (ρ g u)) = σ g (f (p u))`. Rewrite using `[p.isIntertwining, h2 g (p u) hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_comap (hp : Function.Surjective p) {S T : Subrepresentation ρ₂} (h : Step σ S T) :
     Step σ (subComap p S) (subComap p T) := by
@@ -215,19 +211,19 @@ theorem step_comap (hp : Function.Surjective p) {S T : Subrepresentation ρ₂} 
     rw [p.isIntertwining, h2 g (p u) hu]
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3⟩` from `ha`. Take `⟨S', T', h1', h2', h3'⟩` from `hb`. Use `⟨Fin.append (fun i => subMap ι (S i)) (fun i => subComap p (S' i)), Fin.append (fun i => subMap ι (T i)) (fun i => subComap p (T' i)), fun i => ?_, fun i j => ?_, fun i => step_iff.2 ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => simpa using subMap_mono ι (h1 i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `right i => simpa using subComap_mono p (h1' i)`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`.
+Treat this case separately. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce `h`. Simplify using `using subMap_mono ι (h2 i j h)`. Consider the case `right j`. Introduce `_`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨u, _, rfl⟩`. Use `show p (ι u) ∈ (T' j).toSubmodule`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `right i`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`. Introduce `h`. Use `j.2` as an intermediate fact. Simplify using `only [Fin.lt_def, Fin.val_natAdd, Fin.val_castAdd] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `right j`. Introduce `h`. Establish `h' : i < j`. Simplify using `only [Fin.lt_def, Fin.val_natAdd] at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `using subComap_mono p (h2' i j h')`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => simpa using step_map ι hι (step_iff.1 (h3 i))`. Consider the case `right i => simpa using step_comap p hp (step_iff.1 (h3' i))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem occurs_add (hι : Function.Injective ι) (hp : Function.Surjective p)
     (h0 : ∀ u, p (ι u) = 0) {a b : ℕ} (ha : OccursTimes σ ρ₁ a) (hb : OccursTimes σ ρ₂ b) :
@@ -271,11 +267,11 @@ theorem occurs_add (hι : Function.Injective ι) (hp : Function.Surjective p)
     | right i => simpa using step_comap p hp (step_iff.1 (h3' i))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le ?_` and prove the remaining obligations. Introduce and unpack `r ⟨S, T, h1, h2, h3⟩`. Set `A : Finset (Fin r)` to `Finset.univ.filter fun i => Step σ (subComap ι (S i)) (subComap ι (T i))`. Establish `hA` using `occurs_of_finset (σ := σ) A (fun i => subComap ι (S i)) (fun i => subComap ι (T i)) (fun i => subComap_mono ι (h1 i)) (fun i j h => subComap_mono ι (h2 i j h)) (fun i hi => (Finset.mem_filter.1 hi).2)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB` using `occurs_of_finset (σ := σ) Aᶜ (fun i => subMap p (S i)) (fun i => subMap p (T i)) (fun i => subMap_mono p (h1 i)) (fun i j h => subMap_mono p (h2 i j h)) (fun i hi => (step_dichotomy ι p hσ hker (h1 i) (step_iff.1 (h3 i))).resolve_left fun h => Finset.mem_compl.1 hi (Finset.mem_fi …`. Establish `hc : (r : ℕ∞) = (A.card : ℕ∞) + (Aᶜ.card : ℕ∞)`. Rewrite using `[← Nat.cast_add, Finset.card_add_card_compl, Fintype.card_fin]`. Rewrite using `[hc]`. Conclude with `add_le_add (le_iSup₂_of_le _ hA le_rfl) (le_iSup₂_of_le _ hB le_rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENat.biSup_add_biSup_le' ⟨0, occurs_zero _ _⟩ ⟨0, occurs_zero _ _⟩ fun a ha b hb => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_add]`. Conclude with `le_iSup₂_of_le _ (occurs_add ι p hι hp h0 ha hb) le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_exact (hσ : σ.IsIrreducible) (hι : Function.Injective ι)
     (hp : Function.Surjective p) (h0 : ∀ u, p (ι u) = 0) (hker : ∀ v, p v = 0 → ∃ u, ι u = v) :
@@ -304,9 +300,9 @@ theorem jhMult_exact (hσ : σ.IsIrreducible) (hι : Function.Injective ι)
 end Exact
 
 /- English proof (translation)
-Set `ι : S.toRepresentation.IntertwiningMap ρ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Set `p : ρ.IntertwiningMap (subQuot ⊤ S)` to `⟨Submodule.mkQ _ ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation ρ).toSubmodule LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hp : ∀ v, p v = 0 ↔ v ∈ S.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Use `jhMult_exact ι p hσ Subtype.val_injective (fun x => ?_) (fun u => (hp _).2 u.2) fun v hv => ⟨⟨v, (hp v).1 hv⟩, rfl⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v.1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem jhMult_sub_add_quot {σ : Representation F G W} {ρ : Representation F G V}
     (hσ : σ.IsIrreducible) (S : Subrepresentation ρ) :
@@ -322,7 +318,7 @@ theorem jhMult_sub_add_quot {σ : Representation F G W} {ρ : Representation F G
   exact ⟨v.1, rfl⟩
 
 /- English proof (translation)
-Introduce `hle`. Take `⟨f, h1, -, h3⟩` from `h`. Use `(bot_ne_top : (⊥ : Subrepresentation σ) ≠ ⊤) (le_antisymm bot_le fun w _ => ?_)` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h1 w`. Conclude with `(h3 v hv).2 (hle hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Step.not_le {σ : Representation F G W} {ρ : Representation F G V}
     (hσ : σ.IsIrreducible) {S T : Subrepresentation ρ} (h : Step σ S T) : ¬ S ≤ T := by
@@ -333,11 +329,11 @@ theorem Step.not_le {σ : Representation F G W} {ρ : Representation F G V}
   exact (h3 v hv).2 (hle hv)
 
 /- English proof (translation)
-Establish `hl : Module.length (MonoidAlgebra F G) ρ.asModule ≠ ⊤` using `Module.length_ne_top_iff.2 h`. Use `ne_top_of_le_ne_top (b := Module.length (MonoidAlgebra F G) ρ.asModule + 1) (by simpa using hl) (iSup₂_le ?_)` and prove the remaining obligations. Introduce and unpack `r ⟨S, T, h1, h2, h3⟩`. Break down `r with _ | n` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hm : StrictMono fun i => Subrepresentation.subrepresentationSubmoduleOrderIso (S i)`. Introduce `i j hij`. Use `Subrepresentation.subrepresentationSubmoduleOrderIso.strictMono ((h2 i j hij).trans_lt (lt_of_le_not_ge (h1 j) ((step_iff.1 (h3 j)).not_le hσ)))` and prove the remaining obligations. Use `Order.LTSeries.length_le_krullDim (LTSeries.mk n _ hm)` as an intermediate fact. Rewrite `this` using `[← Module.coe_length]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : (n : ℕ∞) ≤ Module.length (MonoidAlgebra F G) ρ.asModule`. Conclude with `WithBot.coe_le_coe.1 this`. Use `push_cast`. Conclude with `add_le_add h' le_rfl`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem jhMult_ne_top {σ : Representation F G W} {ρ : Representation F G V}
     (hσ : σ.IsIrreducible) (h : HasFiniteLength ρ) : jhMult σ ρ ≠ ⊤ := by
@@ -359,15 +355,15 @@ theorem jhMult_ne_top {σ : Representation F G W} {ρ : Representation F G V}
   exact add_le_add h' le_rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Use `h (le_antisymm (iSup₂_le ?_) zero_le)` and prove the remaining obligations. Introduce and unpack `r ⟨S, T, -, -, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Break down `r with _ | n` into its components or cases. Simplify using the standard rewrite rules. Take `⟨f, h1, h2, -⟩` from `step_iff.1 (h3 0)`. Use `absurd ⟨S 0, ⟨f ∘ₗ (S 0).toSubmodule.subtype, fun g => ?_⟩, fun w => ?_⟩ hn` and prove the remaining obligations. Conclude with `LinearMap.ext fun v => h2 g v.1 v.2`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, rfl⟩` from `h1 w`. Conclude with `⟨⟨v, hv⟩, rfl⟩`. Introduce and unpack `⟨S, f, hf⟩`. Set `ι : S.toRepresentation.IntertwiningMap ρ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hs : Step σ (⊤ : Subrepresentation S.toRepresentation) f.ker` using `⟨f.toLinearMap, fun w => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hf w`. Conclude with `⟨v, trivial, rfl⟩, fun g v _ => f.isIntertwining _ _ g v, fun v _ => Iff.rfl⟩`. Establish `h1 : OccursTimes σ ρ 1` using `⟨fun _ => subMap ι ⊤, fun _ => subMap ι f.ker, fun _ => subMap_mono ι le_top, fun i j h => absurd (Subsingleton.elim i j) h.ne, fun _ => step_iff.2 (step_map ι Subtype.val_injective hs)⟩`. Establish `: ((1 : ℕ) : ℕ∞) ≤ jhMult σ ρ` using `le_iSup₂_of_le 1 h1 le_rfl`. Introduce `h0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jhMult_ne_zero_iff {σ : Representation F G W} {ρ : Representation F G V} :
     jhMult σ ρ ≠ 0 ↔ IsSubquotient σ ρ := by

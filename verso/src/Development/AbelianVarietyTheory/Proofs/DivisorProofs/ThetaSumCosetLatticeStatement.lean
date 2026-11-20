@@ -17,7 +17,7 @@ open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaCoset.thetaSum_coset | exact GlobalTheory.ThetaCoset.thetaSum_coset | (intros; apply GlobalTheory.ThetaCoset.thetaSum_coset <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_sum_coset_lattice : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ (r : κ → FiniteAdeleRing (𝓞 F) F) (ρ : κ → F), ratFin F κ ρ - r ∈ scaledInt F κ a →

@@ -18,9 +18,9 @@ namespace GlobalTheory.ConjSmooth
 open GlobalTheory.ConjDS
 
 /- English proof (translation)
-Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A ((Matrix.isUnit_iff_isUnit_det A).1 hA)`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A ((Matrix.isUnit_iff_isUnit_det A).1 hA)`. Proceed by induction on `l with`. Consider the case `nil => simp [h1]`. Consider the case `cons x l ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, ← ih]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_list_prod {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsUnit A) (l : List (Matrix (Fin n) (Fin n) ℂ)) :
     A * l.prod * A⁻¹ = (l.map fun x => A * x * A⁻¹).prod := by
@@ -34,25 +34,23 @@ theorem conj_list_prod {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsUnit A
       _ = A * x * A⁻¹ * (A * l.prod * A⁻¹) := by noncomm_ring
 
 /- English proof (translation)
-Introduce `D Y S M τ w hw`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `k Xs hXs`. Use `set A := (conjModel M).fr τ with hAdef`. Establish `hA : IsUnit A` using `(conjModel M).fr_unit τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hdet`. Establish `hrep : ∀ g, M.rep τ g (cj (M.H τ) w) = cj (M.H τ) ((conjModel M).σ τ (A * g * A⁻¹) w)`. Introduce `g`. Establish `e : rv ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _))⁻¹) = M.fr τ * g * (M.fr τ)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_submatrix_equiv]`. Establish `: (M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * (M.fr τ)⁻¹.submatrix (Equiv.refl _) Fin.revPerm = rv (M.fr τ * g * (M.fr τ)⁻¹)`. Use extensionality with `i j`. Simplify using `[rv, Matrix.mul_apply]`. Rewrite using `[this, rv_rv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show M.σ τ (M.fr τ * g * (M.fr τ)⁻¹) (cj (M.H τ) w) = M.σ τ (rv ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _))⁻¹)) (cj (M.H τ) w)`. Rewrite using `[e]`. Establish `hX' : ∀ i, A * Xs i * A⁻¹ ∈ GlobalTheory.Ell.lieOf (Formalism.REAL.Jm ((conjModel M).ε τ))`. Introduce `i`. Establish `hg : Aᴴ * Formalism.REAL.Jm ((conjModel M).ε τ) * A = gramAt D Y τ` using `(conjModel M).fr_gram τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : (Xs i)ᴴ * gramAt D Y τ + gramAt D Y τ * Xs i = 0` using `hXs i`. Establish `h3 : (A⁻¹)ᴴ * Aᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Use `show (A * Xs i * A⁻¹)ᴴ * Formalism.REAL.Jm ((conjModel M).ε τ) + Formalism.REAL.Jm ((conjModel M).ε τ) * (A * Xs i * A⁻¹) = 0`. Rewrite `hi` using `[← hg]`. Establish `: (A * Xs i * A⁻¹)ᴴ * Formalism.REAL.Jm ((conjModel M).ε τ) + Formalism.REAL.Jm ((conjModel M).ε τ) * (A * Xs i * A⁻¹) = (A⁻¹)ᴴ * ((Xs i)ᴴ * (Aᴴ * Formalism.REAL.Jm ((conjModel M).ε τ) * A) + (Aᴴ * Formalism.REAL.Jm ((conjModel M).ε τ) * A) * Xs i) * A⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.one_mul]`. Use `noncomm_ring`. Use `_ = _ := by rw [← h3]; simp only [Matrix.mul_assoc, h1, Matrix.mul_one, Matrix.mul_add, Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this, hi, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hprod : ∀ t : Fin k → ℝ, A * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * A⁻¹ = (List.ofFn fun i => NormedSpace.exp (t i • (A * Xs i * A⁻¹))).prod`. Introduce `t`. Rewrite using `[conj_list_prod hA, List.map_ofFn]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `List.ofFn_inj.2 (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[← Matrix.exp_conj A _ hA, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hc` using `hw k (fun i => A * Xs i * A⁻¹) hX'`. Set `L : Cj (M.H τ) →L[ℝ] M.H τ` to `{ toFun := cj (M.H τ) map_add' := map_add (cj (M.H τ)) map_smul' := fun r x => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, LinearIsometryEquiv.map_smulₛₗ, Complex.conj_ofReal]`. Both sides reduce to the same expression. Use `cont := (cj (M.H τ)).continuous }`. Establish `hL` using `L.contDiff.comp hc`. Use `hL using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp]`. Rewrite using `[hrep, hprod]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cj_mem_sm : ∀ (D : D7) (Y : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel Y S) (τ : D.what₂.Tau)
   (w : (GlobalTheory.ConjDS.conjModel M).H τ),

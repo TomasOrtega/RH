@@ -5,21 +5,21 @@ open Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt Finset
 namespace Formalism.FourierDecayAlt.P.Mx1
 
 /- English proof (translation)
-Simplify using `[coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_ne (r : ℕ) (v : Var r) : coord v ≠ 0 := by
   simp [coord]
 
 /- English proof (translation)
-Simplify using `[vz, vzb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vz_ne {r : ℕ} : (vz : Var r) ≠ vzb := by
   simp [vz, vzb]
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[HahnSeries.mem_support]`. Introduce `h`. Apply `hγ` to reduce the goal to its premises. Use `show ((ofLex γ v : ℤ) : ℂ) * f.coeff γ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem euler_support {r : ℕ} (v : Var r) (f : Fn r) : (euler v f).support ⊆ f.support := by
   intro γ hγ
@@ -30,9 +30,9 @@ theorem euler_support {r : ℕ} (v : Var r) (f : Fn r) : (euler v f).support ⊆
   rw [h, mul_zero]
 
 /- English proof (translation)
-Unfold `sc`. Use extensionality with `i j`. Rewrite using `[Matrix.star_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem star_sc (P : Par) (w : Pr P.r) : star (sc P w) = sc P (star w) := by
   unfold sc
@@ -50,7 +50,7 @@ namespace Formalism.FourierDecayAlt.P
 open Mx1
 
 /- English proof (translation)
-Introduce `r f g z`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> refine LinearMap.ext fun x => ?_ <;>`. Simplify using `[mulOp, mul_assoc, add_mul, Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem multiplication_op_hom : Formalism.FourierDecayAlt.M.MulOpHom := by
   intro r f g z
@@ -58,9 +58,9 @@ theorem multiplication_op_hom : Formalism.FourierDecayAlt.M.MulOpHom := by
     simp [mulOp, mul_assoc, add_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `r v f g`. Establish `hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ` using `fun _ _ _ => rfl`. Use extensionality with `γ`. Rewrite using `[hc, HahnSeries.coeff_add, HahnSeries.coeff_mul_left' f.isPWO_support (Mx1.euler_support v f), HahnSeries.coeff_mul_right' g.isPWO_support (Mx1.euler_support v g), HahnSeries.coeff_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, hsum⟩` from `Finset.mem_addAntidiagonal.1 hij`. Rewrite using `[hc, hc, ← hsum, ofLex_add, Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euler_leibniz : Formalism.FourierDecayAlt.M.EulerLeibniz := by
   intro r v f g
@@ -77,17 +77,15 @@ theorem euler_leibniz : Formalism.FourierDecayAlt.M.EulerLeibniz := by
   ring
 
 /- English proof (translation)
-Introduce `r v w z`. Establish `hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ` using `fun _ _ _ => rfl`. Prove the components needed by the constructor for the conclusion. Use extensionality with `γ`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[if_pos rfl]`. Simplify using `only [coord, HahnSeries.coeff_single]`. Use `split_ifs with hγ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hγ` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[if_neg hvw]`. Simplify using `only [coord, HahnSeries.coeff_single, HahnSeries.coeff_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `split_ifs with hγ`. Substitute `hγ` using the available equality. Simplify using `[Pi.single_apply, hvw]`. Simplify using the standard rewrite rules. Use extensionality with `γ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Simplify using `only [HahnSeries.algebraMap_apply, HahnSeries.C_apply, HahnSeries.coeff_single, HahnSeries.coeff_zero, Algebra.algebraMap_self, RingHom.id_apply]`. Use `split_ifs with hγ`. Substitute `hγ` using the available equality. Simplify using the standard rewrite rules.
-
-Use `left`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem euler_coordinates : Formalism.FourierDecayAlt.M.EulerCoord := by
   intro r v w z
@@ -122,7 +120,7 @@ theorem euler_coordinates : Formalism.FourierDecayAlt.M.EulerCoord := by
     · simp
 
 /- English proof (translation)
-Introduce `r v w`. Establish `hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ` using `fun _ _ _ => rfl`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Use extensionality with `γ`. Simplify using `only [Module.End.mul_apply, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -136,7 +134,7 @@ theorem euler_commute : Formalism.FourierDecayAlt.M.EulerComm := by
   ring
 
 /- English proof (translation)
-Introduce `r v f`. Use `LinearMap.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, mulOp, LinearMap.mulLeft_apply]`. Rewrite using `[euler_leibniz r v f g, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerMul_statement : Formalism.FourierDecayAlt.M.EulerMul := by
   intro r v f
@@ -145,9 +143,9 @@ theorem eulerMul_statement : Formalism.FourierDecayAlt.M.EulerMul := by
   rw [euler_leibniz r v f g, add_comm]
 
 /- English proof (translation)
-Introduce `r v TT`. Use `⟨coord_ne r v, fun h => ?_⟩` and prove the remaining obligations. Establish `he : (toLex (Pi.single vz 1) + toLex (Pi.single vzb 1) : Expo r) ≠ 0`. Introduce `h0`. Use `congrFun (congrArg ofLex h0) vz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((Pi.single vz (1 : ℤ) + Pi.single vzb 1 : Var r → ℤ) vz) = (0 : Var r → ℤ) vz at this`. Simplify using `[Pi.single_apply, vz_ne (r := r)] at this`. Establish `hc` using `congrArg (fun s : Fn r => s.coeff (toLex (Pi.single vz 1) + toLex (Pi.single vzb 1))) h`. Simplify using `[gg, coord, HahnSeries.single_mul_single, HahnSeries.algebraMap_apply, HahnSeries.C_apply, HahnSeries.coeff_single, he] at hc`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem function_nonzero : Formalism.FourierDecayAlt.M.FnNonzero := by
   intro r v TT
@@ -162,11 +160,11 @@ theorem function_nonzero : Formalism.FourierDecayAlt.M.FnNonzero := by
     HahnSeries.coeff_single, he] at hc
 
 /- English proof (translation)
-Introduce `P`. Establish `key : ∀ w : Pr P.r, sc P w = 0 → w = 0`. Introduce `w h`. Use `congrFun (congrFun h (fun _ => 0)) (fun _ => 0)` as an intermediate fact. Simplify `this` using `[sc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨⟨0, 1, fun h => ?_⟩⟩, fun f fb h => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Pr P.r) = 0` using `key 1 (by unfold sc; rw [map_one]; exact h.symm)`. Establish `h2 : (1 : Op P.r) (1 : Fn P.r) = (0 : Op P.r) 1` using `congrArg (fun w : Pr P.r => (w.1 : Op P.r) (1 : Fn P.r)) h1`. Simplify using `at h2`. Establish `h1` using `key _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (mulOp f) (1 : Fn P.r) = (0 : Op P.r) 1` using `congrArg (fun w : Pr P.r => (w.1 : Op P.r) (1 : Fn P.r)) h1`. Simplify `h2` using `[mulOp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem model_nontrivial : Formalism.FourierDecayAlt.M.ModelNontrivial := by
   intro P
@@ -185,25 +183,25 @@ theorem model_nontrivial : Formalism.FourierDecayAlt.M.ModelNontrivial := by
     simpa [mulOp] using h2
 
 /- English proof (translation)
-Introduce `P`. Establish `hs : ∀ X Y : Op P.r, star (mk X Y) = mk Y X` using `fun X Y => rfl`. Establish `hneg : ∀ X Y : Op P.r, -(mk X Y : Pr P.r) = mk (-X) (-Y)` using `fun X Y => rfl`. Establish `mc : ∀ f g : Fn P.r, mulOp f * mulOp g = mulOp g * mulOp f` using `fun f g => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mulOp, Module.End.mul_apply, LinearMap.mulLeft_apply, ← mul_assoc, mul_comm f g]`. Use `⟨fun l => ⟨?_, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `cA cbA`. Rewrite using `[star_sc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `ciA cbiA`. Rewrite using `[star_sc]`. Both sides reduce to the same expression. Unfold `pA pbA`. Rewrite using `[star_sc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `sc`. Rewrite using `[← map_neg]`. Use `congr 1`. Unfold `pP pbP`. Rewrite using `[hs, hneg, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zA zbA`. Rewrite using `[star_sc]`. Both sides reduce to the same expression. Unfold `ziA zbiA`. Rewrite using `[star_sc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `ggA`. Rewrite using `[star_sc]`. Both sides reduce to the same expression. Unfold `ggiA`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[star_sc]`. Both sides reduce to the same expression. Establish `e1 : star (dzP : Pr P.r) = -dzbP`. Unfold `dzP dzbP`. Rewrite using `[hs, hneg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : star (zbP : Pr P.r) = zP` using `rfl`. Establish `e3 : star (ggiP P.TT : Pr P.r) = ggiP P.TT` using `rfl`. Establish `e4 : (ggiP P.TT : Pr P.r) * zP = zP * ggiP P.TT`. Unfold `ggiP zP fnP M.mk`. Use `Prod.ext (mc _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `show MulOpposite.op _ * MulOpposite.op _ = MulOpposite.op _ * MulOpposite.op _`. Rewrite using `[← MulOpposite.op_mul, ← MulOpposite.op_mul, mc]`. Unfold `nabA nabsA`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `π`. Rewrite using `[Pi.star_apply, star_add, star_smul, star_mul, e1, e2, e3, e4, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_generators : Formalism.FourierDecayAlt.M.StarGens := by
   intro P
@@ -243,9 +241,9 @@ theorem star_generators : Formalism.FourierDecayAlt.M.StarGens := by
     rw [Pi.star_apply, star_add, star_smul, star_mul, e1, e2, e3, e4, Complex.star_def, Complex.conj_ofReal]
 
 /- English proof (translation)
-Introduce `P L hL`. Take `⟨-, -, -, -, -, -, hz, -, hzb, -, -, -, hn, hns, hT⟩` from `hL`. Establish `hS` using `star_generators P`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hzb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS.2.1`. Rewrite using `[hn, hns]`. Conclude with `hS.2.2.2.2.2`. Rewrite using `[hT]`. Simplify using `[Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level_star : Formalism.FourierDecayAlt.M.LevelStar := by
   intro P L hL

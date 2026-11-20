@@ -7,13 +7,13 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `x`. Establish `hu : Nonempty (InfinitePlace ℚ)` using `inferInstance`. Take `⟨w⟩` from `hu`. Establish `huniq : ∀ v : InfinitePlace ℚ, v = w` using `fun v => Subsingleton.elim v w`. Establish `hreal : InfinitePlace.IsReal w` using `IsTotallyReal.isReal w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : adelicChar ℚ (TR.sInf ℚ fun _ => x) = Real.fourierChar (-x)`. Establish `e : TR.sInf ℚ (fun _ => x) = infiniteAdeleInl (TR.infEq ℚ fun _ => x)` using `rfl`. Rewrite using `[e, adelicChar_infiniteAdeleInl, Fintype.prod_eq_single w (fun v hv => absurd (huniq v) hv)]`. Rewrite using `[infiniteAdelicChar_apply_of_isReal hreal]`. Establish `e2 : InfinitePlace.Completion.extensionEmbeddingOfIsReal hreal (TR.infEq ℚ (fun _ => x) w) = x` using `(InfinitePlace.Completion.ringEquivRealOfIsReal hreal).apply_symm_apply x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Establish `h2 : adelicChar ℚ (-(TR.sInf ℚ fun _ => x)) = Real.fourierChar x`. Rewrite using `[AddChar.map_neg_eq_inv, h, AddChar.map_neg_eq_inv, inv_inv]`. Establish `h3 : ψ (-(TR.sInf ℚ fun _ => x)) = ((adelicChar ℚ (-(TR.sInf ℚ fun _ => x)) : Circle) : ℂ)` using `rfl`. Rewrite using `[h3, h2, Real.fourierChar_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.standardAddChar_neg_archimedean_rat :
     ∀ x : ℝ, ψ (-(TR.sInf ℚ fun _ => x)) = Complex.exp (2 * Real.pi * Complex.I * x) := by

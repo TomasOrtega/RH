@@ -13,16 +13,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GalLift.ConjWeil
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2, inv_one, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hecke_mul_inv {D : D7} {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : IsHeckeChar D η) :
     IsHeckeChar D (χ * η⁻¹) :=
   ⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2, inv_one, mul_one]⟩
 
 /- English proof (translation)
-Take `⟨o, h1, -⟩` from `GlobalTheory.WeilChange.exists_weilDatum_twist D ψ ho.std S T χS χT (χS' * χS⁻¹) (χT' * χT⁻¹) om ho (hecke_mul_inv hS ho.hecS) (hecke_mul_inv hT ho.hecT) (resEta_parity (resEta_mul rS (resEta_inv ho.resS)) (by omega)) (resEta_parity (resEta_mul rT (resEta_inv ho.resT)) (by omega) …`. Establish `e : ∀ a b : (AE D)ˣ →* Circle, a * (b * a⁻¹) = b` using `fun a b => by ext1 z`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply]`. Rewrite using `[mul_comm (b z), mul_inv_cancel_left]`. Rewrite `h1` using `[e, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨o, h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_datum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT χS' χT' : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (ho : IsWeilDatumO ψ S T χS χT om)
@@ -40,9 +40,9 @@ theorem exists_of_datum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} 
   exact ⟨o, h1⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Take `⟨c, hc⟩` from `R.t_odd`. Establish `h2` using `R.two_le_m`. Unfold `Ranks.nV Ranks.r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem even_im_hermitian_sub (R : Ranks) : 0 % 2 = R.nV % 2 ∧ (0 + 1) % 2 = R.r % 2 := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -53,7 +53,7 @@ theorem even_im_hermitian_sub (R : Ranks) : 0 % 2 = R.nV % 2 ∧ (0 + 1) % 2 = R
   constructor <;> omega
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i σ μ' η' hμ hη hH`. Establish `hV : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Conclude with `exists_of_datum (hR.thP.ωP i A.μ0) hμ.1 (hecke_mul_inv hμ.1 hη.1) (resEta_parity hH.mu_res ((even_im_hermitian_sub D.R).1.trans (congrArg (· % 2) hV.symm))) (resEta_parity (resEta_mul hH.mu_res (resEta_inv hH.eta_res)) ((even_im_hermitian_sub D.R).2.trans (congrArg (· % 2) hW.sym …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_conj_weil : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ) (μ' η' : (AE D)ˣ →* Circle), ChiAt R i σ μ' → IsEtaConj σ R.eta η' → HypConj R i σ μ' η' → ∃ ω, IsWeilDatumO R.ψ (Vc D i) (Wc D i) μ' (μ' * η'⁻¹) ω := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i σ μ' η' hμ hη hH

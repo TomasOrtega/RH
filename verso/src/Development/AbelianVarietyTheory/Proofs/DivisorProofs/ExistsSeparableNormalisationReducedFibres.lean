@@ -10,11 +10,11 @@ namespace GlobalTheory
 open GroundTheory.FunctionField GroundTheory.Arith.SchemeCoh KaehlerDifferential
 
 /- English proof (translation)
-Establish `hle : ringKrullDim A ≤ 1` using `Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 A)`. Establish `h0 : ringKrullDim A ≠ 0` using `fun h0 => h (by`. Establish `: Ring.KrullDimLE 0 A`. Rewrite using `[Ring.krullDimLE_iff, h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Ring.KrullDimLE.isField_of_isDomain)`. Establish `hnn : 0 ≤ ringKrullDim A` using `ringKrullDim_nonneg_of_nontrivial`. Generalize the expression as in `ringKrullDim A = d at hle h0 hnn ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hnn (by simp)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe n`. Establish `h1 : n ≤ 1` using `by exact_mod_cast hle`. Establish `h2 : n ≠ 0` using `by exact_mod_cast h0`. Rewrite using `[le_antisymm h1 (Order.one_le_iff_ne_zero.mpr h2)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_one_of_isDedekindDomain_of_not_isField (A : Type) [CommRing A] [IsDedekindDomain A] (h : ¬ IsField A) : ringKrullDim A = 1 := by
   have hle : ringKrullDim A ≤ 1 := Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 A)
@@ -34,15 +34,15 @@ theorem ringKrullDim_eq_one_of_isDedekindDomain_of_not_isField (A : Type) [CommR
     rfl
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ hdim`. Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg k A`. Establish `hs : ringKrullDim A = s`. Set `_ : Algebra (MvPolynomial (Fin s) k) A` to `g.toRingHom.toAlgebra`. Establish `_ : Algebra.IsIntegral (MvPolynomial (Fin s) k) A` using `⟨fun x => hfin.to_isIntegral x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `_ : FaithfulSMul (MvPolynomial (Fin s) k) A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hg`. Rewrite using `[GlobalTheory.ringKrullDim_eq_of_isIntegral (MvPolynomial (Fin s) k) A, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Establish `hs1 : s = 1`. Rewrite `hs` using `[hdim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hs.symm` after adjusting the coercions. Substitute `hs1` using the available equality. Use `⟨g (MvPolynomial.X 0), ?_⟩` and prove the remaining obligations. Set `e : k[X] →ₐ[k] MvPolynomial (Fin 1) k` to `Polynomial.aeval (MvPolynomial.X 0)`. Establish `he : Function.Surjective e`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.range_eq_top]`. Express the relevant statement in the definitionally equal form `(Polynomial.aeval (R := k) (MvPolynomial.X (R := k) (0 : Fin 1))).range = ⊤`. Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval, ← MvPolynomial.adjoin_range_X, Set.range_unique]`. Both sides reduce to the same expression. Establish `hcomp : Polynomial.aeval (R` using `k) (g (MvPolynomial.X 0)) = g.comp e := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[e]`. Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp hfin (RingHom.Finite.of_surjective _ he)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_aeval_finite_of_ringKrullDim_eq_one : ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A],
     ringKrullDim A = 1 → ∃ t : A, (Polynomial.aeval (R := k) t).Finite := by
@@ -74,17 +74,15 @@ theorem exists_aeval_finite_of_ringKrullDim_eq_one : ∀ (k A : Type) [Field k] 
   exact RingHom.Finite.comp hfin (RingHom.Finite.of_surjective _ he)
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ y hy hA`. Rewrite using `[injective_iff_map_eq_zero]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨p, hp, hp0⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyi : IsIntegral k y` using `(show IsAlgebraic k y from ⟨p, hp0, hp⟩).isIntegral`. Use `set B : Subalgebra k A := (Polynomial.aeval (R := k) y).range with hB`. Use `haveI : Algebra.IsIntegral k B := by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, q, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsIntegral k (Polynomial.aeval y q)`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(hyi.pow i).smul _`. Conclude with `(isIntegral_algHom_iff B.val Subtype.val_injective).1 this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.IsIntegral k A := by`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hx : (Polynomial.aeval (R` using `k) y).toRingHom.IsIntegralElem x := hy.to_isIntegral x`. Take `⟨f, hfm, hf⟩` from `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : k[X] →+* B` to `(Polynomial.aeval (R := k) y).rangeRestrict.toRingHom`. Establish `hxB : IsIntegral B x`. Use `⟨f.map φ, hfm.map φ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap B A).comp φ = (Polynomial.aeval (R` using `k) y).toRingHom := RingHom.ext fun q => rfl`.
-
-Rewrite using `[e]`. Conclude with `hf`. Conclude with `isIntegral_trans x hxB`. Conclude with `hA ((Algebra.IsIntegral.isField_iff_isField (algebraMap k A).injective).1 (Field.toIsField k))`.
+A detailed English derivation is pending.
 -/
 theorem aeval_injective_of_finite_of_not_isField : ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] (y : A),
     (Polynomial.aeval (R := k) y).Finite → ¬ IsField A → Function.Injective (Polynomial.aeval (R := k) y) := by
@@ -119,13 +117,11 @@ theorem aeval_injective_of_finite_of_not_isField : ∀ (k A : Type) [Field k] [C
   exact hA ((Algebra.IsIntegral.isField_iff_isField (algebraMap k A).injective).1 (Field.toIsField k))
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _`. Establish `hnt` using `kaehlerDifferential_nontrivial (k := k) (K := FractionRing A)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hall : ∀ x : FractionRing A, D k (FractionRing A) x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Rewrite using `[div_eq_mul_inv, Derivation.leibniz, Derivation.leibniz_inv, h a, h b]`. Simplify using the standard rewrite rules. Establish `htop : (⊤ : Submodule (FractionRing A) Ω[FractionRing A⁄k]) = ⊥`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← KaehlerDifferential.span_range_derivation, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hall x`. Take `⟨ω, hω⟩` from `exists_ne (0 : Ω[FractionRing A⁄k])`. Establish `hmem : ω ∈ (⊥ : Submodule (FractionRing A) Ω[FractionRing A⁄k])` using `htop ▸ Submodule.mem_top`.
-
-Conclude with `hω ((Submodule.mem_bot _).1 hmem)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_D_algebraMap_fractionRing_ne_zero : ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A]
     [IsFunctionField k (FractionRing A)],
@@ -148,15 +144,15 @@ theorem exists_D_algebraMap_fractionRing_ne_zero : ∀ (k A : Type) [Field k] [C
   exact hω ((Submodule.mem_bot _).1 hmem)
 
 /- English proof (translation)
-Establish `htrA : Algebra.trdeg k A = 1`. Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg k A`. Establish `hs` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_of_normalization k g hg hfin.to_isIntegral`. Rewrite `hs` using `[hR]`. Establish `hs1 : s = 1` using `by exact_mod_cast hs.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `hs1` using the available equality. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_normalization k g hg hfin.to_isIntegral]`. Simplify using the standard rewrite rules. Establish `htr : Algebra.trdeg k (FractionRing A) = 1`. Establish `: FaithfulSMul A (FractionRing A)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective A _)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic A (FractionRing A)` using `IsLocalization.isAlgebraic (FractionRing A) (nonZeroDivisors A)`. Rewrite using `[← trdeg_add_eq k A (A := FractionRing A), htrA, trdeg_eq_zero (R := A) (A := FractionRing A), add_zero]`. Establish `: Algebra.Transcendental k (FractionRing A)`. Rewrite using `[← trdeg_ne_zero_iff, htr]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `Algebra.Transcendental.transcendental (R := k) (A := FractionRing A)`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hbx : IsTranscendenceBasis k ((↑) : ({x} : Set (FractionRing A)) → FractionRing A)` using `AlgebraicIndependent.isTranscendenceBasis_of_trdeg_le_of_finite ((algebraicIndependent_singleton_iff (⟨x, rfl⟩ : ({x} : Set (FractionRing A)))).2 hx) (by rw [htr, Cardinal.mk_singleton])`. Establish `halg` using `hbx.isAlgebraic_field`. Rewrite `halg` using `[Subtype.range_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType A (FractionRing A)` using `Algebra.EssFiniteType.of_isLocalization (FractionRing A) (nonZeroDivisors A)`. Establish `: Algebra.EssFiniteType k (FractionRing A)` using `Algebra.EssFiniteType.comp k A (FractionRing A)`. Establish `: Algebra.EssFiniteType (IntermediateField.adjoin k {x}) (FractionRing A)` using `Algebra.EssFiniteType.of_comp k _ (FractionRing A)`. Conclude with `Algebra.finite_of_essFiniteType_of_isAlgebraic`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFunctionField_fractionRing_of_ringKrullDim_eq_one (k A : Type) [Field k] [CommRing A]
     [IsDomain A] [Algebra k A] [Algebra.FiniteType k A] (hR : ringKrullDim A = 1) :
@@ -195,11 +191,11 @@ theorem isFunctionField_fractionRing_of_ringKrullDim_eq_one (k A : Type) [Field 
   exact Algebra.finite_of_essFiniteType_of_isAlgebraic
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ _ hA`. Establish `hdim : ringKrullDim A = 1` using `ringKrullDim_eq_one_of_isDedekindDomain_of_not_isField A hA`. Use `haveI : IsFunctionField k (FractionRing A) := isFunctionField_fractionRing_of_ringKrullDim_eq_one k A hdim`. Take `⟨t, ht⟩` from `exists_aeval_finite_of_ringKrullDim_eq_one k A hdim`. Take `⟨a, ha⟩` from `exists_D_algebraMap_fractionRing_ne_zero k A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∃ y : A, (Polynomial.aeval (R` using `k) y).Finite ∧ D k (FractionRing A) (algebraMap A (FractionRing A) y) ≠ 0 := by`. Distinguish the cases in `hD : D k (FractionRing A) (algebraMap A (FractionRing A) t) = 0`. Take `⟨M, hM⟩` from `GlobalTheory.T.noether_normalization_finite_aeval_pow_add k A t a ht`. Use `⟨t ^ M + a, hM, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_pow, map_add, Derivation.leibniz_pow, hD, smul_zero, smul_zero, zero_add]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `ha`. Conclude with `⟨t, ht, hD⟩`. Take `⟨y, hy, hDy⟩` from `key`. Use `haveI := isSeparable_of_D_ne_zero hDy`. Conclude with `⟨y, hy, GlobalTheory.T.reduced_fibres_almost_all_of_separable_dedekind_curve k A y hy (aeval_injective_of_finite_of_not_isField k A y hy hA) this⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_separable_normalisation_reduced_fibres : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A], ¬ IsField A → ∃ y : A, (Polynomial.aeval (R := k) y).Finite ∧ ∃ δ : k[X], δ ≠ 0 ∧ ∀ α : k, δ.eval α ≠ 0 → ∀ Q : Ideal A, Q.IsMaximal → y - algebraMap k A α ∉ Q ^ 2 := by
   intro k A _ _ _ _ _ _ hA

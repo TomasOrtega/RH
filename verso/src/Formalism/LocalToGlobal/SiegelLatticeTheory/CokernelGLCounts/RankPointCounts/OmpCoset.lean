@@ -12,13 +12,13 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Establish `hQQ : Q * Q.adjugate = 1` using `by rw [Matrix.mul_adjugate, hQ, one_smul]`. Establish `hPP : P.adjugate * P = 1` using `by rw [Matrix.adjugate_mul, hP, one_smul]`. Establish `hPl' : ∀ d, P.adjugate d (Fin.last r) = if d = Fin.last r then 1 else 0`. Introduce `d`. Use `congrFun (congrFun hPP d) (Fin.last r)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, hPl, Matrix.one_apply]`. Establish `hW : ∀ c, (Q * (Q.adjugate * (Z.adjugate * P.adjugate))) c (Fin.last r) = Z.adjugate c (Fin.last r)`. Introduce `c`. Rewrite using `[← Matrix.mul_assoc, hQQ, Matrix.one_mul, Matrix.mul_apply]`. Simplify using `[hPl']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hZ, Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib]`. Simplify using `only [hv, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_smul, ← hW c, Matrix.mul_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Rewrite using `[hZ, Matrix.det_mul, Matrix.det_mul, hP, hQ, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adjugate_last_col_sum_and_det_of_coset (Z Z' P Q : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (v v' : Fin (r + 1) → S.V) (φ : S.V →ₗ[E] S.V) (hZ : Z' = P * Z * Q)
@@ -48,17 +48,17 @@ private theorem adjugate_last_col_sum_and_det_of_coset (Z Z' P Q : Matrix (Fin (
   · rw [hZ, Matrix.det_mul, Matrix.det_mul, hP, hQ, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨M, hM, hMd, hMl⟩` from `coef_mat F0 (s' : S.V →ₗ[E] S.V) (fun j x hx => hsf j x hx) hsz`. Take `⟨N, hN, hNd, hNl⟩` from `coef_mat F (σ.symm : S.V →ₗ[E] S.V) (fun j x hx => hσf j x hx) hσz`. Establish `hM' : ∀ b, s' (F0.fvec b) = ∑ c, M c b • F0.fvec c` using `hM`. Establish `hN' : ∀ b, σ.symm (F.fvec b) = ∑ c, N c b • F.fvec c` using `hN`. Establish `hs : ∀ x y, S.hT (σ x) (σ y) = S.hT x y` using `hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : ∀ b, (mapFlag (σ * γ1 * s') hγ2 F0).fvec b = σ (∑ c, M c b • (mapFlag γ1 hγ1 F0).fvec c)`. Introduce `b`. Rewrite using `[fvec_mapFlag, LinearEquiv.mul_apply, LinearEquiv.mul_apply, hM' b, map_sum]`. Simplify using `only [fvec_mapFlag, map_smul]`. Establish `hv2 : ∀ b, F.fvec b = σ (∑ c, N c b • F.fvec c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[← hN', LinearEquiv.apply_symm_apply]`. Establish `hZ1 : Zhat F (mapFlag (σ * γ1 * s') hγ2 F0) = Nᴴ * Zhat F (mapFlag γ1 hγ1 F0) * M`. Use extensionality with `a b`. Establish `e1 : Zhat F (mapFlag (σ * γ1 * s') hγ2 F0) a b = S.hT (F.fvec a) ((mapFlag (σ * γ1 * s') hγ2 F0).fvec b)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[e1, hv1 b, hv2 a, hs]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Zhat, brS, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hZ2 : Zhat (mapFlag (σ * γ1 * s') hγ2 F0) F = Mᴴ * Zhat (mapFlag γ1 hγ1 F0) F * N`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1 : Zhat (mapFlag (σ * γ1 * s') hγ2 F0) F a b = S.hT ((mapFlag (σ * γ1 * s') hγ2 F0).fvec a) (F.fvec b)` using `rfl`. Rewrite using `[e1, hv1 a, hv2 b, hs]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Zhat, brS, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Apply the tactic sequence `obtain ⟨h1, h2⟩ := adjugate_last_col_sum_and_det_of_coset _ _ _ _ _ _ (σ : S.V →ₗ[E] S.V) hZ1 hv1 hMd (by simp [Matrix.det_conjTranspose, hNd]) (by intro a; rw [Matrix.conjTranspose_apply, hNl]; split_ifs <;> simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Apply the tactic sequence `obtain ⟨h3, h4⟩ := adjugate_last_col_sum_and_det_of_coset _ _ _ _ _ _ (σ : S.V →ₗ[E] S.V) hZ2 hv2 hNd (by simp [Matrix.det_conjTranspose, hMd]) (by intro a; rw [Matrix.conjTranspose_apply, hMl]; split_ifs <;> simp)`. Conclude with `⟨h1, h2, h3, h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem omp_coset (F : FlagG S r T) (F0 : FlagG S r T') (σ γ1 s' : S.V ≃ₗ[E] S.V)
     (hσ : σ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hσ' : σ.symm ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hγ1 : γ1 ∈ Formalism.HermitianLatticesTheory.isom S.hT)

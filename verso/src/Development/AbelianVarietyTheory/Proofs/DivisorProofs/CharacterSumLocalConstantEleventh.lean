@@ -15,9 +15,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ)
 
 /- English proof (translation)
-Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_sclLat]`. Introduce `l`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 (h l.1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IntAt P ((q : E) ^ k)` using `(intRing P).pow_mem (intAt_natCast P q) k`. Use `h1.mul (hx l) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show e' l.1 = e l.1 + k by omega, zpow_add₀ hq', zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sclLat_anti (hq : q ≠ 0) {N : ℕ} {e e' : ℕ → ℤ} (h : ∀ l, e l ≤ e' l) : sclLat P q N e' ≤ sclLat P q N e := by
   have hq' : (q : E) ≠ 0 := Nat.cast_ne_zero.2 hq
@@ -31,7 +31,7 @@ theorem sclLat_anti (hq : q ≠ 0) {N : ℕ} {e e' : ℕ → ℤ} (h : ∀ l, e 
   field_simp
 
 /- English proof (translation)
-Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Rewrite using `[mem_sclLat, mem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[zpow_add₀ hq', zpow_one, Pi.smul_apply, smul_eq_mul, mul_inv, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_sclLat_succ (hq : q ≠ 0) {N : ℕ} (e : ℕ → ℤ) (x : Sp E N) :
     x ∈ sclLat P q N (fun l => e l + 1) ↔ (q : E)⁻¹ • x ∈ sclLat P q N e := by
@@ -41,9 +41,9 @@ theorem mem_sclLat_succ (hq : q ≠ 0) {N : ℕ} (e : ℕ → ℤ) (x : Sp E N) 
   rw [zpow_add₀ hq', zpow_one, Pi.smul_apply, smul_eq_mul, mul_inv, mul_assoc]
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `using M.sub_mem hx (h₀ (hc x ((hκ x).1 (h₁ hx))))`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using M.add_mem (h₀ (hc x (h₁ hx))) hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_stabL_of_cong {N : ℕ} {M₀ M M₁ : Submodule (𝓞 E) (Sp E N)} (h₀ : M₀ ≤ M) (h₁ : M ≤ M₁)
     {κ : Sp E N ≃ₗ[E] Sp E N} (hκ : κ ∈ stabL E N M₁) (hc : ∀ y ∈ M₁, κ y - y ∈ M₀) : κ ∈ stabL E N M := by
@@ -58,13 +58,13 @@ noncomputable def resMat {N : ℕ} (e : ℕ → ℤ) (h : Sp E N ≃ₗ[E] Sp E 
   fun p => redP P (h (eN E N p.2.1) p.1 * (q : E) ^ (e p.2.1 - e p.1.1))
 
 /- English proof (translation)
-Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `a1` using `(maps_iff P q hq e e h.toLinearMap).1 fun y hy => (hh y).2 hy`. Establish `a2` using `(maps_iff P q hq e e h'.toLinearMap).1 fun y hy => (hh' y).2 hy`. Establish `a3` using `(maps_iff P q hq e (fun l => e l + 1) (h'.toLinearMap - h.toLinearMap)).2 fun l l' => by`. Establish `b1 : IntAt P (h' (eN E N l'.1) l * (q : E) ^ (e l'.1 - e l.1) - h (eN E N l'.1) l * (q : E) ^ (e l'.1 - e l.1))` using `(intRing P).sub_mem (a2 l l') (a1 l l')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `reduction_add b1 (a1 l l')`. Establish `b3 : redP P (h (eN E N l'.1) l * (q : E) ^ (e l'.1 - e l.1)) = redP P (h' (eN E N l'.1) l * (q : E) ^ (e l'.1 - e l.1))` using `congrFun hres (l, l')`. Use `erw [sub_add_cancel, b3, right_eq_add] at b2`. Use `hdiv _ b1 b2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show e l'.1 - (e l.1 + 1) = e l'.1 - e l.1 - 1 by ring, zpow_sub_one₀ hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Pi.sub_apply, LinearEquiv.coe_coe]`. Clear the denominators using the available nonvanishing facts. Introduce `y hy`. Establish `a4` using `a3 y hy`. Rewrite `a4`, the goal using `[mem_sclLat_succ P q hq]`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hh, map_smul, map_sub]`. Simplify using `using a4`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cong_of_resMat_eq (hq : q ≠ 0) (hdiv : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (q : E)))
     {N : ℕ} {e : ℕ → ℤ} {h h' : Sp E N ≃ₗ[E] Sp E N} (hh : h ∈ stabL E N (sclLat P q N e))
@@ -91,11 +91,11 @@ theorem cong_of_resMat_eq (hq : q ≠ 0) (hdiv : ∀ a : E, IntAt P a → redP P
   simpa using a4
 
 /- English proof (translation)
-Apply the tactic sequence `have h₀ : ∀ s, sclLat P q (n + c) (fun l => scE n (fun i => i + 1) l + 1) ≤ flagS P q k rS n c s := fun s => sclLat_anti P q hq fun l => by split_ifs <;> omega`. Apply the tactic sequence `have h₁ : ∀ s, flagS P q k rS n c s ≤ lamY P q n c fun i => i + 1 := fun s => sclLat_anti P q hq fun l => by split_ifs <;> omega`. Use `⟨hκ, fun s _ => mem_stabL_of_cong (h₀ s) (h₁ s) hκ hc, fun s _ => ⟨mem_stabL_of_cong (h₀ s) (h₁ s) hκ hc, h₀ s (hc _ ?_)⟩⟩` and prove the remaining obligations. Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Unfold `lamY bvecS bvecG`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mem_sclLat]`. Introduce `i`. Distinguish the cases in `hi : i.1 = fIdx k c n (symIdxInv k rS s)`. Simplify using `only [Pi.smul_apply, eN, hi, if_true, smul_eq_mul, mul_one]`. Rewrite using `[inv_mul_cancel₀ (zpow_ne_zero _ hq')]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intAt_one P`. Simplify using `only [Pi.smul_apply, eN, hi, if_false, smul_eq_mul, mul_zero]`. Conclude with `intAt_zero P`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_JGsym_of_cong (hq : q ≠ 0) (k rS r t n c : ℕ) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hκ : κ ∈ stabL E (n + c) (lamY P q n c fun i => i + 1))
@@ -120,27 +120,25 @@ theorem mem_JGsym_of_cong (hq : q ≠ 0) (k rS r t n c : ℕ) {κ : Sp E (n + c)
 end
 
 /- English proof (translation)
-Use `⟨1, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H j hj`. Take `⟨hvG, -, -, hprod, -⟩` from `BadPrimes.bad_primes D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H`. Take `⟨⟨-, -, -, -, -, -, hX, -, -, hPr, -, -, hg, -⟩, -, -, -, -, hsh, hI, -⟩` from `H`. Establish `hq : ∀ P : HeightOneSpectrum (𝓞 X.E), Formalism.L2.Col.qOf P ≠ 0` using `fun P h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgg : 0 < Pr.g 0 * Pr.g 1` using `Nat.mul_pos (hPr.g_prime 0).pos (hPr.g_prime 1).pos`. Establish `h1 : Fintype.card (I.β j) ≤ (Pr.g 0 * Pr.g 1) ^ (N.R.f * N.Nm ^ 2)`. Break down `j with _ | i` into its components or cases. Take `⟨b, hb⟩` from `hI.zero_uniq`. Conclude with `(Fintype.card_le_one_iff.2 fun a a' => (hb a).trans (hb a').symm).trans (Nat.one_le_pow _ _ hgg)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set n := N.R.N (i + 1) + cOf N.R (i + 1) with hn haveI : ∀ P : rowSG Pr sel mu, Finite (𝓞 X.E ⧸ P.1.asIdeal) := fun P => finite_res P.1`. Set `φ : I.β (i + 1) → ∀ P : rowSG Pr sel mu, Fin n × Fin n → 𝓞 X.E ⧸ P.1.asIdeal` to `fun b P => resMat P.1 (Formalism.L2.Col.qOf P.1) (scE (N.R.N (i + 1)) fun i => i + 1) (I.h (i + 1) b P)`. Establish `hφ : Function.Injective φ`. Introduce `b b' hbb`. Use `hI.inj i (by omega) b b' fun P => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `hvG P.1 P.2`. Establish `s1` using `hI.stabG _ b P hP`. Establish `s2` using `hI.stabG _ b' P hP`. Unfold `lamYat at s1 s2`. Rewrite `s1`, `s2` using `[if_pos hP]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨1, Subgroup.one_mem _, (I.h (i + 1) b P)⁻¹ * I.h (i + 1) b' P, ?_, by group⟩` and prove the remaining obligations. Unfold `Jat`. Rewrite using `[if_pos hP, hsh, if_pos rfl]`. Conclude with `mem_JGsym_of_cong _ _ (hq _) _ _ _ _ _ _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ s1) s2) (cong_of_resMat_eq _ _ (hq _) (GlobalTheory.TypePrimeUnif.intAt_div_qOf X Pr hX.ok hPr P.1 hP) s1 s2 (congrFun hbb P))`. Establish `h2` using `Nat.card_le_card_of_injective φ hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3 : ∀ P : rowSG Pr sel mu, Nat.card (Fin n × Fin n → 𝓞 X.E ⧸ P.1.asIdeal) = Formalism.L2.Col.qOf P.1 ^ (n * n)` using `fun P => by`. Rewrite using `[Nat.card_fun, Nat.card_prod, Nat.card_fin]`. Both sides reduce to the same expression. Rewrite `h2` using `[Nat.card_eq_fintype_card, Nat.card_pi, Finset.prod_congr rfl fun P _ => h3 P, Finset.prod_pow, hprod, ← pow_mul]`. Use `h2.trans (Nat.pow_le_pow_right hgg (Nat.mul_le_mul_left _ ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h4 : n ≤ N.Nm`. Rewrite using `[hn]`. Unfold `NumDatum.Nm Ranks.N cOf`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (show i + 1 ≤ N.R.m by omega)`. Rewrite using `[hd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: i + 1 + d - 1 - (i + 1) ≤ d` using `by omega`. Use polynomial arithmetic with `[Nat.zero_le (d * N.R.t)]`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul h4 h4`. Rewrite `h1` using `[hg 0, hg 1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0 : (1 : ℝ) ≤ N.g 0` using `by rw [← hg 0]; exact_mod_cast (hPr.g_prime 0).one_le`. Establish `g1 : (1 : ℝ) ≤ N.g 1` using `by rw [← hg 1]; exact_mod_cast (hPr.g_prime 1).one_le`. Establish `hT : (1 : ℝ) ≤ Pr.T u` using `by exact_mod_cast (hPr.T_prime u).one_le`. Establish `gg : (1 : ℝ) ≤ (N.g 0 : ℝ) * N.g 1` using `one_le_mul_of_one_le_of_one_le g0 g1`. Establish `ggT : (N.g 0 : ℝ) * N.g 1 ≤ (N.g 0 : ℝ) * N.g 1 * Pr.T u` using `le_mul_of_one_le_right (by linarith) hT`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `he : N.R.f * N.Nm ^ 2 ≤ N.R.f * (N.R.m ^ 2 * N.Nm ^ 2)` using `Nat.mul_le_mul_left _ (Nat.le_mul_of_pos_left _ (Nat.pow_pos (by omega)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_log (show 0 < (N.g 0 : ℝ) * N.g 1 * Pr.T u by linarith), ← Real.exp_nat_mul, Real.exp_eq_exp]`. Unfold `errUnit`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_index_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ j, j + 2 ≤ N.R.m → (Fintype.card (I.β j) : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u)) := by
   classical

@@ -9,7 +9,7 @@ namespace WlocSk.UnitaryGroupBasics
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `congrFun hc p` as an intermediate fact. Simplify using `only [bvec, Matrix.mulVec, dotProduct_single, mul_one, Pi.single_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_of_fix {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {c : Fin (2 * r + k + 1)} (hc : h *ᵥ bvec c = bvec c) (p : Fin (2 * r + k + 1)) :
@@ -19,13 +19,13 @@ theorem col_of_fix {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   exact this
 
 /- English proof (translation)
-Establish `hU' : hᴴ * Hpk k r * h = Hpk k r` using `hU`. Establish `e` using `congrFun (congrFun hU' c) j`. Rewrite `e` using `[Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single c]`. Rewrite `e` using `[conjTranspose_apply, hc c, if_pos rfl, star_one, one_mul, hpk_mul_apply, hpk_row]`. Establish `hs : sgn k r c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Use `sgn_mul_self (k := k) (r := r) c` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Distinguish the cases in `hj : j = tau k r c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[if_pos hj]`. Rewrite using `[if_pos hj.symm]`. Conclude with `mul_left_cancel₀ hs (e.trans (mul_one _).symm)`. Rewrite `e` using `[if_neg hj]`. Rewrite using `[if_neg (Ne.symm hj)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 e).resolve_left hs`. Introduce `p _ hp`. Rewrite using `[conjTranspose_apply, hc p, if_neg hp, star_zero, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_of_fixed_col {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hU : h ∈ UH (Hpk k r)) (c : Fin (2 * r + k + 1))
@@ -53,11 +53,11 @@ theorem row_of_fixed_col {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Distinguish the cases in `hcr : c.val < r`. Establish `e : eI k r ⟨c.val, hcr⟩ = c` using `Fin.ext rfl`. Use `(hh.2.1 ⟨c.val, hcr⟩).1` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `col_of_fix this p`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : 2 * r + k - c.val < r` using `by omega`. Establish `e : esI k r ⟨2 * r + k - c.val, ha⟩ = c`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `(hh.2.1 ⟨2 * r + k - c.val, ha⟩).2` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `col_of_fix this p`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uw_fixed_col {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
@@ -78,7 +78,7 @@ theorem uw_fixed_col {z : Fin (2 * r + k + 1) → ℂ}
     exact col_of_fix this p
 
 /- English proof (translation)
-Unfold `tau`. Simplify using `only`. Use `split_ifs`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem tau_out (i : Fin (2 * r + k + 1)) (hi : i.val < r ∨ r + k < i.val) :
     (tau k r i).val < r ∨ r + k < (tau k r i).val := by
@@ -88,7 +88,7 @@ theorem tau_out (i : Fin (2 * r + k + 1)) (hi : i.val < r ∨ r + k < i.val) :
   omega
 
 /- English proof (translation)
-Use `⟨fun i j hj => uw_fixed_col hh j hj i, fun i j hi => ?_⟩` and prove the remaining obligations. Use `row_of_fixed_col hh.1 (tau k r i) (uw_fixed_col hh _ (tau_out i hi)) j` as an intermediate fact. Rewrite `this` using `[tau_tau]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uw_block {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
@@ -99,9 +99,9 @@ theorem uw_block {z : Fin (2 * r + k + 1) → ℂ}
   exact this
 
 /- English proof (translation)
-Establish `hu` using `isUnit_of_uh hh.1`. Establish `fix : ∀ v : Fin (2 * r + k + 1) → ℂ, h *ᵥ v = v → h⁻¹ *ᵥ v = v`. Introduce `v hv`. Use `conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨uh_inv hh.1, fun a => ⟨fix _ (hh.2.1 a).1, fix _ (hh.2.1 a).2⟩, fix _ hh.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
@@ -114,7 +114,7 @@ theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ}
   exact ⟨uh_inv hh.1, fun a => ⟨fix _ (hh.2.1 a).1, fix _ (hh.2.1 a).2⟩, fix _ hh.2.2⟩
 
 /- English proof (translation)
-Use `⟨uh_mul hh.1 hh'.1, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, (hh'.2.1 a).1, (hh.2.1 a).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hh'.2.1 a).2, (hh.2.1 a).2]`. Rewrite using `[← Matrix.mulVec_mulVec, hh'.2.2, hh.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uw_mul {z : Fin (2 * r + k + 1) → ℂ}
     {h h' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
@@ -125,11 +125,11 @@ theorem uw_mul {z : Fin (2 * r + k + 1) → ℂ}
   · rw [← Matrix.mulVec_mulVec, hh'.2.2, hh.2.2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single q]`. Rewrite using `[hg q q hq (by omega), if_pos rfl, mul_one]`. Introduce `p _ hpq`. Distinguish the cases in `hp : q.val ≤ p.val ∨ r ≤ p.val`. Rewrite using `[hg p q hq hp, if_neg hpq, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hp`. Establish `hne : i ≠ p`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.1 i p (by omega), if_neg hne, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem block_mul_col {h g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : block k r h) (hg : col k r g) (i q : Fin (2 * r + k + 1)) (hq : q.val ≤ r + k)
@@ -149,15 +149,15 @@ theorem block_mul_col {h g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) 
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Introduce `i j hj hi`. Establish `term : ∀ q : Fin (2 * r + k + 1), (h * g) i q * h' q j = h i q * h' q j`. Introduce `q`. Distinguish the cases in `h0 : h' q j = 0`. Rewrite using `[h0, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjr : j.val < r`. Establish `hqj : q = j`. Assume the negation of the conclusion as `hne`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hh'.1 q j (Or.inl hjr), if_neg hne]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Substitute `hqj` using the available equality. Rewrite using `[block_mul_col hh hg i q hj hi]`. Establish `hqW : r ≤ q.val ∧ q.val ≤ r + k`. Assume the negation of the conclusion as `hc`. Apply `h0` to reduce the goal to its premises.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : q ≠ j`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[hh'.2 q j (by omega), if_neg hne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[block_mul_col hh hg i q hqW.2 (by omega)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun q _ => term q), ← Matrix.mul_apply, hinv, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_col {h h' g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : block k r h) (hh' : block k r h') (hinv : h * h' = 1) (hg : col k r g) :
@@ -187,9 +187,9 @@ theorem conj_col {h h' g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hrow, if_pos rfl, one_mul]`. Introduce `p _ hp`. Rewrite using `[hrow, if_neg (Ne.symm hp), zero_mul]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h'`.
+A detailed English derivation is pending.
 -/
 theorem mul_apply_of_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
@@ -202,9 +202,9 @@ theorem mul_apply_of_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hcol, if_pos rfl, mul_one]`. Introduce `q _ hq`. Rewrite using `[hcol, if_neg hq, mul_zero]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h'`.
+A detailed English derivation is pending.
 -/
 theorem mul_apply_of_col {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
@@ -217,9 +217,9 @@ theorem mul_apply_of_col {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hrow, if_pos rfl, one_mul]`. Introduce `p _ hp`. Rewrite using `[hrow, if_neg (Ne.symm hp), zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_apply_of_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1))
@@ -233,7 +233,7 @@ theorem mulVec_apply_of_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Unfold `ellA`. Establish `hrow : ∀ p, h (eI k r a) p = if eI k r a = p then 1 else 0` using `fun p => hh.2 _ p (by simp only [eI]; omega)`. Distinguish the cases in `ha : a.val + 1 < r`. Rewrite using `[dif_pos ha, dif_pos ha, mul_apply_of_col _ _ _ (fun q => hh'.1 q _ (by simp only [eI]; omega)), mul_apply_of_row _ _ _ hrow]`. Rewrite using `[dif_neg ha, dif_neg ha, ← Matrix.mulVec_mulVec, hz, ← Matrix.mulVec_mulVec, mulVec_apply_of_row _ _ hrow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellA_conj (z : Fin (2 * r + k + 1) → ℂ)
     {h h' g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -249,7 +249,7 @@ theorem ellA_conj (z : Fin (2 * r + k + 1) → ℂ)
       mulVec_apply_of_row _ _ hrow]
 
 /- English proof (translation)
-Establish `hinv` using `uw_inv hh`. Establish `hu` using `isUnit_of_uh hh.1`. Establish `hm'` using `(nset_iff m).1 hm`. Conclude with `(nset_iff _).2 ⟨uh_mul (uh_mul hinv.1 hm'.1) hh.1, conj_col (uw_block hinv) (uw_block hh) (Matrix.nonsing_inv_mul _ hu) hm'.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uw_conj_mem {z : Fin (2 * r + k + 1) → ℂ}
     {h m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -261,9 +261,9 @@ theorem uw_conj_mem {z : Fin (2 * r + k + 1) → ℂ}
     conj_col (uw_block hinv) (uw_block hh) (Matrix.nonsing_inv_mul _ hu) hm'.2⟩
 
 /- English proof (translation)
-Establish `hinv` using `uw_inv hh`. Unfold `psiGen`. Use `congr 4`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ellA_conj z (uw_block hinv) (uw_block hh) hh.2.2 a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiGen_conj (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
     {h m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}

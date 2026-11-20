@@ -29,7 +29,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Kg, Subgroup.mem_iInf, Subgroup.mem_inf, Subgroup.mem_comap]`. Use `forall₂_congr fun w _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Simplify using `[hs, Subgroup.mem_comap]`. Simplify using `[hs]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {u : GL (Fin n) (Af E)} :
     u ∈ Kg S L ↔ ∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) u ∈ L w ∧
@@ -41,11 +41,11 @@ private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {
   · simp [hs]
 
 /- English proof (translation)
-Unfold `finFn`. Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨p₁, q₁⟩` from `mem_Kg.1 hu₁ w hw`. Take `⟨p₂, q₂⟩` from `mem_Kg.1 hu₂ w hw`. Establish `e₁ : atW w ((u₁, u₂) * h) = (GeneralLinearGroup.map (pLoc E w) u₁, GeneralLinearGroup.map (pLoc E w) u₂) * atW w h` using `Prod.ext (map_mul _ _ _) (map_mul _ _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e₁, h₁ w _ (Subgroup.mem_prod.2 ⟨p₁, p₂⟩)]`. Use `split_ifs with hs`. Establish `e₂ : atW w (thP E a b ((u₁, u₂) * h)) = (GeneralLinearGroup.map (pLoc E w) (thF E a u₁), GeneralLinearGroup.map (pLoc E w) (thF E b u₂)) * atW w (thP E a b h)`. Rewrite using `[map_mul]`. Conclude with `Prod.ext (map_mul _ _ _) (map_mul _ _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e₂, h₂ w _ (Subgroup.mem_prod.2 ⟨q₁ hs, q₂ hs⟩)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem finFn_left {S : Set (Pl E)} {Z : Finset (Pl E)} (L : Lv a b Z) {φ₁ φ₂ : ∀ w : Pl E, LF a b w}
     (h₁ : ∀ w, ∀ k ∈ (L.L₁ w).prod (L.L₂ w), ∀ y, φ₁ w (k * y) = φ₁ w y)
@@ -70,13 +70,13 @@ private theorem finFn_left {S : Set (Pl E)} {Z : Finset (Pl E)} (L : Lv a b Z) {
   · rfl
 
 /- English proof (translation)
-Introduce `k hk y`. Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h1 : w ∈ Z`. Simplify using `only [if_pos h1]`. Conclude with `((hφ w h1).2 k hk y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg h1]`. Establish `hk' : k ∈ K2 a b w`. Establish `ho` using `L.off w h1`. Rewrite `hk` using `[ho.1, ho.2]`. Conclude with `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : w ∈ T`. Simplify using `only [if_pos h2]`. Conclude with `((UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 E a b w (e w)).2 k hk' y).1`. Simplify using `only [if_neg h2]`. Establish `hc : k * y ∈ (K2 a b w : Set (GLw a w × GLw b w)) ↔ y ∈ (K2 a b w : Set (GLw a w × GLw b w))` using `(K2 a b w).mul_mem_cancel_left hk'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hy : y ∈ (K2 a b w : Set (GLw a w × GLw b w))`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (hc.2 hy)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem (fun h => hy (hc.1 h))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem position_left {Z : Finset (Pl E)} (T : Finset (Pl E)) (L : Lv a b Z) {φ : ∀ w : Pl E, LF a b w}
     (hφ : L.Fix φ) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1))) (w : Pl E) :
@@ -103,9 +103,9 @@ private theorem position_left {Z : Finset (Pl E)} (T : Finset (Pl E)) (L : Lv a 
       · rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem (fun h => hy (hc.1 h))]
 
 /- English proof (translation)
-Establish `hc : IsCompact (K2 a b w : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`. Establish `ho : IsOpen (((L.L₁ w).prod (L.L₂ w) : Subgroup _) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(L.open₁ w).prod (L.open₂ w)`. Use `haveI : CompactSpace (K2 a b w) := isCompact_iff_compactSpace.1 hc`. Establish `ho' : IsOpen ((((L.L₁ w).prod (L.L₂ w)).subgroupOf (K2 a b w) : Subgroup (K2 a b w)) : Set (K2 a b w))` using `ho.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho'`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 private theorem relIndex_ne {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) :
     ((L.L₁ w).prod (L.L₂ w)).relIndex (K2 a b w) ≠ 0 := by
@@ -122,7 +122,7 @@ private theorem relIndex_ne {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) :
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Unfold `Lv.ln`. Rewrite using `[Set.indicator_of_mem (Subgroup.one_mem _)]`. Conclude with `Nat.cast_ne_zero.2 (relIndex_ne L w)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ln_one_ne {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) : L.ln w 1 ≠ 0 := by
   unfold Lv.ln
@@ -130,9 +130,9 @@ private theorem ln_one_ne {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) : L.ln w
   exact Nat.cast_ne_zero.2 (relIndex_ne L w)
 
 /- English proof (translation)
-Unfold `finFn`. Use `finprod_mem_induction (fun x : ℂ => x ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun w _ => ?_` and prove the remaining obligations. Establish `e₁ : atW w (1 : Hf E a b) = 1` using `Prod.ext (map_one _) (map_one _)`. Rewrite using `[map_one, e₁]`. Use `mul_ne_zero (ln_one_ne L w) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `ln_one_ne L w`. Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem finFn_one_ne (S : Set (Pl E)) {Z : Finset (Pl E)} (L : Lv a b Z) : finFn S L.ln L.ln 1 ≠ 0 := by
   unfold finFn
@@ -147,31 +147,27 @@ private theorem finFn_one_ne (S : Set (Pl E)) {Z : Finset (Pl E)} (L : Lv a b Z)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ`. Establish `hfixln : L.Fix L.ln` using `fun w _ => (locAlg E a b Z L w).1`. Establish `hlnl : ∀ w, ∀ k ∈ (L.L₁ w).prod (L.L₂ w), ∀ y, L.ln w (k * y) = L.ln w y` using `fun w k hk y => (((locAlg E a b Z L w).1).2 k hk y).1`. Establish `c1 : ∀ x y, ∀ u₁ ∈ Kg S L.L₁, ∀ u₂ ∈ Kg S L.L₂, ∀ h, A.idm S L x y ((u₁, u₂) * h) = A.idm S L x y h`. Introduce `x y u₁ hu₁ u₂ hu₂ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show A.blk.vol⁻¹ * finFn S L.ln L.ln _ = A.blk.vol⁻¹ * finFn S L.ln L.ln _`. Rewrite using `[finFn_left L hlnl hlnl hu₁ hu₂]`. Use `⟨c1, ?_, ?_⟩` and prove the remaining obligations. Introduce `T φ e₁ e₂ hφ x y u₁ hu₁ u₂ hu₂ h show A.blk.vol⁻¹ * finFn S _ _ _ = A.blk.vol⁻¹ * finFn S _ _ _`. Rewrite using `[finFn_left L (fun w => position_left T L hφ e₁ w) (fun w => position_left T L hfixln e₂ w) hu₁ hu₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf haveI : BorelSpace (Hf E a b) := ⟨rfl⟩ set K : Subgroup (Hf E a b) := (Kg S L.L₁).prod (Kg S L.L₂) with hKdef`. Establish `hKo : IsOpen (K : Set (Hf E a b))`. Rewrite using `[hKdef, Subgroup.coe_prod]`. Conclude with `(kgFacts E a S Z L.L₁ hS hZ (fun w => ⟨L.open₁ w, L.le₁ w⟩) fun w hw => (L.off w hw).1).1.prod (kgFacts E b S Z L.L₂ hS hZ (fun w => ⟨L.open₂ w, L.le₂ w⟩) fun w hw => (L.off w hw).2).1`. Establish `hKm : MeasurableSet (K : Set (Hf E a b))` using `hKo.measurableSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℂ := A.idm S L () () 1 with hc`. Establish `hvol : A.blk.vol ≠ 0` using `(ffAlg E a b l₁ l₂ D A S hS).1`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (inv_ne_zero hvol) (finFn_one_ne S L)`. Establish `hmem : ∀ h ∈ K, A.idm S L () () h = c`. Introduce `h hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `c1 () () h.1 (Subgroup.mem_prod.1 hh).1 h.2 (Subgroup.mem_prod.1 hh).2 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hnot : ∀ h, h ∉ K → A.idm S L () () h = 0`. Introduce `h hh`. Establish `hz : finFn S L.ln L.ln h = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `ht : IsTestP L.ln` using `(positionTest E a b S Z L hZ).2.1`. Establish `key` using `fun w hw => GlobalTheory.CompanionTheory.FinTestTw.factors_ne_zero ht ht hne w hw`. Establish `m : ∀ w ∈ S, atW w h ∈ (L.L₁ w).prod (L.L₂ w) ∧ (IsSplitAt w → atW w (thP E a b h) ∈ (L.L₁ w).prod (L.L₂ w))` using `fun w hw => ⟨Set.mem_of_indicator_ne_zero (key w hw).1, fun hs => Set.mem_of_indicator_ne_zero ((key w hw).2 hs)⟩`. Use `hh (Subgroup.mem_prod.2 ⟨mem_Kg.2 fun w hw => ⟨(Subgroup.mem_prod.1 (m w hw).1).1, fun hs => ?_⟩, mem_Kg.2 fun w hw => ⟨(Subgroup.mem_prod.1 (m w hw).1).2, fun hs => ?_⟩⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Subgroup.mem_prod.1 ((m w hw).2 hs)).1`. Conclude with `(Subgroup.mem_prod.1 ((m w hw).2 hs)).2`. Use `show A.blk.vol⁻¹ * finFn S L.ln L.ln h = 0`. Rewrite using `[hz, mul_zero]`. Establish `hone : (A.ν.real (K : Set (Hf E a b)) : ℂ) * c = 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `congrFun (congrFun (congrFun (hkMul E a b l₁ l₂ D A S Z L hS hZ).2.1 ()) ()) 1`. Establish `hi : (fun h => A.idm S L () () h * A.idm S L () () (h⁻¹ * 1)) = (K : Set (Hf E a b)).indicator fun _ => c * c`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : h ∈ K`. Rewrite using `[Set.indicator_of_mem (show h ∈ (K : Set (Hf E a b)) from hh), hmem h hh, hmem _ (by simpa using K.inv_mem hh)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (show h ∉ (K : Set (Hf E a b)) from hh), hnot h hh, zero_mul]`. Establish `h1 : ∫ h, A.idm S L () () h * A.idm S L () () (h⁻¹ * 1) ∂A.ν = c`. Simplify `h0` using `[mulF]`. Rewrite `h1` using `[hi, integral_indicator_const _ hKm]`. Establish `h2 : c * ((A.ν.real (K : Set (Hf E a b)) : ℂ) * c) = c * 1`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[mul_one]`. Simplify `h1` using `[Complex.real_smul, mul_assoc, mul_comm, mul_left_comm]`. Conclude with `mul_left_cancel₀ hc0 h2`. Use function extensionality and compare the values at `i x`. Establish `hi : (fun h => A.idm S L i.2 () h * f (i.1, ()) (x * finH h)) = (K : Set (Hf E a b)).indicator fun _ => c * f i x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : h ∈ K`. Rewrite using `[Set.indicator_of_mem (show h ∈ (K : Set (Hf E a b)) from hh)]`. Use `hf (i.1, ()) h.1 (Subgroup.mem_prod.1 hh).1 h.2 (Subgroup.mem_prod.1 hh).2 x` as an intermediate fact. Use `show A.idm S L () () h * f (i.1, ()) (x * (finGL E a h.1, finGL E b h.2)) = _`.
-
-Rewrite using `[this, hmem h hh]`. Rewrite using `[Set.indicator_of_notMem (show h ∉ (K : Set (Hf E a b)) from hh)] show A.idm S L () () h * _ = 0`. Rewrite using `[hnot h hh, zero_mul]`. Use `show ∑ z : Unit, ∫ h, A.idm S L i.2 z h * f (i.1, z) (x * finH h) ∂A.ν = f i x`. Rewrite using `[Fintype.sum_unique]`.
-
-Use `show ∫ h, A.idm S L i.2 () h * f (i.1, ()) (x * finH h) ∂A.ν = f i x`. Rewrite using `[hi, integral_indicator_const _ hKm, Complex.real_smul, ← mul_assoc, hone, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idmAct : IdmAct := by
   intro E _ _ _ a b l₁ l₂ D A S Z L hS hZ

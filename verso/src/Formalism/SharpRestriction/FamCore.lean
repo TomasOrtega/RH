@@ -25,11 +25,11 @@ def TTwVals {D : D7} (L : SizeData₂ D) (p : ℕ) : Finset (Finset ℕ) :=
   (suppAt L p).image (fun w => (L.TTw w).image (fun t : D.host.TT => (t : D.R.A).val))
 
 /- English proof (translation)
-Establish `hinj : ∀ t1 t2 : D.host.TT, (t1 : D.R.A).val = (t2 : D.R.A).val → t1 = t2` using `fun t1 t2 h => Subtype.ext (Fin.ext h)`. Use `⟨fun v => if h : ∃ t : D.host.TT, (t : D.R.A).val = v then L.aT h.choose else 0, fun v => if h : ∃ t : D.host.TT, (t : D.R.A).val = v then L.bT h.choose else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[← hTT]`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h : ∃ t' : D.host.TT, (t' : D.R.A).val = t.val` using `⟨⟨t, ht⟩, rfl⟩`. Simplify using `only [dif_pos h]`. Conclude with `⟨L.aT_win _, L.bT_ge _, hb _⟩`. Introduce `t`. Establish `h : ∃ t' : D.host.TT, (t' : D.R.A).val = (t : D.R.A).val` using `⟨t, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hinj _ _ h.choose_spec`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp only [dif_pos h, e]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_self {D : D7} (L : SizeData₂ D) (TTn : Finset ℕ) (bTop : ℝ) (hTT : D.host.TT.image Formalism.HC.Frame.A.val = TTn)
     (hb : ∀ t : D.host.TT, (L.bT t : ℝ) ≤ bTop) :
@@ -52,9 +52,9 @@ theorem wt_self {D : D7} (L : SizeData₂ D) (TTn : Finset ℕ) (bTop : ℝ) (hT
     refine ⟨?_, ?_⟩ <;> simp only [dif_pos h, e]
 
 /- English proof (translation)
-Take `⟨a, b, hwin, hag⟩` from `wt_self (L i0) TTn bTop (hTT i0) (hb i0)`. Take `⟨i, hi, hcov⟩` from `cov i0 u0 a b hu hwin`. Use `⟨i, hi, fun t t0 hv => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hcov t`. Take `⟨h3, h4⟩` from `hag t0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, h2, hv, h3, h4]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem coverS_of_cover {Ix : Type} {D : Ix → D7} (L : ∀ i, SizeData₂ (D i)) (TTn : Finset ℕ) (bTop : ℝ)
     (hTT : ∀ i, (D i).host.TT.image Formalism.HC.Frame.A.val = TTn) (hb : ∀ i (t : (D i).host.TT), ((L i).bT t : ℝ) ≤ bTop)
@@ -148,7 +148,7 @@ structure FamCore (eps : ℝ) where
           (L x i).aT t = (L x i0).aT t0 ∧ (L x i).bT t = (L x i0).bT t0
 
 /- English proof (translation)
-Take `⟨x, hx, hyx⟩` from `Fm.Win_unb (max y (Fm.x1 + 1))`. Establish `h1` using `le_max_left y (Fm.x1 + 1)`. Establish `h2` using `le_max_right y (Fm.x1 + 1)`. Conclude with `⟨x, le_trans h1 hyx, by linarith, hx, Fm.Ix_win x hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem FamCore.exists_pt {eps : ℝ} (Fm : FamCore eps) (y : ℝ) : ∃ x, y ≤ x ∧ Fm.x1 < x ∧ x ∈ Fm.Win ∧ Nonempty (Fm.Ix x) := by
   obtain ⟨x, hx, hyx⟩ := Fm.Win_unb (max y (Fm.x1 + 1))
@@ -157,7 +157,7 @@ theorem FamCore.exists_pt {eps : ℝ} (Fm : FamCore eps) (y : ℝ) : ∃ x, y �
   exact ⟨x, le_trans h1 hyx, by linarith, hx, Fm.Ix_win x hx⟩
 
 /- English proof (translation)
-Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_J 0 i]`. Conclude with `(Fm.L 0 i).sc.one_le_J`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FamCore.one_le_J {eps : ℝ} (Fm : FamCore eps) : 1 ≤ Fm.J := by
   obtain ⟨i⟩ := Fm.Ix_zero
@@ -167,7 +167,7 @@ theorem FamCore.one_le_J {eps : ℝ} (Fm : FamCore eps) : 1 ≤ Fm.J := by
 def FamCore.ez {eps : ℝ} (Fm : FamCore eps) : ℝ := eps / Fm.J
 
 /- English proof (translation)
-Use `show (Fm.L x i).sc.eps / (Fm.L x i).sc.J = eps / Fm.J`. Rewrite using `[Fm.L_eps, Fm.L_J]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FamCore.L_ez {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (i : Fm.Ix x) : (Fm.L x i).sc.ez = Fm.ez := by
   show (Fm.L x i).sc.eps / (Fm.L x i).sc.J = eps / Fm.J
@@ -177,7 +177,7 @@ def FamCore.Windows {eps : ℝ} (Fm : FamCore eps) (la : ℝ) : Prop :=
   ∀ y : ℝ, ∃ Y : ℝ, y ≤ Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ la → x ∈ Fm.Win
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((Fm.D x i).mem u).A.T_prime, ((Fm.D x i).T_win u).1, ((Fm.D x i).T_win u).2, (Fm.D x i).T_norm u, ((Fm.D x i).T_ne_pde u).1, ((Fm.D x i).T_ne_pde u).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem FamCore.level_primes_admissible {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word) :
     (Fm.L x i).AdmT u ((Fm.D x i).mem u).A.T :=
@@ -185,11 +185,9 @@ theorem FamCore.level_primes_admissible {eps : ℝ} (Fm : FamCore eps) (x : ℝ)
     ((Fm.D x i).T_ne_pde u).1, ((Fm.D x i).T_ne_pde u).2⟩
 
 /- English proof (translation)
-Establish `h` using `Fm.bTop_ge x hx i`. Establish `hx0 : 0 < x` using `by linarith [Fm.one_lt_family_threshold]`. Establish `hs0 : 0 < (Fm.L x i).sc.x` using `lt_trans zero_lt_one (Fm.L x i).sc.one_lt_alt`. Establish `hb' : 0 ≤ (Fm.L x i).sc.b'`. Unfold `Formalism.BasicNotions.Scale.b' Formalism.BasicNotions.Scale.a Formalism.BasicNotions.Scale.b Formalism.BasicNotions.Scale.X'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `div_nonneg (mul_nonneg hs0.le (Real.exp_pos _).le) (Real.exp_pos _).le`. Establish `hd : 0 ≤ (Fm.L x i).sc.delta1`. Unfold `Formalism.BasicNotions.Scale.delta1`. Conclude with `Real.rpow_nonneg hs0.le _`. Establish `hterm : 0 ≤ 2 * ((Fm.D x i).R.n : ℝ) * (Fm.L x i).sc.delta1 * x ^ (2 * eps) * (Fm.L x i).sc.b' / ((Fm.D x i).R.k : ℝ)` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) hd) (Real.rpow_nonneg hx0.le _)) hb') (Nat.cast_nonneg _)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem FamCore.b'_le_bTop {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     (Fm.L x i).sc.b' ≤ Fm.bTop x := by
@@ -216,11 +214,11 @@ def FamCore.CoverAll {eps : ℝ} (Fm : FamCore eps) : Prop :=
         (Fm.L x i).bT t = b (t : (Fm.D x i).R.A).val
 
 /- English proof (translation)
-Take `⟨i, hi, hag⟩` from `Fm.coverS x hx i0 u0 hu`. Use `⟨i, hi, fun t => ?_⟩` and prove the remaining obligations. Establish `hv : (t : (Fm.D x i).R.A).val ∈ Fm.TTn x`. Rewrite using `[← Fm.TT_eq x i]`. Conclude with `Finset.mem_image_of_mem _ t.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[← Fm.TT_eq x i0]`. Take `⟨t0, ht0, he⟩` from `Finset.mem_image.1 hv`. Take `⟨h1, h2⟩` from `hag t ⟨t0, ht0⟩ he.symm`. Take `⟨h3, h4⟩` from `hc ⟨t0, ht0⟩`. Rewrite using `[h1, h2, h3, h4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [he], by rw [he]⟩`.
+A detailed English derivation is pending.
 -/
 theorem FamCore.coverS_carry {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (hx : Fm.x1 < x) (i0 : Fm.Ix x) (av bv : ℕ → ℤ)
     (hc : ∀ t : (Fm.D x i0).host.TT, (Fm.L x i0).aT t = av (t : (Fm.D x i0).R.A).val ∧
@@ -243,7 +241,7 @@ theorem FamCore.coverS_carry {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (hx : Fm.x
   exact ⟨by rw [he], by rw [he]⟩
 
 /- English proof (translation)
-Conclude with `wt_self (Fm.L x i0) (Fm.TTn x) (Fm.bTop x) (Fm.TT_eq x i0) (fun t => Fm.bT_le x hx i0 t)`.
+A detailed English derivation is pending.
 -/
 theorem FamCore.coverU_hyp_self {eps : ℝ} (Fm : FamCore eps) (x : ℝ) (hx : Fm.x1 < x) (i0 : Fm.Ix x) :
     ∃ a b : ℕ → ℤ,

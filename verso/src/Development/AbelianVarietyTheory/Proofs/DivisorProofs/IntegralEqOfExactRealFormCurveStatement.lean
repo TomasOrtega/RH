@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralEqOfExactRealFormCurve.lean&line=30#L30)
 -/

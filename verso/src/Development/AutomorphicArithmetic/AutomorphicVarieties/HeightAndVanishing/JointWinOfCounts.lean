@@ -14,14 +14,14 @@ open Formalism.GaloisCohomology UpperTheory.Top
 namespace UpperTheory.V.HV
 
 /- English proof (translation)
-The claim follows from `point (sumIn h2 h5 (countVs hP hF hT CK hK) countIV) (sumOut h1 hZ h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem pointHV_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) {CK : ℝ}
     (hK : LemmaK CK) (h1 : CountI) (h2 : CountII) (h3 : CountIII) (h5 : CountV) (hZ : CountZ) : PointHV :=
   point (sumIn h2 h5 (countVs hP hF hT CK hK) countIV) (sumOut h1 hZ h2 h3)
 
 /- English proof (translation)
-The claim follows from `thmHV (pointHV_of_counts hP hF hT hK h1 h2 h3 h5 hZ) K Ct hC`.
+A detailed English derivation is pending.
 -/
 theorem thmHV_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) {CK : ℝ}
     (hK : LemmaK CK) (h1 : CountI) (h2 : CountII) (h3 : CountIII) (h5 : CountV) (hZ : CountZ) (K : BConst) {Ct : ℝ}
@@ -29,7 +29,7 @@ theorem thmHV_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF : Lo
   thmHV (pointHV_of_counts hP hF hT hK h1 h2 h3 h5 hZ) K Ct hC
 
 /- English proof (translation)
-The claim follows from `jointWin_of (by norm_num) hB (thmHV_of_counts hP hF hT hK h1 h2 h3 h5 hZ K (by norm_num))`.
+A detailed English derivation is pending.
 -/
 theorem jointWin_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) {CK : ℝ}
     (hK : LemmaK CK) {K : BConst} (hB : ThmBab K 401) (h1 : CountI) (h2 : CountII) (h3 : CountIII) (h5 : CountV)
@@ -37,7 +37,7 @@ theorem jointWin_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF :
   jointWin_of (by norm_num) hB (thmHV_of_counts hP hF hT hK h1 h2 h3 h5 hZ K (by norm_num))
 
 /- English proof (translation)
-The claim follows from `vwin_of_joint (jointWin_of_counts hP hF hT hK hB h1 h2 h3 h5 hZ) ((thmBc_iff (by norm_num)).2 hc)`.
+A detailed English derivation is pending.
 -/
 theorem vwin_of_counts (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) {CK : ℝ}
     (hK : LemmaK CK) {K : BConst} (hB : ThmBab K 401) (hc : ThmBcFree) (h1 : CountI) (h2 : CountII) (h3 : CountIII)

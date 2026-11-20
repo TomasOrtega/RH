@@ -13,7 +13,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Introduce `p n' O _ _ _ S0 hG`. Establish `hV : ValuationProperties p O` using `valuation_properties_hold hG.prime S0`. Establish `hchar` using `dvr_fraction_field_char_zero hG.prime S0`. Conclude with `⟨hchar, fun n ι _ LL => ⟨fun S => integral_formula_stability_holds hG.prime hV n ι LL S, fun S => char_zero_stability_of_closure hG.prime hchar (fock_lattice_closure_holds hV) n ι LL S, fock_lattice_finite_spanning_holds hG.prime S0 hV n ι⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem integral_formula_lattice_holds : AdmissibleDVRIntegralFormLatticesStable := by
   intro p n' O _ _ _ S0 hG
@@ -23,7 +23,7 @@ theorem integral_formula_lattice_holds : AdmissibleDVRIntegralFormLatticesStable
     fun S => char_zero_stability_of_closure hG.prime hchar (fock_lattice_closure_holds hV) n ι LL S, fock_lattice_finite_spanning_holds hG.prime S0 hV n ι⟩⟩
 
 /- English proof (translation)
-The claim follows from `((integral_formula_lattice_holds p n' O S0 hG).2 n ι LL).1 S`.
+A detailed English derivation is pending.
 -/
 theorem integral_polynomials_enveloping_stable (p n' : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S0 : UniformizedDVR p O) (hG : AdmissibleDVR p n' O) (n : ℕ) (ι : Type) [Fintype ι] (LL : Letters ι) (S : Set ι) :
@@ -33,7 +33,7 @@ theorem integral_polynomials_enveloping_stable (p n' : ℕ) (O : Type) [CommRing
   ((integral_formula_lattice_holds p n' O S0 hG).2 n ι LL).1 S
 
 /- English proof (translation)
-The claim follows from `polynomial_isotypic_lattice_of_parts D (complete_reducibility_of_semisimple D h2) contravariant_orthogonality_holds highest_weight_dominant_holds (subrep_restriction_of_reducibility (complete_reducibility_of_semisimple D h2)) polynomial_representation_holds integral_formula_latti …`.
+A detailed English derivation is pending.
 -/
 theorem polynomial_isotypic_lattice_corollary (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h13 : IsotypicProjectorTheoremField D) : FilteredProjectorCorollaryField D :=
   polynomial_isotypic_lattice_of_parts D (complete_reducibility_of_semisimple D h2) contravariant_orthogonality_holds highest_weight_dominant_holds (subrep_restriction_of_reducibility (complete_reducibility_of_semisimple D h2)) polynomial_representation_holds integral_formula_lattice_holds h13

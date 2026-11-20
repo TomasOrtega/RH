@@ -14,19 +14,19 @@ def casCoef (μ : Fin n → ℤ) (a b : Fin n) : ℝ :=
   (if a = b then (μ a : ℝ) ^ 2 else 0) + (if b < a then (μ a : ℝ) - μ b else 0)
 
 /- English proof (translation)
-Establish `hcard : ∀ a : Fin n, (((univ.filter fun b : Fin n => b < a).card : ℕ) : ℝ) - (((univ.filter fun b : Fin n => a < b).card : ℕ) : ℝ) = -2 * rho n a`. Introduce `a`. Rewrite using `[Finset.filter_gt_eq_Iio, Finset.filter_lt_eq_Ioi, Fin.card_Iio, Fin.card_Ioi]`. Establish `ha : 1 + (a : ℕ) ≤ n` using `by have := a.isLt; omega`. Rewrite using `[Nat.sub_sub, Nat.cast_sub ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rho]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrow : ∀ a, ∑ b, casCoef μ a b = (μ a : ℝ) ^ 2 + ∑ b, ((if b < a then (μ a : ℝ) else 0) - if b < a then (μ b : ℝ) else 0)`. Introduce `a`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (μ a : ℝ) ^ 2 = ∑ b, (if a = b then (μ a : ℝ) ^ 2 else 0) by simp, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `casCoef`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hswap : ∑ a : Fin n, ∑ b : Fin n, (if b < a then (μ b : ℝ) else 0) = ∑ a : Fin n, ∑ b : Fin n, (if a < b then (μ a : ℝ) else 0)` using `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hA : ∀ a : Fin n, ∑ b : Fin n, (if b < a then (μ a : ℝ) else 0) = (μ a : ℝ) * (((univ.filter fun b : Fin n => b < a).card : ℕ) : ℝ)`. Introduce `a`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Establish `hB : ∀ a : Fin n, ∑ b : Fin n, (if a < b then (μ a : ℝ) else 0) = (μ a : ℝ) * (((univ.filter fun b : Fin n => a < b).card : ℕ) : ℝ)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hrow, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Use `_ = ∑ a, ((μ a : ℝ) ^ 2 + (μ a : ℝ) * (-2 * rho n a)) := by`. Rewrite using `[hswap, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hA, hB, ← hcard]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = casVal lam := by`. Simplify using `only [casVal, nsq, dot, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hμ a]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_casCoef (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) :
     ∑ a, ∑ b, casCoef μ a b = casVal lam := by

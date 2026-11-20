@@ -29,7 +29,7 @@ variable {S : Scheme.{0}}
 def fourfoldProductMap {G H : Over S} (h : G ⟶ H) : G4 G ⟶ G4 H := h ⊗ₘ (h ⊗ₘ (h ⊗ₘ h))
 
 /- English proof (translation)
-The claim follows from `isFinite_map_tensorHom s _ _ hh (isFinite_map_tensorHom s _ _ hh (isFinite_map_tensorHom s _ _ hh hh))`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_map_g4map {T : Scheme.{0}} (s : T ⟶ S) {G H : Over S} (h : G ⟶ H)
     (hh : IsFinite ((Over.pullback s).map h).left) : IsFinite ((Over.pullback s).map (fourfoldProductMap h)).left :=
@@ -38,7 +38,7 @@ theorem isFinite_map_g4map {T : Scheme.{0}} (s : T ⟶ S) {G H : Over S} (h : G 
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `e : ((𝟙 G)⁻¹ : G ⟶ G) ≫ (𝟙 G)⁻¹ = 𝟙 G`. Rewrite using `[GrpObj.comp_inv, Category.comp_id, inv_inv]`. Use `haveI : IsIso ((𝟙 G)⁻¹ : G ⟶ G) := ⟨⟨(𝟙 G)⁻¹, e, e⟩⟩`. Conclude with `(Over.forget (Sp Ω)).map_isIso ((𝟙 G)⁻¹ : G ⟶ G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_inv_left {G : Over (Sp Ω)} [GrpObj G] [IsCommMonObj G] : IsIso ((𝟙 G)⁻¹ : G ⟶ G).left := by
   have e : ((𝟙 G)⁻¹ : G ⟶ G) ≫ (𝟙 G)⁻¹ = 𝟙 G := by
@@ -47,13 +47,11 @@ theorem isIso_inv_left {G : Over (Sp Ω)} [GrpObj G] [IsCommMonObj G] : IsIso ((
   exact (Over.forget (Sp Ω)).map_isIso ((𝟙 G)⁻¹ : G ⟶ G)
 
 /- English proof (translation)
-Use `haveI : IsIso ((𝟙 G)⁻¹ : G ⟶ G).left := isIso_inv_left`. Use `haveI : IsAffineHom ((𝟙 G)⁻¹ : G ⟶ G).left := inferInstance`. Establish `hLi : Out.RelAmple G (L.pull ((𝟙 G)⁻¹ : G ⟶ G).left)` using `GlobalTheory.PosDefAmple.relAmple_pull_of_isAffineHom _ hL ha`. Establish `hN` using `LB.isLB_linComb (K := Fin 2) hL ![𝟙 G.left, ((𝟙 G)⁻¹ : G ⟶ G).left] ![1, 1]`. Use `GlobalTheory.relAmple_of_isAmpleLB G hN (fun U hU => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `LB.isLB_pull hL ((𝟙 G)⁻¹ : G ⟶ G).left`. Establish `h1` using `GlobalTheory.isAmpleLB_of_relAmple G hL ha U hU`. Establish `h2` using `GlobalTheory.isAmpleLB_of_relAmple G hP hLi U hU`. Establish `a1` using `LB.isLB_pull hN (G.hom ⁻¹ᵁ U).ι`. Establish `a2` using `LB.isLB_pull hL (G.hom ⁻¹ᵁ U).ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `LB.isLB_pull hP (G.hom ⁻¹ᵁ U).ι`. Establish `a4` using `LB.isLB_div a1 a2`. Establish `a5` using `LB.isLB_div a4 a3`. Use `GlobalTheory.IsAmpleLB.tensor h1 h2 a1 ?_` and prove the remaining obligations. Rewrite using `[← cls_eq_zero_iff a5, cls_div a4 a3 a5, cls_div a1 a2 a4, cls_pull hN _ a1, cls_pull hL _ a2, cls_pull hP _ a3, cls_pull hL _ hP, cls_linComb hL _ _ hN]`.
-
-Simplify using `[Fin.sum_univ_two, pull_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relAmple_sym {G : Over (Sp Ω)} [GrpObj G] [IsCommMonObj G] [IsProper G.hom] {L : LB G.left} (hL : L.IsLB)
     (ha : Out.RelAmple G L) :

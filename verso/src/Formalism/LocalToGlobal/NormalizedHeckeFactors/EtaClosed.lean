@@ -6,7 +6,7 @@ open Formalism.BasicNotions NumberField
 namespace Formalism.L2
 
 /- English proof (translation)
-The claim follows from `locs_cover_twists_of_hecke Fm ReciprocityTheory.ChartRestriction.L3H.heckeStd hfam`.
+A detailed English derivation is pending.
 -/
 theorem linkEtaTw_closed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (hfam : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ (M : MtFam (Fm.D x i)) (_ : NormalizedLocalCompatibility (Fm.D x i) M),
@@ -15,7 +15,7 @@ theorem linkEtaTw_closed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
   locs_cover_twists_of_hecke Fm ReciprocityTheory.ChartRestriction.L3H.heckeStd hfam
 
 /- English proof (translation)
-Conclude with `linkEtaTw_closed Fm hfam`.
+A detailed English derivation is pending.
 -/
 theorem linkEta_closed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (hfam : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ (M : MtFam (Fm.D x i)) (_ : NormalizedLocalCompatibility (Fm.D x i) M),
@@ -24,7 +24,7 @@ theorem linkEta_closed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
   exact linkEtaTw_closed Fm hfam
 
 /- English proof (translation)
-The claim follows from `etaN_eq_etaJ_of_muAt_ne T ReciprocityTheory.ChartRestriction.L3H.heckeStd HT h1 h2 hw`.
+A detailed English derivation is pending.
 -/
 theorem etaN_eq_etaJ' {D : D7} {M : MtFam D} (T : NormalizedLocalCompatibility D M) (HT : HeckeTied D M) {j : ℕ}
     {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :

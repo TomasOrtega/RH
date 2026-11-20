@@ -4,11 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegula
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ d r f hd hm hq`. Establish `he : Ideal.ofList (List.ofFn f) = Ideal.span (Set.range f)`. Unfold `Ideal.ofList`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[List.mem_ofFn]`. Use `isRegular_of_isCM_of_ringKrullDim_quotient_add_length_le (isCM_of_isRegularLocalRing A) (fun y hy => ?_) ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hy`. Conclude with `hm i`. Rewrite using `[he, List.length_ofFn, hd]`.
-
-Conclude with `hq`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegular_ofFn_of_ringKrullDim_quotient_add_le :
     ∀ (A : Type) [CommRing A] [IsRegularLocalRing A] (d r : ℕ) (f : Fin r → A),

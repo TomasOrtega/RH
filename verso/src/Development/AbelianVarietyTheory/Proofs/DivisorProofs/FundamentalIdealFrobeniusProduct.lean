@@ -8,13 +8,13 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.AfPVecDen
 
 /- English proof (translation)
-Introduce `p _ V _ _ ι _ b Ω hΩ`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] V) := moduleTopology (AfP p) (AfP p ⊗[ℚ] V)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] V) := ⟨rfl⟩`. Set `b'` to `b.baseChange (AfP p)`. Establish `hcont : ∀ i, Continuous (b'.coord i)` using `fun i => IsModuleTopology.continuous_of_linearMap (b'.coord i)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpt : ∀ i, IsCompact ((b'.coord i) '' Ω)` using `fun i => hΩ.image (hcont i)`. Use `choose m hm0 hm using fun i => GlobalTheory.T.compact_rational_bounded_denominators p _ (hcpt i)`. Use `⟨∏ i, m i, Finset.prod_pos (fun i _ => hm0 i), fun c hc i => ?_⟩` and prove the remaining obligations. Establish `hval : b'.coord i ((1 : AfP p) ⊗ₜ[ℚ] c) = algebraMap ℚ (AfP p) (b.repr c i)`. Simplify using `only [b', Module.Basis.coord_apply, Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, e, hk⟩` from `hm i (b.repr c i) (hval ▸ ⟨_, hc, rfl⟩)`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Use `⟨k * r, e, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (V : Type) [AddCommGroup V] [Module ℚ V] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℚ V) (Ω : Set (AfP p ⊗[ℚ] V)),

@@ -10,13 +10,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Act
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d L s₁ f hf z`. Establish `hE` using `C1.eis_leftInv d hf z`. Use `⟨fun nb lam 𝓖 𝓖₀ h h₀ uM ν 𝓤 𝓤₀ hU hU₀ T T' hT x => ?_, fun nb' lam' 𝓖' 𝓖'₀ h' h'₀ T' x => ?_⟩` and prove the remaining obligations. Establish `step1 : ∀ g, fc d.B.ψ d.b nb lam 𝓖 (d.eis f s₁ z) T g = fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T g` using `fun g => C1.fc_dom d h h₀ _ hE T g`. Repeatedly rewrite using `[step1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `hU.2.1` as an intermediate fact. Establish `: VAddInvariantMeasure L.ratV (Fin L.n → AE F E) ν` using `⟨fun c s _ => measure_preimage_add ν c.1 s⟩`. Establish `: Countable L.ratV`. Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Use `Function.Surjective.countable (f := fun v : Fin L.n → E => (⟨GlobalTheory.ThK.incV F v, AddSubgroup.subset_closure ⟨v, rfl⟩⟩ : L.ratV)) fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `C1.ratV_inc u.2`. Conclude with `⟨v, Subtype.ext hv.symm⟩`. Use `hU.2.2.1.setIntegral_eq hU₀.2.2.1 fun u₀ u => ?_` and prove the remaining obligations. Use `show fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T (uM (u₀.1 + u) * x) = fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T (uM u * x)`. Rewrite using `[C1.uM_add hU, mul_assoc, C1.fc_conj h₀ hU _ hE hT u₀.2]`.
-
-Conclude with `C1.fc_dom L.sd h' h'₀ _ (GlobalTheory.Eis.leftInv_cosetSum (C1.phz_j_leftInv L hf z x)) T' 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepDom : IndepDom := by
   intro F E _ _ _ _ _ σ d L s₁ f hf z

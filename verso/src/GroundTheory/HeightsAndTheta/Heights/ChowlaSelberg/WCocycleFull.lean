@@ -15,9 +15,9 @@ variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ 
 namespace WCocycle
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (LinearMap.mulLeft ℤ c)` using `fun x y h ↦ mul_left_cancel₀ hc (by simpa using h)`. Set `e` to `Submodule.equivMapOfInjective (LinearMap.mulLeft ℤ c) hinj N`. Rewrite using `[eisensteinSum, eisensteinSum, ← tsum_mul_left, scaleLattice, ← e.tsum_eq]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `show ((c * (x : ℂ)) ^ n)⁻¹ = _`. Rewrite using `[mul_pow, mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisensteinSum_scaleLattice {c : ℂ} (hc : c ≠ 0) (N : Submodule ℤ ℂ) (n : ℕ) :
     eisensteinSum (scaleLattice c N) n = (c ^ n)⁻¹ * eisensteinSum N n := by
@@ -31,7 +31,7 @@ theorem eisensteinSum_scaleLattice {c : ℂ} (hc : c ≠ 0) (N : Submodule ℤ �
   rw [mul_pow, mul_inv]
 
 /- English proof (translation)
-Simplify using `only [latticeDiscr, latticeG₂, latticeG₃, eisensteinSum_scaleLattice hc]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem latticeDiscr_scaleLattice {c : ℂ} (hc : c ≠ 0) (N : Submodule ℤ ℂ) :
     latticeDiscr (scaleLattice c N) = (c ^ 12)⁻¹ * latticeDiscr N := by
@@ -39,9 +39,9 @@ theorem latticeDiscr_scaleLattice {c : ℂ} (hc : c ≠ 0) (N : Submodule ℤ �
   field_simp
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.mul_le.2 fun m hm n hn ↦ ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hn`. Use `Submodule.mem_map.2 ⟨m * y, Submodule.mul_mem_mul hm hy, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Submodule.map_le_iff_le_comap.2 (Submodule.mul_le.2 fun m hm y hy ↦ ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply, show c * (m * y) = m * (c * y) by ring]`. Conclude with `Submodule.mul_mem_mul hm (Submodule.mem_map.2 ⟨y, hy, rfl⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_scaleLattice (c : ℂ) (M N : Submodule ℤ ℂ) :
     M * scaleLattice c N = scaleLattice c (M * N) := by
@@ -57,9 +57,9 @@ theorem mul_scaleLattice (c : ℂ) (M N : Submodule ℤ ℂ) :
     exact Submodule.mul_mem_mul hm (Submodule.mem_map.2 ⟨y, hy, rfl⟩)
 
 /- English proof (translation)
-Use `S.isTotallyComplex` as an intermediate fact. Establish `hK` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Take `⟨I, c, hc, hLI⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Establish `hLc : L.lattice = scaleLattice c (idealLattice σ ↑I)`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hLI, scaleLattice, Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[hLc, mul_scaleLattice, latticeDiscr_scaleLattice hc, ← idealLattice_mul, ← Units.val_mul, ← lattice_idealPeriodPair σ hK, latticeDiscr_lattice]`. Conclude with `mul_ne_zero (inv_ne_zero (pow_ne_zero _ hc)) (discr_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeDiscr_idealLattice_mul_ne_zero (S : PrimeDiscriminant K) (σ : K →+* ℂ)
     (L : PeriodPair) (hL : latticeEnd L = cmRing σ) (𝔟 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
@@ -76,9 +76,9 @@ theorem latticeDiscr_idealLattice_mul_ne_zero (S : PrimeDiscriminant K) (σ : K 
   exact mul_ne_zero (inv_ne_zero (pow_ne_zero _ hc)) (discr_ne_zero _)
 
 /- English proof (translation)
-Introduce `σ L hL 𝔞 𝔭`. Establish `hΛ : idealLattice σ ↑(𝔞 * 𝔭)⁻¹ * L.lattice = idealLattice σ ↑𝔭⁻¹ * (idealLattice σ ↑𝔞⁻¹ * L.lattice)`. Rewrite using `[mul_inv, Units.val_mul, idealLattice_mul, mul_comm (idealLattice σ ↑𝔞⁻¹), mul_assoc]`. Establish `h0 : latticeDiscr L.lattice ≠ 0`. Rewrite using `[latticeDiscr_lattice]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `discr_ne_zero L`. Establish `h1` using `latticeDiscr_idealLattice_mul_ne_zero S σ L hL 𝔞⁻¹`. Simplify using `only [discrRatio, hΛ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem full (S : PrimeDiscriminant K) : WCocycle.Statement S := by
   intro σ L hL 𝔞 𝔭

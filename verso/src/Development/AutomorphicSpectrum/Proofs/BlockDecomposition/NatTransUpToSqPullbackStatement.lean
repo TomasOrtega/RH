@@ -6,7 +6,7 @@ open CategoryTheory Opposite CrystallineSemistableComparison CrystallineSemistab
 universe w w' w'' t t' v u v' u' v'' u''
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CoefUpTo.coef_upTo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNatTransUpToSqPullback.lean&line=9#L9)
 -/

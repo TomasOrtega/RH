@@ -19,11 +19,11 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
 /- English proof (translation)
-Establish `n'` using `_root_.PI.UnitaryGroupMassFormula.ScalEquivGen.ndOfQ hΛ hF hL' hG'`. Establish `n''` using `_root_.PI.UnitaryGroupMassFormula.ScalEquivGen.ndOfQ hΛ hF hL'' hG''`. Establish `hTh1''` using `_root_.PI.UnitaryGroupMassFormula.ScalEquivGen.thEq''Q hΛ hdim n' n'' hs1`. Introduce `y1 hy1 y3 hy3 y1' hy1' y3' hy3' h13 h31 al al'`. Establish `hy1b : y1 ∈ orth S (Xplus F)` using `hy1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy1'b : y1' ∈ orth S (Xplus F')` using `hy1'.2`. Establish `hy2 : y1 ∈ Ylift Λ F F''` using `Submodule.mem_inf.mpr ⟨_root_.PI.UnitaryGroupMassFormula.ScalEquivGen.yliftMemQ hTh1'' hy1, hy1b⟩`. Establish `hy2' : β y1' ∈ Ylift' Λ F F''` using `Submodule.mem_inf.mpr ⟨_root_.PI.UnitaryGroupMassFormula.ScalEquivGen.ylift'MemQ hi hX hTh1'' hy1', _root_.PI.UnitaryGroupMassFormula.ScalEquivGen.mapOrthXplusQ hi hX hz hy1'b⟩`. Establish `a` using `hS1 y1 hy1 y1 hy2 y1' hy1' (β y1') hy2' (by simp) (by simp) al al'`. Establish `b` using `hS2 y1 hy2 y3 hy3 (β y1') hy2' y3' hy3' h13 h31 al al'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `a.trans b`.
+A detailed English derivation is pending.
 -/
 theorem isScalar_trans {Λ : Submodule (𝓞 E) S.V} {r k : ℕ} {T T' : E} {F : LFlag S r T}
     {F' F'' F''' : LFlag S r T'} {β γ : S.V ≃ₗ[E] S.V}
@@ -51,23 +51,21 @@ theorem isScalar_trans {Λ : Submodule (𝓞 E) S.V} {r k : ℕ} {T T' : E} {F :
 end Gen
 
 /- English proof (translation)
-Introduce `D X Y u u' t t' t'' hG hG' hG'' h1 hsc1 h2 hsc2`. Establish `hdim` using `Formalism.L2.SG.Corank.finrank_VS D`. Establish `hGv : ∀ s : TauC Y u u', s.G ≠ 0 → Gval (lf D (X.Fu u)) s.frame ≠ 0` using `fun s hs h => hs ((Formalism.L2.SG.Pf.SatGram.gterm_G Y s).trans h)`. Establish `hlat : Submodule.IsLattice D.host.E t.lam` using `((Y.rowsOK u).1 t.lam t.mem).2.1.1`. Establish `hLF : IsLift t.lam (lf D (X.Fu u))` using `((Y.rowsOK u).1 t.lam t.mem).2.1.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt : ∀ s : TauC Y u u', IsLift s.lam s.frame` using `fun s => s.rep.2.2.2.2.1`. Take `⟨⟨hl1, hl1'⟩, hs1, hS1⟩` from `(show scalT t t' from hsc1)`. Take `⟨⟨hl2, hl2'⟩, hs2, hS2⟩` from `(show scalT t' t'' from hsc2)`. Rewrite `hs2`, `hS2` using `[← hl1]`. Establish `hL' : IsLift t.lam t'.frame` using `by rw [hl1]; exact hLt t'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL'' : IsLift t.lam t''.frame` using `by rw [hl1, hl2]; exact hLt t''`. Establish `hth1` using `(Formalism.L2.SG.NGCut.CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam hlat _ t.frame t'.frame _ hLF (hLt t) (hGv t hG)).1 hs1`. Establish `hth2` using `(Formalism.L2.SG.NGCut.CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam hlat _ t'.frame t''.frame _ hLF hL' (hGv t' hG')).1 hs2`. Establish `htr` using `Formalism.L2.SG.NGCut.CorankRelation.Th_trans t.lam _ t.frame t'.frame t''.frame (t'.lin * t.lin⁻¹) (t''.lin * t'.lin⁻¹) (fun x hx => (Formalism.L2.SG.NGCut.CorankRelation.frame_mem_iff t' t'' x).1 hx) hth1 hth2`. Establish `hmul : (t''.lin * t'.lin⁻¹) * (t'.lin * t.lin⁻¹) = t''.lin * t.lin⁻¹` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `htr` using `[hmul]`. Establish `hs3 : Lat.s0 t.lam (lf D (X.Fu u)) t.frame t''.frame (t''.lin * t.lin⁻¹) D.R.k = 1` using `(Formalism.L2.SG.NGCut.CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam hlat _ t.frame t''.frame _ hLF (hLt t) (hGv t hG)).2 htr`. Establish `hi1` using `t.rep.2.2.1`. Establish `hi2` using `t'.rep.2.2.1`. Establish `hiβ : t'.lin * t.lin⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hi2 ((Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hi1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ j, (Xflag t.frame j).map ((t'.lin * t.lin⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag t'.frame j`. Introduce `j`. Unfold `GTerm.frame`. Rewrite using `[Formalism.L2.SG.Pf.MainEqClass.xflag_mapLF' t.lin hi1, Formalism.L2.SG.Pf.MainEqClass.xflag_mapLF' t'.lin hi2, ← Submodule.map_comp]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hz : (t'.lin * t.lin⁻¹) t.frame.fl.z = t'.frame.fl.z`. Unfold `GTerm.frame`. Rewrite using `[Formalism.L2.SG.Pf.MainEqClass.z_mapLF' t.lin hi1, Formalism.L2.SG.Pf.MainEqClass.z_mapLF' t'.lin hi2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsc3` using `isScalar_trans (β := t'.lin * t.lin⁻¹) (γ := t''.lin * t'.lin⁻¹) hlat hdim hLF (hLt t) (hGv t hG) hL' (hGv t' hG') hiβ hX hz hs1 hS1 hS2`. Establish `e3 : (t'.lin * t.lin⁻¹).trans (t''.lin * t'.lin⁻¹) = t''.lin * t.lin⁻¹` using `hmul`. Rewrite `hsc3` using `[e3]`. Establish `hl : t.lam = t''.lam ∧ t.lam' = t''.lam'` using `⟨hl1.trans hl2, hl1'.trans hl2'⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show s0T t t'' = 1`. Unfold `s0T`. Rewrite using `[if_pos hl]`. Conclude with `hs3`.
-
-Use `show scalT t t''`. Conclude with `⟨hl, hs3, hsc3⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scalar_pair_trans : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     ∀ t t' t'' : TauC Y u u', t.G ≠ 0 → t'.G ≠ 0 → t''.G ≠ 0 →

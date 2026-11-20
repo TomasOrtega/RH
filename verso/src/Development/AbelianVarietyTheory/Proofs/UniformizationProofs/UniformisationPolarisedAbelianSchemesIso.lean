@@ -17,11 +17,9 @@ namespace GlobalTheory.UnifCompare
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `e : pullU π (U ⊓ V) (res inf_le_left a) = pullU π (U ⊓ V) (res inf_le_right b)`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : π x ∈ U ⊓ V` using `hx`. Establish `h₁` using `gm_pull (𝟙 X) π x (U ⊓ V) hx' (res inf_le_left a)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `gm_pull (𝟙 X) π x (U ⊓ V) hx' (res inf_le_right b)`. Rewrite `h₁`, `h₂` using `[Category.id_comp]`. Conclude with `h₁.trans ((gm_res π x _ hx' a).trans ((h x hx'.1 hx'.2).trans ((gm_res π x _ hx' b).symm.trans h₂.symm)))`. Establish `e' : (res inf_le_left a : Γ(Y, U ⊓ V)ˣ) = res inf_le_right b` using `Units.ext (FunDescent.app_injective π (U ⊓ V) (congrArg Units.val e))`. Establish `hz : r z ∈ U ⊓ V` using `⟨hU, hV⟩`.
-
-Conclude with `(gm_res r z _ hz a).symm.trans ((congrArg (gm r z _) e').trans (gm_res r z _ hz b))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_eq_of_flat_surjective {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat π] [Surjective π]
     {U V : Y.Opens} (a : Γ(Y, U)ˣ) (b : Γ(Y, V)ˣ)
@@ -47,7 +45,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
 omit [IsDomain R] in
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem trans_comp_proj (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left :=
@@ -63,9 +61,7 @@ theorem pG_left (e : ℕ) :
     (U.gt e).pG.left = (U.gt e).q.left ≫ (fstG I e D.toPre.P.A).left := rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((U.gt_q e).trans ((congrArg ((U.gt e).q.left ≫ ·) (trans_comp_proj e D.toPre.P.A).symm).trans (Category.assoc _ _ _).symm))`. Establish `h₁ : (U.gt (e + 1)).q.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w (U.gt (e + 1)).q`. Establish `h₀ : (U.gt e).q.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w (U.gt e).q`. Establish `k : ∀ B : Over (Spec (CommRingCat.of R)), thickMap R I e B ≫ pullback.snd _ _ = pullback.snd _ _ ≫ thickTrans R I e` using `fun B => pullback.lift_snd _ _ _`.
-
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (thickMap R I e G ≫ ·) h₁).trans ((k G).trans ((congrArg (· ≫ thickTrans R I e) h₀.symm).trans ((Category.assoc _ _ _).trans ((congrArg ((U.gt e).q.left ≫ ·) (k _).symm).trans (Category.assoc _ _ _).symm)))))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trans_comp_q (e : ℕ) :
     thickMap R I e G ≫ (U.gt (e + 1)).q.left = (U.gt e).q.left ≫ thickMap R I e D.toPre.P.A := by
@@ -82,9 +78,9 @@ theorem trans_comp_q (e : ℕ) :
         ((congrArg ((U.gt e).q.left ≫ ·) (k _).symm).trans (Category.assoc _ _ _).symm)))))
 
 /- English proof (translation)
-Establish `hM' : (U.gt (e + 1)).pG.left (thickMap R I e G y) ∈ D.toPre.P.L.U jM` using `(congrArg (fun g => g y ∈ D.toPre.P.L.U jM) (U.gt_q e)).mpr hM`. Establish `hL' : (fstG I (e + 1) G).left (thickMap R I e G y) ∈ U.LG.L.U jL` using `(congrArg (fun g => g y ∈ U.LG.L.U jL) (trans_comp_proj e G)).mpr hL`. Establish `hm : y ∈ thickMap R I e G ⁻¹ᵁ ((D.toPre.P.L.pull (U.gt (e + 1)).pG.left).U (fun _ => jM) ⊓ (U.LG.L.pull (fstG I (e + 1) G).left).U (fun _ => jL)) ⊓ ((D.toPre.P.L.pull (U.gt e).pG.left).U (fun _ => jM) ⊓ (U.LG.L.pull (fstG I e G).left).U (fun _ => jL))` using `⟨⟨mem_pull.2 hM', mem_pull.2 hL'⟩, mem_pull.2 hM, mem_pull.2 hL⟩`. Establish `H` using `congrArg (gm (𝟙 _) y _) (U.w_compat e (fun _ => jM, fun _ => jL) _ inf_le_left inf_le_right)`. Establish `h₁` using `gm_pull (𝟙 _) (thickMap R I e G) y _ hm.1 ((U.w (e + 1)).s (fun _ => jM, fun _ => jL))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁` using `[Category.id_comp]`. Conclude with `h₁.symm.trans ((gm_res (𝟙 _) y inf_le_left hm _).symm.trans (H.trans (gm_res (𝟙 _) y inf_le_right hm _)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gw_trans (e : ℕ) (y : (thickObj R I e G).left) (jM : D.toPre.P.L.ι) (jL : U.LG.L.ι)
     (hM : (U.gt e).pG.left y ∈ D.toPre.P.L.U jM) (hL : (fstG I e G).left y ∈ U.LG.L.U jL) :
@@ -112,21 +108,19 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor UnifCompare
 
 /- English proof (translation)
-Introduce `hGF hS hA R _ _ _ I hR D D' A A' G _ _ hG U U' wL he hgen hrig`. Use `choose β hβm hβ using unifPre_abelianPart_iso R I hR D D' A A' G hG U U'`. Use `choose v hvg hv using fun e => T.uniformisation_polarisations_agree_at_level hGF R I hR D D' A A' G hG U U' wL he hgen hrig e (β e) (hβm e) (hβ e)`. Establish `hβl : ∀ e, (U'.gt e).q.left ≫ (β e).hom.left = (U.gt e).q.left` using `fun e => congrArg (·.left) (hβ e)`. Establish `hp : ∀ e, (U'.gt e).q.left ≫ (β e).hom.left ≫ (fstG I e D.toPre.P.A).left = (U.gt e).pG.left` using `fun e => (Category.assoc _ _ _).symm.trans (congrArg (· ≫ (fstG I e D.toPre.P.A).left) (hβl e))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ e, thickMap R I e D'.toPre.P.A ≫ (β (e + 1)).hom.left = (β e).hom.left ≫ thickMap R I e D.toPre.P.A`. Introduce `e`. Use `(U'.gt e).q_flat` as an intermediate fact. Use `(U'.gt e).q_surj` as an intermediate fact. Establish `: Epi (U'.gt e).q.left` using `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cancel_epi (U'.gt e).q.left, ← Category.assoc, ← trans_comp_q, Category.assoc, hβl, trans_comp_q, ← Category.assoc, hβl]`. Take `⟨hN, -, -, hC⟩` from `hR`. Take `⟨Φ, w, hw, H⟩` from `T.exists_iso_of_compatible_abelianThickenings hS hA R I D.toPre.P D'.toPre.P β v hvg hc (by`. Introduce `e Z r z j j' hj hj'`. Use `(U'.gt e).q_flat` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(U'.gt e).q_surj` as an intermediate fact. Establish `hm : ∀ y : (thickObj R I e D'.toPre.P.A).left, y ∈ (D.toPre.P.L.pull ((β e).hom.left ≫ (fstG I e D.toPre.P.A).left)).U (fun _ => j) ⊓ (D'.toPre.P.L.pull (fstG I e D'.toPre.P.A).left).U (fun _ => j') → thickMap R I e D'.toPre.P.A y ∈ (D.toPre.P.L.pull ((β (e + 1)).hom.left ≫ (fstG …`. Introduce `y hy`. Establish `k : thickMap R I e D'.toPre.P.A ≫ (β (e + 1)).hom.left ≫ (fstG I (e + 1) D.toPre.P.A).left = (β e).hom.left ≫ (fstG I e D.toPre.P.A).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (fstG I (e + 1) D.toPre.P.A).left) (hc e)).trans ((Category.assoc _ _ _).trans (congrArg ((β e).hom.left ≫ ·) (trans_comp_proj e _))))`. Conclude with `⟨mem_pull.2 ((congrArg (fun g => g y ∈ D.toPre.P.L.U j) k).mpr (mem_pull.1 hy.1)), mem_pull.2 ((congrArg (fun g => g y ∈ D'.toPre.P.L.U j') (trans_comp_proj e _)).mpr (mem_pull.1 hy.2))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : r z ∈ (D.toPre.P.L.pull ((β e).hom.left ≫ (fstG I e D.toPre.P.A).left)).U (fun _ => j) ⊓ (D'.toPre.P.L.pull (fstG I e D'.toPre.P.A).left).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `(gm_pull r _ z _ (hm _ hz) _).symm.trans (gm_eq_of_flat_surjective (U'.gt e).q.left _ _ (fun x _ hx => ?_) r z (hm _ hz) hz)` and prove the remaining obligations. Use `(gm_pull _ _ x _ (hm _ hx) _).trans ?_` and prove the remaining obligations. Take `⟨jL, hL⟩` from `exists_chart U.LG.isLB ((fstG I e G).left x)`. Take `⟨jL', hL'⟩` from `exists_chart U'.LG.isLB ((fstG I e G).left x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (U.gt e).pG.left x ∈ D.toPre.P.L.U j` using `(congrArg (fun g => g x ∈ D.toPre.P.L.U j) (hp e)).mp (mem_pull.1 hx.1)`. Establish `hM' : (U'.gt e).pG.left x ∈ D'.toPre.P.L.U j'` using `mem_pull.1 hx.2`. Establish `h₀` using `hv e _ (𝟙 _) x j j' jL jL' hM hM' hL hL'`. Establish `h₁` using `hv (e + 1) _ (thickMap R I e G) x j j' jL jL' ((congrArg (fun g => g x ∈ D.toPre.P.L.U j) (U.gt_q e)).mpr hM) ((congrArg (fun g => g x ∈ D'.toPre.P.L.U j') (U'.gt_q e)).mpr hM') ((congrArg (fun g => g x ∈ U.LG.L.U jL) (trans_comp_proj e G)).mpr hL) ((congrArg (fun g => g x ∈ U'.L …`. Rewrite `h₁` using `[gw_trans U' e x j' jL' hM' hL', gw_trans U e x j jL hM hL, trans_comp_q, trans_comp_proj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h₀` using `[Category.id_comp, Category.id_comp]`. Conclude with `mul_right_cancel (h₁.trans h₀.symm))`. Use `⟨Φ, w, hw, fun e => ⟨?_, fun Z r z jM jM' jL jL' hM hM' hL hL' => ?_⟩⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((U'.gt e).q.left ≫ ·) (H e).1).trans (hp e))`. Establish `h` using `(H e).2 Z (r ≫ (U'.gt e).q.left) z jM jM' ((congrArg (fun g => g (r z) ∈ D.toPre.P.L.U jM) (hp e)).mpr hM) hM'`.
-
-Rewrite `h` using `[Category.assoc]`. Conclude with `(congrArg (· * _) h).trans (hv e Z r z jM jM' jL jL' hM hM' hL hL')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unifPre_polarised_iso :
     GlobalFnsSt → SecBaseChangeSt → AmpleSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I → ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : UnifPre I D A G) (U' : UnifPre I D' A' G) (wL : LB.Iso U'.LG.L (U.LG.L.pull (𝟙 G.left))) (he : eSec G ≫ 𝟙 G.left = 𝟙 _ ≫ eSec G), wL.IsGen → LB.Gen.Maps (LB.linCombIso wL (K := PUnit) (fun _ => eSec G) (fun _ => 1)) U'.LG.rig (rigPullOf (𝟙 G.left) (𝟙 _) he U.LG.L U.LG.rig) → ∃ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso D'.toPre.P.L (D.toPre.P.L.pull Φ.hom.left)), (w.IsGen ∧ ∀ e : ℕ, (U'.gt e).pG.left ≫ Φ.hom.left = (U.gt e).pG.left ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : U.LG.L.ι) (jL' : U'.LG.L.ι), (U.gt e).pG.left (r z) ∈ D.toPre.P.L.U jM → (U'.gt e).pG.left (r z) ∈ D'.toPre.P.L.U jM' → (fstG I e G).left (r z) ∈ U.LG.L.U jL → (fstG I e G).left (r z) ∈ U'.LG.L.U jL' → Geo.Tor.gw w (r ≫ (U'.gt e).pG.left) z jM jM' * Geo.Tor.gw (U'.w e) r z jM' (fun _ => jL') = Geo.Tor.gw (U.w e) r z jM (fun _ => jL) * Geo.Tor.gw wL (r ≫ (fstG I e G).left) z jL jL')) := by

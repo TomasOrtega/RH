@@ -16,37 +16,33 @@ section Tate
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Set `P : Set (AF D.host.F)` to `{c | ∀ q : D.host.F, ψ (algebraMap D.host.F (AF D.host.F) q * c) = 1}`. Establish `hPF : ∀ q : D.host.F, algebraMap D.host.F (AF D.host.F) q ∈ P` using `fun q q' => by`. Rewrite using `[← map_mul]`. Conclude with `hψ.1.2.2.1 _`. Establish `hPadd : ∀ c c', c ∈ P → c' ∈ P → c + c' ∈ P` using `fun c c' hc hc' q => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, AddChar.map_add_eq_mul, hc q, hc' q, one_mul]`. Establish `hPneg : ∀ c, c ∈ P → -c ∈ P` using `fun c hc q => by`. Rewrite using `[mul_neg, AddChar.map_neg_eq_inv, hc q, inv_one]`. Establish `hPsmul : ∀ (q : D.host.F) c, c ∈ P → algebraMap D.host.F (AF D.host.F) q * c ∈ P` using `fun q c hc q' => by`. Rewrite using `[← mul_assoc, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc _`. Establish `hPclosed : IsClosed P`. Establish `: P = ⋂ q : D.host.F, (fun c => ψ (algebraMap D.host.F (AF D.host.F) q * c)) ⁻¹' {1}`. Use extensionality with `c`. Simplify using `[P]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun q => isClosed_singleton.preimage ((psi_cont hψ).comp (continuous_const.mul continuous_id))`. Take `⟨K, hK, hF0K⟩` from `Formalism.IndefR.PHeisFC.fundamental_set_subset_compact D.host.F`. Establish `hN : ∀ᶠ c in 𝓝 (0 : AF D.host.F), ∀ k ∈ K, 1 / 2 < (ψ (c * k)).re`. Use `hK.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcont : Continuous fun p : AF D.host.F × AF D.host.F => (ψ (p.1 * p.2)).re` using `Complex.continuous_re.comp ((psi_cont hψ).comp (continuous_fst.mul continuous_snd))`. Establish `h0 : (1 / 2 : ℝ) < (ψ ((0, k).1 * (0, k).2)).re`. Simplify using `only [zero_mul, AddChar.map_zero_eq_one, Complex.one_re]`. Evaluate the numerical expressions. Conclude with `continuousAt_const.eventually_lt hcont.continuousAt h0`.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdisc : ∀ᶠ c in 𝓝 (0 : AF D.host.F), c ∈ P → c = 0` using `by filter_upwards [hN] with c hc hcP`. Use `psi_nondeg hψ c fun y => ?_` and prove the remaining obligations. Take `⟨q, hq, -⟩` from `Formalism.IndefR.PHeisFC.ad_exU D.host.F y`. Establish `hy : ∀ n : ℕ, ψ (c * (n • y)) = ψ (c * y) ^ n` using `fun n => by`. Rewrite using `[mul_smul_comm, ← AddChar.map_nsmul_eq_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : ∀ z : AF D.host.F, 1 / 2 < (ψ (c * z)).re` using `fun z => by`. Take `⟨q', hq', -⟩` from `Formalism.IndefR.PHeisFC.ad_exU D.host.F z`. Establish `e : c * z = algebraMap D.host.F (AF D.host.F) (-q') * c + c * (algebraMap D.host.F (AF D.host.F) q' + z)`. Rewrite using `[map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, AddChar.map_add_eq_mul, hcP (-q'), one_mul]`. Conclude with `hc _ (hF0K hq')`. Use `Formalism.IndefR.PHeisTh.eq_one_of_re_pow_gt _ (psi_norm hψ _) fun n => ?_` and prove the remaining obligations. Rewrite using `[← hy n]`. Conclude with `hre _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN0, hNP⟩ : ∃ N ∈ 𝓝 (0 : AF D.host.F), ∀ c ∈ N, c ∈ P → c = 0` from `⟨_, hdisc, fun c hc => hc⟩`. Take `⟨U, hUN, hUo, hU0⟩` from `mem_nhds_iff.1 hN0`. Establish `hfin : (P ∩ K).Finite`. Establish `hcpt : IsCompact (P ∩ K)` using `hK.inter_left hPclosed`. Use `hcpt.finite ⟨?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `discreteTopology_iff_isOpen_singleton.2 fun x => ?_` and prove the remaining obligations. Use `⟨(fun z => z - (x : AF D.host.F)) ⁻¹' U, hUo.preimage (continuous_id.sub continuous_const), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hy`. Establish `hyx : (y : AF D.host.F) - x ∈ P`. Use `hPadd _ _ y.2.1 (hPneg _ x.2.1)` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg]`. Then use the resulting hypothesis. Conclude with `Subtype.ext (sub_eq_zero.1 (hNP _ (hUN hy) hyx))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `using hU0`. Assume the negation of the conclusion as `hnot`. Use `push Not at hnot`. Establish `hrep : ∀ q : D.host.F, ∃ r : D.host.F, algebraMap D.host.F (AF D.host.F) r + algebraMap D.host.F (AF D.host.F) q * a ∈ Formalism.IndefR.PHeisFC.F0 D.host.F` using `fun q => (Formalism.IndefR.PHeisFC.ad_exU D.host.F _).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose r hr using hrep`. Set `g : D.host.F → AF D.host.F` to `fun q => algebraMap D.host.F (AF D.host.F) (r q) + algebraMap D.host.F (AF D.host.F) q * a`. Establish `hgP : ∀ q, g q ∈ P ∩ K` using `fun q => ⟨hPadd _ _ (hPF _) (hPsmul _ _ ha), hF0K (hr q)⟩`. Establish `hginj : Function.Injective g`. Introduce `q q' hqq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Apply `hnot ((r q' - r q) / (q - q'))` to reduce the goal to its premises. Establish `hsub : q - q' ≠ 0` using `sub_ne_zero.2 hne`. Establish `e : algebraMap D.host.F (AF D.host.F) (q - q') * a = algebraMap D.host.F (AF D.host.F) (r q' - r q)`. Simplify using `only [g] at hqq`.
-
-Rewrite using `[map_sub, map_sub, sub_mul]`. Take the linear combination `hqq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← map_mul, one_div_mul_cancel hsub, map_one, one_mul]`. Use `_ = algebraMap D.host.F (AF D.host.F) (1 / (q - q')) * algebraMap D.host.F (AF D.host.F) (r q' - r q) := by rw [e]`.
-
-Use `_ = algebraMap D.host.F (AF D.host.F) ((r q' - r q) / (q - q')) := by`. Rewrite using `[← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Conclude with `(Set.infinite_of_injective_forall_mem hginj hgP) hfin`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem rat_of_perp (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F)
     (ha : ∀ q : D.host.F, ψ (algebraMap D.host.F (AF D.host.F) q * a) = 1) :
@@ -139,11 +135,11 @@ section Matrix
 variable {D : D7} (S T : HSp D)
 
 /- English proof (translation)
-Establish `hd : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hdpos : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hs : D.host.sqrtMinusD ≠ 0`. Introduce `h0`. Rewrite `hd` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (Real.sqrt D.host.d : ℂ) = 0`. Break down `mul_eq_zero.1 hd.symm with h | h` into its components or cases. Conclude with `absurd h Complex.I_ne_zero`. Conclude with `h`. Conclude with `(Real.sqrt_pos.2 hdpos).ne' (by exact_mod_cast this)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hN : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Establish `: Ideal.absNorm D.host.ccK ≠ 0` using `fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `this` after adjusting the coercions. Unfold `Host.xi0`. Conclude with `div_ne_zero (neg_ne_zero.2 one_ne_zero) (mul_ne_zero hN hs)`.
+A detailed English derivation is pending.
 -/
 theorem embedding_xi_zero_ne_zero : D.host.xi0 ≠ 0 := by
   have hd : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
@@ -169,7 +165,7 @@ def betaO (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : D.host.F :=
   Algebra.trace D.host.F D.host.E (D.host.xi0 * hE S T e γ)
 
 /- English proof (translation)
-Establish `h : hO S T (ratW T S e) (ratW T S γ) = incA D (hE S T e γ)`. Unfold `hO hE`. Simplify using `only [map_sum, map_mul, ratW, Matrix.map_apply, Brg.cA_inc]`. Unfold `symplO betaO`. Rewrite using `[h, ← map_mul, trace_incA]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_ratW_ratW (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplO S T (ratW T S e) (ratW T S γ) = algebraMap D.host.F (AF D.host.F) (betaO S T e γ) := by
@@ -180,9 +176,9 @@ theorem symplO_ratW_ratW (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   rw [h, ← map_mul, trace_incA]
 
 /- English proof (translation)
-Establish `h : hO S T (c • x) y = algebraMap (AF D.host.F) (AE D) c * hO S T x y`. Unfold `hO`. Simplify using `only [Matrix.smul_apply, Algebra.smul_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c' _ => Finset.sum_congr rfl fun d _ => by ring` and prove the remaining obligations. Unfold `symplO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_smul_left (c : AF D.host.F) (x y : WO S T) : symplO S T (c • x) y = c * symplO S T x y := by
   have h : hO S T (c • x) y = algebraMap (AF D.host.F) (AE D) c * hO S T x y := by
@@ -199,7 +195,7 @@ def symplLin (y : WO S T) : WO S T →ₗ[AF D.host.F] AF D.host.F where
   map_smul' c x := symplO_smul_left S T c x y
 
 /- English proof (translation)
-Unfold `betaO hE`. Rewrite using `[← map_add, ← mul_add]`. Use `congr 2`. Simplify using `only [Matrix.add_apply, star_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem betaO_add_right (e γ γ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     betaO S T e (γ + γ') = betaO S T e γ + betaO S T e γ' := by
@@ -209,7 +205,7 @@ theorem betaO_add_right (e γ γ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   simp only [Matrix.add_apply, star_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hE`. Establish `h : ∀ c b, star ((q • γ) c b) = algebraMap D.host.F D.host.E q * star (γ c b)` using `fun c b => by`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def, star_mul', Eqv.star_algebraMapF, mul_comm]`. Simplify using `only [h, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hE_smul_right (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     hE S T e (q • γ) = algebraMap D.host.F D.host.E q * hE S T e γ := by
@@ -221,7 +217,7 @@ theorem hE_smul_right (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.
     Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
 /- English proof (translation)
-Unfold `hE`. Simplify using `only [Matrix.smul_apply, Algebra.smul_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hE_smul_left (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     hE S T (q • e) γ = algebraMap D.host.F D.host.E q * hE S T e γ := by
@@ -231,7 +227,7 @@ theorem hE_smul_left (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.h
     Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
 /- English proof (translation)
-Rewrite using `[mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_alg_mul (q : D.host.F) (z : D.host.E) :
     Algebra.trace D.host.F D.host.E (D.host.xi0 * (algebraMap D.host.F D.host.E q * z)) =
@@ -239,14 +235,14 @@ theorem trace_alg_mul (q : D.host.F) (z : D.host.E) :
   rw [mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `betaO`. Rewrite using `[hE_smul_right, trace_alg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaO_smul_right (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     betaO S T e (q • γ) = q * betaO S T e γ := by
   unfold betaO; rw [hE_smul_right, trace_alg_mul]
 
 /- English proof (translation)
-Unfold `betaO hE`. Rewrite using `[← map_add, ← mul_add]`. Use `congr 2`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem betaO_add_left (e e' γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     betaO S T (e + e') γ = betaO S T e γ + betaO S T e' γ := by
@@ -256,7 +252,7 @@ theorem betaO_add_left (e e' γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `betaO`. Rewrite using `[hE_smul_left, trace_alg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaO_smul_left (q : D.host.F) (e γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     betaO S T (q • e) γ = q * betaO S T e γ := by
@@ -266,7 +262,7 @@ def epsO (a : Formalism.IndefR.PHeisTh.Ix T S) : Matrix (Fin T.rank) (Fin S.rank
   Matrix.single a.1 a.2.1 (Module.finBasis D.host.F D.host.E a.2.2)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.IndefR.PHeisTh.eV, epsO, ratW, Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eV_eq (a : Formalism.IndefR.PHeisTh.Ix T S) : Formalism.IndefR.PHeisTh.eV T S a = ratW T S (epsO S T a) := by
   ext i j
@@ -274,7 +270,7 @@ theorem eV_eq (a : Formalism.IndefR.PHeisTh.Ix T S) : Formalism.IndefR.PHeisTh.e
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, epsO, Matrix.single_apply, Fintype.sum_prod_type, smul_ite, smul_zero, ite_and]`. Simplify using `only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `(Module.finBasis D.host.F D.host.E).sum_repr (e i j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_epsO (e : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ∑ a : Formalism.IndefR.PHeisTh.Ix T S, (Module.finBasis D.host.F D.host.E).repr (e a.1 a.2.1) a.2.2 • epsO S T a = e := by
@@ -290,11 +286,11 @@ def LamO : Matrix (Fin T.rank) (Fin S.rank) D.host.E →ₗ[D.host.F] (Formalism
   map_smul' q γ := by funext a; exact betaO_smul_right S T q _ γ
 
 /- English proof (translation)
-Rewrite using `[← sum_epsO S T e]`. Establish `hadd : ∀ (s : Finset (Formalism.IndefR.PHeisTh.Ix T S)) (f : Formalism.IndefR.PHeisTh.Ix T S → Matrix (Fin T.rank) (Fin S.rank) D.host.E), betaO S T (∑ a ∈ s, f a) γ = ∑ a ∈ s, betaO S T (f a) γ`. Introduce `s f`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [Finset.sum_empty]`. Use `betaO_smul_left S T 0 0 γ` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, betaO_add_left, ih]`. Rewrite using `[hadd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[betaO_smul_left]`. Use `congrFun h a` as an intermediate fact. Simplify using `only [LamO, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply] at this`. Rewrite using `[this, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaO_eq_zero_of (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (h : LamO S T γ = 0)
     (e : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : betaO S T e γ = 0 := by
@@ -316,23 +312,21 @@ theorem betaO_eq_zero_of (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (h : L
   rw [this, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `γ hγ`. Establish `h0` using `betaO_eq_zero_of S T γ hγ`. Assume the negation of the conclusion as `hne`. Set `M : Matrix (Fin S.rank) (Fin T.rank) D.host.E` to `S.gram⁻¹ * Matrix.transpose (γ.map (starRingEnd D.host.E)) * T.gram`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Establish `hM : M ≠ 0`. Introduce `hM0`. Apply `hne` to reduce the goal to its premises. Establish `hS` using `Matrix.mul_nonsing_inv S.gram (isUnit_iff_ne_zero.2 (Formalism.L2.Theta.gram_det_ne S))`. Establish `hT` using `Matrix.mul_nonsing_inv T.gram (isUnit_iff_ne_zero.2 (Formalism.L2.Theta.gram_det_ne T))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Matrix.transpose (γ.map (starRingEnd D.host.E)) = S.gram * M * T.gram⁻¹`. Simplify using `only [M, ← Matrix.mul_assoc, hS, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hT, Matrix.mul_one]`. Rewrite `e1` using `[hM0, Matrix.mul_zero, Matrix.zero_mul]`. Use extensionality with `c b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun e1 b) c` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, M i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Conclude with `hM (Matrix.ext h)`. Set `e : Matrix (Fin T.rank) (Fin S.rank) D.host.E` to `Matrix.single j i (D.host.xi0⁻¹ * (M i j)⁻¹)`. Establish `hE1 : hE S T e γ = D.host.xi0⁻¹`. Establish `htr : hE S T e γ = (M * e).trace`. Unfold `hE`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Brg.hO_tr (starRingEnd D.host.E) (S.gram⁻¹) T.gram e γ` as an intermediate fact. Simplify `this` using `[M, Matrix.mul_assoc, starRingEnd_apply]`. Establish `key : ∀ c : D.host.E, (M * Matrix.single j i c).trace = M i j * c`. Introduce `c`. Rewrite using `[Matrix.trace, Finset.sum_eq_single i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Introduce `b _ hb`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[htr, key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1` using `h0 e`. Unfold `betaO at h1`. Rewrite `h1` using `[hE1, mul_inv_cancel₀ embedding_xi_zero_ne_zero, ← map_one (algebraMap D.host.F D.host.E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one]`. Establish `h2 : (Module.finrank D.host.F D.host.E : D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
-
-Conclude with `h2 h1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LamO_injective : Function.Injective (LamO S T) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -377,7 +371,7 @@ theorem LamO_injective : Function.Injective (LamO S T) := by
   exact h2 h1
 
 /- English proof (translation)
-Establish `hdim : Module.finrank D.host.F (Matrix (Fin T.rank) (Fin S.rank) D.host.E) = Module.finrank D.host.F (Formalism.IndefR.PHeisTh.Ix T S → D.host.F)`. Rewrite using `[Module.finrank_fintype_fun_eq_card, Module.finrank_matrix]`. Simplify using `[Formalism.IndefR.PHeisTh.Ix, Formalism.IndefR.PHeisFC.nE, Fintype.card_prod, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 (LamO_injective S T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem LamO_surjective : Function.Surjective (LamO S T) := by
   have hdim : Module.finrank D.host.F (Matrix (Fin T.rank) (Fin S.rank) D.host.E) =
@@ -388,7 +382,7 @@ theorem LamO_surjective : Function.Surjective (LamO S T) := by
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 (LamO_injective S T)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show algebraMap D.host.F (AF D.host.F) r • incA D (e i j) = incA D (r • e i j)`. Rewrite using `[Algebra.smul_def, ← IsScalarTower.algebraMap_apply, Algebra.smul_def r (e i j), map_mul]`. Use `congr 1`. Conclude with `(Algebra.TensorProduct.includeRight.commutes r).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem smul_ratW (r : D.host.F) (e : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     algebraMap D.host.F (AF D.host.F) r • ratW T S e = ratW T S (r • e) := by
@@ -399,19 +393,17 @@ theorem smul_ratW (r : D.host.F) (e : Matrix (Fin T.rank) (Fin S.rank) D.host.E)
   exact (Algebra.TensorProduct.includeRight.commutes r).symm
 
 /- English proof (translation)
-Establish `hx' : x = ∑ a, Formalism.IndefR.PHeisTh.Co T S x a • ratW T S (epsO S T a)` using `by conv_lhs => rw [← Formalism.IndefR.PHeisTh.sum_eV T S x]`. Simplify using `only [eV_eq]`. Establish `hcoord : ∀ γ, symplO S T x (ratW T S γ) = ∑ a, Formalism.IndefR.PHeisTh.Co T S x a * algebraMap D.host.F (AF D.host.F) (LamO S T γ a)`. Introduce `γ`. Use `congrArg (symplLin S T (ratW T S γ)) hx'` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at this`. Rewrite using `[show symplO S T x (ratW T S γ) = symplLin S T (ratW T S γ) x from rfl, this]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show _ * symplO S T _ _ = _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symplO_ratW_ratW]`. Both sides reduce to the same expression. Establish `hrat : ∀ a, ∃ r : D.host.F, Formalism.IndefR.PHeisTh.Co T S x a = algebraMap D.host.F (AF D.host.F) r`. Introduce `a`. Use `rat_of_perp hψ _ fun q => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `LamO_surjective S T (Pi.single a q)`. Use `hx γ` as an intermediate fact. Rewrite `this` using `[hcoord, hγ, Finset.sum_eq_single a]`. Rewrite `this` using `[Pi.single_eq_same, mul_comm]`. Then use the resulting hypothesis. Introduce `b _ hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hb, map_zero, mul_zero]`. Simplify using the standard rewrite rules. Use `choose r hr using hrat`. Set `ratWHom : Matrix (Fin T.rank) (Fin S.rank) D.host.E →+ WO S T` to `⟨⟨ratW T S, ratW_zero S T⟩, ratW_add S T⟩`. Use `(mem_ratL_iff S T x).2 ⟨∑ a, r a • epsO S T a, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Use `show ratWHom (∑ a, r a • epsO S T a) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show ratW T S (r a • epsO S T a) = _`.
-
-Rewrite using `[hr a, smul_ratW]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratL_of_perp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (x : WO S T)
     (hx : ∀ γ, ψ (symplO S T x (ratW T S γ)) = 1) : x ∈ ratL T S := by
@@ -449,7 +441,7 @@ theorem ratL_of_perp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
   rw [hr a, smul_ratW]
 
 /- English proof (translation)
-The claim follows from `charComplete_of fun _ hψ S T x hx => ratL_of_perp S T hψ x hx`.
+A detailed English derivation is pending.
 -/
 theorem charComplete (D : D7) : CharComplete D :=
   charComplete_of fun _ hψ S T x hx => ratL_of_perp S T hψ x hx

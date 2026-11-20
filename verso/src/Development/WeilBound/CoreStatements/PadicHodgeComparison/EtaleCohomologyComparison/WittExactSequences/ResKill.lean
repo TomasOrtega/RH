@@ -18,9 +18,9 @@ universe w₁
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `⟨ha.1, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, ha.2.1 x hx, hb.2.1 x hx, add_zero]`. Take `⟨x, hx⟩` from `ha.2.2.1 y hy`. Take `⟨x', hx'⟩` from `hb.2.2.1 y hy`. Conclude with `⟨x + x', by rw [map_add, hx, hx', add_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `ha.2.2.2 n y hy`. Take `⟨x', hx'⟩` from `hb.2.2.2 n y hy`. Conclude with `⟨x + x', by rw [map_add, hx, hx', add_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_add {K : Cx.{w} R} {M : Type w₁} [AddCommGroup M] [Module R M] {ε : M →ₗ[R] K.X 0} {a b : R}
     (ha : K.ResUpTo a ε) (hb : K.ResUpTo b ε) : K.ResUpTo (a + b) ε := by
@@ -34,9 +34,9 @@ theorem res_add {K : Cx.{w} R} {M : Type w₁} [AddCommGroup M] [Module R M] {ε
     exact ⟨x + x', by rw [map_add, hx, hx', add_smul]⟩
 
 /- English proof (translation)
-Use `⟨ha.1, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ha.2.1 x hx, smul_zero]`. Take `⟨x, hx⟩` from `ha.2.2.1 y hy`. Conclude with `⟨r • x, by rw [map_smul, hx, mul_smul]⟩`. Take `⟨x, hx⟩` from `ha.2.2.2 n y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r • x, by rw [map_smul, hx, mul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_mul {K : Cx.{w} R} {M : Type w₁} [AddCommGroup M] [Module R M] {ε : M →ₗ[R] K.X 0} (r : R) {a : R}
     (ha : K.ResUpTo a ε) : K.ResUpTo (r * a) ε := by
@@ -48,16 +48,16 @@ theorem res_mul {K : Cx.{w} R} {M : Type w₁} [AddCommGroup M] [Module R M] {ε
     exact ⟨r • x, by rw [map_smul, hx, mul_smul]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, fun x _ => hM x, fun y _ => ⟨0, by rw [map_zero, hK]⟩, fun n y _ => ⟨0, by rw [map_zero, hK]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_kill {K : Cx.{w} R} {M : Type w₁} [AddCommGroup M] [Module R M] {ε : M →ₗ[R] K.X 0} (a : R)
     (h0 : ∀ x, K.d 0 (ε x) = 0) (hM : ∀ x : M, a • x = 0) (hK : ∀ n (y : K.X n), a • y = 0) : K.ResUpTo a ε :=
   ⟨h0, fun x _ => hM x, fun y _ => ⟨0, by rw [map_zero, hK]⟩, fun n y _ => ⟨0, by rw [map_zero, hK]⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `key : ∀ i : Fin 2, ((elF (pts j A) (j ⋙ F)).map (GlobalTheory.CatH.toLast i s)).hom (ptsAug j F A x (GlobalTheory.CatH.face i s)) = (F.map (s.obj (Fin.last 1)).2).hom x`. Introduce `i`. Express the relevant statement in the definitionally equal form `(F.map ((GlobalTheory.CatH.face i s).obj (Fin.last 0)).2 ≫ F.map (j.map (GlobalTheory.CatH.toLast i s).1)).hom x = _`. Rewrite using `[← F.map_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Conclude with `(GlobalTheory.CatH.toLast i s).2`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • ((elF (pts j A) (j ⋙ F)).map (GlobalTheory.CatH.toLast i s)).hom (ptsAug j F A x (GlobalTheory.CatH.face i s)) = 0`. Rewrite using `[Fin.sum_univ_two, key, key]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_ptsAug {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
     (F : C ⥤ ModuleCat.{w} R) (A : C) (x : F.obj A) : d (elF (pts j A) (j ⋙ F)) 0 (ptsAug j F A x) = 0 := by
@@ -84,7 +84,7 @@ def ptsG {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T �
     exact G.map_comp y (j.map φ)
 
 /- English proof (translation)
-Introduce `h A`. Establish `hb : ∀ t, Function.Bijective ((ptsG j G A).app t)` using `fun t => ⟨fun y y' (e : G.map y = G.map y') => G.map_injective e, fun y => ⟨G.preimage y, G.map_preimage y⟩⟩`. Use `(CrystallineSemistableComparison.P.res_semilinear (elMor (ptsG j G A) ((j ⋙ G) ⋙ F)).hom (ptsAug (j ⋙ G) F (G.obj A)) (ptsAug j (G ⋙ F) A) LinearMap.id s Function.bijective_id (CrystallineSemistableComparison.P.el_iso _ _ hb) (fun x => rfl)).1 (h (G.obj A))` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem des_ff {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
     {C' : Type u''} [Category.{v} C'] (G : C ⥤ C') [G.Full] [G.Faithful] (F : C' ⥤ ModuleCat.{w} R) (s : R) :
@@ -97,9 +97,9 @@ theorem des_ff {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type u
   exact this
 
 /- English proof (translation)
-Establish `kill : ∀ a : R, (∀ (A : C) (x : F.obj A), a • x = 0) → DesJ j F a` using `fun a ha A => res_kill a (d_ptsAug j F A) (ha A) fun n y => by funext s; exact ha _ (y s)`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem a ha => exact (h a ha).elim id (kill a)`. Consider the case `zero => exact kill 0 fun _ x => zero_smul R x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact fun A => res_add (ha A) (hb A)`. Consider the case `smul r a _ ha => exact fun A => res_mul r (ha A)`.
+Treat this case separately. Treat this case separately.
 -/
 theorem des_span {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C) (F : C ⥤ ModuleCat.{w} R) (S : Set R)
     (h : ∀ a ∈ S, DesJ j F a ∨ ∀ (A : C) (x : F.obj A), a • x = 0) : ∀ s ∈ Ideal.span S, DesJ j F s := by

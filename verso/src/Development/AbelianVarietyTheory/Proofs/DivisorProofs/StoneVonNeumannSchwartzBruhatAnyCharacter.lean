@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     (scaleSnd c w).2 = c • w.2 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.schr, scaleSnd_fst, scaleSnd_snd, AddChar.mulShift_apply, dotProduct_smul, smul_eq_mul]`. Use `congr 2`. Rewrite using `[mul_add, mul_left_comm c (⅟2), mul_inv_cancel_left₀ hc, mul_inv_cancel_left₀ hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_mulShift_scaleSnd {k : Type} [Field k] [Invertible (2 : k)] {κ : Type} [Fintype κ]
     (ψ : AddChar k ℂ) {c : k} (hc : c ≠ 0) (w : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
@@ -37,21 +37,19 @@ theorem schr_mulShift_scaleSnd {k : Type} [Field k] [Invertible (2 : k)] {κ : T
   rw [mul_add, mul_left_comm c (⅟2), mul_inv_cancel_left₀ hc, mul_inv_cancel_left₀ hc]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ κ _ n d ψ0 hψ hne wT wM hT hM hTM hsurj`. Take `⟨c, hc, hcond⟩` from `GlobalTheory.CondRescale.exists_rescale_conductor_integers ψ0 hψ hne`. Establish `hψ1 : Continuous (ψ0.mulShift c)`. Establish `: (ψ0.mulShift c : k → ℂ) = fun x => ψ0 (c * x)`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `AddChar.mulShift_apply`. Rewrite using `[this]`. Conclude with `hψ.comp (continuous_const.mul continuous_id)`. Set `S : Matrix (Fin n) (Fin d) k →+ Matrix (Fin n) (Fin d) k` to `{ toFun := fun z => c • z map_zero' := smul_zero c map_add' := smul_add c }`. Establish `hS : ∀ z, S z = c • z` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ (a : k) (Y z : Matrix (Fin n) (Fin d) k), ∑ i, ∑ j, Y i j * (a • z) i j = a * ∑ i, ∑ j, Y i j * z i j`. Introduce `a Y z`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Take `⟨ι, hbij, h1, h2⟩` from `GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians (κ := κ) (n := n) (d := d) (ψ0.mulShift c) hψ1 (fun x => by simpa only [AddChar.mulShift_apply] using hcond x) ((scaleSnd c⁻¹).comp wT) ((scaleSnd c⁻¹).comp (wM.comp S)) (fun Y Y' => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddMonoidHom.comp_apply, scaleSnd_fst, scaleSnd_snd, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_sub, hT, mul_zero])`. Use the proof step `(fun z z' => by`. Simplify using `only [AddMonoidHom.comp_apply, scaleSnd_fst, scaleSnd_snd, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_sub, hM, mul_zero])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun Y z => by`. Simplify using `only [AddMonoidHom.comp_apply, scaleSnd_fst, scaleSnd_snd, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_sub, hTM, hS, hsum, inv_mul_cancel_left₀ hc])`. Use the proof step `(fun w => by`. Take `⟨Y, z, h⟩` from `hsurj (scaleSnd c w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨Y, c⁻¹ • z, ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[hS, smul_inv_smul₀ hc, ← map_add, h]`. Conclude with `Prod.ext rfl (inv_smul_smul₀ hc _))`. Use `⟨ι, hbij, fun Y φ hφ => ?_, fun z φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `h1 Y φ hφ` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.comp_apply, schr_mulShift_scaleSnd ψ0 hc]`. Then use the resulting hypothesis. Use `h2 (c⁻¹ • z) φ hφ` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, schr_mulShift_scaleSnd ψ0 hc, hS, smul_inv_smul₀ hc]`. Rewrite using `[this]`.
-
-Use function extensionality and compare the values at `Y'`. Rewrite using `[AddChar.mulShift_apply, hsum, mul_inv_cancel_left₀ hc]`.
+A detailed English derivation is pending.
 -/
 theorem stoneVonNeumann_any_char :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]

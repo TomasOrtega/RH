@@ -17,33 +17,31 @@ private noncomputable def rho0 (H : Type) [Group H] [Fintype H] : H →* Matrix 
       mul_assoc]
 
 /- English proof (translation)
-Introduce `hT hD k _ _ l _ H _ _ hp a ρ ha hrank`. Take `⟨Q, P, hQP⟩` from `hT l H hp H (rho0 H)`. Take `⟨A, hAdef⟩ : ∃ A : Matrix H H k, A = Matrix.of fun h g : H => a (h * g⁻¹)` from `⟨_, rfl⟩`. Rewrite `hrank` using `[← hAdef]`. Take `⟨R, hR⟩ : ∃ R : H → Matrix (Fin (Fintype.card H)) (Fin (Fintype.card H)) ℤ, R = fun u => Q * rho0 H u * P` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ u i j, ∃ m : ℤ, j ≤ i → R u i j - (if i = j then 1 else 0) = (l : ℤ) * m`. Introduce `u i j`. Distinguish the cases in `h : j ≤ i`. Take `⟨m, hm⟩` from `hQP u i j h`. Conclude with `⟨m, fun _ => by rw [hR]; exact hm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose m hm using hm`. Establish `hAsum : A = ∑ u, a u • (rho0 H u).map (Int.castRingHom k)`. Use extensionality with `h g`. Establish `e : ∀ u : H, h = u * g ↔ u = h * g⁻¹` using `fun u => by`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hAdef, Matrix.sum_apply, rho0, e]`. Take `⟨A', hA'def⟩ : ∃ A' : Matrix (Fin (Fintype.card H)) (Fin (Fintype.card H)) k, A' = Q.map (Int.castRingHom k) * A * P.map (Int.castRingHom k)` from `⟨_, rfl⟩`. Establish `hA'sum : A' = ∑ u, a u • (R u).map (Int.castRingHom k)`. Rewrite using `[hA'def, hAsum, hR]`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA' : ∀ i j, A' i j = ∑ u, a u * ((R u i j : ℤ) : k)`. Introduce `i j`. Rewrite using `[hA'sum]`. Simplify using `[Matrix.sum_apply]`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin (Fintype.card H)) (Fin (Fintype.card H)) k, B = Matrix.of fun i j => - ∑ u, a u * ((m u i j : ℤ) : k)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTe : ∀ i j, j ≤ i → (A' + (l : k) • B) i j = (∑ u, a u) * (if i = j then 1 else 0)`. Introduce `i j hij`. Establish `e : ∀ u, ((R u i j : ℤ) : k) = (if i = j then 1 else 0) + (l : k) * ((m u i j : ℤ) : k)`. Introduce `u`. Use `hm u i j hij` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : R u i j = (if i = j then 1 else 0) + (l : ℤ) * m u i j` using `by linarith`. Rewrite using `[h2]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hA', hB, Matrix.of_apply, e, mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum, mul_neg, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∀ u, a u * ((l : k) * ((m u i j : ℤ) : k)) = (l : k) * (a u * ((m u i j : ℤ) : k))` using `fun u => by ring`. Simplify using `only [this]`. Simplify using the standard rewrite rules. Establish `hdet : (A' + (l : k) • B).det = (∑ u, a u) ^ Fintype.card H`. Rewrite using `[Matrix.det_of_upperTriangular]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hTe]`. Introduce `i j hij`. Establish `hji : j < i` using `hij`. Rewrite using `[hTe i j hji.le, if_neg hji.ne', mul_zero]`. Establish `hnA : ∀ i j, ‖A' i j‖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[hA']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun u _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (ha u) (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one k _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnB : ∀ i j, ‖B i j‖ ≤ 1`. Introduce `i j`. Rewrite using `[hB, Matrix.of_apply, norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun u _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_one₀ (ha u) (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one k _)`. Establish `hnl : ‖(l : k)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one k l`. Establish `hr : A'.rank ≤ ρ`. Rewrite using `[hA'def]`. Conclude with `(Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_mul_le_right _ _).trans hrank)`.
-
-Use `hD k (Fintype.card H) A' B (l : k) ρ hnA hnB hnl hr` as an intermediate fact. Rewrite `this` using `[hdet, norm_pow]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.groupDet_pf :
     UpperTheory.Gal.Gen.TriMat → UpperTheory.Gal.Gen.DetLow → UpperTheory.Gal.Gen.GroupDet := by

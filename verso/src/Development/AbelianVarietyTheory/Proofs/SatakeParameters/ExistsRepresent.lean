@@ -3,21 +3,21 @@ import Mathlib
 namespace GlobalTheory.ExistsRepresentation
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `Φ : W →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `{ toFun := fun u i => Bf (u : V) (b i : V) map_add' := by`. Introduce `u u'`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := by`. Introduce `c u`. Use function extensionality and compare the values at `i`. Simplify using `}`. Establish `hinj : Function.Injective Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Establish `hall : ∀ w : W, Bf (u : V) (w : V) = 0`. Introduce `w`. Rewrite using `[← b.sum_repr w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smulₛₗ]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Establish `h0` using `congrFun hu i`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply] at h0`. Simplify using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : (u : V) ≠ 0` using `by simpa using hne`. Establish `h1` using `hpos _ hne'`. Rewrite `h1` using `[hall u]`. Simplify using `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).mp hinj`. Take `⟨u, hu⟩` from `hsurj (fun i => L (b i : V))`. Use `⟨u, u.2, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hwsum : w = ∑ i, (b.repr ⟨w, hw⟩ i) • (b i : V)`. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨w, hw⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Conclude with `h2.symm`. Rewrite using `[hwsum]`. Simplify using `only [map_sum, map_smulₛₗ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `h3` using `congrFun hu i`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at h3`. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_represent {V : Type} [AddCommGroup V] [Module ℂ V]
     (Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hpos : ∀ v : V, v ≠ 0 → (0 : ℝ) < (Bf v v).re)

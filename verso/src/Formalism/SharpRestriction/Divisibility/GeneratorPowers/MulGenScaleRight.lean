@@ -23,7 +23,7 @@ theorem scaleGen_eq {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X
     scaleGen φ ε u g = scaleGenG Xo.univ.t φ ε u g := rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← FBIdLB.scaleGenG_one Xo.univ.t φ ε g]`. Rewrite using `[FBIdLB.mulGen_scaleGenG, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulGen_scale_right {Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ Xo.univ.t.G.left))
     (ε : K → ℤ) (φ' : K' → (Y ⟶ Xo.univ.t.G.left)) (ε' : K' → ℤ) (v : Γ(Y, ⊤)ˣ)
@@ -41,7 +41,7 @@ abbrev sub (m : ℕ) {n' : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n' �
   Units.map (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2).toMonoidHom T
 
 /- English proof (translation)
-Establish `h1` using `FBIdLB.pullGen_scaleGenG Xo.univ.t (cφ ![jpt y d x m (0 : Fin 2), jpt y d x m (1 : Fin 2)]) (cε 2) (unitΓ (T m)) (e m) (homAt y.x (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2)).left`. Rewrite `h1` using `[FBIdLB.unitΓ_homAt]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pe_tw (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m)ˣ) (m : ℕ) {n' : ℕ}
     (φ : Fin 2 → Fin d → MvPolynomial (Fin n' × Fin d) S) :
@@ -52,7 +52,7 @@ theorem pe_tw (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m)ˣ
   exact h1
 
 /- English proof (translation)
-Establish `h1` using `FBIdLB.scaleGenG_one Xo.univ.t (cφ ![jpt y d x 0 (0 : Fin 2), jpt y d x 0 (1 : Fin 2)]) (cε 2) (e 0)`. Establish `h2 : unitΓ (T 0) = 1` using `by rw [h0, FBIdSy.unitΓ_one]`. Use `show scaleGenG Xo.univ.t _ _ (unitΓ (T 0)) (e 0) = e 0`. Rewrite using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_zero (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m)ˣ) (h0 : T 0 = 1) :
     tw y d x e T 0 = e 0 := by
@@ -63,9 +63,7 @@ theorem tw_zero (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m)
   exact h1
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `hg i j`. Unfold `tw scaleGen`. Simplify using `only`. Use `erw [map_mul, map_mul, ReciprocityTheory.ChartRestriction.G.DVR.res_res', ReciprocityTheory.ChartRestriction.G.DVR.res_res', h]`.
-
-Apply the tactic sequence `all_goals first | exact mul_left_comm _ _ _ | exact le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem tw_isGen (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m)ˣ) (m : ℕ) (hg : (e m).IsGen) :
     (tw y d x e T m).IsGen := by
@@ -77,15 +75,13 @@ theorem tw_isGen (e : ∀ m, FrTy y d x m) (T : ∀ m, (Jet S (Fin 2 × Fin d) m
   all_goals first | exact mul_left_comm _ _ _ | exact le_rfl
 
 /- English proof (translation)
-Use `⟨fun m => tw_isGen y d x e T m (hF.gen m), fun m => ?_, fun m => ?_, fun m => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hc⟩` from `hF.ph1 m`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[pe_tw, pe_tw, pe_tw, FBIdLB.invGen_scaleGenG, FBIdLB.invGen_scaleGenG, FBIdLB.mulGen_scaleGenG, FBIdLB.mulGen_scaleGenG, hm1 m, FBIdSy.unitΓ_mul, ← _root_.mul_inv, _root_.mul_inv_cancel, FBIdLB.scaleGenG_one]`. Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hc⟩` from `hF.ph2 m`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[pe_tw, pe_tw, pe_tw, FBIdLB.invGen_scaleGenG, FBIdLB.invGen_scaleGenG, FBIdLB.mulGen_scaleGenG, FBIdLB.mulGen_scaleGenG, hm2 m, FBIdSy.unitΓ_mul, ← _root_.mul_inv, _root_.mul_inv_cancel, FBIdLB.scaleGenG_one]`. Conclude with `hc`. Take `⟨u, hu, hc⟩` from `hF.sy m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `key` using `FBIdLB.corr_scaleGenG Xo.univ.t hc (unitΓ (T m))`. Establish `eR : scaleGen _ _ (unitΓ u⁻¹) (pe y d x (tw y d x e T) m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)]) = scaleGenG Xo.univ.t _ _ (unitΓ (T m)) (scaleGen _ _ (unitΓ u⁻¹) (pe y d x e m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)]))`. Rewrite using `[pe_tw, hs m, scaleGen_eq, scaleGen_eq, FBIdSy.scaleGenG_scaleGenG, FBIdSy.scaleGenG_scaleGenG, _root_.mul_comm]`. Rewrite using `[eR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key`. Take `⟨wL, hwL, h⟩` from `hF.ad a`. Use `⟨wL, hwL, fun m => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hc⟩` from `h m`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
-
-Establish `key` using `FBIdLB.corr_scaleGenG Xo.univ.t hc (unitΓ (sub d m ![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)] (T m)))`. Rewrite using `[pe_tw, pe_tw, hb m a, mulGen_scale_right, scaleGen_eq, FBIdSy.scaleGenG_scaleGenG, _root_.mul_comm, ← FBIdSy.scaleGenG_scaleGenG]`. Conclude with `key`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_tw [StarRing (𝓞 E)] {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S}
     {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S}
@@ -135,9 +131,9 @@ theorem isFrame_tw [StarRing (𝓞 E)] {F : Fin d → MvPowerSeries (Fin 2 × Fi
     exact key
 
 /- English proof (translation)
-Establish `h1` using `FBIdLB.pullGen_scaleGenG Xo.univ.t (cφ ![jpt y d x (m + 1) (0 : Fin 2), jpt y d x (m + 1) (1 : Fin 2)]) (cε 2) (unitΓ (T (m + 1))) (e (m + 1)) (homAt y.x (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m)).left`. Rewrite `h1` using `[FBIdLB.unitΓ_homAt]`. Establish `key` using `FBIdLB.corr_scaleGenG Xo.univ.t (hstep m) (unitΓ (Units.map (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m).toMonoidHom (T (m + 1))))`. Establish `hu : unitΓ (Units.map (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m).toMonoidHom (T (m + 1))) * unitΓ (U m) = unitΓ (T m)`. Rewrite using `[← FBIdSy.unitΓ_mul, hT m]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : scaleGenG Xo.univ.t (cφ ![jpt y d x m (0 : Fin 2), jpt y d x m (1 : Fin 2)]) (cε 2) (unitΓ (Units.map (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m).toMonoidHom (T (m + 1)))) (scaleGenG Xo.univ.t _ _ (unitΓ (U m)) (e m)) = tw y d x e T m` using `(FBIdSy.scaleGenG_scaleGenG Xo.univ.t (cφ ![jpt y d x m (0 : Fin 2), jpt y d x m (1 : Fin 2)]) (cε 2) _ _ (e m)).trans (congrArg (fun v => scaleGenG Xo.univ.t (cφ ![jpt y d x m (0 : Fin 2), jpt y d x m (1 : Fin 2)]) (cε 2) v (e m)) hu)`. Conclude with `(congrArg₂ (LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _) h1 h2.symm).mpr key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trunc_tw (e : ∀ m, FrTy y d x m) (T U : ∀ m, (Jet S (Fin 2 × Fin d) m)ˣ)
     (hstep : ∀ m, LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _
@@ -169,7 +165,7 @@ theorem trunc_tw (e : ∀ m, FrTy y d x m) (T U : ∀ m, (Jet S (Fin 2 × Fin d)
   exact (congrArg₂ (LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _) h1 h2.symm).mpr key
 
 /- English proof (translation)
-Introduce `j j' _ _ hx`. Establish `: j = j'` using `funext fun k => hx k k rfl`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem corr_refl {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.univ.t.G.left)) (ε : K → ℤ)
     (g : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) : LB.Gen.Corr Xo.univ.t.PP.L φ ε φ ε g g := by
@@ -179,9 +175,9 @@ theorem corr_refl {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.
   rfl
 
 /- English proof (translation)
-Establish `hfr` using `isFrame_tw y C.d C.x C.e T C.frame hm1 hm2 hs hb`. Establish `h0'` using `tw_zero y C.d C.x C.e T h0`. Establish `hrig : LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ (eL y C.d C.x C.B.A.act (tw y C.d C.x C.e T) C.wP 0) (homAt y.x (jetAug : Jet S (Fin 1 × Fin C.d) 0 →ₐ[S] S)).left) (rigT Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (overAt y.x S) 1)`. Simplify using `only [eL, pe]`. Rewrite using `[h0']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.rig0`. Use `⟨tw y C.d C.x C.e T, hfr, hrig, fun m => trunc_tw y C.d C.x C.e T U hstep hT m, fun m => ?_⟩` and prove the remaining obligations. Conclude with `corr_refl _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fixTw_of [StarRing (𝓞 E)] [Algebra ℚ S] (C : ChartAt Xo c y) (T U : ∀ m, (Jet S (Fin 2 × Fin C.d) m)ˣ)
     (hm1 : ∀ m, sub C.d m ![fun j => psIn C.d m ![0, 1] (C.B.G.F j), fun j => X ((2 : Fin 3), j)] (T m) =

@@ -25,7 +25,7 @@ def AutEnd2Ao {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.Prime] (c :
       (∃ f : Af.Newform (2 * e + 1), f.Att ι (Af.tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))) ∧ WitAQ ι W
 
 /- English proof (translation)
-The claim follows from `@AutEnd2C`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.V.Pr.AutEnd2 := @AutEnd2C
 

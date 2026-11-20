@@ -26,19 +26,17 @@ variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K
   [IsScalarTower (𝓞 K) K R]
 
 /- English proof (translation)
-Establish `h1 : Submodule.span K S ≤ Submodule.span K (latIn ⊤ Vs hV : Set R)`. Use `Submodule.span_le.2 fun g hg => ?_` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `hS g hg`. Rewrite using `[← inv_smul_smul₀ hs g]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ((mem_latIn _ _ _ _).2 ⟨trivial, h⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ _ (h1 hf)`. Rewrite `ht` using `[Submodule.span_eq, Submonoid.smul_def, ← algebraMap_smul K]`. Establish `ht0 : algebraMap (𝓞 K) K t ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero t.2`. Use `⟨_, ht0, fun la v hv => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `((mem_latIn _ _ _ _).1 ht).2 la v hv`. Establish `hv'` using `hV la v hv`. Rewrite `h2`, the goal using `[hv'.smul _ _ ht0]`. Distinguish the cases in `htop : v f = ⊤`. Rewrite using `[htop, EReal.coe_add_top]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `le_top`. Take `⟨x, hx⟩ : ∃ x : ℝ, v f = x` from `⟨_, (EReal.coe_toReal htop (hv'.ne_bot f)).symm⟩`. Establish `h3 : ∀ m : ℕ, v (f ^ (m + 1)) = ((((m : ℝ) + 1) * x : ℝ) : EReal)` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simpa using hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m ih`. Rewrite using `[pow_succ, hv'.mul, ih, hx, ← EReal.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (0 : ℝ) ≤ (vAdd la (algebraMap (𝓞 K) K t) : ℤ)` using `by exact_mod_cast vAdd_int_nonneg la ht0`. Rewrite `h2` using `[h3, ← EReal.coe_add, EReal.coe_nonneg]`. Rewrite using `[hx, ← EReal.coe_add, EReal.coe_nonneg]`. Break down `le_total 0 x with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg (α := ℝ) k) (neg_nonneg.2 h)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_nonneg_of_pow (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (S : Set R)
@@ -74,7 +72,7 @@ theorem exists_smul_nonneg_of_pow (Vs : HeightOneSpectrum (𝓞 K) → Set (R �
   · nlinarith [mul_nonneg (Nat.cast_nonneg (α := ℝ) k) (neg_nonneg.2 h)]
 
 /- English proof (translation)
-Use `Submodule.FG.map _ (GlobalTheory.fg_of_integral_functionals K C _ fun x hx => ?_)` and prove the remaining obligations. Take `⟨K', _, _, _, φ, h0, h1⟩` from `h x.1 x.2 fun e => hx (Subtype.ext e)`. Conclude with `⟨K', inferInstance, inferInstance, inferInstance, φ ∘ₗ C.subtype, h0, fun y hy => h1 y.1 y.2 hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fg_latIn (C : Submodule K R) [FiniteDimensional K C] (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v)
@@ -87,9 +85,9 @@ theorem fg_latIn (C : Submodule K R) [FiniteDimensional K C] (Vs : HeightOneSpec
 end Generic
 
 /- English proof (translation)
-Establish `hM : CuspMul Xo c U` using `(Formalism.L2.PjFree.cuspMul_ofPj U).1 (GlobalTheory.CuspProduct.cuspMul_holds E H Dw l Xo c r _)`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, by simpa using hd, by simpa using hf⟩`. Consider the case `succ k ih`. Take `⟨a', h1, h2⟩` from `ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.succ_mul, pow_succ]`. Conclude with `⟨a' + a, ⟨fun τ => (h1.1 τ).add (hd.1 τ), h1.2.add hd.2⟩, hM _ _ _ _ _ _ h1 hd h2 hf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_mem_cusp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
@@ -104,19 +102,19 @@ theorem pow_mem_cusp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
     exact ⟨a' + a, ⟨fun τ => (h1.1 τ).add (hd.1 τ), h1.2.add hd.2⟩, hM _ _ _ _ _ _ h1 hd h2 hf⟩
 
 /- English proof (translation)
-Take `⟨-, -, hM', -, hx1, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D Q hQ`. Take `⟨hr, hr1, -⟩` from `hnum j hj`. Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `hξ : cc (-D.host.xi0) = -(-D.host.xi0)`. Establish `: cc (-D.host.xi0) = -cc D.host.xi0` using `by simp [cc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, GlobalTheory.LatticeData.flagDomainConj_hostXi_eq_neg D]`. Establish `hneg : ∀ τ : D.host.E →+* ℂ, τ (Q.H.rt : D.host.E) = Q.H.rt0 → (τ (-D.host.xi0)).im < 0`. Introduce `τ hτ`. Rewrite `hτ` using `[hQ.1.2.1, hQ.1.2.2.1]`. Establish `h` using `xi0_embedding_im_pos D τ ((mem_cm_type_iff D τ).2 hτ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hpos : 0 < (D.host.φ₀ D.host.sqrtMinusD).im`. Rewrite using `[h0]`. Simplify using `using d_pos D`. Rewrite `h` using `[if_pos hpos, Int.cast_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum _ Q.H (Q.Dw j) (-(-D.host.xi0)) (by rw [neg_neg, GlobalTheory.LatticeData.flagDomainConj_hostXi_eq_neg D]) (by rw [neg_neg]; exact cmHost_imaginaryGenerator_ne_zero hP D) _ hr.symm`. Take `⟨U, hU, hPr, -, hχ, hG, -⟩` from `GlobalTheory.FrameUnif.exists_unf_hasPrinc _ Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c Q.c.F.val.toRingHom D.R.r (-D.host.xi0) Gm φ (by omega) rfl hξ hneg hφ`. Rewrite `hPr` using `[hM']`. Use `⟨U, hU, fun k k' => ⟨(hG k).1.trans (hG k').1.symm, (hG k).2.trans (hG k').2.symm⟩, fun k ga hga h => ?_, hχ, fun k => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hPr k ga hga fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `h x hx`. Conclude with `⟨u, hu, by rw [e, add_sub_cancel_left, Nat.cast_smul_eq_nsmul]⟩`. Establish `hperf` using `GlobalTheory.traceForm_integral_perfect_of_isUnf _ _ _ _ _ _ _ _ U hU k`. Establish `hone : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (U.X k).ξ0 * D.host.AA * D.host.AAbar * (differentIdeal ℤ (𝓞 D.host.E) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hG k).2, show -D.host.xi0 = (-1 : (𝓞 D.host.E)ˣ) • D.host.xi0 by simp, ← (FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, rfl⟩)]`. Conclude with `hP D.R D.host`. Establish `hM : 0 < Q.l.M` using `by have := Q.l.three_le; omega`. Take `⟨Xx, h1, -, h3⟩` from `GlobalTheory.exists_dataX_of_perfect_traceForm _ _ (U.X k) D.host.AA D.host.AAbar (xiR D) Q.l.M (fun a => by`. Rewrite using `[GlobalTheory.LatticeData.cc_eq_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨conj_mem_AA D, fun ha => by simpa only [conj_conj] using conj_mem_AAbar D ha⟩)`. Use `hone (fun τ => by rw [(hG k).2, map_neg, norm_neg]; exact xiConst_holds D τ) hx1 hperf.1 hperf.2 hM (hPr k)`. Conclude with `⟨Xx, _, h1, AA_ne_zero hP D, h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unf (D : D7) (Q : Par D) (hQ : Q.Pins) (j : ℕ) (hj : InR D j) :
     ∃ U : Formalism.L2.PjFree.Unf (Q.Xo j) Q.c Q.c.F.val.toRingHom D.R.r, Formalism.L2.PjFree.IsUnf U ∧
@@ -171,15 +169,15 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q hQ`. Take `⟨hr, hr1, -⟩` from `hnum j hj`. Take `⟨U', hU', hG, hPr, hχ, hX⟩` from `exists_unf D T.Q hQ j hj`. Establish `hbdd : ∀ a n, Dom a n → ∀ f ∈ T.cuspA j a n, ∀ k, (U'.X k).IsBddSec (laU U'.toPj a n k) (rdU U'.toPj f k)` using `fun a n hd f hf => isBddSec_of_isUnf _ _ _ _ (T.Q.Xo j) T.Q.c T.σ₀ _ (T.U j T.σ₀) U'.toPj T.good_σ₀ hU hU' (by omega) a n hd f (cusp_le_sec _ _ _ _ _ hf) fun k => (Formalism.L2.Pj.abelian₂.holSub_SS siegelSpaceAlgebra_holds _ _ (((mem_cusp _ _ _ _ _ f).1 hf).2 _ T.good_σ₀) k).1`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI : FiniteDimensional T.Q.c.F (cuspW T j w) := GlobalTheory.cuspForms_finiteDimensional_of_goodEmb _ _ _ _ _ _ _ (T.U j) T.σ₀ T.good_σ₀ hU _ _ (dom_wtA w)`. Use `fg_latIn _ _ _ fun x hx hx0 => ?_` and prove the remaining obligations. Use `letI := T.Q.H.starRing`. Establish `hs` using `cusp_le_sec _ _ _ _ _ hx`. Take `⟨z, La, hz, hG0⟩` from `GlobalTheory.CMDetect.exists_good_cmPt_frPoly_ne_zero _ _ _ _ (T.Q.Xo j) T.Q.c (fun _ => rfl) _ U'.toPj hU' hr1 hX _ _ x hs hx0 (hbdd _ _ (dom_wtA w) x hx)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, N, h0, hint⟩` from `GlobalTheory.LatFull.CMInt.exists_frame_bounded_denom _ _ _ _ (T.Q.Xo j) T.Q.c z _ La hz _ _ x hs hG0`. Use `⟨z.K, inferInstance, inferInstance, inferInstance, { toFun := fun F => N * evR (T.Q.Xo j) T.Q.c F y map_add' := fun F G => ?_ map_smul' := fun s F => ?_ }, h0, fun F hF => hint F (cusp_le_sec _ _ _ _ _ hF)⟩` and prove the remaining obligations. Rewrite using `[← mul_add]`. Conclude with `congrArg _ (evalAt_add _ _ F G y)`. Establish `e : evR (T.Q.Xo j) T.Q.c (s • F) y = algebraMap T.Q.c.F z.K s * evR (T.Q.Xo j) T.Q.c F y` using `evalAt_smul _ _ s F y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, RingHom.id_apply, Algebra.smul_def, mul_left_comm]`. Use `le_antisymm (Submodule.span_le.2 fun f hf => ((mem_latIn _ _ _ f).1 hf).1) fun f hf => ?_` and prove the remaining obligations. Take `⟨a', hd', hf'⟩` from `pow_mem_cusp (T.U j) (dom_wtA w) hf (4 * (Module.finrank ℚ D.host.E * D.R.r) + 3)`. Take `⟨d, nab, hlev, hnab, hroot, hle, hph, hspan⟩` from `exists_datum_span _ _ _ _ (T.Q.Xo j) T.Q.c _ _ U' hr1 hA T.good_σ₀ hU' hG hPr a' _ hd' (Nat.le_mul_of_pos_right _ hn) fun k ga _ => hχ k _ ga`. Establish `hsf : Squarefree d.l₂.M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hle, hQ.2.1.1, Nat.squarefree_mul ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)]`. Conclude with `⟨(D.host.g_prime 0).prime.squarefree, (D.host.g_prime 1).prime.squarefree⟩`. Take `⟨s, hs, h⟩` from `exists_smul_nonneg_of_pow (valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c)) isVal_valSet _ (exists_smul_short_nonneg D _ _ _ (T.Q.Xo j) T.Q.c _ d hlev hnab hroot hsf hph nab 1 0 a') f _ (hspan _ (cusp_le_sec _ _ _ _ _ hf') (hbdd _ _ hd' _ hf'))`. Rewrite using `[← inv_smul_smul₀ hs f]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ((mem_latIn _ _ _ _).2 ⟨Submodule.smul_mem _ _ hf, h⟩))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullAt_of_pins (D : D7) (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j)
     (hU : IsUnf (T.U j T.σ₀)) (w : WeightFamilies.Wt D j) (hn : 0 < w.n) : FullAt T j w := by

@@ -21,9 +21,9 @@ namespace GlobalTheory.TwFam.PullRel
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `e₁ : ρ.left ≫ tφ D a β 1 = (DVR.cP D T β * ρ).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul ρ (𝟙 D.P.A) (toUnit _ ≫ D.c β)).trans (by`. Rewrite using `[Category.comp_id, ← DVR.cP, DVR.comp_cP, mul_comm]))`. Establish `e₂ : ρ.left ≫ tφ D a β 2 = (DVR.cP D T β).left` using `congrArg (fun q => q.left) (DVR.comp_cP D ρ β)`. Establish `e₃ : ρ.left ≫ tφ D a β 3 = (1 : T ⟶ D.P.A).left` using `congrArg (fun q : T ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) ρ)`. Establish `e₀ : ρ.left ≫ tφ D a β 0 = ρ.left` using `Category.comp_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₄ : ρ.left ≫ tφ D a β 4 = (ρ ≫ a).left` using `rfl`. Rewrite using `[Fin.prod_univ_five, e₀, e₁, e₂, e₃, e₄]`. Use `show _ ^ (n - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) * _ ^ j = _`. Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_tφ (D : DegPre R) (a : D.P.A ⟶ D.P.A) {T : Over (Sp R)} (ρ : T ⟶ D.P.A) (β : D.X) (n j : ℤ)
     {U : Type} [CommGroup U] (hh : (T.left ⟶ D.P.A.left) → U) :
@@ -48,19 +48,19 @@ namespace GlobalTheory.TwFam.PullRel
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨hma, hma', hr, -, hc, hB⟩` from `hE`. Take `⟨t, ht, t₀⟩` from `exists_ros hG D.P.isAb D.P.isLB a a' hr`. Establish `cf : ∀ T, DVR.cP D T (h' α) = DVR.cP D T α ≫ a'` using `fun T => by`. Rewrite using `[DVR.cP, hc, ← Category.assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key` using `gen_unique' D.P.isLB (φ := Sum.elim (D.Oφ (𝟙 _) (h' α)) (D.Oφ a α)) (ε := Sum.elim Oε Oinvε) (u' := LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ t (lift (𝟙 D.P.A) (DVR.cP D D.P.A α)).left)) (fun U _ h => by`. Use `(DVR.prod_neg _ _ (prod_ros a a' (𝟙 D.P.A) (DVR.cP D _ α) h)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (GlobalTheory.UT.OLinEnd.prod_Oφ D (𝟙 _) _ h) (GlobalTheory.UT.OLinEnd.prod_Oφ_inv D a α h)).trans ?_` and prove the remaining obligations. Rewrite using `[cf, Category.id_comp, _root_.mul_comm (DVR.cP D _ α) a, _root_.mul_comm (DVR.cP D _ α ≫ a') (𝟙 _)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `D.P.A.hom (eSec D.P.A) (Over.w η[D.P.A]) (hG _ _ D.P.isAb).2 hu.1`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)) (fun y I hI => by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (𝟙 _)`. Establish `C : IsCub (cubV D.cub (T` using `T) y I) := isCub_cubV D.cub hI`. Establish `e` using `(ros_add D.cub hG D.P.isAb a a' t ht t₀ (T := T) hI 1 1 (DVR.cP D _ α)).1`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Establish `e' : val₂ t (T` using `T) y I 1 (DVR.cP D _ α) = 1 := mul_eq_left.1 e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `o : (1 : T ⟶ D.P.A).left = eSec D.P.A` using `Category.id_comp _`. Establish `k : eSec D.P.A ≫ (lift (𝟙 D.P.A) (DVR.cP D D.P.A α)).left = (lift (1 : T ⟶ D.P.A) (DVR.cP D T α)).left`. Rewrite using `[← o, ← Over.comp_left, comp_lift, DVR.comp_cP, Category.comp_id]`. Establish `n` using `hu.2 _ (𝟙 _) y I hI`. Rewrite `n` using `[Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_inv, val_pull hI, k]`. Conclude with `n.trans (inv_eq_one.2 e').symm) Z (r ≫ D.xK mu) z J hJ`. Establish `m : D.xK mu ≫ (lift (𝟙 D.P.A) (DVR.cP D D.P.A α)).left = D.pt2 mu α`. Rewrite using `[← Over.comp_left, comp_lift, DVR.comp_cP, Category.comp_id]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `b` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hB t ht t₀ mu α) r)`. Rewrite `b` using `[val_pull hJ]`. Rewrite `key` using `[val_inv, val_pull hJ, Category.assoc, m]`. Rewrite using `[key, ← b, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem iota_c (D : DegPre R) (a a' : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X) (hE : EndData D a a' h h') (α mu : D.X)
     (u : LB.Gen (IotaLB D a α (h' α))) (hu : IsIota u) (Z : Scheme.{0}) (r : Z ⟶ (TK R).left) (z : Z) (J)
@@ -109,13 +109,13 @@ namespace GlobalTheory.TwFam.PullRel
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Introduce `U _ hh`. Establish `io : ∀ (ρ : DegPre.BF D (FractionRing R) ⟶ D.P.A) (ξ δ : D.X), ∏ i, hh (ρ.left ≫ Sum.elim (D.Oφ (𝟙 D.P.A) δ) (D.Oφ a ξ) i) ^ Sum.elim Oε Oinvε i = (hh (DVR.cP D _ δ * ρ).left * (hh (DVR.cP D _ δ).left)⁻¹ * (hh ρ.left)⁻¹ * hh (1 : DegPre.BF D (FractionRing R) ⟶ D.P.A).left) * ((hh …` using `fun ρ ξ δ => by`. Use `DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ ?_ ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, WeightPf.Oφ_comp, Category.comp_id]`. Conclude with `GlobalTheory.UT.OLinEnd.prod_Oφ D ρ δ hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr, WeightPf.Oφ_comp]`. Conclude with `GlobalTheory.UT.OLinEnd.prod_Oφ_inv D (ρ ≫ a) ξ hh`. Establish `p₁` using `DVR.prod_fam D (FractionRing R) aK (α + k • ν) k hh`. Establish `p₂` using `DVR.prod_fam D (FractionRing R) (aK ≫ DegPre.trF D (FractionRing R) ν) α k hh`. Establish `q₁` using `prod_tφ D a (DegPre.prB D (FractionRing R)) β' 0 k hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q₂` using `prod_tφ D a (DegPre.trF D (FractionRing R) mu ≫ DegPre.prB D (FractionRing R)) β 0 k hh`. Rewrite `p₁` using `[h₁]`. Rewrite `p₂` using `[Category.assoc, h₂, ← Category.assoc]`. Simplify using `only [Over.comp_left, Category.assoc] at p₂ q₂`. Use `(DVR.prod_sum₂ (K := (Fin 4 ⊕ Fin 4) ⊕ (Fin 4 ⊕ Fin 4)) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (DVR.prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₁ (DVR.prod_neg _ _ p₂)) (io _ _ _)) (DVR.prod_neg _ _ (io _ _ _))). …` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Over.comp_left, Category.assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formEq_pull (D : DegPre R) (a : D.P.A ⟶ D.P.A) (k : ℕ) (mu ν α β β' : D.X)
     (aK : DegPre.BF D (FractionRing R) ⟶ DegPre.BF D (FractionRing R))
@@ -163,27 +163,25 @@ end GlobalTheory.TwFam.PullRel
 namespace GlobalTheory.TwFam.PullRel
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D a a' h h' hE k F mu α u u' s s' hu hu' hs hs'`. Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨hma, -, -, hch, -, -⟩` from `id hE`. Establish `hL` using `D.toPre.P.isLB`. Take `⟨⟨uF, huF, hcF⟩, -⟩` from `DVR.gen_fe (D := D.toPre) (F := FractionRing R) hG k (h mu) α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `feF` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ uF).1 (F.F.fe (h mu) α uF huF hcF)`. Establish `h1 : scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1` using `by unfold scal; rw [map_one, map_one]`. Establish `ext : ∀ β (Z : Scheme.{0}) (r : Z ⟶ (DegPre.BF D.toPre (FractionRing R)).left) (z : Z) (J), Good D.toPre.P.L z J → sval (F.F.s β) r z J = sval (F.f β) (r ≫ (DegPre.prB D.toPre (FractionRing R)).left) z J`. Introduce `β Z r z J hJ`. Establish `e` using `F.ext β`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[h1]`. Conclude with `(DVR.SectionScalarValuation.secScal_sval e r z hJ).symm`. Set `aK : DegPre.BF D.toPre (FractionRing R) ⟶ DegPre.BF D.toPre (FractionRing R)` to `lift (fst _ _) (DegPre.prB D.toPre (FractionRing R) ≫ a)`. Establish `aK_pr : aK ≫ DegPre.prB D.toPre (FractionRing R) = DegPre.prB D.toPre (FractionRing R) ≫ a` using `lift_snd _ _`. Establish `aK_fst : aK ≫ fst _ _ = fst _ _` using `lift_fst _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cPh : ∀ T, DVR.cP D.toPre T (h mu) = DVR.cP D.toPre T mu ≫ a` using `fun T => by`. Rewrite using `[DVR.cP, hch, ← Category.assoc]`. Both sides reduce to the same expression. Establish `trpr : ∀ ν, DegPre.trF D.toPre (FractionRing R) ν ≫ DegPre.prB D.toPre (FractionRing R) = DegPre.prB D.toPre (FractionRing R) * DVR.cP D.toPre _ ν` using `fun ν => by`. Rewrite using `[DVR.trF_eq, DVR.tr_pr, DVR.comp_cP]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `M1 : aK ≫ DegPre.trF D.toPre (FractionRing R) (h mu) ≫ DegPre.prB D.toPre (FractionRing R) = DegPre.trF D.toPre (FractionRing R) mu ≫ DegPre.prB D.toPre (FractionRing R) ≫ a` using `by haveI := hma`. Rewrite using `[trpr, MonObj.comp_mul, aK_pr, DVR.comp_cP, ← Category.assoc, trpr, MonObj.mul_comp, cPh]`. Use `haveI := hma`. Establish `z₁ : DegPre.zF D.toPre (FractionRing R) ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Establish `z₂ : DegPre.zF D.toPre (FractionRing R) ≫ DegPre.prB D.toPre (FractionRing R) = 1` using `lift_snd _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `M2 : DegPre.zF D.toPre (FractionRing R) ≫ aK = DegPre.zF D.toPre (FractionRing R)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, aK_fst]`. Rewrite using `[Category.assoc, aK_pr, ← Category.assoc, z₂, MonObj.one_comp]`. Establish `M3 : DegPre.zF D.toPre (FractionRing R) ≫ DegPre.trF D.toPre (FractionRing R) mu ≫ DegPre.prB D.toPre (FractionRing R) = DVR.cP D.toPre _ mu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[trpr, MonObj.comp_mul, z₂, DVR.comp_cP, _root_.one_mul]`. Introduce `v hv Z x z J hJ`. Establish `wv : ∀ (Z : Scheme.{0}) (x : Z ⟶ (DegPre.BF D.toPre (FractionRing R)).left) (z : Z) (J), Good D.toPre.P.L z J → val (LB.mulGen _ _ _ _ _ (LB.mulGen _ _ _ _ _ (LB.pullGen _ _ _ uF aK.left) (LB.pullGen _ _ _ u' (DegPre.prB D.toPre (FractionRing R)).left)) (LB.invGen _ _ _ (LB.pullG …` using `fun Z x z J hJ => by rw [val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, val_pull hJ]`. Establish `key` using `(gen_unique' hL (formEq_pull D.toPre a k mu (h mu) α (h' α) (h' (α + k • h mu)) aK aK_pr M1) (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left (DegPre.zF D.toPre (FractionRing R)).left (congrArg (fun q => q.left) z₁) (DVR.surj_appTop D.toPre _ hG) hv.1 (DVR.mulGen_isGen _ _ _ …`. Establish `e₁` using `val_corr hI hcF (𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e₁` using `[val_pull hI, Category.id_comp]`. Establish `e₂` using `DVR.val_famMult (D := D.toPre) (F := FractionRing R) (𝟙 _) hI k (h mu) α`. Rewrite `e₂` using `[Over.id_left, Category.id_comp, DVR.TWM.val_powGen, DVR.TWM.val_powGen]`. Establish `e₃ : val u' (1 : TF (R` using `R) (FractionRing R) ⟶ D.toPre.P.A).left y I = 1 := hu'.2 _ (TF (R := R) (FractionRing R)).hom y I hI`. Establish `e₄` using `iota_c D.toPre a a' h h' hE α mu u hu _ (jFK (R := R) (FractionRing R)) y I hI`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₅ : jFK (R` using `R) (FractionRing R) ≫ D.toPre.xK mu = (DVR.cP D.toPre (TF (R := R) (FractionRing R)) mu).left := (Category.assoc _ _ _).symm`. Rewrite using `[wv _ _ y I hI, hv.2 y I hI, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left, M2, z₂, M3, e₁, e₂, e₃, e₄, e₅]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`. Use the proof step `module) Z x z J hJ).trans (wv Z x z J hJ)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `f₁ : (x ≫ (DegPre.prB D.toPre (FractionRing R)).left) ≫ a.left = (x ≫ aK.left) ≫ (DegPre.prB D.toPre (FractionRing R)).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, aK_pr]`. Establish `f₂ : ((x ≫ aK.left) ≫ (DegPre.trF D.toPre (FractionRing R) (h mu)).left) ≫ (DegPre.prB D.toPre (FractionRing R)).left = (x ≫ (DegPre.trF D.toPre (FractionRing R) mu).left ≫ (DegPre.prB D.toPre (FractionRing R)).left) ≫ a.left`. Use `congrArg (fun q => x ≫ q.left) M1` as an intermediate fact. Simplify `this` using `only [Over.comp_left, Category.assoc]`.
-
-Rewrite using `[hs' _ _ z J hJ, hs _ _ z J hJ, key, f₁, ← ext _ _ _ z J hJ, feF _ _ z J hJ, ext _ _ _ z J hJ, f₂, Over.comp_left, _root_.mul_assoc, _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul, mul_comm (val u _ z J), inv_mul_cancel_right]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ (k : ℕ) (F : IntFam (maximalIdeal R) D.toPre k) (mu α : D.toPre.X) (u : LB.Gen (IotaLB D.toPre a α (h' α))) (u' : LB.Gen (IotaLB D.toPre a (α + k • h mu) (h' (α + k • h mu)))) (s : SecT D.toPre a 0 k (h' α)) (s' : SecT D.toPre a 0 k (h' (α + k • h mu))), IsIota u → IsIota u' → IsPullT u (F.f α) s → IsPullT u' (F.f (α + k • h mu)) s' → TRel h mu s s' := by
   intro R _ _ _ _ D a a' h h' hE k F mu α u u' s s' hu hu' hs hs'

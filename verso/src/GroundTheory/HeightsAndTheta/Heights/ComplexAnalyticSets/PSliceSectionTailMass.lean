@@ -16,19 +16,15 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Conclude with `tendsto_const_nhds`. Use `set A := hA.choose`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hAf : IsFiniteProjection I A` using `hA.choose_spec`. Establish `hfin : ∀ y, (fibre I A y).Finite` using `fun y => (ComplexSets.FibreBound.proof n d I A hprime hdim hAf y).2.1`. Establish `hne : zeroSet I ⊆ {x | x ≠ 0}` using `fun x hx hx0 => by`. Substitute `hx0` using the available equality. Use `hx _ hmem` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[linForm] at this`. Establish `hsm : ∀ _ : Fin d, SmoothNear (zeroSet I) fun x => Real.log (h.dualNorm x)` using `fun _ => ⟨{0}ᶜ, isOpen_compl_singleton, hne, contDiffOn_log_dualNorm h⟩`. Establish `hint` using `hMF n d h I ℓ A hprime hmem hdim hAf`. Unfold `chartInt`. Establish `key` using `tendsto_integral_of_dominated_convergence (f := fun _ => (0 : ℝ)) (F := fun k => chartDens I A (fun x => 1 - sliceCut h k x) fun _ x => Real.log (h.dualNorm x)) (chartAbsDens I A (fun _ => 1) fun _ x => Real.log (h.dualNorm x)) (fun k => (SheetSumMeasurable.proof n d I A _ _ hpri …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[integral_zero]`. Then use the resulting hypothesis. Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens`. Rewrite using `[CutOffDominated.sheetSum_eq_sum _ (hfin y), CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hs`. Establish `h01` using `SliceCut.mem_Icc h k x`. Rewrite using `[abs_mul, abs_mul, abs_one, one_mul, abs_of_nonneg (by linarith [h01.2])]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) (by linarith [h01.1])`. Simplify using the standard rewrite rules.
-
-Unfold `chartDens`. Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Establish `hterm : ∀ x, Tendsto (fun k : ℕ => if hs : ∃ s, IsSheetAt I A x s then (1 - sliceCut h k x) * ReciprocityTheory.AnForm.maDens (fun i => (fun (_ : Fin d) x => Real.log (h.dualNorm x)) i ∘ hs.choose) y else 0) atTop (𝓝 0)` using `fun x => by split_ifs with hs`. Simplify using `using ((SliceCut.tendsto_one h x).const_sub 1).mul_const (ReciprocityTheory.AnForm.maDens (fun i => (fun (_ : Fin d) x => Real.log (h.dualNorm x)) i ∘ hs.choose) y)`. Conclude with `tendsto_const_nhds`.
-
-Simplify using `using tendsto_finsetSum (hfin y).toFinset fun x _ => hterm x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem SliceSectionTailMass.tendsto_tail {n d : ℕ} (h : HermNorm n) (I : Ideal (MvPolynomial (Fin n) ℂ))
     (ℓ : Fin n → ℂ) (hMF : SliceMassFinite.Statement) (hprime : I.IsPrime) (hmem : linForm ℓ - 1 ∈ I)
@@ -81,9 +77,9 @@ theorem SliceSectionTailMass.tendsto_tail {n d : ℕ} (h : HermNorm n) (I : Idea
     simpa using tendsto_finsetSum (hfin y).toFinset fun x _ => hterm x
 
 /- English proof (translation)
-Introduce `n e h W F u' ℓ hW hF hu hℓ hℓP P hP`. Take `⟨hprime, hdim, huJ⟩` from `SliceIdeal.proof n (e + 1) W F ℓ hW hF hℓ`. Take `⟨-, himg, -⟩` from `SliceComponents.proof n W u' ℓ hW hℓP`. Establish `hmin : P ⊔ Ideal.span {linForm ℓ - 1} ∈ (W ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u'}).minimalPrimes`. Rewrite using `[← himg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_image_of_mem _ (Finset.mem_coe.mpr hP)`. Conclude with `SliceSectionTailMass.tendsto_tail h _ ℓ hMF hmin.1.1 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (IndefiniteRowSideFullHecke.ComplexSets.dim_component_linForm hprime hdim (huJ u' hu) hmin)`.
+A detailed English derivation is pending.
 -/
 theorem SliceSectionTailMass.proof (hMF : SliceMassFinite.Statement) : SliceSectionTailMass.Statement := by
   intro n e h W F u' ℓ hW hF hu hℓ hℓP P hP

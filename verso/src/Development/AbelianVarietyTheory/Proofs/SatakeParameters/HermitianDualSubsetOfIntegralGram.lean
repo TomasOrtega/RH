@@ -9,14 +9,14 @@ open Matrix
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualA_hform_eq {L : Type} [Field L] (σ : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (u v : Fin n → L) :
     Formalism.UG.hform σ J u v = (fun i => σ (u i)) ⬝ᵥ (J *ᵥ v) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[dotProduct, Matrix.mulVec, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dualA_conj_mulVec {L : Type} [Field L] (σ : L →+* L) {a b : ℕ} (y : Matrix (Fin a) (Fin b) L) (w : Fin b → L) :
     (fun i => σ ((y *ᵥ w) i)) = (y.map σ) *ᵥ (fun i => σ (w i)) := by
@@ -24,7 +24,7 @@ theorem dualA_conj_mulVec {L : Type} [Field L] (σ : L →+* L) {a b : ℕ} (y :
   simp [dotProduct, Matrix.mulVec, map_sum]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hw k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualA_mulVec_int {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {a b : ℕ}
     {A : Matrix (Fin a) (Fin b) L} (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) {w : Fin b → L}
@@ -33,27 +33,27 @@ theorem dualA_mulVec_int {L : Type} [Field L] [Valued L (WithZero (Multiplicativ
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hw k)
 
 /- English proof (translation)
-Introduce `L _ _ σ n n' JS JT hσ hv hJS hJT hS0 hT0 x hx v h1 h2`. Establish `hS : Formalism.UG.cT σ (JS : Matrix (Fin n) (Fin n) L) = JS` using `HoweSwap.cT_herm hS0`. Establish `hT : Formalism.UG.cT σ (JT : Matrix (Fin n') (Fin n') L) = JT` using `HoweSwap.cT_herm hT0`. Establish `hSi` using `HoweSwap.cT_inv_herm JS hS`. Take `⟨hS1, hS2⟩` from `HoweSwap.glint_int hJS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hT1, hT2⟩` from `HoweSwap.glint_int hJT`. Establish `hint : ∀ z, z ∈ Formalism.UG.intL L → σ z ∈ Formalism.UG.intL L`. Introduce `z hz`. Simplify using `only [Formalism.UG.intL, Valuation.mem_integer_iff] at hz ⊢`. Rewrite using `[hv]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨l, w, hl, hw, hz⟩` from `GlobalTheory.T.dual_integral_preimage_le_sum_transpose_image L n' n (x.map σ) ((JS : Matrix (Fin n) (Fin n) L) *ᵥ v) (by`. Introduce `u hu hxu`. Establish `e : x *ᵥ (fun i => σ (u i)) = fun i => σ ((x.map σ *ᵥ u) i)`. Rewrite using `[dualA_conj_mulVec]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[hσ]`. Use `h1 (fun i => σ (u i)) (fun i => hint _ (hu i)) (fun i => by rw [e]; exact hint _ (hxu i))` as an intermediate fact. Rewrite `this` using `[dualA_hform_eq]`. Simplify `this)` using `[dotProduct, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : ∀ {a b : Type} (Z : Matrix a b L), (Z.map σ)ᵀ = Formalism.UG.cT σ Z` using `fun _ => rfl`. Establish `hy : Formalism.UG.cT σ (adj σ JS JT x) * (JS : Matrix (Fin n) (Fin n) L) = (JT : Matrix (Fin n') (Fin n') L) * x`. Simplify using `only [adj, Formalism.UG.cT_mul, HoweSwap.cT_cT hσ, hT, hSi, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hTxv : ∀ k, (((JT : Matrix (Fin n') (Fin n') L) * x) *ᵥ v) k ∈ Formalism.UG.intL L`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h2 (Pi.single k 1) (fun i => by` as an intermediate fact. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[dualA_hform_eq, dualA_conj_mulVec, dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hc, Matrix.mulVec_mulVec, hy]`. Establish `e : (fun i => σ ((Pi.single k 1 : Fin n' → L) i)) = Pi.single k 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite `this` using `[e]`. Simplify using `using this`. Establish `hxv : ∀ k, (x *ᵥ v) k ∈ Formalism.UG.intL L`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `k`. Use `dualA_mulVec_int hT2 hTxv k` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, HoweSwap.inv_mul_cl]`. Then use the resulting hypothesis. Establish `hyw : adj σ JS JT x *ᵥ (((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ w) = (((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (x.map σ)ᵀ) *ᵥ w`. Rewrite using `[Matrix.mulVec_mulVec, adj, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : v = ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ l + (((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (x.map σ)ᵀ) *ᵥ w`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_add, ← hz, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `⟨((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ l, ((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ w, dualA_mulVec_int hS2 hl, fun i => ?_, dualA_mulVec_int hT2 hw, by rw [hyw]; exact hv2⟩` and prove the remaining obligations. Establish `e : x *ᵥ (((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ l) = x *ᵥ v - (x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (x.map σ)ᵀ) *ᵥ w` using `by conv_rhs => rw [hv2]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec w, ← Matrix.mul_assoc, add_sub_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Pi.sub_apply]`. Conclude with `Subring.sub_mem _ (hxv i) (dualA_mulVec_int hx hw i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermDual_subset_of_gram_int : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L),
     (∀ z, σ (σ z) = z) → (∀ z, Valued.v (σ z) = Valued.v z) →

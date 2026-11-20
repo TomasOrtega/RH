@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(hs.dual.basis inf_le_right).repr (GlobalTheory.Twist.resM (GlobalTheory.VB.dual F) inf_le_left (he.coord l)) i = (he.basis inf_le_left).repr (GlobalTheory.Twist.resM F inf_le_right (s i)) l`. Rewrite using `[GlobalTheory.VB.IsFrame.dual_basis_repr, GlobalTheory.VB.dualApp_res, GlobalTheory.VB.IsFrame.dualApp_coord]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_dual (X : Scheme.{0}) (F : X.Modules) (r : ℕ) (V V' : X.Opens) (e : Fin r → Γ(F, V))
     (s : Fin r → Γ(F, V')) (he : GlobalTheory.VB.IsFrame e) (hs : GlobalTheory.VB.IsFrame s) (l i : Fin r) :

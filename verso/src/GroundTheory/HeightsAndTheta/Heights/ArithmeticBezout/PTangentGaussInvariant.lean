@@ -19,14 +19,14 @@ def unitMat {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSp
     (EuclideanSpace.basisFun (Fin n) ℂ).toBasis U.toLinearMap
 
 /- English proof (translation)
-The claim follows from `U.toMatrix_mem_unitaryGroup _ _`.
+A detailed English derivation is pending.
 -/
 theorem unitMat_mem {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) :
     unitMat U ∈ Matrix.unitaryGroup (Fin n) ℂ :=
   U.toMatrix_mem_unitaryGroup _ _
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr (EuclideanSpace.basisFun (Fin n) ℂ).toBasis (EuclideanSpace.basisFun (Fin n) ℂ).toBasis U.toLinearMap v`. Establish `h2` using `congrFun h k`. Simplify `h2.symm` using `[unitMat, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_apply_eq_sum {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n))
     (v : EuclideanSpace ℂ (Fin n)) (k : Fin n) : U v k = ∑ j, unitMat U k j * v j := by
@@ -36,7 +36,7 @@ theorem unitary_apply_eq_sum {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ
   simpa [unitMat, Matrix.mulVec, dotProduct] using h2.symm
 
 /- English proof (translation)
-Rewrite using `[unitMat, unitMat, ← LinearMap.toMatrix_mul]`. Establish `: U.toLinearMap * U.symm.toLinearMap = 1` using `LinearMap.ext fun x => by simp`. Rewrite using `[this, LinearMap.toMatrix_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitMat_mul_symm {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) :
     unitMat U * unitMat U.symm = 1 := by
@@ -45,7 +45,7 @@ theorem unitMat_mul_symm {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ
   rw [this, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Establish `key : ∀ s : Fin n → ℂ, ((∑ j, ‖s j‖ ^ 2 : ℝ) : ℂ) = s ⬝ᵥ star s`. Introduce `s`. Simplify using `[dotProduct, Complex.mul_conj']`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[key (r ᵥ* A), key r, Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff).1 hA, Matrix.vecMul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sum_norm_sq_vecMul {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ}
     (hA : A ∈ Matrix.unitaryGroup (Fin n) ℂ) (r : Fin n → ℂ) :
@@ -58,13 +58,11 @@ theorem sum_norm_sq_vecMul {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ}
     ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff).1 hA, Matrix.vecMul_one]
 
 /- English proof (translation)
-Use `set f : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) := (Matrix.toLin' Aᵀ).restrictScalars ℝ with hf`. Establish `hfun : (fun r : Fin n → ℂ => r ᵥ* A) = f`. Use function extensionality and compare the values at `r`. Simplify using `[hf, Matrix.toLin'_apply, Matrix.mulVec_transpose]`. Establish `hdet : LinearMap.det f = 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ‖A.det‖ = 1`. Establish `h1 : A.det ∈ unitary ℂ` using `Matrix.det_of_mem_unitary hA`. Conclude with `CStarRing.norm_of_mem_unitary h1`. Rewrite using `[hf, LinearMap.det_restrictScalars, LinearMap.det_toLin', Matrix.det_transpose, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, hd]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmeas : Measurable (fun r : Fin n → ℂ => r ᵥ* A)`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `fun_prop`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun, Measure.map_linearMap_addHaar_eq_smul_addHaar volume (by rw [hdet]; norm_num), hdet]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_vecMul {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ}
     (hA : A ∈ Matrix.unitaryGroup (Fin n) ℂ) :
@@ -92,7 +90,7 @@ def matSub {m n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanS
   fun i => π i ᵥ* unitMat U
 
 /- English proof (translation)
-The claim follows from `volume_preserving_pi fun _ => measurePreserving_vecMul (unitMat_mem U)`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_matSub {m n : ℕ}
     (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) :
@@ -100,7 +98,7 @@ theorem measurePreserving_matSub {m n : ℕ}
   volume_preserving_pi fun _ => measurePreserving_vecMul (unitMat_mem U)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matSub, Matrix.vecMul_vecMul, unitMat_mul_symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matSub_symm_matSub {m n : ℕ}
     (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) (π : Fin m → Fin n → ℂ) :
@@ -118,7 +116,7 @@ def matSubEquiv {m n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] Eucli
   measurable_invFun := (measurePreserving_matSub U.symm).measurable
 
 /- English proof (translation)
-Simplify using `only [linProj, matSub, unitary_apply_eq_sum, Matrix.vecMul, dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linProj_matSub {m n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n))
     (π : Fin m → Fin n → ℂ) (v : EuclideanSpace ℂ (Fin n)) :
@@ -130,14 +128,14 @@ theorem linProj_matSub {m n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [matGauss, matSub, sum_norm_sq_vecMul (unitMat_mem U)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matGauss_matSub {m n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n))
     (π : Fin m → Fin n → ℂ) : matGauss (matSub U π) = matGauss π := by
   simp only [matGauss, matSub, sum_norm_sq_vecMul (unitMat_mem U)]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[firstCoordVec, EuclideanSpace.basisFun_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem firstCoordVec_eq_basisFun {n : ℕ} (hn : 0 < n) :
     firstCoordVec n = EuclideanSpace.basisFun (Fin n) ℂ ⟨0, hn⟩ := by
@@ -145,31 +143,29 @@ theorem firstCoordVec_eq_basisFun {n : ℕ} (hn : 0 < n) :
   simp [firstCoordVec, EuclideanSpace.basisFun_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `lt_of_lt_of_le hm hmn`. Choose the witnesses or unpack the hypotheses as in `⟨u, huT, hu1, hyu⟩ : ∃ u ∈ T, ‖u‖ = 1 ∧ (‖y‖ : ℂ) • u = y := by`. Distinguish the cases in `hy0 : y = 0`. Establish `hTne : T ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hT` using `[h, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨t, htT, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hTne`. Conclude with `⟨(‖t‖⁻¹ : ℂ) • t, T.smul_mem _ htT, norm_smul_inv_norm ht0, by simp [hy0]⟩`. Use `⟨(‖y‖⁻¹ : ℂ) • y, T.smul_mem _ hy, norm_smul_inv_norm hy0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ (by exact_mod_cast norm_ne_zero_iff.2 hy0), one_smul]`. Take `⟨bT, hbT⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ) (E := T) (ι := Fin m) (v := fun _ => (⟨u, huT⟩ : T)) (s := {⟨0, hm⟩}) (by simp [hT]) (by`. Use `⟨fun i => by simpa using hu1, fun i j hij => ?_⟩` and prove the remaining obligations. Conclude with `absurd (Subtype.ext ((Set.mem_singleton_iff.1 i.2).trans (Set.mem_singleton_iff.1 j.2).symm)) hij)`. Establish `hbT0 : (bT ⟨0, hm⟩ : EuclideanSpace ℂ (Fin n)) = u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbT _ (Set.mem_singleton _)]`. Use `set v : Fin n → EuclideanSpace ℂ (Fin n) := fun j => if h : (j : ℕ) < m then (bT ⟨j, h⟩ : EuclideanSpace ℂ (Fin n)) else 0 with hv`. Take `⟨B, hB⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ) (E := EuclideanSpace ℂ (Fin n)) (ι := Fin n) (v := v) (s := {j | (j : ℕ) < m}) (by simp) (by`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : (i : ℕ) < m` using `hi`. Establish `hj' : (j : ℕ) < m` using `hj`. Simplify using `only [Set.domRestrict, hv, dif_pos hi', dif_pos hj']`. Rewrite using `[← Submodule.coe_inner, orthonormal_iff_ite.1 bT.orthonormal]`. Simplify using `[Fin.ext_iff])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBv : ∀ j : Fin n, ∀ h : (j : ℕ) < m, B j = (bT ⟨j, h⟩ : EuclideanSpace ℂ (Fin n))`. Introduce `j h`. Rewrite using `[hB j h]`. Simplify using `[hv, h]`. Use `set e := EuclideanSpace.basisFun (Fin n) ℂ with he`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : ∀ w, e.equiv B (Equiv.refl _) w = ∑ j, w j • B j`. Introduce `w`. Use `conv_lhs => rw [← e.sum_repr w]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul, OrthonormalBasis.equiv_apply_basis, Equiv.refl_apply]`. Both sides reduce to the same expression. Use `⟨e.equiv B (Equiv.refl _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : ∀ j : Fin n, m ≤ (j : ℕ) → w j = 0` using `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (j : ℕ) < m`. Rewrite using `[hBv j h]`. Conclude with `T.smul_mem _ (bT _).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw' j (by omega), zero_smul]`. Conclude with `T.zero_mem`. Introduce `t ht`. Establish `hBk : ∀ k : Fin m, B (Fin.castLE hmn k) = (bT k : EuclideanSpace ℂ (Fin n))` using `fun k => hBv _ (by simp)`. Use `⟨∑ k : Fin m, (bT.repr ⟨t, ht⟩ k) • e (Fin.castLE hmn k), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_ show ∀ j : Fin n, m ≤ (j : ℕ) → (e (Fin.castLE hmn k)) j = 0` and prove the remaining obligations. Introduce `j hj`. Establish `hne : j ≠ Fin.castLE hmn k`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[he, EuclideanSpace.basisFun_apply, hne]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[map_sum, map_smul, OrthonormalBasis.equiv_apply_basis, hBk]`.
-
-Use `_ = ((∑ k : Fin m, (bT.repr ⟨t, ht⟩ k) • bT k : T) : EuclideanSpace ℂ (Fin n)) := by`. Simplify using the standard rewrite rules. Use `_ = t := by rw [bT.sum_repr]`. Rewrite using `[firstCoordVec_eq_basisFun hn, map_smul, OrthonormalBasis.equiv_apply_basis, Equiv.refl_apply, hBv _ hm]`. Rewrite using `[show (⟨((⟨0, hn⟩ : Fin n) : ℕ), hm⟩ : Fin m) = ⟨0, hm⟩ from rfl, hbT0, hyu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_leadCoordPlane {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
     (T : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (hT : finrank ℂ T = m)
@@ -253,15 +249,15 @@ theorem exists_unitary_leadCoordPlane {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
     rw [show (⟨((⟨0, hn⟩ : Fin n) : ℕ), hm⟩ : Fin m) = ⟨0, hm⟩ from rfl, hbT0, hyu]
 
 /- English proof (translation)
-Introduce `n m hm hmn T hT y hy`. Take `⟨U, hLT, hTL, hUy⟩` from `exists_unitary_leadCoordPlane hm hmn T hT y hy`. Use `set L := leadCoordPlane n m with hL`. Set `W : L →ₗᵢ[ℂ] T` to `{ toFun := fun x => ⟨U x, hLT x x.2⟩ map_add' := fun x x' => by ext1; simp map_smul' := fun c x => by ext1; simp norm_map' := fun x => by simp }`. Establish `hWx : ∀ x : L, (W x : EuclideanSpace ℂ (Fin n)) = U x` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWsurj : Function.Surjective W`. Introduce `t`. Take `⟨w, hw, hwt⟩` from `hTL t t.2`. Conclude with `⟨⟨w, hw⟩, Subtype.ext hwt⟩`. Establish `hfin : finrank ℂ L = finrank ℂ T` using `(LinearEquiv.ofBijective W.toLinearMap ⟨W.injective, hWsurj⟩).finrank_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ π : Fin m → Fin n → ℂ, tangentJac (matSub U π) L = tangentJac π T`. Introduce `π`. Establish `hcomp : (linProjₗ (matSub U π)).comp L.subtype = ((linProjₗ π).comp T.subtype).comp W.toLinearMap`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearIsometry.coe_toLinearMap, hWx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `linProj_matSub U π x`. Unfold `tangentJac`. Establish `h2` using `LinearMap.normDet_comp_of_finrank_eq (𝕜 := ℂ) (U := L) (V := T) (W := EuclideanSpace ℂ (Fin m)) W.toLinearMap ((linProjₗ π).comp T.subtype) (by exact hfin)`. Rewrite using `[hcomp, h2, LinearIsometry.normDet_eq_one, mul_one]`. Establish `hemb : MeasurableEmbedding (matSub (m` using `m) U) := (matSubEquiv U).measurableEmbedding`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key` using `(measurePreserving_matSub (m := m) U).lintegral_comp_emb hemb (fun π => matGauss π * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π (((‖y‖ : ℝ) : ℂ) • firstCoordVec n)) * ENNReal.ofReal (tangentJac π (leadCoordPlane n m)))`. Unfold `tangentGaussProfile`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `lintegral_congr fun π => ?_` and prove the remaining obligations. Simplify using `only [matGauss_matSub, linProj_matSub, hUy, ← hL, hJ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TangentGaussInvariant.proof : TangentGaussInvariant.Statement := by
   intro n m hm hmn T hT y hy

@@ -23,7 +23,7 @@ def SympAt {S : Scheme.{0}} {A : Over S} [GrpObj A] (P : LB (G2 A).left) (h M : 
       (unitOn (z ^ (2 * omegaStd a b)))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSympLev_iff {S : Scheme.{0}} {A : Over S} [GrpObj A] (P : LB (G2 A).left) (h M : ℕ) {B : Type}
     [CommRing B] (ζ : B) (t₁ : S ⟶ Sp B) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)) :
@@ -39,13 +39,11 @@ namespace GlobalTheory.SympLevLocus
 open GlobalTheory.SiegelPull in
 
 /- English proof (translation)
-Establish `push : ∀ a, pushHom pb (Over.mk x) (toUnit (Over.mk x) ≫ lev' a) = toUnit (Over.mk (x ≫ g)) ≫ lev a`. Introduce `a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((toUnit (Over.mk x)).left ≫ (lev' a).left) ≫ φ = (toUnit (Over.mk (x ≫ g))).left ≫ (lev a).left`. Rewrite using `[Category.assoc, hl, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `inj` using `push_injective pb (Over.mk x)`. Establish `surj` using `push_surjective pb (Over.mk x)`. Use `and_congr (forall_congr' fun a => ?_) (and_congr ⟨fun H g₀ hg₀ => ?_, fun H g₀ hg₀ => ?_⟩ (forall_congr' fun a => forall_congr' fun b => ?_))` and prove the remaining obligations. Rewrite using `[← inj.eq_iff, push, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, rfl⟩` from `surj g₀`. Take `⟨a, ha⟩` from `H g₁ (inj (by rw [map_pow, map_one]; exact hg₀))`. Conclude with `⟨a, (push a).symm.trans (congrArg _ ha)⟩`. Take `⟨a, ha⟩` from `H (pushHom pb (Over.mk x) g₀) (by rw [← map_pow, hg₀, map_one])`. Conclude with `⟨a, inj ((push a).trans ha)⟩`.
-
-Conclude with `weilIs_grpPullback_of_comm S T A A' g φ _ _ (pull_isLB hP _) (pull_isLB hP' _) pb (diag_iso sq iso) (Over.mk x) M _ _ _ _ _ (congrArg (fun q => q.left) (push a).symm) (congrArg (fun q => q.left) (push b).symm)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sympAt_pullback_iff {S T : Scheme.{0}} (g : T ⟶ S) {A : Over S} [GrpObj A] [IsCommMonObj A] {A' : Over T}
     [GrpObj A'] [IsCommMonObj A'] {P : LB (G2 A).left} {P' : LB (G2 A').left} {φ : A'.left ⟶ A.left}

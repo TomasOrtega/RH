@@ -11,14 +11,14 @@ noncomputable def cechDiagApp {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `WidePullback.lift_π _ _ _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem cechDiagApp_π {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) (j : Fin (k + 1)) :
     cechDiagApp f k ≫ WidePullback.π _ j = 𝟙 _ := WidePullback.lift_π _ _ _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `WidePullback.lift_base _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cechDiagApp_base {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) :
     cechDiagApp f k ≫ WidePullback.base _ = yoneda.map f := WidePullback.lift_base _ _ _ _
@@ -39,9 +39,9 @@ noncomputable def cechDiag {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech
       exact (cechDiagApp_base f _).symm
 
 /- English proof (translation)
-Use `⟨cechDiag f, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨(WidePullback.π (fun _ : Fin (0 + 1) => yoneda.map f) 0 : _ ⟶ yoneda.obj Y), ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `cechDiagApp_π f 0 0`. Express the relevant statement in the definitionally equal form `WidePullback.π (fun _ : Fin (0 + 1) => yoneda.map f) 0 ≫ cechDiagApp f 0 = 𝟙 _`. Apply `WidePullback.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[Fin.fin_one_eq_zero j, Category.assoc, cechDiagApp_π, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, cechDiagApp_base, Category.id_comp, WidePullback.π_arrow]`. Use extensionality with `n : 1`. Conclude with `cechDiagApp_base f _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cechDiag_spec {Y X : Scheme.{0}} (f : Y ⟶ X) :
     ∃ Δ : sch.obj Y ⟶ cech f, IsIso (Δ.app (op ⦋0⦌)) ∧ Δ ≫ cechAug f = sch.map f := by

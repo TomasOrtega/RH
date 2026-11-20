@@ -9,41 +9,37 @@ namespace GlobalTheory
 open Polynomial Module.End
 
 /- English proof (translation)
-Introduce `O K V _ _ _ _ _ _ _ _ _ _ _ S hS hsplit hint L _ _ _ 𝔪`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Take `⟨F, hF, -⟩` from `NCov.exists_finset_pts hinj hS hsplit hint`. Distinguish the cases in `hA : ∃ ψ0 : Algebra.adjoin O S →ₐ[O] O, NCov.cls ψ0 = 𝔪`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at hA`. Use `⟨0, Subalgebra.zero_mem _, fun x hx => ?_, fun x _ => rfl⟩` and prove the remaining obligations. Establish `: NCov.part (Algebra.adjoin O S) 𝔪 = ⊥`. Unfold `NCov.part`. Conclude with `iSup₂_eq_bot.2 fun ψ h => absurd h (hA ψ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[this, Submodule.mem_bot]`. Simplify using `[hx]`. Take `⟨ψ0, rfl⟩` from `hA`. Establish `hmax` using `NCov.cls_isMaximal ψ0`. Establish `hs : ∀ φ : Algebra.adjoin O S →ₐ[O] O, ∃ s : Algebra.adjoin O S, (NCov.cls φ ≠ NCov.cls ψ0 → s ∈ NCov.cls φ) ∧ s ∉ NCov.cls ψ0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Introduce `φ`. Distinguish the cases in `h : NCov.cls φ = NCov.cls ψ0`. Conclude with `⟨1, fun h' => absurd h h', fun h1 => hmax.ne_top ((Ideal.eq_top_iff_one _).2 h1)⟩`. Establish `: ¬ NCov.cls φ ≤ NCov.cls ψ0` using `fun hle => h ((NCov.cls_isMaximal φ).eq_of_le hmax.ne_top hle)`. Take `⟨s, hs1, hs2⟩` from `SetLike.not_le_iff_exists.1 this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, fun _ => hs1, hs2⟩`. Use `choose s hsin hsout using hs`. Use `set FA := F.filter (fun ψ => NCov.cls ψ = NCov.cls ψ0)`. Use `set FB := F.filter (fun ψ => NCov.cls ψ ≠ NCov.cls ψ0)`. Use `letI : CommRing (Algebra.adjoin O S) := Algebra.adjoinCommRingOfComm O fun a ha b hb => (hS a ha b hb).eq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hfdef⟩ : ∃ f : Algebra.adjoin O S, f = ∏ φ ∈ FB, s φ` from `⟨_, rfl⟩`. Establish `hres : ∀ ψ : Algebra.adjoin O S →ₐ[O] O, ∀ u, u ∈ NCov.cls ψ ↔ IsLocalRing.residue O (ψ u) = 0` using `fun ψ u => Iff.rfl`. Establish `hfA : ∀ ψ, NCov.cls ψ = NCov.cls ψ0 → IsLocalRing.residue O (ψ f) ≠ 0`. Introduce `ψ hψ`. Rewrite using `[hfdef, map_prod, map_prod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_ne_zero_iff.2 fun φ _ => ?_` and prove the remaining obligations. Use `hsout φ` as an intermediate fact. Rewrite `this` using `[← hψ, hres]`. Conclude with `this`. Establish `hfB : ∀ φ ∈ FB, IsLocalRing.residue O (φ f) = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ hφ`. Rewrite using `[hfdef, map_prod, map_prod]`. Conclude with `Finset.prod_eq_zero hφ ((hres φ _).1 (hsin φ (Finset.mem_filter.1 hφ).2))`. Set `d : (Algebra.adjoin O S →ₐ[O] O) → ℕ` to `fun ψ => (f : End K V).maxGenEigenspaceIndex (NCov.pt ψ f)`. Set `g : O[X]` to `∏ ψ ∈ FA, (X - C (ψ f)) ^ d ψ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `h : O[X]` to `∏ φ ∈ FB, (X - C (φ f)) ^ d φ`. Establish `hcop : IsCoprime g h`. Use `IsCoprime.prod_left fun ψ hψ => IsCoprime.prod_right fun φ hφ => IsCoprime.pow ?_` and prove the remaining obligations. Use `isCoprime_X_sub_C_of_isUnit_sub ?_` and prove the remaining obligations. Use `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hfB φ hφ, sub_zero]`. Conclude with `hfA ψ (Finset.mem_filter.1 hψ).2`. Take `⟨p, q, hpq⟩` from `hcop`. Establish `hkill : ∀ (G : Finset (Algebra.adjoin O S →ₐ[O] O)) (ψ) (_ : ψ ∈ G) (x : V), x ∈ NCov.W _ (NCov.pt ψ) → aeval (f : End K V) (∏ φ ∈ G, (X - C (φ f)) ^ d φ) x = 0`. Introduce `G ψ hψ x hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (∏ φ ∈ G, (X - C (φ f)) ^ d φ) = (∏ φ ∈ G.erase ψ, (X - C (φ f)) ^ d φ) * (X - C (ψ f)) ^ d ψ from (Finset.prod_erase_mul _ _ hψ).symm]`. Rewrite using `[map_mul, Module.End.mul_apply, map_pow, map_sub, aeval_X, aeval_C]`. Rewrite using `[NCov.pow_sub_apply_eq_zero ψ f hx, map_zero]`. Establish `hval : ((aeval f (q * h) : Algebra.adjoin O S) : End K V) = aeval (f : End K V) (q * h)`. Establish `e` using `aeval_algHom_apply (Algebra.adjoin O S).val f (q * h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using e.symm`. Use `⟨_, (aeval f (q * h)).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hval]`. Establish `hle : NCov.part (Algebra.adjoin O S) (NCov.cls ψ0) ≤ LinearMap.ker (aeval (f : End K V) (q * h) - 1)`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `NCov.part`. Use `iSup₂_le fun ψ hψ => ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Distinguish the cases in `hW : NCov.W _ (NCov.pt ψ) = ⊥`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hy` using `[hW, Submodule.mem_bot]`. Rewrite using `[hy, map_zero]`. Establish `hψA : ψ ∈ FA` using `Finset.mem_filter.2 ⟨hF ψ hW, hψ⟩`. Establish `e1` using `congrArg (fun P => aeval (f : End K V) P y) hpq`. Simplify using `only [map_add, map_mul, LinearMap.add_apply, Module.End.mul_apply, map_one, Module.End.one_apply] at e1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e1` using `[hkill FA ψ hψA y hy, map_zero, zero_add]`. Simplify `e1` using `[map_mul, Module.End.mul_apply]`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval]`. Establish `hle : NCov.off (Algebra.adjoin O S) (NCov.cls ψ0) ≤ LinearMap.ker (aeval (f : End K V) (q * h))`. Unfold `NCov.off`. Use `iSup₂_le fun φ hφ => ?_` and prove the remaining obligations. Introduce `y hy`.
-
-Rewrite using `[LinearMap.mem_ker]`. Distinguish the cases in `hW : NCov.W _ (NCov.pt φ) = ⊥`. Rewrite `hy` using `[hW, Submodule.mem_bot]`. Rewrite using `[hy, map_zero]`. Establish `hφB : φ ∈ FB` using `Finset.mem_filter.2 ⟨hF φ hW, hφ⟩`.
-
-Rewrite using `[map_mul, Module.End.mul_apply, hkill FB φ hφB y hy, map_zero]`. Conclude with `hle hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_projector_mem_adjoin :
     ∀ (O K V : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]

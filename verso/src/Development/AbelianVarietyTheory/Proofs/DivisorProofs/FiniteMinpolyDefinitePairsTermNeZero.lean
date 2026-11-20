@@ -10,27 +10,23 @@ namespace GlobalTheory.LKDef.FinPol
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `p _ G L f r K φ hr hf hφ`. Take `⟨Ω, hΩc, hΩ⟩` from `GlobalTheory.T.twistedHeckeTestFunction_support_compact p G L f hf`. Take `⟨D, hD, hDp⟩` from `GlobalTheory.T.compact_conj_charpoly_bounded_denominators_awayP p G (Ω ∪ Ω⁻¹) (hΩc.union hΩc.inv)`. Take `⟨k, hk⟩` from `GlobalTheory.T.twisted_orbit_norm_bounds p G r K φ hr hφ`. Establish `hp` using `(Fact.out : p.Prime)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨D * p ^ (2 * k * Module.finrank ℚ G.C), Nat.mul_pos hD (pow_pos hp.pos _), ?_⟩` and prove the remaining obligations. Introduce `P hirr hP`. Establish `fin : ∀ (y0 : G.Cˣ) (c0 : ℚˣ), Irreducible (minpoly G.F (y0 : G.C)) → (y0 : G.C) * P.β * sh G y0 = algebraMap ℚ G.C c0 * P.β → ‖((c0 : ℚ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k → ‖(((c0⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k → (∀ (w : Fin G.m) (μ : PadicAlgCl p), ((G.rho w (y0 : G.C)).charpoly.ma …`. Introduce `y0 c0 hirr0 hy0 hc hc' hu hu' hAf`. Establish `hroots` using `GlobalTheory.LKIrr.root_norm_le_irr G P.β y0 c0 hirr0 hy0 _ hc hc' hu hu'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hroots' : ∀ μ : PadicAlgCl p, ((LinearMap.mulLeft ℚ (y0 : G.C)).charpoly.map (algebraMap ℚ (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ (p : ℝ) ^ (2 * k)` using `fun μ hμ => by`. Rewrite using `[show 2 * k = k + k by ring, pow_add]; exact hroots μ hμ`. Establish `h6` using `GlobalTheory.T.padic_coeff_denominator_bound_of_bounded_roots p _ (LinearMap.charpoly_monic _) (2 * k) hroots'`. Rewrite `h6` using `[LinearMap.charpoly_natDegree]`. Apply `GlobalTheory.T.isIntegral_natCast_smul_of_mul_charpoly_coeff_int G.C` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Take `⟨kk, hkk⟩` from `hAf i`. Conclude with `GlobalTheory.T.den_bound_combine_padic_primeToP p D (2 * k * Module.finrank ℚ G.C) kk hp _ (h6 i) hkk`. Rewrite `hP` using `[DPair.term]`. Use `split_ifs at hP with h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `swap`. Conclude with `absurd rfl hP`. Rewrite `hP` using `[DPair.termAt, pointSum]`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, _ ≠ (0 : ℂ) := by`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hP (by rw [finsum_congr hc]; exact finsum_zero)`. Establish `hq2` using `(mul_ne_zero_iff.1 hq).2`. Establish `hfq` using `(mul_ne_zero_iff.1 hq2).1`. Establish `hφq` using `(mul_ne_zero_iff.1 hq2).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x := P.trivAf.choose with hxdef`. Use `set o := Quotient.out q with hodef`. Establish `hgΩ` using `hΩ _ hfq`. Establish `hnrm` using `h.choose_spec`. Take `⟨hk1, hk2, hk3, hk4⟩` from `hk P.atP h.choose.1 h.choose.2 o.2 hnrm hφq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set g := o.1⁻¹ * P.toAf x P.trivAf.choose_spec.choose P.trivAf.choose_spec.choose_spec P.self * o.1 with hg`. Establish `hg1 : ((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) = ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x) * Units.map (inC G (AfP p)).toMonoidHom P.γ * ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x)⁻¹` using `by show ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ * (x * Units.map (inC G (AfP p)).toMonoidHom P.γ * x⁻¹) * (o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 = _ group`. Use `set X := (o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x`. Establish `hA` using `hDp g (P.γ : G.C) X (Or.inl hgΩ) (by rw [hg1]; rfl)`. Establish `hgi : g⁻¹ ∈ Ω ∪ Ω⁻¹` using `Or.inr (by simpa using hgΩ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'` using `hDp g⁻¹ ((P.γ⁻¹ : G.Cˣ) : G.C) X hgi (by show (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ).val = _`. Rewrite using `[hg1]`. Simplify using `[mul_assoc])`. Establish `hc1 : ((P.atP.1 : ℚ_[p]ˣ) : ℚ_[p]) = ((P.c : ℚ) : ℚ_[p])` using `by show algebraMap ℚ ℚ_[p] (P.c : ℚ) = _`. Simplify using the standard rewrite rules.
-
-Establish `hc2 : ((P.atP.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) = (((P.c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])` using `by show algebraMap ℚ ℚ_[p] ((P.c⁻¹ : ℚˣ) : ℚ) = _`. Simplify using the standard rewrite rules. Establish `hw1 : ∀ w, (((P.atP.2 w : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))) = G.rho w (P.γ : G.C)` using `fun w => rfl`. Establish `hw2 : ∀ w, ((((P.atP.2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))) = G.rho w ((P.γ⁻¹ : G.Cˣ) : G.C)` using `fun w => rfl`. Establish `hrel' : ((P.γ⁻¹ : G.Cˣ) : G.C) * P.β * sh G ((P.γ⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C ((P.c⁻¹ : ℚˣ) : ℚ) * P.β` using `(P.cent.inv_mem P.self.2).2`.
-
-Establish `hirr' : Irreducible (minpoly G.F ((P.γ⁻¹ : G.Cˣ) : G.C))` using `GlobalTheory.LKIrr.irreducible_minpoly_inv G P.γ hirr`. Use `⟨fin P.γ P.c hirr P.sim (hc1 ▸ hk1) (hc2 ▸ hk2) (fun w μ hμ => hk3 w μ (by rw [hw1]; exact hμ)) (fun w μ hμ => hk4 w μ (by rw [hw2]; exact hμ)) hA, fin P.γ⁻¹ P.c⁻¹ hirr' hrel' (hc2 ▸ hk2) (by rw [inv_inv]; exact hc1 ▸ hk1) (fun w μ hμ => hk4 w μ (by rw [hw2]; exact hμ)) (fun w μ …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_of_term_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ)
     (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r →
@@ -122,31 +118,25 @@ namespace GlobalTheory.LKDef.FinPol
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Set `ψF : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := fun x => by show G.psi v (algebraMap G.F G.C x) = _`. Rewrite using `[G.psi_F, Matrix.algebraMap_eq_diagonal]`. Use `rfl }`. Set `Ψ : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψF (fun a _ => Algebra.commute_algebraMap_left a _)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `haveI : Nontrivial (Matrix (Fin G.n) (Fin G.n) ℂ) := by haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩ infer_instance`. Establish `hinj : Function.Injective Ψ` using `RingHom.injective (Ψ : ℂ ⊗[G.F] G.C →+* Matrix (Fin G.n) (Fin G.n) ℂ)`. Use `set Γ := G.psi v P.γ with hΓ`. Establish `hΨ : ∀ k : ℕ, Ψ (1 ⊗ₜ ((P.γ : G.C) ^ k)) = Γ ^ k`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hli0` using `Module.Flat.linearIndependent_one_tmul (S := ℂ) (linearIndependent_pow (K := G.F) (P.γ : G.C))`. Establish `hli` using `hli0.map' Ψ.toLinearMap (LinearMap.ker_eq_bot.2 hinj)`. Establish `hli' : LinearIndependent ℂ (fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => Γ ^ (i : ℕ))`. Establish `e : (⇑Ψ.toLinearMap ∘ fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => (1 : ℂ) ⊗ₜ[G.F] ((P.γ : G.C) ^ (i : ℕ))) = fun i : Fin (minpoly G.F (P.γ : G.C)).natDegree => Γ ^ (i : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `hΨ i`. Rewrite `hli` using `[e]`. Conclude with `hli`. Establish `hd : (minpoly G.F (P.γ : G.C)).natDegree = G.n` using `P.reg.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral G.F (P.γ : G.C)` using `Algebra.IsIntegral.isIntegral _`. Establish `hpm : P.pol.Monic` using `minpoly.monic hint`. Use `set Q := P.pol.map (algebraMap G.F ℂ) with hQ`. Establish `hQm : Q.Monic` using `hpm.map _`. Establish `hQdeg : Q.natDegree = G.n` using `by rw [hQ, hpm.natDegree_map]; exact P.reg.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hQΓ : Polynomial.aeval Γ Q = 0`. Rewrite using `[hQ, Polynomial.aeval_map_algebraMap]`. Establish `h : Polynomial.aeval (ψF (P.γ : G.C)) P.pol = 0`. Rewrite using `[Polynomial.aeval_algHom_apply]`. Simplify using `[DPair.pol, minpoly.aeval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Establish `hroot : Q.IsRoot w`. Rewrite using `[Polynomial.IsRoot, hQ, Polynomial.eval_map]`. Conclude with `hw`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_neg at hne`. Establish `hdet : (Γ - algebraMap ℂ (Matrix (Fin G.n) (Fin G.n) ℂ) w).det ≠ 0`. Introduce `h0`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hne x hx0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[hx, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `set R := Q /ₘ (Polynomial.X - Polynomial.C w) with hRdef`. Establish `hQR : (Polynomial.X - Polynomial.C w) * R = Q` using `Polynomial.mul_divByMonic_eq_iff_isRoot.2 hroot`. Establish `hRΓ : Polynomial.aeval Γ R = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hQΓ`. Rewrite `h1` using `[← hQR, map_mul]`. Establish `hu : IsUnit (Polynomial.aeval Γ (Polynomial.X - Polynomial.C w))`. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Matrix.isUnit_iff_isUnit_det]`. Conclude with `isUnit_iff_ne_zero.2 hdet`.
-
-Conclude with `(hu.mul_right_eq_zero).1 h1`. Establish `hRd : R.natDegree = G.n - 1`. Rewrite using `[hRdef, Polynomial.natDegree_divByMonic _ (Polynomial.monic_X_sub_C w), hQdeg, Polynomial.natDegree_X_sub_C]`. Establish `hR0 : R ≠ 0`. Introduce `h`.
-
-Rewrite `hQR` using `[h, mul_zero]`. Conclude with `hQm.ne_zero hQR.symm`. Establish `hsum : ∑ i : Fin (minpoly G.F (P.γ : G.C)).natDegree, R.coeff i • Γ ^ (i : ℕ) = 0`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => R.coeff i • Γ ^ i), hd, ← hRΓ, Polynomial.aeval_eq_sum_range, hRd, Nat.sub_add_cancel G.n_pos]`. Establish `hc` using `Fintype.linearIndependent_iff.1 hli' (fun i => R.coeff i) hsum ⟨G.n - 1, by rw [hd]; have := G.n_pos; omega⟩`.
-
-Conclude with `hR0 (Polynomial.leadingCoeff_eq_zero.1 (by rw [Polynomial.leadingCoeff, hRd]; exact hc))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem roots_eig (G : HTGroup p) (P : DPair G) (v : InfinitePlace G.F) (w : ℂ)
     (hw : P.pol.eval₂ v.embedding w = 0) : ∃ x : Fin G.n → ℂ, x ≠ 0 ∧ G.psi v P.γ *ᵥ x = w • x := by
@@ -223,17 +213,15 @@ theorem roots_eig (G : HTGroup p) (P : DPair G) (v : InfinitePlace G.F) (w : ℂ
   exact hR0 (Polynomial.leadingCoeff_eq_zero.1 (by rw [Polynomial.leadingCoeff, hRd]; exact hc))
 
 /- English proof (translation)
-Establish `hlaw` using `DPair.form_law G P v`. Use `set H := G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C) with hH`. Use `set A := G.psi v (P.γ : G.C) with hA`. Use `set q : ℂ := star x ⬝ᵥ (H *ᵥ x) with hq`. Establish `hq0 : q ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `h0`. Establish `hd` using `P.posR v x hx0`. Distinguish the cases in `hv : sigPosH (G.gram_herm v) = 1`. Use `hd.1 hv` as an intermediate fact. Rewrite `this` using `[← hH, ← hq, h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Use `hd.2 hv` as an intermediate fact. Rewrite `this` using `[← hH, ← hq, h0]`. Simplify using `at this`. Establish `key : star x ⬝ᵥ ((Aᴴ * H * A) *ᵥ x) = (star w * w) * q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hx, dotProduct_mulVec, ← star_mulVec, hx, mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, hq]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hlaw, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `hc : star w * w = ((P.c : ℚ) : ℂ)` using `mul_right_cancel₀ hq0 key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h2 : ((Complex.normSq w : ℝ) : ℂ) = ((((P.c : ℚ) : ℝ)) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Use `push_cast`. Conclude with `hc`. Rewrite using `[← Complex.normSq_eq_norm_sq]`.
-
-Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_norm_sq (G : HTGroup p) (P : DPair G) (v : InfinitePlace G.F) (w : ℂ) (x : Fin G.n → ℂ)
     (hx0 : x ≠ 0) (hx : G.psi v P.γ *ᵥ x = w • x) : ‖w‖ ^ 2 = ((P.c : ℚ) : ℝ) := by
@@ -269,25 +257,25 @@ open GlobalTheory.LKMid.Northcott
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.finite_monic_of_roots_bdd_of_mul_isIntegral G.F G.n N N hN).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, rfl, hI1, hI2⟩`. Establish `hc0 : ((P.c : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast P.c.ne_zero`. Establish `hint : ∀ (v : InfinitePlace G.F) (w : ℂ) (x : Fin G.n → ℂ), x ≠ 0 → G.psi v P.γ *ᵥ x = w • x → IsIntegral ℤ ((N : ℂ) * w) ∧ IsIntegral ℤ ((N : ℂ) * w⁻¹)`. Introduce `v w x hx hwx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) * G.psi v (P.γ : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hx' : x = w • (G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) *ᵥ x)` using `by conv_lhs => rw [← Matrix.one_mulVec x, ← hinv, ← Matrix.mulVec_mulVec, hwx, Matrix.mulVec_smul]`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[hx', zero_smul]`. Establish `hinvx : G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) *ᵥ x = w⁻¹ • x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hw0, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = w⁻¹ • x := by rw [← hx']`. Prove the components needed by the constructor for the conclusion. Use `isIntegral_eig (hI1.map (G.psi v).toIntAlgHom) hx ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.psi v ((N : ℤ) • (P.γ : G.C)) *ᵥ x = _`. Rewrite using `[map_zsmul, Matrix.smul_mulVec, hwx, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `isIntegral_eig (hI2.map (G.psi v).toIntAlgHom) hx ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.psi v ((N : ℤ) • ((P.γ⁻¹ : G.Cˣ) : G.C)) *ᵥ x = _`. Rewrite using `[map_zsmul, Matrix.smul_mulVec, hinvx, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hkey : ∀ (v : InfinitePlace G.F) (w : ℂ), P.pol.eval₂ v.embedding w = 0 → ‖w‖ ≤ N ∧ IsIntegral ℤ ((N : ℂ) * w)`. Introduce `v w hw`. Take `⟨x, hx, hwx⟩` from `roots_eig G P v w hw`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, h3⟩` from `hint v w x hx hwx`. Conclude with `⟨norm_le_of_isIntegral_inv w P.c N hN (eig_norm_sq G P v w x hx hwx) hc0 h3, h2⟩`. Use `⟨minpoly.monic (Algebra.IsIntegral.isIntegral _), P.reg.1, ?_⟩` and prove the remaining obligations. Introduce `φ w hw`. Establish `hr : P.pol.eval₂ φ w = 0`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Polynomial.mem_roots'.1 hw).2` as an intermediate fact. Rewrite `this` using `[Polynomial.IsRoot, Polynomial.eval_map]`. Then use the resulting hypothesis. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite `hr` using `[← h]`. Conclude with `hkey _ w hr`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : P.pol.eval₂ (InfinitePlace.mk φ).embedding (starRingEnd ℂ w) = 0`. Rewrite using `[h]`. Use `congrArg (starRingEnd ℂ) hr` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Use `this using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.ext fun x => rfl`. Take `⟨h1, h2⟩` from `hkey _ _ hr'`. Use `⟨by simpa using h1, ?_⟩` and prove the remaining obligations. Use `h2.map (starRingEnd ℂ).toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_pol_int (G : HTGroup p) (N : ℕ) (hN : 0 < N) :
     {P0 : Polynomial G.F | ∃ P : DPair G, P.pol = P0 ∧
@@ -342,7 +330,7 @@ theorem finite_pol_int (G : HTGroup p) (N : ℕ) (hN : 0 < N) :
     simpa using this
 
 /- English proof (translation)
-Introduce `p _ G _ L f hf _ K' f' hf' _`. Take `⟨N, hN, hb⟩` from `integral_of_term_ne_zero p G L f 1 K' f' one_pos hf hf'`. Use `(finite_pol_int G N hN).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, rfl, hi, ht⟩`. Conclude with `⟨P, rfl, hb P hi ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_pol_term_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
     ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →

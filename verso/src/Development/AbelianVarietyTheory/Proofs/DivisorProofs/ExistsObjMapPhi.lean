@@ -16,9 +16,9 @@ namespace GlobalTheory.Dict.SameExp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use `⟨⟨m, fun a => ?_, fun a => (h₂ a).trans (Category.id_comp _).symm⟩, rfl⟩` and prove the remaining obligations. Establish `ha : a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[← Submodule.sup_smul, l.coprime, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Rewrite using `[o₁.eta_add, o₂.eta_add, o₁.eta_ker x hx, o₂.eta_ker x hx, _root_.one_mul, _root_.one_mul]`. Conclude with `(h₁ y hy).trans (Category.id_comp _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_objMap_phi {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}}
     {s : S ⟶ Sp B} (o₁ o₂ : Obj D l b s) (m : SABMap o₁.t o₂.t (𝟙 S))
@@ -36,7 +36,7 @@ theorem exists_objMap_phi {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRi
   exact (h₁ y hy).trans (Category.id_comp _).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `objMap_unique_of_field firstFiveLaws.1.serre m' m`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem phi_eq_of_eq {D : Datum H} {l : Geo.Tor.Level H} {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B}
     {b' : Base l B'} {S : Scheme.{0}} {s : S ⟶ Sp B} {s' : Sp ℂ ⟶ Sp B'}
@@ -51,19 +51,19 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Dict.SameFibre GlobalTheory.Dict.SameExp GlobalTheory.UnifPoint GlobalTheory.AnVal in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' hs hx hL hA mk hmk hm hm' z`. Establish `hyy : y'.x = y.x` using `anFib_point_eq E H Dw l Xo c hA r g X bas idx e x L y y' A A' hs hx hL mk hmk hm hm'`. Take `⟨Φ, k₁, -, l₁, m₁, -⟩` from `AnFib.exists_anPt E H Dw l Xo c r g X bas idx e x L y A hs hx hL`. Take `⟨Φ', k₂, -, l₂, m₂, -⟩` from `AnFib.exists_anPt E H Dw l Xo c r g X bas idx e x L y' A' hs hx hL`. Take `⟨-, pos, -⟩` from `hx_laws E r X g bas idx 0 hs Even.zero x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `σ : KA l →+* ℂ` to `(algebraMap c.F ℂ).comp (IntermediateField.inclusion c.le).toRingHom`. Establish `hy : y.x ≫ Xo.s = 𝟙 _ ≫ spMap σ` using `y.x_over.trans (Category.id_comp _).symm`. Establish `hy' : y'.x ≫ Xo.s = 𝟙 _ ≫ spMap σ` using `y'.x_over.trans (Category.id_comp _).symm`. Take `⟨o₁, ⟨n₁⟩⟩` from `obj_pull E H Dw l _ ℂ (baseKA l) (baseOfEmb σ) σ _ _ Xo.s (𝟙 _) y.x rfl rfl hy Xo.univ`. Take `⟨o₂, ⟨n₂⟩⟩` from `obj_pull E H Dw l _ ℂ (baseKA l) (baseOfEmb σ) σ _ _ Xo.s (𝟙 _) y'.x rfl rfl hy' Xo.univ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, χ₁, b₁, f₁, h₁⟩` from `exists_holUnif n₁.toSABMap Φ.toAnFr fun z hz => by rw [m₁]; exact pos z hz`. Take `⟨u₂, χ₂, b₂, f₂, h₂⟩` from `exists_holUnif n₂.toSABMap Φ'.toAnFr fun z hz => by rw [m₂]; exact pos z hz`. Take `⟨m, hm₀⟩` from `exists_sabMap_of_isAH o₁ o₂ u₁ u₂ h₁ h₂ (fun z => by rw [b₁, b₂, l₁, l₂]) (fun z w => by rw [m₁, m₂]) (fun a => tyAct (fun j => rowType X (idx j)) a) (fun a z => OrthoMetric.pt_ext n₁.cart (by`. Rewrite using `[f₁, Φ.lin, Over.comp_left, Over.comp_left, Category.assoc, n₁.act, ← Category.assoc, f₁]))`. Use the proof step `(fun a z => OrthoMetric.pt_ext n₂.cart (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f₂, Φ'.lin, Over.comp_left, Over.comp_left, Category.assoc, n₂.act, ← Category.assoc, f₂]))`. Take `⟨k, hk⟩` from `exists_objMap_phi o₁ o₂ m (fun a ha => by`. Establish `c₁ : o₁.eta a = u₁.ex _` using `OrthoMetric.pt_ext n₁.cart ((n₁.eta a).trans ((congrArg (fun q => q.left) ((hm a ha).trans (k₁ _).symm)).trans (f₁ _).symm))`. Establish `c₂ : o₂.eta a = u₂.ex _` using `OrthoMetric.pt_ext n₂.cart ((n₂.eta a).trans ((congrArg (fun q => q.left) ((hm' a ha).trans (k₂ _).symm)).trans (f₂ _).symm))`. Rewrite using `[c₁, c₂, hm₀])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun a => by`. Establish `c₁` using `o₁.etaA_ker a`. Establish `c₂` using `o₂.etaA_ker a`. Rewrite `c₁`, `c₂` using `[hA, one_smul]`. Rewrite using `[c₁, c₂, ← CM.HermWeil.ex_zero u₁, ← CM.HermWeil.ex_zero u₂, hm₀])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k', hk'⟩` from `((ObjMaps.id_comp_cancel E H Dw l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₂ o₁).2 y'.x (𝟙 _) n₂).1 k`. Establish `hφ` using `phi_eq_of_eq ((Category.id_comp _).trans hyy) n₁ k'`. Establish `e₁` using `congrArg (fun q => q.left) (k₁ z)`. Establish `e₂` using `congrArg (fun q => q.left) (k₂ z)`. Use `e₂.symm.trans (Eq.trans ?_ e₁)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(f₂ z).symm.trans (Eq.trans ?_ (f₁ z))` and prove the remaining obligations. Rewrite using `[← hm₀ z, Category.assoc, ← hk, ← hk', hφ]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.anFib_ex_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y y' : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y) (A' : AnFib X bas idx e x L y'), IsSympl X bas → x ∈ X.dom → SelfD X L → l.A = 1 → ∀ mk : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark l L mk → A.Marked mk → A'.Marked mk → ∀ z, (A'.ex z).left = (A.ex z).left := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' hs hx hL hA mk hmk hm hm' z

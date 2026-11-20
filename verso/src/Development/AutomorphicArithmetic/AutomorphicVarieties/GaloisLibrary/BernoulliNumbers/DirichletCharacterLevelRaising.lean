@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Distinguish the cases in `hc : a.Coprime (N * p)`. Establish `hpa : ¬ p ∣ a` using `fun h => (Nat.Prime.coprime_iff_not_dvd hp).1 (Nat.Coprime.coprime_mul_left_right hc).symm h`. Rewrite using `[if_neg hpa, sub_zero]`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd χ (dvd_mul_right N p) (ZMod.unitOfCoprime a hc)` as an intermediate fact. Rewrite `this` using `[ZMod.coe_unitOfCoprime, ZMod.cast_natCast (dvd_mul_right N p)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])] split_ifs with h`. Simplify using the standard rewrite rules. Establish `: ¬ a.Coprime N` using `fun h' => hc (Nat.Coprime.mul_right h' ((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm)`. Rewrite using `[MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime]), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_power_identity {R : Type} [CommRing R] {N p : ℕ} (χ : DirichletCharacter R N) (hp : p.Prime) (a : ℕ) :
     DirichletCharacter.changeLevel (dvd_mul_right N p) χ (a : ZMod (N * p))
@@ -27,15 +27,13 @@ private theorem valuation_power_identity {R : Type} [CommRing R] {N p : ℕ} (χ
       rw [MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime]), sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun b _ => p * b) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [mem_Icc, mem_filter] at hb ⊢`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨⟨Nat.mul_pos hp hb.1, ?_⟩, dvd_mul_right _ _⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hb.2`. Introduce `a _ b _ h`. Conclude with `Nat.eq_of_mul_eq_mul_left hp h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha`. Simplify using `only [mem_Icc, mem_filter] at ha`. Take `⟨⟨h1, h2⟩, b, rfl⟩` from `ha`. Use `⟨b, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [mem_Icc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `Nat.pos_of_mul_pos_left h1`. Rewrite `h2` using `[mul_comm]`. Conclude with `Nat.le_of_mul_le_mul_right h2 hp`. Introduce `_ _`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sum_divisible_eq_sum_mul {R : Type} [AddCommMonoid R] {N p : ℕ} (hp : 0 < p) (f : ℕ → R) :
     ∑ a ∈ Icc 1 (N * p), (if p ∣ a then f a else 0) = ∑ b ∈ Icc 1 N, f (p * b) := by
@@ -59,11 +57,11 @@ private theorem sum_divisible_eq_sum_mul {R : Type} [AddCommMonoid R] {N p : ℕ
   · intro _ _; rfl
 
 /- English proof (translation)
-Introduce `R _ _ N p k χ hN hp hk`. Establish `hc` using `b_comp (dvd_mul_right N p) k (χ : ZMod N → R) (Nat.mul_pos hN hp.pos)`. Rewrite using `[sub_mul, one_mul]`. Use `nth_rewrite 1 [← hc]`. Unfold `genB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [valuation_power_identity χ hp, map_natCast, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul]`. Use `congr 1`. Rewrite using `[sum_divisible_eq_sum_mul hp.pos (fun a => χ (a : ZMod N) * algebraMap ℚ R (bcoef (N * p) k a)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hs` using `(b_shift N k b hN).2.1 p hp.pos`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((k : ℤ) - 1) = ((k - 1 : ℕ) : ℤ)` using `by omega`. Rewrite `hs` using `[e, zpow_natCast, mul_comm p N]`. Rewrite using `[hs, Nat.cast_mul, map_mul, map_mul, map_pow, map_natCast (algebraMap ℚ R)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_step :
     ∀ {R : Type} [CommRing R] [Algebra ℚ R] {N p : ℕ} (k : ℕ) (χ : DirichletCharacter R N), 0 < N → p.Prime → 1 ≤ k → genB k (DirichletCharacter.changeLevel (dvd_mul_right N p) χ : ZMod (N * p) → R) = (1 - χ (p : ZMod N) * (p : R) ^ (k - 1)) * genB k χ := by

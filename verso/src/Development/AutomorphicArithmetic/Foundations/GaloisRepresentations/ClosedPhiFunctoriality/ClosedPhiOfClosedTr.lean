@@ -11,25 +11,23 @@ open scoped Formalism.Per NNReal
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a ha P AI hT w A h O _ _ _ Bw hj J r hr hss C g θ hC hρ`. Establish `hcrr : IsCrysAt P Bw (r.comp (Dec (F` using `E) A).subtype) := (GlobalTheory.LimitTop.closedAtL E Ω l a ha P AI hT w A h O Bw hj J r hr hss C hC.lin fun ρ hm => ⟨(hρ ρ hm).1, (hρ ρ hm).2.1, (hρ ρ hm).2.2.2⟩).2 fun ρ hm => (hρ ρ hm).2.2.1`. Take `⟨T⟩` from `hT`. Set `jl : ↥(GK Bw.Kw) →* Formalism.ConjugateSelfDual.G E Ω` to `(ReciprocityTheory.Gal.Dec (F := E) A).subtype.comp Bw.e.symm.toMonoidHom`. Establish `hjl : Continuous jl` using `continuous_subtype_val.comp Bw.e_symm_cont`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `jE : E →+* ↥Bw.Kw.1` to `(Bw.j.comp (algebraMap E Ω)).codRestrict Bw.Kw.1 Bw.j_E`. Set `J' : (↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l) → Multiset ℤ` to `fun τ'' => J (τ''.toRingHom.comp jE)`. Take `⟨Cv, hCv⟩` from `h1 l (Formalism.ConjugateSelfDual.G E Ω) a Bw.LL r hr hss C (fun ρ hm => (hρ ρ hm).1) _ θ hC`. Establish `tr : ∀ (ρ : Formalism.ConjugateSelfDual.G E Ω →* GL (Fin a) (Om l)) (L : FinExt l) (r' : ↥(GK Bw.Kw) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK Bw.Kw) (Fin a → ↥L.1)), Bw.LL.1 ≤ L.1 → (∀ g v, R g v = (r' g).val *ᵥ v) → (∀ g i k, (((r' g).val i k : ↥L.1) : Om l) = ((ρ.comp …` using `E) A).subtype) L (r'.comp Bw.e.toMonoidHom) ∧ Bw.repE L (r'.comp Bw.e.toMonoidHom) = R := by`. Introduce `ρ L r' R hle hR he`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨hle, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `g i k`. Use `he (Bw.e g) i k` as an intermediate fact. Simplify `this` using `[jl, mapRep]`. Use `MonoidHom.ext fun g => LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR]`. Simplify using `[LocBridge.repE, Matrix.toLin'_apply]`. Take `⟨bk⟩` from `GlobalTheory.BSP.nonempty_bk_of_finExt l Bw.Kw`. Take `⟨τp, hτp⟩` from `GlobalTheory.BSP.exists_isPer l Bw.Kw bk`. Take `⟨N, F, F₀, rr, hF, hF₀, hlink⟩` from `h2 l Bw.Kw Bw.LL bk τp hτp P AI T a Bw.LL_split (r.comp jl) _ (Cv.pull jl hjl) J' (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨ρ, hm, rfl⟩ L r' R hle hR he`. Take `⟨hmod, hrep⟩` from `tr ρ L r' R hle hR he`. Use `⟨hrep ▸ GlobalTheory.SstModel.main l P AI ⟨T⟩ E Ω (ReciprocityTheory.Gal.Dec (F := E) A) O Bw a _ L _ hmod (hρ ρ hm).2.1, fun τ n => ?_⟩` and prove the remaining obligations. Establish `hi : IsInduced Bw ((L.1.val.comp τ).toRingHom.comp jE) τ` using `fun x => rfl`. Use `IsJumpsAt.count_eq P hmod hi ((hρ ρ hm).2.2.2 _ L τ hi) n` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hrep]`. Conclude with `this.symm)`. Use the proof step `(by`. Introduce and unpack `_ ⟨ρ, hm, rfl⟩ L r' R hle hR he`. Take `⟨hmod, hrep⟩` from `tr ρ L r' R hle hR he`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hrep]`. Conclude with `(hmod.isCrysAt_iff P).1 (hρ ρ hm).2.2.1)`. Establish `hfix` using `h4 l E Ω w A h O Bw hj g`. Establish `hfix0 : FixUr Bw.Kw 0` using `fun c _ => by simp`. Establish `hf1 : FixUr Bw.Kw (-alpha l g).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Break down `le_total (alpha l g) 0 with h0 | h0` into its components or cases. Rewrite using `[show (-alpha l g).toNat = (alpha l g).natAbs by omega]` and apply the resulting hypothesis. Rewrite using `[show (-alpha l g).toNat = 0 by omega]` and apply the resulting hypothesis. Establish `hf2 : FixUr Bw.Kw (alpha l g).toNat`. Break down `le_total (alpha l g) 0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[show (alpha l g).toNat = 0 by omega]` and apply the resulting hypothesis. Rewrite using `[show (alpha l g).toNat = (alpha l g).natAbs by omega]` and apply the resulting hypothesis. Establish `hα : alpha l g = (((alpha l g).toNat : ℕ) : ℤ) - (((-alpha l g).toNat : ℕ) : ℤ)` using `by omega`. Take `⟨s, V, V', hs, hV, hV', hl⟩` from `h3 l Bw.Kw bk τp hτp P AI T _ _ hf1 hf2 _ N _ (Cv.pull jl hjl).tw F F₀ rr hF hF₀ hlink`. Use `h6 l P AI T Bw.Kw bk _ Bw.LL a r C Cv s V V' _ θ (fun m k => wdTr P ι Bw h hj (((Cv.lay m).rep k).comp (Dec (F := E) A).subtype) g) hs ?_ (fun m k => ?_) hl hCv` and prove the remaining obligations.
-
-Conclude with `h5 l ι P AI T E Ω w A h O Bw hj g _ _ hα a _ _ hcrr _ Cv.b Cv.e (Cv.pull jl hjl).reads _ _ hV`. Conclude with `h5 l ι P AI T E Ω w A h O Bw hj g _ _ hα a _ _ (hρ _ ((Cv.lay m).mem k)).2.2.1 _ (fun j => (Cv.lay m).b j k) (Cv.lay m).e (((Cv.pull jl hjl).lay m).reads k) _ _ (hV' m)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem closedTr_of (h1 : CoverJ) (h2 : FrEx) (h3 : OpEx2) (h4 : FixOf) (h5 : Tie2) (h6 : TrLim) : ClosedTr := by
   intro E Ω _ _ _ _ _ l _ ι a ha P AI hT w A h O _ _ _ Bw hj J r hr hss C g θ hC hρ
@@ -91,9 +89,9 @@ theorem closedTr_of (h1 : CoverJ) (h2 : FrEx) (h3 : OpEx2) (h4 : FixOf) (h5 : Ti
       (((Cv.pull jl hjl).lay m).reads k) _ _ (hV' m)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a ha P AI hT w A h O _ _ _ Bw hj J r hr hss C hρ σ S hC n`. Establish `key` using `H E Ω l ι a ha P AI hT w A h O Bw hj J r hr hss C (σ ^ n) (S n) (fun ε hε => by`. Take `⟨t, c, ht, h1, h2⟩` from `hC n ε hε`. Use `⟨t, c, ht, h1, ?_⟩` and prove the remaining obligations. Use `h2 n le_rfl` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this)` using `only [hp E Ω w A h _ σ n, wdTr]`. Use the proof step `(fun ρ hm => ⟨(hρ ρ hm).1, GlobalTheory.CrysSst.isSstAt_of_isCrysAt l P AI hT E Ω _ O Bw a _ (hρ ρ hm).2.1, (hρ ρ hm).2.1, (hρ ρ hm).2.2⟩)`. Rewrite using `[hp E Ω w A h _ σ n, ← key, wdTr, RingEquiv.apply_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congPhi_of_closedTr (H : ClosedTr) (hp : PowTr) : GlobalTheory.CongPhi.ClosedPhi := by
   intro E Ω _ _ _ _ _ l _ ι a ha P AI hT w A h O _ _ _ Bw hj J r hr hss C hρ σ S hC n

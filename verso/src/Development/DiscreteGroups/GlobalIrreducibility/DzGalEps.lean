@@ -15,14 +15,14 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ g _ n A v hv w' h' hvN hwN K _ red hr hk` and use `exists_resIso g n A v hv w' h' hvN hwN K red hr hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resIso_holds : ResIso :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ g _ n A v hv w' h' hvN hwN K _ red hr hk =>
     exists_resIso g n A v hv w' h' hvN hwN K red hr hk
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem R (Finset.mem_univ j)`. Rewrite using `[hd, pow_mul, pow_mul, hF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_prod_eq {ι : Type*} [Fintype ι] (R : ι → ℕ) (F1 F2 : ι → ℂ) (hF : ∀ j, F1 j ^ R j = F2 j ^ R j) :
     (∏ j, F1 j) ^ (∏ j, R j) = (∏ j, F2 j) ^ (∏ j, R j) := by
@@ -32,11 +32,9 @@ theorem pow_prod_eq {ι : Type*} [Fintype ι] (R : ι → ℕ) (F1 F2 : ι → �
   rw [hd, pow_mul, pow_mul, hF]
 
 /- English proof (translation)
-Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' i hi n hn2 hg hN a' ha' K _ _ red hr hk a ha ε hε ψ₀ h₀ ψ hψc hψ1 y hirr htame hdim ξ hξ hξf u hu χ₀ χ hχ hlc`. Take `⟨c, hc⟩` from `eps_unr_split h u hu`. Rewrite using `[hc ε hε ψ hψc hψ1, hc ε hε ψ hψc hψ1]`. Establish `hj` using `fun j => one_ratio resIso_holds hA hT g A w h w' h' i hi n hn2 hg hN a' ha' K red hr hk a ha ε hε ψ₀ h₀ ψ hψc hψ1 y hirr htame hdim ξ hξ hξf χ₀ χ hχ hlc (c j)`. Use `choose R hR0 hR using hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ j, R j, Finset.prod_pos fun j _ => hR0 j, ?_⟩` and prove the remaining obligations. Establish `e : ∀ (e' : Fin u.lpDim → ℂˣ) (G : ℂ), ((∏ j, e' j : ℂˣ) : ℂ) * G ^ u.lpDim = ∏ j, ((e' j : ℂ) * G)`. Introduce `e' G`. Rewrite using `[Units.coe_prod, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e, e]`.
-
-Conclude with `pow_prod_eq R _ _ hR`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galEps_of_art (hA : ArtExists) (hT : TameRec) : GalEps := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' i hi n hn2 hg hN a' ha' K _ _ red hr hk a ha ε hε ψ₀ h₀ ψ
@@ -54,7 +52,7 @@ theorem galEps_of_art (hA : ArtExists) (hT : TameRec) : GalEps := by
   exact pow_prod_eq R _ _ hR
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ A v h`. Take `⟨rc, ⟨a, ha, -⟩, -⟩` from `hLL.1 L Ω A v h`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem artExists_of_LL (hLL : GlobalTheory.Published.LocalLanglandsGL) : ArtExists := by
   intro L Ω _ _ _ _ _ A v h
@@ -62,7 +60,7 @@ theorem artExists_of_LL (hLL : GlobalTheory.Published.LocalLanglandsGL) : ArtExi
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Introduce `hLL hT` and use `galEps_of_art (artExists_of_LL hLL) hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lGal : LGal := fun hLL hT => galEps_of_art (artExists_of_LL hLL) hT
 

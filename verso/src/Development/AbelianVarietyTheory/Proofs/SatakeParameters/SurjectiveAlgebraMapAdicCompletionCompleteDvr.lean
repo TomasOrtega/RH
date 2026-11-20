@@ -6,17 +6,17 @@ open NumberField IsDedekindDomain WithZero
 namespace GlobalTheory.DenseCompl
 
 /- English proof (translation)
-Use `choose r hr using fun n : ℕ => GlobalTheory.Idele.exists_valued_sub_le v ha n`. Establish `hle : ∀ m n : ℕ, m ≤ n → exp (-(n : ℤ)) ≤ exp (-(m : ℤ))` using `fun m n h => by`. Rewrite using `[exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : ∀ m n : ℕ, m ≤ n → π ^ m ∣ r n - r m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Establish `h1 : v.valuation Qq (algebraMap W Qq (r n - r m)) ≤ exp (-(m : ℤ))`. Rewrite using `[← GlobalTheory.Idele.valued_algebraMap, map_sub, map_sub]`. Establish `he : algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r n)) - algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r m)) = (a - algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r m))) - (a - algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r n)))` using `by ring`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Valuation.map_sub _ _ _).trans (max_le (hr m) ((hr n).trans (hle m n hmn)))`. Take `⟨w, hw⟩` from `(exists_eq_pow_mul_iff hπ v _ m).2 h1`. Conclude with `⟨w, IsFractionRing.injective W Qq hw⟩`. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec (f := r) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(dvd_sub_comm).1 (hdiv m n hmn))`. Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Valuation.zero_iff Valued.v]`. Use `eq_zero_of_forall_le_exp fun n => ?_` and prove the remaining obligations. Establish `h2` using `hL n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `h2`. Establish `h3 : Valued.v (algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r n - L))) ≤ exp (-(n : ℤ))`. Rewrite using `[GlobalTheory.Idele.valued_algebraMap]`. Conclude with `(exists_eq_pow_mul_iff hπ v _ n).1 ⟨w, by rw [hw]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `he : a - algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq L) = (a - algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r n))) + algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq (r n - L))`. Rewrite using `[map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (hr n) h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_valued_le_one {W Qq : Type} [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [IsFractionRing W Qq] {π : W}
@@ -61,13 +61,13 @@ theorem exists_eq_algebraMap_of_valued_le_one {W Qq : Type} [CommRing W] [IsDoma
   exact (Valuation.map_add _ _ _).trans (max_le (hr n) h3)
 
 /- English proof (translation)
-Introduce `W Qq _ _ _ _ _ _ π hπ hc v a`. Distinguish the cases in `ha : Valued.v a ≤ 1`. Take `⟨L, hL⟩` from `exists_eq_algebraMap_of_valued_le_one hπ hc v ha`. Conclude with `⟨_, hL.symm⟩`. Establish `ha0 : Valued.v a ≠ 0` using `fun h => ha (h ▸ zero_le')`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set p := algebraMap Qq (v.adicCompletion Qq) (algebraMap W Qq π) with hpdef`. Establish `hp : Valued.v p = exp (-1)`. Rewrite using `[hpdef, GlobalTheory.Idele.valued_algebraMap, valuation_uniformiser hπ v]`. Establish `hp0 : p ≠ 0` using `fun h => exp_ne_zero (by rw [← hp, h, map_zero] : exp (-1 : ℤ) = 0)`. Use `set m := (log (Valued.v a)).toNat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hva : Valued.v a = exp (log (Valued.v a))` using `(exp_log ha0).symm`. Establish `hle : Valued.v (a * p ^ m) ≤ 1`. Rewrite using `[map_mul, map_pow, hva, hp, ← exp_nsmul, ← exp_add, ← exp_zero, exp_le_exp]`. Use `Int.self_le_toNat (log (Valued.v a))` as an intermediate fact. Simplify using `only [smul_neg, nsmul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨L, hL⟩` from `exists_eq_algebraMap_of_valued_le_one hπ hc v hle`. Use `⟨algebraMap W Qq L / algebraMap W Qq π ^ m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_pow, ← hL, ← hpdef, mul_div_cancel_right₀ _ (pow_ne_zero _ hp0)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_algebraMap_adicCompletion : ∀ {W Qq : Type} [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [IsFractionRing W Qq] (π : W)

@@ -6,17 +6,17 @@ namespace CompanionTheory.Lime.BM
 open Formalism.BasicNotions
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.Bmu.besselMapUniqGap`.
+A detailed English derivation is pending.
 -/
 theorem uniqGap_holds : UniqGap := CompanionTheory.Bmu.besselMapUniqGap
 
 /- English proof (translation)
-The claim follows from `ampUnif CompanionTheory.Bmu.besselMapUniqGap`.
+A detailed English derivation is pending.
 -/
 theorem ampUnif_holds : Formalism.MainNotions.S.Pv.LemmaJ.AmpUnif := ampUnif CompanionTheory.Bmu.besselMapUniqGap
 
 /- English proof (translation)
-The claim follows from `wuDecayOfGap CompanionTheory.Bmu.besselMapUniqGap`.
+A detailed English derivation is pending.
 -/
 theorem wuDecayOfGap_holds' : Formalism.L2.SG.Pf.WuDecayOfGap := wuDecayOfGap CompanionTheory.Bmu.besselMapUniqGap
 

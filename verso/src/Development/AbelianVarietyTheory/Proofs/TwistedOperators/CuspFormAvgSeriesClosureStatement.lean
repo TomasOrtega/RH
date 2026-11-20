@@ -30,7 +30,7 @@ open GlobalTheory.Grow GlobalTheory.Size
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AvgCuspType.avg_isCuspOfType` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCuspFormAvgSeriesClosure.lean&line=35#L35)
 -/

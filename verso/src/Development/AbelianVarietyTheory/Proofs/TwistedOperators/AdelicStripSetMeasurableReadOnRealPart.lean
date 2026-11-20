@@ -41,21 +41,21 @@ Both sides reduce to the same expression.
 theorem finPart_tmul (a : AF D.host.F) (x : D.host.E) : finPart D (a ⊗ₜ[D.host.F] x) = sndA D.host.F a ⊗ₜ[D.host.F] x := rfl
 
 /- English proof (translation)
-The claim follows from `TensorProduct.map_tmul _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ιInf_tmul (b : Ainf D.host.F) (x : D.host.E) : ιInf D (b ⊗ₜ[D.host.F] x) = inlA D b ⊗ₜ[D.host.F] x :=
   TensorProduct.map_tmul _ _ _ _
 
 /- English proof (translation)
-The claim follows from `TensorProduct.map_tmul _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ιFin_tmul (b : Af D.host.F) (x : D.host.E) : ιFin D (b ⊗ₜ[D.host.F] x) = inrA D b ⊗ₜ[D.host.F] x :=
   TensorProduct.map_tmul _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, RingHom.map_zero, LinearMap.map_zero]`. Consider the case `tmul a x`. Rewrite using `[eInf, Algebra.TensorProduct.tmul_mul_tmul, one_mul, infPart_tmul, ιInf_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Prod.ext (α := Ainf D.host.F) (β := Af D.host.F) (by change (1 : Ainf D.host.F) * a.1 = a.1; exact one_mul _) (by change (0 : Af D.host.F) * a.2 = 0; exact zero_mul _)`. Consider the case `add z z' hz hz' => rw [mul_add, hz, hz', RingHom.map_add, LinearMap.map_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eInf_mul (z : AE D) : eInf D * z = ιInf D (infPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -68,9 +68,9 @@ theorem eInf_mul (z : AE D) : eInf D * z = ιInf D (infPart D z) := by
   | add z z' hz hz' => rw [mul_add, hz, hz', RingHom.map_add, LinearMap.map_add]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, RingHom.map_zero, LinearMap.map_zero]`. Consider the case `tmul a x`. Rewrite using `[eFin, Algebra.TensorProduct.tmul_mul_tmul, one_mul, finPart_tmul, ιFin_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Prod.ext (α := Ainf D.host.F) (β := Af D.host.F) (by change (0 : Ainf D.host.F) * a.1 = 0; exact zero_mul _) (by change (1 : Af D.host.F) * a.2 = a.2; exact one_mul _)`. Consider the case `add z z' hz hz' => rw [mul_add, hz, hz', RingHom.map_add, LinearMap.map_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eFin_mul (z : AE D) : eFin D * z = ιFin D (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -83,7 +83,7 @@ theorem eFin_mul (z : AE D) : eFin D * z = ιFin D (finPart D z) := by
   | add z z' hz hz' => rw [mul_add, hz, hz', RingHom.map_add, LinearMap.map_add]
 
 /- English proof (translation)
-Rewrite using `[eInf, eFin, ← TensorProduct.add_tmul, Algebra.TensorProduct.one_def]`. Use `congr 1`. Conclude with `Prod.ext (α := Ainf D.host.F) (β := Af D.host.F) (by change (1 : Ainf D.host.F) + 0 = 1; exact add_zero _) (by change (0 : Af D.host.F) + 1 = 1; exact zero_add _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eInf_add_eFin : eInf D + eFin D = 1 := by
   rw [eInf, eFin, ← TensorProduct.add_tmul, Algebra.TensorProduct.one_def]
@@ -92,21 +92,21 @@ theorem eInf_add_eFin : eInf D + eFin D = 1 := by
     (by change (0 : Af D.host.F) + 1 = 1; exact zero_add _)
 
 /- English proof (translation)
-Rewrite using `[eInf_mul, eInf, infPart_tmul, ιInf_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eInf_mul_self : eInf D * eInf D = eInf D := by
   rw [eInf_mul, eInf, infPart_tmul, ιInf_tmul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[eFin_mul, eFin, finPart_tmul, ιFin_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eFin_mul_self : eFin D * eFin D = eFin D := by
   rw [eFin_mul, eFin, finPart_tmul, ιFin_tmul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[eFin_mul, eInf, finPart_tmul]`. Establish `h : sndA D.host.F (aInf D) = 0` using `rfl`. Rewrite using `[h, TensorProduct.zero_tmul, LinearMap.map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eFin_mul_eInf : eFin D * eInf D = 0 := by
   rw [eFin_mul, eInf, finPart_tmul]
@@ -114,24 +114,24 @@ theorem eFin_mul_eInf : eFin D * eInf D = 0 := by
   rw [h, TensorProduct.zero_tmul, LinearMap.map_zero]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, eFin_mul_eInf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eInf_mul_eFin : eInf D * eFin D = 0 := by rw [mul_comm, eFin_mul_eInf]
 
 /- English proof (translation)
-Rewrite using `[eInf_mul, eInf_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eInf_mul_eq {z z' : AE D} (h : infPart D z = infPart D z') : eInf D * z = eInf D * z' := by
   rw [eInf_mul, eInf_mul, h]
 
 /- English proof (translation)
-Rewrite using `[eFin_mul, eFin_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eFin_mul_eq {z z' : AE D} (h : finPart D z = finPart D z') : eFin D * z = eFin D * z' := by
   rw [eFin_mul, eFin_mul, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `eInf_mul_eq (congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_map_inf {m n : ℕ} {M N : Matrix (Fin m) (Fin n) (AE D)} (h : M.map (infPart D) = N.map (infPart D)) :
     eInf D • M = eInf D • N := by
@@ -140,7 +140,7 @@ theorem smul_eq_of_map_inf {m n : ℕ} {M N : Matrix (Fin m) (Fin n) (AE D)} (h 
   exact eInf_mul_eq (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `eFin_mul_eq (congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_map_fin {m n : ℕ} {M N : Matrix (Fin m) (Fin n) (AE D)} (h : M.map (finPart D) = N.map (finPart D)) :
     eFin D • M = eFin D • N := by
@@ -149,7 +149,7 @@ theorem smul_eq_of_map_fin {m n : ℕ} {M N : Matrix (Fin m) (Fin n) (AE D)} (h 
   exact eFin_mul_eq (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Establish `h : infHom W g = 1` using `MonoidHom.mem_ker.1 hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mt_map_inf {W : HSp D} {g : GA D W} (hg : g ∈ GfC W) : (mt W g).map (infPart D) = 1 := by
   have h : infHom W g = 1 := MonoidHom.mem_ker.1 hg
@@ -157,7 +157,7 @@ theorem mt_map_inf {W : HSp D} {g : GA D W} (hg : g ∈ GfC W) : (mt W g).map (i
     _ = 1 := by rw [h, Units.val_one]
 
 /- English proof (translation)
-Establish `h : finHom W g = 1` using `MonoidHom.mem_ker.1 hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mt_map_fin {W : HSp D} {g : GA D W} (hg : g ∈ GinfC W) : (mt W g).map (finPart D) = 1 := by
   have h : finHom W g = 1 := MonoidHom.mem_ker.1 hg
@@ -165,21 +165,21 @@ theorem mt_map_fin {W : HSp D} {g : GA D W} (hg : g ∈ GinfC W) : (mt W g).map 
     _ = 1 := by rw [h, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `smul_eq_of_map_inf (by rw [Matrix.map_mul, mt_map_inf hg, Matrix.one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem smul_mt_mul_of_fin {W : HSp D} {g : GA D W} (hg : g ∈ GfC W) {k : ℕ} (M : Matrix (Fin W.rank) (Fin k) (AE D)) :
     eInf D • (mt W g ⬝ M) = eInf D • M :=
   smul_eq_of_map_inf (by rw [Matrix.map_mul, mt_map_inf hg, Matrix.one_mul])
 
 /- English proof (translation)
-The claim follows from `smul_eq_of_map_fin (by rw [Matrix.map_mul, mt_map_fin hg, Matrix.one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem smul_mt_mul_of_inf {W : HSp D} {g : GA D W} (hg : g ∈ GinfC W) {k : ℕ} (M : Matrix (Fin W.rank) (Fin k) (AE D)) :
     eFin D • (mt W g ⬝ M) = eFin D • M :=
   smul_eq_of_map_fin (by rw [Matrix.map_mul, mt_map_fin hg, Matrix.one_mul])
 
 /- English proof (translation)
-Establish `hinj : Function.Injective x₀.mulVec` using `Matrix.mulVec_injective_iff.2 hx`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin x₀) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h : LinearMap.toMatrix' (g ∘ₗ Matrix.mulVecLin x₀) = 1` using `by rw [hg, LinearMap.toMatrix'_id]`. Rewrite `h` using `[LinearMap.toMatrix'_comp, show LinearMap.toMatrix' x₀.mulVecLin = x₀ from LinearMap.toMatrix'_toLin' x₀]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_left_inv {n ρ : ℕ} {x₀ : Matrix (Fin n) (Fin ρ) D.host.E} (hx : LinearIndependent D.host.E x₀.transpose) :
     ∃ y : Matrix (Fin ρ) (Fin n) D.host.E, y * x₀ = 1 := by
@@ -190,7 +190,7 @@ theorem exists_left_inv {n ρ : ℕ} {x₀ : Matrix (Fin n) (Fin ρ) D.host.E} (
   rwa [LinearMap.toMatrix'_comp, show LinearMap.toMatrix' x₀.mulVecLin = x₀ from LinearMap.toMatrix'_toLin' x₀] at h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hx i j h, zero_mul]`. Rewrite using `[hy j i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_mul' {k : ℕ} {x y : Matrix (Fin k) (Fin k) (AE D)}
     (hx : ∀ i j, j < i → x i j = 0) (hy : ∀ i j, j < i → y i j = 0) (i : Fin k) :
@@ -205,7 +205,7 @@ def Qset {n ρ : ℕ} (X : Mx D n ρ) (Y : Mx D ρ n) : Set (Mx D n ρ) :=
   {w | X ⬝ (Y ⬝ w) = w ∧ (∀ i j : Fin ρ, j < i → (Y ⬝ w) i j = 0) ∧ ∀ i : Fin ρ, (Y ⬝ w) i i = eInf D}
 
 /- English proof (translation)
-Establish `hc : Continuous fun w : Mx D n ρ => Y ⬝ w` using `continuous_const.matrix_mul continuous_id`. Simplify using `only [Qset, Set.setOf_and, Set.setOf_forall]`. Use `IsClosed.inter (isClosed_eq (continuous_const.matrix_mul hc) continuous_id) (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (hc.matrix_elem i j) continuous_const`. Conclude with `isClosed_iInter fun i => isClosed_eq (hc.matrix_elem i i) continuous_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_Qset {n ρ : ℕ} (X : Mx D n ρ) (Y : Mx D ρ n) : IsClosed (Qset X Y) := by
   have hc : Continuous fun w : Mx D n ρ => Y ⬝ w := continuous_const.matrix_mul continuous_id
@@ -219,11 +219,11 @@ def Sset (W : HSp D) {ρ : ℕ} (C : Set (GA D W)) (X : Mx D W.rank ρ) (Y : Mx 
   {z | ∃ c ∈ C, eInf D • (mt W c ⬝ z) ∈ Qset X Y}
 
 /- English proof (translation)
-Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC`. Establish `h1 : Continuous fun p : C × Mx D W.rank ρ => mt W (p.1 : GA D W)` using `(GlobalTheory.MixModel.continuous_mt W).comp (continuous_subtype_val.comp continuous_fst)`. Establish `h2 : Continuous fun p : C × Mx D W.rank ρ => mt W (p.1 : GA D W) ⬝ p.2` using `h1.matrix_mul continuous_snd`. Establish `hf : Continuous fun p : C × Mx D W.rank ρ => eInf D • (mt W (p.1 : GA D W) ⬝ p.2)` using `continuous_matrix fun i j => continuous_const.mul (h2.matrix_elem i j)`. Establish `hT : IsClosed {p : C × Mx D W.rank ρ | eInf D • (mt W (p.1 : GA D W) ⬝ p.2) ∈ Qset X Y}` using `(isClosed_Qset X Y).preimage hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `isClosedMap_snd_of_compactSpace _ hT using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, h⟩`. Conclude with `⟨(⟨c, hc⟩, z), h, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨c, z'⟩, h, rfl⟩`. Conclude with `⟨c.1, c.2, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClosed_Sset (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hC : IsCompact C) (X : Mx D W.rank ρ) (Y : Mx D ρ W.rank) :
     IsClosed (Sset W C X Y) := by
@@ -244,7 +244,7 @@ theorem isClosed_Sset (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hC : IsCompact 
     exact ⟨c.1, c.2, h⟩
 
 /- English proof (translation)
-Establish `hu'` using `(GlobalTheory.UniIndexPrime.mem_uniSub u).1 hu`. Establish `hm : Y ⬝ (eInf D • (X ⬝ u.1)) = eInf D • u.1` using `by rw [Matrix.mul_smul, ← Matrix.mul_assoc, hYX, Matrix.one_mul]`. Use `⟨by rw [hm, Matrix.mul_smul], fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Matrix.smul_apply, hu'.1 i j hij, smul_zero]`. Rewrite using `[hm, Matrix.smul_apply, hu'.2 i, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_Qset {n ρ : ℕ} {X : Mx D n ρ} {Y : Mx D ρ n} (hYX : Y ⬝ X = 1) (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) :
     eInf D • (X ⬝ u.1) ∈ Qset X Y := by
@@ -255,11 +255,11 @@ theorem smul_mem_Qset {n ρ : ℕ} {X : Mx D n ρ} {Y : Mx D ρ n} (hYX : Y ⬝ 
   · rw [hm, Matrix.smul_apply, hu'.2 i, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨v, hv⟩ : ∃ v : Matrix (Fin ρ) (Fin ρ) (AE D), v = m' + eFin D • (1 : Matrix (Fin ρ) (Fin ρ) (AE D))` from `⟨_, rfl⟩`. Establish `hvlo : ∀ i j : Fin ρ, j < i → v i j = 0`. Introduce `i j hij`. Rewrite using `[hv, Matrix.add_apply, Matrix.smul_apply, hlo i j hij, Matrix.one_apply_ne hij.ne', smul_zero, zero_add]`. Establish `hvd : ∀ i : Fin ρ, v i i = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hv, Matrix.add_apply, Matrix.smul_apply, hd i, Matrix.one_apply_eq, smul_eq_mul, _root_.mul_one, eInf_add_eFin]`. Establish `hvdet : IsUnit v.det`. Rewrite using `[Matrix.det_of_upperTriangular (fun a b h => hvlo a b h)]`. Simplify using `only [hvd, Finset.prod_const_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `isUnit_one`. Use `⟨((Matrix.isUnit_iff_isUnit_det v).2 hvdet).unit, ?_, hv⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.UniIndexPrime.mem_uniSub _).2 ⟨hvlo, hvd⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unit_mix {ρ : ℕ} (m' : Matrix (Fin ρ) (Fin ρ) (AE D)) (hlo : ∀ i j : Fin ρ, j < i → m' i j = 0)
     (hd : ∀ i : Fin ρ, m' i i = eInf D) :
@@ -281,21 +281,21 @@ theorem unit_mix {ρ : ℕ} (m' : Matrix (Fin ρ) (Fin ρ) (AE D)) (hlo : ∀ i 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w, w = eInf D • (mt W q ⬝ X ⬝ u.1)` from `⟨_, rfl⟩`. Rewrite `hQ` using `[← hw]`. Take `⟨hQ1, hQ2, hQ3⟩` from `hQ`. Take `⟨m, hm⟩ : ∃ m, m = Y ⬝ w` from `⟨_, rfl⟩`. Rewrite `hQ1`, `hQ2`, `hQ3` using `[← hm]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hem : eInf D • m = m`. Rewrite using `[hm, ← Matrix.mul_smul, hw, smul_smul, eInf_mul_self]`. Take `⟨ui, hui⟩ : ∃ ui : Matrix (Fin ρ) (Fin ρ) (AE D), ui = (u⁻¹ : GL (Fin ρ) (AE D)).1` from `⟨_, rfl⟩`. Establish `huu : u.1 ⬝ ui = 1` using `by rw [hui, ← Units.val_mul, _root_.mul_inv_cancel, Units.val_one]`. Establish `hut : IsUnitri ui`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hui]`. Conclude with `(GlobalTheory.UniIndexPrime.mem_uniSub (u⁻¹ : GL (Fin ρ) (AE D))).1 (inv_mem hu)`. Take `⟨m', hm'⟩ : ∃ m', m' = m ⬝ ui` from `⟨_, rfl⟩`. Establish `hm'e : eInf D • m' = m'` using `by rw [hm', ← Matrix.smul_mul, hem]`. Establish `hm'lo : ∀ i j : Fin ρ, j < i → m' i j = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Establish `hbt : (m ⬝ ui).BlockTriangular id` using `Matrix.BlockTriangular.mul (fun a b h => hQ2 a b h) (fun a b h => hut.1 a b h)`. Rewrite using `[hm']`. Conclude with `hbt hij`. Establish `hm'd : ∀ i : Fin ρ, m' i i = eInf D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hm', diag_mul' hQ2 hut.1 i, hQ3 i, hut.2 i, _root_.mul_one]`. Take `⟨u₁, hu₁, hv⟩` from `unit_mix m' hm'lo hm'd`. Establish `dec : ∀ M : Mx D W.rank ρ, M = eInf D • M + eFin D • M` using `fun M => by`. Rewrite using `[← add_smul, eInf_add_eFin, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r1 : eInf D • (X ⬝ u₁.1) = X ⬝ m'`. Rewrite using `[← Matrix.mul_smul, hv, smul_add, hm'e, smul_smul, eInf_mul_eFin, zero_smul, add_zero]`. Establish `r2 : eInf D • (mt W q ⬝ X) = X ⬝ m'`. Establish `h2 : eInf D • (mt W q ⬝ X) = w ⬝ ui`. Rewrite using `[hw, Matrix.smul_mul, Matrix.mul_assoc (mt W q ⬝ X), huu, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, ← hQ1, hm', Matrix.mul_assoc]`. Establish `r3 : eFin D • (mt W q ⬝ X) = eFin D • X` using `smul_mt_mul_of_inf hq X`. Establish `r4 : eFin D • (X ⬝ u₁.1) = eFin D • X`. Rewrite using `[← Matrix.mul_smul, hv, smul_add, ← hm'e, smul_smul, eFin_mul_eInf, zero_smul, zero_add, smul_smul, eFin_mul_self, Matrix.mul_smul, Matrix.mul_one]`. Establish `key : mt W q ⬝ X = X ⬝ u₁.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[dec (mt W q ⬝ X), dec (X ⬝ u₁.1), r1, r2, r3, r4]`. Conclude with `⟨u₁, hu₁, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_Rgrp_of (W : HSp D) {ρ : ℕ} {X : Mx D W.rank ρ} {Y : Mx D ρ W.rank} {q : GA D W} (hq : q ∈ GinfC W)
     (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) (hQ : eInf D • (mt W q ⬝ X ⬝ u.1) ∈ Qset X Y) : q ∈ Rgrp W X := by
@@ -340,11 +340,11 @@ theorem mem_Rgrp_of (W : HSp D) {ρ : ℕ} {X : Mx D W.rank ρ} {Y : Mx D ρ W.r
   exact ⟨u₁, hu₁, key⟩
 
 /- English proof (translation)
-Establish `hcomm` using `(GlobalTheory.AdelicSplit.adelic_split D W).2.2.1`. Take `⟨c, hc, hQ⟩` from `hS`. Take `⟨sp, hsp⟩` from `(GlobalTheory.AdelicSplit.adelic_split D W).2.2.2.1`. Take `⟨a, ha, b, hb, rfl⟩ : ∃ a ∈ GinfC W, ∃ b ∈ GfC W, h = a * b` from `⟨(sp.symm h).1.1, (sp.symm h).1.2, (sp.symm h).2.1, (sp.symm h).2.2, by rw [← hsp, sp.apply_symm_apply]⟩`. Establish `hcI : c ∈ GinfC W` using `hCinf hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : c * a⁻¹ ∈ GinfC W` using `mul_mem hcI (inv_mem ha)`. Establish `e2 : c * (a * b)⁻¹ = b⁻¹ * (c * a⁻¹)`. Rewrite using `[_root_.mul_inv_rev, ← _root_.mul_assoc, (show Commute c b from hcomm c hcI b hb).inv_right.eq, _root_.mul_assoc]`. Establish `hw : eInf D • (mt W c ⬝ (mt W (a * b)⁻¹ ⬝ (X ⬝ u.1))) = eInf D • (mt W (c * a⁻¹) ⬝ X ⬝ u.1)`. Rewrite using `[← Matrix.mul_assoc, ← mt_mul, e2, mt_mul, Matrix.mul_assoc, smul_mt_mul_of_fin (inv_mem hb), Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hQ` using `[hw]`. Establish `hqR : c * a⁻¹ ∈ Rgrp W X` using `mem_Rgrp_of W hq u hu hQ`. Use `⟨(c * a⁻¹)⁻¹, inv_mem hqR, c, hc, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem strip_of_mem (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hCinf : C ⊆ GinfC W) {X : Mx D W.rank ρ} {Y : Mx D ρ W.rank}
     (h : GA D W) (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) (hS : mt W h⁻¹ ⬝ (X ⬝ u.1) ∈ Sset W C X Y) :
@@ -366,9 +366,9 @@ theorem strip_of_mem (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hCinf : C ⊆ Gi
   rw [_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `hcomm` using `(GlobalTheory.AdelicSplit.adelic_split D W).2.2.1`. Take `⟨r, hr, c, hc, b, hb, rfl⟩` from `hh`. Take `⟨v, hv, hrv⟩` from `(Rgrp W X).inv_mem hr`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hcI : c ∈ GinfC W` using `hCinf hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : c * (r * c * b)⁻¹ = b⁻¹ * r⁻¹`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, ← _root_.mul_assoc, (show Commute c b from hcomm c hcI b hb).inv_right.eq, _root_.mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← Matrix.mul_assoc, ← mt_mul, e1, mt_mul, Matrix.mul_assoc, smul_mt_mul_of_fin (inv_mem hb), ← Matrix.mul_assoc, hrv, Matrix.mul_assoc, ← Units.val_mul]`. Conclude with `smul_mem_Qset hYX _ (mul_mem hv hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_strip (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hCinf : C ⊆ GinfC W) {X : Mx D W.rank ρ} {Y : Mx D ρ W.rank}
     (hYX : Y ⬝ X = 1) (h : GA D W) (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) (hh : h ∈ strip W (Rgrp W X) C) :
@@ -386,13 +386,13 @@ theorem mem_of_strip (W : HSp D) {ρ : ℕ} {C : Set (GA D W)} (hCinf : C ⊆ Gi
   exact smul_mem_Qset hYX _ (mul_mem hv hu)
 
 /- English proof (translation)
-Introduce `D W ρ x₀ hx C hC hCinf`. Take `⟨y, hy⟩` from `exists_left_inv hx.1`. Establish `hYX : (rat y : Mx D ρ W.rank) ⬝ (rat x₀ : Mx D W.rank ρ) = 1`. Express the relevant statement in the definitionally equal form `y.map (incA D) * x₀.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, hy, Matrix.map_one _ (incA D).map_zero (incA D).map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace (Mx D W.rank ρ) := ⟨rfl⟩`. Establish `hS : MeasurableSet (Sset W C (rat x₀) (rat y))` using `(isClosed_Sset W hC _ _).measurableSet`. Establish `hiff : ∀ (h : GA D W) (u : GL (Fin ρ) (AE D)), u ∈ UX D ρ → (mt W h⁻¹ ⬝ ((rat x₀ : Mx D W.rank ρ) ⬝ u.1) ∈ Sset W C (rat x₀) (rat y) ↔ h ∈ strip W (Rgrp W (rat x₀)) C)` using `fun h u hu => ⟨strip_of_mem W hCinf h u hu, mem_of_strip W hCinf hYX h u hu⟩`. Establish `hstrip : strip W (Rgrp W (rat x₀)) C = (fun h : GA D W => mt W h⁻¹ ⬝ (rat x₀ : Mx D W.rank ρ)) ⁻¹' Sset W C (rat x₀) (rat y)`. Use extensionality with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `hiff h 1 (one_mem _)`. Rewrite `h1` using `[Units.val_one, Matrix.mul_one]`. Conclude with `h1.symm`. Use `⟨?_, Sset W C (rat x₀) (rat y), hS, fun z z' hzz => ?_, fun h u => hiff h u.1 u.2⟩` and prove the remaining obligations. Rewrite using `[hstrip]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `(((GlobalTheory.MixModel.continuous_mt W).comp continuous_inv).matrix_mul continuous_const).measurable hS`. Establish `key : ∀ c : GA D W, eInf D • (mt W c ⬝ z) = eInf D • (mt W c ⬝ z')` using `fun c => smul_eq_of_map_inf (by rw [Matrix.map_mul, Matrix.map_mul, hzz])`. Conclude with `⟨fun ⟨c, hc, h⟩ => ⟨c, hc, key c ▸ h⟩, fun ⟨c, hc, h⟩ => ⟨c, hc, (key c).symm ▸ h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem strip_measurable : ∀ (D : D7) (W : HSp D) (ρ : ℕ) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E), IsBase W x₀ →
     ∀ C : Set (GA D W), IsCompact C → C ⊆ GinfC W → MeasurableSet (strip W (Rgrp W (rat x₀)) C) ∧

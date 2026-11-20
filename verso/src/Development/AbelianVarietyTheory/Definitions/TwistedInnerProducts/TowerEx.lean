@@ -232,7 +232,7 @@ def FockTot : Prop := All fun {D} _ _ _ {G} W _ => ∀ (i : Fin D.R.m) (ℓ : (W
   Tame W.ψ _ _ ℓ → (∀ κ P, ℓ (star (W.fock (.chi i.1 0) (W.cosVec i.1 κ) P)) = 0) → ∀ f, VacG W.ψ _ _ (latRow G i.1) f → ℓ f = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example : TowerEx ↔ ∀ D : D7, Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q) → ∀ (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 →
     ∀ (sc : Consts) (G : GridData L sc) (W : G.Weil) (M : GlobalTheory.FunObj.Vol G), M.IsRow →
@@ -245,7 +245,7 @@ example {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) :
     flBF (B := ⟨_, _, _, _, B.d, B.o, B.ζ, B.line, B.vA, B.vN⟩) (J := ⟨_, _, J.d, J.v0, J.vN⟩) s = flatBF s := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => by simp, fun _ _ _ => by simp, fun _ _ => continuous_const, fun _ _ => ⟨0, fun _ => by simp⟩, fun _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (S T : HSp D) : Tame ψ S T fun _ => 0 :=
   ⟨fun _ _ _ _ => by simp, fun _ _ _ => by simp, fun _ _ => continuous_const, fun _ _ => ⟨0, fun _ => by simp⟩,

@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.WeilTripleW
 
 /- English proof (translation)
-Use `⟨h.1.div' h'.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {χ χ' : (AF F ⊗[F] E)ˣ →* Circle} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
@@ -29,9 +29,9 @@ theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F 
   simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
 /- English proof (translation)
-Introduce `a`. Establish `e1` using `h a`. Establish `e2` using `h' a`. Simplify using `only [MonoidHom.div_apply, Circle.coe_div] at *`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Establish `hm : ((-1 : ℂ) ^ m) * ((-1 : ℂ) ^ m) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`. Rewrite using `[div_eq_iff (by simp), pow_add, mul_assoc, hm, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : Subgroup Rˣ}
     {χ χ' : Eˣ →* Circle} {n m : ℕ} (h : GlobalTheory.WeilM.ResEtaPow K χ n) (h' : GlobalTheory.WeilM.ResEtaPow K χ' m) :
@@ -49,7 +49,7 @@ theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : 
 end GlobalTheory.WeilTripleW
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t i j hS B hB X Y r s r' s' hX hY Mo hMo`. Take `⟨hb, ha, rb, ra⟩` from `GlobalTheory.SquareChars.square_chars hL t i j hS`. Conclude with `GlobalTheory.T.exists_adelicWeilRep_unitaryPair_schroedingerModel D B hB _ _ X Y r s r' s' hX hY Mo hMo (beta G i j) (beta G i j / alpha G t i j) hb (GlobalTheory.WeilTripleW.isHecke_div hb ha) rb (GlobalTheory.WeilTripleW.resEtaPow_div rb ra)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilTripleW.exists_isWeil : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → ∀ (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →

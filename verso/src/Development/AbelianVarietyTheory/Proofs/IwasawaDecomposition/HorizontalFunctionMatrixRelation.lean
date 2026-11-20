@@ -16,27 +16,23 @@ open scoped Matrix CategoryTheory.Obj Topology
 namespace GlobalTheory.ShFam.Hor
 
 /- English proof (translation)
-Use `set s : Fin n → ℂ := fun k => if (k : ℕ) < a then Complex.log (z k) else z k with hs`. Establish `hzk : ∀ k, ‖z k‖ < 1 / 2` using `fun k => lt_of_le_of_lt (norm_le_pi_norm z k) hz`. Establish `hpos : ∀ k : Fin n, (k : ℕ) < a → 0 < ‖z k‖` using `fun k hk => norm_pos_iff.mpr (h0 k hk)`. Establish `hlogneg : ∀ k : Fin n, (k : ℕ) < a → Real.log ‖z k‖ < 0` using `fun k hk => Real.log_neg (hpos k hk) (by linarith [hzk k])`. Use `set ℓ := |Real.log ‖∏ k ∈ Finset.univ.filter (fun k : Fin n => (k : ℕ) < a), z k‖| with hℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hℓk : ∀ k : Fin n, (k : ℕ) < a → -Real.log ‖z k‖ ≤ ℓ`. Introduce `k hk`. Rewrite using `[hℓ, norm_prod, Real.log_prod]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.single_le_sum (f := fun j => -Real.log ‖z j‖)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Use `hlogneg j (Finset.mem_filter.mp hj).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk⟩`. Use `_ = -∑ j ∈ Finset.univ.filter (fun k : Fin n => (k : ℕ) < a), Real.log ‖z j‖ := by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_neg_distrib]`. Use `_ ≤ _ := neg_le_abs _`. Introduce `j hj`. Conclude with `(hpos j (Finset.mem_filter.mp hj).2).ne'`. Establish `hℓ0 : 0 ≤ ℓ` using `abs_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Distinguish the cases in `hk : (k : ℕ) < a`. Simplify using `only [hk, if_true, hs]`. Rewrite using `[Complex.log_re]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hlogneg k hk`. Simplify using `only [hk, if_false, hs]`. Combine the linear relations using `[hzk k]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : (k : ℕ) < a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [logExp, hk, if_true, hs]`. Conclude with `Complex.exp_log (h0 k hk)`. Simplify using `only [logExp, hk, if_false, hs]`. Introduce `j hj`. Simplify using `only [hj, if_true, hs]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.log_im]`. Conclude with `Complex.abs_arg_le_pi _`. Establish `hsk : ∀ k, ‖s k‖ ≤ ℓ + 4`. Introduce `k`. Distinguish the cases in `hk : (k : ℕ) < a`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [hk, if_true, hs]`. Establish `h1 : ‖Complex.log (z k)‖ ≤ |(Complex.log (z k)).re| + |(Complex.log (z k)).im|` using `Complex.norm_le_abs_re_add_abs_im _`. Rewrite `h1` using `[Complex.log_re, Complex.log_im]`. Establish `h2 : |Real.log ‖z k‖| = -Real.log ‖z k‖` using `abs_of_neg (hlogneg k hk)`. Establish `h3` using `Complex.abs_arg_le_pi (z k)`.
-
-Establish `h4` using `hℓk k hk`. Combine the linear relations using `[Real.pi_lt_four]`. Simplify using `only [hk, if_false, hs]`. Combine the linear relations using `[hzk k]`. Establish `: ‖s‖ ≤ ℓ + 4` using `(pi_norm_le_iff_of_nonneg (by linarith)).mpr hsk`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_log_lift {n : ℕ} (a : ℕ) (z : Fin n → ℂ) (hz : ‖z‖ < 1 / 2) (h0 : ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) :
     ∃ s ∈ logDom n a, logExp a s = z ∧ (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) ∧
@@ -97,9 +93,9 @@ theorem exists_log_lift {n : ℕ} (a : ℕ) (z : Fin n → ℂ) (hz : ‖z‖ < 
     linarith
 
 /- English proof (translation)
-Establish `hij : ∀ i j, ∀ᶠ b in 𝓝 b₀, ‖W b i j‖ < ‖W b₀ i j‖ + 1`. Introduce `i j`. Establish `hc : ContinuousAt (fun b => ‖W b i j‖) b₀` using `continuous_norm.continuousAt.comp ((continuous_id.matrix_elem i j).continuousAt.comp h)`. Conclude with `hc.eventually_lt continuousAt_const (lt_add_one _)`. Use `⟨∑ i, ∑ j, (‖W b₀ i j‖ + 1), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity`. Establish `hall : ∀ᶠ b in 𝓝 b₀, ∀ i j, ‖W b i j‖ < ‖W b₀ i j‖ + 1` using `Filter.eventually_all.mpr fun i => Filter.eventually_all.mpr fun j => hij i j filter_upwards [hall] with b hb i j`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_entries_le {V m n : Type} [TopologicalSpace V] [Fintype m] [Fintype n] {W : V → Matrix m n ℂ} {b₀ : V}
     (h : ContinuousAt W b₀) : ∃ M : ℝ, 0 ≤ M ∧ ∀ᶠ b in 𝓝 b₀, ∀ i j, ‖W b i j‖ ≤ M := by
@@ -122,7 +118,7 @@ theorem eventually_entries_le {V m n : Type} [TopologicalSpace V] [Fintype m] [F
             (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp [differentiableOn_const]`. Consider the case `insert i u hi ih`. Simplify using `only [Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i u)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_finset_prod {V J : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {u : Finset J} {f : J → V → ℂ}
     {B : Set V} (h : ∀ i ∈ u, DifferentiableOn ℂ (f i) B) : DifferentiableOn ℂ (fun b => ∏ i ∈ u, f i b) B := by
@@ -134,29 +130,25 @@ theorem differentiableOn_finset_prod {V J : Type} [NormedAddCommGroup V] [Normed
     exact (h i (Finset.mem_insert_self i u)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T σ g e Fu τ x hm h hσ hpq hx hh x₀`. Take `⟨n, g', r, ka, ch, ex, lam, ρ, hx₀, he0, hL⟩` from `GlobalTheory.T.exists_exponential_chart_at_point E H Dw l Xo c O β Y T σ hσ hpq x₀`. Take `⟨hE, hIn, -, hlam, C0, k0, hC0⟩` from `id hL`. Use `⟨ch.source ∩ ch ⁻¹' Metric.ball 0 (1 / 2), fun y => ∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch y j, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ch.isOpen_inter_preimage Metric.isOpen_ball`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx₀, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, he0, Metric.mem_ball, dist_self]`. Evaluate the numerical expressions. Introduce `V _ _ _ B y hB hy hmaps show DifferentiableOn ℂ (fun b => ∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch (y b) j) B`. Conclude with `differentiableOn_finset_prod (f := fun j b => ch (y b) j) fun j _ => hE.2.1 j V B y hB hy fun b hb => (hmaps hb).1`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Simplify using `only [Finset.prod_ne_zero_iff, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `(hIn y hy.1).symm`. Introduce `V _ _ _ B f hB hf hfN b₀ hb₀`. Take `⟨i, T₀, hT⟩` from `GlobalTheory.T.exists_constant_periodMarking_universalCover E H Dw l Xo c O β T.Z σ g e Fu n g' r ka ch ex lam ρ hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, k, hCk⟩` from `GlobalTheory.T.horizontalCoordinate_polynomial_bound E H Dw l c σ (Fu.Di i) τ (x i) (hm i) g' r T₀ ρ (hx i)`. Take `⟨W, Wi, hW, hWi, hWW⟩` from `GlobalTheory.T.exists_continuousOn_frameDirections_inverse E H Dw l Xo c O β T.Z σ n g' ch ex hE V B f hB hf fun b hb => (hfN b hb).1`. Take `⟨M, hM0, hMe⟩` from `eventually_entries_le (hW.continuousAt (hB.mem_nhds hb₀))`. Take `⟨M', hM'0, hMe'⟩` from `eventually_entries_le (hWi.continuousAt (hB.mem_nhds hb₀))`. Use `set K : ℝ := 1 + M + M' + |C0| * 5 ^ k0 with hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc5 : 0 ≤ |C0| * 5 ^ k0` using `by positivity`. Use `⟨max C 0 * K ^ k, k0 * k, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hMe, hMe', hB.mem_nhds hb₀] with b hbW hbWi hbB`. Introduce `hin`. Take `⟨hys, hyb⟩` from `hfN b hbB`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyb' : ‖ch (f b).1‖ < 1 / 2`. Simplify `hyb` using `only [Set.mem_preimage, Metric.mem_ball, dist_zero_right]`. Establish `hnz : ∀ j : Fin n, (j : ℕ) < ka → ch (f b).1 j ≠ 0` using `(hIn _ hys).mp hin`. Take `⟨s, hsD, hsE, hsIm, hsB⟩` from `exists_log_lift ka (ch (f b).1) hyb' hnz`. Establish `hsymm : ch.symm (logExp ka s) = (f b).1` using `by rw [hsE]; exact ch.left_inv hys`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, gm, hPer, hIso, hQ⟩` from `hT s hsD (f b) (W b) hsymm.symm (hWW b hbB).1`. Establish `hGood` using `GlobalTheory.T.periodLinearAlgebra_hodgeSequence_exact E H Dw l Xo c O β T.Z σ g e Fu τ (f b) i Q (x i) (hm i) hPer (hx i)`. Take `⟨hGood', hnorm, -⟩` from `GlobalTheory.T.horizontalCoordinate_lattice_isometry_det_one E H Dw l c σ (Fu.Di i) τ (x i) (hm i) Q gm (hx i) hGood hIso`. Establish `hhb : h (f b) = perVal c σ τ (x i) (hm i) Q` using `hh (f b) i Q hPer`. Establish `hlamb : ‖lam s‖ ≤ C0 * (1 + ‖s‖) ^ k0` using `hC0 s hsD (by rw [hsE]; exact hyb'.le) hsIm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set large₂ : ℝ := 1 + |Real.log ‖∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch (f b).1 j‖| with hLg`. Establish `hLg1 : 1 ≤ large₂` using `le_add_of_nonneg_right (abs_nonneg _)`. Establish `hpowL : 1 ≤ large₂ ^ k0` using `one_le_pow₀ hLg1`. Use `set A : ℝ := max 1 (max (max M M') ‖lam s‖) with hA`. Establish `hA1 : 1 ≤ A` using `le_max_left _ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hKle : K ≤ K * large₂ ^ k0` using `le_mul_of_one_le_right (by linarith) hpowL`. Establish `hlam' : ‖lam s‖ ≤ K * large₂ ^ k0`. Combine the equalities or inequalities in the displayed calculation. Establish `hAK : A ≤ K * large₂ ^ k0` using `max_le (by linarith) (max_le (max_le (by linarith) (by linarith)) hlam')`. Establish `hb` using `hCk (Q.comp gm.toLinearMap.toAddMonoidHom) (W b) (Wi b) (lam s) A hGood' (hWW b hbB).2.1 (hWW b hbB).2.2 (fun v => hQ v) (hlam s hsD).2.2 hA1 (fun z j => (hbW z j).trans (le_trans (le_trans (le_max_left M M') (le_max_left _ _)) (le_max_right _ _))) (fun j z => (hbWi j z).trans (l …`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAk : A ^ k ≤ K ^ k * large₂ ^ (k0 * k)`. Combine the equalities or inequalities in the displayed calculation. Establish `hCA : C * A ^ k ≤ max C 0 * K ^ k * large₂ ^ (k0 * k)`. Combine the equalities or inequalities in the displayed calculation. Establish `key1 : ‖h (f b)‖ ≤ max C 0 * K ^ k * large₂ ^ (k0 * k)`.
-
-Rewrite using `[hhb, ← hnorm]`. Conclude with `hb.1.trans hCA`. Establish `key2 : ‖(h (f b))⁻¹‖ ≤ max C 0 * K ^ k * large₂ ^ (k0 * k)`. Rewrite using `[hhb, norm_inv, ← hnorm, ← norm_inv]`. Conclude with `hb.2.trans hCA`.
-
-Conclude with `⟨key1, key2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem logGrowth_of_eq_perVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (τ : E →+* ℂ) (x : ∀ i, Idx Dw τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Idx Dw τ) (Idx Dw τ) E) (h : CxFr T.Z σ → ℂ), Formalism.L2.PjFree.GoodEmb c σ → 1 ≤ Dw.p + Dw.q → (∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)) → (∀ a i Q, Per Fu a i Q → h a = perVal c σ τ (x i) (hm i) Q) → LogGrowth h := by
   classical

@@ -14,9 +14,9 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.
 namespace GlobalTheory.WpFam.ExpansionIntegral
 
 /- English proof (translation)
-Introduce `l hl lam N _ M x hM hx hx0`. Establish `hpos : 0 < M` using `Nat.pos_of_ne_zero fun h => hM (h ▸ dvd_zero l)`. Establish `hpow : ∀ e : ℕ, ¬ l ∣ M ^ e` using `fun e h => hM (hl.out.dvd_of_dvd_pow h)`. Establish `hsz` using `(GlobalTheory.T.algebraicValuationAtLeast_basic_properties l lam).1`. Use `⟨⟨cB N x, GlobalTheory.T.weierstrass_division_value_q_expansion N x hx0, fun k => hsz (M ^ 2) _ (hpow 2) ?_⟩, ⟨cD N x, GlobalTheory.T.hasQExpansion_normalizedDerivWeierstrassPTorsion N x, fun k => hsz (M ^ 3) _ (hpow 3) ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `(GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N M x k hpos hx).1`. Rewrite using `[Nat.cast_pow]`. Conclude with `(GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N M x k hpos hx).2.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (N : ℕ) [NeZero N] (M : ℕ)
     (x : Fin 2 → ZMod N), ¬ l ∣ M → M • x = 0 → x ≠ 0 →

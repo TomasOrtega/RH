@@ -18,11 +18,11 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.KsBase
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h`. Use `⟨(b : F), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Submodule.map (Algebra.linearMap (𝓞 F) F)) hb`. Rewrite `h` using `[Submodule.map_span, Set.image_singleton, Ideal.map, Ideal.span, Submodule.map_span, Set.image_image]`. Use `h.symm.trans (congrArg _ ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, Subtype.ext hx.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem span_eq_of_isPrincipal {E : Type} [Field E] (φ : E →+* ℂ) (F : IntermediateField ℚ ℂ) (hF : ∀ x, φ x ∈ F)
     (𝔞 : Ideal (𝓞 E)) (h : (𝔞.map (RingOfIntegers.mapRingHom (φ.codRestrict F hF))).IsPrincipal) :
@@ -40,25 +40,23 @@ theorem span_eq_of_isPrincipal {E : Type} [Field E] (φ : E →+* ℂ) (F : Inte
     exact ⟨a, ha, Subtype.ext hx.symm⟩
 
 /- English proof (translation)
-Take `⟨SF, hSF, hF⟩` from `exists_gens_le F`. Set `A : Finset ℕ` to `{B.ramOrder} ∪ Finset.univ.image B.T`. Set `SR : Finset ℂ` to `A.image fun N : ℕ => Complex.exp (2 * Real.pi * Complex.I / N)`. Take `⟨K, hfd, hKgal, hS, -, hconj⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (SF ∪ SR) (by`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_union.1 hz with hz | hz` into its components or cases. Use `exacts [hSF z hz, by`. Take `⟨N, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `isAlgebraic_exp N])`. Simplify using `only [Finset.mem_union] at hS`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFK : F ≤ K` using `hF K fun z hz => hS z (.inl hz)`. Establish `hEK : ∀ x, B.host.φ₀ x ∈ K` using `fun x => hFK (hEF x)`. Establish `hR : ∀ N ∈ A, Complex.exp (2 * Real.pi * Complex.I / (N : ℕ)) ∈ K` using `fun N hN => by`. Establish `hz : Complex.exp (2 * Real.pi * Complex.I / N) ∈ SR` using `Finset.mem_image.2 ⟨N, hN, rfl⟩`. Conclude with `hS _ (.inr hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `: NumberField K` using `{}`. Simplify using `only [rootsField, sup_le_iff, cycField_le_iff] at hr`. Take `⟨⟨⟨⟨hr1, hr2⟩, hr3⟩, hr4⟩, hr5⟩` from `hr`. Set `f` to `toComap hFK`. Use `⟨{ toPre := B LL := K starLL := starOf K hconj embLL := K.val starLL_cx := fun _ => rfl embE := B.host.φ₀.codRestrict K hEK embE_φ₀ := rfl LL0 := ⊤ coeffGaloisSubfield_isGalois := IsGalois.of_algEquiv IntermediateField.topEquiv.symm Ks := F.comap K.val Ks_le := le_top E_le_Ks := …` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `N hN`. Establish `h : rootOne N ∈ F`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hN`. Apply the tactic sequence `rcases hN with rfl | rfl | rfl | rfl | rfl <;> assumption`. Conclude with `⟨⟨_, hFK h⟩, h, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `N hN`. Establish `h : rootOne N ∈ F`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hN`. Apply the tactic sequence `rcases hN with rfl | rfl | rfl <;> assumption`. Conclude with `⟨⟨_, hFK h⟩, h, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `𝔞`. Take `⟨β, hsp⟩` from `hc 𝔞`. Use `⟨f β, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend f) hsp`. Rewrite `h` using `[extend_span, Set.image_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.trans (image_comap hFK 𝔞 B.host.φ₀ (B.host.φ₀.codRestrict K hEK) fun _ => rfl)`. Introduce `j hj1 hj 𝔞 h𝔞`. Take `⟨β, hβ, hsp, hn⟩` from `hk j hj1 hj 𝔞 h𝔞`. Use `⟨f β, (map_ne_zero f).2 hβ, ?_, fun σ => hn (σ.comp f)⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend f) hsp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[extend_span, Set.image_singleton, map_prod]`. Use `h.trans (Finset.prod_congr rfl fun g _ => ?_)` and prove the remaining obligations. Establish `e1` using `image_comap hFK 𝔞 (B.host.φ₀.comp (B.host.sigmaOf g : B.host.E →+* B.host.E)) (fun a => B.host.φ₀.codRestrict K hEK (B.host.sigmaOf g a)) fun _ => rfl`. Establish `e2` using `image_comap hFK 𝔞 ((B.host.φ₀.comp (B.host.sigmaOf g : B.host.E →+* B.host.E)).comp (B.host.conj : B.host.E →+* B.host.E)) (fun a => B.host.φ₀.codRestrict K hEK (B.host.sigmaOf g (B.host.conj a))) fun _ => rfl`. Rewrite using `[map_mul, map_pow, map_pow]`.
-
-Conclude with `congrArg₂ (· * ·) (congrArg (· ^ (B.R.sigW j).1) e1) (congrArg (· ^ (B.R.sigW j).2) e2)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Conclude with `fun hz => ⟨⟨z, hFK hz⟩, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_base_of_contents (B : Pre) (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F]
     (hEF : ∀ x, B.host.φ₀ x ∈ F) (hr : rootsField B ≤ F) (hp : rootOne B.host.pde ∈ F)
@@ -148,9 +146,9 @@ theorem exists_base_of_contents (B : Pre) (F : IntermediateField ℚ ℂ) [Finit
     · exact fun hz => ⟨⟨z, hFK hz⟩, hz, rfl⟩
 
 /- English proof (translation)
-Establish `hO : listField δ f ≤ δ.Om` using `listField_le_Om δ f`. Use `host_cplx P` as an intermediate fact. Use `finite_Om δ` as an intermediate fact. Establish `: FiniteDimensional ℚ (listField δ f)` using `FiniteDimensional.of_injective (IntermediateField.inclusion hO).toLinearMap (IntermediateField.inclusion_injective hO)`. Take `⟨h1, -, h3, h4, -, h6⟩` from `(listField_le_iff δ f).1 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : 1 ≤ P.R.m` using `le_trans one_le_two P.R.two_le_m`. Use `⟨hO, exists_base_of_contents P _ ((imField_le_iff _).1 h1) h4 (h3 (rootOne_mem_ray _ (modulus_ne_zero P) (pde_dvd P) δ.isRay)) (h3 (rootOne_mem_ray _ (modulus_ne_zero P) (pde'_dvd P) δ.isRay)) (cycField_le_iff.1 ((le_sup_right.trans le_sup_left).trans (h6 1 le_rfl hm))) (fun 𝔞 => …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_base_listField (hR : RayField) (hP : PrincipalIdealSt) (P : Pre) (f : GlobalTheory.Mem.Top.Fr P)
     (δ : FieldDat P) : listField δ f ≤ δ.Om ∧ ∃ B : Base, B.toPre = P ∧ B.KsC = listField δ f := by

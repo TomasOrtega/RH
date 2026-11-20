@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Take `⟨F, ⟨hF0, hFS, hFst⟩, hmin⟩` from `(wellFounded_lt (α := Submodule κ E)).has_min {F | F ≠ ⊥ ∧ F ≤ S ∧ ∀ i, ∀ v ∈ F, f i v ∈ F} ⟨S, hS, le_rfl, hst⟩`. Take `⟨v, hvF, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hF0`. Use `⟨v, hFS hvF, hv0, fun i => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial F := Submodule.nontrivial_iff_ne_bot.mpr hF0`. Take `⟨c, hc'⟩` from `Module.End.exists_eigenvalue ((f i).restrict (hFst i) : Module.End κ F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hc'.exists_hasEigenvector`. Establish `hw1 : f i w = c • (w : E)` using `congrArg Subtype.val hw.apply_eq_smul`. Establish `hw0 : (w : E) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`. Establish `key : ¬ F ⊓ Module.End.eigenspace (f i) c < F`. Use `hmin _ ⟨?_, inf_le_left.trans hFS, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(Submodule.ne_bot_iff _).mpr ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.mpr hw1⟩, hw0⟩`. Introduce and unpack `j u ⟨huF, hu⟩`. Use `⟨hFst j u huF, Module.End.mem_eigenspace_iff.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[hc i j u (hFS huF), Module.End.mem_eigenspace_iff.mp hu, map_smul]`. Establish `h2 : F ⊓ Module.End.eigenspace (f i) c = F` using `(eq_or_lt_of_le inf_le_left).resolve_right key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: v ∈ F ⊓ Module.End.eigenspace (f i) c` using `by rw [h2]; exact hvF`. Conclude with `⟨c, Module.End.mem_eigenspace_iff.mp this.2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem common_eigen {κ E ι : Type*} [Field κ] [IsAlgClosed κ] [AddCommGroup E] [Module κ E]
     [FiniteDimensional κ E] (f : ι → Module.End κ E) (S : Submodule κ E) (hS : S ≠ ⊥)
@@ -35,29 +35,27 @@ private theorem common_eigen {κ E ι : Type*} [Field κ] [IsAlgClosed κ] [AddC
   exact ⟨c, Module.End.mem_eigenspace_iff.mp this.2⟩
 
 /- English proof (translation)
-Establish `hmul : ∀ a b v, σ a (σ b v) = σ (a * b) v` using `fun a b v => by rw [map_mul]; rfl`. Establish `hcom : ∀ (X : Submodule κ V) (g : Γ), (∀ h ∈ H, ∀ v ∈ X, σ h v ∈ X) → ∀ h ∈ H, ∀ v ∈ X.comap (σ g), σ h v ∈ X.comap (σ g)`. Introduce `X g hX h hh v hv`. Use `hX (g * h * g⁻¹) (Subgroup.Normal.conj_mem ‹_› h hh g) _ hv` as an intermediate fact. Rewrite `this` using `[hmul, inv_mul_cancel_right, ← hmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨W, ⟨hW0, hWst⟩, hmin⟩` from `(wellFounded_lt (α := Submodule κ V)).has_min {F | F ≠ ⊥ ∧ ∀ g ∈ H, ∀ v ∈ F, σ g v ∈ F} ⟨W₀, hb, h0⟩`. Take `⟨U, ⟨hU0, hUt, hUst⟩, hmax⟩` from `(wellFounded_gt (α := Submodule κ V)).has_min {F | F ≠ ⊥ ∧ F ≠ ⊤ ∧ ∀ g ∈ H, ∀ v ∈ F, σ g v ∈ F} ⟨W₀, hb, ht, h0⟩`. Establish `hex : ∃ g, ¬ W ≤ U.comap (σ g)`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Use `push_neg at hne`. Break down `hirr (⨅ g, U.comap (σ g)) (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[Submodule.mem_iInf]`. Introduce `k`. Use `hv (k * g)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[Submodule.mem_comap, ← hmul]`. Conclude with `this) with h | h`. Conclude with `hW0 (le_bot_iff.mp (h ▸ le_iInf hne))`. Apply `hUt` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Introduce `v _`. Establish `: v ∈ ⨅ g, U.comap (σ g)` using `by rw [h]; trivial`. Simplify using `using (Submodule.mem_iInf _).mp this 1`. Take `⟨g, hg⟩` from `hex`. Establish `hU'` using `hcom U g hUst`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hback : ∀ u ∈ U, σ g⁻¹ u ∈ U.comap (σ g)` using `fun u hu => by`. Rewrite using `[Submodule.mem_comap, hmul]`. Simplify using `using hu`. Use `⟨U.comap (σ g), W, ⟨?_, ?_⟩, ?_, hW0, hU', hWst⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `hmin _ ⟨hne, fun h hh v hv => ⟨hU' h hh v hv.1, hWst h hh v hv.2⟩⟩ ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_ne inf_le_right fun h => hg (inf_eq_right.mp h)`. Rewrite using `[codisjoint_iff]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : ∀ h ∈ H, ∀ v ∈ U.comap (σ g) ⊔ W, σ h v ∈ U.comap (σ g) ⊔ W`. Introduce `h hh v hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hU' h hh a ha) (hWst h hh b hb)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : U ≤ (U.comap (σ g) ⊔ W).comap (σ g⁻¹)` using `fun u hu => Submodule.mem_sup_left (hback u hu)`. Use `hmax ((U.comap (σ g) ⊔ W).comap (σ g⁻¹)) ⟨?_, ?_, hcom _ _ hX⟩ ?_` and prove the remaining obligations. Conclude with `fun h => hU0 (le_bot_iff.mp (h ▸ hle))`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: σ g v ∈ (U.comap (σ g) ⊔ W).comap (σ g⁻¹)` using `by rw [h]; trivial`. Rewrite `this` using `[Submodule.mem_comap, hmul]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne hle fun h => hg fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, h, Submodule.mem_comap, hmul]`. Simplify using `using Submodule.mem_sup_right hw`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`. Use `(Submodule.ne_bot_iff _).mpr ⟨_, hback u hu, fun h => hu0 ?_⟩` and prove the remaining obligations.
-
-Use `congrArg (σ g) h` as an intermediate fact. Rewrite `this` using `[hmul]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_compl {Γ κ V : Type*} [Group Γ] [Field κ] [AddCommGroup V] [Module κ V]
     [FiniteDimensional κ V] (σ : Γ →* Module.End κ V) (H : Subgroup Γ) [H.Normal]
@@ -128,15 +126,15 @@ private theorem exists_compl {Γ κ V : Type*} [Group Γ] [Field κ] [AddCommGro
     simpa using this
 
 /- English proof (translation)
-Set `Q : Module.End κ V` to `U.subtype ∘ₗ U.linearProjOfIsCompl W hc`. Establish `hQU : ∀ u ∈ U, Q u = u` using `fun u hu => by`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨u, hu⟩)`. Establish `hQW : ∀ u ∈ W, Q u = 0` using `fun u hu => by`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨u, hu⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∀ h ∈ H, σ h * Q = Q * σ h`. Introduce `h hh`. Use extensionality with `v`. Establish `: v ∈ U ⊔ W` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hQU a ha, hQW b hb, hQU _ (hU h hh a ha), hQW _ (hW h hh b hb)]`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Use `haveI : Nontrivial V := ⟨u, 0, hu0⟩`. Establish `hn : (Module.finrank κ V : κ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(Module.finrank κ V : κ) • Q - LinearMap.trace κ V Q • 1, fun h => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun T : Module.End κ V => T w) h`. Establish `h2` using `congrArg (fun T : Module.End κ V => T u) h`. Simplify using `[hQW w hw, hw0] at h1`. Simplify using `[hQU u hu, h1, hu0] at h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hn (by simp [h2])`. Simplify using `[mul_comm]`. Introduce `h hh`. Simplify using `[mul_sub, sub_mul, hQ h hh]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_traceless {Γ κ V : Type*} [Group Γ] [Field κ] [CharZero κ] [AddCommGroup V]
     [Module κ V] [FiniteDimensional κ V] (σ : Γ →* Module.End κ V) (H : Subgroup Γ)
@@ -169,21 +167,19 @@ private theorem exists_traceless {Γ κ V : Type*} [Group Γ] [Field κ] [CharZe
     simp [mul_sub, sub_mul, hQ h hh]
 
 /- English proof (translation)
-Set `S : Submodule κ (Module.End κ V)` to `{ carrier := {T | LinearMap.trace κ V T = 0 ∧ ∀ h ∈ H, σ h * T = T * σ h} add_mem' := fun ha hb => ⟨by simp [ha.1, hb.1], fun h hh => by`. Rewrite using `[mul_add, add_mul, ha.2 h hh, hb.2 h hh]⟩`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => ⟨by simp [ha.1], fun h hh => by simp [ha.2 h hh]⟩ }`. Set `f : Γ → Module.End κ (Module.End κ V)` to `fun g => LinearMap.mulLeft κ (σ g) ∘ₗ LinearMap.mulRight κ (σ g⁻¹)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ g T, f g T = σ g * (T * σ g⁻¹)` using `fun _ _ => rfl`. Establish `hff : ∀ a b T, f a (f b T) = f (a * b) T` using `fun a b T => by`. Simplify using `only [hf, _root_.mul_inv_rev, map_mul, mul_assoc]`. Establish `hH : ∀ h ∈ H, ∀ T ∈ S, f h T = T` using `fun h hh T hT => by`. Rewrite using `[hf, ← mul_assoc, hT.2 h hh, mul_assoc, ← map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hst : ∀ g, ∀ T ∈ S, f g T ∈ S`. Introduce `g T hT`. Use `⟨?_, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, LinearMap.trace_mul_comm, mul_assoc, ← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hT.1`. Establish `h1` using `hT.2 (g⁻¹ * h * g) (by simpa using Subgroup.Normal.conj_mem ‹_› h hh g⁻¹)`. Establish `e1 : σ h * σ g = σ g * σ (g⁻¹ * h * g)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `e2 : σ g⁻¹ * σ h = σ (g⁻¹ * h * g) * σ g⁻¹`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, ← mul_assoc, e1, mul_assoc, ← mul_assoc _ T, h1, mul_assoc, ← e2]`. Simplify using `only [mul_assoc]`. Take `⟨T, hT, hT0, hTc⟩` from `common_eigen f S ((Submodule.ne_bot_iff _).mpr ⟨P, ⟨hPt, hP⟩, hP0⟩) hst (fun a b T hT => by`. Rewrite using `[← hH _ (hab a b) _ (hst b _ (hst a T hT)), hff, hff, hff]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `group)`. Use `⟨T, hT0, hT.1, hT.2, fun g => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hTc g`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc, ← hc, hf, mul_assoc, mul_assoc, ← map_mul]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_twist {Γ κ V : Type*} [Group Γ] [Field κ] [IsAlgClosed κ] [CharZero κ]
     [AddCommGroup V] [Module κ V] [FiniteDimensional κ V] (σ : Γ →* Module.End κ V)
@@ -226,29 +222,25 @@ private theorem exists_twist {Γ κ V : Type*} [Group Γ] [Field κ] [IsAlgClose
   rw [← smul_mul_assoc, ← hc, hf, mul_assoc, mul_assoc, ← map_mul]; simp
 
 /- English proof (translation)
-Introduce `Γ κ _ _ _ _ m ρ H _ hab hirr hred`. Set `σ : Γ →* Module.End κ (Fin m → κ)` to `{ toFun := fun g => Matrix.toLin' (ρ g : Matrix (Fin m) (Fin m) κ) map_one' := by simp [Module.End.one_eq_id] map_mul' := fun a b => by simp [Matrix.toLin'_mul, Module.End.mul_eq_comp] }`. Establish `hσ : ∀ g v, σ g v = (ρ g : Matrix (Fin m) (Fin m) κ) *ᵥ v` using `fun g v => Matrix.toLin'_apply _ _`. Establish `hirr' : ∀ W : Submodule κ (Fin m → κ), (∀ g, ∀ v ∈ W, σ g v ∈ W) → W = ⊥ ∨ W = ⊤` using `fun W hW => hirr W fun g _ v hv => hσ g v ▸ hW g v hv`. Unfold `MatIrr at hred`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_neg at hred`. Take `⟨W₀, h0, hb, ht⟩` from `hred`. Take `⟨U, W, hc, hU0, hW0, hU, hW⟩` from `exists_compl σ H hirr' W₀ (fun g hg v hv => by rw [hσ]; exact h0 g hg v hv) hb ht`. Take `⟨P, hP0, hPt, hP⟩` from `exists_traceless σ H U W hc hU0 hW0 hU hW`. Take `⟨T, hT0, hTt, hTH, hT⟩` from `exists_twist σ H hab P hP0 hPt hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose c hc using hT`. Establish `hunit : ∀ g, IsUnit (σ g)` using `fun g => (Group.isUnit g).map σ`. Establish `hne : ∀ g, T * σ g ≠ 0` using `fun g h => hT0 ((hunit g).mul_left_eq_zero.mp h)`. Establish `hc0 : ∀ g, c g ≠ 0` using `fun g h => hT0 ((hunit g).mul_right_eq_zero.mp (by rw [hc, h, zero_smul]))`. Establish `huniq : ∀ g d, σ g * T = d • (T * σ g) → c g = d` using `fun g d h => smul_left_injective κ (hne g) ((hc g).symm.trans h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `φ : Γ →* κˣ` to `{ toFun := fun g => Units.mk0 (c g) (hc0 g) map_one' := Units.ext (huniq 1 1 (by simp)) map_mul' := fun a b => Units.ext (huniq _ _ (by`. Rewrite using `[map_mul, mul_assoc, hc b, mul_smul_comm, ← mul_assoc, hc a, smul_mul_assoc, smul_smul, mul_assoc, mul_comm (c b)]`. Use the proof step `rfl)) }`. Establish `hφ : ∀ g, (φ g : κ) = c g` using `fun _ => rfl`. Establish `hker : LinearMap.ker T = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hirr' _ fun g v hv => ?_).resolve_right fun h => hT0 (LinearMap.ker_eq_top.mp h)` and prove the remaining obligations. Use `congrArg (fun A : Module.End κ (Fin m → κ) => A v) (hc g)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, LinearMap.mem_ker.mp hv, map_zero] at this`. Conclude with `(smul_eq_zero.mp this.symm).resolve_left (hc0 g)`. Establish `hTu : IsUnit T` using `(LinearMap.isUnit_iff_ker_eq_bot T).mpr hker`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : (LinearMap.toMatrix' T).det ≠ 0`. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `(hTu.map LinearMap.det).ne_zero`. Establish `hM : ∀ g, LinearMap.toMatrix' T * (c g • (ρ g : Matrix (Fin m) (Fin m) κ)) = (ρ g : Matrix (Fin m) (Fin m) κ) * LinearMap.toMatrix' T` using `fun g => by`. Use `congrArg LinearMap.toMatrix' (hc g)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `this` using `[map_smul, LinearMap.toMatrix'_mul, LinearMap.toMatrix'_mul]`. Simplify `this.symm` using `[σ]`. Use `⟨φ, fun h1 => ?_, fun h hh => ?_, ?_, ⟨GeneralLinearGroup.mkOfDetNeZero _ hdet, fun g _ => hM g⟩⟩` and prove the remaining obligations. Use `haveI : Nontrivial (Fin m → κ) := by`. Take `⟨u, -, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨u, 0, hu0⟩`. Take `⟨a, ha⟩` from `Module.End.exists_eigenvalue T`. Establish `htop : Module.End.eigenspace T a = ⊤`. Use `(hirr' _ fun g v hv => ?_).resolve_left ha` and prove the remaining obligations. Use `congrArg (fun A : Module.End κ (Fin m → κ) => A v) (hc g)` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, hv, map_smul, ← hφ, h1] at this`. Simplify using `using this.symm`. Establish `hTa : T = a • 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Module.End.mem_eigenspace_iff.mp (by rw [htop]; trivial)`. Establish `hn : (Module.finrank κ (Fin m → κ) : κ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Rewrite `hTt` using `[hTa, map_smul, LinearMap.trace_one, smul_eq_mul, mul_eq_zero]`. Conclude with `hT0 (by rw [hTa, hTt.resolve_right hn, zero_smul])`. Conclude with `Units.ext (huniq h 1 (by rw [one_smul, hTH h hh]))`.
-
-Use extensionality with `g`. Use `congrArg Matrix.det (hM g)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_smul, mul_comm _ (LinearMap.toMatrix' T).det]`. Establish `h2` using `mul_left_cancel₀ hdet this`. Establish `h3 : (ρ g : Matrix (Fin m) (Fin m) κ).det ≠ 0` using `(ρ g).det_ne_zero`.
-
-Simplify `h2` using `[hφ, h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.exists_selfTwist :
     ∀ {Γ κ : Type} [Group Γ] [Field κ] [IsAlgClosed κ] [CharZero κ] {m : ℕ} (ρ : Γ →* GL (Fin m) κ) (H : Subgroup Γ) [H.Normal],

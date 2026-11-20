@@ -16,14 +16,14 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Fi
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `w.isMaximal.exists_inv hs`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_add_eq_one_of_notMem (w : HeightOneSpectrum (𝓞 E)) {s : 𝓞 E} (hs : s ∉ w.asIdeal) :
     ∃ t : 𝓞 E, ∃ a ∈ w.asIdeal, t * s + a = 1 :=
   w.isMaximal.exists_inv hs
 
 /- English proof (translation)
-The claim follows from `hl uni := hu f_add P x hx y hy := hd.f_add P x ((hT P).ge hx) y ((hT P).ge hy) f_smul P a x hx := hd.f_smul P a x ((hT P).ge hx) f_off P x hx := hd.f_off P x fun h => hx ((hT P).le h) f_ne P := by obtain ⟨x, hx, hne⟩ := hd.f_ne P have hx' := Formalism.L2.Col.le_locP P.1 _ hx obta …`.
+A detailed English derivation is pending.
 -/
 theorem decoration_admissible_of_localization_eq {d : Deco E n ST SG} (hd : d.Ok) {N' : Submodule (𝓞 E) (Sp E n)}
     (hl : Submodule.IsLattice E N') (hu : IsUnimodular (hStd E n) N')
@@ -82,11 +82,9 @@ theorem decoration_admissible_of_localization_eq {d : Deco E n ST SG} (hd : d.Ok
 omit [StarRing E] in
 
 /- English proof (translation)
-Establish `h1 : ∀ Q : S, ∃ a : ℕ, a.Coprime p ∧ ((a : ℕ) : 𝓞 E) ∈ Q.1.asIdeal`. Introduce `Q`. Use `haveI := Q.1.isMaximal`. Use `haveI : Finite (𝓞 E ⧸ Q.1.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ Q.1.ne_bot`. Use `letI := Ideal.Quotient.field Q.1.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : (ringChar (𝓞 E ⧸ Q.1.asIdeal)).Prime` using `CharP.prime_ringChar _`. Use `⟨_, (Nat.Prime.coprime_iff_not_dvd hp).2 fun h => hS Q.1 Q.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `(ringChar.spec _ _).2 h`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
-
-Conclude with `(ringChar.spec _ _).2 dvd_rfl`. Use `choose a ha ha' using h1`. Use `⟨∏ Q, a Q, Nat.Coprime.prod_left fun Q _ => ha Q, fun Q hQ => ?_⟩` and prove the remaining obligations. Conclude with `Ideal.mem_of_dvd _ (Nat.cast_dvd_cast (Finset.dvd_prod_of_mem a (Finset.mem_univ ⟨Q, hQ⟩))) (ha' ⟨Q, hQ⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_coprime_mem (p : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ Q ∈ S, ((p : ℕ) : 𝓞 E) ∉ Q.asIdeal) : ∃ a : ℕ, a.Coprime p ∧ ∀ Q ∈ S, ((a : ℕ) : 𝓞 E) ∈ Q.asIdeal := by
@@ -114,7 +112,7 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : 
   (emb : ι → E →+* K)
 
 /- English proof (translation)
-Introduce `ha`. Take `⟨x, y, e⟩` from `(Nat.Coprime.cast (R := 𝓞 K) h)`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ ha) (w.asIdeal.mul_mem_left _ hw)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_of_coprime {a p : ℕ} (h : a.Coprime p) (w : HeightOneSpectrum (𝓞 K))
     (hw : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal) : ((a : ℕ) : 𝓞 K) ∉ w.asIdeal := by
@@ -125,11 +123,9 @@ theorem natCast_notMem_of_coprime {a p : ℕ} (h : a.Coprime p) (w : HeightOneSp
 
 omit [Fintype ι] in
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨a • x, h x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ c hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_tauLat (τ : ι) {L L' : Submodule (𝓞 E) (Fin n → E)} {a : ℕ} (h : ∀ x ∈ L, a • x ∈ L')
     {y : Fin n → K} (hy : y ∈ tauLat emb τ L) : a • y ∈ tauLat emb τ L' := by
@@ -145,7 +141,7 @@ theorem nsmul_mem_tauLat (τ : ι) {L L' : Submodule (𝓞 E) (Fin n → E)} {a 
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `GlobalTheory.TransLoc.localization_le_of_smul_mem w ha fun φ hφ x hx => ?_` and prove the remaining obligations. Use `hφ _ (nsmul_mem_tauLat emb τ h hx)` as an intermediate fact. Rewrite `this` using `[dotProduct_smul]`. Rewrite using `[smul_dotProduct, Nat.cast_smul_eq_nsmul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_dualFr_tauLat_le (τ : ι) {L L' : Submodule (𝓞 E) (Fin n → E)} {a : ℕ} (h : ∀ x ∈ L, a • x ∈ L')
     (w : HeightOneSpectrum (𝓞 K)) (ha : ((a : ℕ) : 𝓞 K) ∉ w.asIdeal) :
@@ -157,11 +153,11 @@ theorem localization_dualFr_tauLat_le (τ : ι) {L L' : Submodule (𝓞 E) (Fin 
   exact this
 
 /- English proof (translation)
-Use `choose B hB using fun τ => GlobalTheory.LatBasisAt.basisAtEx K n (M τ) (hM τ) w`. Establish `hB' : ∀ τ, IsBasisAt w (M' τ) (B τ)` using `fun τ => (h τ).symm.trans (hB τ)`. Establish `h1` using `GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι n lam M hM w B hB`. Establish `h2` using `GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι n lam M' hM' w B hB'`. Establish `key : ∀ (T : Submodule (𝓞 K) (Pol K ι n)) (x : VV K lam), x ∈ localization₂ w.asIdeal (T.comap ((VV K lam).subtype.restrictScalars (𝓞 K))) ↔ x.1 ∈ localization₂ w.asIdeal T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x`. Conclude with `Iff.rfl`. Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Unfold `nabK`.
+Unfold both sides to obtain the same proposition, which implies itself. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, h1.1, h2.1]`. Use extensionality with `x`. Unfold `delK`. Rewrite using `[key, key, h1.2, h2.2]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_nabK_delK_congr (lam : ι → DomWeight n) {M M' : ι → Submodule (𝓞 K) (Fin n → K)}
     (hM : ∀ τ, Submodule.IsLattice K (M τ)) (hM' : ∀ τ, Submodule.IsLattice K (M' τ)) (w : HeightOneSpectrum (𝓞 K))
@@ -185,7 +181,7 @@ theorem localization_nabK_delK_congr (lam : ι → DomWeight n) {M M' : ι → S
     rw [key, key, h1.2, h2.2]
 
 /- English proof (translation)
-The claim follows from `localization_nabK_delK_congr lam (fun τ => GlobalTheory.DualLat.isLattice_dualFr _ (GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L hL)) (fun τ => GlobalTheory.DualLat.isLattice_dualFr _ (GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L' hL')) w fun τ => le_antisymm (localizat …`.
+A detailed English derivation is pending.
 -/
 theorem localization_nabAtr_delAtr_congr (lam : ι → DomWeight n) {L L' : Submodule (𝓞 E) (Fin n → E)}
     (hL : Submodule.IsLattice E L) (hL' : Submodule.IsLattice E L') {a : ℕ} (h : ∀ x ∈ L, a • x ∈ L')
@@ -202,7 +198,7 @@ end Coef
 variable {p : ℕ} {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Take `⟨a, hap, ha⟩` from `exists_coprime_mem p ST hT`. Use `localization_nabAtr_delAtr_congr X.emb lam d.2.Lsh_lattice d.2.lat (a := a) (fun x hx => ?_) (fun x hx => Submodule.smul_of_tower_mem _ a (d.2.N_le_Lsh hx)) w (natCast_notMem_of_coprime hap w hw)` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 X.E)]`. Conclude with `d.2.smul_Lsh_mem_N (fun P => by rw [map_natCast]; exact ha P.1 P.2) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem use₃ (lam : X.Tau → DomWeight n) (hT : ∀ Q ∈ ST, ((p : ℕ) : 𝓞 X.E) ∉ Q.asIdeal)
     (d : DecoSet X.E n ST SG) (w : HeightOneSpectrum (𝓞 X.K)) (hw : ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal) :
@@ -215,7 +211,7 @@ theorem use₃ (lam : X.Tau → DomWeight n) (hT : ∀ Q ∈ ST, ((p : ℕ) : �
   exact d.2.smul_Lsh_mem_N (fun P => by rw [map_natCast]; exact ha P.1 P.2) hx
 
 /- English proof (translation)
-Use `haveI : ∀ w : SG, Finite (𝓞 X.E ⧸ w.1.asIdeal) := fun w => Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot`. Use `haveI : Finite (GLG X.E n SG) := inferInstance`. Use `⟨orderOf g, orderOf_pos g, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, pow_orderOf_eq_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levFam_chr_root (Λ : LevFam X.E X.K n SG) (g : Λ.grp) : ∃ k : ℕ, 0 < k ∧ Λ.chr g ^ k = 1 := by
   haveI : ∀ w : SG, Finite (𝓞 X.E ⧸ w.1.asIdeal) := fun w => Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot

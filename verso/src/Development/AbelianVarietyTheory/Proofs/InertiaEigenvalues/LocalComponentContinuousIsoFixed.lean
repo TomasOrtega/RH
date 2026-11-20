@@ -13,9 +13,9 @@ namespace GlobalTheory.EigLocalSum
 open GlobalTheory.PRep
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family`. Consider the case `exact _root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family`. Consider the case `(apply _root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EigenFamilyStabilizer.exists_eigen_family ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_eigen_family {G V W ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [Fintype ι]
@@ -36,29 +36,27 @@ theorem exists_eigen_family {G V W ι : Type} [Group G] [TopologicalSpace G] [Is
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S hS s σ hloc c hc hci K θ U hK hKOne hU hU1 hθU f hf hθ ι _ xs z hxs hz`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Apply `hz` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hrt : ∀ h ∈ K, ∃ x : GAf L n, TrivOutside {s.v} x ∧ Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x) = h ∧ NG.rt L n x f = θ h • f`. Introduce `h hh`. Take `⟨x, hx, e⟩` from `GlobalTheory.EigLocal.exists_trivOutside_map_loc n s c h`. Conclude with `⟨x, hx, e, by rw [hθ x hx (e ▸ hh), e]⟩`. Establish `hmul : ∀ k ∈ K, ∀ k' ∈ K, θ (k * k') = θ k * θ k'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `k hk k' hk'`. Take `⟨x, hx, e, hfx⟩` from `hrt k hk`. Take `⟨x', hx', e', hfx'⟩` from `hrt k' hk'`. Establish `hxx : TrivOutside {s.v} (x * x')` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul hx hx'`. Establish `e2 : Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n (x * x')) = k * k'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, e, e']`. Establish `h2` using `hθ (x * x') hxx (e2 ▸ mul_mem hk hk')`. Rewrite `h2` using `[e2]`. Establish `h3 : NG.rt L n (x * x') f = NG.rt L n x (NG.rt L n x' f)`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[NG.rt, mul_assoc]`. Rewrite `h2` using `[h3, hfx', map_smul, hfx, smul_smul]`. Establish `h4 : (θ (k * k') - θ k' * θ k) • f = 0`. Rewrite using `[sub_smul, h2, sub_self]`. Break down `smul_eq_zero.1 h4 with h5 | h5` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[sub_eq_zero.1 h5, mul_comm]`. Conclude with `absurd h5 hf0`. Establish `hmem` using `GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent L n a S hS s σ hloc c hc hci hf`. Rewrite `hmem` using `[iSup_subtype']`. Take `⟨F, hF, hFsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose y hy using fun i => LinearMap.mem_range.1 (hF i)`. Establish `hsum : ∑ j : F.support, (j.1.1 : σ.V →ₗ[ℂ] (GAf L n → a.W)) (y j.1) = f`. Rewrite using `[← hFsum, Finsupp.sum, ← Finset.sum_attach F.support]`. Conclude with `Finset.sum_congr rfl fun j _ => hy j.1`. Establish `hKo : IsOpen (K : Set (GL (Fin n) (s.w.adicCompletion L)))` using `Subgroup.isOpen_mono hKOne GlobalTheory.StepData.isOpen_KOne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKc : IsCompact (K : Set (GL (Fin n) (s.w.adicCompletion L)))` using `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (K.isClosed_of_isOpen hKo) hK`. Establish `hint : ∀ (j : F.support) (x : GAf L n), TrivOutside {s.v} x → ∀ v, (j.1.1 : σ.V →ₗ[ℂ] (GAf L n → a.W)) (σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) v) = NG.rt L n x ((j.1.1 : σ.V →ₗ[ℂ] (GAf L n → a.W)) v)` using `fun j x hx v => j.1.2.2 x hx v`. Take `⟨u, hu, hus⟩` from `exists_eigen_family σ.smooth hKc hU hU1 θ hθU hmul (fun j : F.support => (j.1.1 : σ.V →ₗ[ℂ] (GAf L n → a.W))) (fun j => y j.1) (by`. Introduce `k hk`. Take `⟨x, hx, e, hfx⟩` from `hrt k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `e` using the available equality. Rewrite using `[Finset.sum_congr rfl fun j _ => hint j x hx (y j.1), ← map_sum, hsum, hfx])`. Rewrite `hus` using `[hsum]`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hz` to reduce the goal to its premises. Establish `key : ∀ j, ∑ m, z m • σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n (xs m))) (u j) = 0`. Introduce `j`. Assume the negation of the conclusion as `hne`. Conclude with `hne (hall (u j) (hu j))`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← hus, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => (hint j (xs m) (hxs m) (u j)).symm`.
-
-Use `_ = ∑ j : F.support, (j.1.1 : σ.V →ₗ[ℂ] (GAf L n → a.W)) (∑ m, z m • σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n (xs m))) (u j)) := by`. Simplify using `only [map_sum, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`. Use `_ = 0 := Finset.sum_eq_zero fun j _ => by rw [key j, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigen_local_sum : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (s : SplitPlace L) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S s σ → ∀ c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L, Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → ∀ (K : Subgroup (GL (Fin n) (s.w.adicCompletion L))) (θ : GL (Fin n) (s.w.adicCompletion L) → ℂ) (U : Set (GL (Fin n) (s.w.adicCompletion L))), K ≤ GlobalTheory.SplitWeil.KO (s.w.adicCompletion L) (Fin n) → GlobalTheory.SplitWeil.KOne (s.w.adicCompletion L) (Fin n) ≤ K → IsOpen U → (1 : GL (Fin n) (s.w.adicCompletion L)) ∈ U → (∀ g ∈ U, g ∈ K → θ g = 1) → ∀ f ∈ NG.isoTyp a.ρ S, (∀ x : GAf L n, TrivOutside {s.v} x → Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x) ∈ K → NG.rt L n x f = θ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) • f) → ∀ (ι : Type) [Fintype ι] (xs : ι → GAf L n) (z : ι → ℂ), (∀ j, TrivOutside {s.v} (xs j)) → ∑ j, z j • NG.rt L n (xs j) f ≠ 0 → ∃ y : σ.V, (∀ h ∈ K, σ.ρ h y = θ h • y) ∧ ∑ j, z j • σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n (xs j))) y ≠ 0 := by
   intro L _ _ _ n a S hS s σ hloc c hc hci K θ U hK hKOne hU hU1 hθU f hf hθ ι _ xs z hxs hz

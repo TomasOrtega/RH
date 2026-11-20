@@ -39,11 +39,11 @@ def fockStab (X : GlobalTheory.NormDict.Data P) : Subgroup (GA D X.A) where
       _ = X.fock T := by rw [← Module.End.mul_apply, ← map_mul, e, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Unfold `GlobalTheory.NormSum.minorPol`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun j _ => ?_` and prove the remaining obligations. Use `set f : Fin a × Fin a → Formalism.MainNotions.GL3Theta.Idx D a d := fun p => (τ, (T τ j).1 p.1, p.2) with hf`. Establish `hfi : Function.Injective f`. Introduce `p q e`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, Prod.mk.injEq] at e`. Conclude with `Prod.ext ((T τ j).2.injective e.2.1) e.2.2`. Establish `e : (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, (T τ j).1 i, i') : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)) = (MvPolynomial.rename f).toRingHom.mapMatrix (Matrix.mvPolynomialX (Fin a) (Fin a) ℂ)`. Use extensionality with `i i'`. Simplify using `[Matrix.mvPolynomialX, hf]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, ← RingHom.map_det]`. Introduce `h0`. Conclude with `Matrix.det_mvPolynomialX_ne_zero (Fin a) ℂ ((MvPolynomial.rename_injective f hfi) (h0.trans (map_zero _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem minorPol_ne_zero {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) : GlobalTheory.NormSum.minorPol D T ≠ 0 := by
   unfold GlobalTheory.NormSum.minorPol

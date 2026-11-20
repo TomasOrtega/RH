@@ -4,7 +4,7 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `h x`. Take `⟨b, hb, hq⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors O) q`. Use `⟨b, nonZeroDivisors.ne_zero hb, IsLocalization.integerNormalization (nonZeroDivisors O) q, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_map_algebraMap E, hq, ← algebraMap_smul E b q, map_smul, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_denominator_aeval_elem (O E A : Type) [CommRing O] [IsDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] [CommRing A] [Algebra O A] [Algebra E A] [IsScalarTower O E A] (g : A)
@@ -16,15 +16,15 @@ theorem exists_denominator_aeval_elem (O E A : Type) [CommRing O] [IsDomain O] [
   rw [← aeval_map_algebraMap E, hq, ← algebraMap_smul E b q, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hS`. Establish `key : ∃ c : O, c ≠ 0 ∧ ∀ x ∈ s, ∃ p : O[X], aeval g p = c • x`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert a s _ ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, hs⟩` from `ih`. Take `⟨d, hd, p, hp⟩` from `exists_denominator_aeval_elem O E A g h a`. Use `⟨c * d, mul_ne_zero hc hd, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `⟨c • p, by rw [map_smul, hp, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨q, hq⟩` from `hs x hx`. Conclude with `⟨d • q, by rw [map_smul, hq, mul_comm, mul_smul]⟩`. Take `⟨c, hc, hs⟩` from `key`. Use `⟨c, hc, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨p, hp⟩` from `hx`. Take `⟨q, hq⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p + q, by rw [map_add, hp, hq, smul_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨p, hp⟩` from `hx`. Conclude with `⟨a • p, by rw [map_smul, hp, smul_comm]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_common_denominator_aeval_of_fg (O E A : Type) [CommRing O] [IsDomain O] [Field E]
     [Algebra O E] [IsFractionRing O E] [CommRing A] [Algebra O A] [Algebra E A]

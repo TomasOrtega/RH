@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.EtaJoin.TypeTieProof
 
 /- English proof (translation)
-Set `bC : Module.Basis ι ℂ W` to `Module.Basis.mk hli hsp.ge`. Use `⟨bC.constr ℂ (fun k => f (b k)), fun v => ?_⟩` and prove the remaining obligations. Establish `h : (bC.constr ℂ (fun k => f (b k))).comp j = f`. Use `b.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: j (b k) = bC k` using `by simp [bC]`. Rewrite using `[this, Module.Basis.constr_basis]`. Conclude with `congrArg (fun g : V →ₛₗ[σ] U => g v) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_semilin {L V W U ι : Type} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] (σ : L →+* ℂ) (j : V →ₛₗ[σ] W) (b : Module.Basis ι L V)
@@ -28,13 +28,11 @@ theorem exists_ext_semilin {L V W U ι : Type} [Field L] [AddCommGroup V] [Modul
   exact congrArg (fun g : V →ₛₗ[σ] U => g v) h
 
 /- English proof (translation)
-Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp H v).1 (by rw [htop]; exact Submodule.mem_top)`. Establish `h0 : ∀ x0, x0 ∉ Y → f x0 = 0`. Introduce `x0 hx0`. Distinguish the cases in `hs : x0 ∈ f.support`. Establish `e : f x0 = v - ∑ x ∈ f.support.erase x0, f x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[← hsum, Finsupp.sum, ← Finset.add_sum_erase _ _ hs, add_sub_cancel_right]`. Establish `m2 : f x0 ∈ ⨆ (x) (_ : x ≠ x0), H x`. Rewrite using `[e]`. Use `Submodule.sub_mem _ (h x0 hx0) (Submodule.sum_mem _ fun x hx => ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase hx) (hf x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.disjoint_def.1 (hind x0)) _ (hf x0) m2`. Conclude with `Finsupp.notMem_support_iff.1 hs`. Rewrite using `[← hsum, Finsupp.sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Y`.
-
-Conclude with `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem hx (hf x))`. Rewrite using `[h0 x hx]`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_biSup_of_forall {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] (H : ι → Submodule K V)
     (hind : iSupIndep H) (htop : ⨆ x, H x = ⊤) (Y : Set ι) (v : V)
@@ -65,14 +63,14 @@ namespace GlobalTheory.EtaJoin.TypeTieProof
 open Formalism.L2.NG
 
 /- English proof (translation)
-The claim follows from `D.host.φ₀.injective (by rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+A detailed English derivation is pending.
 -/
 theorem host_conj_eq (D : D7) (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
   D.host.φ₀.injective (by
     rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `hx : (x : D.host.E) = D.host.conj (y : D.host.E)`. Rewrite using `[hxy, host_conj_eq, host_conj_eq, IsCMField.complexConj_apply_apply]`. Conclude with `(h y x hx).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjPl_symm {D : D7} {w w' : PlE D.host} (h : IsConjPl D.host w w') : IsConjPl D.host w' w := by
   intro x y hxy
@@ -81,17 +79,15 @@ theorem isConjPl_symm {D : D7} {w w' : PlE D.host} (h : IsConjPl D.host w w') : 
   exact (h y x hx).symm
 
 /- English proof (translation)
-Introduce and unpack `⟨w', hover, hw'⟩`. Establish `hp : ∀ p : ℕ, w' ∈ placesOver D.host.E p → w ∈ placesOver D.host.E p`. Introduce `p hp`. Establish `h1 : algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ w'.asIdeal` using `by rw [map_natCast]; exact hp`. Establish `h2 : (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hover]`. Conclude with `h1`. Establish `h3 : algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.w.asIdeal`. Rewrite using `[← Ideal.mem_comap, s.w_under]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[map_natCast]`. Conclude with `(hc (p : 𝓞 D.host.E) (p : 𝓞 D.host.E) (by rw [host_conj_eq]; simp)).2 h3`. Take `⟨hsp, hl, hS, hQ⟩` from `hw`. Break down `hw' with hQ' | ⟨kk, hg⟩ | hpd` into its components or cases. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE s.w w' (hover.trans s.w_under.symm) with e | e` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Conclude with `hQ (HT.Q_conj i s.w w (isConjPl_symm hc) hQ')`. Establish `ew : GlobalTheory.SplitConjPlace.conjPlE s.w = w` using `by ext1; ext x`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE]`. Use `(hc x _ ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, host_conj_eq]`. Rewrite `hQ'` using `[e, ew]`. Conclude with `hQ hQ'`. Apply `hS` to reduce the goal to its premises. Use `(D.nd.S_def i w).2 ⟨?_, hl⟩` and prove the remaining obligations.
-
-Establish `hv` using `hp _ hg`. Use `fin_cases kk`. Conclude with `Or.inl hv`. Conclude with `Or.inr (Or.inl hv)`. Conclude with `hS ((D.nd.S_def i w).2 ⟨Or.inr (Or.inr (hp _ hpd)), hl⟩)`.
+Establish an intermediate fact. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem not_bad_of_splitOut {D : D7} {M : MtFam D} (HT : HeckeTied D M) (i : D.nd.Loc) {w : PlE D.host}
     (hw : SplitOut D.nd i w) (s : SplitPlace D.host.E) (hc : IsConjPl D.host w s.w) : s.v ∉ badPl D i := by
@@ -128,7 +124,7 @@ theorem not_bad_of_splitOut {D : D7} {M : MtFam D} (HT : HeckeTied D M) (i : D.n
   · exact hS ((D.nd.S_def i w).2 ⟨Or.inr (Or.inr (hp _ hpd)), hl⟩)
 
 /- English proof (translation)
-Establish `hfin` using `GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (M.loc i).J (M.loc i).χ (badPl D i) (HT.J_hyp i) s ϖ k (not_bad_of_splitOut HT i hw s hc) hu`. Simplify using `only [tN]`. Rewrite using `[GlobalTheory.PtLocalEig.heckeD_add _ _ _ _ hfin c f f', smul_add, smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tN_lin {D : D7} {M : MtFam D} (HT : HeckeTied D M) (i : D.nd.Loc) {w : PlE D.host}
     (hw : SplitOut D.nd i w) (s : SplitPlace D.host.E) (hc : IsConjPl D.host w s.w)
@@ -150,11 +146,11 @@ variable {O X Mo : Type} [CommRing O] [IsDomain O] [AddCommGroup Mo] [Module O M
   (T : Subalgebra O (X → O)) (act : T →ₐ[O] Module.End O Mo)
 
 /- English proof (translation)
-Set `F : T → Module.End (FractionRing O) (TensorProduct O (FractionRing O) Mo)` to `fun f => (act f).baseChange (FractionRing O)`. Establish `hc : ∀ f g, Commute (F f) (F g)` using `fun f g => by show (act f).baseChange _ * (act g).baseChange _ = (act g).baseChange _ * (act f).baseChange _`. Rewrite using `[← LinearMap.baseChange_mul, ← LinearMap.baseChange_mul, ← map_mul, ← map_mul, mul_comm]`. Establish `h` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo F (fun f g φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc g f) φ)`. Set `χ : X → (T → FractionRing O)` to `fun x f => algebraMap O (FractionRing O) ((f : X → O) x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hχ : Function.Injective χ`. Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hfx⟩` from `hsep x y hne`. Conclude with `hfx (IsFractionRing.injective O (FractionRing O) (congrFun hxy ⟨f, hf⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h.comp hχ).mono fun x => iInf_mono fun f => ?_` and prove the remaining obligations. Conclude with `((F f).eigenspace_le_genEigenspace (k := 1) (by norm_num)).trans (((F f).genEigenspace _).monotone le_top)`.
+A detailed English derivation is pending.
 -/
 theorem heckeEig_iSupIndep (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x ≠ (f : X → O) y) :
     iSupIndep (heckeEig T act) := by
@@ -176,11 +172,11 @@ theorem heckeEig_iSupIndep (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X 
     (((F f).genEigenspace _).monotone le_top)
 
 /- English proof (translation)
-Establish `hu : u ∈ ⨆ x, heckeEig T act x` using `by rw [htop]; exact Submodule.mem_top`. Use `Submodule.iSup_induction (heckeEig T act) (motive := fun u => φ ((act f).baseChange (FractionRing O) u) = algebraMap O (FractionRing O) ((f : X → O) x0) * φ u) hu ?_ ?_ ?_` and prove the remaining obligations. Introduce `x u hux`. Establish `he : (act f).baseChange (FractionRing O) u = algebraMap O (FractionRing O) ((f : X → O) x) • u` using `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hux f)`. Rewrite using `[he, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x = x0`. Rewrite using `[hx]`. Rewrite using `[hφ x hx u hux, mul_zero, mul_zero]`. Simplify using the standard rewrite rules. Introduce `a b ha hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, map_add, map_add, ha, hb, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_eig (htop : ⨆ x, heckeEig T act x = ⊤) (x0 : X)
     (φ : Module.Dual (FractionRing O) (TensorProduct O (FractionRing O) Mo))
@@ -209,29 +205,27 @@ namespace GlobalTheory.EtaJoin.TypeTieProof
 open Formalism.L2.NG
 
 /- English proof (translation)
-Introduce `D M i HT HR AV _ HS HE S y hy`. Set `ι : FractionRing (D.nd.O i) →+* ℂ` to `(D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)`. Establish `hι : ∀ a, ι (D.nd.embK i a) = D.what₂.embLL a` using `D.naut.iota_LL i`. Use `mem_biSup_of_forall (heckeEig (D.nd.T i) (D.nd.act i)) (heckeEig_iSupIndep _ _ (D.nd.T_sep i)) (HE i) {x | ∃ P ∈ S, D.naut.ptV i P = some x} _ ?_` and prove the remaining obligations. Introduce `x0 hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hv`. Take `⟨φ, hφv, hφB⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hv inferInstance`. Establish `hφ0 : ∀ x, x ≠ x0 → ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, φ u = 0`. Introduce `x hx u hu`. Establish `hm : φ u ∈ Submodule.map φ (⨆ (x) (_ : x ≠ x0), heckeEig (D.nd.T i) (D.nd.act i) x)` using `Submodule.mem_map_of_mem (Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem hx hu))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[hφB]`. Conclude with `(Submodule.mem_bot _).1 hm`. Establish `hφe` using `dual_eig (D.nd.T i) (D.nd.act i) (HE i) x0 φ hφ0`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i))`. Establish `hb` using `D.what₂.jMt_basis (D.nd.mu i) (D.nd.j i) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f0 : D.what₂.MtL (D.nd.mu i) (D.nd.j i) →ₛₗ[D.what₂.embLL] ℂ` to `{ toFun := fun z => ι (φ (D.nd.prMt i z)) map_add' := fun a c => by simp only [map_add] map_smul' := fun a z => by show ι (φ (D.nd.prMt i (a • z))) = D.what₂.embLL a • ι (φ (D.nd.prMt i z))`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, map_mul, hι, smul_eq_mul] }`. Take `⟨Ψ, hΨ⟩` from `exists_ext_semilin D.what₂.embLL (D.what₂.jMt _ _) b hb.1 hb.2 f0`. Set `bC : Module.Basis _ ℂ (D.what₂.Mt (D.nd.mu i) (D.nd.j i))` to `Module.Basis.mk hb.1 hb.2.ge`. Establish `hbC : ∀ q, bC q = D.what₂.jMt _ _ (b q)` using `fun q => by simp [bC]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ P ∈ S, D.naut.typeV i P ≤ LinearMap.ker Ψ`. Introduce `P hP z hz`. Assume the negation of the conclusion as `hz0`. Rewrite `hz0` using `[LinearMap.mem_ker]`. Apply `hx0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, hP, (AV.ptV i P x0).2 ?_⟩` and prove the remaining obligations. Introduce `w k s ϖ hw hc hu hk1 hk2 y' hy'`. Take `⟨c, hcP⟩` from `HS P w k s ϖ hw hc hu hk1 hk2`. Use `choose x' hx' using HR i w k s ϖ hw hc hu hk1 hk2`. Set `Tt : Module.End ℂ (D.what₂.Mt (D.nd.mu i) (D.nd.j i))` to `bC.constr ℂ (fun q => D.what₂.jMt _ _ (x' (b q)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTb : ∀ q, Tt (bC q) = D.what₂.jMt _ _ (x' (b q))` using `fun q => by`. Simplify using `only [Tt, Module.Basis.constr_basis]`. Establish `t0 : tN (M.loc i).J s ϖ k (0 : GAf D.host.E D.R.nV → (M.loc i).wt.W) = 0`. Establish `e` using `tN_lin HT i hw s hc ϖ hu k 1 0 0`. Simplify using `only [smul_zero, add_zero, one_smul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using e`. Set `tl : (GAf D.host.E D.R.nV → (M.loc i).wt.W) →ₗ[ℂ] (GAf D.host.E D.R.nV → (M.loc i).wt.W)` to `{ toFun := tN (M.loc i).J s ϖ k map_add' := fun f f' => by simpa using tN_lin HT i hw s hc ϖ hu k 1 f f' map_smul' := fun a f => by simpa [t0] using tN_lin HT i hw s hc ϖ hu k a f 0 }`. Establish `hreal : (M.loc i).real ∘ₗ Tt = tl ∘ₗ (M.loc i).real` using `bC.ext fun q => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hTb, hbC]`. Conclude with `hx' (b q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨT : Ψ ∘ₗ Tt = ι (algebraMap _ (FractionRing (D.nd.O i)) ((D.nd.hT i w k : D.nd.X i → D.nd.O i) x0)) • Ψ` using `bC.ext fun q => by`. Rewrite using `[LinearMap.comp_apply, hTb, LinearMap.smul_apply, hbC, hΨ, hΨ]`. Use `show ι (φ (D.nd.prMt i (x' (b q)))) = _ • ι (φ (D.nd.prMt i (b q)))`. Rewrite using `[HT.hT i w k s ϖ hw hc hu hk1 hk2 (b q) (x' (b q)) (hx' (b q)), hφe, map_mul, smul_eq_mul]`. Establish `hTz : Tt z = c • z` using `(M.loc i).real_inj (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `LinearMap.congr_fun hreal z`. Rewrite `e` using `[LinearMap.comp_apply, LinearMap.comp_apply]`. Rewrite using `[e, map_smul]`. Conclude with `hcP z hz)`. Establish `hcz : c = ι (algebraMap _ (FractionRing (D.nd.O i)) ((D.nd.hT i w k : D.nd.X i → D.nd.O i) x0))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e` using `LinearMap.congr_fun hΨT z`. Rewrite `e` using `[LinearMap.comp_apply, LinearMap.smul_apply, hTz, map_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hz0 e`. Rewrite using `[hcP y' hy', hcz]`. Both sides reduce to the same expression.
-
-Establish `hyk` using `(iSup₂_le hker) hy`. Rewrite `hyk` using `[LinearMap.mem_ker, hΨ]`. Conclude with `hφv ((map_eq_zero_iff ι ι.injective).1 hyk)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeTie_holds : ∀ (D : D7) (M : MtFam D) (i : D.nd.Loc), HeckeTied D M → HeckeRational D M → AVTied D M →
     SplitUnif D → HeckeScalar M i → D.nd.EigSpan → TypeTie D i := by

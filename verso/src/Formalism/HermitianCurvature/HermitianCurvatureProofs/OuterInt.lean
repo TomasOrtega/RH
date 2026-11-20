@@ -15,27 +15,21 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `hsW : SigmaFinite S.μW` using `Dx2.OrbJ.sigmaF S.haarW`. Establish `hsW' : SigmaFinite S.μW'` using `Dx2.OrbJ.sigmaF S.haarW'`. Establish `hfW : IsFiniteMeasure S.μW` using `⟨by rw [hW1]; exact ENNReal.one_lt_top⟩`. Establish `hfW' : IsFiniteMeasure S.μW'` using `⟨by rw [hW1']; exact ENNReal.one_lt_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set γ := U.mMap k r 0 (U.hMat σ d) γ0 with hγ`. Establish `hγG : γ ∈ B.GV k r`. Use `(Formalism.FourierDecayAlt.P.slice_membership k r 0).1 (U.hMat σ d) γ0 (hMat_det_ne σ d hd) hγ0` as an intermediate fact. Conclude with `this`. Use `set f : B.SS k r → (Wq →L[ℂ] Wp) := fun p => theta0 S.z σ.symm p • D.orbIntegrand S γ F p with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : AEStronglyMeasurable f S.μSS` using `(theta0_meas S.z σ.symm).aestronglyMeasurable.smul (Dx3.integrand_aesm S hγG hFc)`. Establish `hSS` using `muSS_eq S hN`. Use `set P := (S.μW.prod (QN k r)).prod (S.μW'.prod (QN k r)) with hP`. Establish `hfm' : AEStronglyMeasurable f (P.map (TN k r))` using `by rw [← hSS]; exact hfm`. Establish `hTm : AEMeasurable (TN k r) P` using `TN_meas.aemeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `set P2 := (S.μW.prod S.μW').prod ((QN k r).prod (QN k r)) with hP2`. Establish `hsw` using `Dx2.SL.measurePreserving_prod_middle_swap S.μW (QN k r) S.μW' (QN k r)`. Use `set G2 : (Mt k r × Mt k r) × ((U.RC k r 0 × (G.UT r → ℂ)) × (U.RC k r 0 × (G.UT r → ℂ))) → (Wq →L[ℂ] Wp) := fun x => f (TN k r ((x.1.1, x.2.1), (x.1.2, x.2.2))) with hG2`. Establish `hG2e : G2 = (f ∘ TN k r) ∘ (Dx2.SL.swap4 (α` using `Mt k r) (β := U.RC k r 0 × (G.UT r → ℂ)) (γ := Mt k r) (δ := U.RC k r 0 × (G.UT r → ℂ))).symm := by`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hfTm : AEStronglyMeasurable (f ∘ TN k r) P` using `hfm'.comp_aemeasurable hTm`. Establish `hG2m : AEStronglyMeasurable G2 P2`. Rewrite using `[hG2e]`. Conclude with `hfTm.comp_measurePreserving (hsw.symm _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ x ∂(S.μW.prod S.μW'), Matrix.of x.1 ∈ UWset k r S.z ∧ Matrix.of x.2 ∈ UWset k r S.z'`. Establish `b1` using `(Measure.quasiMeasurePreserving_fst (μ := S.μW) (ν := S.μW')).ae (Dx2.OrbJ.ae_mem S.haarW)`. Establish `b2` using `(Measure.quasiMeasurePreserving_snd (μ := S.μW) (ν := S.μW')).ae (Dx2.OrbJ.ae_mem S.haarW')`. Use `filter_upwards [b1, b2] with x h1 h2 using ⟨h1, h2⟩`. Establish `hin` using `fun x : Mt k r × Mt k r => fun hx : Matrix.of x.1 ∈ UWset k r S.z ∧ Matrix.of x.2 ∈ UWset k r S.z' => inner_int S z0 z0' hz hz' σ d hd γ0 hγ0 hrel F hFc M Bs hBs hBsf hdom x.1 x.2 hx.1 hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG2i : Integrable G2 P2`. Rewrite using `[integrable_prod_iff hG2m]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae] with x hx using (hin x hx).1`. Use `Integrable.of_bound hG2m.norm.integral_prod_right' (M * (U.muXi k r 0 0 σ Bs).toReal) ?_ filter_upwards [hae] with x hx` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `(hin x hx).2.2`. Establish `hfTi : Integrable (f ∘ TN k r) P`. Use `(hsw.symm _).integrable_comp_emb (MeasurableEquiv.measurableEmbedding _) (g := f ∘ TN k r)` as an intermediate fact. Rewrite using `[← this, ← hG2e]`.
-
-Conclude with `hG2i`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hSS]`. Conclude with `(integrable_map_measure hfm' hTm).2 hfTi`. Rewrite using `[hSS, integral_map hTm hfm']`.
-
-Establish `e` using `(hsw.symm _).integral_comp' (f ∘ TN k r)`. Express the relevant statement in the definitionally equal form `∫ x, (f ∘ TN k r) x ∂P = _`. Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `∫ x, G2 x ∂P2 = _`. Rewrite using `[hP2, integral_prod G2 hG2i]`.
-
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx using (hin x hx).2.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem outer_int (S : B.RealPlaceData k r Wp Wq) (hN : S.μN = D.muN k r) (hW1 : S.μW Set.univ = 1)
     (hW1' : S.μW' Set.univ = 1) (z0 z0' : Fin (2 * 0 + k + 1) → ℂ)
@@ -109,9 +103,9 @@ theorem outer_int (S : B.RealPlaceData k r Wp Wq) (hN : S.μN = D.muN k r) (hW1 
     filter_upwards [hae] with x hx using (hin x hx).2.1
 
 /- English proof (translation)
-Take `⟨M, Bs, hBs, hBsf, hdom⟩` from `slice_dom k r hr σ d hd F hFc R hFs`. Take `⟨hint, heq⟩` from `outer_int S hN hW1 hW1' z0 z0' hz hz' σ d hd γ0 hγ0 hrel F hFc M Bs hBs hBsf hdom`. Establish `hγG : U.mMap k r 0 (U.hMat σ d) γ0 ∈ B.GV k r` using `(Formalism.FourierDecayAlt.P.slice_membership k r 0).1 (U.hMat σ d) γ0 (hMat_det_ne σ d hd) hγ0`. Establish `hw' : ∀ a : Fin r, w.symm a.castSucc = (σ.symm.symm a).castSucc` using `by simpa using hw`. Establish `hnc` using `theta0_normCut S hγG hdd hZw σ.symm hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ θ, D.IsNormCut S (U.mMap k r 0 (U.hMat σ d) γ0) (D.muR S (U.mMap k r 0 (U.hMat σ d) γ0) w) θ ∧ Integrable (fun p => θ p • D.orbIntegrand S (U.mMap k r 0 (U.hMat σ d) γ0) F p) S.μSS` using `⟨_, hnc, hint⟩`. Unfold `D.orbJ`. Rewrite using `[dif_pos hex, Formalism.FourierDecayAlt.P.orbital_integral_indep_choice k r Wp Wq S _ _ hrel (Formalism.FourierDecayAlt.P.radial_measure_is_haar k r Wp Wq S _ w dd hγG hdd hZw) F hex.choose _ hex.choose_spec.1 hnc hex.choose_spec.2 hint, heq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbJ_mMap (S : B.RealPlaceData k r Wp Wq) (hN : S.μN = D.muN k r) (hW1 : S.μW Set.univ = 1)
     (hW1' : S.μW' Set.univ = 1) (z0 z0' : Fin (2 * 0 + k + 1) → ℂ)

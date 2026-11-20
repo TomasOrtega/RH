@@ -14,11 +14,11 @@ open BranchingSupport Formalism.FourierDecayAlt.ThreeDimData ReciprocityTheory.C
 def thr (n : ℕ) (ε : Fin n → Bool) : ℝ := max (thrStar ε) (G2.thrS ε)
 
 /- English proof (translation)
-Establish `hp : pOf ε ≤ n` using `(Finset.card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `hq : qOf ε ≤ n` using `(Finset.card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `h0 : S7.q0 ε ≤ n` using `by unfold S7.q0; omega`. Establish `hp' : (pOf ε : ℝ) ≤ n` using `by exact_mod_cast hp`. Establish `hq' : (qOf ε : ℝ) ≤ n` using `by exact_mod_cast hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : (S7.q0 ε : ℝ) ≤ n` using `by exact_mod_cast h0`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h2 : (n : ℝ) ≤ n ^ 3` using `le_self_pow₀ h1 (by norm_num)`. Establish `h3 : (n : ℝ) ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ h1 (by norm_num)`. Establish `h4 : Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ 2 * n` using `Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 16 * (n : ℝ) * S7.q0 ε ≤ 16 * n * n` using `by gcongr`. Establish `h6 : (n : ℝ) * pOf ε * qOf ε ≤ n * n * n` using `by gcongr`. Apply the tactic sequence `refine max_le (max_le ?_ ?_) (max_le ?_ ?_) <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thr n ε ≤ 43 * (n : ℝ) ^ 3 := by
   have hp : pOf ε ≤ n := (Finset.card_le_univ _).trans_eq (Fintype.card_fin n)
@@ -36,7 +36,7 @@ theorem thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thr n ε ≤ 43 
   refine max_le (max_le ?_ ?_) (max_le ?_ ?_) <;> nlinarith
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, v => by change Formalism.MainNotions.S.dsig σ X (Formalism.MainNotions.S.dsigW σ W v) = PI.UpqRep.dsig σ X (PI.UpqRep.dsigW σ W v) rw [dsigW_SK σ W v]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx k r → (H →L[ℂ] H)) : ∀ (W : List (Mx k r)) (v : H),
@@ -47,7 +47,7 @@ theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpac
     rw [dsigW_SK σ W v]; rfl
 
 /- English proof (translation)
-Introduce `n ε μ H _ _ _ σ hμ hσ h hg ht` and use `have ht' : G2.thrS ε + 1 < h := lt_of_le_of_lt (by unfold thr; linarith [le_max_right (thrStar ε) (G2.thrS ε)]) ht ⟨G2.zuckerman_tensor_exists n ε μ H σ hμ hσ h hg ht', G2.zuckerman_dual_tensor_exists n ε μ H σ hμ hσ h hg ht'⟩ dec := by intro k r ε μ U h m hU hg ht obtain ⟨C, Ws, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zuckerman_library_bounds : Lib thr where
   zg := fun n ε μ H _ _ _ σ hμ hσ h hg ht =>

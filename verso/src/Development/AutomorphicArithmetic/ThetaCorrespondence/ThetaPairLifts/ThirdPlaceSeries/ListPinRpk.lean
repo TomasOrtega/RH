@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiteralAutomorphy.PinPt
 open Formalism.L2.Host Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.Lev
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem listPin_rpk_alt {D : D7} {O : Obj D} {R : _root_.Formalism.L2.RecTAlt O.ex} {S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt R} {x : GlobalTheory.Mem.R3.TwIn O.ex}
     (y : _root_.GlobalTheory.Mem.R3.RealInAlt x R S) (r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage R S) (hr : r = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y) {CF bb : ℝ}

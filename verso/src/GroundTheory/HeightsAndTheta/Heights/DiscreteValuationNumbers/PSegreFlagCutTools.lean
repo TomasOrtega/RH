@@ -17,18 +17,18 @@ variable {K : Type} {ι : K → Type} {O : Type} [CommRing O] {Ω : Type} [Field
   {M M' : ℕ} {Φ : Type} [Field Φ] [Algebra Ω Φ] [Algebra O Φ] [IsScalarTower O Ω Φ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Apply the tactic sequence `rcases o with _ | _ | k <;> simp [liftPairDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftPairDeg_sub (a b : K → ℤ) : liftPairDeg (a - b) = liftPairDeg a - liftPairDeg b := by
   funext o
   rcases o with _ | _ | k <;> simp [liftPairDeg]
 
 /- English proof (translation)
-Introduce `d hd`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero _ f d hd`. Establish `hb` using `hf hu`. Rewrite using `[← hb]`. Use function extensionality and compare the values at `o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hσ : Function.Injective (fun p : Σ k, ι k => (⟨some (some p.1), p.2⟩ : Σ o, bundleIdx (bundleIdx ι M) M' o))`. Introduce and unpack `⟨a, i⟩ ⟨a', i'⟩ h`. Use `injection h with h1 h2`. Use `injection h1 with h1`. Use `injection h1 with h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `h1` using the available equality. Conclude with `Sigma.ext rfl h2`. Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index_inj hσ]`. Apply the tactic sequence `rcases o with _ | _ | k <;> simp [Finsupp.sum, Finset.sum_apply, blockWeight, Pi.single_apply, vdeg]`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_liftPairForm [DecidableEq K] {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b) :
     IsMultiHomog (liftPairForm M M' f) (vdeg b) := by
@@ -49,7 +49,7 @@ theorem isMultiHomog_liftPairForm [DecidableEq K] {f : MRing ι O} {b : K → �
   rcases o with _ | _ | k <;> simp [Finsupp.sum, Finset.sum_apply, blockWeight, Pi.single_apply, vdeg]
 
 /- English proof (translation)
-Unfold `liftPairForm`. Establish `e : pt ∘ (fun p : Σ k, ι k => (⟨some (some p.1), p.2⟩ : Σ o, bundleIdx (bundleIdx ι M) M' o)) = algebraMap Ω Φ ∘ y` using `funext hpt`. Rewrite using `[aeval_rename, e, aeval_algebraMap_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_liftPairForm {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Φ}
     (hpt : ∀ p : Σ k, ι k, pt ⟨some (some p.1), p.2⟩ = algebraMap Ω Φ (y p)) (f : MRing ι O) :
@@ -67,9 +67,9 @@ variable {K : Type} {ι : K → Type} {O : Type} [CommRing O] {Ω : Type} [Field
   {M M' : ℕ} {Φ : Type} [Field Φ] [Algebra Ω Φ] [Algebra O Φ] [IsScalarTower O Ω Φ]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [liftPairForm, rename_C, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, map_C]`. Rewrite using `[IsScalarTower.algebraMap_apply O Ω Φ]`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [liftPairForm, map_add] at hp hq ⊢`. Rewrite using `[hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [liftPairForm, pointConeMap] at hp ⊢`. Simplify using `only [map_mul, rename_X, aeval_X, map_X, map_C, rename_C, hpt, hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pointConeMap_liftPairForm {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Φ}
     (hpt : ∀ p : Σ k, ι k, pt ⟨some (some p.1), p.2⟩ = algebraMap Ω Φ (y p)) (f : MRing ι O) :
@@ -87,9 +87,9 @@ theorem pointConeMap_liftPairForm {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleI
     simp only [map_mul, rename_X, aeval_X, map_X, map_C, rename_C, hpt, hp]
 
 /- English proof (translation)
-Unfold `pointIdeal`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Rewrite using `[pointConeMap_liftPairForm hpt]`. Establish `hinj : Function.Injective (fun k : K => (some (some k) : Option (Option K)))` using `fun a b h => Option.some_injective _ (Option.some_injective _ h)`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h' : MvPolynomial.map (algebraMap Ω Φ) (pointConeMap O y f) = 0` using `rename_injective _ hinj (by rw [h, map_zero])`. Conclude with `map_injective _ (algebraMap Ω Φ).injective (by rw [h', map_zero])`. Introduce `h`. Rewrite using `[h, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftPairForm_mem_iff {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Φ}
     (hpt : ∀ p : Σ k, ι k, pt ⟨some (some p.1), p.2⟩ = algebraMap Ω Φ (y p)) (f : MRing ι O) :
@@ -108,17 +108,17 @@ theorem liftPairForm_mem_iff {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleIdx (b
     rw [h, map_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨bf, bg, hbf, hbg, hb⟩` from `hD.degrees`. Use `IsVerticalDivisor.of_unit_off_special ⟨vdeg bf, vdeg bg, isMultiHomog_liftPairForm hbf, isMultiHomog_liftPairForm hbg, ?_⟩ (fun h => hD.num_not_mem ((liftPairForm_mem_iff hpt f).1 h)) (fun h => hD.den_not_mem ((liftPairForm_mem_iff hpt g).1 h)) ?_` and prove the remaining obligations. Rewrite using `[← hb]`. Use function extensionality and compare the values at `o`. Apply the tactic sequence `rcases o with _ | _ | k <;> simp [vdeg, liftPairDeg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `W hW hPW hrel hϖ`. Set `σ : MRing ι O →+* MRing (bundleIdx (bundleIdx ι M) M') O` to `(rename fun p : Σ k, ι k => (⟨some (some p.1), p.2⟩ : Σ o, bundleIdx (bundleIdx ι M) M' o)).toRingHom`. Establish `hσ : ∀ a, σ a = liftPairForm M M' a` using `fun _ => rfl`. Establish `hW' : (W.comap σ).IsPrime` using `Ideal.comap_isPrime σ W`. Establish `hPW' : pointIdeal O y ≤ W.comap σ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite using `[Ideal.mem_comap, hσ]`. Conclude with `hPW ((liftPairForm_mem_iff hpt a).2 ha)`. Establish `hrel' : IsRelevant (W.comap σ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hrel (some (some k))`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, hσ]`. Simplify `hi` using `[liftPairForm]`. Establish `hϖ' : (C ϖ : MRing ι O) ∉ W.comap σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, hσ]`. Simplify `hϖ` using `[liftPairForm]`. Take `⟨u, v, hu, hv, h⟩` from `hD.unit_off_special _ hW' hPW' hrel' hϖ'`. Use `⟨liftPairForm M M' u, liftPairForm M M' v, by rwa [← hσ, ← Ideal.mem_comap], by rwa [← hσ, ← Ideal.mem_comap], ?_⟩` and prove the remaining obligations. Establish `e : liftPairForm M M' u * liftPairForm M M' f - liftPairForm M M' v * liftPairForm M M' g = liftPairForm M M' (u * f - v * g)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [liftPairForm, map_sub, map_mul]`. Rewrite using `[e]`. Conclude with `(liftPairForm_mem_iff hpt _).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsVerticalDivisor.liftPair [DecidableEq K] {y : (Σ k, ι k) → Ω} {pt : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Φ}
     (hpt : ∀ p : Σ k, ι k, pt ⟨some (some p.1), p.2⟩ = algebraMap Ω Φ (y p)) {ϖ : O} {b : K → ℤ}
@@ -165,7 +165,7 @@ section Divisors
 variable {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O]
 
 /- English proof (translation)
-The claim follows from `IsVerticalDivisor.of_unit_off_special hD.degrees hf hg fun W hW hHW hrel hϖ => by obtain ⟨u, v, hu, hv, h⟩ := hD.unit_off_special W hW (hPH.trans hHW) hrel hϖ exact ⟨u, v, hu, hv, hPH h⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsVerticalDivisor.restrict {P H : Ideal (MRing ι O)} {ϖ : O} {b : K → ℤ} {f g : MRing ι O}
     (hD : IsVerticalDivisor P ϖ b f g) (hPH : P ≤ H) (hf : f ∉ H) (hg : g ∉ H) :
@@ -179,9 +179,9 @@ variable [IsDomain O] [IsDiscreteValuationRing O] [Fintype K] [∀ k, Fintype (�
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `e` using `divCycle_eq_of_sub_mem h`. Rewrite `e` using `[DivCycleMul.full O K ι P f g' ‹_› hf hg', DivCycleMul.full O K ι P f' g ‹_› hf' hg]`. Use function extensionality and compare the values at `W`. Establish `eW` using `congrFun e W`. Simplify using `only [Pi.add_apply] at eW`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ratDiv]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ratDiv_eq_of_sub_mem {P : Ideal (MRing ι O)} [P.IsPrime] {f g f' g' : MRing ι O} (hf : f ∉ P)
     (hg : g ∉ P) (hf' : f' ∉ P) (hg' : g' ∉ P) (h : f * g' - f' * g ∈ P) :
@@ -202,11 +202,11 @@ variable {Ω : Type*} [Field Ω] {N : ℕ} {E : Type*} [AddCommGroup E] [Module 
   [Algebra Ω Φ]
 
 /- English proof (translation)
-Establish `hAB : w.toMatrix w' * w'.toMatrix w = 1` using `w.toMatrix_mul_toMatrix_flip w'`. Establish `hA : (w.toMatrix w').BlockTriangular id`. Introduce `i j hji`. Rewrite using `[Module.Basis.toMatrix_apply]`. Conclude with `hsame j i hji`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `_` to `invertibleOfRightInverse _ _ hAB`. Establish `hB : (w'.toMatrix w).BlockTriangular id`. Establish `h` using `Matrix.blockTriangular_inv_of_blockTriangular hA`. Rewrite `h` using `[Matrix.inv_eq_right_inv hAB]`. Then use the resulting hypothesis. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hB hij`. Rewrite `h` using `[Module.Basis.toMatrix_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem repr_flag_inv (w w' : Module.Basis (Fin N) Ω E) (hsame : ∀ i j : Fin N, i < j → w.repr (w' i) j = 0) :
     ∀ i j : Fin N, i < j → w'.repr (w i) j = 0 := by
@@ -225,9 +225,9 @@ theorem repr_flag_inv (w w' : Module.Basis (Fin N) Ω E) (hsame : ∀ i j : Fin 
   rwa [Module.Basis.toMatrix_apply] at h
 
 /- English proof (translation)
-Establish `hAB : w.toMatrix w' * w'.toMatrix w = 1` using `w.toMatrix_mul_toMatrix_flip w'`. Establish `h` using `congrFun (congrFun hAB k) k`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single k]`. Simplify `h` using `only [Module.Basis.toMatrix_apply]`. Introduce `i _ hik`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hik with hlt | hgt` into its components or cases. Rewrite using `[Module.Basis.toMatrix_apply, hsame i k hlt, zero_mul]`. Rewrite using `[Module.Basis.toMatrix_apply (e := w'), repr_flag_inv w w' hsame k i hgt, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_flag_diag (w w' : Module.Basis (Fin N) Ω E) (hsame : ∀ i j : Fin N, i < j → w.repr (w' i) j = 0)
     (k : Fin N) : w.repr (w' k) k * w'.repr (w k) k = 1 := by
@@ -243,11 +243,11 @@ theorem repr_flag_diag (w w' : Module.Basis (Fin N) Ω E) (hsame : ∀ i j : Fin
   · simp
 
 /- English proof (translation)
-Unfold `flagLineCoord`. Rewrite using `[Finset.sum_eq_single ⟨k, hk⟩, Finset.sum_eq_single ⟨k, hk⟩]`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_eq_same, map_one, mul_one, ← mul_assoc, mul_comm (algebraMap Ω Φ _), mul_assoc, ← map_mul, repr_flag_diag w w' hsame, map_one, mul_one]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with hlt | hgt` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[repr_flag_inv w w' hsame j ⟨k, hk⟩ hlt, map_zero, mul_zero]`. Establish `h0 : flagCoord w e t (k + 1) j = 0`. Unfold `flagCoord`. Rewrite using `[if_neg]`. Conclude with `fun h => absurd hgt (by rw [Fin.lt_def]; simp only; omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[h0, zero_mul]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply, if_neg hj, map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flagLineCoord_flag (w w' e : Module.Basis (Fin N) Ω E)
     (hsame : ∀ i j : Fin N, i < j → w.repr (w' i) j = 0) (t : Fin N → Φ) (k : ℕ) (hk : k < N) :
@@ -278,28 +278,28 @@ section Slots
 variable {K : Type} {ι : K → Type} {R : Type} [CommRing R] {M M' m : ℕ}
 
 /- English proof (translation)
-Simplify using `[closureForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem closureForm_zero (h : MRing (bundleIdx (bundleIdx ι M) M') R) (F : Fin m → MRing ι R) :
     closureForm M M' h F (Fin.castAdd m 0) = h := by
   simp [closureForm]
 
 /- English proof (translation)
-Simplify using `[closureForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem closureForm_natAdd (h : MRing (bundleIdx (bundleIdx ι M) M') R) (F : Fin m → MRing ι R) (j : Fin m) :
     closureForm M M' h F (Fin.natAdd 1 j) = liftPairForm M M' (F j) := by
   simp [closureForm]
 
 /- English proof (translation)
-Simplify using `[closureDeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem closureDeg_zero (ζ : Option (Option K) → ℤ) (L : Fin m → K → ℤ) :
     closureDeg ζ L (Fin.castAdd m 0) = ζ := by
   simp [closureDeg]
 
 /- English proof (translation)
-Simplify using `[closureDeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem closureDeg_natAdd (ζ : Option (Option K) → ℤ) (L : Fin m → K → ℤ) (j : Fin m) :
     closureDeg ζ L (Fin.natAdd 1 j) = liftPairDeg (L j) := by
@@ -313,13 +313,13 @@ variable {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] [I
   [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Simplify using `[cycEval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycEval_zero_fun (Z : Ideal (MRing ι O) → ℤ) : cycEval (fun _ => 0) Z = 0 := by
   simp [cycEval]
 
 /- English proof (translation)
-Unfold `cycEval`. Conclude with `finsum_congr h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cycEval_congr_cycle {n Z Z' : Ideal (MRing ι O) → ℤ} (h : ∀ W, Z W * n W = Z' W * n W) :
     cycEval n Z = cycEval n Z' := by
@@ -327,7 +327,7 @@ theorem cycEval_congr_cycle {n Z Z' : Ideal (MRing ι O) → ℤ} (h : ∀ W, Z 
   exact finsum_congr h
 
 /- English proof (translation)
-Rewrite using `[cycEval_eq_sum hZ, cycEval_eq_sum hZ, cycEval_eq_sum hZ, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cycEval_add_fun (n₁ n₂ Z : Ideal (MRing ι O) → ℤ) (hZ : (Function.support Z).Finite) :
     cycEval (fun W => n₁ W + n₂ W) Z = cycEval n₁ Z + cycEval n₂ Z := by
@@ -336,7 +336,7 @@ theorem cycEval_add_fun (n₁ n₂ Z : Ideal (MRing ι O) → ℤ) (hZ : (Functi
   ring
 
 /- English proof (translation)
-Rewrite using `[cycEval_eq_sum hZ, cycEval_eq_sum hZ, cycEval_eq_sum hZ, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cycEval_sub_fun (n₁ n₂ Z : Ideal (MRing ι O) → ℤ) (hZ : (Function.support Z).Finite) :
     cycEval (fun W => n₁ W - n₂ W) Z = cycEval n₁ Z - cycEval n₂ Z := by
@@ -345,7 +345,7 @@ theorem cycEval_sub_fun (n₁ n₂ Z : Ideal (MRing ι O) → ℤ) (hZ : (Functi
   ring
 
 /- English proof (translation)
-Use extensionality with `μ`. Rewrite using `[coeff_C]`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `hA.coeff_eq_zero (by rwa [Ne, Finsupp.degree_eq_zero_iff, eq_comm])`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_C_of_isHomogeneous_zero {σ : Type*} {A : MvPolynomial σ ℤ} (hA : A.IsHomogeneous 0) :
     A = C (A.coeff 0) := by
@@ -357,9 +357,9 @@ theorem eq_C_of_isHomogeneous_zero {σ : Type*} {A : MvPolynomial σ ℤ} (hA : 
   · exact hA.coeff_eq_zero (by rwa [Ne, Finsupp.degree_eq_zero_iff, eq_comm])
 
 /- English proof (translation)
-Unfold `classNum`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `h0 : μ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hμ) (hA.coeff_eq_zero (by rwa [Ne, Finsupp.degree_eq_zero_iff]))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Simplify using `[classList]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem classNum_of_isHomogeneous_zero {σ : Type*} (z z' : σ → K → ℤ) {A : MvPolynomial σ ℤ}
     (hA : A.IsHomogeneous 0) (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -375,7 +375,7 @@ theorem classNum_of_isHomogeneous_zero {σ : Type*} (z z' : σ → K → ℤ) {A
 variable [Fintype K] [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `pairNum`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pairNum_congr_ratDiv {P : Ideal (MRing ι O)} {r : ℕ} {z z' : Fin r → K → ℤ}
     {F G F' G' : Fin r → MRing ι O} (h : ∀ i, ratDiv P (F i) (G i) = ratDiv P (F' i) (G' i))
@@ -385,9 +385,9 @@ theorem pairNum_congr_ratDiv {P : Ideal (MRing ι O)} {r : ℕ} {z z' : Fin r �
   simp only [h]
 
 /- English proof (translation)
-Unfold `pairNum`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[Pi.single_eq_same]`. Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [classNum_zero_poly]`. Conclude with `cycEval_zero_fun _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairNum_single {P : Ideal (MRing ι O)} {r : ℕ} (z z' : Fin r → K → ℤ) (F G : Fin r → MRing ι O)
     (j : Fin r) (H : MvPolynomial (Fin r ⊕ Fin r) ℤ) (Q : List (K → ℤ)) :
@@ -402,11 +402,11 @@ theorem pairNum_single {P : Ideal (MRing ι O)} {r : ℕ} (z z' : Fin r → K �
   · simp
 
 /- English proof (translation)
-Unfold `pairNum`. Use `Finset.sum_congr rfl fun i _ => cycEval_congr_support fun W hW => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[add_mul, classNum_add_poly, classNum_X_mul, classNum_X_mul, ← Finset.sum_add_distrib]`. Unfold `classNum`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hlen : e ≤ (classList (Sum.elim z z') μ ++ Q).length`. Rewrite using `[List.length_append, classList_length_of_mem_support _ (hBs i) hμ]`. Conclude with `hQ`. Rewrite using `[vNumL_perm W List.perm_middle, vNumL_add_of_ratDiv_ne_zero hϖ hP (hD i) hW _ _ _ hlen]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairNum_mul_pairSum {ϖ : O} (hϖ : Irreducible ϖ) {P : Ideal (MRing ι O)} {e : ℕ} (hP : IsModelOver P (e + 1))
     {r : ℕ} (z z' : Fin r → K → ℤ) (fs gs : Fin r → MRing ι O)

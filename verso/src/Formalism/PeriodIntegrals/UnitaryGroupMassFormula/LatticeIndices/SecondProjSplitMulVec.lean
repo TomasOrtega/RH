@@ -9,7 +9,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[pr1, Matrix.mulVec, dotProduct, Prod.fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem firstProj_split_mulVec {K T : Type} [Field K] [CommRing T] [Algebra K T] (θ : T ≃ₐ[K] K × K) {n : Type}
     [Fintype n] (M : Matrix n n T) (v : n → T) :
@@ -18,7 +18,7 @@ theorem firstProj_split_mulVec {K T : Type} [Field K] [CommRing T] [Algebra K T]
   simp [pr1, Matrix.mulVec, dotProduct, Prod.fst_sum]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[pr2, Matrix.mulVec, dotProduct, Prod.snd_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem secondProj_split_mulVec {K T : Type} [Field K] [CommRing T] [Algebra K T] (θ : T ≃ₐ[K] K × K) {n : Type}
     [Fintype n] (M : Matrix n n T) (v : n → T) :

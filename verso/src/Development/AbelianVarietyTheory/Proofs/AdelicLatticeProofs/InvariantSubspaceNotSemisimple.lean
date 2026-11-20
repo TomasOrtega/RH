@@ -6,13 +6,13 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hJ`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∀ k : ℕ, J ^ (k + 1) ≠ ⊥`. Introduce `k`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa [Submodule.pow_one] using h0`. Consider the case `succ k ih`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot ih`. Take `⟨b, hb, hba⟩` from `hcon a (Ideal.pow_le_self (Nat.succ_ne_zero k) ha) ha0`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hba` to reduce the goal to its premises. Establish `: b * a ∈ J ^ (k + 1 + 1)`. Rewrite using `[Ideal.IsTwoSided.pow_succ]`. Conclude with `Ideal.mul_mem_mul hb ha`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[h]`. Simplify using `using this`. Apply `key n` to reduce the goal to its premises. Rewrite using `[Submodule.pow_succ, hn]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_mul_eq_zero_of_isNilpotent {R : Type*} [Ring R] (J : Ideal R) [J.IsTwoSided]
     (hJ : IsNilpotent J) (h0 : J ≠ ⊥) : ∃ a ∈ J, a ≠ 0 ∧ ∀ b ∈ J, b * a = 0 := by
@@ -38,7 +38,7 @@ theorem exists_mem_mul_eq_zero_of_isNilpotent {R : Type*} [Ring R] (J : Ideal R)
   simp
 
 /- English proof (translation)
-Establish `: RingHomSurjective f` using `⟨hf⟩`. Conclude with `Ring.le_comap_jacobson (f := f) hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_mem_jacobson_of_surjective {R S : Type*} [Ring R] [Ring S] (f : R →+* S)
     (hf : Function.Surjective f) {b : R} (hb : b ∈ Ring.jacobson R) : f b ∈ Ring.jacobson S := by
@@ -56,15 +56,13 @@ noncomputable def spanAlg {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Set (M
     exact h.mul_mem a ha b hb)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span ℂ Γ at hx`. Express the relevant statement in the definitionally equal form `Matrix.map x (⇑σ : ℂ → ℂ) ∈ Submodule.span ℂ Γ`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg => exact Submodule.subset_span (h.aut_mem σ g hg)`. Consider the case `zero`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : Matrix.map (0 : Matrix ι ι ℂ) (⇑σ : ℂ → ℂ) = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Establish `e : Matrix.map (a + b) (⇑σ : ℂ → ℂ) = Matrix.map a (⇑σ : ℂ → ℂ) + Matrix.map b (⇑σ : ℂ → ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `e : Matrix.map (c • a) (⇑σ : ℂ → ℂ) = σ c • Matrix.map a (⇑σ : ℂ → ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_spanAlg {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Set (Matrix ι ι ℂ)} (h : IsPre Γ)
     (σ : ℂ ≃+* ℂ) {x : Matrix ι ι ℂ} (hx : x ∈ spanAlg h) : x.map σ ∈ spanAlg h := by
@@ -91,7 +89,7 @@ noncomputable def spanAlgMap {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Set
     (fun x => map_mem_spanAlg h σ x.2)
 
 /- English proof (translation)
-Introduce `y`. Use `⟨⟨y.1.map σ.symm, map_mem_spanAlg h σ.symm y.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[spanAlgMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem spanAlgMap_surjective {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Set (Matrix ι ι ℂ)} (h : IsPre Γ)
     (σ : ℂ ≃+* ℂ) : Function.Surjective (spanAlgMap h σ) := by
@@ -102,15 +100,15 @@ theorem spanAlgMap_surjective {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Se
   simp [spanAlgMap]
 
 /- English proof (translation)
-Introduce `W hW`. Establish `hW' : ∀ x ∈ Submodule.span ℂ Γ, ∀ v ∈ W, x *ᵥ v ∈ W`. Introduce `x hx v hv`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hW x hx v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mulVec]`. Conclude with `W.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mulVec]`. Conclude with `W.smul_mem _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `U : Submodule (spanAlg h) (ι → ℂ)` to `{ W.toAddSubmonoid with smul_mem' := fun c v hv => hW' c.1 c.2 v hv }`. Take `⟨U', hU⟩` from `exists_isCompl U`. Establish `hsm : ∀ (x : Matrix ι ι ℂ), x ∈ spanAlg h → ∀ v ∈ U', x *ᵥ v ∈ U'` using `fun x hx v hv => U'.smul_mem ⟨x, hx⟩ hv`. Set `W' : Submodule ℂ (ι → ℂ)` to `{ U'.toAddSubmonoid with smul_mem' := fun c v hv => by`. Use `hsm (c • 1) ((spanAlg h).smul_mem (spanAlg h).one_mem c) v hv` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mulVec, one_mulVec] at this }` and apply the resulting hypothesis. Use `⟨W', fun g hg v hv => hsm g (Submodule.subset_span hg) v hv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Conclude with `Submodule.disjoint_def.1 hU.disjoint x hx hx'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `x`. Establish `: x ∈ U ⊔ U'` using `by rw [hU.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 this`. Conclude with `Submodule.add_mem_sup hy hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ss_of_isSemisimpleRing {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Set (Matrix ι ι ℂ)} (h : IsPre Γ)
     [IsSemisimpleRing (spanAlg h)] : SS Γ := by
@@ -143,17 +141,15 @@ theorem ss_of_isSemisimpleRing {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : S
     exact Submodule.add_mem_sup hy hz
 
 /- English proof (translation)
-Introduce `ι _ _ Γ h hss`. Establish `: IsArtinianRing (spanAlg h)` using `IsArtinianRing.of_finite ℂ _`. Establish `h0 : Ring.jacobson (spanAlg h) ≠ ⊥`. Introduce `h0`. Use `IsArtinianRing.isSemisimpleRing_iff_jacobson.2 h0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hss (ss_of_isSemisimpleRing h)`. Take `⟨a, ha, ha0, hba⟩` from `exists_mem_mul_eq_zero_of_isNilpotent (Ring.jacobson (spanAlg h)) IsSemiprimaryRing.isNilpotent h0`. Set `W : Submodule ℂ (ι → ℂ)` to `{ carrier := {v | ∀ b ∈ Ring.jacobson (spanAlg h), b.1 *ᵥ v = 0} add_mem' := fun {x y} hx hy b hb => by rw [mulVec_add, hx b hb, hy b hb, add_zero] zero_mem' := fun b _ => mulVec_zero _ smul_mem' := fun c v hv b hb => by rw [mulVec_smul, hv b hb, smul_zero] }`. Use `⟨W, ?_, ?_, a.1, a.2, fun h1 => ha0 (Subtype.ext h1), ?_, fun v hv => hv a ha⟩` and prove the remaining obligations. Introduce `g hg v hv b hb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg' : g ∈ spanAlg h` using `Submodule.subset_span hg`. Establish `h1 : b * (⟨g, hg'⟩ : spanAlg h) ∈ Ring.jacobson (spanAlg h)` using `Ideal.mul_mem_right _ _ hb`. Establish `h2` using `hv _ h1`. Rewrite `h2` using `[MulMemClass.coe_mul, ← mulVec_mulVec]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ v hv b hb`. Establish `h1 : spanAlgMap h σ.symm b ∈ Ring.jacobson (spanAlg h)` using `map_mem_jacobson_of_surjective _ (spanAlgMap_surjective h σ.symm) hb`. Establish `h2` using `hv _ h1`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrArg σ (congrFun h2 i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h3` using `[spanAlgMap, mulVec, dotProduct, map_sum]`. Introduce `v b hb`. Rewrite using `[mulVec_mulVec]`. Use `congrArg Subtype.val (hba b hb)` as an intermediate fact. Express the relevant statement in the definitionally equal form `b.1 * a.1 = 0 at this`.
-
-Rewrite using `[this, zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_socle_radical_of_not_ss :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → ¬ SS Γ → ∃ W : Submodule ℂ (ι → ℂ), (∀ g ∈ Γ, ∀ v ∈ W, g *ᵥ v ∈ W) ∧ (∀ σ : ℂ ≃+* ℂ, ∀ v ∈ W, (fun i => σ (v i)) ∈ W) ∧ ∃ a ∈ Submodule.span ℂ Γ, a ≠ 0 ∧ (∀ v, a *ᵥ v ∈ W) ∧ ∀ v ∈ W, a *ᵥ v = 0 := by

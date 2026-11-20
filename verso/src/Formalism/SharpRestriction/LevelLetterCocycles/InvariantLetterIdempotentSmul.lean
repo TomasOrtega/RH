@@ -23,7 +23,7 @@ section SlopeTestRemainingChoices
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaD_smul_letA' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -32,7 +32,7 @@ theorem gammaD_smul_letA' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem idempotent_mul_self'' (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   funext i
@@ -41,7 +41,7 @@ theorem idempotent_mul_self'' (c : ZMod n) : (letE c : LetA O n) * letE c = letE
   · simp [letE, h]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul O y]`. Conclude with `dl_add W T hx (dl_smul W T (-1) hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantLetter_sub {c : ZMod n} {x y : W.DD T} (hx : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x)
     (hy : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c y) : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (x - y) := by
@@ -49,27 +49,27 @@ theorem invariantLetter_sub {c : ZMod n} {x y : W.DD T} (hx : Formalism.MainNoti
   exact dl_add W T hx (dl_smul W T (-1) hy)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [smul_smul, idempotent_mul_self''], fun δ hδ => by rw [gammaD_smul_letA', gammaA_idempotent, hz δ hδ]⟩`.
+Supply the required witnesses or components.
 -/
 theorem invariant_letter_idempotent_smul {c : ZMod n} {z : W.DD T} (hz : ∀ δ ∈ W.DelF, W.γD T δ z = z) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T c ((letE c : LetA O n) • z) :=
   ⟨by rw [smul_smul, idempotent_mul_self''], fun δ hδ => by rw [gammaD_smul_letA', gammaA_idempotent, hz δ hδ]⟩
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE W.π₀, smul_smul, algebraMap_uniformizer_mul_inverse hU, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformizer_smul_inverse_smul (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (x : W.DD T) :
     W.π₀ • (uniformizerInverse W • x) = x := by
   rw [← algebraMap_smul W.EE W.π₀, smul_smul, algebraMap_uniformizer_mul_inverse hU, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (LetA O n) r (e • x), ← algebraMap_smul (LetA O n) r x, smul_comm_letA_EE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_comm_O_EE (r : O) (e : W.EE) (x : W.DD T) : r • (e • x) = e • (r • x) := by
   rw [← algebraMap_smul (LetA O n) r (e • x), ← algebraMap_smul (LetA O n) r x, smul_comm_letA_EE]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ a), smul_smul, map_pow, ← mul_pow, Ring.mul_inverse_cancel _ hU, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem q_pow_smul_inverse_pow_smul (hU : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) (a : ℕ) (x : W.DD T) :
     Formalism.MainNotions.LiftingTheory.qp W ^ a • (Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ a • x) = x := by
@@ -77,7 +77,7 @@ theorem q_pow_smul_inverse_pow_smul (hU : IsUnit (algebraMap (LetA O n) W.EE (Fo
     Ring.mul_inverse_cancel _ hU, one_pow, one_smul]
 
 /- English proof (translation)
-Establish `h : (x : W.DD T × W.DD T) ∈ W.wachCocyclesDelta T` using `x.2`. Simplify using `only [LocWach.wachCocyclesDelta, herrZ1Δ, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.prodMap_apply, LinearMap.id_apply, sub_eq_zero] at h`. Conclude with `congrArg Prod.snd (h.2 δ hδ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_fixes_cocycle_second (x : ↥(W.wachCocyclesDelta T)) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γD T δ (x : W.DD T × W.DD T).2 = (x : W.DD T × W.DD T).2 := by
@@ -87,9 +87,9 @@ theorem delta_fixes_cocycle_second (x : ↥(W.wachCocyclesDelta T)) (δ : W.Gam)
   exact congrArg Prod.snd (h.2 δ hδ)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(hB hA T hT c).1`. Establish `hmem : ((PD.p : ℕ) : O) ^ k • w ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T c 0` using `Submodule.subset_span ⟨_, ⟨hN, dl_smul W T _ hw⟩, by simp⟩`. Establish `h` using `((hB hA T hT c).2 _ e he 0).2 w k hmem`. Use `Submodule.span_le.2 ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨hx, -⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `using hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_natCast_pow_smul_mem [NeZero n] (hB : Sh.BasTool W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hT : IsCrys PD T.ρ)
     (c : ZMod n) {w : W.DD T} (k : ℕ) (hw : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c w)
@@ -103,9 +103,7 @@ theorem mem_of_natCast_pow_smul_mem [NeZero n] (hB : Sh.BasTool W) (hA : Formali
   simpa using hx
 
 /- English proof (translation)
-Set `e` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hA.1`. Use `⟨(W.emb c).comp e.symm.toAlgHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `show (W.emb c) (e.symm (algebraMap K₀ K x)) = W.emb c x`. Use `congr 1`.
-
-Conclude with `e.symm_apply_apply x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_embedding_over_letter [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (c : ZMod n) :
     ∃ τ : K →ₐ[Qp] LL, Formalism.MainNotions.LiftingTheory.Over W τ c := by
@@ -117,9 +115,9 @@ theorem exists_embedding_over_letter [NeZero n] (hA : Formalism.MainNotions.Lift
   exact e.symm_apply_apply x
 
 /- English proof (translation)
-Unfold `lam`. Break down `Nat.eq_zero_or_pos H with rfl | hH` into its components or cases. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ 2 * (H : ℝ)`. Establish `: (1 : ℝ) ≤ H` using `by exact_mod_cast hH`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.logb_nonneg (b := (l : ℝ)) (by exact_mod_cast hl) this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lam_nonneg_of_one_lt (l H : ℕ) (hl : 1 < l) : 0 ≤ lam l H := by
   unfold lam
@@ -143,37 +141,31 @@ def liftingSection (R : Polynomial O) (a : ℕ) (ν zc : W.DD T) : W.DD T :=
     Polynomial.aeval (derivationOnWachModule W T) (Polynomial.divX R) (uniformizerInverse W • zc)
 
 /- English proof (translation)
-Establish `hU` using `hR.πU`. Establish `hπΔ` using `hR.πΔ`. Establish `hqU` using `hR.qU`. Establish `hqΔ` using `Formalism.MainNotions.LiftingTheory.lifta_qΔ W hπΔ`. Use `set d := derivationOnWachModule W T with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set pp : O := ((PD.p : ℕ) : O) with hpp`. Establish `ciFix : ∀ δ ∈ W.DelF, W.γE δ (uniformizerInverse W) = uniformizerInverse W` using `fun δ hδ => delta_fixes_inverse W _ hπΔ hU δ hδ`. Establish `qiFix : ∀ δ ∈ W.DelF, W.γE δ (Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ a) = Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ a`. Introduce `δ hδ`. Rewrite using `[map_pow, delta_fixes_inverse W _ hqΔ hqU δ hδ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set R1 := Polynomial.divX R with hR1`. Establish `hsplit : R = R1 * X + C (pp ^ s₁)`. Rewrite using `[← hR0, mul_comm]`. Conclude with `(Polynomial.X_mul_divX_add R).symm`. Use `set m₀ := Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ a • ν with hm₀def`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set dz := uniformizerInverse W • zc with hdzdef`. Establish `hm₀ : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c m₀` using `invariantLetter_fixed_smul W T _ qiFix hν`. Establish `hdz : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c dz` using `invariantLetter_fixed_smul W T _ ciFix hzc`. Take `⟨y, hyN, hyΔ, hye⟩` from `h3`. Establish `he₁ : uniformizerInverse W • (pp ^ N • zc + (W.γ T μ - μ)) = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hye, pow_one, inverse_smul_uniformizer_smul W T hU]`. Establish `hy_eq : y = pp ^ N • dz + d μ`. Rewrite using `[← he₁, smul_add, hd, derivation_on_wach_module_apply, hdzdef, smul_comm_O_EE]`. Establish `hyDL : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c y`. Rewrite using `[← he₁]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `invariantLetter_fixed_smul W T _ ciFix (dl_add W T (dl_smul W T _ hzc) (invariantLetter_gamma_sub W T hμ))`. Establish `hyQ : QLattice W T c 0 y` using `⟨hyDL, by simpa using hyN⟩`. Use `set u₀ := pp ^ N • m₀ - μ with hu₀def`. Establish `hu₀ : QLattice W T c a u₀`. Use `⟨invariantLetter_sub W T (dl_smul W T _ hm₀) hμ, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu₀def, smul_sub, smul_comm (Formalism.MainNotions.LiftingTheory.qp W ^ a) (pp ^ N) m₀, hm₀def, q_pow_smul_inverse_pow_smul W T hqU]`. Conclude with `h6`. Establish `hms : liftingSection W T R a ν zc = Polynomial.aeval d R m₀ + Polynomial.aeval d R1 dz` using `rfl`. Establish `key : Polynomial.aeval d R μ = pp ^ s₁ • μ + Polynomial.aeval d R1 (d μ)` using `by conv_lhs => rw [hsplit]`. Rewrite using `[map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.add_apply, Module.End.mul_apply, Module.algebraMap_end_apply, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u := pp ^ N • liftingSection W T R a ν zc - pp ^ s₁ • μ with hudef`. Establish `e1 : Polynomial.aeval d R u₀ = pp ^ N • Polynomial.aeval d R m₀ - Polynomial.aeval d R μ`. Rewrite using `[hu₀def, (Polynomial.aeval d R).map_sub, (Polynomial.aeval d R).map_smul]`. Establish `e2 : Polynomial.aeval d R1 y = pp ^ N • Polynomial.aeval d R1 dz + Polynomial.aeval d R1 (d μ)`. Rewrite using `[hy_eq, (Polynomial.aeval d R1).map_add, (Polynomial.aeval d R1).map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu_eq : u = Polynomial.aeval d R u₀ + Polynomial.aeval d R1 y`. Rewrite using `[hudef, hms, e1, e2, key, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hXP : ∀ (Q : Polynomial O) (x : W.DD T), d (Polynomial.aeval d Q x) = Polynomial.aeval d (X * Q) x`. Introduce `Q x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Establish `hDLms : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (liftingSection W T R a ν zc)`. Rewrite using `[hms]`. Conclude with `dl_add W T (invariantLetter_polynomial_derivation W T hπΔ hU R hm₀) (invariantLetter_polynomial_derivation W T hπΔ hU R1 hdz)`. Establish `hQu : QLattice W T c a u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu_eq]`. Conclude with `qLattice_add W T (qLattice_polynomial_derivation W T hDS hA hT c a R hu₀) (qLattice_mono W T (Nat.zero_le a) (qLattice_polynomial_derivation W T hDS hA hT c 0 R1 hyQ))`. Establish `hdu : d u = Polynomial.aeval d (X * R) u₀ + Polynomial.aeval d (X * R1) y`. Rewrite using `[hu_eq, map_add, hXP, hXP]`. Establish `hduN : d u ∈ W.N T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hdu]`. Use `(W.N T).add_mem (hkill u₀ hu₀) ?_` and prove the remaining obligations. Establish `h` using `(qLattice_polynomial_derivation W T hDS hA hT c 0 (X * R1) hyQ).2`. Rewrite `h` using `[pow_zero, one_smul]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hduDL : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (d u)` using `invariantLetter_derivation W T hπΔ hU hQu.1`. Use `set w := pp ^ s₁ • dz + d (liftingSection W T R a ν zc) with hwdef`. Establish `hexpr : pp ^ s₁ • zc + (W.γ T (liftingSection W T R a ν zc) - liftingSection W T R a ν zc) = W.π₀ • w`. Rewrite using `[hwdef, smul_add, smul_comm W.π₀ (pp ^ s₁) dz, hdzdef, uniformizer_smul_inverse_smul W T hU, hd, uniformizer_smul_derivation W T hU]`. Establish `hpw : pp ^ N • w = pp ^ s₁ • y + d u`.
-
-Establish `h1 : pp ^ N • dz = y - d μ` using `by rw [hy_eq]; abel`. Establish `h2 : pp ^ N • liftingSection W T R a ν zc = u + pp ^ s₁ • μ` using `by rw [hudef]; abel`. Rewrite using `[hwdef, smul_add, smul_comm (pp ^ N) (pp ^ s₁) dz, h1, ← d.map_smul (pp ^ N), h2, d.map_add, d.map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hwDL : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c w` using `dl_add W T (dl_smul W T _ hdz) (invariantLetter_derivation W T hπΔ hU hDLms)`.
-
-Establish `hwN : w ∈ W.N T`. Use `mem_of_natCast_pow_smul_mem W T hB hA hT c N hwDL ?_` and prove the remaining obligations. Rewrite using `[hpw]`. Conclude with `(W.N T).add_mem ((W.N T).smul_of_tower_mem _ hyN) hduN`. Use `⟨hDLms, ⟨w, hwN, hwDL.2, by rw [pow_one, hexpr]⟩, hQu, ⟨d u, hduN, hduDL.2, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[pow_one, hd, uniformizer_smul_derivation W T hU]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_killing_polynomial [NeZero n] (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring W) (hDS : DerivationPreservesQLattice W)
     (hB : Sh.BasTool W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hT : IsCrys PD T.ρ) (c : ZMod n) (a N s₁ : ℕ)

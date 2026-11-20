@@ -26,15 +26,15 @@ def ReflH (hZ : CR Z) (h : Hyp Z) : Sp k n ≃ₜ Sp k n where
     exact (continuous_fst.sub (((continuous_Pr Z).comp continuous_fst).const_smul (2 : k))).prodMk continuous_snd
 
 /- English proof (translation)
-Establish `hsurj : LinearMap.range ((qL Z).domRestrict (BzL Z)) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `y`. Take `⟨c, hc, rfl⟩` from `PositivityTheory.RgUd.T.Nil.Four.Alg.qZ_surj hZ y`. Conclude with `⟨⟨c, Z_le_Bz Z hZ hc⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker ((qL Z).domRestrict (BzL Z))`. Rewrite `hrn` using `[hsurj, finrank_top, Module.finrank_fin_fun]`. Establish `hker : LinearMap.ker ((qL Z).domRestrict (BzL Z)) = (B0 Z).comap (BzL Z).subtype`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.domRestrict_apply, Submodule.mem_comap, Submodule.subtype_apply, B0, Submodule.mem_inf, x.2, true_and]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e : Module.finrank k (LinearMap.ker ((qL Z).domRestrict (BzL Z))) = Module.finrank k (B0 Z)`. Rewrite using `[hker]`. Conclude with `(Submodule.comapSubtypeEquivOfLe (inf_le_left : B0 Z ≤ BzL Z)).finrank_eq`. Establish `hS : Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) = BzL Z`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`. Both sides reduce to the same expression. Establish `hC : Module.finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) = Module.finrank k (BzL Z)`. Rewrite using `[← Subalgebra.finrank_toSubmodule, hS]`. Use `show Module.finrank k (B0 Z) = Module.finrank k _ - Module.finrank k _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hC]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem d_eq [CharZero k] (hZ : CR Z) : d Z = dB0 Z := by
   classical
@@ -66,35 +66,31 @@ theorem d_eq [CharZero k] (hZ : CR Z) : d Z = dB0 Z := by
   omega
 
 /- English proof (translation)
-Introduce `n Z hZ`. Use `borelize k`. Establish `h : Hyp Z` using `⟨PositivityTheory.RgUd.T.Nil.Four.Alg.piZ_mem hZ, PositivityTheory.RgUd.T.Nil.Four.Alg.qZ_piZ hZ, fun x c hc hq => PositivityTheory.RgUd.T.Nil.Four.Alg.piZ_eq hZ hc hq, fun w hw hb => PositivityTheory.RgUd.T.Nil.Four.Alg.trB_nondeg hZ hw hb⟩`. Take `⟨ψ, hψ⟩` from `exists_hasConductor_one k`. Set `ν : Measure k` to `Measure.addHaar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomp : ∀ (U : Set (Sp k n)) (e : Sp k n ≃ₜ Sp k n), (∀ x, e x ∈ U → x ∈ U) → ∀ f : Sp k n → ℂ, f ∈ supportedIn U → (fun p => f (e p)) ∈ supportedIn U`. Introduce `U e he f hf`. Rewrite `hf`, the goal using `[mem_supportedIn, GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Take `⟨⟨hlc, hcs⟩, hsu⟩` from `hf`. Use `⟨⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `he x (hsu hx)`. Establish `hU : ∀ (e : Sp k n ≃ₜ Sp k n) (f : Sp k n → ℂ), f ∈ supportedIn (Set.univ : Set (Sp k n)) → (fun p => f (e p)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `fun e => hcomp Set.univ e (fun _ _ => Set.mem_univ _)`. Establish `hRf : ∀ f : Sp k n → ℂ, f ∈ supportedIn (Set.univ : Set (Sp k n)) → (fun p => f (Refl (Z` using `Z) p)) ∈ supportedIn (Set.univ : Set (Sp k n)) := fun f hf => hU (ReflH hZ h) f hf`. Establish `hRU : ∀ f : Sp k n → ℂ, f ∈ supportedIn (UU : Set (Sp k n)) → (fun p => f (Refl (Z` using `Z) p)) ∈ supportedIn (UU : Set (Sp k n)) := fun f hf => hcomp UU (ReflH hZ h) (fun _ hx => hx) f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨q, hq⟩` from `(supportedIn (Set.univ : Set (Sp k n))).exists_isCompl`. Set `Φ : (Sp k n → ℂ) →ₗ[ℂ] Sp k n → ℂ` to `(phiS ψ ν hZ h hψ.continuous).comp ((supportedIn (Set.univ : Set (Sp k n))).projectionOnto q hq)`. Establish `hΦ : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), Φ f = phi0 ψ ν hZ h f`. Introduce `f hf`. Establish `e1 : (supportedIn (Set.univ : Set (Sp k n))).projectionOnto q hq f = ⟨f, hf⟩` using `Submodule.linearProjOfIsCompl_apply_left hq ⟨f, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Φ, LinearMap.comp_apply, e1]`. Both sides reduce to the same expression. Set `κ : ℂ` to `(((distribHaarChar k (GeneralLinearGroup.det (Gu hZ h)) : NNReal) : ℝ) : ℂ)⁻¹ * (((ν.real (𝒪[k] : Set k) ^ 2 * nabs k 1) ^ d Z : ℝ) : ℂ)`. Establish `hχ : (distribHaarChar k (GeneralLinearGroup.det (Gu hZ h)) : NNReal) ≠ 0`. Establish `e2` using `map_mul_eq_one (distribHaarChar k) (mul_inv_cancel (GeneralLinearGroup.det (Gu hZ h)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `left_ne_zero_of_mul_eq_one e2`. Establish `hO : IsOpen ((𝒪[k] : Set k))` using `(ValuativeRel.valuation k).isOpen_integer`. Establish `hC : IsCompact ((𝒪[k] : Set k))` using `isCompact_iff_compactSpace.mpr (inferInstance : CompactSpace 𝒪[k])`. Establish `hν : 0 < ν.real (𝒪[k] : Set k)`. Rewrite using `[measureReal_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ENNReal.toReal_pos (hO.measure_ne_zero ν ⟨0, zero_mem _⟩) hC.measure_lt_top.ne`. Establish `hn1 : nabs k 1 = 1`. Simplify using `[nabs]`. Establish `hκ : κ ≠ 0`. Use `mul_ne_zero (inv_ne_zero ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hχ` after adjusting the coercions. Rewrite using `[hn1, mul_one]`. Conclude with `pow_ne_zero _ (pow_pos hν 2).ne'` after adjusting the coercions. Set `Φ' : (Sp k n → ℂ) →ₗ[ℂ] Sp k n → ℂ` to `κ⁻¹ • (Φ.comp (LinearMap.funLeft ℂ ℂ (Refl (Z := Z))))`. Establish `hΦ' : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), Φ' f = κ⁻¹ • phi0 ψ ν hZ h (fun p => f (Refl (Z` using `Z) p)) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Use `show κ⁻¹ • Φ (fun p => f (Refl (Z := Z) p)) = _`. Rewrite using `[hΦ _ (hRf f hf)]`. Use `⟨Φ, Φ', ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hΦ f hf]`. Conclude with `test_vector_mem_schwartz_bruhat ψ ν hZ h hψ hf`. Introduce `f hf`. Rewrite using `[hΦ' f hf]`. Conclude with `Submodule.smul_mem _ _ (test_vector_mem_schwartz_bruhat ψ ν hZ h hψ (hRf f hf))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf y hy p hp`. Rewrite using `[hΦ f hf]`. Conclude with `fourier_transform_vanishes_on_fibre ψ ν hZ h f hy hp`. Introduce `g hg f hf p hp`. Establish `hA : (fun p => f (act g p)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `hU (PositivityTheory.RgUd.T.Nil.Four.Alg.actH g) f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΦ f hf, hΦ _ hA]`. Conclude with `fourier_transform_equivariant ψ ν hZ h hg f p`. Introduce `f hf`. Establish `hf'` using `supportedIn_mono (Set.subset_univ _) hf`. Rewrite using `[hΦ f hf']`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `fourier_transform_preserves_compact ψ ν hZ h hψ hf`. Introduce `f hf`. Establish `hf'` using `supportedIn_mono (Set.subset_univ _) hf`. Rewrite using `[hΦ' f hf']`. Conclude with `Submodule.smul_mem _ _ (fourier_transform_preserves_compact ψ ν hZ h hψ (hRU f hf))`.
-
-Introduce `f hf p hp`. Establish `hR` using `hRf f hf`. Establish `hm` using `test_vector_mem_schwartz_bruhat ψ ν hZ h hψ hR`. Rewrite using `[hΦ' f hf, map_smul, hΦ _ hm, Pi.smul_apply, fourier_transform_involution ψ ν hZ h hψ hR p, Refl_Refl hZ h, smul_eq_mul, ← mul_assoc]`. Express the relevant statement in the definitionally equal form `κ⁻¹ * κ * f p = f p`.
-
-Rewrite using `[inv_mul_cancel₀ hκ, one_mul]`. Introduce `t f hf p hp`. Establish `hS : (fun p => f (sig Z t⁻¹ p)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `hU (PositivityTheory.RgUd.T.Nil.Four.Alg.sigH hZ t⁻¹) f hf`. Rewrite using `[hΦ f hf, hΦ _ hS, ← d_eq hZ]`. Conclude with `fourier_transform_scaling ψ ν hZ h t f hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiP [CharZero k] : PhiP (k := k) := by
   intro n Z hZ

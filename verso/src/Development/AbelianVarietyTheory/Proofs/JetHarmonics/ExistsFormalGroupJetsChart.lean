@@ -22,7 +22,7 @@ namespace GlobalTheory.ChartBaseChange
 open Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sp_sp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -35,7 +35,7 @@ section Alg
 variable {V V' : Type} [CommRing V] [CommRing V']
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Conclude with `h i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jet_algHom_ext {κ B : Type} [CommRing B] [Algebra V B] {m : ℕ} (f g : Jet V κ m →ₐ[V] B)
     (h : ∀ i, f (Ideal.Quotient.mk _ (MvPolynomial.X i)) = g (Ideal.Quotient.mk _ (MvPolynomial.X i))) : f = g := by
@@ -47,14 +47,14 @@ theorem jet_algHom_ext {κ B : Type} [CommRing B] [Algebra V B] {m : ℕ} (f g :
 def asJet {κ κ' : Type} {m m' : ℕ} (g : JetR V κ m →ₐ[V] JetR V κ' m') : Jet V κ m →ₐ[V] Jet V κ' m' := g
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.JetTest.jetAug_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aug_X {κ : Type} {m : ℕ} (i : κ) :
     (jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.X i)) = 0 := by
   rw [GlobalTheory.JetTest.jetAug_mk]; simp
 
 /- English proof (translation)
-Apply `jet_algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, aug_X, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact X_mem_orig i)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetZero_eq (κ : Type) (m : ℕ) :
     (asJet (jetZeroR V κ m)) = (Algebra.ofId V (Jet V κ 0)).comp jetAug := by
@@ -64,7 +64,7 @@ theorem jetZero_eq (κ : Type) (m : ℕ) :
   exact Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact X_mem_orig i)
 
 /- English proof (translation)
-Apply `jet_algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[aug_X]`. Conclude with `aug_X (m := 0) i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aug_jetZero (κ : Type) (m : ℕ) :
     (jetAug : Jet V κ 0 →ₐ[V] V).comp (asJet (jetZeroR V κ m)) = jetAug := by
@@ -74,9 +74,9 @@ theorem aug_jetZero (κ : Type) (m : ℕ) :
   exact aug_X (m := 0) i
 
 /- English proof (translation)
-Establish `hle : RingHom.ker (jetAug : Jet V κ m →ₐ[V] V) ≤ (orig V κ).map (Ideal.Quotient.mk (orig V κ ^ (m + 1)))`. Introduce `w hw`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Rewrite `hw` using `[RingHom.mem_ker, GlobalTheory.JetTest.jetAug_mk]`. Establish `h` using `sub_const_mem_orig p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hw, map_zero, sub_zero]`. Conclude with `Ideal.mem_map_of_mem _ h`. Apply `le_bot_iff.1` to reduce the goal to its premises. Use `(Ideal.pow_right_mono hle _).trans ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_aug_pow (κ : Type) (m : ℕ) : RingHom.ker (jetAug : Jet V κ m →ₐ[V] V) ^ (m + 1) = ⊥ := by
   have hle : RingHom.ker (jetAug : Jet V κ m →ₐ[V] V) ≤
@@ -92,11 +92,11 @@ theorem ker_aug_pow (κ : Type) (m : ℕ) : RingHom.ker (jetAug : Jet V κ m →
   rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `jet_algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[aug_X, AlgHom.comp_apply, ← aug_jetZero, AlgHom.comp_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (jetAug : Jet V κ' 0 →ₐ[V] V) (h i)).trans (map_zero _)`. Introduce `h j`. Establish `h1` using `AlgHom.congr_fun h (Ideal.Quotient.mk _ (MvPolynomial.X j))`. Rewrite `h1` using `[aug_X, AlgHom.comp_apply]`. Establish `h2` using `AlgHom.congr_fun (jetZero_eq (V := V) κ' m) (ψ (Ideal.Quotient.mk _ (MvPolynomial.X j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[AlgHom.comp_apply, h1, map_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem zero_iff {κ κ' : Type} {m : ℕ} (ψ : Jet V κ m →ₐ[V] Jet V κ' m) :
     (∀ j, jetZeroR V κ' m (ψ (zR m j)) = 0) ↔ (jetAug : Jet V κ' m →ₐ[V] V).comp ψ = jetAug := by
@@ -114,11 +114,9 @@ theorem zero_iff {κ κ' : Type} {m : ℕ} (ψ : Jet V κ m →ₐ[V] Jet V κ' 
     exact h2
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show g' (Ideal.Quotient.mk _ (MvPolynomial.map φ (MvPolynomial.C r))) = jetCoef φ κ' m (g (algebraMap V _ r))`. Rewrite using `[MvPolynomial.map_C, g.commutes]`. Use `(g'.commutes (φ r)).trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = Ideal.Quotient.mk _ (MvPolynomial.map φ (MvPolynomial.C r))`. Rewrite using `[MvPolynomial.map_C]`. Both sides reduce to the same expression. Introduce `i show g' (Ideal.Quotient.mk _ (MvPolynomial.map φ (MvPolynomial.X i))) = _`. Rewrite using `[MvPolynomial.map_X]`.
-
-Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_sq (φ : V →+* V') {κ κ' : Type} {m : ℕ} (g : Jet V κ m →ₐ[V] Jet V κ' m)
     (g' : Jet V' κ m →ₐ[V'] Jet V' κ' m)
@@ -141,9 +139,9 @@ theorem coef_sq (φ : V →+* V') {κ κ' : Type} {m : ℕ} (g : Jet V κ m →�
     exact h i
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.psJet`. Use `Ideal.Quotient.eq.2 (Ideal.Quotient.eq_zero_iff_mem.1 ((GlobalTheory.JetTest.mk_eq_zero_iff (m := m) _).2 ?_))` and prove the remaining obligations. Introduce `e he`. Establish `hle : ∀ i, e i ≤ m` using `fun i => (Finsupp.le_degree i e).trans he`. Rewrite using `[MvPolynomial.coeff_sub, MvPowerSeries.coeff_trunc, if_pos, h e he, sub_self]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_ne (fun i => ?_) (fun hh => ?_)` and prove the remaining obligations. Simplify using `using (hle i).trans (Nat.le_succ m)`. Use `hle q` as an intermediate fact. Rewrite `this` using `[hh]`. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psJet_eq {n d : ℕ} (m : ℕ) (q : Fin n × Fin d) (f : PS V n d) (P : MvPolynomial (Fin n × Fin d) V)
     (h : ∀ e : Fin n × Fin d →₀ ℕ, e.degree ≤ m → MvPowerSeries.coeff e f = P.coeff e) :
@@ -160,7 +158,7 @@ theorem psJet_eq {n d : ℕ} (m : ℕ) (q : Fin n × Fin d) (f : PS V n d) (P : 
     simp at this
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval _ (MvPolynomial.X q) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substJ_X {n d : ℕ} (m : ℕ) (f : Fin d → PS V n d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0)
     (q : Fin 1 × Fin d) :
@@ -169,9 +167,9 @@ theorem substJ_X {n d : ℕ} (m : ℕ) (f : Fin d → PS V n d) (hf : ∀ j, MvP
   rw [MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Apply `coef_sq` to reduce the goal to its premises. Introduce `q`. Use `(substJ_X m f' hf' q).trans ?_` and prove the remaining obligations. Unfold `jetSubstP`. Rewrite using `[GlobalTheory.JetTest.jetMap_mk, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `psJet_eq m (i0, q.2) _ (MvPolynomial.map φ _) fun a ha => ?_` and prove the remaining obligations. Establish `hc : MvPolynomial.constantCoeff (psTrunc m (f q.2)) = 0`. Rewrite using `[MvPolynomial.constantCoeff_eq, GlobalTheory.JetTest.coeff_psTrunc, if_pos (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. Rewrite using `[hc, map_zero, sub_zero, MvPolynomial.coeff_map, GlobalTheory.JetTest.coeff_psTrunc, if_pos ha, e, MvPowerSeries.coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_sq (φ : V →+* V') {n d : ℕ} (i0 : Fin n) (m : ℕ) (f : Fin d → PS V n d)
     (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (f' : Fin d → PS V' n d)
@@ -194,9 +192,9 @@ theorem subst_sq (φ : V →+* V') {n d : ℕ} (i0 : Fin n) (m : ℕ) (f : Fin d
     MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Apply `coef_sq` to reduce the goal to its premises. Introduce `q`. Use `(substJ_X m (fun j => (MvPowerSeries.X (i, j) : PS V' n d)) (fun j => by simp) q).trans ?_` and prove the remaining obligations. Unfold `jetCopy`. Rewrite using `[GlobalTheory.JetTest.jetMap_mk, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `psJet_eq m (i, q.2) _ (MvPolynomial.map φ _) fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_X, ← MvPolynomial.coe_X, MvPolynomial.coeff_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem copy_sq (φ : V →+* V') {n d : ℕ} (i : Fin n) (m : ℕ) :
     (asJet (jetPt (T := V') (d := d) i m) :
@@ -212,7 +210,7 @@ theorem copy_sq (φ : V →+* V') {n d : ℕ} (i : Fin n) (m : ℕ) :
   rw [MvPolynomial.map_X, ← MvPolynomial.coe_X, MvPolynomial.coeff_coe]
 
 /- English proof (translation)
-Use extensionality with `r`. Use `show Ideal.Quotient.mk _ (MvPolynomial.map φ (MvPolynomial.C r)) = _`. Rewrite using `[MvPolynomial.map_C]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coef_alg (φ : V →+* V') (κ : Type) (m : ℕ) :
     (jetCoef φ κ m).comp (algebraMap V (Jet V κ m)) = (algebraMap V' (Jet V' κ m)).comp φ := by
@@ -234,15 +232,15 @@ def ofAlg {G : Over (Sp V)} {A : Type} [CommRing A] [Algebra V A] (y : algOver V
   Over.homMk y.left ((Over.w y).trans (Category.comp_id _).symm)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hz`. Use `⟨fun m => ?_, fun m => ?_, fun κ' m y hy => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `congrArg CommaMorphism.left (h1 m)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h` using `congrArg CommaMorphism.left (h2 m)`. Express the relevant statement in the definitionally equal form `spMap _ ≫ (z m).left = (spMap (algebraMap V V) ≫ 𝟙 _) ≫ η[G].left at h`. Express the relevant statement in the definitionally equal form `spMap ((asJet (jetZeroR V κ m)) : Jet V κ m →+* Jet V κ 0) ≫ (z m).left = spMap (algebraMap V (Jet V κ 0)) ≫ η[G].left`. Rewrite using `[jetZero_eq, AlgHom.comp_toRingHom, ← sp_sp, Category.assoc, h, Category.comp_id, ← Category.assoc, sp_sp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `y' : overAt (𝟙 (Sp V)) (Jet V κ' m) ⟶ G` to `ofAlg (A := Jet V κ' m) y`. Establish `hy' : Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetAug : Jet V κ' m →ₐ[V] V) ≫ y' = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h` using `congrArg CommaMorphism.left hy`. Express the relevant statement in the definitionally equal form `spMap ((asJet (jetZeroR V κ' m)) : Jet V κ' m →+* Jet V κ' 0) ≫ (y' : overAt (𝟙 (Sp V)) (Jet V κ' m) ⟶ G).left = spMap (algebraMap V (Jet V κ' 0)) ≫ η[G].left at h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `spMap ((jetAug : Jet V κ' m →ₐ[V] V) : Jet V κ' m →+* V) ≫ (y' : overAt (𝟙 (Sp V)) (Jet V κ' m) ⟶ G).left = (spMap (algebraMap V V) ≫ 𝟙 _) ≫ η[G].left`. Rewrite using `[← aug_jetZero, AlgHom.comp_toRingHom, ← sp_sp, Category.assoc, h, Category.comp_id, ← Category.assoc, spMap_comp_alg]`. Take `⟨ψ, ⟨a1, a2⟩, hu⟩` from `h3 (Jet V κ' m) jetAug m (ker_aug_pow κ' m) _ hy'`. Use `⟨ψ, ⟨(zero_iff ψ).2 a1, ?_⟩, fun ψ' h' => hu ψ' ⟨(zero_iff ψ').1 h'.1, ?_⟩⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg CommaMorphism.left a2`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `congrArg CommaMorphism.left h'.2`.
+A detailed English derivation is pending.
 -/
 theorem univ_toAlg (G : Over (Sp V)) [GrpObj G] (κ : Type) (z : GlobalTheory.PowGerm.JetPts G κ)
     (hz : GlobalTheory.PowGerm.IsUnivJ G κ z) :
@@ -285,7 +283,7 @@ variable (φ : V →+* V') (G : Over (Sp V)) [GrpObj G] (G' : Over (Sp V')) [Grp
 
 include hP in
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hP.1.hom_ext h ((Over.w a).trans (Over.w b).symm)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pb_ext {T : Over (Sp V')} (a b : T ⟶ G') (h : a.left ≫ Fm = b.left ≫ Fm) : a = b := by
   apply Over.OverMorphism.ext
@@ -296,7 +294,7 @@ variable {d : ℕ} (z : GlobalTheory.PowGerm.JetPts G (Fin 1 × Fin d)) (z' : Gl
 
 include hz in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(spMap (g' : Jet V' (Fin 1 × Fin d) m →+* Jet V' (Fin n × Fin d) m) ≫ (z' m).left) ≫ Fm = spMap _ ≫ spMap (g : Jet V (Fin 1 × Fin d) m →+* Jet V (Fin n × Fin d) m) ≫ (z m).left`. Rewrite using `[Category.assoc, hz, ← Category.assoc, sp_sp, h, ← sp_sp, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_sq {n : ℕ} (m : ℕ) (g : Jet V (Fin 1 × Fin d) m →ₐ[V] Jet V (Fin n × Fin d) m)
     (g' : Jet V' (Fin 1 × Fin d) m →ₐ[V'] Jet V' (Fin n × Fin d) m)
@@ -310,9 +308,9 @@ theorem left_sq {n : ℕ} (m : ℕ) (g : Jet V (Fin 1 × Fin d) m →ₐ[V] Jet 
 
 include hP hz in
 /- English proof (translation)
-Apply `pb_ext φ G G' Fm hP` to reduce the goal to its premises. Set `c : Over.mk ((algOver V' (Jet V' (Fin 2 × Fin d) m)).hom ≫ spMap φ) ⟶ overAt (𝟙 (Sp V)) (Jet V (Fin 2 × Fin d) m)` to `Over.homMk (spMap (jetCoef φ (Fin 2 × Fin d) m)) (by`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap (algebraMap V (Jet V (Fin 2 × Fin d) m)) ≫ 𝟙 _ = spMap (algebraMap V' (Jet V' (Fin 2 × Fin d) m)) ≫ spMap φ`. Rewrite using `[Category.comp_id, sp_sp, sp_sp, coef_alg])`. Establish `h` using `hP.2 (algOver V' (Jet V' (Fin 2 × Fin d) m)) (algOverHom (jetPt (d := d) (0 : Fin 2) m) ≫ toAlg (z' m)) (algOverHom (jetPt (d := d) (1 : Fin 2) m) ≫ toAlg (z' m)) (c ≫ Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy d m (0 : Fin 2)) ≫ z m) (c ≫ Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy …`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Rewrite using `[← MonObj.comp_mul, ← hl]`. Conclude with `left_sq φ G G' Fm z z' hz m _ _ (subst_sq φ 0 m F hF F' hF' e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_bc (m : ℕ) (F : Fin d → PS V 2 d) (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0)
     (F' : Fin d → PS V' 2 d) (hF' : ∀ j, MvPowerSeries.constantCoeff (F' j) = 0)
@@ -343,7 +341,7 @@ theorem law_bc (m : ℕ) (F : Fin d → PS V 2 d) (hF : ∀ j, MvPowerSeries.con
 
 include hP hz in
 /- English proof (translation)
-Apply `pb_ext φ G G' Fm hP` to reduce the goal to its premises. Use `Eq.trans ?_ (left_sq φ G G' Fm z z' hz m _ _ (subst_sq φ 0 m F hF F' hF' e)).symm` and prove the remaining obligations. Rewrite using `[← hl]`. Express the relevant statement in the definitionally equal form `((z' m).left ≫ α'.left) ≫ Fm = spMap _ ≫ (z m).left ≫ α.left`. Rewrite using `[Category.assoc, hα, ← Category.assoc, hz, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_bc (m : ℕ) (α : G ⟶ G) (α' : G' ⟶ G') (hα : α'.left ≫ Fm = Fm ≫ α.left)
     (F : Fin d → PS V 1 d) (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0)
@@ -365,11 +363,11 @@ end GlobalTheory.ChartBaseChange
 open GlobalTheory.ChartBaseChange in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y Ch T' φ t' mp`. Use `letI := H.starRing`. Take `⟨BT, hF, hA, -⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y Ch`. Establish `hU` using `GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y Ch`. Take `⟨z', hU', hz⟩` from `GlobalTheory.T.exists_universalJetCoordinates_pullback T.V T'.V φ Ch.I.G.G t'.G mp.cm.F mp.cart _ Ch.xT hU`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, u2, u3⟩` from `univ_toAlg t'.G _ z' hU'`. Use `⟨Formalism.MainNotions.ModuliIntegralCharts.H1.FBMap.mapG φ BT.G, fun m => toAlg (z' m), Formalism.MainNotions.ModuliIntegralCharts.H1.FBMap.mapA φ BT.A, ?_, fun a => ?_, ⟨u1, u2, u3, fun m => ?_⟩, fun m a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF]`. Both sides reduce to the same expression. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `law_bc φ Ch.I.G.G t'.G mp.cm.F mp.cart Ch.xT z' hz m Ch.FT (hF ▸ BT.G.const) _ _ (fun j => by rw [← hF]; rfl) (Ch.chartT.law m)`. Conclude with `act_bc φ Ch.I.G.G t'.G mp.cm.F mp.cart Ch.xT z' hz m (Ch.I.G.act.act a) (t'.act.act a) (mp.act a) (Ch.actT a) (hA ▸ BT.A.const a) _ _ (fun j => by rw [← hA]; rfl) (Ch.chartT.act m a)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.integralChart_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (T' : CDVR) (φ : T.V →+* T'.V) (t' : SAB H (Sp T'.V)) (_ : SABMap t' Ch.I.G (spMap φ)), ∃ (F' : FGLaw T'.V (chD Ch.ch)) (x' : ∀ m : ℕ, algOver T'.V (JetR T'.V (Fin 1 × Fin (chD Ch.ch)) m) ⟶ t'.G) (act' : Germ.OAct (𝓞 E) F'), F'.F = (fun i => MvPowerSeries.map φ (Ch.FT i)) ∧ (∀ a, act'.act a = fun i => MvPowerSeries.map φ (Ch.actT a i)) ∧ IsChartJ t'.G F' x' ∧ ChartActs t'.G x' t'.act.toRingAct act' := by
   intro E _ _ _ H Dw l Xo c T io y Ch T' φ t' mp

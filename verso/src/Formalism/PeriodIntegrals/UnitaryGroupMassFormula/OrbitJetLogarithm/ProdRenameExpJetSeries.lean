@@ -12,7 +12,7 @@ open MvPowerSeries Formalism.BasicNotions Formalism.MainNotions.G PI.OrbJet.OJ
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_coeff_monomial_one {τ : Type*} (j m : τ →₀ ℕ) :
     ‖coeff m (monomial j (1 : ℂ_[p]))‖ ≤ 1 := by
@@ -20,7 +20,7 @@ theorem norm_coeff_monomial_one {τ : Type*} (j m : τ →₀ ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc`. Conclude with `⟨c, hc, be, ⟨ep, hep, sg, hsg, monomial j 1, fun m => norm_coeff_monomial_one j m, subst_log_jet_monomial _ _ c ep sg hc0 be j⟩, hbe⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem admissible_jet_term {D : D7} (E : Ent D) (h5 : 5 ≤ p) (u : D.what₂.Word) (i : ℕ) (z : Pl D) (c : ℂ_[p])
     (hc : ‖c‖ = 1) (ep sg : ℂ_[p]) (hep : ‖ep‖ = 1) (hsg : sg = 1 ∨ sg = -1) (be : MvPowerSeries (ZMod 2) ℂ_[p])
@@ -37,11 +37,11 @@ def kz (D : D7) {N0 N1 : ℕ} (z : Pl D) (k : Pl D × Fin N0 × Fin N1 →₀ �
   Finsupp.equivFunOnFinite.symm fun w => k (z, w.2)
 
 /- English proof (translation)
-Use extensionality with `⟨z0, w⟩`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single z0]`. Establish `h : ((z0, w) : Pl D × Fin N0 × Fin N1) = pEmb (ptE D z0) (Fin N0 × Fin N1) ((0 : ZMod 1), w)` using `rfl`. Rewrite using `[h, Finsupp.mapDomain_apply (pEmb (ptE D z0) _).injective]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `z _ hz`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨a, w'⟩, h⟩`. Rewrite `h` using `[pEmb_apply]`. Conclude with `hz (congrArg Prod.fst h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ z0) h`.
+A detailed English derivation is pending.
 -/
 theorem sum_mapDomain_kz (D : D7) {N0 N1 : ℕ} (k : Pl D × Fin N0 × Fin N1 →₀ ℕ) :
     ∑ z, Finsupp.mapDomain (pEmb (ptE D z) (Fin N0 × Fin N1)) (kz D z k) = k := by
@@ -60,9 +60,9 @@ theorem sum_mapDomain_kz (D : D7) {N0 N1 : ℕ} (k : Pl D × Fin N0 × Fin N1 �
     exact absurd (Finset.mem_univ z0) h
 
 /- English proof (translation)
-Use `MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show logPl D p v 0 = 0`. Simplify using `only [logPl]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => (pow_ne_zero e (pow_ne_zero 2 (Fact.out : p.Prime).ne_zero)) (Finsupp.single_eq_zero.1 h.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem hs_logPl (D : D7) (hn : nP D p = 1) (N0 N1 : ℕ) : HasSubst (logPl D p (β := Fin N0 × Fin N1)) := by
   refine MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => ?_
@@ -75,9 +75,9 @@ theorem hs_logPl (D : D7) (hn : nP D p = 1) (N0 N1 : ℕ) : HasSubst (logPl D p 
     (Finsupp.single_eq_zero.1 h.symm)
 
 /- English proof (translation)
-Use `MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show jetLogG p 1 v 0 = 0`. Simplify using `only [jetLogG]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => (pow_ne_zero e (pow_ne_zero 2 (Fact.out : p.Prime).ne_zero)) (Finsupp.single_eq_zero.1 h.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem hasSubst_log_jet (N0 N1 : ℕ) : HasSubst (jetLogG p 1 (β := Fin N0 × Fin N1)) := by
   refine MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => ?_
@@ -90,13 +90,13 @@ theorem hasSubst_log_jet (N0 N1 : ℕ) : HasSubst (jetLogG p 1 (β := Fin N0 × 
     (Finsupp.single_eq_zero.1 h.symm)
 
 /- English proof (translation)
-Establish `hE : ∀ f : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p], OJ.expS ℂ_[p] f = PI.OrbShared.ExpSum.eS f` using `fun f => rfl`. Use `set g : Pl D → MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p] := fun z => (sg z / 2) • ∑ a : Fin N0, ∑ b : Fin N1, subst (gSub (ep z) (z, a, b)) (be z) with hg`. Establish `hgc : ∀ z, constantCoeff (g z) = 0` using `fun z => by`. Simplify using `only [hg]`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, cc_gSub _ _ _ (hcc z), Finset.sum_const_zero, smul_zero]`. Establish `hz : ∀ z, rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (Y1 N0 N1 (ep z) (sg z) (be z)) =`. Substitute `(logPl D p (β := Fin N0 × Fin N1)) (OJ.expS ℂ_[p] (g z)) := by` using the available equality. Introduce `z`. Establish `hl : (fun v => rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (jetLogG p 1 v)) = fun v => logPl D p (pEmb (ptE D z) (Fin N0 × Fin N1) v)`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[jetLogG_one, rename_psubst _ (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X v)), MvPowerSeries.rename_X, logPl_one p D hn]`. Rewrite using `[Y1, rename_subst' _ (hasSubst_log_jet N0 N1), hl, ← subst_rename' _ (hs_logPl D hn N0 N1), OJ.expS, OJ.expS, rename_psubst _ (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_jet_series N0 N1 (ep z) (sg z) (be z) (hcc z))), rename_jet_series]`. Rewrite using `[Finset.prod_congr rfl (fun z _ => hz z), ← MvPowerSeries.coe_substAlgHom (hs_logPl D hn N0 N1), ← map_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show fAll D N0 N1 ep sg be = ∑ z, g z from rfl, hE, PI.OrbShared.ExpSum.eS_sum _ _ (fun z _ => hgc z)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_rename_exp_jet_series (D : D7) (hn : nP D p = 1) (N0 N1 : ℕ) (ep sg : Pl D → ℂ_[p])
     (be : Pl D → MvPowerSeries (ZMod 2) ℂ_[p]) (hcc : ∀ z, constantCoeff (be z) = 0) :
@@ -131,9 +131,9 @@ theorem prod_rename_exp_jet_series (D : D7) (hn : nP D p = 1) (N0 N1 : ℕ) (ep 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Apply the tactic sequence `first | rfl | simp`. Consider the case `@insert i s hi ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPowerSeries.monomial_mul_monomial, one_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem prod_monomial_one_eq_monomial_sum {ι σ : Type*} (s : Finset ι) (m : ι → σ →₀ ℕ) :
     ∏ i ∈ s, (monomial (m i) (1 : ℂ_[p]) : MvPowerSeries σ ℂ_[p]) = monomial (∑ i ∈ s, m i) 1 := by
@@ -146,9 +146,9 @@ private theorem prod_monomial_one_eq_monomial_sum {ι σ : Type*} (s : Finset ι
     rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPowerSeries.monomial_mul_monomial, one_mul]
 
 /- English proof (translation)
-Establish `hpsi : ∀ z (s : ZMod 1 × Fin N0 × Fin N1), rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (psiA p c s) = psiA p c (pEmb (ptE D z) (Fin N0 × Fin N1) s)`. Introduce `z s`. Establish `hh : PowerSeries.HasSubst (C c⁻¹ * X s : MvPowerSeries (ZMod 1 × Fin N0 × Fin N1) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Simplify using `only [psiA]`. Rewrite using `[rename_psubst _ hh, map_mul, MvPowerSeries.rename_C, MvPowerSeries.rename_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ z, rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (T1 N0 N1 c (ep z) (sg z) (be z) (kz D z k)) =`. Substitute `(psiA p c) (monomial (Finsupp.mapDomain (pEmb (ptE D z) (Fin N0 × Fin N1)) (kz D z k)) 1 * rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (Y1 N0 N1 (ep z) (sg z) (be z))) := by` using the available equality. Introduce `z`. Rewrite using `[T1, rename_subst' _ (hs_psiA p c), funext (hpsi z), ← subst_rename' _ (hs_psiA p c), map_mul, MvPowerSeries.rename_monomial]`. Rewrite using `[Finset.prod_congr rfl (fun z _ => hT z), ← MvPowerSeries.coe_substAlgHom (hs_psiA p c), ← map_prod, Finset.prod_mul_distrib, prod_rename_exp_jet_series D hn N0 N1 ep sg be hcc, prod_monomial_one_eq_monomial_sum, sum_mapDomain_kz]`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor (D : D7) (hn : nP D p = 1) (N0 N1 : ℕ) (c : ℂ_[p]) (hc : c ≠ 0) (ep sg : Pl D → ℂ_[p])
     (be : Pl D → MvPowerSeries (ZMod 2) ℂ_[p]) (hcc : ∀ z, constantCoeff (be z) = 0)

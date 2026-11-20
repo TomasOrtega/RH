@@ -17,7 +17,7 @@ section Map
 variable (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_smul_of_tower e o x`. Consider the case `exact e.map_smul (o : E) x`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locInA_osmul (o : M.L.O) (x : V) : e (o • x) = o • e x := by
   first
@@ -30,9 +30,7 @@ def eO : V →ₗ[M.L.O] V where
   map_smul' o x := locInA_osmul e o x
 
 /- English proof (translation)
-Establish `key : Submodule.span E (Set.range v) ≤ (Submodule.span E (Set.range w)).comap (e : V →ₗ[E] V)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show e (v i) ∈ Submodule.span E (Set.range w)`. Rewrite using `[h i]`.
-
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `key hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInA_span_mem {ι : Type} (v w : ι → V) (h : ∀ i, e (v i) = w i) {x : V}
     (hx : x ∈ Submodule.span E (Set.range v)) : e x ∈ Submodule.span E (Set.range w) := by
@@ -46,9 +44,7 @@ theorem locInA_span_mem {ι : Type} (v w : ι → V) (h : ∀ i, e (v i) = w i) 
   exact key hx
 
 /- English proof (translation)
-Establish `key : Submodule.span M.L.O (Set.range v) ≤ (Submodule.span M.L.O (Set.range fun i => e (v i))).comap (eO e)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show e (v i) ∈ Submodule.span M.L.O (Set.range fun i => e (v i))`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
-
-Conclude with `key hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem locInA_spanO_mem {ι : Type} (v : ι → V) {x : V}
     (hx : x ∈ Submodule.span M.L.O (Set.range v)) : e x ∈ Submodule.span M.L.O (Set.range fun i => e (v i)) := by
@@ -64,14 +60,14 @@ variable {abelian₂ Lam' : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam' ↔ e.sym
 include hL
 
 /- English proof (translation)
-The claim follows from `(hL _).2 (by rwa [LinearEquiv.symm_apply_apply])`.
+A detailed English derivation is pending.
 -/
 theorem locInA_mem (x : V) (hx : x ∈ abelian₂) : e x ∈ Lam' := (hL _).2 (by rwa [LinearEquiv.symm_apply_apply])
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[hL, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Apply the tactic sequence `exact ⟨e.symm x, hx, (by first | exact e.apply_symm_apply x | simp [eO])⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩ show e.symm (e y) ∈ abelian₂`. Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem locInA_map_eq : Lam' = abelian₂.map (eO e) := by
   ext x
@@ -84,9 +80,9 @@ theorem locInA_map_eq : Lam' = abelian₂.map (eO e) := by
     rwa [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun a => locInA_mem e hL (v a) (h1 a), ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact h2.map' (e : V →ₗ[E] V) (LinearEquiv.ker e)`. Consider the case `exact h2.map' (e : V →ₗ[E] V) (LinearMap.ker_eq_bot.2 e.injective)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hxs`. Establish `hs : e.symm x ∈ Submodule.span E (Set.range v)` using `locInA_span_mem e.symm (fun i => e (v i)) v (fun i => e.symm_apply_apply (v i)) hxs`. Establish `h5` using `locInA_spanO_mem e v (h3 _ ((hL x).1 hx) hs)`. Rewrite `h5` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locInA_prim {ι : Type} (v : ι → V) (h : H.Prim abelian₂ v) : H.Prim Lam' (fun i => e (v i)) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -101,9 +97,7 @@ theorem locInA_prim {ι : Type} (v : ι → V) (h : H.Prim abelian₂ v) : H.Pri
     rwa [LinearEquiv.apply_symm_apply] at h5
 
 /- English proof (translation)
-Establish `key : H.smulLat c abelian₂ ≤ (H.smulLat c Lam').comap (eO e)` using `by show Submodule.span M.L.O ((fun v => c • v) '' (abelian₂ : Set V)) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show e (c • y) ∈ H.smulLat c Lam'`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.subset_span ⟨e y, locInA_mem e hL y hy, rfl⟩`. Conclude with `key hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInA_smulLat (c : E) {x : V} (hx : x ∈ H.smulLat c abelian₂) : e x ∈ H.smulLat c Lam' := by
   have key : H.smulLat c abelian₂ ≤ (H.smulLat c Lam').comap (eO e) := by
@@ -118,15 +112,15 @@ theorem locInA_smulLat (c : E) {x : V} (hx : x ∈ H.smulLat c abelian₂) : e x
 include hiso
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[locInA_map_eq e hL]`. Conclude with `h1.map _`. Rewrite using `[eq_top_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Establish `hx : e.symm x ∈ Submodule.span E (abelian₂ : Set V)`. Rewrite using `[h2]`. Conclude with `Submodule.mem_top`. Establish `key : Submodule.span E (abelian₂ : Set V) ≤ (Submodule.span E (Lam' : Set V)).comap (e : V →ₗ[E] V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Use `show e y ∈ Submodule.span E (Lam' : Set V)`. Conclude with `Submodule.subset_span (locInA_mem e hL y hy)`. Establish `h5 : e (e.symm x) ∈ Submodule.span E (Lam' : Set V)` using `key hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `h5` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `x`. Rewrite using `[hL x, h3]`. Prove the components needed by the constructor for the conclusion. Introduce `hH y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h6` using `hH (e.symm y) ((hL y).1 hy)`. Rewrite `h6` using `[← hiso, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hH y hy`. Rewrite using `[← hiso, LinearEquiv.apply_symm_apply]`. Conclude with `hH (e y) (locInA_mem e hL y hy)`.
+A detailed English derivation is pending.
 -/
 theorem locInA_selfDual (h : H.IsSelfDual abelian₂) : H.IsSelfDual Lam' := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -158,7 +152,7 @@ theorem locInA_selfDual (h : H.IsSelfDual abelian₂) : H.IsSelfDual Lam' := by
 
 omit hL in
 /- English proof (translation)
-Use `first`. Consider the case `(ext a b; simp only [Loc.HermSp.Zhat, Matrix.of_apply, hiso])`. Consider the case `(unfold Loc.HermSp.Zhat; simp only [hiso])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locInA_zhat {r : ℕ} (f f' : Fin (r + 1) → V) :
     H.Zhat (fun a => e (f a)) (fun b => e (f' b)) = H.Zhat f f' := by
@@ -168,7 +162,7 @@ theorem locInA_zhat {r : ℕ} (f f' : Fin (r + 1) → V) :
 
 omit hL in
 /- English proof (translation)
-Use `first`. Consider the case `simp only [Loc.HermSp.Dl, locInA_zhat H e hiso f f']`. Consider the case `(unfold Loc.HermSp.Dl; rw [locInA_zhat H e hiso f f'])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locInA_dl {r : ℕ} (f f' : Fin (r + 1) → V) (l : ℕ) :
     H.Dl (fun a => e (f a)) (fun b => e (f' b)) l = H.Dl f f' l := by
@@ -177,9 +171,7 @@ theorem locInA_dl {r : ℕ} (f f' : Fin (r + 1) → V) (l : ℕ) :
     | (unfold Loc.HermSp.Dl; rw [locInA_zhat H e hiso f f'])
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Use `⟨locInA_prim H e hL f h1, fun a b hab => ?_, ?_, h4, h5⟩` and prove the remaining obligations. Use `show H.h (e (f a)) (e (f b)) = 0`. Rewrite using `[hiso]`. Conclude with `h2 a b hab`.
-
-Use `show H.h (e (f (Fin.last r))) (e (f (Fin.last r))) = -algebraMap F E T`. Rewrite using `[hiso]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInA_frame {r : ℕ} (f : Fin (r + 1) → V) (T : F) (h : H.IsFrame abelian₂ r f T) :
     H.IsFrame Lam' r (fun a => e (f a)) T := by
@@ -194,9 +186,9 @@ theorem locInA_frame {r : ℕ} (f : Fin (r + 1) → V) (T : F) (h : H.IsFrame ab
 
 omit hL hiso in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Break down `hsp : M.split with _ | g` into its components or cases. Simplify using `only [Loc.HermSp.MMfam, hsp]`. Apply the tactic sequence `cases i <;> rfl`. Simplify using `only [Loc.HermSp.MMfam, hsp]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases i <;> simp [map_smul, map_sub]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locInA_mmfam {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F) :
     H.MMfam (⟨Lam', fun a => e (f a), fun b => e (f' b), T, T'⟩ : Loc.Term V M r) =
@@ -209,13 +201,11 @@ theorem locInA_mmfam {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F) :
     cases i <;> simp [map_smul, map_sub]
 
 /- English proof (translation)
-Take `⟨⟨hsd, hfr, hfr', hu, hg, hsp⟩, hpr⟩` from `h`. Establish `hdl : ∀ l, H.Dl (fun a => e (f a)) (fun b => e (f' b)) l = H.Dl f f' l` using `fun l => locInA_dl H e hiso f f' l`. Use `⟨⟨locInA_selfDual H e hiso hL hsd, locInA_frame H e hiso hL f T hfr, locInA_frame H e hiso hL f' T' hfr', ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsUnit (H.Dl (fun a => e (f a)) (fun b => e (f' b)) (r + 1))`. Rewrite using `[hdl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hu`. Use `show H.Gdet (fun a => e (f a)) (fun b => e (f' b)) T T' ≠ 0`. Simplify using `only [Loc.HermSp.Gdet, hdl]`. Conclude with `hg`. Introduce `g hgs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `hsp g hgs`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `b`. Establish `h3' : ∀ b, f' b - f b ∈ H.smulLat (algebraMap F E (g.q : F)) abelian₂` using `h3`. Use `show e (f' b) - e (f b) ∈ H.smulLat (algebraMap F E (g.q : F)) Lam'`.
-
-Rewrite using `[← map_sub]`. Conclude with `locInA_smulLat H e hL _ (h3' b)`. Rewrite using `[locInA_mmfam H e (abelian₂ := abelian₂) (Lam' := Lam') f f' T T']`. Conclude with `locInA_prim H e hL _ hpr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGeneric_map {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
     (h : H.IsGeneric (⟨abelian₂, f, f', T, T'⟩ : Loc.Term V M r)) :
@@ -254,7 +244,7 @@ include hiso
 
 include hf in
 /- English proof (translation)
-Use `first`. Consider the case `exact e.symm_apply_eq.2 (hf a).symm`. Consider the case `(conv_lhs => rw [← hf a]`. Conclude with `e.symm_apply_apply _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locInA_fs (a : Fin (r + 1)) : e.symm (t₁.f a) = t₁.f a := by
   first
@@ -264,7 +254,7 @@ theorem locInA_fs (a : Fin (r + 1)) : e.symm (t₁.f a) = t₁.f a := by
 
 include hf' in
 /- English proof (translation)
-Rewrite using `[← hf' b]`. Conclude with `e.symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInA_fs' (b : Fin (r + 1)) : e.symm (f₃' b) = f₂' b := by
   rw [← hf' b]
@@ -272,7 +262,7 @@ theorem locInA_fs' (b : Fin (r + 1)) : e.symm (f₃' b) = f₂' b := by
 
 include hf in
 /- English proof (translation)
-Conclude with `locInA_span_mem e (fun a : Fin r => t₁.f a.castSucc) (fun a : Fin r => t₁.f a.castSucc) (fun a => hf _) hx`.
+A detailed English derivation is pending.
 -/
 theorem locInA_X (x : V) (hx : x ∈ H.X t₁.f) : e x ∈ H.X t₁.f := by
   exact locInA_span_mem e (fun a : Fin r => t₁.f a.castSucc) (fun a : Fin r => t₁.f a.castSucc)
@@ -280,7 +270,7 @@ theorem locInA_X (x : V) (hx : x ∈ H.X t₁.f) : e x ∈ H.X t₁.f := by
 
 include hf in
 /- English proof (translation)
-Conclude with `locInA_span_mem e.symm (fun a : Fin r => t₁.f a.castSucc) (fun a : Fin r => t₁.f a.castSucc) (fun a => locInA_fs H e hiso t₁ hf _) hx`.
+A detailed English derivation is pending.
 -/
 theorem locInA_Xs (x : V) (hx : x ∈ H.X t₁.f) : e.symm x ∈ H.X t₁.f := by
   exact locInA_span_mem e.symm (fun a : Fin r => t₁.f a.castSucc) (fun a : Fin r => t₁.f a.castSucc)
@@ -288,7 +278,7 @@ theorem locInA_Xs (x : V) (hx : x ∈ H.X t₁.f) : e.symm x ∈ H.X t₁.f := b
 
 include hf' in
 /- English proof (translation)
-Conclude with `locInA_span_mem e (fun a : Fin r => f₂' a.castSucc) (fun a : Fin r => f₃' a.castSucc) (fun a => hf' _) hx`.
+A detailed English derivation is pending.
 -/
 theorem locInA_X' (x : V) (hx : x ∈ H.X f₂') : e x ∈ H.X f₃' := by
   exact locInA_span_mem e (fun a : Fin r => f₂' a.castSucc) (fun a : Fin r => f₃' a.castSucc)
@@ -296,7 +286,7 @@ theorem locInA_X' (x : V) (hx : x ∈ H.X f₂') : e x ∈ H.X f₃' := by
 
 include hf' in
 /- English proof (translation)
-Conclude with `locInA_span_mem e.symm (fun a : Fin r => f₃' a.castSucc) (fun a : Fin r => f₂' a.castSucc) (fun a => locInA_fs' H e hiso hf' _) hx`.
+A detailed English derivation is pending.
 -/
 theorem locInA_Xs' (x : V) (hx : x ∈ H.X f₃') : e.symm x ∈ H.X f₂' := by
   exact locInA_span_mem e.symm (fun a : Fin r => f₃' a.castSucc) (fun a : Fin r => f₂' a.castSucc)
@@ -307,9 +297,9 @@ abbrev qE : H.Wb f₂' ≃ₗ[E] H.Wb f₃' :=
 
 include hX in
 /- English proof (translation)
-Establish `h1 : (y : V) - x ∈ H.X t₁.f`. Rewrite using `[hy]`. Conclude with `hX (x : V) x.2`. Establish `h2 : y - x ∈ (H.X t₁.f).comap (H.perp (H.X t₁.f)).subtype` using `h1`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Submodule.Quotient.eq _).2 h2`. Consider the case `(simp only [Loc.HermSp.mkW, Submodule.mkQ_apply]`. Conclude with `(Submodule.Quotient.eq _).2 h2)`.
+A detailed English derivation is pending.
 -/
 theorem locInA_mk_e (x : ↥(H.perp (H.X t₁.f))) (y : ↥(H.perp (H.X t₁.f))) (hy : (y : V) = e x) :
     H.mkW t₁.f y = H.mkW t₁.f x := by
@@ -325,11 +315,9 @@ theorem locInA_mk_e (x : ↥(H.perp (H.X t₁.f))) (y : ↥(H.perp (H.X t₁.f))
 include hf hX in
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hp : e x ∈ H.perp (H.X t₁.f)` using `perp_map H e hiso _ _ (locInA_Xs H e hiso t₁ hf) x.2`. Use `⟨⟨e x, hp⟩, (hL _).2 ?_, locInA_mk_e H e hiso t₁ hX x ⟨e x, hp⟩ rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show e.symm (e (x : V)) ∈ Lam₂`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hx`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hp : e.symm y ∈ H.perp (H.X t₁.f)` using `perp_map_symm H e hiso _ _ (locInA_X H e hiso t₁ hf) y.2`.
-
-Use `⟨⟨e.symm y, hp⟩, (hL _).1 hy, ?_⟩` and prove the remaining obligations. Conclude with `(locInA_mk_e H e hiso t₁ hX ⟨e.symm y, hp⟩ y (e.apply_symm_apply _).symm).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lset_eq {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔ e.symm x ∈ Lam₂) :
     H.Lset Lam₂ t₁.f = H.Lset Lam₃ t₁.f := by
@@ -347,9 +335,9 @@ theorem lset_eq {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ �
     exact (locInA_mk_e H e hiso t₁ hX ⟨e.symm y, hp⟩ y (e.apply_symm_apply _).symm).symm
 
 /- English proof (translation)
-Establish `hxy : perpEquiv H e hiso (H.X f₂') (H.X f₃') (locInA_X' H e hiso hf') (locInA_Xs' H e hiso hf') x = y` using `by first`. Consider the case `exact Subtype.ext hy.symm`. Consider the case `exact Subtype.ext (by simp [perpEquiv, hy])`. Rewrite using `[← hxy]`. Use `first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(simp only [qEquiv, Loc.HermSp.mkW, Submodule.mkQ_apply] rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locInA_q_mk (x : ↥(H.perp (H.X f₂'))) (y : ↥(H.perp (H.X f₃'))) (hy : (y : V) = e x) :
     qE H e hiso hf' (H.mkW f₂' x) = H.mkW f₃' y := by
@@ -365,11 +353,9 @@ theorem locInA_q_mk (x : ↥(H.perp (H.X f₂'))) (y : ↥(H.perp (H.X f₃'))) 
        rfl)
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Establish `hp : e x ∈ H.perp (H.X f₃')` using `perp_map H e hiso _ _ (locInA_Xs' H e hiso hf') x.2`. Use `⟨⟨e x, hp⟩, (hL _).2 ?_, (locInA_q_mk H e hiso hf' x ⟨e x, hp⟩ rfl).symm⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show e.symm (e (x : V)) ∈ Lam₂`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hx`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hp : e.symm y ∈ H.perp (H.X f₂')` using `perp_map_symm H e hiso _ _ (locInA_X' H e hiso hf') y.2`.
-
-Conclude with `⟨H.mkW f₂' ⟨e.symm y, hp⟩, ⟨⟨e.symm y, hp⟩, (hL _).1 hy, rfl⟩, locInA_q_mk H e hiso hf' ⟨e.symm y, hp⟩ y (e.apply_symm_apply _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lset_q {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔ e.symm x ∈ Lam₂) :
     qE H e hiso hf' '' H.Lset Lam₂ f₂' = H.Lset Lam₃ f₃' := by
@@ -389,17 +375,13 @@ theorem lset_q {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔
 include hf hX in
 
 /- English proof (translation)
-Establish `hL' : ∀ y, y ∈ Lam₂ ↔ e.symm.symm y ∈ Lam₃` using `fun y => by`. Rewrite using `[LinearEquiv.symm_symm, hL, LinearEquiv.symm_apply_apply]`. Use extensionality with `⟨p1, p2⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', x, hx'L, hxL, hsub, hp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hp1 : e.symm x' ∈ H.perp (H.X f₂')` using `perp_map_symm H e hiso _ _ (locInA_X' H e hiso hf') x'.2`. Establish `hp2 : e.symm x ∈ H.perp (H.X t₁.f)` using `perp_map_symm H e hiso _ _ (locInA_X H e hiso t₁ hf) x.2`. Use `⟨(H.mkW f₂' ⟨e.symm x', hp1⟩, H.mkW t₁.f ⟨e.symm x, hp2⟩), ⟨⟨e.symm x', hp1⟩, ⟨e.symm x, hp2⟩, (hL _).1 hx'L, (hL _).1 hxL, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show e.symm (x : V) - e.symm x' ∈ H.smulLat (algebraMap F E (g.q : F)) Lam₂`. Rewrite using `[← map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `locInA_smulLat H e.symm hL' _ hsub`. Rewrite using `[hp]`. Conclude with `Prod.ext (locInA_q_mk H e hiso hf' ⟨e.symm x', hp1⟩ x' (e.apply_symm_apply _).symm) (locInA_mk_e H e hiso t₁ hX ⟨e.symm x, hp2⟩ x (e.apply_symm_apply _).symm).symm`. Introduce and unpack `⟨⟨q1, q2⟩, ⟨x', x, hx'L, hxL, hsub, hq⟩, hp⟩`. Establish `hp1 : e x' ∈ H.perp (H.X f₃')` using `perp_map H e hiso _ _ (locInA_Xs' H e hiso hf') x'.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hp2 : e x ∈ H.perp (H.X t₁.f)` using `perp_map H e hiso _ _ (locInA_Xs H e hiso t₁ hf) x.2`. Use `⟨⟨e x', hp1⟩, ⟨e x, hp2⟩, (hL _).2 ?_, (hL _).2 ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show e.symm (e (x' : V)) ∈ Lam₂`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hx'L`.
-
-Use `show e.symm (e (x : V)) ∈ Lam₂`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hxL`. Use `show e (x : V) - e x' ∈ H.smulLat (algebraMap F E (g.q : F)) Lam₃`. Rewrite using `[← map_sub]`.
-
-Conclude with `locInA_smulLat H e hL _ hsub`. Rewrite using `[← hp, hq]`. Conclude with `Prod.ext (locInA_q_mk H e hiso hf' x' ⟨e x', hp1⟩ rfl) (locInA_mk_e H e hiso t₁ hX x ⟨e x, hp2⟩ rfl).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_q {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔ e.symm x ∈ Lam₂) (g : Loc.SplitG M.L)
     (T T' : F) :
@@ -442,7 +424,7 @@ theorem iota_q {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔
         (locInA_mk_e H e hiso t₁ hX x ⟨e x, hp2⟩ rfl).symm
 
 /- English proof (translation)
-Introduce `x x₂ hx hx₂`. Establish `hp : e.symm (x₂ : V) ∈ H.perp (H.X f₂')` using `perp_map_symm H e hiso _ _ (locInA_X' H e hiso hf') x₂.2`. Establish `h1 : c₁ • φ' (H.mkW t₁.f' x) = c₂ • H.mkW f₂' ⟨e.symm x₂, hp⟩` using `h x ⟨e.symm x₂, hp⟩ hx (by show e.symm (x₂ : V) = v₂; rw [hx₂, LinearEquiv.symm_apply_apply])`. Use `show c₁ • qE H e hiso hf' (φ' (H.mkW t₁.f' x)) = c₂ • H.mkW f₃' x₂`. Rewrite using `[← map_smul (qE H e hiso hf') c₁, h1, map_smul (qE H e hiso hf') c₂, locInA_q_mk H e hiso hf' ⟨e.symm x₂, hp⟩ x₂ (e.apply_symm_apply _).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sendsTo_trans (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂') (c₁ c₂ : E) (v₁ v₂ : V)
     (h : H.SendsTo φ'.toLinearMap c₁ c₂ v₁ v₂) :
@@ -458,7 +440,7 @@ theorem sendsTo_trans (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂') (c₁ c₂ : E) 
 
 include hf hX in
 /- English proof (translation)
-Introduce `x x₂ hx hx₂`. Establish `hp : e.symm (x₂ : V) ∈ H.perp (H.X t₁.f)` using `perp_map_symm H e hiso _ _ (locInA_X H e hiso t₁ hf) x₂.2`. Establish `h1` using `h x ⟨e.symm x₂, hp⟩ hx (by show e.symm (x₂ : V) = v₂; rw [hx₂, LinearEquiv.symm_apply_apply])`. Rewrite using `[h1, ← locInA_mk_e H e hiso t₁ hX ⟨e.symm x₂, hp⟩ x₂ (e.apply_symm_apply _).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sendsTo_refl_trans (c₁ c₂ : E) (v₁ v₂ : V)
     (h : H.SendsTo (LinearEquiv.refl E (H.Wb t₁.f)).toLinearMap c₁ c₂ v₁ v₂) :
@@ -471,7 +453,7 @@ theorem sendsTo_refl_trans (c₁ c₂ : E) (v₁ v₂ : V)
 
 include hf hf' in
 /- English proof (translation)
-Establish `h1 : (fun a => e (t₁.f a)) = t₁.f` using `funext hf`. Establish `h2 : (fun b => e (f₂' b)) = f₃'` using `funext hf'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem locInA_zhat' : H.Zhat t₁.f f₃' = H.Zhat t₁.f f₂' := by
   have h1 : (fun a => e (t₁.f a)) = t₁.f := funext hf
@@ -481,7 +463,7 @@ theorem locInA_zhat' : H.Zhat t₁.f f₃' = H.Zhat t₁.f f₂' := by
 
 include hf hf' in
 /- English proof (translation)
-Establish `h1 : (fun a => e (t₁.f a)) = t₁.f` using `funext hf`. Establish `h2 : (fun b => e (f₂' b)) = f₃'` using `funext hf'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem locInA_dl' (l : ℕ) : H.Dl t₁.f f₃' l = H.Dl t₁.f f₂' l := by
   have h1 : (fun a => e (t₁.f a)) = t₁.f := funext hf
@@ -492,27 +474,21 @@ theorem locInA_dl' (l : ℕ) : H.Dl t₁.f f₃' l = H.Dl t₁.f f₂' l := by
 include hf hf' hX in
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6⟩` from `hI`. Establish `hz` using `locInA_zhat' H e hiso t₁ hf hf'`. Establish `hd : ∀ l, H.Dl t₁.f f₃' l = H.Dl t₁.f f₂' l` using `fun l => locInA_dl' H e hiso t₁ hf hf' l`. Establish `hom' : H.om' t₁.f f₃' = e (H.om' t₁.f f₂')`. Simplify using `only [Loc.HermSp.om', hz, map_sum, map_smul, hf']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hom : H.om t₁.f f₃' = e (H.om t₁.f f₂')`. Simplify using `only [Loc.HermSp.om, hz, map_sum, map_smul, hf]`. Establish `h21 : ∀ y ∈ H.Xp t₁.f ⊔ H.Xp f₃', e.symm y ∈ H.Xp t₁.f ⊔ H.Xp f₂'`. Introduce `y hy`. Establish `key : H.Xp t₁.f ⊔ H.Xp f₃' ≤ (H.Xp t₁.f ⊔ H.Xp f₂').comap (e.symm : V →ₗ[E] V)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Use `show Submodule.span E (Set.range t₁.f) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show e.symm (t₁.f a) ∈ H.Xp t₁.f ⊔ H.Xp f₂'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locInA_fs H e hiso t₁ hf a]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Use `show Submodule.span E (Set.range f₃') ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show e.symm (f₃' b) ∈ H.Xp t₁.f ⊔ H.Xp f₂'`. Rewrite using `[locInA_fs' H e hiso hf' b]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨b, rfl⟩)`. Conclude with `key hy`. Use `⟨i1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y x₂ y₂ hx hy`. Establish `hp1 : e.symm (x₂ : V) ∈ H.perp (H.X f₂')` using `perp_map_symm H e hiso _ _ (locInA_X' H e hiso hf') x₂.2`. Establish `hp2 : e.symm (y₂ : V) ∈ H.perp (H.X f₂')` using `perp_map_symm H e hiso _ _ (locInA_X' H e hiso hf') y₂.2`. Establish `hx' : φ' (H.mkW t₁.f' x) = H.mkW f₂' ⟨e.symm x₂, hp1⟩`. Apply `(qE H e hiso hf').injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[locInA_q_mk H e hiso hf' ⟨e.symm x₂, hp1⟩ x₂ (e.apply_symm_apply _).symm]`. Conclude with `hx`. Establish `hy' : φ' (H.mkW t₁.f' y) = H.mkW f₂' ⟨e.symm y₂, hp2⟩`. Apply `(qE H e hiso hf').injective` to reduce the goal to its premises. Rewrite using `[locInA_q_mk H e hiso hf' ⟨e.symm y₂, hp2⟩ y₂ (e.apply_symm_apply _).symm]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[← i2 x y _ _ hx' hy']`. Use `show H.h (x₂ : V) y₂ = H.h (e.symm (x₂ : V)) (e.symm (y₂ : V))`. Rewrite using `[← hiso (e.symm (x₂ : V)) (e.symm (y₂ : V)), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Introduce `w hw`.
-
-Take `⟨w₂, hw₂, s1, s2⟩` from `i3 w hw`. Conclude with `⟨e w₂, perp_map H e hiso _ _ h21 hw₂, sendsTo_refl_trans H e hiso t₁ hf hX 1 1 w w₂ s1, sendsTo_trans H e hiso t₁ hf' φ' 1 1 w w₂ s2⟩`. Use `show H.SendsTo (LinearEquiv.refl E (H.Wb t₁.f)).toLinearMap (H.Dl t₁.f f₃' (r + 1)) (H.Dl t₁.f t₁.f' (r + 1)) (H.om' t₁.f t₁.f') (H.om' t₁.f f₃')`. Rewrite using `[hd, hom']`. Conclude with `sendsTo_refl_trans H e hiso t₁ hf hX _ _ _ _ i4`.
-
-Use `show H.SendsTo (φ'.trans (qE H e hiso hf')).toLinearMap (M.L.cj (H.Dl t₁.f f₃' (r + 1))) (M.L.cj (H.Dl t₁.f t₁.f' (r + 1))) (H.om t₁.f t₁.f') (H.om t₁.f f₃')`. Rewrite using `[hd, hom]`. Conclude with `sendsTo_trans H e hiso t₁ hf' φ' _ _ _ _ i5`. Use `show H.Dl t₁.f t₁.f' r * H.Dl t₁.f f₃' (r + 1) = H.Dl t₁.f f₃' r * H.Dl t₁.f t₁.f' (r + 1)`. Rewrite using `[hd, hd]`.
-
-Conclude with `i6`.
+A detailed English derivation is pending.
 -/
 theorem ident_trans (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂')
     (hI : H.Ident t₁ ⟨⊥, t₁.f, f₂', t₁.T, t₁.T'⟩ (LinearEquiv.refl E _) φ') :
@@ -578,19 +554,15 @@ theorem ident_trans (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂')
 include hf hf' hX in
 
 /- English proof (translation)
-Take `⟨hgen, hres⟩` from `hP (φ'.trans (qE H e hiso hf')) (ident_trans H e hiso t₁ hf hf' hX φ' hI) (by`. Establish `h0` using `sendsTo_trans H e hiso t₁ hf' φ' 1 1 _ _ hz`. Rewrite using `[hf' (Fin.last r)] at h0)` and apply the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hL' : ∀ x, x ∈ Lam₂ ↔ e.symm.symm x ∈ Lam₃` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_symm, hL, LinearEquiv.symm_apply_apply]`. Establish `hiso' : ∀ v w, H.h (e.symm v) (e.symm w) = H.h v w` using `fun v w => by`. Establish `h0` using `hiso (e.symm v) (e.symm w)`. Rewrite `h0` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `h0.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `isGeneric_map H e.symm hiso' hL' t₁.f f₃' t₁.T t₁.T' hgen`. Establish `h2 : (fun a => e.symm (t₁.f a)) = t₁.f` using `funext (locInA_fs H e hiso t₁ hf)`. Establish `h3 : (fun b => e.symm (f₃' b)) = f₂'` using `funext (locInA_fs' H e hiso hf')`. Rewrite `h1` using `[h2, h3]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r1, r2, r3, r4, r5⟩` from `hres`. Use `⟨r1.trans ?_, r2, ?_, hz, ?_⟩` and prove the remaining obligations. Conclude with `(lset_eq H e hiso t₁ hf hX hL).symm`. Establish `hc : (qE H e hiso hf') '' (φ' '' H.Lset t₁.abelian₂ t₁.f') = (qE H e hiso hf') '' H.Lset Lam₂ f₂'`. Rewrite using `[lset_q H e hiso hf' hL, Set.image_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r3`. Conclude with `Set.image_injective.2 (qE H e hiso hf').injective hc`. Introduce `g hg`. Establish `he : Prod.map (qE H e hiso hf') id '' (Prod.map φ' (LinearEquiv.refl E (H.Wb t₁.f)) '' H.iotaGraph g t₁) = Prod.map (qE H e hiso hf') id '' H.iotaGraph g ⟨Lam₂, t₁.f, f₂', t₁.T, t₁.T'⟩`. Rewrite using `[← iota_q H e hiso t₁ hf hf' hX hL g t₁.T t₁.T', Set.image_image]`.
-
-Conclude with `r5 g hg`. Establish `hinj : Function.Injective (Prod.map (qE H e hiso hf') (id : H.Wb t₁.f → H.Wb t₁.f))` using `by first`. Consider the case `exact (qE H e hiso hf').injective.prodMap Function.injective_id`. Consider the case `exact (qE H e hiso hf').injective.Prod_map Function.injective_id`. Consider the case `exact Prod.map_injective.2 ⟨(qE H e hiso hf').injective, Function.injective_id⟩`.
-
-Conclude with `Set.image_injective.2 hinj he`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locSet_back {Lam₂ Lam₃ : Submodule M.L.O V} (hL : ∀ x, x ∈ Lam₃ ↔ e.symm x ∈ Lam₂)
     (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂')

@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.GenPush
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Establish `h0 : j ⁻¹ᵁ Z.basicOpen (a - b) = ⊥`. Rewrite using `[Scheme.preimage_basicOpen, map_sub, hab, sub_self, Scheme.basicOpen_zero]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨z, hz⟩` from `(Opens.ne_bot_iff_nonempty _).mp hne`. Take `⟨x, hx1, ⟨y, rfl⟩⟩` from `hj.inter_open_nonempty _ (Z.basicOpen (a - b)).isOpen ⟨z, hz⟩`. Establish `: y ∈ j ⁻¹ᵁ Z.basicOpen (a - b)` using `hx1`. Rewrite `this` using `[h0]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective_of_dense {T Z : Scheme.{0}} [IsReduced Z] (j : T ⟶ Z) [IsOpenImmersion j]
     (hj : Dense (Set.range j)) (W : Z.Opens) : Function.Injective (j.app W).hom := by
@@ -32,7 +32,7 @@ theorem app_injective_of_dense {T Z : Scheme.{0}} [IsReduced Z] (j : T ⟶ Z) [I
   exact this
 
 /- English proof (translation)
-Establish `e : f = inv k ≫ (k ≫ f ≫ m) ≫ inv m` using `by simp`. Rewrite using `[e, CommRingCat.hom_comp, CommRingCat.hom_comp]`. Use `RingHom.IsIntegral.trans _ _ ?_ (RingHom.IsIntegral.trans _ _ h ?_)` and prove the remaining obligations. Conclude with `RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv k)).2`. Conclude with `RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv m)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_isIso_comp {A B C D : CommRingCat.{0}} (k : A ⟶ B) (f : B ⟶ C) (m : C ⟶ D) [IsIso k]
     [IsIso m] (h : (k ≫ f ≫ m).hom.IsIntegral) : f.hom.IsIntegral := by
@@ -43,11 +43,11 @@ theorem isIntegral_of_isIso_comp {A B C D : CommRingCat.{0}} (k : A ⟶ B) (f : 
   · exact RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv m)).2
 
 /- English proof (translation)
-Establish `: IsAffine U.toScheme` using `hU`. Establish `h` using `isIntegral_appTop_of_universallyClosed (ρ ∣_ U)`. Rewrite `h` using `[morphismRestrict_appTop]`. Establish `e : U.ι ''ᵁ ⊤ = U` using `by simp`. Rewrite `h` using `[ρ.app_eq e, Category.assoc, Category.assoc, ← Functor.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [eqToHom_op, eqToHom_map, eqToHom_trans] at h`. Establish `hi : ∀ {A B : CommRingCat.{0}} (p : A = B), IsIso (eqToHom p)` using `fun p => by`. Substitute `p` using the available equality. Rewrite using `[eqToHom_refl]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `@isIntegral_of_isIso_comp _ _ _ _ _ _ _ ?_ ?_ h` and prove the remaining obligations. Conclude with `hi _`. Conclude with `hi _`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_app_of_universallyClosed {Z₁ Z₂ : Scheme.{0}} (ρ : Z₁ ⟶ Z₂) [UniversallyClosed ρ]
     (U : Z₂.Opens) (hU : IsAffineOpen U) : (ρ.app U).hom.IsIntegral := by
@@ -64,7 +64,7 @@ theorem isIntegral_app_of_universallyClosed {Z₁ Z₂ : Scheme.{0}} (ρ : Z₁ 
   · exact hi _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_section_extending_of_dense_openImmersion j hj U s fun u hu => GlobalTheory.T.exists_local_section_of_isIntegralElem_normal_scheme j hj U s hs u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_app_eq_of_isIntegralElem {T Z : Scheme.{0}} [GlobalTheory.IsNormalScheme Z] [IsLocallyNoetherian Z]
     (j : T ⟶ Z) [IsOpenImmersion j] (hj : Dense (Set.range j)) (U : Z.Opens)
@@ -72,9 +72,9 @@ theorem exists_app_eq_of_isIntegralElem {T Z : Scheme.{0}} [GlobalTheory.IsNorma
   GlobalTheory.T.exists_section_extending_of_dense_openImmersion j hj U s fun u hu => GlobalTheory.T.exists_local_section_of_isIntegralElem_normal_scheme j hj U s hs u hu
 
 /- English proof (translation)
-Substitute `hρ` using the available equality. Introduce `t`. Establish `ht : (ρ.app U).hom.IsIntegralElem t` using `isIntegral_app_of_universallyClosed ρ U hU t`. Establish `hs : ((j₁ ≫ ρ).app U).hom.IsIntegralElem (j₁.app (ρ ⁻¹ᵁ U) t)`. Express the relevant statement in the definitionally equal form `((j₁.app (ρ ⁻¹ᵁ U)).hom.comp (ρ.app U).hom).IsIntegralElem _`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `RingHom.IsIntegralElem.map ht _`. Take `⟨h, hh⟩` from `exists_app_eq_of_isIntegralElem (j₁ ≫ ρ) h₂ U _ hs`. Use `⟨h, app_injective_of_dense j₁ h₁ (ρ ⁻¹ᵁ U) ?_⟩` and prove the remaining obligations. Rewrite using `[← hh]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem app_surjective_of_dense {T Z₁ Z₂ : Scheme.{0}} [IsReduced Z₁] [GlobalTheory.IsNormalScheme Z₂]
     [IsLocallyNoetherian Z₂] (j₁ : T ⟶ Z₁) (j₂ : T ⟶ Z₂) [IsOpenImmersion j₁] [IsOpenImmersion j₂]
@@ -97,7 +97,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Use `haveI : GlobalTheory.IsNormalScheme Y.X := GlobalTheory.IsNormalScheme.of_pred Y.normal`. Use `haveI : IsIso (genι Y) := GlobalTheory.VarFlag.isIso_genι`. Conclude with `isReduced_of_isOpenImmersion (genι Y)`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_gen_id (Y : Model Xo c (RingHom.id c.F)) : IsReduced (gen Y) := by
   haveI : GlobalTheory.IsNormalScheme Y.X := GlobalTheory.IsNormalScheme.of_pred Y.normal
@@ -105,7 +105,7 @@ theorem isReduced_gen_id (Y : Model Xo c (RingHom.id c.F)) : IsReduced (gen Y) :
   exact isReduced_of_isOpenImmersion (genι Y)
 
 /- English proof (translation)
-Use `haveI := isReduced_gen_id Y`. Use `haveI : IsDominant Y.jQ := ⟨Y.jQ_dense⟩`. Use `ext_of_isDominant Y.jQ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hρ, X.jQ_over, Y.jQ_over]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_genStr (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X)
     (hρ : Y.jQ ≫ ρ = X.jQ) : ρ ≫ genStr X = genStr Y := by
@@ -115,7 +115,7 @@ theorem comp_genStr (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen 
   rw [← Category.assoc, hρ, X.jQ_over, Y.jQ_over]
 
 /- English proof (translation)
-Use `haveI := isProper_genStr X`. Use `haveI : IsProper (ρ ≫ genStr X) := (comp_genStr X Y ρ hρ) ▸ isProper_genStr Y`. Conclude with `IsProper.of_comp ρ (genStr X)`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_jQ (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X)
     (hρ : Y.jQ ≫ ρ = X.jQ) : IsProper ρ := by
@@ -124,9 +124,7 @@ theorem isProper_of_jQ (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : g
   exact IsProper.of_comp ρ (genStr X)
 
 /- English proof (translation)
-Take `⟨hN, hL⟩` from `GlobalTheory.ModelRelCompare.normal_genericFibre X (GlobalTheory.ModelRelCompare.isDedFrac_in_use c).1`. Use `haveI : GlobalTheory.IsNormalScheme (gen X) := GlobalTheory.IsNormalScheme.of_pred hN`. Use `haveI : IsLocallyNoetherian (gen X) := hL`. Use `haveI := isReduced_gen_id Y`. Use `haveI := isProper_of_jQ X Y ρ hρ`.
-
-Use `haveI := Y.jQ_open`. Use `haveI := X.jQ_open`. Conclude with `app_surjective_of_dense Y.jQ X.jQ Y.jQ_dense X.jQ_dense ρ hρ U.1 U.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem app_surjective (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X)
     (hρ : Y.jQ ≫ ρ = X.jQ) (U : (gen X).affineOpens) : Function.Surjective (ρ.app U.1).hom := by
@@ -144,7 +142,7 @@ end Models
 end GlobalTheory.GenPush
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ X Y ρ hρ U` and use `GlobalTheory.GenPush.app_surjective X Y ρ hρ U`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GenPush.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X), Y.jQ ≫ ρ = X.jQ →

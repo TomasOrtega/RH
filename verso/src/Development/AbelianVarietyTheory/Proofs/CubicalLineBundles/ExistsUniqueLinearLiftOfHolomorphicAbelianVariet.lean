@@ -13,25 +13,23 @@ variable {V W : Type*} [NormedAddCommGroup V] [NormedAddCommGroup W] {A : Type*}
   {ι : Type*} {Y : Type*} [TopologicalSpace Y] [T2Space Y]
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hN' : N ∩ ex ⁻¹' S ∈ 𝓝 (0 : W)` using `inter_mem hN (hSe.mem_nhds (by simpa using h0))`. Take `⟨R, hR, hRN⟩` from `nhds_basis_closedBall.mem_iff.1 hN'`. Use `set r := R / 4 with hr`. Establish `hr0 : 0 < r` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Set V` to `{z | ∃ w ∈ closedBall (0 : W) (2 * r), ex w = G z}`. Establish `hKS : closedBall (0 : W) (2 * r) ⊆ ex ⁻¹' S` using `fun w hw ↦ (hRN (closedBall_subset_closedBall (by linarith) hw)).2`. Establish `hTS : T ⊆ G ⁻¹' S`. Introduce and unpack `z ⟨w, hw, h⟩`. Rewrite using `[mem_preimage, ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hKS hw`. Establish `hcl : closure T ∩ G ⁻¹' S ⊆ T`. Introduce and unpack `z ⟨hz, hzS⟩`. Take `⟨x, hx, hxz⟩` from `mem_closure_iff_seq_limit.1 hz`. Use `choose w hw hwx using hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w₀, hw₀, φ, hφ, hlim⟩` from `(isCompact_closedBall (0 : W) (2 * r)).tendsto_subseq hw`. Use `⟨w₀, hw₀, hsep _ (hKS hw₀) _ hzS fun i ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `(((hfe i).continuousAt (hSe.mem_nhds (hKS hw₀))).tendsto).comp hlim`. Establish `h2` using `(((hfG i).continuousAt (hSG.mem_nhds hzS)).tendsto).comp (hxz.comp hφ.tendsto_atTop)`. Use `tendsto_nhds_unique h1 (h2.congr fun n ↦ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `[hwx]`. Take `⟨c, hc⟩` from `TopologicalSpace.exists_dense_seq W`. Set `B : ℕ → Set V` to `fun j ↦ {z | ∃ w ∈ ball (c j) r, ex w = G z}`. Establish `hB : ⋃ j, closure (B j) = univ`. Use `eq_univ_of_forall fun z ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hex (G z)`. Take `⟨j, hj⟩` from `hc.exists_dist_lt w hr0`. Conclude with `mem_iUnion.2 ⟨j, subset_closure ⟨w, hj, hw⟩⟩`. Take `⟨j, y, hy⟩` from `nonempty_interior_of_iUnion_of_closed (fun _ ↦ isClosed_closure) hB`. Take `⟨z₀, hz₀i, w₀, hw₀, hz₀⟩` from `mem_closure_iff.1 (interior_subset hy) _ isOpen_interior hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hBT : ∀ z ∈ B j, z - z₀ ∈ T`. Introduce and unpack `z ⟨w, hw, h⟩`. Use `⟨w - w₀, ?_, by simp [h, hz₀]⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_zero_right, ← dist_eq_norm]`. Use `dist_triangle_right w w₀ (c j)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw`, `hw₀` using `[mem_ball]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ᶠ z in 𝓝 (0 : V), z + z₀ ∈ closure (B j)`. Establish `: Tendsto (fun z : V ↦ z + z₀) (𝓝 0) (𝓝 z₀)`. Simplify using `using (continuous_add_const z₀).tendsto 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `this (mem_interior_iff_mem_nhds.1 hz₀i)`. Use `filter_upwards [h1, hSG.mem_nhds (show (0 : V) ∈ G ⁻¹' S by simpa using h0)] with z hz hzS`. Establish `hzT : z ∈ closure T`. Simplify using `using map_mem_closure (continuous_sub_right z₀) hz hBT`. Take `⟨w, hw, h⟩` from `hcl ⟨hzT, hzS⟩`.
-
-Conclude with `⟨w, (hRN (closedBall_subset_closedBall (by linarith) hw)).1, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_map_nhds_of_separating [CompleteSpace V] [ProperSpace W] {ex : W →+ A}
     (hex : Function.Surjective ex) {G : V →+ A} {S : Set A} (h0 : (0 : A) ∈ S) {f : ι → A → Y}
@@ -91,19 +89,19 @@ theorem tendsto_map_nhds_of_separating [CompleteSpace V] [ProperSpace W] {ex : W
   exact ⟨w, (hRN (closedBall_subset_closedBall (by linarith) hw)).1, h⟩
 
 /- English proof (translation)
-Establish `: CompleteSpace V` using `FiniteDimensional.complete ℂ V`. Establish `: ProperSpace W` using `FiniteDimensional.proper ℂ W`. Establish `ht` using `tendsto_map_nhds_of_separating hex h0 hsep hSe hSG (fun i ↦ (hfe i).continuousOn) (fun i ↦ (hfG i).continuousOn)`. Establish `ht' : Tendsto G (𝓝 0) (map ex (𝓝 0))` using `fun s hs ↦ (ht _ hs).mono fun z hz ↦ image_preimage_subset _ _ hz`. Take `⟨U, hU, hU0⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.1 hker 0 ex.ker.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hNU⟩` from `exists_nhds_half_neg (hU.mem_nhds (hU0.ge rfl).1)`. Establish `hinj : InjOn ex N` using `fun x hx y hy hxy ↦ sub_eq_zero.1 (hU0.le ⟨hNU x hx y hy, by simp [AddMonoidHom.mem_ker, hxy]⟩)`. Establish `hs : ∀ᶠ z in 𝓝 0, Function.invFunOn ex N (ex z) = z` using `by filter_upwards [hN] with z hz using hinj.leftInvOn_invFunOn hz`. Establish `hs0 : Function.invFunOn ex N 0 = 0` using `by simpa using hs.self_of_nhds`. Establish `hc : ContinuousAt (fun z ↦ Function.invFunOn ex N (G z)) 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ContinuousAt, map_zero, hs0]`. Establish `h1 : Tendsto (Function.invFunOn ex N) (map ex (𝓝 0)) (𝓝 0)` using `tendsto_map'_iff.2 (tendsto_id.congr' (hs.mono fun z hz ↦ hz.symm))`. Conclude with `h1.comp ht'`. Take `⟨L, hL, hu⟩` from `existsUnique_realLinear_lift_of_germ (ex := G) hker hc ((ht N hN).mono fun z hz ↦ Function.invFunOn_eq hz)`. Establish `hI : ∀ (c : ℂ) z, L (c • z) = c • L z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c z`. Use `sub_eq_zero.1 (hD _ fun i ↦ ?_)` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ (fun w ↦ f i (ex w)) 0` using `(hfe i).differentiableAt (hSe.mem_nhds (by simpa using h0))`. Establish `h2 : DifferentiableAt ℂ (fun z ↦ f i (G z)) 0` using `(hfG i).differentiableAt (hSG.mem_nhds (by simpa using h0))`. Establish `h3` using `(h1.hasFDerivAt.restrictScalars ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← map_zero L]`. Establish `h4` using `h3.comp 0 L.hasFDerivAt`. Establish `h5 : ((fun w ↦ f i (ex w)) ∘ L) = fun z ↦ f i (G z)`. Use function extensionality and compare the values at `z`. Simplify using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h5, map_zero]`. Establish `h6` using `h4.unique (h2.hasFDerivAt.restrictScalars ℝ)`. Establish `h7 : ∀ z, fderiv ℂ (fun w ↦ f i (ex w)) 0 (L z) = fderiv ℂ (fun z ↦ f i (G z)) 0 z` using `fun z ↦ DFunLike.congr_fun h6 z`. Rewrite using `[map_sub, h7, map_smul, map_smul, h7, sub_self]`. Use `⟨⟨⟨L, L.map_add⟩, hI⟩, hL, fun F hF ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `realLinear_eq_of_sub_mem_discrete hker (L := F.restrictScalars ℝ) (L' := L.toLinearMap) fun x ↦ by simp [AddMonoidHom.mem_ker, hF, hL]` as an intermediate fact. Use extensionality with `z`. Conclude with `DFunLike.congr_fun this z`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem existsUnique_linear_lift_of_separating [NormedSpace ℂ V] [NormedSpace ℂ W]
     [FiniteDimensional ℂ V] [FiniteDimensional ℂ W] {ex : W →+ A}
@@ -167,21 +165,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open TangentOrigin in
 
 /- English proof (translation)
-Introduce `A _ _ L g m u h₁ h₂ G hG hhol`. Use `letI : CommGroup (𝟙_ (Over (Sp ℂ)) ⟶ A) := { (inferInstance : Group (𝟙_ (Over (Sp ℂ)) ⟶ A)) with mul_comm := fun a b ↦ by`. Take `⟨z, rfl⟩` from `u.ex_onto a`. Take `⟨w, rfl⟩` from `u.ex_onto b`. Conclude with `(u.ex_add z w).symm.trans ((congrArg u.ex (add_comm z w)).trans (u.ex_add w z)) }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ex : (Fin g → ℂ) →+ Additive (𝟙_ (Over (Sp ℂ)) ⟶ A)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (u.ex z)) u.ex_add`. Set `G' : (Fin m → ℂ) →+ Additive (𝟙_ (Over (Sp ℂ)) ⟶ A)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (G z)) hG`. Set `pt : (𝟙_ (Over (Sp ℂ))).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt` using `fun q ↦ Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (u.ex 0).left pt) (U := ⊤) (Set.mem_univ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U`. Introduce `q _`. Rewrite using `[hsub q]`. Conclude with `hpU`. Establish `hker : (ex.ker : Set (Fin g → ℂ)) = u.Λ` using `Set.ext fun z ↦ u.ker z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `existsUnique_linear_lift_of_separating (ex := ex) (G := G') u.ex_onto (hker ▸ isDiscrete_iff_discreteTopology.2 u.discrete) (S := {a | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}) (f := fun (s : Γ(A.left, U)) a ↦ valAt' (Additive.toMul a).left U s) ?_ ?_ (u.hol U 0).1 ?_ (fun s ↦ (u.hol U …` and prove the remaining obligations. Rewrite using `[← map_zero ex]`. Conclude with `h0`. Introduce `a ha b hb h`. Use `Over.OverMorphism.ext (f := Additive.toMul a) (g := Additive.toMul b) (ext_evalPt (R := ℂ) hU ha hb (RingHom.ext fun s ↦ ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s))`. Use `(hhol U 0).1` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Introduce `s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hhol U s).2` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Introduce `w hw`. Take `⟨v, ⟨hv, hd⟩, -⟩` from `h₂ w`.
-
-Establish `hvU` using `(tangent_mem_iff (u := u) hv U).2 h0`. Use `(h₁ v hv).unique hd ((isDiff_iff hv hU hvU h0 0).2 ?_)` and prove the remaining obligations. Rewrite using `[(isDiff_iff hv hU hvU h0 w).1 hd]`. Use `RingHom.ext fun s ↦ TrivSqZeroExt.ext rfl ?_` and prove the remaining obligations. Rewrite using `[jet_snd, jet_snd, map_zero]`.
-
-Conclude with `hw s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_linear_lift_of_isHolTo :
     ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g m : ℕ)

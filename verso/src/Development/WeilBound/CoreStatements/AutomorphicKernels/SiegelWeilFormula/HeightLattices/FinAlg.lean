@@ -12,7 +12,7 @@ open PositivityTheory.SiegelWeilFormula.KWhit.Ht
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨-, hE, -, h⟩` from `hcm`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨-, hE, -, h⟩ := hcm
@@ -21,7 +21,7 @@ theorem sig_sig (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : 
   rw [h, h, star_star]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [HeckeCharacterZeroLocus.SiegelWeilU.sigR, sig_sig hcm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sgv_sgv (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (v : HeightOneSpectrum (𝓞 F)) (z : v.adicCompletion F ⊗[F] E) :
     HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ z) = z := by
@@ -31,7 +31,7 @@ theorem sgv_sgv (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (v : 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨a₀, ha₀, o, rfl⟩` from `ha`. Take `⟨b₀, hb₀, o', rfl⟩` from `hb`. Conclude with `⟨a₀ * b₀, mul_mem ha₀ hb₀, o * o', by simp [Algebra.TensorProduct.tmul_mul_tmul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OE_gen_mul (v : HeightOneSpectrum (𝓞 F)) {a b : v.adicCompletion F ⊗[F] E}
     (ha : ∃ a₀ ∈ v.adicCompletionIntegers F, ∃ o : 𝓞 E, a = a₀ ⊗ₜ[F] (o : E))
@@ -42,11 +42,11 @@ theorem OE_gen_mul (v : HeightOneSpectrum (𝓞 F)) {a b : v.adicCompletion F �
   exact ⟨a₀ * b₀, mul_mem ha₀ hb₀, o * o', by simp [Algebra.TensorProduct.tmul_mul_tmul]⟩
 
 /- English proof (translation)
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Proceed by induction on `hb using AddSubgroup.closure_induction with`. Consider the case `mem y hy => exact AddSubgroup.subset_closure (OE_gen_mul v hx hy)`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => rw [mul_add]`. Conclude with `add_mem h h'`. Consider the case `neg y _ h => rw [mul_neg]`. Conclude with `neg_mem h`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x x' _ _ h h' => rw [add_mul]`. Conclude with `add_mem h h'`. Consider the case `neg x _ h => rw [neg_mul]`. Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem OE_mul (v : HeightOneSpectrum (𝓞 F)) {a b : v.adicCompletion F ⊗[F] E} (ha : a ∈ OE E v) (hb : b ∈ OE E v) :
     a * b ∈ OE E v := by
@@ -62,7 +62,7 @@ theorem OE_mul (v : HeightOneSpectrum (𝓞 F)) {a b : v.adicCompletion F ⊗[F]
   | neg x _ h => rw [neg_mul]; exact neg_mem h
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩`.
+A detailed English derivation is pending.
 -/
 theorem OE_one (v : HeightOneSpectrum (𝓞 F)) : (1 : v.adicCompletion F ⊗[F] E) ∈ OE E v :=
   AddSubgroup.subset_closure ⟨1, one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩
@@ -75,11 +75,9 @@ def OEsub (v : HeightOneSpectrum (𝓞 F)) : Subring (v.adicCompletion F ⊗[F] 
     mul_mem' := fun ha hb => OE_mul v ha hb }
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, o, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨a, ha, ⟨σ o, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(o.2.map σ)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.sigR]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x x' _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`.
-
-Consider the case `neg x _ h => rw [map_neg]`. Conclude with `neg_mem h`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem OE_sig (v : HeightOneSpectrum (𝓞 F)) {z : v.adicCompletion F ⊗[F] E} (hz : z ∈ OE E v) :
     HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ z ∈ OE E v := by
@@ -95,7 +93,7 @@ theorem OE_sig (v : HeightOneSpectrum (𝓞 F)) {z : v.adicCompletion F ⊗[F] E
   | neg x _ h => rw [map_neg]; exact neg_mem h
 
 /- English proof (translation)
-Simplify using `[lat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lat (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (y : Fin n → v.adicCompletion F ⊗[F] E) :
     y ∈ lat E v n ↔ ∀ i, y i ∈ OE E v := by

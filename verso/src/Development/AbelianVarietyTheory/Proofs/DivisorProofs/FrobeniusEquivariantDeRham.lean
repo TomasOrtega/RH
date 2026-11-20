@@ -15,7 +15,7 @@ namespace GlobalTheory.AbDatum
 open GlobalTheory.ConjSeq
 
 /- English proof (translation)
-Establish `k` using `(frobMor p R hR B (cast_left p R hR B)).comp (homMor (dp0 R) (𝟙 _) f)`. Conclude with `(GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) f) (frobMor p R hR A (cast_left p R hR A)) k (fun _ ↦ rfl) (GlobalTheory.VB.frob_naturality p _ f.left _) c).trans (GrpMor.pull_pull (frobMor p R hR B (cast_left p R hR B)) (homMor (dp0 R) (𝟙 _) f) k (fun _ ↦ rfl) rfl c).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frobDR_primPull (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] (hR : (p : R) = 0)
     {A B : Over (Sp R)} [GrpObj A] [GrpObj B] (f : A ⟶ B) [IsMonHom f] (c : primDR B) :
@@ -26,9 +26,9 @@ theorem frobDR_primPull (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] (hR : (
     (GrpMor.pull_pull (frobMor p R hR B (cast_left p R hR B)) (homMor (dp0 R) (𝟙 _) f) k (fun _ ↦ rfl) rfl c).symm
 
 /- English proof (translation)
-Introduce `O _ T A _ i H e p _ h0 ρ Ψ hρ hΨ x`. Use `frobPull_hom_ext_affine p h0 fun V hV s ↦ (e V hV).injective ?_` and prove the remaining obligations. Establish `e1 : (VB.act (pullAct ρ (frob T p h0)) x ≫ Ψ).app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s) = Ψ.app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) ((VB.act ρ x).app V s))` using `congrArg (Ψ.app V) (QCoh.pullback_map_app_pullbackSections (frob T p h0) (VB.act ρ x) (le_refl V) s)`. Establish `e2 : (Ψ ≫ VB.act ρ x).app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s) = (VB.act ρ x).app V (Ψ.app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s))` using `rfl`. Use `(congrArg (e V hV) e1).trans (Eq.trans ?_ (congrArg (e V hV) e2).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΨ V hV, hρ x V hV, hρ x V hV, hΨ V hV]`. Use `haveI := i.hom x`. Conclude with `frobDR_primPull p _ (A := onAff A hV) (B := onAff A hV) ((Over.pullback hV.fromSpec).map (i.act x)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linFrob_isEquivariant : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] (i : OAct O A) (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))

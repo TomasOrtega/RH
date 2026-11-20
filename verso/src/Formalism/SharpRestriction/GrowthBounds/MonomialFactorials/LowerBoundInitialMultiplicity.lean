@@ -14,7 +14,7 @@ variable (hS : SegFacts C0 CE1 CE2 X)
 include hS
 
 /- English proof (translation)
-Break down `le_total j w with h | h` into its components or cases. Rewrite using `[Nat.cast_sub h]`. Rewrite using `[Nat.sub_eq_zero_of_le h, Nat.cast_zero]`. Establish `: (w : ℝ) ≤ j` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cast_sub_ge (w j : ℕ) : (w : ℝ) - j ≤ ((w - j : ℕ) : ℝ) := by
   rcases le_total j w with h | h
@@ -24,23 +24,21 @@ theorem cast_sub_ge (w j : ℕ) : (w : ℝ) - j ≤ ((w - j : ℕ) : ℝ) := by
     linarith
 
 /- English proof (translation)
-Take `⟨hK, hdl, hlv⟩` from `digits_of_idx hx`. Establish `hK'` using `hK`. Take `⟨hDig, hK1, -, -⟩` from `hK'`. Use `set u := uTop (X.S C0 CE1 CE2) i with hu`. Establish `hσu : (X.S C0 CE1 CE2).sigma ≤ (u : ℕ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hu, uTop]`. Use `set P := SegData.P X.p (X.S C0 CE1 CE2) u with hPdef`. Establish `hPpos : 0 < P` using `twoPow_pos C0 CE1 CE2 X u`. Establish `hj : x.2.1 i ≤ x.1.o u` using `(((mem_lv _ _ _).mp hlv).1 i).1`. Establish `hA : coarseA X.p (X.S C0 CE1 CE2) x.1 u ≤ (X.S C0 CE1 CE2).bTop u / P` using `Nat.div_le_div_right (Nat.sub_le _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjP : x.2.1 i * P ≤ (X.S C0 CE1 CE2).bTop u` using `(Nat.mul_le_mul_right _ ((hj.trans (hK1 u hσu).1).trans hA)).trans (Nat.div_mul_le_self _ _)`. Establish `hry : x.1.ry = dl.2` using `by rw [← hdl]`. Establish `hne : (Nl C0 CE1 CE2 X dl x.2 i).Nonempty` using `(Wl_ne ha u).image _`. Establish `hn0 : (XMof C0 CE1 CE2 X dl a x.1 x.2).n₀ i = sInf (↑(Nl C0 CE1 CE2 X dl x.2 i) : Set ℕ)` using `rfl`. Establish `hmem : sInf (↑(Nl C0 CE1 CE2 X dl x.2 i) : Set ℕ) ∈ (↑(Nl C0 CE1 CE2 X dl x.2 i) : Set ℕ)` using `Nat.sInf_mem (Finset.coe_nonempty.mpr hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[Finset.mem_coe]`. Take `⟨v, hv, hcm⟩` from `Finset.mem_image.mp hmem`. Simplify using `only [Wl, Finset.mem_filter, flipOneThree.Inst.winA, Finset.mem_Icc] at hv`. Take `⟨⟨hav, -⟩, hsv, hdvd⟩` from `hv`. Rewrite `hsv`, `hdvd` using `[← hu]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn0, ← hcm]`. Establish `hsum : ∑ c : Fin (X.r + 1), dl.2 u c ≤ (X.r + 1) * P`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `c _`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hry]`. Conclude with `le_of_lt (hDig.1 u c).2`. Use `_ = (X.r + 1) * P := by simp`. Establish `hQ : (v - ∑ c : Fin (X.r + 1), dl.2 u c) / P * P = v - ∑ c : Fin (X.r + 1), dl.2 u c` using `Nat.div_mul_cancel hdvd`. Establish `hc1` using `cast_sub_ge hS ((v - ∑ c : Fin (X.r + 1), dl.2 u c) / P) (x.2.1 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcm' : cm C0 CE1 CE2 X dl x.2 i v = (v - ∑ c : Fin (X.r + 1), dl.2 u c) / P - x.2.1 i` using `rfl`. Rewrite using `[hcm']`. Establish `hQr : (((v - ∑ c : Fin (X.r + 1), dl.2 u c) / P : ℕ) : ℝ) * (P : ℝ) = (v : ℝ) - (∑ c : Fin (X.r + 1), dl.2 u c : ℕ)`. Rewrite using `[← Nat.cast_sub hsv, ← Nat.cast_mul, hQ]`. Establish `hsumR : ((∑ c : Fin (X.r + 1), dl.2 u c : ℕ) : ℝ) ≤ ((X.r : ℝ) + 1) * (P : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hsum` after adjusting the coercions. Establish `hjPR : ((x.2.1 i : ℕ) : ℝ) * (P : ℝ) ≤ 5 / 2 * X.L.b'`. Establish `h1 : (((x.2.1 i * P : ℕ)) : ℝ) ≤ (X.S C0 CE1 CE2).bTop u` using `by exact_mod_cast hjP`. Move the coercions through the operations in `at h1`. Combine the linear relations using `[hS.bTop u]`.
-
-Establish `havR : (X.L.a : ℝ) ≤ v` using `by exact_mod_cast hav`. Establish `hPR : (0 : ℝ) ≤ (P : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lower_bound_initial_multiplicity {dl : DCl X} {a : Fin X.s → ℕ} (ha : a ∈ cbox C0 CE1 CE2 X dl)
     {x : Σ _ : SegBlock X.s X.r, Lv C0 CE1 CE2 X} (hx : x ∈ idx C0 CE1 CE2 X dl a) (i : Fin (X.S C0 CE1 CE2).t) :
@@ -96,31 +94,27 @@ theorem lower_bound_initial_multiplicity {dl : DCl X} {a : Fin X.s → ℕ} (ha 
   nlinarith
 
 /- English proof (translation)
-Introduce `dl hdl a ha x hx i`. Establish `hF` using `hS.hF`. Establish `hinj : Function.Injective (uTop (X.S C0 CE1 CE2))`. Introduce `k k' h`. Simplify using `only [uTop, Fin.mk.injEq] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Fin.ext (by omega)`. Use `set n : Fin (X.S C0 CE1 CE2).t → ℕ := fun k => topA C0 CE1 CE2 X dl (uTop (X.S C0 CE1 CE2) k) with hn`. Use `set a' := ovr (uTop (X.S C0 CE1 CE2)) a n with haeq`. Establish `ha' : a' ∈ cbox C0 CE1 CE2 X dl`. Establish `hb` using `cbox_eq C0 CE1 CE2 X dl a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Apply `ovr_mem _ hinj` to reduce the goal to its premises. Rewrite using `[← hb]`. Conclude with `ha`. Conclude with `Fintype.mem_piFinset.mpr (fun k => topA_mem_Wl ha _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x ∈ idx C0 CE1 CE2 X dl a'`. Rewrite using `[← hFree dl hdl a ha a' ha']`. Conclude with `hx`. Take `⟨hK', -, -⟩` from `digits_of_idx hx'`. Take `⟨-, hdl0, -⟩` from `digits_of_idx hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hry : x.1.ry = dl.2` using `by rw [← hdl0]`. Establish `hT'` using `(mem_cbox' ha').1`. Establish `hSb` using `S_bound hS a' hT' x.1 hK' x.2 i`. Establish `hn0` using `lower_bound_initial_multiplicity hS ha hx i`. Establish `htop : (XMof C0 CE1 CE2 X dl a x.1 x.2).top = fun k => (n k - ∑ c : Fin (X.r + 1), x.1.ry (uTop (X.S C0 CE1 CE2) k) c) / SegData.P X.p (X.S C0 CE1 CE2) (uTop (X.S C0 CE1 CE2) k) - x.2.1 k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hne : (Nl C0 CE1 CE2 X dl x.2 k).Nonempty` using `(Wl_ne ha _).image _`. Establish `h1` using `cm_top (dl := dl) x.2 k (Wl_ne ha _)`. Establish `h2 : sInf (↑(Nl C0 CE1 CE2 X dl x.2 k) : Set ℕ) ≤ (Nl C0 CE1 CE2 X dl x.2 k).sup id`. Establish `hm` using `Nat.sInf_mem (Finset.coe_nonempty.mpr hne)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.le_sup (f := id) hm`. Rewrite using `[hry]`. Use `show sInf (↑(Nl C0 CE1 CE2 X dl x.2 k) : Set ℕ) + 1 * ((Nl C0 CE1 CE2 X dl x.2 k).sup id - sInf (↑(Nl C0 CE1 CE2 X dl x.2 k) : Set ℕ) + 1 - 1) = cm C0 CE1 CE2 X dl x.2 k (n k)`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : (XMof C0 CE1 CE2 X dl a x.1 x.2).LL.setTies (XMof C0 CE1 CE2 X dl a x.1 x.2).T (XMof C0 CE1 CE2 X dl a x.1 x.2).top = lLL C0 CE1 CE2 X a' x.1 x.2`. Rewrite using `[htop, haeq, lLL_ovr]`. Both sides reduce to the same expression. Establish `hP : (0 : ℝ) < (SegData.P X.p (X.S C0 CE1 CE2) (uTop (X.S C0 CE1 CE2) i) : ℝ)`. Conclude with `twoPow_pos C0 CE1 CE2 X _` after adjusting the coercions.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hkP` using `hS.kP (uTop (X.S C0 CE1 CE2) i)`. Establish `hm' : (4 : ℝ) ≤ X.L.m` using `by exact_mod_cast hF.m4`. Establish `hsm : (2 * (X.s : ℝ) + 2) ≤ X.L.m` using `by exact_mod_cast hF.s_le`. Establish `hpm` using `hF.p_ge`. Establish `hp0 : (0 : ℝ) < X.p` using `by show (0 : ℝ) < X.L.p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h48 : (4 * (X.s : ℝ) + 8) ≤ X.p` using `by show (4 * (X.s : ℝ) + 8) ≤ X.L.p`. Use the polynomial consequences of the given equalities and inequalities. Establish `hb'p : X.L.b' ≤ (X.L.a : ℝ) / X.p`. Rewrite using `[le_div_iff₀ hp0]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hF.b_lt` as an intermediate fact. Use `show X.L.b' * X.L.p ≤ X.L.a`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : (0 : ℝ) ≤ X.L.a` using `Nat.cast_nonneg _`. Establish `hsum : (2 * (X.s : ℝ) + 1) * (2 * X.L.a / X.p) + 6 * ((X.L.a : ℝ) / X.p) ≤ X.L.a`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hreal : ((GM.M.TieData.S (lLL C0 CE1 CE2 X a' x.1 x.2) (gT C0 CE1 CE2 X x.1) i : ℕ) : ℝ) * (SegData.P X.p (X.S C0 CE1 CE2) (uTop (X.S C0 CE1 CE2) i) : ℝ) ≤ ((XMof C0 CE1 CE2 X dl a x.1 x.2).n₀ i : ℝ) * (SegData.P X.p (X.S C0 CE1 CE2) (uTop (X.S C0 CE1 CE2) i) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnat : GM.M.TieData.S (lLL C0 CE1 CE2 X a' x.1 x.2) (gT C0 CE1 CE2 X x.1) i ≤ (XMof C0 CE1 CE2 X dl a x.1 x.2).n₀ i`. Conclude with `le_of_mul_le_mul_right hreal hP` after adjusting the coercions.
-
-Rewrite using `[hL]`. Conclude with `hnat`.
+A detailed English derivation is pending.
 -/
 theorem restSI_proved (hFree : RestFree C0 CE1 CE2 X) : RestSI (C0 := C0) (CE1 := CE1) (CE2 := CE2) (X := X) := by
   intro dl hdl a ha x hx i
@@ -201,7 +195,7 @@ theorem restSI_proved (hFree : RestFree C0 CE1 CE2 X) : RestSI (C0 := C0) (CE1 :
   exact hnat
 
 /- English proof (translation)
-The claim follows from `restTMSize_of hS hFree (restSI_proved hS hFree)`.
+A detailed English derivation is pending.
 -/
 theorem restTMSize_proved (hFree : RestFree C0 CE1 CE2 X) : RestTMSize C0 CE1 CE2 X :=
   restTMSize_of hS hFree (restSI_proved hS hFree)

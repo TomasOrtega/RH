@@ -23,11 +23,11 @@ open scoped ComplexOrder Matrix
 namespace GlobalTheory.OneParamOrbit
 
 /- English proof (translation)
-Establish `hu : IsUnit (B.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (B.fr_unit τ)`. Establish `hinj : Function.Injective ((B.fr τ)⁻¹).mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_nonsing_inv_iff).mpr (B.fr_unit τ))`. Establish `hJ : ((B.fr τ)⁻¹)ᴴ * gramAt D X τ * (B.fr τ)⁻¹ = Formalism.REAL.Jm (B.ε τ)`. Rewrite using `[← B.fr_gram τ]`. Establish `h1 : ((B.fr τ)⁻¹)ᴴ * (B.fr τ)ᴴ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (B.ε τ) := by rw [h1, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]`. Establish `hpos` using `(hG.conjTranspose_mul_mul_same hinj).diag_pos (i := i)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[hJ]`. Assume the negation of the conclusion as `hne`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_apply_eq, hne] at hpos`. Evaluate the numerical expressions using `at hpos`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem eps_true_of_posDef {D : D7} {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) (τ : D.what₂.Tau)
     (hG : (gramAt D X τ).PosDef) (i : Fin X.rank) : B.ε τ i = true := by
@@ -49,13 +49,13 @@ theorem eps_true_of_posDef {D : D7} {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) 
   norm_num at hpos
 
 /- English proof (translation)
-Establish `hu : IsUnit (B.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (B.fr_unit τ)`. Establish `hJ1 : Formalism.REAL.Jm (B.ε τ) = 1`. Establish `: B.ε τ = fun _ => true` using `funext (eps_true_of_posDef B τ hG)`. Rewrite using `[this]`. Simplify using `[Formalism.REAL.Jm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgram : (B.fr τ)ᴴ * B.fr τ = gramAt D X τ`. Rewrite using `[← B.fr_gram τ, hJ1, Matrix.mul_one]`. Use `⟨?_, by rw [hJ1, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Establish `h1 : ((B.fr τ)⁻¹)ᴴ * (B.fr τ)ᴴ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((B.fr τ)⁻¹)ᴴ * (B.fr τ)ᴴ * (B.fr τ * (B.fr τ)⁻¹) := by`. Rewrite using `[hgram, hE, ← hgram]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_Kset {D : D7} {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) (τ : D.what₂.Tau)
     (hG : (gramAt D X τ).PosDef) {E : Matrix (Fin X.rank) (Fin X.rank) ℂ}
@@ -79,25 +79,23 @@ theorem conj_mem_Kset {D : D7} {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) (τ :
     _ = 1 := by rw [h1, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `D ψ θ _hψ hθ M X A B χ χ' ω hω hexp hsig τ Y hY Φ hΦ`. Establish `hG : (gramAt D X τ).PosDef` using `GlobalTheory.IndefiniteRowSideFullHecke.MassFormulaPositivity.posDef_of_hasSignature (hsig τ)`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Establish `h0 : fockF ψ θ false A B 0 P = 0`. Use `GlobalTheory.FiniteFock.pureTensorO_smul ψ θ (GlobalTheory.Grid.sgn false M) X (frSgn false A).cart B.cart A.onb B.onb 0 0 P` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨⊥, inferInstance, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`. Take `⟨a, b, ha, hb⟩` from `hexp τ`. Take `⟨x, y, -, -, hK⟩` from `GlobalTheory.CompactFockAction.compactFockAll D (GlobalTheory.Grid.sgn false M) X (frSgn false A) B θ ψ χ χ' (ω.toSgn false) f τ a b hθ hω ha hb hf hf0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(MvPolynomial.restrictTotalDegree _ ℂ P.totalDegree).map (fockF ψ θ false A B f), inferInstance, fun t => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (B.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (B.fr_unit τ)`. Establish `hE : (NormedSpace.exp (t • Y))ᴴ * gramAt D X τ * NormedSpace.exp (t • Y) = gramAt D X τ` using `GlobalTheory.SmoothAutCheck.exp_mem_UH (Matrix.isUnit_iff_isUnit_det _ |>.mp hG.isUnit) hY t`. Establish `hk` using `conj_mem_Kset B τ hG hE`. Establish `hA1 : (frSgn false A).elt θ τ 1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAu : IsUnit (A.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (A.fr_unit τ)`. Use `show atTau θ _ τ ((A.fr τ)⁻¹ * 1 * A.fr τ) = 1`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ hAu]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_one hθ _ τ`. Establish `hBk : B.elt θ τ (B.fr τ * NormedSpace.exp (t • Y) * (B.fr τ)⁻¹) = oneP θ X τ Y t` using `by show atTau θ X τ ((B.fr τ)⁻¹ * (B.fr τ * NormedSpace.exp (t • Y) * (B.fr τ)⁻¹) * B.fr τ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[show (B.fr τ)⁻¹ * (B.fr τ * NormedSpace.exp (t • Y) * (B.fr τ)⁻¹) * B.fr τ = ((B.fr τ)⁻¹ * B.fr τ) * NormedSpace.exp (t • Y) * ((B.fr τ)⁻¹ * B.fr τ) by`. Simplify using `only [Matrix.mul_assoc],`. Use the proof step `Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `hω1 : ω (1, oneP θ X τ Y t) = (ω.toSgn false) ((frSgn false A).elt θ τ 1, B.elt θ τ (B.fr τ * NormedSpace.exp (t • Y) * (B.fr τ)⁻¹))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA1, hBk]`. Use `show ω (1, _) = ω ((GlobalTheory.Grid.ofSgn false M) 1, _)`. Rewrite using `[map_one]`. Establish `key` using `hK 1 (GlobalTheory.Chain.RealIt.one_mem_Kset _) _ hk P`. Establish `hfock : fockF ψ θ false A B f P = GlobalTheory.ChainFr.ptF ψ θ (frSgn false A) B f P` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfock, hω1, key]`. Use `Submodule.smul_mem _ _ ⟨_, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 (GlobalTheory.Chain.RealIt.SubstDeg.totalDegree_subst_le _ _ _ _ _ _ _ _ _), rfl⟩` and prove the remaining obligations. Consider the case `zero => exact ⟨⊥, inferInstance, fun t => by rw [map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨V₁, h₁, hV₁⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨V₂, h₂, hV₂⟩` from `hy`. Conclude with `⟨V₁ ⊔ V₂, Submodule.finiteDimensional_sup V₁ V₂, fun t => by`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (hV₁ t)) (Submodule.mem_sup_right (hV₂ t))⟩`. Consider the case `smul c x _ hx`.
-
-Take `⟨V, h, hV⟩` from `hx`. Conclude with `⟨V, h, fun t => by rw [map_smul]; exact Submodule.smul_mem _ _ (hV t)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbit_finiteDimensional : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (χ χ' : (AE D)ˣ →* Circle) (ω : GlobalTheory.Grid.WRep M X),

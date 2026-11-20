@@ -17,11 +17,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `hZ0 : ∀ a b, ε a ≠ ε b → Z a b = 0`. Introduce `a b hab`. Establish `h` using `congrFun (congrFun hZ.2 a) b`. Rewrite `h` using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb] at hab h ⊢ <;> first | exact h | linear_combination h / 2 | linear_combination -h / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[actM, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : ε a = ε b`. Conclude with `Submodule.smul_mem _ _ (layer_kStable hE hV k a b hab x hx)`. Rewrite using `[hZ0 a b hab, zero_smul]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actM_mem_layer_of_inK {V : Submodule ℂ D} (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) {k : ℕ} {x : D} (hx : x ∈ layer ε E V k) :
@@ -43,7 +43,7 @@ theorem actM_mem_layer_of_inK {V : Submodule ℂ D} (hE : IsGlRep E) (hV : IsKSt
     exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hx`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `actM_mem_layer_of_inK hE hV hZ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actM_pow_mem_layer_of_inK {V : Submodule ℂ D} (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) {k : ℕ} {x : D} (hx : x ∈ layer ε E V k) (m : ℕ) :
@@ -55,15 +55,15 @@ theorem actM_pow_mem_layer_of_inK {V : Submodule ℂ D} (hE : IsGlRep E) (hV : I
     exact actM_mem_layer_of_inK hE hV hZ ih
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (layer ε E V k) := finiteDimensional_layer hVf k`. Set `T : layer ε E V k →ₗ[ℂ] layer ε E V k` to `(actM E Z).restrict (fun x hx => actM_mem_layer_of_inK hE hV hZ hx)`. Set `T'` to `LinearMap.toContinuousLinearMap T`. Use `⟨‖T'‖, norm_nonneg _, fun x hx m => ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ m : ℕ, ((actM E Z) ^ m) x = (((T ^ m) ⟨x, hx⟩ : layer ε E V k) : D)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hnorm : ∀ (m : ℕ) (y : layer ε E V k), ‖(T ^ m) y‖ ≤ ‖T'‖ ^ m * ‖y‖`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `y`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpow]`. Conclude with `hnorm m ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_actM_pow_le_of_inK {V : Submodule ℂ D} (hE : IsGlRep E)
     (hV : IsKStableSub ε E V) (hVf : FiniteDimensional ℂ V) {Z : Matrix (Fin n) (Fin n) ℂ}
@@ -96,13 +96,13 @@ theorem exists_norm_actM_pow_le_of_inK {V : Submodule ℂ D} (hE : IsGlRep E)
   exact hnorm m ⟨x, hx⟩
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hv'` using `hv`. Rewrite `hv'` using `[genSub_eq_iSup_layer hE hVK]`. Take `⟨k, hk⟩ : ∃ k, v ∈ layer ε E V k` from `(Submodule.mem_iSup_of_directed _ (Monotone.directed_le fun i j hij => layer_mono hij)).mp hv'`. Take `⟨C, hC0, hC⟩` from `exists_norm_actM_pow_le_of_inK hE hVK hVf hZ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : Summable fun m : ℕ => C ^ m * ‖v‖ * |(1 : ℝ) - 0| ^ m / (m.factorial : ℝ)`. Use `(Real.summable_pow_div_factorial C).mul_left ‖v‖` as an intermediate fact. Use `this.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [sub_zero, abs_one, one_pow, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsum` using `hasSum_orbit_of_bound hσ hD hZ.1 v (fun m => C ^ m * ‖v‖) (fun m => by simpa using hC v hk m) 0 1 hs`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1, Complex.ofReal_one, one_smul, ContinuousLinearMap.one_apply, sub_zero, one_pow] at hsum`. Rewrite using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe]`. Use `mem_closure_of_tendsto hsum.tendsto_sum_nat (Filter.Eventually.of_forall fun N => ?_)` and prove the remaining obligations. Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_map_of_mem (layer_le_genSub (ε := ε) k (actM_pow_mem_layer_of_inK hE hVK hZ hk m))`.
+A detailed English derivation is pending.
 -/
 theorem exp_inK_apply_mem_closure (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V)

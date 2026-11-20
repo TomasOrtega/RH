@@ -22,9 +22,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `hP hN E _ _ _ H Dw l Xo c hr hg`. Establish `hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨hE, hI, -⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Establish `hM : ∀ la, ModelAt Xo c la`. Introduce `la`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `modelAt_of_good_level hP E H Dw hr (Function.update (fun l' => Classical.choice (hN E H Dw l' hr)) l Xo) l c la (fun p hp _ => hg p hp)`. Rewrite `h` using `[Function.update_self]`. Then use the resulting hypothesis. Conclude with `⟨fun la => GlobalTheory.T.exists_normalCharts_everyFinitePlace hT E H Dw l Xo c hE hI la (hM la), GlobalTheory.T.transfer_bounds_algebraic_to_all_points_of_models hT E H Dw l Xo c hE hI hM⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem sCharts_and_transfer_of_good_level : PartI → N1ab → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → (∀ la : HeightOneSpectrum (𝓞 c.F), (∃ S : SCharts Xo c la, S.CovQ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → Formalism.L2.PjFree.NoCommonZero Xo c ws → ∃ S : SCharts Xo c la, S.FamW ws ∧ S.CovQ) ∧ (∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.regular₂ Xo c U) ∧ ∀ C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c), (∀ a n, C a n ≤ sec Xo c a n) → Formalism.L2.PjFree.RegularityR1Quotient Xo c C ∧ Formalism.L2.PjFree.RegularityR2Quotient Xo c C := by
   intro hP hN E _ _ _ H Dw l Xo c hr hg

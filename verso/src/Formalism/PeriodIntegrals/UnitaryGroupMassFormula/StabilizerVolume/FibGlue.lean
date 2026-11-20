@@ -18,22 +18,20 @@ open Classical in
 def extZ (U : Set V) (φ : U → ℝ) : V → ℝ := fun v => if h : v ∈ U then φ ⟨v, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[extZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZ_val (U : Set V) (φ : U → ℝ) (u : U) : extZ U φ u = φ u := by simp [extZ]
 
 /- English proof (translation)
-Use `set K : Set V := Subtype.val '' tsupport φ with hKdef`. Establish `hK : IsCompact K` using `hs.image continuous_subtype_val`. Establish `hKU : K ⊆ U` using `by rintro _ ⟨u, -, rfl⟩; exact u.2`. Establish `hzero : ∀ v ∉ K, extZ U φ v = 0`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : v ∈ U`. Simplify using `only [extZ, h, dite_true]`. Conclude with `image_eq_zero_of_notMem_tsupport (fun hm => hv ⟨⟨v, h⟩, hm, rfl⟩)`. Simplify using `[extZ, h]`. Establish `hsupp : tsupport (extZ U φ) ⊆ K`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `closure_minimal _ hK.isClosed` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (hzero v h)`. Use `⟨?_, HasCompactSupport.intro' hK hK.isClosed hzero, hsupp.trans hKU⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `v`. Distinguish the cases in `hv : v ∈ U`. Establish `hcon : ContinuousOn (extZ U φ) U`. Rewrite using `[continuousOn_iff_continuous_restrict]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Conclude with `extZ_val U φ u`. Conclude with `hcon.continuousAt (hU.mem_nhds hv)`. Establish `hvK : v ∉ K` using `fun h => hv (hKU h)`.
-
-Establish `hev : (fun _ => (0 : ℝ)) =ᶠ[𝓝 v] extZ U φ` using `by filter_upwards [hK.isClosed.isOpen_compl.mem_nhds hvK] with w hw using (hzero w hw).symm`. Conclude with `(continuousAt_const (y := (0 : ℝ))).congr hev`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem extZ_props {U : Set V} (hU : IsOpen U) (φ : U → ℝ) (hc : Continuous φ)
     (hs : HasCompactSupport φ) : IsCcOn U (extZ U φ) := by
@@ -66,19 +64,19 @@ theorem extZ_props {U : Set V} (hU : IsOpen U) (φ : U → ℝ) (hc : Continuous
     exact (continuousAt_const (y := (0 : ℝ))).congr hev
 
 /- English proof (translation)
-Apply the tactic sequence `funext v; by_cases h : v ∈ U <;> simp [extZ, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extZ_add (U : Set V) (φ ψ : U → ℝ) : extZ U (φ + ψ) = extZ U φ + extZ U ψ := by
   funext v; by_cases h : v ∈ U <;> simp [extZ, h]
 
 /- English proof (translation)
-Apply the tactic sequence `funext v; by_cases h : v ∈ U <;> simp [extZ, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extZ_smul (U : Set V) (c : ℝ) (φ : U → ℝ) : extZ U (c • φ) = c • extZ U φ := by
   funext v; by_cases h : v ∈ U <;> simp [extZ, h]
 
 /- English proof (translation)
-Introduce `v`. Distinguish the cases in `hv : v ∈ U`. Simplify using `only [extZ, hv, dite_true]`. Conclude with `h _`. Simplify using `[extZ, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extZ_nonneg (U : Set V) (φ : U → ℝ) (h : 0 ≤ φ) : 0 ≤ extZ U φ := by
   intro v; by_cases hv : v ∈ U
@@ -98,7 +96,7 @@ def G (hD : DensAll μ f ι ν U) (φ : V → ℝ) : X → ℝ :=
   if h : IsCcOn U φ then Classical.choose (hD φ h.1 h.2.1 h.2.2) else 0
 
 /- English proof (translation)
-Simplify using `only [G, dif_pos h]`. Conclude with `Classical.choose_spec (hD φ h.1 h.2.1 h.2.2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem G_spec (hD : DensAll μ f ι ν U) {φ : V → ℝ} (h : IsCcOn U φ) :
     Continuous (G hD φ) ∧ ∀ S : Set X, IsCompact S →
@@ -111,7 +109,7 @@ variable [OpensMeasurableSpace X] [T2Space X] [LocallyCompactSpace X]
   [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Use `DensGen.eq_zero_of_setIntegral (ν := ν) (fun b => g1 b - g2 b) univ b univ_mem (h1.sub h2).continuousOn (fun S hS _ => by` as an intermediate fact. Rewrite using `[integral_sub (h1.continuousOn.integrableOn_compact hS) (h2.continuousOn.integrableOn_compact hS), h S hS, sub_self])`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dens_unique {g1 g2 : X → ℝ} (h1 : Continuous g1) (h2 : Continuous g2)
     (h : ∀ S, IsCompact S → ∫ b in S, g1 b ∂ν = ∫ b in S, g2 b ∂ν) : g1 = g2 := by
@@ -123,11 +121,11 @@ theorem dens_unique {g1 g2 : X → ℝ} (h1 : Continuous g1) (h2 : Continuous g2
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Establish `hneg' : 0 < -g b0` using `by linarith`. Establish `hev : ∀ᶠ b in 𝓝 b0, -g b0 / 2 < -g b` using `(hg.neg.continuousAt (x := b0)).eventually (lt_mem_nhds (by simp only [Pi.neg_apply]; linarith))`. Take `⟨S, hSn, hSsub, hSc⟩` from `local_compact_nhds hev`. Establish `hSm : MeasurableSet S` using `hSc.isClosed.measurableSet`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : ν S ≠ ⊤` using `hSc.measure_lt_top.ne`. Establish `hpos' : 0 < ν.real S`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos (ν.measure_pos_of_mem_nhds hSn).ne' hlt`. Establish `hge` using `setIntegral_ge_of_const_le_real (c := -g b0 / 2) hSm hlt (fun b hb => (hSsub hb).le) (hg.neg.continuousOn.integrableOn_compact hSc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.neg_apply, integral_neg] at hge`. Use `h S hSc` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem dens_nonneg {g : X → ℝ} (hg : Continuous g)
     (h : ∀ S, IsCompact S → 0 ≤ ∫ b in S, g b ∂ν) (b0 : X) : 0 ≤ g b0 := by
@@ -150,21 +148,21 @@ theorem dens_nonneg {g : X → ℝ} (hg : Continuous g)
 variable [IsFiniteMeasureOnCompacts μ] [OpensMeasurableSpace V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.add hψ.1, hφ.2.1.add hψ.2.1, (tsupport_add φ ψ).trans (union_subset hφ.2.2 hψ.2.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCc_add {φ ψ : V → ℝ} (hφ : IsCcOn U φ) (hψ : IsCcOn U ψ) : IsCcOn U (φ + ψ) :=
   ⟨hφ.1.add hψ.1, hφ.2.1.add hψ.2.1,
     (tsupport_add φ ψ).trans (union_subset hφ.2.2 hψ.2.2)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.const_smul c, hφ.2.1.smul_left, (tsupport_smul_subset_right (fun _ : V => c) φ).trans hφ.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCc_smul (c : ℝ) {φ : V → ℝ} (hφ : IsCcOn U φ) : IsCcOn U (c • φ) :=
   ⟨hφ.1.const_smul c, hφ.2.1.smul_left,
     (tsupport_smul_subset_right (fun _ : V => c) φ).trans hφ.2.2⟩
 
 /- English proof (translation)
-Establish `hs` using `G_spec hD (isCc_add hφ hψ)`. Use `dens_unique (ν := ν) hs.1 ((G_spec hD hφ).1.add (G_spec hD hψ).1) fun S hS => ?_` and prove the remaining obligations. Rewrite using `[← hs.2 S hS, Pi.add_def, integral_add (hφ.1.integrable_of_hasCompactSupport hφ.2.1).integrableOn (hψ.1.integrable_of_hasCompactSupport hψ.2.1).integrableOn, (G_spec hD hφ).2 S hS, (G_spec hD hψ).2 S hS, Pi.add_def, integral_add ((G_spec hD hφ).1.continuousOn.integrableOn_compact …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem G_add (hD : DensAll μ f ι ν U) {φ ψ : V → ℝ} (hφ : IsCcOn U φ) (hψ : IsCcOn U ψ) :
     G hD (φ + ψ) = G hD φ + G hD ψ := by
@@ -178,7 +176,7 @@ theorem G_add (hD : DensAll μ f ι ν U) {φ ψ : V → ℝ} (hφ : IsCcOn U φ
     ((G_spec hD hψ).1.continuousOn.integrableOn_compact hS)]
 
 /- English proof (translation)
-Establish `hs` using `G_spec hD (isCc_smul c hφ)`. Use `dens_unique (ν := ν) hs.1 ((G_spec hD hφ).1.const_smul c) fun S hS => ?_` and prove the remaining obligations. Rewrite using `[← hs.2 S hS]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, integral_const_mul, (G_spec hD hφ).2 S hS]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem G_smul (hD : DensAll μ f ι ν U) (c : ℝ) {φ : V → ℝ} (hφ : IsCcOn U φ) :
     G hD (c • φ) = c • G hD φ := by
@@ -189,7 +187,7 @@ theorem G_smul (hD : DensAll μ f ι ν U) (c : ℝ) {φ : V → ℝ} (hφ : IsC
   rw [integral_const_mul, integral_const_mul, (G_spec hD hφ).2 S hS]
 
 /- English proof (translation)
-Introduce `b` and use `dens_nonneg (G_spec hD hφ).1 (fun S hS => by rw [← (G_spec hD hφ).2 S hS]; exact integral_nonneg fun v => h0 v) b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem G_nonneg (hD : DensAll μ f ι ν U) {φ : V → ℝ} (hφ : IsCcOn U φ) (h0 : 0 ≤ φ) :
     0 ≤ G hD φ := fun b =>
@@ -207,9 +205,9 @@ variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Establish `hK : IsCompact (Subtype.val '' tsupport φ)` using `hs.image continuous_subtype_val`. Apply `closure_minimal _ hK.isClosed` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hU : v ∈ U`. Simplify using `only [extZ, hU, dite_true]`. Conclude with `image_eq_zero_of_notMem_tsupport (fun hm => h ⟨⟨v, hU⟩, hm, rfl⟩)`. Simplify using `[extZ, hU]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsupport_extZ (U : Set V) (φ : U → ℝ) (hs : HasCompactSupport φ) :
     tsupport (extZ U φ) ⊆ Subtype.val '' tsupport φ := by
@@ -262,7 +260,7 @@ def restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) : C_c(U, ℝ) where
       fun u hu => image_eq_zero_of_notMem_tsupport hu
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ U`. Simplify using `[extZ, hv, restr]`. Simplify using `only [extZ, hv, dite_false]`. Conclude with `(image_eq_zero_of_notMem_tsupport fun hm => hv (h.2.2 hm)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extZ_restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) :
     extZ U (restr hU φ h) = φ := by
@@ -273,9 +271,9 @@ theorem extZ_restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) :
     exact (image_eq_zero_of_notMem_tsupport fun hm => hv (h.2.2 hm)).symm
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Establish `hme : MeasurableEmbedding (Subtype.val : U → V)` using `MeasurableEmbedding.subtype_coe hU.measurableSet`. Establish `hint : Integrable (restr hU φ h) (RealRMK.rieszMeasure (lam hD hU b))` using `(restr hU φ h).continuous.integrable_of_hasCompactSupport (restr hU φ h).hasCompactSupport`. Use `⟨(hme.integrable_map_iff).2 hint, ?_⟩` and prove the remaining obligations. Rewrite using `[fibG, hme.integral_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `RealRMK.integral_rieszMeasure (lam hD hU b) (restr hU φ h)` as an intermediate fact. Rewrite `this` using `[lam_apply, extZ_restr]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibG_integral (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (φ : V → ℝ)
     (h : IsCcOn U φ) :
@@ -292,19 +290,17 @@ theorem fibG_integral (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (φ : 
   exact this
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Establish `hme : MeasurableEmbedding (Subtype.val : U → V)` using `MeasurableEmbedding.subtype_coe hU.measurableSet`. Rewrite using `[fibG, hme.map_apply]`. Establish `hOeq : (Subtype.val : U → V) ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ∘ Subtype.val) ⁻¹' {ι b}ᶜ`. Use extensionality with `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[u.2]`. Establish `hO : IsOpen ((f ∘ Subtype.val : U → Y) ⁻¹' {ι b}ᶜ)` using `isOpen_compl_singleton.preimage (hf.comp continuous_subtype_val)`. Rewrite using `[hOeq]`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Rewrite using `[hO.measure_eq_iSup_isCompact]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun K => iSup_le fun hKO => iSup_le fun hK => ?_` and prove the remaining obligations. Take `⟨g, hg1, hgc, hgO, hg01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO`. Set `ψ : C_c(U, ℝ)` to `⟨g, hgc⟩`. Establish `hle` using `RealRMK.rieszMeasure_le_of_eq_one (lam hD hU b) (f := ψ) (fun x => (hg01 x).1) hK (fun x hx => hg1 hx)`. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_apply]`. Establish `hcc : IsCcOn U (extZ U ψ)` using `extZ_props hU ψ ψ.continuous ψ.hasCompactSupport`. Establish `hts` using `tsupport_extZ U ψ ψ.hasCompactSupport`. Establish `hCc : IsCompact (f '' tsupport (extZ U ψ))` using `hcc.2.1.image hf`. Use `set N : Set X := (ι ⁻¹' (f '' tsupport (extZ U ψ)))ᶜ with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNo : IsOpen N` using `(hCc.isClosed.preimage hι).isOpen_compl`. Establish `hbN : b ∈ N`. Introduce and unpack `⟨v, hv, hfv⟩`. Take `⟨u, hu, rfl⟩` from `hts hv`. Conclude with `hgO hu hfv`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz` using `DensGen.eq_zero_of_setIntegral (ν := ν) (G hD (extZ U ψ)) N b (hNo.mem_nhds hbN) (G_spec hD hcc).1.continuousOn (fun S hS hSN => by`. Rewrite using `[← (G_spec hD hcc).2 S hS]`. Use `setIntegral_eq_zero_of_forall_eq_zero fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨s, hs, hfs⟩` from `hv`.
-
-Conclude with `hSN hs ⟨v, subset_tsupport _ hne, hfs.symm⟩)`. Rewrite using `[hz, ENNReal.ofReal_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibG_supp (hD : DensAll μ f ι ν U) (hU : IsOpen U) (hf : Continuous f)
     (hι : Continuous ι) (b : X) : fibG hD hU b (f ⁻¹' {ι b} ∩ U)ᶜ = 0 := by
@@ -362,13 +358,13 @@ def DisintStep : Prop :=
       ∀ φ : V → ENNReal, Measurable φ → ∫⁻ v in U, φ v ∂μ = ∫⁻ b, ∫⁻ v, φ v ∂(fib b) ∂ν
 
 /- English proof (translation)
-Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU hD`. Use `⟨fibG hD hU, fibG_supp hD hU hf hι.continuous, ?_, fun φ hc hs hsu => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ φ : V → ℝ, IsCcOn U φ → (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ` using `fun φ h => funext fun b => (fibG_integral hD hU b φ h).2`. Use `hDis V X Y μ ν hμ hν hpos f ι U hf hι hr hU (fibG hD hU) (fibG_supp hD hU hf hι.continuous) (fun b K hK hKU => ?_) (fun φ h => ?_)` and prove the remaining obligations. Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hme : MeasurableEmbedding (Subtype.val : U → V)` using `MeasurableEmbedding.subtype_coe hU.measurableSet`. Rewrite using `[fibG, hme.map_apply]`. Establish `hsub : K ⊆ Set.range (Subtype.val : U → V)` using `by rw [Subtype.range_coe]; exact hKU`. Conclude with `((Topology.IsInducing.subtypeVal.isCompact_preimage_iff hsub).2 hK).measure_lt_top`. Use `⟨fun b => (fibG_integral hD hU b φ h).1, ?_, fun S hS => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hint φ h]`. Conclude with `(G_spec hD h).1`. Rewrite using `[hint φ h]`. Conclude with `(G_spec hD h).2 S hS`. Establish `h : IsCcOn U φ` using `⟨hc, hs, hsu⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun b _ => (fibG_integral hD hU b φ h).1, ?_⟩` and prove the remaining obligations. Establish `: (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ`. Use function extensionality and compare the values at `fun b => (fibG_integral hD hU b φ h).2`. Rewrite using `[this]`. Conclude with `(G_spec hD h).1.continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem fibOfDens_of (hDis : DisintStep) : FibOfDens := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU hD

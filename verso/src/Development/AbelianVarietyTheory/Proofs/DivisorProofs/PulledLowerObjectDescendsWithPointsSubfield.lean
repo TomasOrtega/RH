@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon.PtsDescent
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.LamF.exists_mulEquiv_points_of_isGrpPullback S S' f G G' φ h T`. Establish `e : Φ x = z` using `Over.OverMorphism.ext ((hΦ x).trans hz.symm)`. Rewrite using `[← hΦ, map_pow, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_left_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') (x : T ⟶ G') (z : Over.mk (T.hom ≫ f) ⟶ G)
@@ -23,9 +23,9 @@ theorem pow_left_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S
   rw [← hΦ, map_pow, e]
 
 /- English proof (translation)
-Establish `h0 : D.c 0 = 1`. Use `D.c_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [succ_nsmul, D.c_add, ih, pow_succ]`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem degPre_c_nsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (y : D.X) (n : ℕ) :
     D.c (n • y) = D.c y ^ n := by
@@ -42,19 +42,19 @@ end GlobalTheory.UCanon.PtsDescent
 namespace GlobalTheory.UCanon.PtsDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hdiv K _ _ _ ev k₀ hk₀ o' m₁ B₀ _ _ M₀ c₀ B' _ π₁ π₀ w c' θ hB₀ hM₀ hpb1 hpb0 hw hc' hθ hL hpts`. Establish `h1 : IsGrpPullback o'.t.G B₀ (spMap k₀.subtype) (θ ≫ π₀)` using `(hθ.comp hpb0).congr (Category.id_comp _) rfl`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans o'.t.PP.isLB (pull_isLB Q.P.isLB _) (pull_isLB hM₀ _) hL (GlobalTheory.GenSpread.lbIso_pull_comp θ rfl rfl ⟨w, hw⟩)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpb : IsGrpPullback o'.t.G L.D.P.A (spMap (ev.comp iw)) (m₁.toSABMap.φ ≫ L.φB)` using `(m₁.cart.comp L.ab.1).congr (Category.comp_id _) rfl`. Set `x : Sp K ⟶ o'.t.G.left` to `hpb.1.lift (spMap (ev.comp iw) ≫ (L.D.c y).left) (𝟙 _) (by rw [Category.assoc, Over.w (L.D.c y)]; simp)`. Establish `hx1 : x ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c y).left` using `hpb.1.lift_fst _ _ _`. Establish `hx2 : x ≫ o'.t.G.hom = 𝟙 _` using `hpb.1.lift_snd _ _ _`. Use `⟨x, hx2, hx1, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `xp : 𝟙_ (Over (Sp K)) ⟶ o'.t.G` to `Over.homMk x (by simpa using hx2)`. Set `z : Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw)) ⟶ L.D.P.A` to `toUnit _ ≫ L.D.c y`. Establish `htu : (toUnit (Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw)))).left = (𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw)`. Simplify using `using Over.w (toUnit (Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw))))`. Establish `hz : z.left = xp.left ≫ m₁.toSABMap.φ ≫ L.φB` using `by show (toUnit (Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw))) ≫ L.D.c y).left = x ≫ m₁.toSABMap.φ ≫ L.φB`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, htu, hx1]`. Simplify using the standard rewrite rules. Establish `hpow` using `pow_left_of_isGrpPullback hpb _ xp z hz l.M'`. Establish `hxa : (xp ^ l.M').left ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c (l.M' • e (e.symm y))).left`. Rewrite using `[LinearEquiv.apply_symm_apply, degPre_c_nsmul, ← hpow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((toUnit (Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap (ev.comp iw))) ≫ L.D.c y) ^ l.M').left = _`. Rewrite using `[← MonObj.comp_pow, Over.comp_left, htu]`. Simplify using the standard rewrite rules. Establish `hxs : (xp ^ l.M').left ≫ o'.t.G.hom = 𝟙 _` using `by simpa using Over.w (xp ^ l.M')`. Establish `h₁` using `hpts _ (e.symm y) hxs hxa`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsec : (xp ^ l.M').left ≫ θ = c' (e.symm y)`. Apply `hpb1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, (hc' _).2.1]`. Rewrite using `[Category.assoc, hθ.1.w, ← Category.assoc, hxs, (hc' _).1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM' : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.grpPullback_point_descends_algClosed_subfield K k₀ hk₀ B₀ o'.t.G (θ ≫ π₀) hB₀ h1 l.M' hM' xp (c₀ (e.symm y)) (by rw [← Category.assoc, hsec, (hc' _).2.2])`. Conclude with `⟨y₀, hy₀⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pulledObj_descends_with_points : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (iw : L.W →+* V) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X), DivFrom L Q oQ iw s ε e → ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (ev : V →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → ∀ (o' : LowObj D' c ((ev.comp iw).comp L.b)) (m₁ : ObjMap o' L.o (spMap (ev.comp iw))), ∀ (B₀ : Over (Sp k₀)) [GrpObj B₀] [IsCommMonObj B₀] (M₀ : LB B₀.left) (c₀ : Q.X → (Sp k₀ ⟶ B₀.left)) (B' : Over (Sp K)) [GrpObj B'] (π₁ : B'.left ⟶ Q.P.A.left) (π₀ : B'.left ⟶ B₀.left) (w : LB.Iso (Q.P.L.pull π₁) (M₀.pull π₀)) (c' : Q.X → (Sp K ⟶ B'.left)) (θ : o'.t.G.left ⟶ B'.left), IsAbelianScheme B₀ → M₀.IsLB → IsGrpPullback B' Q.P.A (spMap ev) π₁ → IsGrpPullback B' B₀ (spMap k₀.subtype) π₀ → w.IsGen → (∀ a, c' a ≫ B'.hom = 𝟙 _ ∧ c' a ≫ π₁ = spMap ev ≫ (Q.c a).left ∧ c' a ≫ π₀ = spMap k₀.subtype ≫ c₀ a) → IsGrpPullback o'.t.G B' (𝟙 _) θ → LBIso o'.t.PP.L (Q.P.L.pull (θ ≫ π₁)) → (∀ (x : Sp K ⟶ o'.t.G.left) (a : Q.X), x ≫ o'.t.G.hom = 𝟙 _ → x ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c (l.M' • e a)).left → x ≫ θ ≫ π₁ = spMap ev ≫ (Q.c a).left) → IsGrpPullback o'.t.G B₀ (spMap k₀.subtype) (θ ≫ π₀) ∧ LBIso o'.t.PP.L (M₀.pull (θ ≫ π₀)) ∧ ∀ y : L.D.X, ∃ x : Sp K ⟶ o'.t.G.left, x ≫ o'.t.G.hom = 𝟙 _ ∧ x ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c y).left ∧ ∃ x₀ : Sp k₀ ⟶ B₀.left, x ≫ θ ≫ π₀ = spMap k₀.subtype ≫ x₀ := by
   intro E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hdiv K _ _ _ ev k₀ hk₀ o' m₁ B₀ _ _ M₀ c₀ B' _ π₁ π₀ w c' θ hB₀ hM₀ hpb1 hpb0 hw hc' hθ hL hpts

@@ -5,27 +5,23 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `E _ _ z n M hn hM hz hmem`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp hmem`. It suffices to establish `hw0 : w = 0 by`. Rewrite `hw` using `[hw0, zero_mul]`. Conclude with `sub_eq_zero.mp hw.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hMpos : (0 : ℝ) < M`. Establish `: 0 < M` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hzE : (z : E) ^ n = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (algebraMap (𝓞 E) E) hz`. Rewrite `h` using `[map_pow, map_one]`. Rewrite using `[NumberField.RingOfIntegers.coe_eq_algebraMap]`. Conclude with `h`. Establish `hwE : (w : E) * (M : E) = (z : E) - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (algebraMap (𝓞 E) E) hw`. Rewrite `h` using `[map_mul, map_sub, map_natCast, map_one]`. Rewrite using `[NumberField.RingOfIntegers.coe_eq_algebraMap w, NumberField.RingOfIntegers.coe_eq_algebraMap z]`. Conclude with `h`. Establish `hbound : ∀ σ : E →ₐ[ℚ] ℂ, ‖σ (w : E)‖ ≤ 2 / M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Establish `hz1 : ‖σ (z : E)‖ = 1`. Establish `h1 : ‖σ (z : E)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← map_pow, hzE, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : σ (w : E) * (M : ℂ) = σ (z : E) - 1`. Establish `h` using `congrArg σ hwE`. Rewrite `h` using `[map_mul, map_sub, map_natCast, map_one]`. Conclude with `h`. Establish `h3 : ‖σ (w : E)‖ * (M : ℝ) ≤ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖σ (w : E) * (M : ℂ)‖ = ‖σ (w : E)‖ * (M : ℝ)`. Rewrite using `[norm_mul, Complex.norm_natCast]`. Rewrite using `[← h4, h2]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(le_div_iff₀ hMpos).mpr h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hcard : Fintype.card (E →ₐ[ℚ] ℂ) ≠ 0`. Rewrite using `[AlgHom.card ℚ E ℂ]`. Conclude with `(Module.finrank_pos).ne'`. Establish `hprod : ‖((Algebra.norm ℤ w : ℤ) : ℂ)‖ < 1`. Establish `h1 : ((Algebra.norm ℤ w : ℤ) : ℂ) = algebraMap ℚ ℂ (Algebra.norm ℚ (w : E))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.coe_norm_int, map_intCast]`. Rewrite using `[h1, Algebra.norm_eq_prod_embeddings ℚ ℂ (w : E), norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Establish `hN : Algebra.norm ℤ w = 0`. Rewrite `hprod` using `[Complex.norm_intCast]`.
-
-Establish `habs : ((|Algebra.norm ℤ w| : ℤ) : ℝ) < 1`. Use `push_cast`. Conclude with `hprod`. Establish `habs' : |Algebra.norm ℤ w| < 1` using `by exact_mod_cast habs`. Conclude with `Int.abs_lt_one_iff.mp habs'`.
-
-Conclude with `Algebra.norm_eq_zero_iff.mp hN`.
+A detailed English derivation is pending.
 -/
 theorem rootOfUnity_eq_one_of_sub_one_mem_span : ∀ (E : Type) [Field E] [NumberField E] (z : 𝓞 E) (n M : ℕ), 0 < n → 3 ≤ M → z ^ n = 1 → z - 1 ∈ Ideal.span {(M : 𝓞 E)} → z = 1 := by
   intro E _ _ z n M hn hM hz hmem

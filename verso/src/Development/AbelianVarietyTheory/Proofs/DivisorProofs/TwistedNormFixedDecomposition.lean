@@ -6,7 +6,7 @@ namespace GlobalTheory.TwistStab
 variable {H : Type} [Group H]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hf]; exact h.1, by rw [Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hf]; exact h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem commensurable_comap {f : H →* H} (hf : Function.Surjective f) {A B : Subgroup H}
     (h : A.Commensurable B) : (A.comap f).Commensurable (B.comap f) :=
@@ -14,11 +14,11 @@ theorem commensurable_comap {f : H →* H} (hf : Function.Surjective f) {A B : S
    by rw [Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hf]; exact h.2⟩
 
 /- English proof (translation)
-Use `haveI : (A.subgroupOf B).FiniteIndex := ⟨h⟩`. Use `haveI : Finite (B ⧸ A.subgroupOf B) := Subgroup.finite_quotient_of_finiteIndex`. Use `⟨(Set.finite_range (fun q : B ⧸ A.subgroupOf B => ((Quotient.out q : B) : H))).toFinset, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_range] at hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, rfl⟩` from `hf`. Conclude with `(Quotient.out q).2`. Introduce `b hb`. Take `⟨a, ha⟩` from `QuotientGroup.mk_out_eq_mul (A.subgroupOf B) (⟨b, hb⟩ : B)`. Use `⟨((Quotient.out (QuotientGroup.mk (⟨b, hb⟩ : B) : B ⧸ A.subgroupOf B) : B) : H), ?_, ((a : B) : H)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.Finite.mem_toFinset, Set.mem_range]`. Conclude with `⟨_, rfl⟩`. Conclude with `A.inv_mem (Subgroup.mem_subgroupOf.mp a.2)`. Rewrite using `[ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_cover {A B : Subgroup H} (h : A.relIndex B ≠ 0) :
     ∃ R : Finset H, (∀ f ∈ R, f ∈ B) ∧ ∀ b ∈ B, ∃ f ∈ R, ∃ a ∈ A, b = f * a := by
@@ -44,14 +44,14 @@ def iterComap (T : H →* H) (K : Subgroup H) (n : ℕ) : Subgroup H :=
   (fun C : Subgroup H => C.comap T)^[n] K
 
 /- English proof (translation)
-The claim follows from `Function.iterate_succ_apply' _ n K`.
+A detailed English derivation is pending.
 -/
 theorem iterComap_succ (T : H →* H) (K : Subgroup H) (n : ℕ) :
     iterComap T K (n + 1) = (iterComap T K n).comap T :=
   Function.iterate_succ_apply' _ n K
 
 /- English proof (translation)
-The claim follows from `| 0, _ => Iff.rfl | n + 1, x => by rw [iterComap_succ, Subgroup.mem_comap, mem_iterComap T K n, Function.iterate_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem mem_iterComap (T : H →* H) (K : Subgroup H) :
     ∀ (n : ℕ) (x : H), x ∈ iterComap T K n ↔ (⇑T)^[n] x ∈ K
@@ -60,49 +60,39 @@ theorem mem_iterComap (T : H →* H) (K : Subgroup H) :
     rw [iterComap_succ, Subgroup.mem_comap, mem_iterComap T K n, Function.iterate_succ_apply]
 
 /- English proof (translation)
-Introduce `H _ θ K₀ δ r hr hθr hθK hcomm Z hZ hZr hG`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Use `set T : H →* H := (MulAut.conj δ).toMonoidHom.comp θ with hT`. Establish `hTapp : ∀ x, T x = δ * θ x * δ⁻¹` using `fun x => by`. Simplify using `[T, MulAut.conj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hθs : Function.Surjective θ` using `fun y => ⟨(⇑θ)^[s] y, by rw [← Function.iterate_succ_apply' (⇑θ) s y]; exact hθr y⟩`. Establish `hTs : Function.Surjective T` using `fun y => by`. Take `⟨x, hx⟩` from `hθs (δ⁻¹ * y * δ)`. Conclude with `⟨x, by rw [hTapp, hx]; group⟩`. Establish `hθK' : ∀ n : ℕ, ∀ k ∈ K₀, (⇑θ)^[n] k ∈ K₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro k hk`. Conclude with `hk`. Consider the case `succ n ih => intro k hk`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hθK _ (ih k hk)`. Establish `hcθ : K₀.comap θ = K₀`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_comap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `e : (⇑θ)^[s] (θ x) = x` using `by rw [← Function.iterate_succ_apply]; exact hθr x`. Rewrite using `[← e]`. Conclude with `hθK' s _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hθK x`. Establish `hconj : K₀.comap (MulAut.conj δ).toMonoidHom = K₀.map (MulAut.conj δ⁻¹).toMonoidHom`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_comap, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Introduce `hx`. Conclude with `⟨δ * x * δ⁻¹, hx, by group⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Use `hk using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTK : (K₀.comap T).Commensurable K₀`. Establish `h1 : (K₀.comap (MulAut.conj δ).toMonoidHom).Commensurable K₀` using `hconj ▸ hcomm δ⁻¹`. Use `commensurable_comap hθs h1` as an intermediate fact. Rewrite `this` using `[Subgroup.comap_comap, hcθ]`. Conclude with `this`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ n, (iterComap T K₀ n).Commensurable K₀`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact Subgroup.Commensurable.refl _`. Consider the case `succ n ih => rw [iterComap_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(commensurable_comap hTs ih).trans hTK`. Use `set V : Subgroup H := ⨅ i : Fin (s + 1), iterComap T K₀ i with hV`. Use `set U : Subgroup H := Z ⊓ V with hU`. Establish `hfin : ∀ g : H, U.relIndex (Z ⊓ K₀.map (MulAut.conj g).toMonoidHom) ≠ 0`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Subgroup.relIndex_inf_ne_zero` to reduce the goal to its premises. Rewrite using `[Subgroup.relIndex_eq_one.mpr inf_le_left]`. Conclude with `one_ne_zero`. Apply `Subgroup.relIndex_iInf_ne_zero` to reduce the goal to its premises. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.relIndex_ne_zero_trans ((hW i).trans (hcomm g).symm).1 (by rw [Subgroup.relIndex_eq_one.mpr inf_le_right]; exact one_ne_zero)`. Establish `hUK : U ≤ K₀`. Introduce `u hu`. Use `Subgroup.mem_iInf.mp (Subgroup.mem_inf.mp hu).2 ⟨0, Nat.succ_pos s⟩` as an intermediate fact. Conclude with `this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨U, inf_le_left, hUK, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨huZ, huV⟩` from `Subgroup.mem_inf.mp hu`. Rewrite using `[← hTapp]`. Use `Subgroup.mem_inf.mpr ⟨by rw [hTapp]; exact hZ u huZ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Subgroup.mem_iInf]`. Introduce `i`. Rewrite using `[mem_iterComap, ← Function.iterate_succ_apply]`. Use `show (⇑T)^[(i : ℕ) + 1] u ∈ K₀`. Break down `Nat.lt_or_ge ((i : ℕ) + 1) (s + 1) with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Subgroup.mem_iInf.mp huV ⟨(i : ℕ) + 1, h⟩` as an intermediate fact. Rewrite `this` using `[mem_iterComap]`. Conclude with `this`. Establish `e : (i : ℕ) + 1 = s + 1` using `by omega`. Rewrite using `[e, hZr u huZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hUK hu`. Take `⟨R, hRB, hR⟩` from `finite_cover (hfin 1)`. Take `⟨G, hGZ, hGcl⟩` from `hG`. Use `⟨G ∪ R, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Finset.mem_union.mp hg with h | h` into its components or cases. Conclude with `hGZ g h`. Conclude with `(Subgroup.mem_inf.mp (hRB g h)).1`. Use `hGcl.trans ((Subgroup.closure_le _).mpr ?_)` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`.
-
-Conclude with `Subgroup.subset_closure (Or.inl (Finset.mem_coe.mpr (Finset.mem_union_left _ hx)))`. Establish `hx'` using `Subgroup.mem_inf.mp hx`. Establish `hx1 : x ∈ Z ⊓ K₀.map (MulAut.conj (1 : H)).toMonoidHom` using `Subgroup.mem_inf.mpr ⟨hx'.1, ⟨x, hx'.2, by simp [MulAut.conj_apply]⟩⟩`. Take `⟨f, hf, a, ha, rfl⟩` from `hR x hx1`. Conclude with `Subgroup.mul_mem _ (Subgroup.subset_closure (Or.inl (Finset.mem_coe.mpr (Finset.mem_union_right _ hf)))) (Subgroup.subset_closure (Or.inr ha))`.
-
-Introduce `h g`. Take `⟨R, -, hR⟩` from `finite_cover (hfin g⁻¹)`. Distinguish the cases in `hex : ∃ z₀ ∈ Z, ∃ k₀ ∈ K₀, z₀ = h * k₀ * g`. Take `⟨z₀, hz₀, k₀, hk₀, rfl⟩` from `hex`. Use `⟨R.image (fun f => h * k₀ * g * f), ?_⟩` and prove the remaining obligations.
-
-Introduce `z hz k hk hzk`. Establish `hmem : (h * k₀ * g)⁻¹ * z ∈ Z ⊓ K₀.map (MulAut.conj g⁻¹).toMonoidHom`. Use `Subgroup.mem_inf.mpr ⟨Z.mul_mem (Z.inv_mem hz₀) hz, ⟨k₀⁻¹ * k, K₀.mul_mem (K₀.inv_mem hk₀) hk, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hzk]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
-
-Use `group`. Take `⟨f, hf, a, ha, hfa⟩` from `hR _ hmem`. Use `⟨h * k₀ * g * f, Finset.mem_image.mpr ⟨f, hf, rfl⟩, a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc (h * k₀ * g) f a, ← hfa]`. Use `group`.
-
-Conclude with `⟨∅, fun z hz k hk hzk => absurd ⟨z, hz, k, hk, hzk⟩ hex⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stable_subgroup : ∀ {H : Type} [Group H] (θ : H →* H) (K₀ : Subgroup H) (δ : H) (r : ℕ), 0 < r → (∀ h, (⇑θ)^[r] h = h) →
     (∀ k ∈ K₀, θ k ∈ K₀) → (∀ g : H, Subgroup.Commensurable (K₀.map (MulAut.conj g).toMonoidHom) K₀) →

@@ -22,12 +22,12 @@ variable (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (j : ℕ)
 attribute [local instance] opModJ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ ↦ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCentralScalarJ : IsCentralScalar B (Om R B j) := ⟨fun _ _ ↦ rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun r b m ↦ smul_assoc r b.unop m⟩`.
+Supply the required witnesses or components.
 -/
 theorem isScalarTowerJ : IsScalarTower R Bᵐᵒᵖ (Om R B j) := ⟨fun r b m ↦ smul_assoc r b.unop m⟩
 
@@ -53,14 +53,14 @@ def extMapJ {T T' : C} (φ : T ⟶ T') :
     · simp [TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Simplify using `[extMapJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_extMapJ {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (Om R (F.obj T) j)) :
     (extMapJ F j φ c).fst = mp F φ c.fst := by
   simp [extMapJ]
 
 /- English proof (translation)
-Simplify using `[extMapJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_extMapJ {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (Om R (F.obj T) j)) :
     (extMapJ F j φ c).snd = pOm F j φ c.snd := by
@@ -80,7 +80,7 @@ def omjExt : C ⥤ CommAlgCat.{0} R where
       rw [snd_extMapJ, snd_extMapJ]))))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `extMapJ F j φ (TrivSqZeroExt.inr x) = _`. Conclude with `TrivSqZeroExt.ext ((fst_extMapJ F j φ _).trans (by simp)) ((snd_extMapJ F j φ _).trans (by simp))`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mp_omjExt_inr {T T' : C} (φ : T ⟶ T') (x : Om R (F.obj T) j) :
     mp (omjExt F j) φ (TrivSqZeroExt.inr x : (omjExt F j).obj T) =
@@ -89,20 +89,20 @@ theorem mp_omjExt_inr {T T' : C} (φ : T ⟶ T') (x : Om R (F.obj T) j) :
   exact TrivSqZeroExt.ext ((fst_extMapJ F j φ _).trans (by simp)) ((snd_extMapJ F j φ _).trans (by simp))
 
 /- English proof (translation)
-The claim follows from `snd_extMapJ F j φ c`.
+A detailed English derivation is pending.
 -/
 theorem snd_mp_omjExt {T T' : C} (φ : T ⟶ T') (c : (omjExt F j).obj T) :
     (mp (omjExt F j) φ c).snd = pOm F j φ c.snd := snd_extMapJ F j φ c
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_extMapJ F j u c)))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_mp_omjExt_iff {T S : C} (u : T ⟶ S) (c : (omjExt F j).obj T) :
     IsUnit (mp (omjExt F j) u c) ↔ IsUnit (mp F u c.fst) :=
   TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_extMapJ F j u c)))
 
 /- English proof (translation)
-Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom (F.obj S) (Om R (F.obj S) j))) hb` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inlJ_eq_top {S : C} {n : ℕ} {b : Fin n → F.obj S} (hb : Ideal.span (Set.range b) = ⊤) :
     Ideal.span (Set.range fun i ↦ (TrivSqZeroExt.inl (b i) : (omjExt F j).obj S)) = ⊤ := by

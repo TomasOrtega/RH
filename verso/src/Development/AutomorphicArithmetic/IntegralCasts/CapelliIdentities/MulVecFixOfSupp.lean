@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `m y v h`. Establish `key : y.mulVec v = (1 : Matrix (Fin m) (Fin m) ℂ).mulVec v`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : v j = 0`. Rewrite using `[hj, mul_zero, mul_zero]`. Rewrite using `[h j hj i, Matrix.one_apply]`. Rewrite using `[key, Matrix.one_mulVec]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qi20.mulVec_fix_of_supp :
     ∀ {m : ℕ} (y : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ),

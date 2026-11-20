@@ -11,7 +11,7 @@ noncomputable def under {X : Scheme.{0}} (z : X) : Ideal Γ(X, ⊤) :=
   Ideal.comap (X.presheaf.germ ⊤ z trivial).hom (IsLocalRing.maximalIdeal (X.presheaf.stalk z))
 
 /- English proof (translation)
-Simplify using `only [under, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_under_iff {X : Scheme.{0}} (z : X) (a : Γ(X, ⊤)) :
     a ∈ under z ↔ ¬ IsUnit (X.presheaf.germ ⊤ z trivial a) := by
@@ -21,9 +21,9 @@ instance under_isPrime {X : Scheme.{0}} (z : X) : (under z).IsPrime :=
   Ideal.comap_isPrime _ _
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[mem_under_iff]`. Introduce `hu`. Apply `ha` to reduce the goal to its premises. Establish `e` using `X.presheaf.germ_stalkSpecializes (U := ⊤) trivial h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← e, CommRingCat.comp_apply]`. Conclude with `hu.map (X.presheaf.stalkSpecializes h).hom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_le_of_specializes {X : Scheme.{0}} {z x : X} (h : z ⤳ x) : under z ≤ under x := by
   intro a ha
@@ -35,11 +35,9 @@ theorem under_le_of_specializes {X : Scheme.{0}} {z x : X} (h : z ⤳ x) : under
   exact hu.map (X.presheaf.stalkSpecializes h).hom
 
 /- English proof (translation)
-Establish `hu : IsUnit (X.presheaf.germ ⊤ z trivial a)`. Assume the negation of the conclusion as `h`. Establish `: a ∈ under z` using `(mem_under_iff z a).2 h`. Rewrite `this` using `[hz]`. Conclude with `ha this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hzV : z ∈ X.basicOpen a` using `(X.mem_basicOpen a z trivial).2 hu`. Use `haveI : Nonempty (X.basicOpen a) := ⟨⟨z, hzV⟩⟩`. Establish `h1` using `Scheme.ord_of_isUnit (U := X.basicOpen a) (f := X.presheaf.map (homOfLE le_top).op a) (X.toRingedSpace.isUnit_res_basicOpen a) hzV`. Rewrite using `[← h1]`. Use `congr 1`.
-
-Conclude with `(X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ord_eq_zero_of_under_eq_bot {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (z : X)
     (a : Γ(X, ⊤)) (hz : under z = ⊥) (ha : a ≠ 0) :

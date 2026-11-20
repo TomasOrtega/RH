@@ -10,17 +10,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.AdeleBaseChange
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (Af F ⊗[F] E) := IsModuleTopology.topologicalAddGroup (Af F) _`. Use `S.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `B` to `Algebra.TensorProduct.basis (Af F) b`. Take `⟨D, hD, hb⟩` from `exists_nat_mul_integral (Finset.univ.image b)`. Use `choose o ho using fun i => hb _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Establish `hn : ∀ᶠ z : Af F ⊗[F] E in 𝓝 0, ∀ k, ∃ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) ∧ B.repr z k = D • a`. Rewrite using `[Filter.eventually_all]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `hc : Continuous fun z : Af F ⊗[F] E => B.coord k z` using `IsModuleTopology.continuous_of_linearMap (B.coord k)`. Use `GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F D hD` as an intermediate fact. Establish `h0 : B.coord k (0 : Af F ⊗[F] E) = 0` using `map_zero _`. Conclude with `hc.continuousAt.preimage_mem_nhds (x := 0) (h0 ▸ this)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Filter.mem_of_superset hn fun z hz => ?_` and prove the remaining obligations. Use `choose a ha hza using hz`. Rewrite using `[← B.sum_repr z]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `e : B.repr z k • B k = a k ⊗ₜ[F] ((o k : 𝓞 E) : E)`.
-
-Express the relevant statement in the definitionally equal form `_ = a k ⊗ₜ[F] algebraMap (𝓞 E) E (o k)`. Rewrite using `[ho, hza, Algebra.TensorProduct.basis_apply, TensorProduct.tmul_smul, smul_assoc]`. Use `congr 1`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`.
-
-Conclude with `hS _ (ha k) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_of_tmul_mem (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (S : AddSubgroup (Af F ⊗[F] E))
@@ -57,19 +53,17 @@ theorem isOpen_of_tmul_mem (F E : Type) [Field F] [NumberField F] [Field E] [Num
   exact hS _ (ha k) _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ`. Take `⟨ι, -, hι, -⟩` from `exists_tensor_finiteAdele_equiv F E`. Set `I : Subring (FiniteAdeleRing (𝓞 E) E)` to `{ carrier := {a | ∀ v, a v ∈ v.adicCompletionIntegers E} mul_mem' := fun ha hb v => mul_mem (ha v) (hb v) one_mem' := fun v => one_mem _ add_mem' := fun ha hb v => add_mem (ha v) (hb v) zero_mem' := fun v => zero_mem _ neg_mem' := fun ha v => neg_mem (ha v) }`. Set `R : Subring (Af F ⊗[F] E)` to `I.comap ι.toRingHom`. Establish `hR : ∀ y, y ∈ R ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (ι y P) ≤ 1` using `fun y => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : ∀ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) → ∀ x : 𝓞 E, a ⊗ₜ[F] (x : E) ∈ R` using `fun a ha x => (hR _).2 ((hι _).1 (AddSubgroup.subset_closure ⟨a, ha, x, rfl⟩))`. Use `⟨R, ι, hR, ?_, isOpen_of_tmul_mem F E R.toAddSubgroup hm, fun y hy => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.AdeleCocompact.isCompact_integral E).image (continuous_symm_finite F E ι hι)`. Establish `e : (R : Set (Af F ⊗[F] E)) = ι.symm '' {a : FiniteAdeleRing (𝓞 E) E | ∀ v, a v ∈ v.adicCompletionIntegers E}`. Use extensionality with `y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨ι y, hy, ι.symm_apply_apply y⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `(hR _).2 fun P => by rw [ι.apply_symm_apply]; exact ha P`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`. Establish `hy'` using `(hι y).2 ((hR y).1 hy) clear hy`. Proceed by induction on `hy' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨a, ha, x, rfl⟩` from `hy`. Conclude with `hm a ha (RingOfIntegers.mapRingHom (σ : E →+* E) x)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Take `⟨M, hM, h⟩` from `GlobalTheory.IntegralFinAdele.exists_nat_mul_integral E (ι a)`. Use `⟨M, hM.ne', (hR _).2 fun P => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_natCast]`. Conclude with `h P`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_subring : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     ∃ (R : Subring (Af F ⊗[F] E)) (ι : (Af F ⊗[F] E) ≃+* FiniteAdeleRing (𝓞 E) E), (∀ y, y ∈ R ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (ι y P) ≤ 1) ∧

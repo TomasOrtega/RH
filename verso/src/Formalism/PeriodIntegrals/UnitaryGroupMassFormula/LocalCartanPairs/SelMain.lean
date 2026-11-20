@@ -9,19 +9,17 @@ namespace PI.SqPair.LCP
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `hc : ∀ n : ℕ, ϖ ^ n ≠ 0` using `fun n => pow_ne_zero n hϖ0`. Establish `hh : h ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : ϖ ^ (2 * k) • A' = 0` using `by rw [← hrel]; simp`. Break down `smul_eq_zero.1 h0 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hc _ h2`. Rewrite `hA'` using `[h2, Matrix.det_zero]`. Conclude with `not_isUnit_zero hA'`. Take `⟨m, h₁, i, j, rfl, hu⟩` from `sel_factor ϖ hϖ0 hval h hh`. Take `⟨hmk, hrel₁⟩` from `sel_le σ ϖ hϖ0 hϖ hσϖ A A' h₁ hA' m k hrel`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨m, h₁, rfl, hmk, hrel₁, ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge m k with hlt | hge` into its components or cases. Use `right`. Use `⟨hlt, ?_⟩` and prove the remaining obligations. Take `⟨hg1, hg2⟩` from `sel_inv σ A A' h₁ hA' (hc _) hrel₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxi : IsUnit ((h₁ *ᵥ Pi.single j 1) i)` using `by simpa [Matrix.mulVec_single] using hu`. Take `⟨y, hy⟩` from `sel_dual σ A hA (h₁ *ᵥ Pi.single j 1) i hxi`. Use `⟨A'⁻¹ * (h₁.map σ)ᵀ * A, j, y, hg1, hg2, ⟨i, hxi⟩, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sel_form σ A h₁ (Pi.single j 1) (Pi.single j 1), hrel₁]`. Establish `hs : (fun l : ι => σ ((Pi.single j (1 : R) : ι → R) l)) = (Pi.single j 1 : ι → R)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Simplify using `[Matrix.mulVec_single, dotProduct, Pi.single_apply]`. Rewrite using `[Matrix.mulVec_mulVec, hg2, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `left`. Establish `hm : m = k` using `le_antisymm hmk hge`.
-
-Substitute `hm` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite `hrel₁` using `[Nat.sub_self, mul_zero, pow_zero, one_smul]`. Conclude with `sel_unit_of_rel σ A A' h₁ hA' hrel₁`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sel_main (σ : R ≃+* R) (ϖ : R) (hϖ0 : ϖ ≠ 0) (hϖ : ¬ IsUnit ϖ) (hσϖ : σ ϖ = ϖ)
     (hval : ∀ x : R, x ≠ 0 → ∃ n : ℕ, ∃ u : R, IsUnit u ∧ x = ϖ ^ n * u)

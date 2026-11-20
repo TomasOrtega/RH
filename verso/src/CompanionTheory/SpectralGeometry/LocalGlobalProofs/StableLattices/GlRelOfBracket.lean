@@ -16,29 +16,29 @@ namespace GlobalTheory.CompanionTheory.SmoothModule
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_mul_J (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext a; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; simp only [Pi.star_apply]; split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_conj (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
   congr 1; funext a; simp only [Pi.star_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, J_mul_J, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_J_mul (X : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * X) = X := by
   rw [← Matrix.mul_assoc, J_mul_J, Matrix.one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Xᴴ * Jm ε + Jm ε * X = 0 ↔ _`. Unfold `thetaJ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, Matrix.mul_neg, neg_neg, J_J_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `: Jm ε * X = -(Xᴴ * Jm ε)` using `by conv_lhs => rw [← h]`. Rewrite using `[Matrix.mul_neg, Matrix.mul_assoc, J_J_mul]`. Rewrite using `[this, add_neg_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_iff {X : Matrix (Fin n) (Fin n) ℂ} : inG ε X ↔ thetaJ ε X = X := by
   change Xᴴ * Jm ε + Jm ε * X = 0 ↔ _
@@ -53,41 +53,41 @@ theorem inG_iff {X : Matrix (Fin n) (Fin n) ℂ} : inG ε X ↔ thetaJ ε X = X 
     rw [this, add_neg_cancel]
 
 /- English proof (translation)
-Simplify using `only [thetaJ, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_add (X Y : Matrix (Fin n) (Fin n) ℂ) : thetaJ ε (X + Y) = thetaJ ε X + thetaJ ε Y := by
   simp only [thetaJ, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]
 
 /- English proof (translation)
-Simplify using `only [thetaJ, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem theta_sub (X Y : Matrix (Fin n) (Fin n) ℂ) : thetaJ ε (X - Y) = thetaJ ε X - thetaJ ε Y := by
   simp only [thetaJ, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]; abel
 
 /- English proof (translation)
-Simplify using `only [thetaJ, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem theta_smul (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     thetaJ ε (c • X) = (starRingEnd ℂ c) • thetaJ ε X := by
   simp only [thetaJ, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]; rfl
 
 /- English proof (translation)
-Simplify using `only [thetaJ, conjTranspose_neg, conjTranspose_mul, J_conj, conjTranspose_conjTranspose, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, J_J_mul, J_mul_J, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_theta (X : Matrix (Fin n) (Fin n) ℂ) : thetaJ ε (thetaJ ε X) = X := by
   simp only [thetaJ, conjTranspose_neg, conjTranspose_mul, J_conj, conjTranspose_conjTranspose,
     Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, J_J_mul, J_mul_J, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [thetaJ, conjTranspose_mul, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, J_J_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_mul (X Y : Matrix (Fin n) (Fin n) ℂ) : thetaJ ε (X * Y) = -(thetaJ ε Y * thetaJ ε X) := by
   simp only [thetaJ, conjTranspose_mul, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, J_J_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [thetaJ, Jm, conjTranspose_single, Matrix.neg_apply, mul_diagonal, diagonal_mul, Matrix.smul_apply, Formalism.REAL.sgn, single_apply]`. Distinguish the cases in `h : b = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `cases ε a <;> cases ε b <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_single (a b : Fin n) :
     thetaJ ε (single a b 1) = (-(Formalism.REAL.sgn ε a b : ℂ)) • single b a 1 := by
@@ -100,19 +100,19 @@ theorem theta_single (a b : Fin n) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite `*` using `[inG_iff]`. Rewrite using `[theta_add, hX, hY]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_add {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY : inG ε Y) : inG ε (X + Y) := by
   rw [inG_iff] at *; rw [theta_add, hX, hY]
 
 /- English proof (translation)
-Rewrite `*` using `[inG_iff]`. Rewrite using `[theta_smul, hX, Complex.conj_ofReal]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_smul (s : ℝ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : inG ε ((s : ℂ) • X) := by
   rw [inG_iff] at *; rw [theta_smul, hX, Complex.conj_ofReal]
 
 /- English proof (translation)
-Rewrite `*` using `[inG_iff]`. Rewrite using `[theta_sub, theta_mul, theta_mul, hX, hY]`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem inG_comm {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY : inG ε Y) :
     inG ε (X * Y - Y * X) := by
@@ -125,7 +125,7 @@ def im (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (
   (1 / (2 * Complex.I)) • (Y - thetaJ ε Y)
 
 /- English proof (translation)
-Use `Complex.I_ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 -/
 theorem inv_two_I : (1 / (2 * Complex.I) : ℂ) = -(1 / 2) * Complex.I := by
   have := Complex.I_ne_zero
@@ -133,7 +133,7 @@ theorem inv_two_I : (1 / (2 * Complex.I) : ℂ) = -(1 / 2) * Complex.I := by
   simp
 
 /- English proof (translation)
-Rewrite using `[inG_iff, re, theta_smul, theta_add, theta_theta, add_comm]`. Use `congr 1`. Simplify using `[Complex.conj_ofNat]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem inG_re (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (re ε Y) := by
   rw [inG_iff, re, theta_smul, theta_add, theta_theta, add_comm]
@@ -141,7 +141,7 @@ theorem inG_re (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (re ε Y) := by
   simp [Complex.conj_ofNat]
 
 /- English proof (translation)
-Rewrite using `[inG_iff, im, theta_smul, theta_sub, theta_theta, ← neg_sub Y, smul_neg, ← neg_smul, inv_two_I]`. Use `congr 1`. Simplify using `[Complex.conj_ofNat]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem inG_im (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (im ε Y) := by
   rw [inG_iff, im, theta_smul, theta_sub, theta_theta, ← neg_sub Y, smul_neg, ← neg_smul, inv_two_I]
@@ -149,7 +149,7 @@ theorem inG_im (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (im ε Y) := by
   simp [Complex.conj_ofNat]
 
 /- English proof (translation)
-Rewrite using `[re, im, inv_two_I, smul_smul]`. Establish `: Complex.I * (-(1 / 2) * Complex.I) = 1 / 2`. Take the linear combination `(-(1 / 2) : ℂ) * Complex.I_mul_I`. Rewrite using `[this]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_add_im (Y : Matrix (Fin n) (Fin n) ℂ) : re ε Y + Complex.I • im ε Y = Y := by
   rw [re, im, inv_two_I, smul_smul]
@@ -158,21 +158,21 @@ theorem re_add_im (Y : Matrix (Fin n) (Fin n) ℂ) : re ε Y + Complex.I • im 
   rw [this]; module
 
 /- English proof (translation)
-Rewrite using `[theta_add, theta_smul, inG_iff.1 hA, inG_iff.1 hB, Complex.conj_I, neg_smul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_pair {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε B) :
     thetaJ ε (A + Complex.I • B) = A - Complex.I • B := by
   rw [theta_add, theta_smul, inG_iff.1 hA, inG_iff.1 hB, Complex.conj_I, neg_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[re, theta_pair hA hB]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_pair {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε B) :
     re ε (A + Complex.I • B) = A := by
   rw [re, theta_pair hA hB]; module
 
 /- English proof (translation)
-Rewrite using `[im, theta_pair hA hB, inv_two_I]`. Establish `h : A + Complex.I • B - (A - Complex.I • B) = (2 * Complex.I) • B` using `by module`. Establish `: (-(1 / 2) * Complex.I) * (2 * Complex.I) = 1`. Take the linear combination `(-1 : ℂ) * Complex.I_mul_I`. Rewrite using `[h, smul_smul, this, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem im_pair {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε B) :
     im ε (A + Complex.I • B) = B := by
@@ -183,26 +183,26 @@ theorem im_pair {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε 
   rw [h, smul_smul, this, one_smul]
 
 /- English proof (translation)
-Establish `h : gᴴ * Jm ε * g = Jm ε` using `hg`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, J_mul_J]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UJ_left_inv {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : Jm ε * gᴴ * Jm ε * g = 1 := by
   have h : gᴴ * Jm ε * g = Jm ε := hg
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, J_mul_J]
 
 /- English proof (translation)
-The claim follows from `inv_eq_left_inv (UJ_left_inv hg)`.
+A detailed English derivation is pending.
 -/
 theorem UJ_inv {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : g⁻¹ = Jm ε * gᴴ * Jm ε :=
   inv_eq_left_inv (UJ_left_inv hg)
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det g).2 (isUnit_det_of_left_inverse (UJ_left_inv hg))`.
+A detailed English derivation is pending.
 -/
 theorem UJ_isUnit {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : IsUnit g :=
   (Matrix.isUnit_iff_isUnit_det g).2 (isUnit_det_of_left_inverse (UJ_left_inv hg))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(g⁻¹)ᴴ * Jm ε * g⁻¹ = Jm ε`. Establish `h` using `mul_eq_one_comm.1 (UJ_left_inv hg)`. Rewrite using `[UJ_inv hg]`. Simplify using `only [conjTranspose_mul, J_conj, conjTranspose_conjTranspose, Matrix.mul_assoc, J_J_mul] at h ⊢`. Rewrite using `[h, Matrix.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UJ_inv_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : g⁻¹ ∈ UJset ε := by
   change (g⁻¹)ᴴ * Jm ε * g⁻¹ = Jm ε
@@ -212,9 +212,9 @@ theorem UJ_inv_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : g⁻
   rw [h, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1 : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h2 : hᴴ * Jm ε * h = Jm ε` using `hh`. Express the relevant statement in the definitionally equal form `(g * h)ᴴ * Jm ε * (g * h) = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Jm ε := by rw [h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem UJ_mul {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hh : h ∈ UJset ε) : g * h ∈ UJset ε := by
   have h1 : gᴴ * Jm ε * g = Jm ε := hg
@@ -225,7 +225,7 @@ theorem UJ_mul {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hh : h 
     _ = Jm ε := by rw [h1, h2]
 
 /- English proof (translation)
-Rewrite `*` using `[inG_iff]`. Use `conv_rhs => rw [← hX]`. Rewrite using `[UJ_inv hg]`. Simplify using `only [thetaJ, conjTranspose_mul, J_conj, conjTranspose_conjTranspose, Matrix.mul_assoc, J_J_mul, Matrix.mul_neg, Matrix.neg_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_conj {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hX : inG ε X) :
     inG ε (g * X * g⁻¹) := by
@@ -236,9 +236,9 @@ theorem inG_conj {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hX : 
     Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(NormedSpace.exp X)ᴴ * Jm ε * NormedSpace.exp X = Jm ε`. Establish `hu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, J_mul_J ε, J_mul_J ε⟩, rfl⟩`. Establish `hinv : (Jm ε)⁻¹ = Jm ε` using `inv_eq_left_inv (J_mul_J ε)`. Establish `h1 : Xᴴ = Jm ε * (-X) * (Jm ε)⁻¹` using `by conv_rhs => rw [← inG_iff.1 hX]`. Rewrite using `[hinv]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [thetaJ, neg_neg, Matrix.mul_assoc, J_J_mul, J_mul_J, Matrix.mul_one]`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hu, hinv, Matrix.exp_neg, Matrix.mul_assoc _ (Jm ε) (Jm ε), J_mul_J, Matrix.mul_one, Matrix.mul_assoc, nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp X)), Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : NormedSpace.exp X ∈ UJset ε := by
   change (NormedSpace.exp X)ᴴ * Jm ε * NormedSpace.exp X = Jm ε
@@ -253,7 +253,7 @@ theorem exp_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : NormedSpace.e
     nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp X)), Matrix.mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [matrix_eq_sum_single (g * single a b 1 * h)]`. Use `sum_congr rfl fun c _ => sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, single_apply, ite_and]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_single (g h : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     g * single a b 1 * h = ∑ c, ∑ d, (g c a * h b d) • single c d (1 : ℂ) := by
@@ -306,7 +306,7 @@ theorem cext_apply {M : Type*} [AddCommGroup M] [Module ℂ M] (d : Matrix (Fin 
     cext ε d hadd hsmul Y = d (re ε Y) + Complex.I • d (im ε Y) := rfl
 
 /- English proof (translation)
-Establish `h0 : d 0 = 0` using `by simpa using hsmul 0 X hX`. Establish `h1 : re ε X = X` using `by rw [re, inG_iff.1 hX]; module`. Establish `h2 : im ε X = 0` using `by rw [im, inG_iff.1 hX, sub_self, smul_zero]`. Rewrite using `[cext_apply, h1, h2, h0, smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cext_of_inG {M : Type*} [AddCommGroup M] [Module ℂ M] (d : Matrix (Fin n) (Fin n) ℂ → M)
     (hadd : ∀ X Y, inG ε X → inG ε Y → d (X + Y) = d X + d Y)
@@ -318,9 +318,9 @@ theorem cext_of_inG {M : Type*} [AddCommGroup M] [Module ℂ M] (d : Matrix (Fin
   rw [cext_apply, h1, h2, h0, smul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← re_add_im (ε := ε) Y, ← re_add_im (ε := ε) Z]`. Establish `h1` using `h _ _ (inG_re Y) (inG_re Z)`. Establish `h2` using `h _ _ (inG_re Y) (inG_im Z)`. Establish `h3` using `h _ _ (inG_im Y) (inG_re Z)`. Establish `h4` using `h _ _ (inG_im Y) (inG_im Z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_add, map_smul, add_mul, mul_add, smul_mul_assoc, mul_smul_comm] at *`. Take the linear combination `(norm := module) h1 + Complex.I • h2 + Complex.I • h3 + Complex.I • Complex.I • h4`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem bracket_ext {R : Type*} [Ring R] [Algebra ℂ R] (C : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] R)
     (h : ∀ X Y, inG ε X → inG ε Y → C X * C Y - C Y * C X = C (X * Y - Y * X))
@@ -335,9 +335,9 @@ theorem bracket_ext {R : Type*} [Ring R] [Algebra ℂ R] (C : Matrix (Fin n) (Fi
     Complex.I • Complex.I • h4
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `key : ∀ a b c d : Fin n, C (single a b 1 * single c d 1) = if b = c then C (single a d 1) else 0`. Introduce `a b c d`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h, map_zero]`. Rewrite using `[h, map_sub, key, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glRel_of_bracket {R : Type*} [Ring R] [Algebra ℂ R] (C : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] R)
     (h : ∀ Y Z, C Y * C Z - C Z * C Y = C (Y * Z - Z * Y)) :
@@ -352,7 +352,7 @@ theorem glRel_of_bracket {R : Type*} [Ring R] [Algebra ℂ R] (C : Matrix (Fin n
   rw [h, map_sub, key, key]
 
 /- English proof (translation)
-Rewrite using `[← re_add_im (ε := ε) Y, theta_pair (inG_re Y) (inG_im Y)]`. Simplify using `only [map_add, map_sub, map_smul, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, inner_add_left, inner_sub_right, inner_smul_left, inner_smul_right, h _ (inG_re Y), h _ (inG_im Y), Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adj_ext {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (C : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ V)
@@ -370,14 +370,14 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-The claim follows from `(⟨(σ g : H →ₗ[ℂ] H), hσ.2.1 g hg⟩ : H →ₗᵢ[ℂ] H).inner_map_map v w`.
+A detailed English derivation is pending.
 -/
 theorem inner_rep (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (v w : H) :
     ⟪σ g v, σ g w⟫_ℂ = ⟪v, w⟫_ℂ :=
   (⟨(σ g : H →ₗ[ℂ] H), hσ.2.1 g hg⟩ : H →ₗᵢ[ℂ] H).inner_map_map v w
 
 /- English proof (translation)
-Establish `h` using `HasDerivAt.inner ℂ hv hw`. Simplify using `only [inner_rep hσ (exp_mem (inG_smul _ hX)), Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1, one_apply_eq_self] at h`. Use `h.unique (hasDerivAt_const _ _)` as an intermediate fact. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem skew (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v w v' w' : H}
     (hv : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) v' 0)
@@ -390,9 +390,9 @@ theorem skew (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX
   linear_combination this
 
 /- English proof (translation)
-Establish `h` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hv`. Use `HasDerivAt.congr_of_eventuallyEq h (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `he` using `exp_mem (inG_smul t hX)`. Establish `h1 : (t : ℂ) • (g * X * g⁻¹) = g * ((t : ℂ) • X) * g⁻¹`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hσ.1.2 _ (UJ_mul (UJ_mul hg he) (UJ_inv_mem hg)) g hg`. Rewrite `h2` using `[Matrix.mul_assoc _ g⁻¹ g, nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (UJ_isUnit hg)), Matrix.mul_one, hσ.1.2 _ hg _ he]`. Use `beta_reduce`. Rewrite using `[h1, Matrix.exp_conj _ _ (UJ_isUnit hg)]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T v) h2).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_deriv (hσ : IsURepOn (UJset ε) σ) {X g : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X)
     (hg : g ∈ UJset ε) {v v' : H}
@@ -413,31 +413,27 @@ theorem conj_deriv (hσ : IsURepOn (UJset ε) σ) {X g : Matrix (Fin n) (Fin n) 
 end Analytic
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ hσ`. Take `⟨h0, hadd, hsm, hst, hd, hlin⟩` from `hL n ε H σ hσ`. Establish `hbr` using `hB n ε H σ hσ`. Set `S : Submodule ℂ H` to `{ carrier := smoothVecs (Jm ε) σ add_mem' := fun {a b} ha hb => hadd a ha b hb zero_mem' := h0 smul_mem' := fun c {x} hx => hsm c x hx }`. Set `D : ∀ X, inG ε X → Module.End ℂ S` to `fun X hX => { toFun := fun v => ⟨dsig σ X v, (hd X hX v v.2).1⟩ map_add' := fun v w => Subtype.ext <| by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1` using `(hd X hX _ (v + w).2).2`. Simplify using `only [Submodule.coe_add, map_add] at h1`. Conclude with `h1.unique ((hd X hX v v.2).2.add (hd X hX w w.2).2)`. Use the proof step `map_smul' := fun c v => Subtype.ext <| by`. Establish `h1` using `(hd X hX _ (c • v).2).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Submodule.coe_smul, map_smul] at h1`. Conclude with `h1.unique ((hd X hX v v.2).2.const_smul c) }`. Set `d : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ S` to `fun X => if hX : inG ε X then D X hX else 0`. Establish `hdv : ∀ X, inG ε X → ∀ v : S, (d X v : H) = dsig σ X v`. Introduce `X hX v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [d, dif_pos hX]`. Both sides reduce to the same expression. Establish `dadd : ∀ X Y, inG ε X → inG ε Y → d (X + Y) = d X + d Y`. Introduce `X Y hX hY`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.add_apply, Submodule.coe_add, hdv _ (inG_add hX hY), hdv _ hX, hdv _ hY]`. Conclude with `(hlin X Y hX hY v v.2).1`. Establish `dsmul : ∀ (s : ℝ) X, inG ε X → d ((s : ℂ) • X) = (s : ℂ) • d X`. Introduce `s X hX`. Use extensionality with `v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, hdv _ (inG_smul s hX), hdv _ hX]`. Conclude with `(hlin X X hX hX v v.2).2 s`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC, hCX⟩ : ∃ C : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ S, (∀ Y (v : S), (C Y v : H) = dsigC ε σ Y v) ∧ ∀ X, inG ε X → ∀ v : S, (C X v : H) = dsig σ X v := by`. Use `⟨cext ε d dadd dsmul, fun Y v => ?_, fun X hX v => ?_⟩` and prove the remaining obligations. Rewrite using `[cext_apply, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, hdv _ (inG_re Y), hdv _ (inG_im Y)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[cext_of_inG _ _ _ hX, hdv _ hX]`. Establish `hder : ∀ X, inG ε X → ∀ v : S, HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) (C X v : H) 0`. Introduce `X hX v`. Rewrite using `[hCX X hX]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hd X hX v v.2).2`. Use `⟨S, fun a b => C (single a b 1), fun v => Iff.rfl, fun a b v => hC _ v, fun X hX v => ?_, ?_, ?_, hst, ?_⟩` and prove the remaining obligations. Establish `h : X = ∑ a, ∑ b, X a b • single a b (1 : ℂ)`. Simplify using `only [smul_single, smul_eq_mul, mul_one]`. Conclude with `matrix_eq_sum_single X`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (C X v : H) = ∑ a, ∑ b, X a b • (C (single a b 1) v : H)` using `by conv_lhs => rw [h]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[← h2]`. Conclude with `hder X hX v`. Use `glRel_of_bracket C (bracket_ext (ε := ε) C fun X Y hX hY => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, hCX _ hX, hCX _ hY, hCX _ (inG_comm hX hY)]`. Conclude with `hbr X Y hX hY v v.2`. Introduce `a b x y`. Rewrite using `[adj_ext (ε := ε) C (fun X hX x y => skew hσ hX (hder X hX x) (hder X hX y)), theta_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, LinearMap.smul_apply, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g hg a b v w hw`. Establish `h1 : ∀ X, inG ε X → σ g (C X v) = C (g * X * g⁻¹) w`. Introduce `X hX`.
-
-Establish `h` using `hder _ (inG_conj hg hX) w`. Rewrite `h` using `[hw]`. Conclude with `(conj_deriv hσ hX hg (hder X hX v)).unique h`. Establish `h2 : ∀ Y, σ g (C Y v) = C (g * Y * g⁻¹) w`. Introduce `Y`.
-
-Rewrite using `[← re_add_im (ε := ε) Y]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, h1 _ (inG_re Y), h1 _ (inG_im Y)]`. Rewrite using `[h2, conj_single]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smMod (hL : CompanionTheory.D.DSIC.SmLin) (hB : CompanionTheory.D.DSIC.SmBracket) : CompanionTheory.D.DSIC.SmMod := by
   classical

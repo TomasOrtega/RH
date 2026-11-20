@@ -8,13 +8,13 @@ noncomputable def LowerGen.offDiagSupport {n : ℕ} (M : Matrix (Fin n) (Fin n) 
   Finset.univ.filter fun p => p.1 ≠ p.2 ∧ M p.1 p.2 ≠ 0
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Rewrite using `[transvection_mul_apply_same]`. Establish `hrow : L j b = if b = j then L j j else 0`. Break down `lt_trichotomy b j with h | h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg h.ne]`. Conclude with `hmin j b h (Ne.symm h.ne)`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h.ne']; exact hL (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrow]`. Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hb]`. Rewrite using `[transvection_mul_apply_of_ne _ _ _ _ ha]`. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LowerGen.lowerTriangular_elim_step {n : ℕ} (L : Matrix (Fin n) (Fin n) ℂ)
     (hL : L.BlockTriangular OrderDual.toDual) (i j : Fin n) (hij : j < i)
@@ -39,37 +39,33 @@ end GlobalTheory
 
 open GlobalTheory GlobalTheory.LowerGen in
 /- English proof (translation)
-Introduce `n P _h1 hmul hdiag htr`. It suffices to establish `H : ∀ m : ℕ, ∀ L : GL (Fin n) ℂ, L.val.BlockTriangular OrderDual.toDual → (LowerGen.offDiagSupport L.val).card = m → P L by`. Introduce `L hL`. Conclude with `H _ L hL rfl`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `L hL hm`. Establish `hdet : L.val.det ≠ 0`. Establish `h` using `congrArg Matrix.det L.mul_inv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h`. Establish `hdiag0 : ∀ k, L.val k k ≠ 0`. Rewrite `hdet` using `[Matrix.det_of_lowerTriangular _ hL]`. Conclude with `fun k => (Finset.prod_ne_zero_iff.mp hdet) k (Finset.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hS : (LowerGen.offDiagSupport L.val) = ∅`. Apply `hdiag` to reduce the goal to its premises. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `: (a, b) ∈ LowerGen.offDiagSupport L.val` using `by simp [LowerGen.offDiagSupport, hab, hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hS]`. Simplify using `at this`. Establish `hne : (LowerGen.offDiagSupport L.val).Nonempty` using `Finset.nonempty_iff_ne_empty.mpr hS`. Set `cols` to `(LowerGen.offDiagSupport L.val).image Prod.snd`. Establish `hcols : cols.Nonempty` using `hne.image _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set j := cols.min' hcols with hjdef`. Establish `hjmem : j ∈ cols` using `Finset.min'_mem _ _`. Take `⟨⟨i, jj⟩, hp, hj'⟩` from `Finset.mem_image.mp hjmem`. Simplify using `only at hj'`. Substitute `hj'` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LowerGen.offDiagSupport, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Take `⟨hij, hLij⟩` from `hp`. Establish `hlt : j < i`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `absurd (hL (by simpa using h)) hLij`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hmin : ∀ a b : Fin n, b < j → a ≠ b → L.val a b = 0`. Introduce `a b hb hab`. Assume the negation of the conclusion as `hne'`. Establish `hbm : b ∈ cols` using `Finset.mem_image.mpr ⟨(a, b), by simp [LowerGen.offDiagSupport, hab, hne'], rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `Finset.min'_le cols b hbm` as an intermediate fact. Rewrite `this` using `[← hjdef]`. Conclude with `absurd hb (not_lt.mpr this)`. Use `set c : ℂ := -L.val i j / L.val j j with hc`. Establish `hijne : i ≠ j` using `hij`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `U : GL (Fin n) ℂ` to `⟨transvection i j c, transvection i j (-c), by rw [transvection_mul_transvection_same _ _ hij]; simp, by rw [transvection_mul_transvection_same _ _ hij]; simp⟩`. Set `V : GL (Fin n) ℂ` to `⟨transvection i j (-c), transvection i j c, by rw [transvection_mul_transvection_same _ _ hij]; simp, by rw [transvection_mul_transvection_same _ _ hij]; simp⟩`. Apply the tactic sequence `have hentry := LowerGen.lowerTriangular_elim_step L.val hL i j hlt (hdiag0 j) hmin`. Establish `hUL : ∀ a b, (U * L).val a b = if a = i ∧ b = j then 0 else L.val a b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact hentry a b`. Establish `hlowUL : (U * L).val.BlockTriangular OrderDual.toDual`. Introduce `a b hab`. Rewrite using `[hUL]`. Use `split_ifs with h`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `hL hab`. Establish `hsupp : LowerGen.offDiagSupport (U * L).val = (LowerGen.offDiagSupport L.val).erase (i, j)`. Use extensionality with `⟨a, b⟩`. Simplify using `only [LowerGen.offDiagSupport, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase, hUL, ne_eq, Prod.mk.injEq]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : a = i ∧ b = j`. Simplify using `[h]`. Simplify using `only [h, if_false]`. The claim follows by propositional logic. Establish `hcard : (LowerGen.offDiagSupport (U * L).val).card < m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsupp, ← hm]`. Apply `Finset.card_erase_lt_of_mem` to reduce the goal to its premises. Simplify using `[LowerGen.offDiagSupport, hij, hLij]`. Establish `hPUL : P (U * L)` using `ih _ hcard _ hlowUL rfl`. Establish `hPV : P V` using `htr i j (-c) V hlt rfl`.
-
-Establish `hVUL : V * (U * L) = L`. Rewrite using `[← mul_assoc]`. Establish `: V * U = 1`. Use extensionality with `: 1`. Use `show transvection i j (-c) * transvection i j c = 1`.
-
-Rewrite using `[transvection_mul_transvection_same _ _ hij]`. Simplify using the standard rewrite rules. Rewrite using `[this, one_mul]`. Rewrite using `[← hVUL]`. Conclude with `hmul _ _ hPV hPUL`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.lowerTriangular_GL_induction : ∀ {n : ℕ} (P : GL (Fin n) ℂ → Prop), P 1 → (∀ A B, P A → P B → P (A * B)) →
     (∀ D : GL (Fin n) ℂ, D.val.IsDiag → P D) →

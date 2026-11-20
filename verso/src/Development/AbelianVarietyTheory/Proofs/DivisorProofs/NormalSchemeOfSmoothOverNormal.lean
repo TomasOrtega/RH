@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.SmoothNormal
 
 /- English proof (translation)
-Introduce `B Y _ π n _ hB`. Establish `: Smooth π` using `SmoothOfRelativeDimension.smooth n π`. Conclude with `GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth π hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNormalScheme_of_smoothOfRelativeDimension :
     ∀ (B Y : Scheme.{0}) [IsLocallyNoetherian B] (π : Y ⟶ B) (n : ℕ) [SmoothOfRelativeDimension n π],

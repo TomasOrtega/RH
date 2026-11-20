@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PrimIn
 namespace GlobalTheory.PrimBase
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM`. Establish `hGiv : GlobalTheory.LiftRows.Given R.toRealDat F.lv2` using `GlobalTheory.GivenOfTop.given_of_top R F hT.ok hT.char hT.ex hT.host hT.params hT.ccK hT.guard hT.types`. Establish `hStab : GoodStable A3.A.X` using `GlobalTheory.T.goodCharacters_dual_stable_of_thetaLift_scalars hP.q12 R.toRealDat F.lv2 hGiv`. Establish `hCD : GlobalTheory.CuspMult.CuspDecomp D` using `GlobalTheory.CuspDec.cuspDecomp hP.q3 hP.q2 D`. Establish `hLI : GlobalTheory.Chain.LiftInteg D` using `GlobalTheory.Chain.LiftConv.liftInteg_of_cuspRapidDecay hP.q2 D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCore` using `GlobalTheory.CoreOfWeak.core_of_weak R F hT.char hT.ex`. Establish `hSch : GlobalTheory.Hk3.SchurAll R.toRealDat` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hP.q2 R.toRealDat`. Establish `hTR : GlobalTheory.TrCopy.TRLev R.toRealDat F.lv2 R.SF` using `GlobalTheory.T.transfer_eigensystem_parts_three_levels_of_mult_eq R.toRealDat F.lv2 1 hT.ok.ok2 hCore.1 hSch hStab hCD hM R.SF hCore.2.1`. Establish `hFix : ∀ t P, GlobalTheory.Hk3.Good R.toRealDat t P → Formalism.DivisionValues.conjPl P = P → GlobalTheory.Hk3.FixAll R.toRealDat t P` using `GlobalTheory.FixAllGood.fixAll_of_good R F hT.char hT.ex`. Establish `hU` using `GlobalTheory.T.thetaLift_scalarIdentity_matching_adjointInjective hP.q5 hP.q3 hP.q4 hP.q6 hP.q2 hP.q1 hP.q7 hP.q8 (_root_.ResidueKilled.sec_of_dm hP.q9) hP.q10 hP.q11 R.toRealDat F.lv2 hGiv hT.ccK hT.char.allPl hFix R.SF hCore.2.1 hTR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hGiv, hStab, hCD, hLI, hTR, hU.2.2.1, hU.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem base_of_ties_alt : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), TiesB R F → GlobalTheory.CuspMult.MultEq R.toRealDat → GlobalTheory.LiftRows.Given R.toRealDat F.lv2 ∧ GoodStable A3.A.X ∧ GlobalTheory.CuspMult.CuspDecomp D ∧ GlobalTheory.Chain.LiftInteg D ∧ GlobalTheory.TrCopy.TRLev R.toRealDat F.lv2 R.SF ∧ GlobalTheory.LiftRows.UpInj R.toRealDat ∧ GlobalTheory.LiftRows.UpInjW R.toRealDat := by
   intro hP D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM
@@ -44,7 +44,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PrimIn
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PrimBase.base_of_ties_alt | exact _root_.GlobalTheory.PrimBase.base_of_ties_alt | (intros; apply _root_.GlobalTheory.PrimBase.base_of_ties_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lift_data_of_multiplicity_one : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), TiesB R F → GlobalTheory.CuspMult.MultEq R.toRealDat → GlobalTheory.LiftRows.Given R.toRealDat F.lv2 ∧ GoodStable A3.A.X ∧ GlobalTheory.CuspMult.CuspDecomp D ∧ GlobalTheory.Chain.LiftInteg D ∧ GlobalTheory.TrCopy.TRLev R.toRealDat F.lv2 R.SF ∧ GlobalTheory.LiftRows.UpInj R.toRealDat ∧ GlobalTheory.LiftRows.UpInjW R.toRealDat := by
   first | exact @_root_.GlobalTheory.PrimBase.base_of_ties_alt | exact _root_.GlobalTheory.PrimBase.base_of_ties_alt | (intros; apply _root_.GlobalTheory.PrimBase.base_of_ties_alt <;> assumption)

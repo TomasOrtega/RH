@@ -11,13 +11,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelTor
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b N hN hNp`. Take `⟨e, hep, he⟩` from `D.perfP`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `he0 : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h` using the available equality. Rewrite `hep` using `[Nat.coprime_zero_left]`. Conclude with `absurd hep hp.one_lt.ne'`. Conclude with `h`. Take `⟨M, hMge, hMp⟩` from `Nat.exists_infinite_primes (p + e + 3)`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM3 : 3 ≤ M` using `by omega`. Establish `hModd : Odd M` using `hMp.odd_of_ne_two (by omega)`. Establish `hMcp : M.Coprime p` using `(Nat.coprime_primes hMp hp).2 (by omega)`. Establish `hMe : M.Coprime e` using `(Nat.Prime.coprime_iff_not_dvd hMp).2 fun h => by`. Use `Nat.le_of_dvd he0 h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hg : 1 ≤ Module.finrank ℤ D.La / 2`. Use `D.two_le_finrank_La` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.exists_representingFamily_of_auxiliaryRepresentation p D R b N M e hN hNp hM3 hModd hMcp hep hMe he (GlobalTheory.T.harrisTaylor_auxiliary_symplectic_level_representable p D R b N M e hN hNp hM3 hModd hMcp hep hMe he (GlobalTheory.T.siegelKernelBoundedRepresentable …`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_repFam_qproj : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∃ F : RepFam b N, IsQProjOver F.s := by

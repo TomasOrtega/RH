@@ -12,21 +12,21 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies Globa
 variable {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hsub : ∀ X Y, ρ (X - Y) = ρ X - ρ Y`. Introduce `X Y`. Use `hadd (X - Y) Y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ρ 0 = 0`. Use `hsub 0 0` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Set `r : Matrix (Fin n) (Fin n) ℂ → A` to `fun Z => ρ (rePart hJ hu Z) + Complex.I • ρ (imPart hJ hu Z)`. Establish `key : ∀ X Y : lieU J, r (X.1 + Complex.I • Y.1) = ρ X + Complex.I • ρ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `X Y`. Simplify using `only [r, rePart_mk, imPart_mk]`. Establish `hII : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (m : M), Complex.I • Complex.I • m = -m`. Introduce `M _ _ m`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toFun := r, map_add' := ?_, map_smul' := ?_ }, fun Z => rfl, ?_⟩` and prove the remaining obligations. Introduce `Z W`. Take `⟨X, Y, rfl⟩` from `exists_mk hJ hu Z`. Take `⟨X', Y', rfl⟩` from `exists_mk hJ hu W`. Establish `: X.1 + Complex.I • Y.1 + (X'.1 + Complex.I • Y'.1) = (X + X').1 + Complex.I • (Y + Y').1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = (X.1 + X'.1) + Complex.I • (Y.1 + Y'.1)`. Use `module`. Rewrite using `[this, key, key, key, hadd, hadd]`. Use `module`. Introduce `c Z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X, Y, rfl⟩` from `exists_mk hJ hu Z`. Establish `hc : c = (c.re : ℂ) + (c.im : ℂ) * Complex.I` using `(Complex.re_add_im c).symm`. Generalize the expression as in `c.re = a at hc`. Generalize the expression as in `c.im = b at hc`. Substitute `hc` using the available equality.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: ((a : ℂ) + (b : ℂ) * Complex.I) • (X.1 + Complex.I • Y.1) = (a • X - b • Y).1 + Complex.I • (b • X + a • Y).1`. Express the relevant statement in the definitionally equal form `_ = ((a : ℂ) • X.1 - (b : ℂ) • Y.1) + Complex.I • ((b : ℂ) • X.1 + (a : ℂ) • Y.1)`. Simplify using `only [add_smul, smul_add, mul_smul, hII]`. Use `module`. Rewrite using `[this, key, key, hsub, hadd, hsm, hsm, hsm, hsm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [RingHom.id_apply, add_smul, smul_add, mul_smul, hII]`. Use `module`. Introduce `X`. Use `key X 0` as an intermediate fact. Simplify `this` using `[h0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_linear_extension (hJ : Jᴴ = J) (hu : IsUnit J.det) {A : Type} [Ring A] [Algebra ℂ A] (ρ : lieU J → A)
     (hadd : ∀ X Y, ρ (X + Y) = ρ X + ρ Y) (hsm : ∀ (c : ℝ) X, ρ (c • X) = (c : ℂ) • ρ X) :
@@ -75,7 +75,7 @@ theorem exists_linear_extension (hJ : Jᴴ = J) (hu : IsUnit J.det) {A : Type} [
     simpa [h0] using this
 
 /- English proof (translation)
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single (U * single a b (1 : ℂ) * V)]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_single_mul (U V : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     U * single a b (1 : ℂ) * V = ∑ c, ∑ d, (U c a * V b d) • single c d (1 : ℂ) := by
@@ -86,7 +86,7 @@ theorem mul_single_mul (U V : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and]
 
 /- English proof (translation)
-Simplify using `only [mul_single_mul, map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[← Fintype.sum_prod_type', ← Fintype.sum_prod_type' (f := fun c d => ∑ b, ∑ a, (V b d * U c a) • (R (single c d 1) * R' (single b a 1)))]`. Simplify using `only [← Fintype.sum_prod_type']`. Use `Fintype.sum_equiv ((Equiv.prodComm _ _).trans (Equiv.prodCongr (Equiv.refl _) (Equiv.prodComm _ _))) _ _ fun q => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem casimir_move {A : Type} [Ring A] [Algebra ℂ A] (R R' : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A)
     (U V : Matrix (Fin n) (Fin n) ℂ) :
@@ -100,9 +100,9 @@ theorem casimir_move {A : Type} [Ring A] [Algebra ℂ A] (R R' : Matrix (Fin n) 
   simp [mul_comm]
 
 /- English proof (translation)
-Use `casimir_move R (R ∘ₗ (LinearMap.mulRight ℂ B) ∘ₗ (LinearMap.mulLeft ℂ B⁻¹)) B⁻¹ B` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, LinearMap.mulLeft_apply] at this`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul B hB, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul B hB, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem casimir_conj {A : Type} [Ring A] [Algebra ℂ A] (R : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A)
     (B : Matrix (Fin n) (Fin n) ℂ) (hB : IsUnit B.det) :
@@ -117,11 +117,11 @@ theorem casimir_conj {A : Type} [Ring A] [Algebra ℂ A] (R : Matrix (Fin n) (Fi
     Matrix.nonsing_inv_mul B hB, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hBH : IsUnit Bᴴ.det` using `by rw [det_conjTranspose]; exact hB.star`. Establish `key : (Bᴴ * B)⁻¹ * (B⁻¹ * single a b (1 : ℂ) * B)ᴴ * (Bᴴ * B) = B⁻¹ * single b a 1 * B`. Rewrite using `[Matrix.mul_inv_rev, conjTranspose_mul, conjTranspose_mul, conjTranspose_nonsing_inv, conjTranspose_single, star_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Bᴴ⁻¹ Bᴴ B, ← Matrix.mul_assoc Bᴴ⁻¹ Bᴴ, Matrix.nonsing_inv_mul _ hBH, Matrix.one_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `h with rfl | rfl` into its components or cases. Rewrite using `[cj, key]`. Establish `hu : IsUnit (Bᴴ * B).det` using `by rw [det_mul]; exact hBH.mul hB`. Establish `: (-(Bᴴ * B))⁻¹ = -(Bᴴ * B)⁻¹`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[neg_mul_neg, Matrix.nonsing_inv_mul _ hu]`. Rewrite using `[cj, this, neg_mul, neg_mul_neg, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_conj_single (B : Matrix (Fin n) (Fin n) ℂ) (hB : IsUnit B.det) (h : J = Bᴴ * B ∨ J = -(Bᴴ * B))
     (a b : Fin n) : cj J (B⁻¹ * single a b 1 * B) = -(B⁻¹ * single b a 1 * B) := by
@@ -141,11 +141,9 @@ theorem cj_conj_single (B : Matrix (Fin n) (Fin n) ℂ) (hB : IsUnit B.det) (h :
     rw [cj, this, neg_mul, neg_mul_neg, key]
 
 /- English proof (translation)
-Establish `h : (1 / (2 * Complex.I) : ℂ) * (1 / (2 * Complex.I)) = -(1 / 4)`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `h1 : ∀ a b, ((1 / 2 : ℂ) • (F a b - F b a)) * ((1 / 2 : ℂ) • (F a b - F b a)) + ((1 / (2 * Complex.I) : ℂ) • (F a b + F b a)) * ((1 / (2 * Complex.I) : ℂ) • (F a b + F b a)) = -((1 / 2 : ℂ) • (F a b * F b a) + (1 / 2 : ℂ) • (F b a * F a b))`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [smul_mul_smul_comm, h, mul_add, add_mul, mul_sub, sub_mul]`. Use `module`. Simplify using `only [h1, Finset.sum_neg_distrib, neg_neg, Finset.sum_add_distrib, ← Finset.smul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => F b a * F a b)]`.
-
-Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_squares {A : Type} [Ring A] [Algebra ℂ A] (F : Fin n → Fin n → A) :
     ∑ a, ∑ b, F a b * F b a =
@@ -166,37 +164,35 @@ theorem sum_squares {A : Type} [Ring A] [Algebra ℂ A] (F : Fin n → Fin n →
   module
 
 /- English proof (translation)
-Introduce `n J B hB h`. Establish `hBH : IsUnit Bᴴ.det` using `by rw [det_conjTranspose]; exact hB.star`. Establish `hJ : Jᴴ = J`. Apply the tactic sequence `rcases h with rfl | rfl <;> simp`. Establish `hu : IsUnit J.det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Break down `h with rfl | rfl` into its components or cases. Rewrite using `[det_mul]`. Conclude with `hBH.mul hB`. Rewrite using `[det_neg, det_mul]`. Conclude with `(isUnit_one.neg.pow _).mul (hBH.mul hB)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ` to `fun a b => B⁻¹ * single a b 1 * B`. Set `X : Fin n × Fin n × Bool → lieU J` to `fun p => if p.2.2 then rePart hJ hu (F p.1 p.2.1) else imPart hJ hu (F p.1 p.2.1)`. Use `⟨X, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `Y -`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Submodule ℝ (lieU J)` to `Submodule.span ℝ (Set.range X)`. Establish `hS : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Z ∈ Submodule.span ℂ (Set.range fun p : Fin n × Fin n => F p.1 p.2) → ∃ U ∈ S, ∃ V ∈ S, Z = U.1 + Complex.I • V.1`. Introduce `Z hZ`. Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem Z hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨a, b⟩, rfl⟩` from `hZ`. Conclude with `⟨_, Submodule.subset_span ⟨(a, b, true), rfl⟩, _, Submodule.subset_span ⟨(a, b, false), rfl⟩, (re_add_im hJ hu _).symm⟩`. Consider the case `zero => exact ⟨0, S.zero_mem, 0, S.zero_mem, by simp⟩`. Consider the case `add Z W _ _ hZ hW`. Take `⟨U, hU, V, hV, rfl⟩` from `hZ`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U', hU', V', hV', rfl⟩` from `hW`. Use `⟨U + U', S.add_mem hU hU', V + V', S.add_mem hV hV', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (U.1 + U'.1) + Complex.I • (V.1 + V'.1)`. Use `module`. Consider the case `smul c Z _ hZ`.
+Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨U, hU, V, hV, rfl⟩` from `hZ`. Establish `hc : c = (c.re : ℂ) + (c.im : ℂ) * Complex.I` using `(Complex.re_add_im c).symm`. Generalize the expression as in `c.re = a at hc`. Generalize the expression as in `c.im = b at hc`. Substitute `hc` using the available equality.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a • U - b • V, S.sub_mem (S.smul_mem _ hU) (S.smul_mem _ hV), b • U + a • V, S.add_mem (S.smul_mem _ hU) (S.smul_mem _ hV), ?_⟩` and prove the remaining obligations. Establish `hII : ∀ (m : Matrix (Fin n) (Fin n) ℂ), Complex.I • Complex.I • m = -m`. Introduce `m`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`. Express the relevant statement in the definitionally equal form `_ = ((a : ℂ) • U.1 - (b : ℂ) • V.1) + Complex.I • ((b : ℂ) • U.1 + (a : ℂ) • V.1)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_smul, smul_add, mul_smul, hII]`. Use `module`. Establish `hY : Y.1 ∈ Submodule.span ℂ (Set.range fun p : Fin n × Fin n => F p.1 p.2)`. Establish `: Y.1 = B⁻¹ * (B * Y.1 * B⁻¹) * B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul B hB, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul B hB, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.matrix_eq_sum_single (B * Y.1 * B⁻¹)]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Establish `: Matrix.single a b ((B * Y.1 * B⁻¹) a b) = (B * Y.1 * B⁻¹) a b • Matrix.single a b (1 : ℂ)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, mul_smul_comm, smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(a, b), rfl⟩)`. Take `⟨U, hU, V, -, hUV⟩` from `hS _ hY`. Establish `h1` using `rePart_mk hJ hu U V`. Establish `h2` using `rePart_mk hJ hu Y 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h3 : Y.1 + Complex.I • (0 : lieU J).1 = Y.1` using `by simp`. Rewrite `h2` using `[h3, hUV, h1]`. Rewrite using `[← h2]`. Conclude with `hU`. Introduce `P Q hPQ A _ _ ρ hadd hsm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨R, hR, hX⟩` from `exists_linear_extension hJ hu ρ hadd hsm`. Establish `hP : ∀ a b, P a b = rePart hJ hu (single a b 1)` using `fun a b => Subtype.ext (hPQ a b).1`. Establish `hQ : ∀ a b, Q a b = imPart hJ hu (single a b 1)` using `fun a b => Subtype.ext (hPQ a b).2`. Simplify using `only [hP, hQ, ← hR]`. Rewrite using `[casimir_conj R B hB, sum_squares (fun a b => R (F a b))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ρ (X (a, b, true)) = (1 / 2 : ℂ) • (R (F a b) - R (F b a))`. Rewrite using `[← hX]`. Express the relevant statement in the definitionally equal form `R ((1 / 2 : ℂ) • (F a b + cj J (F a b))) = _`. Rewrite using `[cj_conj_single B hB h, map_smul, map_add, map_neg, ← sub_eq_add_neg]`. Establish `e2 : ρ (X (a, b, false)) = (1 / (2 * Complex.I) : ℂ) • (R (F a b) + R (F b a))`.
-
-Rewrite using `[← hX]`. Express the relevant statement in the definitionally equal form `R ((1 / (2 * Complex.I) : ℂ) • (F a b - cj J (F a b))) = _`. Rewrite using `[cj_conj_single B hB h, map_smul, map_sub, map_neg, sub_neg_eq_add]`. Rewrite using `[Fintype.sum_bool, e1, e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimir_eq_neg_sum_sq : ∀ (n : ℕ) (J B : Matrix (Fin n) (Fin n) ℂ), IsUnit B.det → (J = Bᴴ * B ∨ J = -(Bᴴ * B)) → ∃ X : Fin n × Fin n × Bool → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J, Submodule.span ℝ (Set.range X) = ⊤ ∧ ∀ P Q : Fin n → Fin n → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J, (∀ a b, (P a b).1 = (1 / 2 : ℂ) • (Matrix.single a b 1 + -(J⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * J)) ∧ (Q a b).1 = (1 / (2 * Complex.I)) • (Matrix.single a b 1 - -(J⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * J))) → ∀ (A : Type) [Ring A] [Algebra ℂ A] (ρ : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J → A), (∀ Y Z, ρ (Y + Z) = ρ Y + ρ Z) → (∀ (c : ℝ) Y, ρ (c • Y) = (c : ℂ) • ρ Y) → ∑ a, ∑ b, (ρ (P a b) + Complex.I • ρ (Q a b)) * (ρ (P b a) + Complex.I • ρ (Q b a)) = -∑ i, ρ (X i) * ρ (X i) := by
   intro n J B hB h

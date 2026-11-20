@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CechFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFormsEqChartForms
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory.DI GlobalTheory.LogDR GlobalTheory.Cartier
 /- English proof (citation)
-Apply `GlobalTheory.LogDR.ChartStalk.logAt_eq_chartForms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLogFormsEqChartForms.lean&line=138#L138)
 -/

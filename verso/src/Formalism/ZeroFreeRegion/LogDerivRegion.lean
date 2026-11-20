@@ -12,19 +12,19 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-The claim follows from `logDerivBoundInRegionOfBounds zeroFreeRegion logDerivBoundRightHalfPlane growthBound zetaInvBound_statement logDerivBoundedHeight landauLocal`.
+A detailed English derivation is pending.
 -/
 theorem logDerivRegion : LogDerivRegion :=
   logDerivBoundInRegionOfBounds zeroFreeRegion logDerivBoundRightHalfPlane growthBound zetaInvBound_statement
     logDerivBoundedHeight landauLocal
 
 /- English proof (translation)
-The claim follows from `rectangleShiftOfResidue rectangle_double_pole laurentExpansionAtOne`.
+A detailed English derivation is pending.
 -/
 theorem rectShift : RectShift := rectangleShiftOfResidue rectangle_double_pole laurentExpansionAtOne
 
 /- English proof (translation)
-The claim follows from `zetaPrimeSumErrorBoundOfBounds zeroFreeRegion logDerivRegion logDerivBoundRightHalfPlane perron_formula rectShift`.
+A detailed English derivation is pending.
 -/
 theorem gzPNT : GzPNT :=
   zetaPrimeSumErrorBoundOfBounds zeroFreeRegion logDerivRegion logDerivBoundRightHalfPlane perron_formula rectShift

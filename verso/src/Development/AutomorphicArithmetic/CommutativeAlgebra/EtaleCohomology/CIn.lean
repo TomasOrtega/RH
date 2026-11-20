@@ -9,7 +9,7 @@ open CrystallineSemistableComparison
 namespace UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Take `⟨N, h1, h2, F, h3⟩` from `CrystallineSemistableComparison.crystallineComparison.pinEx l K r f hf`. Take `⟨Amp, -, -, -, a1, a2, a3, a4, a5, -⟩` from `CrystallineSemistableComparison.crystallineComparison.endEx (fun l _ K _ => UpperTheory.Gal.KunnethLefschetz.Top.etSide_sm_holds l K) l K`. Conclude with `⟨Amp, N, F, a1, a2, a3, a4, a5, h1, h2, fun M hM j => ⟨h3 M hM j, CrystallineSemistableComparison.crystallineComparison.bInEx l K M hM j⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cIn (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (r : Res l K) (f : ℕ)
     (hf : 0 < f) : CIn l K r f := by

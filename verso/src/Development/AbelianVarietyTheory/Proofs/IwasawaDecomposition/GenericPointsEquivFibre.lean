@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.ClosurePts
 
 /- English proof (translation)
-Take `⟨ψ, rfl⟩` from `ExtConj.factor y _ h`. Establish `hbij : Function.Bijective (i.residueFieldMap z).hom`. Use `⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`. Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`. Establish `: IsIso (i.residueFieldMap z)` using `(ConcreteCategory.isIso_iff_bijective _).2 hbij`. Use `⟨Spec.map (inv (i.residueFieldMap z) ≫ ψ) ≫ Z.fromSpecResidueField z, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id_assoc]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_closed {K : Type} [Field K] {Z X : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (z : Z)
     (y : Sp K ⟶ X) (h : below y = i z) : ∃ y' : Sp K ⟶ Z, y' ≫ i = y := by
@@ -28,15 +28,15 @@ theorem lift_closed {K : Type} [Field K] {Z X : Scheme.{0}} (i : Z ⟶ X) [IsClo
     ← Spec.map_comp, IsIso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ Y M x Z _ i _ hZ hx K _ σ`. Establish `: CharZero K` using `charZero_of_injective_ringHom σ.injective`. Establish `hgen (y : Sp K ⟶ Z) : below y = genericPoint Z` using `SmallSecHeight.eq_genericPoint hZ (Scheme.SpecToEquivOfField K Z y).2.hom.charZero`. Establish `hpre : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F)) (S := F)`. Establish `hj : IsPreimmersion M.j` using `MorphismProperty.of_isPullback M.pb.flip hpre`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : spMap (σ.comp (algebraMap (𝓞 F) F)) = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hw (y : {y : Sp K ⟶ Z // y ≫ (i ≫ M.p) = spMap (σ.comp (algebraMap (𝓞 F) F))}) : (y.1 ≫ i) ≫ M.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[Category.assoc, y.2, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f : {y : Sp K ⟶ Z // y ≫ (i ≫ M.p) = spMap (σ.comp (algebraMap (𝓞 F) F))} → {y : {y : Sp K ⟶ Y.X // y ≫ Y.str = spMap σ} // below y.1 = x}` to `fun y => ⟨⟨M.pb.lift (y.1 ≫ i) (spMap σ) (hw y), M.pb.lift_snd _ _ _⟩, by`. Apply `M.j.isEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← hx, ← hgen y.1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp K ⟶ M.X => below t) (M.pb.lift_fst _ _ (hw y))).trans (Scheme.Hom.comp_apply _ _ _))⟩`. Establish `hf (y) : (f y).1.1 ≫ M.j = y.1 ≫ i` using `M.pb.lift_fst _ _ _`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Equiv.ofBijective f ⟨fun a b h => ?_, ?_⟩, fun y => ⟨hf y, hgen y.1⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono i, ← hf, ← hf, h]`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Take `⟨y', hy'⟩` from `lift_closed i (genericPoint Z) (y ≫ M.j) ((Scheme.Hom.comp_apply _ _ _).trans ((congrArg M.j hyx).trans hx.symm))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : y' ≫ (i ≫ M.p) = spMap (σ.comp (algebraMap (𝓞 F) F))`. Rewrite using `[← Category.assoc, hy', Category.assoc, M.pb.w, ← Category.assoc, hy, hs]`. Use `⟨⟨y', h1⟩, Subtype.ext (Subtype.ext (M.pb.hom_ext ((hf _).trans hy') ?_))⟩` and prove the remaining obligations. Conclude with `(f ⟨y', h1⟩).1.2.trans hy.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (x : Y.X) (Z : Scheme.{0}) [IsIntegral Z] (i : Z ⟶ M.X) [IsClosedImmersion i], IsArithVar (i ≫ M.p) 0 → i (genericPoint Z) = M.j x → ∀ (K : Type) [Field K] (σ : F →+* K), ∃ E : {y : Sp K ⟶ Z // y ≫ (i ≫ M.p) = spMap (σ.comp (algebraMap (𝓞 F) F))} ≃ {y : {y : Sp K ⟶ Y.X // y ≫ Y.str = spMap σ} // below y.1 = x}, ∀ y, (E y).1.1 ≫ M.j = y.1 ≫ i ∧ below y.1 = genericPoint Z := by
   intro F _ _ Y M x Z _ i _ hZ hx K _ σ

@@ -13,7 +13,7 @@ namespace PI.PoincareSeriesFinite.UnitaryGroupMassFormula
 open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable
 
 /- English proof (translation)
-Unfold `quotientLIntegral multiplicityLIntegral`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `PI.FoldMult.UnitaryGroupMassFormula.one_le_mult Γ Ω h1 y`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem quotientLIntegral_le_multiplicityLIntegral {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [MeasurableSpace G] (μ : Measure G) (Γ : Subgroup G) (Ω : Set G)
@@ -27,7 +27,7 @@ theorem quotientLIntegral_le_multiplicityLIntegral {G : Type*} [Group G] [Topolo
       exact PI.FoldMult.UnitaryGroupMassFormula.one_le_mult Γ Ω h1 y
 
 /- English proof (translation)
-Introduce `Γ S hΓ hSΓ Ω hΩ h1 a Ph hPh F hF hL D hD x`. Use `haveI := hΓ`. Use `lt_of_le_of_lt (foldBound_holds G μ Γ S hΓ hSΓ Ω hΩ.isClosed.measurableSet a Ph hPh.1 hPh.2.1 hPh.2.2 F hF D hD x) ?_` and prove the remaining obligations. Use `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top (PI.FoldMult.UnitaryGroupMassFormula.mult_lt_top Γ Ω hΩ x)) ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (quotientLIntegral_le_multiplicityLIntegral μ Γ Ω h1 F Ph) hL`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem poincareSeriesFinite (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G]

@@ -25,7 +25,7 @@ def EigenLatDifferent.Statement : Prop :=
       eigenLat I s = diffLat s I
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Gauss.split Gauss.φ₀, Submodule.fg_span_singleton _⟩`.
+Supply the required witnesses or components.
 -/
 example : (∀ σ : Gauss.Em →+* ℂ, ∃ t : Gauss.Em →+* Gauss.Em, Gauss.φ₀.comp t = σ) ∧ Gauss.isoLine.FG :=
   ⟨Gauss.split Gauss.φ₀, Submodule.fg_span_singleton _⟩

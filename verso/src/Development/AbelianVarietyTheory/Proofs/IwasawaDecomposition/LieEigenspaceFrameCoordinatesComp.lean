@@ -20,9 +20,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 open MonObj in
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Set `δ : tEpsG (spMap φ ≫ x) ⟶ tEpsG x` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap S' (DualNumber S')) ≫ spMap φ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg])`. Use `⟨fun i => δ ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Over.comp_left, δ, Over.homMk_left]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu i, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_epsMul]`. Rewrite using `[List.prod_ofFn, List.prod_ofFn, ← comp_prodT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_map {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} {cf : Fin m → S} {w : Sp (DualNumber S) ⟶ t.G.left}
@@ -40,9 +40,9 @@ theorem comb_map {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x :
     rfl
 
 /- English proof (translation)
-Take `⟨d, xc, hx⟩` from `GlobalTheory.ShFam.EigLoc.exists_chart t x`. Use `choose p hp using fun j => GlobalTheory.LieLocBasis.vec_exists hx _ (hv j)`. Use `choose q hq using fun j => GlobalTheory.LieLocBasis.vec_exists hx _ (hw j)`. Take `⟨r, rfl⟩` from `GlobalTheory.LieLocBasis.vec_exists hx _ hu`. Take `rfl : v = _` from `funext hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `rfl : w = _` from `funext hq`. Simplify using `only [GlobalTheory.LieLocBasis.comb_iff hx] at h1 h2 ⊢`. Rewrite using `[h2]`. Simplify using `only [h1, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_comb {S : Type} [CommRing S] [IsLocalRing S] {x : Sp S ⟶ X} {m n : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x (v j))
@@ -62,13 +62,13 @@ theorem comb_comb {S : Type} [CommRing S] [IsLocalRing S] {x : Sp S ⟶ X} {m n 
   exact Finset.sum_comm
 
 /- English proof (translation)
-The claim follows from `(spMap_comp' _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp2 {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := (spMap_comp' _ _).symm
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp2 {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
@@ -79,9 +79,9 @@ end GlobalTheory.ShFam.CoordComp
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.FlagBundle GlobalTheory.ShFam.CoordComp in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z R _ φ x f R' _ φ' x' g R'' _ φ'' x'' h ψ ψ' A A' hl ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩`. Substitute `a1 a2 b1 b2` using the available equality. Use `⟨by rw [spMap_comp2, Category.assoc], rfl, fun τ i => ?_⟩` and prove the remaining obligations. Establish `e : (fun k => spMap (dualMap (ψ'.comp ψ)) ≫ f.v τ k) = fun k => spMap (dualMap ψ') ≫ spMap (dualMap ψ) ≫ f.v τ k`. Use function extensionality and compare the values at `fun k => by rw [dualMap_comp2, spMap_comp2, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `comb_comb Z.t (fun j => GlobalTheory.FactorDepth.isTanAtG_map _ ψ' (GlobalTheory.FactorDepth.isTanAtG_map _ ψ (f.tan τ j))) (fun j => GlobalTheory.FactorDepth.isTanAtG_map _ ψ' (g.tan τ j)) (h.tan τ i) (fun j k => ψ' (A τ j k)) (A' τ i) (fun j => comb_map Z.t ψ' (a3 τ j)) (b3 τ i …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShFam.CoordComp.coord_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (R : Type) [CommRing R] (φ : c.F →+* R) (x : Sp R ⟶ Z.X) (f : EigFrame Z φ x) (R' : Type) [CommRing R'] (φ' : c.F →+* R') (x' : Sp R' ⟶ Z.X) (g : EigFrame Z φ' x') (R'' : Type) [CommRing R''] (φ'' : c.F →+* R'') (x'' : Sp R'' ⟶ Z.X) (h : EigFrame Z φ'' x'') (ψ : R →+* R') (ψ' : R' →+* R'') (A : Mat Dw.mult R') (A' : Mat Dw.mult R''), IsLocalRing R'' → f.Coord ψ g A → g.Coord ψ' h A' → f.Coord (ψ'.comp ψ) h (A' * A.map ψ') := by
   intro E _ _ _ H Dw l Xo c O _ β Z R _ φ x f R' _ φ' x' g R'' _ φ'' x'' h ψ ψ' A A' hl ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩

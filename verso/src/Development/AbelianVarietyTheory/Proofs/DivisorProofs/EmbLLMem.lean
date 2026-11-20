@@ -19,7 +19,7 @@ def fld : IntermediateField ℚ ℂ :=
   IntermediateField.adjoin ℚ (Set.range D.what₂.embLL ∪ {g2 (lat D δ), g3 (lat D δ), wpF (lat D δ) t0})
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin ℚ _ (Or.inl ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem embLL_mem (x : D.what₂.LL) : D.what₂.embLL x ∈ fld D δ t0 :=
   IntermediateField.subset_adjoin ℚ _ (Or.inl ⟨x, rfl⟩)

@@ -9,9 +9,7 @@ open NumberField IsDedekindDomain Topology GroundTheory.Global GroundTheory.Glob
 namespace PositivityTheory.FamInh
 
 /- English proof (translation)
-Use `haveI : ∀ w : InfinitePlace E, LocallyConnectedSpace w.Completion := fun w => by`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Conclude with `(InfinitePlace.Completion.isometryEquivRealOfIsReal hw).toHomeomorph.locallyConnectedSpace`. Conclude with `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).toHomeomorph.locallyConnectedSpace`. Use `haveI : LocallyConnectedSpace (InfiniteAdeleRing E) := inferInstanceAs (LocallyConnectedSpace (∀ w : InfinitePlace E, w.Completion))`.
-
-Establish `he : IsOpenEmbedding (Units.val : (InfiniteAdeleRing E)ˣ → InfiniteAdeleRing E)` using `Units.isOpenEmbedding_val (R := ∀ w : InfinitePlace E, w.Completion)`. Use `haveI : LocallyConnectedSpace (InfiniteAdeleRing E)ˣ := he.locallyConnectedSpace`. Conclude with `isOpen_connectedComponent`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_connInf (E : Type) [Field E] [NumberField E] :
     IsOpen ((Subgroup.connectedComponentOfOne (InfiniteAdeleRing E)ˣ : Subgroup (InfiniteAdeleRing E)ˣ) :
@@ -28,7 +26,7 @@ theorem isOpen_connInf (E : Type) [Field E] [NumberField E] :
   exact isOpen_connectedComponent
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem ofInfinite_eq_map (E : Type) [Field E] [NumberField E] (y : (InfiniteAdeleRing E)ˣ) :
     (ofInfinite y : IdeleGroup E) =
@@ -36,21 +34,19 @@ theorem ofInfinite_eq_map (E : Type) [Field E] [NumberField E] (y : (InfiniteAde
   Units.ext rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : IdeleClassGroup.mk E x ∈ connectedComponent (1 : IdeleClassGroup E)` using `hx`. Use `show x ∈ closure (((Neutral.B1.diagUnits E).range ⊔ GlobalTheory.HeckeGal.infConn E : Subgroup (IdeleGroup E)) : Set (IdeleGroup E))`. Rewrite using `[mem_closure_iff_nhds]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `hc : Continuous fun u : (FiniteAdeleRing (𝓞 E) E)ˣ => x * (ofFinite u : IdeleGroup E)⁻¹` using `continuous_const.mul continuous_ofFinite.inv`. Establish `hW : (fun u : (FiniteAdeleRing (𝓞 E) E)ˣ => x * (ofFinite u : IdeleGroup E)⁻¹) ⁻¹' t ∈ 𝓝 1` using `hc.continuousAt.preimage_mem_nhds (by simpa using ht)`. Take `⟨S, n, -, hn0, hsub⟩` from `exists_finiteLevel_subset hW`. Establish `hsupp : (Function.support n).Finite` using `S.finite_toSet.subset fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (hn0 v h)`. Set `V : Subgroup (IdeleGroup E)` to `(Subgroup.connectedComponentOfOne (InfiniteAdeleRing E)ˣ).comap (toInfinite E) ⊓ (finiteLevel n).comap (toFinite E)`. Establish `hV : IsOpen (V : Set (IdeleGroup E))` using `((isOpen_connInf E).preimage (continuous_toInfinite E)).inter ((isOpen_finiteLevel hsupp).preimage (continuous_toFinite E))`. Establish `hVo : IsOpen ((V.map (IdeleClassGroup.mk E) : Subgroup (IdeleClassGroup E)) : Set (IdeleClassGroup E))` using `IdeleClassGroup.isOpenMap_mk E _ hV`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcl : IsClopen ((V.map (IdeleClassGroup.mk E) : Subgroup (IdeleClassGroup E)) : Set (IdeleClassGroup E))` using `⟨Subgroup.isClosed_of_isOpen _ hVo, hVo⟩`. Take `⟨y, hy, hyx⟩` from `hcl.connectedComponent_subset (one_mem _) hx'`. Establish `hk : x * y⁻¹ ∈ (IdeleClassGroup.mk E).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hyx, mul_inv_cancel]`. Rewrite `hk` using `[IdeleClassGroup.ker_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x * (ofFinite (toFinite E y))⁻¹, hsub hy.2, ?_⟩` and prove the remaining obligations. Establish `e : x * (ofFinite (toFinite E y))⁻¹ = (x * y⁻¹) * ofInfinite (toInfinite E y)`. Establish `h` using `ofFinite_mul_ofInfinite y`. Generalize the expression as in `ofFinite (toFinite E y) = a at h ⊢`. Generalize the expression as in `ofInfinite (toInfinite E y) = b at h ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[mul_inv, mul_assoc, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem_sup hk ⟨toInfinite E y, hy.1, (ofInfinite_eq_map E _).symm⟩`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩ show IdeleClassGroup.mk E (diagonal E k) ∈ Subgroup.connectedComponentOfOne (IdeleClassGroup E)`. Rewrite using `[IdeleClassGroup.mk_diagonal]`. Conclude with `one_mem _`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Set `f : (InfiniteAdeleRing E)ˣ →* IdeleClassGroup E` to `(IdeleClassGroup.mk E).comp (Units.map (MonoidHom.inl (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)))`.
-
-Establish `hf : Continuous f` using `(IdeleClassGroup.continuous_mk E).comp (Continuous.units_map _ (continuous_id.prodMk continuous_const))`. Establish `h` using `hf.image_connectedComponent_subset 1 ⟨y, hy, rfl⟩`. Rewrite `h` using `[map_one]`. Conclude with `h`. Conclude with `isClosed_connectedComponent.preimage (IdeleClassGroup.continuous_mk E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_connectedComponent (E : Type) [Field E] [NumberField E] :
     (Subgroup.connectedComponentOfOne (GroundTheory.Global.IdeleClassGroup E)).comap (GroundTheory.Global.IdeleClassGroup.mk E) =

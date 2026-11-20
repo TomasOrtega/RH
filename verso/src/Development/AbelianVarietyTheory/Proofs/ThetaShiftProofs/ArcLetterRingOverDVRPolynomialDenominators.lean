@@ -15,13 +15,13 @@ section General
 variable {σ R L : Type*} [CommRing R] [CommRing L]
 
 /- English proof (translation)
-Establish `hcoe : ∀ B : MvPolynomial σ R, ((MvPolynomial.map φ B : MvPolynomial σ L) : MvPowerSeries σ L) = MvPowerSeries.map φ (B : MvPowerSeries σ R)`. Introduce `B`. Use extensionality with `m`. Simplify using `[MvPolynomial.coeff_map]`. Establish `hu : (A : MvPowerSeries σ R) * MvPowerSeries.invOfUnit (A : MvPowerSeries σ R) 1 = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `MvPowerSeries.mul_invOfUnit` to reduce the goal to its premises. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe]`. Simplify `hA` using `[MvPolynomial.constantCoeff_eq]`. Establish `hP : (P : MvPowerSeries σ L) = MvPowerSeries.map φ (MvPowerSeries.invOfUnit (A : MvPowerSeries σ R) 1 * (G : MvPowerSeries σ R))`. Rewrite using `[map_mul, ← hcoe G, ← h, MvPolynomial.coe_mul, hcoe A, ← mul_assoc, ← map_mul, mul_comm _ (A : MvPowerSeries σ R), hu, map_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ m, ∃ r, φ r = P.coeff m`. Introduce `m`. Rewrite using `[← MvPolynomial.coeff_coe, hP, MvPowerSeries.coeff_map]`. Conclude with `⟨_, rfl⟩`. Use `choose r hr using hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ m ∈ P.support, MvPolynomial.monomial m (r m), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `conv_rhs => rw [P.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_constantCoeff (φ : R →+* L) (A G : MvPolynomial σ R) (P : MvPolynomial σ L)
     (hA : MvPolynomial.constantCoeff A = 1)
@@ -52,15 +52,15 @@ theorem exists_map_eq_of_constantCoeff (φ : R →+* L) (A G : MvPolynomial σ R
   rw [MvPolynomial.map_monomial, hr]
 
 /- English proof (translation)
-Set `s : σ → MvPolynomial σ R` to `fun x => MvPolynomial.X x + MvPolynomial.C (a x)`. Set `t : σ → MvPolynomial σ R` to `fun x => MvPolynomial.X x - MvPolynomial.C (a x)`. Establish `h1 : MvPolynomial.constantCoeff (MvPolynomial.bind₁ s A) = 1`. Rewrite using `[← hA]`. Establish `: (MvPolynomial.constantCoeff : MvPolynomial σ R →+* R).comp (MvPolynomial.bind₁ s).toRingHom = MvPolynomial.eval a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `x`. Simplify using `[s]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `RingHom.congr_fun this A`. Establish `h2` using `congrArg (MvPolynomial.bind₁ fun x => MvPolynomial.map φ (s x)) h`. Rewrite `h2` using `[map_mul, ← MvPolynomial.map_bind₁, ← MvPolynomial.map_bind₁]`. Take `⟨Q, hQ⟩` from `exists_map_eq_of_constantCoeff φ _ _ _ h1 h2`. Use `⟨MvPolynomial.bind₁ t Q, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.map_bind₁, hQ, MvPolynomial.bind₁_bind₁]`. Establish `: (fun x => MvPolynomial.bind₁ (fun i => MvPolynomial.map φ (t i)) (MvPolynomial.map φ (s x))) = MvPolynomial.X`. Use function extensionality and compare the values at `x`. Simplify using `[s, t]`. Rewrite using `[this, MvPolynomial.bind₁_X_left]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_eval (φ : R →+* L) (a : σ → R) (A G : MvPolynomial σ R) (P : MvPolynomial σ L)
     (hA : MvPolynomial.eval a A = 1)
@@ -92,9 +92,9 @@ end General
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Unfold `arcDetR`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `Matrix.det_one (n := Fin (Dw.mult τ)) (R := PowerSeries V)` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i k : 2`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_arcDetR (Dw : Datum H) (V : Type) [CommRing V] :
     MvPolynomial.eval (fun x : ArcLt Dw => if x.2.1 = x.2.2 then (1 : PowerSeries V) else 0)
@@ -109,9 +109,9 @@ theorem eval_arcDetR (Dw : Datum H) (V : Type) [CommRing V] :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Unfold `arcDetR arcDet`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i k : 2`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_arcDetR (Dw : Datum H) (V K : Type) [CommRing V] [Field K] (φ : PowerSeries V →+* LaurentSeries K) :
     MvPolynomial.map φ (arcDetR Dw V) = arcDet Dw K := by
@@ -124,7 +124,7 @@ theorem map_arcDetR (Dw : Datum H) (V K : Type) [CommRing V] [Field K] (φ : Pow
   simp
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `eval_arcDetR Dw V`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arcDetR_ne_zero (Dw : Datum H) (V : Type) [CommRing V] [Nontrivial V] : arcDetR Dw V ≠ 0 := by
   intro h0
@@ -133,7 +133,7 @@ theorem arcDetR_ne_zero (Dw : Datum H) (V : Type) [CommRing V] [Nontrivial V] : 
   exact zero_ne_one h1
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (arcDetR_ne_zero Dw V)` and prove the remaining obligations. Rewrite using `[Ne, MvPolynomial.C_eq_zero]`. Use `mul_ne_zero ?_ PowerSeries.X_ne_zero` and prove the remaining obligations. Introduce `h`. Conclude with `hϖ (PowerSeries.C_injective (h.trans (map_zero _).symm))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem den_ne_zero (Dw : Datum H) (V : Type) [CommRing V] [IsDomain V] {ϖ : V} (hϖ : ϖ ≠ 0) :
     MvPolynomial.C (PowerSeries.C ϖ * PowerSeries.X) * arcDetR Dw V ≠ 0 := by
@@ -148,22 +148,22 @@ section Parts
 variable (Dw : Datum H) (V K : Type) [CommRing V] [IsDomain V] [Field K] {ϖ : V}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (den_ne_zero Dw V hϖ))`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_letter (hϖ : ϖ ≠ 0) : IsDomain (ArcSR Dw V ϖ) :=
   IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (den_ne_zero Dw V hϖ))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (den_ne_zero Dw V hϖ))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_letter_injective (hϖ : ϖ ≠ 0) :
     Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (PowerSeries V)) (ArcSR Dw V ϖ)) :=
   IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (den_ne_zero Dw V hϖ))
 
 /- English proof (translation)
-Use `letI : Algebra A B := j.toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Flat A B`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Establish `hx' : j a * x = 0` using `hx`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ha' : j a ≠ 0` using `fun h => nonZeroDivisors.ne_zero ha (hi (h.trans (map_zero _).symm))`. Conclude with `(mul_eq_zero.mp hx').resolve_left ha'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_of_injective {A B : Type} [CommRing A] [IsDomain A] [IsBezout A] [CommRing B] [IsDomain B]
     (j : A →+* B) (hi : Function.Injective j) : j.Flat := by
@@ -176,11 +176,11 @@ theorem flat_of_injective {A B : Type} [CommRing A] [IsDomain A] [IsBezout A] [C
   exact (mul_eq_zero.mp hx').resolve_left ha'
 
 /- English proof (translation)
-Establish `hu : IsUnit (((algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K)).comp (MvPolynomial.map φ)) (MvPolynomial.C (PowerSeries.C ϖ * PowerSeries.X) * arcDetR Dw V))`. Rewrite using `[map_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations. Establish `hne : φ (PowerSeries.C ϖ * PowerSeries.X) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `den_ne_zero Dw V hϖ` to reduce the goal to its premises. Rewrite using `[hφ (h.trans (map_zero _).symm), map_zero, zero_mul]`. Rewrite using `[RingHom.comp_apply, MvPolynomial.map_C]`. Conclude with `(hne.isUnit.map MvPolynomial.C).map _`. Rewrite using `[RingHom.comp_apply, map_arcDetR]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Conclude with `⟨IsLocalization.Away.lift _ hu, IsLocalization.Away.lift_comp _ hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift (hϖ : ϖ ≠ 0) (φ : PowerSeries V →+* LaurentSeries K) (hφ : Function.Injective φ) :
     ∃ ψ : ArcSR Dw V ϖ →+* ArcS Dw K,
@@ -201,13 +201,13 @@ theorem exists_lift (hϖ : ϖ ≠ 0) (φ : PowerSeries V →+* LaurentSeries K) 
   exact ⟨IsLocalization.Away.lift _ hu, IsLocalization.Away.lift_comp _ hu⟩
 
 /- English proof (translation)
-Take `⟨N, G₀, hf⟩` from `IsLocalization.Away.surj (c * Δ) f`. Establish `h3` using `congrArg ψ hf`. Rewrite `h3` using `[map_mul ψ, ← map_pow, ← hP, hψ, hψ, ← map_mul]`. Establish `h4` using `hj h3`. Establish `h5 : MvPolynomial.map φ (Δ ^ N) * (P * MvPolynomial.map φ (c ^ N)) = MvPolynomial.map φ G₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h4, mul_pow, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Q, hQ⟩` from `exists_map_eq_of_eval φ a _ _ _ (by rw [map_pow, ha, one_pow]) h5`. Rewrite `h5` using `[← hQ, ← map_mul]`. Establish `h6` using `MvPolynomial.map_injective φ hφ h5`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨N, Q, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap _ S (c * Δ))` using `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `hu` using `[map_mul]`. Establish `hu' : IsUnit (algebraMap _ S (Δ ^ N))`. Rewrite using `[map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_of_mul_isUnit_right hu).pow N`. Apply `hu'.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, h6, ← hf, map_mul, map_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem denominators_gen {σ R L S S' : Type} [CommRing R] [CommRing L] [CommRing S] [CommRing S'] [IsDomain S]
     [Algebra (MvPolynomial σ R) S] (c Δ : MvPolynomial σ R) [IsLocalization.Away (c * Δ) S]
@@ -237,9 +237,9 @@ theorem denominators_gen {σ R L S S' : Type} [CommRing R] [CommRing L] [CommRin
   ring
 
 /- English proof (translation)
-Use `haveI := isDomain_letter Dw V hϖ`. Establish `hinj` using `algebraMap_letter_injective Dw V hϖ`. Establish `hD : arcDet Dw K ≠ 0`. Rewrite using `[← map_arcDetR Dw V K φ]`. Conclude with `fun h => arcDetR_ne_zero Dw V (MvPolynomial.map_injective φ hφ (h.trans (map_zero _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hinjL : Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K))` using `IsLocalization.injective (M := Submonoid.powers (arcDet Dw K)) _ (powers_le_nonZeroDivisors_of_noZeroDivisors hD)`. Conclude with `denominators_gen (MvPolynomial.C (PowerSeries.C ϖ * PowerSeries.X)) (arcDetR Dw V) hinj _ hinjL _ (eval_arcDetR Dw V) φ hφ ψ (fun B => RingHom.congr_fun hψ B) f P hP`.
+A detailed English derivation is pending.
 -/
 theorem denominators (hϖ : ϖ ≠ 0) (φ : PowerSeries V →+* LaurentSeries K) (hφ : Function.Injective φ)
     (ψ : ArcSR Dw V ϖ →+* ArcS Dw K)
@@ -261,13 +261,13 @@ theorem denominators (hϖ : ϖ ≠ 0) (φ : PowerSeries V →+* LaurentSeries K)
     (eval_arcDetR Dw V) φ hφ ψ (fun B => RingHom.congr_fun hψ B) f P hP
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hψ`. Use `⟨RingHom.ext fun p => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `RingHom.congr_fun hψ (MvPolynomial.C p)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, arcιR, arcι, this]`. Use `RingHom.congr_fun hψ (MvPolynomial.X x)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_X] at this`. Simplify using `only [arcXR, arcX, this]`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `p`. Use `RingHom.congr_fun h1 p` as an intermediate fact. Simplify using `only [RingHom.comp_apply, arcιR, arcι] at this`. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C, this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `x`. Use `h2 x` as an intermediate fact. Simplify using `only [arcXR, arcX] at this`. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_X, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem comp_eq_of_letters (φ : PowerSeries V →+* PowerSeries K) (ψ : ArcSR Dw V ϖ →+* ArcS Dw K) :
     ψ.comp (algebraMap (MvPolynomial (ArcLt Dw) (PowerSeries V)) (ArcSR Dw V ϖ)) =
@@ -295,7 +295,7 @@ theorem comp_eq_of_letters (φ : PowerSeries V →+* PowerSeries K) (ψ : ArcSR 
       simp only [RingHom.comp_apply, MvPolynomial.map_X, this]
 
 /- English proof (translation)
-Use `haveI := isDomain_letter Dw V hϖ`. Use `flat_of_injective _ ?_` and prove the remaining obligations. Rewrite using `[arcιR, RingHom.coe_comp, RingHom.coe_comp]`. Conclude with `((algebraMap_letter_injective Dw V hϖ).comp (MvPolynomial.C_injective _ _)).comp PowerSeries.C_injective`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_letter [IsBezout V] (hϖ : ϖ ≠ 0) : ((arcιR Dw V ϖ).comp (PowerSeries.C (R := V))).Flat := by
   haveI := isDomain_letter Dw V hϖ
@@ -305,7 +305,7 @@ theorem flat_letter [IsBezout V] (hϖ : ϖ ≠ 0) : ((arcιR Dw V ϖ).comp (Powe
 
 omit [IsDomain V] in
 /- English proof (translation)
-Rewrite using `[RingHom.coe_comp]`. Conclude with `HahnSeries.ofPowerSeries_injective.comp (PowerSeries.map_injective _ hi)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toLaurent_injective (i : V →+* K) (hi : Function.Injective i) :
     Function.Injective ((HahnSeries.ofPowerSeries ℤ K).comp (PowerSeries.map i)) := by
@@ -315,9 +315,9 @@ theorem toLaurent_injective (i : V →+* K) (hi : Function.Injective i) :
 end Parts
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Tv ϖ hϖ`. Establish `hφ` using `toLaurent_injective Tv.V Tv.Fr (algebraMap Tv.V Tv.Fr) (IsFractionRing.injective Tv.V Tv.Fr)`. Use `⟨isDomain_letter Dw Tv.V hϖ, algebraMap_letter_injective Dw Tv.V hϖ, flat_letter Dw Tv.V hϖ, ?_, ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `exists_lift Dw Tv.V Tv.Fr hϖ _ hφ`. Conclude with `⟨ψ, (comp_eq_of_letters Dw Tv.V Tv.Fr _ ψ).1 hψ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `ψ h1 h2 f ⟨P, hP⟩`. Conclude with `denominators Dw Tv.V Tv.Fr hϖ _ hφ ψ ((comp_eq_of_letters Dw Tv.V Tv.Fr _ ψ).2 ⟨h1, h2⟩) f P hP`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (Tv : CDVR) (ϖ : Tv.V), ϖ ≠ 0 → IsDomain (ArcSR Dw Tv.V ϖ) ∧ Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (PowerSeries Tv.V)) (ArcSR Dw Tv.V ϖ)) ∧ ((arcιR Dw Tv.V ϖ).comp (PowerSeries.C (R := Tv.V))).Flat ∧ (∃ ψ : ArcSR Dw Tv.V ϖ →+* ArcS Dw Tv.Fr, ψ.comp (arcιR Dw Tv.V ϖ) = (arcι Dw Tv.Fr).comp (PowerSeries.map (algebraMap Tv.V Tv.Fr)) ∧ ∀ x : ArcLt Dw, ψ (arcXR Dw Tv.V ϖ x) = arcX Dw Tv.Fr x.1 x.2.1 x.2.2) ∧ ∀ ψ : ArcSR Dw Tv.V ϖ →+* ArcS Dw Tv.Fr, ψ.comp (arcιR Dw Tv.V ϖ) = (arcι Dw Tv.Fr).comp (PowerSeries.map (algebraMap Tv.V Tv.Fr)) → (∀ x : ArcLt Dw, ψ (arcXR Dw Tv.V ϖ x) = arcX Dw Tv.Fr x.1 x.2.1 x.2.2) → ∀ f : ArcSR Dw Tv.V ϖ, (∃ P : MvPolynomial (ArcLt Dw) (LaurentSeries Tv.Fr), algebraMap _ (ArcS Dw Tv.Fr) P = ψ f) → ∃ (N : ℕ) (G : MvPolynomial (ArcLt Dw) (PowerSeries Tv.V)), f * arcιR Dw Tv.V ϖ (PowerSeries.C (R := Tv.V) ϖ * PowerSeries.X) ^ N = algebraMap _ (ArcSR Dw Tv.V ϖ) G := by
   intro E _ _ _ H Dw Tv ϖ hϖ

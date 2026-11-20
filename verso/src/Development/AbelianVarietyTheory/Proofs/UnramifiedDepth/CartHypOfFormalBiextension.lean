@@ -16,7 +16,7 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p`. Conclude with `GlobalTheory.T.cartHyp_of_integralGaugedFormalGroupLaw C V d I (Fin dd) (Y.raw p) (GlobalTheory.T.isIntegralGaugedFormalGroupLaw_pairData C V O dd Y d I p) (GlobalTheory.T.hasGaugeAdjointLieProjectors_pairData C V O dd Y d I p) (GlobalTheory.T.hasGaugeAdjointTeichmullerEnd_pair_p …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cartHyp_of_formalBiextension : CartFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p

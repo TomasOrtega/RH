@@ -10,15 +10,15 @@ open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 open Formalism.InvariantFactorPaths
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ e he`. Simplify using `at he`. Consider the case `cons x xs ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hp e he`. Rewrite `hp` using `[List.pairwise_cons]`. Consider the cases of `e with`. Consider the case `zero`. Simplify using `only [List.getElem_cons_zero, List.take_succ_cons, List.take_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.filter_cons_of_pos (by simp)]`. Use `congr 1`. Rewrite using `[List.filter_eq_nil_iff]`. Introduce `y hy`. Establish `h1` using `hp.1 y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [decide_eq_true_eq, not_le]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ e`. Simplify using `only [List.getElem_cons_succ, List.take_succ_cons]`. Establish `hlt : xs[e]'(by simp at he; omega) < x` using `hp.1 _ (List.getElem_mem _)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[List.filter_cons_of_pos (by simp only [decide_eq_true_eq]; omega), ih hp.2 e (by simp at he; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem filter_ge_get_eq_take : ∀ (L : List ℕ), L.Pairwise (· > ·) → ∀ (e : ℕ) (he : e < L.length),
     L.filter (fun y => decide (L[e] ≤ y)) = L.take (e + 1) := by
@@ -47,9 +47,9 @@ theorem filter_ge_get_eq_take : ∀ (L : List ℕ), L.Pairwise (· > ·) → ∀
 def latestList (P : ℕ → Bool) (M : ℕ) : List ℕ := ((List.range' 1 M).filter P).reverse
 
 /- English proof (translation)
-Simplify using `only [latestList, List.mem_reverse, List.mem_filter, List.mem_range'_1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1.1, by omega⟩, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1.1, by omega⟩, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latest_list (P : ℕ → Bool) (M y : ℕ) : y ∈ latestList P M ↔ (1 ≤ y ∧ y ≤ M) ∧ P y = true := by
   simp only [latestList, List.mem_reverse, List.mem_filter, List.mem_range'_1]
@@ -60,14 +60,14 @@ theorem mem_latest_list (P : ℕ → Bool) (M y : ℕ) : y ∈ latestList P M �
     exact ⟨⟨h1.1, by omega⟩, h2⟩
 
 /- English proof (translation)
-Rewrite using `[latestList, List.pairwise_reverse]`. Conclude with `(List.pairwise_lt_range' (s := 1) (n := M)).filter _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latest_list_pairwise_gt (P : ℕ → Bool) (M : ℕ) : (latestList P M).Pairwise (· > ·) := by
   rw [latestList, List.pairwise_reverse]
   exact (List.pairwise_lt_range' (s := 1) (n := M)).filter _
 
 /- English proof (translation)
-The claim follows from `(latest_list_pairwise_gt P M).imp ne_of_gt`.
+A detailed English derivation is pending.
 -/
 theorem latest_list_nodup (P : ℕ → Bool) (M : ℕ) : (latestList P M).Nodup :=
   (latest_list_pairwise_gt P M).imp ne_of_gt
@@ -75,9 +75,9 @@ theorem latest_list_nodup (P : ℕ → Bool) (M : ℕ) : (latestList P M).Nodup 
 def countFrom (P : ℕ → Bool) (M x : ℕ) : ℕ := ((Finset.Icc 1 M).filter fun y => P y = true ∧ x ≤ y).card
 
 /- English proof (translation)
-Unfold `countFrom`. Establish `hnd : ((latestList P M).filter fun y => decide (x ≤ y)).Nodup` using `(latest_list_nodup P M).filter _`. Rewrite using `[← List.toFinset_card_of_nodup hnd]`. Use `congr 1`. Use extensionality with `y`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_Icc, List.mem_toFinset, List.mem_filter, mem_latest_list, decide_eq_true_eq]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem count_from_eq_filter_length (P : ℕ → Bool) (M x : ℕ) :
     countFrom P M x = ((latestList P M).filter fun y => decide (x ≤ y)).length := by
@@ -91,7 +91,7 @@ theorem count_from_eq_filter_length (P : ℕ → Bool) (M x : ℕ) :
   tauto
 
 /- English proof (translation)
-Use `⟨(mem_latest_list P M _).1 (List.getElem_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[count_from_eq_filter_length, filter_ge_get_eq_take _ (latest_list_pairwise_gt P M) e he, List.length_take]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem latest_list_get_spec (P : ℕ → Bool) (M e : ℕ) (he : e < (latestList P M).length) :
     ((1 ≤ (latestList P M)[e] ∧ (latestList P M)[e] ≤ M) ∧ P (latestList P M)[e] = true) ∧
@@ -101,14 +101,14 @@ theorem latest_list_get_spec (P : ℕ → Bool) (M e : ℕ) (he : e < (latestLis
   omega
 
 /- English proof (translation)
-Rewrite using `[count_from_eq_filter_length]`. Conclude with `List.length_filter_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_from_le_length (P : ℕ → Bool) (M x : ℕ) : countFrom P M x ≤ (latestList P M).length := by
   rw [count_from_eq_filter_length]
   exact List.length_filter_le _ _
 
 /- English proof (translation)
-Unfold `countFrom`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [Finset.mem_filter] at hy ⊢`. Conclude with `⟨hy.1, hy.2.1, le_trans h hy.2.2⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem count_from_antitone (P : ℕ → Bool) (M : ℕ) {x x' : ℕ} (h : x ≤ x') : countFrom P M x' ≤ countFrom P M x := by
   unfold countFrom
@@ -118,11 +118,11 @@ theorem count_from_antitone (P : ℕ → Bool) (M : ℕ) {x x' : ℕ} (h : x ≤
   exact ⟨hy.1, hy.2.1, le_trans h hy.2.2⟩
 
 /- English proof (translation)
-Unfold `countFrom`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset (fun y hy => by`. Simplify using `only [Finset.mem_filter] at hy ⊢`. Conclude with `⟨hy.1, hy.2.1, le_trans h.le hy.2.2⟩)]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨hx.1, hx.2, le_rfl⟩`. Simplify using `only [Finset.mem_filter]`. Introduce `hc`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hc.2.2 (not_le.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem count_from_strict_anti (P : ℕ → Bool) (M : ℕ) {x x' : ℕ} (h : x < x') (hx : (1 ≤ x ∧ x ≤ M) ∧ P x = true) :
     countFrom P M x' < countFrom P M x := by
@@ -139,9 +139,9 @@ theorem count_from_strict_anti (P : ℕ → Bool) (M : ℕ) {x x' : ℕ} (h : x 
     exact absurd hc.2.2 (not_le.2 h)
 
 /- English proof (translation)
-Take `⟨i, hi, hix⟩` from `List.mem_iff_getElem.1 ((mem_latest_list P M x).2 hx)`. Establish `h1` using `(latest_list_get_spec P M i hi).2`. Rewrite `h1` using `[hix, hc]`. Establish `hie : i = e` using `by omega`. Substitute `hie` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨hi, hix⟩`.
+Supply the required witnesses or components.
 -/
 theorem latest_list_get_of_count (P : ℕ → Bool) (M e x : ℕ) (hx : (1 ≤ x ∧ x ≤ M) ∧ P x = true) (hc : countFrom P M x = e + 1) :
     ∃ he : e < (latestList P M).length, (latestList P M)[e] = x := by
@@ -153,7 +153,7 @@ theorem latest_list_get_of_count (P : ℕ → Bool) (M e x : ℕ) (hx : (1 ≤ x
   exact ⟨hi, hix⟩
 
 /- English proof (translation)
-Conclude with `List.pairwise_iff_getElem.1 (latest_list_pairwise_gt P M) e (e + 1) (by omega) he (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem latest_list_succ_lt (P : ℕ → Bool) (M e : ℕ) (he : e + 1 < (latestList P M).length) :
     (latestList P M)[e + 1] < (latestList P M)[e]'(by omega) := by
@@ -169,7 +169,7 @@ def toL (r K : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) : BranchingDimens
   B := fun i => if h : 1 ≤ i ∧ i ≤ N then B ⟨i - 1, by omega⟩ else 0
 
 /- English proof (translation)
-Simplify using `only [toL]`. Rewrite using `[dif_pos h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toL_vec (LL : Letters (Fin N)) (B : Fin N → ℕ) (i : ℕ) (h : 1 ≤ i ∧ i ≤ N) :
     (toL r K LL B).vec i = LL.vec ⟨i - 1, by omega⟩ := by
@@ -177,7 +177,7 @@ theorem toL_vec (LL : Letters (Fin N)) (B : Fin N → ℕ) (i : ℕ) (h : 1 ≤ 
   rw [dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [toL]`. Rewrite using `[dif_pos h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toL_B (LL : Letters (Fin N)) (B : Fin N → ℕ) (i : ℕ) (h : 1 ≤ i ∧ i ≤ N) :
     (toL r K LL B).B i = B ⟨i - 1, by omega⟩ := by
@@ -188,7 +188,7 @@ section
 variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → Fin N} {bb : Fin N → ℝ} {a La : ℝ} {p : ℕ}
 
 /- English proof (translation)
-Use `show N - r = n0`. Use `H.hN` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem letters_n0_eq (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B).n0 = n0 := by
   show N - r = n0
@@ -196,11 +196,11 @@ theorem letters_n0_eq (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B).n0 
   omega
 
 /- English proof (translation)
-Establish `hn0` using `letters_n0_eq (r := r) (K := K) H`. Establish `hN` using `H.hN`. Establish `h3` using `H.two_r_le_n0`. Use `⟨H.r1, Nat.one_le_iff_ne_zero.2 (NeZero.ne K), ?_, fun i h1 h2 => ?_, fun i h1 h2 => ?_⟩` and prove the remaining obligations. Use `show 3 * r ≤ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [toL] at h2`. Rewrite using `[toL_vec LL B i ⟨h1, by omega⟩]`. Conclude with `H.vec_true_of_early _ (by simp only; omega)`. Rewrite `h1` using `[hn0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [toL] at h2`. Rewrite using `[toL_vec LL B i ⟨by omega, h2⟩]`. Conclude with `H.vec_true_of_late _ (by simp only; omega)`.
+A detailed English derivation is pending.
 -/
 theorem toL_Wf [NeZero K] (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B).Wf := by
   have hn0 := letters_n0_eq (r := r) (K := K) H
@@ -218,15 +218,15 @@ theorem toL_Wf [NeZero K] (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B)
     exact H.vec_true_of_late _ (by simp only; omega)
 
 /- English proof (translation)
-Establish `hlen : l + 1 < (latestList P n0).length` using `by simpa using hl`. Establish `e1 : ((latestList P n0).map (toL r K LL B).B).getD (l + 1) 0 = (toL r K LL B).B ((latestList P n0)[l + 1])`. Simplify using `[List.getD_eq_getElem?_getD, List.getElem?_eq_getElem, hlen]`. Establish `e2 : ((latestList P n0).map (toL r K LL B).B).getD l 0 = (toL r K LL B).B ((latestList P n0)[l]'(by omega))`. Simplify using `[List.getD_eq_getElem?_getD, List.getElem?_eq_getElem, show l < (latestList P n0).length by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Establish `hxy` using `latest_list_succ_lt P n0 l hlen`. Establish `hxs` using `(latest_list_get_spec P n0 (l + 1) hlen).1`. Establish `hys` using `(latest_list_get_spec P n0 l (by omega)).1`. Generalize the expression as in `(latestList P n0)[l + 1] = x at hxy hxs ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(latestList P n0)[l]'(by omega) = y at hxy hys ⊢`. Establish `hN` using `H.hN`. Rewrite using `[toL_B LL B x ⟨hxs.1.1, by omega⟩, toL_B LL B y ⟨hys.1.1, by omega⟩]`. Establish `hv : LL.vec ⟨x - 1, by omega⟩ = LL.vec ⟨y - 1, by omega⟩`. Rewrite using `[hP x ⟨hxs.1.1, by omega⟩ hxs.2, hP y ⟨hys.1.1, by omega⟩ hys.2]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `H.H2 ⟨x - 1, by omega⟩ ⟨y - 1, by omega⟩ (by rw [Fin.lt_iff_val_lt_val]; simp only; omega) (by simp only; omega) hv`. Establish `hp13 : (13 : ℝ) ≤ p` using `by exact_mod_cast H.p13`. Establish `hB0 : (0 : ℝ) ≤ (B ⟨x - 1, by omega⟩ : ℝ)` using `Nat.cast_nonneg _`. Establish `h3 : ((13 ^ 2 * B ⟨x - 1, by omega⟩ : ℕ) : ℝ) ≤ ((5 * B ⟨y - 1, by omega⟩ : ℕ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hp2 : (169 : ℝ) ≤ (p : ℝ) ^ 2` using `by nlinarith`. Establish `h8` using `mul_le_mul_of_nonneg_right hp2 hB0`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem latest_thresholds_decay (H : HypT N n0 r K LL B od bb a La p) (P : ℕ → Bool) (v : Bool)
     (hP : ∀ i (h : 1 ≤ i ∧ i ≤ N), P i = true → LL.vec ⟨i - 1, by omega⟩ = v) (l : ℕ)
@@ -262,23 +262,19 @@ theorem latest_thresholds_decay (H : HypT N n0 r K LL B od bb a La p) (P : ℕ �
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `hn0` using `letters_n0_eq (r := r) (K := K) H`. Establish `hN` using `H.hN`. Establish `h3n` using `H.two_r_le_n0`. Establish `h3K` using `H.N_add_r_le_K`. Establish `h4` using `H.H4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4a` using `H.N_le_a`. Establish `eV : (toL r K LL B).latestV (toL r K LL B).n0 = (latestList (fun l => (toL r K LL B).vec l) n0).map (toL r K LL B).B`. Simplify using `only [BranchingDimensions.Letters.latestV, latestList, hn0, min_self]`. Establish `eC : (toL r K LL B).latestC (toL r K LL B).n0 = (latestList (fun l => !(toL r K LL B).vec l) n0).map (toL r K LL B).B`. Simplify using `only [BranchingDimensions.Letters.latestC, latestList, hn0, min_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨H.a3, by norm_num, le_rfl, fun i h1 h2 => ?_, fun l hl => ?_, fun l hl => ?_, fun i h1 h2 => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[hn0]`. Rewrite using `[toL_B LL B i ⟨h1, by omega⟩]`. Establish `h5` using `H.H1 ⟨i - 1, by omega⟩ (by simp only; omega)`. Use `⟨?_, h5.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show r + K ≤ B ⟨i - 1, by omega⟩`. Conclude with `h5.1` after adjusting the coercions. Rewrite `hl`, the goal using `[eV]`. Conclude with `latest_thresholds_decay H _ true (fun i hi hPi => by rw [← toL_vec LL B i hi]; exact hPi) l hl`. Rewrite `hl`, the goal using `[eC]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `latest_thresholds_decay H _ false (fun i hi hPi => by`. Rewrite using `[← toL_vec LL B i hi]`. Simplify using `using hPi) l hl`. Rewrite `h1`, `h2` using `[hn0]`. Simplify using `only [toL] at h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[toL_vec LL B i ⟨by omega, by omega⟩]`. Conclude with `H.vec_true_of_late _ (by simp only; omega)`. Use `show N + r ≤ K`. Use linear arithmetic over natural numbers and integers. Use `show 2 * r ≤ N`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `show r + K ≤ 2 * (K - 2 * N)`. Establish `hK : 2 * N ≤ K`. Establish `h6 : (2 * N : ℝ) ≤ K`. Establish `: (0 : ℝ) ≤ ((r + K : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h6` after adjusting the coercions. Establish `h7 : ((r + K : ℕ) : ℝ) ≤ ((2 * (K - 2 * N) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_mul, Nat.cast_sub hK]`. Move the coercions through the operations in `at h4 ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h7` after adjusting the coercions. Use `show (N : ℝ) ≤ a`. Conclude with `h4a`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem toL_Hyp [NeZero K] (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B).Hyp a 13 := by
   have hn0 := letters_n0_eq (r := r) (K := K) H
@@ -333,13 +329,13 @@ def toB (bb : Fin N → ℝ) (p : ℕ) : ℕ → ℝ := fun i =>
   if h : 1 ≤ i ∧ i ≤ N then 13 * bb ⟨i - 1, by omega⟩ / (p : ℝ) else 1
 
 /- English proof (translation)
-Establish `hN` using `H.hN`. Establish `hp : (0 : ℝ) < p`. Use `H.p13` as an intermediate fact. Conclude with `(by omega : 0 < p)` after adjusting the coercions. Use `⟨H.La_pos, fun i h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [toL] at h1 h2`. Establish `hi : 1 ≤ i ∧ i ≤ N` using `⟨by omega, h2⟩`. Establish `hb : toB bb p i = 13 * bb ⟨i - 1, by omega⟩ / (p : ℝ)`. Simplify using `only [toB]`. Rewrite using `[dif_pos hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun l hl1 hl2 hl3 => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Use `H.bb_pos ⟨i - 1, by omega⟩ (by simp only; omega)` as an intermediate fact. Check the signs of the components of the expression. Rewrite `hl3` using `[letters_n0_eq H]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toL_B LL B l ⟨hl1, by omega⟩, hb]`. Establish `h5` using `H.bb_le ⟨i - 1, by omega⟩ ⟨l - 1, by omega⟩ (by simp only; omega) (by rw [Fin.lt_iff_val_lt_val]; simp only; omega) (by simp only; omega)`. Use `le_trans h5 (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem toL_TData (H : HypT N n0 r K LL B od bb a La p) : (toL r K LL B).TData 13 La (toB bb p) := by
   have hN := H.hN

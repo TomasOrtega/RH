@@ -8,9 +8,9 @@ def idPoint (R : Type*) [CommRing R] (r n : ℕ) : Fin r × Fin n → R :=
   fun v => if v.1.val = v.2.val then 1 else 0
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[RingHom.map_det]`. Use `Matrix.det_one (R := R) (n := Fin s)` and compare the differences between its conclusion and the goal. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply, idPoint, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `if_congr Fin.val_inj rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem eval_idPoint_lpMinor (R : Type*) [CommRing R] {r n : ℕ} (s : ℕ) (hr : s ≤ r)
     (hn : s ≤ n) : eval (idPoint R r n) (lpMinor R s hr hn) = 1 := by
@@ -22,15 +22,13 @@ theorem eval_idPoint_lpMinor (R : Type*) [CommRing R] {r n : ℕ} (s : ℕ) (hr 
   exact if_congr Fin.val_inj rfl rfl
 
 /- English proof (translation)
-Establish `h1 : (∑ q : Fin s, (Pi.single (Fin.castLE hr (σ q)) 1 : Fin r → ℕ)) = ∑ q : Fin s, (Pi.single (Fin.castLE hr q) 1 : Fin r → ℕ)` using `Equiv.sum_comp σ (fun q => (Pi.single (Fin.castLE hr q) 1 : Fin r → ℕ))`. Rewrite using `[h1]`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨a.val, h⟩]`. Conclude with `if_pos (Fin.ext rfl)`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `hab`. Substitute `hab` using the available equality. Conclude with `hb (Fin.ext rfl)`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_neg]`. Introduce `hab`. Substitute `hab` using the available equality.
-
-Conclude with `h b.isLt`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hwrow_sum_single_castLE {r s : ℕ} (hr : s ≤ r) (σ : Equiv.Perm (Fin s)) :
     (∑ q : Fin s, (Pi.single (Fin.castLE hr (σ q)) 1 : Fin r → ℕ)) =
@@ -60,11 +58,11 @@ theorem hwrow_sum_single_castLE {r s : ℕ} (hr : s ≤ r) (σ : Equiv.Perm (Fin
     exact h b.isLt
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[Matrix.det_apply]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `σ _`. Establish `hk : IsWeightedHomogeneous (rowW r n) (∏ i, (Matrix.of fun p q : Fin s => (X (Fin.castLE hr p, Fin.castLE hn q) : MvPolynomial (Fin r × Fin n) R)) (σ i) i) (fun a : Fin r => if a.val < s then 1 else 0)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hwrow_sum_single_castLE hr σ]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `i _`. Simplify using `only [Matrix.of_apply]`. Conclude with `isWeightedHomogeneous_X R (rowW r n) _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hk`, the goal using `[← mem_weightedHomogeneousSubmodule]`. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem hk _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpMinor_rowHom (R : Type*) [CommRing R] {r n : ℕ} (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
     IsWeightedHomogeneous (rowW r n) (lpMinor R s hr hn)

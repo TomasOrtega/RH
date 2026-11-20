@@ -9,11 +9,11 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 open Formalism.L2.Th1
 
 /- English proof (translation)
-Take `⟨-, -, h2, h3, -, lam, hlam, e2, e3⟩` from `hg`. Establish `hm : ι.symm lam ≠ 0`. Introduce `h`. Apply `hlam` to reduce the goal to its premises. Use `congrArg ι h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hc : (ι.symm lam)⁻¹ ≠ 0` using `inv_ne_zero hm`. Take `⟨-, -, -, -, -, -, -, -, -, hg2, hg3⟩` from `F.homogeneity L (ι.symm lam)⁻¹ hc`. Use `⟨F.scalePair L (ι.symm lam)⁻¹ hc, ⟨?_, ?_, h2, h3⟩, fun d hd => F.hasCMByScale d L _ hc hd⟩` and prove the remaining obligations. Rewrite using `[hg2, e2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hg3, e3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem good_lattice (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (g2 g3 : ℂ_[l])
     (hg : IsGoodModel l L ι g2 g3) :

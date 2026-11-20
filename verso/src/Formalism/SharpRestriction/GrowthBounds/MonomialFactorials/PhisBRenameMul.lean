@@ -12,16 +12,16 @@ section Free
 variable {k σ : Type} [Field k] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.GM.tieE, LinearMap.mulLeft_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tieE_mul_free (w e : Fin r → σ) (F m : MvPolynomial σ k) :
     Formalism.GM.tieE w e (F * m) = Formalism.GM.tieE w e F * m := by
   simp only [Formalism.GM.tieE, LinearMap.mulLeft_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `key : ∀ (v : σ) (G : MvPolynomial σ k), pderiv v m = 0 → pderiv v (G * m) = pderiv v G * m`. Introduce `v G hv`. Rewrite using `[Derivation.leibniz, hv, smul_zero, zero_add, smul_eq_mul, mul_comm]`. Unfold `Formalism.GM.tieF`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, Finset.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show pderiv (w c) (pderiv (e c) (F * m)) = pderiv (w c) (pderiv (e c) F) * m`. Rewrite using `[key _ _ (he c), key _ _ (hw c)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tieF_mul_free (w e : Fin r → σ) (F m : MvPolynomial σ k) (hw : ∀ c, pderiv (w c) m = 0)
     (he : ∀ c, pderiv (e c) m = 0) : Formalism.GM.tieF w e (F * m) = Formalism.GM.tieF w e F * m := by
@@ -35,15 +35,15 @@ theorem tieF_mul_free (w e : Fin r → σ) (F m : MvPolynomial σ k) (hw : ∀ c
   rw [key _ _ (he c), key _ _ (hw c)]
 
 /- English proof (translation)
-Establish `hE : ∀ (j : ℕ) (G : MvPolynomial σ k), ((Formalism.GM.tieE w e) ^ j) (G * m) = ((Formalism.GM.tieE w e) ^ j) G * m`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro G`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ j ih`. Introduce `G`. Rewrite using `[pow_succ']`. Use `show Formalism.GM.tieE w e (((Formalism.GM.tieE w e) ^ j) (G * m)) = Formalism.GM.tieE w e (((Formalism.GM.tieE w e) ^ j) G) * m`. Rewrite using `[ih, tieE_mul_free]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : ∀ (j : ℕ) (G : MvPolynomial σ k), ((Formalism.GM.tieF w e) ^ j) (G * m) = ((Formalism.GM.tieF w e) ^ j) G * m`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro G`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `G`. Rewrite using `[pow_succ']`. Use `show Formalism.GM.tieF w e (((Formalism.GM.tieF w e) ^ j) (G * m)) = Formalism.GM.tieF w e (((Formalism.GM.tieF w e) ^ j) G) * m`. Rewrite using `[ih, tieF_mul_free w e _ m hw he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.GM.tiePhi`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.comp_apply, hF, hE, smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiePhi_mul_free (w e : Fin r → σ) (o n z : ℕ) (F m : MvPolynomial σ k) (hw : ∀ c, pderiv (w c) m = 0)
     (he : ∀ c, pderiv (e c) m = 0) : Formalism.GM.tiePhi w e o n z (F * m) = Formalism.GM.tiePhi w e o n z F * m := by
@@ -76,7 +76,7 @@ theorem tiePhi_mul_free (w e : Fin r → σ) (o n z : ℕ) (F m : MvPolynomial �
     smul_mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons, LinearMap.comp_apply]`. Rewrite using `[ih (fun j hj => h j (List.mem_cons_of_mem _ hj)), h i (by simp)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_mul_free {ι : Type*} (l : List ι) (f : ι → MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (m : MvPolynomial σ k)
     (h : ∀ i ∈ l, ∀ F, f i (F * m) = f i F * m) (F : MvPolynomial σ k) :
@@ -88,7 +88,7 @@ theorem foldr_mul_free {ι : Type*} (l : List ι) (f : ι → MvPolynomial σ k 
     rw [ih (fun j hj => h j (List.mem_cons_of_mem _ hj)), h i (by simp)]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons, LinearMap.comp_apply]`. Rewrite using `[ih (fun j hj => h j (List.mem_cons_of_mem _ hj)), h i (by simp)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_rename {τ : Type} {ι : Type*} (l : List ι) (em : σ → τ)
     (f : ι → MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (g : ι → MvPolynomial τ k →ₗ[k] MvPolynomial τ k)
@@ -108,21 +108,21 @@ section Level
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Take `⟨-, hpos, -, hN⟩` from `hB`. Establish `hlt : ∀ i : Fin G.T.t, G.T.pos i + 1 < N` using `fun i => by have := hpos i; omega`. Establish `hfin0 : ∀ i : Fin G.T.t, Formalism.GM.M.finPos N (G.T.pos i) = Fin.castSucc (⟨G.T.pos i, by have` using `hlt i; omega⟩ : Fin N) := by`. Introduce `i`. Apply `Fin.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Formalism.GM.M.finPos, Fin.coe_castSucc]`. Use `hlt i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfin1 : ∀ i : Fin G.T.t, Formalism.GM.M.finPos N (G.T.pos i + 1) = Fin.castSucc (⟨G.T.pos i + 1, hlt i⟩ : Fin N)`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Formalism.GM.M.finPos, Fin.coe_castSucc]`. Use `hlt i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlet0 : ∀ i : Fin G.T.t, G.letterAt (G.T.pos i) = (⟨G.T.pos i, by have` using `hlt i; omega⟩ : Fin N) := by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Formalism.GM.M.BlockData.letterAt]`. Use `hlt i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hlet1 : ∀ i : Fin G.T.t, G.letterAt (G.T.pos i + 1) = (⟨G.T.pos i + 1, hlt i⟩ : Fin N)`. Introduce `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Formalism.GM.M.BlockData.letterAt]`. Use `hlt i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (Formalism.GM.M.chainEmb N r G.T.t)`. Introduce `x y h`. Simplify using `only [Formalism.GM.M.chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `phisB`. Rewrite using `[foldr_mul_free]`. Use `congr 1`. Unfold `Formalism.GM.M.TieData.phis`. Use `foldr_rename _ _ _ _ (fun i _ F => ?_) y` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.GM.M.TieData.phi, dif_pos (hlt i), Formalism.GM.M.tiePhiAt]`. Rewrite using `[hfin0, hfin1, hlet0, hlet1]`. Conclude with `Formalism.CountingSumsFrames.TO.tiePhi_rename (Formalism.GM.M.chainEmb N r G.T.t) hinj (fun c : Fin r => ((⟨G.T.pos i, by have := hlt i; omega⟩ : Fin N), c)) (fun c : Fin r => ((⟨G.T.pos i + 1, hlt i⟩ : Fin N), c)) _ _ _ F`. Introduce `i _ F`. Conclude with `tiePhi_mul_free _ _ _ _ _ F m (fun c => by rw [hfin0]; exact hm _ c) (fun c => by rw [hfin1]; exact hm _ c)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phisB_rename_mul (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (y : MvPolynomial (Fin N × Fin r) ℚ_[p])
     (m : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p])

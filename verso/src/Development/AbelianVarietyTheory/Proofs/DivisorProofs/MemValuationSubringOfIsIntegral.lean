@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.IntegralInValuationSubring
 
 /- English proof (translation)
-Set `f : R →+* A` to `(algebraMap R Ω).codRestrict A h`. Use `letI : Algebra R A := f.toAlgebra`. Use `haveI : IsScalarTower R A Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hA : IsIntegral A b` using `hb.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).1 hA`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_valuationSubring_of_isIntegral {Ω : Type} [Field Ω] {R : Type} [CommRing R]
     [Algebra R Ω] (A : ValuationSubring Ω) (h : ∀ r : R, algebraMap R Ω r ∈ A) {b : Ω}

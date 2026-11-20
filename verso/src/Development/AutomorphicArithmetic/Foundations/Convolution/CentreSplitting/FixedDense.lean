@@ -7,23 +7,21 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `G H X _ _ _ _ _ _ _ ρ τ J U hU hρ hτ hJ hd v hv`. Use `Metric.mem_closure_iff.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hd.exists_dist_lt v hε`. Establish `hfin : ((fun g => τ g x) '' (U : Set G)).Finite`. Take `⟨t, -, ht⟩` from `hU.elim_nhds_subcover (fun g => {h | τ h x = τ g x}) fun g _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsOpen ((fun h => g⁻¹ * h) ⁻¹' {g | τ g x = x})` using `(hτ x).preimage (by fun_prop)`. Use `Filter.mem_of_superset (h1.mem_nhds (by simp)) fun h hh => ?_` and prove the remaining obligations. Establish `h2 : τ (g⁻¹ * h) x = x` using `hh`. Use `show τ h x = τ g x`. Use `conv_rhs => rw [← h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `(t.finite_toSet.image fun g => τ g x).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨i, hi, h⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Conclude with `⟨i, hi, (h : τ g x = τ i x).symm⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := hfin.toFinset with hS`. Establish `hm : ∀ y, y ∈ S ↔ ∃ g ∈ U, τ g x = y` using `fun y => by simp [hS]`. Establish `hpos : 0 < S.card` using `Finset.card_pos.2 ⟨x, (hm x).2 ⟨1, U.one_mem, by simp⟩⟩`. Establish `hc : (S.card : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hpos.ne'`. Establish `hc' : (S.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hpos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hst : ∀ u ∈ U, ∀ y ∈ S, τ u y ∈ S` using `fun u hu y hy => by`. Take `⟨g, hg, rfl⟩` from `(hm y).1 hy`. Conclude with `(hm _).2 ⟨u * g, U.mul_mem hu hg, by rw [map_mul]; rfl⟩`. Use `⟨_, ⟨(S.card : ℂ)⁻¹ • ∑ y ∈ S, y, fun u hu => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Use `Finset.sum_nbij' (τ u) (τ u⁻¹) (hst u hu) (hst _ (U.inv_mem hu)) (fun y _ => ?_) (fun y _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : v - J ((S.card : ℂ)⁻¹ • ∑ y ∈ S, y) = (S.card : ℂ)⁻¹ • ∑ y ∈ S, (v - J y)`. Rewrite using `[map_smul, map_sum, Finset.sum_sub_distrib, smul_sub, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc', one_smul]`. Establish `h1 : ∀ y ∈ S, ‖v - J y‖ = dist v (J x)` using `fun y hy => by`. Take `⟨g, hg, rfl⟩` from `(hm y).1 hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, dist_eq_norm, ← hρ g (v - J x), map_sub, hv g hg]`. Rewrite using `[dist_eq_norm, e, norm_smul, norm_inv, Complex.norm_natCast]`. Use `lt_of_le_of_lt ?_ hx` and prove the remaining obligations. Rewrite using `[inv_mul_le_iff₀ (by exact_mod_cast hpos)]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_const, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.fixedDense :
     UpperTheory.ConvolutionTheory.Dp.FixedDense := by

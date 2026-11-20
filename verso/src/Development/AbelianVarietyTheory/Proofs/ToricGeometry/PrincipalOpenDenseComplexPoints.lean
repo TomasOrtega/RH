@@ -12,7 +12,7 @@ namespace GlobalTheory
 open AffinePoints in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨φ, rfl, -⟩`. Establish `h` using `image_closure_subset_closure_image (isEmbedding_coe (R := ℂ) (A := A) (C := ℂ)).continuous ⟨φ, dense_nonvanishing hf φ, rfl⟩`. Use `closure_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Conclude with `⟨ψ, rfl, hψ⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem algHom_mem_closure_nonvanishing (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A]
     [Algebra.FiniteType ℂ A] (f : A) (hf : f ≠ 0) :
@@ -26,7 +26,7 @@ theorem algHom_mem_closure_nonvanishing (A : Type) [CommRing A] [IsDomain A] [Al
   exact ⟨ψ, rfl, hψ⟩
 
 /- English proof (translation)
-Introduce `_ _ A _ _ _ _ f hf` and use `algHom_mem_closure_nonvanishing A f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem principalOpen_dense_complexPoints :
     (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.FiniteType ℂ A], ∃ (d : ℕ) (j : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (a : A) (p : Polynomial (MvPolynomial (Fin d) ℂ)) (q : MvPolynomial (Fin d) ℂ), ringKrullDim A = d ∧ Function.Injective j ∧ j.toRingHom.Finite ∧ p.Monic ∧ Irreducible p ∧ (∀ r : Polynomial (MvPolynomial (Fin d) ℂ), r.eval₂ j.toRingHom a = 0 ↔ p ∣ r) ∧ q ≠ 0 ∧ Polynomial.C q ∈ Ideal.span {p, p.derivative} ∧ ∀ b : A, ∃ r : Polynomial (MvPolynomial (Fin d) ℂ), j q * b = r.eval₂ j.toRingHom a) → (∀ (d : ℕ) (q : MvPolynomial (Fin d) ℂ), q ≠ 0 → IsConnected {x : Fin d → ℂ | MvPolynomial.eval x q ≠ 0} ∧ Dense {x : Fin d → ℂ | MvPolynomial.eval x q ≠ 0}) → (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.FiniteType ℂ A] (f : A), f ≠ 0 → {x : A → ℂ | ∃ φ : A →ₐ[ℂ] ℂ, ⇑φ = x ∧ x 1 ≠ 0} ⊆ closure {x : A → ℂ | ∃ φ : A →ₐ[ℂ] ℂ, ⇑φ = x ∧ x f ≠ 0}) :=

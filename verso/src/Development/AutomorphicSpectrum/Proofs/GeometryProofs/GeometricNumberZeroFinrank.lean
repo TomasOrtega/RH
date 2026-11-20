@@ -12,7 +12,7 @@ open GroundTheory.Heights₂.Heights.Targets.CurveVerticalPointChart (chartMono_
 open GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds (homog_X fracHom fracHom_apply fracHom_eq_zero_iff mem_locRing_iff div_mem_locRing)
 
 /- English proof (translation)
-Set `l : M ≃ₗ[ℤ] κ` to `{ e with map_smul' := fun n x => by simpa using map_intCast_smul e ℤ ℤ n x }`. Rewrite using `[l.length_eq, Module.length_eq_of_surjective (R := ZMod p) (S := ℤ) (M := κ) (fun z => ⟨(z.cast : ℤ), by simp⟩), Module.length_eq_rank, Cardinal.toNat_toENat]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem length_toNat_of_addEquiv {M κ : Type*} [AddCommGroup M] [Module ℤ M] [Field κ] (e : M ≃+ κ)
     (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) κ] :
@@ -34,14 +34,14 @@ def dehom (hPW : P ≤ W) (c : ∀ k, J k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing 
       div_mem_locRing hPW (homog_X p.1 p.2) (homog_X p.1 (c p.1)) (hc p.1)⟩ : locRing P W)).toRingHom
 
 /- English proof (translation)
-Introduce `h` and use `hc k (hPW (fracHom_eq_zero_iff.1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frac_chart_ne_zero (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) :
     fracHom P (X ⟨k, c k⟩ : MRing J) ≠ 0 := fun h =>
   hc k (hPW (fracHom_eq_zero_iff.1 h))
 
 /- English proof (translation)
-Establish `h : (locRing P W).subtype.comp (dehom hPW c hc) = (aeval (R` using `ℤ) (fun p : Σ k, J k => fracHom P (X p) / fracHom P (X ⟨p.1, c p.1⟩))).toRingHom := by`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => ?_` and prove the remaining obligations. Simplify using `[dehom]`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_dehom (hPW : P ≤ W) (c : ∀ k, J k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (f : MRing J) :
     ((dehom hPW c hc f : locRing P W) : FractionRing (MRing J ⧸ P)) =
@@ -54,7 +54,7 @@ theorem coe_dehom (hPW : P ≤ W) (c : ∀ k, J k) (hc : ∀ k, (X ⟨k, c k⟩ 
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Establish `h : fracHom P = (aeval (R` using `ℤ) (fun p : Σ k, J k => fracHom P (X p))).toRingHom := MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => by simp`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fracHom_eq_aeval (f : MRing J) :
     fracHom P f = aeval (fun p : Σ k, J k => fracHom P (X p)) f := by
@@ -63,7 +63,7 @@ theorem fracHom_eq_aeval (f : MRing J) :
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Establish `hD : fracHom P (chartMono c n) = ∏ k, fracHom P (X ⟨k, c k⟩ : MRing J) ^ n k`. Simplify using `[chartMono, map_prod, map_pow]`. Establish `hD0 : ∏ k, fracHom P (X ⟨k, c k⟩ : MRing J) ^ n k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (frac_chart_ne_zero hPW hc k)`. Rewrite using `[coe_dehom, aeval_div (fun p : Σ k, J k => fracHom P (X p)) c G n hG, hD, ← fracHom_eq_aeval, mul_assoc, inv_mul_cancel₀ hD0, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dehom_form (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) {G : MRing J} {n : B → ℕ}
     (hG : IsMultiHomog G n) :
@@ -76,7 +76,7 @@ theorem dehom_form (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩
     mul_assoc, inv_mul_cancel₀ hD0, mul_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_dehom, aeval_X]`. Conclude with `div_self (frac_chart_ne_zero hPW hc k)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_X_chart (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) :
     dehom hPW c hc (X ⟨k, c k⟩) = 1 := by
@@ -87,7 +87,7 @@ theorem dehom_X_chart (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k
 variable [IsLocalRing (locRing P W)]
 
 /- English proof (translation)
-The claim follows from `regularityLocalFlat_holds.mem_maximalIdeal_iff hPW _ hG (isMultiHomog_chartMono c n) (chartMono_notMem ‹W.IsPrime› hc n) (dehom_form hPW hc hG)`.
+A detailed English derivation is pending.
 -/
 theorem dehom_mem_maximalIdeal_iff (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W)
     {G : MRing J} {n : B → ℕ} (hG : IsMultiHomog G n) :
@@ -100,29 +100,27 @@ def theta (hPW : P ≤ W) (c : ∀ k, J k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing 
   (residue (locRing P W)).comp (dehom hPW c hc)
 
 /- English proof (translation)
-The claim follows from `(residue_eq_zero_iff _).trans (dehom_mem_maximalIdeal_iff hPW hc hG)`.
+A detailed English derivation is pending.
 -/
 theorem theta_eq_zero_iff (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W)
     {G : MRing J} {n : B → ℕ} (hG : IsMultiHomog G n) : theta hPW c hc G = 0 ↔ G ∈ W :=
   (residue_eq_zero_iff _).trans (dehom_mem_maximalIdeal_iff hPW hc hG)
 
 /- English proof (translation)
-Simplify using `[theta, dehom_X_chart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_X_chart (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) :
     theta hPW c hc (X ⟨k, c k⟩) = 1 := by
   simp [theta, dehom_X_chart]
 
 /- English proof (translation)
-Use `set I0 := Ideal.span (Set.range fun k => (X ⟨k, c k⟩ : MRing J) - 1) with hI0`. Establish `hIk : I0 ≤ RingHom.ker (theta hPW c hc)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `[SetLike.mem_coe, RingHom.mem_ker, theta_X_chart]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Establish `hχ : ∀ k, Ideal.Quotient.mk I0 (X ⟨k, c k⟩) = 1` using `fun k => by`. Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, G, hG, hGf⟩` from `exists_homog _ c hχ f`. Establish `hd : G - f ∈ I0` using `Ideal.Quotient.eq.mp hGf`. Establish `hG0 : G ∈ RingHom.ker (theta hPW c hc)` using `by simpa using add_mem (hIk hd) hf`. Establish `hGW : G ∈ W` using `(theta_eq_zero_iff hPW hc hG).1 hG0`. Establish `e : f = G - (G - f)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `sub_mem (Ideal.mem_sup_left hGW) (Ideal.mem_sup_right hd)`. Use `sup_le ?_ hIk` and prove the remaining obligations. Introduce `f hf`. Take `⟨n, G, hGW, hG, e⟩` from `exists_homog_mem (theta hPW c hc) c (theta_X_chart hPW hc) hWh hf`.
-
-Rewrite using `[RingHom.mem_ker, ← e]`. Conclude with `(theta_eq_zero_iff hPW hc hG).2 hGW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_theta (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W)
     (hWh : IsMultiHomogIdeal W) :
@@ -151,13 +149,13 @@ theorem ker_theta (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ 
     exact (theta_eq_zero_iff hPW hc hG).2 hGW
 
 /- English proof (translation)
-Introduce `z`. Take `⟨x, rfl⟩` from `residue_surjective z`. Take `⟨u, v, a, hu, hv, hvW, hx⟩` from `(mem_locRing_iff hPW).1 x.2`. Establish `hvk : v ∉ RingHom.ker (theta hPW c hc)` using `fun h => hvW ((theta_eq_zero_iff hPW hc hv).1 h)`. Take `⟨g, i, hi, hgi⟩` from `hmax.exists_inv hvk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD0 : fracHom P (chartMono c a) ≠ 0` using `fun h => chartMono_notMem ‹W.IsPrime› hc a (hPW (fracHom_eq_zero_iff.1 h))`. Establish `h1 : dehom hPW c hc u = x * dehom hPW c hc v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `mul_right_cancel₀ hD0` to reduce the goal to its premises. Rewrite using `[dehom_form hPW hc hu, ← hx, Subring.coe_mul, mul_assoc, dehom_form hPW hc hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : theta hPW c hc g * theta hPW c hc v = 1`. Use `congrArg (theta hPW c hc) hgi` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, RingHom.mem_ker.1 hi, add_zero, map_one]`. Then use the resulting hypothesis. Use `⟨u * g, ?_⟩` and prove the remaining obligations. Establish `h3 : theta hPW c hc u = residue _ x * theta hPW c hc v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [theta, RingHom.comp_apply, h1, map_mul]`. Rewrite using `[map_mul, h3, mul_assoc, mul_comm (theta hPW c hc v), h2, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_surjective (hPW : P ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W)
     (hmax : (RingHom.ker (theta hPW c hc)).IsMaximal) : Function.Surjective (theta hPW c hc) := by
@@ -187,7 +185,7 @@ def chartHom {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀ k, J k) : MRi
     (⟨w p / w ⟨p.1, c p.1⟩, Algebra.subset_adjoin ⟨p, rfl⟩⟩ : chartRingZ w c)).toRingHom
 
 /- English proof (translation)
-Establish `h : (chartRingZ w c).val.toRingHom.comp (chartHom w c) = (aeval (R` using `ℤ) (fun p : Σ k, J k => w p / w ⟨p.1, c p.1⟩)).toRingHom := by`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => ?_` and prove the remaining obligations. Simplify using `[chartHom]`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_chartHom {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀ k, J k) (f : MRing J) :
     ((chartHom w c f : chartRingZ w c) : K) = aeval (fun p : Σ k, J k => w p / w ⟨p.1, c p.1⟩) f := by
@@ -198,7 +196,7 @@ theorem coe_chartHom {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀ k, J 
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Introduce and unpack `⟨r, hr⟩`. Rewrite `hr` using `[chartRingZ, Algebra.adjoin_range_eq_range_aeval]`. Take `⟨f, hf⟩` from `(AlgHom.mem_range _).mp hr`. Conclude with `⟨f, Subtype.ext ((coe_chartHom w c f).trans hf)⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chartHom_surjective {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀ k, J k) :
     Function.Surjective (chartHom w c) := by
@@ -208,15 +206,13 @@ theorem chartHom_surjective {K : Type} [Field K] (w : (Σ k, J k) → K) (c : �
   exact ⟨f, Subtype.ext ((coe_chartHom w c f).trans hf)⟩
 
 /- English proof (translation)
-Use `set I0 := Ideal.span (Set.range fun k => (X ⟨k, c k⟩ : MRing J) - 1) with hI0`. Establish `hspan : I0 ≤ RingHom.ker (chartHom w c)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_chartHom]`. Simplify using `[hwc k]`. Introduce `f hf`. Establish `hχ : ∀ k, Ideal.Quotient.mk I0 (X ⟨k, c k⟩) = 1` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`. Take `⟨n, G, hG, hGf⟩` from `exists_homog _ c hχ f`. Establish `hd : G - f ∈ I0` using `Ideal.Quotient.eq.mp hGf`. Establish `hG0 : chartHom w c G = 0` using `by simpa using add_mem (hspan hd) hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGv : aeval w G = 0`. Establish `h1` using `congrArg Subtype.val hG0`. Rewrite `h1` using `[coe_chartHom, aeval_div w c G n hG]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hwc k)))`. Establish `hGW : G ∈ W` using `hPW (mem_mCoordIdeal_of_aeval_eq_zero w hG hGv)`.
-
-Establish `e : f = G - (G - f)` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem (Ideal.mem_sup_left hGW) (Ideal.mem_sup_right hd)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_chartHom_le {K : Type} [Field K] {w : (Σ k, J k) → K} {c : ∀ k, J k} {W : Ideal (MRing J)}
     (hPW : mCoordIdeal w ≤ W) (hwc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
@@ -247,15 +243,13 @@ theorem ker_chartHom_le {K : Type} [Field K] {w : (Σ k, J k) → K} {c : ∀ k,
   exact sub_mem (Ideal.mem_sup_left hGW) (Ideal.mem_sup_right hd)
 
 /- English proof (translation)
-Establish `hwc : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k h => hc k (hPW ((X_mem_iff w k _).2 h))`. Establish `hs` using `chartHom_surjective w c`. Establish `hker` using `ker_theta hPW hc hWh`. Establish `hle : RingHom.ker (chartHom w c) ≤ RingHom.ker (theta hPW c hc)`. Rewrite using `[hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ker_chartHom_le hPW hwc`. Use `haveI : (RingHom.ker (theta hPW c hc)).IsPrime := RingHom.ker_isPrime _`. Establish `hq : (Ideal.map (chartHom w c) (RingHom.ker (theta hPW c hc))).IsPrime` using `Ideal.map_isPrime_of_surjective hs hle`. Establish `h0 : Ideal.map (chartHom w c) (RingHom.ker (theta hPW c hc)) ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : (X ⟨k, i⟩ : MRing J) ∈ RingHom.ker (theta hPW c hc)`. Rewrite using `[hker]`. Conclude with `Ideal.mem_sup_left hX`. Establish `h1` using `Ideal.mem_map_of_mem (chartHom w c) hx`. Rewrite `h1` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Subtype.val h1`. Rewrite `h2` using `[coe_chartHom, aeval_X]`. Conclude with `div_ne_zero hw (hwc k) h2`. Use `haveI := chart_prime_isMaximal (p := p) w hbir c hwc _ hq h0`. Establish `h3` using `Ideal.comap_isMaximal_of_surjective (chartHom w c) hs (K := Ideal.map (chartHom w c) (RingHom.ker (theta hPW c hc)))`.
-
-Establish `hle' : Ideal.comap (chartHom w c) ⊥ ≤ RingHom.ker (theta hPW c hc)` using `hle`. Rewrite `h3` using `[Ideal.comap_map_of_surjective (chartHom w c) hs, sup_eq_left.2 hle']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ker_theta_isMaximal {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra (ZMod p) K]
     [IsFunctionField (ZMod p) K] {w : (Σ k, J k) → K} {W : Ideal (MRing J)} [(mCoordIdeal w).IsPrime] [W.IsPrime]
@@ -289,11 +283,11 @@ theorem ker_theta_isMaximal {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algeb
   rwa [Ideal.comap_map_of_surjective (chartHom w c) hs, sup_eq_left.2 hle'] at h3
 
 /- English proof (translation)
-Introduce `B _ J _ p _ K _ _ _ w hbir k i hw W hW b _ _`. Take `⟨hmin, hrel⟩` from `hW`. Use `haveI hWp : W.IsPrime := hmin.1.1`. Use `haveI hPp : (mCoordIdeal w).IsPrime := RingHom.ker_isPrime _`. Establish `hPW : mCoordIdeal w ≤ W` using `le_sup_left.trans hmin.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : (X ⟨k, i⟩ : MRing J) ∈ W` using `hmin.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hWh : IsMultiHomogIdeal W` using `isMultiHomogIdeal_of_mem_minimalPrimes (GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal w) (homog_X k i) hmin`. Establish `hc : ∀ k, (X ⟨k, (hrel k).choose⟩ : MRing J) ∉ W` using `fun k => (hrel k).choose_spec`. Establish `hmax` using `ker_theta_isMaximal (p := p) hbir hPW hc hWh hw hX`. Establish `hsurj` using `theta_surjective hPW hc hmax`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[geoNum, dif_pos hrel]`. Use `congr 1`. Conclude with `length_toNat_of_addEquiv ((Ideal.quotEquivOfEq (ker_theta hPW hc hWh).symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)).toAddEquiv p`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_zero_eq_finrank : ∀ (B : Type) [Fintype B] (J : B → Type) [∀ k, Fintype (J k)] (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [Algebra (ZMod p) K] [IsFunctionField (ZMod p) K] (w : (Σ k, J k) → K), Birational w → ∀ (k : B) (c : J k), w ⟨k, c⟩ ≠ 0 → ∀ W ∈ divSupp (mCoordIdeal w) (X ⟨k, c⟩), ∀ (b : Fin 0 → B → ℤ) [IsLocalRing (locRing (mCoordIdeal w) W)] [Algebra (ZMod p) (locRing (mCoordIdeal w) W)], geoNum 0 W b = (Module.finrank (ZMod p) (ResidueField (locRing (mCoordIdeal w) W)) : ℤ) := by
   intro B _ J _ p _ K _ _ _ w hbir k i hw W hW b _ _

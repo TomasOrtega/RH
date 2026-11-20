@@ -11,21 +11,19 @@ open Classical
 namespace GlobalTheory.DvrCentre
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA M z`. Establish `hΩ : CharZero Ω` using `hA.char`. Distinguish the cases in `hz : z = genericPoint M.Z`. Substitute `hz` using the available equality. Establish `: CharZero (PowerSeries Ω)` using `charZero_of_injective_ringHom (PowerSeries.C_injective (R := Ω))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hc : IsAdicComplete (IsLocalRing.maximalIdeal (PowerSeries Ω)) (PowerSeries Ω)` using `by first`. Consider the case `infer_instance`. Consider the case `(rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance)`. Use `⟨PowerSeries Ω, inferInstance, inferInstance, inferInstance, this, spMap (PowerSeries.C (R := Ω)) ≫ M.pt, hc, ?_, IsLocalRing.closedPoint _, ?_⟩` and prove the remaining obligations. Conclude with `M.pt_apply _`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `M.pt_apply _`. Establish `: IsDedekindDomain o` using `hA.ded`. Establish `: IsLocallyNoetherian M.Z`. Use `M.lft` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian M.s`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S` to `M.Z.presheaf.stalk z`. Establish `hS : CharZero S` using `(M.stalkHom z).charZero`. Establish `hgen : M.Z.fromSpecStalk z (⊥ : PrimeSpectrum S) = genericPoint M.Z`. Establish `h1 : genericPoint M.Z ∈ Set.range (M.Z.fromSpecStalk z)`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `genericPoint_specializes z`. Take `⟨q, hq⟩` from `h1`. Establish `h2 : (⊥ : PrimeSpectrum S) ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Establish `h3` using `h2.map (M.Z.fromSpecStalk z).continuous`. Rewrite `h3` using `[hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(h3.antisymm (genericPoint_specializes _)).eq`. Establish `hne : (⊥ : Ideal S) ≠ IsLocalRing.maximalIdeal S`. Introduce `e`. Apply `hz` to reduce the goal to its premises. Establish `: (⊥ : PrimeSpectrum S) = IsLocalRing.closedPoint S` using `PrimeSpectrum.ext e`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hgen, this, Scheme.fromSpecStalk_closedPoint]`. Take `⟨O, _, hO, hO', hO'', φ, h1, h2⟩` from `GlobalTheory.exists_complete_discreteValuationRing_ker_eq (S := S) (⊥ : Ideal S) hne`. Establish `hφ : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 h1`. Establish `: CharZero O` using `charZero_of_injective_ringHom hφ`. Use `⟨O, inferInstance, hO, hO', this, spMap φ ≫ M.Z.fromSpecStalk z, hO'', ?_, (⊥ : PrimeSpectrum O), ?_⟩` and prove the remaining obligations.
-
-Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (M.Z.fromSpecStalk z) ?_) (Scheme.fromSpecStalk_closedPoint (x := z)))` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint φ`. Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (M.Z.fromSpecStalk z) ?_) hgen)` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_centre : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω]
     (M : RatModel o Ω) (z : M.Z), ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V)

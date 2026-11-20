@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdelicScalar.SizeBounds
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero D.host.E`. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs h` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem one_le_rdE (D : D7) : (1 : ℝ) ≤ D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
@@ -24,11 +24,11 @@ theorem one_le_rdE (D : D7) : (1 : ℝ) ≤ D.host.rdE := by
   · positivity
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes at h`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty D.what₂.Tau := by`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Use `show 0 < 2 * D.R.ord`. Establish `h1` using `D.R.two_le_m`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `D.R.m_le_f`. Use linear arithmetic over natural numbers and integers. Take `⟨-, -, -, hb⟩` from `h.1 τ`. Establish `hq` using `(D.hc τ).gap_be i`. Establish `hr : ((((D.R.t : ℚ) + 3) / 2 : ℚ) : ℝ) ≤ (((D.hc τ).e i - (D.hc τ).b i : ℚ) : ℝ)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `hq` after adjusting the coercions. Move the coercions through the operations in `at hr`. Establish `habs` using `abs_le.mp (hb i)`. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Combine the linear relations using `[habs.1, habs.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_le_b (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) : 1 ≤ b := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes at h
@@ -48,11 +48,11 @@ theorem one_le_b (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) : 1 ≤ b 
   linarith [habs.1, habs.2]
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes at h`. Take `⟨he0, he2, hv, hb⟩` from `h.1 τ`. Establish `hb0 : (0 : ℝ) ≤ b` using `by linarith`. Unfold `Formalism.L2.NTheta.lamAt`. Use `split_ifs with h1 h2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hv0, hv1⟩` from `hv ⟨n, h1⟩`. Apply the tactic sequence `constructor <;> linarith`. Establish `habs` using `abs_le.mp (hb ⟨n - (D.R.k - 1), h2⟩)`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith [habs.1, habs.2]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lam_bounds (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (τ : D.what₂.Tau) (n : ℕ) :
     -b ≤ ((Formalism.L2.NTheta.lamAt (D.hc τ) n : ℚ) : ℝ) + (((D.hc τ).e i : ℚ) : ℝ) ∧
@@ -71,9 +71,9 @@ theorem lam_bounds (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (τ : D.
     constructor <;> linarith
 
 /- English proof (translation)
-Break down `le_or_gt ⌊x⌋ 0 with h0 | h0` into its components or cases. Rewrite using `[Int.toNat_of_nonpos h0]`. Simplify using `using hc`. Establish `h1 : ((⌊x⌋.toNat : ℕ) : ℤ) = ⌊x⌋` using `Int.toNat_of_nonneg h0.le`. Establish `h2 : ((⌊x⌋.toNat : ℕ) : ℝ) = ((⌊x⌋ : ℤ) : ℝ)` using `by exact_mod_cast h1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Establish `h3 : ((⌊x⌋ : ℤ) : ℝ) ≤ ((x : ℚ) : ℝ)` using `by exact_mod_cast Int.floor_le x`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem toNat_floor_le (x : ℚ) (c : ℝ) (hc : 0 ≤ c) (hx : (x : ℝ) ≤ c) : ((⌊x⌋.toNat : ℕ) : ℝ) ≤ c := by
   rcases le_or_gt ⌊x⌋ 0 with h0 | h0
@@ -86,11 +86,11 @@ theorem toNat_floor_le (x : ℚ) (c : ℝ) (hc : 0 ≤ c) (hx : (x : ℝ) ≤ c)
     linarith
 
 /- English proof (translation)
-Establish `hlam` using `(lam_bounds D i b h τ n).2`. Establish `hb1` using `one_le_b D i b h`. Unfold `aPl`. Use `split_ifs with hn`. Apply `toNat_floor_le _ _ (by linarith)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `hnp : (n : ℝ) + 1 ≤ (p : ℝ)` using `by exact_mod_cast Nat.succ_le_of_lt hn`. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Nat.cast_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem aPl_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (p : ℕ) (τ : D.what₂.Tau) (n : ℕ) :
     (aPl D i p τ n : ℝ) ≤ 3 * b := by
@@ -107,11 +107,11 @@ theorem aPl_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (p : ℕ) (�
     linarith
 
 /- English proof (translation)
-Establish `hlam` using `(lam_bounds D i b h τ (p + (q - n) - 1)).1`. Establish `hb1` using `one_le_b D i b h`. Unfold `aMi`. Use `split_ifs with hn`. Apply `toNat_floor_le _ _ (by linarith)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `hqn : (0 : ℝ) ≤ ((q - n : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Nat.cast_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem aMi_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (p q : ℕ) (τ : D.what₂.Tau) (n : ℕ) :
     (aMi D i p q τ n : ℝ) ≤ 3 * b := by
@@ -128,13 +128,13 @@ theorem aMi_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (p q : ℕ) 
     linarith
 
 /- English proof (translation)
-Establish `hb1` using `one_le_b D i b h`. Establish `hi` using `i.isLt`. Establish `hs` using `D.sp.W_sigval ((i : ℕ) + 1) (by omega) (by omega) (tauE D ρ)`. Establish `hP : ∀ n, ((aPlAt D i σ ρ n : ℕ) : ℝ) ≤ 3 * b` using `fun n => aPl_le D i b h _ _ n`. Establish `hM : ∀ n, ((aMiAt D i σ ρ n : ℕ) : ℝ) ≤ 3 * b` using `fun n => aMi_le D i b h _ _ _ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Finset.sum_le_sum (s := Finset.range (pW D i ρ)) (fun n _ => hP n)`. Establish `h2` using `Finset.sum_le_sum (s := Finset.range (qW D i ρ)) (fun n _ => hM n)`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul] at h1 h2`. Establish `hr : (pW D i ρ : ℝ) + (qW D i ρ : ℝ) = (D.R.r : ℝ)`. Establish `hn : pW D i ρ + qW D i ρ = D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pW, qW, Wc, hs]`. Unfold `Formalism.BasicNotions.Ranks.sigW Formalism.BasicNotions.Ranks.r`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Conclude with `hn` after adjusting the coercions.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Unfold `degAt`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem degAt_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     (degAt D i σ ρ : ℝ) ≤ 3 * (D.R.r : ℝ) * b := by
@@ -159,31 +159,31 @@ theorem degAt_le (D : D7) (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (σ : D.wh
     _ = 3 * (D.R.r : ℝ) * b := by rw [← hr]; ring
 
 /- English proof (translation)
-Introduce `D i b h`. Establish `hb1` using `one_le_b D i b h`. Establish `hrd` using `one_le_rdE D`. Establish `hnV : (1 : ℝ) ≤ (D.R.nV : ℝ)`. Establish `h1` using `D.R.t_odd.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ D.R.nV`. Unfold `Formalism.BasicNotions.Ranks.nV`. Use linear arithmetic over natural numbers and integers. Conclude with `h2` after adjusting the coercions. Establish `hk5 : 5 ≤ D.R.k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hrk : D.R.r ≤ 2 * D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hk : (5 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast hk5`. Establish `hr2 : (D.R.r : ℝ) ≤ 2 * (D.R.k : ℝ)` using `by exact_mod_cast hrk`. Establish `hgl` using `h.2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0` using `hgl 0`. Establish `hg1` using `hgl 1`. Use `set y : ℝ := (D.R.k : ℝ) * b with hy`. Establish `hy5 : 5 ≤ y` using `by nlinarith`. Establish `hy8 : y ^ 3 ≤ y ^ 8` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : 25 ≤ y * y` using `by nlinarith`. Establish `hy3 : 25 * y ≤ y ^ 3` using `by nlinarith [mul_le_mul_of_nonneg_right hyy (by linarith : (0 : ℝ) ≤ y)]`. Establish `hyP : (390625 : ℝ) ≤ y ^ 8`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 5) hy5 8` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg1' : (1 : ℝ) ≤ (D.host.g 1 : ℝ)` using `by linarith`. Establish `hg0' : (0 : ℝ) ≤ (D.host.g 0 : ℝ)` using `Nat.cast_nonneg _`. Establish `hbr : (1 : ℝ) ≤ b * D.host.rdE` using `one_le_mul_of_one_le_of_one_le hb1 hrd`. Establish `hG : (D.host.g 0 : ℝ) ≤ (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)` using `le_mul_of_one_le_right hg0' hg1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ) ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))` using `le_mul_of_one_le_left (by positivity) hbr`. Establish `hB : b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ)` using `le_mul_of_one_le_right (by positivity) hnV`. Establish `hC : (1 : ℝ) ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))` using `by linarith`. Establish `hD : (D.R.nV : ℝ) ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ)` using `le_mul_of_one_le_left (by positivity) hC`. Establish `hX : y ^ 8 ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Lp D b = Real.log (b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ))` using `rfl`. Establish `hXpos : 0 < b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ)` using `by linarith`. Establish `he6 : Real.exp (5.5 : ℝ) ≤ 729`. Establish `h1 : Real.exp (5.5 : ℝ) ≤ Real.exp 6` using `Real.exp_le_exp.mpr (by norm_num)`. Establish `h2 : Real.exp 6 = Real.exp 1 ^ 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `h3 : Real.exp 1 ^ 6 ≤ (3 : ℝ) ^ 6` using `pow_le_pow_left₀ (Real.exp_pos 1).le (by linarith [Real.exp_one_lt_d9]) 6`. Evaluate the numerical expressions using `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h55 : (5.5 : ℝ) ≤ Lp D b`. Rewrite using `[hL]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h55, ?_, by linarith, ?_, fun σ ρ => degAt_le D i b h σ ρ⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.log_le_log (by linarith) hD`. Establish `hb0 : (0 : ℝ) ≤ b` using `by linarith`. Establish `hrb : (D.R.r : ℝ) * b ≤ (2 * (D.R.k : ℝ)) * b` using `mul_le_mul_of_nonneg_right hr2 hb0`. Establish `h32 : 3 * (D.R.r : ℝ) * b + 2 ≤ b * D.host.rdE * ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * (D.R.nV : ℝ)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < 3 * (D.R.r : ℝ) * b + 2` using `by positivity`. Establish `hlog` using `Real.log_le_log hpos h32`. Rewrite `hlog` using `[← hL]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sizes : ∀ (D : D7) (i : Fin D.R.m) (b : ℝ), Sizes D i b → (5.5 : ℝ) ≤ Lp D b ∧ Real.log (D.R.nV : ℝ) ≤ Lp D b ∧ 0 ≤ b ∧ Real.log (3 * (D.R.r : ℝ) * b + 2) ≤ 2 * Lp D b ∧ ∀ (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau), (degAt D i σ ρ : ℝ) ≤ 3 * (D.R.r : ℝ) * b := by
   intro D i b h

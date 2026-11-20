@@ -28,7 +28,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFa
 namespace GlobalTheory.TwistStepVal
 
 /- English proof (translation)
-Establish `hq : 0 < Ideal.absNorm w.asIdeal` using `Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Use `GlobalTheory.Square.isAwayUnit_of_unitOff_embedding σ x _ m hq hm ?_` and prove the remaining obligations. Rewrite using `[hx, Formalism.L2.Host.HChar.val_eq χ hw y hy]`. Conclude with `GlobalTheory.ValUnitLevel.unitOff_val L χ I φ n w _ hinf hw (Ideal.absNorm_mem _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAwayUnit_loc {L K : Type} [Field L] [NumberField L] [Field K] [NumberField K] (σ : K →+* ℂ)
     (χ : Formalism.L2.Host.HChar L) {I : Type} [Fintype I] {φ : I → L →+* ℂ} {n : I → ℤ} (hinf : χ.HasInf φ n)
@@ -42,17 +42,17 @@ theorem isAwayUnit_loc {L K : Type} [Field L] [NumberField L] [Field K] [NumberF
   exact GlobalTheory.ValUnitLevel.unitOff_val L χ I φ n w _ hinf hw (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Introduce `D T Lc sc G W S μ₀ hL hN i j t v τ hμ hχ htw`. Rewrite using `[GlobalTheory.SqStepArith.chrW_chs G hL]`. Establish `hy : Formalism.L2.Host.IsUnifAt (GlobalTheory.AdelicU.splitPrime τ) (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom (unifAt v))` using `by show Valued.v (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ) ((unifAt v : (Fv D.host.F v)ˣ) : Fv D.host.F v)) = WithZero.exp (-1 : ℤ)`. Rewrite using `[GlobalTheory.LFun.SplitTie.valued_complMap τ (GlobalTheory.AdelicU.splitPrime_under τ), GlobalTheory.ChrWUnif.valued_unifAt]`. Generalize the expression as in `Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom (unifAt v) = y at hy ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hm : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `e : ((nuH G t i j).loc (GlobalTheory.AdelicU.splitPrime τ) y : ℂ) = ((Lc.C.mu0 j).loc (GlobalTheory.AdelicU.splitPrime τ) y : ℂ) * ((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime τ) y : ℂ) * ((G.ch.chiH (D.R.m - i)).loc (GlobalTheory.AdelicU.splitPrime τ) y : ℂ)⁻¹`. Simplify using `[nuH, Formalism.L2.Host.HChar.loc, div_eq_mul_inv]`. Take `⟨a, ha⟩` from `hN.chars.mu0 j (GlobalTheory.AdelicU.splitPrime τ) y`. Take `⟨b, hb⟩` from `hN.chars.xi t (GlobalTheory.AdelicU.splitPrime τ) y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hN.chars.chi (D.R.m - i) hm (Nat.sub_le _ _) (GlobalTheory.AdelicU.splitPrime τ) y`. Establish `hQ : 0 < Qn G t` using `Finset.prod_pos fun w _ => Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hdvd : Ideal.absNorm (GlobalTheory.AdelicU.splitPrime τ).asIdeal ∣ Qn G t` using `Finset.dvd_prod_of_mem (fun w : HeightOneSpectrum (𝓞 D.host.E) => Ideal.absNorm w.asIdeal) htw`. Use `⟨a * b * c⁻¹, by rw [e, map_mul, map_mul, map_inv₀, ha, hb, hc], ?_⟩` and prove the remaining obligations. Take `⟨n, -, hn⟩` from `(Lc.C.isMu0 j).inf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `ua` using `isAwayUnit_loc D.what₂.embLL _ hn hμ y hy hdvd ha`. Establish `uc` using `isAwayUnit_loc D.what₂.embLL _ (G.ch.inf _ hm (Nat.sub_le _ _)) hχ y hy hdvd hc`. Take `⟨k, hk, hξ⟩` from `hL.xi_fin t`. Establish `ub : GlobalTheory.Square.IsAwayUnit (Qn G t) b`. Use `GlobalTheory.Square.AwayClosure.of_pow_eq_one _ hk (D.what₂.embLL.injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, hb, map_one, ← Units.val_pow_eq_pow_val]`. Establish `h1 : (Lc.xiH t ^ k).loc (GlobalTheory.AdelicU.splitPrime τ) y = 1`. Rewrite using `[show Lc.xiH t ^ k = 1 from hξ]`. Both sides reduce to the same expression. Rewrite using `[← Units.val_one, ← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.L2.Host.HChar.loc]`. Conclude with `GlobalTheory.Square.AwayClosure.mul (GlobalTheory.Square.AwayClosure.mul ua ub) (GlobalTheory.Square.AwayClosure.inv hQ uc)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_val : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (W : G.Weil) (S : GridChoice W Set.univ) {μ₀ : T},
     Lc.Is μ₀ → NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)}

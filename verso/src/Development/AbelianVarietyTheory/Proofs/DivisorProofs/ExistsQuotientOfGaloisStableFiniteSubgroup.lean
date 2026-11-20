@@ -14,15 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.Quot
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure K`. Set `q : Sp Ω ⟶ Sp K` to `spMap (algebraMap K Ω)`. Establish `: Surjective q` using `⟨fun x => ⟨IsLocalRing.closedPoint Ω, Subsingleton.elim _ _⟩⟩`. Establish `: JacobsonSpace ↥(pullback H.hom q)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd H.hom q)`. Establish `hd : Dense (closedPoints ↥(pullback H.hom q))` using `dense_iff_closure_eq.2 closure_closedPoints`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `(pullback.fst H.hom q).surjective.denseRange.dense_image (pullback.fst H.hom q).continuous hd`. Establish `hdom : IsDominant (equalizer.ι a.left b.left)`. Use `⟨hD.mono ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw₀, rfl⟩`. Establish `hw : IsClosed ({w} : Set ↥(pullback H.hom q))` using `hw₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `y : Sp Ω ⟶ H.left` to `pointOfClosedPoint (pullback.snd H.hom q) w hw ≫ pullback.fst H.hom q`. Establish `hy : y ≫ H.hom = q`. Simplify using `only [y, Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`. Set `x : ptOver K Ω ⟶ H` to `Over.homMk y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hx : y ≫ a.left = y ≫ b.left` using `congrArg CommaMorphism.left (h x)`. Use `⟨equalizer.lift y hx (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(equalizer.lift y hx ≫ equalizer.ι a.left b.left) (IsLocalRing.closedPoint Ω) = _`. Rewrite using `[equalizer.lift_ι]`. Conclude with `congrArg (pullback.fst H.hom q) (pointOfClosedPoint_apply (pullback.snd H.hom q) w hw _)`.
-
-Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated Z.hom ((Over.w a).trans (Over.w b).symm) (equalizer.ι _ _) (equalizer.condition _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_ext_of_pt_eq {K : Type} [Field K] {H Z : Over (Sp K)} [IsReduced H.left]
     [LocallyOfFiniteType H.hom] [IsSeparated Z.hom] (a b : H ⟶ Z)
@@ -58,19 +56,19 @@ end GlobalTheory.AV.Quot
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A G hfin hn hgal`. Take `⟨H, _, i, hi, hmono, hfinH, het, hG⟩` from `GlobalTheory.T.exists_finiteEtale_subgroupScheme_of_galoisStable_points K A G hfin hn hgal`. Take `⟨B, q, hq, hker⟩` from `GlobalTheory.T.exists_quotient_abelianVariety_by_finiteSubgroup K A H i hi hmono hfinH`. Establish `: IsReduced H.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced H.hom`. Establish `hext : ∀ (Z : Over (Sp K)) [IsSeparated Z.hom] (a b : H ⟶ Z), (∀ y : A.Pt, y ∈ G → ∀ (y' : ptOver K (AlgebraicClosure K) ⟶ H), y' ≫ i = y → y' ≫ a = y' ≫ b) → a = b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z _ a b hab`. Conclude with `GlobalTheory.AV.Quot.over_ext_of_pt_eq a b fun y' => hab _ ((hG _).2 ⟨y', rfl⟩) y' rfl`. Establish `hkerG : (ptMap q).ker = G`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, ptMap_apply, hker, hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, q, hq, ?_, hkerG, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AV.DegSep.deg_eq_card_ker_of_killed K A B q (Nat.card G) hn hq, hkerG]`. Introduce `T x hx`. Take `⟨y, rfl⟩` from `(hker T x).1 hx`. Use `A.ab.proper` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : i ^ Nat.card G = 1`. Use `hext A.X _ _ ?_` and prove the remaining obligations. Introduce `z hz y' hy'`. Rewrite using `[MonObj.comp_pow, hy', MonObj.comp_one]`. Establish `h1` using `pow_card_eq_one' (G := G) (x := ⟨z, hz⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val h1`. Rewrite using `[← MonObj.comp_pow, hpow, MonObj.comp_one]`. Introduce `C f hf`. Use `GlobalTheory.AV.AbVar.exists_factor_of_isogeny K A B C q f hq ?_` and prove the remaining obligations. Introduce `T x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `(hker T x).1 hx`. Use `C.ab.proper` as an intermediate fact. Establish `hif : i ≫ f.hom = 1`. Use `hext C.X _ _ ?_` and prove the remaining obligations. Introduce `z hz y' hy'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hy', MonObj.comp_one]`. Conclude with `hf hz`. Rewrite using `[Category.assoc, hif, MonObj.comp_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_quot_of_galois_stable : ∀ (K : Type) [Field K] (A : AbVar K) (G : Subgroup A.Pt), Finite G →
     ((Nat.card G : ℕ) : K) ≠ 0 → (∀ (σ : Gal K) (x : A.Pt), x ∈ G → galPts A.X σ x ∈ G) →

@@ -4,12 +4,12 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 namespace UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-The claim follows from `adic_holds GlobalTheory.T.etaleCohomology_coefficientRing_invariance`.
+A detailed English derivation is pending.
 -/
 theorem adic : Adic := adic_holds GlobalTheory.T.etaleCohomology_coefficientRing_invariance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨weights_holds, torsion_holds, adic⟩`.
+Supply the required witnesses or components.
 -/
 theorem all_holds : Weights ∧ Torsion ∧ Adic := ⟨weights_holds, torsion_holds, adic⟩
 

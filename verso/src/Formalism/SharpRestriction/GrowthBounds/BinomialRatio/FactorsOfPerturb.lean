@@ -12,7 +12,7 @@ section Perturb
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `dvrOrderNat`. Rewrite using `[IsDiscreteValuationRing.addVal_uniformizer hw]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nv_irr {w : O} (hw : Irreducible w) : dvrOrderNat w = 1 := by
   unfold dvrOrderNat
@@ -20,7 +20,7 @@ theorem nv_irr {w : O} (hw : Irreducible w) : dvrOrderNat w = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `ramE`. Rewrite using `[← h2, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hw]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ramE_two {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) : ramE p O = 2 := by
   unfold ramE
@@ -28,13 +28,13 @@ theorem ramE_two {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : ordW (algebraMap O (KK O) x) = (((dvrOrderNat x : ℤ) - (dvrOrderNat (1 : O) : ℤ) : ℤ) : WithTop ℤ)` using `ord_eq_order_sub_of_fraction _ x 1 hx one_ne_zero (by rw [map_one, mul_one])`. Establish `h0 : dvrOrderNat (1 : O) = 0`. Unfold `dvrOrderNat`. Rewrite using `[IsDiscreteValuationRing.addVal_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hv : vO p x = (((dvrOrderNat x : ℚ) / 2 : ℚ) : WithTop ℚ)`. Unfold `vO vK`. Rewrite using `[h1, h0, ramE_two hw h2]`. Simplify using the standard rewrite rules. Unfold `vLEO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, hqD⟩`. Establish `hq' : q = (dvrOrderNat x : ℚ) / 2` using `(WithTop.coe_inj.mp hq).symm`. Substitute `hq'` using the available equality.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Move the coercions through the operations in `at hqD`. Conclude with `hqD`. Introduce `h`. Conclude with `⟨_, rfl, by push_cast; exact h⟩`.
+Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vLEO_iff {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {x : O} (hx : x ≠ 0) (D : ℝ) :
     vLEO p x D ↔ (dvrOrderNat x : ℝ) / 2 ≤ D := by
@@ -60,9 +60,9 @@ theorem vLEO_iff {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {
     exact ⟨_, rfl, by push_cast; exact h⟩
 
 /- English proof (translation)
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hw`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hn : dvrOrderNat ((u : O) * w ^ n) = n`. Unfold `dvrOrderNat`. Rewrite using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hw, IsDiscreteValuationRing.addVal_eq_zero_of_unit, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_unit_pow {w : O} (hw : Irreducible w) {x : O} (hx : x ≠ 0) : ∃ u : Oˣ, x = (u : O) * w ^ dvrOrderNat x := by
   obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hw
@@ -75,11 +75,11 @@ theorem eq_unit_pow {w : O} (hw : Irreducible w) {x : O} (hx : x ≠ 0) : ∃ u 
   rw [hn]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `hw0 : IsLocalRing.residue O w = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hw.1`. Establish `hmap : (IsLocalRing.residue O).mapMatrix (1 + w • N) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hw0]`. Simplify using `[hij, hw0]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, hmap, Matrix.det_one]`. Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_one_add {n : ℕ} {w : O} (hw : Irreducible w) (N : Matrix (Fin n) (Fin n) O) :
     IsUnit (1 + w • N : Matrix (Fin n) (Fin n) O) := by
@@ -97,29 +97,27 @@ theorem isUnit_one_add {n : ℕ} {w : O} (hw : Irreducible w) (N : Matrix (Fin n
   exact one_ne_zero
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Conclude with `Or.inl hn`. Use `right`. Use `⟨x, y, hx, hy, ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => eq_unit_pow hw (hδ i).1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hkdef⟩ : ∃ k : Fin n → ℕ, ∀ i, k i = dvrOrderNat (δ i)` from `⟨_, fun _ => rfl⟩`. Establish `hu' : ∀ i, δ i = (u i : O) * w ^ k i` using `fun i => by rw [hkdef]; exact hu i`. Establish `hk : ∀ i, k i < c`. Introduce `i`. Establish `h` using `(vLEO_iff hw h2 (hδ i).1 D).mp (hδ i).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← hkdef]`. Establish `h0 : (0 : ℝ) ≤ (k i : ℝ)` using `Nat.cast_nonneg _`. Establish `: (k i : ℝ) < c` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ k ⟨⟨0, hn⟩, Finset.mem_univ _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hNdef⟩ : ∃ N : Matrix (Fin n) (Fin n) O, ∀ i j, N i j = (((u i)⁻¹ : Oˣ) : O) * w ^ (c - k i - 1) * ν i j` from `⟨Matrix.of fun i j => (((u i)⁻¹ : Oˣ) : O) * w ^ (c - k i - 1) * ν i j, fun _ _ => rfl⟩`. Take `⟨zl, hzdef⟩ : ∃ zl : Fin n → O, ∀ l, zl l = (u i0 : O) * (((u l)⁻¹ : Oˣ) : O) * w ^ (k i0 - k l)` from `⟨_, fun _ => rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin n) (Fin n) O, (1 + w • N) * Q = 1 := by`. Take `⟨U, hU⟩` from `isUnit_one_add hw N`. Conclude with `⟨↑U⁻¹, by rw [← hU]; exact U.mul_inv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzl : ∀ l, δ l * zl l = δ i0`. Introduce `l`. Establish `hle : k l ≤ k i0` using `hi0 l (Finset.mem_univ _)`. Rewrite using `[hu' l, hu' i0, hzdef]`. Establish `hb : w ^ k i0 = w ^ k l * w ^ (k i0 - k l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' hle]`. Rewrite using `[hb]`. Establish `hu1 : (u l : O) * (((u l)⁻¹ : Oˣ) : O) = 1` using `Units.mul_inv (u l)`. Take the linear combination `(u i0 : O) * w ^ k l * w ^ (k i0 - k l) * hu1`. Establish `hD1 : ∀ i j, δ i * (w * N i j) = w ^ c * ν i j`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Establish `hc : w ^ c = w ^ k i * w * w ^ (c - k i - 1)`. Rewrite using `[← pow_succ, ← pow_add]`. Use `congr 1`. Use `hk i` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hu1 : (u i : O) * (((u i)⁻¹ : Oˣ) : O) = 1` using `Units.mul_inv (u i)`. Rewrite using `[hNdef, hu' i, hc]`. Take the linear combination `(w ^ k i * w * w ^ (c - k i - 1) * ν i j) * hu1`. Establish `hB : ∀ i l, (if i = l then δ i else 0) + w ^ c * ν i l = δ i * (1 + w • N) i l`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i l`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, mul_add, hD1 i l, Matrix.one_apply, mul_ite, mul_one, mul_zero]`. Use `⟨δ i0, Q * Matrix.diagonal zl, (hδ i0).1, (hδ i0).2, fun i j => ?_⟩` and prove the remaining obligations. Establish `hBM : ∑ l, δ i * (1 + w • N) i l * (Q * Matrix.diagonal zl) l j = if i = j then δ i0 else 0`. Establish `hmul : ∑ l, (1 + w • N) i l * (Q * Matrix.diagonal zl) l j = ((1 + w • N) * (Q * Matrix.diagonal zl)) i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[mul_assoc (δ i)]`. Rewrite using `[← Finset.mul_sum, hmul, ← Matrix.mul_assoc, hQ, Matrix.one_mul, Matrix.diagonal_apply]`. Use `split_ifs with hij`. Conclude with `hzl i`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_zero _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hT, hB]`.
-
-Simplify using `only [map_mul]`. Use `_ = if i = j then algebraMap O Kf (δ i0) else 0 := by`. Rewrite using `[hBM]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem factors_of_perturb {Kf V V' : Type} [Field Kf] [Algebra O Kf] [AddCommGroup V] [Module O V]
     [AddCommGroup V'] [Module O V'] {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O))
@@ -197,9 +195,9 @@ theorem factors_of_perturb {Kf V V' : Type} [Field Kf] [Algebra O Kf] [AddCommGr
 end Perturb
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC Dj g hD0 hBD hc e he`. Take `⟨F, G, δ, hF, hG, hδ, hT⟩` from `h X W Qq O Kf ι σ jO w hS hH hC Dj g hD0 hBD hc e he`. Use `choose ν hν using hT`. Set `eI : Fin (∏ j, g j) ≃ (∀ j, Fin (g j))` to `(Fintype.equivFinOfCardEq (by simp)).symm`. Use `factors_of_perturb hS.2.1 hS.1.w_sq _ _ _ _ X.c _ hc (fun a => F (eI a)) (fun a => G (eI a)) (fun a => hF _) (fun a => hG _) (fun a => δ (eI a)) (fun a => hδ _) (fun a b => ν (eI a) (eI b)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[hν]`. Simplify using `only [Equiv.apply_eq_iff_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ}
     (h : LiftVecAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc) : LiftAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc := by
@@ -214,7 +212,7 @@ theorem liftAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ}
   simp only [Equiv.apply_eq_iff_eq]
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ ⟨Ct0, h0, hCt⟩ => ⟨Ct0, h0, fun Ct h' => liftAt_of (hCt Ct h')⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem restLift_of (h : RestLiftVec) : RestLift :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ ⟨Ct0, h0, hCt⟩ => ⟨Ct0, h0, fun Ct h' => liftAt_of (hCt Ct h')⟩) h

@@ -11,9 +11,9 @@ open MvPolynomial MeasureTheory NumberField
 noncomputable section
 
 /- English proof (translation)
-Introduce `hg`. Take `⟨x, hx, hxW⟩` from `hPt F n W hW`. Establish `hunit : g ∣ 1`. Rewrite `hg`, the goal using `[eq_C_of_isEmpty g]`. Establish `hc : coeff 0 g ≠ 0` using `fun h => hg.1 (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨C (coeff 0 g)⁻¹, by rw [← C_mul, mul_inv_cancel₀ hc, C_1]⟩`. Establish `hinc : (fun _ => 0 : Fin 0 × Fin n → AlgebraicClosure F) ∈ incidence W 0` using `⟨x, hx, hxW, fun i => i.elim0⟩`. Use `(hg.2 1).mpr hunit _ hinc` as an intermediate fact. Simplify using `at this`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_isChowForm_zero (hPt : ProjPrimeHasPoint.Statement) {F : Type} [Field F] {n : ℕ}
     {W : Ideal (MvPolynomial (Fin n) F)} (hW : IsProjPrime W) (g : MvPolynomial (Fin 0 × Fin n) F) :
@@ -30,17 +30,17 @@ theorem not_isChowForm_zero (hPt : ProjPrimeHasPoint.Statement) {F : Type} [Fiel
   simp at this
 
 /- English proof (translation)
-Introduce `K _ _ n H J hJ e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `δ I f hI hf hδ`. Take `⟨u, -, hu⟩` from `exists_mem_linForm_not_mem (K := K) hI.isRelevant (S := Set.univ) Submodule.span_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, g, hg, heq⟩` from `hS K n 0 I f (fun j => (u j : K)) hI hf hu`. Establish `hempty : (divCycle I fun j => (u j : K)).support = ∅`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `W hW`. Conclude with `not_isChowForm_zero hPt (isProjPrime_of_mem_support_divCycle hI _ hW) _ (hg W hW)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ 0 δ I f u hI hf hδ hu, hR K n 0 δ H I f u hI hf hδ hu, hempty, Finset.sum_empty]`. Establish `hne : specFirst f (fun j => (u j : K)) ≠ 0`. Rewrite using `[heq, hempty, Finset.prod_empty, mul_one]`. Conclude with `C_ne_zero.mpr hc`. Rewrite using `[chowHt_zero_groups_eq_zero H δ hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ e ih`. Introduce `δ I f hI hf hδ`. Take `⟨u, -, hu⟩` from `exists_mem_linForm_not_mem (K := K) hI.isRelevant (S := Set.univ) Submodule.span_univ`. Take `⟨c, hc, g, hg, heq⟩` from `hS K n (e + 1) I f (fun j => (u j : K)) hI hf hu`. Rewrite using `[hJ (e + 1) δ I f u hI hf hδ hu, hR K n (e + 1) δ H I f u hI hf hδ hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hδs` using `hδ.specFirst (fun j => (u j : K))`. Establish `hne : specFirst f (fun j => (u j : K)) ≠ 0`. Rewrite using `[heq]`. Conclude with `mul_ne_zero (C_ne_zero.mpr hc) (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hg W hW).1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hδs`, `hne` using `[heq]`. Take `⟨δW, hδW, hsum⟩` from `exists_degrees_of_chowFormCycle (Nat.succ_pos e) _ c g hg hδs hne`. Rewrite using `[heq, ← hsum, chowHt_C_mul_prod hMul H _ _ _ _ (fun W hW => (hg W hW).1) hc]`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[ih (δW W) W (g W) (isProjPrime_of_mem_support_divCycle hI _ hW) (hg W hW) (hδW W hW)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChowHeightCharacterised.proof (hR : ChowHeightRecursion.Statement)
     (hS : ChowFormSection.Statement) (hMul : ChowHeightMul.Statement) (hPt : ProjPrimeHasPoint.Statement) :

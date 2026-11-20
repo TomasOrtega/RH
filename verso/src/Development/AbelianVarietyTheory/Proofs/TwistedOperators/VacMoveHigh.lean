@@ -19,23 +19,21 @@ namespace GlobalTheory.ExpansionInvariance
 
 open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum GlobalTheory.SplitHecke GlobalTheory.ThetaMove in
 /- English proof (translation)
-Introduce `D T L sc G W U S t ht Φ β j hj k hk e he Tm hTm`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `hee : e * e = e` using `ho.idem`. Establish `hce : e * cA D e = 0` using `he.2`. Establish `hf` using `idem_conj_sum hee hce`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `W.om_is (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega)`. Establish `hvac` using `S.Z.vac_is (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega)`. Establish `hS` using `GlobalTheory.FunObj.OrthoFrame.isSelfDualC_colLat_of_orthonormal _ _ (S.N.fr_on (.top (j + 1)) (show j + 1 ≤ D.R.m by omega))`. Establish `hT` using `GlobalTheory.FunObj.OrthoFrame.isSelfDualC_colLat_of_orthonormal _ _ (S.N.fr_on (.top (j + 1 + 1)) (show j + 1 + 1 ≤ D.R.m by omega))`. Use `set g : GA D (G.V (.top (j + 1))) := ((((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) : FinPt G (.top (j + 1))) : FinPt G (.top (j + 1))) : GA D (G.V (.top (j + 1)))) with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.SplitLinear.splitLinearModel D W.ψ _ _ _ _ _ hW _ _ hS hT (locPl G t) e he _ hvac.2.theta hvac.2.lat 1 one_ne_zero Tm hTm (cutPart (e + cA D e) _ g) 1 (suppAt_cutPart hee hce _ g) (GlobalTheory.SplitLinear.suppAt_one e _) _ _ (GlobalTheory.VecInv.isDetAt_detAt e hee …`. Establish `hinf : infPart D (e + cA D e) = 0`. Rewrite using `[RingHom.map_add, ho.infPart_eq, infPart_cA ho.infPart_eq, add_zero]`. Establish `hgfin : g ∈ GfC (G.V (.top (j + 1)))` using `((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1))).2`. Establish `hg1fin : cutPart (e + cA D e) _ g ∈ GfC (G.V (.top (j + 1)))` using `GlobalTheory.IdemSupport.mem_GfC_of_suppF _ hinf (suppAt_cutPart hee hce _ g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2fin : cutPart (1 - (e + cA D e)) _ g ∈ GfC (G.V (.top (j + 1)))`. Establish `e1 : cutPart (1 - (e + cA D e)) _ g = (cutPart (e + cA D e) _ g)⁻¹ * g`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← cutPart_mul hf]`. Rewrite using `[e1]`. Conclude with `mul_mem (inv_mem hg1fin) hgfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ : ∀ u, u ∈ stdLatO S (.top t (j + 1)) ↔ ∃ u₀ ∈ stdLatO S (.top t (j + 1)), u = actO _ _ (cutPart (1 - (e + cA D e)) _ g) 1 u₀` using `GlobalTheory.T.offPlacesPart_movedLevel_keeps_standardHomLattice S ht j hj k hk e he`. Establish `hV` using `G.isV (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega) fun _ h => by cases h`. Establish `hV'` using `G.isV (X := .top (j + 1 + 1)) (show j + 1 + 1 ≤ D.R.m by omega) fun _ h => by cases h`. Establish `hv'` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ _ hW W.θ_is _ _ _ _ _ _ _ _ (cutPart (1 - (e + cA D e)) _ g) 1 (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ _ hg2fin τ, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_m …`. Take `⟨c₂, -, hc₂⟩` from `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ hV.sigOK hV'.sigOK (W.cart_is _ (show j + 1 ≤ D.R.m by omega)) (W.cart_is _ (show j + 1 + 1 ≤ D.R.m by omega)) _ _ hS hT _ _ hvac hv'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvacTm : Tm (halfInd e (stdLatO S (.top t (j + 1)))) = S.Z.vac (.top t (j + 1))`. Use `hTm.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `⟨c₂ * ((splitFacO (G.chrS (.top t (j + 1) : Pair T)) (G.chrT (.top t (j + 1) : Pair T)) (GlobalTheory.VecInv.detAt e hee (G.pS (.top t (j + 1) : Pair T)) (cutPart (e + cA D e) _ g)) (GlobalTheory.VecInv.detAt e hee (G.pT (.top t (j + 1) : Pair T)) 1) : ℂ) * (GlobalTheory.Indefini …` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, ← cutPart_mul hf]`. Use `_ = c₂ • W.om (.top t (j + 1)) (cutPart (e + cA D e) _ g, 1) (S.Z.vac (.top t (j + 1))) := by`. Rewrite using `[hc₂, map_smul]`. Use `_ = _ := by`. Rewrite using `[← hvacTm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `erw [key]`. Use `conv_rhs => rw [mul_smul, ← map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul, GlobalTheory.SplitLinear.subst_eq, halfInd_cutPart hee hce]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem vac_move_high : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T},
     t ∈ U → ∀ {Φ : G.Datum} {β : CosFam G t} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))),

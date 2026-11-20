@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.AbPartPull
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' t' t f m K _ z P`. Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ t t' P.tK f z m P.m`. Conclude with `⟨n, hn.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sabMap_tK : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (t' : SAB H S') (t : SAB H S) (f : S' ⟶ S) (m : SABMap t' t f) (K : Type) [Field K] (z : Sp K ⟶ S') (P : AbPart t (z ≫ f)), ∃ m' : SABMap P.tK t' z, m'.φ ≫ m.φ = P.m.φ := by
   intro E _ _ _ H S S' t' t f m K _ z P

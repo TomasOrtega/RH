@@ -15,15 +15,13 @@ namespace GlobalTheory.CompanionTheory.HeckeKm
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hc : (((Zls.unifU k ^ m : kˣ)) : k) = ((Zls.unif k ^ m : 𝒪[k]) : k)`. Simplify using `[Zls.unifU]`. Both sides reduce to the same expression. Establish `hne : ((Zls.unif k ^ m : 𝒪[k]) : k) ≠ 0`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ne_zero _`. Establish `hinv : (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) = ((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, hc]`. Rewrite using `[Ideal.mem_span_singleton', hinv]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, rfl⟩`. Establish `: ((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹ * ((b * Zls.unif k ^ m : 𝒪[k]) : k) = (b : k)`. Rewrite using `[MulMemClass.coe_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `b.2`. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul]`. Express the relevant statement in the definitionally equal form `((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹ * (a : k) * _ = _`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mem_span_unif_pow_iff (m : ℕ) (a : 𝒪[k]) :
     a ∈ Ideal.span {Zls.unif k ^ m} ↔ (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) * (a : k) ∈ 𝒪[k] := by
@@ -49,13 +47,13 @@ theorem mem_span_unif_pow_iff (m : ℕ) (a : 𝒪[k]) :
     field_simp
 
 /- English proof (translation)
-Establish `key : ∀ (u : GL (Fin N) 𝒪[k]) (i j : Fin N), ((Matrix.GeneralLinearGroup.map (n` using `Fin N) (algebraMap 𝒪[k] k) u).val - 1) i j = ((u.val i j - (1 : Matrix (Fin N) (Fin N) 𝒪[k]) i j : 𝒪[k]) : k) := by`. Introduce `u i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.map_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply_ne h]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨u, rfl⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← mem_span_unif_pow_iff, ← Ideal.Quotient.eq]`. Establish `h` using `congrArg (fun x : GL (Fin N) (𝒪[k] ⧸ Ideal.span {Zls.unif k ^ m}) => x.val i j) (MonoidHom.mem_ker.1 hu)`. Simplify `h` using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite]`. Introduce and unpack `⟨⟨u, rfl⟩, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨u, MonoidHom.mem_ker.2 (Units.ext (Matrix.ext fun i j => ?_)), rfl⟩` and prove the remaining obligations. Establish `h'` using `h i j`. Rewrite `h'` using `[key, ← mem_span_unif_pow_iff, ← Ideal.Quotient.eq]`. Simplify `h'` using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_Km_iff {N m : ℕ} (g : GL (Fin N) k) :
     g ∈ Zls.Km k N m ↔ g ∈ KO k (Fin N) ∧
@@ -84,7 +82,7 @@ theorem mem_Km_iff {N m : ℕ} (g : GL (Fin N) k) :
     simpa [Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite] using h'
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul (((Units.continuous_val (M := Matrix (Fin N) (Fin N) k)).sub continuous_const).matrix_elem i j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry_Km (N : ℕ) (c : k) (i j : Fin N) :
     Continuous fun g : GL (Fin N) k => c * (g.val - 1) i j :=
@@ -92,7 +90,7 @@ theorem continuous_entry_Km (N : ℕ) (c : k) (i j : Fin N) :
     (((Units.continuous_val (M := Matrix (Fin N) (Fin N) k)).sub continuous_const).matrix_elem i j)
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_Km_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_Km_eq (N m : ℕ) :
     (Zls.Km k N m : Set (GL (Fin N) k)) = (KO k (Fin N) : Set (GL (Fin N) k)) ∩
@@ -102,7 +100,7 @@ theorem coe_Km_eq (N m : ℕ) :
   simp only [SetLike.mem_coe, mem_Km_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]
 
 /- English proof (translation)
-Rewrite using `[coe_Km_eq]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (show IsOpen (𝒪[k] : Set k) from Valuation.isOpen_integer).preimage (continuous_entry_Km N _ i j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_Km (N m : ℕ) : IsOpen (Zls.Km k N m : Set (GL (Fin N) k)) := by
   rw [coe_Km_eq]
@@ -110,7 +108,7 @@ theorem isOpen_Km (N m : ℕ) : IsOpen (Zls.Km k N m : Set (GL (Fin N) k)) := by
     (show IsOpen (𝒪[k] : Set k) from Valuation.isOpen_integer).preimage (continuous_entry_Km N _ i j))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite using `[coe_Km_eq]`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO.inter_right (isClosed_iInter fun i => isClosed_iInter fun j => (show IsCompact (𝒪[k] : Set k) from IsNonarchimedeanLocalField.isCompact_closedBall k 1).isClosed.preimage (continuous_entry_Km N _ i j))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_Km (N m : ℕ) : IsCompact (Zls.Km k N m : Set (GL (Fin N) k)) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -120,9 +118,7 @@ theorem isCompact_Km (N m : ℕ) : IsCompact (Zls.Km k N m : Set (GL (Fin N) k))
       (continuous_entry_Km N _ i j))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : NonarchimedeanAddGroup k := ⟨fun V hV => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `haveI : TotallyDisconnectedSpace k := inferInstance`.
-
-Use `haveI : TotallyDisconnectedSpace (Matrix (Fin N) (Fin N) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin N → Fin N → k))`. Conclude with `⟨(GlobalTheory.SplitFlip.isEmbedding_val_GL (k := k) (n := Fin N)).isTotallyDisconnected (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem totallyDisconnected_GL (N : ℕ) : TotallyDisconnectedSpace (GL (Fin N) k) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -137,11 +133,11 @@ theorem totallyDisconnected_GL (N : ℕ) : TotallyDisconnectedSpace (GL (Fin N) 
     (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hπ m g`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI := totallyDisconnected_GL (k := k) N`. Establish `hKc` using `isCompact_Km (k := k) N m`. Establish `hKo` using `isOpen_Km (k := k) N m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ' : GroundTheory.Automorphic.IsSmooth π` using `fun v => hπ v`. Establish `hfix : ∀ w : GroundTheory.Automorphic.fixedVectors π (Zls.Km k N m), (w : V) ∈ fixed π (Zls.Km k N m)` using `fun w h => by`. Simplify using `using w.2 h h.2`. Use `⟨LinearMap.codRestrict (fixed π (Zls.Km k N m)) ((Submodule.subtype _) ∘ₗ GroundTheory.Automorphic.fixedProj π hπ' hKc hKo ∘ₗ π g ∘ₗ (fixed π (Zls.Km k N m)).subtype) fun v => hfix _, ?_⟩` and prove the remaining obligations. Introduce `v l hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs` using `GroundTheory.Automorphic.sub_fixedProj_mem hπ' hKc hKo (π g (v : V))`. Establish `h0` using `GroundTheory.Automorphic.coinvariantsKer_le_ker_of_invariant (ρ := π) (K := Zls.Km k N m) (f := l) (fun x hx w => LinearMap.congr_fun (hl x hx) w) hs`. Rewrite `h0` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHeckeOp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π →

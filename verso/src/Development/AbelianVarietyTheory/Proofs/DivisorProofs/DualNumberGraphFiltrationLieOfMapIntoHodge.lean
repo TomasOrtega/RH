@@ -12,7 +12,7 @@ namespace GlobalTheory.HTRealise.LieCond
 variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
 /- English proof (translation)
-Establish `k'` using `(homMor (dp0 k) (𝟙 _) g).comp (constMor A₀)`. Establish `e1 : primPull (epsDP k) (GlobalTheory.DeRham.epsRed k) g ((constMor A₀).pull c) = k'.pull c` using `GrpMor.pull_pull (constMor A₀) (homMor _ _ g) k' (fun _ => rfl) (by simp) c`. Establish `e2 : (constMor A₀).pull (primPull (dp0 k) (𝟙 _) g c) = k'.pull c` using `GrpMor.pull_pull (homMor _ _ g) (constMor A₀) k' (fun _ => rfl) rfl c`. Rewrite using `[push_apply, e1, ← e2, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_coords (g : A₀ ⟶ A₀) [IsMonHom g] {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
@@ -28,7 +28,7 @@ theorem push_coords (g : A₀ ⟶ A₀) [IsMonHom g] {d : Crys (epsDP k) (Global
   rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.smul_apply, h, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_coords (r : k) {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
@@ -39,11 +39,11 @@ theorem smul_coords (r : k) {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Establish `hu : u = x` using `LinearMap.ext fun c => by`. Use `congrArg TrivSqZeroExt.fst ((h c).symm.trans (e c))` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv : v = f x + y` using `LinearMap.ext fun c => by`. Use `congrArg TrivSqZeroExt.snd ((h c).symm.trans (e c))` as an intermediate fact. Simplify using `using this`. Substitute `hu hv` using the available equality. Conclude with `⟨hx, by simpa using hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hu, hv⟩`. Conclude with `⟨u, hu, v - f u, hv, fun c => by rw [h c]; simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_graphFil_iff_coords {f : HdR A₀ →ₗ[k] HdR A₀} {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀}
     {u v : HdR A₀}
@@ -74,23 +74,23 @@ def algChar (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) (i : Fin D.a) :
   MonoidAlgebra.lift k k (𝓞 D.F) (β.comp (b.t i)).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[algAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algAct_single (o₀ : GlobalTheory.UPel.HT.Obj b N s) (c : 𝓞 D.F) :
     algAct o₀ (MonoidAlgebra.single c (1 : k)) = GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O c) := by
   simp [algAct]
 
 /- English proof (translation)
-Simplify using `[algAct, algChar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algChar_single (β : R →+* k) (i : Fin D.a) (c : 𝓞 D.F) :
     algChar b β i (MonoidAlgebra.single c (1 : k)) = β (b.t i c) := by
   simp [algAct, algChar]
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨g.coeff.support.card, fun l => g.coeff (g.coeff.support.equivFin.symm l), fun l => (g.coeff.support.equivFin.symm l : 𝓞 D.F), y, hy, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `hg i` as an intermediate fact. Rewrite `this` using `[algChar, MonoidAlgebra.lift_apply, Finsupp.sum, ← Finset.sum_coe_sort g.coeff.support, ← Equiv.sum_comp g.coeff.support.equivFin.symm]`. Simplify `this` using `[smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[algAct, MonoidAlgebra.lift_apply, Finsupp.sum, ← Finset.sum_coe_sort g.coeff.support, ← Equiv.sum_comp g.coeff.support.equivFin.symm, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algAct_mem_lieZ (o₀ : GlobalTheory.UPel.HT.Obj b N s) (β : R →+* k) (g : MonoidAlgebra k (𝓞 D.F))
     (hg : ∀ i, algChar b β i g = 0) {y : HdR o₀.A} (hy : y ∈ GlobalTheory.HTCount.rhoPart o₀ β) :
@@ -108,13 +108,13 @@ theorem algAct_mem_lieZ (o₀ : GlobalTheory.UPel.HT.Obj b N s) (β : R →+* k)
     rfl
 
 /- English proof (translation)
-Establish `: ∀ i j : Fin D.a, ∃ x, i ≠ j → β (b.t i x) ≠ β (b.t j x)` using `fun i j => by`. Distinguish the cases in `h : i = j`. Conclude with `⟨0, fun h' => (h' h).elim⟩`. Take `⟨x, hx⟩` from `hx i j h`. Conclude with `⟨x, fun _ => hx⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose x hx' using this`. Set `q : Fin D.a → Fin D.a → MonoidAlgebra k (𝓞 D.F)` to `fun i j => (β (b.t i (x i j)) - β (b.t j (x i j)))⁻¹ • (MonoidAlgebra.single (x i j) 1 - algebraMap k _ (β (b.t j (x i j))))`. Establish `hq : ∀ i j m, algChar b β m (q i j) = (β (b.t i (x i j)) - β (b.t j (x i j)))⁻¹ * (β (b.t m (x i j)) - β (b.t j (x i j)))`. Introduce `i j m`. Simplify using `only [q, map_smul, map_sub, algChar_single, AlgHom.commutes, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨fun i => ∏ j ∈ Finset.univ.erase i, q i j, fun i m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `inv_mul_cancel₀ (sub_ne_zero.2 (hx' i j (Finset.ne_of_mem_erase hj).symm))`. Use `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ m⟩) ?_` and prove the remaining obligations. Rewrite using `[hq, sub_self, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem (β : R →+* k) (hx : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.t i x) ≠ β (b.t j x)) :
     ∃ e : Fin D.a → MonoidAlgebra k (𝓞 D.F), ∀ i j, algChar b β j (e i) = if j = i then 1 else 0 := by
@@ -142,11 +142,11 @@ theorem exists_idem (β : R →+* k) (hx : ∀ i j : Fin D.a, i ≠ j → ∃ x,
     rw [hq, sub_self, mul_zero]
 
 /- English proof (translation)
-Introduce `i j hij`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Establish `h1` using `congrArg (Ideal.map β) (b.comax i j hij)`. Rewrite `h1` using `[Ideal.map_span, Ideal.map_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Ideal.span (β '' Set.range fun x => b.t i x - b.t j x) = ⊥`. Rewrite using `[Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Simplify using `[map_sub, h x]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `bot_ne_top h1`.
+A detailed English derivation is pending.
 -/
 theorem chars_ne (β : R →+* k) : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.t i x) ≠ β (b.t j x) := by
   intro i j hij
@@ -162,15 +162,15 @@ theorem chars_ne (β : R →+* k) : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.
   exact bot_ne_top h1
 
 /- English proof (translation)
-Establish `hρ` using `congrArg β b.ρ_root`. Simplify using `only [map_add, map_sub, map_pow, map_mul, map_intCast, map_zero] at hρ`. Use `set n : ℕ := (4 * D.nm - D.tr ^ 2).toNat`. Establish `hpos : 0 < 4 * D.nm - D.tr ^ 2` using `by linarith [D.disc_neg]`. Establish `hn : (n : ℤ) = 4 * D.nm - D.tr ^ 2` using `Int.toNat_of_nonneg hpos.le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : n.Coprime p`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 fun hd => D.disc_p ?_)` and prove the remaining obligations. Establish `: (p : ℤ) ∣ (n : ℤ)` using `Int.natCast_dvd_natCast.2 hd`. Rewrite `this` using `[hn]`. Establish `h' : D.tr ^ 2 - 4 * D.nm = -(4 * D.nm - D.tr ^ 2)` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`. Conclude with `(dvd_neg).2 this`. Establish `hu : IsUnit (n : k)`. Use `(b.unit n hcop).map β` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hu.ne_zero` to reduce the goal to its premises. Establish `hnk : (n : k) = ((4 * D.nm - D.tr ^ 2 : ℤ) : k)` using `by rw [← hn]; simp`. Rewrite using `[hnk]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: (β b.ρ - ((D.tr : k) - β b.ρ)) ^ 2 = 0` using `by rw [h0]; ring`. Take the linear combination `-this + 4 * hρ`.
+A detailed English derivation is pending.
 -/
 theorem delta_ne (β : R →+* k) : β b.ρ - ((D.tr : k) - β b.ρ) ≠ 0 := by
   have hρ := congrArg β b.ρ_root
@@ -203,7 +203,7 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} 
   {N : ℕ} {k : Type} [Field k] {s : Sp k ⟶ Sp R}
 
 /- English proof (translation)
-Use `(algAct o₀).toLinearMap.map_smul r g` as an intermediate fact. Conclude with `LinearMap.congr_fun this z`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algAct_smul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (r : k) (g : MonoidAlgebra k (𝓞 D.F)) (z : HdR o₀.A) :
     algAct o₀ (r • g) z = r • algAct o₀ g z := by
@@ -211,7 +211,7 @@ theorem algAct_smul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (r : k) (g : M
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algAct_mul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (g h : MonoidAlgebra k (𝓞 D.F)) (z : HdR o₀.A) :
     algAct o₀ (g * h) z = algAct o₀ g (algAct o₀ h z) := by
@@ -219,7 +219,7 @@ theorem algAct_mul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (g h : MonoidAl
   rfl
 
 /- English proof (translation)
-The claim follows from `o₀.act.hom (algebraMap (𝓞 D.F) D.O c) algAct o₀ (MonoidAlgebra.single c (1 : k)) z = push (dp0 k) (𝟙 _) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) z := by rw [algAct_single] rfl`.
+A detailed English derivation is pending.
 -/
 theorem algAct_single_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (c : 𝓞 D.F) (z : HdR o₀.A) :
     haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O c)
@@ -232,14 +232,14 @@ end GlobalTheory.HTRealise.LieCond
 namespace GlobalTheory.HTRealise.LieCond
 
 /- English proof (translation)
-Rewrite using `[← smul_sub, show X - r' • z - (X - r • z) = (r - r') • z by rw [sub_smul]; abel, inv_smul_smul₀ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_sub_smul_sub_sub_inv_sub_smul_sub_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (X z : V) (r r' : k)
     (h : r - r' ≠ 0) : (r - r')⁻¹ • (X - r' • z) - (r - r')⁻¹ • (X - r • z) = z := by
   rw [← smul_sub, show X - r' • z - (X - r • z) = (r - r') • z by rw [sub_smul]; abel, inv_smul_smul₀ h]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem smul_add_sub_linearMap_smul_add_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (f : V →ₗ[k] V) (a : k)
     (X Y P Q : V) : (a • Y + Q) - f (a • X + P) = a • (Y - f X) + (Q - f P) := by
@@ -247,7 +247,7 @@ theorem smul_add_sub_linearMap_smul_add_eq {k V : Type*} [Field k] [AddCommGroup
   abel
 
 /- English proof (translation)
-Rewrite using `[← h, neg_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_eq_neg_smul_add_of_sub_smul_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (u u' S X : V) (a : k)
     (h : u' - a • X = u) : u - S = (-a) • X + (u' - S) := by
@@ -261,7 +261,7 @@ namespace GlobalTheory.HTRealise.LieCond
 variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.sub_apply, h, h']`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_sub {d d' : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v u' v' : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
@@ -272,9 +272,9 @@ theorem coords_sub {d d' : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {
   ext <;> simp
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, Finset.sum_empty, LinearMap.zero_apply]`. Apply the tactic sequence `ext <;> simp`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Finset.sum_insert ha, LinearMap.add_apply, h, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_sum {Idx : Type} (s : Finset Idx) (d : Idx → Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀)
     (u v : Idx → HdR A₀)
@@ -298,27 +298,23 @@ set_option maxHeartbeats 2000000 in
 open LieCond in
 
 /- English proof (translation)
-Introduce `p _ D R _ b N k _ β s o₀ f hZ hfZ d hd`. Use `haveI := o₀.act.hom`. Take `⟨u, v, huv⟩` from `exists_coords d`. Use `set Ω := GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) with hΩ`. Use `set ρ := β b.ρ with hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set ρ' := (D.tr : k) - ρ with hρ'`. Use `set δ := ρ - ρ' with hδdef`. Establish `hδ : δ ≠ 0` using `delta_ne (b := b) β`. Establish `hcoord` using `coords_sub (fun c => push_coords (o₀.act.act (algebraMap (𝓞 D.F) D.O D.ω)) huv c) (fun c => smul_coords ρ huv c)`. Take `⟨hx, hy⟩` from `(mem_graphFil_iff_coords (f := f) hcoord).1 hd`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Ω u - ρ • u ∈ Fil o₀.A at hx`. Express the relevant statement in the definitionally equal form `Ω v - ρ • v - f (Ω u - ρ • u) ∈ Fil o₀.A at hy`. Take `⟨e, he⟩` from `exists_idem (b := b) β (chars_ne β)`. Take `⟨u', hu'def⟩ : ∃ u', u' = δ⁻¹ • (Ω u - ρ' • u)` from `⟨_, rfl⟩`. Take `⟨v', hv'def⟩ : ∃ v', v' = δ⁻¹ • (Ω v - ρ' • v)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrho : ∀ z, δ⁻¹ • (Ω z - ρ' • z) ∈ GlobalTheory.HTCount.rhoPart o₀ β` using `fun z => Submodule.smul_mem _ _ ⟨z, by simp [Ω, ρ', ρ]⟩`. Establish `key : ∀ g, (∀ j, algChar b β j g = 0) → algAct o₀ g u' ∈ Fil o₀.A ∧ algAct o₀ g v' - f (algAct o₀ g u') ∈ Fil o₀.A` using `fun g hg => ⟨hZ (algAct_mem_lieZ o₀ β g hg (hu'def ▸ hrho u)), sub_mem (hZ (algAct_mem_lieZ o₀ β g hg (hv'def ▸ hrho v))) (hfZ _ (algAct_mem_lieZ o₀ β g hg (hu'def ▸ hrho u)))⟩`. Use `choose w hw using fun i => exists_crys o₀.ab (algAct o₀ (e i) u') (algAct o₀ (e i) v')`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Introduce `i c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `coords_sub (fun c' => push_coords (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (hw i) c') (fun c' => smul_coords (β (b.t i c)) (hw i) c')`. Rewrite using `[mem_graphFil_iff_coords hc]`. Establish `hg : ∀ j, algChar b β j (MonoidAlgebra.single c (1 : k) * e i - β (b.t i c) • e i) = 0`. Introduce `j`. Rewrite using `[map_sub, map_mul, map_smul, algChar_single, he, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ z, push (dp0 k) (𝟙 _) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (algAct o₀ (e i) z) - β (b.t i c) • algAct o₀ (e i) z = algAct o₀ (MonoidAlgebra.single c (1 : k) * e i - β (b.t i c) • e i) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[map_sub, LinearMap.sub_apply, algAct_mul_apply, algAct_smul_apply, algAct_single_apply]`. Rewrite using `[e1, e1]`. Conclude with `key _ hg`. Establish `hs` using `coords_sub huv (coords_sum Finset.univ w (fun i => algAct o₀ (e i) u') (fun i => algAct o₀ (e i) v') (fun i c => hw i c))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_graphFil_iff_coords hs]`. Establish `hg0 : ∀ j, algChar b β j (1 - ∑ i, e i) = 0`. Introduce `j`. Rewrite using `[map_sub, map_one, map_sum]`. Simplify using `[he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k1, k2⟩` from `key _ hg0`. Establish `decu : u' - δ⁻¹ • (Ω u - ρ • u) = u` using `by rw [hu'def]; exact inv_sub_smul_sub_sub_inv_sub_smul_sub_eq _ _ _ _ hδ`. Establish `decv : v' - δ⁻¹ • (Ω v - ρ • v) = v` using `by rw [hv'def]; exact inv_sub_smul_sub_sub_inv_sub_smul_sub_eq _ _ _ _ hδ`. Establish `hsum : ∀ z, algAct o₀ (1 - ∑ i, e i) z = z - ∑ i, algAct o₀ (e i) z`. Introduce `z`.
-
-Rewrite using `[map_sub, map_one, map_sum, LinearMap.sub_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[sub_eq_neg_smul_add_of_sub_smul_eq u u' _ _ _ decu, sub_eq_neg_smul_add_of_sub_smul_eq v v' _ _ _ decv, ← hsum, ← hsum]`. Use `⟨add_mem (Submodule.smul_mem _ _ hx) k1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add_sub_linearMap_smul_add_eq]`.
-
-Conclude with `add_mem (Submodule.smul_mem _ _ hy) k2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_decomp_graphFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] (β : R →+* k) (s : Sp k ⟶ Sp R)

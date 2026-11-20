@@ -9,19 +9,19 @@ open scoped ComplexOrder
 namespace GlobalTheory.ScalarModulus
 
 /- English proof (translation)
-Establish `h0 : ((Pr.g 0 : ℕ) : 𝓞 X.E) * ((Pr.g 1 : ℕ) : 𝓞 X.E) ≠ 0` using `mul_ne_zero (by exact_mod_cast (hPr.g_prime 0).ne_zero) (by exact_mod_cast (hPr.g_prime 1).ne_zero)`. Take `⟨M, z, hM, -, -, hz⟩` from `GlobalTheory.TamePow.exists_pow_locK_mul_inf X.E χ (divs (((Pr.g 0 : ℕ) : 𝓞 X.E) * ((Pr.g 1 : ℕ) : 𝓞 X.E))) (GlobalTheory.CharVal.productRule χ) (fun v hv => h.unr v fun i hi => hv ((Formalism.L2.Col.mem_divs h0 v).2 (by fin_cases i exacts [v.asIdeal.mul_mem_right _ hi, v.asIdeal …`. Take `⟨n, -, hn⟩` from `h.inf`. Establish `hz'` using `congrArg Units.val hz`. Rewrite `hz'` using `[Units.val_mul, Units.val_pow_eq_pow_val, hn z, ← hy, Units.val_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsq : ∀ τ, (X.embC σ₀ τ (z : X.E) / ((‖X.embC σ₀ τ (z : X.E)‖ : ℝ) : ℂ)) ^ 2 = σ₀ (X.emb τ (z : X.E) / X.emb τ (star (z : X.E)))`. Introduce `τ`. Establish `h1 : X.embC σ₀ τ z ≠ 0` using `(map_ne_zero _).2 z.ne_zero`. Establish `h2` using `hX.conjE (X.embC σ₀ τ) z`. Rewrite using `[map_div₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = X.embC σ₀ τ z / X.embC σ₀ τ (star (z : X.E))`. Rewrite using `[h2, div_pow, ← Complex.mul_conj', pow_two, mul_div_mul_left _ _ h1]`. Establish `key : y ^ (M * 2) * ∏ τ, (X.emb τ (z : X.E) / X.emb τ (star (z : X.E))) ^ n τ = 1`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[map_one, map_mul, map_pow, map_prod, pow_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∏ τ, σ₀ ((X.emb τ (z : X.E) / X.emb τ (star (z : X.E))) ^ n τ) = (∏ τ, (X.embC σ₀ τ (z : X.E) / ((‖X.embC σ₀ τ (z : X.E)‖ : ℝ) : ℂ)) ^ n τ) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← hsq, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`. Rewrite using `[h3, ← mul_pow, hz', one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖σ (∏ τ, (X.emb τ (z : X.E) / X.emb τ (star (z : X.E))) ^ n τ)‖ = 1`. Rewrite using `[map_prod, norm_prod]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : ‖(σ.comp (X.emb τ)) z‖ ≠ 0` using `norm_ne_zero_iff.2 ((map_ne_zero _).2 z.ne_zero)`. Establish `h2` using `hX.conjE (σ.comp (X.emb τ)) z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[RingHom.comp_apply]`. Rewrite `h2` using `[RingHom.comp_apply, RingHom.comp_apply]`. Rewrite using `[map_zpow₀, norm_zpow, map_div₀, norm_div, h2, Complex.norm_conj, div_self h1, one_zpow]`. Establish `h5` using `congrArg (fun t => ‖σ t‖) key`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow, h4, mul_one, map_one, norm_one] at h5`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h5`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_locK {X : Fields} {Pr : Primes X} {m : ℕ} {Ch : Chars X Pr m} {σ₀ : X.K →+* ℂ} {e : X.Tau → ℚ}
     {j : Fin m} {χ : Formalism.L2.Host.HChar X.E} (hX : X.Ok) (hPr : Pr.Ok) (h : IsMu0 Ch σ₀ e j χ)
@@ -67,15 +67,15 @@ theorem norm_eq_one_of_locK {X : Fields} {Pr : Primes X} {m : ℕ} {Ch : Chars X
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h5
 
 /- English proof (translation)
-Establish `hU` using `fun P x y hy => norm_eq_one_of_locK hX hPr (ht.mu0 ⟨j, hj⟩) P x y hy σ`. Establish `hval : ∀ P : HeightOneSpectrum (𝓞 X.E), (∀ k, ((Pr.g k : ℕ) : 𝓞 X.E) ∉ P.asIdeal) → ‖σ (Ch.muVal ⟨j, hj⟩ P : X.K)‖ = 1` using `fun P hP => hU P (Formalism.L2.Host.unif P) _ (ht.muVal _ P hP)`. Establish `hfin` using `GlobalTheory.CharVal.finOrder_tup mu`. Establish `h1 : ∀ P : rowSG Pr sel mu, ‖σ (cst.muq (j + 1) P)‖ = 1`. Introduce `P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : ‖σ ((qValC (mu : Chr X.F X.E X.K) P.1 : X.Kˣ) : X.K)‖ = 1` using `GlobalTheory.GO.norm_map_of_finOrder _ (GlobalTheory.CharVal.finOrder_qVal hfin P.1)`. Establish `h1` using `hL.muqG j hj P (hS P) (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) rfl`. Establish `h2 : G.σ₀ ((cst.muq (j + 1) P * ((qValC (mu : Chr X.F X.E X.K) P.1 : X.Kˣ) : X.K))⁻¹) = (((G.mu0 ⟨j, hj⟩).locK P.1 (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) : ℂˣ) : ℂ)`. Rewrite using `[map_inv₀, map_mul, h1, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one, inv_inv]`. Establish `h3` using `hU P.1 _ _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_inv₀, map_mul, norm_inv, norm_mul, hq, mul_one, inv_eq_one]`. Then use the resulting hypothesis. Establish `h2 : ‖σ (muOff sel (rowSG Pr sel mu) (mUof Ch mu j) N)‖ = 1`. Unfold `muOff`. Use `finprod_induction (fun x => ‖σ x‖ = 1) (by simp) (fun x y hx hy => by rw [map_mul, norm_mul, hx, hy, one_mul]) fun v => ?_` and prove the remaining obligations. Use `split_ifs with hv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, norm_zpow, mUof, dif_pos hj, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, norm_mul, norm_inv, norm_inv, hval _ (GlobalTheory.ColPeriod.Scal.g_notMem_sel hX hPr hsel hv), GlobalTheory.GO.nor …`. Simplify using the standard rewrite rules. Rewrite using `[muInvDet, map_mul, norm_mul, h2, one_mul, map_prod, norm_prod]`. Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `muAt`. Take `⟨z, ζ, hζ, e⟩` from `GlobalTheory.LocCharVal.locChar_eq_zpow_mul X.E X.K P.1 (qOf P.1) (cst.muq (j + 1) P) _ ((LinearEquiv.det (fr P) : X.Eˣ) : X.E) (GlobalTheory.CharVal.val_natCast_of_notMem_sq (Ideal.absNorm_mem _) (GlobalTheory.ColPeriod.levelPrimes X Pr sel S mu hX hPr hsel P).1.2) (Units.ne_zer …`. Rewrite using `[e, map_mul, map_zpow₀, norm_mul, norm_zpow, h1, GlobalTheory.GO.norm_map_of_finOrder _ hζ, one_zpow, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_muInvDet {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
@@ -121,9 +121,9 @@ theorem norm_muInvDet {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr 
   rw [e, map_mul, map_zpow₀, norm_mul, norm_zpow, h1, GlobalTheory.GO.norm_map_of_finOrder _ hζ, one_zpow, one_mul]
 
 /- English proof (translation)
-Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h i hi n L fr σ`. Take `⟨hH, -, ⟨-, hσ, -, ⟨eta, ht⟩, -, hsel⟩, -, hmu, -, hI, -, -⟩` from `h`. Take `⟨-, -, -, -, -, -, hX, -, -, hPr, -⟩` from `hH`. Rewrite `ht` using `[← hσ]`. Use `Or.inr (norm_muInvDet hX.ok hPr hsel (fun P => ?_) ht hI hi L fr σ)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hmu` using the available equality. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `h`. Establish `h0` using `twistPrimes_trivialTuple_empty sel Sg`. Conclude with `absurd (h0 ▸ h) (Finset.notMem_empty _)`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_muInvDet_zero_or_one : ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ i, i < N.R.m → ∀ (n : ℕ) (L : Submodule (𝓞 X.E) (Sp X.E n)) (fr : Frs X.E n (rowSG Pr sel mu)) (σ : X.K →+* ℂ), ‖σ (muInvDet sel (rowSG Pr sel mu) (mUof Ch mu i) (muAt Ch sel mu cst i) L fr)‖ = 0 ∨ ‖σ (muInvDet sel (rowSG Pr sel mu) (mUof Ch mu i) (muAt Ch sel mu cst i) L fr)‖ = 1 := by
   intro D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h i hi n L fr σ

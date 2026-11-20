@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.TwoVarValRing
 
 /- English proof (translation)
-Establish `h` using `MvPowerSeries.weightedOrder_eq_nat (f := f) (Pi.single s 1) (n := 0)`. Rewrite `h` using `[Nat.cast_zero]`. Rewrite using `[h, MvPowerSeries.X_dvd_iff]`. Simplify using `only [Finsupp.weight_single_one_apply, not_forall, Nat.not_lt_zero, false_imp_iff, implies_true, and_true]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨m, h1, h2⟩`. Conclude with `⟨m, h2, h1⟩`. Introduce and unpack `⟨m, h1, h2⟩`. Conclude with `⟨m, h2, h1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem not_X_dvd_iff_weightedOrder {σ R : Type} [DecidableEq σ] [Semiring R] (s : σ)
     (f : MvPowerSeries σ R) :
@@ -20,7 +20,7 @@ theorem not_X_dvd_iff_weightedOrder {σ R : Type} [DecidableEq σ] [Semiring R] 
   · rintro ⟨m, h1, h2⟩; exact ⟨m, h2, h1⟩
 
 /- English proof (translation)
-Rewrite `*` using `[not_X_dvd_iff_weightedOrder]`. Rewrite using `[MvPowerSeries.weightedOrder_mul, hf, hg, add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_X_dvd_mul {σ R : Type} [DecidableEq σ] [Semiring R] [NoZeroDivisors R] (s : σ)
     {f g : MvPowerSeries σ R} (hf : ¬ MvPowerSeries.X s ∣ f) (hg : ¬ MvPowerSeries.X s ∣ g) :
@@ -29,14 +29,14 @@ theorem not_X_dvd_mul {σ R : Type} [DecidableEq σ] [Semiring R] [NoZeroDivisor
   rw [MvPowerSeries.weightedOrder_mul, hf, hg, add_zero]
 
 /- English proof (translation)
-Rewrite using `[not_X_dvd_iff_weightedOrder, MvPowerSeries.weightedOrder_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem not_X_dvd_one {σ R : Type} [DecidableEq σ] [Semiring R] [Nontrivial R] (s : σ) :
     ¬ MvPowerSeries.X s ∣ (1 : MvPowerSeries σ R) := by
   rw [not_X_dvd_iff_weightedOrder, MvPowerSeries.weightedOrder_one]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.X_dvd_iff]`. Introduce `h`. Use `h (Finsupp.single 0 1) (by simp)` as an intermediate fact. Simplify using `[MvPowerSeries.coeff_index_single_self_X] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_X_one_dvd_X_zero (k : Type) [Field k] :
     ¬ MvPowerSeries.X 1 ∣ (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) k) := by
@@ -46,11 +46,11 @@ theorem not_X_one_dvd_X_zero (k : Type) [Field k] :
   simp [MvPowerSeries.coeff_index_single_self_X] at this
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) k)` using `PowerSeries.HasSubst.X 0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb (PowerSeries.X_prime (R := k)).irreducible`. Rewrite using `[PowerSeries.subst_mul hs, PowerSeries.subst_pow hs, PowerSeries.subst_X hs]`. Apply `not_X_dvd_mul` to reduce the goal to its premises. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit ((u : PowerSeries k).subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) k))`. Rewrite using `[← PowerSeries.coe_substAlgHom hs]`. Conclude with `u.isUnit.map _`. Conclude with `not_X_dvd_one (R := k) (1 : Fin 2) (h.trans hu.dvd)`. Proceed by induction on `n with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using not_X_dvd_one (R := k) (1 : Fin 2)`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `not_X_dvd_mul _ (ih (by simp)) (not_X_one_dvd_X_zero k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_X_one_dvd_subst (k : Type) [Field k] (b : PowerSeries k) (hb : b ≠ 0) :
     ¬ MvPowerSeries.X 1 ∣ b.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) k) := by
@@ -90,11 +90,9 @@ noncomputable def locSecondVar (k : Type) [Field k] :
     rw [map_one, mul_one, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Establish `hu0 : algebraMap (MvPowerSeries (Fin 2) k) (FractionRing (MvPowerSeries (Fin 2) k)) u ≠ 0`. Rewrite using `[ne_eq, FaithfulSMul.algebraMap_eq_zero_iff]`. Introduce and unpack `rfl`. Conclude with `hu (dvd_zero _)`. Establish `hx : (x : FractionRing (MvPowerSeries (Fin 2) k)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `hu0 h.symm`. Use `IsUnit.of_mul_eq_one (⟨(x : FractionRing (MvPowerSeries (Fin 2) k))⁻¹, v, u, hu, ?_⟩ : locSecondVar k) ?_` and prove the remaining obligations. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ hx, one_mul]`.
-
-Conclude with `Subtype.ext (mul_inv_cancel₀ hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_locSecondVar (k : Type) [Field k] (x : locSecondVar k) (u v : MvPowerSeries (Fin 2) k)
     (hu : ¬ MvPowerSeries.X 1 ∣ u)
@@ -126,19 +124,17 @@ instance isLocalRing_locSecondVar (k : Type) [Field k] : IsLocalRing (locSecondV
   · exact Or.inl (isUnit_locSecondVar k x u v hu h)
 
 /- English proof (translation)
-Introduce `k _ σ₀ σ₁ h₀ h₁`. Use `⟨locSecondVar k, inferInstance, fun x u v hv h => ⟨u, v, hv, h⟩, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := PowerSeries k) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `⟨a.subst (MvPowerSeries.X 0), b.subst (MvPowerSeries.X 0), not_X_one_dvd_subst k b hb0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h₀, ← h₀, ← map_mul, div_mul_cancel₀]`. Rewrite using `[ne_eq, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis. Break down `ValuationRing.isInteger_or_isInteger (PowerSeries k) x with h | ⟨c, hc⟩` into its components or cases. Conclude with `h`. Distinguish the cases in `hx0 : x = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨0, by rw [hx0, map_zero]⟩`. Distinguish the cases in `hcu : IsUnit c`. Take `⟨d, hd⟩` from `hcu.exists_right_inv`. Use `⟨d, ?_⟩` and prove the remaining obligations. Establish `: x⁻¹ * algebraMap (PowerSeries k) _ d = 1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, ← map_mul, hd, map_one]`. Rewrite using `[← mul_one x, ← this, ← mul_assoc, mul_inv_cancel₀ hx0, one_mul]`. It suffices to derive a contradiction. Establish `hs : PowerSeries.HasSubst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) k)` using `PowerSeries.HasSubst.X 1`. Establish `hX : PowerSeries.X ∣ c`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_dvd_iff]`. Assume the negation of the conclusion as `h0`. Conclude with `hcu (PowerSeries.isUnit_iff_constantCoeff.2 (Ne.isUnit h0))`. Take `⟨c', rfl⟩` from `hX`. Take `⟨u, v, hv, h⟩` from `hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hv` to reduce the goal to its premises. Establish `h2 : v = (PowerSeries.X * c').subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) k) * u`. Apply `IsFractionRing.injective (MvPowerSeries (Fin 2) k) (FractionRing (MvPowerSeries (Fin 2) k))` to reduce the goal to its premises. Rewrite using `[map_mul, ← h₁, hc, ← h, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hx0, map_one, one_mul]`. Rewrite using `[h2, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, mul_assoc]`.
-
-Conclude with `dvd_mul_right _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_ring_second_variable : ∀ (k : Type) [Field k] (σ₀ σ₁ : FractionRing (PowerSeries k) →ₐ[k] FractionRing (MvPowerSeries (Fin 2) k)), (∀ x : PowerSeries k, σ₀ (algebraMap _ _ x) = algebraMap (MvPowerSeries (Fin 2) k) _ (x.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) k))) → (∀ x : PowerSeries k, σ₁ (algebraMap _ _ x) = algebraMap (MvPowerSeries (Fin 2) k) _ (x.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) k))) → ∃ L : Subalgebra k (FractionRing (MvPowerSeries (Fin 2) k)), IsLocalRing L ∧ (∀ (x : FractionRing (MvPowerSeries (Fin 2) k)) (u v : MvPowerSeries (Fin 2) k), ¬ MvPowerSeries.X 1 ∣ v → x * algebraMap (MvPowerSeries (Fin 2) k) _ v = algebraMap (MvPowerSeries (Fin 2) k) _ u → x ∈ L) ∧ (∀ x, σ₀ x ∈ L) ∧ ∀ x, σ₁ x ∈ L → x ∈ Set.range (algebraMap (PowerSeries k) (FractionRing (PowerSeries k))) := by
   intro k _ σ₀ σ₁ h₀ h₁

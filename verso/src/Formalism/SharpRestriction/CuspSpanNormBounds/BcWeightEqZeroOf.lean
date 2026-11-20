@@ -19,7 +19,7 @@ def sBigL (r : ℕ) (κ τ : ℝ) : ((Fin r → ℂ) × ℂ) →ₗ[ℝ] ((Fin r
     ((τ ^ 2) • LinearMap.id)
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [sBigL, sBig, Complex.real_smul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sBigL_apply (r : ℕ) (κ τ : ℝ) (p : (Fin r → ℂ) × ℂ) : sBigL r κ τ p = sBig r κ τ p := by
   ext a <;> simp [sBigL, sBig, Complex.real_smul]
@@ -34,7 +34,7 @@ section Norm
 variable {k r : ℕ} {κ τ : ℝ}
 
 /- English proof (translation)
-Rewrite using `[sBigL, LinearMap.det_prodMap, LinearMap.det_pi]`. Simplify using `only [LinearMap.det_smul, LinearMap.det_id, Complex.finrank_real_complex, mul_one, jacBig]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,25 +46,25 @@ theorem det_sBigL : LinearMap.det (sBigL r κ τ) = jacBig r κ τ := by
   · ring
 
 /- English proof (translation)
-The claim follows from `mul_pos (Finset.prod_pos fun a _ => pow_pos (tF_pos hκ hτ _) 4) (pow_pos hτ 4)`.
+A detailed English derivation is pending.
 -/
 theorem jacBig_pos (hκ : 0 < κ) (hτ : 0 < τ) : 0 < jacBig r κ τ :=
   mul_pos (Finset.prod_pos fun a _ => pow_pos (tF_pos hκ hτ _) 4) (pow_pos hτ 4)
 
 /- English proof (translation)
-The claim follows from `mul_pos (Finset.prod_pos fun a _ => pow_pos (pow_pos (tF_pos hκ hτ _) 2) _) (pow_pos (pow_pos hτ 4) _)`.
+A detailed English derivation is pending.
 -/
 theorem wBig_pos (hκ : 0 < κ) (hτ : 0 < τ) : 0 < wBig k r κ τ :=
   mul_pos (Finset.prod_pos fun a _ => pow_pos (pow_pos (tF_pos hκ hτ _) 2) _) (pow_pos (pow_pos hτ 4) _)
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det (sBigL r κ τ) ≠ 0` using `by rw [det_sBigL]; exact (jacBig_pos hκ hτ).ne'`. Set `e : ((Fin r → ℂ) × ℂ) ≃ₗ[ℝ] ((Fin r → ℂ) × ℂ)` to `LinearMap.equivOfDetNeZero (sBigL r κ τ) hdet`. Set `eM : ((Fin r → ℂ) × ℂ) ≃ᵐ ((Fin r → ℂ) × ℂ)` to `e.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`. Establish `: (volume : Measure ((Fin r → ℂ) × ℂ)).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Measure.prod.instIsAddHaarMeasure _ _`. Establish `hmap : Measure.map eM (volume : Measure ((Fin r → ℂ) × ℂ)) = ENNReal.ofReal |(LinearMap.det (sBigL r κ τ))⁻¹| • volume`. Rewrite using `[← Measure.map_linearMap_addHaar_eq_smul_addHaar volume hdet]`. Both sides reduce to the same expression. Establish `h1 : ∫⁻ p, G (sBig r κ τ p) = ENNReal.ofReal |(jacBig r κ τ)⁻¹| * ∫⁻ p, G p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun p => G (sBig r κ τ p)) = fun p => G (eM p)`. Use function extensionality and compare the values at `p`. Rewrite using `[← sBigL_apply]`. Both sides reduce to the same expression. Rewrite using `[this, ← lintegral_map_equiv, hmap, lintegral_smul_measure, det_sBigL, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← mul_assoc, ← ENNReal.ofReal_mul (jacBig_pos hκ hτ).le, abs_inv, abs_of_pos (jacBig_pos hκ hτ), mul_inv_cancel₀ (jacBig_pos hκ hτ).ne', ENNReal.ofReal_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_sBig (hκ : 0 < κ) (hτ : 0 < τ) (G : (Fin r → ℂ) × ℂ → ENNReal) :
     ∫⁻ p, G p = ENNReal.ofReal (jacBig r κ τ) * ∫⁻ p, G (sBig r κ τ p) := by
@@ -85,13 +85,13 @@ theorem lintegral_sBig (hκ : 0 < κ) (hτ : 0 < τ) (G : (Fin r → ℂ) × ℂ
     abs_of_pos (jacBig_pos hκ hτ), mul_inv_cancel₀ (jacBig_pos hκ hτ).ne', ENNReal.ofReal_one, one_mul]
 
 /- English proof (translation)
-Establish `hn : Complex.normSq (((τ ^ 2 : ℝ) : ℂ) * p.2) = τ ^ 4 * Complex.normSq p.2`. Rewrite using `[Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 0 < τ ^ 4` using `pow_pos hτ 4`. Unfold `bcWeight sBig`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[hn]`. Distinguish the cases in `hc : T * T' ≤ Complex.normSq p.2`. Rewrite using `[if_pos (by nlinarith), if_pos hc]`. Establish `hprod : ∏ a : Fin r, ‖((tF r κ τ a.val ^ 2 : ℝ) : ℂ) * p.1 a‖ ^ (2 * (Mdim k r a - 2)) = (∏ a : Fin r, (tF r κ τ a.val ^ 2) ^ (2 * (Mdim k r a - 2))) * ∏ a : Fin r, ‖p.1 a‖ ^ (2 * (Mdim k r a - 2))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (pow_pos (tF_pos hκ hτ _) 2), mul_pow]`. Rewrite using `[hprod, show τ ^ 4 * Complex.normSq p.2 - τ ^ 2 * T * (τ ^ 2 * T') = τ ^ 4 * (Complex.normSq p.2 - T * T') by ring, mul_pow, wBig]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg (by intro h; apply hc; nlinarith), if_neg hc, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcWeight_sBig (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (p : (Fin r → ℂ) × ℂ) :
     bcWeight k r (τ ^ 2 * T) (τ ^ 2 * T') (sBig r κ τ p) = wBig k r κ τ * bcWeight k r T T' p := by
@@ -115,7 +115,7 @@ theorem bcWeight_sBig (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (p : (Fin r →
   · rw [if_neg (by intro h; apply hc; nlinarith), if_neg hc, mul_zero]
 
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem hsNormSq_eq_sum {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) :
@@ -126,14 +126,14 @@ theorem hsNormSq_eq_sum {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpa
   rw [inner_self_eq_norm_sq_to_K]; norm_cast
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_sum]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem hsNormSq_nonneg {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : 0 ≤ hsNormSq A := by
   rw [hsNormSq_eq_sum]; positivity
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_sum, hsNormSq_eq_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[FunLike.coe_smul, Pi.smul_apply, norm_smul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (C : ℂ) (A : Wq →L[ℂ] Wp) :
@@ -143,9 +143,9 @@ theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace
   rw [FunLike.coe_smul, Pi.smul_apply, norm_smul, mul_pow]
 
 /- English proof (translation)
-Unfold `bcWeight`. Use `split_ifs with hc`. Break down `not_and_or.mp h with h1 | h1` into its components or cases. Use `push Not at h1`. Take `⟨a, ha⟩` from `h1`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 2 * (Mdim k r a - 2) ≠ 0` using `by unfold Mdim; omega`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ a) (by rw [ha, norm_zero, zero_pow hpos]), zero_mul]`. Establish `: Complex.normSq p.2 = T * T'` using `le_antisymm (not_lt.mp h1) hc`. Rewrite using `[this, sub_self, zero_pow (by omega), mul_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bcWeight_eq_zero_of {T T' : ℝ} (hk : 2 ≤ k) (p : (Fin r → ℂ) × ℂ)
     (h : ¬ ((∀ a, p.1 a ≠ 0) ∧ T * T' < Complex.normSq p.2)) : bcWeight k r T T' p = 0 := by
@@ -161,13 +161,11 @@ theorem bcWeight_eq_zero_of {T T' : ℝ} (hk : 2 ≤ k) (p : (Fin r → ℂ) × 
   · rfl
 
 /- English proof (translation)
-Unfold `jNorm2 jNormSq`. Rewrite using `[e1, e2, lintegral_sBig hκ hτ]`. Establish `hw` using `wBig_pos (k := k) (r := r) hκ hτ`. Establish `hpt : ∀ p : (Fin r → ℂ) × ℂ, ENNReal.ofReal (bcWeight k r (τ ^ 2 * Tz k r L.z) (τ ^ 2 * Tz k r L.z') (sBig r κ τ p) * ‖Real.sqrt (hsNormSq (L₁.J f₁ (bigCell k r (sBig r κ τ p).1 (μsec₁ (sBig r κ τ p).2))))‖ ^ 2) = ENNReal.ofReal (wBig k r κ τ * ‖C‖ ^ 2) * ENNReal.ofReal (bcWeight …`. Introduce `p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hD : (∀ a, p.1 a ≠ 0) ∧ Tz k r L.z * Tz k r L.z' < Complex.normSq p.2`. Use `swap`. Establish `h0` using `bcWeight_eq_zero_of (T := Tz k r L.z) (T' := Tz k r L.z') hk p (by tauto)`. Rewrite using `[bcWeight_sBig hκ hτ, h0]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (by positivity), hJ p hD.1 hD.2, bcWeight_sBig hκ hτ, Real.norm_eq_abs, Real.norm_eq_abs, sq_abs, sq_abs, Real.sq_sqrt (mul_nonneg (sq_nonneg _) (hsNormSq_nonneg _)), Real.sq_sqrt (hsNormSq_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Repeatedly rewrite using `[hpt]`.
-
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc, ← ENNReal.ofReal_mul (jacBig_pos hκ hτ).le, mul_assoc (jacBig r κ τ)]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jNorm2_tr (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r)
     (e1 : Tz k r L₁.z = τ ^ 2 * Tz k r L.z) (e2 : Tz k r L₁.z' = τ ^ 2 * Tz k r L.z')
@@ -202,7 +200,7 @@ theorem jNorm2_tr (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r)
     mul_assoc (jacBig r κ τ)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem wbPart_smul (z : Fin (2 * r + k + 1) → ℂ) (t : ℂ) : wbPart k r (t • z) = t • wbPart k r z := by
   funext j; rfl
@@ -211,7 +209,7 @@ def secTr (τ : ℝ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : 
   fun ζ => μsec (ζ / ((τ ^ 2 : ℝ) : ℂ))
 
 /- English proof (translation)
-Unfold `secTr sBig`. Establish `: ((τ ^ 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (pow_pos hτ 2).ne'`. Simplify using `only`. Rewrite using `[mul_div_cancel_left₀ _ this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem secTr_sBig (hτ : 0 < τ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : (Fin r → ℂ) × ℂ) :
     secTr τ μsec (sBig r κ τ p).2 = μsec p.2 := by
@@ -221,19 +219,17 @@ theorem secTr_sBig (hτ : 0 < τ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k 
   rw [mul_div_cancel_left₀ _ this]
 
 /- English proof (translation)
-Establish `h2 : ((τ ^ 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (pow_pos hτ 2).ne'`. Establish `h4 : 0 < τ ^ 4` using `pow_pos hτ 4`. Establish `hns : ∀ ζ : ℂ, Complex.normSq (ζ / ((τ ^ 2 : ℝ) : ℂ)) = Complex.normSq ζ / τ ^ 4`. Introduce `ζ`. Rewrite using `[Complex.normSq_div, Complex.normSq_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hreg : ∀ ζ : ℂ, Tz k r ((τ : ℂ) • z) * Tz k r ((τ : ℂ) • z') < Complex.normSq ζ → Tz k r z * Tz k r z' < Complex.normSq (ζ / ((τ ^ 2 : ℝ) : ℂ))`. Introduce `ζ hζ`. Rewrite `hζ` using `[Tz_smul, Tz_smul]`. Rewrite using `[hns, lt_div_iff₀ h4]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨fun i j => ?_, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hc : ContDiff ℝ ∞ (fun ζ : ℂ => ζ / ((τ ^ 2 : ℝ) : ℂ))`. Establish `: (fun ζ : ℂ => ζ / ((τ ^ 2 : ℝ) : ℂ)) = fun ζ => ((τ ^ 2)⁻¹ : ℝ) • ζ`. Use function extensionality and compare the values at `ζ`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Complex.real_smul, div_eq_inv_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `contDiff_const_smul _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(h.1 i j).comp hc.contDiffOn fun ζ hζ => hreg ζ hζ`. Take `⟨hu, hv⟩` from `h.2 _ (hreg ζ hζ)`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Unfold `secTr`. Rewrite using `[wbPart_smul, wbPart_smul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `herm at hv ⊢`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct, hv]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSection_tr (hτ : 0 < τ) {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (h : IsSection k r z z' μsec) : IsSection k r ((τ : ℂ) • z) ((τ : ℂ) • z') (secTr τ μsec) := by

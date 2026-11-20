@@ -6,15 +6,15 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ φ`. Establish `hp' : MeasurePreserving θ.e.symm μ μ` using `θ.pres.symm θ.e.toHomeomorph.toMeasurableEquiv`. Establish `hg' : ∀ g, θ.e.symm g ∈ Gam K n ↔ g ∈ Gam K n` using `fun g => by rw [← θ.mem_gam, θ.e.apply_symm_apply]`. Take `⟨h1, q1⟩` from `qmapPres (Gam K n) μ θ.e θ.mem_gam θ.pres`. Take `⟨h2, q2⟩` from `qmapPres (Gam K n) μ θ.e.symm hg' hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ContinuousLinearMap.adjoint θ.U φ = Lp.compMeasurePreserving _ q1 φ`. Use `ext_inner_right ℂ fun ψ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, L2.inner_def, L2.inner_def]`. Establish `a1` using `q1.quasiMeasurePreserving.ae_eq_comp (θ.U_spec ψ)`. Establish `m : AEStronglyMeasurable (fun y => ⟪(φ : RightCosetSpace (Gam K n) → ℂ) y, (θ.U ψ : RightCosetSpace (Gam K n) → ℂ) y⟫_ℂ) (Measure.map (fun y : RightCosetSpace (Gam K n) => mk (Gam K n) (θ.e (Quotient.out y))) (quotientMeasure (Gam K n) μ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[q1.map_eq]`. Conclude with `(Lp.aestronglyMeasurable φ).inner (Lp.aestronglyMeasurable _)`. Establish `e1` using `integral_map q1.measurable.aemeasurable m`. Rewrite `e1` using `[q1.map_eq]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [a1, Lp.coeFn_compMeasurePreserving φ q1] with y hy hz`. Rewrite using `[hz]`. Simplify using `only [Function.comp_apply] at hy ⊢`. Rewrite using `[hy, h2, θ.e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `Quotient.out_eq y`. Rewrite using `[key]`. Conclude with `Lp.coeFn_compMeasurePreserving φ q1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.twAdj :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (θ : Twist μ) (φ : L2 μ),

@@ -9,28 +9,28 @@ namespace LateralTheory.EtaleTrace.Cov.GenInPf
 abbrev A (k : Type) [Field k] (N : ℕ) := homogeneousSubmodule (Fin (N + 1)) k
 
 /- English proof (translation)
-The claim follows from `(mem_homogeneousSubmodule _ _).2 (isHomogeneous_X k j)`.
+A detailed English derivation is pending.
 -/
 theorem X_mem (k : Type) [Field k] (N : ℕ) (j : Fin (N + 1)) : (X j : MvPolynomial (Fin (N + 1)) k) ∈ A k N 1 :=
   (mem_homogeneousSubmodule _ _).2 (isHomogeneous_X k j)
 
 /- English proof (translation)
-Simplify using `using X_mem k N j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_mem' (k : Type) [Field k] (N : ℕ) (j : Fin (N + 1)) :
     (X j : MvPolynomial (Fin (N + 1)) k) ∈ A k N (1 • 1) := by
   simpa using X_mem k N j
 
 /- English proof (translation)
-Establish `htop : ⨆ i, Proj.basicOpen (A k N) (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) = ⊤`. Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Conclude with `fun i => ⟨1, X_mem k N i⟩`. Rewrite using `[eq_top_iff]`. Introduce `x hxt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hxt`. Establish `hx : x ∈ Algebra.adjoin k (Set.range (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) k))`. Rewrite using `[MvPolynomial.adjoin_range_X]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy => exact Algebra.subset_adjoin hy`. Consider the case `algebraMap c`. Establish `h0 : (C c : MvPolynomial (Fin (N + 1)) k) ∈ A k N 0` using `(mem_homogeneousSubmodule _ _).2 (isHomogeneous_C _ c)`. Use `(Algebra.adjoin (A k N 0) (Set.range (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) k))).algebraMap_mem (⟨C c, h0⟩ : A k N 0)` as an intermediate fact. Simplify using `using this`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`. Establish `hm : ι.base (genericPoint X) ∈ (⨆ i, Proj.basicOpen (A k N) (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k))`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hm`. Conclude with `⟨i, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genCover {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {N : ℕ} (ι : X ⟶ PN k N) :
     ∃ i : Fin (N + 1), genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i) := by
@@ -82,9 +82,9 @@ end LateralTheory.EtaleTrace.Cov.GenInPf
 namespace LateralTheory.EtaleTrace.Cov
 open GenInPf in
 /- English proof (translation)
-Introduce `k _ X _ p N ι hp`. Take `⟨i, h⟩` from `genCover ι`. Establish `hgen` using `hG k p N ι hp i h (hE k p N ι hp i h)`. Use `⟨coordAt ι i h, i, ?_, hgen⟩` and prove the remaining obligations. Establish `h1` using `(hgen 1 one_pos (MvPolynomial.X i) (X_mem k N i)).1.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(hgen 1 one_pos (MvPolynomial.X i) (X_mem k N i)).2 1 (MvPolynomial.X i) (X_mem' k N i) h`. Simplify using `only [eval₂_X, pow_one] at h1 h2`. Express the relevant statement in the definitionally equal form `coordAt ι i h i * coordAt ι i h i = coordAt ι i h i at h2`. Conclude with `mul_left_cancel₀ h1 (h2.trans (mul_one _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem GenIn_of (hE : GenAwayEval) (hG : GenOfAway) : GenIn := by
   intro k _ X _ p N ι hp

@@ -29,14 +29,14 @@ variable {T σ : Type} [Fintype T] [DecidableEq T]
 def emb (g : T → σ →₀ ℕ) : T × σ →₀ ℕ := ∑ τ, Finsupp.mapDomain (Prod.mk τ) (g τ)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Prod.mk.inj h).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma prodMk_inj (τ : T) : Function.Injective (Prod.mk τ : σ → T × σ) := fun _ _ h => (Prod.mk.inj h).2
 
 /- English proof (translation)
-Unfold `emb`. Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (prodMk_inj τ) _ _`. Introduce `τ' _ hτ'`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k', hk'⟩`. Conclude with `hτ' (Prod.mk.inj hk').1`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma emb_apply (g : T → σ →₀ ℕ) (τ : T) (k : σ) : emb g (τ, k) = g τ k := by
   unfold emb
@@ -49,7 +49,7 @@ lemma emb_apply (g : T → σ →₀ ℕ) (τ : T) (k : σ) : emb g (τ, k) = g 
   · intro h; exact absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Introduce `g h hgh`. Use function extensionality and compare the values at `τ`. Use extensionality with `k`. Rewrite using `[← emb_apply g τ k, ← emb_apply h τ k, hgh]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma emb_inj : Function.Injective (emb : (T → σ →₀ ℕ) → T × σ →₀ ℕ) := by
   intro g h hgh
@@ -58,18 +58,18 @@ lemma emb_inj : Function.Injective (emb : (T → σ →₀ ℕ) → T × σ →�
   rw [← emb_apply g τ k, ← emb_apply h τ k, hgh]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_subset h (fun k _ hk => by simp [Finsupp.notMem_support_iff.mp hk])`.
+A detailed English derivation is pending.
 -/
 lemma fact_subset {α : Type} (u : α →₀ ℕ) (S : Finset α) (h : u.support ⊆ S) :
     ∏ k ∈ u.support, (u k).factorial = ∏ k ∈ S, (u k).factorial :=
   Finset.prod_subset h (fun k _ hk => by simp [Finsupp.notMem_support_iff.mp hk])
 
 /- English proof (translation)
-Use `set U : Finset σ := Finset.univ.biUnion fun τ => (g τ).support with hU`. Establish `hsub : (emb g).support ⊆ (Finset.univ : Finset T) ×ˢ U`. Introduce and unpack `⟨τ, k⟩ hx`. Rewrite `hx` using `[Finsupp.mem_support_iff, emb_apply]`. Simplify using `only [Finset.mem_product, Finset.mem_univ, true_and, hU, Finset.mem_biUnion]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨τ, Finsupp.mem_support_iff.mpr hx⟩`. Rewrite using `[fact_subset _ _ hsub, Finset.prod_product]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [emb_apply]`. Use `(fact_subset (g τ) U ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Simplify using `only [hU, Finset.mem_biUnion, Finset.mem_univ, true_and]`. Conclude with `⟨τ, hk⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma fact_emb (g : T → σ →₀ ℕ) :
     ∏ x ∈ (emb g).support, (emb g x).factorial = ∏ τ, ∏ k ∈ (g τ).support, (g τ k).factorial := by
@@ -89,9 +89,7 @@ lemma fact_emb (g : T → σ →₀ ℕ) :
   exact ⟨τ, hk⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [as_sum (p τ)]`. Rewrite using `[map_sum]`. Simplify using `only [rename_monomial]`.
-
-Use `_ = ∑ g ∈ Fintype.piFinset (fun τ => (p τ).support), ∏ τ, monomial (Finsupp.mapDomain (Prod.mk τ) (g τ)) (coeff (g τ) (p τ)) := Finset.prod_univ_sum _ _`. Use `_ = _ := Finset.sum_congr rfl fun g _ => (monomial_sum_prod _ _ _).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prod_rename_eq (p : T → MvPolynomial σ ℂ) :
     ∏ τ, rename (Prod.mk τ) (p τ) =
@@ -109,7 +107,7 @@ lemma prod_rename_eq (p : T → MvPolynomial σ ℂ) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[fischerInner_monomial_left, coeff_monomial]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -125,15 +123,15 @@ end TensorFockForm
 
 open TensorFockForm Formalism.REAL in
 /- English proof (translation)
-Introduce `T σ _ _ p q`. Rewrite using `[prod_rename_eq p, prod_rename_eq q, fischerInner_sum_left]`. Repeatedly rewrite using `[fischerInner_sum_right, fock_mono]`. Establish `hR : ∀ τ, fockF (p τ) (q τ) = ∑ m ∈ (p τ).support, ∑ n ∈ (q τ).support, (if m = n then coeff m (p τ) * star (coeff n (q τ)) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) else 0)`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [as_sum (p τ), as_sum (q τ)]`. Rewrite using `[fischerInner_sum_left]`. Repeatedly rewrite using `[fischerInner_sum_right, fock_mono]`. Repeatedly rewrite using `[hR]`. Rewrite using `[Finset.prod_univ_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Distinguish the cases in `hgh : g = h`. Substitute `hgh` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_true]`. Rewrite using `[fact_emb]`. Use `push_cast`. Rewrite using `[star_prod, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Rewrite using `[if_neg (fun e => hgh (emb_inj e))]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `Function.ne_iff.mp hgh`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem TensorFock_holds : TensorFockProduct := by
   intro T σ _ _ p q

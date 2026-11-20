@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F hF h0 l`. Take `⟨n, ⟨Φ⟩⟩` from `hF`. Take `⟨c, hc, hsum⟩` from `GlobalTheory.T.globalOneFormFrame_coordinates_constant R C F h0 n Φ`. Use `⟨fun T ↦ ∑ i, algebraMap R (F.obj T) (l (Φ.w i)) • Φ.δ i T, ?_, ?_⟩` and prove the remaining obligations. Introduce `T T' φ ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_sum, map_mul, AlgHom.commutes, Φ.nat]`. Introduce `w T`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hc, ← map_mul, ← map_sum]`. Establish `hw : l w = l (∑ i, c i w • Φ.w i)` using `congrArg l (hsum w)`. Rewrite using `[hw, map_sum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_vectorField_of_functional : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), HasFrame F → CohomZeroIsConstants F → ∀ l : Glob1 F →ₗ[R] R, ∃ δ : ∀ T : C, Ω[F.obj T⁄R] →ₗ[F.obj T] F.obj T, (∀ ⦃T T' : C⦄ (φ : T ⟶ T') (ω : Ω[F.obj T⁄R]), δ T' (p1 F φ ω) = mp F φ (δ T ω)) ∧ ∀ (w : Glob1 F) T, δ T (w.1 T) = algebraMap R (F.obj T) (l w) := by
   intro R _ C _ F hF h0 l

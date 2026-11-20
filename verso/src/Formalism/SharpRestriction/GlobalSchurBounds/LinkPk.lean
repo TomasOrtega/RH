@@ -21,11 +21,11 @@ section General
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V]
 
 /- English proof (translation)
-Set `I : Ideal (𝓞 K)` to `M.comap (LinearMap.toSpanSingleton (𝓞 K) V x)`. Establish `hI : ∀ a : 𝓞 K, a ∈ I ↔ a • x ∈ M` using `fun a => Iff.rfl`. Establish `htop : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : m ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)`. Take `⟨s, hs, hsx⟩` from `h ⟨m, hm.isPrime, hm0⟩`. Conclude with `hs (hle ((hI s).2 hsx))`. Establish `h1 : (1 : 𝓞 K) ∈ I` using `by rw [htop]; trivial`. Establish `h2` using `(hI 1).1 h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_of_locally (M : Submodule (𝓞 K) V) (x : V)
     (h : ∀ v : HeightOneSpectrum (𝓞 K), ∃ s : 𝓞 K, s ∉ v.asIdeal ∧ s • x ∈ M) : x ∈ M := by
@@ -42,15 +42,13 @@ theorem mem_of_locally (M : Submodule (𝓞 K) V) (x : V)
   rwa [one_smul] at h2
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hM`. Establish `hSM : ∀ y ∈ S, y ∈ M` using `fun y hy => by rw [← hS]; exact Submodule.subset_span hy`. Set `f : V → 𝓞 K` to `fun y => if hy : y ∈ M then (h y hy).choose else 1`. Establish `hf0 : ∀ y, f y ≠ 0`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : y ∈ M`. Simplify using `only [f, dif_pos hy]`. Conclude with `(h y hy).choose_spec.1`. Simplify using `only [f, dif_neg hy]`. Conclude with `one_ne_zero`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfN : ∀ y ∈ M, f y • y ∈ N`. Introduce `y hy`. Simplify using `only [f, dif_pos hy]`. Conclude with `(h y hy).choose_spec.2`. Use `⟨∏ y ∈ S, f y, Finset.prod_ne_zero_iff.2 (fun y _ => hf0 y), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Submodule.span (𝓞 K) (S : Set V) ≤ N.comap (LinearMap.lsmul (𝓞 K) V (∏ y ∈ S, f y))`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem f hy`. Use `show (∏ y ∈ S, f y) • y ∈ N`.
-
-Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `N.smul_mem _ (hfN y (hSM y hy))`. Introduce `y hy`. Rewrite `hy` using `[← hS]`. Conclude with `hle hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_mul (M N : Submodule (𝓞 K) V) (hM : M.FG)
     (h : ∀ y ∈ M, ∃ s : 𝓞 K, s ≠ 0 ∧ s • y ∈ N) : ∃ c : 𝓞 K, c ≠ 0 ∧ ∀ y ∈ M, c • y ∈ N := by
@@ -81,7 +79,7 @@ theorem exists_common_mul (M N : Submodule (𝓞 K) V) (hM : M.FG)
 end General
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `h x hx`. Rewrite `hsx` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `⟨s, hs, hsx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem locLe_zero {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     {w : HeightOneSpectrum (𝓞 K)} {A B : Submodule (𝓞 K) V} (h : DV.LocLe w 0 A B) :
@@ -92,17 +90,15 @@ theorem locLe_zero {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup
   exact ⟨s, hs, hsx⟩
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).mpr hpZ`. Take `⟨P, hP, hlo⟩` from `(inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.what₂.LL)))`. Establish `hpP : ((p : ℕ) : 𝓞 D.what₂.LL) ∈ P`. Establish `h1 : (p : ℤ) ∈ Ideal.span {(p : ℤ)}` using `Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hlo.over, Ideal.mem_comap]`. Simplify using `using h1`. Establish `hne : P ≠ ⊥`. Introduce `h`. Rewrite `hpP` using `[h, Ideal.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp.ne_zero (by exact_mod_cast hpP)`. Use `⟨D.plEq.symm ⟨P, hP, hne⟩, ?_⟩` and prove the remaining obligations. Use `set w := D.plEq.symm ⟨P, hP, hne⟩ with hw`. Establish `hr` using `J.resChar_mem D w`. Rewrite `hr` using `[hw, Equiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hr` using `[← hw]`. Assume the negation of the conclusion as `hcon`. Establish `hco : Nat.Coprime (D.what₂.places.resChar w) p` using `(Nat.coprime_primes (D.what₂.places.resChar_prime w) hp).2 hcon`. Establish `hb` using `Nat.gcd_eq_gcd_ab (D.what₂.places.resChar w) p`. Rewrite `hb` using `[hco]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 D.what₂.LL) = ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) * ((Nat.gcdA (D.what₂.places.resChar w) p : ℤ) : 𝓞 D.what₂.LL) + ((p : ℕ) : 𝓞 D.what₂.LL) * ((Nat.gcdB (D.what₂.places.resChar w) p : ℤ) : 𝓞 D.what₂.LL)`. Use `congrArg (fun z : ℤ => (z : 𝓞 D.what₂.LL)) hb` as an intermediate fact. Simplify using `using this`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 (by`. Rewrite using `[h1]`.
-
-Conclude with `P.add_mem (P.mul_mem_right _ hr) (P.mul_mem_right _ hpP)))`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_over' (D : D7) (p : ℕ) (hp : p.Prime) : ∃ w : D.what₂.places.Pl, D.what₂.places.resChar w = p := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
@@ -139,9 +135,9 @@ def NuAtT (D : D7) (L : SizeData₂ D) : Prop :=
   ∀ u w, D.what₂.places.resChar w = (D.mem u).A.T → DV.LocLe (D.plEq w) 0 (L.NuLat u) (DV.MramL D u)
 
 /- English proof (translation)
-Introduce `u w hw x hx`. Establish `h1 : InLoc (D.plEq w) (L.NuLat u) x` using `⟨1, fun h => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), by rwa [one_smul]⟩`. Establish `h2 : D.nuIn u x ∈ LT.Nlam D u w` using `(hAtT u w hw x).mp h1`. Establish `h3 : D.nuIn u x ∈ (D.fm u).S 0 w` using `(h5 u w hw h2).1`. Take `⟨s, hs, hsx⟩` from `D.locSpan u w _ h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Use `show (D.nuIn u).restrictScalars (𝓞 D.what₂.LL) (s • x) ∈ ((D.fm u).lat 0).L`. Rewrite using `[map_smul]`. Conclude with `hsx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuAtT_of {D : D7} {L : SizeData₂ D} (hAtT : NuAtTDef D L)
     (h5 : ∀ u w, D.what₂.places.resChar w = (D.mem u).A.T → LT.Nlam D u w ≤ LT.Sram D u w) : NuAtT D L := by
@@ -158,9 +154,9 @@ theorem nuAtT_of {D : D7} {L : SizeData₂ D} (hAtT : NuAtTDef D L)
   exact hsx
 
 /- English proof (translation)
-Introduce `x hx`. Use `mem_of_locally _ x (fun v => ?_)` and prove the remaining obligations. Establish `hv : D.plEq (D.plEq.symm v) = v` using `Equiv.apply_symm_apply _ _`. Distinguish the cases in `hw : D.what₂.places.resChar (D.plEq.symm v) = (D.mem u).A.T`. Use `locLe_zero (hT u _ hw) x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `this` using `[hv]`. Then use the resulting hypothesis. Use `locLe_zero (hNu.1 u _ hw) x hx` as an intermediate fact. Rewrite `this` using `[hv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nu_le_mram {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuAtT D L) (u : D.what₂.Word) :
     L.NuLat u ≤ DV.MramL D u := by
@@ -174,11 +170,11 @@ theorem nu_le_mram {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuAtT
     rwa [hv] at this
 
 /- English proof (translation)
-Establish `hq2 : D.host.q ≠ 2`. Use `D.host.hyp.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hT : (D.mem u).A.T = 2`. Use `⟨D.host.q, D.host.hyp.1, by rw [hT]; exact hq2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `DV.InertK Host.cls primeClass`. Rewrite using `[if_neg D.host.q_notMem_small, if_pos rfl]`. Simplify using the standard rewrite rules. Use `⟨2, Nat.prime_two, fun h => hT h.symm, ?_⟩` and prove the remaining obligations. Unfold `DV.InertK Host.cls primeClass`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos D.host.two_mem_small]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_free_prime (D : D7) (u : D.what₂.Word) :
     ∃ p : ℕ, p.Prime ∧ p ≠ (D.mem u).A.T ∧ ¬ DV.InertK D p := by
@@ -196,11 +192,11 @@ theorem exists_free_prime (D : D7) (u : D.what₂.Word) :
     simp
 
 /- English proof (translation)
-Introduce `u`. Establish `hle` using `nu_le_mram hNu hT u`. Prove the components needed by the constructor for the conclusion. Establish `: Module.Finite (𝓞 D.what₂.LL) (DV.MramL D u)` using `Module.Finite.iff_fg.2 (D.MramL_fg u)`. Establish `: IsNoetherian (𝓞 D.what₂.LL) (DV.MramL D u)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(IsNoetherian.noetherian ((L.NuLat u).comap (DV.MramL D u).subtype)).map (DV.MramL D u).subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.2 hle]`. Conclude with `h2`. Take `⟨p, hp, hpT, hin⟩` from `exists_free_prime D u`. Take `⟨w, hw⟩` from `place_over' D p hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEq` using `hNu.2.1 u w (by rw [hw]; exact hpT) (Or.inr (by rw [hw]; exact hin))`. Use `exists_common_mul _ _ (D.MramL_fg u) (fun y hy => ?_)` and prove the remaining obligations. Take `⟨s, hs, hsy⟩` from `locLe_zero hEq.2 y hy`. Conclude with `⟨s, fun h0 => hs (by rw [h0]; exact Ideal.zero_mem _), hsy⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nuCommens_of {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuAtT D L) : NuCommens D L := by
   intro u
@@ -219,9 +215,9 @@ theorem nuCommens_of {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuA
     exact ⟨s, fun h0 => hs (by rw [h0]; exact Ideal.zero_mem _), hsy⟩
 
 /- English proof (translation)
-Take `⟨a0, h10⟩` from `h10`. Take `⟨a1, hS⟩` from `hS`. Use `⟨max (max a0 a1) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `e0 : a0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `e1 : a1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Fm.x1 < x` using `by have := le_trans (le_max_right (max a0 a1) (Fm.x1 + 1)) hx; linarith`. Conclude with `nuCommens_of (Fm.nuDef x e2 i) (nuAtT_of (Fm.ex x e2 i).lat.atT (fun u w hw => ((h10 x e0 i u (hS x e1 e2 i u)).2.2.2.2.1 w hw).1))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nuCommensF_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) :
     NuCommensF Fm := by
@@ -247,9 +243,9 @@ namespace Formalism.MainNotions
 open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
 
 /- English proof (translation)
-Take `⟨a0, h10⟩` from `h10`. Take `⟨a1, hS⟩` from `hS`. Use `⟨max (max a0 a1) (Fm.x1 + 1), fun x hx i u => ?_⟩` and prove the remaining obligations. Establish `e0 : a0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `e1 : a1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Fm.x1 < x` using `by have := le_trans (le_max_right (max a0 a1) (Fm.x1 + 1)) hx; linarith`. Establish `h` using `(h10 x e0 i u (hS x e1 e2 i u)).2.1.1`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramRankF_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) : RamRankF Fm := by
   obtain ⟨a0, h10⟩ := h10
@@ -264,13 +260,13 @@ theorem ramRankF_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h
 set_option linter.unusedVariables false in
 
 /- English proof (translation)
-Introduce `hTu hCh`. Establish `hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps`. Take `⟨C5, c6, Cb, -, -, -, -, -, -, cQD, -, -, -⟩` from `hCh`. Conclude with `dl_of_chosen Fm C5 cQD`. Take `⟨C₅, h59a⟩` from `UnusedSlot33.field_lemmas_except_seven`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅` using `fun x hx i => by`. Take `⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩` from `h59a (Fm.D x i) (Fm.L x i).sc`. Conclude with `⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩`. Establish `h24` using `s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol`. Establish `h244 : StandardLattice.FamilyPartFour Fm C3` using `h24.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h22 : TaylorLogMetric.ConclusionOnFamily Fm C22` using `s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))`. Establish `h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev` using `fun x hx i => (h244 x hx i).2.2.2.1`. Establish `h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison` using `s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 h4p t10)`. Establish `hNF : NuFullF Fm` using `nuFullF_of Fm (nuCommensF_of Fm crystallineComparison h10 tSet)`. Establish `hRank : J.MuRank Fm` using `muRank_of_chosen Fm crystallineComparison (by linarith) hCh hNF h10 tSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hNF, hRank⟩`.
+A detailed English derivation is pending.
 -/
 theorem muRank_pk {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
     (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
@@ -309,15 +305,15 @@ theorem muRank_pk {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineCompa
   exact ⟨hNF, hRank⟩
 
 /- English proof (translation)
-Introduce `hCov hTu _ hCh hIn`. Establish `hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps`. Take `⟨C5, c6, Cb, -, -, -, -, -, -, cQD, -, -, -⟩` from `hCh`. Conclude with `dl_of_chosen Fm C5 cQD`. Take `⟨C₅, h59a⟩` from `UnusedSlot33.field_lemmas_except_seven`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅` using `fun x hx i => by`. Take `⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩` from `h59a (Fm.D x i) (Fm.L x i).sc`. Conclude with `⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩`. Establish `h24` using `s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol`. Establish `h244 : StandardLattice.FamilyPartFour Fm C3` using `h24.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h22 : TaylorLogMetric.ConclusionOnFamily Fm C22` using `s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))`. Establish `h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev` using `fun x hx i => (h244 x hx i).2.2.2.1`. Establish `h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison` using `s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 h4p t10)`. Establish `hNF : NuFullF Fm` using `nuFullF_of Fm (nuCommensF_of Fm crystallineComparison h10 tSet)`. Establish `hRank : J.MuRank Fm` using `muRank_of_chosen Fm crystallineComparison (by linarith) hCh hNF h10 tSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : RRRankF Fm`. Take `⟨C5, c6, Cb, -, -, -, -, -, -, -, -, cPr, -⟩` from `hCh`. Take `⟨-, lS, lI, lD, -⟩` from `hIn`. Conclude with `rrRankF_of Fm Cabs CH C0 (by linarith) lS cPr lI lD`. Establish `h245 : StandardLattice.PartFiveFamilyBounds Fm` using `h24.2.2.2.2.2.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCount : CountF Fm` using `countF_fam Fm h245`. Establish `h23` using `s23 ⟨flipTwoThree.theta_norm_family_of_linked Fm C22 h22 tOm, flipTwoThree.theta_condition_family_of_linked Fm C22 tFree tTh, flipTwoThree.stabiliser_family_of_column_lemma Fm 100 C₅ h59 h4p, flipTwoThree.injectivity_family_of_theorem Fm crystallineComparison h10 tSet, flipTwoThr …`. Establish `hSM : SlopesMF Fm` using `flipTwoThree.slopesMF_of_count_fam Fm h23.2.2.2.2.1 h23.2.2.2.2.2.1 hCount hDl tCV`. Conclude with `linkGLOBAL Fm Cabs CH C0 eL hCabs hCH.le heL hCount hSM (fun _ _ => slopes_family_of_division_side Fm provedFourF (ioNonnegF Fm)) hNF hRank hRR (fun cPr cCo lS lI lD => frameF_of Fm CH C0 hCH hC0 (frameRealF_of'' Fm Cabs CH C0 hCH.le lD lI lS cPr hNF hRank hTu (ramRankF_of Fm cry …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linkGLOBAL_pk {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
     (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)

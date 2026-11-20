@@ -12,11 +12,11 @@ open scoped ComplexConjugate nonZeroDivisors ContDiff ENNReal
 namespace GlobalTheory.RSThetaLow
 
 /- English proof (translation)
-Take `⟨B, hB, h⟩` from `GlobalTheory.RSTheta.exists_tsum_zpow_le hT hs`. Use `⟨B, hB, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hT0 : 0 < T` using `one_pos.trans hT`. Use `le_of_eq_of_le ?_ (h u⁻¹ (inv_pos.2 hu))` and prove the remaining obligations. Rewrite using `[← (Equiv.neg ℤ).tsum_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply]`. Establish `hp : 0 < T ^ n * u⁻¹` using `by positivity`. Establish `e : T ^ (-n) * u = (T ^ n * u⁻¹)⁻¹`. Rewrite using `[_root_.zpow_neg, mul_inv, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Real.inv_rpow hp.le, Real.rpow_neg hp.le]`. Simplify using `only [inv_le_one₀ hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_tsum_zpow_le_low {T s : ℝ} (hT : 1 < T) (hs : 0 < s) : ∃ B : ℝ≥0∞, B ≠ ⊤ ∧ ∀ u : ℝ, 0 < u →
     ∑' n : ℤ, (if T ^ n * u ≤ 1 then ENNReal.ofReal ((T ^ n * u) ^ s) else 0) ≤ B := by
@@ -36,21 +36,19 @@ theorem exists_tsum_zpow_le_low {T s : ℝ} (hT : 1 < T) (hs : 0 < s) : ∃ B : 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `set δ : GA E a → ℝ := fun g => (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδc : Continuous δ` using `GlobalTheory.RSTheta.continuous_absDet`. Establish `hδ0 : ∀ g, 0 < δ g` using `fun g => (ideleModule E _).2`. Establish `hδr : ∀ γ g, δ (ratGL E a γ * g) = δ g` using `fun γ g => by`. Simplify using `only [hδ, map_mul, ideleModule_det_rat, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set T : ℝ := Real.exp 1 ^ (a * Module.finrank ℚ E) with hT`. Establish `hT1 : 1 < T` using `one_lt_pow₀ (Real.one_lt_exp_iff.2 one_pos) (Nat.mul_pos ha Module.finrank_pos).ne'`. Establish `hδz : ∀ (n : ℤ) g, δ (splitCentre E a 1 ^ n * g) = T ^ n * δ g` using `GlobalTheory.RSTheta.absDet_zpow_mul`. Establish `hm : MeasurableSet {g | δ g ≤ 1}` using `(isClosed_le hδc continuous_const).measurableSet`. Establish `hc : Continuous fun g => δ g ^ s` using `hδc.rpow_const fun g => Or.inl (hδ0 g).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (.of_forall fun g => Real.rpow_nonneg (hδ0 g).le _)).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Set.inter_comm, ← Measure.restrict_restrict hm, ← lintegral_indicator hm]`. Set `φ : (ratGL E a).range × ℤ → latticeGL E a` to `fun p => ⟨p.1 * splitCentre E a 1 ^ p.2, mul_mem (Subgroup.mem_sup_left p.1.2) (zpow_mem_latticeGL _)⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨_, γ, rfl⟩, n⟩ ⟨⟨_, γ', rfl⟩, n'⟩ h`. Establish `h1 : ratGL E a γ * splitCentre E a 1 ^ n = ratGL E a γ' * splitCentre E a 1 ^ n'` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun x => δ (x * 1)) h1`. Simplify using `only [mul_assoc, hδr, hδz] at h2`. Take `rfl : n = n'` from `zpow_right_injective₀ (one_pos.trans hT1) hT1.ne' (mul_right_cancel₀ (hδ0 1).ne' h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext (Subtype.ext (mul_right_cancel h1)) rfl`. Introduce and unpack `⟨g, hg⟩`. Take `⟨γ, n, rfl⟩` from `mem_latticeGL_iff.1 hg`. Conclude with `⟨⟨⟨_, γ, rfl⟩, n⟩, rfl⟩`. Use `haveI : Countable (latticeGL E a) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hd` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom (latticeGL E a) μ`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `h1 : μ (GlobalTheory.AutomorphicL2Unitary.stdDom (latticeGL E a)) ≠ ⊤`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hd]`. Conclude with `measure_ne_top _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.ThetaUnfold.lintegral_unfold μ (latticeGL E a) (ratGL E a).range (fun n : ℤ => splitCentre E a 1 ^ n) (Equiv.ofBijective φ hφ) (fun _ => rfl) hd h𝓕 _ (by rintro _ ⟨γ, rfl⟩ g; simp only [Set.indicator_apply, Set.mem_setOf_eq]; rw [show δ (ratGL E a γ * g) = δ g fro …`. Take `⟨B, hB, h⟩` from `exists_tsum_zpow_le_low hT1 hs`. Use `(lintegral_mono (g := fun _ => B) fun g => ?_).trans_lt ?_` and prove the remaining obligations. Use `le_of_eq_of_le (tsum_congr fun n => ?_) (h _ (hδ0 g))` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq]`.
-
-Rewrite using `[hδz]`. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top hB.lt_top h1.lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_absDet_rpow (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) {s : ℝ} (hs : 0 < s) :
@@ -99,7 +97,7 @@ theorem integrableOn_absDet_rpow (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaar
     exact ENNReal.mul_lt_top hB.lt_top h1.lt_top
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ ha μ _ _ h𝓕 _ hs` and use `integrableOn_absDet_rpow ha μ h𝓕 hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integrableOn_absDet_rpow_low : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a →
     ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] (𝓕 : Set (GA E a)), IsFundamentalDomain (ratGL E a).range 𝓕 μ →

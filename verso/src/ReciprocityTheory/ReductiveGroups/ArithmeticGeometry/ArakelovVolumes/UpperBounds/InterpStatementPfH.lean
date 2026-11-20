@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def Lm (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) : ℝ := Real.log ‖dmin X.Gm x τ i‖
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hx`. Establish `h1` using `(hx τ).2 i`. Rewrite `h1` using `[h]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dmin_ne_zero {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -26,9 +26,9 @@ theorem dmin_ne_zero {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin 
   simp at h1
 
 /- English proof (translation)
-Establish `hd : ∀ τ i, dmin X.Gm x τ i ≠ 0` using `fun τ i => dmin_ne_zero X hx τ i`. Establish `hp : ∀ τ (i : Fin r), 0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖` using `fun τ i => norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))`. Unfold `phla Data.nfac`. Rewrite using `[Real.log_prod (fun τ _ => Finset.prod_ne_zero_iff.mpr (fun i _ => (Real.rpow_pos_of_pos (hp τ i) _).ne')), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hp τ i) _).ne'), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Real.log_rpow (hp τ i), norm_div, Real.log_div (norm_ne_zero_iff.mpr (hd τ _)) (norm_ne_zero_iff.mpr (hd τ _))]`. Simplify using `only [Lm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phla_eq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
     phla X la x = ∑ τ, ∑ i : Fin r, (la τ i : ℝ) * (Lm X x τ i.succ - Lm X x τ i.castSucc) := by
@@ -47,11 +47,11 @@ theorem phla_eq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
   ring
 
 /- English proof (translation)
-Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Establish `hd : ∀ τ i, dmin X.Gm (cpt X x0 z) τ i ≠ 0` using `fun τ i => dmin_ne_zero X hx τ i`. Unfold `densF`. Rewrite using `[Real.log_prod (fun τ _ => Finset.prod_ne_zero_iff.mpr (fun i _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hd τ _))))]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.log_prod (fun i _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hd τ _)))]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Real.log_zpow]`. Simplify using `only [Lm]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try ring`.
+A detailed English derivation is pending.
 -/
 theorem log_densF_eq (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     Real.log (densF X x0 z) = ∑ τ, ∑ i : Fin r, (-2) * Lm X (cpt X x0 z) τ i.castSucc := by
@@ -69,9 +69,9 @@ theorem log_densF_eq (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) :
   try ring
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp only [Finset.sum_range_zero, Nat.cast_zero]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih, Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_range_two_mul_sub_mul_sub_eq (L : ℕ → ℝ) (c : ℝ) (r : ℕ) :
     ∑ i ∈ Finset.range r, ((2 * i : ℝ) - c) * (L (i + 1) - L i) =
@@ -84,7 +84,7 @@ private theorem sum_range_two_mul_sub_mul_sub_eq (L : ℕ → ℝ) (c : ℝ) (r 
     ring
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | r + 1 => by have ih := sbp L r have htel : ∑ i ∈ Finset.range r, (L (i + 1) - L i) = L r - L 0 := Finset.sum_range_sub L r have hsplit : ∑ i ∈ Finset.range r, ((2 * i : ℝ) - (((r + 1 : ℕ) : ℝ) - 1)) * (L (i + 1) - L i) = ∑ i ∈ Finset.range r, ((2 * i : ℝ) - ((r : …`.
+A detailed English derivation is pending.
 -/
 theorem sbp (L : ℕ → ℝ) : ∀ r : ℕ, ∑ i ∈ Finset.range r, ((2 * i : ℝ) - ((r : ℝ) - 1)) * (L (i + 1) - L i) =
     ((r : ℝ) - 1) * L r - 2 * ∑ i ∈ Finset.range r, L i + ((r : ℝ) + 1) * L 0
@@ -104,7 +104,7 @@ theorem sbp (L : ℕ → ℝ) : ∀ r : ℕ, ∑ i ∈ Finset.range r, ((2 * i :
     ring
 
 /- English proof (translation)
-Unfold `Lm dmin lminor`. Use `haveI : IsEmpty (Fin ((0 : Fin (r + 1)) : ℕ)) := ⟨fun i => by have := i.isLt; simp at this⟩`. Rewrite using `[Matrix.det_isEmpty]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lm_zero (x : Frame X.Ψ r) (τ : X.Ψ) : Lm X x τ 0 = 0 := by
   unfold Lm dmin lminor
@@ -113,7 +113,7 @@ theorem Lm_zero (x : Frame X.Ψ r) (τ : X.Ψ) : Lm X x τ 0 = 0 := by
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gram_eq_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
@@ -123,11 +123,11 @@ private theorem gram_eq_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hN : (mat (nmat X z) τ).det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Simplify using `[mat, nmat]`. Introduce `a b hab`. Establish `hab' : a < b` using `OrderDual.toDual_lt_toDual.mp hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[mat, nmat, not_lt.mpr hab'.le, hab'.ne]`. Establish `hNc : ((mat (nmat X z) τ).map (starRingEnd ℂ)).det = 1`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hN, map_one]`. Establish `key : dmin X.Gm (cpt X x0 z) τ (Fin.last r) = (gram τ.1 X.Gm (mat (cpt X x0 z) τ)).det` using `rfl`. Establish `e1 : mat (cpt X x0 z) τ = mat x0 τ * mat (nmat X z) τ` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ a : Fin r, ‖((sgn X.p0 (a : ℕ) : ℝ) : ℂ)‖ = 1` using `fun a => by`. Apply the tactic sequence `unfold sgn; split_ifs <;> simp`. Rewrite using `[Lm, key, e1, gram_eq_lemma, Matrix.transpose_mul, Matrix.map_mul, show ∀ A B C D F : Matrix (Fin r) (Fin r) ℂ, A * B * C * (D * F) = A * (B * C * D) * F from fun A B C D F => by simp only [Matrix.mul_assoc], ← gram_eq_lemma τ.1 X.Gm (mat x0 τ), ho τ, Matrix.det_mul, Matrix.det_m …`. Simplify using `only [one_mul, mul_one, norm_prod, hs, Finset.prod_const_one, Real.log_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lm_last_cpt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (z : V (nd X)) (τ : X.Ψ) :
     Lm X (cpt X x0 z) τ (Fin.last r) = 0 := by
@@ -151,19 +151,17 @@ theorem Lm_last_cpt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (z : V (nd X)) (τ : 
   simp only [one_mul, mul_one, norm_prod, hs, Finset.prod_const_one, Real.log_one]
 
 /- English proof (translation)
-Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Rewrite using `[phla_eq X hx, log_densF_eq X x0 hz]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Take `⟨L, hL⟩ : ∃ L : ℕ → ℝ, L = fun n => if h : n < r + 1 then Lm X (cpt X x0 z) τ ⟨n, h⟩ else 0` from `⟨_, rfl⟩`. Establish `h1 : ∀ i : Fin r, Lm X (cpt X x0 z) τ i.succ = L ((i : ℕ) + 1)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hL]`. Simplify using `only`. Rewrite using `[dif_pos (show (i : ℕ) + 1 < r + 1 by have := i.isLt; omega)]`. Apply the tactic sequence `try rfl`. Establish `h2 : ∀ i : Fin r, Lm X (cpt X x0 z) τ i.castSucc = L (i : ℕ)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Simplify using `only`. Rewrite using `[dif_pos (show (i : ℕ) < r + 1 by have := i.isLt; omega)]`. Apply the tactic sequence `try rfl`. Establish `hk : ∀ i : Fin r, ((kapW X τ i : ℤ) : ℝ) = (2 * (i : ℕ) : ℝ) - ((r : ℝ) - 1)` using `fun i => by`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [kapW]`. Use `push_cast`. Apply the tactic sequence `try ring`. Establish `hr : L r = 0`. Rewrite using `[hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[dif_pos (show r < r + 1 by omega)]`. Conclude with `Lm_last_cpt X x0 ho z τ`. Establish `e0 : (⟨0, Nat.succ_pos r⟩ : Fin (r + 1)) = 0` using `Fin.ext (by simp)`. Establish `h0 : L 0 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL]`. Simplify using `only`. Rewrite using `[dif_pos (show 0 < r + 1 by omega), e0]`. Conclude with `Lm_zero X _ τ`. Simplify using `only [h1, h2, hk]`.
-
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ((2 * i : ℝ) - ((r : ℝ) - 1)) * (L (i + 1) - L i)) r, Fin.sum_univ_eq_sum_range (fun i => (-2) * L i) r, sbp L r, hr, h0, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem phla_kapW_cpt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     phla X (kapW X) (cpt X x0 z) = Real.log (densF X x0 z) := by
@@ -203,9 +201,9 @@ theorem phla_kapW_cpt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz 
   ring
 
 /- English proof (translation)
-Establish `hN : ∀ k : Fin r, ContDiff ℂ ∞ fun z : V (nd X) => nmat X z τ k b`. Introduce `k`. Distinguish the cases in `h : b < k`. Simplify using `only [nmat, dif_pos h]`. Conclude with `(show V (nd X) →L[ℂ] ℂ from EuclideanSpace.proj _).contDiff`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [nmat, dif_neg h]`. Conclude with `contDiff_const`. Use `show ContDiff ℂ ∞ fun z : V (nd X) => (mat x0 τ * mat (nmat X z) τ) a b`. Simplify using `only [Matrix.mul_apply, mat, Matrix.of_apply]`. Conclude with `ContDiff.sum (fun k _ => contDiff_const.mul (hN k))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpt_entry_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin r) :
     ContDiff ℂ ∞ fun z : V (nd X) => cpt X x0 z τ a b := by
@@ -221,9 +219,9 @@ theorem cpt_entry_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin r) :
   exact ContDiff.sum (fun k _ => contDiff_const.mul (hN k))
 
 /- English proof (translation)
-Establish `hc : ∀ a b : Fin r, ContDiff ℝ ∞ fun z : V (nd X) => cpt X x0 z τ a b` using `fun a b => (cpt_entry_cd X x0 τ a b).restrict_scalars ℝ`. Establish `hcj : ∀ a b : Fin r, ContDiff ℝ ∞ fun z : V (nd X) => (starRingEnd ℂ) (cpt X x0 z τ a b)`. Introduce `a b`. Use `first`. Consider the case `exact Complex.conjCLE.contDiff.comp (hc a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa [Function.comp_def] using Complex.conjCLE.contDiff.comp (hc a b)`. Simplify using `only [gram, hermC, col, Matrix.of_apply, mat]`. Use `ContDiff.sum (fun k _ => ContDiff.sum (fun l _ => ?_))` and prove the remaining obligations. Conclude with `((hc k a).mul contDiff_const).mul (hcj l b)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_cpt_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin r) :
     ContDiff ℝ ∞ fun z : V (nd X) => FD.gram τ.1 X.Gm (mat (cpt X x0 z) τ) a b := by
@@ -239,9 +237,9 @@ theorem gram_cpt_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin r) :
   exact ((hc k a).mul contDiff_const).mul (hcj l b)
 
 /- English proof (translation)
-Unfold `dmin lminor`. Simplify using `only [Matrix.det_apply', Matrix.submatrix_apply]`. Use `ContDiff.sum (fun σ _ => contDiff_const.mul ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact contDiff_prod (fun j _ => gram_cpt_cd X x0 τ _ _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem dmin_cpt_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     ContDiff ℝ ∞ fun z : V (nd X) => dmin X.Gm (cpt X x0 z) τ i := by
@@ -253,7 +251,7 @@ theorem dmin_cpt_cd (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
   | fun_prop
 
 /- English proof (translation)
-Rewrite using `[Complex.normSq_eq_norm_sq, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_norm_eq (w : ℂ) : Real.log ‖w‖ = Real.log (Complex.normSq w) / 2 := by
   rw [Complex.normSq_eq_norm_sq, Real.log_pow]
@@ -261,9 +259,9 @@ theorem log_norm_eq (w : ℂ) : Real.log ‖w‖ = Real.log (Complex.normSq w) /
   ring
 
 /- English proof (translation)
-Establish `hd : dmin X.Gm (cpt X x0 z) τ i ≠ 0` using `dmin_ne_zero X hz τ i`. Establish `hf` using `dmin_cpt_cd X x0 τ i`. Establish `hre : ContDiff ℝ ∞ fun w => (dmin X.Gm (cpt X x0 w) τ i).re` using `Complex.reCLM.contDiff.comp hf`. Establish `him : ContDiff ℝ ∞ fun w => (dmin X.Gm (cpt X x0 w) τ i).im` using `Complex.imCLM.contDiff.comp hf`. Simplify using `only [Lm, log_norm_eq, Complex.normSq_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ContDiffAt.div_const ?_ 2` and prove the remaining obligations. Use `((hre.mul hre).add (him.mul him)).contDiffAt.log ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_apply]`. Conclude with `(Complex.normSq_pos.mpr hd).ne'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lm_cpt_cdAt (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) (τ : X.Ψ) (i : Fin (r + 1)) :
     ContDiffAt ℝ ∞ (fun w => Lm X (cpt X x0 w) τ i) z := by
@@ -278,7 +276,7 @@ theorem Lm_cpt_cdAt (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) (τ
   exact (Complex.normSq_pos.mpr hd).ne'
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', mat, Matrix.of_apply]`. Use `ContDiff.sum (fun σ _ => contDiff_const.mul ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact contDiff_prod (fun j _ => cpt_entry_cd X x0 τ _ _)`. Consider the case `fun_prop`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem contDiff_det_mat_cpt (x0 : Frame X.Ψ r) (τ : X.Ψ) :
     ContDiff ℂ ∞ fun w : V (nd X) => (mat (cpt X x0 w) τ).det := by
@@ -289,11 +287,9 @@ private theorem contDiff_det_mat_cpt (x0 : Frame X.Ψ r) (τ : X.Ψ) :
   | fun_prop
 
 /- English proof (translation)
-Establish `hz' : cpt X x0 z ∈ X.dom` using `hz`. Use `show ∀ᶠ w in 𝓝 z, cpt X x0 w ∈ X.dom`. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hz' ⊢`. Rewrite using `[Filter.eventually_all]`. Introduce `τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.and ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun w : V (nd X) => (mat (cpt X x0 w) τ).det` using `(contDiff_det_mat_cpt X x0 τ).continuous`. Conclude with `hc.continuousAt.eventually_ne (hz' τ).1`. Rewrite using `[Filter.eventually_all]`. Introduce `i`.
-
-Establish `hc : Continuous fun w : V (nd X) => psgn X.p0 i * (dmin X.Gm (cpt X x0 w) τ i).re` using `continuous_const.mul (Complex.continuous_re.comp (dmin_cpt_cd X x0 τ i).continuous)`. Conclude with `hc.continuousAt.eventually (Ioi_mem_nhds ((hz' τ).2 i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eventually_mem_omF (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     ∀ᶠ w in 𝓝 z, w ∈ OmF X x0 := by
@@ -313,7 +309,7 @@ private theorem eventually_mem_omF (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z �
     exact hc.continuousAt.eventually (Ioi_mem_nhds ((hz' τ).2 i))
 
 /- English proof (translation)
-Use `filter_upwards [eventually_mem_omF X x0 hz] with w hw`. Conclude with `phla_eq X hw la`.
+A detailed English derivation is pending.
 -/
 theorem phla_cpt_eventually (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) (la : Wt X.Ψ r) :
     (fun w => phla X la (cpt X x0 w)) =ᶠ[𝓝 z]
@@ -322,7 +318,7 @@ theorem phla_cpt_eventually (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X
   exact phla_eq X hw la
 
 /- English proof (translation)
-Use `ContDiffAt.congr_of_eventuallyEq ?_ (phla_cpt_eventually X x0 hz la)` and prove the remaining obligations. Use `ContDiffAt.sum (fun τ _ => ContDiffAt.sum (fun i _ => ?_))` and prove the remaining obligations. Conclude with `contDiffAt_const.mul ((Lm_cpt_cdAt X x0 hz τ _).sub (Lm_cpt_cdAt X x0 hz τ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phla_cpt_cdAt (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) (la : Wt X.Ψ r) :
     ContDiffAt ℝ ∞ (fun w => phla X la (cpt X x0 w)) z := by
@@ -331,7 +327,7 @@ theorem phla_cpt_cdAt (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) (
   exact contDiffAt_const.mul ((Lm_cpt_cdAt X x0 hz τ _).sub (Lm_cpt_cdAt X x0 hz τ _))
 
 /- English proof (translation)
-Use `ContDiffAt.congr_of_eventuallyEq ?_ ((eventually_mem_omF X x0 hz).mono (fun w hw => log_densF_eq X x0 hw))` and prove the remaining obligations. Conclude with `ContDiffAt.sum (fun τ _ => ContDiffAt.sum (fun i _ => contDiffAt_const.mul (Lm_cpt_cdAt X x0 hz τ _)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDens_cdAt (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     ContDiffAt ℝ ∞ (fun w => Real.log (densF X x0 w)) z := by
@@ -347,9 +343,9 @@ Both sides reduce to the same expression.
 @[simp] theorem V_zero_app {m : ℕ} (i : Fin m) : (0 : V m) i = 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : b < a`. Simplify using `[mat, nmat, Matrix.one_apply, h, h.ne'] first`. Consider the case `exact V_zero_app _`. Consider the case `rfl`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `[mat, nmat, Matrix.one_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nmat_zero (τ : X.Ψ) : mat (nmat X (0 : V (nd X))) τ = 1 := by
   ext a b
@@ -361,7 +357,7 @@ theorem nmat_zero (τ : X.Ψ) : mat (nmat X (0 : V (nd X))) τ = 1 := by
   · simp [mat, nmat, Matrix.one_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show mat x0 τ * mat (nmat X 0) τ = x0 τ`. Rewrite using `[nmat_zero, Matrix.mul_one]`. Apply the tactic sequence `try rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_zero (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   funext τ
@@ -370,15 +366,15 @@ theorem cpt_zero (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   try rfl
 
 /- English proof (translation)
-Establish `hsq : ∀ a : ℕ, sgn X.p0 a * sgn X.p0 a = 1` using `fun a => by`. Apply the tactic sequence `unfold sgn; split_ifs <;> norm_num`. Establish `hd : ∀ τ : X.Ψ, ∀ i : Fin (r + 1), dmin X.Gm x0 τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Introduce `τ i`. Unfold `dmin lminor`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[ho τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Rewrite using `[Complex.ofReal_prod, ← Fin.prod_univ_eq_prod_range]`. Both sides reduce to the same expression. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h3` using `congrArg Matrix.det (ho τ)`. Rewrite `h3` using `[gram_eq_lemma, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `exact (Finset.prod_ne_zero_iff.mpr (fun a _ => Complex.ofReal_ne_zero.mpr (by unfold sgn; split_ifs <;> norm_num))) h3.symm`. Establish `hps : psgn X.p0 i * psgn X.p0 i = 1`. Unfold `psgn`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one (fun a _ => hsq a)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd τ i, Complex.ofReal_re, hps]`. Conclude with `one_pos`.
+A detailed English derivation is pending.
 -/
 private theorem mem_dom_of_isOrth' (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : x0 ∈ X.dom := by
   have hsq : ∀ a : ℕ, sgn X.p0 a * sgn X.p0 a = 1 := fun a => by
@@ -407,7 +403,7 @@ private theorem mem_dom_of_isOrth' (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : x0 �
     exact one_pos
 
 /- English proof (translation)
-Use `show cpt X x0 0 ∈ X.dom`. Rewrite using `[cpt_zero]`. Conclude with `mem_dom_of_isOrth' X x0 ho`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_OmF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : (0 : V (nd X)) ∈ OmF X x0 := by
   show cpt X x0 0 ∈ X.dom
@@ -415,15 +411,15 @@ theorem zero_mem_OmF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : (0 : V (nd X)) ∈
   exact mem_dom_of_isOrth' X x0 ho
 
 /- English proof (translation)
-Conclude with `mem_dom_of_isOrth' X x0 ho`.
+A detailed English derivation is pending.
 -/
 theorem orth_mem_dom (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : x0 ∈ X.dom := by
   exact mem_dom_of_isOrth' X x0 ho
 
 /- English proof (translation)
-Simplify using `only [phla_eq X hx]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (((la1 - kapW X - k • la2) τ i : ℤ) : ℝ) = (la1 τ i : ℝ) - (kapW X τ i : ℝ) - (k : ℝ) * (la2 τ i : ℝ)`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phla_comb {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la1 la2 : Wt X.Ψ r) (k : ℕ) :
     phla X (la1 - kapW X - k • la2) x = phla X la1 x - phla X (kapW X) x - k * phla X la2 x := by
@@ -439,23 +435,23 @@ theorem phla_comb {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la1 la2 : Wt X.Ψ r) (k
   ring
 
 /- English proof (translation)
-Establish `hle1 : (1 : WithTop ℕ∞) ≤ ∞` using `by first`. Consider the case `exact mod_cast le_top`. Consider the case `simp`. Establish `hle2 : (1 : WithTop ℕ∞) + 1 ≤ ∞`. Rewrite using `[one_add_one_eq_two]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `exact (WithTop.coe_le_coe.mpr (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤))`. Consider the case `exact mod_cast le_top`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `decide`. Establish `hn0 : (∞ : WithTop ℕ∞) ≠ 0` using `(lt_of_lt_of_le zero_lt_one hle1).ne'`. Establish `hD : ∀ᶠ w in 𝓝 z, fderiv ℝ f w = fderiv ℝ f1 w - fderiv ℝ f2 w - c • fderiv ℝ f3 w` using `by filter_upwards [hev.eventuallyEq_nhds, h1, h2, h3] with w hw hw1 hw2 hw3`. Rewrite using `[hw.fderiv_eq]`. Conclude with `(((hw1.differentiableAt hn0).hasFDerivAt.sub (hw2.differentiableAt hn0).hasFDerivAt).sub ((hw3.differentiableAt hn0).hasFDerivAt.const_mul c)).fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ l, wdb n l f =ᶠ[𝓝 z] fun w => wdb n l f1 w - wdb n l f2 w - c * wdb n l f3 w`. Introduce `l`. Use `filter_upwards [hD] with w hw`. Simplify using `only [wdb, hw, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWd : ∀ g : V n → ℂ, (∀ᶠ w in 𝓝 z, ContDiffAt ℝ ∞ g w) → ∀ l, DifferentiableAt ℝ (wdb n l g) z`. Introduce `g hg l`. Establish `hf' : DifferentiableAt ℝ (fderiv ℝ g) z` using `((hg.self_of_nhds).fderiv_right hle2).differentiableAt one_ne_zero`. Establish `hv : ∀ v : V n, DifferentiableAt ℝ (fun y => fderiv ℝ g y v) z` using `fun v => hf'.clm_apply (differentiableAt_const v)`. Establish `hsum : DifferentiableAt ℝ (fun y => fderiv ℝ g y (bas n l) + Complex.I * fderiv ℝ g y (Complex.I • bas n l)) z` using `(hv _).add ((hv _).const_mul Complex.I)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show DifferentiableAt ℝ (fun y => (fderiv ℝ g y (bas n l) + Complex.I * fderiv ℝ g y (Complex.I • bas n l)) / 2) z`. Simplify using `only [div_eq_mul_inv]`. Conclude with `hsum.mul_const _`. Establish `hwd : ∀ j l, wd n j (wdb n l f) z = wd n j (wdb n l f1) z - wd n j (wdb n l f2) z - c * wd n j (wdb n l f3) z`. Introduce `j l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `d1` using `hWd f1 h1 l`. Establish `d2` using `hWd f2 h2 l`. Establish `d3` using `hWd f3 h3 l`. Establish `e2 : fderiv ℝ (fun w => wdb n l f1 w - wdb n l f2 w - c * wdb n l f3 w) z = fderiv ℝ (wdb n l f1) z - fderiv ℝ (wdb n l f2) z - c • fderiv ℝ (wdb n l f3) z` using `((d1.hasFDerivAt.sub d2.hasFDerivAt).sub (d3.hasFDerivAt.const_mul c)).fderiv`. Unfold `wd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hW l).fderiv_eq, e2]`. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `leviV`. Simplify using `only [hwd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem leviV_sub_sub_const_mul_of_eventuallyEq {n : ℕ} (f f1 f2 f3 : V n → ℂ) (c : ℂ) (z : V n) (ξ : Fin n → ℂ)
     (hev : f =ᶠ[𝓝 z] fun w => f1 w - f2 w - c * f3 w)
@@ -521,13 +517,9 @@ private theorem leviV_sub_sub_const_mul_of_eventuallyEq {n : ℕ} (f f1 f2 f3 : 
   ring
 
 /- English proof (translation)
-Unfold `leviO leviDens leviM`. Establish `hev` using `eventually_mem_omF X x0 hz`. Rewrite using `[leviV_sub_sub_const_mul_of_eventuallyEq (fun w => ((phla X (la1 - kapW X - k • la2) (cpt X x0 w) : ℝ) : ℂ)) (fun w => ((phla X la1 (cpt X x0 w) : ℝ) : ℂ)) (fun w => ((Real.log (densF X x0 w) : ℝ) : ℂ)) (fun w => ((phla X la2 (cpt X x0 w) : ℝ) : ℂ)) (k : ℂ) z ξ ?_ ?_ ?_ ?_]`. Use `first`. Consider the case `(simp only [Complex.sub_re, Complex.mul_re, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero]; done)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`. Use `filter_upwards [hev] with w hw`. Establish `hw' : cpt X x0 w ∈ X.dom` using `hw`. Apply the tactic sequence `try dsimp only`. Rewrite using `[phla_comb X hw' la1 la2 k, phla_kapW_cpt X x0 ho hw]`.
-
-Use `push_cast`. Apply the tactic sequence `try ring`. Use `filter_upwards [hev] with w hw`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp w (phla_cpt_cdAt X x0 hw la1)`. Use `filter_upwards [hev] with w hw`.
-
-Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp w (logDens_cdAt X x0 hw)`. Use `filter_upwards [hev] with w hw`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp w (phla_cpt_cdAt X x0 hw la2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem leviM_comb (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0)
     (la1 la2 : Wt X.Ψ r) (k : ℕ) (ξ : Fin (nd X) → ℂ) :

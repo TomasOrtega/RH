@@ -22,7 +22,7 @@ def coordinateToLast (c : τ) : (τ → ℂ) →L[ℂ] (Option {c' // c' ≠ c} 
     | some c' => ContinuousLinearMap.proj c'.1
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : c' = c <;> simp [lastToCoordinate, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lastToCoordinate_apply (c : τ) (w : Option {c' // c' ≠ c} → ℂ) (c' : τ) :
     lastToCoordinate c w c' = if h : c' = c then w none else w (some ⟨c', h⟩) := by
@@ -42,9 +42,9 @@ theorem coordinateToLast_some (c : τ) (y : τ → ℂ) (c' : {c' // c' ≠ c}) 
     coordinateToLast c y (some c') = y c'.1 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c'`. Rewrite using `[lastToCoordinate_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lastToCoordinate_coordinateToLast (c : τ) (y : τ → ℂ) :
     lastToCoordinate c (coordinateToLast c y) = y := by
@@ -55,9 +55,9 @@ theorem lastToCoordinate_coordinateToLast (c : τ) (y : τ → ℂ) :
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c'`. Rewrite using `[lastToCoordinate_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[pointWithLast]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pointWithLast, h]`.
+A detailed English derivation is pending.
 -/
 theorem lastToCoordinate_pointWithLast (c : τ) (s : ℂ) :
     lastToCoordinate c (pointWithLast 0 s) = Pi.single c s := by
@@ -68,19 +68,19 @@ theorem lastToCoordinate_pointWithLast (c : τ) (s : ℂ) :
   · simp [pointWithLast, h]
 
 /- English proof (translation)
-Introduce `τ _ _ y₀ c d F g hF hg hord`. Establish `hA : ∀ h : (τ → ℂ) → ℂ, AnalyticAt ℂ h y₀ → AnalyticAt ℂ (fun w => h (y₀ + lastToCoordinate c w)) 0`. Introduce `h hh`. Conclude with `AnalyticAt.fun_comp_of_eq hh (analyticAt_const.add ((lastToCoordinate c).analyticAt 0)) (by simp)`. Establish `hord' : analyticOrderAt (fun t => (fun w => F (y₀ + lastToCoordinate c w)) (pointWithLast 0 t)) 0 = d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hord` using `only [lastToCoordinate_pointWithLast]`. Take `⟨q, a, hq, ha, heq⟩` from `hW {c' // c' ≠ c} d _ _ (hA F hF) (hA g hg) hord'`. Use `⟨fun y => q (coordinateToLast c (y - y₀)), fun j u => a j (fun c' => u c'.1 - y₀ c'.1), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `AnalyticAt.fun_comp_of_eq hq (((coordinateToLast c).analyticAt _).comp (analyticAt_id.sub analyticAt_const)) (by simp)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : AnalyticAt ℂ (fun u : τ → ℂ => fun c' : {c' // c' ≠ c} => u c'.1 - y₀ c'.1) (zeroCoordinate c y₀)`. Establish `hL` using `((ContinuousLinearMap.pi fun c' : {c' // c' ≠ c} => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : τ => ℂ) c'.1).analyticAt (zeroCoordinate c y₀)).sub (analyticAt_const (v := fun c' : {c' // c' ≠ c} => y₀ c'.1))`. Use `hL using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u c'`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `AnalyticAt.fun_comp_of_eq (ha j) hR ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c'`. Simplify using `[zeroCoordinate_apply, c'.2]`. Establish `hT : Tendsto (fun y => coordinateToLast c (y - y₀)) (𝓝 y₀) (𝓝 0)`. Establish `hc : Continuous fun y : τ → ℂ => coordinateToLast c (y - y₀)` using `(coordinateToLast c).continuous.comp (continuous_id.sub continuous_const)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hc.tendsto y₀`. Use `filter_upwards [hT.eventually heq] with y hy`. Establish `hy' : y₀ + lastToCoordinate c (coordinateToLast c (y - y₀)) = y`. Rewrite using `[lastToCoordinate_coordinateToLast]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hy'] at hy`. Rewrite using `[hy]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (fun i : {c' // c' ≠ c} => coordinateToLast c (y - y₀) (some i)) = fun c' => zeroCoordinate c y c'.1 - y₀ c'.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `c'`. Rewrite using `[coordinateToLast_some, zeroCoordinate_apply, if_neg c'.2, Pi.sub_apply]`. Rewrite using `[h1, coordinateToLast_none, Pi.sub_apply]`.
+A detailed English derivation is pending.
 -/
 theorem WeierstrassDivisionAtPoint.proof (hW : WeierstrassDivision.Statement) :
     WeierstrassDivisionAtPoint.Statement := by

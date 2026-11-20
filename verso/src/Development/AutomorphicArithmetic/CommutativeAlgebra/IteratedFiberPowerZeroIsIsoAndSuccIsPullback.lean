@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC UpperTheory.Et
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Set `g : Over.mk (𝟙 S) ⟶ GlobalTheory.KS.pow A 0` to `Pi.lift fun i => Fin.elim0 i`. Set `f : GlobalTheory.KS.pow A 0 ⟶ Over.mk (𝟙 S)` to `Over.homMk (GlobalTheory.KS.pow A 0).hom`. Establish `hfg : f ≫ g = 𝟙 _` using `Pi.hom_ext _ _ fun i => Fin.elim0 i`. Use `⟨⟨g.left, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun x => x.left) hfg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `[f]`. Simplify using `using Over.w g`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem UpperTheory.power_zero_isIso {S : Scheme.{0}} (A : Over S) : IsIso (GlobalTheory.KS.pow A 0).hom := by
   let g : Over.mk (𝟙 S) ⟶ GlobalTheory.KS.pow A 0 := Pi.lift fun i => Fin.elim0 i
@@ -20,7 +20,7 @@ private theorem UpperTheory.power_zero_isIso {S : Scheme.{0}} (A : Over S) : IsI
   · simpa using Over.w g
 
 /- English proof (translation)
-Use `⟨Pi.lift fun j => Fin.lastCases (motive := fun _ => T ⟶ A) b (fun i => a ≫ Pi.π (fun _ : Fin m => A) i) j, ?_, ?_⟩` and prove the remaining obligations. Use `Pi.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.power_succ_lift {S : Scheme.{0}} (A : Over S) (m : ℕ) (T : Over S)
     (a : T ⟶ GlobalTheory.KS.pow A m) (b : T ⟶ A) :
@@ -34,7 +34,7 @@ private theorem UpperTheory.power_succ_lift {S : Scheme.{0}} (A : Over S) (m : �
   · simp
 
 /- English proof (translation)
-Use `Pi.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact h₂`. Consider the case `cast i => simpa using congrArg (· ≫ Pi.π (fun _ : Fin m => A) i) h₁`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem UpperTheory.power_succ_lift_unique {S : Scheme.{0}} (A : Over S) (m : ℕ) (T : Over S)
     (l l' : T ⟶ GlobalTheory.KS.pow A (m + 1))
@@ -48,17 +48,17 @@ private theorem UpperTheory.power_succ_lift_unique {S : Scheme.{0}} (A : Over S)
   | cast i => simpa using congrArg (· ≫ Pi.π (fun _ : Fin m => A) i) h₁
 
 /- English proof (translation)
-Introduce `S A`. Use `⟨UpperTheory.power_zero_isIso A, fun m => ?_⟩` and prove the remaining obligations. Set `P : GlobalTheory.KS.pow A (m + 1) ⟶ GlobalTheory.KS.pow A m` to `Pi.lift fun i : Fin m => Pi.π (fun _ : Fin (m + 1) => A) i.castSucc`. Set `Q : GlobalTheory.KS.pow A (m + 1) ⟶ A` to `Pi.π (fun _ : Fin (m + 1) => A) (Fin.last m)`. Establish `w : P.left ≫ (GlobalTheory.KS.pow A m).hom = Q.left ≫ A.hom` using `(Over.w P).trans (Over.w Q).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL` using `fun s : PullbackCone (GlobalTheory.KS.pow A m).hom A.hom => UpperTheory.power_succ_lift A m (Over.mk (s.snd ≫ A.hom)) (Over.homMk s.fst s.condition) (Over.homMk s.snd rfl)`. Use `⟨P.left, Q.left, IsPullback.of_isLimit' ⟨w⟩ (PullbackCone.IsLimit.mk w (fun s => (hL s).choose.left) ?_ ?_ ?_), Over.w P⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[← Over.comp_left, (hL s).choose_spec.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `s`. Rewrite using `[← Over.comp_left, (hL s).choose_spec.2]`. Both sides reduce to the same expression. Introduce `s n hn1 hn2`. Establish `hn : n ≫ (GlobalTheory.KS.pow A (m + 1)).hom = s.snd ≫ A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Over.w Q, ← Category.assoc, hn2]`. Set `N : Over.mk (s.snd ≫ A.hom) ⟶ GlobalTheory.KS.pow A (m + 1)` to `Over.homMk n hn`. Establish `h1 : N ≫ P = (hL s).choose ≫ P`. Rewrite using `[(hL s).choose_spec.1]`. Apply `(Over.forget S).map_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hn1` using `[N]`. Establish `h2 : N ≫ Q = (hL s).choose ≫ Q`. Rewrite using `[(hL s).choose_spec.2]`. Apply `(Over.forget S).map_injective` to reduce the goal to its premises. Simplify `hn2` using `[N]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg (fun x => x.left) (UpperTheory.power_succ_lift_unique A m _ N _ h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.iteratedFiberPower_zero_isIso_and_succ_isPullback :
     ∀ {S : Scheme.{0}} (A : Over S), IsIso (GlobalTheory.KS.pow A 0).hom ∧ ∀ m : ℕ, ∃ (u : (GlobalTheory.KS.pow A (m + 1)).left ⟶ (GlobalTheory.KS.pow A m).left) (v : (GlobalTheory.KS.pow A (m + 1)).left ⟶ A.left), IsPullback u v (GlobalTheory.KS.pow A m).hom A.hom ∧ u ≫ (GlobalTheory.KS.pow A m).hom = (GlobalTheory.KS.pow A (m + 1)).hom := by

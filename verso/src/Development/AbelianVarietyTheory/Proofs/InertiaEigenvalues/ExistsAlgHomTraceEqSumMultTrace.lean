@@ -29,7 +29,7 @@ noncomputable def blockDiagMultAlgHom (k : Type) [Field k] (N : ℕ) (n m : Fin 
     exact blockDiagonal'_one
 
 /- English proof (translation)
-Use `show (blockDiagonal' (fun j : (Σ i, Fin (m i)) => x j.1)).trace = _`. Rewrite using `[trace_blockDiagonal', Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show ∑ _y : Fin (m i), (x i).trace = _`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiagMultAlgHom_trace (k : Type) [Field k] (N : ℕ) (n m : Fin N → ℕ)
     (x : Π i, Matrix (Fin (n i)) (Fin (n i)) k) :
@@ -41,9 +41,9 @@ theorem blockDiagMultAlgHom_trace (k : Type) [Field k] (N : ℕ) (n m : Fin N �
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `k _ N n m d hd`. Establish `hcard : Fintype.card (Σ j : (Σ i, Fin (m i)), Fin (n j.1)) = d`. Rewrite using `[Fintype.card_sigma, Fintype.sum_sigma, ← hd]`. Simplify using `[mul_comm]`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨(reindexAlgEquiv k k e).toAlgHom.comp (blockDiagMultAlgHom k N n m), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← blockDiagMultAlgHom_trace]`. Use `show (reindex e e (blockDiagMultAlgHom k N n m x)).trace = _`. Simplify using `only [reindex_apply, trace, diag, submatrix_apply]`. Conclude with `Equiv.sum_comp e.symm (fun i => blockDiagMultAlgHom k N n m x i i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_algHom_trace_eq_sum_mult_trace : ∀ (k : Type) [Field k] (N : ℕ) (n m : Fin N → ℕ) (d : ℕ),
     ∑ i, m i * n i = d → ∃ ρ : (Π i, Matrix (Fin (n i)) (Fin (n i)) k) →ₐ[k] Matrix (Fin d) (Fin d) k,

@@ -12,7 +12,7 @@ open scoped Classical
 namespace GlobalTheory.FlagDegChecked
 
 /- English proof (translation)
-Introduce `h1 h2 ι _ N n`. Use `GlobalTheory.FlagDegTie.flag_gdeg_eq_degFl h1 h2 ι N n` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem flag_gdeg_eq_degFl_checked : Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ (ι : Type) [Fintype ι] (N : ℕ) (n : ι × Fin N → ℤ), gdeg (comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n) (dimFl ι N) = degFl ι N (lin (fun x => (n x : ℝ)) ^ dimFl ι N) := by
   intro h1 h2 ι _ N n

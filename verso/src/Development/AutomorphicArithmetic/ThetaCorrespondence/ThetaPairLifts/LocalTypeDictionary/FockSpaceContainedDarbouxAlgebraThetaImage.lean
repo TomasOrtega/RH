@@ -16,11 +16,9 @@ noncomputable section
 namespace GlobalTheory.DarbImageRevB
 variable {D : D7}
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM g P hg`. Establish `hG : IsUnit W₁.gram.det` using `(Formalism.L2.Theta.gram_det_ne W₁).isUnit`. Establish `key` using `(GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ false W₁ X A₁ B e.symm Bs hM.triple.base h.ψ Γ.V' Γ.W _ _ _ _ (by simpa using h.JW₁) (by rw [h.JX]; rfl) hM.triple.geo.hV' hM.triple.geo.hW (fun w => by`. Take `⟨τ, h1, -, h2, h3⟩` from `h.cart w`. Conclude with `⟨τ, h1, by simpa using h2, by rw [h3]; rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `Γ.M' hM.triple.geo.hM' (crd W₁.gram hG e) (fun u => by simp [crd])).1`. Take `⟨Φ, hΦ, hd⟩` from `key (fockF ψ θ false A₁ B g P) (Submodule.subset_span ⟨g, P, hg, rfl⟩)`. Use `⟨Φ, hΦ, funext fun x => ?_⟩` and prove the remaining obligations. Establish `h2` using `hd.2 ((crd W₁.gram hG e).symm x)`. Rewrite `h2` using `[AddEquiv.apply_symm_apply]`.
-
-Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_darbouxAlgebra_theta_eq_fockFunction : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -63,7 +61,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction | exact _root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction | (intros; apply _root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction <;> as …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.fockSpace_contained_darbouxAlgebra_theta_image : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -35,7 +35,7 @@ theorem coe_diagι (φ : V₁ →ₗ[ℂ] V₂) (v : V₁) :
 def diagSub (φ : V₁ →ₗ[ℂ] V₂) : Submodule ℂ (sD D₁ D₂) := LinearMap.range (diagι φ)
 
 /- English proof (translation)
-Rewrite using `[diagι_apply, diagι_apply]`. Simplify using `only [sE, lift_ofP]`. Rewrite using `[hcomm a b hab v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sE_diagι (φ : V₁ →ₗ[ℂ] V₂) (hst : IsKStableSub ε E₁ V₁)
     (hcomm : ∀ a b (hab : ε a = ε b) (v : V₁),
@@ -47,29 +47,25 @@ theorem sE_diagι (φ : V₁ →ₗ[ℂ] V₂) (hst : IsKStableSub ε E₁ V₁)
   rw [hcomm a b hab v]
 
 /- English proof (translation)
-Unfold `IsKIrrHW`. Establish `: FiniteDimensional ℂ V₁` using `hV₁.1`. Establish `hstab : IsKStableSub ε (sE E₁ E₂) (diagSub φ)`. Introduce `a b hab x hx`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sE_diagι φ hV₁.2.1 hcomm hab v]`. Conclude with `LinearMap.mem_range_self _ _`. Use `⟨inferInstanceAs (FiniteDimensional ℂ (LinearMap.range (diagι φ))), hstab, ?_, ?_⟩` and prove the remaining obligations. Introduce `S' hS' hS'st`. Set `T : Submodule ℂ D₁` to `(S'.comap (diagι φ)).map V₁.subtype`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTle : T ≤ V₁`. Introduce `u hu`. Take `⟨v, -, rfl⟩` from `Submodule.mem_map.mp hu`. Conclude with `v.2`. Establish `hTst : IsKStableSub ε E₁ T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a b hab u hu`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.mp hu`. Use `Submodule.mem_map.mpr ⟨⟨E₁ a b v, hV₁.2.1 a b hab _ v.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show diagι φ _ ∈ S'`. Rewrite using `[← sE_diagι φ hV₁.2.1 hcomm hab v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS'st a b hab _ hv`. Break down `hV₁.2.2.1 T hTle hTst with hT | hT` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp (hS' hx)`. Establish `hvT : (v : D₁) ∈ T` using `Submodule.mem_map.mpr ⟨v, hx, rfl⟩`. Rewrite `hvT` using `[hT, Submodule.mem_bot]`. Establish `hv0 : v = 0` using `(Submodule.coe_eq_zero).mp hvT`. Rewrite using `[hv0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hvT : (v : D₁) ∈ T`. Rewrite using `[hT]`. Conclude with `v.2`. Take `⟨v', hv', hvv'⟩` from `Submodule.mem_map.mp hvT`. Establish `hv'v : v' = v` using `Subtype.ext hvv'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hv'v]`. Conclude with `hv'`. Take `⟨w, hwV, hw0, hK⟩` from `hV₁.2.2.2`. Take `⟨hwa, hwb⟩` from `hK`. Use `⟨diagι φ ⟨w, hwV⟩, LinearMap.mem_range_self _ _, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hw0` to reduce the goal to its premises. Establish `h1` using `congrArg (fun x => (toP x).1) h`. Simplify `h1` using `[diagι_apply, toPrimitive_ofPrimitive]`. Use `⟨fun a => ?_, fun a b hab hε => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[sE_diagι φ hV₁.2.1 hcomm (a := a) (b := a) rfl, ← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (hwa a)`. Rewrite using `[sE_diagι φ hV₁.2.1 hcomm hε]`. Establish `h0 : (⟨E₁ a b w, hV₁.2.1 a b hε _ hwV⟩ : V₁) = 0` using `Subtype.ext (hwb a b hab hε)`.
-
-Rewrite using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagSub_isKIrrHW (φ : V₁ →ₗ[ℂ] V₂) {Λ : Fin n → ℝ} (hV₁ : IsKIrrHW ε E₁ Λ V₁)
     (hcomm : ∀ a b (hab : ε a = ε b) (v : V₁),
@@ -133,7 +129,7 @@ theorem diagSub_isKIrrHW (φ : V₁ →ₗ[ℂ] V₂) {Λ : Fin n → ℝ} (hV�
         rw [h0, map_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hx`. Rewrite using `[casimir_sE, diagι_apply]`. Simplify using `only [lift_ofP]`. Rewrite using `[hc₁ _ v.2, hc₂ _ (φ v).2, ← Prod.smul_mk, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem casimir_diagSub (φ : V₁ →ₗ[ℂ] V₂) {c : ℂ}
     (hc₁ : ∀ v ∈ V₁, casimir E₁ v = c • v) (hc₂ : ∀ v ∈ V₂, casimir E₂ v = c • v) :

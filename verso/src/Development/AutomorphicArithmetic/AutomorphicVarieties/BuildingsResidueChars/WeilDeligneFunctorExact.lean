@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.W
 
 open TensorProduct Module GlobalTheory.Pst GlobalTheory.Pst.DpstMap in
 /- English proof (translation)
-Introduce `LL U D' D D'' F _ _ _ _ _ _ _ _ _ _ m' m m'' τ T S hT hS hex hsurj`. Establish `hS' : Function.Surjective (S.baseChange F)` using `LinearMap.lTensor_surjective F hsurj`. Establish `hex' : Function.Exact (T.baseChange F) (S.baseChange F)` using `lTensor_exact F hex hsurj`. Establish `eT : ∀ y, letterLin m' m F τ T hT (letterQ m' F τ y) = letterQ m F τ (T.baseChange F y)` using `fun _ => rfl`. Establish `eS : ∀ y, letterLin m m'' F τ S hS (letterQ m F τ y) = letterQ m'' F τ (S.baseChange F y)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : letterKer m'' F τ ≤ (letterKer m F τ).map (S.baseChange F)` using `iSup_le fun c => by`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨y, rfl⟩` from `hS' y`. Use `⟨_, Submodule.mem_iSup_of_mem c ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (congrArg (LinearMap.baseChange F) (hS c)) y` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.comp_apply]`. Simplify using `[this]`. Use `⟨fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `letterQ_surjective m F τ y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Rewrite `h` using `[eS, ← LinearMap.mem_ker, ker_letterQ]`. Take `⟨z, hz, hzy⟩` from `hker h`. Take `⟨w, hw⟩` from `(hex' (y - z)).mp (by rw [map_sub, hzy, sub_self])`. Use `⟨letterQ m' F τ w, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz0 : letterQ m F τ z = 0`. Rewrite using `[← LinearMap.mem_ker, ker_letterQ]`. Conclude with `hz`. Rewrite using `[eT, hw, map_sub, hz0, sub_zero]`. Introduce and unpack `⟨w, hw⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `letterQ_surjective m' F τ w`. Rewrite using `[← hw, eT, eS, hex'.apply_apply_eq_zero, map_zero]`. Take `⟨y, rfl⟩` from `letterQ_surjective m'' F τ y`. Take `⟨y, rfl⟩` from `hS' y`. Conclude with `⟨letterQ m F τ y, eS y⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weilDeligne_functor_exact :
     UpperTheory.V.Af.Wd.LetterExact := by

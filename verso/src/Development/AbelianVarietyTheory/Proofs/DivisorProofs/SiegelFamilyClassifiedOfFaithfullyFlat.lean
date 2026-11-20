@@ -19,25 +19,23 @@ variable {h n : ℕ} {B B' B₁ : Type} [CommRing B] [CommRing B'] [CommRing B�
   {T T₁ : Scheme.{0}} {s₁ : T₁ ⟶ Sp B₁}
 
 /- English proof (translation)
-Take `⟨φ₁, hm⟩` from `exists_of_siegPB m`. Take `⟨ψ₁, hk⟩` from `exists_of_siegPB k`. Take `⟨φ₁₂, hφ, sq₁, iso₁, lev₁⟩` from `(sRelBy_one_iff _ _ _ _).1 hm`. Take `⟨ψ₁₂, hψ, sq₂, iso₂, lev₂⟩` from `(sRelBy_one_iff _ _ _ _).1 hk`. Establish `: Epi p` using `Flat.epi_of_flat_of_surjective p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Flat φ₁` using `MorphismProperty.of_isPullback hφ.1.flip inferInstance`. Establish `: Surjective φ₁` using `MorphismProperty.of_isPullback hφ.1.flip inferInstance`. Establish `: QuasiCompact φ₁` using `MorphismProperty.of_isPullback hφ.1.flip inferInstance`. Establish `: Flat ψ₁` using `MorphismProperty.of_isPullback hψ.1.flip inferInstance`. Establish `: Surjective ψ₁` using `MorphismProperty.of_isPullback hψ.1.flip inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact ψ₁` using `MorphismProperty.of_isPullback hψ.1.flip inferInstance`. Establish `: EffectiveEpi φ₁` using `inferInstance`. Establish `: EffectiveEpi ψ₁` using `inferInstance`. Set `φ` to `EffectiveEpi.desc φ₁ ψ₁ (comp_eq_of_comp_eq b hn ho hu hm hk)`. Establish `hφψ : φ₁ ≫ φ = ψ₁` using `EffectiveEpi.fac _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `w : φ ≫ u.A.hom = c.A.hom`. Rewrite using `[← cancel_epi φ₁, ← Category.assoc, hφψ, hψ.1.w, hφ.1.w]`. Establish `: Mono φ` using `mono_of_fac hφ.1 hψ.1 hφψ w`. Set `ψ` to `EffectiveEpi.desc ψ₁ φ₁ (fun g₁ g₂ e => by`. Rewrite using `[← cancel_mono φ, Category.assoc, Category.assoc, hφψ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e)`. Establish `hψφ : ψ₁ ≫ ψ = φ₁` using `EffectiveEpi.fac _ _ _`. Establish `: IsIso φ` using `⟨ψ, by rw [← cancel_epi φ₁, ← Category.assoc, hφψ, hψφ, Category.comp_id], by rw [← cancel_epi ψ₁, ← Category.assoc, hψφ, hφψ, Category.comp_id]⟩`. Establish `gp : IsGrpPullback c.A u.A (𝟙 T) φ` using `GlobalTheory.ObjDescent.isGrpPullback_id hφ hψ φ hφψ (w.trans (Category.comp_id _).symm)`. Take `⟨φ₂, sq⟩` from `GlobalTheory.SiegDesc.exists_isSquare gp.1.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `lev : ∀ a, (c.lev a).left ≫ φ = 𝟙 T ≫ (u.lev a).left` using `fun a => by`. Rewrite using `[Category.id_comp, ← cancel_epi p, ← Category.assoc, ← lev₁ a, Category.assoc, hφψ, lev₂ a]`. Establish `he : eSec (G2 c.A) ≫ φ₂ = eSec (G2 u.A)`. Establish `e₀ : eSec c.A ≫ φ = 𝟙 _ ≫ eSec u.A` using `(cubeMapOf gp).e_comm`. Rewrite `e₀` using `[Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (eSec (G2 c.A) ≫ φ₂) ≫ (fst u.A u.A).left = eSec (G2 u.A) ≫ (fst u.A u.A).left`. Rewrite using `[Category.assoc, sq.1, ← Category.assoc, eSec_fst, eSec_fst, e₀]`. Use `show (eSec (G2 c.A) ≫ φ₂) ≫ (snd u.A u.A).left = eSec (G2 u.A) ≫ (snd u.A u.A).left`. Rewrite using `[Category.assoc, sq.2, ← Category.assoc, eSec_snd, eSec_snd, e₀]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : LBIso c.P (u.P.pull φ₂)`. Establish `h₁` using `c.isLB`. Establish `h₂` using `pull_isLB u.isLB φ₂`. Establish `hN` using `LB.isLB_div h₂ h₁`. Establish `cN : CechPic.cls _ hN = CechPic.pull φ₂ (CechPic.cls _ u.isLB) - CechPic.cls _ h₁` using `CechPic.cls_div h₂ h₁ hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq` using `GlobalTheory.SiegDesc.isPullback_of_isSquare hφ.1 sq₁`. Establish `e₂ : φ₁₂ ≫ φ₂ = ψ₁₂` using `GlobalTheory.SiegDesc.isSquare_comp hφψ sq₁ sq sq₂`. Establish `cl₁ : CechPic.cls c₁.P c₁.isLB = CechPic.pull φ₁₂ (CechPic.cls c.P c.isLB)` using `(CechPic.cls_eq_iff _ (pull_isLB c.isLB _)).2 iso₁`. Establish `cl₂ : CechPic.cls c₁.P c₁.isLB = CechPic.pull ψ₁₂ (CechPic.cls u.P u.isLB)` using `(CechPic.cls_eq_iff _ (pull_isLB u.isLB _)).2 iso₂`. Use `GlobalTheory.exists_gen_of_rigidified_of_flat_baseChange GlobalTheory.abelianSchemeLaws_all.1.globalFns T T₁ p (G2 c.A) _ (AbelianSchemeGerms.isAbelianScheme_tensor _ _ c.ab c.ab) hN inferInstance inferInstance inferInstance ((CechPic.cls_eq_zero_iff (pull_isLB hN _)).1 ?_) ((Cec …` and prove the remaining obligations.
-
-Rewrite using `[CechPic.cls_pull hN, cN, map_sub, ← CechPic.pull_comp, he, cls_eSec u, cls_eSec c, sub_zero]`. Rewrite using `[CechPic.cls_pull hN, cN, ← hsq.isoPullback_inv_fst, CechPic.pull_comp, map_sub, ← CechPic.pull_comp, e₂, ← cl₂, ← cl₁, sub_self, map_zero]`. Conclude with `siegPB_of ((sRelBy_one_iff _ _ _ _).2 ⟨φ₂, gp, sq, hiso, lev⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegPB_id_of_fpqc (b : TBase B n) {sc : T ⟶ Sp B'} {su : T ⟶ Sp B} (c : SiegPre h n ζ' sc)
     (u : SiegPre h n (b.ζ : B) su) (c₁ : SiegPre h n ζ₁ s₁) (p : T₁ ⟶ T) [Flat p] [QuasiCompact p] [Surjective p]
@@ -99,7 +97,7 @@ theorem siegPB_id_of_fpqc (b : TBase B n) {sc : T ⟶ Sp B'} {su : T ⟶ Sp B} (
   exact siegPB_of ((sRelBy_one_iff _ _ _ _).2 ⟨φ₂, gp, sq, hiso, lev⟩)
 
 /- English proof (translation)
-Take `⟨⟨u', hu'⟩, hpr⟩` from `GlobalTheory.siegPre_pullback h n B (b.ζ : B) Y S sY (f ≫ sY) f u rfl`. Establish `k' : SiegPB c₁ u' p` using `pb_cancel hu' k`. Establish `e` using `pb_comp hu' (siegPB_id_of_fpqc b c u' c₁ p hn ho (hpr u' hu' hu) m k')`. Rewrite `e` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem siegPB_of_fpqc_cover (h n : ℕ) (B : Type) [CommRing B] (b : TBase B n) (S S₁ Y : Scheme.{0})
     (s : S ⟶ Sp B) (s₁ : S₁ ⟶ Sp B) (sY : Y ⟶ Sp B) (c : SiegPre h n (b.ζ : B) s) (c₁ : SiegPre h n (b.ζ : B) s₁)
@@ -111,17 +109,17 @@ theorem siegPB_of_fpqc_cover (h n : ℕ) (B : Type) [CommRing B] (b : TBase B n)
   rwa [Category.id_comp] at e
 
 /- English proof (translation)
-Introduce `g n hg hn ho F R R' _ _ _ _ β c _ H`. Establish `hn0 : n ≠ 0` using `by omega`. Set `π : Sp R' ⟶ Sp R` to `spMap (algebraMap R R')`. Establish `: Flat π` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Surjective π` using `⟨PrimeSpectrum.comap_surjective_of_faithfullyFlat⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact π` using `inferInstance`. Establish `hcomp : π ≫ spMap β = spMap ((algebraMap R R').comp β)`. Simplify using `only [π, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨⟨c', hc'⟩, -⟩` from `GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) (Sp R) (Sp R') (spMap β) (spMap ((algebraMap R R').comp β)) π c hcomp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf's, hf'⟩` from `H c' hc'`. Establish `hagree : pullback.fst π π ≫ f' = pullback.snd π π ≫ f'`. Take `⟨⟨c₁, hc₁⟩, -⟩` from `GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) (Sp R') (pullback π π) (spMap ((algebraMap R R').comp β)) (pullback.fst π π ≫ spMap ((algebraMap R R').comp β)) (pullback.fst π π) c' rfl`. Establish `a₁ : SiegPB c₁ F.univ (pullback.fst π π ≫ f')` using `pb_comp hf' hc₁`. Establish `b₁ : SiegPB c₁ c (pullback.fst π π ≫ π)` using `pb_comp hc' hc₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b₁` using `[pullback.condition]`. Establish `b₂ : SiegPB c₁ c' (pullback.snd π π)` using `pb_cancel hc' b₁`. Establish `a₂ : SiegPB c₁ F.univ (pullback.snd π π ≫ f')` using `pb_comp hf' b₂`. Use `GlobalTheory.T.siegelFamily_classifyingMap_unique g n hg hn ho F _ _ c₁ _ _ (by rw [Category.assoc, hf's]) ?_ a₁ a₂` and prove the remaining obligations. Rewrite using `[Category.assoc, hf's, ← hcomp, ← Category.assoc, ← pullback.condition, Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsRegularEpi π` using `isRegularEpi_of_flat_of_surjective_of_isAffine π`. Set `f` to `EffectiveEpi.desc π f' (fun g₁ g₂ e => by`. Use `congrArg (pullback.lift g₁ g₂ e ≫ ·) hagree` as an intermediate fact. Rewrite using `[← Category.assoc, ← Category.assoc, pullback.lift_fst, pullback.lift_snd] at this)` and apply the resulting hypothesis. Establish `hf : π ≫ f = f'` using `EffectiveEpi.fac _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: Epi π` using `Flat.epi_of_flat_of_surjective π`. Use `⟨f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi π, ← Category.assoc, hf, hf's, hcomp]`. Conclude with `siegPB_of_fpqc_cover g n (cycAway n) (cycBase hn0) (Sp R) (Sp R') F.X (spMap β) _ F.s c c' F.univ π f hn ho F.princ hc' (by rw [hf]; exact hf')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classified_of_faithfullyFlat : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.FaithfullyFlat R R'] (β : cycAway n →+* R) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal → (∀ c' : SiegPre g n (zetaAway n) (spMap ((algebraMap R R').comp β)), SiegPB c' c (spMap (algebraMap R R')) → ∃ f : Sp R' ⟶ F.X, f ≫ F.s = spMap ((algebraMap R R').comp β) ∧ SiegPB c' F.univ f) → ∃ f : Sp R ⟶ F.X, f ≫ F.s = spMap β ∧ SiegPB c F.univ f := by
   intro g n hg hn ho F R R' _ _ _ _ β c _ H

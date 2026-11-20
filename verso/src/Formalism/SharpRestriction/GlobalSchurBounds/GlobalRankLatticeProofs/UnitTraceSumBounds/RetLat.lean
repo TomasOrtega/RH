@@ -8,27 +8,27 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarEx
 namespace Formalism.MainNotions.Ext
 
 /- English proof (translation)
-The claim follows from `area_lattice_formula`.
+A detailed English derivation is pending.
 -/
 theorem areaLat_holds : AreaLat := area_lattice_formula
 
 /- English proof (translation)
-The claim follows from `translation_invariant_lattice`.
+A detailed English derivation is pending.
 -/
 theorem transInvLat_holds : TransInvLat := translation_invariant_lattice
 
 /- English proof (translation)
-The claim follows from `sigma_star_unique`.
+A detailed English derivation is pending.
 -/
 theorem sigmaStarUniq_holds : SigmaStarUniq := sigma_star_unique
 
 /- English proof (translation)
-The claim follows from `discrNe'`.
+A detailed English derivation is pending.
 -/
 theorem discrNe_holds : DiscrNe := discrNe'
 
 /- English proof (translation)
-The claim follows from `sigma_star_exists`.
+A detailed English derivation is pending.
 -/
 theorem sigmaStarEx_holds : SigmaStarEx := sigma_star_exists
 

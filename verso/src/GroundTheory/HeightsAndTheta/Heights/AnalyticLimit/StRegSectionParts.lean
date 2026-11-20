@@ -18,7 +18,7 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
 def bdDom (R : RegChartData A) (j : Fin R.n) : Set X := (R.ψ j).source ∩ R.ψ j ⁻¹' R.W j
 
 /- English proof (translation)
-The claim follows from `(R.ψ j).isOpen_inter_preimage (R.isOpen_kappaOpenNeighbourhood j)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_bdDom (R : RegChartData A) (j : Fin R.n) : IsOpen (bdDom R j) :=
   (R.ψ j).isOpen_inter_preimage (R.isOpen_kappaOpenNeighbourhood j)
@@ -28,19 +28,19 @@ def bdEq (R : RegChartData A) (j : Fin R.n) (y : X) : ℂ := ∏ i ∈ R.S j, R.
 def bdIdx (R : RegChartData A) (x : X) : Fin R.n := (R.cover x).choose
 
 /- English proof (translation)
-The claim follows from `(R.cover x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_V''_bdIdx (R : RegChartData A) (x : X) : x ∈ R.V'' (bdIdx R x) :=
   (R.cover x).choose_spec
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1, R.closure_W'_subset j (subset_closure (R.closure_W''_subset j (subset_closure hx.2)))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem V''_subset_bdDom (R : RegChartData A) (j : Fin R.n) : R.V'' j ⊆ bdDom R j :=
   fun _ hx => ⟨hx.1, R.closure_W'_subset j (subset_closure (R.closure_W''_subset j (subset_closure hx.2)))⟩
 
 /- English proof (translation)
-The claim follows from `V''_subset_bdDom R _ (mem_V''_bdIdx R x)`.
+A detailed English derivation is pending.
 -/
 theorem mem_bdDom_bdIdx (R : RegChartData A) (x : X) : x ∈ bdDom R (bdIdx R x) :=
   V''_subset_bdDom R _ (mem_V''_bdIdx R x)

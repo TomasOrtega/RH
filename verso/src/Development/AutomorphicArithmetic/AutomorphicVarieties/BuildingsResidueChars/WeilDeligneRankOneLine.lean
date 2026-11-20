@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.Pst.DpstMap GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hi : ((u⁻¹ : (End F M)ˣ) : End F M) x = c⁻¹ • x`. Rewrite using `[eq_inv_smul_iff₀ hc, ← map_smul, ← hx, ← End.mul_apply, Units.inv_mul, End.one_apply]`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [zpow_add_one, Units.val_mul, End.mul_apply, hx, map_smul, ih, smul_smul, zpow_add_one₀ hc, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `pred n ih => rw [zpow_sub_one, Units.val_mul, End.mul_apply, hi, map_smul, ih, smul_smul, zpow_sub_one₀ hc, mul_comm]`.
+Treat this case separately.
 -/
 private theorem zpow_apply_eig {F M : Type} [Field F] [AddCommGroup M] [Module F M] (u : (End F M)ˣ) (x : M) (c : F)
     (hc : c ≠ 0) (hx : (u : End F M) x = c • x) (n : ℤ) : ((u ^ n : (End F M)ˣ) : End F M) x = c ^ n • x := by
@@ -22,9 +22,9 @@ private theorem zpow_apply_eig {F M : Type} [Field F] [AddCommGroup M] [Module F
       zpow_sub_one₀ hc, mul_comm]
 
 /- English proof (translation)
-Establish `hφ' : (φ ^ f) ((φ ^ n) x) = c • (φ ^ n) x`. Rewrite using `[← End.mul_apply, ← pow_add, add_comm, pow_add, End.mul_apply, hφ, map_smul]`. Establish `hs' : a ((φ ^ n) x) = s • (φ ^ n) x`. Establish `hcm' : Commute φ a` using `hcm`. Rewrite using `[← End.mul_apply, ← (hcm'.pow_left n).eq, End.mul_apply, hs, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `zpow_apply_eig (u ^ f) _ c hc (by rw [Units.val_pow_eq_pow_val, hu]; exact hφ') (-d)`. Rewrite using `[End.mul_apply, ← mul_neg, zpow_mul, zpow_natCast, hz, map_smul, hs', mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem key {F M : Type} [Field F] [AddCommGroup M] [Module F M] (u : (End F M)ˣ) (φ a : End F M)
     (hu : (u : End F M) = φ) (hcm : φ * a = a * φ) (x : M) (c s : F) (hc : c ≠ 0) (f : ℕ) (hφ : (φ ^ f) x = c • x)
@@ -41,11 +41,11 @@ private theorem key {F M : Type} [Field F] [AddCommGroup M] [Module F M] (u : (E
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ P ι w A h O _ _ _ Bw hj L V _ _ _ _ _ ρ h1 hV x hx0 c hc hφ σ s hs y`. Establish `hfin` using `hV.finite`. Establish `hd : finrank ℂ (WDSpace P ι ρ) = 1`. Rewrite using `[LetterDim.finrank_wdSpace l P ι _ L _ _ hV, h1]`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, wdMk P ι ρ ((phiD P ρ ^ n) x) ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hh`. Conclude with `hx0 (GlobalTheory.PstFaithful.eq_zero_of_wdMk_phiD_pow l P ι _ L _ _ _ fun n => by_contra fun h0 => hh ⟨n, h0⟩)`. Establish `hw : weilD Bw h P ρ σ ((phiD P ρ ^ n) x) = (c ^ (-deg σ) * s) • (phiD P ρ ^ n) x`. Rewrite using `[weilD_apply]`. Conclude with `key (phiU P ρ) (phiD P ρ) _ (coe_phiU P ρ) (phiD_actD P ρ _) x c s hc _ hφ hs n _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, rfl⟩` from `(finrank_eq_one_iff_of_nonzero' (K := ℂ) _ hn).mp hd y`. Rewrite using `[map_smul, wdRho_mk, hw, wdMk_smul, smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.weil_deligne_rank_one_line :
     UpperTheory.V.Af.Wd.Line := by

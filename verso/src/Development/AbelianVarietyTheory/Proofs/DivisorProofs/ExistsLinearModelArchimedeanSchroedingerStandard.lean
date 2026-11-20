@@ -24,13 +24,13 @@ def fstH : AdeleRing (𝓞 F) F →+* InfiniteAdeleRing F := RingHom.fst _ _
 def sndH : AdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 F) F := RingHom.snd _ _
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext {x y : AdeleRing (𝓞 F) F} (h1 : fstH x = fstH y) (h2 : sndH x = sndH y) : x = y :=
   Prod.ext h1 h2
 
 /- English proof (translation)
-Use `pt_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [dotProduct, map_sum, map_mul] show ∑ i, (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (z i) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (∑ i, z i * y i)`. Simplify using `only [map_sum, map_mul]`. Simplify using `only [dotProduct, map_sum, map_mul] show ∑ i, (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dot_infE_infE {κ : Type} [Fintype κ] (z y : κ → mixedEmbedding.mixedSpace F) :
     infE F z ⬝ᵥ infE F y = pt (∑ i, z i * y i) := by
@@ -43,11 +43,9 @@ theorem dot_infE_infE {κ : Type} [Fintype κ] (z y : κ → mixedEmbedding.mixe
     simp
 
 /- English proof (translation)
-Use `set c : InfiniteAdeleRing F := fstH (⅟(2 : AdeleRing (𝓞 F) F))`. Use `⟨InfiniteAdeleRing.ringEquiv_mixedSpace F (c * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm S), ?_, ?_⟩` and prove the remaining obligations. Use `pt_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul] show c * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm S = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_mul] show _ * (0 : FiniteAdeleRing (𝓞 F) F) = 0`. Conclude with `mul_zero _`. Establish `hc : c * 2 = 1`. Establish `h` using `congrArg fstH (invOf_mul_self (2 : AdeleRing (𝓞 F) F))`. Rewrite `h` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis.
-
-Rewrite using `[← map_add, ← add_mul, ← mul_two, hc, one_mul, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invOf_two_mul_pt (S : mixedEmbedding.mixedSpace F) :
     ∃ t, ⅟(2 : AdeleRing (𝓞 F) F) * pt S = pt t ∧ t + t = S := by
@@ -66,13 +64,11 @@ theorem invOf_two_mul_pt (S : mixedEmbedding.mixedSpace F) :
     rw [← map_add, ← add_mul, ← mul_two, hc, one_mul, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hψ' : ∀ a, ψ (pt a) = Complex.exp (2 * Real.pi * Complex.I * β a)` using `hψ`. Take `⟨t, ht, htt⟩` from `invOf_two_mul_pt (F := F) (∑ i, v.1 i * v.2 i)`. Establish `hsum : ∀ a b : mixedEmbedding.mixedSpace F, pt (F` using `F) a + pt b = pt (a + b) := by`. Introduce `a b`. Use `pt_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Conclude with `(map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ _).symm`. Rewrite using `[map_add]`. Conclude with `add_zero (0 : FiniteAdeleRing (𝓞 F) F)`. Establish `hbt : β t = β (∑ i, v.1 i * v.2 i) / 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← htt, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `show ψ (infE F z ⬝ᵥ infE F v.2 + ⅟(2 : AdeleRing (𝓞 F) F) * (infE F v.1 ⬝ᵥ infE F v.2)) * φ (z + v.1) = _`. Rewrite using `[dot_infE_infE, dot_infE_infE, ht, hsum, hψ', map_add, hbt]`. Use `push_cast`.
-
-Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem schrInf_eq (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hψ : ∀ a, ψ (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, 0) : AdeleRing (𝓞 F) F) =
@@ -130,7 +126,7 @@ def qmap (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) {κ : Type} [Fintype
     simp [InnerProductSpace.toDual_symm_apply, real_inner_smul_left]
 
 /- English proof (translation)
-Simplify using `[qmap, InnerProductSpace.toDual_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_qmap (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) {κ : Type} [Fintype κ] {n : ℕ}
     (Q : EuclideanSpace ℝ (Fin n) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)) (y : κ → mixedEmbedding.mixedSpace F)
@@ -138,11 +134,11 @@ theorem inner_qmap (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) {κ : Type
   simp [qmap, InnerProductSpace.toDual_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`. Take `⟨b, hb⟩` from `hβ (y i) hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `inner_qmap β Q y (Q.symm (Pi.single i b))`. Rewrite `h` using `[hy, inner_zero_left, ContinuousLinearEquiv.apply_symm_apply, bil_apply]`. Establish `hs : ∑ j, (Pi.single i b : κ → mixedEmbedding.mixedSpace F) j * y j = y i * b`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hs]`. Conclude with `hb h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qmap_injective (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (hβ : ∀ a, a ≠ 0 → ∃ b, β (a * b) ≠ 0)
     {κ : Type} [Fintype κ] {n : ℕ} (Q : EuclideanSpace ℝ (Fin n) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)) :
@@ -166,7 +162,7 @@ def qEquiv (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (hβ : ∀ a, a �
   LinearMap.linearEquivOfInjective (qmap β Q) (qmap_injective β hβ Q) Q.toLinearEquiv.finrank_eq.symm
 
 /- English proof (translation)
-Conclude with `(qEquiv β hβ Q).apply_symm_apply q`.
+A detailed English derivation is pending.
 -/
 theorem qmap_qEquiv_symm (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (hβ : ∀ a, a ≠ 0 → ∃ b, β (a * b) ≠ 0)
     {κ : Type} [Fintype κ] {n : ℕ} (Q : EuclideanSpace ℝ (Fin n) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F))
@@ -190,13 +186,13 @@ def Peq {V : Type} [AddCommGroup V] [Module ℝ V] {n : ℕ} (Q : EuclideanSpace
     simp only [h1, h2, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `F _ _ ψ β hψ hβ κ _`. Set `Q : EuclideanSpace ℝ (Fin (Module.finrank ℝ (κ → mixedEmbedding.mixedSpace F))) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `(LinearEquiv.ofFinrankEq _ _ finrank_euclideanSpace_fin).toContinuousLinearEquiv`. Set `Y` to `(qEquiv β hβ Q).symm`. Use `⟨_, Q, Peq Q.toLinearEquiv Y, fun w φ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hq` using `qmap_qEquiv_symm β hβ Q (GlobalTheory.RealWeil.qPart w)`. Establish `h1` using `inner_qmap β Q (Y (GlobalTheory.RealWeil.qPart w)) x`. Establish `h2` using `inner_qmap β Q (Y (GlobalTheory.RealWeil.qPart w)) (GlobalTheory.RealWeil.pPart w)`. Rewrite `h1`, `h2` using `[hq, bil_apply]`. Simplify using `only [Function.comp_apply, GlobalTheory.RealWeil.rhoFun, GlobalTheory.RealWeil.phase]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[schrInf_eq ψ β hψ]`. Use `show Complex.exp (2 * Real.pi * Complex.I * (β (∑ i, Q x i * Y (GlobalTheory.RealWeil.qPart w) i) + β (∑ i, Q (GlobalTheory.RealWeil.pPart w) i * Y (GlobalTheory.RealWeil.qPart w) i) / 2)) * φ (Q x + Q (GlobalTheory.RealWeil.pPart w)) = _`. Rewrite using `[← h1, ← h2, ← map_add, real_inner_comm (GlobalTheory.RealWeil.pPart w)]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_model : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ),

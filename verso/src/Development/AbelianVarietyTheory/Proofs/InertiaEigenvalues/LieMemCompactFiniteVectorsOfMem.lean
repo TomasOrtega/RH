@@ -7,15 +7,15 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 namespace GlobalTheory.LieFin
 
 /- English proof (translation)
-Introduce `E _ _ _ N X φ hφ`. Set `S : Submodule ℂ (Sm E N)` to `Submodule.span ℂ (Set.range fun k => cptRep E N k φ)`. Use `haveI : FiniteDimensional ℂ S := hφ`. Set `b` to `Module.finBasis ℝ (Lie E N)`. Set `T : Submodule ℂ (Sm E N)` to `⨆ s, S.map (lie E N (b s))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ T := by haveI : ∀ s, FiniteDimensional ℂ (S.map (lie E N (b s))) := fun s => inferInstance`. Conclude with `Submodule.finiteDimensional_iSup _`. Establish `key : ∀ (Z : Lie E N) (ψ : Sm E N), ψ ∈ S → lie E N Z ψ ∈ T`. Introduce `Z ψ hψ`. Rewrite using `[← b.sum_repr Z, map_sum, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply]`. Establish `h1 : lie E N (b s) ψ ∈ T` using `(le_iSup (fun s => S.map (lie E N (b s))) s) (Submodule.mem_map_of_mem hψ)`. Establish `h2 : ((b.repr Z s : ℝ) : ℂ) • lie E N (b s) ψ ∈ T` using `T.smul_mem _ h1`. Simplify `h2` using `[Complex.coe_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k (lie E N X φ)))`. Use `Submodule.finiteDimensional_of_le (S₂ := T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e` using `congrArg (fun f : Module.End ℂ (Sm E N) => f φ) (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) (Matrix.of X))`. Simplify using `only [Module.End.mul_apply] at e`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `rt E N (infGL E N (Unitary.toUnits k)) (lie E N X φ) ∈ T`. Establish `eX : toL (Matrix.of X) = X` using `rfl`. Rewrite `e` using `[eX]`. Rewrite using `[e]`. Conclude with `key _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem lie_mem_finVec : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} (X : Lie E N) (φ : Sm E N),
     φ ∈ finVec (cptRep E N) → lie E N X φ ∈ finVec (cptRep E N) := by

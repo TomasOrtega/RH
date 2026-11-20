@@ -13,11 +13,11 @@ open scoped ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `cntCl`. Establish `h1 : {O : Set α | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}} ⊆ (fun O' : Set α => O' ∩ X) '' {O : Set α | ∃ a ∈ Y, O = {b | b ∈ Y ∧ R a b}}`. Introduce and unpack `O ⟨a, ha, rfl⟩`. Use `⟨{b | b ∈ Y ∧ R a b}, ⟨a, h ha, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `b`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h2⟩, h3⟩`. Conclude with `⟨h3, h2⟩`. Introduce and unpack `⟨h2, h3⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h h2, h3⟩, h2⟩`. Conclude with `(Set.encard_le_encard h1).trans (Set.encard_image_le _ _)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem class_count_mono {α : Type} {X Y : Set α} (R : α → α → Prop) (h : X ⊆ Y) : cntCl X R ≤ cntCl Y R := by
   unfold cntCl
@@ -37,12 +37,12 @@ section Num
 variable (D : D7) (large₂ : SizeData₂ D)
 
 /- English proof (translation)
-Combine the linear relations using `[d_two_le_b D large₂]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_scale : (1 : ℝ) ≤ large₂.sc.b := by linarith [d_two_le_b D large₂]
 
 /- English proof (translation)
-Unfold `sizeZ`. Establish `h : ∀ τ : D.what₂.Tau, (1 : ℝ) ≤ ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 (absDl D Z l τ / large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2))`. Introduce `τ`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_gram_size_generic (C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D large₂.sc.b C Z := by
   unfold sizeZ
@@ -55,9 +55,9 @@ theorem one_le_gram_size_generic (C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D large�
     _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) (fun τ _ => h τ)
 
 /- English proof (translation)
-Establish `hb` using `one_le_scale D large₂`. Establish `hs` using `one_le_gram_size_generic D large₂ C Z`. Unfold `HHZ`. Rewrite using `[← Real.rpow_mul (by linarith)]`. Establish `h1 : C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * (D.R.m : ℝ)) = C ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Establish `h2 : (0 : ℝ) < large₂.sc.b ^ (C ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `h3 : (1 : ℝ) ≤ sizeZ D large₂.sc.b C Z ^ 4` using `one_le_pow₀ hs`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_le_gram_height (C : ℝ) (Z : GramM D) :
     large₂.sc.b ^ (C ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) ≤ HHZ D large₂.sc.b C Z := by
@@ -72,30 +72,30 @@ theorem pow_le_gram_height (C : ℝ) (Z : GramM D) :
   nlinarith
 
 /- English proof (translation)
-Use `le_trans ?_ (pow_le_gram_height D large₂ C Z)` and prove the remaining obligations. Conclude with `Real.one_le_rpow (one_le_scale D large₂) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_le_gram_height (C : ℝ) (Z : GramM D) : 1 ≤ HHZ D large₂.sc.b C Z := by
   refine le_trans ?_ (pow_le_gram_height D large₂ C Z)
   exact Real.one_le_rpow (one_le_scale D large₂) (by positivity)
 
 /- English proof (translation)
-Use `d_m_eq D` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.m)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_m_alt : (1 : ℝ) ≤ D.R.m := by
   have := d_m_eq D
   exact_mod_cast (by omega : 1 ≤ D.R.m)
 
 /- English proof (translation)
-Unfold `NT`. Conclude with `one_le_pow₀ (by exact_mod_cast (D.mem u).A.T_prime.one_lt.le)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_T_pos (u : D.what₂.Word) : 1 ≤ NT D u := by
   unfold NT
   exact one_le_pow₀ (by exact_mod_cast (D.mem u).A.T_prime.one_lt.le)
 
 /- English proof (translation)
-Use `le_trans ?_ (pow_le_gram_height D large₂ C Z)` and prove the remaining obligations. Use `Real.rpow_le_rpow_of_exponent_le (one_le_scale D large₂) ?_` and prove the remaining obligations. Establish `hm` using `one_le_m_alt D`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `h1 : (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 3` using `by nlinarith [mul_self_nonneg ((D.R.m : ℝ) - 1), mul_nonneg (by linarith : (0:ℝ) ≤ (D.R.m:ℝ)) (by nlinarith : (0:ℝ) ≤ (D.R.m:ℝ)^2 - 1)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem scale_pow_le_gram_height {C K : ℝ} (hK : K ≤ C ^ 2) (Z : GramM D) :
     large₂.sc.b ^ (K * (D.R.m : ℝ) * D.R.f) ≤ HHZ D large₂.sc.b C Z := by
@@ -108,9 +108,9 @@ theorem scale_pow_le_gram_height {C K : ℝ} (hK : K ≤ C ^ 2) (Z : GramM D) :
     _ ≤ C ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f := by gcongr
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h23, _, _⟩` from `h.1`. Establish `h23' : Tr D u ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ))` using `(h23 u).2`. Establish `hb` using `one_le_scale D large₂`. Unfold `NT`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) h23' _`. Use `_ = large₂.sc.b ^ (CT * (D.R.m : ℝ) * D.R.f) := by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_T_le_pow {C' Cl Cg cb Cu cT CT C0 : ℝ} (h : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u : D.what₂.Word) :
     NT D u ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ) * D.R.f) := by
@@ -124,9 +124,9 @@ theorem norm_T_le_pow {C' Cl Cg cb Cu cT CT C0 : ℝ} (h : Cnt.Hyp0 D large₂ C
         rw [← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]
 
 /- English proof (translation)
-Establish `hb` using `one_le_scale D large₂`. Establish `h1` using `norm_T_le_pow D large₂ h u`. Establish `h0` using `norm_T_pos D u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]; congr 1; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ _ := scale_pow_le_gram_height D large₂ hCT Z`.
+A detailed English derivation is pending.
 -/
 theorem norm_T_sq_le_gram_height {C' Cl Cg cb Cu cT CT C0 C : ℝ} (h : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u : D.what₂.Word)
     (hCT : 2 * CT ≤ C ^ 2) (Z : GramM D) : NT D u ^ 2 ≤ HHZ D large₂.sc.b C Z := by
@@ -181,37 +181,35 @@ def GenericThetaFamily (Cg cb Cu cT CT C0 A : ℝ) : Prop :=
 end C4F
 
 /- English proof (translation)
-Use `set OO : Set (Set α) := {O | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}} with hOO`. Establish `hrep : ∀ O : OO, ∃ a ∈ X, (O : Set α) = {b | b ∈ X ∧ R a b}` using `fun O => O.2`. Use `choose rep hrepX hrepE using hrep`. Set `S : β → Set (Set α)` to `fun y => {O | ∃ h : O ∈ OO, φ (rep ⟨O, h⟩) = y}`. Establish `hS : ∀ y, (S y).encard ≤ cntCl {a | a ∈ X ∧ φ a = y} R`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `hinj : Set.InjOn (fun O : Set α => O ∩ {a | φ a = y}) (S y)`. Introduce and unpack `O₁ ⟨h₁, hy₁⟩ O₂ ⟨h₂, hy₂⟩ hEq`. Establish `e₁` using `hrepE ⟨O₁, h₁⟩`. Establish `e₂` using `hrepE ⟨O₂, h₂⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only at e₁ e₂`. Establish `q₁` using `Set.ext_iff.1 e₁`. Establish `q₂` using `Set.ext_iff.1 e₂`. Establish `m₁ : rep ⟨O₁, h₁⟩ ∈ O₁ ∩ {a | φ a = y}` using `⟨(q₁ _).2 ⟨hrepX _, hR.refl _⟩, hy₁⟩`. Establish `hEq' : O₁ ∩ {a | φ a = y} = O₂ ∩ {a | φ a = y}` using `hEq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₂ : rep ⟨O₁, h₁⟩ ∈ O₂` using `((Set.ext_iff.1 hEq' _).1 m₁).1`. Establish `r21 : R (rep ⟨O₂, h₂⟩) (rep ⟨O₁, h₁⟩)` using `((q₂ _).1 m₂).2`. Use extensionality with `b`. Rewrite using `[q₁ b, q₂ b]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hb, hr⟩`. Conclude with `⟨hb, hR.trans r21 hr⟩`. Introduce and unpack `⟨hb, hr⟩`. Conclude with `⟨hb, hR.trans (hR.symm r21) hr⟩`. Rewrite using `[← hinj.encard_image]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `cntCl`. Apply `Set.encard_le_encard` to reduce the goal to its premises. Introduce and unpack `_ ⟨O, ⟨h, hy⟩, rfl⟩`. Use `⟨rep ⟨O, h⟩, ⟨hrepX _, hy⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `hrepE ⟨O, h⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only at e`. Establish `q` using `Set.ext_iff.1 e`. Use `show O ∩ {a | φ a = y} = _`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hbO, hy'⟩`. Take `⟨hb, hr⟩` from `(q b).1 hbO`. Conclude with `⟨⟨hb, hy'⟩, hr⟩`. Introduce and unpack `⟨⟨hb, hy'⟩, hr⟩`. Conclude with `⟨(q b).2 ⟨hb, hr⟩, hy'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcover : OO ⊆ ⋃ y ∈ B, S y`. Introduce `O hO`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨φ (rep ⟨O, hO⟩), hφ _ (hrepX _), hO, rfl⟩`. Establish `hSK : ∀ y ∈ B, ((S y).encard : ℝ≥0∞) ≤ K` using `fun y hy => le_trans (ENat.toENNReal_le.2 (hS y)) (hK y hy)`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (OO.encard : ℝ≥0∞) ≤ _`. Distinguish the cases in `hB : B.Finite`. Establish `h1 : OO.encard ≤ ∑ y ∈ hB.toFinset, (S y).encard`. Use `le_trans (Set.encard_le_encard ?_) (Finset.set_encard_biUnion_le hB.toFinset S)` and prove the remaining obligations. Introduce `O hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `hcover hO` as an intermediate fact. Simplify using `using this`. Establish `h2 : ((∑ y ∈ hB.toFinset, (S y).encard : ℕ∞) : ℝ≥0∞) = ∑ y ∈ hB.toFinset, ((S y).encard : ℝ≥0∞)` using `map_sum ENat.toENNRealRingHom _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul, hB.encard_eq_coe_toFinset_card]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Establish `hinf : B.encard = ⊤` using `Set.Infinite.encard_eq hB`. Rewrite using `[hinf, ENat.toENNReal_top]`. Distinguish the cases in `hK0 : K = 0`. Establish `hemp : OO = ∅`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `O hO`. Use `hcover hO` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨y, hy, hOy⟩` from `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : ((S y).encard : ℝ≥0∞) ≤ 0` using `hK0 ▸ hSK y hy`. Establish `h0' : (S y).encard = 0`. Establish `: ((S y).encard : ℝ≥0∞) = 0` using `le_antisymm h0 bot_le`. Simplify using `using this`. Rewrite `h0'` using `[Set.encard_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hOy` using `[h0']`. Conclude with `hOy`. Rewrite using `[hemp]`. Simplify using the standard rewrite rules. Rewrite using `[ENNReal.top_mul hK0]`.
-
-Conclude with `le_top`.
+A detailed English derivation is pending.
 -/
 theorem class_count_fibres {α β : Type} (X : Set α) (R : α → α → Prop) (hR : Equivalence R) (φ : α → β) (B : Set β)
     (hφ : ∀ a ∈ X, φ a ∈ B) (K : ℝ≥0∞) (hK : ∀ y ∈ B, (cntCl {a | a ∈ X ∧ φ a = y} R : ℝ≥0∞) ≤ K) :
@@ -297,11 +295,9 @@ section Mean
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `MeanLe at h ⊢`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun Λ hΛ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_right (hN Λ hΛ) _`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N' Λ : ℝ≥0∞)) * ENNReal.ofReal K := by`. Rewrite using `[Finset.sum_mul]`. Use `_ ≤ (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ENNReal.ofReal B * ENNReal.ofReal K := by`. Conclude with `mul_le_mul_left h _`. Use `_ = (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ENNReal.ofReal (B * K) := by`.
-
-Rewrite using `[mul_assoc, ← ENNReal.ofReal_mul hB]`. Use `_ ≤ _ := by`. Conclude with `mul_le_mul_right (ENNReal.ofReal_le_ofReal hle) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_le_of_mul {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Finset (LatV D)) (N N' : LatV D → ℕ∞)
     {B K B2 : ℝ} (hB : 0 ≤ B) (h : MeanLe D F0 what₂ N' B)
@@ -323,7 +319,7 @@ theorem mean_le_of_mul {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Fi
         exact mul_le_mul_right (ENNReal.ofReal_le_ofReal hle) _
 
 /- English proof (translation)
-Unfold `MeanLe`. Establish `: ∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N Λ : ℝ≥0∞) = 0` using `Finset.sum_eq_zero fun Λ hΛ => by rw [hN Λ hΛ]; simp`. Rewrite using `[this]`. Conclude with `bot_le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_le_of_zero {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Finset (LatV D)) (N : LatV D → ℕ∞)
     (B : ℝ) (hN : ∀ Λ ∈ what₂, N Λ = 0) : MeanLe D F0 what₂ N B := by

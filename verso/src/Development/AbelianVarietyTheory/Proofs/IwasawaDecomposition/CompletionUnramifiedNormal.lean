@@ -11,11 +11,11 @@ open IsLocalRing
 namespace GlobalTheory.EtaleCompletionNormal
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← IsLocalRing.subsingleton_tensorProduct (R := S)]`. Use `subsingleton_of_forall_eq 0 fun x ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange R S (ResidueField S) Ideal.Quotient.mk_surjective x).mp (Subsingleton.elim _ _)`. Take `⟨⟨x, hx⟩, rfl⟩` from `Ideal.toCotangent_surjective _ x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [KaehlerDifferential.kerCotangentToTensor_toCotangent]`. Use `replace hx : x ∈ Ideal.map (algebraMap R S) (maximalIdeal R) := by simpa [H] using hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `mem x h => obtain ⟨x, hx, rfl⟩ := h`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add x y hx hy _ _ => simp [*, TensorProduct.tmul_add]`. Consider the case `smul a x hx _`. Establish `: residue S x = 0` using `by rwa [residue_eq_zero_iff, ← H]`. Simplify using `[*, TensorProduct.tmul_add, TensorProduct.smul_tmul', ← Algebra.algebraMap_eq_smul_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_map_maximalIdeal {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [IsLocalRing R] [IsLocalRing S] [IsLocalHom (algebraMap R S)] [Algebra.EssFiniteType R S]
@@ -39,35 +39,25 @@ theorem formallyUnramified_of_map_maximalIdeal {R S : Type*} [CommRing R] [CommR
     simp [*, TensorProduct.tmul_add, TensorProduct.smul_tmul', ← Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Introduce `D E _ _ _ _ _ h hD hAd hAi hE hEc _ het hfu`. Take `⟨hflat, hmap, hfin⟩` from `het`. Use `haveI := hD`. Use `haveI := hE`. Use `haveI := hEc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI := hAd`. Use `haveI := hAi`. Set `A` to `AdicCompletion (maximalIdeal D) D`. Use `haveI : IsNoetherianRing A := AdicNoeth.isNoetherianRing_adicCompletion D _`. Use `haveI : IsAdicComplete ((maximalIdeal D).map h) E := by rw [hmap]; exact hEc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_adicCompletion_ringHom_extend (maximalIdeal D) h`. Use `letI : Algebra A E := g.toAlgebra`. Establish `hgA : ∀ a, g (algebraMap D A a) = h a` using `fun a => RingHom.congr_fun hg a`. Establish `hmA : (maximalIdeal A).map (algebraMap A E) = maximalIdeal E`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, Ideal.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Express the relevant statement in the definitionally equal form `(maximalIdeal D).map (g.comp _) = _`. Rewrite using `[hg, hmap]`. Use `haveI : IsLocalHom (algebraMap A E) := ((local_hom_TFAE _).out 0 2).mpr hmA.le`. Establish `hres : ((residue E).comp g).Finite` using `RingHom.Finite.of_comp_finite (f := algebraMap D A) (by rw [RingHom.comp_assoc, hg]; exact hfin)`. Use `haveI : Module.Finite A (E ⧸ (maximalIdeal A).map (algebraMap A E)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← RingHom.finite_algebraMap]`. Use `show ((Ideal.Quotient.mk _).comp (algebraMap A E)).Finite`. Rewrite using `[hmA]`. Conclude with `hres`. Use `haveI : IsHausdorff ((maximalIdeal A).map (algebraMap A E)) E := by rw [hmA]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite A E := FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal A)`. Use `haveI : Module.Flat A E := by`. Use `LocalFlat.flat_of_relationsLift E (I := maximalIdeal A) (hmA.le.trans (maximalIdeal_le_jacobson _)) fun n => ?_` and prove the remaining obligations. Use `letI : Algebra D E := h.toAlgebra`. Use `haveI : Module.Flat D E := hflat`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `fg` using `(maximalIdeal D).fg_of_isNoetherianRing`. Establish `hkerA : ∀ x : A, AdicCompletion.evalₐ (maximalIdeal D) n x = 0 ↔ x ∈ maximalIdeal A ^ n`. Introduce `x`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, ← Submodule.restrictScalars_mem D, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval fg, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite using `[← AdicCompletion.factor_evalₐ_eq_eval _ x (by simp), h0, map_zero]`. Introduce `h0`. Rewrite using `[← AdicCompletion.factor_eval_eq_evalₐ _ x (by simp), h0, map_zero]`. Establish `hmapn : (maximalIdeal A ^ n).map (algebraMap A E) = (maximalIdeal D ^ n).map (algebraMap D E)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, Ideal.map_map]`. Express the relevant statement in the definitionally equal form `(maximalIdeal D ^ n).map (g.comp _) = _`. Rewrite using `[hg]`. Both sides reduce to the same expression. Use `LocalFlat.relationsLift_of_square (AdicCompletion.evalₐ (maximalIdeal D) n).toRingHom (Ideal.Quotient.mk ((maximalIdeal D ^ n).map (algebraMap D E))) (algebraMap _ _) (AdicCompletion.surjective_evalₐ _ n) Ideal.Quotient.mk_surjective ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `(hkerA x)`. Rewrite using `[Ideal.mk_ker, hmapn]`. Use extensionality with `x`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal D) n x)`.
-
-Establish `hx : x - algebraMap D A a ∈ maximalIdeal A ^ n`. Rewrite using `[← hkerA, map_sub, ← ha, AlgHom.commutes, sub_eq_zero]`. Both sides reduce to the same expression. Establish `hx' : algebraMap A E x - h a ∈ (maximalIdeal D ^ n).map (algebraMap D E)`. Rewrite using `[← hmapn, ← hgA]`.
-
-Rewrite using `[show algebraMap A E x - g (algebraMap D A a) = algebraMap A E (x - algebraMap D A a) from (map_sub g _ _).symm]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ← ha]`. Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, eq_comm, Ideal.Quotient.eq]`. Conclude with `hx'`.
-
-Rewrite using `[RingHom.flat_algebraMap_iff]`. Conclude with `Module.Flat.of_linearEquiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor E (maximalIdeal D ^ n)).toLinearEquiv`. Use `haveI : Algebra.FormallyUnramified A (ResidueField E) := by`. Rewrite using `[← RingHom.formallyUnramified_algebraMap]`. Establish `e : (algebraMap A (ResidueField E)).comp (algebraMap D A) = (residue E).comp h`.
-
-Rewrite using `[← hg]`. Both sides reduce to the same expression. Conclude with `RingHom.FormallyUnramified.of_comp (f := algebraMap D A) (by rw [e]; exact hfu)`. Use `haveI : Algebra.FormallyUnramified A E := formallyUnramified_of_map_maximalIdeal hmA`. Use `haveI : Algebra.FinitePresentation A E := (Algebra.FinitePresentation.of_finiteType (R := A) (A := E)).1 inferInstance`.
-
-Use `haveI : Algebra.Etale A E := Algebra.Etale.of_formallyUnramified_of_flat`. Use `haveI : IsLocalization.AtPrime E (maximalIdeal E) := IsLocalization.self fun a ha => by_contra fun h' => ha h'`. Conclude with `isDomain_and_isIntegrallyClosed_atPrime_of_etale A (maximalIdeal E) E`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isDomain_and_isIntegrallyClosed : ∀ (D E : Type) [CommRing D] [IsDomain D] [IsLocalRing D] [CommRing E] [IsLocalRing E] (h : D →+* E), IsNoetherianRing D → IsDomain (AdicCompletion (IsLocalRing.maximalIdeal D) D) → IsIntegrallyClosed (AdicCompletion (IsLocalRing.maximalIdeal D) D) → IsNoetherianRing E → IsAdicComplete (IsLocalRing.maximalIdeal E) E → IsLocalHom h → GlobalTheory.Toroidal.IsEtaleCompletion h → ((IsLocalRing.residue E).comp h).FormallyUnramified → IsDomain E ∧ IsIntegrallyClosed E := by
   intro D E _ _ _ _ _ h hD hAd hAi hE hEc _ het hfu

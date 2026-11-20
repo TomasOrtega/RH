@@ -17,7 +17,7 @@ noncomputable section
 namespace ChartEnergyIntegrableAlt
 
 /- English proof (translation)
-Establish `hx : (Fin.cons 1 y : Fin (e + 1) → ℂ) ≠ 0` using `fun h => by`. Use `congr_fun h 0` as an intermediate fact. Simplify using `at this`. Conclude with `hM.re_dotProduct_pos hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_pos {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hM : M.PosDef) (y : Fin e → ℂ) :
     0 < (star (Fin.cons 1 y : Fin (e + 1) → ℂ) ⬝ᵥ (M *ᵥ (Fin.cons 1 y : Fin (e + 1) → ℂ))).re := by
@@ -27,7 +27,7 @@ theorem quad_pos {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hM : M.
   exact hM.re_dotProduct_pos hx
 
 /- English proof (translation)
-Establish `hz : Continuous fun y : Fin e → ℂ => (Fin.cons 1 y : Fin (e + 1) → ℂ)` using `continuous_const.finCons continuous_id`. Establish `hc : Continuous fun y : Fin e → ℂ => star (Fin.cons 1 y : Fin (e + 1) → ℂ) ⬝ᵥ (M *ᵥ (Fin.cons 1 y : Fin (e + 1) → ℂ))` using `hz.star.dotProduct (continuous_const.matrix_mulVec hz)`. Conclude with `Real.measurable_log.comp (Real.continuous_sqrt.measurable.comp (Complex.measurable_re.comp hc.measurable))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_hermChartPot {e : ℕ} (M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) :
     Measurable (hermChartPot M) := by
@@ -39,11 +39,11 @@ theorem measurable_hermChartPot {e : ℕ} (M : Matrix (Fin (e + 1)) (Fin (e + 1)
   exact Real.measurable_log.comp (Real.continuous_sqrt.measurable.comp (Complex.measurable_re.comp hc.measurable))
 
 /- English proof (translation)
-Take `⟨c, hc, h1⟩` from `hCmp _ M N hM hN`. Take `⟨c', hc', h2⟩` from `hCmp _ N M hN hM`. Use `⟨|Real.log c| + |Real.log c'|, fun y => ?_⟩` and prove the remaining obligations. Establish `hqM` using `quad_pos hM y`. Establish `hqN` using `quad_pos hN y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `Real.log_le_log hqM (h1 (Fin.cons 1 y))`. Establish `a2` using `Real.log_le_log hqN (h2 (Fin.cons 1 y))`. Rewrite `a1` using `[Real.log_mul hc.ne' hqN.ne']`. Rewrite `a2` using `[Real.log_mul hc'.ne' hqM.ne']`. Simplify using `only [hermChartPot, Real.log_sqrt hqM.le, Real.log_sqrt hqN.le, Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [le_abs_self (Real.log c), le_abs_self (Real.log c'), abs_nonneg (Real.log c), abs_nonneg (Real.log c')]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pot_sub_bound (hCmp : HermFormCompare.Statement) {e : ℕ} {M N : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ}
     (hM : M.PosDef) (hN : N.PosDef) :
@@ -63,21 +63,17 @@ theorem pot_sub_bound (hCmp : HermFormCompare.Statement) {e : ℕ} {M N : Matrix
     abs_nonneg (Real.log c')]
 
 /- English proof (translation)
-Use `set HM := cxHessian (hermChartPot M) y`. Use `set HN := cxHessian (hermChartPot N) y`. Use `set A : Fin e → Matrix (Fin e) (Fin e) ℂ := fun j => if (j : ℕ) < k then HM else HN with hAdef`. Establish `hA : (fun j : Fin e => cxHessian (if (j : ℕ) < k then hermChartPot M else hermChartPot N) y) = A`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [hAdef]`. Apply the tactic sequence `split_ifs <;> rfl`. Use `set B : Fin e → Matrix (Fin e) (Fin e) ℂ := fun _ => ((max C 1 : ℝ) : ℂ) • HN with hBdef`. Establish `hApsd : ∀ j, (A j).PosSemidef` using `fun j => by`. Simplify using `only [hAdef]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `hMp`. Conclude with `hNp`. Establish `hsm : ∀ r : ℝ, 0 ≤ r → (((r : ℝ) : ℂ) • HN).PosSemidef` using `fun r hr => hNp.smul (Complex.zero_le_real.2 hr)`. Establish `hAB : ∀ j, (B j - A j).PosSemidef` using `fun j => by`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hBdef, hAdef]`. Use `split_ifs`. Establish `h : ((max C 1 : ℝ) : ℂ) • HN - HM = ((C : ℂ) • HN - HM) + (((max C 1 - C : ℝ)) : ℂ) • HN`. Use `push_cast`. Rewrite using `[sub_smul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h]`. Conclude with `hle.add (hsm _ (sub_nonneg.2 (le_max_left C 1)))`. Establish `h : ((max C 1 : ℝ) : ℂ) • HN - HN = (((max C 1 - 1 : ℝ)) : ℂ) • HN`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_smul, one_smul]`. Rewrite using `[h]`. Conclude with `hsm _ (sub_nonneg.2 (le_max_right C 1))`. Establish `hmono : (mixedDisc A).re ≤ (mixedDisc B).re` using `ReciprocityTheory.AnForm.A.mdisc_re_mono A B hApsd hAB`. Establish `hnn : 0 ≤ (mixedDisc A).re` using `(ReciprocityTheory.AnForm.A.mdisc_nonneg_of_posSemidef A hApsd).2`.
-
-Establish `hB : mixedDisc B = ((max C 1 : ℝ) : ℂ) ^ e * HN.det`. Establish `h` using `ReciprocityTheory.AnForm.A.mdisc_const (((max C 1 : ℝ) : ℂ) • HN)`. Rewrite `h` using `[det_smul, Fintype.card_fin]`. Conclude with `h`. Establish `hN1 : mixedDisc (fun _ : Fin e => HN) = HN.det` using `ReciprocityTheory.AnForm.A.mdisc_const HN`.
-
-Establish `hc : 0 ≤ (e.factorial : ℝ) * (2 / Real.pi) ^ e` using `by positivity`. Unfold `maDensity`. Rewrite using `[hA, hN1, Real.norm_eq_abs, abs_mul, abs_of_nonneg hc, abs_of_nonneg hnn]`. Rewrite `hmono` using `[hB, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem abs_maDensity_mix_le {e : ℕ} {M N : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (k : ℕ) (C : ℝ) (y : Fin e → ℂ)
     (hMp : (cxHessian (hermChartPot M) y).PosSemidef) (hNp : (cxHessian (hermChartPot N) y).PosSemidef)
@@ -134,9 +130,9 @@ end ChartEnergyIntegrableAlt
 open ChartEnergyIntegrableAlt in
 
 /- English proof (translation)
-Introduce `e M N hM hN k`. Take `⟨C, hC⟩` from `hHess e M N hM hN`. Take `⟨C₀, hC₀⟩` from `hHess e N N hN hN`. Take `⟨K, hK⟩` from `pot_sub_bound hCmp hM hN`. Establish `hmix : Integrable (fun y : Fin e → ℂ => maDensity (fun j : Fin e => if (j : ℕ) < k then hermChartPot M else hermChartPot N) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Integrable.mono' ((ChartDensityIntegrable.proof e N hN).const_mul (max C 1 ^ e)) (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adb_measurable_maDensity _).aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `abs_maDensity_mix_le k C y (hC y).1.posSemidef (hC₀ y).1.posSemidef (hC y).2`. Conclude with `hmix.bdd_mul ((measurable_hermChartPot M).sub (measurable_hermChartPot N)).aestronglyMeasurable (Eventually.of_forall hK)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ChartEnergyIntegrable.proof (hCmp : HermFormCompare.Statement) (hHess : ChartHessCompare.Statement) :
     ChartEnergyIntegrable.Statement := by

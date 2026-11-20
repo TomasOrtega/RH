@@ -12,14 +12,14 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gN_nonneg_bessel_integrability {k r : ℕ} (x : Formalism.FourierDecayAlt.B.Mat k r) : 0 ≤ Formalism.FourierDecayAlt.B.gN x := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (show xᴴ * Hpk 0 0 * x = Hpk 0 0 from hx) 0) 0`. Simplify using `[Matrix.mul_apply, Hpk, Fin.sum_univ_succ] at h`. Establish `h1 : Complex.normSq (x 0 0) = 1`. Establish `h4 : ((Complex.normSq (x 0 0) : ℝ) : ℂ) = 1` using `by rw [Complex.normSq_eq_conj_mul_self, h]`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.FourierDecayAlt.B.gN`. Simplify using `[Fin.sum_univ_succ, h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gN_eq_one_of_zero_dim (x : Formalism.FourierDecayAlt.B.Mat 0 0) (hx : x ∈ UH (Hpk 0 0)) : Formalism.FourierDecayAlt.B.gN x = 1 := by
   have h := congrFun (congrFun (show xᴴ * Hpk 0 0 * x = Hpk 0 0 from hx) 0) 0
@@ -31,7 +31,7 @@ theorem gN_eq_one_of_zero_dim (x : Formalism.FourierDecayAlt.B.Mat 0 0) (hx : x 
   simp [Fin.sum_univ_succ, h1]
 
 /- English proof (translation)
-Establish `hmeas : Measurable fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-A)`. Unfold `Formalism.FourierDecayAlt.B.gN`. Use `fun_prop`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Conclude with `(hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (gN_nonneg_bessel_integrability _) _)).2 h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_gN_rpow_of_lintegral_lt_top {k r : ℕ} {μ : Measure (Mt k r)} {A : ℝ}
     (h : (∫⁻ x : Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-A)) ∂μ) < ∞) :
@@ -44,13 +44,13 @@ theorem integrable_gN_rpow_of_lintegral_lt_top {k r : ℕ} {μ : Measure (Mt k r
     Real.rpow_nonneg (gN_nonneg_bessel_integrability _) _)).2 h
 
 /- English proof (translation)
-Introduce `k r μG A hG hA`. Establish `hG' : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.B.GV k r) μG` using `Formalism.MainNotions.BridgeLemma₃.hu_haarG k r μG ⟨hG.1, hG.2.1, hG.2.2.1, hG.2.2.2⟩`. Break down `Nat.eq_zero_or_pos (k + r) with h0 | hpos` into its components or cases. Take `⟨rfl, rfl⟩ : k = 0 ∧ r = 0` from `by omega`. Establish `h1` using `Formalism.FourierDecayAlt.P.norm_power_integrable_sharp 0 0 μG 1 hG' (by simp [Formalism.FourierDecayAlt.B.AB])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI` using `integrable_gN_rpow_of_lintegral_lt_top h1`. Use `hI.congr ?_` and prove the remaining obligations. Establish `hconc : μG {x : Mt 0 0 | Matrix.of x ∉ UH (Hpk 0 0)} = 0` using `hG.2.2.1`. Rewrite using `[Filter.EventuallyEq, ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hconc` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hxG`. Apply `hx` to reduce the goal to its premises. Use `show Formalism.FourierDecayAlt.B.gN (k := 0) (r := 0) (Matrix.of x) ^ (-(1:ℝ)) = Formalism.FourierDecayAlt.B.gN (k := 0) (r := 0) (Matrix.of x) ^ (-A)`. Rewrite using `[gN_eq_one_of_zero_dim (Matrix.of x : Formalism.FourierDecayAlt.B.Mat 0 0) hxG, Real.one_rpow, Real.one_rpow]`. Establish `hAB : Formalism.FourierDecayAlt.B.AB k r ≤ A`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkr : (1 : ℝ) ≤ (k : ℝ) + r` using `by exact_mod_cast hpos`. Simplify using `only [Formalism.FourierDecayAlt.B.AB, Formalism.FourierDecayAlt.ThreeDimData.AG] at hA ⊢`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `integrable_gN_rpow_of_lintegral_lt_top (Formalism.FourierDecayAlt.P.norm_power_integrable_sharp k r μG A hG' hAB)`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem growth_group_bound : Formalism.FourierDecayAlt.ThreeDimData.GrowthG := by
   intro k r μG A hG hA

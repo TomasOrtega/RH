@@ -6,27 +6,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar.LatPull
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ X' Ω' _ ξ' f i E' _ _ j L T r V hd hj hli hvb p' hp'`. Take `⟨h, hT⟩` from `hp'`. Take `⟨U, hU, b, hb, hfr⟩` from `hvb _ hT`. Establish `hind' : LinearIndependent Ω' fun k => j (b k)` using `hli r b (hfr _ hT hU).1`. Establish `hbV : ∀ k, b k ∈ V` using `fun k => hb ▸ Submodule.subset_span ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v ∈ Submodule.span Ω (Set.range b), j v ∈ Submodule.span Ω' (Set.range fun k => j (b k))`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx`. Rewrite using `[hj]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `⟨f ⁻¹ᵁ U, hU, fun k => j (b k), ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨b k, hbV k, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `key v (by rw [hb]; exact hv)`. Introduce and unpack `q' ⟨h', hT'⟩ hq'`. Use `⟨hind', ?_⟩` and prove the remaining obligations. Establish `hL` using `(hfr _ hT' hq').2`. Take `⟨h2, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `key' : ∀ e ∈ Submodule.span (regAt ξ ⟨f q'.1, h'⟩) (Set.range b), j e ∈ Submodule.span (regAt ξ' q') (Set.range fun k => j (b k))`. Introduce `e he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul a x _ hx`. Establish `e1 : j (a • x) = (⟨i a, hreg a a.2⟩ : regAt ξ' q') • j x` using `hj a x`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ hx`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h3, e, he, rfl⟩`. Conclude with `key' e (by rw [← hL]; exact he)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Use `Submodule.subset_span ⟨h', b k, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVBOn_pull :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E]

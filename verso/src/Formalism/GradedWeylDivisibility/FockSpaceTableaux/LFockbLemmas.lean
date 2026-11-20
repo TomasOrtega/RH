@@ -10,7 +10,7 @@ namespace Formalism.GradedWeylDivisibility
 open Formalism.REAL (fockF)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF`. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, mul_comm (starRingEnd ℂ _)]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

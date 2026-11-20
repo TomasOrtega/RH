@@ -7,9 +7,9 @@ variable {R A : Type} (R' : Type) [CommRing R] [CommRing A] [Bialgebra R A] [Com
   [Algebra R R']
 
 /- English proof (translation)
-Use `AlgebraTensorModule.ext fun r a => ?_` and prove the remaining obligations. Rewrite using `[← mul_one r, ← smul_eq_mul, ← smul_tmul', map_smul, map_smul]`. Use `congr 1`. Establish `h : ∀ c : A ⊗[R] A, AlgebraTensorModule.tensorTensorTensorComm R R' R R' R' R' A A (comul (R` using `R') (1 : R') ⊗ₜ[R] c) = AlgebraTensorModule.distribBaseChange R R' A A (1 ⊗ₜ c) := by`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [tmul_add, map_add, hx, hy]`. Consider the case `tmul x y => simp [Bialgebra.comul_one, Algebra.TensorProduct.one_def]`. Simplify using `only [cobOne_apply, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.baseChange_tmul, tmul_sub, map_sub, TensorProduct.comul_tmul, h, AlgebraTensorModule.distribBaseChange_tmul, Algebra.TensorProduct.one_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem cobOne_baseChange :
     cobOne R' (R' ⊗[R] A) = (AlgebraTensorModule.distribBaseChange R R' A A).toLinearMap ∘ₗ
@@ -33,13 +33,13 @@ end GlobalTheory.PDiv
 namespace GlobalTheory.PDiv
 
 /- English proof (translation)
-Use `set K := LinearMap.ker (cobOne R A)`. Establish `hsub : ∀ y : R' ⊗[R] K, (liftSemi (toBaseChange R R' A).prim y).1 = K.subtype.lTensor R' y`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, Submodule.coe_add, hx, hy]`. Consider the case `tmul r b`. Rewrite using `[liftSemi_tmul, Submodule.coe_smul, SemiBialgHom.prim_val, toBaseChange_apply, LinearMap.lTensor_tmul, Submodule.subtype_apply, smul_tmul', smul_eq_mul, mul_one]`. Establish `hex` using `Module.Flat.lTensor_exact R' (LinearMap.exact_subtype_ker_map (cobOne R A))`. Use `⟨fun x y h => ?_, fun z => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.Flat.lTensor_preserves_injective_linearMap (M := R') K.subtype K.injective_subtype ?_` and prove the remaining obligations. Rewrite using `[← hsub, ← hsub, h]`. Take `⟨x, hx⟩` from `z`. Establish `hz : (cobOne R A).lTensor R' x = 0`. Establish `h0 : cobOne R' (R' ⊗[R] A) x = 0` using `hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[cobOne_baseChange, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.map_eq_zero_iff, LinearMap.baseChange_eq_ltensor]`. Conclude with `h0`. Take `⟨y, hy⟩` from `(hex x).1 hz`. Conclude with `⟨y, Subtype.ext ((hsub y).trans hy)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftSemi_prim_baseChange_bijective {R A : Type} (R' : Type) [CommRing R] [CommRing A]
     [Bialgebra R A] [CommRing R'] [Algebra R R'] [Module.Flat R R'] :

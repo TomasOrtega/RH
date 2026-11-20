@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.SplitPlace
 
 /- English proof (translation)
-Establish `hΦ` using `GlobalTheory.StdFrames.comp_toAd D`. Establish `hd` using `GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ h`. Take `⟨ε, hε, h3⟩` from `q.above`. Establish `h2` using `q.split.2.1`. Establish `h4` using `GlobalTheory.IdemSupport.ev_mul (Φ := (GlobalTheory.StdFrames.toAd D).comp (toEAf D)) q.e (cA D q.e) PP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h2, GlobalTheory.IdemSupport.ev_zero, hd.2.1, one_mul, eq_comm]`. Assume the negation of the conclusion as `hv`. Use `(GlobalTheory.IdemSupport.place_comp hΦ hε).2.2 PP hv` as an intermediate fact. Rewrite `this` using `[← h3, GlobalTheory.IdemSupport.ev_add, h4, hd.2.1, add_zero]`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E) (h : Formalism.L2.NTheta.IsIdemAt q.e PP) :
@@ -31,7 +31,7 @@ theorem under_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   exact one_ne_zero this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ q q' PP h h'` and use `(under_eq q PP h).symm.trans (under_eq q' PP h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem v_eq_of_isIdemAt : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']

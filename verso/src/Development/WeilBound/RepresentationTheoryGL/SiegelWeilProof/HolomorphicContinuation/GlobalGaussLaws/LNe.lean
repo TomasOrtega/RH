@@ -14,17 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D ψ θ l hψ hθ hl τ`. Take `⟨ψ₀, h₀, lam, hlam, hψeq⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hsh : ψ = shift ψ₀ lam`. Use extensionality with `x`. Rewrite using `[hψeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hlamE : algebraMap D.host.F D.host.E lam ≠ 0` using `(map_ne_zero _).2 hlam`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Use `set μ' : D.host.E := -D.host.xi0 / algebraMap D.host.F D.host.E lam with hμ'`. Establish `hsk : IsSkew μ'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨div_ne_zero (neg_ne_zero.2 hxi) hlamE, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ', star_div₀, star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Formalism.IndefR.Eqv.star_algebraMapF]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨lam2, hlam2, -, l', hl', habs⟩` from `shift_char_realPar D ψ₀ h₀ θ hθ μ' hsk`. Establish `hl2 : lam2 = lam`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[hlam2, hμ']`. Clear the denominators using the available nonvanishing facts. Rewrite `hl'` using `[hl2, ← hsh]`. Establish `heq : l = l'` using `GlobalTheory.StdUnn.RealPar.realPar_unique D ψ θ hθ l l' hl hl'`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `e` using `habs τ`. Rewrite `e` using `[← heq, h, abs_zero]`. Establish `h1 : tauE D τ D.host.xi0 ≠ 0` using `(map_ne_zero _).2 hxi`. Establish `h2 : tauE D τ μ' ≠ 0` using `(map_ne_zero _).2 hsk.1`.
-
-Conclude with `div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2) e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lNe : LNe := by
   intro D ψ θ l hψ hθ hl τ

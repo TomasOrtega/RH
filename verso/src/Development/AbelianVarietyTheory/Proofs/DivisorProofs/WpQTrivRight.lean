@@ -18,9 +18,9 @@ def trivHom (k : ℕ) : Multiplicative N.X →* N.QT k where
 abbrev Qq (k : ℕ) : Type := N.QT k ⧸ (trivHom N k).range
 
 /- English proof (translation)
-Rewrite using `[N.qEq_iff, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨Multiplicative.ofAdd z, by simp [trivHom]⟩`. Introduce and unpack `⟨z, hz⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨z.toAdd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N.qTriv k z.toAdd = p⁻¹ * p' at hz`. Rewrite using `[hz, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem qEq_iff_mk_eq {k : ℕ} (p p' : N.QT k) : N.QEq p p' ↔ (QuotientGroup.mk p : Qq N k) = QuotientGroup.mk p' := by
   rw [N.qEq_iff, QuotientGroup.eq]
@@ -42,21 +42,21 @@ def pushRep (M n : ℕ) : N.QT M →* N.QT n :=
   else 1
 
 /- English proof (translation)
-Simplify using `[pushRep, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pushRep_fst {M n : ℕ} (h : n ∣ M) (p : N.QT M) : (pushRep N M n p).1.1 = p.1.1 := by
   simp [pushRep, h]
 
 /- English proof (translation)
-Simplify using `[pushRep, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pushRep_snd {M n : ℕ} (h : n ∣ M) (p : N.QT M) : (pushRep N M n p).1.2 = p.1.2 ^ (M / n) := by
   simp [pushRep, h]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, rfl⟩`. Distinguish the cases in `h : n ∣ M`. Use `⟨Multiplicative.ofAdd ((M / n) • z.toAdd), Subtype.ext (Prod.ext ?_ ?_)⟩` and prove the remaining obligations. Simplify using `only [trivHom, MonoidHom.coe_mk, OneHom.coe_mk, NumD.qTriv, toAdd_ofAdd]`. Rewrite using `[pushRep_fst N h, smul_smul, Nat.mul_div_cancel' h]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [trivHom, MonoidHom.coe_mk, OneHom.coe_mk, NumD.qTriv, toAdd_ofAdd]`. Rewrite using `[pushRep_snd N h, N.io_nsmul]`. Simplify using `[pushRep, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pushRep_triv (M n : ℕ) : (trivHom N M).range ≤ (trivHom N n).range.comap (pushRep N M n) := by
   rintro _ ⟨z, rfl⟩
@@ -77,13 +77,13 @@ theorem pushQ_mk (M n : ℕ) (p : N.QT M) :
     pushQ N M n (QuotientGroup.mk p) = QuotientGroup.mk (pushRep N M n p) := rfl
 
 /- English proof (translation)
-Rewrite using `[← inv_inj, ← NumD.wp_swap, WpPairing.wp_qTriv, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wp_qTriv_right {k : ℕ} (p : N.QT k) (z : N.X) : N.wp p (N.qTriv k z) = 1 := by
   rw [← inv_inj, ← NumD.wp_swap, WpPairing.wp_qTriv, inv_one]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `(N.qEq_iff _ _).1 hp`. Take `⟨w, rfl⟩` from `(N.qEq_iff _ _).1 hq`. Rewrite using `[WpPairing.wp_mul_left, WpPairing.wp_mul_right, WpPairing.wp_mul_right, WpPairing.wp_qTriv, WpPairing.wp_qTriv, wp_qTriv_right]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wp_congr {k : ℕ} {p p' q q' : N.QT k} (hp : N.QEq p p') (hq : N.QEq q q') : N.wp p q = N.wp p' q' := by
   obtain ⟨z, rfl⟩ := (N.qEq_iff _ _).1 hp

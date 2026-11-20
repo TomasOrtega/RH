@@ -13,15 +13,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g g' s s' y y' y'' h`. Use `⟨fun h' => (frChg_refl_and_comp E H Dw l Xo c S y y' y'').2 g g' s s' h h', fun h' => ?_⟩` and prove the remaining obligations. Establish `hx : y'.x = y.x` using `h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : y''.x = y.x` using `h'.1`. Take `⟨g₀, a₀, hg₀, h₀⟩` from `(frChg_exists_unique E H Dw l Xo c S y y').1 hx`. Take `⟨rfl, rfl⟩` from `(frChg_exists_unique E H Dw l Xo c S y y').2 _ _ _ _ h h₀`. Take `⟨k, b, -, hk⟩` from `(frChg_exists_unique E H Dw l Xo c S y' y'').1 (hx'.trans hx.symm)`. Establish `hc` using `(frChg_refl_and_comp E H Dw l Xo c S y y' y'').2 _ _ _ _ h hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e₁, e₂⟩` from `(frChg_exists_unique E H Dw l Xo c S y y'').2 _ _ _ _ h' hc`. Establish `e₃ : g' = k`. Use function extensionality and compare the values at `τ`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).2 (hg₀ τ)).mul_right_cancel (congrFun e₁ τ)`. Establish `e₄ : s' = (b : S)` using `a₀.isUnit.mul_right_cancel e₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₃, e₄]`. Conclude with `hk`. Introduce `y`. Conclude with `(frChg_refl_and_comp E H Dw l Xo c S y y y).1`. Introduce `T _ _ φ g s y y' z z' h hm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `ChgBC.frChg_baseChange E H Dw l Xo c S T φ y y' z z' g s h hm`. Introduce `t y y'`. Rewrite using `[(frBor_calculus E H Dw l Xo c S y y' y').1 t]`. Conclude with `⟨fun ⟨g, a, b, c⟩ => ⟨g, b, a, c⟩, fun ⟨g, a, b, c⟩ => ⟨g, b, a, c⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem frChg_calculus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S], (∀ (g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (s s' : S) (y y' y'' : FrPt Xo c S), FrChg g s y y' → (FrChg g' s' y' y'' ↔ FrChg (fun τ => g' τ * g τ) (s' * s) y y'')) ∧ (∀ y : FrPt Xo c S, FrChg (fun _ => 1) 1 y y) ∧ (∀ (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (s : S) (y y' : FrPt Xo c S) (z z' : FrPt Xo c T), FrChg g s y y' → FrMap φ y z → (FrMap φ y' z' ↔ FrChg (fun τ => (g τ).map φ) (φ s) z z')) ∧ ∀ (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' ↔ ∃ g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S, (∀ τ i, g τ i i = (t (some ⟨τ, i⟩) : S)) ∧ (∀ τ i j, i < j → g τ i j = 0) ∧ FrChg g (t none : S) y y' := by
   intro E _ _ _ H Dw l Xo c S _ _

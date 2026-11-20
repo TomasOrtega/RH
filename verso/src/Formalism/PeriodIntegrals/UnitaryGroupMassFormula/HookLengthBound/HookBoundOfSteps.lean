@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.DetShif
 namespace PI.HookSteps
 
 /- English proof (translation)
-The claim follows from `hB (hN hR hH hL (hS hA hD hP hH))`.
+A detailed English derivation is pending.
 -/
 theorem hookBound_of_steps (hB : HookBoundOf) (hN : HookNormOf) (hS : DetShiftNormOf)
     (hR : RenameIso) (hH : HwDetMul) (hL : HwLastZero) (hA : DetAdj) (hD : DetDetId)

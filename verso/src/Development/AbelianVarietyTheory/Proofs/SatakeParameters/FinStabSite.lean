@@ -9,9 +9,7 @@ namespace GlobalTheory.TwV
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J`. Use `show FinStab Lv`. Introduce `j c La hLa`. Distinguish the cases in `hj : j ≤ D.R.m`. Conclude with `Nat.finite_of_card_ne_zero ((labAt X H).stab_dvd j hj c La hLa).1.ne'`.
-
-Conclude with `(J.empty j (by omega)).elim c`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem finStab_site : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), FinStab (sysS H X std).Lv := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J

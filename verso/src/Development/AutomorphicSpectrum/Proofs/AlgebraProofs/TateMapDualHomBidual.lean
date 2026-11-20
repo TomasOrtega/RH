@@ -13,11 +13,11 @@ section Rank
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Establish `hP : Module.rank O P < Cardinal.aleph0` using `(Submodule.rank_le P).trans_lt hQ`. Establish `h1` using `HasRankNullity.rank_quotient_add_rank P`. Establish `h2 : Module.rank O P = Module.rank O Q`. Use `le_antisymm (Submodule.rank_le P) ?_` and prove the remaining obligations. Rewrite using `[← Cardinal.cast_toNat_of_lt_aleph0 hQ, ← Cardinal.cast_toNat_of_lt_aleph0 hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_le.2 h`. Establish `h3 : Module.rank O (Q ⧸ P) = 0`. Use `Cardinal.eq_of_add_eq_add_right (b := Module.rank O P) ?_ hP` and prove the remaining obligations. Rewrite using `[h1, h2, zero_add]`. Take `⟨a, ha, hy⟩` from `rank_eq_zero_iff.1 h3 (Submodule.Quotient.mk y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, (Submodule.Quotient.mk_eq_zero P).1 (by rw [Submodule.Quotient.mk_smul]; exact hy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {Q : Type} [AddCommGroup Q] [Module O Q]
     (hQ : Module.rank O Q < Cardinal.aleph0) (P : Submodule O Q)
@@ -37,7 +37,7 @@ theorem exists_smul_mem {Q : Type} [AddCommGroup Q] [Module O Q]
 variable {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M]
 
 /- English proof (translation)
-Establish `h1 : Module.rank O (LinearMap.range f) < Cardinal.aleph0` using `Module.rank_lt_aleph0 O _`. Establish `h2 : Module.rank O (LinearMap.ker f) < Cardinal.aleph0` using `(Submodule.rank_le _).trans_lt (Module.rank_lt_aleph0 O M)`. Establish `h3` using `congrArg Cardinal.toNat (LinearMap.rank_range_add_rank_ker f)`. Rewrite `h3` using `[Cardinal.toNat_add h1 h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_range_add_ker {M' : Type} [AddCommGroup M'] [Module O M'] (f : M →ₗ[O] M') :
     Module.finrank O (LinearMap.range f) + Module.finrank O (LinearMap.ker f) =
@@ -49,19 +49,17 @@ theorem finrank_range_add_ker {M' : Type} [AddCommGroup M'] [Module O M'] (f : M
   rwa [Cardinal.toNat_add h1 h2] at h3
 
 /- English proof (translation)
-Establish `hWr : Module.rank O W < Cardinal.aleph0` using `(Submodule.rank_le W).trans_lt (Module.rank_lt_aleph0 O M)`. Take `⟨w, hw⟩` from `exists_linearIndependent_of_le_finrank (R := O) (M := W) le_rfl`. Set `S : Submodule O W` to `Submodule.span O (Set.range w)`. Establish `hS : Module.finrank O W ≤ Module.finrank O S`. Rewrite using `[finrank_span_eq_card hw, Fintype.card_fin]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Φ : M →ₗ[O] (Fin (Module.finrank O W) → O)` to `LinearMap.pi fun j => B.flip (w j : M)`. Establish `hker : LinearMap.ker Φ = N`. Use extensionality with `x`. Rewrite using `[hN, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx y hy`. Take `⟨a, ha, hay⟩` from `exists_smul_mem hWr S hS ⟨y, hy⟩`. Establish `h0 : ∀ s ∈ S, B x (s : M) = 0` using `fun s hs => by`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hs`. Conclude with `congrFun hx j`. Consider the case `zero => simp`. Consider the case `add s t _ _ hs ht => simp [hs, ht]`. Consider the case `smul c s _ hs => simp [hs]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `h0 _ hay`. Simplify using `only [Submodule.coe_smul, map_smul, smul_eq_mul] at h1`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha`. Introduce `hx`. Conclude with `funext fun j => hx _ (w j).2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `finrank_range_add_ker Φ`. Establish `h2 : Module.finrank O (LinearMap.range Φ) ≤ Module.finrank O W`. Use `Submodule.finrank_le (LinearMap.range Φ)` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[hker]`.
-
-Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_le_add (B : M →ₗ[O] M →ₗ[O] O) (W N : Submodule O M)
     (hN : ∀ x, x ∈ N ↔ ∀ y ∈ W, B x y = 0) :
@@ -100,11 +98,11 @@ theorem finrank_le_add (B : M →ₗ[O] M →ₗ[O] O) (W N : Submodule O M)
   omega
 
 /- English proof (translation)
-Establish `hWr : Module.rank O W < Cardinal.aleph0` using `(Submodule.rank_le W).trans_lt (Module.rank_lt_aleph0 O M)`. Establish `h1` using `finrank_le_add B W N hN`. Set `P : Submodule O W` to `N.comap W.subtype`. Establish `hP : Module.finrank O W ≤ Module.finrank O P`. Establish `: Module.finrank O P = Module.finrank O N` using `(Submodule.comapSubtypeEquivOfLe hNW).finrank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Take `⟨a, ha, hax⟩` from `exists_smul_mem hWr P hP ⟨x, hx⟩`. Rewrite using `[hN]`. Introduce `y hy`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : a • x ∈ N` using `hax`. Establish `h3` using `(hN _).1 h2 y hy`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h3`. Conclude with `(mul_eq_zero.1 h3).resolve_left ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_of_finrank (B : M →ₗ[O] M →ₗ[O] O) (W N : Submodule O M)
     (hN : ∀ x, x ∈ N ↔ ∀ y ∈ W, B x y = 0) (hNW : N ≤ W)
@@ -133,7 +131,7 @@ section Tate
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
 
 /- English proof (translation)
-The claim follows from `(charHom_app_muT _ n).symm.trans (dualChar_app_muT t n)`.
+A detailed English derivation is pending.
 -/
 theorem charElem_bidual (G : PDivGroup p O) (t : G.Tate) (n : ℕ) :
     charElem (G := G.dual) (tateMap G G.dual.dual O G.bidual.hom t) n =
@@ -141,7 +139,7 @@ theorem charElem_bidual (G : PDivGroup p O) (t : G.Tate) (n : ℕ) :
   (charHom_app_muT _ n).symm.trans (dualChar_app_muT t n)
 
 /- English proof (translation)
-The claim follows from `muRoot_ext fun n => by rw [muRoot_pairing, muRoot_pairing, charElem_bidual] exact (apply_charElem χ n _).symm`.
+A detailed English derivation is pending.
 -/
 theorem pairing_dual_bidual (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) :
     pairing G.dual O χ (tateMap G G.dual.dual O G.bidual.hom t) = pairing G O t χ :=
@@ -150,9 +148,9 @@ theorem pairing_dual_bidual (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) 
     exact (apply_charElem χ n _).symm
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h`. Establish `h2` using `congrArg (algebraMap ℤ_[p] O) (PadicInt.unitCoeff_spec h)`. Rewrite `h2` using `[ha, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h2.symm with h3 | h3` into its components or cases. Conclude with `((PadicInt.unitCoeff h).isUnit.map (algebraMap ℤ_[p] O)).ne_zero h3`. Conclude with `pow_ne_zero _ hp h3`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective [IsDomain O] [Algebra ℤ_[p] O] (hp : (p : O) ≠ 0) :
     Function.Injective (algebraMap ℤ_[p] O) := by
@@ -166,9 +164,9 @@ theorem algebraMap_injective [IsDomain O] [Algebra ℤ_[p] O] (hp : (p : O) ≠ 
   · exact pow_ne_zero _ hp h3
 
 /- English proof (translation)
-Use `(G.pairing_flip_bijective C).1 (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pairing G O y _ = pairing G O y _`. Rewrite using `[← pairing_tateMap, pairing_dual_bidual, map_neg]`. Take `⟨a, ha, hb⟩` from `hB y t`. Take `⟨a', ha', hb'⟩` from `hB t y`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : a = - a'` using `algebraMap_injective hp (by rw [map_neg, ← hb, ← hb', hskew])`. Rewrite using `[ha, ha', h, neg_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateMap_dualHom_bidual (C : Type) [Field C] [Algebra O C] [IsIntegrallyClosedIn O C]
     [IsAlgClosed C] [CharZero C] [IsDomain O] [Algebra ℤ_[p] O] (hp : (p : O) ≠ 0)
@@ -197,39 +195,37 @@ open AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj NumberF
   GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Semi Lagr
 
 /- English proof (translation)
-Introduce `hF p _ C _ _ _ v O _ _ _ hv hp hO _ G _ _ lam ζ h0 h B κ hζ hκ hbij hdim hB halt`. Establish `hpp : p.Prime` using `Fact.out`. Establish `: IsIntegrallyClosedIn O C` using `isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun hx => hv.exists_of_le_one (hv.mem_of_integral hx)⟩`. Use `G.finite_tate C` as an intermediate fact. Use `G.free_tate C` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : O) ≠ 0` using `fun h => by`. Establish `h5 : algebraMap O C (p : O) = 0` using `by rw [h, map_zero]`. Rewrite `h5` using `[map_natCast]`. Conclude with `Nat.cast_ne_zero.2 hpp.ne_zero h5`. Establish `hκ0 : κ ≠ 0` using `fun h => hκ.1 (by rw [h, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hskew : ∀ x y, B x y = - B y x` using `fun x y => by`. Establish `h1` using `halt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, halt, zero_add, add_zero] at h1`. Conclude with `eq_neg_of_add_eq_zero_right h1`. Set `e : G.Tate ≃ₗ[ℤ_[p]] G.dual.Tate` to `LinearEquiv.ofBijective _ hbij`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : O ⊗[ℤ_[p]] G.Tate ≃ₗ[O] O ⊗[ℤ_[p]] G.dual.Tate` to `e.baseChange ℤ_[p] O _ _`. Establish `hL : ∀ x, (tateMap G G.dual O lam).baseChange O x = L x` using `fun _ => rfl`. Use `set f := dlogLinear G ∘ₗ (tateMap G G.dual O lam).baseChange O with hf`. Establish `hfL : ∀ x, f x = dlogLinear G (L x)` using `fun _ => rfl`. Establish `hcoker : ∀ w : G.omega, κ • w ∈ LinearMap.range f` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `coker_dlog_killed p C v O hv hp hO G κ hκ.2 w`. Conclude with `⟨L.symm u, by rw [hfL, L.apply_symm_apply, hu]⟩`. Use `⟨hcoker, ?_⟩` and prove the remaining obligations. Set `B' : O ⊗[ℤ_[p]] G.Tate →ₗ[O] O ⊗[ℤ_[p]] G.dual.Tate →ₗ[O] O` to `(B ∘ₗ L.symm.toLinearMap).flip`. Establish `hB' : ∀ (x : G.Tate) (χ : G.dual.Tate), ∃ a : ℤ_[p], pairing G O x χ = a • muTate O ζ h0 h ∧ B' (1 ⊗ₜ x) (1 ⊗ₜ χ) = algebraMap ℤ_[p] O a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x χ`. Take `⟨z, rfl⟩` from `hbij.2 χ`. Take `⟨a, ha, hb⟩` from `hB z x`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `h1 : L.symm (1 ⊗ₜ tateMap G G.dual O lam z) = 1 ⊗ₜ z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `B (L.symm _) _ = _`. Rewrite using `[h1, hb]`. Establish `hN : ∀ x, x ∈ LinearMap.ker (hodgeTateLinear G) ↔ ∀ y ∈ LinearMap.ker f, B x y = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Rewrite using `[LinearMap.mem_ker, (hF p C v O hv hp hO G).2 ζ h0 h hζ B' hB' x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Establish `h1` using `hx (L y) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : B y x = 0`. Establish `: B' x (L y) = B y x`. Express the relevant statement in the definitionally equal form `B (L.symm (L y)) x = _`. Rewrite using `[L.symm_apply_apply]`. Rewrite `h1` using `[this]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hskew, h2, neg_zero]`. Introduce `hx y hy`. Establish `h1` using `hx (L.symm y) (by`. Rewrite using `[LinearMap.mem_ker, hfL, L.apply_symm_apply]`. Conclude with `hy)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `B (L.symm y) x = 0`. Rewrite using `[hskew, h1, neg_zero]`. Establish `hkey : ∀ x, omegaMap G G.dual lam (hodgeTateLinear G x) = - f x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, neg_add]`. Consider the case `tmul c t`. Establish `h1 : omegaMap G G.dual lam (hodgeTate G t) = - dlog G (tateMap G G.dual O lam t)`. Rewrite using `[hodgeTate_apply, ← dlog_tateMap, tateMap_dualHom_bidual C hp0 G lam (muTate O ζ h0 h) B hB hskew, map_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f (c ⊗ₜ t) = c • dlog G (tateMap G G.dual O lam t)` using `rfl`. Rewrite using `[hodgeTateLinear_tmul, map_smul, h1, h2, smul_neg]`. Establish `hNW : LinearMap.ker (hodgeTateLinear G) ≤ LinearMap.ker f` using `fun x hx => by`. Establish `h1` using `hkey x`. Rewrite `h1` using `[LinearMap.mem_ker.1 hx, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_ker.2 (neg_eq_zero.1 h1.symm)`. Establish `hM : Module.finrank O (O ⊗[ℤ_[p]] G.Tate) = G.height`. Rewrite using `[Module.finrank_baseChange, G.finrank_tate C]`. Set `g : G.omega →ₗ[O] LinearMap.range f` to `LinearMap.codRestrict _ (κ • LinearMap.id) hcoker`. Establish `hg : Function.Injective g` using `fun a b hab => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : κ • a = κ • b` using `congrArg Subtype.val hab`. Conclude with `smul_right_injective _ hκ0 h1`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hg`. Establish `h2` using `(finrank_range_add_ker f).trans hM`. Establish `h3 : 2 * Module.finrank O (LinearMap.ker f) ≤ G.height`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Establish `hWN` using `le_of_finrank B (LinearMap.ker f) _ hN hNW (h3.trans_eq hM.symm)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`.
-
-Conclude with `(hN x).1 (hWN hx) y hy`. Introduce `hx`. Conclude with `hNW ((hN x).2 hx)`.
+A detailed English derivation is pending.
 -/
 theorem dlog_lagrangian : FarguesHodgeTate → ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O) [Algebra ℤ_[p] O] (G : PDivGroup p O) [Module.Free O G.omega] [Module.Finite O G.omega] (lam : G ⟶ G.dual) (ζ : ℕ → O) (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) (B : O ⊗[ℤ_[p]] G.Tate →ₗ[O] O ⊗[ℤ_[p]] G.Tate →ₗ[O] O) (κ : O), ζ 1 ≠ 1 → IsHTConst v p κ → Function.Bijective (tateMap G G.dual O lam) → 2 * Module.finrank O G.omega = G.height → (∀ x y : G.Tate, ∃ a : ℤ_[p], pairing G O y (tateMap G G.dual O lam x) = a • muTate O ζ h0 h ∧ B (1 ⊗ₜ x) (1 ⊗ₜ y) = algebraMap ℤ_[p] O a) → (∀ x, B x x = 0) → (∀ w : G.omega, κ • w ∈ LinearMap.range (dlogLinear G ∘ₗ (tateMap G G.dual O lam).baseChange O)) ∧ ∀ x, (dlogLinear G ∘ₗ (tateMap G G.dual O lam).baseChange O) x = 0 ↔ ∀ y, (dlogLinear G ∘ₗ (tateMap G G.dual O lam).baseChange O) y = 0 → B x y = 0 := by
   intro hF p _ C _ _ _ v O _ _ _ hv hp hO _ G _ _ lam ζ h0 h B κ hζ hκ hbij hdim hB halt

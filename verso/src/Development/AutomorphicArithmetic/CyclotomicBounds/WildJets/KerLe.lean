@@ -17,25 +17,23 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hx : 1 ≤ large₂.sc.x ^ P.Cb` using `Real.one_le_rpow (le_of_lt large₂.sc.one_lt_alt) P.Cb_nonneg`. Establish `hb` using `P.precision_cube_order_sq_le`. Establish `hPPn` using `P.PP_nW`. Establish `hNle` using `P.nW_le`. Establish `h40` using `P.TO_40`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit` using `P.split`. Establish `hnP` using `P.nP_eq`. Take `⟨hlo1, hlo2, hlo3⟩` from `P.nW_lo`. Establish `hN4 : 4 ≤ P.nWn` using `by omega`. Establish `hk : D.R.k ≤ P.nWn + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: D.R.k - 1 ≤ (D.R.k - 1) * D.R.f` using `Nat.le_mul_of_pos_right _ hf`. Use linear arithmetic over natural numbers and integers. Establish `hr : D.R.r ≤ P.nWn` using `by omega`. Establish `ht : D.R.t ≤ P.nWn + P.TO * P.nWn` using `by omega`. Establish `hmN : D.R.m ≤ (2 * D.R.f * D.R.m) ^ 4 * P.nWn`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbig : bigN D ≤ (P.nWn + 1) + D.R.m * (P.TO * P.nWn + 2 * P.nWn + 7)`. Unfold `bigN sLen`. Establish `: D.R.m * (D.R.t + (D.R.r + 6) + 1) ≤ D.R.m * (P.TO * P.nWn + 2 * P.nWn + 7)` using `Nat.mul_le_mul_left _ (by nlinarith)`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hmR : (D.R.m : ℝ) ≤ P.PP`. Establish `: ((D.R.m : ℕ) : ℝ) ≤ (((2 * D.R.f * D.R.m) ^ 4 * P.nWn : ℕ) : ℝ)` using `by exact_mod_cast hmN`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNR : (P.nWn : ℝ) ≤ P.PP` using `hNle`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN4R : (4 : ℝ) ≤ P.nWn` using `by exact_mod_cast hN4`. Establish `hTR : (40 : ℝ) ≤ P.TO`. Establish `: 40 * (P.Dp + 2) ≤ P.TO` using `h40`. Establish `: 40 ≤ P.TO` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbigR : (bigN D : ℝ) ≤ (P.nWn + 1) + D.R.m * (P.TO * P.nWn + 2 * P.nWn + 7)`. Conclude with `hbig` after adjusting the coercions. Establish `hPP1 : 1 ≤ P.PP` using `by linarith`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `by positivity`. Establish `hT0 : (0 : ℝ) ≤ P.TO` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) ≤ P.nWn` using `by positivity`. Establish `step1 : ((P.nWn : ℝ) + 1) + D.R.m * (P.TO * P.nWn + 2 * P.nWn + 7) ≤ P.PP ^ 2 * P.TO ^ 2`. Establish `e1 : (D.R.m : ℝ) * (P.TO * P.nWn + 2 * P.nWn + 7) ≤ P.PP * (P.TO * P.PP + 2 * P.PP + 7)`. Apply `mul_le_mul hmR _ (by positivity) (by linarith)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hPP1 (by linarith : (0:ℝ) ≤ P.PP)]`. Establish `step2 : P.PP ^ 2 * P.TO ^ 2 ≤ P.PP ^ 3 * P.TO ^ 2 * large₂.sc.x ^ P.Cb`. Establish `h3 : P.PP ^ 2 ≤ P.PP ^ 3` using `by nlinarith [sq_nonneg P.PP]`. Establish `hT2 : (0 : ℝ) ≤ P.TO ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem bigN_le_sc_b {D : D7} {large₂ : SizeData₂ D} {Pm : ParameterChoice' D large₂} (P : ParamsT D large₂ Pm)
     (hf : 1 ≤ D.R.f) (hm : 1 ≤ D.R.m) : (bigN D : ℝ) ≤ large₂.sc.b := by
@@ -93,19 +91,19 @@ private theorem bigN_le_sc_b {D : D7} {large₂ : SizeData₂ D} {Pm : Parameter
   linarith
 
 /- English proof (translation)
-Introduce `D T L sc G large₂ hS hH hc p hp`. Establish `hw : ∀ τ a, (((wt G p.big τ).natW a : ℕ) : ℝ) ≤ 12 * large₂.sc.b` using `fun τ a => wtBd large₂ hS hH hc p hp τ a`. Take `⟨⟨Pm, P, -⟩, -, hmf, hm44, -⟩` from `hS`. Establish `hm : 1 ≤ D.R.m` using `by omega`. Establish `hf : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hmf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNb` using `bigN_le_sc_b P hf hm`. Establish `hnodes : DefNode D.R.m p.big ∧ DefNode D.R.m p.small`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨h1, h2⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨h1, h2⟩, ⟨by omega, h2⟩⟩`. Consider the case `mu t i j => exact hp.elim`. Consider the case `core i => exact hp.elim`. Consider the case `top t j`. Conclude with `⟨show j + 1 ≤ D.R.m from hp, show j ≤ D.R.m by have : j + 1 ≤ D.R.m := hp; omega⟩`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Establish `rb : ((G.V p.big).rank : ℝ) ≤ bigN D` using `by exact_mod_cast GlobalTheory.DefRank.rank_le_bigN G p.big hnodes.1`. Establish `rs : ((G.V p.small).rank : ℝ) ≤ bigN D` using `by exact_mod_cast GlobalTheory.DefRank.rank_le_bigN G p.small hnodes.2`. Establish `hsum : ((∑ τ, ∑ a, (wt G p.big τ).natW a : ℕ) : ℝ) ≤ D.R.f * (G.V p.big).rank * (12 * large₂.sc.b)`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, D.what₂.card_Tau]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb0 : (0 : ℝ) ≤ large₂.sc.b` using `le_trans (by positivity) hNb`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `by positivity`. Establish `hrb0 : (0 : ℝ) ≤ (G.V p.big).rank` using `by positivity`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrs0 : (0 : ℝ) ≤ (G.V p.small).rank` using `by positivity`. Establish `e1 : (D.R.f : ℝ) * (G.V p.big).rank * (12 * large₂.sc.b) ≤ 12 * D.R.f * bigN D * large₂.sc.b`. Use `mul_le_mul_of_nonneg_left rb (by positivity : (0:ℝ) ≤ 12 * D.R.f * large₂.sc.b)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : (D.R.f : ℝ) * (G.V p.small).rank * (G.V p.big).rank ≤ D.R.f * bigN D * large₂.sc.b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hsb : ((G.V p.small).rank : ℝ) ≤ large₂.sc.b` using `le_trans rs hNb`. Establish `h1 : ((G.V p.small).rank : ℝ) * (G.V p.big).rank ≤ large₂.sc.b * bigN D` using `mul_le_mul hsb rb hrb0 hb0`. Use `mul_le_mul_of_nonneg_left h1 hf0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.WildA.kerLe :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → HostHyp D → sc.cGap = 1 → ∀ p : GlobalTheory.ChiGrid.Pair T, DefPair D.R.m p →

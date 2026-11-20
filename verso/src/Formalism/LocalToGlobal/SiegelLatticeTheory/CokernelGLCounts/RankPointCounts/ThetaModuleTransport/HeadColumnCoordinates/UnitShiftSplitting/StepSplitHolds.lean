@@ -4,12 +4,12 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LocalCountModules.AlgGSplit
 
 /- English proof (translation)
-The claim follows from `gamSplit_of gamSub_holds gamSup_holds`.
+A detailed English derivation is pending.
 -/
 theorem gamSplit_holds : GamSplitP := gamSplit_of gamSub_holds gamSup_holds
 
 /- English proof (translation)
-The claim follows from `stepSplit_of gamSplit_holds formSplit_holds`.
+A detailed English derivation is pending.
 -/
 theorem stepSplit_holds : Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.StepSplit := stepSplit_of gamSplit_holds formSplit_holds
 

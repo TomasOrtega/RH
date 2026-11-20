@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.EGlue.Restrict
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ₁, h₁, φ₂, h₂, rfl⟩`. Conclude with `Submodule.subset_span ⟨φ₁.1, ⟨φ₁, h₁, rfl⟩, φ₂.1, ⟨φ₂, h₂, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pairSpace_le_prodSpan (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) :
     pairSpace U₁ U₂ ≤ prodSpan (U₁.map (Sm E a).subtype) (U₂.map (Sm E b).subtype) := by
@@ -22,7 +22,7 @@ theorem pairSpace_le_prodSpan (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule 
   exact Submodule.subset_span ⟨φ₁.1, ⟨φ₁, h₁, rfl⟩, φ₂.1, ⟨φ₂, h₂, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨φ₁, h₁, rfl⟩, _, ⟨φ₂, h₂, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨φ₁, h₁, φ₂, h₂, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem prodSpan_le_pairSpace (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) :
     prodSpan (U₁.map (Sm E a).subtype) (U₂.map (Sm E b).subtype) ≤ pairSpace U₁ U₂ := by
@@ -31,9 +31,9 @@ theorem prodSpan_le_pairSpace (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule 
   exact Submodule.subset_span ⟨φ₁, h₁, φ₂, h₂, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ₁, -, φ₂, h₂, rfl⟩` from `h`. Conclude with `⟨φ₁.1 m₁ • φ₂, U₂.smul_mem _ h₂, by funext y; simp⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add F F' _ _ h₁ h₂ => exact Submodule.add_mem _ h₁ h₂`. Consider the case `smul r F _ h => exact Submodule.smul_mem _ r h`.
+Treat this case separately. Treat this case separately.
 -/
 theorem slice_mem (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) (F : H E a b → ℂ)
     (hF : F ∈ pairSpace U₁ U₂) (m₁ : GA E a) :
@@ -51,9 +51,9 @@ end GlobalTheory.CompanionTheory.EGlue.Restrict
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Introduce `E _ _ _ a b U₁ U₂ U₂' F hF hs`. Establish `hS₂ : ∀ m₁, (fun y => F (m₁, y)) ∈ U₂'.map (Sm E b).subtype`. Introduce `m₁`. Take `⟨φ, -, hφ⟩` from `Restrict.slice_mem U₁ U₂ F hF m₁`. Conclude with `⟨φ, hs m₁ φ hφ, hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h` using `GlobalTheory.CompanionTheory.LimV.Slices.mem_prodSpan_inf_of_slices (U₁.map (Sm E a).subtype) ⊤ (U₂.map (Sm E b).subtype) (U₂'.map (Sm E b).subtype) F (Restrict.pairSpace_le_prodSpan U₁ U₂ hF) (fun _ => Submodule.mem_top) hS₂`. Use `Restrict.prodSpan_le_pairSpace U₁ U₂' ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, q, hq, rfl⟩`. Conclude with `⟨p, hp.1, q, hq.2, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pairRestrict_holds : PairRestrict := by
   intro E _ _ _ a b U₁ U₂ U₂' F hF hs

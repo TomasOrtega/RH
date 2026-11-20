@@ -14,23 +14,17 @@ open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hA : MeasurableSet {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)}`. Establish `hc : IsClosed {x : Mt k r | (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r}`. Apply `isClosed_eq` to reduce the goal to its premises. Conclude with `((Continuous.matrix_conjTranspose continuous_id).matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.measurableSet`. Establish `hN : MeasurableSet {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}` using `hA.compl`. Establish `hint` using `hq ({x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}.indicator 1) (measurable_one.indicator hN)`. Rewrite `hint` using `[lintegral_indicator_one hN, hG.2.2.1]`. Establish `hmass : μS Set.univ ≠ 0` using `fun h => hS0 (Measure.measure_univ_eq_zero.mp h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSc' : μS {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)}ᶜ = 0` using `hSc`. Establish `hlow : ∀ x ∈ {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}, μS Set.univ ≤ ∫⁻ s, {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS`. Introduce `x hx`. Establish `hsub : ∀ s ∈ {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)}, (fun i j => (Matrix.of s * Matrix.of x) i j) ∈ {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}`. Introduce `s hs hsx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hx` to reduce the goal to its premises. Establish `e1 : (Matrix.of s * Matrix.of x)ᴴ * Hpk k r * (Matrix.of s * Matrix.of x) = Hpk k r` using `hsx`. Establish `e2 : (Matrix.of s)ᴴ * Hpk k r * Matrix.of s = Hpk k r` using `hs`. Use `show (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := e1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.union_compl_self]`. Use `_ ≤ μS {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)} + μS {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)}ᶜ := measure_union_le _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `_ = μS {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)} := by rw [hSc', add_zero]`. Use `_ = ∫⁻ s, {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)}.indicator 1 s ∂μS := (lintegral_indicator_one hA).symm`. Use `_ ≤ _ := lintegral_mono (fun s => by`. Distinguish the cases in `hs : s ∈ {s : Mt k r | Matrix.of s ∈ UH (Hpk k r)}`. Rewrite using `[Set.indicator_of_mem hs, Set.indicator_of_mem (hsub s hs)]`.
-
-Conclude with `le_rfl`. Rewrite using `[Set.indicator_of_notMem hs]`. Conclude with `zero_le)`. Establish `hge : μS Set.univ * ν {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)} ≤ ∫⁻ x, ∫⁻ s, {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS ∂ν`. Rewrite using `[← lintegral_indicator_const hN]`.
-
-Conclude with `lintegral_mono (fun x => by`. Distinguish the cases in `hx : x ∈ {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `hlow x hx`. Rewrite using `[Set.indicator_of_notMem hx]`.
-
-Conclude with `zero_le)`. Rewrite `hge` using `[← hint]`. Break down `mul_eq_zero.mp (le_zero_iff.mp hge) with h | h` into its components or cases. Conclude with `absurd h hmass`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem quot_meas_not_mem_UH_eq_zero {μG μS ν : Measure (Mt k r)} (hG : IsHaarOn (UH (Hpk k r)) μG) (hS0 : μS ≠ 0)
     (hSc : μS {x | Matrix.of x ∉ UH (Hpk k r)} = 0) (hq : IsQuotMeas μG μS ν) :
@@ -119,15 +113,13 @@ def conjE (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : IsU
   measurable_invFun := Formalism.MainNotions.S.Pv.LemmaJ.measurable_conjL _ _
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `hn'' : n'ᴴ * Hpk k r * n' = Hpk k r` using `hn'`. Establish `hleft : (Hpk k r * n'ᴴ * Hpk k r) * n' = 1`. Simplify using `only [Matrix.mul_assoc] at hn'' ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hn'', hH]`. Establish `ha : IsUnit n'.det` using `Matrix.isUnit_det_of_left_inverse hleft`. Establish `hc : ENNReal.ofReal θ' ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hinv : μG.map (lmulE n' ha) = μG` using `hG.2.2.2 n' hn'`. Establish `hL : νR.map (fun x => fun i j => (n' * Matrix.of x) i j) = νR.map (lmulE n' ha)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `lintegral_map_equiv _ _`. Use `_ = ∫⁻ x, ∫⁻ s, f (lmulE n' ha (fun i j => (Matrix.of s * Matrix.of x) i j)) ∂(ENNReal.ofReal θ' • μ₀.map (conjE n' ha)) ∂νR := hq _ (hf.comp (lmulE n' ha).measurable)`. Use `_ = ∫⁻ x, ENNReal.ofReal θ' * ∫⁻ s, f (lmulE n' ha (fun i j => (Matrix.of (conjE n' ha s) * Matrix.of x) i j)) ∂μ₀ ∂νR := by`. Repeatedly rewrite using `[lintegral_smul_measure, smul_eq_mul, lintegral_map_equiv]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ENNReal.ofReal θ' * ∫⁻ x, ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of (lmulE n' ha x)) i j) ∂μ₀ ∂νR := by`. Rewrite using `[lintegral_const_mul' _ _ hc]`. Use `congr 1`. Use `lintegral_congr (fun x => lintegral_congr (fun s => ?_))` and prove the remaining obligations. Use `congr 1`.
-
-Use function extensionality and compare the values at `i j`. Use `show (n' * (n'⁻¹ * Matrix.of s * n' * Matrix.of x)) i j = (Matrix.of s * (n' * Matrix.of x)) i j`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.one_mul]`. Use `_ = _ := by`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, hL, lintegral_map_equiv]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_transport {μG μ₀ νR : Measure (Mt k r)} (hG : IsHaarOn (UH (Hpk k r)) μG)
     {n' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn' : n' ∈ UH (Hpk k r)) (θ' : ℝ)
@@ -164,7 +156,7 @@ theorem quot_transport {μG μ₀ νR : Measure (Mt k r)} (hG : IsHaarOn (UH (Hp
         rw [lintegral_smul_measure, smul_eq_mul, hL, lintegral_map_equiv]
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[mul_comm Complex.I]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     ‖psi k r z c g‖ = 1 := by
@@ -173,9 +165,9 @@ theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Matrix (Fin (2
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_smul, smul_smul]`. Use `congr 1`. Establish `h1 : (innerSL ℂ (a • u)) x = star a * (innerSL ℂ u) x`. Simplify using `[inner_smul_left, Complex.star_def]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smulRight_smul_smul {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup F]
     [NormedSpace ℂ F] (a b : ℂ) (u : E) (v : F) :
@@ -190,39 +182,35 @@ theorem smulRight_smul_smul {E F : Type*} [NormedAddCommGroup E] [InnerProductSp
   ring
 
 /- English proof (translation)
-Introduce `D τ w w' θ W hW lam' A hA hT hT' n n' g₀ hn hn' hg₀ θ' hθ' μ₀ νR hμ₀ hq`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Use `⟨quot_transport hG hn'.1 θ' hq, ?_⟩` and prove the remaining obligations. Establish `hH : Hpk D.R.k D.R.rS * Hpk D.R.k D.R.rS = 1` using `(hpkFacts D.R.k D.R.rS).2.1`. Establish `hHdet : IsUnit (Hpk D.R.k D.R.rS).det` using `Matrix.isUnit_det_of_left_inverse hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUH` using `uHGroup _ (Hpk D.R.k D.R.rS) hHdet`. Establish `hn'U : n' ∈ UH (Hpk D.R.k D.R.rS)` using `hn'.1`. Establish `hnU : n ∈ UH (Hpk D.R.k D.R.rS)` using `hn.1`. Establish `ha : IsUnit n'.det` using `(hUH.2.2 n' hn'U).1`. Establish `hn'inv : n'⁻¹ ∈ UH (Hpk D.R.k D.R.rS)` using `(hUH.2.2 n' hn'U).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μS := ENNReal.ofReal θ' • μ₀.map (fun x => fun i j => (n'⁻¹ * Matrix.of x * n') i j) with hμS`. Establish `hS0 : μS ≠ 0`. Introduce `h0`. Establish `h1` using `hq (fun _ => 1) measurable_const`. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Conclude with `hG.2.1 h1`. Establish `hSc : μS {x | Matrix.of x ∉ UH (Hpk D.R.k D.R.rS)} = 0`. Rewrite using `[hμS, Measure.smul_apply, smul_eq_mul, show (fun x : Mt D.R.k D.R.rS => fun i j => (n'⁻¹ * Matrix.of x * n') i j) = ⇑(conjE n' ha) from rfl, MeasurableEquiv.map_apply]`. Use `mul_eq_zero_of_right _ (measure_mono_null ?_ hμ₀)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx hR`. Apply `hx` to reduce the goal to its premises. Establish `hxU : Matrix.of x ∈ UH (Hpk D.R.k D.R.rS)` using `hR.1.1`. Use `show n'⁻¹ * Matrix.of x * n' ∈ UH (Hpk D.R.k D.R.rS)`. Conclude with `hUH.2.1 _ (hUH.2.1 _ hn'inv _ hxU) _ hn'U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνUH : ∀ᵐ x ∂νR, Matrix.of x ∈ UH (Hpk D.R.k D.R.rS)` using `ae_iff.2 (quot_meas_not_mem_UH_eq_zero hG hS0 hSc hq)`. Establish `hσ` using `Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hA.2.1`. Establish `hv0` using `hA.2.2.2.2.1`. Establish `hπ1 : W.π 1 = 1` using `(Formalism.MainNotions.LowestKTypeMultiplicity.rp_repOfHC _ _ _ _ _ _ hW.2.2.1 (by rw [hW.2.2.2.2.1]; exact hT) hW.1).1.1`. Establish `hπ'1 : W.π' 1 = 1` using `(Formalism.MainNotions.LowestKTypeMultiplicity.rp_repOfHC _ _ _ _ _ _ hW.2.2.2.1 (by rw [hW.2.2.2.2.2.1]; exact hT') hW.2.1).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1W : ∀ z : Fin (2 * D.R.rS + D.R.k + 1) → ℂ, (1 : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) ∈ UWset D.R.k D.R.rS z`. Introduce `z`. Conclude with `⟨hUH.1, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩`. Establish `hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ (n * g) = psiS D W.z n • A.Φ g`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hA.2.2.1.2.2.1 1 (h1W W.z) n hn (A.σ g A.v0) (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv0 hg)`. Rewrite `h2` using `[one_mul, hπ1, ContinuousLinearMap.one_apply]`. Simplify using `only [LocS.Φ]`. Rewrite using `[hσ.1.2 n hnU g hg, ContinuousLinearMap.comp_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' (n' * g) = psiS D W.z' n' • A.Φ' g`. Introduce `g hg`. Establish `h2` using `hA.2.2.2.1.2.2.1 1 (h1W W.z') n' hn' (A.σ g A.v0) (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv0 hg)`. Rewrite `h2` using `[one_mul, hπ'1, ContinuousLinearMap.one_apply]`. Simplify using `only [LocS.Φ']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hσ.1.2 n' hn'U g hg, ContinuousLinearMap.comp_apply]`. Conclude with `h2`. Use `set K : W.Wq →L[ℂ] W.Wp := ((A.cN : ℂ))⁻¹ • ∫ x, (innerSL ℂ (A.Φ' (Matrix.of x))).smulRight (A.Φ (g₀ * (n' * Matrix.of x))) ∂νR with hKdef`. Establish `hL : A.J νR (n * g₀ * n') = psiS D W.z n • K`. Simplify using `only [LocS.J, ampJ, hKdef]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_comm (psiS D W.z n), ← integral_smul (psiS D W.z n)]`. Use `congr 1`. Use `integral_congr_ae (hνUH.mono fun x hx => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hΦ _ (hUH.2.1 _ hg₀ _ (hUH.2.1 _ hn'U _ hx))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `smulRight_smul_smul (1 : ℂ) (psiS D W.z n) (A.Φ' (Matrix.of x)) (A.Φ (g₀ * (n' * Matrix.of x)))`. Rewrite `h` using `[one_smul, star_one, one_mul]`. Conclude with `h`. Establish `hR : A.J (ENNReal.ofReal θ' • νR.map (fun x => fun i j => (n' * Matrix.of x) i j)) g₀ = ((θ' : ℂ) * star (psiS D W.z' n')) • K`. Simplify using `only [LocS.J, ampJ, hKdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_smul_measure, show (fun x : Mt D.R.k D.R.rS => fun i j => (n' * Matrix.of x) i j) = ⇑(lmulE n' ha) from rfl, integral_map_equiv, ENNReal.toReal_ofReal hθ'.le]`. Establish `hI : ∫ x, (innerSL ℂ (A.Φ' (Matrix.of (lmulE n' ha x)))).smulRight (A.Φ (g₀ * Matrix.of (lmulE n' ha x))) ∂νR = star (psiS D W.z' n') • ∫ x, (innerSL ℂ (A.Φ' (Matrix.of x))).smulRight (A.Φ (g₀ * (n' * Matrix.of x))) ∂νR`. Rewrite using `[← integral_smul (star (psiS D W.z' n'))]`. Use `integral_congr_ae (hνUH.mono fun x hx => ?_)` and prove the remaining obligations. Use `show (innerSL ℂ (A.Φ' (n' * Matrix.of x))).smulRight (A.Φ (g₀ * (n' * Matrix.of x))) = _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΦ' _ hx]`. Establish `h` using `smulRight_smul_smul (psiS D W.z' n') (1 : ℂ) (A.Φ' (Matrix.of x)) (A.Φ (g₀ * (n' * Matrix.of x)))`. Rewrite `h` using `[one_smul, mul_one]`. Conclude with `h`. Rewrite using `[hI, ← Complex.coe_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, Formalism.MainNotions.BesselShellMomentBounds.hsNormSq_smul (psiS D W.z n) K, Formalism.MainNotions.BesselShellMomentBounds.hsNormSq_smul ((θ' : ℂ) * star (psiS D W.z' n')) K]`. Establish `hψ : ‖psiS D W.z n‖ = 1`.
-
-Unfold `psiS`. Conclude with `norm_psi _ _ _`. Establish `hψ' : ‖(θ' : ℂ) * star (psiS D W.z' n')‖ = θ'`. Establish `h1 : ‖psiS D W.z' n'‖ = 1`. Unfold `psiS`.
-
-Conclude with `norm_psi _ _ _`. Rewrite using `[norm_mul, norm_star, h1, mul_one, Complex.norm_real, Real.norm_of_nonneg hθ'.le]`. Rewrite using `[hψ, hψ', ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[one_pow, one_mul, _root_.zpow_neg, zpow_ofNat, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem amplitude_transport : Formalism.MainNotions.S.Pv.LemmaJ.AmpTransport := by
   intro D τ w w' θ W hW lam' A hA hT hT' n n' g₀ hn hn' hg₀ θ' hθ' μ₀ νR hμ₀ hq

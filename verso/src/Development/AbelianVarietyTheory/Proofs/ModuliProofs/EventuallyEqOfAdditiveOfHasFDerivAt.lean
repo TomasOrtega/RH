@@ -19,9 +19,9 @@ variable {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddComm
 def HolAt (a : E → (Sp ℂ ⟶ Z)) (w₀ : E) : Prop := ∃ W, IsOpen W ∧ w₀ ∈ W ∧ IsHolTo W a
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Use `⟨?_, h2.mono fun w hw => ⟨hs hw.1, hw.2⟩⟩` and prove the remaining obligations. Use `hW'.inter h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun hw => ⟨hw.1, hs hw.1, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolTo_mono {a : E → (Sp ℂ ⟶ Z)} {W W' : Set E} (h : IsHolTo W a) (hW' : IsOpen W') (hs : W' ⊆ W) :
     IsHolTo W' a := by
@@ -33,7 +33,7 @@ theorem isHolTo_mono {a : E → (Sp ℂ ⟶ Z)} {W W' : Set E} (h : IsHolTo W a)
   exact ⟨fun hw => ⟨hw.1, hs hw.1, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩
 
 /- English proof (translation)
-Use `⟨Set.univ, isOpen_univ, trivial, fun U f => ⟨?_, differentiableOn_const _⟩⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ⊤ ≤ x ⁻¹ᵁ U <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem HolAt.const (x : Sp ℂ ⟶ Z) (w₀ : E) : HolAt (fun _ => x) w₀ := by
   refine ⟨Set.univ, isOpen_univ, trivial, fun U f => ⟨?_, differentiableOn_const _⟩⟩
@@ -44,14 +44,14 @@ namespace HolAt
 variable {a a' : E → (Sp ℂ ⟶ Z)} {w₀ : E}
 
 /- English proof (translation)
-Take `⟨W, -, hw, h⟩` from `h`. Use `filter_upwards [(h U 0).1.mem_nhds ⟨hw, hU⟩] with w hw using hw.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_mem (h : HolAt a w₀) {U : Z.Opens} (hU : ⊤ ≤ a w₀ ⁻¹ᵁ U) : ∀ᶠ w in 𝓝 w₀, ⊤ ≤ a w ⁻¹ᵁ U := by
   obtain ⟨W, -, hw, h⟩ := h
   filter_upwards [(h U 0).1.mem_nhds ⟨hw, hU⟩] with w hw using hw.2
 
 /- English proof (translation)
-Take `⟨W, -, hw, h⟩` from `h`. Conclude with `SCV.analyticAt_of_differentiableOn (h U f).2 ((h U f).1.mem_nhds ⟨hw, hU⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticAt [FiniteDimensional ℂ E] (h : HolAt a w₀) {U : Z.Opens} (hU : ⊤ ≤ a w₀ ⁻¹ᵁ U) (f : Γ(Z, U)) :
     AnalyticAt ℂ (fun w => valAt' (a w) U f) w₀ := by
@@ -59,23 +59,23 @@ theorem analyticAt [FiniteDimensional ℂ E] (h : HolAt a w₀) {U : Z.Opens} (h
   exact SCV.analyticAt_of_differentiableOn (h U f).2 ((h U f).1.mem_nhds ⟨hw, hU⟩)
 
 /- English proof (translation)
-The claim follows from `analyticAt_pi_iff.mpr fun i => h.analyticAt hU (f i)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_pi [FiniteDimensional ℂ E] (h : HolAt a w₀) {U : Z.Opens} (hU : ⊤ ≤ a w₀ ⁻¹ᵁ U) {κ : Type}
     [Fintype κ] (f : κ → Γ(Z, U)) : AnalyticAt ℂ (fun w i => valAt' (a w) U (f i)) w₀ :=
   analyticAt_pi_iff.mpr fun i => h.analyticAt hU (f i)
 
 /- English proof (translation)
-Take `⟨W, hW, hw, h⟩` from `h`. Use `filter_upwards [hW.mem_nhds hw] with w hw using ⟨W, hW, hw, h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually (h : HolAt a w₀) : ∀ᶠ w in 𝓝 w₀, HolAt a w := by
   obtain ⟨W, hW, hw, h⟩ := h
   filter_upwards [hW.mem_nhds hw] with w hw using ⟨W, hW, hw, h⟩
 
 /- English proof (translation)
-Take `⟨W, hW, hw, h⟩` from `h`. Take `⟨S, hS, hSo, hS0⟩` from `eventually_nhds_iff.1 e`. Establish `h'` using `isHolTo_mono h (hW.inter hSo) Set.inter_subset_left`. Use `⟨W ∩ S, hW.inter hSo, ⟨hw, hS0⟩, fun U f => ?_⟩` and prove the remaining obligations. Establish `: {b ∈ W ∩ S | ⊤ ≤ a' b ⁻¹ᵁ U} = {b ∈ W ∩ S | ⊤ ≤ a b ⁻¹ᵁ U}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `b`. Conclude with `and_congr_right fun hb => by rw [hS b hb.2]`. Rewrite using `[this]`. Conclude with `⟨(h' U f).1, (h' U f).2.congr fun b hb => by rw [hS b hb.1.2]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem congr (h : HolAt a w₀) (e : a =ᶠ[𝓝 w₀] a') : HolAt a' w₀ := by
   obtain ⟨W, hW, hw, h⟩ := h
@@ -89,9 +89,9 @@ theorem congr (h : HolAt a w₀) (e : a =ᶠ[𝓝 w₀] a') : HolAt a' w₀ := b
   exact ⟨(h' U f).1, (h' U f).2.congr fun b hb => by rw [hS b hb.1.2]⟩
 
 /- English proof (translation)
-Take `⟨W, hW, hw, h⟩` from `h`. Take `⟨S, hS, hSo, hS0⟩` from `eventually_nhds_iff.1 (hφ.eventually_analyticAt.and (hφ.continuousAt.eventually (hW.mem_nhds hw)))`. Establish `hd : DifferentiableOn ℂ φ S` using `fun v hv => (hS v hv).1.differentiableAt.differentiableWithinAt`. Use `⟨S, hSo, hS0, fun U f => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h U f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, h2.comp (hd.mono fun w hw => hw.1) fun w hw => ⟨(hS w hw.1).2, hw.2⟩⟩` and prove the remaining obligations. Use `hd.continuousOn.isOpen_inter_preimage hSo h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Conclude with `⟨fun hw => ⟨hw.1, (hS w hw.1).2, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem comp [CompleteSpace E] {φ : E' → E} {v₀ : E'} (h : HolAt a (φ v₀)) (hφ : AnalyticAt ℂ φ v₀) :
     HolAt (fun v => a (φ v)) v₀ := by
@@ -107,7 +107,7 @@ theorem comp [CompleteSpace E] {φ : E' → E} {v₀ : E'} (h : HolAt a (φ v₀
   exact ⟨fun hw => ⟨hw.1, (hS w hw.1).2, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩
 
 /- English proof (translation)
-Take `⟨W, hW, hw, h⟩` from `h`. Use `⟨W, hW, hw, fun U f => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h (q ⁻¹ᵁ U) ((q.app U).hom f)`. Conclude with `⟨h1, h2.congr fun w _ => (valAt'_comp _ _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem post (h : HolAt a w₀) (q : Z ⟶ Y) : HolAt (fun w => a w ≫ q) w₀ := by
   obtain ⟨W, hW, hw, h⟩ := h
@@ -118,7 +118,7 @@ theorem post (h : HolAt a w₀) (q : Z ⟶ Y) : HolAt (fun w => a w ≫ q) w₀ 
 end HolAt
 
 /- English proof (translation)
-Introduce `U f`. Establish `key : ∀ w ∈ {b ∈ W | ⊤ ≤ a b ⁻¹ᵁ U}, {b ∈ W | ⊤ ≤ a b ⁻¹ᵁ U} ∈ 𝓝 w` using `fun w hw => Filter.Eventually.and (hW.mem_nhds hw.1) ((h w hw.1).eventually_mem hw.2)`. Use `⟨isOpen_iff_mem_nhds.2 key, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨W', -, hw', h'⟩` from `h w hw.1`. Conclude with `((h' U f).2.differentiableAt ((h' U f).1.mem_nhds ⟨hw', hw.2⟩)).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHolTo_of_holAt {a : E → (Sp ℂ ⟶ Z)} {W : Set E} (hW : IsOpen W) (h : ∀ w ∈ W, HolAt a w) :
     IsHolTo W a := by
@@ -130,23 +130,19 @@ theorem isHolTo_of_holAt {a : E → (Sp ℂ ⟶ Z)} {W : Set E} (hW : IsOpen W) 
   exact ((h' U f).2.differentiableAt ((h' U f).1.mem_nhds ⟨hw', hw.2⟩)).differentiableWithinAt
 
 /- English proof (translation)
-Take `⟨W₁, hW₁, hw₁, ha⟩` from `ha`. Take `⟨W₂, hW₂, hw₂, hb⟩` from `hb`. Establish `hW` using `hW₁.inter hW₂`. Use `replace ha := isHolTo_mono ha hW Set.inter_subset_left`. Use `replace hb := isHolTo_mono hb hW Set.inter_subset_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨W₁ ∩ W₂, hW, ⟨hw₁, hw₂⟩, fun U f => ?_⟩` and prove the remaining obligations. Generalize the expression as in `W₁ ∩ W₂ = W at ha hb`. Use `holFamily_of_affine valAt'_rules W Z c (fun w₀ hw₀ => ?_) U f` and prove the remaining obligations. Take `⟨S₀, hS₀, hx₀, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := (c w₀ ≫ p ≫ s) (default : PrimeSpectrum ℂ)) trivial`. Take `⟨U₁, hU₁, hx₁, h₁⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := s ⁻¹ᵁ S₀) (x := (c w₀ ≫ p) (default : PrimeSpectrum ℂ)) hx₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U₂, hU₂, hx₂, h₂⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (U := t ⁻¹ᵁ S₀) (x := (c w₀ ≫ q) (default : PrimeSpectrum ℂ)) (by rw [H.w] at hx₀; exact hx₀)`. Establish `h₁' : U₁ ≤ s ⁻¹ᵁ S₀` using `h₁`. Establish `h₂' : U₂ ≤ t ⁻¹ᵁ S₀` using `h₂`. Use `set V : Z.Opens := p ⁻¹ᵁ U₁ ⊓ q ⁻¹ᵁ U₂ with hVdef`. Establish `hiff : ∀ w, ⊤ ≤ c w ⁻¹ᵁ V ↔ ⊤ ≤ (c w ≫ p) ⁻¹ᵁ U₁ ∧ ⊤ ≤ (c w ≫ q) ⁻¹ᵁ U₂` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hVdef, Scheme.Hom.preimage_inf, le_inf_iff, Scheme.Hom.comp_preimage, Scheme.Hom.comp_preimage]`. Establish `hV : IsAffineOpen V`. Establish `: IsAffine _` using `hS₀`. Establish `: IsAffine _` using `hU₁`. Establish `: IsAffine _` using `hU₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := S₀) (UT := U₂) (UX := U₁) h₂' h₁' hVdef).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := S₀) (UT := U₂) (UX := U₁) h₂' h₁' hVdef).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ hS₀ hU₂ hU₁)`. Establish `hgen` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Use `⟨V, hV, (hiff w₀).2 ⟨(top_le_preimage_iff_mem _ _).2 hx₁, (top_le_preimage_iff_mem _ _).2 hx₂⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `(ha U₁ 0).1.inter (hb U₂ 0).1 using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, hiff]`. The claim follows by propositional logic. Establish `hg : g ∈ Subring.closure _` using `hgen.ge (Subring.mem_top g)`. Proceed by induction on `hg using Subring.closure_induction with`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Break down `hx with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Conclude with `((ha U₁ y).2.mono fun w hw => ⟨hw.1, ((hiff w).1 hw.2).1⟩).congr fun w hw => valAt'_appLE _ _ _ _ _ _ hw.2`. Conclude with `((hb U₂ y).2.mono fun w hw => ⟨hw.1, ((hiff w).1 hw.2).2⟩).congr fun w hw => valAt'_appLE _ _ _ _ _ _ hw.2`. Consider the case `zero => simp only [valAt'_zero]`.
-
-Conclude with `differentiableOn_const _`. Consider the case `one => exact (differentiableOn_const (1 : ℂ)).congr fun w hw => valAt'_one _ hw.2`. Consider the case `add x y _ _ hx hy => simp only [valAt'_add]`. Conclude with `hx.add hy`. Consider the case `neg x _ hx => simp only [valAt'_neg]`.
-
-Conclude with `hx.neg`. Consider the case `mul x y _ _ hx hy => simp only [valAt'_mul]`. Conclude with `hx.mul hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem holAt_of_isPullback {S X : Scheme.{0}} {p : Z ⟶ X} {q : Z ⟶ Y} {s : X ⟶ S} {t : Y ⟶ S}
     (H : IsPullback p q s t) {c : E → (Sp ℂ ⟶ Z)} {w₀ : E} (ha : HolAt (fun w => c w ≫ p) w₀)
@@ -204,9 +200,9 @@ section Group
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {y : E → (Sp ℂ ⟶ X)} {w₀ : E}
 
 /- English proof (translation)
-Establish `h1 : ∀ w, (lift (a w) (b w)).left ≫ (fst G G).left = (a w).left` using `fun w => by`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `h2 : ∀ w, (lift (a w) (b w)).left ≫ (snd G G).left = (b w).left` using `fun w => by`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `H : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback G.hom G.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(holAt_of_isPullback H (c := fun w => (lift (a w) (b w)).left) (ha.congr (Eventually.of_forall fun w => (h1 w).symm)) (hb.congr (Eventually.of_forall fun w => (h2 w).symm))).post μ[G].left`.
+A detailed English derivation is pending.
 -/
 theorem HolAt.mul {a b : ∀ w, Over.mk (y w) ⟶ G} (ha : HolAt (Z := G.left) (fun w => (a w).left) w₀)
     (hb : HolAt (Z := G.left) (fun w => (b w).left) w₀) :
@@ -221,20 +217,20 @@ theorem HolAt.mul {a b : ∀ w, Over.mk (y w) ⟶ G} (ha : HolAt (Z := G.left) (
     (hb.congr (Eventually.of_forall fun w => (h2 w).symm))).post μ[G].left
 
 /- English proof (translation)
-The claim follows from `ha.post (GrpObj.inv (X := G)).left`.
+A detailed English derivation is pending.
 -/
 theorem HolAt.inv {a : ∀ w, Over.mk (y w) ⟶ G} (ha : HolAt (Z := G.left) (fun w => (a w).left) w₀) :
     HolAt (Z := G.left) (fun w => ((a w)⁻¹).left) w₀ :=
   ha.post (GrpObj.inv (X := G)).left
 
 /- English proof (translation)
-The claim follows from `hy.post η[G].left`.
+A detailed English derivation is pending.
 -/
 theorem HolAt.one (hy : HolAt y w₀) : HolAt (Z := G.left) (fun w => (1 : Over.mk (y w) ⟶ G).left) w₀ :=
   hy.post η[G].left
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa only [pow_zero, mul_inv_cancel] using ha.mul ha.inv`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul ha`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem HolAt.pow {a : ∀ w, Over.mk (y w) ⟶ G} (ha : HolAt (Z := G.left) (fun w => (a w).left) w₀) (n : ℕ) :
     HolAt (Z := G.left) (fun w => (a w ^ n).left) w₀ := by
@@ -249,15 +245,15 @@ section Additive
 variable {V A : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [AddCommGroup A]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_addMonoidHom_eventuallyEq (g := g) (by filter_upwards [prod_mem_nhds (Metric.ball_mem_nhds (0 : V) hr) (Metric.ball_mem_nhds (0 : V) hr)] with p hp`. Conclude with `hg _ hp.1 _ hp.2)`. Use `⟨e, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hball : ∀ k : ℕ, (2⁻¹ : ℝ) ^ k • x ∈ Metric.ball (0 : V) r` using `fun k => by`. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, norm_pow]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) (by norm_num))).trans_lt hx`. Establish `hstep : ∀ k : ℕ, e ((2⁻¹ : ℝ) ^ k • x) = g ((2⁻¹ : ℝ) ^ k • x) → e x = g x`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises. Establish `: (2⁻¹ : ℝ) ^ k • x = (2⁻¹ : ℝ) ^ (k + 1) • x + (2⁻¹ : ℝ) ^ (k + 1) • x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← add_smul, pow_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_add, hg _ (hball _) _ (hball _), h]`. Establish `ht : Tendsto (fun j : ℕ => (2⁻¹ : ℝ) ^ j • x) atTop (𝓝 0)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2⁻¹ : ℝ)) (by norm_num) (by norm_num)).smul_const x`. Take `⟨k, hk⟩` from `(ht.eventually he).exists`. Conclude with `hstep k hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_addMonoidHom_eqOn_ball {g : V → A} {r : ℝ} (hr : 0 < r)
     (hg : ∀ x ∈ Metric.ball (0 : V) r, ∀ x' ∈ Metric.ball (0 : V) r, g (x + x') = g x + g x') :
@@ -289,9 +285,9 @@ theorem exists_addMonoidHom_eqOn_ball {g : V → A} {r : ℝ} (hr : 0 < r)
 end Additive
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `exists_addMonoidHom_eventuallyEq (V := E) hζ`. Establish `h1 : HasFDerivAt l T 0` using `hT.congr_of_eventuallyEq hl`. Establish `hc : Continuous l` using `continuous_of_continuousAt_zero l h1.continuousAt`. Establish `h2 : (l.toRealLinearMap hc) = T.restrictScalars ℝ` using `(l.toRealLinearMap hc).hasFDerivAt.unique (h1.restrictScalars ℝ)`. Use `filter_upwards [hl] with v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv]`. Conclude with `DFunLike.congr_fun h2 v`.
+A detailed English derivation is pending.
 -/
 theorem eventuallyEq_of_additive_of_hasFDerivAt {ζ : E → E'} {T : E →L[ℂ] E'} (hT : HasFDerivAt ζ T 0)
     (hζ : ∀ᶠ p in 𝓝 (0 : E × E), ζ (p.1 + p.2) = ζ p.1 + ζ p.2) : ζ =ᶠ[𝓝 0] T := by

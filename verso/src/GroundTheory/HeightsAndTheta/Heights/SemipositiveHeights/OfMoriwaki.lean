@@ -12,7 +12,7 @@ namespace GroundTheory.Heights₂.Heights.ForSecondHalf
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 /- English proof (translation)
-The claim follows from `G6ppB.proof hBig NmSmallIntoFS.proof (FSSmallFinite.proof SmallFormsFinite.proof) (FSSmallCountBound.proof hHS)`.
+A detailed English derivation is pending.
 -/
 theorem G6ppB.of_moriwaki (hBig : MoriwakiBigStatement) (hHS : MoriwakiHSStatement) : BirationalPullbackPushforwardFormula :=
   G6ppB.proof hBig NmSmallIntoFS.proof (FSSmallFinite.proof SmallFormsFinite.proof)

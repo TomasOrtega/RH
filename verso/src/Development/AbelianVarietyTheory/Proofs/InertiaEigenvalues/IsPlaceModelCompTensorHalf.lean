@@ -26,7 +26,7 @@ theorem tensorHalf_apply (a' b : AE D) (Ψ Φ : Mx D m n → ℂ) (x : Mx D m n)
 open GlobalTheory.ExportSeries.RestrictHalfModel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tensorHalf_apply, restrictHalf_apply, one_smul, add_comm b a']`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensorHalf_halfInd (a' b : AE D) (Λ : AddSubgroup (Mx D m n)) (Ψ : Mx D m n → ℂ) :
     tensorHalf a' b Ψ ((1 : ℂ) • halfInd a' Λ) = restrictHalf b a' Λ Ψ := by
@@ -35,15 +35,15 @@ theorem tensorHalf_halfInd (a' b : AE D) (Λ : AddSubgroup (Mx D m n)) (Ψ : Mx 
   ring
 
 /- English proof (translation)
-Take `⟨-, k, hk, hinv, hlat⟩` from `hΦ`. Take `⟨-, k', hk', hinv', hlat'⟩` from `hΨ`. Use `⟨fun t ht => ?_, k * k', Nat.mul_pos hk hk', fun u hu hhu t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[tensorHalf_apply]`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `ht (by rw [if_neg h, mul_zero])`. Rewrite `hhu` using `[isHalf_iff']`. Simplify using `only [tensorHalf_apply]`. Establish `e1 : a' • (t + (k * k') • u) = a' • t + k • (a' • (k' • u))`. Rewrite using `[smul_add, mul_comm k k', mul_smul, smul_comm k' k u, smul_comm a' k]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : b • (t + (k * k') • u) = b • t + k' • (b • (k • u))`. Rewrite using `[smul_add, mul_smul, smul_comm k k' u, smul_comm b k']`. Establish `e3 : (a' + b) • ((k * k') • u) = (k * k') • u` using `by rw [smul_comm, hhu]`. Rewrite using `[e1, hinv _ (hΛ a' ha' _ (Λ.nsmul_mem hu k')) (isHalf_smul ha' _), e2, hinv' _ (hΛ b hb _ (Λ.nsmul_mem hu k)) (isHalf_smul hb _), isHalf_add_iff e3]`. Rewrite `ht` using `[tensorHalf_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Φ (a' • t) ≠ 0` using `fun h => ht (by rw [h, zero_mul, zero_mul])`. Establish `h2 : Ψ (b • t) ≠ 0` using `fun h => ht (by rw [h, mul_zero, zero_mul])`. Establish `h3 : IsHalf (a' + b) t`. Assume the negation of the conclusion as `h`. Conclude with `ht (by rw [if_neg h, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[isHalf_iff', add_smul]`. Rewrite using `[← h3, smul_add, mul_smul, mul_comm k k', mul_smul k']`. Conclude with `Λ.add_mem (by rw [smul_comm k k']; exact Λ.nsmul_mem (hlat _ h1) k') (by rw [smul_comm k' k]; exact Λ.nsmul_mem (hlat' _ h2) k)`.
+A detailed English derivation is pending.
 -/
 theorem isSBHalf_tensorHalf {a' b : AE D} (ha' : a' * a' = a') (hb : b * b = b) {Λ : AddSubgroup (Mx D m n)}
     (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) {Φ Ψ : Mx D m n → ℂ} (hΦ : IsSBHalf a' Λ Φ)
@@ -74,15 +74,13 @@ theorem isSBHalf_tensorHalf {a' b : AE D} (ha' : a' * a' = a') (hb : b * b = b) 
     exact Λ.add_mem (by rw [smul_comm k k']; exact Λ.nsmul_mem (hlat _ h1) k') (by rw [smul_comm k' k]; exact Λ.nsmul_mem (hlat' _ h2) k)
 
 /- English proof (translation)
-Establish `hsb : ∀ Φ, IsSBHalf a' Λ Φ → IsSBHalf (a' + b) Λ (tensorHalf a' b Ψ Φ)` using `fun Φ hΦ => isSBHalf_tensorHalf ha' hb hΛ hΦ hΨ`. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hbx, hax⟩` from `smul_of_half hab hx`. Establish `hxa : IsHalf (a' + b) x` using `(isHalf_iff' _ _).2 hax`. Establish `e : tensorHalf a' b Ψ (fun t => Φ (t + x)) = fun t => tensorHalf a' b Ψ Φ (t + x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [tensorHalf_apply]`. Rewrite using `[smul_add, (isHalf_iff' _ _).1 hx, smul_add b, hbx, add_zero, isHalf_add_iff hax]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.trans _ (hsb Φ hΦ) x hxa`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : IsHalf (cA D (a' + b)) y`. Rewrite `hy`, the goal using `[isHalf_iff']`. Rewrite using `[map_add, add_smul, hy, ← hy, smul_smul, ← map_mul, mul_comm, hab, map_zero, zero_smul, add_zero]`. Establish `e : tensorHalf a' b Ψ (fun t => ψ (symplO S T t y) * Φ t) = fun t => ψ (symplO S T t y) * tensorHalf a' b Ψ Φ t`. Use function extensionality and compare the values at `z`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [tensorHalf_apply]`. Rewrite using `[GlobalTheory.SplitScalar.symplO_smul, (isHalf_iff' _ _).1 hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.modul _ (hsb Φ hΦ) y hy'`.
-
-Rewrite using `[LinearMap.comp_apply, tensorHalf_halfInd]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPlaceModel_comp_tensorHalf {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)}
     {f₀ : WO S T → ℂ} {a' b : AE D} {T₀ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} (ha' : a' * a' = a') (hb : b * b = b)

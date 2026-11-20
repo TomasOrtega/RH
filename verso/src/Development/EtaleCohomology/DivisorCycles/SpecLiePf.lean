@@ -5,27 +5,25 @@ namespace LateralTheory.DivDb.SpecLiePf
 open LateralTheory.DivDb
 
 /- English proof (translation)
-Introduce `Γ K K' _ _ _ _ _ N n ρ X e hX hL hR`. Set `x : (Fin N × Fin N) ⊕ Fin n → K'` to `Sum.elim (fun p => X p.1 p.2) e`. Set `gAB : Finset (Fin n) → Finset (Fin n) → MvPolynomial ((Fin N × Fin N) ⊕ Fin n) K` to `fun A B => MvPolynomial.C (B.card : K) * ∑ i ∈ A, MvPolynomial.X (Sum.inr i) - MvPolynomial.C (A.card : K) * ∑ i ∈ B, MvPolynomial.X (Sum.inr i)`. Set `G : Set (MvPolynomial ((Fin N × Fin N) ⊕ Fin n) K)` to `{g | ∃ A B : Finset (Fin n), A.Nonempty ∧ B.Nonempty ∧ Disjoint A B ∧ g = gAB A B}`. Establish `hGf : G.Finite` using `(Set.finite_range (fun AB : Finset (Fin n) × Finset (Fin n) => gAB AB.1 AB.2)).subset (by rintro g ⟨A, B, -, -, -, rfl⟩; exact ⟨(A, B), rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `haG : ∀ g ∈ G, MvPolynomial.aeval x g ≠ 0`. Introduce and unpack `g ⟨A, B, hA, hB, hAB, rfl⟩`. Simplify using `only [gAB, map_sub, map_mul, map_sum, MvPolynomial.aeval_X, x, Sum.elim_inr, map_natCast]`. Conclude with `sub_ne_zero.mpr (hL A B hA hB hAB)`. Take `⟨y, hy, hyG⟩` from `hS K K' _ x G hGf haG`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun a b => y (Sum.inl (a, b)), fun i => y (Sum.inr i), ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∀ f ∈ Van (img ρ ⊤ : Set (Mat K N)), dAt f 1 _ = 0`. Introduce `f hf`. Establish `hf' : ∀ g : Γ, MvPolynomial.eval (fun p : Fin N × Fin N => (ρ g : Matrix (Fin N) (Fin N) K) p.1 p.2) f = 0` using `fun g => hf _ ⟨g, trivial, rfl⟩`. Establish `h0` using `hX f hf'`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : MvPolynomial ((Fin N × Fin N) ⊕ Fin n) K` to `∑ p : Fin N × Fin N, MvPolynomial.C (MvPolynomial.eval (fun q : Fin N × Fin N => (1 : Matrix (Fin N) (Fin N) K) q.1 q.2) (MvPolynomial.pderiv p f)) * MvPolynomial.X (Sum.inl p)`. Establish `hxL : MvPolynomial.aeval x L = 0`. Simplify `h0` using `only [L, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, x, Sum.elim_inl]`. Establish `h1` using `hy L hxL`. Simplify `h1` using `only [L, dAt, ev, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X, Matrix.of_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A B hA hB hAB`. Establish `h1` using `hyG _ ⟨A, B, hA, hB, hAB, rfl⟩`. Simplify using `only [gAB, map_sub, map_mul, map_sum, MvPolynomial.eval_C, MvPolynomial.eval_X] at h1`. Conclude with `sub_ne_zero.mp h1`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : Matrix (Fin N) (Fin N) (MvPolynomial ((Fin N × Fin N) ⊕ Fin n) K)` to `Matrix.scalar (Fin N) (MvPolynomial.X (Sum.inr i)) - Matrix.of (fun a b => MvPolynomial.X (Sum.inl (a, b)))`. Establish `hx : MvPolynomial.aeval x M.det = 0`. Establish `e1 : MvPolynomial.aeval x M.det = ((MvPolynomial.aeval x).toRingHom.mapMatrix M).det`. Rewrite using `[← RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : (MvPolynomial.aeval x).toRingHom.mapMatrix M = Matrix.scalar (Fin N) (e i) - X`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[M, x]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[M, x, h]`. Rewrite using `[e1, e2, ← Matrix.eval_charpoly]`. Conclude with `hR i`. Establish `h1` using `hy _ hx`. Establish `e1 : MvPolynomial.eval y M.det = ((MvPolynomial.eval y).mapMatrix M).det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← RingHom.map_det]`. Establish `e2 : (MvPolynomial.eval y).mapMatrix M = Matrix.scalar (Fin N) (y (Sum.inr i)) - Matrix.of (fun a b => y (Sum.inl (a, b)))`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[M]`. Simplify using `[M, h]`. Rewrite `h1` using `[e1, e2]`. Express the relevant statement in the definitionally equal form `Polynomial.eval (y (Sum.inr i)) (Matrix.charpoly (Matrix.of fun a b => y (Sum.inl (a, b)))) = 0`. Rewrite using `[Matrix.eval_charpoly]`.
-
-Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecLie_of (hS : SpecPt) : SpecLie := by
   intro Γ K K' _ _ _ _ _ N n ρ X e hX hL hR

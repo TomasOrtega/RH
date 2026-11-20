@@ -22,7 +22,7 @@ def ArithP : Prop :=
       (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log r) / ((g : ℝ) - 1)) * (g : ℝ) ^ r
 
 /- English proof (translation)
-Introduce `g r q d e _ hq hd hq8 hd16 he hq16 hd16' hg hr hg12 c T hT`. Conclude with `(hC g r (by omega) (by omega) c T hT).trans (hA g r q d e Fact.out hq hd hq8 hd16 he hq16 hd16' hg hr hg12)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem claim_of (hC : CountP) (hA : ArithP) : PI.SqfRootShift.Claim := by
   intro g r q d e _ hq hd hq8 hd16 he hq16 hd16' hg hr hg12 c T hT

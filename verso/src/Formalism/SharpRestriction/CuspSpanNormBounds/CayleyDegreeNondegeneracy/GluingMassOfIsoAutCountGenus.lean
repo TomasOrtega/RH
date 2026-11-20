@@ -13,7 +13,7 @@ section Tr
 variable (D : D7)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [isomAct_mem_gmap, Submodule.mem_inf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_inf_cayley_degree_nondegeneracy {V : Type} [AddCommGroup V] [Module D.host.E V] [Module (𝓞 D.host.E) V]
     [IsScalarTower (𝓞 D.host.E) D.host.E V] (g : V ≃ₗ[D.host.E] V) (A B : Submodule (𝓞 D.host.E) V) :
@@ -22,7 +22,7 @@ theorem gmap_inf_cayley_degree_nondegeneracy {V : Type} [AddCommGroup V] [Module
   simp only [isomAct_mem_gmap, Submodule.mem_inf]
 
 /- English proof (translation)
-The claim follows from `Submodule.map_sup _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gmap_sup_cayley_degree_nondegeneracy {V : Type} [AddCommGroup V] [Module D.host.E V] [Module (𝓞 D.host.E) V]
     [IsScalarTower (𝓞 D.host.E) D.host.E V] (g : V ≃ₗ[D.host.E] V) (A B : Submodule (𝓞 D.host.E) V) :
@@ -31,33 +31,29 @@ theorem gmap_sup_cayley_degree_nondegeneracy {V : Type} [AddCommGroup V] [Module
 variable {D}
 
 /- English proof (translation)
-Establish `hσ' : ∀ x y, (VS D).hT (σ x) (σ y) = (VS D).hT x y` using `hσ`. Establish `hgX : gmap σ (toO (hS D) F0.X) = toO (hS D) F0.X`. Use extensionality with `x`. Rewrite using `[isomAct_mem_gmap]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h' : σ.symm x ∈ F0.X` using `h`. Use `hX _ h'` as an intermediate fact. Establish `e : σ.symm x = x`. Apply `σ.symm.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Rewrite `h` using `[e]`. Conclude with `h`. Introduce `h`. Establish `h' : x ∈ F0.X` using `h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hX x h']`. Conclude with `h`. Establish `hgO : gmap σ (toO (hS D) (orth (hS D) F0.X)) = toO (hS D) (orth (hS D) F0.X)`. Use extensionality with `y`. Rewrite using `[isomAct_mem_gmap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `σ.symm y ∈ orth (hS D) F0.X ↔ y ∈ orth (hS D) F0.X`. Rewrite using `[Formalism.MainNotions.mem_orth_iff, Formalism.MainNotions.mem_orth_iff]`. Use `forall₂_congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hσ' x (σ.symm y), LinearEquiv.apply_symm_apply]`. Establish `: σ x = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearEquiv.eq_symm_apply, hX x hx]`. Rewrite using `[this]`. Establish `hXLam : XLam (gmap σ Λ) (lf D F0) = XLam Λ (lf D F0)`. Establish `h1 : XLam (gmap σ Λ) (lf D F0) = gmap σ (XLam Λ (lf D F0))`. Unfold `XLam`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gmap_inf_cayley_degree_nondegeneracy]`. Express the relevant statement in the definitionally equal form `gmap σ Λ ⊓ toO (hS D) F0.X = gmap σ Λ ⊓ gmap σ (toO (hS D) F0.X)`. Rewrite using `[hgX]`. Rewrite using `[h1]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[isomAct_mem_gmap]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : σ.symm x ∈ F0.X` using `h.2`. Establish `e : σ.symm x = x` using `σ.symm.injective (hX _ h')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Conclude with `h`. Introduce `h`. Establish `h' : x ∈ F0.X` using `h.2`. Rewrite using `[hX x h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h`. Establish `hLsub : Lsub (gmap σ Λ) (lf D F0) = gmap σ (Lsub Λ (lf D F0))`. Unfold `Lsub Lrep`. Rewrite using `[gmap_inf_cayley_degree_nondegeneracy, gmap_sup_cayley_degree_nondegeneracy, gmap_inf_cayley_degree_nondegeneracy]`. Express the relevant statement in the definitionally equal form `(gmap σ Λ ⊓ toO (hS D) (orth (hS D) F0.X) ⊔ toO (hS D) F0.X) ⊓ toO (hS D) (orth (hS D) F0.X) = (gmap σ Λ ⊓ gmap σ (toO (hS D) (orth (hS D) F0.X)) ⊔ gmap σ (toO (hS D) F0.X)) ⊓ gmap σ (toO (hS D) (orth (hS D) F0.X))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgX, hgO]`. Use `⟨?_, hLsub⟩` and prove the remaining obligations. Take `⟨⟨hlat1, hgen1⟩, ⟨hL, hU, hLift, hConv⟩, hXS⟩` from `hΛ`. Take `⟨_, hloc, _, huni, _⟩` from `isomAct (𝓞 D.host.E) D.host.E (VS D).V (VS D).hT σ hσ Λ`. Use `⟨⟨isomAct_lattice σ Λ hlat1, fun p hp => ?_⟩, ⟨isomAct_lattice σ Λ hL, huni.2 hU, ⟨?_, hLift.2⟩, ?_, fun c hc => hConv.2 c ?_⟩, hXLam.trans hXS⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg, e⟩` from `hgen1 p hp`. Conclude with `⟨σ * g, (isom (VS D).hT).mul_mem hσ hg, by rw [gmap_mul, e, hloc p]⟩`. Rewrite using `[isomAct_mem_gmap]`. Express the relevant statement in the definitionally equal form `σ.symm F0.z ∈ Λ`. Rewrite using `[hz]`.
-
-Conclude with `hLift.1`. Rewrite using `[hXLam]`. Conclude with `hConv.1`. Rewrite `hc` using `[hLsub, isomAct_mem_gmap, map_smul]`. Express the relevant statement in the definitionally equal form `c • σ.symm F0.z ∈ _ at hc`.
-
-Rewrite `hc` using `[hz]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_gmap_of_flag_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hσ : σ ∈ isom (VS D).hT) (hX : ∀ x ∈ F0.X, σ.symm x = x) (hz : σ.symm F0.z = F0.z) (Λ : LatV D)
@@ -137,17 +133,15 @@ theorem isLattice_gmap_of_flag_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS
 variable (D)
 
 /- English proof (translation)
-Introduce `_ _ _ F0 he hz γ hγ Λ₁ hΛ₁`. Establish `hzO : F0.z ∈ orth (hS D) (LinearMap.range (D.sp.iXY 0))`. Rewrite using `[Formalism.MainNotions.mem_orth_iff]`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.hT_swap_zero (z_orth_embedding D u w)`. Establish `hXO : F0.X ≤ orth (hS D) (LinearMap.range (D.sp.iXY 0))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `D.sp.hypE a ∈ orth (hS D) (LinearMap.range (D.sp.iXY 0))`. Rewrite using `[Formalism.MainNotions.mem_orth_iff]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(D.sp.hyp_orthX a w).1`. Apply the tactic sequence `obtain ⟨hrow, hLsub⟩ := isLattice_gmap_of_flag_isometry F0 (extendByIdentity D γ) (extendByIdentity_mem_isom D γ hγ) (fun x hx => extendByIdentity_symm_fix_orth D γ x (hXO hx)) (extendByIdentity_symm_fix_orth D γ _ hzO) Λ₁ hΛ₁`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨gmap (extendByIdentity D γ) Λ₁, hrow, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨w, c⟩`. Unfold `latticeWithZ`. Rewrite using `[Submodule.mem_comap, hLsub, isomAct_mem_gmap, isomAct_mem_gmap, Submodule.mem_comap]`. Establish `e1 : ((embedWithZ D F0).restrictScalars (𝓞 D.host.E)) (w, c) = D.sp.iXY 0 w + c • F0.z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[embedWithZ]`. Establish `e2 : ((embedWithZ D F0).restrictScalars (𝓞 D.host.E)) ((extendByOne D γ).symm (w, c)) = D.sp.iXY 0 (γ.symm w) + c • F0.z`. Establish `: (extendByOne D γ).symm (w, c) = (γ.symm w, c)` using `rfl`. Rewrite using `[this]`. Simplify using `[embedWithZ]`.
-
-Rewrite using `[e1, e2, extendByIdentity_symm_apply D γ w _ (Submodule.smul_mem _ c hzO)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometries_transport_lattices (u : D.what₂.Word) : IsometriesTransportLattices D u := by
   intro _ _ _ F0 he hz γ hγ Λ₁ hΛ₁
@@ -180,7 +174,7 @@ theorem isometries_transport_lattices (u : D.what₂.Word) : IsometriesTransport
   rw [e1, e2, extendByIdentity_symm_apply D γ w _ (Submodule.smul_mem _ c hzO)]
 
 /- English proof (translation)
-The claim follows from `gluing_mass_of_gluing_facts D u hpos hlat h1 h2 (isometries_transport_lattices D u) h4 h5`.
+A detailed English derivation is pending.
 -/
 theorem gluing_mass_of_iso_aut_count_genus (u : D.what₂.Word) (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))

@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.SmallRoute
 
 /- English proof (translation)
-Introduce `D T L sc G hWC hK hP μ₀ hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁`. Take `⟨z, hz, h1, hJ⟩` from `GlobalTheory.T.exists_translation_comb_integrable_thetaKernel hK hP hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁`. Take `⟨hI, h2⟩` from `GlobalTheory.T.smallRoute_combination_mul_lift_by_degree hL W B ρ t i j M hM Θ Θ' hΘ F hF hB g₁ z`. Conclude with `⟨z, hz, Filter.Eventually.of_forall h1, h2.trans (GlobalTheory.T.smallRoute_sum_translated_outerIntegrals_eq hL W t i j M hM Θ' F hB g₁ z hI hJ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_translates_lift : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (hWC : GlobalTheory.SquareSt.WeilConvergence) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) (hP : GlobalTheory.Published.CuspDecayBound) {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hT : SquareTriple W t i j)

@@ -15,9 +15,9 @@ namespace UnramifiedCompletion
 variable (l : ℕ) [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : ‖(((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l])‖ = ‖(l : ℚ_[l])‖` using `PadicComplex.norm_extends' l _`. Establish `h2 : (((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l]) = (l : ℂ_[l])`. Simplify using the standard rewrite rules. Rewrite `h` using `[h2]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`.
+A detailed English derivation is pending.
 -/
 lemma normL_lt_one : ‖(l : ℂ_[l])‖ < 1 := by
   have h : ‖(((l : ℚ_[l]) : ℚ_[l]) : ℂ_[l])‖ = ‖(l : ℚ_[l])‖ := PadicComplex.norm_extends' l _
@@ -28,20 +28,20 @@ lemma normL_lt_one : ‖(l : ℂ_[l])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 hl.out.ne_zero`.
+A detailed English derivation is pending.
 -/
 lemma castL_ne_zero : (l : ℂ_[l]) ≠ 0 := Nat.cast_ne_zero.2 hl.out.ne_zero
 
 variable {l}
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qi27.norm_ringA_le .. | (apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumpt …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma norm_ringA_le {x : ℂ_[l]} (hx : x ∈ ringA l) : ‖x‖ ≤ 1 := by
   first | exact UpperTheory.Reformulated.B.Qi27.norm_ringA_le .. | (apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl x hx | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl x | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma pow_pow_fix {M : Type*} [Monoid M] (x : M) (a : ℕ) (h : x ^ a = x) (k : ℕ) : x ^ (a ^ k) = x := by
   induction k with
@@ -49,9 +49,9 @@ lemma pow_pow_fix {M : Type*} [Monoid M] (x : M) (a : ℕ) (h : x ^ a = x) (k : 
   | succ k ih => rw [pow_succ, pow_mul, ih, h]
 
 /- English proof (translation)
-Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h1 : (l : ℂ_[l]) * (y : ℂ_[l]) = 1`. Use `congrArg (fun t : ringA l => (t : ℂ_[l])) hy` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ‖(l : ℂ_[l])‖ * ‖(y : ℂ_[l])‖ = 1` using `by rw [← norm_mul, h1, norm_one]`. Establish `h3 : ‖(l : ℂ_[l])‖ * ‖(y : ℂ_[l])‖ < 1` using `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) (normL_lt_one l) (norm_ringA_le y.2)`. Conclude with `absurd h2 h3.ne`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma castL_nonunit : ((l : ℕ) : ringA l) ∈ nonunits (ringA l) := by
   intro hu
@@ -65,25 +65,23 @@ lemma castL_nonunit : ((l : ℕ) : ringA l) ∈ nonunits (ringA l) := by
   exact absurd h2 h3.ne
 
 /- English proof (translation)
-Establish `: CharP (ringA l ⧸ Ideal.span {((l : ℕ) : ringA l)}) l` using `CharP.quotient _ l castL_nonunit`. Use `set mk := Ideal.Quotient.mk (Ideal.span {((l : ℕ) : ringA l)}) with hmk`. Establish `key : ∀ (a b : ringA l ⧸ Ideal.span {((l : ℕ) : ringA l)}) (f g : ℕ), a ^ (l ^ f) = a → b ^ (l ^ g) = b → a ^ (l ^ (f * g)) = a ∧ b ^ (l ^ (f * g)) = b`. Introduce `a b f g ha hb`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul]`. Conclude with `pow_pow_fix a _ ha g`. Rewrite using `[mul_comm, pow_mul]`. Conclude with `pow_pow_fix b _ hb f`. Use `Subring.closure_induction (p := fun x hx => ∃ f : ℕ, 0 < f ∧ (mk ⟨x, hx⟩) ^ (l ^ f) = mk ⟨x, hx⟩) ?_ ?_ ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨n, hn, hln, h⟩` from `hz`. Establish `hcop : Nat.Coprime l n` using `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hln`. Use `⟨n.totient, Nat.totient_pos.2 hn, ?_⟩` and prove the remaining obligations. Establish `h1 : l ^ n.totient ≡ 1 [MOD n]` using `Nat.ModEq.pow_totient hcop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : z ^ (l ^ n.totient) = z`. Establish `h3 : z ^ (l ^ n.totient) = z ^ 1`. Rewrite using `[← Nat.div_add_mod (l ^ n.totient) n, ← Nat.div_add_mod 1 n, h1, pow_add, pow_add, pow_mul, pow_mul, h]`. Simplify using the standard rewrite rules. Simplify using `using h3`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components.
 
-Rewrite using `[← map_pow]`. Use `congr 1`. Conclude with `Subtype.ext h2`. Conclude with `⟨1, one_pos, by`. Establish `: (⟨0, zero_mem _⟩ : ringA l) = 0` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero, zero_pow (pow_ne_zero _ hl.out.ne_zero)]⟩`. Conclude with `⟨1, one_pos, by`. Establish `: (⟨1, one_mem _⟩ : ringA l) = 1` using `rfl`. Rewrite using `[this, map_one, one_pow]⟩`. Introduce and unpack `x y hx hy ⟨f, hf, h1⟩ ⟨g, hg, h2⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k1, k2⟩` from `key _ _ f g h1 h2`. Use `⟨f * g, Nat.mul_pos hf hg, ?_⟩` and prove the remaining obligations. Establish `: (⟨x + y, add_mem hx hy⟩ : ringA l) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_add, add_pow_char_pow, k1, k2]`. Introduce and unpack `x hx ⟨f, hf, h1⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `: (⟨-x, neg_mem hx⟩ : ringA l) = -⟨x, hx⟩` using `rfl`. Rewrite using `[this, map_neg]`. Establish `h0` using `map_neg (iterateFrobenius (ringA l ⧸ Ideal.span {((l : ℕ) : ringA l)}) l f) (mk ⟨x, hx⟩)`. Rewrite `h0` using `[iterateFrobenius_def, iterateFrobenius_def, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h0`. Introduce and unpack `x y hx hy ⟨f, hf, h1⟩ ⟨g, hg, h2⟩`. Take `⟨k1, k2⟩` from `key _ _ f g h1 h2`. Use `⟨f * g, Nat.mul_pos hf hg, ?_⟩` and prove the remaining obligations. Establish `: (⟨x * y, mul_mem hx hy⟩ : ringA l) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`.
-
-Rewrite using `[this, map_mul, mul_pow, k1, k2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_period {x : ℂ_[l]} (hx : x ∈ ringA l) :
     ∃ f : ℕ, 0 < f ∧
@@ -142,9 +140,9 @@ end UnramifiedCompletion
 open UnramifiedCompletion
 
 /- English proof (translation)
-Introduce `l hl`. Use `⟨fun x hx => norm_ringA_le hx, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨f, hf, h⟩` from `exists_period hx`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[← map_pow, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Use `⟨c, c.2, ?_⟩` and prove the remaining obligations. Use `congrArg (fun t : ringA l => (t : ℂ_[l])) hc` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ring_a_facts : RingAFacts := by
   intro l hl
@@ -163,17 +161,17 @@ namespace UnramifiedCompletion
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `Subring.le_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 lemma ringA_le_ringB : ringA l ≤ ringB l := Subring.le_topologicalClosure _
 
 /- English proof (translation)
-The claim follows from `Subring.isClosed_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 lemma isClosed_ringB : IsClosed (ringB l : Set ℂ_[l]) := Subring.isClosed_topologicalClosure _
 
 /- English proof (translation)
-Establish `h : closure (ringA l : Set ℂ_[l]) ⊆ {x | ‖x‖ ≤ 1}` using `closure_minimal (fun x hx => norm_ringA_le hx) (isClosed_le continuous_norm continuous_const)`. Conclude with `h hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma norm_ringB_le {x : ℂ_[l]} (hx : x ∈ ringB l) : ‖x‖ ≤ 1 := by
   have h : closure (ringA l : Set ℂ_[l]) ⊆ {x | ‖x‖ ≤ 1} :=
@@ -181,12 +179,12 @@ lemma norm_ringB_le {x : ℂ_[l]} (hx : x ∈ ringB l) : ‖x‖ ≤ 1 := by
   exact h hx
 
 /- English proof (translation)
-The claim follows from `natCast_mem _ l`.
+A detailed English derivation is pending.
 -/
 lemma castL_mem_ringB : (l : ℂ_[l]) ∈ ringB l := natCast_mem _ l
 
 /- English proof (translation)
-Establish `h1` using `(hasSum_geometric_of_norm_lt_one h).tendsto_sum_nat`. Conclude with `isClosed_ringB.mem_of_tendsto h1 (Eventually.of_forall fun n => sum_mem fun i _ => pow_mem hw i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma geom_mem {w : ℂ_[l]} (hw : w ∈ ringB l) (h : ‖w‖ < 1) : (1 - w)⁻¹ ∈ ringB l := by
   have h1 := (hasSum_geometric_of_norm_lt_one h).tendsto_sum_nat
@@ -194,7 +192,7 @@ lemma geom_mem {w : ℂ_[l]} (hw : w ∈ ringB l) (h : ‖w‖ < 1) : (1 - w)⁻
     (Eventually.of_forall fun n => sum_mem fun i _ => pow_mem hw i)
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ l ^ f` using `hl.out.two_le.trans (Nat.le_self_pow hf.ne' l)`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le h2`. Conclude with `⟨k, by omega⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_pow_eq (f : ℕ) (hf : 0 < f) : ∃ N : ℕ, l ^ f = N + 2 := by
   have h2 : 2 ≤ l ^ f := hl.out.two_le.trans (Nat.le_self_pow hf.ne' l)
@@ -205,11 +203,11 @@ def PerA (l : ℕ) [Fact l.Prime] : Prop :=
   ∀ x ∈ ringA l, ∃ f : ℕ, 0 < f ∧ ∃ y ∈ ringA l, x ^ (l ^ f) - x = (l : ℂ_[l]) * y
 
 /- English proof (translation)
-Take `⟨f, hf, y, hy, e⟩` from `hA x hx`. Take `⟨N, hN⟩` from `exists_pow_eq (l := l) f hf`. Establish `hxN : ‖x ^ (N + 1)‖ < 1`. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) h (Nat.succ_ne_zero _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : 1 - x ^ (N + 1) ≠ 0`. Introduce `h0`. Establish `h1 : x ^ (N + 1) = 1` using `(sub_eq_zero.1 h0).symm`. Rewrite `hxN` using `[h1, norm_one]`. Conclude with `lt_irrefl _ hxN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨-y * (1 - x ^ (N + 1))⁻¹, mul_mem (neg_mem (ringA_le_ringB hy)) (geom_mem (pow_mem (ringA_le_ringB hx) _) hxN), ?_⟩` and prove the remaining obligations. Establish `e2 : x * (1 - x ^ (N + 1)) = (l : ℂ_[l]) * (-y)`. Rewrite `e` using `[hN]`. Take the linear combination `-e`. Rewrite using `[← mul_assoc, ← e2, mul_assoc, mul_inv_cancel₀ hne, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma div_ringA (hA : PerA l) {x : ℂ_[l]} (hx : x ∈ ringA l) (h : ‖x‖ < 1) :
     ∃ y ∈ ringB l, x = (l : ℂ_[l]) * y := by
@@ -230,9 +228,9 @@ lemma div_ringA (hA : PerA l) {x : ℂ_[l]} (hx : x ∈ ringA l) (h : ‖x‖ < 
   rw [← mul_assoc, ← e2, mul_assoc, mul_inv_cancel₀ hne, mul_one]
 
 /- English proof (translation)
-Take `⟨u, hu, hlim⟩` from `mem_closure_iff_seq_limit.1 (show x ∈ closure (ringA l : Set ℂ_[l]) from hx)`. Establish `hev : ∀ᶠ n in atTop, ‖u n‖ < 1` using `(hlim.norm).eventually_lt_const h`. Establish `hlim2 : Tendsto (fun n => (l : ℂ_[l])⁻¹ * u n) atTop (𝓝 ((l : ℂ_[l])⁻¹ * x))` using `hlim.const_mul _`. Use `⟨(l : ℂ_[l])⁻¹ * x, isClosed_ringB.mem_of_tendsto hlim2 (hev.mono fun n hn => ?_), by rw [mul_inv_cancel_left₀ (castL_ne_zero l)]⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `div_ringA hA (hu n) hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, inv_mul_cancel_left₀ (castL_ne_zero l)]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma div_ringB (hA : PerA l) {x : ℂ_[l]} (hx : x ∈ ringB l) (h : ‖x‖ < 1) :
     ∃ y ∈ ringB l, x = (l : ℂ_[l]) * y := by
@@ -248,15 +246,13 @@ lemma div_ringB (hA : PerA l) {x : ℂ_[l]} (hx : x ∈ ringB l) (h : ‖x‖ < 
   exact hy
 
 /- English proof (translation)
-Take `⟨f, hf, y, hy, e⟩` from `hA u hu`. Take `⟨N, hN⟩` from `exists_pow_eq (l := l) f hf`. Establish `hu0 : u ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`. Establish `e2 : u * (1 - u ^ (N + 1)) = (l : ℂ_[l]) * (-y)`. Rewrite `e` using `[hN]`. Take the linear combination `-e`. Establish `hw : ‖1 - u ^ (N + 1)‖ < 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg norm e2`. Rewrite `h1` using `[norm_mul, norm_mul, h, one_mul, norm_neg]`. Rewrite using `[h1]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) (normL_lt_one l) (norm_ringA_le hy)`. Establish `hB : 1 - u ^ (N + 1) ∈ ringB l` using `sub_mem (one_mem _) (pow_mem (ringA_le_ringB hu) _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `geom_mem hB hw`. Rewrite `h3` using `[sub_sub_cancel]`. Establish `h4 : u⁻¹ = u ^ N * (u ^ (N + 1))⁻¹`. Rewrite using `[pow_succ, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hu0), one_mul]`. Rewrite using `[h4]`.
-
-Conclude with `mul_mem (pow_mem (ringA_le_ringB hu) _) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_ringA (hA : PerA l) {u : ℂ_[l]} (hu : u ∈ ringA l) (h : ‖u‖ = 1) : u⁻¹ ∈ ringB l := by
   obtain ⟨f, hf, y, hy, e⟩ := hA u hu
@@ -280,15 +276,15 @@ lemma inv_ringA (hA : PerA l) {u : ℂ_[l]} (hu : u ∈ ringA l) (h : ‖u‖ = 
   exact mul_mem (pow_mem (ringA_le_ringB hu) _) h3
 
 /- English proof (translation)
-Take `⟨u0, hu0, hd⟩` from `Metric.mem_closure_iff.1 (show u ∈ closure (ringA l : Set ℂ_[l]) from hu) 1 one_pos`. Rewrite `hd` using `[dist_eq_norm]`. Establish `hn : ‖u0‖ = 1`. Use `le_antisymm (norm_ringA_le hu0) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hlt` using `[not_le]`. Establish `h1 : ‖u‖ ≤ max ‖u - u0‖ ‖u0‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (u - u0) u0`. Rewrite `h1` using `[h]`. Conclude with `absurd h1 (not_le.2 (max_lt hd hlt))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : u0 ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hi` using `inv_ringA hA hu0 hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwB : u0⁻¹ * (u0 - u) ∈ ringB l` using `mul_mem hi (sub_mem (ringA_le_ringB hu0) hu)`. Establish `hw : ‖u0⁻¹ * (u0 - u)‖ < 1`. Rewrite using `[norm_mul, norm_inv, hn, inv_one, one_mul, norm_sub_rev]`. Conclude with `hd`. Establish `e : u = u0 * (1 - u0⁻¹ * (u0 - u))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_sub, mul_one, mul_inv_cancel_left₀ hne, sub_sub_cancel]`. Establish `h5` using `mul_mem hi (geom_mem hwB hw)`. Rewrite `h5` using `[← mul_inv, ← e]`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 lemma inv_ringB (hA : PerA l) {u : ℂ_[l]} (hu : u ∈ ringB l) (h : ‖u‖ = 1) : u⁻¹ ∈ ringB l := by
   obtain ⟨u0, hu0, hd⟩ :=
@@ -318,13 +314,11 @@ def DivB (l : ℕ) [Fact l.Prime] : Prop :=
   ∀ x ∈ ringB l, ‖x‖ < 1 → ∃ y ∈ ringB l, x = (l : ℂ_[l]) * y
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx h`. Rewrite `h` using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (norm_ringB_le hx) (not_le.2 h)`. Consider the case `succ n ih`. Introduce `x hx h`. Break down `(norm_ringB_le hx).lt_or_eq with h1 | h1` into its components or cases. Take `⟨y, hy, e⟩` from `hdiv x hx h1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ‖(l : ℂ_[l])‖ ^ n < ‖y‖`. Rewrite `h` using `[e, norm_mul, pow_succ, mul_comm]`. Conclude with `lt_of_mul_lt_mul_left h (norm_nonneg _)`. Take `⟨k, u, hu, hu1, e2⟩` from `ih y hy h2`. Conclude with `⟨k + 1, u, hu, hu1, by rw [e, e2, pow_succ]; ring⟩`.
-
-Conclude with `⟨0, x, hx, h1, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_unit_factorization_bounded (hdiv : DivB l) : ∀ n : ℕ, ∀ x ∈ ringB l, ‖(l : ℂ_[l])‖ ^ n < ‖x‖ →
     ∃ k : ℕ, ∃ u ∈ ringB l, ‖u‖ = 1 ∧ x = (l : ℂ_[l]) ^ k * u := by
@@ -346,7 +340,7 @@ lemma exists_unit_factorization_bounded (hdiv : DivB l) : ∀ n : ℕ, ∀ x ∈
     · exact ⟨0, x, hx, h1, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 h0) (normL_lt_one l)`. Conclude with `exists_unit_factorization_bounded hdiv n x hx hn`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_unit (hdiv : DivB l) {x : ℂ_[l]} (hx : x ∈ ringB l) (h0 : x ≠ 0) :
     ∃ k : ℕ, ∃ u ∈ ringB l, ‖u‖ = 1 ∧ x = (l : ℂ_[l]) ^ k * u := by
@@ -354,13 +348,13 @@ lemma exists_unit (hdiv : DivB l) {x : ℂ_[l]} (hx : x ∈ ringB l) (h0 : x ≠
   exact exists_unit_factorization_bounded hdiv n x hx hn
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _ h`. Simplify using `using h`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx h`. Establish `h1 : ‖(l : ℂ_[l]) ^ (k + 1) * x‖ < 1`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (pow_nonneg (norm_nonneg _) _) (pow_lt_one₀ (norm_nonneg _) (normL_lt_one l) (Nat.succ_ne_zero _)) hx`. Take `⟨y, hy, e⟩` from `hdiv _ h h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ih x hx ?_` and prove the remaining obligations. Establish `e2 : (l : ℂ_[l]) ^ k * x = y`. Apply `mul_left_cancel₀ (castL_ne_zero l)` to reduce the goal to its premises. Rewrite using `[← e, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 lemma mem_of_pow_mul (hdiv : DivB l) : ∀ (k : ℕ) (x : ℂ_[l]), ‖x‖ ≤ 1 →
     (l : ℂ_[l]) ^ k * x ∈ ringB l → x ∈ ringB l := by
@@ -415,7 +409,7 @@ def fracS (hdiv : DivB l) (hinv : ∀ x ∈ ringB l, ‖x‖ = 1 → x⁻¹ ∈ 
     exact mul_mem (pow_mem castL_mem_ringB j) (hinv u hu hu1)
 
 /- English proof (translation)
-Establish `h1 : ringA l ≤ (MaximalUnramifiedExtension l).toSubring` using `Subring.closure_le.2 fun z hz => Subfield.le_topologicalClosure _ (Subfield.subset_closure hz)`. Conclude with `Subring.topologicalClosure_minimal _ h1 (Subfield.isClosed_topologicalClosure _) hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ringB_le_Kur {x : ℂ_[l]} (hx : x ∈ ringB l) : x ∈ MaximalUnramifiedExtension l := by
   have h1 : ringA l ≤ (MaximalUnramifiedExtension l).toSubring :=
@@ -425,15 +419,13 @@ lemma ringB_le_Kur {x : ℂ_[l]} (hx : x ∈ ringB l) : x ∈ MaximalUnramifiedE
 end UnramifiedCompletion
 
 /- English proof (translation)
-Introduce `hA l hl`. Establish `hA2 : PerA l` using `(hA l).2`. Establish `hdiv : DivB l` using `fun x hx h => div_ringB hA2 hx h`. Establish `hinv : ∀ x ∈ ringB l, ‖x‖ = 1 → x⁻¹ ∈ ringB l` using `fun x hx h => inv_ringB hA2 hx h`. Use `⟨fun x => ⟨fun hx => ⟨ringB_le_Kur hx, norm_ringB_le hx⟩, ?_⟩, hdiv, hinv⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hK, h1⟩`. Establish `hF : Subfield.closure (muPrime l) ≤ fracS hdiv hinv` using `Subfield.closure_le.2 fun z hz => ⟨0, by simpa using ringA_le_ringB (Subring.subset_closure hz)⟩`. Establish `h2 : x ∈ closure (ringB l : Set ℂ_[l])`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x0, hx0, hd⟩` from `Metric.mem_closure_iff.1 (show x ∈ closure ((Subfield.closure (muPrime l) : Subfield ℂ_[l]) : Set ℂ_[l]) from hK) (min ε 1) (lt_min hε one_pos)`. Use `⟨x0, ?_, hd.trans_le (min_le_left _ _)⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hF hx0`. Establish `hn : ‖x0‖ ≤ 1`. Establish `h3 : ‖x0‖ ≤ max ‖x0 - x‖ ‖x‖`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using IsUltrametricDist.norm_add_le_max (x0 - x) x`. Use `h3.trans (max_le ?_ h1)` and prove the remaining obligations. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `(hd.trans_le (min_le_right _ _)).le`. Conclude with `mem_of_pow_mul hdiv k x0 hn hk`.
-
-Rewrite `h2` using `[isClosed_ringB.closure_eq]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem KurIntegers_of : RingAFacts → KurIntegers := by
   intro hA l hl
@@ -463,11 +455,11 @@ theorem KurIntegers_of : RingAFacts → KurIntegers := by
   rwa [isClosed_ringB.closure_eq] at h2
 
 /- English proof (translation)
-Introduce `hK l hl a ha h0`. Take `⟨h1, hdiv, -⟩` from `hK l`. Establish `key : ∀ x ∈ ringB l, x ≠ 0 → ∃ k : ℕ, ‖x‖ = ‖(l : ℂ_[l])‖ ^ k`. Introduce `x hx hx0`. Take `⟨k, u, _, hu1, e⟩` from `exists_unit hdiv hx hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, by rw [e, norm_mul, norm_pow, hu1, mul_one]⟩`. Break down `le_total ‖a‖ 1 with h | h` into its components or cases. Take `⟨k, hk⟩` from `key a ((h1 a).2 ⟨ha, h⟩) h0`. Conclude with `⟨k, by rw [hk, zpow_natCast]⟩`. Establish `hi : ‖a⁻¹‖ ≤ 1` using `by rw [norm_inv]; exact inv_le_one_of_one_le₀ h`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `key a⁻¹ ((h1 _).2 ⟨inv_mem ha, hi⟩) (inv_ne_zero h0)`. Conclude with `⟨-k, by rw [zpow_neg, zpow_natCast, ← hk, norm_inv, inv_inv]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem KurUnram_of : KurIntegers → KurUnram := by
   intro hK l hl a ha h0
@@ -484,9 +476,9 @@ theorem KurUnram_of : KurIntegers → KurUnram := by
     exact ⟨-k, by rw [zpow_neg, zpow_natCast, ← hk, norm_inv, inv_inv]⟩
 
 /- English proof (translation)
-Introduce `l hl n hn hln`. Establish `: NeZero (n : ℂ_[l])` using `⟨Nat.cast_ne_zero.2 hn.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℂ_[l] n`. Establish `hmem : z ∈ MaximalUnramifiedExtension l` using `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, hn, hln, hz.pow_eq_one⟩)`. Use `⟨⟨z, hmem⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsPrimitiveRoot.of_map_of_injective (f := (MaximalUnramifiedExtension l).subtype) hz Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem unramified_completion_roots : KurRoots := by
   intro l hl n hn hln
@@ -498,7 +490,7 @@ theorem unramified_completion_roots : KurRoots := by
   exact IsPrimitiveRoot.of_map_of_injective (f := (MaximalUnramifiedExtension l).subtype) hz Subtype.val_injective
 
 /- English proof (translation)
-Introduce `l hl`. Conclude with `(Subfield.isClosed_topologicalClosure _).completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unramified_completion_complete : KurComplete := by
   intro l hl

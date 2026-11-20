@@ -8,9 +8,9 @@ open scoped TensorProduct DirectSum
 namespace GlobalTheory.OneFunctional
 
 /- English proof (translation)
-Introduce `a b α β`. Take `⟨e⟩` from `GlobalTheory.GLDuality.nonempty_equiv_polyRep a b`. Take `⟨e, he⟩` from `Iso.of_equiv e`. Use `⟨e, fun p x => ?_⟩` and prove the remaining obligations. Establish `key : (Representation.directSum fun i : GlobalTheory.GLDuality.Part (min a b) => Representation.tprod ((twist (detU a ^ α) ((irr a (GlobalTheory.GLDuality.pad a i)).comp (conjU a))).comp (MonoidHom.fst (U a) (U b))) ((twist (detU b ^ β) (irr b (GlobalTheory.GLDuality.pad b i))).c …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `DFinsupp.ext` to reduce the goal to its premises. Introduce `i`. Express the relevant statement in the definitionally equal form `TensorProduct.map ((((detU a ^ α) p.1 : ℂˣ) : ℂ) • (irr a (GlobalTheory.GLDuality.pad a i) (conjU a p.1))) ((((detU b ^ β) p.2 : ℂˣ) : ℂ) • (irr b (GlobalTheory.GLDuality.pad b i) p.2)) (x i) = ((((detU a ^ α) p.1 * (detU b ^ β) p.2 : ℂˣ) : ℂ)) • TensorProduct.map (irr a (GlobalT …`. Rewrite using `[TensorProduct.map_smul_left, TensorProduct.map_smul_right, smul_smul, Units.val_mul, LinearMap.smul_apply]`. Rewrite using `[key, map_smul, he]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

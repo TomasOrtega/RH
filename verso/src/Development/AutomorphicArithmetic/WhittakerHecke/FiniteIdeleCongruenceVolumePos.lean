@@ -8,7 +8,7 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `le_antisymm ha ?_` and prove the remaining obligations. Use `mul_le_mul' (le_refl a) hb` as an intermediate fact. Rewrite `this` using `[h, mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma eq_one_of_mul'' {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {a b : Γ}
     (ha : a ≤ 1) (hb : b ≤ 1) (h : a * b = 1) : a = 1 := by
@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 private lemma ef_fst (x : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : ((ef x : (A ℚ)ˣ) : A ℚ).1 = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Establish `h` using `congrArg (fun y : FiniteAdeleRing (𝓞 ℚ) ℚ => y v) (Units.inv_mul x)`. Establish `h' : ((x⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) v * (x : FiniteAdeleRing (𝓞 ℚ) ℚ) v = 1` using `h`. Rewrite using `[h', map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inv_mul_at (x : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) (v : H.P ℚ) :
     Valued.v (((x⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) v) *
@@ -36,13 +36,13 @@ private lemma inv_mul_at (x : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) (v : H.P ℚ) 
   rw [h', map_one]
 
 /- English proof (translation)
-Conclude with `hL.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private lemma natCast_ne (L : ℕ) (hL : 0 < L) (v : H.P ℚ) : (L : H.Kv v) ≠ 0 := by
   exact_mod_cast hL.ne'
 
 /- English proof (translation)
-Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (L : 𝓞 ℚ)`. Rewrite `h2` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 h]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma v_natCast_of_not_bad (L : ℕ) (v : H.P ℚ) (h : ¬ Bad L v) : Valued.v (L : H.Kv v) = 1 := by
   have h2 := HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (L : 𝓞 ℚ)
@@ -50,7 +50,7 @@ private lemma v_natCast_of_not_bad (L : ℕ) (v : H.P ℚ) (h : ¬ Bad L v) : Va
   exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hne : Ideal.span {(L : 𝓞 ℚ)} ≠ 0`. Simplify `hL.ne'` using `[Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Use `(Ideal.finite_factors hne).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma finite_bad (L : ℕ) (hL : 0 < L) : {v : H.P ℚ | Bad L v}.Finite := by
   have hne : Ideal.span {(L : 𝓞 ℚ)} ≠ 0 := by
@@ -59,11 +59,11 @@ private lemma finite_bad (L : ℕ) (hL : 0 < L) : {v : H.P ℚ | Bad L v}.Finite
   exact Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Establish `hB : IsOpen {y : H.Kv v | Valued.v y ≤ Valued.v (L : H.Kv v)}`. Establish `: {y : H.Kv v | Valued.v y ≤ Valued.v (L : H.Kv v)} = {y | Valued.v.restrict y ≤ Valued.v.restrict (L : H.Kv v)}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_le_iff]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Valued.isOpen_closedBall _ (by simp [natCast_ne L hL v])`. Establish `he : Continuous fun y : FiniteAdeleRing (𝓞 ℚ) ℚ => y v` using `RestrictedProduct.continuous_eval v`. Establish `hf : Continuous fun x : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ => (x : FiniteAdeleRing (𝓞 ℚ) ℚ) v - 1` using `(he.comp Units.continuous_val).sub continuous_const`. Use `(hB.preimage hf).mem_nhds ?_` and prove the remaining obligations. Establish `h0 : ((1 : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) v - 1 = 0` using `sub_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v (((1 : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) v - 1) ≤ _`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nhds_cong (L : ℕ) (hL : 0 < L) (v : H.P ℚ) :
     {x : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ | Valued.v ((x : FiniteAdeleRing (𝓞 ℚ) ℚ) v - 1) ≤ Valued.v (L : H.Kv v)} ∈
@@ -85,19 +85,17 @@ private lemma nhds_cong (L : ℕ) (hL : 0 < L) (v : H.P ℚ) :
   exact zero_le'
 
 /- English proof (translation)
-Introduce `L hL`. Use `set S : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ := (fun u => (IdeleGroup.prodEquiv ℚ).symm (1, u)) ⁻¹' TT L with hS`. Establish `hcT : cT L = (finiteIdeleMeasure ℚ S).toReal` using `rfl`. Establish `hsub : S ⊆ (finiteIntegralUnits ℚ : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : ∀ v : H.P ℚ, Valued.v ((x : FiniteAdeleRing (𝓞 ℚ) ℚ) v) = 1` using `fun v => hx.1.2 v`. Use `(mem_finiteIntegralUnits ℚ).2 fun v => ?_` and prove the remaining obligations. Establish `hi` using `inv_mul_at x v`. Rewrite `hi` using `[hu v, mul_one]`. Conclude with `⟨(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).2 (hu v).le, (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).2 hi.le⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hnhds : S ∈ 𝓝 (1 : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ)`. Establish `h1 : (finiteIntegralUnits ℚ : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) ∈ 𝓝 (1 : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ)` using `(isOpen_finiteIntegralUnits ℚ).mem_nhds (one_mem _)`. Establish `h2` using `(Filter.biInter_mem (finite_bad L hL)).2 fun v (_ : Bad L v) => nhds_cong L hL v`. Use `filter_upwards [h1, h2] with x hx hc`. Take `hxi` from `(mem_finiteIntegralUnits ℚ).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ v : H.P ℚ, Valued.v ((x : FiniteAdeleRing (𝓞 ℚ) ℚ) v) ≤ 1` using `fun v => (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 (hxi v).1`. Establish `hle' : ∀ v : H.P ℚ, Valued.v (((x⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) v) ≤ 1` using `fun v => (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 (hxi v).2`. Use `⟨⟨ef_fst x, fun v => ?_⟩, fun v => ?_⟩` and prove the remaining obligations. Conclude with `eq_one_of_mul'' (hle v) (hle' v) (by rw [mul_comm]; exact inv_mul_at x v)`. Establish `hcp : H.cp v ((ef x : (A ℚ)ˣ) : A ℚ) - 1 = (x : FiniteAdeleRing (𝓞 ℚ) ℚ) v - 1` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `Valued.v (H.cp v (((ef x : (A ℚ)ˣ) : A ℚ) - 1)) ≤ _`. Rewrite using `[map_sub, map_one, hcp]`. Distinguish the cases in `hb : Bad L v`. Conclude with `Set.mem_iInter₂.1 hc v hb`. Rewrite using `[v_natCast_of_not_bad L v hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Valuation.map_sub _ _ _).trans (max_le (hle v) ?_)` and prove the remaining obligations. Rewrite using `[map_one]`. Rewrite using `[hcT]`. Use `ENNReal.toReal_pos (Measure.measure_pos_of_mem_nhds _ hnhds).ne' ?_` and prove the remaining obligations. Use `((measure_mono hsub).trans_lt ?_).ne` and prove the remaining obligations.
-
-Rewrite using `[finiteIdeleMeasure_finiteIntegralUnits]`. Conclude with `ENNReal.one_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteIdele_congruenceVolume_pos :
     ∀ L : ℕ, 0 < L → 0 < cT L := by

@@ -7,7 +7,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.PB.Cj
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (star : (Fin e → ℂ) → (Fin e → ℂ)) u` using `continuous_star.continuousAt`. Use `GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 ?_` and prove the remaining obligations. Use `filter_upwards [hc.eventually hh.eventually_analyticAt] with q hq`. Simplify `hq.differentiableAt.star_star` using `[Function.comp_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem analyticAt_conj_comp_star {e : ℕ} {h : (Fin e → ℂ) → ℂ} {u : Fin e → ℂ}
     (hh : AnalyticAt ℂ h (star u)) :
@@ -18,11 +18,11 @@ theorem analyticAt_conj_comp_star {e : ℕ} {h : (Fin e → ℂ) → ℂ} {u : F
   simpa [Function.comp_def] using hq.differentiableAt.star_star
 
 /- English proof (translation)
-Introduce `j w hw`. Take `⟨k, hk⟩` from `A.cover (c ((A.chart j).symm w))`. Establish `hw' : w ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (c ⁻¹' (A.chart k).source)` using `⟨hw.1, hk⟩`. Establish `h1` using `hanti j k w hw'`. Establish `h2 : AnalyticAt ℂ (g ∘ (A.chart k).symm) (A.chart k (c ((A.chart j).symm w)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg k _ ⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, (A.chart k).left_inv hk]`. Conclude with `hw.2`. Establish `h3 : AnalyticAt ℂ (fun v => starRingEnd ℂ ((g ∘ (A.chart k).symm) (star v))) (star (A.chart k (c ((A.chart j).symm w))))` using `analyticAt_conj_comp_star (by simpa using h2)`. Establish `h4` using `AnalyticAt.comp (g := fun v => starRingEnd ℂ ((g ∘ (A.chart k).symm) (star v))) (f := fun z => star (A.chart k (c ((A.chart j).symm z)))) (x := w) h3 h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h4.congr ?_` and prove the remaining obligations. Establish `hcc : ContinuousAt (c ∘ (A.chart j).symm) w` using `hc.continuousAt.comp ((A.chart j).continuousAt_symm hw.1)`. Use `filter_upwards [hcc ((A.chart k).open_source.mem_nhds hk)] with w' hw''`. Establish `hw3 : c ((A.chart j).symm w') ∈ (A.chart k).source` using `hw''`. Simplify using `[Function.comp, (A.chart k).left_inv hw3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoOn_conj_comp {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} (c : X → X)
     (hc : Continuous c)

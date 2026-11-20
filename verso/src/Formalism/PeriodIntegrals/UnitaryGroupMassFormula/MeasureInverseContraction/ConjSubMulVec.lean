@@ -13,30 +13,30 @@ section Tri
 variable {n r : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ}
 
 /- English proof (translation)
-Rewrite using `[hJ_conj ε y, hJ_conj ε y x, hJ_conj ε y x', hJ_add, star_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_left (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
   rw [hJ_conj ε y, hJ_conj ε y x, hJ_conj ε y x', hJ_add, star_add]
 
 /- English proof (translation)
-Simplify using `only [Pw, hJ_add, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Pw_add (x y : Fin n → ℂ) : Pw ε e f (x + y) = Pw ε e f x + Pw ε e f y := by
   simp only [Pw, hJ_add, add_smul, Finset.sum_add_distrib]; abel
 
 /- English proof (translation)
-Simplify using `only [Pw, hJ_smul, mul_smul, ← Finset.smul_sum, smul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pw_smul (c : ℂ) (x : Fin n → ℂ) : Pw ε e f (c • x) = c • Pw ε e f x := by
   simp only [Pw, hJ_smul, mul_smul, ← Finset.smul_sum, smul_sub]
 
 /- English proof (translation)
-Simplify using `[Pw, hJ_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pw_zero : Pw ε e f 0 = 0 := by simp [Pw, hJ_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Pw_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Pw_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Pw_sum {ι : Type*} (s : Finset ι) (x : ι → Fin n → ℂ) :
     Pw ε e f (∑ i ∈ s, x i) = ∑ i ∈ s, Pw ε e f (x i) := by
@@ -46,7 +46,7 @@ theorem Pw_sum {ι : Type*} (s : Finset ι) (x : ι → Fin n → ℂ) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Pw_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, mulVec_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mulVec_fsum {ι : Type*} (s : Finset ι) (M : Matrix (Fin n) (Fin n) ℂ) (x : ι → Fin n → ℂ) :
     M *ᵥ (∑ i ∈ s, x i) = ∑ i ∈ s, M *ᵥ x i := by
@@ -56,14 +56,14 @@ theorem mulVec_fsum {ι : Type*} (s : Finset ι) (M : Matrix (Fin n) (Fin n) ℂ
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, mulVec_add, ih]
 
 /- English proof (translation)
-Rewrite using `[hJ_mulVec_eq, hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hJ_unitary {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (x y : Fin n → ℂ) :
     hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
   rw [hJ_mulVec_eq, hg]; rfl
 
 /- English proof (translation)
-Rewrite using `[sub_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, Amat_mulVec, Amat_mulVec, sub_mulVec, one_mulVec]`. Use `(Alin ε e f s).map_sub (g *ᵥ Afun ε e f s⁻¹ y) (Afun ε e f s⁻¹ y)` as an intermediate fact. Simplify using `only [Alin_apply] at this`. Rewrite using `[this, A_inv hG s hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_mulVec (hG : Gram ε e f) (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) (g : Matrix (Fin n) (Fin n) ℂ)
     (y : Fin n → ℂ) : (Amat ε e f s * g * Amat ε e f s⁻¹ - 1) *ᵥ y =
@@ -78,7 +78,7 @@ variable (hG : Gram ε e f)
 include hG
 
 /- English proof (translation)
-Unfold `Pw`. Simplify using `only [fe hG, hG.ee, ite_smul, one_smul, zero_smul, Finset.sum_const_zero, sub_zero]`. Simplify using `[Finset.sum_ite_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Pw_e (d : Fin r) : Pw ε e f (e d) = 0 := by
   unfold Pw
@@ -86,11 +86,11 @@ theorem Pw_e (d : Fin r) : Pw ε e f (e d) = 0 := by
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, hd, rfl⟩` from `hx`. Use `⟨fun b hb => ?_, fun b => hG.ee b d, Pw_e hG d⟩` and prove the remaining obligations. Rewrite using `[fe hG, if_neg]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `(not_lt.2 hb) hd`. Consider the case `zero => exact ⟨fun b _ => hJ_zero ε _, fun b => hJ_zero ε _, Pw_zero⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun b hb => by rw [hJ_add, hx.1 b hb, hy.1 b hb, add_zero], fun b => by rw [hJ_add, hx.2.1 b, hy.2.1 b, add_zero], by rw [Pw_add, hx.2.2, hy.2.2, add_zero]⟩`.
+Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Conclude with `⟨fun b hb => by rw [hJ_smul, hx.1 b hb, mul_zero], fun b => by rw [hJ_smul, hx.2.1 b, mul_zero], by rw [Pw_smul, hx.2.2, smul_zero]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_facts (k : ℕ) {v : Fin n → ℂ} (hv : v ∈ spanLt e k) :
     (∀ b : Fin r, k ≤ b.val → hJ ε (f b) v = 0) ∧ (∀ b, hJ ε (e b) v = 0) ∧ Pw ε e f v = 0 := by
@@ -110,9 +110,9 @@ theorem span_facts (k : ℕ) {v : Fin n → ℂ} (hv : v ∈ spanLt e k) :
       by rw [Pw_smul, hx.2.2, smul_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[sub_mulVec, one_mulVec, hJ_sub]`. Establish `h1 : e b = g *ᵥ (g' *ᵥ e b)` using `by rw [mulVec_mulVec, hgg, one_mulVec]`. Establish `h2 : g' *ᵥ e b = e b + (g' - 1) *ᵥ e b` using `by rw [sub_mulVec, one_mulVec]; abel`. Establish `h3` using `(span_facts hG b.val (hN'.1.1 b)).1 c (Fin.le_iff_val_le_val.1 (not_lt.1 hbc))`. Establish `key : hJ ε (e b) (g *ᵥ f c) = hJ ε (e b) (f c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, sub_self]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem tri_f {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (hgg : g * g' = 1)
     (hN' : InN ε e z g') (b c : Fin r) (hbc : ¬ c < b) : hJ ε (e b) ((g - 1) *ᵥ f c) = 0 := by
@@ -139,7 +139,7 @@ def Sb (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ) (g : Matrix (Fin n)
 
 omit hG in
 /- English proof (translation)
-Break down `hκ with h | h` into its components or cases. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hκ0]`. Conclude with `mul_le_mul_of_nonneg_right h (norm_nonneg _)`. Simplify using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nb {κ lam : ℝ} {x : ℂ} (hκ0 : 0 ≤ κ) (hκ : κ ≤ lam⁻¹ ∨ x = 0) : ‖(κ : ℂ) * x‖ ≤ lam⁻¹ * ‖x‖ := by
   rcases hκ with h | h
@@ -148,45 +148,41 @@ theorem nb {κ lam : ℝ} {x : ℂ} (hκ0 : 0 ≤ κ) (hκ : κ ≤ lam⁻¹ ∨
   · simp [h]
 
 /- English proof (translation)
-Establish `hl0 : 0 < lam` using `lt_of_lt_of_le one_pos hlam`. Establish `ht0 : ∀ b, 0 < t b` using `fun b => lt_of_lt_of_le hl0 (ht1 b)`. Establish `hXe` using `fun c => span_facts hG _ (hN.1.1 c)`. Establish `hXw : ∀ v, (∀ a, hJ ε (e a) v = 0) → (∀ b, hJ ε (e b) ((g - 1) *ᵥ v) = 0) ∧ Pw ε e f ((g - 1) *ᵥ v) = 0` using `fun v hv => (span_facts hG _ (hN.2 v hv)).2`. Establish `hPwy : ∀ a, hJ ε (e a) (Pw ε e f y) = 0` using `fun a => e_Pw hG a y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (g - 1) *ᵥ Afun ε e f t y = ∑ c, ((t c : ℂ) * hJ ε (f c) y) • (g - 1) *ᵥ e c + ∑ c, ((t c : ℂ)⁻¹ * hJ ε (e c) y) • (g - 1) *ᵥ f c + (g - 1) *ᵥ Pw ε e f y`. Rewrite using `[Afun, mulVec_add, mulVec_add, mulVec_fsum, mulVec_fsum]`. Simplify using `only [mulVec_smul]`. Use `set w := (g - 1) *ᵥ Afun ε e f t y with hw`. Establish `hα : ∀ b, hJ ε (f b) w = ∑ c, (t c : ℂ) * (hJ ε (f c) y * hJ ε (f b) ((g - 1) *ᵥ e c)) + ∑ c, (t c : ℂ)⁻¹ * (hJ ε (e c) y * hJ ε (f b) ((g - 1) *ᵥ f c)) + hJ ε (f b) ((g - 1) *ᵥ Pw ε e f y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[hv, hJ_add, hJ_add, hJ_sum, hJ_sum]`. Simplify using `only [hJ_smul, mul_assoc]`. Establish `hβ : ∀ b, hJ ε (e b) w = ∑ c, (t c : ℂ)⁻¹ * (hJ ε (e c) y * hJ ε (e b) ((g - 1) *ᵥ f c))`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hJ_add, hJ_add, hJ_sum, hJ_sum, (hXw _ hPwy).1 b]`. Simplify using `only [hJ_smul, (hXe _).2.1 b, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_assoc]`. Establish `hP : Pw ε e f w = ∑ c, ((t c : ℂ)⁻¹ * hJ ε (e c) y) • Pw ε e f ((g - 1) *ᵥ f c)`. Rewrite using `[hv, Pw_add, Pw_add, Pw_sum, Pw_sum, (hXw _ hPwy).2]`. Simplify using `only [Pw_smul, (hXe _).2.2, smul_zero, Finset.sum_const_zero, zero_add, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hent : Afun ε e f t⁻¹ w i = ∑ b, (∑ c, (((t c / t b : ℝ) : ℂ) * (hJ ε (f c) y * hJ ε (f b) ((g - 1) *ᵥ e c))) + ∑ c, ((((t c * t b)⁻¹ : ℝ) : ℂ) * (hJ ε (e c) y * hJ ε (f b) ((g - 1) *ᵥ f c))) + (((t b)⁻¹ : ℝ) : ℂ) * hJ ε (f b) ((g - 1) *ᵥ Pw ε e f y)) * e b i + ∑ b, (∑ c, (((t b …`. Rewrite using `[Afun, hP]`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hα, hβ, Pi.inv_apply, Complex.ofReal_inv, inv_inv]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[mul_add, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun c _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hent]`. Establish `k1 : ∀ b c : Fin r, ‖(((t c / t b : ℝ) : ℂ) * (hJ ε (f c) y * hJ ε (f b) ((g - 1) *ᵥ e c)))‖ ≤ lam⁻¹ * ‖hJ ε (f c) y * hJ ε (f b) ((g - 1) *ᵥ e c)‖`. Introduce `b c`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `nb (div_nonneg (ht0 c).le (ht0 b).le) ?_` and prove the remaining obligations. Distinguish the cases in `hbc : b < c`. Use `left`. Rewrite using `[div_le_iff₀ (ht0 b)]`. Use `ht2 b c hbc` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `right`. Rewrite using `[(hXe c).1 b (Fin.le_iff_val_le_val.1 (not_lt.1 hbc)), mul_zero]`. Establish `k2 : ∀ b c : Fin r, ‖((((t c * t b)⁻¹ : ℝ) : ℂ) * (hJ ε (e c) y * hJ ε (f b) ((g - 1) *ᵥ f c)))‖ ≤ lam⁻¹ * ‖hJ ε (e c) y * hJ ε (f b) ((g - 1) *ᵥ f c)‖`. Introduce `b c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `nb (inv_nonneg.2 (mul_nonneg (ht0 c).le (ht0 b).le)) (Or.inl ?_)` and prove the remaining obligations. Apply `inv_anti₀ hl0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `k3 : ∀ b : Fin r, ‖((((t b)⁻¹ : ℝ) : ℂ) * hJ ε (f b) ((g - 1) *ᵥ Pw ε e f y))‖ ≤ lam⁻¹ * ‖hJ ε (f b) ((g - 1) *ᵥ Pw ε e f y)‖` using `fun b => nb (inv_nonneg.2 (ht0 b).le) (Or.inl (inv_anti₀ hl0 (ht1 b)))`. Establish `k4 : ∀ b c : Fin r, ‖(((t b / t c : ℝ) : ℂ) * (hJ ε (e c) y * hJ ε (e b) ((g - 1) *ᵥ f c)))‖ ≤ lam⁻¹ * ‖hJ ε (e c) y * hJ ε (e b) ((g - 1) *ᵥ f c)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `b c`. Use `nb (div_nonneg (ht0 b).le (ht0 c).le) ?_` and prove the remaining obligations. Distinguish the cases in `hcb : c < b`. Use `left`. Rewrite using `[div_le_iff₀ (ht0 c)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ht2 c b hcb` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `right`. Rewrite using `[tri_f hG hg hgg hN' b c hcb, mul_zero]`. Establish `k5 : ∀ c : Fin r, ‖((((t c)⁻¹ : ℝ) : ℂ) * (hJ ε (e c) y * Pw ε e f ((g - 1) *ᵥ f c) i))‖ ≤ lam⁻¹ * (‖hJ ε (e c) y‖ * ‖Pw ε e f ((g - 1) *ᵥ f c) i‖)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c`. Rewrite using `[← norm_mul]`. Conclude with `nb (inv_nonneg.2 (ht0 c).le) (Or.inl (inv_anti₀ hl0 (ht1 c)))`. Unfold `Sb`. Simplify using `only [mul_add, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_add_le _ _).trans (add_le_add ((norm_add_le _ _).trans (add_le_add ?_ ?_)) ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add]`. Use `add_le_add ((norm_add_le _ _).trans ?_) (k3 b)` and prove the remaining obligations. Rewrite using `[mul_add]`. Use `add_le_add ((norm_sum_le _ _).trans ?_) ((norm_sum_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_le_sum fun c _ => k1 b c`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun c _ => k2 b c`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, ← mul_assoc]`.
-
-Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun c _ => k4 b c`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations.
-
-Conclude with `k5 c`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entry_bound (t : Fin r → ℝ) (lam : ℝ) (hlam : 1 ≤ lam) (ht1 : ∀ b, lam ≤ t b)
     (ht2 : ∀ b c : Fin r, b < c → lam * t c ≤ t b) {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}

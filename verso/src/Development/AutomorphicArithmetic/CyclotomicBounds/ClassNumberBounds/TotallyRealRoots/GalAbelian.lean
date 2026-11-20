@@ -7,7 +7,7 @@ namespace KStar.TotallyRealRoots
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hM : ζ ^ M = 1`. Take `⟨c, rfl⟩` from `hm`. Rewrite using `[pow_mul, hζ, one_pow]`. Rewrite using `[h ζ hM, ZMod.unitsMap_val, ← ZMod.natCast_val, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ga_restrict {Ω : Type*} [Monoid Ω] {m M : ℕ} [NeZero m] [NeZero M] (hm : m ∣ M)
     (f : Ω → Ω) (a : (ZMod M)ˣ) (h : ∀ ζ : Ω, ζ ^ M = 1 → f ζ = ζ ^ (a : ZMod M).val)
@@ -19,11 +19,9 @@ private theorem ga_restrict {Ω : Type*} [Monoid Ω] {m M : ℕ} [NeZero m] [NeZ
   rw [h ζ hM, ZMod.unitsMap_val, ← ZMod.natCast_val, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]
 
 /- English proof (translation)
-Establish `hen : ∀ i, HasEnoughRootsOfUnity (AlgebraicClosure F) (l ^ i)` using `fun i => by`. Establish `: NeZero (l ^ i)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: NeZero ((l ^ i : ℕ) : AlgebraicClosure F)` using `⟨Nat.cast_ne_zero.mpr (NeZero.ne _)⟩`. Use `infer_instance`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure F) (l ^ n)`. Establish `h1 : g ζ = ζ ^ (PadicInt.toZModPow n ((eps l F g : ℤ_[l]ˣ) : ℤ_[l])).val` using `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut Gal(AlgebraicClosure F/F) (AlgebraicClosure F) g) ζ hζ.pow_eq_one`. Rewrite `h1` using `[h ζ hζ.pow_eq_one]`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨l ^ n, Nat.pos_of_neZero _, hζ.pow_eq_one⟩`. Rewrite `h1` using `[hfin.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf, ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`.
-
-Conclude with `Units.ext h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ga_red {F : Type*} [Field F] [CharZero F] (g : Gal(AlgebraicClosure F/F)) (n : ℕ)
     (w : (ZMod (l ^ n))ˣ)
@@ -47,7 +45,7 @@ private theorem ga_red {F : Type*} [Field F] [CharZero F] (g : Gal(AlgebraicClos
   exact Units.ext h1.symm
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic E K` using `Algebra.IsAlgebraic.tower_top (K := ℚ) E`. Set `φ : K →ₐ[E] AlgebraicClosure E` to `IsAlgClosed.lift`. Conclude with `⟨φ.toRingHom, fun x => φ.commutes x⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem ga_embed {K : Type*} [Field K] [NumberField K] (E : IntermediateField ℚ K) :
     ∃ φ : K →+* AlgebraicClosure E, ∀ x : E, φ (x : K) = algebraMap E (AlgebraicClosure E) x := by
@@ -58,11 +56,11 @@ private theorem ga_embed {K : Type*} [Field K] [NumberField K] (E : Intermediate
 variable {N : ℕ} [NeZero N] {K : Type*} [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨φ, hφ⟩` from `ga_embed E`. Take `⟨a, ha⟩` from `exists_class_of_aut (N := N) g.toRingEquiv`. Establish `: NeZero (l ^ N.factorization l)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `mem_levelGroup.2 ⟨a, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsCyclotomicExtension.Rat.galEquivZMod N K).symm a, ?_, MulEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => ?_` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[← aut_comp_embedding φ g.toRingEquiv.toRingHom a ha x]`. Use `hφ ⟨x, hx⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ x = _ at this`. Rewrite using `[this]`. Conclude with `g.commutes _`. Conclude with `(ga_red g _ _ (ga_restrict (Nat.ordProj_dvd N l) g a ha)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galImage_le_levelGroup (E : IntermediateField ℚ K) :
     galImage l E ≤ levelGroup l N (fieldSubgroup N K E) := by
@@ -83,13 +81,13 @@ theorem galImage_le_levelGroup (E : IntermediateField ℚ K) :
   · exact (ga_red g _ _ (ga_restrict (Nat.ordProj_dvd N l) g a ha)).symm
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨h, ⟨σ, hσ, rfl⟩, hu⟩` from `mem_levelGroup.1 hu`. Take `⟨φ, hφ⟩` from `ga_embed E`. Use `mem_of_isClosed isClosed_galImage fun b => ?_` and prove the remaining obligations. Take `⟨a, ha1, ha2⟩` from `exists_lift_level _ u hu b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: NeZero (l ^ b)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: NeZero (N * l ^ b)` using `⟨mul_ne_zero (NeZero.ne _) (NeZero.ne _)⟩`. Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure E)` using `Algebra.IsAlgebraic.trans ℚ E _`. Take `⟨g, hg⟩` from `exists_aut_pow_roots (AlgebraicClosure E) a`. Establish `hN` using `ga_restrict (Nat.dvd_mul_right N (l ^ b)) g a hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `ga_restrict (Nat.dvd_mul_left (l ^ b) N) g a hg`. Rewrite `hN` using `[ha1]`. Rewrite `hb` using `[ha2]`. Establish `hfix : ∀ x : E, g.toRingEquiv (algebraMap E (AlgebraicClosure E) x) = algebraMap E (AlgebraicClosure E) x` using `fun x => by`. Establish `h1` using `aut_comp_embedding φ g.toRingEquiv.toRingHom _ hN (x : K)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (IsCyclotomicExtension.Rat.galEquivZMod N K).symm ((IsCyclotomicExtension.Rat.galEquivZMod N K).toMonoidHom σ) = σ` using `MulEquiv.symm_apply_apply _ _`. Rewrite `h1` using `[h2, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x x.2, hφ]`. Conclude with `h1`. Set `g' : Gal(AlgebraicClosure E/E)` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) hfix`. Conclude with `⟨eps l E g', ⟨g', rfl⟩, ga_red g' b _ hb⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levelGroup_le_galImage (E : IntermediateField ℚ K) :
     levelGroup l N (fieldSubgroup N K E) ≤ galImage l E := by
@@ -118,7 +116,7 @@ theorem levelGroup_le_galImage (E : IntermediateField ℚ K) :
   exact ⟨eps l E g', ⟨g', rfl⟩, ga_red g' b _ hb⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (galImage_le_levelGroup E) (levelGroup_le_galImage E)`.
+A detailed English derivation is pending.
 -/
 theorem galImage_eq_levelGroup (E : IntermediateField ℚ K) :
     galImage l E = levelGroup l N (fieldSubgroup N K E) :=

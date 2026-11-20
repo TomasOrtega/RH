@@ -12,9 +12,9 @@ open PI.RW
 def rowW {k : ℕ} (a : Fin k) : Fin k × Fin k → ℕ := fun v => if v.1 = a then 1 else 0
 
 /- English proof (translation)
-Establish `h'` using `h.sum_weight_X_mul_pderiv`. Unfold `RE`. Rewrite using `[Nat.cast_smul_eq_nsmul K d f, ← h']`. Use `symm`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a (fun x _ hx => by simp [rowW, hx]) (fun h => absurd (Finset.mem_univ a) h)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rowW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem RE_eq_of_hom {K : Type} [CommRing K] {k : ℕ} (a : Fin k)
     (f : MvPolynomial (Fin k × Fin k) K) (d : ℕ)
@@ -28,11 +28,9 @@ theorem RE_eq_of_hom {K : Type} [CommRing K] {k : ℕ} (a : Fin k)
   simp [rowW]
 
 /- English proof (translation)
-Unfold `initMinor`. Rewrite using `[Matrix.det_apply]`. Use `IsWeightedHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `hp` using `IsWeightedHomogeneous.prod Finset.univ (fun i => (X (I (σ i), Fin.castLE hs i) : MvPolynomial (Fin k × Fin k) K)) (fun i => rowW a (I (σ i), Fin.castLE hs i)) (w := rowW a) (fun i _ => isWeightedHomogeneous_X K (rowW a) _)`. Establish `hdeg : ∑ i, rowW a (I (σ i), Fin.castLE hs i) = (Finset.univ.filter fun p => I p = a).card`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [rowW]`. Rewrite using `[Finset.card_filter]`. Conclude with `Equiv.sum_comp σ (fun p => if I p = a then 1 else 0)`. Rewrite `hp` using `[hdeg]`. Rewrite `*` using `[Units.smul_def, ← mem_weightedHomogeneousSubmodule]`.
-
-Conclude with `zsmul_mem hp _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_hom {K : Type} [CommRing K] {k s : ℕ} (a : Fin k) (I : Fin s → Fin k) (hs : s ≤ k) :
     IsWeightedHomogeneous (rowW a) (initMinor K I hs)
@@ -54,7 +52,7 @@ theorem minor_hom {K : Type} [CommRing K] {k s : ℕ} (a : Fin k) (I : Fin s →
   exact zsmul_mem hp _
 
 /- English proof (translation)
-Unfold `bideterminant`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun j _ => minor_hom a (I j) (hsz j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bidet_hom {K : Type} [CommRing K] {k N : ℕ} (a : Fin k) (sz : Fin N → ℕ)
     (hsz : ∀ j, sz j ≤ k) (I : ∀ j, Fin (sz j) → Fin k) :
@@ -64,11 +62,11 @@ theorem bidet_hom {K : Type} [CommRing K] {k N : ℕ} (a : Fin k) (sz : Fin N �
   exact IsWeightedHomogeneous.prod _ _ _ fun j _ => minor_hom a (I j) (hsz j)
 
 /- English proof (translation)
-Unfold `shapeDeg`. Rewrite using `[ht0, Finset.card_filter]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : 0 < sz j`. Rewrite using `[if_pos hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.card_le_one.2 fun p hp q hq => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp hq`. Conclude with `(hI j).injective (hp.trans hq.symm)`. Rewrite using `[if_neg hj]`. Establish `hem : (Finset.univ : Finset (Fin (sz j))) = ∅` using `Finset.univ_eq_empty_iff.2 ⟨fun p => hj (lt_of_le_of_lt (Nat.zero_le _) p.2)⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hem]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wt_le {k N : ℕ} (sz : Fin N → ℕ) (I : ∀ j, Fin (sz j) → Fin k)
     (hI : ∀ j, StrictMono (I j)) (a t0 : Fin k) (ht0 : t0.val = 0) :
@@ -92,13 +90,11 @@ def Data (m : ℕ) (ν : Fin (m + 1) → ℕ) : Type :=
     (∀ j, d.2.1 j ≤ m + 1) ∧ shapeDeg d.2.1 = ν ∧ ∀ j, StrictMono (d.2.2 j)}
 
 /- English proof (translation)
-Introduce `K _ m ν _`. Use `⟨{d : Σ N : ℕ, Σ sz : Fin N → ℕ, ∀ j, Fin (sz j) → Fin (m + 1) // (∀ j, d.2.1 j ≤ m + 1) ∧ shapeDeg d.2.1 = ν ∧ ∀ j, StrictMono (d.2.2 j)}, fun d => bideterminant K d.1.2.1 d.2.1 d.1.2.2, fun d a => ∑ j, (Finset.univ.filter fun p => d.1.2.2 j p = a).card, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨⟨N, sz, I⟩, hsz, hsh, hmono⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Substitute `hsh` using the available equality. Conclude with `h1 K (m + 1) (m + 1) N sz hsz I`. Use `le_trans (h2 K (m + 1) (m + 1) ν) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `f ⟨N, sz, hsz, I, hsh, hmono, rfl⟩`. Conclude with `⟨⟨⟨N, sz, I⟩, hsz, hsh, hmono⟩, rfl⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨N, sz, I⟩, hsz, hsh, hmono⟩ a`. Conclude with `RE_eq_of_hom a _ _ (bidet_hom a sz hsz I)`. Introduce and unpack `⟨⟨N, sz, I⟩, hsz, hsh, hmono⟩ a`. Establish `hw` using `wt_le sz I hmono a 0 rfl`. Rewrite `hw` using `[hsh]`.
-
-Conclude with `hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowWtSpan_of_bideterminant (h1 : BideterminantMem) (h2 : BideterminantSpan) : PI.RowWtSpan := by
   intro K _ m ν _

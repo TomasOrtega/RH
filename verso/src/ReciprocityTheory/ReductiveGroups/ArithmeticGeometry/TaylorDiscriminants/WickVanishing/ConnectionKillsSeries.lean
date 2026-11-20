@@ -16,19 +16,19 @@ variable {k : Type} [CommRing k] {τ : Type} [Fintype τ]
 def vf (c : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) : MvPowerSeries τ k := ∑ t, c t * pderiv k t G
 
 /- English proof (translation)
-Simplify using `only [vf, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_add (c : τ → MvPowerSeries τ k) (f G : MvPowerSeries τ k) : vf c (f + G) = vf c f + vf c G := by
   simp only [vf, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [vf, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_sub (c : τ → MvPowerSeries τ k) (f G : MvPowerSeries τ k) : vf c (f - G) = vf c f - vf c G := by
   simp only [vf, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [vf, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vf_sum {ι : Type} (s : Finset ι) (c : τ → MvPowerSeries τ k) (f : ι → MvPowerSeries τ k) :
     vf c (∑ i ∈ s, f i) = ∑ i ∈ s, vf c (f i) := by
@@ -36,19 +36,19 @@ theorem vf_sum {ι : Type} (s : Finset ι) (c : τ → MvPowerSeries τ k) (f : 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[vf, MvPowerSeries.pderiv_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_C (c : τ → MvPowerSeries τ k) (a : k) : vf c (C a) = 0 := by
   simp [vf, MvPowerSeries.pderiv_C]
 
 /- English proof (translation)
-Simplify using `[vf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_zeroc (G : MvPowerSeries τ k) : vf (fun _ => (0 : MvPowerSeries τ k)) G = 0 := by
   simp [vf]
 
 /- English proof (translation)
-Simplify using `only [vf, Derivation.leibniz, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vf_mul (c : τ → MvPowerSeries τ k) (f G : MvPowerSeries τ k) :
     vf c (f * G) = vf c f * G + f * vf c G := by
@@ -56,7 +56,7 @@ theorem vf_mul (c : τ → MvPowerSeries τ k) (f G : MvPowerSeries τ k) :
   exact Finset.sum_congr rfl fun t _ => by ring
 
 /- English proof (translation)
-Simplify using `[vf, MvPowerSeries.pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_X (c : τ → MvPowerSeries τ k) (s : τ) : vf c (X s) = c s := by
   classical
@@ -68,7 +68,7 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem liftX_hs : HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _
@@ -76,35 +76,35 @@ theorem liftX_hs : HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d
 def liftHom : PS k 1 d →+* AA k d := (substAlgHom (liftX_hs (d := d) k)).toRingHom
 
 /- English proof (translation)
-Simplify using `only [liftHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPowerSeries.substAlgHom_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem liftHom_apply (f : PS k 1 d) : liftHom k f = liftX k f := by
   simp only [liftHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPowerSeries.substAlgHom_apply]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← liftHom_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftX_zero : liftX k (0 : PS k 1 d) = 0 := by
   rw [← liftHom_apply, map_zero]
 
 /- English proof (translation)
-Simplify using `only [← liftHom_apply, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftX_mul (f g : PS k 1 d) : liftX k (f * g) = liftX k f * liftX k g := by
   simp only [← liftHom_apply, map_mul]
 
 /- English proof (translation)
-Simplify using `only [← liftHom_apply, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftX_sum {ι : Type} (s : Finset ι) (f : ι → PS k 1 d) :
     liftX k (∑ i ∈ s, f i) = ∑ i ∈ s, liftX k (f i) := by
   simp only [← liftHom_apply, map_sum]
 
 /- English proof (translation)
-Unfold `liftX`. Rewrite using `[LogPf.pderiv_subst (fun _ => MvPowerSeries.constantCoeff_X _) f (Sum.inl j)]`. Rewrite using `[Finset.sum_eq_single ((0 : Fin 1), j)]`. Simplify using `[MvPowerSeries.pderiv_X]`. Introduce `p _ hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp' : p.2 ≠ j`. Introduce `h`. Conclude with `hp (Prod.ext (Subsingleton.elim _ _) h)`. Simplify using `[MvPowerSeries.pderiv_X, Pi.single_apply, hp']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_inl_liftX (f : PS k 1 d) (j : Fin d) :
     pderiv k (Sum.inl j) (liftX k f) = liftX k (pderiv k ((0 : Fin 1), j) f) := by
@@ -121,7 +121,7 @@ theorem pderiv_inl_liftX (f : PS k 1 d) (j : Fin d) :
   · simp
 
 /- English proof (translation)
-Unfold `liftX`. Rewrite using `[LogPf.pderiv_subst (fun _ => MvPowerSeries.constantCoeff_X _) f (Sum.inr i)]`. Simplify using `[MvPowerSeries.pderiv_X, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_liftX (f : PS k 1 d) (i : Fin d) : pderiv k (Sum.inr i) (liftX k f) = 0 := by
   classical
@@ -149,7 +149,7 @@ theorem cf_inr (B : FB R d O) (h : PS k 2 d) (u φ : Fin d → k) (i : Fin d) :
     cf k B h u φ (Sum.inr i) = liftX k (Dof (B.FK k) u (sgOf k h i)) + C (φ i) := rfl
 
 /- English proof (translation)
-Unfold `nabla vf fm Dx`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [cf_inl, cf_inr, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nabla_eq (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) (G : AA k d) :
     nabla k B h m u φ G = vf (cf k B h u φ) G - (C (m : k) * fm k h u) * G := by
@@ -159,9 +159,9 @@ theorem nabla_eq (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) (G
   ring
 
 /- English proof (translation)
-Unfold `vf`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [cf_inl, pderiv_inl_liftX, pderiv_inr_liftX, mul_zero, Finset.sum_const_zero, add_zero]`. Unfold `Dof`. Rewrite using `[liftX_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [liftX_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_cf_liftX (B : FB R d O) (h : PS k 2 d) (u φ : Fin d → k) (g : PS k 1 d) :
     vf (cf k B h u φ) (liftX k g) = liftX k (Dof (B.FK k) u g) := by
@@ -173,7 +173,7 @@ theorem vf_cf_liftX (B : FB R d O) (h : PS k 2 d) (u φ : Fin d → k) (g : PS k
   simp only [liftX_mul]
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h m φ f`. Rewrite using `[nabla_eq, vf_cf_liftX]`. Simplify using `[fm, Dof, liftX_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem connection_kills_series : ConnectionKillsSeries := by
   intro R _ d O _ _ k _ _ _ B h m φ f

@@ -79,7 +79,7 @@ def JacExGoodN : Prop :=
         ∃ C, 0 < C ∧ DisintLoc ε k T T' μS μS' h C
 
 /- English proof (translation)
-Introduce `n r k ε e z z' T T' sc hF hG hsc`. Establish `hn : n = 2 * r + k + 1` using `by have := hF.dim; omega`. Substitute `hn` using the available equality. Conclude with `H r k ε e z z' T T' sc hF hG hsc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem jacExGood_of_N (H : JacExGoodN) : JacExGood := by
   intro n r k ε e z z' T T' sc hF hG hsc

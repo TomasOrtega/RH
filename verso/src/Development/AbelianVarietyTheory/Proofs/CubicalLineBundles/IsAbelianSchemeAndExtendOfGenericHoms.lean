@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : 𝟙 (splitTorus S PUnit) = 1`. Rewrite using `[← Diag.diagMap_id, ← Diag.diagMap_zero]`. Use `congr 1`. Conclude with `⟨η, h.symm, toUnit_unique _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components.
 -/
 theorem isIso_toUnit_splitTorus_punit (S : Scheme.{0}) : IsIso (toUnit (splitTorus S PUnit)) := by
   have h : 𝟙 (splitTorus S PUnit) = 1 := by
@@ -21,7 +21,7 @@ theorem isIso_toUnit_splitTorus_punit (S : Scheme.{0}) : IsIso (toUnit (splitTor
   exact ⟨η, h.symm, toUnit_unique _ _⟩
 
 /- English proof (translation)
-Use `h.comm; infer_instance smooth := by have := h.smooth; change Smooth (pullback.snd A.hom f); infer_instance proper := by have := h.proper; change IsProper (pullback.snd A.hom f); infer_instance geomConnected := by` as an intermediate fact. Use `h.geomConnected` as an intermediate fact. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.snd A.hom f)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_pullback_obj {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A]
     (h : IsAbelianScheme A) : IsAbelianScheme ((Over.pullback f).obj A) where
@@ -48,7 +48,7 @@ noncomputable def torusExtensionOfAbelian {K : Type} [Field K] (A : Over (Spec (
     exact IsPullback.of_vert_isIso ⟨Category.comp_id _⟩
 
 /- English proof (translation)
-The claim follows from `h.comm smooth := h.smooth separated := by have := h.proper; infer_instance quasiCompact := by have := h.proper; infer_instance geomConnected := h.geomConnected fibres := fun _ _ _ p => ⟨torusExtensionOfAbelian _ (isAbelianScheme_pullback_obj p A h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_isAbelianScheme {S : Scheme.{0}} (A : Over S) [GrpObj A]
     (h : IsAbelianScheme A) : IsSemiAbelian A where
@@ -60,7 +60,7 @@ theorem isSemiAbelian_of_isAbelianScheme {S : Scheme.{0}} (A : Over S) [GrpObj A
   fibres := fun _ _ _ p => ⟨torusExtensionOfAbelian _ (isAbelianScheme_pullback_obj p A h)⟩
 
 /- English proof (translation)
-The claim follows from `| 0 => Diag.isAbelianScheme_unit S | n + 1 => AbelianSchemeGerms.isAbelianScheme_powObj A h n`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_powObj_of_isAbelianScheme {S : Scheme.{0}} (A : Over S) [GrpObj A]
     (h : IsAbelianScheme A) : ∀ n, IsAbelianScheme (Out.powObj A n)
@@ -68,7 +68,7 @@ theorem isAbelianScheme_powObj_of_isAbelianScheme {S : Scheme.{0}} (A : Over S) 
   | n + 1 => AbelianSchemeGerms.isAbelianScheme_powObj A h n
 
 /- English proof (translation)
-The claim follows from `| 0, u => by simp | n + 1, u => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, MonObj.comp_mul, comp_list_prod_ofFn t]`.
+A detailed English derivation is pending.
 -/
 theorem comp_list_prod_ofFn {S : Scheme.{0}} {T T' G : Over S} [MonObj G] (t : T' ⟶ T) :
     ∀ {n : ℕ} (u : Fin n → (T ⟶ G)), t ≫ (List.ofFn u).prod = (List.ofFn fun i => t ≫ u i).prod
@@ -78,7 +78,7 @@ theorem comp_list_prod_ofFn {S : Scheme.{0}} {T T' G : Over S} [MonObj G] (t : T
       comp_list_prod_ofFn t]
 
 /- English proof (translation)
-Unfold `IsTangent at hv ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp_of_isMonHom {R : Type} [CommRing R] {B G : Over (Sp R)} [GrpObj B] [GrpObj G]
     (Φ : B ⟶ G) [IsMonHom Φ] (v : epsR R ⟶ B) (hv : IsTangent v) : IsTangent (v ≫ Φ) := by

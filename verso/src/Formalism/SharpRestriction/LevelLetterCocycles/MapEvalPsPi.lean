@@ -25,14 +25,14 @@ def psPi (ι R : Type) [CommRing R] : (ι → PowerSeries R) →+* PowerSeries (
     simp
 
 /- English proof (translation)
-Simplify using `[psPi]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem coeff_psPi {ι R : Type} [CommRing R] (f : ι → PowerSeries R) (k : ℕ) (i : ι) :
     PowerSeries.coeff k (psPi ι R f) i = PowerSeries.coeff k (f i) := by
   simp [psPi]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[PowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_eval_psPi {ι R : Type} [CommRing R] (f : ι → PowerSeries R) (i : ι) :
     PowerSeries.map (Pi.evalRingHom (fun _ => R) i) (psPi ι R f) = f i := by
@@ -46,7 +46,7 @@ variable (LL : Type) [Field LL] (l : ℕ) [Fact l.Prime]
 abbrev Rs (s : ℕ) : Type := ↥(primitiveRoots (l ^ (s + 1)) LL)
 
 /- English proof (translation)
-The claim follows from `pow_pos (Fact.out : l.Prime).pos _`.
+A detailed English derivation is pending.
 -/
 theorem pos_pow (s : ℕ) : 0 < l ^ (s + 1) := pow_pos (Fact.out : l.Prime).pos _
 
@@ -55,20 +55,20 @@ def powR (s : ℕ) (a : (ZMod (l ^ (s + 1)))ˣ) (ζ : Rs LL l s) : Rs LL l s :=
     LevelStatements.Link.pow_val_mem_primitiveRoots _ (pos_pow l s) _ a.isUnit ζ.2⟩
 
 /- English proof (translation)
-The claim follows from `((mem_primitiveRoots (pos_pow l s)).1 ζ.2).pow_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem rs_pow_N (s : ℕ) (ζ : Rs LL l s) : (ζ : LL) ^ (l ^ (s + 1)) = 1 :=
   ((mem_primitiveRoots (pos_pow l s)).1 ζ.2).pow_eq_one
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.mod_add_div k (l ^ (s + 1)), pow_add, pow_mul, rs_pow_N, one_pow, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem rs_pow_mod (s : ℕ) (ζ : Rs LL l s) (k : ℕ) :
     (ζ : LL) ^ (k % l ^ (s + 1)) = (ζ : LL) ^ k := by
   conv_rhs => rw [← Nat.mod_add_div k (l ^ (s + 1)), pow_add, pow_mul, rs_pow_N, one_pow, mul_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [powR, Units.val_mul, ZMod.val_mul]`. Rewrite using `[← pow_mul, rs_pow_mod]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem powR_powR (s : ℕ) (a b : (ZMod (l ^ (s + 1)))ˣ) (ζ : Rs LL l s) :
     powR LL l s a (powR LL l s b ζ) = powR LL l s (b * a) ζ := by
@@ -77,7 +77,7 @@ theorem powR_powR (s : ℕ) (a b : (ZMod (l ^ (s + 1)))ˣ) (ζ : Rs LL l s) :
   rw [← pow_mul, rs_pow_mod]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [powR, Units.val_one, ZMod.val_one_eq_one_mod]`. Rewrite using `[rs_pow_mod, pow_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem powR_one (s : ℕ) (ζ : Rs LL l s) : powR LL l s 1 ζ = ζ := by
   apply Subtype.ext
@@ -147,7 +147,7 @@ def rhoL (hR : Ring9 W) (c : ZMod n) (s : ℕ) : PowerSeries O →+* PowerSeries
     (RingHom.pi fun ζ => ((rhoZ W c ζ).comp (baseIdOf hR).ι).toRingHom)
 
 /- English proof (translation)
-Rewrite using `[rhoL, RingHom.comp_apply, map_eval_psPi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_eval_rhoL (hR : Ring9 W) (c : ZMod n) (s : ℕ) (a : PowerSeries O) (ζ : Rs LL PD.p s) :
     PowerSeries.map (Pi.evalRingHom (fun _ => LL) ζ) (rhoL hR c s a) = rhoZ W c ζ ((baseIdOf hR).ι a) := by
@@ -169,11 +169,11 @@ def coefN (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZMod n) (x : ↥(W
   toKsD W s (Dc W T c) fun ζ => ⟨Lb.levB T c ζ x k, Lb.mem T c ζ x k⟩
 
 /- English proof (translation)
-Use `choose m hm using fun ζ : Rs LL PD.p s => Lb.supp T c ζ x`. Use `⟨-(∑ ζ, |m ζ|), fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `hk` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : (fun ζ : Rs LL PD.p s => (⟨Lb.levB T c ζ x k, Lb.mem T c ζ x k⟩ : Dc W T c)) = 0`. Use function extensionality and compare the values at `ζ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hm ζ k ?_` and prove the remaining obligations. Establish `h1` using `Finset.single_le_sum (f := fun ζ => |m ζ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ ζ)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `neg_abs_le (m ζ)`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [coefN, h0, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bdd_coefN (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZMod n) (x : ↥(W.N T)) :
     BddBelow (Function.support (coefN Lb s T c x)) := by
@@ -256,18 +256,18 @@ def prL (s : ℕ) : LvT hR uZ ιZ T c hΔ ell →+ Amb LL (KsW W s) (Dc W T c) w
     split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem prL_of_lt (s : ℕ) (h : s < ell) (e : LvT hR uZ ιZ T c hΔ ell) :
     prL s e = toA hR T c s (e ⟨s, h⟩ : AmbM hR T c s) := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem prL_of_ge (s : ℕ) (h : ¬ s < ell) (e : LvT hR uZ ιZ T c hΔ ell) : prL s e = 0 := dif_neg h
 
 /- English proof (translation)
-Distinguish the cases in `h : s < ell`. Rewrite using `[prL_of_lt s h, prL_of_lt s h]`. Both sides reduce to the same expression. Rewrite using `[prL_of_ge s h, prL_of_ge s h, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem prL_smul (s : ℕ) (a : PowerSeries O) (e : LvT hR uZ ιZ T c hΔ ell) :
     prL s (a • e) = HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a) • prL s e := by
@@ -277,7 +277,7 @@ theorem prL_smul (s : ℕ) (a : PowerSeries O) (e : LvT hR uZ ιZ T c hΔ ell) :
   · rw [prL_of_ge s h, prL_of_ge s h, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Use `h s s.2` as an intermediate fact. Rewrite `this` using `[prL_of_lt s s.2, prL_of_lt s s.2]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prL_inj (e e' : LvT hR uZ ιZ T c hΔ ell) (h : ∀ s < ell, prL s e = prL s e') : e = e' := by
   funext s
@@ -287,9 +287,7 @@ theorem prL_inj (e e' : LvT hR uZ ιZ T c hΔ ell) (h : ∀ s < ell, prL s e = p
   exact this
 
 /- English proof (translation)
-Distinguish the cases in `h : s < ell`. Rewrite using `[prL_of_lt s h]`. Conclude with `(e ⟨s, h⟩).2`. Rewrite using `[prL_of_ge s h]`. Introduce `j`.
-
-Conclude with `map_zero _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prL_inv (s : ℕ) (e : LvT hR uZ ιZ T c hΔ ell) :
     (levW W uZ ιZ s).Inv (D := Dc W T c) (prL s e) := by
@@ -308,9 +306,9 @@ variable {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O} {T : LocL
   {hΔ : DeltaRho hR uZ ιZ c} {ell : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [coefN, Pi.add_apply]`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `ζ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem coefN_add (Lb : LevB W) (s : ℕ) (x y : ↥(W.N T)) :
     coefN Lb s T c (x + y) = coefN Lb s T c x + coefN Lb s T c y := by
@@ -323,7 +321,7 @@ theorem coefN_add (Lb : LevB W) (s : ℕ) (x y : ↥(W.N T)) :
   simp [map_add]
 
 /- English proof (translation)
-Establish `h : HahnSeries.ofSuppBddBelow (coefN Lb s T c (x + y)) (bdd_coefN Lb s T c (x + y)) = HahnSeries.ofSuppBddBelow (coefN Lb s T c x) (bdd_coefN Lb s T c x) + HahnSeries.ofSuppBddBelow (coefN Lb s T c y) (bdd_coefN Lb s T c y)`. Use extensionality with `k`. Simplify using `[HahnSeries.ofSuppBddBelow, coefN_add]`. Simplify using `only [expN, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem expN_add (Lb : LevB W) (s : ℕ) (x y : ↥(W.N T)) :
     expN Lb s T c (x + y) = expN Lb s T c x + expN Lb s T c y := by
@@ -350,7 +348,7 @@ def LocInv (c : ZMod n) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (κ : Pow
     (levW W uZ ιZ s).Inv (D := Dc W T c) (locF Lb C κ s x hx)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem locF_congr (κ : PowerSeries O) (s : ℕ) {x y : C.V} (hx : x ∈ (latOf C).N c)
     (hy : y ∈ (latOf C).N c) (h : x = y) : locF Lb C κ s x hx = locF Lb C κ s y hy := by
@@ -422,9 +420,7 @@ def FilD (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) (s : ℕ)
   (FilLev W T c s u).comap ((ιV PD (LL := LL) (V := T.V)).comp (DcrisL PD T.ρ (W.emb c)).subtype)
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `Tw`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. Conclude with `absurd (h1.trans hij) h2`.
-
-Conclude with `bot_le`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tw_mono (m : ℤ) : Monotone (Tw (LL := LL) (D := Dc W T c) m) := by
   intro i j hij
@@ -534,7 +530,7 @@ def gEL (H : LvHyp Lb hR uZ ιZ C c ell Λ κ lam) :
     exact map_add _ _ _
 
 /- English proof (translation)
-Rewrite using `[prL_of_lt s' hs', prL_of_lt s' hs']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prL_gEL (H : LvHyp Lb hR uZ ιZ C c ell Λ κ lam) (s' : ℕ) (hs' : s' < ell)
     (e : LvT hR uZ ιZ T c H.delta ell) :
@@ -546,7 +542,7 @@ def cstL (hΔ : DeltaRho hR uZ ιZ c) (ell : ℕ) (d : Dc W T c) : LvT hR uZ ιZ
   fun s => ⟨cstD (KsW W s) d, fun j => Formalism.ExponentWindows.G.SlopeTestRemainingChoices.grd_cst _ _ d⟩
 
 /- English proof (translation)
-Rewrite using `[prL_of_lt s' hs']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prL_cstL {hΔ : DeltaRho hR uZ ιZ c} (s' : ℕ) (hs' : s' < ell) (d : Dc W T c) :
     prL s' (cstL hΔ ell d) = cstD (KsW W s') d := by
@@ -664,7 +660,7 @@ def prEOf {F : LatHom T₁.L T₂.L} (M : MapHyp hR uZ ιZ F c) {hΔ₁ : DeltaR
     exact M.smul s _ _
 
 /- English proof (translation)
-Rewrite using `[prL_of_lt s hs, prL_of_lt s hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prL_prEOf {F : LatHom T₁.L T₂.L} (M : MapHyp hR uZ ιZ F c) {hΔ₁ : DeltaRho hR uZ ιZ c}
     {hΔ₂ : DeltaRho hR uZ ιZ c} {ell : ℕ} (s : ℕ) (hs : s < ell)

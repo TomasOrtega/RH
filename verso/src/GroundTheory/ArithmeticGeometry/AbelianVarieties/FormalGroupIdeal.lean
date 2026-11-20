@@ -24,7 +24,7 @@ instance : WithIdeal (AdicRing 𝒪) := ⟨IsLocalRing.maximalIdeal 𝒪⟩
 variable [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪]
 
 /- English proof (translation)
-The claim follows from `(IsAdic.isAdicComplete_iff (I := (WithIdeal.i : Ideal (AdicRing 𝒪))) rfl).1 (inferInstanceAs (IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪))`.
+A detailed English derivation is pending.
 -/
 theorem completeSpace_and_t2Space : CompleteSpace (AdicRing 𝒪) ∧ T2Space (AdicRing 𝒪) :=
   (IsAdic.isAdicComplete_iff (I := (WithIdeal.i : Ideal (AdicRing 𝒪))) rfl).1
@@ -46,7 +46,7 @@ def psEvalAt {σ : Type*} (f : MvPowerSeries σ 𝒪) (a : σ → 𝒪) : 𝒪 :
     (MvPowerSeries.eval₂ (algebraMap 𝒪 (AdicRing 𝒪)) (fun i => AdicRing.equiv 𝒪 (a i)) f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => WithIdeal.isTopologicallyNilpotent_of_mem (ha i), by rw [Filter.cofinite_eq_bot]; exact Filter.tendsto_bot⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasEval_adicRing {σ : Type*} [Finite σ] {a : σ → 𝒪}
     (ha : ∀ i, a i ∈ IsLocalRing.maximalIdeal 𝒪) :
@@ -55,13 +55,13 @@ theorem hasEval_adicRing {σ : Type*} [Finite σ] {a : σ → 𝒪}
     by rw [Filter.cofinite_eq_bot]; exact Filter.tendsto_bot⟩
 
 /- English proof (translation)
-Simplify using `[psEvalAt, MvPowerSeries.eval₂_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psEvalAt_X {σ : Type*} (a : σ → 𝒪) (i : σ) : psEvalAt (MvPowerSeries.X i) a = a i := by
   simp [psEvalAt, MvPowerSeries.eval₂_X]
 
 /- English proof (translation)
-Simplify using `[psEvalAt, MvPowerSeries.eval₂_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem psEvalAt_C {σ : Type*} (a : σ → 𝒪) (r : 𝒪) : psEvalAt (MvPowerSeries.C r) a = r := by
   simp [psEvalAt, MvPowerSeries.eval₂_C]
@@ -84,7 +84,7 @@ def evAlgHom {σ : Type*} [Finite σ] (a : σ → 𝒪) (ha : ∀ i, a i ∈ IsL
       rfl }
 
 /- English proof (translation)
-Simplify using `[evAlgHom, psEvalAt, MvPowerSeries.coe_eval₂Hom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evAlgHom_apply {σ : Type*} [Finite σ] (a : σ → 𝒪)
     (ha : ∀ i, a i ∈ IsLocalRing.maximalIdeal 𝒪) (f : MvPowerSeries σ 𝒪) :
@@ -93,7 +93,7 @@ theorem evAlgHom_apply {σ : Type*} [Finite σ] (a : σ → 𝒪)
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-Establish `hopen : IsOpen ((WithIdeal.i : Ideal (AdicRing 𝒪)) : Set (AdicRing 𝒪))`. Use `(WithIdeal.i : Ideal (AdicRing 𝒪)).toAddSubgroup.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `(Ideal.hasBasis_nhds_zero_adic (WithIdeal.i : Ideal (AdicRing 𝒪))).mem_of_mem (i := 1) trivial` as an intermediate fact. Simplify using `using this`. Conclude with `AddSubgroup.isClosed_of_isOpen (WithIdeal.i : Ideal (AdicRing 𝒪)).toAddSubgroup hopen`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isClosed_maximalIdeal_adicRing :
     IsClosed ((WithIdeal.i : Ideal (AdicRing 𝒪)) : Set (AdicRing 𝒪)) := by
@@ -105,15 +105,13 @@ theorem isClosed_maximalIdeal_adicRing :
   exact AddSubgroup.isClosed_of_isOpen (WithIdeal.i : Ideal (AdicRing 𝒪)).toAddSubgroup hopen
 
 /- English proof (translation)
-Set `_ : UniformSpace 𝒪` to `⊥`. Establish `_ : DiscreteUniformity 𝒪` using `⟨rfl⟩`. Establish `hφ : Continuous (algebraMap 𝒪 (AdicRing 𝒪))`. Rewrite using `[UniformSpace.toTopologicalSpace_bot]`. Conclude with `continuous_bot`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `MvPowerSeries.hasSum_eval₂ hφ (hasEval_adicRing ha) f`. Establish `hmem : MvPowerSeries.eval₂ (algebraMap 𝒪 (AdicRing 𝒪)) (fun i => AdicRing.equiv 𝒪 (a i)) f ∈ (WithIdeal.i : Ideal (AdicRing 𝒪))`. Rewrite `h` using `[HasSum]`. Use `isClosed_maximalIdeal_adicRing.mem_of_tendsto h (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hf`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hd`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod]`. Use `Ideal.prod_mem _ (i := i) (Finsupp.mem_support_iff.mpr hi) ?_` and prove the remaining obligations. Conclude with `Ideal.pow_mem_of_mem _ (ha i) _ (Nat.pos_of_ne_zero hi)`.
-
-Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psEvalAt_mem {σ : Type*} [Finite σ] {f : MvPowerSeries σ 𝒪}
     (hf : MvPowerSeries.constantCoeff f ∈ IsLocalRing.maximalIdeal 𝒪) {a : σ → 𝒪}
@@ -142,7 +140,7 @@ theorem psEvalAt_mem {σ : Type*} [Finite σ] {f : MvPowerSeries σ 𝒪}
   exact hmem
 
 /- English proof (translation)
-Set `_ : UniformSpace 𝒪` to `⊥`. Establish `_ : DiscreteUniformity 𝒪` using `⟨rfl⟩`. Simplify using `only [psEvalAt]`. Rewrite using `[MvPowerSeries.eval₂_subst hg (hasEval_adicRing ha)]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psEvalAt_subst {σ τ : Type*} [Finite σ] [Finite τ] {g : σ → MvPowerSeries τ 𝒪}
     (hg : MvPowerSeries.HasSubst g) (f : MvPowerSeries σ 𝒪) {a : τ → 𝒪}
@@ -155,7 +153,7 @@ theorem psEvalAt_subst {σ τ : Type*} [Finite σ] [Finite τ] {g : σ → MvPow
   rfl
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst, psEvalAt_subst hg.const f ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psEvalAt_powerSeries_subst {τ : Type*} [Finite τ] {g : MvPowerSeries τ 𝒪}
     (hg : PowerSeries.HasSubst g) (f : PowerSeries 𝒪) {a : τ → 𝒪}
@@ -165,7 +163,7 @@ theorem psEvalAt_powerSeries_subst {τ : Type*} [Finite τ] {g : MvPowerSeries �
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hx`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal 𝒪).isPrime.mem_of_pow_mem n (by rw [hn]; exact zero_mem _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_of_isNilpotent {x : 𝒪} (hx : IsNilpotent x) :
     x ∈ IsLocalRing.maximalIdeal 𝒪 := by
@@ -182,7 +180,7 @@ def val (x : MaxIdealPoint F) : 𝒪 := x.1
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (x : MaxIdealPoint F) : x.val ∈ IsLocalRing.maximalIdeal 𝒪 := x.2
 
@@ -197,13 +195,13 @@ Both sides reduce to the same expression.
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext {x y : MaxIdealPoint F} (h : x.val = y.val) : x = y := Subtype.ext h
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-Introduce `_ _` and use `ext`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem val_injective : Function.Injective (val : MaxIdealPoint F → 𝒪) := fun _ _ => ext
 
@@ -217,7 +215,7 @@ Both sides reduce to the same expression.
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 /- English proof (translation)
-Introduce `i`. Use `fin_cases i`. Use `exacts [x.val_mem, y.val_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_mem (x y : MaxIdealPoint F) :
     ∀ i, (![x.val, y.val] : Fin 2 → 𝒪) i ∈ IsLocalRing.maximalIdeal 𝒪 := by
@@ -256,14 +254,14 @@ def pointVar {σ : Type*} (i : σ) : F.Point σ :=
   ⟨MvPowerSeries.X i, by simp [PowerSeries.HasSubst]⟩
 
 /- English proof (translation)
-The claim follows from `ext (psEvalAt_X _ i)`.
+A detailed English derivation is pending.
 -/
 theorem evalPoint_pointVar {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) (i : σ) :
     evalPoint x (pointVar i) = x i :=
   ext (psEvalAt_X _ i)
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `psEvalAt 0 _ = 0`. Rewrite using `[← evAlgHom_apply _ (fun i => (x i).val_mem), map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalPoint_zero {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) :
     evalPoint x (0 : F.Point σ) = 0 := by
@@ -272,9 +270,9 @@ theorem evalPoint_zero {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) :
   rw [← evAlgHom_apply _ (fun i => (x i).val_mem), map_zero]
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `psEvalAt (p + q).val _ = _`. Rewrite using `[FormalGroup.add_apply, psEvalAt_subst (GroundTheory.LocalField.FormalGroup.point_hasSubst_pair p q) _ fun i => (x i).val_mem, val_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evalPoint_add {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) (p q : F.Point σ) :
     evalPoint x (p + q) = evalPoint x p + evalPoint x q := by
@@ -287,7 +285,7 @@ theorem evalPoint_add {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) (p q
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `psEvalAt (-p).val _ = _`. Rewrite using `[GroundTheory.LocalField.FormalGroup.neg_point_val, psEvalAt_powerSeries_subst p.prop _ fun i => (x i).val_mem]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPoint_neg {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) (p : F.Point σ) :
     evalPoint x (-p) = -evalPoint x p := by

@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.RowVal
 
 /- English proof (translation)
-Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig V.gram`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs` using `[zero_smul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NeZero.ne μ hs`. Establish `h1 : IsFundamentalDomain (GQ V) F μ'` using `h.mono (by`. Rewrite using `[hs]; exact Measure.absolutelyContinuous_smul (by exact_mod_cast hs0))`. Rewrite using `[hs, Measure.restrict_smul, integral_smul_nnreal_measure, h1.setIntegral_eq h' fun γ x => hf γ γ.2 x]`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_int_scale {D : D7} {V : HSp D} {μ μ' : Measure (GA D V)} (hμ : μ.IsHaarMeasure) (hμ' : μ'.IsHaarMeasure)
     {s : NNReal} (hs : μ = s • μ') {F F' : Set (GA D V)}
@@ -37,7 +37,7 @@ theorem fd_int_scale {D : D7} {V : HSp D} {μ μ' : Measure (GA D V)} (hμ : μ.
   rw [NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Introduce `γ u` and use `h.quasiL γ u v level := by obtain ⟨U, hU, hl⟩ := h.levL exact ⟨U, hU, fun a ha h0 => hl a ha h0 v⟩ cont := h.cont.comp (continuous_id.prodMk continuous_const) smooth := fun n L hL h0 u => by have := h.smooth n L 0 hL continuous_const h0 (fun _ => Matrix.map_zero _ (map_zero (finP …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem biTheta_slice1 {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A S → WO S A' → ℂ}
     (h : IsBiTheta ψ A S A' C) (v : WO S A') : IsThetaFunO ψ A S fun u => C u v where
@@ -51,7 +51,7 @@ theorem biTheta_slice1 {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D
     simpa using this
 
 /- English proof (translation)
-Introduce `γ v` and use `h.quasiR γ u v level := by obtain ⟨U, hU, hl⟩ := h.levR exact ⟨U, hU, fun a ha h0 => hl a ha h0 u⟩ cont := h.cont.comp (continuous_const.prodMk continuous_id) smooth := fun n L hL h0 v => by have := h.smooth n 0 L continuous_const hL (fun _ => Matrix.map_zero _ (map_zero (finPart …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem biTheta_slice2 {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A S → WO S A' → ℂ}
     (h : IsBiTheta ψ A S A' C) (u : WO A S) : IsThetaFunO ψ S A' (C u) where
@@ -68,7 +68,7 @@ section
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hw` using `W.om_is p hp`. Establish `e : ((γ * g, h) : GA D (G.pS p) × GA D (G.pT p)) = (γ, 1) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ Y hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_fix_left (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (Y : WO (G.pS p) (G.pT p) → ℂ)
     (hY : IsThetaFunO W.ψ _ _ Y) (g : GA D (G.pS p)) (h : GA D (G.pT p)) (γ : GA D (G.pS p)) (hγ : γ ∈ GQ (G.pS p)) :
@@ -79,7 +79,7 @@ theorem om_fix_left (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (Y : WO (G.
   exact hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ Y hY)
 
 /- English proof (translation)
-Establish `hw` using `W.om_is p hp`. Establish `e : ((g, γ * h) : GA D (G.pS p) × GA D (G.pT p)) = (1, γ) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ Y hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_fix_right (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (Y : WO (G.pS p) (G.pT p) → ℂ)
     (hY : IsThetaFunO W.ψ _ _ Y) (g : GA D (G.pS p)) (h : GA D (G.pT p)) (γ : GA D (G.pT p)) (hγ : γ ∈ GQ (G.pT p)) :
@@ -90,7 +90,7 @@ theorem om_fix_right (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (Y : WO (G
   exact hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ Y hY)
 
 /- English proof (translation)
-The claim follows from `biTheta_slice2 ((GlobalTheory.SeeSaw.biAct_all D W.ψ _ _ _ _ _ _ _ (W.om (.top t j)) (W.om (.top t (j + 1))) (W.om_is (.top t j) (show j + 1 ≤ D.R.m by omega)) (W.om_is (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega)) C hC).1 (h₀, h₁)) 0`.
+A detailed English derivation is pending.
 -/
 theorem mid_theta (W : G.Weil) (t : T) (j : ℕ) (hj : j + 2 ≤ D.R.m)
     (C : WO (G.V (.top j)) (G.V (.top (j + 1))) → WO (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) → ℂ)
@@ -104,7 +104,7 @@ section
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hM X hX hX'`. Take `⟨h1', h2'⟩` from `hM' X hX hX'`. Conclude with `fd_int_scale h1 h1' (hs X hX hX') h2 h2' f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem int_scale {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' : IsHaarDef M') (hs : Scales M M' s)
     {X : Node} (hX : DefNode D.R.m X) (hX' : X ≠ .top D.R.m) (f : GA D (G.V X) → ℂ)
@@ -115,19 +115,17 @@ theorem int_scale {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' :
   exact fd_int_scale h1 h1' (hs X hX hX') h2 h2' f hf
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_ g _`. Use `⟨?_, hF⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show F = (∏ i ∈ Finset.range 0, ((s (.grid i D.R.m) : ℝ) : ℂ)) • F`. Rewrite using `[Finset.prod_range_zero, one_smul]`. Consider the case `succ n ih`. Introduce `hn g hg`. Take `⟨e, hinv⟩` from `ih (by omega) (fun i => g i.castSucc) (fun i => hg i.castSucc)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : Pair.InRange D.R.m (Pair.chi n D.R.m : Pair T)` using `show n + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m from ⟨hn, le_rfl⟩`. Establish `hθ : IsThetaFunO W.ψ (G.pS (.chi n D.R.m)) (G.pT (.chi n D.R.m)) (g (Fin.last n))` using `hg (Fin.last n)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show liftA W M (.right n D.R.m) (g (Fin.last n)) (liftP W M (rowPath T D.R.m n) (rowFam D.R.m n fun i => g i.castSucc) F) = _ • liftA W M' (.right n D.R.m) (g (Fin.last n)) (liftP W M' (rowPath T D.R.m n) (rowFam D.R.m n fun i => g i.castSucc) F)`. Rewrite using `[e, liftA_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, smul_eq_mul, liftA_apply]`. Rewrite using `[int_scale hM hM' hs (X := (Arrow.right n D.R.m : Arrow T).src) (show n ≤ D.R.m ∧ D.R.m = D.R.m from ⟨by omega, rfl⟩) (fun e => by cases e) _ ?_, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ x show W.ker (.chi n D.R.m) _ (γ * x) h * _ = W.ker (.chi n D.R.m) _ x h * _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hinv γ hγ x]`. Use `congr 1`. Use `ker_rat_left W _ hp _ hθ γ hγ 1 (one_mem _) x h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Introduce `γ hγ x show liftA W M' (.right n D.R.m) (g (Fin.last n)) (liftP W M' (rowPath T D.R.m n) (rowFam D.R.m n fun i => g i.castSucc) F) (γ * x) = liftA W M' (.right n D.R.m) (g (Fin.last n)) (liftP W M' (rowPath T D.R.m n) (rowFam D.R.m n fun i => g i.castSucc) F) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [liftA_apply]`. Use `congr 1`. Use function extensionality and compare the values at `g'`. Use `congr 1`. Use `ker_rat_left W _ hp _ hθ 1 (one_mem _) γ hγ g' x` as an intermediate fact.
-
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem row_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' : IsHaarDef M') (hs : Scales M M' s)
     (F : Fn G (.grid 0 D.R.m)) (hF : ∀ γ ∈ GQ (G.V (.grid 0 D.R.m)), ∀ x, F (γ * x) = F x) :
@@ -176,9 +174,9 @@ theorem row_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaar
       rwa [one_mul] at this
 
 /- English proof (translation)
-Introduce `γ hγ x`. Unfold `biL`. Use `congr 1`. Use function extensionality and compare the values at `h₁`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `h₀`. Use `congr 1`. Conclude with `om_fix_right W (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega) _ (mid_theta W t j hj C hC h₀ h₁) h₁ x γ hγ`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem biL_inv (W : G.Weil) (M : Vol G) (t : T) (j : ℕ) (hj : j + 2 ≤ D.R.m) (φ : Fn G (.top j))
     (C : WO (G.V (.top j)) (G.V (.top (j + 1))) → WO (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) → ℂ)
@@ -190,13 +188,13 @@ theorem biL_inv (W : G.Weil) (M : Vol G) (t : T) (j : ℕ) (hj : j + 2 ≤ D.R.m
   exact om_fix_right W (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega) _ (mid_theta W t j hj C hC h₀ h₁) h₁ x γ hγ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₂`. Establish `hA : Pair.InRange D.R.m (Pair.top t j : Pair T)` using `show j + 1 ≤ D.R.m by omega`. Establish `hB : Pair.InRange D.R.m (Pair.top t (j + 1) : Pair T)` using `show j + 1 + 1 ≤ D.R.m by omega`. Establish `inner : ∀ h₁, ∫ h₀ in M.fd (.top j), φ h₀ * W.om (.top t (j + 1)) (h₁, h₂) (fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0) 0 ∂M.ν (.top j) = ((s (.top j) : ℝ) : ℂ) * ∫ h₀ in M'.fd (.top j), φ h₀ * W.om (.top t (j + 1)) (h₁, h₂) (fun v => W.om (.top t j) (h₀, h₁) (fun u => …` using `fun h₁ => int_scale hM hM' hs (X := .top j) (show j ≤ D.R.m by omega) (fun e => by injection e; omega) _ fun γ hγ h₀ => by`. Establish `e : (fun v => W.om (.top t j) (γ * h₀, h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun v => om_fix_left W _ hA _ (biTheta_slice1 hC v) h₀ h₁ γ hγ`. Simplify using `only [e, hφ γ hγ h₀]`. Use `show ∫ h₁ in M.fd (.top (j + 1)), (∫ h₀ in M.fd (.top j), φ h₀ * W.om (.top t (j + 1)) (h₁, h₂) (fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0) 0 ∂M.ν (.top j)) ∂M.ν (.top (j + 1)) = _ * ∫ h₁ in M'.fd (.top (j + 1)), (∫ h₀ in M'.fd (.top j), φ h₀ * W.om (.top t (j + 1)) (h …`. Repeatedly rewrite using `[inner]`. Rewrite using `[integral_const_mul, int_scale hM hM' hs (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega) (fun e => by injection e; omega) _ ?_]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ h₁`. Use `congr 1`. Use function extensionality and compare the values at `h₀`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e : (fun v => W.om (.top t j) (h₀, γ * h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0`. Use function extensionality and compare the values at `fun v => om_fix_right W _ hA _ (biTheta_slice1 hC v) h₀ h₁ γ hγ`. Rewrite using `[e]`. Conclude with `om_fix_left W (.top t (j + 1)) hB _ (mid_theta W t j hj C hC h₀ h₁) h₁ h₂ γ hγ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biL_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' : IsHaarDef M') (hs : Scales M M' s)
     (t : T) (j : ℕ) (hj : j + 2 ≤ D.R.m) (φ : Fn G (.top j)) (hφ : ∀ γ ∈ GQ (G.V (.top j)), ∀ x, φ (γ * x) = φ x)
@@ -229,7 +227,7 @@ theorem biL_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaar
     exact om_fix_left W (.top t (j + 1)) hB _ (mid_theta W t j hj C hC h₀ h₁) h₁ h₂ γ hγ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₂`. Simplify using `only [biL, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem biL_smul (W : G.Weil) (M : Vol G) (t : T) (j : ℕ) (φ : Fn G (.top j))
     (C : WO (G.V (.top j)) (G.V (.top (j + 1))) → WO (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) → ℂ) (c : ℂ) :
@@ -238,7 +236,7 @@ theorem biL_smul (W : G.Weil) (M : Vol G) (t : T) (j : ℕ) (φ : Fn G (.top j))
   simp only [biL, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, φ => by simp only [jPer, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul] | σ + 1, j, hj, φ => jPer_smul_F W M t C F c σ (j + 1 + 1) (by omega) _`.
+A detailed English derivation is pending.
 -/
 theorem jPer_smul_F (W : G.Weil) (M : Vol G) (t : T) (C : BiFam G) (F : Fn G (.grid D.R.m D.R.m)) (c : ℂ) :
     ∀ σ j (hj : j + 2 * σ + 2 = D.R.m) φ, jPer W M t C (c • F) σ j hj φ = c * jPer W M t C F σ j hj φ
@@ -247,7 +245,7 @@ theorem jPer_smul_F (W : G.Weil) (M : Vol G) (t : T) (C : BiFam G) (F : Fn G (.g
   | σ + 1, j, hj, φ => jPer_smul_F W M t C F c σ (j + 1 + 1) (by omega) _
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, φ, c => by show ∫ h' in M.fd (.grid D.R.m D.R.m), F h' * biL W M t j (c • φ) (C j) (GlobalTheory.RowChain.topEmb G _ h') ∂M.ν (.grid D.R.m D.R.m) = _ rw [biL_smul] simp only [jPer, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul] | σ + 1, j, hj, φ, c …`.
+A detailed English derivation is pending.
 -/
 theorem jPer_smul_φ (W : G.Weil) (M : Vol G) (t : T) (C : BiFam G) (F : Fn G (.grid D.R.m D.R.m)) :
     ∀ σ j (hj : j + 2 * σ + 2 = D.R.m) φ (c : ℂ), jPer W M t C F σ j hj (c • φ) = c * jPer W M t C F σ j hj φ
@@ -261,7 +259,7 @@ theorem jPer_smul_φ (W : G.Weil) (M : Vol G) (t : T) (C : BiFam G) (F : Fn G (.
     exact jPer_smul_φ W M t C F σ (j + 1 + 1) _ _ c
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨_, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_rational _ γ hγ, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul _ γ x⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem topEmb_rat {n : ℕ} (h : D.R.m = n) (γ : GA D (G.V (.grid D.R.m D.R.m))) (hγ : γ ∈ GQ _)
     (x : GA D (G.V (.grid D.R.m D.R.m))) :
@@ -270,7 +268,7 @@ theorem topEmb_rat {n : ℕ} (h : D.R.m = n) (γ : GA D (G.V (.grid D.R.m D.R.m)
   exact ⟨_, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_rational _ γ hγ, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul _ γ x⟩
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, hev, φ, hφ => by have hC' := hC j hev (by omega) show ∫ h' in M.fd (.grid D.R.m D.R.m), F h' * biL W M t j φ (C j) (GlobalTheory.RowChain.topEmb G _ h') ∂M.ν (.grid D.R.m D.R.m) = _ * ∫ h' in M'.fd (.grid D.R.m D.R.m), F h' * biL W M' t j φ (C j) (GlobalTheory.RowChai …`.
+A detailed English derivation is pending.
 -/
 theorem jPer_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' : IsHaarDef M') (hs : Scales M M' s)
     (t : T) (C : BiFam G) (hC : ∀ k, Even k → k < D.R.m → IsBiTheta W.ψ _ _ _ (C k)) (F : Fn G (.grid D.R.m D.R.m))
@@ -302,7 +300,7 @@ theorem jPer_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaa
     ring
 
 /- English proof (translation)
-Establish `hθ : ∀ i : Fin D.R.m, IsThetaFunO W.ψ _ _ (W.fock (.chi i D.R.m) (f i) (P i))` using `fun i => GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ (hg.2 i) (P i)`. Take `⟨e1, hinv⟩` from `row_scale W hM hM' hs F hF.1 D.R.m le_rfl _ hθ`. Unfold `per`. Rewrite using `[e1, jPer_smul_F, jPer_scale W hM hM' hs t C hg.1 _ hinv _ 0 _ ⟨0, rfl⟩ φ hφ.1, sProd, Finset.prod_range_succ, Finset.range_eq_Ico]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaarDef M) (hM' : IsHaarDef M') (hs : Scales M M' s)
     (t : T) (φ : Fn G (.top 0)) (F : Fn G (.grid 0 D.R.m)) (hφ : GlobalTheory.Unf.IsContAut _ φ) (hF : GlobalTheory.Unf.IsContAut _ F)
@@ -319,7 +317,7 @@ theorem per_scale (W : G.Weil) {M M' : Vol G} {s : Node → NNReal} (hM : IsHaar
 end
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Use `intros`. Introduce `t M M' s hM hM' hs φ F hφ hF C f hg P`. Conclude with `per_scale _ hM hM' hs t φ F hφ hF C f hg P`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem volAt_big : Big fun ch => VolAt ch := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩

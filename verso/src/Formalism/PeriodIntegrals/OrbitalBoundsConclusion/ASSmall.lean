@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.ArtSch
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SmallArtinSchreier.ExistsAsOfValLtOne
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.ASSmall.tiltSmall`.
+A detailed English derivation is pending.
 -/
 theorem smallSurjective : PI.ArtSch.TiltSmall := PI.UnitaryGroupMassFormula.ASSmall.tiltSmall

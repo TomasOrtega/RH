@@ -18,7 +18,7 @@ abbrev glG : Subgroup (Matrix (Fin a) (Fin a) (Cinf E))ˣ := ⊤
 abbrev glL : Submodule ℝ (Matrix (Fin a) (Fin a) (Cinf E)) := ⊤
 
 /- English proof (translation)
-The claim follows from `isExpLieAlgebra_top`.
+A detailed English derivation is pending.
 -/
 theorem glH : IsExpLieAlgebra (glG E a) (glL E a) := isExpLieAlgebra_top
 

@@ -21,40 +21,40 @@ open GlobalTheory.CuspCentre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, cc_sum', cc_mul']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_cc_mul (A B : Matrix (Fin ρ) (Fin ρ) E) : (A * B).map cc = A.map cc * B.map cc := by
   ext a b
   simp [Matrix.mul_apply, cc_sum', cc_mul']
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[cc_cc']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_cc_cc (A : Matrix (Fin ρ) (Fin ρ) E) : (A.map cc).map cc = A := by
   ext a b
   simp [cc_cc']
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h, cc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_cc_one : (1 : Matrix (Fin ρ) (Fin ρ) E).map cc = 1 := by
   ext a b
   by_cases h : a = b <;> simp [Matrix.one_apply, h, cc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by ext a b; exact h a b, fun h a b => congrFun (congrFun h a) b⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSkew_iff (β : Matrix (Fin ρ) (Fin ρ) E) : FJ.IsSkew β ↔ β.map cc = -βᵀ :=
   ⟨fun h => by ext a b; exact h a b, fun h a b => congrFun (congrFun h a) b⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by ext a b; exact h a b, fun h a b => congrFun (congrFun h a) b⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHerm_iff (β : Matrix (Fin ρ) (Fin ρ) E) : FJ.IsHermE β ↔ β.map cc = βᵀ :=
   ⟨fun h => by ext a b; exact h a b, fun h a b => congrFun (congrFun h a) b⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isHerm_iff]`. Rewrite using `[map_cc_mul, map_cc_mul, h, Matrix.transpose_map, map_cc_cc]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_conj (P χ : Matrix (Fin ρ) (Fin ρ) E) (h : FJ.IsHermE χ) :
     FJ.IsHermE (P * χ * (P.map cc)ᵀ) := by
@@ -63,7 +63,7 @@ theorem isHerm_conj (P χ : Matrix (Fin ρ) (Fin ρ) E) (h : FJ.IsHermE χ) :
   simp [Matrix.transpose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isSkew_iff]`. Rewrite using `[map_cc_mul, map_cc_mul, h, Matrix.transpose_map, map_cc_cc]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isSkew_conj (P β : Matrix (Fin ρ) (Fin ρ) E) (h : FJ.IsSkew β) :
     FJ.IsSkew (Pᵀ * β * P.map cc) := by
@@ -72,7 +72,7 @@ theorem isSkew_conj (P β : Matrix (Fin ρ) (Fin ρ) E) (h : FJ.IsSkew β) :
   simp [Matrix.transpose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [h, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_change {e₀ e : Fin ρ → Fin r → E} {P : Matrix (Fin ρ) (Fin ρ) E}
     (h : ∀ a, e₀ a = ∑ b, P a b • e b) (v : Fin ρ → E) :
@@ -81,11 +81,11 @@ theorem comb_change {e₀ e : Fin ρ → Fin r → E} {P : Matrix (Fin ρ) (Fin 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[Matrix.ext_iff_mulVec]`. Introduce `v`. Rewrite using `[zMatE_mulVec, zMatE_mulVec, comb_change h]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Establish `h1 : (fun b => herm X.Gm v (e₀ b)) = P.map cc *ᵥ fun d => herm X.Gm v (e d)`. Use function extensionality and compare the values at `b`. Rewrite using `[h b, herm_comb_r]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `((β *ᵥ fun b => herm X.Gm v (e₀ b)) ᵥ* P) c = ((Pᵀ * β * P.map cc) *ᵥ fun d => herm X.Gm v (e d)) c`. Rewrite using `[h1, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zMatE_change (X : Data E r) {e₀ e : Fin ρ → Fin r → E} {P : Matrix (Fin ρ) (Fin ρ) E}
     (h : ∀ a, e₀ a = ∑ b, P a b • e b) (β : Matrix (Fin ρ) (Fin ρ) E) :
@@ -107,7 +107,7 @@ theorem zMatE_change (X : Data E r) {e₀ e : Fin ρ → Fin r → E} {P : Matri
 variable {X : Data E r} {cu₀ cu : FJ.CuspFD X ρ} {P : Matrix (Fin ρ) (Fin ρ) E}
 
 /- English proof (translation)
-Take `⟨hs, γ, hγ, e⟩` from `hβ`. Conclude with `⟨isSkew_conj P β hs, γ, hγ, e.trans (zMatE_change X h β)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zGam_change (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {β : Matrix (Fin ρ) (Fin ρ) E}
     (hβ : β ∈ FJ.zGam X cu₀) : Pᵀ * β * P.map cc ∈ FJ.zGam X cu := by
@@ -115,9 +115,9 @@ theorem zGam_change (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {β : Matri
   exact ⟨isSkew_conj P β hs, γ, hγ, e.trans (zMatE_change X h β)⟩
 
 /- English proof (translation)
-Use `inf_le_inf_left _ fun x hx => ?_` and prove the remaining obligations. Establish `hle : Submodule.span E (Set.range cu₀.e) ≤ Submodule.span E (Set.range cu.e)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[h a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mem fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem lattice_le (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) : cu₀.I ≤ cu.I := by
   refine inf_le_inf_left _ fun x hx => ?_
@@ -129,9 +129,9 @@ theorem lattice_le (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) : cu₀.I �
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, x, hx, e⟩` from `hv`. Conclude with `Submodule.subset_span ⟨a, ha, x, lattice_le h hx, e.trans (comb_change h v)⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.add_vecMul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.smul_vecMul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem crdI_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {v : Fin ρ → E} (hv : v ∈ FJ.crdI 𝔄 cu₀) :
@@ -145,7 +145,7 @@ theorem crdI_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
   | smul c x _ hx => rw [Matrix.smul_vecMul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(P *ᵥ l) ⬝ᵥ x = l ⬝ᵥ (x ᵥ* P)`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_change (P : Matrix (Fin ρ) (Fin ρ) E) (l x : Fin ρ → E) :
     ∑ i, (P *ᵥ l) i * x i = ∑ i, l i * (x ᵥ* P) i := by
@@ -153,7 +153,7 @@ theorem pair_change (P : Matrix (Fin ρ) (Fin ρ) E) (l x : Fin ρ → E) :
   rw [dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Rewrite `hl`, the goal using `[← SetLike.mem_coe, FJ.xcFD_coe]`. Introduce `x hx`. Rewrite using `[pair_change]`. Conclude with `hl _ (crdI_change 𝔄 h hx)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xcFD_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {l : Fin ρ → E} (hl : l ∈ FJ.XcFD 𝔄 cu) :
@@ -164,7 +164,7 @@ theorem xcFD_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
   exact hl _ (crdI_change 𝔄 h hx)
 
 /- English proof (translation)
-Introduce `l hl`. Establish `h1` using `hu _ (xcFD_change 𝔄 h hl)`. Establish `h2` using `pair_change P l u`. Simplify using `only [mul_comm (u _), mul_comm ((u ᵥ* P) _)] at h1 ⊢`. Rewrite using `[← h2]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem dualOE_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {u : Fin ρ → E} (hu : u ∈ FJ.dualOE (FJ.XcFD 𝔄 cu₀)) :
@@ -176,7 +176,7 @@ theorem dualOE_change (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
   rwa [← h2]
 
 /- English proof (translation)
-Establish `: Matrix.trace ((P * χ * (P.map cc)ᵀ)ᵀ * β) = Matrix.trace (χᵀ * (Pᵀ * β * P.map cc))`. Rewrite using `[← Matrix.mul_assoc χᵀ, Matrix.trace_mul_comm _ (P.map cc)]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Simplify using `only [FJ.prE, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prE_change (X : Data E r) (P χ β : Matrix (Fin ρ) (Fin ρ) E) :
     FJ.prE X (P * χ * (P.map cc)ᵀ) β = FJ.prE X χ (Pᵀ * β * P.map cc) := by
@@ -186,14 +186,14 @@ theorem prE_change (X : Data E r) (P χ β : Matrix (Fin ρ) (Fin ρ) E) :
   simp only [FJ.prE, this]
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_eq (χ : Matrix (Fin ρ) (Fin ρ) E) (u m : Fin ρ → E) :
     ∑ i, ∑ k, u i * χ i k * cc (m k) = u ⬝ᵥ (χ *ᵥ fun k => cc (m k)) := by
   simp [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (fun k => cc ((m ᵥ* P) k)) = (P.map cc)ᵀ *ᵥ fun k => cc (m k)`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.vecMul, Matrix.mulVec, dotProduct, cc_sum', cc_mul', mul_comm]`. Rewrite using `[form_eq, form_eq, h1, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_change (P χ : Matrix (Fin ρ) (Fin ρ) E) (u m : Fin ρ → E) :
     ∑ i, ∑ k, u i * (P * χ * (P.map cc)ᵀ) i k * cc (m k) =
@@ -204,7 +204,7 @@ theorem form_change (P χ : Matrix (Fin ρ) (Fin ρ) E) (u m : Fin ρ → E) :
   rw [form_eq, form_eq, h1, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `β hβ` and use `by rw [prE_change] exact hχ _ (zGam_change h hβ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phase_change (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {χ : Matrix (Fin ρ) (Fin ρ) E}
     (hχ : ∀ β ∈ FJ.zGam X cu, ∃ n : ℤ, FJ.prE X χ β = n) :
@@ -213,7 +213,7 @@ theorem phase_change (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) {χ : Matr
   exact hχ _ (zGam_change h hβ)
 
 /- English proof (translation)
-Introduce `u hu m hm` and use `by rw [form_change] exact hχ _ (dualOE_change 1 h hu) _ (dualOE_change 1 h hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_change (N : ℕ) (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b)
     {χ : Matrix (Fin ρ) (Fin ρ) E}
@@ -226,9 +226,9 @@ theorem integral_change (N : ℕ) (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e 
   exact hχ _ (dualOE_change 1 h hu) _ (dualOE_change 1 h hm)
 
 /- English proof (translation)
-Rewrite using `[comb_change h (P⁻¹ a)]`. Establish `h1 : P⁻¹ a ᵥ* P = (1 : Matrix (Fin ρ) (Fin ρ) E) a`. Rewrite using `[← Matrix.nonsing_inv_mul P hP]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basis_inv (hP : IsUnit P.det) (h : ∀ a, cu₀.e a = ∑ b, P a b • cu.e b) (a : Fin ρ) :
     cu.e a = ∑ b, P⁻¹ a b • cu₀.e b := by
@@ -240,7 +240,7 @@ theorem basis_inv (hP : IsUnit P.det) (h : ∀ a, cu₀.e a = ∑ b, P a b • c
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : (P⁻¹.map cc)ᵀ * (P.map cc)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← map_cc_mul, Matrix.mul_nonsing_inv P hP, map_cc_one, Matrix.transpose_one]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv P hP, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inv (hP : IsUnit P.det) (χ : Matrix (Fin ρ) (Fin ρ) E) :
     P * (P⁻¹ * χ * (P⁻¹.map cc)ᵀ) * (P.map cc)ᵀ = χ := by
@@ -251,9 +251,9 @@ theorem conj_inv (hP : IsUnit P.det) (χ : Matrix (Fin ρ) (Fin ρ) E) :
     Matrix.mul_nonsing_inv P hP, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r ρ N X cu₀ cu P hP h H χ hχ`. Establish `hQ` using `basis_inv hP h`. Establish `H'` using `H _ (isHerm_conj P⁻¹ χ hχ)`. Prove the components needed by the constructor for the conclusion. Introduce `hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `integral_change N h (H'.1 (phase_change hQ hA))` as an intermediate fact. Rewrite `this` using `[conj_inv hP]`. Then use the resulting hypothesis. Introduce `hB`. Use `phase_change h (H'.2 (integral_change N hQ hB))` as an intermediate fact. Rewrite `this` using `[conj_inv hP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem expoMatch_of_basis_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ N : ℕ) (X : Data E r) (cu₀ cu : FJ.CuspFD X ρ) (P : Matrix (Fin ρ) (Fin ρ) E), IsUnit P.det → (∀ a, cu₀.e a = ∑ b, P a b • cu.e b) → (∀ χ, FJ.IsHermE χ → ((∀ β ∈ FJ.zGam X cu, ∃ n : ℤ, FJ.prE X χ β = n) ↔ ∀ u ∈ FJ.dualOE (FJ.XcFD 1 cu), ∀ m ∈ FJ.dualOE (FJ.XcFD 1 cu), (N : E) * ∑ i, ∑ k, u i * χ i k * cc (m k) ∈ Set.range (algebraMap (𝓞 E) E))) → ∀ χ, FJ.IsHermE χ → ((∀ β ∈ FJ.zGam X cu₀, ∃ n : ℤ, FJ.prE X χ β = n) ↔ ∀ u ∈ FJ.dualOE (FJ.XcFD 1 cu₀), ∀ m ∈ FJ.dualOE (FJ.XcFD 1 cu₀), (N : E) * ∑ i, ∑ k, u i * χ i k * cc (m k) ∈ Set.range (algebraMap (𝓞 E) E)) := by
   intro E _ _ _ r ρ N X cu₀ cu P hP h H χ hχ

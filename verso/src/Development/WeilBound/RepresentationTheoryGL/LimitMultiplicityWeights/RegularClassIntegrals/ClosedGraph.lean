@@ -132,7 +132,7 @@ def FDRight : Prop :=
       ∫ x in 𝓕, F (x * g) ∂μ = ∫ x in 𝓕, F x ∂μ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => measurable_const, fun _ => measurable_const, fun _ _ _ => Set.toFinite _, fun _ _ => Integrable.of_finite⟩`.
+Supply the required witnesses or components.
 -/
 example {H : Type} [Group H] [TopologicalSpace H] [MeasurableSpace H] {n : ℕ} (ι : H →* Matrix (Fin n) (Fin n) ℂ) :
     IsKer ι (Measure.dirac ()) (fun _ : Unit => fun _ => (1 : ℂ)) (fun _ _ => (1 : H)) :=

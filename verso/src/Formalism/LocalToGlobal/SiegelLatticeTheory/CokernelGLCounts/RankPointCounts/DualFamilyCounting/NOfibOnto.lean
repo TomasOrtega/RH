@@ -19,9 +19,9 @@ namespace Onto
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `h1 : Xc X x v = Xc X y v`. Use extensionality with `b a`. Simplify using `only [Xc, hX]`. Establish `h2 : Gc X u x v = Gc X u y v`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `b c`. Simplify using `only [Gc, hR]`. Simplify using `only [Hc, h1, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hc_congr (x y : BV X) (hX : ∀ p, x (Sum.inl (Sum.inl p)) = y (Sum.inl (Sum.inl p)))
     (hR : ∀ b, x (Sum.inl (Sum.inr b)) = y (Sum.inl (Sum.inr b))) : Hc X u x = Hc X u y := by
@@ -35,13 +35,13 @@ theorem hc_congr (x y : BV X) (hX : ∀ p, x (Sum.inl (Sum.inl p)) = y (Sum.inl 
   simp only [Hc, h1, h2]
 
 /- English proof (translation)
-Rewrite `hy` using `[aaLb, SetLike.mem_coe]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, -, l, hl, rfl⟩` from `hz`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `X.Lb_perp l hl a`. Simplify using `only [map_smul, h1, h2, smul_zero, and_self]`. Consider the case `zero`. Introduce `a`. Simplify using `only [map_zero, and_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add z w _ _ hz hw`. Introduce `a`. Simplify using `only [map_add, (hz a).1, (hz a).2, (hw a).1, (hw a).2, add_zero, and_self]`. Consider the case `smul r z _ hz`. Introduce `a`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.map_smul_of_tower, (hz a).1, (hz a).2, smul_zero, and_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aaLb_inW {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) : InW X y := by
   rw [aaLb, SetLike.mem_coe] at hy
@@ -62,7 +62,7 @@ theorem aaLb_inW {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) : InW X y
     simp only [LinearMap.map_smul_of_tower, (hz a).1, (hz a).2, smul_zero, and_self]
 
 /- English proof (translation)
-Conclude with `mem_closure_image (rowHom X u) (Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D b : Set D.host.E), ∃ l ∈ X.Lb, y = c • l}).toAddSubgroup z`.
+A detailed English derivation is pending.
 -/
 theorem mem_cl_row (b : Fin D.R.rS) (z : InfinitePlace X.B.I.F → Fin (D.R.k + 1) → ℂ) :
     z ∈ AddSubgroup.closure (rowV X u '' aaLb X b) ↔ ∃ y ∈ aaLb X b, rowV X u y = z := by
@@ -86,7 +86,7 @@ def imHom : D.host.E →+ (InfinitePlace X.B.I.F → ℝ) where
   map_add' s t := by funext v; simp
 
 /- English proof (translation)
-Conclude with `mem_closure_image (imHom X) (imH a) z`.
+A detailed English derivation is pending.
 -/
 theorem mem_cl_im (a : Fin D.R.rS) (z : InfinitePlace X.B.I.F → ℝ) :
     z ∈ cLat X u (Sum.inr (Sum.inr a)) ↔ ∃ t ∈ imH a, imHom X t = z := by
@@ -97,41 +97,37 @@ end Onto
 open Onto in
 
 /- English proof (translation)
-Introduce `D X u x hx`. Establish `hA : ∀ p : LsNc5.LtPair D.R.rS, ∃ t ∈ aaD D p.1.1 * (aaD D p.1.2)⁻¹, embV X t = x (Sum.inl (Sum.inl p))`. Introduce `p`. Establish `h` using `hx (Sum.inl (Sum.inl p))`. Simplify using `only [tauQ, sub_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mem_cl_emb X _ _).1 h`. Establish `hB : ∀ b : Fin D.R.rS, ∃ y ∈ aaLb X b, rowV X u y = x (Sum.inl (Sum.inr b))`. Introduce `b`. Establish `h` using `hx (Sum.inl (Sum.inr b))`. Simplify using `only [tauQ, sub_zero] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(mem_cl_row X u b _).1 h`. Establish `hC : ∀ p : LsNc5.LtPair D.R.rS, ∃ s ∈ aaD D p.1.1 * aaD D p.1.2, embV X s = fun v => x (Sum.inr (Sum.inl p)) v - Hc X u x v p.1.1 p.1.2 / 2` using `fun p => (mem_cl_emb X _ _).1 (hx (Sum.inr (Sum.inl p)))`. Establish `hD : ∀ a : Fin D.R.rS, ∃ t ∈ imH a, imHom X t = fun v => x (Sum.inr (Sum.inr a)) v - -((Hc X u x v a a).re * (embS D (X.pl v) (theta D)).im)` using `fun a => (mem_cl_im X u a _).1 (hx (Sum.inr (Sum.inr a)))`. Use `choose tA htA htA' using hA`. Use `choose xs hxs hxs' using hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `choose sC hsC hsC' using hC`. Use `choose tD htD htD' using hD`. Take `⟨X0, hX0⟩ : ∃ X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E, X0 = fun b a => if h : b < a then tA ⟨(b, a), h⟩ else if b = a then 1 else 0` from `⟨_, rfl⟩`. Establish `hup : ∀ b a : Fin D.R.rS, a < b → X0 b a = 0`. Introduce `b a h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hX0, not_lt_of_gt h, ne_of_gt h]`. Establish `hdg : ∀ a, X0 a a = 1`. Introduce `a`. Simplify using `[hX0]`. Establish `hX0p : ∀ p : LsNc5.LtPair D.R.rS, X0 p.1.1 p.1.2 = tA p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p`. Simplify using `[hX0, p.2]`. Establish `hW : ∀ b, InW X (xs b)` using `fun b => aaLb_inW X (hxs b)`. Establish `hGh : ∀ i j, star (Gp D X0 xs j i) = Gp D X0 xs i j`. Introduce `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun (Gp_herm X0 xs) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E, M = fun b a => if h : b < a then sC ⟨(b, a), h⟩ else if h' : a < b then -Gp D X0 xs b a - star (sC ⟨(a, b), h'⟩) else tD a - Gp D X0 xs a a * theta D` from `⟨_, rfl⟩`. Establish `hMlt : ∀ p : LsNc5.LtPair D.R.rS, M p.1.1 p.1.2 = sC p`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hM, p.2]`. Establish `hMgt : ∀ p : LsNc5.LtPair D.R.rS, M p.1.2 p.1.1 = -Gp D X0 xs p.1.2 p.1.1 - star (sC p)`. Introduce `p`. Simplify using `[hM, p.2, not_lt_of_gt p.2]`. Establish `hMd : ∀ a, M a a = tD a - Gp D X0 xs a a * theta D`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Simplify using `[hM]`. Establish `hth : star (theta D) = 1 - theta D`. Rewrite using `[Inh.tie_star]`. Conclude with `eq_sub_of_add_eq' (theta_spec D).2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hData : DataOK X X0 xs M`. Use `⟨hup, hdg, hW, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.conjTranspose_apply, Matrix.neg_apply]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hMlt ⟨(i, j), h⟩, hMgt ⟨(i, j), h⟩, star_sub, star_neg, star_star, hGh]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, hc⟩` from `htD i`. Rewrite using `[hMd, star_sub, star_mul', Inh.tie_star D (tD i), hc, hth, hGh]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hMlt ⟨(j, i), h⟩, hMgt ⟨(j, i), h⟩]`. Expand and normalize the polynomial expressions, which then agree. Establish `hXb : ∀ p, x (Sum.inl (Sum.inl p)) = blkQ X u X0 xs M (Sum.inl (Sum.inl p))`. Introduce `p`. Use `show _ = embV X (X0 p.1.1 p.1.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hX0p]`. Conclude with `(htA' p).symm`. Establish `hRb : ∀ b, x (Sum.inl (Sum.inr b)) = blkQ X u X0 xs M (Sum.inl (Sum.inr b))`. Introduce `b`. Conclude with `(hxs' b).symm`.
+Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hHc : ∀ v, Hc X u x v = (Gp D X0 xs).map (embS D (X.pl v))`. Introduce `v`. Rewrite using `[hc_congr X u x _ hXb hRb]`. Conclude with `Hc_blkQ X u X0 xs M hup hdg hW v`. Use `⟨X0, xs, M, hData, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Break down `p with ((p | b) | (p | a))` into its components or cases. Conclude with `(hXb p).symm`. Conclude with `(hRb b).symm`. Use function extensionality and compare the values at `v show (embS D (X.pl v) (M p.1.1 p.1.2) - star (embS D (X.pl v) (M p.1.2 p.1.1))) / 2 = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `congrFun (hsC' p) v`. Simplify using `only [embV, hHc v, Matrix.map_apply] at hs`. Establish `e1 : star (embS D (X.pl v) (M p.1.2 p.1.1)) = -embS D (X.pl v) (Gp D X0 xs p.1.1 p.1.2) - embS D (X.pl v) (sC p)`. Rewrite using `[hMgt, ← emb_star X, star_sub, star_neg, star_star, hGh, map_sub, map_neg]`. Rewrite using `[e1, hMlt]`.
-
-Take the linear combination `hs`. Use function extensionality and compare the values at `v show (embS D (X.pl v) (M a a)).im = _`. Establish `hs` using `congrFun (htD' a) v`. Simplify using `only [imHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hHc v, Matrix.map_apply] at hs`. Establish `hr : (embS D (X.pl v) (Gp D X0 xs a a)).im = 0`.
-
-Use `congrArg (embS D (X.pl v)) (hGh a a)` as an intermediate fact. Rewrite `this` using `[emb_star X]`. Conclude with `Complex.conj_eq_iff_im.mp this`. Rewrite using `[hMd, map_sub, map_mul, Complex.sub_im, Complex.mul_im, hr]`. Take the linear combination `hs`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fibOnto_holds : FibOnto := by
   intro D X u x hx

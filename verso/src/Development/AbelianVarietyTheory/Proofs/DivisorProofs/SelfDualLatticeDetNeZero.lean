@@ -13,13 +13,13 @@ open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J L hL hdual hdet`. Take `⟨y, hy, hyJ⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Establish `hmem : ∀ c : E, c • y ∈ L`. Introduce `c`. Rewrite using `[hdual]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _ o`. Establish `h0 : form σ J (c • y) x = 0`. Unfold `form`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.smul_vecMul, hyJ, smul_zero, zero_dotProduct]`. Rewrite using `[h0, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_zero`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hy`. Establish `hi' : y i ≠ 0` using `hi`. Establish `htop : L.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin n => E) i) = ⊤ := by`. Rewrite using `[eq_top_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e _`. Use `⟨(e / y i) • y, hmem _, ?_⟩` and prove the remaining obligations. Simplify using `[hi']`. Establish `hfin : Module.Finite (𝓞 E) E` using `⟨htop ▸ hL.fg.map _⟩`. Conclude with `RingOfIntegers.not_isField E (isField_of_isIntegral_of_isField (R := 𝓞 E) (S := E) (FaithfulSMul.algebraMap_injective _ _) (Field.toIsField E))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_lattice_trace_selfDual :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)

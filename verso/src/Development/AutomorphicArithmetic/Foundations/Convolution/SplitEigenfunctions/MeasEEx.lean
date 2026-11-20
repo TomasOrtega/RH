@@ -8,7 +8,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _`. Set `μ : Measure (G1 E)` to `Measure.haar`. Take `⟨D, hD, -, hf⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (Gam E)`. Conclude with `⟨⟨μ, D, inferInstance, M.unimod E μ, hD, hf μ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.measEEx :
     MeasEEx := by

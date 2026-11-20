@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `Γ k _ _ n H χ hinj`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`. Take `⟨hH, hz⟩` from `hcon`. Establish `hz' : ∀ g, g ∉ H → ∑ i, (χ i g : k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg`. Assume the negation of the conclusion as `h`. Conclude with `hz ⟨g, hg, h⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0, g0 ∉ H := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hH` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `x _`. Assume the negation of the conclusion as `hx`. Conclude with `h ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Fin (n + 1) → (H →* k)` to `fun i => (Units.coeHom k).comp ((χ i).comp H.subtype)`. Establish `hψ : Function.Injective ψ`. Introduce `i j hij`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `DFunLike.congr_fun hij x`. Establish `hli` using `(linearIndependent_monoidHom H k).comp ψ hψ`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `h0` using `hli (fun i => (χ i g0 : k)) (by`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : g0 * (h : Γ) ∉ H` using `fun hm => hg0 ((H.mul_mem_cancel_right h.2).1 hm)`. Use `hz' _ hm` as an intermediate fact. Simplify using `only [map_mul, Units.val_mul] at this`. Simplify `this) 0` using `[ψ, Finset.sum_apply]`. Conclude with `(χ 0 g0).ne_zero h0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.trNe :
     ∀ {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (H : Subgroup Γ) (χ : Fin (n + 1) → Γ →* kˣ), (Function.Injective fun i => (χ i).comp H.subtype) →

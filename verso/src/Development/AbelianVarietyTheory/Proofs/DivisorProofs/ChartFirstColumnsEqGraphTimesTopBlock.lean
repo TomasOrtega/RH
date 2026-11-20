@@ -7,13 +7,11 @@ namespace GlobalTheory.ChartGraph
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular (chartMatrixTopBlock X z τ) (by`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Use `show nmat X z τ (Fin.castLE X.p0_le i) (Fin.castLE X.p0_le j) = 0`. Establish `h1 : ¬ (Fin.castLE X.p0_le j < Fin.castLE X.p0_le i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [Fin.coe_castLE]`. Conclude with `not_lt.mpr (le_of_lt hij')`. Establish `h2 : Fin.castLE X.p0_le i ≠ Fin.castLE X.p0_le j`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `ne_of_lt hij'` to reduce the goal to its premises. Conclude with `Fin.castLE_injective _ h`. Simplify using `only [nmat, dif_neg h1, if_neg h2])]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`.
-
-Use `show nmat X z τ (Fin.castLE X.p0_le i) (Fin.castLE X.p0_le i) = 1`. Simplify using `[nmat]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartMatrixTopBlock_det_eq_one (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : (chartMatrixTopBlock X z τ).det = 1 := by
   rw [Matrix.det_of_lowerTriangular (chartMatrixTopBlock X z τ) (by
@@ -31,23 +29,23 @@ theorem chartMatrixTopBlock_det_eq_one (X : Data E r) (z : V (nd X)) (τ : X.Ψ)
   simp [nmat]
 
 /- English proof (translation)
-Distinguish the cases in `hm : (m : ℕ) < X.p0`. Establish `hrow : ∀ c : Fin X.p0, X.lowBlock (graphCoord X z) τ m (Fin.castLE X.p0_le c) = if (⟨m, hm⟩ : Fin X.p0) = c then 1 else 0`. Introduce `c`. Simplify using `only [Data.lowBlock, Matrix.of_apply]`. Rewrite using `[dif_neg (by omega)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [add_zero]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : (m : ℕ) = (c : ℕ)` using `by simpa using congrArg (fun t : Fin r => (t : ℕ)) h`. Conclude with `Fin.ext hv`. Introduce `h`. Use `ext`. Rewrite using `[← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [hrow, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Both sides reduce to the same expression. Establish `hm' : X.p0 ≤ (m : ℕ)` using `not_lt.mp hm`. Establish `hrow : ∀ c : Fin X.p0, X.lowBlock (graphCoord X z) τ m (Fin.castLE X.p0_le c) = graphCoord X z τ ⟨(m : ℕ) - X.p0, by have` using `m.isLt; omega⟩ c := by`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Simplify using `only [Data.lowBlock, Matrix.of_apply]`. Establish `hne : m ≠ Fin.castLE X.p0_le c`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use `c.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, dif_pos ⟨hm', c.isLt⟩, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [hrow]`. Establish `hdet : IsUnit (chartMatrixTopBlock X z τ).det` using `by rw [chartMatrixTopBlock_det_eq_one]; exact isUnit_one`. Establish `key : chartBottomLeftBlock X z τ * (chartMatrixTopBlock X z τ)⁻¹ * chartMatrixTopBlock X z τ = chartBottomLeftBlock X z τ`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.mul_one]`. Use `congrFun (congrFun key ⟨(m : ℕ) - X.p0, by have := m.isLt; omega⟩) a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply]`. Establish `h2 : chartBottomLeftBlock X z τ ⟨(m : ℕ) - X.p0, by have` using `m.isLt; omega⟩ a = nmat X z τ m (Fin.castLE X.p0_le a) := by show nmat X z τ ⟨X.p0 + ((m : ℕ) - X.p0), _⟩ (Fin.castLE X.p0_le a) = _`. Use `congr 1`. Use `ext`. Simplify using `only`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(this.trans h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem entry_eq (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (m : Fin r) (a : Fin X.p0) :
     nmat X z τ m (Fin.castLE X.p0_le a) =
@@ -90,11 +88,11 @@ theorem entry_eq (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (m : Fin r) (a : Fin 
     exact (this.trans h2).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x z τ`. Use `⟨chartMatrixTopBlock_det_eq_one X z τ, fun a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `show (mat x τ * mat (nmat X z) τ) k (Fin.castLE X.p0_le a) = ∑ c : Fin X.p0, chartMatrixTopBlock X z τ c a * (mat x τ * X.lowBlock (graphCoord X z) τ) k (Fin.castLE X.p0_le c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `show mat x τ k m * nmat X z τ m (Fin.castLE X.p0_le a) = _`. Rewrite using `[entry_eq, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cols_graph : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r)
     (z : V (nd X)) (τ : X.Ψ), (chartMatrixTopBlock X z τ).det = 1 ∧ ∀ a : Fin X.p0,

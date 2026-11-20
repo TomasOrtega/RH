@@ -6,15 +6,15 @@ open MvPolynomial GlobalTheory.Capelli Formalism.BasicNotions.TH GlobalTheory.Jo
 namespace GlobalTheory.JointHarm
 
 /- English proof (translation)
-Establish `key : ∀ k, ∑ i ∈ Finset.Ico (a : ℕ) (a + k), (α i - α (i + 1)) + α (a + k) = α a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← add_assoc, Finset.sum_Ico_succ_top (by omega)]`. Use `hα (Nat.le_succ (a + k))` as an intermediate fact. Simplify using `only [Nat.succ_eq_add_one] at this`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `key (n - a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[show (a : ℕ) + (n - a) = n by have := a.2; omega, h0, add_zero]`. Rewrite using `[← h1]`. Use `Finset.sum_bij (fun i _ => (i : ℕ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ici, Fin.le_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.mem_Ico.2 ⟨hi, i.2⟩`. Introduce `i _ j _ h`. Conclude with `Fin.ext h`. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_Ico]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨b, hb.2⟩, Finset.mem_Ici.2 (Fin.le_def.2 hb.1), rfl⟩`. Introduce `_ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_Ici_sub_succ {n : ℕ} (α : ℕ → ℕ) (hα : Antitone α) (h0 : α n = 0) (a : Fin n) :
     ∑ i ∈ Finset.Ici a, (α (i : ℕ) - α ((i : ℕ) + 1)) = α a := by
@@ -43,27 +43,25 @@ theorem sum_Ici_sub_succ {n : ℕ} (α : ℕ → ℕ) (hα : Antitone α) (h0 : 
     rfl
 
 /- English proof (translation)
-Distinguish the cases in `hP0 : P = 0`. Conclude with `⟨0, by simp, by simp [hP0]⟩`. Take `⟨hru, hcu, hrw, hcw⟩` from `hP`. Establish `hrow : ∀ a : Fin p, ∀ m ∈ P.support, ∑ k, m (z (a, k)) = α a` using `fun a m hm => by`. Conclude with `(rowOp_eq_smul_iff z a P _).1 (hrw a) m hm` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : ∀ k : Fin r, ∀ m ∈ P.support, ∑ a, m (z (a, k)) = α k` using `fun k m hm => by`. Conclude with `(colOp_eq_smul_iff z k P _).1 (hcw k) m hm` after adjusting the coercions. Set `e : Fin (min p r) → Fin p` to `Fin.castLE (min_le_left p r)`. Set `f : Fin (min p r) → Fin r` to `Fin.castLE (min_le_right p r)`. Establish `hei : Function.Injective e` using `Fin.castLE_injective _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi : Function.Injective f` using `Fin.castLE_injective _`. Establish `hve : ∀ a k, a ∉ Set.range e → z (a, k) ∉ P.vars`. Introduce `a k ha hv`. Take `⟨m, hm, hv⟩` from `(mem_vars_iff_mem_support _).1 hv`. Establish `h1` using `hrow a m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0 a (not_lt.1 fun h' => ha ⟨⟨a, h'⟩, rfl⟩), Finset.sum_eq_zero_iff]`. Conclude with `Finsupp.mem_support_iff.1 hv (h1 k (Finset.mem_univ _))`. Establish `hvf : ∀ a k, k ∉ Set.range f → z (a, k) ∉ P.vars`. Introduce `a k hk hv`. Take `⟨m, hm, hv⟩` from `(mem_vars_iff_mem_support _).1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hcol k m hm`. Rewrite `h1` using `[h0 k (not_lt.1 fun h' => hk ⟨⟨k, h'⟩, rfl⟩), Finset.sum_eq_zero_iff]`. Conclude with `Finsupp.mem_support_iff.1 hv (h1 a (Finset.mem_univ _))`. Take `⟨Q, hQ, hPQ⟩` from `eq_mul_prod_minors (fun w : Fin (min p r) × Fin (min p r) => z (e w.1, f w.2)) (hz.comp (hei.prodMap hfi)) P (fun i => α i - α (i + 1)) (fun a m hm => by`. Rewrite using `[sum_Ici_sub_succ α hα (h0 _ le_rfl)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (hrow (e a) m hm)` and prove the remaining obligations. Use `Fintype.sum_of_injective f hfi _ _ (fun k hk => ?_) fun _ => rfl` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `hvf _ k hk ((mem_vars_iff_mem_support _).2 ⟨m, hm, Finsupp.mem_support_iff.2 h1⟩))`. Use the proof step `(fun i j hij => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁` using `(rowOp_apply _ _ _ _).symm.trans (hru (e i) (e j) hij)`. Use `((rowAdd_invariant_iff (fun k => z (e i, f k)) (fun k => z (e j, f k)) (fun k l h => hfi (by simpa using hz h)) (fun k l h => hij.ne (hei (congrArg Prod.fst (hz h)))) P).out 2 1).1 (Eq.trans ?_ h₁)` and prove the remaining obligations. Use `Fintype.sum_of_injective f hfi _ _ (fun k hk => ?_) fun _ => rfl` and prove the remaining obligations. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hvf _ k hk), mul_zero])`. Use the proof step `(fun i j hij => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁` using `(colOp_apply _ _ _ _).symm.trans (hcu (f i) (f j) hij)`. Use `((rowAdd_invariant_iff (fun k => z (e k, f i)) (fun k => z (e k, f j)) (fun k l h => hei (by simpa using hz h)) (fun k l h => hij.ne (hfi (congrArg Prod.snd (hz h)))) P).out 2 1).1 (Eq.trans ?_ h₁)` and prove the remaining obligations. Use `Fintype.sum_of_injective e hei _ _ (fun k hk => ?_) fun _ => rfl` and prove the remaining obligations. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hve k _ hk), mul_zero])`. Establish `hPQ' : P = Q * minorPoly z α` using `hPQ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨Q, ?_, hPQ'⟩` and prove the remaining obligations. Establish `hsub : ∀ s ∈ Q.vars, s ∈ P.vars`. Introduce `s hs`. Rewrite `hs`, the goal using `[mem_vars_iff_degreeOf_ne_zero]`. Rewrite `hP0`, the goal using `[hPQ']`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[degreeOf_mul_eq (left_ne_zero_of_mul hP0) (right_ne_zero_of_mul hP0)]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨a, k⟩ hw`. Distinguish the cases in `ha : a ∈ Set.range e`. Distinguish the cases in `hk : k ∈ Set.range f`.
-
-Take `⟨a, rfl⟩` from `ha`. Take `⟨k, rfl⟩` from `hk`. Conclude with `hQ (a, k) hw`. Conclude with `hvf a k hk (hsub _ hw)`. Conclude with `hve a k ha (hsub _ hw)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_minorPoly (σ : Type) [DecidableEq σ] (p r : ℕ) (z : Fin p × Fin r → σ)
     (hz : Function.Injective z) (α : ℕ → ℕ) (hα : Antitone α) (h0 : ∀ i, min p r ≤ i → α i = 0)

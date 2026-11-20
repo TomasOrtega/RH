@@ -11,7 +11,7 @@ section Core
 variable {H E : Type} [Group H] [Field E]
 
 /- English proof (translation)
-Use `show adj X = -X ↔ _`. Rewrite using `[← Matrix.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mem_sp4_iff {X : M4 E} : X ∈ sp4 E ↔ ∀ a b, (sgn a * sgn b) • X b.rev a.rev = -X a b := by
   show adj X = -X ↔ _
@@ -19,19 +19,19 @@ private theorem mem_sp4_iff {X : M4 E} : X ∈ sp4 E ↔ ∀ a b, (sgn a * sgn b
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ (r : H → M4 (DualNumber E)), (∀ g a b, r g a b = ⟨if a = b then (χ a g : E) else 0, γ g a b * χ b g⟩) → ∀ g h a b, (r (g * h) a b = (r g * r h) a b ↔ γ (g * h) a b = γ g a b + (χ a g : E) / χ b g * γ h a b)`. Introduce `r hr g h a b`. Establish `hf : ∀ g a b, (r g a b).fst = if a = b then (χ a g : E) else 0` using `fun g a b => by rw [hr]; rfl`. Establish `hs : ∀ g a b, (r g a b).snd = γ g a b * χ b g` using `fun g a b => by rw [hr]; rfl`. Establish `u1` using `Units.ne_zero (χ b g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2` using `Units.ne_zero (χ b h)`. Rewrite using `[TrivSqZeroExt.ext_iff, Matrix.mul_apply, TrivSqZeroExt.snd_sum, TrivSqZeroExt.fst_sum]`. Simplify using `only [DualNumber.snd_mul, TrivSqZeroExt.fst_mul, hf, hs, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, map_mul, Units.val_mul]`. Apply the tactic sequence `rw [and_iff_right (by split_ifs with h <;> simp [h])]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Clear the denominators using the available nonvanishing facts. Apply `mul_right_cancel₀ u2` to reduce the goal to its premises. Take the linear combination `e`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun ⟨r, hr⟩ g h a b => (key r hr g h a b).1 (by rw [map_mul]), fun hz => ?_⟩` and prove the remaining obligations. Set `r : H → M4 (DualNumber E)` to `fun g => Matrix.of fun a b => ⟨if a = b then (χ a g : E) else 0, γ g a b * χ b g⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨⟨⟨r, ?_⟩, fun g h => Matrix.ext fun a b => (key r (fun _ _ _ => rfl) g h a b).2 (hz g h a b)⟩, fun _ _ _ => rfl⟩` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1 : γ 1 a b = 0` using `by simpa using hz 1 1 a b`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Use `show (if a = b then (χ a 1 : E) else 0) = _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Use `show γ 1 a b * χ b 1 = _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[h1]`. Simplify using `[h, h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hom_iff (χ : Fin 4 → H →* Eˣ) (γ : H → M4 E) :
     (∃ r : H →* M4 (DualNumber E), ∀ g a b, r g a b = ⟨if a = b then (χ a g : E) else 0, γ g a b * χ b g⟩) ↔
@@ -91,7 +91,7 @@ Evaluate the decidable proposition.
 private theorem wt_pos_ne : ∀ a b a' b' : Fin 4, a < b → b' ≤ a' → wt a' b' ≠ wt a b := by decide
 
 /- English proof (translation)
-Rewrite using `[dimsL, if_neg h, if_neg]`. Apply the tactic sequence `rintro (rfl | rfl | rfl | rfl | rfl) <;> exact h (by decide)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dimsL_out (j : ℤ × ℤ) (h : j ∉ wts) : dimsL j = 0 := by
   rw [dimsL, if_neg h, if_neg]
@@ -108,9 +108,9 @@ Evaluate the decidable proposition.
 private theorem sgn_sq : ∀ a b : Fin 4, sgn a * sgn b * (sgn a * sgn b) = 1 := by decide
 
 /- English proof (translation)
-Use `⟨Matrix.single a b 1 - adj (Matrix.single a b 1), mem_sp4_iff.2 fun i j => ?_, ?_, fun i j h => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, adj_apply, Fin.rev_rev, sgn_rev, smul_sub, smul_smul, sgn_sq, one_smul, neg_sub]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [adj_apply, sgn, Fin.rev, Matrix.single_apply] <;> norm_num`. Rewrite using `[Matrix.sub_apply, adj_apply, Matrix.single_apply_of_ne, Matrix.single_apply_of_ne, smul_zero, sub_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h (wt_rev _ _).symm`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem ex_root [CharZero E] (a b : Fin 4) :
     ∃ X ∈ sp4 E, X a b ≠ 0 ∧ ∀ a' b', wt a' b' ≠ wt a b → X a' b' = 0 := by
@@ -131,21 +131,19 @@ private def Q (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (j : ℤ × ℤ) (γ 
       (∀ a b, Continuous fun g => γ g a b) ∧ ∀ g a b, wt a b ≠ j → γ g a b = 0
 
 /- English proof (translation)
-Establish `hab : a ≠ b` using `hba.ne'`. Establish `hr : ∀ g a b, (χ b.rev g : E) / χ a.rev g = χ a g / χ b g` using `fun g a b => by`. Rewrite using `[div_eq_div_iff (Units.ne_zero _) (Units.ne_zero _), hθ, mul_comm, hθ]`. Establish `hw : ∀ a', wt a' a' ≠ wt a b` using `fun a' h => hab ((wt_eq_zero a b).1 (h.symm.trans ((wt_eq_zero _ _).2 rfl)))`. Take `⟨X, hX, hX0, hXw⟩` from `ex_root (E := E) a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `v : H → M4 E` to `fun g => Matrix.of fun a b => (1 - (χ a g : E) / χ b g) * X a b`. Establish `hv : ∀ g a b, v g a b = (1 - (χ a g : E) / χ b g) * X a b` using `fun _ _ _ => rfl`. Establish `hvS : v ∈ S`. Use `(hS v).2 ⟨fun g h a b => ?_, fun g => mem_sp4_iff.2 fun a b => ?_, ⟨X, hX, fun g a b _ => rfl⟩, fun s _ a' => ?_, fun a b => ?_, fun g a' b' h => ?_⟩` and prove the remaining obligations. Establish `u1` using `Units.ne_zero (χ b g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `u2` using `Units.ne_zero (χ b h)`. Simplify using `only [hv, map_mul, Units.val_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv, hv, hr, ← mul_smul_comm, mem_sp4_iff.1 hX, mul_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hXw _ _ (hw a'), mul_zero]`. Conclude with `(continuous_const.sub (hc a b)).mul continuous_const`. Rewrite using `[hv, hXw _ _ h, mul_zero]`. Establish `hk : 1 - (χ a g0 : E) / χ b g0 ≠ 0` using `fun h => h0 (Units.ext ((div_eq_one_iff_eq (Units.ne_zero _)).1 (sub_eq_zero.1 h).symm))`. Use `(finrank_eq_one_iff_of_nonzero' (⟨v, hvS⟩ : S) fun h => ?_).2 fun ⟨γ, hγ⟩ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun (congrFun (congrFun (congrArg Subtype.val h) g0) a) b` as an intermediate fact. Conclude with `mul_ne_zero hk hX0 this`. Take `⟨-, h1, ⟨Y, hY, h2⟩, -, -, h3⟩` from `(hS γ).1 hγ`. Use `⟨Y a b / X a b, Subtype.ext (funext fun g => Matrix.ext fun a' b' => ?_)⟩` and prove the remaining obligations. Use `show Y a b / X a b * v g a' b' = γ g a' b'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : Y a b / X a b * v g a b = γ g a b`. Rewrite using `[hv, h2 g a b hba]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h : wt a' b' = wt a b`. Break down `wt_fib a b a' b' hab h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `e1` using `mem_sp4_iff.1 (h1 g) b.rev a.rev`. Establish `e2` using `mem_sp4_iff.1 (((hS v).1 hvS).2.1 g) b.rev a.rev`. Rewrite `e1`, `e2` using `[Fin.rev_rev, Fin.rev_rev]`. Rewrite using `[← neg_inj, ← e1, ← mul_neg, ← e2, ← e, mul_smul_comm]`.
-
-Rewrite using `[h3 g a' b' h, hv, hXw _ _ h, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dim_root [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (θ : H → E)
     (hθ : ∀ g a, (χ a.rev g : E) * χ a g = θ g) (hc : ∀ a b, Continuous fun g => (χ a g : E) / χ b g)
@@ -191,17 +189,17 @@ private theorem dim_root [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Pro
     · rw [h3 g a' b' h, hv, hXw _ _ h, mul_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hr : ∀ g a b, (χ b.rev g : E) / χ a.rev g = χ a g / χ b g` using `fun g a b => by`. Rewrite using `[div_eq_div_iff (Units.ne_zero _) (Units.ne_zero _), hθ, mul_comm, hθ]`. Take `⟨X, hX, hX1, hXw, hY⟩` from `UpperTheory.exists_sp4_root_vector_unique_on_weight E a b hab.ne`. Set `f : S →ₗ[E] T` to `{ toFun := fun γ => ⟨fun g => γ.1 g a b, (hT _).2 ⟨((hS _).1 γ.2).2.2.2.2.1 a b, fun g h => ((hS _).1 γ.2).1 g h a b⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Bijective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨(injective_iff_map_eq_zero f).2 fun ⟨γ, hγ⟩ h => ?_, fun ⟨z, hz⟩ => ?_⟩` and prove the remaining obligations. Take `⟨-, h2, -, -, -, h5⟩` from `(hS γ).1 hγ`. Use `Subtype.ext (funext fun g => Matrix.ext fun a' b' => ?_)` and prove the remaining obligations. Use `show γ g a' b' = 0`. Establish `h0 : γ g a b = 0` using `congrFun (congrArg Subtype.val h) g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : wt a' b' = wt a b`. Rewrite using `[hY _ (h2 g) a' b' e, h0, zero_mul]`. Conclude with `h5 g a' b' e`. Take `⟨z1, z2⟩` from `(hT z).1 hz`. Set `γ : H → M4 E` to `fun g => z g • X`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hγ : ∀ g a b, γ g a b = z g * X a b` using `fun _ _ _ => rfl`. Use `⟨⟨γ, (hS γ).2 ⟨fun g h a' b' => ?_, fun g => Submodule.smul_mem _ _ hX, ⟨0, zero_mem _, fun g a' b' h => ?_⟩, fun s _ a' => ?_, fun a' b' => z1.mul continuous_const, fun g a' b' h => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hγ]`. Distinguish the cases in `e : wt a' b' = wt a b`. Break down `wt_fib a b a' b' hab.ne e with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[z2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[z2, hr]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hXw _ _ e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ, hXw _ _ (wt_pos_ne a b a' b' hab h.le), mul_zero, Matrix.zero_apply, mul_zero]`. Rewrite using `[hγ, hXw _ _ (wt_pos_ne a b a' a' hab le_rfl), mul_zero]`. Rewrite using `[hγ, hXw _ _ h, mul_zero]`. Conclude with `Subtype.ext (funext fun g => (hγ g a b).trans (by rw [hX1, mul_one]))`. Conclude with `(LinearEquiv.ofBijective f hf).finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dim_pos [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (θ : H → E)
     (hθ : ∀ g a, (χ a.rev g : E) * χ a g = θ g) (a b : Fin 4) (hab : a < b) (T : Submodule E (H → E))
@@ -243,19 +241,17 @@ private theorem dim_pos [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Prop
   exact (LinearEquiv.ofBijective f hf).finrank_eq
 
 /- English proof (translation)
-Set `f : S →ₗ[E] E × E` to `{ toFun := fun γ => (γ.1 σ 0 0, γ.1 σ 1 1) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Bijective f`. Use `⟨(injective_iff_map_eq_zero f).2 fun ⟨γ, hγ⟩ h => ?_, fun ⟨x, y⟩ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, -, h3, h4, h5⟩` from `(hS γ).1 hγ`. Establish `hd : ∀ a, γ σ a a = 0 → ∀ g, γ g a a = 0` using `fun a ha g => congrFun (hun (fun g => γ g a a) (h4 a a) (fun g h => by simpa using h1 g h a a) (fun g hg => h3 g hg a) ha) g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `d0` using `hd 0 (congrArg Prod.fst h)`. Establish `d1` using `hd 1 (congrArg Prod.snd h)`. Use `Subtype.ext (funext fun g => Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use `show γ g a b = 0`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Establish `e` using `mem_sp4_iff.1 (h2 g) a a`. Use `fin_cases a`. Conclude with `d0 g`. Conclude with `d1 g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `neg_eq_zero.1 (e.symm.trans ((congrArg _ (d1 g)).trans (smul_zero _)))`. Conclude with `neg_eq_zero.1 (e.symm.trans ((congrArg _ (d0 g)).trans (smul_zero _)))`. Conclude with `h5 g a b fun e => hab ((wt_eq_zero a b).1 e)`. Take `⟨u, u1, u2, u3, u4⟩` from `hex x`. Take `⟨w, w1, w2, w3, w4⟩` from `hex y`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `γ : H → M4 E` to `fun g => Matrix.diagonal ![u g, w g, -w g, -u g]`. Use `⟨⟨γ, (hS γ).2 ⟨fun g h a b => ?_, fun g => mem_sp4_iff.2 fun a b => ?_, ⟨0, zero_mem _, fun g a b h => by simp [γ, h.ne']⟩, fun s hs a => ?_, fun a b => ?_, fun g a b h => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab fin_cases a <;> simp [γ, u2, w2, add_comm]`. Simplify using `[γ, hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [γ, sgn, Fin.rev, Matrix.diagonal_apply]`. Apply the tactic sequence `fin_cases a <;> simp [γ, u3 s hs, w3 s hs]`. Distinguish the cases in `hab : a = b`. Substitute `hab fin_cases a exacts [u1, w1, w1.neg, u1.neg]` using the available equality. Simplify using `[γ, hab, continuous_const]`.
-
-Conclude with `Matrix.diagonal_apply_ne _ fun e => h ((wt_eq_zero a b).2 e)`. Conclude with `Prod.ext u4 w4`. Rewrite using `[(LinearEquiv.ofBijective f hf).finrank_eq]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem dim_zero (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (σ : H)
     (hex : ∀ e : E, ∃ u : H → E, Continuous u ∧ (∀ g h, u (g * h) = u g + u h) ∧ (∀ g, I g → u g = 0) ∧ u σ = e)
@@ -305,17 +301,15 @@ private theorem dim_zero (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (σ : H)
   simp
 
 /- English proof (translation)
-Set `m : (H → M4 E) ≃ₗ[E] (H → M4 E)` to `{ toFun := fun γ g => Matrix.of fun a b => γ g a b * χ b g invFun := fun γ g => Matrix.of fun a b => γ g a b * (χ b g : E)⁻¹ map_add' := fun x y => funext fun g => Matrix.ext fun a b => add_mul _ _ _ map_smul' := fun x y => funext fun g => Matrix.ext fun a b => mul_assoc _ _ _ le …`. Establish `hm : ∀ γ g a b, m γ g a b = γ g a b * χ b g` using `fun _ _ _ _ => rfl`. Establish `hQ : ∀ γ, γ ∈ S.comap (m : (H → M4 E) →ₗ[E] (H → M4 E)) ↔ Q χ I j γ` using `fun γ => by show m γ ∈ S ↔ _`. Rewrite using `[hS]`. Simplify using `only [hm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨r, h1, h2⟩, h3, h4⟩`. Establish `h5 : ∀ a b, Continuous fun g => γ g a b` using `fun a b => ((h3 a b).mul (hci b)).congr fun g => mul_inv_cancel_right₀ (Units.ne_zero _) _`. Take `⟨h6, h7, h8⟩` from `(hP γ r h1 h5).1 h2`. Conclude with `⟨(hom_iff χ γ).1 ⟨r, h1⟩, h6, h7, h8, h5, fun g a b h => (mul_eq_zero.1 (h4 g a b h)).resolve_right (Units.ne_zero _)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3, h4, h5, h6⟩`. Take `⟨r, hr⟩` from `(hom_iff χ γ).2 h1`. Conclude with `⟨⟨r, hr, (hP γ r hr h5).2 ⟨h2, h3, h4⟩⟩, fun a b => (h5 a b).mul (hc b), fun g a b h => by rw [h6 g a b h, zero_mul]⟩`. Rewrite using `[← (m.ofSubmodule' S).finrank_eq]`. Distinguish the cases in `h1 : j ∈ wts`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Break down `wt_cases j h1 with rfl | ⟨a, b, hab, rfl, e⟩ | ⟨a, b, hab, rfl, e⟩` into its components or cases. Conclude with `dim_zero χ I σ hex hun _ hQ`. Take `⟨T, hT, h2⟩` from `hpos a b hab`. Rewrite using `[e, ← h2]`. Conclude with `dim_pos χ I θ hθ a b hab T hT _ hQ`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `hne a b hab.ne'`. Rewrite using `[e]`. Conclude with `dim_root χ I θ hθ (fun a b => ((hc a).mul (hci b)).congr fun g => (div_eq_mul_inv _ _).symm) a b hab g hg _ hQ`. Rewrite using `[dimsL_out j h1]`. Use `(congrArg (fun T : Submodule E (H → M4 E) => finrank E T) (eq_bot_iff.2 fun γ hγ => ?_)).trans (finrank_bot _ _)` and prove the remaining obligations.
-
-Conclude with `funext fun g => Matrix.ext fun a b => ((hQ γ).1 hγ).2.2.2.2.2 g a b fun h => h1 (h ▸ wt_mem a b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem dim_core [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Prop) (θ : H → E) (σ : H)
     (hθ : ∀ g a, (χ a.rev g : E) * χ a g = θ g) (hc : ∀ a, Continuous fun g => (χ a g : E))
@@ -374,7 +368,7 @@ private theorem dim_core [CharZero E] (χ : Fin 4 → H →* Eˣ) (I : H → Pro
 end Core
 
 /- English proof (translation)
-Establish `: IsLocallyConstant φ` using `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨(fun y => x⁻¹ * y) ⁻¹' φ.ker, h.preimage (continuous_const.mul continuous_id), by simp, fun y hy => by`. Use `MonoidHom.mem_ker.1 hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm⟩`. Conclude with `(this.comp f).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of_open {H O E : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Group O]
     [TopologicalSpace E] (φ : H →* O) (h : IsOpen (φ.ker : Set H)) (f : O → E) : Continuous fun g => f (φ g) := by
@@ -386,25 +380,21 @@ private theorem cont_of_open {H O E : Type} [Group H] [TopologicalSpace H] [IsTo
   exact (this.comp f).continuous
 
 /- English proof (translation)
-Introduce `hL Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ j S hS`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap ℚ_[l] E).injective`. Use `haveI : IsGalois ℚ Ω := {}`. Use `letI : TopologicalSpace E := moduleTopology ℚ_[l] E`. Use `haveI : IsModuleTopology ℚ_[l] E := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing E := IsModuleTopology.isTopologicalRing ℚ_[l] E`. Take `⟨-, f2, -, -, -, f4, f3, -, -, -, -, -, f5, -⟩` from `facts D hD`. Establish `hT : l ∈ D.T` using `Finset.mem_insert_self _ _`. Establish `hp : l.Prime` using `Fact.out`. Set `ι : c.Oˣ →* Eˣ` to `Units.map (algebraMap c.O E).toMonoidHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `Units.map_injective (IsFractionRing.injective c.O E)`. Establish `hdiv : ∀ (x y : c.Oˣ), algebraMap c.O E ((x * y⁻¹ : c.Oˣ) : c.O) = algebraMap c.O E x / algebraMap c.O E y` using `fun x y => by simp [div_eq_mul_inv]`. Set `χ : Fin 4 → D.Gp l →* Eˣ` to `fun a => ι.comp ((D.ps a).comp (D.Gp l).subtype)`. Establish `hχ' : ∀ a g, (χ a g : E) = algebraMap c.O E (D.ps a g : c.Oˣ)` using `fun _ _ => rfl`. Establish `hr0 : ∀ (g : D.Gp l) a b, algebraMap c.O E (D.r0At l g a b) = if a = b then (χ a g : E) else 0` using `fun g a b => by show algebraMap c.O E (Matrix.diagonal (fun a => ((D.ps a g : c.Oˣ) : c.O)) a b) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.diagonal_apply, hχ']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcy : Continuous fun g => algebraMap c.O E (chiO ℚ Ω l c.O g : c.Oˣ)`. Establish `h1 : Continuous (algebraMap ℚ_[l] E)` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap ℚ_[l] E)`. Establish `h2 : Continuous fun g : G ℚ Ω => ((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (continuous_cycZ ℚ Ω l)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(h1.comp (continuous_subtype_val.comp h2)).congr fun g => ?_` and prove the remaining obligations. Use `show algebraMap ℚ_[l] E (algebraMap ℤ_[l] ℚ_[l] _) = algebraMap c.O E (algebraMap ℤ_[l] c.O _)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `hal : Continuous fun g => algebraMap c.O E (D.al g : c.Oˣ)` using `((hcy.mul (cont_of_open D.om f5 fun u => algebraMap c.O E (u⁻¹ : c.Oˣ))).mul (cont_of_open D.ξ hD.xi_open fun u => algebraMap c.O E u)).congr fun g => by`. Simplify using `only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, map_mul, Pi.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hPs : Continuous fun g => algebraMap c.O E (D.Psi g : c.Oˣ)` using `((hcy.pow D.e).mul (cont_of_open D.ψ hD.psi_open fun u => algebraMap c.O E u)).congr fun g => by`. Simplify using `only [Raw.Psi, UpperTheory.V.Chr.Psi, zpow_natCast, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, map_mul, Units.val_pow_eq_pow_val, map_pow, Pi.mul_apply, Pi.pow_apply]`. Establish `hps : ∀ a, Continuous fun g => algebraMap c.O E (D.ps a g : c.Oˣ)` using `fun a => by fin_cases a`. Conclude with `(hal.mul hPs).congr fun g => (map_mul _ _ _).symm`. Conclude with `hPs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hal`. Conclude with `continuous_const (y := algebraMap c.O E 1)`. Establish `hc : ∀ a, Continuous fun g => (χ a g : E)` using `fun a => (hps a).comp continuous_subtype_val`. Take `⟨hex, hun⟩` from `UpperTheory.exists_unique_unramified_hom_of_frobenius_value l l hp (D.pl l) (hD.pl_over l hp) ⟨D.sg l, (f2 l hT).1⟩ (hD.sg_frob l hT) E`. Use `dim_core χ (fun g => (g : G ℚ Ω) ∈ D.Ip l) (fun g => algebraMap c.O E (D.th g)) ⟨D.sg l, (f2 l hT).1⟩ (fun g a => ?_) hc (fun a => ?_) (fun a b hab => ?_) hex hun (fun a b hab => ?_) (EqL D) (fun γ r hr hγ => ?_) j S (fun s => by simpa only [hr0, QCont] using hS s)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ', hχ', ← map_mul, ← Units.val_mul, mul_comm, ← MonoidHom.mul_apply, f4]`. Conclude with `((hc a).comp continuous_inv).congr fun g => by simp`. Conclude with `⟨D.s0, fun e => hab (f3 (congrArg Units.val (hι e)))⟩`. Establish `key` using `UpperTheory.exists_finrank_two_cocycles_char_ratio hL D hD E a b hab`. Simplify using `only [hdiv] at key`.
-
-Conclude with `key`. Establish `key` using `spTanL D hD E γ r (fun g a b => ?_) hγ`. Simplify using `only [hdiv] at key`. Conclude with `key`. Rewrite using `[hr, hr0]`.
-
-Use `congr 1`. Use `show _ = (γ g * (Matrix.diagonal fun a => ((D.ps a g : c.Oˣ) : c.O)).map (algebraMap c.O E)) a b`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.mul_diagonal, hχ']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.tangent_space_deformation_at_l :
     LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (hD : D.Good) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra ↥c.O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ↥c.O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing ↥c.O E] (j : ℤ × ℤ) (S : Submodule E (D.Gp l → M4 E)), (∀ s, s ∈ S ↔ (∃ r' : D.Gp l →* M4 (DualNumber E), (∀ g a b, r' g a b = ⟨algebraMap c.O E (D.r0At l g a b), s g a b⟩) ∧ EqL D r') ∧ (∀ a b, QCont l fun g => s g a b) ∧ ∀ g a b, wt a b ≠ j → s g a b = 0) → finrank E ↥S = dimsL j := by

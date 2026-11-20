@@ -11,11 +11,11 @@ namespace GlobalTheory.BCT.LocMem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `set c : E ≃+* E := (IsCMField.complexConj E).toRingEquiv`. Use `set u := conjSrc c w with hu`. Establish `h : GlobalTheory.Mem.Chr.ConjPl c u w` using `conjPl_conjSrc c w`. Assume the negation of the conclusion as `hne`. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨u, hne, ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `algebraMap _ _ y ∈ u.asIdeal ↔ algebraMap _ _ y ∈ w.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hfix : c ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) y : 𝓞 E) : E) = ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) y : 𝓞 E) : E)`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E _ = _`. Rewrite using `[IsCMField.complexConj_eq_self_iff]`. Conclude with `((y : maximalRealSubfield E)).2`. Rewrite using `[← h, hfix]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjSrc_eq_of_not_split (w : Pl E) (hw : ¬ IsSplitAt w) :
     conjSrc (IsCMField.complexConj E).toRingEquiv w = w := by
@@ -37,9 +37,9 @@ theorem conjSrc_eq_of_not_split (w : Pl E) (hw : ¬ IsSplitAt w) :
   rw [← h, hfix]
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Establish `hex : ∃ s : u.adicCompletion E →+* u.adicCompletion E, Continuous s ∧ ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨f, hf, hext⟩`. Establish `hcj : cj u = hex.choose`. Unfold `cj`. Rewrite using `[dif_pos hex]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hfs : (f : u.adicCompletion E → u.adicCompletion E) = hex.choose` using `(HeightOneSpectrum.denseRange_algebraMap E u).equalizer hf hex.choose_spec.1 (funext fun k => by simp only [Function.comp_apply, hext, hex.choose_spec.2])`. Rewrite using `[hcj, ← hfs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_cj_of_ext (w u : Pl E) (hu : u = w) (f : u.adicCompletion E →+* w.adicCompletion E) (hf : Continuous f)
     (hext : ∀ k : E, f (algebraMap E _ k) = algebraMap E _ (IsCMField.complexConj E k)) (b : Af E) :
@@ -56,7 +56,7 @@ theorem eq_cj_of_ext (w u : Pl E) (hu : u = w) (f : u.adicCompletion E →+* w.a
   rw [hcj, ← hfs]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = pLoc E w (conjFin (IsCMField.complexConj E).toRingEquiv (pFin E a))`. Rewrite using `[pLoc_conjFin]`. Conclude with `(eq_cj_of_ext w _ (conjSrc_eq_of_not_split w hw) _ (conjLoc_spec _ w).1 (fun k => (conjLoc_spec _ w).2.1 k) (pFin E a)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_pLoc_pFin (w : Pl E) (hw : ¬ IsSplitAt w) (a : Ad E) :
     cj w (pLoc E w (pFin E a)) = pLoc E w (pFin E (conjAd E a)) := by
@@ -70,11 +70,9 @@ end GlobalTheory.BCT.LocMem
 open GlobalTheory.BCT.LocMem in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n w x`. Unfold `UL`. Use `split_ifs with hs`. Conclude with `Subgroup.mem_top _`. Establish `hx : cT (conjAd E) ((x : UA E n) : GA E n).val * 1 * ((x : UA E n) : GA E n).val = 1` using `(x : UA E n).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : Ad E →+* w.adicCompletion E := (pLoc E w).comp (pFin E)`. Establish `hval : (cLoc w (x : UA E n)).val = φ.mapMatrix ((x : UA E n) : GA E n).val` using `rfl`. Establish `hcT : cT (cj w) (φ.mapMatrix ((x : UA E n) : GA E n).val) = φ.mapMatrix (cT (conjAd E) ((x : UA E n) : GA E n).val)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `cj_pLoc_pFin w hs _`.
-
-Express the relevant statement in the definitionally equal form `cT (cj w) (cLoc w (x : UA E n)).val * 1 * (cLoc w (x : UA E n)).val = 1`. Rewrite using `[hval, hcT, ← map_one φ.mapMatrix, ← map_mul, ← map_mul, hx]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.cLoc_mem_UL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ,
     ∀ (w : Pl E) (x : finU E n), cLoc w (x : UA E n) ∈ UL n w := by

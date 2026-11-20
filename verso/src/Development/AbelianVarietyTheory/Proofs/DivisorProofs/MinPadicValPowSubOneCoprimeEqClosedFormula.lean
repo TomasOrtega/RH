@@ -8,21 +8,19 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.MinValClosed
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Unfold `Formalism.PairingDivisionLocalBalance.mE`. Use `split_ifs with h2 hd`. Substitute `h2` using the available equality. Establish `hodd : ¬ 2 ∣ a`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `Nat.Coprime.coprime_dvd_left h hac` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `ha1 : 1 < a` using `by omega`. Use `padicValNat.pow_two_sub_one_ge ha1 hodd (by omega) he` as an intermediate fact.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨k, rfl⟩` from `hd`. Establish `hl3 : 3 ≤ l` using `by have := hl.two_le; omega`. Establish `hk : k ≠ 0` using `by rintro rfl; simp at hn`. Establish `hodd : Odd l` using `hl.odd_of_ne_two h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := a ^ (l - 1) with hb`. Establish `hb1 : 1 < b` using `Nat.one_lt_pow (by omega) (by omega)`. Establish `hfer : l ∣ b - 1`. Use `Nat.ModEq.pow_card_sub_one_eq_one hl hac` as an intermediate fact. Conclude with `(Nat.modEq_iff_dvd' hb1.le).mp this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : ¬ l ∣ b`. Introduce `h`. Establish `h1 : l ∣ a` using `hl.dvd_of_dvd_pow h`. Establish `: l ∣ Nat.gcd a l` using `Nat.dvd_gcd h1 dvd_rfl`. Rewrite `this` using `[hac]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl.one_lt.ne' (Nat.dvd_one.mp this)`. Establish `hpow : a ^ ((l - 1) * k) - 1 = b ^ k - 1 ^ k` using `by rw [pow_mul, one_pow]`. Rewrite using `[hpow, padicValNat.pow_sub_pow hodd hb1 (by simpa using hfer) hnd hk]`. Establish `hv1 : 1 ≤ padicValNat l (b - 1)` using `one_le_padicValNat_of_dvd (by omega) hfer`. Establish `hvl : padicValNat l (l - 1) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Apply `padicValNat.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `h`. Use `Nat.le_of_dvd (by omega) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[padicValNat.mul (by omega) hk, hvl]`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mE_le_padicValNat {l n a : ℕ} (hl : l.Prime) (hn : 2 ≤ n) (he : Even n) (ha : 2 ≤ a)
     (hac : a.Coprime l) : Formalism.PairingDivisionLocalBalance.mE l n ≤ padicValNat l (a ^ n - 1) := by
@@ -65,9 +63,9 @@ theorem mE_le_padicValNat {l n a : ℕ} (hl : l.Prime) (hn : 2 ≤ n) (he : Even
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Introduce `hmv l n hl hn he`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨a, ha, hac, hv⟩` from `hmv l n hl hn he`. Conclude with `Nat.sInf_le ⟨a, ha, hac, hv.symm⟩`. Take `⟨a, ha, hac, hv⟩` from `mMin_mem hl.one_lt.le n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `mE_le_padicValNat hl hn he ha hac`.
+A detailed English derivation is pending.
 -/
 theorem mMin_eq_mE : Formalism.PairingDivisionLocalBalance.MinVal → ∀ l n : ℕ, l.Prime → 2 ≤ n → Even n → mMin l n = Formalism.PairingDivisionLocalBalance.mE l n := by
   intro hmv l n hl hn he

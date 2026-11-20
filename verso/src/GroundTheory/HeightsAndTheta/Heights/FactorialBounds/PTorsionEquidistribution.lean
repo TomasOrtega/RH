@@ -11,21 +11,21 @@ noncomputable section
 namespace TorsionEquidistribution
 
 /- English proof (translation)
-The claim follows from `(AddCircle.coe_eq_zero_iff 1).2 ⟨k, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem coe_intCast_eq_zero (k : ℤ) : ((k : ℝ) : AddCircle (1 : ℝ)) = 0 :=
   (AddCircle.coe_eq_zero_iff 1).2 ⟨k, by simp⟩
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Establish `hts : (QuotientAddGroup.mk t : AddCircle (1 : ℝ)) = ((t - round t : ℝ) : AddCircle (1 : ℝ))`. Rewrite using `[AddCircle.coe_sub, coe_intCast_eq_zero, sub_zero]`. Establish `hns : ‖((t - round t : ℝ) : AddCircle (1 : ℝ))‖ = |t - round t|`. Rewrite using `[← hts]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UnitAddCircle.norm_eq`. Rewrite `hy`, `hn`, the goal using `[hts]`. Rewrite `hn` using `[hns]`. Rewrite `hy` using `[← AddCircle.coe_nsmul, AddCircle.coe_eq_zero_iff]`. Take `⟨k, hk⟩` from `hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`. Establish `hk' : (k : ℝ) = m * (t - round t)` using `by simpa using hk`. Establish `habs : |(k : ℝ)| < 1`. Rewrite using `[hk', abs_mul, abs_of_pos hm']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hk0 : k = 0` using `Int.abs_lt_one_iff.1 (by exact_mod_cast habs)`. Establish `hs0 : t - round t = 0`. Rewrite `hk'` using `[hk0, Int.cast_zero]`. Break down `mul_eq_zero.1 hk'.symm with h | h` into its components or cases. Conclude with `absurd h hm'.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `h`. Rewrite using `[hs0]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_nsmul_eq_zero_of_norm_lt {m : ℕ} (hm : 0 < m) {y : AddCircle (1 : ℝ)}
     (hy : m • y = 0) (hn : ‖y‖ < 1 / m) : y = 0 := by
@@ -53,11 +53,11 @@ theorem eq_zero_of_nsmul_eq_zero_of_norm_lt {m : ℕ} (hm : 0 < m) {y : AddCircl
   rw [hs0]; rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Apply `hxy` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `hi : ‖x i - y i‖ < 1 / m`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← dist_eq_norm]`. Conclude with `lt_of_le_of_lt (dist_le_pi_dist x y i) h`. Establish `hx' : m • x = 0` using `hx`. Establish `hy' : m • y = 0` using `hy`. Establish `h0 : m • (x i - y i) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hx' i`. Establish `h2` using `congrFun hy' i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at h1 h2`. Rewrite using `[smul_sub, h1, h2, sub_zero]`. Conclude with `sub_eq_zero.1 (eq_zero_of_nsmul_eq_zero_of_norm_lt hm h0 hi)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_div_le_dist {n m : ℕ} (hm : 0 < m) {x y : Fin n → AddCircle (1 : ℝ)}
     (hx : x ∈ torusTorsion n m) (hy : y ∈ torusTorsion n m) (hxy : x ≠ y) :
@@ -81,7 +81,7 @@ def gridPoint (n m : ℕ) (j : Fin n → ℤ) : Fin n → AddCircle (1 : ℝ) :=
   fun i => (((j i : ℝ) / m : ℝ) : AddCircle (1 : ℝ))
 
 /- English proof (translation)
-Use `show m • gridPoint n m j = 0`. Use function extensionality and compare the values at `i`. Simplify using `only [gridPoint, Pi.smul_apply, Pi.zero_apply]`. Rewrite using `[← AddCircle.coe_nsmul, nsmul_eq_mul, mul_div_cancel₀ _ (Nat.cast_pos.2 hm).ne']`. Conclude with `coe_intCast_eq_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gridPoint_mem {n m : ℕ} (hm : 0 < m) (j : Fin n → ℤ) :
     gridPoint n m j ∈ torusTorsion n m := by
@@ -93,15 +93,13 @@ theorem gridPoint_mem {n m : ℕ} (hm : 0 < m) (j : Fin n → ℤ) :
   exact coe_intCast_eq_zero _
 
 /- English proof (translation)
-Establish `hx' : m • x = 0` using `hx`. Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`. Establish `key : ∀ i, ∃ k : ℤ, 0 ≤ k ∧ k < m ∧ ((((k : ℝ) / m : ℝ)) : AddCircle (1 : ℝ)) = x i`. Introduce `i`. Take `⟨t, ht⟩` from `QuotientAddGroup.mk_surjective (x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : m • x i = 0` using `by simpa using congrFun hx' i`. Rewrite `h1` using `[← ht]`. Express the relevant statement in the definitionally equal form `m • ((t : ℝ) : AddCircle (1 : ℝ)) = 0 at h1`. Rewrite `h1` using `[← AddCircle.coe_nsmul, AddCircle.coe_eq_zero_iff]`. Take `⟨q, hq⟩` from `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hq' : (q : ℝ) = m * t` using `by simpa using hq`. Use `⟨q % m, Int.emod_nonneg _ (by exact_mod_cast hm.ne'), Int.emod_lt_of_pos _ (by exact_mod_cast hm), ?_⟩` and prove the remaining obligations. Establish `hd` using `Int.emod_add_ediv_mul q m`. Establish `hdiv : ((q % (m : ℤ) : ℤ) : ℝ) / m = t - ((q / (m : ℤ) : ℤ) : ℝ)`. Establish `hd' : ((q % (m : ℤ) : ℤ) : ℝ) + ((q / (m : ℤ) : ℤ) : ℝ) * (m : ℝ) = q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd` after adjusting the coercions. Rewrite using `[div_eq_iff hm'.ne']`. Take the linear combination `hd' + hq'`. Rewrite using `[hdiv, AddCircle.coe_sub, coe_intCast_eq_zero, sub_zero, ← ht]`. Use `choose k hk0 hkm hk using key`.
-
-Conclude with `⟨k, Fintype.mem_piFinset.2 fun i => Finset.mem_Ico.2 ⟨hk0 i, hkm i⟩, funext hk⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gridPoint {n m : ℕ} (hm : 0 < m) {x : Fin n → AddCircle (1 : ℝ)}
     (hx : x ∈ torusTorsion n m) :
@@ -131,15 +129,15 @@ theorem exists_gridPoint {n m : ℕ} (hm : 0 < m) {x : Fin n → AddCircle (1 : 
   exact ⟨k, Fintype.mem_piFinset.2 fun i => Finset.mem_Ico.2 ⟨hk0 i, hkm i⟩, funext hk⟩
 
 /- English proof (translation)
-Introduce `j hj j' hj' h`. Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`. Use function extensionality and compare the values at `i`. Establish `hji` using `Fintype.mem_piFinset.1 (Finset.mem_coe.1 hj) i`. Establish `hji'` using `Fintype.mem_piFinset.1 (Finset.mem_coe.1 hj') i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun h i`. Simplify using `only [gridPoint] at h1`. Rewrite `h1` using `[← sub_eq_zero, ← AddCircle.coe_sub, AddCircle.coe_eq_zero_iff]`. Take `⟨q, hq⟩` from `h1`. Establish `hq' : ((j i - j' i : ℤ) : ℝ) = ((q * m : ℤ) : ℝ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hq` using `[zsmul_eq_mul, mul_one, div_sub_div_same, eq_div_iff hm'.ne']`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : j i - j' i = q * m` using `by exact_mod_cast hq'`. Establish `hlt` using `hW i _ hji _ hji'`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmz : (0 : ℤ) < m` using `by exact_mod_cast hm`. Rewrite `hlt` using `[hint, abs_mul, abs_of_pos hmz]`. Establish `hq1 : |q| < 1` using `by nlinarith`. Establish `hq0 : q = 0` using `Int.abs_lt_one_iff.1 hq1`. Rewrite `hint` using `[hq0, zero_mul, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hint`.
+A detailed English derivation is pending.
 -/
 theorem gridPoint_injOn {n m : ℕ} (hm : 0 < m) {W : Fin n → Finset ℤ}
     (hW : ∀ i, ∀ a ∈ W i, ∀ b ∈ W i, |a - b| < m) :
@@ -166,9 +164,9 @@ theorem gridPoint_injOn {n m : ℕ} (hm : 0 < m) {W : Fin n → Finset ℤ}
   exact hint
 
 /- English proof (translation)
-Rewrite using `[UnitAddCircle.norm_eq]`. Break down `le_or_gt (round t) 0 with h | h` into its components or cases. Establish `h' : (round t : ℝ) ≤ 0` using `by exact_mod_cast h`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`. Establish `h0 : (1 : ℤ) ≤ round t` using `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : (1 : ℝ) ≤ round t` using `by exact_mod_cast h0`. Rewrite using `[abs_of_nonpos (by linarith)]; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem quarter_le_norm {t : ℝ} (h1 : 1 / 4 ≤ t) (h2 : t ≤ 3 / 4) :
     (1 / 4 : ℝ) ≤ ‖(t : AddCircle (1 : ℝ))‖ := by
@@ -181,29 +179,27 @@ theorem quarter_le_norm {t : ℝ} (h1 : 1 / 4 ≤ t) (h2 : t ≤ 3 / 4) :
     rw [abs_of_nonpos (by linarith)]; linarith
 
 /- English proof (translation)
-Use `set ε : ENNReal := ENNReal.ofReal ((2 / 3 : ℝ) ^ n / 12) with hε`. Establish `hεpos : 0 < ε` using `ENNReal.ofReal_pos.2 (by positivity)`. Establish `hlim : Tendsto (fun r : ℝ => volume (cthickening r Z)) (𝓝 0) (𝓝 0)`. Use `tendsto_measure_cthickening_of_isClosed (μ := volume) (s := Z) ⟨1, one_pos, measure_ne_top _ _⟩ hZ` as an intermediate fact. Rewrite `this` using `[hZ0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hr : Tendsto (fun m : ℕ => (1 / 3 : ℝ) / m) atTop (𝓝 0)` using `tendsto_const_div_atTop_nhds_zero_nat _`. Establish `hev` using `(hlim.comp hr).eventually (gt_mem_nhds hεpos)`. Use `filter_upwards [hev, eventually_ge_atTop 1] with m hvol hm1`. Simplify using `only [Function.comp_apply] at hvol`. Establish `hm : 0 < m` using `hm1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`. Use `set r : ℝ := (1 / 3 : ℝ) / m with hrdef`. Establish `hr0 : 0 < r` using `by positivity`. Establish `hTfin : (torusTorsion n m).Finite`. Use `((Fintype.piFinset fun _ : Fin n => Finset.Ico (0 : ℤ) m).finite_toSet.image (gridPoint n m)).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `exists_gridPoint hm hx`. Conclude with `⟨j, hj, rfl⟩`. Establish `hSfin : (torusTorsion n m ∩ Z).Finite` using `hTfin.subset inter_subset_left`. Use `set F := hSfin.toFinset with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdisj : PairwiseDisjoint (F : Set (Fin n → AddCircle (1 : ℝ))) fun x => closedBall x r`. Introduce `x hx y hy hxy`. Simplify using `only [hF, Set.Finite.coe_toFinset] at hx hy`. Apply `closedBall_disjoint_closedBall` to reduce the goal to its premises. Use `one_div_le_dist hm hx.1 hy.1 hxy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
 
-Establish `h2 : r + r < 1 / m`. Rewrite using `[hrdef]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hball : ∀ x : Fin n → AddCircle (1 : ℝ), volume (closedBall x r) = ENNReal.ofReal (2 * r) ^ n`. Introduce `x`. Rewrite using `[volume_pi_closedBall _ hr0.le]`. Simplify using `only [AddCircle.volume_closedBall]`. Establish `: min (1 : ℝ) (2 * r) = 2 * r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `min_eq_right` to reduce the goal to its premises. Establish `h1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`. Establish `h2 : (1 / 3 : ℝ) / m ≤ 1 / 3` using `div_le_self (by norm_num) h1`. Rewrite using `[hrdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Establish `hsub : (⋃ x ∈ F, closedBall x r) ⊆ cthickening r Z`. Introduce `y hy`. Simplify using `only [mem_iUnion] at hy`. Take `⟨x, hx, hy⟩` from `hy`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hF, Set.Finite.mem_toFinset] at hx`. Conclude with `closedBall_subset_cthickening hx.2 r hy`. Establish `hsum : (F.card : ENNReal) * ENNReal.ofReal (2 * r) ^ n < ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum` using `[← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), hε, ENNReal.ofReal_lt_ofReal_iff (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard : (torusTorsion n m ∩ Z).ncard = F.card`. Rewrite using `[hF, Set.ncard_eq_toFinset_card _ hSfin]`. Rewrite using `[hcard]`. Establish `h2r : 2 * r = (2 / 3) / m` using `by rw [hrdef]; ring`. Rewrite `hsum` using `[h2r, div_pow]`.
-
-Establish `hmn : (0 : ℝ) < (m : ℝ) ^ n` using `by positivity`. Establish `ha : (0 : ℝ) < (2 / 3 : ℝ) ^ n` using `by positivity`. Rewrite `hsum` using `[mul_div_assoc', div_lt_div_iff₀ hmn (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eventually_ncard_inter_lt {n : ℕ} (Z : Set (Fin n → AddCircle (1 : ℝ)))
     (hZ : IsClosed Z) (hZ0 : volume Z = 0) :
@@ -276,41 +272,37 @@ theorem eventually_ncard_inter_lt {n : ℕ} (Z : Set (Fin n → AddCircle (1 : �
   nlinarith
 
 /- English proof (translation)
-Introduce `n hn Z c hZ hZ0 _hc`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Use `filter_upwards [eventually_ncard_inter_lt Z hZ hZ0, eventually_ge_atTop 12] with m hz hm12`. Establish `hm : 0 < m` using `by omega`. Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm12' : (12 : ℝ) ≤ m` using `by exact_mod_cast hm12`. Use `set T := torusTorsion (k + 1) m with hT`. Use `set i₀ : Fin (k + 1) := ⟨0, hn⟩ with hi₀`. Use `set S := T ∩ Z with hS`. Use `set G' := {x ∈ T \ Z | (1 / 4 : ℝ) ≤ ‖x i₀ + (c : AddCircle (1 : ℝ))‖} with hG'`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `(T \ Z).ncard ≤ 3 * G'.ncard`. Establish `hTsub : T ⊆ gridPoint (k + 1) m '' (Fintype.piFinset fun _ : Fin (k + 1) => Finset.Ico (0 : ℤ) m)`. Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `exists_gridPoint hm hx`. Conclude with `⟨j, hj, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTfin : T.Finite` using `((Finset.finite_toSet _).image _).subset hTsub`. Establish `hTcard : T.ncard ≤ m ^ (k + 1)`. Use `(ncard_le_ncard hTsub ((Finset.finite_toSet _).image _)).trans ?_` and prove the remaining obligations. Use `(ncard_image_le (Finset.finite_toSet _)).trans ?_` and prove the remaining obligations. Rewrite using `[ncard_coe_finset, Fintype.card_piFinset]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Int.card_Ico]`. Use `set G := {x ∈ T | (1 / 4 : ℝ) ≤ ‖x i₀ + (c : AddCircle (1 : ℝ))‖} with hG`. Use `set a : ℤ := ⌈(m : ℝ) / 4 - m * c⌉ with ha`. Use `set b : ℤ := ⌊3 * (m : ℝ) / 4 - m * c⌋ with hb`. Establish `ha1 : (m : ℝ) / 4 - m * c ≤ a` using `Int.le_ceil _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha2 : (a : ℝ) < (m : ℝ) / 4 - m * c + 1` using `Int.ceil_lt_add_one _`. Establish `hb1 : (b : ℝ) ≤ 3 * (m : ℝ) / 4 - m * c` using `Int.floor_le _`. Establish `hb2 : 3 * (m : ℝ) / 4 - m * c < b + 1` using `Int.lt_floor_add_one _`. Use `set W : Fin (k + 1) → Finset ℤ := fun i => if i = i₀ then Finset.Icc a b else Finset.Ico 0 m with hW`. Establish `hWwidth : ∀ i, ∀ u ∈ W i, ∀ v ∈ W i, |u - v| < m`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i u hu v hv`. Distinguish the cases in `hi : i = i₀`. Simplify using `only [hW, hi, if_true, Finset.mem_Icc] at hu hv`. Establish `h1 : ((b - a : ℤ) : ℝ) < m` using `by push_cast; linarith`. Establish `h2 : b - a < m` using `by exact_mod_cast h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [abs_lt]; constructor <;> omega`. Simplify using `only [hW, hi, if_false, Finset.mem_Ico] at hu hv`. Apply the tactic sequence `rw [abs_lt]; constructor <;> omega`. Establish `hGsub : gridPoint (k + 1) m '' (Fintype.piFinset W) ⊆ G`. Introduce and unpack `_ ⟨j, hj, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨gridPoint_mem hm j, ?_⟩` and prove the remaining obligations. Establish `hj0` using `Fintype.mem_piFinset.1 (Finset.mem_coe.1 hj) i₀`. Simplify using `only [hW, if_true, Finset.mem_Icc] at hj0`. Establish `hlo : (a : ℝ) ≤ j i₀` using `by exact_mod_cast hj0.1`. Establish `hhi : (j i₀ : ℝ) ≤ b` using `by exact_mod_cast hj0.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e : gridPoint (k + 1) m j i₀ + (c : AddCircle (1 : ℝ)) = (((j i₀ : ℝ) / m + c : ℝ) : AddCircle (1 : ℝ))`. Rewrite using `[AddCircle.coe_add]`. Both sides reduce to the same expression. Rewrite using `[e]`. Apply `quarter_le_norm` to reduce the goal to its premises.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (1 / 4 - c) * m ≤ j i₀` using `by linarith`. Use `(le_div_iff₀ hm').2 h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (j i₀ : ℝ) ≤ (3 / 4 - c) * m` using `by linarith`. Use `(div_le_iff₀ hm').2 h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGfin : G.Finite` using `hTfin.subset fun x hx => hx.1`. Establish `hGcard : (b + 1 - a).toNat * m ^ k ≤ G.ncard`. Combine the equalities or inequalities in the displayed calculation. Establish `hW0 : W 0 = Finset.Icc a b` using `if_pos (Fin.ext (by simp [hi₀]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWs : ∀ i : Fin k, W i.succ = Finset.Ico (0 : ℤ) m` using `fun i => if_neg (fun h => by simp [hi₀, Fin.ext_iff] at h)`. Rewrite using `[Fintype.card_piFinset, Fin.prod_univ_succ, hW0]`. Simplify using `only [hWs, Int.card_Icc, Int.card_Ico, Finset.prod_const, Finset.card_univ, Fintype.card_fin, sub_zero, Int.toNat_natCast]`. Use `_ = (gridPoint (k + 1) m '' (Fintype.piFinset W)).ncard := by`. Rewrite using `[(gridPoint_injOn hm hWwidth).ncard_image, ncard_coe_finset]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ G.ncard := ncard_le_ncard hGsub hGfin`. Establish `hSfin : S.Finite` using `hTfin.subset inter_subset_left`. Establish `hG'fin : G'.Finite` using `hTfin.subset fun x hx => hx.1.1`. Establish `hGG' : G.ncard ≤ G'.ncard + S.ncard`. Use `(ncard_le_ncard_sdiff_add_ncard G S hSfin).trans (Nat.add_le_add_right ?_ _)` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ncard_le_ncard ?_ hG'fin` and prove the remaining obligations. Introduce and unpack `x ⟨⟨hxT, hx⟩, hxS⟩`. Conclude with `⟨⟨hxT, fun hxZ => hxS ⟨hxT, hxZ⟩⟩, hx⟩`. Establish `hT'card : (T \ Z).ncard ≤ T.ncard` using `ncard_le_ncard sdiff_subset hTfin`. Establish `hP : (0 : ℝ) ≤ (m : ℝ) ^ k` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hab : ((b + 1 - a : ℤ) : ℝ) ≤ (((b + 1 - a).toNat : ℕ) : ℝ)`. Conclude with `Int.self_le_toNat _` after adjusting the coercions. Establish `h1 : ((m : ℝ) / 2 - 1) * (m : ℝ) ^ k ≤ G.ncard`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 0 ≤ ((m : ℝ) - 12) * (m : ℝ) ^ k` using `mul_nonneg (by linarith) hP`.
-
-Establish `h3 : ((T \ Z).ncard : ℝ) ≤ (m : ℝ) ^ k * m`. Rewrite using `[← pow_succ]`. Conclude with `hT'card.trans hTcard` after adjusting the coercions. Establish `h4 : (G.ncard : ℝ) ≤ G'.ncard + S.ncard` using `by exact_mod_cast hGG'`. Rewrite `hz` using `[pow_succ]`.
-
-Rewrite using `[← Nat.cast_le (α := ℝ)]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem proof : TorsionEquidistribution.Statement := by
   intro n hn Z c hZ hZ0 _hc

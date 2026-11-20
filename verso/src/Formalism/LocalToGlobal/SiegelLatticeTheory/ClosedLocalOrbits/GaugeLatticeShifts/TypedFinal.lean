@@ -17,20 +17,20 @@ namespace Formalism.L2.SG.Pf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X _` and use `SatGram.typedRed_exists' SatGramLoc.split_prime_local_holds SatGramLoc.reduction_structure_holds (hP D X)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trExistsC_of (hP : ∀ (D : D7) (X : HidaSetting D), SatGram.PsiCond X) : TRExistsC :=
   fun D X _ => SatGram.typedRed_exists' SatGramLoc.split_prime_local_holds SatGramLoc.reduction_structure_holds (hP D X)
 
 /- English proof (translation)
-The claim follows from `open Formalism.L2.SG.Pf.SatGram in psi_conductor_all_places D X`.
+A detailed English derivation is pending.
 -/
 theorem psiCond_holds {D : D7} (X : HidaSetting D) : SatGram.PsiCond X :=
   open Formalism.L2.SG.Pf.SatGram in
   psi_conductor_all_places D X
 
 /- English proof (translation)
-The claim follows from `trExistsC_of (fun _ X => psiCond_holds X)`.
+A detailed English derivation is pending.
 -/
 theorem trExistsC_holds : TRExistsC :=
   trExistsC_of (fun _ X => psiCond_holds X)
@@ -40,7 +40,7 @@ section
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `open Formalism.L2.SG.Pf.SatGram Formalism.L2.SG.LocVol Formalism.L2.SG.TypedSets Formalism.L2.SG.GGMirabolic in typed_count (redExists_holds X) (gUnif_holds X) (gResCard_holds X) (gCount_of splitPrimeLoc_holds) TR i`.
+A detailed English derivation is pending.
 -/
 theorem typed_count_holds (TR : TypedRed X) (i : Fin 2) :
     Fintype.card {v : TR.Pl // Fintype.card (TR.Fq v) = D.host.g i} = Module.finrank ℚ X.B.I.F :=
@@ -48,11 +48,11 @@ theorem typed_count_holds (TR : TypedRed X) (i : Fin 2) :
   typed_count (redExists_holds X) (gUnif_holds X) (gResCard_holds X) (gCount_of splitPrimeLoc_holds) TR i
 
 /- English proof (translation)
-Establish `h0` using `typed_count_holds X TR 0`. Establish `h1` using `typed_count_holds X TR 1`. Rewrite `h0`, `h1` using `[Fintype.card_subtype]`. Establish `hfilt : Finset.univ.filter (fun v => ¬ Fintype.card (TR.Fq v) = D.host.g 0) = Finset.univ.filter (fun v => Fintype.card (TR.Fq v) = D.host.g 1)`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => (TR.card_q v).resolve_left h`. Introduce `h h'`. Conclude with `D.host.g_ne (h'.symm.trans h)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e0 : ∏ v ∈ Finset.univ.filter (fun v => Fintype.card (TR.Fq v) = D.host.g 0), (1 + 3 / (Fintype.card (TR.Fq v) : ℝ)) = (1 + 3 / (D.host.g 0 : ℝ)) ^ Module.finrank ℚ X.B.I.F`. Rewrite using `[Finset.prod_congr rfl (g := fun _ => (1 + 3 / (D.host.g 0 : ℝ))) (fun v hv => by rw [(Finset.mem_filter.mp hv).2]), Finset.prod_const, h0]`. Establish `e1 : ∏ v ∈ Finset.univ.filter (fun v => ¬ Fintype.card (TR.Fq v) = D.host.g 0), (1 + 3 / (Fintype.card (TR.Fq v) : ℝ)) = (1 + 3 / (D.host.g 1 : ℝ)) ^ Module.finrank ℚ X.B.I.F`. Rewrite using `[hfilt, Finset.prod_congr rfl (g := fun _ => (1 + 3 / (D.host.g 1 : ℝ))) (fun v hv => by rw [(Finset.mem_filter.mp hv).2]), Finset.prod_const, h1]`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun v => Fintype.card (TR.Fq v) = D.host.g 0), e0, e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tt_eq_holds (TR : TypedRed X) :
     ∏ v, (1 + 3 / (Fintype.card (TR.Fq v) : ℝ)) =
@@ -80,7 +80,7 @@ theorem tt_eq_holds (TR : TypedRed X) :
     (fun v => Fintype.card (TR.Fq v) = D.host.g 0), e0, e1]
 
 /- English proof (translation)
-The claim follows from `open Formalism.L2.SG.Pf.SatGram Formalism.L2.SG.LocVol Formalism.L2.SG.TypedSets Formalism.L2.SG.GGMirabolic in gamma_one_eq_prod_typed_places (redExists_holds X) (gUnif_holds X) (gResCard_holds X) (gCount_of splitPrimeLoc_holds) TR`.
+A detailed English derivation is pending.
 -/
 theorem gamma_one_typed_places_holds (TR : TypedRed X) :
     Gam1 TR = ∏ p : Formalism.L2.SG.TypedSets.TypP X.B.I.F (D.host.g 0) (D.host.g 1),
@@ -90,13 +90,11 @@ theorem gamma_one_typed_places_holds (TR : TypedRed X) :
   gamma_one_eq_prod_typed_places (redExists_holds X) (gUnif_holds X) (gResCard_holds X) (gCount_of splitPrimeLoc_holds) TR
 
 /- English proof (translation)
-Introduce `p`. Establish `hg0 : D.host.g 0 ≠ 0` using `(D.host.g_prime 0).ne_zero`. Establish `hg1 : D.host.g 1 ≠ 0` using `(D.host.g_prime 1).ne_zero`. Establish `hty` using `(Formalism.L2.SG.TypedSets.mem_typSet X.B.I.F _ _ hg0 hg1 p.1).1 p.2`. Establish `hg : ((X.B.g : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[X.g_eq, Nat.cast_mul]`. Break down `hty with h | h` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ h`. Conclude with `Ideal.mul_mem_left _ _ h`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Unfold `Formalism.L2.SG.LocVol.gAt`. Use `split_ifs with h0`. Conclude with `gResCard_holds X p.1 0 h0`. Conclude with `gResCard_holds X p.1 1 (hty.resolve_left h0)`.
-
-Unfold `Formalism.L2.SG.LocVol.etaV`. Rewrite using `[if_pos (split_at_g X p.1 hg)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSplitX_holds : Formalism.L2.SG.LocVol.GSplitX X := by
   intro p

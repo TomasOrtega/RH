@@ -17,23 +17,23 @@ namespace PositivityTheory.SiegelWeilFormula.Kdil
 open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨k, hk⟩` from `R.locOp_mM_law w hT hG hL`. Use `set A : Matrix (Fin d.n) (Fin d.n) ℂ := diagonal fun j => (Real.exp (s * X j) : ℂ) with hA`. Establish `hdet : A.det = ((Real.exp (∑ j, s * X j) : ℝ) : ℂ)`. Rewrite using `[hA, det_diagonal, Real.exp_sum, Complex.ofReal_prod]`. Establish `hpos : 0 < Real.exp (∑ j, s * X j)` using `Real.exp_pos _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit A.det`. Rewrite using `[hdet]`. Conclude with `isUnit_iff_ne_zero.mpr (Complex.ofReal_ne_zero.mpr hpos.ne')`. Establish `hinv : (Aᴴ)⁻¹ = diagonal fun j => (Real.exp (-(s * X j)) : ℂ)`. Rewrite using `[hA, diagonal_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.conj_ofReal]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, neg_add_cancel, Real.exp_zero, Complex.ofReal_one]`. Establish `hy : mR (a s) = mLoc A`. Rewrite using `[show mR (a s) = _ from ha s, mLoc, hinv]`. Rewrite using `[hk (a s) A hunit hy (fP 1) (hFP d.m d.n 1)]`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖A.det‖ = Real.exp (∑ j, s * X j)`. Rewrite using `[hdet, Complex.norm_real, Real.norm_of_nonneg hpos.le]`. Rewrite using `[hn, ← hdet, div_self hunit.ne_zero, _root_.one_zpow, one_mul, hdet]`. Simplify using `only [fam, fP, evX, map_one, one_mul, gs]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Complex.ofReal_pow, ← Real.exp_nat_mul, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use `push_cast`. Rewrite using `[neg_mul]`. Use `congr 2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `he : (Matrix.of v * A) b j = v b j * ((Real.exp (s * X j) : ℝ) : ℂ)`. Rewrite using `[hA, Matrix.mul_diagonal]`. Both sides reduce to the same expression. Use `erw [he]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Complex.ofReal_mul, mul_pow, Complex.ofReal_exp, ← Complex.exp_nat_mul, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fam_eq_L_pf_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -86,7 +86,7 @@ theorem fam_eq_L_pf_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R
     push_cast
     ring
 /- English proof (translation)
-The claim follows from `@_root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_pf_k`.
+A detailed English derivation is pending.
 -/
 theorem fam_eq_L_closed_k : type_of% @_root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_pf_k := @_root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_pf_k
 end PositivityTheory.SiegelWeilFormula.Kdil

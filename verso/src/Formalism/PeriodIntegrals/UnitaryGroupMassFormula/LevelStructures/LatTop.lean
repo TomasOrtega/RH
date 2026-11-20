@@ -16,15 +16,15 @@ section Key
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨N1, h1, m1⟩` from `hy`. Take `⟨N2, h2, m2⟩` from `hz`. Use `⟨N1 * N2, mul_ne_zero h1 h2, ?_⟩` and prove the remaining obligations. Establish `e1 : (N1 * N2) • y = N2 • (N1 • y)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (N1 * N2) • z = N1 • (N2 • z)` using `by rw [mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_add, e1, e2]`. Conclude with `L.add_mem (zsmul_mem m1 N2) (zsmul_mem m2 N1)`. Consider the case `smul e y _ hy`. Take `⟨N, hN, m⟩` from `hy`. Take `⟨c, hc, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e}`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi : IsIntegral ℤ (c • e)` using `hint e (Finset.mem_singleton_self e)`. Use `⟨c * N, mul_ne_zero hc hN, ?_⟩` and prove the remaining obligations. Establish `e3 : (c * N) • (e • y) = (c • e) • (N • y)`. Rewrite using `[mul_smul, smul_comm N e y, smul_assoc]`. Rewrite using `[e3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : (c • e) • (N • y) = (IsIntegralClosure.mk' (𝓞 E) (c • e) hi) • (N • y)`. Rewrite using `[← algebraMap_smul E (IsIntegralClosure.mk' (𝓞 E) (c • e) hi) (N • y), IsIntegralClosure.algebraMap_mk']`. Rewrite using `[e4]`. Conclude with `L.smul_mem _ m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
@@ -71,28 +71,26 @@ Both sides reduce to the same expression.
 theorem ratAdd_apply (x : Fin n → E) : ratAdd v x = ratV (F := F) (Fv F v) x := rfl
 
 /- English proof (translation)
-The claim follows from `(latLoc (E := E) v Λ).smul_mem (⟨c, hc⟩ : v.adicCompletionIntegers F) hy`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_latLoc (Λ : Set (Fin n → E)) {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F)
     {y : Fin n → Fv F v ⊗[F] E} (hy : y ∈ latLoc (E := E) v Λ) : c • y ∈ latLoc (E := E) v Λ :=
   (latLoc (E := E) v Λ).smul_mem (⟨c, hc⟩ : v.adicCompletionIntegers F) hy
 
 /- English proof (translation)
-Establish `: CompactSpace (v.adicCompletionIntegers F)` using `isCompact_iff_compactSpace.mp (isCompact_adicCompletionIntegers F v)`. Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.mpr hfg`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := L)`. Set `g : s → (Fin n → Fv F v ⊗[F] E)` to `fun i => ratV (F := F) (Fv F v) ((i.1 : L) : Fin n → E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : (s → v.adicCompletionIntegers F) → (Fin n → Fv F v ⊗[F] E)` to `fun c => ∑ i, ((c i : v.adicCompletionIntegers F) : Fv F v) • g i`. Establish `hf : Continuous f`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Establish `hi : Continuous fun c : (s → v.adicCompletionIntegers F) => ((c i : v.adicCompletionIntegers F) : Fv F v)` using `(continuous_apply i).subtype_val`. Conclude with `hi.smul (continuous_const : Continuous fun _ : (s → v.adicCompletionIntegers F) => g i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : latLoc (E` using `E) v (L : Set (Fin n → E)) ≤ Submodule.span (v.adicCompletionIntegers F) (Set.range g) := by`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `key : ∀ x : L, x ∈ Submodule.span ℤ (s : Set L) → ratAdd v (x : Fin n → E) ∈ Submodule.span (v.adicCompletionIntegers F) (Set.range g)`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Consider the case `zero => show ratAdd v ((0 : L) : Fin n → E) ∈ _`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => show ratAdd v ((x + y : L) : Fin n → E) ∈ _`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul k x _ hx => show ratAdd v ((k • x : L) : Fin n → E) ∈ _`. Rewrite using `[Submodule.coe_smul_of_tower, map_zsmul]`. Conclude with `zsmul_mem hx k`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `key ⟨l, hl⟩ (hs ▸ Submodule.mem_top)`. Establish `e : (latLoc (E` using `E) v (L : Set (Fin n → E)) : Set (Fin n → Fv F v ⊗[F] E)) = Set.range f := by`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp (hle hy)`. Conclude with `⟨c, hc⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `Submodule.sum_mem _ fun i _ => smul_mem_latLoc v _ (c i).2 ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, (i.1 : L).2, rfl⟩`.
-
-Rewrite using `[e]`. Conclude with `isCompact_range hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_latLoc (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
     IsCompact (latLoc (E := E) v (L : Set (Fin n → E)) : Set (Fin n → Fv F v ⊗[F] E)) := by
@@ -144,9 +142,9 @@ theorem isCompact_latLoc (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
   exact isCompact_range hf
 
 /- English proof (translation)
-Proceed by induction on `N using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[add_mul, one_mul, TensorProduct.tmul_add, ih, TensorProduct.add_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `pred k ih`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[sub_mul, one_mul, TensorProduct.tmul_sub, ih, TensorProduct.sub_tmul]`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_intCast_mul (N : ℤ) (e : E) :
     (1 : Fv F v) ⊗ₜ[F] ((N : E) * e) = (N : Fv F v) ⊗ₜ[F] e := by
@@ -160,9 +158,9 @@ theorem one_tmul_intCast_mul (N : ℤ) (e : E) :
     rw [sub_mul, one_mul, TensorProduct.tmul_sub, ih, TensorProduct.sub_tmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[ratV, inclR, TensorProduct.smul_tmul']`. Conclude with `one_tmul_intCast_mul v N e`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[ratV, inclR, h]`.
+A detailed English derivation is pending.
 -/
 theorem ratV_zsmul_single (N : ℤ) (j : Fin n) (e : E) :
     ratV (F := F) (Fv F v) (N • (Pi.single j e : Fin n → E)) =

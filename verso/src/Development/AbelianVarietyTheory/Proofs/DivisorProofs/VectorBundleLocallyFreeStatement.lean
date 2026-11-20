@@ -11,7 +11,7 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VB.exists_open_isVB_free_finite | exact GlobalTheory.VB.exists_open_isVB_free_finite | (intros; apply GlobalTheory.VB.exists_open_isVB_free_finite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.vector_bundle_locally_free : ∀ (B : Scheme.{0}) (ι : Type) [Finite ι] (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → ∀ b : B, ∃ U : B.Opens, b ∈ U ∧ ∀ a, Nonempty ((Scheme.Modules.pullback U.ι).obj (E a) ≅ SheafOfModules.free (R := U.toScheme.ringCatSheaf) (Fin (r a))) := by
   first | exact @GlobalTheory.VB.exists_open_isVB_free_finite | exact GlobalTheory.VB.exists_open_isVB_free_finite | (intros; apply GlobalTheory.VB.exists_open_isVB_free_finite <;> assumption)

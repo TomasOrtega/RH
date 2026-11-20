@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c o' Ω _ _ _ M x T ξ hx R _ j V' _ _ _ h g' hinj hirr hcomm a k ha`. Use `haveI : IsDiscreteValuationRing T.V := T.cdvr.1`. Set `v : M.Z.presheaf.stalk x ⟶ CommRingCat.of T.V` to `M.Z.presheaf.stalkSpecializes hx ≫ Scheme.stalkClosedPointTo (R := CommRingCat.of T.V) ξ`. Establish `hv : Spec.map v ≫ M.Z.fromSpecStalk x = ξ`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : Spec.map (CommRingCat.ofHom j ≫ CommRingCat.ofHom g') = Spec.map (v ≫ CommRingCat.ofHom h)`. Rewrite using `[← cancel_mono (M.Z.fromSpecStalk x), Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, hv]`. Conclude with `hcomm`. Establish `e2 : g' (j a) = h (v.hom a)` using `congrArg (fun φ => φ.hom a) (Spec.map_injective e1)`. Establish `e3 : M.val (jK T.V ≫ ξ) (M.stalkHom x a) = algebraMap T.V (FractionRing T.V) (v.hom a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(RatModel.val_spMap_comp (algebraMap T.V (FractionRing T.V)) ξ hx (M.stalkEquiv x a)).trans ?_` and prove the remaining obligations. Rewrite using `[RatModel.valLoc, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`. Rewrite `ha` using `[e2]`. Establish `h0 : v.hom a ≠ 0` using `fun h0 => by`. Rewrite `ha` using `[h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero k hirr.ne_zero (associated_zero_iff_eq_zero _ |>.1 ha.symm)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 T.irr`. Establish `h1 : Associated (h T.ϖ ^ n) (h T.ϖ ^ k)`. Use `Associated.trans ?_ ha` and prove the remaining obligations. Rewrite using `[hu, map_mul, map_pow]`.
-
-Conclude with `(associated_unit_mul_left _ _ (u.isUnit.map h)).symm`. Establish `hn : n = k` using `le_antisymm ((pow_dvd_pow_iff hirr.ne_zero hirr.not_isUnit).1 h1.dvd) ((pow_dvd_pow_iff hirr.ne_zero hirr.not_isUnit).1 h1.symm.dvd)`. Conclude with `⟨u, by rw [e3, hu, hn, mul_comm]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uOrdEq_stalkHom_of_associated : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) (x : M.Z) (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z), ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∀ (R : Type) [CommRing R] (j : M.Z.presheaf.stalk x →+* R) (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (h : T.V →+* V') (g' : R →+* V'), Function.Injective h → Irreducible (h T.ϖ) → spMap g' ≫ (spMap j ≫ M.Z.fromSpecStalk x) = spMap h ≫ ξ → ∀ (a : M.Z.presheaf.stalk x) (k : ℕ), Associated (g' (j a)) (h T.ϖ ^ k) → UOrdEq M T ξ (M.stalkHom x a) k := by
   intro E _ _ _ H Dw l Xo c o' Ω _ _ _ M x T ξ hx R _ j V' _ _ _ h g' hinj hirr hcomm a k ha

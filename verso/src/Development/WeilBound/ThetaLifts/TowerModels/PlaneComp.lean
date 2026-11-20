@@ -11,15 +11,15 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Set `f : (Fin n → E) →ₗ[E] E × E` to `(formL (σ := σ) J x).prod (formL (σ := σ) J y)`. Establish `hf : LinearMap.range f = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce and unpack `⟨a, b⟩`. Use `⟨(a / form σ J y x) • y + b • x, Prod.ext ?_ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `form σ J _ x = a`. Rewrite using `[form_add_left, form_smul_left, form_smul_left, hxx, div_mul_cancel₀ _ hyx, mul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `form σ J _ y = b`. Rewrite using `[form_add_left, form_smul_left, form_smul_left, hyy, hxy, mul_zero, mul_one, zero_add]`. Establish `hk : Module.finrank E (LinearMap.ker f) = n₁`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `f.finrank_range_add_finrank_ker` as an intermediate fact. Rewrite `this` using `[hf, finrank_top]`. Simplify using `only [Module.finrank_prod, Module.finrank_self, Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers. Set `b` to `Module.finBasisOfFinrankEq E (LinearMap.ker f) hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Set `g : (Fin n₁ → E) →ₗ[E] (Fin n → E)` to `(LinearMap.ker f).subtype ∘ₗ b.equivFun.symm.toLinearMap`. Take `⟨p, hp⟩` from `g.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 ((LinearMap.ker f).injective_subtype.comp b.equivFun.symm.injective))`. Use `⟨LinearMap.toMatrix' g, LinearMap.toMatrix' p, by rw [← LinearMap.toMatrix'_comp, hp, LinearMap.toMatrix'_id], fun u => ?_, fun z h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `(b.equivFun.symm u).2` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Prod.mk_eq_zero.1 this`. Use `⟨b.equivFun ⟨z, Prod.mk_eq_zero.2 ⟨h1, h2⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Express the relevant statement in the definitionally equal form `z = (b.equivFun.symm (b.equivFun _) : LinearMap.ker f)`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compl (n n₁ : ℕ) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) (hn : n = n₁ + 2)
     (hxx : form σ J x x = 0) (hyy : form σ J y y = 0) (hxy : form σ J x y = 1) (hyx : form σ J y x ≠ 0) :
@@ -55,14 +55,14 @@ theorem exists_compl (n n₁ : ℕ) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n 
     rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_of_fg_map_injective f hf (hL.of_le (Submodule.map_comap_le f L))`.
+A detailed English derivation is pending.
 -/
 theorem fg_comap {V W : Type} [AddCommGroup V] [Module (𝓞 E) V] [AddCommGroup W] [Module (𝓞 E) W]
     (f : V →ₗ[𝓞 E] W) (hf : Function.Injective f) (L : Submodule (𝓞 E) W) (hL : L.FG) : (L.comap f).FG :=
   Submodule.fg_of_fg_map_injective f hf (hL.of_le (Submodule.map_comap_le f L))
 
 /- English proof (translation)
-The claim follows from `fg_comap _ (fun u u' e => by have := congrArg (P *ᵥ ·) (show ι *ᵥ u = ι *ᵥ u' from e) simpa [Matrix.mulVec_mulVec, hP] using this) L hL.fg span_eq_top := by rw [eq_top_iff] intro u _ obtain ⟨t, ht⟩ := multiple_mem_span_of_mem_localization_span (𝓞 E)⁰ E (L : Set (Fin n → E)) (ι *ᵥ …`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_comap (n n₁ : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (ι : Matrix (Fin n) (Fin n₁) E)
     (P : Matrix (Fin n₁) (Fin n) E) (hP : P * ι = 1) (hL : L.IsLattice E) :
@@ -85,7 +85,7 @@ theorem isLattice_comap (n n₁ : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (�
     exact ht
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨L.comap ((LinearMap.toSpanSingleton E _ x).restrictScalars (𝓞 E)), FractionalIdeal.isFractional_of_fg (fg_comap _ (smul_left_injective E hx) L hL.fg)⟩, fun _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ideal (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.IsLattice E) (x : Fin n → E) (hx : x ≠ 0) :
     ∃ 𝔟 : FractionalIdeal (𝓞 E)⁰ E, ∀ s : E, s ∈ 𝔟 ↔ s • x ∈ L :=

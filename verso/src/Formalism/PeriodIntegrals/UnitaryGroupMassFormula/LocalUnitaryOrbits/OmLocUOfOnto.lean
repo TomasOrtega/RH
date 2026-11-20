@@ -15,14 +15,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-The claim follows from `fibU'_of_hens σ J ψ v Λ a Y (fibHens_of σ J v Λ ψ a Y h)`.
+A detailed English derivation is pending.
 -/
 theorem fibU'_of_onto (a : ℕ) (Y : TupV (E := E) v n a) (h : HensOnto σ J v Λ ψ a Y) :
     FibU' σ J ψ v Λ a Y :=
   fibU'_of_hens σ J ψ v Λ a Y (fibHens_of σ J v Λ ψ a Y h)
 
 /- English proof (translation)
-The claim follows from `omLocU_of_hens σ J ψ v Λ a Y hSd hOm h1 (fibHens_of σ J v Λ ψ a Y hO) h3 h4 h5`.
+A detailed English derivation is pending.
 -/
 theorem omLocU_of_onto (a : ℕ) (Y : TupV (E := E) v n a)
     (hSd : (StdHyp σ J ψ → (∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ) ∧ ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν))
@@ -32,7 +32,7 @@ theorem omLocU_of_onto (a : ℕ) (Y : TupV (E := E) v n a)
   omLocU_of_hens σ J ψ v Λ a Y hSd hOm h1 (fibHens_of σ J v Λ ψ a Y hO) h3 h4 h5
 
 /- English proof (translation)
-The claim follows from `omLocU_of_onto σ J ψ v Λ a Y hSd hOm h1 (hensOnto_of σ J v Λ ψ a Y hGI hTr) h3 h4 h5`.
+A detailed English derivation is pending.
 -/
 theorem omLocU_of_tr (a : ℕ) (Y : TupV (E := E) v n a)
     (hSd : (StdHyp σ J ψ → (∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ) ∧ ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν))

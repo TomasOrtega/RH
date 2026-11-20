@@ -19,11 +19,11 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory.KeyOfPeriod
 
 /- English proof (translation)
-Introduce `_ H g τ a b hg hs hp hab`. Take `⟨P, u, th, e, hΛ, ⟨h₁, h₂⟩, hth, -⟩` from `H g τ a b hs hp hab.1 hab.2`. Substitute `e` using the available equality. Take `⟨rig, hr, hR⟩` from `Test.exists_isRig u`. Use `choose v hv using fun i : Fin P.g => (h₂ (Pi.single i (2 * Real.pi * Complex.I)⁻¹)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `Test.isLieBasis_of_isDiff P u h₁ h₂ (inv_ne_zero Complex.two_pi_I_ne_zero) v (fun i => (hv i).1) fun i => (hv i).2`. Take `⟨z, hz⟩` from `Function.ne_iff.1 (TorusAlg.thetaChar_level hs hp hab.1 hab.2).1`. Take `⟨i, hi⟩` from `exists_chart P.isLB ((u.ex z).left (default : PrimeSpectrum ℂ))`. Establish `hi'` using `(top_le_preimage_iff_mem _ _).2 hi`. Establish `hne : th.f i ≠ 0` using `fun h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hth i z hi'` as an intermediate fact. Rewrite `this` using `[h, valAt'_zero]`. Conclude with `mul_ne_zero hz (u.fr_ne i z hi') this.symm`. Conclude with `⟨⟨P, hg, rig, hr, th, exists_mem_nonzeroLocus P th ⟨i, hne⟩, v, hb⟩, rfl, (normalAt_one_iff _ _ _ _).2 ⟨u, hs, hp, hΛ, hR, hth, fun i => (hv i).2⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_keyIn_normalAt :
     ThetaUnifAV → GlobalTheory.TorusAlgebraic → ∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ), 1 ≤ g → τ.IsSymm → (τ.map Complex.im).PosDef → charHalf g a b → ∃ (x : KeyIn ℂ) (h : x.P.g = g), NormalAt x (τ.submatrix (Fin.cast h) (Fin.cast h)) 1 (fun i => a (i.cast h)) (fun i => b (i.cast h)) 1 := by

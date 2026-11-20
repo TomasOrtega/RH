@@ -15,7 +15,7 @@ local notation "gPt" p:max => spMap (ValuationSubring.subtype (OO p))
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : IsClosed (S ∩ closedPoints T)`. Rewrite using `[← Set.biUnion_of_singleton (S ∩ closedPoints T)]`. Conclude with `h.isClosed_biUnion fun x hx ↦ hx.2`. Rewrite using `[← JacobsonSpace.closure_inter_closedPoints hS, hc.closure_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_of_finite_inter_closedPoints {T : Type*} [TopologicalSpace T]
     [JacobsonSpace T] {S : Set T} (hS : IsClosed S) (h : (S ∩ closedPoints T).Finite) :
@@ -27,13 +27,13 @@ theorem finite_of_isClosed_of_finite_inter_closedPoints {T : Type*} [Topological
   exact h
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.mp hσ` as an intermediate fact. Set `i` to `X.fromSpecResidueField σ`. Establish `h1 : LocallyOfFiniteType ((i ≫ s) ≫ specZIsTerminal.from Z)`. Rewrite using `[specZIsTerminal.hom_ext ((i ≫ s) ≫ specZIsTerminal.from Z) (i ≫ π)]`. Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : LocallyOfFiniteType (i ≫ s)` using `locallyOfFiniteType_of_comp _ (specZIsTerminal.from Z)`. Establish `h3 : LocallyQuasiFinite (i ≫ s)` using `.of_injective (Function.injective_of_subsingleton _)`. Establish `h4 : QuasiCompact (i ≫ s)` using `⟨fun U _ _ ↦ (Set.toFinite _).isCompact⟩`. Establish `H` using `(IsPullback.of_hasPullback (pullback.fst s t) i).paste_horiz (IsPullback.of_hasPullback s t).flip`. Establish `h5 : LocallyQuasiFinite (pullback.fst (pullback.fst s t) i ≫ pullback.snd s t)` using `MorphismProperty.of_isPullback H.flip h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : QuasiCompact (pullback.fst (pullback.fst s t) i ≫ pullback.snd s t)` using `MorphismProperty.of_isPullback H.flip h4`. Use `(((pullback.fst (pullback.fst s t) i ≫ pullback.snd s t).finite_preimage hF).image (pullback.fst (pullback.fst s t) i)).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hw'⟩`. Establish `: w ∈ Set.range (pullback.fst (pullback.fst s t) i)`. Rewrite using `[Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hw`. Take `⟨v, rfl⟩` from `this`. Conclude with `⟨v, by simpa using hw', rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_pullback_over_closedPoint {X Z P : Scheme.{0}} (π : X ⟶ Sp ℤ)
     [LocallyOfFiniteType π] (s : X ⟶ Z) (t : P ⟶ Z) (σ : X) (hσ : IsClosed ({σ} : Set X))
@@ -64,7 +64,7 @@ theorem finite_pullback_over_closedPoint {X Z P : Scheme.{0}} (π : X ⟶ Sp ℤ
   exact ⟨v, by simpa using hw', rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.quasiFiniteLocus_eq_top_iff, eq_top_iff]`. Use `subset_of_isOpen_of_closedPoints isOpen_univ f.quasiFiniteLocus.isOpen fun y hy _ ↦ ?_` and prove the remaining obligations. Establish `: Finite (f.fiber (f y))` using `(f.fiberHomeo (f y)).finite_iff.mpr (h y hy)`. Conclude with `Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber.mpr (isOpen_discrete _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyQuasiFinite_of_finite_fibres_closedPoints {Y X : Scheme.{0}} (f : Y ⟶ X)
     [LocallyOfFiniteType f] [JacobsonSpace Y]
@@ -75,29 +75,25 @@ theorem locallyQuasiFinite_of_finite_fibres_closedPoints {Y X : Scheme.{0}} (f :
   exact Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber.mpr (isOpen_discrete _)
 
 /- English proof (translation)
-Introduce `X _ π _ _ _ hX Z P s t _ G U φ hU hφ H`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian π`. Establish `: Nonempty U.toScheme` using `hU.to_subtype`. Establish `: IsIntegral U.toScheme` using `isIntegral_of_isOpenImmersion U.ι`. Establish `: QuasiCompact U.ι` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDominant U.ι` using `⟨by`. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `U.isOpen.dense hU⟩`. Set `Γ` to `graphClosure s t U.ι φ hφ.symm`. Set `f : Γ ⟶ X` to `graphClosure.fst s t U.ι φ hφ.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : Γ ⟶ P` to `graphClosure.snd s t U.ι φ hφ.symm`. Set `j : U.toScheme ⟶ Γ` to `graphClosure.incl s t U.ι φ hφ.symm`. Establish `hjf : j ≫ f = U.ι` using `graphClosure.incl_fst ..`. Establish `hjg : j ≫ g = φ` using `graphClosure.incl_snd ..`. Establish `hfg : f ≫ s = g ≫ t` using `graphClosure.condition ..`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat (j ≫ f ≫ π)` using `by rw [reassoc_of% hjf]; infer_instance`. Establish `: Flat (f ≫ π)` using `flat_of_schemeDominant_of_isDedekindDomain j _`. Establish `: JacobsonSpace Γ` using `jacobsonSpace_of_locallyOfFiniteType_int (f ≫ π)`. Use `choose F hF hFG hFH using H`. Establish `hcl (z : Γ) (hz : IsClosed ({z} : Set Γ)) : IsClosed ({f z} : Set X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using f.isClosedMap _ hz`. Establish `key (z : Γ) (hz : IsClosed ({z} : Set Γ)) : g z ∈ F (f z) (hcl z hz)`. Take `⟨p, hp, y, hy, hyU⟩` from `padicAlgCl_integral_points.1 Γ (f ≫ π) z hz j.opensRange (Set.range_nonempty _)`. Take `⟨l, e⟩ : ∃ l, l ≫ j = gPt p ≫ y` from `⟨_, IsOpenImmersion.lift_fac j (gPt p ≫ y) hyU⟩`. Use `hFH (f z) (hcl z hz) p (y ≫ f) l (y ≫ g) ((Scheme.Hom.comp_apply _ _ _).trans (congrArg f hy)) (by rw [← reassoc_of% e, hjf]) (by rw [← reassoc_of% e, hjg]) (by simp [hfg])` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((Scheme.Hom.comp_apply y g _).trans (congrArg g hy)) ▸ this`. Establish `: LocallyQuasiFinite f`. Use `locallyQuasiFinite_of_finite_fibres_closedPoints f fun y hy ↦ ?_` and prove the remaining obligations. Use `finite_of_isClosed_of_finite_inter_closedPoints ((hcl y hy).preimage f.continuous) ?_` and prove the remaining obligations. Use `((finite_pullback_over_closedPoint π s t (f y) (hcl y hy) (hF _ (hcl y hy))).preimage (graphClosure.ι s t U.ι φ hφ.symm).isClosedEmbedding.injective.injOn).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨hz, hz'⟩`. Establish `hz₁ : f z = f y` using `hz`. Establish `h₂` using `key z hz'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hz₁`. Rewrite using `[← Scheme.Hom.comp_apply]`. Establish `: ∀ (x : X) (hx : IsClosed ({x} : Set X)), f z = x → g z ∈ F x hx`. Introduce and unpack `_ _ rfl`. Conclude with `h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this _ _ hz₁`. Establish `: IsIso f` using `isIso_of_isProper_of_quasiFinite_of_birational f (fun x ↦ (hX x).2) U ‹_›`. Establish `hG : Set.range (inv f ≫ g) ⊆ Set.range G.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `subset_of_isOpen_of_closedPoints isOpen_univ (g ⁻¹ᵁ G).isOpen (fun z hz _ ↦ hFG _ _ (key z hz)) (Set.mem_univ _)`. Establish `e` using `IsOpenImmersion.lift_fac G.ι (inv f ≫ g) hG`. Establish `e' : U.ι ≫ inv f = j` using `by simp [hjf]`. Use `⟨IsOpenImmersion.lift G.ι (inv f ≫ g) hG, ⟨?_, ?_⟩, fun Φ hΦ ↦ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e, reassoc_of% e', hjg]`. Rewrite using `[reassoc_of% e, ← hfg, IsIso.inv_hom_id_assoc]`. Rewrite using `[← cancel_mono G.ι, e]`. Use `ext_of_isDominant_of_isSeparated t ?_ U.ι ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hΦ.2, Category.assoc, ← hfg, IsIso.inv_hom_id_assoc]`.
-
-Rewrite using `[hΦ.1, reassoc_of% e', hjg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_extension_of_finite_specializations :
     ∀ (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π] [QuasiCompact π], IsNormalScheme X → ∀ (Z P : Scheme.{0}) (s : X ⟶ Z) (t : P ⟶ Z) [IsProper t] (G : P.Opens) (U : X.Opens) (φ : U.toScheme ⟶ P), (U : Set X).Nonempty → φ ≫ t = U.ι ≫ s → (∀ σ : X, IsClosed ({σ} : Set X) → ∃ F : Set P, F.Finite ∧ F ⊆ G ∧ ∀ (p : ℕ) [Fact p.Prime] (a : Sp (OO p) ⟶ X) (a₀ : Sp (PadicAlgCl p) ⟶ U.toScheme) (b : Sp (OO p) ⟶ P), a (cPt p) = σ → a₀ ≫ U.ι = gPt p ≫ a → gPt p ≫ b = a₀ ≫ φ → b ≫ t = a ≫ s → b (cPt p) ∈ F) → ∃! Φ : X ⟶ G.toScheme, U.ι ≫ Φ ≫ G.ι = φ ∧ Φ ≫ G.ι ≫ t = s := by

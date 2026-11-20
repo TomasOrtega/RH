@@ -13,11 +13,11 @@ section General
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[← taylor_coeff]`. Establish `h1 : taylor x (∏ z ∈ T, (X - C z)) = ∏ z ∈ T, (X + C (x - z))`. Rewrite using `[taylor_apply, Polynomial.prod_comp]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [sub_comp, X_comp, C_comp, map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Finset.prod_X_add_C_coeff T _ hq]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Finset.mem_powersetCard]`. Rewrite using `[norm_prod, ← ht.2, ← Finset.prod_const]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun z hz => ?_` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Conclude with `h z (ht.1 hz)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_taylor_coeff_le (T : Finset K) (x : K) (r : ℝ) (hr : 0 ≤ r) (h : ∀ z ∈ T, ‖z - x‖ ≤ r)
     (q : ℕ) (hq : q ≤ T.card) :
@@ -38,9 +38,9 @@ theorem norm_taylor_coeff_le (T : Finset K) (x : K) (r : ℝ) (hr : 0 ≤ r) (h 
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le`. Consider the case `exact _root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le`. Consider the case `(apply _root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootNormPowerBound.exists_root_norm_sub_pow_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_root_near [IsAlgClosed K] (p : K[X]) (hp : 0 < p.natDegree) (x : K) :
     ∃ b ∈ p.roots, ‖p.leadingCoeff‖ * ‖b - x‖ ^ p.natDegree ≤ ‖p.eval x‖ := by
@@ -57,16 +57,16 @@ end General
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `(spectralNorm_eq_of_equiv g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_gal' (g : GQ l) (x : Om l) : ‖g x‖ = ‖x‖ := (spectralNorm_eq_of_equiv g x).symm
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h0 : n.choose q ≠ 0` using `(Nat.choose_pos hq).ne'`. Establish `h1 : ((n.choose q : ℕ) : Om l) = algebraMap ℚ_[l] (Om l) ((n.choose q : ℕ) : ℚ_[l])`. Rewrite using `[map_natCast]`. Rewrite using `[h1, norm_algebraMap', Padic.norm_eq_zpow_neg_valuation (by exact_mod_cast h0), Padic.valuation_natCast, zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Nat.pow_factorization_choose_le (p := l) (k := q) hn`. Rewrite `h2` using `[Nat.factorization_def _ hl]`. Establish `h3 : (0 : ℝ) < (l : ℝ) ^ padicValNat l (n.choose q)`. Use `hl.pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Rewrite using `[← div_eq_mul_inv, le_div_iff₀ h3, one_mul]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_mul_norm_choose (n q : ℕ) (hn : 0 < n) (hq : q ≤ n) :
     1 ≤ (n : ℝ) * ‖((n.choose q : ℕ) : Om l)‖ := by
@@ -89,7 +89,7 @@ noncomputable def cst (k : ℕ) : ℝ := (2 : ℝ) ^ ((4 : ℝ) - (2 * k + 4) / 
 noncomputable def loss (k : ℕ) : ℝ := (2 : ℝ) ^ (((k : ℝ) + 1) / 2 ^ k)
 
 /- English proof (translation)
-Unfold `cst loss`. Rewrite using `[← Real.rpow_add (by norm_num)]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,13 +102,13 @@ theorem cst_succ (k : ℕ) : cst (k + 1) = cst k * loss k := by
   ring
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow (by norm_num) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_loss (k : ℕ) : 1 ≤ loss k :=
   Real.one_le_rpow (by norm_num) (by positivity)
 
 /- English proof (translation)
-Unfold `loss`. Rewrite using `[← Real.rpow_mul_natCast (by norm_num), ← Real.rpow_natCast (2 : ℝ) (k + 1)]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem loss_pow (k : ℕ) : loss k ^ (2 ^ k) = 2 ^ (k + 1) := by
   unfold loss
@@ -118,7 +118,7 @@ theorem loss_pow (k : ℕ) : loss k ^ (2 ^ k) = 2 ^ (k + 1) := by
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [cst]`. Consider the case `succ k ih => rw [cst_succ]`. Conclude with `one_le_mul_of_one_le_of_one_le ih (one_le_loss k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem one_le_cst (k : ℕ) : 1 ≤ cst k := by
   induction k with
@@ -126,7 +126,7 @@ theorem one_le_cst (k : ℕ) : 1 ≤ cst k := by
   | succ k ih => rw [cst_succ]; exact one_le_mul_of_one_le_of_one_le ih (one_le_loss k)
 
 /- English proof (translation)
-Unfold `cst`. Establish `: (16 : ℝ) = (2 : ℝ) ^ (4 : ℝ)` using `by norm_num`. Rewrite using `[this]`. Use `Real.rpow_le_rpow_of_exponent_le (by norm_num) ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ (2 * k + 4) / 2 ^ k` using `by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -139,49 +139,41 @@ theorem cst_le (k : ℕ) : cst k ≤ 16 := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x r S hS hc hr`. Establish `hr0 : 0 ≤ r` using `by simpa using hr 1 H.one_mem`. Use `⟨x, fun g hg => ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ S` using `by simpa using hS 1 H.one_mem`. Conclude with `Finset.card_le_one.1 (by simpa using hc) _ (hS g hg) _ hx`. Use `one_le_cst 0` as an intermediate fact. Rewrite using `[sub_self, norm_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `x r S hS hc hr`. Establish `hr0 : 0 ≤ r` using `by simpa using hr 1 H.one_mem`. Establish `hc1` using `one_le_cst k`. Establish `hl1` using `one_le_loss k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := S.filter (fun z => ∃ g ∈ H, g x = z) with hT`. Establish `hTm : ∀ z, z ∈ T ↔ ∃ g ∈ H, g x = z`. Introduce `z`. Rewrite using `[hT, Finset.mem_filter]`. Conclude with `⟨fun h => h.2, fun ⟨g, hg, h⟩ => ⟨h ▸ hS g hg, g, hg, h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hTc : T.card ≤ 2 ^ (k + 1)` using `(Finset.card_filter_le _ _).trans hc`. Distinguish the cases in `hk : T.card ≤ 2 ^ k`. Take `⟨y, hy, hxy⟩` from `ih x r T (fun g hg => (hTm _).2 ⟨g, hg, rfl⟩) hk hr`. Use `⟨y, hy, hxy.trans ?_⟩` and prove the remaining obligations. Rewrite using `[cst_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ hr0` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use `push Not at hk`. Use `set f : (Om l)[X] := ∏ z ∈ T, (X - C z) with hf`. Use `set q := T.card - 2 ^ k with hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hq1 : T.card - q = 2 ^ k` using `by omega`. Establish `hfm : f.Monic` using `monic_prod_of_monic _ _ fun z _ => monic_X_sub_C z`. Establish `hfd : f.natDegree = T.card`. Rewrite using `[hf, natDegree_prod_of_monic _ _ fun z _ => monic_X_sub_C z]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfg : ∀ g ∈ H, f.map (g : Om l →+* Om l) = f`. Introduce `g hg`. Rewrite using `[hf, Polynomial.map_prod]`. Use `Finset.prod_bij (fun z _ => g z) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g', hg', rfl⟩` from `(hTm z).1 hz`. Conclude with `(hTm _).2 ⟨g * g', H.mul_mem hg hg', rfl⟩`. Introduce `a _ b _ h`. Conclude with `g.injective h`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g', hg', rfl⟩` from `(hTm z).1 hz`. Use `⟨(g⁻¹ * g') x, (hTm _).2 ⟨_, H.mul_mem (H.inv_mem hg) hg', rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel_left]`. Introduce `z _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set p := hasseDeriv q f with hp`. Establish `hpd : p.natDegree = 2 ^ k` using `by rw [hp, natDegree_hasseDeriv, hfd, hq1]`. Establish `hpl : p.leadingCoeff = ((T.card.choose q : ℕ) : Om l)`. Establish `h2 : 2 ^ k + q = T.card` using `by omega`. Rewrite using `[leadingCoeff, hpd, hp, hasseDeriv_coeff, h2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hfd, hfm.coeff_natDegree, hfd]`. Rewrite using `[mul_one]`. Establish `hpg : ∀ g ∈ H, p.map (g : Om l →+* Om l) = p`. Introduce `g hg`. Use extensionality with `n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congrArg (fun u => coeff u (n + q)) (hfg g hg)` as an intermediate fact. Simplify using `only [coeff_map] at this`. Rewrite using `[coeff_map, hp, hasseDeriv_coeff, map_mul, map_natCast, this]`. Establish `hp0 : p ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hpd` using `[h, natDegree_zero]`. Conclude with `(pow_pos two_pos k).ne hpd`. Take `⟨b, hb, hbx⟩` from `exists_root_near p (by rw [hpd]; positivity) x`. Establish `hev` using `norm_taylor_coeff_le T x r hr0 (fun z hz => by`. Take `⟨g, hg, rfl⟩` from `(hTm z).1 hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hr g hg) q (by omega)`. Rewrite `hev` using `[← hf, ← hp, hq1]`. Rewrite `hbx` using `[hpd, hpl]`. Establish `hch` using `one_le_mul_norm_choose (l := l) T.card q (by omega) (by omega)`. Establish `hbr : ‖b - x‖ ≤ loss k * r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `le_of_pow_le_pow_left₀ (pow_pos two_pos k).ne' (by positivity) ?_` and prove the remaining obligations. Rewrite using `[mul_pow, loss_pow]`. Establish `h1 : (T.card : ℝ) ≤ 2 ^ (k + 1)` using `by exact_mod_cast hTc`. Establish `h2 : 0 ≤ ‖b - x‖ ^ 2 ^ k` using `by positivity`. Establish `h3 : (0 : ℝ) ≤ T.card` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hbx.trans hev) h3`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right h1 (by positivity)`. Establish `hrr : r ≤ loss k * r` using `le_mul_of_one_le_left hr0 hl1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgb : ∀ g ∈ H, ‖g b - b‖ ≤ loss k * r`. Introduce `g hg`. Establish `e : g b - b = g (b - x) + ((g x - x) + (x - b))` using `by rw [map_sub]; ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)))` and prove the remaining obligations.
-
-Rewrite using `[norm_gal']`. Conclude with `hbr`. Conclude with `(hr g hg).trans hrr`. Rewrite using `[norm_sub_rev]`. Conclude with `hbr`.
-
-Take `⟨y, hy, hby⟩` from `ih b (loss k * r) p.roots.toFinset (fun g hg => by`. Rewrite using `[Multiset.mem_toFinset, mem_roots hp0, IsRoot.def]`. Establish `h0 : p.eval b = 0` using `(mem_roots hp0).1 hb`. Establish `h1` using `eval_map_apply (g : Om l →+* Om l) (p := p) b`. Rewrite `h1` using `[hpg g hg, h0, map_zero]`.
-
-Conclude with `h1)`. Use the proof step `((Multiset.toFinset_card_le _).trans ((card_roots' p).trans hpd.le)) hgb`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `e : x - y = (x - b) + (b - y)` using `by ring`. Rewrite using `[e, cst_succ, mul_assoc]`.
-
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ hby)` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Conclude with `hbr.trans (le_mul_of_one_le_left (by positivity) hc1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ax_step (H : Subgroup (GQ l)) (k : ℕ) : ∀ (x : Om l) (r : ℝ) (S : Finset (Om l)),
     (∀ g ∈ H, g x ∈ S) → S.card ≤ 2 ^ k → (∀ g ∈ H, ‖g x - x‖ ≤ r) →
@@ -295,9 +287,9 @@ theorem ax_step (H : Subgroup (GQ l)) (k : ℕ) : ∀ (x : Om l) (r : ℝ) (S : 
     exact hbr.trans (le_mul_of_one_le_left (by positivity) hc1)
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨16, by norm_num, fun H x r hr => ?_⟩` and prove the remaining obligations. Establish `hr0 : 0 ≤ r` using `by simpa using hr 1 H.one_mem`. Establish `hint : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Use `set S := ((minpoly ℚ_[l] x).aroots (Om l)).toFinset with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hxy⟩` from `ax_step H S.card x r S (fun g _ => by`. Rewrite using `[hS, Multiset.mem_toFinset, mem_aroots]`. Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_algHom_apply, minpoly.aeval, map_zero]) Nat.lt_two_pow_self.le hr`. Conclude with `⟨y, hy, hxy.trans (mul_le_mul_of_nonneg_right (cst_le _) hr0)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ax_lemma : ∀ (l : ℕ) [Fact l.Prime], ∃ c : ℝ, 0 < c ∧ ∀ (H : Subgroup (GQ l)) (x : Om l) (r : ℝ),
     (∀ g ∈ H, ‖g x - x‖ ≤ r) → ∃ y : Om l, (∀ g ∈ H, g y = y) ∧ ‖x - y‖ ≤ c * r := by

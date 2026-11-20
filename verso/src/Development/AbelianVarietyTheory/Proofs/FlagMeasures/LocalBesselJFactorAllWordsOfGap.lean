@@ -16,21 +16,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.JFactTie
 
 /- English proof (translation)
-Introduce `D X Y hF hI C hB u u' hGap t hG hr`. Establish `hex : ∃ s : TT Y u u', s.toTerm = tc hI t` using `Formalism.L2.SG.Pf.liftOntoC_of Formalism.L2.SG.Pf.WittFlags.LatIso_holds D X Y u u' (tc hI t)`. Establish `hs : hex.choose.toTerm = tc hI t` using `hex.choose_spec`. Establish `hrel : hex.choose.relevant` using `by show hex.choose.toTerm.relevant`. Rewrite using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hI.relevant t).1 hr`. Establish `hsG : hex.choose.G ≠ 0` using `by show hex.choose.toTerm.G ≠ 0`. Rewrite using `[hs]`. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[gterm_val hI t, h0, map_zero]`. Establish `hP : HasPin hex.choose` using `GlobalTheory.T.relevantLift_normalisedData_exist D X Y u u' hex.choose hrel hsG`. Establish `hx` using `hP.choose_spec`. Establish `hJ : JtOf hI t = Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') hex.choose`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `JtOf`. Rewrite using `[dif_pos hex]`. Establish `hV : volRC hI t = (hP.choose.2.1 hP.choose.2.2).toReal`. Unfold `volRC covR`. Rewrite using `[dif_pos ⟨hr, hG, hex⟩, dif_pos hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ∀ v, ∀ r ∈ Formalism.L2.SG.RealObj.StSet (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I …`. Introduce `v`. Take `⟨τ, rfl⟩ : ∃ τ, v = vOf X τ` from `⟨X.pl v, by simp [vOf]⟩`. Take `⟨p, hp⟩` from `GlobalTheory.T.relevant_term_has_real_relative_point D X Y hF hI 1 C u u' t hex.choose hs hG hr τ`. Conclude with `GlobalTheory.StabInv.stab_inv D X 1 C hB u u' τ (hex.choose.pt.1 (vOf X τ)) p hGap hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μl, νl, hH, hQ, hR, hA⟩` from `GlobalTheory.T.normalisedLift_amplitude_eq_covolume_mul_local D X Y 1 C u u' hex.choose hP.choose hrel hsG hx.1 hx.2.1 hx.2.2 hinv`. Establish `hloc : ∀ τ, j1 hI C hB t τ = Complex.normSq ((((cOf hB u τ : ℝ) : ℂ))⁻¹ * sclOf hB u u' τ) * hsNormSq (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (vOf X τ)); Formalism.L2.SG.RealObj.Jv (νl (vOf X τ)) (X.Wloc u (vOf X τ)) (X.Wloc u' (vOf X τ)) (hex.choose.pt.1 (vOf X τ))) := by`. Introduce `τ`. Use `haveI : SigmaFinite (μl (vOf X τ)) := (hH (vOf X τ)).1`. Conclude with `GlobalTheory.T.localAmplitude_wittLift_eq_quotientIntegral D X Y hF hI C hB u u' t hex.choose hs hG hr hGap τ (μl (vOf X τ)) (νl (vOf X τ)) inferInstance (hQ (vOf X τ)) (hR τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK` using `GlobalTheory.T.amplitudeConstant_eq_prod_covolumes D X Y hF 1 C hB u u' one_pos hGap`. Establish `hre : (∏ τ, hsNormSq (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (vOf X τ)); Formalism.L2.SG.RealObj.Jv (νl (vOf X τ)) (X.Wloc u (vOf X τ)) (X.Wloc u' (vOf X τ)) (hex.choose.pt.1 (vOf X τ)))) = ∏ v, hsNormSq (haveI := FiniteDimensional.complete ℂ (X.Vloc u v); Formalism.L2.SG.RealObj.Jv (νl v) (X.Wloc u v …`. Establish `hcov : covN (Y` using `Y) C u * covN (Y := Y) C u' = ((Measure.pi (fun _ : D.what₂.Tau => muNB D 1) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u)).toReal * (Measure.pi …`. Rewrite using `[hJ, hV, hA, hcov]`. Unfold `P1`.
-
-Rewrite using `[Finset.prod_congr rfl fun τ _ => hloc τ, Finset.prod_mul_distrib, hre, hK]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jFactN_all : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (C : Choice X 1) (hB : WuBessel C) (u u' : D.what₂.Word), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → JFactN hI C hB u u' := by
   intro D X Y hF hI C hB u u' hGap t hG hr

@@ -12,15 +12,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Set `x : ∀ v, Gv v` to `fun v => if h : v ∈ S then Function.surjInv (he v h).2 (w v) else 1`. Establish `hx : x ∈ RP Gv K` using `by show ∀ᶠ v in Filter.cofinite, x v ∈ K v`. Use `Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.mem_coe]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv (by simp [x, h, one_mem])`. Use `⟨⟨x, hx⟩, ⟨fun v h => ?_, fun v h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show e v h (x v) = w v`. Simplify using `only [x, dif_pos h]`. Conclude with `Function.surjInv_eq _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show x v = 1`. Simplify using `[x, h]`. Introduce and unpack `g ⟨h1, h2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : v ∈ S`. Apply `(he v h).1` to reduce the goal to its premises. Rewrite using `[h1 v h]`. Use `show w v = e v h (x v)`. Simplify using `only [x, dif_pos h]`.
-
-Conclude with `(Function.surjInv_eq _ _).symm`. Rewrite using `[h2 v h] show 1 = x v`. Simplify using `[x, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rp_exists_unique {I : Type} {Gv Hv : I → Type} [∀ v, Group (Gv v)] [∀ v, Group (Hv v)]
     (K : ∀ v, Subgroup (Gv v)) (S : Finset I) (e : ∀ v, v ∈ S → (Gv v →* Hv v))
@@ -54,7 +52,7 @@ private theorem rp_exists_unique {I : Type} {Gv Hv : I → Type} [∀ v, Group (
       simp [x, h]
 
 /- English proof (translation)
-Simplify using `[dg, val_diagT, Matrix.det_diagonal, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem det_dg_inv {k : Type} [Field k] (t : kˣ) :
     ((dg ![t, t⁻¹] : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).det = 1 := by
@@ -63,7 +61,7 @@ private theorem det_dg_inv {k : Type} [Field k] (t : kˣ) :
 end UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Rewrite using `[SU, MonoidHom.mem_ker]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, Units.val_one]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_su_of_det_eq_one {K : Type} [Field K] {D : K} (x : DX D) (hx : (Glob.mt x).det = 1) :
     x ∈ SU D := by
@@ -73,19 +71,15 @@ private theorem mem_su_of_det_eq_one {K : Type} [Field K] {D : K} (x : DX D) (hx
   exact hx
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA`. Establish `loc` using `fun v (h : v ∈ A.Sg) => (datOk F Δ A hA).2.2.1 v h`. Establish `bU : ∀ v (h : v ∈ A.Sg), Function.Bijective (eU (A.hs v h))` using `fun v h => (eU_facts (Kv v) (Ov v) (loc v h).1 (loc v h).2.1 _ (A.s v) (A.hs v h) (loc v h).2.2.1).1`. Establish `bD : ∀ v (h : v ∈ A.Sg), Function.Bijective (eD (A.hs v h))` using `fun v h => (eD_facts (Kv v) (Ov v) (loc v h).1 (loc v h).2.1 _ (A.s v) (A.hs v h) (loc v h).2.2.1).1`. Use `⟨fun d => ?_, fun d => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `rp_exists_unique (Hv := fun v => GL (Fin 3) (Kv v)) _ A.Sg (fun v h => eU (A.hs v h)) bU (fun v => dg (d v))`. Conclude with `rp_exists_unique (Hv := fun v => GL (Fin 2) (Kv v)) _ A.Sg (fun v h => eD (A.hs v h)) bD (fun v => dg (d v))`. Introduce and unpack `g g' d d' ⟨hg1, hg2⟩ ⟨hg1', hg2'⟩`. Use `⟨fun v h => ?_, fun v h => ?_⟩` and prove the remaining obligations. Use `show eU (A.hs v h) (g.1 v * g'.1 v) = dg (d v * d' v)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, hg1 v h, hg1' v h]`. Conclude with `(map_mul (diagT (Kv v) (Fin 3)) _ _).symm`. Use `show g.1 v * g'.1 v = 1`. Rewrite using `[hg2 v h, hg2' v h, mul_one]`. Introduce and unpack `g g' d d' ⟨hg1, hg2⟩ ⟨hg1', hg2'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `⟨fun v h => ?_, fun v h => ?_⟩` and prove the remaining obligations. Use `show eD (A.hs v h) (g.1 v * g'.1 v) = dg (d v * d' v)`. Rewrite using `[map_mul, hg1 v h, hg1' v h]`. Conclude with `(map_mul (diagT (Kv v) (Fin 2)) _ _).symm`. Use `show g.1 v * g'.1 v = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg2 v h, hg2' v h, mul_one]`. Introduce and unpack `g t ⟨hg1, hg2⟩`. Simplify using `only [SA, Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `v`. Use `show g.1 v ∈ SU (cv v Δ)`.
-
-Distinguish the cases in `h : v ∈ A.Sg`. Establish `hfac` using `(eD_facts (Kv v) (Ov v) (loc v h).1 (loc v h).2.1 _ (A.s v) (A.hs v h) (loc v h).2.2.1).2.2.2.2.1 (g.1 v)`. Establish `hd` using `hg1 v h`. Establish `h2 : ((dg (SD.dS t v) : GL (Fin 2) (Kv v)) : Matrix (Fin 2) (Fin 2) (Kv v)).det = 1` using `det_dg_inv (t v)`. Use `mem_su_of_det_eq_one _ ?_` and prove the remaining obligations.
-
-Rewrite using `[hfac.1, hd, h2, map_one]`. Conclude with `(hg2 v h).symm ▸ one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.elEx :
     UpperTheory.V.Z.Sym.So.ElEx := by

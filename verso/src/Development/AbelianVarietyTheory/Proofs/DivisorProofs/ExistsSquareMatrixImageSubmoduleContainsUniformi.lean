@@ -7,9 +7,9 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq`. Consider the case `exact _root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq`. Consider the case `(apply _root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MatrixRangeExistence.exists_matrix_range_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_square_matrix_of_submodule_between
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (n : ℕ) (ϖ : O)

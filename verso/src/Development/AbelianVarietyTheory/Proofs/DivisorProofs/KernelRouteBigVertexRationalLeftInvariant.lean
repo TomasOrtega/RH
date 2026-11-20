@@ -15,9 +15,9 @@ namespace GlobalTheory.BigRouteInv
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, -, ⟨φ₁, φ₂, hloc, -⟩⟩, rfl, -⟩` from `hΘ`. Take `⟨d₀, hd₀, P, rfl⟩` from `GlobalTheory.SmallRoute.mem_support_tensT W hd`. Take `⟨h1, -⟩` from `hloc d₀ hd₀`. Establish `v1` using `ρ.vX_is i (j + 1) i.2 j.2`. Establish `t1` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is h1.2 v1.2.theta`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _`.
+A detailed English derivation is pending.
 -/
 theorem theta_first_of_matched {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {t : T} {i j : Fin D.R.m}
     {Θ : TotT G (routeBig t i j)} {Θ' : TotT G (routeSmall t i j)} (hΘ : IsMatched B t ρ i j Θ Θ')
@@ -31,11 +31,11 @@ theorem theta_first_of_matched {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {t
   exact GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j Θ Θ' hΘ g₁ γ hγ g`. Establish `hc` using `W.om_is (.chi (i : ℕ) ((j : ℕ) + 1)) ⟨i.2, j.2⟩`. Use function extensionality and compare the values at `u`. Unfold `kerBig`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `theta_first_of_matched hΘ hd`. Use `congr 2`. Use `show thetaKO (W.om (.chi (i : ℕ) ((j : ℕ) + 1))) (negGA _ u) (γ * g) d.1.2 = thetaKO (W.om (.chi (i : ℕ) ((j : ℕ) + 1))) (negGA _ u) g d.1.2`. Unfold `thetaKO`. Establish `e : ((negGA _ u, γ * g) : GA D (G.pS (.chi (i : ℕ) ((j : ℕ) + 1))) × GA D (G.pT (.chi (i : ℕ) ((j : ℕ) + 1)))) = (1, γ) * (negGA _ u, g)` using `by simp`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hc.om_aut 1 (one_mem _) γ hγ _ (hc.om_pres _ _ h1)`.
+A detailed English derivation is pending.
 -/
 theorem kerBig_rat_mul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ') (g₁ : GA D (G.V (.grid (i + 1) j))),

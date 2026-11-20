@@ -14,75 +14,75 @@ def Adj (J M M' : Matrix β β A) : Prop := Mᵀ * J = J * M'.map c
 variable {c} {J : Matrix β β A}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (c : A →+* A))`.
+A detailed English derivation is pending.
 -/
 theorem mapc_mul {ι κ μ : Type} [Fintype κ] (M : Matrix ι κ A) (N : Matrix κ μ A) : (M * N).map c = M.map c * N.map c :=
   Matrix.map_mul (f := (c : A →+* A))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add c) _ _`.
+A detailed English derivation is pending.
 -/
 theorem mapc_add {ι κ : Type} (M N : Matrix ι κ A) : (M + N).map c = M.map c + N.map c := Matrix.map_add _ (map_add c) _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.map_neg _ (map_neg c) _`.
+A detailed English derivation is pending.
 -/
 theorem mapc_neg {ι κ : Type} (M : Matrix ι κ A) : (-M).map c = -M.map c := Matrix.map_neg _ (map_neg c) _
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, mapc_add, mapc_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapc_sub {ι κ : Type} (M N : Matrix ι κ A) : (M - N).map c = M.map c - N.map c := by
   rw [sub_eq_add_neg, mapc_add, mapc_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero c) (map_one c)`.
+A detailed English derivation is pending.
 -/
 theorem mapc_one {ι : Type} [DecidableEq ι] : (1 : Matrix ι ι A).map c = 1 := Matrix.map_one _ (map_zero c) (map_one c)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_zero _ (map_zero c)`.
+A detailed English derivation is pending.
 -/
 theorem mapc_zero {ι κ : Type} : (0 : Matrix ι κ A).map c = 0 := Matrix.map_zero _ (map_zero c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapc_smul {ι κ : Type} (a : A) (M : Matrix ι κ A) : (a • M).map c = c a • M.map c := by
   ext i j; simp
 
 /- English proof (translation)
-Simplify using `[Adj, mapc_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Adj.one : Adj c J 1 1 := by simp [Adj, mapc_one]
 
 /- English proof (translation)
-Unfold `Adj at *`. Rewrite using `[transpose_add, Matrix.add_mul, h, h', mapc_add, Matrix.mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.add {M M' N N' : Matrix β β A} (h : Adj c J M M') (h' : Adj c J N N') : Adj c J (M + N) (M' + N') := by
   unfold Adj at *; rw [transpose_add, Matrix.add_mul, h, h', mapc_add, Matrix.mul_add]
 
 /- English proof (translation)
-Unfold `Adj at *`. Rewrite using `[transpose_sub, Matrix.sub_mul, h, h', mapc_sub, Matrix.mul_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.sub {M M' N N' : Matrix β β A} (h : Adj c J M M') (h' : Adj c J N N') : Adj c J (M - N) (M' - N') := by
   unfold Adj at *; rw [transpose_sub, Matrix.sub_mul, h, h', mapc_sub, Matrix.mul_sub]
 
 /- English proof (translation)
-Unfold `Adj at *`. Rewrite using `[transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', mapc_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.mul {M M' N N' : Matrix β β A} (h : Adj c J M M') (h' : Adj c J N N') : Adj c J (M * N) (N' * M') := by
   unfold Adj at *
   rw [transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', mapc_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `Adj at *`. Rewrite using `[transpose_smul, Matrix.smul_mul, h, mapc_smul, ha, Matrix.mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.smul {M M' : Matrix β β A} (h : Adj c J M M') {a a' : A} (ha : c a' = a) : Adj c J (a • M) (a' • M') := by
   unfold Adj at *; rw [transpose_smul, Matrix.smul_mul, h, mapc_smul, ha, Matrix.mul_smul]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using Adj.one`. Consider the case `succ N ih => have := ih.mul h`. Rewrite `this` using `[← pow_succ, ← pow_succ']`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Adj.pow {M : Matrix β β A} (h : Adj c J M M) (N : ℕ) : Adj c J (M ^ N) (M ^ N) := by
   induction N with
@@ -90,9 +90,9 @@ theorem Adj.pow {M : Matrix β β A} (h : Adj c J M M) (N : ℕ) : Adj c J (M ^ 
   | succ N ih => have := ih.mul h; rwa [← pow_succ, ← pow_succ'] at this
 
 /- English proof (translation)
-Establish `h : (k.1 : Matrix β β A)ᵀ * J * (k.1 : Matrix β β A).map c = J` using `k.2`. Establish `h1 : (k.1 : Matrix β β A) * ((k⁻¹).1 : Matrix β β A) = 1` using `k.1.mul_inv`. Unfold `Adj`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mapc_mul, h1, mapc_one, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [← Matrix.mul_assoc, h]`.
+A detailed English derivation is pending.
 -/
 theorem adj_unit (k : UG c J) : Adj c J (k.1 : Matrix β β A) (k⁻¹).1 := by
   have h : (k.1 : Matrix β β A)ᵀ * J * (k.1 : Matrix β β A).map c = J := k.2
@@ -103,21 +103,19 @@ theorem adj_unit (k : UG c J) : Adj c J (k.1 : Matrix β β A) (k⁻¹).1 := by
     _ = _ := by rw [← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Use `set m := 1 - k with hm`. Use `set m' := 1 - k' with hm'`. Use `set T := -(f' * m) with hT`. Establish `hJ' : Ji * J = 1` using `mul_eq_one_comm.1 hJ`. Establish `am : Adj c J m m'` using `Adj.one.sub a1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `am' : Adj c J m' m` using `Adj.one.sub a2`. Establish `af : Adj c J (1 + m * b) (1 + b' * m')` using `Adj.one.add (am.mul b1)`. Establish `af' : Adj c J (1 + b' * m') (1 + m * b)` using `Adj.one.add (b2.mul am')`. Use `set f := 1 + m * b with hfd`. Use `set g := 1 + b' * m' with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfT : f * T = -m` using `by rw [hT, Matrix.mul_neg, ← Matrix.mul_assoc, hf, Matrix.one_mul]`. Establish `z : f * m' + m * g = 0`. Establish `e : m * m' = m + m'`. Rewrite using `[hm, hm', Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, hk]`. Simplify using the standard rewrite rules.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `: f * m' + m * g = m' + m + m * (b + b') * m'` using `by rw [hfd, hg]; noncomm_ring`. Rewrite using `[this, hb, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, e]`. Normalize the expressions using the abelian group laws. Establish `e1 : Tᵀ * J * g.map c = -(J * m'.map c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← af, ← Matrix.mul_assoc, ← transpose_mul, hfT, transpose_neg, Matrix.neg_mul, am]`. Establish `e2 : gᵀ * J * T.map c = -(J * m.map c)`. Rewrite using `[af', Matrix.mul_assoc, ← mapc_mul, hfT, mapc_neg, Matrix.mul_neg]`. Establish `e3 : gᵀ * (Tᵀ * J + J * T.map c) * g.map c = 0`. Establish `: gᵀ * (Tᵀ * J + J * T.map c) * g.map c = gᵀ * (Tᵀ * J * g.map c) + gᵀ * J * T.map c * g.map c` using `by noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, e1, e2, Matrix.mul_neg, ← Matrix.mul_assoc, af', Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← mapc_mul, ← mapc_mul, ← neg_add, ← Matrix.mul_add, ← mapc_add, z, mapc_zero, Matrix.mul_zero, neg_zero]`. Establish `hf' : f' * f = 1` using `mul_eq_one_comm.1 hf`. Establish `l : J * f'.map c * Ji * gᵀ = 1`. Establish `: gᵀ = J * f.map c * Ji` using `by rw [← af', Matrix.mul_assoc, hJ, Matrix.mul_one]`. Rewrite using `[this]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `r : g.map c * (Ji * f'ᵀ * J) = 1`. Establish `: g.map c = Ji * (fᵀ * J)` using `by rw [af, ← Matrix.mul_assoc, hJ', Matrix.one_mul]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[l, r, Matrix.one_mul, Matrix.mul_one]`. Use `_ = J * f'.map c * Ji * (gᵀ * (Tᵀ * J + J * T.map c) * g.map c) * (Ji * f'ᵀ * J) := by noncomm_ring`. Use `_ = 0 := by rw [e3, Matrix.mul_zero, Matrix.zero_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_alt {Ji k k' b b' f' : Matrix β β A} (hJ : J * Ji = 1) (hk : k * k' = 1) (a1 : Adj c J k k') (a2 : Adj c J k' k)
     (b1 : Adj c J b b') (b2 : Adj c J b' b) (hb : b + b' = -1) (hf : (1 + (1 - k) * b) * f' = 1) :
@@ -167,23 +165,23 @@ def CC (b : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks 1 (
 def Ci (b : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks (-b) (1 + b) 1 (-1)
 
 /- English proof (translation)
-Rewrite using `[Ci, CC, fromBlocks_multiply, ← fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ci_CC (b : Matrix β β A) : Ci b * CC b = 1 := by
   rw [Ci, CC, fromBlocks_multiply, ← fromBlocks_one]
   congr 1 <;> noncomm_ring
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (Ci_CC b)`.
+A detailed English derivation is pending.
 -/
 theorem CC_Ci (b : Matrix β β A) : CC b * Ci b = 1 := mul_eq_one_comm.1 (Ci_CC b)
 
 /- English proof (translation)
-Establish `e : b'.map c = -1 - b.map c`. Rewrite using `[← mapc_one (c := c), ← mapc_neg, ← mapc_sub, ← hb]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `b1' : bᵀ * J = -J - J * b.map c` using `by rw [b1, e]; noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[CC, dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply, mapc_add, mapc_one, transpose_add, transpose_one]`. Use `congr 1`. Use `noncomm_ring`. Use `noncomm_ring`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `: ((1 + bᵀ) * J + bᵀ * 0) * (1 + b.map c) + ((1 + bᵀ) * 0 + bᵀ * -J) * b.map c = J + J * b.map c + bᵀ * J` using `by noncomm_ring`. Rewrite using `[this, b1']`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem gram_CC {b b' : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1) :
     (CC b)ᵀ * dbl J * (CC b).map c = fromBlocks 0 J J 0 := by
@@ -220,33 +218,31 @@ def mkU {b b' : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1) (g g' : M
 def SS (ε : A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks ((1 - ε) • 1) (ε • 1) (ε • 1) ((1 - ε) • 1)
 
 /- English proof (translation)
-Establish `hk : (k.1 : Matrix β β A) * ((k⁻¹).1 : Matrix β β A) = 1` using `k.1.mul_inv`. Establish `sk` using `skew_alt hJ hk (adj_unit k) (by simpa using adj_unit k⁻¹) b1 b2 hb hf`. Use `set m : Matrix β β A := 1 - k.1 with hmd`. Use `set T := -(f' * m) with hT`. Establish `e0 : ε * (1 - ε) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0' : (1 - ε) * ε = 0` using `by rw [mul_comm, e0]`. Establish `e1 : (1 - ε) * (1 - ε) = 1 - ε` using `by rw [sub_mul, one_mul, e0, sub_zero]`. Establish `hS : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * SS ε = 1`. Rewrite using `[SS, fromBlocks_multiply, ← fromBlocks_one]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, e0, e0', e1, he, ← add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hSu : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A)ᵀ * fromBlocks 0 J J 0 * (SS ε : Matrix (β ⊕ β) (β ⊕ β) A).map c = fromBlocks 0 J J 0`. Rewrite using `[SS, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [mapc_smul, mapc_one, map_sub, map_one, hc, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 (f' * m) 0 1 = 1`. Rewrite using `[fromBlocks_multiply, ← fromBlocks_one, hT]`. Simplify using the standard rewrite rules. Establish `hUu : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A)ᵀ * fromBlocks 0 J J 0 * (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A).map c = fromBlocks 0 J J 0`. Rewrite using `[fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply, mapc_one, mapc_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [transpose_one, transpose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add]`. Rewrite using `[add_comm (J * _), sk]`. Establish `hf' : f' * (1 + m * b) = 1` using `mul_eq_one_comm.1 hf`. Establish `hTt : T * (1 + b * m) = -m`. Establish `: T * (1 + b * m) = -(f' * (1 + m * b) * m)` using `by rw [hT]; noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hf', Matrix.one_mul]`. Establish `ht : (1 - b * (f' * m)) * (1 + b * m) = 1`. Establish `: (1 - b * (f' * m)) * (1 + b * m) = 1 + b * m + b * (T * (1 + b * m))` using `by rw [hT]; noncomm_ring`. Rewrite using `[this, hTt]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s` to `mkU b1 hb _ _ hS hSu`. Set `n` to `mkU b1 hb _ _ hU hUu`. Establish `hs : (s.1 : Matrix (β ⊕ β) (β ⊕ β) A) = CC b * SS ε * Ci b` using `rfl`. Establish `hn : (n.1 : Matrix (β ⊕ β) (β ⊕ β) A) = CC b * fromBlocks 1 T 0 1 * Ci b` using `rfl`. Establish `hεT : ε • T = T` using `by rw [hT, smul_neg, ← Matrix.mul_smul, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hεT' : (1 - ε) • T = 0` using `by rw [sub_smul, one_smul, hεT, sub_self]`. Establish `hL : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 T 0 1 * SS ε = fromBlocks 1 0 T 1`. Rewrite using `[SS, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, add_zero, hεT, hεT', zero_add, Matrix.add_mul, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hD : Ci b * (diagCols β : Matrix (β ⊕ β) β A) = (fromRows 1 0 : Matrix (β ⊕ β) β A)`. Rewrite using `[Ci, diagCols, fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Establish `hD' : CC b * (fromRows 1 0 : Matrix (β ⊕ β) β A) = (diagCols β : Matrix (β ⊕ β) β A)`. Rewrite using `[CC, diagCols, fromBlocks_mul_fromRows]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `⟨s, n, (s * n * s)⁻¹ * gd, ⟨1 + b * m, 1 - b * (f' * m), mul_eq_one_comm.1 ht, ht⟩, ?_, by group, hs, hn, rfl, ?_, ?_, rfl, rfl⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Conclude with `s.1.mul_inv`. Rewrite using `[hn, Matrix.mul_assoc _ (Ci b), hD, Matrix.mul_assoc (CC b), fromBlocks_mul_fromRows]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hD'`. Establish `e : ((s * n * s).1 : Matrix (β ⊕ β) (β ⊕ β) A) = CC b * fromBlocks 1 0 T 1 * Ci b`. Express the relevant statement in the definitionally equal form `(s.1 : Matrix (β ⊕ β) (β ⊕ β) A) * (n.1 : Matrix (β ⊕ β) (β ⊕ β) A) * (s.1 : Matrix (β ⊕ β) (β ⊕ β) A) = _`. Rewrite using `[hs, hn, ← hL]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e2 : (gd.1 : Matrix (β ⊕ β) (β ⊕ β) A) * (diagCols β : Matrix (β ⊕ β) β A) = ((s * n * s).1 : Matrix (β ⊕ β) (β ⊕ β) A) * ((diagCols β : Matrix (β ⊕ β) β A) * (1 + b * m))`. Rewrite using `[e, hgd, ← Matrix.mul_assoc _ (diagCols β : Matrix (β ⊕ β) β A), Matrix.mul_assoc _ (Ci b), hD, Matrix.mul_assoc (CC b), fromBlocks_mul_fromRows, CC, fromBlocks_mul_fromRows, fromRows_mul, diagCols, fromBlocks_mul_fromRows]`. Use `congr 1`. Establish `: (1 * (1 * 1 + 0 * 0) + (1 + b) * (T * 1 + 1 * 0)) * (1 + b * m) = 1 + b * m + (1 + b) * (T * (1 + b * m))` using `by noncomm_ring`. Rewrite using `[this, hTt, hmd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Establish `: (1 * (1 * 1 + 0 * 0) + b * (T * 1 + 1 * 0)) * (1 + b * m) = 1 + b * m + b * (T * (1 + b * m))` using `by noncomm_ring`. Rewrite using `[this, hTt]`. Use `noncomm_ring`. Express the relevant statement in the definitionally equal form `(((s * n * s)⁻¹).1 : Matrix (β ⊕ β) (β ⊕ β) A) * (gd.1 : Matrix (β ⊕ β) (β ⊕ β) A) * (diagCols β : Matrix (β ⊕ β) β A) = (diagCols β : Matrix (β ⊕ β) β A) * (1 + b * m)`.
-
-Rewrite using `[Matrix.mul_assoc _ (gd.1 : Matrix (β ⊕ β) (β ⊕ β) A), e2, ← Matrix.mul_assoc]`. Establish `: (((s * n * s)⁻¹).1 : Matrix (β ⊕ β) (β ⊕ β) A) * ((s * n * s).1 : Matrix (β ⊕ β) (β ⊕ β) A) = 1` using `(s * n * s).1.inv_mul`. Rewrite using `[this, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decomp {Ji b b' f' : Matrix β β A} (hJ : J * Ji = 1) (k : UG c J) (b1 : Adj c J b b') (b2 : Adj c J b' b)
     (hb : b + b' = -1) (hf : (1 + (1 - (k.1 : Matrix β β A)) * b) * f' = 1) {ε : A} (he : ε * ε = ε) (hc : c ε = ε)
@@ -333,11 +329,11 @@ theorem exists_decomp {Ji b b' f' : Matrix β β A} (hJ : J * Ji = 1) (k : UG c 
     rw [this, Matrix.one_mul]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, e⟩ : ∃ a b : ℕ, a < b ∧ x ^ a = x ^ b := by`. Take `⟨a, b, hne, e⟩` from `Finite.exists_ne_map_eq_of_infinite fun i : ℕ => x ^ i`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `exacts [⟨a, b, h, e⟩, ⟨b, a, h, e.symm⟩]`. Take `⟨p, rfl⟩` from `Nat.exists_eq_add_of_lt hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ j, x ^ (a + j * (p + 1)) = x ^ a` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[show a + (j + 1) * (p + 1) = (a + p + 1) + j * (p + 1) by ring, pow_add, ← e, ← pow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(a + 1) * (p + 1), by positivity, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : ∃ r, (a + 1) * (p + 1) = a + r` from `Nat.exists_eq_add_of_le (by nlinarith)`. Rewrite using `[← pow_add, show (a + 1) * (p + 1) + (a + 1) * (p + 1) = (a + (a + 1) * (p + 1)) + r by omega, pow_add, h1, ← pow_add, hr]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_idem {M : Type} [Monoid M] [Finite M] (x : M) : ∃ N, 0 < N ∧ x ^ N * x ^ N = x ^ N := by
   obtain ⟨a, b, hab, e⟩ : ∃ a b : ℕ, a < b ∧ x ^ a = x ^ b := by
@@ -355,29 +351,25 @@ theorem exists_pow_idem {M : Type} [Monoid M] [Finite M] (x : M) : ∃ N, 0 < N 
   rw [← pow_add, show (a + 1) * (p + 1) + (a + 1) * (p + 1) = (a + (a + 1) * (p + 1)) + r by omega, pow_add, h1, ← pow_add, hr]
 
 /- English proof (translation)
-Take `⟨N, hN, he⟩` from `exists_pow_idem (1 + 1 + k + k')`. Use `⟨N, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hk' : k * k' = 1` using `mul_eq_one_comm.1 hk`. Use `set x := 1 + 1 + k + k' with hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := 1 + k with hu`. Establish `hxu : x = k' * (u * u)`. Establish `: k' * (u * u) = k' + (k' * k) + (k' * k) + (k' * k) * k` using `by rw [hu]; noncomm_ring`. Rewrite using `[this, hk, hx]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ck : Commute k x`. Rewrite using `[hx]`. Conclude with `(((Commute.one_right k).add_right (Commute.one_right k)).add_right (Commute.refl k)).add_right (hk'.trans hk.symm)`. Establish `cu : Commute u x` using `(Commute.one_left x).add_left ck`. Use `set e := x ^ N with hed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ce : Commute k e` using `ck.pow_right N`. Establish `h2 : (2 : K) * h = 1` using `by rw [two_mul, hh]`. Establish `hh0 : h ≠ 0` using `fun h0 => by simp [h0] at hh`. Establish `f1 : e * (1 + (1 - k) * ((-h) • 1 + δ • (1 - e))) = h • (u * e)`. Establish `a1 : e * ((1 - k) * (1 - e)) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← ((Commute.one_left e).sub_left ce).eq, Matrix.mul_assoc, Matrix.mul_sub, he]`. Simplify using the standard rewrite rules. Establish `a2 : e * (1 - k) = e - k * e` using `by rw [Matrix.mul_sub, ce.eq, Matrix.mul_one]`. Rewrite using `[Matrix.mul_add (1 - k), Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, a1, Matrix.mul_one, Matrix.mul_one, a2, hu, Matrix.add_mul, Matrix.one_mul]`. Establish `: e = (h + h) • e` using `by rw [hh, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [smul_zero, add_zero]`. Use `enter [1]`. Rewrite using `[this]`. Use `module`. Establish `y1 : (u * e) *ᵥ y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (e *ᵥ ·) hy` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, f1, Matrix.mulVec_zero, Matrix.smul_mulVec] at this`. Conclude with `(smul_eq_zero.1 this).resolve_left hh0`. Establish `y2 : e *ᵥ y = 0`. Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: e = x ^ N' * k' * u * (u * e)` using `by conv_lhs => rw [← he]`. Rewrite using `[hed, pow_succ x N', hxu]`. Use `noncomm_ring`. Rewrite using `[this, ← Matrix.mulVec_mulVec, y1, Matrix.mulVec_zero]`. Establish `y3 : y = ((δ - h) / (2 * δ)) • (u *ᵥ y)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h20 : (2 : K) ≠ 0` using `fun h0 => by simp [h0] at h2`. Establish `a : (1 + (1 - k) * ((-h) • 1 + δ • (1 - e))) = (2 * δ) • 1 - (δ - h) • u - δ • ((1 - k) * e)`. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_sub, Matrix.mul_one, hu]`. Establish `: (1 : Matrix β β K) = (h + h) • 1` using `by rw [hh, one_smul]`. Use `conv_lhs => enter [1]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Use `module`. Rewrite `hy` using `[a, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, y2, Matrix.mulVec_zero, smul_zero, sub_zero, Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[div_eq_inv_mul, mul_smul, ← hy, smul_smul, inv_mul_cancel₀ (mul_ne_zero h20 hδ), one_smul]`. Establish `y4 : ∀ j : ℕ, y = ((δ - h) / (2 * δ)) ^ j • (u ^ j *ᵥ y)` using `fun j => by`.
-
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ u, ← Matrix.mulVec_mulVec, pow_succ, mul_smul, ← Matrix.mulVec_smul, ← y3]`. Conclude with `ih`.
-
-Establish `hux : u * u = k * x` using `by rw [hxu, ← Matrix.mul_assoc, hk', Matrix.one_mul]`. Establish `: u ^ (2 * N) = k ^ N * e` using `by rw [pow_mul, pow_two, hux, ck.mul_pow]`. Apply `hy0` to reduce the goal to its premises. Rewrite using `[y4 (2 * N), this, ← Matrix.mulVec_mulVec, y2, Matrix.mulVec_zero, smul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_ne {K : Type} [Field K] [Finite K] {k k' : Matrix β β K} (hk : k' * k = 1) {h δ : K} (hh : h + h = 1)
     (hδ : δ ≠ 0) : ∃ N, (1 + (1 - k) * ((-h) • 1 + δ • (1 - (1 + 1 + k + k') ^ N))).det ≠ 0 := by

@@ -12,7 +12,7 @@ open UpperTheory.V.Z UpperTheory.V.Z.Ord
 open private au_isTeich au_open from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.AuTeichEx
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 L)} ≠ 0`. Simplify using `[hl.out.ne_zero]`. Conclude with `(Ideal.finite_factors h0).subset fun w hw => Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hw)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finite_over_l (L : Type) [Field L] [NumberField L] (l : ℕ) [hl : Fact l.Prime] :
     {w : Plc L | ((l : ℕ) : 𝓞 L) ∈ w.asIdeal}.Finite := by
@@ -22,7 +22,7 @@ private theorem finite_over_l (L : Type) [Field L] [NumberField L] (l : ℕ) [hl
     Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hw)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA v.1) (s.split _ (Or.inl v.2)) _ (HeightOneSpectrum.ext (Ideal.ext fun x => (show _ ↔ _ from (s.hw v.1) (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v.1 x)))`.
+A detailed English derivation is pending.
 -/
 private theorem split_l {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Vl l L) : IsSplitAt (s.w v.1) :=
@@ -40,7 +40,7 @@ private def PO (lam : Wt L l n) (d : ℕ) (ξ : GV n (hset Q τ₀).Sl →* GL (
     Af.AttC ι (Y.r.comp V.pr) π ∧ ∀ v, π.IsLocComp ((hset Q τ₀).Sl v) (Y.σl v)
 
 /- English proof (translation)
-Introduce `hi` and use `by have hc : Continuous (Y.r.comp V.pr) := Y.cont.comp (V.pr_cont W.continuous_resP) obtain ⟨π, p1, p2, p3, p4⟩ := linkU hP L Ω (UpperTheory.isUnramifiedAt_totallyReal_of_inertia_le_restriction_range L Ω s.unr) l s.odd ι n hn σ hσ (Y.r.comp V.pr) hc hi ((Filter.eventually_cofinit …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem po_of (hP : Af.HypothesesH) (hn : 1 ≤ n) {lam : Wt L l n} {d : ℕ} {ξ : GV n (hset Q τ₀).Sl →* GL (Fin d) ℂ}
     (Y : (hset Q τ₀).Part ι lam ξ) (σ : Submodule ℂ (UA L n → ℂ)) (hσ : IsAutRepU σ)
@@ -56,11 +56,11 @@ private theorem po_of (hP : Af.HypothesesH) (hn : 1 ≤ n) {lam : Wt L l n} {d :
 end
 
 /- English proof (translation)
-Introduce `lam _ d ξ hξ F hF hK hI`. Take `⟨e, he⟩` from `hξ`. Take `⟨t, ht⟩` from `au_isTeich c r`. Establish `hop : IsOpen (τ₀.ker : Set (KT n (wt s)))` using `au_open _ (ι.injective.comp Subtype.val_injective) τ₀ (hτ t ht).1`. Establish `h1` using `decompU l L Ω s n hn V Q c m τ₀ ι hop lam d e ξ he F hF hK hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `SetLike.le_def.1 (iSup_le fun σ => ?_) h1` and prove the remaining obligations. Distinguish the cases in `h0 : YOf Q ι τ₀ e ξ σ.1 = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨Y, hY, -, hcomp, hLG⟩` from `partU hP l L Ω s n hn V Q c r ι m τ₀ hτ lam d e ξ he σ.1 σ.2 h0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hY]`. Conclude with `le_iSup (fun Y : {Y : (hset Q τ₀).Part ι lam ξ // PO Q τ₀ ι lam d ξ Y} => Y.1.Y) ⟨Y, po_of Q τ₀ ι hP hn Y σ.1 σ.2 hcomp hLG⟩`.
+A detailed English derivation is pending.
 -/
 private theorem autPO (hP : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n) (V : s.Lev) (Q : QData V) (c : Coef l)
@@ -81,7 +81,7 @@ private theorem autPO (hP : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Typ
       ⟨Y, po_of Q τ₀ ι hP hn Y σ.1 σ.2 hcomp hLG⟩
 
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι m τ₀ hτ` and use `autPO hP l L Ω s n hn V Q c r ι m τ₀ hτ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.autUO :
     Af.HypothesesH → AutUO := fun hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι m τ₀ hτ =>

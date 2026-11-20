@@ -19,14 +19,14 @@ def uMat (F : Type) [Field F] (n : ℕ) : Matrix (Fin n) (Fin n) (MvPolynomial (
     else if h' : r = c ∧ r.val + 1 < n then X (Sum.inr ⟨r.val, by omega⟩) else 0
 
 /- English proof (translation)
-Simplify using `only [uMat, Matrix.of_apply]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_of_lt (F : Type) [Field F] {n : ℕ} {r c : Fin n} (h : c < r) : uMat F n r c = 0 := by
   simp only [uMat, Matrix.of_apply]
   rw [dif_neg (by omega), dif_neg (by omega)]
 
 /- English proof (translation)
-Simplify using `[uMat, hr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uMat_diag (F : Type) [Field F] {n : ℕ} (r : ℕ) (hr : r + 1 < n) :
     uMat F n ⟨r, by omega⟩ ⟨r, by omega⟩ = X (Sum.inr ⟨r, by omega⟩) := by
@@ -41,7 +41,7 @@ def flagMinorMap (F : Type) [Field F] (n : ℕ) :
   aeval fun q : Σ j, PluckerBlocks n n j => flagMinor (genMat F n) q.1 q.2
 
 /- English proof (translation)
-Simplify using `only [flagMinor]`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flagMinor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n N1 : ℕ}
     (M : Matrix (Fin n) (Fin N1) R) (j : Fin (n - 1)) (T : PluckerBlocks N1 n j) :
@@ -51,7 +51,7 @@ theorem flagMinor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n 
   rfl
 
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `[genMat, toUpper]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toUpper_genMat (F : Type) [Field F] (n : ℕ) :
     (genMat F n).map (toUpper F n) = uMat F n := by
@@ -59,7 +59,7 @@ theorem toUpper_genMat (F : Type) [Field F] (n : ℕ) :
   simp [genMat, toUpper]
 
 /- English proof (translation)
-Rewrite using `[AlgHom.comp_apply, flagMinorMap, aeval_X, ← toUpper_genMat F n]`. Conclude with `(flagMinor_map (toUpper F n).toRingHom _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toUpper_flagMinorMap_X (F : Type) [Field F] (n : ℕ) (q : Σ j, PluckerBlocks n n j) :
     (toUpper F n).comp (flagMinorMap F n) (X q) = flagMinor (uMat F n) q.1 q.2 := by
@@ -70,7 +70,7 @@ def rowCols {n : ℕ} (r : ℕ) (c : Fin n) : Fin (r + 1) → Fin n :=
   fun i => if h : i.val < r ∧ i.val < c.val then ⟨i.val, by omega⟩ else c
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `only [rowCols]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp only [Fin.lt_def] at * <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowCols_strictMono {n : ℕ} (r : ℕ) (c : Fin n) (hc : r ≤ c.val) :
     StrictMono (rowCols r c) := by
@@ -81,14 +81,14 @@ theorem rowCols_strictMono {n : ℕ} (r : ℕ) (c : Fin n) (hc : r ≤ c.val) :
 def colSet {n : ℕ} (r : ℕ) (c : Fin n) : Finset (Fin n) := Finset.univ.image (rowCols r c)
 
 /- English proof (translation)
-Rewrite using `[colSet, Finset.card_image_of_injective _ (rowCols_strictMono r c hc).injective]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colSet_card {n : ℕ} (r : ℕ) (c : Fin n) (hc : r ≤ c.val) : (colSet r c).card = r + 1 := by
   rw [colSet, Finset.card_image_of_injective _ (rowCols_strictMono r c hc).injective]
   simp
 
 /- English proof (translation)
-The claim follows from `(Finset.orderEmbOfFin_unique (colSet_card r c hc) (fun x => Finset.mem_image_of_mem _ (Finset.mem_univ x)) (rowCols_strictMono r c hc)).symm`.
+A detailed English derivation is pending.
 -/
 theorem orderEmbOfFin_colSet {n : ℕ} (r : ℕ) (c : Fin n) (hc : r ≤ c.val) :
     ⇑((colSet r c).orderEmbOfFin (colSet_card r c hc)) = rowCols r c :=
@@ -96,13 +96,13 @@ theorem orderEmbOfFin_colSet {n : ℕ} (r : ℕ) (c : Fin n) (hc : r ≤ c.val) 
     (rowCols_strictMono r c hc)).symm
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Simplify using `only [flagMinor]`. Rewrite using `[orderEmbOfFin_colSet j.val c hc, Matrix.det_of_isUpperTriangular, Fin.prod_univ_castSucc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.submatrix_apply, rowCols, Fin.val_castSucc, dif_pos (And.intro k.2 (by omega : k.val < c.val))]`. Both sides reduce to the same expression. Simplify using `only [Matrix.submatrix_apply, rowCols, Fin.val_last, lt_irrefl, false_and, dif_neg, not_false_eq_true]`. Both sides reduce to the same expression. Introduce `a b hab`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.submatrix_apply]`. Apply `uMat_of_lt` to reduce the goal to its premises. Simplify using `only [rowCols]`. Establish `hb : b.val < j.val` using `by simp only [id, Fin.lt_def] at hab; omega`. Rewrite using `[dif_pos ⟨hb, by omega⟩]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.lt_def, Fin.val_castLE] at hab ⊢`. Conclude with `hab`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagMinor_uMat_colSet (F : Type) [Field F] {n : ℕ} (j : Fin (n - 1)) (c : Fin n) (hc : j.val ≤ c.val) :
     flagMinor (uMat F n) j ⟨colSet j.val c, colSet_card j.val c hc⟩ =
@@ -139,9 +139,9 @@ def redMat (T : Matrix (Fin n) (Fin n) K) : Matrix (Fin n) (Fin n) K :=
   Matrix.of fun i k => if h : k.val < i.val then redCoeff T i ⟨k.val, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE i.2.le) (Fin.castLE_injective _) _ _ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Establish `hki : ¬ k.val < i.val` using `fun h => hk ⟨⟨k.val, h⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [redMat, Matrix.of_apply]`. Rewrite using `[dif_neg hki, zero_mul]`. Introduce `k`. Simplify using `only [redMat, Matrix.of_apply, Fin.val_castLE]`. Rewrite using `[dif_pos k.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem redMat_mul_apply (T : Matrix (Fin n) (Fin n) K) (i c : Fin n) :
     (redMat T * T) i c = ∑ k : Fin i.val, redCoeff T i k * T (Fin.castLE i.2.le k) c := by
@@ -157,9 +157,9 @@ theorem redMat_mul_apply (T : Matrix (Fin n) (Fin n) K) (i c : Fin n) :
     rw [dif_pos k.2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, redMat_mul_apply]`. Establish `h1 : Matrix.vecMul (redCoeff T i) (leadBlock T i) = fun c : Fin i.val => T i (Fin.castLE i.2.le c)`. Rewrite using `[redCoeff, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (hT i)), Matrix.vecMul_one]`. Establish `h2` using `congrFun h1 ⟨c.val, hc⟩`. Establish `hcc : (Fin.castLE i.2.le ⟨c.val, hc⟩ : Fin n) = c` using `Fin.ext rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.vecMul, dotProduct, leadBlock, Matrix.submatrix_apply, hcc] at h2`. Rewrite using `[h2, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduce_apply_of_lt (T : Matrix (Fin n) (Fin n) K) (hT : ∀ i, (leadBlock T i).det ≠ 0)
     (i c : Fin n) (hc : c < i) : ((1 - redMat T) * T) i c = 0 := by
@@ -173,7 +173,7 @@ theorem reduce_apply_of_lt (T : Matrix (Fin n) (Fin n) K) (hT : ∀ i, (leadBloc
   rw [h2, sub_self]
 
 /- English proof (translation)
-Establish `hki : ¬ k.val < i.val` using `by omega`. Simplify using `only [redMat, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply_ne (ne_of_lt h)]`. Rewrite using `[dif_neg hki, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduce_lower (T : Matrix (Fin n) (Fin n) K) (i k : Fin n) (h : i < k) :
     (1 - redMat T) i k = 0 := by
@@ -182,7 +182,7 @@ theorem reduce_lower (T : Matrix (Fin n) (Fin n) K) (i k : Fin n) (h : i < k) :
   rw [dif_neg hki, sub_zero]
 
 /- English proof (translation)
-Simplify using `only [redMat, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply_eq]`. Rewrite using `[dif_neg (lt_irrefl _), sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduce_diag (T : Matrix (Fin n) (Fin n) K) (i : Fin n) : (1 - redMat T) i i = 1 := by
   simp only [redMat, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply_eq]
@@ -191,15 +191,15 @@ theorem reduce_diag (T : Matrix (Fin n) (Fin n) K) (i : Fin n) : (1 - redMat T) 
 end RowReduce
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Simplify using `only [flagMinor]`. Establish `key : (E * M).submatrix (Fin.castLE (by omega) : Fin (j.val + 1) → Fin n) (S.1.orderEmbOfFin S.2) = E.submatrix (Fin.castLE (by omega) : Fin (j.val + 1) → Fin n) (Fin.castLE (by omega)) * M.submatrix (Fin.castLE (by omega) : Fin (j.val + 1) → Fin n) (S.1.orderEmbOfFin S.2)`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE (by omega)) (Fin.castLE_injective _) _ _ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Establish `hk' : ¬ k.val < j.val + 1` using `fun h => hk ⟨⟨k.val, h⟩, rfl⟩`. Rewrite using `[hE _ _ (by simp only [Fin.lt_def, Fin.val_castLE]; omega), zero_mul]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Both sides reduce to the same expression. Rewrite using `[key, Matrix.det_mul, Matrix.det_of_isLowerTriangular, Finset.prod_eq_one, one_mul]`. Introduce `i _`. Simplify using `[hE1]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Simplify using `only [Matrix.submatrix_apply]`. Apply `hE` to reduce the goal to its premises. Simplify using `only [OrderDual.toDual_lt_toDual] at hab`. Simplify using `only [Fin.lt_def, Fin.val_castLE] at hab ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hab`.
+A detailed English derivation is pending.
 -/
 theorem flagMinor_lowerUni_mul {R : Type} [CommRing R] {n : ℕ} (E M : Matrix (Fin n) (Fin n) R)
     (hE : ∀ i k, i < k → E i k = 0) (hE1 : ∀ i, E i i = 1) (j : Fin (n - 1)) (S : PluckerBlocks n n j) :
@@ -237,11 +237,11 @@ abbrev GenField : Type := FractionRing (MvPolynomial (Fin n × Fin n) F)
 def genMatK : Matrix (Fin n) (Fin n) (GenField F n) := (genMat F n).map (algebraMap _ _)
 
 /- English proof (translation)
-Establish `e : leadBlock (genMatK F n) i = (leadBlock (genMat F n) i).map (algebraMap _ (GenField F n))` using `rfl`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `((algebraMap _ (GenField F n)).mapMatrix (leadBlock (genMat F n) i)).det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `IsFractionRing.injective (MvPolynomial (Fin n × Fin n) F) (GenField F n) (h.trans (map_zero _).symm)`. Establish `h3` using `congrArg (MvPolynomial.eval fun p : Fin n × Fin n => if p.1 = p.2 then (1 : F) else 0) h2`. Rewrite `h3` using `[RingHom.map_det, map_zero]`. Establish `e2 : (MvPolynomial.eval fun p : Fin n × Fin n => if p.1 = p.2 then (1 : F) else 0).mapMatrix (leadBlock (genMat F n) i) = 1`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[leadBlock, genMat, Matrix.one_apply, Fin.ext_iff]`. Rewrite `h3` using `[e2, Matrix.det_one]`. Conclude with `one_ne_zero h3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadBlock_genMatK_det_ne_zero (i : Fin n) : (leadBlock (genMatK F n) i).det ≠ 0 := by
   have e : leadBlock (genMatK F n) i =
@@ -269,7 +269,7 @@ def fromUpper : MvPolynomial (UIdx n) F →ₐ[F] GenField F n :=
     | Sum.inr r => genRed F n ⟨r.val, by omega⟩ ⟨r.val, by omega⟩
 
 /- English proof (translation)
-Break down `lt_trichotomy r c with h | h | h` into its components or cases. Simplify using `[uMat, h, fromUpper]`. Substitute `h` using the available equality. Simplify using `[uMat, hr, fromUpper]`. Rewrite using `[uMat_of_lt F h, map_zero, genRed, reduce_apply_of_lt _ (leadBlock_genMatK_det_ne_zero F n) _ _ h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fromUpper_uMat (r c : Fin n) (hr : r.val + 1 < n) :
     fromUpper F n (uMat F n r c) = genRed F n r c := by
@@ -281,11 +281,11 @@ theorem fromUpper_uMat (r c : Fin n) (hr : r.val + 1 < n) :
       reduce_apply_of_lt _ (leadBlock_genMatK_det_ne_zero F n) _ _ h]
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Establish `e1 : fromUpper F n (flagMinor (uMat F n) j S) = flagMinor ((uMat F n).map (fromUpper F n).toRingHom) j S` using `(flagMinor_map _ _ _ _).symm`. Rewrite using `[e1, ← flagMinor_map]`. Establish `: flagMinor ((uMat F n).map (fromUpper F n).toRingHom) j S = flagMinor (genRed F n) j S`. Simplify using `only [flagMinor]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.map_apply]`. Conclude with `fromUpper_uMat F n _ _ (by simp only [Fin.val_castLE]; omega)`. Rewrite using `[this, genRed, flagMinor_lowerUni_mul _ _ (reduce_lower _) (reduce_diag _)]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fromUpper_flagMinor (j : Fin (n - 1)) (S : PluckerBlocks n n j) :
     fromUpper F n (flagMinor (uMat F n) j S) =
@@ -304,11 +304,11 @@ theorem fromUpper_flagMinor (j : Fin (n - 1)) (S : PluckerBlocks n n j) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[AlgHom.comp_apply, h, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `key : (fromUpper F n).comp ((toUpper F n).comp (flagMinorMap F n)) = (IsScalarTower.toAlgHom F (MvPolynomial (Fin n × Fin n) F) (GenField F n)).comp (flagMinorMap F n)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[AlgHom.comp_apply, toUpper_flagMinorMap_X, fromUpper_flagMinor, AlgHom.comp_apply, flagMinorMap, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `congrArg (fun g : MRingOver F (PluckerBlocks n n) →ₐ[F] GenField F n => g f) key`. Simplify using `only [AlgHom.comp_apply] at h2 h`. Rewrite `h2` using `[h, map_zero, IsScalarTower.coe_toAlgHom']`. Conclude with `IsFractionRing.injective (MvPolynomial (Fin n × Fin n) F) (GenField F n) (h2.symm.trans (map_zero _).symm)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_flagMinorMap_eq :
     RingHom.ker (flagMinorMap F n) = RingHom.ker ((toUpper F n).comp (flagMinorMap F n)) := by
@@ -335,9 +335,9 @@ theorem ker_flagMinorMap_eq :
 end Generic
 
 /- English proof (translation)
-Use `⟨Polynomial.C a * Polynomial.X - Polynomial.C b, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg (fun p : Polynomial R => p.coeff 1) h0`. Simplify using `at h1`. Conclude with `ha h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_mul_eq {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {a b : R} {y : A}
     (ha : a ≠ 0) (h : algebraMap R A a * y = algebraMap R A b) : IsAlgebraic R y := by
@@ -355,7 +355,7 @@ def ltPairsEquiv (n : ℕ) : {p : Fin n × Fin n // p.1 < p.2} ≃ Σ c : Fin n,
   right_inv := by rintro ⟨c, k⟩; rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_congr (ltPairsEquiv n), Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_ltPairs (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 < p.2} = flagDim n := by
   rw [Fintype.card_congr (ltPairsEquiv n), Fintype.card_sigma]
@@ -364,7 +364,7 @@ theorem card_ltPairs (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 < p.2} 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_sum, card_ltPairs, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_UIdx (n : ℕ) : Fintype.card (UIdx n) = flagDim n + (n - 1) := by
   rw [Fintype.card_sum, card_ltPairs, Fintype.card_fin]
@@ -377,12 +377,12 @@ def diagProd (r : ℕ) (hr : r < n) : MvPolynomial (UIdx n) F :=
   ∏ k : Fin r, uMat F n ⟨k.val, by omega⟩ ⟨k.val, by omega⟩
 
 /- English proof (translation)
-The claim follows from `Fin.prod_univ_zero _`.
+A detailed English derivation is pending.
 -/
 theorem diagProd_zero (h : 0 < n) : diagProd F n 0 h = 1 := Fin.prod_univ_zero _
 
 /- English proof (translation)
-Rewrite using `[diagProd, Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diagProd_succ (i : ℕ) (h : i + 1 < n) :
     diagProd F n (i + 1) h = diagProd F n i (by omega) * uMat F n ⟨i, by omega⟩ ⟨i, by omega⟩ := by
@@ -390,14 +390,14 @@ theorem diagProd_succ (i : ℕ) (h : i + 1 < n) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem diagProd_congr {r s : ℕ} (hr : r < n) (hs : s < n) (h : r = s) : diagProd F n r hr = diagProd F n s hs := by
   subst h
   rfl
 
 /- English proof (translation)
-Rewrite using `[diagProd, Finset.prod_ne_zero_iff]`. Introduce `k _`. Rewrite using `[uMat_diag F k.val (by omega)]`. Conclude with `X_ne_zero _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagProd_ne_zero (r : ℕ) (hr : r < n) : diagProd F n r hr ≠ 0 := by
   rw [diagProd, Finset.prod_ne_zero_iff]
@@ -412,9 +412,9 @@ instance upperKer_isPrime : (upperKer F n).IsPrime := RingHom.ker_isPrime _
 abbrev UpperQuot : Type := MRingOver F (PluckerBlocks n n) ⧸ upperKer F n
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Break down `Nat.eq_zero_or_pos j.val with h0 | hpos` into its components or cases. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, diagProd_congr F n _ (by omega) h0, diagProd_zero]`. Take `⟨i, hi⟩ : ∃ i : ℕ, j.val = i + 1` from `⟨j.val - 1, by omega⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Ideal.Quotient.mk _ (X ⟨⟨i, by omega⟩, ⟨colSet i ⟨i, by omega⟩, colSet_card i _ le_rfl⟩⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.kerLiftAlg_mk, toUpper_flagMinorMap_X]`. Simplify using `only`. Rewrite using `[flagMinor_uMat_colSet F (n := n) ⟨i, by omega⟩ ⟨i, by omega⟩ le_rfl, diagProd_congr F n _ (by omega) hi, diagProd_succ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_diagProd (j : Fin (n - 1)) :
     ∃ a : UpperQuot F n, Ideal.kerLiftAlg ((toUpper F n).comp (flagMinorMap F n)) a =
@@ -432,11 +432,11 @@ theorem exists_diagProd (j : Fin (n - 1)) :
     rfl
 
 /- English proof (translation)
-Set `_` to `(Ideal.kerLiftAlg ((toUpper F n).comp (flagMinorMap F n))).toRingHom.toAlgebra`. Establish `hj` using `j.2`. Take `⟨a, ha⟩` from `exists_diagProd F n j`. Use `isAlgebraic_of_mul_eq (a := a) (b := Ideal.Quotient.mk _ (X ⟨j, ⟨colSet j.val c, colSet_card j.val c hc⟩⟩)) ?_ ?_` and prove the remaining obligations. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[h0, map_zero]`. Conclude with `diagProd_ne_zero F n j.val (by omega) ha.symm`. Express the relevant statement in the definitionally equal form `Ideal.kerLiftAlg _ a * _ = Ideal.kerLiftAlg _ _`. Rewrite using `[ha, Ideal.kerLiftAlg_mk, toUpper_flagMinorMap_X]`. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flagMinor_uMat_colSet F j c hc, diagProd]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_uMat (j : Fin (n - 1)) (c : Fin n) (hc : j.val ≤ c.val) :
     letI := (Ideal.kerLiftAlg ((toUpper F n).comp (flagMinorMap F n))).toRingHom.toAlgebra
@@ -455,19 +455,17 @@ theorem isAlgebraic_uMat (j : Fin (n - 1)) (c : Fin n) (hc : j.val ≤ c.val) :
     rw [flagMinor_uMat_colSet F j c hc, diagProd]
 
 /- English proof (translation)
-Use `set ι := Ideal.kerLiftAlg ((toUpper F n).comp (flagMinorMap F n))`. Set `_ : Algebra (UpperQuot F n) (MvPolynomial (UIdx n) F)` to `ι.toRingHom.toAlgebra`. Establish `: IsScalarTower F (UpperQuot F n) (MvPolynomial (UIdx n) F)` using `IsScalarTower.of_algebraMap_eq fun c => (ι.commutes c).symm`. Establish `: FaithfulSMul F (UpperQuot F n)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap F (UpperQuot F n)).injective`. Establish `: FaithfulSMul (UpperQuot F n) (MvPolynomial (UIdx n) F)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (Ideal.kerLiftAlg_injective _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ u : UIdx n, IsAlgebraic (UpperQuot F n) (X u : MvPolynomial (UIdx n) F)`. Introduce and unpack `(⟨⟨r, c⟩, h⟩ | r)`. Establish `e : (X (Sum.inl ⟨(r, c), h⟩) : MvPolynomial (UIdx n) F) = uMat F n r c`. Simplify using `[uMat, h]`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : r.val < n - 1`. Use `c.2` as an intermediate fact. Simplify using `only [Fin.lt_def] at h`. Use linear arithmetic over natural numbers and integers. Conclude with `isAlgebraic_uMat F n ⟨r.val, hr⟩ c (le_of_lt h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr` using `r.2`. Rewrite using `[← uMat_diag F r.val (by omega)]`. Conclude with `isAlgebraic_uMat F n r _ le_rfl`. Establish `: Algebra.IsAlgebraic (UpperQuot F n) (MvPolynomial (UIdx n) F)`. Establish `hall : ∀ x : MvPolynomial (UIdx n) F, x ∈ Subalgebra.algebraicClosure (UpperQuot F n) (MvPolynomial (UIdx n) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x`. Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[← MvPolynomial.algebraMap_eq, IsScalarTower.algebraMap_apply F (UpperQuot F n)]`. Conclude with `isAlgebraic_algebraMap _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact.
 
-Consider the case `add p q hp hq => exact Subalgebra.add_mem _ hp hq`. Consider the case `mul_X p u hp => exact Subalgebra.mul_mem _ hp (hX u)`. Conclude with `⟨fun x => hall x⟩`. Establish `h` using `trdeg_add_eq F (UpperQuot F n) (A := MvPolynomial (UIdx n) F)`. Rewrite `h` using `[trdeg_eq_zero (R := UpperQuot F n) (A := MvPolynomial (UIdx n) F), add_zero, MvPolynomial.trdeg_of_isDomain, Cardinal.mk_fintype, card_UIdx, Cardinal.lift_natCast]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_upperQuot :
     Algebra.trdeg F (UpperQuot F n) = ((flagDim n + (n - 1) : ℕ) : Cardinal) := by
@@ -528,14 +526,14 @@ def rowDeg : (Fin (n - 1) → ℕ) →+ (Fin n → ℕ) where
   map_add' a b := by simp [add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[rowDeg, rowsUpTo, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDeg_apply (a : Fin (n - 1) → ℕ) (r : Fin n) :
     rowDeg n a r = ∑ j, if r.val ≤ j.val then a j else 0 := by
   simp [rowDeg, rowsUpTo, Finset.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [rowDeg, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -548,15 +546,15 @@ theorem rowDeg_single (j : Fin (n - 1)) : rowDeg n (Pi.single j 1) = rowsUpTo n 
   · simp
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `j`. Establish `hj` using `j.2`. Establish `key : ∀ c : Fin (n - 1) → ℕ, rowDeg n c ⟨j.val, by omega⟩ = c j + rowDeg n c ⟨j.val + 1, by omega⟩`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rowDeg_apply, rowDeg_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : j = k`. Substitute `h1` using the available equality.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h2 : j.val ≠ k.val` using `fun h => h1 (Fin.ext h)`. Distinguish the cases in `h3 : j.val ≤ k.val`. Rewrite using `[if_pos h3, if_neg h1, if_pos (by omega), zero_add]`. Rewrite using `[if_neg h3, if_neg h1, if_neg (by omega), add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = c j + ∑ k, if j.val + 1 ≤ k.val then c k else 0 := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Establish `h1` using `congrFun h ⟨j.val, by omega⟩`. Establish `h2` using `congrFun h ⟨j.val + 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[key a, key b, h2]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rowDeg_injective : Function.Injective (rowDeg n) := by
   intro a b h
@@ -585,9 +583,7 @@ theorem rowDeg_injective : Function.Injective (rowDeg n) := by
   omega
 
 /- English proof (translation)
-Simplify using `only [uMat, Matrix.of_apply]`. Use `split_ifs with h h'`. Conclude with `isWeightedHomogeneous_X F (rowWeight n) _`. Establish `e : (Pi.single r 1 : Fin n → ℕ) = rowWeight n (Sum.inr ⟨r.val, by omega⟩)` using `rfl`. Rewrite using `[e]`.
-
-Conclude with `isWeightedHomogeneous_X F (rowWeight n) _`. Conclude with `isWeightedHomogeneous_zero F (rowWeight n) _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_isWeightedHomogeneous (r c : Fin n) :
     IsWeightedHomogeneous (rowWeight n) (uMat F n r c) (Pi.single r 1) := by
@@ -600,15 +596,15 @@ theorem uMat_isWeightedHomogeneous (r c : Fin n) :
   · exact isWeightedHomogeneous_zero F (rowWeight n) _
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Use function extensionality and compare the values at `r`. Simplify using `only [Finset.sum_apply, Pi.single_apply, rowsUpTo]`. Use `split_ifs with hr`. Rewrite using `[Finset.sum_eq_single ⟨r.val, by omega⟩]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `only [Fin.ext_iff, Fin.val_castLE] at h`. Simplify using `[h]`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[if_neg]`. Introduce `h`. Simplify using `only [Fin.ext_iff, Fin.val_castLE] at h`. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sum_single_castLE (j : Fin (n - 1)) :
     ∑ i : Fin (j.val + 1), (Pi.single (Fin.castLE (by have := j.2; omega) i : Fin n) 1 : Fin n → ℕ) =
@@ -636,11 +632,11 @@ theorem sum_single_castLE (j : Fin (n - 1)) :
     omega
 
 /- English proof (translation)
-Rewrite using `[← sum_single_castLE n j]`. Simplify using `only [flagMinor]`. Rewrite using `[Matrix.det_apply]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `σ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : IsWeightedHomogeneous (rowWeight n) (∏ i, (uMat F n).submatrix (Fin.castLE (by have` using `j.2; omega)) (S.1.orderEmbOfFin S.2) (σ i) i) (∑ i : Fin (j.val + 1), (Pi.single (Fin.castLE (by have := j.2; omega) i : Fin n) 1 : Fin n → ℕ)) := by`. Rewrite using `[← Equiv.sum_comp σ]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `i _`. Conclude with `uMat_isWeightedHomogeneous F n _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul]`. Conclude with `hp.neg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMinor_uMat_isWeightedHomogeneous (j : Fin (n - 1)) (S : PluckerBlocks n n j) :
     IsWeightedHomogeneous (rowWeight n) (flagMinor (uMat F n) j S) (rowsUpTo n j) := by
@@ -665,13 +661,13 @@ theorem flagMinor_uMat_isWeightedHomogeneous (j : Fin (n - 1)) (S : PluckerBlock
 abbrev upperMap : MRingOver F (PluckerBlocks n n) →ₐ[F] MvPolynomial (UIdx n) F := (toUpper F n).comp (flagMinorMap F n)
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Establish `ha : a = Finsupp.weight (plWeight n) m` using `(hf (mem_support_iff.1 hm)).symm`. Establish `hC : ∀ c : F, upperMap F n (C c) = C c`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(upperMap F n).commutes c`. Rewrite using `[monomial_eq, map_mul, hC, map_finsuppProd]`. Apply `IsWeightedHomogeneous.C_mul` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Finsupp.weight_apply, Finsupp.sum, map_sum]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `p _`. Use `show IsWeightedHomogeneous (rowWeight n) (upperMap F n (X p ^ m p)) (rowDeg n (m p • plWeight n p))`. Rewrite using `[map_pow, map_nsmul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `IsWeightedHomogeneous.pow` to reduce the goal to its premises. Rewrite using `[toUpper_flagMinorMap_X, plWeight, rowDeg_single]`. Conclude with `flagMinor_uMat_isWeightedHomogeneous F n _ _`.
+A detailed English derivation is pending.
 -/
 theorem upperMap_isWeightedHomogeneous (f : MRingOver F (PluckerBlocks n n)) (a : Fin (n - 1) → ℕ)
     (hf : IsWeightedHomogeneous (plWeight n) f a) :
@@ -696,13 +692,11 @@ theorem upperMap_isWeightedHomogeneous (f : MRingOver F (PluckerBlocks n n)) (a 
   exact flagMinor_uMat_isWeightedHomogeneous F n _ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_weightedHomogeneousComponent (plWeight n) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Rewrite using `[map_sum, map_sum]`. Distinguish the cases in `ha : weightedHomogeneousComponent (plWeight n) a f = 0`. Rewrite using `[ha, map_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Rewrite using `[ha, map_zero, map_zero]`. Conclude with `(upperMap_isWeightedHomogeneous F n _ b (weightedHomogeneousComponent_isWeightedHomogeneous b f)).weightedHomogeneousComponent_ne _ (fun h => hab (rowDeg_injective n h).symm)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single a]`. Conclude with `(upperMap_isWeightedHomogeneous F n _ a (weightedHomogeneousComponent_isWeightedHomogeneous a f)).weightedHomogeneousComponent_same`. Introduce `b _ hb`. Conclude with `(upperMap_isWeightedHomogeneous F n _ b (weightedHomogeneousComponent_isWeightedHomogeneous b f)).weightedHomogeneousComponent_ne _ (fun hab => hb (rowDeg_injective n hab).symm)`. Introduce `h`.
-
-Conclude with `absurd ((Set.Finite.mem_toFinset _).2 ha) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem upperMap_weightedHomogeneousComponent (f : MRingOver F (PluckerBlocks n n)) (a : Fin (n - 1) → ℕ) :
     weightedHomogeneousComponent (rowWeight n) (rowDeg n a) (upperMap F n f) =
@@ -732,9 +726,9 @@ theorem upperMap_weightedHomogeneousComponent (f : MRingOver F (PluckerBlocks n 
       exact absurd ((Set.Finite.mem_toFinset _).2 ha) h
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `ha : Finsupp.weight (plWeight n) m = a` using `hf (mem_support_iff.1 hm)`. Rewrite using `[← ha, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using `[plWeight]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Simplify using `[plWeight, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_of_isWeightedHomogeneous (f : MRingOver F (PluckerBlocks n n)) (a : Fin (n - 1) → ℕ)
     (hf : IsWeightedHomogeneous (plWeight n) f a) : IsMultiHomog f a := by
@@ -751,11 +745,11 @@ theorem isMultiHomog_of_isWeightedHomogeneous (f : MRingOver F (PluckerBlocks n 
   · simp
 
 /- English proof (translation)
-Use `⟨{f | f ∈ upperKer F n ∧ ∃ a, IsWeightedHomogeneous (plWeight n) f a}, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨_, a, ha⟩`. Conclude with `⟨a, isMultiHomog_of_isWeightedHomogeneous F n f a ha⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sum_weightedHomogeneousComponent (plWeight n) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Use `Ideal.sum_mem _ fun a _ => Ideal.subset_span ⟨?_, a, weightedHomogeneousComponent_isWeightedHomogeneous a f⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, ← upperMap_weightedHomogeneousComponent]`. Rewrite `hf` using `[RingHom.mem_ker]`. Rewrite using `[hf, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.span_le.2 fun f hf => hf.1`.
+A detailed English derivation is pending.
 -/
 theorem upperKer_isMultiHomogIdeal : IsMultiHomogIdeal (upperKer F n) := by
   classical
@@ -776,9 +770,9 @@ theorem upperKer_isMultiHomogIdeal : IsMultiHomogIdeal (upperKer F n) := by
 end Grading
 
 /- English proof (translation)
-Introduce `j`. Establish `hj` using `j.2`. Use `⟨⟨colSet j.val ⟨j.val, by omega⟩, colSet_card j.val _ le_rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, toUpper_flagMinorMap_X]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[flagMinor_uMat_colSet F j ⟨j.val, by omega⟩ le_rfl]`. Establish `e : (∏ k : Fin j.val, uMat F n ⟨k.val, by omega⟩ ⟨k.val, by omega⟩) * uMat F n ⟨j.val, by omega⟩ ⟨j.val, by omega⟩ = diagProd F n (j.val + 1) (by omega)` using `(diagProd_succ F n j.val (by omega)).symm`. Rewrite using `[e]`. Conclude with `diagProd_ne_zero F n _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperKer_isRelevant (F : Type) [Field F] (n : ℕ) : IsRelevant (upperKer F n) := by
   intro j
@@ -797,7 +791,7 @@ end FlagDim
 open FlagDim in
 
 /- English proof (translation)
-Introduce `F _ n`. Establish `hker : flagIdealOver F n = upperKer F n` using `ker_flagMinorMap_eq F n`. Rewrite using `[hker]`. Use `⟨⟨inferInstance, upperKer_isMultiHomogIdeal F n, upperKer_isRelevant F n⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, trdeg_upperQuot, Fintype.card_fin, Cardinal.toENat_nat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

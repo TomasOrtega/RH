@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH`. Take `⟨hF, hBC, -⟩` from `GlobalTheory.abelianDeRham_free_baseChange_rigid hH`. Conclude with `⟨hF, GlobalTheory.AbelianHodge.abelianDeRham_hodge GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations hH, hBC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem abelianDeRham_free_hodge_baseChange : GlobalTheory.Published.AbelianHodgeDeRham →
     GlobalTheory.Published.AbelianDeRham.Free ∧ GlobalTheory.Published.AbelianDeRham.Hodge ∧

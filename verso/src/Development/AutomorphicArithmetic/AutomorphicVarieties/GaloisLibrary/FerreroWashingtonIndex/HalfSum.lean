@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `α k _ σ H H' g hσ hg hH hH' hHH' hH'H`. Use `Finset.sum_bij' (fun x _ => if x ∈ H' then x else σ x) (fun y _ => if y ∈ H then y else σ y) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Distinguish the cases in `h : x ∈ H'`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_false]`. Conclude with `(hHH' x hx).resolve_left h`. Introduce `y hy`. Distinguish the cases in `h : y ∈ H`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_false]`. Conclude with `(hH'H y hy).resolve_left h`. Introduce `x hx`. Distinguish the cases in `h : x ∈ H'`. Simplify using `[h, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h, hH x hx, hσ]`. Introduce `y hy`. Distinguish the cases in `h : y ∈ H`. Simplify using `[h, hy]`. Simplify using `[h, hH' y hy, hσ]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `x hx`. Distinguish the cases in `h : x ∈ H'`. Simplify using `[h]`. Simplify using `[h, hg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.halfSum :
     ∀ (α k : Type) [AddCommMonoid k] (σ : α → α) (H H' : Finset α) (g : α → k), (∀ x, σ (σ x) = x) → (∀ x, g (σ x) = g x) → (∀ x ∈ H, σ x ∉ H) → (∀ x ∈ H', σ x ∉ H') → (∀ x ∈ H, x ∈ H' ∨ σ x ∈ H') → (∀ x ∈ H', x ∈ H ∨ σ x ∈ H) → ∑ x ∈ H, g x = ∑ x ∈ H', g x := by

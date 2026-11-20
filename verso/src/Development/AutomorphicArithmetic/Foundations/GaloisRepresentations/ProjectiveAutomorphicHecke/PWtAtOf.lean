@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalT
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ π`. Use `⟨⟨(AU.mk π).wt, AutSub.finPart_wt_ne_bot E n π⟩, fun W hW τ lam hlam => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Establish `hT` using `GlobalTheory.Cong.ofType_of_finPart_fixed E n π W ⊥ f hf hf0 (by`. Introduce `k hk v g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_bot.1 hk, mul_one])`. Conclude with `hasWeightAt_unique π τ hlam (hT.wt τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pWtAt_of :
     UpperTheory.Gal.CertificateRingHomMap.WtAt := by

@@ -13,7 +13,7 @@ private def IsBlockDiagFinThree {A : Type} [CommRing A] (M : Matrix (Fin 3) (Fin
   M 0 1 = 0 ∧ M 1 0 = 0 ∧ M 1 2 = 0 ∧ M 2 1 = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma submatrix_corners_three {A : Type} (M : Matrix (Fin 3) (Fin 3) A) :
     M.submatrix ![0, 2] ![0, 2] = !![M 0 0, M 0 2; M 2 0, M 2 2] := by
@@ -21,7 +21,7 @@ private lemma submatrix_corners_three {A : Type} (M : Matrix (Fin 3) (Fin 3) A) 
   fin_cases i <;> fin_cases j <;> rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Simplify using `only [submatrix_corners_three, Matrix.charpoly, det_fin_three, det_fin_two]`. Simplify using `[charmatrix_apply, h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma charpoly_block_three {A : Type} [CommRing A] (M : Matrix (Fin 3) (Fin 3) A) (h : IsBlockDiagFinThree M) :
     M.charpoly = (X - C (M 1 1)) * (M.submatrix ![0, 2] ![0, 2]).charpoly := by
@@ -44,11 +44,9 @@ private def corner {G A : Type} [Group G] [CommRing A] (m : G →* Matrix (Fin 3
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h1, h4]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `choose g hg using hc`. Establish `h0` using `congrFun (congrFun (ho g) 1) 1`. Take `⟨a1, a2, a3, a4⟩` from `h (g 0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨b1, b2, b3, b4⟩` from `h (g 2)`. Simplify using `[ordProd, List.ofFn_succ, Matrix.mul_apply, Fin.sum_univ_three, a2, a3, b1, b4, sub_eq_zero] at h0`. Break down `h0 with h0 | h0 | h0` into its components or cases. Conclude with `hg 0 h0`. Conclude with `hg 1 h0`.
-
-Conclude with `hg 2 h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma mid_eq {D κ : Type} [Field κ] (m : D → Matrix (Fin 3) (Fin 3) κ) (h : ∀ g, IsBlockDiagFinThree (m g))
     (ψ : Fin 3 → D → κ) (ho : ∀ g, ordProd m ψ g = 0) : ∃ i, ∀ g, m g 1 1 = ψ i g := by
@@ -65,15 +63,15 @@ private lemma mid_eq {D κ : Type} [Field κ] (m : D → Matrix (Fin 3) (Fin 3) 
   · exact hg 2 h0
 
 /- English proof (translation)
-Establish `hb : ∀ g, IsBlockDiagFinThree ((m g).map φ)` using `fun g => by`. Take `⟨h1, h2, h3, h4⟩` from `h g`. Simplify using `[IsBlockDiagFinThree, h1, h2, h3, h4]`. Take `⟨i, hi⟩` from `mid_eq _ (fun s => hb (ι s)) _ ho`. Set `σ : G →* GL (Fin 2) κ` to `(corner ((φ.mapMatrix : Matrix (Fin 3) (Fin 3) A →+* _).toMonoidHom.comp m) hb).toHomUnits`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hσ : gm σ = fun g => ((m g).map φ).submatrix ![0, 2] ![0, 2]` using `rfl`. Rewrite `hirr`, the goal using `[← hσ]`. Use `irrNormal G κ k A 2 Nat.prime_two σ hirr φ red χ hφ (fun g => ?_) D ι (fun a => ψ (i.succAbove a)) (fun g => ?_) U (fun a b hab => ?_) ?_` and prove the remaining obligations. Use `⟨((m g).submatrix ![0, 2] ![0, 2]).charpoly, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.charpoly_map]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Matrix.charpoly_map]`. Simplify using `only [submatrix_corners_three, Matrix.charpoly, det_fin_two, chPoly, Fin.prod_univ_two]`. Simplify using `[charmatrix_apply, h0, h2, mul_eq_zero.1 (h02 g)]`. Establish `e` using `hch g`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e` using `[charpoly_block_three _ (hb _), hi, chPoly, Fin.prod_univ_succAbove _ i]`. Conclude with `mul_left_cancel₀ (X_sub_C_ne_zero _) e`. Take `⟨g, hg, hg'⟩` from `hs`. Conclude with `⟨g, hg, hg' _ _ fun e => hab (Fin.succAbove_right_injective e)⟩`. Take `⟨g, hg⟩` from `hχ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 1, g, hg⟩`.
+A detailed English derivation is pending.
 -/
 private lemma core {G D κ k A : Type} [Group G] [Group D] [Field κ] [IsAlgClosed κ] [Field k] [CommRing A]
     (m : G →* Matrix (Fin 3) (Fin 3) A) (h : ∀ g, IsBlockDiagFinThree (m g)) (φ : A →+* κ) (hφ : Function.Injective φ)
@@ -111,45 +109,37 @@ end UpperTheory.V.Pr
 
 open Matrix Polynomial IsLocalRing UpperTheory.V UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Pr in
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F T x L y j hj hN hρ hψ hE U hU`. Establish `hj' : IsLocalHom (j : L.R →+* y.A)` using `⟨hj.map_nonunit⟩`. Take `⟨-, hbar, hid, htri⟩` from `loc_rho T.ok T.n23 T.S x L`. Establish `hO : IsLocalHom (algebraMap O L.R)`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hna`. Establish `h1` using `ha.map j`. Rewrite `h1` using `[AlgHom.commutes, PowerSeries.isUnit_iff_constantCoeff]`. Establish `h2 : residue O a = 0` using `(residue_eq_zero_iff a).2 hna`. Establish `h3 : PowerSeries.constantCoeff (algebraMap O y.A a) = algebraMap (ResidueField O) y.K (residue O a)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PowerSeries.algebraMap_apply, PowerSeries.constantCoeff_C, IsScalarTower.algebraMap_apply O (ResidueField O) y.K]`. Both sides reduce to the same expression. Rewrite `h1` using `[h3, h2, map_zero]`. Conclude with `not_isUnit_zero h1`. Establish `hb` using `(hbar (ResidueField.map (algebraMap O L.R)) fun a => ResidueField.map_residue _ _).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : y.A →+* y.Fb := (algebraMap y.Fr y.Fb).comp (algebraMap y.A y.Fr) with hφ`. Establish `hφi : Function.Injective φ` using `(algebraMap y.Fr y.Fb).injective.comp (IsFractionRing.injective y.A y.Fr)`. Use `set ρ := L.ρ.map (j : L.R →+* y.A) with hρd`. Use `set f : T.S.A →+* y.Fb := φ.comp ((j : L.R →+* y.A).comp (L.ι : T.S.A →+* L.R)) with hf`. Establish `hfρ : T.S.u.map f = ρ.map φ` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hker : RingHom.ker f = L.im (RingHom.ker j)`. Use extensionality with `a`. Simplify using `only [hf, RingHom.mem_ker, Space.Loc.im, Ideal.mem_comap, RingHom.comp_apply, map_eq_zero_iff _ hφi]`. Both sides reduce to the same expression. Establish `hTE : T.S.u.TE (RingHom.ker f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hker]`. Take `⟨a, b, c⟩` from `hid (RingHom.ker j)`. Conclude with `⟨⟨fun h => hE.1.1 (a.2 h), fun h => hE.1.2 (b.2 h)⟩, rfl, c.1 hE.2.2⟩`. Establish `hirr` using `typeE T.ok T.S y.Fb f hTE`. Establish `hodd : ∀ g a b, Odd (w 3 a - w 3 b) → ρ.r g a b = 0` using `fun g a b h => hE.2.2 (Ideal.subset_span ⟨g, a, b, h, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV : Nonempty T.G.Vl`. Rewrite using `[T.K.e.nonempty_congr]`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nonempty_iff]`. Use `T.big.1` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Frame.d] at this`. Take `⟨v⟩` from `hV`. Establish `hfi : U.FiniteIndex` using `by haveI : CompactSpace T.G.G₀ := isCompact_iff_compactSpace.1 (T.G.η.ker.isClosed_of_isOpen T.G.η_open).isCompact haveI := U.quotient_finite_of_isOpen hU`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`. Establish `hU' : IsOpen (U.normalCore : Set T.G.G₀)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (U.normalCore_isClosed (U.isClosed_of_isOpen hU))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g₁, hg₁, hfree⟩` from `niceSep l O F 3 T x L y j hj hN hρ hψ _ hU' v`. Use `haveI : T.G.G'.Normal := MonoidHom.normal_ker _`. Set `lam : T.G.Gv v →* F.Gv (T.K.e v)` to `(T.K.lam v).toMulEquiv.toMonoidHom`. Establish `hlam : ∀ s, T.K.π (T.G.φ v s) = F.loc0 _ (lam s)` using `fun s => (T.K.lam_loc v s).symm`. Set `k' : ResidueField O →+* ResidueField y.A` to `(ResidueField.map (j : L.R →+* y.A)).comp (ResidueField.map (algebraMap O L.R))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : ∀ z : L.R, residue y.A (j z) = ResidueField.map (j : L.R →+* y.A) (residue L.R z)` using `fun z => (ResidueField.map_residue (j : L.R →+* y.A) z).symm`. Establish `key` using `core (ρ.r.comp T.K.π) (fun g => ⟨hodd _ _ _ (by decide), hodd _ _ _ (by decide), hodd _ _ _ (by decide), hodd _ _ _ (by decide)⟩) φ hφi (fun W hW => hirr W fun g _ u hu => by`. Take `⟨g', rfl⟩` from `T.K.π_surj g`. Conclude with `hW g' trivial u hu)`. Use the proof step `(residue y.A) (fun a => W.pushCh k' (((F.Ψ.comp F.del.ker.subtype).comp T.K.π) ^ w 3 (![0, 2] a)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun g => (hres _).trans (congrArg _ (hb (T.K.π g) 0))) (fun g => (hres _).trans (congrArg _ (hb (T.K.π g) 2)))`. Use the proof step `(fun g => by`. Distinguish the cases in `hx : T.S.u.triP ≤ x`. Establish `h1 : L.ρ.r (T.K.π g) 2 0 ∈ maximalIdeal L.R`. Use `hx (Ideal.subset_span ⟨T.K.π g, 2, 0, by decide, rfl⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← L.lies]`. Conclude with `this`. Use `mul_eq_zero_of_right _ ((hres _).trans ?_)` and prove the remaining obligations. Rewrite using `[(residue_eq_zero_iff _).2 h1, map_zero]`. Establish `h1 : L.ρ.r (T.K.π g) 0 2 ∈ maximalIdeal L.R` using `(htri hx).2 (Ideal.subset_span ⟨T.K.π g, 0, 2, by decide, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_eq_zero_of_left ((hres _).trans ?_) _` and prove the remaining obligations. Rewrite using `[(residue_eq_zero_iff _).2 h1, map_zero])`. Use the proof step `(T.G.φ v) (fun i => ((ρ.map φ).ψ (T.K.e v) i).comp lam)`. Use the proof step `(fun g => by`. Establish `h` using `congrArg (Polynomial.map f) (o1 T.ok T.n23 T.S (T.K.e v) (lam g))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[← Matrix.charpoly_map, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C] at h`. Rewrite using `[MonoidHom.comp_apply, hlam]`. Conclude with `h)`. Use the proof step `(fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(ρ.map φ).ord (T.K.e v) fun i => lam (g i)`. Simplify using `only [MonoidHom.comp_apply, hlam]`. Conclude with `h)`. Use the proof step `(U.normalCore ⊓ T.G.G') ⟨g₁, hg₁, fun a b hab e => hfree a b hab 1 one_pos (by`. Establish `e1 : φ (ρ.ψ (T.K.e v) a (lam g₁)) = φ (ρ.ψ (T.K.e v) b (lam g₁))` using `congrArg Units.val e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ρ.ψ (T.K.e v) a (lam g₁) = ρ.ψ (T.K.e v) b (lam g₁)` using `Units.ext (hφi e1)`. Establish `e3 : y.ψ v a g₁ = y.ψ v b g₁`. Rewrite using `[hψ]`. Conclude with `congrArg (· * _) e2`. Simplify using `only [e3])⟩`.
-
-Use the proof step `(by`. Take `⟨g, hg⟩` from `T.ok.f3 (T.K.e v)`. Take `⟨s, rfl⟩` from `(T.K.lam v).surjective g`. Use `⟨s, fun e => hg ?_⟩` and prove the remaining obligations. Establish `e1 : k' ((F.Ψ (T.K.π (T.G.φ v s)) ^ w 3 0 : (ResidueField O)ˣ) : ResidueField O) = k' ((F.Ψ (T.K.π (T.G.φ v s)) ^ w 3 2 : (ResidueField O)ˣ) : ResidueField O)` using `congrArg Units.val e`.
-
-Establish `e2` using `Units.ext (k'.injective e1)`. Rewrite `e2` using `[hlam, show w 3 0 = 1 by decide, show w 3 2 = -1 by decide, zpow_one, _root_.zpow_neg_one]`. Rewrite using `[sq]`. Conclude with `mul_eq_one_iff_eq_inv.2 e2)`. Introduce `Y hW`.
-
-Use `key Y fun g hg u hu => ?_` and prove the remaining obligations. Establish `h1` using `hW g ⟨U.normalCore_le hg.1, hg.2⟩ u hu`. Establish `h2 : (W.mat (W.pushRep (algebraMap y.Fr y.Fb) y.ρF) g).submatrix ![0, 2] ![0, 2] = φ (T.K.κA y.A g) • (((ρ.r.comp T.K.π) g).map φ).submatrix ![0, 2] ![0, 2]`. Use extensionality with `a b`. Use `show φ (UpperTheory.V.W.mat y.ρ g _ _) = _`.
-
-Rewrite using `[hρ]`. Conclude with `map_mul φ _ _`. Simplify using `only [h2, smul_mulVec] at h1`. Conclude with `(Y.smul_mem_iff (((T.K.κA y.A g).isUnit.map φ).ne_zero)).1 h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.niceIrrE :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (T : UpperTheory.V.Pr.Setup F 3) (x : Ideal T.S.A) (L : T.S.Loc x) (y : UpperTheory.V.W.Point T.r) (j : L.R →ₐ[O] y.A), IsLocalHom j → UpperTheory.V.Pr.Nice L.ρ (RingHom.ker j) → UpperTheory.V.W.mat y.ρ = T.K.tw (L.ρ.map (j : L.R →+* y.A)) → y.ψ = T.K.twψ (L.ρ.map (j : L.R →+* y.A)) → L.ρ.TE (RingHom.ker j) → ∀ U : Subgroup T.G.G₀, IsOpen (U : Set T.G.G₀) → UpperTheory.V.U3.MatIrr (U ⊓ T.G.G') fun g => (UpperTheory.V.W.mat (UpperTheory.V.W.pushRep (algebraMap y.Fr y.Fb) y.ρF) g).submatrix ![0, 2] ![0, 2] := by

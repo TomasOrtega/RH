@@ -15,13 +15,13 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.LawDer
 
 /- English proof (translation)
-Introduce `p O _ G d c n m hp u φ hφ k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `F`. Take `⟨a, ha⟩` from `GlobalTheory.T.counit_formalChart_ev_sub_constantCoeff_dvd p O G d c n F`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_zero, Function.iterate_zero, id, LinearMap.convOne_apply, Algebra.algebraMap_self, RingHom.id_apply, ha]`. Conclude with `m.mul_mem_right a hp`. Consider the case `succ k ih`. Introduce `F`. Take `⟨t, ht⟩` from `GlobalTheory.T.comul_chart_sub_subst_mem_p_smul p O G d c n F`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, LinearMap.convMul_apply, Function.iterate_succ_apply, sub_eq_iff_eq_add.1 ht, map_add, map_add, map_smul, map_smul]`. Establish `h1` using `GlobalTheory.T.dual_pairing_chart_partial_derivative_mod_max p O G d c n m hp u φ hφ (φ ^ k).ofConv (subst c.μ F)`. Establish `h2` using `ih (invDer c.μ u F)`. Establish `h3 : (p : O) • LinearMap.mul' O O (TensorProduct.map (φ ^ k).ofConv φ.ofConv t) ∈ m`. Rewrite using `[smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `m.mul_mem_right _ hp`. Use `m.add_mem (m.add_mem h1 h2) h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [invDer]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem convPow_ev_sub_constantCoeff_iterate_mem : ∀ (p : ℕ) (O : Type) [CommRing O]
     (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (n : ℕ) (m : Ideal O), (p : O) ∈ m →

@@ -13,7 +13,7 @@ end DeepSquares
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, WithZero.exp k = a` from `⟨_, WithZero.exp_log (ne_bot_of_gt ha)⟩`. Take `⟨l, rfl⟩ : ∃ l, WithZero.exp l = b` from `⟨_, WithZero.exp_log (ne_bot_of_gt hb)⟩`. Rewrite `ha`, `hb` using `[WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma exp_neg_two_mul_le_mul_of_lt {e : ℕ} {a b : ℤᵐ⁰}
     (ha : WithZero.exp (-((e : ℤ) + 1)) < a) (hb : WithZero.exp (-((e : ℤ) + 1)) < b) :
@@ -28,21 +28,21 @@ open NumberField IsDedekindDomain in
 open scoped WithZero in
 
 /- English proof (translation)
-Introduce `F _ _ v e h2 x hx`. Unfold `_root_.GlobalTheory.QNorm.hiUnits at hx`. Unfold `_root_.GlobalTheory.QNorm.sqs _root_.GlobalTheory.QNorm.hiUnits`. Take `⟨-, hx1⟩` from `hx`. Use `set w : Valuation (v.adicCompletion F) ℤᵐ⁰ := Valued.v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : w 4 = WithZero.exp (-(2 * e : ℤ))`. Establish `: (4 : v.adicCompletion F) = 2 * 2` using `by norm_num`. Rewrite using `[this, map_mul, h2, ← WithZero.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hlt : w ((x : v.adicCompletion F) - 1) < w 4`. Use `lt_of_le_of_lt hx1 ?_` and prove the remaining obligations. Rewrite using `[h4, WithZero.exp_lt_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `_root_.GlobalTheory.LocalQuad.isSquare_of_valued_sub_one_lt F v _ hlt`. Establish `hprod : w (r - 1) * w (r + 1) ≤ WithZero.exp (-((2 * e + 1 : ℕ) : ℤ))`. Rewrite using `[← map_mul, show (r - 1) * (r + 1) = r * r - 1 by ring, ← hr]; exact hx1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hs1⟩ : ∃ s : v.adicCompletion F, s * s = x ∧ w (s - 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ)) := by`. Distinguish the cases in `hm : w (r - 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨r, hr.symm, hm⟩`. Distinguish the cases in `hp : w (r + 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ))`. Use `⟨-r, by rw [neg_mul_neg, hr], ?_⟩` and prove the remaining obligations. Rewrite using `[show -r - 1 = -(r + 1) by ring, Valuation.map_neg]` and apply the resulting hypothesis. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. It suffices to derive a contradiction. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hm hp hprod`. Use `(exp_neg_two_mul_le_mul_of_lt (not_le.mp hm) (not_le.mp hp)).trans hprod` as an intermediate fact. Rewrite `this` using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hs0 : s ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `only [mul_zero] at hs`. Conclude with `x.ne_zero hs.symm`. Establish `hsv : w s = 1`. Establish `hlt1 : w (s - 1) < 1` using `hs1.trans_lt (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using Valuation.map_one_add_of_lt w hlt1`. Use `⟨Units.mk0 s hs0, ⟨hsv, hs1⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[pow_two, hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.hiUnits_le_sqs_hiUnits : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (e : ℕ),

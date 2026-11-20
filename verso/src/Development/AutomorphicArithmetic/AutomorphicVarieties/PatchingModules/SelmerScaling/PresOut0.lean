@@ -7,29 +7,27 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `O B _ _ _ _ _ _ _ D0 X hX hspan Z Q hZ hQ hdim`. Use `haveI hOO : IsCO O O := { complete := inferInstance isLocalHom := ⟨fun a h => by simpa using h⟩ res_surj := fun x => ⟨x, by simp⟩ }`. Use `haveI hA : IsCO O (MvPowerSeries (Fin D0) O) := co_mvps O O (Fin D0)`. Take `⟨F, ⟨hFC, hFX⟩, -⟩` from `co_ev O O B (Fin D0) (Algebra.ofId O B) X hX`. Establish `hsurj : Function.Surjective F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `co_surj` to reduce the goal to its premises. Use `le_trans hspan (sup_le ?_ (sup_le ?_ le_sup_right))` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Ideal.mem_sup_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hFX i]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff]`. Simplify using the standard rewrite rules. Use `le_sup_of_le_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap]`. Establish `h1 : algebraMap O B a = F (MvPowerSeries.C a)`. Rewrite using `[hFC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff]`. Simplify using `using ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdimA : ringKrullDim (MvPowerSeries (Fin D0) O) = 1 + (D0 : WithBot ℕ∞)`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one]`. Simplify using the standard rewrite rules. Establish `hinj : ∀ r, F r ∈ Z → r = 0`. Introduce `r hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hnz : r ∈ nonZeroDivisors (MvPowerSeries (Fin D0) O)` using `mem_nonZeroDivisors_of_ne_zero hne`. Establish `hle` using `ringKrullDim_succ_le_of_surjective ((Ideal.Quotient.mk Z).comp F.toRingHom) ((Ideal.Quotient.mk_surjective).comp hsurj) hnz (by simpa [Ideal.Quotient.eq_zero_iff_mem] using hr)`. Rewrite `hle` using `[hdimA]`. Generalize the expression as in `ringKrullDim (B ⧸ Z) = d at hle hdim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : d ≠ ⊥` using `ne_bot_of_le_ne_bot (WithBot.coe_ne_bot) hdim`. Take `⟨e, rfl⟩` from `WithBot.ne_bot_iff_exists.mp hb`. Establish `h2 : (((1 + D0 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (e : WithBot ℕ∞)` using `hdim`. Rewrite `h2` using `[WithBot.coe_le_coe]`. Establish `h1 : ((e + 1 : ℕ∞) : WithBot ℕ∞) ≤ (((1 + D0 : ℕ) : ℕ∞) : WithBot ℕ∞)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at hle ⊢`. Conclude with `hle`. Rewrite `h1` using `[WithBot.coe_le_coe]`. Establish `het : e ≠ ⊤`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 
-Rewrite `h1` using `[h]`. Simplify using `at h1`. Use `lift e to ℕ using het`. Normalize the coercions in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hZbot : Z = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Take `⟨r, rfl⟩` from `hsurj z`. Rewrite using `[hinj r hz, map_zero]`.
-
-Conclude with `Ideal.zero_mem _`. Rewrite using `[hZbot]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.presOut0 :
     ∀ (O B : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CommRing B] [Algebra O B] [IsCO O B] (D0 : ℕ) (X : Fin D0 → B), (∀ a, X a ∈ maximalIdeal B) → maximalIdeal B ≤ Ideal.span (Set.range X) ⊔ ((maximalIdeal O).map (algebraMap O B) ⊔ maximalIdeal B ^ 2) → ∀ Z Q : Ideal B, Z.IsPrime → Q.IsPrime → ((1 + D0 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (B ⧸ Z) → Z ≤ Q := by

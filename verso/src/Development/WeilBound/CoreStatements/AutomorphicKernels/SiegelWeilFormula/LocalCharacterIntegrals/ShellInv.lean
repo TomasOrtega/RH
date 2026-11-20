@@ -11,7 +11,7 @@ open scoped TensorProduct Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `SwSplit.jtR_conj_inv' v σ hcm J ψR μv Φv hΦ`.
+A detailed English derivation is pending.
 -/
 theorem jtR_conj_inv (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (ψR : Fv F v → ℂ) (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E))

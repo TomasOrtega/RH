@@ -28,7 +28,7 @@ namespace GlobalTheory.TwistChart
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨GlobalTheory.EmbChart.isSplitIdem_idem _, ?_, GlobalTheory.SplitProjChart.rdA_idem φ⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isIdemOf_idem {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v) :
     IsIdemOf φ (GlobalTheory.EmbChart.idem (GlobalTheory.SplitProjChart.emb φ)) := by
@@ -37,9 +37,9 @@ theorem isIdemOf_idem {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D 
   rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer (Fv D.host.F v))`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`. Conclude with `ValuativeRel.uniformizer_ne_zero hx.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x hx0, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 D.host.F)) :
     ∃ ϖ : (Fv D.host.F v)ˣ, ValuativeRel.valuation (Fv D.host.F v) (ϖ : Fv D.host.F v) =
@@ -52,13 +52,13 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 D.host.F)) :
   exact ⟨Units.mk0 x hx0, hx⟩
 
 /- English proof (translation)
-Establish `hπ` using `(GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1`. Establish `hee : e * e = e` using `he.1.1`. Take `⟨sec, hsec⟩ : ∃ sec : Fv D.host.F v → AE D, ∀ y, rdA φ (sec y) = y` from `⟨fun y => (hπ.1 y).choose, fun y => (hπ.1 y).choose_spec⟩`. Establish `hf1 : ∀ y, (1 - e) * ((1 - e) + e * sec y) = 1 - e` using `fun y => by`. Take the linear combination `(1 - sec y) * hee`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hf2 : ∀ y, rdA φ ((1 - e) + e * sec y) = y` using `fun y => by`. Rewrite using `[map_add, map_sub, map_mul, map_one, he.2.2, hsec]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ x y, (1 - e) * x = 1 - e → rdA φ x = y → x = (1 - e) + e * sec y`. Introduce `x y h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : e * (x - sec y) = 0` using `(hπ.2.1 _).1 (by rw [map_sub, h2, hsec, sub_self])`. Establish `h4 : e * x = e * sec y` using `by rw [mul_sub] at h3; exact sub_eq_zero.1 h3`. Combine the equalities or inequalities in the displayed calculation. Establish `hmul : ∀ y z, (1 - e) + e * sec (y * z) = ((1 - e) + e * sec y) * ((1 - e) + e * sec z)` using `fun y z => (key _ _ (by rw [← mul_assoc, hf1, hf1]) (by rw [map_mul, hf2, hf2])).symm`. Establish `hone : (1 - e) + e * sec 1 = 1` using `(key 1 1 (mul_one _) (map_one _)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : (Fv D.host.F v)ˣ → (AE D)ˣ` to `fun y => ⟨(1 - e) + e * sec y, (1 - e) + e * sec ((y⁻¹ : (Fv D.host.F v)ˣ) : Fv D.host.F v), by rw [← hmul, Units.mul_inv, hone], by rw [← hmul, Units.inv_mul, hone]⟩`. Conclude with `⟨MonoidHom.mk' f fun y z => Units.ext (by simp only [f, Units.val_mul]; exact hmul y z), fun y => ⟨hf1 y, hf2 y⟩, fun x y h1 h2 => key x y h1 h2⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem unit_section {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v) {e : AE D} (he : IsIdemOf φ e) :
     ∃ U : (Fv D.host.F v)ˣ →* (AE D)ˣ, (∀ y, (1 - e) * (U y : AE D) = 1 - e ∧ rdA φ (U y : AE D) = y) ∧
@@ -97,19 +97,19 @@ def blockEquiv (n r k t : ℕ) (h : n = r + k * t) : Fin r ⊕ Blocks k t ≃ Fi
     (finSumFinEquiv.trans (finCongr h.symm))
 
 /- English proof (translation)
-Simplify using `[blockEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEquiv_inl (n r k t : ℕ) (h : n = r + k * t) (i : Fin r) : ((blockEquiv n r k t h (.inl i) : Fin n) : ℕ) = i := by
   simp [blockEquiv]
 
 /- English proof (translation)
-Establish `hπ` using `(GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1`. Establish `hJ` using `GlobalTheory.NoExcl.isHermND_gram s.V`. Set `ε` to `blockEquiv s.V.rank D.R.r k D.R.t hrank`. Set `re : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) ≃* GL (Fin s.V.rank) (Fv D.host.F v)` to `Units.mapEquiv (Matrix.reindexAlgEquiv (Fv D.host.F v) (Fv D.host.F v) ε).toRingEquiv.toMulEquiv`. Set `L` to `GlobalTheory.AdelicU.splitEquivIn (GlobalTheory.AdelicU.isCMExt_host D) hJ (GlobalTheory.AdelicU.chartEmb hπ) (frCo φ s.β)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) →* GA D s.V` to `(GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v).comp (L.symm.toMulEquiv.toMonoidHom.comp re.toMonoidHom)`. Use `⟨ι, ε, blockEquiv_inl _ _ _ _ hrank, fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v (GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v (ι y)) = ι y`. Simplify using `only [ι, MonoidHom.comp_apply, GlobalTheory.AdelicU.proj_emb_self]`. Establish `h1 : grpCo φ s.V (frCo φ s.β) (ι y) = GlobalTheory.SplitHecke.rho s.V (rdA φ) (frCo φ s.β) (ι y)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitHecke.rho_val]`. Both sides reduce to the same expression. Rewrite using `[h1, GlobalTheory.AdelicU.rho_eq_splitEquivIn hπ s.V hJ]`. Simplify using `only [ι, L, MonoidHom.comp_apply, GlobalTheory.AdelicU.proj_emb_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : L (L.symm (re y)) = re y` using `L.apply_symm_apply _`. Express the relevant statement in the definitionally equal form `(L (L.symm (re y))).1.submatrix ε ε = y.1`. Rewrite using `[h2]`. Use extensionality with `i j`. Simplify using `[re]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_isChart (s : PiLocalization₂ D) (k : ℕ) (hrank : s.V.rank = D.R.r + k * D.R.t) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (φ : SplitProj D v) {e : AE D} (he : IsIdemOf φ e) : ∃ ι, IsChart s k φ ι := by
@@ -143,13 +143,13 @@ namespace GlobalTheory.TwistChart
 open GlobalTheory.ChainOnto GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `D c w hw j _ s hs PP hPP`. Establish `hPg : PP ∈ c.Pg` using `by rw [hw.union]; exact Finset.mem_union_right _ hPP`. Take `⟨-, ⟨es, hes, -⟩, -⟩` from `hw.com.split`. Use `⟨?_, fun v φ _ => ?_⟩` and prove the remaining obligations. Take `⟨v, φ, -, h⟩` from `(GlobalTheory.SplitIdemDict.idem_dictionary D).1 _ _ (hes PP hPg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, φ, h⟩`. Establish `he` using `isIdemOf_idem φ`. Take `⟨U, hU1, hU2⟩` from `unit_section φ he`. Establish `huniq` using `(GlobalTheory.SplitProjChart.chart_rdA D v φ _ he).2.2.2.2`. Take `⟨hr, -, hst⟩` from `hs`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨_, he⟩, ?_, exists_isChart s j hst.rank φ he, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `exists_unif (D := D) v`. Conclude with `⟨U ϖ, ϖ, _, he, (hU1 ϖ).1, (hU1 ϖ).2, hϖ⟩`. Use `⟨(Circle.toUnits.comp χ).comp U, fun y => ?_, fun x y ⟨e', he', h1, h2⟩ => ?_⟩` and prove the remaining obligations. Conclude with `Circle.norm_coe _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `huniq e' he'`. Establish `hx : x = U y` using `Units.ext (hU2 _ _ h1 h2)`. Rewrite using `[hx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charts_at_twist : ∀ D : D7, ForStageQ D fun c w j s => ∀ PP ∈ w.Q, (∃ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP) ∧ ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → (∃ e, IsIdemOf φ e) ∧ (∃ x ϖ, IsLocUnif φ x ϖ) ∧ (∃ ι, IsChart s j φ ι) ∧ ∀ χ : (AE D)ˣ →* Circle, ∃ μ : (Fv D.host.F v)ˣ →* ℂˣ, GlobalTheory.SmGL.IsUnitaryChar μ ∧ (∀ (x : (AE D)ˣ) (y : (Fv D.host.F v)ˣ), (∃ e, IsIdemOf φ e ∧ (1 - e) * (x : AE D) = 1 - e ∧ rdA φ (x : AE D) = y) → μ y = Circle.toUnits (χ x)) := by
   intro D c w hw j _ s hs PP hPP

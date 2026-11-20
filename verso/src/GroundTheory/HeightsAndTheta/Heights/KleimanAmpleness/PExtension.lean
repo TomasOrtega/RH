@@ -17,11 +17,11 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   [IsScalarTower S Ω E]
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨k, hk, rfl⟩` from `ha`. Break down `Finset.mem_insert.mp (Finset.mem_coe.mp hk) with rfl | hk'` into its components or cases. Conclude with `⟨1, 1, one_mem _, by ring⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨0, X k, X_mem_monos hk', by ring⟩`. Consider the case `one => exact ⟨0, 1, one_mem _, by ring⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨p, t, ht, rfl⟩` from `ha`. Take `⟨p', t', ht', rfl⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p + p', t * t', mul_mem ht ht', by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem monos_insert_decomp {i : Fin (N + 1)} {J : Finset (Fin (N + 1))} {s : Poly S N}
     (hs : s ∈ monos (insert i J)) : ∃ (p : ℕ) (t : Poly S N), t ∈ monos J ∧ s = X i ^ p * t := by
@@ -39,11 +39,9 @@ theorem monos_insert_decomp {i : Fin (N + 1)} {J : Finset (Fin (N + 1))} {s : Po
     exact ⟨p + p', t * t', mul_mem ht ht', by ring⟩
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun q _ => aeval x f / aeval x s * q ∈ twistMod S x (c + d) J) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨g, t, k, k', ht, hg, hkt, hk, rfl⟩`. Use `Submodule.subset_span ⟨f * g, s * t, e + k, e' + k', mul_mem hs ht, hf.mul hg, hse.mul hkt, by push_cast; omega, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, div_mul_div_comm]`. Rewrite using `[mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a q _ hq`.
-
-Rewrite using `[chartRing_smul_def, mul_left_comm, ← chartRing_smul_def]`. Conclude with `Submodule.smul_mem _ a hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_twistMod {J : Chart x} {f s : Poly S N} {e e' : ℕ} {d c : ℤ} (hs : s ∈ monos J.1)
     (hf : f.IsHomogeneous e') (hse : s.IsHomogeneous e) (hd : (e' : ℤ) = e + d) {q : Ω}
@@ -63,11 +61,11 @@ theorem mul_mem_twistMod {J : Chart x} {f s : Poly S N} {e e' : ℕ} {d c : ℤ}
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun m _ => (aeval x f / aeval x s) • m ∈ (F.twist (twistSys S x (c + d))).sub J) ?_ ?_ ?_ ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Use `Submodule.subset_span ⟨_, mul_mem_twistMod hs hf hse hd hq, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Rewrite using `[smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a m _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (aeval x f / aeval x s) • (a • m) = a • ((aeval x f / aeval x s) • m)`. Rewrite using `[Subalgebra.smul_def, Subalgebra.smul_def, smul_smul, smul_smul, mul_comm]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ a hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_twist (F : SubSystem S x E) {J : Chart x} {f s : Poly S N} {e e' : ℕ} {d c : ℤ}
     (hs : s ∈ monos J.1) (hf : f.IsHomogeneous e') (hse : s.IsHomogeneous e) (hd : (e' : ℤ) = e + d)
@@ -87,11 +85,9 @@ theorem smul_mem_twist (F : SubSystem S x E) {J : Chart x} {f s : Poly S N} {e e
     exact Submodule.smul_mem _ a hm
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun q _ => q ∈ chartRing S x J) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, he, rfl⟩`. Establish `hee : e' = e` using `by omega`. Substitute `hee` using the available equality. Conclude with `⟨f, s, e', hs, hf, hse, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `Subalgebra.zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `Subalgebra.add_mem _ ha hb`. Introduce `a q _ hq`. Rewrite using `[chartRing_smul_def]`.
-
-Conclude with `Subalgebra.mul_mem _ a.2 hq`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_chartRing_of_mem_twistMod_zero {J : Chart x} {q : Ω} (hq : q ∈ twistMod S x 0 J) :
     q ∈ chartRing S x J := by
@@ -109,9 +105,9 @@ theorem mem_chartRing_of_mem_twistMod_zero {J : Chart x} {q : Ω} (hq : q ∈ tw
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun m _ => m ∈ F.sub J) ?_ ?_ ?_ ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Establish `h` using `Submodule.smul_mem (F.sub J) (⟨q, mem_chartRing_of_mem_twistMod_zero hq⟩ : chartRing S x J) hy`. Rewrite `h` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b _ _ ha hb`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a m _ hm`. Conclude with `Submodule.smul_mem _ a hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_twist_zero (F : SubSystem S x E) {J : Chart x} {m : E}
     (hm : m ∈ (F.twist (twistSys S x 0)).sub J) : m ∈ F.sub J := by
@@ -125,7 +121,7 @@ theorem mem_of_mem_twist_zero (F : SubSystem S x E) {J : Chart x} {m : E}
   · intro a m _ hm; exact Submodule.smul_mem _ a hm
 
 /- English proof (translation)
-Establish `h` using `smul_mem_twist F (f := 1) (e' := 0) (d := -(e : ℤ)) hs (isHomogeneous_one _ _) hse (by simp) hm`. Rewrite `h` using `[show c + -(e : ℤ) = 0 by omega, map_one, one_div]`. Conclude with `mem_of_mem_twist_zero F h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_smul_mem (F : SubSystem S x E) {I : Chart x} {c : ℤ} {m : E}
     (hm : m ∈ (F.twist (twistSys S x c)).sub I) {s : Poly S N} {e : ℕ} (hs : s ∈ monos I.1)
@@ -136,14 +132,14 @@ theorem inv_smul_mem (F : SubSystem S x E) {I : Chart x} {c : ℤ} {m : E}
   exact mem_of_mem_twist_zero F h
 
 /- English proof (translation)
-Simplify using `only [SubSystem.gam, SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_gam {F : SubSystem S x E} {c : ℤ} {m : E} :
     m ∈ F.gam c ↔ ∀ J, m ∈ (F.twist (twistSys S x c)).sub J := by
   simp only [SubSystem.gam, SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem]
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[mem_gam]`. Introduce `J`. Establish `h` using `smul_mem_twist F (J := J) (s := 1) (e := 0) (d := d) (one_mem _) hf (isHomogeneous_one _ _) (by simp) (hm J)`. Rewrite `h` using `[map_one, div_one]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_mem_gam (F : SubSystem S x E) {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) {c : ℤ}
     {m : E} (hm : m ∈ F.gam c) : aeval x f • m ∈ F.gam (c + d) := by
@@ -156,21 +152,21 @@ theorem smul_mem_gam (F : SubSystem S x E) {f : Poly S N} {d : ℕ} (hf : f.IsHo
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `J.2.1`. Establish `hxj : x j ≠ 0` using `(mem_support x).mp (J.2.2 hj)`. Set `K : Chart x` to `⟨insert i J.1, Finset.insert_nonempty _ _, Finset.insert_subset ((mem_support x).mpr hi) J.2.2⟩`. Establish `hJK : J.1 ⊆ K.1` using `Finset.subset_insert _ _`. Establish `hiK : (singleChart hi).1 ⊆ K.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[singleChart, K]`. Establish `hyK : y ∈ F.sub K` using `F.mono _ _ hiK y hy`. Take `⟨a, ⟨u, hu⟩, hay⟩` from `(F.mem_iff J K hJK y).mp hyK`. Establish `hinv : (a : Ω) * ((↑u⁻¹ : chartRing S x K) : Ω) = 1`. Use `congrArg Subtype.val (Units.mul_inv u)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hu]`. Conclude with `this`. Take `⟨f, s, e, hs, hf, hse, hb⟩` from `(↑u⁻¹ : chartRing S x K).2`. Rewrite `hinv` using `[hb]`. Take `⟨p, t, ht, rfl⟩` from `monos_insert_decomp hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `monos_isHomogeneous ht`. Establish `hs0` using `eval_ne_zero_of_mem_monos K hs`. Establish `hX : X i ^ p * t ≠ 0` using `fun h => hs0 (by rw [h, map_zero])`. Establish `hepq : e = p + q` using `hse.inj_right ((isHomogeneous_X_pow i p).mul hq) hX`. Substitute `hepq` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `ht0 : aeval x t ≠ 0` using `eval_ne_zero_of_mem_monos J ht`. Rewrite `hinv` using `[map_mul, map_pow, aeval_X]`. Establish `key : (a : Ω) * aeval x f = x i ^ p * aeval x t`. Establish `h1 : x i ^ p * aeval x t ≠ 0` using `mul_ne_zero (pow_ne_zero _ hi) ht0`. Clear denominators, using `at hinv` for the nonvanishing conditions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hinv`. Use `Filter.eventually_atTop.mpr ⟨p, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Establish `hdeg : (t * X j ^ (p + k)).IsHomogeneous (p + q + k)`. Use `hq.mul (isHomogeneous_X_pow j (p + k))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show q + (p + k) = p + q + k by ring]`. Then use the resulting hypothesis. Establish `hc : aeval x f * x i ^ k / (aeval x t * x j ^ (p + k)) ∈ chartRing S x J` using `⟨f * X i ^ k, t * X j ^ (p + k), p + q + k, mul_mem ht (pow_mem (X_mem_monos hj) _), hf.mul (isHomogeneous_X_pow i k), hdeg, by simp [map_mul, map_pow, aeval_X]⟩`. Establish `hxy : x i ^ (p + k) • y = x j ^ (p + k) • ((⟨_, hc⟩ : chartRing S x J) • ((a : Ω) • y))`. Rewrite using `[Subalgebra.smul_def, smul_smul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(x i ^ k)) * key`. Rewrite using `[hxy]`. Use `Submodule.subset_span ⟨x j ^ (p + k), ?_, _, Submodule.smul_mem _ _ hay, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨X j ^ (p + k), 1, 0, p + k, one_mem _, isHomogeneous_X_pow j _, isHomogeneous_one _ _, by simp, by simp⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_pow_smul_mem (F : SubFamily S x E) {i : Fin (N + 1)} (hi : x i ≠ 0) {y : E}
     (hy : y ∈ F.sub (singleChart hi)) (J : Chart x) :
@@ -244,14 +240,14 @@ def ofGens {ι : Type} [Fintype ι] (deg : ι → ℤ) (gen : ι → E) : FinGra
       ⟨Fintype.equivFin ι k, f, e, hf, by simpa using he, by simpa using hz⟩⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨k, 1, 0, isHomogeneous_one _ _, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_ofGens {ι : Type} [Fintype ι] (deg : ι → ℤ) (gen : ι → E) (k : ι) :
     gen k ∈ (ofGens (S := S) (x := x) deg gen).piece (deg k) :=
   Submodule.subset_span ⟨k, 1, 0, isHomogeneous_one _ _, by simp, by simp⟩
 
 /- English proof (translation)
-Use `show Submodule.span S _ ≤ V c`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, f, e, hf, he, rfl⟩`. Establish `h` using `hsmul f e _ _ hf (hV k)`. Rewrite `h` using `[show deg k + e = c by omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ofGens_piece_le {ι : Type} [Fintype ι] (deg : ι → ℤ) (gen : ι → E) {V : ℤ → Submodule S E}
     (hV : ∀ k, gen k ∈ V (deg k))
@@ -268,25 +264,21 @@ end ExtensionProof
 open ExtensionProof in
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x E _ _ _ _ F hF`. Establish `hgen : ∀ (i : Fin (N + 1)) (hi : x i ≠ 0), ∃ (r : ℕ) (g : Fin r → E), Submodule.span (chartRing S x (singleChart hi)) (Set.range g) = F.sub (singleChart hi)` using `fun i hi => Submodule.fg_iff_exists_fin_generating_family.mp (hF _)`. Use `choose r g hg using hgen`. Establish `hev : ∀ᶠ n : ℕ in Filter.atTop, ∀ (k : Σ i : {i // x i ≠ 0}, Fin (r i.1 i.2)) (J : Chart x), x k.1.1 ^ n • g k.1.1 k.1.2 k.2 ∈ (F.twist (twistSys S x (n : ℤ))).sub J`. Rewrite using `[Filter.eventually_all]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[Filter.eventually_all]`. Introduce `J`. Use `eventually_pow_smul_mem F k.1.2 ?_ J` and prove the remaining obligations. Rewrite using `[← hg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨k.2, rfl⟩`. Take `⟨n, hn⟩` from `hev.exists`. Set `M : FinGradedSub (S` to `S) (x := x) E := ofGens (fun _ : (Σ i : {i // x i ≠ 0}, Fin (r i.1 i.2)) => (n : ℤ)) (fun k => x k.1.1 ^ n • g k.1.1 k.1.2 k.2)`. Establish `hpiece : ∀ c, M.piece c ≤ F.gam c` using `fun c => ofGens_piece_le _ _ (fun k => mem_gam.mpr (hn k)) (fun _ _ _ _ hf hm => smul_mem_gam F.toSubSystem hf hm) c`. Use `⟨M, hpiece, fun I => le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Conclude with `inv_smul_mem F.toSubSystem ((mem_gam.mp (hpiece a hm)) I) hs hse (by omega)`. Introduce `y hy`. Take `⟨i, hi⟩` from `I.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Establish `hsub : (singleChart hxi).1 ⊆ I.1` using `by simpa [singleChart] using hi`. Establish `hF1 : ∀ z ∈ F.sub (singleChart hxi), z ∈ M.tilde 0 I`. Introduce `z hz`. Rewrite `hz` using `[← hg i hxi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Submodule.span_induction (p := fun z _ => z ∈ M.tilde 0 I) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hmem : x i ^ n • g i hxi j ∈ M.piece n` using `gen_mem_ofGens _ _ (⟨⟨i, hxi⟩, j⟩ : Σ i : {i // x i ≠ 0}, Fin (r i.1 i.2))`. Use `Submodule.subset_span ⟨_, X i ^ n, n, n, pow_mem (X_mem_monos hi) n, isHomogeneous_X_pow i n, hmem, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, aeval_X, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hxi), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Establish `h` using `Submodule.smul_mem _ (chartIncl hsub a) hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h`, the goal using `[Subalgebra.smul_def]`. Conclude with `h`. Take `⟨a, ⟨u, hu⟩, hay⟩` from `(F.mem_iff _ I hsub y).mp hy`. Establish `hinv : ((↑u⁻¹ : chartRing S x I) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact.
-
-Rewrite `this` using `[hu]`. Conclude with `this`. Establish `hy' : y = (↑u⁻¹ : chartRing S x I) • ((a : Ω) • y)`. Rewrite using `[Subalgebra.smul_def, smul_smul, hinv, one_smul]`. Rewrite using `[hy']`.
-
-Conclude with `Submodule.smul_mem _ _ (hF1 _ hay)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Extension.proof : Extension.Statement.{u, v, w} := by
   intro S _ _ Ω _ _ N x E _ _ _ _ F hF

@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b N hN hp`. Take `⟨F, q⟩` from `GlobalTheory.T.exists_quasiProjective_harrisTaylor_family p D R b N hN hp`. Conclude with `⟨⟨F.X, F.s, q, GlobalTheory.T.smoothOfRelativeDimension_repFam_of_isQProjOver p D R b N hN hp F q, F.univ, F.rep⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem model_nonempty : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → Nonempty (Model b N) := by

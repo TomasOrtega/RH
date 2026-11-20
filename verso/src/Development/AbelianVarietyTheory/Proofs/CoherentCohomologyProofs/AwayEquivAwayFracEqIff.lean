@@ -22,7 +22,7 @@ instance (n : ℤ) : AddCommGroup (RingPiece L n) :=
   inferInstanceAs (AddCommGroup (LB.Sec (lbZPow L n)))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[zglobal_ext e]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringPiece_mk_ext {m' : ℤ} {σ : LB.Sec (lbZPow L m)} {τ : LB.Sec (lbZPow L m')} (h : m = m')
     (e : ∀ i, zfun σ i = zfun τ i) :
@@ -31,7 +31,7 @@ theorem ringPiece_mk_ext {m' : ℤ} {σ : LB.Sec (lbZPow L m)} {τ : LB.Sec (lbZ
   rw [zglobal_ext e]
 
 /- English proof (translation)
-The claim follows from `ringPiece_mk_ext (add_assoc _ _ _) fun i => by simp only [zfun_zmul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem ringPiece_mk_assoc {p q r : ℤ} (a : LB.Sec (lbZPow L p)) (b : LB.Sec (lbZPow L q))
     (c : LB.Sec (lbZPow L r)) :
@@ -73,7 +73,7 @@ abbrev SecRing (L : LB X) : Type := ⨁ n, RingPiece L n
 def SecRing.of (m : ℤ) : LB.Sec (lbZPow L m) →+ SecRing L := DirectSum.of (RingPiece L) m
 
 /- English proof (translation)
-The claim follows from `DirectSum.of_mul_of (A := RingPiece L) σ τ`.
+A detailed English derivation is pending.
 -/
 theorem SecRing.of_mul_of {m' : ℤ} (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) :
     SecRing.of m σ * SecRing.of m' τ = SecRing.of (m + m') (zmul σ τ) :=
@@ -85,9 +85,9 @@ Both sides reduce to the same expression.
 theorem SecRing.one_def : (1 : SecRing L) = SecRing.of 0 (zone L) := rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, SecRing.one_def]`. Conclude with `of_eq_of_gradedMonoid_eq (ringPiece_mk_ext (by simp) fun i => by simp)`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ih, SecRing.of_mul_of]`. Conclude with `of_eq_of_gradedMonoid_eq (ringPiece_mk_ext (by push_cast; ring) fun i => by`. Simplify using `only [zfun_zmul, zfun_zpowSec, pow_succ])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SecRing.of_pow (σ : LB.Sec (lbZPow L m)) (k : ℕ) :
     SecRing.of m σ ^ k = SecRing.of (k * m) (zpowSec σ k) := by
@@ -108,7 +108,7 @@ instance (n : ℤ) : AddCommGroup (ModulePiece F L V n) :=
   inferInstanceAs (AddCommGroup Γ(twistZ F L n, V))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[zsec_ext e]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem modulePiece_mk_ext {n' : ℤ} {a : Γ(twistZ F L n, V)} {b : Γ(twistZ F L n', V)} (h : n = n')
     (e : ∀ i, zcoord a i = zcoord b i) :
@@ -117,7 +117,7 @@ theorem modulePiece_mk_ext {n' : ℤ} {a : Γ(twistZ F L n, V)} {b : Γ(twistZ F
   rw [zsec_ext e]
 
 /- English proof (translation)
-The claim follows from `modulePiece_mk_ext (zero_add _) fun i => by rw [zcoord_mulSecOfEq_app, zfun_zone, map_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem modulePiece_mk_one (a : Γ(twistZ F L n, V)) :
     GradedMonoid.mk (A := ModulePiece F L V) (0 + n)
@@ -127,7 +127,7 @@ theorem modulePiece_mk_one (a : Γ(twistZ F L n, V)) :
     rw [zcoord_mulSecOfEq_app, zfun_zone, map_one, one_smul]
 
 /- English proof (translation)
-The claim follows from `modulePiece_mk_ext (add_assoc _ _ _) fun i => by simp only [zcoord_mulSecOfEq_app, zfun_zmul, map_mul, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem modulePiece_mk_mul {p q : ℤ} (σ : LB.Sec (lbZPow L p)) (τ : LB.Sec (lbZPow L q))
     (a : Γ(twistZ F L n, V)) :
@@ -161,13 +161,13 @@ namespace SecModule
 def of (n : ℤ) : Γ(twistZ F L n, V) →+ SecModule F L V := DirectSum.of (ModulePiece F L V) n
 
 /- English proof (translation)
-The claim follows from `DirectSum.of_injective (β := ModulePiece F L V) n`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (n : ℤ) : Function.Injective (of (F := F) (L := L) (V := V) n) :=
   DirectSum.of_injective (β := ModulePiece F L V) n
 
 /- English proof (translation)
-The claim follows from `(Gmodule.of_smul_of (RingPiece L) (ModulePiece F L V) σ a).trans (of_eq_of_gradedMonoid_eq (modulePiece_mk_ext (a := (mulSecOfEq F σ (add_comm _ _)).app V a) ((add_comm _ _).trans h) fun i => by simp only [zcoord_mulSecOfEq_app]))`.
+A detailed English derivation is pending.
 -/
 theorem of_smul_of (σ : LB.Sec (lbZPow L m)) (a : Γ(twistZ F L n, V)) {d : ℤ} (h : n + m = d) :
     SecRing.of m σ • of n a = of d ((mulSecOfEq F σ h).app V a) :=
@@ -177,7 +177,7 @@ theorem of_smul_of (σ : LB.Sec (lbZPow L m)) (a : Γ(twistZ F L n, V)) {d : ℤ
         simp only [zcoord_mulSecOfEq_app]))
 
 /- English proof (translation)
-Rewrite using `[SecRing.of_pow, of_smul_of]`. Use the proof step `@[elab_as_elim]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_pow_smul_of (σ : LB.Sec (lbZPow L m)) (k : ℕ) (a : Γ(twistZ F L n, V)) {d : ℤ}
     (h : n + k * m = d) :
@@ -186,7 +186,7 @@ theorem of_pow_smul_of (σ : LB.Sec (lbZPow L m)) (k : ℕ) (a : Γ(twistZ F L n
 
 @[elab_as_elim]
 /- English proof (translation)
-The claim follows from `DirectSum.induction_on y zero hof add`.
+A detailed English derivation is pending.
 -/
 theorem induction_on {P : SecModule F L V → Prop} (y : SecModule F L V) (zero : P 0)
     (hof : ∀ n a, P (of n a)) (add : ∀ y z, P y → P z → P (y + z)) : P y :=
@@ -198,7 +198,7 @@ def resAdd (h : W ≤ V) : SecModule F L V →+ SecModule F L W :=
   DirectSum.map (α := ModulePiece F L V) (β := ModulePiece F L W) fun n => resM (twistZ F L n) h
 
 /- English proof (translation)
-The claim follows from `DirectSum.map_of (α := ModulePiece F L V) (β := ModulePiece F L W) _ n a`.
+A detailed English derivation is pending.
 -/
 theorem resAdd_of (h : W ≤ V) (a : Γ(twistZ F L n, V)) :
     resAdd F L h (of n a) = of n (resM _ h a) :=
@@ -222,7 +222,7 @@ def res (h : W ≤ V) : SecModule F L V →ₗ[SecRing L] SecModule F L W where
         rw [resAdd_of, of_smul_of σ a rfl, of_smul_of σ _ rfl, resAdd_of, app_resM]
 
 /- English proof (translation)
-The claim follows from `resAdd_of h a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem res_of (h : W ≤ V) (a : Γ(twistZ F L n, V)) :
     res F L h (of n a) = of n (resM _ h a) := resAdd_of h a
@@ -234,15 +234,15 @@ theorem res_apply (h : W ≤ V) (y : SecModule F L V) (n : ℤ) :
     (res F L h y n : Γ(twistZ F L n, W)) = resM (twistZ F L n) h (y n) := rfl
 
 /- English proof (translation)
-Establish `hE : ∀ d : ℤ, ∃ E : Γ(twistZ F L (d - m), V) ≃+ Γ(twistZ F L d, V), ∀ a, E a = (mulSecOfEq F σ (sub_add_cancel d m)).app V a` using `fun d => ⟨AddEquiv.ofBijective ((mulSecOfEq F σ (sub_add_cancel d m)).app V).hom (bijective_mulSecOfEq_app hL σ _ hV), fun _ => rfl⟩`. Use `choose E hE using hE`. Take `⟨g, hg'⟩ : ∃ g : SecModule F L V →+ SecModule F L V, ∀ d (b : Γ(twistZ F L d, V)), g (of d b) = of (d - m) ((E d).symm b)` from `⟨DirectSum.toAddMonoid (β := ModulePiece F L V) fun d => (of (d - m)).comp (E d).symm.toAddMonoidHom, fun d b => DirectSum.toAddMonoid_of (β := ModulePiece F L V) _ d b⟩`. Establish `hg : ∀ (n d : ℤ) (h : n + m = d) (a : Γ(twistZ F L n, V)), g (of d ((mulSecOfEq F σ h).app V a)) = of n a` using `fun n d h a => by`. Take `rfl : n = d - m` from `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg', ← hE, AddEquiv.symm_apply_apply]`. Use `⟨Function.LeftInverse.injective (g := g) fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Proceed by induction on `y using induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add y z hy hz => simp only [smul_add, map_add] at hy hz ⊢`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, hz]`. Consider the case `hof n a => simp only [of_smul_of σ a rfl, hg]`. Proceed by induction on `y using induction_on with`. Consider the case `zero => exact ⟨0, smul_zero _⟩`. Consider the case `add y z hy hz`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hy`. Take `⟨z, rfl⟩` from `hz`. Conclude with `⟨y + z, smul_add _ _ _⟩`. Consider the case `hof d b`. Take `⟨a, rfl⟩` from `(bijective_mulSecOfEq_app (F := F) hL σ (sub_add_cancel d m) hV).2 b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨of _ a, of_smul_of σ a _⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_bijective (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (hV : V ≤ Out.nonzeroLocus σ) :
     Function.Bijective fun y : SecModule F L V => SecRing.of m σ • y := by
@@ -276,15 +276,13 @@ theorem smul_bijective (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (hV : V ≤ Out.
       exact ⟨of _ a, of_smul_of σ a _⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨_, k, rfl⟩`. Rewrite using `[map_pow]`. Conclude with `((Module.End.isUnit_iff _).2 (smul_bijective hL σ (hV.le.trans inf_le_right))).pow k`. Use `surj y := by`. It suffices to establish `H : ∀ᶠ k : ℕ in atTop, ∃ x, SecRing.of m σ ^ k • y = res F L h x by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, x, e⟩` from `H.exists`. Conclude with `⟨⟨x, _, k, rfl⟩, e⟩`. Proceed by induction on `y using induction_on with`. Consider the case `zero => exact .of_forall fun k => ⟨0, by rw [smul_zero, map_zero]⟩`. Consider the case `add y z hy hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hy.and hz).mono fun k ⟨⟨a, ha⟩, ⟨b, hb⟩⟩ => ⟨a + b, by rw [smul_add, map_add, ha, hb]⟩`. Consider the case `hof n b`. Use `(eventually_exists_resM_eq_mulSecOfEq_zpowSec hL σ hW hW' h hV b).mono fun k hk => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hk _ rfl`. Conclude with `⟨of _ a, by rw [res_of, ha, of_pow_smul_of]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `exists_of_eq {y z} e := by classical`. It suffices to establish `H : ∀ y, res F L h y = 0 → ∀ᶠ k : ℕ in atTop, SecRing.of m σ ^ k • y = 0 by`. Take `⟨k, hk⟩` from `(H (y - z) (by rw [map_sub, e, sub_self])).exists`. Conclude with `⟨⟨_, k, rfl⟩, sub_eq_zero.1 ((smul_sub _ _ _).symm.trans hk)⟩`. Introduce `y hy`.
-
-Establish `key : ∀ n, ∀ᶠ k : ℕ in atTop, SecRing.of m σ ^ k • of n (y n) = 0` using `fun n => (eventually_mulSecOfEq_zpowSec_eq_zero hL σ hW h hV.ge (y n) ((res_apply h y n).symm.trans (by rw [hy]; rfl))).mono fun k hk => (of_pow_smul_of σ k (y n) rfl).trans ((congrArg (of _) (hk _ rfl)).trans (map_zero _))`. Use `((eventually_all_finset y.support).2 fun n _ => key n).mono fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_of y, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_res [F.IsQuasicoherent] (hL : L.IsLB) (σ : LB.Sec (lbZPow L m))
     (hW : IsCompact (W : Set X)) (hW' : IsQuasiSeparated (W : Set X)) (h : V ≤ W)
@@ -336,7 +334,7 @@ def awayEquiv : LocalizedModule.Away (SecRing.of m σ) (SecModule F L W) ≃ₗ[
   IsLocalizedModule.iso _ (res F L h)
 
 /- English proof (translation)
-Use `haveI := isLocalizedModule_res (F := F) hL σ hW hW' h hV`. Rewrite using `[← map_smul, pow_smul_awayFrac, awayFrac_zero]`. Conclude with `IsLocalizedModule.iso_mk_one _ (res F L h) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_awayEquiv (k : ℕ) (y : SecModule F L W) :
     SecRing.of m σ ^ k • awayEquiv hL σ hW hW' h hV (awayFrac _ _ k y) = res F L h y := by
@@ -345,7 +343,7 @@ theorem pow_smul_awayEquiv (k : ℕ) (y : SecModule F L W) :
   exact IsLocalizedModule.iso_mk_one _ (res F L h) y
 
 /- English proof (translation)
-Rewrite using `[← (of_injective d).eq_iff, ← res_of, ← of_pow_smul_of, ← pow_smul_awayEquiv hL σ hW hW' h hV k]`. Conclude with `(IsSMulRegular.pow k (smul_bijective hL σ (hV.le.trans inf_le_right)).1).eq_iff.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayEquiv_awayFrac_eq_iff (k : ℕ) {d : ℤ} (hd : n + k * m = d) (a : Γ(twistZ F L d, W))
     (b : Γ(twistZ F L n, V)) :
@@ -355,9 +353,9 @@ theorem awayEquiv_awayFrac_eq_iff (k : ℕ) {d : ℤ} (hd : n + k * m = d) (a : 
   exact (IsSMulRegular.pow k (smul_bijective hL σ (hV.le.trans inf_le_right)).1).eq_iff.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, a, rfl⟩`. Take `⟨b, hb⟩` from `(bijective_mulSecOfEq_app (F := F) hL (zpowSec σ k) (n := n) rfl ((hV.le.trans inf_le_right).trans (nonzeroLocus_le_zpowSec hL σ k))).2 (resM _ h a)`. Conclude with `⟨b, (awayEquiv_awayFrac_eq_iff hL σ hW hW' h hV k rfl a b).2 hb.symm⟩`. Introduce and unpack `⟨b, hb⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk⟩` from `(eventually_exists_resM_eq_mulSecOfEq_zpowSec hL σ hW hW' h hV b).exists`. Take `⟨a, ha⟩` from `hk _ rfl`. Conclude with `⟨k, a, (awayEquiv hL σ hW hW' h hV).injective (((awayEquiv_awayFrac_eq_iff hL σ hW hW' h hV k rfl a b).2 ha).trans hb.symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_awayPiece_iff (z : LocalizedModule.Away (SecRing.of m σ) (SecModule F L W)) :
     z ∈ awayPiece F σ W n ↔ ∃ b : Γ(twistZ F L n, V), awayEquiv hL σ hW hW' h hV z = of n b := by

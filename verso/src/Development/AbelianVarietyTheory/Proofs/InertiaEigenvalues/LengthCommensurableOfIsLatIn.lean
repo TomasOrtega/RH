@@ -14,11 +14,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {W : Type} [AddCommGroup W] [Module O W] in
 
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.relLength_ne_top_iff]`. Take `⟨hAfg, hAV, -⟩` from `hA`. Take `⟨-, -, hBV⟩` from `hB`. Establish `: Module.Finite O A` using `Module.Finite.iff_fg.mpr hAfg`. Apply `_root_.GlobalTheory.isFiniteLength_of_isTorsion` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H a`. Take `⟨c, hc, hcB⟩` from `hBV a (hAV a.2)`. Use `⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hcB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.relLength_ne_top_of_isLatIn {V A B : Submodule O W} (hA : _root_.Formalism.MainNotions.IntegralHeckeForms.IsLatIn A V)
     (hB : _root_.Formalism.MainNotions.IntegralHeckeForms.IsLatIn B V) : _root_.GlobalTheory.relLength A B ≠ ⊤ := by
@@ -39,7 +39,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {W : Type} [AddCommGroup W] [Module O W] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_root_.GlobalTheory.relLength_ne_top_of_isLatIn hA hB, _root_.GlobalTheory.relLength_ne_top_of_isLatIn hB hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.lengthCommensurable_of_isLatIn {V A B : Submodule O W} (hA : _root_.Formalism.MainNotions.IntegralHeckeForms.IsLatIn A V)
     (hB : _root_.Formalism.MainNotions.IntegralHeckeForms.IsLatIn B V) : _root_.GlobalTheory.LengthCommensurable A B :=
@@ -50,7 +50,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {W : Type} [AddCommGroup W] [Module O W] in
 
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.IntegralHeckeForms.sIdx _root_.Formalism.MainNotions.IntegralHeckeForms.lenR _root_.GlobalTheory.signedLength`. Rewrite using `[← _root_.GlobalTheory.relLength_eq_length_quotient_comap, ← _root_.GlobalTheory.relLength_eq_length_quotient_comap]`. Use `push_cast`. Rewrite using `[sub_div]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.sIdx_eq_signedLength_div (l : ℕ) (A B : Submodule O W) :
     _root_.Formalism.MainNotions.IntegralHeckeForms.sIdx l A B = (_root_.GlobalTheory.signedLength A B : ℝ) /
@@ -65,9 +65,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {W : Type} [AddCommGroup W] [Module O W] in
 
 /- English proof (translation)
-Introduce `O _ _ _ W _ _ l V L₁ L₂ L₃ h₁ h₂ h₃`. Establish `hadd : _root_.Formalism.MainNotions.IntegralHeckeForms.sIdx l L₁ L₃ = _root_.Formalism.MainNotions.IntegralHeckeForms.sIdx l L₁ L₂ + _root_.Formalism.MainNotions.IntegralHeckeForms.sIdx l L₂ L₃`. Simplify using `only [_root_.GlobalTheory.sIdx_eq_signedLength_div]`. Rewrite using `[(_root_.GlobalTheory.lengthCommensurable_of_isLatIn h₁ h₂).signedLength_eq_add (_root_.GlobalTheory.lengthCommensurable_of_isLatIn h₂ h₃)]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_div]`. Use `⟨hadd, fun hle => ?_⟩` and prove the remaining obligations. Rewrite using `[hadd, le_add_iff_nonneg_right, _root_.GlobalTheory.sIdx_eq_signedLength_div]`. Apply `div_nonneg _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `(_root_.GlobalTheory.lengthCommensurable_of_isLatIn h₂ h₃).signedLength_nonneg hle` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.sIdx_add_and_mono :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (W : Type)

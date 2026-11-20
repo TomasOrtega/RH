@@ -5,17 +5,15 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : ProperSpace R := FiniteDimensional.proper_real R`. Use `haveI : CompleteSpace R := FiniteDimensional.complete ℝ R`. Use `set K : Set (Matrix (Fin n) (Fin n) R) := Set.pi Set.univ (fun _ => Set.pi Set.univ (fun _ => Metric.closedBall (0 : R) B)) with hK`. Establish `hKc : IsCompact K` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))`. Establish `hmemK : ∀ c : Matrix (Fin n) (Fin n) R, (∀ i j, ‖c i j‖ ≤ B) → c ∈ K`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Introduce `c h i _ j _`. Simplify `h i j` using `[Metric.mem_closedBall, dist_zero_right]`. Take `⟨C1, hC1⟩` from `hKc.exists_bound_of_continuousOn hG.continuousOn`. Use `set K' := K ∩ {c | ε ≤ G c} with hK'`. Establish `hK'c : IsCompact K'` using `hKc.inter_right (isClosed_le continuous_const hG)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `f : Matrix (Fin n) (Fin n) R → (Fin n → Fin n → R)` to `fun c => fun i j => (c⁻¹) i j`. Establish `hf : ContinuousOn f K'`. Introduce `c hc`. Establish `hu : IsUnit c` using `hU c (ne_of_gt (lt_of_lt_of_le hε hc.2))`. Establish `hdet : IsUnit c.det` using `(Matrix.isUnit_iff_isUnit_det c).1 hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu'⟩` from `hdet`. Establish `h1 : ContinuousAt Ring.inverse c.det`. Rewrite using `[← hu']`. Conclude with `NormedRing.inverse_continuousAt u`. Conclude with `(continuousAt_matrix_inv c h1).continuousWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C2, hC2⟩` from `hK'c.exists_bound_of_continuousOn hf`. Use `⟨max C1 C2, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Conclude with `le_trans (le_trans (le_abs_self _) (by simpa [Real.norm_eq_abs] using hC1 c (hmemK c hc))) (le_max_left _ _)`. Introduce `c hc hGc i j`.
-
-Establish `hm : c.1 ∈ K'` using `⟨hmemK _ hc, hGc⟩`. Establish `h2` using `hC2 _ hm`. Establish `h3 : ‖f c.1 i j‖ ≤ ‖f c.1‖` using `le_trans (norm_le_pi_norm (f c.1 i) j) (norm_le_pi_norm (f c.1) i)`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `le_trans (le_trans h3 h2) (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_inv_entries_bounded (R : Type) [NormedCommRing R] [NormedAlgebra ℝ R] [FiniteDimensional ℝ R] (n : ℕ) (G : Matrix (Fin n) (Fin n) R → ℝ) (hG : Continuous G) (hU : ∀ c, G c ≠ 0 → IsUnit c) (B ε : ℝ) (hε : 0 < ε) :
     ∃ C : ℝ, (∀ c : Matrix (Fin n) (Fin n) R, (∀ i j, ‖c i j‖ ≤ B) → G c ≤ C) ∧ ∀ c : GL (Fin n) R, (∀ i j, ‖c.1 i j‖ ≤ B) → ε ≤ G c.1 → ∀ i j, ‖c⁻¹.1 i j‖ ≤ C := by

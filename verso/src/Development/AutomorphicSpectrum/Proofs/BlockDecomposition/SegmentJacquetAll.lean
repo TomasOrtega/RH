@@ -21,9 +21,9 @@ namespace GlobalTheory.CompanionTheory.SegCoarse
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `Δ`. Proceed by induction on `h : Δ.len using Nat.strong_induction_on generalizing Δ with`. Consider the case `_ n ih`. Establish `hp` using `Δ.len_pos`. Break down `Nat.lt_or_ge n 3 with h3 | h3` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `interval_cases n`. Use linear arithmetic over natural numbers and integers. Conclude with `@GlobalTheory.T.fine_jacquet_length_one k _ _ _ _ hA Δ h`. Conclude with `@GlobalTheory.T.fine_jacquet_segment_length_two k _ _ _ _ hA hZ Δ h`. Conclude with `@GlobalTheory.T.fine_jacquet_segment_induction k _ _ _ _ hA Δ (h ▸ h3) fun Δ' hlt => ih _ (h ▸ hlt) Δ' rfl`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fineJac_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : GlobalTheory.Published.SegmentRepresentation) :
     ∀ Δ : Segment k, FineJac Δ := by
@@ -39,15 +39,15 @@ theorem fineJac_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : 
     · exact @GlobalTheory.T.fine_jacquet_segment_induction k _ _ _ _ hA Δ (h ▸ h3) fun Δ' hlt => ih _ (h ▸ hlt) Δ' rfl
 
 /- English proof (translation)
-Use `choose c x hx hcusp hemb using fun a => GlobalTheory.T.support_subscheme_embedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr`. Establish `hjx : ∀ a, 1 ≤ jm (x a) (hx a) (y a).rep` using `fun a => by`. Take `⟨φ, hφ⟩` from `hemb a`. Use `Model.nontrivial_of_isIrreducible (y a).2.rep.irr` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : (y a).2.rep.V)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA (x a) (hx a) (y a).rep (y a).2.rep.smooth φ ⟨v, fun e => hv (hφ (e.trans (map_zero φ).symm))⟩`. Establish `hcat0 : ∑ i, (concat c x i).1 = N`. Rewrite using `[sum_concat, ← hd]`. Conclude with `Finset.sum_congr rfl fun a _ => hx a`. Establish `hirr : π.IsIrreducible` using `hπ.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : IsSmooth π` using `hπ.hasSupport.isSmooth`. Establish `hle` using `GlobalTheory.T.jacquet_multiplicity_concat hA y hd c x hx hcat0 hjx π hsm (hasFiniteLength_of_isIrreducible hirr)`. Establish `h1' : 1 ≤ jm (concat c x) hcat0 π` using `h1.trans hle`. Take `⟨hl, hfine⟩` from `(fineJac_all hA hZ Δ π hπ).2 _ (concat c x) hcat0 (fun i => hcusp _ _) h1'`. Establish `hc : ∀ a, 0 < c a` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Establish `: IsEmpty (Fin (c a))` using `by rw [h0]; infer_instance`. Use `hx a` as an intermediate fact. Rewrite `this` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `(hpos a).ne this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hxeq : x = fun a => dec (topCut Δ c hc a)` using `concat_injective (funext fun i => (hfine i).trans (concat_dec_topCut Δ c hc hl i).symm)`. Substitute `hxeq` using the available equality. Use `⟨c, hc, hl, hcat0, hle, fun a => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hemb a`. Conclude with `GlobalTheory.T.irreducible_sub_segment_product hA hZ (topCut Δ c hc a) (hx a) (y a).rep (y a).2.rep.smooth (y a).2.rep.irr φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem occurs_topCut (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : GlobalTheory.Published.SegmentRepresentation)
     (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
@@ -87,23 +87,21 @@ theorem occurs_topCut (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ 
   exact GlobalTheory.T.irreducible_sub_segment_product hA hZ (topCut Δ c hc a) (hx a) (y a).rep (y a).2.rep.smooth (y a).2.rep.irr φ hφ
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hZ Δ N V _ _ π hπ s y hd hpos`. Establish `hdΔ : ∑ a, (dec Δ a).1 = N` using `(sum_dec Δ).trans hπ.deg_eq`. Establish `hone` using `(fineJac_all hA hZ Δ π hπ).1 hdΔ`. Establish `hirr : π.IsIrreducible` using `hπ.2.1`. Establish `hsm : IsSmooth π` using `hπ.hasSupport.isSmooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hread : ∀ (c : Fin s → ℕ) (hc : ∀ a, 0 < c a) (hl : ∑ a, c a = Δ.len) (hcat : ∑ i, (concat c (fun a => dec (topCut Δ c hc a)) i).1 = N), jm (concat c (fun a => dec (topCut Δ c hc a))) hcat π = 1` using `fun c hc hl hcat => (jm_reindex hl _ _ (concat_dec_topCut Δ c hc hl) hcat hdΔ π).trans hone`. Establish `hB : 1 ≤ jm y hd π → ∃ Γ : Fin s → Segment k, IsTopCut Δ Γ ∧ ∀ a, IsLSeg (Γ a) (y a).rep` using `fun h1 => by`. Take `⟨c, hc, hl, -, -, hL⟩` from `occurs_topCut hA hZ Δ π hπ y hd hpos h1`. Conclude with `⟨topCut Δ c hc, isTopCut_topCut Δ c hc hl, hL⟩`. Establish `hC : jm y hd π ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : jm y hd π = 0`. Rewrite using `[h0]`. Conclude with `zero_le_one`. Take `⟨c, hc, hl, hcat, hle, -⟩` from `occurs_topCut hA hZ Δ π hπ y hd hpos (ENat.one_le_iff_ne_zero.2 h0)`. Conclude with `hle.trans (hread c hc hl hcat).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hD : (∃ Γ : Fin s → Segment k, IsTopCut Δ Γ ∧ ∀ a, IsLSeg (Γ a) (y a).rep) → 1 ≤ jm y hd π`. Introduce and unpack `⟨Γ, hΓ, hL⟩`. Establish `hΓe` using `eq_topCut hΓ`. Use `set c : Fin s → ℕ := fun a => (Γ a).len with hcdef`. Establish `hc : ∀ a, 0 < c a` using `fun a => (Γ a).len_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∑ a, c a = Δ.len` using `hΓ.1`. Establish `hcat : ∑ i, (concat c (fun a => dec (topCut Δ c hc a)) i).1 = N` using `(Fintype.sum_equiv (finCongr hl) _ _ fun i => by rw [concat_dec_topCut Δ c hc hl]; rfl).trans hdΔ`. Establish `hxpos : ∀ a, 0 < ∑ i, (dec (topCut Δ c hc a) i).1` using `fun a => by`. Rewrite using `[sum_dec, deg_topCut]`. Conclude with `Nat.mul_pos (hc a) Δ.d_pos`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ, hσd, h1σ⟩` from `GlobalTheory.T.concatenated_jacquet_multiplicity_factorization hA c (fun a => dec (topCut Δ c hc a)) hxpos hcat π hsm (hasFiniteLength_of_isIrreducible hirr) (hread c hc hl hcat).ge`. Establish `hσpos : ∀ a, 0 < (σ a).1` using `fun a => (hσd a).symm ▸ hxpos a`. Take `⟨c', hc', hl', -, -, hL'⟩` from `occurs_topCut hA hZ Δ π hπ σ hσ hσpos h1σ`. Establish `hsd : ∀ a, ∑ i : Fin (c a), (dec (topCut Δ c hc a) i).1 = c a * Δ.d` using `fun a => (sum_dec _).trans (deg_topCut Δ c hc a)`. Establish `hcc : c' = c` using `funext fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e1` using `(hL' a).deg_eq`. Rewrite `e1` using `[deg_topCut, hσd a, hsd a]`. Conclude with `Nat.eq_of_mul_eq_mul_right Δ.d_pos e1`. Substitute `hcc` using the available equality. Establish `hσy : σ = y` using `funext fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : IsLSeg (topCut Δ c hc' a) (y a).rep`. Use `hL a` as an intermediate fact. Rewrite `this` using `[hΓe]`. Conclude with `this`. Conclude with `eq_of_isLSeg (hL' a) h2`.
-
-Substitute `hσy` using the available equality. Conclude with `h1σ`. Use `⟨fun h => le_antisymm hC (hD h), fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `h (hB (ENat.one_le_iff_ne_zero.2 h0))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lSegJacquet : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : GlobalTheory.Published.SegmentRepresentation), LSegJacquet k := by

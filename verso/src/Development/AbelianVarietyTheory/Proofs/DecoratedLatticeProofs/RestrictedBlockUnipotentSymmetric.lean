@@ -35,7 +35,7 @@ open NumberField IsDedekindDomain Matrix Formalism.MainNotions.S Formalism.L2.SG
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `e : ∀ i j, (m.map f - 1) i j = f ((m - 1) i j)` using `fun i j => by`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, map_sub, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [FlagCond, e, ← map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem flagCond_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B) (P : B → Prop) (ρ k : ℕ) (ε : A)
     (m : Matrix (Fin n) (Fin n) A) :
@@ -46,7 +46,7 @@ theorem flagCond_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →
   simp only [FlagCond, e, ← map_mul]
 
 /- English proof (translation)
-Simplify using `only [rootSum, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rootSum_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B) (ρ k : ℕ) (ε : A)
     (m : Matrix (Fin n) (Fin n) A) : rootSum ρ k (f ε) (m.map f) = f (rootSum ρ k ε m) := by
@@ -55,7 +55,7 @@ theorem rootSum_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Matrix.transpose_apply, flagGram, dualIdx]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flagGram_transpose (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) :
     (flagGram K n ρ k)ᵀ = flagGram K n ρ k := by
@@ -66,9 +66,9 @@ theorem flagGram_transpose (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * 
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `low : ∀ i j : Fin n, j.val ≤ i.val → ((M : Matrix (Fin n) (Fin n) K) - 1) i j = 0`. Introduce `i j h`. Break down `eq_or_lt_of_le h with h | h` into its components or cases. Take `rfl : j = i` from `Fin.ext h`. Simplify using `[unip_diag hM.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.sub_apply, unip_lower hM.1 (show j < i from h), Matrix.one_apply_ne (ne_of_gt (show j < i from h)), sub_zero]`. Use `⟨fun i j _ h => low i j h, fun i j hj hi => ?_, fun i j _ _ h => by rw [low i j h, mul_zero]⟩` and prove the remaining obligations. Distinguish the cases in `h : j.val ≤ i.val`. Conclude with `low i j h`. Rewrite using `[Matrix.sub_apply, hM.2 i j hi (by omega) hj, Matrix.one_apply_ne (fun e => h (by rw [e])), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagCond_of_unipSym {K : Type} [CommRing K] {n ρ k : ℕ} (ε : K) {M : GL (Fin n) K} (hM : M ∈ unipSym K n ρ k) :
     FlagCond (fun c : K => c = 0) ρ k ε (M : Matrix (Fin n) (Fin n) K) := by
@@ -84,9 +84,9 @@ theorem flagCond_of_unipSym {K : Type} [CommRing K] {n ρ k : ℕ} (ε : K) {M :
   · rw [Matrix.sub_apply, hM.2 i j hi (by omega) hj, Matrix.one_apply_ne (fun e => h (by rw [e])), sub_zero]
 
 /- English proof (translation)
-Establish `h' : (M : Matrix (Fin n) (Fin n) K)ᵀ * flagGram K n ρ k * (M' : Matrix (Fin n) (Fin n) K) = flagGram K n ρ k`. Use `congrArg Matrix.transpose h` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, flagGram_transpose K hn, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Use `⟨fun ⟨h1, h2⟩ => ?_, fun hM => ⟨flagCond_of_unipSym _ hM, flagCond_of_unipSym _ (GlobalTheory.T.symmetricUnipotent_mem_of_flagBasisDual K n ρ k hn M M' h hM)⟩⟩` and prove the remaining obligations. Break down `hε with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `GlobalTheory.T.symmetricUnipotent_mem_of_flagCongruence_dual K n ρ k hn M M' h h1 h2`. Conclude with `GlobalTheory.T.symmetricUnipotent_mem_of_flagBasisDual K n ρ k hn M' M h' (GlobalTheory.T.symmetricUnipotent_mem_of_flagCongruence_dual K n ρ k hn M' M h' h2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem flagCond_iff_unipSym {K : Type} [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) {ε ε' : K}
     (hε : (ε = 1 ∧ ε' = 0) ∨ (ε = 0 ∧ ε' = 1)) (M M' : GL (Fin n) K)
@@ -103,7 +103,7 @@ theorem flagCond_iff_unipSym {K : Type} [CommRing K] {n ρ k : ℕ} (hn : n = 2 
   · exact GlobalTheory.T.symmetricUnipotent_mem_of_flagBasisDual K n ρ k hn M' M h' (GlobalTheory.T.symmetricUnipotent_mem_of_flagCongruence_dual K n ρ k hn M' M h' h2 h1)
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `hs`. Establish `: s = (g : Formalism.L2.Herm.intAf I.F I.E) * ⟨t, ht⟩` using `Subtype.ext (by simpa using e)`. Rewrite using `[this, map_mul, map_natCast, hg, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_zero_of_zmod (I : AutInst) {g : ℕ} {K : Type} [CommRing K] (p : Formalism.L2.Herm.intAf I.F I.E →+* K)
     (hg : (g : K) = 0) {s : Formalism.L2.Herm.intAf I.F I.E} (hs : ZMod' I g s) : p s = 0 := by
@@ -112,11 +112,11 @@ theorem map_eq_zero_of_zmod (I : AutInst) {g : ℕ} {K : Type} [CommRing K] (p :
   rw [this, map_mul, map_natCast, hg, zero_mul]
 
 /- English proof (translation)
-Establish `e : Formalism.L2.Herm.hatL (F` using `I.F) I.L = I.Lf := by show Submodule.span _ _ = Submodule.span _ _`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨z, hz⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z.1, z.2, rfl⟩`. Rewrite using `[GlobalTheory.LevSplit.mem_St_iff β I.L hβ, e]`. Use `⟨fun h => ⟨fun y hy => Formalism.L2.SG.Pf.unitaryCongruence.K_mv I h hy, fun y hy => Formalism.L2.SG.Pf.unitaryCongruence.K_mv I (Formalism.L2.SG.Pf.unitaryCongruence.K_inv I h) hy⟩, fun h y => ⟨h.1 y, fun hy => ?_⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.2 _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kset_iff (I : AutInst) {β : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)} (hβ : IsFrame β I.L) (x : I.Gf) :
     x ∈ I.Kset ↔ (x : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) ∈ St β := by
@@ -136,33 +136,31 @@ theorem kset_iff (I : AutInst) {β : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNo
   rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Take `⟨hew, hG⟩` from `GlobalTheory.T.liftFrame_gram_congr_flagGram I g e0 f0 z0 bw bwd ew hF hn β hβ`. Establish `hpg : ∀ PP ∈ Pg, (g : kP PP) = 0` using `fun PP hPP => by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hdiv PP hPP)`. Set `ewS : Formalism.L2.Herm.intAf I.F I.E` to `⟨ew, hF.2.2.2.2.1.2.2.1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p' : ∀ PP : Pl I.E, Formalism.L2.Herm.intAf I.F I.E →+* kP PP` to `fun PP => (resS I.F PP).comp (sigInt I)`. Establish `hε : ∀ PP ∈ Pg, (resS I.F PP ewS = 1 ∧ p' PP ewS = 0) ∨ (resS I.F PP ewS = 0 ∧ p' PP ewS = 1)`. Introduce `PP hPP`. Establish `h1 : resS I.F PP (1 - ewS - sigInt I ewS) = 0` using `map_eq_zero_of_zmod I _ (hpg PP hPP) hew`. Establish `h2 : ewS * sigInt I ewS = 0` using `Subtype.ext hF.2.2.2.2.1.2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : resS I.F PP ewS * p' PP ewS = 0` using `by show _ * resS I.F PP (sigInt I ewS) = 0`. Rewrite using `[← map_mul, h2, map_zero]`. Rewrite `h1` using `[map_sub, map_sub, map_one]`. Establish `h1' : 1 - resS I.F PP ewS - p' PP ewS = 0` using `h1`. Use `haveI := PP.isPrime`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `Or.inr ⟨h, by rw [h] at h1'; linear_combination -h1'⟩`. Conclude with `Or.inl ⟨by rw [h] at h1'; linear_combination -h1', h⟩`. Establish `hZ : ∀ s : Formalism.L2.Herm.intAf I.F I.E, ZMod' I g s ↔ ∀ PP ∈ Pg, resS I.F PP s = 0 ∧ p' PP s = 0` using `fun s => ⟨fun h PP hPP => ⟨map_eq_zero_of_zmod I _ (hpg PP hPP) h, map_eq_zero_of_zmod I _ (hpg PP hPP) h⟩, hN s⟩`. Establish `hroot` using `fun (PP : Pl I.E) (hPP : PP ∈ Pg) => GlobalTheory.T.flagRootSum_dual_eq_symmetricEdge_sum (kP PP) I.n ρ k hn _ _ (a₁ PP) (a₂ PP) (hε PP hPP) (ha PP hPP).1 (ha PP hPP).2`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose! a ha1 ha2 using hroot`. Establish `hmat : ∀ (x : I.Gf) (m : GL (Fin I.n) (Formalism.L2.Herm.intAf I.F I.E)), frGL β m = (x : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) → matIn I β x = (m : Matrix (Fin I.n) (Fin I.n) (Formalism.L2.Herm.intAf I.F I.E)).map (Formalism.L2.Herm.intAf I.F I.E).subtype`. Introduce `x m hm`. Unfold `matIn`. Rewrite using `[← hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: β⁻¹ * frGL β m * β = intGL I.F I.E I.n m`. Simplify using `only [frGL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hrel` using `fun (x : I.Gf) m hm (PP : Pl I.E) (hPP : PP ∈ Pg) => GlobalTheory.T.unitary_liftedFlagBasis_reduce_mod_level I g ρ k β hG (kP PP) (resS I.F PP) (hpg PP hPP) x m hm`. Establish `main : ∀ x : I.Gf, x ∈ K2set I g e0 z0 bw ↔ (x : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) ∈ St β ∧ ∀ PP ∈ Pg, redFn β PP x ∈ unipSym (kP PP) I.n ρ k`. Introduce `x`. Use `show x ∈ I.Kset ∧ _ ↔ _`. Rewrite using `[kset_iff I hβ.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr_right fun hS => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.levelCongruence_iff_flag_conditions I g e0 f0 z0 bw bwd ew hF hn β hβ x hS]`. Take `⟨m, hm⟩` from `hS`. Rewrite using `[hmat x m hm, ← hm]`. Use `(flagCond_map (Formalism.L2.Herm.intAf I.F I.E).subtype (ZMod' I g) ρ k ewS _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `e : ∀ PP ∈ Pg, (redFn β PP (frGL β m) ∈ unipSym (kP PP) I.n ρ k ↔ FlagCond (fun s => resS I.F PP s = 0) ρ k ewS m.1 ∧ FlagCond (fun s => p' PP s = 0) ρ k ewS m.1)`. Introduce `PP hPP`. Rewrite using `[redFn_frGL, ← flagCond_iff_unipSym hn (hε PP hPP) (Formalism.UG.bc (resS I.F PP) m) (Formalism.UG.bc (p' PP) m) (hrel x m hm PP hPP)]`. Conclude with `and_congr (flagCond_map (resS I.F PP) (fun c => c = 0) ρ k ewS m.1) (flagCond_map (p' PP) (fun c => c = 0) ρ k ewS m.1)`. Rewrite using `[forall₂_congr e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩ PP hPP`. Conclude with `⟨⟨fun i j a b => ((hZ _).1 (h1 i j a b) PP hPP).1, fun i j a b => ((hZ _).1 (h2 i j a b) PP hPP).1, fun i j a b c => ((hZ _).1 (h3 i j a b c) PP hPP).1⟩, ⟨fun i j a b => ((hZ _).1 (h1 i j a b) PP hPP).2, fun i j a b => ((hZ _).1 (h2 i j a b) PP hPP).2, fun i j a b c => ((hZ _).1 …`. Introduce `h`. Conclude with `⟨fun i j a b => (hZ _).2 fun PP hPP => ⟨(h PP hPP).1.1 i j a b, (h PP hPP).2.1 i j a b⟩, fun i j a b => (hZ _).2 fun PP hPP => ⟨(h PP hPP).1.2.1 i j a b, (h PP hPP).2.2.1 i j a b⟩, fun i j a b c => (hZ _).2 fun PP hPP => ⟨(h PP hPP).1.2.2 i j a b c, (h PP hPP).2.2.2 i j a b c⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨a, ha1, fun x => ⟨main x, fun hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨hS, hU⟩` from `(main x).1 hx`. Establish `hc` using `GlobalTheory.T.characterArgument_congr_rootEntrySum_mod I g e0 f0 z0 bw bwd ew hF hn β hβ hG x hS`. Take `⟨m, hm⟩` from `hS`. Rewrite `hc` using `[hmat x m hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `rootSum_map (Formalism.L2.Herm.intAf I.F I.E).subtype ρ k ewS m.1`. Establish `hc' : ZMod' I g (chiArg I e0 f0 z0 bw bwd x - (rootSum ρ k ewS m.1).1)`. Establish `hr' : rootSum ρ k ew (m.1.map (Formalism.L2.Herm.intAf I.F I.E).subtype) = (rootSum ρ k ewS m.1).1` using `hr`. Rewrite `hc` using `[hr']`. Then use the resulting hypothesis. Establish `e1 : chi2f I psiEf g e0 f0 z0 bw bwd x = psiEf (divN I g (rootSum ρ k ewS m.1).1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨t, ht, e⟩` from `hc'`. Rewrite using `[flagLevelCharacter_eq_psi_divN, eq_add_of_sub_eq e, Formalism.L2.SG.Pf.unitaryCongruence.divN_add, hadd, Formalism.L2.SG.Pf.unitaryCongruence.divN_gmul _ _ hg, hint t ht, one_mul]`. Rewrite using `[e1, hχ]`. Use `Finset.prod_congr rfl fun PP hPP => congrArg _ ?_` and prove the remaining obligations. Establish `hU'` using `hU PP hPP`.
-
-Rewrite `hU'`, the goal using `[← hm, redFn_frGL]`. Rewrite using `[← ha2 PP hPP (Formalism.UG.bc (resS I.F PP) m) (Formalism.UG.bc (p' PP) m) (hrel x m hm PP hPP) hU']`. Conclude with `congrArg₂ (· + ·) (congrArg _ (rootSum_map (resS I.F PP) ρ k ewS m.1).symm) (congrArg _ (rootSum_map (p' PP) ρ k ewS m.1).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_in_frame (I : AutInst) (g : ℕ) (hg : g ≠ 0) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z0 : VA I) (bw bwd : Fin k → VA I)
     (ew : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (hF : IsRefFrame I g e0 f0 z0 bw bwd ew) (hn : I.n = 2 * ρ + k + 1)
@@ -275,19 +273,15 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hg : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hn' : (instOf D).n = 2 * D.R.rS + D.R.k + 1`. Rewrite using `[hn]`. Take `⟨c, hc⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Ranks.r Ranks.rS`. Use linear arithmetic over natural numbers and integers. Take `⟨hs1, hs2⟩` from `GlobalTheory.T.flagVec_mem_Lf_and_inMod (instOf D) _ e0 f0 z0 bw bwd ew hF hn'`. Take `⟨β₀, hβ₀⟩` from `GlobalTheory.T.exists_latticeFrame_lifting_spanning_vectors_mod D _ hg _ hs1 hs2`. Establish `hN : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, (∀ PP ∈ Pg, resS D.host.F PP s = 0 ∧ resS D.host.F PP (sigInt (instOf D) s) = 0) → ZMod' (instOf D) (D.host.g 0 * D.host.g 1) s.1`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s hs`. Use `GlobalTheory.T.integralAdele_congr_zero_of_residues_squarefree (instOf D) _ hg (GlobalTheory.T.typePrimes_product_not_mem_sq_place D) s fun Q hQ => ?_` and prove the remaining obligations. Take `⟨PP, hPP, rfl | h⟩` from `GlobalTheory.T.typePrimePlace_mem_or_conj_genusTypePlaceSet D Pg hPg Q hQ`. Conclude with `(hs _ hPP).1`. Conclude with `(h s).2 (hs _ hPP).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, a₂, ha, hχ⟩` from `GlobalTheory.T.character_residueFields_eq_prod_genericShift D.host.E (Formalism.L2.Herm.intAf D.host.F D.host.E) Pg (fun PP => resS D.host.F PP) (fun PP => (resS D.host.F PP).comp (sigInt (instOf D))) (fun s => star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1))) ψ0 hψ ( …`. Take `⟨t, ht, e⟩` from `hN s hs`. Establish `: divN (instOf D) (D.host.g 0 * D.host.g 1) s.1 = t` using `(congrArg _ e).trans (Formalism.L2.SG.Pf.unitaryCongruence.divN_gmul _ _ hg t)`. Use `show star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1)) = 1`. Rewrite using `[this, hint t ht, star_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use the proof step `(GlobalTheory.T.exists_integralAdele_prescribed_residues_and_conj D Pg hnc)`. Use the proof step `(GlobalTheory.T.residueSupport_single_place_to_conjugatePair_position D Pg hPg.1 hnc (fun s => star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1)) ≠ 1) fun Q hQ => by`. Take `⟨s, h1, h2⟩` from `GlobalTheory.T.exists_finiteAdditiveChar_ne_one_at_each_prime D psiEf hadd hint hrat Q hQ`. Conclude with `⟨s, h1, fun h => h2 (by simpa using congrArg star h)⟩)`. Take `⟨a, ha1, hK⟩` from `read_in_frame (instOf D) _ hg e0 f0 z0 bw bwd ew hF hn' β₀ hβ₀ Pg hPg.1 hN psiEf hadd hint ψ0 a₁ a₂ ha hχ`.
-
-Establish `hL : (instOf D).L = Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0` using `Lv_eq_map D`. Take `⟨β, hβ, hSt, hred⟩` from `GlobalTheory.T.exists_diagonal_frame_change_unweighting_symEdges (D := D) (n := (D.sp.Y 0).rank) D.R.rS D.R.k Pg _ β₀ hβ₀.1 a ha1`. Use `⟨β, hL ▸ hβ, fun x => ⟨?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hSt]`. Conclude with `(hK x).1.trans (and_congr_right fun hS => forall₂_congr fun PP hPP => (hred PP hPP _ hS).1.symm)`.
-
-Conclude with `((hK x).2 hx).trans (Finset.prod_congr rfl fun PP hPP => congrArg _ (hred PP hPP _ ((hK x).1.1 hx).1).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagBasis.read_inst (D : D7) (e0 f0 : Fin D.R.rS → VA (instOf D)) (z0 : VA (instOf D))
     (bw bwd : Fin D.R.k → VA (instOf D)) (ew : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af (instOf D).F)
@@ -360,7 +354,7 @@ namespace GlobalTheory.SeeConjRead
 open Formalism.L2.DIV
 
 /- English proof (translation)
-Establish `hg : g ∈ blockTri (κ` using `κ) (blk2 n) := fun i j h => by`. Simplify using `[blk2, i.2, j.2] at h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[upper_block_val_submatrix hr hg]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -373,7 +367,7 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (hr : n �
   simp
 
 /- English proof (translation)
-Introduce `i j h` and use `by have hi : i.val < r := lt_of_lt_of_le i.2 hn have hj : j.val < r := lt_of_lt_of_le j.2 hn simp [blkOf, hi, hj] at h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockTri_blkOf_top {κ : Type} [CommRing κ] {n r : ℕ} (t : ℕ) (hn : n ≤ r) (g : GL (Fin n) κ) :
     g ∈ blockTri (κ := κ) (blkOf r t) := fun i j h => by
@@ -382,9 +376,9 @@ theorem blockTri_blkOf_top {κ : Type} [CommRing κ] {n r : ℕ} (t : ℕ) (hn :
   simp [blkOf, hi, hj] at h
 
 /- English proof (translation)
-Establish `key : ∀ (I : Formalism.MainNotions.S.AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (y : (Formalism.L2.SG.InstExistsPf.instOf D).GA), ((castGA hI.symm) y).1 = 1 ↔ y.1 = 1`. Introduce `I hI y`. Substitute `hI` using the available equality. Conclude with `Iff.rfl`. Use `show ((castGA h.symm) (Formalism.IndefR.RationalEmbedding.iota D κ)).1 = 1 ↔ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key X.B.I h, ← Formalism.L2.SG.EvalTIota.brg_mem_GfC_i, ContinuousMulEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem iotaX_fst_eq_one_iff {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (κ : GA D (D.sp.Y 0)) : (iotaX X h κ).1 = 1 ↔ κ ∈ GfC (D.sp.Y 0) := by
@@ -397,7 +391,7 @@ theorem iotaX_fst_eq_one_iff {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetti
   rw [key X.B.I h, ← Formalism.L2.SG.EvalTIota.brg_mem_GfC_i, ContinuousMulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[ContinuousMulEquiv.symm_apply_eq]`. Conclude with `Prod.ext h1.symm rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_symm_one {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (κ : GA D (D.sp.Y 0)) (h1 : (iotaX X h κ).1 = 1) : (iotaX X h).symm (1, (iotaX X h κ).2) = κ := by
@@ -407,11 +401,11 @@ theorem eq_symm_one {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h 
 end GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Establish `key : ∀ (I : AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (g : ℕ) (_ : g = D.host.g 0 * D.host.g 1) (e0 f0 : Fin D.R.rS → VA I) (z0 : VA I) (bw bwd : Fin D.R.k → VA I) (ew : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (_ : GlobalTheory.FlagBasis.IsRefFrame I g e0 f0 z …` using `I.F) (Formalism.MainNotions.S.Af I.F) x) * psiEinf I x = 1), ∃ β : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame β (Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0) ∧ ∀ κ : GA D (D.sp.Y 0), ((castGA hI.symm (Formalism.IndefR.RationalEmbedding.iota D κ)).2 ∈ K2s …`. Introduce `I hI g hg e0 f0 z0 bw bwd ew hF hn psiEf hadd hint hrat`. Substitute `hI hg` using the available equality. Take `⟨β, hβ, hK⟩` from `GlobalTheory.FlagBasis.read_inst D e0 f0 z0 bw bwd ew hF hn psiEf hadd hint hrat Pg hPg hnc ψ0 hψ`. Use `⟨β, hβ, fun κ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Establish `e2 : Lev.finE (D.sp.Y 0) κ = ((Formalism.IndefR.RationalEmbedding.iota D κ).2.1 : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D))` using `(congrArg (Lev.finE (D.sp.Y 0)) ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ)).symm.trans e`. Establish `hx` using `hK (Formalism.IndefR.RationalEmbedding.iota D κ).2`. Generalize the expression as in `Lev.finE (D.sp.Y 0) κ = y at e2 ⊢`. Substitute `e2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Conclude with `hx`. Conclude with `key X.B.I h X.B.g X.g_eq X.e0 X.f0 X.z0 X.bw X.bwd X.ew (GlobalTheory.FlagBasis.isRefFrame_setting X) X.n_eq X.psiEf X.psiEf_add X.psiEf_int X.psiEf_rat`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeConjRead.read_fin {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (Pg : Finset (Pl D.host.E)) (hPg : GlobalTheory.Core.Mi.IsTypePlaces Pg)

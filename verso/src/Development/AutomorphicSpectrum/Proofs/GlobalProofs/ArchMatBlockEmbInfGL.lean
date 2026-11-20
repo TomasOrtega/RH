@@ -20,13 +20,13 @@ namespace GlobalTheory.CompanionTheory.BlockEntry
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Use `haveI : CompleteSpace (Matrix (Fin d) (Fin d) ℂ) := FiniteDimensional.complete ℝ _`. Establish `h' : ∀ W : Matrix (Fin d) (Fin n) ℂ, V * (U * W) = W` using `fun W => by rw [← Matrix.mul_assoc, h, Matrix.one_mul]`. Set `f : Matrix (Fin d) (Fin d) ℂ × ℂ →+* Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun p => U * p.1 * V + p.2 • (1 - U * V) map_one' := by simp map_mul' := fun p q => by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, h', Matrix.one_mul, Matrix.mul_one, sub_self, smul_zero, smul_smul, sub_zero, add_zero, zero_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use `module`. Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Matrix.add_mul, Matrix.mul_add, add_smul]`. Use `abel }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : Continuous f` using `((continuous_const.matrix_mul continuous_fst).matrix_mul continuous_const).add (continuous_snd.smul continuous_const)`. Establish `e` using `NormedSpace.map_exp f hf (A, 0)`. Establish `e1 : f (A, 0) = U * A * V` using `by simp [f]`. Rewrite `e` using `[e1]`. Use `e.symm.trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Express the relevant statement in the definitionally equal form `U * (NormedSpace.exp (A, (0 : ℂ))).1 * V + (NormedSpace.exp (A, (0 : ℂ))).2 • (1 - U * V) = _`. Establish `f1 : (NormedSpace.exp (A, (0 : ℂ))).1 = NormedSpace.exp A` using `Prod.fst_exp (A, (0 : ℂ))`. Establish `f2 : (NormedSpace.exp (A, (0 : ℂ))).2 = NormedSpace.exp 0` using `Prod.snd_exp (A, (0 : ℂ))`. Rewrite using `[f1, f2, NormedSpace.exp_zero, one_smul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exp_sandwich' {n d : ℕ} (U : Matrix (Fin n) (Fin d) ℂ) (V : Matrix (Fin d) (Fin n) ℂ) (h : V * U = 1)
     (A : Matrix (Fin d) (Fin d) ℂ) : NormedSpace.exp (U * A * V) = 1 + U * (NormedSpace.exp A - 1) * V := by
@@ -57,17 +57,17 @@ theorem exp_sandwich' {n d : ℕ} (U : Matrix (Fin n) (Fin d) ℂ) (V : Matrix (
   abel
 
 /- English proof (translation)
-Introduce `n d J X Y xx yy xy yx B`. Establish `h1 : (Yᴴ * J) * X = 1` using `yx`. Establish `h2 : (Xᴴ * J) * Y = 1` using `xy`. Establish `yy' : ∀ {m : ℕ} (W : Matrix (Fin d) (Fin m) ℂ), Yᴴ * (J * (Y * W)) = 0` using `fun W => by`. Rewrite using `[← Matrix.mul_assoc J, ← Matrix.mul_assoc, ← Matrix.mul_assoc Yᴴ J Y, yy, Matrix.zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `xx' : ∀ {m : ℕ} (W : Matrix (Fin d) (Fin m) ℂ), Xᴴ * (J * (X * W)) = 0` using `fun W => by`. Rewrite using `[← Matrix.mul_assoc J, ← Matrix.mul_assoc, ← Matrix.mul_assoc Xᴴ J X, xx, Matrix.zero_mul]`. Establish `c12 : X * B * (Yᴴ * J) * (Y * (-Bᴴ) * (Xᴴ * J)) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[yy']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `c21 : Y * (-Bᴴ) * (Xᴴ * J) * (X * B * (Yᴴ * J)) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[xx']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : Commute (X * B * (Yᴴ * J)) (Y * (-Bᴴ) * (Xᴴ * J))`. Unfold `Commute SemiconjBy`. Rewrite using `[c12, c21]`. Establish `hs : X * B * (Yᴴ * J) - Y * Bᴴ * (Xᴴ * J) = X * B * (Yᴴ * J) + Y * (-Bᴴ) * (Xᴴ * J)`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, sub_eq_add_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Matrix.exp_add_of_commute _ _ hc, exp_sandwich' X (Yᴴ * J) h1, exp_sandwich' Y (Xᴴ * J) h2, ← Matrix.conjTranspose_neg, Matrix.exp_conjTranspose]`. Establish `cross : X * (NormedSpace.exp B - 1) * (Yᴴ * J) * (Y * ((NormedSpace.exp (-B))ᴴ - 1) * (Xᴴ * J)) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[yy']`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, cross, add_zero]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exp_isoFrame' : ∀ (n d : ℕ) (J : Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin d) ℂ),
     Xᴴ * J * X = 0 → Yᴴ * J * Y = 0 → Xᴴ * J * Y = 1 → Yᴴ * J * X = 1 →
@@ -96,21 +96,19 @@ theorem exp_isoFrame' : ∀ (n d : ℕ) (J : Matrix (Fin n) (Fin n) ℂ) (X Y : 
   abel
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm Φ j hΦ hΦs hj hΦz w τ z`. Establish `key : ∀ x, GlobalTheory.LFun.infTens F E (Φ.symm x) = j.symm x.1` using `fun x => by`. Establish `e` using `congrArg Prod.fst (hΦz (Φ.symm x))`. Rewrite `e` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[e, RingEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : Continuous fun z : GlobalTheory.CuspRep.Cinf E => infEmb τ (compInf F E w (Φ.symm (GlobalTheory.CuspRep.sInf E z)))` using `(GlobalTheory.Published.LeviInducedModel.cont_piInf τ).comp (hΦs.comp ((GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const))`. Establish `hR : Continuous (GlobalTheory.CuspRep.coord τ.1)`. Unfold `GlobalTheory.CuspRep.coord`. Use `split_ifs`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.continuous_conj.comp (continuous_apply _)`. Establish `hsymm : Continuous (GlobalTheory.CuspRep.infEq E).symm` using `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex v)).continuous.comp (continuous_apply v)`. Establish `hD : DenseRange fun x : E => (GlobalTheory.CuspRep.infEq E).symm (algebraMap E (InfiniteAdeleRing E) x)` using `((GlobalTheory.CuspRep.infEq E).symm.surjective.denseRange).comp (NumberField.InfiniteAdeleRing.denseRange_algebraMap E) hsymm`. Establish `hE : ∀ x : E, infEmb τ (compInf F E w (Φ.symm (GlobalTheory.CuspRep.sInf E ((GlobalTheory.CuspRep.infEq E).symm (algebraMap E (InfiniteAdeleRing E) x))))) = GlobalTheory.CuspRep.coord τ.1 ((GlobalTheory.CuspRep.infEq E).symm (algebraMap E (InfiniteAdeleRing E) x))`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : GlobalTheory.CuspRep.sInf E ((GlobalTheory.CuspRep.infEq E).symm (algebraMap E (InfiniteAdeleRing E) x)) = ((algebraMap E (InfiniteAdeleRing E) x, 0) : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E)`. Express the relevant statement in the definitionally equal form `((GlobalTheory.CuspRep.infEq E ((GlobalTheory.CuspRep.infEq E).symm _), 0) : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Establish `h2 : j.symm (algebraMap E (InfiniteAdeleRing E) x) = (1 : Ainf F) ⊗ₜ[F] x`. Rewrite using `[← hj x, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hci : ∀ y : AF F ⊗[F] E, compInf F E w y = (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E)).toRingHom (GlobalTheory.LFun.infTens F E y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[h1, hci]`. Use `erw [key]`. Express the relevant statement in the definitionally equal form `infEmb τ ((Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E)).toRingHom (j.symm (algebraMap E (InfiniteAdeleRing E) x))) = _`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3` using `GlobalTheory.CuspRep.coord_algebraMap τ.1 x`. Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.coord τ.1 ((GlobalTheory.CuspRep.infEq E).symm (algebraMap E (InfiniteAdeleRing E) x)) = τ.1 x at h3`. Rewrite using `[h3]`. Express the relevant statement in the definitionally equal form `infEmb τ ((GlobalTheory.AutFunCompare.evW w 1) ⊗ₜ[F] x) = _`. Rewrite using `[map_one, infEmb_tmul, map_one, one_mul]`.
-
-Conclude with `congrFun (hD.equalizer hL hR (funext hE)) z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infEmb_compInf_sInf' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E), Continuous Φ → Continuous Φ.symm → (∀ x : E, j ((1 : Ainf F) ⊗ₜ[F] x) = algebraMap E (InfiniteAdeleRing E) x) → (∀ z, Φ z = (j (GlobalTheory.LFun.infTens F E z), GlobalTheory.LFun.finAdEquiv F E (GlobalTheory.LFun.finTens F E z))) → ∀ (w : InfinitePlace F) (τ : EmbOver E w) (z : GlobalTheory.CuspRep.Cinf E),
  infEmb τ (compInf F E w (Φ.symm (GlobalTheory.CuspRep.sInf E z))) = GlobalTheory.CuspRep.coord τ.1 z := by
@@ -167,17 +165,15 @@ theorem infEmb_compInf_sInf' : ∀ (F E : Type) [Field F] [NumberField F] [Field
 open GlobalTheory.CuspRep GlobalTheory.BlockArch in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm n J _ r X Y _ l d h ι hB y`. Establish `hmem` using `((GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb F E σ hcm n J r X Y l d h ι hB).choose_spec.2.2 y).1`. Use `⟨hmem, fun w τ => ?_⟩` and prove the remaining obligations. Take `⟨Φ, j, hΦ, hΦs, hj1, hs, hform⟩` from `hB`. Set `π : AF F ⊗[F] E →+* ℂ` to `(infEmb τ).comp (compInf F E w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hco : ∀ z : Cinf E, π (Φ.symm (sInf E z)) = coord τ.1 z` using `fun z => infEmb_compInf_sInf' F E σ hcm Φ j hΦ hΦs hj1 hs w τ z`. Establish `hp : ∀ y : GL (Fin d) (Cinf E), ((infGL E d y).1.map Φ.symm).map π = y.1.map (coord τ.1)` using `fun y => by`. Rewrite using `[Matrix.map_map]`. Conclude with `congrArg Units.val (map_cornerGL_of_hom (sInf E) (π.comp Φ.symm.toRingHom) (coord τ.1) hco y)`. Establish `hA : ∀ {m p : Type} (M : Matrix m p E), (adMat F M).map π = M.map τ.1` using `fun M => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (adMat F M).map (compInf F E w) = M.map (inclR (F` using `F) w.Completion) := map_inclR_map (evInf F w) M`. Express the relevant statement in the definitionally equal form `(adMat F M).map (⇑(infEmb τ) ∘ ⇑(compInf F E w)) = _`. Rewrite using `[← Matrix.map_map, e1, Matrix.map_map]`. Use extensionality with `i k`. Simplify using `[inclR]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hC : ∀ {m p : Type} (M : Matrix m p (AF F ⊗[F] E)), (Formalism.UG.cT (sigR (AF F) σ) M).map π = (M.map π)ᴴ` using `fun M => by`. Establish `e1 : (Formalism.UG.cT (sigR (AF F) σ) M).map (compInf F E w) = Formalism.UG.cT (sigR w.Completion σ) (M.map (compInf F E w))` using `map_cT_sigR_map (evInf F w) σ M`. Express the relevant statement in the definitionally equal form `(Formalism.UG.cT (sigR (AF F) σ) M).map (⇑(infEmb τ) ∘ ⇑(compInf F E w)) = _`. Rewrite using `[← Matrix.map_map, e1]`. Use extensionality with `i k`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.AdelicU.infEmb_sigR hcm τ _).symm`. Rewrite using `[GlobalTheory.Orb.archMat_apply, matHom_projArch]`. Express the relevant statement in the definitionally equal form `(((matHom _ σ J (ι (infGL E d y))).1).map (compInf F E w)).map (infEmb τ) = _`. Rewrite using `[Matrix.map_map]`. Express the relevant statement in the definitionally equal form `((matHom _ σ J (ι (infGL E d y))).1).map π = _`.
-
-Rewrite using `[hform, ← map_inv, map_blockForm, hA, hA, hA, hA, hC, hp, hp, Matrix.map_mul, Matrix.map_mul, GlobalTheory.CentreFin.map_cT_emb hcm, GlobalTheory.CentreFin.map_cT_emb hcm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archMat_blockEmb_infGL' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (l d : ℕ) (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d →* GAd σ J), GlobalTheory.BlockForms.IsBlockEmb σ J X Y h ι → ∀ (y : GL (Fin d) (GlobalTheory.CuspRep.Cinf E)), ι (GlobalTheory.CuspRep.infGL E d y) ∈ infPts σ J ∧ ∀ (w : InfinitePlace F) (τ : EmbOver E w),
  GlobalTheory.Orb.archMat σ J τ (projArch σ J w (ι (GlobalTheory.CuspRep.infGL E d y))) =
@@ -218,7 +214,7 @@ open GlobalTheory.CuspRep (Cinf coord atEmb expGLi infGL)
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_coordE (τ : E →+* ℂ) : Continuous (coord τ) := by
   unfold coord
@@ -227,9 +223,9 @@ theorem continuous_coordE (τ : E →+* ℂ) : Continuous (coord τ) := by
   · exact Complex.continuous_conj.comp (continuous_apply _)
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Express the relevant statement in the definitionally equal form `(t • x) _ = (t : ℂ) * x _`. Rewrite using `[Pi.smul_apply, Complex.real_smul]`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ ((t • x) _) = (t : ℂ) * starRingEnd ℂ (x _)`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`.
+A detailed English derivation is pending.
 -/
 theorem coord_smul (τ : E →+* ℂ) (t : ℝ) (x : Cinf E) : coord τ (t • x) = (t : ℂ) * coord τ x := by
   unfold coord
@@ -240,9 +236,9 @@ theorem coord_smul (τ : E →+* ℂ) (t : ℝ) (x : Cinf E) : coord τ (t • x
     rw [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin d) (Fin d) (Cinf E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin d) (Fin d) (Cinf E)) := FiniteDimensional.complete ℝ _`. Use `letI : NormedAlgebra ℚ (Matrix (Fin d) (Fin d) (Cinf E)) := NormedAlgebra.restrictScalars ℚ ℝ _`. Use `letI : NormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedRing`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin d) (Fin d) ℂ) := FiniteDimensional.complete ℝ _`. Use `letI : NormedAlgebra ℚ (Matrix (Fin d) (Fin d) ℂ) := NormedAlgebra.restrictScalars ℚ ℝ _`. Establish `hc : Continuous ((coord τ).mapMatrix : Matrix (Fin d) (Fin d) (Cinf E) → Matrix (Fin d) (Fin d) ℂ)` using `continuous_id.matrix_map (continuous_coordE τ)`. Conclude with `NormedSpace.map_exp (coord τ).mapMatrix hc M`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_coord_exp {d : ℕ} (τ : E →+* ℂ) (M : Matrix (Fin d) (Fin d) (Cinf E)) :
     (NormedSpace.exp M).map (coord τ) = NormedSpace.exp (M.map (coord τ)) := by
@@ -259,7 +255,7 @@ theorem map_coord_exp {d : ℕ} (τ : E →+* ℂ) (M : Matrix (Fin d) (Fin d) (
   exact NormedSpace.map_exp (coord τ).mapMatrix hc M
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[coord_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_coord_smul_atEmb {d : ℕ} (τ τ' : E →+* ℂ) (t : ℝ) (B : Matrix (Fin d) (Fin d) ℂ) :
     (t • B.map (atEmb τ)).map (coord τ') = (t : ℂ) • B.map (fun z => coord τ' (atEmb τ z)) := by
@@ -272,29 +268,29 @@ section Line
 open GlobalTheory.CuspRep (Cinf coord atEmb expGLi infGL)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm n J hJ r X Y hW l d h ι hι w τ B`. Establish `hga` using `archMat_blockEmb_infGL' F E σ hcm n J hJ r X Y hW l d h ι hι`. Establish `hoff : ∀ (w' : InfinitePlace F), w' ≠ w → ∀ (τ' : EmbOver E w') (z : ℂ), coord τ'.1 (atEmb τ.1 z) = 0`. Introduce `w' hw' τ' z`. Establish `hmk : InfinitePlace.mk τ'.1 ≠ InfinitePlace.mk τ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e`. Apply `hw'` to reduce the goal to its premises. Establish `e'` using `congrArg (fun v : InfinitePlace E => v.comap (algebraMap F E)) e`. Simplify using `only [InfinitePlace.comap_mk, τ'.2, τ.2, InfinitePlace.mk_embedding] at e'`. Conclude with `e'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `coord atEmb`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_eq_of_ne hmk]`. Establish `hinv : ∀ t : ℝ, (expGLi d (t • B.map (atEmb τ.1)))⁻¹ = expGLi d ((-t) • B.map (atEmb τ.1))` using `fun t => by`. Establish `e` using `GlobalTheory.CuspRep.expGLi_add_smul d (B.map (atEmb τ.1)) (-t) t`. Rewrite `e` using `[neg_add_cancel, zero_smul, GlobalTheory.CuspRep.expGLi_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(eq_inv_of_mul_eq_one_left e.symm).symm`. Establish `hexpmap : ∀ (τ' : E →+* ℂ) (s : ℝ), (expGLi d (s • B.map (atEmb τ.1))).1.map (coord τ') = NormedSpace.exp ((s : ℂ) • B.map (fun z => coord τ' (atEmb τ.1 z)))` using `fun τ' s => by`. Rewrite using `[GlobalTheory.CuspRep.val_expGLi, map_coord_exp, map_coord_smul_atEmb]`. Introduce `t`. Take `⟨hmem, hmat⟩` from `hga (expGLi d (t • B.map (atEmb τ.1)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨projArch σ J w (ι (infGL E d (expGLi d (t • B.map (atEmb τ.1))))), ?_, ?_⟩` and prove the remaining obligations. Use `GAd_ext σ J (fun w'' => ?_) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `e : w'' = w`. Substitute `e` using the available equality. Rewrite using `[projArch_embArch_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[projArch_embArch_ne σ J e]`. Take `⟨τ'⟩ : Nonempty (EmbOver E w'')` from `inferInstance`. Establish `inj : Function.Injective (GlobalTheory.Orb.archMat σ J τ')` using `fun a b e => by`. Rewrite `e` using `[GlobalTheory.Orb.archMat_eq_archEquiv J hcm, GlobalTheory.Orb.archMat_eq_archEquiv J hcm]`. Conclude with `(archEquiv J hcm τ').injective (Subtype.ext (Units.ext e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `inj` to reduce the goal to its premises. Establish `hz : B.map (fun z => coord τ'.1 (atEmb τ.1 z)) = 0`. Use extensionality with `a b`. Simplify using `[hoff w'' e τ']`. Rewrite using `[hmat w'' τ', map_one, hinv, hexpmap, hexpmap, hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[proj_embArch, ← projFinLoc_projFin, mem_infPts.1 hmem, map_one]`. Establish `hb : B.map (fun z => coord τ.1 (atEmb τ.1 z)) = B`. Use extensionality with `a b`. Simplify using `[GlobalTheory.CuspRep.coord_atEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmat w τ, hinv, hexpmap, hexpmap, hb]`. Establish `hJh : (J.map τ.1)ᴴ = J.map τ.1` using `conjTranspose_map hcm hJ τ.1`. Take `⟨hxx, hyy, hxy⟩` from `GlobalTheory.CentreFin.frame_emb hcm hW τ.1`. Set `f : Fin d → Fin r` to `fun j => ⟨l + j.val, by omega⟩`. Establish `hf : Function.Injective f` using `fun a b e => Fin.ext (by simpa [f] using congrArg Fin.val e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `key : ∀ A C : Matrix (Fin n) (Fin r) E, ((GlobalTheory.BlockForms.blkCols h A).map τ.1)ᴴ * J.map τ.1 * (GlobalTheory.BlockForms.blkCols h C).map τ.1 = ((A.map τ.1)ᴴ * J.map τ.1 * C.map τ.1).submatrix f f`. Introduce `A C`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `bxx` using `(key X X).trans (by rw [hxx])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `byy` using `(key Y Y).trans (by rw [hyy])`. Establish `bxy` using `(key X Y).trans (by rw [hxy, Matrix.submatrix_one f hf])`. Establish `byx` using `GlobalTheory.CentreFin.dual_swap hJh bxy`. Establish `ha` using `exp_isoFrame' n d (J.map τ.1) _ _ bxx byy bxy byx ((t : ℂ) • B)`. Establish `hneg : ((-t : ℝ) : ℂ) • B = -((t : ℂ) • B)` using `by push_cast; rw [neg_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hneg, ← ha]`. Use `congr 1`. Rewrite using `[conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, ← Complex.coe_smul, smul_sub, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isLineOf_blockEmb_exp' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (l d : ℕ) (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d →* GAd σ J), GlobalTheory.BlockForms.IsBlockEmb σ J X Y h ι → ∀ (w : InfinitePlace F) (τ : EmbOver E w) (B : Matrix (Fin d) (Fin d) ℂ),
  IsLineOf σ J τ ((GlobalTheory.BlockForms.blkCols h X).map τ.1 * B * (((GlobalTheory.BlockForms.blkCols h Y).map τ.1)ᴴ * J.map τ.1) - (GlobalTheory.BlockForms.blkCols h Y).map τ.1 * Bᴴ * (((GlobalTheory.BlockForms.blkCols h X).map τ.1)ᴴ * J.map τ.1))
@@ -363,11 +359,9 @@ end Line
 open GlobalTheory.CuspRep in
 
 /- English proof (translation)
-Introduce `E _ _ _ d f B x`. Establish `hc : HasDerivAt (fun t : ℝ => toL (expGLi d (t • B)).val) (toL B) 0`. Use `letI : NormedRing (Matrix (Fin d) (Fin d) (Cinf E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin d) (Fin d) (Cinf E)) := FiniteDimensional.complete ℝ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) B (0 : ℝ)`. Rewrite `h1` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Set `L : Matrix (Fin d) (Fin d) (Cinf E) →L[ℝ] Lie E d` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Rewrite using `[GlobalTheory.CuspRep.lie_apply]`.
-
-Conclude with `((hasDerivAt_curve f x (fun t : ℝ => expGLi d (t • B)) (toL B) (by simp) hc).deriv).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_eq_deriv_exp' : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (d : ℕ) (f : GlobalTheory.CuspRep.Sm E d) (B : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E)) (x : GlobalTheory.CuspRep.GA E d),
  (GlobalTheory.CuspRep.lie E d (GlobalTheory.CuspRep.toL B) f).1 x = deriv (fun t : ℝ => f.1 (x * GlobalTheory.CuspRep.infGL E d (GlobalTheory.CuspRep.expGLi d (t • B)))) 0 := by

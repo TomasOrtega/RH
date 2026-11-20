@@ -17,7 +17,7 @@ namespace GlobalTheory.PsiCoordLocal
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Conclude with `(jK R).app_injective W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jK_app_inj (W : (Spec (CommRingCat.of R)).Opens) : Function.Injective ((jK R).app W).hom := by
   have : IsDominant (jK R) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by
@@ -28,7 +28,7 @@ theorem jK_app_inj (W : (Spec (CommRingCat.of R)).Opens) : Function.Injective ((
 
 omit [IsDomain R] in
 /- English proof (translation)
-Establish `e : DegPre.toOpen (R` using `R) ⊤ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom := by`. Use extensionality with `r`. Simplify using `[DegPre.toOpen]`. Rewrite using `[e]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.bijective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toOpen_top_bijective : Function.Bijective (DegPre.toOpen (R := R) ⊤) := by
   have e : DegPre.toOpen (R := R) ⊤ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom := by
@@ -40,7 +40,7 @@ theorem toOpen_top_bijective : Function.Bijective (DegPre.toOpen (R := R) ⊤) :
 variable (D : DegPre R) (χ : D.X)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hV hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem generic_le (j : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens}
     (hV : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit)) :
@@ -48,11 +48,11 @@ theorem generic_le (j : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens
   fun _ hy => Set.mem_iInter.2 fun _ => hV hy
 
 /- English proof (translation)
-Establish `l : V ≤ (D.c χ).left ⁻¹ᵁ (D.P.L.U (j PUnit.unit) ⊓ D.P.L.U (j' PUnit.unit))` using `fun y hy => ⟨hj hy, hj' hy⟩`. Use `⟨(res l (pullU (D.c χ).left _ (D.P.L.g (j PUnit.unit) (j' PUnit.unit)))) ^ (-1 : ℤ), unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : jK R y ∈ V` using `hy`. Establish `t` using `gen_trans (D.psi_gen χ) (𝟙 (TK R).left) y (j := j) (j' := j') (h hy) (h' hy)`. Use `(gm_res _ y h hy _).trans (t.trans (Eq.trans ?_ (map_mul _ _ _).symm))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) (Eq.symm ?_) (gm_res _ y h' hy _).symm` and prove the remaining obligations. Use `(gm_pull (𝟙 _) (jK R) y V hy' _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Use `(map_zpow _ _ _).trans (Eq.trans ?_ (Fintype.prod_unique _).symm)` and prove the remaining obligations. Use `congrArg (· ^ (-1 : ℤ)) ((gm_res (jK R) y l hy' _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_pull (jK R) (D.c χ).left y _ (l hy') _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_trans (j j' : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens}
     (hj : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit)) (hj' : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j' PUnit.unit))
@@ -73,13 +73,13 @@ theorem exists_trans (j j' : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).
   rw [Category.id_comp]; rfl
 
 /- English proof (translation)
-Introduce `j V hV _ hle h`. Establish `c0 : (D.c 0).left = eSec D.P.A`. Use `PsiZero.cPoint_zero' D (𝟙_ _)` as an intermediate fact. Rewrite `this` using `[cP, toUnit_unit, Category.id_comp, Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hx : D.xK 0 = jK R ≫ eSec D.P.A` using `by rw [← c0]; rfl`. Establish `hle' : V ≤ LB.wchart D.P.L (K` using `PUnit) (fun _ => eSec D.P.A) j := fun y hy => Set.mem_iInter.2 fun _ => by rw [← c0]; exact hle hy`. Use `⟨((Spec (CommRingCat.of R)).presheaf.map (homOfLE hle').op).hom (D.rig.s j)⁻¹.val, (Units.isUnit _).map _, fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : jK R y ∈ V` using `hy`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB y (K := PUnit) (fun _ => D.xK 0) j (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 (h hy) k)`. Establish `e` using `PsiZero.val_psi_zero hB hJ`. Rewrite `e` using `[val_of (D.psi 0) _ y J j (fun k => (congrArg J (Category.id_comp (D.xK 0))).trans (eJ k)), val_of D.rig _ y J j (fun k => (congrArg J hx.symm).trans (eJ k))]`. Use `(gs_pull (𝟙 _) (jK R) y V hy' _).trans (Eq.trans ?_ ((gs_res (𝟙 _) y h hy _).trans (gs_unit _ _ _ (h hy) _)).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(gs_res (jK R) y hle' hy' _).trans ((gs_unit _ _ _ (hle' hy') _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val ((map_inv _ _).trans e.symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiUnitOn_zero (hB : D.TauBimult) : PsiUnitOn D 0 Set.univ := by
   intro j V hV _ hle h
@@ -107,9 +107,9 @@ theorem psiUnitOn_zero (hB : D.TauBimult) : PsiUnitOn D 0 Set.univ := by
 variable {D χ}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨j, -, h, e⟩` from `h`. Rewrite `e` using `[map_zero, map_zero]`. Establish `hu` using `((D.psi χ).s j).isUnit.map ((TK R).left.presheaf.map (homOfLE h).op).hom`. Rewrite `hu` using `[← e]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Nonempty (jK R ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens)) := ⟨⟨closedPoint (FractionRing R), trivial⟩⟩`. Conclude with `not_isUnit_zero hu`.
+A detailed English derivation is pending.
 -/
 theorem ne_zero_of_coord {r : R} (h : PsiCoord D χ r) : r ≠ 0 := by
   rintro rfl
@@ -122,9 +122,9 @@ theorem ne_zero_of_coord {r : R} (h : PsiCoord D χ r) : r ≠ 0 := by
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Take `⟨j, hj, h, e⟩` from `h`. Take `⟨j', hj', h', e'⟩` from `h'`. Take `⟨u, hu⟩` from `exists_trans D χ j' j hj' hj h' h`. Set `φ` to `RingEquiv.ofBijective _ (toOpen_top_bijective (R := R))`. Use `⟨Units.map φ.symm.toMonoidHom u, toOpen_top_bijective.1 (jK_app_inj ⊤ ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k : DegPre.toOpen (R` using `R) ⊤ (Units.map φ.symm.toMonoidHom u : Rˣ) = u := φ.apply_symm_apply u.val`. Rewrite using `[map_mul, map_mul, k, e, e']`. Conclude with `congrArg Units.val hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_coord {r r' : R} (h : PsiCoord D χ r) (h' : PsiCoord D χ r') : ∃ u : Rˣ, r' = u * r := by
   obtain ⟨j, hj, h, e⟩ := h
@@ -137,13 +137,13 @@ theorem exists_unit_of_coord {r r' : R} (h : PsiCoord D χ r) (h' : PsiCoord D �
   exact congrArg Units.val hu
 
 /- English proof (translation)
-Take `⟨j, hj, h, e⟩` from `h`. Take `⟨V, hV, hpV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Spec (CommRingCat.of R)) (x := 𝔭) (U := ⟨W, hW⟩) hp`. Establish `h₂ : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit)` using `le_top.trans hj`. Take `⟨s, hs, es⟩` from `hU j V hV hle h₂ (generic_le D χ j h₂)`. Establish `k : DegPre.toOpen (R` using `R) V r = s := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `jK_app_inj V (Eq.trans ?_ es.symm)` and prove the remaining obligations. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy' : jK R y ∈ V` using `hy`. Establish `a` using `congrArg (gs (𝟙 _) y _) e`. Establish `a₁` using `gs_pull (𝟙 _) (jK R) y ⊤ trivial (DegPre.toOpen (R := R) ⊤ r)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `gs_res (𝟙 _) y h trivial ((D.psi χ).s j).val`. Use `(gs_pull (𝟙 _) (jK R) y V hy' _).trans (Eq.trans ?_ (gs_res (𝟙 _) y (generic_le D χ j h₂) hy _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (a₁.symm.trans (a.trans a₂))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(gs_res (jK R) y le_top hy' _).trans (gs_res (jK R) y (le_top : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ ⊤) trivial _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[← k]`. Establish `b` using `(Spec (CommRingCat.of R)).basicOpen_of_isUnit hs`. Establish `c : (Spec (CommRingCat.of R)).basicOpen (DegPre.toOpen (R` using `R) V r) = V ⊓ (Spec (CommRingCat.of R)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r) := (Spec (CommRingCat.of R)).basicOpen_res _ _`. Rewrite `c` using `[b, basicOpen_eq_of_affine]`. Conclude with `(c.le hpV).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_of_coord {W : Set (Sp R)} {𝔭 : PrimeSpectrum R} (hW : IsOpen W) (hp : 𝔭 ∈ W) (hU : PsiUnitOn D χ W)
     {r : R} (h : PsiCoord D χ r) : r ∉ 𝔭.asIdeal := by
@@ -172,7 +172,7 @@ theorem not_mem_of_coord {W : Set (Sp R)} {𝔭 : PrimeSpectrum R} (hW : IsOpen 
   exact (c.le hpV).2
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart D.P.isLB ((D.c χ).left (closedPoint R))`. Conclude with `⟨fun _ => i, ((IsLocalRing.closedPoint_mem_iff ((D.c χ).left ⁻¹ᵁ D.P.L.U i)).1 hi).ge⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_top [IsLocalRing R] (D : DegPre R) (χ : D.X) :
     ∃ j : PUnit → D.P.L.ι, (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit) := by
@@ -180,11 +180,11 @@ theorem exists_chart_top [IsLocalRing R] (D : DegPre R) (χ : D.X) :
   exact ⟨fun _ => i, ((IsLocalRing.closedPoint_mem_iff ((D.c χ).left ⁻¹ᵁ D.P.L.U i)).1 hi).ge⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ _ Dg _ χ`. Use `⟨?_, fun _ _ => exists_unit_of_coord, fun _ _ hW hp hU _ => not_mem_of_coord hW hp hU⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart_top Dg.toPre χ`. Establish `h` using `generic_le Dg.toPre χ j hj`. Distinguish the cases in `hχ : χ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hχ` using the available equality. Establish `hU` using `psiUnitOn_zero Dg.toPre Dg.tau_bimult`. Take `⟨s, -, e⟩` from `hU j ⊤ (isAffineOpen_top _) (Set.subset_univ _) hj h`. Take `⟨r, rfl⟩` from `toOpen_top_bijective.2 s`. Establish `hr : PsiCoord Dg.toPre 0 r` using `⟨j, hj, h, e⟩`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨r, hr, ne_zero_of_coord hr, fun h => absurd rfl h, fun _ => IsLocalRing.notMem_maximalIdeal.1 (not_mem_of_coord (𝔭 := closedPoint R) isOpen_univ trivial hU hr)⟩`. Take `⟨s, hs, e⟩` from `Dg.psi_pos χ hχ j ⊤ (isAffineOpen_top _) hj h`. Take `⟨r, hm, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ toOpen_top_bijective.2).1 hs`. Establish `hr : PsiCoord Dg.toPre χ r` using `⟨j, hj, h, e⟩`. Conclude with `⟨r, hr, ne_zero_of_coord hr, fun _ => hm, fun h => absurd h hχ⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R] (Dg : DegData R (maximalIdeal R)), IsIntegrallyClosed R → ∀ χ, (∃ r, PsiCoord Dg.toPre χ r ∧ r ≠ 0 ∧ (χ ≠ 0 → r ∈ maximalIdeal R) ∧ (χ = 0 → IsUnit r)) ∧ (∀ r r', PsiCoord Dg.toPre χ r → PsiCoord Dg.toPre χ r' → ∃ u : Rˣ, r' = u * r) ∧ ∀ (W : Set (Sp R)) (𝔭 : PrimeSpectrum R), IsOpen W → 𝔭 ∈ W → PsiUnitOn Dg.toPre χ W → ∀ r, PsiCoord Dg.toPre χ r → r ∉ 𝔭.asIdeal := by
   intro R _ _ _ _ Dg _ χ

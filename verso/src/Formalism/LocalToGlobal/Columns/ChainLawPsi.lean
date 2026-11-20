@@ -15,7 +15,7 @@ section Join
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Use `show (clL_ext c κ v) (Fin.castAdd c l) = κ (LinearMap.funLeft E E (Fin.castAdd c) v) l`. Rewrite using `[clL_ext_apply, ciExtM_castAdd, show κ (LinearMap.funLeft E E (Fin.castAdd c) v) = κ.toLinearMap (LinearMap.funLeft E E (Fin.castAdd c) v) from rfl, ← LinearMap.toMatrix'_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct, LinearMap.funLeft_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clPsi_restr {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + c)) :
     LinearMap.funLeft E E (Fin.castAdd c) (clL_ext c κ v) = κ (LinearMap.funLeft E E (Fin.castAdd c) v) := by
@@ -27,9 +27,9 @@ theorem clPsi_restr {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + c)
   simp [Matrix.mulVec, dotProduct, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Unfold `atNL`. Use `split_ifs with h`. Establish `hc : 0 < c` using `by omega`. Establish `e : (⟨n, h⟩ : Fin (n + c)) = Fin.natAdd n ⟨0, hc⟩` using `rfl`. Simplify using `only [LinearMap.proj_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, clL_ext_natAdd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem clPsi_atNL {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + c)) :
     atNL E (n + c) n (clL_ext c κ v) = atNL E (n + c) n v := by
@@ -42,7 +42,7 @@ theorem clPsi_atNL {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + c))
   · rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [joinCol, LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, LinearEquiv.coe_coe]`. Rewrite using `[clL_ext_inX, clPsi_restr, clPsi_atNL]`. Simplify using `only [map_add, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem clPsi_joinCol {n' c' n c : ℕ} (κ₀ : Sp E n' ≃ₗ[E] Sp E n') (κ : Sp E n ≃ₗ[E] Sp E n) (x₀ : HomE E n' n) (y' : Sp E n) :
     joinCol (c' := c') (c := c) (κ.symm.toLinearMap ∘ₗ x₀ ∘ₗ κ₀.toLinearMap) (κ.symm y') =
@@ -62,7 +62,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
 /- English proof (translation)
-Take `⟨hk0, hr0, hrN0, -⟩` from `ranks_frame_inequalities R hm (j := m2) (by omega)`. Take `⟨hk1, -, hrN1, -⟩` from `ranks_frame_inequalities R hm (j := m2 + 1) le_rfl`. Conclude with `⟨ciQ_mem P, ciQ_notMem_sq hX hPr hP, by omega, hk0, hk1, hr0, t_pos R, by simpa using hrN0.symm, hrN1.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clPsi_phiHyp (hX : X.Ok) (hPr : Pr.Ok) (hm : R.m = m2 + 2) (P : HeightOneSpectrum (𝓞 X.E)) (hP : P ∈ Pr.vGs) :
     PhiGSLawHyp P (qOf P) R.k R.rS R.r R.t (m2 + 1) (cOf R m2) (R.N m2) (cOf R (m2 + 1)) (R.N (m2 + 1)) := by

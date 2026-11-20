@@ -10,21 +10,19 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Col2.Splice
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q Q0 Q1 v g0 h p0 p1 q h0 h1 hQ hSG hoff hN hf hfr`. Take `⟨⟨hg0, hd0⟩, -⟩` from `(ChTwRead.isPtOf_iff hc g0 p0).1 h0`. Take `⟨⟨hh, hd1⟩, hfr1⟩` from `(ChTwRead.isPtOf_iff hc h p1).1 h1`. Use `set m := h * rll_put n v (bc (prV (E := E) v) (h⁻¹ * g0)) with hm`. Establish `hv : bc (prV (E` using `E) v) m = bc (prV (E := E) v) g0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, map_mul, rll_put_self, ← map_mul, mul_inv_cancel_left]`. Establish `hne : ∀ P : HeightOneSpectrum (𝓞 E), ¬ IsOver v P → P.under (𝓞 F) ≠ v`. Introduce and unpack `P hP rfl`. Conclude with `hP rfl`. Establish `hw : ∀ P : HeightOneSpectrum (𝓞 E), ¬ IsOver v P → bc (prV (E` using `E) (P.under (𝓞 F))) m = bc (prV (E := E) (P.under (𝓞 F))) h := by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `P hP`. Rewrite using `[hm, map_mul, rll_put_ne n v _ (hne P hP), mul_one]`. Establish `hmU : m ∈ UAd hc n` using `mul_mem hh (rll_put_mem_UAd hc n v (afsplit_bc_mem hc.sig 1 v _ (mul_mem (inv_mem hh) hg0)))`. Use `(ChTwRead.isPtOf_iff hc m q).2 ⟨⟨hmU, ?_⟩, fun P i j => ?_⟩` and prove the remaining obligations. Use `ext1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.L2.DIV.eq_of_forall_localized_eq fun P => ?_` and prove the remaining obligations. Distinguish the cases in `hP : IsOver v P`. Rewrite using `[hN P hP, hd0]`. Conclude with `(updn_mem_loc hP hv).symm`. Rewrite using `[hoff.N P hP, hd1]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(updn_mem_loc (v := P.under (𝓞 F)) rfl (hw P hP)).symm`. Use function extensionality and compare the values at `P`. Distinguish the cases in `hP : IsOver v P.1`. Rewrite using `[hf P hP, hd0]`. Conclude with `(updn_f_loc ST SG P hP hv).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hoff.f P hP, hd1]`. Conclude with `(updn_f_loc ST SG (v := P.1.under (𝓞 F)) P rfl (hw P.1 hP)).symm`. Use function extensionality and compare the values at `w`. Establish `hP` using `hSG w.1 w.2`. Rewrite using `[hoff.be w hP, hd1]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(updn_be_loc ST SG (v := w.1.under (𝓞 F)) w rfl (hw w.1 hP)).symm`. Take `⟨⟨P1, hP1⟩, hP', e⟩` from `hfr P`. Establish `hPv` using `hQ P.1 P.2`. Simplify using `only at hP'`. Substitute `hP'` using the available equality.
-
-Rewrite using `[← e, ← hfr1 ⟨_, hP1⟩ i j]`. Use `ChTwRead.adAt_congr_prV P.1 ?_` and prove the remaining obligations. Use `congrArg (fun g : GL (Fin n) (E ⊗[F] (P.1.under (𝓞 F)).adicCompletion F) => g.val i j) (hw P.1 hPv)` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isPtOf_splice : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG Q Q0 Q1 : Finset (HeightOneSpectrum (𝓞 E))) (v : HeightOneSpectrum (𝓞 F)) (g0 h : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) (p0 : DecoF E n ST SG Q0) (p1 : DecoF E n ST SG Q1) (q : DecoF E n ST SG Q), GlobalTheory.Mem.Col2.IsPtOf hc g0 p0 → GlobalTheory.Mem.Col2.IsPtOf hc h p1 → (∀ P ∈ Q, ¬ IsOver v P) → (∀ w ∈ SG, ¬ IsOver v w) → Deco.SameOff ST SG v q.deco.1 p1.deco.1 → (∀ P : HeightOneSpectrum (𝓞 E), IsOver v P → localization₂ P.asIdeal q.deco.1.N = localization₂ P.asIdeal p0.deco.1.N) → (∀ P : ST, IsOver v P.1 → q.deco.1.f P = p0.deco.1.f P) → (∀ P : Q, ∃ P' : Q1, P'.1 = P.1 ∧ p1.fr P' = q.fr P) → GlobalTheory.Mem.Col2.IsPtOf hc (h * rll_put n v (bc (prV (E := E) v) (h⁻¹ * g0))) q := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q Q0 Q1 v g0 h p0 p1 q h0 h1 hQ hSG hoff hN hf hfr

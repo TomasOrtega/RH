@@ -10,31 +10,27 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer
 
 /- English proof (translation)
-Introduce `l _ K π hπ`. Take `⟨⟨⟨hD, hV, -⟩, -⟩, hfin⟩` from `GlobalTheory.LocalIntegers.good_integers l K`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hi : Algebra.IsIntegral ℤ_[l] ↥(OL K)` using `integralClosure.AlgebraIsIntegral`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] ↥(OL K))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h1 : algebraMap ℤ_[l] ↥K.1 a = algebraMap ℤ_[l] ↥K.1 b` using `congrArg Subtype.val hab`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥K.1, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥K.1 b]`. Conclude with `IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] ↥K.1).injective h1)`. Establish `hf : FaithfulSMul ℤ_[l] ↥(OL K)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ¬ IsUnit ((l : ℕ) : ↥(OL K))`. Introduce `hu`. Rewrite `hu` using `[← map_natCast (algebraMap ℤ_[l] ↥(OL K))]`. Conclude with `PadicInt.irreducible_p.not_isUnit (isUnit_of_map_unit _ _ hu)`. Establish `hdvd : π ∣ ((l : ℕ) : ↥(OL K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hm : ((l : ℕ) : ↥(OL K)) ∈ IsLocalRing.maximalIdeal ↥(OL K)` using `hl`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hle : Ideal.span {((l : ℕ) : ↥(OL K)) ^ 1} ≤ Ideal.span {π}`. Rewrite using `[pow_one, Ideal.span_singleton_le_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinQ : Finite (↥(OL K) ⧸ Ideal.span {π})`. Use `hfin 1` as an intermediate fact. Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle)`. Establish `hnt : Nontrivial (↥(OL K) ⧸ Ideal.span {π})`. Use `Ideal.Quotient.nontrivial_iff.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `hπ.not_isUnit`. Establish `h2 : 2 ≤ qOf π` using `Finite.one_lt_card`. Establish `hord : addOrderOf (1 : ↥(OL K) ⧸ Ideal.span {π}) = l`. Establish `h1 : (1 : ↥(OL K) ⧸ Ideal.span {π}) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {π})), Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `fun h => hπ.not_isUnit (isUnit_of_dvd_one h)`. Use `addOrderOf_eq_prime ?_ h1` and prove the remaining obligations. Rewrite using `[nsmul_one, ← map_natCast (Ideal.Quotient.mk (Ideal.span {π})), Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hdvd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : l ∣ qOf π`. Use `addOrderOf_dvd_natCard (1 : ↥(OL K) ⧸ Ideal.span {π})` as an intermediate fact. Rewrite `this` using `[hord]`. Then use the resulting hypothesis. Establish `hl0 : ((l : ℕ) : ↥(OL K)) ≠ 0`. Introduce `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `congrArg (fun x : ↥(OL K) => (x : ↥K.1)) h`. Simplify using `only [ZeroMemClass.coe_zero, SubringClass.coe_natCast] at h2`. Conclude with `hlp.ne_zero (by exact_mod_cast h2)`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hπ`. Establish `he : e ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `hl` to reduce the goal to its premises. Rewrite `hu` using `[pow_zero]`. Conclude with `IsUnit.of_mul_eq_one _ hu`. Establish `hnorm : ∀ μ : ↥K.1 →ₐ[ℚ_[l]] Om l, ‖((μ (π : ↥K.1) : Om l) : ℂ_[l])‖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `μ`. Rewrite using `[PadicComplex.norm_extends]`. Establish `hint : ∀ x : ↥(OL K), ‖μ (x : ↥K.1)‖ ≤ 1`. Introduce `x`. Rewrite using `[← GlobalTheory.isIntegral_padicInt_iff_norm_le_one]`.
-
-Conclude with `(x.2 : IsIntegral ℤ_[l] (x : ↥K.1)).map (μ.restrictScalars ℤ_[l])`. Establish `hpow : (π : ↥K.1) ^ e = (l : ↥K.1) * ((u : ↥(OL K)) : ↥K.1)`. Use `congrArg (fun x : ↥(OL K) => (x : ↥K.1)) hu` as an intermediate fact. Simplify using `using this.symm`. Establish `h3 : ‖μ (π : ↥K.1)‖ ^ e < 1`.
-
-Rewrite using `[← norm_pow, ← map_pow, hpow, map_mul, norm_mul, map_natCast, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) Padic.norm_p_lt_one (hint _)`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) he).1 h3`. Conclude with `⟨h2, hq, hdvd, hnorm K.1.val, hnorm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uniformiser_facts : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Irreducible π →
     2 ≤ qOf π ∧ l ∣ qOf π ∧ π ∣ (l : ↥(OL K)) ∧

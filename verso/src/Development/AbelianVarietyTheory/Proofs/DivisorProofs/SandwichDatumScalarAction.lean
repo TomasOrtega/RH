@@ -18,9 +18,9 @@ namespace GlobalTheory.DetInv
 
 open Matrix TensorProduct in
 /- English proof (translation)
-Establish `hdet : A.det * B.det = c ^ n`. Rewrite using `[← Matrix.det_mul, hAB, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hB : B.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero n hc hdet.symm`. Establish `h1 : X * B * B.adjugate = B.det • X`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Rewrite `h1` using `[hX, Matrix.zero_mul]`. Conclude with `(smul_eq_zero.mp h1.symm).resolve_left hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem matrix_eq_zero_of_mul_right_cancel_lemma {R : Type} [CommRing R] [IsDomain R] {n : ℕ}
     {A B X : Matrix (Fin n) (Fin n) R} {c : R} (hAB : A * B = c • (1 : Matrix (Fin n) (Fin n) R))
@@ -38,9 +38,9 @@ private theorem matrix_eq_zero_of_mul_right_cancel_lemma {R : Type} [CommRing R]
 
 open Matrix TensorProduct in
 /- English proof (translation)
-Establish `hdet : A.det * B.det = c ^ n`. Rewrite using `[← Matrix.det_mul, hAB, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hA : A.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero n hc hdet.symm`. Establish `h1 : A.adjugate * (A * Y) = A.det • Y`. Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Rewrite `h1` using `[hY, Matrix.mul_zero]`. Conclude with `(smul_eq_zero.mp h1.symm).resolve_left hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem matrix_eq_zero_of_mul_left_cancel_lemma_2 {R : Type} [CommRing R] [IsDomain R] {n : ℕ}
     {A B Y : Matrix (Fin n) (Fin n) R} {c : R} (hAB : A * B = c • (1 : Matrix (Fin n) (Fin n) R))
@@ -59,33 +59,27 @@ private theorem matrix_eq_zero_of_mul_left_cancel_lemma_2 {R : Type} [CommRing R
 open Matrix TensorProduct in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ h D`. Use `haveI : IsDomain (_root_.GlobalTheory.Sandwich.Ainf p O) := _root_.GlobalTheory.AinfXi.isDomain_ainf hv`. Use `set F := D.F with hF`. Use `set G := D.G with hG`. Use `set Ψ := D.Ψ with hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Ψ' := D.Ψ' with hΨ'`. Use `set M := D.ρM with hM`. Use `set φ := _root_.GlobalTheory.Sandwich.phiInv p O with hφ`. Establish `hμ : _root_.GlobalTheory.Sandwich.mu ε ≠ 0` using `(_root_.GlobalTheory.DetInv.mu_coeff_zero_ne_zero p C v O hv ε hε).2.1`. Establish `hμ' : φ (_root_.GlobalTheory.Sandwich.mu ε) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ, _root_.GlobalTheory.Sandwich.phiInv_mu]`. Conclude with `(_root_.GlobalTheory.DetInv.mu_coeff_zero_ne_zero p C v O hv ε hε).2.2`. Establish `hξ : _root_.GlobalTheory.Sandwich.xi ε ≠ 0`. Introduce `h0`. Establish `h1` using `_root_.GlobalTheory.AinfXi.xi_nzd hv ε hε 1 (by rw [h0, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h1`. Establish `hGF : G * F = _root_.GlobalTheory.Sandwich.mu ε • 1` using `D.G_mul_F`. Establish `hFΨ : F = Ψ * F.map φ` using `D.F_eq`. Establish `hΨΨ' : Ψ * Ψ' = _root_.GlobalTheory.Sandwich.xi ε • 1` using `D.Ψ_mul`. Establish `hFT : ∀ l, F * _root_.GlobalTheory.DetInv.rhoTA D l = M l * F` using `fun l => D.F_act l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hFG : F * G = _root_.GlobalTheory.Sandwich.mu ε • 1`. Establish `h0 : (F * G - _root_.GlobalTheory.Sandwich.mu ε • 1) * F = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, hGF, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, sub_self]`. Conclude with `sub_eq_zero.mp (matrix_eq_zero_of_mul_right_cancel_lemma hGF hμ h0)`. Establish `hTφ : ∀ l, (_root_.GlobalTheory.DetInv.rhoTA D l).map φ = _root_.GlobalTheory.DetInv.rhoTA D l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `l`. Unfold `_root_.GlobalTheory.DetInv.rhoTA`. Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `_root_.GlobalTheory.DetInv.PsiPhi.phiInv_ofPadic x`. Establish `hFTφ : ∀ l, F.map φ * _root_.GlobalTheory.DetInv.rhoTA D l = (M l).map φ * F.map φ`. Introduce `l`. Use `congrArg (fun X => X.map φ) (hFT l)` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hTφ]`. Then use the resulting hypothesis. Establish `hGFφ : G.map φ * F.map φ = φ (_root_.GlobalTheory.Sandwich.mu ε) • 1`. Rewrite using `[← Matrix.map_mul, hGF]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hΨM : ∀ l, Ψ * (M l).map φ = M l * Ψ`. Introduce `l`. Establish `h0 : (Ψ * (M l).map φ - M l * Ψ) * F.map φ = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, ← hFTφ, ← Matrix.mul_assoc, ← hFΨ, hFT, Matrix.mul_assoc, ← hFΨ, sub_self]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp (matrix_eq_zero_of_mul_right_cancel_lemma hGFφ hμ' h0)`. Use `⟨?_, hFG, ?_, hΨM, ?_⟩` and prove the remaining obligations. Introduce `c`. Establish `hT : _root_.GlobalTheory.DetInv.rhoTA D (algebraMap ℤ_[p] Λ c) = _root_.GlobalTheory.Sandwich.ofPadic p O c • (1 : Matrix (Fin h) (Fin h) (_root_.GlobalTheory.Sandwich.Ainf p O))`. Unfold `_root_.GlobalTheory.DetInv.rhoTA`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AlgHom.commutes]`. Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_matrix_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1` using `hFT (algebraMap ℤ_[p] Λ c)`.
-
-Rewrite `h1` using `[hT]`. Establish `h0 : (M (algebraMap ℤ_[p] Λ c) - _root_.GlobalTheory.Sandwich.ofPadic p O c • 1) * F = 0`. Rewrite using `[Matrix.sub_mul, ← h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, sub_self]`. Conclude with `sub_eq_zero.mp (matrix_eq_zero_of_mul_right_cancel_lemma hGF hμ h0)`. Introduce `l`.
-
-Establish `h0 : (G * M l - _root_.GlobalTheory.DetInv.rhoTA D l * G) * F = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, ← hFT, ← Matrix.mul_assoc, hGF, Matrix.mul_assoc, hGF, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, sub_self]`. Conclude with `sub_eq_zero.mp (matrix_eq_zero_of_mul_right_cancel_lemma hGF hμ h0)`. Introduce `l`. Establish `h0 : Ψ * (Ψ' * M l - (M l).map φ * Ψ') = 0`.
-
-Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hΨΨ', ← Matrix.mul_assoc, hΨM, Matrix.mul_assoc, hΨΨ', Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, sub_self]`. Conclude with `sub_eq_zero.mp (matrix_eq_zero_of_mul_left_cancel_lemma_2 hΨΨ' hξ h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DetInv.datum_scalar_intertwine : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (_root_.GlobalTheory.Sandwich.root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (h : ℕ) (D : _root_.GlobalTheory.Sandwich.Datum ε h Λ), (∀ c : ℤ_[p], D.ρM (algebraMap ℤ_[p] Λ c) = _root_.GlobalTheory.Sandwich.ofPadic p O c • (1 : Matrix (Fin h) (Fin h) (_root_.GlobalTheory.Sandwich.Ainf p O))) ∧ D.F * D.G = _root_.GlobalTheory.Sandwich.mu ε • (1 : Matrix (Fin h) (Fin h) (_root_.GlobalTheory.Sandwich.Ainf p O)) ∧ (∀ l, D.G * D.ρM l = _root_.GlobalTheory.DetInv.rhoTA D l * D.G) ∧ (∀ l, D.Ψ * (D.ρM l).map (_root_.GlobalTheory.Sandwich.phiInv p O) = D.ρM l * D.Ψ) ∧ ∀ l, D.Ψ' * D.ρM l = (D.ρM l).map (_root_.GlobalTheory.Sandwich.phiInv p O) * D.Ψ' := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ h D

@@ -18,9 +18,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {A : AdData t u μ St} {dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt} {a : 𝓞 D.host.E}
 
 /- English proof (translation)
-Rewrite using `[← H.N_eq i hi c]`. Conclude with `H.lat i hi c`. Use `frame := fun P => H.frame i hi c P`. Use `fnl := by`. Introduce `P v h hv`.
-
-Conclude with `Classical.epsilon_spec (H.fnl i hi ((St i hi).chOf c) P v h hv) c rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPtAd_cls (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i) :
     IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c) where
@@ -33,9 +31,9 @@ theorem isPtAd_cls (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw
     exact Classical.epsilon_spec (H.fnl i hi ((St i hi).chOf c) P v h hv) c rfl
 
 /- English proof (translation)
-Take `⟨⟨c, rfl⟩, hc⟩` from `((St i hi).K β).y_bij.2 (Quotient.mk'' x)`. Take `⟨g, hg, k, hk, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hc`. Rewrite `hg`, `hk` using `[Subgroup.mem_subgroupOf]`. Take `⟨γ, hγ, hγg⟩` from `Subgroup.mem_map.1 hg`. Use `⟨c, rfl, γ, hγ, ⟨k.1, hk⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `congrArg Subtype.val e`. Simplify using `only [Subgroup.coe_mul] at e1`. Rewrite using `[e1, ← hγg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_cls_eq (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x : UA D i hi) :
     ∃ c : (D.chTw u μ).cls i, (St i hi).chOf c = β ∧ ∃ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi),
@@ -53,11 +51,11 @@ theorem exists_cls_eq (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x : UA D
 end Cls
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie`. Establish `hcls : ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c)` using `fun i hi c => isPtAd_cls hTie i hi c`. Use `⟨fun i hi β x => ?_, hcls⟩` and prove the remaining obligations. Take `⟨c, hcβ, γ, hγ, κ, hx⟩` from `exists_cls_eq (St := St) i hi β x`. Substitute `hcβ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Set `k : UA D i hi` to `⟨κ.1, (((St i hi).K ((St i hi).chOf c)).lev.U_eq κ.1).1 κ.2 |>.1⟩`. Set `x₁ : UA D i hi` to `x * k⁻¹`. Establish `hx₁ : x₁.1 = ratA D.host.F γ * ((St i hi).y c).1` using `by show x.1 * (κ.1)⁻¹ = _`. Rewrite using `[hx, mul_inv_cancel_right]`. Take `⟨p₁, hp₁⟩` from `hR A dtU a hPin hTie i hi _ ((St i hi).y c) x₁ (A.pt i hi c) γ hγ hx₁ (hcls i hi c)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxk : x.1 = x₁.1 * κ.1` using `by show x.1 = x.1 * (κ.1)⁻¹ * κ.1`. Rewrite using `[inv_mul_cancel_right]`. Conclude with `hL A dtU a hPin hTie i hi _ x₁ x p₁ κ hxk hp₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptEx_of_tie (hR : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x' : UA D i hi) p, ∀ γ ∈ Formalism.UG.UJ (Formalism.L2.Forms.sigD D : D.host.E →+* D.host.E) (Formalism.L2.Forms.gramN D i hi), x'.1 = ratA D.host.F γ * x.1 → IsPtAd A a i hi β x p → ∃ p', IsPtAd A a i hi β x' p')) (hL : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x' : UA D i hi) p (κ : ((St i hi).K β).lev.U), x'.1 = x.1 * κ.1 → IsPtAd A a i hi β x p → ∃ p', IsPtAd A a i hi β x' p')) : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c)) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie
@@ -80,7 +78,7 @@ theorem ptEx_of_tie (hR : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dt
   exact hL A dtU a hPin hTie i hi _ x₁ x p₁ κ hxk hp₁
 
 /- English proof (translation)
-The claim follows from `ptEx_of_tie GlobalTheory.T.chartPoint_leftTranslate_rationalUnitary GlobalTheory.T.chartBasePoint_rightTranslate_by_chartLevel`.
+A detailed English derivation is pending.
 -/
 theorem ptEx_isPtAd : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c)) :=
   ptEx_of_tie GlobalTheory.T.chartPoint_leftTranslate_rationalUnitary GlobalTheory.T.chartBasePoint_rightTranslate_by_chartLevel

@@ -34,14 +34,14 @@ def chainL {m : ℕ} (s : Fin m → ℂ × 𝕄) (F : 𝕄 → E) : 𝕄 → E :
   (List.ofFn fun i => opL (s i).1 (s i).2).foldr (fun t h => t h) F
 
 /- English proof (translation)
-Simplify using `only [chainL, List.ofFn_succ, List.foldr_cons]`.
+Simplify using the standard rewrite rules.
 -/
 lemma chainL_succ {m : ℕ} (s : Fin (m + 1) → ℂ × 𝕄) (F : 𝕄 → E) :
     chainL s F = opL (s 0).1 (s 0).2 (chainL (fun i => s i.succ) F) := by
   simp only [chainL, List.ofFn_succ, List.foldr_cons]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `Formalism.QuantumDeterminants.Top opL negL Lhol`. Rewrite using `[Matrix.neg_mul, map_neg]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma top_opL (x : ℂ) (a b : Fin n) (F : 𝕄 → E) :
     Formalism.QuantumDeterminants.Top negL x a b F = opL (if a = b then x else 0) (-(Matrix.single a b 1)) F := by
@@ -54,11 +54,9 @@ def sσ (u : ℂ) (σ : Equiv.Perm (Fin n)) : Fin n → ℂ × 𝕄 :=
   fun i => (if σ i = i then u - ((i : ℕ) : ℂ) else 0, -(Matrix.single (σ i) i 1))
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.qdetOp Formalism.QuantumDeterminants.qminorOp`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = (List.ofFn fun i => opL (sσ u σ i).1 (sσ u σ i).2).foldr (fun t h => t h) F z`. Establish `hl : (List.ofFn fun k : Fin n => Formalism.QuantumDeterminants.Top (E` using `E) negL (u - ((k : ℕ) : ℂ)) (id (σ k)) (id k)) = List.ofFn fun i => opL (E := E) (sσ u σ i).1 (sσ u σ i).2 := by`. Use `congr 1`. Use function extensionality and compare the values at `k G`. Conclude with `top_opL _ _ _ G`.
-
-Rewrite using `[hl]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qdet_chain (u : ℂ) (F : 𝕄 → E) (z : 𝕄) :
     Formalism.QuantumDeterminants.qdetOp negL u F z = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • chainL (sσ u σ) F z := by
@@ -83,14 +81,14 @@ def chainH {m : ℕ} (s : Fin m → ℂ × 𝕄) (g : 𝕋 → ℂ) : 𝕋 → �
   (List.ofFn fun i => opH (s i).1 (s i).2).foldr (fun t h => t h) g
 
 /- English proof (translation)
-Simplify using `only [chainH, List.ofFn_succ, List.foldr_cons]`.
+Simplify using the standard rewrite rules.
 -/
 lemma chainH_succ {m : ℕ} (s : Fin (m + 1) → ℂ × 𝕄) (g : 𝕋 → ℂ) :
     chainH s g = opH (s 0).1 (s 0).2 (chainH (fun i => s i.succ) g) := by
   simp only [chainH, List.ofFn_succ, List.foldr_cons]
 
 /- English proof (translation)
-The claim follows from `| 0, s, g, hg => by simpa [chainH] using hg | m + 1, s, g, hg => by rw [chainH_succ] show ContDiffOn ℂ ∞ (fun p => (s 0).1 • chainH _ g p + GPs.DH (s 0).2 (chainH _ g) p) _ exact ((sm_chainH _ hg).const_smul _).add (GPs.sm_DH _ (sm_chainH _ hg))`.
+A detailed English derivation is pending.
 -/
 lemma sm_chainH : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {g : 𝕋 → ℂ}, ContDiffOn ℂ ∞ g (GPs.Wset n) →
     ContDiffOn ℂ ∞ (chainH s g) (GPs.Wset n)
@@ -101,7 +99,7 @@ lemma sm_chainH : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {g : 𝕋 → ℂ}, 
     exact ((sm_chainH _ hg).const_smul _).add (GPs.sm_DH _ (sm_chainH _ hg))
 
 /- English proof (translation)
-The claim follows from `| 0, s, g, _, p, _ => by simp [chainH, chainL] | m + 1, s, g, hg, p, hp => by rw [chainH_succ, chainL_succ] show (s 0).1 • chainH _ g p + GPs.DH (s 0).2 (chainH _ g) p = (s 0).1 • chainL _ (fun y => g (y, p.2)) p.1 + Lhol (s 0).2 (chainL _ (fun y => g (y, p.2))) p.1 have hS : IsO …`.
+A detailed English derivation is pending.
 -/
 lemma chainH_slice : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {g : 𝕋 → ℂ}, ContDiffOn ℂ ∞ g (GPs.Wset n) →
     ∀ p ∈ GPs.Wset n, chainH s g p = chainL s (fun y => g (y, p.2)) p.1
@@ -119,9 +117,9 @@ lemma chainH_slice : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {g : 𝕋 → ℂ
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ} [CompactSpace (KG ε)]
 
 /- English proof (translation)
-Unfold `GPs.Fint`. Establish `: ∫ k, (c • g₁ (GPs.emb x k) + g₂ (GPs.emb x k)) • GPs.Pk T k ∂(muK ε) = c • ∫ k, g₁ (GPs.emb x k) • GPs.Pk T k ∂(muK ε) + ∫ k, g₂ (GPs.emb x k) • GPs.Pk T k ∂(muK ε)`. Simplify using `only [add_smul, smul_eq_mul, mul_smul]`. Establish `e` using `integral_add ((GPs.int_int T h₁ hx).smul c) (GPs.int_int T h₂ hx)`. Simplify using `only [Pi.smul_apply] at e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, integral_smul]`. Rewrite using `[this, smul_add, smul_comm (GPs.cK T) c]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma Fint_opH (T : KType ε Λ) {g₁ g₂ : 𝕋 → ℂ} (h₁ : ContDiffOn ℂ ∞ g₁ (GPs.Wset n))
     (h₂ : ContDiffOn ℂ ∞ g₂ (GPs.Wset n)) (c : ℂ) {x : 𝕄} (hx : x ∈ Ps1.Uset ε) :
@@ -136,7 +134,7 @@ lemma Fint_opH (T : KType ε Λ) {g₁ g₂ : 𝕋 → ℂ} (h₁ : ContDiffOn �
   rw [this, smul_add, smul_comm (GPs.cK T) c]
 
 /- English proof (translation)
-The claim follows from `| 0, s, g, _, z, _ => by simp [chainL, chainH] | m + 1, s, g, hg, z, hz => by rw [chainL_succ, chainH_succ] show (s 0).1 • chainL _ (GPs.Fint T g) z + Lhol (s 0).2 (chainL _ (GPs.Fint T g)) z = GPs.Fint T (fun p => (s 0).1 • chainH _ g p + GPs.DH (s 0).2 (chainH _ g) p) z rw [Fin …`.
+A detailed English derivation is pending.
 -/
 lemma chain_Fint (T : KType ε Λ) : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {g : 𝕋 → ℂ},
     ContDiffOn ℂ ∞ g (GPs.Wset n) → ∀ z ∈ Ps1.Uset ε,
@@ -151,7 +149,7 @@ lemma chain_Fint (T : KType ε Λ) : ∀ {m : ℕ} (s : Fin m → ℂ × 𝕄) {
       GPs.lhol_Fint T (sm_chainH _ hg) _ hz]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, F => by simp | p + 1, T, T', h, F => by simp only [List.ofFn_succ, List.foldr_cons] rw [fold_conj c (fun i => T i.succ) (fun i => T' i.succ) (fun i => h i.succ) F, h 0]`.
+A detailed English derivation is pending.
 -/
 lemma fold_conj (c : 𝕄 → 𝕄) : ∀ {p : ℕ} (T T' : Fin p → (𝕄 → ℂ) → (𝕄 → ℂ)),
     (∀ i F, T i (fun y => F (c y)) = fun y => T' i F (c y)) → ∀ F : 𝕄 → ℂ,
@@ -163,9 +161,9 @@ lemma fold_conj (c : 𝕄 → 𝕄) : ∀ {p : ℕ} (T T' : Fin p → (𝕄 → 
     rw [fold_conj c (fun i => T i.succ) (fun i => T' i.succ) (fun i => h i.succ) F, h 0]
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.qdetOp Formalism.QuantumDeterminants.qminorOp`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[fold_conj (fun y => A * y * B) _ _ (fun i G => ?_) F]`. Use function extensionality and compare the values at `y`. Unfold `Formalism.QuantumDeterminants.Top negL`. Rewrite using `[GPs.lhol_conj A B hAB hBA]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma qdet_conj (A B : 𝕄) (hAB : A * B = 1) (hBA : B * A = 1) (u : ℂ) (F : 𝕄 → ℂ) (z : 𝕄) :
     Formalism.QuantumDeterminants.qdetOp negL u (fun y => F (A * y * B)) z =
@@ -182,11 +180,11 @@ lemma qdet_conj (A B : 𝕄) (hAB : A * B = 1) (hBA : B * A = 1) (u : ℂ) (F : 
   rw [GPs.lhol_conj A B hAB hBA]
 
 /- English proof (translation)
-Apply the tactic sequence `have htop : ∀ (x : ℂ) (a b : Fin n) (F : 𝕄 → ℂ) (G : smoothS n), Set.EqOn F G (OmegaSet n) → Set.EqOn (Formalism.QuantumDeterminants.Top Eop x a b F) ((capEntry A x a b G : smoothS n) : 𝕄 → ℂ) (OmegaSet n) := by`. Introduce `x a b F G h z hz`. Rewrite using `[capEntry_apply_end]`. Use `show (if a = b then x • F z else 0) + Eop a b F z = ((A a b G : smoothS n) : 𝕄 → ℂ) z + ((if a = b then x • G else 0 : smoothS n) : 𝕄 → ℂ) z`. Rewrite using `[hA a b F G h hz, h hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp [add_comm]`. Unfold `Formalism.QuantumDeterminants.qdetOp Formalism.QuantumDeterminants.qminorOp capelliC cminor`. Rewrite using `[Finset.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, LinearMap.smul_apply, Submodule.coe_smul_of_tower, Pi.smul_apply, zsmul_eq_mul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `exact CapPhi.fold_eqOn n (fun k => Formalism.QuantumDeterminants.Top Eop (u - ((k : ℕ) : ℂ)) (id (σ k)) (id k)) (fun j => capEntry A (u - ((j : ℕ) : ℂ)) (id (σ j)) (id j)) (fun i F' G' h' => htop _ _ _ F' G' h') F G h hz`.
+A detailed English derivation is pending.
 -/
 lemma qdet_eq_gen (Eop : Fin n → Fin n → (𝕄 → ℂ) → (𝕄 → ℂ)) (A : Fin n → Fin n → Module.End ℂ (smoothS n))
     (hA : ∀ a b (F : 𝕄 → ℂ) (G : smoothS n), Set.EqOn F G (OmegaSet n) →
@@ -211,9 +209,9 @@ lemma qdet_eq_gen (Eop : Fin n → Fin n → (𝕄 → ℂ) → (𝕄 → ℂ)) 
     (fun i F' G' h' => htop _ _ _ F' G' h') F G h hz
 
 /- English proof (translation)
-Establish `hA : ∀ a b (F : 𝕄 → ℂ) (G : smoothS n), Set.EqOn F G (OmegaSet n) → Set.EqOn ((fun a b (G : 𝕄 → ℂ) => fun w => -Lhol (A * Matrix.single a b 1 * B) G w) a b F) (((∑ c, ∑ d, (A c a * B b d) • CapPhi.negE c d : Module.End ℂ (smoothS n)) G : smoothS n) : 𝕄 → ℂ) (OmegaSet n)`. Introduce `a b F G h w hw`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, CapPhi.negE_apply _ _ _ hw]`. Rewrite using `[lhol_congr h hw, CasPsA.conj_single_eq, GPs.lhol_sumX]`. Simplify using `only [GPs.lhol_sumX, GPs.lhol_smulX, Finset.sum_neg_distrib, smul_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[qdet_conj A B hAB hBA, qdet_eq_gen _ _ hA _ _ _ (CapPhi.phiS_eqOn μ) hz, CapAd.capelliC_ad _ ((isGlRep_iff_glRelR _).mp CapPhi.isGlRep_negE) A B hBA hAB, ← CapPhi.qdet_eq _ _ _ (CapPhi.phiS_eqOn μ) hz, cap_phiM μ lam hμ Y hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cap_conj_phi (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) (Y : ℂ) (A B : 𝕄) (hAB : A * B = 1)
     (hBA : B * A = 1) {z : 𝕄} (hz : A * z * B ∈ OmegaSet n) :
@@ -238,17 +236,15 @@ variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
 open CapPs in
 /- English proof (translation)
-Use `compactSpace_KG ε` as an intermediate fact. Establish `hK : ∀ k : KG ε, toMK k⁻¹ * toMK k = 1 ∧ toMK k * toMK k⁻¹ = 1` using `fun k => by`. Rewrite using `[Ps1.toMK_inv_eq, ← Matrix.star_eq_conjTranspose]`. Conclude with `⟨Unitary.star_mul_self_of_mem k.2.1, Unitary.mul_star_self_of_mem k.2.1⟩`. Use `⟨Ps1.Uset ε, Ps1.isOpen_Uset, Ps1.posSet_subset_Uset, fun z hz => ?_, fun Y z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GPs.hasFDerivAt_Fint T (GPs.smooth_g0_on_Wset μ) hz).differentiableAt.differentiableWithinAt`. Use `set u : ℂ := Y + ((n : ℂ) - 1) / 2 with hu`. Use `set C : ℂ := Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y with hC`. Establish `hint : ∀ k : KG ε, ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • chainH (sσ u σ) (GPs.g0 μ) (GPs.emb z k) = C * GPs.g0 μ (GPs.emb z k)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun σ _ => by rw [chainH_slice _ (GPs.smooth_g0_on_Wset μ) _ (GPs.emb_mem hz k)], ← qdet_chain]`. Conclude with `cap_conj_phi μ lam hμ Y (toMK k⁻¹) (toMK k) (hK k).1 (hK k).2 (GPs.emb_mem hz k)`. Establish `hI : ∀ σ : Equiv.Perm (Fin n), Integrable (fun k => chainH (sσ u σ) (GPs.g0 μ) (GPs.emb z k) • GPs.Pk T k) (muK ε)` using `fun σ => GPs.int_int T (sm_chainH _ (GPs.smooth_g0_on_Wset μ)) hz`. Rewrite using `[GPs.psM_eq, qdet_chain, Finset.sum_congr rfl fun σ _ => by rw [chain_Fint T _ (GPs.smooth_g0_on_Wset μ) z hz]]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `integral_finsetSum (μ := muK ε) Finset.univ (fun σ _ => (hI σ).smul (((Equiv.Perm.sign σ : ℤ) : ℂ)))`. Simplify using `only [Pi.smul_apply] at e`. Rewrite using `[e, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul, GPs.Fint, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = GPs.cK T • ∫ k, C • (GPs.g0 μ (GPs.emb z k) • GPs.Pk T k) ∂(muK ε) := by`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [← smul_assoc, ← Finset.sum_smul]`. Rewrite using `[hint k, smul_eq_mul]`.
-
-Use `_ = C • GPs.Fint T (GPs.g0 μ) z := by`. Rewrite using `[integral_smul, GPs.Fint, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cap_psM (T : KType ε Λ) (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) :
     ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ posSet n ⊆ U ∧ DifferentiableOn ℂ (psM T μ) U ∧

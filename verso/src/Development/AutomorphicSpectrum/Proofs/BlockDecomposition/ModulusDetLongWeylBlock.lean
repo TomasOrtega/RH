@@ -14,14 +14,14 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `only [GeneralLinearGroup.val_det_apply, w3]`. Simplify using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_long_weyl3 : ((GeneralLinearGroup.det (w3 : GL (Fin 3) F) : Fˣ) : F) = -1 := by
   simp only [GeneralLinearGroup.val_det_apply, w3]
   simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[tinv, GeneralLinearGroup.val_det_apply, Matrix.det_transpose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_tinv {n : Type} [Fintype n] [DecidableEq n] (g : GL n F) :
     GeneralLinearGroup.det (tinv g) = (GeneralLinearGroup.det g)⁻¹ := by
@@ -29,7 +29,7 @@ theorem det_tinv {n : Type} [Fintype n] [DecidableEq n] (g : GL n F) :
   simp [tinv, GeneralLinearGroup.val_det_apply, Matrix.det_transpose]
 
 /- English proof (translation)
-Establish `h : modulus (-1 : F) ^ 2 = 1`. Rewrite using `[sq, ← modulus_mul]`. Simplify using `[modulus_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) (by norm_num)).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modulus_neg_one : modulus (-1 : F) = 1 := by
   have h : modulus (-1 : F) ^ 2 = 1 := by
@@ -38,11 +38,9 @@ theorem modulus_neg_one : modulus (-1 : F) = 1 := by
   exact (pow_eq_one_iff_of_nonneg (by positivity) (by norm_num)).1 h
 
 /- English proof (translation)
-Establish `h1 : mp a⁻¹ s * mp a s = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_mul, inv_mul_cancel]`. Simplify using `[mp, modulus_one]`. Establish `h2 : mp a (-s) * mp a s = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_add, neg_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mp]`. Establish `h3 : mp a s ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `zero_ne_one h1`.
-
-Conclude with `mul_right_cancel₀ h3 (h1.trans h2.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_inv (a : Fˣ) (s : ℂ) : mp a⁻¹ s = mp a (-s) := by
   have h1 : mp a⁻¹ s * mp a s = 1 := by
@@ -60,7 +58,7 @@ theorem mp_inv (a : Fˣ) (s : ℂ) : mp a⁻¹ s = mp a (-s) := by
 end D
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ h`. Establish `hw : mp (GeneralLinearGroup.det (w3 : GL (Fin 3) F)) 1 = 1`. Rewrite using `[GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_one, det_long_weyl3, modulus_neg_one]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_mul, hw, one_mul, det_tinv, mp_inv, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_det_em]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [MeasurableSpace F] [BorelSpace F] (h : GL (Fin 2) F),

@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.ShFam.IsDivNorm
 
 /- English proof (translation)
-Introduce `k _ Y p σ d R C n h`. Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Take `⟨V, t, f, hy, -, hf, e⟩` from `h.2 y`. Establish `hc : ContinuousOn (fun z => ‖ev p σ V.1 t z‖ * Real.exp (-f z / 2)) (ptsIn p σ V.1)` using `(continuousOn_ev _).norm.mul (((hf.continuousOn (isOpen_ptsIn _)).neg.div_const 2).rexp)`. Use `(hc.congr fun z hz => ?_).continuousAt ((isOpen_ptsIn _).mem_nhds hy)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_left_inj₀ (h.1 z).1 (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[e z hz, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem continuous : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} (R : AnRead p σ d) (C : Closeds Y) (n : CxPts p σ → ℝ), IsDivNorm R C n → Continuous n := by
   intro k _ Y p σ d R C n h

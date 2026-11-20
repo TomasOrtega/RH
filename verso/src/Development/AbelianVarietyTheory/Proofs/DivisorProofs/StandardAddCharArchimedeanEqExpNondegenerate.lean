@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.StdBeta
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_zero u.2`.
+A detailed English derivation is pending.
 -/
 theorem at_arch (F : Type) [Field F] [NumberField F] (a : mixedEmbedding.mixedSpace F) :
     At (M := AF F) (evI F) (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, 0) : AdeleRing (𝓞 F) F) := by
@@ -23,16 +23,16 @@ theorem at_arch (F : Type) [Field F] [NumberField F] (a : mixedEmbedding.mixedSp
   · exact mul_zero u.2
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem evI_arch (F : Type) [Field F] [NumberField F] (a : mixedEmbedding.mixedSpace F) :
     evI F (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, 0) : AdeleRing (𝓞 F) F) = a :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply a
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Use `⟨-(Algebra.trace ℝ (mixedEmbedding.mixedSpace F)), fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ.2.2 _ (at_arch F a), evI_arch]`. Simplify using `only [LinearMap.neg_apply, Complex.ofReal_neg]`. Put the polynomial expressions in normal form.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Assume the negation of the conclusion as `h push_neg at h`. Conclude with `ha (GlobalTheory.ArchUniq.Coord.eq_zero_of_trace a fun b => by`. Use `h b` as an intermediate fact. Rewrite `this` using `[LinearMap.neg_apply, neg_eq_zero]`. Conclude with `this)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdBeta : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∃ β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ,

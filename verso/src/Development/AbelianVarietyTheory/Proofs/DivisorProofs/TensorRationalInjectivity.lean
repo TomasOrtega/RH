@@ -16,7 +16,7 @@ def JointInj (φ : ∀ i, A →+* B i) (L : Type) [AddCommGroup L] : Prop :=
 variable (φ : ∀ i, A →+* B i)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, ← LinearMap.lTensor_comp_rTensor, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_sq {L L' : Type} [AddCommGroup L] [AddCommGroup L'] (g : L →ₗ[ℤ] L') (i : I)
     (h : A ⊗[ℤ] L) :
@@ -26,7 +26,7 @@ theorem comm_sq {L L' : Type} [AddCommGroup L] [AddCommGroup L'] (g : L →ₗ[�
     LinearMap.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul a l => rw [Subsingleton.elim l 0, tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem all_zero_of_subsingleton (L : Type) [AddCommGroup L] [Subsingleton L] (h : A ⊗[ℤ] L) :
     h = 0 := by
@@ -36,13 +36,13 @@ theorem all_zero_of_subsingleton (L : Type) [AddCommGroup L] [Subsingleton L] (h
   | add x y hx hy => rw [hx, hy, add_zero]
 
 /- English proof (translation)
-Introduce `h _` and use `all_zero_of_subsingleton L h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_subsingleton (L : Type) [AddCommGroup L] [Subsingleton L] : JointInj φ L :=
   fun h _ => all_zero_of_subsingleton L h
 
 /- English proof (translation)
-Introduce `h hh`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := A) g hg` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h' _ fun i => by rw [comm_sq, hh i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_injective [Module.Flat ℤ A] {L L' : Type} [AddCommGroup L] [AddCommGroup L']
     (g : L →ₗ[ℤ] L') (hg : Function.Injective g) (h' : JointInj φ L') : JointInj φ L := by
@@ -52,7 +52,7 @@ theorem of_injective [Module.Flat ℤ A] {L L' : Type} [AddCommGroup L] [AddComm
   exact h' _ fun i => by rw [comm_sq, hh i, map_zero]
 
 /- English proof (translation)
-Take `⟨h0, rfl⟩` from `hr`. Rewrite using `[h' h0 fun i => ?_, map_zero]`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := B i) g hg` to reduce the goal to its premises. Rewrite using `[map_zero, ← comm_sq, hh i]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_of_mem_range [∀ i, Module.Flat ℤ (B i)] {L L' : Type} [AddCommGroup L]
     [AddCommGroup L'] (g : L' →ₗ[ℤ] L) (hg : Function.Injective g) (h' : JointInj φ L')
@@ -64,7 +64,7 @@ theorem zero_of_mem_range [∀ i, Module.Flat ℤ (B i)] {L L' : Type} [AddCommG
   rw [map_zero, ← comm_sq, hh i]
 
 /- English proof (translation)
-Introduce `h hh`. Establish `h0 : LinearMap.lTensor A g h = 0` using `h3 _ fun i => by rw [comm_sq, hh i, map_zero]`. Take `⟨y, hy⟩` from `(lTensor_exact A hfg hg h).mp h0`. Conclude with `zero_of_mem_range φ f hf h1 h ⟨y, hy⟩ hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem of_exact [∀ i, Module.Flat ℤ (B i)] {L' L L'' : Type} [AddCommGroup L'] [AddCommGroup L]
     [AddCommGroup L''] (f : L' →ₗ[ℤ] L) (g : L →ₗ[ℤ] L'') (hf : Function.Injective f)
@@ -76,7 +76,7 @@ theorem of_exact [∀ i, Module.Flat ℤ (B i)] {L' L L'' : Type} [AddCommGroup 
   exact zero_of_mem_range φ f hf h1 h ⟨y, hy⟩ hh
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => by obtain ⟨m, rfl⟩ := ht a obtain ⟨n, rfl⟩ := ht b rw [h0, h0]⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_of_surj {C : Type} [AddCommGroup C] (t : ℤ →ₗ[ℤ] C)
     (ht : Function.Surjective t) (h0 : ∀ n, t n = 0) : Subsingleton C :=
@@ -86,11 +86,9 @@ theorem subsingleton_of_surj {C : Type} [AddCommGroup C] (t : ℤ →ₗ[ℤ] C)
     rw [h0, h0]⟩
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Distinguish the cases in `htop : LinearMap.ker t = ⊤`. Use `haveI := subsingleton_of_surj t ht fun n => by`. Rewrite using `[LinearMap.ker_eq_top.mp htop]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `of_subsingleton φ C`. Establish `hk : LinearMap.ker t = Ideal.span {(p : ℤ)}`. Use `(hmax.eq_of_le htop ?_).symm` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `LinearMap.mem_ker.mpr htp`.
-
-Set `e : C ≃+ ZMod p` to `((t.quotKerEquivOfSurjective ht).symm.toAddEquiv.trans (Submodule.quotEquivOfEq _ _ hk).toAddEquiv).trans (Int.quotientSpanNatEquivZMod p).toAddEquiv`. Conclude with `of_injective φ e.toAddMonoidHom.toIntLinearMap e.injective hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem of_prime [Module.Flat ℤ A] (p : ℕ) (hp : p.Prime) (hP : JointInj φ (ZMod p)) {C : Type}
     [AddCommGroup C] (t : ℤ →ₗ[ℤ] C) (ht : Function.Surjective t) (htp : t p = 0) :
@@ -110,21 +108,19 @@ theorem of_prime [Module.Flat ℤ A] (p : ℕ) (hp : p.Prime) (hP : JointInj φ 
     exact of_injective φ e.toAddMonoidHom.toIntLinearMap e.injective hP
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk C _ t ht htk`. Distinguish the cases in `h1 : k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h1 haveI := subsingleton_of_surj t ht fun n => by` using the available equality. Rewrite using `[show n = n • (((1 : ℕ) : ℤ)) by simp, map_zsmul, htk, smul_zero]`. Conclude with `of_subsingleton φ C`. Establish `hp : k.minFac.Prime` using `Nat.minFac_prime h1`. Take `⟨m, hm⟩ : k.minFac ∣ k` from `Nat.minFac_dvd k`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp2` using `hp.two_le`. Distinguish the cases in `hm1 : m = 1`. Substitute `hm1` using the available equality. Rewrite `hm` using `[_root_.mul_one]`. Rewrite `htk` using `[hm]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `of_prime φ _ hp (hP _ hp) t ht htk`. Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hmk : m < k` using `by nlinarith`. Establish `hpk : k.minFac < k`. Establish `: 2 ≤ m` using `by omega`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `s : ℤ →ₗ[ℤ] C` to `((k.minFac : ℕ) : ℤ) • t`. Establish `hs1 : JointInj φ (LinearMap.range s)`. Use `ih m hmk hm0 _ s.rangeRestrict s.surjective_rangeRestrict ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearMap.codRestrict_apply, ZeroMemClass.coe_zero, s, LinearMap.rangeRestrict, LinearMap.smul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_zsmul, smul_eq_mul, ← Nat.cast_mul, ← hm, htk]`. Establish `hs3 : JointInj φ (C ⧸ LinearMap.range s)`. Use `ih _ hpk hp.pos _ ((LinearMap.range s).mkQ ∘ₗ t) ((LinearMap.range s).mkQ_surjective.comp ht) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [s, LinearMap.smul_apply]`. Rewrite using `[← map_zsmul, smul_eq_mul, _root_.mul_one]`. Conclude with `of_exact φ _ _ (LinearMap.range s).injective_subtype (LinearMap.exact_subtype_mkQ _) (LinearMap.range s).mkQ_surjective hs1 hs3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_killed [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)]
     (hP : ∀ p : ℕ, p.Prime → JointInj φ (ZMod p)) :
@@ -175,7 +171,7 @@ theorem of_killed [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)]
 end GlobalTheory.TensorDevissage
 
 /- English proof (translation)
-Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul a l => rw [Subsingleton.elim a 0, zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem GlobalTheory.TensorDevissage.all_zero_of_subsingleton' {A L : Type} [CommRing A] [Subsingleton A]
     [AddCommGroup L] (h : A ⊗[ℤ] L) : h = 0 := by
@@ -190,11 +186,11 @@ variable {A : Type} [CommRing A] {I : Type} {B : I → Type} [∀ i, CommRing (B
 variable (φ : ∀ i, A →+* B i)
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ k : ℕ, 0 < k ∧ t k = 0`. Take `⟨k, hk, htk⟩` from `hex`. Conclude with `of_killed φ hP k hk C t ht htk`. Use `push_neg at hex`. Establish `hinj : Function.Injective t`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(injective_iff_map_eq_zero t).mpr fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hex n.natAbs (Int.natAbs_pos.mpr hne)` to reduce the goal to its premises. Break down `Int.natAbs_eq n with h | h` into its components or cases. Rewrite using `[← h]`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hn`. Rewrite using `[show ((n.natAbs : ℕ) : ℤ) = -n by omega, map_neg, hn, neg_zero]`. Set `e` to `LinearEquiv.ofBijective t ⟨hinj, ht⟩`. Conclude with `of_injective φ e.symm.toLinearMap e.symm.injective hZ`.
+A detailed English derivation is pending.
 -/
 theorem of_cyclic [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)] (hZ : JointInj φ ℤ)
     (hP : ∀ p : ℕ, p.Prime → JointInj φ (ZMod p)) (C : Type) [AddCommGroup C] (t : ℤ →ₗ[ℤ] C)
@@ -214,15 +210,15 @@ theorem of_cyclic [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)] (hZ : Joint
     exact of_injective φ e.symm.toLinearMap e.symm.injective hZ
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `L _ s hs hspan`. Rewrite `hs` using `[Nat.le_zero, Finset.card_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hs` using the available equality. Use `haveI : Subsingleton L := ⟨fun a b => by`. Establish `ha : a ∈ Submodule.span ℤ ((∅ : Finset L) : Set L)` using `hspan ▸ Submodule.mem_top`. Establish `hb : b ∈ Submodule.span ℤ ((∅ : Finset L) : Set L)` using `hspan ▸ Submodule.mem_top`. Rewrite `ha`, `hb` using `[Finset.coe_empty, Submodule.span_empty, Submodule.mem_bot]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, hb]⟩`. Conclude with `of_subsingleton φ L`. Consider the case `succ n ih`. Introduce `L _ s hs hspan`. Break down `s.eq_empty_or_nonempty with h | ⟨x, hx⟩` into its components or cases.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Conclude with `ih L ∅ (by simp) hspan`. Establish `h1 : JointInj φ (LinearMap.range (LinearMap.toSpanSingleton ℤ L x))` using `of_cyclic φ hZ hP _ _ (LinearMap.surjective_rangeRestrict _)`. Establish `h3 : JointInj φ (L ⧸ LinearMap.range (LinearMap.toSpanSingleton ℤ L x))`. Use `ih _ ((s.erase x).image (LinearMap.range (LinearMap.toSpanSingleton ℤ L x)).mkQ) (Finset.card_image_le.trans ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.card_erase_of_mem hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.coe_image, ← Submodule.map_span, Submodule.map_mkQ_eq_top, ← LinearMap.span_singleton_eq_range, ← Submodule.span_insert, Finset.coe_erase, Set.insert_diff_singleton, Set.insert_eq_of_mem (by exact_mod_cast hx), hspan]`. Conclude with `of_exact φ _ _ (Submodule.injective_subtype _) (LinearMap.exact_subtype_mkQ _) (Submodule.mkQ_surjective _) h1 h3`.
+A detailed English derivation is pending.
 -/
 theorem of_fg [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)] (hZ : JointInj φ ℤ)
     (hP : ∀ p : ℕ, p.Prime → JointInj φ (ZMod p)) :
@@ -260,9 +256,9 @@ theorem of_fg [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)] (hZ : JointInj 
       (Submodule.mkQ_surjective _) h1 h3
 
 /- English proof (translation)
-Introduce `h hh`. Take `⟨L0, hfin, hsub⟩` from `TensorProduct.exists_finite_submodule_right_of_setFinite {h} (Set.finite_singleton h)`. Take `⟨s, hs⟩` from `hfin.fg_top`. Establish `h0 : JointInj φ L0` using `of_fg φ hZ hP s.card L0 s le_rfl hs`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp (hsub (Set.mem_singleton h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_of_mem_range φ L0.subtype (Submodule.injective_subtype _) h0 h ⟨y, hy⟩ hh`.
+A detailed English derivation is pending.
 -/
 theorem of_all [Module.Flat ℤ A] [∀ i, Module.Flat ℤ (B i)] (hZ : JointInj φ ℤ)
     (hP : ∀ p : ℕ, p.Prime → JointInj φ (ZMod p)) (L : Type) [AddCommGroup L] :
@@ -282,17 +278,15 @@ namespace GlobalTheory
 open GlobalTheory.TensorDevissage in
 
 /- English proof (translation)
-Introduce `N I A _ B _ φ hA hB hN hQ hp L _ h hh`. Use `haveI := hA`. Use `haveI := hB`. Distinguish the cases in `hN0 : N = 0`. Substitute `hN0 haveI : Subsingleton A := by` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsUnit (0 : A)` using `by simpa using hN`. Conclude with `subsingleton_of_zero_eq_one (isUnit_zero_iff.mp this)`. Conclude with `all_zero_of_subsingleton' h`. Establish `hZ : JointInj φ ℤ` using `of_injective φ (Int.castAddHom ℚ).toIntLinearMap Int.cast_injective (hQ hN0)`. Establish `hP : ∀ p : ℕ, p.Prime → JointInj φ (ZMod p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hpp`. Distinguish the cases in `hpN : p ∣ N`. Introduce `x _`. Establish `hkill : ∀ y : A ⊗[ℤ] ZMod p, (N : ℤ) • y = 0`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a z`. Rewrite using `[← TensorProduct.tmul_smul, zsmul_eq_mul, Int.cast_natCast]`. Take `⟨c, rfl⟩` from `hpN`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, ZMod.natCast_self, zero_mul, zero_mul, tmul_zero]`. Consider the case `add y1 y2 h1 h2 => rw [smul_add, h1, h2, add_zero]`. Take `⟨u, hu⟩` from `hN`. Establish `hx : x = ((u⁻¹ : Aˣ) : A) • (((N : ℤ) : A) • x)`. Rewrite using `[smul_smul, ← hu, Units.inv_mul, one_smul]`.
-
-Rewrite using `[hx, Int.cast_smul_eq_zsmul, hkill, smul_zero]`. Conclude with `hp p hpp hpN`. Conclude with `of_all φ hZ hP L h hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointInj_tensor_of_rat_and_zmod : ∀ (N : ℕ) (I A : Type) [CommRing A] (B : I → Type) [∀ i, CommRing (B i)] (φ : ∀ i, A →+* B i),
     Module.Flat ℤ A → (∀ i, Module.Flat ℤ (B i)) → IsUnit ((N : ℤ) : A) →

@@ -14,15 +14,15 @@ variable {g : ℕ} [Fact g.Prime] {F : Type} [Field F] [ValuativeRel F] [Topolog
   [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-The claim follows from `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem lt_one_mem_nhds : {x : F | valuation F x < 1} ∈ nhds (0 : F) :=
   (IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, by simp⟩
 
 /- English proof (translation)
-Establish `h1 : Filter.Tendsto (fun n : ℕ => (e z) ^ n) Filter.atTop (nhds 0)`. Use `(he.tendsto 0).comp (tendsto_pow_atTop_nhds_zero_of_norm_lt_one hz)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Simplify `this` using `[Function.comp_def, map_pow]`. Take `⟨n, hn⟩` from `(h1.eventually lt_one_mem_nhds).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[map_pow]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem val_lt_one {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℚ_[g]} (hz : ‖z‖ < 1) :
     valuation F (e z) < 1 := by
@@ -36,7 +36,7 @@ theorem val_lt_one {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℚ_[g]} (hz :
   exact absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))
 
 /- English proof (translation)
-Establish `: z ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := hz`. Rewrite `this` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `val_lt_one he this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_one_of_red {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℤ_[g]}
     (hz : PadicInt.toZMod z = 0) : valuation F (e z) < 1 := by
@@ -45,11 +45,11 @@ theorem val_lt_one_of_red {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℤ_[g]
   exact val_lt_one he this
 
 /- English proof (translation)
-Use `set m : ℕ := (PadicInt.toZMod z).val`. Establish `hm : PadicInt.toZMod (z - (m : ℤ_[g])) = 0`. Rewrite using `[map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `e1 : e (z : ℚ_[g]) = (m : F) + e ((z - (m : ℤ_[g]) : ℤ_[g]) : ℚ_[g])`. Rewrite using `[PadicInt.coe_sub, map_sub, PadicInt.coe_natCast, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(Valuation.map_add _ _ _).trans (max_le ?_ (val_lt_one_of_red he hm).le)` and prove the remaining obligations. Use `clear e1 hm`. Proceed by induction on `m with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.cast_succ]; exact (Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one {e : ℚ_[g] ≃+* F} (he : Continuous e) (z : ℤ_[g]) : valuation F (e z) ≤ 1 := by
   set m : ℕ := (PadicInt.toZMod z).val
@@ -69,7 +69,7 @@ def intHom {e : ℚ_[g] ≃+* F} (he : Continuous e) : ℤ_[g] →+* 𝒪[F] :=
     rw [Valuation.mem_integer_iff]; exact val_le_one he z
 
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.map (intHom he) k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[inc, intHom]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_inc_mem_KO {e : ℚ_[g] ≃+* F} (he : Continuous e) {n : ℕ} (k : GL (Fin n) ℤ_[g]) :
     Matrix.GeneralLinearGroup.map e.toRingHom (inc g n k) ∈ GlobalTheory.SplitWeil.KO F (Fin n) := by
@@ -79,23 +79,21 @@ theorem map_inc_mem_KO {e : ℚ_[g] ≃+* F} (he : Continuous e) {n : ℕ} (k : 
   rfl
 
 /- English proof (translation)
-Establish `hred : ∀ i j, (red g (r + t) k : Mt g (r + t)) i j = PadicInt.toZMod ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) i j)` using `fun i j => by simp [red]`. Establish `hent : ∀ i j, (Matrix.GeneralLinearGroup.map e.toRingHom (inc g (r + t) k)).val i j = e ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) i j : ℚ_[g])` using `fun i j => by simp [inc]`. Use `set d : ℤ_[g] := ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]).submatrix (Fin.natAdd r) (Fin.natAdd r)).det with hd`. Establish `hbr : br r t (red g (r + t) k : Mt g (r + t)) = (PadicInt.toZMod (p` using `g)).mapMatrix ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]).submatrix (Fin.natAdd r) (Fin.natAdd r)) := by`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hi : r + (i : ℕ) < r + t` using `by omega`. Establish `hj : r + (j : ℕ) < r + t` using `by omega`. Simplify using `only [br, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), hred]`. Both sides reduce to the same expression. Establish `hdc : PadicInt.toZMod d = c` using `by rw [hc, hbr, hd, RingHom.map_det]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdu : IsUnit d`. Assume the negation of the conclusion as `h`. Establish `: d ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by rw [PadicInt.ker_toZMod]; exact h`. Rewrite `this` using `[RingHom.mem_ker, hdc]`. Conclude with `c.ne_zero this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hu _ (map_inc_mem_KO he k) ?_ ?_ (Units.map e.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom hdu.unit)) ?_).trans ?_` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hent]`. Apply `val_lt_one_of_red he` to reduce the goal to its premises. Rewrite using `[← hred]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 _ _ (by simp) (by simp)`. Introduce `i j`. Rewrite using `[hent]`. Establish `hij : (red g (r + t) k : Mt g (r + t)) (Fin.castAdd t i) (Fin.castAdd t j) = (1 : Mt g r) i j`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hi : (i : ℕ) < r + t` using `by omega`. Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj)]`. Both sides reduce to the same expression. Establish `h2 : PadicInt.toZMod ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) (Fin.castAdd t i) (Fin.castAdd t j) - if i = j then 1 else 0) = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[map_sub, ← hred, hij, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `val_lt_one_of_red he h2` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `[hd, RingHom.map_det]`. Use `congr 1`. Establish `h2` using `hT hdu.unit`. Establish `h3 : Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom hdu.unit = c := Units.ext (by simpa using hdc)`. Rewrite `h2` using `[h3, MonoidHom.comp_apply]`.
-
-Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_inc {e : ℚ_[g] ≃+* F} (he : Continuous e) {ξ : Fˣ →* ℂˣ} {χ : (ZMod g)ˣ →* ℂˣ}
     (hT : TamePart (ξ.comp (Units.map e.toMonoidHom)) χ) {r t : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -152,14 +150,14 @@ theorem act_inc {e : ℚ_[g] ≃+* F} (he : Continuous e) {ξ : Fˣ →* ℂˣ} 
     rw [h2]
 
 /- English proof (translation)
-Introduce `i j hj hi` and use `by rw [Matrix.one_apply_ne] intro h; rw [h] at hi; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inPar_one {r n : ℕ} : InPar r (1 : Mt g n) := fun i j hj hi => by
   rw [Matrix.one_apply_ne]
   intro h; rw [h] at hi; omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : (i : ℕ) < r + t` using `by omega`. Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tl_one {r t : ℕ} : tl r (1 : Mt g (r + t)) = 1 := by
   ext i j
@@ -168,9 +166,9 @@ theorem tl_one {r t : ℕ} : tl r (1 : Mt g (r + t)) = 1 := by
   simp only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : r + (i : ℕ) < r + t` using `by omega`. Establish `hj : r + (j : ℕ) < r + t` using `by omega`. Simplify using `only [br, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]`. Distinguish the cases in `h : (i : ℕ) = j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Rewrite using `[if_neg (by omega), if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem br_one {r t : ℕ} : br r t (1 : Mt g (r + t)) = 1 := by
   ext i j
@@ -182,13 +180,13 @@ theorem br_one {r t : ℕ} : br r t (1 : Mt g (r + t)) = 1 := by
   · rw [if_neg (by omega), if_neg h]
 
 /- English proof (translation)
-Use `set M : Mt g (r + t) := fun i j : Fin (r + t) => if (i : ℕ) < r ∧ (j : ℕ) < r then Formalism.MainNotions.ArithmeticCylinders.entN ((1 : Gn g r) : Mt g r) i j else if r ≤ (i : ℕ) ∧ r ≤ (j : ℕ) then Formalism.MainNotions.ArithmeticCylinders.entN (y : Mt g t) (i - r) (j - r) else 0 …`. Establish `h0 : InPar r M` using `fun i j hj hi => by rw [hM]; dsimp only; rw [if_neg (by omega), if_neg (by omega)]`. Establish `h1 : tl r M = 1`. Use extensionality with `i j`. Establish `hi : (i : ℕ) < r + t` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `[tl, Formalism.MainNotions.ArithmeticCylinders.entN, hM, hi, hj]`. Establish `h2 : br r t M = y`. Use extensionality with `i j`. Simplify using `[br, Formalism.MainNotions.ArithmeticCylinders.entN, hM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, LabelDet.det_inPar r t M h0, h1, h2, Matrix.det_one, one_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Establish `hb : (blk r t (r + t) 1 y : Mt g (r + t)) = M` using `by show ((toG M : Gn g (r + t)) : Mt g (r + t)) = M`. Rewrite using `[toG, dif_pos hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hb]`. Conclude with `⟨h0, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem blk_parts {r t : ℕ} (y : Gn g t) :
     InPar r (blk r t (r + t) 1 y : Mt g (r + t)) ∧ tl r (blk r t (r + t) 1 y : Mt g (r + t)) = 1 ∧
@@ -214,13 +212,11 @@ theorem blk_parts {r t : ℕ} (y : Gn g t) :
   rw [hb]; exact ⟨h0, h1, h2⟩
 
 /- English proof (translation)
-Introduce `g _ F _ _ _ _ e he ξ χ hT r t V _ _ ρ u hu`. Establish `hsurj : ∀ x : Gn g (r + t), red g (r + t) (Function.invFun (red g (r + t)) x) = x` using `fun x => Function.invFun_eq (Model.red_surjective _ x)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.mem_principalCongruenceFixedVectors_iff]`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `act_inc he hT hu k (by rw [hk, Units.val_one]; exact inPar_one) (by rw [hk, Units.val_one]; exact tl_one) 1 (by rw [hk, Units.val_one, Units.val_one, br_one, Matrix.det_one])` as an intermediate fact. Rewrite `this` using `[map_one, Units.val_one, one_smul]`. Conclude with `this`. Introduce `x h0 h1 h2`. Use `act_inc he hT hu (Function.invFun (red g (r + t)) x) (by rw [hsurj]; exact h0) (by rw [hsurj]; exact h1) 1 (by rw [hsurj, h2, Matrix.det_one, Units.val_one])` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one, Units.val_one, one_smul]`. Conclude with `this`. Introduce `y`. Take `⟨h0, h1, h2⟩` from `blk_parts (r := r) y`. Use `act_inc he hT hu (Function.invFun (red g (r + t)) (blk r t (r + t) 1 y)) (by rw [hsurj]; exact h0) (by rw [hsurj]; exact h1) (Matrix.GeneralLinearGroup.det y) (by rw [hsurj, h2, Matrix.GeneralLinearGroup.val_det_apply])` as an intermediate fact.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isParVec_of_isBlockVec : ∀ (g : ℕ) [Fact g.Prime] (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (e : ℚ_[g] ≃+* F), Continuous e → ∀ (ξ : Fˣ →* ℂˣ) (χ : (ZMod g)ˣ →* ℂˣ),

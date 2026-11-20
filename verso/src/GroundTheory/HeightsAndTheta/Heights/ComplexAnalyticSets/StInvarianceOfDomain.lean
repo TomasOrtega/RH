@@ -8,13 +8,11 @@ def InvarianceOfDomain.Statement : Prop :=
     IsOpen U → ContinuousOn f U → Set.InjOn f U → IsOpen (f '' U)
 
 /- English proof (translation)
-Use `⟨Metric.isOpen_ball, ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.continuousOn ?_` and prove the remaining obligations. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using continuous_apply (0 : Fin 2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun x : Fin 2 → ℝ => x 1 + x 0 ^ 3)` using `by fun_prop`. Conclude with `hc`. Introduce `s _ t _ hst`. Establish `h0 : s 0 = t 0` using `by simpa using congrFun hst 0`. Establish `h1 : s 1 + s 0 ^ 3 = t 1 + t 0 ^ 3` using `by simpa using congrFun hst 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h0`. Simplify using `only [Fin.mk_one]`. Rewrite `h1` using `[h0]`.
-
-Conclude with `add_right_cancel h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InvarianceOfDomain.hypotheses_inhabited :
     IsOpen (Metric.ball (0 : Fin 2 → ℝ) 1) ∧

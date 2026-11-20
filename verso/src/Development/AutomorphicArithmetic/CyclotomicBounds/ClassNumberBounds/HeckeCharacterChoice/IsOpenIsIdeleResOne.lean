@@ -13,7 +13,7 @@ private noncomputable def resExp (𝔪 : Ideal (𝓞 E)) (v : HeightOneSpectrum 
   (Associates.mk v.asIdeal).count (Associates.mk 𝔪).factors
 
 /- English proof (translation)
-Simplify `Ideal.finite_factors h𝔪` using `only [Ideal.dvd_iff_le]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem finite_above (h𝔪 : 𝔪 ≠ ⊥) :
     {v : HeightOneSpectrum (𝓞 E) | 𝔪 ≤ v.asIdeal}.Finite := by

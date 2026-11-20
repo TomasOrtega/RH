@@ -20,7 +20,7 @@ namespace WeierstrassCurveSeries
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Take `⟨h0, h1, -, -⟩` from `Formalism.L2.Th1.A.logSpec.{0} K W`. Take `⟨e0, -, e2, e3, -⟩` from `Formalism.L2.Th1.A.expSpec.{0} K W`. Conclude with `⟨h0, h1, e0, e3, e2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem logPair (W : WeierstrassCurve K) : IsLogPair (logSer W) (expSer W) := by
   obtain ⟨h0, h1, -, -⟩ := Formalism.L2.Th1.A.logSpec.{0} K W
@@ -28,7 +28,7 @@ theorem logPair (W : WeierstrassCurve K) : IsLogPair (logSer W) (expSer W) := by
   exact ⟨h0, h1, e0, e3, e2⟩
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.Th1.A.wpInU.{0} K W`. Establish `hl : PowerSeries.HasSubst (logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (logPair W).1`. Unfold `XIsWp wpShift`. Rewrite using `[map_zero, sub_zero, PowerSeries.subst_add hl, PowerSeries.subst_mul hl, PowerSeries.subst_pow hl, PowerSeries.subst_X hl, ← PowerSeries.coe_substAlgHom hl, map_one, PowerSeries.coe_substAlgHom hl, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xIsWp (W : WeierstrassCurve K) : XIsWp (wpReg W) (logSer W) (xS W) (W.b₂ / 12) := by
   have h := Formalism.L2.Th1.A.wpInU.{0} K W
@@ -41,7 +41,7 @@ theorem xIsWp (W : WeierstrassCurve K) : XIsWp (wpReg W) (logSer W) (xS W) (W.b�
   ring
 
 /- English proof (translation)
-Establish `h` using `logPair W`. Establish `hl : PowerSeries.HasSubst (logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' h.1`. Unfold `wTr`. Rewrite using `[PowerSeries.subst_add hl, Pts.subst_subst h.2.2.1 h.1, h.2.2.2.1, PowerSeries.X_subst, PowerSeries.subst_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_wTr (W : WeierstrassCurve K) (xP yP : K) :
     PowerSeries.subst (logSer W) (wTr W xP yP) = xPlus W xP yP + PowerSeries.C (W.b₂ / 12) := by
@@ -57,11 +57,11 @@ end WeierstrassCurveSeries
 open WeierstrassCurveSeries
 
 /- English proof (translation)
-Introduce `K _ _ R W hW`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Take `⟨-, hx, -, -, hom, -, hF, -⟩` from `Formalism.L2.Th1.A.coeffMem.{0} K W R h1 h2 h3 h4 h6`. Use `⟨logPair W, xIsWp W, ⟨(Formalism.L2.Th1.A.wSerFactor.{0} K W).2.2.2.1, hx⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Formalism.L2.Th1.A.fglLog.{0} K W).2` as an intermediate fact. Unfold `fadd`. Rewrite using `[← this]`. Conclude with `hF n`. Rewrite using `[(Formalism.L2.Th1.A.logSpec.{0} K W).2.2.1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(Formalism.L2.Th1.A.unitSpec.{0} K W).2.2.1, hom⟩`.
+A detailed English derivation is pending.
 -/
 theorem curve_formal_frame : CurveFrame := by
   intro K _ _ R W hW
@@ -77,9 +77,9 @@ theorem curve_formal_frame : CurveFrame := by
     exact ⟨(Formalism.L2.Th1.A.unitSpec.{0} K W).2.2.1, hom⟩
 
 /- English proof (translation)
-Introduce `K _ _ W ι _ neg xP yP al h`. Take `⟨hE, hn, hxy, hsum⟩` from `h`. Use `⟨hn, ?_, hsum⟩` and prove the remaining obligations. Introduce `P`. Use `hD K W (xP P) (yP P) (hE P)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show HasSecondLogDeriv (wpShift (wpReg W) (xP P + W.b₂ / 12)) (2 * wpReg W - wTr W (xP P) (yP P) - wTr W (xP (neg P)) (yP (neg P)))`. Rewrite using `[(hxy P).1, (hxy P).2]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveEndoZ_of (hD : CurveSecondLogDerivative) : CurveEndoZ := by
   intro K _ _ W ι _ neg xP yP al h
@@ -93,9 +93,9 @@ theorem curveEndoZ_of (hD : CurveSecondLogDerivative) : CurveEndoZ := by
   exact this
 
 /- English proof (translation)
-Introduce `K _ _ R W hW ι _ neg xP yP al albar h hx hy hN ha ha' hc`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Establish `hM` using `Formalism.L2.Th1.A.coeffMem.{0} K W R h1 h2 h3 h4 h6`. Use `⟨curveEndoZ_of hD K W ι neg xP yP al h, hN, fun P => subst_wTr W _ _, ?_, hx, ha, ha', hc⟩` and prove the remaining obligations. Introduce `P n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hM.2.2.2.2.2.2.2.2.2.2 (xP P) (hx P) (yP P) (hy P) n).1`.
+A detailed English derivation is pending.
 -/
 theorem curveEndoR_of (hD : CurveSecondLogDerivative) : CurveEndoR := by
   intro K _ _ R W hW ι _ neg xP yP al albar h hx hy hN ha ha' hc
@@ -106,11 +106,11 @@ theorem curveEndoR_of (hD : CurveSecondLogDerivative) : CurveEndoR := by
   exact (hM.2.2.2.2.2.2.2.2.2.2 (xP P) (hx P) (yP P) (hy P) n).1
 
 /- English proof (translation)
-Introduce `K _ _ _ _ R hR h2 W hW s2 hF1 O _ _ _ τ hτ hstar hself h2O hsum Dn hDn hdata`. Take `⟨hlp, hwp, hA, hFG, hl'⟩` from `curve_formal_frame K R W hW`. Establish `hPh : IsPh (wpReg W) s2 (logSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W))` using `(odd_phi_is_phi K (wpReg W) (logSer W) s2 hlp.1 hlp.2.1).2`. Establish `hFr : Frame R (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W))` using `⟨hlp, hFG, hPh.1⟩`. Establish `hall` using `endoAllFromData K R hR (wpReg W) s2 (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) (xS W) (W.b₂ / 12) hFr hF1 hPh hwp hA O τ hτ hstar hself h2 h2O hsum Dn hDn (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `α hα`. Take `⟨ι, hι, neg, xP, yP, hE, hx, hy, hN, ha, ha', hc, hs⟩` from `hdata α hα`. Conclude with `⟨ι, hι, neg, xP, fun P => wTr W (xP P) (yP P), fun P => xPlus W (xP P) (yP P), curveEndoR_of hD K R W hW ι neg xP yP (τ α) (τ (star α)) hE hx hy hN ha ha' hc, hs⟩)`. Use `⟨fun α => ⟨(hall α).1, (hall α).2.1, (hall α).2.2, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `jetAdj K R (logSer W) (expSer W) _ (τ α) (τ (star α)) hlp hPh.1 (hall α).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `(hall (-1)).2.1`. Rewrite `hm` using `[star_neg, star_one, map_neg, map_one]`. Conclude with `jetOne K R (logSer W) (expSer W) _ hlp hl' hPh.1 hm h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveEndoAll_of (hD : CurveSecondLogDerivative) : CurveEndoAll := by
   intro K _ _ _ _ R hR h2 W hW s2 hF1 O _ _ _ τ hτ hstar hself h2O hsum Dn hDn hdata
@@ -133,24 +133,24 @@ theorem curveEndoAll_of (hD : CurveSecondLogDerivative) : CurveEndoAll := by
     exact jetOne K R (logSer W) (expSer W) _ hlp hl' hPh.1 hm h2
 
 /- English proof (translation)
-Introduce `K _ _ W xP yP hP`. Conclude with `Formalism.L2.Th1.A.plusZCleared.{0} K W xP yP hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem curve_second_log_derivative_holds : CurveSecondLogDerivative := by
   intro K _ _ W xP yP hP
   exact Formalism.L2.Th1.A.plusZCleared.{0} K W xP yP hP
 
 /- English proof (translation)
-The claim follows from `curveEndoZ_of curve_second_log_derivative_holds`.
+A detailed English derivation is pending.
 -/
 theorem curve_integer_multiplication_series : CurveEndoZ := curveEndoZ_of curve_second_log_derivative_holds
 
 /- English proof (translation)
-The claim follows from `curveEndoR_of curve_second_log_derivative_holds`.
+A detailed English derivation is pending.
 -/
 theorem curve_real_multiplication_series : CurveEndoR := curveEndoR_of curve_second_log_derivative_holds
 
 /- English proof (translation)
-The claim follows from `curveEndoAll_of curve_second_log_derivative_holds`.
+A detailed English derivation is pending.
 -/
 theorem curve_all_endomorphism_series : CurveEndoAll := curveEndoAll_of curve_second_log_derivative_holds
 

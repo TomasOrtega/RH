@@ -13,19 +13,17 @@ namespace GlobalTheory.InertLevel
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ x y : G, x ∈ S → y ∈ S → (x⁻¹ * y ∈ U ↔ x⁻¹ * y ∈ K)` using `fun x y hx hy => hU _ (S.mul_mem (S.inv_mem hx) hy)`. Set `ι : S ⧸ (K.subgroupOf S) → G ⧸ U` to `fun q => (((q.out : S) : G) : G ⧸ U)`. Establish `hinj : Function.Injective ι`. Introduce `q q' h`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `h1` using `QuotientGroup.eq.1 h`. Establish `h2` using `(key _ _ (q.out).2 (q'.out).2).1 h1`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsupp : (Function.support fun c : G ⧸ U => if hc : ∃ x : G, (x : G ⧸ U) = c ∧ x ∈ S then F hc.choose else 0) ⊆ Set.range ι`. Introduce `c hc`. Distinguish the cases in `hc' : ∃ x : G, (x : G ⧸ U) = c ∧ x ∈ S`. Take `⟨x, hxc, hxS⟩` from `hc'`. Use `⟨((⟨x, hxS⟩ : S) : S ⧸ (K.subgroupOf S)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set q : S ⧸ (K.subgroupOf S) := ((⟨x, hxS⟩ : S) : S ⧸ (K.subgroupOf S))`. Establish `h1` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' q)`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`. Establish `h1' : ((q.out : S) : G)⁻¹ * x ∈ K` using `by simpa using h1`. Rewrite using `[← hxc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `QuotientGroup.eq.2 ((key _ _ (q.out).2 hxS).2 h1')`. Conclude with `absurd (dif_neg hc') hc`. Establish `hsum` using `finsum_mem_inter_support (fun c : G ⧸ U => if hc : ∃ x : G, (x : G ⧸ U) = c ∧ x ∈ S then F hc.choose else 0) (Set.range ι)`. Rewrite `hsum` using `[Set.inter_eq_right.2 hsupp, finsum_mem_support, finsum_mem_range hinj]`. Rewrite using `[hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `hc : ∃ x : G, (x : G ⧸ U) = ι q ∧ x ∈ S` using `⟨((q.out : S) : G), rfl, (q.out).2⟩`. Rewrite using `[dif_pos hc]`. Take `⟨h1, h2⟩` from `hc.choose_spec`. Establish `hm : ((q.out : S) : G)⁻¹ * hc.choose ∈ K` using `(key _ _ (q.out).2 h2).1 (QuotientGroup.eq.1 h1.symm)`.
-
-Establish `e : hc.choose = ((q.out : S) : G) * (((q.out : S) : G)⁻¹ * hc.choose)` using `by group`. Rewrite using `[e, hF _ (q.out).2 _ (S.mul_mem (S.inv_mem (q.out).2) h2) hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_cosets_eq {G W : Type} [Group G] [AddCommMonoid W] (S K U : Subgroup G)
     (hU : ∀ κ ∈ S, (κ ∈ U ↔ κ ∈ K)) (F : G → W)
@@ -75,15 +73,15 @@ end GlobalTheory.InertLevel
 namespace GlobalTheory.InertLevel
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv hKU U U' hU hU' W _ _ h hbi φ hφ`. Use function extensionality and compare the values at `g`. Set `F : GAf L n → W` to `fun x => Dv.hval h (Dv.loc x) • φ (g * x)`. Establish `hF : ∀ x ∈ GlobalTheory.InertSph.Gv L n v, ∀ κ ∈ GlobalTheory.InertSph.Gv L n v, κ ∈ Umax L n → F (x * κ) = F x`. Introduce `x _ κ hκS hκU`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hκ, hk⟩` from `hKU κ hκU hκS`. Establish `hloc : Dv.loc (x * κ) = Dv.loc x * Dv.loc κ` using `(GlobalTheory.SatInd.CosetFin.locHom Dv).map_mul x κ`. Establish `hφκ : φ (g * x * κ) = φ (g * x)` using `congrFun (hφ κ hκU hκS) (g * x)`. Establish `hval : Dv.hval h (Dv.loc x * Dv.loc κ) = Dv.hval h (Dv.loc x)`. Unfold `InertDatum.hval`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hy : Dv.loc x ∈ Formalism.UG.GU Dv.σw n`. Establish `hyk : Dv.loc x * Dv.loc κ ∈ Formalism.UG.GU Dv.σw n` using `(Formalism.UG.GU Dv.σw n).mul_mem hy hκ`. Rewrite using `[dif_pos hyk, dif_pos hy]`. Establish `e` using `hbi 1 ⟨⟨Dv.loc κ, hκ⟩, hk⟩ ⟨Dv.loc x, hy⟩`. Simplify using `only [OneMemClass.coe_one, one_mul] at e`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `hyk : Dv.loc x * Dv.loc κ ∉ Formalism.UG.GU Dv.σw n` using `fun hm => hy (by`. Simplify using `using (Formalism.UG.GU Dv.σw n).mul_mem hm ((Formalism.UG.GU Dv.σw n).inv_mem hκ))`. Rewrite using `[dif_neg hyk, dif_neg hy]`. Use `show Dv.hval h (Dv.loc (x * κ)) • φ (g * (x * κ)) = Dv.hval h (Dv.loc x) • φ (g * x)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hloc, hval, ← mul_assoc, hφκ]`. Establish `e1` using `finsum_cosets_eq (GlobalTheory.InertSph.Gv L n v) (Umax L n) U (fun κ hκ => hU κ hκ) F hF`. Establish `e2` using `finsum_cosets_eq (GlobalTheory.InertSph.Gv L n v) (Umax L n) U' (fun κ hκ => hU' κ hκ) F hF`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckeFunI_level_indep : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), (∀ κ : GAf L n, κ ∈ Umax L n → TrivOutside {v} κ → ∃ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc κ, hκ⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n) → ∀ (U U' : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → (∀ κ, TrivOutside {v} κ → (κ ∈ U' ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (h : Formalism.UG.GU Dv.σw n → ℂ), Formalism.UG.IsBiInv (Formalism.UG.KU Dv.σw n) h → ∀ φ : GAf L n → W, (∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ φ = φ) → heckeFunI L n U Dv h φ = heckeFunI L n U' Dv h φ := by
   intro L _ _ _ n v w Dv hKU U U' hU hU' W _ _ h hbi φ hφ

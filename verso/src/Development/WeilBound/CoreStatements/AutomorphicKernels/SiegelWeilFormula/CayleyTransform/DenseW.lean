@@ -11,11 +11,9 @@ namespace PositivityTheory.SiegelWeilFormula.Krd.DM
 open PositivityTheory.SiegelWeilFormula.Krd.DC
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix ι ι K).map f = 1` using `Matrix.map_one _ (map_zero f) (map_one f)`. Establish `hD : D = biᵀ * Q * bi.map f`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, Matrix.transpose_one, h1, Matrix.one_mul, Matrix.mul_one]`. Use `_ = biᵀ * (bᵀ * D * b.map f) * bi.map f := by`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = biᵀ * Q * bi.map f := by rw [hQ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.map_mul, Matrix.map_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = D := by rw [hQ, hZ, ← hD]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_unitE {K ι : Type} [CommRing K] [Fintype ι] [DecidableEq ι] (f : K →+* K) (b bi Z D Q : Matrix ι ι K)
     (hb : b * bi = 1) (hQ : bᵀ * D * b.map f = Q) (hZ : Zᵀ * Q * Z.map f = Q) :
@@ -32,7 +30,7 @@ theorem conj_unitE {K ι : Type} [CommRing K] [Fintype ι] [DecidableEq ι] (f :
     _ = D := by rw [hQ, hZ, ← hD]
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul]`. Conclude with `hD this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (f : K →+* K) {A D : Matrix ι ι K}
     (h : Aᵀ * D * A.map f = D) (hD : D.det ≠ 0) : A.det ≠ 0 := by
@@ -44,14 +42,14 @@ theorem det_ne_of {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (f : K �
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem incM_cA {p q : Type} (M : Matrix p q E) : (incM F M).map (cA σ) = incM F (M.map σ) := by
   ext i j
   rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.transpose_map.symm`.
+A detailed English derivation is pending.
 -/
 theorem incM_alt_bis {p q : Type} (M : Matrix p q E) : (incM F M)ᵀ = incM F Mᵀ :=
   Matrix.transpose_map.symm
@@ -59,7 +57,7 @@ theorem incM_alt_bis {p q : Type} (M : Matrix p q E) : (incM F M)ᵀ = incM F M�
 variable (d : SD σ)
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det hε` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero, zero_mul]`. Conclude with `QR_det_ne E ε this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblJ_det {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n ε) : (dbl d.Y.J).det ≠ 0 := by
   intro h0
@@ -71,7 +69,7 @@ def bX (X : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin 
   d.b.1 * X * (d.b⁻¹).1
 
 /- English proof (translation)
-The claim follows from `conj_unitE (σ : E →+* E) d.b.1 (d.b⁻¹).1 X (dbl d.Y.J) (QR E d.n ε) (Units.mul_inv d.b) hε hX`.
+A detailed English derivation is pending.
 -/
 theorem bX_unitary {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n ε)
     {X : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E} (hX : Xᵀ * QR E d.n ε * X.map σ = QR E d.n ε) :
@@ -87,7 +85,7 @@ def ratG {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n ε)
       rw [dbl_incM d, incM_cA, incM_alt_bis, ← incM_mul, ← incM_mul, bX_unitary d hε hX]⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratG_mem {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n ε)
     (X : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) (hX : Xᵀ * QR E d.n ε * X.map σ = QR E d.n ε) :
@@ -95,7 +93,7 @@ theorem ratG_mem {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E 
   Subgroup.mem_subgroupOf.2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `show incM F (d.b⁻¹).1 * incM F (bX d X) * incM F d.b.1 = incM F X`. Rewrite using `[← incM_mul, ← incM_mul]`. Use `congr 1`. Simplify using `only [bX, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_ratG {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n ε)
     (X : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) (hX : Xᵀ * QR E d.n ε * X.map σ = QR E d.n ε) :
@@ -107,7 +105,7 @@ theorem inFrame_ratG {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Q
   rw [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `show incM F (d.b⁻¹).1 * (mat2 x * mat2 z) * incM F d.b.1 = (incM F (d.b⁻¹).1 * mat2 x * incM F d.b.1) * (incM F (d.b⁻¹).1 * mat2 z * incM F d.b.1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bb d, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inFrame_mul (x z : d.G) : inFrame d.b (x * z) = inFrame d.b x * inFrame d.b z := by
   show incM F (d.b⁻¹).1 * (mat2 x * mat2 z) * incM F d.b.1 =
@@ -118,9 +116,9 @@ theorem inFrame_mul (x z : d.G) : inFrame d.b (x * z) = inFrame d.b x * inFrame 
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ u : d.G, mat2 u = incM F d.b.1 * inFrame d.b u * incM F (d.b⁻¹).1` using `fun u => by`. Simplify using `only [inFrame, ← Matrix.mul_assoc, bb d, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, bb d, Matrix.mul_one]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show mat2 x = mat2 z`. Rewrite using `[e x, e z, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_inj {x z : d.G} (h : inFrame d.b x = inFrame d.b z) : x = z := by
   have e : ∀ u : d.G, mat2 u = incM F d.b.1 * inFrame d.b u * incM F (d.b⁻¹).1 := fun u => by
@@ -132,14 +130,14 @@ theorem inFrame_inj {x z : d.G} (h : inFrame d.b x = inFrame d.b z) : x = z := b
   rw [e x, e z, h]
 
 /- English proof (translation)
-Use `Matrix.isUnit_det_of_right_inverse (B := ((ε : ℤ) : ℂ)⁻¹ • (Qc n ε)ᵀ) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, J_sq, smul_smul, inv_mul_cancel₀ (eps_ne ε), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_unit (ε : ℤˣ) {n : ℕ} : IsUnit (Qc n ε)ᵀ.det := by
   refine Matrix.isUnit_det_of_right_inverse (B := ((ε : ℤ) : ℂ)⁻¹ • (Qc n ε)ᵀ) ?_
   rw [Matrix.mul_smul, J_sq, smul_smul, inv_mul_cancel₀ (eps_ne ε), one_smul]
 
 /- English proof (translation)
-Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Use `congrArg Matrix.det hh` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `(J_unit ε).ne_zero this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_of_inU {ε : ℤˣ} {n : ℕ} {h : M2 n} (hh : InU (Qc n ε)ᵀ h) : IsUnit h.det := by
   refine isUnit_iff_ne_zero.2 fun h0 => ?_
@@ -152,19 +150,17 @@ end PositivityTheory.SiegelWeilFormula.Krd.DM
 open PositivityTheory.SiegelWeilFormula.Krd PositivityTheory.SiegelWeilFormula.Krd.DM PositivityTheory.SiegelWeilFormula.Krd.DC in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w y O hO hy`. Establish `h0` using `zeta_ne R.hζ`. Establish `hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = QR E d.n R.ε` using `R.hε`. Take `⟨X, hXU, hXO⟩` from `exists_rat d.cm (d.B.emb w).1 R.hζ hO hy`. Establish `hX` using `rat_unitary d.cm (d.B.emb w).1 R.ε X hXU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ratG d hε X hX, ratG_mem d hε X hX, _, hXO, ratG d hε X hX * (R.ι w (Phi R.hζ ⟨_, hXU⟩))⁻¹, (inv_mul_cancel_right _ _).symm, fun y'' => ?_⟩` and prove the remaining obligations. Use `set y' := Phi R.hζ ⟨X.map (d.B.emb w).1, hXU⟩ with hy'`. Use `set A := inFrame d.b (ratG d hε X hX * (R.ι w y')⁻¹) with hA`. Establish `hAC : A * inFrame d.b (R.ι w y') = incM F X`. Rewrite using `[hA, ← inFrame_mul, inv_mul_cancel_right, inFrame_ratG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : d.cw w (inFrame d.b (R.ι w y')) = X.map (d.B.emb w).1`. Establish `e` using `R.at_w w y'`. Rewrite `e` using `[show mR y' = dZ d.n R.ζ * X.map (d.B.emb w).1 * dZ d.n R.ζ⁻¹ from rfl, Matrix.mul_assoc _ (dZ _ R.ζ⁻¹), dZ_inv_mul h0, Matrix.mul_one]`. Use `congrArg (fun M => dZ d.n R.ζ⁻¹ * M) e` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, dZ_inv_mul h0, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet` using `det_of_inU hXU`. Establish `hAw : d.cw w A = 1`. Establish `e : d.cw w A * X.map (d.B.emb w).1 = X.map (d.B.emb w).1`. Use `congrArg (d.cw w) hAC` as an intermediate fact. Rewrite `this` using `[cw_mul, hC, cw_incM]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Use `_ = 1 := by rw [e, Matrix.mul_nonsing_inv _ hdet]`. Apply `inFrame_inj d` to reduce the goal to its premises. Rewrite using `[inFrame_mul d _ (R.ι w y''), inFrame_mul d (R.ι w y''), ← hA]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Rewrite using `[cw_mul, cw_mul]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Rewrite using `[hAw, Matrix.one_mul, Matrix.mul_one]`.
-
-Rewrite using `[R.off_w w w' y'' hw, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[fin_mul, fin_mul, R.off_f w y'', ← fin_mul, ← fin_mul, Matrix.mul_one, Matrix.one_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.SiegelWeilFormula.Krd.denseW : PositivityTheory.SiegelWeilFormula.DenseW := by
   intro F E _ _ _ _ _ σ d R w y O hO hy

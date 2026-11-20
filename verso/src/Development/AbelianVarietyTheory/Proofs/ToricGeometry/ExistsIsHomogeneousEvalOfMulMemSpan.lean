@@ -11,7 +11,7 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨G, hG, hfG⟩` from `hf`. Take `⟨H, hH, hgH⟩` from `hg`. Conclude with `⟨G * H, hG.mul hH, fun z => by rw [hfG, hgH, map_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isWeightedHomogeneous_coeff_mul_rw1 {X ρ : Type} (b : ρ → X → ℂ) {k l : ℕ} {f g : X → ℂ}
     (hf : ∃ G : MvPolynomial ρ ℂ, G.IsHomogeneous k ∧
@@ -25,11 +25,11 @@ private theorem isWeightedHomogeneous_coeff_mul_rw1 {X ρ : Type} (b : ρ → X 
   exact ⟨G * H, hG.mul hH, fun z => by rw [hfG, hgH, map_mul]⟩
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨MvPolynomial.X i, MvPolynomial.isHomogeneous_X (R := ℂ) i, fun z => by simp⟩`. Consider the case `zero => exact ⟨0, MvPolynomial.isHomogeneous_zero _ _ _, fun z => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨G, hG, hxG⟩` from `hx`. Take `⟨H, hH, hyH⟩` from `hy`. Conclude with `⟨G + H, hG.add hH, fun z => by simp [hxG, hyH]⟩`. Consider the case `smul c x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨G, hG, hxG⟩` from `hx`. Establish `hCG` using `(MvPolynomial.isHomogeneous_C (σ := ρ) c).mul hG`. Rewrite `hCG` using `[zero_add]`. Conclude with `⟨MvPolynomial.C c * G, hCG, fun z => by simp [hxG]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem exists_homogeneous_one_eval_of_mem_span {X ρ : Type} (b : ρ → X → ℂ) {f : X → ℂ}
     (hf : f ∈ Submodule.span ℂ (Set.range b)) :
@@ -51,21 +51,21 @@ private theorem exists_homogeneous_one_eval_of_mem_span {X ρ : Type} (b : ρ �
     exact ⟨MvPolynomial.C c * G, hCG, fun z => by simp [hxG]⟩
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `m hm`. Rewrite `hm` using `[mul_zero, Finsupp.degree_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hm` using the available equality. Conclude with `⟨1, MvPolynomial.isHomogeneous_one _ _, fun z => by simp⟩`. Consider the case `succ k ih`. Introduce `m hm`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m i ≠ 0 := by`.
+Substitute using the available equality. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : m = 0` using `by ext x; exact h x`. Rewrite `hm` using `[h0, map_zero]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hle₁ : Finsupp.single i 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨m₁, rfl⟩ : ∃ m₁, m = m₁ + Finsupp.single i 1` from `⟨_, (tsub_add_cancel_of_le hle₁).symm⟩`. Rewrite `hm` using `[map_add, Finsupp.degree_single]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, m₁ j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : m₁ = 0` using `by ext x; exact h x`. Rewrite `hm` using `[h0, map_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle₂ : Finsupp.single j 1 ≤ m₁`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨m₂, rfl⟩ : ∃ m₂, m₁ = m₂ + Finsupp.single j 1` from `⟨_, (tsub_add_cancel_of_le hle₂).symm⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[map_add, Finsupp.degree_single]`. Establish `hdeg : m₂.degree = 2 * k` using `by omega`. Take `⟨G, hG, hGz⟩` from `isWeightedHomogeneous_coeff_mul_rw1 b (ih m₂ hdeg) (exists_homogeneous_one_eval_of_mem_span b (hab j i))`. Use `⟨G, hG, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hGz z, Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Finsupp.prod_single_index, pow_zero, pow_one, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem exists_homogeneous_eval_of_even_degree_monomial {X σ ρ : Type} (a : σ → X → ℂ) (b : ρ → X → ℂ)
     (hab : ∀ i j, a i * a j ∈ Submodule.span ℂ (Set.range b)) :
@@ -113,13 +113,13 @@ private theorem exists_homogeneous_eval_of_even_degree_monomial {X σ ρ : Type}
     ring
 
 /- English proof (translation)
-Establish `hP : ∀ s : Finset (σ →₀ ℕ), s ⊆ F.support → ∃ G : MvPolynomial ρ ℂ, G.IsHomogeneous d ∧ ∀ z, (∑ m ∈ s, F.coeff m * m.prod fun c e => a c z ^ e) = MvPolynomial.eval (fun c => b c z) G`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨0, MvPolynomial.isHomogeneous_zero _ _ _, fun z => by simp⟩`. Consider the case `insert m s hms ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hsub`. Take `⟨G, hG, hGz⟩` from `ih (fun x hx => hsub (Finset.mem_insert_of_mem hx))`. Establish `hm : m.degree = 2 * d`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hF (MvPolynomial.mem_support_iff.mp (hsub (Finset.mem_insert_self m s)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH, hHz⟩` from `exists_homogeneous_eval_of_even_degree_monomial a b hab d m hm`. Establish `hCH` using `(MvPolynomial.isHomogeneous_C (σ := ρ) (F.coeff m)).mul hH`. Rewrite `hCH` using `[zero_add]`. Use `⟨MvPolynomial.C (F.coeff m) * H + G, hCH.add hG, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hms, hGz z, hHz z]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨G, hG, hGz⟩` from `hP F.support subset_rfl`. Conclude with `⟨G, hG, fun z => by rw [MvPolynomial.eval_eq, ← hGz z]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHomogeneous_eval_of_mul_mem_span {X σ ρ : Type} (a : σ → X → ℂ) (b : ρ → X → ℂ)
     (hab : ∀ i j, a i * a j ∈ Submodule.span ℂ (Set.range b)) (d : ℕ) (F : MvPolynomial σ ℂ)
@@ -149,11 +149,11 @@ theorem exists_isHomogeneous_eval_of_mul_mem_span {X σ ρ : Type} (a : σ → X
   exact ⟨G, hG, fun z => by rw [MvPolynomial.eval_eq, ← hGz z]; rfl⟩
 
 /- English proof (translation)
-Introduce `hA hB hC g τ hτ`. Take `⟨N, hN3, hNC⟩` from `hC g τ hτ`. Use `⟨2 * N, by omega, even_two_mul N, fun d f hf => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hFz⟩` from `hNC (2 * d) f ⟨hf.1, fun n n' z => by rw [show N * (2 * d) = 2 * N * d by ring]; exact hf.2 n n' z⟩`. Establish `hA'` using `(hA g τ hτ N (by omega)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab : ∀ i j : Fin g → Fin N, (fun z : Fin g → ℂ => theta (fun k => ((i k : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) * (fun z : Fin g → ℂ => theta (fun k => ((j k : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∈ Submodule.span ℂ (Set.range (fun (c : Fin g → Fin (2 * N)) (z : Fin …`. Introduce `i j`. Use `hB g τ hτ (2 * N) (by omega) _ ⟨(hA' i).1.mul (hA' j).1, fun n n' z => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hA' i).2 n n' z`. Establish `h2` using `(hA' j).2 n n' z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce at h1 h2 ⊢`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, h1, h2, show ∀ x : ℂ, eC (-((2 * N : ℕ) : ℂ) * x) = eC (-(N : ℂ) * x) * eC (-(N : ℂ) * x) from fun x => by unfold eC; rw [← Complex.exp_add]; congr 1; push_cast; ring]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨G, hG, hGz⟩` from `exists_isHomogeneous_eval_of_mul_mem_span (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun k => ((c k : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (fun (c : Fin g → Fin (2 * N)) (z : Fin g → ℂ) => theta (fun k => ((c k : ℕ) : ℝ) / ((2 * N : ℕ) : ℝ)) 0 (((2 * N : ℕ) : ℂ) • …`. Conclude with `⟨G, hG, fun z => (hFz z).trans (hGz z)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_projectiveNormality_even :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → (∀ c : Fin g → Fin N, (Differentiable ℂ (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) z)) ∧ LinearIndependent ℂ (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → ∀ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → f ∈ Submodule.span ℂ (Set.range (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∃ N : ℕ, 3 ≤ N ∧ ∀ (d : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → ∃ F : MvPolynomial (Fin g → Fin N) ℂ, F.IsHomogeneous d ∧ ∀ z, f z = MvPolynomial.eval (fun c => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) F) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∃ N : ℕ, 3 ≤ N ∧ Even N ∧ (∀ (d : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → ∃ F : MvPolynomial (Fin g → Fin N) ℂ, F.IsHomogeneous d ∧ ∀ z, f z = MvPolynomial.eval (fun c => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) F)) := by

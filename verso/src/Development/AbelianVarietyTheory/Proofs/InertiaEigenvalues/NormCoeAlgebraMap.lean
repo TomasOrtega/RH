@@ -13,9 +13,9 @@ namespace GlobalTheory.HWL.GroupLayer
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `GlobalTheory.HWL.NormVal.locPrime_v_normalised l P LL`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using `only [AddValuation.map_zero, top_le_iff, AddValuation.top_iff, ZeroMemClass.coe_zero, norm_zero, norm_le_zero_iff, ZeroMemClass.coe_eq_zero]`. Establish `hne : P.v LL y ≠ ⊤` using `fun h => hy ((AddValuation.top_iff _).1 h)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 hne`. Rewrite using `[← hq, h2, (h1 y q).1 hq.symm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem v_le_iff (P : LocPrime l) (LL : FinExt l) (x y : ↥LL.1) :
     P.v LL y ≤ P.v LL x ↔ ‖(x : Om l)‖ ≤ ‖(y : Om l)‖ := by
@@ -29,7 +29,7 @@ theorem v_le_iff (P : LocPrime l) (LL : FinExt l) (x y : ↥LL.1) :
     rw [← hq, h2, (h1 y q).1 hq.symm]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[l] (Om l) (a : ℚ_[l])‖ = ‖(a : ℚ_[l])‖`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem norm_coe_algebraMap (LL : FinExt l) (a : ℤ_[l]) :
     ‖((algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) a) : ↥LL.1) : Om l)‖ = ‖a‖ := by
@@ -37,7 +37,7 @@ theorem norm_coe_algebraMap (LL : FinExt l) (a : ℤ_[l]) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← norm_coe_algebraMap LL (a ^ k - 1), map_sub, map_sub, map_one, map_one, map_pow (algebraMap ℤ_[l] ↥(OL LL))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_pow_sub_one (LL : FinExt l) (a : ℤ_[l]) (k : ℕ) :
     ‖((algebraMap ↥(OL LL) ↥LL.1 ((algebraMap ℤ_[l] ↥(OL LL) a) ^ k) - 1 : ↥LL.1) : Om l)‖
@@ -45,7 +45,7 @@ theorem norm_pow_sub_one (LL : FinExt l) (a : ℤ_[l]) (k : ℕ) :
   rw [← norm_coe_algebraMap LL (a ^ k - 1), map_sub, map_sub, map_one, map_one, map_pow (algebraMap ℤ_[l] ↥(OL LL))]
 
 /- English proof (translation)
-Simplify `norm_pow_sub_one LL a 1` using `only [pow_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_sub_one (LL : FinExt l) (a : ℤ_[l]) :
     ‖((algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) a) - 1 : ↥LL.1) : Om l)‖
@@ -56,7 +56,7 @@ noncomputable def congSub (l : ℕ) [Fact l.Prime] (s : ℕ) : Subgroup ℤ_[l]�
   (Units.map (Ideal.Quotient.mk (Ideal.span {(l : ℤ_[l]) ^ s})).toMonoidHom).ker
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← Ideal.Quotient.eq, congSub, MonoidHom.mem_ker, Units.ext_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_congSub (s : ℕ) (u : ℤ_[l]ˣ) :
     u ∈ congSub l s ↔ ‖(u : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(s : ℤ)) := by
@@ -65,23 +65,23 @@ theorem mem_congSub (s : ℕ) (u : ℤ_[l]ˣ) :
   simp
 
 /- English proof (translation)
-Introduce `l _ P K s LL hG`. Take `⟨emb, hbij, hσ⟩` from `GlobalTheory.HWL.exists_letters l P K s LL hG`. Take `⟨hs1, hs2, hKs, -⟩` from `hG`. Take `⟨χ, hχ, -, honto⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Take `⟨one, hone1, hone2⟩` from `GlobalTheory.HWL.exists_unitLat l K LL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `GlobalTheory.HWL.NormVal.locPrime_v_normalised l P LL`. Set `χK : ↥(GK K) →* ℤ_[l]ˣ` to `χ.comp (GK K).subtype`. Take `⟨gam, gamK, D, hgam, hD, hK, hKeq, hK1⟩` from `GlobalTheory.PadicUnitSub.exists_gam_gamK_torsion l s χK.range hs1 hs2 (fun u hu => by`. Take `⟨g, hg, hgu⟩` from `honto K s hKs u hu`. Conclude with `⟨⟨g, hg⟩, hgu⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `χΓ : ↥χK.range →* (↥(OL LL))ˣ` to `(Units.map (algebraMap ℤ_[l] ↥(OL LL)).toMonoidHom).comp χK.range.subtype`. Establish `hχΓ : ∀ g : ↥χK.range, (χΓ g : ↥(OL LL)) = algebraMap ℤ_[l] ↥(OL LL) ((g : ℤ_[l]ˣ) : ℤ_[l])` using `fun _ => rfl`. Establish `hres : ∀ g : ↥(GK K), algebraMap ℚ_[l] ↥LL.1 ((P.PD K).χ g : ℚ_[l]) = algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) ((χK g : ℤ_[l]ˣ) : ℤ_[l]))` using `fun g => by`. Rewrite using `[P.PD_χ, ← hχ]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs : ((s : ℚ) : WithTop ℚ) = (s : WithTop ℚ)` using `by norm_cast`. Establish `hz : (l : ℝ) ^ (-((s : ℚ) : ℝ)) = (l : ℝ) ^ (-(s : ℤ))`. Rewrite using `[← Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `⟨{ emb := emb, emb_bij := hbij, emb_σ := hσ, n_eq := rfl, v_l := ?_, s_pos := hs1, s_two := fun h => hs2 (by rwa [P.PD_p] at h), Gam := ↥χK.range, resΓ := χK.rangeRestrict, resΓ_onto := χK.rangeRestrict_surjective, χΓ := χΓ, χΓ_res := fun g => (hres g).symm, χΓ_inj := ?_, gam := …` and prove the remaining obligations. Rewrite using `[P.PD_p]`. Use `(h1 (l : ↥LL.1) 1).2 (by` as an intermediate fact. Establish `h` using `norm_coe_algebraMap LL (l : ℤ_[l])`. Rewrite `h` using `[map_natCast, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, PadicInt.norm_p]`. Simplify using `[Real.rpow_neg_one])`. Simplify using `using this`. Introduce `a b hab`. Establish `h` using `congrArg (fun u : (↥(OL LL))ˣ => (u : ↥(OL LL))) hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hχΓ] at h`. Establish `h0` using `norm_coe_algebraMap LL (((a : ℤ_[l]ˣ) : ℤ_[l]) - ((b : ℤ_[l]ˣ) : ℤ_[l]))`. Rewrite `h0` using `[map_sub, h, sub_self, map_zero, ZeroMemClass.coe_zero, norm_zero, eq_comm, norm_eq_zero, sub_eq_zero]`. Conclude with `Subtype.ext (Units.ext h0)`. Rewrite using `[← hs, h1, hχΓ, norm_sub_one, hgam, hz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[v_le_iff, hχΓ, hχΓ, norm_pow_sub_one, norm_pow_sub_one]`. Conclude with `hK g`. Introduce `h`. Use `hKeq fun g => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h g` as an intermediate fact. Rewrite `this` using `[v_le_iff, hχΓ, hχΓ, norm_pow_sub_one, norm_pow_sub_one]`. Then use the resulting hypothesis. Introduce `g`. Rewrite using `[Subgroup.mem_comap, mem_congSub, ← hs, h2, hres, norm_sub_one, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_gamS : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l),
     Good K s LL → Nonempty (GamS P K s LL) := by

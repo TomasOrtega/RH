@@ -9,13 +9,13 @@ open GlobalTheory.LKMid
 variable {H : Type} [Group H] (θ : H →* H)
 
 /- English proof (translation)
-Simplify using `[nrmG, List.range_succ, List.map_append, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmG_succ' (j : ℕ) (δ : H) : nrmG θ (j + 1) δ = nrmG θ j δ * (⇑θ)^[j] δ := by
   simp [nrmG, List.range_succ, List.map_append, List.prod_append]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp [nrmG]`. Consider the case `succ j ih`. Rewrite using `[nrmG_succ' θ (j + 1), nrmG_succ', map_mul, ← mul_assoc, ih, ← Function.iterate_succ_apply' (⇑θ), nrmG_succ' θ j]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_map_nrmG (j : ℕ) (δ : H) : δ * θ (nrmG θ j δ) = nrmG θ (j + 1) δ := by
   induction j with
@@ -24,9 +24,9 @@ theorem mul_map_nrmG (j : ℕ) (δ : H) : δ * θ (nrmG θ j δ) = nrmG θ (j + 
     rw [nrmG_succ' θ (j + 1), nrmG_succ', map_mul, ← mul_assoc, ih, ← Function.iterate_succ_apply' (⇑θ), nrmG_succ' θ j]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp [nrmG]`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply', ih, Function.iterate_succ_apply' (⇑θ), ← mul_map_nrmG]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, mul_inv_rev, inv_inv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem iterate_twConj (δ : H) (i : ℕ) (h : H) :
     (⇑((MulAut.conj δ).toMonoidHom.comp θ))^[i] h = nrmG θ i δ * (⇑θ)^[i] h * (nrmG θ i δ)⁻¹ := by
@@ -39,11 +39,11 @@ theorem iterate_twConj (δ : H) (i : ℕ) (h : H) :
     group
 
 /- English proof (translation)
-Introduce `H _ θ δ r _ hθ`. Establish `key : δ * θ (nrmG θ r δ) = nrmG θ r δ * δ`. Rewrite using `[mul_map_nrmG, nrmG_succ', hθ]`. Establish `hN : nrmG θ r δ = δ * θ (nrmG θ r δ) * δ⁻¹` using `by rw [key]; group`. Use `⟨fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz`, the goal using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `h2 : θ (nrmG θ r δ) * θ z = θ z * θ (nrmG θ r δ)` using `by rw [← map_mul, ← hz, map_mul]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hz` using `[Subgroup.mem_centralizer_singleton_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[iterate_twConj, hθ, ← hz, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ {H : Type} [Group H] (θ : H →* H) (δ : H) (r : ℕ), 0 < r → (∀ h, (⇑θ)^[r] h = h) →
     (∀ z ∈ Subgroup.centralizer {GlobalTheory.LKMid.nrmG θ r δ}, δ * θ z * δ⁻¹ ∈ Subgroup.centralizer {GlobalTheory.LKMid.nrmG θ r δ}) ∧

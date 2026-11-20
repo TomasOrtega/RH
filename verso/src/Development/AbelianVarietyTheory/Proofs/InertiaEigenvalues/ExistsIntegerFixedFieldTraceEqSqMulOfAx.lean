@@ -2,33 +2,29 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ p r x a J _ σ₁ c hp hAx hx hJ hc`. Use `set M := IntermediateField.fixedField J with hMdef`. Establish `hpr : (p : L) ^ r ≠ 0` using `pow_ne_zero _ hp`. Establish `hint : ∀ n : ℤ, (n : L) ∈ 𝒪[L]` using `fun n => intCast_mem _ n`. Establish `hσO : ∀ (σ : L ≃ₐ[F] L) (w : L), w ∈ 𝒪[L] → σ w ∈ 𝒪[L]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ w hw`. Rewrite `hw`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[valuation_algEquiv_apply F L σ w]` and apply the resulting hypothesis. Establish `hdiff : ∀ σ : L ≃ₐ[F] L, σ (x / (p : L) ^ r) - x / (p : L) ^ r = (σ x - x) / (p : L) ^ r`. Introduce `σ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_pow, map_natCast, sub_div]`. Establish `hJint : ∀ σ ∈ J, σ (x / (p : L) ^ r) - x / (p : L) ^ r ∈ 𝒪[L]`. Introduce `σ hσ`. Take `⟨z, hz, e⟩` from `hx σ`. Take `⟨k, hk⟩` from `hJ σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiff, e, hk]`. Establish `: (((p : ℤ) ^ r * k : ℤ) : L) + (p : L) ^ r * z = (p : L) ^ r * ((k : L) + z)` using `by push_cast; ring`. Rewrite using `[this, mul_div_cancel_left₀ _ hpr]`. Conclude with `add_mem (hint k) hz`. Take `⟨y, hyJ, hw⟩` from `hAx J (x / (p : L) ^ r) hJint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z₁, hz₁, e₁⟩` from `hx σ₁`. Establish `hyM : y ∈ M` using `(IntermediateField.mem_fixedField_iff J y).2 hyJ`. Use `set yM : M := ⟨y, hyM⟩`. Use `set sM : M := σ₁.restrictNormal M yM`. Establish `hsM : (sM : L) = σ₁ y` using `AlgEquiv.restrictNormal_commutes σ₁ M yM`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hpF : (p : F) ^ r ≠ 0`. Introduce `h`. Apply `hpr` to reduce the goal to its premises. Use `congrArg (algebraMap F L) h` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set kF : F := (a σ₁ : F) / (p : F) ^ r`. Use `set zM : M := (p : M) ^ 2 * (algebraMap F M kF - (sM - yM))`. Establish `hzL : (zM : L) = σ₁ ((p : L) ^ 2 * (x / (p : L) ^ r - y)) - (p : L) ^ 2 * (x / (p : L) ^ r - y) - (p : L) ^ 2 * z₁`. Establish `h1 : (algebraMap F L kF) = (a σ₁ : L) / (p : L) ^ r`. Simplify using `[kF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : σ₁ (x / (p : L) ^ r) = x / (p : L) ^ r + (a σ₁ : L) / (p : L) ^ r + z₁`. Use `hdiff σ₁` as an intermediate fact. Rewrite `this` using `[e₁, add_div, mul_div_cancel_left₀ _ hpr]`. Take the linear combination `this`. Establish `h3 : (zM : L) = (p : L) ^ 2 * (algebraMap F L kF - (σ₁ y - y))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zM, MulMemClass.coe_mul, SubmonoidClass.coe_pow, AddSubgroupClass.coe_sub, IntermediateField.coe_algebraMap_apply, hsM]`. Simplify using `[yM]`. Rewrite using `[h3, map_mul, map_sub, map_pow, map_natCast, h2, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzO : (zM : L) ∈ 𝒪[L]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hzL]`. Conclude with `sub_mem (sub_mem (hσO σ₁ _ hw) hw) (mul_mem (pow_mem (natCast_mem _ p) 2) hz₁)`. Establish `hfin : Module.finrank F M = J.index`. Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index, hMdef, IntermediateField.fixingSubgroup_fixedField]`. Use `⟨⟨zM, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hzO`, the goal using `[Valuation.mem_integer_iff]`. Establish `hmono` using `ValuativeExtension.mapValueGroupWithZero_strictMono (A := M) (B := L)`. Rewrite `hzO` using `[IntermediateField.valuation_coe, ← map_one (ValuativeExtension.mapValueGroupWithZero M L)]`. Conclude with `hmono.le_iff_le.mp hzO`. Establish `hz : zM = algebraMap F M ((p : F) ^ 2 * kF) - algebraMap F M ((p : F) ^ 2) * (sM - yM)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zM, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr : Algebra.trace F M sM = Algebra.trace F M yM` using `Algebra.trace_eq_of_algEquiv (σ₁.restrictNormal M) yM`. Use `show Algebra.trace F M zM = _`. Rewrite using `[hz, map_sub, Algebra.trace_algebraMap, ← Algebra.smul_def, LinearMap.map_smul, map_sub, htr, sub_self, smul_zero, sub_zero, hfin, nsmul_eq_mul]`.
-
-Establish `hcF : (c : F) * (p : F) ^ r = (J.index : F) * (a σ₁ : F)` using `by exact_mod_cast congrArg (fun t : ℤ => (t : F)) hc`. Establish `hk : (J.index : F) * kF = c`. Simplify using `only [kF]`. Rewrite using `[mul_div_assoc', div_eq_iff hpF]`. Take the linear combination `-hcF`.
-
-Take the linear combination `(p : F) ^ 2 * hk`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PMon.Ram.exists_integer_fixedField_trace_eq : ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra F L] [ValuativeExtension F L] [FiniteDimensional F L] [IsGalois F L] (p r : ℕ) (x : L) (a : (L ≃ₐ[F] L) → ℤ) (J : Subgroup (L ≃ₐ[F] L)) [J.Normal] (σ₁ : L ≃ₐ[F] L) (c : ℤ), (p : L) ≠ 0 → AxIn F L p → (∀ σ : L ≃ₐ[F] L, ∃ z ∈ 𝒪[L], σ x - x = (a σ : L) + (p : L) ^ r * z) → (∀ σ ∈ J, (p : ℤ) ^ r ∣ a σ) → c * (p : ℤ) ^ r = (J.index : ℤ) * a σ₁ → ∃ z : 𝒪[↥(IntermediateField.fixedField J)], Algebra.trace F ↥(IntermediateField.fixedField J) (z : ↥(IntermediateField.fixedField J)) = (p : F) ^ 2 * (c : F) := by
   intro F L _ _ _ _ _ _ _ _ _ _ _ _ p r x a J _ σ₁ c hp hAx hx hJ hc

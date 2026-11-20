@@ -11,11 +11,11 @@ section AmpleProof
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω] {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero`. Rewrite using `[Submodule.mul_le]`. Introduce `p hp q hq`. Rewrite `hq` using `[Submodule.restrictScalars_mem, pow_zero_sub]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp`, the goal using `[Submodule.restrictScalars_mem]`. Rewrite using `[Nat.add_zero, mul_comm]`. Use `Submodule.smul_mem _ (⟨q, hq⟩ : Kleiman.chartRing S x I) hp` as an intermediate fact. Rewrite `this` using `[Kleiman.chartRing_smul_def]`. Then use the resulting hypothesis. Consider the case `succ b ih`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Establish `h1 : ((Q.pow (b + 1)).sub I).restrictScalars S = ((Q.pow b).sub I).restrictScalars S * (Q.sub I).restrictScalars S` using `(mul_eq_twist (Q.pow b) Q I).symm`. Establish `h2 : ((Q.pow (a + (b + 1))).sub I).restrictScalars S = ((Q.pow (a + b)).sub I).restrictScalars S * (Q.sub I).restrictScalars S` using `(mul_eq_twist (Q.pow (a + b)) Q I).symm`. Rewrite using `[h1, h2, ← mul_assoc]`. Conclude with `mul_le_mul' ih le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_pow_le (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (a b : ℕ) :
     ((Q.pow a).sub I).restrictScalars S * ((Q.pow b).sub I).restrictScalars S ≤
@@ -40,7 +40,7 @@ theorem pow_mul_pow_le (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (a b
     exact mul_le_mul' ih le_rfl
 
 /- English proof (translation)
-The claim follows from `pow_mul_pow_le Q I a b (Submodule.mul_mem_mul (M := ((Q.pow a).sub I).restrictScalars S) (N := ((Q.pow b).sub I).restrictScalars S) hp hq)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_pow (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) {a b : ℕ} {p q : Ω}
     (hp : p ∈ (Q.pow a).sub I) (hq : q ∈ (Q.pow b).sub I) : p * q ∈ (Q.pow (a + b)).sub I :=
@@ -48,9 +48,9 @@ theorem mul_mem_pow (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) {a b : 
     (N := ((Q.pow b).sub I).restrictScalars S) hp hq)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Nat.mul_zero, pow_zero_sub]`. Conclude with `one_mem _`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `mul_mem_pow Q I ih hh`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_pow (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) {m : ℕ} {h : Ω}
     (hh : h ∈ (Q.pow m).sub I) (n : ℕ) : h ^ n ∈ (Q.pow (m * n)).sub I := by
@@ -93,21 +93,19 @@ def ampleSub (Q : Kleiman.SubSystem S x Ω) (m : ℕ) (h : Ω) (hh : ∀ I, h �
 end AmpleProof
 
 /- English proof (translation)
-Introduce `S _ N Ω _ _ x H A`. Establish `hxI : ∀ I : Kleiman.Chart x, ∃ i ∈ I.1, x i ≠ 0` using `fun I =>`. Set `⟨i, hi⟩` to `I.2.1`. Use the proof step `⟨i, hi, (Kleiman.mem_support x).mp (I.2.2 hi)⟩`. Establish `hsub : ∀ k I, A.h k ∈ (H.pow A.m).sub I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k I`. Use `A.mem_secs k` as an intermediate fact. Rewrite `this` using `[Kleiman.SubSystem.secs, Submodule.mem_iInf]`. Conclude with `this I`. Use `⟨{ m := A.m, m_pos := A.m_pos, M := A.r, h := A.h, gen := ⟨?_, ?_⟩, finite := ?_ }⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman.secs, Submodule.mem_iInf]`. Introduce `i hi`. Rewrite using `[lpow.equiv _ A.m_pos hi, chartModule_of_ne_zero _ hi, Submodule.restrictScalars_mem]`. Conclude with `hsub k _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[lpow.equiv _ A.m_pos hi, chartModule_of_ne_zero _ hi, chartRing.equiv S x hi, span_image2_eq, A.generates]`. Introduce `j hj`. Take `⟨t, ht⟩` from `A.finite j hj`. Establish `hle : IndefiniteRowSideFullHecke.Kleiman.regOn S x (toIndefiniteRowSideFullHecke H.toSubSystem) A.m A.h j ≤ ampleSub H.toSubSystem A.m (A.h j) (hsub j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IndefiniteRowSideFullHecke.Kleiman.regOn, Algebra.adjoin_le_iff]`. Introduce `f hf`. Use `show f ∈ Kleiman.ampleRing H.toSubSystem A.m (A.h j)`. Use `Set.mem_iInter.mpr fun I => ?_` and prove the remaining obligations. Take `⟨i, hiI, hi⟩` from `hxI I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩` from `hf i hi`. Use `⟨n, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn0` into its components or cases. Simplify using `only [pow_zero, mul_one, Submodule.mem_one] at hn`. Take `⟨s, rfl⟩` from `hn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_zero, mul_one, Nat.mul_zero, pow_zero_sub]`. Conclude with `Subalgebra.algebraMap_mem _ s`. Establish `key : IndefiniteRowSideFullHecke.Kleiman.lpow S (toIndefiniteRowSideFullHecke H.toSubSystem) A.m i ^ n = IndefiniteRowSideFullHecke.Kleiman.lpow S (toIndefiniteRowSideFullHecke H.toSubSystem) (A.m * n) i`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman.lpow, pow_mul]`. Rewrite `hn` using `[key, lpow.equiv _ (Nat.mul_pos A.m_pos hn0) hi, chartModule_of_ne_zero _ hi, Submodule.restrictScalars_mem]`.
-
-Conclude with `(H.pow (A.m * n)).mono _ I (Finset.singleton_subset_iff.mpr hiI) _ hn`. Conclude with `⟨t, fun f hf => ht (hle hf)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Ample.proof : Ample.Statement := by
   intro S _ N Ω _ _ x H A

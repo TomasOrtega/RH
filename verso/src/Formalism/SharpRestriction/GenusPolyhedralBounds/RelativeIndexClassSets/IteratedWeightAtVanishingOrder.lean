@@ -19,22 +19,22 @@ def jF : MvPolynomial (Idx D j N) B.KO →+* Kp X la N :=
   (jK X la N).comp (MvPolynomial.map (algebraMap B.KO (X.Kl la)))
 
 /- English proof (translation)
-Simplify using `[jK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jK_C (a : X.Kl la) : jK X la N (MvPolynomial.C a) = algebraMap (X.Kl la) (Kp X la N) a := by
   simp [jK]
 
 /- English proof (translation)
-Simplify using `[jF, jK_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jF_C (a : B.KO) :
     jF X la N (MvPolynomial.C a) = algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a) := by
   simp [jF, jK_C]
 
 /- English proof (translation)
-Establish `h : (jK X la N).comp (MvPolynomial.map (algebraMap (X.Ol la) (X.Kl la))) = (algebraMap (Op X la N) (Kp X la N)).comp (algebraMap (Pol X la N) (Op X la N))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, MvPolynomial.map_C, jK_C, ← IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N), ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply (X.Ol la) (Pol X la N) (Op X la N), ← IsScalarTower.algebraMap_apply (X.Ol la) (Op X …`. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, MvPolynomial.map_X]`. Unfold `jK`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Both sides reduce to the same expression. Conclude with `RingHom.congr_fun h q`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jK_map (q : Pol X la N) : jK X la N (MvPolynomial.map (algebraMap (X.Ol la) (X.Kl la)) q) =
     algebraMap (Op X la N) (Kp X la N) (algebraMap (Pol X la N) (Op X la N) q) := by
@@ -52,15 +52,15 @@ theorem jK_map (q : Pol X la N) : jK X la N (MvPolynomial.map (algebraMap (X.Ol 
   exact RingHom.congr_fun h q
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' la a`.
+A detailed English derivation is pending.
 -/
 theorem val_algebraMap (a : B.KO) : Valued.v (algebraMap B.KO (X.Kl la) a) = la.valuation B.KO a :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' la a
 
 /- English proof (translation)
-Establish `hm : algebraMap B.KO (X.Kl la) a ∈ la.adicCompletionIntegers B.KO`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, val_algebraMap]`. Conclude with `ha`. Use `⟨algebraMap (X.Ol la) (Op X la N) ⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[jF_C, ← IsScalarTower.algebraMap_apply (X.Ol la) (Op X la N) (Kp X la N), IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem jF_C_mem (a : B.KO) (ha : la.valuation B.KO a ≤ 1) :
     jF X la N (MvPolynomial.C a) ∈ Set.range (algebraMap (Op X la N) (Kp X la N)) := by
@@ -72,7 +72,7 @@ theorem jF_C_mem (a : B.KO) (ha : la.valuation B.KO a ≤ 1) :
   rfl
 
 /- English proof (translation)
-Use `⟨β.prod fun p k => Tv X la N p ^ k, ?_⟩` and prove the remaining obligations. Simplify using `[jF, jK, MvPolynomial.eval₂_monomial, Finsupp.prod, map_prod, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jF_monomial_mem (β : Idx D j N →₀ ℕ) :
     jF X la N (MvPolynomial.monomial β 1) ∈ Set.range (algebraMap (Op X la N) (Kp X la N)) := by
@@ -80,13 +80,11 @@ theorem jF_monomial_mem (β : Idx D j N →₀ ℕ) :
   simp [jF, jK, MvPolynomial.eval₂_monomial, Finsupp.prod, map_prod, map_pow]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨s, hs⟩` from `hx`. Establish `hx0 : x ≠ 0` using `by rintro rfl; rw [map_zero] at hlt; exact absurd hlt (by simp)`. Establish `hinv : Valued.v x⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hlt`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : x⁻¹ ∈ la.adicCompletionIntegers B.KO`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hinv.le`. Establish `h1 : s * algebraMap (X.Ol la) (Op X la N) ⟨x⁻¹, hm⟩ = 1`. Apply `IsFractionRing.injective (Op X la N) (Kp X la N)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hs, ← IsScalarTower.algebraMap_apply (X.Ol la) (Op X la N) (Kp X la N), IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N), ← map_mul, map_one]`. Use `show algebraMap (X.Kl la) (Kp X la N) (x * x⁻¹) = 1`. Rewrite using `[mul_inv_cancel₀ hx0, map_one]`. Establish `hu : IsUnit (algebraMap (X.Ol la) (Op X la N) ⟨x⁻¹, hm⟩)` using `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact h1)`. Establish `hu' : IsUnit (⟨x⁻¹, hm⟩ : X.Ol la)` using `isUnit_of_map_unit (algebraMap (X.Ol la) (Op X la N)) _ hu`.
-
-Use `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.valuationSubring.integers (Valued.v : Valuation (X.Kl la) _))).mp hu'` as an intermediate fact. Conclude with `absurd this hinv.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem {x : X.Kl la}
     (hx : algebraMap (X.Kl la) (Kp X la N) x ∈ Set.range (algebraMap (Op X la N) (Kp X la N))) : Valued.v x ≤ 1 := by
@@ -110,37 +108,33 @@ theorem val_le_one_of_mem {x : X.Kl la}
   exact absurd this hinv.ne
 
 /- English proof (translation)
-Take `⟨β0, hβ0, hmax⟩` from `Finset.exists_max_image p.support (fun γ => la.valuation B.KO (p.coeff γ)) ⟨β, MvPolynomial.mem_support_iff.mpr hβ⟩`. Establish `hc0 : p.coeff β0 ≠ 0` using `MvPolynomial.mem_support_iff.mp hβ0`. Use `set c0 : B.KO := p.coeff β0 with hc0def`. Establish `hle : ∀ γ, la.valuation B.KO (p.coeff γ) ≤ la.valuation B.KO c0`. Introduce `γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hγ : γ ∈ p.support`. Conclude with `hmax γ hγ`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hγ, map_zero]`. Conclude with `zero_le`. Establish `hq : MvPolynomial.map (algebraMap B.KO (X.Kl la)) (MvPolynomial.C c0⁻¹ * p) ∈ Set.range (MvPolynomial.map (σ` using `Idx D j N) (algebraMap (X.Ol la) (X.Kl la))) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `y hy`. Take `⟨γ, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp hy`. Establish `hm : algebraMap B.KO (X.Kl la) (c0⁻¹ * p.coeff γ) ∈ la.adicCompletionIntegers B.KO`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, val_algebraMap, map_mul, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(inv_mul_le_one₀ (zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hc0))).mpr (hle γ)`. Conclude with `⟨⟨_, hm⟩, by rw [MvPolynomial.coeff_map, MvPolynomial.coeff_C_mul]; rfl⟩`. Take `⟨q, hq⟩` from `hq`. Establish `hq1 : q.coeff β0 = 1`. Apply `IsFractionRing.injective (X.Ol la) (X.Kl la)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← MvPolynomial.coeff_map, hq, MvPolynomial.coeff_map, MvPolynomial.coeff_C_mul, ← hc0def, inv_mul_cancel₀ hc0, map_one, map_one]`. Establish `hqu : IsUnit (algebraMap (Pol X la N) (Op X la N) q)`. Rewrite using `[IsLocalization.AtPrime.isUnit_to_map_iff (Op X la N) (gI X la N)]`. Introduce `hmem`. Use `(MvPolynomial.mem_map_C_iff (I := IsLocalRing.maximalIdeal (X.Ol la))).mp hmem β0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hq1]`. Conclude with `(Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal _).ne_top this`. Take `⟨uq, huq⟩` from `hqu`. Establish `hfac : jF X la N p = algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) c0) * algebraMap (Op X la N) (Kp X la N) (uq : Op X la N)`. Rewrite using `[huq, ← jK_map, hq, ← jF_C]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show _ = jF X la N (MvPolynomial.C c0) * jF X la N (MvPolynomial.C c0⁻¹ * p)`. Rewrite using `[← map_mul, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hc0, map_one, one_mul]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.Ol la)`. Establish `hϖ'` using `Op.irreducible_map X la N hϖ`. Use `set n : ℕ := (vAdd la (p.coeff β)).toNat with hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hdvd : algebraMap (X.Ol la) (Op X la N) ϖ ^ (n + 1) ∣ r`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ', nsmul_one]`. Conclude with `Order.add_one_le_of_lt hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨s, hs⟩` from `hdvd`. Establish `hϖ0 : (ϖ : X.Kl la) ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Establish `hmem : algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) c0 * ((ϖ : X.Kl la) ^ (n + 1))⁻¹) ∈ Set.range (algebraMap (Op X la N) (Kp X la N))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨s * ((uq⁻¹ : (Op X la N)ˣ) : Op X la N), ?_⟩` and prove the remaining obligations. Establish `hϖK : algebraMap (X.Kl la) (Kp X la N) (ϖ : X.Kl la) = algebraMap (Op X la N) (Kp X la N) (algebraMap (X.Ol la) (Op X la N) ϖ)`. Rewrite using `[← IsScalarTower.algebraMap_apply (X.Ol la) (Op X la N) (Kp X la N), IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N)]`. Both sides reduce to the same expression. Establish `hne : algebraMap (X.Kl la) (Kp X la N) (ϖ : X.Kl la) ≠ 0` using `(map_ne_zero _).mpr hϖ0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : algebraMap (Op X la N) (Kp X la N) (uq : Op X la N) * algebraMap (Op X la N) (Kp X la N) ((uq⁻¹ : (Op X la N)ˣ) : Op X la N) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2` using `hr.symm.trans (congrArg (algebraMap (Op X la N) (Kp X la N)) hs)`. Rewrite `h2` using `[hfac, map_mul (algebraMap (Op X la N) (Kp X la N)), map_pow, ← hϖK]`. Rewrite using `[map_mul (algebraMap (X.Kl la) (Kp X la N)), map_inv₀, map_pow, map_mul (algebraMap (Op X la N) (Kp X la N))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ hne)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hv` using `val_le_one_of_mem X la N hmem`. Rewrite `hv` using `[map_mul, map_inv₀, map_pow, val_algebraMap]`. Establish `hvϖ0 : Valued.v (ϖ : X.Kl la) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hϖ0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvϖ : Valued.v (ϖ : X.Kl la) < 1`. Use `lt_of_le_of_ne ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp ϖ.2) fun h => ?_` and prove the remaining obligations. Conclude with `hϖ.not_isUnit ((Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.valuationSubring.integers (Valued.v : Valuation (X.Kl la) _))).mpr h)`. Establish `hv2 : la.valuation B.KO c0 ≤ Valued.v (ϖ : X.Kl la) ^ (n + 1)` using `by simpa using (mul_inv_le_iff₀ (zero_lt_iff.mpr (pow_ne_zero _ hvϖ0))).mp hv`. Establish `hvβ0 : la.valuation B.KO (p.coeff β) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hβ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : WithZero.log (la.valuation B.KO (p.coeff β)) ≤ WithZero.log (Valued.v (ϖ : X.Kl la) ^ (n + 1))` using `(WithZero.log_le_log hvβ0 (pow_ne_zero _ hvϖ0)).mpr ((hle β).trans hv2)`. Establish `h4 : WithZero.log (Valued.v (ϖ : X.Kl la)) < 0`. Rewrite using `[← WithZero.log_one, WithZero.log_lt_log hvϖ0 one_ne_zero]`. Conclude with `hvϖ`. Rewrite `h3` using `[WithZero.log_pow]`.
-
-Establish `h5 : vAdd la (p.coeff β) ≤ n` using `by rw [hn]; exact Int.self_le_toNat _`. Unfold `vAdd at h5`. Establish `h6 : ((n + 1 : ℕ) : ℤ) * WithZero.log (Valued.v (ϖ : X.Kl la)) ≤ ((n + 1 : ℕ) : ℤ) * (-1)` using `mul_le_mul_of_nonneg_left (by omega) (by positivity)`. Rewrite `h3` using `[nsmul_eq_mul]`. Move the coercions through the operations in `at h3 h6`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem addVal_le_vAdd (p : MvPolynomial (Idx D j N) B.KO) (β : Idx D j N →₀ ℕ) (r : Op X la N) (hβ : p.coeff β ≠ 0)
     (hr : algebraMap (Op X la N) (Kp X la N) r = jF X la N p) :
@@ -255,7 +249,7 @@ Both sides reduce to the same expression.
 theorem coe_uV (F : B.Cusp j ka) : (uV X la N ka F : Rp X la N) = emb X la N (X.inc ka F) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, coe_uV, coe_uV, map_smul, emb_smul, jF_C, algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem uV_smul (a : B.KO) (F : B.Cusp j ka) :
     uV X la N ka (a • F) = jF X la N (MvPolynomial.C a) • uV X la N ka F := by
@@ -264,11 +258,11 @@ theorem uV_smul (a : B.KO) (F : B.Cusp j ka) :
     algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a)]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(X.inc ka).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr (X.inc_inj ka))`. Set `φ' : X.Forms →ₗ[B.KO] X.Kl la` to `(Algebra.linearMap B.KO (X.Kl la)) ∘ₗ φ ∘ₗ g`. Set `φ2 : X.Vl la →ₗ[X.Kl la] X.Kl la` to `(TensorProduct.isBaseChange B.KO X.Forms (X.Kl la)).lift φ'`. Set `φ3 : Rp X la N →ₗ[Kp X la N] Kp X la N` to `(bcV_isBaseChange X la N).lift ((Algebra.linearMap (X.Kl la) (Kp X la N)) ∘ₗ φ2)`. Use `⟨φ3 ∘ₗ (Vw X la N ka).subtype, fun F => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : φ2 (X.bc la (X.inc ka F)) = algebraMap B.KO (X.Kl la) (φ F)`. Use `(TensorProduct.isBaseChange B.KO X.Forms (X.Kl la)).lift_eq φ' (X.inc ka F)` as an intermediate fact. Establish `hgF : g (X.inc ka F) = F` using `LinearMap.congr_fun hg F`. Rewrite `this` using `[show φ' (X.inc ka F) = algebraMap B.KO (X.Kl la) (φ (g (X.inc ka F))) from rfl, hgF]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(bcV_isBaseChange X la N).lift_eq ((Algebra.linearMap (X.Kl la) (Kp X la N)) ∘ₗ φ2) (X.bc la (X.inc ka F))`. Rewrite `h3` using `[LinearMap.comp_apply, h2]`. Rewrite using `[jF_C]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext (φ : B.Cusp j ka →ₗ[B.KO] B.KO) :
     ∃ φ1 : ↥(Vw X la N ka) →ₗ[Kp X la N] Kp X la N, ∀ F, φ1 (uV X la N ka F) = jF X la N (MvPolynomial.C (φ F)) := by
@@ -289,15 +283,15 @@ theorem exists_ext (φ : B.Cusp j ka →ₗ[B.KO] B.KO) :
   exact h3
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `M1`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `key : ∀ y ∈ X.loc la (X.Msup ka), bcV X la N y ∈ (Submodule.span (Op X la N) (uV X la N ka '' (B.Mlat j ka : Set (B.Cusp j ka)))).map ((Vw X la N ka).subtype.restrictScalars (Op X la N))`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨F', ⟨F, hF, rfl⟩, rfl⟩` from `hy`. Conclude with `⟨uV X la N ka F, Submodule.subset_span ⟨F, hF, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y y' _ _ hy hy' => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hy'`. Consider the case `smul a y _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← algebraMap_smul (X.Kl la) a y, map_smul, algebraMap_smul, ← algebraMap_smul (Op X la N) a]`. Conclude with `Submodule.smul_mem _ _ hy`. Take `⟨v, hv, hve⟩` from `key _ hx`. Establish `: jW X la N ka x = v` using `Subtype.ext hve.symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `Submodule.subset_span ⟨toW X la ka ⟨F, hF⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨X.inc ka F, ⟨F, hF, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem integralForms_eq_span_image : M1 X la N ka = Submodule.span (Op X la N) (uV X la N ka '' (B.Mlat j ka : Set (B.Cusp j ka))) := by
   apply le_antisymm
@@ -330,7 +324,7 @@ def psi : MvPolynomial (Idx D j N) X.Forms →+* Rp X la N :=
     fun p => algebraMap (Kp X la N) (Rp X la N) (algebraMap (Op X la N) (Kp X la N) (Tv X la N p))
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Simplify using `[psi, jF, jK, MvPolynomial.eval₂_monomial, Finsupp.prod, map_prod, map_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_monomial (β : Idx D j N →₀ ℕ) (F : X.Forms) :
     psi X la N (MvPolynomial.monomial β F) = jF X la N (MvPolynomial.monomial β 1) • emb X la N F := by
@@ -344,7 +338,7 @@ section Word
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL w0 : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Unfold `SizeBoundsAlt.zPoly secPow sec psi`. Simplify using `only [map_mul, map_prod, map_pow, map_sum, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_C, Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem psi_zPoly (al : Fin (WeightFamilies.dimY D j) → ℕ) (θ : B.Cusp j w0) :
     psi X la N (SizeBoundsAlt.zPoly X w al θ) = secPow X la w al * emb X la N (X.inc w0 θ) := by
@@ -352,7 +346,7 @@ theorem psi_zPoly (al : Fin (WeightFamilies.dimY D j) → ℕ) (θ : B.Cusp j w0
   simp only [map_mul, map_prod, map_pow, map_sum, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_C, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[← psi_zPoly, SizeBoundsAlt.polynomial_eq_sum_monomials (inc := fun w => (X.inc w).toAddMonoidHom) zc h, map_sum, AddSubmonoidClass.coe_finsetSum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[psi_monomial, Submodule.coe_smul, coe_uV]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_zSum (ka : WeightFamilies.Wt D j) (al : Fin (WeightFamilies.dimY D j) → ℕ) (θ : B.Cusp j w0)
     (zc : (Idx D j N →₀ ℕ) →₀ B.Cusp j ka) (h : ∀ β, X.inc ka (zc β) = (SizeBoundsAlt.zPoly X w al θ).coeff β) :
@@ -371,11 +365,11 @@ section Main
 variable {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j} {T : ℕ}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Nat.exists_eq_add_of_le hDT`. Establish `ha : a0 D j (WeightFamilies.dimY D j + a) = a` using `by unfold a0; omega`. Rewrite using `[ha]`. Apply `SizeBoundsAlt.weight_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[SizeBoundsAlt.weight_iterate_positive_part]`. Simplify using `only [PJ.wF0, addL, wadd, wsmul]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `τ i`. Rewrite using `[SizeBoundsAlt.weight_iterate_negative_part]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PJ.wF0, addL, wadd, wsmul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SizeBoundsAlt.weight_iterate_n]`. Simplify using `only [PJ.wF0, addL, wadd, wsmul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iterated_weight_at_vanishingOrder (X : PJ D B P j) (wL wF : WeightFamilies.Wt D j) (T : ℕ) (hDT : WeightFamilies.dimY D j ≤ T) :
     SizeBoundsAlt.wtIter wadd wL (X.wF0 wL wF) (a0 D j T) = addL wF wL T := by
@@ -396,13 +390,11 @@ theorem iterated_weight_at_vanishingOrder (X : PJ D B P j) (wL wF : WeightFamili
     ring
 
 /- English proof (translation)
-Take `⟨z', hz1, hz2⟩` from `SizeBoundsAlt.exists_zFam X (addL wF wL T) wL (X.wF0 wL wF) (a0 D j T) (iterated_weight_at_vanishingOrder X wL wF T hDT) G.w hw G.th0 hth0 G.alz hal`. Establish `hz : ∀ k β, G.zc k β ∈ B.Mlat j (addL wF wL T)` using `fun k β => by`. Establish `: G.zc k β = z' k β` using `X.inc_inj _ ((hzc k β).trans (hz1 k β).symm)`. Rewrite using `[this]`. Conclude with `hz2 k β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZg : Zg G la = Set.range fun k => ∑ β ∈ (G.zc k).support, jF X la G.N (MvPolynomial.monomial β 1) • uV X la G.N (addL wF wL T) (G.zc k β)`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨k, Subtype.ext ((coe_zSum X la G.w _ (G.alz k) (G.th0 k) (G.zc k) (hzc k)).trans hk.symm)⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨k, coe_zSum X la G.w _ (G.alz k) (G.th0 k) (G.zc k) (hzc k)⟩`. Establish `key` using `SizeBoundsAlt.len_le_gaussC hfg hz hdet la (R := Op X la G.N) (F := Kp X la G.N) (jF X la G.N) (jF_C_mem X la G.N) (jF_monomial_mem X la G.N) (addVal_le_vAdd X la G.N) (uV X la G.N (addL wF wL T)) (uV_smul X la G.N _) (exists_ext X la G.N _) (Zl G la) (by unfold Zl; rw [hZg])`. Unfold `Zm ZK`. Rewrite using `[integralForms_eq_span_image, hZg]`.
-
-Conclude with `key`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_Zm_le (G : GlobalFamilyData X (addL wF wL T) wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
     (hfg : (B.Mlat j (addL wF wL T)).FG) (hDT : WeightFamilies.dimY D j ≤ T)

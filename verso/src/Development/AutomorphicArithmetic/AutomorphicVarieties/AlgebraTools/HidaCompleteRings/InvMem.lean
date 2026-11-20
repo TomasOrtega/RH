@@ -3,17 +3,17 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `Λ M _ _ _ _ S u hu`. Take `⟨p, hp, hpv⟩` from `LinearMap.exists_monic_and_aeval_eq_zero Λ ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M)`. Establish `key : ∀ n i, i ≤ n → (u : Module.End Λ M) ^ n * ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) ^ i = (u : Module.End Λ M) ^ (n - i)`. Introduce `n i hi`. Establish `h1 : (u : Module.End Λ M) ^ i * ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) ^ i = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, inv_pow, Units.mul_inv]`. Rewrite using `[← pow_sub_mul_pow (u : Module.End Λ M) hi, mul_assoc, h1, mul_one]`. Rewrite `hpv` using `[Polynomial.aeval_eq_sum_range]`. Consider the cases of `h : p.natDegree with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hc : p.coeff 0 = 1` using `by rw [← h]; exact hp.coeff_natDegree`. Rewrite `hpv` using `[h, Finset.sum_range_one, hc, one_smul, pow_zero]`. Establish `hz : ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) = 0`. Rewrite using `[← mul_one ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M), hpv, mul_zero]`. Rewrite using `[hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.zero_mem`. Consider the case `succ n`. Establish `hc : p.coeff (n + 1) = 1` using `by rw [← h]; exact hp.coeff_natDegree`. Rewrite `hpv` using `[h, Finset.sum_range_succ, hc, one_smul]`. Establish `hmul` using `congrArg (fun w => (u : Module.End Λ M) ^ n * w) hpv`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmul` using `[mul_add, Finset.mul_sum, mul_zero]`. Establish `hlast : (u : Module.End Λ M) ^ n * ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) ^ (n + 1) = ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M)`. Rewrite using `[pow_succ, ← mul_assoc, key n n le_rfl, Nat.sub_self, pow_zero, one_mul]`. Rewrite `hmul` using `[hlast]`. Establish `hterm : ∀ i ∈ Finset.range (n + 1), (u : Module.End Λ M) ^ n * (p.coeff i • ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) ^ i) = p.coeff i • (u : Module.End Λ M) ^ (n - i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[mul_smul_comm, key n i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))]`. Rewrite `hmul` using `[Finset.sum_congr rfl hterm]`. Rewrite using `[eq_neg_of_add_eq_zero_right hmul]`. Conclude with `S.neg_mem (S.sum_mem fun i _ => S.smul_mem (S.pow_mem hu _) _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.invMem :
     ∀ (Λ M : Type) [CommRing Λ] [AddCommGroup M] [Module Λ M] [Module.Finite Λ M] (S : Subalgebra Λ (Module.End Λ M)) (u : (Module.End Λ M)ˣ), (u : Module.End Λ M) ∈ S → ((u⁻¹ : (Module.End Λ M)ˣ) : Module.End Λ M) ∈ S := by

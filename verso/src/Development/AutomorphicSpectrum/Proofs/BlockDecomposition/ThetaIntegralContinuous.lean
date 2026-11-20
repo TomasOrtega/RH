@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BigCellJ
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := hμ.1`. Use `haveI i6 : DiscreteTopology (ratMx D m n) := i5`. Use `haveI : SecondCountableTopology (ratMx D m n) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hc : Continuous φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1`. Establish `hU : GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiAbs.UnifSummable (ratMx D m n).subtype φ` using `fun Q hQ => by`. Take `⟨b, hb1, hb2⟩` from `GlobalTheory.CompanionTheory.ThetaPoisson.translates_bound hθ ⟨φ, hφ⟩ Q hQ`. Use `⟨b, hb1, fun c x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hb2 x hx c`. Rewrite `h` using `[add_comm]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiAbs.integrable_of_unif hc hU μ hK fun x => by`. Take `⟨γ, hγ, h⟩` from `hKc x`. Use `⟨⟨-γ, (ratMx D m n).neg_mem hγ⟩, ?_⟩` and prove the remaining obligations.
-
-Simplify `h` using `[sub_neg_eq_add, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_schwartzA {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {μ : Measure (Mx D m n)}
     {𝓕 : Set (Mx D m n)} (hμ : IsCovolOne (ratMx D m n) μ 𝓕) {φ : Mx D m n → ℂ}
@@ -43,7 +41,7 @@ theorem integrable_schwartzA {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {m n :
     simpa [sub_neg_eq_add, add_comm] using h
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (trA : AE D → AF D.host.F)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Unfold `halfTr`. Conclude with `continuous_const.mul ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_halfTr {D : D7} : Continuous (halfTr : AE D → AF D.host.F) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -54,9 +52,9 @@ theorem continuous_halfTr {D : D7} : Continuous (halfTr : AE D → AF D.host.F) 
   exact continuous_const.mul ht
 
 /- English proof (translation)
-Establish `hg1 : ∀ b, AEStronglyMeasurable (g b) μ` using `fun b => (hj.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Establish `hg2 : ∀ y, Continuous fun b => g b y` using `fun y => hj.comp (continuous_id.prodMk continuous_const)`. Use `continuous_of_dominated (bound := fun y => ‖φ y‖) (fun b => ?_) (fun b => ?_) hi.norm ?_` and prove the remaining obligations. Conclude with `hi.aestronglyMeasurable.mul (hg1 b)`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hn, mul_one]`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Conclude with `(hg2 y).const_mul (φ y)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_integral_twist {X Y : Type*} [TopologicalSpace X] [FirstCountableTopology X]
     [TopologicalSpace Y] [SecondCountableTopology Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
@@ -75,7 +73,7 @@ theorem continuous_integral_twist {X Y : Type*} [TopologicalSpace X] [FirstCount
     exact (hg2 y).const_mul (φ y)
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Unfold `GlobalTheory.StdUnn.inner`. Conclude with `GlobalTheory.MixModel.continuous_adj.matrix_mul (continuous_const.matrix_mul continuous_id)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_inner_self {D : D7} (V : HSp D) (r : ℕ) :
     Continuous fun y : Mx D V.rank r => (GlobalTheory.StdUnn.inner V y y : Mx D r r) := by
@@ -84,7 +82,7 @@ theorem continuous_inner_self {D : D7} (V : HSp D) (r : ℕ) :
   exact GlobalTheory.MixModel.continuous_adj.matrix_mul (continuous_const.matrix_mul continuous_id)
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `hψ.1.comp (continuous_halfTr.comp ((continuous_subtype_val.comp continuous_fst).matrix_mul ((continuous_inner_self V r).comp continuous_snd)).matrix_trace)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phase {D : D7} (V : HSp D) (r : ℕ) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) :
@@ -96,9 +94,7 @@ theorem continuous_phase {D : D7} (V : HSp D) (r : ℕ) {ψ : AddChar (AF D.host
       ((continuous_inner_self V r).comp continuous_snd)).matrix_trace)
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ φ hψ hθ ⟨𝓕, hμ⟩ hφ`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D V.rank r`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D r r`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D r) := TopologicalSpace.Subtype.secondCountableTopology _`.
-
-Use `haveI : FirstCountableTopology (hermA D r) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Conclude with `continuous_integral_twist (g := fun (b : hermA D r) (y : Mx D V.rank r) => ψ (halfTr (Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D r r)))) (integrable_schwartzA hθ hμ hφ) (continuous_phase V r hψ) (fun b y => hψ.2.1 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jt_continuous : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (μ : Measure (Mx D V.rank r)) (φ : Mx D V.rank r → ℂ), IsCharAF D.host.F ψ → IsInfFam θ →

@@ -19,11 +19,11 @@ def LevelPrimeBasicClauses (D : D7) : Prop :=
     (LocalQuadraticParts.MuH D u).muMax ≤ ((D.fm u).lat 0).muMax
 
 /- English proof (translation)
-Introduce `u`. Take `⟨h1, h2, h3, -⟩` from `h u`. Take `⟨s1, s2, -⟩` from `D.ram_slopes u`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1'` using `congrArg (fun q : ℚ => (q : ℝ)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1'`. Rewrite using `[h1']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (LocalQuadraticParts.MuH D u).mu = (D.fm u).ramLat.mu from s1]`. Conclude with `h2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (LocalQuadraticParts.MuH D u).muMax = (D.fm u).ramLat.muMax from s2]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem levelPrimeClauses_of_second (D : D7) (h : ∀ u, product_first_zeroth_parts.Conclusion2 D u) : LevelPrimeBasicClauses D := by
   intro u
@@ -40,11 +40,11 @@ theorem levelPrimeClauses_of_second (D : D7) (h : ∀ u, product_first_zeroth_pa
     exact h3
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `finite_places_over (K := D.what₂.LL) p hp`. Establish `h1 : ∑ w ∈ S, SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) = ∑ v ∈ S.map D.plEq.toEmbedding, lw D.what₂.LL v * (eWL D.what₂.LL v : ℝ)`. Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[D.ram_eq w]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsub : S.map D.plEq.toEmbedding ⊆ T`. Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `Finset.mem_map.1 hv`. Rewrite using `[hT]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `resChar_mem D w` as an intermediate fact. Rewrite `this` using `[hS w hw]`. Conclude with `this`. Rewrite using `[h1, ← sum_lw_e p hp T hT]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg hsub (fun v _ _ => mul_nonneg (lw_nonneg v) (Nat.cast_nonneg _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_lwP_e_le (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.Pl)
     (hS : ∀ w ∈ S, D.what₂.places.resChar w = p) :
@@ -82,37 +82,35 @@ def LevelPrimeSizeBounds (D : D7) (L : SizeData₂ D) (C1 : ℝ) : Prop :=
     C1 * LocalQuadraticParts.nTT D * (L.sc.a / D.R.k + L.sc.b')
 
 /- English proof (translation)
-Introduce `u`. Take `⟨c1, c2, c3⟩` from `levelPrimeClauses_of_second D h2 u`. Use `⟨c1, c2, c3, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw x hx`. Establish `h1 : InLoc (D.plEq w) (L.NuLat u) x` using `⟨1, fun h => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), by rwa [one_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : D.nuIn u x ∈ product_first_zeroth_parts.Nlam D u w` using `(hAtT u w hw x).mp h1`. Establish `h3 : D.nuIn u x ∈ (D.fm u).S 0 w` using `((h5 u w hw).1 h2).1`. Take `⟨s, hs, hsx⟩` from `hLoc u w _ h3`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.nuIn u).restrictScalars (NumberField.RingOfIntegers D.what₂.LL) (s • x) ∈ ((D.fm u).lat 0).L`. Rewrite using `[map_smul]`. Conclude with `hsx`. Introduce `F hFT`. Establish `hx0 : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 < L.sc.a` using `mul_pos hx0 (Real.exp_pos _)`. Establish `hb' : 0 < L.sc.b'` using `div_pos ha (Real.exp_pos _)`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hd : (0 : ℝ) ≤ D.duS u` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : (0 : ℝ) ≤ LocalQuadraticParts.nTT D` using `Nat.cast_nonneg _`. Establish `hlT : 0 ≤ Real.log ((D.mem u).A.T : ℝ)` using `Real.log_natCast_nonneg _`. Use `set B : ℝ := C1 * LocalQuadraticParts.nTT D * (L.sc.a / D.R.k + L.sc.b') with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hterm : ∀ w ∈ F, SizeData₂.sz w (L.lenMN u w) ≤ (SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ)) * (2 * (D.R.m * D.duS u * B))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Establish `hwT : D.what₂.places.resChar w = (D.mem u).A.T` using `hFT w hw`. Take `⟨-, -, n, hn, hle⟩` from `h5 u w hwT`. Establish `hl` using `hNu.2.2 u w n (by rw [hLen u w hwT, hn])`. Establish `hlw` using `logWeight_nonneg w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (0 : ℝ) ≤ D.what₂.places.ramIdx w` using `Nat.cast_nonneg _`. Establish `hSw` using `hS u w hwT`. Establish `h1 : (n : ℝ) ≤ (D.what₂.places.ramIdx w : ℝ) * (D.R.m * D.duS u * B)` using `le_trans hle (by gcongr)`. Unfold `SizeData₂.sz`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ w ∈ F, SizeData₂.sz w (L.lenMN u w) ≤ Real.log ((D.mem u).A.T : ℝ) * (2 * (D.R.m * D.duS u * B))`. Use `le_trans (Finset.sum_le_sum hterm) ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Conclude with `mul_le_mul_of_nonneg_right (sum_lwP_e_le D _ (D.mem u).A.T_prime F hFT) (by positivity)`. Establish `hN1 : 1 ≤ D.R.N D.R.m` using `by have := D.R.m_add_three_le_k; unfold Ranks.N; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hTf : 2 * D.R.f + 1 < (D.mem u).A.T`. Establish `h` using `(hSet u).1`. Establish `: 2 * D.R.f ≤ 2 * D.R.f * D.R.N D.R.m` using `Nat.le_mul_of_pos_right _ hN1`. Use linear arithmetic over natural numbers and integers. Establish `hTfR : 2 * (D.R.f : ℝ) + 1 < (D.mem u).A.T` using `by exact_mod_cast hTf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hT1 : 0 < ((D.mem u).A.T : ℝ) - 1` using `by linarith`. Establish `hT2 : (2 : ℝ) ≤ (D.mem u).A.T` using `by exact_mod_cast (D.mem u).A.T_prime.two_le`. Establish `hr : (1 / 2 : ℝ) ≤ (1 - 1 / (((D.mem u).A.T : ℝ) - 1)) ^ D.R.f`. Establish `hb` using `one_add_mul_le_pow (a := -(1 / (((D.mem u).A.T : ℝ) - 1))) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 1 / (((D.mem u).A.T : ℝ) - 1) ≤ 1`. Rewrite using `[div_le_one hT1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the proof step `linarith) D.R.f`. Establish `h3 : (D.R.f : ℝ) * (1 / (((D.mem u).A.T : ℝ) - 1)) ≤ 1 / 2`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mul_one_div, div_le_iff₀ hT1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (1 + -(1 / (((D.mem u).A.T : ℝ) - 1))) = 1 - 1 / (((D.mem u).A.T : ℝ) - 1)` using `by ring`. Rewrite `hb` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hgoal : (4 * C1) * LocalQuadraticParts.nTT D * D.R.m * (L.sc.a / D.R.k + L.sc.b') * Real.log ((D.mem u).A.T : ℝ) = 4 * (D.R.m * B * Real.log ((D.mem u).A.T : ℝ))`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hgoal]`. Break down `eq_or_lt_of_le hd with h0 | h0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c1, ← h0, mul_zero, div_zero]`. Check the signs of the components of the expression. Establish `hdu : 0 < ((D.mem u).A.du : ℝ)` using `by rw [c1]; positivity`. Rewrite using `[div_le_iff₀ hdu]`. Use `le_trans hsum ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[c1]`. Establish `: (D.duS u : ℝ) * (1 / 2) ≤ (1 - 1 / (((D.mem u).A.T : ℝ) - 1)) ^ D.R.f * (D.duS u : ℝ)`. Rewrite using `[mul_comm]`. Use `gcongr`. Establish `hP : 0 ≤ D.R.m * B * Real.log ((D.mem u).A.T : ℝ)` using `by positivity`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem levelPrime_summary_of_fifth (D : D7) (L : SizeData₂ D) (C C1 : ℝ) (h2 : ∀ u, product_first_zeroth_parts.Conclusion2 D u)
     (h5 : ∀ u, product_first_zeroth_parts.Conclusion5 D u C) (hNu : DV.NuDef D L) (hAtT : NuAtTDef D L) (hLoc : LocSpan D)
@@ -202,9 +200,9 @@ theorem levelPrime_summary_of_fifth (D : D7) (L : SizeData₂ D) (C C1 : ℝ) (h
       nlinarith
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `hE`. Use `⟨4 * C1, max x0 (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hxx0 : x0 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_right x0 (Fm.x1 + 1)) hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h2, h5, hLoc, hLen, hS, hSet⟩` from `hx0 x hxx0 i`. Conclude with `levelPrime_summary_of_fifth (Fm.D x i) (Fm.L x i) C C1 h2 h5 (Fm.nuDef x hx1 i) (Fm.ex x hx1 i).lat.atT hLoc hLen hS hSet hC1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem family_levelPrime_summary {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C C1 : ℝ) (hC1 : 0 ≤ C1)
     (hE : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,

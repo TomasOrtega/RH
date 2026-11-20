@@ -22,15 +22,15 @@ open GroundTheory.Automorphic.FourierWhittaker (partialCoeff blockGL uGL)
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Rewrite using `[ContinuousAt, zero_mul, tendsto_zero_iff_norm_tendsto_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun z : ℂ => ‖z * ((‖z‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)‖) = fun z => ‖z‖ ^ (1 / 2 : ℝ)`. Use function extensionality and compare the values at `z`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[Real.zero_rpow (show (1 / 2 : ℝ) ≠ 0 by norm_num)]`. Establish `hp : 0 < ‖z‖` using `norm_pos_iff.mpr hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]`. Establish `h2 : ‖z‖ ^ (1 / 2 : ℝ) = ‖z‖ ^ (1 : ℝ) * ‖z‖ ^ (-(1 / 2) : ℝ)`. Rewrite using `[← Real.rpow_add hp]`. Evaluate the numerical expressions. Rewrite using `[h2, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Establish `hc : Continuous fun z : ℂ => ‖z‖ ^ (1 / 2 : ℝ)` using `continuous_norm.rpow_const (fun _ => Or.inr (by norm_num))`. Simplify `hc.tendsto 0` using `[Real.zero_rpow (show (1 / 2 : ℝ) ≠ 0 by norm_num)]`. Establish `hn : ‖z‖ ≠ 0` using `norm_ne_zero_iff.mpr hz`. Apply `ContinuousAt.mul continuousAt_id` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.continuous_ofReal.continuousAt.comp` to reduce the goal to its premises. Conclude with `continuous_norm.continuousAt.rpow_const (Or.inl hn)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem continuous_mul_norm_rpow_neg_half :
     Continuous fun z : ℂ => z * ((‖z‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) := by
@@ -60,7 +60,7 @@ theorem continuous_mul_norm_rpow_neg_half :
     exact continuous_norm.continuousAt.rpow_const (Or.inl hn)
 
 /- English proof (translation)
-The claim follows from `continuous_mul_norm_rpow_neg_half`.
+A detailed English derivation is pending.
 -/
 example : Continuous fun z : ℂ => z * ((‖z‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) := continuous_mul_norm_rpow_neg_half
 

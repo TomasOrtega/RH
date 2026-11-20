@@ -26,14 +26,14 @@ open IsLocalRing GlobalTheory.HodgeTateCompare GlobalTheory.IndefiniteRowSideFul
 variable {R : Type} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (lieEquiv_add v w)`.
+A detailed English derivation is pending.
 -/
 theorem lieEquiv_add' {G : Over (Spec (CommRingCat.of R))} [GrpObj G] (v w : Lie G) :
     lieEquiv G (v + w) = lieAdd G (lieEquiv G v) (lieEquiv G w) :=
   Subtype.ext (lieEquiv_add v w)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (lieEquiv_smul a v)`.
+A detailed English derivation is pending.
 -/
 theorem lieEquiv_smul' {G : Over (Spec (CommRingCat.of R))} [GrpObj G] (a : R) (v : Lie G) :
     lieEquiv G (a • v) = lieScale G a (lieEquiv G v) :=
@@ -54,16 +54,16 @@ def lieLin {T G : Over (Spec (CommRingCat.of R))} [GrpObj T] [GrpObj G] (u : T �
     exact (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.isLieLinear_lieMap u).2 _ _
 
 /- English proof (translation)
-The claim follows from `Equiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem lieEquiv_lieLin {T G : Over (Spec (CommRingCat.of R))} [GrpObj T] [GrpObj G] (u : T ⟶ G)
     [IsMonHom u] (v : Lie T) : lieEquiv G (lieLin u v) = lieMap u (lieEquiv T v) :=
   Equiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun v : Module.Dual R M => (Algebra.ofId R (ResidueField R)).toLinearMap ∘ₗ v = 0) hv ?_ ?_` and prove the remaining obligations. Introduce `a ha w _`. Use extensionality with `c`. Simplify using `[IsLocalRing.ResidueField.algebraMap_eq, (IsLocalRing.residue_eq_zero_iff a).2 ha]`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_comp_of_mem {M : Type} [AddCommGroup M] [Module R M] {v : Module.Dual R M}
     (hv : v ∈ (maximalIdeal R) • (⊤ : Submodule R (Module.Dual R M))) :
@@ -77,9 +77,9 @@ theorem res_comp_of_mem {M : Type} [AddCommGroup M] [Module R M] {v : Module.Dua
     rw [LinearMap.comp_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite using `[← b.sum_dual_apply_smul_coord v]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations. Use `LinearMap.congr_fun hv (b i)` as an intermediate fact. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[IsLocalRing.ResidueField.algebraMap_eq]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_res_comp {M : Type} [AddCommGroup M] [Module R M] [Module.Free R M]
     [Module.Finite R M] {v : Module.Dual R M}
@@ -93,7 +93,7 @@ theorem mem_of_res_comp {M : Type} [AddCommGroup M] [Module R M] [Module.Free R 
   simpa [IsLocalRing.ResidueField.algebraMap_eq] using this
 
 /- English proof (translation)
-Establish `h1 : tangentAlg v = tangentAlg w` using `ptMap_locIncl_injective h`. Use `GlobalTheory.AugCot.hom_ext (ε := aug G) fun a => ?_` and prove the remaining obligations. Conclude with `(tangentAlg_snd v a).symm.trans ((congrArg (fun φ => (φ a).snd) h1).trans (tangentAlg_snd w a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tangentPt_inj {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {A : Type} [CommRing A]
     [Algebra R A] {v w : Cotangent G →ₗ[R] A}
@@ -104,11 +104,11 @@ theorem tangentPt_inj {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {A : Type}
     ((congrArg (fun φ => (φ a).snd) h1).trans (tangentAlg_snd w a))
 
 /- English proof (translation)
-Set `k` to `ResidueField R`. Set `f : Spec (CommRingCat.of k) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R k))`. Set `Y : Over (Spec (CommRingCat.of k))` to `specO k (DualNumber k)`. Set `e : specO R (DualNumber k) ≅ (Over.map f).obj Y` to `Over.isoMk (Iso.refl _) (by`. Simplify using `only [Iso.refl_hom, Category.id_comp, Over.map_obj_hom, Y, f, specO, Over.mk_hom]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq])`. Set `adj` to `Over.mapPullbackAdj f`. Use `haveI : Mono ((Over.pullback f).map u) := by haveI : Mono ((Over.pullback f).map u).left := inferInstanceAs (Mono ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R k).map u).left)`. Conclude with `Over.mono_of_mono_left _`. Establish `h1 : adj.homEquiv _ _ (e.inv ≫ p) = adj.homEquiv _ _ (e.inv ≫ q)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(cancel_mono ((Over.pullback f).map u)).1` to reduce the goal to its premises. Rewrite using `[← adj.homEquiv_naturality_right, ← adj.homEquiv_naturality_right, Category.assoc, Category.assoc, h]`. Establish `h2` using `(adj.homEquiv _ _).injective h1`. Conclude with `(cancel_epi e.inv).1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_cancel {T G : Over (Spec (CommRingCat.of R))} (u : T ⟶ G)
     (hu : IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R (ResidueField R)).map u).left)
@@ -131,15 +131,15 @@ theorem comp_cancel {T G : Over (Spec (CommRingCat.of R))} (u : T ⟶ G)
   exact (cancel_epi e.inv).1 h2
 
 /- English proof (translation)
-Set `eM` to `TensorProduct.quotTensorEquivQuotSMul M (maximalIdeal R)`. Set `eN` to `TensorProduct.quotTensorEquivQuotSMul N (maximalIdeal R)`. Establish `hle : (maximalIdeal R) • (⊤ : Submodule R M) ≤ ((maximalIdeal R) • (⊤ : Submodule R N)).comap l` using `Submodule.smul_le.2 fun r hr n _ => by`. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr trivial`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `q` to `Submodule.mapQ _ _ l hle`. Establish `hq : Function.Injective q`. Use `(injective_iff_map_eq_zero q).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (h x hx)`. Establish `hcomm : ∀ t, eN (l.lTensor (R ⧸ maximalIdeal R) t) = q (eM t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `tmul a x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.quotTensorEquivQuotSMul_mk_tmul, TensorProduct.quotTensorEquivQuotSMul_mk_tmul, Submodule.mapQ_apply, map_smul]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht, map_add, map_add]`. Introduce `s t hst`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eM.injective` to reduce the goal to its premises. Apply `hq` to reduce the goal to its premises. Rewrite using `[← hcomm, ← hcomm, hst]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTensor_injective_of {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (l : M →ₗ[R] N)
@@ -174,19 +174,17 @@ theorem lTensor_injective_of {M N : Type} [AddCommGroup M] [Module R M] [AddComm
   rw [← hcomm, ← hcomm, hst]
 
 /- English proof (translation)
-Introduce `R _ _ G _ hG r u _ hu`. Use `haveI := hG`. Take `⟨_, _⟩` from `finite_projective_of_smooth (G := G)`. Take `⟨_, _⟩` from `finite_projective_of_smooth (G := torus R r)`. Use `haveI : Module.FinitePresentation R (Cotangent G) := Module.finitePresentation_of_projective _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.Free R (Cotangent G) := Module.free_of_flat_of_isLocalRing`. Use `haveI : Module.FinitePresentation R (Cotangent (torus R r)) := Module.finitePresentation_of_projective _ _`. Use `haveI : Module.Free R (Cotangent (torus R r)) := Module.free_of_flat_of_isLocalRing`. Set `l` to `lieLin u`. Set `φ` to `Algebra.ofId R (ResidueField R)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ x, l x ∈ (maximalIdeal R) • (⊤ : Submodule R (Lie G)) → x ∈ (maximalIdeal R) • (⊤ : Submodule R (Lie (torus R r)))`. Introduce `x hx`. Establish `h1` using `res_comp_of_mem hx`. Establish `a1 : ∀ y, (lieEquiv (torus R r) y).1 ≫ u = (lieEquiv G (l y)).1` using `fun y => by`. Rewrite using `[lieEquiv_lieLin]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : (ptMap (dualBC φ) ≫ (lieEquiv (torus R r) x).1) ≫ u = (ptMap (dualBC φ) ≫ (lieEquiv (torus R r) 0).1) ≫ u`. Rewrite using `[Category.assoc, Category.assoc, a1, a1, map_zero, lieEquiv_val, lieEquiv_val, dualBC_tangentPt, dualBC_tangentPt]`. Conclude with `congrArg tangentPt (h1.trans (LinearMap.comp_zero _).symm)`. Establish `h3` using `comp_cancel u hu h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Rewrite `h3` using `[lieEquiv_val, lieEquiv_val, dualBC_tangentPt, dualBC_tangentPt, LinearMap.comp_zero]`. Conclude with `mem_of_res_comp (tangentPt_inj h3)`. Take `⟨l', hl'⟩` from `(IsLocalRing.split_injective_iff_lTensor_residueField_injective l).2 (lTensor_injective_of l key)`. Use `⟨fun y => lieEquiv (torus R r) (l' ((lieEquiv G).symm y)), ⟨fun x y => ?_, fun a x => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(lieEquiv G).surjective x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(lieEquiv G).surjective y`. Simplify using `only`. Rewrite using `[← lieEquiv_add', Equiv.symm_apply_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, map_add, lieEquiv_add']`. Take `⟨x, rfl⟩` from `(lieEquiv G).surjective x dsimp only`. Rewrite using `[← lieEquiv_smul', Equiv.symm_apply_apply, Equiv.symm_apply_apply, map_smul, lieEquiv_smul']`.
-
-Take `⟨x, rfl⟩` from `(lieEquiv (torus R r)).surjective x dsimp only`. Rewrite using `[← lieEquiv_lieLin, Equiv.symm_apply_apply]`. Conclude with `congrArg _ (LinearMap.congr_fun hl' x)`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G], Smooth G.hom → ∀ (r : ℕ) (u : torus R r ⟶ G) [IsMonHom u],

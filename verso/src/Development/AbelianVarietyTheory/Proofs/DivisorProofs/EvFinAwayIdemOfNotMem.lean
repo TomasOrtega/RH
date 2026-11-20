@@ -24,7 +24,7 @@ def awayFin (S : Finset (HeightOneSpectrum (𝓞 F))) : Af F :=
 def awayIdem (S : Finset (HeightOneSpectrum (𝓞 F))) : AF F := pairA F 0 (awayFin S)
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Use `show (if v ∈ S then (0 : Fv F v) else 1) * (if v ∈ S then 0 else 1) = if v ∈ S then 0 else 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem awayFin_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : awayFin S * awayFin S = awayFin S := by
   classical
@@ -33,7 +33,7 @@ theorem awayFin_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : awayFin S *
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Prod.ext (zero_mul _) (awayFin_mul_self S)`.
+A detailed English derivation is pending.
 -/
 theorem awayIdem_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : awayIdem S * awayIdem S = awayIdem S :=
   Prod.ext (zero_mul _) (awayFin_mul_self S)
@@ -57,20 +57,20 @@ variable {e : AF F} (he : e * e = e)
 include he
 
 /- English proof (translation)
-Take the linear combination `-he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_mul_one_sub : e * (1 - e) = 0 := by linear_combination -he
 /- English proof (translation)
-Take the linear combination `-he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_mul_idem : (1 - e) * e = 0 := by linear_combination -he
 /- English proof (translation)
-Take the linear combination `he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_idem_mul : (1 - e) * (1 - e) = 1 - e := by linear_combination he
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, he, idem_mul_one_sub he, one_sub_mul_idem he, one_sub_idem_mul he, zero_smul, add_zero, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idem_comb_mul (X Y X' Y' : Matrix (Fin N) (Fin N) (AE F E)) :
     (e • X + (1 - e) • Y) * (e • X' + (1 - e) • Y') = e • (X * X') + (1 - e) • (Y * Y') := by
@@ -78,20 +78,20 @@ theorem idem_comb_mul (X Y X' Y' : Matrix (Fin N) (Fin N) (AE F E)) :
     idem_mul_one_sub he, one_sub_mul_idem he, one_sub_idem_mul he, zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[idemMat, idemMat, idemMat, idem_comb_mul he, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idemMat_mul (X Y : Matrix (Fin N) (Fin N) (AE F E)) : idemMat e (X * Y) = idemMat e X * idemMat e Y := by
   rw [idemMat, idemMat, idemMat, idem_comb_mul he, mul_one]
 end
 
 /- English proof (translation)
-Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_comb_self (e : AF F) (X : Matrix (Fin N) (Fin N) (AE F E)) : e • X + (1 - e) • X = X := by
   rw [← add_smul, add_sub_cancel, one_smul]
 
 /- English proof (translation)
-The claim follows from `idem_comb_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem idemMat_one (e : AF F) : idemMat e (1 : Matrix (Fin N) (Fin N) (AE F E)) = 1 := idem_comb_self _ _
 

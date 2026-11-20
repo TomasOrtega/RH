@@ -27,7 +27,7 @@ def IsLowVec (M : DSModel V S) (v₀ : M.Vec) : Prop :=
   ∀ τ, IsLowUnit (M.ε τ) (M.lam τ) (M.σ τ) (v₀ τ : M.H τ)
 
 /- English proof (translation)
-The claim follows from `(h v₀ v₀').2`.
+A detailed English derivation is pending.
 -/
 theorem ev_pair (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c : ℂ}
     (h : IsMultIP M μ 𝓕 T T' c) (v₀ v₀' : M.Vec) :
@@ -35,11 +35,11 @@ theorem ev_pair (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) 
   (h v₀ v₀').2
 
 /- English proof (translation)
-Establish `h1` using `ev_pair M μ 𝓕 T T h v₀ v₀`. Establish `h2 : ∏ τ, ⟪(v₀ τ : M.H τ), (v₀ τ : M.H τ)⟫_ℂ = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, hv τ]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `h1` using `[h2, mul_one]`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem ev_norm (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T : MMap M) {c : ℂ}
     (h : IsMultIP M μ 𝓕 T T c) (v₀ : M.Vec) (hv : ∀ τ, ‖(v₀ τ : M.H τ)‖ = 1) :
@@ -64,9 +64,9 @@ def ResInjVec (M : DSModel V S) (C : Submodule ℂ (MMap M)) : Prop :=
   ∀ T ∈ C, ∀ v : M.Vec, (∀ τ, (v τ : M.H τ) ≠ 0) → T v = 0 → T = 0
 
 /- English proof (translation)
-Introduce `T hT h0`. Take `⟨v, hv0, x, hx⟩` from `hv`. Use `h T hT v hv0 ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h0 x`. Rewrite `h1` using `[LinearMap.comp_apply, hx, PiTensorProduct.lift.tprod, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem resInj_of_vec (M : DSModel V S) (C : Submodule ℂ (MMap M)) {TK : Type} [AddCommGroup TK] [Module ℂ TK]
     (emb : TK →ₗ[ℂ] ⨂[ℂ] τ, M.sm τ) (h : ResInjVec M C)

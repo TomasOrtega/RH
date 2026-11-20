@@ -11,17 +11,15 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Introduce `l _ h ρ x h2 hρ0 hρ1 hs1 hlam`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set s := ‖sh x‖ with hs`. Establish `hs0 : 0 < s` using `lt_of_le_of_lt hρ0 hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : 1 ≤ h` using `le_trans (by norm_num) h2`. Take `⟨j, hj, n₀, hn₀⟩` from `GlobalTheory.T.exists_unique_max_term_untiltFrobeniusSeries l h s h2 hs0 hs1`. Take `⟨hsum, -, -, -⟩` from `GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h j s x h1 hs1 le_rfl`. Establish `hpw` using `(GlobalTheory.T.tiltFrobeniusIntegerPower_laws l).2.2.2.2.2.2`. Establish `hterm : ∀ n : ℤ, ‖(l : ℂ_[l]) ^ (-n) * sh (pw (n * h + j) x)‖ = ‖(l : ℂ_[l])‖ ^ (-n) * s ^ ((l : ℝ) ^ (n * h + j : ℤ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[norm_mul, norm_zpow, hpw]`. Establish `hnorm : ‖lam h j x‖ = ‖(l : ℂ_[l])‖ ^ (-n₀) * s ^ ((l : ℝ) ^ (n₀ * h + j : ℤ))`. Rewrite using `[GlobalTheory.T.norm_eq_of_hasSum_of_dominant_term ℂ_[l] ℤ _ _ n₀ hsum (by`. Introduce `n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hterm, hterm]`. Conclude with `hn₀ n hn), hterm]`. Take `⟨-, ⟨m, hm⟩, -, -, -, hmono⟩` from `GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j s h1 hs0.le hs1`. Establish `hgs : gam l h j s ≤ ‖lam h j x‖`. Rewrite using `[hm, hnorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hmn : m = n₀`. Rewrite using `[hmn]`. Conclude with `(hn₀ m hmn).le`. Establish `hgρ : gam l h j ρ < gam l h j s` using `((GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j ρ h1 hρ0 hρ1).2.2.2.2.2) s hlt hs1`. Use `hlam j hj` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_sh_le_of_lam_le : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (ρ : ℝ) (x : Fl l), 2 ≤ h → 0 ≤ ρ → ρ < 1 → ‖sh x‖ < 1 → (∀ j : ℕ, j < 2 → ‖lam h j x‖ ≤ gam l h j ρ) → ‖sh x‖ ≤ ρ := by
   intro l _ h ρ x h2 hρ0 hρ1 hs1 hlam

@@ -10,17 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.QTw
 
 /- English proof (translation)
-Introduce `B X I l Z u a Ch₀ A hA hI P hP i hi β hv x`. Establish `hQ : P.1 ∈ I.Q a`. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `absurd h hP`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSQ : P.1 ∈ I.SQ` using `Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hQ⟩`. Establish `hT : ((B.T u : ℕ) : 𝓞 B.host.F) ∉ (P.1.under (𝓞 B.host.F)).asIdeal`. Introduce `hm`. Apply `GlobalTheory.KerT.T_notMem_rowSG (I.tup a) (GlobalTheory.BasePrimes.primes_ok B X).1 hI.sel_ok (hI.T_mem u) P.1 P.2` to reduce the goal to its premises. Use `Ideal.mem_comap.1 hm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[map_natCast]`. Establish `hk` using `hv _ hT`. Establish `hpt` using `(hA.base i hi β).1`. Establish `hfr` using `hpt.fr ⟨P.1, hSQ⟩`. Rewrite using `[frsF_eq_ptFr, ← extTo_fr I.SQ _ ⟨P.1, hSQ⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set f := (extTo I.SQ (A.p0 i β).1.1).fr ⟨P.1, hSQ⟩ with hf`. Establish `key : ∀ j : Fin (B.R.N i), f (Pi.single j 1) = Pi.single j 1`. Introduce `j`. Use function extensionality and compare the values at `r`. Establish `h1` using `hfr r j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.Mem.Col2.ZeroMove.adAt_entry_one P.1 hk r j]`. Apply `(algebraMap B.fields.E (P.1.adicCompletion B.fields.E)).injective` to reduce the goal to its premises. Rewrite using `[← h1, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `: (f : Formalism.L2.Col.Sp B.fields.E (B.R.N i) →ₗ[B.fields.E] Formalism.L2.Col.Sp B.fields.E (B.R.N i)) = LinearMap.id` using `LinearMap.pi_ext' fun j => LinearMap.ext_ring (key j)`.
-
-Conclude with `congrArg (fun g => g x) this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frsF_base_eq_self : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι} {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀), A.Is → I.Ok → ∀ (P : BadPr I a), P.1 ∉ (B.primes X).vGs → ∀ (i : ℕ), i ≤ B.R.m → ∀ (β : Ch₀ i), (∀ v : HeightOneSpectrum (𝓞 B.host.F), ((B.T u : ℕ) : 𝓞 B.host.F) ∉ v.asIdeal → Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) v) (A.kb i β) = 1) → ∀ (x : Formalism.L2.Col.Sp B.fields.E (B.R.N i)), Formalism.L2.Col.frsF I.sel (I.tup a) (A.p0 i β).1.1 P x = x := by
   intro B X I l Z u a Ch₀ A hA hI P hP i hi β hv x

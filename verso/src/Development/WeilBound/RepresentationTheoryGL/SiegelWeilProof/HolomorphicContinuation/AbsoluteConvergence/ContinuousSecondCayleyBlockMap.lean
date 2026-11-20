@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mR : Continuous (mR : GR n → M2 n) :=
   Units.continuous_val.comp continuous_subtype_val
@@ -21,9 +21,9 @@ theorem continuous_mR : Continuous (mR : GR n → M2 n) :=
 def KMat (n : ℕ) : Set (M2 n) := {M | Mᴴ * M = 1 ∧ Mᴴ * JJ n * M = JJ n}
 
 /- English proof (translation)
-Establish `hsub : KMat n ⊆ Set.pi univ (fun _ : Fin n ⊕ Fin n => Set.pi univ (fun _ : Fin n ⊕ Fin n => Metric.closedBall (0:ℂ) 1))`. Introduce `M hM`. Establish `hU : M ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff'.mpr hM.1`. Introduce `i _ j _`. Simplify using `using entry_norm_bound_of_unitary hU i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : IsCompact (Set.pi univ (fun _ : Fin n ⊕ Fin n => Set.pi univ (fun _ : Fin n ⊕ Fin n => Metric.closedBall (0:ℂ) 1)))` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall 0 1))`. Use `hc.of_isClosed_subset ?_ hsub` and prove the remaining obligations. Establish `hA : Continuous fun M : M2 n => Mᴴ * M` using `continuous_id.matrix_conjTranspose.matrix_mul continuous_id`. Establish `hB : Continuous fun M : M2 n => Mᴴ * JJ n * M` using `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `(isClosed_eq hA continuous_const).inter (isClosed_eq hB continuous_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_KMat : IsCompact (KMat n) := by
   have hsub : KMat n ⊆ Set.pi univ (fun _ : Fin n ⊕ Fin n => Set.pi univ (fun _ : Fin n ⊕ Fin n => Metric.closedBall (0:ℂ) 1)) := by
@@ -41,11 +41,11 @@ theorem isCompact_KMat : IsCompact (KMat n) := by
   exact (isClosed_eq hA continuous_const).inter (isClosed_eq hB continuous_const)
 
 /- English proof (translation)
-Set `φ : KMat n → GR n` to `fun M => ⟨⟨M.1, M.1ᴴ, (mul_eq_one_comm).mp M.2.1, M.2.1⟩, M.2.2⟩`. Establish `hφ : Continuous φ` using `Continuous.subtype_mk (Units.continuous_iff.mpr ⟨continuous_subtype_val, continuous_subtype_val.matrix_conjTranspose⟩) _`. Establish `hK : IsCompact (univ : Set (KMat n))` using `isCompact_iff_isCompact_univ.mp isCompact_KMat`. Establish `himg : φ '' univ = ((KR n : Subgroup (GR n)) : Set (GR n))`. Use extensionality with `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M, -, rfl⟩`. Conclude with `⟨M.2.2, M.2.1⟩`. Introduce `hk`. Use `⟨⟨mR k, hk.2, hk.1⟩, trivial, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[← himg]`. Conclude with `hK.image hφ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KR : IsCompact ((KR n : Subgroup (GR n)) : Set (GR n)) := by
   let φ : KMat n → GR n := fun M =>
@@ -70,7 +70,7 @@ theorem isCompact_KR : IsCompact ((KR n : Subgroup (GR n)) : Set (GR n)) := by
 instance compactSpace_KR_far : CompactSpace (KR n) := isCompact_iff_compactSpace.mp isCompact_KR
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [u1, Matrix.add_apply, Matrix.smul_apply, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_first_cayley_block_map : Continuous (fun M : M2 n => u1 M) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -78,7 +78,7 @@ theorem continuous_first_cayley_block_map : Continuous (fun M : M2 n => u1 M) :=
   fun_prop
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [u2, Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_second_cayley_block_map : Continuous (fun M : M2 n => u2 M) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -86,15 +86,15 @@ theorem continuous_second_cayley_block_map : Continuous (fun M : M2 n => u2 M) :
   fun_prop
 
 /- English proof (translation)
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp g.1.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_mR_ne (g : GR n) : (mR g).det ≠ 0 := by
   exact ((Matrix.isUnit_iff_isUnit_det _).mp g.1.isUnit).ne_zero
 
 /- English proof (translation)
-Establish `hm : Continuous (mR : GR n → M2 n)` using `continuous_mR`. Establish `hd : Continuous fun g : GR n => (mR g).det` using `hm.matrix_det`. Establish `h1 : Continuous fun g : GR n => (u1 (mR g)).det` using `(continuous_first_cayley_block_map.comp hm).matrix_det`. Establish `h2 : Continuous fun g : GR n => (u2 (mR g)).det` using `(continuous_second_cayley_block_map.comp hm).matrix_det`. Unfold `F0 f0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(hd.zpow₀ e fun g => Or.inl (det_mR_ne g)).mul ((h1.zpow₀ _ fun g => Or.inl (hD n g).1).mul (h2.zpow₀ _ fun g => Or.inl (hD n g).2))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_weight_factor (hD : CayleyBlocksInvertible) (p q : ℕ) (e : ℤ) : Continuous (F0 (n := n) p q e) := by
   have hm : Continuous (mR : GR n → M2 n) := continuous_mR
@@ -106,21 +106,21 @@ theorem continuous_weight_factor (hD : CayleyBlocksInvertible) (p q : ℕ) (e : 
     ((h1.zpow₀ _ fun g => Or.inl (hD n g).1).mul (h2.zpow₀ _ fun g => Or.inl (hD n g).2))
 
 /- English proof (translation)
-Unfold `F0 f0`. Use `mul_ne_zero (zpow_ne_zero _ (det_mR_ne g)) (mul_ne_zero (zpow_ne_zero _ (hD n g).1) (zpow_ne_zero _ (hD n g).2))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem weight_factor_ne_zero (hD : CayleyBlocksInvertible) (p q : ℕ) (e : ℤ) (g : GR n) : F0 p q e g ≠ 0 := by
   unfold F0 f0
   refine mul_ne_zero (zpow_ne_zero _ (det_mR_ne g)) (mul_ne_zero (zpow_ne_zero _ (hD n g).1) (zpow_ne_zero _ (hD n g).2))
 
 /- English proof (translation)
-Unfold `hLoc`. Conclude with `inv_pos.mpr (pow_pos (norm_pos_iff.mpr (hD n g).1) 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hLoc_pos (hD : CayleyBlocksInvertible) (g : GR n) : 0 < hLoc g := by
   unfold hLoc
   exact inv_pos.mpr (pow_pos (norm_pos_iff.mpr (hD n g).1) 2)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GR n => (u1 (mR g)).det` using `(continuous_first_cayley_block_map.comp continuous_mR).matrix_det`. Unfold `hLoc`. Conclude with `(h1.norm.pow 2).inv₀ fun g => pow_ne_zero 2 (norm_ne_zero_iff.mpr (hD n g).1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hLoc (hD : CayleyBlocksInvertible) : Continuous (hLoc (n := n)) := by
   have h1 : Continuous fun g : GR n => (u1 (mR g)).det := (continuous_first_cayley_block_map.comp continuous_mR).matrix_det

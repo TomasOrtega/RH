@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R Q _ _ _ _ _`. Use `haveI : Finite (Submodule R Q) := Finite.of_injective (fun N : Submodule R Q => (N : Set Q)) SetLike.coe_injective`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ (IsLocalRing.maximalIdeal R ^ i • (⊤ : Submodule R Q)) = IsLocalRing.maximalIdeal R ^ j • (⊤ : Submodule R Q) := by`. Take `⟨i, j, hne, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => IsLocalRing.maximalIdeal R ^ n • (⊤ : Submodule R Q))`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨i, j, hlt, h⟩`. Conclude with `⟨j, i, hlt, h.symm⟩`. Establish `hbot : IsLocalRing.maximalIdeal R ^ i • (⊤ : Submodule R Q) = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal R) _ (Submodule.fg_def.2 ⟨_, Set.toFinite _, Submodule.span_eq _⟩) ?_ (IsLocalRing.maximalIdeal_le_jacobson _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, fun a ha z => ?_⟩` and prove the remaining obligations. Establish `hz : a • z ∈ IsLocalRing.maximalIdeal R ^ i • (⊤ : Submodule R Q)` using `Submodule.smul_mem_smul ha Submodule.mem_top`. Rewrite `hz` using `[hbot, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FiniteModuleMaximalIdealAnnihilation.exists_pow_maximalIdeal_smul_finite_eq_zero :
     ∀ (R Q : Type) [inst : CommRing R] [inst_1 : IsLocalRing R]

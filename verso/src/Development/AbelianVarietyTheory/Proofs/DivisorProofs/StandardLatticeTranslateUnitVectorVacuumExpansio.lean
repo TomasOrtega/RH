@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.FunObj.TransExp
 
 /- English proof (translation)
-Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hf_swap (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     Hf D T y x = (starRingEnd ℂ) (Hf D T x y) := by
@@ -23,11 +23,11 @@ theorem hf_swap (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `key : Complex.exp (-(Real.pi : ℂ) * Hf D T x y) = Formalism.MainNotions.TaylorLogMetric.kap D T x y * Complex.exp (-(Real.pi : ℂ) * Hf D T y x)`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.kap, ← Complex.exp_add, hf_swap D T x y]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im] <;> ring`. Establish `e1 : ∀ u v c : ℂ, Complex.exp (-(Real.pi : ℂ) * (u + v) - c) = Complex.exp (-(Real.pi : ℂ) * u - c) * Complex.exp (-(Real.pi : ℂ) * v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `u v c`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Wd, U, VacMove.hf_add_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[show z + y + x = z + x + y from add_right_comm _ _ _, e1 (Hf D T z y) (Hf D T x y), e1 (Hf D T z x) (Hf D T y x), key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_comm (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N N' → ℂ)
     (z : VC D N N') : Wd D T x (Wd D T y F) z = Formalism.MainNotions.TaylorLogMetric.kap D T x y * Wd D T y (Wd D T x F) z := by
@@ -45,7 +45,7 @@ theorem wd_comm (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N 
   ring
 
 /- English proof (translation)
-Simplify using `only [Wd, U, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun q _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wd_mul_sum (D : D7) (T : Tor D) {N N' : ℕ} {ι : Type*} (x : VC D N N') (c : ℂ) (s : Finset ι)
     (f : ι → VC D N N' → ℂ) (z : VC D N N') :
@@ -54,13 +54,13 @@ theorem wd_mul_sum (D : D7) (T : Tor D) {N N' : ℕ} {ι : Type*} (x : VC D N N'
   exact Finset.sum_congr rfl fun q _ => by ring
 
 /- English proof (translation)
-Establish `hI : Iop D T A B e0 = fun z => ((Real.sqrt ((A.addSubgroupOf B).index : ℝ))⁻¹ : ℂ) * ∑ᶠ q : B ⧸ A.addSubgroupOf B, Wd D T ((Quotient.out q : B) : VC D N N') e0 z`. Use function extensionality and compare the values at `z`. Unfold `Iop`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hB _ (Quotient.out q).2]`. Use function extensionality and compare the values at `z`. Rewrite using `[hI]`. Distinguish the cases in `h0 : (A.addSubgroupOf B).index = 0`. Simplify using `[Wd, U, h0]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `haveI : Finite (B ⧸ A.addSubgroupOf B) := Nat.finite_of_card_ne_zero h0 haveI := Fintype.ofFinite (B ⧸ A.addSubgroupOf B)`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[wd_mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wd_comm, hfix]`.
+A detailed English derivation is pending.
 -/
 theorem wd_iop_of (D : D7) (T : Tor D) {N N' : ℕ} (A B : AddSubgroup (VC D N N')) (e0 : VC D N N' → ℂ)
     (x : VC D N N') (hB : ∀ y ∈ B, ∀ F, Wd D T y F = fun z => al D T y * U D T y F z)
@@ -88,7 +88,7 @@ theorem wd_iop_of (D : D7) (T : Tor D) {N N' : ℕ} (A B : AddSubgroup (VC D N N
     rw [wd_comm, hfix]
 
 /- English proof (translation)
-Introduce `D δ hc 𝔪 h𝔪 a d e0 he x hx`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d)` using `VacMove.klat _ (VacMove.moves_one D a) (VacMove.moves_one D d)`. Establish `kp : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))` using `Or.inr ⟨_, _, VacMove.sd_of_moves (VacMove.moves_one D a), GlobalTheory.T.selfDualSkewIdealLattice_isSelfDual D 𝔪 d h𝔪, rfl⟩`. Conclude with `wd_iop_of D _ _ _ e0 x (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ kp).2.1 (VacMove.wd_fix h1 hc k0 he hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wd_iop_expand : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) → ∀ x ∈ (La0 D (tor0 D ⊤ δ) a d), Wd D (tor0 D ⊤ δ) x (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) e0) = fun z => ((Real.sqrt (((La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))).index : ℝ))⁻¹ : ℂ) * ∑ᶠ q : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)), Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x ((Quotient.out q : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) : VC D a d) * Wd D (tor0 D ⊤ δ) ((Quotient.out q : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) : VC D a d) e0 z := by
   intro D δ hc 𝔪 h𝔪 a d e0 he x hx

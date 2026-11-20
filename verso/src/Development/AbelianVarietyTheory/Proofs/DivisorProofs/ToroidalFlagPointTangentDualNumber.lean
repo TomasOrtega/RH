@@ -27,23 +27,23 @@ Both sides reduce to the same expression.
 theorem tv_tvG {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : tv (tvG hv) = ovT hv := rfl
 
 /- English proof (translation)
-The claim follows from `tanM_ext (Over.OverMorphism.ext rfl)`.
+A detailed English derivation is pending.
 -/
 theorem tvG_tv (n : TanM x0 t.G) : tvG (isTanAtG_of (t := t) (x0 := x0) (tv n) (tv_mem n)) = n :=
   tanM_ext (Over.OverMorphism.ext rfl)
 
 /- English proof (translation)
-Simplify using `only [tv, toMul_sum, Subgroup.val_finset_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tv_sumG {κ : Type} (s : Finset κ) (f : κ → TanM x0 t.G) : tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   simp only [tv, toMul_sum, Subgroup.val_finset_prod]
 
 /- English proof (translation)
-Establish `e : IsCombAtG t x0 u cf w ↔ (combT x0 (fun i => ovT (hu i)) cf).left = w` using `isCombAtG_iff t x0 (fun i => ovT (hu i)) cf w`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `tanM_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[tv_sumG, tv_tvG]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.symm`. Introduce `h`. Establish `h3 : ovT hw = combT x0 (fun i => ovT (hu i)) cf`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tv_tvG hw, h, tv_sumG]`. Both sides reduce to the same expression. Conclude with `(congrArg (fun V => Over.Hom.left V) h3).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem combG_iff {m : ℕ} (u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (hu : ∀ i, IsTanAtG t x0 (u i))
     (cf : Fin m → S) {w : Sp (DualNumber S) ⟶ t.G.left} (hw : IsTanAtG t x0 w) :
@@ -70,11 +70,11 @@ section Letters
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Unfold `letters`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun a _ => (List.nodup_finRange _).map (fun i j h => ?_), ?_⟩` and prove the remaining obligations. Simplify using `using h`. Use `(List.nodup_finRange _).pairwise_of_forall_ne fun a _ b _ hab => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hxa hxb`. Simplify using `only [List.mem_map, List.mem_finRange, true_and] at hxa hxb`. Take `⟨i, rfl⟩` from `hxa`. Take `⟨j, hj⟩` from `hxb`. Use `congrArg Sigma.fst hj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hab ((Fintype.equivFin (E →+* ℂ)).symm.injective this.symm)`.
+A detailed English derivation is pending.
 -/
 theorem letters_nodup : (letters Dw).Nodup := by
   unfold letters
@@ -90,9 +90,9 @@ theorem letters_nodup : (letters Dw).Nodup := by
     exact hab ((Fintype.equivFin (E →+* ℂ)).symm.injective this.symm)
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `x`. Unfold `letters`. Use `List.mem_flatMap.2 ⟨Fintype.equivFin (E →+* ℂ) τ, List.mem_finRange _, ?_⟩` and prove the remaining obligations. Generalize the expression as in `hσ : (Fintype.equivFin (E →+* ℂ)).symm (Fintype.equivFin (E →+* ℂ) τ) = σ`. Take `rfl : σ = τ` from `by rw [← hσ, Equiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Conclude with `List.mem_map.2 ⟨i, List.mem_finRange i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_letters (x : Letter Dw) : x ∈ letters Dw := by
   obtain ⟨τ, i⟩ := x
@@ -112,9 +112,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 include hA in
 /- English proof (translation)
-Rewrite using `[← hA]`. Use `forall_congr' fun a => ⟨fun h => tanM_ext ?_, fun h => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h`. Use `congrArg (fun V => (tv V).left) h` as an intermediate fact.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_iffG (τ : E →+* ℂ) {w : Sp (DualNumber Ω) ⟶ Z.t.G.left} (hw : IsTanAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) w) :
     (∀ a : 𝓞 E, w ≫ (Z.t.act.act a).left = spMap (epsMul (y.fK (embF c τ (a : E)))) ≫ w) ↔
@@ -128,9 +126,9 @@ theorem eig_iffG (τ : E →+* ℂ) {w : Sp (DualNumber Ω) ⟶ Z.t.G.left} (hw 
 
 include hA in
 /- English proof (translation)
-Establish `hw` using `isTanAtG_of (t := Z.t) (x0 := y.y ≫ GlobalTheory.Toroidal.genι Z) (tv n) (tv_mem n)`. Establish `heig` using `(eig_iffG y hA τ hw).2 ((tvG_tv n).symm ▸ hn)`. Take `⟨a, ha, hu⟩` from `y.basis τ _ hw heig`. Use `⟨a, ?_, fun b hb => hu b ?_⟩` and prove the remaining obligations. Rewrite using `[← tvG_tv n]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(combG_iff (y.u τ) (y.tan τ) a hw).1 ha`. Use `(combG_iff (y.u τ) (y.tan τ) b hw).2 ?_` and prove the remaining obligations. Rewrite using `[tvG_tv n]`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_coordsG (τ : E →+* ℂ) (n : TanM (y.y ≫ GlobalTheory.Toroidal.genι Z) Z.t.G)
     (hn : IsEigV (actR (x0 := y.y ≫ GlobalTheory.Toroidal.genι Z) (S := Ω) Z.t.act) (embK c τ) n) :
@@ -146,7 +144,7 @@ theorem eig_coordsG (τ : E →+* ℂ) (n : TanM (y.y ≫ GlobalTheory.Toroidal.
     exact hb
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hv i b, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_combG {x : Sp Ω ⟶ Z.X} (τ : E →+* ℂ) {m : ℕ} (v : Fin m → TanM x Z.t.G)
     (hv : ∀ i, IsEigV (actR (x0 := x) (S := Ω) Z.t.act) (embK c τ) (v i)) (a : Fin m → Ω) :
@@ -160,7 +158,7 @@ def fullG : Letter Dw → TanM (y.y ≫ GlobalTheory.Toroidal.genι Z) Z.t.G := 
 
 include hA in
 /- English proof (translation)
-The claim follows from `(eig_iffG y hA τ (y.tan τ i)).1 (y.eig τ i)`.
+A detailed English derivation is pending.
 -/
 theorem fullG_eig (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     IsEigV (actR (x0 := y.y ≫ GlobalTheory.Toroidal.genι Z) (S := Ω) Z.t.act) (embK c τ) (fullG y ⟨τ, i⟩) :=
@@ -168,15 +166,13 @@ theorem fullG_eig (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
 
 include hA in
 /- English proof (translation)
-Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨f, hf, hfs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `ρ` to `actR (x0 := y.y ≫ GlobalTheory.Toroidal.genι Z) (S := Ω) Z.t.act`. Establish `hsum : ∑ τ, proj ρ (embK c) α τ m = m`. Use `congrArg (fun e : Module.End Ω (TanM (y.y ≫ GlobalTheory.Toroidal.genι Z) Z.t.G) => e m) (sum_proj ρ (embK c) α hinj)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[LinearMap.sum_apply]`. Establish `hE : ∀ τ, IsEigV ρ (embK c τ) (proj ρ (embK c) α τ m)` using `fun τ => eig_of_alpha ρ (embK c) α hN τ (proj_eig_alpha ρ (embK c) α hinj f hf hfs τ m)`. Use `choose a ha hu using fun τ => eig_coordsG y hA τ (proj ρ (embK c) α τ m) (hE τ)`. Use `⟨fun k => a k.1 k.2, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `show m = ∑ k : Letter Dw, a k.1 k.2 • fullG y k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_sigma]`. Use `conv_lhs => rw [← hsum]`. Conclude with `Finset.sum_congr rfl fun τ _ => ha τ`. Establish `hb' : m = ∑ k : Letter Dw, b k • fullG y k` using `hb`. Rewrite `hb'` using `[Fintype.sum_sigma]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Take `⟨τ, i⟩` from `k`. Establish `hn` using `proj_sum_eig ρ (embK c) α hinj (fun τ => ∑ i, b ⟨τ, i⟩ • fullG y ⟨τ, i⟩) (fun τ => eig_combG τ _ (fun i => fullG_eig y hA τ i) _) τ`. Rewrite `hn` using `[← hb']`. Use `hu τ (fun i => b ⟨τ, i⟩) hn` as an intermediate fact.
-
-Conclude with `congrFun this i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fullG_basis (m : TanM (y.y ≫ GlobalTheory.Toroidal.genι Z) Z.t.G) :
     ∃! a : Letter Dw → Ω, m = ∑ k, a k • fullG y k := by
@@ -210,13 +206,13 @@ theorem fullG_basis (m : TanM (y.y ≫ GlobalTheory.Toroidal.genι Z) Z.t.G) :
 end Flag
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z Ω _ y w hw`. Use `letI : Algebra c.F Ω := y.fK.toAlgebra`. Use `set L := GlobalTheory.ShFam.Pad.letters Dw with hL`. Set `e : Fin L.length ≃ Letter Dw` to `(letters_nodup Dw).getEquivOfForallMemList _ (mem_letters Dw)`. Establish `he : ∀ k, e k = L.get k` using `fun k => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ a : Fin L.length → Ω, Formalism.L2.Pj.IsCombAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) (fun k => y.u (L.get k).1 (L.get k).2) a w ↔ tvG hw = ∑ k, a k • fullG y (e k)` using `fun a => combG_iff (fun k => y.u (L.get k).1 (L.get k).2) (fun k => y.tan _ _) a hw`. Take `⟨b, hb, hbu⟩` from `fullG_basis y rfl (tvG hw)`. Use `⟨fun k => b (e k), (hc _).2 ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `(Equiv.sum_comp e (fun x => b x • fullG y x)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hc a).1 ha`. Establish `h2 : tvG hw = ∑ x, a (e.symm x) • fullG y x`. Rewrite using `[h1, ← Equiv.sum_comp e]`. Simplify using the standard rewrite rules. Use `hbu _ h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `congrFun this (e k)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem letters_basis : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {Ω : Type} [Field Ω] (y : GlobalTheory.ShFam.Pad.FlagPt Z Ω) (w : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber Ω) ⟶ Z.t.G.left), Formalism.L2.Pj.IsTanAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) w → ∃! a : Fin (GlobalTheory.ShFam.Pad.letters Dw).length → Ω, Formalism.L2.Pj.IsCombAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) (fun k => y.u ((GlobalTheory.ShFam.Pad.letters Dw).get k).1 ((GlobalTheory.ShFam.Pad.letters Dw).get k).2) a w := by
   intro E _ _ _ H Dw l Xo c O _ β Z Ω _ y w hw

@@ -2,17 +2,17 @@ import Mathlib
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `I _ W _ _ _ N _ _ Φ hΦ y`. Use `Fintype.ofFinite I` as an intermediate fact. Establish `hinv` using `PiTensorProduct.dualDistrib_dualDistribInvOfBasis_left_inverse (R := ℂ) (M := W) (fun i => Module.Free.chooseBasis ℂ (W i))`. Establish `hf : ∃ f : ∀ i, Module.Dual ℂ (W i), Φ (PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ f)) ≠ 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Establish `h0 : Φ ∘ₗ PiTensorProduct.dualDistrib = 0`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `f`. Simplify using `using h f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hΦ` to reduce the goal to its premises. Rewrite using `[← LinearMap.comp_id Φ, ← hinv, ← LinearMap.comp_assoc, h0, LinearMap.zero_comp]`. Take `⟨f, hf⟩` from `hf`. Use `⟨PiTensorProduct.dualDistrib ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap f y, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Use `LinearMap.congr_fun h (f y)` as an intermediate fact. Simplify using `using this`. Introduce `T hT m`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, PiTensorProduct.map_tprod, MultilinearMap.toLinearMap_apply, PiTensorProduct.dualDistrib_apply]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = y`. Substitute `hi` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi, hT i hi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_factor_dual_embedding_of_ne_zero_tensor :
     ∀ (I : Type) [Finite I] (W : I → Type) [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)] [∀ i, FiniteDimensional ℂ (W i)] (N : Type) [AddCommGroup N] [Module ℂ N] (Φ : Module.Dual ℂ (⨂[ℂ] i, W i) →ₗ[ℂ] N), Φ ≠ 0 → ∀ y : I, ∃ E : Module.Dual ℂ (W y) →ₗ[ℂ] Module.Dual ℂ (⨂[ℂ] i, W i), Φ ∘ₗ E ≠ 0 ∧ ∀ T : ∀ i, W i →ₗ[ℂ] W i, (∀ i, i ≠ y → T i = LinearMap.id) → ∀ m, E m ∘ₗ PiTensorProduct.map T = E (m ∘ₗ T y) := by

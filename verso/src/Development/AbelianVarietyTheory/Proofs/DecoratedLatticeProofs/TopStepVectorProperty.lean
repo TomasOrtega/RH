@@ -23,9 +23,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseChain
 
 /- English proof (translation)
-Establish `h1` using `(mem_multT θ M J χ u).1 hu`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `h2 : Continuous (u (PiTensorProduct.tprod ℂ f))` using `(GlobalTheory.mult_value_left_cont_level θ M J χ _ h1 f).2.1`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.const_smul r`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `hx.add hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multT_apply_continuous {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S)
     (J : Set (GA D V)) (χ : GA D V → ℂ) (u : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : SmT M) :
@@ -41,9 +41,9 @@ theorem multT_apply_continuous {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     exact hx.add hy
 
 /- English proof (translation)
-Introduce `γ hγ h`. Establish `h1` using `(mem_multT θ M J χ u).1 hu`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `h2 : u (PiTensorProduct.tprod ℂ f) (γ * h) = u (PiTensorProduct.tprod ℂ f) h` using `(GlobalTheory.mult_value_left_cont_level θ M J χ _ h1 f).1 γ hγ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, h2]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem multT_apply_left {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S)
     (J : Set (GA D V)) (χ : GA D V → ℂ) (u : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : SmT M) :
@@ -59,7 +59,7 @@ theorem multT_apply_left {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ :
     rw [map_add, Pi.add_apply, Pi.add_apply, hx, hy]
 
 /- English proof (translation)
-Introduce and unpack `n rfl`. Conclude with `hω`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem weil_transport {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {a b : (AE D)ˣ →* Circle}
     (ω : Om (Yc D (D.R.m - 1)) T) (hω : IsWeilDatumO ψ _ _ a b ω) :
@@ -68,9 +68,9 @@ theorem weil_transport {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {a 
   exact hω
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP j h v hv F Q x g`. Establish `hC` using `hP.bot.hyp.2.2.2.1`. Establish `hω : IsWeilDatumO (pk W).ψ (Yc D (j + 1)) D.sp.X' _ _ (omT (pk W) W.P.A3.A.μ0 j h)` using `weil_transport ((pk W).ωX W.P.A3.A.μ0) (hC.chain.ωX W.P.A3.A.μ0) (j + 1) (idx_top h)`. Take `⟨c1, hc1⟩` from `hC.lev.βY (j + 1) (by omega)`. Take `⟨c2, hc2⟩` from `hC.lev.βX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv' : IsThetaFunO (pk W).ψ (Yc D (j + 1)) D.sp.X' v` using `(GlobalTheory.VecTheta.vecThetaSD D).1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hc1) (GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hc2) hc1.1 hc2.1 hv`. Establish `hf` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hω.std hC.models.inf (cart ((pk W).MY (j + 1))) (onb ((pk W).MY (j + 1))) (cart (pk W).MX) (onb (pk W).MX) hv' Q`. Establish `hν` using `hC.models.νX W.P.A3.A.μ0`. Establish `key` using `GlobalTheory.Hk3.StepX.integ_X hω hf (F.1 x) (multT_apply_continuous _ _ _ _ F.1 F.2 x) (multT_apply_left _ _ _ _ F.1 F.2 x) _ hν.1.1 _ hν.2 g 1`. Simplify `key` using `only [mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lastStep_integrableOn : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ j (h : j + 2 * 0 + 2 = D.R.m) v, IsStepVecOf (pk W).ψ (pk W).θ (Yc D (j + 1)) D.sp.X' (cart ((pk W).MY (j + 1))) (cart (pk W).MX) ((pk W).ΛY (j + 1)) (pk W).ΛX ((pk W).βY (j + 1)) (pk W).βX ((pk W).datYt W.P.A3.A.μ0 (j + 1) (lvP W)) ((pk W).chi D.R.m) ((pk W).Q W.P.A3.A.μ0) ((pk W).xiR W.P.A3.A.μ0) (vacT (pk W) j h) v → ∀ (F : CXP (pk W) (lvP W) W.P.A3.A.μ0) Q x g, IntegrableOn (fun y => thetaKO (omT (pk W) W.P.A3.A.μ0 j h) g y (pureTensorO (pk W).ψ (pk W).θ (Yc D (j + 1)) D.sp.X' (cart ((pk W).MY (j + 1))) (cart (pk W).MX) (onb ((pk W).MY (j + 1))) (onb (pk W).MX) v Q) * F.1 x y) ((pk W).fdX W.P.A3.A.μ0) ((pk W).νX W.P.A3.A.μ0) := by
   intro D L hT Gi Gl Kc Yd cX ex W hP j h v hv F Q x g

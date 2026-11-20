@@ -12,9 +12,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.CohomologicalPurity.LeafAWCutTw
 
 /- English proof (translation)
-Establish `: r = ((r.down.val : ℕ) : ULift.{1} (ZMod q))`. Consider the cases of `r with`. Consider the case `up a`. Express the relevant statement in the definitionally equal form `ULift.up a = ULift.up ((a.val : ℕ) : ZMod q)`. Rewrite using `[ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [this]`. Conclude with `Nat.cast_smul_eq_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ulift_smul_eq_nsmul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (r : ULift.{1} (ZMod q)) (m : M) : r • m = r.down.val • m := by
@@ -34,9 +34,9 @@ theorem twF_map_mk (q : ℕ) (i : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) (x 
       (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map f.hom) x) : (twF q i).obj B) := rfl
 
 /- English proof (translation)
-Establish `hrel : (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q i).obj A) = Submodule.Quotient.mk (Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)))` using `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩)`. Establish `e1 : Finsupp.single ξ b = b • Finsupp.single ξ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Establish `e2 : Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)) = (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)) • Finsupp.single ζ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Submodule.Quotient.mk_smul, hrel, e2, Submodule.Quotient.mk_smul, smul_smul]`. Conclude with `ulift_smul_eq_nsmul _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twF_single_pow (q : ℕ) [NeZero q] (i : ℤ) (A : CommRingCat.{0}) (ζ ξ : Prim q A) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) (b : ULift.{1} (ZMod q)) :
@@ -54,27 +54,27 @@ theorem twF_single_pow (q : ℕ) [NeZero q] (i : ℤ) (A : CommRingCat.{0}) (ζ 
   exact ulift_smul_eq_nsmul _ _
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => ModuleCat.Hom.hom f x) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : M.obj Γ(U, ⊤)) : Sec.res g (ofRings.sec M U x) = ofRings.sec M V ((M.map g.appTop).hom x) :=
   (congrArg (fun f => ModuleCat.Hom.hom f x) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op)).symm
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U)
     (x : Sec F U) : Sec.res (h ≫ g) x = Sec.res h (Sec.res g x) := by
   simp [Sec.res]
 
 /- English proof (translation)
-Establish `L` using `LateralTheory.Fin.EtaleLocalPropertyBasicClosure.intersectionNumber_baseChange`. Establish `hZ` using `(etale_locally_roots_of_unity_structure_of_exists_and_kummer etale_locally_exists_primitive_root_of_unity_of_invertible_order etale_locally_kummer_roots_of_units_of_invertible_order q V).2.1`. Establish `key : Loc V fun W h => ∃ c : ℕ, ((twF q i).map h.appTop).hom x = c • (Submodule.Quotient.mk (Finsupp.single (ζ.map h.appTop.hom) 1) : (twF q i).obj Γ(W, ⊤))`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Proceed by induction on `f using Finsupp.induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero`. Use `L.1 V _ fun W h => ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, Submodule.Quotient.mk_zero]`. Conclude with `map_zero ((twF q i).map h.appTop).hom`. Consider the case `single_add ξ b g _ _ ih`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `L.2.1 V _ _ (L.2.2.1 V _ _ (hZ ζ ξ) ih) fun W h ⟨⟨a, ha⟩, ⟨c, hc⟩⟩ => ⟨(b.down * ((a ^ i : (ZMod q)ˣ) : ZMod q)).val + c, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_add]`. Use `(map_add ((twF q i).map h.appTop).hom _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hc, twF_map_mk, Finsupp.mapDomain_single, twF_single_pow q i _ (ζ.map h.appTop.hom) (ξ.map h.appTop.hom) a ha b, add_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `L.2.1 V _ _ key fun W h ⟨c, hc⟩ => ⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[sec_res, hc]`. Unfold `twGen ofRings.sec`. Conclude with `map_nsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twF_loc (q : ℕ) [NeZero q] (i : ℤ) (V : Scheme.{0}) (ζ : Prim q Γ(V, ⊤)) (x : (twF q i).obj Γ(V, ⊤)) :
     Loc V fun W h => ∃ c : ℕ, Sec.res h (ofRings.sec (twF q i) V x) = c • twGen i (ζ.map h.appTop.hom) := by
@@ -102,7 +102,7 @@ theorem twF_loc (q : ℕ) [NeZero q] (i : ℤ) (V : Scheme.{0}) (ζ : Prim q Γ(
   exact map_nsmul _ _ _
 
 /- English proof (translation)
-The claim follows from `(LateralTheory.Fin.EtaleSheafificationSectionsLocallyFromPresheaf.intersectionNumber_baseChange (ZMod q) (Scheme.Γ ⋙ twF q i)).1 U y`.
+A detailed English derivation is pending.
 -/
 theorem loc_surj (q : ℕ) (i : ℤ) (U : Scheme.{0}) (y : Sec (tw q i) U) :
     Loc U fun V g => ∃ x : (twF q i).obj Γ(V, ⊤), ofRings.sec (twF q i) V x = Sec.res g y :=
@@ -135,7 +135,7 @@ def liftP : Scheme.Γ ⋙ twF q i ⟶ M.obj where
 
 include hn hr in
 /- English proof (translation)
-Use `⟨ObjectProperty.homMk (sheafifyLift Scheme.etaleTopology (liftP i M e hn hr) M.property), fun U ζ => ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (fun η => (η.app (op U)).hom (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj Γ(U, ⊤))) (toSheafify_sheafifyLift Scheme.etaleTopology (liftP i M e hn hr) M.property)`. Use `key.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Finsupp.linearCombination _ (e U) (Finsupp.single ζ 1) = _`. Rewrite using `[Finsupp.linearCombination_single, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_ex : ∃ φ : tw q i ⟶ M, ∀ U ζ, Sec.map φ (twGen i ζ) = e U ζ := by
   refine ⟨ObjectProperty.homMk (sheafifyLift Scheme.etaleTopology (liftP i M e hn hr) M.property), fun U ζ => ?_⟩
@@ -148,23 +148,21 @@ theorem lift_ex : ∃ φ : tw q i ⟶ M, ∀ U ζ, Sec.map φ (twGen i ζ) = e U
 end Lift
 
 /- English proof (translation)
-Introduce `q _ i`. Establish `L` using `LateralTheory.Fin.EtaleLocalPropertyBasicClosure.intersectionNumber_baseChange`. Use `⟨fun U y => ?_, fun U ζ y => ?_, fun U _ ζ c hc => ?_, fun V U g ζ => ?_, fun U ζ ξ a h => ?_, fun M e hn hr => ?_⟩` and prove the remaining obligations. Use `L.2.2.2.2.1 U _ (L.2.1 U _ _ (loc_surj q i U y) fun V g ⟨x, hx⟩ => ?_)` and prove the remaining obligations. Distinguish the cases in `hne : Nonempty (Prim q Γ(V, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨ζ⟩` from `hne`. Use `L.2.1 V _ _ (twF_loc q i V ζ x) fun W h ⟨c, hc⟩ => Or.inr ⟨ζ.map h.appTop.hom, c, ?_⟩` and prove the remaining obligations. Rewrite using `[res_comp, ← hx]`. Conclude with `hc`. Use `L.1 V _ fun W h => Or.inl ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hf : f = 0` using `Finsupp.ext fun ζ => absurd ⟨ζ⟩ hne`. Establish `h0 : Sec.res g y = 0`. Rewrite using `[← hx, hf, Submodule.Quotient.mk_zero]`. Unfold `ofRings.sec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Rewrite using `[res_comp, h0]`. Conclude with `map_zero _`. Use `L.2.2.2.2.1 U _ (L.2.1 U _ _ (loc_surj q i U y) fun V g ⟨x, hx⟩ => ?_)` and prove the remaining obligations. Use `L.2.1 V _ _ (twF_loc q i V (ζ.map g.appTop.hom) x) fun W h ⟨c, hc⟩ => ⟨c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hp : (ζ.map g.appTop.hom).map h.appTop.hom = ζ.map (h ≫ g).appTop.hom`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Prim.map]`. Both sides reduce to the same expression. Rewrite using `[res_comp, ← hx, ← hp]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hc`. Establish `h1 : ((c : ZMod q).val • twGen i ζ) = c • twGen i ζ`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)) c, ulift_smul_eq_nsmul]`. Both sides reduce to the same expression. Use `GenConn.inj_of twF_gen_inj_of q U i ζ (a₁ := (c : ZMod q)) (a₂ := 0) (by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [h1, hc, ZMod.val_zero, zero_smul])`. Conclude with `(ZMod.natCast_eq_zero_iff c q).1 this`. Use `(sec_res (twF q i) g _).trans ?_` and prove the remaining obligations. Rewrite using `[twF_map_mk, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `twGen`. Use `twF_single_pow q i Γ(U, ⊤) ζ ξ a h 1` as an intermediate fact. Rewrite `this` using `[ULift.one_down, one_mul]`. Use `(congrArg (ofRings.sec (twF q i) U) this).trans ?_` and prove the remaining obligations. Unfold `ofRings.sec`.
-
-Conclude with `map_nsmul _ _ _`. Take `⟨φ, hφ⟩` from `lift_ex i M e hn hr`. Conclude with `⟨φ, hφ, fun ψ hψ => TwResExt.twuniq_pf q i M ψ φ fun U ζ => (hψ U ζ).trans (hφ U ζ).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twSec : EtaleTateTwistSectionsLocallyGenerated := by
   intro q _ i

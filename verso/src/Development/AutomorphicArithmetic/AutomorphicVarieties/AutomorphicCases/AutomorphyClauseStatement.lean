@@ -38,7 +38,7 @@ def AutomorphyClauseStatement : Prop :=
         Af.AutOn K ι (-1) fun s => (r (toGS Ω _ s)).mat
 
 /- English proof (translation)
-Introduce `K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF` and use `by obtain ⟨g₁, hg, H⟩ := h K hK Ω l ι c N e ψ o₁ hd S A F hF exact ⟨g₁, hg, fun R _ _ _ u hu => ⟨(H R u hu).1, fun ξ r h1 h2 => ((H R u hu).2 ξ r h1 h2).aut⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LiftRingStatement.core (h : LiftRingStatement) : AutomorphyClauseStatement := fun K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF => by
   obtain ⟨g₁, hg, H⟩ := h K hK Ω l ι c N e ψ o₁ hd S A F hF

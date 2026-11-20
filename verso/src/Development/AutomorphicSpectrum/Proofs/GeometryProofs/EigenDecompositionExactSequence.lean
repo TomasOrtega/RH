@@ -7,14 +7,14 @@ open NumberField GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.EigExact
 
 /- English proof (translation)
-Simplify using `[eigSp, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff {k V O : Type} [Field k] [AddCommGroup V] [Module k V] [CommRing O]
     {ρ : O →+* Module.End k V} {τ : O →+* k} {x : V} : x ∈ eigSp ρ τ ↔ ∀ a, ρ a x = τ a • x := by
   simp [eigSp, sub_eq_zero]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_eigSp_iff, EigenSplit.mem_eigenSub]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigSp_eq_eigenSub {k V O : Type} [Field k] [AddCommGroup V] [Module k V] [CommRing O]
     (ρ : O →+* Module.End k V) (τ : O →+* k) : eigSp ρ τ = EigenSplit.eigenSub ρ τ := by
@@ -22,13 +22,13 @@ theorem eigSp_eq_eigenSub {k V O : Type} [Field k] [AddCommGroup V] [Module k V]
   rw [mem_eigSp_iff, EigenSplit.mem_eigenSub]
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `GlobalTheory.TraceSpread.exists_embedding τ`. Establish `hs` using `GlobalTheory.TraceSpread.isSplitting_embeddings (E := E) k`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, mem_eigSp_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_eigSp_iff]`. Introduce `a`. Rewrite using `[← hgρ, hx, map_smul]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hg y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[eigSp_eq_eigenSub]`. Use `⟨EigenSplit.proj hs ρ₂ φ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, eigSp_eq_eigenSub]`. Conclude with `EigenSplit.proj_mem hs ρ₂ φ x`. Establish `he : EigenSplit.IsEquivariant ρ₂ ρ₃ g` using `hgρ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he.proj hs φ x]`. Conclude with `EigenSplit.proj_of_mem hs hy`.
+A detailed English derivation is pending.
 -/
 theorem map_eigSp_eq {E : Type} [Field E] [NumberField E] {k : Type} [Field k] [IsAlgClosed k] [CharZero k]
     {V₂ V₃ : Type} [AddCommGroup V₂] [Module k V₂] [AddCommGroup V₃] [Module k V₃]
@@ -55,13 +55,13 @@ theorem map_eigSp_eq {E : Type} [Field E] [NumberField E] {k : Type} [Field k] [
       exact EigenSplit.proj_of_mem hs hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hk⟩`. Rewrite `hx` using `[SetLike.mem_coe, mem_eigSp_iff]`. Establish `hk' : x ∈ LinearMap.range f` using `by rw [hfg]; exact hk`. Take `⟨z, rfl⟩` from `hk'`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_eigSp_iff]`. Introduce `a`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hfρ, hx, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite `hz` using `[SetLike.mem_coe, mem_eigSp_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_eigSp_iff]`. Introduce `a`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hfρ, hz, map_smul]`. Express the relevant statement in the definitionally equal form `f z ∈ LinearMap.ker g`. Rewrite using `[← hfg]`. Conclude with `⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eigSp_inf_ker {O k V₁ V₂ V₃ : Type} [CommRing O] [Field k] [AddCommGroup V₁] [Module k V₁]
     [AddCommGroup V₂] [Module k V₂] [AddCommGroup V₃] [Module k V₃]
@@ -90,7 +90,7 @@ theorem eigSp_inf_ker {O k V₁ V₂ V₃ : Type} [CommRing O] [Field k] [AddCom
       exact ⟨z, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (g.domRestrict S)`. Rewrite `h` using `[LinearMap.range_domRestrict]`. Rewrite using `[← h, LinearMap.ker_domRestrict, ← Submodule.finrank_map_subtype_eq S (Submodule.comap S.subtype (LinearMap.ker g)), Submodule.map_comap_subtype]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_map_add_inf_ker {k V W : Type} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
     (g : V →ₗ[k] W) (S : Submodule k V) [FiniteDimensional k S] :
@@ -101,15 +101,13 @@ theorem finrank_map_add_inf_ker {k V W : Type} [Field k] [AddCommGroup V] [Modul
     Submodule.map_comap_subtype]
 
 /- English proof (translation)
-Introduce `E _ _ k _ _ _ V₁ V₂ V₃ _ _ _ _ _ _ ρ₁ ρ₂ ρ₃ f g hf hg hfg hfρ hgρ τ r n b₁ b₂ hb₁ hs₁ hb₂ hs₂`. Establish `hr : Module.finrank k (eigSp ρ₁ τ) = r`. Rewrite using `[← hs₁, finrank_span_eq_card hb₁, Fintype.card_fin]`. Establish `hn : Module.finrank k (eigSp ρ₂ τ) = n`. Rewrite using `[← hs₂, finrank_span_eq_card hb₂, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional k (eigSp ρ₂ τ) := by`. Rewrite using `[← hs₂]`. Conclude with `FiniteDimensional.span_of_finite k (Set.finite_range b₂)`. Establish `hsum` using `finrank_map_add_inf_ker g (eigSp ρ₂ τ)`. Rewrite `hsum` using `[map_eigSp_eq hg hgρ τ, eigSp_inf_ker hf hfg hfρ τ, ← (Submodule.equivMapOfInjective f hf (eigSp ρ₁ τ)).finrank_eq, hr, hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional k (eigSp ρ₃ τ) := by`. Rewrite using `[← map_eigSp_eq hg hgρ τ]`. Use `infer_instance`. Establish `h3 : Module.finrank k (eigSp ρ₃ τ) = n - r` using `by omega`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `B` to `Module.finBasisOfFinrankEq k (eigSp ρ₃ τ) h3`. Use `⟨fun i => (B i : V₃), ?_, ?_⟩` and prove the remaining obligations. Conclude with `B.linearIndependent.map' (eigSp ρ₃ τ).subtype (Submodule.ker_subtype _)`. Establish `: Set.range (fun i => (B i : V₃)) = (eigSp ρ₃ τ).subtype '' Set.range B`. Rewrite using `[← Set.range_comp]`.
-
-Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, B.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_eigSp_quot : ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (V₁ V₂ V₃ : Type) [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂] [AddCommGroup V₃] [Module k V₃] (ρ₁ : 𝓞 E →+* Module.End k V₁) (ρ₂ : 𝓞 E →+* Module.End k V₂) (ρ₃ : 𝓞 E →+* Module.End k V₃) (f : V₁ →ₗ[k] V₂) (g : V₂ →ₗ[k] V₃), Function.Injective f → Function.Surjective g → LinearMap.range f = LinearMap.ker g → (∀ a x, f (ρ₁ a x) = ρ₂ a (f x)) → (∀ a x, g (ρ₂ a x) = ρ₃ a (g x)) → ∀ (τ : 𝓞 E →+* k) (r n : ℕ) (b₁ : Fin r → V₁) (b₂ : Fin n → V₂), LinearIndependent k b₁ → Submodule.span k (Set.range b₁) = eigSp ρ₁ τ → LinearIndependent k b₂ → Submodule.span k (Set.range b₂) = eigSp ρ₂ τ → r ≤ n ∧ ∃ b₃ : Fin (n - r) → V₃, LinearIndependent k b₃ ∧ Submodule.span k (Set.range b₃) = eigSp ρ₃ τ := by
   intro E _ _ k _ _ _ V₁ V₂ V₃ _ _ _ _ _ _ ρ₁ ρ₂ ρ₃ f g hf hg hfg hfρ hgρ τ r n b₁ b₂ hb₁ hs₁ hb₂ hs₂

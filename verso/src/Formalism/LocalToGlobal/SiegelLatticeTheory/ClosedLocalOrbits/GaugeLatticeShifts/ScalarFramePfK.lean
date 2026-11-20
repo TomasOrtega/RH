@@ -17,7 +17,7 @@ section ScalOm
 variable {D : D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E}
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hw`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, om_pair, if_neg (Fin.castSucc_ne_last b), smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_om_X (u v : Fin (D.R.rS + 1) → (VS D).V) {w : (VS D).V} (hw : w ∈ Xs (S := VS D) v) :
     (VS D).hT (Gom u v) w = 0 := by
@@ -27,35 +27,27 @@ theorem hT_om_X (u v : Fin (D.R.rS + 1) → (VS D).V) {w : (VS D).V} (hw : w ∈
   rw [map_smul, om_pair, if_neg (Fin.castSucc_ne_last b), smul_zero]
 
 /- English proof (translation)
-Use `set f := F.fl.fvec with hf`. Use `set f' := F'.fl.fvec with hf'`. Use `set f'' := F''.fl.fvec with hf''`. Use `set D1 := GDl f f' (D.R.rS + 1) with hD1def`. Use `set D2 := GDl f f'' (D.R.rS + 1) with hD2def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R1 := GDl f f' D.R.rS with hR1def`. Use `set om1 := Gom f f' with hom1`. Use `set om2 := Gom f f'' with hom2`. Establish `hfl' : f' (Fin.last _) = F'.fl.z` using `fvec_last _`. Establish `hfl'' : f'' (Fin.last _) = F''.fl.z` using `fvec_last _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfc' : ∀ b : Fin D.R.rS, f' b.castSucc = F'.fl.e b` using `fun b => fvec_castSucc _ b`. Establish `hfc'' : ∀ b : Fin D.R.rS, f'' b.castSucc = F''.fl.e b` using `fun b => fvec_castSucc _ b`. Establish `q1 : ∀ b, (VS D).hT om1 (f' b) = if b = Fin.last _ then D1 else 0` using `om_pair f f'`. Establish `q2 : ∀ b, (VS D).hT om2 (f'' b) = if b = Fin.last _ then D2 else 0` using `om_pair f f''`. Establish `hom1X : ∀ w ∈ Xsp F', (VS D).hT om1 w = 0` using `fun w hw => hT_om_X f f' (by rw [← Xsp_eq_Xs]; exact hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz'z' : (VS D).hT F'.fl.z F'.fl.z = -T'` using `F'.fl.z_norm`. Use `set u' := om1 + (star D1 / T') • F'.fl.z with hu'`. Establish `hu'U : u' ∈ UUE Λ F F'`. Rewrite using `[hU1]`. Conclude with `Submodule.add_mem _ (span_left_le F F' (Gom_mem f f')) (Submodule.smul_mem _ _ (span_right_le F F' (z_mem_span F')))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hu'o : u' ∈ orth (VS D) (Xplus F')`. Rewrite using `[Xplus, mem_orth_Xplus]`. Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', map_add, map_smul, F'.fl.z_orth b, smul_zero, add_zero, hT_swap, hom1X _ (Submodule.subset_span ⟨b, rfl⟩), star_zero]`. Establish `h1` using `q1 (Fin.last _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[if_pos rfl, hfl']`. Rewrite using `[hu', map_add, map_smul, hz'z', hT_swap, h1, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hu'oX : u' ∈ orth (VS D) (Xsp F')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_orth]`. Introduce `x hx`. Conclude with `(mem_orth (VS D)).1 hu'o x (Submodule.mem_sup_left hx)`. Establish `hβU : β u' ∈ UUE Λ F F''` using `htrβ u' hu'U hu'oX`. Establish `hβo : β u' ∈ orth (VS D) (Xplus F'')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Xplus, mem_orth_Xplus]`. Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `hb : β.symm (F''.fl.e b) ∈ Xsp F'` using `hXm' _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[show F''.fl.e b = β (β.symm (F''.fl.e b)) from (β.apply_symm_apply _).symm, hiso]`. Conclude with `(mem_orth (VS D)).1 hu'o _ (Submodule.mem_sup_left hb)`.
+Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hβz, hiso]`. Conclude with `(mem_orth (VS D)).1 hu'o _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Establish `hx0 : -(om1 - star R1 • F.fl.z) ∈ Xsp F`. Rewrite using `[Xsp_eq_Xs, ← fvec_last F.fl]`. Conclude with `Submodule.neg_mem _ (om_decomp f f')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsg : SgRel F F' 0 u' (-star R1) (-(star D1 / T'))` using `⟨-(om1 - star R1 • F.fl.z), hx0, 0, Submodule.zero_mem _, by rw [hz, hz', hu']; module⟩`. Take `⟨x, hx, x'', hx'', heq⟩` from `hsc u' (Submodule.mem_inf.2 ⟨hu'U, hu'o⟩) (Submodule.mem_inf.2 ⟨hβU, hβo⟩) _ _ hsg`. Rewrite `heq` using `[hz, hz'', hu', map_add, map_smul, hβz]`. Establish `hp : β om1 + x'' = star R1 • F.fl.z - x`. Establish `e1 : β om1 + x'' = -(0 - (β om1 + (star D1 / T') • F''.fl.z)) - (star D1 / T') • F''.fl.z + x''`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1, heq]`. Use `module`. Establish `hxX : x ∈ F.fl.X` using `hx`. Establish `hx''X : x'' ∈ F''.fl.X` using `hx''`.
-
-Establish `hpspan : β om1 + x'' ∈ Submodule.span D.host.E (Set.range f)`. Rewrite using `[hp]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ (z_mem_span F)) (Xsp_le_span F hx)`. Establish `hq0 : star D2 • (β om1 + x'') - star D1 • om2 = 0`. Use `eq_zero_of_orth_of_det_ne_zero f f'' hD2 (Submodule.sub_mem _ (Submodule.smul_mem _ _ hpspan) (Submodule.smul_mem _ _ (Gom_mem f f''))) fun b => ?_` and prove the remaining obligations.
-
-Rewrite using `[PI.ScalarPairDr.W.hT_sub_left, hT_smul_left, hT_smul_left, star_star, star_star, PI.ScalarPairDr.W.hT_add_left, q2]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[if_pos rfl, hfl'', hT_X_alt F''.fl hx''X, ← hβz, hiso, ← hfl', q1, if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
-
-Consider the case `cast b`. Rewrite using `[if_neg (Fin.castSucc_ne_last b), hfc'', hT_X_X F''.fl hx''X (Submodule.subset_span ⟨b, rfl⟩), show F''.fl.e b = β (β.symm (F''.fl.e b)) from (β.apply_symm_apply _).symm, hiso, hom1X _ (hXm' _ (Submodule.subset_span ⟨b, rfl⟩))]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : star D2 • β om1 - star D1 • om2 = -(star D2 • x'') + (star D2 • (β om1 + x'') - star D1 • om2)` using `by module`. Rewrite using `[e, hq0, add_zero]`.
-
-Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hx'')`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_om (F : LFlag (VS D) D.R.rS T) (F' F'' : LFlag (VS D) D.R.rS T') (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hz : F.zt = F.fl.z) (hz' : F'.zt = F'.fl.z) (hz'' : F''.zt = F''.fl.z) (hT0' : T' ≠ 0)

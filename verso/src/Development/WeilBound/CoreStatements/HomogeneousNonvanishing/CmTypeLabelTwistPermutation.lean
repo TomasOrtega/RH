@@ -9,11 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c g`. Set `F : HostAut H → CMType H → CMType H` to `fun g τ => ⟨τ.1.comp g.σ.toRingHom, by show τ.1 (g.σ (H.rt : E)) = _`. Rewrite using `[g.fix]`. Conclude with `τ.2⟩`. Use `⟨⟨F g, F g.symm, fun τ => ?_, fun τ => ?_⟩, fun _ => rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (RingHom.ext fun x => ?_) show τ.1 (g.σ (g.σ.symm x)) = τ.1 x` and prove the remaining obligations. Rewrite using `[RingEquiv.apply_symm_apply]`. Use `Subtype.ext (RingHom.ext fun x => ?_) show τ.1 (g.σ.symm (g.σ x)) = τ.1 x` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_apply]`. Introduce and unpack `(τ | τ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.ext fun x => Subtype.ext rfl`. Use `RingHom.ext fun x => Subtype.ext ?_ show τ.1 ((g.s (H.bar x) : 𝓞 E) : E) = τ.1 ((H.bar (g.s x) : 𝓞 E) : E)` and prove the remaining obligations. Rewrite using `[g.s_bar]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_type_label_twist_permutation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (g : HostAut H), ∃ π : CMType H ≃ CMType H, (∀ τ, (π τ).1 = τ.1.comp g.σ.toRingHom) ∧ ∀ s, labelEmb c (Sum.map π π s) = (labelEmb c s).comp g.s.toRingHom := by
   intro E _ _ _ H l c g

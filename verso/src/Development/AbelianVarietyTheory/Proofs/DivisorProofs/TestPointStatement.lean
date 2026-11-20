@@ -13,18 +13,18 @@ open Formalism.L2.Pj
 namespace GlobalTheory.DetHT.TestPt
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spm_spm {R S S' : Type} [CommRing R] [CommRing S] [CommRing S'] (φ : R →+* S) (ψ : S →+* S') :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `⟨q⟩ : Nonempty (Sp K)` from `inferInstance`. Take `⟨_, ⟨U, hU, rfl⟩, hq, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (z q)) isOpen_univ`. Establish `hU' : IsAffineOpen U` using `hU`. Establish `hr : Set.range z ⊆ Set.range hU'.fromSpec`. Rewrite using `[hU'.range_fromSpec]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨q', rfl⟩`. Establish `: q' = q` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[this]`. Conclude with `hq`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU'.fromSpec z hr : Sp K ⟶ Spec Γ(X, U))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Γ(X, U), inferInstance, hU'.fromSpec, φ.hom, inferInstance, ?_⟩` and prove the remaining obligations. Establish `: spMap φ.hom = IsOpenImmersion.lift hU'.fromSpec z hr` using `hφ`. Rewrite using `[this]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart {X : Scheme.{0}} {K : Type} [Field K] (z : Sp K ⟶ X) :
     ∃ (R : Type) (_ : CommRing R) (ξ : Sp R ⟶ X) (φ : R →+* K), IsOpenImmersion ξ ∧ spMap φ ≫ ξ = z := by
@@ -43,13 +43,11 @@ theorem exists_chart {X : Scheme.{0}} {K : Type} [Field K] (z : Sp K ⟶ X) :
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Establish `hφ : ∀ a, IsAlgebraic ℤ ((k.comp φ₀) a)` using `fun a => (hK (φ₀ a)).algHom k.toIntAlgHom`. Generalize the expression as in `k.comp φ₀ = φ at hφ ⊢`. Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := ℤ) (A := R)`. Use `⟨IntermediateField.adjoin F (φ '' (s : Set R)), ?_, fun a => ?_⟩` and prove the remaining obligations. Use `haveI : Finite (φ '' (s : Set R)) := (s.finite_toSet.image φ).to_subtype`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, rfl⟩`. Conclude with `((hφ a).extendScalars (S := F) (algebraMap ℤ F).injective_int).isIntegral`. Establish `ha : a ∈ Algebra.adjoin ℤ (s : Set R)` using `by rw [hs]; trivial`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩`. Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finite_subfield {R F C : Type} [CommRing R] [Algebra.FiniteType ℤ R] [Field F] [CharZero F] [Field C]
     [Algebra F C] {K : Type} [Field K] (k : K →+* C) (hK : ∀ a : K, IsAlgebraic ℤ a) (φ₀ : R →+* K) :
@@ -70,9 +68,9 @@ theorem exists_finite_subfield {R F C : Type} [CommRing R] [Algebra.FiniteType �
     | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Establish `hv : ValuativeCriterion f`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`. Conclude with `hp.1.1.1`. Set `S : ValuativeCommSq f` to `{ R := V, K := FractionRing V, i₁ := y, i₂ := s, commSq := ⟨h⟩ }`. Take `⟨U⟩` from `hv S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U.default.l, U.default.fac_left.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {V : Type} [CommRing V] [IsDomain V]
     [ValuationRing V] (y : Sp (FractionRing V) ⟶ X) (s : Sp V ⟶ B)
@@ -86,23 +84,21 @@ theorem exists_extend {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {V : Ty
   exact ⟨U.default.l, U.default.fac_left.symm⟩
 
 /- English proof (translation)
-Take `⟨R, _, ξ, φ, hξ, rfl⟩` from `exists_chart z`. Set `f : A →+* R` to `(Spec.preimage (ξ ≫ s)).hom`. Establish `hf : spMap f = ξ ≫ s` using `Spec.map_preimage (ξ ≫ s)`. Use `letI : Algebra A R := f.toAlgebra`. Use `haveI : Algebra.FiniteType A R := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h : LocallyOfFiniteType (ξ ≫ s)` using `inferInstance`. Rewrite `h` using `[← Spec.map_preimage (ξ ≫ s)]`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 h`. Use `haveI : Algebra.FiniteType ℤ R := Algebra.FiniteType.trans (S := A) inferInstance inferInstance`. Set `T₀ : CDVR` to `⟨ℤ_[p]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT₀ : T₀.FinRes` using `Finite.of_equiv (ZMod p) (PadicInt.residueField (p := p)).symm.toEquiv`. Set `g₀ : ℤ_[p] →+* ℂ_[p]` to `(algebraMap ℚ_[p] ℂ_[p]).comp (algebraMap ℤ_[p] ℚ_[p])`. Establish `hg₀ : ∀ a, g₀ a ∈ 𝓞_ℂ_[p]` using `fun a => by`. Rewrite using `[GlobalTheory.CdvrLiftCp.mem_int_iff']`. Use `show ‖algebraMap ℚ_[p] ℂ_[p] (a : ℚ_[p])‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[norm_algebraMap']`. Conclude with `a.2`. Establish `hg₀i : Function.Injective g₀` using `(algebraMap ℚ_[p] ℂ_[p]).injective.comp (IsFractionRing.injective ℤ_[p] ℚ_[p])`. Set `kO₀ : T₀.V →+* 𝓞_ℂ_[p]` to `g₀.codRestrict 𝓞_ℂ_[p] hg₀`. Set `k₀ : T₀.Fr →+* ℂ_[p]` to `IsFractionRing.lift (A := ℤ_[p]) (K := FractionRing ℤ_[p]) hg₀i`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hk₀ : ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO₀ a) = k₀ (algebraMap T₀.V T₀.Fr a)` using `fun a => (IsFractionRing.lift_algebraMap (A := ℤ_[p]) (K := FractionRing ℤ_[p]) hg₀i a).symm`. Use `letI : Algebra T₀.Fr ℂ_[p] := k₀.toAlgebra`. Use `haveI : CharZero T₀.Fr := algebraRat.charZero _`. Take `⟨L, hL, hmem⟩` from `exists_finite_subfield (F := T₀.Fr) k hK φ`. Set `φL : R →+* L` to `(k.comp φ).codRestrict L hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `kL : L →+* ℂ_[p]` to `L.val.toRingHom`. Establish `hφL : kL.comp φL = k.comp φ` using `rfl`. Take `⟨T', -, -, ψ, kO', hfin, hinj, -, -, hkO', hint⟩` from `GlobalTheory.CdvrLiftCp.exists_cdvr_lift p T₀ hT₀ kO₀ k₀ hk₀ L kL (fun a => rfl)`. Take `⟨β', hβ'⟩` from `hint A (φL.comp f) (fun a => by`. Rewrite using `[← GlobalTheory.CdvrLiftCp.mem_int_iff']`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : IsIntegral ℤ a` using `Algebra.IsIntegral.isIntegral a`. Establish `h2 : IsIntegral 𝓞_ℂ_[p] ((kL.comp (φL.comp f)) a)` using `IsIntegral.map_of_comp_eq (Int.castRingHom 𝓞_ℂ_[p]) _ (RingHom.ext_int _ _) h1`. Conclude with `(PadicComplexInt.integers p).mem_of_integral h2)`. Establish `hring : (ψ.toRingHom.comp φL).comp f = (algebraMap T'.V (FractionRing T'.V)).comp β'` using `RingHom.ext fun a => (hβ' a).symm`. Take `⟨yT, hyT⟩` from `exists_extend s hs (V := T'.V) (spMap (ψ.toRingHom.comp φL) ≫ ξ) (spMap β') (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, ← hf, spm_spm, spm_spm, hring])`. Use `⟨T', kO', yT, hfin, hinj, ?_⟩` and prove the remaining obligations. Establish `hrk : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO' = (kL.comp ψ.symm.toRingHom).comp (algebraMap T'.V (FractionRing T'.V))` using `RingHom.ext hkO'`. Establish `hid : (kL.comp ψ.symm.toRingHom).comp (ψ.toRingHom.comp φL) = k.comp φ`. Rewrite using `[← hφL]`.
-
-Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, spm_spm, hrk, ← spm_spm, Category.assoc, ← hyT, ← Category.assoc, spm_spm, hid, ← Category.assoc, spm_spm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_point {A : Type} [CommRing A] [Module.Finite ℤ A] {X : Scheme.{0}} (s : X ⟶ Sp A)
     (hs : IsProper s) (p : ℕ) [Fact p.Prime] {K : Type} [Field K] (k : K →+* ℂ_[p]) (hK : ∀ a : K, IsAlgebraic ℤ a)
@@ -165,7 +161,7 @@ end GlobalTheory.DetHT.TestPt
 namespace GlobalTheory.DetHT
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z p _ _ P hP`. Take `⟨K, _, k, z, hK, hz⟩` from `hP`. Take `⟨T, kO, yT, hT, hkO, h⟩` from `TestPt.exists_integral_point Z.s (projProper _ _ _ Z.proj) p k hK (z ≫ Z.j)`. Use `⟨spMap kO ≫ yT, ?_, T, kO, yT, hT, hkO, rfl⟩` and prove the remaining obligations. Rewrite using `[h, hz, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem testPtSt : TestPtSt := by
   intro E _ _ _ H Dw l Xo c Z p _ _ P hP

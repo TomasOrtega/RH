@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Simplify using `only [constPt]`. Rewrite using `[reassoc_of% h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem constPt_idem {k : Type} [Field k] {X : Scheme.{0}} (x : Sp (DualNumber k) ⟶ X) :
     constPt (constPt x) = constPt x := by
@@ -19,7 +19,7 @@ theorem constPt_idem {k : Type} [Field k] {X : Scheme.{0}} (x : Sp (DualNumber k
   rw [reassoc_of% h]
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Rewrite `h1` using `[h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_half_degree : 2 * (Module.finrank ℚ E / 2) = Module.finrank ℚ E := by
   have h1 := Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E
@@ -28,21 +28,19 @@ theorem two_mul_half_degree : 2 * (Module.finrank ℚ E / 2) = Module.finrank �
   omega
 
 /- English proof (translation)
-The claim follows from `Complex.isPrimitiveRoot_exp n hn.ne'`.
+A detailed English derivation is pending.
 -/
 theorem zeta_prim (n : ℕ) (hn : 0 < n) : IsPrimitiveRoot (zeta n) n :=
   Complex.isPrimitiveRoot_exp n hn.ne'
 
 /- English proof (translation)
-Rewrite using `[KA, IntermediateField.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h0 : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1 : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[← map_pow, h0, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h]`. Conclude with `hc τ _`. Establish `: H.rt0 = τ (-(H.rt : E))` using `by rw [map_neg, h, neg_neg]`. Rewrite using `[this]`. Conclude with `hc τ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos haveI : NeZero l.M' := ⟨hM.ne'⟩`. Establish `hp : zeta l.A ^ l.M' = 1`. Take `⟨c, hc⟩ : l.A ∣ l.M'` from `Nat.dvd_lcm_right _ _`. Rewrite using `[hc, pow_mul, (zeta_prim _ l.A_pos).pow_eq_one, one_pow]`. Take `⟨i, -, hi⟩` from `(zeta_prim _ hM).eq_pow_of_pow_eq_one hp`.
-
-Rewrite using `[← hi]`. Conclude with `pow_mem hz i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_conj (l : Level H) (F : IntermediateField ℚ ℂ) (hc : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F)
     (hz : zeta l.M' ∈ F) : KA l ≤ F := by
@@ -68,9 +66,9 @@ theorem le_of_conj (l : Level H) (F : IntermediateField ℚ ℂ) (hc : ∀ (τ :
     exact pow_mem hz i
 
 /- English proof (translation)
-Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Set `F : IntermediateField ℚ ℂ` to `IntermediateField.normalClosure ℚ E ℂ ⊔ IntermediateField.adjoin ℚ {zeta l.M'}`. Establish `hc : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F` using `fun τ a => (le_sup_left : _ ≤ F) (AlgHom.fieldRange_le_normalClosure τ.toRatAlgHom ⟨a, rfl⟩)`. Establish `hz : zeta l.M' ∈ F` using `(le_sup_right : _ ≤ F) (IntermediateField.mem_adjoin_simple_self _ _)`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {zeta l.M'}) := IntermediateField.adjoin.finiteDimensional ((zeta_prim _ hM).isIntegral hM).tower_top`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨F, inferInstance, hc, hz, le_of_conj l F hc hz⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem coeff_nonempty (l : Level H) : Nonempty (Coeff l) := by
   have hM : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos

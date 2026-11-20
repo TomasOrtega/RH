@@ -21,12 +21,12 @@ open scoped ENNReal NNReal Pointwise
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_Mx (m n : ℕ) : BorelSpace (Mx D m n) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `hs.nullMeasurableSet.prod ht.nullMeasurableSet ae_covers := by have h1 := (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hs.ae_covers have h2 := (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae ht.ae_covers filter_upwards [h1, h2] with p hp hq obtain ⟨g, hg⟩ : …`.
+A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_prod {A B : Type*} [AddGroup A] [AddGroup B] [MeasurableSpace A]
     [MeasurableSpace B] {Γ : AddSubgroup A} {Δ : AddSubgroup B} {μ : Measure A} {ν : Measure B} [SFinite μ]
@@ -67,17 +67,13 @@ theorem isAddFundamentalDomain_prod {A B : Type*} [AddGroup A] [AddGroup B] [Mea
       · rw [Measure.prod_prod, h0, zero_mul]
 
 /- English proof (translation)
-Use `haveI := borel_Mx (D := D) T.rank S.rank`. Use `haveI := borel_Mx (D := D) T.rank A.rank`. Use `haveI := borel_Mx (D := D) T.rank B.rank`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D T.rank S.rank`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D T.rank A.rank`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨k1, k2, k3, k4, k5, -⟩` from `lattice_Mx D T.rank B.rank`. Use `haveI : Countable (ratL T S) := (TopologicalSpace.separableSpace_iff_countable.1 inferInstance : Countable (ratMx D T.rank S.rank))`. Use `haveI : MeasurableConstVAdd (ratL T S) (WO S T) := ⟨fun _ => (continuous_const.add continuous_id).measurable⟩`. Use `haveI : VAddInvariantMeasure (ratL T S) (WO S T) μ := ⟨fun c s _ => measure_preimage_add μ (c : WO S T) s⟩`. Set `e : WO S T ≃ₜ (WO A T × WO B T)` to `{ (o.resS T).toEquiv with continuous_toFun := o.continuous_resS T, continuous_invFun := o.continuous_resS_symm T }`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `em` to `e.toMeasurableEquiv`. Use `haveI : (μ.map em).IsAddHaarMeasure := (o.resS T).isAddHaarMeasure_map μ (o.continuous_resS T) (o.continuous_resS_symm T)`. Take `⟨c, hmeq⟩ : ∃ c : ℝ≥0, μ.map em = c • μA.prod μB` from `⟨_, Measure.isAddLeftInvariant_eq_smul (μ.map em) (μA.prod μB)⟩`. Use `⟨c, fun Φ hper => ?_⟩` and prove the remaining obligations. Establish `hqmp : Measure.QuasiMeasurePreserving em μ (μA.prod μB)` using `⟨em.measurable, by rw [hmeq]; exact Measure.smul_absolutelyContinuous⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hprod` using `isAddFundamentalDomain_prod hA hB`. Establish `hmem : ∀ g : (ratL T A).prod (ratL T B), (o.resS T).symm (g : WO A T × WO B T) ∈ ratL T S` using `fun g => by`. Rewrite using `[o.mem_ratL_resS, AddEquiv.apply_symm_apply]`. Conclude with `AddSubgroup.mem_prod.1 g.2`. Establish `hP : IsAddFundamentalDomain (ratL T S) (em ⁻¹' (FA ×ˢ FB)) μ`.
-
-Use `hprod.preimage_of_equiv hqmp (e := fun g => ⟨_, hmem g⟩) ⟨fun g g' h => ?_, fun h => ?_⟩ fun g x => ?_` and prove the remaining obligations. Conclude with `Subtype.ext ((o.resS T).symm.injective (congrArg Subtype.val h))`. Use `⟨⟨o.resS T h, AddSubgroup.mem_prod.2 ((o.mem_ratL_resS T h).1 h.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(o.resS T).symm_apply_apply h`. Express the relevant statement in the definitionally equal form `o.resS T ((o.resS T).symm (g : WO A T × WO B T) + x) = (g : WO A T × WO B T) + o.resS T x`.
-
-Rewrite using `[map_add, AddEquiv.apply_symm_apply]`. Rewrite using `[h𝓕.setLIntegral_eq hP (fun x => Φ (o.resS T x)) (fun g x => hper g g.2 x)]`. Express the relevant statement in the definitionally equal form `∫⁻ x in em ⁻¹' (FA ×ˢ FB), Φ (em x) ∂μ = _`. Rewrite using `[← lintegral_map_equiv _ em, ← em.restrict_map, hmeq, Measure.restrict_smul, lintegral_smul_measure, Measure.prod_restrict]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_resS {S A B T : HSp D} (o : OrthDec S A B) (μ : Measure (WO S T)) [μ.IsAddHaarMeasure]
     (𝓕 : Set (WO S T)) (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) (μA : Measure (WO A T)) (μB : Measure (WO B T))
@@ -129,7 +125,7 @@ open scoped ENNReal NNReal
 variable {D : D7}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, rfl⟩ x`. Establish `h : ‖f (ratW T S g + x)‖ = ‖f x‖` using `by rw [hf.quasi, norm_mul, hψ.1.2.1, one_mul]`. Use `show ‖f (ratW T S g + x)‖ₑ ^ 2 = _`. Rewrite using `[← ofReal_norm, ← ofReal_norm, h]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_sq_periodic {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : ∀ γ ∈ ratL T S, ∀ x, ‖f (γ + x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2 := by
@@ -139,27 +135,23 @@ theorem enorm_sq_periodic {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
   rw [← ofReal_norm, ← ofReal_norm, h]
 
 /- English proof (translation)
-Introduce `D ψ S A B T o μ 𝓕 hμ h𝓕 f hf`. Use `haveI := borel_Mx (D := D) T.rank S.rank`. Use `haveI := borel_Mx (D := D) T.rank A.rank`. Use `haveI := borel_Mx (D := D) T.rank B.rank`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D T.rank S.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D T.rank A.rank`. Take `⟨k1, k2, k3, k4, k5, -⟩` from `lattice_Mx D T.rank B.rank`. Take `⟨μA, FA, hA⟩` from `exists_isCovolOne D T.rank A.rank`. Take `⟨μB, FB, hB⟩` from `exists_isCovolOne D T.rank B.rank`. Use `haveI := hA.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hB.1`. Establish `hFA : IsAddFundamentalDomain (ratL T A) FA μA` using `hA.2.1`. Establish `hFB : IsAddFundamentalDomain (ratL T B) FB μB` using `hB.2.1`. Take `⟨c, hc⟩` from `lintegral_resS o μ 𝓕 h𝓕 μA μB FA FB hFA hFB`. Establish `hslice` using `GlobalTheory.T.weilOperator_oneVariable_keeps_thetaFunctions D ψ S A B T o f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hΦ0 : Measurable fun y : WO A T × WO B T => ‖f ((o.resS T).symm y)‖ₑ ^ 2` using `((ENNReal.continuous_pow 2).comp (continuous_enorm.comp (hf.cont.comp (o.continuous_resS_symm T)))).measurable`. Establish `e0 : ∀ hψ : IsStdChar D ψ (-1), ∫⁻ x in 𝓕, ‖f x‖ₑ ^ 2 ∂μ = c • ∫⁻ y, ‖f ((o.resS T).symm y)‖ₑ ^ 2 ∂((μA.restrict FA).prod (μB.restrict FB))`. Introduce `hψ`. Establish `h` using `hc (fun y => ‖f ((o.resS T).symm y)‖ₑ ^ 2) (fun γ hγ x => by`. Simplify using `only [AddEquiv.symm_apply_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `enorm_sq_periodic hψ hf γ hγ x)`. Simplify `h` using `only [AddEquiv.symm_apply_apply]`. Use `⟨fun χ χ' om hW p => ?_, fun χ χ' om hW p => ?_⟩` and prove the remaining obligations. Establish `hψ` using `hW.std`. Establish `hF` using `hslice.1 χ χ' om hW p`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbox` using `(GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hψ S A B T o).2.2.2 f hf`. Establish `hfun : (fun y : WO A T × WO B T => ‖om p (fun u => f ((o.resS T).symm (u, y.2))) y.1‖ₑ ^ 2) = fun y => ‖(fun x => om p (fun u => f ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1) ((o.resS T).symm y)‖ₑ ^ 2`. Use function extensionality and compare the values at `y`. Simplify using `only [AddEquiv.apply_symm_apply]`. Establish `hΦ1 : Measurable fun y : WO A T × WO B T => ‖om p (fun u => f ((o.resS T).symm (u, y.2))) y.1‖ₑ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfun]`. Conclude with `((ENNReal.continuous_pow 2).comp (continuous_enorm.comp (hF.cont.comp (o.continuous_resS_symm T)))).measurable`. Establish `e1` using `hc (fun y => ‖om p (fun u => f ((o.resS T).symm (u, y.2))) y.1‖ₑ ^ 2) (fun γ hγ x => enorm_sq_periodic hψ hF γ hγ x)`. Rewrite using `[e1, e0 hψ]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[lintegral_prod_symm _ hΦ1.aemeasurable, lintegral_prod_symm _ hΦ0.aemeasurable]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Use `show ∫⁻ u in FA, ‖om p (fun u => f ((o.resS T).symm (u, v))) u‖ₑ ^ 2 ∂μA = ∫⁻ u in FA, ‖f ((o.resS T).symm (u, v))‖ₑ ^ 2 ∂μA`. Conclude with `hW.om_unit μA FA hA.1 hFA p (fun u => f ((o.resS T).symm (u, v))) (hbox.1 v)`. Establish `hψ` using `hW.std`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF` using `hslice.2 χ χ' om hW p`. Establish `hbox` using `(GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hψ S A B T o).2.2.2 f hf`. Establish `hfun : (fun y : WO A T × WO B T => ‖om p (fun v => f ((o.resS T).symm (y.1, v))) y.2‖ₑ ^ 2) = fun y => ‖(fun x => om p (fun v => f ((o.resS T).symm ((o.resS T x).1, v))) (o.resS T x).2) ((o.resS T).symm y)‖ₑ ^ 2`. Use function extensionality and compare the values at `y`. Simplify using `only [AddEquiv.apply_symm_apply]`.
-
-Establish `hΦ1 : Measurable fun y : WO A T × WO B T => ‖om p (fun v => f ((o.resS T).symm (y.1, v))) y.2‖ₑ ^ 2`. Rewrite using `[hfun]`. Conclude with `((ENNReal.continuous_pow 2).comp (continuous_enorm.comp (hF.cont.comp (o.continuous_resS_symm T)))).measurable`. Establish `e1` using `hc (fun y => ‖om p (fun v => f ((o.resS T).symm (y.1, v))) y.2‖ₑ ^ 2) (fun γ hγ x => enorm_sq_periodic hψ hF γ hγ x)`. Rewrite using `[e1, e0 hψ]`.
-
-Use `congr 1`. Rewrite using `[lintegral_prod _ hΦ1.aemeasurable, lintegral_prod _ hΦ0.aemeasurable]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Use `show ∫⁻ v in FB, ‖om p (fun v => f ((o.resS T).symm (u, v))) v‖ₑ ^ 2 ∂μB = ∫⁻ v in FB, ‖f ((o.resS T).symm (u, v))‖ₑ ^ 2 ∂μB`. Conclude with `hW.om_unit μB FB hB.1 hFB p (fun v => f ((o.resS T).symm (u, v))) (hbox.2 u)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : OrthDec S A B) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ (χ χ' : (AE D)ˣ →* Circle) (om : Om A T), IsWeilDatumO ψ A T χ χ' om → ∀ p, ∫⁻ x in 𝓕, ‖om p (fun u => f ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1‖ₑ ^ 2 ∂μ = ∫⁻ x in 𝓕, ‖f x‖ₑ ^ 2 ∂μ) ∧ ∀ (χ χ' : (AE D)ˣ →* Circle) (om : Om B T), IsWeilDatumO ψ B T χ χ' om → ∀ p, ∫⁻ x in 𝓕, ‖om p (fun v => f ((o.resS T).symm ((o.resS T x).1, v))) (o.resS T x).2‖ₑ ^ 2 ∂μ = ∫⁻ x in 𝓕, ‖f x‖ₑ ^ 2 ∂μ := by
   intro D ψ S A B T o μ 𝓕 hμ h𝓕 f hf

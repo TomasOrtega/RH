@@ -24,11 +24,11 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hT3 : F.trM t.Φ (opM (Tl l₁) (Tl l₂) (1 : Matrix Unit Unit ℂ)) g = _` using `tensTr E a b (Ml l₁) (Ml l₂) Unit t.ka t.kb (Tl l₁) (Tl l₂) t.ψ 1 g`. Establish `hA : ∏ v, t.arch (Tl l₁) (Tl l₂) v (GeneralLinearGroup.map (cV v) g.1, GeneralLinearGroup.map (cV v) g.2) = (∏ v, phiOf (Ml l₁ v) (Tl l₁ v) (t.ka v) (gInf v g.1)) * ∏ v, phiOf (Ml l₂ v) (Tl l₂ v) (t.kb v) (gInf v g.2)`. Simplify using `only [PT.arch]`. Conclude with `Finset.prod_mul_distrib`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : finFn S φ₁ φ₂ (hFin g * (ratF E a u₁, ratF E b u₂)⁻¹) = ∏ᶠ v ∈ S, φ₁ v (cpt v u₁ g.1, cpt v u₂ g.2) * if IsSplitAt v then φ₂ v (cpt' v u₁ g.1, cpt' v u₂ g.2) else 1`. Simplify using `only [finFn, Adel.cpt_eq, Adel.cpt'_eq]`. Both sides reduce to the same expression. Use `hT3.trans ?_` and prove the remaining obligations. Rewrite using `[ht, Pi.smul_apply, smul_eq_mul, adel, hA, ← hF]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [F.rt, Ar.ff, Finset.univ_unique, Finset.sum_singleton, Matrix.one_apply_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trM_pt {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a}
     {l₂ : InfinitePlace E → DomWeight b} {D : Dom E a b} (A : Ar l₁ l₂ D) (S : Set (Pl E)) (u₁ : GL (Fin a) E) (u₂ : GL (Fin b) E)
@@ -51,19 +51,17 @@ theorem trM_pt {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {l
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b l₁ l₂ D A μ₁ μ₂ h₁ h₂`. Use `haveI := GlobalTheory.CompanionTheory.UnrCM.nontrivial_infinitePlace E hU`. Use `haveI := A.ha`. Use `haveI := A.hb`. Use `haveI : BorelSpace (G a) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace (G b) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA E a) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA E b) := ⟨rfl⟩`. Take `⟨c, hc, h4⟩` from `global_character_holds E hU a b μ₁ μ₂ A.μa A.μb`. Distinguish the cases in `hv : A.blk.vol = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, one_ne_zero, fun S _ _ hS' => absurd hv (hF E a b l₁ l₂ D A S hS').1⟩`. Use `⟨A.blk.vol⁻¹ * c * 2 ^ ((a + b) * Fintype.card (InfinitePlace E)), mul_ne_zero (mul_ne_zero (inv_ne_zero hv) hc) (pow_ne_zero _ two_ne_zero), ?_⟩` and prove the remaining obligations. Introduce `S Z L hSec hZ u₁ u₂ hu₁ hu₂ φ T e₁ e₂ k C R hφ hreg hIn hR hC`. Take `⟨c₀, hc₀, ht⟩` from `hT E a b l₁ l₂ D A S Z L hSec hZ u₁ u₂ hu₁ hu₂`. Establish `ht'` using `(ht φ T _ _ C R hφ hreg hR hC).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hr : 0 ≤ c₀ * (1 + R)` using `mul_nonneg hc₀ (by linarith)`. Take `⟨-, hseen, htest, -⟩` from `(hS E a b S Z L hZ φ T e₁ e₂ hφ hIn).2 k`. Take `⟨hln, -, hsl⟩` from `hSl E a b S Z L hZ`. Establish `h3` using `G3.g3 E hU a b S hSec l₁ l₂ _ htest (by`. Take `⟨w, hw, hw'⟩` from `hreg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨w, (hZ w hw).1, by rw [fam, if_pos hw]; exact hw'⟩)`. Establish `one : ∀ j ∈ C.s, ellSum2 μ₁ μ₂ (trM (C.t j).Φ A.tw) = A.blk.vol⁻¹ * c * 2 ^ ((a + b) * Fintype.card (InfinitePlace E)) * (C.t j).val (chi l₁) (chi l₂) * geomSt2 S l₁ l₂ (fam Z T φ e₁ e₂ k)` using `fun j hj => by`. Take `⟨ok, hψ, -, -⟩` from `hC j hj`. Establish `e` using `trM_pt A S u₁ u₂ _ _ (C.t j) hψ`. Establish `e' : adel S u₁ u₂ ((C.t j).arch (Tl l₁) (Tl l₂)) (intersection_update_fsHerm_neg_one Z T φ fun w => (e₁ w).pow k) (intersection_update_fsHerm_neg_one Z T L.ln fun w => (e₂ w).pow k) = ∑ _i ∈ ({()} : Finset Unit), A.blk.vol • trM (C.t j).Φ A.tw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_singleton, e, smul_smul, mul_inv_cancel₀ hv, one_smul]`. Establish `h5` using `h4 S hSec u₁ u₂ hu₁ hu₂ l₁ l₂ (fun v => (C.t j).va v (chi l₁ v) * (C.t j).vb v (chi l₂ v)) ((C.t j).arch (Tl l₁) (Tl l₂)) _ _ (fun v => (hL E a b l₁ l₂ D A).2 v _ _ _ _ _ (ok.ka v) (ok.kb v)) ((hsl φ hφ).2 T fun w => (e₁ w).pow k) ((hsl _ hln).2 T fun w => (e₂ w).pow k)`. Rewrite `h5` using `[e', ellLin_holds E a b μ₁ μ₂ Unit _ _ _ _ hr (fun _ _ => ht' j hj), Finset.sum_singleton, hseen, h3, Finset.prod_mul_distrib]`. Establish `hval : (C.t j).val (chi l₁) (chi l₂) = (∏ v, (C.t j).va v (chi l₁ v)) * ∏ v, (C.t j).vb v (chi l₂ v)` using `rfl`. Rewrite using `[hval, ← inv_mul_cancel_left₀ hv (ellSum2 μ₁ μ₂ (trM (C.t j).Φ A.tw)), h5]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Cmb.Φ, Growth.trM_sum, ellLin_holds E a b μ₁ μ₂ _ _ _ _ _ hr ht', Cmb.val, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[one j hj]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cmbEll_of (hT : CmbTest) (hS : SeenFam) (hSl : PositionTest) (hL : LefL) (hF : FfAlg) : CmbEll := by
   intro E _ _ _ hU a b l₁ l₂ D A μ₁ μ₂ h₁ h₂

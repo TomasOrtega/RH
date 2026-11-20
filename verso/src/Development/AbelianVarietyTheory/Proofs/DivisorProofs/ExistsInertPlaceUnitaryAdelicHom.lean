@@ -12,7 +12,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_nu {R S : Type} [NonUnitalNonAssocSemiring R] [NonUnitalNonAssocSemiring S] (f : R →ₙ+* S)
     {l m k : ℕ} (A : Matrix (Fin l) (Fin m) R) (B : Matrix (Fin m) (Fin k) R) :
@@ -23,13 +23,13 @@ def blow {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) : Matrix (F
   1 + (A - 1).map (ptAt hw h)
 
 /- English proof (translation)
-Simplify using `[blow, Matrix.map_zero _ (map_zero (ptAt hw h))]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blow_one {n : ℕ} : blow hw h (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = 1 := by
   simp [blow, Matrix.map_zero _ (map_zero (ptAt hw h))]
 
 /- English proof (translation)
-Establish `e : A * B - 1 = (A - 1) + (B - 1) + (A - 1) * (B - 1)` using `by noncomm_ring`. Simplify using `only [blow, e, Matrix.map_add _ (map_add (ptAt hw h)), map_mul_nu]`. Use `noncomm_ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blow_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) (w.adicCompletion E)) :
     blow hw h (A * B) = blow hw h A * blow hw h B := by
@@ -43,7 +43,7 @@ def blowHom (n : ℕ) : Matrix (Fin n) (Fin n) (w.adicCompletion E) →* Matrix 
   map_mul' := blow_mul hw h
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[blow]`. Simplify using `[blow, Matrix.one_apply, hij, Ne.symm hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blow_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) :
     (blow hw h A)ᵀ = blow hw h Aᵀ := by
@@ -53,7 +53,7 @@ theorem blow_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E
   · simp [blow, Matrix.one_apply, hij, Ne.symm hij]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[blow, cA_ptAt hw h σ hc]`. Simplify using `[blow, Matrix.one_apply, hij, cA_ptAt hw h σ hc]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blow_map_cA (σ : E →ₐ[F] E) {c : w.adicCompletion E →+* w.adicCompletion E} (hc : IsConjAt σ h c) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) : (blow hw h A).map (cA σ) = blow hw h (A.map c) := by
@@ -63,7 +63,7 @@ theorem blow_map_cA (σ : E →ₐ[F] E) {c : w.adicCompletion E →+* w.adicCom
   · simp [blow, Matrix.one_apply, hij, cA_ptAt hw h σ hc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, incM, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, inclR_mul_ptAt, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_pt_mul_incM {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (J : Matrix (Fin n) (Fin n) E) :
     A.map (ptAt hw h) * incM F J = (A * J.map (algebraMap E _)).map (ptAt hw h) := by
@@ -73,7 +73,7 @@ theorem map_pt_mul_incM {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion 
   rw [mul_comm, inclR_mul_ptAt, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, incM, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inclR_mul_ptAt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_mul_map_pt {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (J : Matrix (Fin n) (Fin n) E) :
     incM F J * A.map (ptAt hw h) = (J.map (algebraMap E _) * A).map (ptAt hw h) := by
@@ -83,9 +83,9 @@ theorem incM_mul_map_pt {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion 
   rw [inclR_mul_ptAt]
 
 /- English proof (translation)
-Rewrite using `[blow_transpose]`. Use `set Ja := J.map (algebraMap E (w.adicCompletion E))`. Establish `e : (Aᵀ - 1) * Ja + Ja * (B - 1) + (Aᵀ - 1) * Ja * (B - 1) = 0`. Establish `: (Aᵀ - 1) * Ja + Ja * (B - 1) + (Aᵀ - 1) * Ja * (B - 1) = Aᵀ * Ja * B - Ja` using `by noncomm_ring`. Rewrite using `[this, hAB, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (blow hw h Aᵀ) * incM F J * blow hw h B = incM F J + (((Aᵀ - 1) * Ja + Ja * (B - 1) + (Aᵀ - 1) * Ja * (B - 1)).map (ptAt hw h))`. Rewrite using `[Matrix.map_add _ (map_add (ptAt hw h)), Matrix.map_add _ (map_add (ptAt hw h)), map_mul_nu _ ((Aᵀ - 1) * Ja), ← map_pt_mul_incM, ← incM_mul_map_pt]`. Simplify using `only [blow]`. Use `noncomm_ring`. Rewrite using `[e2, e, Matrix.map_zero _ (map_zero (ptAt hw h)), add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blow_form {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (A B : Matrix (Fin n) (Fin n) (w.adicCompletion E))
     (hAB : Aᵀ * J.map (algebraMap E _) * B = J.map (algebraMap E _)) :
@@ -104,9 +104,9 @@ theorem blow_form {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (A B : Matrix (Fin n)
   rw [e2, e, Matrix.map_zero _ (map_zero (ptAt hw h)), add_zero]
 
 /- English proof (translation)
-Establish `e1 : (A - 1).map (ptAt hw h) *ᵥ (fun i => ptAt hw h (ζ i)) = fun i => ptAt hw h (((A - 1) *ᵥ ζ) i)`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`. Rewrite using `[blow, Matrix.add_mulVec, Matrix.one_mulVec, e1]`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Pi.add_apply, ← map_add, Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blow_mulVec_pt {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (ζ : Fin n → w.adicCompletion E) :
     blow hw h A *ᵥ (fun i => ptAt hw h (ζ i)) = fun i => ptAt hw h ((A *ᵥ ζ) i) := by
@@ -117,29 +117,25 @@ theorem blow_mulVec_pt {n : ℕ} (A : Matrix (Fin n) (Fin n) (w.adicCompletion E
   rw [Pi.add_apply, ← map_add, Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, add_sub_cancel]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ c : Formalism.UG.Ov E w, (fun i => ptAt hw h ((c • x) i)) ∈ GlobalTheory.InertSph.latAt X v by`. Simplify using `using H 1`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨t, ht⟩` from `(InertChart.complEquiv hw h).surjective (c : w.adicCompletion E)`. Establish `htI : t ∈ intLoc F E v` using `(InertChart.mem_intLoc_iff hw h t).2 (by`. Rewrite using `[show toCompl h t = c from ht]`. Conclude with `c.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ t ∈ intLoc F E v, (fun i => ptAt hw h (toCompl h t * algebraMap E (w.adicCompletion E) (y i))) ∈ GlobalTheory.InertSph.latAt X v`. Introduce `s hs`. Establish `hs' : s ∈ AddSubgroup.closure {z | ∃ a ∈ v.adicCompletionIntegers F, ∃ x : 𝓞 E, z = a ⊗ₜ[F] (x : E)}` using `hs`. Use `clear hs`. Proceed by induction on `hs' using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem z hz`. Take `⟨a, ha, e, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v a, GlobalTheory.LatVac.at_liftV v a, by rw [GlobalTheory.LatVac.evFin_liftV]; exact ha, e • y, X.L.smul_mem e hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, ptAt_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : toCompl h (a ⊗ₜ[F] (e : E)) * algebraMap E (w.adicCompletion E) (y i) = toCompl h (a ⊗ₜ[F] ((e : E) * y i))`. Rewrite using `[toCompl_tmul, toCompl_tmul, map_mul, mul_assoc]`. Rewrite using `[e2, show toCompl h (a ⊗ₜ[F] ((e : E) * y i)) = InertChart.complEquiv hw h (a ⊗ₜ[F] ((e : E) * y i)) from rfl, RingEquiv.symm_apply_apply]`. Use `show _ = GlobalTheory.LatVac.liftV v a • ((1 : AF F) ⊗ₜ[F] _)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `zero => simp only [map_zero, zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `e3 : (fun i => ptAt hw h (toCompl h (a + b) * algebraMap E (w.adicCompletion E) (y i))) = (fun i => ptAt hw h (toCompl h a * algebraMap E (w.adicCompletion E) (y i))) + (fun i => ptAt hw h (toCompl h b * algebraMap E (w.adicCompletion E) (y i)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Simplify using `[add_mul]`. Rewrite using `[e3]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `e3 : (fun i => ptAt hw h (toCompl h (-a) * algebraMap E (w.adicCompletion E) (y i))) = -(fun i => ptAt hw h (toCompl h a * algebraMap E (w.adicCompletion E) (y i)))`. Use function extensionality and compare the values at `i`. Simplify using `[neg_mul]`. Rewrite using `[e3]`. Conclude with `neg_mem ha`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `key t htI using 2 with i` and compare the differences between its conclusion and the goal. Use `show ptAt hw h ((c : w.adicCompletion E) * _) = _`. Rewrite using `[← ht]`. Both sides reduce to the same expression. Consider the case `zero => intro c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [smul_zero, Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `c`. Use `add_mem (hx c) (hy c) using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `i`. Simplify using `[smul_add]`. Consider the case `smul a x _ hx`. Introduce `c`. Use `hx (c * a) using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `i`. Rewrite using `[mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_mem_latAt {n : ℕ} (X : Spc F E n) {x : Fin n → w.adicCompletion E} (hx : x ∈ GlobalTheory.LFun.latAt w X.L) :
     (fun i => ptAt hw h (x i)) ∈ GlobalTheory.InertSph.latAt X v := by
@@ -199,15 +195,13 @@ theorem pt_mem_latAt {n : ℕ} (X : Spc F E n) {x : Fin n → w.adicCompletion E
     funext i; rw [mul_smul]
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, y, hy, rfl⟩` from `hz`. Establish `hat : ∀ i, At (evFin F v) ((a • fun i => inclR (F` using `F) (AF F) (y i)) i) := fun i u hu => by`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, smul_smul, ← smul_eq_mul u a, ha u hu, zero_smul]`. Establish `hz : (a • fun i => inclR (F` using `F) (AF F) (y i)) = fun i => ptAt hw h (locW h ((a • fun i => inclR (F := F) (AF F) (y i)) i)) :=`. Use function extensionality and compare the values at `fun i => (ptAt_locW hw h (hat i)).symm`. Establish `hloc : (fun i => locW h ((a • fun i => inclR (F` using `F) (AF F) (y i)) i)) ∈ GlobalTheory.LFun.latAt w X.L := by`. Establish `e : (fun i => locW h ((a • fun i => inclR (F` using `F) (AF F) (y i)) i)) = (⟨complMap h (evFin F v a), complMap_mem h hav⟩ : Formalism.UG.Ov E w) • fun i => algebraMap E (w.adicCompletion E) (y i) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply]`. Use `show toCompl h (compFin F E v (a • ((1 : AF F) ⊗ₜ[F] y i))) = complMap h (evFin F v a) * _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Rewrite using `[hz, blow_mulVec_pt]`. Conclude with `pt_mem_latAt hw h X (hA _ hloc)`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blow_mulVec_mem {n : ℕ} (X : Spc F E n) (A : Matrix (Fin n) (Fin n) (w.adicCompletion E))
     (hA : ∀ x ∈ GlobalTheory.LFun.latAt w X.L, A *ᵥ x ∈ GlobalTheory.LFun.latAt w X.L) :
@@ -239,9 +233,9 @@ theorem blow_mulVec_mem {n : ℕ} (X : Spc F E n) (A : Matrix (Fin n) (Fin n) (w
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨k', rfl⟩` from `hk`. Establish `hy` using `(hP (((P⁻¹ : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) _) *ᵥ x)).2 (by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Use `(hP _).1 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ (hy j)` and prove the remaining obligations. Conclude with `(k'.1 i j).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_preserves {n : ℕ} (X : Spc F E n) (P : GL (Fin n) (w.adicCompletion E)) (hP : IsFrameAt w X.L P)
     (k : GL (Fin n) (w.adicCompletion E)) (hk : k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (w.adicCompletion E))) :
@@ -259,9 +253,9 @@ theorem conj_preserves {n : ℕ} (X : Spc F E n) (P : GL (Fin n) (w.adicCompleti
   exact (k'.1 i j).2
 
 /- English proof (translation)
-Establish `hpqc : p.map c * q.map c = 1` using `by rw [← Matrix.map_mul, hpq, Matrix.map_one _ (map_zero c) (map_one c)]`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.map_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = δ • (qᵀ * q.map c) := by rw [hk, Matrix.mul_one]`. Use `_ = qᵀ * (pᵀ * Ja * p.map c) * q.map c := by rw [hP]; simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`. Use `_ = (p * q)ᵀ * Ja * (p.map c * q.map c) := by rw [Matrix.transpose_mul]; simp only [Matrix.mul_assoc]`. Use `_ = Ja := by rw [hpq, hpqc]; simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_form {K : Type} [CommRing K] {n : ℕ} (c : K →+* K) (Ja p q m : Matrix (Fin n) (Fin n) K) (δ : K)
     (hpq : p * q = 1) (hP : pᵀ * Ja * p.map c = δ • 1) (hk : mᵀ * m.map c = 1) :
@@ -294,17 +288,15 @@ end GlobalTheory.InertPlace
 
 open GlobalTheory.InertPlace in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v w hw h σL hc n X P δ hPJ Γ _ φ hφ`. Establish `hmem : ∀ g, embHom hw h P φ g ∈ UG (cA σ) (incM F X.J)` using `fun g => by show ((embHom hw h P φ g : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F X.J * ((embHom hw h P φ g : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = incM F X.J`. Rewrite using `[embHom_val, blow_map_cA hw h σ hc]`. Use `blow_form hw h X.J _ _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `conj_form σL _ _ _ _ δ (by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]) hPJ (hφ g)`. Establish `hAt : ∀ g, (embHom hw h P φ).codRestrict (UG (cA σ) (incM F X.J)) hmem g ∈ UAt σ X (evFin F v)` using `fun g => by show At (evFin F v) (((embHom hw h P φ g : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) - 1)`. Rewrite using `[embHom_val, blow, add_sub_cancel_left]`. Introduce `u hu`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply]`. Conclude with `at_ptAt hw h _ u hu`. Use `⟨(embHom hw h P φ).codRestrict (UG (cA σ) (incM F X.J)) hmem, hAt, fun g => ?_, fun hF g hg => ?_⟩` and prove the remaining obligations. Use `show (((embHom hw h P φ g : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))).map (locW h) = _`. Rewrite using `[embHom_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[blow, locW_ptAt]`. Simplify using `[blow, Matrix.one_apply, hij, locW_ptAt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨hAt g, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show ((embHom hw h P φ g : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) *ᵥ z ∈ _`. Rewrite using `[embHom_val]`. Conclude with `blow_mulVec_mem hw h X _ (conj_preserves X P hF (φ g) hg) z hz`. Rewrite using `[← map_inv] show ((embHom hw h P φ g⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) *ᵥ z ∈ _`.
-
-Rewrite using `[embHom_val]`. Conclude with `blow_mulVec_mem hw h X _ (conj_preserves X P hF (φ g⁻¹) (by rw [map_inv]; exact inv_mem hg)) z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertPlace.exists_hom_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F)
     (w : HeightOneSpectrum (𝓞 E)) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)

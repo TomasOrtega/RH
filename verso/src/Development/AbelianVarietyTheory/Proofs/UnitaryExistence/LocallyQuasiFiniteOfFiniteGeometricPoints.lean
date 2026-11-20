@@ -8,11 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hJ : JacobsonSpace P` using `LocallyOfFiniteType.jacobsonSpace s`. Establish `hc : (closedPoints P).Finite`. Establish `: Finite (closedPoints P)` using `Finite.of_equiv _ (pointEquivClosedPoint s)`. Conclude with `Set.toFinite _`. Establish `hcl : IsClosed (closedPoints P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.biUnion_of_singleton (closedPoints P)]`. Conclude with `hc.isClosed_biUnion fun x hx ↦ hx`. Establish `hu : closedPoints P = Set.univ`. Use `JacobsonSpace.closure_inter_closedPoints (X := P) isClosed_univ` as an intermediate fact. Rewrite `this` using `[Set.univ_inter, hcl.closure_eq]`. Then use the resulting hypothesis.
-
-Conclude with `Set.finite_univ_iff.mp (hu ▸ hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_of_finite_sections {Ω : Type} [Field Ω] [IsAlgClosed Ω] {P : Scheme.{0}}
     (s : P ⟶ Spec (.of Ω)) [LocallyOfFiniteType s]
@@ -30,13 +28,13 @@ theorem finite_of_finite_sections {Ω : Type} [Field Ω] [IsAlgClosed Ω] {P : S
   exact Set.finite_univ_iff.mp (hu ▸ hc)
 
 /- English proof (translation)
-Use `LocallyQuasiFinite.of_finite_preimage_singleton f fun y ↦ ?_` and prove the remaining obligations. Set `Ω` to `AlgebraicClosure (Y.residueField y)`. Set `y' : Spec (.of Ω) ⟶ Y` to `Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y) Ω)) ≫ Y.fromSpecResidueField y`. Establish `hy : y ∈ Set.range y'`. Take `⟨z⟩ : Nonempty ↥(Spec (.of Ω))` from `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, (Scheme.Hom.comp_apply _ _ z).trans (Scheme.fromSpecResidueField_apply y _)⟩`. Use `clear_value y'`. Use `h Ω y'` as an intermediate fact. Establish `hP : Finite ↥(pullback f y')`. Use `finite_of_finite_sections (pullback.snd f y') ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finite.of_injective (β := {x : Spec (.of Ω) ⟶ X // x ≫ f = y'}) (fun x ↦ ⟨x.1 ≫ pullback.fst f y', by` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, x.2, Category.id_comp]⟩) ?_`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val hab`. Rewrite using `[a.2, b.2]`. Use `(Set.finite_range (pullback.fst f y')).subset ?_` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `Set.preimage_mono (Set.singleton_subset_iff.mpr hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locallyQuasiFinite_of_finite_geometric_points {X Y : Scheme.{0}} (f : X ⟶ Y)
     [LocallyOfFiniteType f]
@@ -66,9 +64,7 @@ theorem locallyQuasiFinite_of_finite_geometric_points {X Y : Scheme.{0}} (f : X 
   exact Set.preimage_mono (Set.singleton_subset_iff.mpr hy)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty {x : T ⟶ Ga // x ≫ p = y} with he | ⟨⟨x₀, hx₀⟩⟩` into its components or cases. Use `infer_instance`. Use `Finite.of_injective (β := {x : T ⟶ Ga // x ≫ p = 1}) (fun x ↦ ⟨x₀⁻¹ * x.1, by` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hx₀, x.2, inv_mul_cancel]⟩) ?_`. Introduce `a b hab`.
-
-Conclude with `Subtype.ext (mul_left_cancel (congrArg Subtype.val hab))`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_fiber_of_finite_ker {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {Ga G T : C} [GrpObj Ga] [GrpObj G] (p : Ga ⟶ G) [IsMonHom p]
@@ -83,9 +79,9 @@ theorem finite_fiber_of_finite_ker {C : Type*} [Category C] [CartesianMonoidalCa
   exact Subtype.ext (mul_left_cancel (congrArg Subtype.val hab))
 
 /- English proof (translation)
-Introduce `S Ga G _ _ p hp hft _ h`. Use `locallyQuasiFinite_of_finite_geometric_points p.left fun Ω _ _ y ↦ ?_` and prove the remaining obligations. Set `y' : Over.mk (y ≫ G.hom) ⟶ G` to `Over.homMk y rfl`. Use `finite_fiber_of_finite_ker p (h Ω (y ≫ G.hom)) y'` as an intermediate fact. Use `Finite.of_injective (β := {x : Over.mk (y ≫ G.hom) ⟶ Ga // x ≫ p = y'}) (fun x ↦ ⟨Over.homMk x.1 (by` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `x.1 ≫ Ga.hom = y ≫ G.hom`. Rewrite using `[← Over.w p, ← Category.assoc, x.2]), Over.OverMorphism.ext x.2⟩) ?_`. Introduce `a b hab`. Conclude with `Subtype.ext (congrArg (fun z ↦ z.1.left) hab)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locallyQuasiFinite_of_finite_geometric_ker :
     ∀ (S : Scheme.{0}) (Ga G : Over S) [GrpObj Ga] [GrpObj G] (p : Ga ⟶ G), IsMonHom p →

@@ -44,9 +44,9 @@ def vHom (p : ℕ) (C : Type) [NormedField C] : Additive Cˣ →+ ℝ where
     ring
 
 /- English proof (translation)
-Use `haveI : Module.Free ℤ M := by first`. Consider the case `exact Module.free_of_finite_type_torsion_free'`. Consider the case `infer_instance`. Set `b` to `Module.Free.chooseBasis ℤ M`. Use `choose u hu using fun i => hM _ (b i).2`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b.constr ℤ u, fun m => ?_⟩` and prove the remaining obligations. Establish `key : (vHom p C).toIntLinearMap ∘ₗ b.constr ℤ u = M.subtype` using `b.ext fun i => by simp [hu]`. Simplify using `using LinearMap.congr_fun key m`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_section (p : ℕ) {C : Type} [NormedField C] (M : Submodule ℤ ℝ) [Module.Finite ℤ M]
     (hM : ∀ m ∈ M, ∃ u : Additive Cˣ, vHom p C u = m) :
@@ -64,23 +64,19 @@ theorem exists_section (p : ℕ) {C : Type} [NormedField C] (M : Submodule ℤ �
   simpa using LinearMap.congr_fun key m
 
 /- English proof (translation)
-Establish `key : ∀ x : TensorProduct ℤ Y Y, ∃ u : Additive Cˣ, vHom p C u = TensorProduct.lift β x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by rw [map_zero, map_zero]⟩`. Consider the case `tmul a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨u, hu⟩` from `h a b`. Conclude with `⟨Additive.ofMul u, by rw [TensorProduct.lift.tmul, hu]; rfl⟩`. Consider the case `add x y hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u + v, by rw [map_add, map_add, hu, hv]⟩`. Establish `hM : ∀ m ∈ LinearMap.range (TensorProduct.lift β), ∃ u : Additive Cˣ, vHom p C u = m`. Introduce and unpack `m ⟨x, rfl⟩`. Conclude with `key x`. Take `⟨s, hs⟩` from `exists_section (C := C) p _ hM`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `mem : ∀ a b, β a b ∈ LinearMap.range (TensorProduct.lift β)` using `fun a b => ⟨a ⊗ₜ b, TensorProduct.lift.tmul _ _⟩`. Use `⟨fun a b => Additive.toMul (s ⟨β a b, mem a b⟩), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a a' b`. Establish `e : (⟨β (a + a') b, mem _ _⟩ : LinearMap.range (TensorProduct.lift β)) = ⟨β a b, mem a b⟩ + ⟨β a' b, mem a' b⟩` using `Subtype.ext (by simp)`. Use `show Additive.toMul (s ⟨β (a + a') b, mem _ _⟩) = Additive.toMul (s ⟨β a b, mem a b⟩) * Additive.toMul (s ⟨β a' b, mem a' b⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(rw [e, map_add]; rfl)`. Consider the case `(rw [e, map_add, toMul_add])`. Consider the case `(simp only [e, map_add]; rfl)`. Introduce `a b b'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `e : (⟨β a (b + b'), mem _ _⟩ : LinearMap.range (TensorProduct.lift β)) = ⟨β a b, mem a b⟩ + ⟨β a b', mem a b'⟩` using `Subtype.ext (by simp)`. Use `show Additive.toMul (s ⟨β a (b + b'), mem _ _⟩) = Additive.toMul (s ⟨β a b, mem a b⟩) * Additive.toMul (s ⟨β a b', mem a b'⟩)`. Use `first`. Consider the case `(rw [e, map_add]; rfl)`. Consider the case `(rw [e, map_add, toMul_add])`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(simp only [e, map_add]; rfl)`. Introduce `a b a' b' hab`. Establish `e : (⟨β a b, mem a b⟩ : LinearMap.range (TensorProduct.lift β)) = ⟨β a' b', mem a' b'⟩` using `Subtype.ext hab`. Use `show Additive.toMul (s ⟨β a b, mem a b⟩) = Additive.toMul (s ⟨β a' b', mem a' b'⟩)`. Rewrite using `[e]`.
-
-Introduce `a b show β a b = BoundaryLocalData.vU p (Additive.toMul (s ⟨β a b, mem a b⟩))`. Establish `hab` using `(hs ⟨β a b, mem a b⟩).symm`. Use `first`. Consider the case `exact hab`. Consider the case `(simp only [vHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at hab; exact hab)`.
-
-Consider the case `(rw [hab]; rfl)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_tau (p : ℕ) {C : Type} [NormedField C] {Y : Type} [AddCommGroup Y] [Module.Finite ℤ Y]
     (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (h : ∀ a b, ∃ u : Cˣ, β a b = BoundaryLocalData.vU p u) :
@@ -137,9 +133,9 @@ theorem exists_tau (p : ℕ) {C : Type} [NormedField C] {Y : Type} [AddCommGroup
     | (rw [hab]; rfl)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual K V, φ v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hv` to reduce the goal to its premises. Use `first`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Module.forall_dual_apply_eq_zero_iff K v).1 hc`. Consider the case `exact (Module.forall_dual_apply_eq_zero_iff v).1 hc`. Use `⟨(φ v)⁻¹ • φ.smulRight w, ?_⟩` and prove the remaining obligations. Simplify using `[LinearMap.smulRight_apply, smul_smul, inv_mul_cancel₀ hφ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lin {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W] {v : V}
     (hv : v ≠ 0) (w : W) : ∃ f : V →ₗ[K] W, f v = w := by
@@ -154,9 +150,9 @@ theorem exists_lin {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCo
   simp [LinearMap.smulRight_apply, smul_smul, inv_mul_cancel₀ hφ]
 
 /- English proof (translation)
-Take `⟨-, -, h⟩` from `h`. Break down `h with ⟨mm, rfl⟩ | ⟨π, hK, hπ⟩` into its components or cases. Use `⟨(mm : 𝓞 D.host.E), ?_, Or.inl ⟨mm, rfl, rfl⟩⟩` and prove the remaining obligations. Establish `h1 : ((mm : 𝓞 D.host.E) : D.host.E) = (mm : D.host.E)` using `by first`. Consider the case `simp`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `norm_cast`. Rewrite using `[h1, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨π, hπ, Or.inr hK⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem exists_alp (D : D7) (p n : ℕ) (h : ModuliIntegralCharts.NHyp D p n) : ∃ α : 𝓞 D.host.E,
     (α : D.host.E) * D.host.conj (α : D.host.E) = (n : D.host.E) ∧
@@ -193,7 +189,7 @@ structure LocBHyp (D : D7) {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) 
     ∀ v, v ∈ L.intJet y (L.latStd nW) n DF ↔ ∀ i, ‖b.repr v i‖ ≤ 1
 
 /- English proof (translation)
-Introduce `_ y a b` and use `⟨B.tau y a (B.phi y b), B.be_tau y a b⟩ psiV_val := fun _ y a => ⟨B.mulC y a (BoundaryLocalData.w0 D • a), B.psiV_def y a⟩ oX := ⟨B.oX, B.oX_inv, fun _ φ => ⟨B.secOf φ, B.nrm_secOf φ⟩⟩ keySh_inv := B.keySh_inv dP_le := fun y => by have := B.dimB_add y; omega th_ne := fun y nW => …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem locBHyp_of_LocB {D : D7} {r j p : ℕ} {L : ModuliIntegralCharts.Loc D r j p} (B : BoundaryLocalData.LocB D L) : LocBHyp D L where
   be_val := fun _ y a b => ⟨B.tau y a (B.phi y b), B.be_tau y a b⟩
@@ -208,45 +204,13 @@ theorem locBHyp_of_LocB {D : D7} {r j p : ℕ} {L : ModuliIntegralCharts.Loc D r
   intJet_free := B.intJet_free
 
 /- English proof (translation)
-Establish `h1` using `fun (Z : L.Mdl) (y : L.Pt Z) => exists_tau p (L.be y) (H.be_val Z y)`. Use `choose t t1 t2 t3 t4 using h1`. Use `choose u hu using H.psiV_val`. Take `⟨O, hO, hsec⟩` from `H.oX`. Use `choose sec hsec using hsec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : ∀ y nW, ∃ th : L.Sn y (L.latStd nW) 1, ∀ n, ∃ f : L.Sn y (L.latStd nW) 1 →ₗ[(L.fld y).C] L.Sn y (L.latStd nW) n, ModuliIntegralCharts.NHyp D p n → L.vth y (L.latStd nW) n = f th`. Introduce `y nW`. Break down `H.th_ne y nW with ⟨s, hs⟩ | h0` into its components or cases. Use `⟨s, fun n => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_lin (K := (L.fld y).C) hs (L.vth y (L.latStd nW) n)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨f, fun _ => hf.symm⟩`. Conclude with `⟨0, fun n => ⟨0, fun hn => by simpa using h0 n hn⟩⟩`. Use `choose th pb hpb using h2`. Conclude with `⟨{ chX := fun {Z} y => XT D (L.Ylat y) xAdd := fun {Z} y => inferInstance xMod := fun {Z} y => inferInstance phi := fun {Z} y => XT.mk D (L.Ylat y) phi_conj := fun {Z} y c c' h a => by`. Establish `: c' = integersConjugation D c` using `RingOfIntegers.ext (by rw [h, integers_conjugation_coe])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, XT.smul_mk]`. Use `tau := fun {Z} y a χ => t Z y a ((XT.mk D (L.Ylat y)).symm χ)`. Use `tau_add_left := fun {Z} y a a' χ => t1 Z y a a' _`. Use `tau_add_right := fun {Z} y a χ χ' => by rw [map_add]; exact t2 Z y a _ _`. Use `tau_symm := fun {Z} y a b => t3 Z y _ _ _ _ (L.be_symm y a b)`.
-
-Use `tau_smul := fun {Z} y c a χ => by`. Rewrite using `[XT.symm_smul]`. Conclude with `t3 Z y _ _ _ _ (L.be_bal y c (integersConjugation D c) (integers_conjugation_coe D c) a _)`. Use `be_tau := fun {Z} y a b => t4 Z y a b`. Use `multiplicationLatticeFirst := fun {Z} y _ _ => 0`.
-
-Use `multiplicationLatticeSecond := fun {Z} y _ _ => 0`. Use `mulC := fun {Z} y a _ => u Z y a`. Use `psiV_def := fun {Z} y a => hu Z y a`. Use `StrictHenselianAcyclic := L.LBG`. Use `squareRootLineBundle := L.LBGq`.
-
-Use `res2 := fun {La} P => L.resQ P`. Use `PoiQ := L.PPq`. Use `biext := fun {La} _ => True`. Use `dg := fun {La} P => P`. Use `dgq := fun {La} P => P`.
-
-Use `dg_res := fun {La} P => rfl`. Use `PPq_def := fun La => rfl`. Use `BPt := Empty`. Use `Rl := fun z => z.elim`. Use `iRr := fun z => z.elim`.
-
-Use `iRd := fun z => z.elim`. Use `iRl := fun z => z.elim`. Use `iRn := fun z => z.elim`. Use `iRi := fun z => z.elim`. Use `iRc := fun z => z.elim`.
-
-Use `Yb := fun z => z.elim`. Use `iYa := fun z => z.elim`. Use `iYm := fun z => z.elim`. Use `Xb := fun z => z.elim`. Use `iXa := fun z => z.elim`.
-
-Use `iXm := fun z => z.elim`. Use `phib := fun z => z.elim`. Use `phib_conj := fun z => z.elim`. Use `taub := fun z => z.elim`. Use `taub_add_left := fun z => z.elim`.
-
-Use `taub_add_right := fun z => z.elim`. Use `taub_symm := fun z => z.elim`. Use `taub_smul := fun z => z.elim`. Use `taub_pos := fun z => z.elim`. Use `Sg := fun z => z.elim`.
-
-Use `iSg := fun z => z.elim`. Use `iSk := fun z => z.elim`. Use `iSm := fun z => z.elim`. Use `iSt := fun z => z.elim`. Use `Sreg := fun z => z.elim`.
-
-Use `fc := fun z => z.elim`. Use `trU := fun z => z.elim`. Use `oX := O`. Use `oX_inv := hO`. Use `secOf := fun {F} φ => sec F φ`.
-
-Use `nrm_secOf := fun {F} φ y => hsec F φ y`. Use `keySh_inv := H.keySh_inv`. Use `dimB := fun y => D.R.f * r - L.dP y`. Use `dimB_add := fun y => Nat.sub_add_cancel (H.dP_le y)`. Use `FB := fun y nW n _ => L.Sn y (L.latStd nW) n`.
-
-Use `fbAdd := fun y nW n _ => inferInstanceAs (AddCommGroup (L.Sn y (L.latStd nW) n))`. Use `fbMod := fun y nW n _ => inferInstanceAs (Module (L.fld y).C (L.Sn y (L.latStd nW) n))`. Use `nB := fun {y nW n χ} _ => 2`. Use `sgc := fun y nW n χ => if χ = 0 then LinearMap.id else 0`. Use `trB := fun y nW n a χ => LinearEquiv.refl _ _`.
-
-Use `trB_norm := fun y nW n a χ σ => rfl`. Use `alp := fun n => if h : ModuliIntegralCharts.NHyp D p n then (exists_alp D p n h).choose else 0`. Use `alp_spec := fun n h => by`. Rewrite using `[dif_pos h]`. Conclude with `(exists_alp D p n h).choose_spec`.
-
-Use `th1 := th`. Use `pbAl := pb`. Use `vth_def := fun y nW n hn => hpb y nW n hn`. Use `jX := fun y nW n DF χ => L.jet y (L.latStd nW) n DF`. Use `intJet_free := H.intJet_free`.
-
-Use `jX_int := fun y nW n DF χ σ h => absurd h (by norm_num)`. Use `jet_fourier := fun y nW n DF s c hc => by`. Use `⟨{0}, fun F hF => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Establish `h0 : (0 : Fin nW → XT D (L.Ylat y)) ∈ F` using `hF (Finset.mem_singleton_self 0)`. Rewrite using `[Finset.sum_eq_single_of_mem 0 h0 (fun χ _ hχ => by simp [hχ])]`.
-
-Simplify using `}⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_boundary_local_trivial_biext (D : D7) {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) (H : LocBHyp D L) :
     Nonempty (BoundaryLocalData.LocB D L) := by
@@ -356,14 +320,14 @@ theorem nonempty_boundary_local_trivial_biext (D : D7) {r j p : ℕ} (L : Moduli
       simp }⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨B⟩ => locBHyp_of_LocB B, nonempty_boundary_local_trivial_biext D L⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_boundary_local_iff (D : D7) {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) :
     Nonempty (BoundaryLocalData.LocB D L) ↔ LocBHyp D L :=
   ⟨fun ⟨B⟩ => locBHyp_of_LocB B, nonempty_boundary_local_trivial_biext D L⟩
 
 /- English proof (translation)
-Introduce `Z y` and use `(hP Z).elim y psiV_val := fun Z y => (hP Z).elim y oX := ⟨O, hO, fun _ _ => ⟨0, fun y => (hP _).elim y⟩⟩ keySh_inv := hk dP_le := fun y => (hP _).elim y th_ne := fun y => (hP _).elim y intJet_free := fun y => (hP _).elim y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locBHyp_of_isEmpty (D : D7) {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) (hP : ∀ Z, IsEmpty (L.Pt Z))
     (O : L.Sh L.Xm) (hO : L.IsInv O) (hk : L.IsInv L.piPP → ∀ c, L.IsInv (L.keySh c)) : LocBHyp D L where

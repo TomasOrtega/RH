@@ -21,14 +21,14 @@ abbrev B : Type := Bcris l
 def φ : B l →+* B l := φB l
 
 /- English proof (translation)
-Rewrite using `[map_natCast, ← map_natCast (qQ l)]`. Conclude with `(IsUnit.mk0 (l : ℚ_[l]) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iC_l : IsUnit (iC l (l : ACris.ACris ℂ_[l] l)) := by
   rw [map_natCast, ← map_natCast (qQ l)]
   exact (IsUnit.mk0 (l : ℚ_[l]) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)).map _
 
 /- English proof (translation)
-The claim follows from `IsUnit.mk0 _ DeRhamTwist.Twist.tQ_ne`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_image_period : IsUnit (iC l (tA l)) := IsUnit.mk0 _ DeRhamTwist.Twist.tQ_ne
 
@@ -37,14 +37,14 @@ def ι : B l →+* BdR l := Loc2.lift (iC l) (isUnit_iC_l l) (isUnit_image_perio
 def iA (a : ℕ) : B l →+* BdR l := (ι l).comp (φ l ^ a)
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (cB l)]`. Conclude with `Loc2.isUnit_left _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_l : IsUnit (l : B l) := by
   rw [← map_natCast (cB l)]
   exact Loc2.isUnit_left _ _
 
 /- English proof (translation)
-Establish `hz : (z : ℤ_[l]) ≠ 0` using `nonZeroDivisors.coe_ne_zero z`. Rewrite using `[PadicInt.unitCoeff_spec hz, map_mul, map_pow, map_natCast]`. Conclude with `((PadicInt.unitCoeff hz).isUnit.map _).mul ((isUnit_l l).pow _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_zB (z : nonZeroDivisors ℤ_[l]) : IsUnit (zB l z) := by
   have hz : (z : ℤ_[l]) ≠ 0 := nonZeroDivisors.coe_ne_zero z

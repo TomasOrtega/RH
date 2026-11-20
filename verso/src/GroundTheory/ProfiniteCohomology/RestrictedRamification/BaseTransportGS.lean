@@ -34,9 +34,9 @@ theorem zmodRepResIso_hom_apply (n : ℕ) (a : ULift.{u} (ZMod n)) :
 omit [IsTopologicalGroup G] [IsTopologicalGroup G'] in
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `d a`. Take `⟨a⟩` from `a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `f.hom ((zmodMulPairing n D' hD').hom ((ULift.up a : zmodRep.{u} G' n) ⊗ₜ[ULift.{u} ℤ] (d : D') : (zmodRep.{u} G' n ⊗ D' : Rep _ _))) = (zmodMulPairing n D hD).hom ((ULift.up a : zmodRep.{u} G n) ⊗ₜ[ULift.{u} ℤ] f.hom d : (zmodRep.{u} G n ⊗ D : Rep _ _))`. Rewrite using `[zmodMulPairing_tmul, zmodMulPairing_tmul]`. Conclude with `map_zsmul f.hom.toLinearMap.toAddMonoidHom _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmodMulPairingRight_res (n : ℕ) {D' : Rep.{u} (ULift.{u} ℤ) G'} {D : Rep.{u} (ULift.{u} ℤ) G}
     (hD' : ∀ d : D', n • d = 0) (hD : ∀ d : D, n • d = 0) (f : Rep.res θ.toMulEquiv.toMonoidHom D' ⟶ D) :
@@ -72,7 +72,7 @@ def gsMackeyEmbeddings : ∀ w : (placesOver S : Set (HeightOneSpectrum (𝓞 L)
 
 omit [IsGalois L Ω] in
 /- English proof (translation)
-The claim follows from `Equiv.piCongrLeft_apply_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gsMackeyEmbeddings_mackeyPlaceEquiv
     (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs)) :
@@ -82,7 +82,7 @@ theorem gsMackeyEmbeddings_mackeyPlaceEquiv
 omit [NumberField F] [Algebra F Ω] [IsScalarTower F L Ω] [IsGalois F Ω] in
 
 /- English proof (translation)
-Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gsFinFamily_apply_of_eq {ιs' : ∀ w : (placesOver S : Set (HeightOneSpectrum (𝓞 L))),
       Ω →ₐ[L] AlgebraicClosure ((w : HeightOneSpectrum (𝓞 L)).adicCompletion L)}
@@ -95,7 +95,7 @@ theorem gsFinFamily_apply_of_eq {ιs' : ∀ w : (placesOver S : Set (HeightOneSp
   rfl
 
 /- English proof (translation)
-Conclude with `(gsBaseChange_mackeyFamily hL ιs p σ).trans (gsFinFamily_apply_of_eq (gsMackeyEmbeddings_mackeyPlaceEquiv hL ιs p) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gsBaseChange_mackeyFamily_eq (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs))
     (σ : mackeyGroup (gsOpenSubgroup S hL) (gsFinFamily S ιs) p) :
@@ -135,7 +135,7 @@ end Compact
 section ZMod
 
 /- English proof (translation)
-The claim follows from `compactTransport_compactCupRes (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsBaseChange S hL) (mackeyPlaceEquiv S hL ιs) (fun p => gsMackeyLocalEquiv hL ιs p.1 p.2.out) (gsBaseChange_mackeyFamily_eq hL ιs) f.hom …`.
+A detailed English derivation is pending.
 -/
 theorem gsMackeyCompactIso_compactCupRes_zmod (n : ℕ)
     {D' : Rep.{u} (ULift.{u} ℤ) (galUnramifiedOutside L Ω (placesOver S))} [IsDiscreteRep D']

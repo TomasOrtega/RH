@@ -12,13 +12,13 @@ def lop (A B : Module.End K W) : Module.End K (Module.End K W) :=
   LinearMap.mulLeft K A * LinearMap.mulRight K B
 
 /- English proof (translation)
-Simplify using `[lop, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lop_apply (A B X : Module.End K W) : lop A B X = A * X * B := by
   simp [lop, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing X with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, lop_apply, pow_succ A k, pow_succ' B k]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lop_pow_apply (A B X : Module.End K W) (k : ℕ) : (lop A B ^ k) X = A ^ k * X * B ^ k := by
   induction k generalizing X with
@@ -28,9 +28,9 @@ theorem lop_pow_apply (A B X : Module.End K W) (k : ℕ) : (lop A B ^ k) X = A ^
     simp only [mul_assoc]
 
 /- English proof (translation)
-Use `show lop A B * lop A' B' = lop A' B' * lop A B`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lop_apply]`. Establish `e1 : A * (A' * X * B') * B = (A * A') * X * (B' * B)` using `by simp only [mul_assoc]`. Establish `e2 : A' * (A * X * B) * B' = (A' * A) * X * (B * B')` using `by simp only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, hA.eq, hB.eq]`.
+A detailed English derivation is pending.
 -/
 theorem lop_commute {A B A' B' : Module.End K W} (hA : Commute A A') (hB : Commute B B') :
     Commute (lop A B) (lop A' B') := by
@@ -42,7 +42,7 @@ theorem lop_commute {A B A' B' : Module.End K W} (hA : Commute A A') (hB : Commu
   rw [e1, e2, hA.eq, hB.eq]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp [Om]`. Consider the case `succ q ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ← ih, LinearMap.sum_apply]`. Simplify using `only [lop_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -56,7 +56,7 @@ theorem Om_eq_pow (E : ι → ι → Module.End K W) (S : Finset ι) (z : ι) (q
     rfl
 
 /- English proof (translation)
-Use `h z i z j` as an intermediate fact. Simplify using `only [hi, hj, if_false, sub_self] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlRel.commF {E : ι → ι → Module.End K W} (h : GlRel E) {z i j : ι} (hi : i ≠ z) (hj : j ≠ z) :
     Commute (E z i) (E z j) := by
@@ -65,7 +65,7 @@ theorem GlRel.commF {E : ι → ι → Module.End K W} (h : GlRel E) {z i j : ι
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Use `h i z j z` as an intermediate fact. Simplify using `only [Ne.symm hi, Ne.symm hj, if_false, sub_self] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlRel.commE {E : ι → ι → Module.End K W} (h : GlRel E) {z i j : ι} (hi : i ≠ z) (hj : j ≠ z) :
     Commute (E i z) (E j z) := by
@@ -74,9 +74,9 @@ theorem GlRel.commE {E : ι → ι → Module.End K W} (h : GlRel E) {z i j : ι
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Establish `hzi : i ≠ z` using `fun e => hz (e ▸ Finset.mem_insert_self _ _)`. Establish `hcomm : Commute (lop (E z i) (E i z)) (∑ j ∈ S, lop (E z j) (E j z))`. Use `Commute.sum_right _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hjz : j ≠ z` using `fun e => hz (e ▸ Finset.mem_insert_of_mem hj)`. Conclude with `lop_commute (h.commF hzi hjz) (h.commE hzi hjz)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Om_eq_pow, Finset.sum_insert hi, hcomm.add_pow, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, Module.End.natCast_apply, map_nsmul, map_nsmul, ← Om_eq_pow, lop_pow_apply, ← Nat.cast_smul_eq_nsmul K]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Om_insert {E : ι → ι → Module.End K W} (h : GlRel E) {S : Finset ι} {z i : ι} (hz : z ∉ insert i S)
     (hi : i ∉ S) (q : ℕ) :
@@ -99,16 +99,16 @@ section padic
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) Padic.norm_p_lt_one.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_p_le_one (k : ℕ) : ‖(p : ℚ_[p]) ^ k‖ ≤ 1 := by
   rw [norm_pow]
   exact pow_le_one₀ (norm_nonneg _) Padic.norm_p_lt_one.le
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hC : n.choose k ≠ 0` using `(Nat.choose_pos hk).ne'`. Establish `hv : (n.choose k).factorization p ≤ Nat.log p N` using `Nat.factorization_choose_le_log.trans (Nat.log_mono_right hn)`. Establish `hdecomp : ((n.choose k : ℕ) : ℚ_[p]) = (p : ℚ_[p]) ^ ((n.choose k).factorization p) * ((n.choose k / p ^ ((n.choose k).factorization p) : ℕ) : ℚ_[p])`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ‖((n.choose k / p ^ ((n.choose k).factorization p) : ℕ) : ℚ_[p])‖ = 1` using `Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr (Nat.not_dvd_ordCompl hp hC))`. Rewrite using `[hdecomp, norm_div, norm_mul, hr, mul_one, Padic.norm_p_pow, Padic.norm_p_pow, div_le_one (zpow_pos (by exact_mod_cast hp.pos) _)]`. Conclude with `zpow_le_zpow_right₀ (by exact_mod_cast hp.one_lt.le) (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_log_div_choose {n k N : ℕ} (hk : k ≤ n) (hn : n ≤ N) :
     ‖(p : ℚ_[p]) ^ (Nat.log p N) / (n.choose k : ℚ_[p])‖ ≤ 1 := by
@@ -128,17 +128,17 @@ theorem norm_pow_log_div_choose {n k N : ℕ} (hk : k ≤ n) (hn : n ≤ N) :
 variable {W ι : Type} [AddCommGroup W] [Module ℚ_[p] W] [DecidableEq ι]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_ c q _ u hu`. Consider the cases of `q with`. Consider the case `zero => simpa [Om, Nat.factorial_ne_zero] using hu`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ q => simpa [Om] using M.zero_mem`. Consider the case `insert i S hi ih`. Introduce `hz c q hqc u hu`. Establish `hzi : z ≠ i` using `fun e => hz (e ▸ Finset.mem_insert_self _ _)`. Establish `hzS : z ∉ S` using `fun e => hz (Finset.mem_insert_of_mem e)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Om_insert hE hz hi q, LinearMap.sum_apply, Finset.smul_sum]`. Use `AddSubgroup.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hkq : k ≤ q` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Establish `hu' : ((k.factorial : ℚ_[p]))⁻¹ • ((E i z) ^ k) u ∈ M` using `hD i z (Ne.symm hzi) k u hu`. Establish `hY` using `ih hzS (c + k) (q - k) (by omega) _ hu'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDY` using `hD z i hzi k _ hY`. Establish `hnorm` using `norm_pow_log_div_choose (p := p) (n := c + k) (k := k) (N := N) (by omega) (by omega)`. Establish `key` using `hZ _ hnorm _ hDY`. Use `key using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, Module.End.mul_apply, map_smul, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `hqk : q - k + (c + k) = q + c` using `by omega`. Rewrite using `[hqk, Finset.card_insert_of_notMem hi, Nat.cast_choose ℚ_[p] hkq, Nat.cast_choose ℚ_[p] (Nat.le_add_left k c), Nat.add_sub_cancel]`. Establish `h1 : (c.factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h2 : (k.factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((q - k).factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h4 : ((q + c).factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h5 : (q.factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h6 : ((c + k).factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -181,9 +181,9 @@ theorem Om_int {E : ι → ι → Module.End ℚ_[p] W} (hE : GlRel E) {M : AddS
     ring
 
 /- English proof (translation)
-Unfold `Pstep`. Rewrite using `[LinearMap.sum_apply, Finset.smul_sum]`. Use `AddSubgroup.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Establish `hql : q ≤ l` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hq)`. Establish `h` using `Om_int hE hZ hD z (l + S.card) S hz S.card q (by omega) u hu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hZ ((-1 : ℚ_[p]) ^ q) (by simp) _ h`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Pstep_int {E : ι → ι → Module.End ℚ_[p] W} (hE : GlRel E) {M : AddSubgroup W} (hZ : ZpClosed p M)
     (hD : DivStable E M) {z : ι} {S : Finset ι} (hz : z ∉ S) (l : ℕ) {u : W} (hu : u ∈ M) :
@@ -202,17 +202,17 @@ theorem Pstep_int {E : ι → ι → Module.End ℚ_[p] W} (hE : GlRel E) {M : A
 end padic
 
 /- English proof (translation)
-Introduce `p _ W ι _ _ _ E hE M hZ hD l L hL u hu`. Establish `up : ∀ (a b : ℕ) (x : W), a ≤ b → (p : ℚ_[p]) ^ a • x ∈ M → (p : ℚ_[p]) ^ b • x ∈ M`. Introduce `a b x hab hx`. Use `hZ _ (norm_pow_p_le_one (p := p) (b - a)) _ hx` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add, Nat.sub_add_cancel hab]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `main : ∀ (L : List ι), L.Nodup → ∀ N, l + L.length - 1 ≤ N → ∀ u ∈ M, ((p : ℚ_[p]) ^ (L.length.choose 2 * Nat.log p N)) • InvOp E l L u ∈ M`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_ N _ u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hu` using `[InvOp]`. Consider the case `cons z L ih`. Introduce `hnd N hN u hu`. Rewrite `hnd` using `[List.nodup_cons]`. Take `⟨hzL, hnd⟩` from `hnd`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [List.length_cons] at hN`. Establish `hv` using `ih hnd N (by omega) u hu`. Establish `hcard : L.toFinset.card = L.length` using `List.toFinset_card_of_nodup hnd`. Establish `hz : z ∉ L.toFinset` using `by simpa using hzL`. Establish `hP` using `Pstep_int hE hZ hD hz l hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hP` using `[hcard]`. Establish `hP'` using `up _ (L.length * Nat.log p N) _ (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))) hP`. Use `hP' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[InvOp, Module.End.mul_apply, map_smul, smul_smul, ← pow_add, List.length_cons, Nat.choose_succ_succ, Nat.choose_one_right]`. Use `congr 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `main L hL (l + L.length - 1) le_rfl u hu`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem invariant_integral_holds : InvInt := by
   intro p _ W ι _ _ _ E hE M hZ hD l L hL u hu

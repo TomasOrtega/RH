@@ -87,7 +87,7 @@ section Inhabitant
 open GlobalTheory.SerreTateDef (Zmod4 elliptic_hyps)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example : SerreTate ↔ HomLift ∧ Lift := Iff.rfl
 

@@ -13,19 +13,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PerUC.GxLe
 
 /- English proof (translation)
-Establish `hY : 0 < Y` using `lt_of_lt_of_le (by positivity) h1`. Establish `hp : 0 < r ^ s` using `Real.rpow_pos_of_pos hr _`. Establish `hp1 : r ^ s ≤ 1` using `Real.rpow_le_one hr.le hr1 hs0.le`. Establish `hq : r⁻¹ ^ s * r ^ s = 1`. Rewrite using `[← Real.mul_rpow (inv_nonneg.2 hr.le) hr.le, inv_mul_cancel₀ hr.ne', Real.one_rpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq1 : 1 ≤ r⁻¹ ^ s` using `Real.one_le_rpow ((one_le_inv₀ hr).2 hr1) hs0.le`. Establish `hmin : min (r ^ s) (r⁻¹ ^ s) = r ^ s` using `min_eq_left (hp1.trans hq1)`. Establish `hlog4 : Real.log 4 ≤ 2`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogY : Real.log Y ≤ 0` using `Real.log_nonpos hY.le (h2.trans (by nlinarith))`. Establish `hlogr : Real.log (r ^ 2 / 4) ≤ Real.log Y` using `Real.log_le_log (by positivity) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : Real.log (r ^ 2 / 4) = 2 * Real.log r - Real.log 4`. Rewrite using `[Real.log_div (by positivity) (by norm_num), Real.log_pow]; norm_num`. Establish `habs : |Real.log Y| ≤ Real.log 4 + 2 * Real.log r⁻¹`. Rewrite using `[abs_of_nonpos hlogY, Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hl : Real.log r⁻¹ ≤ r⁻¹ ^ s / s` using `Real.log_le_rpow_div (inv_nonneg.2 hr.le) hs0`. Establish `hW : 1 ≤ (1 + Y) ^ N` using `one_le_pow₀ (by linarith)`. Establish `hL0 : 0 ≤ 1 + |Real.log Y|` using `by positivity`. Establish `hfrac : (1 + |Real.log Y|) / (1 + Y) ^ N ≤ 1 + |Real.log Y|` using `div_le_self hL0 hW`. Establish `hkey : r ^ s * (1 + |Real.log Y|) ≤ 51 + 2 / s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : r ^ s * (1 + |Real.log Y|) ≤ r ^ s * (3 + 2 * (r⁻¹ ^ s / s))`. Apply `mul_le_mul_of_nonneg_left _ hp.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : r ^ s * (3 + 2 * (r⁻¹ ^ s / s)) = 3 * r ^ s + 2 / s`. Establish `: r ^ s * (2 * (r⁻¹ ^ s / s)) = 2 / s * (r⁻¹ ^ s * r ^ s)` using `by ring`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_add, this, hq]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hmin, show r ^ (2 * s) = r ^ s * r ^ s by rw [two_mul, Real.rpow_add hr]]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_var_small (s : ℝ) (hs0 : 0 < s) (r Y : ℝ) (N : ℕ) (hr : 0 < r) (hr1 : r ≤ 1)
     (h1 : r ^ 2 / 4 ≤ Y) (h2 : Y ≤ r ^ 2) :
@@ -69,27 +69,25 @@ theorem one_var_small (s : ℝ) (hs0 : 0 < s) (r Y : ℝ) (N : ℕ) (hr : 0 < r)
     _ ≤ (51 + 2 / s) * r ^ s := mul_le_mul_of_nonneg_right hkey hp.le
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `by linarith`. Establish `hY : 0 < Y` using `lt_of_lt_of_le (by positivity) h1`. Establish `hp : 0 < r ^ s` using `Real.rpow_pos_of_pos hr _`. Establish `hq0 : 0 < r⁻¹ ^ s` using `Real.rpow_pos_of_pos (inv_pos.2 hr) _`. Establish `hq : r⁻¹ ^ s * r ^ s = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.mul_rpow (inv_nonneg.2 hr.le) hr.le, inv_mul_cancel₀ hr.ne', Real.one_rpow]`. Establish `hq1 : r⁻¹ ^ s ≤ 1` using `Real.rpow_le_one (inv_nonneg.2 hr.le) (inv_le_one_of_one_le₀ hr1) hs0.le`. Establish `hp1 : 1 ≤ r ^ s` using `Real.one_le_rpow hr1 hs0.le`. Establish `hmin : min (r ^ s) (r⁻¹ ^ s) = r⁻¹ ^ s` using `min_eq_right (hq1.trans hp1)`. Establish `hlog4 : Real.log 4 ≤ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Rewrite using `[this]`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hW1 : 1 ≤ 1 + Y` using `by linarith`. Establish `hW0 : 0 < 1 + Y` using `by linarith`. Establish `hL : 1 + |Real.log Y| ≤ 3 * (1 + Y)`. Distinguish the cases in `hY1 : 1 ≤ Y`. Rewrite using `[abs_of_nonneg (Real.log_nonneg hY1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Real.log_le_sub_one_of_pos hY` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY2 : Y ≤ 1` using `(not_le.1 hY1).le`. Rewrite using `[abs_of_nonpos (Real.log_nonpos hY.le hY2)]`. Establish `hq4 : (4 : ℝ)⁻¹ ≤ Y` using `by nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_le_log (by norm_num) hq4` as an intermediate fact. Rewrite `this` using `[Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr3 : r ^ (3 * s) ≤ 16 * (1 + Y) ^ 2`. Establish `a1 : r ^ (3 * s) ≤ r ^ (3 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hr1 (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : r ^ (3 : ℝ) = r ^ 3`. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `a3 : r ^ 2 ≤ 4 * (1 + Y)` using `by linarith`. Establish `a4 : r ^ 3 ≤ r ^ 2 * r ^ 2` using `by nlinarith [sq_nonneg r, mul_nonneg (sq_nonneg r) (sub_nonneg.2 hr1), mul_nonneg (mul_nonneg (sq_nonneg r) hr.le) (sub_nonneg.2 hr1)]`. Establish `a5 : r ^ 2 * r ^ 2 ≤ (4 * (1 + Y)) * (4 * (1 + Y))` using `mul_le_mul a3 a3 (by positivity) (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[a2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hWN : (1 + Y) ^ 3 ≤ (1 + Y) ^ N` using `pow_le_pow_right₀ hW1 hN`. Establish `hmain : r ^ (3 * s) * (1 + |Real.log Y|) ≤ 48 * (1 + Y) ^ N`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : r ^ (3 * s) = r ^ (2 * s) * r ^ s`. Rewrite using `[← Real.rpow_add hr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hWp : 0 < (1 + Y) ^ N` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hmin]`. Establish `hs2 : 0 < 2 / s` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hq, mul_one]`. Use `_ = (r ^ (3 * s) * (1 + |Real.log Y|) / (1 + Y) ^ N) * r⁻¹ ^ s := by rw [h3]; ring`.
-
-Use `_ ≤ 48 * r⁻¹ ^ s := mul_le_mul_of_nonneg_right ((div_le_iff₀ hWp).2 hmain) hq0.le`. Use `_ ≤ (51 + 2 / s) * r⁻¹ ^ s := mul_le_mul_of_nonneg_right (by linarith) hq0.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_var_large (s : ℝ) (hs0 : 0 < s) (hs1 : s ≤ 1) (r Y : ℝ) (N : ℕ) (hN : 3 ≤ N)
     (hr1 : 1 ≤ r) (h1 : r ^ 2 / 4 ≤ Y) (h2 : Y ≤ r ^ 2) :
@@ -157,7 +155,7 @@ theorem one_var_large (s : ℝ) (hs0 : 0 < s) (hs1 : s ≤ 1) (r Y : ℝ) (N : �
     _ ≤ (51 + 2 / s) * r⁻¹ ^ s := mul_le_mul_of_nonneg_right (by linarith) hq0.le
 
 /- English proof (translation)
-Break down `le_total r 1 with hr1 | hr1` into its components or cases. Conclude with `one_var_small s hs0 r Y N hr hr1 h1 h2`. Conclude with `one_var_large s hs0 hs1 r Y N hN hr1 h1 h2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem one_var (s : ℝ) (hs0 : 0 < s) (hs1 : s ≤ 1) (r Y : ℝ) (N : ℕ) (hN : 3 ≤ N)
     (hr : 0 < r) (h1 : r ^ 2 / 4 ≤ Y) (h2 : Y ≤ r ^ 2) :
@@ -175,27 +173,25 @@ theorem alg_id (a Z P Q L IA IB : ℝ) (ha : a ≠ 0) (hZ : Z ≠ 0) (hP : P ≠
   field_simp
 
 /- English proof (translation)
-Establish `hs0 : 0 < 1 - σ` using `by linarith`. Establish `hs1 : 1 - σ ≤ 1` using `by linarith`. Establish `hR0 : 0 < R` using `lt_of_lt_of_le (by positivity) hR1`. Establish `hr : 0 < Z / a` using `div_pos hZ ha`. Establish `hYsq : (a * Z) ^ 2 / R ^ 2 = (a * Z / R) ^ 2` using `by rw [div_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ((a * Z) ^ 2 / R ^ 2) ^ ((1 : ℝ) / 2) = a * Z / R`. Rewrite using `[hYsq, ← Real.sqrt_eq_rpow, Real.sqrt_sq (by positivity)]`. Establish `hT2 : a * Z / R ≤ Z / a`. Rewrite using `[div_le_div_iff₀ hR0 ha]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hR1 hZ.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hT1 : Z / a / 2 ≤ a * Z / R`. Rewrite using `[div_div, div_le_div_iff₀ (by positivity) hR0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hR2 hZ.le]`. Establish `hY2 : (a * Z) ^ 2 / R ^ 2 ≤ (Z / a) ^ 2`. Rewrite using `[hYsq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (by positivity) hT2 2`. Establish `hY1 : (Z / a) ^ 2 / 4 ≤ (a * Z) ^ 2 / R ^ 2`. Rewrite using `[hYsq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hone` using `one_var (1 - σ) hs0 hs1 (Z / a) ((a * Z) ^ 2 / R ^ 2) N hN hr hY1 hY2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hone` using `[inv_div]`. Establish `hcol : (a / (a * Z)) ^ (2 * σ - 2) = Z ^ (2 * (1 - σ))`. Establish `: a / (a * Z) = Z⁻¹` using `by field_simp`. Rewrite using `[this, Real.inv_rpow hZ.le, ← Real.rpow_neg hZ.le]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hrp : (Z / a) ^ (2 * (1 - σ)) = Z ^ (2 * (1 - σ)) / a ^ (2 * (1 - σ))` using `Real.div_rpow hZ.le ha.le _`. Establish `hap : a ^ (-2 - 2 * σ) = (a ^ 4)⁻¹ * a ^ (2 * (1 - σ))`. Establish `e : (-2 - 2 * σ : ℝ) = -((4 : ℕ) : ℝ) + 2 * (1 - σ)` using `by push_cast; ring`. Rewrite using `[e, Real.rpow_add ha, Real.rpow_neg ha.le, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hcol, hap]`. Rewrite `hone` using `[hrp]`. Establish `hP : 0 < a ^ (2 * (1 - σ))` using `Real.rpow_pos_of_pos ha _`. Establish `hQ : 0 < Z ^ (2 * (1 - σ))` using `Real.rpow_pos_of_pos hZ _`. Generalize the expression as in `a ^ (2 * (1 - σ)) = P at *`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Z ^ (2 * (1 - σ)) = Q at *`. Generalize the expression as in `hLdef : (1 + |Real.log ((a * Z) ^ 2 / R ^ 2)|) / (1 + (a * Z) ^ 2 / R ^ 2) ^ N = L at *`. Establish `hL0 : 0 ≤ L`. Rewrite using `[← hLdef]`. Check the signs of the components of the expression.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `e1 : ((a * Z) ^ 3)⁻¹ * (a * Z / R * (1 + |Real.log ((a * Z) ^ 2 / R ^ 2)|) / (1 + (a * Z) ^ 2 / R ^ 2) ^ N) * Q / H = ((a * Z) ^ 3)⁻¹ * (a * Z / R) * L * Q * H⁻¹`. Rewrite using `[← hLdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfac : 0 ≤ ((a ^ 4)⁻¹ * P) * A⁻¹ * B⁻¹ * (Z ^ 2)⁻¹` using `by positivity`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: ((a * Z) ^ 3)⁻¹ * (a * Z / R) * L * Q ≤ ((a * Z) ^ 3)⁻¹ * (Z / a) * L * Q` using `by gcongr`. Conclude with `mul_le_mul this hH (hHnn) (by positivity)`. Use `_ = ((a ^ 4)⁻¹ * P) * A⁻¹ * B⁻¹ * (Z ^ 2)⁻¹ * (Q / P * L) := alg_id a Z P Q L A⁻¹ B⁻¹ ha.ne' hZ.ne' hP.ne'`. Use `_ ≤ ((a ^ 4)⁻¹ * P) * A⁻¹ * B⁻¹ * (Z ^ 2)⁻¹ * ((51 + 2 / (1 - σ)) * min ((Z / a) ^ (1 - σ)) ((a / Z) ^ (1 - σ))) := mul_le_mul_of_nonneg_left hone hfac`.
-
-Use `_ = _ := by ring`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_step (σ : ℝ) (hσ0 : 0 < σ) (hσ1 : σ < 1) (a Z R A B H : ℝ) (N : ℕ) (hN : 3 ≤ N)
     (ha : 0 < a) (hZ : 0 < Z) (hR1 : a ^ 2 ≤ R) (hR2 : R ≤ 2 * a ^ 2)
@@ -268,23 +264,21 @@ theorem real_step (σ : ℝ) (hσ0 : 0 < σ) (hσ1 : σ < 1) (a Z R A B H : ℝ)
 open GlobalTheory.CompanionTheory.MajC in
 
 /- English proof (translation)
-Introduce `σ hσ0 hσ1`. Use `⟨51 + 2 / (1 - σ), 8, fun N hN h hv hd => ?_⟩` and prove the remaining obligations. Establish `hu : h 0 0 ≠ 0`. Introduce `hu`. Establish `hv0 : h 1 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hv` using `[hu, norm_zero]`. Conclude with `norm_le_zero_iff.1 hv`. Apply `hd` to reduce the goal to its premises. Rewrite using `[dt_eq, hu, hv0]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hga : GlobalTheory.CompanionTheory.PerUC.ga σ 4 h = ‖h 0 0‖ ^ (-2 - 2 * σ) * ((1 + ‖h 0 0‖) ^ 4)⁻¹ * ((1 + ‖h 0 1‖) ^ 4)⁻¹ * kern (1 - σ) ‖h 0 0‖ (h 1 1 - h 1 0 / h 0 0 * h 0 1)`. Unfold `GlobalTheory.CompanionTheory.PerUC.ga`. Rewrite using `[if_pos ⟨hv, hu⟩]`. Rewrite using `[hga]`. Use `set z := h 1 1 - h 1 0 / h 0 0 * h 0 1 with hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : h 0 0 * h 1 1 - h 0 1 * h 1 0 = h 0 0 * z`. Rewrite using `[hz]`. Clear the denominators using the available nonvanishing facts. Establish `hU : 0 < ‖h 0 0‖` using `norm_pos_iff.2 hu`. Establish `hdt : dt h = ‖h 0 0‖ * ‖z‖` using `by rw [dt_eq, hdet, norm_mul]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : 0 < ‖z‖`. Establish `: 0 < dt h` using `lt_of_le_of_ne (by rw [dt_eq]; exact norm_nonneg _) (Ne.symm hd)`. Rewrite `this` using `[hdt]`. Conclude with `(pos_iff_pos_of_mul_pos this).1 hU`. Establish `hcol : GlobalTheory.CompanionTheory.MajC.col h = ‖h 0 0‖` using `max_eq_left hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : kern (1 - σ) ‖h 0 0‖ z = (‖z‖ ^ 2)⁻¹ * min ((‖z‖ / ‖h 0 0‖) ^ (1 - σ)) ((‖h 0 0‖ / ‖z‖) ^ (1 - σ))` using `rfl`. Establish `hA : ((1 + ‖h‖) ^ N)⁻¹ ≤ ((1 + ‖h 0 0‖) ^ 4)⁻¹ * ((1 + ‖h 0 1‖) ^ 4)⁻¹`. Rewrite using `[← mul_inv]`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Establish `h1 : 1 + ‖h 0 0‖ ≤ 1 + ‖h‖` using `by linarith [entry_le h 0 0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : 1 + ‖h 0 1‖ ≤ 1 + ‖h‖` using `by linarith [entry_le h 0 1]`. Establish `h3 : (1 : ℝ) ≤ 1 + ‖h‖` using `by linarith [norm_nonneg h]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgx : GlobalTheory.CompanionTheory.PerUC.gx σ N h = (dt h ^ 3)⁻¹ * ((dt h ^ 2 / GlobalTheory.CompanionTheory.PerUC.rr h ^ 2) ^ ((1 : ℝ) / 2) * (1 + |Real.log (dt h ^ 2 / GlobalTheory.CompanionTheory.PerUC.rr h ^ 2)|) / (1 + dt h ^ 2 / GlobalTheory.CompanionTheory.PerUC.rr h ^ 2) …` using `rfl`. Establish `hR1 : ‖h 0 0‖ ^ 2 ≤ GlobalTheory.CompanionTheory.PerUC.rr h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.CompanionTheory.PerUC.rr`. Use polynomial arithmetic with `[sq_nonneg ‖h 1 0‖]`. Establish `hR2 : GlobalTheory.CompanionTheory.PerUC.rr h ≤ 2 * ‖h 0 0‖ ^ 2`. Unfold `GlobalTheory.CompanionTheory.PerUC.rr`. Use polynomial arithmetic with `[norm_nonneg (h 1 0)]`.
-
-Rewrite using `[hgx, hk, hdt, hcol]`. Conclude with `real_step σ hσ0 hσ1 ‖h 0 0‖ ‖z‖ _ _ _ _ N (by omega) hU hZ hR1 hR2 (by positivity) (by positivity) (by positivity) hA`.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gx_le_ga : ∀ σ : ℝ, 0 < σ → σ < 1 → ∃ (C : ℝ) (N₀ : ℕ), ∀ N ≥ N₀, ∀ h : Ad3.K.LC.M22,
     ‖h 1 0‖ ≤ ‖h 0 0‖ → GlobalTheory.CompanionTheory.MajC.dt h ≠ 0 →

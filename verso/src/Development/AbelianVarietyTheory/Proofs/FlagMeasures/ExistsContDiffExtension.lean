@@ -13,7 +13,7 @@ namespace GlobalTheory.GardingSmooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Set `B : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ) ≃ₗ[ℝ] (Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ)).toLinearMap ∘ₗ LinearMap.mul ℝ (Matrix (Fin n) (Fin n) ℂ))`. Conclude with `(B.contDiff.comp hf).clm_apply hg`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_matrix_mul {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
     {f g : P → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) :
@@ -27,7 +27,7 @@ theorem contDiff_matrix_mul {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedS
   exact (B.contDiff.comp hf).clm_apply hg
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `AddMonoidHom.toRealLinearMap (Matrix.conjTransposeAddEquiv (Fin n) (Fin n) ℂ).toAddMonoidHom continuous_id.matrix_conjTranspose`. Conclude with `L.contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_adjoint {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ => xᴴ := by
   let L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ :=
@@ -36,13 +36,13 @@ theorem contDiff_adjoint {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fi
   exact L.contDiff
 
 /- English proof (translation)
-Establish `hloc : ∀ x : E, ∃ (U : Set E) (F : E → ℂ), IsOpen U ∧ x ∈ U ∧ ContDiffOn ℝ ∞ F U ∧ ∀ g ∈ U, g ∈ S → β g = F g`. Introduce `x`. Distinguish the cases in `hx : x ∈ S`. Conclude with `hβ x hx`. Conclude with `⟨Sᶜ, fun _ => 0, hS.isOpen_compl, hx, contDiffOn_const, fun g hg hg' => (hg hg').elim⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose U F hUo hxU hFU hβF using hloc`. Take `⟨ρ, hρ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, E) isClosed_univ U hUo (fun x _ => Set.mem_iUnion.2 ⟨x, hxU x⟩)`. Use `⟨fun g => ∑ᶠ i, ρ i g • F i g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← contMDiff_iff_contDiff]`. Use `ρ.contMDiff_finsum_smul fun i x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((hFU i).contDiffAt ((hUo i).mem_nhds (hρ i hx))).contMDiffAt`. Introduce `g hg`. Establish `hterm : ∀ i, ρ i g • F i g = ρ i g • β g`. Introduce `i`. Distinguish the cases in `h : ρ i g = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `[h]`. Rewrite using `[hβF i g (hρ i (subset_tsupport _ h)) hg]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[← finsum_smul, ρ.sum_eq_one (Set.mem_univ g), one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_contDiff_eq_on_closed_of_local {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {S : Set E} (hS : IsClosed S) (β : E → ℂ)
@@ -73,7 +73,7 @@ private theorem exists_contDiff_eq_on_closed_of_local {E : Type} [NormedAddCommG
     rw [← finsum_smul, ρ.sum_eq_one (Set.mem_univ g), one_smul]
 
 /- English proof (translation)
-Establish `hclosed : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g}`. Establish `hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => gᴴ * Jm ε * g` using `(contDiff_matrix_mul (contDiff_matrix_mul contDiff_adjoint contDiff_const) contDiff_id).continuous`. Conclude with `isClosed_eq hc continuous_const`. Conclude with `exists_contDiff_eq_on_closed_of_local hclosed β (fun x hx => hβ x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_contDiff_extension {n : ℕ} {ε : Fin n → Bool} {β : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hβ : SmoothOnG ε β) :
@@ -85,23 +85,21 @@ theorem exists_contDiff_extension {n : ℕ} {ε : Fin n → Bool} {β : Matrix (
   exact exists_contDiff_eq_on_closed_of_local hclosed β (fun x hx => hβ x hx)
 
 /- English proof (translation)
-Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hs p₀ hp₀`. Use `set B' := ((ContinuousLinearMap.compL ℝ P V W).comp B.flip).flip`. Establish `hB' : ∀ L h, B' L h = (B.flip h).comp L` using `fun _ _ => rfl`. Establish `hDs : ContDiff ℝ ∞ (fun x : P × Z => fderiv ℝ (fun q => Ψ q x.2) x.1)`. Establish `hf'` using `hΨ.comp ((contDiff_snd (E := P × Z) (F := P)).prodMk ((contDiff_snd (E := P) (F := Z)).comp (contDiff_fst (E := P × Z) (F := P))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ContDiff.fderiv (f := fun (x : P × Z) (q : P) => Ψ q x.2) (g := Prod.fst) hf' contDiff_fst (le_of_eq ENat.coe_top_add_one)`. Establish `hDc : Continuous (fun x : P × Z => fderiv ℝ (fun q => Ψ q x.2) x.1)` using `hDs.continuous`. Establish `hpart : ∀ z, ContDiff ℝ ∞ (fun q => Ψ q z)` using `fun z => hΨ.comp (contDiff_id.prodMk (contDiff_const (c := z)))`. Establish `hderiv : ∀ y p, HasFDerivAt (fun q => B (Ψ q (e y)) (w y)) (B' (fderiv ℝ (fun q => Ψ q (e y)) p) (w y)) p`. Introduce `y p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : HasFDerivAt (fun q => Ψ q (e y)) (fderiv ℝ (fun q => Ψ q (e y)) p) p` using `((hpart (e y)).differentiable (by simp) p).hasFDerivAt`. Rewrite using `[hB']`. Conclude with `(B.flip (w y)).hasFDerivAt.comp p h1`. Establish `hzero : ∀ p ∈ s, ∀ y ∉ K, fderiv ℝ (fun q => Ψ q (e y)) p = 0`. Introduce `p hp y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hev : (fun q => Ψ q (e y)) =ᶠ[nhds p] fun _ => 0` using `Filter.eventually_of_mem (hs.mem_nhds hp) fun q hq => hsupp q hq y hy`. Rewrite using `[hev.fderiv_eq]`. Simplify using the standard rewrite rules. Establish `hΨc : ∀ p, Continuous fun y => Ψ p (e y)` using `fun p => hΨ.continuous.comp (continuous_const.prodMk he)`. Establish `hFc : ∀ p, Continuous fun y => B (Ψ p (e y)) (w y)` using `fun p => (B.continuous.comp (hΨc p)).clm_apply hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF'c : Continuous fun y => B' (fderiv ℝ (fun q => Ψ q (e y)) p₀) (w y)` using `(B'.continuous.comp (hDc.comp (continuous_const.prodMk he))).clm_apply hw`. Establish `hcpt : IsCompact (Metric.closedBall p₀ (δ / 2) ×ˢ (e '' K))` using `(isCompact_closedBall _ _).prod (hK.image he)`. Take `⟨C₁, hC₁⟩` from `hcpt.exists_bound_of_continuousOn hDc.continuousOn`. Take `⟨C₂, hC₂⟩` from `hK.exists_bound_of_continuousOn hw.continuousOn`. Establish `hsub : Metric.ball p₀ (δ / 2) ⊆ s` using `fun p hp => hball (Metric.ball_subset_ball (by linarith) hp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hint : Integrable (fun y => B (Ψ p₀ (e y)) (w y)) μ`. Rewrite using `[← integrableOn_iff_integrable_of_support_subset (s := K)]`. Conclude with `(hFc p₀).continuousOn.integrableOn_compact hK`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hyK`. Apply `hy` to reduce the goal to its premises. Simplify using `[hsupp p₀ hp₀ y hyK]`. Establish `hbint : Integrable (K.indicator fun _ => ‖B'‖ * C₁ * C₂) μ` using `(integrableOn_const hK.measure_lt_top.ne).integrable_indicator hKm`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (Metric.ball_mem_nhds p₀ (half_pos hδ)) (Filter.Eventually.of_forall fun p => (hFc p).aestronglyMeasurable) hint hF'c.aestronglyMeasurable ?_ hbint (Filter.Eventually.of_forall fun y p _ => hderiv y p)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Filter.Eventually.of_forall fun y p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[Set.indicator_of_mem hy]`. Establish `hL : ‖fderiv ℝ (fun q => Ψ q (e y)) p‖ ≤ C₁` using `hC₁ (p, e y) ⟨Metric.ball_subset_closedBall hp, Set.mem_image_of_mem e hy⟩`. Establish `hh : ‖w y‖ ≤ C₂` using `hC₂ y hy`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzero p (hsub hp) y hy]`. Simplify using `[hy]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hasFDerivAt_integral_lemma {X : Type} [TopologicalSpace X] [MeasurableSpace X]
     [OpensMeasurableSpace X] [SecondCountableTopology X] [T2Space X] (μ : Measure X)
@@ -181,15 +179,13 @@ private theorem hasFDerivAt_integral_lemma {X : Type} [TopologicalSpace X] [Meas
     simp [hy]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `V E W _ _ _ _ _ _ _ B Ψ w hΨ hw hsupp`. Simplify using `only [Nat.cast_zero, contDiffOn_zero]`. Introduce `p hp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hasFDerivAt_integral_lemma μ e he hK hs B Ψ w hΨ hw hsupp hp).continuousAt.continuousWithinAt`. Consider the case `succ m ih`. Introduce `V E W _ _ _ _ _ _ _ B Ψ w hΨ hw hsupp`. Establish `hcast : ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1` using `by norm_cast`. Rewrite using `[hcast, contDiffOn_succ_iff_fderiv_of_isOpen hs]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun p hp => (hasFDerivAt_integral_lemma μ e he hK hs B Ψ w hΨ hw hsupp hp).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations. Establish `hD : ContDiff ℝ ∞ (Function.uncurry fun (p : P) (z : Z) => fderiv ℝ (fun q => Ψ q z) p)`. Establish `hf'` using `hΨ.comp ((contDiff_snd (E := P × Z) (F := P)).prodMk ((contDiff_snd (E := P) (F := Z)).comp (contDiff_fst (E := P × Z) (F := P))))`. Conclude with `ContDiff.fderiv (f := fun (x : P × Z) (q : P) => Ψ q x.2) (g := Prod.fst) hf' contDiff_fst (le_of_eq ENat.coe_top_add_one)`. Establish `hDz : ∀ p ∈ s, ∀ y ∉ K, fderiv ℝ (fun q => Ψ q (e y)) p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp y hy`. Establish `hev : (fun q => Ψ q (e y)) =ᶠ[nhds p] fun _ => 0` using `Filter.eventually_of_mem (hs.mem_nhds hp) fun q hq => hsupp q hq y hy`. Rewrite using `[hev.fderiv_eq]`. Simplify using the standard rewrite rules. Use `(ih (P →L[ℝ] V) E (P →L[ℝ] W) (((ContinuousLinearMap.compL ℝ P V W).comp B.flip).flip) (fun p z => fderiv ℝ (fun q => Ψ q z) p) w hD hw hDz).congr fun p hp => ?_` and prove the remaining obligations.
-
-Conclude with `(hasFDerivAt_integral_lemma μ e he hK hs B Ψ w hΨ hw hsupp hp).fderiv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_integral_lemma_2 {X : Type} [TopologicalSpace X] [MeasurableSpace X]
     [OpensMeasurableSpace X] [SecondCountableTopology X] [T2Space X] (μ : Measure X)
@@ -231,37 +227,33 @@ private theorem contDiffOn_integral_lemma_2 {X : Type} [TopologicalSpace X] [Mea
     exact (hasFDerivAt_integral_lemma μ e he hK hs B Ψ w hΨ hw hsupp hp).fderiv
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ β hβ hβc u g₀ _`. Take `⟨⟨_, hσmul⟩, _, hσcont⟩` from `hσ`. Take `⟨φ, hφ, hφβ⟩` from `exists_contDiff_extension hβ`. Establish `hemb` using `(isClosedEmbeddingMatrix n ε).1`. Establish `hum : Continuous (fun y : UJ ε => umat y)` using `hemb.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := tsupport (fun g : UJ ε => β (umat g)) with hT`. Establish `hmulc : Continuous fun q : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => q.1 * q.2` using `(contDiff_matrix_mul contDiff_fst contDiff_snd).continuous`. Establish `hcpt : IsCompact (Metric.closedBall g₀ 1 ×ˢ T)` using `(isCompact_closedBall _ _).prod hβc`. Take `⟨R, hR⟩` from `hcpt.exists_bound_of_continuousOn (f := fun q : Matrix (Fin n) (Fin n) ℂ × UJ ε => q.1 * umat q.2) (hmulc.comp (continuous_fst.prodMk (hum.comp continuous_snd))).continuousOn`. Use `set R' := max R 0 with hR'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR'0 : 0 ≤ R'` using `le_max_right _ _`. Establish `hRR : R ≤ R'` using `le_max_left _ _`. Set `χ : ContDiffBump (0 : Matrix (Fin n) (Fin n) ℂ)` to `⟨R' + 1, R' + 2, by linarith, by linarith⟩`. Establish `hχsupp : Function.support χ = Metric.ball 0 (R' + 2)` using `χ.support_eq`. Establish `hχone : ∀ Y : Matrix (Fin n) (Fin n) ℂ, ‖Y‖ ≤ R' + 1 → χ Y = 1` using `fun Y hY => χ.one_of_mem_closedBall (mem_closedBall_zero_iff.2 hY)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ → ℂ` to `fun p Y => ((χ Y : ℝ) : ℂ) * φ (Jm ε * pᴴ * Jm ε * Y)`. Establish `hΨ : ContDiff ℝ ∞ (Function.uncurry Ψ)`. Establish `h1 : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => ((χ x.2 : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp (χ.contDiff.comp contDiff_snd)`. Establish `h2 : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => φ (Jm ε * x.1ᴴ * Jm ε * x.2)` using `hφ.comp (contDiff_matrix_mul (contDiff_matrix_mul (contDiff_matrix_mul (contDiff_const (c := Jm ε)) (contDiff_adjoint.comp contDiff_fst)) (contDiff_const (c := Jm ε))) contDiff_snd)`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K := (fun y : UJ ε => umat y) ⁻¹' Metric.closedBall 0 (R' + 2) with hKeq`. Establish `hK : IsCompact K` using `hemb.isCompact_preimage (isCompact_closedBall _ _)`. Establish `hsupp : ∀ p ∈ Metric.ball g₀ 1, ∀ y ∉ K, Ψ p (umat y) = 0`. Introduce `p _ y hy`. Establish `h0 : χ (umat y) = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Establish `h' : umat y ∈ Function.support χ` using `h`. Rewrite `h'` using `[hχsupp]`. Conclude with `hy (Metric.ball_subset_closedBall h')`. Simplify using `[Ψ, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw : Continuous fun y : UJ ε => σ (umat y) u` using `(hσcont u).comp_continuous hum (fun y => y.2)`. Establish `hsmooth` using `contDiffOn_infty.2 fun m => contDiffOn_integral_lemma_2 (muG ε) (fun y : UJ ε => umat y) hum hK Metric.isOpen_ball m ℂ H H (ContinuousLinearMap.lsmul ℝ ℂ) Ψ (fun y => σ (umat y) u) hΨ hw hsupp`. Use `⟨Metric.ball g₀ 1, _, Metric.isOpen_ball, Metric.mem_ball_self one_pos, hsmooth, ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`. Establish `hgG' : gᴴ * Jm ε * g = Jm ε` using `hgG`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinv : Jm ε * gᴴ * Jm ε * g = 1`. Combine the equalities or inequalities in the displayed calculation. Set `gu : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.1 hinv, hinv⟩`. Set `g' : UJ ε` to `⟨gu, hgG⟩`. Establish `hg'm : umat g' = g` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg'inv : umat g'⁻¹ = Jm ε * gᴴ * Jm ε` using `rfl`. Establish `hφcomp : ∀ y : UJ ε, β (umat y) = φ (umat y)` using `fun y => (hφβ _ y.2).symm`. Establish `hint : Integrable (fun y : UJ ε => β (umat y) • σ (umat y) u) (muG ε)`. Use `Continuous.integrable_of_hasCompactSupport ?_ (hβc.smul_right (f' := fun y => σ (umat y) u))` and prove the remaining obligations. Establish `hβu : Continuous fun y : UJ ε => β (umat y)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Repeatedly rewrite using `[hφcomp]`. Conclude with `hφ.continuous.comp hum`. Conclude with `hβu.smul hw`. Establish `hgl : g ∈ Metric.closedBall g₀ 1` using `Metric.ball_subset_closedBall hg`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[inv_mul_cancel_left, map_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `σ g (σ (umat y) u) = σ (g * umat y) u`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hσmul g hgG (umat y) y.2]`. Apply the tactic sequence `try rfl`. Use `_ = ∫ y, β (umat (g'⁻¹ * y)) • σ (umat y) u ∂muG ε := integral_mul_left_eq_self (fun y => β (umat (g'⁻¹ * y)) • σ (umat y) u) g'`. Use `_ = ∫ y, ContinuousLinearMap.lsmul ℝ ℂ (Ψ g (umat y)) (σ (umat y) u) ∂muG ε := by`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[ContinuousLinearMap.lsmul_apply]`. Use `congr 1`. Establish `hprod : umat (g'⁻¹ * y) = Jm ε * gᴴ * Jm ε * umat y` using `rfl`. Establish `hφy : φ (Jm ε * gᴴ * Jm ε * umat y) = β (umat (g'⁻¹ * y))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hprod]`. Conclude with `(hφcomp _).symm`. Simplify using `only [Ψ, hφy]`. Distinguish the cases in `h0 : β (umat (g'⁻¹ * y)) = 0`. Simplify using `[h0]`.
-
-Establish `hyT : g'⁻¹ * y ∈ T` using `subset_tsupport _ h0`. Establish `hbd : ‖g * umat (g'⁻¹ * y)‖ ≤ R` using `hR (g, g'⁻¹ * y) ⟨hgl, hyT⟩`. Establish `hY : g * umat (g'⁻¹ * y) = umat y`. Rewrite using `[← hg'm]`. Express the relevant statement in the definitionally equal form `umat (g' * (g'⁻¹ * y)) = umat y`.
-
-Rewrite using `[mul_inv_cancel_left]`. Rewrite `hbd` using `[hY]`. Rewrite using `[hχone (umat y) (by linarith), Complex.ofReal_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem garding_smooth : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ →

@@ -22,9 +22,9 @@ open GlobalTheory.Ker.ONBasis
 variable {D : D7} {T : HSp D}
 
 /- English proof (translation)
-Unfold `negM`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem negM_sq (T : HSp D) (q : ℕ) : negM T q * negM T q = 1 := by
   unfold negM
@@ -35,7 +35,7 @@ theorem negM_sq (T : HSp D) (q : ℕ) : negM T q * negM T q = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `negM`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem negM_herm (T : HSp D) (q : ℕ) : (negM T q)ᴴ = negM T q := by
   unfold negM
@@ -51,7 +51,7 @@ theorem compAt_eq (θ : InfFam D) (ρ : D.what₂.Tau) (h : GA D T) :
     compAt θ ρ (Formalism.L2.Theta.mt T h) = infMat D.sp.cm.sig T.gram (θ ρ) h := rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FockCompare.RealAction.gramAt_eq hθ]`. Conclude with `GlobalTheory.FockCompare.RealAction.unitary_map (cA D) ((θ ρ).comp (infPart D)) (GlobalTheory.FockCompare.comp_cA hθ ρ) _ _ (mt_rel T g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_unitary' {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (g : GA D T) :
     (compAt θ ρ (Formalism.L2.Theta.mt T g))ᴴ * gramAt D T ρ * compAt θ ρ (Formalism.L2.Theta.mt T g) = gramAt D T ρ := by
@@ -60,7 +60,7 @@ theorem compAt_unitary' {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau)
     (GlobalTheory.FockCompare.comp_cA hθ ρ) _ _ (mt_rel T g)
 
 /- English proof (translation)
-Introduce `τ`. Unfold `mvZ`. Rewrite using `[Matrix.conjTranspose_mul, ← hZ τ]`. Use `conv_rhs => rw [← compAt_unitary' hθ τ g]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isONeg_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ : IsONeg T q Z) (g : GA D T) :
     IsONeg T q (mvZ θ g Z) := by
@@ -71,9 +71,9 @@ theorem isONeg_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `mvZ`. Establish `e : Formalism.L2.Theta.mt T (g' * g) = Formalism.L2.Theta.mt T g' * Formalism.L2.Theta.mt T g` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[e, ← Matrix.mul_assoc]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem mvZ_mul (θ : InfFam D) (Z : Fam T) (g g' : GA D T) : mvZ θ (g' * g) Z = mvZ θ g' (mvZ θ g Z) := by
   funext τ
@@ -84,7 +84,7 @@ theorem mvZ_mul (θ : InfFam D) (Z : Fam T) (g g' : GA D T) : mvZ θ (g' * g) Z 
   exact Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : (Formalism.L2.Theta.mt T g).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hg)`. Establish `h2 : compAt θ τ (Formalism.L2.Theta.mt T g) = ((Formalism.L2.Theta.mt T g).map (infPart D)).map (θ τ)` using `rfl`. Unfold `mvZ`. Rewrite using `[h2, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvZ_fin (θ : InfFam D) (Z : Fam T) {g : GA D T} (hg : g ∈ GfC T) : mvZ θ g Z = Z := by
   funext τ
@@ -94,9 +94,9 @@ theorem mvZ_fin (θ : InfFam D) (Z : Fam T) {g : GA D T} (hg : g ∈ GfC T) : mv
   rw [h2, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu'` using `isUnit_det (negM_sq T q) (isONeg_mvZ hθ hZ g τ)`. Establish `e : (mvZ θ g Z τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt T g) = (Z τ)⁻¹`. Use `symm`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.nonsing_inv_mul _ hu'`. Unfold `cartZ`. Rewrite using `[Matrix.mul_assoc, e]`. Unfold `mvZ`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cartZ_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ : IsONeg T q Z) (g : GA D T)
     (τ : D.what₂.Tau) :
@@ -113,9 +113,9 @@ theorem cartZ_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `(GlobalTheory.SmoothForms.RealPts.glue θ hθ T).1 g fun τ => ?_` and prove the remaining obligations. Establish `hu` using `isUnit_det (negM_sq T q) (hZ τ)`. Establish `h1 : compAt θ τ (Formalism.L2.Theta.mt T g) * Z τ = Z τ` using `congrFun h τ`. Rewrite using `[← compAt_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = 1 := by rw [h1, Matrix.mul_nonsing_inv _ hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_of_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ : IsONeg T q Z) {g : GA D T}
     (h : mvZ θ g Z = Z) : g ∈ GfC T := by
@@ -128,11 +128,11 @@ theorem fin_of_mvZ {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z : Fam T} (hZ
     _ = 1 := by rw [h1, Matrix.mul_nonsing_inv _ hu]
 
 /- English proof (translation)
-Establish `hu` using `fun τ => isUnit_det (negM_sq T q) (hZ τ)`. Take `⟨a, ha, h⟩` from `(GlobalTheory.SmoothForms.RealPts.glue θ hθ T).2 (fun τ => Z' τ * (Z τ)⁻¹) (fun τ => by show (Z' τ * (Z τ)⁻¹)ᴴ * gramAt D T τ * (Z' τ * (Z τ)⁻¹) = gramAt D T τ`. Establish `h2` using `Matrix.mul_nonsing_inv _ (hu τ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (Z τ * (Z τ)⁻¹)ᴴ * gramAt D T τ * (Z τ * (Z τ)⁻¹) := by`. Rewrite using `[hZ' τ, ← hZ τ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one])`. Use `⟨a, ha, funext fun τ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `mvZ`. Rewrite using `[compAt_eq, h τ, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hu τ), Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_move {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z Z' : Fam T} (hZ : IsONeg T q Z)
     (hZ' : IsONeg T q Z') : ∃ a ∈ GinfC T, Z' = mvZ θ a Z := by
@@ -151,13 +151,13 @@ theorem exists_move {θ : InfFam D} (hθ : IsInfFam θ) {q : ℕ} {Z Z' : Fam T}
   rw [compAt_eq, h τ, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hu τ), Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `σ`. Take `⟨τ, rfl⟩` from `eT.surjective σ`. Establish `hm : mat (frOf rfl eT Z) (eT τ) = Z τ`. Use extensionality with `a b`. Simplify using `[mat, frOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hG : ∀ a b, tauE D τ (X.Gm a b) = -gramAt D T τ b a` using `fun a b => by`. Rewrite using `[hM.1]`. Simplify using `[gramAt]`. Rewrite using `[hm, he]`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrFun (congrFun (hZ τ) b) a`. Establish `h2 : FD.gram (tauE D τ) X.Gm (Z τ) a b = -((Z τ)ᴴ * gramAt D T τ * Z τ) b a`. Simplify using `only [FD.gram, hermC, FD.col, Matrix.of_apply, hG, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, ← Finset.sum_neg_distrib, RCLike.star_def]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, h1, negM]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (Ne.symm hab), neg_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOrtho_frOf {X : Data D.host.E T.rank} (eT : D.what₂.Tau ≃ X.Ψ) (hM : ModelW T rfl X)
     (he : ∀ ρ, (eT ρ).1 = tauE D ρ) {Z : Fam T} (hZ : IsONeg T X.p0 Z) : X.IsOrtho (frOf rfl eT Z) := by
@@ -184,7 +184,7 @@ theorem isOrtho_frOf {X : Data D.host.E T.rank} (eT : D.what₂.Tau ≃ X.Ψ) (h
   · rw [Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (Ne.symm hab), neg_zero]
 
 /- English proof (translation)
-Introduce `τ i`. Unfold `dmin`. Establish `h : FD.gram τ.1 X.Gm (mat x τ) = sgnM X` using `hx τ`. Rewrite using `[h, GlobalTheory.SW.Slab.lminor_sgnM]`. Apply the tactic sequence `rcases GlobalTheory.SW.Slab.psgn_sq X.p0 i with h | h <;> rw [h] <;> norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnitFr_of_isOrtho {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     {x : Frame X.Ψ r} (hx : X.IsOrtho x) : IsUnitFr X x := by
@@ -199,7 +199,7 @@ end GlobalTheory.OneMapRef.Frames
 open GlobalTheory.OneMapRef.Frames GlobalTheory.Ker.ONBasis in
 
 /- English proof (translation)
-Introduce `D S T r g hr ψ θ X eT bas idx hS Z hZ`. Substitute `hr` using the available equality. Take `⟨-, hθ, -, -, hM, -, he, -⟩` from `hS`. Establish `ho` using `isOrtho_frOf eT hM he hZ`. Conclude with `⟨mem_dom X ho, isUnitFr_of_isOrtho X ho, ho, fun ρ => isCartanInv (negM_sq T _) (negM_herm T _) (hZ ρ), fun h => ⟨isONeg_mvZ hθ hZ h, cartZ_mvZ hθ hZ h, mvZ_mul θ Z h, mvZ_fin θ Z, fin_of_mvZ hθ hZ, fun _ hZ' => exists_move hθ hZ hZ'⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.OneMapRef.oneg_frames : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (X : Data D.host.E r) (eT : D.what₂.Tau ≃ X.Ψ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hS : IsSet ψ θ S T hr X eT bas), ∀ Z : Fam T, IsONeg T X.p0 Z → frOf hr eT Z ∈ X.dom ∧ IsUnitFr X (frOf hr eT Z) ∧ X.IsOrtho (frOf hr eT Z) ∧ (∀ ρ, IsCartanInv (gramAt D T ρ) (cartZ T X.p0 Z ρ)) ∧ ∀ h : GA D T, IsONeg T X.p0 (mvZ θ h Z) ∧ (∀ ρ, cartZ T X.p0 (mvZ θ h Z) ρ * compAt θ ρ (Formalism.L2.Theta.mt T h) = compAt θ ρ (Formalism.L2.Theta.mt T h) * cartZ T X.p0 Z ρ) ∧ (∀ h', mvZ θ (h' * h) Z = mvZ θ h' (mvZ θ h Z)) ∧ (h ∈ GfC T → mvZ θ h Z = Z) ∧ (mvZ θ h Z = Z → h ∈ GfC T) ∧ ∀ Z', IsONeg T X.p0 Z' → ∃ a ∈ GinfC T, Z' = mvZ θ a Z := by
   intro D S T r g hr ψ θ X eT bas idx hS Z hZ

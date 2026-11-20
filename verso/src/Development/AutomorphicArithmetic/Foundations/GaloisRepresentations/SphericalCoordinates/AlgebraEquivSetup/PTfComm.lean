@@ -5,7 +5,7 @@ open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem comm_conv (hRing : ConvRing) {X : Type} [Group X] {K : Subgroup X} (hK : IsCommensurated K)
     {f g h : X → ℂ} (hf : f ∈ Hecke ℂ K) (hg : g ∈ Hecke ℂ K) (hh : h ∈ Hecke ℂ K)
@@ -18,13 +18,13 @@ private theorem comm_conv (hRing : ConvRing) {X : Type} [Group X] {K : Subgroup 
     _ = conv K h (conv K f g) := (hRing X K hK h hh f hf).2 g hg
 
 /- English proof (translation)
-Establish `hK` using `T.cms`. Establish `mA` using `(hAdm X M T a ha).1.1`. Establish `mB` using `(hAdm X M T b hb).1.1`. Establish `mZ` using `(hAdm X M T z hz.2).1.1`. Establish `mZ'` using `(hAdm X M T z' hz'.2).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cz` using `hCen X M T a z ha hz`. Establish `cz'` using `hCen X M T b z' hb hz'`. Establish `eBZ : conv T.K₀ (T.tf b) (T.tf z) = conv T.K₀ (T.tf z) (T.tf b)` using `(hCen X M T b z hb hz).2.trans (hCen X M T b z hb hz).1.symm`. Establish `eAZ' : conv T.K₀ (T.tf a) (T.tf z') = conv T.K₀ (T.tf z') (T.tf a)` using `(hCen X M T a z' ha hz').2.trans (hCen X M T a z' ha hz').1.symm`. Establish `eZZ' : conv T.K₀ (T.tf z) (T.tf z') = conv T.K₀ (T.tf z') (T.tf z)` using `(hCen X M T z z' hz.2 hz').2.trans (hCen X M T z z' hz.2 hz').1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mAZ` using `(hRing X T.K₀ hK _ mA _ mZ).1`. Establish `h1` using `comm_conv hRing hK mA mZ mB hab eBZ.symm`. Establish `h2` using `comm_conv hRing hK mA mZ mZ' eAZ' eZZ'`. Establish `h3` using `comm_conv hRing hK mB mZ' mAZ h1.symm h2.symm`. Rewrite using `[← cz.2, ← cz'.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.symm`.
+A detailed English derivation is pending.
 -/
 private theorem comm_cen (hAdm : TfAdm) (hCen : TfMulCen) (hRing : ConvRing) {X M : Type} [Group X] [Group M]
     (T : TyLev X M) {a b z z' : X} (ha : T.L.pr a = 1) (hb : T.L.pr b = 1) (hz : T.Cen z) (hz' : T.Cen z')
@@ -51,11 +51,11 @@ private theorem comm_cen (hAdm : TfAdm) (hCen : TfMulCen) (hRing : ConvRing) {X 
   exact h3.symm
 
 /- English proof (translation)
-Introduce `hAdm hRing hCen hL hR hLoc X M M' M'' _ _ _ _ T L' Kw hF hAp z z' hz hz' t`. Use `⟨fun L'' t' h1 h2 => ?_, fun t' hc => ?_⟩` and prove the remaining obligations. Establish `ha : T.L.pr (L'.loc t) = 1` using `hAp.1 t`. Establish `hb : T.L.pr (L''.loc t') = 1` using `h1.1 t'`. Establish `hb' : L'.pr (L''.loc t') = 1` using `h2.1 t'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `comm_cen hAdm hCen hRing T ha hb hz hz' ((hL X M M' T L' Kw hF hAp t _ hb hb').trans (hR X M M' T L' Kw hF hAp t _ hb hb').symm)`. Establish `ha : T.L.pr (L'.loc t) = 1` using `hAp.1 t`. Establish `hb : T.L.pr (L'.loc t') = 1` using `hAp.1 t'`. Use `comm_cen hAdm hCen hRing T ha hb hz hz' ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLoc X M M' T L' Kw hF hAp t t' g, hLoc X M M' T L' Kw hF hAp t' t g, hc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pTfComm : TfAdm → ConvRing → TfMulCen → TfMulL → TfMulR → TfLoc → TfComm := by
   intro hAdm hRing hCen hL hR hLoc X M M' M'' _ _ _ _ T L' Kw hF hAp z z' hz hz' t

@@ -13,13 +13,13 @@ namespace GlobalTheory.HermCoordEquiv
 open GlobalTheory.GaussMean.OneVec
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, f a b = (if a < b then f a b else 0) + (if a = b then f a b else 0) + (if b < a then f a b else 0)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.2 h.le]`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, h.ne', not_lt.2 h.le]`. Establish `hsub : ∀ g : Fin n → Fin n → M, ∑ p : {p : Fin n × Fin n // p.1 < p.2}, g p.1.1 p.1.2 = ∑ a, ∑ b, if a < b then g a b else 0`. Introduce `g`. Rewrite using `[← Fintype.sum_prod_type' (f := fun a b => if a < b then g a b else 0), ← Finset.sum_filter]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.sum_subtype _ (by simp) (fun a : Fin n × Fin n => g a.1 a.2)).symm`. Rewrite using `[Finset.sum_add_distrib, hsub (fun a b => f a b), hsub (fun a b => f b a)]`. Use `conv_lhs => enter [2, a, 2, b]`. Rewrite using `[h1 a b]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Finset.sum_comm (f := fun a b => if b < a then f a b else 0)]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem sum_sum_split {M : Type} [AddCommMonoid M] {n : ℕ} (f : Fin n → Fin n → M) :
     ∑ a, ∑ b, f a b = ∑ a, f a a + ∑ p : {p : Fin n × Fin n // p.1 < p.2}, (f p.1.1 p.1.2 + f p.1.2 p.1.1) := by
@@ -53,9 +53,9 @@ def invMat (σ : E →ₐ[F] E) {n : ℕ} (x : (Fin n → R) × ({p : Fin n × F
     else algebraMap R (R ⊗[F] E) (x.1 a)
 
 /- English proof (translation)
-Introduce `a b`. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Simplify using `[invMat, hab, not_lt.2 hab.le, sigR_sigR R h]`. Substitute `hab` using the available equality. Simplify using `only [invMat, lt_self_iff_false, ↓reduceDIte]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `sigR_algebraMap R _`. Simplify using `[invMat, hab, not_lt.2 hab.le]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invMat_mem (h : IsCMExt F E σ) {n : ℕ} (x : (Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)) :
     invMat R σ x ∈ HermR R σ n := by
@@ -85,13 +85,13 @@ def coordEquiv (h : IsCMExt F E σ) (n : ℕ) :
     simp [hermCoord, mul_add]
 
 /- English proof (translation)
-Unfold `pairHerm coordPair`. Rewrite using `[sum_sum_split (fun a b => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a b * (T : Matrix (Fin n) (Fin n) _) b a)]`. Use `beta_reduce`. Rewrite using `[map_add, map_sum, map_sum, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `half_trace R h (algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (S.1 a a) * (algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (T.1 a a)))` as an intermediate fact. Rewrite `this` using `[map_mul, fixed_eq R h (S.2 a a), fixed_eq R h (T.2 a a)]`. Simplify `this` using `[hermCoord]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : T.1 p.1.2 p.1.1 = sigR R σ (T.1 p.1.1 p.1.2)` using `(T.2 p.1.2 p.1.1).symm`. Establish `hS : S.1 p.1.2 p.1.1 = sigR R σ (S.1 p.1.1 p.1.2)` using `(S.2 p.1.2 p.1.1).symm`. Simplify using `only [hermCoord]`. Rewrite using `[hT, hS]`. Establish `hw : S.1 p.1.1 p.1.2 * sigR R σ (T.1 p.1.1 p.1.2) + sigR R σ (S.1 p.1.1 p.1.2) * T.1 p.1.1 p.1.2 = algebraMap R (R ⊗[F] E) (Algebra.trace R (R ⊗[F] E) (sigR R σ (S.1 p.1.1 p.1.2) * T.1 p.1.1 p.1.2))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_sigR R h, add_comm, map_mul, sigR_sigR R h]`. Rewrite using `[hw, half_trace R h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_eq (h : IsCMExt F E σ) {n : ℕ} (S T : HermR R σ n) :
     pairHerm R σ n S T = coordPair R σ n (hermCoord R σ S) (hermCoord R σ T) := by

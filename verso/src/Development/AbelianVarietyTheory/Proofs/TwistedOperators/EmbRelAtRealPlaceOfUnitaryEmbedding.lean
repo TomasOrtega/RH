@@ -21,9 +21,7 @@ namespace GlobalTheory.EmbAtPlace
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h1 i) j`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, sub_eq_zero]`.
-
-Conclude with `congrFun (congrFun (h2 τ) i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_ext {m n : Type*} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D}
     (hσ : GlobalTheory.FockCompare.Chart θ σ) {M N : Matrix m n (Formalism.L2.Theta.AE D)}
@@ -36,9 +34,7 @@ theorem mat_ext {m n : Type*} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+
   · rw [RingHom.map_sub, RingHom.map_sub, sub_eq_zero]; exact congrFun (congrFun (h2 τ) i) j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `h1 i`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, sub_eq_zero]`.
-
-Conclude with `h2 τ i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vec_ext {n : Type*} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D}
     (hσ : GlobalTheory.FockCompare.Chart θ σ) {v w : n → Formalism.L2.Theta.AE D}
@@ -50,7 +46,7 @@ theorem vec_ext {n : Type*} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ F
   · rw [RingHom.map_sub, RingHom.map_sub, sub_eq_zero]; exact h2 τ i
 
 /- English proof (translation)
-Establish `: Formalism.L2.Theta.infPart D (incA D e) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] e`. Simplify using `[Formalism.L2.Theta.infPart, incA, inclR]`. Rewrite using `[this]`. Conclude with `(hθ τ).1 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_incA {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (e : D.host.E) :
     θ τ (Formalism.L2.Theta.infPart D (incA D e)) = tauE D τ e := by
@@ -63,29 +59,25 @@ end GlobalTheory.EmbAtPlace
 namespace GlobalTheory.EmbAtPlace
 
 /- English proof (translation)
-Introduce `D θ hθ A B ι τ h g hh hg hE`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hX` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ B τ hg`. Establish `hY` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ A τ hh`. Establish `fX : (matHom B (atTau θ B τ g)).1.map (Formalism.L2.Theta.finPart D) = 1` using `(congrArg (fun k : GL (Fin B.rank) (Af D.host.F ⊗[D.host.F] D.host.E) => k.val) (MonoidHom.mem_ker.1 hX.1)).trans Units.val_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fY : (matHom A (atTau θ A τ h)).1.map (Formalism.L2.Theta.finPart D) = 1` using `(congrArg (fun k : GL (Fin A.rank) (Af D.host.F ⊗[D.host.F] D.host.E) => k.val) (MonoidHom.mem_ker.1 hY.1)).trans Units.val_one`. Establish `iX : ∀ τ', (matHom B (atTau θ B τ g)).1.map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) = if τ' = τ then g else 1` using `fun τ' => by split_ifs with e`. Substitute `e` using the available equality. Conclude with `hX.2.1`. Conclude with `hX.2.2 τ' e`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `iY : ∀ τ', (matHom A (atTau θ A τ h)).1.map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) = if τ' = τ then h else 1` using `fun τ' => by split_ifs with e`. Substitute `e` using the available equality. Conclude with `hY.2.1`. Conclude with `hY.2.2 τ' e`. Establish `iF : ∀ τ', ((frameMat B A ι).map (incA D)).map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) = (frameMat B A ι).map (tauE D τ')` using `fun τ' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `GlobalTheory.EmbAtPlace.theta_incA hθ τ' e`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.EmbAtPlace.mat_ext hσ ?_ fun τ' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, fX, fY, Matrix.one_mul, Matrix.mul_one]`. Set `φ : Formalism.L2.Theta.AE D →+* ℂ` to `(θ τ').comp (Formalism.L2.Theta.infPart D)`. Express the relevant statement in the definitionally equal form `Matrix.map (_ * _) ⇑φ = Matrix.map (_ * _) ⇑φ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(matHom B (atTau θ B τ g)).1.map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) * ((frameMat B A ι).map (incA D)).map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) = ((frameMat B A ι).map (incA D)).map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) * (matHom A (atTau θ A τ …`. Rewrite using `[iX, iY, iF]`. Use `split_ifs with e`. Substitute `e` using the available equality. Conclude with `hE.1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_mul, Matrix.mul_one]`. Use `GlobalTheory.EmbAtPlace.vec_ext hσ (fun i => ?_) fun τ' i => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mulVec, fX, Matrix.one_mulVec]`. Both sides reduce to the same expression. Set `φ : Formalism.L2.Theta.AE D →+* ℂ` to `(θ τ').comp (Formalism.L2.Theta.infPart D)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ _ = φ _`. Rewrite using `[RingHom.map_mulVec]`. Express the relevant statement in the definitionally equal form `((matHom B (atTau θ B τ g)).1.map (fun z => θ τ' (Formalism.L2.Theta.infPart D z)) *ᵥ fun j => θ τ' (Formalism.L2.Theta.infPart D (incA D (x j)))) i = θ τ' (Formalism.L2.Theta.infPart D (incA D (x i)))`. Simplify using `only [GlobalTheory.EmbAtPlace.theta_incA hθ]`. Rewrite using `[iX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with e`. Substitute `e` using the available equality. Establish `h0 : (((frameMat B A ι).map (tauE D τ'))ᴴ * gramAt D B τ') *ᵥ (fun j => tauE D τ' (x j)) = 0`. Establish `hm : ((frameMat B A ι).map (tauE D τ'))ᴴ * gramAt D B τ' = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A ι) * B.gram).map (tauE D τ')`. Rewrite using `[Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, Formalism.UG.cT, Matrix.transpose_apply]`. Conclude with `(Formalism.IndefR.Eqv.tauE_star D τ' _).symm`. Rewrite using `[hm]`.
-
-Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (tauE D τ') (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A ι) * B.gram) x i` as an intermediate fact. Simplify using `only [Function.comp_def] at this`. Rewrite using `[← this, hx]`. Simplify using the standard rewrite rules.
-
-Conclude with `congrFun (hE.2 _ h0) i`. Rewrite using `[Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embRel_atTau : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (τ : D.what₂.Tau)
     (h : Matrix (Fin A.rank) (Fin A.rank) ℂ) (g : Matrix (Fin B.rank) (Fin B.rank) ℂ), h ∈ Formalism.QuantumDeterminants.UH (gramAt D A τ) →

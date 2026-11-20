@@ -21,13 +21,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PoincareKer
 
 /- English proof (translation)
-Introduce `hH R _ _ A B _ _ g hA hB hgA hgB P hP φ hφ y hy`. Establish `hL` using `hP.isLB`. Take `⟨v, hv, -⟩` from `((GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange hH).2.1 R B g hB hgB).1.1 y`. Establish `horth` using `GlobalTheory.T.hodgeFiltrations_orthogonal_lineBundlePairing_product hH R A B g hA hB hgA hgB P hL φ hφ`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_isChartChoiceForPoints_of_nontrivial R A B P hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `GlobalTheory.T.cohomologous_neg_torsor_cocycle_of_orthogonal hH R A B g hA hB hgA hgB P hL φ hφ horth y v hv 0 (fun h hh => by rw [hy h hh, map_zero]) 0 (by rw [map_zero]; rfl) j hj`. Take `⟨k, hk⟩` from `hc`. Establish `hk' : IsCob (chartsA P) (tanCoc P j v) k`. Introduce `D _ _ D' _ _ ψ x hx`. Establish `e` using `hk D D' ψ x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : fv (0 : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) D D' ψ x = 0` using `rfl`. Simplify using `only [Fn1.add, Fn1.neg, h0, zero_add, neg_neg] at e`. Conclude with `e`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_pointwiseLineBundleGenerator_of_trivial_pullback R (A ⊗ B) A P hL (AbDual.inl A B) hP.zero_right`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_dualNumberGenerator_of_torsorCoboundary R A B P hL v hv.1 j hj s hs k hk'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `GlobalTheory.T.exists_pointwiseGenerator_of_dualNumberLineBundleGenerator R A B P hL v hv.1 T hT`. Establish `htriv` using `GlobalTheory.T.cechLineBundle_pull_trivial_of_pointwiseGenerator R (A ⊗ B) (A ⊗ epsR R) P hL _ t ht`. Establish `hv1 : v = 1` using `hP.ker_right (epsR R) v htriv`. Substitute `hv1` using the available equality. Conclude with `isLieImage_one_iff.mp hv`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_fil_of_orth : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] [Nontrivial R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, AbDual.IsPerfect A B P → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → ∀ y : HdR B, (∀ x ∈ Fil A, φ x y = 0) → y ∈ Fil B := by
   intro hH R _ _ A B _ _ g hA hB hgA hgB P hP φ hφ y hy

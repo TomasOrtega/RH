@@ -4,11 +4,11 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[isSchemeTheoreticallyDominant_iff]`. Set `h𝒰` to `X.isBasis_affineOpens.isOpenCover_mem_and_le (T.isBasis_affineOpens.isOpenCover.comap p.base.hom)`. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (fun U ↦ ⟨_, by exact U.2.1⟩) h𝒰 ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨U, ⟨V, hV⟩⟩, hU, hUV : U ≤ p ⁻¹ᵁ V⟩`. Simplify using `only [Scheme.IdealSheafData.ideal_bot, Pi.bot_apply, ← le_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `b hb`. Establish `hb' : W.ι.app U b = 0` using `W.ι.ideal_ker_le ⟨U, hU⟩ hb`. Use `h U V hU hV hUV b fun x hx hxW ↦ ?_` and prove the remaining obligations. Establish `h1` using `Scheme.Hom.germ_stalkMap_apply W.ι U ⟨x, hxW⟩ hx b`. Rewrite `h1` using `[hb', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `y : W.toScheme` to `⟨x, hxW⟩`. Establish `hiso : IsIso (W.ι.stalkMap y)` using `inferInstance`. Establish `hinj : Function.Injective (W.ι.stalkMap y)` using `(ConcreteCategory.bijective_of_isIso (W.ι.stalkMap y)).1`. Conclude with `hinj (h1.trans (map_zero _).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSchemeTheoreticallyDominant_ι_of_germ_eq_zero_over_affine
     (X T : Scheme.{0}) (p : X ⟶ T) (W : X.Opens)

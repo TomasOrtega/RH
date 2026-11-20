@@ -12,19 +12,17 @@ open GlobalTheory.CompanionTheory.DualHol
 namespace GlobalTheory.CompanionTheory.ModulusWeight
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ δ B hδ`. Establish `hq : (1 : ℝ) < residueCard F` using `by exact_mod_cast one_lt_residueCard (K := F)`. Establish `hq0 : (0 : ℝ) < residueCard F` using `zero_lt_one.trans hq`. Establish `hmod : ∀ u : Fˣ, (modulus (u : F) : ℝ) = (residueCard F : ℝ) ^ (-ord (u : F))` using `fun u => by`. Rewrite using `[modulus_of_ne_zero u.ne_zero, NNReal.coe_zpow, NNReal.coe_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hB : 0 < B`. Use `swap`. Establish `hz : (fun a : Fˣ => Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ) a) = 0`. Use function extensionality and compare the values at `u`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, not_le, hmod]`. Conclude with `(not_lt.mp hB).trans_lt (zpow_pos hq0 _)`. Rewrite using `[hz]`. Conclude with `integrable_zero _ _ _`. Establish `hm : Continuous fun a : Fˣ => (modulus (a : F) : ℝ)` using `NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : MeasurableSet {a : Fˣ | (modulus (a : F) : ℝ) ≤ B}` using `(isClosed_le hm continuous_const).measurableSet`. Establish `hc : Continuous fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ` using `hm.rpow_const fun _ => Or.inr hδ.le`. Use `⟨hc.aestronglyMeasurable.indicator hS, ?_⟩` and prove the remaining obligations. Set `b : ℤ → ENNReal` to `fun n => if (residueCard F : ℝ) ^ n ≤ B then ENNReal.ofReal ((residueCard F : ℝ) ^ (δ * (n : ℝ))) else 0`. Establish `hbound : ∀ u : Fˣ, ‖Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ) u‖ₑ ≤ (fun k : ℤ => b (-k)) (ord (u : F))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `u`. Distinguish the cases in `hu : (modulus (u : F) : ℝ) ≤ B`. Establish `hu' : (residueCard F : ℝ) ^ (-ord (u : F)) ≤ B` using `hmod u ▸ hu`. Rewrite using `[Set.indicator_of_mem (by exact hu)]`. Simplify using `only [b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hu', ← ofReal_norm, Real.norm_of_nonneg (by positivity), hmod u, ← Real.rpow_intCast, ← Real.rpow_mul hq0.le, mul_comm]`. Rewrite using `[Set.indicator_of_notMem (by exact hu), enorm_zero]`. Conclude with `bot_le`. Establish `hle` using `lintegral_multHaar_le_tsum (K := F) _ (fun k : ℤ => b (-k)) hbound`. Establish `hsum : ∑' k : ℤ, b (-k) = ∑' n : ℤ, b n` using `(Equiv.neg ℤ).tsum_eq b`.
-
-Rewrite `hle` using `[hsum]`. Conclude with `hle.trans_lt ((GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div _ δ B hq hδ hB).trans_lt ENNReal.ofReal_lt_top)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_modulus_rpow_indicator : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (δ B : ℝ), 0 < δ → Integrable (fun a : Fˣ => Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ) a) (multHaar F) := by
   intro F _ _ _ _ _ _ δ B hδ

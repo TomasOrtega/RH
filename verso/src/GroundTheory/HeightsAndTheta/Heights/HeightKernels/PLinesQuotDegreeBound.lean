@@ -7,13 +7,13 @@ namespace GroundTheory.Heights₂.Heights
 open NumberField
 
 /- English proof (translation)
-Introduce `K _ _ n a d ha hd m k b c hbc hmk`. Establish `hb : LinearIndependent K b` using `hbc.comp Sum.inl Sum.inl_injective`. Take `⟨τ, hτ, hbs⟩` from `h1 K n m k b hb hmk`. Establish `hcard : Fintype.card (Fin m ⊕ Fin k) = Module.finrank K (Fin n → K)`. Simplify using `[hmk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `B : Module.Basis (Fin m ⊕ Fin k) K (Fin n → K)` to `basisOfLinearIndependentOfCardEqFinrank' _ hbs hcard`. Establish `hBl : ∀ i, B (Sum.inl i) = b i` using `fun i => by`. Simplify using `[B, coe_basisOfLinearIndependentOfCardEqFinrank']`. Establish `hBr : ∀ j, B (Sum.inr j) = Pi.single (τ j) 1` using `fun j => by`. Simplify using `[B, coe_basisOfLinearIndependentOfCardEqFinrank']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Use `set D := (B.toMatrix (Sum.elim b c)).toBlocks₂₂.det with hD`. Establish `hI` using `h2 K n m k a B b c τ ha hBl hBr hτ hbc`. Establish `hG : ∀ σ : K →+* ℂ, Real.log (gramAt (diagMetric d σ) σ (Sum.elim b c)).det.re - Real.log (gramAt (diagMetric d σ) σ b).det.re ≤ ∑ j, Real.log (d σ (τ j)) + 2 * Real.log ‖σ D‖` using `fun σ => h3 K n m k (d σ) σ B b c τ (hd σ) hBl hBr hτ hbc`. Establish `hGs` using `Finset.sum_le_sum fun σ (_ : σ ∈ Finset.univ) => hG σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hGs` using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_comm]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`. Unfold `quotDegree`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LinesQuotDegreeBound.proof (h1 : LinesExtendBasis.Statement)
     (h2 : LinesQuotIndexLog.Statement) (h3 : LinesQuotGramLog.Statement) :

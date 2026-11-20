@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asy
 open scoped ContDiff Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.not_forall_exists_two_liesOver_absNorm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNotForallExistsTwoLiesOverAbsNormEq.lean&line=13#L13)
 -/

@@ -10,11 +10,11 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership
 namespace GlobalTheory.DetExpP
 
 /- English proof (translation)
-Take `⟨u, v, h⟩` from `GlobalTheory.RectSVD.exists_orthonormalBasis_singularValues (E := EuclideanSpace ℂ k) (F := EuclideanSpace ℂ m) (p := p) (q := q) (by simp [Fintype.card_congr fm]) (by simp [Fintype.card_congr fk]) (Matrix.toEuclideanLin B)`. Use `set u' := u.reindex fm.symm with hu'`. Use `set v' := v.reindex fk.symm with hv'`. Establish `hU` using `(EuclideanSpace.basisFun m ℂ).toMatrix_orthonormalBasis_mem_unitary u'`. Establish `hV` using `(EuclideanSpace.basisFun k ℂ).toMatrix_orthonormalBasis_mem_unitary v'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, hU, _, hV, ?_⟩` and prove the remaining obligations. Use `set U := (EuclideanSpace.basisFun m ℂ).toBasis.toMatrix u' with hUd`. Use `set V := (EuclideanSpace.basisFun k ℂ).toBasis.toMatrix v' with hVd`. Establish `hD : (Matrix.of fun a b => if ((fm a : ℕ) = (fk b : ℕ)) then (((Matrix.toEuclideanLin B).singularValues (fm a) : ℝ) : ℂ) else 0) = Uᴴ * B * V`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.of_apply, ← h (fm a) (fk b), Matrix.mul_assoc]`. Simplify using `[hUd, hVd, hu', hv', Matrix.mul_apply, Module.Basis.toMatrix_apply, PiLp.inner_apply, Matrix.mulVec, dotProduct, mul_comm]`. Establish `h1 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hU`. Establish `h2 : V * Vᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hV`. Rewrite using `[hD, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_svd_equiv {m k : Type} [Fintype m] [DecidableEq m] [Fintype k] [DecidableEq k] {p q : ℕ}
     (fm : m ≃ Fin p) (fk : k ≃ Fin q) (B : Matrix m k ℂ) :
@@ -43,31 +43,29 @@ theorem exists_svd_equiv {m k : Type} [Fintype m] [DecidableEq m] [Fintype k] [D
     Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hth : ∀ i, min p q ≤ i → Real.tanh (t i) = 0` using `fun i hi => by simp [ht i hi]`. Establish `hc : ∀ x : ℝ, Real.cosh x ^ 2 = (2 : ℝ)⁻¹ * (1 + Real.cosh (2 * x))` using `fun x => by`. Rewrite using `[Real.cosh_two_mul, Real.cosh_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∀ x : ℝ, Real.sinh x * Real.cosh x = (2 : ℝ)⁻¹ * Real.sinh (2 * x)` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Real.sinh_two_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hct : ∀ x : ℝ, Real.tanh x * Real.cosh x ^ 2 = (2 : ℝ)⁻¹ * Real.sinh (2 * x)` using `fun x => by`. Rewrite using `[Real.sinh_two_mul, Real.tanh_eq_sinh_div_cosh]`. Use `(Real.cosh_pos x).ne'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hd : ∀ x : ℝ, Real.tanh x * (Real.sinh x * Real.cosh x) + 1 = (2 : ℝ)⁻¹ * (1 + Real.cosh (2 * x))` using `fun x => by`. Rewrite using `[Real.tanh_eq_sinh_div_cosh, ← hc, Real.cosh_sq]`. Use `(Real.cosh_pos x).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `set A : Matrix (Fin p) (Fin p) ℂ := Matrix.diagonal fun i => ((Real.cosh (t i) ^ 2 : ℝ) : ℂ)`. Use `set B : Matrix (Fin p) (Fin q) ℂ := GlobalTheory.FockDecay.rectDiag p q fun i => Real.sinh (t i) * Real.cosh (t i)`. Use `set C : Matrix (Fin q) (Fin p) ℂ := (GlobalTheory.FockDecay.rectDiag p q fun i => Real.tanh (t i))ᴴ`. Establish `hM : (2 : ℂ)⁻¹ • (1 + GlobalTheory.FockDecay.hypMat p q t 2) = Matrix.fromBlocks 1 0 C 1 * Matrix.fromBlocks A B 0 1`. Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, GlobalTheory.FockDecay.hypMat, Matrix.fromBlocks_add, Matrix.fromBlocks_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.one_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_zero]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [A, Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [B, GlobalTheory.FockDecay.rectDiag, Matrix.smul_apply, Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `only [C, A, GlobalTheory.FockDecay.rectDiag, Matrix.smul_apply, Matrix.of_apply, Matrix.conjTranspose_apply, Matrix.mul_diagonal]`. Use `split_ifs with h`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← Complex.ofReal_mul, hct, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.FockDecay.ct_mul_rectDiag _ _ hth]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`. Establish `e` using `congrArg (fun r : ℝ => (r : ℂ)) (hd (t i))`. Move the coercions through the operations in `at e ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul]`. Take the linear combination `(-1 : ℂ) * e`. Simplify using the standard rewrite rules. Rewrite using `[hM, Matrix.det_mul, Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_diagonal]`. Simplify using `only [Matrix.det_one, one_mul, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `key : ∏ i : Fin p, Real.cosh (t i) ^ 2 = (∏ i ∈ Finset.range (min p q), Real.cosh (t i)) ^ 2`. Rewrite using `[Finset.prod_pow, Fin.prod_univ_eq_prod_range (fun i => Real.cosh (t i)) p]`. Use `congr 1`. Use `symm`. Apply `Finset.prod_subset (Finset.range_mono (min_le_left p q))` to reduce the goal to its premises.
-
-Introduce `i hi hni`. Simplify using `only [Finset.mem_range, not_lt] at hi hni`. Rewrite using `[ht i hni, Real.cosh_zero]`. Rewrite using `[← key, Complex.ofReal_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_half_one_add_hypMat (p q : ℕ) (t : ℕ → ℝ) (ht : ∀ i, min p q ≤ i → t i = 0) :
     ((2 : ℂ)⁻¹ • (1 + GlobalTheory.FockDecay.hypMat p q t 2)).det =
@@ -135,33 +133,29 @@ theorem det_half_one_add_hypMat (p q : ℕ) (t : ℕ → ℝ) (ht : ∀ i, min p
   rw [← key, Complex.ofReal_prod]
 
 /- English proof (translation)
-Set `e : {i // ε i = true} ⊕ {i // ε i = false} ≃ Fin n` to `(Equiv.sumCongr (Equiv.refl _) (Equiv.subtypeEquivRight (fun i => by simp))).trans (Equiv.sumCompl (fun i => ε i = true))`. Establish `he1 : ∀ a : {i // ε i = true}, e (Sum.inl a) = a.1` using `fun a => rfl`. Establish `he2 : ∀ b : {i // ε i = false}, e (Sum.inr b) = b.1` using `fun b => rfl`. Use `set x := offBlock ε X with hxd`. Establish `hX' : Matrix.reindex e.symm e.symm X = Matrix.fromBlocks 0 x xᴴ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `(a|a) (b|b)`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, he1, Matrix.fromBlocks_apply₁₁, Matrix.zero_apply]`. Conclude with `hX.2 _ _ (by rw [a.2, b.2])`. Simplify using `[x, offBlock, he1, he2]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, he1, he2, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply, x, offBlock, Matrix.of_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hX.1.apply _ _).symm`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, he2, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`. Conclude with `hX.2 _ _ (by rw [a.2, b.2])`. Establish `hdet1 : ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp X * NormedSpace.exp X)).det = ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp (Matrix.fromBlocks 0 x xᴴ 0) * NormedSpace.exp (Matrix.fromBlocks 0 x xᴴ 0))).det`. Rewrite using `[← Matrix.det_reindex_self e.symm, ← Matrix.coe_reindexAlgEquiv ℂ ℂ, map_smul, map_add, map_one, map_mul, Matrix.coe_reindexAlgEquiv, ← GlobalTheory.FockEmbExp.exp_reindex', hX']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set fm := Fintype.equivFin {i // ε i = true}`. Use `set fk := Fintype.equivFin {i // ε i = false}`. Use `set p := Fintype.card {i // ε i = true}`. Use `set q := Fintype.card {i // ε i = false}`. Take `⟨U, hU, V, hV, hx⟩` from `exists_svd_equiv fm fk x`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set D := Matrix.of (fun a b => if ((fm a : ℕ) = (fk b : ℕ)) then (((Matrix.toEuclideanLin x).singularValues (fm a) : ℝ) : ℂ) else 0) with hDd`. Use `set t : ℕ → ℝ := fun i => singVal ε X i with htd`. Establish `ht : ∀ i, min p q ≤ i → t i = 0`. Introduce `i hi`. Simplify using `only [htd, singVal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_min_iff.mp (le_refl (min p q)) with ⟨h1, h2⟩` into its components or cases. Distinguish the cases in `hq : q ≤ i`. Apply `LinearMap.singularValues_of_finrank_le` to reduce the goal to its premises. Simplify `hq` using `[q]`. Establish `hp : p ≤ i` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.singularValues_eq_zero_iff_le_finrank_range]`. Use `le_trans (Submodule.finrank_le _) ?_` and prove the remaining obligations. Simplify `hp` using `[p]`. Use `set K : Matrix ({i // ε i = true} ⊕ {i // ε i = false}) ({i // ε i = true} ⊕ {i // ε i = false}) ℂ := Matrix.fromBlocks U 0 0 V with hKd`. Establish `hUU : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hU`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUU' : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `hVV : V * Vᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hV`. Establish `hVV' : Vᴴ * V = 1` using `Matrix.mem_unitaryGroup_iff'.mp hV`. Establish `hKK : K * Kᴴ = 1`. Simplify using `[hKd, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hUU, hVV]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hKK' : Kᴴ * K = 1`. Simplify using `[hKd, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hUU', hVV']`. Establish `hKinv : K⁻¹ = Kᴴ` using `Matrix.inv_eq_left_inv hKK'`. Establish `hKu : IsUnit K` using `(Matrix.isUnit_iff_isUnit_det K).mpr (Matrix.isUnit_det_of_right_inverse hKK)`. Use `set Y := Matrix.fromBlocks 0 D Dᴴ 0 with hYd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hXY : Matrix.fromBlocks 0 x xᴴ 0 = K * Y * K⁻¹`. Rewrite using `[hKinv, hx]`. Simplify using `[hKd, hYd, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hdet2 : ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp (Matrix.fromBlocks 0 x xᴴ 0) * NormedSpace.exp (Matrix.fromBlocks 0 x xᴴ 0))).det = ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp ((2 : ℝ) • Y))).det`. Rewrite using `[hXY, Matrix.exp_conj K Y hKu]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : K * NormedSpace.exp Y * K⁻¹ * (K * NormedSpace.exp Y * K⁻¹) = K * (NormedSpace.exp Y * NormedSpace.exp Y) * K⁻¹`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ ((Matrix.isUnit_iff_isUnit_det K).mp hKu)]`. Establish `h2 : (2 : ℂ)⁻¹ • (1 + K * (NormedSpace.exp Y * NormedSpace.exp Y) * K⁻¹) = K * ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp Y * NormedSpace.exp Y)) * K⁻¹`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det K).mp hKu)]`. Rewrite using `[h1, h2, Matrix.det_conj hKu, ← Matrix.exp_add_of_commute _ _ (Commute.refl _), two_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `σ' : {i // ε i = true} ⊕ {i // ε i = false} ≃ Fin p ⊕ Fin q` to `Equiv.sumCongr fm fk`. Establish `hYP : Matrix.reindex σ' σ' Y = GlobalTheory.FockDecay.diagP p q t`. Use extensionality with `(a|a) (b|b)`. Simplify using `[σ', hYd, GlobalTheory.FockDecay.diagP]`. Simplify using `[σ', hYd, hDd, GlobalTheory.FockDecay.diagP, GlobalTheory.FockDecay.rectDiag, htd, singVal, x]`.
-
-Simplify using `[σ', hYd, hDd, GlobalTheory.FockDecay.diagP, GlobalTheory.FockDecay.rectDiag, htd, singVal, x]`. Simplify using `[σ', hYd, GlobalTheory.FockDecay.diagP]`. Establish `hs : Matrix.reindex σ' σ' ((2 : ℝ) • Y) = (2 : ℝ) • GlobalTheory.FockDecay.diagP p q t`. Rewrite using `[← hYP]`. Use `ext`.
-
-Simplify using the standard rewrite rules. Establish `hdet3 : ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp ((2 : ℝ) • Y))).det = ((2 : ℂ)⁻¹ • (1 + GlobalTheory.FockDecay.hypMat p q t 2)).det`. Rewrite using `[← Matrix.det_reindex_self σ', ← Matrix.coe_reindexAlgEquiv ℂ ℂ, map_smul, map_add, map_one, Matrix.coe_reindexAlgEquiv, ← GlobalTheory.FockEmbExp.exp_reindex', hs, GlobalTheory.FockDecay.exp_diagP t ht]`. Rewrite using `[hdet1, hdet2, hdet3, det_half_one_add_hypMat p q t ht]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_half_one_add_exp_mul_exp (n : ℕ) (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ)
     (hX : IsInP ε X) :

@@ -14,9 +14,9 @@ namespace PositivityTheory.Xgn.LatticeChartPoints
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type}
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact Algebra.subset_adjoin ha`. Consider the case `algebraMap n`. Establish `: algebraMap ℤ Ω n = algebraMap O Ω (n : O)` using `by simp`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_le (O : Type) [CommRing O] [Algebra O Ω] (S : Set Ω) {a : Ω} (ha : a ∈ Algebra.adjoin ℤ S) :
     a ∈ Algebra.adjoin O S := by
@@ -30,11 +30,11 @@ theorem int_le (O : Type) [CommRing O] [Algebra O Ω] (S : Set Ω) {a : Ω} (ha 
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `ha`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k0, k1, k2⟩`. Establish `hs : s ≠ 0` using `right_ne_zero_of_mul k0`. Use `⟨hs, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: s = a⁻¹ * (a * s)` using `by field_simp`. Rewrite using `[this]`. Conclude with `mul_mem h2 k1`. Establish `: s⁻¹ = a * (a * s)⁻¹` using `by field_simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `mul_mem h1 k2`. Introduce and unpack `⟨k0, k1, k2⟩`. Use `⟨mul_ne_zero h0 k0, mul_mem h1 k1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv]`. Conclude with `mul_mem h2 k2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_mul_iff {q : Cpt ξ} {a s : Ω} (ha : unitAt ξ q a) : unitAt ξ q (a * s) ↔ unitAt ξ q s := by
   obtain ⟨h0, h1, h2⟩ := ha
@@ -51,9 +51,9 @@ theorem unitAt_mul_iff {q : Cpt ξ} {a s : Ω} (ha : unitAt ξ q a) : unitAt ξ 
     rw [mul_inv]; exact mul_mem h2 k2
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => obtain ⟨j, rfl⟩ := ha`. Conclude with `hq.2 j`. Consider the case `algebraMap o => exact hO o`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem reg (O : Type) [CommRing O] [Algebra O Ω] (x : κ → Ω) (c : κ) (a : Ω)
     (ha : a ∈ Algebra.adjoin O (Set.range fun j => x j / x c)) (q : Cpt ξ) (hq : InChart ξ x c q)
@@ -65,7 +65,7 @@ theorem reg (O : Type) [CommRing O] [Algebra O Ω] (x : κ → Ω) (c : κ) (a :
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun t => ⟨t.1, h _ t.2⟩ map_one' := Subtype.ext rfl map_mul' := fun _ _ => Subtype.ext rfl map_zero' := Subtype.ext rfl map_add' := fun _ _ => Subtype.ext rfl }, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_incl {O : Type} [CommRing O] [Algebra O Ω] (B : Subalgebra ℤ Ω) (R : Subalgebra O Ω)
     (h : ∀ a ∈ B, a ∈ R) : ∃ φ : B →+* R, ∀ t : B, ((φ t : R) : Ω) = t :=
@@ -76,15 +76,15 @@ theorem exists_incl {O : Type} [CommRing O] [Algebra O Ω] (B : Subalgebra ℤ �
      map_add' := fun _ _ => Subtype.ext rfl }, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_incl B R hle`. Take `⟨q, hq, hI⟩` from `hpt (P.comap φ) (Ideal.comap_isPrime φ P)`. Establish `hAO : ∀ a : A, algebraMap A Ω a = algebraMap O Ω (algebraMap A O a)` using `fun a => IsScalarTower.algebraMap_apply A O Ω a`. Establish `hnot : ∀ a : A, a ∉ m → φ ⟨_, hconst a⟩ ∉ P`. Introduce `a ha hmem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (algebraMap A O a)` using `IsLocalization.map_units O (⟨a, ha⟩ : m.primeCompl)`. Establish `he : φ ⟨_, hconst a⟩ = algebraMap O R (algebraMap A O a)` using `Subtype.ext ((hφ _).trans (hAO a))`. Rewrite `hmem` using `[he]`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem (hu.map _))`. Establish `hunit : ∀ a : A, a ∉ m → unitAt ξ q (algebraMap A Ω a)` using `fun a ha => (hI ⟨_, hconst a⟩).1 (fun h => hnot a ha (Ideal.mem_comap.1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, hq, fun o => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `hloc _ (R.algebraMap_mem o)`. Take `⟨h0, -, h2⟩` from `hunit a ha`. Establish `: algebraMap O Ω o = (algebraMap A Ω a)⁻¹ * (algebraMap A Ω a * algebraMap O Ω o)`. Rewrite using `[← _root_.mul_assoc, inv_mul_cancel₀ h0, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem h2 (hreg _ hb q hq)`. Take `⟨a, ha, hb⟩` from `hloc s s.2`. Use `Iff.trans ?_ ((hI ⟨_, hb⟩).trans (unitAt_mul_iff (hunit a ha)))` and prove the remaining obligations. Establish `he : φ ⟨_, hb⟩ = φ ⟨_, hconst a⟩ * s` using `Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, MulMemClass.coe_mul, hφ])`. Rewrite using `[Ideal.mem_comap, he, hP.mul_mem_iff_mem_or_mem]`. Conclude with `⟨fun h h' => h'.elim (hnot a ha) h, fun h h' => h (Or.inr h')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem point_of_prime (C : Cpt ξ → Prop)
     (A : Type) [CommRing A] [Algebra A Ω] (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O]
@@ -126,9 +126,9 @@ theorem point_of_prime (C : Cpt ξ → Prop)
 
 open GlobalTheory.CompanionTheory.Ar.ChartPrimes in
 /- English proof (translation)
-Take `⟨V, hV, hmem⟩` from `T.affine c hc`. Establish `hqV : q.1 ∈ V` using `(hmem _).2 ⟨q.2, hq⟩`. Establish `hg : genPt ξ ∈ V` using `q.2.mem_open V.2 hqV`. Take `⟨f, hfU, hqf⟩` from `hV.exists_basicOpen_le ⟨q.1, hU⟩ hqV`. Establish `key : ∀ (p : Cpt ξ), p.1 ∈ V → (p.1 ∈ X.basicOpen f ↔ unitAt ξ p (secVal ξ V hg f))` using `fun p hp => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[X.mem_basicOpen f _ hp, ← genMap_germ_eq V hg p hp f]`. Conclude with `isUnit_iff_unitAt p (T.gen.inj _) _`. Use `⟨secVal ξ V hg f, (T.ring c hc _).2 fun p hp => ⟨_, genMap_germ_eq V hg p ((hmem _).2 ⟨p.2, hp⟩) f⟩, (key q hqV).1 hqf, fun q' hq' hu => hfU ((key q' ((hmem _).2 ⟨q'.2, hq'⟩)).2 hu)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem basic_nbhd (x : κ → Ω) (T : CoordTie ℤ ξ x) (c : κ) (hc : x c ≠ 0) (q : Cpt ξ) (hq : InChart ξ x c q)
     (U : X.Opens) (hU : q.1 ∈ U) : ∃ g ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c), unitAt ξ q g ∧
@@ -147,9 +147,9 @@ end PositivityTheory.Xgn.LatticeChartPoints
 
 open PositivityTheory.Xgn.LatticeChartPoints in
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ _ J _ y T A _ _ hA m _ O _ _ _ _ _ _ _ c hc`. Use `⟨fun a ha q hq hO => reg O (mseg y) c a ha q hq hO, fun P hP => ?_, fun q hq _ a ha => ?_, fun q hq _ U hU => ?_⟩` and prove the remaining obligations. Conclude with `point_of_prime (InChart ξ (mseg y) c) A m O (Algebra.adjoin ℤ (Set.range fun j => mseg y j / mseg y c)) _ (fun a ha => int_le O _ ha) (fun I hI => (chart_point_of_prime X Ω ξ ℤ _ (mseg y) T c hc I hI).exists) (fun a ha => (T.ring c hc a).1 ha) (hA c hc) (fun t ht => (mem_chartRin …`. Take `⟨s, hs, hu, hsa⟩` from `(regAt_iff_exists_chart_fraction X Ω ξ ℤ _ (mseg y) T c q hq a).1 ha`. Conclude with `⟨s, int_le O _ hs, hu, int_le O _ hsa⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hu, h⟩` from `basic_nbhd (mseg y) T c hc q hq U hU`. Conclude with `⟨g, int_le O _ hg, hu, fun q' hq' _ hu' => h q' hq' hu'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.lattice_chart_points : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω), CoordTie ℤ ξ (mseg y) → ∀ (A : Type) [CommRing A] [Algebra A Ω], HasConstants ℤ A y → ∀ (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (c : ∀ k, J k), mseg y c ≠ 0 → (∀ a ∈ chartRing O (mseg y) c, ∀ q : Cpt ξ, InChart ξ (mseg y) c q → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → a ∈ regAt ξ q) ∧ (∀ P : Ideal (chartRing O (mseg y) c), P.IsPrime → ∃ q : Cpt ξ, InChart ξ (mseg y) c q ∧ (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) ∧ ∀ s : chartRing O (mseg y) c, s ∉ P ↔ unitAt ξ q (s : Ω)) ∧ (∀ q : Cpt ξ, InChart ξ (mseg y) c q → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → ∀ a ∈ regAt ξ q, ∃ s ∈ chartRing O (mseg y) c, unitAt ξ q s ∧ s * a ∈ chartRing O (mseg y) c) ∧ (∀ q : Cpt ξ, InChart ξ (mseg y) c q → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → ∀ U : X.Opens, q.1 ∈ U → ∃ g ∈ chartRing O (mseg y) c, unitAt ξ q g ∧ ∀ q' : Cpt ξ, InChart ξ (mseg y) c q' → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q') → unitAt ξ q' g → q'.1 ∈ U) := by
   intro X Ω _ ξ K _ _ J _ y T A _ _ hA m _ O _ _ _ _ _ _ _ c hc

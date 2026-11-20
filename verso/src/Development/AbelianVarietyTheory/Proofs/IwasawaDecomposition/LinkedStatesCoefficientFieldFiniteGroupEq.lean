@@ -9,7 +9,7 @@ open GlobalTheory.HeightCounting.SerMove
 namespace GlobalTheory.HeightCounting.SerMove.Ids
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Take `rfl` from `eq_of_heq hl`. Take `rfl` from `eq_of_heq hc`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem coeffF_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {l' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H'}
@@ -21,9 +21,9 @@ theorem coeffF_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H H' : Rec
   rfl
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at e`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Consider the cases of `hp`. Conclude with `⟨MulEquiv.refl _, fun _ => HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem gc_equiv {B B' : Base} {px : PreX B.toPre} {px' : PreX B'.toPre} (h : Enl B B') (hp : HEq px' px) :
     ∃ γ : GlobalTheory.Mem.R3.Gc B px ≃* GlobalTheory.Mem.R3.Gc B' px', ∀ u, HEq (γ u) u := by
@@ -36,9 +36,9 @@ theorem gc_equiv {B B' : Base} {px : PreX B.toPre} {px' : PreX B'.toPre} (h : En
   exact ⟨MulEquiv.refl _, fun _ => HEq.rfl⟩
 
 /- English proof (translation)
-Establish `hH` using `e.H`. Establish `hl` using `e.l`. Establish `hc` using `e.c`. Use `clear e`. Take `⟨e0, -⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at e0`. Substitute `e0` using the available equality. Conclude with `coeffF_eq (eq_of_heq hH) hl hc`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dat_F_eq {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok}
@@ -56,9 +56,9 @@ theorem dat_F_eq {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : 
   exact coeffF_eq (eq_of_heq hH) hl hc
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'`. Establish `hc` using `l.extN.c`. Establish `hH` using `l.extN.H`. Establish `hl` using `l.extN.l`. Use `show ∃ (eK : x.m.z.core.Q.c.F ≃+* x'.m.z.core.Q.c.F) (γ : GlobalTheory.Mem.R3.Gc B w.px ≃* GlobalTheory.Mem.R3.Gc B' w'.px), _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `gc_equiv l.enl l.px`. Establish `hF : x'.m.z.core.Q.c.F = x.m.z.core.Q.c.F` using `dat_F_eq (z := datAt x g) (z' := datAt x' g') l.enl l.extN`. Conclude with `⟨(IntermediateField.equivOfEq hF.symm).toRingEquiv, γ, fun y => rfl, hγ⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem field_group_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∃ (eK : ↥(sideAt x g hg a).core.Q.c.F ≃+* ↥(sideAt x' g' hg' a').core.Q.c.F) (γ : (sideAt x g hg a).Γ ≃* (sideAt x' g' hg' a').Γ), (∀ y, ((eK y : ↥(sideAt x' g' hg' a').core.Q.c.F) : ℂ) = (y : ℂ)) ∧ ∀ u, HEq (γ u) u := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'

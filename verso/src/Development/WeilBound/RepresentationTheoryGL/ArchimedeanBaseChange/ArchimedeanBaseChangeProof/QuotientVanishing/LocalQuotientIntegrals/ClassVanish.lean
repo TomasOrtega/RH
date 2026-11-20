@@ -22,7 +22,7 @@ namespace PositivityTheory.Rg.BcB.CV
 open PositivityTheory.Rg.BcB.D1 GlobalTheory.CompanionTheory
 
 /- English proof (translation)
-The claim follows from `classVanish_of_steps QuotNorm.integral_normaliser_eq (QuotProduct.quotProd_of_normEq QuotNorm.integral_normaliser_eq) chainSum RatDisc.ratDisc locVanish LocP.main LocFlagPf.locFlag degBdd KerTwFin.kerFin mahler SplitInf.splitAt NonEll.nonEllFlag SplitTwo.splitAt2 PairParam.pairPa …`.
+A detailed English derivation is pending.
 -/
 theorem classVanish : ClassVanish :=
   classVanish_of_steps QuotNorm.integral_normaliser_eq (QuotProduct.quotProd_of_normEq QuotNorm.integral_normaliser_eq) chainSum
@@ -32,12 +32,12 @@ theorem classVanish : ClassVanish :=
     (QuotStageInt.quotStage_of QuotNorm.integral_normaliser_eq) sizeBasic
 
 /- English proof (translation)
-The claim follows from `UnfoldCut.unfold_of_mahler mahler`.
+A detailed English derivation is pending.
 -/
 theorem unfold : Unfold := UnfoldCut.unfold_of_mahler mahler
 
 /- English proof (translation)
-The claim follows from `ellFormula_of unfold ellTerm classVanish sizeBasic`.
+A detailed English derivation is pending.
 -/
 theorem ellFormula : EllFormula := ellFormula_of unfold ellTerm classVanish sizeBasic
 

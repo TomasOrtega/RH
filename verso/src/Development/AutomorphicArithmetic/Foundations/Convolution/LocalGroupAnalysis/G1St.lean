@@ -25,23 +25,23 @@ open PositivityTheory.Rg.Tf.Geo
 namespace UpperTheory.ConvolutionTheory.G
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.K.g0`.
+A detailed English derivation is pending.
 -/
 theorem g0 : G0 := UpperTheory.ConvolutionTheory.K.g0
 /- English proof (translation)
-The claim follows from `firstGeometricCondition_of_properties charpoly_factor_coeff_zero_valuation_eq_prod character_column_kernels_of_block_chi_c_of_block_chi_one`.
+A detailed English derivation is pending.
 -/
 theorem g1St : EllipticityFromProductFormula := firstGeometricCondition_of_properties charpoly_factor_coeff_zero_valuation_eq_prod character_column_kernels_of_block_chi_c_of_block_chi_one
 /- English proof (translation)
-The claim follows from `galois_twist_preserves_siegel_bound`.
+A detailed English derivation is pending.
 -/
 theorem g2 : G2 := galois_twist_preserves_siegel_bound
 /- English proof (translation)
-The claim follows from `twisted_trace_formula_elliptic_expansion g2 twistedGeometricSide_unfolding (unitaryGroupGeometricSide_of_quotient_identities isUnit_last_join closedSubgroup_cutoff_exists) isUnit_last_join closedSubgroup_cutoff_exists monic_polynomial_is_matrix_charpoly nm_agrees_with_twisted_nor …`.
+A detailed English derivation is pending.
 -/
 theorem g3 : G3 := twisted_trace_formula_elliptic_expansion g2 twistedGeometricSide_unfolding (unitaryGroupGeometricSide_of_quotient_identities isUnit_last_join closedSubgroup_cutoff_exists) isUnit_last_join closedSubgroup_cutoff_exists monic_polynomial_is_matrix_charpoly nm_agrees_with_twisted_norm_sigmaGL galois_fixed_adelic_matrices_descend elliptic_centralizer_quotient_compact character_column_kernels_of_block_chi_c_of_block_chi_one g0
 /- English proof (translation)
-The claim follows from `stable_twisted_trace_formula_comparison isUnit_last_join closedSubgroup_cutoff_exists (orbitalIntegral_absolute_convergence isUnit_last_join closedSubgroup_cutoff_exists) galois_fixed_adelic_matrices_descend character_column_kernels_of_block_chi_c_of_block_chi_one p1_holds (p2_of …`.
+A detailed English derivation is pending.
 -/
 theorem g4 : G4 := stable_twisted_trace_formula_comparison isUnit_last_join closedSubgroup_cutoff_exists (orbitalIntegral_absolute_convergence isUnit_last_join closedSubgroup_cutoff_exists) galois_fixed_adelic_matrices_descend character_column_kernels_of_block_chi_c_of_block_chi_one p1_holds (p2_of p1_holds) firstCohomologyBound_of_boundaryBound (ginvH_wCell_last_mul_mulVec_bvec_eI GlobalTheory.CNorm.hasseNorm)
 

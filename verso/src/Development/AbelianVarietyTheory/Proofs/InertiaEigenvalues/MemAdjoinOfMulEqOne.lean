@@ -7,17 +7,17 @@ namespace GlobalTheory.UnitLemma.TwistUnit
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Take `⟨p, hp, hpt⟩` from `ht`. Establish `e : aeval t p = 0` using `hpt`. Rewrite `e` using `[aeval_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, one_smul]`. Break down `Nat.eq_zero_or_pos p.natDegree with h0 | hpos` into its components or cases. Rewrite `e` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at e`. Establish `: t = 0` using `by simpa using congrArg (t * ·) e`. Rewrite using `[this]`. Conclude with `Subalgebra.zero_mem _`. Take `⟨k, hk⟩ : ∃ k, p.natDegree = k + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hk]`. Establish `hts : t * s = 1` using `by rw [mul_comm]; exact h`. Establish `h1 : t ^ (k + 1) * s ^ k = t`. Rewrite using `[pow_succ', mul_assoc, ← mul_pow, hts, one_pow, mul_one]`. Establish `h2 : ∀ i ∈ Finset.range (k + 1), p.coeff i • t ^ i * s ^ k = p.coeff i • s ^ (k - i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hik : i ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[smul_mul_assoc]`. Use `congr 1`. Rewrite using `[show s ^ k = s ^ i * s ^ (k - i) by rw [← pow_add, Nat.add_sub_cancel' hik], ← mul_assoc, ← mul_pow, hts, one_pow, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (· * s ^ k) e`. Simplify using `only [add_mul, zero_mul, Finset.sum_mul] at e2`. Rewrite `e2` using `[Finset.sum_congr rfl h2, h1]`. Establish `key : t = -∑ i ∈ Finset.range (k + 1), p.coeff i • s ^ (k - i)`. Take the linear combination `e2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `Subalgebra.neg_mem _ (Subalgebra.sum_mem _ fun i _ => Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton O s) _) _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_adjoin_of_mul_eq_one {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {s t : A}
     (h : s * t = 1) (ht : IsIntegral O t) : t ∈ Algebra.adjoin O {s} := by
@@ -51,13 +51,11 @@ theorem mem_adjoin_of_mul_eq_one {O A : Type} [CommRing O] [CommRing A] [Algebra
     Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton O s) _) _)
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `hL`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately.
 
-Consider the case `algebraMap r`. Introduce `y hy`. Rewrite using `[← Algebra.smul_def]`. Conclude with `L.smul_mem r hy`. Consider the case `add x z _ _ hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[add_mul]`. Conclude with `L.add_mem (hx y hy) (hz y hy)`. Consider the case `mul x z _ _ hx hz`. Introduce `y hy`.
-
-Rewrite using `[mul_assoc]`. Conclude with `hx _ (hz y hy)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_stab {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {s : A} (L : Submodule O A)
     (hL : ∀ y ∈ L, s * y ∈ L) {a : A} (ha : a ∈ Algebra.adjoin O {s}) : ∀ y ∈ L, a * y ∈ L := by
@@ -78,19 +76,19 @@ theorem adjoin_stab {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {s : A}
 variable {K : UQ}
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis K.E B.A`. Establish `hsm : ∀ (e : K.E) (y : B.A), B.σ (e • y) = K.c e • B.σ y`. Introduce `e y`. Rewrite using `[Algebra.smul_def, map_mul, B.σ_alg, ← Algebra.smul_def]`. Establish `hli : LinearIndependent K.E ((B.σ : B.A →+ B.A) ∘ b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `b.linearIndependent.map_of_injective_injective (fun r => K.c.symm r) (B.σ : B.A →+ B.A) ?_ ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Simplify using `using hr`. Introduce `m hm`. Establish `: B.σ m = 0` using `hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `r m show B.σ (K.c.symm r • m) = r • B.σ m`. Rewrite using `[hsm, RingEquiv.apply_symm_apply]`. Establish `hsp : ⊤ ≤ Submodule.span K.E (Set.range ((B.σ : B.A →+ B.A) ∘ b))`. Introduce `y _`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : y = ∑ j, K.c (b.repr (B.σ.symm y) j) • B.σ (b j)` using `by conv_lhs => rw [← B.σ.apply_symm_apply y, ← b.sum_repr (B.σ.symm y)]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hsm _ _`. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b' : Module.Basis (Module.Free.ChooseBasisIndex K.E B.A) K.E B.A` to `Module.Basis.mk hli hsp`. Establish `hb' : ∀ i, b' i = B.σ (b i)` using `fun i => by`. Simplify using `only [b', Module.Basis.mk_apply]`. Both sides reduce to the same expression. Establish `hrepr : ∀ y i, b'.repr (B.σ y) i = K.c (b.repr y i)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y i`. Establish `h1 : B.σ y = ∑ j, K.c (b.repr y j) • b' j` using `by conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hsm, hb']`. Rewrite using `[h1, b'.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.trace_eq_matrix_trace b', Algebra.trace_eq_matrix_trace b, Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[hb', ← map_mul, hrepr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_σ (B : InvAlg K) (a : B.A) :
     Algebra.trace K.E B.A (B.σ a) = K.c (Algebra.trace K.E B.A a) := by
@@ -135,9 +133,9 @@ theorem trace_σ (B : InvAlg K) (a : B.A) :
   rw [hb', ← map_mul, hrepr]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Take `⟨b, hb⟩` from `K.c_int a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, ha, K.c_c]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨b, hb⟩` from `K.c_int a`. Conclude with `⟨b, hb.symm⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_c (e : K.E) : K.c e ∈ (algebraMap K.O K.E).range ↔ e ∈ (algebraMap K.O K.E).range := by
   constructor
@@ -150,7 +148,7 @@ theorem mem_range_c (e : K.E) : K.c e ∈ (algebraMap K.O K.E).range ↔ e ∈ (
     exact ⟨b, hb.symm⟩
 
 /- English proof (translation)
-Rewrite using `[trace_σ, mem_range_c]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_σ_mem (B : InvAlg K) (a : B.A) :
     Algebra.trace K.E B.A (B.σ a) ∈ (algebraMap K.O K.E).range ↔
@@ -158,27 +156,27 @@ theorem trace_σ_mem (B : InvAlg K) (a : B.A) :
   rw [trace_σ, mem_range_c]
 
 /- English proof (translation)
-Introduce `K B hg hs hi ε hε`. Take `⟨β₀, hβ, hb1, hb2⟩` from `GlobalTheory.T.exists_unit_basePoint_adjoin_twisted_sigma K B hg hs hi ε hε`. Use `⟨β₀, hβ, fun x hx => ?_⟩` and prove the remaining obligations. Use `set R := (algebraMap K.O K.E).range with hR`. Use `set T := Algebra.trace K.E B.A with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hεT : ∀ a, T (ε * a) ∈ R ↔ T a ∈ R`. Introduce `a`. Break down `hε with rfl | rfl` into its components or cases. Rewrite using `[one_mul]`. Rewrite using `[neg_one_mul, map_neg, neg_mem_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstab : ∀ L : Submodule K.O B.A, (∀ y ∈ L, B.g * y ∈ L) → ∀ w : B.A, ((∀ y ∈ L, T ((β₀ : B.A) * x * y * B.σ w) ∈ R) ↔ ∀ y ∈ L, T ((x : B.A) * y * B.σ w) ∈ R)`. Introduce `L hL w`. Establish `s1` using `adjoin_stab L hL hb1`. Establish `s2` using `adjoin_stab L hL hb2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h y hy`. Use `h _ (s2 y hy)` as an intermediate fact. Establish `e : (β₀ : B.A) * x * (((β₀⁻¹ : B.Aˣ) : B.A) * y) * B.σ w = x * y * B.σ w`. Use `β₀.mul_inv` as an intermediate fact. Take the linear combination `(↑x * y * B.σ w) * this`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `h y hy`. Use `h _ (s1 y hy)` as an intermediate fact. Rewrite `this` using `[show (x : B.A) * ((β₀ : B.A) * y) * B.σ w = β₀ * x * y * B.σ w by ring]`. Then use the resulting hypothesis. Establish `hX' : ∀ (L : Submodule K.O B.A) (w : B.A), ((∀ y ∈ L, T ((x : B.A) * w * B.σ y) ∈ R) ↔ ∀ y ∈ L, T ((x : B.A) * y * B.σ w) ∈ R)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `L w`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← trace_σ_mem B]`. Rewrite using `[show B.σ ((x : B.A) * w * B.σ y) = x * y * B.σ w by`. Rewrite using `[map_mul, map_mul, hx, B.σ_σ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `ring]`. Establish `hsym : ∀ a b : B.A, T ((β₀ : B.A) * x * a * B.σ b) ∈ R ↔ T ((β₀ : B.A) * x * (B.g * b) * B.σ a) ∈ R`. Introduce `a b`. Rewrite using `[← trace_σ_mem B ((β₀ : B.A) * x * a * B.σ b), show B.σ ((β₀ : B.A) * x * a * B.σ b) = ε * ((β₀ : B.A) * x * (B.g * b) * B.σ a) by`. Rewrite using `[map_mul, map_mul, map_mul, hβ, hx, B.σ_σ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use the proof step `ring, hεT]`. Establish `hgg : B.σ B.g * B.g = 1` using `by rw [mul_comm]; exact hg`. Establish `hgad : B.g ∈ Algebra.adjoin K.O {B.σ B.g}` using `mem_adjoin_of_mul_eq_one hgg hi`. Use extensionality with `L`. Simplify using `only [Set.mem_setOf_eq, InvAlg.X, InvAlg.herm, Units.val_mul, ← hT, ← hR]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hLat, hU⟩`. Establish `h1 : ∀ y ∈ L, B.σ B.g * y ∈ L`. Introduce `y hy`. Rewrite using `[hU]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `y' hy'`. Rewrite using `[hsym, show (β₀ : B.A) * x * (B.g * (B.σ B.g * y)) * B.σ y' = β₀ * x * y * B.σ y' by`. Take the linear combination `((β₀ : B.A) * x * y * B.σ y') * hg]`. Conclude with `(hU y').1 hy' y hy`. Establish `h2 : ∀ y ∈ L, B.g * y ∈ L` using `adjoin_stab L h1 hgad`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hLat, h2, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hX' L y, ← hstab L h2, ← hU]`. Introduce and unpack `⟨hLat, h2, hXc⟩`. Use `⟨hLat, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hstab L h2, ← hX', ← hXc]`.
+A detailed English derivation is pending.
 -/
 theorem twisted_unit_eq_unit : ∀ (K : UQ) (B : InvAlg K), B.g * B.σ B.g = 1 → B.P.Separable → IsIntegral K.O B.g →
     ∀ (ε : B.A), (ε = 1 ∨ ε = -1) → ∃ β₀ : B.Aˣ, B.σ (β₀ : B.A) = β₀ * (ε * B.g) ∧

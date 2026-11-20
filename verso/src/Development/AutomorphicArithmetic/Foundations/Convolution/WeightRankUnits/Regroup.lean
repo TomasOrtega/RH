@@ -6,23 +6,21 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ S hS g hg G`. Establish `hG : ∀ w, G w = ∏ u ∈ hg.toFinset with u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)), g u`. Introduce `w`. Use `finprod_mem_eq_prod_of_inter_mulSupport_eq g ?_` and prove the remaining obligations. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Finset.coe_filter, Set.Finite.mem_toFinset, Function.mem_mulSupport]`. The claim follows by propositional logic. Establish `hne : ∀ w, G w ≠ 1 → ∃ u ∈ hg.toFinset, u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Introduce `w hw`. Assume the negation of the conclusion as `hcon`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Apply `hw` to reduce the goal to its premises. Rewrite using `[hG w, Finset.filter_false_of_mem hcon, Finset.prod_empty]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((hg.toFinset.finite_toSet.biUnion (fun u _ => GlobalTheory.QNorm.finite_places_over (maximalRealSubfield E) E (u.under (𝓞 (maximalRealSubfield E)))))).subset ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨u, hu, huw⟩` from `hne w hw`. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr hu) huw.symm`. Use `choose σ hσS hσ using fun w => (hS w).exists`. Establish `huniq : ∀ u w, w ∈ S → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → σ u = w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `u w hw h`. Conclude with `(hS u).unique ⟨hσS u, hσ u⟩ ⟨hw, h.symm⟩`. Establish `hS' : S ∩ Function.mulSupport G = ((hg.toFinset.image σ : Finset (Pl E)) : Set (Pl E)) ∩ Function.mulSupport G`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Finset.coe_image, Set.mem_image, Finset.mem_coe]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hw'⟩`. Take `⟨u, hu, huw⟩` from `hne w hw'`. Conclude with `⟨⟨u, hu, huniq u w hw huw⟩, hw'⟩`. Introduce and unpack `⟨⟨u, _, rfl⟩, hw'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hσS u, hw'⟩`. Rewrite using `[finprod_mem_eq_prod_of_inter_mulSupport_eq G hS', finprod_eq_prod g hg, ← Finset.prod_fiberwise_of_maps_to (t := hg.toFinset.image σ) (g := σ) (fun u hu => Finset.mem_image_of_mem σ hu) g]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨u₀, _, rfl⟩` from `Finset.mem_image.mp hw`. Rewrite using `[hG]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_congr (Finset.filter_congr fun u _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `huniq u _ (hσS u₀) h`. Introduce `h`.
-
-Rewrite using `[← h, hσ u]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.regroup :
     UpperTheory.ConvolutionTheory.G2.Regroup := by

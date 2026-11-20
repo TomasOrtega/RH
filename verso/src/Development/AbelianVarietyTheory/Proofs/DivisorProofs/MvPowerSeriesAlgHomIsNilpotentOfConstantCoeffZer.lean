@@ -8,21 +8,19 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ σ _ A _ _ φ hφ a ha`. Use `haveI := Fintype.ofFinite σ`. Establish `hc : ∀ α : σ →₀ ℕ, ∃ o : Option σ, (α = 0 ∧ o = none) ∨ ∃ i, o = some i ∧ α i ≠ 0`. Introduce `α`. Distinguish the cases in `h : α = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨none, Or.inl ⟨h, rfl⟩⟩`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 h`. Conclude with `⟨some i, Or.inr ⟨i, rfl, by simpa using hi⟩⟩`. Use `choose c hc using hc`. Set `g : σ → MvPowerSeries σ k` to `fun i α => if c α = some i then coeff α a else 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ i α, coeff α (g i) = if c α = some i then coeff α a else 0` using `fun _ _ => rfl`. Establish `hsum : a = ∑ i, g i`. Use extensionality with `α`. Rewrite using `[map_sum]`. Simplify using `only [hg]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hc α with ⟨h0, h1⟩ | ⟨i, h1, -⟩` into its components or cases. Rewrite using `[h1, h0]`. Simplify using `using ha`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsum, map_sum]`. Use `isNilpotent_sum fun i _ => ?_` and prove the remaining obligations. Establish `hd : (X i : MvPowerSeries σ k) ∣ g i`. Rewrite using `[X_dvd_iff]`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg, if_neg]`. Introduce `h`. Break down `hc m with ⟨-, h1⟩ | ⟨j, h1, h2⟩` into its components or cases. Rewrite `h` using `[h1]`. Consider the cases of `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite `h` using `[h1]`. Consider the cases of `h`. Conclude with `h2 hm`. Take `⟨b, hb⟩` from `hd`. Rewrite using `[hb, map_mul]`.
-
-Conclude with `(Commute.all _ _).isNilpotent_mul_right (hφ i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPowerSeries_algHom_isNilpotent_of_constantCoeff_zero :
     ∀ (k : Type) [CommRing k] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra k A],

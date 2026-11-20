@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ c c' h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `W y S' ⟨h1, h2, h3, h4, h5⟩`. Use `⟨fun s i j => h (h1 s i j), h2, fun s i => h (h3 s i), h4, fun n hn w hw hd ψ hk hs => ?_⟩` and prove the remaining obligations. Take `⟨Y, P, u, b, a1, a2, a3, a4, a5, a6, a7, a8, a9⟩` from `h5 n hn w hw hd ψ hk hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Y, P, u, b, a1, fun s x i => h (a2 s x i), h a3, a4, fun i => h (a5 i), a6, a7, a8, fun q hq hl => ?_⟩` and prove the remaining obligations. Take `⟨B, hB, t, ht, ht'⟩` from `a9 q hq hl`. Conclude with `⟨B, hB, t, fun x i => h (ht x i), ht'⟩`. Introduce and unpack `A ν Z ⟨h1, h2, h3⟩`. Conclude with `⟨h1, fun r => ⟨fun s x => h ((h2 r).1 s x), (h2 r).2⟩, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `A Z j m₀ c₀ Rhs ⟨ζ, hζ, H⟩`. Use `⟨ζ, hζ, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨ι, inst, P, o, ⟨p1, p2, p3, p4, p5⟩, hc⟩` from `H m hm`. Conclude with `⟨ι, inst, P, o, ⟨p1, p2, fun i => h (p3 i), p4, p5⟩, hc⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.mono :
     UpperTheory.V.Z.Kato.Joint.Mono := by

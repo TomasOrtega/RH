@@ -5,21 +5,19 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 
 /- English proof (translation)
-Use `set O := v.adicCompletionIntegers F`. Establish `hv : (Valued.v : Valuation (v.adicCompletion F) _).Integers O`. Use `Valuation.integer.integers (Valued.v : Valuation (v.adicCompletion F) _)` as an intermediate fact. Conclude with `this`. Establish `ha : ∀ a : 𝓞 E, Valued.v (τ a) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1 : IsIntegral ℤ (τ a)` using `IsIntegral.map τ (NumberField.RingOfIntegers.isIntegral_coe a)`. Establish `h2 : IsIntegral O (τ a)` using `h1.tower_top`. Conclude with `hv.mem_of_integral h2`. Use `⟨ha, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : 𝓞 E →+* O` to `((τ : E →+* v.adicCompletion F).comp (algebraMap (𝓞 E) E)).codRestrict O.toSubring (fun a => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 (ha a))`. Establish `hmem : ∀ a : 𝓞 E, a ∈ (IsLocalRing.maximalIdeal O).comap φ ↔ Valued.v (τ a) < 1`. Introduce `a`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hv.isUnit_iff_valuation_eq_one]`. Express the relevant statement in the definitionally equal form `¬ Valued.v (τ a) = 1 ↔ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨fun h => lt_of_le_of_ne (ha a) h, fun h => ne_of_lt h⟩`. Use `⟨(IsLocalRing.maximalIdeal O).comap φ, ?_, hmem⟩` and prove the remaining obligations. Apply `Ideal.IsPrime.isMaximal inferInstance` to reduce the goal to its premises. Introduce `hbot`. Take `⟨π, hπ, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt : Valued.v (algebraMap F (v.adicCompletion F) (π : F)) < 1`. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) v π).2 hπ` as an intermediate fact. Rewrite `this` using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`. Conclude with `this`. Establish `hne : (algebraMap (𝓞 F) (𝓞 E) π) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Apply `hπ0` to reduce the goal to its premises. Apply `FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E)` to reduce the goal to its premises. Simplify using `using h`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap (𝓞 F) (𝓞 E) π ∈ (IsLocalRing.maximalIdeal O).comap φ`. Rewrite using `[hmem]`. Establish `e : ((algebraMap (𝓞 F) (𝓞 E) π : 𝓞 E) : E) = algebraMap F E (π : F)`. Conclude with `(IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E π).symm.trans (IsScalarTower.algebraMap_apply (𝓞 F) F E π)`. Rewrite using `[e, AlgHom.commutes]`.
-
-Conclude with `hlt`. Rewrite `this` using `[hbot]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.adicEmbedding_integral_place (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] v.adicCompletion F) :

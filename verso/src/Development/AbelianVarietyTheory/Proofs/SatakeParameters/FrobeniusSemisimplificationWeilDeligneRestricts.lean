@@ -13,19 +13,17 @@ open GlobalTheory.AboveL
 namespace GlobalTheory.AboveL
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' X Y _ _ _ _ _ _ ρ N a ρ' N' b _ _ ha hb e hρ hN`. Set `f` to `(Module.finBasis ℂ X).equivFun`. Set `a₁` to `a.transport f`. Set `b₀` to `ResEx.resRep h h' a₁`. Set `g : Y ≃ₗ[ℂ] (Fin (Module.finrank ℂ X) → ℂ)` to `e.symm.trans f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ρ'' : Weil h' → Module.End ℂ (Fin (Module.finrank ℂ X) → ℂ)` to `fun σ' => f.conjAlgEquiv ℂ (ρ (ResEx.resW h h' σ'))`. Set `N''` to `f.conjAlgEquiv ℂ N`. Establish `hss : IsFrobSS ρ'' N'' b₀`. Use `⟨?_, fun σ' => ?_⟩` and prove the remaining obligations. Use `show f.conjAlgEquiv ℂ a.N = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha.1]`. Use `show Commute (f.conjAlgEquiv ℂ (a.ρ (ResEx.resW h h' σ'))) _ ∧ IsNilpotent (_ - f.conjAlgEquiv ℂ (a.ρ (ResEx.resW h h' σ')))`. Use `⟨(ha.2 (ResEx.resW h h' σ')).1.map (f.conjAlgEquiv ℂ), ?_⟩` and prove the remaining obligations. Use `(ha.2 (ResEx.resW h h' σ')).2.map (f.conjAlgEquiv ℂ)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiso : b.Iso b₀`. Use `IsFrobSS.iso hb hss g (fun σ' y => ?_) (fun y => ?_)` and prove the remaining obligations. Establish `h1` using `hρ (ResEx.resW h h' σ') σ' (fun _ => rfl) (e.symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Use `show f (e.symm (ρ' σ' y)) = f.conjAlgEquiv ℂ (ρ (ResEx.resW h h' σ')) (f (e.symm y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Establish `h1` using `hN (e.symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Use `show f (e.symm (N' y)) = f.conjAlgEquiv ℂ N (f (e.symm y))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Use `⟨_, a₁, b₀, WD.sound (a.iso_transport f).symm, (WD.sound hiso).symm, rfl, fun σ σ' hs => ?_⟩` and prove the remaining obligations. Use `show a₁.ρ (ResEx.resW h h' σ') = a₁.ρ σ`. Use `congr 1`.
-
-Conclude with `Subtype.ext (AlgEquiv.ext fun z => (hs z).symm)`.
+A detailed English derivation is pending.
 -/
 theorem restricts_of_isFrobSS : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (X Y : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] [AddCommGroup Y] [Module ℂ Y] [FiniteDimensional ℂ Y] (ρ : Representation ℂ (Weil h) X) (N : Module.End ℂ X) (a : WDRep h X) (ρ' : Representation ℂ (Weil h') Y) (N' : Module.End ℂ Y) (b : WDRep h' Y), IsSmooth ρ → IsSmooth ρ' → IsFrobSS ⇑ρ N a → IsFrobSS ⇑ρ' N' b → ∀ e : X ≃ₗ[ℂ] Y, (∀ (σ : Weil h) (σ' : Weil h'), (∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) → ∀ x, e (ρ σ x) = ρ' σ' (e x)) → (∀ x, e (N x) = N' (e x)) → Restricts (WD.mk a) (WD.mk b) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' X Y _ _ _ _ _ _ ρ N a ρ' N' b _ _ ha hb e hρ hN

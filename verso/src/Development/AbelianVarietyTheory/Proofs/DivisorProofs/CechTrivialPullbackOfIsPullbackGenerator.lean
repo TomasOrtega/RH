@@ -11,7 +11,7 @@ open GlobalTheory.CharKer
 namespace GlobalTheory.CharKer
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_res_pull {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -21,9 +21,9 @@ lemma res_res_pull {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W
   rfl
 
 /- English proof (translation)
-Introduce `X Y p M e he`. Use `⟨⟨fun j => res (LB.wchart_le M (fun _ : PUnit => p) j PUnit.unit) (e (j PUnit.unit))⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `gg : (M.pull p).g i j = res (le_inf (inf_le_left.trans (LB.wchart_le M (fun _ : PUnit => p) i PUnit.unit)) (inf_le_right.trans (LB.wchart_le M (fun _ : PUnit => p) j PUnit.unit))) (pullU p _ (M.g (i PUnit.unit) (j PUnit.unit)))` using `(Fintype.prod_unique (fun k : PUnit => (res (le_inf (inf_le_left.trans (LB.wchart_le M (fun _ : PUnit => p) i k)) (inf_le_right.trans (LB.wchart_le M (fun _ : PUnit => p) j k))) (pullU p _ (M.g (i k) (j k)))) ^ (1 : ℤ))).trans (zpow_one _)`. Rewrite using `[gg]`. Establish `h` using `he (i PUnit.unit) (j PUnit.unit) (LB.wchart M (fun _ : PUnit => p) i ⊓ LB.wchart M (fun _ : PUnit => p) j) (inf_le_left.trans (LB.wchart_le M (fun _ : PUnit => p) i PUnit.unit)) (inf_le_right.trans (LB.wchart_le M (fun _ : PUnit => p) j PUnit.unit)) (le_inf (inf_le_left.trans (LB …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(res_res_pull _ _ _).trans (h.trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (res_res_pull _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triv_pull_of_isPullGen : ∀ (X Y : Scheme.{0}) (p : X ⟶ Y) (M : LB Y) (e : ∀ k, Γ(X, p ⁻¹ᵁ M.U k)ˣ), IsPullGen p M e → Triv (M.pull p) := by
   intro X Y p M e he

@@ -31,7 +31,7 @@ def killed (ρ : Representation ℂ H X) (I : Set (MonoidAlgebra ℂ H)) : Submo
   ⨅ x ∈ I, LinearMap.ker (ρ.asAlgebraHom x)
 
 /- English proof (translation)
-Simplify using `[killed]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_killed {ρ : Representation ℂ H X} {I : Set (MonoidAlgebra ℂ H)} {v : X} :
     v ∈ killed ρ I ↔ ∀ x ∈ I, ρ.asAlgebraHom x v = 0 := by
@@ -87,7 +87,7 @@ structure IsFinIso (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (β' : GL (Fin 
       ∀ PP ∈ Pg, Formalism.UG.bc (resS D.host.F PP) u = 1
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one] conj g := by rw [Matrix.one_mul, Matrix.mul_one]; rfl frame := ⟨rfl, 1, by rw [map_one, mul_one, Matrix.one_mul]; rfl, fun _ _ => map_one _⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFinIso.refl (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Pg : Finset (Pl D.host.E)) :
     IsFinIso V V β β Pg 1 (ContinuousMulEquiv.refl _) where

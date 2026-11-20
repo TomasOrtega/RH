@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV UpperTheory.Gal.Int.Geo TensorProduct
 
 /- English proof (translation)
-Introduce `l _ V V' _ _ _ _ Φ hΦ I T T' hT L _ _ θ d b`. Set `e : V ≃ₗ[ℚ_[l]] V'` to `LinearEquiv.ofBijective Φ hΦ`. Set `eL : L ⊗[ℚ_[l]] V ≃ₗ[L] L ⊗[ℚ_[l]] V'` to `LinearEquiv.baseChange ℚ_[l] L V V' e`. Establish `hcoe : ∀ x, eL x = Φ.baseChange L x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hcomm : ∀ g x, (T' g).baseChange L (Φ.baseChange L x) = Φ.baseChange L ((T g).baseChange L x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `g x`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, ← LinearMap.baseChange_comp, hT g]`. Establish `hmap : (⨅ g, Module.End.eigenspace ((T g).baseChange L) (θ g)).map (eL : L ⊗[ℚ_[l]] V →ₗ[L] L ⊗[ℚ_[l]] V') = ⨅ g, Module.End.eigenspace ((T' g).baseChange L) (θ g)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hz`. Rewrite `hx`, the goal using `[Submodule.mem_iInf]`. Introduce `g`. Establish `hxg` using `Module.End.mem_eigenspace_iff.1 (hx g)`. Rewrite using `[Module.End.mem_eigenspace_iff, LinearEquiv.coe_coe, hcoe, hcomm, hxg, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Use `Submodule.mem_map.2 ⟨eL.symm y, ?_, by simp⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[Submodule.mem_iInf]`. Introduce `g`. Establish `hyg` using `Module.End.mem_eigenspace_iff.1 (hy g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Module.End.mem_eigenspace_iff]`. Apply `eL.injective` to reduce the goal to its premises. Establish `h1` using `hcomm g (eL.symm y)`. Rewrite `h1` using `[← hcoe, LinearEquiv.apply_symm_apply, hyg]`. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, hcoe, ← h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b.map (eL.ofSubmodules _ _ hmap), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, LinearEquiv.ofSubmodules_apply, hcoe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.exists_basis_simultaneousEigenspace_of_equivariant_bijective :
     ∀ (l : ℕ) [Fact l.Prime] (V V' : Type 1) [AddCommGroup V] [Module ℚ_[l] V] [AddCommGroup V'] [Module ℚ_[l] V'] (Φ : V →ₗ[ℚ_[l]] V'), Function.Bijective Φ → ∀ (I : Type) (T : I → V →ₗ[ℚ_[l]] V) (T' : I → V' →ₗ[ℚ_[l]] V'), (∀ g, Φ ∘ₗ T g = T' g ∘ₗ Φ) → ∀ (L : Type) [Field L] [Algebra ℚ_[l] L] (θ : I → L) (d : ℕ) (b : Module.Basis (Fin d) L ↥(⨅ g, Module.End.eigenspace ((T g).baseChange L) (θ g))), ∃ b' : Module.Basis (Fin d) L ↥(⨅ g, Module.End.eigenspace ((T' g).baseChange L) (θ g)), ∀ i, (b' i).1 = Φ.baseChange L (b i).1 := by

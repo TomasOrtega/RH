@@ -22,23 +22,21 @@ namespace GlobalTheory.RigLBIso
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Introduce and unpack `S G _ _ L₁ L₂ ⟨w, hw⟩`. Establish `hw₀ : PGen (isoPullId w (F` using `𝟙 G.left) rfl) := isoPullId_pgen hw rfl`. Take `⟨c, hc⟩` from `GlobalTheory.Unif.RigidifyIso.exists_ratio (K := PUnit) (φ' := fun _ => eSec G) (φ := fun _ => eSec G) (ε := fun _ => 1) hw₀ L₂.isLB L₁.isLB (𝟙 _) (fun _ => by rw [Category.comp_id, Category.id_comp]) L₁.rig L₁.rigGen L₂.rig L₂.rigGen`. Set `π : G.left ⟶ (𝟙_ (Over S)).left` to `G.hom`. Establish `hs : eSec G ≫ π = 𝟙 _` using `Over.w η[G]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `wL : LB.Iso L₁.L L₂.L` to `⟨fun i => res (le_top : _ ≤ π ⁻¹ᵁ ⊤) (pullU π ⊤ c) * w.s i⟩`. Establish `hv : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (j : L₂.L.ι) (k : L₁.L.ι), f y ∈ L₂.L.U j → f y ∈ L₁.L.U k → gv wL f y j k = gm (f ≫ π) y ⊤ c * gv w f y j k`. Introduce `Y f y j k hj hk`. Establish `hz : f y ∈ L₂.L.U j ⊓ L₁.L.U k` using `⟨hj, hk⟩`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res f y _ hz _).trans (gm_pull f π y ⊤ trivial c)) rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨wL, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `p q`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `h1 : (𝟙 G.left) x ∈ L₂.L.U p.1` using `hx.1.1`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (𝟙 G.left) x ∈ L₁.L.U p.2` using `hx.1.2`. Establish `h3 : (𝟙 G.left) x ∈ L₂.L.U q.1` using `hx.2.1`. Establish `h4 : (𝟙 G.left) x ∈ L₁.L.U q.2` using `hx.2.2`. Establish `eL : gm (𝟙 G.left) x _ (res (inf_le_left : (L₂.L.div L₁.L).U p ⊓ (L₂.L.div L₁.L).U q ≤ _) (wL.s p)) = gv wL (𝟙 G.left) x p.1 p.2` using `gm_res (𝟙 G.left) x _ hx _`. Establish `eR : gm (𝟙 G.left) x _ ((L₂.L.div L₁.L).g p q * res (inf_le_right : (L₂.L.div L₁.L).U p ⊓ (L₂.L.div L₁.L).U q ≤ _) (wL.s q)) = gm (𝟙 G.left) x _ (L₂.L.g p.1 q.1) * (gm (𝟙 G.left) x _ (L₁.L.g p.2 q.2))⁻¹ * gv wL (𝟙 G.left) x q.1 q.2` using `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div L₁.L L₂.L (𝟙 G.left) x p q hx) (gm_res (𝟙 G.left) x _ hx _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eL, eR, hv _ _ x _ _ h1 h2, hv _ _ x _ _ h3 h4, gm_isGen hw (𝟙 G.left) x p.1 q.1 p.2 q.2 h1 h3 h2 h4]`. Conclude with `mul_left_comm _ _ _`. Introduce and unpack `⟨P, Q⟩`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (eSec G) x ∈ L₂.L.U (P PUnit.unit)` using `Set.mem_iInter.1 hx.1 PUnit.unit`. Establish `hk : (eSec G) x ∈ L₁.L.U (Q PUnit.unit)` using `Set.mem_iInter.1 hx.2 PUnit.unit`. Establish `hj' : (𝟙 _ ≫ eSec G) x ∈ L₂.L.U (P PUnit.unit)` using `Set.mem_iInter.1 hx.1 PUnit.unit`. Establish `hk' : (𝟙 _ ≫ eSec G) x ∈ L₁.L.U (Q PUnit.unit)` using `Set.mem_iInter.1 hx.2 PUnit.unit`. Establish `hc'` using `hc _ (𝟙 _) x P Q (by simp only [Category.comp_id]; exact hx.1) hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ep : ReciprocityTheory.ChartRestriction.G.Geo.Tor.pw (isoPullId w (F` using `𝟙 G.left) rfl) (K := PUnit) (fun _ => eSec G) (fun _ => 1) (𝟙 _) x P Q = gv w (𝟙 _ ≫ eSec G) x (P PUnit.unit) (Q PUnit.unit) := by show ∏ k : PUnit, _ = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `gw_isoPullId w rfl _ x _ _ hj' hk'`. Rewrite `hc'` using `[Category.comp_id, ep]`. Establish `eL : gm (𝟙 _) x _ (res (inf_le_left : LB.wchart L₂.L (fun _ => eSec G) P ⊓ LB.wchart L₁.L (fun _ => eSec G) Q ≤ _) (L₂.rig.s P)) = gm (𝟙 _) x _ (L₂.rig.s P)` using `gm_res (𝟙 _) x _ hx _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `eR : gm (𝟙 _) x _ (@id (Γ((𝟙_ (Over S)).left, LB.wchart L₂.L (fun _ => eSec G) P ⊓ LB.wchart L₁.L (fun _ => eSec G) Q)ˣ) ((LB.linCombIso wL (K` using `PUnit) (fun _ => eSec G) (fun _ => 1)).s (P, Q)) * res (inf_le_right : LB.wchart L₂.L (fun _ => eSec G) P ⊓ LB.wchart L₁.L (fun _ => eSec G) Q ≤ _) (L₁.rig.s Q)) = gv wL (𝟙 _ ≫ eSec G) x (P PUnit.unit) (Q PUnit.unit) * gm (𝟙 _) x _ (L₁.rig.s Q) := by`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res (𝟙 _) x _ hx _))` and prove the remaining obligations. Use `show gm (𝟙 _) x _ (∏ _k : PUnit, (res _ (pullU (eSec G) _ (wL.s (P PUnit.unit, Q PUnit.unit)))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res (𝟙 _) x _ hx _).trans (gm_pull (𝟙 _) (eSec G) x (L₂.L.U (P PUnit.unit) ⊓ L₁.L.U (Q PUnit.unit)) ⟨hj, hk⟩ _)`.
-
-Use `eL.trans (hc'.trans (Eq.trans ?_ eR.symm))` and prove the remaining obligations. Rewrite using `[hv _ _ x _ _ hj' hk', Category.assoc, hs, Category.comp_id]`. Conclude with `(mul_assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rig_iso_of_iso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L₁ L₂ : RigLB G), LBIso L₁.L L₂.L → ∃ wL : LB.Iso L₁.L L₂.L, wL.IsGen ∧ LB.Gen.Maps (LB.linCombIso wL (K := PUnit) (fun _ => eSec G) (fun _ => 1)) L₁.rig L₂.rig := by
   rintro S G _ _ L₁ L₂ ⟨w, hw⟩

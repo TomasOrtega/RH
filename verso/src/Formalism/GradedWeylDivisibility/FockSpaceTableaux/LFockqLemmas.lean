@@ -11,9 +11,9 @@ section general
 variable {σ : Type*}
 
 /- English proof (translation)
-Unfold `fockQ`. Use `Finset.sum_subset h (fun m _ hm => ?_)` and prove the remaining obligations. Establish `hz : f.coeff m = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hm (MvPolynomial.mem_support_iff.mpr hne)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[hz]`.
+A detailed English derivation is pending.
 -/
 lemma lfockq_eq_sum (f g : MvPolynomial σ ℚ) (s : Finset (σ →₀ ℕ)) (h : f.support ⊆ s) :
     fockQ f g = ∑ m ∈ s, f.coeff m * g.coeff m * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℚ) := by
@@ -25,7 +25,7 @@ lemma lfockq_eq_sum (f g : MvPolynomial σ ℚ) (s : Finset (σ →₀ ℕ)) (h 
   simp [hz]
 
 /- English proof (translation)
-Rewrite using `[lfockq_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, lfockq_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right]`. Conclude with `Finset.sum_congr rfl (fun m _ => by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lfockq_symm (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := by
   classical
@@ -34,9 +34,9 @@ lemma lfockq_symm (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := by
   exact Finset.sum_congr rfl (fun m _ => by ring)
 
 /- English proof (translation)
-Unfold `fockQ`. Establish `hne : f.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `he`. Conclude with `hf (MvPolynomial.support_eq_empty.mp he)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_pos (fun m hm => ?_) hne` and prove the remaining obligations. Establish `hc : f.coeff m ≠ 0` using `MvPolynomial.mem_support_iff.mp hm`. Establish `hw : (0 : ℚ) < ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℚ)` using `Nat.cast_pos.mpr (Finset.prod_pos (fun k _ => Nat.factorial_pos _))`. Conclude with `mul_pos (mul_self_pos.mpr hc) hw`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lfockq_self_pos (f : MvPolynomial σ ℚ) (hf : f ≠ 0) : 0 < fockQ f f := by
   unfold fockQ
@@ -51,7 +51,7 @@ lemma lfockq_self_pos (f : MvPolynomial σ ℚ) (hf : f ≠ 0) : 0 < fockQ f f :
   exact mul_pos (mul_self_pos.mpr hc) hw
 
 /- English proof (translation)
-Rewrite using `[lfockq_eq_sum (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add, lfockq_eq_sum f g (f.support ∪ f'.support) Finset.subset_union_left, lfockq_eq_sum f' g (f.support ∪ f'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_add]; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lfockq_add_left (f f' g : MvPolynomial σ ℚ) :
     fockQ (f + f') g = fockQ f g + fockQ f' g := by
@@ -63,7 +63,7 @@ lemma lfockq_add_left (f f' g : MvPolynomial σ ℚ) :
   exact Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_add]; ring)
 
 /- English proof (translation)
-Rewrite using `[lfockq_eq_sum (c • f) g f.support MvPolynomial.support_smul, lfockq_eq_sum f g f.support subset_rfl, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_smul, smul_eq_mul]; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lfockq_smul_left (c : ℚ) (f g : MvPolynomial σ ℚ) :
     fockQ (c • f) g = c * fockQ f g := by

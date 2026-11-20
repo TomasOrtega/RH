@@ -20,7 +20,7 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.HSChoice.EtaleSection
 
 /- English proof (translation)
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ g.appTop, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Spec.map_comp, ← Category.assoc, Scheme.isoSpec_hom, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_isoSpec_comp {k : Type} [CommRing k] {X : Scheme.{0}} [IsAffine X] (g : X ⟶ Spec (.of k)) :
     letI := algebraΓOfHom g
@@ -30,25 +30,21 @@ theorem exists_eq_isoSpec_comp {k : Type} [CommRing k] {X : Scheme.{0}} [IsAffin
     toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
 /- English proof (translation)
-Use `letI := algebraΓOfHom (I.subschemeι ≫ S.str)`. Use `haveI : IsFinite (I.subschemeι ≫ S.str) := hI`. Use `haveI : IsAffine I.subscheme := isAffine_of_isAffineHom (I.subschemeι ≫ S.str)`. Take `⟨a, ha, he⟩` from `exists_eq_isoSpec_comp (I.subschemeι ≫ S.str)`. Establish `e1 : Nat.card (S.subPts I Ω) = Nat.card {z : Sp Ω ⟶ I.subscheme // z ≫ I.subschemeι ≫ S.str = spMap (algebraMap k Ω)}`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Nat.card_congr (Equiv.ofBijective (fun z => (⟨⟨z.1 ≫ I.subschemeι, by rw [Category.assoc]; exact z.2⟩, z.1, rfl⟩ : S.subPts I Ω)) ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `z z' h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h0 : z.1 ≫ I.subschemeι = z'.1 ≫ I.subschemeι` using `congrArg (fun x : S.subPts I Ω => x.1.1) h`. Conclude with `(cancel_mono I.subschemeι).1 h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, z, hz⟩`. Use `⟨⟨z, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hz]`. Conclude with `x.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hz`. Establish `hmk : ∀ φ : Γ(I.subscheme, ⊤) →ₐ[k] Ω, (Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ I.subscheme.isoSpec.inv) ≫ I.subschemeι ≫ S.str = spMap (algebraMap k Ω)`. Introduce `φ`. Rewrite using `[he, Category.assoc, Iso.inv_hom_id_assoc, ← Spec.map_comp]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Use extensionality with `r`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[ha]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `φ.commutes r`. Establish `e2 : Nat.card {z : Sp Ω ⟶ I.subscheme // z ≫ I.subschemeι ≫ S.str = spMap (algebraMap k Ω)} = Nat.card (Γ(I.subscheme, ⊤) →ₐ[k] Ω)`. Use `(Nat.card_congr (Equiv.ofBijective (fun φ : Γ(I.subscheme, ⊤) →ₐ[k] Ω => (⟨Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ I.subscheme.isoSpec.inv, hmk φ⟩ : {z : Sp Ω ⟶ I.subscheme // z ≫ I.subschemeι ≫ S.str = spMap (algebraMap k Ω)})) ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `φ ψ h`. Simplify using `only [Subtype.mk.injEq, cancel_mono] at h`.
+By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `Spec.map_injective h`. Use extensionality with `r`. Conclude with `congrArg (fun f => f.hom r) h2`. Introduce and unpack `⟨z, hz⟩`. Establish `hψ : Spec.map (Spec.preimage (z ≫ I.subscheme.isoSpec.hom)) = z ≫ I.subscheme.isoSpec.hom` using `Spec.map_preimage _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : a ≫ Spec.preimage (z ≫ I.subscheme.isoSpec.hom) = CommRingCat.ofHom (algebraMap k Ω)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hψ, Category.assoc, ← he]`. Conclude with `hz`. Use `⟨AlgHom.mk (Spec.preimage (z ≫ I.subscheme.isoSpec.hom)).hom (fun r => ?_), ?_⟩` and prove the remaining obligations.
-
-Establish `h3` using `congrArg (fun f => f.hom r) hc`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, ha] at h3`. Conclude with `h3`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Iso.comp_inv_eq]`.
-
-Conclude with `hψ`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_subPts {k : Type} [Field k] (S : LinSys k) (I : S.Y.IdealSheafData) (hI : S.IsFiniteSub I)
     (Ω : Type) [Field Ω] [Algebra k Ω] :
@@ -111,11 +107,9 @@ theorem natCard_subPts {k : Type} [Field k] (S : LinSys k) (I : S.Y.IdealSheafDa
   rw [e1, e2]
 
 /- English proof (translation)
-Use `letI := algebraΓOfHom (I.subschemeι ≫ S.str)`. Introduce `h`. Use `haveI : IsFinite (I.subschemeι ≫ S.str) := hI`. Use `haveI : IsAffine I.subscheme := isAffine_of_isAffineHom (I.subschemeι ≫ S.str)`. Take `⟨a, ha, he⟩` from `exists_eq_isoSpec_comp (I.subschemeι ≫ S.str)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Etale (Spec.map a)`. Use `HasRingHomProperty.Spec_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `(RingHom.etale_algebraMap (R := k) (S := Γ(I.subscheme, ⊤))).mpr h`. Rewrite using `[he]`.
-
-Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_algebraEtale {k : Type} [Field k] (S : LinSys k) (I : S.Y.IdealSheafData) (hI : S.IsFiniteSub I) :
     letI := algebraΓOfHom (I.subschemeι ≫ S.str)
@@ -133,9 +127,9 @@ theorem etale_of_algebraEtale {k : Type} [Field k] (S : LinSys k) (I : S.Y.Ideal
   infer_instance
 
 /- English proof (translation)
-Establish `hv : (T.toLinSys.baseChange E).IsVariety` using `hT.alg.variety.baseChange E`. Establish `H` using `GlobalTheory.ProperCut.topSelf_eq_length_of_smooth (T.toLinSys.baseChange E).str hv.smooth hv.proj (T.toLinSys.baseChange E).isLB (fun i => (T.toLinSys.baseChange E).comb (s i)) hfin`. Establish `hdel : (T.toLinSys.baseChange E).del = T.del` using `GlobalTheory.FieldChangeInter.del_baseChange F E T.toLinSys hT.alg.variety.proj`. Use `⟨H.1, ?_⟩` and prove the remaining obligations. Use `⟨H.2.2.2.2.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hdel]`. Conclude with `H.2.2.2.2.2.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_finrank {F : Type} [Field F] [NumberField F] (T : Tuple F) (hT : T.IsGeometric) (E : Type) [Field E]
     [Algebra F E] (s : Fin T.D → Fin T.N → E)
@@ -155,7 +149,7 @@ theorem finite_finrank {F : Type} [Field F] [NumberField F] (T : Tuple F) (hT : 
   exact H.2.2.2.2.2.symm
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `v`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl` into its components or cases. Simplify `isHomogeneous_C (Fin 1 × Fin N) (s i j)` using `[join, Fin.castSucc_ne_last]`. Simplify `isHomogeneous_X K ((0 : Fin 1), j)` using `[join]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma isHomogeneous_join_C_X {K : Type} [CommRing K] {D N : ℕ} (s : Fin D → Fin N → K) (v : Fin (D + 1) × Fin N) :
     (join (fun i j => (C (s i j) : MvPolynomial (Fin 1 × Fin N) K)) (fun j => X ((0 : Fin 1), j)) v).IsHomogeneous
@@ -166,13 +160,13 @@ private lemma isHomogeneous_join_C_X {K : Type} [CommRing K] {D N : ℕ} (s : Fi
   · simpa [join] using isHomogeneous_X K ((0 : Fin 1), j)
 
 /- English proof (translation)
-Unfold `spec`. Rewrite using `[f.as_sum, map_sum]`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Establish `hprod : (m.prod fun v e => (join (fun i j => (C (s i j) : MvPolynomial (Fin 1 × Fin N) K)) (fun j => X ((0 : Fin 1), j)) v) ^ e).IsHomogeneous (∑ v ∈ m.support, (if v.1 = Fin.last D then 1 else 0) * m v)` using `IsHomogeneous.prod _ _ _ fun v _ => (isHomogeneous_join_C_X s v).pow (m v)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg : ∑ v ∈ m.support, (if v.1 = Fin.last D then 1 else 0) * m v = δ`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _) (fun v _ hv => by simp [Finsupp.notMem_support_iff.1 hv])]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (Fin.last D)]`. Simplify using `using hf m hm (Fin.last D)`. Introduce `i _ hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hi]`. Simplify using the standard rewrite rules. Establish `h2` using `(isHomogeneous_C (Fin 1 × Fin N) (algebraMap F K (coeff m f))).mul hprod`. Rewrite `h2` using `[zero_add, hdeg]`. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_spec {F K : Type} [Field F] [Field K] [Algebra F K] {D N δ : ℕ} (s : Fin D → Fin N → K)
     (f : MvPolynomial (Fin (D + 1) × Fin N) F) (hf : IsMultiHomogeneous (fun _ => δ) f) :
@@ -199,7 +193,7 @@ theorem isHomogeneous_spec {F K : Type} [Field F] [Field K] [Algebra F K] {D N �
   exact h2
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `v`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl` into its components or cases. Simplify using `[join]`. Simplify using `[join]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma eval_join_C_X_eq_join {K : Type} [CommRing K] {D N : ℕ} (s : Fin D → Fin N → K) (ξ : Fin N → K)
     (v : Fin (D + 1) × Fin N) :
@@ -211,9 +205,9 @@ private lemma eval_join_C_X_eq_join {K : Type} [CommRing K] {D N : ℕ} (s : Fin
   · simp [join]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [spec, MvPolynomial.algebraMap_apply]`. Consider the case `add p q hp hq`. Simplify using `only [spec, map_add] at hp hq ⊢`. Rewrite using `[hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p v hp`. Simplify using `only [spec, map_mul, aeval_X] at hp ⊢`. Rewrite using `[hp, eval_join_C_X_eq_join]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_spec {F K : Type} [CommRing F] [CommRing K] [Algebra F K] {D N : ℕ} (s : Fin D → Fin N → K)
     (f : MvPolynomial (Fin (D + 1) × Fin N) F) (ξ : Fin N → K) :

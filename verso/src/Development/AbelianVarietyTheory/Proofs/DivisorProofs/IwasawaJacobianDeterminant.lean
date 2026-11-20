@@ -19,9 +19,9 @@ noncomputable def lowProj {m : ℕ} (b c : Fin m) : (Low m → ℂ) →L[ℂ] �
   if h : c < b then ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Low m => ℂ) (⟨(b, c), h⟩ : Low m) else 0
 
 /- English proof (translation)
-Distinguish the cases in `h : c < b`. Simplify using `[lowProj, uni, h, one_apply_ne h.ne']`. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Simplify using `[lowProj, uni]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[lowProj, uni, h, hbc, one_apply_ne hbc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lowProj_apply {m : ℕ} (b c : Fin m) (v : Low m → ℂ) : lowProj b c v = (uni v - 1) b c := by
   by_cases h : c < b
@@ -31,7 +31,7 @@ theorem lowProj_apply {m : ℕ} (b c : Fin m) (v : Low m → ℂ) : lowProj b c 
     · simp [lowProj, uni, h, hbc, one_apply_ne hbc]
 
 /- English proof (translation)
-Distinguish the cases in `h : c < b`. Use `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Low m => ℂ) (⟨(b, c), h⟩ : Low m)).hasFDerivAt).comp x hu` as an intermediate fact. Simplify using `only [lowProj, uni, of_apply, dif_pos h]`. Conclude with `this`. Simplify `(hasFDerivAt_const (𝕜 := ℂ) (if b = c then (1 : ℂ) else 0) x)` using `[lowProj, uni, h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_uni_apply {m : ℕ} {u : (Low m → ℂ) → Low m → ℂ} {L : (Low m → ℂ) →L[ℂ] (Low m → ℂ)}
     {x : Low m → ℂ} (hu : HasFDerivAt u L x) (b c : Fin m) :
@@ -43,13 +43,13 @@ theorem hasFDerivAt_uni_apply {m : ℕ} {u : (Low m → ℂ) → Low m → ℂ} 
   · simpa [lowProj, uni, h] using (hasFDerivAt_const (𝕜 := ℂ) (if b = c then (1 : ℂ) else 0) x)
 
 /- English proof (translation)
-Set `g : Fin m × Fin m → ℂ` to `fun u => A i u.1 * C u.2 j * (uni ξ - 1) u.1 u.2`. Establish `hsub : ∑ t : Low m, g t.1 = ∑ u : Fin m × Fin m, g u`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun u : Fin m × Fin m => u.2 < u.1) (by simp) g]`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `u _ hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hu`. Simplify using `only [g, ← lowProj_apply]`. Simplify using `[lowProj, not_lt.2 hu]`. Establish `hlow : ∀ t : Low m, g t.1 = A i t.1.1 * C t.1.2 j * ξ t`. Introduce `t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g, ← lowProj_apply]`. Simplify using `[lowProj, t.2]`. Rewrite using `[← Finset.sum_congr rfl (fun t _ => hlow t), hsub, Fintype.sum_prod_type]`. Simplify using `only [g, mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_low_mul_apply {m : ℕ} (A C : Matrix (Fin m) (Fin m) ℂ) (ξ : Low m → ℂ) (i j : Fin m) :
     (A * (uni ξ - 1) * C) i j = ∑ t : Low m, A i t.1.1 * C t.1.2 j * ξ t := by
@@ -72,11 +72,11 @@ theorem mul_low_mul_apply {m : ℕ} (A C : Matrix (Fin m) (Fin m) ℂ) (ξ : Low
   ring
 
 /- English proof (translation)
-Use extensionality with `a c`. Establish `h1 : HasFDerivAt (fun y => (g * uni y) a c) (∑ b ∈ Finset.univ, g a b • ((lowProj b c).comp (ContinuousLinearMap.id ℂ _))) x`. Use `HasFDerivAt.sum (u := Finset.univ) (fun b _ => (hasFDerivAt_uni_apply (hasFDerivAt_id x) b c).const_mul (g a b))` as an intermediate fact. Use `this.congr_of_eventuallyEq (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : HasFDerivAt (fun y => (g * uni y) a c) (∑ b ∈ Finset.univ, (uni (φ x) a b • fderiv ℂ (fun y => B y b c) x + B x b c • (lowProj a b).comp (fderiv ℂ φ x))) x`. Use `HasFDerivAt.sum (u := Finset.univ) (fun b _ => (hasFDerivAt_uni_apply hφ.hasFDerivAt a b).mul (hBd b c).hasFDerivAt)` as an intermediate fact. Use `this.congr_of_eventuallyEq (hB.mono fun y hy => ?_)` and prove the remaining obligations. Simplify using `only [hy]`. Simplify using `[mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun D => D ξ) (h1.unique h2)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply, lowProj_apply, smul_eq_mul] at this`. Simplify using `only [Matrix.add_apply, mul_apply, of_apply, this, Finset.sum_add_distrib]`. Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun b _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deriv_flag_eq {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (φ : (Low m → ℂ) → Low m → ℂ)
     (B : (Low m → ℂ) → Matrix (Fin m) (Fin m) ℂ) (x : Low m → ℂ)
@@ -107,9 +107,9 @@ theorem deriv_flag_eq {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (φ : (Low m �
   congr 1 <;> refine Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Introduce `a c h`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Break down `lt_or_ge b a with hb | hb` into its components or cases. Rewrite using `[hN a b hb, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP b c (lt_of_lt_of_le h hb), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_mul_upper {m : ℕ} (N P : Matrix (Fin m) (Fin m) ℂ) (hN : ∀ a c : Fin m, c < a → N a c = 0)
     (hP : ∀ a c : Fin m, c < a → P a c = 0) : ∀ a c : Fin m, c < a → (N * P) a c = 0 := by
@@ -121,7 +121,7 @@ theorem upper_mul_upper {m : ℕ} (N P : Matrix (Fin m) (Fin m) ℂ) (hN : ∀ a
   · rw [hP b c (lt_of_lt_of_le h hb), mul_zero]
 
 /- English proof (translation)
-The claim follows from `|((fderiv ℂ φ x).restrictScalars ℝ).det| = ∏ s : Low m, ‖B x s.1.1 s.1.1 / B x s.1.2 s.1.2‖ ^ 2 := by have hU : IsUnit (uni (φ x)).det := by rw [det_uni]; exact isUnit_one have hV : IsUnit (uni x).det := by rw [det_uni]; exact isUnit_one have hx := hB.self_of_nhds have hTup : ∀ a …`.
+A detailed English derivation is pending.
 -/
 theorem abs_det_fderiv_flag (m : ℕ) (g : Matrix (Fin m) (Fin m) ℂ) (φ : (Low m → ℂ) → Low m → ℂ)
     (B : (Low m → ℂ) → Matrix (Fin m) (Fin m) ℂ) (x : Low m → ℂ)

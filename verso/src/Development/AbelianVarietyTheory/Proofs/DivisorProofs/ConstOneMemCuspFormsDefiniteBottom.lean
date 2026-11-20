@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.BottomCusp
 
 /- English proof (translation)
-Introduce and unpack `r C ⟨hr, hC, h0⟩`. Use `h r C ⟨hr, hC, ?_⟩` and prove the remaining obligations. Establish `e : (GlobalTheory.Grid.neg A).gram = -A.gram` using `GlobalTheory.Grid.neg_gram A`. Rewrite `h0` using `[e, Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `neg_eq_zero.1 h0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAniso_neg {D : D7} {A : HSp D} (h : IsAniso A) : IsAniso (GlobalTheory.Grid.neg A) := by
   rintro r C ⟨hr, hC, h0⟩
@@ -33,14 +33,14 @@ theorem isAniso_neg {D : D7} {A : HSp D} (h : IsAniso A) : IsAniso (GlobalTheory
   exact neg_eq_zero.1 h0
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Cusp.mem_cuspForms.2 ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem const_one_mem_cuspForms_of_anisotropic {D : D7} {V : HSp D} (h : IsAniso V) (θ : GlobalTheory.Mem.Th.InfF D) (A : CptF V) :
     (fun _ => (1 : ℂ)) ∈ A0 θ V A :=
   GlobalTheory.Cusp.mem_cuspForms.2 ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X hX t cA _`. Conclude with `const_one_mem_cuspForms_of_anisotropic (isAniso_neg (GlobalTheory.Mem.ColAd.isAniso_of_gram hX.std.1)) W.θ cA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_A0_of_isBottomTri : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∀ cA : CptF (GlobalTheory.Grid.neg A), HidaSetting W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s A'.rank cA → (fun _ => (1 : ℂ)) ∈ A0 W.θ (GlobalTheory.Grid.neg A) cA := by

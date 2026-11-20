@@ -15,9 +15,9 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 namespace GlobalTheory.CoverDS
 
 /- English proof (translation)
-Introduce `hL hK hD p q hpq T R lam hlam hR`. Establish `hn : 0 < p + q` using `hpq`. Take `⟨P, e, -, hB, hcase⟩` from `isParam_cases hlam`. Break down `hcase with rfl | rfl` into its components or cases. Take `⟨σ, hf, hds⟩` from `(hasParam_iff_factors R hn P hB).1 hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.hasDiscreteSeriesKTypes_cover_of_factorsThroughCovering hL hK hD p q (p + q) e P T R σ hB hf hds`. Take `⟨σ, hπ, hds⟩` from `(hasParam_half_iff R hn P hB).1 hR`. Establish `hf : Factors (Cover.twist R).U e σ` using `(factors_twist_iff R σ).2 hπ`. Conclude with `GlobalTheory.T.hasDiscreteSeriesKTypes_of_sqrtDetTwist p q T R (blockPar P e) (GlobalTheory.T.hasDiscreteSeriesKTypes_cover_of_factorsThroughCovering hL hK hD p q (p + q) e P T (Cover.twist R) σ hB hf hds)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasTypes_of_hasParam_of_group : GlobalTheory.Dec.LowKMultOne → GlobalTheory.Dec.KTypesAbove → GlobalTheory.Dec.DSInfChar →
     ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q) (R : DSRep T) (lam : Ix p q → ℚ),

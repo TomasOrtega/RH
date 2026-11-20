@@ -17,7 +17,7 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU.SchurConst
 
 /- English proof (translation)
-Unfold `gs`. Use `split_ifs with h`. Simplify using `only [map_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs
@@ -26,7 +26,7 @@ theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y 
   · rfl
 
 /- English proof (translation)
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Rewrite `e` using `[h y J hJ, mul_zero]`. Conclude with `e.trans (gs_zero _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_zero_of_val {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ y J, Good L y J → sval s (𝟙 Y) y J = 0)
@@ -37,9 +37,9 @@ theorem sec_zero_of_val {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [
   exact e.trans (gs_zero _ _ _).symm
 
 /- English proof (translation)
-Establish `h1` using `sec_zero_of_val hL (pullMulSec s τ u hu) (fun y J hJ => by`. Rewrite using `[sval_pullMulSec s τ u hu _ y hJ, Category.id_comp, h y J hJ, zero_mul])`. Use `sec_zero_of_val hL s (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `h2 : sval (pullMulSec s τ u hu) σ y J = 0`. Unfold `sval`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1]`. Conclude with `gs_zero _ _ _`. Rewrite `h2` using `[sval_pullMulSec s τ u hu _ y hJ, hστ]`. Conclude with `(Units.mul_left_eq_zero _).1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_zero_of_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K₃ : Type} [Fintype K] [Fintype K₃]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (τ : Y' ⟶ Y) (σ : Y ⟶ Y') (hστ : σ ≫ τ = 𝟙 Y)
@@ -56,19 +56,19 @@ theorem sec_zero_of_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K₃ 
   exact (Units.mul_left_eq_zero _).1 h2
 
 /- English proof (translation)
-Introduce `hL1 hL2 V _ _ _ hV D A G _ _ U N hN hw t s hts mu α u hu hcorr`. Take `⟨t₀, s₀, he₀, hfe₀, j, hj⟩` from `hw α`. Take `⟨a, ha⟩` from `GlobalTheory.T.expansionComponents_proportional_shift_multiple hL1 hL2 V hV D A G U N hN α mu u hu ⟨t₀, s₀, he₀, j, hj⟩`. Establish `hc : ∀ (z : (DegPre.BF D (Kbar V)).left) (b c : Kbar V), gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) (b * c) ⊤) = gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) b ⊤) * gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) c ⊤)`. Introduce `z b c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← gs_mul _ _ ⊤ trivial]`. Simplify using `only [DegPre.constBF, map_mul]`. Establish `hc1 : ∀ (z : (DegPre.BF D (Kbar V)).left), gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) 1 ⊤) = 1`. Introduce `z`. Rewrite using `[gs_eq _ _ ⊤ trivial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [DegPre.constBF, map_one]`. Establish `hca : ∀ (z : (DegPre.BF D (Kbar V)).left) (b : Kbar V), gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) (b - 1) ⊤) = gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) b ⊤) - 1`. Introduce `z b`. Rewrite using `[gs_eq _ _ ⊤ trivial, gs_eq _ _ ⊤ trivial]`. Simplify using `only [DegPre.constBF, map_sub, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ha1 : a = 1`. Assume the negation of the conclusion as `hne`. Apply `hj` to reduce the goal to its premises. Establish `hinv : (DegPre.trF D (Kbar V) (-mu)).left ≫ (DegPre.trF D (Kbar V) mu).left = 𝟙 _`. Rewrite using `[← Over.comp_left, DVR.UUA.trF_add, neg_add_cancel, DVR.UUA.trF_zero, Over.id_left]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sec_zero_of_pull D.P.isLB (s₀ α) _ _ hinv u hu (fun z J hJ => ?_) j` and prove the remaining obligations. Establish `e1` using `ha t₀ s₀ he₀ z J hJ`. Establish `e2` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ _).1 (hfe₀ mu α u hu hcorr) _ (𝟙 _) z J hJ`. Rewrite `e2` using `[Category.id_comp]`. Establish `e3 : gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) (a - 1) ⊤) * (sval (s₀ α) (DegPre.trF D (Kbar V) mu).left z J * (val u (𝟙 _) z J).val) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hca, _root_.sub_mul, _root_.one_mul, ← e1, ← e2, sub_self]`. Establish `e4` using `congrArg (gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) (a - 1)⁻¹ ⊤) * ·) e3`. Simplify using `only [mul_zero] at e4`. Rewrite `e4` using `[← _root_.mul_assoc, ← hc, inv_mul_cancel₀ (sub_ne_zero.2 hne), hc1, _root_.one_mul]`. Conclude with `(Units.mul_left_eq_zero _).1 e4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ _).2 fun z J hJ => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ha t s hts z J hJ, ha1, hc1, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : Laws → Laws2 → AllPre fun {V} _ _ _ {D} {_} {_} _ _ U => ∀ N : ℕ, 1 ≤ N → (∀ α, ∃ t s, U.ExpF (Kbar V) N t s ∧ DegPre.FamFE D (Kbar V) N s ∧ ∃ j, (s α).f j ≠ 0) → U.FE (Kbar V) N := by
   intro hL1 hL2 V _ _ _ hV D A G _ _ U N hN hw t s hts mu α u hu hcorr

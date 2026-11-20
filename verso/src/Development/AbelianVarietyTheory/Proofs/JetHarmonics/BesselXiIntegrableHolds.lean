@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.DS.Xi.xiExists`.
+A detailed English derivation is pending.
 -/
 theorem besselXiIntegrable_holds : GlobalTheory.HCXi.BesselXiIntegrable :=
   ReciprocityTheory.ChartRestriction.DS.Xi.xiExists

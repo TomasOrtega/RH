@@ -4,13 +4,13 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l hl E a W ha hW j hj`. Establish `hp : l.Prime` using `hl.out`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff, Polynomial.finsetSum_coeff, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k hk => ?_` and prove the remaining obligations. Establish `hak : ‖a k‖ ≤ 1` using `ha k (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.taylor_monomial, ← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul, Polynomial.coeff_X_add_C_pow, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy j (l ^ k) with h | h | h` into its components or cases. Establish `hne : j ≠ l ^ k` using `h.ne`. Simplify using `only [hne, if_false, mul_zero, sub_zero]`. Take `⟨m, hm⟩ : l ∣ (l ^ k).choose j` from `hp.dvd_choose_pow (by omega) h.ne`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, Nat.cast_mul, norm_mul, norm_mul, norm_mul]`. Establish `h1 : ‖W ^ (l ^ k - j)‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hW`. Establish `h2 : ‖(m : ℂ_[l])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ m`. Combine the equalities or inequalities in the displayed calculation. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hne : j ≠ l ^ k` using `h.ne'`. Simplify using `only [hne, if_false, mul_zero, sub_zero, Nat.choose_eq_zero_of_lt h, Nat.cast_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem additive_poly_taylor_coeff_sub_norm_le :
     ∀ (l : ℕ) [Fact l.Prime] (E : ℕ) (a : ℕ → ℂ_[l]) (W : ℂ_[l]), (∀ k, k ≤ E → ‖a k‖ ≤ 1) → ‖W‖ ≤ 1 →

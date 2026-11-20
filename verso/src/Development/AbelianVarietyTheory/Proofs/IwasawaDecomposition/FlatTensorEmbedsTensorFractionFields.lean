@@ -4,13 +4,13 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hF : Module.Flat T F` using `IsLocalization.flat F (nonZeroDivisors T)`. Establish `hK : Module.Flat T K` using `Module.Flat.trans T F K`. Set `f : U →ₐ[T] L` to `IsScalarTower.toAlgHom T U L`. Set `g : C →ₐ[T] K` to `IsScalarTower.toAlgHom T C K`. Set `e : L ⊗[F] K ≃ₐ[F] L ⊗[T] K` to `IsLocalization.algebraTensorEquiv (nonZeroDivisors T) F L K`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨(e.symm.toRingHom : L ⊗[T] K →+* L ⊗[F] K).comp (Algebra.TensorProduct.map f g).toRingHom, ?_, ?_⟩` and prove the remaining obligations. Establish `hf : Function.Injective f.toLinearMap` using `IsFractionRing.injective U L`. Establish `hg : Function.Injective g.toLinearMap` using `IsFractionRing.injective C K`. Establish `h1 : Function.Injective (LinearMap.lTensor U g.toLinearMap)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hg`. Establish `h2 : Function.Injective (LinearMap.rTensor K f.toLinearMap)` using `Module.Flat.rTensor_preserves_injective_linearMap _ hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Function.Injective (TensorProduct.map f.toLinearMap g.toLinearMap)`. Rewrite using `[← LinearMap.rTensor_comp_lTensor]`. Conclude with `h2.comp h1`. Introduce `x y hxy`. Apply `h3` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e.symm.injective hxy`. Introduce `u c show e.symm (f u ⊗ₜ g c) = _`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem flat_tensor_embeds_tensor_fractionFields
     (T U C F K L : Type) [CommRing T] [IsDomain T] [CommRing U] [IsDomain U] [CommRing C]

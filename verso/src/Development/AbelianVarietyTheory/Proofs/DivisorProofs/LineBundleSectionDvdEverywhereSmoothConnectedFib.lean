@@ -23,13 +23,13 @@ noncomputable section
 namespace GlobalTheory.DivSpread
 
 /- English proof (translation)
-Introduce `i hyi`. Choose the witnesses or unpack the hypotheses as in `⟨k, hxk⟩ : ∃ k, x ∈ L.U k := by`. Establish `: x ∈ (⨆ k, L.U k)` using `hL.cover ▸ trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `hyk : y ∈ L.U k` using `hyx.mem_open (L.U k).isOpen hxk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sp : ∀ (U : X.Opens) (hx : x ∈ U) (b : Γ(X, U)), gs (𝟙 X) y U b = (X.presheaf.stalkSpecializes hyx).hom (gs (𝟙 X) x U b)`. Introduce `U hx b`. Rewrite using `[gs_eq _ y U (hyx.mem_open U.isOpen hx), gs_eq _ x U hx]`. Conclude with `(congrArg (fun φ => φ.hom ((Scheme.Hom.app (𝟙 X) U).hom b)) (X.presheaf.germ_stalkSpecializes _ hyx)).symm`. Set `c : Γ(X, p ⁻¹ᵁ ⊤)` to `(p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ z, gs (𝟙 X) z (p ⁻¹ᵁ ⊤) c = cst p z a` using `fun z => (gs_pull (𝟙 X) p z ⊤ trivial _).trans (by rw [Category.id_comp]; rfl)`. Take `⟨t, ht⟩` from `h k hxk`. Establish `hk : cst p y a ∣ gs (𝟙 X) y (L.U k) (s.f k)`. Use `⟨(X.presheaf.stalkSpecializes hyx).hom t, ?_⟩` and prove the remaining obligations. Rewrite using `[sp _ hxk, ht, map_mul, ← hc, ← hc, ← sp (p ⁻¹ᵁ ⊤) (show p x ∈ (⊤ : (Spec (CommRingCat.of V)).Opens) from trivial)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : y ∈ L.U i ⊓ L.U k` using `⟨hyi, hyk⟩`. Establish `e` using `congrArg (gs (𝟙 X) y (L.U i ⊓ L.U k)) (s.compat i k)`. Rewrite `e` using `[gs_res _ y _ hm, gs_mul _ y _ hm, gs_res _ y _ hm]`. Rewrite using `[e]`. Conclude with `Dvd.dvd.mul_left hk _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_specializes {X : Scheme.{0}} {V : Type} [CommRing V] (p : X ⟶ Spec (CommRingCat.of V)) {L : LB X}
     (hL : L.IsLB) (s : LB.Sec L) (a : V) {x y : X} (hyx : y ⤳ x)
@@ -60,27 +60,25 @@ theorem dvd_of_specializes {X : Scheme.{0}} {V : Type} [CommRing V] (p : X ⟶ S
   exact Dvd.dvd.mul_left hk _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push_neg at H`. Apply `h` to reduce the goal to its premises. Take `⟨V, hV, hxV, hVle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := U ⊓ W) (x := x) ⟨hxU, hxW⟩`. Establish `hVU : V ≤ U` using `fun z hz => (hVle hz).1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVW : V ≤ W` using `fun z hz => (hVle hz).2`. Set `fV : Γ(X, V)` to `(X.presheaf.map (homOfLE hVU).op).hom f`. Set `cV : Γ(X, V)` to `(X.presheaf.map (homOfLE hVW).op).hom c`. Establish `hgf : ∀ z (hz : z ∈ V), gs (𝟙 X) z U f = (X.presheaf.germ V z hz).hom fV` using `fun z hz => by`. Rewrite using `[← gs_res (𝟙 X) z hVU hz, gs_eq _ z V hz]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hgc : ∀ z (hz : z ∈ V), gs (𝟙 X) z W c = (X.presheaf.germ V z hz).hom cV` using `fun z hz => by`. Rewrite using `[← gs_res (𝟙 X) z hVW hz, gs_eq _ z V hz]`. Both sides reduce to the same expression. Use `letI : Algebra Γ(X, V) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hxV⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hlocx := hV.isLocalization_stalk ⟨x, hxV⟩`. Rewrite using `[← Ideal.mem_span_singleton]`. Use `GlobalTheory.PrincipalHartogs.mem_span_singleton_of_forall_height_le_one _ _ fun Q hQ hQ1 => ?_` and prove the remaining obligations. Set `P : Ideal Γ(X, V)` to `Q.comap (algebraMap Γ(X, V) (X.presheaf.stalk x))`. Use `haveI hPp : P.IsPrime := Ideal.comap_isPrime _ Q`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Pt : PrimeSpectrum Γ(X, V)` to `⟨P, hPp⟩`. Establish `hyV : hV.fromSpec Pt ∈ V`. Establish `: hV.fromSpec Pt ∈ Set.range hV.fromSpec` using `⟨Pt, rfl⟩`. Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis. Set `yV : V` to `⟨hV.fromSpec Pt, hyV⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPt : hV.primeIdealOf yV = Pt` using `hV.fromSpec.isOpenEmbedding.injective (hV.fromSpec_primeIdealOf yV)`. Establish `hsp : yV.1 ⤳ x`. Establish `hle : Pt ≤ hV.primeIdealOf ⟨x, hxV⟩` using `by show P ≤ (hV.primeIdealOf ⟨x, hxV⟩).asIdeal`. Rewrite using `[← IsLocalization.AtPrime.comap_maximalIdeal (X.presheaf.stalk x) (hV.primeIdealOf ⟨x, hxV⟩).asIdeal]`. Conclude with `Ideal.comap_mono (IsLocalRing.le_maximalIdeal hQ.ne_top)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `((PrimeSpectrum.le_iff_specializes _ _).1 hle).map hV.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hV.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Use `letI : Algebra Γ(X, V) (X.presheaf.stalk yV.1) := X.presheaf.algebra_section_stalk yV`. Establish `hlocy` using `hV.isLocalization_stalk yV`. Rewrite `hlocy` using `[hPt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hdim : Order.coheight yV.1 ≤ 1`. Rewrite using `[← GlobalTheory.ringKrullDim_stalk_le_one_iff, IsLocalization.AtPrime.ringKrullDim_eq_height P (X.presheaf.stalk yV.1)]`. Use `IsLocalization.height_comap (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl Q` as an intermediate fact. Express the relevant statement in the definitionally equal form `(P.height : WithBot ℕ∞) ≤ 1`. Rewrite using `[show P = Ideal.under Γ(X, V) Q from rfl, this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Conclude with `hQ1` after adjusting the coercions. Take `⟨t, ht⟩` from `H yV.1 hsp hdim`. Rewrite `ht` using `[hgf _ hyV, hgc _ hyV]`. Express the relevant statement in the definitionally equal form `algebraMap Γ(X, V) _ fV = algebraMap Γ(X, V) _ cV * t at ht`. Take `⟨⟨a, w⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ht` using `[IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.eq_mk'_iff_mul_eq, ← map_mul]`. Take `⟨m, hm⟩` from `IsLocalization.exists_of_eq (M := P.primeCompl) ht`. Use `⟨algebraMap Γ(X, V) (X.presheaf.stalk x) (m * w), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(P.primeCompl.mul_mem m.2 w.2 : (m : Γ(X, V)) * w ∉ P)`. Rewrite using `[Ideal.mem_span_singleton, hgf x hxV, hgc x hxV]`.
-
-Express the relevant statement in the definitionally equal form `algebraMap Γ(X, V) _ cV ∣ algebraMap Γ(X, V) _ (m * w) * algebraMap Γ(X, V) _ fV`. Use `⟨algebraMap Γ(X, V) (X.presheaf.stalk x) (m * a), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, show (m : Γ(X, V)) * w * fV = m * (fV * w) by ring, hm, show (m : Γ(X, V)) * (cV * a) = cV * (m * a) by ring]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_specializes_not_dvd {X : Scheme.{0}} {U W : X.Opens} (c : Γ(X, W)) (f : Γ(X, U)) {x : X}
     (hxU : x ∈ U) (hxW : x ∈ W) [IsDomain (X.presheaf.stalk x)] [IsIntegrallyClosed (X.presheaf.stalk x)]
@@ -141,9 +139,9 @@ theorem exists_specializes_not_dvd {X : Scheme.{0}} {U W : X.Opens} (c : Γ(X, W
       show (m : Γ(X, V)) * (cV * a) = cV * (m * a) by ring]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne'`. Establish `hlt : y < w` using `lt_of_le_not_ge (show y ≤ w from hw) (fun h => hne' (hw.antisymm h).eq)`. Establish `hmaxw : IsMax w` using `by simpa using (Order.coheight_le_coe_iff (n := 1)).1 hy w hlt`. Take `⟨z, hz, hpz⟩` from `Flat.generalizingMap p (show P' ⤳ p w from he ▸ hP')`. Establish `h1 : w ≤ z` using `hz`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : z = w` using `(hz.antisymm (hmaxw h1)).eq`. Conclude with `hne (hpz.symm.trans (h2 ▸ he))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes_of_coheight_le_one {X S : Scheme.{0}} (p : X ⟶ S) [Flat p] {y w : X}
     (hy : Order.coheight y ≤ 1) {P' : S} (hP' : P' ⤳ p y) (hne : P' ≠ p y) (hw : w ⤳ y) (he : p w = p y) :
@@ -157,9 +155,9 @@ theorem eq_of_specializes_of_coheight_le_one {X S : Scheme.{0}} (p : X ⟶ S) [F
   exact hne (hpz.symm.trans (h2 ▸ he))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Apply `h` to reduce the goal to its premises. Establish `hy : y ∈ p ⁻¹ᵁ ⊤` using `show p y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial`. Rewrite using `[cst, gs_eq p y ⊤ hy]`. Use `(X.mem_basicOpen _ y hy).1 ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.preimage_basicOpen]`. Use `show p y ∈ (Spec (CommRingCat.of R)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_not_isUnit_cst {X : Scheme.{0}} {R : Type} [CommRing R] (p : X ⟶ Spec (CommRingCat.of R)) (y : X)
     (a : R) (h : ¬ IsUnit (cst p y a)) : a ∈ (p y).asIdeal := by
@@ -174,9 +172,9 @@ theorem mem_of_not_isUnit_cst {X : Scheme.{0}} {R : Type} [CommRing R] (p : X �
   exact ha
 
 /- English proof (translation)
-Take `⟨y', hy'⟩ : y ∈ Set.range (p.fiberι (p y))` from `by rw [Scheme.Hom.range_fiberι]; rfl`. Take `⟨z', hz'⟩ : z ∈ Set.range (p.fiberι (p y))` from `by rw [Scheme.Hom.range_fiberι]; exact hz`. Establish `hg : ∀ t, genericPoint (p.fiber (p y)) ⤳ t` using `fun t => (genericPoint_spec _).specializes trivial`. Establish `hgm : p (p.fiberι (p y) (genericPoint (p.fiber (p y)))) = p y`. Establish `: p.fiberι (p y) (genericPoint (p.fiber (p y))) ∈ Set.range (p.fiberι (p y))` using `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Scheme.Hom.range_fiberι]`. Conclude with `this`. Establish `h1 : p.fiberι (p y) (genericPoint (p.fiber (p y))) = y` using `hmax _ (by have := (hg y').map (p.fiberι (p y)).continuous; rwa [hy'] at this) hgm`. Rewrite using `[← h1, ← hz']`. Conclude with `(hg z').map (p.fiberι (p y)).continuous`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specializes_of_mem_fibre {X S : Scheme.{0}} (p : X ⟶ S) [GeometricallyIrreducible p] {y : X}
     (hmax : ∀ w, w ⤳ y → p w = p y → w = y) {z : X} (hz : p z = p y) : y ⤳ z := by
@@ -196,17 +194,15 @@ end GlobalTheory.DivSpread
 
 open GlobalTheory.DivSpread in
 /- English proof (translation)
-Introduce `R _ _ _ _ _ X p hsm hgc e he L hL s q hq hcl x j hxj`. Establish `: GeometricallyIntegral p` using `GlobalTheory.geometricallyIntegral_of_smooth p`. Establish `: GlobalTheory.IsNormalScheme X` using `GlobalTheory.isNormalScheme_of_smooth p`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian p`. Assume the negation of the conclusion as `hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Set `c : Γ(X, p ⁻¹ᵁ ⊤)` to `(p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom q)`. Establish `hc : ∀ z, gs (𝟙 X) z (p ⁻¹ᵁ ⊤) c = cst p z q` using `fun z => (gs_pull (𝟙 X) p z ⊤ trivial _).trans (by rw [Category.id_comp]; rfl)`. Take `⟨y, hyx, hy1, hyn⟩` from `exists_specializes_not_dvd c (s.f j) hxj trivial (by rw [hc]; exact hnot)`. Rewrite `hyn` using `[hc]`. Establish `hyj : y ∈ L.U j` using `hyx.mem_open (L.U j).isOpen hxj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hqP : q ∈ (p y).asIdeal` using `mem_of_not_isUnit_cst p y q fun hu => hyn ⟨hu.unit⁻¹ * gs (𝟙 X) y (L.U j) (s.f j), by rw [← _root_.mul_assoc, IsUnit.mul_val_inv, _root_.one_mul]⟩`. Set `P0 : Spec (CommRingCat.of R)` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hP0 : P0 ⤳ p y` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Establish `hP0' : P0 ≠ p y` using `fun h => hq (by`. Establish `: q ∈ P0.asIdeal` using `h ▸ hqP`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this)`. Establish `hmax : ∀ w, w ⤳ y → p w = p y → w = y` using `fun w hw hpe => eq_of_specializes_of_coheight_le_one p hy1 hP0 hP0' hw hpe`. Establish `hey : p (e (p y)) = p y`. Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : y ⤳ e (p y)` using `specializes_of_mem_fibre p hmax hey`. Establish `h2 : e (p y) ⤳ e (closedPoint R)` using `(IsLocalRing.specializes_closedPoint (p y)).map e.continuous`. Establish `hcm : p (e (closedPoint R)) = closedPoint R` using `by show (e ≫ p) (closedPoint R) = _`. Rewrite using `[he]`. Both sides reduce to the same expression.
-
-Conclude with `hyn (dvd_of_specializes p hL s q (h1.trans h2) (fun k hk => hcl _ hcm k hk) j hyj)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DivSpread.dvd_everywhere : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (X : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of R)), Smooth p → GeometricallyConnected p → ∀ (e : Spec (CommRingCat.of R) ⟶ X), e ≫ p = 𝟙 _ → ∀ (L : LB X), L.IsLB → ∀ (s : LB.Sec L) (q : R), q ≠ 0 → (∀ (x : X), p x = closedPoint R → ∀ j, x ∈ L.U j → ∃ t, gs (𝟙 X) x (L.U j) (s.f j) = cst p x q * t) → ∀ (x : X) j, x ∈ L.U j → ∃ t, gs (𝟙 X) x (L.U j) (s.f j) = cst p x q * t := by
   intro R _ _ _ _ _ X p hsm hgc e he L hL s q hq hcl x j hxj

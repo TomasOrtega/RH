@@ -22,9 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ker.FockOnto
 
 /- English proof (translation)
-Introduce `z`. Establish `hs : ∀ (c : ℂ) (u : V), fderiv ℝ Φ z (c • u) = c * fderiv ℝ Φ z u`. Introduce `c u`. Establish `e : c • u = c.re • u + c.im • (I • u)`. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, smul_smul, ← add_smul, Complex.re_add_im]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, map_smul, map_smul, hI, Complex.real_smul, Complex.real_smul, ← mul_assoc, ← add_mul, Complex.re_add_im]`. Set `A : V →L[ℂ] ℂ` to `{ toFun := fderiv ℝ Φ z map_add' := map_add _ map_smul' := hs cont := (fderiv ℝ Φ z).continuous }`. Conclude with `(hasFDerivAt_of_restrictScalars ℝ (f' := A) (h z).hasFDerivAt (by ext; rfl)).differentiableAt`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem differentiable_of_fderiv_I {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {Φ : V → ℂ}
     (h : Differentiable ℝ Φ) (hI : ∀ z u, fderiv ℝ Φ z (I • u) = I * fderiv ℝ Φ z u) : Differentiable ℂ Φ := by
@@ -45,9 +45,9 @@ theorem differentiable_of_fderiv_I {V : Type} [NormedAddCommGroup V] [NormedSpac
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Set `e : V ≃L[ℝ] (Fin (Module.finrank ℝ V) → ℝ)` to `(Module.finBasis ℝ V).equivFun.toContinuousLinearEquiv`. Establish `h1` using `hf.smooth _ (R.comp e.symm.toLinearEquiv.toAddEquiv.toAddMonoidHom) (hR.comp e.symm.continuous) (fun t => hr _) 0`. Establish `h2` using `(h1.differentiable (by simp)).comp e.differentiable`. Use `(funext fun v => ?_ : (fun v => f (R v)) = _) ▸ h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (R v) = f (0 + R (e.symm (e v)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[zero_add, e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem differentiable_comp {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (R : V →+ WO S T)
@@ -61,9 +61,7 @@ theorem differentiable_comp {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ
   rw [zero_add, e.symm_apply_apply]
 
 /- English proof (translation)
-Establish `key : ∀ {F A E : Type} [Field F] [CommRing A] [CommRing E] [Algebra F A] [Algebra F E] (p : A) (x : E), p ⊗ₜ[F] (-(N • x)) = N • (p ⊗ₜ[F] (-x))`. Introduce `F A E _ _ _ _ _ p x`. Rewrite using `[← smul_neg]`. Conclude with `map_nsmul (TensorProduct.mk F A E p) N (-x)`. Use function extensionality and compare the values at `a k`.
-
-Conclude with `key (pairA D.host.F 0 1) (y k a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finW_neg_nsmul (N : ℕ) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     finW S T (-(N • y)) = N • finW S T (-y) := by
@@ -76,14 +74,14 @@ theorem finW_neg_nsmul (N : ℕ) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E)
   exact key (pairA D.host.F 0 1) (y k a)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finW_mem_hatA {A : AddSubgroup (Matrix (Fin S.rank) (Fin T.rank) D.host.E)}
     {y : Matrix (Fin S.rank) (Fin T.rank) D.host.E} (hy : y ∈ A) : finW S T y ∈ hatA S T A :=
   AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, y, hy, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a k`. Express the relevant statement in the definitionally equal form `finPart D (incA D (y k a) - (pairA D.host.F 0 1) ⊗ₜ[D.host.F] y k a) = 0`. Rewrite using `[RingHom.map_sub]`. Conclude with `sub_eq_zero.2 rfl`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRealPt_sub (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     IsRealPt (S := S) (T := T) (ratW T S yᵀ - finW S T y) := by
@@ -93,9 +91,9 @@ theorem isRealPt_sub (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
   exact sub_eq_zero.2 rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ k a`. Express the relevant statement in the definitionally equal form `conj (C.θ (C.m.e.symm σ) (infPart D (incA D (y k a) - (pairA D.host.F 0 1) ⊗ₜ[D.host.F] y k a))) = σ.1 (y k a)`. Establish `h0 : infPart D ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] y k a) = 0`. Establish `: infPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] y k a) = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] y k a` using `rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : infPart D (incA D (y k a)) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] y k a` using `rfl`. Establish `h2` using `C.m.e_emb (C.m.e.symm σ)`. Rewrite `h2` using `[Equiv.apply_symm_apply]`. Rewrite using `[RingHom.map_sub, h0, h1, sub_zero, (C.inf _).1, h2, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem realPt_sub (C : Ctx S T) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     C.realPt (ratW T S yᵀ - finW S T y) = embR C.X y := by
@@ -115,23 +113,23 @@ end GlobalTheory.Ker.FockOnto
 open GlobalTheory.Ker.FockOnto in
 
 /- English proof (translation)
-Introduce `D S T C B hB f hf hF`. Take `⟨R, hRc, -, hadd, hR, hR', -⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Establish `hx : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Take `⟨⟨L, hL⟩, -⟩` from `GlobalTheory.Ker.zR_laws D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even _ hx`. Establish `hg0 : ∀ z : Fin S.rank → Fin C.g → ℂ, gaussR C.X C.bas C.idx (C.xB B) z ≠ 0` using `fun z => Complex.exp_ne_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Φ : (Fin S.rank → Fin C.g → ℂ) → ℂ := fun z => (gaussR C.X C.bas C.idx (C.xB B) z)⁻¹ * f (R (L.symm z)) with hΦ`. Establish `hd : Differentiable ℝ Φ` using `(((RealHeis.contDiff_gaussR C.X C.bas C.idx (C.xB B)).differentiable (by simp)).inv hg0).mul ((differentiable_comp hf R hRc fun v => (hR v).1).comp L.symm.differentiable)`. Establish `hv : ∀ v, f (R v) = gaussR C.X C.bas C.idx (C.xB B) (zR C.X C.idx (C.xB B) v) * Φ (zR C.X C.idx (C.xB B) v)`. Introduce `v`. Simplify using `only [hΦ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel_left₀ (hg0 _), ← hL, L.symm_apply_apply]`. Establish `hw : ∀ w, IsRealPt w → f w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * Φ (C.zOf (C.xB B) w)`. Introduce `w hw`. Rewrite using `[Ctx.zOf, ← hv, hR' w hw]`. Establish `hone : ∀ ζ (σ : C.X.Ψ) (c : Fin S.rank → Fin T.rank → ℂ), fderiv ℝ Φ ζ (I • L (Pi.single σ c)) = I * fderiv ℝ Φ ζ (L (Pi.single σ c))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ σ c`. Establish `h1` using `(GlobalTheory.T.annihilation_creation_periodCoordinates D S T C B hB f Φ hd hw (C.m.e.symm σ) (Matrix.of fun a k => conj (c k a)) (L (Pi.single σ c)) (by simp [hL]) (R (L.symm ζ)) (hR _).1).1`. Establish `h2 : C.zOf (C.xB B) (R (L.symm ζ)) = ζ` using `by rw [Ctx.zOf, (hR _).2, ← hL, L.apply_symm_apply]`. Rewrite `h1` using `[hF, h2, Pi.zero_apply]`. Establish `h3` using `(mul_eq_zero.1 h1.symm).resolve_left (hg0 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-I) * h3 + (fderiv ℝ Φ ζ (I • L (Pi.single σ c))) * Complex.I_mul_I`. Establish `hC : Differentiable ℂ Φ`. Use `differentiable_of_fderiv_I hd fun ζ u => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `L.surjective u`. Rewrite using `[← Finset.univ_sum_single v, map_sum, Finset.smul_sum, map_sum, map_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => hone ζ σ _`. Take `⟨-, hext, hth⟩` from `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Take `⟨-, -, -, hfin, -, N, hN, hlev⟩` from `hth f hf`. Take `⟨φ, hφ, hθ⟩` from `GlobalTheory.T.exists_theta_eq_of_translation_invariant_multiple D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even _ hx N hN Φ hC (by`. Introduce `y hy v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hfin (-(N • y)) (R v) (hR v).1`. Establish `h2 : embR C.X (-(N • y)) = -(N • embR C.X y)`. Use function extensionality and compare the values at `σ k a`. Simplify using `[embR]`. Establish `h3 : ratW T S (-(N • y))ᵀ - finW S T (-(N • y)) = R (-(N • embR C.X y))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hR' _ (isRealPt_sub _), realPt_sub, h2]`. Establish `h4 : EFR C.X v (-(N • embR C.X y)) = -EFR C.X v (N • embR C.X y)`. Generalize the expression as in `N • embR C.X y = a`. Simplify using `only [EFR, hermC, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib, Complex.neg_re, neg_mul, neg_neg]`. Rewrite `h1` using `[h3, finW_neg_nsmul, hlev _ (finW_mem_hatA (neg_mem ((TensLat.mem_tens_stdL _ _).2 hy))), (hR v).2, h2, ← map_sub, sub_neg_eq_add, h4, hv, hv]`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Use the proof step `simp)`. Use `⟨φ, hφ, (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx φ hφ).2 f ⟨hf, fun w hw' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hw w hw', thR, hθ, Ctx.zOf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ker.exists_test_of_fock : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ B, C.IsB B → ∀ f, C.IsTh f → C.IsFock B f → ∃ φ : TF S.rank C.g, SW.IsSB φ ∧ f = C.Th (C.xB B) φ := by
   intro D S T C B hB f hf hF

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TiedUnif
 
 /- English proof (translation)
-Introduce `h1 h2 D G _ _ Pl0 I0 T0 A3 T _ R F κ v₀ fw O hC hb hO hr ha hn`. Conclude with `lUnif_of_pins h1 h2 T R.toRealDat κ v₀ O F.lv2 fw hC.base.lev hC.base.grp hC.base.models hb hO hr ha hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uniformisation_every_embedding_thirdKind : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat3 D A3 T.Q.c.F) (F : Face3 D A3) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.toRealDat.MW i σ).Vec) (fw : FWTie T R.toRealDat κ v₀), ∀ (O : ∀ i, OMDat T.toCore R.toRealDat i Unit (fun _ => A3.A.μ0)), R.WeakCharacterisation F → BarTie fw → (∀ i, OMPins T R.toRealDat κ v₀ O i) → RhoGeo fw O → EquivAll T R.toRealDat κ O → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → R.toRealDat.LUnif := by
   intro h1 h2 D G _ _ Pl0 I0 T0 A3 T _ R F κ v₀ fw O hC hb hO hr ha hn

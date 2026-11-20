@@ -21,7 +21,7 @@ structure Cls (Gd : Sm E a → Prop) : Prop where
 variable {ν p w} {Gd : Sm E a → Prop} [IsFiniteMeasure ν]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.bdd F hF {g} isCompact_singleton`. Conclude with `Integrable.of_bound (h.meas F hF g) C (.of_forall fun y => hC y g rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Cls.integrable (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : GA E a) :
     Integrable (fun y => F.1 (p y * g) * w y) ν := by
@@ -29,7 +29,7 @@ theorem Cls.integrable (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : GA E a)
   exact Integrable.of_bound (h.meas F hF g) C (.of_forall fun y => hC y g rfl)
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc]`. Conclude with `chart_val F _ (IsUnit.unit (hx : IsUnit (Matrix.of x)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_unit (F : GA E a → ℂ) (g g' : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     chart F (g' * g) x = F (g' * (g * infGL E a (IsUnit.unit (hx : IsUnit (Matrix.of x))))) := by
@@ -37,7 +37,7 @@ private theorem chart_unit (F : GA E a → ℂ) (g g' : GA E a) {x : Lie E a} (h
   exact chart_val F _ (IsUnit.unit (hx : IsUnit (Matrix.of x)))
 
 /- English proof (translation)
-Simplify using `only [chart_unit F.1 g _ hx]`. Conclude with `h.integrable hF _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Cls.integrable_chart (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : GA E a) {x : Lie E a}
     (hx : x ∈ invSet E a) : Integrable (fun y => chart F.1 (p y * g) x * w y) ν := by
@@ -45,11 +45,9 @@ private theorem Cls.integrable_chart (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F
   exact h.integrable hF _
 
 /- English proof (translation)
-Establish `hu : Continuous fun x : S => (IsUnit.unit (hSU x.2 : IsUnit (Matrix.of x.1)) : GL (Fin a) (Cinf E))`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `contDiffOn_invM.continuousOn.comp_continuous (f := fun x : S => x.1) continuous_subtype_val fun x => hSU x.2` as an intermediate fact. Use `Continuous.congr this fun p => ?_` and prove the remaining obligations. Simplify using `only [Matrix.coe_units_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `haveI : CompactSpace S := isCompact_iff_compactSpace.1 hS`. Take `⟨C, hC⟩` from `h.bdd F hF _ (isCompact_range ((continuous_const (y := g)).mul (continuous_infGL.comp hu)))`. Use `⟨C, fun y x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[chart_unit F.1 g _ (hSU hx)]`.
-
-Conclude with `hC y _ ⟨⟨x, hx⟩, rfl⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Cls.bdd_chart (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : GA E a) {S : Set (Lie E a)}
     (hS : IsCompact S) (hSU : S ⊆ invSet E a) : ∃ C : ℝ, ∀ y, ∀ x ∈ S, ‖chart F.1 (p y * g) x * w y‖ ≤ C := by
@@ -67,7 +65,7 @@ private theorem Cls.bdd_chart (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : 
 
 omit [IsFiniteMeasure ν] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `h : IsUnit (Matrix.of x)`. Simplify using `only [chart, avg, dif_pos h, mul_assoc]`. Simplify using `only [chart, dif_neg h, zero_mul, integral_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem chart_avg (F : GA E a → ℂ) (g : GA E a) :
     chart (avg ν p w F) g = fun x => ∫ y, chart F (p y * g) x * w y ∂ν := by
@@ -77,13 +75,11 @@ private theorem chart_avg (F : GA E a → ℂ) (g : GA E a) :
   · simp only [chart, dif_neg h, zero_mul, integral_zero]
 
 /- English proof (translation)
-Take `⟨S, hSy, hSU, hS⟩` from `local_compact_nhds (isOpen_invSet.mem_nhds hx)`. Use `choose C hC using fun i => h.bdd_chart (h.lie F (Module.finBasis ℝ (Lie E a) i) hF) g hS hSU`. Use `choose D hD using fun i => hS.exists_bound_of_continuousOn ((contDiffOn_coef (E := E) (a := a) i).continuousOn.mono hSU)`. Establish `hi : ∀ i, Integrable (fun y => (chart (GlobalTheory.CuspRep.lie E a (Module.finBasis ℝ (Lie E a) i) F).1 (p y * g) x * w y) • coef i x) ν` using `fun i => (h.integrable_chart (h.lie F _ hF) g hx).smul_const _`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (F := fun x y => chart F.1 (p y * g) x * w y) (F' := fun x y => ∑ i, (chart (GlobalTheory.CuspRep.lie E a (Module.finBasis ℝ (Lie E a) i) F).1 (p y * g) x * w y) • coef i x) (bound := fun _ => ∑ i, C i * D i) hSy (Filter.eve …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (hC i y z hz) (hD i z hz) (norm_nonneg _) ((norm_nonneg _).trans (hC i y z hz))))`. Use the proof step `(integrable_const _) (.of_forall fun y z hz => by`. Establish `h1` using `(((contDiffAt_chart F.2 (p y * g) (hSU hz)).differentiableAt (by simp)).hasFDerivAt).mul_const (w y)`. Rewrite `h1` using `[fderiv_chart F _ (hSU hz), Finset.smul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul, mul_comm (w y)] at h1`. Conclude with `h1)`. Rewrite `key` using `[integral_finset_sum _ fun i _ => hi i]`. Simplify using `only [integral_smul_const] at key`. Simplify using `only [chart_avg]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem Cls.hasFDerivAt (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g : GA E a) {x : Lie E a}
     (hx : x ∈ invSet E a) : HasFDerivAt (chart (avg ν p w F.1) g)
@@ -112,11 +108,11 @@ private theorem Cls.hasFDerivAt (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (g 
   exact key
 
 /- English proof (translation)
-Introduce `g`. Establish `key : ∀ n : ℕ, ∀ F : Sm E a, Gd F → ContDiffOn ℝ n (chart (avg ν p w F.1) g) (invSet E a)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `F hF`. Conclude with `contDiffOn_zero.2 fun y hy => (h.hasFDerivAt hF g hy).continuousAt.continuousWithinAt`. Consider the case `succ n ih`. Introduce `F hF`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_invSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y hy => (h.hasFDerivAt hF g hy).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.congr ?_ fun y hy => (h.hasFDerivAt hF g hy).fderiv` and prove the remaining obligations. Conclude with `ContDiffOn.sum fun i _ => (ih _ (h.lie _ _ hF)).smul ((contDiffOn_coef i).of_le (by exact_mod_cast le_top))`. Conclude with `contDiffOn_infty.2 fun n => key n F hF`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Cls.mem_Sm (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) : avg ν p w F.1 ∈ Sm E a := by
   intro g
@@ -135,9 +131,9 @@ theorem Cls.mem_Sm (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) : avg ν p w F.1
   exact contDiffOn_infty.2 fun n => key n F hF
 
 /- English proof (translation)
-Establish `h1 : oneL E a ∈ invSet E a` using `isUnit_one`. Rewrite using `[lieD, (h.hasFDerivAt hF g h1).fderiv]`. Simplify using `only [chart_avg, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ← integral_mul_const]`. Rewrite using `[← integral_finset_sum _ fun i _ => (h.integrable_chart (h.lie F _ hF) g h1).mul_const _]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [lie_apply, lieD]`. Rewrite using `[fderiv_chart F _ h1]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Cls.lieD_avg (h : Cls ν p w Gd) {F : Sm E a} (hF : Gd F) (X : Lie E a) (g : GA E a) :
     lieD X (avg ν p w F.1) g = avg ν p w (GlobalTheory.CuspRep.lie E a X F).1 g := by

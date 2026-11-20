@@ -10,9 +10,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain
 variable (D : D7)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hv : (D.plEq w).valuation D.what₂.LL x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Rewrite using `[D.val_eq w x hx, vAdd, ← WithTop.coe_zero, WithTop.coe_le_coe, neg_nonneg]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← WithZero.exp_log hv]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_nonneg_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     (0 : WithTop ℤ) ≤ D.what₂.places.val w x ↔ (D.plEq w).valuation D.what₂.LL x ≤ 1 := by
@@ -25,9 +25,9 @@ theorem val_nonneg_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     rw [← WithZero.exp_zero, WithZero.exp_le_exp]
 
 /- English proof (translation)
-Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.what₂.LL)]`. Apply the tactic sequence `suffices hs : (D.plEq w).valuation D.what₂.LL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) < 1 by first | exact_mod_cast hs | simpa using hs`. Establish `hp : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero`. Establish `hv : (D.plEq w).valuation D.what₂.LL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `(Valuation.ne_zero_iff _).2 hp`. Establish `h1` using `D.what₂.places.val_resChar w`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[D.val_eq w _ hp, vAdd]`. Establish `h2 : -WithZero.log ((D.plEq w).valuation D.what₂.LL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)) = ((D.what₂.places.ramIdx w : ℕ) : ℤ)` using `WithTop.coe_inj.1 h1`. Establish `hpos` using `D.what₂.places.ramIdx_pos w`. Rewrite using `[← WithZero.exp_log hv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem resChar_mem (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
@@ -61,7 +61,7 @@ def extRec : ExtOf (OO (D.what₂.places.resChar w) n) (KO (D.what₂.places.res
   extOt (tauRec D w n)
 
 /- English proof (translation)
-Rewrite using `[val_nonneg_iff]`. Conclude with `induces_tauAt (D.plEq w) (resChar_mem D w) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embRec_int (x : D.what₂.LL) :
     (0 : WithTop ℤ) ≤ D.what₂.places.val w x ↔

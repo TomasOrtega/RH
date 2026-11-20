@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `hS hV hP R _ _ n lam g y`. Establish `key : ∀ i : Fin n, vdm (scaleOff y i g) = y ^ (n - 1).choose 2 * ((-1) ^ (i : ℕ) * vdmAway i g * ∏ k ∈ univ.erase i, (g i - y * g k))`. Introduce `i`. Establish `h1 : vdmAway i (scaleOff y i g) = y ^ (n - 1).choose 2 * vdmAway i g`. Rewrite using `[← (hP n i).2, ← Finset.prod_pow_eq_pow_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `vdmAway`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : a ≠ i` using `(Finset.mem_erase.mp ha).1`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ i` using `(Finset.mem_erase.mp hb).1`. Simplify using `[scaleOff, ha', hb', mul_sub]`. Use `_ = y ^ ((Finset.Ioi a).erase i).card * ∏ b ∈ (Finset.Ioi a).erase i, (g a - g b) := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∏ k ∈ univ.erase i, (scaleOff y i g i - scaleOff y i g k) = ∏ k ∈ univ.erase i, (g i - y * g k)`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≠ i` using `(Finset.mem_erase.mp hk).1`. Simplify using `[scaleOff, hk']`. Rewrite using `[hV R n (scaleOff y i g) i, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hL : y ^ (n - 1).choose 2 * ∑ i, sch lam (scaleOff y i g) * ((-1) ^ (i : ℕ) * vdmAway i g * ∏ k ∈ univ.erase i, (g i - y * g k)) = ∑ i, sch lam (scaleOff y i g) * vdm (scaleOff y i g)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[key i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ i : Fin n, y ^ (∑ k ∈ univ.erase i, (lam k + (n - 1 - (k : ℕ)))) = y ^ (n - 1).choose 2 * y ^ (∑ k ∈ univ.erase i, lam k + (i : ℕ))`. Introduce `i`. Rewrite using `[Finset.sum_add_distrib, (hP n i).1, ← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hL, hS R n lam g y, Finset.sum_congr rfl fun i _ => hR i, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Schur.offClrPow_of :
     SchurYOffClr → VdmSplit → PairCount → OffClrPow := by

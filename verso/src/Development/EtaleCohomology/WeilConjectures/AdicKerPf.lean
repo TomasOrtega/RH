@@ -6,14 +6,14 @@ open CategoryTheory Opposite GlobalTheory.EtC LateralTheory.KummerTheory
 namespace LateralTheory.EWeil.AdicKerPf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem nz (l : ℕ) [Fact l.Prime] (k : ℕ) : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `clear h`. Proceed by induction on `d with`. Consider the case `zero => haveI := nz l m`. Conclude with `(hA (l ^ m) (l ^ m) dvd_rfl E).2.2.1 n i (y.1 m)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ d ih => haveI := nz l (m + (d + 1))`. Rewrite using `[← (hA (l ^ (m + (d + 1))) (l ^ (m + d)) (pow_dvd_pow l (by omega)) E).2.2.2 (l ^ m) (pow_dvd_pow l (by omega)) n i (y.1 _)]`. Rewrite using `[show red (l ^ (m + (d + 1))) (l ^ (m + d)) E n i (y.1 (m + (d + 1))) = y.1 (m + d) from y.2 (m + d)]`. Conclude with `ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp (hA : A11) {l : ℕ} [Fact l.Prime] {E : Spc} {n i : ℤ} (y : Hl l E n i) (M m : ℕ) (h : m ≤ M) :
     red (l ^ M) (l ^ m) E n i (y.1 M) = y.1 m := by
@@ -29,7 +29,7 @@ theorem comp (hA : A11) {l : ℕ} [Fact l.Prime] {E : Spc} {n i : ℤ} (y : Hl l
     exact ih
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `PadicInt.toZModPow m ((l : ℤ_[l]) ^ b) • (show Ht (l ^ m) E n i from v) = _`. Rewrite using `[map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_pow {l : ℕ} [Fact l.Prime] {E : Spc} {n i : ℤ} (m b : ℕ) (v : HtL l m E n i) :
     ((l : ℤ_[l]) ^ b) • v = (show Ht (l ^ m) E n i from (l ^ b : ℕ) • v) := by
@@ -38,19 +38,17 @@ theorem smul_pow {l : ℕ} [Fact l.Prime] {E : Spc} {n i : ℤ} (m b : ℕ) (v :
   rfl
 
 /- English proof (translation)
-Introduce `hA l _ E i hB hFin n b x hx`. Express the relevant statement in the definitionally equal form `x.1 b = 0 at hx`. Take `⟨u, d, hBk⟩` from `hB b`. Set `S : ℕ → Type 1` to `fun a => {w : Ht (l ^ a) E n i // u a n w = x.1 (b + a)}`. Set `f : ∀ a, S (a + 1) → S a` to `fun a w => ⟨red (l ^ (a + 1)) (l ^ a) E n i w.1, by`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← (hBk a n).2.2.2.2.2 w.1, w.2]`. Conclude with `x.2 (b + a)⟩`. Set `F : ℕᵒᵖ ⥤ Type 1` to `Functor.ofOpSequence (X := S) fun a => TypeCat.ofHom (f a)`. Use `haveI : ∀ j, Finite (F.obj j) := fun j => by haveI := hFin j.unop n`. Conclude with `(inferInstance : Finite (S j.unop))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ j, Nonempty (F.obj j) := fun j => by`. Establish `h0 : red (l ^ (b + j.unop)) (l ^ b) E n i (x.1 (b + j.unop)) = 0`. Rewrite using `[comp hA x (b + j.unop) b (by omega)]; exact hx`. Take `⟨w, hw⟩` from `((hBk j.unop n).1 (x.1 (b + j.unop))).1 h0`. Conclude with `⟨(⟨w, hw⟩ : S j.unop)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs⟩` from `nonempty_sections_of_finite_inverse_system F`. Set `y : Hl l E n i` to `⟨fun a => (show S a from s (op a)).1, fun a => by`. Use `hs (homOfLE (Nat.le_succ a)).op` as an intermediate fact. Rewrite `this` using `[Functor.ofOpSequence_map_homOfLE_succ]`. Conclude with `congrArg Subtype.val this⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `⟨y, Subtype.ext (funext fun m => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1 m = ((l : ℤ_[l]) ^ b) • y.1 m`. Rewrite using `[smul_pow]`. Break down `le_or_gt m b with h | h` into its components or cases. Establish `hxm : x.1 m = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← comp hA x b m h]`. Conclude with `(congrArg (red (l ^ b) (l ^ m) E n i) hx).trans (map_zero _)`. Rewrite using `[hxm]`. Take `⟨c, hc⟩` from `pow_dvd_pow l h`. Express the relevant statement in the definitionally equal form `0 = (l ^ b : ℕ) • (show Ht (l ^ m) E n i from y.1 m)`.
-
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ m)), hc, Nat.cast_mul, ZMod.natCast_self, zero_mul, zero_smul]`. Take `⟨a, rfl⟩` from `Nat.exists_eq_add_of_le h.le`. Establish `h1 : u a n (y.1 a) = x.1 (b + a)` using `(show S a from s (op a)).2`. Rewrite using `[← h1, ← comp hA y (b + a) a (by omega)]`. Conclude with `(hBk a n).2.2.2.1 (y.1 (b + a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AdicKer_of : LateralTheory.KummerTheory.AdicKer := by
   intro hA l _ E i hB hFin n b x hx

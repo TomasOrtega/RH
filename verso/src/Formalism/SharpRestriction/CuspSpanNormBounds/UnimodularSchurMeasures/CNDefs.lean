@@ -32,7 +32,7 @@ def CSize.Strata {X : CData} (S : CSize X) : Prop :=
     ∀ J c, ∀ x ∈ S.str J c, ∀ a, S.tau1 x ≤ S.tau J c x a
 
 /- English proof (translation)
-The claim follows from `measurableSet_le measurable_const h.1`.
+A detailed English derivation is pending.
 -/
 theorem CSize.measurableSet_Mod {X : CData} (S : CSize X) (h : S.Strata) (C₁ : ℝ) : MeasurableSet (S.Mod C₁) :=
   measurableSet_le measurable_const h.1

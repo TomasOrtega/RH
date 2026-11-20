@@ -19,11 +19,9 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.BdFamily
 
 /- English proof (translation)
-Establish `hdU : ∀ (U : Y.Opens) (f : Γ(Y, U)), DifferentiableOn ℂ (fun b => ev p σ U f (y b)) {b ∈ B | y b ∈ ptsIn p σ U}` using `fun U f => (hy U f).2`. Take `⟨i, hc⟩` from `R.cover (y b)`. Use `set c := R.chart i with hcdef`. Establish `hOc : IsOpen {b ∈ B | y b ∈ c.e.source}` using `hcont.isOpen_inter_preimage hB c.e.open_source`. Establish `hdiff : DifferentiableOn ℂ (fun b => c.e (y b)) {b ∈ B | y b ∈ c.e.source}` using `differentiableOn_euclidean.2 fun a => ((hdU c.U (c.x a)).mono fun v hv => ⟨hv.1, c.source_subset hv.2⟩).congr fun v hv => c.apply_eq _ hv.2 a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : b ∈ {b ∈ B | y b ∈ c.e.source}` using `⟨hb, hc⟩`. Establish `hF : ContDiffAt ℝ ∞ (fun b => c.e (y b)) b` using `(GlobalTheory.SCV.contDiffAt_of_differentiableOn hdiff (hOc.mem_nhds hb') _).restrict_scalars ℝ`. Establish `hφc : ContDiffAt ℝ ∞ (φ ∘ c.e.symm) (c.e (y b))` using `(hφ.chart hO c).contDiffAt ((GlobalTheory.ChartGlue.isOpen_over c.e hO).mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hc hbO))`. Use `(hφc.comp b hF).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hOc.mem_nhds hb'] with w hw`.
-
-Simplify using `only [Function.comp_apply, c.e.left_inv hw.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_comp {K : Type} [CommRing K] {Y : Scheme.{0}} {p : Y ⟶ Sp K} {σ : K →+* ℂ} {d : ℕ}
     (R : AnRead p σ d) {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W] {B : Set W}
@@ -48,7 +46,7 @@ theorem contDiffAt_comp {K : Type} [CommRing K] {Y : Scheme.{0}} {p : Y ⟶ Sp K
   simp only [Function.comp_apply, c.e.left_inv hw.2]
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ n U y hU hy hc u hu hb`. Establish `h1 : ∀ i, ContDiffAt ℝ ∞ (fun v => Real.log (x.nrm σ i (y v) ^ 2)) u` using `fun i => contDiffAt_comp _ hU hy hc (isOpen_not_liesIn _) (x.nrm_div σ i).smoothOn_log hu fun h => hb ((x.liesIn_genBd_iff _).2 ⟨i, h⟩)`. Use `((contDiffAt_const (c := Real.exp 1)).sub (ContDiffAt.sum (s := Finset.univ) fun i _ => h1 i)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(hc.continuousAt (hU.mem_nhds hu)).eventually ((isOpen_not_liesIn _).mem_nhds hb)] with v hv`. Rewrite using `[OddPrimesWithRootsOfUnity.r, ← Finset.prod_pow, Real.log_prod fun i _ => (pow_pos (x.nrm_pos hv i) 2).ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_r : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s)
     (σ : κ.c.F →+* ℂ) (n : ℕ) (U : Set (V n)) (y : V n → CxPts (genStr s.T.Z) σ), IsOpen U →

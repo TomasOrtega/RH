@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.KeyFormula.DegProd
 open GlobalTheory.KeyKa
 
 /- English proof (citation)
-Apply `GlobalTheory.KeyKa.KosGr.koszul_exact_of_graded_regular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FKoszulExactOfGradedRegular.lean&line=288#L288)
 -/

@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.Inhab
 open Formalism.BasicNotions NumberField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c hc => hK.1.trans (h.1 c hc), trivial, fun c hc => (hK.2.2.1 _).trans (h.2.2.1 c hc), fun c hc => (hK.2.2.2 _).trans (h.2.2.2 c hc)⟩`.
+Supply the required witnesses or components.
 -/
 theorem FC.Large.mono {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large K' CH) (hK : K.le K') : C.Large K CH :=
   ⟨fun c hc => hK.1.trans (h.1 c hc), trivial, fun c hc => (hK.2.2.1 _).trans (h.2.2.1 c hc),
@@ -30,17 +30,13 @@ def fcOf (p t : ℝ) (o : Out) (M N : ℝ) : FC where
   T := ⟨p, o.eP, o.Cp, N, o.cTO, N, N⟩
 
 /- English proof (translation)
-Use `set p := K.pre with hp`. Use `set t : ℝ := 401 with ht`. Use `set o := out p t with ho`. Use `set M := max (K.mid (fcOf p t o 0 0).cOut) 1 with hM`. Use `set N := max (K.last ((fcOf p t o 0 0).cOut ++ (fcOf p t o M 0).cMid M)) 1 with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM1 : 1 ≤ M` using `le_max_right _ _`. Establish `hM0 : 0 ≤ M` using `le_trans zero_le_one hM1`. Establish `hN0 : 0 ≤ N` using `le_trans zero_le_one (le_max_right _ _)`. Use `⟨fcOf p t o M N, M, hM0, rfl, ⟨hM0, hN0, hN0, hN0, hN0, hN0, hN0, hN0, hN0, hN0, hN0, by show (0 : ℝ) ≤ 5; norm_num, by show (0 : ℝ) ≤ 4; norm_num, by show (0 : ℝ) ≤ 1; norm_num, hN0⟩, le_refl _, ⟨?_, trivial, ?_, ?_⟩, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `c hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc' : c = p`. Simplify using `only [FC.cPre, fcOf, List.mem_cons, List.not_mem_nil, or_false] at hc`. Conclude with `hc`. Rewrite using `[hc']`. Introduce `c hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc' : c = M`. Simplify using `only [FC.cMid, fcOf, List.mem_cons, List.not_mem_nil, or_false, or_self] at hc`. Conclude with `hc`. Rewrite using `[hc']`. Conclude with `le_max_left _ _`.
-
-Introduce `c hc`. Establish `hc' : c = N`. Simplify using `only [FC.cLast, fcOf, List.mem_cons, List.not_mem_nil, or_false, or_self, inv_inv] at hc`. Conclude with `hc`. Rewrite using `[hc']`.
-
-Conclude with `le_max_left _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_large (K : TransportedAlt) (out : ℝ → ℝ → Out) :
     ∃ (C : FC) (CH : ℝ), 0 ≤ CH ∧ C.out = out C.T.CP C.Ct ∧ C.GK.Nonneg ∧ 1 ≤ C.Cr ∧ C.Large K CH ∧ C.P.CF = CH ∧

@@ -5,9 +5,9 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat.{u_1} 
     fun (R : Type u_1) [CommRing R] (m : ℕ) (i j : Fin m) ↦ if j = i.rev then (1 : R) else (0 : R)
 
 /- English proof (translation)
-Introduce `R _ m`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Simplify using `[UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat, Matrix.one_apply, eq_comm]`. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux2.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (m : ℕ),
@@ -27,7 +27,7 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl.{u_1} :
         inv_val := UpperTheory.Reformulated.B.AntidiagonalConjugation.aux2 m : (Matrix (Fin m) (Fin m) R)ˣ }
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux4.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -36,7 +36,7 @@ theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux4.{u_1} :
   rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux5.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -56,14 +56,14 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalConjugation.theta.{u_1}
       UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m * UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv g * UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m
 
 /- English proof (translation)
-The claim follows from `Units.ext (UpperTheory.Reformulated.B.AntidiagonalConjugation.aux2 m)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl_mul_self {R : Type*} [CommRing R] (m : ℕ) :
     UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m * UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m = 1 :=
   Units.ext (UpperTheory.Reformulated.B.AntidiagonalConjugation.aux2 m)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(↑(g * h)⁻¹ : Matrix n n R).transpose = (↑g⁻¹ : Matrix n n R).transpose * (↑h⁻¹ : Matrix n n R).transpose`. Rewrite using `[mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_mul {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g h : GL n R) :
@@ -74,14 +74,14 @@ private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_mul {n 
   rw [mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.transpose_transpose (↑g : Matrix n n R))`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_trInv {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g : GL n R) : UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv (UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv g) = g :=
   Units.ext (Matrix.transpose_transpose (↑g : Matrix n n R))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat R m).transpose = UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat R m`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, UpperTheory.Reformulated.B.AntidiagonalConjugation.Jmat]`. Apply the tactic sequence `refine if_congr ⟨?_, ?_⟩ rfl rfl <;> rintro rfl <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_Jgl {R : Type*} [CommRing R] (m : ℕ) :
     UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv (UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m) = UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m := by
@@ -92,7 +92,7 @@ private theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_Jgl {R 
   refine if_congr ⟨?_, ?_⟩ rfl rfl <;> rintro rfl <;> simp
 
 /- English proof (translation)
-Introduce `m R _ g`. Simplify using `only [UpperTheory.Reformulated.B.AntidiagonalConjugation.theta, UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_mul, UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_trInv, UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_Jgl]`. Rewrite using `[mul_assoc, mul_assoc, mul_assoc, UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl_mul_self, mul_one, ← mul_assoc, UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl_mul_self, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux8.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g : GL (Fin m) R), UpperTheory.Reformulated.B.AntidiagonalConjugation.theta (UpperTheory.Reformulated.B.AntidiagonalConjugation.theta g) = g := by
@@ -103,7 +103,7 @@ theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux8.{u_1} :
     UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl_mul_self, one_mul]
 
 /- English proof (translation)
-Introduce `m R _ g h`. Simplify using `only [UpperTheory.Reformulated.B.AntidiagonalConjugation.theta, UpperTheory.Reformulated.B.AntidiagonalConjugation.trInv_mul, mul_assoc]`. Rewrite using `[← mul_assoc (UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m) (UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl R m), UpperTheory.Reformulated.B.AntidiagonalConjugation.Jgl_mul_self, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux9.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g h : GL (Fin m) R),
@@ -119,7 +119,7 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalConjugation.thetaAut.{u
         right_inv := UpperTheory.Reformulated.B.AntidiagonalConjugation.aux8, map_mul' := UpperTheory.Reformulated.B.AntidiagonalConjugation.aux9 : GL (Fin m) R ≃* GL (Fin m) R }
 
 /- English proof (translation)
-Introduce `m R _`. Conclude with `if_pos rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux11.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R],
@@ -129,7 +129,7 @@ theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux11.{u_1} :
   exact if_pos rfl
 
 /- English proof (translation)
-Introduce `m R _ s t`. Establish `hsq : UpperTheory.Reformulated.B.AntidiagonalConjugation.thetaAut m R * UpperTheory.Reformulated.B.AntidiagonalConjugation.thetaAut m R = 1` using `MulEquiv.ext fun g => UpperTheory.Reformulated.B.AntidiagonalConjugation.aux8 g`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl <;>`. Simplify using `[hne, hsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.aux12.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R] (s t : ℤˣ),
@@ -169,7 +169,7 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalConjugation.conjBy.{u_1
         r
 
 /- English proof (translation)
-Introduce `G R _ _ m h r g`. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.AntidiagonalConjugation.ofGL h * r g * (UpperTheory.Reformulated.B.AntidiagonalConjugation.ofGL h)⁻¹).left = _`. Rewrite using `[← map_inv, SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.left_inl, SemidirectProduct.left_inl, SemidirectProduct.right_inl, map_one, one_mul, MulAut.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.AntidiagonalConjugation.conjBy_left :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ} (h : GL (Fin m) R) (r : G →* UpperTheory.Reformulated.B.AntidiagonalConjugation.GG m R)

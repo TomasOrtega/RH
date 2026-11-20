@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.HolDict.ZDecay
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < x` using `lt_of_le_of_ne hx (Ne.symm hne)`. Establish `h1` using `h (max (max T 0) (K / x)) ((le_max_left _ _).trans (le_max_left _ _)) ((le_max_right _ _).trans (le_max_left _ _))`. Establish `h2 : K / x ≤ max (max T 0) (K / x)` using `le_max_right _ _`. Establish `h3 : x * (K / x) = K` using `mul_div_cancel₀ _ hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -35,23 +35,21 @@ theorem eq_zero_of_le_div {x K T : ℝ} (hx : 0 ≤ x) (h : ∀ t : ℝ, T ≤ t
   nlinarith
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨P, hP, hfP⟩` from `hf`. Establish `hflow` using `GlobalTheory.HolDict.flowInv n ι Hm q x₀ w hx P e he hP (fun m hm v hv => by`. Take `⟨h1, h2⟩` from `hinv m hm v hv`. Rewrite `h2` using `[hfP _ h1, hfP _ hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2) u hu`. Use `choose C A hCA using fun τ => GlobalTheory.HolDict.FlowGS.flowGS n (Hm τ) (q τ) (x₀ τ) (hx τ) (w τ) (e τ) (he τ) (u τ) (hu τ)`. Establish `hC0 : ∀ τ, 0 ≤ C τ` using `fun τ => by`. Take `⟨u', -, b, -, -, h, -⟩` from `hCA τ 0 le_rfl`. Use `(norm_nonneg _).trans h` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨K, hK⟩` from `hdec (2 * (∑ τ, A τ + 1))`. Take `⟨-, -, hst, hbase⟩` from `GlobalTheory.HolDict.frDoms_open_preconnected_stable n ι Hm q x₀ hx`. Use `set C' : ℝ := ∑ τ, C τ + 1 with hC'`. Establish `hCs : 0 ≤ ∑ τ, C τ` using `Finset.sum_nonneg fun τ _ => hC0 τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC'pos : 0 < C'` using `by linarith`. Establish `hCle : ∀ τ, C τ ≤ C'` using `fun τ => by`. Use `Finset.single_le_sum (f := C) (fun τ _ => hC0 τ) (Finset.mem_univ τ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← norm_eq_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_zero_of_le_div (K := (∏ τ, C τ) * K * C' ^ (∑ τ, A τ + 1)) (T := C') (norm_nonneg _) fun t hT ht => ?_` and prove the remaining obligations. Use `choose u' hu' b hb hdecomp hchi hshort using fun τ => hCA τ t ht`. Establish `ht1 : 0 < 1 + t` using `by linarith`. Establish `hone : ∀ _ : ι, UpT (1 : Mt n)` using `fun _ => ⟨by simp, fun a c hc => Matrix.one_apply_ne hc.ne'⟩`. Establish `hmem : (fun τ => (u' τ * x₀ τ : Mt n)) ∈ frDoms Hm q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hst u' hu' (fun _ => 1) hone _ hbase` as an intermediate fact. Simplify using `only [Matrix.mul_one] at this`. Conclude with `this`. Establish `h1 : f u = (∏ τ, ∏ a, b τ a a ^ w τ a) * f u'`. Rewrite using `[hfP u hu, ← hflow t ht, hfP u' hu', ← hP.2 _ hmem b hb]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `hdecomp τ`. Establish `hq : 0 < C' / (1 + t)` using `div_pos hC'pos ht1`. Establish `h2` using `hK u' hu' (Real.sqrt (C' / (1 + t))) (Real.sqrt_pos.2 hq) (Real.sqrt_le_one.2 ((div_le_one ht1).2 (by linarith))) fun τ i => Real.le_sqrt_of_sq_le ((le_div_iff₀ ht1).2 ((hshort τ i).trans (hCle τ)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[pow_mul, Real.sq_sqrt hq.le]`. Establish `h3 : ‖∏ τ, ∏ a, b τ a a ^ w τ a‖ ≤ (∏ τ, C τ) * (1 + t) ^ (∑ τ, A τ)`. Rewrite using `[norm_prod, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun τ _ => norm_nonneg _) fun τ _ => hchi τ`. Establish `h4 : ‖f u‖ ≤ (∏ τ, C τ) * (1 + t) ^ (∑ τ, A τ) * (K * (C' / (1 + t)) ^ (∑ τ, A τ + 1))`.
-
-Rewrite using `[h1, norm_mul]`. Conclude with `mul_le_mul h3 h2 (norm_nonneg _) ((norm_nonneg _).trans h3)`. Use `(mul_le_mul_of_nonneg_right h4 ht1.le).trans_eq ?_` and prove the remaining obligations. Rewrite using `[div_pow, pow_succ (1 + t)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem holFn_eq_zero {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {Hm : ι → Mt n} {q : ι → ℕ} {x₀ : ι → Mt n}
     {w : ι → Fin n → ℤ} (hx : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) {e : ι → Fin n → ℂ}
@@ -109,9 +107,9 @@ theorem holFn_eq_zero {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {Hm : 
   field_simp
 
 /- English proof (translation)
-Establish `: SMulCommClass G Γ G` using `⟨fun a γ z => by`. Express the relevant statement in the definitionally equal form `a * ((γ : G) * z) = γ * (a * z)`. Rewrite using `[← mul_assoc, hc a, mul_assoc]⟩`. Establish `h2` using `h𝓕.smul_of_comm z₀`. Rewrite using `[h𝓕.setIntegral_eq h2 fun γ z => hF γ γ.2 z]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((measurePreserving_mul_left μ z₀).setIntegral_image_emb (measurableEmbedding_mulLeft z₀) F 𝓕).symm`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_translate {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (hc : ∀ a b : G, a * b = b * a) (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
@@ -125,9 +123,9 @@ theorem setIntegral_translate {G : Type} [Group G] [TopologicalSpace G] [IsTopol
   exact ((measurePreserving_mul_left μ z₀).setIntegral_image_emb (measurableEmbedding_mulLeft z₀) F 𝓕).symm
 
 /- English proof (translation)
-Establish `hs : ∀ x : D.host.E, tauE D τ ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = star (tauE D τ x)` using `fun x => by`. Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ x`. Establish `h` using `congrArg (tauE D τ) hξ.2`. Rewrite `h` using `[map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, hs, gramAt, Matrix.map_apply, Pi.star_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_tau {D : D7} {V : HSp D} {ξ : Fin V.rank → D.host.E} (hξ : IsoVec V ξ) (τ : D.what₂.Tau) :
     star (fun i => tauE D τ (ξ i)) ⬝ᵥ (gramAt D V τ).mulVec (fun i => tauE D τ (ξ i)) = 0 := by
@@ -140,27 +138,25 @@ theorem iso_tau {D : D7} {V : HSp D} {ξ : Fin V.rank → D.host.E} (hξ : IsoVe
   simp only [dotProduct, Matrix.mulVec, map_sum, map_mul, hs, gramAt, Matrix.map_apply, Pi.star_apply]
 
 /- English proof (translation)
-Introduce `D θ V S M w hθ hM φ haut hhol hdec ξ hξ μ 𝓕 hμ h𝓕 g`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: Countable (GQ V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Establish `: BorelSpace (ZI V ξ)` using `Subtype.borelSpace (ZI V ξ : Set (GA D V))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable ((GQ V).subgroupOf (ZI V ξ))` using `Function.Injective.countable (f := fun γ : (GQ V).subgroupOf (ZI V ξ) => (⟨γ.1.1, γ.2⟩ : GQ V)) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ V => (x : GA D V)) h))`. Take `⟨L, hL, hLmul, -, hUG, hLa, -, hsplit, hcomm, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Take `⟨⟨ε, -⟩, -, -, hlift, -⟩` from `GlobalTheory.T.adelicTransvectionSubgroup_eq_adeles_closed D θ V hθ ξ hξ`. Establish `hfin` using `((GlobalTheory.T.transvectionSubgroup_cocompact_haar_fundamentalDomain D θ V hθ ξ hξ).2.1 μ 𝓕 hμ h𝓕).2`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 hfin`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ a b : ZI V ξ, a * b = b * a` using `fun a b => by`. Take `⟨a, rfl⟩` from `ε.surjective a`. Take `⟨b, rfl⟩` from `ε.surjective b`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Take `⟨a, ha, u, hu, rfl⟩` from `hsplit g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ)` using `fun τ => ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hM).1`. Take `⟨B, hB⟩` from `hdec.bounded`. Establish `hf : HolFn (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) w fun v => ∫ z in 𝓕, φ ((z : GA D V) * a * L v) ∂μ`. Use `GlobalTheory.T.integral_holomorphicTypeFamily_holomorphicType _ _ _ _ _ w hx (ZI V ξ) (μ.restrict 𝓕) (fun z v => φ ((z : GA D V) * a * L v)) B (fun z => ?_) (fun z v _ => hB _) fun v _ => ?_` and prove the remaining obligations. Take `⟨f, ⟨P, hP, hfP⟩, hφf⟩` from `hhol ((z : GA D V) * a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, fun v hv => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hφf _ (hL v hv).1, ← hfP v hv]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(hL v hv).2 τ`. Conclude with `(haut.cont.comp ((continuous_subtype_val.mul continuous_const).mul continuous_const)).measurable.aestronglyMeasurable`. Establish `key` using `holFn_eq_zero hx (iso_tau hξ) hf (fun m hm v hv => ?_) (fun k => ?_) _ (hUG u)`. Simplify using `only [hLa u hu, mul_assoc] at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z₀, hz₀, hz₁, hz₂⟩` from `hlift m hm`. Establish `hm' : m = fun τ => archM V (θ τ) z₀` using `funext fun τ => (hz₂ τ).symm`. Establish `hmU : m ∈ UG (gramAt D V)` using `hm' ▸ hUG z₀`. Establish `hLm : L m = z₀` using `by rw [hm']; exact hLa z₀ hz₁`. Use `⟨fun τ => GlobalTheory.PointAtPlaceHom.mul_mem_UH (hmU τ) (hv τ), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← setIntegral_translate hc _ μ h𝓕 (fun z => φ ((z : GA D V) * a * L v)) (fun γ hγ z => ?_) ⟨z₀, hz₀⟩]`. Use `integral_congr_ae (.of_forall fun z => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val (hc ⟨z₀, hz₀⟩ z)`. Simplify using `only [Subgroup.coe_mul] at h1 ⊢`. Rewrite using `[hLmul m hmU v hv, hLm, h1, mul_assoc (z : GA D V) z₀, ← hcomm a ha z₀ hz₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mul_assoc]`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `haut.left _ hγ _`. Take `⟨c, N, hc0, hh⟩` from `GlobalTheory.T.quotientHeight_lower_bound_short_isotropic_vector D θ V hθ ξ hξ a ha`. Take `⟨C, hC⟩` from `hdec (N * k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨C / c ^ k * (μ.restrict 𝓕).real Set.univ, fun v hv δ h0 h1 hs => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm]`. Use `norm_integral_le_of_norm_le_const (.of_forall fun z => ?_)` and prove the remaining obligations. Establish `h2` using `hh z z.2 (L v) (hL v hv).1 δ h0 h1 fun τ i => by rw [(hL v hv).2 τ]; exact hs τ i`. Establish `h3` using `pow_le_pow_left₀ hc0.le h2 k`.
-
-Rewrite `h3` using `[mul_pow, ← pow_mul]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (pow_pos hc0 k)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zCusp_of_rapidDecay : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ), IsInfFam θ → HolShape M → ∀ φ : GA D V → ℂ, IsAutFun V φ → HolAd θ M w φ → GlobalTheory.CuspDecay.IsRapidDecay θ V φ → ZCusp V φ := by
   intro D θ V S M w hθ hM φ haut hhol hdec ξ hξ μ 𝓕 hμ h𝓕 g

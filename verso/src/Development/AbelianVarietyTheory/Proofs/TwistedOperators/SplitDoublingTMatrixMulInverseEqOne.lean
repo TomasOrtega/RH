@@ -15,13 +15,13 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.SplitDblGen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d c K K' hKK hc`. Establish `h2 : (half : AE F E) * 2 = 1`. Unfold `half`. Rewrite using `[show (2 : AE F E) = algebraMap (AF F) (AE F E) 2 from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self, map_one]`. Establish `hP : (c * c) • ((K - 1) * (K' - 1)) = (K - 1) * (K' - 1)` using `by rw [← smul_mul_assoc, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : (K - 1) + (K' - 1) + (K - 1) * (K' - 1) = 0`. Rewrite using `[sub_mul, mul_sub, mul_sub, hKK]`. Use `noncomm_ring`. Establish `hff : ((half * (1 + c)) * (half * (1 + c))) • ((K - 1) * (K' - 1)) = (half * (1 + c)) • ((K - 1) * (K' - 1))`. Rewrite using `[show (half * (1 + c)) * (half * (1 + c)) = half * half * (1 + 2 * c) + half * half * (c * c) by ring, add_smul, ← smul_smul (half * half) (c * c), hP, ← add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Take the linear combination `(half * (1 + c)) * h2`. Unfold `tMat`. Generalize the expression as in `half * (1 + c) = f at hff ⊢`. Establish `e : (1 + f • (K - 1)) * (1 + f • (K' - 1)) = 1 + f • ((K - 1) + (K' - 1)) + (f * f) • ((K - 1) * (K' - 1))`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, one_mul, mul_add, mul_one, smul_mul_smul_comm, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hff, add_assoc, ← smul_add, hsum, smul_zero, add_zero]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tMat_mul_tMat_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (c : AE F E) (K K' : Matrix (Fin d) (Fin d) (AE F E)),
     K * K' = 1 → (c * c) • (K - 1) = K - 1 →

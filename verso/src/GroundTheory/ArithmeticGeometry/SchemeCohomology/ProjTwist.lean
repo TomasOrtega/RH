@@ -36,11 +36,9 @@ def isLocallyFraction (k : ℤ) : LocalPredicate fun x : ProjectiveSpectrum.top 
   (isFractionPrelocal 𝒜 k).sheafify
 
 /- English proof (translation)
-Use `by_contra! h`. Use `x.not_irrelevant_le fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 z]`. Use `x.1.toIdeal.sum_mem fun n hn => ?_` and prove the remaining obligations. Distinguish the cases in `hn0 : n = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hn0` using the available equality. Establish `: (DirectSum.decompose 𝒜 z 0 : A) = 0`. Rewrite using `[← GradedRing.proj_apply]`. Conclude with `(HomogeneousIdeal.mem_irrelevant_iff _ _).mp hz`. Rewrite using `[this]`.
-
-Conclude with `zero_mem _`. Conclude with `h _ n (SetLike.coe_mem _) (Nat.pos_of_ne_zero hn0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_deg_nmem (x : ProjectiveSpectrum 𝒜) :
     ∃ (f : A) (m : ℕ), f ∈ 𝒜 m ∧ 0 < m ∧ f ∉ x.asHomogeneousIdeal := by
@@ -59,9 +57,9 @@ theorem exists_pos_deg_nmem (x : ProjectiveSpectrum 𝒜) :
   · exact h _ n (SetLike.coe_mem _) (Nat.pos_of_ne_zero hn0)
 
 /- English proof (translation)
-Take `⟨f, m, hf, hm, hfx⟩` from `exists_pos_deg_nmem x`. Use `⟨m * (-k).toNat, m * (-k).toNat + k.toNat - (-k).toNat + 0, f ^ (-k).toNat, ?_, ?_, fun h => hfx (x.isPrime.mem_of_pow_mem _ h)⟩` and prove the remaining obligations. Establish `: ((-k).toNat : ℤ) ≤ m * (-k).toNat`. Conclude with `Nat.le_mul_of_pos_left _ hm` after adjusting the coercions. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify `SetLike.pow_mem_graded (-k).toNat hf` using `[mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_den (k : ℤ) (x : ProjectiveSpectrum 𝒜) :
     ∃ (i j : ℕ) (s : A), (j : ℤ) = i + k ∧ s ∈ 𝒜 i ∧ s ∉ x.asHomogeneousIdeal := by
@@ -75,14 +73,14 @@ theorem exists_den (k : ℤ) (x : ProjectiveSpectrum 𝒜) :
   · simpa [mul_comm] using SetLike.pow_mem_graded (-k).toNat hf
 
 /- English proof (translation)
-Introduce `hh` and use `(x.isPrime.mem_or_mem hh).elim h h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nmem_mul {x : ProjectiveSpectrum 𝒜} {s s' : A} (h : s ∉ x.asHomogeneousIdeal)
     (h' : s' ∉ x.asHomogeneousIdeal) : s * s' ∉ x.asHomogeneousIdeal := fun hh =>
   (x.isPrime.mem_or_mem hh).elim h h'
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, j, s, hij, hs, hsx⟩ := exists_den k x.1 refine ⟨U ⊓ ProjectiveSpectrum.basicOpen 𝒜 s, ⟨x.2, hsx⟩, Opens.infLELeft _ _, i, j, hij, 0, s, zero_mem _, hs, fun y => y.2.2, fun y => ?_⟩ simp [Localization.mk_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) :
     (isLocallyFraction 𝒜 k).pred (0 : ∀ x : U, Loc 𝒜 x.1) := fun x => by
@@ -92,7 +90,7 @@ theorem zero_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) :
   simp [Localization.mk_zero]
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨Va, ma, ia, i, j, hij, r, s, hr, hs, hsn, wa⟩ := ha x obtain ⟨Vb, mb, ib, i', j', hij', r', s', hr', hs', hsn', wb⟩ := hb x have hdeg : j' + i = j + i' := by omega refine ⟨Va ⊓ Vb, ⟨ma, mb⟩, Opens.infLELeft _ _ ≫ ia, i + i', j + i', by push_cast; omega, r * s' + s * r' …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem add_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a b : ∀ x : U, Loc 𝒜 x.1)
     (ha : (isLocallyFraction 𝒜 k).pred a) (hb : (isLocallyFraction 𝒜 k).pred b) :
@@ -114,7 +112,7 @@ theorem add_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a b : ∀ 
     ring
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨V, m, iV, i, j, hij, r, s, hr, hs, hsn, w⟩ := ha x refine ⟨V, m, iV, i, j, hij, -r, s, neg_mem hr, hs, hsn, fun y => ?_⟩ simp only [Pi.neg_apply, w y, Localization.neg_mk]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem neg_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a : ∀ x : U, Loc 𝒜 x.1)
     (ha : (isLocallyFraction 𝒜 k).pred a) : (isLocallyFraction 𝒜 k).pred (-a) := fun x => by
@@ -214,7 +212,7 @@ variable {𝒜} {k : ℤ} {U V : (Proj 𝒜).Opens}
 def val (s : Γ(twistingSheaf 𝒜 k, U)) : ∀ x : U, Loc 𝒜 x.1 := s.1
 
 /- English proof (translation)
-The claim follows from `s.2`.
+A detailed English derivation is pending.
 -/
 lemma isLocallyFraction_val (s : Γ(twistingSheaf 𝒜 k, U)) :
     (isLocallyFraction 𝒜 k).pred (val s) := s.2
@@ -229,7 +227,7 @@ Both sides reduce to the same expression.
     val (mkSection f hf) = f := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] lemma ext {s t : Γ(twistingSheaf 𝒜 k, U)} (h : val s = val t) : s = t := Subtype.ext h
 

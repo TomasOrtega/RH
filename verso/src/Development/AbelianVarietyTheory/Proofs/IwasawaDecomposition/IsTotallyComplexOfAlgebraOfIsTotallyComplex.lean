@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hw`. Establish `h` using `InfinitePlace.IsReal.comap (algebraMap E K) hw`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_algebra (E K : Type) [Field E] [NumberField E] [Field K]
     [NumberField K] [Algebra E K] [IsTotallyComplex E] : IsTotallyComplex K := by
@@ -17,7 +17,7 @@ theorem isTotallyComplex_of_algebra (E K : Type) [Field E] [NumberField E] [Fiel
   exact InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _) h
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ _` and use `isTotallyComplex_of_algebra E K`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] [IsTotallyComplex E], IsTotallyComplex K :=
   fun E K _ _ _ _ _ _ => isTotallyComplex_of_algebra E K

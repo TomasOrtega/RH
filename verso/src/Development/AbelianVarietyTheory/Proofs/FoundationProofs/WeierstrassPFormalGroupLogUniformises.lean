@@ -15,7 +15,7 @@ namespace GlobalTheory.WpForm
 open PowerSeries
 
 /- English proof (translation)
-Establish `hA : GlobalTheory.FormalInv.linearPart (fun _ : Unit => (l : MvPowerSeries Unit R)) = 1`. Use extensionality with `i j`. Conclude with `h1`. Take `⟨v, hv, h, h'⟩` from `(GlobalTheory.FormalInv.exists_substInv_iff (u := fun _ : Unit => (l : MvPowerSeries Unit R)) (fun _ => h0)).2 (hA ▸ isUnit_one)`. Conclude with `⟨v (), hv (), h (), h' ()⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subst_inverse {R : Type*} [CommRing R] (l : PowerSeries R)
     (h0 : constantCoeff l = 0) (h1 : coeff 1 l = 1) :
@@ -29,27 +29,25 @@ theorem exists_subst_inverse {R : Type*} [CommRing R] (l : PowerSeries R)
   exact ⟨v (), hv (), h (), h' ()⟩
 
 /- English proof (translation)
-Use `set l : PowerSeries K := X * m with hl`. Establish `h0 : constantCoeff l = 0` using `by simp [hl]`. Establish `h1 : coeff 1 l = 1`. Rewrite using `[hl, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul]`. Simplify using `using hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨ex, he0, he1, he2⟩` from `exists_subst_inverse l h0 h1`. Establish `sl : HasSubst l` using `HasSubst.of_constantCoeff_zero' h0`. Establish `se : HasSubst ex` using `HasSubst.of_constantCoeff_zero' he0`. Establish `hle : ∀ f : PowerSeries K, (subst l (subst ex f : PowerSeries K) : PowerSeries K) = f`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_comp_subst_apply se sl, he2]`. Conclude with `congrFun MvPowerSeries.subst_self f`. Establish `hel : ∀ f : PowerSeries K, (subst ex (subst l f : PowerSeries K) : PowerSeries K) = f`. Introduce `f`. Rewrite using `[subst_comp_subst_apply sl se, he1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrFun MvPowerSeries.subst_self f`. Use `set Q : PowerSeries K := subst ex (m ^ 2 * q) with hQ`. Establish `hQl : (subst l Q : PowerSeries K) = m ^ 2 * q` using `hle _`. Establish `hw : derivative K l = m + X * derivative K m`. Rewrite using `[hl, Derivation.leibniz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[add_comm]`. Establish `hw0 : derivative K l ≠ 0`. Introduce `h`. Use `congrArg constantCoeff (hw.symm.trans h)` as an intermediate fact. Simplify using `[hm] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hch` using `derivative_subst (f := Q) sl`. Rewrite `hch` using `[hQl, Derivation.leibniz, Derivation.leibniz_pow]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul] at hch`. Establish `key : l * (subst l (derivative K Q) : PowerSeries K) - 2 * (m ^ 2 * q) = m ^ 3 * M`. Apply `mul_right_cancel₀ hw0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hch' : m ^ 2 * derivative K q + q * (2 * (m * derivative K m)) = (subst l (derivative K Q) : PowerSeries K) * derivative K l` using `by simpa using hch`. Take the linear combination `-l * hch' + m ^ 3 * hd - 2 * m ^ 2 * q * hw + (m ^ 2 * derivative K q + q * (2 * (m * derivative K m))) * hl`. Establish `hQW : IsWpSer a b Q`. Prove the components needed by the constructor for the conclusion. Establish `h2 : ∀ f : PowerSeries K, constantCoeff (subst ex f : PowerSeries K) = constantCoeff f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `f`. Establish `hf` using `eq_X_mul_shift_add_const f`. Use `conv_lhs => rw [hf]`. Rewrite using `[← coe_substAlgHom se, map_add, map_mul, substAlgHom_X, map_add, map_mul, he0, C_eq_algebraMap, AlgHom.commutes]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hQ, h2]`. Simplify using `[hm, hq]`. Rewrite using `[← hel (_ ^ 2), ← hel (_ - C b * X ^ 6)]`. Use `congr 1`. Establish `hD : derivativeFun Q = derivative K Q` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hD, ← coe_substAlgHom sl]`. Simplify using `only [map_pow, map_sub, map_mul, map_ofNat, substAlgHom_X, C_eq_algebraMap, AlgHom.commutes]`. Rewrite using `[coe_substAlgHom sl, hQl]`. Simplify using `only [C_eq_algebraMap] at hM`. Express the relevant statement in the definitionally equal form `(l * _ - _) ^ 2 = _ - algebraMap K (PowerSeries K) a * l ^ 4 * _ - algebraMap K (PowerSeries K) b * l ^ 6`.
-
-Rewrite using `[key, hl]`. Take the linear combination `m ^ 6 * hM`. Rewrite using `[(GlobalTheory.WpSeries.existsUnique_isWpSer K a b).unique hP hQW, hQl]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_eq_of_equation {K : Type} [Field K] [CharZero K] {a b : K}
     {P m q M : PowerSeries K} (hP : IsWpSer a b P) (hm : constantCoeff m = 1)
@@ -114,14 +112,14 @@ theorem subst_eq_of_equation {K : Type} [Field K] [CharZero K] {a b : K}
   rw [(GlobalTheory.WpSeries.existsUnique_isWpSer K a b).unique hP hQW, hQl]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[dX, coeff_derivative, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dX_eq_derivative {K : Type*} [CommRing K] (f : PowerSeries K) : dX f = derivative K f := by
   ext n
   simp [dX, coeff_derivative, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `: ((n : ℂ_[p]) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Simplify using `[flog, coeff_derivative, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem derivative_flog {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve ℂ_[p])
     (wq : PowerSeries ℂ_[p]) : derivative ℂ_[p] (flog W wq) = omegaW W wq := by
@@ -130,29 +128,27 @@ theorem derivative_flog {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve ℂ_[p])
   simp [flog, coeff_derivative, this]
 
 /- English proof (translation)
-Introduce `p _ W wq P hwq hP`. Establish `hw1` using `GlobalTheory.GenusOneDatum.constantCoeff_of_isWq hwq`. Take `⟨m, hm⟩` from `X_dvd_iff.2 (GlobalTheory.GenusOneDatum.constantCoeff_flog W wq)`. Establish `hm1 : constantCoeff m = 1`. Use `GlobalTheory.GenusOneDatum.coeff_one_flog hwq` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hm, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul]`. Simplify using `using this`. Establish `he : wq * wq⁻¹ = 1` using `PowerSeries.mul_inv_cancel wq (by rw [hw1]; exact one_ne_zero)`. Establish `he1 : constantCoeff wq⁻¹ = 1` using `by simp [PowerSeries.constantCoeff_inv, hw1]`. Use `set e := wq⁻¹ with hedef`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : PowerSeries ℂ_[p] := C W.a₁ * X + C W.a₃ * X ^ 3 * wq - 2 with hN`. Establish `h2 : constantCoeff (2 : PowerSeries ℂ_[p]) = 2` using `map_ofNat _ 2`. Establish `hω : omegaW W wq * (wq * N) = -2 * wq - X * derivative ℂ_[p] wq`. Establish `hu : (wq * N)⁻¹ * (wq * N) = 1` using `PowerSeries.inv_mul_cancel _ (by simp [hN, hw1, h2])`. Establish `: omegaW W wq = (-2 * wq - X * derivative ℂ_[p] wq) * (wq * N)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← dX_eq_derivative]`. Both sides reduce to the same expression. Rewrite using `[this, mul_assoc, hu, mul_one]`. Establish `hde : wq * derivative ℂ_[p] e + e * derivative ℂ_[p] wq = 0`. Use `congrArg (derivative ℂ_[p]) he` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[Derivation.leibniz]`. Simplify using `using this`. Use `set r := W.b₂ / 12 with hr`. Establish `hq : lineSer e (-r) = e + C r * X ^ 2` using `by simp [lineSer]`. Establish `hdq : derivative ℂ_[p] (e + C r * X ^ 2) = derivative ℂ_[p] e + C r * (2 * X)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_add, Derivation.leibniz, Derivation.leibniz_pow]`. Simplify using the standard rewrite rules. Establish `hW : wq = 1 + C W.a₁ * X * wq + C W.a₂ * X ^ 2 * wq + C W.a₃ * X ^ 3 * wq ^ 2 + C W.a₄ * X ^ 4 * wq ^ 2 + C W.a₆ * X ^ 6 * wq ^ 3` using `hwq`. Establish `hW' : e ^ 2 = e ^ 3 + C W.a₁ * X * e ^ 2 + C W.a₂ * X ^ 2 * e ^ 2 + C W.a₃ * X ^ 3 * e + C W.a₄ * X ^ 4 * e + C W.a₆ * X ^ 6`. Take the linear combination `e ^ 3 * hW + (-e ^ 2 + C W.a₁ * X * e ^ 2 + C W.a₂ * X ^ 2 * e ^ 2 + (C W.a₃ * X ^ 3 + C W.a₄ * X ^ 4) * e * (wq * e + 1) + C W.a₆ * X ^ 6 * ((wq * e) ^ 2 + wq * e + 1)) * he`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hNe : N * e = C W.a₁ * X * e + C W.a₃ * X ^ 3 - 2 * e`. Rewrite using `[hN]`. Take the linear combination `C W.a₃ * X ^ 3 * he`. Establish `c2 : (12 : PowerSeries ℂ_[p]) * C r = C W.a₁ ^ 2 + 4 * C W.a₂`. Establish `: 12 * r = W.a₁ ^ 2 + 4 * W.a₂` using `by rw [hr, WeierstrassCurve.b₂]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `congrArg (C (R := ℂ_[p])) this` using `only [map_mul, map_add, map_pow, map_ofNat]`. Establish `c4 : (C (W.c₄ / 12) : PowerSeries ℂ_[p]) = 12 * C r ^ 2 - 2 * (2 * C W.a₄ + C W.a₁ * C W.a₃)`. Establish `: W.c₄ / 12 = 12 * r ^ 2 - 2 * (2 * W.a₄ + W.a₁ * W.a₃)`. Rewrite using `[hr, WeierstrassCurve.c₄, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `only [map_mul, map_add, map_sub, map_pow, map_ofNat]`. Establish `c6 : (C (W.c₆ / 216) : PowerSeries ℂ_[p]) = 2 * C r * (2 * C W.a₄ + C W.a₁ * C W.a₃) - 8 * C r ^ 3 - (C W.a₃ ^ 2 + 4 * C W.a₆)`. Establish `: W.c₆ / 216 = 2 * r * (2 * W.a₄ + W.a₁ * W.a₃) - 8 * r ^ 3 - (W.a₃ ^ 2 + 4 * W.a₆)`. Rewrite using `[hr, WeierstrassCurve.c₆, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Simplify using `only [map_mul, map_add, map_sub, map_pow, map_ofNat]`. Establish `main` using `subst_eq_of_equation (m := m) (q := e + C r * X ^ 2) (M := N * e) hP hm1 (by simp [he1]) (by`. Rewrite using `[← hm, derivative_flog, hdq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-e ^ 2 * hω + X * e * hde + (omegaW W wq * N * e + 2 * e - X * derivative ℂ_[p] e) * he)`. Use the proof step `(by`. Rewrite using `[hNe, c4, c6]`. Take the linear combination `4 * hW' - X ^ 2 * e ^ 2 * c2)`. Rewrite using `[hq, hm, main]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wp_flog : ∀ (p : ℕ) [Fact p.Prime] (W : WeierstrassCurve ℂ_[p]) (wq P : PowerSeries ℂ_[p]), IsWq W wq → IsWpSer (W.c₄ / 12) (W.c₆ / 216) P → PowerSeries.X ^ 2 * (PowerSeries.subst (flog W wq) P : PowerSeries ℂ_[p]) = flog W wq ^ 2 * lineSer wq⁻¹ (-(W.b₂ / 12)) := by
   intro p _ W wq P hwq hP

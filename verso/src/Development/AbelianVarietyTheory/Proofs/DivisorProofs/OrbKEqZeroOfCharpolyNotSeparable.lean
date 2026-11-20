@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKCount.orbK GlobalTheory.LKCount.orbC`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `q`. Establish `hz : ∀ x : G, f (x⁻¹ * δ * x) = 0`. Introduce `x`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Apply `hδ` to reduce the goal to its premises. Establish `hs` using `hf _ h`. Establish `hc : ((π (x⁻¹ * δ * x) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly = ((π δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly`. Rewrite using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[hc]`. Then use the resulting hypothesis. Simplify using `[hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem orbK_eq_zero_of_charpoly_not_separable (G : Type) [Group G] (k : Type) [Field k] (n : ℕ)
     (π : G →* GL (Fin n) k) (K : Subgroup G) (δ : G) (f : G → ℂ)

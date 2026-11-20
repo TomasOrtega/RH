@@ -7,9 +7,9 @@ open Finset
 variable {ι κ : Type*} [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hF : ∑ j ∈ J, ∑ w ∈ W, l w * F j w = ∑ w ∈ W, ∑ j ∈ J, l w * F j w` using `Finset.sum_comm`. Establish `hE : ∑ j ∈ J, ∑ w ∈ W, l w * E j w = ∑ w ∈ W, ∑ j ∈ J, l w * E j w` using `Finset.sum_comm`. Unfold `ClaimSg Sg sgw Ga Fo Ee`. Rewrite using `[hF, hE, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weightedSlopeExcess_decomposition (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
     (tau : ι → ℝ) : ClaimSg W J l gain F E tau := by
@@ -23,11 +23,11 @@ theorem weightedSlopeExcess_decomposition (W : Finset ι) (J : Finset κ) (l : �
   ring
 
 /- English proof (translation)
-Unfold `ClaimUnit`. Introduce `hP hl hio`. Establish `hmain : 2 * ∑ w ∈ W, l w * io w = 2 * ∑ p ∈ P, Real.log (p : ℝ) * iop p`. Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hP]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun p hp => ?_)` and prove the remaining obligations. Rewrite using `[← hl p hp, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun w hw => ?_)` and prove the remaining obligations. Rewrite `hw` using `[Finset.mem_filter]`. Rewrite using `[hio w hw.1, hw.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ hmain` and prove the remaining obligations. Apply the tactic sequence `first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unit_weight_partition (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ) (l io : ι → ℝ)
     (iop : ℕ → ℝ) : ClaimUnit W P pr l io iop := by
@@ -45,15 +45,15 @@ theorem unit_weight_partition (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ)
   first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum])
 
 /- English proof (translation)
-Unfold `ClaimDe`. Introduce `hdM hT hdu`. Establish `hT1 : (1 : ℝ) < T - 1` using `by linarith`. Establish `hT1p : (0 : ℝ) < T - 1` using `by linarith`. Establish `hTp : (0 : ℝ) < T` using `by linarith`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 < 1 / (T - 1)` using `div_pos one_pos hT1p`. Establish `hx1 : 1 / (T - 1) < 1` using `by rw [div_lt_one hT1p]; exact hT1`. Establish `hq0 : 0 < 1 - 1 / (T - 1)` using `by linarith`. Establish `hq1 : 1 - 1 / (T - 1) ≤ 1` using `by linarith`. Establish `hdM0 : dM ≠ 0` using `hdM.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : du / dM = (1 - 1 / (T - 1)) ^ f`. Rewrite using `[hdu, mul_div_right_comm, div_self hdM0, one_mul]`. Establish `hpow0 : 0 < (1 - 1 / (T - 1)) ^ f` using `pow_pos hq0 f`. Establish `hpow1 : (1 - 1 / (T - 1)) ^ f ≤ 1` using `pow_le_one₀ hq0.le hq1`. Establish `hbern : 1 + (f : ℝ) * (-(1 / (T - 1))) ≤ (1 + -(1 / (T - 1))) ^ f` using `one_add_mul_le_pow (by linarith) f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (1 : ℝ) + -(1 / (T - 1)) = 1 - 1 / (T - 1)` using `by ring`. Rewrite `hbern` using `[hq]`. Establish `hfx : (f : ℝ) * (-(1 / (T - 1))) = -((f : ℝ) / (T - 1))` using `by ring`. Establish `hf0 : (0 : ℝ) ≤ f` using `Nat.cast_nonneg f`. Establish `hfT : (f : ℝ) / (T - 1) ≤ 2 * (f : ℝ) / T`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hT1p, div_mul_eq_mul_div, le_div_iff₀ hTp]`. Use polynomial arithmetic with `[mul_nonneg hf0 (by linarith : (0 : ℝ) ≤ T - 2)]`. Rewrite using `[hr]`. Use `⟨?_, by linarith, by linarith, by linarith⟩` and prove the remaining obligations. Rewrite using `[hdu]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -87,11 +87,11 @@ theorem deficit_bounds (f : ℕ) (T dM du : ℝ) : ClaimDe f T dM du := by
   ring
 
 /- English proof (translation)
-Unfold `ClaimT`. Introduce `hl hdM hde0 hde1 hdu hlam hlen hsum`. Establish `hdu0 : 0 < du` using `by rw [hdu]; exact mul_pos (by linarith) hdM`. Establish `hdu2 : dM ≤ 2 * du`. Rewrite using `[hdu]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ 1 - 2 * de) hdM.le]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hdu0]`. Establish `h1` using `hl w hw`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hlen w hw`. Use polynomial arithmetic with `[mul_nonneg h1 (sub_nonneg.2 h2), mul_nonneg (mul_nonneg h1 hlam) (sub_nonneg.2 hdu2)]`. Use `_ = 4 * lam * Real.log T := by rw [← Finset.mul_sum, hsum]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem truncatedLength_bound (WT : Finset ι) (l len : ι → ℝ) (dM du de lam T : ℝ) :
     ClaimT WT l len dM du de lam T := by
@@ -111,25 +111,23 @@ theorem truncatedLength_bound (WT : Finset ι) (l len : ι → ℝ) (dM du de la
     _ = 4 * lam * Real.log T := by rw [← Finset.mul_sum, hsum]
 
 /- English proof (translation)
-Unfold `HypLow at H`. Take `⟨hl, hdM, hde0, hde1, hdu, hWT, htau, hio, hlen, hPT, hRd, hmuN⟩` from `H`. Establish `hsg` using `weightedSlopeExcess_decomposition W J l gain F E tau`. Unfold `ClaimSg at hsg`. Establish `hde' : 0 < 1 - de` using `by linarith`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hdu0 : 0 < du` using `by rw [hdu]; exact mul_pos hde' hdM`. Establish `hdM0 : dM ≠ 0` using `hdM.ne'`. Establish `hde0' : 1 - de ≠ 0` using `hde'.ne'`. Establish `ha : Sg W l (sgw J gain F E) tau - Sg W l sg' tau ≤ Rd`. Unfold `Sg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `le_trans (le_of_eq (Finset.sum_congr rfl (fun w _ => by ring))) hRd`. Establish `hsplit : ∑ w ∈ W \ WT, 2 * l w * be du len tau w + ∑ w ∈ WT, 2 * l w * be du len tau w = BeSum W l du len tau` using `Finset.sum_sdiff hWT`. Establish `hT : ∑ w ∈ WT, 2 * l w * be du len tau w = ∑ w ∈ WT, 2 * l w * len w / du`. Use `Finset.sum_congr rfl (fun w hw => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `be`. Rewrite using `[htau w hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ∑ w ∈ W \ WT, 2 * l w * be du len tau w ≤ ∑ w ∈ W \ WT, (1 / (1 - de) * (2 * (l w * io w)) + de / (1 - de) * (2 * (l w * tau w)))`. Use `Finset.sum_le_sum (fun w hw => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hwW` using `(Finset.mem_sdiff.1 hw).1`. Establish `h1` using `hl w hwW`. Establish `h2` using `hlen w hw`. Establish `h3` using `hio w hwW`. Unfold `be`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `key : 1 / (1 - de) * (2 * (l w * io w)) + de / (1 - de) * (2 * (l w * tau w)) - 2 * l w * ((len w - du * tau w) / du) = 2 * l w * (dM * (tau w + io w) - len w) / du`. Rewrite using `[hdu]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 0 ≤ 2 * l w * (dM * (tau w + io w) - len w) / du` using `div_nonneg (mul_nonneg (by linarith) (by linarith)) hdu0.le`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hIOge : ∑ w ∈ W \ WT, l w * io w ≤ ∑ w ∈ W, l w * io w` using `Finset.sum_le_sum_of_subset_of_nonneg Finset.sdiff_subset (fun w hw _ => mul_nonneg (hl w hw) (hio w hw))`. Establish `hTa0 : ∑ w ∈ WT, l w * tau w = 0` using `Finset.sum_eq_zero (fun w hw => by rw [htau w hw, mul_zero])`. Establish `hTas : ∑ w ∈ W \ WT, l w * tau w + ∑ w ∈ WT, l w * tau w = ∑ w ∈ W, l w * tau w` using `Finset.sum_sdiff hWT`. Establish `hN2 : ∑ w ∈ W \ WT, (1 / (1 - de) * (2 * (l w * io w)) + de / (1 - de) * (2 * (l w * tau w))) = 1 / (1 - de) * (2 * ∑ w ∈ W \ WT, l w * io w) + de / (1 - de) * Ta W l tau`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]`. Unfold `Ta`. Rewrite using `[← hTas, hTa0, add_zero]`. Establish `hc : 1 / (1 - de) * (2 * ∑ w ∈ W \ WT, l w * io w) ≤ X / (1 - de)`. Rewrite using `[hX, one_div, div_eq_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (by linarith) (inv_nonneg.2 hde'.le)`. Establish `hbe : BeSum W l du len tau ≤ PT + X / (1 - de) + de / (1 - de) * Ta W l tau`. Rewrite using `[← hsplit, hT]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hmuN]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem le_muN_of_hypLow {W WT : Finset ι} {J : Finset κ} {l : ι → ℝ} {gain F E : κ → ι → ℝ}
     {tau io len sg' : ι → ℝ} {dM du de muMu muN PT Rd X : ℝ}
@@ -196,15 +194,15 @@ private theorem le_muN_of_hypLow {W WT : Finset ι} {J : Finset κ} {l : ι → 
   linarith
 
 /- English proof (translation)
-Establish `hl2` using `le_muN_of_hypLow (X := 2 * Q) hq H`. Unfold `HypLow at H`. Unfold `HypLow2 at H2`. Take `⟨hl, -, hde0, -, -, -, -, hio, -, -, -, -⟩` from `H`. Take `⟨a1, a2, a3, a4, a5, a6, -, a8, a9⟩` from `H2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hde' : 0 < 1 - de` using `by linarith`. Establish `hQ0 : 0 ≤ Q`. Establish `: 0 ≤ ∑ w ∈ W, l w * io w` using `Finset.sum_nonneg (fun w hw => mul_nonneg (hl w hw) (hio w hw))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTa0 : 0 ≤ Ta W l tau`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `Ta`. Establish `: 0 ≤ ∑ w ∈ W, l w * tau w` using `Finset.sum_nonneg (fun w hw => mul_nonneg (hl w hw) (a4 w hw))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hio2 : 2 * Q / (1 - de) ≤ 4 * Q`. Rewrite using `[div_le_iff₀ hde']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg hQ0 (by linarith : (0 : ℝ) ≤ 1 - 2 * de)]`. Establish `hk : de / (1 - de) ≤ 2 * de`. Rewrite using `[div_le_iff₀ hde']`. Use polynomial arithmetic with `[mul_nonneg hde0 (by linarith : (0 : ℝ) ≤ 1 - 2 * de)]`. Establish `hchain : de / (1 - de) * Ta W l tau ≤ 4 * f / T * b ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem le_muN_of_hypLow_of_hypLow2 {W WT : Finset ι} {J : Finset κ} {l : ι → ℝ}
     {gain F E : κ → ι → ℝ} {tau io len sg' : ι → ℝ} {dM du de muMu muN PT Rd : ℝ}
@@ -242,9 +240,9 @@ private theorem le_muN_of_hypLow_of_hypLow2 {W WT : Finset ι} {J : Finset κ} {
   linarith
 
 /- English proof (translation)
-Unfold `ClaimLow2`. Introduce `H H2`. Use `le_muN_of_hypLow_of_hypLow2 ?_ H H2` and prove the remaining obligations. Unfold `HypLow2 at H2`. Take `⟨-, -, -, -, -, -, a7, -, -⟩` from `H2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `exact a7.symm.trans (by first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum]))`.
+A detailed English derivation is pending.
 -/
 theorem lower_bound_simplified (W WT : Finset ι) (J : Finset κ) (l : ι → ℝ)
     (gain F E : κ → ι → ℝ) (tau io len sg' : ι → ℝ) (dM du de muMu muN PT Rd : ℝ)
@@ -258,11 +256,11 @@ theorem lower_bound_simplified (W WT : Finset ι) (J : Finset κ) (l : ι → �
   exact a7.symm.trans (by first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum]))
 
 /- English proof (translation)
-Unfold `ClaimHigh`. Introduce `H`. Unfold `HypHigh at H`. Take `⟨hl, hsg', h1, h2⟩` from `H`. Establish `hsg` using `weightedSlopeExcess_decomposition W J l gain F E tau`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `ClaimSg at hsg`. Establish `hle : Sg W l sg' tau ≤ Sg W l (sgw J gain F E) tau`. Unfold `Sg`. Use `Finset.sum_le_sum (fun w hw => ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (by linarith [hsg' w hw]) (by linarith [hl w hw])`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem claimHigh_valid (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
     (tau sg' : ι → ℝ) (muMaxM muMaxMu muMaxN : ℝ) :

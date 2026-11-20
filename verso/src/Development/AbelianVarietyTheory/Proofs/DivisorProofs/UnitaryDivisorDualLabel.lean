@@ -10,11 +10,11 @@ section Generic
 variable {L : Type} [Field L] {n : ℕ}
 
 /- English proof (translation)
-Set `A0 : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨A i j, hA i j⟩`. Set `B0 : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨B i j, hB i j⟩`. Establish `eA : RingHom.mapMatrix (m` using `Fin n) O.subtype A0 = A := by ext i j; rfl`. Establish `eB : RingHom.mapMatrix (m` using `Fin n) O.subtype B0 = B := by ext i j; rfl`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `Fin n) O.subtype) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X Y h`. Use extensionality with `i j`. Simplify using `using congrFun (congrFun h i) j`. Establish `h1 : A0 * B0 = 1` using `inj (by rw [map_mul, map_one, eA, eB, hAB])`. Establish `h2 : B0 * A0 = 1` using `inj (by rw [map_mul, map_one, eA, eB, hBA])`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨bc (n := Fin n) O.subtype ⟨A0, B0, h1, h2⟩, ⟨_, rfl⟩, eA⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_glint (O : Subring L) (A B : Matrix (Fin n) (Fin n) L) (hAB : A * B = 1) (hBA : B * A = 1)
     (hA : ∀ i j, A i j ∈ O) (hB : ∀ i j, B i j ∈ O) :
@@ -32,7 +32,7 @@ theorem exists_glint (O : Subring L) (A B : Matrix (Fin n) (Fin n) L) (hAB : A *
   exact ⟨bc (n := Fin n) O.subtype ⟨A0, B0, h1, h2⟩, ⟨_, rfl⟩, eA⟩
 
 /- English proof (translation)
-Take `⟨U0, rfl⟩` from `hU`. Conclude with `((U0 : Matrix (Fin n) (Fin n) O) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_mem (O : Subring L) {U : GL (Fin n) L} (hU : U ∈ GLint (Fin n) O) (i j : Fin n) :
     (U : Matrix (Fin n) (Fin n) L) i j ∈ O := by
@@ -40,7 +40,7 @@ theorem entry_mem (O : Subring L) {U : GL (Fin n) L} (hU : U ∈ GLint (Fin n) O
   exact ((U0 : Matrix (Fin n) (Fin n) O) i j).2
 
 /- English proof (translation)
-Unfold `antiJ`. Use `congr 1`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Simplify using `only [Fin.ext_iff, Fin.val_rev, eq_iff_iff]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -53,13 +53,13 @@ theorem antiJ_apply (i j : Fin n) : antiJ L n i j = if j = i.rev then 1 else 0 :
   omega
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, antiJ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L n * A) i j = A i.rev j := by
   simp [Matrix.mul_apply, antiJ_apply]
 
 /- English proof (translation)
-Establish `: ∀ k : Fin n, (j = k.rev) = (k = j.rev)` using `fun k => by`. Rewrite using `[eq_iff_iff, eq_comm, Fin.rev_eq_iff]`. Simplify using `[Matrix.mul_apply, antiJ_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_antiJ (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (A * antiJ L n) i j = A i j.rev := by
   have : ∀ k : Fin n, (j = k.rev) = (k = j.rev) := fun k => by
@@ -67,7 +67,7 @@ theorem mul_antiJ (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (A * antiJ L n)
   simp [Matrix.mul_apply, antiJ_apply, this]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[antiJ_mul, antiJ_apply, Fin.rev_rev, Matrix.one_apply]`. Simplify using `[eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem antiJ_sq : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -75,7 +75,7 @@ theorem antiJ_sq : antiJ L n * antiJ L n = 1 := by
   simp [eq_comm]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[antiJ_sq, Matrix.mul_one, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, cT_one, Matrix.mul_one, antiJ_sq]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_mul (σ : L →+* L) (A B : Matrix (Fin n) (Fin n) L) (h : A * B = 1) :
     antiJ L n * cT σ B * antiJ L n * (antiJ L n * cT σ A * antiJ L n) = 1 := by
@@ -85,9 +85,9 @@ theorem dual_mul (σ : L →+* L) (A B : Matrix (Fin n) (Fin n) L) (h : A * B = 
     _ = 1 := by rw [h, cT_one, Matrix.mul_one, antiJ_sq]
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Establish `hi` using `i.2`. Establish `h1 : (i : ℕ) < (dualLab d).length` using `by simp [dualLab]`. Rewrite using `[List.getD_eq_getElem _ _ h1, List.getD_eq_getElem _ _ i.rev.2]`. Simplify using `only [dualLab, List.getElem_reverse, List.getElem_map, List.length_map, Fin.val_rev]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem getD_dualLab (d : List ℤ) (hd : d.length = n) (i : Fin n) :
     (dualLab d).getD i 0 = -(d.getD i.rev 0) := by
@@ -104,9 +104,9 @@ end Generic
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ b ∈ GLint (Fin n) (intL L), ∀ i j, (antiJ L n * cT σ ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * antiJ L n) i j ∈ intL L`. Introduce `b hb i j`. Rewrite using `[mul_antiJ, antiJ_mul]`. Use `entry_mem (intL L) hb j.rev i.rev` as an intermediate fact. Use `show Valued.v (σ _) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ]`. Conclude with `this`. Conclude with `exists_glint (intL L) _ (antiJ L n * cT σ (a : Matrix (Fin n) (Fin n) L) * antiJ L n) (dual_mul σ _ _ (Units.mul_inv a)) (dual_mul σ _ _ (Units.inv_mul a)) (key _ (inv_mem ha)) (key _ ha)`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {a : GL (Fin n) L}
     (ha : a ∈ GLint (Fin n) (intL L)) :
@@ -124,19 +124,19 @@ theorem exists_dual (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     (dual_mul σ _ _ (Units.mul_inv a)) (dual_mul σ _ _ (Units.inv_mul a)) (key _ (inv_mem ha)) (key _ ha)
 
 /- English proof (translation)
-Introduce `L _ _ σ n d g hσ hd hg ⟨ϖ, hϖ, a, ha, b, hb, hab⟩`. Take `⟨a', ha', ea⟩` from `exists_dual σ hσ ha`. Take `⟨b', hb', eb⟩` from `exists_dual σ hσ hb`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Use `⟨σ ϖ, by rw [hσ, hϖ], a', ha', b', hb', ?_⟩` and prove the remaining obligations. Establish `hg' : cT σ (g : Matrix (Fin n) (Fin n) L) * antiJ L n * (g : Matrix (Fin n) (Fin n) L) = antiJ L n` using `hg`. Establish `eD : Matrix.diagonal (fun i : Fin n => σ ϖ ^ (dualLab d).getD i 0) = antiJ L n * cT σ (Matrix.diagonal (fun i : Fin n => ϖ ^ (-d.getD i 0))) * antiJ L n`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[mul_antiJ, antiJ_mul]`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply, Fin.rev_inj]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_true]`. Rewrite using `[getD_dualLab d hd, map_zpow₀]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`. Establish `hDD : Matrix.diagonal (fun i : Fin n => ϖ ^ d.getD i 0) * Matrix.diagonal (fun i : Fin n => ϖ ^ (-d.getD i 0)) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero]`. Establish `hinv : (g : Matrix (Fin n) (Fin n) L) * (((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun i : Fin n => ϖ ^ (-d.getD i 0)) * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) = 1`. Rewrite using `[hab]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `dual_mul σ _ _ hinv`. Establish `h2 : antiJ L n * cT σ (g : Matrix (Fin n) (Fin n) L) * antiJ L n * (g : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ _), hg', antiJ_sq]`. Establish `h3 : (g : Matrix (Fin n) (Fin n) L) = antiJ L n * cT σ (((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun i : Fin n => ϖ ^ (-d.getD i 0)) * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) * antiJ L n` using `by conv_rhs => rw [← Matrix.mul_one (_ * antiJ L n), ← h2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, ea, eb, eD, cT_mul, cT_mul]`. Establish `hJ : ∀ X : Matrix (Fin n) (Fin n) L, antiJ L n * (antiJ L n * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, antiJ_sq, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDiv_dualLab : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ) (d : List ℤ) (g : GL (Fin n) L), (∀ x, Valued.v (σ x) = Valued.v x) → d.length = n → g ∈ GU σ n → HasDiv (intL L) d g → HasDiv (intL L) (dualLab d) g := by
   intro L _ _ σ n d g hσ hd hg ⟨ϖ, hϖ, a, ha, b, hb, hab⟩

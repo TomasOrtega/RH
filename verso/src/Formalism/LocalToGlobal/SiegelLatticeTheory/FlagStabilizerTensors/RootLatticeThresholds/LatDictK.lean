@@ -21,7 +21,7 @@ variable {D : D7} (X : HidaSetting D)
 def vOf (x : Fin X.B.I.n → X.B.I.E) : (VS D).V := ∑ i, X.ιE (x i) • X.bas i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [HidaSetting.crd, crdOf, vOf]`. Rewrite using `[X.bas.repr_sum_self]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem crd_vOf (x : Fin X.B.I.n → X.B.I.E) : X.crd (vOf X x) = x := by
   funext i
@@ -30,7 +30,7 @@ theorem crd_vOf (x : Fin X.B.I.n → X.B.I.E) : X.crd (vOf X x) = x := by
   simp
 
 /- English proof (translation)
-Use `show X.B.I.fmat (x⁻¹ * x) = 1`. Simplify using `[AutInst.fmat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fmatK_inv_mul (x : X.B.I.Gf) : X.B.I.fmat x⁻¹ * X.B.I.fmat x = 1 := by
   show X.B.I.fmat (x⁻¹ * x) = 1
@@ -42,9 +42,9 @@ Both sides reduce to the same expression.
 theorem fmatK_mul (x y : X.B.I.Gf) : X.B.I.fmat (x * y) = X.B.I.fmat x * X.B.I.fmat y := rfl
 
 /- English proof (translation)
-Establish `hL : PIW.AdelClassFin.abelian₂ X.B.I a = PIW.AdelClassFin.abelian₂ X.B.I b`. Use extensionality with `v`. Use `show X.B.I.fmat a⁻¹ *ᵥ PIW.AdelClassFin.iv X.B.I v ∈ X.B.I.Lf ↔ X.B.I.fmat b⁻¹ *ᵥ PIW.AdelClassFin.iv X.B.I v ∈ X.B.I.Lf`. Establish `e : PIW.AdelClassFin.iv X.B.I v = incl X.B.I (X.crd (vOf X v))` using `by rw [crd_vOf]; rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(ha _).symm.trans (hb _)`. Take `⟨k, hk, hkeq⟩` from `PIW.AdelClassFin.lattice_map_injective X.B.I a b hL`. Rewrite using `[hkeq, ← mul_assoc, inv_mul_cancel, one_mul]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dict_K (a b : X.B.I.Gf) (S : Set (VS D).V)
     (ha : ∀ y, y ∈ S ↔ X.B.I.fmat a⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf)
@@ -71,7 +71,7 @@ section DictKMain
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `ρ σ h`. Use `dict_K X _ _ {y | y ∈ cs.lamOf ρ} (fun y => cs.lat_eq ρ y) (fun y => ?_)` and prove the remaining obligations. Use `show y ∈ cs.lamOf ρ ↔ _`. Rewrite using `[h]`. Conclude with `cs.lat_eq σ y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colLatK {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂) :
     Formalism.L2.SG.NormCut.ColLatK cs := by
@@ -90,7 +90,7 @@ section DictK2
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨M, -, -, hf, hc⟩` from `h`. Establish `h3 : incl X.B.I ((M : Matrix _ _ _) *ᵥ X.crd w) = (M : Matrix _ _ _).map (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F)) *ᵥ incl X.B.I (X.crd w) := by`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (M : Matrix _ _ _) (X.crd w) i`. Rewrite using `[hf, hc, h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLink_incl {x : X.B.I.GA} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : RatLink X x γ) (w : (VS D).V) :
     X.B.I.fmat x.2 *ᵥ incl X.B.I (X.crd w) = incl X.B.I (X.crd (γ w)) := by
@@ -102,7 +102,7 @@ theorem ratLink_incl {x : X.B.I.GA} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h
   rw [hf, hc, h3]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← γ.apply_symm_apply y, ← ratLink_incl X h]`. Rewrite using `[mulVec_mulVec, fmatK_inv_mul, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLink_incl_inv {x : X.B.I.GA} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : RatLink X x γ) (y : (VS D).V) :
     X.B.I.fmat x.2⁻¹ *ᵥ incl X.B.I (X.crd y) = incl X.B.I (X.crd (γ.symm y)) := by
@@ -118,17 +118,15 @@ section DictKMain2
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `t`. Take `⟨hRL, -, hmap, -⟩` from `t.rep.2`. Establish `hRL' : RatLink X t.pt t.lin` using `hRL`. Establish `hmap' : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `hmap`. Establish `hb0` using `cs.base_lam t.lam t.mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1` using `cs'.base_lam t.lam' t.mem'`. Establish `key : ((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ * (t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')) ∈ X.B.I.Kset`. Use `dict_K X _ _ {y | y ∈ t.lam} (fun y => ?_) (fun y => ?_)` and prove the remaining obligations. Use `show y ∈ t.lam ↔ _ conv_lhs => rw [← hb0]`. Conclude with `cs.lat_eq _ y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show y ∈ t.lam ↔ _`. Establish `e1 : y ∈ t.lam ↔ t.lin.symm y ∈ t.lam'`. Rewrite using `[← hmap']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: t.lin.symm y = z` using `by rw [← hzy]; simp`. Rewrite using `[this]`. Conclude with `hz`. Introduce `h`. Conclude with `⟨t.lin.symm y, h, by simp⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hlat : ∀ w, w ∈ t.lam' ↔ X.B.I.fmat ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ *ᵥ incl X.B.I (X.crd w) ∈ X.B.I.Lf` using `fun w => by`. Use `cs'.lat_eq (cs'.base t.lam') w` as an intermediate fact. Rewrite `this` using `[hb1]`. Conclude with `this`. Rewrite using `[e1, hlat, show (t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u'))⁻¹ = ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ * t.pt.2⁻¹ from _root_.mul_inv_rev _ _, fmatK_mul, ← mulVec_mulVec, ratLink_incl_inv X hRL']`.
-
-Establish `e : kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt = ((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ * (t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u'))`. Simplify using `only [kOf, mul_assoc]`. Rewrite using `[e]`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem termK {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
@@ -179,15 +177,15 @@ section DictK3
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsCoprimeMulDvdPow.main g`.
+A detailed English derivation is pending.
 -/
 theorem nat_split (g : ℕ) : ∀ m : ℕ, 0 < m → ∃ c d : ℕ, m = c * d ∧ Nat.Coprime c g ∧ d ∣ g ^ m :=
   _root_.UpperTheory.Reformulated.B.ExistsCoprimeMulDvdPow.main g
 
 /- English proof (translation)
-Set `I : Ideal R` to `L.comap (LinearMap.toSpanSingleton R M x)`. Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : R) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify `h1` using `[I]`. Take `⟨Q, hQ, hIQ⟩` from `Ideal.exists_le_maximal I hI`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩` from `h Q hQ`. Conclude with `absurd (hIQ (show s ∈ I by simpa [I] using hsx)) hs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_loc {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (L : Submodule R M) (x : M)
     (h : ∀ Q : Ideal R, Q.IsMaximal → ∃ s, s ∉ Q ∧ s • x ∈ L) : x ∈ L := by
@@ -200,14 +198,14 @@ theorem mem_of_loc {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (L :
     exact absurd (hIQ (show s ∈ I by simpa [I] using hsx)) hs
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[HidaSetting.crd, crdOf, map_nsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_nsmul (n : ℕ) (v : (VS D).V) : X.crd (n • v) = n • X.crd v := by
   funext i
   simp [HidaSetting.crd, crdOf, map_nsmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incl, nsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_nsmul (n : ℕ) (x : Fin X.B.I.n → X.B.I.E) :
     incl X.B.I (n • x) = (n : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I x := by
@@ -223,21 +221,19 @@ section DictKMain3
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `g1 Λ hΛ v hv`. Establish `hg : X.B.g = gS D` using `X.g_eq`. Take `⟨m, hm0, hm⟩` from `PIW.AdelClassFin.lattice_denominator X.B.I (X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd v))`. Establish `hmv : m • v ∈ Λ`. Rewrite using `[hΛ, crd_nsmul, incl_nsmul, mulVec_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Take `⟨c, d, hmcd, hcop, hdg⟩` from `nat_split X.B.g m hm0`. Establish `hcv : c • v ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ`. Apply `mem_of_loc` to reduce the goal to its premises. Introduce `Q hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hgQ : ((gS D : ℕ) : 𝓞 D.host.E) ∈ Q`. Establish `hQ0 : Q ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hQ (NumberField.RingOfIntegers.not_isField _)`. Take `⟨s, hs, hsv⟩` from `hv ⟨Q, hQ.isPrime, hQ0⟩ hgQ`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_of_tower_mem _ c hsv`. Use `⟨((gS D * d : ℕ) : 𝓞 D.host.E), fun hQd => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hQd` using `[Nat.cast_mul]`. Break down `hQ.isPrime.mem_or_mem hQd with h1 | h1` into its components or cases. Conclude with `hgQ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `hdg`. Establish `h2 : ((X.B.g ^ m : ℕ) : 𝓞 D.host.E) ∈ Q`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Q.mul_mem_right _ h1`. Rewrite `h2` using `[Nat.cast_pow, hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgQ (hQ.isPrime.mem_of_pow_mem _ h2)`. Establish `e : ((gS D * d : ℕ) : 𝓞 D.host.E) • (c • v) = ((gS D : ℕ) : 𝓞 D.host.E) • (m • v)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, smul_smul, smul_smul, hmcd]`. Put the polynomial expressions in normal form. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hmv`. Rewrite `hcv` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨w, hw, hwv⟩` from `hcv`. Use `⟨c, hcop, ?_⟩` and prove the remaining obligations. Establish `e2 : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd v)) = (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd w))`.
-
-Rewrite using `[← mulVec_smul, ← mulVec_smul, ← incl_nsmul, ← incl_nsmul, ← crd_nsmul, ← crd_nsmul, ← hwv, Nat.cast_smul_eq_nsmul, hg]`. Rewrite using `[e2]`. Conclude with `Submodule.subset_span ⟨_, (hΛ w).1 hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modGAt : Formalism.L2.SG.NormCut.ModGAt X := by
   intro g1 Λ hΛ v hv

@@ -6,11 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.Y
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Establish `haN : a.Coprime l` using `Nat.Coprime.coprime_dvd_right hl ha`. Establish `haM : a.Coprime M`. Rewrite using `[hM]`. Conclude with `Nat.Coprime.mul_right ha (Nat.Coprime.pow_right m haN)`. Establish `hdiv : l ^ (r + ck l (e + 1) + 1) ∣ M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow l hm) N`. Establish `hI` using `yNear l Γ M (φ.comp (ZMod.unitsMap h)) e a r haM ho hdiv`. Rewrite `hI` using `[yLevel l Γ N φ (e + 1) a ha (by omega) hl m M h haM hM]`. Use `(intAt_iff l r _).mp hI g` as an intermediate fact.
-
-Simplify `this` using `[coeff_coefMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem near_level (l : ℕ) [Fact l.Prime] (Γ : Type) [CommGroup Γ] [Finite Γ] (N : ℕ) [NeZero N]
     (φ : (ZMod N)ˣ →* Γ) (e a : ℕ) (ha : a.Coprime N) (ho : Odd a) (hl : l ∣ N) (r m : ℕ)
@@ -29,25 +27,21 @@ private theorem near_level (l : ℕ) [Fact l.Prime] (Γ : Type) [CommGroup Γ] [
   simpa [coeff_coefMap] using this
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ N _ φ e a ha ho hl`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `set y := yEl (e + 1) a ha φ with hy`. Establish `hy0 : IntAt l 0 y`. Rewrite using `[intAt_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `haveI : NeZero (N * l ^ (ck l (e + 1) + 1)) := ⟨mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hl0)⟩`. Establish `hn` using `near_level l Γ N φ e a ha ho hl 0 (ck l (e + 1) + 1) (by omega) (N * l ^ (ck l (e + 1) + 1)) (dvd_mul_right _ _) rfl g`. Establish `h1` using `hn.mem`. Establish `h2` using `add_mem h1 (intCast_mem (Zl l) ((ytEl e a (φ.comp (ZMod.unitsMap (dvd_mul_right N (l ^ (ck l (e + 1) + 1)))))).coeff g))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[sub_add_cancel]`. Use `show y.coeff g / (l : ℚ) ^ 0 ∈ Zl l`. Simplify using `using h2`. Take `⟨Yp, hYp⟩` from `exists_padicInt_lift_of_integralAt l y hy0`. Establish `hYg : ∀ g, ((Yp.coeff g : ℤ_[l]) : ℚ_[l]) = ((y.coeff g : ℚ) : ℚ_[l])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Use `congrArg (fun x => x.coeff g) hYp` as an intermediate fact. Simplify using `using this`. Use `⟨Yp, hYg, ?_⟩` and prove the remaining obligations. Introduce `r`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨r + ck l (e + 1) + 1, ?_⟩` and prove the remaining obligations. Introduce `m hm M _ h hM`. Establish `hc : ∀ g, ∃ c : ℤ_[l], (((ytEl e a (φ.comp (ZMod.unitsMap h))).coeff g : ℤ) : ℤ_[l]) = Yp.coeff g + (l : ℤ_[l]) ^ r * c`. Introduce `g`. Establish `hn` using `near_level l Γ N φ e a ha ho hl r m hm M h hM g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t : ℤ := (ytEl e a (φ.comp (ZMod.unitsMap h))).coeff g`. Use `set q : ℚ := (y.coeff g - (t : ℚ)) / (l : ℚ) ^ r with hqdef`. Establish `hq : ‖(q : ℚ_[l])‖ ≤ 1` using `Padic.norm_rat_le_one (mem_Zl.mp hn)`. Establish `hqr : q * (l : ℚ) ^ r = y.coeff g - t`. Rewrite using `[hqdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `div_mul_cancel₀ _ (pow_ne_zero _ (by exact_mod_cast hl0))`. Establish `hqr' : (q : ℚ_[l]) * (l : ℚ_[l]) ^ r = ((y.coeff g : ℚ) : ℚ_[l]) - (t : ℚ_[l])`. Use `congrArg (fun x : ℚ => (x : ℚ_[l])) hqr` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c : ℤ_[l]` to `⟨(q : ℚ_[l]), hq⟩`. Use `⟨-c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (t : ℚ_[l]) = ((Yp.coeff g : ℤ_[l]) : ℚ_[l]) + (l : ℚ_[l]) ^ r * -(q : ℚ_[l])`. Rewrite using `[hYg g]`.
-
-Take the linear combination `hqr'`. Use `choose c hc using hc`. Use `⟨MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm c), ?_⟩` and prove the remaining obligations. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `g`.
-
-Rewrite using `[MonoidAlgebra.coeff_add, MonoidAlgebra.coeff_smul, coeff_coefMap, hc g]`. Simplify using `[smul_eq_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.congr :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [CommGroup Γ] [Finite Γ] (N : ℕ) [NeZero N] (φ : (ZMod N)ˣ →* Γ) (e a : ℕ) (ha : a.Coprime N), Odd a → l ∣ N → ∃ z : MonoidAlgebra ℤ_[l] Γ, IsInt l z (yEl (e + 1) a ha φ) ∧ ∀ r : ℕ, ∃ m₀ : ℕ, ∀ m ≥ m₀, ∀ (M : ℕ) [NeZero M] (h : N ∣ M), M = N * l ^ m → ∃ w : MonoidAlgebra ℤ_[l] Γ, coefMap ℤ_[l] Γ (ytEl e a (φ.comp (ZMod.unitsMap h))) = z + (l : ℤ_[l]) ^ r • w := by

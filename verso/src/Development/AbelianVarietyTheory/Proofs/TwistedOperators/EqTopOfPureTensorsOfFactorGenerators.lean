@@ -7,9 +7,9 @@ namespace GlobalTheory.TensHead
 
 open scoped TensorProduct in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.TensHead.piOp`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma piOp_tprod {ι : Type} [DecidableEq ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (i : ι) (g : Module.End ℂ (M i))
@@ -27,7 +27,7 @@ private lemma piOp_tprod {ι : Type} [DecidableEq ι] {M : ι → Type}
 
 open scoped TensorProduct in
 /- English proof (translation)
-Rewrite using `[piOp_tprod]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma _root_.GlobalTheory.TensHead.piOp_tprod_update {ι : Type} [DecidableEq ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (i : ι) (g : Module.End ℂ (M i))
@@ -39,7 +39,7 @@ lemma _root_.GlobalTheory.TensHead.piOp_tprod_update {ι : Type} [DecidableEq ι
 
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `hmem : TensorProduct.map g LinearMap.id ∈ _root_.GlobalTheory.TensHead.tensOps Op₀ (_root_.GlobalTheory.TensHead.piOps Op)`. Unfold `_root_.GlobalTheory.TensHead.tensOps`. Conclude with `Or.inl ⟨g, hg, rfl⟩`. Unfold `_root_.GlobalTheory.TensHead.Stab at hN`. Simplify using `using hN _ hmem _ h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the first alternative. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma apply_tmul_mem_of_stab_left {ι : Type} [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀]
     [Module ℂ M₀] {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
@@ -58,9 +58,9 @@ private lemma apply_tmul_mem_of_stab_left {ι : Type} [DecidableEq ι] {M₀ : T
 
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `hmem : TensorProduct.map LinearMap.id (_root_.GlobalTheory.TensHead.piOp i g) ∈ _root_.GlobalTheory.TensHead.tensOps Op₀ (_root_.GlobalTheory.TensHead.piOps Op)`. Unfold `_root_.GlobalTheory.TensHead.tensOps _root_.GlobalTheory.TensHead.piOps`. Conclude with `Or.inr ⟨_, ⟨i, g, hg, rfl⟩, rfl⟩`. Unfold `_root_.GlobalTheory.TensHead.Stab at hN`. Use `hN _ hmem _ h` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the second alternative. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `this` using `[TensorProduct.map_tmul, LinearMap.id_apply, _root_.GlobalTheory.TensHead.piOp_tprod_update]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma tmul_tprod_update_apply_mem_of_stab {ι : Type} [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀]
     [Module ℂ M₀] {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
@@ -82,31 +82,29 @@ private lemma tmul_tprod_update_apply_mem_of_stab {ι : Type} [DecidableEq ι] {
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `ι _ _ M₀ _ _ M _ _ Op₀ Op Rel₀ Rel F₀ F h₀ hF N hRel₀ hRel hN hgen`. Establish `key : ∀ s : Finset ι, ∀ y : ∀ j, M j, (∀ j, j ∉ s → y j ∈ F j) → ∀ a : M₀, a ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ y ∈ N`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy a`. Establish `hT` using `h₀ (N.comap ((TensorProduct.mk ℂ M₀ (⨂[ℂ] i, M i)).flip (PiTensorProduct.tprod ℂ y))) ?_ ?_ ?_`. Establish `ha : a ∈ (⊤ : Submodule ℂ M₀)` using `trivial`. Rewrite `ha` using `[← hT]`. Simplify using `using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Simplify using `using hRel₀ x hx _`. Unfold `_root_.GlobalTheory.TensHead.Stab`. Introduce `g hg x hx`. Simplify using `only [Submodule.mem_comap, LinearMap.flip_apply, TensorProduct.mk_apply] at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `apply_tmul_mem_of_stab_left hN hg hx`. Introduce `x hx`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.flip_apply, TensorProduct.mk_apply]`. Conclude with `hgen x hx y (fun j => hy j (by simp))`. Consider the case `insert i s hi ih`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `y hy a`. Set `S : Submodule ℂ (M i)` to `⨅ (b : M₀) (z : {z : ∀ j, M j // ∀ j, j ∉ s → j ≠ i → z j ∈ F j}), N.comap ((TensorProduct.mk ℂ M₀ (⨂[ℂ] j, M j) b) ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap z.1 i)`. Establish `hS : ∀ x, x ∈ S ↔ ∀ (b : M₀) (z : ∀ j, M j), (∀ j, j ∉ s → j ≠ i → z j ∈ F j) → b ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (Function.update z i x) ∈ N`. Introduce `x`. Simplify using `only [S, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.comp_apply, MultilinearMap.toLinearMap_apply, TensorProduct.mk_apply, Subtype.forall]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `hF i S ?_ ?_ ?_`. Establish `hx : y i ∈ S`. Rewrite using `[hT]`. Discharge the goal by the elementary cases of `trivial`. Use `(hS _).1 hx a y (fun j hj hji => hy j (by simp [hji, hj]))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Introduce `x hx`. Rewrite using `[hS]`. Introduce `b z _`. Conclude with `hRel i x hx b z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.TensHead.Stab`. Introduce `g hg x hx`. Rewrite `hx`, the goal using `[hS]`. Introduce `b z hz`. Conclude with `tmul_tprod_update_apply_mem_of_stab hN i hg (hx b z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Rewrite using `[SetLike.mem_coe, hS]`. Introduce `b z hz`. Apply `ih` to reduce the goal to its premises. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `using hx`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hz j hj hji`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hall : ∀ v, v ∈ N`. Introduce `v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact N.zero_mem`. Consider the case `tmul a t`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r y`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `N.smul_mem r (key Finset.univ y (fun j hj => absurd (Finset.mem_univ j) hj) a)`. Consider the case `add p q hp hq`.
-
-Rewrite using `[TensorProduct.tmul_add]`. Conclude with `N.add_mem hp hq`. Consider the case `add p q hp hq => exact N.add_mem hp hq`. Conclude with `eq_top_iff.2 fun v _ => hall v`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TensHead.eq_top_of_pure_generators :
     ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀]

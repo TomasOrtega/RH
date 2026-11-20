@@ -8,27 +8,27 @@ namespace UpperTheory.V.Ws.Pp
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `IsUp`. Conclude with `⟨fun h i j hij => h i j hij, fun h i j hij => h hij⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isUp_iff (X : M4 R) : IsUp X ↔ X.BlockTriangular id := by
   unfold IsUp
   exact ⟨fun h i j hij => h i j hij, fun h i j hij => h hij⟩
 
 /- English proof (translation)
-Rewrite `hX`, `hY`, the goal using `[isUp_iff]`. Conclude with `hX.mul hY`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUp_mul {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := by
   rw [isUp_iff] at hX hY ⊢
   exact hX.mul hY
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [adj_apply, hX j.rev i.rev (Fin.rev_lt_rev.2 h), smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsUp_adj {X : M4 R} (hX : IsUp X) : IsUp (adj X) := fun i j h => by
   rw [adj_apply, hX j.rev i.rev (Fin.rev_lt_rev.2 h), smul_zero]
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[isUp_iff]`. Use `haveI := b.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUp_inv {b : (M4 R)ˣ} (hb : IsUp (b : M4 R)) : IsUp ((b⁻¹ : (M4 R)ˣ) : M4 R) := by
   rw [isUp_iff] at hb ⊢
@@ -37,9 +37,9 @@ theorem IsUp_inv {b : (M4 R)ˣ} (hb : IsUp (b : M4 R)) : IsUp ((b⁻¹ : (M4 R)�
   exact Matrix.blockTriangular_inv_of_blockTriangular hb
 
 /- English proof (translation)
-Rewrite `hX`, `hY` using `[isUp_iff]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hX h, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsUp_diag {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) : (X * Y) i i = X i i * Y i i := by
   rw [isUp_iff] at hX hY
@@ -52,9 +52,9 @@ theorem IsUp_diag {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) : (X * Y)
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `hax : IsUp (a * X)` using `IsUp_mul ha hX`. Use `⟨IsUp_mul hax hb, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUp_diag hax hb, IsUp_diag ha hX]`. Establish `h1 : a i i * b i i = 1`. Rewrite using `[← IsUp_diag ha hb, hab]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem upConj {a b X : M4 R} (hab : a * b = 1) (ha : IsUp a) (hb : IsUp b) (hX : IsUp X) :
     IsUp (a * X * b) ∧ ∀ i, (a * X * b) i i = X i i := by
@@ -68,12 +68,12 @@ theorem upConj {a b X : M4 R} (hab : a * b = 1) (ha : IsUp a) (hb : IsUp b) (hX 
     _ = X i i := by rw [h1, mul_one]
 
 /- English proof (translation)
-The claim follows from `h.trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem adj_mul_self {u : M4 R} (h : IsGSp 1 u) : adj u * u = 1 := h.trans (one_smul _ _)
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (adj_mul_self h)`.
+A detailed English derivation is pending.
 -/
 theorem mul_adj_self {u : M4 R} (h : IsGSp 1 u) : u * adj u = 1 := mul_eq_one_comm.1 (adj_mul_self h)
 

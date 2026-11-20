@@ -24,9 +24,9 @@ def CellPair : Type :=
     p.1 ∈ VaSet a ∧ (∀ i, p.2 i i = 1) ∧ ∀ i j, j < i → p.2 i j = 0}
 
 /- English proof (translation)
-Apply `Matrix.nonsing_inv_mul` to reduce the goal to its premises. Establish `hd : l.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular l (fun i j hij => h.2.1 i j hij)]`. Simplify using `[h.1]`. Rewrite using `[hd]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem intLow_inv_mul {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : TieN.IntLow M l) : l⁻¹ * l = 1 := by
   apply Matrix.nonsing_inv_mul
@@ -37,9 +37,9 @@ theorem intLow_inv_mul {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : TieN.IntLow
   exact isUnit_one
 
 /- English proof (translation)
-Apply `Matrix.mul_nonsing_inv` to reduce the goal to its premises. Establish `hd : l.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => h.2.1 i j hij)]`. Simplify using `[h.1]`. Rewrite using `[hd]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem intUp_mul_inv {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : TieN.IntUp M l) : l * l⁻¹ = 1 := by
   apply Matrix.mul_nonsing_inv
@@ -81,32 +81,32 @@ Both sides reduce to the same expression.
 theorem eA_val (i : Fin (m + 1)) : ((eA a i : Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) : ℕ) = (i : ℕ) := rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.lt_iff_val_lt_val, eA_val, eA_val, ← Fin.lt_iff_val_lt_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eA_lt {i j : Fin (m + 1)} : eA a i < eA a j ↔ i < j := by
   rw [Fin.lt_iff_val_lt_val, eA_val, eA_val, ← Fin.lt_iff_val_lt_val]
 
 /- English proof (translation)
-The claim follows from `(Matrix.submatrix_mul_equiv X Y (eA a) (eA a) (eA a)).symm`.
+A detailed English derivation is pending.
 -/
 theorem rhoA_mul (X Y : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) :
     rhoA a (X * Y) = rhoA a X * rhoA a Y :=
   (Matrix.submatrix_mul_equiv X Y (eA a) (eA a) (eA a)).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.submatrix_one_equiv (eA a)`.
+A detailed English derivation is pending.
 -/
 theorem rhoA_one : rhoA a (1 : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = 1 :=
   Matrix.submatrix_one_equiv (eA a)
 
 /- English proof (translation)
-The claim follows from `(Formalism.MainNotions.LocalModelPeriodLattices.mat_eq a).symm`.
+A detailed English derivation is pending.
 -/
 theorem rhoA_pt : rhoA a (Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) = a.mat :=
   (Formalism.MainNotions.LocalModelPeriodLattices.mat_eq a).symm
 
 /- English proof (translation)
-Simplify using `[rhoA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoA_apply (X : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)
     (x y : Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) : X x y = rhoA a X ((eA a).symm x) ((eA a).symm y) := by
@@ -116,7 +116,7 @@ abbrev sbA : Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum →
   fun x y => Loc.sameBlock a.blocks (x : ℕ) (y : ℕ)
 
 /- English proof (translation)
-The claim follows from `| [], x, y, hx, _ => by simp at hx | (u, s) :: bs, x, y, hx, hy => by simp only [List.map_cons, List.sum_cons] at hx hy simp only [Loc.sameBlock, List.map_cons, Formalism.DoubleCosetMeasures.blk] by_cases h1 : x < (s : ℕ) <;> by_cases h2 : y < (s : ℕ) · simp [h1, h2] · have h2' : …`.
+A detailed English derivation is pending.
 -/
 private theorem sameBlock_eq_true_iff_blk_eq {K : Type} [CommRing K] : ∀ (bs : List (Kˣ × ℕ+)) (x y : ℕ),
     x < (List.map (fun b : Kˣ × ℕ+ => ((b.2 : ℕ+) : ℕ)) bs).sum →
@@ -141,27 +141,27 @@ private theorem sameBlock_eq_true_iff_blk_eq {K : Type} [CommRing K] : ∀ (bs :
       simp [h1, h2, h1', h2', ih]
 
 /- English proof (translation)
-Conclude with `sameBlock_eq_true_iff_blk_eq a.blocks x y x.2 y.2`.
+A detailed English derivation is pending.
 -/
 theorem sbA_iff (x y : Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) :
     sbA a x y = true ↔ Formalism.DoubleCosetMeasures.blk (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 x = Formalism.DoubleCosetMeasures.blk (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 y := by
   exact sameBlock_eq_true_iff_blk_eq a.blocks x y x.2 y.2
 
 /- English proof (translation)
-The claim follows from `Grp.isCoord_low _ _ (sbA a) (sbA_iff a)`.
+A detailed English derivation is pending.
 -/
 theorem isCoordA : Grp.IsCoord (K := E) (PW (sbA a))
     (Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) :=
   Grp.isCoord_low _ _ (sbA a) (sbA_iff a)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `((isCoordA a).mem (g : GL _ E)).1 g.2`. Rewrite using `[hx]`. Use `⟨fun i => ?_, fun i j hij => ?_, fun i j hij hsb => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.submatrix_apply, mk]`. Establish `hne : eA a i ≠ eA a j` using `(eA a).injective.ne (ne_of_lt hij)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlt : eA a i < eA a j` using `(eA_lt a).2 hij`. Simplify using `only [Matrix.submatrix_apply, mk, hne, if_false]`. Rewrite using `[dif_neg]`. Introduce `hp`. Conclude with `absurd hp.1 (not_lt.2 hlt.le)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : eA a i ≠ eA a j` using `(eA a).injective.ne hij`. Establish `hs : sbA a (eA a i) (eA a j) = true`. Simplify using `only [sbA, eA_val]`. Conclude with `hsb`. Simplify using `only [Matrix.submatrix_apply, mk, hne, if_false]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_neg]`. Introduce `hp`. Establish `h2 : sbA a (eA a i) (eA a j) = false` using `hp.2`. Rewrite `h2` using `[hs]`. Conclude with `Bool.noConfusion h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem va_of_lowW (g : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) :
     rhoA a ((g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix _ _ E) ∈ VaSet a := by
@@ -187,19 +187,17 @@ theorem va_of_lowW (g : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNoti
     exact Bool.noConfusion h2
 
 /- English proof (translation)
-Use `set X : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E := v.submatrix (eA a).symm (eA a).symm with hXdef`. Establish `hval : ∀ b : Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum, (((eA a).symm b : Fin (m + 1)) : ℕ) = (b : ℕ)`. Introduce `b`. Establish `h` using `eA_val a ((eA a).symm b)`. Simplify using `only [Equiv.apply_symm_apply] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hX : mk (PW (sbA a)) (fun p => X p.1.1 p.1.2) = X`. Apply `Dec.mk_coords` to reduce the goal to its premises. Introduce `b`. Simplify using `[hXdef, hv.1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b c hbc hP`. Simplify using `only [hXdef, Matrix.submatrix_apply]`. Establish `hne : (eA a).symm b ≠ (eA a).symm c` using `(eA a).symm.injective.ne hbc`. Distinguish the cases in `hlt : b < c`. Apply `hv.2.1` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← eA_lt a]`. Simplify using `using hlt`. Establish `hcb : c < b` using `lt_of_le_of_ne (not_lt.1 hlt) (Ne.symm hbc)`. Establish `hsb : sbA a b c = true`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP ⟨hcb, by simpa using h⟩`. Apply `hv.2.2 _ _ hne` to reduce the goal to its premises. Rewrite using `[hval b, hval c]`. Conclude with `hsb`. Establish `hdet : X.det = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hX]`. Conclude with `(isCoordA a).det _`. Set `gU : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E` to `Matrix.nonsingInvUnit X (by rw [hdet]; exact isUnit_one)`. Establish `hmem : gU ∈ Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2` using `((isCoordA a).mem gU).2 ⟨_, hX.symm⟩`. Use `⟨⟨gU, hmem⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show X.submatrix (eA a) (eA a) = v`. Use extensionality with `i j`. Simplify using `[hXdef]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lowW_of_va {v : Matrix (Fin (m + 1)) (Fin (m + 1)) E} (hv : v ∈ VaSet a) :
     ∃ g : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2,
@@ -241,7 +239,7 @@ theorem lowW_of_va {v : Matrix (Fin (m + 1)) (Fin (m + 1)) E} (hv : v ∈ VaSet 
   simp [hXdef]
 
 /- English proof (translation)
-Establish `hg : Formalism.DoubleCosetMeasures.IsUpUni ((g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)` using `g.2`. Conclude with `⟨fun i => hg.2 _, fun i j hij => hg.1 ((eA_lt a).2 hij)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem up_of_upUniG (g : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) :
     (∀ i, rhoA a ((g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix _ _ E) i i = 1) ∧
@@ -251,13 +249,13 @@ theorem up_of_upUniG (g : Formalism.DoubleCosetMeasures.upUniG E (Formalism.Main
   exact ⟨fun i => hg.2 _, fun i j hij => hg.1 ((eA_lt a).2 hij)⟩
 
 /- English proof (translation)
-Use `set X : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E := u.submatrix (eA a).symm (eA a).symm with hXdef`. Establish `hup : Formalism.DoubleCosetMeasures.IsUpUni X`. Prove the components needed by the constructor for the conclusion. Introduce `b c hcb`. Simplify using `only [hXdef, Matrix.submatrix_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2` to reduce the goal to its premises. Rewrite using `[← eA_lt a]`. Simplify using `using hcb`. Introduce `b`. Simplify using `[hXdef, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : X.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hup.1]`. Simplify using `[hup.2]`. Set `gU : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E` to `Matrix.nonsingInvUnit X (by rw [hdet]; exact isUnit_one)`. Establish `hmem : gU ∈ Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum` using `hup`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨gU, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show X.submatrix (eA a) (eA a) = u`. Use extensionality with `i j`. Simplify using `[hXdef]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upUniG_of_up {u : Matrix (Fin (m + 1)) (Fin (m + 1)) E} (h1 : ∀ i, u i i = 1)
     (h2 : ∀ i j, j < i → u i j = 0) :
@@ -299,7 +297,7 @@ abbrev uOf (g : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.Lo
     Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, rhoA_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoA_gl_mul (g h : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) :
     rhoA a (((g * h : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)) :
@@ -309,7 +307,7 @@ theorem rhoA_gl_mul (g h : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattic
   rw [Units.val_mul, rhoA_mul]
 
 /- English proof (translation)
-Rewrite using `[← rhoA_gl_mul, mul_inv_cancel, Units.val_one, rhoA_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoA_gl_inv (g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) :
     rhoA a (g : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) *
@@ -318,7 +316,7 @@ theorem rhoA_gl_inv (g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices
   rw [← rhoA_gl_mul, mul_inv_cancel, Units.val_one, rhoA_one]
 
 /- English proof (translation)
-Rewrite using `[← rhoA_gl_mul, inv_mul_cancel, Units.val_one, rhoA_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoA_gl_inv' (g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) :
     rhoA a (((g⁻¹ : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)) :
@@ -327,22 +325,20 @@ theorem rhoA_gl_inv' (g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattice
   rw [← rhoA_gl_mul, inv_mul_cancel, Units.val_one, rhoA_one]
 
 /- English proof (translation)
-Introduce `x y` and use `by rw [rhoA_apply a X x y]; exact h _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_of_rhoA {X : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E}
     (h : ∀ i j, rhoA a X i j ∈ M.R) : Formalism.DoubleCosetMeasures.IsInt M.R X := fun x y => by
   rw [rhoA_apply a X x y]; exact h _ _
 
 /- English proof (translation)
-Establish `hcoe : ((g' * g⁻¹ : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = (g' : GL (Fin (Formalism.MainNotio …`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Take `⟨hI, _⟩` from `hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨vOf a (g' * g⁻¹), ⟨(va_of_lowW a (g' * g⁻¹)).1, (va_of_lowW a (g' * g⁻¹)).2.1, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `hI _ _`. Use `show rhoA a ((g' : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = _`. Rewrite using `[← rhoA_gl_mul, hcoe, inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨l, hl, he⟩`. Establish `he' : rhoA a ((g' : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = l * rhoA a ((g : GL (Fin (Formalism.MainNo …` using `he`. Establish `hL : rhoA a (((g' * g⁻¹ : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainN …`. Rewrite using `[hcoe, rhoA_gl_mul, he', Matrix.mul_assoc, rhoA_gl_inv, Matrix.mul_one]`. Establish `hY` using `rhoA_gl_inv' a ((g' * g⁻¹ : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hY` using `[hL]`. Establish `hinv` using `Matrix.inv_eq_left_inv hY`. Use `⟨isInt_of_rhoA M a (fun i j => ?_), isInt_of_rhoA M a (fun i j => ?_)⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `hl.2.2 i j`.
-
-Rewrite using `[← hinv]`. Conclude with `(LocOrbCut.intLow_inv M hl).2.2 i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_low (g g' : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) :
     g' * g⁻¹ ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2) ↔
@@ -380,15 +376,13 @@ theorem rel_low (g g' : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNoti
       exact (LocOrbCut.intLow_inv M hl).2.2 i j
 
 /- English proof (translation)
-Establish `hcoe : ((g⁻¹ * g' : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = (g : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)⁻¹ * (g' …`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Take `⟨hI, _⟩` from `hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨uOf a (g⁻¹ * g'), ⟨(up_of_upUniG a (g⁻¹ * g')).1, (up_of_upUniG a (g⁻¹ * g')).2, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `hI _ _`. Use `show rhoA a ((g' : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = _`. Rewrite using `[← rhoA_gl_mul, hcoe, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨ρ, hρ, he⟩`. Establish `he' : rhoA a ((g' : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) = rhoA a ((g : GL (Fin (Formalism.MainNotion …` using `he`. Establish `hL : rhoA a (((g⁻¹ * g' : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin …`. Rewrite using `[hcoe, rhoA_gl_mul, he', ← Matrix.mul_assoc, rhoA_gl_inv', Matrix.one_mul]`. Establish `hY` using `rhoA_gl_inv a ((g⁻¹ * g' : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hY` using `[hL]`. Establish `hinv` using `Matrix.inv_eq_right_inv hY`. Use `⟨isInt_of_rhoA M a (fun i j => ?_), isInt_of_rhoA M a (fun i j => ?_)⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `hρ.2.2 i j`.
-
-Rewrite using `[← hinv]`. Conclude with `(LocOrbCut.intUp_inv M hρ).2.2 i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_up (g g' : Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) :
     g⁻¹ * g' ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) ↔
@@ -435,7 +429,7 @@ def pairOf (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.Loca
   ⟨(vOf a q.1.out, uOf a q.2.out), va_of_lowW a _, up_of_upUniG a _⟩
 
 /- English proof (translation)
-Rewrite using `[← rhoA_pt a]`. Use `show rhoA a _ = rhoA a _ * rhoA a _ * rhoA a _`. Rewrite using `[← rhoA_mul, ← rhoA_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zQ_eq (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a)) :
     LocOrbCut.zQ M.R a q = (pairOf M a q).1.1 * a.mat * (pairOf M a q).1.2 := by
@@ -445,7 +439,7 @@ theorem zQ_eq (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.L
   rfl
 
 /- English proof (translation)
-Take `⟨⟨l, hl, e1⟩, ⟨ρ, hρ, e2⟩⟩` from `h`. Rewrite using `[e1, e2]`. Establish `h'` using `hO _ hp l ρ hl hρ`. Simplify `h'` using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mem_of_cellSetoid_rel_of_mem (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
     (hO : ∀ Z ∈ O, ∀ l ρ, TieN.IntLow M l → TieN.IntUp M ρ → l * Z * ρ ∈ O)
@@ -457,17 +451,15 @@ private theorem mem_of_cellSetoid_rel_of_mem (O : Set (Matrix (Fin (m + 1)) (Fin
   simpa only [Matrix.mul_assoc] using h'
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Use `⟨pairOf M a q, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← zQ_eq]`. Conclude with `hq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q _ q' _ he`. Establish `hr : (cellSetoid M a).r (pairOf M a q) (pairOf M a q')` using `Quotient.exact he`. Take `⟨⟨l, hl, e1⟩, ⟨ρ, hρ, e2⟩⟩` from `hr`. Establish `h1` using `(rel_low M a q.1.out q'.1.out).2 ⟨l, hl, e1⟩`. Establish `h2` using `(rel_up M a q.2.out q'.2.out).2 ⟨ρ, hρ, e2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq q.1, ← Quotient.out_eq q'.1]`. Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `QuotientGroup.rightRel_apply.2 h1`. Rewrite using `[← Quotient.out_eq q.2, ← Quotient.out_eq q'.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `QuotientGroup.eq.2 h2`. Introduce and unpack `c ⟨p, rfl, hp⟩`. Take `⟨g, hg⟩` from `lowW_of_va a p.2.1`. Take `⟨h, hh⟩` from `upUniG_of_up a p.2.2.1 p.2.2.2`. Set `q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a)` to `(Quotient.mk _ g, QuotientGroup.mk h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq1 : g * (q.1.out)⁻¹ ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2)` using `QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq q.1))`. Take `⟨l, hl, el⟩` from `(rel_low M a q.1.out g).1 hq1`. Establish `hq2 : (q.2.out)⁻¹ * h ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum)` using `QuotientGroup.eq.1 (Quotient.out_eq q.2)`. Take `⟨ρ, hρ, er⟩` from `(rel_up M a q.2.out h).1 hq2`. Establish `hr : (cellSetoid M a).r (pairOf M a q) p` using `⟨⟨l, hl, by rw [← hg]; exact el⟩, ⟨ρ, hρ, by rw [← hh]; exact er⟩⟩`.
-
-Use `⟨q, ?_, Quotient.sound hr⟩` and prove the remaining obligations. Use `show LocOrbCut.zQ M.R a q ∈ O`. Rewrite using `[zQ_eq]`. Conclude with `mem_of_cellSetoid_rel_of_mem M a O hO ((cellSetoid M a).iseqv.symm hr) hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellCos_bijOn (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
     (hO : ∀ Z ∈ O, ∀ l ρ, TieN.IntLow M l → TieN.IntUp M ρ → l * Z * ρ ∈ O) :
@@ -508,7 +500,7 @@ theorem cellCos_bijOn (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
     exact mem_of_cellSetoid_rel_of_mem M a O hO ((cellSetoid M a).iseqv.symm hr) hp
 
 /- English proof (translation)
-Establish `hb` using `cellCos_bijOn M a O hO`. Rewrite using `[← hb.image_eq, Set.ncard_image_of_injOn hb.injOn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellCos (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
     (hO : ∀ Z ∈ O, ∀ l ρ, TieN.IntLow M l → TieN.IntUp M ρ → l * Z * ρ ∈ O) :
@@ -518,7 +510,7 @@ theorem cellCos (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
   rw [← hb.image_eq, Set.ncard_image_of_injOn hb.injOn]
 
 /- English proof (translation)
-Establish `hb` using `cellCos_bijOn M a O hO`. Rewrite using `[← hb.image_eq, Set.finite_image_iff hb.injOn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellCos_finite_iff (O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E))
     (hO : ∀ Z ∈ O, ∀ l ρ, TieN.IntLow M l → TieN.IntUp M ρ → l * Z * ρ ∈ O) :

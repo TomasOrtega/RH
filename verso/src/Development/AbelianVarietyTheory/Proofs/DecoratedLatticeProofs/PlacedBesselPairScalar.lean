@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.MiTop.UnitAtLevel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.smul_one_eq_diagonal, Matrix.mulVec_diagonal]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smulOne_mulVec {R : Type} [CommRing R] {n : ℕ} (c : R) (y : Fin n → R) :
     Matrix.mulVec (c • (1 : Matrix (Fin n) (Fin n) R)) y = c • y := by
@@ -31,9 +31,9 @@ theorem smulOne_mulVec {R : Type} [CommRing R] {n : ℕ} (c : R) (y : Fin n → 
   rfl
 
 /- English proof (translation)
-Establish `h1 : (A⁻¹).val * A.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2` using `congrFun (congrFun h1 ⟨0, hn⟩) ⟨0, hn⟩`. Rewrite `h2` using `[hA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul]`. Use `⟨(A⁻¹).val ⟨0, hn⟩ ⟨0, hn⟩, by rw [mul_comm]; exact h2, ?_⟩` and prove the remaining obligations. Establish `h3 : A.val * ((A⁻¹).val ⟨0, hn⟩ ⟨0, hn⟩ • (1 : Matrix (Fin n) (Fin n) R)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hA, Matrix.smul_mul, Matrix.one_mul, smul_smul, h2, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_of_scalar {R : Type} [CommRing R] {n : ℕ} (hn : 0 < n) (A : GL (Fin n) R) (c : R)
     (hA : A.val = c • (1 : Matrix (Fin n) (Fin n) R)) :
@@ -49,9 +49,9 @@ theorem inv_of_scalar {R : Type} [CommRing R] {n : ℕ} (hn : 0 < n) (A : GL (Fi
     _ = _ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `ha`. Establish `e1 : a * a' = 1` using `by rw [mul_comm]; exact ha'`. Establish `e2 : a * (ι * a') = ι` using `by linear_combination ι * e1`. Establish `e3 : a * (ι * (a' * u)) = 1` using `by linear_combination (ι * u) * e1 + hι`. Establish `e4 : a * (a' * u) = u` using `by linear_combination u * e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `(key (a' * u)).2 (by rw [e3]; exact O.one_mem)` as an intermediate fact. Rewrite `this` using `[e4]`. Then use the resulting hypothesis. Use `(key a').1 (by rw [e1]; exact O.one_mem)` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_shift {R : Type} [CommRing R] (O : Subring R) (a u ι : R) (ha : ∃ a', a' * a = 1) (hι : ι * u = 1)
     (key : ∀ c, a * c ∈ O ↔ a * (ι * c) ∈ O) : u ∈ O ∧ ι ∈ O := by
@@ -74,19 +74,19 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW hrS u u' f f' B B' hP hP' a₀ a a₀' a' hA hA' z hz hzc k hk he v hv`. Establish `hm : 0 < D.R.m` using `by unfold Ranks.rS at hrS; omega`. Establish `hfr` using `(GlobalTheory.T.self_dual_lattice_frame_chain W hW 0 hm).2`. Establish `hkSt` using `(GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D (Yc D 0) (W.Q.Rl.βY 0) ((pk W).ΛY 0) hfr k).1 (GlobalTheory.FinZeta.LevelOff.finE_mem_St_of_mem_levG hk) v`. Take `⟨e, α, hl⟩` from `GlobalTheory.T.level_place_frame_exists W hW hrS v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `GlobalTheory.T.center_adelicUnitaryGroup_scalar_at_finitePlace D (D.sp.Y 0) z hzc v`. Establish `hpos : 0 < (D.sp.Y 0).rank`. Use `B.d.rank_add` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨ι, hιζ, hζinv⟩` from `GlobalTheory.MiTop.UnitAtLevel.inv_of_scalar hpos _ ζ hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `htinv : (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v (tOf f B a₀ a)))⁻¹ = (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheor …`. Rewrite using `[he, map_mul, map_mul, map_mul, map_mul, mul_inv_rev, mul_inv_rev]`. Establish `hkinv : ∀ y, y ∈ GlobalTheory.AdelicU.latLoc D.host.F ((pk W).ΛY 0) v ↔ Matrix.mulVec ((GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v k))⁻¹ …`. Establish `h` using `GlobalTheory.AdelicU.mem_stabLoc.1 (inv_mem hkSt)`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `h y`. Rewrite `h2` using `[map_inv]`. Conclude with `h2`. Establish `key : ∀ c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, ((α⁻¹ : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host …`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hl u f B (GlobalTheory.MiTop.PlacedP.placed f B hP) a₀ a hA c, ← hl u' f' B' (GlobalTheory.MiTop.PlacedP.placed f' B' hP') a₀' a' hA' (ι * c), htinv, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hζinv, GlobalTheory.MiTop.UnitAtLevel.smulOne_mul …`. Conclude with `(hkinv _).symm`. Take `⟨hζO, hιO⟩` from `GlobalTheory.MiTop.UnitAtLevel.mem_of_shift (GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) _ ζ ι ⟨α, Units.mul_inv α⟩ hιζ key`. Use `GlobalTheory.AdelicU.mem_stabLoc.2 ?_` and prove the remaining obligations. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hζ, GlobalTheory.MiTop.UnitAtLevel.smulOne_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Submodule.smul_mem _ (⟨ζ, hζO⟩ : GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) hy` as an intermediate fact. Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy`. Use `Submodule.smul_mem _ (⟨ι, hιO⟩ : GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) hy` as an intermediate fact. Rewrite `this` using `[Subring.smul_def, smul_smul, hιζ, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem centralRatio_stabLoc_atLevel : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∀ u u' (f : FamCh W u) (f' : FamCh W u') (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (B' : SBes W.S.X W.Q.instEq u' W.Q.Rl.ψ (D.sp.X 0)), GlobalTheory.MiTop.PlacedP f B → GlobalTheory.MiTop.PlacedP f' B' → ∀ a₀ a a₀' a', IsAt f B a₀ a → IsAt f' B' a₀' a' → ∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → ∀ k ∈ rJ W, tOf f B a₀ a = z * tOf f' B' a₀' a' * k → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (∃ PP ∈ (pk W).Pg, PP.under (𝓞 D.host.F) = v) → GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v z ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig (D.sp.Y 0).gram ((pk W).ΛY 0) v := by
 

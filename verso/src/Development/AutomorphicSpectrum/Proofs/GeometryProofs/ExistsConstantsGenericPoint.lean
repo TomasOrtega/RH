@@ -12,29 +12,27 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 y₀ hy`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := Y.jQ_open`. Establish `hd : 𝔐.ξ ≫ 𝔐.f = spMap 𝔐.fn ≫ 𝔐.ξ₀` using `𝔐.fn_over`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b₀ : 𝓞 c.F →+* 𝔐.Ω₀` to `(Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom`. Establish `hb : 𝔐.ξ₀ ≫ Y.s = spMap b₀` using `(Spec.map_preimage _).symm`. Establish `hc : 𝔐.fn.comp b₀ = 𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)`. Establish `hsp : spMap (𝔐.fn.comp b₀) = spMap (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))`. Establish `hm : spMap (𝔐.fn.comp b₀) = spMap 𝔐.fn ≫ spMap b₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[hm, ← hb, ← 𝔐.cst_over, ← Category.assoc, ← Category.assoc, hd]`. Use `CommRingCat.hom_ext_iff.1 (Spec.map_injective hsp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective b₀`. Introduce `u v huv`. Establish `h` using `congrArg 𝔐.fn huv`. Establish `hu : ∀ w, 𝔐.fn (b₀ w) = 𝔐.cst (algebraMap (𝓞 c.F) c.F w)` using `fun w => RingHom.congr_fun hc w`. Rewrite `h` using `[hu, hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `IsFractionRing.injective (𝓞 c.F) c.F (𝔐.cst.injective h)`. Set `cst₀ : c.F →+* 𝔐.Ω₀` to `IsFractionRing.lift hinj`. Establish `hl : cst₀.comp (algebraMap (𝓞 c.F) c.F) = b₀`. Use extensionality with `w`. Conclude with `IsFractionRing.lift_algebraMap hinj w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfn : 𝔐.fn.comp cst₀ = 𝔐.cst`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hl, hc]`. Establish `hs : 𝔐.ξ₀ ≫ Y.s = spMap (cst₀.comp (algebraMap (𝓞 c.F) c.F))` using `by rw [hl, hb]`. Establish `hcomp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C), spMap (g.comp f) = spMap g ≫ spMap f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `A B C _ _ _ f g`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `w : Sp 𝔐.Ω₀ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift 𝔐.ξ₀ (spMap cst₀) (by rw [hs, hcomp])`. Set `u : c.F →+* Ω` to `(Spec.preimage (y₀ ≫ pullback.snd _ _)).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu : y₀ ≫ pullback.snd _ _ = spMap u` using `(Spec.map_preimage _).symm`. Establish `huc : u = 𝔐.cst`. Establish `hsp : spMap (u.comp (algebraMap (𝓞 c.F) c.F)) = spMap (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[hcomp, ← hu, ← 𝔐.cst_over, ← Category.assoc 𝔐.ξ, hy, Model.j]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`. Establish `h1` using `CommRingCat.hom_ext_iff.1 (Spec.map_injective hsp)`. Establish `h2 : u.comp (algebraMap (𝓞 c.F) c.F) = 𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)` using `by simpa using h1`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) h2`. Establish `hw : spMap 𝔐.fn ≫ w = y₀ ≫ Y.jQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, ← hd, hy, Model.j, Category.assoc]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← hcomp, hfn, Category.assoc, Y.jQ_over, hu, huc]`. Establish `hr : Set.range w ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', rfl⟩ : ∃ a', (spMap 𝔐.fn) a' = a` from `⟨IsLocalRing.closedPoint _, Subsingleton.elim _ _⟩`. Use `⟨y₀ a', ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ a') hw` as an intermediate fact. Simplify using `using this.symm`. Use `⟨cst₀, IsOpenImmersion.lift Y.jQ w hr, ?_, hs, hfn⟩` and prove the remaining obligations.
-
-Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (y₀ : Sp Ω ⟶ Xo.XF c), 𝔐.ξ ≫ 𝔐.f = y₀ ≫ Y.j → ∃ (cst₀ : c.F →+* 𝔐.Ω₀) (y₁ : Sp 𝔐.Ω₀ ⟶ Xo.XF c), 𝔐.ξ₀ = y₁ ≫ Y.j ∧ 𝔐.ξ₀ ≫ Y.s = spMap (cst₀.comp (algebraMap (𝓞 c.F) c.F)) ∧ 𝔐.fn.comp cst₀ = 𝔐.cst := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 y₀ hy

@@ -11,23 +11,21 @@ universe w
 namespace GlobalTheory.CompanionTheory.RowInj
 
 /- English proof (translation)
-Establish `hT : (Subtype.val (Subtype.val (Subtype.val z)) : (p q : ℕ) → K.X p q) ∈ K.T n` using `Subtype.prop (Subtype.val (Subtype.val z))`. Establish `h0 : ∀ p r, p < a → (Subtype.val (Subtype.val (Subtype.val z)) : (p q : ℕ) → K.X p q) p r = 0` using `fun p r hp => z.2 p r hp`. Establish `hdv : K.dv a q ((Subtype.val (Subtype.val (Subtype.val z)) : (p q : ℕ) → K.X p q) a q) = 0` using `dv_lead K _ (D_zero K (Subtype.val z)) a q h0`. Establish `hB : leadC K a q z ∈ (colH K q).B a`. Establish `hz'` using `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz'` using `[leadE_eq]`. Unfold `CrystallineSemistableComparison.Cx.cls at hz'`. Rewrite `hz'` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hz'`. Establish `hL` using `leadC_eq K a q z hdv`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v₁, W₁, hW₁, hD, hv⟩ : ∃ (v₁ : K.X a q) (W₁ : (p q : ℕ) → K.X p q), (∀ p r, p + r + 1 ≠ n → W₁ p r = 0) ∧ K.D W₁ = K.sgl a q v₁ ∧ (Subtype.val (Subtype.val (Subtype.val z)) : (p q : ℕ) → K.X p q) a q - v₁ ∈ (K.col a).B q := by`. Consider the cases of `a with`. Consider the case `zero`. Use `⟨0, 0, fun _ _ _ => rfl, by simp, ?_⟩` and prove the remaining obligations. Establish `hb : leadC K 0 q z ∈ (⊥ : Submodule R ((colH K q).X 0))` using `hB`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Submodule.mem_bot, hL]`. Unfold `CrystallineSemistableComparison.Cx.cls at hb`. Rewrite `hb` using `[Submodule.Quotient.mk_eq_zero]`. Simplify using `using hb`. Consider the case `succ a'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Establish `hb : leadC K (a' + 1) q z ∈ LinearMap.range ((colH K q).d a')` using `hB`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp hb`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective (Submodule.comap ((K.col a').Z q).subtype ((K.col a').B q)) y`. Establish `hw : K.dv a' q (w : K.X a' q) = 0` using `w.2`. Use `⟨K.dh a' q w, K.sgl a' q w, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p r hpr`. Apply `K.sgl_ne` to reduce the goal to its premises. Distinguish the cases in `hp : p = a'`. Use `right`. Introduce `hr`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Apply `hpr` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Use `left`. Conclude with `hp`. Rewrite using `[DCx.D_sgl, hw, map_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite `hy` using `[hL]`. Unfold `CrystallineSemistableComparison.Cx.cls at hy`. Express the relevant statement in the definitionally equal form `(colMap K a').mapH q (Submodule.Quotient.mk w) = _ at hy`. Unfold `CrystallineSemistableComparison.Cx.Hom.mapH at hy`. Rewrite `hy` using `[Submodule.mapQ_apply, Submodule.Quotient.eq]`.
-
-Establish `h2` using `Submodule.neg_mem _ hy`. Rewrite `h2` using `[neg_sub]`. Conclude with `h2`. Take `⟨W, hW, hW'⟩` from `lower_vert K _ hT haq h0 v₁ W₁ hW₁ hD hv`. Conclude with `lower K z W hW hW'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clsZ_mem_of_leadE {R : Type} [CommRing R] (K : DCx.{w} R) (n a q : ℕ) (haq : a + q = n)
     (z : Zf K n a) (hz : leadE K a q z = 0) : clsZ K n a z ∈ Ff K n (a + 1) := by
@@ -84,9 +82,9 @@ theorem clsZ_mem_of_leadE {R : Type} [CommRing R] (K : DCx.{w} R) (n a q : ℕ) 
   exact lower K z W hW hW'
 
 /- English proof (translation)
-Establish `h0 : leadC K a q z = 0` using `Subsingleton.elim _ _`. Rewrite using `[leadE_eq]`. Unfold `CrystallineSemistableComparison.Cx.cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `show leadC K a q z ∈ (colH K q).B a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem leadE_eq_zero_of_subsingleton {R : Type} [CommRing R] (K : DCx.{w} R) (n a q : ℕ)
     (hs : Subsingleton ((K.col a).H q)) (z : Zf K n a) : leadE K a q z = 0 := by
@@ -99,13 +97,13 @@ theorem leadE_eq_zero_of_subsingleton {R : Type} [CommRing R] (K : DCx.{w} R) (n
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `b _ hbk x hx`. Establish `hb' : b = a + j + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hb'` using the available equality. Establish `hs` using `Ff_top_subsingleton K (a + j)`. Establish `hxx` using `Subsingleton.elim (⟨x, hx⟩ : ↥(Ff K (a + j) (a + j + 1))) 0`. Simplify using `using congrArg Subtype.val hxx`. Consider the case `succ k ih`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `b hb hbk x hx`. Establish `hx' : x ∈ LinearMap.range (clsZ K (a + j) b)` using `hx`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.mp hx'`. Establish `hq : b + (a + j - b) = a + j` using `by omega`. Establish `hz : leadE K b (a + j - b) z = 0` using `leadE_eq_zero_of_subsingleton K (a + j) b (a + j - b) (hK b _ (by omega)) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ih (b + 1) (by omega) (by omega) _ (clsZ_mem_of_leadE K (a + j) b (a + j - b) hq z hz)`.
+A detailed English derivation is pending.
 -/
 theorem Ff_eq_zero {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ)
     (hK : ∀ p q, q < a → Subsingleton ((K.col p).H q)) :
@@ -129,7 +127,7 @@ theorem Ff_eq_zero {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ)
     exact ih (b + 1) (by omega) (by omega) _ (clsZ_mem_of_leadE K (a + j) b (a + j - b) hq z hz)
 
 /- English proof (translation)
-Introduce `R _ K a j hK z hz`. Conclude with `Ff_eq_zero K a j hK a (j + 1) (by omega) (by omega) _ (clsZ_mem_of_leadE K (a + j) j a (by omega) z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clsZ_eq_zero_of_leadE : ∀ {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ), (∀ p q, q < a → Subsingleton ((K.col p).H q)) →
     ∀ z : Zf K (a + j) j, leadE K j a z = 0 → clsZ K (a + j) j z = 0 := by

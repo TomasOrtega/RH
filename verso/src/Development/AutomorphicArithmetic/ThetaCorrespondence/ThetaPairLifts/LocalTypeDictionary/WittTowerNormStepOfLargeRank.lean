@@ -30,7 +30,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK G
 section IndefiniteRowSideFullHecke
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hd : ∀ {χ χ' : Chr F E}, IsHecke F E χ → IsHecke F E χ' → IsHecke F E (χ / χ')` using `fun h h' => ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]⟩`. Take `⟨om, hom⟩` from `_root_.GlobalTheory.WeilExGen.exists_weil_representation_realization hP F E σ B hB a (a + a') Γ.V Γ.W _ _ _ _ g.hV g.hW Γ.M g.hM X.β (X.β / X.α) c.heckeβ (hd c.heckeβ c.heckeα) c.resβ (resEtaPow_quot c.resβ c.resα)`. Take `⟨om', hom'⟩` from `_root_.GlobalTheory.WeilExGen.exists_weil_representation_realization hP F E σ B hB a' (a + a') Γ.V' Γ.W _ _ _ _ g.hV' g.hW Γ.M' g.hM' X.α (X.α / X.β) c.heckeα (hd c.heckeα c.heckeβ) c.resα (by rw [Nat.add_comm]; exact resEtaPow_quot c.resα c.resβ)`. Conclude with `⟨om, om', hB, g, c, hom, hom'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theta_tower_step_exists_triple (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} (hB : B.IsGood σ) {a a' : ℕ} {Γ : Geo σ a a'} (g : Γ.IsGood B) {X : Chars F E}
     (c : X.IsGood B a a') : ∃ om om', IsTriple B Γ X om om' := by
@@ -42,9 +42,9 @@ theorem theta_tower_step_exists_triple (hP : _root_.GlobalTheory.FunPr.ThetaLoca
     c.heckeα (hd c.heckeα c.heckeβ) c.resα (by rw [Nat.add_comm]; exact resEtaPow_quot c.resα c.resβ)
   exact ⟨om, om', hB, g, c, hom, hom'⟩
 /- English proof (translation)
-Take `⟨R, Ra, h1⟩` from `hM F E σ B a a' Γ Xa oa oa' ha`. Take `⟨R', Rb, h2⟩` from `hM F E σ B a a' Γ Xb ob ob' hb`. Establish `h3 : IsMatched B Γ Xb ob ob' R Rb` using `⟨hb, _root_.GlobalTheory.T.characters_real_valued_of_equal_exponent hP F E σ B a a' Γ Xa Xb oa oa' ob ob' R ha hb h1.real, h2.fin⟩`. Take `⟨⟨-, ⟨ca, hca, -⟩, -⟩, -⟩` from `(hK.1 F E σ B a a' Γ Xa oa oa' ha).2 R Ra h1`. Take `⟨⟨-, ⟨cb, hcb, -⟩, h0⟩, -⟩` from `(hK.1 F E σ B a a' Γ Xb ob ob' hb).2 R Rb h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨R, Ra, Rb, ca, cb, h1, h3, hca, hcb, h0 cb hcb⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pivot_pair (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : ThetaIntegralsAgree) (hM : LocalMatching) {B : Base F E} {a a' : ℕ}
     {Γ : Geo σ a a'} {Xa Xb : Chars F E} {oa oa' ob ob'} (ha : IsTriple B Γ Xa oa oa') (hb : IsTriple B Γ Xb ob ob') :
@@ -57,11 +57,11 @@ theorem exists_pivot_pair (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK 
   obtain ⟨⟨-, ⟨cb, hcb, -⟩, h0⟩, -⟩ := (hK.1 F E σ B a a' Γ Xb ob ob' hb).2 R Rb h3
   exact ⟨R, Ra, Rb, ca, cb, h1, h3, hca, hcb, h0 cb hcb⟩
 /- English proof (translation)
-Take `⟨oa, oa', ha⟩` from `_root_.GlobalTheory.SqStepBig.theta_tower_step_exists_triple hP hB g xa`. Take `⟨ob, ob', hb⟩` from `_root_.GlobalTheory.SqStepBig.theta_tower_step_exists_triple hP hB g xb`. Establish `ha₂ : IsTriple B (reG Γ V V' Z) Xa oa oa'` using `⟨hB, g₂, xa, ha.weil, ha.weil'⟩`. Establish `hb₂ : IsTriple B (reG Γ V V' Z) Xb ob ob'` using `⟨hB, g₂, xb, hb.weil, hb.weil'⟩`. Take `⟨R, Ra, Rb, ca, cb, m1, m2, k1, k2, hcb⟩` from `_root_.GlobalTheory.SqStepBig.exists_pivot_pair hP hK hM ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R₂, Sa, Sb, da, db, n1, n2, l1, l2, hdb⟩` from `_root_.GlobalTheory.SqStepBig.exists_pivot_pair hP hK hM ha₂ hb₂`. Take `⟨k, hk⟩` from `H R oa oa' Ra ob ob' Rb ca cb m1 m2 k1 k2`. Take `⟨k', hk'⟩` from `_root_.GlobalTheory.T.divisibility_along_quadratic_tower hP hK hM F E σ B a a' Γ V V' Z Xa Xb R R₂ oa ob oa' ob' Ra Rb Sa Sb ca cb da db m1 m2 n1 n2 k1 k2 l1 l2`. Use `⟨oa, oa', ob, ob', R₂, Sa, Sb, da, db, n1, n2, l1, l2, hdb, k * k', mul_left_cancel₀ hcb ?_⟩` and prove the remaining obligations. Establish `e : ((Xa.ν (k * k') / Xb.ν (k * k') : Circle) : ℂ) = ((Xa.ν k / Xb.ν k : Circle) : ℂ) * ((Xa.ν k' / Xb.ν k' : Circle) : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, ← div_mul_div_comm, Circle.coe_mul]`. Rewrite using `[e]`. Take the linear combination `lb * hk' + ((Xa.ν k' / Xb.ν k' : Circle) : ℂ) * db * hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem theta_tower_step_pair_real_part (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : ThetaIntegralsAgree) (hM : LocalMatching) {B : Base F E} (hB : B.IsGood σ)
     {a a' : ℕ} {Γ : Geo σ a a'} (g : Γ.IsGood B) {Xa Xb : Chars F E} (xa : Xa.IsGood B a a') (xb : Xb.IsGood B a a') {la lb : ℂ}
@@ -89,33 +89,33 @@ theorem theta_tower_step_pair_real_part (hP : _root_.GlobalTheory.FunPr.ThetaLoc
   linear_combination lb * hk' + ((Xa.ν k' / Xb.ν k' : Circle) : ℂ) * db * hk
 end IndefiniteRowSideFullHecke
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gbig_of_three (gbig_both GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage (_root_.GlobalTheory.T.tower_stage_fit_factor_alt hP hK hM)) (gbig_both (_root_.GlobalTheory.T.quadratic_tower_exists hP) GlobalTheory.T.squareNu_ratio_values_roots_of_unity) (_root_.GlobalTheory. …` and prove the remaining obligations. Introduce and unpack `D T Lc sc G μ₀ C x b ⟨qb, qd⟩ ⟨qs, qx⟩ qf W S hψ hN i j p A A' WW X lam e hX hF he`. Take `⟨e₁, e₂, s, hα⟩` from `hK.2.2`. Take `⟨emb, hemb⟩` from `qb W hψ i j _ _ A A' WW X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B₀, he₀, f₀⟩` from `hemb μ₀`. Take `⟨Γ₀, o₀, p₀, q₀, g₀, -⟩` from `qd W hψ i j _ _ A A' WW X lam μ₀ B₀ hX hF f₀`. Establish `b1` using `g₀.eBig`. Establish `b2` using `g₀.aBig`. Establish `b3` using `g₀.lt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₀` using `g₀.hV`. Establish `hW₀` using `g₀.hW`. Rewrite `b1`, `b2`, `hW₀` using `[p₀, q₀]`. Rewrite `hV₀` using `[p₀]`. Take `⟨n, hn⟩ : ∃ n, A.rank = n + 2` from `⟨A.rank - 2, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y', V₁, H₀, hY', hV₁, hH₀⟩` from `GlobalTheory.T.exists_hyperbolicPlane_split_hermitianLatticeSpace _ _ _ B₀ f₀.2.1 A.rank n hn (by omega) Γ₀.V _ _ (by omega) (by omega) hV₀ 0 (n + 1) (by omega) (by omega)`. Take `⟨Z', W₁, H₀', hZ', hW₁, hH₀'⟩` from `GlobalTheory.T.skewHermitian_selfDual_lattice_hyperbolic_plane_splitting _ _ _ B₀ f₀.2.1 (A.rank + A'.rank) (n + A'.rank) (by omega) (by omega) Γ₀.W _ _ (by omega) (by omega) hW₀ 0 (n + 1) (by omega) (by omega)`. Take `⟨B, ΛB, sB, nB, oB⟩` from `GlobalTheory.T.exists_selfDual_orientedModel_conjugate_hermitian D B₀ f₀.2.1 f₀.2.2.1 n _ _ V₁ hV₁`. Take `⟨WW₁, ΛW, sW, nW, oW⟩` from `GlobalTheory.T.exists_selfDual_orientedModel_scaled_skewHermitian D B₀ f₀.2.1 f₀.2.2.1 _ _ _ W₁ hW₁`. Take `rfl : n = B.rank` from `oB.1.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2, s3, s4, -, s6, -, s8⟩` from `id hX`. Take `⟨Y, hY, y1, y2, y3⟩` from `qs W hψ i j p 0 B A' WW₁ ΛB X.rA'.Λ ΛW sB s8.rigA'.1 sW (by omega) s2 (by omega) s4 (by simpa using nB) s6 (by simpa using nW) oW.1.symm`. Take `⟨c, hc⟩` from `qf W S hψ hN i j p 0 B A' WW₁ Y hY`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Use `⟨B, A', WW₁, Y, c, hY, hc.isConst, fun t => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Bs, hes, f⟩` from `hemb t`. Establish `hee : Bs.emb = B₀.emb` using `hes.trans he₀.symm`. Establish `f₁ : Fit G W i j t μ₀ Bs B.rank A'.rank` using `Fit.down_left (hn ▸ f)`. Take `⟨Γ, o, pΓ, qΓ, g, HX⟩` from `qd W hψ i j _ _ A A' WW X lam t Bs hX hF f`. Take `⟨Γ₁, o₁, pΓ₁, qΓ₁, g₁, HY⟩` from `qd W hψ i j _ _ B A' WW₁ Y c t Bs hY hc f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, U₁, H, u1, u2, u3, u4, hH⟩` from `GlobalTheory.T.adaptedHyperbolicPlane_rescale_rebasis _ _ _ f.2.1.cm B₀ Bs hee _ _ _ V₁ H₀ 0 (B.rank + 1) (by omega) (by omega) hY'.lat hV₁.lat hH₀`. Take `⟨Z, Z₁, H', z1, z2, z3, z4, hH'⟩` from `GlobalTheory.T.adaptedHyperbolicPlane_rescale_rebasis _ _ _ f.2.1.cm B₀ Bs hee _ _ _ W₁ H₀' 0 (B.rank + 1) (by omega) (by omega) hZ'.lat hW₁.lat hH₀'`. Establish `eV : reS Γ.V U = reS (reS Γ₀.V Y') U` using `reS_congr U (o₀.1.eq o.1)`. Establish `eW : reS Γ.W Z = reS (reS Γ₀.W Z') Z` using `reS_congr Z (o₀.2.2.eq o.2.2)`. Establish `eV₁ : reS Γ₁.V U₁ = reS V₁ U₁` using `reS_congr U₁ (oB.eq (y1 ▸ o₁.1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eW₁ : reS Γ₁.W Z₁ = reS W₁ Z₁` using `reS_congr Z₁ (oW.eq (y3 ▸ o₁.2.2))`. Establish `eV' : reS Γ₁.V' Γ.V' = reS Γ.V' Γ.V'` using `reS_congr Γ.V' (o.2.1.eq (y2 ▸ o₁.2.1))`. Establish `hV' : (reS Γ.V' Γ.V').IsHerm D.sp.cm.sig Bs Γ.q (A'.rank - Γ.q)` using `g.hV'`. Establish `g₂ : (reG Γ U Γ.V' Z).IsGood Bs` using `isGood_reG g (by rw [eV, pΓ]; exact isHerm_rebase hee hY' u1 u3) hV' (by rw [eW, pΓ, qΓ]; exact isSkew_rebase hee hZ' z1 z3)`. Establish `g₃ : (reG Γ₁ U₁ Γ.V' Z₁).IsGood Bs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isGood_reG g₁ ?_ (by rw [eV', qΓ₁, ← qΓ]; exact hV') ?_` and prove the remaining obligations. Rewrite using `[eV₁, pΓ₁]`. Apply the tactic sequence `convert isHerm_rebase hee hV₁ u2 u4 using 1 <;> omega`. Rewrite using `[eW₁, pΓ₁, qΓ₁]`. Apply the tactic sequence `convert isSkew_rebase hee hW₁ z2 z4 using 1 <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨oa, oa', ob, ob', R, Ra, Rb, da, db, m1, m2, k1, k2, hdb, k, hk⟩` from `_root_.GlobalTheory.SqStepBig.theta_tower_step_pair_real_part hP hK hM f.2.1 g f.2.2.2.1 f.2.2.2.2.1 HX g₂`. Take `⟨pa, pa', pb, pb', R₁, Sa, Sb, ca, cb, n1, n2, l1, l2, hcb, k', hk'⟩` from `_root_.GlobalTheory.SqStepBig.theta_tower_step_pair_real_part hP hK hM f.2.1 g₁ f₁.2.2.2.1 f₁.2.2.2.2.1 HY g₃`. Take `⟨C₀, -, HC⟩` from `stepAlpha_cast (hα _ _ D.sp.cm.sig) Bs hn he (reG Γ U Γ.V' Z) (reG Γ₁ U₁ Γ.V' Z₁) H H' R R₁ eV' qΓ qΓ₁ (by show Γ₁.p + 1 = Γ.p; rw [pΓ, pΓ₁]) (by show H.IsAdapted _ _ (reS Γ.V U) (reS Γ₁.V U₁) _ _; rw [eV, eV₁]; exact hH) (by show H'.IsAdapted _ _ (reS Γ.W Z) (reS Γ₁.W Z₁) _ _; r …`. Establish `E1` using `HC _ _ _ _ _ _ _ m1 n1 _ _ k1 l1`. Establish `E0` using `HC _ _ _ _ _ _ _ m2 n2 _ _ k2 l2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ, eζ⟩` from `qx W S hN i j t k`. Take `⟨ζ', hζ', eζ'⟩` from `qx W S hN i j t k'`. Establish `hz : D.what₂.embLL ζ ≠ 0` using `eζ ▸ Circle.coe_ne_zero _`. Establish `hz0 : ζ ≠ 0` using `fun h => hz (by rw [h, map_zero])`. Rewrite `hk` using `[eζ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk'` using `[eζ']`. Establish `hc0` using `hc.1 μ₀`. Use `⟨Bs, e₁, e₂, s, H.𝔟, H'.𝔟, C₀ * lam μ₀ * cb / (db * c μ₀), ζ' * ζ⁻¹, f.1, hζ'.mul (awayUnit_inv hz0 hζ), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `da = _ * _ * charL _ (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) _ * _ at E1`. Rewrite using `[map_mul, map_inv₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `stepFac Bs (GlobalTheory.SqStep.chs G i j t) e₁ e₂ s H.𝔟 H'.𝔟 (1 - (e : ℤ)) = u at E1 ⊢`. Generalize the expression as in `charL (GlobalTheory.SqStep.chs G i j t).ν (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) (e : ℂ) = L at E1 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-c μ₀) * hk + lam μ₀ * c μ₀ * E1 + C₀ * u * L * lam μ₀ * hk'`. Express the relevant statement in the definitionally equal form `db = _ * _ * charL _ (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) _ * _ at E0`.
+Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `stepFac Bs (GlobalTheory.SqStep.chs G i j μ₀) e₁ e₂ s H.𝔟 H'.𝔟 (1 - (e : ℤ)) = u at E0 ⊢`. Generalize the expression as in `charL (GlobalTheory.SqStep.chs G i j μ₀).ν (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) (e : ℂ) = L at E0 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `lam μ₀ * E0`.
+Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem theta_tower_step_norm_identity : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
@@ -215,15 +215,15 @@ noncomputable section
 namespace GlobalTheory.SqStepBig
 open GlobalTheory.Square
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gbig_of_three (_root_.GlobalTheory.SqStepBig.theta_tower_step_norm_identity hP hK hM) GlobalTheory.T.thetaStepFactor_ratio_unit_gaussSumQuotient GlobalTheory.T.partialHeckeLFunction_square_eq_primitive ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q1 q2 q3 W S hψ hN i j p A A' WW X lam e Lf hX hF he hL`. Take `⟨B, B', WW₁, Y, c, hY, hc, H⟩` from `q1 W S hψ hN i j p A A' WW X lam e hX hF he`. Establish `he2` using `two_le_half hX he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlam` using `hF.1`. Establish `hne : ∀ t, Lf t e * c t ≠ 0` using `fun t => by`. Take `⟨Bs, e₁, e₂, s, 𝔟, 𝔠, C', ζ, -, -, et, -⟩` from `H t`. Rewrite `et` using `[q3 i j t e (Lf t) he2 (hL t)]`. Establish `h` using `hlam t`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[et]`. Conclude with `mul_ne_zero (right_ne_zero_of_mul (left_ne_zero_of_mul h)) (right_ne_zero_of_mul h)`. Use `⟨B, B', WW₁, Y, c, fun t => lam t / (Lf t e * c t), hY, hc, fun t => ⟨div_ne_zero (hlam t) (hne t), ?_⟩, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, div_mul_cancel₀ _ (hne t)]`. Take `⟨Bs, e₁, e₂, s, 𝔟, 𝔠, C', ζ, hB, hζ, et, e0⟩` from `H t`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `et` using `[q3 i j t e (Lf t) he2 (hL t)]`. Rewrite `e0` using `[q3 i j μ₀ e (Lf μ₀) he2 (hL μ₀)]`. Establish `ht` using `hlam t`. Establish `h0` using `hlam μ₀`. Rewrite `ht` using `[et]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[e0]`. Establish `key` using `stepRatio_swap (C := C') (q2 W S hψ hN i j t Bs e₁ e₂ s 𝔟 𝔠 (1 - (e : ℤ)) hB (right_ne_zero_of_mul (left_ne_zero_of_mul (left_ne_zero_of_mul ht)))) (right_ne_zero_of_mul (left_ne_zero_of_mul (left_ne_zero_of_mul h0))) hζ`. Use `beta_reduce`. Rewrite using `[et, e0, mul_assoc _ (Lf t e), mul_assoc _ (Lf μ₀ e), mul_div_cancel_right₀ _ (hne t), mul_div_cancel_right₀ _ (hne μ₀)]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_tower_norm_step_large_rank : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
@@ -275,7 +275,7 @@ open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank | exact _root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank | (intros; apply _root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.witt_tower_norm_step_of_large_rank : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

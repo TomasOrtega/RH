@@ -19,7 +19,7 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Conclude with `swC_main false hp hq hμ hgap hh s hs hσ hσ' ν hν hd`.
+A detailed English derivation is pending.
 -/
 theorem fdeg_ratio_V {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {μ : Fin n → ℝ}
     (hμ : S7.IsHCParam μ) {h : ℝ} (hgap : GapAtLeast ε μ h) (hh : thrS ε + 1 < h) (s : Fin n)

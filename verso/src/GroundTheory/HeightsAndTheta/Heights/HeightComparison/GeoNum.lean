@@ -19,19 +19,19 @@ variable (p : ℕ) [Fact p.Prime]
 abbrev red : MRing ι ℤ →+* MRing ι (ZMod p) := MvPolynomial.map (Int.castRingHom (ZMod p))
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.map_surjective _ ZMod.intCast_surjective`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective : Function.Surjective (red (ι := ι) p) :=
   MvPolynomial.map_surjective _ ZMod.intCast_surjective
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_red : RingHom.ker (red (ι := ι) p) = Ideal.span {C (p : ℤ)} := by
   rw [MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Rewrite using `[RingHom.ker_eq_comap_bot]`. Conclude with `Ideal.comap_mono bot_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_comap (J' : Ideal (MRing ι (ZMod p))) :
     RingHom.ker (red (ι := ι) p) ≤ J'.comap (red p) := by
@@ -39,7 +39,7 @@ theorem ker_le_comap (J' : Ideal (MRing ι (ZMod p))) :
   exact Ideal.comap_mono bot_le
 
 /- English proof (translation)
-Rewrite using `[Ideal.comap_map_of_surjective _ (red_surjective p), ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hJ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_map_eq {J : Ideal (MRing ι ℤ)} (hJ : RingHom.ker (red (ι := ι) p) ≤ J) :
     (J.map (red p)).comap (red p) = J := by
@@ -47,7 +47,7 @@ theorem comap_map_eq {J : Ideal (MRing ι ℤ)} (hJ : RingHom.ker (red (ι := ι
     sup_eq_left.mpr hJ]
 
 /- English proof (translation)
-Establish `h : Q ⊔ Ideal.span (red p '' T) = (Q.comap (red p) ⊔ Ideal.span T).map (red p)`. Rewrite using `[Ideal.map_sup, Ideal.map_comap_of_surjective _ (red_surjective p), Ideal.map_span]`. Rewrite using `[h, comap_map_eq p ((ker_le_comap p Q).trans le_sup_left)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_sup_span (Q : Ideal (MRing ι (ZMod p))) (T : Set (MRing ι ℤ)) :
     Q.comap (red p) ⊔ Ideal.span T = (Q ⊔ Ideal.span (red p '' T)).comap (red p) := by
@@ -56,7 +56,7 @@ theorem comap_sup_span (Q : Ideal (MRing ι (ZMod p))) (T : Set (MRing ι ℤ)) 
   rw [h, comap_map_eq p ((ker_le_comap p Q).trans le_sup_left)]
 
 /- English proof (translation)
-Simplify using `only [Geo.IsRelevant, IsRelevant, Ideal.mem_comap, red, map_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isRelevant_comap_iff (Q : Ideal (MRing ι (ZMod p))) :
     Geo.IsRelevant (R := ℤ) (Q.comap (red p)) ↔ IsRelevant Q := by
@@ -76,7 +76,7 @@ theorem quotEquiv_mk (J' : Ideal (MRing ι (ZMod p))) (x : MRing ι ℤ) :
   rfl
 
 /- English proof (translation)
-Unfold `NumbersDVR.multAt`. Use `length_localizedModule_eq_of_surjective (red p) (red_surjective p) W' _ rfl _ _ (quotEquiv p J').toAddEquiv fun s x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `quotEquiv p J' (Ideal.Quotient.mk _ (s * y)) = Ideal.Quotient.mk J' (red p s) * quotEquiv p J' (Ideal.Quotient.mk _ y)`. Rewrite using `[quotEquiv_mk, quotEquiv_mk, map_mul, map_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem multAt_comap (J' W' : Ideal (MRing ι (ZMod p))) [W'.IsPrime] :
     NumbersDVR.multAt (J'.comap (red p)) (W'.comap (red p)) = NumbersDVR.multAt J' W' := by
@@ -89,7 +89,7 @@ theorem multAt_comap (J' W' : Ideal (MRing ι (ZMod p))) [W'.IsPrime] :
   rw [quotEquiv_mk, quotEquiv_mk, map_mul, map_mul]
 
 /- English proof (translation)
-Establish `e1 : Module.length ℤ (MRing ι ℤ ⧸ J'.comap (red p)) = Module.length ℤ (MRing ι (ZMod p) ⧸ J')`. Use `((quotEquiv p J').toAddEquiv.toIntLinearEquiv).length_eq` and compare the differences between its conclusion and the goal. Establish `e2 : Module.length ℤ (MRing ι (ZMod p) ⧸ J') = Module.length (ZMod p) (MRing ι (ZMod p) ⧸ J')`. Use `Module.length_eq_of_surjective (R := ZMod p) (S := ℤ) (M := MRing ι (ZMod p) ⧸ J') ZMod.intCast_surjective` and compare the differences between its conclusion and the goal. Rewrite using `[e1, e2, Module.length_eq_rank]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -107,19 +107,17 @@ theorem length_toNat_comap (J' : Ideal (MRing ι (ZMod p))) :
   rfl
 
 /- English proof (translation)
-Establish `hJ : Q.comap (red p) ⊔ Ideal.span {s} = (Q ⊔ Ideal.span {red p s}).comap (red p)`. Rewrite using `[comap_sup_span p Q {s}, Set.image_singleton]`. Establish `hS : Geo.divSupp (Q.comap (red p)) s = Ideal.comap (red p) '' {W' | W' ∈ (Q ⊔ Ideal.span {red p s}).minimalPrimes ∧ IsRelevant W'}`. Use extensionality with `W`. Simplify using `only [Geo.divSupp, Set.mem_ofPred_eq, hJ, Ideal.comap_minimalPrimes_eq_of_surjective (red_surjective p), Set.mem_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨W', hW', rfl⟩, hr⟩`. Conclude with `⟨W', ⟨hW', (isRelevant_comap_iff p W').mp hr⟩, rfl⟩`. Introduce and unpack `⟨W', ⟨hW', hr⟩, rfl⟩`. Conclude with `⟨⟨W', hW', rfl⟩, (isRelevant_comap_iff p W').mpr hr⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hsupp : ∀ (f : Ideal (MRing ι (ZMod p)) → ℤ) (T : Set (Ideal (MRing ι (ZMod p)))), Function.support f ⊆ T → ∑ᶠ W ∈ T, f W = ∑ᶠ W, f W`. Introduce `f T hT`. Rewrite using `[← finsum_mem_inter_support f T, Set.inter_eq_right.mpr hT, ← finsum_mem_univ f, ← finsum_mem_inter_support f Set.univ, Set.univ_inter]`. Rewrite using `[hS, finsum_mem_image (Ideal.comap_injective_of_surjective _ (red_surjective p)).injOn, hJ]`. Unfold `cycEval`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hsupp _ {W' | W' ∈ (Q ⊔ Ideal.span {red p s}).minimalPrimes ∧ IsRelevant W'}]`. Use `finsum_mem_congr rfl fun W' hW' => ?_` and prove the remaining obligations. Establish `: W'.IsPrime` using `hW'.1.1.1`. Establish `hd : divCycle Q (red p s) W' = ((NumbersDVR.multAt (Q ⊔ Ideal.span {red p s}) W').toNat : ℤ)`. Unfold `divCycle`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `dif_pos hW'`. Rewrite using `[multAt_eq_toNat, multAt_comap, ← hd]`. Distinguish the cases in `h0 : divCycle Q (red p s) W' = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Rewrite using `[h W' h0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W' hW'`. Assume the negation of the conclusion as `hT`. Apply `hW'` to reduce the goal to its premises. Use `show divCycle Q (red p s) W' * N W' = 0`. Unfold `divCycle`.
-
-Rewrite using `[dif_neg (show ¬ (_ ∧ _) from hT), zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycEval_divCycle_eq (Q : Ideal (MRing ι (ZMod p))) (s : MRing ι ℤ)
     (N : Ideal (MRing ι (ZMod p)) → ℤ) (g : Ideal (MRing ι ℤ) → ℤ)
@@ -166,29 +164,29 @@ theorem cycEval_divCycle_eq (Q : Ideal (MRing ι (ZMod p))) (s : MRing ι ℤ)
     rw [dif_neg (show ¬ (_ ∧ _) from hT), zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `Q hQ hdim a`. Establish `hrel : Geo.IsRelevant (R` using `ℤ) (Q.comap (red p)) := (isRelevant_comap_iff p Q).mpr hQ.relevant`. Establish `hi : ∀ k, (X ⟨k, (hrel k).choose⟩ : MRing ι (ZMod p)) ∉ Q` using `fun k => by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hrel k).choose_spec` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_X]`. Then use the resulting hypothesis. Establish `hd : ringKrullDim (MRing ι (ZMod p) ⧸ Q) = ((0 + Fintype.card K : ℕ) : WithBot ℕ∞)` using `(CutRegular.relDim_eq_natCast_iff Q 0).mp hdim`. Take `rfl : a = ![]` from `Subsingleton.elim _ _`. Rewrite using `[IntNumPoint.proof IntNumBase.full (ZMod p) K ι Q _ hQ hd hi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Geo.geoNum]`. Rewrite using `[dif_pos hrel, ReciprocityTheory.ChartRestriction.G.AI.I1.ptDeg, ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal, comap_sup_span, ← Set.range_comp]`. Establish `hf : (red p ∘ fun k => (X ⟨k, (hrel k).choose⟩ : MRing ι ℤ) - 1) = fun k => (X ⟨k, (hrel k).choose⟩ : MRing ι (ZMod p)) - 1`. Use function extensionality and compare the values at `k`. Simplify using `[red]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf, length_toNat_comap]`. Consider the case `succ n ih`. Introduce `Q hQ hdim a`. Establish `hrel : Geo.IsRelevant (R` using `ℤ) (Q.comap (red p)) := (isRelevant_comap_iff p Q).mpr hQ.relevant`. Establish `hi : ∀ k, (X ⟨k, (hrel k).choose⟩ : MRing ι (ZMod p)) ∉ Q` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hrel k).choose_spec` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_X]`. Then use the resulting hypothesis. Establish `hadd : ∀ c c' : K → ℤ, intNum (ZMod p) Q (Fin.snoc (α` using `fun _ => K → ℤ) (Fin.init a) (c + c')) = intNum (ZMod p) Q (Fin.snoc (α := fun _ => K → ℤ) (Fin.init a) c) + intNum (ZMod p) Q (Fin.snoc (α := fun _ => K → ℤ) (Fin.init a) c') := by`. Introduce `c c'`. Use `IntNumAdd.full (ZMod p) K ι Q hQ.multiHomog hQ.relevant (n + 1) hdim (Fin.snoc (α := fun _ => K → ℤ) (Fin.init a) 0) (Fin.last n) c c'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `only [Fin.update_snoc_last]`. Set `f : (K → ℤ) →+ ℤ` to `AddMonoidHom.mk' (fun c => intNum (ZMod p) Q (Fin.snoc (α := fun _ => K → ℤ) (Fin.init a) c)) hadd`. Establish `hlin : ∀ c : K → ℤ, intNum (ZMod p) Q (Fin.snoc (α` using `fun _ => K → ℤ) (Fin.init a) c) = ∑ k, c k * intNum (ZMod p) Q (Fin.snoc (α := fun _ => K → ℤ) (Fin.init a) (Pi.single k 1)) := by`. Introduce `c`. Establish `hc : c = ∑ k, c k • (Pi.single k 1 : K → ℤ)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `: f c = ∑ k, c k • f (Pi.single k 1)` using `by conv_lhs => rw [hc]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_zsmul f (c k) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[f, smul_eq_mul]`. Establish `hcut : ∀ k, intNum (ZMod p) Q (Fin.snoc (α` using `fun _ => K → ℤ) (Fin.init a) (Pi.single k 1)) = ∑ᶠ W ∈ Geo.divSupp (Q.comap (red p)) (X ⟨k, (hrel k).choose⟩), (Geo.multAt (Q.comap (red p) ⊔ Ideal.span {X ⟨k, (hrel k).choose⟩}) W : ℤ) * Geo.geoNum n W (Fin.init a) := by`. Introduce `k`. Establish `hX : IsMultiHomog (X ⟨k, (hrel k).choose⟩ : MRing ι (ZMod p)) (Pi.single k 1)` using `isWeightedHomogeneous_X (ZMod p) (blockWeight ι) _`. Establish `e : (fun j => (((Pi.single k 1 : K → ℕ) j : ℕ) : ℤ)) = Pi.single k 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `CutRegular.full (ZMod p) K ι Q hQ n hdim (Pi.single k 1) _ hX (hi k) (Fin.init a)`. Rewrite `hc` using `[e]`. Rewrite using `[hc]`. Establish `hXr : red p (X ⟨k, (hrel k).choose⟩ : MRing ι ℤ) = X ⟨k, (hrel k).choose⟩` using `map_X _ _`. Use `cycEval_divCycle_eq p Q (X ⟨k, (hrel k).choose⟩) (fun W => intNum (ZMod p) W (Fin.init a)) (fun W => Geo.geoNum n W (Fin.init a)) (fun W' hW' => by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hW'` using `[hXr]`. Take `⟨hW'm, hW'd⟩` from `DivCycleSupport.full (ZMod p) K ι Q hQ n hdim (Pi.single k 1) _ hX (hi k) W' hW'`. Conclude with `ih W' hW'm hW'd (Fin.init a))`. Rewrite `this` using `[hXr]`. Then use the resulting hypothesis. Use `conv_lhs => rw [← Fin.snoc_init_self a]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlin]`. Simplify using `only [Geo.geoNum]`. Rewrite using `[dif_pos hrel]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hcut k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intNum_eq_geoNum_comap (n : ℕ) : ∀ Q : Ideal (MRing ι (ZMod p)), IsMultiProjPrime Q →
     relDim Q = ((n : ℕ) : WithBot (WithTop ℤ)) → ∀ a : Fin n → K → ℤ,
@@ -283,15 +281,13 @@ end GeoNum
 open GeoNum in
 
 /- English proof (translation)
-Establish `hker : RingHom.ker (red (ι` using `ι) p) ≤ V := by`. Rewrite using `[ker_red, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hpV`. Establish `hcm : (V.map (red p)).comap (red p) = V` using `comap_map_eq p hker`. Establish `: V.IsPrime` using `hV.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : IsMultiProjPrime (V.map (red p))`. Use `⟨Ideal.map_isPrime_of_surjective (red_surjective p) hker, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isMultiHomogIdeal_iff]`. Take `⟨S, hS, hVS⟩` from `hV.2.1`. Use `⟨red p '' S, ?_, by rw [hVS, Ideal.map_span]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`. Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[← isRelevant_comap_iff p, hcm]`. Conclude with `hV.2.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : relDim (V.map (red p)) = ((n : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[CutRegular.relDim_eq_natCast_iff, ← hdim]`. Use `ringKrullDim_eq_of_ringEquiv (quotEquiv p (V.map (red p)))` as an intermediate fact. Rewrite `this` using `[hcm]`. Conclude with `this.symm`.
-
-Use `intNum_eq_geoNum_comap p n _ hQ hd a` as an intermediate fact. Rewrite `this` using `[hcm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem intNum_map_eq_geoNum {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] (p : ℕ) [Fact p.Prime] (n : ℕ) (V : Ideal (Geo.MRing ι))
@@ -325,13 +321,13 @@ theorem intNum_map_eq_geoNum {K : Type} [Fintype K] [DecidableEq K] {ι : K → 
 open GeoNum in
 
 /- English proof (translation)
-Use `⟨⟨RingHom.ker_isPrime _, ⟨{C (p : ℤ)}, ?_, ker_red p⟩, fun k => ⟨0, ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Use `⟨0, fun m hm k => ?_⟩` and prove the remaining obligations. Establish `: m = 0`. Establish `h1` using `MvPolynomial.mem_support_iff.mp hm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[coeff_C]`. Assume the negation of the conclusion as `hne`. Conclude with `h1 (if_neg (Ne.symm hne))`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, map_X]`. Conclude with `X_ne_zero _`. Rewrite using `[RingHom.mem_ker, map_C]`. Simplify using the standard rewrite rules. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective (red_surjective p)), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Nat.card ((_ : Unit) × Fin (D + 1)) = D + 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intNum_map_eq_geoNum_hyps (p : ℕ) [Fact p.Prime] (D : ℕ) :
     Geo.IsMultiProjPrime (RingHom.ker (red (ι := fun _ : Unit => Fin (D + 1)) p)) ∧

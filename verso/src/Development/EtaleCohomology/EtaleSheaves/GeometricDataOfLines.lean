@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut LateralTheo
 namespace LateralTheory.E.GeometricData
 
 /- English proof (translation)
-Establish `h : p.appLE ⊤ ⊤ le_top = p.appTop` using `p.appLE_eq_app (U := ⊤)`. Rewrite using `[rA, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rA_top {A : Type} [CommRing A] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)) :
     rA p ⊤ = p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom := by
@@ -14,9 +14,9 @@ theorem rA_top {A : Type} [CommRing A] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRin
   rw [rA, h]
 
 /- English proof (translation)
-Introduce `A _ _ Z p hIL`. Take `⟨L, u, l, hu, hl, rfl⟩` from `hIL`. Establish `: UniversallyClosed u` using `(IsIntegralHom.iff_universallyClosed_and_isAffineHom.mp hu).1`. Establish `: UniversallyClosed l` using `hl.1.toUniversallyClosed`. Establish `h1` using `isIntegral_appTop_of_universallyClosed (u ≫ l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rA_top]`. Use `RingHom.IsIntegral.trans _ _ ?_ h1` and prove the remaining obligations. Conclude with `RingHom.isIntegral_of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.symm.surjective`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topInt : TopInt := by
   intro A _ _ Z p hIL
@@ -29,7 +29,7 @@ theorem topInt : TopInt := by
   exact RingHom.isIntegral_of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.symm.surjective
 
 /- English proof (translation)
-Simplify using `only [Scheme.germToFunctionField]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_res_eq {Z : Scheme.{0}} [IsIntegral Z] (U W : Z.Opens) (h : W ≤ U) [Nonempty U] [Nonempty W]
     (s : Γ(Z, U)) : Z.germToFunctionField W (Z.presheaf.map (homOfLE h).op s) = Z.germToFunctionField U s := by
@@ -37,27 +37,23 @@ theorem germ_res_eq {Z : Scheme.{0}} [IsIntegral Z] (U W : Z.Opens) (h : W ≤ U
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
 /- English proof (translation)
-Introduce `A _ _ Z p hI hTop hAff`. Take `⟨z⟩ : Nonempty Z` from `inferInstance`. Establish `: Nonempty (⊤ : Z.Opens)` using `⟨⟨z, trivial⟩⟩`. Establish `: Nonempty (⊤ ⊓ ⊤ : Z.Opens)` using `⟨⟨z, trivial, trivial⟩⟩`. Set `φ : Γ(Z, ⊤) →+* Z.functionField` to `(Z.germToFunctionField ⊤).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `_ : Algebra A Z.functionField` to `(φ.comp (rA p ⊤)).toAlgebra`. Set `B : Subalgebra A Z.functionField` to `{ toSubsemiring := φ.rangeS, algebraMap_mem' := fun a => ⟨rA p ⊤ a, rfl⟩ }`. Establish `hBint : ∀ x ∈ B, IsIntegral A x`. Introduce and unpack `x ⟨g, rfl⟩`. Take `⟨P, hP, hP0⟩` from `hTop g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `: Polynomial.eval₂ (algebraMap A Z.functionField) (φ g) P = φ (Polynomial.eval₂ (rA p ⊤) g P)`. Rewrite using `[Polynomial.hom_eval₂]`. Both sides reduce to the same expression. Rewrite using `[this, hP0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hDov : AdjoinInv B 1 = B`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AdjoinInv, Algebra.adjoin_le_iff]`. Introduce and unpack `x (hx | hx)`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff.mp hx, inv_one]`. Conclude with `B.one_mem`. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Or.inl hx)`. Use `⟨Z.functionField, inferInstance, inferInstance, B, B, 1, ?_, fun x hx _ => hBint x hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨one_ne_zero, B.one_mem, by rw [inv_one]; exact B.one_mem, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Conclude with `(hBint b hb).tower_top`. Introduce `b hb`. Conclude with `(hBint b hb).tower_top`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hDov]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Or.inl hx)`. Rewrite using `[Algebra.adjoin_le_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `x (hx | hx)`. Conclude with `hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `B.one_mem`. Use `⟨⊤, ⊤, φ, φ, (Z.germToFunctionField (⊤ ⊓ ⊤)).hom, hAff, hAff, by simpa using hAff, sup_idem _, Z.germToFunctionField_injective _, Z.germToFunctionField_injective _, Z.germToFunctionField_injective _, rfl, rfl, ?_, ?_, ?_, fun a => rfl, fun a => rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hDov]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, germ_res_eq (⊤ ⊓ ⊤) ⊤ (le_inf le_rfl le_rfl) s⟩`.
-
-Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨Z.presheaf.map (homOfLE inf_le_left).op s, germ_res_eq _ _ _ s⟩`. Introduce `s`. Conclude with `germ_res_eq _ _ _ s`. Introduce `s`.
-
-Conclude with `germ_res_eq _ _ _ s`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem embedAffine : EmbedAffine := by
   intro A _ _ Z p hI hTop hAff

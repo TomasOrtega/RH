@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ hpq hfan hnsi k _ m e C hC hms`. Take `⟨hm, hs⟩` from `hms`. Establish `hB : GlobalTheory.Mum.Base (ChartRing k m e)` using `GlobalTheory.ChartQF.base_chartRing C.toFam`. Establish `hR : HasRigidCoords C` using `GlobalTheory.T.canonicalFamily_has_pointRigid_coordinates Xo c φ (ChartRing k m e) hB C hC`. Take `⟨hft, hdim⟩` from `GlobalTheory.T.canonicalChart_residueField_dimension Xo c φ C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, s, ε, τ₀, h1, h2, h3, h4, -⟩` from `id hR`. Conclude with `⟨⟨hm, hs, GlobalTheory.T.openPart_classified_monomialBoundaryFamily Xo c φ _ hB C, GlobalTheory.T.canonicalFamily_localInjections_eq_same_point Xo c φ hpq hfan hnsi _ hB C hC, ⟨GlobalTheory.T.canonical_data_rigid_along_stratum Xo c φ _ hB C hC, GlobalTheory.T.isPointRigidBoundary …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTautB_of_canon : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), Canon C → (∃ hm : C.m = m, ∀ i, C.s i = bdParam k m e (Fin.cast hm i)) → IsTautB C := by
   intro E _ _ _ H Dw l Xo c φ hpq hfan hnsi k _ m e C hC hms

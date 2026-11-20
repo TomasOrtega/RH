@@ -9,19 +9,17 @@ open Formalism.MainNotions.S
 open ValuativeRel
 
 /- English proof (translation)
-Establish `hinj` using `fl_inj L`. Rewrite using `[Ideal.isMaximal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Rewrite `h1` using `[Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz⟩` from `h1`. Establish `hz' : (z : E) * algebraMap F E ϖ = 1`. Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[piO]`. Establish `hϖ0 : (ϖ : F) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `hzF : (z : E) = algebraMap F E (ϖ : F)⁻¹`. Establish `h2 : algebraMap F E (ϖ : F) * algebraMap F E (ϖ : F)⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (ϖ : F)⁻¹ ∈ 𝒪[F]` using `fl_mem_int L hinj (hzF ▸ z.2)`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Establish `h3 : ϖ * ⟨_, hmem⟩ = 1` using `Subtype.ext (by show (ϖ : F) * (ϖ : F)⁻¹ = 1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `mul_inv_cancel₀ hϖ0)`. Conclude with `⟨⟨ϖ, ⟨_, hmem⟩, h3, by rw [mul_comm]; exact h3⟩, rfl⟩`. Introduce `J x hIJ hx hxJ`. Establish `hnd : ¬ ∃ z ∈ L.O, (x : E) = algebraMap F E ϖ * z`. Introduce and unpack `⟨z, hz, hxz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨⟨z, hz⟩, Subtype.ext (by simp [piO, hxz, mul_comm])⟩`. Take `⟨y, hy, hxy⟩` from `fl_local L hl hE hinj ϖ hϖ x x.2 hnd`. Establish `: (1 : L.O) = x * ⟨y, hy⟩` using `Subtype.ext (by simp [hxy])`.
-
-Rewrite using `[this]`. Conclude with `J.mul_mem_right _ hxJ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_max {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hl : IsNonarchimedeanLocalField F)

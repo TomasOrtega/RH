@@ -21,7 +21,7 @@ structure Fits (C : Cols B) (d : C.Tup → ℕ) : Prop where
   defn : ∀ u (x : (C.mem u).A.Mram), (C.fm u).ipC 0 x x = 0 → x = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(W.eMt0 u).trans (stdOrthonormalBasis ℂ (W.Amb C.mu0)).repr.toLinearEquiv⟩ mtTw u μ := ⟨(W.eMtTw u μ).trans (stdOrthonormalBasis ℂ (W.Amb μ)).repr.toLinearEquiv⟩ herm u x y := by obtain ⟨a, rfl⟩ := (W.eMu u).surjective x obtain ⟨b, rfl⟩ := (W.eMu u).surjective y rw [← W.eMu_isom …`.
+Supply the required witnesses or components.
 -/
 theorem fits_of_rows {C : Cols B} (W : RowsRest B C) : Fits C (fun μ => Module.finrank ℂ (W.Amb μ)) where
   mt0 u := ⟨(W.eMt0 u).trans (stdOrthonormalBasis ℂ (W.Amb C.mu0)).repr.toLinearEquiv⟩
@@ -75,7 +75,7 @@ def stdJ {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) : (Fin n → L) →�
   map_smul' c x := by ext i; simp
 
 /- English proof (translation)
-Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[stdJ]`. Simplify using `[stdJ, h, Pi.single_eq_of_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem stdJ_single {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) (i : Fin n) :
     stdJ σ n (Pi.single i 1) = (EuclideanSpace.basisFun (Fin n) ℂ).toBasis i := by
@@ -85,13 +85,11 @@ theorem stdJ_single {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) (i : Fin n
   · simp [stdJ, h, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `letI : Algebra L ℂ := σ.toAlgebra`. Establish `h : LinearIndependent ℂ (fun i => algebraMap L ℂ ∘ b i)` using `linearIndependent_algebraMap_comp_iff.2 b.linearIndependent`. Conclude with `h.map' (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm.toLinearMap (LinearEquiv.ker _)`. Establish `h : ∀ x, stdJ σ n x ∈ Submodule.span ℂ (Set.range (fun i => stdJ σ n (b i)))`.
+Prove the components needed by the constructor for the conclusion. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hx : x ∈ Submodule.span L (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`.
-
-Rewrite using `[eq_top_iff, ← (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← stdJ_single σ]`. Conclude with `h _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdJ_basis {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) {κ : Type} (b : Module.Basis κ L (Fin n → L)) :
     LinearIndependent ℂ (fun i => stdJ σ n (b i)) ∧
@@ -118,7 +116,7 @@ def trunc (a b : ℕ) : Eu a →ₗ[ℂ] Eu b :=
   Matrix.toEuclideanLin (Matrix.of fun (i : Fin b) (k : Fin a) => if (i : ℕ) = k then (1 : ℂ) else 0)
 
 /- English proof (translation)
-Establish `: (Matrix.of fun (i : Fin a) (k : Fin a) => if (i : ℕ) = k then (1 : ℂ) else 0) = 1`. Use extensionality with `i k`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Simplify using `[trunc, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trunc_self (a : ℕ) (x : Eu a) : trunc a a x = x := by
   have : (Matrix.of fun (i : Fin a) (k : Fin a) => if (i : ℕ) = k then (1 : ℂ) else 0) = 1 := by
@@ -126,9 +124,9 @@ theorem trunc_self (a : ℕ) (x : Eu a) : trunc a a x = x := by
   simp [trunc, this]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨fun _ _ => rfl, fun _ _ => rfl⟩`. Consider the case `succ j ih`. Use `⟨fun x y => ?_, fun c x => ?_⟩` and prove the remaining obligations. Use `show C.Klin j _ = C.Klin j _ + C.Klin j _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih.map_add, map_add]`. Use `show C.Klin j _ = c • C.Klin j _`. Rewrite using `[ih.map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_lin {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (j : ℕ) :
     IsLinearMap ℂ (Formalism.ThetaLiftIndependence.chainOpM C.wt C.Kmap j) := by
@@ -146,7 +144,7 @@ def mdim (n e : ℕ) : ℕ → ℕ
   | _ + 1 => e
 
 /- English proof (translation)
-Use `R.two_le_m` as an intermediate fact. Take `⟨k, hk⟩ : ∃ k, R.m = k + 1` from `⟨R.m - 1, by omega⟩`. Rewrite using `[hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mdim_m (R : Ranks) (n e : ℕ) : mdim n e R.m = e := by
   have := R.two_le_m
@@ -238,15 +236,15 @@ def model {C : Cols B} {d : C.Tup → ℕ} (h : Fits C d) (n n₀ a : ℕ) : Row
   eMu_isom _ _ _ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨W⟩ => ⟨_, fits_of_rows W⟩, fun ⟨_, h⟩ => ⟨model h 1 1 1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_iff (C : Cols B) : Nonempty (RowsRest B C) ↔ ∃ d, Fits C d :=
   ⟨fun ⟨W⟩ => ⟨_, fits_of_rows W⟩, fun ⟨_, h⟩ => ⟨model h 1 1 1⟩⟩
 
 /- English proof (translation)
-Establish `h` using `B.level_split _ (B.T_level u)`. Unfold `Formalism.BasicNotions.Host.cls primeClass at h`. Establish `h2 : B.T u ≠ 2`. Introduce `h2`. Rewrite `h` using `[if_pos (show B.T u ∈ B.host.small from h2 ▸ B.host.two_mem_small)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `h`. Use `(B.T_prime u).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_lt_alt (B : Pre) (u : B.Word) : 2 < B.T u := by
   have h := B.level_split _ (B.T_level u)
@@ -307,7 +305,7 @@ def tcols (C : Cols B) : Cols B where
       { forms B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) B.LL B.embLL B.places with }
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `: ((tcols C).mem u).C.wt 0 c = 1` using `by show ((Nat.card PUnit : ℕ) : ℂ)⁻¹ = 1`. Simplify using the standard rewrite rules. Rewrite using `[this, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tcols_ipC (C : Cols B) (u : B.Word) (x y : ((tcols C).mem u).C.cls 0 → Unit → ℂ) :
     ((tcols C).fm u).ipC 0 x y = ∑ c, starRingEnd ℂ (x c ()) * y c () := by
@@ -322,7 +320,7 @@ def lineEquiv : ℂ ≃ₗ[ℂ] Eu 1 := (stdOrthonormalBasis ℂ ℂ).repr.toLin
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (finCongr (Module.finrank_self ℂ))).toLinearEquiv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lineEquiv⟩ mtTw _ _ := ⟨lineEquiv⟩ herm u x y := by erw [tcols_ipC, tcols_ipC] rw [map_sum] exact Finset.sum_congr rfl fun c _ => by simp [mul_comm] pos u x := by erw [tcols_ipC] rw [Complex.re_sum] exact Finset.sum_nonneg fun c _ => by rw [Complex.conj_mul']; norm_cast; positiv …`.
+Supply the required witnesses or components.
 -/
 theorem tcols_fits (C : Cols B) : Fits (tcols C) (fun _ => 1) where
   mt0 _ := ⟨lineEquiv⟩
@@ -347,7 +345,7 @@ theorem tcols_fits (C : Cols B) : Fits (tcols C) (fun _ => 1) where
     exact h0
 
 /- English proof (translation)
-Use `⟨tcols C₀, model (tcols_fits C₀) n n₀ a, rfl, rfl, fun _ _ => ?_, fun _ => ?_, fun u => ?_, ?_⟩` and prove the remaining obligations. Conclude with `finrank_euclideanSpace_fin`. Conclude with `finrank_euclideanSpace_fin`. Conclude with `Submodule.nontrivial_iff_ne_bot.2 (GlobalTheory.MemberTorsor.mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (two_lt_alt B.toPre u))`. Conclude with `Bool.noConfusion`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rows (C₀ : Cols B) (n n₀ a : ℕ) : ∃ (C : Cols B) (W : RowsRest B C),
     W.what₂.Drows = n ∧ W.what₂.D0 = n₀ ∧ (∀ μ j, Module.finrank ℂ (W.what₂.Mt μ j) = a) ∧
@@ -362,31 +360,29 @@ theorem exists_rows (C₀ : Cols B) (n n₀ a : ℕ) : ∃ (C : Cols B) (W : Row
   · exact Bool.noConfusion
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[trunc_self]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem trunc_trunc {a b c : ℕ} (h : a = b) (x : Eu a) : trunc b c (trunc a b x) = trunc a c x := by
   subst h; rw [trunc_self]
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mdim_self (n j : ℕ) : mdim n n j = n := by cases j <;> rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[trunc_self]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem congr_symm_eq {a b : ℕ} (h : a = b) (x : Eu b) :
     (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (finCongr h)).symm x = trunc b a x := by
   subst h; rw [trunc_self]; rfl
 
 /- English proof (translation)
-Establish `hd : ∀ j (x : Eu (mdim (d C.mu0) (d C.mu0) j)), (model h (d C.mu0) n₀ a).what₂.downTo C.mu0 j x = trunc _ (d C.mu0) x`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact fun x => (trunc_self _ x).symm`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Conclude with `(ih (trunc _ _ x)).trans (trunc_trunc ((mdim_self _ _).trans (mdim_self _ _).symm) x)`. Introduce `u φ F _`. Establish `hi : (model h (d C.mu0) n₀ a).what₂.iota C.mu0 F = F`. Use `(hd B.R.m _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [congr_symm_eq (mdim_m B.R (d C.mu0) (d C.mu0)) F]`. Conclude with `(trunc_trunc (mdim_self _ _).symm _).trans (trunc_self _ _)`. Use `erw [hi]`. Use `((model h (d C.mu0) n₀ a).perCol_base_eq_PtilCol u φ F).trans ?_` and prove the remaining obligations. Use `show _ = (C.mem u).P.PtilCol _ ((h.mt0 u).some.symm (trunc _ _ F))`.
-
-Use `erw [trunc_self]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem model_buDef {C : Cols B} {d : C.Tup → ℕ} (h : Fits C d) (n₀ a : ℕ) :
     Rows.BuDef (model h (d C.mu0) n₀ a).what₂ := by
@@ -410,7 +406,7 @@ theorem model_buDef {C : Cols B} {d : C.Tup → ℕ} (h : Fits C d) (n₀ a : �
   rfl
 
 /- English proof (translation)
-Introduce `μ j _ _ σ x _`. Use `show (LinearMap.id : Eu a →ₗ[ℂ] Eu a) (LinearMap.adjoint (LinearMap.id : Eu a →ₗ[ℂ] Eu a) x) = ((1 : ℝ) : ℂ) • (show Eu a from x)`. Rewrite using `[LinearMap.adjoint_id, Complex.ofReal_one, one_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem model_lamPDef {C : Cols B} {d : C.Tup → ℕ} (h : Fits C d) (n n₀ a : ℕ) :
     Rows.LamPDef (model h n n₀ a).what₂ := by

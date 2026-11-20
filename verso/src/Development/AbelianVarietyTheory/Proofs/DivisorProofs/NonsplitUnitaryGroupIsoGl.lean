@@ -15,7 +15,7 @@ variable (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun w => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun z : GL (Fin n) (w.adicCompletion E) => z i j) (h w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gl_ext_pLoc {x y : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)}
     (h : ∀ w, GeneralLinearGroup.map (pLoc E w) x = GeneralLinearGroup.map (pLoc E w) y) : x = y := by
@@ -29,9 +29,9 @@ Both sides reduce to the same expression.
 theorem pLoc_idem (T : Finset (Pl E)) (w : Pl E) : pLoc E w (idem E T) = if w ∈ T then 1 else 0 := rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (idem E T * x i j + (1 - idem E T) * (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) i j) = _`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, pLoc_idem]`. Use `split_ifs with hw`. Rewrite using `[one_mul, sub_self, zero_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[zero_mul, sub_zero, zero_add, one_mul, Units.val_one, Matrix.one_apply, Matrix.one_apply, apply_ite (pLoc E w), map_one, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pLoc_prjG (T : Finset (Pl E)) (w : Pl E) (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     GeneralLinearGroup.map (pLoc E w) (prjG E n T x) =
@@ -47,7 +47,7 @@ theorem pLoc_prjG (T : Finset (Pl E)) (w : Pl E) (x : GL (Fin n) (FiniteAdeleRin
 omit [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval (R := fun v : Pl E => v.adicCompletion E) w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comp_pLoc (w : Pl E) :
     Continuous (GeneralLinearGroup.map (n := Fin n) (pLoc E w)) :=
@@ -55,7 +55,7 @@ theorem continuous_comp_pLoc (w : Pl E) :
     (RestrictedProduct.continuous_eval (R := fun v : Pl E => v.adicCompletion E) w))
 
 /- English proof (translation)
-Establish `h : cPl E u = u` using `(GlobalTheory.ConjAtPlace.conjSrc_eq_iff u).2 hu`. Rewrite using `[orb, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orb_eq {u : Pl E} (hu : ¬ IsSplitAt u) : orb E u = {u} := by
   have h : cPl E u = u := (GlobalTheory.ConjAtPlace.conjSrc_eq_iff u).2 hu
@@ -63,11 +63,11 @@ theorem orb_eq {u : Pl E} (hu : ¬ IsSplitAt u) : orb E u = {u} := by
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ n u hu`. Establish `ho` using `orb_eq E hu`. Establish `hmem : ∀ x : GLw n u, locGL E n u x ∈ Gam E n u` using `fun x => ⟨locGL E n u x, gl_ext_pLoc E n fun w => by`. Rewrite using `[pLoc_prjG, ho]`. Use `split_ifs with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[pLoc_locGL_of_ne (by simpa using hw)]⟩`. Use `⟨{ toFun := fun g => GeneralLinearGroup.map (pLoc E u) g.1 invFun := fun x => ⟨locGL E n u x, hmem x⟩ left_inv := ?_ right_inv := fun x => pLoc_locGL u x map_mul' := fun g h => map_mul (GeneralLinearGroup.map (pLoc E u)) g.1 h.1 continuous_toFun := (continuous_comp_pLoc E n u).co …` and prove the remaining obligations. Introduce and unpack `⟨g, x, rfl⟩`. Use `Subtype.ext (gl_ext_pLoc E n fun w => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = u`. Substitute `hw` using the available equality. Conclude with `pLoc_locGL _ _`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E w) (locGL E n u _) = GeneralLinearGroup.map (pLoc E w) (prjG E n (orb E u) x)`. Rewrite using `[pLoc_locGL_of_ne hw, pLoc_prjG, ho, if_neg (by simpa using hw)]`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (u : Pl E), ¬ IsSplitAt u → ∃ e : GlobalTheory.EulerTw.Gam E n u ≃ₜ* GLw n u, ∀ g, e g = GeneralLinearGroup.map (pLoc E u) g.1 := by
   intro E _ _ _ n u hu

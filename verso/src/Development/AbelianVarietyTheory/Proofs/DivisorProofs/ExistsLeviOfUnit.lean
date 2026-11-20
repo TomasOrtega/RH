@@ -20,21 +20,19 @@ open GlobalTheory.LeviLine Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `set c : AE F E →+* AE F E := (cA σ : AE F E →ₐ[AF F] AE F E).toRingHom with hcdef`. Establish `hc : ∀ r, c (c r) = r` using `cA_invol hcm`. Establish `hJ : ∀ i j, c (incM F Y.J j i) = -incM F Y.J i j`. Introduce `i j`. Express the relevant statement in the definitionally equal form `cA σ (inclR (F := F) (AF F) (Y.J j i)) = -inclR (F := F) (AF F) (Y.J i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cA_inclR, hskew i j, map_neg]`. Establish `hxx : sf c (incM F Y.J) (incV F H.x) (incV F H.x) = 0` using `by rw [sf_inc, hxx', map_zero]`. Establish `hyy : sf c (incM F Y.J) (incV F H.y) (incV F H.y) = 0` using `by rw [sf_inc, hyy', map_zero]`. Establish `hxy : sf c (incM F Y.J) (incV F H.x) (incV F H.y) = 1` using `by rw [sf_inc, hxy', map_one]`. Establish `hyx : sf c (incM F Y.J) (incV F H.y) (incV F H.x) = -1` using `by rw [sf_skew c _ hc hJ, hxy, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts : (t : AE F E) * c (c (↑t⁻¹ : AE F E)) = 1` using `by rw [hc, Units.mul_inv]`. Establish `hst : c (↑t⁻¹ : AE F E) * c (t : AE F E) = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Set `L` to `levi c (incM F Y.J) (incV F H.x) (incV F H.y)`. Set `g : GL (Fin n) (AE F E)` to `⟨L t (c ↑t⁻¹), L ↑t⁻¹ (c t), by`. Rewrite using `[levi_mul hc hJ hxx hyy hxy, Units.mul_inv, ← map_mul, Units.inv_mul, map_one, levi_one],`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `by rw [levi_mul hc hJ hxx hyy hxy, Units.inv_mul, ← map_mul, Units.mul_inv, map_one, levi_one]⟩`. Establish `hg : g ∈ UG (cA σ) (incM F Y.J)` using `levi_unitary hc hJ hxx hyy hxy hts hst`. Use `⟨⟨g, hg⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) *ᵥ incV F H.x = _`. Rewrite using `[levi_mulVec, hxx, hxy]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) *ᵥ incV F H.y = c ↑t⁻¹ • incV F H.y`. Rewrite using `[levi_mulVec, hyy, hyx]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) * incM F H.ι = incM F H.ι * (1 : Matrix (Fin n₁) (Fin n₁) (AE F E))`. Rewrite using `[Matrix.mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ext_mulVec_single fun k => ?_` and prove the remaining obligations. Establish `hcol : incM F H.ι *ᵥ Pi.single k 1 = incV F (H.ι *ᵥ Pi.single k 1)`. Use extensionality with `i`. Simplify using `[mulVec_single_one, incM, incV]`. Rewrite using `[← mulVec_mulVec, hcol]`.
-
-Conclude with `levi_mulVec_of_orth _ _ _ _ (by rw [sf_inc, (horth _).1, map_zero]) (by rw [sf_inc, (horth _).2, map_zero])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_levi_of_unit (hcm : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁)
     (hskew : ∀ i j, σ (Y.J j i) = -Y.J i j) (hxx' : form σ Y.J H.x H.x = 0) (hyy' : form σ Y.J H.y H.y = 0)
@@ -80,9 +78,9 @@ theorem exists_levi_of_unit (hcm : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n
     exact levi_mulVec_of_orth _ _ _ _ (by rw [sf_inc, (horth _).1, map_zero]) (by rw [sf_inc, (horth _).2, map_zero])
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ k l`. Rewrite using `[← hH.gram]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LeviFirst.gram_skew hcm _ _ hW k l`. Consider the case `succ j ih`. Introduce `hj k l`. Rewrite using `[← (hiso j (by omega)).2.2.2.2.2.1]`. Conclude with `LeviFirst.gram_skew hcm _ _ (ih (by omega)) k l`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_chain (hcm : IsCMExt F E σ) (B : Base F E) {d d₁ p : ℕ} {W : Spc F E d}
     (hW : ∀ i j, σ (W.J j i) = -W.J i j) {H' : Plane E d d₁} {i₀ i₁ : ℕ} {sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j)}

@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e : gs (𝟙 Y) (τ y) U a = (Y.presheaf.germ U (τ y) hy).hom a` using `gs_eq (𝟙 Y) (τ y) U hy a`. Rewrite using `[e, gs_eq τ y U hy]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply τ U y hy a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_eq_stalkMap_gs_id {Y Y' : Scheme.{0}} (τ : Y' ⟶ Y) (y : Y') (U : Y.Opens) (hy : τ y ∈ U) (a : Γ(Y, U)) :
     gs τ y U a = (τ.stalkMap y).hom (gs (𝟙 Y) (τ y) U a) := by
@@ -24,9 +24,9 @@ theorem gs_eq_stalkMap_gs_id {Y Y' : Scheme.{0}} (τ : Y' ⟶ Y) (y : Y') (U : Y
   exact (Scheme.Hom.germ_stalkMap_apply τ U y hy a).symm
 
 /- English proof (translation)
-Introduce `X Y _ L hL K _ φ ε s hs Y' τ _ y J hJ h0`. Establish `hG : Good L (τ y) (fun χ : Y ⟶ X => J (τ ≫ χ))` using `fun χ => hJ (τ ≫ χ)`. Establish `h1` using `(exists_ne_zero_iff_sval_ne_zero s hG).1 hs`. Rewrite `h1` using `[sval_of s (𝟙 Y) (τ y) _ (fun k => J (τ ≫ φ k)) (fun k => by rw [Category.id_comp])]`. Apply `h1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : gs τ y (LB.wchart L φ (fun k => J (τ ≫ φ k))) (s.f (fun k => J (τ ≫ φ k))) = 0` using `h0`. Establish `h3` using `(gs_eq_stalkMap_gs_id τ y _ (hJ.mem φ τ) _).symm.trans h2`. Establish `hinj : Function.Injective (τ.stalkMap y).hom` using `(ConcreteCategory.bijective_of_isIso (τ.stalkMap y)).1`. Conclude with `(map_eq_zero_iff _ hinj).1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_ne_zero_of_isIso : ∀ (X Y : Scheme.{0}) [IsIntegral Y] (L : LB X), L.IsLB → ∀ (K : Type) [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : LB.Sec (LB.LinComb L φ ε)), (∃ j, s.f j ≠ 0) → ∀ (Y' : Scheme.{0}) (τ : Y' ⟶ Y) [IsIso τ] (y : Y') (J), Good L y J → sval s τ y J ≠ 0 := by
   intro X Y _ L hL K _ φ ε s hs Y' τ _ y J hJ h0

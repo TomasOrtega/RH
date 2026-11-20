@@ -29,7 +29,7 @@ def cellFun (r l t : ℕ) (ϖ : kˣ) (v : (Fin (l * t) → ℤ) → ℂ) (g : GL
     (dcell ϖ (e.1 ∘ (blkEquiv l t).symm) : Set (GL (Fin r ⊕ Blocks l t) k)).indicator (fun _ => v e.1) g
 
 /- English proof (translation)
-Unfold `cellFun`. Rewrite using `[tsum_eq_single e]`. Conclude with `Set.indicator_of_mem hg _`. Introduce `e' he'`. Conclude with `Set.indicator_of_notMem (Set.disjoint_left.1 (hdisj he'.symm) hg) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cellFun_of_mem {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) → ℂ)
     (hdisj : Pairwise (Function.onFun Disjoint fun e : {e : Fin (l * t) → ℤ // Antitone e} =>
@@ -43,7 +43,7 @@ theorem cellFun_of_mem {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) → �
     exact Set.indicator_of_notMem (Set.disjoint_left.1 (hdisj he'.symm) hg) _
 
 /- English proof (translation)
-Unfold `cellFun`. Simplify using `[Set.indicator_of_notMem (hg _)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cellFun_of_notMem {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) → ℂ) {g : GL (Fin r ⊕ Blocks l t) k}
     (hg : ∀ e : {e : Fin (l * t) → ℤ // Antitone e}, g ∉ dcell ϖ (e.1 ∘ (blkEquiv l t).symm)) :
@@ -52,9 +52,9 @@ theorem cellFun_of_notMem {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) �
   simp [Set.indicator_of_notMem (hg _)]
 
 /- English proof (translation)
-Unfold `dcell`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 h`. Use `DoubleCoset.mem_doubleCoset.2 ⟨j⁻¹ * a, mul_mem (inv_mem hj) ha, b * j'⁻¹, mul_mem hb (inv_mem hj'), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 h`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨j * a, mul_mem hj ha, b * j', mul_mem hb hj', by group⟩`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_dcell_mul_iff {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] {ϖ : kˣ}
     {f : D → ℤ} {g j j' : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) (hj' : j' ∈ parahoric k A D) :
@@ -71,9 +71,9 @@ theorem mem_dcell_mul_iff {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [
     exact DoubleCoset.mem_doubleCoset.2 ⟨j * a, mul_mem hj ha, b * j', mul_mem hb hj', by group⟩
 
 /- English proof (translation)
-Unfold `cellFun`. Use `congr 1`. Use function extensionality and compare the values at `e`. Distinguish the cases in `h : g ∈ dcell ϖ (e.1 ∘ (blkEquiv l t).symm)`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((mem_dcell_mul_iff hj hj').2 h)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((mem_dcell_mul_iff hj hj').1 h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cellFun_biinv {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) → ℂ) (g : GL (Fin r ⊕ Blocks l t) k)
     {j j' : GL (Fin r ⊕ Blocks l t) k} (hj : j ∈ parahoric k (Fin r) (Blocks l t))
@@ -86,21 +86,21 @@ theorem cellFun_biinv {r l t : ℕ} {ϖ : kˣ} (v : (Fin (l * t) → ℤ) → �
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((mem_dcell_mul_iff hj hj').1 h'))]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[val_torusElt, Matrix.one_apply, diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torusElt_zero {n : Type} [Fintype n] [DecidableEq n] (ϖ : kˣ) : torusElt k n ϖ 0 = 1 := by
   ext i j
   simp [val_torusElt, Matrix.one_apply, diagonal_apply]
 
 /- English proof (translation)
-Rewrite using `[mtor, Sum.elim_zero_zero, torusElt_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mtor_zero {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) :
     (mtor ϖ (0 : D → ℤ) : GL (A ⊕ D) k) = 1 := by
   rw [mtor, Sum.elim_zero_zero, torusElt_zero]
 
 /- English proof (translation)
-Unfold `sumAbs`. Conclude with `Equiv.sum_comp ε.symm (fun i => |e i|)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sumAbs_comp {N : ℕ} {D : Type} [Fintype D] (ε : Fin N ≃ D) (e : Fin N → ℤ) :
     sumAbs (e ∘ ε.symm) = sumAbs e := by
@@ -108,14 +108,14 @@ theorem sumAbs_comp {N : ℕ} {D : Type} [Fintype D] (ε : Fin N ≃ D) (e : Fin
   exact Equiv.sum_comp ε.symm (fun i => |e i|)
 
 /- English proof (translation)
-Simplify using `[sumAbs, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumAbs_elim {A D : Type} [Fintype A] [Fintype D] (e : D → ℤ) :
     sumAbs (Sum.elim (0 : A → ℤ) e) = sumAbs e := by
   simp [sumAbs, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, val_torusElt, det_diagonal]`. Proceed by induction on `(Finset.univ : Finset n) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, _root_.zpow_add, Units.val_mul, ih, Units.val_zpow_eq_zpow_val ϖ (e i)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem det_torusElt {n : Type} [Fintype n] [DecidableEq n] (ϖ : kˣ) (e : n → ℤ) :
     GeneralLinearGroup.det (torusElt k n ϖ e) = ϖ ^ ∑ i, e i := by
@@ -126,11 +126,11 @@ theorem det_torusElt {n : Type} [Fintype n] [DecidableEq n] (ϖ : kˣ) (e : n �
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, _root_.zpow_add, Units.val_mul, ih, Units.val_zpow_eq_zpow_val ϖ (e i)]
 
 /- English proof (translation)
-Establish `h1 : ψ 1 = 1`. Establish `hb : (1 : GL (Fin N) k) ∈ borel k (Fin N)` using `(mem_borel _).2 fun i j hij => by`. Simplify using `[Matrix.one_apply, (ne_of_lt hij).symm]`. Rewrite using `[hψ.2 1 hb (fun _ => 1) (fun i => by simp)]`. Establish `: ord k 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ord_mul k 1 1` as an intermediate fact. Simplify using `at this`. Conclude with `this`. Simplify using `[this]`. Establish `hK : ∀ κ ∈ (KO k (Fin N) : Set (GL (Fin N) k)), ψ (κ * 1) = 1` using `fun κ hκ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, ← one_mul κ, hψ.1 1 κ hκ, h1]`. Unfold `zonalInt`. Rewrite using `[setIntegral_congr_fun (SplitFlip.isOpen_KO.measurableSet) hK]`. Simplify using `[Measure.real, hμK]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zonalInt_one {N : ℕ} [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)] (μK : Measure (GL (Fin N) k))
     (hμK : μK (KO k (Fin N)) = 1) {γ : Fin N → ℂ} {ψ : GL (Fin N) k → ℂ} (hψ : IsBorelSph k γ ψ) :
@@ -151,7 +151,7 @@ theorem zonalInt_one {N : ℕ} [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL 
   simp [Measure.real, hμK]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isUnramifiedHeightFunction_lowerBlock`.
+A detailed English derivation is pending.
 -/
 theorem hgt_lower : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) (H : GL (A ⊕ D) k → ℝ),
@@ -159,14 +159,14 @@ theorem hgt_lower : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace 
   GlobalTheory.T.isUnramifiedHeightFunction_lowerBlock
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.parahoricHeckeGenericEigenvalue_map_mul`.
+A detailed English derivation is pending.
 -/
 theorem genVal_map_mul : ∀ (q r N n : ℕ) (B : Multiset ℂˣ) (c : ℂˣ),
     genVal q r N (B.map (· * c)) n = (c : ℂ) ^ n * genVal q r N B n :=
   GlobalTheory.T.parahoricHeckeGenericEigenvalue_map_mul
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unramifiedTwist_sphericalFunction_reindex`.
+A detailed English derivation is pending.
 -/
 theorem twist_transport : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (D : Type) [Fintype D] [DecidableEq D] (N : ℕ) (ε : Fin N ≃ D) (ϖ : kˣ),
@@ -182,25 +182,25 @@ theorem twist_transport : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
   GlobalTheory.T.unramifiedTwist_sphericalFunction_reindex
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ hϖ r l t ξ μ₀ hξt hξr hμ₀ B α hαB H hH _ μK ψ hψ V _ _ π x ℓ hx hℓ e`. Establish `hH'` using `hgt_lower k (Fin r) (Blocks l t) ϖ H hH`. Use `set H' : GL (Blocks l t) k → ℝ := fun m => H (emb₂ k (Equiv.refl (Fin r ⊕ Blocks l t)) (1, m)) with hH'def`. Use `set f : GL (Blocks l t) k → ℂ := fun m => (((ξ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) * ℓ (π (emb₂ k (Equiv.refl (Fin r ⊕ Blocks l t)) (1, m)) x) / ((Real.sqrt (H' m) : ℝ) : ℂ) ^ Fintype.card (Fin r) with hfdef`. Take `⟨hfK, hfH⟩` from `GlobalTheory.T.lowerBlockCoefficient_isSphericalHeckeEigen k (Fin r) (Blocks l t) ϖ hϖ ξ hξt hξr V π B x ℓ hx hℓ H' hH' f (fun m => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set f₂ : GL (Fin (l * t)) k → ℂ := fun m => (((μ₀ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) * f (GlobalTheory.ChainStepSupp.reGL k (blkEquiv l t) m) with hf₂def`. Take `⟨hf₂K, hf₂H⟩` from `twist_transport k (Blocks l t) (l * t) (blkEquiv l t) ϖ hϖ μ₀ hμ₀ (B.map (· * (ξ ϖ)⁻¹)) f hfK hfH f₂ (fun m => rfl)`. Establish `hα : Finset.univ.val.map α = (B.map (· * (ξ ϖ)⁻¹)).map (· * (μ₀ ϖ)⁻¹)`. Rewrite using `[hαB, Multiset.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [Function.comp, MonoidHom.mul_apply, _root_.mul_inv_rev]`. Rewrite using `[mul_assoc, mul_comm (ξ ϖ)⁻¹]`. Establish `hz` using `hψ f₂ hf₂K (fun s R hR m => by rw [hf₂H s R hR m, hα, genVal_map_mul _ _ _ _ _ (μ₀ ϖ)⁻¹])`. Establish `hval` using `hz (torusElt k (Fin (l * t)) ϖ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (0:ℝ) < resCard k` using `by exact_mod_cast (zero_lt_one.trans (one_lt_resCard k))`. Establish `hf₂1 : f₂ 1 = ℓ x`. Establish `h1 : H' 1 = 1`. Use `hH'.2 0` as an intermediate fact. Rewrite `this` using `[torusElt_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `[sumAbs]`. Establish `he1 : emb₂ k (Equiv.refl (Fin r ⊕ Blocks l t)) ((1 : GL (Fin r) k), (1 : GL (Blocks l t) k)) = 1` using `map_one _`. Simplify using `only [hf₂def, hfdef, map_one, h1, Real.sqrt_one, he1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hS : ((Real.sqrt (H' (torusElt k (Blocks l t) ϖ (e ∘ (blkEquiv l t).symm))) : ℝ) : ℂ) ^ Fintype.card (Fin r) = (((resCard k : ℝ) ^ (-(r : ℝ) / 2 * (sumAbs e : ℝ)) : ℝ) : ℂ)`. Rewrite using `[hH'.2, sumAbs_comp, Fintype.card_fin, ← Complex.ofReal_pow]`. Use `congr 1`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hq.le, ← Real.rpow_natCast, ← Real.rpow_mul hq.le]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ i, (e ∘ (blkEquiv l t).symm) i = ∑ i, e i` using `Equiv.sum_comp (blkEquiv l t).symm e`. Establish `hval' : f₂ (torusElt k (Fin (l * t)) ϖ e) = (((μ₀ ϖ : ℂˣ) : ℂ) ^ (∑ i, e i))⁻¹ * ((((ξ ϖ : ℂˣ) : ℂ) ^ (∑ i, e i))⁻¹ * ℓ (π (mtor ϖ (e ∘ (blkEquiv l t).symm)) x) / (((resCard k : ℝ) ^ (-(r : ℝ) / 2 * (sumAbs e : ℝ)) : ℝ) : ℂ))`. Simplify using `only [hf₂def, hfdef]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.ChainStepSupp.reGL_torusElt, GlobalTheory.ChainStepSupp.emb₂_one_torusElt, hS, det_torusElt, det_torusElt, hsum]`. Simplify using `[map_zpow, Units.val_zpow_eq_zpow_val]`. Establish `key` using `hval'.symm.trans (hval.trans (by rw [hf₂1]))`. Establish `hA : ((μ₀ ϖ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hB : ((ξ ϖ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSne : (((resCard k : ℝ) ^ (-(r : ℝ) / 2 * (sumAbs e : ℝ)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hq _).ne'`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, mul_zpow]`. Establish `alg : ∀ (X Y S L : ℂ), X ≠ 0 → Y ≠ 0 → S ≠ 0 → L = X * Y * S * (X⁻¹ * (Y⁻¹ * L / S))`. Introduce `X Y S L hX hY hS`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hAn` using `zpow_ne_zero (∑ i, e i) hA`. Establish `hBn` using `zpow_ne_zero (∑ i, e i) hB`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lower_eigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →
@@ -279,61 +279,55 @@ theorem lower_eigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
     _ = _ := by rw [key]; ring
 
 /- English proof (translation)
-Introduce `hUD k _ _ _ _ _ _ _ ν hν ϖ hϖ r t l ξ μ₀ hξu hξt hξr hμ₀ hμ₀u B α ρ hαB hαρ H hH _ _ m _ hm c hc`. Use `letI : MeasurableSpace (GL (Fin (l * t)) k) := borel _`. Use `haveI : BorelSpace (GL (Fin (l * t)) k) := ⟨rfl⟩`. Take `⟨μK, hμKH, hμK⟩` from `GlobalTheory.GLDoubling.Model.exists_haar (k := k) (l * t)`. Use `haveI := hμKH`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψB, hψ⟩` from `GlobalTheory.T.biInvariant_eigenfunction_eq_mul_zonalSpherical k (l * t) μK hμK ϖ hϖ α`. Take `⟨hvol, hdisj⟩` from `GlobalTheory.T.twistedPlace_doubleCoset_volume_and_disjoint k ϖ hϖ r l t m hm μK hμK`. Establish `hceq : c = fun g => ip ν (om (μ₀ * ξ) g (1 : GL (Fin r ⊕ Blocks (l + 1) t) k) (datum ξ)) (datum ξ)`. Use function extensionality and compare the values at `hc`. Take `⟨hcBi, hcSupp, hcVal⟩` from `GlobalTheory.T.weilRep_chainStep_matrixCoefficient_twisted k ν hν ϖ hϖ r t l ξ μ₀ hξu hξt hμ₀ hμ₀u`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcBi`, `hcSupp` using `[← hceq]`. Use `beta_reduce at hcVal`. Establish `hq : (0:ℝ) < resCard k` using `by exact_mod_cast (zero_lt_one.trans (one_lt_resCard k))`. Establish `hq1 : (1:ℝ) < resCard k` using `by exact_mod_cast one_lt_resCard k`. Use `set C0 : ℝ := volAdd ν r * ((resCard k : ℝ) ^ (r * ((l + 1) * t)))⁻¹ with hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC0pos : 0 < C0`. Use `mul_pos ?_ (inv_pos.2 (pow_pos hq _))` and prove the remaining obligations. Rewrite using `[GlobalTheory.ChainStepIdentities.volAdd_eq k ν hν r]`. Use `Finset.prod_pos fun i hi => inv_pos.2 ?_` and prove the remaining obligations. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `zetaAt`. Conclude with `inv_pos.2 (sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq1 (by omega))))`. Establish `hcv : ∀ e : Fin (l * t) → ℤ, c (mtor ϖ (e ∘ (blkEquiv l t).symm)) = (((μ₀ * ξ) ϖ : ℂˣ) : ℂ) ^ (∑ i, e i) * ((C0 * (resCard k : ℝ) ^ (-((r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e : ℝ)) : ℝ) : ℂ)`. Introduce `e`. Establish `hsE : ∑ i, (e ∘ (blkEquiv l t).symm) i = ∑ i, e i` using `Equiv.sum_comp (blkEquiv l t).symm e`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc, hcVal, hsE, sumAbs_comp, Complex.ofReal_mul C0, Complex.ofReal_cpow hq.le, hC0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1 : c 1 = ((C0 : ℝ) : ℂ)`. Use `hcVal 0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[mtor_zero, ← hc]`. Rewrite using `[this]`. Simplify using `[sumAbs, C0]`. Use `set w : (Fin (l * t) → ℤ) → ℂ := fun e => (((resCard k : ℝ) ^ (-((2 * r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e : ℝ)) : ℝ) : ℂ) * zonalInt μK ψ (torusElt k (Fin (l * t)) ϖ e) with hw`. Use `⟨by rw [hc1]; exact_mod_cast hC0pos.ne', cellFun r l t ϖ w, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `V _ _ π x ℓ hx hℓ g`. Establish `hE` using `lower_eigen k ϖ hϖ r l t ξ μ₀ hξt hξr hμ₀ B α hαB H hH μK ψ hψ V π x ℓ hx hℓ`. Distinguish the cases in `hg : ∃ e : {e : Fin (l * t) → ℤ // Antitone e}, g ∈ dcell ϖ (e.1 ∘ (blkEquiv l t).symm)`. Take `⟨e, hge⟩` from `hg`. Rewrite using `[cellFun_of_mem w hdisj e hge]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj, j', hj', rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hge`. Use `set a := (mtor ϖ (e.1 ∘ (blkEquiv l t).symm) : GL (Fin r ⊕ Blocks l t) k) with ha`. Use `set d := Units.mk0 _ (GlobalTheory.ChainStepSupp.det_lower_ne_zero hj)`. Use `set d' := Units.mk0 _ (GlobalTheory.ChainStepSupp.det_lower_ne_zero hj')`. Establish `hc_eq : c (j * a * j') = (ξ d : ℂ) * (ξ d' : ℂ) * c a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, (hcBi j hj d rfl _).1, (hcBi j' hj' d' rfl a).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hℓ_eq : ℓ (π (j * a * j') x) = (ξ d : ℂ) * (ξ d' : ℂ) * ℓ (π a x)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hx.1 j' hj' d' rfl]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hℓ j hj d rfl]`. Expand and normalize the polynomial expressions, which then agree. Establish `u1 : starRingEnd ℂ (ξ d : ℂ) * (ξ d : ℂ) = 1`. Rewrite using `[Complex.conj_mul', hξu d]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `u2 : starRingEnd ℂ (ξ d' : ℂ) * (ξ d' : ℂ) = 1`. Rewrite using `[Complex.conj_mul', hξu d']`. Simplify using the standard rewrite rules. Establish `hM : ‖(((μ₀ * ξ) ϖ : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hμ₀u, hξu, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `u3 : starRingEnd ℂ ((((μ₀ * ξ) ϖ : ℂˣ) : ℂ) ^ (∑ i, e.1 i)) * (((μ₀ * ξ) ϖ : ℂˣ) : ℂ) ^ (∑ i, e.1 i) = 1`. Rewrite using `[map_zpow₀, ← mul_zpow, Complex.conj_mul', hM]`. Simplify using the standard rewrite rules. Establish `hqab : (resCard k : ℝ) ^ (-((r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ)) * (resCard k : ℝ) ^ (-(r : ℝ) / 2 * (sumAbs e.1 : ℝ)) = (resCard k : ℝ) ^ (-((2 * r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ))`. Rewrite using `[← Real.rpow_add hq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc_eq, hℓ_eq, hcv e.1, hE e.1, hc1, hw]`. Simplify using `only [map_mul, Complex.conj_ofReal]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hqab'` using `congrArg (fun y : ℝ => (y : ℂ)) hqab`. Simplify using `only [Complex.ofReal_mul] at hqab' ⊢`. Take the linear combination `(↑C0 * zonalInt μK ψ (torusElt k (Fin (l * t)) ϖ e.1) * ℓ x) * ((starRingEnd ℂ (ξ d' : ℂ) * (ξ d' : ℂ) * (starRingEnd ℂ ((((μ₀ * ξ) ϖ : ℂˣ) : ℂ) ^ (∑ i, e.1 i)) * (((μ₀ * ξ) ϖ : ℂˣ) : ℂ) ^ (∑ i, e.1 i)) * ((((resCard k : ℝ) ^ (-((r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ)) …`. Simplify using `only [not_exists] at hg`. Establish `hc0 : c g = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Assume the negation of the conclusion as `hne`. Take `⟨e, he, hge⟩` from `GlobalTheory.T.support_parahoricBiTransforming_doubleCosets k ϖ hϖ r l t ξ hξt hξr c hcBi hcSupp g hne`. Conclude with `hg ⟨e, he⟩ hge`. Rewrite using `[cellFun_of_notMem w hg, hc0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hgJ`. Establish `h0 : g ∈ dcell ϖ ((0 : Fin (l * t) → ℤ) ∘ (blkEquiv l t).symm)`. Establish `: ((0 : Fin (l * t) → ℤ) ∘ (blkEquiv l t).symm) = 0` using `rfl`. Rewrite using `[this]`. Unfold `dcell`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mtor_zero]`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨g, hgJ, 1, one_mem _, by simp⟩`. Rewrite using `[cellFun_of_mem w hdisj ⟨0, fun _ _ _ => le_refl _⟩ h0, hw]`. Simplify using `[sumAbs, torusElt_zero, zonalInt_one μK hμK hψB]`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨hsum, hhas⟩` from `GlobalTheory.T.unramified_doubling_sum_GL_convergent_L_value hUD k (l * t) μK hμK ϖ hϖ α ρ hαρ ψ hψB s hs`. Establish `hHtor : ∀ e : Fin (l * t) → ℤ, H (mtor ϖ (e ∘ (blkEquiv l t).symm)) = (resCard k : ℝ) ^ (-(sumAbs e))`. Introduce `e`. Rewrite using `[mtor, hH.2, sumAbs_elim, sumAbs_comp]`. Establish `hqC : ((resCard k : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ e : {e : Fin (l * t) → ℤ // Antitone e}, (m.real (dcell ϖ (e.1 ∘ (blkEquiv l t).symm)) : ℂ) * (cellFun r l t ϖ w (mtor ϖ (e.1 ∘ (blkEquiv l t).symm)) * (H (mtor ϖ (e.1 ∘ (blkEquiv l t).symm)) : ℂ) ^ (s - (t : ℂ) / 2)) = (μK.real (cell k (Fin (l * t)) ϖ e) : ℂ) * ((resCa …`. Introduce `e`. Establish `hmem : (mtor ϖ (e.1 ∘ (blkEquiv l t).symm) : GL (Fin r ⊕ Blocks l t) k) ∈ dcell ϖ (e.1 ∘ (blkEquiv l t).symm)` using `DoubleCoset.mem_doubleCoset.2 ⟨1, one_mem _, 1, one_mem _, by simp⟩`. Rewrite using `[cellFun_of_mem w hdisj e hmem, hHtor, hvol e.1]`. Simplify using `only [hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : (((resCard k : ℝ) ^ ((r : ℤ) * sumAbs e.1) : ℝ) : ℂ) = ((resCard k : ℝ) : ℂ) ^ ((((r : ℤ) * sumAbs e.1 : ℤ) : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_cpow hq.le, Real.rpow_intCast]`. Establish `e2 : (((resCard k : ℝ) ^ (-((2 * r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ)) : ℝ) : ℂ) = ((resCard k : ℝ) : ℂ) ^ (((-((2 * r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ)) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow hq.le]`. Establish `e3 : (((resCard k : ℝ) ^ (-(sumAbs e.1)) : ℝ) : ℂ) ^ (s - (t : ℂ) / 2) = ((resCard k : ℝ) : ℂ) ^ ((((-(sumAbs e.1) : ℤ) : ℝ) : ℂ) * (s - (t : ℂ) / 2))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_intCast, Complex.cpow_mul_ofReal_nonneg hq.le]`. Establish `e4 : (resCard k : ℂ) ^ (-(((l * t : ℕ) : ℂ) / 2 + s) * (sumAbs e.1 : ℂ)) = ((resCard k : ℝ) : ℂ) ^ (-(((l * t : ℕ) : ℂ) / 2 + s) * (sumAbs e.1 : ℂ))`. Rewrite using `[Complex.ofReal_natCast]`. Establish `hadd : ((resCard k : ℝ) : ℂ) ^ ((((r : ℤ) * sumAbs e.1 : ℤ) : ℝ) : ℂ) * ((resCard k : ℝ) : ℂ) ^ (((-((2 * r + (l + 1) * t : ℕ) : ℝ) / 2 * (sumAbs e.1 : ℝ)) : ℝ) : ℂ) * ((resCard k : ℝ) : ℂ) ^ ((((-(sumAbs e.1) : ℤ) : ℝ) : ℂ) * (s - (t : ℂ) / 2)) = ((resCard k : ℝ) : ℂ) ^ (-(((l * …`. Rewrite using `[← Complex.cpow_add _ _ hqC, ← Complex.cpow_add _ _ hqC]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.ofReal_mul, e1, e2, e3, e4, ← hadd]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `set F : GL (Fin r ⊕ Blocks l t) k → ℂ := fun g => cellFun r l t ϖ w g * (H g : ℂ) ^ (s - (t : ℂ) / 2) with hF`. Establish `hFbi : ∀ g j, j ∈ parahoric k (Fin r) (Blocks l t) → ∀ j' ∈ parahoric k (Fin r) (Blocks l t), F (j * g * j') = F g`. Introduce `g j hj j' hj'`. Establish `hjK` using `(mem_parahoric.1 hj).1`. Establish `hj'K` using `(mem_parahoric.1 hj').1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hF, cellFun_biinv w g hj hj', (hH.1 j' hj'K (j * g)).2, (hH.1 j hjK g).1]`. Establish `hsupp : ∀ g, F g ≠ 0 → ∃ e : {e : Fin (l * t) → ℤ // Antitone e}, g ∈ DoubleCoset.doubleCoset (mtor ϖ (e.1 ∘ (blkEquiv l t).symm)) (parahoric k (Fin r) (Blocks l t) : Set (GL (Fin r ⊕ Blocks l t) k)) (parahoric k (Fin r) (Blocks l t))`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists] at hne`.
-
-Apply `hg` to reduce the goal to its premises. Simplify using `only [hF, cellFun_of_notMem w hne, zero_mul]`. Establish `hsumm : Summable fun e : {e : Fin (l * t) → ℤ // Antitone e} => m.real (DoubleCoset.doubleCoset (mtor ϖ (e.1 ∘ (blkEquiv l t).symm)) (parahoric k (Fin r) (Blocks l t) : Set (GL (Fin r ⊕ Blocks l t) k)) (parahoric k (Fin r) (Blocks l t))) * ‖F (mtor ϖ (e.1 ∘ (blkEquiv l t).symm))‖`. Use `hsum.congr fun e => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = m.real (dcell ϖ (e.1 ∘ (blkEquiv l t).symm)) * _`.
-
-Rewrite using `[← hterm e, norm_mul, Complex.norm_real, Real.norm_of_nonneg measureReal_nonneg]`. Take `⟨hInt, hHas, -⟩` from `GlobalTheory.integral_biInvariant_hasSum_doubleCoset (GL (Fin r ⊕ Blocks l t) k) m (parahoric k (Fin r) (Blocks l t)) GlobalTheory.ParHecke.Model.isOpen_parahoric GlobalTheory.ParHecke.Model.isCompact_parahoric {e : Fin (l * t) → ℤ // Antitone e} (fun e => mtor ϖ (e.1 ∘ (blkEquiv …`. Use `⟨hInt, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun e : {e : Fin (l * t) → ℤ // Antitone e} => ((m.real (DoubleCoset.doubleCoset (mtor ϖ (e.1 ∘ (blkEquiv l t).symm)) (parahoric k (Fin r) (Blocks l t) : Set (GL (Fin r ⊕ Blocks l t) k)) (parahoric k (Fin r) (Blocks l t))) : ℝ) : ℂ) * F (mtor ϖ (e.1 ∘ (blkEquiv l t).symm) …` using `funext hterm`. Rewrite `hHas` using `[hfun]`.
-
-Conclude with `hHas.unique hhas`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_zeta_twisted : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (r t l : ℕ) (ξ μ₀ : kˣ →* ℂˣ), IsUnitaryChar ξ → IsTame ξ → ¬ IsUnram ξ → IsUnram μ₀ → IsUnitaryChar μ₀ → ∀ (B : Multiset ℂˣ) (α : Fin (l * t) → ℂˣ) (ρ : ℝ), Finset.univ.val.map α = B.map (· * ((μ₀ * ξ) ϖ)⁻¹) → (∀ x, ‖(α x : ℂ)‖ ≤ (resCard k : ℝ) ^ ρ ∧ ‖(α x : ℂ)‖⁻¹ ≤ (resCard k : ℝ) ^ ρ) → ∀ H : GL (Fin r ⊕ Blocks l t) k → ℝ, IsHgt ϖ H → ∀ [MeasurableSpace (GL (Fin r ⊕ Blocks l t) k)] [BorelSpace (GL (Fin r ⊕ Blocks l t) k)] (m : Measure (GL (Fin r ⊕ Blocks l t) k)) [m.IsHaarMeasure], m (parahoric k (Fin r) (Blocks l t)) = 1 → ∀ c : GL (Fin r ⊕ Blocks l t) k → ℂ, (∀ g, c g = ip ν (om (μ₀ * ξ) g (1 : GL (Fin r ⊕ Blocks (l + 1) t) k) (datum ξ)) (datum ξ)) → c 1 ≠ 0 ∧ ∃ ζ : GL (Fin r ⊕ Blocks l t) k → ℂ, (∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin r ⊕ Blocks l t) k) V) (x : V) (ℓ : V →ₗ[ℂ] ℂ), IsGen π ξ ϖ B x → IsCoType π ξ ℓ → ∀ g, starRingEnd ℂ (c g) * ℓ (π g x) = starRingEnd ℂ (c 1) * ζ g * ℓ x) ∧ (∀ g ∈ parahoric k (Fin r) (Blocks l t), ζ g = 1) ∧ ∀ s : ℂ, ρ - 1 / 2 < s.re → Integrable (fun g => ζ g * (H g : ℂ) ^ (s - (t : ℂ) / 2)) m ∧ ∫ g, ζ g * (H g : ℂ) ^ (s - (t : ℂ) / 2) ∂m = lFactor (resCard k) α (s + 1 / 2) * lFactor (resCard k) α⁻¹ (s + 1 / 2) * invNormFactor (resCard k) (l * t) s := by
   intro hUD k _ _ _ _ _ _ _ ν hν ϖ hϖ r t l ξ μ₀ hξu hξt hξr hμ₀ hμ₀u B α ρ hαB hαρ H hH _ _ m _ hm c hc

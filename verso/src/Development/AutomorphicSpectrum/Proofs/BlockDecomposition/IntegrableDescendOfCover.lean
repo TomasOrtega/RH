@@ -22,15 +22,15 @@ namespace GlobalTheory.CompanionTheory.AutCover
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `D V μ _ S hS hcov φ hinv hφ hint`. Establish `hmeas : AEStronglyMeasurable (descend (GQ V) φ) (autMeasure V μ)` using `(GlobalTheory.AutomorphicL2Unitary.aestronglyMeasurable_quotMeasure_iff_lift).2 (by`. Rewrite using `[hinv.lift_descend]`. Conclude with `hφ.aestronglyMeasurable)`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin : ∫⁻ g in S, ‖φ g‖ₑ ∂μ < ⊤` using `hint.2`. Establish `hmf : AEMeasurable (S.indicator fun g => ‖φ g‖ₑ) μ` using `(hφ.enorm.indicator hS).aemeasurable`. Establish `key` using `GlobalTheory.AutomorphicL2Unitary.lintegral_eq_lintegral_tsum (Γ := GQ V) (μ := μ) hmf`. Rewrite `key` using `[lintegral_indicator hS]`. Use `show ∫⁻ q, ‖descend (GQ V) φ q‖ₑ ∂(autMeasure V μ) < ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt ?_ hfin` and prove the remaining obligations. Rewrite using `[key]`. Apply `lintegral_mono` to reduce the goal to its premises. Introduce `q`. Take `⟨γ, hγ, s, hs, hq⟩` from `hcov q.out`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((⟨γ, hγ⟩ : GQ V)⁻¹ : GQ V) : GA D V) * q.out = s` using `by show γ⁻¹ * q.out = s`. Rewrite using `[hq, inv_mul_cancel_left]`. Establish `hmem : (((⟨γ, hγ⟩ : GQ V)⁻¹ : GQ V) : GA D V) * q.out ∈ S`. Rewrite using `[e]`. Conclude with `hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : S.indicator (fun g => ‖φ g‖ₑ) ((((⟨γ, hγ⟩ : GQ V)⁻¹ : GQ V) : GA D V) * q.out) = ‖φ q.out‖ₑ`. Rewrite using `[Set.indicator_of_mem hmem, hinv _ (((⟨γ, hγ⟩ : GQ V)⁻¹ : GQ V)).2]`. Use `show ‖φ q.out‖ₑ ≤ _`. Rewrite using `[← h1]`. Conclude with `ENNReal.le_tsum (f := fun γ : GQ V => S.indicator (fun g => ‖φ g‖ₑ) ((γ : GA D V) * q.out)) _`.
+A detailed English derivation is pending.
 -/
 theorem integrable_descend_of_cover : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] (S : Set (GA D V)),
     MeasurableSet S → (∀ g, ∃ γ ∈ GQ V, ∃ s ∈ S, g = γ * s) → ∀ φ : GA D V → ℂ, GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) φ →

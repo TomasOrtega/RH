@@ -16,7 +16,7 @@ namespace JacquetFiniteLength₂
 variable {n : ℕ} (G : Grp k n)
 end JacquetFiniteLength₂
 /- English proof (translation)
-Introduce `L V _ _ π hπ hirr`. Conclude with `⟨isSmooth_jacU G.e hπ, JacquetFiniteLength₂.hasFiniteLength_jacU G L.loc.bz π hπ (hasFiniteLength_of_isIrreducible hirr)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem step_jacFin_alt {n : ℕ} (G : Grp k n) : G.Step_jacFin_alt := by
   intro L V _ _ π hπ hirr

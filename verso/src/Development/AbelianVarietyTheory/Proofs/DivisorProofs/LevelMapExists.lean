@@ -13,7 +13,7 @@ namespace GlobalTheory.ExpFrame.LevelMap
 variable {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show grp O N lam (g * h) = grp O N lam g * grp O N lam h`. Unfold `grp`. Conclude with `map_mul _ g h`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem grpA_mul (O : Type) [CommRing O] (lam : ι → ℕ → ℕ) (g h : ι → GL (Fin N) O) :
     grpA O N lam (g * h) = grpA O N lam g * grpA O N lam h := by
@@ -23,7 +23,7 @@ theorem grpA_mul (O : Type) [CommRing O] (lam : ι → ℕ → ℕ) (g h : ι �
   exact map_mul _ g h
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show grp O N lam 1 = 1`. Unfold `grp`. Conclude with `map_one _`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem grpA_one (O : Type) [CommRing O] (lam : ι → ℕ → ℕ) :
     grpA O N lam 1 = 1 := by
@@ -41,7 +41,7 @@ def jK (F : Frame l ι N) (lam : ι → ℕ → ℕ) : F.K →* alg F.O N lam wh
 end GlobalTheory.ExpFrame.LevelMap
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam`. Conclude with `⟨GlobalTheory.ExpFrame.LevelMap.jK F lam, fun κ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ExpFrame.levelMap_exists : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ), ∃ (jK : F.K →* alg F.O N lam), F.IsJ lam jK := by
   intro l _ ι _ _ N F lam

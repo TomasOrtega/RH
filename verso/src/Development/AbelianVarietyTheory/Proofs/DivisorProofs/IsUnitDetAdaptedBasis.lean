@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.QhtUnip.BasisUnit
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B m W r s hW W₁ H i₀ i₁ hA`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_surjective_iff_isUnit]`. Establish `hrange : LinearMap.range (Matrix.mulVecLin (basQ H)) = ⊤`. Rewrite using `[eq_top_iff, ← hW.lat.span_eq_top, Submodule.span_le]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, u, -, -, -, rfl⟩` from `hA.split z hz`. Use `⟨(Sum.elim (Sum.elim (fun _ => a) u) (fun _ => b) : Ix m → E) ∘ ixE m, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, basQ]`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Use extensionality with `r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mulVec, dotProduct, basP, Fintype.sum_sum_type, Function.comp_def, mul_comm]`. Introduce `z`. Establish `: z ∈ LinearMap.range (Matrix.mulVecLin (basQ H))` using `hrange ▸ Submodule.mem_top`. Take `⟨v, hv⟩` from `this`. Conclude with `⟨v, hv⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_det_basQ : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → IsUnit (basQ H).det := by

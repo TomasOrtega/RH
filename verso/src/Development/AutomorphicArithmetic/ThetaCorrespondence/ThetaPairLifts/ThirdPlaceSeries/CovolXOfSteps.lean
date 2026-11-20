@@ -14,15 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 /- English proof (translation)
-Introduce `hG hR hC hB hL hS hK hW`. Use `Closed.imp (Closed.and (Closed.and (Closed.and hG hR) (Closed.and hC hB)) (Closed.and (Closed.and hL hS) (Closed.and hK hW))) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH he ⟨⟨⟨⟨_, -, g⟩, ⟨_, -, r⟩⟩, ⟨⟨_, -, c⟩, ⟨_, -, b⟩⟩⟩, ⟨⟨A, -, l⟩, ⟨B, -, s⟩⟩, ⟨C1, h1, k⟩, ⟨C2, h2, w⟩⟩`. Establish `hez : 0 < Fm.ez`. Take `⟨i⟩` from `Fm.Ix_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Fm.L_ez 0 i]`. Conclude with `(Fm.L 0 i).sc.ez_pos`. Take `⟨x0, hx0⟩` from `exists_loss_le (show 0 < Fm.ez / 7 by positivity) A B (C1 + C2 + 1)`. Take `⟨x1, h⟩` from `(((g.and r).and (c.and b)).and ((l.and s).and (k.and w)))`. Use `⟨C1 + C2 + 1, by linarith, max x0 x1, fun x hx hle ι p hp C hC i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨g, r⟩, c, b⟩, ⟨l, s⟩, k, w⟩` from `h x hx ((le_max_right _ _).trans hle) ι p hp`. Establish `ex` using `Fm.L_x x ι hx`. Establish `ee` using `Fm.L_ez x ι`. Establish `hs` using `hx0 x ((le_max_left _ _).trans hle)`. Establish `hx' : 0 < x` using `(zero_lt_one.trans Fm.one_lt_family_threshold).trans hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `main` using `lcv_le p i (ex.symm ▸ hx') h1 h2 (by rw [ex, ee]; exact hs) (g i) (r i) (c i) (b i) (l i) (s i) (k i) (w i)`. Establish `hE : 0 ≤ unitE p`. Take `⟨s1, s2, -⟩` from `s i`. Combine the linear equalities and inequalities to obtain the conclusion. Use `main.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show mainT p i + (C1 + C2 + 1) * unitE p ≤ mainT p i + C * unitE p`. Use `mul_le_mul_of_nonneg_right hC hE` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem covolX_of_lift_bounds_and_coreLe : _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.LiftRecursive → _root_.GlobalTheory.CovTop.LiftTruncation → _root_.GlobalTheory.CovTop.LiftBadSet → _root_.GlobalTheory.CovTop.LiftLambdaBound → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoreBound' → _root_.GlobalTheory.CovTop.LiftLowBound → _root_.GlobalTheory.CovTop.CovolumeBoundOfX := by
   intro hG hR hC hB hL hS hK hW

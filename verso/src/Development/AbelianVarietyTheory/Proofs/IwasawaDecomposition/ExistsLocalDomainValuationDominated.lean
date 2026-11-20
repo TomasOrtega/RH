@@ -9,9 +9,9 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B k _ _ _ _ φ V C hC x hx`. Set `ψ : C →+* V` to `(φ.comp C.val.toRingHom).codRestrict V.toSubring (fun c => (V.valuation_le_one_iff _).mp (hC c c.2))`. Establish `h` using `IsIntegral.map_of_comp_eq ψ φ (by ext c; rfl) hx`. Establish `h2 : φ x ∈ V`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hy]`. Conclude with `y.2`. Conclude with `(V.valuation_le_one_iff _).mpr h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_isIntegral_subalgebra : ∀ (A B k : Type) [CommRing A] [CommRing B] [Algebra A B] [Field k] (φ : B →+* k) (V : ValuationSubring k) (C : Subalgebra A B), (∀ c ∈ C, V.valuation (φ c) ≤ 1) → ∀ x : B, IsIntegral C x → V.valuation (φ x) ≤ 1 := by
   intro A B k _ _ _ _ φ V C hC x hx
@@ -23,9 +23,9 @@ theorem valuation_le_one_of_isIntegral_subalgebra : ∀ (A B k : Type) [CommRing
   exact (V.valuation_le_one_iff _).mpr h2
 
 /- English proof (translation)
-Introduce `A B k _ _ _ _ _ _ _ _ _ _ φ V hker hA _`. Take `⟨C, hCft, hCv, hCfrac⟩` from `GlobalTheory.T.exists_finite_type_valuation_center A B k φ V hker hA`. Take `⟨C', hle, hft', hic', hint⟩` from `GlobalTheory.T.exists_normal_finite_type_over A B C hCft (fun b => by`. Take `⟨a, ha, s, hs, hu, he⟩` from `hCfrac b`. Conclude with `⟨a, ha, s, hs, hu.ne_zero, he⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hv' : ∀ c ∈ C', V.valuation (φ c) ≤ 1` using `fun c hc => valuation_le_one_of_isIntegral_subalgebra A B k φ V C hCv c (hint c hc)`. Conclude with `GlobalTheory.T.exists_local_domain_valuation_center A B k φ V C' hker hft' hic' hv' (fun b => by`. Take `⟨a, ha, s, hs, hu, he⟩` from `hCfrac b`. Conclude with `⟨a, hle ha, s, hle hs, hu, he⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normal_localization_chart_centred : ∀ (A B k : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing B] [IsDomain B] [IsLocalRing B] [IsIntegrallyClosed B] [Algebra A B] [Algebra.EssFiniteType A B] [Field k] (φ : B →+* k) (V : ValuationSubring k), RingHom.ker φ = maximalIdeal B → (∀ a : A, V.valuation (φ (algebraMap A B a)) ≤ 1) → (∀ a ∈ maximalIdeal A, V.valuation (φ (algebraMap A B a)) < 1) → ∃ (D : Type) (_ : CommRing D) (_ : IsDomain D) (_ : IsLocalRing D) (_ : Algebra A D) (ι : D →ₐ[A] B), IsIntegrallyClosed D ∧ Algebra.EssFiniteType A D ∧ Function.Injective ι ∧ (∀ d, V.valuation (φ (ι d)) ≤ 1) ∧ (∀ d ∈ maximalIdeal D, V.valuation (φ (ι d)) < 1) ∧ ∀ b : B, ∃ a s : D, IsUnit (ι s) ∧ ι s * b = ι a := by
   intro A B k _ _ _ _ _ _ _ _ _ _ φ V hker hA _

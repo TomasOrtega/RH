@@ -9,7 +9,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField UpperTheory.V.Af
 /- English proof (translation)
-Introduce `H F₀ F M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hF hsol hplus hM l _ ι n hn r μ hr hirr hμ hs ⟨c, P, hc, hP⟩`. Establish `hM' : IsCMField M` using `hM.resolve_left fun h => by`. Take `⟨v⟩ : Nonempty (InfinitePlace M)` from `inferInstance`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 ((isTotallyComplex_of_algebra F M).isComplex v)) (h.isReal v)`. Conclude with `_root_.UpperTheory.V.Z.Bc.solC_alt H H.cyc F M Ω hsol hF hM' l ι n hn r hr hirr ⟨F₀, _, _, _, _, inferInstance, inferInstance, hplus.1, μ, c, P, hμ, hs, hc, hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.solvable_descent_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Af.SolDescent := by

@@ -15,7 +15,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver mIdealOver)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h.relevant`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.X i ∈ RingHom.ker (ReciprocityTheory.ChartRestriction.G.Geo.coneMap F x)`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.coneMap, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ne_zero_of_isSubvar {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} {d : ℕ} (h : Kleiman.IsSubvar x (Kleiman.primeOf (S := F) x) d) : ∃ i, x i ≠ 0 := by
@@ -26,15 +26,15 @@ theorem exists_ne_zero_of_isSubvar {F : Type} [Field F] {Ω : Type} [Field Ω] [
   simp [ReciprocityTheory.ChartRestriction.G.Geo.coneMap, h0]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA d F _ K _ _ ι _ Ω _ _ y k₀ hmod hdim μ hnef t ht`. Take `⟨i₀, -⟩` from `hmod.1 k₀`. Establish `hpos : 0 < Fintype.card (ι k₀)` using `Fintype.card_pos_iff.mpr ⟨i₀⟩`. Set `e : ι k₀ ≃ Fin (Fintype.card (ι k₀) - 1 + 1)` to `(Fintype.equivFin _).trans (finCongr (Nat.succ_pred_eq_of_pos hpos).symm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨Q, hQ⟩` from `hBun F K ι Ω y k₀ _ e hmod μ`. Establish `hs` using `(hDim F K ι Ω y k₀ _ e hmod d).mpr hdim`. Establish `hn` using `(hNef F K ι Ω y k₀ _ e hmod μ Q hQ).mpr hnef`. Take `⟨p, m, hp, hm, hva⟩` from `hA F d Ω _ _ Q hs hn t ht`. Conclude with `⟨p, m, hp, hm, (hVA F K ι Ω y k₀ _ e hmod μ Q hQ p m hp).mp hva⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hB k _ d Ω _ _ N x M hs hnef t ht`. Establish `hx` using `exists_ne_zero_of_isSubvar hs`. Take `⟨n, hn⟩` from `Generated.full.{0, 0} k Ω N x M`. Take `⟨r, g, -, hg⟩` from `GraphClosedAlt.exists_fin_generators (M.tensorProd (twistBundle k x n)) (hn n le_rfl)`. Establish `hgen : IsGraphGen M n g` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmod` using `GraphModel.full k N Ω x M n (r + 1) g hx hgen`. Establish `hsec` using `twist_secs_eq_secOver M n g hgen`. Establish `hdim` using `(hDim k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x g) baseBlock N (Equiv.refl _) hmod d).mp hs`. Establish `hnef'` using `(hNef k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x g) baseBlock N (Equiv.refl _) hmod (graphDeg n) M hsec).mp hnef`. Take `⟨a, m, ha, hm, hva⟩` from `hB d k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x g) baseBlock hmod hdim (graphDeg n) hnef' t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, m, ha, hm, (hVA k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x g) baseBlock N (Equiv.refl _) hmod (graphDeg n) M hsec a m ha).mpr hva⟩`.
+Supply the required witnesses or components.
 -/
 theorem VeryAmpleNefPlusAmple.equiv (hBun : BundleOfDeg.Statement) (hNef : ModelNefEq.Statement)
     (hVA : ModelVeryAmpleEq.Statement) (hDim : ModelDimEq.Statement) :

@@ -6,7 +6,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Use `⟨‖f.toRealLinearMap hf‖, norm_nonneg _, fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `(f.toRealLinearMap hf).le_opNorm z`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem abs_le_of_continuous_add {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (f : V →+ ℝ) (hf : Continuous f) : ∃ B : ℝ, 0 ≤ B ∧ ∀ z, |f z| ≤ B * ‖z‖ := by
@@ -27,7 +27,7 @@ private noncomputable def eU {E : Type} [Field E] [NumberField E] (z : InfiniteP
     rw [← Complex.exp_add, neg_add_cancel, Complex.exp_zero]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun w => Complex.continuous_exp.comp (continuous_apply w)`. Conclude with `continuous_pi fun w => Complex.continuous_exp.comp (continuous_apply w).neg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_eU {E : Type} [Field E] [NumberField E] :
     Continuous (eU (E := E)) := by
@@ -36,7 +36,7 @@ private theorem continuous_eU {E : Type} [Field E] [NumberField E] :
   · exact continuous_pi fun w => Complex.continuous_exp.comp (continuous_apply w).neg
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `Complex.exp (z w + z' w) = Complex.exp (z w) * Complex.exp (z' w)`. Rewrite using `[Complex.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eU_add {E : Type} [Field E] [NumberField E] (z z' : InfinitePlace E → ℂ) :
     eU (z + z') = eU z * eU z' := by
@@ -46,9 +46,9 @@ private theorem eU_add {E : Type} [Field E] [NumberField E] (z z' : InfinitePlac
   rw [Complex.exp_add]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h : s.val w * s⁻¹.val w = 1` using `congrFun s.mul_inv w`. Establish `h0 : s.val w ≠ 0` using `left_ne_zero_of_mul_eq_one h`. Express the relevant statement in the definitionally equal form `Complex.exp (Complex.log (s.val w)) = s.val w`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Complex.exp_log h0`.
+A detailed English derivation is pending.
 -/
 private theorem eU_log {E : Type} [Field E] [NumberField E] (s : (Cinf E)ˣ) :
     eU (fun w => Complex.log (s.val w)) = s := by
@@ -60,15 +60,13 @@ private theorem eU_log {E : Type} [Field E] [NumberField E] (s : (Cinf E)ˣ) :
   exact Complex.exp_log h0
 
 /- English proof (translation)
-Establish `h : s.val w * s⁻¹.val w = 1` using `congrFun s.mul_inv w`. Establish `h0 : s.val w ≠ 0` using `left_ne_zero_of_mul_eq_one h`. Establish `h1 : s⁻¹.val w ≠ 0` using `right_ne_zero_of_mul_eq_one h`. Establish `p0 : 0 < ‖s.val w‖` using `norm_pos_iff.2 h0`. Establish `p1 : 0 < ‖s⁻¹.val w‖` using `norm_pos_iff.2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ‖s.val w‖ * ‖s⁻¹.val w‖ = 1` using `by rw [← norm_mul, h, norm_one]`. Establish `b0 : ‖s.val w‖ ≤ ‖s.val‖` using `norm_le_pi_norm s.val w`. Establish `b1 : ‖s⁻¹.val w‖ ≤ ‖s⁻¹.val‖` using `norm_le_pi_norm s⁻¹.val w`. Establish `n0 : 0 ≤ ‖s.val‖` using `norm_nonneg _`. Establish `n1 : 0 ≤ ‖s⁻¹.val‖` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l0 : Real.log ‖s.val w‖ ≤ Real.log (1 + ‖s.val‖ + ‖s⁻¹.val‖)` using `Real.log_le_log p0 (by linarith)`. Establish `l1 : Real.log ‖s⁻¹.val w‖ ≤ Real.log (1 + ‖s.val‖ + ‖s⁻¹.val‖)` using `Real.log_le_log p1 (by linarith)`. Establish `hs : Real.log ‖s.val w‖ + Real.log ‖s⁻¹.val w‖ = 0`. Rewrite using `[← Real.log_mul p0.ne' p1.ne', hprod, Real.log_one]`. Establish `hre : |(Complex.log (s.val w)).re| ≤ Real.log (1 + ‖s.val‖ + ‖s⁻¹.val‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.log_re, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `him : |(Complex.log (s.val w)).im| ≤ Real.pi`. Rewrite using `[Complex.log_im]`. Conclude with `Complex.abs_arg_le_pi _`.
-
-Conclude with `(Complex.norm_le_abs_re_add_abs_im _).trans (add_le_add hre him)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_log_le {E : Type} [Field E] [NumberField E] (s : (Cinf E)ˣ) (w : InfinitePlace E) :
     ‖Complex.log (s.val w)‖ ≤ Real.log (1 + ‖s.val‖ + ‖s⁻¹.val‖) + Real.pi := by
@@ -97,23 +95,23 @@ private theorem norm_log_le {E : Type} [Field E] [NumberField E] (s : (Cinf E)ˣ
   exact (Complex.norm_le_abs_re_add_abs_im _).trans (add_le_add hre him)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _D`. Establish `hN : Continuous (fun s : (Cinf E)ˣ => ideleNorm F E (infId E s))` using `continuous_ideleNorm.comp (continuous_infId E)`. Use `⟨hN, fun ω hω => ?_⟩` and prove the remaining obligations. Set `c : (Cinf E)ˣ → ℝ` to `fun s => ‖((ω (ideleNorm F E (infId E s)) : ℂˣ) : ℂ)‖`. Establish `hc : Continuous c` using `(Units.continuous_val.comp (hω.comp hN)).norm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpos : ∀ s, 0 < c s` using `fun s => norm_pos_iff.2 (Units.ne_zero _)`. Establish `hmul : ∀ s s', c (s * s') = c s * c s'`. Introduce `s s'`. Simplify using `only [c, map_mul, Units.val_mul, norm_mul]`. Set `f : (InfinitePlace E → ℂ) →+ ℝ` to `{ toFun := fun z => Real.log (c (eU z)) map_zero' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h1 : eU (0 : InfinitePlace E → ℂ) = 1`. Use `eU_add (0 : InfinitePlace E → ℂ) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `h2 : c 1 = 1` using `by simp [c]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Real.log (c (eU 0)) = 0`. Rewrite using `[h1, h2, Real.log_one]`. Use the proof step `map_add' := fun z z' => by`. Express the relevant statement in the definitionally equal form `Real.log (c (eU (z + z'))) = Real.log (c (eU z)) + Real.log (c (eU z'))`. Rewrite using `[eU_add, hmul, Real.log_mul (hpos _).ne' (hpos _).ne'] }`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : Continuous f` using `(hc.comp continuous_eU).log fun z => (hpos _).ne'`. Take `⟨B, hB0, hB⟩` from `abs_le_of_continuous_add f hf`. Use `⟨Real.exp (B * Real.pi), ⌈B⌉₊, fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c s ≤ _`. Use `set H : ℝ := 1 + ‖s.val‖ + ‖s⁻¹.val‖ with hH`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1 : 1 ≤ H`. Establish `n0 : 0 ≤ ‖s.val‖` using `norm_nonneg _`. Establish `n1 : 0 ≤ ‖s⁻¹.val‖` using `norm_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH0 : 0 < H` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ Real.log H` using `Real.log_nonneg hH1`. Set `z : InfinitePlace E → ℂ` to `fun w => Complex.log (s.val w)`. Establish `hz : ‖z‖ ≤ Real.log H + Real.pi` using `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => norm_log_le s w`. Establish `hfz : f z = Real.log (c s)`. Express the relevant statement in the definitionally equal form `Real.log (c (eU z)) = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eU_log]`. Establish `h1 : Real.log (c s) ≤ B * (Real.log H + Real.pi)`. Rewrite using `[← hfz]`. Conclude with `(le_abs_self _).trans ((hB z).trans (mul_le_mul_of_nonneg_left hz hB0))`. Establish `h2 : B * (Real.log H + Real.pi) ≤ B * Real.pi + (⌈B⌉₊ : ℝ) * Real.log H`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: B * Real.log H ≤ (⌈B⌉₊ : ℝ) * Real.log H` using `mul_le_mul_of_nonneg_right (Nat.le_ceil B) hL`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_nat_mul, Real.exp_log hH0]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.omGrowth :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (_D : Dat F E), OmGrowth F E := by

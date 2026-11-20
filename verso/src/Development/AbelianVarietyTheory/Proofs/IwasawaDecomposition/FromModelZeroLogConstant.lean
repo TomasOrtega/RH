@@ -16,13 +16,13 @@ namespace GlobalTheory.LineNorm
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `F _ _ Y a n ha hn`. Take `⟨M, -⟩` from `GlobalTheory.IntModel.exists_model F Y 0`. Establish `ha' : algebraMap F Y.Fn a ≠ 0` using `(map_ne_zero _).2 ha`. Establish `hu (x : Y.X) : UnitAt x (algebraMap F Y.Fn a)` using `(unitAt_iff ha').2 ⟨Y.regAt_algebraMap x a, map_inv₀ (algebraMap F Y.Fn) a ▸ Y.regAt_algebraMap x a⁻¹⟩`. Establish `hL` using `LB.isLB_pull (LB.isLB_triv M.X) M.j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨M, LB.triv M.X, ⟨n, Nat.pos_of_ne_zero hn⟩, fun _ => Units.mk0 _ ha', LB.isLB_triv M.X, ⟨hL, fun i j h => ?_, fun _ x _ => ?_⟩, fun v e y yt i _ _ => ?_⟩` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Y.X, _)ˣ => fnOf _ h.1 u.val) (hL.g_self i)` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`. Rewrite using `[← (this.symm.trans (fnOf_resG _ h.1 _)), _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Conclude with `(CartierDiv.isEqn_zero x).iff_unitAt.2 (by simpa using hu x)`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Establish `h` using `GlobalTheory.TrueGeo.OfLattice.valAt_const y.1 y.2 a`. Simplify using `only [PNat.mk_coe, inv_one, one_pow, _root_.one_mul, Units.val_mk0, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem fromModel_const : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (a : F) (n : ℕ), a ≠ 0 → n ≠ 0 → FromModel Y 0 (fun _ => 1) (fun _ e _ => Real.log (e.w (algebraMap F (AlgebraicClosure F) a)) / n) := by
   intro F _ _ Y a n ha hn

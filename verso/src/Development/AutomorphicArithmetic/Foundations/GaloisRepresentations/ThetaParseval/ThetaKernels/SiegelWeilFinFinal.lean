@@ -13,7 +13,7 @@ section
 open GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.Fin
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_of_ct_k (_root_.PositivityTheory.SiegelWeilFormula.Act.ctSplit_of_k _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds _root_.PositivityTheory.SiegelWeilFormula.kfour.coefEx_k)`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeilStd_k : _root_.GlobalTheory.ThK.Dbl.SiegelWeilStd_k := _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_of_ct_k (_root_.PositivityTheory.SiegelWeilFormula.Act.ctSplit_of_k _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds _root_.PositivityTheory.SiegelWeilFormula.kfour.coefEx_k)
 end PositivityTheory.SiegelWeilFormula.Fin

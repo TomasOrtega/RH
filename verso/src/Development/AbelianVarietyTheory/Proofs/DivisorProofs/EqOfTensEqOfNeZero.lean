@@ -14,11 +14,11 @@ open scoped Classical
 namespace GlobalTheory.ThK.EvZeroFinLoc
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp h0`. Use function extensionality and compare the values at `ξ`. Use `set z : κ → AF F := fun k => GlobalTheory.LatVac.liftV v (ξ k - evFin F v (x₀ k)) with hz`. Establish `hzat : At (evFin F v) z`. Introduce `u hu`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hevx : (fun i => evFin F v ((x₀ + z) i)) = ξ`. Use function extensionality and compare the values at `i`. Simplify using `[hz, GlobalTheory.LatVac.evFin_liftV]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrx : r (x₀ + z) = r x₀` using `hr x₀ z hzat`. Use `congrFun e (x₀ + z)` as an intermediate fact. Simplify using `only [tens, hevx, hrx] at this`. Conclude with `mul_right_cancel₀ (by simpa using hx₀) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_tens_eq_of_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (r : (κ → AF F) → ℂ) (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) (h0 : r ≠ 0)

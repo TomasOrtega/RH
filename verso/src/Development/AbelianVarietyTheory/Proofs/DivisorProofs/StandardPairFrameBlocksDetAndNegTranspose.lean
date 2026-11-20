@@ -16,23 +16,23 @@ section Helpers
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₁_mul {m m' a a' : ℕ} (M : Matrix (Fin m') (Fin m) k) (X : Matrix (Fin m) (Fin (a + a')) k) :
     blk₁ (M * X) = M * blk₁ X := by
   ext i j; simp [blk₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₂, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₂_mul {m m' a a' : ℕ} (M : Matrix (Fin m') (Fin m) k) (X : Matrix (Fin m) (Fin (a + a')) k) :
     blk₂ (M * X) = M * blk₂ X := by
   ext i j; simp [blk₂, Matrix.mul_apply]
 
 /- English proof (translation)
-Set `M₀ : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨g.val i j, hg.1 i j⟩`. Establish `hM : (algebraMap 𝒪[k] k).mapMatrix M₀ = g.val` using `by ext i j; rfl`. Establish `hv : valuation k (algebraMap 𝒪[k] k M₀.det) = 1` using `by rw [RingHom.map_det, hM]; exact hg.2`. Establish `hdet : IsUnit M₀.det` using `(Valuation.integer.integers (valuation k)).isUnit_of_one (isUnit_iff_ne_zero.2 (by rw [RingHom.map_det, hM]; exact g.det_ne_zero)) hv`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det M₀).2 hdet`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, Units.ext (by rw [← hM, ← hu]; rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_KO_of_isGLO {n : ℕ} (g : GL (Fin n) k) (hg : IsGLO g.val) : g ∈ KO k (Fin n) := by
   let M₀ : Matrix (Fin n) (Fin n) 𝒪[k] := fun i j => ⟨g.val i j, hg.1 i j⟩
@@ -45,16 +45,16 @@ theorem mem_KO_of_isGLO {n : ℕ} (g : GL (Fin n) k) (hg : IsGLO g.val) : g ∈ 
   exact ⟨u, Units.ext (by rw [← hM, ← hu]; rfl)⟩
 
 /- English proof (translation)
-Use `⟨((mem_KO_iff g).1 hg).1, ?_⟩` and prove the remaining obligations. Simplify `valuation_gdet_of_mem_KO hg` using `[gdet, Matrix.GeneralLinearGroup.val_det_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isGLO_of_mem_KO {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : IsGLO g.val := by
   refine ⟨((mem_KO_iff g).1 hg).1, ?_⟩
   simpa [gdet, Matrix.GeneralLinearGroup.val_det_apply] using valuation_gdet_of_mem_KO hg
 
 /- English proof (translation)
-Introduce `i j`. Use `show valuation k ((κ * N) i j) ≤ valuation k (s : k)`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : valuation k (κ i l) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 (hκ i l)`. Establish `h2 : valuation k (N l j) ≤ valuation k (s : k)` using `hN l j`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem_cball {m n p : ℕ} (s : kˣ) (κ : Matrix (Fin m) (Fin n) k) (hκ : ∀ i j, κ i j ∈ 𝒪[k])
     (N : Matrix (Fin n) (Fin p) k) (hN : ∀ i j, N i j ∈ cball s) : ∀ i j, (κ * N) i j ∈ cball s := by
@@ -69,7 +69,7 @@ theorem mul_mem_cball {m n p : ℕ} (s : kˣ) (κ : Matrix (Fin m) (Fin n) k) (h
     _ = _ := one_mul _
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => mul_mem_cball s κ.val ((mem_KO_iff κ).1 hκ).1 N h⟩` and prove the remaining obligations. Use `mul_mem_cball s (κ⁻¹).val ((mem_KO_iff κ).1 hκ).2 _ h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_cball_iff_KO {n p : ℕ} (s : kˣ) {κ : GL (Fin n) k} (hκ : κ ∈ KO k (Fin n)) (N : Matrix (Fin n) (Fin p) k) :
     (∀ i j, (κ.val * N) i j ∈ cball s) ↔ ∀ i j, N i j ∈ cball s := by
@@ -78,13 +78,13 @@ theorem mem_cball_iff_KO {n p : ℕ} (s : kˣ) {κ : GL (Fin n) k} (hκ : κ ∈
   rwa [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul] at this
 
 /- English proof (translation)
-Distinguish the cases in `hS : g * g₁ ∈ KO k (Fin n)`. Rewrite using `[Set.indicator_of_mem (show g ∈ (fun g => g * g₁) ⁻¹' (KO k (Fin n) : Set (GL (Fin n) k)) from hS)]`. Establish `hN : (∀ i j, (g.val * N) i j ∈ cball s) ↔ ∀ i j, ((g₁⁻¹).val * N) i j ∈ cball s`. Rewrite using `[← mem_cball_iff_KO s hS ((g₁⁻¹).val * N), ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_right]`. Distinguish the cases in `hc : ∀ i j, ((g₁⁻¹).val * N) i j ∈ cball s`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hP : (g.val * g₁.val).det ≠ 0 ∧ IsGLO (g.val * g₁.val) ∧ ∀ i j, (g.val * N) i j ∈ cball s` using `⟨(g * g₁).det_ne_zero, isGLO_of_mem_KO hS, hN.2 hc⟩`. Rewrite using `[hpos hP, Set.indicator_of_mem (show ((g₁⁻¹).val * N) ∈ {M : Matrix (Fin n) (Fin p) k | ∀ i j, M i j ∈ cball s} from hc)]`. Establish `e1 : Units.mk0 _ hP.1 = gdet g * gdet g₁` using `Units.ext (by simp [gdet, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_mul])`. Establish `hunit : apow (gdet (g * g₁)) z = 1` using `apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hS) z`. Establish `e2 : apow (gdet g) z = apow (gdet g₁) (-z)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: gdet g = gdet (g * g₁) * (gdet g₁)⁻¹` using `by rw [gdet_mul]; group`. Rewrite using `[this, apow_mul, hunit, one_mul, apow_inv]`. Establish `e3 : (((ν (gdet g))⁻¹ : ℂˣ) : ℂ) * (ν (gdet g) : ℂ) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[e1, e2, map_mul, _root_.mul_inv, Units.val_mul, Pi.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(((ν (gdet g₁))⁻¹ : ℂˣ) : ℂ) * apow (gdet g₁) (-z) * e3`. Rewrite using `[hneg (fun h => hc (hN.1 h.2.2)), Set.indicator_of_notMem (show ((g₁⁻¹).val * N) ∉ {M : Matrix (Fin n) (Fin p) k | ∀ i j, M i j ∈ cball s} from hc)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show g ∉ (fun g => g * g₁) ⁻¹' (KO k (Fin n) : Set (GL (Fin n) k)) from hS), hneg (fun h => hS (mem_KO_of_isGLO (g * g₁) h.2.1))]`. Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrand_eq {n p : ℕ} (ν : kˣ →* ℂˣ) (s : kˣ) (z : ℂ) (N : Matrix (Fin n) (Fin p) k) (g₁ g : GL (Fin n) k)
     (Φv : ℂ)
@@ -124,7 +124,7 @@ theorem integrand_eq {n p : ℕ} (ν : kˣ →* ℂˣ) (s : kˣ) (z : ℂ) (N : 
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (GL (Fin a) k) := Units.instMeasurableSpace haveI : BorelSpace (GL (Fin a) k) := borel_GL`. Conclude with `(isOpen_KO.preimage (continuous_mul_right _)).measurableSet`. Simplify using `[Measure.real, measure_preimage_mul_right, haarVol_self isOpen_KO le_rfl]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurableSet_and_vol {a : ℕ} (g₁ : GL (Fin a) k) :
     @MeasurableSet (GL (Fin a) k) Units.instMeasurableSpace ((fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k))) ∧
@@ -136,15 +136,15 @@ theorem measurableSet_and_vol {a : ℕ} (g₁ : GL (Fin a) k) :
   · simp [Measure.real, measure_preimage_mul_right, haarVol_self isOpen_KO le_rfl]
 
 /- English proof (translation)
-Use `set S := (fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k)) with hSdef`. Take `⟨hSm, hS1⟩` from `measurableSet_and_vol (k := k) g₁`. Take `⟨⟨m₀, hm₀⟩, hmem, huniq⟩` from `GlobalTheory.OneSquareZeta.exists_unique_shell hϖ g₁⁻¹`. Establish `hshell : ∀ m : {m : Fin a → ℤ // Antitone m}, shell (haarVol (KO k (Fin a))) ϖ ν z φ m.1 = (haarVol (KO k (Fin a))).real (shellSet ϖ m.1 ∩ S) • C`. Introduce `m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[shell]`. Repeatedly rewrite using `[hφ]`. Establish `e1` using `setIntegral_indicator (μ := haarVol (KO k (Fin a))) (s := shellSet ϖ m.1) (f := fun _ => C) hSm`. Rewrite using `[e1, setIntegral_const]`. Establish `hsub : S ⊆ shellSet ϖ m₀`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Take `⟨x, hx, y, hy, e⟩` from `mem_shellSet.1 hmem`. Use `mem_shellSet.2 ⟨g * g₁ * x, mul_mem hg hx, y, hy, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[shellSum, finsum_eq_single _ ⟨m₀, hm₀⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hshell, Set.inter_eq_right.2 hsub, hS1, one_smul]`. Introduce `m hm`. Rewrite using `[hshell]`. Establish `: shellSet ϖ m.1 ∩ S = ∅`. Use `Set.eq_empty_of_forall_notMem fun g ⟨hg1, hg2⟩ => hm (huniq m ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, y, hy, e⟩` from `mem_shellSet.1 hg1`. Use `mem_shellSet.2 ⟨(g * g₁)⁻¹ * x, mul_mem (inv_mem hg2) hx, y, hy, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shellSum_indicator {ϖ : kˣ} (hϖ : IsUnif ϖ) {a : ℕ} (ν : kˣ →* ℂˣ) (z C : ℂ)
     (φ : Matrix (Fin a) (Fin a) k → ℂ) (g₁ : GL (Fin a) k)
@@ -180,7 +180,7 @@ theorem shellSum_indicator {ϖ : kˣ} (hϖ : IsUnif ϖ) {a : ℕ} (ν : kˣ →*
     simp [this]
 
 /- English proof (translation)
-Take `⟨hSm, hS1⟩` from `measurableSet_and_vol (k := k) g₁`. Establish `e` using `integral_indicator_const (μ := haarVol (KO k (Fin a))) C hSm`. Rewrite using `[show f = _ from funext hf]`. Conclude with `e.trans (by rw [hS1, one_smul])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_indicator_KO {a : ℕ} (f : GL (Fin a) k → ℂ) (C : ℂ) (g₁ : GL (Fin a) k)
     (hf : ∀ g, f g = ((fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k))).indicator (fun _ => C) g) :
@@ -198,13 +198,13 @@ namespace GlobalTheory.StdPairLoc
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν ϖ c a a' hϖ`. Use `⟨fun X hX => ?_, fun X g₁ hg => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ g : GL (Fin a) k, stdA ν ϖ c a a' (g.val * X) = 0` using `fun g => by`. Rewrite using `[stdA, dif_neg]`. Introduce and unpack `⟨h, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h (by rw [blk₁_mul, Matrix.det_mul, hX, mul_zero])`. Simplify using `[bigF, shellSum, shell, h0]`. Unfold `bigF`. Use `shellSum_indicator hϖ ν _ _ _ g₁ fun g => ?_` and prove the remaining obligations. Use `integrand_eq ν (ϖ ^ c) _ (blk₂ X) g₁ g _ (fun h => ?_) (fun h => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : (blk₁ (g.val * X)).det ≠ 0 ∧ IsGLO (blk₁ (g.val * X)) ∧ ∀ i j, blk₂ (g.val * X) i j ∈ cball (ϖ ^ c)`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]`. Conclude with `h`. Rewrite using `[stdA, dif_pos h']`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `Units.ext (by simp [blk₁_mul, hg])`. Rewrite using `[stdA, dif_neg]`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem bigF_stdA : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ), IsUnif ϖ →
@@ -234,13 +234,13 @@ theorem bigF_stdA : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
       rwa [blk₁_mul, blk₂_mul, ← hg]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν ϖ c a a'`. Use `⟨fun Y hY => ?_, fun Y g₂ hg => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ g : GL (Fin a') k, stdB ν ϖ c a a' (g.val * Y) = 0` using `fun g => by`. Rewrite using `[stdB, dif_neg]`. Introduce and unpack `⟨h, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h (by rw [blk₂_mul, Matrix.det_mul, hY, mul_zero])`. Simplify using `[smallF, h0]`. Unfold `smallF`. Use `integral_indicator_KO _ _ g₂ fun g => ?_` and prove the remaining obligations. Use `integrand_eq ν (ϖ ^ c) _ (blk₁ Y) g₂ g _ (fun h => ?_) (fun h => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : (blk₂ (g.val * Y)).det ≠ 0 ∧ IsGLO (blk₂ (g.val * Y)) ∧ ∀ i j, blk₁ (g.val * Y) i j ∈ cball (ϖ ^ c)`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]`. Conclude with `h`. Rewrite using `[stdB, dif_pos h']`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `Units.ext (by simp [blk₂_mul, hg])`. Rewrite using `[stdB, dif_neg]`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem smallF_stdB : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ),
@@ -270,29 +270,25 @@ theorem smallF_stdB : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
       rwa [blk₁_mul, blk₂_mul, ← hg]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' h`. Use `set σ := finSumFinEquiv (m := a) (n := a') with hσ`. Use `set X := X0 k σ * (invT h).val with hX`. Use `set Y := Y0 k σ * h.val with hY`. Establish `hU : ∀ x y, ∑ l, h.val x l * (h⁻¹).val l y = (1 : Matrix (Fin (a + a')) (Fin (a + a')) k) x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hX1 : blk₁ X = (Matrix.of fun i j : Fin a => (h⁻¹).val (σ (Sum.inl i)) (σ (Sum.inl j)))ᵀ`. Use extensionality with `i j`. Simplify using `[X, blk₁, frameMatrixFirstColumnBlock_mul_apply, invT_val, σ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hX2 : blk₂ X = Matrix.of fun (i : Fin a) (j : Fin a') => (h⁻¹).val (σ (Sum.inr j)) (σ (Sum.inl i))`. Use extensionality with `i j`. Simplify using `[X, blk₂, frameMatrixFirstColumnBlock_mul_apply, invT_val, σ]`. Establish `hY1 : blk₁ Y = Matrix.of fun (i : Fin a') (j : Fin a) => h.val (σ (Sum.inr i)) (σ (Sum.inl j))`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Y, blk₁, frameMatrixSecondColumnBlock_mul_apply, σ]`. Establish `hY2 : blk₂ Y = Matrix.of fun (i j : Fin a') => h.val (σ (Sum.inr i)) (σ (Sum.inr j))`. Use extensionality with `i j`. Simplify using `[Y, blk₂, frameMatrixSecondColumnBlock_mul_apply, σ]`. Establish `hrel0 : blk₁ Y * (blk₁ X)ᵀ + blk₂ Y * (blk₂ X)ᵀ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Use `hU (σ (Sum.inr i)) (σ (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[← Equiv.sum_comp σ, Fintype.sum_sum_type, Matrix.one_apply_ne (σ.injective.ne Sum.inr_ne_inl)]`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, hX1, hX2, hY1, hY2, Matrix.zero_apply]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨?_, fun g₁ g₂ h1 h2 => ?_⟩` and prove the remaining obligations. Set `H' : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k` to `h.val.submatrix σ σ`. Set `U' : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k` to `(h⁻¹).val.submatrix σ σ`. Establish `hHU : ∀ x y, ∑ l, H' x l * U' l y = (1 : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k) x y`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hU (σ x) (σ y)` as an intermediate fact. Rewrite `this` using `[← Equiv.sum_comp σ]`. Conclude with `this.trans (by simp [Matrix.one_apply])`. Set `L : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k` to `Matrix.fromBlocks (Matrix.of fun i j => U' (Sum.inl i) (Sum.inl j)) 0 (Matrix.of fun i j => U' (Sum.inr i) (Sum.inl j)) 1`. Establish `hL : H' * L = Matrix.fromBlocks 1 (Matrix.of fun i j => H' (Sum.inl i) (Sum.inr j)) 0 (Matrix.of fun i j => H' (Sum.inr i) (Sum.inr j))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use extensionality with `(i | i) (j | j)`. Use `hHU (Sum.inl i) (Sum.inl j)` as an intermediate fact. Simplify using `only [Fintype.sum_sum_type] at this`. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, L, Matrix.one_apply]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, L, Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hHU (Sum.inr i) (Sum.inl j)` as an intermediate fact. Simplify using `only [Fintype.sum_sum_type] at this`. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, L, Matrix.one_apply]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, L, Matrix.one_apply]`. Establish `hd` using `congrArg Matrix.det hL`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one, one_mul, Matrix.det_submatrix_equiv_self]`. Rewrite using `[hX1, hY2, Matrix.det_transpose, mul_comm]`. Conclude with `hd`. Establish `e1 : (blk₁ X)ᵀ * ((g₁⁻¹).val)ᵀ = 1`. Rewrite using `[← h1, ← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]`.
-
-Establish `e2 : (g₂⁻¹).val * blk₂ Y = 1` using `by rw [← h2, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `E : blk₁ Y * (blk₁ X)ᵀ = -(blk₂ Y * (blk₂ X)ᵀ)` using `eq_neg_of_add_eq_zero_left hrel0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[E]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]`.
-
-Use `_ = -((g₁⁻¹).val * blk₂ X)ᵀ := by rw [e2, Matrix.one_mul, Matrix.transpose_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem standardPair_frameBlocks_det_and_neg_transpose : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' : ℕ) (h : GL (Fin (a + a')) k),
@@ -360,9 +356,9 @@ theorem standardPair_frameBlocks_det_and_neg_transpose : ∀ {k : Type} [Field k
       _ = -((g₁⁻¹).val * blk₂ X)ᵀ := by rw [e2, Matrix.one_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Establish `: (-Mᵀ ∈ {M : Matrix (Fin n) (Fin m) k | ∀ i j, M i j ∈ cball s}) ↔ M ∈ {M : Matrix (Fin m) (Fin n) k | ∀ i j, M i j ∈ cball s}`. Simplify using `only [Set.mem_setOf_eq, cball, Matrix.neg_apply, Matrix.transpose_apply, Valuation.map_neg]`. Conclude with `forall_comm`. Distinguish the cases in `hM : M ∈ {M : Matrix (Fin m) (Fin n) k | ∀ i j, M i j ∈ cball s}`. Rewrite using `[Set.indicator_of_mem hM, Set.indicator_of_mem (this.2 hM)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hM, Set.indicator_of_notMem (fun h => hM (this.1 h))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cball_neg_transpose {k : Type} [Field k] [ValuativeRel k] {m n : ℕ} (s : kˣ) (M : Matrix (Fin m) (Fin n) k) :
     Set.indicator {M : Matrix (Fin n) (Fin m) k | ∀ i j, M i j ∈ cball s} (1 : Matrix (Fin n) (Fin m) k → ℂ) (-Mᵀ) =

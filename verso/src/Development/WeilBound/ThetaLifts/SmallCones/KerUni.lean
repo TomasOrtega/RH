@@ -22,7 +22,7 @@ def eich (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (ε : R) (x v : Fin n �
   1 + ε • vecMulVec (v + a • x) (J *ᵥ fun i => c (x i)) + (-1 : R) • vecMulVec x (J *ᵥ fun i => c (v i))
 
 /- English proof (translation)
-Simplify using `only [eich, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, bf, dotProduct_comm w, op_smul_eq_smul, smul_smul, neg_one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eich_apply (v : Fin n → R) (a : R) (w) :
     eich c J ε x v a *ᵥ w = w + (ε * bf c J w x) • (v + a • x) + (-bf c J w v) • x := by
@@ -33,21 +33,21 @@ variable (h : PlaneOK c J ε x y ι)
 include h
 
 /- English proof (translation)
-Rewrite using `[eich_apply, h.xx, h.xi]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eich_alt (z a) : eich c J ε x (ι *ᵥ z) a *ᵥ x = x := by rw [eich_apply, h.xx, h.xi]; module
 /- English proof (translation)
-Rewrite using `[eich_apply, h.yx, h.yi, h.ee]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eich_y (z a) : eich c J ε x (ι *ᵥ z) a *ᵥ y = y + ι *ᵥ z + a • x := by rw [eich_apply, h.yx, h.yi, h.ee]; module
 /- English proof (translation)
-Rewrite using `[eich_apply, h.ix]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eich_i (z a w) : eich c J ε x (ι *ᵥ z) a *ᵥ (ι *ᵥ w) = ι *ᵥ w + (-bf c J (ι *ᵥ w) (ι *ᵥ z)) • x := by
   rw [eich_apply, h.ix]; module
 
 /- English proof (translation)
-Establish `e : ι *ᵥ (-z) = (-1 : R) • (ι *ᵥ z)` using `by rw [Matrix.mulVec_neg, neg_one_smul]`. Use `h.ext ?_ ?_ fun w => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, eich_alt h, eich_alt h, Matrix.one_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, eich_y h, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, eich_alt h, eich_y h, eich_i h, Matrix.one_mulVec, e, bf_smul_l] module`. Rewrite using `[← Matrix.mulVec_mulVec, eich_i h, Matrix.mulVec_add, Matrix.mulVec_smul, eich_alt h, eich_i h, Matrix.one_mulVec, e, bf_smul_r, map_neg, map_one] module`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eich_mul (z a) : eich c J ε x (ι *ᵥ z) a * eich c J ε x (ι *ᵥ (-z)) (-a - bf c J (ι *ᵥ z) (ι *ᵥ z)) = 1 := by
   have e : ι *ᵥ (-z) = (-1 : R) • (ι *ᵥ z) := by rw [Matrix.mulVec_neg, neg_one_smul]
@@ -61,9 +61,9 @@ theorem eich_mul (z a) : eich c J ε x (ι *ᵥ z) a * eich c J ε x (ι *ᵥ (-
     module
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← bf_single (c := c) (J := _ * J * _), ← bf_mulVec, ← bf_single (c := c) (J := J) i j]`. Take `⟨s, t, u, e⟩` from `h.span (Pi.single i 1)`. Take `⟨s', t', u', e'⟩` from `h.span (Pi.single j 1)`. Rewrite using `[e, e']`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, eich_alt h, eich_y h, eich_i h, bf_add_l, bf_add_r, bf_smul_l, bf_smul_r, h.xx, h.xy, h.yx, h.yy, h.ix, h.iy, h.xi, h.yi, map_neg, h.symm (ι *ᵥ u') (ι *ᵥ z)]`. Take the linear combination `(t * c t') * ha`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_unit (z a) (ha : bf c J (ι *ᵥ z) (ι *ᵥ z) + a + ε * c a = 0) :
     (eich c J ε x (ι *ᵥ z) a)ᵀ * J * (eich c J ε x (ι *ᵥ z) a).map c = J := by
@@ -77,7 +77,7 @@ theorem eich_unit (z a) (ha : bf c J (ι *ᵥ z) (ι *ᵥ z) + a + ε * c a = 0)
   linear_combination (t * c t') * ha
 
 /- English proof (translation)
-Establish `e1 : bf c J (M *ᵥ y) (M *ᵥ x) = ε` using `by rw [bf_mulVec, hu, h.yx]`. Rewrite `e1` using `[hx, e]`. Simplify using `only [bf_add_l, bf_smul_l, h.xx, h.ix, h.yx] at e1`. Take the linear combination `ε * e1 - (t - 1) * h.ee`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coef_y {M : Matrix (Fin n) (Fin n) R} (hu : Mᵀ * J * M.map c = J) (hx : M *ᵥ x = x) {s t : R} {z}
     (e : M *ᵥ y = s • x + ι *ᵥ z + t • y) : t = 1 := by
@@ -93,7 +93,7 @@ variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} 
 variable {H : Plane E d d₁} {ε : ℤ}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `PositivityTheory.ThKG.Tow.Levi.exists_UA (σ := σ) (eich_mul h.ad z a) (eich_unit h.ad z a ha)`. Use `⟨⟨g, Fr.mem_unip.2 ⟨hg ▸ eich_alt h.ad z a, fun w => ⟨_, hg ▸ eich_i h.ad z a w⟩⟩⟩⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `using hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_eich (h : PG σ W W₁ H ε) (z : Fin d₁ → AE F E) (a : AE F E)
     (ha : bf (cA σ).toRingHom (incM F W.J) (incM F H.ι *ᵥ z) (incM F H.ι *ᵥ z) + a + ε * cA σ a = 0) :
@@ -103,7 +103,7 @@ theorem exists_eich (h : PG σ W W₁ H ε) (z : Fin d₁ → AE F E) (a : AE F 
   simpa using hg
 
 /- English proof (translation)
-Take `⟨s, t, z, e⟩` from `h.ad.span (mat u *ᵥ incV F H.y)`. Conclude with `⟨s, z, by rw [e, coef_y h.ad u.2 (Fr.mem_unip.1 hu).1 e, one_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unip_y (h : PG σ W W₁ H ε) {u : UA σ W.J} (hu : u ∈ unip σ W H) :
     ∃ (a : AE F E) (z : Fin d₁ → AE F E), mat u *ᵥ incV F H.y = a • incV F H.x + incM F H.ι *ᵥ z + incV F H.y := by
@@ -111,17 +111,17 @@ theorem unip_y (h : PG σ W W₁ H ε) {u : UA σ W.J} (hu : u ∈ unip σ W H) 
   exact ⟨s, z, by rw [e, coef_y h.ad u.2 (Fr.mem_unip.1 hu).1 e, one_smul]⟩
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem incV_smul (a : E) (x : Fin n → E) : incV F (a • x) = inclR (F := F) (AF F) a • incV F x := funext fun _ => map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem incV_add (x y : Fin n → E) : incV F (x + y) = incV F x + incV F y := funext fun _ => map_add _ _ _
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `Fr.mem_ratU.1 hr`. Take `⟨s, t, z, e⟩` from `h.rat.span (D *ᵥ H.y)`. Establish `e' : mat u *ᵥ incV F H.y = inclR (F` using `F) (AF F) s • incV F H.x + incM F H.ι *ᵥ incV F z + inclR (F := F) (AF F) t • incV F H.y := by`. Rewrite using `[hD, inc_mulVec, e, incV_add, incV_add, incV_smul, incV_smul, inc_mulVec]`. Conclude with `⟨s, z, by rw [e', coef_y h.ad u.2 (Fr.mem_unip.1 hu).1 e', one_smul, incV_smul, inc_mulVec]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unip_y_rat (h : PG σ W W₁ H ε) {u : UA σ W.J} (hu : u ∈ unip σ W H) (hr : u ∈ ratU σ W.J) :
     ∃ (a : E) (z : Fin d₁ → E), mat u *ᵥ incV F H.y = incV F (a • H.x) + incV F (H.ι *ᵥ z) + incV F H.y := by
@@ -137,9 +137,9 @@ section Mean
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hm : MeasurePreserving (fun x => x * g) μ μ` using `measurePreserving_mul_right μ g`. Establish `h2 : IsFundamentalDomain Γ ((fun x => x * g) ⁻¹' 𝓕) μ` using `h.preimage_of_equiv hm.quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => mul_assoc _ _ _`. Establish `e1` using `hm.setIntegral_preimage_emb (MeasurableEquiv.mulRight g).measurableEmbedding f 𝓕`. Establish `e2` using `h2.setIntegral_eq h (f := f) fun γ x => hl γ.1 γ.2 x`. Simplify using `only [hr, integral_const_mul, e2] at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (c - 1) * ∫ x in 𝓕, f x ∂μ = 0` using `by rw [sub_mul, e1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mean_zero (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {𝓕 : Set G}
     (h : IsFundamentalDomain Γ 𝓕 μ) {f : G → ℂ} (hl : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) {g : G} {c : ℂ} (hc : c ≠ 1)
@@ -156,7 +156,7 @@ theorem mean_zero (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLef
 omit [Group G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]⟩`. Establish `hi : ∀ i, Integrable (f i) (μ.restrict 𝓕)` using `fun i => Integrable.of_bound (hf i).aestronglyMeasurable (b i) (Eventually.of_forall (hfb i))`. Use `hasSum_integral_of_summable_integral_norm hi (hb.of_nonneg_of_le (fun i => integral_nonneg fun _ => norm_nonneg _) fun i => by` as an intermediate fact. Simplify using `using integral_mono (hi i).norm (integrable_const (b i)) (hfb i))`. Simplify `this` using `only [(hs _).tsum_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mean_hasSum {ι : Type} [Countable ι] (μ : Measure G) {𝓕 : Set G} (h1 : μ 𝓕 = 1) {f : ι → G → ℂ} (hf : ∀ i, Continuous (f i))
     {b : ι → ℝ} (hb : Summable b) (hfb : ∀ i x, ‖f i x‖ ≤ b i) {s : G → ℂ} (hs : ∀ x, HasSum (fun i => f i x) (s x)) :
@@ -171,7 +171,7 @@ theorem mean_hasSum {ι : Type} [Countable ι] (μ : Measure G) {𝓕 : Set G} (
 end Mean
 
 /- English proof (translation)
-Rewrite using `[sy_inc, show ⅟(2 : AF F) = algebraMap F (AF F) (2⁻¹ : F) from invOf_eq_right_inv (by rw [← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]; norm_num), ← map_mul, ← map_neg, h.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_rat {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x y : Matrix (Fin n) (Fin d) E) :
     ψ (-(⅟(2 : AF F) * sy σ X W (incM F x) (incM F y))) = 1 := by
@@ -179,7 +179,7 @@ theorem psi_rat {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x y : Matrix (Fin n) (
     invOf_eq_right_inv (by rw [← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]; norm_num), ← map_mul, ← map_neg, h.2.1]
 
 /- English proof (translation)
-Establish `e : Algebra.trace (AF F) (AE F E) 1 = 2`. Rewrite using `[← map_one (inclR (F := F) (E := E) (AF F)), tr_inc, ← map_one (algebraMap F E), Algebra.trace_algebraMap, hB.cm.2.2.1]`. Simplify using `[map_ofNat]`. Rewrite using `[sy, symp, h, neg_one_mul, map_neg, Algebra.algebraMap_eq_smul_one, map_smul, e, smul_eq_mul, mul_neg, neg_neg, mul_comm a, invOf_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_sy (hB : B.IsGood σ) {x y : Ten F E n d} {a : AF F}
     (h : hTens (cA σ) (incM F X.J) (incM F W.J) x y = algebraMap (AF F) (AE F E) a) : -(⅟(2 : AF F) * sy σ X W x y) = a := by
@@ -193,21 +193,21 @@ variable {M : Model σ X W} {M₁ : Model σ X₁ W₁} {e : Fn F n d →ₗ[ℂ
   {ι' : Matrix (Fin d) (Fin d₁) E} {I : Set (Ten F E n d)}
 
 /- English proof (translation)
-Rewrite using `[rho_rho, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_split (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (a b : Ten F E n d) (Φ) :
     M.co.rho ψ (a + b) Φ = ψ (-(⅟(2 : AF F) * sy σ X W a b)) • M.co.rho ψ a (M.co.rho ψ b Φ) := by
   rw [rho_rho, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[rho_split, map_smul, he.inv a ha _ (rho_mem M h b hΦ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_I (h : IsStd B.ψ) (he : IsEv B M M₁ ι ι' I e) {a} (ha : a ∈ I) (b) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
     e (M.co.rho B.ψ (a + b) Φ) = B.ψ (-(⅟(2 : AF F) * sy σ X W a b)) • e (M.co.rho B.ψ b Φ) := by
   rw [rho_split, map_smul, he.inv a ha _ (rho_mem M h b hΦ)]
 
 /- English proof (translation)
-Rewrite using `[rho_split, map_smul, he.Heisenberg₂ w _ (rho_mem M h b hΦ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_mid (h : IsStd B.ψ) (he : IsEv B M M₁ ι ι' I e) (w : Ten F E n₁ d₁) (b) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
     e (M.co.rho B.ψ (incM F ι * w * (incM F ι')ᵀ + b) Φ) =
@@ -215,7 +215,7 @@ theorem ev_mid (h : IsStd B.ψ) (he : IsEv B M M₁ ι ι' I e) (w : Ten F E n�
   rw [rho_split, map_smul, he.Heisenberg₂ w _ (rho_mem M h b hΦ)]
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `hM.rat x`. Rewrite using `[Darboux.rho, hab, theta_schr_rat h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_rho_rat (h : IsStd B.ψ) (hM : M.IsGood B.ψ) (x : Matrix (Fin n) (Fin d) E) (Φ) :
     thetaSum F (M.co.rho B.ψ (incM F x) Φ) = thetaSum F Φ := by
@@ -223,7 +223,7 @@ theorem theta_rho_rat (h : IsStd B.ψ) (hM : M.IsGood B.ψ) (x : Matrix (Fin n) 
   rw [Darboux.rho, hab, theta_schr_rat h]
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_smul {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum F (c • Φ) = c * thetaSum F Φ := by
   simp only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]
@@ -231,25 +231,25 @@ theorem theta_smul {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum
 variable {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
 /- English proof (translation)
-The claim follows from `(IsUWeilPair.isUSplitting hp.weil).pres x Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem om_mem (hp : IsPair B M χX χW om r s r' s') (x) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) : om x Φ ∈ schA F _ :=
   (IsUWeilPair.isUSplitting hp.weil).pres x Φ hΦ
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_om (om : Rep σ X W) (x y) (Φ) : om x (om y Φ) = om (x * y) Φ := by rw [map_mul]; rfl
 
 /- English proof (translation)
-The claim follows from `(IsUWeilPair.isUSplitting hp.weil).impl (g, h) U Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem om_rho (hp : IsPair B M χX χW om r s r' s') (g h) (U : Ten F E n d) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
     om (g, h) (M.co.rho B.ψ U Φ) = M.co.rho B.ψ (mat g * U * (mat h)ᵀ) (om (g, h) Φ) :=
   (IsUWeilPair.isUSplitting hp.weil).impl (g, h) U Φ hΦ
 
 /- English proof (translation)
-Rewrite using `[om_rho hp _ _ _ hΦ, Fr.mat_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Fr.mat_mul, mul_inv_cancel, Fr.mat_one, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_om (hp : IsPair B M χX χW om r s r' s') (h) (U : Ten F E n d) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
     M.co.rho B.ψ U (om (1, h) Φ) = om (1, h) (M.co.rho B.ψ (U * (mat h⁻¹)ᵀ) Φ) := by

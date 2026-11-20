@@ -32,17 +32,15 @@ noncomputable section
 namespace GlobalTheory.KoecherArc
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Take `⟨k, T, M₀, γ₀, xx, hT, hO₀, hL⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_lift_of_arc E H Dw l Xo c O β Z σ N U A φ x fr ψ r y hσ hU hb.1 hm`. Take `⟨M, γ, hO, hγ⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_unipotent_order_two E N _ T M₀ γ₀ xx hO₀`. Establish `hne : γ ≠ 1`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀, x', h1, h2⟩` from `GlobalTheory.T.trivial_monodromy_orbit_converges_symmetric_domain E N _ T M xx hO`. Conclude with `GlobalTheory.T.boundary_arc_lift_not_converges_symmetric_domain E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T xx hσ hU hb hm hL x₀ hx₀ x' h1 h2`. Take `⟨ξ, c', hξ, hc', ht⟩` from `GlobalTheory.T.holomorphicFrameOrbit_isotropic_vector_short E N _ T M γ xx hO hγ hne`. Take `⟨m, v, Lp, Lm, hlim⟩` from `GlobalTheory.T.exists_arcLift_periods_tendsto_span E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU hb.1 hm hO hL`. Establish `hper` using `GlobalTheory.T.eigenframe_specialization_uniform_bound E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU hb.1 hm hO hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C', B, hn⟩` from `GlobalTheory.T.normFactor_inv_le_pow_holomorphicOrbit_periodBound E N _ T M γ xx (la k) m v Lp Lm hO hlim hper`. Establish `hp` using `tendsto_cusp (hS k) hO.2.2.2.1 hξ hc' ht hn`. Establish `hsec` using `(hS k).1.1`. Take `⟨hM, hΓ, hdiff, hdom, hperd⟩` from `hO`. Establish `hγd : ∀ w : ℂ, T < w.im → lact γ (xx w) ∈ (U.X k).dom` using `fun w hw => GlobalTheory.MajInv.lact_mem_dom _ ((U.X k).Γ_stab γ hΓ) (hdom w hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.meromorphic_germ_vanishes_of_periodic_exp_modulus (fun w => rdU U g k (xx w)) (fun _ => 0) _ (fun u => ψ u p) (fun u => ψ u q) T r M 1 1 hM one_pos (one_pow 1) hb.1.1.1 (hsec.1.comp hdiff hdom) (differentiableOn_const 0) (fun w hw => ?_) hp (hb.1.1.2 p) (hb.1.1.2 q …` and prove the remaining obligations. Take `⟨b, hb1, hb2, hb3⟩` from `hperd w hw`. Take `⟨h, hl⟩` from `hL w hw`. Use `⟨?_, rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [hb3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsec.2.1 _ (hγd w hw) b hb1, hsec.2.2 γ hΓ _ (hdom w hw), hχ k γ hΓ]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.bchar, hb2]`. Rewrite using `[Complex.exp_zero, norm_one, mul_one]`. Establish `rd : rdU U g k (xx w) = toC (evR Xo c g (U.un k ⟨xx w, h⟩))` using `dif_pos h`. Use `show ‖toC (evR Xo c g (y (eTwoPi w)))‖ = ‖rdU U g k (xx w)‖`.
-
-Rewrite using `[rd, GlobalTheory.ShFam.KeyRel.evR_sameLie he hg hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β)
@@ -85,7 +83,7 @@ theorem tendsto_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
     rw [rd, GlobalTheory.ShFam.KeyRel.evR_sameLie he hg hl]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨hρ, fun a => (h.1.1.2 a).mono (Metric.ball_subset_ball hρr)⟩, h.1.2.1, fun u hu => h.1.2.2 u (Metric.ball_subset_ball hρr hu)⟩, h.2.1, fun u hu => h.2.2 u (Metric.ball_subset_ball hρr hu)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBdArc_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}

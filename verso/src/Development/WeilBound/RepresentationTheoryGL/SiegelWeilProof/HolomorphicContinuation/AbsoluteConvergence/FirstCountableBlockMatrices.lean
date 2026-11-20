@@ -11,7 +11,7 @@ namespace PositivityTheory.Rg.Sw.AbsSt.BasisPf
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL Q Q' hQ y`. Take `⟨pp, k, hp, hk, rfl⟩` from `hI n y`. Rewrite using `[hL.law Q pp k hp, hL.law Q' pp k hp, hQ k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem flatEq_of (hI : Iwa) : FlatEq := by
   intro m n ε c t p q e sL ρ hL Q Q' hQ y
@@ -32,11 +32,11 @@ theorem secK_apply (sL : PX m n →ₗ[ℂ] (GR n → ℂ)) (hc : ∀ Q, Continu
     secK sL hc Q k = sL Q (k : GR n) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `u v h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun k : KR n => ((k : GR n) : GL (Fin n ⊕ Fin n) ℂ).1) h` as an intermediate fact. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `⟨⟨mR (k : GR n), ⟨k.2.2, k.2.1⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bij_toK : Function.Bijective (toK (n := n)) := by
   constructor
@@ -65,7 +65,7 @@ section Op
 variable [MeasurableSpace (KR n)] [BorelSpace (KR n)] (ν : Measure (KR n)) [IsFiniteMeasure ν]
 
 /- English proof (translation)
-The claim follows from `integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_cont {f : KR n → ℂ} (hf : Continuous f) : Integrable f ν :=
   integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)

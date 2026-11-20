@@ -7,13 +7,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory.IdemConstRank
 
 /- English proof (translation)
-Establish `hf : IsIdempotentElem (Matrix.toLin' M)`. Establish `h2 : Matrix.toLin' (M * M) = Matrix.toLin' M` using `by rw [h]`. Rewrite `h2` using `[Matrix.toLin'_mul]`. Conclude with `h2`. Establish `hc` using `LinearMap.IsIdempotentElem.isCompl hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e` to `Submodule.prodEquivOfIsCompl _ _ hc`. Establish `key : e.conj ((1 : Module.End K (LinearMap.range (Matrix.toLin' M))).prodMap (0 : Module.End K (LinearMap.ker (Matrix.toLin' M)))) = Matrix.toLin' M`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩` from `e.surjective x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.conj_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.prodMap_apply, Module.End.one_apply, LinearMap.zero_apply]`. Rewrite using `[Submodule.coe_prodEquivOfIsCompl', Submodule.coe_prodEquivOfIsCompl', map_add, LinearMap.mem_ker.mp y.2.2, (LinearMap.IsIdempotentElem.mem_range_iff hf).mp y.1.2]`. Simplify using the standard rewrite rules. Use `⟨Module.finrank K (LinearMap.ker (Matrix.toLin' M)), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcp : M.charpoly = (e.conj ((1 : Module.End K (LinearMap.range (Matrix.toLin' M))).prodMap (0 : Module.End K (LinearMap.ker (Matrix.toLin' M))))).charpoly`. Rewrite using `[key, Matrix.charpoly_toLin']`. Rewrite using `[hcp, LinearEquiv.charpoly_conj, LinearMap.charpoly_prodMap, LinearMap.charpoly_one, LinearMap.charpoly_zero, Matrix.rank, ← Matrix.toLin'_apply']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_of_idem {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : M * M = M) :
     ∃ b : ℕ, M.charpoly = (X - 1) ^ M.rank * X ^ b := by
@@ -43,13 +43,13 @@ theorem charpoly_of_idem {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin
     LinearMap.charpoly_one, LinearMap.charpoly_zero, Matrix.rank, ← Matrix.toLin'_apply']
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (f x - f y)`. Rewrite `hne` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ev : ∀ z : X, ∀ t : T, IsUnit t → IsUnit ((t : X → O) z)` using `fun z t ht => ht.map ((Pi.evalRingHom (fun _ : X => O) z).comp T.val.toRingHom)`. Set `g : T` to `⟨f - algebraMap O (X → O) (f y), T.sub_mem hf (T.algebraMap_mem _)⟩`. Set `g' : T` to `algebraMap O T (f x - f y) - g`. Establish `hg : g ∈ nonunits T` using `fun hg => by`. Use `ev y g hg` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[g] at this`. Establish `hg' : g' ∈ nonunits T` using `fun hg => by`. Use `ev x g' hg` as an intermediate fact. Simplify using `[g', g] at this`. Establish `hsum : g + g' = algebraMap O T (f x - f y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[g']`. Conclude with `IsLocalRing.nonunits_add hg hg' (hsum ▸ hu.map (algebraMap O T))`.
+A detailed English derivation is pending.
 -/
 theorem residue_eq {X O : Type} [CommRing O] [IsLocalRing O] (T : Subalgebra O (X → O))
     [IsLocalRing T] (f : X → O) (hf : f ∈ T) (x y : X) :
@@ -74,7 +74,7 @@ theorem residue_eq {X O : Type} [CommRing O] [IsLocalRing O] (T : Subalgebra O (
   exact IsLocalRing.nonunits_add hg hg' (hsum ▸ hu.map (algebraMap O T))
 
 /- English proof (translation)
-Establish `h1 : ((Polynomial.X : k[X]) - 1) ^ a = (Polynomial.X - Polynomial.C 1) ^ a`. Rewrite using `[map_one]`. Establish `hne : ((Polynomial.X : k[X]) - Polynomial.C 1) ^ a * Polynomial.X ^ b ≠ 0` using `mul_ne_zero (pow_ne_zero _ (X_sub_C_ne_zero 1)) (pow_ne_zero _ X_ne_zero)`. Rewrite using `[h1, rootMultiplicity_mul hne, rootMultiplicity_X_sub_C_pow, rootMultiplicity_eq_zero, add_zero]`. Simplify using `[IsRoot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootMultiplicity_one {k : Type} [Field k] (a b : ℕ) :
     rootMultiplicity (1 : k) ((X - 1) ^ a * X ^ b) = a := by
@@ -86,9 +86,9 @@ theorem rootMultiplicity_one {k : Type} [Field k] (a b : ℕ) :
   simp [IsRoot]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `charpoly_of_idem (M.map (toFr O)) (by rw [← Matrix.map_mul, h])`. Rewrite `hb` using `[Matrix.charpoly_map]`. Establish `hinj : Function.Injective (toFr O)` using `IsFractionRing.injective O (FractionRing O)`. Establish `hM : M.charpoly = ((Polynomial.X : O[X]) - 1) ^ (M.map (toFr O)).rank * Polynomial.X ^ b`. Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[hM]`. Simplify using `only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one]`. Conclude with `(rootMultiplicity_one _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_eq_rootMultiplicity {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) O) (h : M * M = M) :
@@ -106,9 +106,9 @@ theorem rank_eq_rootMultiplicity {O : Type} [CommRing O] [IsDomain O] [IsLocalRi
   exact (rootMultiplicity_one _ _).symm
 
 /- English proof (translation)
-Introduce `X O _ _ _ n T e hT he hc x y`. Establish `hx` using `rank_eq_rootMultiplicity (e x) (congrFun he x)`. Establish `hy` using `rank_eq_rootMultiplicity (e y) (congrFun he y)`. Establish `hp : (e x).charpoly.map (IsLocalRing.residue O) = (e y).charpoly.map (IsLocalRing.residue O)`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map]`. Conclude with `residue_eq T (fun z => (e z).charpoly.coeff j) (hc j) x y`. Rewrite using `[hx, hy, hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_const : ∀ {X O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : ℕ} (T : Subalgebra O (X → O)) (e : X → Matrix (Fin n) (Fin n) O), IsLocalRing T → e * e = e → (∀ j : ℕ, (fun x => (e x).charpoly.coeff j) ∈ T) → ∀ x y, ((e x).map (toFr O)).rank = ((e y).map (toFr O)).rank := by
   intro X O _ _ _ n T e hT he hc x y

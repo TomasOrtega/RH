@@ -8,9 +8,9 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace MvPolyn
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Establish `hO : O ≤ h ⁻¹ᵁ Proj.basicOpen (grading R N) (X b * X a)`. Rewrite using `[Proj.basicOpen_mul]`. Conclude with `fun x hx => ⟨hb hx, ha hx⟩`. Establish `e1 : h.appLE _ O ha = (PSpace R N).presheaf.map (homOfLE (basicOpen_mul_le_right a b)).op ≫ h.appLE _ O hO` using `(Scheme.Hom.map_appLE h hO _).symm`. Establish `e2 : h.appLE _ O hb = (PSpace R N).presheaf.map (homOfLE (basicOpen_mul_le_left a b)).op ≫ h.appLE _ O hO` using `(Scheme.Hom.map_appLE h hO _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : F ∈ grading R N n` using `by simpa using hF`. Rewrite using `[e1, e2]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[chartHom_of_mem a hF']`. Conclude with `map_mul_pow_eq _ _ (chart_identity a b hF)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem projective_chart_overlap {R : Type} [CommRing R] {N : ℕ} {W : Scheme.{0}} (h : W ⟶ PSpace R N)
     (O : W.Opens) (a b : Fin (N + 1))
@@ -36,9 +36,9 @@ private theorem projective_chart_overlap {R : Type} [CommRing R] {N : ℕ} {W : 
   exact map_mul_pow_eq _ _ (chart_identity a b hF)
 
 /- English proof (translation)
-Introduce `R _ N W h O a b ha hb`. Use `⟨?_, fun n F hF => projective_chart_overlap h O a b ha hb n F ?_⟩` and prove the remaining obligations. Establish `key` using `projective_chart_overlap h O a b ha hb 1 (X b) (by simpa using X_mem b)`. Rewrite `key` using `[pow_one, chartHom_X_self, map_one]`. Conclude with `IsUnit.of_mul_eq_one_right _ key`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: F ∈ grading R N n` using `hF`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isUnit_chart_coord_and_homogeneous_chart_transition :
     ∀ {R : Type} [CommRing R] {N : ℕ} {W : Scheme.{0}} (h : W ⟶ PSpace R N) (O : W.Opens) (a b : Fin (N + 1))

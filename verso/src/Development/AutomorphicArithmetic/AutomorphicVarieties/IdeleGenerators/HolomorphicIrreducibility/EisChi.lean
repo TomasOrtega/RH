@@ -8,13 +8,13 @@ open CongruenceSubgroup UpperHalfPlane UpperTheory.V.Af UpperTheory.V.Sd
 open scoped MatrixGroups ModularForm
 
 /- English proof (translation)
-Establish `h1 : gaussSum χ ψ * gaussSum χ⁻¹ ψ⁻¹ = ∑ b : ZMod N, ∑ a : ZMod N, χ a * ψ (b * (a - 1))` using `by conv_lhs => rw [gaussSum.eq_1 χ⁻¹, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm (gaussSum χ ψ), ← gaussSum_mulShift_of_isPrimitive ψ hχ b, gaussSum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, AddChar.inv_apply, mul_assoc, ← AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : gaussSum χ ψ * gaussSum χ⁻¹ ψ⁻¹ = (N : ℂ)`. Rewrite using `[h1, Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, AddChar.sum_mulShift _ hψ, sub_eq_zero]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (1 : ZMod N)]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Rewrite `h2` using `[h0, zero_mul]`. Conclude with `(Nat.cast_ne_zero.2 (NeZero.ne N)) h2.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eisChi_gauss_ne {N : ℕ} [NeZero N]
     {χ : DirichletCharacter ℂ N} {ψ : AddChar (ZMod N) ℂ} (hχ : χ.IsPrimitive)
@@ -42,7 +42,7 @@ private theorem eisChi_gauss_ne {N : ℕ} [NeZero N]
   exact (Nat.cast_ne_zero.2 (NeZero.ne N)) h2.symm
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 private theorem eisChi_coe_sum {N : ℕ} {k : ℤ} {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (F : ι → ModularForm (Gamma1 N) k) :
@@ -53,11 +53,11 @@ private theorem eisChi_coe_sum {N : ℕ} {k : ℤ} {ι : Type} (s : Finset ι) (
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]; rfl
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods`. Simplify using the standard rewrite rules. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [coef, qExpansion_zero]`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Unfold `coef`. Establish `h1` using `ModularForm.qExpansion_add one_pos hp (c a • F a) (∑ a ∈ s, c a • F a)`. Establish `h2` using `ModularForm.qExpansion_smul one_pos hp (c a) (F a)`. Establish `h3 : ((c a • F a : ModularForm (Gamma1 N) k) : ℍ → ℂ) = c a • (F a : ℍ → ℂ)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h3, h2]`. Establish `h4 : ((c a • F a + ∑ a ∈ s, c a • F a : ModularForm (Gamma1 N) k) : ℍ → ℂ) = c a • (F a : ℍ → ℂ) + ((∑ a ∈ s, c a • F a : ModularForm (Gamma1 N) k) : ℍ → ℂ)` using `rfl`. Rewrite using `[h4, h1]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eisChi_coef_sum {N : ℕ} [NeZero N] {k : ℤ} {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (F : ι → ModularForm (Gamma1 N) k) (n : ℕ) :
@@ -80,7 +80,7 @@ private theorem eisChi_coef_sum {N : ℕ} [NeZero N] {k : ℤ} {ι : Type} (s : 
     simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih, SlashAction.add_slash, ModularForm.SL_smul_slash]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eisChi_slash_sum {k : ℤ} {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (F : ι → ℍ → ℂ) (γ : SL(2, ℤ)) :
@@ -92,9 +92,9 @@ private theorem eisChi_slash_sum {k : ℤ} {ι : Type} (s : Finset ι) (c : ι �
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih, SlashAction.add_slash, ModularForm.SL_smul_slash]
 
 /- English proof (translation)
-Establish `hi : (χ⁻¹).IsPrimitive`. Rewrite using `[DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]`. Conclude with `hχ`. Use `gaussSum_mulShift_of_isPrimitive (ZMod.stdAddChar (N := N)) hi e` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, gaussSum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, mul_comm e a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eisChi_gs {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) (e : ZMod N) :
     ∑ a : ZMod N, χ⁻¹ a * (ZMod.stdAddChar (a * e) : ℂ) = χ e * gaussSum χ⁻¹ ZMod.stdAddChar := by
@@ -107,31 +107,29 @@ private theorem eisChi_gs {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (
   rw [AddChar.mulShift_apply, mul_comm e a]
 
 /- English proof (translation)
-Introduce `N k _ hN hk χ hχ hpar`. Use `choose F hF using UpperTheory.V.Sd.eisMF N k hk`. Establish `hi : (χ⁻¹).IsPrimitive`. Rewrite using `[DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]`. Conclude with `hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : gaussSum χ⁻¹ (ZMod.stdAddChar (N` using `N)) ≠ 0 := eisChi_gauss_ne hi (ZMod.isPrimitive_stdAddChar N)`. Use `set g := gaussSum χ⁻¹ (ZMod.stdAddChar (N := N)) with hgdef`. Use `haveI : Fact (1 < N) := ⟨hN⟩`. Establish `h0 : χ⁻¹ (0 : ZMod N) = 0` using `MulChar.map_nonunit _ not_isUnit_zero`. Use `⟨∑ a : ZMod N, ((2 * g)⁻¹ * χ⁻¹ a) • F a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `γ hγ`. Rewrite using `[eisChi_coe_sum, eisChi_slash_sum, Finset.smul_sum]`. Simplify using `only [hF, UpperTheory.V.Sd.eisSlash N k hk _ γ hγ]`. Establish `hd : IsUnit (((γ 1 1 : ℤ)) : ZMod N)`. Establish `h1` using `γ.det_coe`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `h1` using `[Matrix.det_fin_two]`. Establish `h2 : ((γ 1 0 : ℤ) : ZMod N) = 0` using `Gamma0_mem.1 hγ`. Establish `h3` using `congrArg (Int.cast : ℤ → ZMod N) h1`. Move the coercions through the operations in `at h3`. Rewrite `h3` using `[h2, mul_zero, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.of_mul_eq_one_right _ h3`. Take `⟨u, hu⟩` from `hd`. Rewrite using `[← hu]`. Use `Fintype.sum_equiv (Units.mulRight u) _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congr 1`. Establish `: χ (u : ZMod N) * χ⁻¹ (u : ZMod N) = 1`. Rewrite using `[← MulChar.mul_apply, mul_inv_cancel, MulChar.one_apply_coe]`. Simplify using `only [Units.mulRight_apply, map_mul]`. Take the linear combination `(-((2 * g)⁻¹ * χ⁻¹ a)) * this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ`. Rewrite using `[eisChi_coe_sum, eisChi_slash_sum]`. Use `Submodule.sum_mem (zeroAtImInftySubmodule ℂ) fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : IsUnit a`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Conclude with `UpperTheory.V.Sd.eisVan N k hk a ha hN γ hγ`. Rewrite using `[MulChar.map_nonunit _ ha, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eisChi_coef_sum]`. Establish `h1 : ∀ a : ZMod N, (2 * g)⁻¹ * χ⁻¹ a * coef (F a) n = ∑ e ∈ n.divisors, (2 * g)⁻¹ * (e : ℂ) ^ (k - 1) * (χ⁻¹ a * (ZMod.stdAddChar (a * (e : ZMod N)) : ℂ) + (-1) ^ k * (χ⁻¹ a * (ZMod.stdAddChar (a * (-(e : ZMod N))) : ℂ)))`. Introduce `a`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, h0]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF, (UpperTheory.V.Sd.eisCoef N k hk a ha).2 n hn, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[mul_neg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, sigChi]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_add_distrib, ← Finset.mul_sum, eisChi_gs hχ, eisChi_gs hχ, ← hgdef, ← neg_one_mul (e : ZMod N), map_mul, hpar]`. Establish `h2 : ((-1 : ℂ) ^ k) * (-1) ^ k = 1` using `by rw [← mul_pow]; simp`. Establish `h3 : (2 * g)⁻¹ * (2 * g) = 1` using `inv_mul_cancel₀ (mul_ne_zero two_ne_zero hg)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `((2 * g)⁻¹ * (e : ℂ) ^ (k - 1) * χ (e : ZMod N) * g) * h2 + ((e : ℂ) ^ (k - 1) * χ (e : ZMod N)) * h3`. Rewrite using `[eisChi_coef_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, h0]`.
-
-Rewrite using `[hF, (UpperTheory.V.Sd.eisCoef N k hk a ha).1]`. Establish `h3 : (2 * g)⁻¹ * (2 * g) = 1` using `inv_mul_cancel₀ (mul_ne_zero two_ne_zero hg)`. Take the linear combination `(χ⁻¹ a * Lk k (ZMod.stdAddChar a : ℂ)) * h3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.eisChi :
     UpperTheory.V.Sd.EisChi := by

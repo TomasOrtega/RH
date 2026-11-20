@@ -3,27 +3,23 @@ import Mathlib
 open NumberField
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hr hU ξ hξ hσ v`. Establish `hne : σ ξ ≠ ξ`. Introduce `h`. Rewrite `h` using `[hσ]`. Conclude with `hξ (by linear_combination (-1 / 2 : E) * h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ y : E, σ y = y → ∃ c : F, algebraMap F E c = y`. Introduce `y hy`. Use `Subalgebra.isSimpleOrder_of_finrank hr` as an intermediate fact. Break down `eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h | h` into its components or cases. Establish `: y ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h]`. Conclude with `Algebra.mem_bot.mp this`. Establish `: ξ ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `by rw [h]; trivial`. Conclude with `absurd this hne`. Establish `hinv : ∀ y : E, σ (σ y) = y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `y`. Use `Subalgebra.isSimpleOrder_of_finrank hr` as an intermediate fact. Break down `eq_bot_or_eq_top (AlgHom.equalizer (σ.comp σ) (AlgHom.id F E)) with h | h` into its components or cases. Establish `: ξ ∈ AlgHom.equalizer (σ.comp σ) (AlgHom.id F E)` using `by show σ (σ ξ) = ξ`. Rewrite using `[hσ, map_neg, hσ, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Take `⟨c, hc⟩` from `Algebra.mem_bot.mp this`. Conclude with `absurd (by rw [← hc, AlgHom.commutes]) hne`. Establish `: y ∈ AlgHom.equalizer (σ.comp σ) (AlgHom.id F E)` using `by rw [h]; trivial`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `τ : 𝓞 E →ₐ[𝓞 F] 𝓞 E` to `RingOfIntegers.mapAlgHom σ`. Establish `hτ : ∀ x : 𝓞 E, ((τ x : 𝓞 E) : E) = σ x` using `fun _ => rfl`. Use `v.isMaximal` as an intermediate fact. Take `⟨w, hw, hwv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hx : ∃ x : 𝓞 E, x - τ x ∉ w`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `heq : AlgHom.id (𝓞 F) (𝓞 E) = τ` using `Algebra.FormallyUnramified.ext_of_iInf w (Ideal.iInf_pow_eq_bot_of_isDomain w hw.ne_top) (fun x => Ideal.Quotient.eq.mpr (hcon x))`. Establish `hall : ∀ x : 𝓞 E, σ x = x` using `fun x => by rw [← hτ, ← heq]; rfl`. Take `⟨p, q, -, hpq⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) ξ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hpq, map_div₀]`. Conclude with `congrArg₂ (· / ·) (hall p) (hall q)`. Take `⟨x, hx⟩` from `hx`. Use `set a : 𝓞 E := x - τ x with ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσa : σ (a : E) = -(a : E)`. Establish `: (a : E) = x - σ x` using `by rw [← hτ]; rfl`. Rewrite using `[this, map_sub, hinv, neg_sub]`. Take `⟨c, hc⟩` from `hfix ((a : E) * a) (by rw [map_mul, hσa, neg_mul_neg])`. Establish `hci : IsIntegral ℤ c`.
-
-Rewrite using `[← isIntegral_algebraMap_iff (B := E) (algebraMap F E).injective, hc]`. Conclude with `a.isIntegral_coe.mul a.isIntegral_coe`. Use `⟨a, a, ⟨c, hci⟩, ?_, hσa, hc.symm⟩` and prove the remaining obligations. Introduce `hn`. Establish `h1` using `(Ideal.mem_of_liesOver w v.asIdeal _).mp hn`.
-
-Establish `h2 : algebraMap (𝓞 F) (𝓞 E) ⟨c, hci⟩ = a * a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hc`. Rewrite `h1` using `[h2]`. Conclude with `hx ((hw.isPrime.mem_or_mem h1).elim id id)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unramified_anti_invariant_local :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),

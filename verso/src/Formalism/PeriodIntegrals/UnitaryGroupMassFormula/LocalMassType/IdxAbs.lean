@@ -7,27 +7,25 @@ namespace PI.LocMassTypW
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hI : ∀ q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q` using `fun q => q.2`. Use `choose x hxN hxq using hI`. Establish `hmk : ∀ a b : V, -a + b ∈ B ↔ (QuotientAddGroup.mk a : V ⧸ B) = QuotientAddGroup.mk b` using `fun a b => QuotientAddGroup.eq.symm`. Establish `hC : C = ⋃ q, (fun v => -φ (x q) + v) ⁻¹' (B : Set V)`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨y, hy, hyB⟩` from `hsur v hv`. Use `⟨⟨QuotientAddGroup.mk (φ y), y, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hyB`, the goal using `[hmk]`. Rewrite using `[hxq]`. Conclude with `hyB`. Introduce and unpack `⟨q, hq⟩`. Establish `hc` using `hCB _ (hφ _ (hxN q)) _ hq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hc`. Establish `hN : N = ⋃ q, (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G)`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hy`. Use `⟨⟨QuotientAddGroup.mk (φ y), y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hco _ (hxN _) _ hy, hmk, hxq]`. Introduce and unpack `⟨q, hq⟩`. Establish `hc` using `hNK _ (hxN q) _ hq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hc`. Establish `hdC : Pairwise (Function.onFun Disjoint fun q => (fun v => -φ (x q) + v) ⁻¹' (B : Set V))`. Introduce `q q' hqq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `v h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hqq` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, hmk] at h1 h2`. Rewrite using `[← hxq q, ← hxq q', h1, h2]`. Establish `hdN : Pairwise (Function.onFun Disjoint fun q => (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q q' hqq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `y h1 h2`. Apply `hqq` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at h1 h2`. Establish `hy : y ∈ N` using `by simpa using hNK _ (hxN q) _ h1`. Rewrite `h1` using `[hco _ (hxN q) _ hy, hmk]`. Rewrite `h2` using `[hco _ (hxN q') _ hy, hmk]`. Rewrite using `[← hxq q, ← hxq q', h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : μ N = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, μ K` using `by conv_lhs => rw [hN]`. Rewrite using `[measure_iUnion hdN fun q => (measurable_const_mul _) hK]`. Conclude with `tsum_congr fun q => measure_preimage_mul μ _ _`. Establish `e2 : ν C = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, ν B`. Rewrite using `[hC, measure_iUnion hdC fun q => (measurable_const_add _) hB]`.
-
-Conclude with `tsum_congr fun q => measure_preimage_add ν _ _`. Rewrite using `[e1, e2, ← ENNReal.tsum_mul_right, ← ENNReal.tsum_mul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_abs {G V : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V]

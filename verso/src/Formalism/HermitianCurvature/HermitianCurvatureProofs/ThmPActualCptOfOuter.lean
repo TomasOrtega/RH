@@ -16,9 +16,7 @@ variable {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r �
   {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hAL.1 l]`. Conclude with `mkPair_mem_preservingAlgebra (op_lc X l 0) (neg_lc (op_lc X l 3))`. Rewrite using `[hAL.2.2.1 l]`. Conclude with `mkPair_mem_preservingAlgebra (op_lc X l 1) (op_lc X l 4)`.
-
-Rewrite using `[hAL.2.2.2.1 l]`. Conclude with `mkPair_mem_preservingAlgebra (op_lc X l 2) (op_lc X l 5)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem site_lc (X : ActualOps P.k P.r z z' π π') {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r}
     (hAL : IsActualLevel X L) (l : Fin P.r) :
@@ -30,14 +28,14 @@ theorem site_lc (X : ActualOps P.k P.r z z' π π') {L : R.LevelData (Pr (RadSp 
   · rw [hAL.2.2.2.1 l]; exact mkPair_mem_preservingAlgebra (op_lc X l 2) (op_lc X l 5)
 
 /- English proof (translation)
-The claim follows from `mkPair_mem_preservingAlgebra (t_lc X Y a b) (t_lc X (star Y) b a)`.
+A detailed English derivation is pending.
 -/
 theorem QQ_lc (X : ActualOps P.k P.r z z' π π') (Y : ℂ) (a b : Fin 2) :
     X.QQ Y a b ∈ presAlg (lcSub P.k P.r z z' π π') :=
   mkPair_mem_preservingAlgebra (t_lc X Y a b) (t_lc X (star Y) b a)
 
 /- English proof (translation)
-Take `⟨-, -, hAL, hQQ, -⟩` from `hD`. Use `rrw_mem (QQi L st i) (QQi_mem L st _ i (fun Y _ a b => ?_) (fun l _ => site_lc X hAL l)) w hw` and prove the remaining obligations. Rewrite using `[hQQ Y, Matrix.smul_apply]`. Conclude with `(presAlg (lcSub P.k P.r z z' π π')).smul_mem (QQ_lc X Y a b) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RRi_lc (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
     (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
@@ -57,9 +55,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Distinguish the cases in `hc : c ∈ OmX r`. Conclude with `intOn_cpt μ hμ c hc Φ (lcSub_le_cptSub hΦ) Ψ (lcSub_le_cptSub hΨ)`. Establish `e : (fun g : Mt k r => B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))) = fun _ => 0`. Use function extensionality and compare the values at `g`. Rewrite using `[radSp_zero_off Φ (x := (c, Matrix.of g)) (fun h => hc h.1)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsInner_zero_left _`. Rewrite using `[e]`. Conclude with `integrable_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem int_lc (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {Φ Ψ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ lcSub k r z z' π π') (hΨ : Ψ ∈ lcSub k r z z' π π') (c : Fin r → ℂ) :
@@ -82,7 +80,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `hle` using `herKc_le_lc (S := S) (st := st) (l0 := l0) X hD.2.2.1 (fun F Φ hF hΦ => jfCptLocAll Wp Wq P z z' π π' D F Φ hD.1 hz hz' hπ hπ' hF hΦ) i`. Establish `hRR` using `RRi_lc X μ L st l0 hD i w hw.1.2.1`. Establish `hu : act (RRi L st i w) x a ∈ lcSub P.k P.r z z' π π'` using `(lcSub P.k P.r z z' π π').sum_mem fun b _ => (hRR a b).1 _ (hle (hx b))`. Conclude with `int_lc μ hD.2.1 hu (hle (hy a)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formIntG_herKc (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -127,7 +125,7 @@ def StepDensCptAll : Prop :=
     StepDens (S := S) P z z' π π' μ L st (herKc S P z z' π π' L st l0 D) l0
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'`. Use `⟨hSD Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ', fun w hw i c hc x y hx hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `fun c' a => formIntG_herKc P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' w hw i c x y hx hy c' a`. Conclude with `hFO Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw i c hc x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem stepFormCptAll_of (hSD : StepDensCptAll) (hFO : FormIntOuterCpt) : StepFormCptAll := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
@@ -136,7 +134,7 @@ theorem stepFormCptAll_of (hSD : StepDensCptAll) (hFO : FormIntOuterCpt) : StepF
   · exact hFO Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw i c hc x y hx hy
 
 /- English proof (translation)
-The claim follows from `thmPActualCpt_of_stepForm (stepFormCptAll_of hSD hFO)`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualCpt_of_outer (hSD : StepDensCptAll) (hFO : FormIntOuterCpt) : ThmPActualCpt :=
   thmPActualCpt_of_stepForm (stepFormCptAll_of hSD hFO)

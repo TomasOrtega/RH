@@ -5,19 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `S _ _ j z`. Use `haveI : Fintype S := Fintype.ofFinite S`. Set `v : S →₀ ℤ` to `∑ s : S, Finsupp.single s 1`. Establish `hv : ∀ g : S, perm S S g v = v`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [v, map_sum, perm_single]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm g) _ _ (fun _ => rfl)`. Set `fi : (Rep.trivial ℤ S ℤ).ρ.IntertwiningMap (permRep S S).ρ` to `⟨LinearMap.toSpanSingleton ℤ _ v, fun g => by`. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `[Rep.trivial_ρ, permRep, hv]⟩`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `gi : (permRep S S).ρ.IntertwiningMap (Rep.trivial ℤ S ℤ).ρ` to `⟨aug S, fun g => by`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `x c`. Simplify using `[Rep.trivial_ρ, permRep, perm_single, aug_single]⟩`. Establish `hcomp : ∀ a : Rep.trivial ℤ S ℤ, (Rep.Hom.hom (Rep.ofHom gi)) ((Rep.Hom.hom (Rep.ofHom fi)) a) = Nat.card S • a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `aug S (a • v) = Nat.card S • a`. Simplify using `only [v, map_smul, map_sum, aug_single, Finset.sum_const, Finset.card_univ, smul_eq_mul, nsmul_eq_mul, Nat.card_eq_fintype_card, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : Subsingleton (groupHomology (permRep S S) (j + 1))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨e⟩` from `shapiro S S (1 : S) (j + 1)`. Use `haveI : Subsingleton (MulAction.stabilizer S (1 : S)) := by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`. Establish `ha' : a * 1 = 1` using `ha`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `hb' : b * 1 = 1` using `hb`. Simplify using `only [mul_one] at ha' hb'`. Substitute `ha' hb'` using the available equality. Both sides reduce to the same expression. Establish `hz` using `ModuleCat.isZero_iff_subsingleton.mp (isZero_groupHomology_succ_of_subsingleton (Rep.trivial ℤ (MulAction.stabilizer S (1 : S)) ℤ) j)`.
-
-Conclude with `e.injective.subsingleton`. Conclude with `mapNsmul S (Rep.trivial ℤ S ℤ) (permRep S S) (Rep.ofHom fi) (Rep.ofHom gi) (Nat.card S) (j + 1) hcomp hsub z`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.kill :
     ∀ (S : Type) [Group S] [Finite S] (j : ℕ) (z : HZ S (j + 1)), Nat.card S • z = 0 := by

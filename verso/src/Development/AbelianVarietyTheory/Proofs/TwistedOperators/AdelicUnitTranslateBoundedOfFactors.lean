@@ -10,17 +10,17 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (B ⊗[F] AdeleRing (𝓞 F) F) := Formalism.BasicNotions.tensTopL (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Use `letI (i : Fin k) : TopologicalSpace (C i ⊗[F] AdeleRing (𝓞 F) F) := Formalism.BasicNotions.tensTopL (F := F) (E := C i) (AdeleRing (𝓞 F) F)`. Use `haveI := (hL F B).1`. Use `choose D hD hDu using h`. Set `p (i : Fin k) : B ⊗[F] AdeleRing (𝓞 F) F →ₐ[F] C i ⊗[F] AdeleRing (𝓞 F) F` to `Algebra.TensorProduct.map (π i) (AlgHom.id F _)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : (∀ i, C i ⊗[F] AdeleRing (𝓞 F) F) → B ⊗[F] AdeleRing (𝓞 F) F` to `fun x => ∑ i, LinearMap.rTensor (AdeleRing (𝓞 F) F) (s i) (x i)`. Establish `hΦ : Continuous Φ` using `continuous_finset_sum _ fun i _ => (continuous_rTensor (AdeleRing (𝓞 F) F) (s i)).comp (continuous_apply i)`. Establish `hp : ∀ i u, p i (sigR τ _ u) = sigR (ρ i) _ (p i u)`. Introduce `i u`. Proceed by induction on `u with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [p, sigR, hcomm]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]`. Establish `hm : ∀ i u (y : C i), LinearMap.rTensor (AdeleRing (𝓞 F) F) (s i) (p i u * inclE (F` using `F) _ y) = u * inclE (F := F) _ (s i y) := by`. Introduce `i u y`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [p, inclE, hmul]`. Consider the case `add a b ha hb => rw [map_add, add_mul, map_add, add_mul, ha, hb]`. Use `⟨Φ '' Set.pi Set.univ D, (isCompact_univ_pi hD).image hΦ, fun u hu => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpu : ∀ i, p i u * sigR (ρ i) _ (p i u) = 1` using `fun i => by`. Rewrite using `[← hp, ← map_mul, hu, map_one]`. Use `choose β hβ hβD using fun i => hDu i (p i u) (hpu i)`. Use `choose γ hγ using fun i => (hβ i).exists_right_inv`. Use `⟨∑ i, s i (β i), IsUnit.of_mul_eq_one (∑ i, s i (γ i)) ?_, fun i => p i u * inclE (F := F) _ (β i), fun i _ => hβD i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Simplify using `only [← hmul, hps, hγ]`. Simplify using `using hsum 1`. Simplify using `only [Φ, hm, map_sum, Finset.mul_sum]`.
+A detailed English derivation is pending.
 -/
 theorem unitBounded_of_split (hL : TensorLattice) {F B : Type} [Field F] [NumberField F]
     [CommRing B] [Algebra F B] [Module.Finite F B] (τ : B →ₐ[F] B) {k : ℕ} (C : Fin k → Type)
@@ -71,25 +71,25 @@ theorem unitBounded_of_split (hL : TensorLattice) {F B : Type} [Field F] [Number
   · simp only [Φ, hm, map_sum, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ P _ _ _ k K _ _ ⟨e⟩ h`. Set `q (i : Fin k) : P →ₐ[F] K i` to `(Pi.evalAlgHom F K i).comp (e : P →ₐ[F] ∀ i, K i)`. Set `t (i : Fin k) : K i →ₗ[F] P` to `e.symm.toLinearMap ∘ₗ LinearMap.single F K i`. Establish `hq : ∀ i x, q i x = e x i` using `fun _ _ => rfl`. Establish `ht : ∀ i x, t i x = e.symm (Pi.single i x)` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, ∑ i, t i (q i x) = x` using `fun x => by`. Simplify using `only [hq, ht, ← map_sum, Finset.univ_sum_single, AlgEquiv.symm_apply_apply]`. Establish `h2 : ∀ i x y, t i (q i x * y) = x * t i y` using `fun i x y => by`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [hq, ht, map_mul, AlgEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `unitBounded_of_split hL (tConj P σ) (fun i => K i ⊗[F] E) (fun i => tConj (K i) σ) (fun i => Algebra.TensorProduct.map (q i) (AlgHom.id F E)) (fun i => LinearMap.rTensor E (t i)) ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [← TensorProduct.sum_tmul, h1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, Finset.sum_add_distrib, ha, hb]`. Introduce `i x y`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, add_mul, ha, hb]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [map_add, mul_add, hc, hd]`. Consider the case `tmul c d => simp [h2]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `b j`. Rewrite using `[map_sum, Finset.sum_eq_single j]`. Generalize the expression as in `b j = y`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `add c d hc hd => simp only [map_add, hc, hd]`. Consider the case `tmul c d => simp [hq, ht]`. Introduce `i _ hi`. Generalize the expression as in `b i = y`. Proceed by induction on `y with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [map_add, hc, hd, add_zero]`. Consider the case `tmul c d => simp [hq, ht, hi.symm]`. Simplify using the standard rewrite rules. Introduce `i x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [tConj]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem productUnitBounded (hL : TensorLattice) : ProductUnitBounded := by
   classical

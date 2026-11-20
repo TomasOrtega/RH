@@ -12,31 +12,29 @@ section Schur
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Establish `hnt : Nontrivial (V →L[ℂ] V)`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `⟨⟨1, 0, fun h => hv (by simpa using congrArg (fun T : V →L[ℂ] V => T v) h)⟩⟩`. Establish `hsub : (spectrum ℝ A).Subsingleton`. Introduce `a ha b hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hab`. Use `wlog hlt : a < b generalizing a b`. Conclude with `this hb ha (Ne.symm hab) (lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hab))`. Use `set c := (a + b) / 2 with hc`. Set `f : ℝ → ℝ` to `fun x => max (x - c) 0`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : ℝ → ℝ` to `fun x => max (c - x) 0`. Establish `hfc : Continuous f` using `by fun_prop`. Establish `hgc : Continuous g` using `by fun_prop`. Establish `hgf : (fun x => g x * f x) = (0 : ℝ → ℝ)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `le_total x c with h | h` into its components or cases. Simplify using `[f, max_eq_right (sub_nonpos.mpr h)]`. Simplify using `[g, max_eq_right (sub_nonpos.mpr h)]`. Establish `hQP : cfc g A * cfc f A = 0`. Rewrite using `[← cfc_mul g f A hgc.continuousOn hfc.continuousOn, hgf, cfc_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : ∀ (φ : ℝ → ℝ), Continuous φ → ∀ x ∈ spectrum ℝ A, φ x ≠ 0 → cfc φ A ≠ 0`. Introduce `φ hφ x hx hφx h`. Establish `hs : spectrum ℝ (cfc φ A) = φ '' spectrum ℝ A` using `cfc_map_spectrum φ A hsa hφ.continuousOn`. Establish `hmem : φ x ∈ spectrum ℝ (cfc φ A)` using `hs ▸ ⟨x, hx, rfl⟩`. Rewrite `hmem` using `[h, spectrum.zero_eq, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hφx hmem`. Establish `hP0 : cfc f A ≠ 0` using `hne f hfc b hb (by`. Simplify using `only [f]; rw [max_eq_left (by linarith)]; linarith)`. Establish `hQ0 : cfc g A ≠ 0` using `hne g hgc a ha (by`. Simplify using `only [g]; rw [max_eq_left (by linarith)]; linarith)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPcomm : ∀ s ∈ S, Commute (cfc f A) s` using `fun s hs => (hcomm s hs).cfc_real f`. Use `set W := (LinearMap.range ((cfc f A : V →L[ℂ] V) : V →ₗ[ℂ] V)).topologicalClosure with hW`. Establish `hinv : ∀ s ∈ S, ∀ v ∈ W, s v ∈ W`. Introduce `s hs v hv`. Establish `hle : LinearMap.range ((cfc f A : V →L[ℂ] V) : V →ₗ[ℂ] V) ≤ W.comap ((s : V →L[ℂ] V) : V →ₗ[ℂ] V)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Simplify using `only [Submodule.mem_comap, ContinuousLinearMap.coe_coe]`. Establish `: s (cfc f A u) = cfc f A (s u)`. Use `congrArg (fun T : V →L[ℂ] V => T u) (hPcomm s hs).eq` as an intermediate fact. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[this]`. Conclude with `Submodule.le_topologicalClosure _ ⟨s u, rfl⟩`. Establish `hcl : IsClosed ((W.comap ((s : V →L[ℂ] V) : V →ₗ[ℂ] V) : Submodule ℂ V) : Set V)` using `(Submodule.isClosed_topologicalClosure _).preimage s.continuous`. Conclude with `Submodule.topologicalClosure_minimal _ hle hcl hv`. Break down `hirr W (Submodule.isClosed_topologicalClosure _) hinv with hbot | htop` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hP0` to reduce the goal to its premises. Use extensionality with `v`. Establish `: cfc f A v ∈ W` using `Submodule.le_topologicalClosure _ ⟨v, rfl⟩`. Rewrite `this` using `[hbot, Submodule.mem_bot]`. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hQ0` to reduce the goal to its premises. Establish `hle : LinearMap.range ((cfc f A : V →L[ℂ] V) : V →ₗ[ℂ] V) ≤ LinearMap.ker ((cfc g A : V →L[ℂ] V) : V →ₗ[ℂ] V)`. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe]`. Use `congrArg (fun T : V →L[ℂ] V => T v) hQP` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hcl` using `Submodule.topologicalClosure_minimal _ hle (cfc g A).isClosed_ker`. Rewrite `hcl` using `[← hW, htop]`. Use extensionality with `v`. Establish `: v ∈ LinearMap.ker ((cfc g A : V →L[ℂ] V) : V →ₗ[ℂ] V)` using `hcl Submodule.mem_top`.
-
-Simplify using `using this`. Establish `hne : (spectrum ℝ A).Nonempty` using `ContinuousFunctionalCalculus.spectrum_nonempty A hsa`. Take `⟨c, hc⟩` from `hne`. Use `⟨c, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_algebraMap_of_commute [Nontrivial V] {S : Set (V →L[ℂ] V)}
     (hirr : ∀ W : Submodule ℂ V, IsClosed (W : Set V) → (∀ s ∈ S, ∀ v ∈ W, s v ∈ W) →
@@ -116,11 +114,11 @@ theorem eq_algebraMap_of_commute [Nontrivial V] {S : Set (V →L[ℂ] V)}
     _ = algebraMap ℝ _ c := cfc_const c A hsa
 
 /- English proof (translation)
-Establish `hre : ∀ s ∈ S, Commute (ℜ T : V →L[ℂ] V) s`. Introduce `s hs`. Rewrite using `[realPart_apply_coe]`. Conclude with `((hcomm T hT s hs).add_left (hcomm _ (hstar T hT) s hs)).smul_left _`. Establish `him : ∀ s ∈ S, Commute (ℑ T : V →L[ℂ] V) s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite using `[imaginaryPart_apply_coe]`. Conclude with `(((hcomm T hT s hs).sub_left (hcomm _ (hstar T hT) s hs)).smul_left _).smul_left _`. Take `⟨a, ha⟩` from `eq_algebraMap_of_commute hirr (ℜ T).2 hre`. Take `⟨b, hb⟩` from `eq_algebraMap_of_commute hirr (ℑ T).2 him`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a + I * b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← realPart_add_I_smul_imaginaryPart T, ha, hb]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul, ← Complex.coe_smul, smul_smul, ← add_smul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_one_of_commute [Nontrivial V] {S : Set (V →L[ℂ] V)}
     (hirr : ∀ W : Submodule ℂ V, IsClosed (W : Set V) → (∀ s ∈ S, ∀ v ∈ W, s v ∈ W) →
@@ -155,13 +153,11 @@ open scoped Matrix.Norms.L2Operator Real InnerProductSpace ComplexConjugate Comp
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Use `set U := (Submodule.span ℂ (range fun g => ρ g x)).topologicalClosure with hU`. Establish `hinv : ρ.IsInvariant U`. Introduce `g v hv`. Establish `hle : Submodule.span ℂ (range fun g => ρ g x) ≤ U.comap ((ρ g : H →L[ℂ] H) : H →ₗ[ℂ] H)`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨h, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, ContinuousLinearMap.coe_coe]`. Rewrite using `[← UnitaryRep.map_mul_apply]`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨g * h, rfl⟩)`. Establish `hcl : IsClosed ((U.comap ((ρ g : H →L[ℂ] H) : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `(Submodule.isClosed_topologicalClosure _).preimage (ρ g).continuous`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `Submodule.topologicalClosure_minimal _ hle hcl hv`. Break down `hρ.2 U (Submodule.isClosed_topologicalClosure _) hinv with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Establish `: x ∈ U` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, by simp⟩)`.
-
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `this`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalClosure_span_orbit {G : Type*} [Group G] [TopologicalSpace G]
     {ρ : UnitaryRep G H} (hρ : ρ.IsIrreducible) {x : H} (hx : x ≠ 0) :
@@ -186,11 +182,9 @@ theorem topologicalClosure_span_orbit {G : Type*} [Group G] [TopologicalSpace G]
   · exact h
 
 /- English proof (translation)
-Establish `htop` using `topologicalClosure_span_orbit hρ hx`. Establish `hle : Submodule.span ℂ (range fun g => ρ g x) ≤ (ℂ ∙ y)ᗮ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h g`. Establish `hcl` using `Submodule.topologicalClosure_minimal _ hle (Submodule.isClosed_orthogonal _)`. Rewrite `hcl` using `[htop]`. Establish `hy : y ∈ (ℂ ∙ y)ᗮ` using `hcl Submodule.mem_top`. Rewrite `hy` using `[Submodule.mem_orthogonal_singleton_iff_inner_right, inner_self_eq_zero]`.
-
-Conclude with `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_inner_map {G : Type*} [Group G] [TopologicalSpace G]
     {ρ : UnitaryRep G H} (hρ : ρ.IsIrreducible) {x y : H} (hx : x ≠ 0)
@@ -213,16 +207,16 @@ instance completeSpace_weightSpace (j : ℤ) : CompleteSpace (weightSpace σ j) 
   (isClosed_weightSpace σ j).completeSpace_coe
 
 /- English proof (translation)
-Rewrite using `[UnitaryRep.inner_map_right, kMat_inv, hy (-θ), inner_smul_left, conj_chi, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_map_kMat_of_mem {j : ℤ} {y : H} (hy : y ∈ weightSpace σ j) (θ : ℝ) (u : H) :
     ⟪y, σ (kMat θ) u⟫_ℂ = chi j θ * ⟪y, u⟫_ℂ := by
   rw [UnitaryRep.inner_map_right, kMat_inv, hy (-θ), inner_smul_left, conj_chi, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[inner_wProj]`. Establish `: (fun θ : ℝ => chi j (-θ) * ⟪y, σ (kMat θ) u⟫_ℂ) = fun _ => ⟪y, u⟫_ℂ`. Use function extensionality and compare the values at `θ`. Rewrite using `[inner_map_kMat_of_mem σ hy, ← mul_assoc, mul_comm (chi j (-θ)), chi_mul_chi_neg, one_mul]`. Rewrite using `[this, intervalIntegral.integral_const, sub_zero, Complex.real_smul, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ : ((2 * π : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (by positivity : (2 * π : ℝ) ≠ 0)`. Rewrite using `[inv_mul_cancel₀ hπ, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_wProj_of_mem {j : ℤ} {y : H} (hy : y ∈ weightSpace σ j) (u : H) :
     ⟪y, wProj σ j u⟫_ℂ = ⟪y, u⟫_ℂ := by
@@ -235,7 +229,7 @@ theorem inner_wProj_of_mem {j : ℤ} {y : H} (hy : y ∈ weightSpace σ j) (u : 
   rw [inv_mul_cancel₀ hπ, one_mul]
 
 /- English proof (translation)
-Simplify using `only [wProj, map_add, smul_add]`. Rewrite using `[intervalIntegral.integral_add ((continuous_wIntegrand σ j x).intervalIntegrable _ _) ((continuous_wIntegrand σ j y).intervalIntegrable _ _), smul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wProj_add (j : ℤ) (x y : H) : wProj σ j (x + y) = wProj σ j x + wProj σ j y := by
   simp only [wProj, map_add, smul_add]
@@ -243,7 +237,7 @@ theorem wProj_add (j : ℤ) (x y : H) : wProj σ j (x + y) = wProj σ j x + wPro
     ((continuous_wIntegrand σ j y).intervalIntegrable _ _), smul_add]
 
 /- English proof (translation)
-Simplify using `only [wProj, map_smul, smul_comm _ c]`. Rewrite using `[intervalIntegral.integral_smul, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wProj_smul (j : ℤ) (c : ℂ) (x : H) : wProj σ j (c • x) = c • wProj σ j x := by
   simp only [wProj, map_smul, smul_comm _ c]
@@ -271,14 +265,14 @@ Both sides reduce to the same expression.
     ((compr σ j g v : weightSpace σ j) : H) = wProj σ j (σ g v) := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_compr_apply, inner_wProj_of_mem σ w.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_compr (j : ℤ) (g : FiltrationCocycleLiftCriterion) (v w : weightSpace σ j) :
     ⟪(w : H), (compr σ j g v : H)⟫_ℂ = ⟪(w : H), σ g v⟫_ℂ := by
   rw [coe_compr_apply, inner_wProj_of_mem σ w.2]
 
 /- English proof (translation)
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, ← inner_conj_symm, inner_compr, inner_conj_symm, UnitaryRep.inner_map_left, inv_inv, ← inner_compr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_compr (j : ℤ) (g : FiltrationCocycleLiftCriterion) : star (compr σ j g) = compr σ j g⁻¹ := by
   rw [ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]
@@ -287,9 +281,9 @@ theorem star_compr (j : ℤ) (g : FiltrationCocycleLiftCriterion) : star (compr 
     inner_conj_symm, UnitaryRep.inner_map_left, inv_inv, ← inner_compr]
 
 /- English proof (translation)
-Establish `key : ∀ (a b : ℝ) (D : FiltrationCocycleLiftCriterion), ⟪y, σ (kMat a * D * kMat b) x⟫_ℂ = chi j a * chi j b * ⟪y, σ D x⟫_ℂ`. Introduce `a b D`. Rewrite using `[UnitaryRep.map_mul_apply, UnitaryRep.map_mul_apply, hx b, map_smul, map_smul, inner_smul_right, inner_map_kMat_of_mem σ hy]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨α, β, D, hD, rfl⟩` from `exists_kak u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[iotaG_mul, iotaG_mul, iotaG_kMat, iotaG_kMat, hD, ← mul_assoc, key, key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_map_iotaG {j : ℤ} {x y : H} (hx : x ∈ weightSpace σ j) (hy : y ∈ weightSpace σ j)
     (u : FiltrationCocycleLiftCriterion) : ⟪y, σ (iotaG u) x⟫_ℂ = ⟪y, σ u x⟫_ℂ := by
@@ -304,7 +298,7 @@ theorem inner_map_iotaG {j : ℤ} {x y : H} (hx : x ∈ weightSpace σ j) (hy : 
   ring
 
 /- English proof (translation)
-Rewrite using `[inner_compr, coe_compr_apply, UnitaryRep.inner_map_right, inner_wProj]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `θ`. Rewrite using `[UnitaryRep.inner_map_left, inv_inv, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_compr_compr (j : ℤ) (g h : FiltrationCocycleLiftCriterion) (v w : weightSpace σ j) :
     ⟪(w : H), (compr σ j g (compr σ j h v) : H)⟫_ℂ = ((2 * π : ℝ)⁻¹ : ℂ) *
@@ -316,7 +310,7 @@ theorem inner_compr_compr (j : ℤ) (g h : FiltrationCocycleLiftCriterion) (v w 
     mul_assoc]
 
 /- English proof (translation)
-Use `ext1 v`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, inner_compr, inner_compr, inner_map_iotaG σ v.2 w.2]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compr_iotaG (j : ℤ) (g : FiltrationCocycleLiftCriterion) : compr σ j (iotaG g) = compr σ j g := by
   ext1 v
@@ -326,9 +320,9 @@ theorem compr_iotaG (j : ℤ) (g : FiltrationCocycleLiftCriterion) : compr σ j 
     inner_map_iotaG σ v.2 w.2]
 
 /- English proof (translation)
-Use `ext1 v`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, inner_compr_compr, ← compr_iotaG σ j h, ← compr_iotaG σ j g, inner_compr_compr]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `θ`. Rewrite using `[← inner_map_iotaG σ v.2 w.2 (g * kMat θ * h), iotaG_mul, iotaG_mul, iotaG_kMat, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compr_comm (j : ℤ) (g h : FiltrationCocycleLiftCriterion) : compr σ j g * compr σ j h = compr σ j h * compr σ j g := by
   ext1 v
@@ -342,23 +336,19 @@ theorem compr_comm (j : ℤ) (g h : FiltrationCocycleLiftCriterion) : compr σ j
   rw [← inner_map_iotaG σ v.2 w.2 (g * kMat θ * h), iotaG_mul, iotaG_mul, iotaG_kMat, mul_assoc]
 
 /- English proof (translation)
-Use `set V := weightSpace σ j`. Use `set xV : V := ⟨x, hx⟩`. Establish `hxV : xV ≠ 0` using `fun h => hx0 (congrArg Subtype.val h)`. Establish `: Nontrivial V` using `⟨⟨xV, 0, hxV⟩⟩`. Use `set S : Set (V →L[ℂ] V) := range (compr σ j) with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hirr : ∀ W : Submodule ℂ V, IsClosed (W : Set V) → (∀ s ∈ S, ∀ v ∈ W, s v ∈ W) → W = ⊥ ∨ W = ⊤`. Introduce `W hWc hWinv`. Distinguish the cases in `hW : W = ⊥`. Conclude with `Or.inl hW`. Use `right`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x', hx'W, hx'0⟩` from `(Submodule.ne_bot_iff W).1 hW`. Establish `: CompleteSpace W` using `hWc.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_eq_bot_iff, eq_bot_iff]`. Introduce `y' hy'`. Rewrite using `[Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_zero_of_forall_inner_map hσ (x := (x' : H)) (fun h => hx'0 (Subtype.ext h)) fun g => ?_` and prove the remaining obligations. Rewrite using `[← inner_compr, ← Submodule.coe_inner]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (hWinv _ ⟨g, rfl⟩ x' hx'W) hy'`. Establish `hstar : ∀ s ∈ S, star s ∈ S`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, (star_compr σ j g).symm⟩`. Establish `hcomm : ∀ s ∈ S, ∀ t ∈ S, Commute s t`. Introduce and unpack `_ ⟨g, rfl⟩ _ ⟨h, rfl⟩`. Conclude with `compr_comm σ j g h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hscal : ∀ g, ∃ c : ℂ, compr σ j g = c • (1 : V →L[ℂ] V)` using `fun g => eq_smul_one_of_commute hirr hstar hcomm ⟨g, rfl⟩`. Use `set c : ℂ := ⟪x, y⟫_ℂ / ⟪x, x⟫_ℂ with hc`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hxx : ⟪x, x⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hx0`. Use `set y' : H := y - c • x with hy'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy'V : y' ∈ V` using `V.sub_mem hy (V.smul_mem c hx)`. Establish `horth : ⟪y', x⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, hy', inner_sub_right, inner_smul_right, hc, div_mul_cancel₀ _ hxx, sub_self, map_zero]`. Establish `hzero : y' = 0`. Use `eq_zero_of_forall_inner_map hσ hx0 fun g => ?_` and prove the remaining obligations.
-
-Take `⟨cg, hcg⟩` from `hscal g`. Use `inner_compr σ j g xV ⟨y', hy'V⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[← this, hcg]`. Simplify using `[xV, horth]`.
-
-Rewrite `hzero` using `[hy', sub_eq_zero]`. Conclude with `hzero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightSpace_eq_smul (hσ : σ.IsIrreducible) {j : ℤ} {x : H} (hx : x ∈ weightSpace σ j)
     (hx0 : x ≠ 0) {y : H} (hy : y ∈ weightSpace σ j) : ∃ c : ℂ, y = c • x := by

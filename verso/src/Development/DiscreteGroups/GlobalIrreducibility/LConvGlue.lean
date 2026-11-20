@@ -17,7 +17,7 @@ section Theta
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-The claim follows from `Units.ext (antidiag_mul_self n k)`.
+A detailed English derivation is pending.
 -/
 theorem longElt_mul_self (n : ℕ) : longElt n k * longElt n k = 1 := Units.ext (antidiag_mul_self n k)
 
@@ -27,41 +27,41 @@ def theta (n : ℕ) : GL (Fin n) k →* GL (Fin n) k :=
   (MulAut.conj (longElt n k)).toMonoidHom.comp (GlobalTheory.CuspRep.invT n k)
 
 /- English proof (translation)
-Simplify using `[theta, MulAut.conj_apply, inv_eq_of_mul_eq_one_right (longElt_mul_self (k := k) n)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_apply {n : ℕ} (g : GL (Fin n) k) :
     theta k n g = longElt n k * GlobalTheory.CuspRep.invT n k g * longElt n k := by
   simp [theta, MulAut.conj_apply, inv_eq_of_mul_eq_one_right (longElt_mul_self (k := k) n)]
 
 /- English proof (translation)
-Rewrite using `[theta_apply, theta_apply, GlobalTheory.T.long_element_conj_involutive]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_theta {n : ℕ} (g : GL (Fin n) k) : theta k n (theta k n g) = g := by
   rw [theta_apply, theta_apply, GlobalTheory.T.long_element_conj_involutive]
 
 /- English proof (translation)
-Rewrite using `[theta_apply, mul_assoc, longElt_mul_self, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tilde_eq {n : ℕ} (g : GL (Fin n) k) : tilde g = theta k n g * longElt n k := by
   rw [theta_apply, mul_assoc, longElt_mul_self, mul_one]
   rfl
 
 /- English proof (translation)
-Simplify using `only [corner]`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_mul {m : ℕ} (g h : GL (Fin m) k) : corner (g * h) = corner g * corner h := by
   simp only [corner]
   rw [← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-The claim follows from `map_one (emb₂ k (stdSum (rfl : m + 1 = m + 1)))`.
+A detailed English derivation is pending.
 -/
 theorem corner_one {m : ℕ} : corner (1 : GL (Fin m) k) = 1 := map_one (emb₂ k (stdSum (rfl : m + 1 = m + 1)))
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `u hu x`. Take `⟨h1, h2⟩` from `GlobalTheory.T.long_element_conj_unipotent_borel k n u hu`. Use `show l (ρ (theta k n u) x) = _`. Rewrite using `[theta_apply, hl _ h1, h2, AddChar.inv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFunctional_theta {ψ : AddChar k Circle} {ρ : Representation ℂ (GL (Fin n) k) V} {l : Module.Dual ℂ V}
     (hl : IsFunctional ψ ρ l) : IsFunctional ψ⁻¹ (ρ.comp (theta k n)) l := by
@@ -71,9 +71,7 @@ theorem isFunctional_theta {ψ : AddChar k Circle} {ρ : Representation ℂ (GL 
   rw [theta_apply, hl _ h1, h2, AddChar.inv_apply]
 
 /- English proof (translation)
-Set `e : Subrepresentation (ρ.comp f : Representation ℂ G' V) ≃o Subrepresentation ρ` to `{ toFun := fun W => ⟨W.toSubmodule, fun g v hv => by`. Take `⟨g', rfl⟩` from `hf g`. Conclude with `W.apply_mem_toSubmodule g' hv⟩`. Use `invFun := fun W => ⟨W.toSubmodule, fun g v hv => W.apply_mem_toSubmodule (f g) hv⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `e.isSimpleOrder_iff.2 hρ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_surjective {G G' : Type} [Group G] [Group G'] {ρ : Representation ℂ G V}
     (hρ : ρ.IsIrreducible) (f : G' →* G) (hf : Function.Surjective f) :
@@ -95,7 +93,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hinvc : Continuous (GlobalTheory.CuspRep.invT n k)` using `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`. Establish `: (theta k n : GL (Fin n) k → GL (Fin n) k) = fun g => longElt n k * GlobalTheory.CuspRep.invT n k g * longElt n k` using `funext theta_apply`. Rewrite using `[this]`. Conclude with `(continuous_const.mul hinvc).mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_theta (n : ℕ) : Continuous (theta k n) := by
   have hinvc : Continuous (GlobalTheory.CuspRep.invT n k) :=
@@ -106,7 +104,7 @@ theorem continuous_theta (n : ℕ) : Continuous (theta k n) := by
   exact (continuous_const.mul hinvc).mul continuous_const
 
 /- English proof (translation)
-The claim follows from `(continuous_leviEmb k _).comp ((continuous_leviTwo k).comp (continuous_id.prodMk continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_corner (m : ℕ) : Continuous (corner : GL (Fin m) k → GL (Fin (m + 1)) k) :=
   (continuous_leviEmb k _).comp ((continuous_leviTwo k).comp (continuous_id.prodMk continuous_const))
@@ -116,7 +114,7 @@ def thetaIrr {n : ℕ} (σ : IrrRep (GL (Fin n) k)) : IrrRep (GL (Fin n) k) :=
     isIrreducible_comp_surjective σ.irr _ fun g => ⟨_, theta_theta g⟩⟩
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun x => g⁻¹ * x) ⁻¹' {x | ρ x v = v}, (hs v).preimage (continuous_const.mul continuous_id), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ρ (g⁻¹ * x) v = v` using `hx`. Use `conv_rhs => rw [← h]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_orbit {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (hs : IsSmooth ρ) (v : V) :
@@ -128,7 +126,7 @@ theorem isLocallyConstant_orbit {G V : Type} [Group G] [TopologicalSpace G] [IsT
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `: (⇑(ψ⁻¹ : AddChar k Circle)) = fun x => ψ (-x)` using `funext (AddChar.inv_apply ψ)`. Rewrite using `[this]`. Conclude with `h.comp continuous_neg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inv_addChar {ψ : AddChar k Circle} (h : Continuous ψ) :
     Continuous (ψ⁻¹ : AddChar k Circle) := by
@@ -138,24 +136,24 @@ theorem continuous_inv_addChar {ψ : AddChar k Circle} (h : Continuous ψ) :
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.BlockTriangularLevi.DiscreteGroups.sglob.LConv.IsWhitTest.sub h h'`.
+A detailed English derivation is pending.
 -/
 theorem IsWhitTest.sub {m : ℕ} {ψ : AddChar k Circle} {f f' : GL (Fin m) k → ℂ} (h : IsWhitTest ψ f)
     (h' : IsWhitTest ψ f') : IsWhitTest ψ fun g => f g - f' g :=
   _root_.UpperTheory.Reformulated.B.P6.BlockTriangularLevi.DiscreteGroups.sglob.LConv.IsWhitTest.sub h h'
 
 /- English proof (translation)
-Establish `hs2 : IsSmooth (π.ρ.comp (theta k (m + 1)))` using `(thetaIrr π).smooth`. Establish `hl2` using `isFunctional_theta hl`. Establish `hJ : ∀ (a b : ℕ) (h : ∑ i, ![a, b] i = m + 1), 0 < a → 0 < b → ∀ x : π.V, x ∈ twKer π.ρ (unipRad k (stdBlocks ![a, b] h)) 1`. Introduce `a b h ha hb x`. Use `Submodule.Quotient.subsingleton_iff.1 (hcusp.2 2 ![a, b] (stdBlocks ![a, b] h) (GlobalTheory.T.unipRad_stdBlocks_two_ne_bot' k (m + 1) a b h ha hb))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.mem_top`. Establish `hJ2 : ∀ (a b : ℕ) (h : ∑ i, ![a, b] i = m + 1), 0 < a → 0 < b → ∀ x : π.V, x ∈ twKer (π.ρ.comp (theta k (m + 1))) (unipRad k (stdBlocks ![a, b] h)) 1`. Introduce `a b h ha hb x`. Establish `h' : ∑ i, ![b, a] i = m + 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at h ⊢`. Use linear arithmetic over natural numbers and integers. Use `(Submodule.span_le.2 ?_) (hJ b a h' hb ha x)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, y, rfl⟩`. Use `Submodule.subset_span ⟨⟨theta k (m + 1) n, ?_⟩, y, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[theta_apply]`. Conclude with `GlobalTheory.T.long_element_conj_unipotent_radical k (m + 1) b a h' h n n.2`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply]`. Rewrite using `[theta_theta]`. Establish `hψ'1 : (ψ⁻¹ : AddChar k Circle) ≠ 1` using `fun h => hψ1 (inv_eq_one.1 h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C2, hC2, hsupp2⟩` from `exists_compact_mod_unipB_whittaker k ψ⁻¹ (continuous_inv_addChar hψc) hψ'1 m π.V (π.ρ.comp (theta k (m + 1))) hs2 hJ2 l hl2 (π.ρ (longElt (m + 1) k) v)`. Establish `key : (fun g : GL (Fin m) k => l (π.ρ (tilde (corner g)) v)) = fun g => l ((π.ρ.comp (theta k (m + 1))) (corner g) (π.ρ (longElt (m + 1) k) v))`. Use function extensionality and compare the values at `g`. Rewrite using `[tilde_eq, map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Use `⟨fun u hu g => ?_, ?_, C2, hC2, hsupp2⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.T.glCornerEmbedding_upperUnitriangular_superDiagonalSum k m u hu beta_reduce`. Rewrite using `[corner_mul, map_mul, Module.End.mul_apply, hl2 _ h1, h2]`. Conclude with `((isLocallyConstant_orbit hs2 _).comp_continuous (continuous_corner m)).comp l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWhitTest_tilde {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) {m : ℕ}
     (π : IrrRep (GL (Fin (m + 1)) k)) (hcusp : IsCuspidal π.ρ) {l : Module.Dual ℂ π.V} (hl : IsFunctional ψ π.ρ l)
@@ -200,27 +198,25 @@ theorem isWhitTest_tilde {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : 
 end Local
 
 /- English proof (translation)
-Introduce `hGen hKir hBig hSep k _ _ _ _ _ ψ hψc hψ1 m hm π₁ π₂ hc₁ hc₂ H`. Establish `hn₁ : Nontrivial π₁.V` using `nontrivial_of_irreducible π₁.irr`. Establish `hn₂ : Nontrivial π₂.V` using `nontrivial_of_irreducible π₂.irr`. Take `⟨l₁, hl₁0, hl₁⟩` from `hGen k ψ hψc hψ1 _ _ π₁.ρ hn₁ hc₁`. Take `⟨l₂, hl₂0, hl₂⟩` from `hGen k ψ hψc hψ1 _ _ π₂.ρ hn₂ hc₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hBig k ψ m hm π₁ π₂ l₁ l₂ hl₁ hl₂ (fun v₁ v₂ hv => ?_) ?_` and prove the remaining obligations. Take `⟨I, hI, hS⟩` from `hSep k m`. Establish `hT` using `(isWhitTest_tilde hψc hψ1 π₁ hc₁ hl₁ v₁).sub (isWhitTest_tilde hψc hψ1 π₂ hc₂ hl₂ v₂)`. Establish `h0` using `hS ψ⁻¹ (continuous_inv_addChar hψc) _ hT fun σ l hl v => by`. Rewrite `hl` using `[inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he₁, he₂⟩` from `H (thetaIrr σ)`. Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar (thetaIrr σ).smooth (thetaIrr σ).irr`. Establish `hl' : IsFunctional ψ⁻¹ (thetaIrr σ).ρ l` using `isFunctional_theta hl`. Establish `e₁` using `he₁ ω hω l₁ l hl₁ hl' I hI v₁ (σ.ρ (theta k m (longElt m k))⁻¹ v)`. Establish `e₂` using `he₂ ω hω l₂ l hl₂ hl' I hI v₂ (σ.ρ (theta k m (longElt m k))⁻¹ v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ g : GL (Fin m) k, (thetaIrr σ).ρ (tilde g) (σ.ρ (theta k m (longElt m k))⁻¹ v) = σ.ρ g v` using `fun g => by show σ.ρ (theta k m (tilde g)) (σ.ρ (theta k m (longElt m k))⁻¹ v) = σ.ρ g v`. Rewrite using `[tilde_eq, map_mul, theta_theta, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_right]`. Simplify using `only [ht] at e₁ e₂`. Simplify using `only [hv] at e₁`. Establish `e₃` using `sub_eq_zero.2 (e₁.trans e₂.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e₃` using `[← map_sub]`. Rewrite using `[← e₃]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `sub_mul _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `congrFun h0 1`. Establish `hw : tilde (corner (1 : GL (Fin m) k)) = longElt (m + 1) k`. Rewrite using `[corner_one, tilde_eq, map_one, one_mul]`. Simplify using `only [hw, Pi.zero_apply] at h1`. Conclude with `sub_eq_zero.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a₁, ha₁⟩ : ∃ a, l₁ a = 1 := by`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 hl₁0`. Conclude with `⟨(l₁ a)⁻¹ • a, by rw [map_smul, smul_eq_mul, inv_mul_cancel₀ (by simpa using ha)]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a₂, ha₂⟩ : ∃ a, l₂ a = 1 := by`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 hl₂0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨(l₂ a)⁻¹ • a, by rw [map_smul, smul_eq_mul, inv_mul_cancel₀ (by simpa using ha)]⟩`. Apply the tactic sequence `let ρ : Representation ℂ (GL (Fin (m + 1)) k) (π₁.V × π₂.V) := { toFun := fun g => (π₁.ρ g).prodMap (π₂.ρ g) map_one' := by ext <;> simp map_mul' := fun g h => by ext <;> simp }`. Establish `hρ : ∀ g v, ρ g v = (π₁.ρ g v.1, π₂.ρ g v.2)` using `fun _ _ => rfl`. Establish `hs : IsSmooth ρ` using `fun v => by`. Establish `: {g | ρ g v = v} = {g | π₁.ρ g v.1 = v.1} ∩ {g | π₂.ρ g v.2 = v.2}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Simplify using `[hρ, Prod.ext_iff]`. Rewrite using `[this]`. Conclude with `(π₁.smooth _).inter (π₂.smooth _)`. Take `⟨v, hv⟩` from `hKir k ψ hψc hψ1 m _ ρ hs (a₁, a₂)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hA` using `(hv (l₁.comp (LinearMap.fst ℂ _ _)) fun u hu x => hl₁ u hu x.1).1`. Establish `hB` using `(hv (l₁.comp (LinearMap.fst ℂ _ _) - l₂.comp (LinearMap.snd ℂ _ _)) fun u hu x => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.fst_apply, LinearMap.snd_apply, hρ, hl₁ u hu, hl₂ u hu]`. Use the proof step `ring).2 (by simp [ha₁, ha₂])`. Use `⟨v.1, v.2, fun g => sub_eq_zero.1 (hB g), ?_⟩` and prove the remaining obligations.
-
-Establish `: l₁ v.1 = 1` using `hA.trans ha₁`. Rewrite using `[this]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue : Glue := by
   intro hGen hKir hBig hSep k _ _ _ _ _ ψ hψc hψ1 m hm π₁ π₂ hc₁ hc₂ H

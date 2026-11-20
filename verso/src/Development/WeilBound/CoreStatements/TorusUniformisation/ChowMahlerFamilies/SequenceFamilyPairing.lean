@@ -11,17 +11,17 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.SequenceFamilyPairing
 
 /- English proof (translation)
-Take `⟨L', _, _, ⟨M'⟩⟩` from `lieModel_exists X G B (Spec.map (CommRingCat.ofHom ψ) ≫ x)`. Take `⟨L'', _, _, ⟨M''⟩⟩` from `lieModel_exists X G T t`. Establish `hξ : ξ = Spec.map (CommRingCat.ofHom k) ≫ Spec.map (CommRingCat.ofHom ψ) ≫ x`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hk, hx]`. Take `⟨β, hβ, -, hsp, hext⟩` from `HTPull.lieBC ψ x _ rfl hsm M₀ M'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j', hj', hjs, -, -⟩` from `HTPull.lieBC k _ ξ hξ hsm M' M`. Take `⟨j₂, hj₂, -, -, -⟩` from `HTPull.lieBC s t _ ht hsm M'' M'`. Take `⟨u', hu'⟩` from `hext u₀`. Establish `hjj : ∀ l, j' (β l) = j₀ l` using `fun l => M.inj (Over.OverMorphism.ext (by`. Rewrite using `[hj', hβ, hj₀, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, HTPull.dualMap_comp, hk]))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : ∀ e' : L', u (j' e') = k (u' e')`. Introduce `e'`. Establish `he' : e' ∈ Submodule.span B (Set.range β)` using `by rw [hsp]; trivial`. Proceed by induction on `he' using Submodule.span_induction with`. Consider the case `mem _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨l, rfl⟩` from `h`. Rewrite using `[hjj, hu, hu', ← hk]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a b _ hb => simp [hjs, hb]`. Take `⟨l, rfl⟩` from `M''.onto v hv`. Establish `e1 : e = j' (j₂ l)` using `M.inj (Over.OverMorphism.ext (by`. Rewrite using `[he, hj', hj₂, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, HTPull.dualMap_comp, hs]))`. Rewrite using `[e1, hall]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_mem {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] (hsm : Smooth G.hom)
     {Ω R B T : Type} [Field Ω] [CommRing R] [CommRing B] [CommRing T]
@@ -64,17 +64,15 @@ theorem val_mem {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] (hsm :
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `haveI : z.asIdeal.IsPrime := PrimeSpectrum.isPrime z`. Use `letI alg : Algebra R ((Spec (CommRingCat.of R)).presheaf.stalk z) := StructureSheaf.stalkAlgebra R z`. Use `haveI loc : IsLocalization.AtPrime ((Spec (CommRingCat.of R)).presheaf.stalk z) z.asIdeal := StructureSheaf.IsLocalization.to_stalk R z`. Establish `hun : ∀ s : z.asIdeal.primeCompl, IsUnit (φ s)`. Introduce `s`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsUnit.mk0 _ fun h => s.2 ?_` and prove the remaining obligations. Establish `h0 : (s : R) = 0` using `hφ (h.trans (map_zero φ).symm)`. Rewrite using `[h0]`. Conclude with `z.asIdeal.zero_mem`. Set `lam : (Spec (CommRingCat.of R)).presheaf.stalk z →+* Ω` to `IsLocalization.lift (M := z.asIdeal.primeCompl) hun`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `lam' : (Spec (CommRingCat.of R)).presheaf.stalk z ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom lam`. Establish `hlam : ∀ r : R, lam (algebraMap R _ r) = φ r` using `fun r => IsLocalization.lift_eq hun r`. Establish `e0 : (Spec (CommRingCat.of R)).fromSpecStalk z = Spec.map (CommRingCat.ofHom (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk z)))` using `Spec.fromSpecStalk_eq' _ _`. Establish `e1 : Spec.map (CommRingCat.ofHom lam) ≫ (Spec (CommRingCat.of R)).fromSpecStalk z = spMap φ`. Rewrite using `[e0, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `RingHom.ext hlam`. Establish `e2 : Spec.map (x.stalkMap z ≫ lam') ≫ X.fromSpecStalk (x z) = ξ`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) e1).trans hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e3 : spMap (genMap ξ ⟨x z, hz⟩) ≫ X.fromSpecStalk (x z) = ξ` using `GlobalTheory.CompanionTheory.Ar.LieStalk.spMap_genMap_fromSpecStalk ⟨x z, hz⟩`. Establish `e4 : x.stalkMap z ≫ lam' = CommRingCat.ofHom (genMap ξ ⟨x z, hz⟩)` using `Spec.map_injective ((cancel_mono (X.fromSpecStalk (x z))).1 (e2.trans e3.symm))`. Establish `e5 : ∀ a, lam ((x.stalkMap z).hom a) = genMap ξ ⟨x z, hz⟩ a` using `fun a => ConcreteCategory.congr_hom e4 a`. Establish `e6 : Spec.map (CommRingCat.ofHom (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk z))) ≫ x = Spec.map (CommRingCat.ofHom (x.stalkMap z).hom) ≫ X.fromSpecStalk (x z)` using `(congrArg (· ≫ x) e0.symm).trans (Scheme.SpecMap_stalkMap_fromSpecStalk x).symm`. Take `⟨v, hv, hev⟩` from `((lieLat_carrier X G Ω ξ Li M ⟨x z, hz⟩).1 e).1 he`.
-
-Take `⟨b, hb⟩` from `val_mem hsm ξ x (X.fromSpecStalk (x z)) φ (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk z)) lam (x.stalkMap z).hom (genMap ξ ⟨x z, hz⟩) (RingHom.ext hlam) (RingHom.ext e5) hx e6 M₀ M j₀ hj₀ u₀ u hu e v hv hev`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj z.asIdeal.primeCompl b`. Use `⟨r, s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, ← hlam, ← hlam, ← map_mul, mul_comm]`. Conclude with `congrArg lam hrs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_frac {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] (hsm : Smooth G.hom)
     {Ω R : Type} [Field Ω] [CommRing R] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
@@ -126,11 +124,11 @@ theorem val_frac {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] (hsm 
   exact congrArg lam hrs
 
 /- English proof (translation)
-Set `I : Ideal R` to `{ carrier := {s | (s : Ω) * a ∈ R} add_mem' := fun {u v} hu hv => by show ((u + v : R) : Ω) * a ∈ R`. Rewrite using `[Subalgebra.coe_add, add_mul]`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by show ((0 : R) : Ω) * a ∈ R`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use the proof step `smul_mem' := fun c u hu => by show ((c • u : R) : Ω) * a ∈ R`. Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, _root_.mul_assoc]`. Conclude with `mul_mem c.2 hu }`. Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : R) ∈ I` using `hI ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ((1 : R) : Ω) * a ∈ R` using `h1`. Simplify using `using h2`. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨r, s, hs, e⟩` from `h ⟨P, hP.isPrime⟩`. Conclude with `absurd (hIP (show (s : Ω) * a ∈ R from e ▸ r.2)) hs`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_frac {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebra O Ω) (a : Ω)
     (h : ∀ z : PrimeSpectrum R, ∃ r s : R, s ∉ z.asIdeal ∧ (s : Ω) * a = r) : a ∈ R := by
@@ -158,9 +156,9 @@ theorem mem_of_frac {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Su
 end PositivityTheory.Xgn.SequenceFamilyPairing
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd _ p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ G c' hc' P u hu v hv`. Rewrite `hu` using `[P.isHT.1]`. Take `⟨u₀, rfl⟩` from `hu`. Use `PositivityTheory.Xgn.SequenceFamilyPairing.mem_of_frac _ _ fun z => ?_` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `PositivityTheory.Xgn.exists_function_at_point E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd p hpS A m hpm O G c' hc' P z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `PositivityTheory.Xgn.SequenceFamilyPairing.val_frac 𝔐.t.semi.smooth 𝔐.ξ (algebraMap (CR O y c') Ω) Subtype.val_injective P.x P.x_gen z (𝔐.all _) P.M 𝔐.M P.toLi P.toLi_pt u₀ (P.j u₀) (P.j_apply u₀) v (hv _ h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.sequence_family_pairing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (u : Module.Dual Ω 𝔐.Li), u ∈ P.Dh.om → ∀ v : 𝔐.Li, (∀ q : Cpt 𝔐.ξ, InChart 𝔐.ξ (mseg y) c' q → (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q) → v ∈ 𝔐.M.lat q) → u v ∈ CR O y c' := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd _ p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ G c' hc' P u

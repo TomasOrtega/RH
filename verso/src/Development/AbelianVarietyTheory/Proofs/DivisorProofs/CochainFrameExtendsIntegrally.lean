@@ -22,15 +22,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieCoo
 open GlobalTheory.TorusLieCoord Formalism.L2.Pj
 
 /- English proof (translation)
-Establish `hb : spMap (dualMap φ) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap S (DualNumber S)) ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Set `p : Over.mk (spMap (algebraMap S (DualNumber S)) ≫ spMap φ) ⟶ torus R r` to `Over.homMk (e.1.left ≫ SplitTorus.bcMap (spMap φ) (Fin r → ℤ)) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, SplitTorus.bcMap_hom, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `q : Over.mk (spMap (algebraMap S (DualNumber S)) ≫ spMap φ) ⟶ torus R r` to `Over.homMk (spMap (dualMap φ) ≫ e₀.1.left) (by`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `hb)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: p = q` using `SplitTorus.pull_ext fun χ => by`. Establish `h₁ : SplitTorus.pull p (Rosenlicht.chi _ χ) = valA e.1 χ`. Unfold `valA`. Rewrite using `[SplitTorus.charUnit_val, ← SplitTorus.bcMap_appTop_chi (spMap φ), ← Rosenlicht.appTop_comp_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h₂ : SplitTorus.pull q (Rosenlicht.chi _ χ) = dualMap φ (valA e₀.1 χ)`. Unfold `valA`. Rewrite using `[SplitTorus.charUnit_val]`. Conclude with `congrArg (fun g => g.hom (e₀.1.left.appTop.hom (Rosenlicht.chi _ χ))) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (dualMap φ)))`. Rewrite using `[h₁, h₂, val_eq_of_lieCoord, val_eq_of_lieCoord]`.
-
-Apply the tactic sequence `ext <;> simp [dualMap, h]`. Conclude with `congrArg (·.left) this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem left_comp_bcMap {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r : ℕ} (e₀ : LieG (torus R r))
     (e : LieG (torus S r)) (h : ∀ j, lieCoord e j = φ (lieCoord e₀ j)) :
@@ -61,11 +59,9 @@ theorem left_comp_bcMap {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) 
   exact congrArg (·.left) this
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ x) (Over.w v.1)`. Establish `h : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ v.1.left = (1 : specO R R ⟶ (Over.pullback x).obj t.G).left` using `congrArg (·.left) v.2`. Establish `e : (specO R R).hom ≫ x = x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (· ≫ x) (Spec.map_id (CommRingCat.of R))).trans (Category.id_comp x)`. Establish `key : ∀ (y : Sp R ⟶ X), (specO R R).hom ≫ x = y → (1 : specO R R ⟶ (Over.pullback x).obj t.G).left ≫ pullback.fst t.G.hom x = (1 : Over.mk y ⟶ t.G).left`. Introduce and unpack `_ rfl`. Conclude with `(grpPull_one (isGrpPullback_pullback t.G x) (specO R R)).symm`. Rewrite using `[← Category.assoc, h]`.
-
-Conclude with `key x e`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_of_lieG {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) (v : LieG ((Over.pullback x).obj t.G)) :
@@ -85,11 +81,11 @@ theorem isTan_of_lieG {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
     exact key x e
 
 /- English proof (translation)
-Introduce and unpack `hP E _ _ _ H X t K _ _ xO xK hx r ε ⟨u, hu, -, hε⟩ i`. Take `⟨e, he, hi⟩` from `hε i`. Set `ψ : ((Over.pullback xK).obj t.G).left ⟶ ((Over.pullback xO).obj t.G).left` to `pullback.lift (pullback.fst t.G.hom xK) (pullback.snd t.G.hom xK ≫ spMap (algebraMap (𝓞 K) K)) (by rw [Category.assoc, hx, pullback.condition])`. Establish `hψ₁ : ψ ≫ pullback.fst t.G.hom xO = pullback.fst t.G.hom xK` using `pullback.lift_fst _ _ _`. Establish `hψ : IsGrpPullback ((Over.pullback xK).obj t.G) ((Over.pullback xO).obj t.G) (spMap (algebraMap (𝓞 K) K)) ψ` using `(isGrpPullback_pullback t.G xO).cancel ((isGrpPullback_pullback t.G xK).congr hx.symm hψ₁.symm) (pullback.lift_snd _ _ _)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, ⟨hU, hU'⟩, -⟩` from `hP.fractionField_of_isGrpPullback (Diag.isSemiAbelian (Sp (𝓞 K)) (Fin r → ℤ)) (IsSemiAbelian.pullback xO t.G t.semi) (SplitTorus.isGrpPullback_bcMap _ _) hψ u`. Take `⟨e₀, he₀⟩` from `(lieCoord_bijective_add_smul (𝓞 K) r).1.2 (Pi.single i 1)`. Establish `hb` using `left_comp_bcMap (algebraMap (𝓞 K) K) e₀ e fun j => by`. Rewrite using `[he, he₀]`. Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨tanOf (isTan_of_lieG t xO (lieMap U e₀)), tan_ext ?_⟩` and prove the remaining obligations. Rewrite using `[left_bcTan, left_tanOf, hi, ← hψ₁, ← Category.assoc u.left, hU', Category.assoc, ← Category.assoc e.1.left, hb]`. Simplify using `[lieMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_bcTan_eq_of_isCochFrame : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (K : Type) [Field K] [NumberField K] (xO : Sp (𝓞 K) ⟶ X) (xK : Sp K ⟶ X) (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) (r : ℕ) (ε : Fin r → TanM xK t.G), IsCochFrame t xK ε → ∀ i, ∃ w : TanM xO t.G, bcTan (algebraMap (𝓞 K) K) hx w = ε i := by
   rintro hP E _ _ _ H X t K _ _ xO xK hx r ε ⟨u, hu, -, hε⟩ i

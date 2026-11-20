@@ -18,7 +18,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `hk`. Use `(φ.toLinearEquiv.toAddEquiv.map_finsum (fun q : GL ι F ⧸ K => e q.out • ρ q.out v)).trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.toLinearEquiv (e q.out • ρ q.out v) = e q.out • σ q.out (φ.toLinearEquiv v)`. Rewrite using `[map_smul, Representation.Equiv.toLinearEquiv_apply, Representation.Equiv.toLinearEquiv_apply, φ.toIntertwiningMap.isIntertwining]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL ι F) V} {σ : Representation ℂ (GL ι F) W} (φ : ρ.Equiv σ)
@@ -32,7 +32,7 @@ theorem hk_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [
     φ.toIntertwiningMap.isIntertwining]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ρ (h : GL ι F) v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v` using `hv h`. Rewrite using `[Representation.Equiv.toLinearEquiv_apply, ← φ.toIntertwiningMap.isIntertwining, ← Representation.Equiv.toLinearEquiv_apply, h1, map_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fixed_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL ι F) V} {σ : Representation ℂ (GL ι F) W} (φ : ρ.Equiv σ)
@@ -46,7 +46,7 @@ theorem fixed_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ n w K' k D _`. Use `⟨(Finset.univ.sup fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) + 1, fun j => ?_⟩` and prove the remaining obligations. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) (Finset.mem_univ j))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem choiceM : ChoiceM := by
   intro E _ _ _ n w K' k D _
@@ -55,13 +55,11 @@ theorem choiceM : ChoiceM := by
     (Finset.le_sup (f := fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) (Finset.mem_univ j))
 
 /- English proof (translation)
-Introduce `E _ _ _ n w K' hKo hKc P hP0 k D`. Establish `hs : ∀ j, IsSmooth (prodAt (D j) w)` using `fun j => GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hfl : ∀ j, GlobalTheory.SmGL.HasFiniteLength (prodAt (D j) w)` using `fun j => hP E n w (Fin (D j).c) (fun i => Fin ((D j).N i)) (GlobalTheory.SmGL.stdBlocks (D j).N (D j).h) (fun i => ((D j).σ i w).V) (fun i => ((D j).σ i w).ρ) (fun i => ((D j).σ i w).smooth) (fun i => ((D j).σ i w).irred)`. Use `choose J hJ W hW1 hW2 τ hτ hcov using fun j => hF E n w _ (prodAt (D j) w) (hs j) (hfl j)`. Set `_ : ∀ j, Fintype (J j)` to `hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : ∀ j i, AddCommGroup (W j i)` to `hW1`. Set `_ : ∀ j i, Module ℂ (W j i)` to `hW2`. Set `I : Type` to `Σ j : Fin k, {i : J j // IsEmpty ((τ j i).Equiv P.ρ)}`. Take `⟨e, hIk, v₀, hv₀, l, hl1, hl, hkill⟩` from `hI E n w K' hKo hKc P.V P.ρ P.smooth P.irred hP0 I (fun x => W x.1 x.2.1) (fun x => τ x.1 x.2.1) (fun x => (hτ x.1 x.2.1).1) (fun x => (hτ x.1 x.2.1).2.1) (fun x => x.2.2)`. Use `⟨e, hIk, ⟨v₀, hv₀, l, hl1, hl⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j τ' hsub hne v hv`. Take `⟨i, ⟨φ⟩⟩` from `hcov j τ'.V τ'.ρ τ'.irred hsub`. Establish `hi : IsEmpty ((τ j i).Equiv P.ρ)` using `⟨fun ψ => hne.false (φ.trans ψ)⟩`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Rewrite using `[hk_equiv, map_zero]`.
-
-Conclude with `hkill ⟨j, i, hi⟩ _ (fixed_equiv φ K' v hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem choiceS_of
     (hI : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),

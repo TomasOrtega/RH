@@ -12,7 +12,7 @@ section General
 variable {C : Type*} [Category C] [Preadditive C]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ih, Cochain.ofHom_add, Cochain.add_comp, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_comp_split {K L : CochainComplex C ℤ} {n : ℤ} {ι : Type} {Kj : ι → CochainComplex C ℤ}
     (i : ∀ j, Kj j ⟶ K) (p : ∀ j, K ⟶ Kj j) (α : Cochain K L n) (s : Finset ι) :
@@ -26,13 +26,13 @@ theorem sum_comp_split {K L : CochainComplex C ℤ} {n : ℤ} {ι : Type} {Kj : 
       ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp]
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Establish `h : ∀ j, ∃ β : Cochain (Kj j) L (n - 1), δ (n - 1) n β = (Cochain.ofHom (i j)).comp α.1 (zero_add n)`. Introduce `j`. Use `hx j` as an intermediate fact. Rewrite `this` using `[cpre_mk, CohomologyClass.mk_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm, β, hβ⟩` from `this`. Take `rfl : m = n - 1` from `by omega`. Conclude with `⟨β, by rw [hβ]; rfl⟩`. Use `choose β hβ using h`. Establish `hδ : ∀ s : Finset ι, δ (n - 1) n (∑ j ∈ s, (Cochain.ofHom (p j)).comp (β j) (zero_add _)) = ∑ j ∈ s, (Cochain.ofHom (p j)).comp ((Cochain.ofHom (i j)).comp α.1 (zero_add n)) (zero_add n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, δ_add, ih, δ_ofHom_comp, hβ]`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n - 1, by omega, ∑ j, (Cochain.ofHom (p j)).comp (β j) (zero_add _), ?_⟩` and prove the remaining obligations. Rewrite using `[hδ, sum_comp_split, hsum, Cochain.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_inj {K L : CochainComplex C ℤ} {ι : Type} [Fintype ι] {Kj : ι → CochainComplex C ℤ}
     (i : ∀ j, Kj j ⟶ K) (p : ∀ j, K ⟶ Kj j) (hsum : ∑ j, p j ≫ i j = 𝟙 K) (n : ℤ)
@@ -76,7 +76,7 @@ def gen (j : Fin m) : Sec ((free R).obj (yoneda.obj (Z j))) (∐ Z) :=
     (Pi.single (M := fun t => Sec ((free R).obj (yoneda.obj (Z j))) (Z t)) j (freeGen R _ (Z j) (𝟙 (Z j))))).choose
 
 /- English proof (translation)
-The claim follows from `congrFun ((LateralTheory.EWeil.Gys.LV.GluePf.shvSigma R ((free R).obj (yoneda.obj (Z j))) (Cofan.mk (∐ Z) (Sigma.ι Z)) (coproductIsCoproduct Z)).2 (Pi.single (M := fun t => Sec ((free R).obj (yoneda.obj (Z j))) (Z t)) j (freeGen R _ (Z j) (𝟙 (Z j))))).choose_spec t`.
+A detailed English derivation is pending.
 -/
 theorem gen_res (j t : Fin m) : Sec.res (Sigma.ι Z t) (gen R Z j) =
     Pi.single (M := fun t => Sec ((free R).obj (yoneda.obj (Z j))) (Z t)) j (freeGen R _ (Z j) (𝟙 (Z j))) t :=
@@ -94,11 +94,11 @@ theorem sec_comp {F F' F'' : Shv R} (φ : F ⟶ F') (ψ : F' ⟶ F'') {U : Schem
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
 /- English proof (translation)
-Apply `LateralTheory.E.L_sch_clsPfYon.yon_ext` to reduce the goal to its premises. Apply `(LateralTheory.EWeil.Gys.LV.GluePf.shvSigma R ((free R).obj (yoneda.obj (∐ Z))) (Cofan.mk (∐ Z) (Sigma.ι Z)) (coproductIsCoproduct Z)).1` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `Sec.res (Sigma.ι Z t) _ = Sec.res (Sigma.ι Z t) _`. Rewrite using `[LateralTheory.E.LeafKumSpecPf.sec_res_map, LateralTheory.E.LeafKumSpecPf.sec_res_map]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `erw [LateralTheory.E.LeafKumSpecPf.freeGen_res]`. Establish `hy : (ConcreteCategory.hom ((yoneda.obj (∐ Z)).map (Sigma.ι Z t).op)) (𝟙 (∐ Z)) = Sigma.ι Z t`. Both sides reduce to the same expression. Rewrite using `[hy, LateralTheory.EtaleFoundations.EvDeltaPf.sec_sum, Finset.sum_eq_single t]`. Rewrite using `[sec_comp, pr, LateralTheory.E.L_sch_clsPfYon.yon_res, gen_res, Pi.single_eq_same, LateralTheory.EtaleFoundations.EvDeltaPf.freeGen_map]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[sec_comp, pr, LateralTheory.E.L_sch_clsPfYon.yon_res, gen_res, Pi.single_eq_of_ne (Ne.symm hb)]`. Conclude with `map_zero _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_pr : ∑ j, pr R Z j ≫ (free R).map (yoneda.map (Sigma.ι Z j)) = 𝟙 _ := by
   classical
@@ -127,7 +127,7 @@ def prS (j : Fin m) : (W R).obj (sch.obj (∐ Z)) ⟶ (W R).obj (sch.obj (Z j)) 
     simp
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun a => ?_)` and prove the remaining obligations. Rewrite using `[NatTrans.app_sum]`. Conclude with `sum_pr R Z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prS : ∑ j, prS R Z j ≫ (W R).map (sch.map (Sigma.ι Z j)) = 𝟙 _ := by
   refine NatTrans.ext (funext fun a => ?_)
@@ -137,11 +137,11 @@ theorem sum_prS : ∑ j, prS R Z j ≫ (W R).map (sch.map (Sigma.ι Z j)) = 𝟙
 end Sheaves
 
 /- English proof (translation)
-Introduce `_ q n i m Z hZ`. Establish `: ∀ j, Finite (Ht q (sch.obj (Z j)) n i)` using `hZ`. Use `Finite.of_injective (AddMonoidHom.pi fun j => pull (ZMod q) (sch.map (Sigma.ι Z j)) (tw q i) n) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ j, (G (ZMod q)).map (prS (ZMod q) Z j) ≫ (chains (ZMod q)).map (sch.map (Sigma.ι Z j)) = 𝟙 _`. Establish `h1 : (G (ZMod q)).map (∑ j, prS (ZMod q) Z j ≫ (W (ZMod q)).map (sch.map (Sigma.ι Z j))) = 𝟙 _`. Rewrite using `[sum_prS, CategoryTheory.Functor.map_id]`. Rewrite `h1` using `[Functor.map_sum]`. Simplify using `only [Functor.map_comp] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Conclude with `cls_inj (fun j => (chains (ZMod q)).map (sch.map (Sigma.ι Z j))) (fun j => (G (ZMod q)).map (prS (ZMod q) Z j)) hsum n x (fun j => congrFun hx j)`.
+A detailed English derivation is pending.
 -/
 theorem LeafCoprod_of : LateralTheory.E.E4.LeafCoprod := by
   intro _ q n i m Z hZ

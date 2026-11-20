@@ -54,7 +54,7 @@ def DualLineIndex.Statement : Prop :=
         (1 : Submodule (𝓞 K') K').toAddSubgroup = 1
 
 /- English proof (translation)
-The claim follows from `dualBasisStandard`.
+A detailed English derivation is pending.
 -/
 example : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) := dualBasisStandard
 

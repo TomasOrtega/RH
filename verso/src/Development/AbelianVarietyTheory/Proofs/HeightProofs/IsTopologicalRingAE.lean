@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 theorem piW_apply (θ : InfFam D) (V W : HSp D) (x : WA V W) (τ : D.what₂.Tau) : piW θ V W x τ = wAt θ V W τ x := rfl
 
 /- English proof (translation)
-Unfold `symplC hC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symplC_add_left (V W : HSp D) (τ : D.what₂.Tau) (x x' y : WC V W) :
     symplC V W τ (x + x') y = symplC V W τ x y + symplC V W τ x' y := by
@@ -68,7 +68,7 @@ theorem symplC_add_left (V W : HSp D) (τ : D.what₂.Tau) (x x' y : WC V W) :
   split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]
 
 /- English proof (translation)
-Unfold `symplC hC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, mul_add, add_mul, map_add, Finset.sum_add_distrib, Complex.add_re]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symplC_add_right (V W : HSp D) (τ : D.what₂.Tau) (x y y' : WC V W) :
     symplC V W τ x (y + y') = symplC V W τ x y + symplC V W τ x y' := by
@@ -76,7 +76,7 @@ theorem symplC_add_right (V W : HSp D) (τ : D.what₂.Tau) (x y y' : WC V W) :
   split_ifs <;> simp only [Matrix.add_apply, mul_add, add_mul, map_add, Finset.sum_add_distrib, Complex.add_re]
 
 /- English proof (translation)
-Unfold `hC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum] <;>`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hC_smul_right (V W : HSp D) (τ : D.what₂.Tau) (c : ℂ) (x y : WC V W) :
     hC V W τ x (c • y) = c * hC V W τ x y := by
@@ -86,7 +86,7 @@ theorem hC_smul_right (V W : HSp D) (τ : D.what₂.Tau) (c : ℂ) (x y : WC V W
       Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Unfold `hC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul] <;>`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hC_smul_left (V W : HSp D) (τ : D.what₂.Tau) (c : ℂ) (x y : WC V W) :
     hC V W τ (c • x) y = starRingEnd ℂ c * hC V W τ x y := by
@@ -96,7 +96,7 @@ theorem hC_smul_left (V W : HSp D) (τ : D.what₂.Tau) (c : ℂ) (x y : WC V W)
       Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Unfold `symplC`. Rewrite using `[← Complex.coe_smul, hC_smul_right, mul_left_comm, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symplC_smul_left (V W : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : WC V W) :
     symplC V W τ (c • x) y = c * symplC V W τ x y := by
@@ -104,7 +104,7 @@ theorem symplC_smul_left (V W : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : WC 
   rw [← Complex.coe_smul, hC_smul_right, mul_left_comm, Complex.re_ofReal_mul]; ring
 
 /- English proof (translation)
-Unfold `symplC`. Rewrite using `[← Complex.coe_smul, hC_smul_left, Complex.conj_ofReal, mul_left_comm, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symplC_smul_right (V W : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : WC V W) :
     symplC V W τ x (c • y) = c * symplC V W τ x y := by
@@ -124,7 +124,7 @@ Both sides reduce to the same expression.
 theorem omR_apply (V W : HSp D) (x y : RW V W) : omR V W x y = ∑ τ, symplC V W τ (x τ) (y τ) := rfl
 
 /- English proof (translation)
-Unfold `jAt actC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jAt_add (V W : HSp D) (τ : D.what₂.Tau) (s s') (x y : WC V W) :
     jAt V W τ s s' (x + y) = jAt V W τ s s' x + jAt V W τ s s' y := by
@@ -132,7 +132,7 @@ theorem jAt_add (V W : HSp D) (τ : D.what₂.Tau) (s s') (x y : WC V W) :
   split_ifs <;> simp only [Matrix.mul_add, Matrix.add_mul, smul_add]
 
 /- English proof (translation)
-Unfold `jAt actC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.mul_smul, Matrix.smul_mul] <;> exact smul_comm _ _ _`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jAt_smul (V W : HSp D) (τ : D.what₂.Tau) (s s') (c : ℝ) (x : WC V W) :
     jAt V W τ s s' (c • x) = c • jAt V W τ s s' x := by
@@ -153,21 +153,21 @@ theorem jR_apply (V W : HSp D) (s : InvFam V) (s' : InvFam W) (x : RW V W) (τ :
 variable {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Conclude with `h.comp _ τ`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Chart.pi_iota (h : Chart θ σ) (V W : HSp D) (z : RW V W) : piW θ V W (iotaW σ V W z) = z := by
   funext τ i j; exact h.comp _ τ
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `h.fin _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Chart.real_iota (h : Chart θ σ) (V W : HSp D) (z : RW V W) : IsRealW V W (iotaW σ V W z) := by
   ext i j; exact h.fin _
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Use `h.ext _ ?_ fun τ => ?_` and prove the remaining obligations. Establish `h1 : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Establish `h2 : finPart D (y i j) = 0` using `congrFun (congrFun hy i) j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_sub, h1, h2, sub_zero]`. Establish `: θ τ (infPart D (x i j)) = θ τ (infPart D (y i j))` using `congrFun (congrFun (congrFun e τ) i) j`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, this, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Chart.real_ext (h : Chart θ σ) {V W : HSp D} {x y : WA V W} (hx : IsRealW V W x) (hy : IsRealW V W y)
     (e : piW θ V W x = piW θ V W y) : x = y := by
@@ -181,14 +181,14 @@ theorem Chart.real_ext (h : Chart θ σ) {V W : HSp D} {x y : WA V W} (hx : IsRe
     rw [RingHom.map_sub, RingHom.map_sub, this, sub_self]
 
 /- English proof (translation)
-The claim follows from `h.real_ext (h.real_iota V W _) hx (h.pi_iota V W _)`.
+A detailed English derivation is pending.
 -/
 theorem Chart.iota_pi (h : Chart θ σ) {V W : HSp D} {x : WA V W} (hx : IsRealW V W x) :
     iotaW σ V W (piW θ V W x) = x :=
   h.real_ext (h.real_iota V W _) hx (h.pi_iota V W _)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => h.cont.comp (continuous_pi fun τ => (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ)))`.
+A detailed English derivation is pending.
 -/
 theorem Chart.continuous_iota (h : Chart θ σ) (V W : HSp D) : Continuous (iotaW σ V W) :=
   continuous_pi fun i => continuous_pi fun j => h.cont.comp (continuous_pi fun τ =>
@@ -199,11 +199,11 @@ instance isModuleTopology_AE : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl�
 instance isTopologicalRing_AE : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis D.host.F D.host.E`. Set `B` to `Algebra.TensorProduct.basis (AF D.host.F) b`. Establish `he : (fun z : AE D => θ τ (infPart D z)) = fun z => ∑ i, θ τ (fstA D.host.F (B.coord i z) ⊗ₜ[D.host.F] (1 : D.host.E)) * tauE D τ (b i)`. Use function extensionality and compare the values at `z`. Use `conv_lhs => rw [← B.sum_repr z]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ∀ y, θ τ (infPart D y) = ((θ τ).comp (infPart D)).toAddMonoidHom y from fun _ => rfl, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show θ τ (infPart D _) = _`. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← (hθ τ).1, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Use `continuous_finset_sum _ fun i _ => Continuous.mul ?_ continuous_const` and prove the remaining obligations. Establish `h1 : Continuous (B.coord i)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2 : Continuous (fstA D.host.F)` using `continuous_fst`. Conclude with `(hθ τ).2.comp (h2.comp h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_comp (hθ : IsInfFam θ) (τ : D.what₂.Tau) : Continuous fun z : AE D => θ τ (infPart D z) := by
   let b := Module.finBasis D.host.F D.host.E
@@ -225,29 +225,27 @@ theorem continuous_comp (hθ : IsInfFam θ) (τ : D.what₂.Tau) : Continuous fu
   exact (hθ τ).2.comp (h2.comp h1)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => (continuous_comp hθ τ).comp ((continuous_apply j).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pi' (hθ : IsInfFam θ) (V W : HSp D) : Continuous (piW θ V W) :=
   continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j =>
     (continuous_comp hθ τ).comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tauE_star (τ : D.what₂.Tau) (x : D.host.E) : tauE D τ (star x) = starRingEnd ℂ (tauE D τ x) := by
   have := D.host.isCMField_hostE
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ x
 
 /- English proof (translation)
-The claim follows from `(hθ τ).1 e`.
+A detailed English derivation is pending.
 -/
 theorem comp_incA (hθ : IsInfFam θ) (τ : D.what₂.Tau) (e : D.host.E) : θ τ (infPart D (incA D e)) = tauE D τ e :=
   (hθ τ).1 e
 
 /- English proof (translation)
-Establish `h` using `hθ τ`. Use `DenseRange.induction_on (NumberField.InfiniteAdeleRing.denseRange_algebraMap D.host.F) a (isClosed_eq (Complex.continuous_conj.comp h.2) h.2) fun f => ?_` and prove the remaining obligations. Establish `e : (algebraMap D.host.F (Ainf D.host.F) f) ⊗ₜ[D.host.F] (1 : D.host.E) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E f)`. Conclude with `(Algebra.TensorProduct.includeLeft (R := D.host.F) (S := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f |>.trans ((Algebra.TensorProduct.includeRight (R := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f).symm`. Use `erw [e, h.1, ← tauE_star]`.
-
-Rewrite using `[(D.sp.cm.fixed _).2 ⟨f, rfl⟩]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_tmul_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) (a : Ainf D.host.F) :
     starRingEnd ℂ (θ τ (a ⊗ₜ[D.host.F] (1 : D.host.E))) = θ τ (a ⊗ₜ[D.host.F] (1 : D.host.E)) := by
@@ -262,9 +260,9 @@ theorem conj_tmul_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) (a : Ainf D.host.
   rw [(D.sp.cm.fixed _).2 ⟨f, rfl⟩]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`. Consider the case `tmul a x`. Establish `e : ∀ y : D.host.E, fstA D.host.F a ⊗ₜ[D.host.F] y = (fstA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `y`. Simplify using the standard rewrite rules. Establish `e2 : infPart D (cA D (a ⊗ₜ[D.host.F] x)) = fstA D.host.F a ⊗ₜ[D.host.F] (star x)` using `rfl`. Establish `e3 : infPart D (a ⊗ₜ[D.host.F] x) = fstA D.host.F a ⊗ₜ[D.host.F] x` using `rfl`. Rewrite using `[e2, e3, e (star x), e x, map_mul, map_mul, map_mul, conj_tmul_one hθ, (hθ τ).1, (hθ τ).1, tauE_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_cA (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : AE D) :
     θ τ (infPart D (cA D z)) = starRingEnd ℂ (θ τ (infPart D z)) := by

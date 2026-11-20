@@ -15,21 +15,17 @@ def ohatL (L : Submodule (𝓞 E) (Fin n → E)) : AddSubgroup (Fin n → E ⊗[
   AddSubgroup.closure {y | ∃ c ∈ Ohat F, ∃ l ∈ L, y = ((1 : E) ⊗ₜ[F] c) • fun i => Formalism.UG.inclE (F := F) Af (l i)}
 
 /- English proof (translation)
-Set `T : Subring (E ⊗[F] Af)` to `{ carrier := {a | ∀ y ∈ ohatL (F := F) L, a • y ∈ ohatL (F := F) L} mul_mem' := fun {a c} ha hc y hy => by rw [mul_smul]; exact ha _ (hc y hy) one_mem' := fun y hy => by rw [one_smul]; exact hy add_mem' := fun {a c} ha hc y hy => by rw [add_smul]; exact add_mem (ha y hy) (hc y hy …`. Establish `hle : IntAf F E ≤ T`. Apply `Subring.closure_le.mpr` to reduce the goal to its premises. Introduce and unpack `a (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨c', hc'⟩, rfl⟩)`. Take `⟨o, rfl⟩` from `hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `fun y hy => ?_` and prove the remaining obligations. Unfold `ohatL at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, l, hl, rfl⟩` from `hz`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨c, hc, o • l, L.smul_mem o hl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (algebraMap (𝓞 E) E o ⊗ₜ[F] (1 : Af)) * (((1 : E) ⊗ₜ[F] c) * ((l i) ⊗ₜ[F] (1 : Af))) = ((1 : E) ⊗ₜ[F] c) * (((o • l) i) ⊗ₜ[F] (1 : Af))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Pi.smul_apply, Algebra.smul_def]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_mul, mul_one]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw => rw [smul_add]`. Conclude with `add_mem hu hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Consider the case `neg u _ hu => rw [smul_neg]`. Conclude with `neg_mem hu`. Use `fun y hy => ?_` and prove the remaining obligations. Unfold `ohatL at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem z hz`. Take `⟨c, hc, l, hl, rfl⟩` from `hz`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨c' * c, ohat_mul hc' hc, l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
-
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw => rw [smul_add]`. Conclude with `add_mem hu hw`. Consider the case `neg u _ hu => rw [smul_neg]`.
-
-Conclude with `neg_mem hu`. Conclude with `hle ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_ohatL (L : Submodule (𝓞 E) (Fin n → E)) {a : E ⊗[F] Af} (ha : a ∈ IntAf F E) :
     ∀ y ∈ ohatL (F := F) L, a • y ∈ ohatL (F := F) L := by
@@ -74,9 +70,9 @@ theorem smul_ohatL (L : Submodule (𝓞 E) (Fin n → E)) {a : E ⊗[F] Af} (ha 
   exact hle ha
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, ohat_one, (l : Fin n → E), l.2, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Algebra.TensorProduct.one_def, one_smul]`. Consider the case `zero => exact zero_mem _`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`. Consider the case `smul a x _ hx => exact smul_ohatL L a.2 x hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lamAf_le_ohatL (L : Submodule (𝓞 E) (Fin n → E)) {y : Fin n → E ⊗[F] Af}
     (hy : y ∈ lamAf (F := F) L) : y ∈ ohatL (F := F) L := by
@@ -93,7 +89,7 @@ theorem lamAf_le_ohatL (L : Submodule (𝓞 E) (Fin n → E)) {y : Fin n → E �
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `k`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `ohat_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intC_zero {b : Module.Basis ι F E} : IntC b (0 : E ⊗[F] Af) := by
   intro k
@@ -101,7 +97,7 @@ theorem intC_zero {b : Module.Basis ι F E} : IntC b (0 : E ⊗[F] Af) := by
   exact ohat_zero
 
 /- English proof (translation)
-Introduce `k`. Simplify using `only [map_neg, Pi.neg_apply]`. Conclude with `ohat_neg (hx k)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intC_neg {b : Module.Basis ι F E} {x : E ⊗[F] Af} (hx : IntC b x) : IntC b (-x) := by
   intro k
@@ -109,25 +105,21 @@ theorem intC_neg {b : Module.Basis ι F E} {x : E ⊗[F] Af} (hx : IntC b x) : I
   exact ohat_neg (hx k)
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `(hfg.restrictScalars (R := ℤ))`. Take `⟨D, hD, hDint⟩` from `exists_den_fin (fun x : T × Fin n × ι => b.repr ((x.1 : Fin n → E) x.2.1) x.2.2)`. Establish `hQ : ∀ l ∈ L, ∀ j k, IntF ((D : F) * b.repr (l j) k)`. Introduce `l hl`. Establish `hl' : l ∈ Submodule.span ℤ (T : Set (Fin n → E))` using `by rw [hT]; exact hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear hl`. Proceed by induction on `hl' using Submodule.span_induction with`. Consider the case `mem x hx => intro j k`. Conclude with `hDint ⟨⟨x, hx⟩, j, k⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `j k`. Unfold `IntF`. Simplify using `only [Pi.zero_apply, map_zero, Finsupp.coe_zero, mul_zero]`. Conclude with `ohat_zero`. Consider the case `add x z _ _ hx hz`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j k`. Establish `h1` using `hx j k`. Establish `h2` using `hz j k`. Unfold `IntF at h1 h2 ⊢`. Rewrite using `[Pi.add_apply, map_add, Finsupp.add_apply, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ohat_add h1 h2`. Consider the case `smul a x _ hx`. Introduce `j k`. Establish `h1` using `hx j k`. Unfold `IntF at h1 ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Pi.smul_apply, map_zsmul, Finsupp.smul_apply, mul_smul_comm, map_zsmul]`. Conclude with `ohat_zsmul h1 a`. Use `⟨D, hD, fun y hy j => ?_⟩` and prove the remaining obligations. Establish `hy'` using `lamAf_le_ohatL L hy`. Use `clear hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `ohatL at hy'`. Proceed by induction on `hy' using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, l, hl, rfl⟩` from `hz`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul, Pi.smul_apply]`. Establish `ew : ((((1 : E) ⊗ₜ[F] c) • fun i => Formalism.UG.inclE (F` using `F) Af (l i)) j) = (l j) ⊗ₜ[F] c := by`. Simplify using `[Formalism.UG.inclE, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[ew]`. Simplify using `only [coord, TensorProduct.lift.tmul, LinearMap.mk₂_apply]`.
-
-Rewrite using `[← Nat.cast_smul_eq_nsmul F, smul_smul, Algebra.smul_def]`. Conclude with `ohat_mul (hQ l hl j k) hc`. Consider the case `zero => rw [Pi.zero_apply, smul_zero]`. Conclude with `intC_zero`. Consider the case `add u w _ _ hu hw => rw [Pi.add_apply, smul_add]`.
-
-Conclude with `intC_add hu hw`. Consider the case `neg u _ hu => rw [Pi.neg_apply, smul_neg]`. Conclude with `intC_neg hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_upper (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
     ∃ D : ℕ, 0 < D ∧ ∀ y ∈ lamAf (F := F) L, ∀ j, IntC b (D • y j) := by

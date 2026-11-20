@@ -22,7 +22,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Unfold `GL2LocalData.WcS GL2LocalData.piS`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem wcS_eq_integral (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (Φ : F × F → ℂ) (h : GL (Fin 2) F) :
     GL2LocalData.WcS χ c₁ c₂ Φ h = ∫ u : Fˣ, GL2LocalData.piS χ c₁ h Φ ((u : F), ((u⁻¹ : Fˣ) : F)) * ((c₁ u : ℂˣ) : ℂ) *
@@ -33,13 +33,13 @@ theorem wcS_eq_integral (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (Φ
   simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[wcS_eq_integral, ← integral_mul_left_eq_self _ ξ₂⁻¹, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `e1` using `GlobalTheory.T.split_weil_action_diagonal F χ hχ hχ1 c₁ Φ hl hc (ξ₁ * ξ₂) g (((ξ₂⁻¹ * x : Fˣ) : F), (((ξ₂⁻¹ * x)⁻¹ : Fˣ) : F))`. Establish `e2` using `GlobalTheory.T.split_weil_action_torus_equivariant F χ hχ hχ1 c₁ g Φ x ((ξ₁ : F), (ξ₂ : F))`. Establish `hpt : (((ξ₁ * ξ₂ : Fˣ) : F) * ((ξ₂⁻¹ * x : Fˣ) : F), (((ξ₂⁻¹ * x)⁻¹ : Fˣ) : F)) = ((ξ₁ : F), (ξ₂ : F)) * ((x : F), ((x⁻¹ : Fˣ) : F))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (ξ₂ : F) ≠ 0` using `ξ₂.ne_zero`. Establish `hx : (x : F) ≠ 0` using `x.ne_zero`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Prod.fst_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Prod.snd_mul, mul_inv, inv_inv]`. Use `beta_reduce`. Rewrite using `[e1, hpt, e2]`. Establish `n1 : ((c₁ ξ₂ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `n2 : ((c₂ ξ₂ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : ((c₂ x : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [map_mul, map_inv, mul_inv, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem wcS_diag [CharZero F] (χ : AddChar F Circle) (hχ : Continuous χ) (hχ1 : χ ≠ 1) (c₁ c₂ : Fˣ →* ℂˣ)
     (Φ : F × F → ℂ) (hl : IsLocallyConstant Φ) (hc : HasCompactSupport Φ) (g : GL (Fin 2) F) (ξ₁ ξ₂ : Fˣ) :
@@ -71,15 +71,15 @@ theorem wcS_diag [CharZero F] (χ : AddChar F Circle) (hχ : Continuous χ) (hχ
 end Local
 
 /- English proof (translation)
-Introduce `K _ _ h2 c v L hok hsp g κ`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.RankinQ.isStd_local v`. Establish `hψ` using `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.continuous_charInv (GP.psiF v) hstd.1`. Establish `hψ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.2 hstd.2.1`. Consider the cases of `L with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `ns w σ η Φ => exact hsp.elim`. Consider the case `@sp w₁ w₂ h₁ h₂ Φ`. Take `⟨hne, hl, hc⟩` from `hok`. Take `⟨d1, d2, dn⟩` from `GlobalTheory.T.split_place_embedding_properties K h2 v w₁ w₂ hne`. Establish `hnv : ((nv v κ : (Qv v)ˣ) : Qv v) = dg1 v w₁ (κ : K) * dg1 v w₂ (κ : K)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[dn]`. Simplify `GlobalTheory.T.local_component_rational_idele v (Units.map (Algebra.norm ℚ : K →* ℚ) κ)` using `[nv]`. Establish `hn0 : dg1 v w₁ (κ : K) * dg1 v w₂ (κ : K) ≠ 0` using `hnv ▸ (nv v κ).ne_zero`. Set `ξ₁ : (Qv v)ˣ` to `Units.mk0 _ (left_ne_zero_of_mul hn0)`. Set `ξ₂ : (Qv v)ˣ` to `Units.mk0 _ (right_ne_zero_of_mul hn0)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ha : nv v κ = ξ₁ * ξ₂` using `Units.ext (by simpa [ξ₁, ξ₂] using hnv)`. Establish `k1 : cAt c v w₁ ξ₁ = localChar c w₁ (atW w₁ κ)`. Use `congrArg (localChar c w₁) (Units.ext ?_)` and prove the remaining obligations. Simplify `d1 (κ : K)` using `[ξ₁, atW]`. Establish `k2 : cAt c v w₂ ξ₂ = localChar c w₂ (atW w₂ κ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (localChar c w₂) (Units.ext ?_)` and prove the remaining obligations. Simplify `d2 (κ : K)` using `[ξ₂, atW]`. Use `show GL2LocalData.WcS (GP.psiF v)⁻¹ (cAt c v w₁) (cAt c v w₂) Φ (dg2 (nv v κ) 1 * g) = (cK c w₁ κ * cK c w₂ κ) * mp (nv v κ) (1 / 2) * ∫ x, fL (LM.sp w₁ w₂ Φ) g (κ : K) x ∂multHaar (Qv v)`. Rewrite using `[ha, wcS_diag _ hψ hψ1 _ _ Φ hl hc g ξ₁ ξ₂, k1, k2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem split_alt : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
     L.ok → L.IsSp → ∀ (g : GL (Fin 2) (Qv v)) (κ : Kˣ),

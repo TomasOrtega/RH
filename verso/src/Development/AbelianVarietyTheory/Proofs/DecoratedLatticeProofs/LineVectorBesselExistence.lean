@@ -29,14 +29,14 @@ namespace GlobalTheory.Fam.RatDec
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_mulVec {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) (G : Matrix (Fin m) (Fin m) D.host.E)
     (v : Fin n → D.host.E) : star (A *ᵥ v) ⬝ᵥ G *ᵥ (A *ᵥ v) = star v ⬝ᵥ (Aᴴ * G * A) *ᵥ v := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_mul_mul {S S' : HSp D} {a b : ℕ} (P : Matrix (Fin S'.rank) (Fin S.rank) D.host.E)
     (A : Matrix (Fin S.rank) (Fin a) D.host.E) (B : Matrix (Fin S.rank) (Fin b) D.host.E) :
@@ -57,11 +57,11 @@ def pullDec {S S' S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (P : Matrix (F
   rank_add := d.rank_add.trans hr
 
 /- English proof (translation)
-Use `⟨Matrix.of fun k j => W₂.frame.equivFun (φ (W₁.frame j)) k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `GlobalTheory.LandherrSignature.form_eq W₂.hT W₂.frame (W₂.frame.equivFun (φ (W₁.frame i))) (W₂.frame.equivFun (φ (W₁.frame j)))`. Simplify using `only [LinearEquiv.symm_apply_apply] at h`. Rewrite `h` using `[hφ]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG : (Matrix.of fun a b => W₂.hT (W₂.frame a) (W₂.frame b)) = W₂.gram` using `rfl`. Rewrite `h` using `[hG]`. Rewrite using `[show W₁.gram i j = W₁.hT (W₁.frame i) (W₁.frame j) from rfl, h]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, mulVec, Matrix.of_apply, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Repeatedly rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Apply the tactic sequence `first | exact Finset.sum_comm | (congr 1; exact Finset.sum_comm)`.
+A detailed English derivation is pending.
 -/
 theorem mat_of_isom (W₁ W₂ : HSp D) (φ : W₁.V ≃ₗ[D.host.E] W₂.V) (hφ : ∀ x y, W₂.hT (φ x) (φ y) = W₁.hT x y) :
     ∃ P : Matrix (Fin W₂.rank) (Fin W₁.rank) D.host.E, Pᴴ * W₂.gram * P = W₁.gram := by
@@ -80,9 +80,7 @@ theorem mat_of_isom (W₁ W₂ : HSp D) (φ : W₁.V ≃ₗ[D.host.E] W₂.V) (h
   first | exact Finset.sum_comm | (congr 1; exact Finset.sum_comm)
 
 /- English proof (translation)
-Establish `hmin : min j D.R.m = j` using `min_eq_left hj`. Use `⟨D.sp.Y_sig _, ?_, fun τ => ?_⟩` and prove the remaining obligations. Use `show (D.sp.Y (min j D.R.m)).rank = _`. Rewrite using `[hmin]`. Conclude with `D.sp.Y_rank j hj`.
-
-Use `show (D.sp.Y (min j D.R.m)).sig τ = _`. Rewrite using `[hmin]`. Conclude with `D.Y_sigval j hj τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yc_facts (j : ℕ) (hj : j ≤ D.R.m) :
     (Yc D j).SigOK ∧ (Yc D j).rank = D.R.rankY j ∧ ∀ τ, (Yc D j).sig τ = sigYD D.R j := by
@@ -94,7 +92,7 @@ theorem yc_facts (j : ℕ) (hj : j ≤ D.R.m) :
     rw [hmin]; exact D.Y_sigval j hj τ
 
 /- English proof (translation)
-Take `⟨hYs, hYr, hYsig⟩` from `yc_facts (D := D) j hj`. Take `⟨φ, hφ⟩` from `GlobalTheory.LandherrSignature.exists_isometry_host D V (Yc D j) hs hYs (hr.trans hYr.symm) (fun τ => (hsig τ).trans (hYsig τ).symm)`. Take `⟨P, hP⟩` from `mat_of_isom V (Yc D j) φ hφ`. Conclude with `⟨⟨b.V₀, b.L, pullDec b.d P hP (hr.trans hYr.symm), b.o, b.ζ, b.line, b.cpt, ((GlobalTheory.Unf.VolExist.measures_exist D).2.1 _ _ _ _).some⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bes_to_Yc (j ρ : ℕ) (hj : j ≤ D.R.m) {V : HSp D} (b : BesAt V (D.sp.X j) ρ) (hr : V.rank = D.R.rankY j)
     (hs : V.SigOK) (hsig : ∀ τ, V.sig τ = sigYD D.R j) :
@@ -107,7 +105,7 @@ theorem bes_to_Yc (j ρ : ℕ) (hj : j ≤ D.R.m) {V : HSp D} (b : BesAt V (D.sp
     ((GlobalTheory.Unf.VolExist.measures_exist D).2.1 _ _ _ _).some⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨hYs, hYr, hYsig⟩` from `yc_facts (D := D) j hj`. Take `⟨φ, hφ⟩` from `GlobalTheory.LandherrSignature.exists_isometry_host D V (Yc D j) hs hYs (hr.trans hYr.symm) (fun τ => (hsig τ).trans (hYsig τ).symm)`. Take `⟨P, hP⟩` from `mat_of_isom V (Yc D j) φ hφ`. Conclude with `⟨⟨pullDec b.d P hP (hr.trans hYr.symm), b.cpt, ((GlobalTheory.Unf.VolExist.measures_exist D).2.1 _ _ _ _).some⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jac_to_Yc (j ρ : ℕ) (hj : j ≤ D.R.m) {V : HSp D} (b : JacAt V (D.sp.X j) ρ) (hr : V.rank = D.R.rankY j)
     (hs : V.SigOK) (hsig : ∀ τ, V.sig τ = sigYD D.R j) : Nonempty (JacAt (Yc D j) (D.sp.X j) ρ) := by
@@ -135,7 +133,7 @@ theorem besF_zero (b0 : BesAt (D.sp.Y 0) (D.sp.X 0) D.R.rS)
     besF b0 b' 0 D.R.rS h0 = b0 := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, ρ, h => by obtain rfl : D.R.rS = ρ := by show D.R.m / 2 - 1 = ρ; omega rw [besF_zero b0 b' h, Nat.zero_div, pow_zero, mul_one] exact h0 | j + 1, ρ, h => h' (j + 1) ρ h`.
+A detailed English derivation is pending.
 -/
 theorem besF_norm (b0 : BesAt (D.sp.Y 0) (D.sp.X 0) D.R.rS)
     (b' : ∀ j ρ, j + 2 * ρ + 2 = D.R.m → BesAt (Yc D j) (D.sp.X j) ρ) (c N : D.host.E)
@@ -149,7 +147,7 @@ theorem besF_norm (b0 : BesAt (D.sp.Y 0) (D.sp.X 0) D.R.rS)
   | j + 1, ρ, h => h' (j + 1) ρ h
 
 /- English proof (translation)
-Establish `hw : B.d.i₀ *ᵥ (B.o.iB *ᵥ B.ζ) = GlobalTheory.Core.SBesEx.cY X h (X.zu u)` using `funext hz`. Rewrite using `[← B.o.isoB, ← quad_mulVec, ← B.d.iso, ← quad_mulVec, hw, GlobalTheory.Core.SBesEx.cY_isom D X h hE, X.zu_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sbes_norm {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {u : D.what₂.Word}
     {ψ : AddChar (AF D.host.F) ℂ} (B : GlobalTheory.Core.Mi.SBes X h u ψ (D.sp.X 0)) (hE : GlobalTheory.Core.Mi.IdE X)
@@ -159,13 +157,13 @@ theorem sbes_norm {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = F
   rw [← B.o.isoB, ← quad_mulVec, ← B.d.iso, ← quad_mulVec, hw, GlobalTheory.Core.SBesEx.cY_isom D X h hE, X.zu_norm]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hp` using the available equality. Simplify using `only [dotProduct, mulVec, Fin.sum_univ_one, Pi.star_apply] at h₀ hrel`. Establish `hz : ζ₀ 0 ≠ 0` using `fun h => h₀ (by rw [h]; simp)`. Establish `hz' : star (ζ₀ 0) ≠ 0` using `star_ne_zero.2 hz`.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Fin.sum_univ_one, Matrix.smul_apply, smul_eq_mul, star_div₀, star_mul', star_inv₀]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | linear_combination hrel | (rw [div_eq_iff (mul_ne_zero hz' hz)]; linear_combination hrel)`. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [mulVec, dotProduct, Matrix.of_apply, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem tau_line {n p : ℕ} (hn : n = 1) (hp : p = 1) (G : Matrix (Fin n) (Fin n) D.host.E)
     (G₀ : Matrix (Fin p) (Fin p) D.host.E) (ζ : Fin n → D.host.E) (ζ₀ : Fin p → D.host.E) (lam c : D.host.E)
@@ -193,27 +191,27 @@ theorem tau_line {n p : ℕ} (hn : n = 1) (hp : p = 1) (G : Matrix (Fin n) (Fin 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP a hLz hT0`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hN : D.host.xi0 * star D.host.xi0 ≠ 0` using `mul_ne_zero hxi (star_ne_zero.2 hxi)`. Take `⟨lam0, hlam0, hB⟩` from `GlobalTheory.Core.Mi.exists_sBes_scaled_dual D W.S.X W.Q.instEq u W.Q.Rl.ψ _ (W.S.tr u) hP.bot.idE W.Q.stdChar`. Take `⟨B, hA, hvA, hz, he, he'⟩` from `hB 1 (a.x 0).vol one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz1 : ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = W.S.X.ιE (W.S.X.zR u (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) k))` using `fun k => by rw [hz k, one_mul]`. Establish `hB0` using `sbes_norm B hP.bot.idE hz1`. Establish `hI` using `GlobalTheory.T.exists_thetaLiftSpaces_positiveIndex_with_lineNorms D u (fun j hj => D.X_posDef j hj)`. Establish `hbes : ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), ∃ b : BesAt (Yc D j) (D.sp.X j) ρ, star b.ζ ⬝ᵥ b.L.gram *ᵥ b.ζ * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -(((D.mem u).A.T : ℕ) : D.host.E)`. Introduce `j ρ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, b, hr, hs, hsig, hn⟩` from `hI.1 j ρ h`. Take `⟨b2, hb2⟩` from `bes_to_Yc j ρ (by omega) b hr hs hsig`. Conclude with `⟨b2, by rw [hb2]; exact hn⟩`. Use `choose b' hb' using hbes`. Establish `hjac : ∀ j ρ, j + 2 * ρ + 2 = D.R.m → Nonempty (JacAt (Yc D (j + 1)) (D.sp.X (j + 1)) ρ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j ρ h`. Take `⟨V, b, hr, hs, hsig⟩` from `hI.2 j ρ h`. Conclude with `jac_to_Yc (j + 1) ρ (by omega) b hr hs hsig`. Take `⟨bes, hbes_def⟩ : ∃ f, f = besF (besOf B) b'` from `⟨_, rfl⟩`. Establish `h0 : 0 + 2 * D.R.rS + 2 = D.R.m` using `by show 0 + 2 * (D.R.m / 2 - 1) + 2 = D.R.m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hbes0 : bes 0 D.R.rS h0 = besOf B` using `by rw [hbes_def]; rfl`. Establish `hnorm : ∀ j ρ h, star (bes j ρ h).ζ ⬝ᵥ (bes j ρ h).L.gram *ᵥ (bes j ρ h).ζ * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -(((D.mem u).A.T : ℕ) : D.host.E)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hbes_def]`. Conclude with `besF_norm (besOf B) b' _ _ hB0 hb'`. Establish `hlnk : ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), Nonempty (Link ((bes j (σ + 1) h).lev (a.x j).vol) (bes (j + 1 + 1) σ (idx_step h)).L (bes (j + 1 + 1) σ (idx_step h)).ζ)`. Introduce `j σ h`. Establish `hn1` using `hnorm j (σ + 1) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn2` using `hnorm (j + 1 + 1) σ (idx_step h)`. Establish `e : (j + 1 + 1) / 2 = j / 2 + 1` using `by omega`. Rewrite `hn2` using `[e, pow_succ]`. Establish `hrel : star (bes j (σ + 1) h).ζ ⬝ᵥ (bes j (σ + 1) h).L.gram *ᵥ (bes j (σ + 1) h).ζ = D.host.xi0 * star D.host.xi0 * (star (bes (j + 1 + 1) σ (idx_step h)).ζ ⬝ᵥ (bes (j + 1 + 1) σ (idx_step h)).L.gram *ᵥ (bes (j + 1 + 1) σ (idx_step h)).ζ)`. Apply `mul_right_cancel₀ (pow_ne_zero (j / 2) hN)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hn1]`. Take the linear combination `-hn2`. Establish `hl` using `(GlobalTheory.Unf.LinkExist.link_of_norm D (σ + 1) ((bes j (σ + 1) h).lev (a.x j).vol) (bes (j + 1 + 1) σ (idx_step h)).L (bes (j + 1 + 1) σ (idx_step h)).ζ D.host.xi0 (bes (j + 1 + 1) σ (idx_step h)).line hrel).2`. Rewrite `hl` using `[div_self hxi, one_smul]`. Then use the resulting hypothesis. Establish `hvol` using `GlobalTheory.Unf.VolExist.measures_exist D`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrelT : ∀ j (h : j + 2 * 0 + 2 = D.R.m), star (-D.host.xi0 ^ (D.R.m / 2)) * (-D.host.xi0 ^ (D.R.m / 2)) * (star (bes j 0 h).ζ ⬝ᵥ (bes j 0 h).L.gram *ᵥ (bes j 0 h).ζ) = -(D.host.xi0 * star D.host.xi0) * (star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀)`. Introduce `j h`. Establish `hn` using `hnorm j 0 h`. Establish `e : D.R.m / 2 = j / 2 + 1` using `by omega`. Establish `hl : star (-D.host.xi0 ^ (D.R.m / 2)) * (-D.host.xi0 ^ (D.R.m / 2)) = (D.host.xi0 * star D.host.xi0) ^ (D.R.m / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_neg, star_pow, neg_mul_neg, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl, e, pow_succ, hT0]`. Take the linear combination `(D.host.xi0 * star D.host.xi0) * hn`. Use `⟨⟨bes, fun j ρ h => (hjac j ρ h).some, fun j σ h => (hlnk j σ h).some, fun j σ h => (hvol.2.2.1 _ _).some, fun j h => Matrix.of fun i k => -D.host.xi0 ^ (D.R.m / 2) * (bes j 0 h).ζ i / a.ζ₀ k⟩, B, h0, ?_, ?_, hA, ⟨1, lam0, one_ne_zero, hlam0, hz, he, he'⟩, hB0, hz1⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `j h`. Conclude with `tau_line (bes j 0 h).line.1 hLz.1 _ _ _ _ _ _ hLz.2 (hrelT j h)`. Use `show B.lev = (bes 0 D.R.rS h0).lev (a.x 0).vol`. Rewrite using `[hbes0, ← hvA]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_yRat : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ a : XGeo D, IsLineVec a.Lz a.ζ₀ → star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀ = (((D.mem u).A.T : ℕ) : D.host.E) → ∃ (y : YRat a) (B : GlobalTheory.Core.Mi.SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), y.Tau (-D.host.xi0 ^ (D.R.m / 2)) ∧ B.lev = (y.bes 0 D.R.rS h0).lev (a.x 0).vol ∧ B.Adapted (W.S.tr u).wt ∧ GlobalTheory.MiTop.Framed B ∧ star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ = -(((D.mem u).A.T : ℕ) : D.host.E) ∧ ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = W.S.X.ιE (W.S.X.zR u (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) k)) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP a hLz hT0

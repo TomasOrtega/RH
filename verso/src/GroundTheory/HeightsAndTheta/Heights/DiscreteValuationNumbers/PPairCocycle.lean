@@ -26,7 +26,7 @@ def polyVal (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (H : MvPolyn
   ∑ μ ∈ H.support, H.coeff μ * A (classList cls μ)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset h fun μ _ hμ => by rw [notMem_support_iff.mp hμ, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem polyVal_eq_sum_of_subset (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) {H : MvPolynomial σ ℤ}
     {S : Finset (σ →₀ ℕ)} (h : H.support ⊆ S) :
@@ -34,7 +34,7 @@ theorem polyVal_eq_sum_of_subset (A : List (K → ℤ) → ℤ) (cls : σ → K 
   Finset.sum_subset h fun μ _ hμ => by rw [notMem_support_iff.mp hμ, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[polyVal_eq_sum_of_subset A cls (S := H₁.support ∪ H₂.support) support_add, polyVal_eq_sum_of_subset A cls (S := H₁.support ∪ H₂.support) Finset.subset_union_left, polyVal_eq_sum_of_subset A cls (S := H₁.support ∪ H₂.support) Finset.subset_union_right]`. Simplify using `only [coeff_add, add_mul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polyVal_add (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (H₁ H₂ : MvPolynomial σ ℤ) :
     polyVal A cls (H₁ + H₂) = polyVal A cls H₁ + polyVal A cls H₂ := by
@@ -50,14 +50,14 @@ def polyValHom (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) : MvPolyn
   map_add' := polyVal_add A cls
 
 /- English proof (translation)
-The claim follows from `map_sub (polyValHom A cls) H₁ H₂`.
+A detailed English derivation is pending.
 -/
 theorem polyVal_sub (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (H₁ H₂ : MvPolynomial σ ℤ) :
     polyVal A cls (H₁ - H₂) = polyVal A cls H₁ - polyVal A cls H₂ :=
   map_sub (polyValHom A cls) H₁ H₂
 
 /- English proof (translation)
-Rewrite using `[polyVal_eq_sum_of_subset A cls support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polyVal_monomial (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (μ : σ →₀ ℕ) (c : ℤ) :
     polyVal A cls (monomial μ c) = c * A (classList cls μ) := by
@@ -66,7 +66,7 @@ theorem polyVal_monomial (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ)
     if_pos rfl]
 
 /- English proof (translation)
-Unfold `polyVal`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_sub _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyVal_fun_sub (A₁ A₂ : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) :
     polyVal (fun l => A₁ l - A₂ l) cls H = polyVal A₁ cls H - polyVal A₂ cls H := by
@@ -75,7 +75,7 @@ theorem polyVal_fun_sub (A₁ A₂ : List (K → ℤ) → ℤ) (cls : σ → K �
   exact Finset.sum_congr rfl fun _ _ => mul_sub _ _ _
 
 /- English proof (translation)
-Unfold `polyVal`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_neg _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyVal_fun_neg (A : List (K → ℤ) → ℤ) (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) :
     polyVal (fun l => -A l) cls H = -polyVal A cls H := by
@@ -89,7 +89,7 @@ def HeadAdd (A : List (K → ℤ) → ℤ) : Prop :=
   ∀ (u v : K → ℤ) (l : List (K → ℤ)), A ((u + v) :: l) = A (u :: l) + A (v :: l)
 
 /- English proof (translation)
-Establish `h` using `hA (u - v) v l`. Rewrite `h` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem HeadAdd.sub {A : List (K → ℤ) → ℤ} (hA : HeadAdd A) (u v : K → ℤ) (l : List (K → ℤ)) :
     A ((u - v) :: l) = A (u :: l) - A (v :: l) := by
@@ -98,7 +98,7 @@ theorem HeadAdd.sub {A : List (K → ℤ) → ℤ} (hA : HeadAdd A) (u v : K →
   linarith
 
 /- English proof (translation)
-Unfold `classList`. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.cons_coe, Multiset.coe_toList, Multiset.coe_toList]`. Simplify using `[Finsupp.toMultiset_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classList_single_add (cls : σ → K → ℤ) (s : σ) (μ : σ →₀ ℕ) :
     (classList cls (Finsupp.single s 1 + μ)).Perm (cls s :: classList cls μ) := by
@@ -107,7 +107,7 @@ theorem classList_single_add (cls : σ → K → ℤ) (s : σ) (μ : σ →₀ �
   simp [Finsupp.toMultiset_single]
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on' with`. Consider the case `monomial μ c`. Rewrite using `[X, monomial_mul, one_mul, polyVal_monomial, polyVal_monomial, hA _ _ (classList_single_add cls s μ)]`. Consider the case `add p q hp hq => rw [mul_add, polyVal_add, polyVal_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem polyVal_X_mul {A : List (K → ℤ) → ℤ} (hA : PermInv A) (cls : σ → K → ℤ) (s : σ)
     (H : MvPolynomial σ ℤ) :
@@ -119,9 +119,9 @@ theorem polyVal_X_mul {A : List (K → ℤ) → ℤ} (hA : PermInv A) (cls : σ 
   | add p q hp hq => rw [mul_add, polyVal_add, polyVal_add, hp, hq]
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on' with`. Consider the case `monomial μ c`. Rewrite using `[rename_monomial, polyVal_monomial, polyVal_monomial]`. Unfold `classList`. Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => rw [map_add, polyVal_add, polyVal_add, hp, hq]`.
+Treat this case separately.
 -/
 theorem polyVal_rename (A : List (K → ℤ) → ℤ) (cls : τ → K → ℤ) (ρ : σ → τ)
     (H : MvPolynomial σ ℤ) :
@@ -146,9 +146,9 @@ def geoSum3 : ℕ → R → R → R → R
   | k + 1, a, b, c => c * geoSum3 k a b c + geoSum k a b
 
 /- English proof (translation)
-Unfold `geoSum`. Rewrite using `[Finset.sum_range_succ, Nat.add_sub_cancel, Nat.sub_self, pow_zero, mul_one, add_comm, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `Finset.mem_range.mp hj` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show k - j = (k - 1 - j) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geoSum_succ (k : ℕ) (p q : R) : geoSum (k + 1) p q = p ^ k + q * geoSum k p q := by
   unfold geoSum
@@ -161,14 +161,14 @@ theorem geoSum_succ (k : ℕ) (p q : R) : geoSum (k + 1) p q = p ^ k + q * geoSu
   ring
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `(Commute.all p q).geom_sum₂_mul k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoSum_mul (k : ℕ) (p q : R) : (p - q) * geoSum k p q = p ^ k - q ^ k := by
   rw [mul_comm]
   exact (Commute.all p q).geom_sum₂_mul k
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [geoSum, geoSum3]`. Consider the case `succ k ih`. Rewrite using `[geoSum_succ, geoSum_succ, geoSum3]`. Take the linear combination `c * ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem geoSum_sub_right (k : ℕ) (a b c : R) :
     geoSum k a c - geoSum k a b = (c - b) * geoSum3 k a b c := by
@@ -179,7 +179,7 @@ theorem geoSum_sub_right (k : ℕ) (a b c : R) :
     linear_combination c * ih
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [geoSum, geoSum3]`. Consider the case `succ k ih`. Rewrite using `[geoSum_succ, geoSum_succ, geoSum3]`. Take the linear combination `c * ih - geoSum_mul k a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem geoSum_sub_left (k : ℕ) (a b c : R) :
     geoSum k a c - geoSum k b c = (a - b) * geoSum3 k a b c := by
@@ -199,16 +199,16 @@ def geoVal (A : List (K → ℤ) → ℤ) (k : ℕ) (u v : K → ℤ) : ℤ :=
   polyVal A ![u, v] (geoSum k (X 0) (X 1) : MvPolynomial (Fin 2) ℤ)
 
 /- English proof (translation)
-Simplify using `[geoSum, map_sum, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem geoSum_rename {σ τ : Type*} (ρ : σ → τ) (k : ℕ) (s t : σ) :
     rename ρ (geoSum k (X s) (X t) : MvPolynomial σ ℤ) = geoSum k (X (ρ s)) (X (ρ t)) := by
   simp [geoSum, map_sum, rename_X]
 
 /- English proof (translation)
-Establish `e : (geoSum k (X i) (X j) : MvPolynomial (Fin 3) ℤ) = rename ![i, j] (geoSum k (X 0) (X 1))`. Rewrite using `[geoSum_rename]`. Both sides reduce to the same expression. Rewrite using `[e, polyVal_rename, geoVal]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `m`. Apply the tactic sequence `fin_cases m <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polyVal_geoSum_three (A : List (K → ℤ) → ℤ) (k : ℕ) (a b c : K → ℤ) (i j : Fin 3) :
     polyVal A ![a, b, c] (geoSum k (X i) (X j)) = geoVal A k (![a, b, c] i) (![a, b, c] j) := by
@@ -221,9 +221,9 @@ theorem polyVal_geoSum_three (A : List (K → ℤ) → ℤ) (k : ℕ) (a b c : K
   fin_cases m <;> rfl
 
 /- English proof (translation)
-Establish `e1 : geoVal A k a c = polyVal A ![a, b, c] (geoSum k (X 0) (X 2))` using `(polyVal_geoSum_three A k a b c 0 2).symm`. Establish `e2 : geoVal A k a b = polyVal A ![a, b, c] (geoSum k (X 0) (X 1))` using `(polyVal_geoSum_three A k a b c 0 1).symm`. Rewrite using `[e1, e2, ← polyVal_sub, geoSum_sub_right, sub_mul, polyVal_sub, polyVal_X_mul hp, polyVal_X_mul hp, ← polyVal_fun_sub, ← polyVal_fun_neg]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show A (c :: l) - A (b :: l) = -A ((b - c) :: l)`. Rewrite using `[ha.sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem geoVal_sub_right {A : List (K → ℤ) → ℤ} (hp : PermInv A) (ha : HeadAdd A) (k : ℕ)
     (a b c : K → ℤ) :
@@ -242,9 +242,9 @@ theorem geoVal_sub_right {A : List (K → ℤ) → ℤ} (hp : PermInv A) (ha : H
   ring
 
 /- English proof (translation)
-Establish `e1 : geoVal A k a c = polyVal A ![a, b, c] (geoSum k (X 0) (X 2))` using `(polyVal_geoSum_three A k a b c 0 2).symm`. Establish `e2 : geoVal A k b c = polyVal A ![a, b, c] (geoSum k (X 1) (X 2))` using `(polyVal_geoSum_three A k a b c 1 2).symm`. Rewrite using `[e1, e2, ← polyVal_sub, geoSum_sub_left, sub_mul, polyVal_sub, polyVal_X_mul hp, polyVal_X_mul hp, ← polyVal_fun_sub]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show A (a :: l) - A (b :: l) = A ((a - b) :: l)`. Rewrite using `[ha.sub]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoVal_sub_left {A : List (K → ℤ) → ℤ} (hp : PermInv A) (ha : HeadAdd A) (k : ℕ)
     (a b c : K → ℤ) :
@@ -268,7 +268,7 @@ section CycleSums
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Unfold `cycEval`. Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `finsum_add_distrib (h₁.subset (Function.support_mul_subset_left _ _)) (h₂.subset (Function.support_mul_subset_left _ _))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycEval_add_cycle {n Z₁ Z₂ : Ideal (MRing ι R) → ℤ} (h₁ : (Function.support Z₁).Finite)
     (h₂ : (Function.support Z₂).Finite) :
@@ -279,7 +279,7 @@ theorem cycEval_add_cycle {n Z₁ Z₂ : Ideal (MRing ι R) → ℤ} (h₁ : (Fu
     (h₂.subset (Function.support_mul_subset_left _ _))
 
 /- English proof (translation)
-Unfold `cycEval`. Simplify using `only [mul_sub]`. Conclude with `finsum_sub_distrib (hZ.subset (Function.support_mul_subset_left _ _)) (hZ.subset (Function.support_mul_subset_left _ _))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycEval_fun_sub {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite) :
     cycEval (fun W => n₁ W - n₂ W) Z = cycEval n₁ Z - cycEval n₂ Z := by
@@ -289,7 +289,7 @@ theorem cycEval_fun_sub {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Functi
     (hZ.subset (Function.support_mul_subset_left _ _))
 
 /- English proof (translation)
-Unfold `cycEval`. Simplify using `only [mul_add]`. Conclude with `finsum_add_distrib (hZ.subset (Function.support_mul_subset_left _ _)) (hZ.subset (Function.support_mul_subset_left _ _))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycEval_fun_add {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite) :
     cycEval (fun W => n₁ W + n₂ W) Z = cycEval n₁ Z + cycEval n₂ Z := by
@@ -299,7 +299,7 @@ theorem cycEval_fun_add {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Functi
     (hZ.subset (Function.support_mul_subset_left _ _))
 
 /- English proof (translation)
-Unfold `cycEval`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hW : Z W = 0`. Simplify using `[hW]`. Rewrite using `[h W hW]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycEval_congr {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (h : ∀ W, Z W ≠ 0 → n₁ W = n₂ W) :
     cycEval n₁ Z = cycEval n₂ Z := by
@@ -310,7 +310,7 @@ theorem cycEval_congr {n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (h : ∀ W, Z W
   · rw [h W hW]
 
 /- English proof (translation)
-Unfold `cycEval`. Use `finsum_eq_sum_of_support_subset _ fun W hW => ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `Function.support_mul_subset_left _ _ hW`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycEval_eq_sum_finite {n Z : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite) :
     cycEval n Z = ∑ W ∈ hZ.toFinset, Z W * n W := by
@@ -320,7 +320,7 @@ theorem cycEval_eq_sum_finite {n Z : Ideal (MRing ι R) → ℤ} (hZ : (Function
   exact Function.support_mul_subset_left _ _ hW
 
 /- English proof (translation)
-Simplify using `only [cycEval_eq_sum_finite hZ]`. Unfold `polyVal`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ _ => Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -335,11 +335,11 @@ theorem cycEval_polyVal {σ : Type*} {Z : Ideal (MRing ι R) → ℤ} (hZ : (Fun
   ring
 
 /- English proof (translation)
-Establish `e1 : cycEval (fun W => geoVal (A W) k a c) Z = cycEval (fun W => geoVal (A W) k a b - polyVal (fun l => A W ((b - c) :: l)) ![a, b, c] (geoSum3 k (X 0) (X 1) (X 2))) Z` using `cycEval_congr fun W hW => by`. Use `geoVal_sub_right (hp W) (ha W hW) k a b c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : cycEval (fun W => geoVal (A W) k a c) Z' = cycEval (fun W => geoVal (A W) k b c + polyVal (fun l => A W ((a - b) :: l)) ![a, b, c] (geoSum3 k (X 0) (X 1) (X 2))) Z'` using `cycEval_congr fun W hW => by`. Use `geoVal_sub_left (hp W) (ha' W hW) k a b c` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : cycEval (fun W => polyVal (fun l => A W ((b - c) :: l)) ![a, b, c] (geoSum3 k (X 0) (X 1) (X 2))) Z = cycEval (fun W => polyVal (fun l => A W ((a - b) :: l)) ![a, b, c] (geoSum3 k (X 0) (X 1) (X 2))) Z'`. Rewrite using `[cycEval_polyVal hZ (fun W l => A W ((b - c) :: l)), cycEval_polyVal hZ' (fun W l => A W ((a - b) :: l))]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hC l`. Rewrite using `[cycEval_add_cycle hZ hZ', e1, e2, cycEval_fun_sub hZ, cycEval_fun_add hZ', e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cycEval_geoVal_cocycle {A : Ideal (MRing ι R) → List (K → ℤ) → ℤ}
     {Z Z' : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite)
@@ -378,9 +378,9 @@ section Models
 universe u
 
 /- English proof (translation)
-Introduce `R _ _ K _ ι _ P f`. Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Unfold `divCycle at hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hW with h`. Conclude with `h.1`. Conclude with `absurd rfl hW`.
+A detailed English derivation is pending.
 -/
 theorem divCycleFiniteSupport : DivCycleFiniteSupport.Statement.{u} := by
   intro R _ _ K _ ι _ P f
@@ -396,7 +396,7 @@ variable {K : Type} [DecidableEq K] {ι : K → Type}
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [diffStep]`. Rewrite using `[sub_right_comm m b b']`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diffStep_swap (b b' : K → ℤ) (h : (K → ℤ) → ℤ) :
     diffStep b (diffStep b' h) = diffStep b' (diffStep b h) := by
@@ -408,7 +408,7 @@ theorem diffStep_swap (b b' : K → ℤ) (h : (K → ℤ) → ℤ) :
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `vNumL vNum intNum mixedDiff`. Rewrite using `[List.ofFn_get, List.ofFn_get]`. Use `congr 1`. Conclude with `h.foldr_eq' (fun x _ y _ z => diffStep_swap y x z) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem vNumL_eq_of_perm (W : Ideal (MRing ι O)) {l l' : List (K → ℤ)} (h : l.Perm l') :
     vNumL W l = vNumL W l' := by
@@ -418,7 +418,7 @@ theorem vNumL_eq_of_perm (W : Ideal (MRing ι O)) {l l' : List (K → ℤ)} (h :
   exact h.foldr_eq' (fun x _ y _ z => diffStep_swap y x z) _
 
 /- English proof (translation)
-Unfold `vNumL vNum intNum mixedDiff`. Rewrite using `[List.ofFn_get, List.ofFn_succ]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ, List.ofFn_get]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vNumL_cons (W : Ideal (MRing ι O)) (u : K → ℤ) (l : List (K → ℤ)) :
     vNumL W (u :: l) = vNum W (Matrix.vecCons u l.get) := by
@@ -430,7 +430,7 @@ def listNum (W : Ideal (MRing ι O)) (Q : List (K → ℤ)) (d : ℕ) (l : List 
   if l.length + Q.length = d then vNumL W (l ++ Q) else 0
 
 /- English proof (translation)
-Introduce `l l' h`. Unfold `listNum`. Rewrite using `[h.length_eq, vNumL_eq_of_perm W (h.append_right Q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem listNum_perm (W : Ideal (MRing ι O)) (Q : List (K → ℤ)) (d : ℕ) :
     PermInv (listNum W Q d) := by
@@ -441,21 +441,19 @@ theorem listNum_perm (W : Ideal (MRing ι O)) (Q : List (K → ℤ)) (d : ℕ) :
 variable [Fintype K] [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨bf, bg, hbf, hbg, -⟩` from `hD.degrees`. Establish `hPmh : IsMultiHomogIdeal P` using `hP.multiProj.multiHomog`. Establish `: P.IsPrime` using `hP.multiProj.isPrime`. Establish `hmh : ∀ (h : MRing ι O) (e : K → ℕ), IsMultiHomog h e → divCycle P h W ≠ 0 → IsMultiHomogIdeal W ∧ W ∈ (P ⊔ Ideal.span {h}).minimalPrimes`. Introduce `h e he hW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `divCycle at hW'`. Use `split_ifs at hW' with hW''`. Conclude with `⟨MinimalPrimeMultiHomog.proof O K ι _ W (SupSpanMultiHomog.proof O K ι P h e hPmh he) hW''.1, hW''.1⟩`. Conclude with `absurd rfl hW'`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Establish `hϖW : (C ϖ : MRing ι O) ∈ W` using `hD.vertical W hW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hWdata : IsMultiHomogIdeal W ∧ W.IsPrime ∧ P ≤ W`. Distinguish the cases in `hWf : divCycle P f W = 0`. Establish `hWg : divCycle P g W ≠ 0`. Introduce `hWg`. Apply `hW` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `[ratDiv, hWf, hWg]`. Take `⟨hm, hmin⟩` from `hmh g bg hbg hWg`. Conclude with `⟨hm, hmin.1.1, le_sup_left.trans hmin.1.2⟩`. Take `⟨hm, hmin⟩` from `hmh f bf hbf hWf`. Conclude with `⟨hm, hmin.1.1, le_sup_left.trans hmin.1.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hWm, hWp, hPW⟩` from `hWdata`. Use `hWp` as an intermediate fact. Establish `hlt : P < W` using `lt_of_le_of_ne hPW (fun e => hϖP (e ▸ hϖW))`. Establish `hdrop` using `DimStrictDrop.proof (MRing ι O) P W hlt`. Rewrite `hdrop` using `[hP.dim]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : ringKrullDim (MRing ι (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((l.length + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[SpecialQuotDim.proof O ϖ hϖ K ι W hϖW]`. Establish `e : d + 1 + Fintype.card K = l.length + 2 + Fintype.card K` using `by omega`. Rewrite `hdrop` using `[e]`. Conclude with `lt_natCast_of_add_one_le hdrop`.
-
-Establish `key` using `h3 (IsLocalRing.ResidueField O) K ι l.length (specialIdeal W) (SpecialIdealCorresp.proof O ϖ hϖ K ι P W hWp hϖW).1 (SpecialIdealMultiHomog.proof O K ι W hWm) hdim u v l.get`. Rewrite using `[vNumL_cons, vNumL_cons, vNumL_cons]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vNumL_add_head (h3 : IntNumAddFirst.Statement.{0}) {ϖ : O} (hϖ : Irreducible ϖ)
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {b : K → ℤ} {f g : MRing ι O}
@@ -505,9 +503,7 @@ theorem vNumL_add_head (h3 : IntNumAddFirst.Statement.{0}) {ϖ : O} (hϖ : Irred
   exact key
 
 /- English proof (translation)
-Introduce `u v l`. Unfold `listNum`. Simplify using `only [List.length_cons, List.cons_append]`. Use `split_ifs with h`. Conclude with `vNumL_add_head h3 hϖ hP hD hW u v (l ++ Q) (by simp only [List.length_append]; omega)`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem listNum_headAdd (h3 : IntNumAddFirst.Statement.{0}) {ϖ : O} (hϖ : Irreducible ϖ)
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {b : K → ℤ} {f g : MRing ι O}
@@ -521,9 +517,9 @@ theorem listNum_headAdd (h3 : IntNumAddFirst.Statement.{0}) {ϖ : O} (hϖ : Irre
   · simp
 
 /- English proof (translation)
-Unfold `listNum`. Simplify using `only [List.length_cons, List.cons_append]`. Distinguish the cases in `h : l.length + 1 + Q.length = d`. Simplify using `only [if_pos h]`. Take `rfl : d = (l ++ Q).length + 1` from `by simp only [List.length_append]; omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [vNumL_cons]`. Conclude with `hC2 O ϖ hϖ K ι P (l ++ Q).length hP b b' f g f' g' hD hD' (l ++ Q).get`. Simplify using `[if_neg h, cycEval]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem listNum_commute (hC2 : VerticalDivisorsCommute.Statement.{0}) {ϖ : O} (hϖ : Irreducible ϖ)
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {b b' : K → ℤ} {f g f' g' : MRing ι O}
@@ -543,7 +539,7 @@ theorem listNum_commute (hC2 : VerticalDivisorsCommute.Statement.{0}) {ϖ : O} (
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `W`. Simplify using `only [ratDiv, Pi.add_apply]`. Rewrite using `[DivCycleMul.proof O K ι P f f' ‹_› hf hf', DivCycleMul.proof O K ι P g g' ‹_› hg hg']`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ratDiv_mul {P : Ideal (MRing ι O)} [P.IsPrime] {f g f' g' : MRing ι O} (hf : f ∉ P)
     (hg : g ∉ P) (hf' : f' ∉ P) (hg' : g' ∉ P) :
@@ -555,15 +551,13 @@ theorem ratDiv_mul {P : Ideal (MRing ι O)} [P.IsPrime] {f g f' g' : MRing ι O}
   ring
 
 /- English proof (translation)
-Take `⟨bf, bg, hf, hg, hb⟩` from `hD.degrees`. Take `⟨bf', bg', hf', hg', hb'⟩` from `hD'.degrees`. Use `⟨bf + bf', bg + bg', IsWeightedHomogeneous.mul hf hf', IsWeightedHomogeneous.mul hg hg', ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, ← hb']`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree. Use `num_not_mem := fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hD.num_not_mem hD'.num_not_mem`. Use `den_not_mem := fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hD.den_not_mem hD'.den_not_mem`. Use `vertical := by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `W hW`. Rewrite `hW` using `[ratDiv_mul hD.num_not_mem hD.den_not_mem hD'.num_not_mem hD'.den_not_mem, Pi.add_apply]`. Distinguish the cases in `h1 : ratDiv P f g W = 0`. Rewrite `hW` using `[h1, zero_add]`. Conclude with `hD'.vertical W hW`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD.vertical W h1`. Use `unit_off_special := by`. Introduce `W hW hPW hrel hϖ`. Take `⟨u, v, hu, hv, h⟩` from `hD.unit_off_special W hW hPW hrel hϖ`. Take `⟨u', v', hu', hv', h'⟩` from `hD'.unit_off_special W hW hPW hrel hϖ`.
-
-Use `⟨u * u', v * v', fun hm => (hW.mem_or_mem hm).elim hu hu', fun hm => (hW.mem_or_mem hm).elim hv hv', ?_⟩` and prove the remaining obligations. Establish `e : u * u' * (f * f') - v * v' * (g * g') = (u' * f') * (u * f - v * g) + (v * g) * (u' * f' - v' * g')` using `by ring`. Rewrite using `[e]`. Conclude with `P.add_mem (P.mul_mem_left _ h) (P.mul_mem_left _ h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVerticalDivisor_mul {P : Ideal (MRing ι O)} [P.IsPrime] {ϖ : O} {b b' : K → ℤ}
     {f g f' g' : MRing ι O} (hD : IsVerticalDivisor P ϖ b f g)
@@ -609,9 +603,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Introduce `c hc`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(h₁ c hc).1 v hv`. Take `⟨m, hm⟩` from `(h₂ c hc).1 _ hn`. Conclude with `⟨m + n, by rw [pow_add, mul_smul]; exact hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `(h₂ c hc).2 v hv`. Take `⟨m, hm⟩` from `(h₁ c hc).2 _ hn`. Conclude with `⟨m + n, by rw [pow_add, mul_smul]; exact hm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameGenericFibre_trans {τ : Type*} {x : τ → Ω} {ϖ : O} {B B' B'' : ChartBundle O x N E}
     (h₁ : SameGenericFibre ϖ B B') (h₂ : SameGenericFibre ϖ B' B'') : SameGenericFibre ϖ B B'' := by
@@ -626,7 +620,7 @@ theorem sameGenericFibre_trans {τ : Type*} {x : τ → Ω} {ϖ : O} {B B' B'' :
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Introduce `c hc` and use `(h c hc).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameGenericFibre_symm {τ : Type*} {x : τ → Ω} {ϖ : O} {B B' : ChartBundle O x N E}
     (h : SameGenericFibre ϖ B B') : SameGenericFibre ϖ B' B :=
@@ -636,7 +630,7 @@ omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] [IsDomain O] [IsDiscret
   [Algebra O Ω] in
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => w.repr z j) (w'.sum_repr v)`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_chain (w w' : Module.Basis (Fin N) Ω E) (v : E) (j : Fin N) :
     w.repr v j = ∑ m, w'.repr v m * w.repr (w' m) j := by
@@ -646,7 +640,7 @@ theorem repr_chain (w w' : Module.Basis (Fin N) Ω E) (v : E) (j : Fin N) :
   exact e.symm
 
 /- English proof (translation)
-The claim follows from `hp₁.flag flag' := hp₂.flag' sameFlag := by intro i j hij rw [repr_chain w w' (w'' i) j] refine Finset.sum_eq_zero fun m _ => ?_ rcases lt_or_ge i m with h | h · rw [hp₂.sameFlag i m h, zero_mul] · rw [hp₁.sameFlag m j (lt_of_le_of_lt h hij), mul_zero] vertical := fun i => by have …`.
+A detailed English derivation is pending.
 -/
 theorem isFlagPair_comp {ϖ : O} {y : (Σ k, ι k) → Ω} [(pointIdeal O y).IsPrime]
     {B B' B'' : ChartBundle O (segreVec y) N E} {w w' w'' : Module.Basis (Fin N) Ω E}
@@ -678,7 +672,7 @@ theorem isFlagPair_comp {ϖ : O} {y : (Σ k, ι k) → Ω} [(pointIdeal O y).IsP
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `hf flag' := hf sameFlag := by intro i j hij simp [Module.Basis.repr_self, hij.ne] vertical := fun i => by rw [sub_self] exact isVerticalDivisor_one ϖ _ generic := fun i => by simp [Module.Basis.repr_self]`.
+A detailed English derivation is pending.
 -/
 theorem isFlagPair_refl {ϖ : O} {y : (Σ k, ι k) → Ω} [(pointIdeal O y).IsPrime]
     {B : ChartBundle O (segreVec y) N E} {w : Module.Basis (Fin N) Ω E} {x : Fin N → K → ℤ}
@@ -696,7 +690,7 @@ theorem isFlagPair_refl {ϖ : O} {y : (Σ k, ι k) → Ω} [(pointIdeal O y).IsP
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[pairNum, cycEval, ratDiv, divCycle_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairNum_one (P : Ideal (MRing ι O)) (x : Fin N → K → ℤ)
     (Gs : Fin N → MvPolynomial (Fin N ⊕ Fin N) ℤ) (Q : List (K → ℤ)) :
@@ -706,9 +700,9 @@ theorem pairNum_one (P : Ideal (MRing ι O)) (x : Fin N → K → ℤ)
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `classNum polyVal listNum`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[if_pos]`. Establish `h1` using `hH (mem_support_iff.mp hμ)`. Rewrite using `[← hn, ← h1]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [classList, Multiset.length_toList, Multiset.card_map, Finsupp.card_toMultiset, Finsupp.weight_apply]`. Simplify using `[Finsupp.sum]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem classNum_eq_polyVal {σ : Type*} (cls : σ → K → ℤ) {H : MvPolynomial σ ℤ} {n : ℕ}
     (hH : H.IsHomogeneous n) {Q : List (K → ℤ)} {d : ℕ} (hn : n + Q.length = d)
@@ -725,9 +719,9 @@ theorem classNum_eq_polyVal {σ : Type*} (cls : σ → K → ℤ) {H : MvPolynom
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => simp [classNum, psumExpansion, geoVal, geoSum, polyVal]`. Consider the case `succ m`. Establish `e : psumExpansion N (m + 1) i = rename ![Sum.inl i, Sum.inr i] (geoSum (m + 1) (X 0) (X 1))`. Rewrite using `[geoSum_rename]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hc : (Sum.elim u v ∘ ![Sum.inl i, Sum.inr i]) = ![u i, v i]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[classNum_eq_polyVal (Q := Q) (d := d) _ (isHomogeneous_psumExpansion N (m + 1) i) (by omega), e, polyVal_rename, hc, geoVal]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_psumExpansion (u v : Fin N → K → ℤ) (k : ℕ) (i : Fin N) {Q : List (K → ℤ)}
     {d : ℕ} (hQ : Q.length + k = d + 1) (W : Ideal (MRing ι O)) :
@@ -747,11 +741,11 @@ theorem classNum_psumExpansion (u v : Fin N → K → ℤ) (k : ℕ) (i : Fin N)
 end Flags
 
 /- English proof (translation)
-Establish `: (pointIdeal O y).IsPrime` using `hP.multiProj.isPrime`. Establish `hpm` using `isFlagPair_comp hp₁ hp₂`. Establish `hS''` using `sameGenericFibre_trans hS hS'`. Establish `ek` using `isPairExpansion_psum N k`. Establish `hsym` using `psum_isSymmetric (Fin N) ℤ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhom` using `isHomogeneous_psum N k`. Rewrite using `[hFI O ϖ hϖ Ω K ι y d hP N E B B'' hS'' w w'' w w'' x x'' x x'' f'' g'' _ _ hp₃ hpm k _ hhom hsym Gs'' _ hG'' ek Q hQ, hFI O ϖ hϖ Ω K ι y d hP N E B B' hS w w' w w' x x' x x' f g f g hp₁ hp₁ k _ hhom hsym Gs _ hG ek Q hQ, hFI O ϖ hϖ Ω K ι y d hP N E B' B'' hS' w' w'' w' w'' x' x' …`. Unfold `pairNum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[ratDiv_mul (hp₁.vertical i).num_not_mem (hp₁.vertical i).den_not_mem (hp₂.vertical i).num_not_mem (hp₂.vertical i).den_not_mem]`. Simplify using `only [classNum_psumExpansion _ _ k i hQ]`. Conclude with `cycEval_geoVal_cocycle (ratDiv_support_finite divCycleFiniteSupport.{0} _ _ _) (ratDiv_support_finite divCycleFiniteSupport.{0} _ _ _) (fun W => listNum_perm W Q d) (fun W hW => listNum_headAdd h3 hϖ hP (hp₁.vertical i) hW Q) (fun W hW => listNum_headAdd h3 hϖ hP (hp₂.vertical i) …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairNum_cocycle (hFI : FlagIndependence.Statement)
     (hC2 : VerticalDivisorsCommute.Statement.{0}) (h3 : IntNumAddFirst.Statement.{0})
@@ -798,7 +792,7 @@ theorem pairNum_cocycle (hFI : FlagIndependence.Statement)
     (fun l => listNum_commute hC2 hϖ hP (hp₁.vertical i) (hp₂.vertical i) Q l)
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hP N E _ _ B B' B'' hS hS' w w' w'' x x' x'' f g f' g' f'' g'' hp₁ hp₂ hp₃ k Gs Gs' Gs'' hG hG' hG'' Q hQ`. Use `⟨pairNum_cocycle hFI hC2 h3 hϖ hP hS hS' hp₁ hp₂ hp₃ hG hG' hG'' hQ, fun fr gr Gr hpr hGr => ?_⟩` and prove the remaining obligations. Establish `: (pointIdeal O y).IsPrime` using `hP.multiProj.isPrime`. Establish `h` using `pairNum_cocycle hFI hC2 h3 hϖ hP hS (sameGenericFibre_symm hS) hp₁ hpr (isFlagPair_refl hp₁.flag) hG hGr (isPairExpansion_psum N k) hQ`. Rewrite `h` using `[pairNum_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

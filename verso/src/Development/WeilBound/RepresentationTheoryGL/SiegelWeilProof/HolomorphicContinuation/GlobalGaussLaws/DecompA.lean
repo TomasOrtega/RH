@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Sw.Glob.DecH
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `JJ`. Rewrite using `[fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, neg_zero]`. Rewrite using `[← fromBlocks_one, fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jj_mul_jj : JJ n * JJ n = -1 := by
   unfold JJ
@@ -21,11 +21,9 @@ theorem jj_mul_jj : JJ n * JJ n = -1 := by
   simp
 
 /- English proof (translation)
-Establish `h' : gᴴ * (JJ n * g) = JJ n`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h`. Establish `hK : (-(JJ n * gᴴ * JJ n)) * g = 1`. Simplify using `only [Matrix.neg_mul, Matrix.mul_assoc, h', jj_mul_jj, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK' : g * (-(JJ n * gᴴ * JJ n)) = 1` using `mul_eq_one_comm.mp hK`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[jj_mul_jj, neg_neg, Matrix.mul_one]`. Use `_ = (g * -(JJ n * gᴴ * JJ n)) * JJ n := by`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
-
-Use `_ = JJ n := by rw [hK', Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_dual {g : M2 n} (h : InG g) : g * JJ n * gᴴ = JJ n := by
   have h' : gᴴ * (JJ n * g) = JJ n := by
@@ -41,9 +39,9 @@ theorem inG_dual {g : M2 n} (h : InG g) : g * JJ n * gᴴ = JJ n := by
     _ = JJ n := by rw [hK', Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `InG JJ at h`. Rewrite `h` using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Take `⟨h1, h2, -, h4⟩` from `h`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add] at h1 h2 h4`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero, ← h1]`. Normalize the expressions using the abelian group laws. Rewrite using `[← h2]`. Normalize the expressions using the abelian group laws. Rewrite using `[← sub_eq_zero, ← h4]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -63,11 +61,11 @@ theorem inG_blocks {A B C D : Matrix (Fin n) (Fin n) ℂ} (h : InG (fromBlocks A
     abel
 
 /- English proof (translation)
-Establish `h' : InG (fromBlocks Aᴴ Cᴴ Bᴴ Dᴴ)`. Establish `hd` using `inG_dual h`. Unfold `InG`. Rewrite using `[← fromBlocks_conjTranspose, conjTranspose_conjTranspose]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `inG_blocks h'`. Simplify using `only [conjTranspose_conjTranspose] at h1 h2 h3`. Use `⟨h1, h2, ?_, h3⟩` and prove the remaining obligations. Establish `h4` using `congrArg conjTranspose h2`. Simplify using `only [conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_one] at h4`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_sub, h4]`.
+A detailed English derivation is pending.
 -/
 theorem inG_blocks_dual {A B C D : Matrix (Fin n) (Fin n) ℂ} (h : InG (fromBlocks A B C D)) :
     A * Bᴴ = B * Aᴴ ∧ A * Dᴴ - B * Cᴴ = 1 ∧ C * Bᴴ - D * Aᴴ = -1 ∧ C * Dᴴ = D * Cᴴ := by

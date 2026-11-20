@@ -14,9 +14,9 @@ namespace UpperTheory.Gal.KunnethLefschetz.G
 variable {W Z Y W' Z' Y' : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Pullback.range_fst a i]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨h.flip.isoPullback.hom w, by rw [← Scheme.Hom.comp_apply, h.flip.isoPullback_hom_fst]⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨h.flip.isoPullback.inv y, by rw [← Scheme.Hom.comp_apply, h.flip.isoPullback_inv_fst]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma range_pb {i : W ⟶ Z} {i' : W' ⟶ Z'} {a : Z' ⟶ Z} {b : W' ⟶ W} (h : IsPullback b i' i a) :
     Set.range i' = a ⁻¹' Set.range i := by
@@ -29,9 +29,9 @@ private lemma range_pb {i : W ⟶ Z} {i' : W' ⟶ Z'} {a : Z' ⟶ Z} {b : W' ⟶
     exact ⟨h.flip.isoPullback.inv y, by rw [← Scheme.Hom.comp_apply, h.flip.isoPullback_inv_fst]⟩
 
 /- English proof (translation)
-Establish `R1` using `isPullback_morphismRestrict π' (a ⁻¹ᵁ U)`. Establish `R2` using `(isPullback_morphismRestrict π U).flip`. Establish `Rect` using `R1.flip.paste_horiz h`. Rewrite `Rect` using `[← morphismRestrict_ι a U]`. Establish `comm : ((π' ⁻¹ᵁ (a ⁻¹ᵁ U)).ι ≫ c) ≫ π = (π' ∣_ (a ⁻¹ᵁ U) ≫ a ∣_ U) ≫ U.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `Rect.w` using `only [Category.assoc]`. Establish `sq` using `IsPullback.of_right (h₁₁ := R2.lift _ _ comm) (v₁₂ := π ∣_ U) (by rw [R2.lift_fst]; exact Rect) (R2.lift_snd _ _ comm) R2`. Conclude with `sq.isIso_snd_of_isIso`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma iso_pb {π : Y ⟶ Z} {π' : Y' ⟶ Z'} {a : Z' ⟶ Z} {c : Y' ⟶ Y} (h : IsPullback c π' π a) (U : Z.Opens)
     (hi : IsIso (π ∣_ U)) : IsIso (π' ∣_ (a ⁻¹ᵁ U)) := by
@@ -50,19 +50,19 @@ private def secPb (D : E.LineData Y) (c : Y' ⟶ Y) (C : Y.Opens) (σ : (C : Sch
   pullback.lift (f := D.f) (g := c) ((c ∣_ C) ≫ σ) (c ⁻¹ᵁ C).ι (by rw [Category.assoc, hσ, morphismRestrict_ι])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma secPb_f (D : E.LineData Y) (c : Y' ⟶ Y) (C : Y.Opens) (σ : (C : Scheme.{0}) ⟶ D.Y) (hσ : σ ≫ D.f = C.ι) :
     secPb D c C σ hσ ≫ (D.pb c).f = (c ⁻¹ᵁ C).ι := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma secPb_fst (D : E.LineData Y) (c : Y' ⟶ Y) (C : Y.Opens) (σ : (C : Scheme.{0}) ⟶ D.Y) (hσ : σ ≫ D.f = C.ι) :
     (show _ ⟶ pullback D.f c from secPb D c C σ hσ) ≫ pullback.fst D.f c = (c ∣_ C) ≫ σ := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : c y ∈ sSup (Pb.𝒱D D)` using `by rw [h]; trivial`. Take `⟨C, ⟨σ, hσ⟩, hC⟩` from `Opens.mem_sSup.1 hy`. Conclude with `Opens.mem_sSup.2 ⟨c ⁻¹ᵁ C, ⟨secPb D c C σ hσ, secPb_f D c C σ hσ⟩, hC⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma loc_pb (D : E.LineData Y) (c : Y' ⟶ Y) (h : sSup (Pb.𝒱D D) = ⊤) : sSup (Pb.𝒱D (D.pb c)) = ⊤ := by
   rw [eq_top_iff]
@@ -72,7 +72,7 @@ private lemma loc_pb (D : E.LineData Y) (c : Y' ⟶ Y) (h : sSup (Pb.𝒱D D) = 
   exact Opens.mem_sSup.2 ⟨c ⁻¹ᵁ C, ⟨secPb D c C σ hσ, secPb_f D c C σ hσ⟩, hC⟩
 
 /- English proof (translation)
-Simplify using `[Scheme.Hom.appTop, morphismRestrict_app, Scheme.Opens.topIso_inv]`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma topIso_nat (c : Y' ⟶ Y) (C : Y.Opens) :
     c.app C ≫ (c ⁻¹ᵁ C).topIso.inv = C.topIso.inv ≫ (c ∣_ C).appTop := by
@@ -80,9 +80,9 @@ private lemma topIso_nat (c : Y' ⟶ Y) (C : Y.Opens) :
   rw [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Establish `e : π.appLE V C hC ≫ c.app C = a.app V ≫ π'.appLE (a ⁻¹ᵁ V) (c ⁻¹ᵁ C) hC'`. Rewrite using `[Scheme.Hom.app_eq_appLE c, Scheme.Hom.appLE_comp_appLE, ← Scheme.Hom.comp_appLE]`. Simplify using `only [h.w]`. Establish `e2` using `congr($(e) ≫ (c ⁻¹ᵁ C).topIso.inv)`. Rewrite `e2` using `[Category.assoc, Category.assoc, topIso_nat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congr($(e2).hom t)`.
+A detailed English derivation is pending.
 -/
 private lemma eqn_pb {π : Y ⟶ Z} {π' : Y' ⟶ Z'} {a : Z' ⟶ Z} {c : Y' ⟶ Y} (h : IsPullback c π' π a) (V : Z.Opens)
     (C : Y.Opens) (hC : C ≤ π ⁻¹ᵁ V) (hC' : c ⁻¹ᵁ C ≤ π' ⁻¹ᵁ (a ⁻¹ᵁ V)) (t : Γ(Z, V)) :
@@ -96,9 +96,9 @@ private lemma eqn_pb {π : Y ⟶ Z} {π' : Y' ⟶ Z'} {a : Z' ⟶ Z} {c : Y' ⟶
   exact congr($(e2).hom t)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `g : MvPolynomial Empty A →+* A` to `MvPolynomial.eval₂Hom (RingHom.id A) Empty.elim`. Establish `hg : ∀ y, g (MvPolynomial.C y) = y` using `fun y => MvPolynomial.eval₂Hom_C _ _ _`. Use `Ideal.mem_map_of_mem g h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.map_span, Set.image_image]`. Simplify `this` using `only [hg, Set.image_id']`. Introduce `h`. Use `Ideal.mem_map_of_mem (MvPolynomial.C : A →+* MvPolynomial Empty A) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_span]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma mem_C {A : Type} [CommRing A] (T : Set A) (x : A) :
     MvPolynomial.C x ∈ Ideal.span ((MvPolynomial.C : A →+* MvPolynomial Empty A) '' T) ↔ x ∈ Ideal.span T := by
@@ -114,7 +114,7 @@ private lemma mem_C {A : Type} [CommRing A] (T : Set A) (x : A) :
     rwa [Ideal.map_span] at this
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private lemma app_zero (g : W' ⟶ Z') (U : Z'.Opens) (O : W'.Opens) (e : O = g ⁻¹ᵁ U) (h : O ≤ g ⁻¹ᵁ U) (x : Γ(Z', U)) :
     (g.appLE U O h).hom x = 0 ↔ (g.app U).hom x = 0 := by
@@ -122,13 +122,13 @@ private lemma app_zero (g : W' ⟶ Z') (U : Z'.Opens) (O : W'.Opens) (e : O = g 
   rw [Scheme.Hom.app_eq_appLE]
 
 /- English proof (translation)
-Establish `e : b ⁻¹ᵁ (i ⁻¹ᵁ V) = i' ⁻¹ᵁ (a ⁻¹ᵁ V)`. Express the relevant statement in the definitionally equal form `(b ≫ i) ⁻¹ᵁ V = (i' ≫ a) ⁻¹ᵁ V`. Rewrite using `[h.w]`. Establish `ev : ∀ (x : Γ(Z, V)) (u : Empty → Γ(W, i ⁻¹ᵁ V)), MvPolynomial.eval₂Hom (i.appLE V (i ⁻¹ᵁ V) le_rfl).hom u (MvPolynomial.C x) = (i.app V).hom x`. Introduce `x u`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.eval₂Hom_C, Scheme.Hom.app_eq_appLE]`. Establish `P` using `presBC i i' a b h V (i ⁻¹ᵁ V) le_rfl hV (hV.preimage i) hV' e.le Empty Empty.elim ((MvPolynomial.C : Γ(Z, V) →+* _) '' T) ?_ ?_`. Use extensionality with `x`. Establish `hs : MvPolynomial.map (a.app V).hom '' ((MvPolynomial.C : Γ(Z, V) →+* _) '' T) = (MvPolynomial.C : Γ(Z', a ⁻¹ᵁ V) →+* MvPolynomial Empty Γ(Z', a ⁻¹ᵁ V)) '' ((a.app V).hom '' T)`. Simplify using `[Set.image_image, MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.mem_ker, ← app_zero i' _ _ e e.le, ← mem_C, ← hs, ← P.2.2, RingHom.mem_ker, MvPolynomial.eval₂Hom_C]`. Introduce `y`. Take `⟨x, rfl⟩` from `i.app_surjective V hV y`. Conclude with `⟨MvPolynomial.C x, ev x _⟩`. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Take `⟨x, rfl⟩` from `MvPolynomial.C_surjective Empty p`. Rewrite using `[RingHom.mem_ker, ev, mem_C, ← hk, RingHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ker_pb {i : W ⟶ Z} {i' : W' ⟶ Z'} {a : Z' ⟶ Z} {b : W' ⟶ W} (h : IsPullback b i' i a) [IsClosedImmersion i]
     (V : Z.Opens) (hV : IsAffineOpen V) (hV' : IsAffineOpen (a ⁻¹ᵁ V)) (T : Set Γ(Z, V))
@@ -156,7 +156,7 @@ private lemma ker_pb {i : W ⟶ Z} {i' : W' ⟶ Z'} {a : Z' ⟶ Z} {b : W' ⟶ W
     rw [RingHom.mem_ker, ev, mem_C, ← hk, RingHom.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[Set.image_insert_eq, ← Set.range_comp]`. Simplify using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma rel_pb {A B : Type} [CommRing A] [CommRing B] (g : A →+* B) {d : ℕ} (t : Fin d → A) (k : Fin d) :
     MvPolynomial.map g '' (insert (MvPolynomial.X k - 1)
@@ -166,7 +166,7 @@ private lemma rel_pb {A B : Type} [CommRing A] [CommRing B] (g : A →+* B) {d :
   simp [Function.comp_def]
 
 /- English proof (translation)
-The claim follows from `coordBC K K' φ q q' a hq V B.affine _ _ B.etale`.
+A detailed English derivation is pending.
 -/
 private lemma hE_pb {K K' : Type} [CommRing K] [CommRing K'] (φ : K →+* K') {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z}
     {π : Y ⟶ Z} {d : ℕ} {q' : Z' ⟶ Spec (CommRingCat.of K')} {a : Z' ⟶ Z}
@@ -175,7 +175,7 @@ private lemma hE_pb {K K' : Type} [CommRing K] [CommRing K'] (φ : K →+* K') {
   coordBC K K' φ q q' a hq V B.affine _ _ B.etale
 
 /- English proof (translation)
-Introduce `y hy` and use `by have h1 : π (c y) ∈ V := h hy have h2 : a (π' y) = π (c y) := by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hc.w] change a (π' y) ∈ V rw [h2] exact h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma hle_pb {π : Y ⟶ Z} {π' : Y' ⟶ Z'} {a : Z' ⟶ Z} {c : Y' ⟶ Y} (hc : IsPullback c π' π a) {V : Z.Opens}
     {C : Y.Opens} (h : C ≤ π ⁻¹ᵁ V) : c ⁻¹ᵁ C ≤ π' ⁻¹ᵁ (a ⁻¹ᵁ V) := fun y hy => by
@@ -224,23 +224,15 @@ private def chartPb {K K' : Type} [CommRing K] [CommRing K'] (φ : K →+* K') {
     rfl
 
 /- English proof (translation)
-Introduce `K K' _ _ φ W Z Y W' Z' Y' q i π D d q' i' π' a b c hq hb hc ⟨B⟩`. Establish `hcl : IsClosedImmersion i` using `B.closed`. Use `⟨{ closed := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hb hcl f := fun {V} e => B.f ((show V ⟶ pullback D.f c from e) ≫ pullback.fst D.f c) f_nat := fun g e => by` and prove the remaining obligations. Rewrite using `[← B.f_nat]`. Simplify using `only [Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `f_u := fun e e' h => B.f_u _ _ _`. Use `U := a ⁻¹ᵁ B.U`. Use `U_eq := by`. Rewrite using `[range_pb hb]`. Express the relevant statement in the definitionally equal form `a ⁻¹' (B.U : Set Z) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[B.U_eq, Set.preimage_compl]`. Use `iso := iso_pb hc B.U B.iso`. Use `unit := fun {V} e he => by`. Apply `B.unit` to reduce the goal to its premises. Establish `: ((show V ⟶ pullback D.f c from e) ≫ pullback.fst D.f c) ≫ D.f ≫ π = (e ≫ (D.pb c).f ≫ π') ≫ a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : pullback.fst D.f c ≫ D.f = pullback.snd D.f c ≫ c` using `pullback.condition`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% h1, hc.w]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `he`. Use `loc := loc_pb D c B.loc`. Use `ι := B.ι`. Use `fin := B.fin`. Use `V := fun α => a ⁻¹ᵁ B.V α`.
-
-Use `cover := by`. Introduce `w _`. Establish `h1 : b w ∈ i ⁻¹ᵁ (⨆ α, B.V α)` using `B.cover trivial`. Take `⟨α, h2⟩` from `Opens.mem_iSup.1 h1`. Establish `h3 : a (i' w) = i (b w)` using `by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hb.w]`.
-
-Use `Opens.mem_iSup.2 ⟨α, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a (i' w) ∈ B.V α`. Rewrite using `[h3]`. Conclude with `h2`. Use `c := fun α => chartPb φ hq hb hc hcl (B.c α)`.
-
-Use `σ := fun α k => secPb D c ((B.c α).C k) (B.σ α k) (B.σ_f α k)`. Use `σ_f := fun α k => secPb_f D c _ _ _`. Use `f_σ := fun α k => by`. Use `(congrArg B.f (secPb_fst D c _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[B.f_nat, B.f_σ]`.
-
-Conclude with `eqn_pb hc _ _ _ _ _ }⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blowBC : BlowBC := by
   intro K K' _ _ φ W Z Y W' Z' Y' q i π D d q' i' π' a b c hq hb hc ⟨B⟩

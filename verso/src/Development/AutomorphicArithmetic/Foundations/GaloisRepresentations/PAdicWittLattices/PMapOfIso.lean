@@ -7,11 +7,11 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `G₀ R _ _ gb S s N o o' θ hiso hmon hact hpol heta`. Use `haveI : IsIso θ.left := (Over.forget S).map_isIso θ`. Use `⟨⟨θ.left, Hecke.sq2 θ, ⟨IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩, ?_⟩, ⟨?_, ?_⟩, fun c => ?_, hpol, fun y => ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Set `u : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ex : x₀ = u ≫ x ≫ θ` using `Over.OverMorphism.ext (by simp [u, hx])`. Establish `ey : y₀ = u ≫ y ≫ θ` using `Over.OverMorphism.ext (by simp [u, hy])`. Rewrite using `[ex, ey, ← MonObj.comp_mul, ← MonObj.mul_comp]`. Simplify using `[u]`. Rewrite using `[Hecke.sq2, ← Over.comp_left, lift_fst, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hecke.sq2, ← Over.comp_left, lift_snd, Over.comp_left]`. Rewrite using `[← Over.comp_left, hact c, Over.comp_left]`. Rewrite using `[← Over.comp_left, heta y, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pMapOfIso :
     MapOfIso := by

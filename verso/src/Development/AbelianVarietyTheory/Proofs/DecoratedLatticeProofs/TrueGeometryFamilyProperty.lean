@@ -27,9 +27,9 @@ section Prim
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Establish `hN : N ≠ 0` using `fun h => hv (by rw [h]; simp)`. Establish `hNF : (N : D.host.F) ≠ 0` using `Int.cast_ne_zero.2 hN`. Use `⟨Ideal.mul_mem_left _ _ ha.1, ?_⟩` and prove the remaining obligations. Establish `hc : finPart D (incA D c) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] c` using `rfl`. Rewrite using `[map_mul, hc, ← AeUnit.idem_mul_finPart D v ha.1, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.HostAdeleIso.intAE_mul_mem D ?_ ha.2` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨_, AeUnit.inv_smul_singleV_mem v N hv, ⟨N • c, hint⟩, ?_⟩` and prove the remaining obligations. Conclude with `AeUnit.tmul_eq_inv_smul_tmul N hNF _ c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem incA_mul_mem_intAt {D : D7} (v : GlobalTheory.FinPl.Pl D) (c : D.host.E) (N : ℤ) (hint : IsIntegral ℤ (N • c))
     (hv : (N : 𝓞 D.host.F) ∉ v.asIdeal) {a : AE D} (ha : a ∈ intAt D (· = v)) : incA D c * a ∈ intAt D (· = v) := by
@@ -43,15 +43,15 @@ theorem incA_mul_mem_intAt {D : D7} (v : GlobalTheory.FinPl.Pl D) (c : D.host.E)
   exact AeUnit.tmul_eq_inv_smul_tmul N hNF _ c
 
 /- English proof (translation)
-Establish `hL' : ∀ x : Fin S.rank → D.host.E, x ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = x i` using `fun x => by`. Rewrite using `[hL x]`. Conclude with `⟨fun h i => ⟨⟨x i, h i⟩, rfl⟩, fun h i => by obtain ⟨b, hb⟩ := h i; exact hb ▸ b.2⟩`. Establish `hN : N ≠ 0` using `fun h => hv (by rw [h]; simp)`. Establish `hNE : (N : D.host.E) ≠ 0` using `Int.cast_ne_zero.2 hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : z i₀ ≠ 0` using `fun h => hNE (by rw [← hπ, h, zero_mul])`. Establish `h1 : ((1 : ℤ) : 𝓞 D.host.F) ∉ v.asIdeal`. Rewrite using `[Int.cast_one]`. Conclude with `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Rewrite using `[GlobalTheory.FinPl.Model.mem_latV_std S L hL' v]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hi : a * incA D (z i₀) ∈ intAt D (· = v)` using `h i₀`. Establish `hint : IsIntegral ℤ (N • (z i₀)⁻¹)`. Establish `: N • (z i₀)⁻¹ = π'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul, ← hπ, mul_comm (z i₀), mul_assoc, mul_inv_cancel₀ hz0, mul_one]`. Rewrite using `[this]`. Conclude with `hπ'`. Establish `h2` using `incA_mul_mem_intAt v (z i₀)⁻¹ N hint hv hi`. Rewrite `h2` using `[mul_comm a, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hz0, map_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i show a * incA D (z i) ∈ intAt D (· = v)`. Rewrite using `[mul_comm]`. Conclude with `incA_mul_mem_intAt v (z i) 1 (by rw [one_smul]; exact hz i) h1 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_std {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : ∀ x, x ∈ L ↔ ∀ i, IsIntegral ℤ (x i)) (v : GlobalTheory.FinPl.Pl D)
     (z : Fin S.rank → D.host.E) (hz : ∀ i, IsIntegral ℤ (z i)) (i₀ : Fin S.rank) (π' : D.host.E) (hπ' : IsIntegral ℤ π') (N : ℤ)
@@ -83,21 +83,17 @@ theorem prim_std {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : ∀ x
 end Prim
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hT' row col hc`. Use `⟨a.k, a.fld, a.val, a.top, a.loc, a.ι, a.v, a.o, a.n, a.G, a.pl, hc, ha.vis, (ha.tie row col).1, ha.shape, ha.gpin, (ha.tie row col).2, ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce `p hp b hb`. Establish `hx` using `(hT'.pinX.xs B.R.m le_rfl).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTp : (((B.T u : ℕ) : ℤ) : 𝓞 (I.rec7 l Z).host.F) ∉ p.asIdeal`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[(ha.tie row col).1.tP p]`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < B.R.N B.R.m` using `B.R.N_pos _`. Use `prim_std _ _ hx p _ (fun i => ?_) (Fin.cast (Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl).symm ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩) (B.host.conj (X.piT u : B.host.E)) (map_isIntegral_int (B.host.conj : B.host.E →+* B.host.E) (X.piT u).2) ((B.T u : ℕ) : ℤ) ?_ hTp b hb` and prove the remaining obligations. Use `(hT'.z0 i).symm ▸ ?_ show IsIntegral ℤ (TC.z0 X u _)` and prove the remaining obligations. Unfold `TC.z0`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(X.piT u).2`. Conclude with `isIntegral_zero`. Establish `h0 : TC.z0 X u ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩ = (X.piT u : B.host.E)` using `if_pos (Nat.sub_add_cancel hpos)`. Establish `h1` using `(hT'.z0 (Fin.cast (Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl).symm ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩)).trans h0`. Establish `h2 : (X.piT u : B.host.E) * B.host.conj (X.piT u : B.host.E) = (((B.T u : ℕ) : ℤ) : B.host.E)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[Int.cast_natCast]`. Conclude with `X.piT_norm u`. Conclude with `(congrArg (fun t : B.host.E => t * B.host.conj (X.piT u : B.host.E)) h1).trans h2`. Use `letI : Field a.k := a.fld`. Use `letI : ValuativeRel a.k := a.val`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `letI : TopologicalSpace a.k := a.top`. Use `letI : IsNonarchimedeanLocalField a.k := a.loc`. Prove the components needed by the constructor for the conclusion. Conclude with `ha.bot.1`. Conclude with `ha.bot.2.2.1`.
-
-Use `⟨1, -(I.rec7 l Z).host.xi0 ^ ((I.rec7 l Z).R.m / 2), by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Rewrite using `[one_mul]`. Conclude with `ha.bot.2.2.2 r`. Conclude with `ha.norm.2`.
-
-Conclude with `fun i => (ha.stdG i).2.2`. Conclude with `GlobalTheory.Fam.lattice_eq_base_off_twist W hA u a ha hT' row col hc`. Introduce `κ hκ y e`. Conclude with `⟨GlobalTheory.T.true_geometry_local_data W hA u a ha hT' row col hc κ hκ y e, GlobalTheory.T.true_geometry_reduction_level W hA u a ha hT' row col hc κ hκ y e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem placed_of_true : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → GlobalTheory.MiTop.PlacedP (a.fam row col) a.d.B := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hT' row col hc

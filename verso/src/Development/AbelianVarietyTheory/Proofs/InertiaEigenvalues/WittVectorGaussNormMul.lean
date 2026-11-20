@@ -6,9 +6,9 @@ namespace GlobalTheory
 namespace WittGaussMul
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact ⟨0, le_rfl, hB, fun k hk => absurd hk (Nat.not_lt_zero k)⟩`. Consider the case `succ i ih`. Take `⟨c, hc0, hcB, hc⟩` from `ih (fun k hk => h k (Nat.lt_succ_of_lt hk))`. Use `⟨max c (f i), le_max_of_le_left hc0, max_lt hcB (h i (Nat.lt_succ_self i)), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hk with hk | rfl` into its components or cases. Conclude with `le_max_of_le_left (hc k hk)`. Conclude with `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_lt_bound (f : ℕ → ℝ) (B : ℝ) (hB : 0 < B) (i : ℕ) (h : ∀ k < i, f k < B) :
     ∃ c, 0 ≤ c ∧ c < B ∧ ∀ k < i, f k ≤ c := by
@@ -23,11 +23,11 @@ theorem exists_lt_bound (f : ℕ → ℝ) (B : ℝ) (hB : 0 < B) (i : ℕ) (h : 
     · exact le_max_right _ _
 
 /- English proof (translation)
-Establish `hb : BddAbove (Set.range f)` using `⟨1, by rintro _ ⟨n, rfl⟩; exact (hf n).trans (pow_le_one₀ hr0.le hr1.le)⟩`. Establish `hle : ∀ n, f n ≤ ⨆ n, f n` using `fun n => le_ciSup hb n`. Establish `hex : ∃ i, f i = ⨆ n, f n`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one hpos hr1`. Take `⟨c, -, hcB, hc⟩` from `exists_lt_bound f _ hpos M (fun k _ => lt_of_le_of_ne (hle k) (hne k))`. Establish `: (⨆ n, f n) ≤ max c (r ^ M)`. Use `ciSup_le fun n => ?_` and prove the remaining obligations. Break down `lt_or_ge n M with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `le_max_of_le_left (hc n h)`. Conclude with `le_max_of_le_right ((hf n).trans (pow_le_pow_of_le_one hr0.le hr1.le h))`. Conclude with `absurd (max_lt hcB hM) (not_lt.mpr this)`. Conclude with `⟨Nat.find hex, Nat.find_spec hex, fun k hk => lt_of_le_of_ne (hle k) (Nat.find_min hex hk)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_first_max (f : ℕ → ℝ) (r : ℝ) (hr0 : 0 < r) (hr1 : r < 1)
     (hf : ∀ n, f n ≤ r ^ n) (hpos : 0 < ⨆ n, f n) :
@@ -56,43 +56,39 @@ end WittGaussMul
 open WittGaussMul in
 
 /- English proof (translation)
-Introduce `l hl R _ _ _ a h01 h0 h1 hmul hadd r hr0 hr1 N hN x y`. Take `⟨Nadd, Nneg, Nmul⟩` from `GlobalTheory.T.witt_vector_gauss_norm_ultrametric l R a h01 h0 h1 hmul hadd r hr0 hr1 N hN`. Use `set T : WittVector l R → ℕ → ℝ := fun x n => a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n with hT`. Establish `hN' : ∀ x, N x = ⨆ n, T x n` using `hN`. Establish `hlpos : (0 : ℝ) < l` using `by exact_mod_cast hl.out.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ n : ℕ, (0 : ℝ) < 1 / (l : ℝ) ^ n` using `fun n => by positivity`. Establish `hT0 : ∀ x n, 0 ≤ T x n` using `fun x n => mul_nonneg (Real.rpow_nonneg (h01 _).1 _) (pow_pos hr0 n).le`. Establish `hTr : ∀ x n, T x n ≤ r ^ n` using `fun x n => mul_le_of_le_one_left (pow_pos hr0 n).le (Real.rpow_le_one (h01 _).1 (h01 _).2 (hexp n).le)`. Establish `hTN : ∀ x n, T x n ≤ N x` using `fun x n => by`. Rewrite using `[hN']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_ciSup (f := T x) ⟨1, by rintro _ ⟨n, rfl⟩; exact (hTr x n).trans (pow_le_one₀ hr0.le hr1.le)⟩ n`. Establish `hN0 : ∀ x, 0 ≤ N x` using `fun x => (hT0 x 0).trans (hTN x 0)`. Establish `hTz : ∀ x n, x.coeff n = 0 → T x n = 0` using `fun x n h => by`. Simplify using `only [hT, h, h0, Real.zero_rpow (hexp n).ne', zero_mul]`. Establish `hpow : ∀ w (n : ℕ), a (w ^ n) = a w ^ n` using `fun w n => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ, hmul, ih, pow_succ]`. Establish `hTp : ∀ (u : WittVector l R) (n : ℕ), T (u * (l : WittVector l R) ^ n) n = a (u.coeff 0) * r ^ n` using `fun u n => by`. Establish `h` using `WittVector.mul_pow_charP_coeff_succ u (m := 0) (n := n)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[zero_add]`. Simplify using `only [hT, h, hpow]`. Use `congr 1`. Use `Real.pow_rpow_inv_natCast (h01 (u.coeff 0)).1 (pow_pos hl.out.pos n).ne'` as an intermediate fact. Simplify using `using this`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x, 0 < N x → ∃ (i : ℕ) (x0 u : WittVector l R), x = x0 + u * (l : WittVector l R) ^ i ∧ N x0 < N x ∧ N (u * (l : WittVector l R) ^ i) ≤ N x ∧ a (u.coeff 0) * r ^ i = N x`. Introduce `x hx`. Take `⟨i, hi, hlt⟩` from `exists_first_max (T x) r hr0 hr1 (hTr x) (by rw [← hN']; exact hx)`. Rewrite `hi`, `hlt` using `[← hN']`. Establish `hmem : WittVector.tail i x ∈ Ideal.span {((l : WittVector l R) ^ i)}`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[WittVector.mem_span_p_pow_iff_le_coeff_eq_zero]`. Introduce `m hm`. Simplify using `[WittVector.tail, WittVector.select, WittVector.coeff_mk, not_le.mpr hm]`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨i, WittVector.init i x, u, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu, WittVector.init_add_tail]`. Take `⟨c, hc0, hcB, hc⟩` from `exists_lt_bound (T x) _ hx i hlt`. Use `lt_of_le_of_lt ?_ hcB` and prove the remaining obligations. Rewrite using `[hN']`. Use `ciSup_le fun n => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `lt_or_ge n i with h | h` into its components or cases. Establish `: (WittVector.init i x).coeff n = x.coeff n`. Simplify using `[WittVector.init, WittVector.select, WittVector.coeff_mk, h]`. Establish `h2 : T (WittVector.init i x) n = T x n` using `by simp only [hT, this]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hc n h`. Rewrite using `[hTz]`. Conclude with `hc0`. Simplify using `[WittVector.init, WittVector.select, WittVector.coeff_mk, not_lt.mpr h]`. Rewrite using `[hu, hN' (WittVector.tail i x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ciSup_le fun n => ?_` and prove the remaining obligations. Break down `lt_or_ge n i with h | h` into its components or cases. Rewrite using `[hTz]`. Conclude with `hN0 x`. Simplify using `[WittVector.tail, WittVector.select, WittVector.coeff_mk, not_le.mpr h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (WittVector.tail i x).coeff n = x.coeff n`. Simplify using `[WittVector.tail, WittVector.select, WittVector.coeff_mk, h]`. Establish `h2 : T (WittVector.tail i x) n = T x n` using `by simp only [hT, this]`. Rewrite using `[h2]`. Conclude with `hTN x n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← hTp, hu, ← hi]`. Establish `: (WittVector.tail i x).coeff i = x.coeff i`. Simplify using `[WittVector.tail, WittVector.select, WittVector.coeff_mk]`. Simplify using `only [hT, this]`. Use `le_antisymm (Nmul x y) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `(hN0 x).eq_or_lt with hx | hx` into its components or cases. Rewrite using `[← hx, zero_mul]`. Conclude with `hN0 _`. Break down `(hN0 y).eq_or_lt with hy | hy` into its components or cases. Rewrite using `[← hy, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `hN0 _`. Take `⟨i, x0, u, hxe, hx0, hu, hui⟩` from `key x hx`. Take `⟨j, y0, v, hye, hy0, hv, hvj⟩` from `key y hy`. Establish `hmain : N x * N y ≤ N ((u * v) * (l : WittVector l R) ^ (i + j))`. Use `le_trans (le_of_eq ?_) (hTN _ (i + j))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTp, WittVector.mul_coeff_zero, hmul, ← hui, ← hvj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrest : N (x0 * y + (u * (l : WittVector l R) ^ i) * y0) < N x * N y`. Use `lt_of_le_of_lt (Nadd _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (Nmul _ _) (mul_lt_mul_of_pos_right hx0 hy)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `lt_of_le_of_lt (Nmul _ _) ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_right hu (hN0 _)) (mul_lt_mul_of_pos_left hy0 hx)`. Establish `heq : (u * v) * (l : WittVector l R) ^ (i + j) = x * y + -(x0 * y + (u * (l : WittVector l R) ^ i) * y0)`. Establish `: x * y = x0 * y + (u * (l : WittVector l R) ^ i) * (y0 + v * (l : WittVector l R) ^ j)`. Rewrite using `[← hye, ← add_mul, ← hxe]`.
-
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `Nadd (x * y) (-(x0 * y + (u * (l : WittVector l R) ^ i) * y0))`. Rewrite `h3` using `[← heq, Nneg]`. Break down `le_max_iff.mp (hmain.trans h3) with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd hrest (not_lt.mpr h)`.
+A detailed English derivation is pending.
 -/
 theorem witt_gaussNorm_mul : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [CharP R l] [PerfectRing R l] (a : R → ℝ), (∀ x, 0 ≤ a x ∧ a x ≤ 1) → a 0 = 0 → a 1 = 1 → (∀ x y, a (x * y) = a x * a y) → (∀ x y, a (x + y) ≤ max (a x) (a y)) → ∀ r : ℝ, 0 < r → r < 1 → ∀ N : WittVector l R → ℝ, (∀ x, N x = ⨆ n : ℕ, a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n) → ∀ x y, N (x * y) = N x * N y := by
   intro l hl R _ _ _ a h01 h0 h1 hmul hadd r hr0 hr1 N hN x y

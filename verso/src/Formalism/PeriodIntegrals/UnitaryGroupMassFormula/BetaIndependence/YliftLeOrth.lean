@@ -15,7 +15,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth]`. Conclude with `fun x hx => hv x (h hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orth_anti {U W : Submodule E S.V} (h : U ≤ W) : orth S W ≤ orth S U := by
   intro v hv
@@ -23,14 +23,14 @@ theorem orth_anti {U W : Submodule E S.V} (h : U ≤ W) : orth S W ≤ orth S U 
   exact fun x hx => hv x (h hx)
 
 /- English proof (translation)
-The claim follows from `orth_anti (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE' S Λ hΛ F F')`.
+A detailed English derivation is pending.
 -/
 theorem Hp_le_orth (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) {T T' : E}
     (F : LFlag S r T) (F' : LFlag S r T') : Hp Λ F F' ≤ orth S (Xsp F') :=
   orth_anti (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE' S Λ hΛ F F')
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hX : Xsp F' ≤ Xplus F'` using `(le_sup_left : F'.fl.X ≤ F'.fl.X ⊔ Submodule.span E {F'.fl.z})`. Conclude with `orth_anti hX hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ylift'_le_orth (Λ : Submodule (𝓞 E) S.V) {T T' : E}
     (F : LFlag S r T) (F' : LFlag S r T') : Ylift' Λ F F' ≤ orth S (Xsp F') := by
@@ -39,7 +39,7 @@ theorem Ylift'_le_orth (Λ : Submodule (𝓞 E) S.V) {T T' : E}
   exact orth_anti hX hv.2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ThPairs (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' F'' : LFlag S r T')
     (β : S.V ≃ₗ[E] S.V) (p : S.V × S.V) :
@@ -51,11 +51,11 @@ variable (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' F'' : LF
   (β₁ β₂ : S.V ≃ₗ[E] S.V)
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[mem_ThPairs, mem_ThPairs]`. Establish `hd : p.1 ∈ Hp Λ F F' → β₁ p.1 - β₂ p.1 ∈ Xsp F''` using `fun h1 => H p.1 (Hp_le_orth Λ hΛ F F' h1)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨⟨h1, h2⟩, h3⟩, ?_⟩` and prove the remaining obligations. Establish `e : β₂ p.1 - p.2 = (β₁ p.1 - p.2) - (β₁ p.1 - β₂ p.1)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem h4 (hd h1)`. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨h1, h2⟩, h3⟩, ?_⟩` and prove the remaining obligations. Establish `e : β₁ p.1 - p.2 = (β₂ p.1 - p.2) + (β₁ p.1 - β₂ p.1)` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem h4 (hd h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThPairs_eq (hΛ : Submodule.IsLattice E Λ)
     (H : ∀ v ∈ orth S (Xsp F'), β₁ v - β₂ v ∈ Xsp F'') :
@@ -76,7 +76,7 @@ theorem ThPairs_eq (hΛ : Submodule.IsLattice E Λ)
     exact add_mem h4 (hd h1)
 
 /- English proof (translation)
-Unfold `Th`. Rewrite using `[ThPairs_eq Λ F F' F'' β₁ β₂ hΛ H]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Th_eq (hΛ : Submodule.IsLattice E Λ)
     (H : ∀ v ∈ orth S (Xsp F'), β₁ v - β₂ v ∈ Xsp F'') :
@@ -85,7 +85,7 @@ theorem Th_eq (hΛ : Submodule.IsLattice E Λ)
   rw [ThPairs_eq Λ F F' F'' β₁ β₂ hΛ H]
 
 /- English proof (translation)
-Unfold `s0`. Rewrite using `[Th_eq Λ F F' F'' β₁ β₂ hΛ H]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem s0_eq (hΛ : Submodule.IsLattice E Λ)
     (H : ∀ v ∈ orth S (Xsp F'), β₁ v - β₂ v ∈ Xsp F'') (k : ℕ) :
@@ -94,13 +94,11 @@ theorem s0_eq (hΛ : Submodule.IsLattice E Λ)
   rw [Th_eq Λ F F' F'' β₁ β₂ hΛ H]
 
 /- English proof (translation)
-Establish `key : ∀ y1' ∈ Ylift' Λ F F', ∀ y2'' : S.V, (y2'' - β₁ y1' ∈ Xsp F'' ↔ y2'' - β₂ y1' ∈ Xsp F'')`. Introduce `y1' hy y2''`. Establish `hd` using `H y1' (Ylift'_le_orth Λ F F' hy)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : y2'' - β₂ y1' = (y2'' - β₁ y1') + (β₁ y1' - β₂ y1')` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem h hd`. Introduce `h`. Establish `e : y2'' - β₁ y1' = (y2'' - β₂ y1') - (β₁ y1' - β₂ y1')` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem h hd`. Unfold `IsScalar`. Prove the components needed by the constructor for the conclusion. Introduce `h y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hx hb`.
-
-Conclude with `h y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hx ((key y1' hy1' y2'').2 hb)`. Introduce `h y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hx hb`. Conclude with `h y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hx ((key y1' hy1' y2'').1 hb)`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isScalar_iff (H : ∀ v ∈ orth S (Xsp F'), β₁ v - β₂ v ∈ Xsp F'') :
     IsScalar Λ F F' F'' β₁ ↔ IsScalar Λ F F' F'' β₂ := by
@@ -131,7 +129,7 @@ section D7
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hg F0 Λ hR x y hx hy β₁ β₂ h1 h2`. Establish `hΛ : Submodule.IsLattice D.host.E Λ` using `hR.1.1`. Establish `H` using `h hg F0 Λ hR x y hx hy β₁ β₂ h1 h2`. Conclude with `⟨s0_eq Λ _ _ _ β₁ β₂ hΛ H _, isScalar_iff Λ _ _ _ β₁ β₂ H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem betaIndep_of (D : D7) (u u' : D.what₂.Word) (h : PI.ScalPairs.BetaL D u u') :
     PI.ScalPairs.BetaFree D u u' := by

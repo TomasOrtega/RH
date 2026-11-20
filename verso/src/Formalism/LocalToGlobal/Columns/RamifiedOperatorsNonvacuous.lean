@@ -56,9 +56,9 @@ section Col
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Chars X Pr R.m}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp only [List.map_nil, List.prod_nil, one_smul]`. Both sides reduce to the same expression. Consider the case `cons i l ih`. Simplify using `only [List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `e1 : (A' i * (l.map A').prod).comp k = (A' i).comp (((l.map A').prod).comp k)` using `rfl`. Rewrite using `[e1, ih, LinearMap.comp_smul, ← LinearMap.comp_assoc, h i, LinearMap.smul_comp, smul_smul, mul_comm (l.map c).prod]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem list_prod_intertwines {K : Type} [Field K] {V V' ι : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     (k : V →ₗ[K] V') (A : ι → Module.End K V) (A' : ι → Module.End K V') (c : ι → K)
@@ -73,7 +73,7 @@ theorem list_prod_intertwines {K : Type} [Field K] {V V' ι : Type} [AddCommGrou
     rfl
 
 /- English proof (translation)
-Use `list_prod_intertwines (kk j) (fun P => UOp W Ch u j P) (fun P => UOp W Ch u (j + 1) P) (fun P => ((c j P : X.Kˣ) : X.K)) (fun P => h j hj P) (VVTc W u w).toList` as an intermediate fact. Unfold `UprodC cProdC`. Rewrite using `[this, Units.coe_prod, Finset.prod_map_toList]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem KernelArgumentHypothesisScalar.prod {u : Pr.Word} {kk : KerArg W Ch u} {c : ℕ → {P // P ∈ Pr.vT u} → X.Kˣ} (h : KernelArgumentHypothesisScalar kk c) (w : HeightOneSpectrum (𝓞 X.K))
     (j : ℕ) (hj : j < R.m) :
@@ -90,7 +90,7 @@ section NonDeg
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `ht`. Conclude with `⟨⟨pullW τ w, (seenC_iff hPr u w).1 hw τ⟩, (mem_VVTc W u w _).2 ⟨τ, by rw [topsP_of_seenC W hPr u w hw]; exact hτ, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem VVTc_nonempty (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (hw : seenC Pr u w) (ht : W.tops.Nonempty) :
     (VVTc W u w).Nonempty := by

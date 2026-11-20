@@ -16,7 +16,7 @@ def OrbitChartResidue.Statement : Prop :=
           Real.log (Nat.card (chartRing x c ⧸ chartPoint x c V))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl), fun _ ↦ by simp [samplePoint]⟩`.
+Supply the required witnesses or components.
 -/
 example : BlockNonzero samplePoint ∧
     Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo

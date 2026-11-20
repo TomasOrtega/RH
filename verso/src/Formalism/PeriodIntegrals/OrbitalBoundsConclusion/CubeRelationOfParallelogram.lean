@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.FglGram
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CubeFormalIdentities.IsExpIntegralParallelogramOfNe
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.CubeRelationOfParallelogram.cubeRelationOfParallelogram`.
+A detailed English derivation is pending.
 -/
 theorem cube_relation_of_parallelogram : PI.FglGram.CubeRelationOfParallelogram := PI.UnitaryGroupMassFormula.CubeRelationOfParallelogram.cubeRelationOfParallelogram

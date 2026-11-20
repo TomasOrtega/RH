@@ -16,11 +16,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hb : valuation k (b : k) ≠ 0` using `by simp`. Rewrite using `[idl, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Express the relevant statement in the definitionally equal form `valuation k ((s : k) * b) ≤ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_left' s.2`. Introduce `h`. Use `⟨⟨x / b, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valuation k (x / b) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ h zero_le`. Express the relevant statement in the definitionally equal form `x / b * b = x`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_idl {b : kˣ} {x : k} : x ∈ idl b ↔ valuation k x ≤ valuation k (b : k) := by
   have hb : valuation k (b : k) ≠ 0 := by simp
@@ -40,7 +40,7 @@ theorem mem_idl {b : kˣ} {x : k} : x ∈ idl b ↔ valuation k x ≤ valuation 
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hb : 0 < valuation k (b : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[mem_idl]`. Express the relevant statement in the definitionally equal form `_ ↔ valuation k _ ≤ 1`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ hb, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_idl_iff_int {b : kˣ} {x : k} : x ∈ idl b ↔ ((b⁻¹ : kˣ) : k) * x ∈ 𝒪[k] := by
   have hb : 0 < valuation k (b : k) := zero_lt_iff.2 (by simp)
@@ -50,9 +50,9 @@ theorem mem_idl_iff_int {b : kˣ} {x : k} : x ∈ idl b ↔ ((b⁻¹ : kˣ) : k)
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `le_antisymm (mem_idl.1 (h ▸ mem_idl.2 le_rfl)) (mem_idl.1 (h ▸ mem_idl.2 le_rfl))`. Introduce `h`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_idl, mem_idl, h]`.
+A detailed English derivation is pending.
 -/
 theorem idl_eq_iff {a b : kˣ} : idl a = idl b ↔ valuation k (a : k) = valuation k (b : k) := by
   constructor
@@ -64,14 +64,14 @@ theorem idl_eq_iff {a b : kˣ} : idl a = idl b ↔ valuation k (a : k) = valuati
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_monLat {n : Type} {c : ℕ} {L : Submodule 𝒪[k] (n → k)} {b : ℕ → kˣ} {v : n ⊕ Fin c → k} :
     v ∈ monLat c L b ↔ (fun r => v (Sum.inl r)) ∈ L ∧ ∀ i : Fin c, v (Sum.inr i) ∈ idl (b (i.val + 1)) := Iff.rfl
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_monLat]`. Conclude with `and_congr_right' (forall_congr' fun i => by rw [h _ (by omega) i.2])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monLat_congr {n : Type} {c : ℕ} (L : Submodule 𝒪[k] (n → k)) {b b' : ℕ → kˣ}
     (h : ∀ i, 1 ≤ i → i ≤ c → idl (b i) = idl (b' i)) : monLat c L b = monLat c L b' := by
@@ -84,7 +84,7 @@ variable {ι ι' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableE
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Conclude with `fun h => ⟨_, h, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_act {g : GL ι k} {L : Submodule 𝒪[k] (ι → k)} {v : ι → k} : v ∈ act g L ↔ (g⁻¹).val *ᵥ v ∈ L := by
   constructor
@@ -93,7 +93,7 @@ theorem mem_act {g : GL ι k} {L : Submodule 𝒪[k] (ι → k)} {v : ι → k} 
   · exact fun h => ⟨_, h, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_act, mem_smul_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_eq_smul (g : GL ι k) (L : Submodule 𝒪[k] (ι → k)) : act g L = g • L := by
   ext v
@@ -101,25 +101,25 @@ theorem act_eq_smul (g : GL ι k) (L : Submodule 𝒪[k] (ι → k)) : act g L =
   rfl
 
 /- English proof (translation)
-Rewrite using `[act_eq_smul]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_act (g : GL ι k) {L : Submodule 𝒪[k] (ι → k)} (h : L.IsLattice k) : (act g L).IsLattice k := by
   rw [act_eq_smul]
   infer_instance
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_smul_lat (stdLat k ι) L`. Conclude with `⟨g, by rw [act_eq_smul, hg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_act_stdLat {L : Submodule 𝒪[k] (ι → k)} (h : L.IsLattice k) : ∃ g : GL ι k, L = act g (stdLat k ι) := by
   obtain ⟨g, hg⟩ := exists_smul_lat (stdLat k ι) L
   exact ⟨g, by rw [act_eq_smul, hg]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_KO]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨maps_stdLat_iff.1 fun y hy => ?_, maps_stdLat_iff.1 fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, hy, rfl⟩`. Rewrite `hy` using `[← h]`. Conclude with `mem_act.1 hy`. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `v`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_act]`. Use `⟨fun hv => ?_, fun hv => maps_stdLat_iff.2 h2 v hv⟩` and prove the remaining obligations. Simplify using `using maps_stdLat_iff.2 h1 _ hv`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem act_stdLat_eq_iff {g : GL ι k} : act g (stdLat k ι) = stdLat k ι ↔ g ∈ KO k ι := by
   rw [mem_KO]
@@ -137,11 +137,11 @@ theorem act_stdLat_eq_iff {g : GL ι k} : act g (stdLat k ι) = stdLat k ι ↔ 
     simpa using maps_stdLat_iff.2 h1 _ hv
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `exists_act_stdLat hL`. Establish `h1 : act ((h * u)⁻¹ * (g * u)) (stdLat k ι) = stdLat k ι`. Rewrite using `[act_mul, act_mul g, e, ← act_mul h, ← act_mul, inv_mul_cancel, act_one]`. Establish `h2` using `valuation_det_of_mem_KO (act_stdLat_eq_iff.1 h1)`. Rewrite using `[nabs_eq_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det h * Matrix.GeneralLinearGroup.det ((h * u)⁻¹ * (g * u))`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[_root_.mul_inv_rev, mul_comm (Matrix.GeneralLinearGroup.det g)]`. Use `group`. Rewrite using `[mul_comm (Matrix.GeneralLinearGroup.det h)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[this, Units.val_mul, map_mul, h2, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem nabs_det_eq_of_act_eq {g h : GL ι k} {L : Submodule 𝒪[k] (ι → k)} (hL : L.IsLattice k)
     (e : act g L = act h L) :
@@ -163,9 +163,9 @@ theorem nabs_det_eq_of_act_eq {g h : GL ι k} {L : Submodule 𝒪[k] (ι → k)}
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype ι] [DecidableEq ι] [DecidableEq ι'] in
 open Classical in
 /- English proof (translation)
-Unfold `sph`. Use `if_congr (forall₂_congr fun v _ => ?_) rfl rfl` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e, smul_smul]`. Simplify using `using hw`. Conclude with `fun h => ⟨_, h, by simp [smul_smul]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sph_apply (α : kˣ) (L' : Submodule 𝒪[k] (ι' → k)) (L : Submodule 𝒪[k] (ι → k)) (x : Matrix ι ι' k) :
     sph α L' L x = if ∀ v ∈ L', (((α⁻¹ : kˣ) : k) • x) *ᵥ v ∈ L then 1 else 0 := by
@@ -181,7 +181,7 @@ theorem sph_apply (α : kˣ) (L' : Submodule 𝒪[k] (ι' → k)) (L : Submodule
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[sph_apply, sph_apply]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Simplify using `only [mem_act, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul]`. Use `⟨fun H y hy => H _ (by simpa using hy), fun H y hy => ?_⟩` and prove the remaining obligations. Simplify using `using H _ hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sph_act (α : kˣ) (g' : GL ι' k) (g : GL ι k) (L' : Submodule 𝒪[k] (ι' → k)) (L : Submodule 𝒪[k] (ι → k))
     (x : Matrix ι ι' k) : sph α (act g' L') (act g L) x = sph α L' L ((g⁻¹).val * x * g'.val) := by
@@ -195,7 +195,7 @@ theorem sph_act (α : kˣ) (g' : GL ι' k) (g : GL ι k) (L' : Submodule 𝒪[k]
 omit [DecidableEq ι] [DecidableEq ι'] in
 open Classical in
 /- English proof (translation)
-Rewrite using `[sph_apply]`. Conclude with `if_congr maps_stdLat_iff rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph_stdLat (α : kˣ) (x : Matrix ι ι' k) :
     sph α (stdLat k ι') (stdLat k ι) x = if IntM (((α⁻¹ : kˣ) : k) • x) then 1 else 0 := by
@@ -204,9 +204,9 @@ theorem sph_stdLat (α : kˣ) (x : Matrix ι ι' k) :
 
 omit [DecidableEq ι] [DecidableEq ι'] in
 /- English proof (translation)
-Establish `: sph α L' L = latInd L' (α • L)`. Use function extensionality and compare the values at `x`. Rewrite using `[sph, latInd]`. Use `if_congr (forall₂_congr fun v _ => ?_) rfl rfl` and prove the remaining obligations. Use `Iff.trans ?_ (Submodule.mem_smul_pointwise_iff_exists _ α L).symm` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exists_congr fun w => and_congr_right' eq_comm`. Rewrite using `[this]`. Conclude with `latInd_mem_SB _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph_mem_SB (α : kˣ) {L' : Submodule 𝒪[k] (ι' → k)} {L : Submodule 𝒪[k] (ι → k)} (h' : L'.IsLattice k)
     (h : L.IsLattice k) : sph α L' L ∈ SB (Matrix ι ι' k) := by
@@ -221,7 +221,7 @@ theorem sph_mem_SB (α : kˣ) {L' : Submodule 𝒪[k] (ι' → k)} {L : Submodul
   exact latInd_mem_SB _ _
 
 /- English proof (translation)
-Use `conv_rhs => rw [← act_one L', sph_act]`. Simplify using `[om, nabs_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_sph (μ : kˣ →* ℂˣ) (h : GL ι k) (α : kˣ) (L' : Submodule 𝒪[k] (ι' → k)) (L : Submodule 𝒪[k] (ι → k))
     (x : Matrix ι ι' k) : om μ 1 h (sph α L' L) x = (((μ (Matrix.GeneralLinearGroup.det h))⁻¹ : ℂˣ) : ℂ) *
@@ -234,17 +234,17 @@ end Act
 section Half
 
 /- English proof (translation)
-Conclude with `(one_lt_resCard k).trans' one_pos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem resCard_pos : (0 : ℝ) < resCard k := by exact_mod_cast (one_lt_resCard k).trans' one_pos
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHalfPow_one : IsHalfPow k 1 := ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨e, rfl⟩` from `ha`. Take `⟨f, rfl⟩` from `hb`. Conclude with `⟨e + f, by rw [← Real.rpow_add resCard_pos]; push_cast; ring_nf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHalfPow_mul {a b : ℝ} (ha : IsHalfPow k a) (hb : IsHalfPow k b) : IsHalfPow k (a * b) := by
   obtain ⟨e, rfl⟩ := ha
@@ -252,14 +252,14 @@ theorem isHalfPow_mul {a b : ℝ} (ha : IsHalfPow k a) (hb : IsHalfPow k b) : Is
   exact ⟨e + f, by rw [← Real.rpow_add resCard_pos]; push_cast; ring_nf⟩
 
 /- English proof (translation)
-Take `⟨e, rfl⟩` from `ha`. Conclude with `⟨-e, by rw [← Real.rpow_neg resCard_pos.le]; push_cast; ring_nf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHalfPow_inv {a : ℝ} (ha : IsHalfPow k a) : IsHalfPow k a⁻¹ := by
   obtain ⟨e, rfl⟩ := ha
   exact ⟨-e, by rw [← Real.rpow_neg resCard_pos.le]; push_cast; ring_nf⟩
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using isHalfPow_one`. Consider the case `succ m ih => rw [pow_succ]`. Conclude with `isHalfPow_mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isHalfPow_pow {a : ℝ} (ha : IsHalfPow k a) (m : ℕ) : IsHalfPow k (a ^ m) := by
   induction m with
@@ -267,13 +267,13 @@ theorem isHalfPow_pow {a : ℝ} (ha : IsHalfPow k a) (m : ℕ) : IsHalfPow k (a 
   | succ m ih => rw [pow_succ]; exact isHalfPow_mul ih ha
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (ϖ : k) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `key : ∀ x : kˣ, (x : k) ∈ 𝒪[k] → ∃ e : ℤ, nabs k x = (resCard k : ℝ) ^ e` using `fun x hx => by`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (x := (⟨x, hx⟩ : 𝒪[k])) (fun h => x.ne_zero (congrArg Subtype.val h)) hϖ`. Establish `hu' : (x : k) = ((u : 𝒪[k]) : k) * (ϖ : k) ^ m` using `by simpa using congrArg Subtype.val hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : valuation k ((u : 𝒪[k]) : k) = 1` using `(Valuation.Integers.valuation_unit (Valuation.integer.integers (valuation k)) u)`. Establish `: nabs k x = nabs k (Units.mk0 (ϖ : k) h0 ^ m)`. Rewrite using `[nabs_eq_iff, hu', map_mul, hv, one_mul]`. Simplify using the standard rewrite rules. Use `⟨-m, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, OpELevi.nabs_pow, nabs_uniformiser hϖ rfl]`. Simplify using the standard rewrite rules. Break down `le_total (valuation k (x : k)) 1 with h | h` into its components or cases. Conclude with `key x h`. Take `⟨e, he⟩` from `key x⁻¹ (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `valuation k _ ≤ 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ h)`. Rewrite `he` using `[OpELevi.nabs_inv]`. Conclude with `⟨-e, by rw [_root_.zpow_neg, ← he, inv_inv]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nabs_eq_zpow (x : kˣ) : ∃ e : ℤ, nabs k x = (resCard k : ℝ) ^ e := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
@@ -300,7 +300,7 @@ theorem exists_nabs_eq_zpow (x : kˣ) : ∃ e : ℤ, nabs k x = (resCard k : ℝ
     exact ⟨-e, by rw [_root_.zpow_neg, ← he, inv_inv]⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_nabs_eq_zpow x`. Use `⟨e * m, ?_⟩` and prove the remaining obligations. Rewrite using `[he, ← Real.rpow_intCast, ← Real.rpow_mul resCard_pos.le]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem isHalfPow_nabs_rpow (x : kˣ) (m : ℤ) : IsHalfPow k (nabs k x ^ ((m : ℝ) / 2)) := by
   obtain ⟨e, he⟩ := exists_nabs_eq_zpow x
@@ -310,7 +310,7 @@ theorem isHalfPow_nabs_rpow (x : kˣ) (m : ℤ) : IsHalfPow k (nabs k x ^ ((m : 
   ring_nf
 
 /- English proof (translation)
-Simplify using `using isHalfPow_nabs_rpow x 2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHalfPow_nabs (x : kˣ) : IsHalfPow k (nabs k x) := by
   simpa using isHalfPow_nabs_rpow x 2

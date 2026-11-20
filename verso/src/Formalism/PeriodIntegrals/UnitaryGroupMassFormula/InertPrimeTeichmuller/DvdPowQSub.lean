@@ -8,11 +8,11 @@ noncomputable section
 namespace PI.OkpW
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [zero_add, sub_self, norm_zero]`. Check the signs of the components of the expression. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Treat this case separately.
 
-Establish `h1` using `h (j + k)`. Establish `h2 : ‖x (j + 1 + k) - x k‖ ≤ max ‖x (j + k + 1) - x (j + k)‖ ‖x (j + k) - x k‖`. Establish `h4` using `IsUltrametricDist.norm_add_le_max (x (j + k + 1) - x (j + k)) (x (j + k) - x k)`. Rewrite using `[show j + 1 + k = j + k + 1 by ring]`. Simplify using `using h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : r ^ (j + k + 1) ≤ r ^ (k + 1)` using `pow_le_pow_of_le_one hr0 hr1 (by omega)`. Conclude with `h2.trans (max_le (h1.trans h3) ih)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ultra_tail {E : Type*} [NormedAddCommGroup E] [IsUltrametricDist E] (x : ℕ → E) {r : ℝ}
     (hr0 : 0 ≤ r) (hr1 : r ≤ 1) (h : ∀ k, ‖x (k + 1) - x k‖ ≤ r ^ (k + 1)) (k j : ℕ) :
@@ -31,9 +31,9 @@ theorem ultra_tail {E : Type*} [NormedAddCommGroup E] [IsUltrametricDist E] (x :
     exact h2.trans (max_le (h1.trans h3) ih)
 
 /- English proof (translation)
-Establish `hc : CauchySeq x` using `cauchySeq_of_le_geometric r r hr1 (fun n => by`. Rewrite using `[dist_comm, dist_eq_norm, ← pow_succ']`. Conclude with `h n)`. Establish `ht` using `hc.tendsto_limUnder`. Use `⟨ht, fun k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht' : Tendsto (fun j => ‖x (j + k) - x k‖) atTop (𝓝 ‖limUnder atTop x - x k‖)` using `(((tendsto_add_atTop_iff_nat k).mpr ht).sub_const (x k)).norm`. Conclude with `le_of_tendsto' ht' (fun j => ultra_tail x hr0 hr1.le h k j)`.
+A detailed English derivation is pending.
 -/
 theorem ultra_limit {E : Type*} [NormedAddCommGroup E] [IsUltrametricDist E] [CompleteSpace E]
     (x : ℕ → E) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r < 1) (h : ∀ k, ‖x (k + 1) - x k‖ ≤ r ^ (k + 1)) :
@@ -49,13 +49,13 @@ theorem ultra_limit {E : Type*} [NormedAddCommGroup E] [IsUltrametricDist E] [Co
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem pinv_lt_one : (p : ℝ)⁻¹ < 1 :=
   inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)
 
 /- English proof (translation)
-Conclude with `inv_nonneg.mpr (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem pinv_nonneg : (0 : ℝ) ≤ (p : ℝ)⁻¹ := by
   exact inv_nonneg.mpr (Nat.cast_nonneg _)
@@ -65,19 +65,19 @@ def tseq (τ : K →+* ℂ_[p]) (a : 𝓞 K) (k : ℕ) : ℂ_[p] := τ ((a ^ ((p
 def teich (τ : K →+* ℂ_[p]) (a : 𝓞 K) : ℂ_[p] := limUnder atTop (tseq τ a)
 
 /- English proof (translation)
-Simplify using `[map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_pow (τ : K →+* ℂ_[p]) (x : 𝓞 K) (n : ℕ) : τ ((x ^ n : 𝓞 K) : K) = τ (x : K) ^ n := by
   simp [map_pow]
 
 /- English proof (translation)
-Simplify using `[map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_sub (τ : K →+* ℂ_[p]) (x y : 𝓞 K) : τ ((x - y : 𝓞 K) : K) = τ (x : K) - τ (y : K) := by
   simp [map_sub]
 
 /- English proof (translation)
-Establish `h1` using `dvd_sub_pow_of_dvd_sub h (2 * k)`. Rewrite using `[show (p ^ 2) ^ k = p ^ (2 * k) by rw [← pow_mul]]`. Conclude with `(pow_dvd_pow _ (by omega)).trans h1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pow_q_sub (a b : 𝓞 K) (h : (p : 𝓞 K) ∣ a - b) (k : ℕ) :
     (p : 𝓞 K) ^ (k + 1) ∣ a ^ ((p ^ 2) ^ k) - b ^ ((p ^ 2) ^ k) := by
@@ -86,7 +86,7 @@ theorem dvd_pow_q_sub (a b : 𝓞 K) (h : (p : 𝓞 K) ∣ a - b) (k : ℕ) :
   exact (pow_dvd_pow _ (by omega)).trans h1
 
 /- English proof (translation)
-Establish `h1` using `dvd_pow_q_sub (a ^ (p ^ 2)) a (hq a) k`. Rewrite `h1` using `[← pow_mul, ← pow_succ']`. Use `norm_tau_dvd τ h1` as an intermediate fact. Simplify `this` using `[tseq, map_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tseq_step (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b) (a : 𝓞 K)
     (k : ℕ) : ‖tseq τ a (k + 1) - tseq τ a k‖ ≤ (p : ℝ)⁻¹ ^ (k + 1) := by
@@ -96,7 +96,7 @@ theorem tseq_step (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ 
   simpa [tseq, map_sub] using this
 
 /- English proof (translation)
-The claim follows from `ultra_limit (tseq τ a) pinv_nonneg pinv_lt_one (tseq_step τ hq a)`.
+A detailed English derivation is pending.
 -/
 theorem teich_spec (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b) (a : 𝓞 K) :
     Tendsto (tseq τ a) atTop (𝓝 (teich τ a)) ∧
@@ -104,7 +104,7 @@ theorem teich_spec (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣
   ultra_limit (tseq τ a) pinv_nonneg pinv_lt_one (tseq_step τ hq a)
 
 /- English proof (translation)
-Establish `h` using `(teich_spec τ hq a).2 0`. Simplify using `only [tseq, pow_zero, pow_one, zero_add] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem teich_close (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b) (a : 𝓞 K) :
     ‖teich τ a - τ (a : K)‖ ≤ (p : ℝ)⁻¹ := by
@@ -113,9 +113,9 @@ theorem teich_close (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) �
   exact h
 
 /- English proof (translation)
-Establish `h1` using `((teich_spec τ hq a).1).pow (p ^ 2)`. Establish `h2` using `(tendsto_add_atTop_iff_nat 1).mpr (teich_spec τ hq a).1`. Establish `e : (fun k => tseq τ a k ^ (p ^ 2)) = fun k => tseq τ a (k + 1)`. Use function extensionality and compare the values at `k`. Simplify using `only [tseq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← tau_pow, ← pow_mul, ← pow_succ]`. Rewrite `h1` using `[e]`. Conclude with `tendsto_nhds_unique h1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_pow (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b) (a : 𝓞 K) :
     teich τ a ^ (p ^ 2) = teich τ a := by
@@ -129,11 +129,11 @@ theorem teich_pow (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ 
   exact tendsto_nhds_unique h1 h2
 
 /- English proof (translation)
-Establish `h1` using `((teich_spec τ hq a).1).pow p`. Establish `hd : Tendsto (fun k => tseq τ b k - tseq τ a k ^ p) atTop (𝓝 0)`. Use `squeeze_zero_norm (a := fun k => (p : ℝ)⁻¹ ^ k) (fun k => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one pinv_nonneg pinv_lt_one)` and prove the remaining obligations. Establish `h2` using `dvd_pow_q_sub b (a ^ p) hb k`. Establish `h3` using `norm_tau_dvd τ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : tseq τ b k - tseq τ a k ^ p = τ ((b ^ ((p ^ 2) ^ k) - (a ^ p) ^ ((p ^ 2) ^ k) : 𝓞 K) : K)`. Simplify using `only [tseq]`. Establish `e2 : (a ^ ((p ^ 2) ^ k)) ^ p = (a ^ p) ^ ((p ^ 2) ^ k)` using `pow_right_comm _ _ _`. Rewrite using `[tau_sub, ← tau_pow, e2]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.trans (pow_le_pow_of_le_one pinv_nonneg pinv_lt_one.le (by omega))`. Establish `h4` using `h1.add hd`. Simplify using `only [add_sub_cancel, add_zero] at h4`. Conclude with `tendsto_nhds_unique (teich_spec τ hq b).1 h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem teich_c (τ : K →+* ℂ_[p]) (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b) (a b : 𝓞 K)
     (hb : (p : 𝓞 K) ∣ b - a ^ p) : teich τ b = teich τ a ^ p := by

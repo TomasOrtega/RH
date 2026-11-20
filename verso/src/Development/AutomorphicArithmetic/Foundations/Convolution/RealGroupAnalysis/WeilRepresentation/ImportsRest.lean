@@ -8,11 +8,11 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ _`. Take `⟨t₀, ht₀, h⟩` from `Reduction.exists_reduced (K := F)`. Use `⟨Real.sqrt t₀, Real.sqrt_pos.2 ht₀, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, k, hk, he, hr⟩` from `h 2 (gl g)`. Take `⟨γ', b', hb', he', h0, h1⟩` from `M.redDet F g γ b hb k he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, a, k', hk', hg, ha, ha'⟩` from `M.fromGL F (ratS F γ' * g) b' hb' k hk he'`. Use `⟨γ', x, a, k', hk', hg, ?_⟩` and prove the remaining obligations. Use `hr 0 1 rfl` as an intermediate fact. Rewrite `this` using `[← h1, ← h0, ha', ← ha, Reduction.adeleAbs_units]`. Express the relevant statement in the definitionally equal form `t₀ * (ab a)⁻¹ ≤ ab a at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hp` using `M.ab_pos a`. Rewrite `this` using `[mul_inv_le_iff₀ hp]`. Conclude with `Real.sqrt_le_iff.2 ⟨hp.le, by rwa [pow_two]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.red :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], St.Red F := by

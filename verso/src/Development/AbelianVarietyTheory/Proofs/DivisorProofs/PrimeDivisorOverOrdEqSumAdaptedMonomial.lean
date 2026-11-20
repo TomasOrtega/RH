@@ -33,7 +33,7 @@ def schOrdHom [IsLocallyNoetherian Y] (v : Y) : Y.functionFieldˣ →* Multiplic
     simp [Units.val_mul, Scheme.ord_mul f.ne_zero g.ne_zero, ofAdd_add]
 
 /- English proof (translation)
-Establish `h` using `congrArg Multiplicative.toAdd (map_prod (schOrdHom v) (fun j => u j ^ m j) s)`. Simplify using `only [map_zpow, toAdd_prod, toAdd_zpow] at h`. Use `h.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem schOrd_prod_zpow [IsLocallyNoetherian Y] {ι : Type} (s : Finset ι)
     (u : ι → Y.functionFieldˣ) (m : ι → ℤ) (v : Y) :
@@ -46,7 +46,7 @@ theorem schOrd_prod_zpow [IsLocallyNoetherian Y] {ι : Type} (s : Finset ι)
   rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg Multiplicative.toAdd (map_inv (schOrdHom v) g)`. Rewrite `h` using `[toAdd_inv]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schOrd_inv [IsLocallyNoetherian Y] (g : Y.functionFieldˣ) (v : Y) :
     Scheme.ord ((g⁻¹ : Y.functionFieldˣ) : Y.functionField) v =
@@ -63,7 +63,7 @@ def divOrdHom (E : DivOver q) : Y.functionFieldˣ →* Multiplicative ℤ where
   map_mul' f g := by simp [E.ord_mul, ofAdd_add]
 
 /- English proof (translation)
-Establish `h` using `congrArg Multiplicative.toAdd (map_prod (divOrdHom E) (fun j => u j ^ m j) s)`. Simplify using `only [map_zpow, toAdd_prod, toAdd_zpow] at h`. Use `h.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem divOrd_prod_zpow (E : DivOver q) {ι : Type} (s : Finset ι) (u : ι → Y.functionFieldˣ)
     (m : ι → ℤ) : E.ord (∏ j ∈ s, u j ^ m j) = ∑ j ∈ s, m j * E.ord (u j) := by
@@ -78,17 +78,15 @@ end GlobalTheory.Discrepancy.MonoOrd
 open GlobalTheory.Discrepancy.MonoOrd in
 
 /- English proof (translation)
-Introduce `k _ Y _ _ _ q E y hE ι _ w u hw _ _ hself hother φ hφ`. Use `set a : ι → ℤ := fun j => Scheme.ord (φ : Y.functionField) (w j) with ha`. Use `set ψ : Y.functionFieldˣ := φ * ∏ j, u j ^ (-a j) with hψ`. Establish `hord : ∀ v, v ⤳ y → Order.coheight v = 1 → Scheme.ord (ψ : Y.functionField) v = 0`. Introduce `v hv h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hψ, Units.val_mul, Scheme.ord_mul φ.ne_zero (Units.ne_zero _), schOrd_prod_zpow]`. Distinguish the cases in `h : ∃ i, v = w i`. Take `⟨i, rfl⟩` from `h`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hself i, ha]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[hother j (w i) hv h1 (fun e => hji (hw e.symm)), mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at h`. Rewrite using `[Finset.sum_eq_zero fun j _ => by rw [hother j v hv h1 (h j), mul_zero], hφ v hv h1 h, add_zero]`. Establish `hreg : ∀ g : Y.functionFieldˣ, (∀ v, v ⤳ y → Order.coheight v = 1 → Scheme.ord (g : Y.functionField) v = 0) → 0 ≤ E.ord g` using `fun g hg => (E.ord_nonneg_iff g).2 (hE _ (regAt_of_forall_coheight_eq_one fun z hz h1 => (GlobalTheory.RegCodimOne.regAt_iff_ord_nonneg h1 g.ne_zero).2 (hg z hz h1).ge))`. Establish `h0` using `hreg ψ hord`. Establish `h0'` using `hreg ψ⁻¹ fun v hv h1 => by rw [schOrd_inv, hord v hv h1, neg_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h0'` using `[E.ord_inv]`. Establish `hψ0 : E.ord ψ = 0` using `by omega`. Rewrite `hψ0` using `[hψ, E.ord_mul, divOrd_prod_zpow]`. Simplify using `only [neg_mul, Finset.sum_neg_distrib] at hψ0`. Rewrite `hψ0` using `[ha]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial : ∀ {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     [GlobalTheory.IsNormalScheme Y] {q : Y ⟶ Sp k} (E : DivOver q) (y : Y), E.Through y →

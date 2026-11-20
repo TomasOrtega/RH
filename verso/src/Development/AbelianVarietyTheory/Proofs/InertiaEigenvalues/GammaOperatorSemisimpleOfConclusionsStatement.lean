@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.SemisimpleLetterIffForallM
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.dss_semisimple_of_used` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGammaOperatorSemisimpleOfConclusions.lean&line=72#L72)
 -/

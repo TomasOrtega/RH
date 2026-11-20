@@ -9,7 +9,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASSnGeomAssembl
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `SSn.Geom.geometry_assembly_holds SSn.Geom.geometry_smoothness_holds SSn.Geom.geometry_equivariance_first_vector SSn.Geom.geometry_equivariance_embedding SSn.Geom.geometry_at_level_function SSn.Geom.geometry_boundedness_at_zero SSn.Geom.geometry_unipotent_bound_holds`.
+A detailed English derivation is pending.
 -/
 theorem second_shift_geometry_holds : SSn.SSnGeom :=
   SSn.Geom.geometry_assembly_holds SSn.Geom.geometry_smoothness_holds SSn.Geom.geometry_equivariance_first_vector SSn.Geom.geometry_equivariance_embedding

@@ -13,9 +13,9 @@ namespace GlobalTheory.ZH.IntegralSum
 open GlobalTheory.FormalValue Filter Topology
 
 /- English proof (translation)
-Establish `hy : ce (cpt T) ∈ U` using `hU trivial`. Take `⟨a, ha⟩` from `i.stalkMap_surjective (ce (cpt T)) ((Y.presheaf.germ U _ hy).hom f)`. Take `⟨U', hU', f', rfl⟩` from `X.presheaf.germ_exist a`. Establish `hcl : spMap π (cpt T) = cpt O` using `IsLocalRing.comap_closedPoint π`. Establish `h1 : (spMap π ≫ c) (cpt T) ∈ U'` using `by rw [← h]; exact hU'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ⊤ ≤ c ⁻¹ᵁ U'` using `(top_le_iff_cpt c U').2 (by rw [← hcl]; exact h1)`. Use `⟨U', f', h2, toStkA_injective ?_⟩` and prove the remaining obligations. Rewrite using `[toStkA_map_valR π c U' _ h2, toStkA_valR_eq_gs ce U _ hU, ← h, ← gs_pull ce i _ U' hU', gs_eq ce _ U hy, gs_eq ce _ (i ⁻¹ᵁ U') hU', ← Scheme.Hom.germ_stalkMap_apply ce U _ hy, ← Scheme.Hom.germ_stalkMap_apply ce (i ⁻¹ᵁ U') _ hU', ← ha]`. Conclude with `congrArg _ (Scheme.Hom.germ_stalkMap_apply i U' _ hU' f').symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_valR {O T : Type} [CommRing O] [IsLocalRing O] [CommRing T] [IsLocalRing T] (π : O →+* T)
     [IsLocalHom π] {X Y : Scheme.{0}} (i : Y ⟶ X) [IsClosedImmersion i] (c : Sp O ⟶ X) (ce : Sp T ⟶ Y)
@@ -36,25 +36,23 @@ theorem exists_lift_valR {O T : Type} [CommRing O] [IsLocalRing O] [CommRing T] 
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (x := c (cpt _)) (U := ⊤) trivial`. Establish `hWt : ⊤ ≤ c ⁻¹ᵁ W` using `(top_le_iff_cpt c W).2 hyW`. Establish `hft : (s.appLE ⊤ W le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top`. Use `letI := (s.appLE ⊤ W le_top).hom.toAlgebra`. Take `⟨t, ht⟩` from `hft.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Set `φ : Γ(X, W) →+* PadicAlgCl p` to `(OO p).subtype.comp (CrdCalc.valHom c W hWt)`. Establish `hφ : ∀ f, φ f = ((valR c W f : OO p) : PadicAlgCl p)` using `fun f => by`. Rewrite using `[CrdCalc.valR_eq c W hWt]`. Both sides reduce to the same expression. Use `haveI : FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] (φ '' (t : Set Γ(X, W)))) := haveI : Finite (φ '' (t : Set Γ(X, W))) := ((t.finite_toSet).image φ).to_subtype IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K₀ ⊔ IntermediateField.adjoin ℚ_[p] (φ '' (t : Set Γ(X, W))), inferInstance, ?_⟩` and prove the remaining obligations. Use `set K := K₀ ⊔ IntermediateField.adjoin ℚ_[p] (φ '' (t : Set Γ(X, W)))`. Establish `hall : ∀ f, φ f ∈ K` using `fun f => by`. Establish `hf : f ∈ Algebra.adjoin Γ(Sp V, ⊤) (t : Set Γ(X, W))` using `ht ▸ trivial`. Proceed by induction on `hf using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact (le_sup_right : _ ≤ K) (IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩)`. Consider the case `algebraMap r`. Use `(le_sup_left : _ ≤ K) ?_` and prove the remaining obligations. Establish `e : (s.appLE ⊤ W le_top ≫ c.appLE W ⊤ hWt ≫ (Scheme.ΓSpecIso (CommRingCat.of (OO p))).hom) = (Scheme.ΓSpecIso (CommRingCat.of V)).hom ≫ CommRingCat.ofHom j`. Rewrite using `[← Category.assoc, ← Scheme.ΓSpecIso_naturality]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congrArg (· ≫ _) ((Scheme.Hom.appLE_comp_appLE c s ⊤ W ⊤ le_top hWt).trans ?_)` and prove the remaining obligations. Simplify using `only [hc]`. Both sides reduce to the same expression. Establish `e' : CrdCalc.valHom c W hWt (algebraMap Γ(Sp V, ⊤) Γ(X, W) r) = j ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom r)` using `congrArg (fun q => q.hom r) e`. Use `hj ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom r)` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite `this` using `[← e']`. Conclude with `this`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_mem hx hy`. Introduce `U hU f`. Take `⟨g, hgU, hyg⟩` from `hW.exists_basicOpen_le ⟨c (cpt _), hU trivial⟩ hyW`. Establish `hgt : ⊤ ≤ c ⁻¹ᵁ X.basicOpen g` using `(top_le_iff_cpt c _).2 hyg`. Use `hW.isLocalization_basicOpen g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨a, ⟨_, n, rfl⟩⟩, e⟩` from `IsLocalization.surj (Submonoid.powers g) (resG X hgU f)`. Establish `e2` using `congrArg (valR c (X.basicOpen g)) e`. Rewrite `e2` using `[CrdCalc.valR_mul c _ hgt, CrdCalc.valR_res c hgU hgt]`. Establish `r1 : ∀ b : Γ(X, W), valR c (X.basicOpen g) (algebraMap Γ(X, W) Γ(X, X.basicOpen g) b) = valR c W b` using `fun b => CrdCalc.valR_res c (X.basicOpen_le g) hgt b`. Rewrite `e2` using `[r1, r1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (valR c W g)` using `(CrdCalc.isUnit_valR_iff c W hWt g).2 hgt`. Establish `hg0 : φ (g ^ n) ≠ 0`. Rewrite using `[map_pow, hφ]`. Conclude with `pow_ne_zero _ (hu.map (OO p).subtype).ne_zero`. Establish `e3 : ((valR c U f : OO p) : PadicAlgCl p) = φ a / φ (g ^ n)`.
-
-Rewrite using `[eq_div_iff hg0, hφ, hφ]`. Conclude with `congrArg Subtype.val e2`. Rewrite using `[e3]`. Conclude with `div_mem (hall _) (hall _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_values {V : Type} [CommRing V] (j : V →+* OO p) (K₀ : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K₀] (hj : ∀ x, (j x : PadicAlgCl p) ∈ K₀) {X : Scheme.{0}} (s : X ⟶ Sp V)
@@ -115,9 +113,7 @@ theorem exists_finite_values {V : Type} [CommRing V] (j : V →+* OO p) (K₀ : 
   exact div_mem (hall _) (hall _)
 
 /- English proof (translation)
-Establish `hc : CauchySeq ω` using `cauchySeq_of_le_geometric r r hr fun e => by`. Rewrite using `[dist_comm, dist_eq_norm, ← pow_succ']`. Conclude with `h e`. Use `haveI : FiniteDimensional ℚ_[p] K.toSubmodule := inferInstanceAs (FiniteDimensional ℚ_[p] K)`. Take `⟨a, -, ha⟩` from `cauchySeq_tendsto_of_isComplete K.toSubmodule.complete_of_finiteDimensional hK hc`.
-
-Conclude with `⟨a, ha⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tendsto (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K] {r : ℝ}
     (hr : r < 1) (ω : ℕ → PadicAlgCl p) (hK : ∀ e, ω e ∈ K) (h : ∀ e, ‖ω (e + 1) - ω e‖ ≤ r ^ (e + 1)) :
@@ -129,11 +125,11 @@ theorem exists_tendsto (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDim
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Use `Metric.tendsto_atTop.2 fun ε hε => ?_` and prove the remaining obligations. Establish `h1` using `(Metric.tendsto_nhds.1 hs) (ε / 2) (half_pos hε)`. Establish `h2` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hr₀ hr).comp (tendsto_add_atTop_nat 1)`. Establish `h3` using `h2.eventually (gt_mem_nhds (half_pos hε))`. Take `⟨e, he1, he2⟩` from `(h1.and h3).exists`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `h e`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Use `hS T hT` as an intermediate fact. Rewrite `this` using `[← dist_eq_norm, dist_comm]`. Establish `h4` using `dist_triangle (∑ i ∈ T, x i) (s e) a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp] at he2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hasSum_of_levels {Ix : Type} {r : ℝ} (hr₀ : 0 ≤ r) (hr : r < 1) (x : Ix → PadicAlgCl p)
     (s : ℕ → PadicAlgCl p) (a : PadicAlgCl p) (hs : Tendsto s atTop (𝓝 a))

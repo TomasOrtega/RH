@@ -37,7 +37,7 @@ def IsCoord {R : Type} [CommRing R] (ξ : Sp R ⟶ Y.X) {g : ℕ}
 omit Y ν in
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, h]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_eq {k : Type} [CommRing k] [Algebra c.F k] {yy : Sp k ⟶ Xo'.XF c'} {y : FrPt Xo c k}
     (h : yy ≫ r = GlobalTheory.AllWt.ptF y) : yy ≫ r ≫ pullback.fst _ _ = y.x := by
@@ -45,20 +45,20 @@ theorem fst_eq {k : Type} [CommRing k] [Algebra c.F k] {yy : Sp k ⟶ Xo'.XF c'}
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B) (ψ : B →+* C) :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_spMap_eq {A B : Type} [CommRing A] [CommRing B] {φ ψ : A →+* B} (h : spMap φ = spMap ψ) : φ = ψ :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Use `show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openImmersion_comp_structure_eq_generic : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c'.F) c'.F) := by
   show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _
@@ -70,9 +70,9 @@ def inclO (hle : c.F ≤ c'.F) : 𝓞 c.F →+* 𝓞 c'.F :=
 omit ν in
 
 /- English proof (translation)
-Take `⟨io, hio⟩ : ∃ io : c'.F →+* k, spMap io = yy ≫ pullback.snd _ _` from `⟨(Spec.preimage (yy ≫ pullback.snd _ _)).hom, by simp [spMap]⟩`. Establish `e1 : φ.comp b = io.comp (algebraMap (𝓞 c'.F) c'.F)` using `eq_of_spMap_eq (by`. Rewrite using `[← spMap_comp_eq, ← spMap_comp_eq, hio, ← hb, ← Category.assoc, ← h, Category.assoc, openImmersion_comp_structure_eq_generic, Category.assoc])`. Establish `e2 : algebraMap c.F k = io.comp (IntermediateField.inclusion hle).toRingHom` using `eq_of_spMap_eq (by`. Rewrite using `[← spMap_comp_eq, hio, Category.assoc, ← hr, ← Category.assoc, h', GlobalTheory.AllWt.ptF, pullback.lift_snd])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨io, e1, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, e1, e2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_eq_of_lift {hle : c.F ≤ c'.F} (hr : r ≫ pullback.snd _ _ = pullback.snd _ _ ≫
       spMap (IntermediateField.inclusion hle).toRingHom) {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X}
@@ -94,25 +94,23 @@ open GlobalTheory.LocM.BaseMdl in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hx : yy ≫ r ≫ pullback.fst _ _ = y.x` using `fst_eq r hyr`. Establish `hy' : yy ≫ Y.jQ ≫ pullback.fst _ _ = spMap φ ≫ ξ` using `hy`. Establish `hs' : (algebraMap c.F k).comp (embK c σ) = φ.comp σR` using `RingHom.ext hs`. Establish `hbt : ∀ b, IsTanAtG Y.t (spMap φ ≫ ξ) (bcV Y.t φ e b)` using `(isTanBasis_bc he φ).1`. Establish `hut : ∀ j, IsTanAtG Xo.univ.t (yy ≫ r ≫ pullback.fst _ _) (y.u σ j)` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `y.tan σ j`. Establish `hue : ∀ j, IsEigG Xo.univ.t (φ.comp σR) (y.u σ j)` using `fun j => hs' ▸ y.eig σ j`. Establish `hbas : ∀ w, IsTanAtG Xo.univ.t (yy ≫ r ≫ pullback.fst _ _) w → IsEigG Xo.univ.t (φ.comp σR) w → ∃! a, IsCombAtG Xo.univ.t (yy ≫ r ≫ pullback.fst _ _) (y.u σ) a w` using `fun w h1 h2 => by`. Rewrite `h1`, the goal using `[hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hs']`. Conclude with `y.basis σ w h1 h2`. Use `choose q hq1 hq2 using fun j => exists_lift ν (x' := yy) (hut j).1`. Establish `hq1' : (fun j => q j ≫ ν.φ) = y.u σ` using `funext hq1`. Establish `hqt : ∀ j, IsTanAtG Y.oF.t (yy) (q j)` using `fun j => (tan_push ν (hq2 j)).2 (hq1 j ▸ hut j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqe : ∀ j, IsEigG Y.oF.t (φ.comp σR) (q j)` using `fun j => (isEigG_push ν (hq2 j) _).2 (hq1 j ▸ hue j)`. Establish `hqt' : ∀ j, IsTanAtG Y.t (spMap φ ≫ ξ) (q j ≫ Y.m.φ)` using `fun j => hy' ▸ (tan_push Y.m (hq2 j)).1 (hqt j)`. Use `choose M hM using fun j => (he.2 k φ (q j ≫ Y.m.φ) (hqt' j)).exists`. Establish `hM' : ∀ j, IsCombAtG Y.t (spMap φ ≫ ξ) (bcV Y.t φ e) (Matrix.of M j) (q j ≫ Y.m.φ)` using `hM`. Establish `hpush : ∀ {a w}, IsCombAtG Y.oF.t (yy) q a w → IsCombAtG Y.t (spMap φ ≫ ξ) (bcV Y.t φ e) (Matrix.vecMul a (Matrix.of M)) (w ≫ Y.m.φ)` using `fun {a w} h => comb_vecMul hbt hM' (hy' ▸ (comb_push Y.m hq2 a (tan_of_comb hqt h).1).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC : ∀ i, ∃ a : Fin (Dw.mult σ) → k, Matrix.vecMul a (Matrix.of M) = U.map φ i` using `fun i => by`. Take `⟨u, hu⟩` from `exists_comb hbt (U.map φ i)`. Establish `hut` using `tan_of_comb hbt hu`. Take `⟨w, rfl, hw⟩` from `exists_lift Y.m (x' := yy) (w := u) (hy' ▸ hut.1)`. Establish `hwt : IsTanAtG Y.oF.t (yy) w` using `(tan_push Y.m hw).2 (hy' ▸ hut)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hwe : IsEigG Y.oF.t (φ.comp σR) w` using `(isEigG_push Y.m hw _).2 ((hU k φ).1 i _ hu)`. Take `⟨a, ha⟩` from `(hbas _ ((tan_push ν hw).1 hwt) ((isEigG_push ν hw _).1 hwe)).exists`. Conclude with `⟨a, (he.2 k φ _ hut).unique (hpush ((comb_push ν hq2 a hw).2 (hq1' ▸ ha))) hu⟩`. Use `choose C hC using hC`. Establish `hCM : Matrix.of C * Matrix.of M = U.map φ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Conclude with `congrFun (hC i) j`. Establish `hinj : ∀ a a' : Fin (Dw.mult σ) → k, Matrix.vecMul a (Matrix.of M) = Matrix.vecMul a' (Matrix.of M) → a = a'`. Introduce `a a' h`. Take `⟨w, hw⟩` from `exists_comb hqt a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w', hw'⟩` from `exists_comb hqt a'`. Establish `h1` using `(tan_of_comb hqt hw).1`. Establish `h2` using `(tan_of_comb hqt hw').1`. Take `rfl : w = w'` from `Y.m.cart.1.hom_ext (GlobalTheory.FlatModel.LiftBC.isCombAtG_unique Y.t (hpush hw) (h ▸ hpush hw')) (h1.trans h2.symm)`. Conclude with `(hbas _ ((tan_push ν h1).1 (tan_of_comb hqt hw)) ((isEigG_push ν h1 _).1 (eig_of_comb hqt hqe hw))).unique (hq1' ▸ (comb_push ν hq2 a h1).1 hw) (hq1' ▸ (comb_push ν hq2 a' h1).1 hw')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨Matrix.of M, Matrix.of C, fun i => ⟨q i, hq2 i, hq1 i, hM' i⟩, hCM, ?_⟩` and prove the remaining obligations. Use `ext1 i`. Use `funext_iff.1 (hinj _ _ ?_)` and prove the remaining obligations. Establish `h1` using `(hU k φ).2 _ _ (hM' i) ((isEigG_push Y.m (hq2 i) _).1 (hqe i))`. Rewrite `h1` using `[← hCM, ← Matrix.vecMul_vecMul]`.
-
-Use `h1.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCoord {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ} {e : Fin g → (Sp (DualNumber R) ⟶ Y.t.G.left)}
     (he : IsTanBasis Y.t ξ e) (σ : E →+* ℂ) {σR : 𝓞 E →+* R} {U : Matrix (Fin g) (Fin g) R}
@@ -178,21 +176,19 @@ theorem exists_isCoord {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ} {e 
 omit ν in
 
 /- English proof (translation)
-Take `⟨q, hqZ, hq₀⟩` from `hq₀`. Take `⟨p₀, hq, hsp⟩ : ∃ p₀ : Sp L, Y.j q = z p₀ ∧ ∀ p : Sp L, p ⤳ p₀` from `⟨_, hq₀, fun p => IsLocalRing.specializes_closedPoint p⟩`. Set `io : c'.F →+* L` to `IsLocalization.lift (M := nonZeroDivisors (𝓞 c'.F)) (g := b) fun y => hu y (nonZeroDivisors.ne_zero y.2)`. Establish `hio : io.comp (algebraMap (𝓞 c'.F) c'.F) = b` using `IsLocalization.lift_comp _`. Establish `hio' : algebraMap c.F L = io.comp (IntermediateField.inclusion hle).toRingHom` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) (by rw [hb, ← hio]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isPreimmersion_fst Y` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Set `z₁ : Sp L ⟶ pullback Y.s (spMap (algebraMap (𝓞 c'.F) c'.F))` to `pullback.lift z (spMap io) (by`. Rewrite using `[hz, spMap_comp_eq, hio])`. Establish `h1 : z₁ ≫ pullback.fst _ _ = z` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Y.jQ q = z₁ p₀`. Apply `(pullback.fst Y.s (spMap (algebraMap (𝓞 c'.F) c'.F))).isEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h1]`. Conclude with `hq`. Establish `hrg : Set.range z₁ ⊆ Set.range Y.jQ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `((hsp p).map z₁.continuous).mem_open Y.jQ.isOpenEmbedding.isOpen_range ⟨q, h2⟩`. Set `yy` to `IsOpenImmersion.lift Y.jQ z₁ hrg`. Establish `h3 : yy ≫ Y.jQ = z₁` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h4 : (yy ≫ r) ≫ pullback.snd _ _ = spMap (algebraMap c.F L)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, hr, ← Y.jQ_over, ← Category.assoc, ← Category.assoc, h3, pullback.lift_snd, spMap_comp_eq, hio']`. Take `⟨y, hy⟩` from `GlobalTheory.FlagTan.exists_frPt (c := c) ((yy ≫ r) ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h4, sOf, spMap_comp_eq])`. Establish `h5 : GlobalTheory.AllWt.ptF y = yy ≫ r`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_fst, hy]`. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_snd, h4]`. Use `⟨yy, y, ?_, h5.symm, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, h3, h1]`. Establish `h6 : yy p₀ = q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Y.jQ.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, h3, h2]`. Rewrite using `[h5]`. Use `((hsp p).map (yy ≫ r).continuous).mem_open (CompSplitPfB.cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z).isOpen ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, h6]`.
-
-Conclude with `hqZ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_frPt {hle : c.F ≤ c'.F} (hr : r ≫ pullback.snd _ _ = pullback.snd _ _ ≫
       spMap (IntermediateField.inclusion hle).toRingHom) (Z : Comp Xo c) {L : Type} [CommRing L] [IsLocalRing L]
@@ -245,15 +241,15 @@ include ν in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨G, ⟨m⟩⟩ : ∃ G : SAB H (Sp T.V), Nonempty (SABMap G Y.t yt) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull yt Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m2⟩⟩ : ∃ t' : SAB H (Sp T.Fr), Nonempty (SABMap t' G (spMap (algebraMap T.V T.Fr))) := by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap (algebraMap T.V T.Fr)) G`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨θ, hθ, -, w2, σ', ⟨g2, r2⟩, hcl, hgen⟩` from `GlobalTheory.DepthSum.thetaCore_trait E H Dw l' Xo' c' _ _ Y T.V yt yy hz G m t' m2`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m2`. Establish `cancel : ∀ (p : Sp T.Fr ⟶ Y.X) (_ : p = yy ≫ Y.j) (n : SABMap t' Y.t p), Nonempty (SABMap t' Y.oF.t yy)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p hp n`. Substitute `hp` using the available equality. Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n).choose⟩`. Take `⟨m3⟩` from `cancel _ hz.symm n`. Take `⟨m1, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν m3`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : yy ≫ r ≫ pullback.fst _ _ = z.x` using `fst_eq r hzr`. Take `⟨y, hy⟩` from `GlobalTheory.AnyLevelFrame.exists_intFr T io _ (by rw [hx0]; exact z.x_over) G t' m1 m2 θ hθ w2 σ' ⟨g2, r2⟩ hcl hgen`. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_fst, pullback.lift_fst, hy, hx0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_snd, pullback.lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_intFr_lift (T : CDVR) (io : c.F →+* T.Fr) (yt : Sp T.V ⟶ Y.X) (yy : Sp T.Fr ⟶ Xo'.XF c')
     (z : letI := io.toAlgebra; FrPt Xo c T.Fr) (hz : yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ yt)
@@ -288,21 +284,19 @@ open GlobalTheory.LocM.BaseMdl in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hx : zz ≫ r ≫ pullback.fst _ _ = y'.x` using `(fst_eq r hzr).trans hzy`. Establish `hz' : zz ≫ Y.jQ ≫ pullback.fst _ _ = spMap (ι.toRingHom.comp φ) ≫ ξ` using `hz`. Use `choose a ha using fun i => (y'.basis σ (z.u σ i) (hzy ▸ z.tan σ i) (z.eig σ i)).exists`. Use `choose w hw1 hw2 hw3 using h.1`. Use `choose w' hw1' hw2' hw3' using h'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbt` using `(isTanBasis_bc he (ι.toRingHom.comp φ)).1`. Establish `hq2 : ∀ j, (spMap (dualMap ι.toRingHom) ≫ w j) ≫ Y.oF.t.G.hom = spMap (algebraMap k (DualNumber k)) ≫ zz` using `fun j => by`. Rewrite using `[Category.assoc, hw1, hpt, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hq1 : (fun j => (spMap (dualMap ι.toRingHom) ≫ w j) ≫ ν.φ) = y'.u σ` using `funext fun j => by`. Rewrite using `[Category.assoc, hw2, hm.2.1]`. Establish `hq3 : ∀ j, IsCombAtG Y.t (spMap (ι.toRingHom.comp φ) ≫ ξ) (bcV Y.t (ι.toRingHom.comp φ) e) (M.map ι j) ((spMap (dualMap ι.toRingHom) ≫ w j) ≫ Y.m.φ)` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t ι.toRingHom (hw3 j)` as an intermediate fact. Rewrite `this` using `[sp_sp]`. Rewrite using `[← bcV_bcV, Category.assoc]`. Conclude with `this`. Establish `hM : M' = Matrix.of a * M.map ι` using `by ext1 i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `funext_iff.1 ?_` and prove the remaining obligations. Establish `h1 : IsCombAtG Y.oF.t (zz) (fun j => spMap (dualMap ι.toRingHom) ≫ w j) (a i) (w' i)` using `(comb_push ν hq2 (a i) (hw1' i)).2 (by rw [hq1, hw2', hx]; exact ha i)`. Establish `h2` using `comb_vecMul hbt hq3 (hz' ▸ (comb_push Y.m hq2 (a i) (hw1' i)).1 h1)`. Conclude with `(he.2 k _ _ (tan_of_comb hbt h2)).unique (hw3' i) h2`. Use `⟨Matrix.of a, ha, hM, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `haveI : CharZero k := charZero_of_injective_algebraMap (algebraMap c.F k).injective`. Establish `hδ : ((discr E : ℤ) : k) ≠ 0` using `Int.cast_ne_zero.2 (discr_ne_zero E)`. Establish `e1 : C.map ι * M.map ι = U.map (ι.toRingHom.comp φ)`. Rewrite using `[← Matrix.map_mul (f := ι), h.2.1, Matrix.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : M.map ι * C.map ι = ((discr E : ℤ) : k) • 1`. Rewrite using `[← Matrix.map_mul (f := ι), h.2.2]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e3 : C' * Matrix.of a * M.map ι = C.map ι * M.map ι` using `by rw [Matrix.mul_assoc, ← hM, h'.2.1, e1]`.
-
-Establish `e4` using `congrArg (· * C.map ι) e3`. Simplify using `only [Matrix.mul_assoc (C' * Matrix.of a), Matrix.mul_assoc (C.map ι), e2, Matrix.mul_smul, Matrix.mul_one] at e4`. Conclude with `smul_right_injective _ hδ e4`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_change {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ Y.t.G.left)} (he : IsTanBasis Y.t ξ e) {σ : E →+* ℂ}
@@ -359,19 +353,19 @@ theorem exists_change {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ}
   exact smul_right_injective _ hδ e4
 
 /- English proof (translation)
-Take `rfl : ψ = ι.toRingHom.comp φ` from `RingHom.ext hψ`. Take `⟨y', hm⟩` from `GlobalTheory.FlagTan.exists_frMap ι y`. Use `isPreimmersion_j Y` as an intermediate fact. Establish `hpt : GlobalTheory.AllWt.ptF y' = spMap ι.toRingHom ≫ GlobalTheory.AllWt.ptF y`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_fst, pullback.lift_fst, hm.1]`. Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_snd, pullback.lift_snd, spMap_comp_eq]`. Use `congr 1`. Conclude with `ι.comp_algebraMap.symm`. Establish `hzz : zz = spMap ι.toRingHom ≫ yy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono Y.j, hz, Category.assoc, hy, sp_sp]`. Establish `hzy0 : GlobalTheory.AllWt.ptF z = GlobalTheory.AllWt.ptF y'`. Rewrite using `[← hzr, hzz, hpt, Category.assoc, hyr]`. Establish `hzy : z.x = y'.x`. Use `congrArg (· ≫ pullback.fst _ _) hzy0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [GlobalTheory.AllWt.ptF, pullback.lift_fst]`. Establish `hy'Z : LiesOn Z y'` using `fun s => by`. Rewrite using `[hpt, Scheme.Hom.comp_apply]`. Conclude with `hyZ _`. Take `⟨a₁, ha₁, hM₁, -⟩` from `exists_change Y r ν he h₁ hm hzy hz hzr hzz h₁'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a₂, ha₂, -, hC₂⟩` from `exists_change Y r ν he h₂ hm hzy hz hzr hzz h₂'`. Establish `k1` using `hL.2 k z y' hy'Z hzy a₁ a₂ ha₁ ha₂`. Rewrite `k1` using `[GlobalTheory.FlagTan.evR_frMap hL.1 hm]`. Establish `k2 : (M₁'.submatrix id I).det = a₁.det * ι (M₁.submatrix id I).det`. Rewrite using `[AlgHom.map_det, ← Matrix.det_mul, hM₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `k3 : ι (C₂.submatrix J id).det = (C₂'.submatrix J id).det * a₂.det`. Rewrite using `[AlgHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(congrFun (congrFun hC₂ (J i)) j).symm`. Rewrite using `[map_mul, map_mul, k2, k3]`. Take the linear combination `(ι (M₁.submatrix id I).det * (C₂'.submatrix J id).det) * k1`.
+A detailed English derivation is pending.
 -/
 theorem value_map {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ Y.t.G.left)} (he : IsTanBasis Y.t ξ e) {Z : Comp Xo c} {f : Rul Xo c}
@@ -426,35 +420,33 @@ open GlobalTheory.ModelFrameCompare MonObj in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `_` to `io.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G : SAB H (Sp T.V), Nonempty (SABMap G Y.t xV) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull xV Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨t₂, n₀, n₂, m', -, h2⟩` from `GlobalTheory.ThetaFrameCheck.genFibre_tied Xo' c' T _ _ Y xV yy hxV G₂ m`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Y.oF.t t₂ _ yy ν m'`. Take `⟨G, t', m1, m2, ⟨ub, ht, he, hb, hl⟩, -⟩` from `y₀.2.2`. Establish `hx : y₀.1.x = yy ≫ r ≫ pullback.fst _ _`. Rewrite using `[← Category.assoc, ← hpt]`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m1', hm1'⟩` from `exists_sabMap_congr m1 hx`. Take `⟨k, n, hk1, hk2⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T.V T.Fr _ G G₂ t' t₂ m1' m2 n₁ n₂`. Take `⟨nm, hnm⟩` from `sabComp pullCubComp E H _ _ _ Y.t G₂ G xV (𝟙 _) m n`. Take `⟨q₀, hq₀⟩` from `exists_sabMap_congr nm (Category.id_comp xV)`. Rewrite `hq₀` using `[hnm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hBt, hBe, hBc⟩` from `GlobalTheory.FactorDepth.Extension.exists_tanEquiv q₀`. Use `⟨fun j => (B (ub σ j)).left, fun j => (hBt _).2 (ht σ j), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hue`. Take `⟨w', hw'⟩` from `B.surjective (ovT hu)`. Establish `e : u = (B w').left` using `by rw [hw']; rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e` using the available equality. Take `⟨cf, hcf, -⟩` from `hb σ w' ((hBt _).1 hu) fun a z hz => (hBe _ a z).1 (hue a z hz)`. Conclude with `⟨cf, (hBc _ _ cf w').2 hcf⟩`. Introduce `cf u w hc hw`. Establish `h3` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t (algebraMap T.V T.Fr) hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t₂ _ yy Y.m m'`. Use `choose u' hu1 hu2 using hl σ`. Establish `hov : ∀ j, u' j ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Introduce `j`. Apply `spMap_frac_cancel (V := T.V)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (ub σ j), spMap_comp', ← dualMap_comp_alg, ← spMap_comp']`. Both sides reduce to the same expression. Establish `hov' : ∀ j, (u' j ≫ k.φ) ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Introduce `j`. Rewrite using `[Category.assoc, k.cart.1.w, ← Category.assoc, hov]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvec : ∀ j, spMap (dualMap (algebraMap T.V T.Fr)) ≫ (B (ub σ j)).left = (u' j ≫ k.φ) ≫ q.φ`. Introduce `j`. Rewrite using `[hB, hq₀, hq, ← Category.assoc, ← hu2, Category.assoc, ← Category.assoc m2.φ, hk2]`. Simplify using `only [Category.assoc, h2]`. Establish `hpt' : spMap (algebraMap T.V T.Fr) ≫ xV = 𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.id_comp, ← hxV]`. Both sides reduce to the same expression. Establish `h4 : IsCombAtG Y.t (𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _) (fun j => (u' j ≫ k.φ) ≫ q.φ) (fun j => algebraMap T.V T.Fr (cf j)) (w ≫ Y.m.φ)`. Rewrite using `[← hpt', hw]`. Simplify `h3` using `only [hvec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w₂, hw₂, hc₂⟩` from `isCombAtG_reflect q (𝟙 _) (fun j => u' j ≫ k.φ) hov' h4`. Establish `hw₂' : w₂ ≫ m'.φ = w`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hq, hw₂]`. Use `isPreimmersion_j Y` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : Mono Y.j` using `inferInstance`. Establish `e2 : w₂ ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Take `⟨uu, -, hh⟩` from `hc₂`. Rewrite using `[← hh]`. Conclude with `Over.w _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : u ≫ Y.t.G.hom = spMap (algebraMap T.V (DualNumber T.V)) ≫ xV`. Take `⟨uu, -, hh⟩` from `hc`. Rewrite using `[← hh]`. Conclude with `Over.w _`. Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, e2, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hmono.right_cancellation` to reduce the goal to its premises. Establish `e3 : spMap (dualMap (algebraMap T.V T.Fr)) ≫ spMap (algebraMap T.V (DualNumber T.V)) ≫ xV = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ yy ≫ Y.j`. Rewrite using `[← Category.assoc, spMap_comp', dualMap_comp_alg, ← spMap_comp', Category.assoc, hxV]`. Use `show (spMap _ ≫ yy) ≫ Y.j = w ≫ Y.oF.t.G.hom ≫ Y.jQ ≫ pullback.fst _ _`. Rewrite using `[← Y.m.cart.1.w, ← Category.assoc w, hw, Category.assoc (spMap _) u, e1, e3, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `isCombAtG_push n₁ (𝟙 _) hc₂`. Establish `hv5 : (fun j => (u' j ≫ k.φ) ≫ n₁.φ) = y₀.1.u σ`. Use function extensionality and compare the values at `j`. Rewrite using `[Category.assoc, hk1, hm1', hu1]`. Rewrite `h5` using `[hv5, hn₁, ← Category.assoc w₂, hw₂', Category.id_comp, ← hx]`.
-
-Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem images_eigenBasis (σ : E →+* ℂ) (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (xV : Sp T.V ⟶ Y.X)
     (yy : Sp T.Fr ⟶ Xo'.XF c') (hxV : yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ xV)
@@ -544,25 +536,23 @@ open GlobalTheory.LocM.BaseMdl in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Establish `hy1 : yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ spMap φ ≫ ξ` using `by rw [hy, sp_sp]`. Establish `hy' : yy ≫ Y.jQ ≫ pullback.fst _ _ = spMap ((algebraMap T.V T.Fr).comp φ) ≫ ξ` using `hy`. Establish `hx : yy ≫ r ≫ pullback.fst _ _ = y₀.1.x` using `fst_eq r hyr`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv1, hv2, hv3⟩` from `images_eigenBasis Y r ν σ T io y₀ _ _ hy1 hyr.symm`. Establish `hbt` using `(isTanBasis_bc he φ).1`. Establish `hbt'` using `(isTanBasis_bc he ((algebraMap T.V T.Fr).comp φ)).1`. Use `choose M₀ hM₀ using fun j => (he.2 T.V φ (v j) (hv1 j)).exists`. Establish `hM₀' : ∀ j, IsCombAtG Y.t (spMap φ ≫ ξ) (bcV Y.t φ e) (Matrix.of M₀ j) (v j)` using `hM₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw1 hw2 hw3 using h.1`. Establish `hw2' : (fun j => w j ≫ ν.φ) = y₀.1.u σ` using `funext hw2`. Establish `key : ∀ cf : Fin (Dw.mult σ) → T.V, (fun b => algebraMap T.V T.Fr (Matrix.vecMul cf (Matrix.of M₀) b)) = Matrix.vecMul (fun j => algebraMap T.V T.Fr (cf j)) M` using `fun cf => by`. Take `⟨u, hu⟩` from `exists_comb hv1 cf`. Establish `h1` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t (algebraMap T.V T.Fr) (comb_vecMul hbt hM₀' hu)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[sp_sp]`. Establish `h2 : IsCombAtG Y.t (spMap ((algebraMap T.V T.Fr).comp φ) ≫ ξ) (bcV Y.t ((algebraMap T.V T.Fr).comp φ) e) (fun b => algebraMap T.V T.Fr (Matrix.vecMul cf (Matrix.of M₀) b)) (spMap (dualMap (algebraMap T.V T.Fr)) ≫ u)`. Rewrite using `[← bcV_bcV]`. Conclude with `h1`. Establish `h3` using `tan_of_comb hbt' h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w', hw', hw''⟩` from `exists_lift Y.m (x' := yy) (hy' ▸ h3.1)`. Establish `h4` using `hv3 cf u w' hu hw'`. Establish `h5 : IsCombAtG Y.oF.t (yy) w (fun j => algebraMap T.V T.Fr (cf j)) w'` using `(comb_push ν hw1 _ hw'').2 (by rw [hw2', hx]; exact h4)`. Establish `h6` using `comb_vecMul hbt' hw3 (hy' ▸ (comb_push Y.m hw1 _ hw'').1 h5)`. Rewrite `h6` using `[hw']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(he.2 T.Fr _ _ h3).unique h2 h6`. Establish `hM : (Matrix.of M₀).map (algebraMap T.V T.Fr) = M`. Use extensionality with `i b`. Use `congrFun (key (Pi.single i 1)) b` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : ∀ i, ∃ cf : Fin (Dw.mult σ) → T.V, Matrix.vecMul cf (Matrix.of M₀) = U.map φ i` using `fun i => by`. Take `⟨u, hu⟩` from `exists_comb hbt (U.map φ i)`. Take `⟨cf, hcf⟩` from `hv2 u (tan_of_comb hbt hu) fun a z hz => by`. Rewrite using `[hinj (hz.trans (hs a))]`. Conclude with `(hU T.V φ).1 i u hu a`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨cf, (he.2 T.V φ u (tan_of_comb hbt hu)).unique (comb_vecMul hbt hM₀' hcf) hu⟩`. Use `choose C₀ hC₀ using hC`. Use `⟨Matrix.of M₀, Matrix.of C₀, hM, ?_⟩` and prove the remaining obligations. Establish `hδ : ((discr E : ℤ) : T.Fr) ≠ 0` using `by haveI : CharZero T.Fr := charZero_of_injective_algebraMap hinj`. Conclude with `Int.cast_ne_zero.2 (discr_ne_zero E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e0 : Matrix.of C₀ * Matrix.of M₀ = U.map φ`. Use extensionality with `i j`. Conclude with `congrFun (hC₀ i) j`. Establish `e3 : (Matrix.of C₀).map (algebraMap T.V T.Fr) * M = C * M`. Rewrite using `[h.2.1, ← hM, ← Matrix.map_mul, e0, Matrix.map_map]`.
-
-Both sides reduce to the same expression. Establish `e4` using `congrArg (· * C) e3`. Simplify using `only [Matrix.mul_assoc, h.2.2, Matrix.mul_smul, Matrix.mul_one] at e4`. Conclude with `smul_right_injective _ hδ e4`.
+A detailed English derivation is pending.
 -/
 theorem coord_integral {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ Y.t.G.left)} (he : IsTanBasis Y.t ξ e) (σ : E →+* ℂ) {σR : 𝓞 E →+* R}
@@ -637,7 +627,7 @@ def algHomOf {K L k : Type} [Field K] [NumberField K] [CommRing L] [CommRing k] 
       (j := ι.comp (algebraMap K L)) (k := algebraMap K k) h) a }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IsLocalization.lift (M := nonZeroDivisors (𝓞 K)) (S := K) (g := b) fun y => h y (nonZeroDivisors.ne_zero y.2)).toAlgebra, IsLocalization.lift_comp _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algebra {K L : Type} [Field K] [NumberField K] [CommRing L] (b : 𝓞 K →+* L)
     (h : ∀ a, a ≠ 0 → IsUnit (b a)) : ∃ _ : Algebra K L, (algebraMap K L).comp (algebraMap (𝓞 K) K) = b :=
@@ -645,19 +635,19 @@ theorem exists_algebra {K L : Type} [Field K] [NumberField K] [CommRing L] (b : 
     fun y => h y (nonZeroDivisors.ne_zero y.2)).toAlgebra, IsLocalization.lift_comp _⟩
 
 /- English proof (translation)
-Establish `key : ∀ x : K, io x ∈ (algebraMap T.V T.Fr).range`. Introduce `x`. Use `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)` as an intermediate fact. Use `Algebra.IsAlgebraic.trans ℤ ℚ K` as an intermediate fact. Take `⟨y, hy0, hy⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) x).exists_integral_multiple`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit ((y : ℤ) : T.V)`. Use `hn y.natAbs (Int.natAbs_pos.2 hy0)` as an intermediate fact. Break down `Int.natAbs_eq y with e | e` into its components or cases. Rewrite using `[e]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e]`. Simplify using `using this.neg`. Take `⟨u, hu⟩` from `hu`. Take `⟨s, hs⟩ : ∃ s : 𝓞 K, algebraMap (𝓞 K) K s = y • x` from `⟨⟨y • x, hy⟩, rfl⟩`. Use `⟨(u⁻¹ : T.Vˣ) * b s, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← hb]`. Establish `e1 : io (algebraMap (𝓞 K) K s) = algebraMap T.V T.Fr u * io x`. Rewrite using `[hu, map_intCast, ← map_intCast io, ← map_mul, ← zsmul_eq_mul, hs]`. Rewrite using `[e1, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Establish `nn : ∀ x : K, 0 ≤ vV T.V (io x)` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `key x`. Rewrite using `[← hs]`. Distinguish the cases in `h : algebraMap T.V T.Fr s = 0`. Simplify using `[h, vV]`. Use `(WithZero.log_le_log (valV_ne_zero (V := T.V) h) one_ne_zero).2 (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ s)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[WithZero.log_one]`. Rewrite using `[vV]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `vV_mul (V := T.V) ((map_ne_zero io).2 ha) ((map_ne_zero io).2 (inv_ne_zero ha))`. Rewrite `h` using `[← map_mul, mul_inv_cancel₀ ha, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `nn a` as an intermediate fact. Use `nn a⁻¹` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_eq_zero {K : Type} [Field K] [NumberField K] (T : CDVR) (io : K →+* T.Fr) (b : 𝓞 K →+* T.V)
     (hb : ∀ a, io (algebraMap (𝓞 K) K a) = algebraMap T.V T.Fr (b a)) (hn : ∀ n : ℕ, 0 < n → IsUnit (n : T.V))
@@ -695,7 +685,7 @@ theorem vV_eq_zero {K : Type} [Field K] [NumberField K] (T : CDVR) (io : K →+*
   omega
 
 /- English proof (translation)
-Introduce `h` and use `ha (by have h1 : IntermediateField.inclusion hle (algebraMap (𝓞 c.F) c.F a) = 0 := congrArg (algebraMap (𝓞 c'.F) c'.F) h exact RingOfIntegers.coe_eq_zero_iff.1 ((map_eq_zero _).1 h1))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inclO_ne_zero (hle : c.F ≤ c'.F) {a : 𝓞 c.F} (ha : a ≠ 0) : inclO hle a ≠ 0 := fun h => ha (by
   have h1 : IntermediateField.inclusion hle (algebraMap (𝓞 c.F) c.F a) = 0 := congrArg (algebraMap (𝓞 c'.F) c'.F) h
@@ -704,15 +694,13 @@ theorem inclO_ne_zero (hle : c.F ≤ c'.F) {a : 𝓞 c.F} (ha : a ≠ 0) : inclO
 omit ν in
 
 /- English proof (translation)
-Take `⟨io, hc', hc⟩` from `comp_eq_of_lift Y r hr hb hz hzr`. Establish `hp` using `RingHom.ker_isPrime ψ`. Set `L` to `Localization.AtPrime (RingHom.ker ψ)`. Establish `hu : ∀ a, a ≠ 0 → IsUnit (((algebraMap R L).comp b) a)` using `fun a ha => IsLocalization.map_units L (⟨b a, fun h => ha (by`. Establish `h1 : ψ (b a) = 0` using `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `DFunLike.congr_fun hc' a`. Simplify using `only [RingHom.comp_apply] at h2`. Rewrite `h2` using `[h1]`. Conclude with `RingOfIntegers.coe_eq_zero_iff.1 ((map_eq_zero _).1 h2.symm))⟩ : (RingHom.ker ψ).primeCompl)`. Take `⟨alg, halg⟩` from `exists_algebra (K := c.F) (((algebraMap R L).comp b).comp (inclO hle)) fun a ha => hu _ (inclO_ne_zero hle ha)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ι₀ : L →+* k` to `IsLocalization.lift (M := (RingHom.ker ψ).primeCompl) (g := ψ) fun y => Ne.isUnit y.2`. Establish `hι₀ : ι₀.comp (algebraMap R L) = ψ` using `IsLocalization.lift_comp _`. Take `⟨yy, y, hy, hyr, hyZ⟩` from `exists_lift_frPt Y r hr Z (spMap (algebraMap R L) ≫ ξ) (by rw [Category.assoc, hb, spMap_comp_eq]) hu halg (by`. Set `s₀ : Sp k` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Use `⟨zz s₀, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hzr]`. Conclude with `hZ s₀`. Rewrite using `[← Scheme.Hom.comp_apply, hz]`. Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg ξ ?_) (Scheme.Hom.comp_apply _ _ _).symm)` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext (Localization.AtPrime.under_maximalIdeal (I := RingHom.ker ψ)).symm)`.
-
-Use `⟨_, hp, alg, yy, y, algHomOf ι₀ (by` and prove the remaining obligations. Rewrite using `[halg, ← RingHom.comp_assoc, ← RingHom.comp_assoc, hι₀, RingHom.comp_assoc, hc]), fun a => ?_, hy, hyr, hyZ⟩`. Conclude with `(DFunLike.congr_fun hι₀ a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local {hle : c.F ≤ c'.F} (hr : r ≫ pullback.snd _ _ = pullback.snd _ _ ≫
       spMap (IntermediateField.inclusion hle).toRingHom) (Z : Comp Xo c) {R : Type} [CommRing R]
@@ -754,47 +742,43 @@ include ν in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (φ : R →+* T.V) (yy : Sp T.Fr ⟶ Xo'.XF c'), yy ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp φ) ≫ ξ ∧ (letI := io.toAlgebra; yy ≫ r = GlobalTheory.AllWt.ptF y₀.1) ∧ (letI := io.toAlgebra; LiesOn Z y₀.1)`. Use `swap`. Conclude with `⟨1, one_pos, fun T io y₀ φ yy h1 h2 h3 => (hex ⟨T, io, y₀, φ, yy, h1, h2, h3⟩).elim⟩`. Take `⟨b, hb⟩ : ∃ b : 𝓞 c'.F →+* R, ξ ≫ Y.s = spMap b` from `⟨(Spec.preimage (ξ ≫ Y.s)).hom, by simp [spMap]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨hbinj, hq⟩ : Function.Injective b ∧ ∃ q, r q ∈ (Z : Set (Xo.XF c)) ∧ Y.j q = ξ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) := by`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, io, y₀, φ, yy₀, h1, h1', h2⟩` from `hex`. Use `letI := io.toAlgebra`. Take `⟨io', hc, -⟩` from `comp_eq_of_lift Y r hr hb h1 h1'`. Use `⟨Function.Injective.of_comp (f := (algebraMap T.V T.Fr).comp φ) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.coe_comp, hc]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `io'.injective.comp (IsFractionRing.injective (𝓞 c'.F) c'.F)`. Take `⟨𝔮, _, _, yy, y, ι, -, hy, hyr, hyZ⟩` from `exists_local Y r hr Z hb _ h1 h1' h2`. Set `s₀ : Sp (Localization.AtPrime 𝔮)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔮))`. Use `⟨yy s₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hyr]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hyZ s₀`. Rewrite using `[← Scheme.Hom.comp_apply, hy]`. Conclude with `bot_map (IsLocalization.injective _ 𝔮.primeCompl_le_nonZeroDivisors) ξ`. Use `haveI : CharZero R := charZero_of_injective_ringHom hbinj`. Set `F` to `FractionRing R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨algF, halgF⟩` from `exists_algebra (K := c.F) ((algebraMap R F).comp (b.comp (inclO hle))) fun a ha => Ne.isUnit ((map_ne_zero_iff _ (IsFractionRing.injective R F)).2 ((map_ne_zero_iff _ hbinj).2 (inclO_ne_zero hle ha)))`. Establish `hgen : ∀ (k : Type) [Field k] [Algebra c.F k] (ψ : R →+* k), Function.Injective ψ → (algebraMap c.F k).comp (algebraMap (𝓞 c.F) c.F) = ψ.comp (b.comp (inclO hle)) → ∃ (yy : Sp k ⟶ Xo'.XF c') (y : FrPt Xo c k), yy ≫ Y.j = spMap ψ ≫ ξ ∧ yy ≫ r = GlobalTheory.AllWt.ptF y ∧ LiesOn Z …` using `fun k _ _ ψ hψ hk => exists_lift_frPt Y r hr Z (spMap ψ ≫ ξ) (b := ψ.comp b) (by rw [Category.assoc, hb, spMap_comp_eq]) (fun a ha => Ne.isUnit ((map_ne_zero_iff _ hψ).2 ((map_ne_zero_iff _ hbinj).2 ha))) hk (by`. Take `⟨q, hqZ, hq⟩` from `hq`. Use `⟨q, hqZ, hq.trans ((bot_map hψ ξ).symm.trans (congrArg _ ?_))⟩` and prove the remaining obligations. Conclude with `Subsingleton.elim (α := PrimeSpectrum k) _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Set `σR : (E →+* ℂ) → (𝓞 E →+* R)` to `fun σ => (b.comp (inclO hle)).comp (RingOfIntegers.mapRingHom (embF c σ))`. Establish `hcompat : ∀ (k : Type) [CommRing k] [Algebra c.F k] (ψ : R →+* k) (yy : Sp k ⟶ Xo'.XF c') (y : FrPt Xo c k), yy ≫ Y.j = spMap ψ ≫ ξ → yy ≫ r = GlobalTheory.AllWt.ptF y → ∀ σ a, algebraMap c.F k (embK c σ a) = ψ (σR σ a)` using `fun k _ _ ψ yy y hy hyr σ a => (DFunLike.congr_fun (comp_eq_of_lift Y r hr hb hy hyr).choose_spec.2 (RingOfIntegers.mapRingHom (embF c σ) a)).symm`. Use `choose U hU using fun σ => exists_isProjMat he (σR σ)`. Establish `hcrd : ∀ (k : Type) [CommRing k] [Algebra c.F k] (ψ : R →+* k) (yy : Sp k ⟶ Xo'.XF c') (y : FrPt Xo c k), yy ≫ Y.j = spMap ψ ≫ ξ → yy ≫ r = GlobalTheory.AllWt.ptF y → ∀ σ, ∃ M C, IsCoord Y r ν ξ e (U σ) ψ yy y σ M C` using `fun k _ _ ψ yy y hy hyr σ => exists_isCoord Y r ν he σ (hU σ) hy hyr (hcompat k ψ yy y hy hyr σ)`. Establish `hint : ∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (φ : R →+* T.V) (yy : Sp T.Fr ⟶ Xo'.XF c'), yy ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp φ) ≫ ξ → (letI` using `io.toAlgebra; yy ≫ r = GlobalTheory.AllWt.ptF y₀.1) → ∀ σ, ∃ (M₀ : Matrix (Fin (Dw.mult σ)) (Fin g) T.V) (C₀ : Matrix (Fin g) (Fin (Dw.mult σ)) T.V), (letI := io.toAlgebra; IsCoord Y r ν ξ e (U σ) ((algebraMap T.V T.Fr).comp φ) yy y₀.1 σ (M₀.map (algebraMap T.V T.Fr)) (C₀.map (al …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := io.toAlgebra`. Take `⟨M, C, hMC⟩` from `hcrd T.Fr _ yy y₀.1 h h' σ`. Take `⟨M₀, C₀, rfl, rfl⟩` from `coord_integral Y r ν he σ (hU σ) T io y₀ φ yy h h' (hcompat T.Fr _ yy y₀.1 h h' σ) M C hMC`. Conclude with `⟨M₀, C₀, hMC⟩`. Take `⟨ηη, η, hη, hηr, hηZ⟩` from `hgen F (algebraMap R F) (IsFractionRing.injective R F) halgF`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose Mη Cη hcη using hcrd F _ ηη η hη hηr`. Establish `hden : ∀ p : (Fin (Dw.mult σ₁) → Fin g) × (Fin (Dw.mult σ₂) → Fin g), ∃ (m : ℕ) (s : R), 0 < m ∧ algebraMap R F s = (m : F) * (evR Xo c f η * ((Mη σ₁).submatrix id p.1).det * ((Cη σ₂).submatrix p.2 id).det)`. Introduce `p`. Use `exists_nat_mul_mem R _ fun T α ι hα hι hn => ?_` and prove the remaining obligations. Set `io : c.F →+* T.Fr` to `ι.comp (algebraMap c.F F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := io.toAlgebra`. Establish `hio : ∀ a, io (algebraMap (𝓞 c.F) c.F a) = algebraMap T.V T.Fr (α (b (inclO hle a)))` using `fun a => (congrArg ι (DFunLike.congr_fun halgF a)).trans (hι _)`. Take `⟨zz, z, hz, hzr, hzZ⟩` from `hgen T.Fr ((algebraMap T.V T.Fr).comp α) ((IsFractionRing.injective T.V T.Fr).comp hα) (RingHom.ext hio)`. Take `⟨y₀, hy₀⟩` from `exists_intFr_lift Y r ν T io (spMap α ≫ ξ) zz z (by rw [hz, ← Category.assoc, spMap_comp_eq]) hzr`. Establish `h1 : zz ≫ r = GlobalTheory.AllWt.ptF y₀.1` using `hzr.trans hy₀.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : LiesOn Z y₀.1` using `fun s => hy₀ ▸ hzZ s`. Take `⟨M₁, C₁, h₁⟩` from `hint T io y₀ α zz hz h1 σ₁`. Take `⟨M₂, C₂, h₂⟩` from `hint T io y₀ α zz hz h1 σ₂`. Establish `key` using `value_map Y r ν he hL hη hηr hηZ (hcη σ₁) (hcη σ₂) ({ ι with commutes' := fun _ => rfl } : F →ₐ[c.F] T.Fr) (fun a => (hι a).symm) hz h1 h₁ h₂ p.1 p.2`. Take `⟨s, hs⟩` from `hbd T io y₀ (vV_eq_zero T io (α.comp (b.comp (inclO hle))) hio hn) h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨s * (M₁.submatrix id p.1).det * (C₂.submatrix p.2 id).det, Eq.trans ?_ key⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hs, RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression. Use `choose m s hm hs using hden`. Establish `hd0 : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(∏ p, m p) * (discr E).natAbs ^ (Dw.mult σ₁ + Dw.mult σ₂), Nat.mul_pos (Finset.prod_pos fun p _ => hm p) (Nat.pos_of_ne_zero (pow_ne_zero _ hd0)), fun T io y₀ φ yy₀ h1 h1' h2 => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Take `⟨M₁, C₁, h₁⟩` from `hint T io y₀ φ yy₀ h1 h1' σ₁`. Take `⟨M₂, C₂, h₂⟩` from `hint T io y₀ φ yy₀ h1 h1' σ₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hδ : ((discr E : ℤ) : T.V) ≠ 0` using `Int.cast_ne_zero.2 (discr_ne_zero E)`. Establish `hMC : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin g) T.V) (C : Matrix (Fin g) (Fin n) T.V), M.map (algebraMap T.V T.Fr) * C.map (algebraMap T.V T.Fr) = ((discr E : ℤ) : T.Fr) • 1 → M * C = ((discr E : ℤ) : T.V) • 1` using `fun M C h => by`. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Use `congrFun (congrFun h i) j` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[← Matrix.map_mul]`. Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Take `⟨⟨I, d₁, hd₁⟩, -⟩` from `exists_minor_dvd T.V _ _ M₁ C₁ _ hδ (hMC _ _ h₁.2.2)`. Take `⟨-, J, d₂, hd₂⟩` from `exists_minor_dvd T.V _ _ M₂ C₂ _ hδ (hMC _ _ h₂.2.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨𝔮, _, _, yy, y, ι₂, hι₂, hy, hyr, hyZ⟩` from `exists_local Y r hr Z hb _ h1 h1' h2`. Set `L` to `Localization.AtPrime 𝔮`. Use `choose ML CL hcL using hcrd L _ yy y hy hyr`. Set `j₀ : L →+* F` to `IsLocalization.lift (M := 𝔮.primeCompl) (g := algebraMap R F) fun a => IsLocalization.map_units F (⟨a, 𝔮.primeCompl_le_nonZeroDivisors a.2⟩ : nonZeroDivisors R)`. Establish `hj₀ : j₀.comp (algebraMap R L) = algebraMap R F` using `IsLocalization.lift_comp _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hj₀inj : Function.Injective j₀`. Rewrite using `[IsLocalization.injective_iff_map_algebraMap_eq (M := 𝔮.primeCompl)]`. Introduce `a a'`. Establish `e1 : ∀ a, j₀ (algebraMap R L a) = algebraMap R F a` using `fun a => DFunLike.congr_fun hj₀ a`. Rewrite using `[e1, e1, (IsFractionRing.injective R F).eq_iff, (IsLocalization.injective L 𝔮.primeCompl_le_nonZeroDivisors).eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `ι₁ : L →ₐ[c.F] F` to `algHomOf j₀ (by`. Rewrite using `[← (comp_eq_of_lift Y r hr hb hy hyr).choose_spec.2, ← RingHom.comp_assoc, hj₀, halgF])`. Establish `k1` using `value_map Y r ν he hL hy hyr hyZ (hcL σ₁) (hcL σ₂) ι₁ (fun a => (DFunLike.congr_fun hj₀ a).symm) hη hηr (hcη σ₁) (hcη σ₂) I J`. Establish `k2` using `value_map Y r ν he hL hy hyr hyZ (hcL σ₁) (hcL σ₂) ι₂ hι₂ h1 h1' h₁ h₂ I J`. Generalize the expression as in `evR Xo c f y * ((ML σ₁).submatrix id I).det * ((CL σ₂).submatrix J id).det = u at k1 k2`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `k3 : algebraMap R L (s (I, J)) = (m (I, J) : L) * u` using `hj₀inj (by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `(DFunLike.congr_fun hj₀ _).trans ((hs (I, J)).trans (congrArg _ k1)))`. Establish `k4 : algebraMap T.V T.Fr (φ (s (I, J))) = (m (I, J) : T.Fr) * (evI y₀ f * algebraMap T.V T.Fr (M₁.submatrix id I).det * algebraMap T.V T.Fr (C₂.submatrix J id).det)`. Use `(hι₂ _).trans ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[k3, map_mul, map_natCast, ← k2, RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression. Take `⟨m', hm'⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ (I, J))`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε⟩ : ∃ ε : ℤ, (((discr E).natAbs : ℕ) : ℤ) = ε * discr E := by`. Break down `Int.natAbs_eq (discr E) with h | h` into its components or cases.
-
-Conclude with `⟨1, by omega⟩`. Conclude with `⟨-1, by omega⟩`. Use `⟨(m' : T.V) * (ε : T.V) ^ (Dw.mult σ₁ + Dw.mult σ₂) * d₁ * d₂ * φ (s (I, J)), ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (algebraMap T.V T.Fr) hd₁`. Establish `e2` using `congrArg (algebraMap T.V T.Fr) hd₂`.
-
-Establish `e3 : (((discr E).natAbs : ℕ) : T.Fr) = (ε : T.Fr) * ((discr E : ℤ) : T.Fr)`. Rewrite using `[← Int.cast_mul, ← hε, Int.cast_natCast]`. Simplify using `only [map_mul, map_pow, map_intCast] at e1 e2`. Simplify using `only [map_mul, map_pow, map_intCast, map_natCast, k4, hm', Nat.cast_mul, Nat.cast_pow, e3, mul_pow, pow_add, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chart_bound {hle : c.F ≤ c'.F} (hr : r ≫ pullback.snd _ _ = pullback.snd _ _ ≫
       spMap (IntermediateField.inclusion hle).toRingHom) (Z : Comp Xo c) {f : Rul Xo c} {σ₁ σ₂ : E →+* ℂ}
@@ -952,41 +936,35 @@ omit Y r ν in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨l', hd, hA', hg⟩` from `GlobalTheory.GoodMultipleLevel.exists_good_multiple E H l`. Use `haveI := c.fin`. Take `⟨c', hle⟩` from `GlobalTheory.TupleCover.exists_coeff_ge l' c.F`. Set `X : ∀ l : Level H, Moduli Dw l` to `fun l₁ => Classical.choice (GlobalTheory.Moduli.moduli_scheme_exists E H Dw l₁ hpq)`. Take `⟨Y₀, -, h6⟩` from `GlobalTheory.partI_closed.2 E H Dw hpq X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, -⟩` from `h6 l' c' hg (hA'.trans hA)`. Take `⟨r, hr, r₀, m₀, hr₀, hfin, -, hsurj⟩` from `GlobalTheory.LevelMapBase.levelMap_coeff_le E H Dw l l' Xo (X l') c c' hle hpq hd`. Take `⟨ν₀, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₀ Y.m0.toSABMap`. Take `⟨ν, -⟩` from `GlobalTheory.ModelFrameCompare.exists_sabMap_congr ν₀ hr₀.symm`. Establish `hN : GlobalTheory.IsNormalScheme Y.X` using `(GlobalTheory.isNormalScheme_iff _).2 Y.normal`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Establish `loc : ∀ x : Y.X, ∃ (V : Y.X.Opens) (m : ℕ), x ∈ V ∧ 0 < m ∧ ∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (yt : Sp T.V ⟶ Y.X) (yy : Sp T.Fr ⟶ (X l').XF c'), yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ yt → (letI` using `io.toAlgebra; yy ≫ r = GlobalTheory.AllWt.ptF y₀.1) → yt (IsLocalRing.closedPoint T.V) ∈ V → (letI := io.toAlgebra; LiesOn Z y₀.1) → (m : T.Fr) * evI y₀ f ∈ (algebraMap T.V T.Fr).range := fun x => by`. Take `⟨V, g, e, hxV, he⟩` from `exists_affine_isTanBasis E H Y.X Y.t Y.X (𝟙 _) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hd, hxU, hle, hic⟩` from `exists_affine_normal_domain V.1 hxV`. Take `⟨ρ, eρ⟩ : ∃ ρ : Γ(Y.X, V.1) →+* Γ(Y.X, U), spMap ρ ≫ V.2.fromSpec = hU.fromSpec` from `⟨(Y.X.presheaf.map (homOfLE hle).op).hom, V.2.map_fromSpec hU _⟩`. Establish `hb` using `isTanBasis_bc he ρ`. Rewrite `hb` using `[Category.comp_id, eρ]`. Establish `: IsNoetherianRing Γ(Y.X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, h⟩` from `chart_bound Y r ν hr Z hL hbd Γ(Y.X, U) hU.fromSpec _ hb`. Use `⟨U, m, hxU, hm, fun T io y₀ yt yy h1 h1' h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `GlobalTheory.localSpec_fac_of_closedPoint_mem_range T.V Y.X Γ(Y.X, U) hU.fromSpec yt inferInstance (by rw [hU.range_fromSpec]; exact h2)`. Conclude with `h T io y₀ φ yy (by rw [h1, ← Category.assoc, spMap_comp_eq]) h1' h3`. Use `choose V m hV hm hloc using loc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun x => (V x : Set Y.X)) (fun x => (V x).isOpen) fun x _ => Set.mem_iUnion.2 ⟨x, hV x⟩`. Use `⟨∏ x ∈ S, m x, Finset.prod_pos fun x _ => hm x, fun la v hv => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, T, io, e₀, ho, y₀, hy, η, -, rfl⟩, rfl⟩` from `hv`. Use `letI : Algebra c.F c'.F := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by simp`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := c'.fin`. Use `haveI : FiniteDimensional c.F c'.F := Module.Finite.of_restrictScalars_finite ℚ c.F c'.F`. Take `⟨L₀, _, _, _, io', hio'⟩` from `GlobalTheory.LevelLift.exists_field_over c.F c'.F T.Fr io`. Use `letI := io.toAlgebra`. Establish `cond : (spMap (algebraMap T.Fr L₀) ≫ GlobalTheory.AllWt.ptF y₀.1) ≫ pullback.snd _ _ = spMap io' ≫ spMap (IntermediateField.inclusion hle).toRingHom`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, pullback.lift_snd, spMap_comp_eq, spMap_comp_eq]`. Conclude with `congrArg spMap hio'.symm`. Take `⟨L, _, _, _, x', hx'⟩` from `GlobalTheory.LevelLift.exists_point_finite_surjective _ hfin hsurj L₀ (pullback.lift _ _ cond)`. Use `letI : Algebra T.Fr L := ((algebraMap L₀ L).comp (algebraMap T.Fr L₀)).toAlgebra`. Use `haveI : IsScalarTower T.Fr L₀ L := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional T.Fr L := Module.Finite.trans L₀ L`. Take `⟨T', iT, e', ψ, φ, he', hv, hψ, hφ, -⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T L`. Take `⟨y₁, ι, hι, hm₁⟩` from `GlobalTheory.IntFrBaseChange.exists_intFr_baseChange E H Dw l Xo c T T' io y₀ iT e' he' fun a _ => hv a`. Use `letI := (iT.comp io).toAlgebra`. Establish `hx1 : x' ≫ r = spMap (algebraMap T.Fr L) ≫ GlobalTheory.AllWt.ptF y₀.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrArg (· ≫ pullback.fst _ _) hx'`. Simplify using `only [Category.assoc, pullback.lift_fst] at h`. Rewrite using `[h, ← Category.assoc, spMap_comp_eq]`. Establish `hc : ψ.toRingHom.comp (algebraMap T.Fr L) = iT` using `RingHom.ext fun a => hψ a`. Establish `hpt : GlobalTheory.AllWt.ptF y₁.1 = spMap iT ≫ GlobalTheory.AllWt.ptF y₀.1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_fst, pullback.lift_fst, hm₁.1, hι]`. Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_snd, pullback.lift_snd, spMap_comp_eq]`. Establish `hyr : (spMap ψ.toRingHom ≫ x') ≫ r = GlobalTheory.AllWt.ptF y₁.1`. Rewrite using `[Category.assoc, hx1, ← Category.assoc, spMap_comp_eq, hc, hpt]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨io₂, hio₂⟩ : ∃ io₂ : c'.F →+* T'.Fr, spMap io₂ = (spMap ψ.toRingHom ≫ x') ≫ pullback.snd _ _` from `⟨(Spec.preimage ((spMap ψ.toRingHom ≫ x') ≫ pullback.snd _ _)).hom, by simp [spMap]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : 𝓞 c'.F →+* T'.V, (algebraMap T'.V T'.Fr).comp b = io₂.comp (algebraMap (𝓞 c'.F) c'.F) := by`. Establish `key : ∀ a : 𝓞 c'.F, io₂ (algebraMap (𝓞 c'.F) c'.F a) ∈ (algebraMap T'.V T'.Fr).range` using `fun a => by`. Take `⟨p, hp, h0⟩` from `RingOfIntegers.isIntegral a`. Use `IsIntegrallyClosed.isIntegral_iff (R := T'.V) (K := T'.Fr).1 ⟨p.map (Int.castRingHom T'.V), hp.map _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg (io₂.comp (algebraMap (𝓞 c'.F) c'.F)) h0`. Rewrite `h1` using `[Polynomial.hom_eval₂, map_zero]`. Rewrite using `[Polynomial.eval₂_map, RingHom.ext_int ((algebraMap T'.V T'.Fr).comp (Int.castRingHom T'.V)) ((io₂.comp (algebraMap (𝓞 c'.F) c'.F)).comp (algebraMap ℤ (𝓞 c'.F)))]`. Conclude with `h1`. Set `eq` to `RingEquiv.ofBijective (algebraMap T'.V T'.Fr).rangeRestrict ⟨fun a a' h => IsFractionRing.injective T'.V T'.Fr (congrArg Subtype.val h), (algebraMap T'.V T'.Fr).rangeRestrict_surjective⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨eq.symm.toRingHom.comp ((io₂.comp (algebraMap (𝓞 c'.F) c'.F)).codRestrict _ key), RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (eq.apply_symm_apply _)`. Take `⟨yt, h1, -⟩` from `extPt Y T' b (spMap ψ.toRingHom ≫ x') (by show _ = spMap (algebraMap T'.V T'.Fr) ≫ spMap b`. Rewrite using `[openImmersion_comp_structure_eq_generic, ← Category.assoc, ← hio₂, spMap_comp_eq, spMap_comp_eq, hb])`. Take `⟨x, hx, hxV⟩` from `Set.mem_iUnion₂.1 (hS (Set.mem_univ (yt (IsLocalRing.closedPoint T'.V))))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `hloc x T' _ y₁ yt _ h1.symm hyr hxV (fun p => by`. Rewrite using `[hpt, Scheme.Hom.comp_apply]`. Conclude with `hy.2 _)`. Establish `hev : evI y₁ f = iT (evI y₀ f)` using `(GlobalTheory.FlagTan.evR_frMap hL.1 hm₁).trans (DFunLike.congr_fun hι _)`. Take `⟨m', hm'⟩` from `Finset.dvd_prod_of_mem m hx`.
-
-Use `show 0 ≤ nval T.V e₀ (evI y₀ _)`. Rewrite using `[← nval_bc iT he' hv, evI_smul, map_natCast, map_mul, map_natCast, ← hev, hm', Nat.cast_mul, mul_comm (m x : T'.Fr), mul_assoc, ← hs, ← map_natCast (algebraMap T'.V T'.Fr), ← map_mul]`. Generalize the expression as in `(m' : T'.V) * s = t`. Distinguish the cases in `h0 : algebraMap T'.V T'.Fr t = 0`. Rewrite using `[h0, nval_zero]`.
-
-Conclude with `le_top`. Use `(WithZero.log_le_log (valV_ne_zero (V := T'.V) h0) one_ne_zero).2 (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ t)` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Rewrite using `[nval_of_ne h0, EReal.coe_nonneg]`. Use `div_nonneg ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
-
-Establish `h2 : 0 ≤ vV T'.V (algebraMap T'.V T'.Fr t)` using `by rw [vV]; omega`. Conclude with `h2` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_denom (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A = 1) (Z : Comp Xo c)
     {f : Rul Xo c} {σ₁ σ₂ : E →+* ℂ} (hL : DetLaw Z f σ₁ σ₂)

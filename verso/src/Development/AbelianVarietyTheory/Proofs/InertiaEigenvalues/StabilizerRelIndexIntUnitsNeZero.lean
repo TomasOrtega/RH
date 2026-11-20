@@ -9,9 +9,7 @@ noncomputable section
 namespace GlobalTheory.UnitLemma.StabIdx
 
 /- English proof (translation)
-Use `haveI : Finite (K ⧸ H.subgroupOf K) := by`. Use `Finite.of_injective (fun q : K ⧸ H.subgroupOf K => f q.out) ?_` and prove the remaining obligations. Introduce `q q' h`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hf _ _ h`.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_map {G X : Type} [Group G] [Finite X] (H K : Subgroup G) (f : K → X)
     (hf : ∀ a b : K, f a = f b → (a : G)⁻¹ * b ∈ H) : H.relIndex K ≠ 0 := by
@@ -27,11 +25,11 @@ theorem relIndex_ne_zero_of_map {G X : Type} [Group G] [Finite X] (H K : Subgrou
 variable {O E A : Type} [CommRing O] [Field E] [CommRing A] [Algebra O A] [Algebra E A]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[stLat_smul_val]`. Use extensionality with `x`. Rewrite using `[mem_mulLat_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `h1 _ hx` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.mul_inv, one_mul]`. Then use the resulting hypothesis. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2 _ hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabilizer_of {g : A} (L : stLat O E g) (t : Aˣ)
     (h1 : ∀ y ∈ (L : Submodule O A), (t : A) * y ∈ (L : Submodule O A))
@@ -50,9 +48,9 @@ theorem mem_stabilizer_of {g : A} (L : stLat O E g) (t : Aˣ)
     exact h2 _ hx
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : Ideal.span {c} ≠ ⊥` using `by simpa using hc`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ`. Establish `hm : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Use `haveI : Finite (O ⧸ IsLocalRing.maximalIdeal O) := (inferInstance : Finite (IsLocalRing.ResidueField O))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.finite_quotient_pow (IsNoetherian.noetherian (IsLocalRing.maximalIdeal O)) n` as an intermediate fact. Rewrite `this` using `[hm, Ideal.span_singleton_pow, ← hn]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_quotient_span [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] {c : O} (hc : c ≠ 0) : Finite (O ⧸ Ideal.span {c}) := by
@@ -69,17 +67,15 @@ theorem finite_quotient_span [IsDomain O] [IsDiscreteValuationRing O]
 variable [IsDomain O] [Algebra O E] [IsFractionRing O E] [IsScalarTower O E A]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hC`. Take `⟨t, ht⟩` from `hL.1`. Establish `hex : ∀ p : A × A, ∃ r : O, r ≠ 0 ∧ r • (p.1 * p.2) ∈ L` using `fun p => ReciprocityTheory.PGsh.L2.SecondCohomologyLattice.exists_smul_mem_of_mem_span (C := E) L (by rw [hL.2]; trivial)`. Use `choose r hr0 hrm using hex`. Use `⟨∏ p ∈ s ×ˢ t, r p, Finset.prod_ne_zero_iff.2 fun p _ => hr0 p, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgen : ∀ a ∈ s, ∀ b ∈ t, (∏ p ∈ s ×ˢ t, r p) • (a * b) ∈ L`. Introduce `a ha b hb`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem r (Finset.mem_product.2 ⟨ha, hb⟩ : (a, b) ∈ s ×ˢ t)`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ (hrm (a, b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx y hy`. Rewrite `hy` using `[← ht]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb`. Rewrite `hx` using `[← hs]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact hgen a ha b hb`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [add_mul, smul_add]`. Conclude with `L.add_mem hu hv`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul o u _ hu => rw [smul_mul_assoc, smul_comm]`. Conclude with `L.smul_mem _ hu`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [mul_add, smul_add]`. Conclude with `L.add_mem hu hv`.
-
-Consider the case `smul o u _ hu => rw [mul_smul_comm, smul_comm]`. Conclude with `L.smul_mem _ hu`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mul_mem (C L : Submodule O A) (hC : C.FG) (hL : IsLat O E L) :
     ∃ c : O, c ≠ 0 ∧ ∀ x ∈ C, ∀ y ∈ L, c • (x * y) ∈ L := by
@@ -110,19 +106,17 @@ theorem exists_smul_mul_mem (C L : Submodule O A) (hC : C.FG) (hL : IsLat O E L)
   | smul o u _ hu => rw [mul_smul_comm, smul_comm]; exact L.smul_mem _ hu
 
 /- English proof (translation)
-Use `set C := Subalgebra.toSubmodule (integralClosure O A) with hCdef`. Take `⟨c, hc0, hcL⟩` from `exists_smul_mul_mem (E := E) C (L : Submodule O A) hC L.2.1`. Use `haveI := finite_quotient_span hc0`. Use `haveI : Finite (C ⧸ (⊤ : Submodule O C)) := by haveI : Subsingleton (C ⧸ (⊤ : Submodule O C)) := Submodule.Quotient.subsingleton_iff.2 rfl infer_instance`. Use `haveI : Finite (C ⧸ Ideal.span {c} • (⊤ : Submodule O C)) := Submodule.finite_quotient_smul _ ((Submodule.fg_top C).2 hC)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmemC : ∀ x : A, IsIntegral O x → x ∈ C` using `fun x hx => hx`. Set `f : intUnits O A → C ⧸ Ideal.span {c} • (⊤ : Submodule O C)` to `fun t => Submodule.Quotient.mk ⟨((t : Aˣ) : A), hmemC _ t.2.1⟩`. Use `relIndex_ne_zero_of_map _ _ f fun a b hab => ?_` and prove the remaining obligations. Rewrite `hab` using `[Submodule.Quotient.eq, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨n, -, hn⟩` from `hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hn' : c • (n : A) = ((a : Aˣ) : A) - ((b : Aˣ) : A)`. Use `congrArg Subtype.val hn` as an intermediate fact. Simplify using `using this`. Establish `ha : ((a : Aˣ)⁻¹ : Aˣ).val * (a : Aˣ).val = 1` using `Units.inv_mul _`. Establish `hb : ((b : Aˣ)⁻¹ : Aˣ).val * (b : Aˣ).val = 1` using `Units.inv_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hna : ((a : Aˣ)⁻¹ : Aˣ).val * (n : A) ∈ C` using `hmemC _ (a.2.2.mul n.2)`. Establish `hnb : ((b : Aˣ)⁻¹ : Aˣ).val * (n : A) ∈ C` using `hmemC _ (b.2.2.mul n.2)`. Apply `mem_stabilizer_of L` to reduce the goal to its premises. Introduce `y hy`. Establish `e : (((a : Aˣ)⁻¹ * (b : Aˣ) : Aˣ) : A) * y = y - c • ((((a : Aˣ)⁻¹ : Aˣ).val * (n : A)) * y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul]`. Rewrite `hn'`, the goal using `[Algebra.smul_def]`. Take the linear combination `(((a : Aˣ)⁻¹ : Aˣ).val * y) * hn' + y * ha`. Rewrite using `[e]`. Conclude with `L.1.sub_mem hy (hcL _ hna _ hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `y hy`. Establish `e : ((((a : Aˣ)⁻¹ * (b : Aˣ))⁻¹ : Aˣ) : A) * y = y + c • ((((b : Aˣ)⁻¹ : Aˣ).val * (n : A)) * y)`. Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul]`. Rewrite `hn'`, the goal using `[Algebra.smul_def]`. Take the linear combination `(-(((b : Aˣ)⁻¹ : Aˣ).val * y)) * hn' + y * hb`.
-
-Rewrite using `[e]`. Conclude with `L.1.add_mem hy (hcL _ hnb _ hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_fg [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)]
     {g : A} (hC : (Subalgebra.toSubmodule (integralClosure O A)).FG) (L : stLat O E g) :
@@ -169,7 +163,7 @@ theorem relIndex_ne_zero_of_fg [IsDiscreteValuationRing O] [Finite (IsLocalRing.
     exact L.1.add_mem hy (hcL _ hnb _ hy)
 
 /- English proof (translation)
-Introduce `O E A _ _ _ _ _ _ _ _ _ _ _ _ g hg L`. Use `haveI := GlobalTheory.T.algebraEtale_of_separable_charpoly_mulLeft E A g hg`. Conclude with `relIndex_ne_zero_of_fg (GlobalTheory.T.integralClosure_fg_finiteEtale_dvr O E A) L`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabilizer_relIndex_intUnits_ne_zero : ∀ (O E A : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field E] [Algebra O E]

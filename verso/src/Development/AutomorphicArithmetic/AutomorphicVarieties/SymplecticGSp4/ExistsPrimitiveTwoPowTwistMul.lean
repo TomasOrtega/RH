@@ -1,21 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O _ _ N _ χ c n hc hcn ξ hξ`. Take `⟨hdN, χ₀, hχ⟩` from `DirichletCharacter.factorsThrough_conductor χ`. Establish `hd2 : χ.conductor ∣ 2 ^ n` using `hc ▸ pow_dvd_pow 2 hcn.le`. Use `set ψ : DirichletCharacter O (2 ^ n) := DirichletCharacter.changeLevel hd2 χ₀ with hψ`. Establish `hn1 : 2 ^ (n - 1) ∣ 2 ^ n` using `pow_dvd_pow 2 (Nat.sub_le n 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ * ξ, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnp`. Establish `hψf : ψ.FactorsThrough (2 ^ (n - 1))` using `DirichletCharacter.FactorsThrough.mono ψ (DirichletCharacter.changeLevel_factorsThrough χ₀ hd2) (by rw [hc]; exact pow_dvd_pow 2 (by omega)) hn1`. Establish `hcd` using `DirichletCharacter.conductor_dvd_level (ψ * ξ)`. Take `⟨k, hk, hk'⟩` from `(Nat.dvd_prime_pow Nat.prime_two).mp hcd`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkn : k ≠ n`. Introduce `h`. Apply `hnp` to reduce the goal to its premises. Rewrite using `[DirichletCharacter.isPrimitive_def, hk', h]`. Establish `hpf : (ψ * ξ).FactorsThrough (2 ^ (n - 1))` using `DirichletCharacter.FactorsThrough.mono (ψ * ξ) (DirichletCharacter.factorsThrough_conductor (ψ * ξ)) (by rw [hk']; exact pow_dvd_pow 2 (by omega)) hn1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξf : ξ.FactorsThrough (2 ^ (n - 1))`. Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap hn1]`. Introduce `x hx`. Establish `h1` using `(DirichletCharacter.factorsThrough_iff_ker_unitsMap hn1).mp hψf hx`. Establish `h2` using `(DirichletCharacter.factorsThrough_iff_ker_unitsMap hn1).mp hpf hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2`, the goal using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Rewrite `h2` using `[MulChar.mul_apply, h1, one_mul]`. Conclude with `h2`. Establish `hle : ξ.conductor ≤ 2 ^ (n - 1)` using `Nat.sInf_le hξf`. Establish `hξ' : ξ.conductor = 2 ^ n` using `hξ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[hξ']`. Establish `: 2 ^ (n - 1) < 2 ^ n` using `Nat.pow_lt_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Establish `ha' : IsCoprime a (2 * (N : ℤ))` using `by exact_mod_cast ha`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haN : IsCoprime a (N : ℤ)` using `ha'.of_mul_right_right`. Establish `ha2 : IsCoprime a ((2 ^ n : ℕ) : ℤ)`. Use `push_cast`. Conclude with `ha'.of_mul_right_left.pow_right`. Establish `e1` using `DirichletCharacter.changeLevel_eq_cast_of_dvd' χ₀ hdN haN`.
-
-Rewrite `e1` using `[← hχ]`. Rewrite using `[MulChar.mul_apply, e1, hψ, DirichletCharacter.changeLevel_eq_cast_of_dvd' χ₀ hd2 ha2]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_primitive_two_pow_twist_mul :
     ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (χ : DirichletCharacter O N) (c n : ℕ), χ.conductor = 2 ^ c → c < n → ∀ ξ : DirichletCharacter O (2 ^ n), ξ.IsPrimitive → ∃ ξ₁ : DirichletCharacter O (2 ^ n), ξ₁.IsPrimitive ∧ ∀ a : ℤ, IsCoprime a (2 * N : ℕ) → ξ₁ a = χ a * ξ a := by

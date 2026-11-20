@@ -15,9 +15,9 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `F` using `ProductExactness.frameLoc_X X u u v`. Apply the tactic sequence `have hep : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.fR b)) = if a = b then 1 else 0 := fun a b => (ProductExactness.hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)`. Establish `hpp : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.fR b)) = 0` using `fun a b => (ProductExactness.hJ_X X v _ _).trans (by rw [X.ff]; simp)`. Establish `hpz : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) = 0` using `fun a => (ProductExactness.hJ_X X v _ _).trans (by rw [(X.zu_orth u a).2]; simp)`. Take `⟨w, hww, hew, hpw, hzw⟩` from `UnitaryIsometries.RI.complement (X.B.I.ε v) F.dim F.sig F.T_pos (⟨F.ee, hep, hpp, F.ez, hpz, F.zz⟩ : UnitaryIsometries.RI.Hyp (X.B.I.ε v) _ _ _ _)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, ⟨F.ee, hep, hpp, F.ez, hpz, F.zz, hew, hpw, hzw, hww, F.T_pos.ne'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem frm_at {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     ∃ w : Fin D.R.k → Fin X.B.I.n → ℂ, NilradicalHermitianFrames.NH.Frm (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a))
@@ -34,11 +34,11 @@ theorem frm_at {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.w
   exact ⟨w, ⟨F.ee, hep, hpp, F.ez, hpz, F.zz, hew, hpw, hzw, hww, F.T_pos.ne'⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs v`. Use `⟨fun a => hs v _ ?_, fun a => hs v _ ?_, hs v _ ?_⟩` and prove the remaining obligations. Conclude with `Or.inl (Or.inl ⟨a, rfl⟩)`. Conclude with `Or.inl (Or.inr ⟨a, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Prove the first alternative.
 
-Conclude with `Or.inr rfl`. Introduce `hs v x hx`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Conclude with `(hs v).1 a`. Conclude with `(hs v).2.1 a`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `(hs v).2.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_Hu_iff {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (s : X.B.I.Ginf) :
     s ∈ Hu X u ↔ ∀ v, s v ∈ NilradicalHermitianFrames.NH.HG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a))
@@ -58,7 +58,7 @@ theorem mem_Hu_iff {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u :
       exact (hs v).2.2
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[mem_Hu_iff]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hu_eq_pi {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) : Hu X u = Set.pi Set.univ (fun v => (NilradicalHermitianFrames.NH.HG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a))
     (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) : Set (Formalism.REAL.UJ (X.B.I.ε v)))) := by
@@ -67,23 +67,15 @@ theorem Hu_eq_pi {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D
   simp
 
 /- English proof (translation)
-Introduce `D X u`. Establish `hw` using `fun v => frm_at X u v`. Use `choose w Fw using hw`. Establish `hdim : ∀ v, X.B.I.n = 2 * D.R.rS + 1 + D.R.k` using `fun v => (ProductExactness.frameLoc_X X u u v).dim`. Use `set SGv := fun v => UnitaryIsometries.RI.SG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) with hSGv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set NGv := fun v => NilradicalHermitianFrames.NH.NG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) with hNGv`. Use `set HGv := fun v => NilradicalHermitianFrames.NH.HG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) with hHGv`. Establish `hS : ∀ s, s ∈ X.SinfU u ↔ ∀ v, s v ∈ SGv v` using `fun s => Iff.rfl`. Establish `hN : ∀ s, s ∈ X.NinfU u ↔ ∀ v, s v ∈ NGv v` using `fun s => Iff.rfl`. Establish `hH : ∀ s, s ∈ Hu X u ↔ ∀ v, s v ∈ HGv v` using `mem_Hu_iff X u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `he : X.SinfU u = ⋂ v, (fun s : X.B.I.Ginf => s v) ⁻¹' (SGv v : Set _)`. Use extensionality with `s`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `hS s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he]`. Conclude with `isClosed_iInter fun v => (UnitaryIsometries.RI.SG_closed _ _ _).preimage (continuous_apply v)`. Conclude with `(hS 1).2 fun v => (SGv v).one_mem`. Introduce `a ha b hb`. Conclude with `(hS _).2 fun v => (SGv v).mul_mem ((hS a).1 ha v) ((hS b).1 hb v)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Conclude with `(hS _).2 fun v => (SGv v).inv_mem ((hS a).1 ha v)`. Conclude with `(hN 1).2 fun v => (NGv v).one_mem`. Introduce `a ha b hb`. Conclude with `(hN _).2 fun v => (NGv v).mul_mem ((hN a).1 ha v) ((hN b).1 hb v)`.
-
-Introduce `a ha`. Conclude with `(hN _).2 fun v => (NGv v).inv_mem ((hN a).1 ha v)`. Rewrite using `[Hu_eq_pi]`. Conclude with `isCompact_univ_pi fun v => NilradicalHermitianFrames.NH.HG_compact (Fw v) (hdim v)`. Conclude with `(hH 1).2 fun v => (HGv v).one_mem`.
-
-Introduce `a ha b hb`. Conclude with `(hH _).2 fun v => (HGv v).mul_mem ((hH a).1 ha v) ((hH b).1 hb v)`. Introduce `a ha`. Conclude with `(hH _).2 fun v => (HGv v).inv_mem ((hH a).1 ha v)`. Introduce `h hh n hn`.
-
-Conclude with `(hN _).2 fun v => NilradicalHermitianFrames.NH.conj_mem _ _ _ _ ((hH h).1 hh v) ((hN n).1 hn v)`. Introduce `n hn h hh`. Conclude with `(hS _).2 fun v => (SGv v).mul_mem (NilradicalHermitianFrames.NH.NG_le_SG _ _ _ ((hN n).1 hn v)) (NilradicalHermitianFrames.NH.HG_le_SG _ _ _ _ ((hH h).1 hh v))`. Introduce `s hs`. Establish `hdec` using `fun v => NilradicalHermitianFrames.NH.mem_NH (Fw v) (hdim v) ((hS s).1 hs v)`.
-
-Use `choose m hm h hh heq using hdec`. Conclude with `⟨m, (hN m).2 hm, h, (hH h).2 hh, funext heq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sDecomp_holds : SDecomp := by
   intro D X u

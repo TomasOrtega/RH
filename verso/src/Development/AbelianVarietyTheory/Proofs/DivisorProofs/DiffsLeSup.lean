@@ -21,9 +21,9 @@ def thetaSpanV' (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om' : Rep σ G
   Submodule.span ℂ {f | ∃ Φ, ∃ Φ' ∈ G.M'.So B.ψ B.τ₁, PolMatch B G X R Rf Φ Φ' ∧ f = G.M'.I om' Φ'}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `h1 : G.M.I om Φ ∈ thetaSpanV B G X om R Rf` using `Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `h2 : G.M'.I om' Φ' ∈ thetaSpanV' B G X om' R Rf` using `Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `: (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) = G.M.I om Φ + (-c) • G.M'.I om' Φ'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.add_mem_sup h1 (Submodule.smul_mem _ _ h2)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffs_le_sup (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a') (c : ℂ) :

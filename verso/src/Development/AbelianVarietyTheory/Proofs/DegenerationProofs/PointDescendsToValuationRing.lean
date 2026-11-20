@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `ValuationRing.isInteger_or_isInteger V a with ⟨v, hv⟩ | ⟨v, hv⟩` into its components or cases. Conclude with `⟨v, hv⟩`. Distinguish the cases in `ha : a = 0`. Conclude with `ha ▸ Subring.zero_mem _`. Establish `h1 : β (α v) = ga a⁻¹` using `by rw [← hv]; exact congrArg (· v) (congrArg DFunLike.coe hc)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : α v * w = 1` using `hβ (by rw [map_mul, h1, h, ← map_mul, inv_mul_cancel₀ ha, map_one, map_one])`. Take `⟨u, rfl⟩` from `hα.map_nonunit v (IsUnit.of_mul_eq_one _ h2)`. Use `⟨(u⁻¹ : Vˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv a, ← hv]`. Conclude with `map_units_inv _ u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_dominating {V : Type} [CommRing V] [IsDomain V] [ValuationRing V] {W C : Type} [CommRing W]
     [Field C] (α : V →+* W) (β : W →+* C) (ga : FractionRing V →+* C) (hα : IsLocalHom α)
@@ -34,17 +34,15 @@ theorem mem_range_of_dominating {V : Type} [CommRing V] [IsDomain V] [ValuationR
     exact map_units_inv _ u
 
 /- English proof (translation)
-Introduce `V _ _ _ W C _ _ _ α β ga hα hβ hc X y x hxy`. Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := y (IsLocalRing.closedPoint W)) trivial`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of W) y hp).ge`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ U`. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (spMap β ≫ y) (IsLocalRing.closedPoint C) ∈ U` using `hy (x := spMap β _) trivial`. Rewrite `h1` using `[hxy]`. Take `rfl : p = spMap ga (IsLocalRing.closedPoint C)` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) _ _`. Conclude with `h1`. Establish `key : ∀ f, β (valR y U f) = ga (valR x U f)` using `fun f => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← HolHom.valR_spMap β y U hy, ← HolHom.valR_spMap ga x U hx, hxy]`. Establish `hinj` using `IsFractionRing.injective V (FractionRing V)`. Set `e` to `RingEquiv.ofBijective (algebraMap V (FractionRing V)).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Set `φ : Γ(X, U) →+* V` to `e.symm.toRingHom.comp ((HolHom.evalHom x U hx).codRestrict _ fun f => mem_range_of_dominating α β ga hα hβ hc _ _ ((key f).trans (by rw [HolHom.valR_eq _ _ hx])))`. Establish `hφ : ∀ f, algebraMap V (FractionRing V) (φ f) = valR x U f` using `fun f => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HolHom.valR_eq _ _ hx]`. Conclude with `congrArg Subtype.val (e.apply_symm_apply _)`. Set `h : Sp V ⟶ X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`. Establish `hh : ⊤ ≤ h ⁻¹ᵁ U` using `fun p _ => hU.range_fromSpec.le ⟨_, rfl⟩`. Establish `hval : ∀ f, valR h U f = φ f` using `fun f => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[HolHom.valR_eq _ _ hh]`. Conclude with `congrArg (fun ψ => ψ.hom f) (AffinePointValues.appLE_specMap_fromSpec hU (CommRingCat.ofHom φ) hh)`. Use `⟨h, HolHom.point_ext hU (fun p _ => hh (x := spMap α p) trivial) hy fun f => ?_, HolHom.point_ext hU (fun p _ => hh (x := jK V p) trivial) hx fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[HolHom.valR_spMap _ _ _ hh, hval]`. Use `hβ ?_` and prove the remaining obligations.
-
-Rewrite using `[key, ← hφ]`. Conclude with `congrArg (· (φ f)) (congrArg DFunLike.coe hc)`. Conclude with `(HolHom.valR_spMap (algebraMap V (FractionRing V)) _ _ hh f).trans (by rw [hval, hφ])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_descends_to_valuationRing : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (W C : Type) [CommRing W] [IsLocalRing W] [Field C] (α : V →+* W) (β : W →+* C) (ga : FractionRing V →+* C), IsLocalHom α → Function.Injective β → β.comp α = ga.comp (algebraMap V (FractionRing V)) → ∀ (X : Scheme.{0}) (y : Sp W ⟶ X) (x : Sp (FractionRing V) ⟶ X), spMap β ≫ y = spMap ga ≫ x → ∃ h : Sp V ⟶ X, spMap α ≫ h = y ∧ jK V ≫ h = x := by
   intro V _ _ _ W C _ _ _ α β ga hα hβ hc X y x hxy

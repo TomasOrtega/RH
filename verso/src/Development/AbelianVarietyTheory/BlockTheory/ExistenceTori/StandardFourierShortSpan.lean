@@ -114,7 +114,7 @@ variable {Δ : DeltaDatum Xo c nab} {hK : ReflexLe Dw c} {nV : ℕ}
   {cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)}
 
 /- English proof (translation)
-Introduce `a n hr hne`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Conclude with `hne (le_bot_iff.1 ((h a n hr).trans (Submodule.span_eq_bot.2 h0).le))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem CuspLeSpan.genNeZero (h : CuspLeSpan Δ hK nV cusp) : GenNeZero Δ hK nV cusp := by
   intro a n hr hne
@@ -123,20 +123,20 @@ theorem CuspLeSpan.genNeZero (h : CuspLeSpan Δ hK nV cusp) : GenNeZero Δ hK nV
   exact hne (le_bot_iff.1 ((h a n hr).trans (Submodule.span_eq_bot.2 h0).le))
 
 /- English proof (translation)
-Introduce `a n hr hp` and use `le_antisymm (h a n hr) (Submodule.span_le.2 (h' a n hr.2.1 hp))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CuspLeSpan.cuspEqSpan (h : CuspLeSpan Δ hK nV cusp) (h' : ShortInCusp Δ hK nV cusp) :
     CuspEqSpan Δ hK nV cusp :=
   fun a n hr hp => le_antisymm (h a n hr) (Submodule.span_le.2 (h' a n hr.2.1 hp))
 
 /- English proof (translation)
-Introduce `nab hn r U hU Δ hK nV` and use `(h nab hn r U hU Δ hK nV).1.genNeZero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SpanCanonical.neZero (h : SpanCanonical Xo c) : NeZeroCanonical Xo c :=
   fun nab hn r U hU Δ hK nV => (h nab hn r U hU Δ hK nV).1.genNeZero
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_inPsi H`. Use `⟨fun _ => 1, 8 * (Module.finrank ℚ E / 2) * (Dw.p + Dw.q) + 4, ⟨hA, ⟨fun _ => antitone_const, ⟨4 * (Module.finrank ℚ E / 2) * (Dw.p + Dw.q) + 2, by ring⟩⟩, hr, le_rfl⟩, τ, hτ, fun _ => le_rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_spanRange (hr : 3 ≤ Dw.p + Dw.q) (hA : l.A = 1) : ∃ a n, SpanRange Dw l a n ∧ OnePos Dw a := by
   obtain ⟨τ, hτ⟩ := exists_inPsi H
@@ -145,11 +145,11 @@ theorem exists_spanRange (hr : 3 ≤ Dw.p + Dw.q) (hA : l.A = 1) : ∃ a n, Span
     τ, hτ, fun _ => le_rfl⟩
 
 /- English proof (translation)
-Introduce `n N β hN hβ`. Take `⟨b, hb, hs⟩` from `hβ.1`. Establish `hu : IsUnit b`. Rewrite `hs` using `[latIdeal_std]`. Rewrite using `[← Ideal.span_singleton_eq_top, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [reflexIdeal, Ideal.map_top]`. Simplify using `[← Ideal.one_eq_top]`. Take `⟨u, rfl⟩` from `hu`. Use `⟨u⁻¹, fun x₀ a P hP => ?_⟩` and prove the remaining obligations. Establish `e : (((u⁻¹ : (𝓞 c.F)ˣ) : 𝓞 c.F) : c.F) = β⁻¹`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hb]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Conclude with `(map_mul (algebraMap (𝓞 c.F) c.F) _ _).symm.trans (by rw [Units.inv_mul, map_one])`. Rewrite using `[e]`. Conclude with `h n N β x₀ a P ⟨std_mem_reps _ n 1, hN, hβ, hP⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StdFourier.unit (h : StdFourier Xo c nab) : StdFourierUnit Xo c nab := by
   intro n N β hN hβ

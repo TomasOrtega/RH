@@ -10,7 +10,7 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Rh.afquot`.
+A detailed English derivation is pending.
 -/
 theorem afQuot_equiv_coords : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), Nonempty (AFQuot p AA.carrier ≃ₗ[R] ((ι → R) ⧸ afLat p AA.carrier)) :=
   PositivityTheory.HtPt.Rh.afquot

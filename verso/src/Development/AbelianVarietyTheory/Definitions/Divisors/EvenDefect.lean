@@ -28,7 +28,7 @@ def Half (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) (f : 
         lamVal w (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left z J J' * val (Q.tau (e a) (e b)) κ z J
 
 /- English proof (translation)
-Take `⟨β, β₂, w, h₁, h₂, h₃, -, h₄, h₅⟩` from `h`. Use `⟨β, β₂, w, h₁, h₂, h₃, h₄, fun κ hκ a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `h₅ κ hκ a b z J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[show unitOn (1 : (FractionRing R')ˣ) = 1 from map_one _, map_one, _root_.mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Half.refines {Q : Data R} {ρ : R →+* R'} {D : DegPre R'} {e : D.X ≃+ Q.X} (h : Half Q ρ D e fun _ _ => 1) :
     Refines Q ρ D e := by

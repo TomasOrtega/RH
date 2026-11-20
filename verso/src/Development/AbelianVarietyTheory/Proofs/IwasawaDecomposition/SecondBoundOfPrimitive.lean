@@ -18,7 +18,7 @@ open GlobalTheory.Mem.R3.Tr
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
 /- English proof (translation)
-Take `⟨G, h1, h2⟩` from `h`. Conclude with `⟨(by with_unfolding_all exact ((GlobalTheory.Mem.GridMove.gdC (a := x.o.Z) (oTw x N).Z G) :)), ⟨(by with_unfolding_all exact (h1.values :)), (by with_unfolding_all exact (h1.roots :))⟩, (by with_unfolding_all exact ((hN _ h2) :))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem listPin_oTw (x : St P) (N : TwNew (Dof x))
     (hN : ∀ Z : GlobalTheory.LamTie.LamDat (Dof x), GlobalTheory.LamTie.IsLamTieFull (Dof x).ntw Z → GlobalTheory.LamTie.IsLamTieFull N.tw Z)
@@ -29,9 +29,9 @@ theorem listPin_oTw (x : St P) (N : TwNew (Dof x))
   exact ⟨(by with_unfolding_all exact ((GlobalTheory.Mem.GridMove.gdC (a := x.o.Z) (oTw x N).Z G) :)), ⟨(by with_unfolding_all exact (h1.values :)), (by with_unfolding_all exact (h1.roots :))⟩, (by with_unfolding_all exact ((hN _ h2) :))⟩
 
 /- English proof (translation)
-Unfold `ListSt`. Generalize the expression as in `x'.m.z.R.toRealDat.toLevCh = Lc' at hR ⊢`. Use `revert Lc'`. Unfold `Dof`. Rewrite using `[ho]`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Lc' hR`. Rewrite using `[eq_of_heq hR]`. Conclude with `listPin_oTw x N hN _ _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem listSt_oTw (cDep : ℝ) (x : St P) (N : TwNew (Dof x))
     (hN : ∀ Z : GlobalTheory.LamTie.LamDat (Dof x), GlobalTheory.LamTie.IsLamTieFull (Dof x).ntw Z → GlobalTheory.LamTie.IsLamTieFull N.tw Z)
@@ -48,9 +48,9 @@ theorem listSt_oTw (cDep : ℝ) (x : St P) (N : TwNew (Dof x))
   exact listPin_oTw x N hN _ _ _ h
 
 /- English proof (translation)
-Introduce `hPr hSer hL cDep`. Use `(StepW.and (GlobalTheory.MtId.inMt_idFrame hPr) (StepW.of_all fun _ _ _ _ _ _ _ h => h)).trans (StepW.of_all fun K B f T w hK hF H P x l => ?_)` and prove the remaining obligations. Take `⟨N, hN, hser⟩` from `GlobalTheory.T.exists_new_twist_lam_full hPr hSer hL hK hF H.2 x l`. Take `⟨x', l', ho, hLc, hrow, hPq, hS, hSb, hhL, heig, hθ, hR, hcG, hgeo⟩` from `GlobalTheory.T.twisted_state_transport_heq_levels hL x l.toLI N`. Take `⟨m, hm⟩` from `H.1 P x'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b⟩` from `hser x' l' ho hrow hPq hS hSb hhL heig hθ hR hcG hgeo m hm`. Conclude with `⟨x', ⟨{ toLI := { l' with mt := m }, b := b }⟩, listSt_oTw cDep x N hN x' ho hLc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sb1l : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ∀ cDep : ℝ, SeriesExistList hL cDep := by
   intro hPr hSer hL cDep

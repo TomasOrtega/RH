@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Establish `e : f.appTop ≫ W.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op ≫ π.appLE U A h = (π ≫ f).appTop ≫ W'.presheaf.map (homOfLE (le_top : A ≤ ⊤)).op`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.comp_appTop]`. Simplify using `[Scheme.Hom.appLE]`. Use extensionality with `r`. Use `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) e` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem appLE_comp_cst {R : Type} [CommRing R] {W W' : Scheme.{0}} (f : W ⟶ Spec (CommRingCat.of R))
     (π : W' ⟶ W) (U : W.Opens) (A : W'.Opens) (h : A ≤ π ⁻¹ᵁ U) :
@@ -25,7 +25,7 @@ theorem appLE_comp_cst {R : Type} [CommRing R] {W W' : Scheme.{0}} (f : W ⟶ Sp
   exact this
 
 /- English proof (translation)
-Use extensionality with `a`. Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Simplify using `only [cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cst_comp_specMap {R C : Type} [CommRing R] [CommRing C] (φ : R →+* C) {W : Scheme.{0}}
     (p : W ⟶ Spec (CommRingCat.of C)) (U : W.Opens) :
@@ -37,9 +37,9 @@ theorem cst_comp_specMap {R C : Type} [CommRing R] [CommRing C] (φ : R →+* C)
   rw [this]
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := {p : W.affineOpens × W'.affineOpens // p.2.1 ≤ π ⁻¹ᵁ p.1.1}) (fun i => i.1.2) ?_ ?_` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨U, hxU⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((iSup_affineOpens_eq_top W).ge (Set.mem_univ (π x)))`. Take `⟨A, hA, hxA, hAU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 W'.isBasis_affineOpens (show x ∈ π ⁻¹ᵁ U.1 from hxU)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(U, ⟨A, hA⟩), hAU⟩, hxA⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[GlobalTheory.Principalise.comapIdealAffine _ π i.1.1 i.1.2 i.2, baseIdeal_ideal, baseIdeal_ideal, Ideal.map_map, appLE_comp_cst]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_baseIdeal {R : Type} [CommRing R] {W W' : Scheme.{0}} (f : W ⟶ Spec (CommRingCat.of R))
     (π : W' ⟶ W) (J : Ideal R) : (baseIdeal f J).comap π = baseIdeal (π ≫ f) J := by
@@ -56,7 +56,7 @@ theorem comap_baseIdeal {R : Type} [CommRing R] {W W' : Scheme.{0}} (f : W ⟶ S
       appLE_comp_cst]
 
 /- English proof (translation)
-Rewrite using `[baseIdeal, baseIdeal, Ideal.map_map, cst_comp_specMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseIdeal_comp_specMap {R C : Type} [CommRing R] [CommRing C] (φ : R →+* C) {W : Scheme.{0}}
     (p : W ⟶ Spec (CommRingCat.of C)) (J : Ideal R) :
@@ -64,13 +64,11 @@ theorem baseIdeal_comp_specMap {R C : Type} [CommRing R] [CommRing C] (φ : R �
   rw [baseIdeal, baseIdeal, Ideal.map_map, cst_comp_specMap]
 
 /- English proof (translation)
-Take `⟨U, hxU⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((iSup_affineOpens_eq_top W).ge (Set.mem_univ x))`. Establish `key : ∀ r, x ∈ W.basicOpen (cst f U.1 r) ↔ r ∉ (f x).asIdeal`. Introduce `r`. Simplify using `only [cst, rs, RingHom.comp_apply]`. Rewrite using `[Scheme.basicOpen_res, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hxU, TopologicalSpace.Opens.mem_inf, true_and]`. Conclude with `PrimeSpectrum.mem_basicOpen _ _`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem hxU, baseIdeal_ideal]`. Unfold `Ideal.map`. Rewrite using `[Scheme.zeroLocus_span, Scheme.mem_zeroLocus_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h r hr`. Assume the negation of the conclusion as `hn`. Conclude with `h _ ⟨r, hr, rfl⟩ ((key r).2 hn)`. Introduce and unpack `h _ ⟨r, hr, rfl⟩ hx`.
-
-Conclude with `(key r).1 hx (h hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_support_baseIdeal {R : Type} [CommRing R] {W : Scheme.{0}} (f : W ⟶ Spec (CommRingCat.of R))
     (J : Ideal R) (x : W) : x ∈ (baseIdeal f J).support ↔ J ≤ (f x).asIdeal := by
@@ -93,7 +91,7 @@ theorem mem_support_baseIdeal {R : Type} [CommRing R] {W : Scheme.{0}} (f : W �
     exact (key r).1 hx (h hr)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ f π J => comap_baseIdeal f π J, fun _ _ _ _ φ _ p J => baseIdeal_comp_specMap φ p J, fun _ _ _ f J x => mem_support_baseIdeal f J x⟩`.
+Supply the required witnesses or components.
 -/
 theorem baseIdeal_calculus :
     (∀ (R : Type) [CommRing R] (W W' : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)) (π : W' ⟶ W) (J : Ideal R), (baseIdeal f J).comap π = baseIdeal (π ≫ f) J) ∧ (∀ (R C : Type) [CommRing R] [CommRing C] (φ : R →+* C) (W : Scheme.{0}) (p : W ⟶ Spec (CommRingCat.of C)) (J : Ideal R), baseIdeal (p ≫ Spec.map (CommRingCat.ofHom φ)) J = baseIdeal p (J.map φ)) ∧ (∀ (R : Type) [CommRing R] (W : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)) (J : Ideal R) (x : W), x ∈ (baseIdeal f J).support ↔ J ≤ (f x).asIdeal) :=

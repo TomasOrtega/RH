@@ -8,33 +8,31 @@ namespace Formalism.MainNotions.StandardLattice
 open NumberField Formalism.BasicNotions Finset Formalism.MainNotions.S
 
 /- English proof (translation)
-Establish `dec : ∀ x : G, ∃ (c : ι) (γ : Γ) (κ : K), x = γ * y c * κ`. Introduce `x`. Take `⟨c, hc⟩` from `hy.2 (Quotient.mk'' x)`. Take `⟨h, hh, k, hk, e⟩` from `(DoubleCoset.eq Γ K (y c) x).1 hc`. Conclude with `⟨c, ⟨h, hh⟩, ⟨k, hk⟩, e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `uniq : ∀ (c c' : ι) (γ γ' : Γ) (κ κ' : K), (γ : G) * y c * κ = γ' * y c' * κ' → c = c' ∧ γ = γ' ∧ κ = κ'`. Introduce `c c' γ γ' κ κ' e`. Establish `hc : c = c'`. Apply `hy.1` to reduce the goal to its premises. Use `(DoubleCoset.eq Γ K (y c) (y c')).2 ⟨((γ'⁻¹ * γ : Γ) : G), (γ'⁻¹ * γ).2, ((κ * κ'⁻¹ : K) : G), (κ * κ'⁻¹).2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y c' = (γ' : G)⁻¹ * ((γ' : G) * y c' * κ') * (κ' : G)⁻¹` using `by group`. Rewrite using `[this, ← e]`. Use `push_cast`. Use `group`. Substitute `hc` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1 : ((γ'⁻¹ * γ : Γ) : G) * y c = y c * ((κ' * κ⁻¹ : K) : G)`. Establish `: (γ : G) * y c = (γ' : G) * y c * κ' * (κ : G)⁻¹` using `by rw [← e]; group`. Use `push_cast`. Rewrite using `[mul_assoc, this]`. Use `group`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hs c _ _ h1`. Establish `h3 : γ = γ'`. Use `congrArg (fun z => γ' * z) h2` as an intermediate fact. Simplify using `using this`. Substitute `h3` using the available equality.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨rfl, rfl, ?_⟩` and prove the remaining obligations. Use `mul_left_cancel e` as an intermediate fact. Conclude with `Subtype.ext this`. Use `choose cc gam kap hdec using dec`. Set `ev : eqvFn Γ K V a ψ →ₗ[ℂ] (ι → V)` to `{ toFun := fun φ c => (φ : G → V) (y c) map_add' := fun φ φ' => rfl map_smul' := fun t φ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinj : Function.Injective ev`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `φ h0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `φ.2 (gam x) (y (cc x)) (kap x)`. Rewrite `h1` using `[← hdec x]`. Establish `h2 : (φ : G → V) (y (cc x)) = 0` using `congrFun h0 (cc x)`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective ev`. Introduce `f`. Set `F : G → V` to `fun x => ((ψ (kap x))⁻¹ : ℂˣ) • a (gam x) (f (cc x))`. Establish `hF : F ∈ eqvFn Γ K V a ψ`. Introduce `γ x κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Establish `e : ((gam (γ * x * κ) : Γ) : G) * y (cc (γ * x * κ)) * (kap (γ * x * κ) : K) = ((γ * gam x : Γ) : G) * y (cc x) * ((kap x * κ : K) : G)`. Rewrite using `[← hdec (γ * x * κ)]`. Use `conv_lhs => rw [hdec x]`. Use `push_cast`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e1, e2, e3⟩` from `uniq _ _ _ _ _ _ e`. Use `show ((ψ (kap (γ * x * κ)))⁻¹ : ℂˣ) • a (gam (γ * x * κ)) (f (cc (γ * x * κ))) = ((ψ κ)⁻¹ : ℂˣ) • a γ (((ψ (kap x))⁻¹ : ℂˣ) • a (gam x) (f (cc x)))`. Rewrite using `[e1, e2, e3, map_mul, map_mul, mul_inv, Module.End.mul_apply]`. Rewrite using `[Units.smul_def, Units.smul_def, Units.smul_def, map_smul, smul_smul]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm]`. Use `⟨⟨F, hF⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Establish `e : ((gam (y c) : Γ) : G) * y (cc (y c)) * (kap (y c) : K) = ((1 : Γ) : G) * y c * ((1 : K) : G)`. Rewrite using `[← hdec (y c)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨e1, e2, e3⟩` from `uniq _ _ _ _ _ _ e`. Use `show ((ψ (kap (y c)))⁻¹ : ℂˣ) • a (gam (y c)) (f (cc (y c))) = f c`. Rewrite using `[e1, e2, e3]`. Simplify using the standard rewrite rules.
-
-Establish `E` using `LinearEquiv.ofBijective ev ⟨hinj, hsurj⟩`. Rewrite using `[E.finrank_eq, Module.finrank_pi_fintype]`. Simplify using `[Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem eqvFn_finrank {G : Type} [Group G] (Γ K : Subgroup G) (V : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (a : Γ →* Module.End ℂ V) (ψ : K →* ℂˣ) {ι : Type} [Fintype ι] (y : ι → G)
@@ -117,9 +115,9 @@ theorem eqvFn_finrank {G : Type} [Group G] (Γ K : Subgroup G) (V : Type) [AddCo
   simp [Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Establish `h1 : ((γ : P) : H) ∈ R ⊓ U.map (MulAut.conj (y : H)).toMonoidHom`. Use `⟨γ.2, ⟨((κ : P) : H), κ.2, ?_⟩⟩` and prove the remaining obligations. Establish `e'` using `congrArg Subtype.val e`. Simplify using `only [Subgroup.coe_mul] at e'`. Use `show (y : H) * ((κ : P) : H) * (y : H)⁻¹ = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e']`. Use `group`. Rewrite `h1` using `[hs]`. Conclude with `Subtype.ext (Subtype.ext (Subgroup.mem_bot.1 h1))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_transfer {H : Type} [Group H] (P R U : Subgroup H) (y : P)
     (hs : R ⊓ U.map (MulAut.conj (y : H)).toMonoidHom = ⊥) (γ : R.subgroupOf P) (κ : U.subgroupOf P)
@@ -135,7 +133,7 @@ theorem stab_transfer {H : Type} [Group H] (P R U : Subgroup H) (y : P)
   exact Subtype.ext (Subtype.ext (Subgroup.mem_bot.1 h1))
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Introduce `u hs V _ _ _ a ψ`. Use `(D.mem u).C.clsFin 0` as an intermediate fact. Conclude with `eqvFn_finrank (GF D) (KPi D Lv u) V a ψ (fun c => (Lv u).y c) (Lv u).y_bij (fun c γ κ e => stab_transfer _ _ _ ((Lv u).y c) (hs c) γ κ e)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lemma_CL_rank_holds (D : D7) (Lv : LevelData D) : LevelDataRankBound D Lv := by
   let _ := D.host.cmStar
@@ -145,7 +143,7 @@ theorem lemma_CL_rank_holds (D : D7) (Lv : LevelData D) : LevelDataRankBound D L
     (fun c γ κ e => stab_transfer _ _ _ ((Lv u).y c) (hs c) γ κ e)
 
 /- English proof (translation)
-The claim follows from `mu0Tie_of_CL D Lv (lemma_CL_rank_holds D Lv) hW u (trivStab_of D Lv h17 hp hg u) X hX`.
+A detailed English derivation is pending.
 -/
 theorem mu0Tie_of_col (D : D7) (Lv : LevelData D) (h17 : adm17 D Lv) (hp : Conclusion4p D Lv) (hg : GBig D)
     (hW : AdmittedWeylDimension D) (u : D.what₂.Word) (X : ColRep D Lv u) (hX : BaseWeightColumnCondition D Lv u X) : Mu0Tie D u :=

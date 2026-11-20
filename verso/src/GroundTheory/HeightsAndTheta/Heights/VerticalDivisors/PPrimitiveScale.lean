@@ -9,31 +9,29 @@ open MvPolynomial NumberField IsDedekindDomain nonZeroDivisors
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ v σ f hf`. Use `set J : FractionalIdeal (𝓞 K)⁰ K := FractionalIdeal.spanFinset (𝓞 K) f.support (fun m => f.coeff m) with hJdef`. Establish `hJ : J ≠ 0`. Rewrite using `[hJdef, FractionalIdeal.spanFinset_ne_zero]`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m, MvPolynomial.mem_support_iff.mpr hm, hm⟩`. Establish `hJJ : J * J⁻¹ = 1` using `mul_inv_cancel₀ hJ`. Establish `hcoeff : ∀ m, f.coeff m ∈ J`. Introduce `m`. Distinguish the cases in `hm : f.coeff m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, ← FractionalIdeal.mem_coe]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[← FractionalIdeal.mem_coe, hJdef, FractionalIdeal.spanFinset_coe]`. Conclude with `Submodule.subset_span ⟨m, MvPolynomial.mem_support_iff.mpr hm, rfl⟩`. Establish `hint : ∀ c ∈ J⁻¹, ∀ m, ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = c * f.coeff m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c hc m`. Establish `h1 : f.coeff m * c ∈ J * J⁻¹` using `FractionalIdeal.mul_mem_mul (hcoeff m) hc`. Rewrite `h1` using `[hJJ, FractionalIdeal.mem_one_iff]`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨y, by rw [hy, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Establish `hex : ∃ c ∈ J⁻¹, ∃ m, ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = c * f.coeff m ∧ y ∉ v.asIdeal`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Set `S : Submodule (𝓞 K) K` to `Submodule.map (Algebra.linearMap (𝓞 K) K) v.asIdeal`. Establish `hle : ((J * J⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) ≤ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.coe_mul, Submodule.mul_le]`. Introduce `j hj c hc`. Establish `hJS : (J : Submodule (𝓞 K) K) ≤ S.comap (LinearMap.mulRight (𝓞 K) c)`. Rewrite using `[hJdef, FractionalIdeal.spanFinset_coe, Submodule.span_le]`. Introduce and unpack `_ ⟨m, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hint c hc m`. Use `Submodule.mem_map.mpr ⟨y, hne c hc m y hy, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.linearMap_apply, LinearMap.mulRight_apply]`. Rewrite using `[hy, mul_comm]`. Conclude with `hJS hj`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : K) ∈ S`. Apply `hle` to reduce the goal to its premises. Rewrite using `[hJJ, FractionalIdeal.mem_coe, FractionalIdeal.mem_one_iff]`. Conclude with `⟨1, map_one _⟩`. Take `⟨y, hy, hy1⟩` from `Submodule.mem_map.mp h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: y = 1`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Simplify using `using hy1`. Rewrite `hy` using `[this]`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc, m0, y0, hy0, hy0v⟩` from `hex`. Establish `hcoeffs : ((C c * f).coeffs : Set K) ⊆ Set.range (algebraMap (𝓞 K) K)`. Introduce `a ha`. Take `⟨m, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp ha`. Take `⟨y, hy⟩` from `hint c hc m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `⟨y, by rw [hy, MvPolynomial.coeff_C_mul]⟩`. Take `⟨g, hg⟩` from `MvPolynomial.mem_range_map_iff_coeffs_subset.mpr hcoeffs`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hy0v` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `: algebraMap (𝓞 K) K y0 = 0` using `by rw [hy0, zero_mul]`. Rewrite using `[(IsFractionRing.injective (𝓞 K) K).eq_iff.mp (this.trans (map_zero _).symm)]`. Conclude with `zero_mem _`. Use `⟨c, g, hc0, hg, m0, ?_⟩` and prove the remaining obligations. Establish `hgm : algebraMap (𝓞 K) K (g.coeff m0) = algebraMap (𝓞 K) K y0`.
-
-Rewrite using `[hy0, ← MvPolynomial.coeff_map, hg, MvPolynomial.coeff_C_mul]`. Rewrite using `[(IsFractionRing.injective (𝓞 K) K) hgm]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveScale.proof : PrimitiveScale.Statement := by
   intro K _ _ v σ f hf

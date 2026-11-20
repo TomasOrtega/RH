@@ -11,9 +11,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `sa : Summable fun n : ℕ => a n * cexp (2 * π * Complex.I * n * τ)` using `((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).1 τ).of_norm`. Establish `sb : Summable fun n : ℕ => b n * cexp (2 * π * Complex.I * n * τ)` using `((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous b hb).1 τ).of_norm`. Unfold `qs`. Rewrite using `[← tsum_mul_left, ← tsum_mul_left, ← (sa.mul_left x).tsum_add (sb.mul_left y)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `n`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qs_lin (a b : ℕ → ℂ) (x y : ℂ) (ha : PolyB a) (hb : PolyB b) (τ : ℍ) :
     qs (x • a + y • b) τ = x * qs a τ + y * qs b τ := by
@@ -26,13 +26,13 @@ theorem qs_lin (a b : ℕ → ℂ) (x y : ℂ) (ha : PolyB a) (hb : PolyB b) (τ
   congr 1; funext n; simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `k L L' N ε ρ hk hL' hN hW`. Establish `intg : ∀ h a : ℕ → ℂ, CF k L' (ch ε) h → PolyB a → Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * qs a τ * (τ.im : ℂ) ^ k))`. Introduce `h a hh ha`. Conclude with `GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L L' N ε h ρ (qs a) hk hL' hN hW hh (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).2.aestronglyMeasurable (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth a ha)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b x y hh ha hb`. Unfold `pet`. Establish `e : (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * qs (x • a + y • b) τ * (τ.im : ℂ) ^ k)) = fun τ => x * ((ρ τ : ℂ) * (conj (qs h τ) * qs a τ * (τ.im : ℂ) ^ k)) + y * ((ρ τ : ℂ) * (conj (qs h τ) * qs b τ * (τ.im : ℂ) ^ k))`. Use function extensionality and compare the values at `τ`. Rewrite using `[qs_lin a b x y ha hb τ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add ((intg h a hh ha).const_mul x) ((intg h b hh hb).const_mul y), integral_const_mul, integral_const_mul]`. Introduce `h h' a x y hh hh' ha`. Unfold `pet`. Establish `e : (fun τ : ℍ => (ρ τ : ℂ) * (conj (x * qs h τ + y * qs h' τ) * qs a τ * (τ.im : ℂ) ^ k)) = fun τ => conj x * ((ρ τ : ℂ) * (conj (qs h τ) * qs a τ * (τ.im : ℂ) ^ k)) + conj y * ((ρ τ : ℂ) * (conj (qs h' τ) * qs a τ * (τ.im : ℂ) ^ k))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add ((intg h a hh ha).const_mul _) ((intg h' a hh' ha).const_mul _), integral_const_mul, integral_const_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pet_linear : ∀ (k L L' N : ℕ) (ε : DirichletCharacter ℂ N) (ρ : ℍ → ℝ), 1 ≤ k → 0 < L' → N ∣ L' → Wt L ρ → (∀ (h a b : ℕ → ℂ) (x y : ℂ), CF k L' (ch ε) h → PolyB a → PolyB b → pet k ρ (qs h) (qs (x • a + y • b)) = x * pet k ρ (qs h) (qs a) + y * pet k ρ (qs h) (qs b)) ∧ ∀ (h h' a : ℕ → ℂ) (x y : ℂ), CF k L' (ch ε) h → CF k L' (ch ε) h' → PolyB a → pet k ρ (fun τ => x * qs h τ + y * qs h' τ) (qs a) = conj x * pet k ρ (qs h) (qs a) + conj y * pet k ρ (qs h') (qs a) := by
   intro k L L' N ε ρ hk hL' hN hW

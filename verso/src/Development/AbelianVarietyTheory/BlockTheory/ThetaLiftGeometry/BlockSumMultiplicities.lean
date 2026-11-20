@@ -86,7 +86,7 @@ def SecondTwistCrystallineAtMost (L : SizeData₂ D) : Prop :=
       smallCount D i w hw (T2O D.nd i ρ π) τ (etaHat L) ≤ D.R.m
 
 /- English proof (translation)
-Introduce `hs i r ρ π hS w hw` and use `⟨(h hs i r ρ π hS w hw).1, fun τ => ⟨((h hs i r ρ π hS w hw).2 τ).1, ((h hs i r ρ π hS w hw).2 τ).2.le⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SecondTwistCrystallineSmall.le {L : SizeData₂ D} (h : SecondTwistCrystallineSmall L) : SecondTwistCrystallineAtMost L :=
   fun hs i r ρ π hS w hw =>
@@ -117,7 +117,7 @@ def FromInputs : Prop :=
   ∀ (D : D7) (L : SizeData₂ D) (ε : ℤˣ), PointsCrys D → PointsJumps D ε → SecondTwistJumps D ε ∧ SecondTwistCrystallineSmall L
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [jT2, GlobalTheory.HTW.jW, cloud, lows]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {R : Ranks} (P : HCParam R) (j : Fin R.m) (s : Bool) : (jT2 P j s).card = R.k - 1 + R.m := by
   cases s <;> simp [jT2, GlobalTheory.HTW.jW, cloud, lows]

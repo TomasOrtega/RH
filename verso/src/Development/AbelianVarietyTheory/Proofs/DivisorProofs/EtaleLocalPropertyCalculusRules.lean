@@ -5,14 +5,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_of_forall (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_mono (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : Loc U P) (hPQ : ∀ V g, P V g → Q V g) : Loc U Q := by
@@ -20,7 +20,7 @@ theorem loc_mono (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `hP`. Take `⟨T, hT, hQ⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_and (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (hP : Loc U P) (hQ : Loc U Q) : Loc U fun V g => P V g ∧ Q V g := by
@@ -30,7 +30,7 @@ theorem loc_and (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S.pullback k, Scheme.etaleTopology.pullback_stable k hS, fun V g hg => hP V (g ≫ k) hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_pullback (U W : Scheme.{0}) (k : W ⟶ U) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : Loc U P) : Loc W fun V g => P V (g ≫ k) := by
@@ -38,9 +38,9 @@ theorem loc_pullback (U W : Scheme.{0}) (k : W ⟶ U) (P : ∀ V : Scheme.{0}, (
   exact ⟨S.pullback k, Scheme.etaleTopology.pullback_stable k hS, fun V g hg => hP V (g ≫ k) hg⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hloc⟩` from `h`. Set `R : Sieve U` to `{ arrows := fun W h => ∀ (W' : Scheme.{0}) (k : W' ⟶ W), P W' (k ≫ h) downward_closed := fun {W W'} h hh k W'' k' => by`. Simplify `hh W'' (k' ≫ k) }` using `[Category.assoc]`. Use `⟨R, Scheme.etaleTopology.transitive hS R ?_, fun V g hg => by simpa using hg V (𝟙 V)⟩` and prove the remaining obligations. Introduce `V g hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hT, hP⟩` from `hloc V g hg`. Use `Scheme.etaleTopology.superset_covering ?_ hT` and prove the remaining obligations. Introduce `W k hk W' k'`. Use `hP W' (k' ≫ k) (T.downward_closed hk k')` as an intermediate fact. Simplify `this` using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem loc_trans (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : Loc U (fun V g => Loc V fun W k => P W (k ≫ g))) : Loc U P := by
@@ -58,15 +58,15 @@ theorem loc_trans (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
   simpa [Category.assoc] using this
 
 /- English proof (translation)
-The claim follows from `loc_of_forall U _ fun _ _ => trivial`.
+A detailed English derivation is pending.
 -/
 theorem loc_top (U : Scheme.{0}) : Loc U fun _ _ => True :=
   loc_of_forall U _ fun _ _ => trivial
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact loc_of_forall U _ fun V g i hi => absurd hi (Finset.notMem_empty i)`. Consider the case `insert a s ha ih`. Use `loc_mono U _ _ (loc_and U _ _ (h a) ih) ?_` and prove the remaining obligations. Introduce `V g hg i hi`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hg.1`. Conclude with `hg.2 i hi`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem loc_finset (U : Scheme.{0}) {ι : Type} (P : ι → ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : ∀ i, Loc U (P i)) (s : Finset ι) : Loc U fun V g => ∀ i ∈ s, P i V g := by
@@ -81,7 +81,7 @@ theorem loc_finset (U : Scheme.{0}) {ι : Type} (P : ι → ∀ V : Scheme.{0}, 
     · exact hg.2 i hi
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Conclude with `loc_mono U _ _ (loc_finset U P h Finset.univ) fun V g hg i => hg i (Finset.mem_univ i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem loc_finite (U : Scheme.{0}) (ι : Type) [Finite ι] (P : ι → ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : ∀ i, Loc U (P i)) : Loc U fun V g => ∀ i, P i V g := by
@@ -89,14 +89,14 @@ theorem loc_finite (U : Scheme.{0}) (ι : Type) [Finite ι] (P : ι → ∀ V : 
   exact loc_mono U _ _ (loc_finset U P h Finset.univ) fun V g hg i => hg i (Finset.mem_univ i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊥, Scheme.bot_mem_grothendieckTopology U, fun V g hg => hg.elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_of_isEmpty (U : Scheme.{0}) [IsEmpty U] (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) :
     Loc U P :=
   ⟨⊥, Scheme.bot_mem_grothendieckTopology U, fun V g hg => hg.elim⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨loc_of_forall, loc_mono, loc_and, loc_pullback, loc_trans, loc_finite, loc_of_isEmpty⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_calculus :
     (∀ (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop), (∀ V g, P V g) → Loc U P) ∧

@@ -19,7 +19,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.ZetaDenom
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isNarrowRayClassLFunction_mul_prime_wideIndicator 𝔪 𝔭 hmax hp hcop C Z Z' hZ hZ'`.
+A detailed English derivation is pending.
 -/
 theorem eulerStep {F : Type} [Field F] [NumberField F] (𝔪 𝔭 : Ideal (𝓞 F)) (hmax : 𝔭.IsMaximal) (hp : 𝔭 ≠ ⊥) (hcop : 𝔭 ⊔ 𝔪 = ⊤)
     (C : ClassGroup (𝓞 F)) (Z Z' : ℂ → ℂ) (hZ : IsRayL 𝔪 (wideInd C) Z) (hZ' : IsRayL 𝔪 (wideInd (C * (cls 𝔭)⁻¹)) Z') :
@@ -27,14 +27,14 @@ theorem eulerStep {F : Type} [Field F] [NumberField F] (𝔪 𝔭 : Ideal (𝓞 
   GlobalTheory.T.isNarrowRayClassLFunction_mul_prime_wideIndicator 𝔪 𝔭 hmax hp hcop C Z Z' hZ hZ'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isNarrowRayClassLFunction_top_wideIndicator_iff C Z`.
+A detailed English derivation is pending.
 -/
 theorem isRayL_top_iff {F : Type} [Field F] [NumberField F] (C : ClassGroup (𝓞 F)) (Z : ℂ → ℂ) :
     IsRayL (⊤ : Ideal (𝓞 F)) (wideInd C) Z ↔ IsClassZeta C Z :=
   GlobalTheory.T.isNarrowRayClassLFunction_top_wideIndicator_iff C Z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finite_primes_over_prime_coprimality_equiv l hl`.
+A detailed English derivation is pending.
 -/
 theorem primesOver_exists {F : Type} [Field F] [NumberField F] (l : ℕ) (hl : l.Prime) :
     ∃ P : Finset (Ideal (𝓞 F)), (∀ 𝔭 ∈ P, 𝔭.IsMaximal ∧ 𝔭 ≠ ⊥ ∧ l ∣ Ideal.absNorm 𝔭) ∧
@@ -42,14 +42,14 @@ theorem primesOver_exists {F : Type} [Field F] [NumberField F] (l : ℕ) (hl : l
   GlobalTheory.T.exists_finite_primes_over_prime_coprimality_equiv l hl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isRatInPadicIntegers_of_twisted_difference l g q hq x h C`.
+A detailed English derivation is pending.
 -/
 theorem inZl_of_shift {G : Type} [CommGroup G] [Finite G] (l : ℕ) [Fact l.Prime] (g : G) (q : ℕ) (hq : l ∣ q)
     (x : G → ℚ) (h : ∀ C, InZl l (x C - (q : ℚ) * x (C * g))) (C : G) : InZl l (x C) :=
   GlobalTheory.T.isRatInPadicIntegers_of_twisted_difference l g q hq x h C
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.partialZetaDenominatorExponent_le_of_integral z l a n ha hn h`.
+A detailed English derivation is pending.
 -/
 theorem cE_le_of_inZl {F : Type} [Field F] [NumberField F] (z : ClassGroup (𝓞 F) → ℚ) (l a n : ℕ) [Fact l.Prime]
     (ha : 2 ≤ a) (hn : 1 ≤ n) (h : ∀ C, InZl l (((a ^ n - 1 : ℕ) : ℚ) * z C)) :
@@ -57,14 +57,14 @@ theorem cE_le_of_inZl {F : Type} [Field F] [NumberField F] (z : ClassGroup (𝓞
   GlobalTheory.T.partialZetaDenominatorExponent_le_of_integral z l a n ha hn h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.minPadicValPowSubOneCoprime_eq_closedFormula hmin l n hl hn he`.
+A detailed English derivation is pending.
 -/
 theorem mMin_eq_mE (hmin : Formalism.PairingDivisionLocalBalance.MinVal) (l n : ℕ) (hl : l.Prime) (hn : 2 ≤ n) (he : Even n) :
     mMin l n = Formalism.PairingDivisionLocalBalance.mE l n :=
   GlobalTheory.T.minPadicValPowSubOneCoprime_eq_closedFormula hmin l n hl hn he
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.partialZetaDenomSumBound_of_local_bounds hsum k z hk h16 h`.
+A detailed English derivation is pending.
 -/
 theorem sumBound_of_local {F : Type} [Field F] [NumberField F] (hsum : Formalism.PairingDivisionLocalBalance.CESum) (k : ℕ)
     (z : ClassGroup (𝓞 F) → ℚ) (hk : 2 ≤ k) (h16 : 16 ≤ finrank ℚ F * k)
@@ -72,7 +72,7 @@ theorem sumBound_of_local {F : Type} [Field F] [NumberField F] (hsum : Formalism
   GlobalTheory.T.partialZetaDenomSumBound_of_local_bounds hsum k z hk h16 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hL.1, fun s hs => (Equiv.subtypeEquivRight fun I => (h I).symm).hasSum_iff (f := fun I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I} => (ε I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) |>.2 (hL.2 s hs)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRayL_of_coprime_iff {F : Type} [Field F] [NumberField F] {𝔣 𝔤 : Ideal (𝓞 F)}
     (h : ∀ I, CoprimeTo F 𝔣 I ↔ CoprimeTo F 𝔤 I) {ε : Ideal (𝓞 F) → ℚ} {L : ℂ → ℂ} (hL : IsRayL 𝔣 ε L) : IsRayL 𝔤 ε L :=
@@ -80,9 +80,9 @@ theorem isRayL_of_coprime_iff {F : Type} [Field F] [NumberField F] {𝔣 𝔤 : 
     (f := fun I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I} => (ε I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) |>.2 (hL.2 s hs)⟩
 
 /- English proof (translation)
-Establish `: ∀ C : ClassGroup (𝓞 F), ∃ r : ℚ, ∃ Z : ℂ → ℂ, IsClassZeta C Z ∧ Z (1 - (k : ℂ)) = (r : ℂ)`. Introduce `C`. Take `⟨L, hL, hv⟩` from `h F ⊤ top_ne_bot (wideInd C) (isRayFun_wideInd _ C)`. Take `⟨r, hr⟩` from `hv k hk`. Conclude with `⟨r, L, (isRayL_top_iff C L).1 hL, hr⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose z hz using this`. Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isZetaValues (h : GlobalTheory.Published.SiegelKlingen) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ)
     (hk : 1 ≤ k) : ∃ z : ClassGroup (𝓞 F) → ℚ, IsZetaValues k z := by
@@ -95,35 +95,31 @@ theorem exists_isZetaValues (h : GlobalTheory.Published.SiegelKlingen) (F : Type
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hPc⟩` from `primesOver_exists (F := F) l hl.out`. Use `set c : ℚ := ((a ^ (finrank ℚ F * k) - 1 : ℕ) : ℚ) with hcdef`. Set `St : Finset (Ideal (𝓞 F)) → Prop` to `fun T => ∀ x : ClassGroup (𝓞 F) → ℚ, (∀ C, ∃ Z : ℂ → ℂ, IsRayL (∏ 𝔭 ∈ T, 𝔭) (wideInd C) Z ∧ Z (1 - (k : ℂ)) = (x C : ℂ)) → ∀ C, InZl l (c * x C)`. Establish `hfull : St P`. Introduce `x hx C`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, hZ, e⟩` from `hx C`. Establish `hZ1 : IsRayL (powMod F l 1) (wideInd C) Z` using `isRayL_of_coprime_iff (fun I => by rw [hPc, coprimeTo_powMod_iff le_rfl]) hZ`. Establish `ha0 : (a : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hcop : CoprimeTo F (powMod F l 1) (Ideal.span {(a : 𝓞 F)})`. Rewrite using `[coprimeTo_powMod_iff le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by simpa using ha0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.isCoprime_iff_sup_eq, Ideal.isCoprime_span_singleton_iff]`. Simplify using `using (Nat.isCoprime_iff_coprime.2 hac).map (Int.castRingHom (𝓞 F))`. Establish `hv : IsRayValue (powMod F l 1) (wideInd C) k (x C)` using `⟨Z, hZ1, e⟩`. Establish `hv' : IsRayValue (powMod F l 1) (translate (Ideal.span {(a : 𝓞 F)}) (wideInd C)) k (x C)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[translate_wideInd ha0]`. Conclude with `hv`. Establish `hint : ∀ I, CoprimeTo F (powMod F l 1) I → InZl l (wideInd C I)` using `fun I _ => by`. Apply the tactic sequence `unfold wideInd; split_ifs <;> simp [InZl]`. Use `h F l 1 le_rfl (wideInd C) (isRayFun_wideInd _ C) hint _ hcop k (by omega) (x C) (x C) hv hv'` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Establish `e2 : c * x C = -(x C - (((a ^ finrank ℚ F : ℕ) : ℚ)) ^ k * x C)`. Rewrite using `[hcdef, Nat.cast_sub (Nat.one_le_pow _ _ (by omega))]; push_cast; ring`. Rewrite using `[e2, inZl_iff, padicValRat.neg, ← inZl_iff]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `step : ∀ (T : Finset (Ideal (𝓞 F))) (𝔭 : Ideal (𝓞 F)), 𝔭 ∉ T → 𝔭 ∈ P → T ⊆ P → St (insert 𝔭 T) → St T`. Introduce `T 𝔭 h𝔭T h𝔭P hTP hSt x hx`. Use `choose Zf hZf eZ using hx`. Take `⟨hmax, hne, hdvd⟩` from `hP 𝔭 h𝔭P`. Establish `hcopT : 𝔭 ⊔ ∏ 𝔮 ∈ T, 𝔮 = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Ideal.isCoprime_iff_sup_eq]`. Use `IsCoprime.prod_right fun 𝔮 h𝔮 => Ideal.isCoprime_iff_sup_eq.2 ?_` and prove the remaining obligations. Conclude with `Ideal.IsMaximal.coprime_of_ne hmax (hP 𝔮 (hTP h𝔮)).1 (fun e => h𝔭T (e ▸ h𝔮))`. Use `set q : ℕ := Ideal.absNorm 𝔭 ^ (k - 1) with hqdef`. Establish `hy : ∀ C, ∃ Z : ℂ → ℂ, IsRayL (∏ 𝔮 ∈ insert 𝔭 T, 𝔮) (wideInd C) Z ∧ Z (1 - (k : ℂ)) = ((x C - (q : ℚ) * x (C * (cls 𝔭)⁻¹) : ℚ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Introduce `C`. Use `⟨fun s => Zf C s - ((Ideal.absNorm 𝔭 : ℕ) : ℂ) ^ (-s) * Zf (C * (cls 𝔭)⁻¹) s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert h𝔭T, mul_comm]`. Conclude with `eulerStep _ 𝔭 hmax hne hcopT C _ _ (hZf C) (hZf _)`. Establish `e1 : -(1 - (k : ℂ)) = ((k - 1 : ℕ) : ℂ)` using `by rw [Nat.cast_sub (by omega)]; push_cast; ring`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, Complex.cpow_natCast, eZ, hqdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hSt _ hy` as an intermediate fact. Introduce `C`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hmul` using `inZl_of_shift l ((cls 𝔭)⁻¹) q (dvd_pow hdvd (by omega)) (fun C => c * x C) (fun C => by have := this C; rwa [mul_sub, mul_left_comm] at this) C`. Conclude with `hmul`. Establish `key : ∀ U : Finset (Ideal (𝓞 F)), U ⊆ P → St (P \ U)`. Introduce `U`. Proceed by induction on `U using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Consider the case `empty => intro _`. Simplify using `using hfull`. Consider the case `insert 𝔭 U h𝔭U ih`. Introduce `hU`. Establish `h𝔭P : 𝔭 ∈ P` using `hU (Finset.mem_insert_self _ _)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Substitute using the available equality.
 
-Establish `ih` using `ih ((Finset.subset_insert _ _).trans hU)`. Establish `e : P \ U = insert 𝔭 (P \ insert 𝔭 U)`. Use extensionality with `𝔮`. Simplify using `only [Finset.mem_sdiff, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rintro ⟨h1, h2⟩; by_cases h : 𝔮 = 𝔭 <;> simp_all`. Introduce and unpack `(h | ⟨h1, h2⟩)`. Substitute `h` using the available equality. Conclude with `⟨h𝔭P, h𝔭U⟩`. Conclude with `⟨h1, fun h => h2 (Or.inr h)⟩`.
-
-Rewrite `ih` using `[e]`. Conclude with `step _ 𝔭 (by simp) h𝔭P Finset.sdiff_subset ih`. Establish `h0` using `key P subset_rfl`. Rewrite `h0` using `[Finset.sdiff_self]`. Use `h0 z (fun C => ?_) C` and prove the remaining obligations.
-
-Take `⟨Z, hZ, e⟩` from `hz C`. Conclude with `⟨Z, by rw [Finset.prod_empty, Ideal.one_eq_top]; exact (isRayL_top_iff C Z).2 hZ, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inZl_mul_zeta (h : GlobalTheory.Published.DeligneRibet) (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (l : ℕ) [hl : Fact l.Prime] (a k : ℕ) (ha : 2 ≤ a) (hac : a.Coprime l) (hk : 2 ≤ k)
@@ -204,13 +200,13 @@ theorem inZl_mul_zeta (h : GlobalTheory.Published.DeligneRibet) (F : Type) [Fiel
   exact ⟨Z, by rw [Finset.prod_empty, Ideal.one_eq_top]; exact (isRayL_top_iff C Z).2 hZ, e⟩
 
 /- English proof (translation)
-Apply `ZetaDenominatorsReal.cm` to reduce the goal to its premises. Introduce `F _ _ _ s hs`. Establish `hf : 1 ≤ finrank ℚ F` using `(Module.finrank_pos : 0 < finrank ℚ F)`. Establish `hn2 : 2 ≤ finrank ℚ F * (2 * s)` using `by nlinarith`. Establish `hev : Even (finrank ℚ F * (2 * s))` using `⟨finrank ℚ F * s, by ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ z : ClassGroup (𝓞 F) → ℚ, IsZetaValues (2 * s) z → ∀ l : ℕ, l.Prime → LocalBound (2 * s) z l`. Introduce `z hz l hl`. Use `haveI := Fact.mk hl`. Establish `hm` using `mMin_eq_mE GlobalTheory.T.dividedPowerValuations_minVal l _ hl hn2 hev`. Take `⟨a, ha2, hac, hv⟩` from `GlobalTheory.T.dividedPowerValuations_minVal l _ hl hn2 hev`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `cE_le_of_inZl (F := F) z l a _ ha2 (by omega) (inZl_mul_zeta h.2 F l a (2 * s) ha2 hac (by omega) z hz)`. Rewrite `hc` using `[hv]`. Apply the tactic sequence `refine ⟨by rw [hm]; exact hc, fun h2 hd => ?_, fun h2 hd => ?_, fun h2 => ?_⟩ <;> rw [hm] <;> simp [Formalism.PairingDivisionLocalBalance.mE, *]`. Use `⟨exists_isZetaValues h.1 F (2 * s) (by omega), fun z hz => ⟨hloc z hz, fun h16 => sumBound_of_local GlobalTheory.T.cmValues_exponent_log_sum_le (2 * s) z (by omega) h16 fun l hl => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hloc z hz l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.1`. Rewrite `h2` using `[h1.mMin_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem zetaDenominators (h : GlobalTheory.Published.SiegelKlingenDeligneRibet) : ZetaDenominators := by
   apply ZetaDenominatorsReal.cm

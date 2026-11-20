@@ -26,7 +26,7 @@ def mvD (t : T) (j : ℕ) (k : GA D (ch.G.V (.grid D.R.m j))) (Φ : SchDown ch.G
   ch.W.om (.mu t D.R.m i) ((Pi.mulSingle j k : Pts ch.G) i, (Pi.mulSingle j k : Pts ch.G) (i + 1)) (Φ i)
 
 /- English proof (translation)
-Break down `eq_or_ne i j with rfl | hi` into its components or cases. Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne hi]`. Conclude with `one_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSingle_fin {j : ℕ} {k : GA D (ch.G.V (.grid D.R.m j))} (hk : k ∈ GfC _) (i : ℕ) :
     (Pi.mulSingle j k : Pts ch.G) i ∈ GfC _ := by
@@ -36,9 +36,9 @@ theorem mulSingle_fin {j : ℕ} {k : GA D (ch.G.V (.grid D.R.m j))} (hk : k ∈ 
     exact one_mem _
 
 /- English proof (translation)
-Establish `hom` using `ch.W.om_is (.mu t D.R.m i) ⟨le_rfl, hi⟩`. Establish `hb` using `mulSingle_fin ch hk i`. Establish `hb'` using `mulSingle_fin ch hk (i + 1)`. Establish `key` using `GlobalTheory.OrientedHeis.om_pureTensorO D ch.W.ψ ch.W.θ (ch.G.pS (.mu t D.R.m i)) (ch.G.pT (.mu t D.R.m i)) (ch.G.chrS (.mu t D.R.m i)) (ch.G.chrT (.mu t D.R.m i)) (ch.W.om (.mu t D.R.m i)) hom ch.W.θ_is (ch.G.cartS ch.W.cart (.mu t D.R.m i)) (ch.G.cartS ch.W.cart (.mu t D.R.m i …`. Establish `e1 : ((g * (Pi.mulSingle j k : Pts ch.G) i, g' * (Pi.mulSingle j k : Pts ch.G) (i + 1)) : GA D (ch.G.V (.grid D.R.m i)) × GA D (ch.G.V (.grid D.R.m (i + 1)))) = (g, g') * ((Pi.mulSingle j k : Pts ch.G) i, (Pi.mulSingle j k : Pts ch.G) (i + 1))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Conclude with `congrArg (ch.W.om (.mu t D.R.m i) (g, g')) key.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_move (t : T) {j : ℕ} {k : GA D (ch.G.V (.grid D.R.m j))} (hk : k ∈ GfC _) {Φ : SchDown ch.G t}
     (hΦ : ∀ i, IsThetaFunO ch.W.ψ _ _ (Φ i)) (P : PolDown ch.G) (i : ℕ) (hi : i < D.R.m)
@@ -66,7 +66,7 @@ theorem om_move (t : T) {j : ℕ} {k : GA D (ch.G.V (.grid D.R.m j))} (hk : k �
   exact congrArg (ch.W.om (.mu t D.R.m i) (g, g')) key.2
 
 /- English proof (translation)
-Establish `e' : (lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁ = (lastAt G Wl t hM j hj vN).s.om (g', 1) Φ₁'` using `e`. Unfold `lastDat`. Rewrite using `[e']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lastDat_congr {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (Wl : G.Weil) {t : T} {M : Vol G}
     (hM : M.Is t) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m) (vN : GlobalTheory.Unf.VolN (besDecAt G j 0 hj)) (g g' : GA D (G.V (.grid D.R.m j)))
@@ -79,7 +79,7 @@ theorem lastDat_congr {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gri
   rw [e']
 
 /- English proof (translation)
-Take `⟨e, _he, φ, hφ, _⟩` from `hτ`. Establish `hv` using `ch.rm.vT_is t D.R.m j le_rfl j.2`. Conclude with `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt ch.W.ψ_std ch.W.θ_is ((hφ d hd).2 j).2 hv.2.theta`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem down_theta {t : T} {Φ : ch.G.Datum} {τ : SchRow ch.G × SchDown ch.G t →₀ ℂ} (hτ : IsFlipFin t ch.S.B ch.rm Φ τ)
     {d : SchRow ch.G × SchDown ch.G t} (hd : d ∈ τ.support) (j : Fin D.R.m) : IsThetaFunO ch.W.ψ _ _ (d.2 j) := by
@@ -88,7 +88,7 @@ theorem down_theta {t : T} {Φ : ch.G.Datum} {τ : SchRow ch.G × SchDown ch.G t
   exact GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt ch.W.ψ_std ch.W.θ_is ((hφ d hd).2 j).2 hv.2.theta
 
 /- English proof (translation)
-Establish `hom` using `ch.W.om_is (.mu t D.R.m j) ⟨le_rfl, j.2⟩`. Establish `key` using `GlobalTheory.OrientedHeis.om_pureTensorO D ch.W.ψ ch.W.θ (ch.G.pS (.mu t D.R.m j)) (ch.G.pT (.mu t D.R.m j)) (ch.G.chrS (.mu t D.R.m j)) (ch.G.chrT (.mu t D.R.m j)) (ch.W.om (.mu t D.R.m j)) hom ch.W.θ_is (ch.G.cartS ch.W.cart (.mu t D.R.m j)) (ch.G.cartS ch.W.cart (.mu t D.R.m j …`. Conclude with `key.1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fockD_theta (t : T) {Φ : SchDown ch.G t} (hΦ : ∀ j, IsThetaFunO ch.W.ψ _ _ (Φ j)) (P : PolDown ch.G) (j : Fin D.R.m) :
     IsThetaFunO ch.W.ψ _ _ (fockD ch.W t Φ P j) := by
@@ -106,14 +106,14 @@ theorem fockD_theta (t : T) {Φ : SchDown ch.G t} (hΦ : ∀ j, IsThetaFunO ch.W
   exact key.1
 
 /- English proof (translation)
-The claim follows from `(ch.W.om_is (.mu t D.R.m i) ⟨le_rfl, i.2⟩).om_pres _ _ (hΦ i)`.
+A detailed English derivation is pending.
 -/
 theorem mvD_theta (t : T) {j : ℕ} {k : GA D (ch.G.V (.grid D.R.m j))} {Φ : SchDown ch.G t}
     (hΦ : ∀ i, IsThetaFunO ch.W.ψ _ _ (Φ i)) (i : Fin D.R.m) : IsThetaFunO ch.W.ψ _ _ (mvD ch t j k Φ i) :=
   (ch.W.om_is (.mu t D.R.m i) ⟨le_rfl, i.2⟩).om_pres _ _ (hΦ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_eq_mul (h : Pts ch.G) (j : ℕ) (k : GA D (ch.G.V (.grid D.R.m j))) :
     Function.update h j (h j * k) = h * Pi.mulSingle j k := by
@@ -124,17 +124,17 @@ theorem update_eq_mul (h : Pts ch.G) (j : ℕ) (k : GA D (ch.G.V (.grid D.R.m j)
   · simp [hi]
 
 /- English proof (translation)
-Establish `hjm : j ≤ D.R.m - 2`. Simplify using `only [idx, List.mem_range'_1] at hj`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `j'`. Unfold `conAt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h0 : j' + 2 * 0 + 2 = D.R.m`. Rewrite using `[dif_pos h0, dif_pos h0]`. Establish `hne1 : j' + 1 ≠ j` using `by omega`. Establish `hne2 : j' + 1 + 1 ≠ j` using `by omega`. Establish `hmv : mvD ch t j k Φ ⟨j' + 1, by omega⟩ = Φ ⟨j' + 1, by omega⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mvD, Fin.val_mk, Pi.mulSingle_eq_of_ne hne1, Pi.mulSingle_eq_of_ne hne2, Prod.mk_one_one, map_one, Module.End.one_apply]`. Establish `hf : fockD ch.W t (mvD ch t j k Φ) P ⟨j' + 1, by omega⟩ = fockD ch.W t Φ P ⟨j' + 1, by omega⟩`. Unfold `fockD`. Rewrite using `[hmv]`. Rewrite using `[hf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lastDat_congr ch.W hM j' h0 _ _ _ _ _ _ ?_` and prove the remaining obligations. Establish `e` using `om_move ch t hk hΦ P j' (by omega) (h j') 1`. Rewrite `e` using `[Pi.mulSingle_eq_of_ne hne1, one_mul]`. Conclude with `e`. Rewrite using `[dif_neg h0, dif_neg h0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : j' + 2 * ((D.R.m - 4 - j') / 2 + 1) + 2 = D.R.m`. Use `dite_congr rfl (fun h1' => ?_) (fun _ => rfl)` and prove the remaining obligations. Establish `e1` using `om_move ch t hk hΦ P j' (by omega) (h j') (h (j' + 1))`. Establish `e2` using `om_move ch t hk hΦ P (j' + 1) (by omega) (h (j' + 1)) (h (j' + 1 + 1))`. Simplify using `only [Pi.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use `dite_congr rfl (fun h1' => absurd h1' h1) (fun _ => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conAt_move (t : T) {M : Vol ch.G} (hM : M.Is t) {j : ℕ} (hj : j ∈ idx D) {k : GA D (ch.G.V (.grid D.R.m j))}
     (hk : k ∈ GfC _) {Φ : SchDown ch.G t} (hΦ : ∀ i, IsThetaFunO ch.W.ψ _ _ (Φ i)) (P : PolDown ch.G) (h : Pts ch.G) :
@@ -169,21 +169,19 @@ theorem conAt_move (t : T) {M : Vol ch.G} (hM : M.Is t) {j : ℕ} (hj : j ∈ id
   · refine dite_congr rfl (fun h1' => absurd h1' h1) (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `t a τ hτ M hM P y j hj h`. Use `⟨fun r hr => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Unfold `tot`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Rewrite using `[hR t M hM _ d.1 (fockD_theta ch t (down_theta ch hτ hd) P.2) (fun i => (hB.2.2.2.2.1 t _ τ hτ M hM d hd P.2 h).2 i) P.1 _ _ (hB.1 a) (hB.2.1 t y) j hj r hr h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : k ∈ GfC _` using `(Subgroup.mem_inf.1 hk).1`. Establish `hmv : ∀ d ∈ τ.support, conAt ch.W hM (fockD ch.W t d.2 P.2) (h * Pi.mulSingle j k) = conAt ch.W hM (fockD ch.W t (mvD ch t j k d.2) P.2) h` using `fun d hd => conAt_move ch t hM hj hk' (down_theta ch hτ hd) P.2 h`. Rewrite using `[update_eq_mul]`. Unfold `tot`. Simplify using `only [Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `Eq.trans (Finset.sum_congr rfl fun d hd => congrArg (fun C => τ d * per ch.W M t C d.1 P.1 (colFn ch a) (formTop ch t y)) (hmv d hd)) ?_` and prove the remaining obligations. Set `Φs : (SchRow ch.G × SchDown ch.G t) ⊕ (SchRow ch.G × SchDown ch.G t) → SchDown ch.G t` to `Sum.elim (fun d => mvD ch t j k d.2) (fun d => d.2)`. Set `fs : (SchRow ch.G × SchDown ch.G t) ⊕ (SchRow ch.G × SchDown ch.G t) → SchRow ch.G` to `Sum.elim (·.1) (·.1)`. Set `xs : (SchRow ch.G × SchDown ch.G t) ⊕ (SchRow ch.G × SchDown ch.G t) → ℂ` to `Sum.elim (fun d => τ d) (fun d => -τ d)`. Establish `hth : ∀ i ∈ τ.support.disjSum τ.support, ∀ n, IsThetaFunO ch.W.ψ _ _ (Φs i n)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `(d | d) hd n`. Conclude with `mvD_theta ch t (down_theta ch hτ (Finset.inl_mem_disjSum.1 hd)) n`. Conclude with `down_theta ch hτ (Finset.inr_mem_disjSum.1 hd) n`. Establish `hvan : ∀ (yr : RowPt ch.G) (v : ∀ j : Fin D.R.m, WO (ch.G.V (.grid D.R.m j)) (ch.G.V (.grid D.R.m (j + 1)))), ∑ i ∈ τ.support.disjSum τ.support, xs i * ((∏ n, fs i n (yr n)) * ∏ n, Φs i n (v n)) = 0`. Introduce `yr v`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk2` using `hK t _ τ hτ j hj k hk yr v`. Simplify using `only [Finsupp.sum] at hk2`. Rewrite using `[Finset.sum_disjSum]`. Simplify using `only [xs, fs, Φs, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[← sub_eq_add_neg, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hk2`. Establish `hgood : ∀ i ∈ τ.support.disjSum τ.support, Good ch.W (conAt ch.W hM (fockD ch.W t (Φs i) P.2) h) (fs i)`. Introduce and unpack `(d | d) hd`. Establish `hd'` using `Finset.inl_mem_disjSum.1 hd show Good ch.W (conAt ch.W hM (fockD ch.W t (mvD ch t j k d.2) P.2) h) d.1`. Rewrite using `[← hmv d hd']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hB.2.2.2.2.1 t _ τ hτ M hM d hd' P.2 _`. Conclude with `hB.2.2.2.2.1 t _ τ hτ M hM d (Finset.inr_mem_disjSum.1 hd) P.2 h`. Establish `key` using `hT t M (hB.2.2.1 t M hM) _ _ (hB.1 a) (hB.2.1 t y) _ (τ.support.disjSum τ.support) xs (fun i => conAt ch.W hM (fockD ch.W t (Φs i) P.2) h) fs hgood (hC t M hM P.2 h _ _ xs fs Φs hth hvan) P.1`. Rewrite `key` using `[Finset.sum_disjSum]`. Simplify using `only [xs, fs, Φs, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at key`.
-
-Rewrite using `[← sub_eq_zero, sub_eq_add_neg]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_of (hB : BasicAt ch) (hC : ConLin ch) (hK : KFix ch) (hR : RInv ch) (hT : TensAt ch) : InvAt ch := by
   intro t a τ hτ M hM P y j hj h
@@ -233,7 +231,7 @@ theorem inv_of (hB : BasicAt ch) (hC : ConLin ch) (hK : KFix ch) (hR : RInv ch) 
     exact key
 
 /- English proof (translation)
-The claim follows from `big_mono (fun ch h => inv_of ch h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2) (Big.and GlobalTheory.T.lastRow_unfolding_basicHypotheses (Big.and GlobalTheory.T.unfoldedProduct_depends_on_dataProduct (Big.and GlobalTheory.T.flippedFiniteTensorLatticeFixed_largeDepth (Big.and GlobalTheory …`.
+A detailed English derivation is pending.
 -/
 theorem main : Big fun ch => InvAt ch :=
   big_mono (fun ch h => inv_of ch h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2)

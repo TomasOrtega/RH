@@ -10,9 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 noncomputable section
 
 /- English proof (translation)
-Use `⟨fun U => ?_⟩` and prove the remaining obligations. Establish `hZ : IsNoetherianRing Γ(SpecZ, ⊤)` using `IsLocallyNoetherian.component_noetherian (X := SpecZ) ⟨⊤, isAffineOpen_top _⟩`. Establish `e : (U : X.Opens) ≤ f ⁻¹ᵁ ⊤` using `by simp`. Establish `hφ` using `HasRingHomProperty.appLE @LocallyOfFiniteType f ‹_› ⟨⊤, isAffineOpen_top _⟩ U e`. Set `_` to `(f.appLE ⊤ U.1 e).hom.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Algebra.FiniteType Γ(SpecZ, ⊤) Γ(X, U)` using `hφ`. Conclude with `Algebra.FiniteType.isNoetherianRing Γ(SpecZ, ⊤) Γ(X, U)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_locallyOfFiniteType_specZ {X : Scheme.{0}} (f : X ⟶ SpecZ)
     [LocallyOfFiniteType f] : IsLocallyNoetherian X := by
@@ -26,9 +26,9 @@ theorem isLocallyNoetherian_of_locallyOfFiniteType_specZ {X : Scheme.{0}} (f : X
   exact Algebra.FiniteType.isNoetherianRing Γ(SpecZ, ⊤) Γ(X, U)
 
 /- English proof (translation)
-Set `y : Spec (CommRingCat.of ℚ)` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h : f.base x = (Spec.map (CommRingCat.ofHom (Int.castRingHom ℚ))).base y`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `⊥ = Ideal.comap (Int.castRingHom ℚ) ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(Ideal.comap_bot_of_injective _ (Int.cast_injective (α := ℚ))).symm`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x y h`. Conclude with `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_baseChangeMap_rat_of_asIdeal_eq_bot {X : Scheme.{0}} (f : X ⟶ SpecZ) (x : X)
     (hx : (f.base x).asIdeal = ⊥) : x ∈ Set.range (baseChangeMap f ℚ) := by
@@ -42,19 +42,17 @@ theorem mem_range_baseChangeMap_rat_of_asIdeal_eq_bot {X : Scheme.{0}} (f : X �
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Introduce `X f _ _ W hW`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `isLocallyNoetherian_of_locallyOfFiniteType_specZ f` as an intermediate fact. Establish `: IsNoetherian X` using `{}`. Establish `hgen : ∀ x : X, x ∉ W → (f.base x).asIdeal ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx h`. Establish `h1` using `hW (mem_range_baseChangeMap_rat_of_asIdeal_eq_bot f x h)`. Rewrite `h1` using `[Scheme.Opens.range_ι]`. Conclude with `hx h1`. Take `⟨S, hSi, hS⟩` from `NoetherianSpace.exists_finset_irreducible (⟨(W : Set X)ᶜ, W.isOpen.isClosed_compl⟩ : Closeds X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSZ : ∀ k ∈ S, (k : Set X) ⊆ (W : Set X)ᶜ`. Introduce `k hk`. Establish `h1 : k ≤ S.sup id` using `Finset.le_sup (f := id) hk`. Rewrite `h1` using `[← hS]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `claim : ∀ k ∈ S, ∃ n : ℕ, 0 < n ∧ ∀ x ∈ (k : Set X), (n : ℤ) ∈ (f.base x).asIdeal`. Introduce `k hk`. Establish `hirr : IsIrreducible (k : Set X)` using `hSi ⟨k, hk⟩`. Establish `hg : IsGenericPoint hirr.genericPoint (k : Set X)` using `hirr.isGenericPoint_genericPoint k.isClosed`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (hgen _ (hSZ k hk hg.mem))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n.natAbs, Int.natAbs_pos.mpr hn0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : (f.base hirr.genericPoint).asIdeal ≤ (f.base x).asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).mpr ((hg.specializes hx).map f.base.hom.continuous)`. Conclude with `Ideal.mem_of_dvd _ (Int.dvd_natAbs.mpr dvd_rfl) (hle hn)`. Use `choose! n hn using claim`. Use `⟨∏ k ∈ S, n k, Finset.prod_pos fun k hk => (hn k hk).1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hxW`. Establish `hxS : x ∈ ((S.sup id : Closeds X) : Set X)` using `by rw [← hS]; exact hxW`. Rewrite `hxS` using `[Closeds.coe_finset_sup, Finset.sup_set_eq_biUnion, Set.mem_iUnion₂]`. Take `⟨k, hk, hxk⟩` from `hxS`.
-
-Apply `(mem_invOpen f _ x).mp hx` to reduce the goal to its premises. Establish `hdvd : ((n k : ℕ) : ℤ) ∣ ((∏ k ∈ S, n k : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr (Finset.dvd_prod_of_mem n hk)`. Conclude with `Ideal.mem_of_dvd _ hdvd ((hn k hk).2 x hxk)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem InvOpenInsideRat.proof : InvOpenInsideRat.Statement := by
   intro X f _ _ W hW

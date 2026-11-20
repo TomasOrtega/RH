@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-Set `e : K ≃ₐ[ℚ] K` to `AlgEquiv.ofRingEquiv (f := (starRingAut : RingAut K)) (fun x => ((starRingAut : K ≃+* K).toRingHom.map_rat_algebraMap x))`. Conclude with `Algebra.trace_eq_of_algEquiv e a`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem thetaBasic_trace_star {K : Type*} [Field K] [NumberField K] [StarRing K] (a : K) :
     Algebra.trace ℚ K (star a) = Algebra.trace ℚ K a := by
@@ -39,27 +39,27 @@ theorem thetaBasic_eqv_apply {K V : Type*} [Field K] [NumberField K] [StarRing K
     ((thetaBasic_eqv g L x : gmap g L) : V) = g x := rfl
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ h hh L γ τ`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Unfold `thetaL`. Use `Eq.trans ?_ ((Equiv.addRight (⟨l, hl⟩ : L)).tsum_eq _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight, Submodule.coe_add]`. Rewrite using `[show γ + l + (x : V) = γ + ((x : V) + l) by abel]`. Unfold `thetaL`. Use `Eq.trans ?_ ((Equiv.neg L).tsum_eq _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Submodule.coe_neg]`. Rewrite using `[show -γ + (x : V) = -(γ + -(x : V)) by abel]`. Simplify using `only [map_neg, LinearMap.neg_apply, neg_neg]`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : ∀ x y, h (g x) (g y) = h x y` using `hg`. Unfold `thetaL`. Rewrite using `[← (thetaBasic_eqv g L).tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[thetaBasic_eqv_apply, ← map_add, hg']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hev hdual`. Unfold `thetaL`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hev x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hdual x x.2`. Establish `h1 : h (x : V) γ = star (h γ x)` using `(hh.eq γ x).symm`. Establish `hx : Algebra.trace ℚ K (h (γ + x) (γ + x)) = Algebra.trace ℚ K (h γ γ) + 2 * ((n : ℚ) + m)`. Simplify using `only [map_add, LinearMap.add_apply, h1, thetaBasic_trace_star, hn, hm]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hx, ← Complex.exp_add]`. Use `set T0 : ℂ := ((Algebra.trace ℚ K (h γ γ) : ℚ) : ℂ)`. Establish `: (Real.pi : ℂ) * Complex.I * (τ + 1) * (((Algebra.trace ℚ K (h γ γ) + 2 * ((n : ℚ) + m) : ℚ)) : ℂ) = (Real.pi * Complex.I * T0 + Real.pi * Complex.I * τ * (((Algebra.trace ℚ K (h γ γ) + 2 * ((n : ℚ) + m) : ℚ)) : ℂ)) + ((n + m : ℤ) : ℂ) * (2 * Real.pi * Complex.I)`. Simplify using `only [T0]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`. Introduce `n γs T g hg`. Establish `hg' : ∀ x y, h (g x) (g y) = h x y` using `hg`. Unfold `thetaN`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.piCongrRight fun _ : Fin n => thetaBasic_eqv g L).tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.piCongrRight_apply, Pi.map_apply, thetaBasic_eqv_apply, ← map_add, hg']`. Introduce `T`. Unfold `thetaN thetaL`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.funUnique (Fin 1) L).symm.tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.funUnique_symm_apply, Fin.sum_univ_one]`. Use `congr 1`. Simplify using `[uniqueElim_const]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thetaBasic : ThetaBasic := by
   intro K V _ _ _ _ _ _ _ h hh L γ τ

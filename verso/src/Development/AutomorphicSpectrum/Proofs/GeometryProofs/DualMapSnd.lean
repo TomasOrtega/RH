@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.HtPull
 
 /- English proof (translation)
-Introduce `B _ Z Z' x φ W h h' s`. Unfold `secVal`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem seccomp : ∀ (B : Type) [CommRing B] (Z Z' : Scheme.{0}) (x : Spec (CommRingCat.of B) ⟶ Z') (φ : Z' ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ W)) (h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ W) (s : Γ(Z, W)), secVal x (φ ⁻¹ᵁ W) h (φ.app W s) = secVal (x ≫ φ) W h' s := by
   intro B _ Z Z' x φ W h h' s
@@ -22,11 +22,11 @@ theorem seccomp : ∀ (B : Type) [CommRing B] (Z Z' : Scheme.{0}) (x : Spec (Com
   rfl
 
 /- English proof (translation)
-Introduce `B B' _ _ ψ Z x W h h' s`. Unfold `secVal`. Establish `e : (spMap ψ ≫ x).appLE W ⊤ h' = x.appLE W ⊤ h ≫ (spMap ψ).appTop`. Establish `e₁ : (spMap ψ).appTop = (spMap ψ).appLE ⊤ ⊤ le_top`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e₁]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap ψ) x W ⊤ ⊤ h _).symm`. Rewrite using `[e]`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n' : (Scheme.ΓSpecIso (CommRingCat.of B')).hom.hom ((spMap ψ).appTop.hom ((x.appLE W ⊤ h).hom s)) = ψ ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((x.appLE W ⊤ h).hom s))` using `(ConcreteCategory.congr_hom n.symm ((x.appLE W ⊤ h).hom s)).symm`. Conclude with `n'`.
+A detailed English derivation is pending.
 -/
 theorem secring : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ψ : B →+* B') (Z : Scheme.{0}) (x : Spec (CommRingCat.of B) ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (h' : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ W) (s : Γ(Z, W)), secVal (spMap ψ ≫ x) W h' s = ψ (secVal x W h s) := by
   intro B B' _ _ ψ Z x W h h' s
@@ -45,9 +45,9 @@ theorem secring : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ψ : B →+* B')
   exact n'
 
 /- English proof (translation)
-Introduce `X X' G _ G' _ f φ h`. Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over X'))))`. Establish `e₁ : (1 : 𝟙_ (Over X') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eta : ∀ (X X' : Scheme.{0}) (G : Over X) [GrpObj G] (G' : Over X') [GrpObj G'] (f : X' ⟶ X) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → (η[G']).left ≫ φ = f ≫ (η[G]).left := by
   intro X X' G _ G' _ f φ h
@@ -59,11 +59,11 @@ theorem eta : ∀ (X X' : Scheme.{0}) (G : Over X) [GrpObj G] (G' : Over X') [Gr
   simp
 
 /- English proof (translation)
-Introduce `X G _ q v hv W hq z _`. Take `⟨p, rfl⟩` from `LieCarrier.surjective_fst z`. Establish `h1 : (1 : Over.mk (X.fromSpecStalk q) ⟶ G).left = X.fromSpecStalk q ≫ (η[G]).left`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : v.left (Spec.map _ p) = (η[G]).left (X.fromSpecStalk q p)` using `congrArg (fun g => g p) (hv.trans h1)`. Use `show v.left _ ∈ W`. Use `e.symm ▸ ?_` and prove the remaining obligations. Establish `h3 : X.fromSpecStalk q p ⤳ q`. Establish `: X.fromSpecStalk q p ∈ Set.range (X.fromSpecStalk q)` using `⟨p, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `(h3.map (η[G]).left.continuous).mem_open W.isOpen hq`.
+A detailed English derivation is pending.
 -/
 theorem tanin : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (q : X) (v : epsAt (X.fromSpecStalk q) ⟶ G), IsTanAt G _ v → ∀ W : G.left.Opens, (η[G]).left q ∈ W → ⊤ ≤ v.left ⁻¹ᵁ W := by
   intro X G _ q v hv W hq z _
@@ -80,7 +80,7 @@ theorem tanin : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (q : X) (v : epsAt 
   exact (h3.map (η[G]).left.continuous).mem_open W.isOpen hq
 
 /- English proof (translation)
-Establish `key : ∀ (t : Spec (CommRingCat.of B') ⟶ Z) (_ : t = spMap ψ ≫ x) (h2 : ⊤ ≤ t ⁻¹ᵁ W), secVal t W h2 s = ψ (secVal x W h0 s)`. Introduce and unpack `_ rfl h2`. Conclude with `secring B B' ψ Z x W h0 h2 s`. Rewrite using `[seccomp B' Z Z' x' φ W h h s]`. Conclude with `key _ hx h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_ring {B B' : Type} [CommRing B] [CommRing B'] (ψ : B →+* B') {Z Z' : Scheme.{0}}
     (x' : Spec (CommRingCat.of B') ⟶ Z') (x : Spec (CommRingCat.of B) ⟶ Z) (φ : Z' ⟶ Z) (hx : x' ≫ φ = spMap ψ ≫ x)
@@ -94,7 +94,7 @@ theorem comp_ring {B B' : Type} [CommRing B] [CommRing B'] (ψ : B →+* B') {Z 
   exact key _ hx h
 
 /- English proof (translation)
-Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_snd {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (a : DualNumber R) :
     (dualMap φ a).snd = φ a.snd := by

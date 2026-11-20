@@ -7,17 +7,15 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Finset Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Establish `hA : ((n / (P * Q) : ℕ) : ℤ) * ((P : ℤ) * Q) ≤ n` using `by exact_mod_cast Nat.div_mul_le_self n (P * Q)`. Establish `hU : (((n - s : ℕ)) : ℤ) < (((n - s) / P : ℕ) : ℤ) * P + P` using `by exact_mod_cast Nat.lt_div_mul_add hP`. Establish `hW : ((((n - s) / P - ee : ℕ)) : ℤ) < ((((n - s) / P - ee) / Q : ℕ) : ℤ) * Q + Q`. Conclude with `Nat.lt_div_mul_add hQ` after adjusting the coercions. Establish `hns : (n : ℤ) - s ≤ ((n - s : ℕ) : ℤ)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hue : (((n - s) / P : ℕ) : ℤ) - ee ≤ ((((n - s) / P - ee : ℕ)) : ℤ)` using `by omega`. Establish `hs' : (s : ℤ) < kk * P` using `by exact_mod_cast hs`. Establish `he' : (ee : ℤ) < rr * Q` using `by exact_mod_cast he`. Establish `hP' : (0 : ℤ) < P` using `by exact_mod_cast hP`. Establish `hQ' : (1 : ℤ) ≤ Q` using `by exact_mod_cast hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : ℤ := ((n / (P * Q) : ℕ) : ℤ)`. Use `set U : ℤ := (((n - s) / P : ℕ) : ℤ)`. Use `set W : ℤ := ((((n - s) / P - ee) / Q : ℕ) : ℤ)`. Establish `st1 : A * Q - kk < U + 1`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Use `mul_le_mul_of_nonneg_left hc hP'.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `st2 : A - rr - kk < W + 1`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations.
 
-Use `push_neg at hc`. Establish `h1` using `mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℤ) ≤ Q)`. Establish `hk0 : (0 : ℤ) ≤ kk` using `by positivity`. Establish `h2` using `mul_le_mul_of_nonneg_left hQ' hk0`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem div_mul_sub_le_div_sub_div (n s P Q ee kk rr : ℕ) (hP : 0 < P) (hQ : 0 < Q) (hs : s < kk * P) (he : ee < rr * Q) :
     ((n / (P * Q) : ℕ) : ℤ) - ((kk + rr + 1 : ℕ) : ℤ) ≤ ((((n - s) / P - ee) / Q : ℕ) : ℤ) := by
@@ -54,13 +52,13 @@ section Pad
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
 /- English proof (translation)
-Establish `hV` using `hX.valid`. Establish `hJ : 0 < X.F.J` using `hV.1`. Unfold `Dat.eZ`. Rewrite using `[dif_pos hJ]`. Establish `hmem` using `Fintype.mem_piFinset.1 (Fintype.mem_piFinset.1 he ⟨(j % (X.F.J : ℤ)).toNat % X.F.J, Nat.mod_lt _ hJ⟩) i`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[Finset.mem_filter, Finset.mem_range]`. Establish `h0 : (0 : ℤ) ≤ j % (X.F.J : ℤ)` using `Int.emod_nonneg _ (by exact_mod_cast hJ.ne')`. Establish `h1 : j % (X.F.J : ℤ) < X.F.J` using `Int.emod_lt_of_pos _ (by exact_mod_cast hJ)`. Establish `hv : ((((j % (X.F.J : ℤ)).toNat % X.F.J : ℕ)) : ℤ) = j % (X.F.J : ℤ)`. Rewrite using `[Nat.mod_eq_of_lt (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hq : X.Qc p K ((((j % (X.F.J : ℤ)).toNat % X.F.J : ℕ)) : ℤ) = X.Qc p K j`. Rewrite using `[hv]`. Establish `e1 : j % (X.F.J : ℤ) + (j / (X.F.J : ℤ)) * X.F.J = j`. Conclude with `Int.emod_add_ediv_mul j (X.F.J : ℤ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `sum_Qc_per (p := p) (K := K) X hV (j % (X.F.J : ℤ)) (j / (X.F.J : ℤ))`. Rewrite `e2` using `[e1]`. Conclude with `e2.symm`. Rewrite `hmem` using `[hq]`. Conclude with `hmem.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eZ_lt_mul_Qc (hX : X.Hyp p K) (la : Fin n' → Fin (r + K) → ℕ) (e : Fin X.F.J → Fin r → ℕ)
     (he : e ∈ X.EE p K la) (j : ℤ) (i : Fin r) : X.eZ e j i < r * X.Qc p K j := by
@@ -87,7 +85,7 @@ theorem eZ_lt_mul_Qc (hX : X.Hyp p K) (la : Fin n' → Fin (r + K) → ℕ) (e :
   exact hmem.1
 
 /- English proof (translation)
-Establish `hmem` using `Fintype.mem_piFinset.1 hla (posOf n' x)`. Establish `hmem2` using `Finset.mem_filter.1 hmem`. Establish `hlt` using `(hmem2.2.2 j x hx rfl).1`. Establish `hne : (Finset.univ : Finset (Fin (r + K))).Nonempty` using `⟨⟨0, by have := NeZero.ne r; omega⟩, Finset.mem_univ _⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_la_lt (hX : X.Hyp p K) (la : Fin n' → Fin (r + K) → ℕ) (hla : la ∈ X.LA p K) (j x : ℤ)
     (hx : x ∈ X.toLate j) : ∑ c, la (posOf n' x) c < (r + K) * X.Pz p K j x := by
@@ -104,21 +102,19 @@ theorem sum_la_lt (hX : X.Hyp p K) (la : Fin n' → Fin (r + K) → ℕ) (hla : 
 end Pad
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hX hLa hk la hla e he j`. Establish `hV` using `hX.valid`. Establish `hp` using `hX.prime.pos`. Establish `hr : 0 < r` using `NeZero.pos r`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x hx hW`. Establish `hb` using `mem_letters_bounds hx`. Take `⟨i, hi, rfl⟩` from `comb_frame_top X.F hV (j - 1) x hb.2.2 hb.1 (r - 1) (Nat.sub_lt hr Nat.one_pos) hW`. Establish `hval : X.bfam p K la e j (X.F.fr (j - 1) i) = (X.nz p K la (j - 1) (X.F.fr (j - 1) i) - X.eZ e (j - 1) ⟨i, hi⟩) / X.Qc p K (j - 1)`. Unfold `Dat.bfam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hx, if_pos hW, Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]`. Rewrite using `[if_pos rfl]`. Introduce `b _ hb'`. Rewrite using `[if_neg]`. Introduce `heq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb'` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `absurd heq.symm (ne_of_lt (fr_lt_fr_of_lt_of_valid hV (j - 1) b.val i h hi))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd heq (ne_of_lt (fr_lt_fr_of_lt_of_valid hV (j - 1) i b.val h b.isLt))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hval]`. Establish `hPQ` using `sum_PzQc hX (j - 1) _ hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hPQ` using `[sub_add_cancel]`. Unfold `Dat.Bw`. Rewrite using `[← hPQ]`. Unfold `Dat.nz`. Conclude with `div_mul_sub_le_div_sub_div _ _ _ _ _ (r + K) r (Pz_pos hp _ _) (by unfold Dat.Qc; exact pow_pos hp _) (sum_la_lt hX la hla (j - 1) _ (sum_frlate X hV (j - 1) ⟨i, hi⟩)) (eZ_lt_mul_Qc hX la e he (j - 1) ⟨i, hi⟩)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hl` using `sum_LLsub X hV j x hx`. Take `⟨h1, h2, -, -⟩` from `sum_late_mem hl.1`. Establish `hval : X.bfam p K la e j x = X.nz p K la j x`. Unfold `Dat.bfam`.
-
-Rewrite using `[if_pos h1, if_neg h2, if_neg (not_le.mpr hl.2)]`. Rewrite using `[hval]`. Conclude with `family_degrees_admissible hr hp (fun j x hx => (sum_LLsub X hV j x hx).1) la hla j x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restPad : RestPad 1088 := by
   classical

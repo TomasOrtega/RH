@@ -9,7 +9,7 @@ namespace GlobalTheory.OrbFinAf
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (basV G v).sum_repr a, ← (basV G v).sum_repr b]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul, map_sum, map_smul, Finset.sum_apply', Finsupp.smul_apply, smul_eq_mul, basV, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.TensorProduct.basis_repr_tmul, Finsupp.mapRange_apply]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basV_repr_mul (G : HTGroup p) (v : AwayP p) (a b : Qv v ⊗[ℚ] G.C) (k : Fin (Module.finrank ℚ G.C)) :
     (basV G v).repr (a * b) k = ∑ i, ∑ j, (basV G v).repr a i * (basV G v).repr b j *
@@ -25,7 +25,7 @@ theorem basV_repr_mul (G : HTGroup p) (v : AwayP p) (a b : Qv v ⊗[ℚ] G.C) (k
 omit [Fact p.Prime] in
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w in (Filter.cofinite : Filter (HeightOneSpectrum ℤ)), algebraMap ℚ (w.adicCompletion ℚ) q ∈ w.adicCompletionIntegers ℚ` using `(algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q).2`. Conclude with `Subtype.val_injective.tendsto_cofinite.eventually h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_rat_mem_integers (q : ℚ) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)),
@@ -36,9 +36,7 @@ theorem eventually_rat_mem_integers (q : ℚ) :
   exact Subtype.val_injective.tendsto_cofinite.eventually h
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ i j k : Fin (Module.finrank ℚ G.C), algebraMap ℚ (Qv v) ((Module.finBasis ℚ G.C).repr (Module.finBasis ℚ G.C i * Module.finBasis ℚ G.C j) k) ∈ v.1.adicCompletionIntegers ℚ`. Simplify using `only [Filter.eventually_all]`. Introduce `i j k`. Conclude with `eventually_rat_mem_integers _`. Use `filter_upwards [h] with v hv a b ha hb k`.
-
-Rewrite using `[basV_repr_mul]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => Subring.mul_mem _ (Subring.mul_mem _ (ha i) (hb j)) (hv i j k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_mul_eventually (G : HTGroup p) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ a b : Qv v ⊗[ℚ] G.C,
@@ -55,7 +53,7 @@ theorem isIntV_mul_eventually (G : HTGroup p) :
     Subring.mul_mem _ (Subring.mul_mem _ (ha i) (hb j)) (hv i j k)
 
 /- English proof (translation)
-Introduce `_ _ G` and use `isIntV_mul_eventually G`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntV_mul_eventually' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p),
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ a b : Qv v ⊗[ℚ] G.C,

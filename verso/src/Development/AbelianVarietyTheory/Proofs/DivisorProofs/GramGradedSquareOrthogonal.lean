@@ -21,7 +21,7 @@ open scoped ComplexOrder
 variable {m r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, Function.comp_apply, submatrix_apply, Pi.star_apply]`. Use `symm`. Use `Fintype.sum_of_injective p hp _ _ (fun a ha => by simp [hv a ha]) fun i => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Fintype.sum_of_injective p hp _ _ (fun a ha => by simp [hv a ha]) fun j => rfl`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem quad_sub (M : Matrix (Fin m) (Fin m) ℂ) {p : Fin r → Fin m} (hp : Function.Injective p) (v : Fin m → ℂ)
     (hv : ∀ a ∉ Set.range p, v a = 0) :
@@ -33,19 +33,19 @@ theorem quad_sub (M : Matrix (Fin m) (Fin m) ℂ) {p : Fin r → Fin m} (hp : Fu
   exact Fintype.sum_of_injective p hp _ _ (fun a ha => by simp [hv a ha]) fun j => rfl
 
 /- English proof (translation)
-Set `S : Fin m → ℂ` to `fun a => if a ∈ Set.range p then v a else 0`. Set `R : Fin m → ℂ` to `fun a => if a ∈ Set.range p then 0 else v a`. Establish `S1 : ∀ a ∈ Set.range p, S a = v a` using `fun a h => if_pos h`. Establish `S0 : ∀ a ∉ Set.range p, S a = 0` using `fun a h => if_neg h`. Establish `R1 : ∀ a ∉ Set.range p, R a = v a` using `fun a h => if_neg h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `R0 : ∀ a ∈ Set.range p, R a = 0` using `fun a h => if_pos h`. Establish `hv : v = S + R` using `funext fun a => by`. Distinguish the cases in `h : a ∈ Set.range p`. Rewrite using `[Pi.add_apply, S1 a h, R0 a h, add_zero]`. Rewrite using `[Pi.add_apply, S0 a h, R1 a h, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hSp : S ∘ p = v ∘ p` using `funext fun i => S1 _ ⟨i, rfl⟩`. Establish `c1 : star S ⬝ᵥ M *ᵥ R = 0`. Simplify using `only [dotProduct, mulVec]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ Set.range p`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun b _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ Set.range p`. Rewrite using `[R0 b hb, mul_zero]`. Rewrite using `[(ho a b ha hb).1, zero_mul]`. Rewrite using `[Pi.star_apply, S0 a ha, star_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `c2 : star R ⬝ᵥ M *ᵥ S = 0`. Simplify using `only [dotProduct, mulVec]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ Set.range p`. Rewrite using `[Pi.star_apply, R0 a ha, star_zero, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun b _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ Set.range p`. Rewrite using `[(ho b a hb ha).2, zero_mul]`. Rewrite using `[S0 b hb, mul_zero]`. Establish `e : star v ⬝ᵥ M *ᵥ v = star S ⬝ᵥ M *ᵥ S + star R ⬝ᵥ M *ᵥ R`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv, star_add, mulVec_add, dotProduct_add, add_dotProduct, add_dotProduct, c1, c2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← hSp, ← quad_sub M hp S S0, Complex.add_re]`. Use `hM.re_dotProduct_nonneg R` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -100,13 +100,13 @@ open scoped ComplexOrder
 variable {m r : ℕ}
 
 /- English proof (translation)
-Establish `hS : (M.submatrix p p).PosDef` using `hM.submatrix hp`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Take `⟨⟨w, hw1, hw2, hw⟩, -⟩` from `isLeast_grSq hS i`. Rewrite using `[hw]`. Use `(isLeast_grSq hM k).2 ⟨Function.extend p w 0, ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hk, hp.extend_apply, hw1]`. Distinguish the cases in `h : j ∈ Set.range p`. Take `⟨i', rfl⟩` from `h`. Rewrite using `[hp.extend_apply, hw2 _ (h2 _ hj)]`. Rewrite using `[Function.extend_apply' _ _ _ fun ⟨a, ha⟩ => h ⟨a, ha⟩, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[quad_sub M hp _ fun a ha => by`. Rewrite using `[Function.extend_apply' _ _ _ fun ⟨b, hb⟩ => ha ⟨b, hb⟩, Pi.zero_apply]]`. Establish `e : Function.extend p w 0 ∘ p = w` using `funext fun a => hp.extend_apply _ _ _`. Rewrite using `[e]`. Take `⟨⟨v, hv1, hv2, hv⟩, -⟩` from `isLeast_grSq hM k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv]`. Use `le_trans ((isLeast_grSq hS i).2 ⟨v ∘ p, ?_, fun i' hi' => hv2 _ (h1 _ hi'), rfl⟩) (quad_sub_le hM.posSemidef hp ho v)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hk, hv1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem grSq_block {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) {p : Fin r → Fin m} (hp : Function.Injective p)
     (ho : ∀ a b, a ∈ Set.range p → b ∉ Set.range p → M a b = 0 ∧ M b a = 0) {k : Fin m} {i : Fin r} (hk : p i = k)
@@ -139,23 +139,21 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Set `eq` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `hpw` using `List.pairwise_iff_get.1 (GlobalTheory.Proof.frame_combination_coeff_unique.pairwise_letters Dw)`. Establish `hli : LinearIndependent K (allFr K e)`. Establish `: allFr K e = (Pi.basisFun K (Fin n)) ∘ (fun j => e.symm ((letters Dw).get j))`. Use function extensionality and compare the values at `fun j => (Pi.basisFun_apply K (Fin n) _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `(Pi.basisFun K (Fin n)).linearIndependent.comp _ (e.symm.injective.comp (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw).1)`. Establish `hM : (h.gram σ (allFr K e)).PosDef` using `h.posDef σ _ _ hli`. Establish `hz : ∀ a b, ((letters Dw).get a).1 ≠ ((letters Dw).get b).1 → h.gram σ (allFr K e) a b = 0` using `fun a b hab => horth _ _ hab`. It suffices to establish `key : ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) (k : Fin (letters Dw).length), (letters Dw).get k = ⟨τ, i⟩ → grSq (h.gram σ (allFr K e)) k = grSq (h.gram σ (tauFr K e τ)) i from fun k => key _ _ k rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ i k hk`. Set `p : Fin (Dw.mult τ) → Fin (letters Dw).length` to `fun i' => eq.symm ⟨τ, i'⟩`. Establish `hg : ∀ i', (letters Dw).get (p i') = ⟨τ, i'⟩` using `fun i' => eq.apply_symm_apply _`. Establish `hp : Function.Injective p` using `fun a b hab => by`. Use `congrArg (fun j => (letters Dw).get j) hab` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg] at this`. Conclude with `eq_of_heq (Sigma.mk.inj this).2`. Establish `hpk : p i = k` using `eq.symm_apply_eq.2 hk.symm`. Establish `hsub : h.gram σ (tauFr K e τ) = (h.gram σ (allFr K e)).submatrix p p`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [HermFam.gram, submatrix_apply, of_apply, allFr, tauFr, hg]`. Establish `hout : ∀ b, b ∉ Set.range p → ((letters Dw).get b).1 ≠ τ`. Introduce `b hb hτ`. Break down `hgb : (letters Dw).get b with ⟨τ', j⟩` into its components or cases. Rewrite `hτ` using `[hgb]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hτ` using the available equality. Conclude with `hb ⟨j, eq.symm_apply_eq.2 hgb.symm⟩`. Establish `ho : ∀ a b, a ∈ Set.range p → b ∉ Set.range p → h.gram σ (allFr K e) a b = 0 ∧ h.gram σ (allFr K e) b a = 0`. Introduce and unpack `_ b ⟨a, rfl⟩ hb`. Establish `h1 : ((letters Dw).get (p a)).1 ≠ ((letters Dw).get b).1` using `by rw [hg]; exact (hout b hb).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hz _ _ h1, hz _ _ h1.symm⟩`. Rewrite using `[hsub]`. Use `BlockGr.grSq_block hM hp ho hpk (fun i' hi' => ?_) (fun i' hi' => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Establish `hlt : p i' < k` using `lt_of_le_of_ne (not_lt.1 hle) fun h' => hi'.ne (hp (hpk.trans h'.symm))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hpw _ _ hlt` as an intermediate fact. Rewrite `this` using `[hg, hk]`. Conclude with `absurd (this rfl) (not_lt.2 hi'.le)`. Use `hpw _ _ hi'` as an intermediate fact. Rewrite `this` using `[hg, hk]`.
-
-Conclude with `this rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grSq_allFr_tauFr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {K : Type} [Field K] [NumberField K] {n : ℕ} (e : Fin n ≃ Letter Dw) (h : HermFam K (Fin n → K))
@@ -212,7 +210,7 @@ theorem grSq_allFr_tauFr {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
 end GlobalTheory.LieSmooth
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.LieSmooth.grSq_allFr_tauFr`.
+A detailed English derivation is pending.
 -/
 example : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {K : Type} [Field K] [NumberField K] {n : ℕ} (e : Fin n ≃ Letter Dw) (h : HermFam K (Fin n → K)) (σ : K →+* ℂ), (∀ z z' : Letter Dw, z.1 ≠ z'.1 → h.form σ (tauFr K e z.1 z.2) (tauFr K e z'.1 z'.2) = 0) → ∀ k : Fin (letters Dw).length, grSq (h.gram σ (allFr K e)) k = grSq (h.gram σ (tauFr K e ((letters Dw).get k).1)) ((letters Dw).get k).2 := @GlobalTheory.LieSmooth.grSq_allFr_tauFr
 

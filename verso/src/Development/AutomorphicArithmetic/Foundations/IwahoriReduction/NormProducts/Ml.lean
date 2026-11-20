@@ -19,7 +19,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix MatrixGroups
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf _ hc hl he _ hA`. Take `⟨c₁, h⟩` from `UpperTheory.Kd.K4.mlOf2 UpperTheory.V.Z.Kato.Sym.symEx UpperTheory.V.Z.Kato.Nb.sApi UpperTheory.V.Z.Kato.Nb.sInvApi UpperTheory.V.Z.Kato.Nb.sBStab UpperTheory.V.Z.Kato.Nb.sSlD UpperTheory.V.Z.Kato.Nb.sCohApi UpperTheory.V.Z.Kato.Nb.sCycZ UpperTheory.V.Z.Kato.Nb.sTop0 UpperTheory. …`. Conclude with `⟨c₁, fun c₀ h₀ => h c₀ h₀ ι gN A W pr x c d gm ψ cf hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Kd.K4.ml :
     ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ)

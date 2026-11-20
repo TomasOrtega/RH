@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `z h`. Establish `key : ∀ k : ℕ, (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 : ℕ) ^ k - (1 : ℂ)‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `e : z ^ (2 : ℕ) ^ (k + 1) - 1 = (z ^ (2 : ℕ) ^ k - 1) * (z ^ (2 : ℕ) ^ k + 1)`. Rewrite using `[pow_succ, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (3 / 2 : ℝ) ≤ ‖z ^ (2 : ℕ) ^ k + 1‖`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3` using `norm_sub_le (z ^ (2 : ℕ) ^ k + 1) (z ^ (2 : ℕ) ^ k - 1)`. Establish `h4 : (z ^ (2 : ℕ) ^ k + 1) - (z ^ (2 : ℕ) ^ k - 1) = 2` using `by ring`. Rewrite `h3` using `[h4]`. Establish `h5 : ‖(2 : ℂ)‖ = 2` using `by simp`. Establish `h6` using `h k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ((1 / 2 : ℝ) / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Establish `h7` using `key k`. Establish `h8` using `h k`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.Reformulated.B.Ue24.eq_one_of_pow_near :
     ∀ {z : ℂ},

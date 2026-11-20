@@ -16,9 +16,9 @@ namespace UpperTheory.HilbertEisensteinWeightOne.EisensteinSmoothness
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `(isOfFinOrder_iff_pow_eq_one).mp H.fin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow χ.1 χ.2.1 hm fun x => congrArg (fun ξ : HChar F => ξ.1 x) h`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen χ.1.ker ho`. Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hw` to reduce the goal to its premises. Establish `h0 : (0 : ℕ) ∈ {n : ℕ | ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → Valued.v ((x : w.adicCompletion F) - 1) ≤ WithZero.exp (-(n : ℤ)) → χ.loc w x = 1}`. Introduce `x hx _`. Conclude with `key w x hx fun h => absurd h hwS`. Conclude with `Nat.le_zero.mp ((H.cond w).2 h0)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_support_of_hyp {χ : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp χ c) :
     {w | c w ≠ 0}.Finite := by
@@ -36,9 +36,9 @@ theorem finite_support_of_hyp {χ : HChar F} {c : HeightOneSpectrum (𝓞 F) →
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Establish `h' : ∀ w : HeightOneSpectrum (𝓞 F), w.valuation F x ≤ 1`. Introduce `w`. Use `h w` as an intermediate fact. Rewrite `this` using `[show pLoc F w (algebraMap F (Af F) x) = (x : w.adicCompletion F) from rfl, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F x h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_int_of_val (x : F)
     (h : ∀ w : HeightOneSpectrum (𝓞 F), Valued.v (pLoc F w (algebraMap F (Af F) x)) ≤ 1) :
@@ -54,7 +54,7 @@ theorem exists_int_of_val (x : F)
 omit [IsTotallyReal F] in
 
 /- English proof (translation)
-Establish `hS : IsCompact (⋃ i, f i '' C)` using `isCompact_iUnion fun i => hC.image (hf i)`. Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact hS`. Conclude with `⟨d, hd0, fun a ha i w => hd _ (Set.mem_iUnion.mpr ⟨i, a, ha, rfl⟩) w⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_den_compact {ι : Type} [Finite ι] {C : Set (Ideles F)} (hC : IsCompact C)
     (f : ι → Ideles F → Af F) (hf : ∀ i, Continuous (f i)) :
@@ -66,7 +66,7 @@ theorem exists_den_compact {ι : Type} [Finite ι] {C : Set (Ideles F)} (hC : Is
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_two]`. Conclude with `le_trans (Valuation.map_add _ _ _) (max_le (h 0) (h 1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sum_two_le {w : HeightOneSpectrum (𝓞 F)} (x : Fin 2 → w.adicCompletion F)
     (h : ∀ j, Valued.v (x j) ≤ 1) : Valued.v (∑ j, x j) ≤ 1 := by
@@ -75,7 +75,7 @@ theorem val_sum_two_le {w : HeightOneSpectrum (𝓞 F)} (x : Fin 2 → w.adicCom
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.GeneralLinearGroup.scalar, Matrix.diagonal]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_Mcol_apply' (g : GA F 2) (a : Ideles F) (j i : Fin 2) :
     ((g⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) a⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) j i =
@@ -85,7 +85,7 @@ theorem coe_Mcol_apply' (g : GA F 2) (a : Ideles F) (j i : Fin 2) :
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.GeneralLinearGroup.scalar, Matrix.diagonal]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_Mrow_apply' (g : GA F 2) (a : Ideles F) (i j : Fin 2) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) i j =
@@ -95,7 +95,7 @@ theorem coe_Mrow_apply' (g : GA F 2) (a : Ideles F) (i j : Fin 2) :
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[← Units.val_mul]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scalar_mul_mul_inv (g : GA F 2) (a : Ideles F) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *
@@ -117,17 +117,15 @@ theorem pFin_units (a : Ideles F) :
     pFin F ((a : Ideles F) : Ad F) = ((IdeleGroup.toFinite F a : (Af F)ˣ) : Af F) := rfl
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_den_compact (ι := Fin 2 × Fin 2) hC (fun p a => pFin F (((g⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) p.1 p.2) * ((IdeleGroup.toFinite F a⁻¹ : (Af F)ˣ) : Af F)) (fun p => continuous_const.mul (Units.continuous_val.comp ((IdeleGroup.continuous_toFinite (K := F)).comp con …`. Use `⟨d, hd0, fun a ha ξ hξ i => ?_⟩` and prove the remaining obligations. Use `set row := rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) with hrow_def`. Establish `hle1 : ∀ w : HeightOneSpectrum (𝓞 F), WithZero.exp (-(c w : ℤ)) ≤ 1` using `fun w => by`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hint : ∀ j w, Valued.v (pLoc F w (pFin F (row j))) ≤ 1`. Introduce `j w`. Take `⟨h0, h1⟩` from `hξ w`. Use `fin_cases j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h0.trans (hle1 w)`. Establish `e : pLoc F w (pFin F (row 1)) = (pLoc F w (pFin F (row 1)) - 1) + 1` using `by ring`. Express the relevant statement in the definitionally equal form `Valued.v (pLoc F w (pFin F (row 1))) ≤ 1`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (h1.trans (hle1 w)) (by rw [Valuation.map_one])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : rowA ξ = row ᵥ* ((g⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) a⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))`. Rewrite using `[hrow_def, Matrix.vecMul_vecMul, scalar_mul_mul_inv, Matrix.vecMul_one]`. Establish `hx : algebraMap F (Af F) (ξ i) = ∑ j, pFin F (row j) * (pFin F (((g⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) j i) * ((IdeleGroup.toFinite F a⁻¹ : (Af F)ˣ) : Af F))`. Establish `h2` using `congrArg (fun v => pFin F (v i)) hrow`. Simplify using `only [Matrix.vecMul, dotProduct, coe_Mcol_apply', map_sum, map_mul] at h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pFin_algebraMap]`. Conclude with `h2`. Apply `exists_int_of_val` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, hx, Finset.mul_sum, map_sum]`.
-
-Apply `val_sum_two_le` to reduce the goal to its premises. Introduce `j`. Rewrite using `[mul_left_comm, map_mul, Valuation.map_mul]`. Conclude with `mul_le_one' (hint j w) (hd a ha (j, i) w)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_row (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) {C : Set (Ideles F)} (hC : IsCompact C) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ a ∈ C, ∀ ξ : Fin 2 → F,
@@ -176,21 +174,19 @@ theorem exists_den_row (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) {C 
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Use `set Cfr : FractionalIdeal (𝓞 F)⁰ F := ∏ᶠ w : HeightOneSpectrum (𝓞 F), (w.asIdeal : FractionalIdeal (𝓞 F)⁰ F) ^ (c w : ℤ)`. Use `set Dfr : FractionalIdeal (𝓞 F)⁰ F := ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hexp : ∀ᶠ w : HeightOneSpectrum (𝓞 F) in Filter.cofinite, (c w : ℤ) = 0`. Rewrite using `[Filter.eventually_cofinite]`. Use `hc.subset fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hw`. Establish `hD0 : differentIdeal ℤ (𝓞 F) ≠ 0` using `differentIdeal_ne_bot`. Establish `hDfr0 : Dfr ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hD0`. Establish `hCfr0 : Cfr ≠ 0`. Apply `finprod_induction (p := fun I : FractionalIdeal (𝓞 F)⁰ F => I ≠ 0)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `one_ne_zero`. Conclude with `fun x y hx hy => mul_ne_zero hx hy`. Conclude with `fun w => zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.mpr w.ne_bot)`. Establish `hJ0 : Cfr * Dfr ≠ 0` using `mul_ne_zero hCfr0 hDfr0`. Establish `hcount : ∀ w : HeightOneSpectrum (𝓞 F), FractionalIdeal.count F w (Cfr * Dfr) = (c w : ℤ) + dd w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `w`. Rewrite using `[FractionalIdeal.count_mul F w hCfr0 hDfr0, FractionalIdeal.count_finprod F w _ hexp, FractionalIdeal.count_coe F w hD0]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨k, hkJ, hk0⟩ : ∃ k ∈ Cfr * Dfr, k ≠ 0 := by`. Establish `hne : ((Cfr * Dfr : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F) ≠ ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, FractionalIdeal.coeToSubmodule_eq_bot]`. Conclude with `hJ0`. Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hval : ∀ w : HeightOneSpectrum (𝓞 F), w.valuation F k ≤ WithZero.exp (-((c w : ℤ) + dd w))` using `fun w => by`. Establish `h1` using `valuation_le_of_mem_fractionalIdeal w hkJ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcount]`. Then use the resulting hypothesis. Establish `hdd : ∀ w : HeightOneSpectrum (𝓞 F), 0 ≤ dd w` using `fun w => by unfold dd; positivity`. Establish `hle1 : ∀ w : HeightOneSpectrum (𝓞 F), w.valuation F k ≤ 1` using `fun w => (hval w).trans (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; have := hdd w; omega)`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F k hle1`. Establish `hrk : (r : F) = k` using `hr`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨r, ?_, fun w => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hk0` to reduce the goal to its premises. Rewrite using `[← hrk]`. Both sides reduce to the same expression.
-
-Express the relevant statement in the definitionally equal form `Valued.v ((r : F) : w.adicCompletion F) ≤ _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hrk]`. Conclude with `hval w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_elem_col (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w | c w ≠ 0}.Finite) :
     ∃ e : 𝓞 F, e ≠ 0 ∧ ∀ w : HeightOneSpectrum (𝓞 F),
@@ -239,19 +235,17 @@ theorem exists_elem_col (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w | c w 
     exact hval w
 
 /- English proof (translation)
-Take `⟨e, he0, he⟩` from `exists_elem_col c hc`. Take `⟨d, hd0, hd⟩` from `exists_den_compact (ι := Fin 2 × Fin 2) hC (fun p a => ((IdeleGroup.toFinite F a : (Af F)ˣ) : Af F) * pFin F (((g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) p.1 p.2)) (fun p => (Units.continuous_val.comp (IdeleGroup.continuous_toFinite (K := F))).mul continuous_const)`. Use `⟨d * e, mul_ne_zero hd0 he0, fun a ha ξ hξ i => ?_⟩` and prove the remaining obligations. Use `set col := ((g⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) a⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ rowA ξ with hcol_def`. Establish `hint : ∀ j w, Valued.v (pLoc F w (algebraMap F (Af F) (e : F) * pFin F (col j))) ≤ 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j w`. Take `⟨h0, h1⟩` from `hξ w`. Establish `hj : Valued.v (pLoc F w (pFin F (col j))) ≤ WithZero.exp ((c w : ℤ) + dd w)` using `by fin_cases j`. Conclude with `h0`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcol : rowA ξ = ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ col`. Rewrite using `[hcol_def, Matrix.mulVec_mulVec, scalar_mul_mul_inv, Matrix.one_mulVec]`. Establish `hx : algebraMap F (Af F) (ξ i) = ∑ j, (((IdeleGroup.toFinite F a : (Af F)ˣ) : Af F) * pFin F (((g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) i j)) * pFin F (col j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (fun v => pFin F (v i)) hcol`. Simplify using `only [Matrix.mulVec, dotProduct, coe_Mrow_apply', map_sum, map_mul] at h2`. Rewrite using `[← pFin_algebraMap]`. Conclude with `h2`. Apply `exists_int_of_val` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w`. Establish `e1 : algebraMap F (Af F) ((d : F) * (e : F) * ξ i) = ∑ j, (algebraMap F (Af F) (d : F) * (((IdeleGroup.toFinite F a : (Af F)ˣ) : Af F) * pFin F (((g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) i j))) * (algebraMap F (Af F) (e : F) * pFin F (col j))`. Rewrite using `[map_mul, map_mul, hx, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : (((d * e : 𝓞 F)) : F) = (d : F) * (e : F)` using `by push_cast; ring`. Rewrite using `[e2, e1, map_sum]`. Apply `val_sum_two_le` to reduce the goal to its premises. Introduce `j`. Rewrite using `[map_mul, Valuation.map_mul]`.
-
-Conclude with `mul_le_one' (hd a ha (i, j) w) (hint j w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_col (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w | c w ≠ 0}.Finite) (g : GA F 2)
     {C : Set (Ideles F)} (hC : IsCompact C) :

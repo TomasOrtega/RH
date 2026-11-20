@@ -22,35 +22,35 @@ def blockEmbeddingAddHom (e : Fin k ≃ S) : Matrix (Fin k) (Fin k) ℂ →+ Mat
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[emb0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem emb0_apply_coe_coe (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) (a b : Fin k) :
     emb0 e X (e a) (e b) = X a b := by
   simp [emb0]
 
 /- English proof (translation)
-Simplify using `[emb0, hi]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem emb0_apply_of_left_not_mem (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) {i j : Fin n}
     (hi : i ∉ S) : emb0 e X i j = 0 := by
   simp [emb0, hi]
 
 /- English proof (translation)
-Simplify using `[emb0, hj]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem emb0_apply_of_right_not_mem (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) {i j : Fin n}
     (hj : j ∉ S) : emb0 e X i j = 0 := by
   simp [emb0, hj]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.symm ⟨i, hi⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_equiv_coe_eq_of_mem (e : Fin k ≃ S) {i : Fin n} (hi : i ∈ S) :
     ∃ a, (e a : Fin n) = i :=
   ⟨e.symm ⟨i, hi⟩, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ S) (fun l _ hl => hF l hl), ← Finset.sum_coe_sort S]`. Conclude with `(Equiv.sum_comp e (fun x : S => F x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_eq_sum_equiv_of_eq_zero_of_not_mem {M : Type*} [AddCommMonoid M] (e : Fin k ≃ S) (F : Fin n → M)
     (hF : ∀ l, l ∉ S → F l = 0) : ∑ l, F l = ∑ c, F (e c) := by
@@ -58,13 +58,11 @@ private theorem sum_eq_sum_equiv_of_eq_zero_of_not_mem {M : Type*} [AddCommMonoi
   exact (Equiv.sum_comp e (fun x : S => F x)).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : i ∈ S`. Distinguish the cases in `hj : j ∈ S`. Take `⟨a, rfl⟩` from `exists_equiv_coe_eq_of_mem e hi`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `exists_equiv_coe_eq_of_mem e hj`. Rewrite using `[emb0_apply_coe_coe, Matrix.mul_apply, sum_eq_sum_equiv_of_eq_zero_of_not_mem e]`. Simplify using `only [emb0_apply_coe_coe]`. Introduce `l hl`. Simplify using `[emb0_apply_of_right_not_mem e X hl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[emb0_apply_of_right_not_mem e _ hj]`. Use `symm`. Conclude with `Finset.sum_eq_zero (fun l _ => by rw [emb0_apply_of_right_not_mem e Y hj, mul_zero])`. Rewrite using `[emb0_apply_of_left_not_mem e _ hi]`. Use `symm`.
-
-Conclude with `Finset.sum_eq_zero (fun l _ => by rw [emb0_apply_of_left_not_mem e X hi, zero_mul])`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem embed_mul (e : Fin k ≃ S) (X Y : Matrix (Fin k) (Fin k) ℂ) :
     emb0 e (X * Y) = emb0 e X * emb0 e Y := by
@@ -86,7 +84,7 @@ theorem embed_mul (e : Fin k ≃ S) (X Y : Matrix (Fin k) (Fin k) ℂ) :
     exact Finset.sum_eq_zero (fun l _ => by rw [emb0_apply_of_left_not_mem e X hi, zero_mul])
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp only [zero_add, pow_one]`. Consider the case `succ m ih => rw [pow_succ, embed_mul, ih, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem embed_pow_succ (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) (m : ℕ) :
     emb0 e (X ^ (m + 1)) = emb0 e X ^ (m + 1) := by
@@ -102,9 +100,9 @@ private theorem emb0Add_apply (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ)
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply]`. Distinguish the cases in `hi : i ∈ S`. Distinguish the cases in `hj : j ∈ S`. Take `⟨a, rfl⟩` from `exists_equiv_coe_eq_of_mem e hi`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `exists_equiv_coe_eq_of_mem e hj`. Rewrite using `[emb0_apply_coe_coe, emb0_apply_coe_coe, Matrix.smul_apply]`. Rewrite using `[emb0_apply_of_right_not_mem e _ hj, emb0_apply_of_right_not_mem e _ hj, smul_zero]`. Rewrite using `[emb0_apply_of_left_not_mem e _ hi, emb0_apply_of_left_not_mem e _ hi, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb0_smul (e : Fin k ≃ S) (c : ℂ) (X : Matrix (Fin k) (Fin k) ℂ) :
     emb0 e (c • X) = c • emb0 e X := by
@@ -119,9 +117,7 @@ private theorem emb0_smul (e : Fin k ≃ S) (c : ℂ) (X : Matrix (Fin k) (Fin k
   · rw [emb0_apply_of_left_not_mem e _ hi, emb0_apply_of_left_not_mem e _ hi, smul_zero]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ S ∧ j ∈ S`. Simplify using `only [emb0, dif_pos h]`. Conclude with `continuous_id.matrix_elem _ _`. Simplify using `only [emb0, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_embed (e : Fin k ≃ S) : Continuous (emb0 e) := by
   refine continuous_matrix fun i j => ?_
@@ -134,11 +130,11 @@ theorem continuous_embed (e : Fin k ≃ S) : Continuous (emb0 e) := by
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin k) (Fin k) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin k) (Fin k) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `h1` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h2` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (emb0 e X)`. Establish `h3` using `(h1.map (blockEmbeddingAddHom e) (continuous_embed e)).add (hasSum_ite_eq 0 (1 - emb0 e 1))`. Use `h2.unique ?_` and prove the remaining obligations. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals try rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Break down `m with _ | m` into its components or cases. Simplify using `[emb0Add_apply]`. Simplify using `[emb0Add_apply, emb0_smul, embed_pow_succ]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_embed (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) :
     NormedSpace.exp (emb0 e X) = emb0 e (NormedSpace.exp X) + (1 - emb0 e 1) := by
@@ -162,16 +158,16 @@ def resB (e : Fin k ≃ S) (M : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin k) (Fi
   fun a b => M (e a) (e b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `emb0_apply_coe_coe e X a b`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem restrict_embed (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) : resB e (emb0 e X) = X := by
   ext a b
   exact emb0_apply_coe_coe e X a b
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : i ∈ S`. Distinguish the cases in `hj : j ∈ S`. Take `⟨a, rfl⟩` from `exists_equiv_coe_eq_of_mem e hi`. Take `⟨b, rfl⟩` from `exists_equiv_coe_eq_of_mem e hj`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[emb0_apply_coe_coe]`. Both sides reduce to the same expression. Rewrite using `[emb0_apply_of_right_not_mem e _ hj, hM i j (Or.inr hj)]`. Rewrite using `[emb0_apply_of_left_not_mem e _ hi, hM i j (Or.inl hi)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem embed_restrict (e : Fin k ≃ S) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i j, (i ∉ S ∨ j ∉ S) → M i j = 0) :
     emb0 e (resB e M) = M := by
@@ -186,9 +182,9 @@ theorem embed_restrict (e : Fin k ≃ S) (M : Matrix (Fin n) (Fin n) ℂ) (hM : 
   · rw [emb0_apply_of_left_not_mem e _ hi, hM i j (Or.inl hi)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply]`. Distinguish the cases in `hi : i ∈ S`. Distinguish the cases in `hj : j ∈ S`. Take `⟨a, rfl⟩` from `exists_equiv_coe_eq_of_mem e hi`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `exists_equiv_coe_eq_of_mem e hj`. Rewrite using `[emb0_apply_coe_coe, emb0_apply_coe_coe, Matrix.conjTranspose_apply]`. Rewrite using `[emb0_apply_of_right_not_mem e _ hj, emb0_apply_of_left_not_mem e _ hj, star_zero]`. Rewrite using `[emb0_apply_of_left_not_mem e _ hi, emb0_apply_of_right_not_mem e _ hi, star_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem embed_conjTranspose (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) :
     emb0 e Xᴴ = (emb0 e X)ᴴ := by
@@ -203,9 +199,9 @@ theorem embed_conjTranspose (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) :
   · rw [emb0_apply_of_left_not_mem e _ hi, emb0_apply_of_right_not_mem e _ hi, star_zero]
 
 /- English proof (translation)
-Rewrite using `[sum_eq_sum_equiv_of_eq_zero_of_not_mem e]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[sum_eq_sum_equiv_of_eq_zero_of_not_mem e]`. Simplify using `only [emb0_apply_coe_coe]`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[emb0_apply_of_right_not_mem e X hj]`. Introduce `i hi`. Simplify using `[emb0_apply_of_left_not_mem e X hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_norm_sq_embed (e : Fin k ≃ S) (X : Matrix (Fin k) (Fin k) ℂ) :
     (∑ i, ∑ j, ‖emb0 e X i j‖ ^ 2) = ∑ a, ∑ b, ‖X a b‖ ^ 2 := by

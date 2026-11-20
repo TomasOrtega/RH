@@ -14,9 +14,9 @@ section Card
 variable {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Establish `h1` using `(HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one).1 u.isUnit`. Establish `h0 : ((u : v.adicCompletionIntegers K) : v.adicCompletion K) ≠ 0`. Introduce `h`. Conclude with `u.ne_zero (Subtype.ext h)`. Rewrite using `[← GroundTheory.Global.normalizedAbv_apply, GroundTheory.Global.normalizedAbv_eq_zpow v h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Valued.v ((u : v.adicCompletionIntegers K) : v.adicCompletion K) = 1 from h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LocalLatticeIndex.norm_unit (u : (v.adicCompletionIntegers K)ˣ) :
     ‖((u : v.adicCompletionIntegers K) : v.adicCompletion K)‖ = 1 := by
@@ -29,11 +29,11 @@ theorem LocalLatticeIndex.norm_unit (u : (v.adicCompletionIntegers K)ˣ) :
   simp
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers K)`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hne : IsLocalRing.maximalIdeal (v.adicCompletionIntegers K) ≠ ⊥`. Rewrite using `[hϖ.maximalIdeal_eq, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hϖ.ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (v.adicCompletionIntegers K ⧸ Ideal.span {(u : v.adicCompletionIntegers K) * ϖ ^ n}) = Ideal.absNorm v.asIdeal ^ n`. Rewrite using `[Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, ← Submodule.cardQuot_apply, cardQuot_pow_of_prime hne, Submodule.cardQuot_apply, ← GroundTheory.Global.natCard_residueField_adicCompletionIntegers v]`. Both sides reduce to the same expression. Establish `hϖn : ‖(ϖ : v.adicCompletion K)‖ = (Ideal.absNorm v.asIdeal : ℝ)⁻¹` using `GroundTheory.Global.normalizedAbv_of_irreducible v hϖ`. Rewrite using `[hcard, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[norm_mul, norm_pow, LocalLatticeIndex.norm_unit, hϖn, one_mul, inv_pow, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalLatticeIndex.card_quot_span {a : v.adicCompletionIntegers K} (ha : a ≠ 0) :
     (Nat.card (v.adicCompletionIntegers K ⧸ Ideal.span {a}) : ℝ) =
@@ -65,9 +65,9 @@ variable {K : Type*} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)}
   [IsScalarTower (v.adicCompletionIntegers K) (v.adicCompletion K) E]
 
 /- English proof (translation)
-Use `.of_smul_eq_zero fun r x h => ?_` and prove the remaining obligations. Establish `h' : algebraMap _ (v.adicCompletion K) r • (x : E) = 0`. Rewrite using `[algebraMap_smul, ← Submodule.coe_smul, h, Submodule.coe_zero]`. Break down `smul_eq_zero.1 h' with hr | hx` into its components or cases. Conclude with `Or.inl ((FaithfulSMul.algebraMap_injective _ (v.adicCompletion K)).eq_iff' (map_zero _) |>.1 hr)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (Subtype.ext hx)`.
+Prove the second alternative.
 -/
 theorem LocalLatticeIndex.isTorsionFree (A : Submodule (v.adicCompletionIntegers K) E) :
     Module.IsTorsionFree (v.adicCompletionIntegers K) A := by
@@ -79,39 +79,37 @@ theorem LocalLatticeIndex.isTorsionFree (A : Submodule (v.adicCompletionIntegers
   · exact Or.inr (Subtype.ext hx)
 
 /- English proof (translation)
-Use `LocalLatticeIndex.isTorsionFree A` as an intermediate fact. Establish `: Module.Finite (v.adicCompletionIntegers K) A` using `Module.Finite.iff_fg.2 hfg`. Use `set ι := Module.Free.ChooseBasisIndex (v.adicCompletionIntegers K) A`. Set `b` to `Module.Free.chooseBasis (v.adicCompletionIntegers K) A`. Establish `hli : LinearIndependent (v.adicCompletion K) (fun i => (b i : E))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearIndependent.iff_fractionRing (v.adicCompletionIntegers K) (v.adicCompletion K)]`. Conclude with `b.linearIndependent.map' A.subtype (Submodule.ker_subtype A)`. Establish `hspanR : Submodule.span (v.adicCompletionIntegers K) (Set.range fun i => (b i : E)) = A`. Establish `: (Set.range fun i => (b i : E)) = A.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Establish `hsp' : ⊤ ≤ Submodule.span (v.adicCompletion K) (Set.range fun i => (b i : E))`. Rewrite using `[← hsp]`. Apply `Submodule.span_le.2` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ Submodule.span (v.adicCompletionIntegers K) (Set.range fun i => (b i : E))`. Rewrite using `[hspanR]`. Conclude with `hx`. Conclude with `Submodule.span_le_restrictScalars (v.adicCompletionIntegers K) (v.adicCompletion K) _ hx'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c : Basis ι (v.adicCompletion K) E` to `Basis.mk hli hsp'`. Establish `hc : ∀ i, c i = (b i : E)` using `fun i => Basis.mk_apply hli hsp' i`. Establish `hrepr : ∀ (x : A) (i : ι), c.repr (x : E) i = algebraMap _ (v.adicCompletion K) (b.repr x i)`. Introduce `x i`. Establish `hx : (x : E) = ∑ j, algebraMap _ (v.adicCompletion K) (b.repr x j) • c j`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hc, algebraMap_smul]`. Rewrite using `[hx, c.repr_sum_self]`. Establish `hmaps : ∀ x ∈ A, (g.toLinearMap.restrictScalars (v.adicCompletionIntegers K)) x ∈ A`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Apply `hBA` to reduce the goal to its premises. Use `show g x ∈ (B : Set E)`. Rewrite using `[hB]`. Conclude with `⟨x, hx, rfl⟩`. Set `φ : A →ₗ[v.adicCompletionIntegers K] A` to `(g.toLinearMap.restrictScalars (v.adicCompletionIntegers K)).restrict hmaps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hφ : ∀ x : A, (φ x : E) = g x` using `fun x => rfl`. Establish `hdet : LinearMap.det (g : E →ₗ[v.adicCompletion K] E) = algebraMap _ (v.adicCompletion K) (LinearMap.det φ)`. Rewrite using `[← LinearMap.det_toMatrix c, ← LinearMap.det_toMatrix b, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.toMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply, hc, LinearEquiv.coe_coe, ← hφ, hrepr]`. Establish `hinj : Function.Injective φ`. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hφ, ← hφ, h]`. Establish `hrank : finrank _ (LinearMap.range φ) = finrank _ A` using `LinearMap.finrank_range_of_inj hinj`. Use `set a := Submodule.smithNormalFormCoeffs b hrank`. Set `b'` to `Submodule.smithNormalFormTopBasis b hrank`. Set `ab` to `Submodule.smithNormalFormBotBasis b hrank`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : ∀ i, a i ≠ 0` using `Submodule.smithNormalFormCoeffs_ne_zero b hrank`. Establish `hcomap : Submodule.comap A.subtype B = LinearMap.range φ`. Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `hx`. Establish `hx' : (x : E) ∈ (B : Set E)` using `hx`. Rewrite `hx'` using `[hB]`. Take `⟨y, hy, hxy⟩` from `hx'`. Conclude with `⟨⟨y, hy⟩, Subtype.ext hxy⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨y, rfl⟩ show g y ∈ (B : Set E)`. Rewrite using `[hB]`. Conclude with `⟨y, y.2, rfl⟩`. Establish `hidx : B.toAddSubgroup.relIndex A.toAddSubgroup = Nat.card (A ⧸ LinearMap.range φ)`. Rewrite using `[← hcomap, AddSubgroup.relIndex, AddSubgroup.index_eq_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hq : Nat.card (A ⧸ LinearMap.range φ) = ∏ i, Nat.card (v.adicCompletionIntegers K ⧸ Ideal.span {a i})`. Rewrite using `[Nat.card_congr (Submodule.quotientEquivPiSpan (LinearMap.range φ) b hrank).toEquiv, Nat.card_pi]`. Set `w : Basis ι _ A` to `ab.map (LinearEquiv.ofInjective φ hinj).symm`. Establish `hw : ∀ i, φ (w i) = a i • b' i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h1 : φ (w i) = ((LinearEquiv.ofInjective φ hinj) (w i) : A)` using `(LinearEquiv.ofInjective_apply _ _).symm`. Rewrite using `[h1]`. Simplify using `only [w, Basis.map_apply, LinearEquiv.apply_symm_apply]`. Conclude with `Submodule.smithNormalFormBotBasis_def b hrank i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdetprod : LinearMap.det φ * b'.det w = ∏ i, a i`. Rewrite using `[← Basis.det_comp]`. Establish `: (⇑φ ∘ ⇑w) = fun i => a i • b' i` using `funext hw`. Rewrite using `[this, AlternatingMap.map_smul_univ, Basis.det_self, smul_eq_mul, mul_one]`. Take `⟨u, hu⟩` from `b'.isUnit_det w`.
-
-Establish `hdetφ : LinearMap.det φ = (∏ i, a i) * ((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K)`. Rewrite using `[← hdetprod, ← hu, mul_assoc, Units.mul_inv, mul_one]`. Establish `hu1 : ‖algebraMap (v.adicCompletionIntegers K) (v.adicCompletion K) ((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K)‖ = 1` using `LocalLatticeIndex.norm_unit v u⁻¹`. Rewrite using `[hidx, hq, Nat.cast_prod, hdet, hdetφ, map_mul, map_prod, norm_mul, norm_prod, hu1, mul_one, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => LocalLatticeIndex.card_quot_span v (ha i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalLatticeIndex.index_eq_det (A B : Submodule (v.adicCompletionIntegers K) E)
     (g : E ≃ₗ[v.adicCompletion K] E) (hfg : A.FG)
@@ -226,7 +224,7 @@ theorem LocalLatticeIndex.index_eq_det (A B : Submodule (v.adicCompletionInteger
 end General
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ v A B g hA hB hBA`. Conclude with `LocalLatticeIndex.index_eq_det A B g hA.1 hA.2 hB hBA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalLatticeIndex.proof : LocalLatticeIndex.Statement := by
   intro K _ _ V _ _ _ _ v A B g hA hB hBA

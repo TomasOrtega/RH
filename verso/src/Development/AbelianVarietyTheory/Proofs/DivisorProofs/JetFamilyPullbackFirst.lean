@@ -18,14 +18,14 @@ namespace GlobalTheory.LatJet.BaseChangeFil
 variable {R R' : Type} [CommRing R] [CommRing R'] {I : Type} [Fintype I] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_single_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_algebraMap (J : JetRing R I n) (r : R) :
     J.b.repr (algebraMap R J.B r) = Finsupp.single ⟨0, by simp⟩ r := by
   rw [Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_single_one]
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ν ↦ ?_` and prove the remaining obligations. Rewrite using `[hτ, repr_algebraMap, repr_algebraMap, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_algebraMap (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I n) (τ : J.B →+* J'.B)
     (hτ : ∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν)) (r : R) :
@@ -35,7 +35,7 @@ theorem map_algebraMap (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ν ↦ ?_` and prove the remaining obligations. Rewrite using `[hτ, JetRing.t, JetRing.t, Module.Basis.repr_self, Module.Basis.repr_self, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_t (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I n) (τ : J.B →+* J'.B)
     (hτ : ∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν)) (i : I) : τ (J.t i) = J'.t i := by
@@ -45,13 +45,13 @@ theorem map_t (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I n) (τ : 
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `fun r ↦ ⟨algebraMap R J.B r, by rw [J.π_eq, repr_algebraMap, Finsupp.single_eq_same]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem π_surjective (J : JetRing R I n) : Function.Surjective J.π := fun r ↦
   ⟨algebraMap R J.B r, by rw [J.π_eq, repr_algebraMap, Finsupp.single_eq_same]⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x ↦ by simp only [RingHom.comp_apply, J.π_eq, J'.π_eq, hτ]`.
+A detailed English derivation is pending.
 -/
 theorem comp_π (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I n) (τ : J.B →+* J'.B)
     (hτ : ∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν)) : σ.comp J.π = J'.π.comp τ :=
@@ -62,33 +62,31 @@ end GlobalTheory.LatJet.BaseChangeFil
 open GlobalTheory.LatJet.BaseChangeFil in
 
 /- English proof (translation)
-Introduce `hAb F _ _ 𝔠 R R' _ _ σ I _ n J J' X₀ δ₀ N Y X₁ N₁ p hp m hN τ hτ hτdp Z' q hq i' hi' hiq mor'`. Establish `hbc0` using `GlobalTheory.T.jet_morphism_is_base_change hAb J X₀ Y.mor`. Establish `hbc1` using `GlobalTheory.T.jet_morphism_is_base_change hAb J' X₁ mor'`. Establish `hspan` using `GlobalTheory.T.lie_filtration_spanned_correspondence hAb σ hp m`. Establish `hb : spMap σ ≫ spMap J.π = spMap J'.π ≫ spMap τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp, comp_π σ J J' τ hτ]`. Establish `M : GrpMor J.κ (spMap J.π) X₀.A J'.κ (spMap J'.π) X₁.A τ (spMap σ) p` using `GrpMor.of_isGrpPullback hτdp hb hp.grp`. Establish `nq : GrpMor (dp0 J.B) (𝟙 _) Y.X'.A (dp0 J'.B) (𝟙 _) Z'.A τ (spMap τ) q` using `GrpMor.of_isGrpPullback (Cris.isDPMorphism_of_eq_bot _ rfl _ _) (by simp) hq.grp`. Establish `hspanq` using `GlobalTheory.T.lie_filtration_spanned_correspondence hAb τ hq nq`. Establish `hprim : ∀ c, c ∈ Submodule.span R' (Set.range m.pull)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := σ.toAlgebra`. Establish `hbc` using `(hAb.2.2.1 R X₀.A _ X₀.ab X₀.dim R' X₁.A p hp.grp).1`. Introduce `c`. Take `⟨z, rfl⟩` from `hbc.2 c`. Proceed by induction on `z with`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul r c₀ => rw [liftSemi_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c₀, rfl⟩)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x₀ ∈ Fil X₀.A, ∀ x, m.Corr x₀ x → ∃ d ∈ liftFil J'.κ hi'.grp, IsJetElt J' X₁ N₁ mor' x d`. Introduce `x₀ hx₀ x hx`. Take `⟨e0, he0⟩` from `hbc0.exists x₀`. Use `choose e he using fun i ↦ hbc0.exists (N i x₀)`. Establish `hd₀ : IsJetElt J X₀ N Y.mor x₀ (e0 + ∑ i, J.t i • e i)` using `fun c ↦ by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, he0 c, fun i ↦ he i c]`. Establish `hd₀F` using `Y.fil x₀ hx₀ _ hd₀`. Take `⟨d', hd'⟩` from `GlobalTheory.T.nilpotent_divided_powers_compatible hAb J.κ J'.κ J.nil J'.nil J.π J'.π (π_surjective J) (π_surjective J') rfl rfl τ σ Y.pull hi' hq hiq M (e0 + ∑ i, J.t i • e i)`. Use `⟨d', hspanq.2.2 _ _ hd₀F (crysToDR_corr J.κ Y.pull.grp hi'.grp M nq hiq hd'), ?_⟩` and prove the remaining obligations. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hprim c using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨c₀, rfl⟩` from `hc`. Establish `e1 : mor'.pull (m.pull c₀) = M.pull (Y.mor.pull c₀)` using `(GrpMor.pull_pull m mor' (m.comp mor') (fun _ ↦ rfl) rfl c₀).trans (GrpMor.pull_pull Y.mor M (m.comp mor') (fun r ↦ map_algebraMap σ J J' τ hτ r) (by simp) c₀).symm`. Rewrite using `[e1, hd', hd₀ c₀, hx c₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, map_sum, map_mul, map_algebraMap σ J J' τ hτ, map_t σ J J' τ hτ, fun i ↦ hN i x₀ x hx c₀]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [map_add, ha, hb, Finset.sum_add_distrib, mul_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `smul r a _ ha`. Simplify using `only [map_smulₛₗ, LinearMap.map_smul, smul_eq_mul, ha, map_mul, mul_add, Finset.mul_sum, RingHom.id_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`. Introduce `x hx d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hP : ∀ x ∈ Submodule.span R' {x' | ∃ x₀ ∈ Fil X₀.A, m.Corr x₀ x'}, ∃ d ∈ liftFil J'.κ hi'.grp, IsJetElt J' X₁ N₁ mor' x d`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨x₀, hx₀, hc⟩` from `h`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `key x₀ hx₀ x hc`. Consider the case `zero => exact ⟨0, zero_mem _, fun c ↦ by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨a + b, add_mem ha hb, fun c ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, ha' c, hb' c, map_add, Finset.sum_add_distrib, mul_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`. Take `⟨a, ha, ha'⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨algebraMap R' J'.B r • a, Submodule.smul_mem _ _ ha, fun c ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, ha' c, map_smul, smul_eq_mul, map_mul, mul_add, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`. Take `⟨d', hd'F, hd'⟩` from `hP x (hspan.2.1 hx)`.
-
-Establish `h0 : mor'.Corr 0 (d - d')` using `fun c ↦ by`. Rewrite using `[LinearMap.sub_apply, hd c, hd' c, sub_self, LinearMap.zero_apply, map_zero]`. Establish `h00 : mor'.Corr 0 0` using `fun c ↦ by simp`. Rewrite using `[sub_eq_zero.1 (hbc1.unique h0 h00)]`. Conclude with `hd'F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatJet.baseChange_liftFil : GlobalTheory.Published.AbelianDeRham → ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {I : Type} [Fintype I] {n : ℕ}

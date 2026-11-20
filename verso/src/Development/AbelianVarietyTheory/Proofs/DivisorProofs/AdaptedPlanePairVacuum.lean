@@ -17,7 +17,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.DblSiegelNZ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, add_dotProduct]`. Rewrite using `[show x + a.1 + b.1 = x + b.1 + a.1 by abel]`. Simplify using `only [← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_zero {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (φ : (κ → R) → ℂ) : schr ψ 0 φ = φ := by
@@ -52,19 +52,17 @@ noncomputable def zsL {n n₁ d : ℕ} (H : Plane E n n₁) : (Fin d → AE F E)
     rw [← Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he he0 dd dd₁ hdd hdd₁ ed hmaps hheis hinv hadm hne`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨Φ₀, hΦ₀, hedΦ₀⟩` from `hne`. Take `⟨l₁, hl₁, hl₁inv, w, hw⟩` from `GlobalTheory.DiagNonvan.exists_invForm_rho_ne_zero F E σ (Fin n₁) (Fin d) (Fin n₁ × Fin d) B.ψ (incM F X₁.J) (incM F W.J) M₁.co dd₁ hψ hdd₁ (ed Φ₀) (hmaps Φ₀ hΦ₀) hedΦ₀`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.adele_vector_haar_exists F E d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨μ, hμ, l₁, hl₁, hl₁inv, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ (v : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)), ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), dd.rho B.ψ v Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `fun v Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`. Use `set Φ₁ := dd.rho B.ψ (incM F H.ι * w) Φ₀ with hΦ₁def`. Establish `hΦ₁ : Φ₁ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `hmem _ Φ₀ hΦ₀`. Establish `hl₁Φ₁ : l₁ (ed Φ₁) ≠ 0` using `by rw [hΦ₁def, hheis w Φ₀ hΦ₀]; exact hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hpadd, hp, hpsep⟩` from `GlobalTheory.T.pair_adapted_projection_exists F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ hH`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `set N := GlobalTheory.DblSiegelX.avgFun dd B.ψ (GlobalTheory.DblSiegelX.zs H) (l₁ ∘ₗ ed) Φ₁ with hNdef`. Establish `hNc : Continuous N` using `GlobalTheory.T.schrodinger_functional_continuous F E B.ψ hψ _ (l₁ ∘ₗ ed) (hadm l₁ hl₁) Φ₁ hΦ₁ d (dd.e.toLinearMap ∘ₗ zsL H)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNi : Integrable N μ` using `(GlobalTheory.T.adapted_plane_pair_restriction_alt hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he he0 dd dd₁ hdd hdd₁ ed hmaps hheis hinv hadm ⟨Φ₀, hΦ₀, hedΦ₀⟩ l₁ hl₁ hl₁inv μ hμ).1 Φ₁ hΦ₁`. Establish `key : ∀ c, ∫ u, B.ψ (p c u) * N u ∂μ = 0`. Introduce `c`. Establish `h` using `hcon (dd.rho B.ψ (Matrix.vecMulVec (incV F H.x) c) Φ₁) (hmem _ _ hΦ₁)`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hNdef, GlobalTheory.DblSiegelX.avgFun, LinearMap.comp_apply, Darboux.rho]`. Rewrite using `[schr_comm, LinearMap.map_smul, LinearMap.map_smul, smul_eq_mul]`. Establish `hi` using `hinv c (dd.rho B.ψ (GlobalTheory.DblSiegelX.zs H u) Φ₁) (hmem _ _ hΦ₁)`. Simplify using `only [Darboux.rho] at hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hi, hp c u, dd.form]`. Establish `hN0` using `GlobalTheory.T.eq_zero_of_adelicFourier_separatingChars_vanish F E B.ψ hψ d (Fin d ⊕ Fin d → AE F E) p hpadd hpsep μ hμ N hNc hNi key`. Apply `hl₁Φ₁` to reduce the goal to its premises. Establish `h0` using `congrFun hN0 0`. Establish `hz : GlobalTheory.DblSiegelX.zs H (0 : Fin d → AE F E) = 0` using `(zsL (F := F) H).map_zero`.
-
-Simplify using `only [hNdef, GlobalTheory.DblSiegelX.avgFun, LinearMap.comp_apply, Darboux.rho, hz, map_zero, schr_zero, Pi.zero_apply] at h0`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

@@ -23,15 +23,15 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Introduce `D large₂ j w _ hlog`. Take `⟨-, -, hM, hG, hc, -⟩` from `GlobalTheory.RunIn.pPow_size D j w`. Establish `hD : (0 : ℝ) ≤ (WeightAlgebra.DF w : ℝ)` using `Nat.cast_nonneg _`. Establish `hl0 : 0 ≤ Real.log (WeightAlgebra.DF w : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hs : (WeightAlgebra.DF w : ℝ) + 1 ≤ w.size`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((WeightAlgebra.DF w : ℕ) : ℝ) = ∑ τ, ((∑ i, (w.aP τ i : ℝ)) + ∑ i, (w.aM τ i : ℝ))`. Simplify using `[WeightAlgebra.DF, WeightAlgebra.degP, Nat.cast_sum]`. Establish `h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ)` using `by positivity`. Unfold `WeightFamilies.Wt.size`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hg2 : ∀ i, (2 : ℝ) ≤ D.host.g i` using `fun i => by exact_mod_cast (D.host.g_prime i).two_le`. Establish `hterm : ∀ i : Fin 2, (WeightAlgebra.DF w : ℝ) / ((D.host.g i : ℝ) - 1) * Real.log (D.host.g i) ≤ (WeightAlgebra.DF w : ℝ) * Real.log (D.host.g i)` using `fun i => mul_le_mul_of_nonneg_right (div_le_self hD (by linarith [hg2 i])) (Real.log_natCast_nonneg _)`. Establish `hsum : ∑ i : Fin 2, (WeightAlgebra.DF w : ℝ) / ((D.host.g i : ℝ) - 1) * Real.log (D.host.g i) ≤ (WeightAlgebra.DF w : ℝ) * Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))`. Rewrite using `[Fin.sum_univ_two, Real.log_mul (by linarith [hg2 0]) (by linarith [hg2 1])]`. Combine the linear relations using `[hterm 0, hterm 1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hP : 0 ≤ WeightAlgebra.PN D large₂`. Unfold `WeightAlgebra.PN WeightAlgebra.lamStar`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans ?_ (mul_le_mul_of_nonneg_left hs hP)` and prove the remaining obligations. Establish `h1` using `mul_le_mul_of_nonneg_left hlog hD`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `WeightAlgebra.PN WeightAlgebra.lamStar`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem depth_sum_le_PN : ∀ (D : D7) (large₂ : SizeData₂ D) (j : ℕ) (w : WeightFamilies.Wt D j), 1 ≤ w.n → Real.log (WeightAlgebra.DF w) ≤ 2 * large₂.sc.L → (WeightAlgebra.DF w : ℝ) * (Real.log (WeightAlgebra.DF w) + 2.2) + (c2 D w * Real.log D.host.QS + cHalf w * Real.log D.host.q + cHalf w * Real.log D.host.d) + ∑ i : Fin 2, (WeightAlgebra.DF w : ℝ) / ((D.host.g i : ℝ) - 1) * Real.log (D.host.g i) ≤ WeightAlgebra.PN D large₂ * w.size := by
   intro D large₂ j w _ hlog

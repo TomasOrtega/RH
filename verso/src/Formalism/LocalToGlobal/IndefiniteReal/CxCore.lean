@@ -138,7 +138,7 @@ variable {A : FamIn K G Pl0 T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {P1 : Sub
   {gE : Representation ℂ G X.EE} {gW : ∀ j, Representation ℂ G (X.W j)}
 
 /- English proof (translation)
-The claim follows from `CxData.cutStable X hC.kFormR hC.kFormL (Formalism.IndefR.CxPass.kerStabR_of hC.kFormR hC.gEquiv (kerStabR_hecke hC.thetaR)) (Formalism.IndefR.CxPass.kerStabL_of hC.kFormL hC.gEquivL (kerStabL_hecke hC.thetaL)) (adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR) (adjClosedL_of hC.o …`.
+A detailed English derivation is pending.
 -/
 theorem CxCore.stable (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) : X.zs.Stable :=
   CxData.cutStable X hC.kFormR hC.kFormL
@@ -147,7 +147,7 @@ theorem CxCore.stable (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C 
     (adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR) (adjClosedL_of hC.ok hC.heckeL hC.kFormL hC.jIsoL)
 
 /- English proof (translation)
-Introduce `b` and use `match b with | false => A.side_WF hC.ok P0 ψ0 X.zs hC.stable hC.inBlock hC.sep | true => A.side_WF hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CxCore.wf (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) :
     ∀ b, (lv (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) b).WF := fun b => match b with
@@ -155,7 +155,7 @@ theorem CxCore.wf (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH h
   | true => A.side_WF hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep
 
 /- English proof (translation)
-The claim follows from `(cutRows (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf A P0 ψ0 P1 ψ1) b (hC.wf b) hC.h4pos (isoR_of hC.ok hC.jIsoR hC.npTie b) (crdZ_of X b) (coordinates_in_good_part_of_definite X b) (Formalism.IndefR.CxPass.ratLev_of hC.ok hC.kFormR hC.jIsoR hC.ratZ hC.gUnit hC.gEquiv b) (Formalism.Ind …`.
+A detailed English derivation is pending.
 -/
 theorem CxCore.h2 (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) (b : Bool) :
     X.H2 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b :=
@@ -167,9 +167,9 @@ theorem CxCore.h2 (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH h
     (hC.thmBop b) (hC.partsE b)).1
 
 /- English proof (translation)
-Establish `kR : X.KerStabR` using `Formalism.IndefR.CxPass.kerStabR_of hC.kFormR hC.gEquiv (kerStabR_hecke hC.thetaR)`. Establish `kL : X.KerStabL` using `Formalism.IndefR.CxPass.kerStabL_of hC.kFormL hC.gEquivL (kerStabL_hecke hC.thetaL)`. Establish `aR : X.AdjClosedR` using `adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR`. Establish `aL : X.AdjClosedL` using `adjClosedL_of hC.ok hC.heckeL hC.kFormL hC.jIsoL`. Establish `hst : X.zs.Stable` using `CxData.cutStable X hC.kFormR hC.kFormL kR kL aR aL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{ kFormR := hC.kFormR, kFormL := hC.kFormL, kerStabR := kR, kerStabL := kL, adjClosedR := aR, adjClosedL := aL inBlock := hC.inBlock, ratZ := hC.ratZ, jIsoR := hC.jIsoR, jIsoL := hC.jIsoL, ok := hC.ok, sep := hC.sep heckeR := hC.heckeR A.fam.μ0, heckeL := fun j => hC.heckeL j A.f …`.
+A detailed English derivation is pending.
 -/
 theorem prims_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW)
     (hPass : Passage ((faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Z.num C CH)
@@ -202,7 +202,7 @@ theorem prims_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C 
       mi0 := hC.mi0, zetaOK := hC.zetaOK, l1e := hC.l1e, passage := hPass, fun0 := hC.fun0 }
 
 /- English proof (translation)
-The claim follows from `links_of_prims (prims_of_core hC hPass)`.
+A detailed English derivation is pending.
 -/
 theorem links_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW)
     (hPass : Passage ((faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Z.num C CH)

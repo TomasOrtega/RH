@@ -6,7 +6,7 @@ namespace LateralTheory.E.LeafExcRingPf2
 open LateralTheory.E.t_E6Cut LateralTheory.E.LeafExcRingPf
 
 /- English proof (translation)
-Use `haveI : PreservesLimit (cospan U.ι g) (yoneda ⋙ SimplicialObject.const PSh) := inferInstance`. Conclude with `(isPullback_morphismRestrict g U).map (yoneda ⋙ SimplicialObject.const PSh)`.
+A detailed English derivation is pending.
 -/
 theorem schPb {X Y : Scheme.{0}} (g : Y ⟶ X) (U : X.Opens) :
     IsPullback (sch.map (g ∣_ U)) (sch.map (g ⁻¹ᵁ U).ι) (sch.map U.ι) (sch.map g) := by
@@ -14,11 +14,11 @@ theorem schPb {X Y : Scheme.{0}} (g : Y ⟶ X) (U : X.Opens) :
   exact (isPullback_morphismRestrict g U).map (yoneda ⋙ SimplicialObject.const PSh)
 
 /- English proof (translation)
-Establish `hb : ∀ n, Function.Bijective (pull R e.hom F n)` using `fun n => by`. Use `Function.bijective_iff_has_inverse.2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`. Establish `hp : ∀ n x, pull R p F n x = pull R e.hom F n (pull R q F n x)` using `fun n x => by rw [← h, pull_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Conn ConnK`. Use `forall_congr' fun n => and_congr (imp_congr_right fun _ => ?_) (imp_congr_right fun _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Bijective (pull R p F n) ↔ Function.Bijective (pull R q F n)`. Rewrite using `[show (pull R p F n : _ → _) = pull R e.hom F n ∘ pull R q F n from funext (hp n)]`. Conclude with `⟨fun hh => (Function.Bijective.of_comp_iff' (hb n) _).1 hh, fun hh => (hb n).comp hh⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `Function.Injective (pull R p F n) ↔ Function.Injective (pull R q F n)`. Rewrite using `[show (pull R p F n : _ → _) = pull R e.hom F n ∘ pull R q F n from funext (hp n)]`. Conclude with `⟨fun hh => (Function.Injective.of_comp_iff (hb n).1 _).1 hh, fun hh => (hb n).1.comp hh⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conn_iso (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {P Q E : Spc} (e : P ≅ Q) (p : P ⟶ E) (q : Q ⟶ E)
     (h : e.hom ≫ q = p) : Conn R F c p ↔ Conn R F c q := by
@@ -37,14 +37,14 @@ theorem conn_iso (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {P Q E : Spc} (e 
     exact ⟨fun hh => (Function.Injective.of_comp_iff (hb n).1 _).1 hh, fun hh => (hb n).1.comp hh⟩
 
 /- English proof (translation)
-Introduce `R _ F c X Y g U`. Conclude with `(conn_iso R F c (schPb g U).isoPullback _ _ (schPb g U).isoPullback_hom_snd).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leafPb : LeafPb := by
   intro R _ F c X Y g U
   exact (conn_iso R F c (schPb g U).isoPullback _ _ (schPb g U).isoPullback_hom_snd).symm
 
 /- English proof (translation)
-The claim follows from `LeafExcRing_of hE hC1 hC2 leafPb`.
+A detailed English derivation is pending.
 -/
 theorem LeafExcRing_of' (hE : LeafExc) (hC1 : LeafCov1) (hC2 : LeafCov2) : LeafExcRing :=
   LeafExcRing_of hE hC1 hC2 leafPb

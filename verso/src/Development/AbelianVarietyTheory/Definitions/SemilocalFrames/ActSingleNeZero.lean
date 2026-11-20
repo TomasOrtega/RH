@@ -22,9 +22,9 @@ def at1 {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (G : Arr V n 1) (a 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Unfold `IsDer`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Simplify using the standard rewrite rules. Introduce `a b x y`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `X _ w`. Simplify using `using hasDerivAt_const (0 : ℝ) (w : ℂ)`. Introduce `v y g₀ _`. Conclude with `⟨Set.univ, fun _ => ⟪y, (v : ℂ)⟫_ℂ, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isDer_trivial {n : ℕ} (ε : Fin n → Bool) :
     IsDer ε (fun _ : Matrix (Fin n) (Fin n) ℂ => ContinuousLinearMap.id ℂ ℂ) ⊤ (fun _ _ => 0) := by
@@ -54,33 +54,33 @@ theorem act_coe {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) (v : (⊤ : Submodule
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hmul : ∀ x y : Matrix (Fin n) (Fin n) ℂ, act x * act y = act (x * y)`. Introduce `x y`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hsub : ∀ x y : Matrix (Fin n) (Fin n) ℂ, act x - act y = act (x - y)`. Introduce `x y`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep, map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hzero : act (0 : Matrix (Fin n) (Fin n) ℂ) = 0`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep]`. Unfold `IsDer`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Establish `key : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0)`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`. Substitute `hbc hda` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Substitute `hbc` using the available equality. Simplify using `[hda]`. Substitute `hda` using the available equality. Simplify using `[hbc]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hbc, hda]`. Rewrite using `[hmul, hmul, hsub, key, ← hsub]`. Apply the tactic sequence `split_ifs <;> simp [hzero]`. Introduce `a b x y`. Establish `hs : sgn (allPos n) a b = 1` using `by simp [sgn, allPos]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hadj : ContinuousLinearMap.adjoint (stdRep (Matrix.single a b (1 : ℂ))) = stdRep (Matrix.single b a 1)`. Rewrite using `[← ContinuousLinearMap.star_eq_adjoint]`. Simplify using `[stdRep, ← map_star, Matrix.star_eq_conjTranspose]`. Rewrite using `[hs, Submodule.coe_inner, Submodule.coe_inner, act_coe, act_coe, ← hadj, ContinuousLinearMap.adjoint_inner_right]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `X _ w`. Establish `hX : X = ∑ a, ∑ b, X a b • Matrix.single a b (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `[Matrix.smul_single]`. Establish `hsum : ((∑ a, ∑ b, X a b • act (Matrix.single a b (1 : ℂ)) w : (⊤ : Submodule ℂ _)) : EuclideanSpace ℂ (Fin n)) = stdRep X w`. Rewrite using `[Submodule.coe_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hX, stdRep, map_sum, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, map_sum, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, act_coe, map_smul, _root_.smul_apply, stdRep]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun : (fun t : ℝ => stdRep (NormedSpace.exp ((t : ℂ) • X)) (w : EuclideanSpace ℂ (Fin n))) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • stdRep X) (w : EuclideanSpace ℂ (Fin n))`. Use function extensionality and compare the values at `t`. Simplify using `only [stdRep]`. Establish `key : Matrix.toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) (NormedSpace.exp ((t : ℂ) • X)) = NormedSpace.exp (Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) ((t : ℂ) • X)) := by`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ, NormedSpace.exp_eq_tsum ℂ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `((Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toContinuousLinearEquiv.map_tsum).trans (tsum_congr fun k => by`. Express the relevant statement in the definitionally equal form `Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) _ = _`. Rewrite using `[map_smul, map_pow])`. Rewrite using `[key, map_smul]`. Establish `h1 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • stdRep X)) (NormedSpace.exp ((0 : ℂ) • stdRep X) * stdRep X) 0` using `hasDerivAt_exp_smul_const _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • stdRep X) (w : EuclideanSpace ℂ (Fin n))) (stdRep X w) ((0 : ℝ) : ℂ)`. Simplify using `using h1.clm_apply (hasDerivAt_const (0 : ℂ) (w : EuclideanSpace ℂ (Fin n)))`. Establish `h3` using `h2.scomp (0 : ℝ) Complex.ofRealCLM.hasDerivAt`. Simplify using `only [Function.comp_def, Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul] at h3`. Rewrite using `[hsum, hfun]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3`. Introduce `v y g₀ _`. Use `⟨Set.univ, fun g => ⟪y, stdRep g (v : EuclideanSpace ℂ (Fin n))⟫_ℂ, isOpen_univ, Set.mem_univ _, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `hF : (fun g : Matrix (Fin n) (Fin n) ℂ => ⟪y, stdRep g (v : EuclideanSpace ℂ (Fin n))⟫_ℂ) = fun g => ∑ i, (starRingEnd ℂ) (y i) * ∑ j, g i j * (v : EuclideanSpace ℂ (Fin n)) j`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[PiLp.inner_apply, stdRep_apply, mul_comm]`. Rewrite using `[hF]`. Apply `ContDiff.contDiffOn` to reduce the goal to its premises. Conclude with `ContDiff.sum fun i _ => contDiff_const.mul (ContDiff.sum fun j _ => (contDiff_apply_apply ℝ ℂ i j).mul contDiff_const)`.
+A detailed English derivation is pending.
 -/
 theorem isDer (n : ℕ) :
     IsDer (allPos n) stdRep ⊤ (fun a b => act (Matrix.single a b 1)) := by

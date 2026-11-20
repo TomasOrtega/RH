@@ -42,7 +42,7 @@ theorem heisForm_apply (y z : heisY h v x₀ w₀) :
       ((z : InfinitePlace E → ι → ℂ) w)).re := rfl
 
 /- English proof (translation)
-Rewrite using `[heisForm_apply, heisForm_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨hH, -⟩` from `hyperbolic_at_place h v hp w`. Rewrite using `[← hForm_conj hH, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisForm_comm (hp : IsHyperbolicPair h x₀ w₀) (y z : heisY h v x₀ w₀) :
     heisForm h v x₀ w₀ y z = heisForm h v x₀ w₀ z y := by
@@ -52,25 +52,25 @@ theorem heisForm_comm (hp : IsHyperbolicPair h x₀ w₀) (y z : heisY h v x₀ 
   rw [← hForm_conj hH, Complex.conj_re]
 
 /- English proof (translation)
-Establish `left : ∀ y : heisY h v x₀ w₀, (∀ z, heisForm h v x₀ w₀ y z = 0) → y = 0`. Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `(y : InfinitePlace E → ι → ℂ) w = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hH, hd, ha, hb, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hba : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v x₀ w) = 1`. Rewrite using `[← hForm_conj hH, hab, map_one]`. Apply `eq_zero_of_hForm hd` to reduce the goal to its premises. Introduce `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set q := z - hForm (gramAt h v w) (vecAt v w₀ w) z • vecAt v x₀ w - hForm (gramAt h v w) (vecAt v x₀ w) z • vecAt v w₀ w with hq`. Establish `hqa : hForm (gramAt h v w) (vecAt v x₀ w) q = 0`. Rewrite using `[hq]`. Simplify using `only [hForm_sub_right, hForm_smul_right, ha, hab]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hqb : hForm (gramAt h v w) (vecAt v w₀ w) q = 0`. Rewrite using `[hq]`. Simplify using `only [hForm_sub_right, hForm_smul_right, hb, hba]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ c : ℂ, (hForm (gramAt h v w) ((y : InfinitePlace E → ι → ℂ) w) (c • q)).re = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Establish `hmem : (Pi.single w (c • q) : InfinitePlace E → ι → ℂ) ∈ heisY h v x₀ w₀`. Introduce `w'`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_same, hForm_smul_right, hqa, hqb, mul_zero, and_self]`. Simplify using `only [Pi.single_eq_of_ne hw, hForm_zero_right, and_self]`. Use `hy ⟨_, hmem⟩` as an intermediate fact. Rewrite `this` using `[heisForm_apply, Finset.sum_eq_single w]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w' _ hw`. Simplify using `[Pi.single_eq_of_ne hw, hForm_zero_right]`. Simplify using the standard rewrite rules. Establish `h1` using `key 1`. Establish `h2` using `key Complex.I`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hForm_smul_right, one_mul]`. Rewrite `h2` using `[hForm_smul_right, Complex.I_mul_re, neg_eq_zero]`. Establish `hyq : hForm (gramAt h v w) ((y : InfinitePlace E → ι → ℂ) w) q = 0` using `Complex.ext h1 h2`. Establish `hya : hForm (gramAt h v w) ((y : InfinitePlace E → ι → ℂ) w) (vecAt v x₀ w) = 0`. Rewrite using `[← hForm_conj hH, (y.2 w).1, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyb : hForm (gramAt h v w) ((y : InfinitePlace E → ι → ℂ) w) (vecAt v w₀ w) = 0`. Rewrite using `[← hForm_conj hH, (y.2 w).2, map_zero]`. Establish `hz : z = q + hForm (gramAt h v w) (vecAt v w₀ w) z • vecAt v x₀ w + hForm (gramAt h v w) (vecAt v x₀ w) z • vecAt v w₀ w`. Rewrite using `[hq]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, hForm_add_right, hForm_add_right, hForm_smul_right, hForm_smul_right, hyq, hya, hyb]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨left, fun y hy => left y fun z => by rw [heisForm_comm hp]; exact hy z⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heisForm_nondegenerate (hp : IsHyperbolicPair h x₀ w₀) :
     (heisForm h v x₀ w₀).Nondegenerate := by
@@ -127,7 +127,7 @@ theorem heisForm_nondegenerate (hp : IsHyperbolicPair h x₀ w₀) :
   exact ⟨left, fun y hy => left y fun z => by rw [heisForm_comm hp]; exact hy z⟩
 
 /- English proof (translation)
-Rewrite using `[heisForm_apply, heisForm_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[heisConjLin_apply, heisConjLin_apply, hForm_mulVec_of_unitary _ (archUnitary_at_place g w)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisForm_heisConjLin (g : archUnitary h v)
     (hg : g ∈ vecFixGroup h v x₀ ⊓ vecFixGroup h v w₀) (y z : heisY h v x₀ w₀) :
@@ -139,21 +139,17 @@ theorem heisForm_heisConjLin (g : archUnitary h v)
 end Form
 
 /- English proof (translation)
-Introduce `x₀ w₀ hp μ _ g hg`. Establish `: BorelSpace (unipRadical h v x₀)` using `Subtype.borelSpace (unipRadical h v x₀ : Set (archUnitary h v))`. Use `set φ := heisHomeo (v := v) hp with hφ`. Use `set lam : Measure (HeisCoord h v x₀ w₀) := (Measure.addHaar : Measure (heisY h v x₀ w₀)).prod volume with hlam`. Use `set G := heisConjLin g hg with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c : unipRadical h v x₀ → unipRadical h v x₀ := fun n => φ ((G (φ.symm n).1, (φ.symm n).2)) with hcdef`. Establish `hc : ∀ n, ((c n : unipRadical h v x₀) : archUnitary h v) = g * n * g⁻¹`. Introduce `n`. Use `conv_rhs => rw [← φ.apply_symm_apply n]`. Conclude with `(heisPoint_conj hp g hg _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : Continuous G` using `LinearMap.continuous_of_finiteDimensional G`. Establish `hcm : Measurable c` using `(φ.continuous.comp ((hGc.comp (continuous_fst.comp φ.symm.continuous)).prodMk (continuous_snd.comp φ.symm.continuous))).measurable`. Establish `hmap : (fun n : unipRadical h v x₀ => g * (n : archUnitary h v) * g⁻¹) = Subtype.val ∘ c`. Use function extensionality and compare the values at `n`. Conclude with `(hc n).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGm : MeasurePreserving G Measure.addHaar Measure.addHaar` using `measurePreserving_of_preserves_bilin _ (heisForm h v x₀ w₀) (heisForm_nondegenerate hp) G (heisForm_heisConjLin g hg)`. Establish `hC : MeasurePreserving (fun x => φ.symm (c (φ x))) lam lam`. Establish `e : (fun x => φ.symm (c (φ x))) = Prod.map G id`. Use function extensionality and compare the values at `x`. Simplify using `only [hcdef, Homeomorph.symm_apply_apply, Prod.map, id]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hGm.prod (MeasurePreserving.id volume)`. Establish `hL : ∀ n, MeasurePreserving (fun x => φ.symm (n * φ x)) lam lam`. Introduce `n`. Take `⟨p, rfl⟩` from `φ.surjective n`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set f : heisY h v x₀ w₀ → InfinitePlace E → ℝ := fun y w => (hForm (gramAt h v w) ((p.1 : InfinitePlace E → ι → ℂ) w) ((y : InfinitePlace E → ι → ℂ) w)).im with hf`. Establish `e : (fun x => φ.symm (φ p * φ x)) = fun x => (p.1 + x.1, (p.2 - f x.1) + x.2)`. Use function extensionality and compare the values at `x`. Rewrite using `[hφ, heisHomeo_apply, heisHomeo_apply, heisPoint_mul, ← heisHomeo_apply, Homeomorph.symm_apply_apply]`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
-
-Simplify using `only [hf]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `hfc : Continuous f` using `continuous_pi fun w => Complex.continuous_im.comp (continuous_hForm_right _ _ ((continuous_apply w).comp continuous_subtype_val))`. Use `MeasurePreserving.skew_product (f := fun y => p.1 + y) (g := fun y t => (p.2 - f y) + t) (measurePreserving_add_left _ p.1) ?_ (Filter.Eventually.of_forall fun y => (measurePreserving_add_left volume _).map_eq)` and prove the remaining obligations.
-
-Conclude with `((continuous_const.sub (hfc.comp continuous_fst)).add continuous_snd).measurable`. Rewrite using `[hmap, ← Measure.map_map continuous_subtype_val.measurable hcm, map_eq_of_measurePreserving_coordinates lam φ hL c hC μ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnipotentModulus.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     UnipotentModulus.Statement h v := by

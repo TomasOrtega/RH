@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.LatticeIndexTer.LatticeIndexDeterminant
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx, Finset.sum_insert hx, IsDiscreteValuationRing.addVal_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_prod {O ι : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (s : Finset ι) (a : ι → O) :
@@ -22,7 +22,7 @@ theorem addVal_prod {O ι : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuatio
     rw [Finset.prod_insert hx, Finset.sum_insert hx, IsDiscreteValuationRing.addVal_mul, ih]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.DiscreteValuationQuotients.goal1 .. | (apply Bl.DiscreteValuationQuotients.goal1 <;> assumption) | (intros; apply Bl.DiscreteValuationQuotients.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem length_quot_range {O M : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M]
@@ -31,7 +31,7 @@ theorem length_quot_range {O M : Type*} [CommRing O] [IsDomain O] [IsDiscreteVal
   first | exact Bl.DiscreteValuationQuotients.goal1 .. | (apply Bl.DiscreteValuationQuotients.goal1 <;> assumption) | (intros; apply Bl.DiscreteValuationQuotients.goal1 <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_second'''.goal1 .. | (apply Bl.general_b_fact_second'''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second'''.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem length_tower {O Y : Type*} [CommRing O] [AddCommGroup Y] [Module O Y]
     (R S D E : Submodule O Y) (hD : ∀ y, y ∈ D ↔ y ∈ R ∧ y ∈ S) (hE : E ≤ D) :
@@ -40,11 +40,9 @@ theorem length_tower {O Y : Type*} [CommRing O] [AddCommGroup Y] [Module O Y]
   first | exact Bl.general_b_fact_second'''.goal1 .. | (apply Bl.general_b_fact_second'''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second'''.goal1 <;> assumption)
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Establish `hx : x ≠ ⊤` using `fun h => hve (by simp [h])`. Establish `hd : d ≠ ⊤` using `fun h => hve (by simp [h])`. Establish `hy : y ≠ ⊤` using `fun h => hve' (by simp [h])`. Use `lift x to ℕ using hx`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Put the expressions in a common number system so they can be compared.
 
-Use `lift y to ℕ using hy`. Use `lift d to ℕ using hd`. Use `lift va to ℕ using hva`. Use `lift vb to ℕ using hvb`. Normalize the coercions in `at h3`.
-
-Simplify using `only [ENat.toNat_natCast]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem arith (x y d va vb ve ve' : ℕ∞) (h1 : ve = x + d) (h2 : ve' = y + d)
     (h3 : ve + vb = ve' + va) (hve : ve ≠ ⊤) (hve' : ve' ≠ ⊤) (hva : va ≠ ⊤) (hvb : vb ≠ ⊤) :
@@ -63,11 +61,7 @@ theorem arith (x y d va vb ve ve' : ℕ∞) (h1 : ve = x + d) (h2 : ve' = y + d)
   omega
 
 /- English proof (translation)
-Use `lift p to ℕ using hp`. Use `lift q to ℕ using hq`. Use `lift p1 to ℕ using hp1`. Use `lift q1 to ℕ using hq1`. Use `lift p2 to ℕ using hp2`.
-
-Use `lift q2 to ℕ using hq2`. Use `lift p3 to ℕ using hp3`. Use `lift q3 to ℕ using hq3`. Normalize the coercions in `at h`. Simplify using `only [ENat.toNat_natCast]`.
-
-Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem arith3 (p q p1 q1 p2 q2 p3 q3 : ℕ∞) (h : p + (q1 + q2 + q3) = q + (p1 + p2 + p3))
     (hp : p ≠ ⊤) (hq : q ≠ ⊤) (hp1 : p1 ≠ ⊤) (hq1 : q1 ≠ ⊤) (hp2 : p2 ≠ ⊤) (hq2 : q2 ≠ ⊤)
@@ -93,7 +87,7 @@ variable {O K Y ι : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [IsScalarTower O K Y] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hz : (z : Y) = ∑ j, algebraMap O K ((Basis.span li).repr z j) • b j` using `by conv_lhs => rw [← (Basis.span li).sum_repr z]`. Simplify using `[Basis.span_apply, algebraMap_smul]`. Rewrite using `[hz, b.repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_of_mem_span (b : Basis ι K Y)
     (li : LinearIndependent O b) (z : Submodule.span O (Set.range b)) (i : ι) :
@@ -104,23 +98,21 @@ theorem repr_of_mem_span (b : Basis ι K Y)
   rw [hz, b.repr_sum_self]
 
 /- English proof (translation)
-Use `set L := Submodule.span O (Set.range b) with hLdef`. Establish `li : LinearIndependent O b` using `LinearIndependent.restrict_scalars' (R := O) (K := K) b.linearIndependent`. Set `bO : Basis ι O L` to `Basis.span li`. Establish `hrepr : ∀ (z : L) i, b.repr z i = algebraMap O K (bO.repr z i)` using `fun z i => repr_of_mem_span b li z i`. Establish `: Module.Free O L` using `Module.Free.of_basis bO`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite O L` using `Module.Finite.of_basis bO`. Set `φ : L →ₗ[O] L` to `bO.constr O (fun j => ⟨w j, hw j⟩)`. Establish `hφ : ∀ z : L, (φ z : Y) = ∑ j, bO.equivFun z j • w j`. Introduce `z`. Simplify using `only [φ, Basis.constr_apply_fintype, Submodule.coe_sum, Submodule.coe_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwK : LinearIndependent K w` using `((b.is_basis_iff_det).2 (by rw [Basis.det_apply]; exact isUnit_iff_ne_zero.2 hdet)).1`. Establish `hwO : LinearIndependent O w` using `LinearIndependent.restrict_scalars' (R := O) (K := K) hwK`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ∑ j, bO.equivFun z j • w j = 0` using `by rw [← hφ, hz]; rfl`. Establish `h1` using `Fintype.linearIndependent_iff.1 hwO _ h0`. Apply `bO.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `[h1 j]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrange : LinearMap.range φ = (Submodule.span O (Set.range w)).comap L.subtype`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ show (φ z : Y) ∈ Submodule.span O (Set.range w)`. Rewrite using `[hφ]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Introduce `hy`. Establish `hy' : (y : Y) ∈ Submodule.span O (Set.range w)` using `hy`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hy'`. Use `⟨bO.equivFun.symm g, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ, LinearEquiv.apply_symm_apply, hg]`. Establish `hH : ∀ i j, algebraMap O K (LinearMap.toMatrix bO bO φ i j) = b.toMatrix w i j`. Introduce `i j`. Rewrite using `[Basis.toMatrix_apply, LinearMap.toMatrix_apply]`. Simplify using `only [φ, Basis.constr_basis]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hrepr ⟨w j, hw j⟩ i).symm`. Use `⟨LinearMap.det φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.det_toMatrix bO, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
-
-Conclude with `hH i j`. Rewrite using `[← hrange, length_quot_range φ hinj]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_span (b : Basis ι K Y) (w : ι → Y) (hw : ∀ j, w j ∈ Submodule.span O (Set.range b))
     (hdet : (b.toMatrix w).det ≠ 0) :
@@ -177,27 +169,25 @@ theorem len_span (b : Basis ι K Y) (w : ι → Y) (hw : ∀ j, w j ∈ Submodul
   · rw [← hrange, length_quot_range φ hinj]
 
 /- English proof (translation)
-Establish `hinjK : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hM : (b.toMatrix b').det ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `ha (hinjK (by rw [h, map_zero]))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c, hc⟩, hcI⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun p : ι × ι => b.toMatrix b' p.1 p.2)`. Establish `hc0' : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hcI' : ∀ i j, ∃ o : O, algebraMap O K o = c • b.repr (b' j) i`. Introduce `i j`. Take `⟨o, ho⟩` from `hcI (i, j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨o, ho⟩`. Use `choose o ho using hcI'`. Set `w : ι → Y` to `fun j => c • b' j`. Establish `hw : ∀ j, w j ∈ Submodule.span O (Set.range b)`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c • b' j ∈ _`. Rewrite using `[← b.sum_repr (b' j), Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc, ← ho i j, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hw' : ∀ j, w j ∈ Submodule.span O (Set.range b')` using `fun j => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hmat : ∀ e : Basis ι K Y, e.toMatrix w = algebraMap O K c • e.toMatrix b'`. Introduce `e`. Use extensionality with `i j`. Simplify using `only [Basis.toMatrix_apply, w, Matrix.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K c (b' j), map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `hcK : algebraMap O K c ≠ 0` using `(map_ne_zero_iff _ hinjK).2 hc0'`. Take `⟨e, he, hlen⟩` from `len_span b w hw (by`. Rewrite using `[hmat, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hcK) hM)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e', he', hlen'⟩` from `len_span b' w hw' (by`. Rewrite using `[hmat, Matrix.det_smul, Basis.toMatrix_self, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hcK)`. Establish `hE : Submodule.span O (Set.range w) ≤ Submodule.span O (Set.range b) ⊓ Submodule.span O (Set.range b')` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact ⟨hw j, hw' j⟩)`. Establish `t1` using `length_tower (Submodule.span O (Set.range b)) (Submodule.span O (Set.range b')) _ _ (fun y => Submodule.mem_inf) hE`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `t2` using `length_tower (Submodule.span O (Set.range b')) (Submodule.span O (Set.range b)) _ _ (fun y => by rw [Submodule.mem_inf, and_comm]) hE`. Rewrite `t1` using `[hlen]`. Rewrite `t2` using `[hlen']`. Establish `hrel : e * c0 = e' * a`. Apply `hinjK` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, he, he', h, hmat, hmat, Matrix.det_smul, Matrix.det_smul, Basis.toMatrix_self, Matrix.det_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv` using `congrArg (IsDiscreteValuationRing.addVal O) hrel`. Rewrite `hv` using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_mul]`. Establish `hne : ∀ x : O, x ≠ 0 → IsDiscreteValuationRing.addVal O x ≠ ⊤` using `fun x hx h => hx (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Rewrite `he` using `[map_zero, hmat, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hcK) hM he.symm`. Establish `he0' : e' ≠ 0`.
-
-Introduce and unpack `rfl`. Rewrite `he'` using `[map_zero, hmat, Matrix.det_smul, Basis.toMatrix_self, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hcK he'.symm`. Unfold `idx qlen`. Conclude with `arith _ _ _ _ _ _ _ t1 t2 hv (hne _ he0) (hne _ he0') (hne _ ha) (hne _ hc0)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem idx_two_bases (b b' : Basis ι K Y) (a c0 : O) (ha : a ≠ 0) (hc0 : c0 ≠ 0)
     (h : algebraMap O K a = (b.toMatrix b').det * algebraMap O K c0) :
@@ -268,9 +258,9 @@ theorem idx_two_bases (b b' : Basis ι K Y) (a c0 : O) (ha : a ≠ 0) (hc0 : c0 
   exact arith _ _ _ _ _ _ _ t1 t2 hv (hne _ he0) (hne _ he0') (hne _ ha) (hne _ hc0)
 
 /- English proof (translation)
-Establish `hmap : (Submodule.span O (Set.range bX)).map ((f : X →ₗ[K] Y).restrictScalars O) = Submodule.span O (Set.range (bX.map f))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Establish `hmat : LinearMap.toMatrix bX bY (f : X →ₗ[K] Y) = bY.toMatrix (bX.map f)`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[LinearMap.toMatrix_apply, Basis.toMatrix_apply, Basis.map_apply]`. Rewrite using `[hmap]`. Rewrite `h` using `[hmat]`. Conclude with `idx_two_bases bY (bX.map f) a b ha hb h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxDet_core {X : Type} [AddCommGroup X] [Module K X] [Module O X] [IsScalarTower O K X]
     (bX : Basis ι K X) (bY : Basis ι K Y) (f : X ≃ₗ[K] Y) (a b : O) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -302,9 +292,9 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
   [Algebra O K] [IsFractionRing O K]
 
 /- English proof (translation)
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective O (LinearMap.toMatrix bX bY (f : X →ₗ[K] Y)).det`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : algebraMap O K b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hb0`. Establish `hdet : (LinearMap.toMatrix bX bY (f : X →ₗ[K] Y)).det ≠ 0` using `(LinearEquiv.isUnit_det f bX bY).ne_zero`. Use `⟨a, b, ?_, hb0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hab, map_zero, zero_div]`. Rewrite using `[← hab, div_mul_cancel₀ _ hbK]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_frac {X Y ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module K X]
     [AddCommGroup Y] [Module K Y] (bX : Basis ι K X) (bY : Basis ι K Y) (f : X ≃ₗ[K] Y) :
@@ -323,9 +313,9 @@ theorem det_frac {X Y ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] 
   · rw [← hab, div_mul_cancel₀ _ hbK]
 
 /- English proof (translation)
-Set `f : X ≃ₗ[K] X` to `LinearEquiv.smulOfNeZero K X u hu`. Establish `hf : (f : X →ₗ[K] X) = u • LinearMap.id`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hdet : (LinearMap.toMatrix bN bN (f : X →ₗ[K] X)).det = u ^ Fintype.card ι`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hf, map_smul, LinearMap.toMatrix_id, Matrix.det_smul, Matrix.det_one, mul_one]`. Rewrite using `[← hf]`. Conclude with `idxDet_core bN bN f a b ha hb (by rw [hdet]; exact h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_scalar_multiple_eq {X ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module K X]
     [Module O X] [IsScalarTower O K X] (bN : Basis ι K X) (u : K) (hu : u ≠ 0) (a b : O)
@@ -352,20 +342,20 @@ namespace Formalism.LatticeIndexTer
 open Module
 
 /- English proof (translation)
-Introduce `O K X Y ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ bX bY f a b ha hb h`. Conclude with `LatticeIndexDeterminant.idxDet_core bX bY f a b ha hb h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_index_eq_det_valuation : IdxDet := by
   intro O K X Y ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ bX bY f a b ha hb h
   exact LatticeIndexDeterminant.idxDet_core bX bY f a b ha hb h
 
 /- English proof (translation)
-Introduce `O K X₁ X₂ X₃ X₄ ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b₁ b₂ b₃ b₄ θ' j θ a b ha hb h`. Simplify using `only`. Take `⟨a1, c1, ha1, hc1, h1⟩` from `LatticeIndexDeterminant.det_frac (O := O) b₁ b₂ θ'`. Take `⟨a2, c2, ha2, hc2, h2⟩` from `LatticeIndexDeterminant.det_frac (O := O) b₂ b₃ j`. Take `⟨a3, c3, ha3, hc3, h3⟩` from `LatticeIndexDeterminant.det_frac (O := O) b₃ b₄ θ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LatticeIndexDeterminant.idxDet_core b₁ b₂ θ' a1 c1 ha1 hc1 h1, LatticeIndexDeterminant.idxDet_core b₂ b₃ j a2 c2 ha2 hc2 h2, LatticeIndexDeterminant.idxDet_core b₃ b₄ θ a3 c3 ha3 hc3 h3]`. Establish `hcomp : LinearMap.toMatrix b₁ b₄ ((θ : X₃ →ₗ[K] X₄) ∘ₗ (j : X₂ →ₗ[K] X₃) ∘ₗ (θ' : X₁ →ₗ[K] X₂)) = LinearMap.toMatrix b₃ b₄ (θ : X₃ →ₗ[K] X₄) * (LinearMap.toMatrix b₂ b₃ (j : X₂ →ₗ[K] X₃) * LinearMap.toMatrix b₁ b₂ (θ' : X₁ →ₗ[K] X₂))`. Rewrite using `[LinearMap.toMatrix_comp b₁ b₃ b₄, LinearMap.toMatrix_comp b₁ b₂ b₃]`. Rewrite `h` using `[hcomp, Matrix.det_mul, Matrix.det_mul]`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrel : a * (c1 * c2 * c3) = b * (a1 * a2 * a3)`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul]`. Rewrite using `[h, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hv` using `congrArg (IsDiscreteValuationRing.addVal O) hrel`. Simplify using `only [IsDiscreteValuationRing.addVal_mul] at hv`. Establish `hne : ∀ x : O, x ≠ 0 → IsDiscreteValuationRing.addVal O x ≠ ⊤` using `fun x hx h => hx (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`. Conclude with `LatticeIndexDeterminant.arith3 _ _ _ _ _ _ _ _ hv (hne _ ha) (hne _ hb) (hne _ ha1) (hne _ hc1) (hne _ ha2) (hne _ hc2) (hne _ ha3) (hne _ hc3)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_index_three_term : ThreeIdx := by
   intro O K X₁ X₂ X₃ X₄ ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
@@ -396,11 +386,11 @@ theorem lattice_index_three_term : ThreeIdx := by
     (hne _ ha2) (hne _ hc2) (hne _ ha3) (hne _ hc3)
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ s N hN`. Take `⟨bN, rfl⟩` from `hB O K X N hN`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Establish `hϖK : algebraMap O K ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : algebraMap O K ϖ ^ (-s) ≠ 0` using `zpow_ne_zero _ hϖK`. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg s`. Rewrite using `[LatticeIndexDeterminant.index_scalar_multiple_eq bN _ hu0 1 (ϖ ^ (k * finrank K X)) one_ne_zero (pow_ne_zero _ hϖ0) (by`. Rewrite using `[Fintype.card_fin, map_one, map_pow, zpow_neg, zpow_natCast, inv_pow, ← pow_mul, inv_mul_cancel₀ (pow_ne_zero _ hϖK)])]`. Rewrite using `[IsDiscreteValuationRing.addVal_one, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[LatticeIndexDeterminant.index_scalar_multiple_eq bN _ hu0 (ϖ ^ (k * finrank K X)) 1 (pow_ne_zero _ hϖ0) one_ne_zero (by`. Rewrite using `[Fintype.card_fin, map_one, mul_one, map_pow, neg_neg, zpow_natCast, ← pow_mul])]`. Rewrite using `[IsDiscreteValuationRing.addVal_one, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idxScale_of (hB : LatBasis) : IdxScale := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ s N hN
@@ -424,11 +414,11 @@ theorem idxScale_of (hB : LatBasis) : IdxScale := by
     simp
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ _ A hA`. Establish `: Module.IsTorsionFree O K` using `isTorsionFree_iff_algebraMap_injective.mpr (IsFractionRing.injective O K)`. Establish `: Submodule.IsLattice K A` using `⟨hA.1, hA.2⟩`. Set `b` to `Module.Free.chooseBasis O A`. Set `bK` to `b.extendOfIsLattice K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨bK.reindex (bK.indexEquiv (Module.finBasis K X)), ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.range_reindex]`. Establish `hr : Set.range bK = A.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[bK]`. Rewrite using `[hr, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem LatticeIndexDeterminant.lattice_span_of_basis : LatBasis := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ A hA
@@ -446,7 +436,7 @@ theorem LatticeIndexDeterminant.lattice_span_of_basis : LatBasis := by
   rw [hr, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-The claim follows from `idxScale_of LatticeIndexDeterminant.lattice_span_of_basis`.
+A detailed English derivation is pending.
 -/
 theorem lattice_index_scale : IdxScale := idxScale_of LatticeIndexDeterminant.lattice_span_of_basis
 

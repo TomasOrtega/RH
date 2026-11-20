@@ -24,50 +24,50 @@ variable {R : Type} [CommRing R] {I : Ideal R} {S : Scheme.{0}} {κ : DividedPow
   {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_fst _ _), push_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_fst_inl (x : Crys κ t A) : push κ t (fst A A) (push κ t (inl A A) x) = x := by
   rw [push_push _ _ _ (lift_fst _ _), push_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_snd _ _), push_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_snd_inl (x : Crys κ t A) : push κ t (snd A A) (push κ t (inl A A) x) = 0 := by
   rw [push_push _ _ _ (lift_snd _ _), push_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_fst _ _), push_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_fst_inr (x : Crys κ t A) : push κ t (fst A A) (push κ t (inr A A) x) = 0 := by
   rw [push_push _ _ _ (lift_fst _ _), push_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_snd_inr (x : Crys κ t A) : push κ t (snd A A) (push κ t (inr A A) x) = x := by
   rw [push_push _ _ _ (lift_snd _ _), push_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_fst _ _), push_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_fst_diag (x : Crys κ t A) : push κ t (fst A A) (push κ t (lift (𝟙 A) (𝟙 A)) x) = x := by
   rw [push_push _ _ _ (lift_fst _ _), push_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_snd_diag (x : Crys κ t A) : push κ t (snd A A) (push κ t (lift (𝟙 A) (𝟙 A)) x) = x := by
   rw [push_push _ _ _ (lift_snd _ _), push_id]; rfl
 
 /- English proof (translation)
-The claim follows from `push_push _ _ _ (by rw [comp_lift, lift_snd, lift_fst]) x`.
+A detailed English derivation is pending.
 -/
 theorem push_swap_inl (x : Crys κ t A) :
     push κ t (lift (snd A A) (fst A A)) (push κ t (inl A A) x) = push κ t (inr A A) x :=
   push_push _ _ _ (by rw [comp_lift, lift_snd, lift_fst]) x
 
 /- English proof (translation)
-The claim follows from `push_push _ _ _ (by rw [comp_lift, lift_snd, lift_fst]) x`.
+A detailed English derivation is pending.
 -/
 theorem push_swap_inr (x : Crys κ t A) :
     push κ t (lift (snd A A) (fst A A)) (push κ t (inr A A) x) = push κ t (inl A A) x :=
@@ -78,7 +78,7 @@ end Push
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `exists_isCorrForm (cupSquare_of_free H (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)) (X.isLB c) (X.rig₁ c) (X.rig₂ c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_corrForm (H : Published.AbelianDeRham.Free) (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt) :
     ∃ φ, IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ :=
@@ -86,11 +86,11 @@ theorem exists_corrForm (H : Published.AbelianDeRham.Free) (X : Obj F 𝔠 (Sp R
     (smooth_prod X.dim X.dim)) (X.isLB c) (X.rig₁ c) (X.rig₂ c)
 
 /- English proof (translation)
-Establish `C` using `cupSquare_of_free H (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)`. Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`. Take `⟨ψ', hψ', k⟩` from `hψ.pull (homMor (dp0 R) (𝟙 _) (lift (snd X.A X.A) (fst X.A X.A)))`. Establish `hψ'' : IsPolForm (dp0 R) (𝟙 _) (X.A ⊗ X.A) (X.P c) ψ'`. Take `⟨n, a, b, hc, rfl⟩` from `hψ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (X.isLB c) (X.symm c).symm _ hc, rfl⟩`. Establish `u` using `Published.AbelianDualCrystal.polForm_unique C (X.isLB c) hψ hψ''`. Establish `k'` using `k (push (dp0 R) (𝟙 _) (lift (snd X.A X.A) (fst X.A X.A)) (push (dp0 R) (𝟙 _) (inl X.A X.A) x)) (push (dp0 R) (𝟙 _) (inl X.A X.A) x) (push (dp0 R) (𝟙 _) (lift (snd X.A X.A) (fst X.A X.A)) (push (dp0 R) (𝟙 _) (inr X.A X.A) y)) (push (dp0 R) (𝟙 _) (inr X.A X.A) y) (fun _ ↦ rfl) fun …`. Rewrite `k'` using `[← u, RingHom.id_apply, push_swap_inl, push_swap_inr, e, e]`. Simplify using `only [push_fst_inl, push_snd_inl, push_fst_inr, push_snd_inr, map_zero, LinearMap.zero_apply, sub_zero, zero_sub] at k'`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `k'`.
+A detailed English derivation is pending.
 -/
 theorem corrForm_antisymm (H : Published.AbelianDeRham.Free) (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt)
     {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R} (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) (x y : HdR X.A) :
@@ -113,9 +113,9 @@ theorem corrForm_antisymm (H : Published.AbelianDeRham.Free) (X : Obj F 𝔠 (Sp
   exact k'
 
 /- English proof (translation)
-Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`. Take `⟨ψ', hψ', k⟩` from `hψ.pull (homMor (dp0 R) (𝟙 _) (lift (𝟙 X.A) (𝟙 X.A)))`. Establish `eq : (φ - LinearMap.flip φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R) = ψ'`. Use `LinearMap.ext fun x ↦ LinearMap.ext fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[k (push (dp0 R) (𝟙 _) (lift (𝟙 X.A) (𝟙 X.A)) x) x (push (dp0 R) (𝟙 _) (lift (𝟙 X.A) (𝟙 X.A)) y) y (fun _ ↦ rfl) (fun _ ↦ rfl), RingHom.id_apply, e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [push_fst_diag, push_snd_diag, LinearMap.sub_apply, LinearMap.flip_apply]`. Rewrite using `[eq]`. Conclude with `hψ'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPolForm_diag (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt) {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) :
@@ -131,7 +131,7 @@ theorem isPolForm_diag (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt) {φ : HdR X.A →�
   exact hψ'
 
 /- English proof (translation)
-Use `haveI := X.rm.hom a`. Take `⟨φ', h', k⟩` from `hφ.pull (X.isLB c) (homMor (dp0 R) (𝟙 _) (𝟙 X.A)) (homMor (dp0 R) (𝟙 _) (X.rm.act a)) (h := (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act a)).left) (by simp only [← Over.comp_left, lift_fst, Category.comp_id]) (by simp only [← Over.comp_left, lift_snd]) (X.isLB (a • c)) (X.smul a c …`. Use `⟨φ', h', fun x y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[k (push (dp0 R) (𝟙 _) (𝟙 X.A) x) x (push (dp0 R) (𝟙 _) (X.rm.act a) y) y (fun _ ↦ rfl) (fun _ ↦ rfl), RingHom.id_apply, push_id, act_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_corrForm_smul (X : Obj F 𝔠 (Sp R)) (a : 𝓞 F) (c : 𝔠.elt) {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) :
@@ -148,13 +148,13 @@ theorem exists_corrForm_smul (X : Obj F 𝔠 (Sp R)) (a : 𝓞 F) (c : 𝔠.elt)
   rfl
 
 /- English proof (translation)
-Take `⟨y, hy, hi⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic ((c : F) / c₀)))`. Set `s : 𝓞 F` to `⟨y • ((c : F) / c₀), hi⟩`. Establish `hs : (s : F) * c₀ = (y : F) * c`. Express the relevant statement in the definitionally equal form `y • ((c : F) / c₀) * c₀ = _`. Rewrite using `[zsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `key : ∀ (n : ℕ) (t : 𝓞 F), (t : F) * c₀ = (n : F) * c → (n : 𝓞 F) • c = t • c₀` using `fun n t e ↦ by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Algebra.smul_def, map_natCast]`. Conclude with `e.symm.trans rfl`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `hn : ((y.natAbs : ℕ) : F) = (y : F)` using `by rw [← Int.cast_natCast, ← h]`. Conclude with `⟨y.natAbs, s, Int.natAbs_ne_zero.2 hy, key _ _ (by rw [hs, hn])⟩`. Establish `hn : (y : F) = -((y.natAbs : ℕ) : F)`. Rewrite using `[← Int.cast_natCast, ← Int.cast_neg]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Int.cast h`. Use `⟨y.natAbs, -s, Int.natAbs_ne_zero.2 hy, key _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[show ((-s : 𝓞 F) : F) = -(s : F) from rfl, neg_mul, hs, hn]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_eq (c c₀ : 𝔠.elt) (h₀ : (c₀ : F) ≠ 0) :
     ∃ (n : ℕ) (t : 𝓞 F), n ≠ 0 ∧ (n : 𝓞 F) • c = t • c₀ := by
@@ -177,7 +177,7 @@ theorem exists_nat_smul_eq (c c₀ : 𝔠.elt) (h₀ : (c₀ : F) ≠ 0) :
     rw [show ((-s : 𝓞 F) : F) = -(s : F) from rfl, neg_mul, hs, hn]; ring
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_natCast (X : Obj F 𝔠 (Sp R)) (n : ℕ) (x : HdR X.A) :
     act (dp0 R) (𝟙 _) X.rm (n : 𝓞 F) x = (n : R) • x := by
@@ -188,13 +188,13 @@ end GlobalTheory.RealMult.PolScale
 namespace GlobalTheory.RealMult.PolScale
 
 /- English proof (translation)
-Introduce `H F _ _ 𝔠 R _ X c c₀ h₀ ψ ψ₀ hψ hψ₀`. Establish `C` using `cupSquare_of_free H.1 X.ab X.dim`. Establish `hD : ∀ d : 𝔠.elt, (X.diag d).IsLB` using `fun d ↦ pull_isLB (X.isLB d) _`. Take `⟨n, t, hn, e⟩` from `exists_nat_smul_eq c c₀ h₀`. Take `⟨φ, hφ⟩` from `exists_corrForm H.1 X c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₀, hφ₀⟩` from `exists_corrForm H.1 X c₀`. Take `⟨φn, hφn, kn⟩` from `exists_corrForm_smul X (n : 𝓞 F) c hφ`. Take `⟨φt, hφt, kt⟩` from `exists_corrForm_smul X t c₀ hφ₀`. Rewrite `hφn` using `[e]`. Establish `u` using `Published.AbelianDualCrystal.polForm_unique C (hD _) (isPolForm_diag X _ hφn) (isPolForm_diag X _ hφt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `u₁` using `Published.AbelianDualCrystal.polForm_unique C (hD c) hψ (isPolForm_diag X c hφ)`. Establish `u₂` using `Published.AbelianDualCrystal.polForm_unique C (hD c₀) hψ₀ (isPolForm_diag X c₀ hφ₀)`. Use `⟨n, t, hn, fun x y ↦ ?_⟩` and prove the remaining obligations. Establish `v` using `LinearMap.congr_fun (LinearMap.congr_fun u x) y`. Rewrite using `[u₁, u₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply, kn, kt, act_natCast, map_smul, LinearMap.smul_apply, smul_eq_mul] at v ⊢`. Establish `a₁` using `corrForm_antisymm H.1 X _ hφt y x`. Establish `a₂` using `corrForm_antisymm H.1 X c₀ hφ₀ (act (dp0 R) (𝟙 _) X.rm t y) x`. Rewrite `a₁` using `[kt, kt]`. Take the linear combination `v + a₂ - a₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_nat_mul_polForm_eq : GlobalTheory.Published.AbelianDeRham → ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R : Type) [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (c c₀ : 𝔠.elt), (c₀ : F) ≠ 0 → ∀ ψ ψ₀ : LinearMap.BilinForm R (HdR X.A),

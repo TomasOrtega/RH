@@ -53,7 +53,7 @@ Both sides reduce to the same expression.
     word F (o :: w) f = app F o (word F w f) := rfl
 
 /- English proof (translation)
-Simplify using `[word, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_append (w w' : List (Op F κ)) (f : (κ → AF F) → ℂ) : word F (w ++ w') f = word F w (word F w' f) := by
   simp [word, List.foldr_append]

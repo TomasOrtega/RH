@@ -22,11 +22,11 @@ def IsNilDP (δ : DividedPowers J) : Prop :=
     (l.map fun p ↦ δ.dpow p.1 p.2).prod = 0
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons p t ih`. Take `⟨k, a⟩` from `p`. Establish `ha : a ∈ J` using `hl (k, a) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht` using `ih (fun q hq ↦ hl q (List.mem_cons_of_mem _ hq))`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons]`. Break down `Nat.lt_or_ge k 2 with hk | hk` into its components or cases. Use `interval_cases k`. Simplify `ht` using `[δ.dpow_zero ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[δ.dpow_one ha]`. Conclude with `⟨fun _ ↦ J.mul_mem_right _ ha, fun hs ↦ h2 _ ha _ (ht.1 (by omega))⟩`. Simplify using `[h k hk a ha]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_dpow_mem_and_eq_zero_of_sq_zero (δ : DividedPowers J) (h2 : ∀ a ∈ J, ∀ b ∈ J, a * b = 0)
     (h : ∀ n, 2 ≤ n → ∀ a ∈ J, δ.dpow n a = 0) (l : List (ℕ × B)) (hl : ∀ p ∈ l, p.2 ∈ J) :
@@ -47,14 +47,14 @@ private theorem prod_dpow_mem_and_eq_zero_of_sq_zero (δ : DividedPowers J) (h2 
     · simp [h k hk a ha]
 
 /- English proof (translation)
-Use `⟨2, fun l hl hs ↦ (prod_dpow_mem_and_eq_zero_of_sq_zero δ h2 h l hl).2 hs⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isDPNilpotent_of_sq (δ : DividedPowers J) (h2 : ∀ a ∈ J, ∀ b ∈ J, a * b = 0)
     (h : ∀ n, 2 ≤ n → ∀ a ∈ J, δ.dpow n a = 0) : IsNilDP δ := by
   refine ⟨2, fun l hl hs ↦ (prod_dpow_mem_and_eq_zero_of_sq_zero δ h2 h l hl).2 hs⟩
 
 /- English proof (translation)
-The claim follows from `isDPNilpotent_of_sq _ (fun a ha b _ ↦ by rw [Ideal.mem_bot.1 ha, zero_mul]) (fun n hn a _ ↦ by classical rw [dividedPowersBot_dpow_eq, if_neg fun h' ↦ absurd h'.2 (by omega)])`.
+A detailed English derivation is pending.
 -/
 theorem isDPNilpotent_bot (B : Type) [CommRing B] : IsNilDP (dividedPowersBot B) :=
   isDPNilpotent_of_sq _ (fun a ha b _ ↦ by rw [Ideal.mem_bot.1 ha, zero_mul])
@@ -63,7 +63,7 @@ theorem isDPNilpotent_bot (B : Type) [CommRing B] : IsNilDP (dividedPowersBot B)
       rw [dividedPowersBot_dpow_eq, if_neg fun h' ↦ absurd h'.2 (by omega)])
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Use `⟨N, fun n hn a ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ J`. Simplify `ha) (by simpa using hn)` using `using hN [(n, a)] (by simpa`. Conclude with `δ.dpow_null ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsNilDP.exists_dpow_eq_zero {δ : DividedPowers J} (h : IsNilDP δ) :
     ∃ N : ℕ, ∀ n, N ≤ n → ∀ a, δ.dpow n a = 0 := by
@@ -74,9 +74,9 @@ theorem IsNilDP.exists_dpow_eq_zero {δ : DividedPowers J} (h : IsNilDP δ) :
   · exact δ.dpow_null ha
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Introduce `n a ha`. Rewrite using `[Ideal.mem_bot.1 ha, map_zero]`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[δ.dpow_zero (Ideal.zero_mem _), δ'.dpow_zero J'.zero_mem, map_one]`. Rewrite using `[δ.dpow_eval_zero hn, δ'.dpow_eval_zero hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDPMorphism_of_eq_bot (δ : DividedPowers J) (hJ : J = ⊥) (δ' : DividedPowers J')
     (f : B →+* B') : IsDPMorphism δ δ' f := by
@@ -93,14 +93,14 @@ open Classical in
 def divided₂ (h : J ^ 2 = 0) : DividedPowers J := OfSquareZero.dividedPowers h
 
 /- English proof (translation)
-Conclude with `OfSquareZero.dpow_of_two_le h hn a`.
+A detailed English derivation is pending.
 -/
 theorem squareZeroDividedPowers_dpow (h : J ^ 2 = 0) {n : ℕ} (hn : 2 ≤ n) (a : B) : (divided₂ h).dpow n a = 0 := by
   classical
   exact OfSquareZero.dpow_of_two_le h hn a
 
 /- English proof (translation)
-The claim follows from `isDPNilpotent_of_sq _ (fun a ha b hb ↦ by have hab := Ideal.mul_mem_mul ha hb rwa [← pow_two, h, Ideal.zero_eq_bot, Ideal.mem_bot] at hab) (fun n hn a _ ↦ squareZeroDividedPowers_dpow h hn a)`.
+A detailed English derivation is pending.
 -/
 theorem isDPNilpotent_squareZero (h : J ^ 2 = 0) : IsNilDP (divided₂ h) :=
   isDPNilpotent_of_sq _ (fun a ha b hb ↦ by
@@ -109,9 +109,9 @@ theorem isDPNilpotent_squareZero (h : J ^ 2 = 0) : IsNilDP (divided₂ h) :=
     (fun n hn a _ ↦ squareZeroDividedPowers_dpow h hn a)
 
 /- English proof (translation)
-Use `⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ hf a ha, ?_⟩` and prove the remaining obligations. Introduce `n a ha`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Use `interval_cases n`. Rewrite using `[(divided₂ h').dpow_zero (hf a ha), (divided₂ h).dpow_zero ha, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(divided₂ h').dpow_one (hf a ha), (divided₂ h).dpow_one ha]`. Rewrite using `[squareZeroDividedPowers_dpow h' hn, squareZeroDividedPowers_dpow h hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDPMorphism_sqDP (h : J ^ 2 = 0) (h' : J' ^ 2 = 0) (f : B →+* B') (hf : ∀ a ∈ J, f a ∈ J') :
     IsDPMorphism (divided₂ h) (divided₂ h') f := by
@@ -126,14 +126,14 @@ theorem isDPMorphism_sqDP (h : J ^ 2 = 0) (h' : J' ^ 2 = 0) (f : B →+* B') (hf
 def dpExp (δ : DividedPowers J) (a : B) : B := ∑ᶠ n : ℕ, δ.dpow n a
 
 /- English proof (translation)
-Rewrite using `[dpExp, finsum_eq_single (fun n ↦ δ.dpow n 0) 0 fun n hn ↦ δ.dpow_eval_zero hn, δ.dpow_zero J.zero_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dpExp_zero (δ : DividedPowers J) : dpExp δ 0 = 1 := by
   rw [dpExp, finsum_eq_single (fun n ↦ δ.dpow n 0) 0 fun n hn ↦ δ.dpow_eval_zero hn,
     δ.dpow_zero J.zero_mem]
 
 /- English proof (translation)
-Rewrite using `[dpExp, finsum_eq_sum_of_support_subset (fun n ↦ (divided₂ h).dpow n a) (s := Finset.range 2) fun n hn ↦ ?_]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, (divided₂ h).dpow_zero ha, (divided₂ h).dpow_one ha]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`. Conclude with `hn (squareZeroDividedPowers_dpow h (by omega) a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem dpExp_sqDP (h : J ^ 2 = 0) {a : B} (ha : a ∈ J) : dpExp (divided₂ h) a = 1 + a := by
   rw [dpExp, finsum_eq_sum_of_support_subset (fun n ↦ (divided₂ h).dpow n a) (s := Finset.range 2)
@@ -174,14 +174,14 @@ structure Thick (γ : DividedPowers I) (s : X ⟶ Sp R) : Type 1 where
 attribute [instance] Thick.ring Thick.alg Thick.ring₀
 
 /- English proof (translation)
-Conclude with `Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   exact Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
 
 /- English proof (translation)
-Conclude with `Spec.map_id (CommRingCat.of A)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   exact Spec.map_id (CommRingCat.of A)
@@ -200,9 +200,9 @@ structure Hom (T T' : Thick γ s) where
   pt : spMap φ₀ ≫ T.x = T'.x
 
 /- English proof (translation)
-Break down `f with ⟨φ, φ₀, comm, dp, pt⟩` into its components or cases. Break down `g with ⟨ψ, ψ₀, comm', dp', pt'⟩` into its components or cases. Take `rfl : φ = ψ` from `h`. Take `rfl : φ₀ = ψ₀` from `RingHom.ext fun c ↦ by`. Take `⟨b, rfl⟩` from `T.surj c`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[comm, comm']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hom.ext' {T T' : Thick γ s} {f g : Hom T T'} (h : f.φ = g.φ) : f = g := by
   rcases f with ⟨φ, φ₀, comm, dp, pt⟩
@@ -221,7 +221,7 @@ instance : Category (Thick γ s) where
     IsDPMorphism.comp _ g.dp f.dp, by rw [spMap_comp, Category.assoc, f.pt, g.pt]⟩
 
 /- English proof (translation)
-The claim follows from `Hom.ext' (AlgHom.ext h)`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {T T' : Thick γ s} {f g : T ⟶ T'} (h : ∀ b, f.φ b = g.φ b) : f = g := Hom.ext' (AlgHom.ext h)
 
@@ -237,7 +237,7 @@ Both sides reduce to the same expression.
 @[simp] theorem id_φ (T : Thick γ s) (b : T.B) : Hom.φ (𝟙 T) b = b := rfl
 
 /- English proof (translation)
-The claim follows from `f.dp.1 (Ideal.mem_map_of_mem _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem Hom.mem {T T' : Thick γ s} (f : T ⟶ T') {b : T.B} (hb : b ∈ T.J) : f.φ b ∈ T'.J := f.dp.1 (Ideal.mem_map_of_mem _ hb)
 
@@ -257,13 +257,13 @@ def ev {γ : DividedPowers I} {s : X ⟶ Sp R} (f : Z1 (O γ s)) {T T' : Thick �
   f.1 T T' φ
 
 /- English proof (translation)
-The claim follows from `Z1.comp f φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem ev_comp {γ : DividedPowers I} {s : X ⟶ Sp R} (f : Z1 (O γ s)) {T T' T'' : Thick γ s}
     (φ : T ⟶ T') (ψ : T' ⟶ T'') : ev f (φ ≫ ψ) = ψ.φ (ev f φ) + ev f ψ := Z1.comp f φ ψ
 
 /- English proof (translation)
-Establish `e : a ≫ p = q ≫ b` using `Thick.hom_ext fun c ↦ h c`. Rewrite using `[← ev_comp, ← ev_comp, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sq {γ : DividedPowers I} {s : X ⟶ Sp R} (f : Z1 (O γ s)) {T₁ T₂ T₃ T₄ : Thick γ s}
     (a : T₁ ⟶ T₂) (p : T₂ ⟶ T₄) (q : T₁ ⟶ T₃) (b : T₃ ⟶ T₄) (h : ∀ c, p.φ (a.φ c) = b.φ (q.φ c)) :
@@ -286,20 +286,20 @@ structure IsMor (γ : DividedPowers I) (s : X ⟶ Sp R) (γ' : DividedPowers I')
   w : φ ≫ s = s' ≫ spMap σ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(DPMorphism.id γ).isDPMorphism, by rw [spMap_id, Category.id_comp, Category.comp_id]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMor.id (γ : DividedPowers I) (s : X ⟶ Sp R) : IsMor γ s γ s (RingHom.id R) (𝟙 X) :=
   ⟨(DPMorphism.id γ).isDPMorphism, by rw [spMap_id, Category.id_comp, Category.comp_id]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(DPMorphism.id γ).isDPMorphism, by rw [spMap_id, Category.comp_id, h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMor.of_over (γ : DividedPowers I) {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ : X' ⟶ X}
     (h : φ ≫ s = s') : IsMor γ s γ s' (RingHom.id R) φ :=
   ⟨(DPMorphism.id γ).isDPMorphism, by rw [spMap_id, Category.comp_id, h]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsDPMorphism.comp _ h'.dp h.dp, by rw [Category.assoc, h.w, ← Category.assoc, h'.w, Category.assoc, spMap_comp]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMor.comp {σ : R →+* R'} {φ : X' ⟶ X} {τ : R' →+* R''} {ψ : X'' ⟶ X'}
     (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ ψ) :
@@ -346,7 +346,7 @@ def IsMor.pull1 (h : IsMor γ s γ' s' σ φ) : H1 γ s →ₛₗ[σ] H1 γ' s' 
 def IsMor.pull2 (h : IsMor γ s γ' s' σ φ) : H2 γ s →ₛₗ[σ] H2 γ' s' := h.coef.pull2
 
 /- English proof (translation)
-The claim follows from `h.coef.pullCohomologyTwo_cup a b`.
+A detailed English derivation is pending.
 -/
 theorem IsMor.pullCohomologyTwo_cup (h : IsMor γ s γ' s' σ φ) (a b : H1 γ s) :
     h.pull2 (cup _ a b) = cup _ (h.pull1 a) (h.pull1 b) := h.coef.pullCohomologyTwo_cup a b
@@ -362,14 +362,14 @@ def IsMor.idTrans (h : IsMor γ s γ s (RingHom.id R) (𝟙 X)) : h.functor ⟶ 
         rw [spMap_id]; simp }
 
 /- English proof (translation)
-The claim follows from `(h.coef.pullCohomologyOne_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans (CoefMap.pullCohomologyOne_id c)`.
+A detailed English derivation is pending.
 -/
 theorem IsMor.pullCohomologyOne_id (h : IsMor γ s γ s (RingHom.id R) (𝟙 X)) (c : H1 γ s) : h.pull1 c = c :=
   (h.coef.pullCohomologyOne_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans
     (CoefMap.pullCohomologyOne_id c)
 
 /- English proof (translation)
-The claim follows from `(h.coef.pullCohomologyTwo_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans (CoefMap.pullCohomologyTwo_id c)`.
+A detailed English derivation is pending.
 -/
 theorem IsMor.pullCohomologyTwo_id (h : IsMor γ s γ s (RingHom.id R) (𝟙 X)) (c : H2 γ s) : h.pull2 c = c :=
   (h.coef.pullCohomologyTwo_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans
@@ -390,7 +390,7 @@ def IsMor.compTrans (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ
         rw [spMap_id, ← e']; simp }
 
 /- English proof (translation)
-The claim follows from `(h.coef.pullCohomologyOne_comp h'.coef c).symm.trans ((h.coef.comp h'.coef).pullCohomologyOne_eq_of_natTrans h''.coef (h.compTrans h' h'' e e') (fun _ _ ↦ rfl) c)`.
+A detailed English derivation is pending.
 -/
 theorem IsMor.pullback1_comp (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ ψ)
     (h'' : IsMor γ s γ'' s'' ρ χ) (e : ∀ r, τ (σ r) = ρ r) (e' : ψ ≫ φ = χ) (c : H1 γ s) :
@@ -400,7 +400,7 @@ theorem IsMor.pullback1_comp (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ
       (fun _ _ ↦ rfl) c)
 
 /- English proof (translation)
-The claim follows from `(h.coef.pullCohomologyTwo_comp h'.coef c).symm.trans ((h.coef.comp h'.coef).pullCohomologyTwo_eq_of_natTrans h''.coef (h.compTrans h' h'' e e') (fun _ _ ↦ rfl) c)`.
+A detailed English derivation is pending.
 -/
 theorem IsMor.pullback2_comp (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ ψ)
     (h'' : IsMor γ s γ'' s'' ρ χ) (e : ∀ r, τ (σ r) = ρ r) (e' : ψ ≫ φ = χ) (c : H2 γ s) :
@@ -420,7 +420,7 @@ abbrev FirstDeRham (s : X ⟶ Sp R) : Type 1 := H1 (dp0 R) s
 abbrev SecondDeRham (s : X ⟶ Sp R) : Type 1 := H2 (dp0 R) s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isDPMorphism_of_eq_bot _ rfl _ _, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMor.of_dividedPowersZeroIdeal {s : X ⟶ Sp R} (γ' : DividedPowers I') {s' : X' ⟶ Sp R'} {σ : R →+* R'}
     {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) : IsMor (dp0 R) s γ' s' σ φ := ⟨isDPMorphism_of_eq_bot _ rfl _ _, h⟩
@@ -465,7 +465,7 @@ def Form (s : X ⟶ Sp R) : Submodule R (Z1 (O (dp0 R) s)) where
   smul_mem' r f hf T T' φ h h' := by simp [hf φ h h']
 
 /- English proof (translation)
-Establish `h0 : ev f.1 a = 0` using `f.2 a h₁ h₂`. Establish `e` using `GlobalTheory.Cris.ev_sq f.1 a p q b h`. Rewrite `e` using `[h0, map_zero, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Form.ev_sq (f : Form s) {T₁ T₂ T₃ T₄ : Thick (dp0 R) s}
     (a : T₁ ⟶ T₂) (p : T₂ ⟶ T₄) (q : T₁ ⟶ T₃) (b : T₃ ⟶ T₄) (h₁ : T₁.J = ⊥) (h₂ : T₂.J = ⊥)
@@ -477,17 +477,15 @@ theorem Form.ev_sq (f : Form s) {T₁ T₂ T₃ T₄ : Thick (dp0 R) s}
 def Form.cl (s : X ⟶ Sp R) : Form s →ₗ[R] FirstDeRham s := H1.mk _ ∘ₗ (Form s).subtype
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[F1, LinearMap.mem_ker]`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Rewrite `hc` using `[toH1O, CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `hc`. Take `⟨g', hg'⟩ : ∃ g' : C0 (O (dp0 R) s), ∀ (T : Thick (dp0 R) s) (hT : T.J = ⊥), g' T = g ⟨T, hT⟩` from `⟨fun T ↦ if hT : T.J = ⊥ then g ⟨T, hT⟩ else 0, fun T hT ↦ dif_pos hT⟩`. Establish `key : ∀ ⦃T T' : Thick (dp0 R) s⦄ (φ : T ⟶ T') (hT : T.J = ⊥) (hT' : T'.J = ⊥), f.1 T T' φ = g' T' - mp (O (dp0 R) s) φ (g' T)`. Introduce `T T' φ hT hT'`. Establish `e` using `congrFun (congrFun (congrFun hg ⟨T, hT⟩) ⟨T', hT'⟩) (ObjectProperty.homMk φ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[amitsur_d0_apply, CoefMap.pullCocycleOne_apply]`. Rewrite using `[hg' T hT, hg' T' hT']`. Conclude with `e.symm`. Use `LinearMap.mem_range.2 ⟨⟨f - ⟨d0 _ g', commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g'⟩, fun T T' φ hT hT' ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f.1 T T' φ - d0 _ g' T T' φ = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[amitsur_d0_apply, key φ hT hT', sub_self]`. Use `show H1.mk _ (f - ⟨d0 _ g', commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g'⟩) = H1.mk _ f`. Conclude with `H1.mk_eq_mk.2 ⟨-g', by rw [map_neg, Submodule.coe_sub, sub_sub_cancel_left]⟩`. Introduce and unpack `_ ⟨f, rfl⟩`. Rewrite using `[F1, LinearMap.mem_ker, toH1O]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (CoefMap.restrict (O (dp0 R) s) (IsTriv s).ι).pull1 (H1.mk _ f.1) = 0`. Rewrite using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `T T' φ`.
-
-Conclude with `(f.2 φ.hom T.2 T'.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem hodgeFiltration_eq_range (s : X ⟶ Sp R) : F1 s = LinearMap.range (Form.cl s) := by
   apply le_antisymm
@@ -533,7 +531,7 @@ theorem IsMor.cl_pullForm {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X}
     Form.cl s' (h.pullForm f) = h.pull1 (Form.cl s f) := rfl
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `hc`. Conclude with `⟨h.pullForm f, h.cl_pullForm f⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsMor.pullback1_mem_hodgeFiltration {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X}
     (h : IsMor (dp0 R) s (dp0 R') s' σ φ) {c : FirstDeRham s} (hc : c ∈ F1 s) : h.pull1 c ∈ F1 s' := by
@@ -598,7 +596,7 @@ variable {s : X ⟶ Sp R} (E E' : SqExt R)
   w := hx.trans (congrArg spMap E.π.comp_algebraMap.symm)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hy, ← spMap_comp, E.π.comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_w {y : Sp E.C ⟶ X} (hy : y ≫ s = spMap (algebraMap R E.C)) :
     (spMap (E.π : E.C →+* E.B) ≫ y) ≫ s = spMap (algebraMap R E.B) := by
@@ -627,7 +625,7 @@ theorem val_apply (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C)) (
     E.val y hy f = ev f (E.secHom (E.red_w hy) E.i E.π_i) - ev f (E.idHom hy) := rfl
 
 /- English proof (translation)
-Rewrite using `[val_apply]`. Express the relevant statement in the definitionally equal form `d0 _ g _ _ (E.secHom (E.red_w hy) E.i E.π_i) - d0 _ g _ _ (E.idHom hy) = _`. Rewrite using `[amitsur_d0_apply, amitsur_d0_apply, mp_O, mp_O]`. Conclude with `sub_sub_sub_cancel_left _ _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangentValue_coboundary (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C)) (g : C0 (O (dp0 R) s)) :
     E.val y hy ⟨d0 _ g, commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g⟩ =
@@ -651,9 +649,9 @@ def thickHom (φ : E.C →ₐ[R] E'.C) (φ₀ : E.B →ₐ[R] E'.B) (hπ : ∀ c
   pt := e
 
 /- English proof (translation)
-Establish `hc : (φ₀ : E.B →+* E'.B).comp (E.π : E.C →+* E.B) = (E'.π : E'.C →+* E'.B).comp (φ : E.C →+* E'.C)` using `RingHom.ext hπ`. Establish `ex : spMap (φ₀ : E.B →+* E'.B) ≫ spMap (E.π : E.C →+* E.B) ≫ y = spMap (E'.π : E'.C →+* E'.B) ≫ y'`. Rewrite using `[← Category.assoc, ← spMap_comp, hc, spMap_comp, Category.assoc, e]`. Establish `s1` using `Form.ev_sq f (Thick.trivHom (x := spMap (E.π : E.C →+* E.B) ≫ y) (hx := E.red_w hy) (T := Thick.triv E'.B _ (E'.red_w hy')) φ₀ (by rw [RingHom.id_comp]; exact ex)) (E'.secHom (E'.red_w hy') E'.i E'.π_i) (E.secHom (E.red_w hy) E.i E.π_i) (E.thickHom E' φ φ₀ hπ (E.red_w hy) (E'.red …`. Establish `s2` using `Form.ev_sq f (Thick.trivHom (x := y) (hx := hy) (T := Thick.triv E'.C y' hy') φ (by rw [RingHom.id_comp]; exact e)) (E'.idHom hy') (E.idHom hy) (E.thickHom E' φ φ₀ hπ (E.red_w hy) (E'.red_w hy') ex) rfl rfl (fun c ↦ rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[val_apply, val_apply, s1, s2, map_sub]`. Conclude with `add_sub_add_right_eq_sub _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_map (φ : E.C →ₐ[R] E'.C) (φ₀ : E.B →ₐ[R] E'.B) (hπ : ∀ c, φ₀ (E.π c) = E'.π (φ c))
     (hi : ∀ b, φ (E.i b) = E'.i (φ₀ b)) (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C))
@@ -679,11 +677,11 @@ theorem val_map (φ : E.C →ₐ[R] E'.C) (φ₀ : E.B →ₐ[R] E'.B) (hπ : �
   exact add_sub_add_right_eq_sub _ _ _
 
 /- English proof (translation)
-Set `θ : h.functor.obj (E.thick (spMap (E.π : E.C →+* E.B) ≫ y) (E.red_w hy)) ⟶ E.thick (spMap (E.π : E.C →+* E.B) ≫ y ≫ φ) (E.red_w hy')` to `{ φ := { RingHom.id E.C with commutes' := fun _ ↦ rfl } φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp := (DPMorphism.id _).isDPMorphism pt := by`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id E.B) ≫ (spMap (E.π : E.C →+* E.B) ≫ y) ≫ φ = spMap (E.π : E.C →+* E.B) ≫ y ≫ φ`. Rewrite using `[spMap_id, Category.id_comp, Category.assoc] }`. Set `θB : h.functor.obj (Thick.triv E.B (spMap (E.π : E.C →+* E.B) ≫ y) (E.red_w hy)) ⟶ Thick.triv E.B (spMap (E.π : E.C →+* E.B) ≫ y ≫ φ) (E.red_w hy')` to `{ φ := { RingHom.id E.B with commutes' := fun _ ↦ rfl } φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp := (DPMorphism.id _).isDPMorphism pt := by`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id E.B) ≫ (spMap (E.π : E.C →+* E.B) ≫ y) ≫ φ = spMap (E.π : E.C →+* E.B) ≫ y ≫ φ`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[spMap_id, Category.id_comp, Category.assoc] }`. Set `θC : h.functor.obj (Thick.triv E.C y hy) ⟶ Thick.triv E.C (y ≫ φ) hy'` to `{ φ := { RingHom.id E.C with commutes' := fun _ ↦ rfl } φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp := (DPMorphism.id _).isDPMorphism pt := by`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id E.C) ≫ y ≫ φ = y ≫ φ`. Rewrite using `[spMap_id, Category.id_comp] }`. Establish `s1` using `Form.ev_sq f θB (E.secHom (E.red_w hy') E.i E.π_i) (h.functor.map (E.secHom (E.red_w hy) E.i E.π_i)) θ rfl rfl (fun _ ↦ rfl)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s2` using `Form.ev_sq f θC (E.idHom hy') (h.functor.map (E.idHom hy)) θ rfl rfl (fun _ ↦ rfl)`. Establish `l1 : ev (h.pullForm f).1 (E.secHom (E.red_w hy) E.i E.π_i) = ev f.1 (h.functor.map (E.secHom (E.red_w hy) E.i E.π_i))` using `rfl`. Establish `l2 : ev (h.pullForm f).1 (E.idHom hy) = ev f.1 (h.functor.map (E.idHom hy))` using `rfl`. Rewrite using `[val_apply, val_apply, l1, l2, s1, s2]`. Conclude with `(add_sub_add_right_eq_sub _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pull {s' : X' ⟶ Sp R} {φ : X' ⟶ X} (h : IsMor (dp0 R) s (dp0 R) s' (RingHom.id R) φ)
     (y : Sp E.C ⟶ X') (hy : y ≫ s' = spMap (algebraMap R E.C))
@@ -737,7 +735,7 @@ theorem val_pull {s' : X' ⟶ Sp R} {φ : X' ⟶ X} (h : IsMor (dp0 R) s (dp0 R)
     simp
 
 /- English proof (translation)
-Establish `hk : RingHom.ker ((self R B).π : B →+* B) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h ↦ h`. Establish `k1 : ev f.1 ((self R B).secHom ((self R B).red_w hy) (self R B).i (self R B).π_i) = 0` using `f.2 _ rfl hk`. Establish `k2 : ev f.1 ((self R B).idHom hy) = 0` using `f.2 _ rfl hk`. Rewrite using `[val_apply, k1, k2, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_self {B : Type} [CommRing B] [Algebra R B] (y : Sp B ⟶ X)
     (hy : y ≫ s = spMap (algebraMap R B)) (f : Form s) : (self R B).val y hy f.1 = 0 := by
@@ -749,13 +747,11 @@ theorem val_self {B : Type} [CommRing B] [Algebra R B] (y : Sp B ⟶ X)
   rw [val_apply, k1, k2, sub_zero]
 
 /- English proof (translation)
-Set `ρ : E.thick (spMap (E.π : E.C →+* E.B) ≫ y) (E.red_w hy) ⟶ Thick.triv E.B (spMap (E.π : E.C →+* E.B) ≫ y) (E.red_w hy)` to `{ φ := E.π φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp := by`. Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ ?_, fun n hn a ha ↦ ?_⟩` and prove the remaining obligations. Conclude with `Ideal.mem_bot.2 (RingHom.mem_ker.1 ha)`. Rewrite using `[RingHom.mem_ker.1 ha, (dp0 E.B).dpow_eval_zero hn]`. Break down `Nat.lt_or_ge n 2 with h2 | h2` into its components or cases.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = 1` from `by omega`. Rewrite using `[(divided₂ E.sq).dpow_one ha, RingHom.mem_ker.1 ha]`. Rewrite using `[squareZeroDividedPowers_dpow E.sq h2, map_zero]`. Use `pt := by`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id E.B) ≫ spMap (E.π : E.C →+* E.B) ≫ y = spMap (E.π : E.C →+* E.B) ≫ y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[spMap_id, Category.id_comp] }`. Establish `k1 : ev f.1 (E.secHom (E.red_w hy) E.i E.π_i ≫ ρ) = 0` using `f.2 (E.secHom (E.red_w hy) E.i E.π_i ≫ ρ) rfl rfl`. Establish `k2 : ev f.1 (E.idHom hy ≫ ρ) = 0` using `f.2 (E.idHom hy ≫ ρ) rfl rfl`. Rewrite `k1`, `k2` using `[ev_comp]`. Rewrite using `[val_apply, map_sub]`.
-
-Conclude with `sub_eq_zero.2 (add_right_cancel (k1.trans k2.symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem π_val (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C)) (f : Form s) :
     E.π (E.val y hy f.1) = 0 := by
@@ -785,9 +781,9 @@ theorem π_val (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C)) (f :
   exact sub_eq_zero.2 (add_right_cancel (k1.trans k2.symm))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hpi : (E.π : E.C →+* E.B).comp (E.i : E.B →+* E.C) = RingHom.id E.B` using `RingHom.ext E.π_i`. Set `lam : Thick.triv E.B (spMap (E.π : E.C →+* E.B) ≫ spMap (E.i : E.B →+* E.C) ≫ x) (E.red_w hy) ⟶ Thick.triv E.C (spMap (E.i : E.B →+* E.C) ≫ x) hy` to `Thick.trivHom E.i (by`. Express the relevant statement in the definitionally equal form `spMap ((RingHom.id E.C).comp (E.i : E.B →+* E.C)) ≫ spMap (E.π : E.C →+* E.B) ≫ spMap (E.i : E.B →+* E.C) ≫ x = spMap (E.i : E.B →+* E.C) ≫ x`. Rewrite using `[RingHom.id_comp, ← Category.assoc (spMap (E.π : E.C →+* E.B)), ← spMap_comp, hpi, spMap_id, Category.id_comp])`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `k : E.secHom (E.red_w hy) E.i E.π_i = lam ≫ E.idHom hy` using `Thick.hom_ext fun _ ↦ rfl`. Rewrite using `[val_apply, k, ev_comp, show ev f.1 lam = 0 from f.2 lam rfl rfl, map_zero, zero_add, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_const (x : Sp E.B ⟶ X) (hx : x ≫ s = spMap (algebraMap R E.B)) (y : Sp E.C ⟶ X)
     (hy : y ≫ s = spMap (algebraMap R E.C)) (e : spMap (E.i : E.B →+* E.C) ≫ x = y) (f : Form s) :

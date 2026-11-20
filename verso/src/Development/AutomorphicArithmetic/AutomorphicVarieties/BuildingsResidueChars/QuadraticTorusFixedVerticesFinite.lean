@@ -4,17 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PS
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective O x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hinj` using `IsFractionRing.injective O K`. Establish `hP : algebraMap O K p ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hp0`. Establish `hB : algebraMap O K b ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hb0`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hp`. Use `set t := (m + n) / 2 with ht`. Use `set r := (m + n) % 2 with hr`. Establish `hN : r + t + t = m + n` using `by omega`. Establish `hr2 : r ≤ 2` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hO : (↑(u * v) * p ^ r) * (p ^ t * p ^ t) = (↑u * p ^ m) * (↑v * p ^ n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (↑u * p ^ m) * (↑v * p ^ n) := by rw [hN]; ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : algebraMap O K (↑(u * v) * p ^ r) * (algebraMap O K p ^ t * algebraMap O K p ^ t) = algebraMap O K (↑u * p ^ m) * algebraMap O K (↑v * p ^ n)`. Rewrite using `[← map_pow, ← map_mul, ← map_mul, ← map_mul, hO]`. Use `⟨algebraMap O K (↑v * p ^ n) / algebraMap O K p ^ t, div_ne_zero hB (pow_ne_zero _ hP), ↑(u * v) * p ^ r, ↑(u * v)⁻¹ * p ^ (2 - r), ?_, ?_⟩` and prove the remaining obligations. Establish `hT : algebraMap O K p ^ t * algebraMap O K p ^ t ≠ 0` using `mul_ne_zero (pow_ne_zero _ hP) (pow_ne_zero _ hP)`. Establish `e : algebraMap O K (↑(u * v) * p ^ r) = algebraMap O K (↑u * p ^ m) * algebraMap O K (↑v * p ^ n) / (algebraMap O K p ^ t * algebraMap O K p ^ t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[eq_div_iff hT, key]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem rescale {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] {p : O} (hp : Irreducible p) {x : K} (hx : x ≠ 0) :
@@ -55,25 +55,23 @@ private theorem rescale {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
       _ = p ^ 2 := by rw [Units.mul_inv, one_mul, Nat.add_sub_cancel' hr2]
 
 /- English proof (translation)
-Take `⟨hc1, hc2⟩` from `hc`. Establish `sq : ∀ u : (Etau K τ)ˣ, (u : Etau K τ) * u = algebraMap K (Etau K τ) (QuadraticAlgebra.norm (u : Etau K τ)) * quo u`. Introduce `u`. Rewrite using `[QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Establish `h1 : star (u : Etau K τ) * star ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← star_mul, Units.inv_mul, star_one]`. Unfold `quo`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, mul_one]`. Use `_ = u * star (u : Etau K τ) * (u * star ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)) := by ring`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hNd⟩ : ∃ N, N = QuadraticAlgebra.norm (c : Etau K τ)` from `⟨_, rfl⟩`. Take `⟨N', hNd'⟩ : ∃ N', N' = QuadraticAlgebra.norm ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ)` from `⟨_, rfl⟩`. Establish `hNN : N * N' = 1`. Rewrite using `[hNd, hNd', ← map_mul, Units.mul_inv, map_one]`. Establish `hN : N ≠ 0` using `left_ne_zero_of_mul_eq_one hNN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sqc` using `sq c`. Establish `sqd` using `sq c⁻¹`. Rewrite `sqc` using `[← hNd]`. Rewrite `sqd` using `[← hNd']`. Take `⟨s, hs, a, b, ha, hab⟩` from `rescale hp hN`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab' : algebraMap O K a * algebraMap O K b = algebraMap O K p ^ 2`. Rewrite using `[← map_mul, hab, map_pow]`. Use `⟨s, hs, ?_, ?_⟩` and prove the remaining obligations. Apply `IsIntegral.of_pow (n := 2) two_pos` to reduce the goal to its premises. Establish `e : (s • (c : Etau K τ)) ^ 2 = algebraMap O (Etau K τ) a * quo c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap K (Etau K τ) s ^ 2 * (algebraMap K (Etau K τ) N * quo c) := by rw [sqc]`. Use `_ = algebraMap O (Etau K τ) a * quo c := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraMap_etau a, ha, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(isIntegral_algebraMap).mul hc1`. Apply `IsIntegral.of_pow (n := 2) two_pos` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hk : (algebraMap O K p * s⁻¹) ^ 2 * N' = algebraMap O K b`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-N') * hab' + (algebraMap O K b * N') * ha + (algebraMap O K b * s ^ 2) * hNN`. Establish `e : ((algebraMap O K p * s⁻¹) • ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ)) ^ 2 = algebraMap O (Etau K τ) b * quo c⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap K (Etau K τ) (algebraMap O K p * s⁻¹) ^ 2 * (algebraMap K (Etau K τ) N' * quo c⁻¹) := by rw [sqd]`. Use `_ = algebraMap O (Etau K τ) b * quo c⁻¹ := by`. Rewrite using `[algebraMap_etau b, ← hk]`.
-
-Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(isIntegral_algebraMap).mul hc2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rescaleE {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] {τ : K} {p : O} (hp : Irreducible p) {c : (Etau K τ)ˣ} (hc : c ∈ Cint O τ) :
@@ -132,9 +130,9 @@ private theorem rescaleE {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
     exact (isIntegral_algebraMap).mul hc2
 
 /- English proof (translation)
-Use extensionality with `T`. Simplify using `only [cls, Set.mem_setOf_eq, Set.image_image, smul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u * Units.mk0 s hs, by congr 1⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, rfl⟩`. Use `⟨u * (Units.mk0 s hs)⁻¹, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[hs]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem cls_smul {K : Type} [Field K] {τ : K} (S : Set (Etau K τ)) {s : K} (hs : s ≠ 0) :
     cls τ ((s • ·) '' S) = cls τ S := by
@@ -150,13 +148,11 @@ private theorem cls_smul {K : Type} [Field K] {τ : K} (S : Set (Etau K τ)) {s 
     simp [hs]
 
 /- English proof (translation)
-Use `haveI := hq`. Take `⟨g, rfl⟩` from `hR`. Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := Ideal.span {m})`. Use `⟨Set.range (fun r : (↥g → O ⧸ Ideal.span {m}) => ∑ i : ↥g, Function.surjInv hsurj (r i) • (i : M)), Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, -, rfl⟩` from `(Submodule.mem_span_finset).mp hx`. Establish `hk : ∀ i : ↥g, ∃ k : O, k * m = f i - Function.surjInv hsurj (Ideal.Quotient.mk _ (f i))`. Introduce `i`. Apply `Ideal.mem_span_singleton'.mp` to reduce the goal to its premises. Apply `Ideal.Quotient.eq.mp` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.surjInv_eq hsurj]`. Use `choose k hk using hk`. Use `⟨_, ⟨fun i => Ideal.Quotient.mk _ (f i), rfl⟩, ∑ i : ↥g, k i • (i : M), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span i.2)`. Rewrite using `[← Finset.sum_coe_sort g, ← Finset.sum_sub_distrib, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, ← hk i, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_finite_representatives_mod_smul_of_fg {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {m : O}
     (hq : Finite (O ⧸ Ideal.span {m})) (R : Submodule O M) (hR : R.FG) :
@@ -181,41 +177,35 @@ private theorem exists_finite_representatives_mod_smul_of_fg {O M : Type} [CommR
     rw [← sub_smul, ← hk i, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL hτ`. Use `haveI := hL.frac`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨c0, hc0, hden⟩` from `int_denom hL hτ`. Establish `hm : c0 * p ≠ 0` using `mul_ne_zero hc0 hp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, hFR⟩` from `exists_finite_representatives_mod_smul_of_fg (finite_quot_span hL hm) (Subalgebra.toSubmodule (integralClosure O (Etau K τ))) (intE_fg hL hτ)`. Establish `hmemR : ∀ z, z ∈ Subalgebra.toSubmodule (integralClosure O (Etau K τ)) ↔ IsIntegral O z`. Introduce `z`. Rewrite using `[Subalgebra.mem_toSubmodule, mem_integralClosure_iff]`. Set `𝒯 : Set (Set (Etau K τ))` to `{T | ∃ M : Submodule O (Etau K τ), T = M ∧ (∀ z ∈ Subalgebra.toSubmodule (integralClosure O (Etau K τ)), (c0 * p) • z ∈ M) ∧ M ≤ Subalgebra.toSubmodule (integralClosure O (Etau K τ))}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h𝒯 : 𝒯.Finite`. Apply `Set.Finite.of_finite_image (f := fun T => T ∩ F)` to reduce the goal to its premises. Conclude with `(hF.powerset).subset (by rintro _ ⟨T, -, rfl⟩; exact Set.inter_subset_right)`. Establish `key : ∀ M M' : Submodule O (Etau K τ), (∀ z ∈ Subalgebra.toSubmodule (integralClosure O (Etau K τ)), (c0 * p) • z ∈ M) → M ≤ Subalgebra.toSubmodule (integralClosure O (Etau K τ)) → (∀ z ∈ Subalgebra.toSubmodule (integralClosure O (Etau K τ)), (c0 * p) • z ∈ M') → (M : Set (Etau K …`. Introduce `M M' hm1 hR1 hm2 he x hx`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hyF, z, hz, hxy⟩` from `hFR x (hR1 hx)`. Establish `hy : y ∈ M`. Establish `e : y = x - (c0 * p) • z` using `by rw [← hxy]; abel`. Rewrite using `[e]`. Conclude with `M.sub_mem hx (hm1 z hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hy2 : y ∈ (M' : Set (Etau K τ)) ∩ F`. Rewrite using `[← he]`. Conclude with `⟨hy, hyF⟩`. Establish `e : x = y + (c0 * p) • z` using `by rw [← hxy]; abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `M'.add_mem hy2.1 (hm2 z hz)`. Introduce and unpack `_ ⟨M1, rfl, h1m, h1R⟩ _ ⟨M2, rfl, h2m, h2R⟩ heq`. Establish `heq' : (M1 : Set (Etau K τ)) ∩ F = (M2 : Set (Etau K τ)) ∩ F` using `heq`. Conclude with `Set.Subset.antisymm (key _ _ h1m h1R h2m heq') (key _ _ h2m h2R h1m heq'.symm)`. Apply `(h𝒯.image (fun T => cls τ T)).subset` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `X ⟨S, hS, hω, ⟨c, hc, hgen⟩, rfl⟩`. Take `⟨s, hs, hsc, hsd⟩` from `rescaleE hp hc`. Use `⟨(s • ·) '' S, ?_, cls_smul S hs⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hS.fg`. Establish `hcomm : ∀ (o : O) (x : Etau K τ), o • (s • x) = s • (o • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce `o x`. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Set `M : Submodule O (Etau K τ)` to `{ carrier := (s • ·) '' S add_mem' := by`. Introduce and unpack `_ _ ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨u + v, ?_, smul_add s u v⟩` and prove the remaining obligations. Rewrite `hu`, `hv`, the goal using `[hg]`. Conclude with `Submodule.add_mem _ hu hv`. Use the proof step `zero_mem' := ⟨0, by rw [hg]; exact Submodule.zero_mem _, smul_zero s⟩`. Use the proof step `smul_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `o _ ⟨u, hu, rfl⟩`. Use `⟨o • u, ?_, (hcomm o u).symm⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[hg]`. Conclude with `Submodule.smul_mem _ o hu }`. Use `⟨M, rfl, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hzi : IsIntegral O z` using `(hmemR z).mp hz`. Establish `e1 : algebraMap O (Etau K τ) p = (s • (c : Etau K τ)) * ((algebraMap O K p * s⁻¹) • ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ))`. Rewrite using `[smul_mul_smul_comm, Units.mul_inv, algebraMap_etau p, Algebra.algebraMap_eq_smul_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Establish `hy : IsIntegral O (((algebraMap O K p * s⁻¹) • ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ)) * z)` using `hsd.mul hzi`. Take `⟨a, b, h1, h2⟩` from `hden _ hy`. Establish `e2 : algebraMap O (Etau K τ) c0 * (((algebraMap O K p * s⁻¹) • ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ)) * z) = algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * ω`. Rewrite using `[algebraMap_etau c0, algebraMap_etau a, algebraMap_etau b]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `ext`. Establish `h1'` using `h1`. Simplify using `at h1' ⊢`. Take the linear combination `h1'`. Establish `h2'` using `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at h2' ⊢`. Take the linear combination `h2'`. Establish `e3 : (c0 * p) • z = a • (s • (c : Etau K τ)) + b • (s • (ω * (c : Etau K τ)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.smul_def, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `_ = (s • (c : Etau K τ)) * (algebraMap O (Etau K τ) c0 * (((algebraMap O K p * s⁻¹) • ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ)) * z)) := by`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (s • (c : Etau K τ)) * (algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * ω) := by`. Rewrite using `[e2]`.
-
-Use `_ = a • (s • (c : Etau K τ)) + b • (s • (ω * (c : Etau K τ))) := by`. Rewrite using `[Algebra.smul_def a, Algebra.smul_def b, ← mul_smul_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Establish `m1 : s • (c : Etau K τ) ∈ M` using `⟨_, hgen.1, rfl⟩`.
-
-Establish `m2 : s • (ω * (c : Etau K τ)) ∈ M` using `⟨_, hω _ hgen.1, rfl⟩`. Conclude with `M.add_mem (M.smul_mem a m1) (M.smul_mem b m2)`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[hmemR]`. Establish `e : s • w = (s • (c : Etau K τ)) * (((c⁻¹ : (Etau K τ)ˣ) : Etau K τ) * w)`.
-
-Rewrite using `[smul_mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Use `show IsIntegral O (s • w)`. Rewrite using `[e]`. Conclude with `hsc.mul (hgen.2 w hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.quadraticTorus_fixedVertices_finite :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → (Fv O τ).Finite := by

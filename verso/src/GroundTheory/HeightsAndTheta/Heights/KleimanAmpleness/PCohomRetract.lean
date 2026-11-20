@@ -19,7 +19,7 @@ variable {M' : Type w} [AddCommGroup M'] [Module (Poly S N) M'] [Module S M']
   [IsScalarTower S (Poly S N) M']
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s => rw [locMap_mk, locMap_mk, hgf m]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 -/
 theorem locMap_retract (f : M →ₗ[Poly S N] M') (g : M' →ₗ[Poly S N] M)
     (hgf : Function.LeftInverse g f) (I : Finset (Fin (N + 1))) :
@@ -29,7 +29,7 @@ theorem locMap_retract (f : M →ₗ[Poly S N] M') (g : M' →ₗ[Poly S N] M)
   | h m s => rw [locMap_mk, locMap_mk, hgf m]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun I => locMap_retract f.toLin g.toLin hgf I.1.1 (z.1 I)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cohomMap_retract {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'}
     (f : GradedHom 𝓜 𝓜') (g : GradedHom 𝓜' 𝓜) (hgf : Function.LeftInverse g.toLin f.toLin)
@@ -40,7 +40,7 @@ theorem cohomMap_retract {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'}
     (Subtype.ext (funext fun I => locMap_retract f.toLin g.toLin hgf I.1.1 (z.1 I)))
 
 /- English proof (translation)
-Introduce `S _ N M M' _ _ _ _ _ _ _ _ 𝓜 𝓜' f g hgf i c`. Conclude with `(cohomMap_retract f g hgf i c).injective`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem CohomRetract.proof : CohomRetract.Statement.{u, v, w} := by
   intro S _ N M M' _ _ _ _ _ _ _ _ 𝓜 𝓜' f g hgf i c

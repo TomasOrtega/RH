@@ -21,23 +21,23 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf13.pow_cong A ha hb h m`.
+A detailed English derivation is pending.
 -/
 private theorem frobAbs_pow_cong {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : Ω} (ha : A.valuation a ≤ 1)
     (hb : A.valuation b ≤ 1) (h : A.valuation (a - b) < 1) (m : ℕ) : A.valuation (a ^ m - b ^ m) < 1 :=
   _root_.UpperTheory.Reformulated.B.Qf13.pow_cong A ha hb h m
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).2 ((apply_mem_iff_of_mem_Dec hg x).2 ((A.valuation_le_one_iff _).1 hx))`.
+A detailed English derivation is pending.
 -/
 private theorem frobAbs_dec_le {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {A : ValuationSubring Ω}
     {g : G K Ω} (hg : g ∈ Dec (F := K) A) {x : Ω} (hx : A.valuation x ≤ 1) : A.valuation (g x) ≤ 1 :=
   (A.valuation_le_one_iff _).2 ((apply_mem_iff_of_mem_Dec hg x).2 ((A.valuation_le_one_iff _).1 hx))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨by rw [pow_zero]; exact one_mem _, fun x _ => by simp⟩`. Consider the case `succ n ih`. Use `⟨Subgroup.pow_mem _ hg.1 _, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg.2 _ (frobAbs_dec_le ih.1 hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `frobAbs_pow_cong A (frobAbs_dec_le ih.1 hx) (b := x ^ q ^ n) (by rw [map_pow]; exact pow_le_one' hx _) (ih.2 x hx) q`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`. Rewrite `h3` using `[sub_add_sub_cancel, ← pow_mul, ← pow_succ]`. Rewrite using `[pow_succ' g, AlgEquiv.mul_apply]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frobAbs_isFrob_pow {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     {A : ValuationSubring Ω} {q : ℕ} {g : G K Ω} (hg : IsFrob (F := K) A q g) (n : ℕ) :
@@ -55,9 +55,9 @@ private theorem frobAbs_isFrob_pow {K Ω : Type} [Field K] [NumberField K] [Fiel
     exact h3
 
 /- English proof (translation)
-Establish `h1 : x ∈ spectrum k (M : Matrix (Fin n) (Fin n) k)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hx`. Establish `h2 : x ^ e ∈ spectrum k ((M : Matrix (Fin n) (Fin n) k) ^ e)` using `spectrum.pow_mem_pow _ e h1`. Rewrite `h2` using `[← Units.val_pow_eq_pow_val, h, Units.val_pow_eq_pow_val, spectrum.map_pow_of_pos _ hf]`. Take `⟨z, hz, hzx⟩` from `h2`. Establish `hz0 : z ≠ 0` using `spectrum.ne_zero_of_mem_of_unit hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨z, Matrix.mem_spectrum_iff_isRoot_charpoly.1 ?_, hzx⟩` and prove the remaining obligations. Establish `h3` using `(spectrum.inv_mem_iff (r := Units.mk0 z hz0) (a := N)).1 (by simpa using hz)`. Simplify using `using h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem frobAbs_eig {k : Type} [Field k] [IsAlgClosed k] {n : ℕ} (M N : GL (Fin n) k) {e f : ℕ} (hf : 0 < f)
     (h : M ^ e = N ^ f) {x : k} (hx : (M : Matrix (Fin n) (Fin n) k).charpoly.IsRoot x) :
@@ -72,24 +72,24 @@ private theorem frobAbs_eig {k : Type} [Field k] [IsAlgClosed k] {n : ℕ} (M N 
   simpa using h3
 
 /- English proof (translation)
-The claim follows from `(mul_pos_iff_of_pos_left ha).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem pos_of_mul_pos_of_pos {a b : ℝ} (ha : 0 < a) (h : 0 < a * b) : 0 < b := (mul_pos_iff_of_pos_left ha).1 h
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n ι ρ w b hb ht A hA p hp hpA f σ hf hσ`. Establish `hpw : (p : 𝓞 F) ∈ w.asIdeal` using `(hA (p : 𝓞 F)).1 (by simpa using hpA)`. Take `⟨e, he, -, hq⟩` from `UpperTheory.exists_normV_eq_prime_pow_le_finrank F p w hp hpw`. Take `⟨φ, hφ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Take `⟨hI, hF⟩` from `hb A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `frobAbs_isFrob_pow hσ e`. Establish `h2` using `frobAbs_isFrob_pow hφ f`. Rewrite `h2` using `[hq, ← pow_mul, mul_comm, pow_mul]`. Establish `h3` using `hI _ (inv_mul_mem_Ine_of_isFrob h1 h2)`. Establish `h4 : ρ σ ^ e = ρ φ ^ f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_inv, inv_mul_eq_one, map_pow, map_pow]`. Apply the tactic sequence `first | exact h3 | exact h3.symm`. Establish `key : ∀ x ∈ (W.mat ρ σ).charpoly.roots, ∃ c ∈ b, ‖ι x‖ ^ e = ‖c‖⁻¹ ^ f`. Introduce `x hx`. Take `⟨z, hz, hzx⟩` from `frobAbs_eig (ρ σ) (ρ φ) hf h4 (isRoot_of_mem_roots hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `hz.map (f := ι.toRingHom)`. Rewrite `h5` using `[← map_inv ρ, hF φ hφ, IsRoot.def, eval_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map, Multiset.mem_map]`. Take `⟨c, hc, hc0⟩` from `h5`. Establish `h6 : (ι z)⁻¹ = c`. Simplify `hc0` using `[sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_pow, ← map_pow, ← hzx, map_pow, norm_pow, ← h6, norm_inv, inv_inv]`. Introduce `x hx y hy _`. Take `⟨c, hc, e1⟩` from `key x hx`. Take `⟨c', hc', e2⟩` from `key y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) < (normV w : ℕ)` using `by rw [hq]; exact_mod_cast pow_pos hp.pos e`. Establish `p1 : 0 < ‖c‖` using `pos_of_mul_pos_of_pos hq0 (lt_of_le_of_lt (norm_nonneg _) (ht c hc c hc))`. Establish `p2 : 0 < ‖c'‖` using `pos_of_mul_pos_of_pos hq0 (lt_of_le_of_lt (norm_nonneg _) (ht c' hc' c' hc'))`. Establish `k : ‖c‖⁻¹ < (normV w : ℝ) * ‖c'‖⁻¹`. Rewrite using `[← div_eq_mul_inv, lt_div_iff₀ p2, inv_mul_lt_iff₀ p1, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht c' hc' c hc`. Use `lt_of_pow_lt_pow_left₀ e (by positivity) ?_` and prove the remaining obligations. Rewrite using `[mul_pow, e1, e2, ← pow_mul, mul_comm f e, pow_mul, ← mul_pow]`. Use `pow_lt_pow_left₀ ?_ (by positivity) hf.ne'` and prove the remaining obligations. Rewrite `k` using `[hq, Nat.cast_pow]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.frobAbs_w :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} (ι : PadicAlgCl l ≃+* ℂ) (ρ : G F Ω →* GL (Fin n) (PadicAlgCl l)) (w : HeightOneSpectrum (𝓞 F)) (b : Multiset ℂ), Af.FrobEig ι ρ w b → (∀ z ∈ b, ∀ z' ∈ b, ‖z‖ < (normV w : ℝ) * ‖z'‖) →
@@ -139,9 +139,9 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hc : IsCoprime (p : 𝓞 F) ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 F)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hp).2 hn)`. Take `⟨a, b, hab⟩` from `hc`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← hab]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ (Ideal.absNorm_mem _))`.
+A detailed English derivation is pending.
 -/
 private theorem dvd_norm {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : p.Prime)
     (h : (p : 𝓞 F) ∈ w.asIdeal) : p ∣ Ideal.absNorm w.asIdeal := by
@@ -154,7 +154,7 @@ private theorem dvd_norm {F : Type} [Field F] [NumberField F] (w : HeightOneSpec
   exact add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ (Ideal.absNorm_mem _))
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `mem_roots'.1 hx`. Use `mem_roots'.2 ⟨scaleRoots_ne_zero h0 s, ?_⟩` and prove the remaining obligations. Rewrite using `[IsRoot.def, scaleRoots_eval_mul, h1.eq_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem root_scale {K : Type} [Field K] {P : K[X]} {x : K} (s : K) (hx : x ∈ P.roots) :
     s * x ∈ (P.scaleRoots s).roots := by
@@ -163,15 +163,13 @@ private theorem root_scale {K : Type} [Field K] {P : K[X]} {x : K} (s : K) (hx :
   rw [IsRoot.def, scaleRoots_eval_mul, h1.eq_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι L _ r ρ κ Z hZ hcp hab`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsAlgClosure L Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`. Use `⟨L.fixingSubgroup, ∏ w ∈ hZ.toFinset, Ideal.absNorm w.asIdeal, L.fixingSubgroup_isOpen, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun w _ h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Introduce `p hp hM A hA f σ hf hσ hF x hx y hy hy0`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨p1, p2, -, -⟩` from `UpperTheory.V.Base.places L Ω p A`. Take `⟨w, hw⟩` from `p1 fun ht => (p2 ht).2 hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpw : (p : 𝓞 L) ∈ w.asIdeal`. Establish `h1` using `hw ((p : ℕ) : 𝓞 L)`. Establish `e : algebraMap L Ω (((p : ℕ) : 𝓞 L) : L) = (p : Ω)` using `by simp`. Rewrite `h1` using `[e]`. Conclude with `h1.1 hA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwZ : w ∉ Z` using `fun h => hM ((dvd_norm w hp hpw).trans (Finset.dvd_prod_of_mem (fun w : HeightOneSpectrum (𝓞 L) => Ideal.absNorm w.asIdeal) (hZ.mem_toFinset.2 h)))`. Set `τ : G L Ω` to `{ σ.toRingEquiv with commutes' := fun z => (IntermediateField.mem_fixingSubgroup_iff L σ).1 hσ z.1 z.2 }`. Establish `hτ : resQ L τ = σ` using `AlgEquiv.ext fun _ => rfl`. Establish `hFτ : IsFrob A (p ^ f) τ` using `⟨hF.1, hF.2⟩`. Establish `h` using `hab w hwZ A hw p hp hA f τ hf hFτ ((κ τ : PadicAlgCl l) * x) (by rw [hcp, hτ]; exact root_scale _ hx) ((κ τ : PadicAlgCl l) * y) (by rw [hcp, hτ]; exact root_scale _ hy) (mul_ne_zero (κ τ).ne_zero hy0)`.
-
-Rewrite `h` using `[map_mul, map_mul, norm_mul, norm_mul, mul_left_comm]`. Conclude with `lt_of_mul_lt_mul_left h (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.pureOf_w :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (L : IntermediateField ℚ Ω) [NumberField L]
@@ -218,9 +216,9 @@ private def eAB : Fin 2 ⊕ Fin 2 ≃ Fin 4 where
   right_inv := by decide
 
 /- English proof (translation)
-Establish `e : Matrix.reindex eAB.symm eAB.symm X = Matrix.fromBlocks (X.submatrix ixA ixA) (X.submatrix ixA ixB) 0 (X.submatrix ixB ixB)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Conclude with `h (ixB i) (ixA j) (by revert i j; decide)`. Both sides reduce to the same expression. Rewrite using `[← Matrix.charpoly_reindex eAB.symm, e, Matrix.charpoly_fromBlocks_zero₂₁]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cp_block {K : Type} [Field K] (X : M4 K) (h : IsBlock X) :
     X.charpoly = (X.submatrix ixA ixA).charpoly * (X.submatrix ixB ixB).charpoly := by
@@ -235,9 +233,9 @@ private theorem cp_block {K : Type} [Field K] (X : M4 K) (h : IsBlock X) :
   rw [← Matrix.charpoly_reindex eAB.symm, e, Matrix.charpoly_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Establish `hc : A.charpoly.roots.card = 2`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim]`. Simplify using the standard rewrite rules. Take `⟨a, b, hab⟩` from `Multiset.card_eq_two.1 hc`. Use `⟨a, by simp [hab], b, by simp [hab], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_eq_prod_roots_charpoly, hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_two {K : Type} [Field K] [IsAlgClosed K] (A : Matrix (Fin 2) (Fin 2) K) :
     ∃ a ∈ A.charpoly.roots, ∃ b ∈ A.charpoly.roots, A.det = a * b := by
@@ -248,11 +246,11 @@ private theorem det_two {K : Type} [Field K] [IsAlgClosed K] (A : Matrix (Fin 2)
   rw [Matrix.det_eq_prod_roots_charpoly, hab]; simp
 
 /- English proof (translation)
-Introduce `K _ _ ι X Q hX h h0`. Establish `hr : X.charpoly.roots = (X.submatrix ixA ixA).charpoly.roots + (X.submatrix ixB ixB).charpoly.roots`. Rewrite using `[cp_block X hX, roots_mul (mul_ne_zero (Matrix.charpoly_monic _).ne_zero (Matrix.charpoly_monic _).ne_zero)]`. Take `⟨a, ha, b, hb, hA⟩` from `det_two (X.submatrix ixA ixA)`. Take `⟨c, hc, d, hd, hB⟩` from `det_two (X.submatrix ixB ixB)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hr]`. Rewrite `h0` using `[hB]`. Establish `h1` using `h a (Multiset.mem_add.2 (Or.inl ha)) c (Multiset.mem_add.2 (Or.inr hc)) (left_ne_zero_of_mul h0)`. Establish `h2` using `h b (Multiset.mem_add.2 (Or.inl hb)) d (Multiset.mem_add.2 (Or.inr hd)) (right_ne_zero_of_mul h0)`. Rewrite using `[hA, hB, map_mul, map_mul, norm_mul, norm_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_lt_mul'' h1 h2 (norm_nonneg _) (norm_nonneg _)).trans_eq (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.pureDet_w :
     ∀ {K : Type} [Field K] [IsAlgClosed K] (ι : K →+* ℂ) (X : M4 K) (Q : ℝ), IsBlock X →
@@ -299,25 +297,21 @@ private def blockChar {H K : Type} [Group H] [CommRing K] (r : H →* M4 K) (h :
       rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD ι 𝔞 e he r u hp hb ⟨H, M, hH, hM, hP⟩`. Take `⟨-, f2, -, f4, -⟩` from `facts D hD`. Take `⟨a1, -, a3⟩` from `f2 l (Finset.mem_insert_self _ _)`. Use `set φ : 𝔞.V →+* PadicAlgCl l := (e : 𝔞.K →+* PadicAlgCl l).comp 𝔞.toK with hφ`. Use `set ρ := mapRep φ r with hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ∀ g, IsBlock (ρ g)` using `fun g i j h => by rw [hρ, mapRep_apply, hb g i j h, map_zero]`. Establish `hc : Continuous ρ` using `smallCont 𝔞 e he _ hp.small`. Use `haveI : CharZero 𝔞.V := φ.charZero`. Establish `hu : adj u * u = 1` using `by simpa [IsGSp] using hp.sp`. Establish `hdet : ∀ s ∈ D.Ip l, ((r s).submatrix ixA ixA).det = 𝔞.a c (D.ps 0 s) * 𝔞.a c (D.ps 2 s) ∧ ((r s).submatrix ixB ixB).det = 𝔞.a c (D.ps 1 s) * 𝔞.a c (D.ps 3 s)` using `fun s hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `blockDet (maximalIdeal 𝔞.V) (fun i => 𝔞.a c (D.ps i (D.sg l))) u (adj u) (r (D.sg l)) (r s) hu (fun i j hij hm => a3 i j hij (by`. Rewrite `hm` using `[← map_sub, mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`. Conclude with `Ideal.Quotient.eq.2 hm))`. Use the proof step `(hb _) (fun i j => by`. Establish `h1` using `hp.red (D.sg l) i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : 𝔞.a c (D.r0 (D.sg l) i j) = Matrix.diagonal (fun i => 𝔞.a c (D.ps i (D.sg l))) i j` using `by show 𝔞.a c (Matrix.diagonal (fun i => (D.ps i (D.sg l) : c.O)) i j) = _`. Rewrite using `[Matrix.diagonal_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h2] at h1)` and apply the resulting hypothesis. Use the proof step `(hp.flag _ a1) (hp.char _ a1) (hb _) (hp.flag s (Ine_le_Dec _ hs))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `only [hp.inert s hs]`. Establish `hps : ∀ i, ∀ s ∈ D.Ip l ⊓ D.ψ.ker ⊓ D.om.ker, φ (𝔞.a c (D.ps i s)) = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l s : ℤ_[l]) ^ D.wts4 i` using `fun i s hs => by`. Rewrite using `[f4 i s hs, Units.val_pow_eq_pow_val, map_pow, map_pow]`. Conclude with `congrArg (· ^ _) (he.1 c _)`. Establish `key : ∀ (ix : Fin 2 → Fin 4) (hix : ix = ixA ∨ ix = ixB) (i j : Fin 4), (∀ s ∈ D.Ip l, ((r s).submatrix ix ix).det = 𝔞.a c (D.ps i s) * 𝔞.a c (D.ps j s)) → ∃ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) ∧ ∀ g ∈ U, ((ρ g).submatrix ix ix).det = algebraMap ℤ_[l] (PadicAlgCl l) (c …` using `fun ix hix i j h => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ g, r g = 1 → blockChar ρ hb' ix hix g = 1` using `fun g hg => by`. Establish `: ρ g = ρ 1`. Use extensionality with `i j`. Rewrite using `[hρ, mapRep_apply, mapRep_apply, hg, map_one r]`. Rewrite using `[← map_one (blockChar ρ hb' ix hix)]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (fun X : M4 _ => (X.submatrix ix ix).det) this`. Use `wtChar D hD (blockChar ρ hb' ix hix) _ (hc.matrix_submatrix ix ix).matrix_det (fun A hA g hg h2 => h1 g (hp.unr A hA g hg h2)) (fun p h2 g hg => h1 g (hp.atP p h2 g hg)) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pow_add, ← hps i s hs, ← hps j s hs, ← map_mul, ← h s hs.1.1, RingHom.map_det]`. Both sides reduce to the same expression. Take `⟨U, hU, hU'⟩` from `key ixA (Or.inl rfl) 0 2 fun s hs => (hdet s hs).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨W, hW, hW'⟩` from `key ixB (Or.inr rfl) 1 3 fun s hs => (hdet s hs).2`. Take `⟨p, A, f, σ, h1, h2, h3, h4, h5, h6, h7⟩` from `frobIn Ω l (H ⊓ (U ⊓ W)) M (hH.inter (hU.inter hW)) hM`. Establish `hp0 : ((p : ℕ) : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 h1.ne_zero`. Establish `h8` using `pureDet_w (ι : PadicAlgCl l →+* ℂ) (ρ σ) _ (hb' σ) (hP p h1 h2 A h3 f σ h4 h5.1 h6) (by`. Rewrite using `[hW' σ h5.2.2, h7]`.
-
-Simplify using `[hp0])`. Rewrite `h8` using `[hU' σ h5.2.1, hW' σ h5.2.2, h7]`. Simplify using `only [map_pow, map_natCast, norm_pow, Complex.norm_natCast] at h8`. Establish `h10 : ((p : ℝ) ^ f) ^ (D.e + 1 + 1) < ((p : ℝ) ^ f) ^ 2 * ((p : ℝ) ^ f) ^ (D.e + 0)` using `h8`. Rewrite `h10` using `[← pow_add, show 2 + (D.e + 0) = D.e + 1 + 1 by omega]`.
-
-Conclude with `lt_irrefl _ h10`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.nePure_w :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l), 𝔞.IsZero e → ∀ r u, KPair D 𝔞 r u → (∀ g, IsBlock (r g)) →

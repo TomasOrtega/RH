@@ -7,13 +7,11 @@ noncomputable section
 namespace GlobalTheory.CxPointsSep
 
 /- English proof (translation)
-Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := k)`. Establish `hrad : (⊥ : Ideal A).IsRadical`. Rewrite using `[Ideal.isRadical_bot_iff]`. Use `infer_instance`. Establish `hj : (⊥ : Ideal A).jacobson = ⊥` using `IsJacobsonRing.out inferInstance hrad`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Ideal.mem_bot, ← hj, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`. Use `letI : Field (A ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (A ⧸ m)`. Establish `hb : Function.Bijective (algebraMap k (A ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `i : k ≃ₐ[k] (A ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (A ⧸ m)) hb`. Use `h ((i.symm : (A ⧸ m) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k m))` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply]`. Establish `h2 : Ideal.Quotient.mkₐ k m a = 0`. Apply `i.symm.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Conclude with `this`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_algHom {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [Algebra k A]
     [IsReduced A] [Algebra.FiniteType k A] (a : A) (h : ∀ e : A →ₐ[k] k, e a = 0) : a = 0 := by
@@ -36,9 +34,7 @@ theorem eq_zero_of_forall_algHom {k A : Type} [Field k] [IsAlgClosed k] [CommRin
   exact Ideal.Quotient.eq_zero_iff_mem.mp h2
 
 /- English proof (translation)
-Use `set K := FractionRing D`. Establish `: Algebra.EssFiniteType ℚ K` using `inferInstanceAs (Algebra.EssFiniteType ℚ (Localization _))`. Establish `h1 : IsReduced (K ⊗[ℚ] ℂ)` using `ReciprocityTheory.AnForm.R.BaseChangeC.isReduced_tensor_of_essFiniteType K ℂ`. Establish `h2 : IsReduced (ℂ ⊗[ℚ] K)` using `isReduced_of_injective (Algebra.TensorProduct.comm ℚ ℂ K).toRingEquiv.toRingHom (Algebra.TensorProduct.comm ℚ ℂ K).injective`. Establish `hinj : Function.Injective (Algebra.TensorProduct.map (AlgHom.id ℚ ℂ) (IsScalarTower.toAlgHom ℚ D K))` using `Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective _ _)`.
-
-Conclude with `isReduced_of_injective (Algebra.TensorProduct.map (AlgHom.id ℚ ℂ) (IsScalarTower.toAlgHom ℚ D K)).toRingHom hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_complex_tensor (D : Type) [CommRing D] [IsDomain D] [Algebra ℚ D]
     [Algebra.FiniteType ℚ D] : IsReduced (ℂ ⊗[ℚ] D) := by
@@ -55,31 +51,27 @@ theorem isReduced_complex_tensor (D : Type) [CommRing D] [IsDomain D] [Algebra �
       (IsScalarTower.toAlgHom ℚ D K)).toRingHom hinj
 
 /- English proof (translation)
-Set `K` to `FractionRing B`. Take `⟨s, hs⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra ℤ B).FG)`. Set `D : Subalgebra ℚ K` to `Algebra.adjoin ℚ ((algebraMap B K) '' (s : Set B))`. Establish `hmem : ∀ b : B, algebraMap B K b ∈ D`. Introduce `b`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : b ∈ Algebra.adjoin ℤ (s : Set B)` using `by rw [hs]; trivial`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin ⟨x, hx, rfl⟩`. Consider the case `algebraMap n => rw [eq_intCast, map_intCast]`. Conclude with `intCast_mem D n`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Use `haveI : Algebra.FiniteType ℚ D := by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite using `[← Subalgebra.fg_iff_finiteType]`. Use `Subalgebra.fg_adjoin_finset (R := ℚ) (s.image (algebraMap B K))` as an intermediate fact. Simplify `this` using `[D]`. Set `g : B →+* D` to `(algebraMap B K).codRestrict D hmem`. Establish `hg : Function.Injective g` using `fun a b h => IsFractionRing.injective B K (congrArg Subtype.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hD : LinearIndependent ℚ (fun j => g (f j))`. Rewrite using `[← LinearIndependent.iff_fractionRing ℤ ℚ]`. Conclude with `hf.map' g.toAddMonoidHom.toIntLinearMap (LinearMap.ker_eq_bot.mpr hg)`. Establish `hT : LinearIndependent ℂ (fun j => (1 : ℂ) ⊗ₜ[ℚ] g (f j))` using `Module.Flat.linearIndependent_one_tmul hD`. Use `haveI : IsReduced (ℂ ⊗[ℚ] D) := isReduced_complex_tensor D`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `pt : ((ℂ ⊗[ℚ] D) →ₐ[ℂ] ℂ) → (B →+* ℂ)` to `fun φ => (φ.toRingHom.comp (Algebra.TensorProduct.includeRight (R := ℚ) (A := ℂ) (B := D)).toRingHom).comp g`. Set `S : Set (Fin r → ℂ)` to `Set.range fun x : B →+* ℂ => fun j => x (f j)`. Establish `hspan : Submodule.span ℂ S = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨ℓ, hℓ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c : Fin r → ℂ` to `fun i => ℓ (fun j => if i = j then 1 else 0)`. Establish `hℓv : ∀ v, ℓ v = ∑ i, v i * c i` using `fun v => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ ℓ v]`. Both sides reduce to the same expression. Establish `hu : ∑ i, c i • ((1 : ℂ) ⊗ₜ[ℚ] g (f i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `eq_zero_of_forall_algHom (k := ℂ)` to reduce the goal to its premises. Introduce `φ`. Establish `h0 : ℓ (fun j => pt φ (f j)) = 0` using `hle (Submodule.subset_span ⟨pt φ, rfl⟩)`. Rewrite `h0` using `[hℓv]`. Rewrite using `[map_sum, ← h0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Establish `hc : c = 0` using `funext fun i => Fintype.linearIndependent_iff.mp hT c hu i`. Apply `hℓ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hℓv, hc]`. Simplify using the standard rewrite rules. Take `⟨b, hbS, hbspan, hli⟩` from `exists_linearIndependent ℂ S`. Establish `hb_top : ⊤ ≤ Submodule.span ℂ (Set.range ((↑) : b → Fin r → ℂ))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Subtype.range_coe, hbspan, hspan]`. Set `bb` to `Module.Basis.mk hli hb_top`. Set `e : b ≃ Fin r` to `bb.indexEquiv (Pi.basisFun ℂ (Fin r))`. Establish `hx : ∀ i : Fin r, ∃ x : B →+* ℂ, (fun j => x (f j)) = ((e.symm i : b) : Fin r → ℂ)` using `fun i => hbS (e.symm i).2`. Use `choose x hx using hx`.
-
-Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hrows : LinearIndependent ℂ (fun i => (Matrix.of fun i j => x i (f j)) i)`. Establish `: (fun i => (Matrix.of fun i j => x i (f j)) i) = (fun v : b => (v : Fin r → ℂ)) ∘ e.symm`. Use function extensionality and compare the values at `i`. Conclude with `hx i`.
-
-Rewrite using `[this]`. Conclude with `hli.comp _ e.symm.injective`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hrows)).ne_zero`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_ne_zero (B : Type) [CommRing B] [IsDomain B] [CharZero B] [Algebra.FiniteType ℤ B]
     (r : ℕ) (f : Fin r → B) (hf : LinearIndependent ℤ f) :

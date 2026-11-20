@@ -44,7 +44,7 @@ Both sides reduce to the same expression.
 theorem mulDxi_apply (A : PAlg l) (k : ℕ) (a : A.A) : mulDxi A k a = A.aTo1 a * A.dxi 1 (l * k) := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `h` using `(GlobalTheory.T.expansion_surjective_additive_linear A).2.2.2 (l * k)`. Rewrite using `[LinearMap.smul_apply, smul_acr, mulDxi_apply, LinearMap.zero_apply, map_pow, mul_left_comm]`. Establish `e : A.aTo1 (A.s (pFlat l) ^ l) * A.dxi 1 (l * k) = 0` using `h`. Rewrite using `[e, mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_mulDxi (A : PAlg l) (k : ℕ) : pFlat l ^ l • mulDxi A k = 0 := by
   ext a
@@ -63,7 +63,7 @@ def tauL (A : PAlg l) : Nm l ⊗[Ob l] A.A →ₗ[Ob l] A.Acr 1 :=
   TensorProduct.lift (Finsupp.lsum ℕ (tk A))
 
 /- English proof (translation)
-Establish `: (1 : Qt l) = Submodule.Quotient.mk (1 : Ob l)` using `rfl`. Rewrite using `[tauL, TensorProduct.lift.tmul, Finsupp.lsum_single, this, tk, Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, one_smul, mulDxi_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauL_one (A : PAlg l) (k : ℕ) (a : A.A) :
     tauL A (Finsupp.single k 1 ⊗ₜ a) = A.aTo1 a * A.dxi 1 (l * k) := by
@@ -72,14 +72,14 @@ theorem tauL_one (A : PAlg l) (k : ℕ) (a : A.A) :
     LinearMap.toSpanSingleton_apply, one_smul, mulDxi_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `r • (Submodule.Quotient.mk (1 : Ob l) : Qt l) = _`. Rewrite using `[← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_one_Qt (r : Ob l) : r • (1 : Qt l) = Submodule.Quotient.mk r := by
   change r • (Submodule.Quotient.mk (1 : Ob l) : Qt l) = _
   rw [← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_Qt (q : Qt l) : pFlat l ^ l • q = 0 := by
   obtain ⟨r, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -89,37 +89,37 @@ theorem pow_smul_Qt (q : Qt l) : pFlat l ^ l • q = 0 := by
 def gen (A : PAlg l) (c : ℕ →₀ A.A) : Nm l ⊗[Ob l] A.A := c.sum fun k a => Finsupp.single k 1 ⊗ₜ a
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_zero_index`.
+A detailed English derivation is pending.
 -/
 theorem gen_zero (A : PAlg l) : gen A 0 = 0 := Finsupp.sum_zero_index
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_add_index' (fun _ => TensorProduct.tmul_zero _ _) (fun _ _ _ => TensorProduct.tmul_add _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gen_add (A : PAlg l) (c d : ℕ →₀ A.A) : gen A (c + d) = gen A c + gen A d :=
   Finsupp.sum_add_index' (fun _ => TensorProduct.tmul_zero _ _) (fun _ _ _ => TensorProduct.tmul_add _ _ _)
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_single_index (TensorProduct.tmul_zero _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gen_single (A : PAlg l) (k : ℕ) (a : A.A) : gen A (Finsupp.single k a) = Finsupp.single k 1 ⊗ₜ a :=
   Finsupp.sum_single_index (TensorProduct.tmul_zero _ _)
 
 /- English proof (translation)
-Rewrite using `[gen, map_finsuppSum, expand]`. Conclude with `Finsupp.sum_congr fun k _ => tauL_one A k (c k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauL_gen (A : PAlg l) (c : ℕ →₀ A.A) : tauL A (gen A c) = A.expand c := by
   rw [gen, map_finsuppSum, expand]
   exact Finsupp.sum_congr fun k _ => tauL_one A k (c k)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, gen_zero A⟩`. Consider the case `add x y hx hy`. Take `⟨c, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + d, gen_add A c d⟩`. Consider the case `tmul n a`. Proceed by induction on `n using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨0, by rw [gen_zero, TensorProduct.zero_tmul]⟩`. Consider the case `add f g hf hg`.
+Supply the required witnesses or components. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc⟩` from `hf`. Take `⟨d, hd⟩` from `hg`. Conclude with `⟨c + d, by rw [gen_add, hc, hd, TensorProduct.add_tmul]⟩`. Consider the case `single k q`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Finsupp.single k (r • a), ?_⟩` and prove the remaining obligations. Rewrite using `[gen_single, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Finsupp.smul_single]`. Use `congr 2`. Conclude with `smul_one_Qt r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_gen (A : PAlg l) (x : Nm l ⊗[Ob l] A.A) : ∃ c, gen A c = x := by
   induction x using TensorProduct.induction_on with
@@ -143,9 +143,9 @@ theorem exists_gen (A : PAlg l) (x : Nm l ⊗[Ob l] A.A) : ∃ c, gen A c = x :=
       exact smul_one_Qt r
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (h k)`. Establish `e : c k = pFlat l ^ l • b`. Rewrite using `[Algebra.smul_def, ← hb, mul_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(map_pow A.s _ _).symm`. Establish `z : pFlat l ^ l • (Finsupp.single k 1 : Nm l) = 0`. Rewrite using `[Finsupp.smul_single, pow_smul_Qt, Finsupp.single_zero]`. Express the relevant statement in the definitionally equal form `Finsupp.single k 1 ⊗ₜ[Ob l] (c k) = 0`. Rewrite using `[e, ← TensorProduct.smul_tmul, z, TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_eq_zero (A : PAlg l) (c : ℕ →₀ A.A) (h : ∀ k, c k ∈ Ideal.span {A.pi ^ l}) : gen A c = 0 := by
   refine Finset.sum_eq_zero fun k _ => ?_
@@ -160,9 +160,9 @@ theorem gen_eq_zero (A : PAlg l) (c : ℕ →₀ A.A) (h : ∀ k, c k ∈ Ideal.
   rw [e, ← TensorProduct.smul_tmul, z, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `exists_gen A x`. Rewrite `hx` using `[tauL_gen]`. Conclude with `gen_eq_zero A c ((GlobalTheory.T.expansion_eq_zero_iff_coeffs_mem A c).1 hx)`. Take `⟨c, rfl⟩` from `(GlobalTheory.T.expansion_surjective_additive_linear A).1 y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨gen A c, tauL_gen A c⟩`.
+A detailed English derivation is pending.
 -/
 theorem tauL_bijective (A : PAlg l) : Function.Bijective (tauL A) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩
@@ -181,7 +181,7 @@ Both sides reduce to the same expression.
 theorem tau_apply (A : PAlg l) (x : Nm l ⊗[Ob l] A.A) : tau A x = tauL A x := rfl
 
 /- English proof (translation)
-Rewrite using `[gen, map_finsuppSum, gen, Finsupp.sum_mapRange_index (fun _ => TensorProduct.tmul_zero _ _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_gen {A B : PAlg l} (f : A ⟶ B) (c : ℕ →₀ A.A) :
     ((D.toPf l ⋙ D.tensF l (Ob l) (Nm l)).map f).hom (gen A c) =
@@ -190,13 +190,13 @@ theorem map_gen {A B : PAlg l} (f : A ⟶ B) (c : ℕ →₀ A.A) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Finsupp.ext fun k => (Finsupp.smul_apply _ _ _).trans (pow_smul_Qt (x k))`.
+A detailed English derivation is pending.
 -/
 theorem pow_smul_Nm (x : Nm l) : pFlat l ^ l • x = 0 :=
   Finsupp.ext fun k => (Finsupp.smul_apply _ _ _).trans (pow_smul_Qt (x k))
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.functoriality_of_period_ring_maps A A (𝟙 A)).2.2.2.2.2 a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_eq (A : PAlg l) (a : Ainf l) (y : A.Acr 1) :
     algebraMap (Ainf l) (A.Acr 1) a * y = a.coeff 0 • y := by
@@ -204,14 +204,14 @@ theorem algebraMap_eq (A : PAlg l) (a : Ainf l) (y : A.Acr 1) :
   rfl
 
 /- English proof (translation)
-The claim follows from `((tauL A).map_smul (a.coeff 0) x).trans (algebraMap_eq A a (tauL A x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tau_smul (A : PAlg l) (a : Ainf l) (x : Nm l ⊗[Ob l] A.A) :
     tau A (a.coeff 0 • x) = algebraMap (Ainf l) (A.Acr 1) a * tau A x :=
   ((tauL A).map_smul (a.coeff 0) x).trans (algebraMap_eq A a (tauL A x)).symm
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `exists_gen A x`. Rewrite using `[tau_apply, tau_apply, map_gen, tauL_gen, tauL_gen]`. Conclude with `((GlobalTheory.T.functoriality_of_period_ring_maps A B f).2.1 c).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_map (A B : PAlg l) (f : A ⟶ B) (x : Nm l ⊗[Ob l] A.A) :
     tau B (((D.toPf l ⋙ D.tensF l (Ob l) (Nm l)).map f).hom x) = mapAcr f 1 (tau A x) := by
@@ -220,7 +220,7 @@ theorem tau_map (A B : PAlg l) (f : A ⟶ B) (x : Nm l ⊗[Ob l] A.A) :
   exact ((GlobalTheory.T.functoriality_of_period_ring_maps A B f).2.1 c).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nm l, inferInstance, inferInstance, l, tau, pow_smul_Nm, tau_smul, tau_map⟩`.
+Supply the required witnesses or components.
 -/
 theorem acr1 (l : ℕ) [Fact l.Prime] : CrystallineSemistableComparison.D.RAcr1 l :=
   ⟨Nm l, inferInstance, inferInstance, l, tau, pow_smul_Nm, tau_smul, tau_map⟩

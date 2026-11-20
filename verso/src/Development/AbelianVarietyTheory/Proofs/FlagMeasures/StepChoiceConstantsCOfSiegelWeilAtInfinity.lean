@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SwxsOfSiegelWeil
 namespace GlobalTheory.St
 
 /- English proof (translation)
-Introduce `h hI` and use `Formalism.L2.SG.Pf.choice_massData (GlobalTheory.St.swxs_of_siegelWeil h) Formalism.L2.SG.Pf.ProdConvCut2.prodConv_onTied hI`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stepChoiceDataC_of_siegelWeil_inInfinity :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent →

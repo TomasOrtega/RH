@@ -21,11 +21,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.Core.Mi.SpanX
 /- English proof (translation)
-Introduce `hDS hHC D L hT Gi Gl Kc Yd cX ex W hP`. Establish `hC` using `hP.bot.hyp.2.2.2.1`. Establish `hok` using `GlobalTheory.Chain.StepVac.stepsOK _ _ _ _ _ _ _ hC.lev hC.models.inf hC.chain.ωY hC.chain.ωX hC.chain.vY hC.chain.vX`. Establish `hm : 0 < D.R.m` using `lt_of_lt_of_le two_pos D.R.two_le_m`. Take `⟨hw, hv⟩` from `hok.2 W.P.A3.A.μ0 ⟨D.R.m - 1, by omega⟩ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle` using `GlobalTheory.ItOnto.kfinSpan_le_span_it hDS hHC D _ _ _ _ ((_root_.GlobalTheory.Fam.pk_z W).MY (D.R.m - 1)) (_root_.GlobalTheory.Fam.pk_z W).MX (_root_.GlobalTheory.Fam.pk_z W).θ (_root_.GlobalTheory.Fam.pk_z W).ψ _ _ ((_root_.GlobalTheory.Fam.pk_z W).ωX W.P.A3.A.μ0) ((_root_.Glo …`. Introduce `v hv`. Establish `hv'` using `hle (Submodule.subset_span ⟨v, fun τ => Submodule.subset_span (hv τ), rfl⟩)`. Use `(Submodule.span_le.2 ?_) hv'` and prove the remaining obligations. Introduce and unpack `w ⟨P, u, hu, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hu' : u ∈ Submodule.comap ((_root_.GlobalTheory.Fam.pk_z W).ItX P) (Submodule.span ℂ {x | ∃ (P : PolF D D.sp.X'.rank (Yc D (D.R.m - 1)).rank) (y : (_root_.GlobalTheory.Fam.pk_z W).MX.Vec), KVecP (_root_.GlobalTheory.Fam.pk_z W).MX y ∧ x = (_root_.GlobalTheory.Fam.pk_z W).ItX P (P …`. Use `(Submodule.span_le.2 ?_) hu` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨P, y, fun τ => GlobalTheory.Core.Mi.StepSpans.isKFin_of_mem_kfin _ _ (hy τ), rfl⟩`. Conclude with `hu'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem itSpans_pk_alt : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → GlobalTheory.Core.Mi.ItSpans ((_root_.GlobalTheory.Fam.pk_z W).MY (D.R.m - 1)) (_root_.GlobalTheory.Fam.pk_z W).MX (_root_.GlobalTheory.Fam.pk_z W).ItX := by
   intro hDS hHC D L hT Gi Gl Kc Yd cX ex W hP

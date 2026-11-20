@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B n hdim c d hc hd f hf`. Take `⟨m, M, hM, s, hm, hcls, hne, horig⟩` from `GlobalTheory.T.exists_section_pullbackAmple_vanishing_origin K A B f d hd hf`. Establish `htop : Out.nonzeroLocus s ≠ ⊤`. Introduce `h`. Apply `horig` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Establish `hpos` using `GlobalTheory.T.effectiveDivisor_pos_degree_ampleClass K A n hdim c hc M hM s hne htop`. Take `⟨⟨Φ, hΦ⟩, -⟩` from `GlobalTheory.T.intersection_number_multilinear_symm K A (Fin (n + 1)) (by simp [hdim])`. Use `set x := CechPic.pull f.hom.left d`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcons : (Fin.cons (cls M hM) (fun _ : Fin n => c) : Fin (n + 1) → Pic A.X.left) = Function.update (Fin.cons x (fun _ : Fin n => c)) 0 ((m : ℤ) • x)`. Rewrite using `[hcls]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update, Fin.succ_ne_zero]`. Rewrite `hpos` using `[← hΦ, hcons, Φ.map_update_smul, Fin.update_cons_zero, smul_eq_mul]`. Rewrite using `[← hΦ]`. Conclude with `pos_of_mul_pos_right hpos (by exact_mod_cast hm.le)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_pull_ample_pos : ∀ (K : Type) [Field K] (A B : AbVar K) (n : ℕ), A.dim = n + 1 → ∀ (c : Pic A.X.left) (d : Pic B.X.left), IsAmpleCls c → IsAmpleCls d → ∀ f : A ⟶ B, f ≠ 0 → 0 < inter A (Fin.cons (CechPic.pull f.hom.left d) (fun _ : Fin n => c) : Fin (n + 1) → Pic A.X.left) := by
   intro K _ A B n hdim c d hc hd f hf

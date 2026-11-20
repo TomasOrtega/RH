@@ -76,7 +76,7 @@ instance (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.
   ⟨fun h => h.1⟩
 
 /- English proof (translation)
-The claim follows from `(h i h1 h2).1 v c z hz`.
+A detailed English derivation is pending.
 -/
 example (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf)
     (h : I.StdLvC l Z u F) (i h1 h2 v c z) (hz : z.1 ∈ ((I.stp u I.mu0 i).rep c).1.1.deco.1.N) :
@@ -169,18 +169,18 @@ structure StdKer {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi 
   O : I.StdO l Z Y.Qp t.O
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 example (u : B.Word) (j : Fin (B.R.N B.R.m)) (h : j.1 + 1 ≠ B.R.N B.R.m) : z0 X u j = 0 := if_neg h
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 example (u : B.Word) (j : Fin (B.R.N B.R.m)) (h : j.1 + 1 = B.R.N B.R.m) :
     z0 X u j = ((X.piT u : 𝓞 B.host.E) : B.host.E) := if_pos h
 
 /- English proof (translation)
-Rewrite using `[h.mt u a]`. Conclude with `if_neg fun h => absurd h.1 (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (Qp : I.ι → Finset ℕ) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (h : I.StdO l Z Qp O)
     (u : B.Word) (a : I.ι) : (O u a).mt 0 = (I.rec7 l Z).muTil 0 := by

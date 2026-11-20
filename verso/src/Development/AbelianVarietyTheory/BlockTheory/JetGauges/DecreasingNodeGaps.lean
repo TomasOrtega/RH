@@ -40,7 +40,7 @@ def NoncompactGapGe (r k : ℕ) (hk : 1 ≤ k) (lam : Fin (2 * r + k + 1) → �
   ∀ s t : Fin (2 * r + k + 1), sign r k hk s ≠ sign r k hk t → h ≤ |lam s - lam t|
 
 /- English proof (translation)
-Establish `: Fin.cast (card_eq r k hk) (cloudIdx r k j) = Fin.castAdd (2 * r + 2) j` using `rfl`. Simplify using `only [param, this, Fin.append_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem param_cloud (r k : ℕ) (hk : 1 ≤ k) (v : Fin (k - 1) → ℝ)
     (b : Fin (2 * r + 2) → ℝ) (j : Fin (k - 1)) : param r k hk v b (cloudIdx r k j) = v j := by
@@ -48,7 +48,7 @@ Establish `: Fin.cast (card_eq r k hk) (cloudIdx r k j) = Fin.castAdd (2 * r + 2
   simp only [param, this, Fin.append_left]
 
 /- English proof (translation)
-Establish `: Fin.cast (card_eq r k hk) (nodeIdx r k hk i) = Fin.natAdd (k - 1) i` using `rfl`. Simplify using `only [param, this, Fin.append_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem param_node (r k : ℕ) (hk : 1 ≤ k) (v : Fin (k - 1) → ℝ)
     (b : Fin (2 * r + 2) → ℝ) (i : Fin (2 * r + 2)) :
@@ -57,7 +57,7 @@ Establish `: Fin.cast (card_eq r k hk) (nodeIdx r k hk i) = Fin.natAdd (k - 1) i
   simp only [param, this, Fin.append_right]
 
 /- English proof (translation)
-Establish `: Fin.cast (card_eq r k hk) (cloudIdx r k j) = Fin.castAdd (2 * r + 2) j` using `rfl`. Simplify using `only [sign, this, Fin.append_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sign_cloud (r k : ℕ) (hk : 1 ≤ k) (j : Fin (k - 1)) :
     sign r k hk (cloudIdx r k j) = true := by
@@ -65,7 +65,7 @@ Establish `: Fin.cast (card_eq r k hk) (cloudIdx r k j) = Fin.castAdd (2 * r + 2
   simp only [sign, this, Fin.append_left]
 
 /- English proof (translation)
-Establish `: Fin.cast (card_eq r k hk) (nodeIdx r k hk i) = Fin.natAdd (k - 1) i` using `rfl`. Simplify using `only [sign, this, Fin.append_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sign_node (r k : ℕ) (hk : 1 ≤ k) (i : Fin (2 * r + 2)) :
     sign r k hk (nodeIdx r k hk i) = decide (Even i.val) := by
@@ -73,9 +73,9 @@ Establish `: Fin.cast (card_eq r k hk) (nodeIdx r k hk i) = Fin.natAdd (k - 1) i
   simp only [sign, this, Fin.append_right]
 
 /- English proof (translation)
-Introduce `s i`. Take `⟨a, ha⟩` from `hl s`. Take `⟨c, hc⟩` from `hu i`. Use `⟨a - c + r, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem parity_of_isShiftedIntegral (r k : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : Fin k → ℝ)
     (hl : IsShiftedIntegral lam) (hu : IsShiftedIntegral u) : Parity r k lam u := by
@@ -88,9 +88,9 @@ theorem parity_of_isShiftedIntegral (r k : ℕ) (lam : Fin (2 * r + k + 1) → �
   ring
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hlt : nodeIdx r k hk ⟨i, by omega⟩ < nodeIdx r k hk ⟨i + 1, hi⟩`. Simplify using `[nodeIdx, Fin.lt_def]`. Establish `h1` using `hd hlt`. Establish `h2` using `hg (nodeIdx r k hk ⟨i, by omega⟩) (nodeIdx r k hk ⟨i + 1, hi⟩) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sign_node, Nat.even_add_one]`. Apply the tactic sequence `by_cases he : Even i <;> simp [he])`. Simplify using `only [param_node] at h1 h2`. Rewrite `h2` using `[abs_of_pos (by linarith)]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nodeGapGe_of_noncompactGapGe (r k : ℕ) (hk : 1 ≤ k) (v : Fin (k - 1) → ℝ)
     (b : Fin (2 * r + 2) → ℝ) (h : ℝ) (hd : IsDecreasing r k hk v b)
@@ -111,17 +111,17 @@ Evaluate the decidable proposition.
 example : List.ofFn (sign 1 2 (by norm_num)) = [true, true, false, true, false] := by decide
 
 /- English proof (translation)
-Establish `hp : param 0 2 (by norm_num) ![1] ![8, 10] = ![1, -8, -10]`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`. Use `⟨?_, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsDecreasing`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hp]`. Introduce `s t hst`. Apply the tactic sequence `fin_cases s <;> fin_cases t <;> simp_all <;> norm_num`. Rewrite using `[hp]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> simp <;> norm_num`. Rewrite using `[hp]`. Introduce `i hi`. Take `rfl : i = 0` from `by omega`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Apply `parity_of_isShiftedIntegral` to reduce the goal to its premises. Rewrite using `[hp]`. Introduce `s`. Use `fin_cases s`.
+Evaluate the numerical expressions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp; norm_num⟩`. Conclude with `⟨-9, by simp; norm_num⟩`. Conclude with `⟨-11, by simp; norm_num⟩`. Introduce `s fin_cases s`. Conclude with `⟨2, by simp; norm_num⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-1, by simp; norm_num⟩`. Introduce `i hi`. Take `rfl : i = 0` from `by omega`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example :
     IsDecreasing 0 2 (by norm_num) ![1] ![8, 10] ∧

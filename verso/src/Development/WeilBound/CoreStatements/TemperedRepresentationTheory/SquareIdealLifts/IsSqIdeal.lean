@@ -63,7 +63,7 @@ def Frame (J : Ideal R) {P : Type 1} [AddCommGroup P] [Module R P] (z : P → Z1
   ∀ x : X.left, ∃ a : Pt κ s₀ X i, a.IsChart ∧ x ∈ Set.range a.y ∧ LocFrame J z a.T fun p ↦ t p a
 
 /- English proof (translation)
-The claim follows from `IsMor.of_dividedPowersZeroIdeal κ (by rw [GlobalTheory.Cris.spMap_id, Category.comp_id, Category.comp_id, w])`.
+A detailed English derivation is pending.
 -/
 theorem redIsMor (κ : DividedPowers I) (w : i ≫ X.hom = s₀) :
     IsMor (dp0 R) (X.hom ≫ 𝟙 _) κ s₀ (RingHom.id R) i :=

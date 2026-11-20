@@ -25,7 +25,7 @@ namespace Integ
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
 /- English proof (translation)
-Unfold `bl`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_bl {r t n : ℕ} (hn : r + t = n) (y : Mx D r t) :
     Matrix.det (bl hn 1 y 0 1 : Mx D n n) = 1 := by
@@ -38,7 +38,7 @@ def blU {r t n : ℕ} (hn : r + t = n) (y : Mx D r t) : GL (Fin n) (AE D) :=
     GlobalTheory.CompanionTheory.JacobiMaps.sh_mul hn _ _ (neg_neg y).symm⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one, ha]`. Conclude with `det_bl hn y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_blU {r t n : ℕ} (hn : r + t = n) (y : Mx D r t) (a : GL (Fin n) (AE D)) (ha : a.1 = bl hn 1 y 0 1) :
     Matrix.GeneralLinearGroup.det a = 1 := by
@@ -47,7 +47,7 @@ theorem det_blU {r t n : ℕ} (hn : r + t = n) (y : Mx D r t) (a : GL (Fin n) (A
   exact det_bl hn y
 
 /- English proof (translation)
-Establish `key` using `addEquivAddHaarChar_smul_map μ φ`. Rewrite `key` using `[hc, one_smul]`. Establish `hp : MeasurePreserving φ μ μ` using `⟨φ.continuous.measurable, key⟩`. Conclude with `hp.lintegral_comp_emb φ.toHomeomorph.measurableEmbedding g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lintegral_comp_char_one {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A] [MeasurableSpace A] [BorelSpace A]
@@ -59,11 +59,11 @@ theorem lintegral_comp_char_one {A : Type} [AddCommGroup A] [TopologicalSpace A]
   exact hp.lintegral_comp_emb φ.toHomeomorph.measurableEmbedding g
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5⟩` from `top_mx (D := D) a n`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Set `φ` to `GlobalTheory.ModuLR.lrCE (1 : GL (Fin a) (AE D)) (blU hn y)`. Establish `hc : addEquivAddHaarChar φ = 1`. Establish `h` using `GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE D.host.F D.host.E D.sp.cm.sig (isCMExt_host D) a n (1 : GL (Fin a) (AE D)) (blU hn y)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[det_blU hn y (blU hn y) rfl]`. Simplify `h` using `only [map_one, one_pow, mul_one]`. Establish `e : ∀ U : Mx D a n, mm U (bl hn 1 y 0 1) = φ U` using `fun U => by`. Simplify using `only [φ]`. Rewrite using `[GlobalTheory.ModuLR.lrCE_apply, Units.val_one, Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [e]`. Conclude with `lintegral_comp_char_one ν φ hc g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_bl {a r t n : ℕ} (hn : r + t = n) (y : Mx D r t) (ν : Measure (Mx D a n))
     (hν : ν.IsAddHaarMeasure) (g : Mx D a n → ℝ≥0∞) :
@@ -84,7 +84,7 @@ theorem lintegral_bl {a r t n : ℕ} (hn : r + t = n) (y : Mx D r t) (ν : Measu
   exact lintegral_comp_char_one ν φ hc g
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[jn, Matrix.submatrix_apply, Matrix.fromCols]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jn_first {a r t n : ℕ} (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) :
     (jn hn w v).submatrix id (fun j => finCongr hn (Fin.castAdd t j)) = w := by
@@ -92,7 +92,7 @@ theorem jn_first {a r t n : ℕ} (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) 
   simp [jn, Matrix.submatrix_apply, Matrix.fromCols]
 
 /- English proof (translation)
-Unfold `XU`. Simplify using `only [mm]`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem xu_bl (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
     (h : GA D W) (U : Mx D t n) (y : Mx D W.rank t) :
@@ -103,7 +103,7 @@ theorem xu_bl (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.ran
   rw [Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨𝓕, hf⟩` from `I.cov₁`. Establish `hb : mm (jn hn (ww W x₀ h) 0) (bl hn 1 y 0 1) = jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0)` using `hJn D n t _ _ hn _ _ y`. Rewrite using `[← hb, ← hIkL D n t B W d I θ hθ M hM hM0]`. Simplify using `only [xu_bl]`. Conclude with `lintegral_bl hn y I.μ₁ hf.1 (fun U => ∫⁻ k : I.l.K, ‖M (mm (mt B ((k : GA D B)⁻¹)) (mm d.jX U + mm d.j0 (mm (jn hn (ww W x₀ h) 0) (bl hn 1 y 0 1))))‖ₑ ∂I.νK)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_eq (hIkL : IkLint) (hJn : JnBl) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) {θ : InfFam D}
     (hθ : IsInfFam θ) {M : Mx D B.rank n → ℂ} (hM : M ∈ schwartzA θ B.rank n)
@@ -120,9 +120,9 @@ theorem inner_eq (hIkL : IkLint) (hJn : JnBl) {d : HypDec B W t} (hn : W.rank + 
     (fun U => ∫⁻ k : I.l.K, ‖M (mm (mt B ((k : GA D B)⁻¹)) (mm d.jX U + mm d.j0 (mm (jn hn (ww W x₀ h) 0) (bl hn 1 y 0 1))))‖ₑ ∂I.νK)
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun u : Mx D a r × Mx D a t => Matrix.fromCols u.1 u.2 i ((finSumFinEquiv.trans (finCongr hn)).symm j)`. Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm j = s`. Consider the cases of `s with`. Consider the case `inl k => exact continuous_fst.matrix_elem i k`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr k => exact continuous_snd.matrix_elem i k`.
+Treat this case separately.
 -/
 theorem continuous_jn {a r t n : ℕ} (hn : r + t = n) :
     Continuous fun u : Mx D a r × Mx D a t => jn hn u.1 u.2 := by
@@ -135,15 +135,15 @@ theorem continuous_jn {a r t n : ℕ} (hn : r + t = n) :
   | inr k => exact continuous_snd.matrix_elem i k
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_bl {r t n : ℕ} (hn : r + t = n) : Continuous fun y : Mx D r t => (bl hn 1 y 0 1 : Mx D n n) :=
   (continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const).matrix_submatrix _ _
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Take `⟨-, k2, -, -, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨-, g2, -, -, g5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `hT` using `(top_mx (D := D) B.rank n).1`. Establish `hU : Continuous fun p : I.l.K × Par D n t W => p.2.2.1` using `continuous_fst.comp (continuous_snd.comp continuous_snd)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : Continuous fun p : I.l.K × Par D n t W => p.2.1` using `continuous_fst.comp continuous_snd`. Establish `hy : Continuous fun p : I.l.K × Par D n t W => p.2.2.2` using `continuous_snd.comp (continuous_snd.comp continuous_snd)`. Establish `hX : Continuous fun p : I.l.K × Par D n t W => XU d hn x₀ p.2.1 p.2.2.1` using `(continuous_const.matrix_mul hU).add (continuous_const.matrix_mul ((continuous_jn hn).comp (((continuous_ww x₀).comp hh).prodMk continuous_const)))`. Conclude with `((continuous_mt B).comp (continuous_subtype_val.comp continuous_fst).inv).matrix_mul (hX.matrix_mul ((continuous_bl hn).comp hy))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pt {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n)
     (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
@@ -167,27 +167,25 @@ end Integ
 open Integ in
 
 /- English proof (translation)
-Introduce `hIk hDom hOrb _ hIkL hFub hJn D n t B W d hn I θ hθ μ hμ x₀ hx₀ Φ hΦ η hη`. Take `⟨M, hM, hM0, hMd⟩` from `hDom D θ hθ B.rank n n id Function.injective_id Φ hΦ`. Establish `hΨ : ikp I M ∈ schwartzA θ W.rank n` using `(hIk D n t B W d I θ hθ M hM).2`. Take `⟨N, hN, -, hNd⟩` from `hDom D θ hθ W.rank n W.rank (fun j => finCongr hn (Fin.castAdd t j)) (fun a b h => by simpa using h) (ikp I M) hΨ`. Take `⟨h1, h2⟩` from `top_par (D := D) n t W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, i2, i3, i4, i5⟩` from `top_mx (D := D) t n`. Take `⟨-, j2, j3, j4, j5⟩` from `top_mx (D := D) W.rank t`. Take `⟨-, g2, g3, -, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Take `⟨-, k2, -, -, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hBG : BorelSpace (GA D W)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB : BorelSpace (GA D B)` using `⟨rfl⟩`. Establish `hK : BorelSpace I.l.K` using `Subtype.borelSpace _`. Establish `o0 : OpensMeasurableSpace (Par D n t W)` using `h1.opensMeasurable`. Establish `oK : OpensMeasurableSpace I.l.K` using `hK.opensMeasurable`. Establish `e1 : SecondCountableTopologyEither I.l.K (Par D n t W)` using `⟨Or.inr h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1 : OpensMeasurableSpace (I.l.K × Par D n t W)` using `Prod.opensMeasurableSpace`. Take `⟨𝓕, hf⟩` from `I.cov₁`. Use `hf.1` as an intermediate fact. Use `I.haar` as an intermediate fact. Use `I.probK` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcM : Continuous M` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ M hM).1`. Establish `hcΦ : Continuous Φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ Φ hΦ).1`. Establish `hcη : Continuous η` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ η hη).1`. Establish `hpt` using `continuous_pt (d := d) hn I x₀`. Establish `hy : Continuous fun p : I.l.K × Par D n t W => p.2.2.2` using `continuous_snd.comp (continuous_snd.comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcore : Continuous (core hn I x₀ Φ η)` using `(hcΦ.comp hpt).mul (Complex.continuous_conj.comp (hcη.comp hy))`. Use `⟨hcore.measurable.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `set F : I.l.K × GA D W × Mx D t n × Mx D W.rank t → ℝ≥0∞ := fun p => ‖M (mm (mt B ((p.1 : GA D B)⁻¹)) (mm (XU d hn x₀ p.2.1 p.2.2.1) (bl hn 1 p.2.2.2 0 1)))‖ₑ * ‖η p.2.2.2‖ₑ with hF`. Establish `hFm : Measurable F` using `(hcM.comp hpt).measurable.enorm.mul (hcη.comp hy).measurable.enorm`. Establish `hle : ∀ p, ‖core hn I x₀ Φ η p‖ₑ ≤ F p` using `fun p => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [core, hF, enorm_mul, RCLike.enorm_conj]`. Use `gcongr`. Rewrite using `[enorm_le_iff_norm_le]`. Use `(hMd _).trans ?_` and prove the remaining obligations. Simplify using `using Complex.re_le_norm _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη' : ∫⁻ y, ‖η y‖ₑ ∂μ < ⊤` using `hasFiniteIntegral_iff_enorm.1 (GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar D θ hθ W.rank t μ η hη).2`. Establish `hN' : ∫⁻ h, ‖N (ww W x₀ h)‖ₑ ∂I.m < ⊤` using `hOrb D θ hθ W I.m I.haar x₀ hx₀ N hN`. Establish `hin : ∀ y h, ∫⁻ U, ∫⁻ k : I.l.K, F (k, h, U, y) ∂I.νK ∂I.μ₁ ≤ ‖N (ww W x₀ h)‖ₑ * ‖η y‖ₑ` using `fun y h => by`. Simplify using `only [hF]`. Establish `e : ∀ U, ∫⁻ k : I.l.K, ‖M (mm (mt B ((k : GA D B)⁻¹)) (mm (XU d hn x₀ h U) (bl hn 1 y 0 1)))‖ₑ * ‖η y‖ₑ ∂I.νK = (∫⁻ k : I.l.K, ‖M (mm (mt B ((k : GA D B)⁻¹)) (mm (XU d hn x₀ h U) (bl hn 1 y 0 1)))‖ₑ ∂I.νK) * ‖η y‖ₑ` using `fun U => lintegral_mul_const' _ _ enorm_ne_top`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[lintegral_mul_const' _ _ enorm_ne_top, inner_eq hIkL hJn hn I hθ hM hM0 x₀ h y]`. Use `gcongr`. Rewrite using `[enorm_le_iff_norm_le]`. Establish `h3` using `hNd (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h3` using `[jn_first]`. Conclude with `h3.trans (Complex.re_le_norm _)`. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [lintegral_mul_const' _ _ enorm_ne_top]`.
-
-Rewrite using `[lintegral_const_mul' _ _ hN'.ne]`. Use `_ < ⊤ := ENNReal.mul_lt_top hN' hη'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_core : IkSch → Dom → OrbFin → Shift → IkLint → Fub4 → JnBl → ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n) (I : IkD d n) θ, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank t)), μ.IsAddHaarMeasure → ∀ (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E), x₀.det ≠ 0 → ∀ Φ ∈ schwartzA θ B.rank n, ∀ η ∈ schwartzA θ W.rank t, Integrable (core hn I x₀ Φ η) (I.νK.prod (Q0 I μ)) := by
   intro hIk hDom hOrb _ hIkL hFub hJn D n t B W d hn I θ hθ μ hμ x₀ hx₀ Φ hΦ η hη

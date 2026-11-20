@@ -18,9 +18,9 @@ namespace GlobalTheory.Poinc.Sep.MemberZeta
 open GlobalTheory.Points
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`. Establish `: X.fromSpecStalk x w ∈ Set.range (X.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := X.fromSpecStalk x w) this U.isOpen hU`. Establish `e : (X.fromSpecStalk x).appLE U ⊤ h = X.presheaf.germ U x hU ≫ (Scheme.ΓSpecIso _).inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU, Category.assoc, Category.assoc, ← Functor.map_comp]`. Conclude with `congrArg (_ ≫ ·) ((congrArg (_ ≫ ·) ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Use `(valR_appLE (spMap ψ) (X.fromSpecStalk x) h (le_preimage_top _) a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `valR_specMap (CommRingCat.ofHom ψ) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_through_stalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ : X.presheaf.stalk x →+* C)
     {U : X.Opens} (hU : x ∈ U) (a : Γ(X, U)) :
@@ -37,11 +37,11 @@ theorem valR_through_stalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ 
   exact valR_specMap (CommRingCat.ofHom ψ) _
 
 /- English proof (translation)
-Take `⟨U, hz, f, rfl⟩` from `M.Z.presheaf.germ_exist x`. Establish `hr : Set.range (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) ⊆ U`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `: (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) w ∈ Set.range (M.Z.fromSpecStalk z)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Specializes.mem_open (x := (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) w) this U.isOpen hz`. Establish `e : jK V ≫ spMap ev = spMap ((algebraMap V (FractionRing V)).comp ev)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[RatModel.val_eq hr (RatModel.stalkHom_germ hz f).symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show valR _ U f = _`. Rewrite using `[← Category.assoc, e, valR_through_stalk _ hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_germ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {V : Type} [CommRing V] [IsDomain V]
     {z : M.Z} (ev : M.Z.presheaf.stalk z →+* V) (x : M.Z.presheaf.stalk z) :
@@ -60,7 +60,7 @@ theorem val_germ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatMo
   rfl
 
 /- English proof (translation)
-Introduce `g n F W Z i X z act V _ _ _ ev Y _ m t δ 𝔪 zt h`. Rewrite using `[𝔪.yK_eq]`. Conclude with `(val_germ ev zt).symm.trans (congrArg (X.M.val _) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_ev_eq_yK : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     (X : Setup F W i) (z : X.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V]

@@ -13,9 +13,9 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 namespace GlobalTheory.HighWt
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rowW, colW, Finset.sum_pi_single', Finset.mem_univ, if_true]`. Apply `Nat.mul_le_mul_left` to reduce the goal to its premises. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowWeight_le_colSum (N : ℕ) (d : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     (Finsupp.weight (rowW N N) d) a ≤ ∑ s, (Finsupp.weight (colW N N) d) s := by
@@ -35,13 +35,13 @@ def wtBox (τ : ι) : Finset (Fin N → ℕ) :=
   Fintype.piFinset fun _ => Finset.range (∑ s : Fin N, res N (lam τ) s + 1)
 
 /- English proof (translation)
-Establish `hc : IsWeightedHomogeneous (colW N N) f (res N (lam τ))`. Use `(Submodule.mem_inf.mp hf).1` as an intermediate fact. Simplify `this` using `[mem_weightedHomogeneousSubmodule]`. Use extensionality with `d`. Rewrite using `[coeff_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coeff_weightedHomogeneousComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Establish `hd` using `hc (Ne.symm hne)`. Simplify using `only [wtBox, Fintype.mem_piFinset, Finset.mem_range]`. Introduce `a`. Use `rowWeight_le_colSum N d a` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hd]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_box (τ : ι) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N (res N (lam τ))) :
     ∑ w ∈ wtBox N lam τ, weightedHomogeneousComponent (rowW N N) w f = f := by
@@ -69,9 +69,9 @@ section Ops
 variable {O N lam}
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, Module.End.mul_apply]`. Set `y : dualWeyl O N N (res N (lam τ))` to `rowProj O N (res N (lam τ)) w (x τ)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hy : (y : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w (x τ : MvPolynomial _ O)` using `rfl`. Rewrite using `[h x y hy]`. Establish `hy' : (y : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w ((Function.update x τ y) τ : MvPolynomial _ O)`. Rewrite using `[Function.update_self, hy, weightedHomogeneousComponent_eq_self (weightedHomogeneousComponent_isWeightedHomogeneous _ _)]`. Rewrite using `[h _ y hy', Function.update_idem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isProj_idem {τ : ι} {w : Fin N → ℕ} {a : Module.End O (NablaT O N lam)} (h : IsProj O N lam τ w a) :
     a * a = a := by
@@ -89,13 +89,11 @@ theorem isProj_idem {τ : ι} {w : Fin N → ℕ} {a : Module.End O (NablaT O N 
   rw [h _ y hy', Function.update_idem]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, Module.End.mul_apply]`. Set `y : dualWeyl O N N (res N (lam τ))` to `rowProj O N (res N (lam τ)) w (x τ)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `y' : dualWeyl O N N (res N (lam τ'))` to `rowProj O N (res N (lam τ')) w' (x τ')`. Establish `hy : (y : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w (x τ : MvPolynomial _ O)` using `rfl`. Establish `hy' : (y' : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w' (x τ' : MvPolynomial _ O)` using `rfl`. Rewrite using `[hb x y' hy', ha x y hy]`. Establish `h1 : (y : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w ((Function.update x τ' y') τ : MvPolynomial _ O)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hne]`. Conclude with `hy`. Establish `h2 : (y' : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (rowW N N) w' ((Function.update x τ y) τ' : MvPolynomial _ O)`. Rewrite using `[Function.update_of_ne hne.symm]`. Conclude with `hy'`.
-
-Rewrite using `[ha _ y h1, hb _ y' h2, Function.update_comm hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProj_comm {τ τ' : ι} (hne : τ ≠ τ') {w w' : Fin N → ℕ} {a b : Module.End O (NablaT O N lam)}
     (ha : IsProj O N lam τ w a) (hb : IsProj O N lam τ' w' b) : a * b = b * a := by
@@ -117,11 +115,11 @@ theorem isProj_comm {τ τ' : ι} (hne : τ ≠ τ') {w w' : Fin N → ℕ} {a b
   rw [ha _ y h1, hb _ y' h2, Function.update_comm hne]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[LinearMap.compMultilinearMap_apply, LinearMap.compMultilinearMap_apply, LinearMap.sum_apply, Module.End.one_apply]`. Establish `key : ∀ w, e w (PiTensorProduct.tprod O x) = (PiTensorProduct.tprod O).toLinearMap x τ (rowProj O N (res N (lam τ)) w (x τ))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[MultilinearMap.toLinearMap_apply]`. Conclude with `he w x _ rfl`. Rewrite using `[Finset.sum_congr rfl (fun w _ => key w)]`. Rewrite using `[← map_sum, MultilinearMap.toLinearMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∑ w ∈ wtBox N lam τ, rowProj O N (res N (lam τ)) w (x τ) = x τ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `sum_box O N lam τ _ (x τ).2`. Rewrite using `[this, Function.update_eq_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProj_sum (τ : ι) (e : (Fin N → ℕ) → Module.End O (NablaT O N lam)) (he : ∀ w, IsProj O N lam τ w (e w)) :
     ∑ w ∈ wtBox N lam τ, e w = 1 := by
@@ -155,32 +153,32 @@ def projA [Fintype ι] (τ : ι) (w : Fin N → ℕ) : alg O N lam :=
 variable [Fintype ι]
 
 /- English proof (translation)
-The claim follows from `(exists_unique_isProj O N ι lam τ w).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem projA_isProj (τ : ι) (w : Fin N → ℕ) : IsProj O N lam τ w (projA (O := O) (lam := lam) τ w : Module.End O (NablaT O N lam)) :=
   (exists_unique_isProj O N ι lam τ w).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((exists_unique_isProj O N ι lam τ w).choose_spec.2 _ h)`.
+A detailed English derivation is pending.
 -/
 theorem projA_eq {τ : ι} {w : Fin N → ℕ} {a : alg O N lam} (h : IsProj O N lam τ w a) : a = projA τ w :=
   Subtype.ext ((exists_unique_isProj O N ι lam τ w).choose_spec.2 _ h)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (isProj_idem (projA_isProj τ w))`.
+A detailed English derivation is pending.
 -/
 theorem projA_idem (τ : ι) (w : Fin N → ℕ) : projA (O := O) (lam := lam) τ w * projA τ w = projA τ w :=
   Subtype.ext (isProj_idem (projA_isProj τ w))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (isProj_comm hne (projA_isProj τ w) (projA_isProj τ' w'))`.
+A detailed English derivation is pending.
 -/
 theorem projA_comm {τ τ' : ι} (hne : τ ≠ τ') (w w' : Fin N → ℕ) :
     projA (O := O) (lam := lam) τ w * projA τ' w' = projA τ' w' * projA τ w :=
   Subtype.ext (isProj_comm hne (projA_isProj τ w) (projA_isProj τ' w'))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum, OneMemClass.coe_one]`. Conclude with `isProj_sum τ _ (projA_isProj τ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projA_sum (τ : ι) : ∑ w ∈ wtBox N lam τ, projA (O := O) (lam := lam) τ w = 1 := by
   apply Subtype.ext
@@ -190,13 +188,13 @@ theorem projA_sum (τ : ι) : ∑ w ∈ wtBox N lam τ, projA (O := O) (lam := l
 end Main
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam Gm _ _ _`. Establish `step : ∀ s : Finset ι, ∃ z : Gm, z ≠ 0 ∧ ∃ w : ι → Fin N → ℕ, ∀ τ ∈ s, projA (O` using `O) (lam := lam) τ (w τ) • z = z := by`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨z, hz⟩` from `exists_ne (0 : Gm)`. Conclude with `⟨z, hz, 0, by simp⟩`. Consider the case `insert τ s hτ ih`. Take `⟨z, hz, w, hw⟩` from `ih`. Establish `hsum : ∑ v ∈ wtBox N lam τ, projA (O` using `O) (lam := lam) τ v • z = z := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_smul, projA_sum, one_smul]`. Take `⟨v, -, hv⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.symm ▸ hz)`. Use `⟨projA τ v • z, hv, Function.update w τ v, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Break down `Finset.mem_insert.mp hσ with rfl | hσ` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Function.update_self, smul_smul, projA_idem]`. Establish `hne : σ ≠ τ` using `fun h => hτ (h ▸ hσ)`. Rewrite using `[Function.update_of_ne hne, smul_smul, projA_comm hne, mul_smul, hw σ hσ]`. Take `⟨z, hz, w, hw⟩` from `step Finset.univ`. Conclude with `⟨w, z, hz, fun τ a ha => by rw [projA_eq ha]; exact hw τ (Finset.mem_univ _)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_jointWt : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι]
     [DecidableEq ι] (lam : ι → ℕ → ℕ) (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], Nontrivial Gm →

@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.WeakApproxDVR
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Unfold `PI.WeakApproxDVR at h`. Unfold `Formalism.L2.G.Cmp.WeakApprox`. Use `hfr` as an intermediate fact. Conclude with `h E (Fin G.P.nV) G.P.W G.P.Qq iw p hp hpu hden hdist`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weakApprox_of_dvr (h : PI.WeakApproxDVR) {p : ℕ} (G : GAtP p) {E : Type} [Field E]
     (iw : ∀ v : Fin G.P.nV, E →+* G.P.Qq v)
@@ -22,7 +22,7 @@ theorem weakApprox_of_dvr (h : PI.WeakApproxDVR) {p : ℕ} (G : GAtP p) {E : Typ
   exact h E (Fin G.P.nV) G.P.W G.P.Qq iw p hp hpu hden hdist
 
 /- English proof (translation)
-The claim follows from `weakApprox_of_dvr weak_approximation_dvr G iw hfr hp hpu hden hdist`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.L2.G.Cmp.weakApprox_of_approx_and_separation {p : ℕ} (G : GAtP p) {E : Type} [Field E]
     (iw : ∀ v : Fin G.P.nV, E →+* G.P.Qq v)

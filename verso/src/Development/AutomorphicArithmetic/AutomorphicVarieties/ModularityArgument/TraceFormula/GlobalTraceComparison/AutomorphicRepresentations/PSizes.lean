@@ -19,7 +19,7 @@ attribute [local instance] borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspBoundSiegel.diagUnits_posIdele (E := E) n (Real.exp_pos τ)`. Rewrite `h` using `[Real.log_exp]`. Rewrite using `[← h, DiscreteGroups.T1.G.Dcy.tor_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem centre_eq (τ : ℝ) : splitCentre E n τ = (An.tor E (fun _ : Fin n => τ) : GA E n) := by
   have h := GlobalTheory.CuspBoundSiegel.diagUnits_posIdele (E := E) n (Real.exp_pos τ)
@@ -27,7 +27,7 @@ private theorem centre_eq (τ : ℝ) : splitCentre E n τ = (An.tor E (fun _ : F
   rw [← h, DiscreteGroups.T1.G.Dcy.tor_eq]
 
 /- English proof (translation)
-Rewrite using `[centre_eq]`. Use `((torNorm_holds E).2 n _).2.trans ?_` and prove the remaining obligations. Establish `h : ‖(fun _ : Fin n => τ)‖ ≤ |τ|` using `(pi_norm_le_iff_of_nonneg (abs_nonneg τ)).2 fun _ => by simp`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem logSize_centre (τ : ℝ) :
     logSize (splitCentre E n τ) ≤ 2 * Module.finrank ℚ E * |τ| := by
@@ -38,18 +38,18 @@ private theorem logSize_centre (τ : ℝ) :
   gcongr
 
 /- English proof (translation)
-Unfold `logSize`. Rewrite using `[inv_inv, add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem logSize_inv' (g : GA E n) : logSize (g⁻¹) = logSize g := by
   unfold logSize
   rw [inv_inv, add_comm]
 
 /- English proof (translation)
-Establish `e : (((1 : Matrix (Fin n) (Fin n) E)ᵀ : Matrix (Fin n) (Fin n) E) : Fin n → Fin n → E) = ⇑(Pi.basisFun E (Fin n))`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `hli : LinearIndependent E ((1 : Matrix (Fin n) (Fin n) E)ᵀ)`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun E (Fin n)).linearIndependent`. Establish `hsp : Submodule.span E (Set.range ((1 : Matrix (Fin n) (Fin n) E)ᵀ)) = ⊤`. Rewrite using `[e]`. Conclude with `(Pi.basisFun E (Fin n)).span_eq`. Establish `h1` using `D1.degBasis E n n g 1 hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `D1.degBasis E n n 1 1 hli`. Establish `h3` using `D1.degAdelic E n n 1 g g 1 hli (by simp)`. Rewrite `h3` using `[mul_one]`. Rewrite `h1`, `h2` using `[hsp]`. Rewrite using `[← h1, ← h2, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deg_top (g : GA E n) : deg g ⊤ = deg (1 : GA E n) ⊤ + logAbs g.val.det := by
   have e : (((1 : Matrix (Fin n) (Fin n) E)ᵀ : Matrix (Fin n) (Fin n) E) : Fin n → Fin n → E) =
@@ -68,7 +68,7 @@ private theorem deg_top (g : GA E n) : deg g ⊤ = deg (1 : GA E n) ⊤ + logAbs
   rw [← h1, ← h2, h3]
 
 /- English proof (translation)
-The claim follows from `|logAbs g.val.det| ≤ C * (1 + logSize g) := by obtain ⟨C, hC, h⟩ := degRight E n refine ⟨C, hC, fun g => abs_le.2 ⟨?_, ?_⟩⟩ · have h1 := h g g⁻¹ ⊤ rw [mul_inv_cancel, logSize_inv', deg_top g] at h1 linarith · have h1 := h 1 g ⊤ rw [one_mul, deg_top g] at h1 linarith`.
+A detailed English derivation is pending.
 -/
 private theorem abs_logAbs_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ g : GA E n,
     |logAbs g.val.det| ≤ C * (1 + logSize g) := by
@@ -82,23 +82,21 @@ private theorem abs_logAbs_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ g : GA E n,
     linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn`. Take `⟨C, hC, hdet⟩` from `abs_logAbs_le (E := E) (n := n)`. Take `⟨-, -, -, c₀, hc₀⟩` from `D1.sizeBasic E n`. Establish `hc : 0 ≤ 2 + |c₀| + C` using `by positivity`. Use `⟨2 + |c₀| + C, hc, fun x => ⟨?_, ?_, DiscreteGroups.T1.G.Dcy.redSize_nonneg _⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set l := ldet x with hl set d : ℝ := (Module.finrank ℚ E : ℝ) with hd`. Establish `hd0 : 0 < d`. Rewrite using `[hd]`. Conclude with `Module.finrank_pos (R := ℚ) (M := E)` after adjusting the coercions. Establish `hn0 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set τ : ℝ := l / (n * d) with hτ`. Use `set y : GA E n := splitCentre E n (-l / (n * d)) * x.1 with hy`. Establish `hr : r0 x = redSize y` using `rfl`. Establish `hx : x.1 = splitCentre E n τ * y`. Rewrite using `[hy, ← mul_assoc, ← CuspidalL2GL.splitCentre_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: τ + -l / (n * d) = 0` using `by rw [hτ]; ring`. Rewrite using `[this, CuspidalL2GL.splitCentre_zero, one_mul]`. Establish `hτle : 2 * d * |τ| ≤ 2 * |l|`. Establish `hpos : 0 < (n : ℝ) * d` using `by positivity`. Rewrite using `[hτ, abs_div, abs_of_pos hpos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 2 * d * (|l| / (n * d)) = 2 * |l| / n` using `by field_simp`. Rewrite using `[e]`. Conclude with `div_le_self (by positivity) hn0`. Establish `hK : 2 * |l| + c₀ ≤ (2 + |c₀| + C) * (1 + |l|)`. Establish `h1` using `le_abs_self c₀`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `abs_nonneg l`. Establish `h3` using `abs_nonneg c₀`. Use polynomial arithmetic with `[mul_nonneg h3 h2, mul_nonneg hC h2]`. Establish `key : redSize x.1 - (2 + |c₀| + C) * (1 + |l|) ≤ redSize y`. Use `le_ciInf fun γ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `DiscreteGroups.T1.G.Dcy.redSize_le x.1 γ`. Establish `h2 : ratGL E n γ * x.1 = splitCentre E n τ * (ratGL E n γ * y)`. Rewrite using `[hx, ← mul_assoc, ← CuspidalL2GL.splitCentre_comm, mul_assoc]`. Rewrite `h1` using `[h2]`. Establish `h3` using `hc₀ (splitCentre E n τ) (ratGL E n γ * y)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : logSize (splitCentre E n τ) ≤ 2 * d * |τ|` using `logSize_centre τ`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : |ldet x| ≤ C * (1 + logSize x.1)` using `hdet x.1`.
-
-Establish `h2` using `DiscreteGroups.T1.G.Dcy.logSize_nonneg x.1`. Establish `h3` using `abs_nonneg c₀`. Use polynomial arithmetic with `[mul_nonneg h3 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem sizes' : Sizes := by
   intro E _ _ _ n hn
@@ -146,7 +144,7 @@ private theorem sizes' : Sizes := by
     nlinarith [mul_nonneg h3 h2]
 
 /- English proof (translation)
-Introduce `_` and use `sizes'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sizes_of_basic : Basic → Sizes := fun _ => sizes'
 

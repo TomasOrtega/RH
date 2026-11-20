@@ -10,11 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights�
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ E _ _ N y W c f b hb`. Take `⟨h0, -, -, hli, -⟩` from `hb`. Take `⟨k, f', c', -, -, hsum, hfr⟩` from `W.frame c h0`. Establish `hk : 0 < k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hsum`. Conclude with `hk`. Take `⟨b0, hli0, hsp0, -⟩` from `hfr ⟨0, hk⟩`. Set `B : Module.Basis (Fin N) Ω E` to `Module.Basis.mk hli0 hsp0.ge`. Establish `: FiniteDimensional Ω E` using `Module.Basis.finiteDimensional_of_finite B`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrank : Module.finrank Ω E = N`. Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_fin]`. Conclude with `hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, hrank])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrameSpanTop.proof : FrameSpanTop.Statement := by
   intro K _ ι _ Ω _ E _ _ N y W c f b hb

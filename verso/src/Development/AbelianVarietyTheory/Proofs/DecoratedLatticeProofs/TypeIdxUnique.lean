@@ -30,11 +30,11 @@ def colLam {D : D7} {u : D.what₂.Word} (T : Formalism.L2.Forms.Forms0 D u) (v 
   else 1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hg : D.host.g j' ≠ D.host.g j`. Introduce `e`. Apply the tactic sequence `rcases Fin.exists_fin_two.mp ⟨j, rfl⟩ with hj | hj <;> rcases Fin.exists_fin_two.mp ⟨j', rfl⟩ with hj' | hj' <;>`. Apply the tactic sequence `subst hj hj' <;> first | exact hne rfl | exact D.host.g_ne e | exact D.host.g_ne e.symm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc : Nat.Coprime (D.host.g j') (D.host.g j)` using `(Nat.coprime_primes (D.host.g_prime j') (D.host.g_prime j)).2 hg`. Take `⟨a, b, hab⟩ : IsCoprime (D.host.g j' : ℤ) (D.host.g j : ℤ)` from `Nat.isCoprime_iff_coprime.2 hc`. Establish `h1 : (1 : 𝓞 D.host.F) ∈ v.asIdeal`. Establish `e : ((a * (D.host.g j' : ℤ) + b * (D.host.g j : ℤ) : ℤ) : 𝓞 D.host.F) = 1` using `by rw [hab]; simp`. Rewrite using `[← e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ h') (v.asIdeal.mul_mem_left _ h)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem type_idx_unique {D : D7} {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)} {j j' : Fin 2}
     (h : (D.host.g j : 𝓞 D.host.F) ∈ v.asIdeal) (h' : (D.host.g j' : 𝓞 D.host.F) ∈ v.asIdeal) : j' = j := by
@@ -53,9 +53,9 @@ theorem type_idx_unique {D : D7} {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Establish `hex : ∃ j : Fin 2, (D.host.g j : 𝓞 D.host.F) ∈ v.asIdeal` using `⟨j, h⟩`. Unfold `colLam`. Rewrite using `[dif_pos hex]`. Establish `key : ∀ (j' : Fin 2) (h' : (D.host.g j' : 𝓞 D.host.F) ∈ v.asIdeal), j' = j → Formalism.L2.Forms.lamJ (T.gl.psi0 j' v h') (T.gl.chiB j' v h') D.R.k D.R.t 0 D.R.k (Formalism.L2.Forms.redM D.host.F v (T.gl.mat j' v h' (T.glev0.fr j' v h') (Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) v) g))) = Formalism.L2.Forms.lamJ (T.gl.psi0 j v h) (T.gl.chiB j v h) D.R.k D.R.t 0 D.R.k (Formalism.L2.Forms.redM D.host.F v (T.gl.mat j v h (T.glev0.fr j v h) (Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) v) g))) := by`. Introduce and unpack `j' h' rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `key _ _ (type_idx_unique h hex.choose_spec)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colLam_eq {D : D7} {u : D.what₂.Word} (T : Formalism.L2.Forms.Forms0 D u) {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)}
     (j : Fin 2) (h : (D.host.g j : 𝓞 D.host.F) ∈ v.asIdeal)

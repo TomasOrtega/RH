@@ -5,37 +5,33 @@ open MeasureTheory Topology
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `X T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ i hi Φ ρ hΦ hinv hsupp hn`. Take `⟨C, hC, hsup⟩` from `hsupp`. Take `⟨hρ, hnorm⟩` from `hn`. Establish `hnorm' : ∀ x : X, ∫⁻ t, ρ (i t * x) ∂ν = 1` using `hnorm`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hΦ.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hCK⟩` from `exists_compact_superset hC`. Establish `hKm : MeasurableSet K` using `hK.measurableSet`. Establish `hcont : Continuous (fun p : T × X => i p.1 * p.2)` using `(hi.comp continuous_fst).mul continuous_snd`. Establish `hopen : IsOpen ((fun p : T × X => i p.1 * p.2) ⁻¹' interior K)` using `isOpen_interior.preimage hcont`. Establish `hsub : ({1} : Set T) ×ˢ C ⊆ (fun p : T × X => i p.1 * p.2) ⁻¹' interior K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, c⟩ ⟨ht, hc⟩`. Establish `ht' : t = 1` using `ht`. Substitute `ht'` using the available equality. Simplify using `using hCK hc`. Take `⟨U, V, hU, hV, h1U, hCV, hUV⟩` from `generalized_tube_lemma isCompact_singleton hC hopen hsub`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hNU, hNc⟩` from `local_compact_nhds (hU.mem_nhds (h1U rfl))`. Establish `hNm : MeasurableSet N` using `hNc.measurableSet`. Establish `hNpos : ν N ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hN).ne'`. Establish `hNfin : ν N ≠ ⊤` using `hNc.measure_lt_top.ne`. Establish `hinK : ∀ t ∈ N, ∀ c ∈ C, i t * c ∈ K` using `fun t ht c hc => interior_subset (hUV (Set.mk_mem_prod (hNU ht) (hCV hc)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ν.IsMulRightInvariant := by`. Establish `h` using `(inferInstance : ν.inv.IsMulRightInvariant)`. Rewrite `h` using `[Measure.inv_eq_self]`. Then use the resulting hypothesis. Use `set ind : X → ℝ≥0∞ := K.indicator 1 with hind`. Establish `hindm : Measurable ind` using `measurable_one.indicator hKm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : Measurable i` using `hi.measurable`. Use `set M : ℝ≥0∞ := ENNReal.ofReal B with hM`. Establish `hA : ∀ t₀ : T, ∀ c ∈ C, ν N ≤ ∫⁻ t, ind (i t * (i t₀ * c)) ∂ν`. Introduce `t₀ c hc`. Establish `h1 : ∫⁻ t, ind (i t * (i t₀ * c)) ∂ν = ∫⁻ t, ind (i t * c) ∂ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `lintegral_mul_right_eq_self (μ := ν) (fun t => ind (i t * c)) t₀` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [map_mul, mul_assoc]`. Rewrite using `[h1, ← lintegral_indicator_one hNm]`. Use `lintegral_mono fun t => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ht : t ∈ N`. Simplify using `[ht, hind, hinK t ht c hc]`. Simplify using `[ht]`. Establish `hpt : ∀ x, ‖Φ x‖ₑ ≤ M / ν N * ∫⁻ t, ind (i t * x) ∂ν`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hx : Φ x = 0`. Simplify using `[hx]`. Take `⟨t₀, c, hc, rfl⟩` from `hsup x hx`. Establish `hle : ‖Φ (i t₀ * c)‖ₑ ≤ M`. Rewrite using `[hinv, hM, ← ofReal_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hB c hc)`. Combine the equalities or inequalities in the displayed calculation. Establish `hj1 : Measurable (fun p : X × T => ind (i p.2 * p.1) * ρ p.1)` using `(hindm.comp ((him.comp measurable_snd).mul measurable_fst)).mul (hρ.comp measurable_fst)`. Establish `hj2 : Measurable (fun p : T × X => ind p.2 * ρ ((i p.1)⁻¹ * p.2))` using `(hindm.comp measurable_snd).mul (hρ.comp (((him.comp measurable_fst).inv).mul measurable_snd))`. Establish `hmain : ∫⁻ x, (∫⁻ t, ind (i t * x) ∂ν) * ρ x ∂μ = μ K`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hm : Measurable fun t : T => ind (i t * x)` using `hindm.comp (him.mul_const x)`. Conclude with `(lintegral_mul_const (ρ x) hm).symm`. Use `_ = ∫⁻ t, ∫⁻ x, ind (i t * x) * ρ x ∂μ ∂ν := lintegral_lintegral_swap hj1.aemeasurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = ∫⁻ t, ∫⁻ y, ind y * ρ ((i t)⁻¹ * y) ∂μ ∂ν := by`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Use `lintegral_mul_left_eq_self (μ := μ) (fun y => ind y * ρ ((i t)⁻¹ * y)) (i t)` as an intermediate fact. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = ∫⁻ y, ∫⁻ t, ind y * ρ ((i t)⁻¹ * y) ∂ν ∂μ := lintegral_lintegral_swap hj2.aemeasurable`. Use `_ = ∫⁻ y, ind y ∂μ := by`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hm : Measurable fun t : T => ρ (i t * y)` using `hρ.comp ((him).mul_const y)`. Establish `h2 : ∫⁻ t, ρ ((i t)⁻¹ * y) ∂ν = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Measure.measurePreserving_inv ν).lintegral_comp hm` as an intermediate fact. Simplify using `only [Pi.inv_apply, map_inv] at this`. Rewrite using `[this, hnorm']`. Establish `hm' : Measurable fun t : T => ρ ((i t)⁻¹ * y)` using `hρ.comp (him.inv.mul_const y)`. Rewrite using `[lintegral_const_mul (ind y) hm', h2, mul_one]`.
-
-Use `_ = μ K := by`. Rewrite using `[hind, lintegral_indicator_one hKm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
-
-Use `gcongr`. Conclude with `hpt x`. Use `_ = M / ν N * μ K := by`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.div_ne_top ENNReal.ofReal_ne_top hNpos), hmain]`. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.div_lt_top ENNReal.ofReal_ne_top hNpos) hK.measure_lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.quotFin :
     UpperTheory.ConvolutionTheory.L1.QuotFin := by

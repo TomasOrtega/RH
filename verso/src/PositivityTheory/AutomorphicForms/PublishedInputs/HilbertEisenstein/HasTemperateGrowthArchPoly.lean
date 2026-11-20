@@ -20,7 +20,7 @@ def levelIdeal (c : HeightOneSpectrum (𝓞 F) → ℕ) : (FractionalIdeal (𝓞
   ∏ᶠ w, primeIdealUnit w ^ (c w : ℤ)
 
 /- English proof (translation)
-Unfold `levelIdeal`. Rewrite using `[count_finprod_primeIdealUnit_zpow]`. Use `Filter.eventually_cofinite.2 (hc.subset fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Nat.cast_eq_zero] at hv ⊢`. Conclude with `hv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem count_levelIdeal {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite)
     (w : HeightOneSpectrum (𝓞 F)) :
@@ -32,7 +32,7 @@ theorem count_levelIdeal {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w
   exact hv
 
 /- English proof (translation)
-Rewrite using `[mem_idealFiniteAdeles]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[count_levelIdeal hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_level_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (B : Af F) :
     B ∈ idealFiniteAdeles (levelIdeal c) ↔ ∀ w, Valued.v (pLoc F w B) ≤ WithZero.exp (-(c w : ℤ)) := by
@@ -42,7 +42,7 @@ theorem mem_level_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w �
   rfl
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.count_coe F w (differentIdeal_ne_bot (A := ℤ))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem count_different (w : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F w ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = dd w := by
@@ -50,7 +50,7 @@ theorem count_different (w : HeightOneSpectrum (𝓞 F)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_idealFiniteAdeles]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[count_traceDualIdeal, count_levelIdeal hc, count_different, neg_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_dual_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (Z : Af F) :
     Z ∈ idealFiniteAdeles (traceDualIdeal F (levelIdeal c)) ↔
@@ -61,13 +61,13 @@ theorem mem_dual_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => (not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_complex : IsEmpty {w : InfinitePlace F // IsComplex w} :=
   ⟨fun w => (not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2⟩
 
 /- English proof (translation)
-The claim follows from `(Equiv.subtypeUnivEquiv (fun w : InfinitePlace F => IsTotallyReal.isReal w)).prod_comp f`.
+A detailed English derivation is pending.
 -/
 theorem prod_real (f : InfinitePlace F → ℂ) : ∏ w : {w : InfinitePlace F // IsReal w}, f w.1 = ∏ v, f v :=
   (Equiv.subtypeUnivEquiv (fun w : InfinitePlace F => IsTotallyReal.isReal w)).prod_comp f
@@ -77,7 +77,7 @@ def archPoly (a : InfinitePlace F → ℝ) (x : mixedSpace F) : ℂ :=
     (((a w.1 : ℝ) : ℂ) + Complex.I * ((x.1 w : ℝ) : ℂ)) * Complex.exp (-(π : ℂ) * ((a w.1 : ℝ) : ℂ) ^ 2)
 
 /- English proof (translation)
-Unfold `archPoly`. Use `hasTemperateGrowth_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Establish `hlin : (fun x : mixedSpace F => ((x.1 w : ℝ) : ℂ)).HasTemperateGrowth` using `((Complex.ofRealCLM.comp ((ContinuousLinearMap.proj w : ({w // IsReal w} → ℝ) →L[ℝ] ℝ).comp (ContinuousLinearMap.fst ℝ ({w // IsReal w} → ℝ) ({w // IsComplex w} → ℂ))) : mixedSpace F →L[ℝ] ℂ)).hasTemperateGrowth`. Conclude with `((HasTemperateGrowth.const _).add ((HasTemperateGrowth.const Complex.I).mul hlin)).mul (HasTemperateGrowth.const _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_archPoly (a : InfinitePlace F → ℝ) : (archPoly (F := F) a).HasTemperateGrowth := by
   unfold archPoly
@@ -95,7 +95,7 @@ def archSchwartz (a : InfinitePlace F → ℝ) : 𝓢(mixedSpace F, ℂ) :=
       (gaussianSchwartz (euclidean.mixedSpace F)))
 
 /- English proof (translation)
-Rewrite using `[archSchwartz, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_archPoly a), SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, norm_mixedToEuclidean_sq, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archSchwartz_apply (a : InfinitePlace F → ℝ) (x : mixedSpace F) :
     archSchwartz a x = archPoly a x * ((Real.exp (-π * (∑ w, x.1 w ^ 2 + 2 * ∑ w, ‖x.2 w‖ ^ 2)) : ℝ) : ℂ) := by
@@ -104,9 +104,9 @@ theorem archSchwartz_apply (a : InfinitePlace F → ℝ) (x : mixedSpace F) :
     norm_mixedToEuclidean_sq, smul_eq_mul]
 
 /- English proof (translation)
-Use `haveI := isEmpty_complex (F := F)`. Rewrite using `[archSchwartz_apply, archPoly, Finset.univ_eq_empty (α := {w : InfinitePlace F // IsComplex w}), Finset.sum_empty, mul_zero, add_zero, Finset.mul_sum, Real.exp_sum, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_exp, mul_assoc, ← Complex.exp_add]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem archSchwartz_eq_prod (a : InfinitePlace F → ℝ) (x : mixedSpace F) :
     archSchwartz a x = ∏ w : {w : InfinitePlace F // IsReal w},
@@ -123,7 +123,7 @@ theorem archSchwartz_eq_prod (a : InfinitePlace F → ℝ) (x : mixedSpace F) :
   ring
 
 /- English proof (translation)
-Rewrite using `[archSchwartz_eq_prod, arch]`. Conclude with `prod_real (fun v => (((UpperTheory.V.TR.pInf F A v : ℝ) : ℂ) + Complex.I * ((UpperTheory.V.TR.pInf F B v : ℝ) : ℂ)) * Complex.exp (-(π : ℂ) * (((UpperTheory.V.TR.pInf F A v : ℝ) : ℂ) ^ 2 + ((UpperTheory.V.TR.pInf F B v : ℝ) : ℂ) ^ 2)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archSchwartz_homeo (A B : Ad F) :
     archSchwartz (UpperTheory.V.TR.pInf F A) (homeomorphMixedSpace F B.1) =
@@ -134,11 +134,11 @@ theorem archSchwartz_homeo (A B : Ad F) :
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Simplify using `only [slice, Phi, Pi.smul_apply, smul_eq_mul, schwartzBruhatTensor, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[archSchwartz_homeo, cosetIndicator_apply, mem_level_iff hc]`. Establish `hB : ∀ w, pLoc F w (B.2 - 1) = pLoc F w (pFin F B) - 1` using `fun w => by`. Rewrite using `[map_sub, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [hB]`. Distinguish the cases in `h1 : ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ))`. Distinguish the cases in `h2 : ∀ w, Valued.v (pLoc F w (pFin F B) - 1) ≤ WithZero.exp (-(c w : ℤ))`. Establish `h3 : ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ)) ∧ Valued.v (pLoc F w (pFin F B) - 1) ≤ WithZero.exp (-(c w : ℤ))` using `fun w => ⟨h1 w, h2 w⟩`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [forall_and, h1, h2, and_self, implies_true, ↓reduceIte, mul_one, one_mul]`. Establish `h3 : ¬ ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ)) ∧ Valued.v (pLoc F w (pFin F B) - 1) ≤ WithZero.exp (-(c w : ℤ))` using `fun h => h2 fun w => (h w).2`. Simplify using `only [forall_and, h1, h2, true_and, and_false, ↓reduceIte, mul_zero, one_mul]`. Establish `h3 : ¬ ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ)) ∧ Valued.v (pLoc F w (pFin F B) - 1) ≤ WithZero.exp (-(c w : ℤ))` using `fun h => h1 fun w => (h w).1`. Simplify using `only [forall_and, h1, false_and, ↓reduceIte, mul_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem slice_eq {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (A : Ad F) :
     slice c A = (if ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ)) then (1 : ℂ) else 0) •
@@ -169,7 +169,7 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Rewrite using `[L1.slice_eq hc A]`. Conclude with `Submodule.smul_mem _ _ (schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_mem_sb {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (A : Ad F) :
     slice c A ∈ schwartzBruhat F := by

@@ -5,13 +5,13 @@ open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheo
 open scoped Matrix
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := x)`. Establish `hbij : Function.Bijective (fun v : InfinitePlace F => v.embedding)`. Prove the components needed by the constructor for the conclusion. Introduce `v w h`. Simplify `congrArg InfinitePlace.mk h` using `[InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `φ`. Establish `hr : ComplexEmbedding.IsReal φ`. Use `IsTotallyReal.isReal (InfinitePlace.mk φ)` as an intermediate fact. Rewrite `this` using `[InfinitePlace.isReal_mk_iff]`. Then use the resulting hypothesis. Conclude with `⟨InfinitePlace.mk φ, InfinitePlace.embedding_mk_eq_of_isReal hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Establish `h2 : ∑ v : InfinitePlace F, v.embedding x = ∑ φ : F →+* ℂ, φ x` using `Fintype.sum_bijective _ hbij _ _ (fun _ => rfl)`. Establish `h3 : ∑ φ : F →+* ℂ, φ x = ∑ σ : F →ₐ[ℚ] ℂ, σ x` using `Fintype.sum_equiv (RingHom.equivRatAlgHom F ℂ) _ _ (fun _ => rfl)`. Establish `h4 : ((Algebra.trace ℚ F x : ℝ) : ℂ) = ∑ v : InfinitePlace F, v.embedding x`. Rewrite using `[h2, h3, ← h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `reAt`. Rewrite using `[← Complex.re_sum, ← h4, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.sum_reAt_eq_trace' (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (x : F) :
     ∑ v : InfinitePlace F, reAt v x = (Algebra.trace ℚ F x : ℝ) := by
@@ -35,13 +35,13 @@ private theorem UpperTheory.sum_reAt_eq_trace' (F : Type) [Field F] [NumberField
   rw [← Complex.re_sum, ← h4, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hdvd : ∀ v : Pl F, v.asIdeal ^ ordI v (differentIdeal ℤ (𝓞 F)) ∣ differentIdeal ℤ (𝓞 F)`. Introduce `v`. Unfold `ordI`. Rewrite using `[← Associates.mk_le_mk_iff_dvd, Associates.mk_pow]`. Conclude with `(Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr differentIdeal_ne_bot) v.associates_irreducible).mpr le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD` using `coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)`. Establish `hne : ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) ≠ 0`. Simplify using `using differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F)`. Rewrite using `[← inv_inv (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F)), ← hD, FractionalIdeal.mem_inv_iff hne]`. Introduce `y hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hy`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `HeightOneSpectrum.mem_integers_of_valuation_le_one F (x * algebraMap (𝓞 F) F d) ?_` and prove the remaining obligations. Introduce `v`. Establish `h1 : v.intValuation d ≤ WithZero.exp (-(ordI v (differentIdeal ℤ (𝓞 F)) : ℤ))` using `(v.intValuation_le_pow_iff_dvd d _).mpr ((hdvd v).trans (Ideal.dvd_span_singleton.mpr hd))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, HeightOneSpectrum.valuation_of_algebraMap]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.mem_dual_of_valuation_le_different (F : Type) [Field F] [NumberField F] (x : F)
     (hx : ∀ v : Pl F, v.valuation F x ≤ WithZero.exp (ordI v (differentIdeal ℤ (𝓞 F)) : ℤ)) :
@@ -75,15 +75,15 @@ private theorem UpperTheory.mem_dual_of_valuation_le_different (F : Type) [Field
     _ = 1 := by rw [← WithZero.exp_add]; simp
 
 /- English proof (translation)
-Establish `hD` using `coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)`. Establish `hne : ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) ≠ 0`. Simplify using `using differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F)`. Rewrite `hx` using `[← inv_inv (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F)), ← hD, FractionalIdeal.mem_inv_iff hne]`. Establish `hnd : ¬ w.asIdeal ^ (ordI w (differentIdeal ℤ (𝓞 F)) + 1) ∣ differentIdeal ℤ (𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `ordI`. Rewrite using `[← Associates.mk_le_mk_iff_dvd, Associates.mk_pow, Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr differentIdeal_ne_bot) w.associates_irreducible]`. Use linear arithmetic over natural numbers and integers. Rewrite `hnd` using `[Ideal.dvd_iff_le]`. Take `⟨d, hd, hd'⟩` from `SetLike.not_le_iff_exists.mp hnd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hint` using `hx _ ((FractionalIdeal.mem_coeIdeal _).mpr ⟨d, hd, rfl⟩)`. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).mp hint`. Establish `h1 : w.valuation F x * w.intValuation d ≤ 1`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← map_mul, ← ha, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `w.intValuation_le_one a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd'` to reduce the goal to its premises. Rewrite using `[← w.intValuation_le_pow_iff_mem]`. Rewrite `h1` using `[hw]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← WithZero.exp_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `_ ≤ WithZero.exp (-((ordI w (differentIdeal ℤ (𝓞 F)) : ℤ) + 1)) * 1 := mul_le_mul' le_rfl h1`. Use `_ = WithZero.exp (-((ordI w (differentIdeal ℤ (𝓞 F)) + 1 : ℕ) : ℤ)) := by push_cast; simp`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.false_of_mem_dual_of_valuation_eq_different_succ (F : Type) [Field F] [NumberField F] (x : F) (w : Pl F)
     (hx : x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F))
@@ -120,11 +120,11 @@ private theorem UpperTheory.false_of_mem_dual_of_valuation_eq_different_succ (F 
     _ = WithZero.exp (-((ordI w (differentIdeal ℤ (𝓞 F)) + 1 : ℕ) : ℤ)) := by push_cast; simp
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 F)) F) _ _ _)]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Take `⟨n, hn⟩` from `h _ ((FractionalIdeal.mem_one_iff _).mpr ⟨b, rfl⟩)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[Algebra.traceForm_apply]`. Simplify using `using hn.symm`. Introduce `h a ha`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨n, hn⟩` from `h b`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by rw [Algebra.traceForm_apply, hn]; simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem UpperTheory.mem_dual_one_iff_trace_mul_int (F : Type) [Field F] [NumberField F] (x : F) :
     x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) ↔
@@ -142,11 +142,11 @@ private theorem UpperTheory.mem_dual_one_iff_trace_mul_int (F : Type) [Field F] 
     exact ⟨n, by rw [Algebra.traceForm_apply, hn]; simp⟩
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `: (t : ℂ) = (n : ℂ)`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this` after adjusting the coercions. Introduce and unpack `⟨n, rfl⟩`. Conclude with `⟨n, by push_cast; ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.cexp_two_pi_I_mul_eq_one_iff_int (t : ℝ) :
     Complex.exp (2 * Real.pi * Complex.I * (t : ℂ)) = 1 ↔ ∃ n : ℤ, t = n := by
@@ -164,29 +164,27 @@ private theorem UpperTheory.cexp_two_pi_I_mul_eq_one_iff_int (t : ℝ) :
     exact ⟨n, by push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ η`. Establish `key : ∀ x : F, (∃ n : ℤ, Algebra.trace ℚ F x = n) ↔ Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v x : ℂ)) = 1`. Introduce `x`. Rewrite using `[← Complex.ofReal_sum, UpperTheory.sum_reAt_eq_trace', UpperTheory.cexp_two_pi_I_mul_eq_one_iff_int]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨n, by rw [hn]; push_cast; rfl⟩`. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨n, by exact_mod_cast hn⟩`. Establish `part1 : ∀ x : F, (∀ v : Pl F, v.valuation F x ≤ WithZero.exp (ordI v (differentIdeal ℤ (𝓞 F)) : ℤ)) → ∀ b : 𝓞 F, Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v (x * (b : F)) : ℂ)) = 1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x hx b`. Conclude with `(key _).mp ((UpperTheory.mem_dual_one_iff_trace_mul_int F x).mp (UpperTheory.mem_dual_of_valuation_le_different F x hx) b)`. Use `⟨part1 η, ?_⟩` and prove the remaining obligations. Introduce `w _ s hs hv hw`. Use `set ψ : 𝓞 F → ℂ := fun b => Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v (η * (b : F)) : ℂ)) with hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ a b : 𝓞 F, ψ (a + b) = ψ a * ψ b`. Introduce `a b`. Simplify using `only [hψ, ← Complex.exp_add]`. Use `congr 1`. Establish `e : ∀ v : InfinitePlace F, (reAt v (η * ((a + b : 𝓞 F) : F)) : ℂ) = (reAt v (η * (a : F)) : ℂ) + (reAt v (η * (b : F)) : ℂ)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `only [reAt, map_add, mul_add, Complex.add_re, Complex.ofReal_add]`. Rewrite using `[Finset.sum_congr rfl (fun v _ => e v), Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hker : ∀ c ∈ w.asIdeal, ψ c = 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h` using `part1 (η * (c : F)) ?_ 1`. Simplify `h` using `[hψ]`. Introduce `v`. Establish `hcv : v.valuation F (c : F) = v.intValuation c` using `HeightOneSpectrum.valuation_of_algebraMap (K := F) v c`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[map_mul, hw, hcv]`. Establish `hc1 : v.intValuation c ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(v.intValuation_le_pow_iff_mem c 1).mpr (by simpa using hc)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, hcv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcoset : ∀ a b : 𝓞 F, a - b ∈ w.asIdeal → ψ a = ψ b`. Introduce `a b hab`. Establish `e : a = b + (a - b)` using `by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, hadd, hker _ hab, mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨b0, hb0⟩ : ∃ b0 : 𝓞 F, ψ b0 ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hdual` using `(UpperTheory.mem_dual_one_iff_trace_mul_int F η).mpr (fun b => (key _).mpr (hcon b))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `UpperTheory.false_of_mem_dual_of_valuation_eq_different_succ F η w hdual hw`. Establish `hsum : ψ b0 * ∑ r, ψ (s r) = ∑ r, ψ (s r)`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun r _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hadd]`. Apply `hcoset` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [map_add, hs]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = ∑ r, ψ (s r) := Fintype.sum_equiv (Equiv.addRight _) _ _ (fun _ => rfl)`. Establish `h0 : (ψ b0 - 1) * ∑ r, ψ (s r) = 0` using `by rw [sub_mul, hsum, one_mul, sub_self]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h) hb0`. Conclude with `h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.addChar_inverseDifferent_and_residue_sum_eq_zero :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (η : F), ((∀ v : Pl F, v.valuation F η ≤ WithZero.exp (ordI v (differentIdeal ℤ (𝓞 F)) : ℤ)) → ∀ b : 𝓞 F, Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v (η * (b : F)) : ℂ)) = 1) ∧ ∀ (w : Pl F) [Fintype (𝓞 F ⧸ w.asIdeal)] (s : 𝓞 F ⧸ w.asIdeal → 𝓞 F), (∀ r, Ideal.Quotient.mk w.asIdeal (s r) = r) → (∀ v : Pl F, v ≠ w → v.valuation F η ≤ WithZero.exp (ordI v (differentIdeal ℤ (𝓞 F)) : ℤ)) → w.valuation F η = WithZero.exp ((ordI w (differentIdeal ℤ (𝓞 F)) : ℤ) + 1) → ∑ r, Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v (η * (s r : F)) : ℂ)) = 0 := by

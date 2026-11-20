@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZ
 open Polynomial Classical GlobalTheory.BadShare
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BadShare.card_perm_partition_parts_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCardPermPartitionPartsMulCentralizer.lean&line=20#L20)
 -/

@@ -51,7 +51,7 @@ def StepSum : Prop :=
     (∀ α ∈ S, SwapRel p l ex ph α) → (∀ δ ∈ S, TraceRel p l ex ph δ) → ∀ α ∈ S, NormRel p l ex ph α
 
 /- English proof (translation)
-Introduce `p _ l ex ph S h0 hX h2 hS2 hswap hadd hmul hint_r hadd2 htr hnm hdec hdef hunit α hα`. Conclude with `h p l ex ph S ⟨h0, hX, h2, hS2, hswap, hadd, hmul, hint_r, hadd2, htr, hnm, hdec, hdef, hunit⟩ α hα`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem target_of_hyp (h : ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) (S : Set (ℂ_[p] × ℂ_[p])),
     Hyp p l ex ph S → ∀ α ∈ S, NormRel p l ex ph α) : Target := by
@@ -60,7 +60,7 @@ theorem target_of_hyp (h : ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries �
     ⟨h0, hX, h2, hS2, hswap, hadd, hmul, hint_r, hadd2, htr, hnm, hdec, hdef, hunit⟩ α hα
 
 /- English proof (translation)
-Use `target_of_hyp ?_` and prove the remaining obligations. Introduce `p _ l ex ph S hH`. Establish `hsw : ∀ α ∈ S, SwapRel p l ex ph α` using `hA p l ex ph S hH (hU p l ex ph S hH)`. Conclude with `hS p l ex ph S hH hsw (hT p l ex ph S hH hsw)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem target_of_steps (hU : StepUnits) (hA : StepAll) (hT : StepTrace) (hS : StepSum) : Target := by
   refine target_of_hyp ?_

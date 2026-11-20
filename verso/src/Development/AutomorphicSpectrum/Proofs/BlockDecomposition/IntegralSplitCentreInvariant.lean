@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CuspTransfer
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding e` using `e.toMeasurableEquiv.measurableEmbedding`. Rewrite using `[hemb.restrict_map, e.injective.preimage_image, hemb.lintegral_map, ← Measure.prod_restrict, lintegral_prod (fun p => h (e p)) (hh.comp e.measurable).aemeasurable]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_image_prod_Ico_of_invariant {X Z : Type*} [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] [SecondCountableTopology X] [TopologicalSpace Z] [MeasurableSpace Z] [BorelSpace Z]
@@ -24,9 +24,9 @@ theorem lintegral_image_prod_Ico_of_invariant {X Z : Type*} [TopologicalSpace X]
   simp [hk]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ ν _ c hmap φ hc hinv`. Take `⟨e, he⟩` from `GlobalTheory.T.adelic_GL_norm_one_split E a ha`. Establish `hF : (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) = ⇑e`. Use function extensionality and compare the values at `fun p => (he p.1 p.2).symm`. Rewrite `hmap` using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hF, ← hmap]`. Use `lintegral_image_prod_Ico_of_invariant e ν (h := fun g => ‖φ g‖ₑ ^ 2) (k := fun x => ‖φ (x : GA E a)‖ₑ ^ 2) (hc.enorm.measurable.pow_const 2) (fun x t => ?_) _` and prove the remaining obligations. Simplify using `only [he, hinv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_productDomain_norm_sq : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a → ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] (ν : Measure (normOneGL E a)) [ν.IsHaarMeasure] (c : ENNReal), Measure.map (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) (ν.prod volume) = c • μ → ∀ φ : GA E a → ℂ, Continuous φ → (∀ t g, φ (splitCentre E a t * g) = φ g) → ∫⁻ g in ((fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) '' (RightCosetSpace.fundamentalDomain (rationalGLOne E a) ×ˢ Set.Ico (0 : ℝ) 1)), ‖φ g‖ₑ ^ 2 ∂(c • μ) = ∫⁻ x in RightCosetSpace.fundamentalDomain (rationalGLOne E a), ‖φ (x : GA E a)‖ₑ ^ 2 ∂ν := by
   intro E _ _ _ a ha μ _ ν _ c hmap φ hc hinv

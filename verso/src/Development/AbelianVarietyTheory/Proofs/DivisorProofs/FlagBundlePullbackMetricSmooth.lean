@@ -23,25 +23,23 @@ open scoped Classical
 namespace GlobalTheory.CovTest.SwapLine
 
 /- English proof (translation)
-Introduce `hC k _ B Y _ _ q p d hq hp _ π w E h H _ fl _ A Φ _ hΦ _ P _`. Set `L4 : Fin 4 → HermLB p` to `![VMetric.grLB fl 0 (H.pull π w), VMetric.grLB fl 1 (H.pull π w), A.pull π w, (VMetric.det H).pull π w]`. Take `⟨Φ4, hΦ4⟩` from `((hC.arExists k Y p (d + 1) hp).2 (Fin 4) L4).1`. Apply the tactic sequence `have e3 := GlobalTheory.VertForm.FormEx.arFun_eq_rename hC hp hΦ hΦ4 ![0, 1, 2] (fun i => by fin_cases i <;> rfl)`. Establish `iso : ((L4 0).tens (L4 1)).Isometric (L4 3)` using `(GlobalTheory.VMetric.isometric_grLB_tens_grLB_det k Y p _ _ (H.pull π w) fl).trans (VMetric.isometric_det_pull H π w)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `icl : (L4 3).icls = (L4 0).icls + (L4 1).icls`. Use `HermLB.icls_eq_iff.2 iso` as an intermediate fact. Rewrite `this` using `[HermLB.icls_tens]`. Conclude with `this.symm`. Set `T : Fin 4 → Fin 4 → ℤ` to `fun j => if j = 3 then ![1, 1, 0, 0] else Pi.single j 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ j, (comb L4 (T j)).Isometric (L4 j)`. Introduce `j`. Distinguish the cases in `hj : j = 3`. Substitute `hj` using the available equality. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[icls_comb, icl]`. Simplify using `[T, Fin.sum_univ_four]`. Simplify using `only [T, hj, if_false]`. Conclude with `isometric_comb_single L4 j`. Establish `hsub` using `((hC.arIso k Y p (d + 1) hp).2 (Fin 4) L4 Φ4 hΦ4).2.2 (Fin 4) L4 T hT`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `GlobalTheory.ArInt.Model.isArFun_unique hp hΦ4 hsub`. Establish `hdim : topologicalKrullDim (closure ({π (genericPoint Y)} : Set B)) < ((d + 1 + 1 : ℕ) : WithBot ℕ∞)`. Use `(topologicalKrullDim_subspace_le B _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hq.dim_eq]`. Conclude with `Nat.lt_succ_self (d + 1)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `StrictHenselianAcyclic : Fin 2 → HermLB q` to `![VMetric.det H, A]`. Set `L2 : Fin 2 → HermLB p` to `fun i => (StrictHenselianAcyclic i).pull π w`. Establish `z2 : IsArFun L2 (d + 1) 0`. Use `⟨fun n => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isometric_comb_pull StrictHenselianAcyclic n π w).symm.isSelfInter hp (GlobalTheory.ProjDrop.isSelfInter_zero_of_dim_lt hC k B Y q p d (d + 1) hq hp π w hdim (comb StrictHenselianAcyclic n))`. Apply the tactic sequence `have e2 := GlobalTheory.VertForm.FormEx.arFun_eq_rename hC hp z2 hΦ4 ![3, 2] (fun i => by fin_cases i <;> rfl)`. Establish `hbase : Φ4 (aeval (![X 3, X 2] : Fin 2 → MvPolynomial (Fin 4) ℝ) P) = 0`. Establish `: aeval (![X 3, X 2] : Fin 2 → MvPolynomial (Fin 4) ℝ) P = rename ![(3 : Fin 4), 2] P`. Rewrite using `[← aeval_X_left_apply (rename _ P), aeval_rename]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[this, ← AlgHom.toLinearMap_apply, ← LinearMap.comp_apply, ← e2, LinearMap.zero_apply]`. Rewrite using `[e3, LinearMap.comp_apply, AlgHom.toLinearMap_apply, ← hbase]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [e4]`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((rename ![(0 : Fin 4), 1, 2]).comp (aeval (![X 0 + X 1, X 2] : Fin 2 → MvPolynomial (Fin 3) ℝ))) P = ((aeval fun j => lin fun i => ((T j i : ℤ) : ℝ)).comp (aeval (![X 3, X 2] : Fin 2 → MvPolynomial (Fin 4) ℝ))) P`. Use `congr 1`.
-
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [T, lin, Fin.sum_univ_four, Pi.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem arFun_sumLine_base_eq_zero : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →

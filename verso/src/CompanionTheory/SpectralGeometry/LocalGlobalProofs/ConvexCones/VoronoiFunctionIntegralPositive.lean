@@ -12,13 +12,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Establish `hmin : ∀ y : Fin n → ZMod (1 + 1), ∃ c : Fin n → ℤ, redV 1 c = y ∧ ∀ c', redV 1 c' = y → β (r c) (r c) ≤ β (r c') (r c')` using `fun y => by`. Take `⟨c0, h0⟩` from `redV_surjective 1 n y`. Take `⟨c, hc, hm⟩` from `WellFounded.has_min (InvImage.wf (fun c : Fin n → ℤ => (β (r c) (r c)).toNat) Nat.lt_wfRel.wf) {c | redV 1 c = y} ⟨c0, h0⟩`. Use `⟨c, hc, fun c' hc' => ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ (β (r c') (r c')).toNat < (β (r c) (r c)).toNat` using `hm c' hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hβ (r c)`. Establish `h3` using `hβ (r c')`. Use linear arithmetic over natural numbers and integers. Use `choose a ha hm using hmin`. Use `⟨a, ha, fun y x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `hr x`. Establish `h` using `hm y (a y + (((1 : ℕ) : ℤ) + 1) • d) (by rw [redV_add_smul, ha])`. Establish `e : r (a y + (((1 : ℕ) : ℤ) + 1) • d) = r (a y) + (r d + r d)`. Rewrite using `[map_add, map_smul, show (((1 : ℕ) : ℤ) + 1) = 2 by norm_num, two_smul]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [toReal, LinearMap.compr₂_apply, Algebra.linearMap_apply, eq_intCast]`. Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_least_points {X : Type} [AddCommGroup X] {n : ℕ} (r : (Fin n → ℤ) →ₗ[ℤ] X)
     (hr : Function.Surjective r) (β : LinearMap.BilinForm ℤ X) (hβ : ∀ y, 0 ≤ β y y) :
@@ -45,7 +45,7 @@ theorem exists_least_points {X : Type} [AddCommGroup X] {n : ℕ} (r : (Fin n �
   exact_mod_cast h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Establish `h` using `hβ (w + (-(β w w + 1) * β z w) • z)`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, hz, hs w z] at h`. Establish `h1 : 1 ≤ β z w * β z w` using `mul_self_pos.2 ht`. Establish `h2` using `hβ w`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -59,13 +59,13 @@ theorem apply_eq_zero_of_self {X : Type} [AddCommGroup X] (β : LinearMap.BilinF
   nlinarith
 
 /- English proof (translation)
-Establish `hdiv : ∀ (k : ℕ) (z w : X), (2 : ℤ) ^ k ∣ β z w`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `z w`. Take `⟨i, x, rfl⟩` from `hc z`. Take `⟨m, hm⟩` from `ih x w`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, LinearMap.add_apply, apply_eq_zero_of_self β hs hβ (h0 i) w, hm]`. Expand and normalize the polynomial expressions, which then agree. Use `LinearMap.ext₂ fun z w => ?_` and prove the remaining obligations. Use `Int.eq_zero_of_abs_lt_dvd (hdiv (β z w).natAbs z w) ?_` and prove the remaining obligations. Rewrite using `[Int.abs_eq_natAbs]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.lt_two_pow_self` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_covers {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (hs : ∀ y z, β y z = β z y)
     (hβ : ∀ y, 0 ≤ β y y) {ι : Type} {a : ι → X} (hc : Covers2 a) (h0 : ∀ i, β (a i) (a i) = 0) : β = 0 := by
@@ -86,21 +86,19 @@ theorem eq_zero_of_covers {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm 
   exact_mod_cast Nat.lt_two_pow_self
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar g q X _ _ _ _ hg hq`. Establish `hfin : Module.Finite ℤ X` using `Module.Finite.trans O X`. Establish `hO : Module.Free ℤ O` using `Module.free_of_finite_type_torsion_free'`. Establish `htf : Module.IsTorsionFree ℤ X` using `Module.IsTorsionFree.trans O`. Establish `hfree : Module.Free ℤ X` using `Module.free_of_finite_type_torsion_free'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Module.finrank ℤ X ≤ g`. Rewrite using `[GlobalTheory.finrank_int_eq_mul_of_finite (O := O) (M := X)]`. Conclude with `(Nat.mul_le_mul_left _ hq).trans hg`. Set `b : Module.Basis (Fin (Module.finrank ℤ X)) ℤ X` to `Module.finBasis ℤ X`. Set `r : (Fin (Module.finrank ℤ X) → ℤ) →ₗ[ℤ] X` to `b.equivFun.symm.toLinearMap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : Function.Surjective r` using `b.equivFun.symm.surjective`. Establish `key : ∀ β : LinearMap.BilinForm ℤ X, (∀ y, 0 ≤ β y y) → ∃ a : (Fin (Module.finrank ℤ X) → ZMod (1 + 1)) → Fin (Module.finrank ℤ X) → ℤ, Covers2 (fun y => r (a y)) ∧ (vorFun O g).evalZ β = 2 ^ (g - Module.finrank ℤ X) * ∑ y, (β (r (a y)) (r (a y)) : ℝ)`. Introduce `β hβ`. Take `⟨a, ha, hm⟩` from `exists_least_points r hr β hβ`. Take `⟨hc, h⟩` from `vorFun_value_le O bar g X _ r a hr ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, hc, ?_⟩` and prove the remaining obligations. Establish `hB : ∀ y, 0 ≤ toReal β y y` using `fun y => by`. Simplify using `only [toReal, LinearMap.compr₂_apply, Algebra.linearMap_apply, eq_intCast]`. Conclude with `hβ y` after adjusting the coercions. Establish `h1` using `((h (toReal β) hB).2).2 hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[evalR_toReal]`. Establish `h2 : ∀ u v, toReal β u v = (β u v : ℝ)` using `fun u v => by`. Simplify using `only [toReal, LinearMap.compr₂_apply, Algebra.linearMap_apply, eq_intCast]`. Simplify using `only [h2] at h1`. Establish `h3 : (2 : ℝ) ^ g = 2 ^ Module.finrank ℤ X * 2 ^ (g - Module.finrank ℤ X)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' hn]`. Rewrite `h1` using `[h3, mul_assoc]`. Conclude with `mul_left_cancel₀ (by positivity) h1`. Use `⟨fun β hβ => ?_, fun β hs hβ hne => ?_⟩` and prove the remaining obligations. Take `⟨a, -, h⟩` from `key β hβ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨2 ^ (g - Module.finrank ℤ X) * ∑ y, β (r (a y)) (r (a y)), by rw [h]; push_cast; rfl⟩`. Take `⟨a, hc, h⟩` from `key β hβ`. Establish `hnn : ∀ y, (0 : ℝ) ≤ (β (r (a y)) (r (a y)) : ℝ)` using `fun y => by exact_mod_cast hβ _`. Rewrite using `[h]`. Use `mul_pos (by positivity) (lt_of_le_of_ne (Finset.sum_nonneg fun y _ => hnn y) fun h0 => hne ?_)` and prove the remaining obligations.
-
-Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg fun y _ => hnn y).1 h0.symm`. Conclude with `eq_zero_of_covers β hs hβ hc fun y => by exact_mod_cast h1 y (Finset.mem_univ y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vorFun_int_pos : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (g q : ℕ)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X],

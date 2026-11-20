@@ -9,7 +9,7 @@ open scoped Matrix ENNReal
 namespace GlobalTheory.SchrKeepsSchA
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ p Φ hΦ`. Conclude with `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ p Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schr_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (p : (κ → AF F) × (κ → AF F)), ∀ Φ ∈ schA F κ, schr ψ p Φ ∈ schA F κ := by

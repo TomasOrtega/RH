@@ -21,7 +21,7 @@ def FreeSheafBasis.Statement : Prop :=
   ∀ (Y : Scheme.{u}) (n : ℕ), IsBasisOn (freeModule Y n) ⊤ (stdSection Y n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Iso.refl _⟩, ⟨stdSection SpecZ 2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem FreeSheafBasis.objects_inhabited :
     Nonempty ((freeModule SpecZ 2 : SpecZ.Modules) ≅ freeModule SpecZ 2) ∧

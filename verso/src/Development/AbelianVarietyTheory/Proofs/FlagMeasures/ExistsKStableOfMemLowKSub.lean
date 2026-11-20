@@ -9,11 +9,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs, hws⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hw`. Use `⟨⨆ i ∈ s, i, ?_, ?_, hws⟩` and prove the remaining obligations. Establish `hfg : (⨆ i ∈ s, i).FG`. Use `Submodule.fg_biSup s (fun i => i) (fun i hi => ?_)` and prove the remaining obligations. Take `⟨hfin, -⟩` from `hs hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(Submodule.fg_iff_finiteDimensional i).2 hfin`. Conclude with `(Submodule.fg_iff_finiteDimensional _).1 hfg`. Introduce `g hg v hv`. Establish `hle : (⨆ i ∈ s, i) ≤ (⨆ i ∈ s, i).comap ((σ g : H →L[ℂ] H) : H →ₗ[ℂ] H)`. Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hstab, -⟩` from `hs hi`. Introduce `x hx`. Conclude with `(le_iSup₂ (f := fun j (_ : j ∈ s) => j) i hi) (hstab g hg x hx)`. Conclude with `hle hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_kStable_of_mem_lowKSub (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (w : H)
@@ -36,7 +36,7 @@ theorem exists_kStable_of_mem_lowKSub (n : ℕ) (ε : Fin n → Bool) (lam : Fin
     exact hle hv
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ w hw`. Take `⟨S, hfin, hstab, hwS⟩` from `exists_kStable_of_mem_lowKSub n ε lam H σ w hw`. Conclude with `⟨S, hfin, hwS, hstab⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKFin_of_mem_lowKSub : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (w : H), w ∈ lowKSub ε lam σ → IsKFin ε σ w := by
   intro n ε lam H _ _ σ w hw

@@ -10,7 +10,7 @@ noncomputable section
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Conclude with `fun y hy => (((A.holo j k y hy).contDiffAt (n := ∞)).restrict_scalars ℝ).contDiffWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem st_trans_smooth (A : FinHolAtlas e X) (j k : Fin A.n) :
     ContDiffOn ℝ ∞ (A.chart k ∘ (A.chart j).symm)
@@ -18,23 +18,21 @@ theorem st_trans_smooth (A : FinHolAtlas e X) (j k : Fin A.n) :
   exact fun y hy => (((A.holo j k y hy).contDiffAt (n := ∞)).restrict_scalars ℝ).contDiffWithinAt
 
 /- English proof (translation)
-Use `choose jx hjx using A.cover`. Set `G : X → Set X` to `fun x => (A.chart (jx x)).source ∩ ⋂ i, (Φ i).U x`. Establish `hGo : ∀ x, IsOpen (G x)` using `fun x => (A.chart (jx x)).open_source.inter (isOpen_iInter_of_finite fun i => (Φ i).isOpen_U x)`. Establish `hGx : ∀ x, x ∈ G x` using `fun x => ⟨hjx x, Set.mem_iInter.mpr fun i => (Φ i).mem_U x⟩`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover G hGo (fun x _ => Set.mem_iUnion.mpr ⟨x, hGx x⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `pt : Fin t.card → X` to `fun m => (t.equivFin.symm m : X)`. Set `ch : Fin t.card → OpenPartialHomeomorph X (Fin e → ℂ)` to `fun m => (A.chart (jx (pt m))).restr (G (pt m))`. Establish `hsrc : ∀ m, (ch m).source = G (pt m)`. Introduce `m`. Simplify using `only [ch, OpenPartialHomeomorph.restr_source, (hGo _).interior_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Set.inter_eq_right.mpr Set.inter_subset_left`. Establish `hcov : ∀ x, ∃ m, x ∈ (ch m).source`. Introduce `x`. Take `⟨y, hy, hxy⟩ : ∃ y ∈ t, x ∈ G y` from `by simpa using ht (Set.mem_univ x)`. Use `⟨t.equivFin ⟨y, hy⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hsrc]`. Simplify `hxy` using `[pt]`. Establish `htr : ∀ a b, ContDiffOn ℝ ∞ (ch b ∘ (ch a).symm) ((ch a).target ∩ (ch a).symm ⁻¹' (ch b).source)`. Introduce `a b`. Simplify using `only [ch, OpenPartialHomeomorph.restr_apply, OpenPartialHomeomorph.restr_symm_apply, OpenPartialHomeomorph.restr_target, OpenPartialHomeomorph.restr_source]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(st_trans_smooth A _ _).mono fun y hy => ⟨hy.1.1, hy.2.1⟩`. Take `⟨χ, hχ0, hχ1, hχs, hχsm⟩` from `exists_chart_partition ch hcov htr`. Use `⟨t.card, χ, fun m => G (pt m), fun m => jx (pt m), fun m _ => pt m, ?_, hχ0, hχ1, fun m => (hχs m).trans (hsrc m).subset, fun m => hGo _, fun m => Set.inter_subset_left, fun m i x hx => Set.mem_iInter.mp hx.2 i⟩` and prove the remaining obligations. Introduce `m k y hy`. Take `⟨n, hn⟩` from `hcov ((A.chart k).symm y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyk : y ∈ (A.chart k).target` using `hy.1`. Establish `hxs : (A.chart k).symm y ∈ (A.chart (jx (pt n))).source`. Establish `hn'` using `hn`. Rewrite `hn'` using `[hsrc]`. Conclude with `hn'.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx_in : (A.chart (jx (pt n))) ((A.chart k).symm y) ∈ (ch n).target` using `(ch n).map_source hn`. Establish `hsm` using `hχsm m n`. Simplify using `only [ch, OpenPartialHomeomorph.restr_symm_apply] at hsm`. Establish `hf` using `hsm.contDiffAt (((A.chart (jx (pt n))).restr (G (pt n))).open_target.mem_nhds hx_in)`. Establish `hW : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart (jx (pt n))).source)` using `(A.chart k).isOpen_inter_preimage_symm (A.chart (jx (pt n))).open_source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hg` using `(st_trans_smooth A k (jx (pt n))).contDiffAt (hW.mem_nhds ⟨hyk, hxs⟩)`. Establish `hc` using `hf.comp y hg`. Use `(hc.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [hW.mem_nhds ⟨hyk, hxs⟩] with z hz`. Simplify using `only [Function.comp_apply]`.
-
-Rewrite using `[(A.chart (jx (pt n))).left_inv hz.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem st_exists_good_partition [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) {r : ℕ}
     (Φ : Fin r → LocPot X) :

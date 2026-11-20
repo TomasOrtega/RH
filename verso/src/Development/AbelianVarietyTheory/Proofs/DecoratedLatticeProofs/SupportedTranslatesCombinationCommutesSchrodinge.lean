@@ -24,7 +24,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨v, ε, hε, hsum⟩` from `h.1.2.2`. Take `⟨q, hqe, -⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v es ε h.1 hε hsum`. Establish `hv : q.v = PP.under (𝓞 D.host.F)` using `GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under q (hqe ▸ h)`. Conclude with `GlobalTheory.LevPin.mxAt_of_half q (hv ▸ hQ) w (hqe ▸ hw)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mxAt_of_idemAt {es : AE D} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt es PP) {Q : GlobalTheory.FinPl.Pl D → Prop}
     (hQ : Q (PP.under (𝓞 D.host.F))) {m n : ℕ} {w : Mx D m n} (hw : IsHalf (es + cA D es) w) : GlobalTheory.FinPl.MxAt Q w := by
@@ -34,13 +34,13 @@ theorem mxAt_of_idemAt {es : AE D} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.I
   exact GlobalTheory.LevPin.mxAt_of_half q (hv ▸ hQ) w (hqe ▸ hw)
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `hs`. Introduce `i j`. Break down `hx with hx | hx` into its components or cases. Rewrite using `[← hx i j, Finset.sum_mul]`. Use `Ideal.sum_mem _ fun PP hPP => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : IsHalf (es PP + cA D (es PP)) (es PP • x)` using `fun a b => by`. Take `⟨h1, h2, -⟩` from `(hes PP hPP).1`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, add_mul, ← mul_assoc, h1, ← mul_assoc, mul_comm (cA D (es PP)), h2, zero_mul, add_zero]`. Use `mxAt_of_idemAt (Q := fun p => ∃ PP ∈ Pg, p = PP.under (𝓞 D.host.F)) (hes PP hPP) ⟨PP, hPP, rfl⟩ hw i j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← hx i j, map_sum, Finset.sum_mul]`. Use `Ideal.sum_mem _ fun PP hPP => ?_` and prove the remaining obligations. Establish `hw : IsHalf (es PP + cA D (es PP)) (cA D (es PP) • x)` using `fun a b => by`. Take `⟨h1, h2, -⟩` from `(hes PP hPP).1`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, add_mul, ← mul_assoc, h2, zero_mul, zero_add, ← mul_assoc, ← map_mul, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `mxAt_of_idemAt (Q := fun p => ∃ PP ∈ Pg, p = PP.under (𝓞 D.host.F)) (hes PP hPP) ⟨PP, hPP, rfl⟩ hw i j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mxAt_of_idemSum {e : AE D} {Pg : Finset (Pl D.host.E)} (hs : IsIdemSum e Pg) {m n : ℕ} {x : Mx D m n}
     (hx : IsHalf e x ∨ IsHalf (cA D e) x) :
@@ -65,11 +65,11 @@ theorem mxAt_of_idemSum {e : AE D} {Pg : Finset (Pl D.host.E)} (hs : IsIdemSum e
     rwa [Matrix.smul_apply, smul_eq_mul] at this
 
 /- English proof (translation)
-Introduce `D ψ hψ S T Λ e Pg P' hs hd d hdc f₁ T₁ T₂ hT₁ hT₂`. Establish `hd' : ∀ p, (∃ PP ∈ Pg, p = PP.under (𝓞 D.host.F)) → ¬ P' p`. Introduce and unpack `p ⟨PP, hPP, rfl⟩`. Conclude with `hd PP hPP`. Establish `hcomm : ∀ x : WO S T, GlobalTheory.FinPl.MxAt (fun p => ∃ PP ∈ Pg, p = PP.under (𝓞 D.host.F)) x → ∀ f, heisO ψ S T x (comb ψ S T d f) = comb ψ S T d (heisO ψ S T x f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx f`. Establish `h` using `(GlobalTheory.DisjComb.main D ψ hψ S T _ P' hd').1 (Finsupp.single x 1) d (fun u hu => by`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Conclude with `hx) hdc f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h` using `only [GlobalTheory.DisjComb.comb_single]`. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT₂, hT₁.trans Φ hΦ x hx, ← hcomm x (mxAt_of_idemSum hs (Or.inl hx)), hT₂]`. Rewrite using `[hT₂, hT₁.modul Φ hΦ y hy, ← hcomm y (mxAt_of_idemSum hs (Or.inr hy)), hT₂]`. Rewrite using `[hT₂, hT₁.vac]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (Λ : AddSubgroup (WO S T)) (e : AE D) (Pg : Finset (Pl D.host.E)) (P' : GlobalTheory.FinPl.Pl D → Prop), IsIdemSum e Pg → (∀ PP ∈ Pg, ¬ P' (PP.under (𝓞 D.host.F))) → ∀ (d : WO S T →₀ ℂ), GlobalTheory.FinPl.CombAt P' d → ∀ (f₁ : WO S T → ℂ) (T₁ T₂ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₁ T₁ → (∀ Φ, T₂ Φ = comb ψ S T d (T₁ Φ)) → IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 (comb ψ S T d f₁) T₂ := by
   intro D ψ hψ S T Λ e Pg P' hs hd d hdc f₁ T₁ T₂ hT₁ hT₂

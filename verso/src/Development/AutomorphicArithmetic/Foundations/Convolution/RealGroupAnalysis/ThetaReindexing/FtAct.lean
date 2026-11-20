@@ -8,21 +8,21 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D h φ v`. Take `⟨ρ, hρ, -, hB⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Establish `hmeas : ∀ k, Measurable (D.act k)`. Introduce `k`. Establish `: D.act k = fun x => (ρ k).val *ᵥ x` using `funext (hρ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Continuous.matrix_mulVec continuous_const continuous_id).measurable`. Establish `hinv : ∀ y, D.act h⁻¹ (D.act h y) = y`. Introduce `y`. Rewrite using `[hρ, hρ, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinv' : ∀ y, D.act h (D.act h⁻¹ y) = y`. Introduce `y`. Rewrite using `[hρ, hρ, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e : V4 F ≃ᵐ V4 F` to `{ toFun := D.act h, invFun := D.act h⁻¹, left_inv := hinv, right_inv := hinv', measurable_toFun := hmeas h, measurable_invFun := hmeas h⁻¹ }`. Establish `hc : 0 < ab (nu F h)` using `(IdeleGroup.ideleModule F (nu F h)).2`. Establish `key : ∀ g : V4 F → ℂ, ∫ y, g (D.act h y) ∂(adeleMeasurePi F) = (((ab (nu F h))⁻¹ ^ 2 : ℝ) : ℂ) * ∫ y, g y ∂(adeleMeasurePi F)`. Introduce `g`. Establish `h1` using `MeasureTheory.integral_map_equiv (μ := adeleMeasurePi F (ι := Fin 4)) e g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Measure.map (⇑e) (adeleMeasurePi F (ι` using `Fin 4)) = ENNReal.ofReal ((ab (nu F h))⁻¹ ^ 2) • adeleMeasurePi F (ι := Fin 4) := UpperTheory.ConvolutionTheory.R2.D.measAct F E D h`. Rewrite `h1` using `[h2, integral_smul_measure, ENNReal.toReal_ofReal (by positivity)]`. Establish `h3 : ∫ y, g (D.act h y) ∂(adeleMeasurePi F) = ∫ x, g (e x) ∂(adeleMeasurePi F)` using `rfl`. Rewrite using `[h3, ← h1, Complex.real_smul]`. Establish `hk` using `key (fun y => φ.1 (D.act h⁻¹ y) * ψ (B4 D.δ y v))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ y, φ.1 (D.act h⁻¹ (D.act h y)) * ψ (B4 D.δ (D.act h y) v) = φ.1 y * ψ (B4 D.δ y (fun i => (nu F h : A F) * D.act h⁻¹ v i))`. Introduce `y`. Establish `hb : B4 D.δ (D.act h y) v = B4 D.δ y (fun i => (nu F h : A F) * D.act h⁻¹ v i)`. Establish `h4 : B4 D.δ (D.act h y) (D.act h (D.act h⁻¹ v)) = (nu F h : A F) * B4 D.δ y (D.act h⁻¹ v)` using `hB h _ _`. Rewrite `h4` using `[hinv' v]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Simplify using `only [B4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hinv, hb]`. Simplify using `only [hpt] at hk`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `ft4`. Rewrite using `[hk, ← mul_assoc, ← Complex.ofReal_mul]`. Establish `: ab (nu F h) ^ 2 * (ab (nu F h))⁻¹ ^ 2 = 1` using `by field_simp`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.ftAct :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (h : GL (Fin 2) (A E)) (φ : S4 F) (v : V4 F),

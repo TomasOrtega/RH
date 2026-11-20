@@ -6,9 +6,7 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PerfectProj
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite k B`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_nilradical (R := B)`. Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : x ^ n ∈ (nilradical B) ^ n` using `Ideal.pow_mem_pow (mem_nilradical.mpr hx) n`. Rewrite `hmem` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`.
-
-Conclude with `pow_eq_zero_of_le (Nat.lt_pow_self hp).le hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_prime_pow_kill (p : ℕ) (hp : 1 < p) (k B : Type) [Field k] [CommRing B]
     [Algebra k B] [Module.Finite k B] :
@@ -21,9 +19,9 @@ theorem exists_pow_prime_pow_kill (p : ℕ) (hp : 1 < p) (k B : Type) [Field k] 
   exact pow_eq_zero_of_le (Nat.lt_pow_self hp).le hmem
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a; exact ⟨a, by simp⟩`. Consider the case `succ m ih`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `ih a`. Take `⟨c, hc⟩` from `h b`. Conclude with `⟨c, by rw [hb, hc, ← pow_mul, pow_succ']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_pow_prime_pow (p : ℕ) {A : Type} [CommRing A] (π : A → A)
     (h : ∀ a, ∃ b, π a = π b ^ p) : ∀ (m : ℕ) (a : A), ∃ b, π a = π b ^ (p ^ m) := by
@@ -37,19 +35,17 @@ theorem exists_eq_pow_prime_pow (p : ℕ) {A : Type} [CommRing A] (π : A → A)
     exact ⟨c, by rw [hb, hc, ← pow_mul, pow_succ']⟩
 
 /- English proof (translation)
-Introduce `p _ k _ _ A B _ _ _ _ _ π π' hA hB`. Break down `subsingleton_or_nontrivial B with hs | hs` into its components or cases. Conclude with `⟨fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _, fun _ _ => Subsingleton.elim _ _⟩`. Use `haveI : CharP B p := charP_of_injective_algebraMap (algebraMap k B).injective p`. Take `⟨r, hr⟩` from `exists_pow_prime_pow_kill p (Fact.out : p.Prime).one_lt k B`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `iA` using `exists_eq_pow_prime_pow p π hA.2 r`. Establish `iB` using `exists_eq_pow_prime_pow p π' hB.2 r`. Establish `h3 : ∀ b, IsNilpotent (π' b) → π' b = 0`. Introduce `b hb`. Take `⟨c, hc⟩` from `iB b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hb`, the goal using `[hc]`. Conclude with `hr _ hb.of_pow`. Use `⟨fun f a => ?_, fun y => ?_, h3⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `iA a`. Take `⟨c, hc⟩` from `iB (f a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IsNilpotent (f (π a) - π' (f a))`. Establish `h1 : IsNilpotent (f (a - π a))` using `(hA.1 a).map f`. Establish `h2` using `hB.1 (f a)`. Establish `e : f (π a) - π' (f a) = (f a - π' (f a)) - f (a - π a)` using `by rw [map_sub]; ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Commute.all _ _).isNilpotent_sub h2 h1`. Establish `he : f (π a) - π' (f a) = (f (π b) - π' c) ^ (p ^ r)`. Rewrite using `[sub_pow_char_pow, hb, hc, map_pow]`. Rewrite `hd` using `[he]`. Conclude with `sub_eq_zero.mp (he.trans (hr _ hd.of_pow))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `iB y`. Establish `he : π' (π' y) - π' y = (π' (π' c) - π' c) ^ (p ^ r)`. Rewrite using `[sub_pow_char_pow, hc, map_pow]`. Establish `hn : IsNilpotent (π' (π' c) - π' c)`. Rewrite using `[← neg_sub]`.
-
-Conclude with `(hB.1 (π' c)).neg`. Conclude with `sub_eq_zero.mp (he.trans (hr _ hn))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natural_idempotent_reduced : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (A B : Type) [CommRing A] [Algebra k A] [CommRing B] [Algebra k B] [Module.Finite k B] (π : A →ₐ[k] A) (π' : B →ₐ[k] B), ((∀ a : A, IsNilpotent (a - π a)) ∧ ∀ a : A, ∃ b : A, π a = π b ^ p) → ((∀ a : B, IsNilpotent (a - π' a)) ∧ ∀ a : B, ∃ b : B, π' a = π' b ^ p) → (∀ (f : A →ₐ[k] B) (a : A), f (π a) = π' (f a)) ∧ (∀ b, π' (π' b) = π' b) ∧ ∀ b, IsNilpotent (π' b) → π' b = 0 := by
   intro p _ k _ _ A B _ _ _ _ _ π π' hA hB

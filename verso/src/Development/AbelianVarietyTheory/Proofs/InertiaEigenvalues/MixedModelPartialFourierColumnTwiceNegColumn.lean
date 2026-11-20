@@ -24,7 +24,7 @@ def intLat (F : Type) [NormedField F] [IsUltrametricDist F] (r : ℕ) : AddSubgr
     simpa using h1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ Set.univ.pi (fun _ => Metric.closedBall (0 : F) 1) ↔ _`. Simplify using `[Set.mem_pi]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mem_intLat {F : Type} [NormedField F] [IsUltrametricDist F] {r : ℕ} (x : Fin r → F) :
     x ∈ intLat F r ↔ ∀ i, ‖x i‖ ≤ 1 := by
@@ -32,7 +32,7 @@ theorem mem_intLat {F : Type} [NormedField F] [IsUltrametricDist F] {r : ℕ} (x
   simp [Set.mem_pi]
 
 /- English proof (translation)
-Establish `hc : Continuous fun v : Fin r → F => ((A, v, c, l) : Gl r F)` using `by fun_prop`. Use `⟨hf.1.comp_continuous hc, ?_⟩` and prove the remaining obligations. Establish `he : IsClosedEmbedding fun v : Fin r → F => ((A, v, c, l) : Gl r F)`. Use `Function.LeftInverse.isClosedEmbedding (f := fun Y : Gl r F => Y.2.1) (fun _ => rfl) (by fun_prop) hc` and prove the remaining obligations. Conclude with `hf.2.comp_isClosedEmbedding he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isTest_slice {F : Type} [NormedField F] {r : ℕ} {f : Gl r F → ℂ} (hf : IsTest f)
     (A : Matrix (Fin r) (Fin r) F) (c : Fin r → F) (l : F) : IsTest fun v : Fin r → F => f (A, v, c, l) := by
@@ -43,23 +43,21 @@ theorem isTest_slice {F : Type} [NormedField F] {r : ℕ} {f : Gl r F → ℂ} (
   exact hf.2.comp_isClosedEmbedding he
 
 /- English proof (translation)
-Use `letI := M.mF`. Use `haveI := M.bF`. Use `haveI := M.haarF`. Use `haveI : IsUltrametricDist F := Unram.ultraF E`. Use `haveI : LocallyCompactSpace F := Unram.lcF E`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Establish `hcond` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).2.2.1`. Establish `hsymm : LinearMap.BilinForm.IsSymm (dotProductBilin F F : LinearMap.BilinForm F (Fin r → F))` using `⟨fun x y => by simp [dotProduct_comm]⟩`. Establish `hnd : LinearMap.BilinForm.Nondegenerate (dotProductBilin F F : LinearMap.BilinForm F (Fin r → F))`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `x hx`. Use extensionality with `i`. Simplify using `using hx (Pi.single i 1)`. Introduce `x hx`. Use extensionality with `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `using hx (Pi.single i 1)`. Establish `hopen : IsOpen (intLat F r : Set (Fin r → F))` using `isOpen_set_pi Set.finite_univ fun _ _ => IsUltrametricDist.isOpen_closedBall _ one_ne_zero`. Establish `hcpt : IsCompact (intLat F r : Set (Fin r → F))` using `isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hvol : (Measure.pi fun _ : Fin r => M.μF) (intLat F r : Set (Fin r → F)) = 1`. Express the relevant statement in the definitionally equal form `(Measure.pi fun _ : Fin r => M.μF) (Set.univ.pi fun _ => Metric.closedBall (0 : F) 1) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.pi_pi]`. Simplify using `[M.volF]`. Establish `hdual : {y : Fin r → F | ∀ x ∈ intLat F r, ψ ((dotProductBilin F F : LinearMap.BilinForm F (Fin r → F)) x y) = 1} = (intLat F r : Set (Fin r → F))`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, mem_intLat, dotProductBilin_apply_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `(hcond (y i)).1 fun e he => ?_` and prove the remaining obligations. Use `h (Pi.single i e) (fun j => by` as an intermediate fact. Distinguish the cases in `hj : j = i`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hj` using the available equality. Simplify using `using he`. Simplify using `[hj])`. Simplify using `using this`. Introduce `h x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hψ.1 _ ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hx i) (norm_nonneg _) (h i)`. Establish `key` using `((GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ (Fin r → F) (dotProductBilin F F) hsymm hnd (Measure.pi fun _ : Fin r => M.μF) inferInstance).1 (intLat F r) hopen hcpt).1`.
-
-Rewrite `key` using `[hdual, hvol]`. Conclude with `key.2 (mul_one 1)`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_pi (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :
@@ -113,7 +111,7 @@ theorem selfDual_pi (F E : Type) [NontriviallyNormedField F] [NontriviallyNormed
   exact key.2 (mul_one 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Conclude with `(selfDual_pi F E r M ψ hψ).2 _ (isTest_slice hf Y.1 Y.2.2.1 Y.2.2.2) Y.2.1`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ptrB_ptrB (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ)

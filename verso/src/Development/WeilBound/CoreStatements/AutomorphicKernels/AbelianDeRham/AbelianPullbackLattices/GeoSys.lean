@@ -17,7 +17,7 @@ namespace MainStatements.Hodge.Pf.AXO
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Over.tensorObj_hom, Limits.pullback.condition]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_tensor (A : Over (Sp R)) [IsSeparated A.hom] : IsSeparated (A ⊗ A).hom := by
   rw [Over.tensorObj_hom, Limits.pullback.condition]

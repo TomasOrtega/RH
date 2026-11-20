@@ -96,7 +96,7 @@ def lowEquiv (hm : n < m) (hi : i ≤ n) : β i ≃ SpIdx β n m i where
     | .top h => absurd h (by omega)
 
 /- English proof (translation)
-Break down `b with ⟨_, h'⟩ | _ | h'` into its components or cases. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_cpl (hm : m ≠ n + 1) (h : i = n + 1) (b : SpIdx β n m i) : b = .cpl h := by
   rcases b with ⟨_, h'⟩ | _ | h'
@@ -105,7 +105,7 @@ theorem eq_cpl (hm : m ≠ n + 1) (h : i = n + 1) (b : SpIdx β n m i) : b = .cp
   · omega
 
 /- English proof (translation)
-Break down `b with ⟨_, h'⟩ | h' | _` into its components or cases. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 -/
 theorem eq_top (hm : n + 1 < m) (h : i = m) (b : SpIdx β n m i) : b = .top h := by
   rcases b with ⟨_, h'⟩ | h' | _
@@ -114,7 +114,7 @@ theorem eq_top (hm : n + 1 < m) (h : i = m) (b : SpIdx β n m i) : b = .top h :=
   · rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun b => by rcases b with ⟨_, h'⟩ | h' | h' <;> omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_of_lt (hm : n + 1 < m) (h : m < i) : IsEmpty (SpIdx β n m i) :=
   ⟨fun b => by rcases b with ⟨_, h'⟩ | h' | h' <;> omega⟩
@@ -160,7 +160,7 @@ theorem spFam_mem_top (h : m = m) : (spFam F n m C T m).mem (.top h) = T.gsd := 
 variable {F n m C T}
 
 /- English proof (translation)
-Introduce and unpack `(⟨b, h⟩ | rfl | rfl)`. Conclude with `hF i h b`. Conclude with `hC`. Conclude with `hT`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spFam_ok (hF : ∀ i, i ≤ n → (F i).Ok) (hC : C.gsd.Ok) (hT : T.gsd.Ok) (i : ℕ) : (spFam F n m C T i).Ok := by
   rintro (⟨b, h⟩ | rfl | rfl)
@@ -219,9 +219,9 @@ theorem spIn_mat (i : ℕ) (φ : (F i).Forms) (al : (F i).β) (h : i ≤ n) : sp
 variable {hS : ∀ i, (spFam F n m C T i).Ok}
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih`. Establish `hi' : i ≤ n` using `by omega`. Use `show (∑ b : (spFam F n m C T i).β, ((spKer kk k1 k2 i b (.mat al hi)).opOf (hS i b) _) ∘ₗ (LinearMap.proj b)) _ = (∑ b : (F i).β, ((kk i b al).opOf (hF i b) _) ∘ₗ (LinearMap.proj b)) _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply]`. Use `(Fintype.sum_equiv (SpIdx.lowEquiv (β := fun j => (F j).β) hm hi') _ _ fun b => ?_).symm` and prove the remaining obligations. Conclude with `congrArg ((kk i b al).opOf (hF i b) ((F i).mem b).outSec) (ih hi' b).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spKer_colTo_low (hm : n < m) (hF : ∀ i, (F i).Ok) (φ : (F 0).Forms) (i : ℕ) (hi : i ≤ n) (al : (F i).β) :
     (spKer kk k1 k2).colTo hS i (spIn n m C T 0 φ) (.mat al hi) = kk.colTo hF i φ al := by
@@ -236,7 +236,7 @@ theorem spKer_colTo_low (hm : n < m) (hF : ∀ i, (F i).Ok) (φ : (F 0).Forms) (
     exact congrArg ((kk i b al).opOf (hF i b) ((F i).mem b).outSec) (ih hi' b).symm
 
 /- English proof (translation)
-Use `show (∑ b : (spFam F n m C T n).β, ((spKer kk k1 k2 n b (.cpl h)).opOf (hS n b) _) ∘ₗ (LinearMap.proj b)) _ = _`. Rewrite using `[LinearMap.sum_apply]`. Use `(Fintype.sum_equiv (SpIdx.lowEquiv (β := fun j => (F j).β) hm le_rfl) _ _ fun b => ?_).symm` and prove the remaining obligations. Conclude with `congrArg ((k1 b).opOf (hF n b) ((F n).mem b).outSec) (spKer_colTo_low kk k1 k2 hm hF φ n le_rfl b).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spKer_colTo_cpl (hm : n < m) (hF : ∀ i, (F i).Ok) (φ : (F 0).Forms) (h : n + 1 = n + 1) :
     (spKer kk k1 k2).colTo hS (n + 1) (spIn n m C T 0 φ) (.cpl h) =
@@ -247,7 +247,7 @@ theorem spKer_colTo_cpl (hm : n < m) (hF : ∀ i, (F i).Ok) (φ : (F 0).Forms) (
   exact congrArg ((k1 b).opOf (hF n b) ((F n).mem b).outSec) (spKer_colTo_low kk k1 k2 hm hF φ n le_rfl b).symm
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Use `show (∑ b : (spFam F n (n + 2) C T (n + 1)).β, ((spKer kk k1 k2 (n + 1) b (.top h)).opOf (hS (n + 1) b) _) ∘ₗ (LinearMap.proj b)) _ = _`. Rewrite using `[LinearMap.sum_apply, Fintype.sum_eq_single (SpIdx.cpl rfl) fun b hb => absurd (SpIdx.eq_cpl (by omega) rfl b) hb]`. Conclude with `congrArg (k2.op hC) (spKer_colTo_cpl kk k1 k2 (by omega) hF φ rfl)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spKer_colTo_top (hm : m = n + 2) (hF : ∀ i, (F i).Ok) (hC : C.gsd.Ok) (φ : (F 0).Forms) (h : m = m) :
     (spKer kk k1 k2).colTo hS m (spIn n m C T 0 φ) (.top h) =
@@ -260,13 +260,13 @@ theorem spKer_colTo_top (hm : m = n + 2) (hF : ∀ i, (F i).Ok) (hC : C.gsd.Ok) 
 end Splice
 
 /- English proof (translation)
-Establish `hC` using `cplGSD_ok Y (hF (n + 1) b)`. Rewrite using `[spKer_colTo_top kk k1 k2 hm hF hC φ h, map_sum]`. Use `show _ = ((∑ al : (F n).β, (((A al).comp (hF (n + 1) b) ((F (n + 1)).mem b).outSec).op (hF n al)) ∘ₗ (LinearMap.proj al)) (kk.colTo hF n φ)).1 d₁`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun al _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h', l1, l2, e1, e2, e3⟩` from `cpl_op_eq_comp (A al) (hF n al) (hF (n + 1) b)`. Establish `e4 : l1 = k1 al`. Take `⟨a, ha⟩` from `l1`. Establish `: a = (k1 al).k` using `funext fun d₀ => funext fun d => (e1 d₀ d).trans (h1 al d₀ d)`. Substitute `this` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, e3, e4]`. Use `show e (k2.appOf hC _ _ (til d₁)) = l2.appOf hC _ _ d₁`. Unfold `ClsKer.appOf`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, e2, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spKer_colTo_eq_colCpl {F : ℕ → GFam K} {n m : ℕ} (hm : m = n + 2) (hF : ∀ i, (F i).Ok) {b : (F (n + 1)).β}
     {Y : Cpl ((F (n + 1)).mem b)} {T : MemOn (F m)} (kk : KerFam F)

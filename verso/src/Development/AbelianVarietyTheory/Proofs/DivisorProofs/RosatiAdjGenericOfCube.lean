@@ -11,7 +11,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.RosGeneric
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun _ => inferInstance, fun e => GlobalTheory.Mum.EndModel.thickMap_map g e, fun e => (hg e).1, fun e => (hg e).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem linEnd_of_actsAs {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -21,9 +21,9 @@ theorem linEnd_of_actsAs {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D :
     fun e => (hg e).2⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U O _ _ _ o a g g' hg hg' ag ag'`. Establish `hE` using `GlobalTheory.Mum.EndModel.endData_of_oAct O D.toPre o a`. Establish `l1 : LinEnd U.toUnifPre (o.onB.act a) (DistribSMul.toAddMonoidHom D.toPre.X (star a)) g` using `linEnd_of_actsAs U.toUnifPre ag`. Establish `l2 : LinEnd U.toUnifPre (o.onB.act (star a)) (DistribSMul.toAddMonoidHom D.toPre.X a) g'`. Use `linEnd_of_actsAs (h := DistribSMul.toAddMonoidHom D.toPre.X (star (star a))) U.toUnifPre ag'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [star_star]`. Establish `H` using `hcube R hR D A G hG U _ _ _ _ hE g g' l1 l2`. Take `⟨u, hu⟩` from `(GlobalTheory.NormRos.normRos_of_lbIso _ G U.LG.L U.LG.isLB g g' H).1`. Use `U.gen_hom` as an intermediate fact. Conclude with `GlobalTheory.EndRosati.rosatiAdj_generic U.toUnifPre (by simp) (by simp) u hu.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rosatiAdj_generic_of_cube (hcube : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ g g' : G ⟶ G, LinEnd U.toUnifPre a h' g → LinEnd U.toUnifPre a' h g' → LBIso (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L)) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (a : O) (g g' : G ⟶ G), IsMonHom g → IsMonHom g' → ActsAs U.toUnifPre (o.onB.act a) (fun χ => star a • χ) g → ActsAs U.toUnifPre (o.onB.act (star a)) (fun χ => star (star a) • χ) g' → RosatiAdj A.A A.L (U.gen.inv ≫ (Over.pullback (jK R)).map g ≫ U.gen.hom) (U.gen.inv ≫ (Over.pullback (jK R)).map g' ≫ U.gen.hom) := by
   intro R _ _ _ hR D A G _ _ hG U O _ _ _ o a g g' hg hg' ag ag'

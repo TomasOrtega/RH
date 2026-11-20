@@ -12,9 +12,9 @@ open Formalism.LFunctionChainParameters.HilbertSchmidtNormSquare
 noncomputable section
 
 /- English proof (translation)
-Introduce `m n V h`. Establish `h1 : (Vᴴ * V).trace = (n : ℂ)` using `by rw [h.1]; simp`. Establish `h2 : (V * Vᴴ).trace = (m : ℂ)` using `by rw [h.2]; simp`. Rewrite `h1` using `[trace_mul_comm]`. Establish `: (m : ℂ) = n` using `by rw [← h2, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem unitary_dimension : UniDim := by
   intro m n V h
@@ -25,7 +25,7 @@ theorem unitary_dimension : UniDim := by
   exact_mod_cast this
 
 /- English proof (translation)
-Rewrite using `[hsSq_eq_re, hsSq_eq_re, conjTranspose_mul]`. Establish `: Mᴴ * Sᴴ * (S * M) = Mᴴ * (Sᴴ * S) * M` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hS, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma hsSq_left {a a' b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (S : Matrix (Fin a') (Fin a) ℂ)
     (hS : Sᴴ * S = 1) : hsSq (S * M) = hsSq M := by
@@ -34,7 +34,7 @@ lemma hsSq_left {a a' b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (S : Matrix (Fin
   rw [this, hS, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← hsSq_conjTranspose (M * T), conjTranspose_mul, hsSq_left _ _ (by simpa using hT), hsSq_conjTranspose]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma hsSq_right {a b b' : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (T : Matrix (Fin b) (Fin b') ℂ)
     (hT : T * Tᴴ = 1) : hsSq (M * T) = hsSq M := by
@@ -42,7 +42,7 @@ lemma hsSq_right {a b b' : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (T : Matrix (Fi
     hsSq_conjTranspose]
 
 /- English proof (translation)
-Introduce `a b a' b' M S T hS hT`. Rewrite using `[hsSq_right _ _ hT, hsSq_left _ _ hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hilbert_schmidt_unitary_invariant : HsUni := by
   intro a b a' b' M S T hS hT
@@ -53,7 +53,7 @@ section Fam
 variable {ι : Type} [Fintype ι] {D D' : ℕ} {d : ι → ℕ}
 
 /- English proof (translation)
-Unfold `phase`. Establish `h1 : 0 < ‖c u‖` using `norm_pos_iff.mpr (hc u)`. Establish `h2 : 0 < ‖c u'‖` using `norm_pos_iff.mpr (hc u')`. Rewrite using `[norm_div, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (mul_pos h1 h2)]`. Conclude with `div_self (mul_pos h1 h2).ne'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_phase (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) : ‖phase c u u'‖ = 1 := by
   unfold phase
@@ -64,7 +64,7 @@ lemma norm_phase (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) : ‖phase
   exact div_self (mul_pos h1 h2).ne'
 
 /- English proof (translation)
-Unfold `phase`. Establish `h1 : (‖c u‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_pos_iff.mpr (hc u)).ne'`. Rewrite using `[Complex.conj_mul']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 lemma phase_self (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u : ι) : phase c u u = 1 := by
   unfold phase
@@ -74,9 +74,9 @@ lemma phase_self (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u : ι) : phase c u u
   field_simp
 
 /- English proof (translation)
-Unfold `gaTw`. Establish `h1 : 0 < ‖c u‖` using `norm_pos_iff.mpr (hc u)`. Establish `h2 : 0 < ‖c u'‖` using `norm_pos_iff.mpr (hc u')`. Establish `: ga u / ‖c u‖ ^ 2 * (ga u' / ‖c u'‖ ^ 2) = ga u * ga u' / (‖c u‖ * ‖c u'‖) ^ 2`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this, Real.sqrt_div' _ (by positivity), Real.sqrt_sq (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sqrt_gaTw (ga : ι → ℝ) (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) :
     Real.sqrt (gaTw ga c u * gaTw ga c u') = Real.sqrt (ga u * ga u') / (‖c u‖ * ‖c u'‖) := by
@@ -88,11 +88,11 @@ lemma sqrt_gaTw (ga : ι → ℝ) (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u'
   rw [this, Real.sqrt_div' _ (by positivity), Real.sqrt_sq (by positivity)]
 
 /- English proof (translation)
-Unfold `Kp`. Rewrite using `[sqrt_gaTw ga c hc]`. Unfold `Btwist phase`. Establish `hm : (V * B u * U u)ᴴ * (V * B u' * U u') = (U u)ᴴ * ((B u)ᴴ * B u') * U u'`. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (U u)ᴴ * ((B u)ᴴ * Vᴴ) * (V * B u' * U u') = (U u)ᴴ * ((B u)ᴴ * (Vᴴ * V) * B u') * U u'` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hV, Matrix.mul_one]`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, hm, Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -114,7 +114,7 @@ lemma Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   ring
 
 /- English proof (translation)
-Unfold `Kd`. Rewrite using `[Kp_tw B ga c V U hc hV, phase_self c hc, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -124,7 +124,7 @@ lemma Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   rw [Kp_tw B ga c V U hc hV, phase_self c hc, one_smul]
 
 /- English proof (translation)
-Rewrite using `[Kd_tw B ga c V U hc hV, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, (hU u).1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Kd_tw_sub (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -133,7 +133,7 @@ lemma Kd_tw_sub (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c
   rw [Kd_tw B ga c V U hc hV, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, (hU u).1]
 
 /- English proof (translation)
-Rewrite using `[Kp_tw B ga c V U hc hV, hsSq_smul, norm_phase c hc, one_pow, one_mul]`. Conclude with `hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u').2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hs_Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -143,7 +143,7 @@ lemma hs_Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c 
   exact hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u').2
 
 /- English proof (translation)
-Rewrite using `[Kd_tw_sub B ga c V U hc hV hU]`. Conclude with `hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hs_Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -153,13 +153,13 @@ lemma hs_Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c 
   exact hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u).2
 
 /- English proof (translation)
-Unfold `Qm`. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Unfold `Btwist gaTw`. Establish `hm : (V * B u * U u) * (V * B u * U u)ᴴ = V * (B u * (B u)ᴴ) * Vᴴ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Establish `: V * B u * U u * ((U u)ᴴ * ((B u)ᴴ * Vᴴ)) = V * (B u * (U u * (U u)ᴴ) * (B u)ᴴ) * Vᴴ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, (hU u).2, Matrix.mul_one]`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, hm, Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1 : (‖c u‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_pos_iff.mpr (hc u)).ne'`. Establish `h2 : c u * star (c u) = (‖c u‖ : ℂ) ^ 2`. Rewrite using `[Complex.star_def, Complex.mul_conj']`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_assoc, h2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma Qm_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -185,14 +185,14 @@ lemma Qm_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   field_simp
 
 /- English proof (translation)
-Rewrite using `[trace_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma trace_conj (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix (Fin D) (Fin D) ℂ) :
     (V * Q * Vᴴ).trace = Q.trace := by
   rw [trace_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `: V * Q * Vᴴ * (V * Q * Vᴴ) = V * (Q * (Vᴴ * V) * Q) * Vᴴ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hV, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_sq (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix (Fin D) (Fin D) ℂ) :
     (V * Q * Vᴴ) * (V * Q * Vᴴ) = V * (Q * Q) * Vᴴ := by
@@ -203,14 +203,14 @@ lemma conj_sq (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix 
 end Fam
 
 /- English proof (translation)
-Introduce `ι _ D D' d B ga c V U hc hV hU`. Conclude with `⟨hs_Kp_tw B ga c V U hc hV.1 hU, hs_Kd_tw B ga c V U hc hV.1 hU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem twist_hilbert_schmidt : TwHS := by
   intro ι _ D D' d B ga c V U hc hV hU
   exact ⟨hs_Kp_tw B ga c V U hc hV.1 hU, hs_Kd_tw B ga c V U hc hV.1 hU⟩
 
 /- English proof (translation)
-Introduce `ι _ D D' d B ga c V U hc hV hU`. Establish `h` using `Qm_tw B ga c V U hc hU`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h, trace_conj V hV.1]`. Rewrite using `[h, conj_sq V hV.1, trace_conj V hV.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_quadratic_form : TwQ := by
   intro ι _ D D' d B ga c V U hc hV hU
@@ -220,11 +220,11 @@ theorem twist_quadratic_form : TwQ := by
   · rw [h, conj_sq V hV.1, trace_conj V hV.1]
 
 /- English proof (translation)
-Introduce `ι _ D D' d B ga c V U hc hV hU`. Take `⟨-, hq1, hq2⟩` from `twist_quadratic_form ι D D' d B ga c V U hc hV hU`. Take `⟨hk1, hk2⟩` from `twist_hilbert_schmidt ι D D' d B ga c V U hc hV hU`. Establish `hD : D' = D` using `unitary_dimension _ _ V hV`. Use `⟨fun u => ?_, fun η => ?_, fun e => ?_, fun Dstar η0 η1 e0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `gaTw`. Establish `h1 : 0 < ‖c u‖ ^ 2` using `by have := norm_pos_iff.mpr (hc u); positivity`. Conclude with `div_pos_iff_of_pos_right h1`. Unfold `F1`. Rewrite using `[hq1, hq2, hD]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `F2`. Simplify using `only [hk2]`. Unfold `InputS`. Simplify using `only [hk1, hk2, hD]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_invariance : TwInv := by
   intro ι _ D D' d B ga c V U hc hV hU
@@ -246,13 +246,13 @@ variable {n : ℕ}
 end Inv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[gaTw]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma gaTw_one {ι : Type} (ga : ι → ℝ) : gaTw ga (fun _ => (1 : ℂ)) = ga := by
   funext u; simp [gaTw]
 
 /- English proof (translation)
-Introduce `Dall D del h`. Rewrite using `[le_div_iff₀ (by linarith), mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_count_valid : RowsCount := by
   intro Dall D del h
@@ -263,9 +263,9 @@ section Frame
 variable {Dall D D1 : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `e : Jᴴ * (J * Jᴴ + J1 * J1ᴴ) * J1 = Jᴴ * J1 + Jᴴ * J1`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Establish `a1 : Jᴴ * (J * Jᴴ) * J1 = (Jᴴ * J) * (Jᴴ * J1)` using `by simp only [Matrix.mul_assoc]`. Establish `a2 : Jᴴ * (J1 * J1ᴴ) * J1 = (Jᴴ * J1) * (J1ᴴ * J1)` using `by simp only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a1, a2, h1, h2, Matrix.one_mul, Matrix.mul_one]`. Rewrite `e` using `[h3, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma frame_orth (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : Jᴴ * J1 = 0 := by
@@ -281,7 +281,7 @@ lemma frame_orth (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fi
     _ = 0 := sub_self _
 
 /- English proof (translation)
-Establish `: (Jᴴ * J1)ᴴ = J1ᴴ * J` using `by rw [conjTranspose_mul, conjTranspose_conjTranspose]`. Rewrite using `[← this, frame_orth J J1 h, conjTranspose_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma frame_orth' (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : J1ᴴ * J = 0 := by
@@ -289,7 +289,7 @@ lemma frame_orth' (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (F
   rw [← this, frame_orth J J1 h, conjTranspose_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `t` using `congrArg Matrix.trace h3`. Rewrite `t` using `[trace_add, trace_mul_comm J, trace_mul_comm J1, h1, h2]`. Simplify using `only [trace_one, Fintype.card_fin] at t`. Conclude with `t.symm` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma frame_dim (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : Dall = D + D1 := by
@@ -300,7 +300,7 @@ lemma frame_dim (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin
   exact_mod_cast t.symm
 
 /- English proof (translation)
-Unfold `Wfr`. Rewrite using `[← Matrix.fromRows_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma Wfr_mul {m : Type} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (X : Matrix (Fin Dall) m ℂ) :
@@ -311,7 +311,7 @@ lemma Wfr_mul {m : Type} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin D
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
 /- English proof (translation)
-Unfold `Wfr`. Rewrite using `[conjTranspose_submatrix, Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, conjTranspose_conjTranspose, conjTranspose_conjTranspose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Wfr_H (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ) :
     (Wfr J J1)ᴴ = (Matrix.fromCols J J1).submatrix id finSumFinEquiv.symm := by
@@ -320,7 +320,7 @@ lemma Wfr_H (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1)
     conjTranspose_conjTranspose, conjTranspose_conjTranspose]
 
 /- English proof (translation)
-Rewrite using `[Wfr_H, ← Matrix.fromRows_mul_fromCols]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma rows_mul_WfrH {a b : ℕ} (X : Matrix (Fin a) (Fin Dall) ℂ) (X1 : Matrix (Fin b) (Fin Dall) ℂ)
     (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ) :
@@ -332,9 +332,9 @@ lemma rows_mul_WfrH {a b : ℕ} (X : Matrix (Fin a) (Fin Dall) ℂ) (X1 : Matrix
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Wfr_H]`. Unfold `Wfr`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows, h.2.2]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (Matrix.fromRows Jᴴ J1ᴴ).submatrix finSumFinEquiv.symm id * (Wfr J J1)ᴴ = 1`. Rewrite using `[rows_mul_WfrH, h.1, h.2.1, frame_orth J J1 h, frame_orth' J J1 h, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Wfr_uni (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : IsUni (Wfr J J1) := by
@@ -350,11 +350,11 @@ lemma Wfr_uni (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D
 end Frame
 
 /- English proof (translation)
-Introduce `Dall D D1 J J1 h`. Establish `o` using `frame_orth J J1 h`. Establish `o'` using `frame_orth' J J1 h`. Use `⟨o, o', frame_dim J J1 h, ?_, ?_, ?_, Wfr_uni J J1 h, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: J * Jᴴ * (J * Jᴴ) = J * (Jᴴ * J) * Jᴴ` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, h.1, Matrix.mul_one]`. Establish `: J * Jᴴ * (J1 * J1ᴴ) = J * (Jᴴ * J1) * J1ᴴ` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, o, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[Wfr_mul, rows_mul_WfrH]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : Jᴴ * (J * Jᴴ) = Jᴴ` using `by rw [← Matrix.mul_assoc, h.1, Matrix.one_mul]`. Establish `a2 : J1ᴴ * (J * Jᴴ) = 0` using `by rw [← Matrix.mul_assoc, o', Matrix.zero_mul]`. Rewrite using `[a1, a2, h.1, o, Matrix.zero_mul, Matrix.zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_properties : FrameFacts := by
   intro Dall D D1 J J1 h
@@ -372,12 +372,12 @@ theorem frame_properties : FrameFacts := by
     rw [a1, a2, h.1, o, Matrix.zero_mul, Matrix.zero_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma isUni_one (n : ℕ) : IsUni (1 : Matrix (Fin n) (Fin n) ℂ) := ⟨by simp, by simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[Brow, Btwist]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma Brow_eq {ι : Type} {D D' : ℕ} {d : ι → ℕ} (W : Matrix (Fin D') (Fin D) ℂ)
     (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) :
@@ -385,9 +385,9 @@ lemma Brow_eq {ι : Type} {D D' : ℕ} {d : ι → ℕ} (W : Matrix (Fin D') (Fi
   funext u; simp [Brow, Btwist]
 
 /- English proof (translation)
-Introduce `ι _ Dall D D1 d B ga J J1 h`. Take `⟨-, i1, i2, i3⟩` from `twist_invariance ι Dall (D + D1) d B ga (fun _ => 1) (Wfr J J1) (fun _ => 1) (fun _ => one_ne_zero) (Wfr_uni J J1 h) (fun _ => isUni_one _)`. Rewrite `i1`, `i2`, `i3` using `[gaTw_one, ← Brow_eq]`. Use `⟨fun u k j => ?_, fun u k j => ?_, i1, i2, i3⟩` and prove the remaining obligations. Unfold `Brow`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Wfr_mul]`. Simplify using the standard rewrite rules. Unfold `Brow`. Rewrite using `[Wfr_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_decomposition : RowsBlock := by
   intro ι _ Dall D D1 d B ga J J1 h
@@ -399,9 +399,9 @@ theorem block_matrix_decomposition : RowsBlock := by
   · unfold Brow; rw [Wfr_mul]; simp
 
 /- English proof (translation)
-Introduce `ι _ Dall D D1 d P ga c V U J J1 A Y' Y η e del hga hc hV hU hJ hdel hD hMI hF1 hF2`. Take `⟨g1, i1, i2, -⟩` from `twist_invariance ι Dall Dall d P ga c V U hc hV hU`. Take `⟨r1, -, j1, j2, -⟩` from `block_matrix_decomposition ι Dall D D1 d (Btwist P c V U) (gaTw ga c) J J1 hJ`. Establish `hdim : ((D + D1 : ℕ) : ℝ) = (Dall : ℝ)` using `by rw [frame_dim J J1 hJ]`. Use `⟨fun u => (g1 u).mpr (hga u), fun u k j => ?_, (j1 η).mpr ((i1 η).mpr hF1), (j2 e).mpr ((i2 e).mpr hF2), by rw [hdim]; exact hD, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[r1, hMI u]`. Unfold `Btwist`. Rewrite using `[Matrix.mul_smul]`. Rewrite using `[hdim]`. Conclude with `(block_count_valid Dall D del hdel).mp hD`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corollary_transport : CorTransport := by
   intro ι _ Dall D D1 d P ga c V U J J1 A Y' Y η e del hga hc hV hU hJ hdel hD hMI hF1 hF2
@@ -416,7 +416,7 @@ theorem corollary_transport : CorTransport := by
   · rw [hdim]; exact (block_count_valid Dall D del hdel).mp hD
 
 /- English proof (translation)
-Unfold `Rs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ _ := Finset.sum_le_sum fun u _ => h u`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma card_mul_le {ι : Type} [Fintype ι] (d : ι → ℕ) (t : ℝ) (h : ∀ u, t ≤ (d u : ℝ)) :
     (Fintype.card ι : ℝ) * t ≤ Rs d := by
@@ -426,9 +426,9 @@ lemma card_mul_le {ι : Type} [Fintype ι] (d : ι → ℕ) (t : ℝ) (h : ∀ u
     _ ≤ _ := Finset.sum_le_sum fun u _ => h u
 
 /- English proof (translation)
-Introduce `ι _ d C0 Gam sg Dstar hC hG hs hD hcard hd`. Establish `h1 : C0 * Gam ^ 2 / sg ≤ (Fintype.card ι : ℝ)` using `by rw [hcard]; exact Nat.le_ceil _`. Establish `h2` using `card_mul_le d _ hd`. Establish `h3 : Dstar / sg = (C0 * Gam ^ 2 / sg) * (Dstar / Gam ^ 2 / C0)` using `by field_simp`. Rewrite using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_right h1 (by positivity)) h2`.
+A detailed English derivation is pending.
 -/
 theorem wordCount_valid : WordCount := by
   intro ι _ d C0 Gam sg Dstar hC hG hs hD hcard hd
@@ -439,9 +439,9 @@ theorem wordCount_valid : WordCount := by
   exact le_trans (mul_le_mul_of_nonneg_right h1 (by positivity)) h2
 
 /- English proof (translation)
-Introduce `k X hX h`. Establish `h2 : Real.log ((2 : ℝ) ^ (k - 3)) = (k - 3) * Real.log 2` using `Real.log_rpow (by norm_num) _`. Rewrite using `[← h2]`. Break down `Nat.eq_zero_or_pos ⌈X⌉₊ with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_nonneg (by linarith)`. Conclude with `Real.log_le_log (by exact_mod_cast h0) ((Nat.ceil_lt_add_one hX).le.trans h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem word_log_real : WordLogReal := by
   intro k X hX h
@@ -453,25 +453,25 @@ theorem word_log_real : WordLogReal := by
   · exact Real.log_le_log (by exact_mod_cast h0) ((Nat.ceil_lt_add_one hX).le.trans h)
 
 /- English proof (translation)
-Introduce `ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h`. Take `⟨hga, hDs, hs, hs20, hC, hG, hcard, hd, a1, a2, a3, a4, a5, hS, hVr, hde0, hde, hcor, hc, hV, hU, hJ, hdel, hD, -, -, hMI⟩` from `h`. Establish `hR` using `wordCount_valid ι d C0 Gam sg Dstar hC hG hs hDs.le hcard hd`. Establish `f1` using `compressTraceSquareBound ι Dall d r Pf Vr ga Dstar sg η0 η1 e0 de hVr (fun u => (hga u).le) hDs hs hs20 hR a1 a2 a3 a4 a5 hde0 hde hcor hS`. Take `⟨fR, f2⟩` from `compressDiagDefectBound ι Dall d r Pf Vr ga de e0 hVr (by linarith) a4 hS.2.1 hcor`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2, c3, c4, c5, c6⟩` from `corollary_transport ι Dall D D1 r (Bram Pf Vr) ga c V U J J1 A Y' Y _ _ del hga hc hV hU hJ hdel hD hMI f1 f2`. Establish `he : 2 * e0 ≤ 1 / 4`. Establish `hsq : Real.sqrt e0 ^ 2 = e0` using `Real.sq_sqrt a4`. Establish `h0` using `Real.sqrt_nonneg e0`. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hRd : 0 < Rs d` using `lt_of_lt_of_le (div_pos hDs hs) hR`. Establish `hDall : 0 < Dall`. Break down `Nat.eq_zero_or_pos Dall with h0 | h0` into its components or cases. It suffices to derive a contradiction. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality.
 
-Establish `hz : ∀ u, (d u : ℝ) ≤ 0`. Introduce `u`. Establish `hK : Kd Pf ga u = 0`. Unfold `Kd Kp`. Establish `: (Pf u)ᴴ * Pf u = 0` using `by ext i j; simp [Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[this, smul_zero]`. Establish `h1` using `hS.2.1 u`. Establish `h2 : hsSq (0 - 1 : Matrix (Fin (d u)) (Fin (d u)) ℂ) = (d u : ℝ)`. Rewrite using `[← hsSq_one (d u)]`. Simplify using `[hsSq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hK, h2]`. Establish `h3 : (0 : ℝ) ≤ (d u : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `: Rs d ≤ 0`. Unfold `Rs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.sum_nonpos fun u _ => hz u`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0`. Use `⟨c1, c2, c3, c4, he, c5, c6, ?_, ?_, by linarith, hDall, ?_⟩` and prove the remaining obligations. Establish `h3 : 0 < (1 - de) * Rs d` using `mul_pos (by linarith) hRd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.sqrt_nonneg de` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (D : ℝ) ≤ (Dall : ℝ)`. Rewrite using `[frame_dim J J1 hJ]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Establish `: (0 : ℝ) ≤ (D1 : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (0 : ℝ) < (Dall : ℝ)` using `by exact_mod_cast hDall`. Assume the negation of the conclusion as `hneg`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hneg` using `[not_le]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem corollary_chain : CorChain := by
   intro ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h
@@ -534,11 +534,9 @@ def V0 : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; 1, 0]
 def U0 : ∀ u : Fin 20, Matrix (Fin (r0 u)) (Fin (r0 u)) ℂ := fun _ => Complex.I • 1
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[J0, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[modelEmbedding, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`.
-
-Simplify using `[J0, modelEmbedding, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma frame0 : OrthFrame J0 modelEmbedding := by
   refine ⟨?_, ?_, ?_⟩
@@ -549,21 +547,19 @@ lemma frame0 : OrthFrame J0 modelEmbedding := by
       simp [J0, modelEmbedding, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Simplify using `[hsSq, Fin.sum_univ_two, Matrix.one_apply]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 lemma hs_one : hsSq (1 : Matrix (Fin 2) (Fin 2) ℂ) = 2 := by
   simp [hsSq, Fin.sum_univ_two, Matrix.one_apply]; norm_num
 
 /- English proof (translation)
-Simplify using `[Kp, P0]`.
+Simplify using the standard rewrite rules.
 -/
 lemma kp0 (u u' : Fin 20) : Kp (d := fun _ => 2) P0 (fun _ => (1 : ℝ)) u u' = 1 := by
   simp [Kp, P0]
 
 /- English proof (translation)
-Break down `hn with rfl | rfl` into its components or cases. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[En, Matrix.mul_apply]`.
-
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [En, Matrix.mul_apply]`.
+Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma en_isom (n : ℕ) (hn : n = 1 ∨ n = 2) : (En n)ᴴ * En n = 1 := by
   rcases hn with rfl | rfl
@@ -571,20 +567,20 @@ lemma en_isom (n : ℕ) (hn : n = 1 ∨ n = 2) : (En n)ᴴ * En n = 1 := by
   · ext i j; fin_cases i <;> fin_cases j <;> simp [En, Matrix.mul_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold r0; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma model_rank_one_or_two (u : Fin 20) : r0 u = 1 ∨ r0 u = 2 := by
   unfold r0; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;>`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [V0, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma model_unitary : IsUni V0 := by
   constructor <;>
   · ext i j; fin_cases i <;> fin_cases j <;> simp [V0, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [U0, Matrix.conjTranspose_smul, smul_smul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma model_unitary_entries (u : Fin 20) : IsUni (U0 u) := by
   constructor <;> simp [U0, Matrix.conjTranspose_smul, smul_smul]
@@ -593,13 +589,13 @@ def A0 : ∀ u, Matrix (Fin 1) (Fin (r0 u)) ℂ :=
   fun u => c0 u • (J0ᴴ * (V0 * Bram (d := fun _ => 2) (r := r0) P0 (fun u => En (r0 u)) u * U0 u))
 
 /- English proof (translation)
-Use `⟨fun _ => by norm_num, by norm_num, by norm_num, le_refl _, by norm_num, by norm_num, ?_, fun _ => by norm_num, by norm_num, by norm_num, by norm_num, le_refl _, by rw [Real.sqrt_zero]; norm_num, ?_, ?_, by norm_num, by norm_num, ?_, ?_, model_unitary, model_unitary_entries, fram …` and prove the remaining obligations. Establish `: (1 : ℝ) * 1 ^ 2 / (1 / 20) = ((20 : ℕ) : ℝ)` using `by norm_num`. Rewrite using `[this, Nat.ceil_natCast]`. Simplify using the standard rewrite rules. Use `⟨fun u u' _ => ?_, fun u => ?_, by norm_num⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kp0, hs_one]`. Evaluate the numerical expressions. Establish `: Kd (d` using `fun _ => 2) P0 (fun _ => (1 : ℝ)) u = 1 := kp0 u u`. Rewrite using `[this]`. Simplify using `[hsSq]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `u`. Conclude with `en_isom _ (model_rank_one_or_two u)`. Establish `h : ∀ u : Fin 20, (((2 : ℕ) : ℝ) - (r0 u : ℝ)) = if u = 0 then 1 else 0`. Apply the tactic sequence `intro u; unfold r0; split_ifs <;> norm_num`. Simplify using `only [h, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Rs]`. Evaluate the numerical expressions. Introduce `u`. Simplify using `[c0]`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hyp0 :
     ChainHyp (d := fun _ => 2) (r := r0) P0 (fun u => En (r0 u)) (fun _ => 1) c0 V0 U0 J0 modelEmbedding A0 1
@@ -625,11 +621,11 @@ theorem hyp0 :
 end Model
 
 /- English proof (translation)
-Introduce `ι _ Dall D' d r Pf Vr ga c V U W hc hV hU hW hVr`. Use `⟨fun u => ?_, fun u => ?_, fun Dstar η0 η1 e0 => ?_⟩` and prove the remaining obligations. Unfold `Brow Btwist Bram VrS`. Simplify using `only [Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Unfold `VrS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[conjTranspose_mul]`. Establish `: (U u)ᴴ * (Vr u)ᴴ * (Vr u * U u) = (U u)ᴴ * ((Vr u)ᴴ * Vr u) * U u`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hVr u, Matrix.mul_one, (hU u).1]`. Take `⟨-, -, -, i3⟩` from `twist_invariance ι Dall Dall d Pf ga c V (fun _ => 1) hc hV (fun _ => isUni_one _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, j3⟩` from `twist_invariance ι Dall D' d (Btwist Pf c V (fun _ => 1)) (gaTw ga c) (fun _ => 1) W (fun _ => 1) (fun _ => one_ne_zero) hW (fun _ => isUni_one _)`. Rewrite `j3` using `[gaTw_one, ← Brow_eq]`. Conclude with `(j3 _ _ _ _).trans (i3 _ _ _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_ramified_factor : TwRamFactor := by
   intro ι _ Dall D' d r Pf Vr ga c V U W hc hV hU hW hVr
@@ -649,7 +645,7 @@ theorem twist_ramified_factor : TwRamFactor := by
     exact (j3 _ _ _ _).trans (i3 _ _ _ _)
 
 /- English proof (translation)
-Unfold `WfrS`. Rewrite using `[Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, conjTranspose_conjTranspose, conjTranspose_conjTranspose, Matrix.fromCols_mul_fromRows, h.2.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma WfrS_isom {Dall D D1 : ℕ} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : (WfrS J J1)ᴴ * WfrS J J1 = 1 := by
@@ -658,9 +654,9 @@ lemma WfrS_isom {Dall D D1 : ℕ} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matr
     conjTranspose_conjTranspose, Matrix.fromCols_mul_fromRows, h.2.2]
 
 /- English proof (translation)
-Unfold `MatrixLatticeEstimates.KpG Kp BfS Btwist`. Establish `key : (WfrS J J1 * (V * Pf u))ᴴ * (WfrS J J1 * (V * Pf u')) = (V * Pf u)ᴴ * (V * Pf u')`. Rewrite using `[conjTranspose_mul]`. Establish `: (V * Pf u)ᴴ * (WfrS J J1)ᴴ * (WfrS J J1 * (V * Pf u')) = (V * Pf u)ᴴ * ((WfrS J J1)ᴴ * WfrS J J1) * (V * Pf u')`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, WfrS_isom J J1 h, Matrix.mul_one]`. Simplify using `only [conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma KpG_BfS {ι : Type} [Fintype ι] {Dall D D1 : ℕ} {d : ι → ℕ}
     (Pf : ∀ u, Matrix (Fin Dall) (Fin (d u)) ℂ) (c : ι → ℂ) (V : Matrix (Fin Dall) (Fin Dall) ℂ)
@@ -677,21 +673,19 @@ lemma KpG_BfS {ι : Type} [Fintype ι] {Dall D D1 : ℕ} {d : ι → ℕ}
   simp only [conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, key]
 
 /- English proof (translation)
-Introduce `ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h`. Take `⟨c1, c2, -, -, -, c5, -, c7, -, -, -, c11⟩` from `corollary_chain ι Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h`. Take `⟨hga, hDs, hs, hs20, hC, hG, hcard, hd, a1, a2, a3, a4, a5, hS, hVr, hde0, hde, hcor, hc, hV, hU, hJ, hdel, hD, -, -, hMI⟩` from `h`. Establish `hR` using `wordCount_valid ι d C0 Gam sg Dstar hC hG hs hDs.le hcard hd`. Take `⟨-, t2, -⟩` from `twist_ramified_factor ι Dall (D + D1) d r Pf Vr ga c V U (Wfr J J1) hc hV hU (Wfr_uni J J1 hJ) hVr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, i3⟩` from `twist_invariance ι Dall Dall d Pf ga c V (fun _ => 1) hc hV (fun _ => isUni_one _)`. Establish `hRs : MatrixLatticeEstimates.RsG (fun u => Fin (d u)) = Rs d` using `by simp [MatrixLatticeEstimates.RsG, Rs]`. Establish `hrel : ∀ u i j, (BfS Pf c V J J1 u * VrS Vr U u) i j = Brow (Wfr J J1) (Btwist (Bram Pf Vr) c V U) u (finSumFinEquiv i) j`. Introduce `u i j`. Establish `e1 : BfS Pf c V J J1 u * VrS Vr U u = Matrix.fromRows Jᴴ J1ᴴ * Btwist (Bram Pf Vr) c V U u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `BfS VrS WfrS Btwist Bram`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Unfold `Brow`. Rewrite using `[e1, Wfr_mul, ← Matrix.fromRows_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨c1, t2, by rw [hRs]; exact hR, by simpa only [Fintype.card_fin, hRs] using hcor, ?_, fun u k j => ?_, hrel, ?_, c11, hdel, ?_⟩` and prove the remaining obligations. Establish `hS'` using `(i3 Dstar η0 η1 e0).mpr hS`. Use `⟨fun u u' hne => ?_, fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[KpG_BfS Pf c V J J1 hJ]`. Simplify `hS'.1 u u' hne` using `only [Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `MatrixLatticeEstimates.KdG`. Rewrite using `[KpG_BfS Pf c V J J1 hJ]`. Establish `h1` using `hS'.2.1 u`. Unfold `Kd at h1`. Simplify `h1` using `only [Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (Fintype.card (Fin D ⊕ Fin D1) : ℝ) = (Dall : ℝ)`. Rewrite using `[frame_dim J J1 hJ]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hS'.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrel, finSumFinEquiv_apply_left]`. Conclude with `c2 u k j`. Establish `: ((∑ u, Fintype.card (Fin (r u)) : ℕ) : ℝ) = Rs r` using `by simp [Rs]`. Establish `h2 : (0 : ℝ) < ((∑ u, Fintype.card (Fin (r u)) : ℕ) : ℝ)` using `by rw [this]; exact c7`. Conclude with `h2` after adjusting the coercions.
-
-Simplify using `using c5`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chain_substitution : ChainCondition := by
   intro ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h

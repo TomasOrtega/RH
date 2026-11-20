@@ -13,9 +13,9 @@ noncomputable section
 def Acc (k r : ℕ) : ℝ := ((64 * (2 * r + k + 1) ^ 3 : ℕ) : ℝ)
 
 /- English proof (translation)
-Unfold `B.AB Acc`. Use `push_cast`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `h1 : (1 : ℝ) ≤ 2 * r + k + 1` using `by linarith`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hk hr, mul_nonneg (mul_nonneg hk hr) hr, mul_nonneg hk hk, mul_nonneg hr hr, mul_nonneg (mul_nonneg hk hk) hk, mul_nonneg (mul_nonneg hr hr) hr, mul_nonneg (mul_nonneg hk hk) hr, mul_nonneg (mul_nonneg hk hr) hr]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem AB_le_Acc (k r : ℕ) : B.AB k r ≤ Acc k r := by
   unfold B.AB Acc
@@ -60,7 +60,7 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.beta Formalism.QuantumDeterminants.betaBig`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -75,11 +75,11 @@ theorem beta_eq_integral (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r 
   rfl
 
 /- English proof (translation)
-Use `set g : (Fin P.r → ℂ) × ℂ → ℝ := fun q => Formalism.QuantumDeterminants.bcWeight P.k P.r (Formalism.QuantumDeterminants.Tz P.k P.r D.z) (Formalism.QuantumDeterminants.Tz P.k P.r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2 with hg`. Establish `hβ'` using `beta_eq_integral D F`. Rewrite `hβ'` using `[hβ]`. Establish `hint : Integrable (fun q => ((g q : ℝ) : ℂ))`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hβ'` using `[integral_undef hn]`. Conclude with `hx (by exact_mod_cast hβ')`. Establish `hgi : Integrable g`. Use `hint.re` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : x = ∫ q, g q`. Rewrite `hβ'` using `[integral_complex_ofReal]`. Conclude with `hβ'` after adjusting the coercions. Unfold `B.normSq Formalism.QuantumDeterminants.jNormSq`. Rewrite using `[hx', ofReal_integral_eq_lintegral_ofReal hgi (Filter.Eventually.of_forall fun q => mul_nonneg (CutBP.bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_of_beta (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (x : ℝ) (hx : x ≠ 0)
     (hβ : B.beta D F F = (x : ℂ)) : B.normSq D F = ENNReal.ofReal x := by
@@ -102,11 +102,11 @@ theorem normSq_of_beta (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r �
     (Filter.Eventually.of_forall fun q => mul_nonneg (CutBP.bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _))]
 
 /- English proof (translation)
-Introduce `F lam0 q0 hF`. Take `⟨c, hc, -, -, hβ, -, -⟩` from `hL P.k P.r Wp Wq p.T.base (Acc P.k P.r) (AB_le_Acc _ _)`. Use `⟨(c : ℝ), by exact_mod_cast hc, fun μ hμ hP => ?_⟩` and prove the remaining obligations. Establish `hG` using `hF μ hμ hP.1`. Establish `hcc` using `hC hK P.k P.r Wp Wq p.T.base _ _ _ _ _ _ _ (F.A μ) hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hI, hE⟩` from `hB hSch P.k P.r Wp Wq p.T.base _ _ _ _ _ _ _ (F.A μ) hG hP.2.1 hP.2.2`. Establish `hinf` using `hA P.k P.r Wp Wq p.T.base (Acc P.k P.r) _ (AB_le_Acc _ _) hcc hI`. Establish `hdeg : 0 < (F.A μ).deg p.T.base.μG` using `degPos_of hSch p F lam0 q0 hF μ hμ hP`. Establish `hbeta : B.beta p.T.base (F.J p.T.base μ) (F.J p.T.base μ) = (((c : ℝ) * (F.A μ).deg p.T.base.μG : ℝ) : ℂ)`. Rewrite using `[JFam.J_of_hc _ F _ hP.1, hβ _ _ hcc hcc, hinf, hE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hJ P Wp Wq p, normSq_of_beta p.T.base _ _ (mul_pos (by exact_mod_cast hc) hdeg).ne' hbeta]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem normDegG_of_leaves [CompleteSpace Wp] [CompleteSpace Wq] (hJ : NormSquareTransferIdentity) (hC : CoefCC) (hA : BetaInfAbs)
     (hB : BetaInfCoef) (hL : B2.LemmaBAny) (hSch : SchurH) (hK : PI.KFinSmooth) (p : KB.Pl P Wp Wq) :

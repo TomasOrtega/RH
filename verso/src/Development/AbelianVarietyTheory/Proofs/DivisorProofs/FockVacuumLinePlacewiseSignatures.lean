@@ -18,7 +18,7 @@ open GlobalTheory.HoweD GlobalTheory.VacLn
 namespace GlobalTheory.HoweD
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap fun w => (MvPolynomial.aeval (R := ℂ) (S₁ := ℂ) (σ := Ln (P w) (Q w) (R w) (S w)) fun _ => 0).toLinearMap)) h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem vacD_ne_zero {ι : Type} [Fintype ι] {P Q R S : ι → ℕ} :
     (PiTensorProduct.tprod ℂ fun w : ι => (1 : Pol (P w) (Q w) (R w) (S w))) ≠ 0 := by
@@ -28,17 +28,15 @@ theorem vacD_ne_zero {ι : Type} [Fintype ι] {P Q R S : ι → ℕ} :
   simp at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ hCM hStd hFr hΦ f₀ ε hyp`. Establish `hD : DerEx` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Take `⟨D, hDu⟩` from `hD F E σ α β κ ψ JA JB d hStd`. Take `⟨J, e, e', hJ, he, hJe, he1, he2, hy⟩` from `GlobalTheory.T.exists_archimedeanPhaseSpace_complexStructure_signatures F E σ α β κ P Q R S τ JA JB d a b A C ε hCM hFr`. Establish `hDx : ∀ u, At (evI F) u → ∀ (f : SInf F κ) x, D u f x = fderiv ℝ f x (coord d u).1 - 2 * Real.pi * Complex.I * (trPair F κ x (coord d u).2 : ℝ) * f x` using `fun u hu f x => (hDu u hu f).2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : ∀ y x, fderiv ℝ f₀ x (J (y - (2 : ℝ) • e y)).1 - 2 * Real.pi * Complex.I * (trPair F κ x (J (y - (2 : ℝ) • e y)).2 : ℝ) * f₀ x = Complex.I * (fderiv ℝ f₀ x y.1 - 2 * Real.pi * Complex.I * (trPair F κ x y.2 : ℝ) * f₀ x)`. Introduce `y x`. Take `⟨u, u', u₁, c, hu, hu', -, hc, hc', -, h0, h', -⟩` from `hy y`. Establish `key` using `hyp u u' hu hu' c hc hc' (D u f₀) (D u' f₀) (hDu u hu f₀).1 (hDu u' hu' f₀).1`. Use `congrArg (fun g : SInf F κ => g x) key` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[hDx u hu, hDx u' hu', h0, h']`. Conclude with `this`. Use `set g₀ := Φ (PiTensorProduct.tprod ℂ fun _ => 1) with hg₀`. Establish `hg0 : g₀ ≠ 0` using `fun h => vacD_ne_zero (hΦ.1 (h.trans (map_zero Φ).symm))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ y x, fderiv ℝ g₀ x (J y).1 - 2 * Real.pi * Complex.I * (trPair F κ x (J y).2 : ℝ) * g₀ x = Complex.I * (fderiv ℝ g₀ x y.1 - 2 * Real.pi * Complex.I * (trPair F κ x y.2 : ℝ) * g₀ x)`. Introduce `y x`. Take `⟨u, -, u₁, c, hu, -, hu₁, hc, -, hc₁, h0, -, h1⟩` from `hy y`. Establish `e0` using `GlobalTheory.T.hasArchDerivativeOnPureTensor_unique_adelicOperators (hDu u hu g₀).1 (hΦ.2 u hu c hc _)`. Establish `e1` using `GlobalTheory.T.hasArchDerivativeOnPureTensor_unique_adelicOperators (hDu u₁ hu₁ g₀).1 (hΦ.2 u₁ hu₁ _ hc₁ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[GlobalTheory.T.fock_vacuum_pi_tensor_heisenberg_factorwise_signature, map_smul, ← e0]`. Use `congrArg (fun g : SInf F κ => g x) e1` as an intermediate fact. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[hDx u hu, hDx u₁ hu₁, h0, h1]`. Conclude with `this`.
-
-Take `⟨z, hz⟩` from `GlobalTheory.T.schwartz_complexStructure_vacuum_solution_eq_smul (trPair F κ) (fun y h => GlobalTheory.T.archimedeanTracePairingBilinear_nondegenerate y h) J e e' hJ he hJe he1 he2 f₀ g₀ hg0 hg hf`. Conclude with `⟨z, hz⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vacLineD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : InfinitePlace F → ℕ) (ψ : AddChar (AF F) ℂ)

@@ -30,7 +30,7 @@ theorem toReal_apply (γ : GL (Fin 2) ℚ) (i j : Fin 2) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `((Rat.castHom ℝ).map_det (γ : Matrix (Fin 2) (Fin 2) ℚ)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_toReal (γ : GL (Fin 2) ℚ) : (toReal γ).det.val = ((γ.det.val : ℚ) : ℝ) := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]
@@ -43,13 +43,13 @@ def realEmb : GL (Fin 2) ℝ →* AdelicGL ℚ 2 :=
   (prodEquiv ℚ 2).symm.toMonoidHom.comp ((MonoidHom.inl _ _).comp realInf)
 
 /- English proof (translation)
-The claim follows from `(prodEquiv ℚ 2).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem prodEquiv_realEmb (h : GL (Fin 2) ℝ) : prodEquiv ℚ 2 (realEmb h) = (realInf h, 1) :=
   (prodEquiv ℚ 2).apply_symm_apply _
 
 /- English proof (translation)
-Introduce `x y hxy` and use `by refine Units.ext (Matrix.ext fun a b => ?_) have := congrArg (fun g : InfiniteAdelicGL ℚ 2 => (g : Matrix (Fin 2) (Fin 2) (InfiniteAdeleRing ℚ)) a b) hxy exact RationalIdeles.realEquiv.symm.injective this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem realInf_injective : Function.Injective realInf := fun x y hxy => by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -58,7 +58,7 @@ theorem realInf_injective : Function.Injective realInf := fun x y hxy => by
   exact RationalIdeles.realEquiv.symm.injective this
 
 /- English proof (translation)
-Introduce `x y hxy` and use `by have := congrArg (fun g => (prodEquiv ℚ 2 g).1) hxy simp only [prodEquiv_realEmb] at this exact realInf_injective this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem realEmb_injective : Function.Injective realEmb := fun x y hxy => by
   have := congrArg (fun g => (prodEquiv ℚ 2 g).1) hxy
@@ -66,7 +66,7 @@ theorem realEmb_injective : Function.Injective realEmb := fun x y hxy => by
   exact realInf_injective this
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Simplify using `only [map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem realEmb_mul_finEmb_comm (h : GL (Fin 2) ℝ) (y : FiniteAdelicGL ℚ 2) :
     realEmb h * finEmb ℚ 2 y = finEmb ℚ 2 y * realEmb h := by
@@ -77,14 +77,14 @@ def realPart (g : AdelicGL ℚ 2) : GL (Fin 2) ℝ :=
   Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom (prodEquiv ℚ 2 g).1
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Conclude with `RationalIdeles.realEquiv.symm_apply_apply _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realInf_realPart (g : AdelicGL ℚ 2) : realInf (realPart g) = (prodEquiv ℚ 2 g).1 := by
   refine Units.ext (Matrix.ext fun a b => ?_)
   exact RationalIdeles.realEquiv.symm_apply_apply _
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul, realInf_realPart]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem realEmb_realPart_mul_finEmb (g : AdelicGL ℚ 2) :
     realEmb (realPart g) * finEmb ℚ 2 (prodEquiv ℚ 2 g).2 = g := by
@@ -93,9 +93,9 @@ theorem realEmb_realPart_mul_finEmb (g : AdelicGL ℚ 2) :
     realInf_realPart]
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`. Use `Prod.ext (Units.ext (Matrix.ext fun a b => ?_)) (Units.ext (Matrix.ext fun a b => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap ℚ (InfiniteAdeleRing ℚ)) (γ a b) = RationalIdeles.realEquiv.symm (((γ : Matrix (Fin 2) (Fin 2) ℚ) a b : ℚ) : ℝ)`. Conclude with `RingHom.congr_fun (RingHom.ext_rat (algebraMap ℚ (InfiniteAdeleRing ℚ)) (RationalIdeles.realEquiv.symm.toRingHom.comp (Rat.castHom ℝ))) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem diagonal_eq (γ : GL (Fin 2) ℚ) :
     diagonal ℚ 2 γ = realEmb (toReal γ) * finEmb ℚ 2 (finiteDiagonal ℚ 2 γ) := by
@@ -109,7 +109,7 @@ theorem diagonal_eq (γ : GL (Fin 2) ℚ) :
   · rfl
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_inv, diagonal_eq, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, Prod.inv_mk, mul_one, one_mul, inv_one]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp only [] <;> group`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_mul_realEmb_mul_finEmb (δ γ : GL (Fin 2) ℚ) (h : GL (Fin 2) ℝ)
     (u : FiniteAdelicGL ℚ 2) :
@@ -124,9 +124,9 @@ theorem diagonal_mul_realEmb_mul_finEmb (δ γ : GL (Fin 2) ℚ) (h : GL (Fin 2)
 variable (N : ℕ) [NeZero N]
 
 /- English proof (translation)
-Use `⟨(mem_integralFiniteGL_iff ℚ 2).2 ⟨fun i j => ?_, fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[finiteDiagonal_apply, ← hA, map_intCast]`. Conclude with `intCast_mem_integralFiniteAdeles _`. Rewrite using `[← map_inv, finiteDiagonal_apply, ← hB, map_intCast]`. Conclude with `intCast_mem_integralFiniteAdeles _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `hN`. Use `⟨(m : 𝔸f), intCast_mem_integralFiniteAdeles m, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ 𝔸f (γ 1 0) = _`. Rewrite using `[← hA, hm, Int.cast_mul, map_mul, map_intCast, map_intCast, Int.cast_natCast]`. Use the proof step `@[simp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDiagonal_mem_Gamma0Level_of_int {γ : GL (Fin 2) ℚ} (A B : Matrix (Fin 2) (Fin 2) ℤ)
     (hA : ∀ i j, (A i j : ℚ) = γ i j) (hB : ∀ i j, (B i j : ℚ) = (γ⁻¹ : GL (Fin 2) ℚ) i j)
@@ -151,7 +151,7 @@ theorem mapGL_apply (σ : SL(2, ℤ)) (i j : Fin 2) :
   rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((σ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ) : ℝ) = ((σ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℝ)`. Conclude with `Rat.cast_intCast _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem toReal_mapGL (σ : SL(2, ℤ)) :
     toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ) = Matrix.SpecialLinearGroup.mapGL ℝ σ := by
@@ -160,7 +160,7 @@ theorem toReal_mapGL (σ : SL(2, ℤ)) :
   exact Rat.cast_intCast _
 
 /- English proof (translation)
-Use `finiteDiagonal_mem_Gamma0Level_of_int N (σ : Matrix (Fin 2) (Fin 2) ℤ) ((σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) (fun i j => rfl) (fun i j => ?_) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite `hσ` using `[Gamma0_mem]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ N).1 hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDiagonal_mapGL_mem_Gamma0Level {σ : SL(2, ℤ)} (hσ : σ ∈ Gamma0 N) :
     finiteDiagonal ℚ 2 (Matrix.SpecialLinearGroup.mapGL ℚ σ) ∈ Gamma0Level N := by
@@ -172,13 +172,11 @@ theorem finiteDiagonal_mapGL_mem_Gamma0Level {σ : SL(2, ℤ)} (hσ : σ ∈ Gam
     exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).1 hσ
 
 /- English proof (translation)
-Take `⟨A, hA, hN, hd⟩` from `exists_int_of_finiteDiagonal_mem N hγ`. Establish `hdetA : ((A.det : ℤ) : ℚ) = γ.det.val`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `e : (Int.castRingHom ℚ).mapMatrix A = (γ : Matrix (Fin 2) (Fin 2) ℚ)`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hA i j`. Rewrite using `[← e, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `h1 : A.det = 1`. Break down `hd with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite `hdetA` using `[h]`. Rewrite `hdet` using `[← hdetA]`. Evaluate the numerical expressions using `at hdet`. Use `⟨(⟨A, h1⟩ : SL(2, ℤ)), ?_, Units.ext (Matrix.ext fun i j => hA i j)⟩` and prove the remaining obligations.
-
-Conclude with `Gamma0_mem.2 ((ZMod.intCast_zmod_eq_zero_iff_dvd _ N).2 hN)`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_mem_Gamma0_of_mem {γ : GL (Fin 2) ℚ} (hγ : finiteDiagonal ℚ 2 γ ∈ Gamma0Level N)
     (hdet : 0 < (γ.det.val : ℚ)) :
@@ -205,20 +203,20 @@ def epsilon : GL (Fin 2) ℚ :=
     by simp [Matrix.one_fin_two]⟩
 
 /- English proof (translation)
-The claim follows from `inv_eq_of_mul_eq_one_right (Units.ext (by simp [epsilon, Matrix.one_fin_two]))`.
+A detailed English derivation is pending.
 -/
 theorem epsilon_inv : epsilon⁻¹ = epsilon :=
   inv_eq_of_mul_eq_one_right (Units.ext (by simp [epsilon, Matrix.one_fin_two]))
 
 /- English proof (translation)
-Rewrite using `[det_toReal, Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `[epsilon, Matrix.det_fin_two_of]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_toReal_epsilon : (toReal epsilon).det.val = -1 := by
   rw [det_toReal, Matrix.GeneralLinearGroup.val_det_apply]
   simp [epsilon, Matrix.det_fin_two_of]
 
 /- English proof (translation)
-Use `finiteDiagonal_mem_Gamma0Level_of_int N !![-1, 0; 0, 1] !![-1, 0; 0, 1] ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `intro i j fin_cases i <;> fin_cases j <;> simp [epsilon]`. Introduce `i j`. Rewrite using `[epsilon_inv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsilon]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
 Simplify using the standard rewrite rules.
 -/
@@ -232,11 +230,11 @@ theorem finiteDiagonal_epsilon_mem : finiteDiagonal ℚ 2 epsilon ∈ Gamma0Leve
   · simp
 
 /- English proof (translation)
-Take `⟨δ, u, hu, hy⟩` from `exists_eq_finiteDiagonal_mul N (prodEquiv ℚ 2 g).2`. Establish `hg : g = diagonal ℚ 2 δ * realEmb ((toReal δ)⁻¹ * realPart g) * finEmb ℚ 2 u` using `by conv_lhs => rw [← realEmb_realPart_mul_finEmb g, hy]`. Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_inv, diagonal_eq, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, Prod.inv_mk, inv_one, mul_one, one_mul]`. Rewrite using `[Prod.mk.injEq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by group, by group⟩`. Use `set x := (toReal δ)⁻¹ * realPart g`. Distinguish the cases in `hx : 0 < x.det.val`. Conclude with `⟨δ, x, hx, u, hu, hg⟩`. Use `⟨δ * epsilon, (toReal epsilon)⁻¹ * x, ?_, (finiteDiagonal ℚ 2 epsilon)⁻¹ * u, mul_mem (inv_mem (finiteDiagonal_epsilon_mem N)) hu, hg.trans (diagonal_mul_realEmb_mul_finEmb δ epsilon x u)⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : x.det.val ≠ 0` using `x.det.ne_zero`. Establish `hneg : x.det.val < 0` using `lt_of_le_of_ne (not_lt.1 hx) hne`. Rewrite using `[map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal_epsilon]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_decomposition (g : AdelicGL ℚ 2) :
     ∃ γ : GL (Fin 2) ℚ, ∃ h : GL (Fin 2) ℝ, 0 < h.det.val ∧ ∃ u ∈ Gamma0Level N,

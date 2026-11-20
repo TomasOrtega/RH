@@ -7,15 +7,13 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Introduce `p _ G P μ hμ`. Take `⟨v, _, x, hx, hpos⟩` from `hμ`. Take `⟨_, _, hlaw⟩` from `GlobalTheory.T.similitudePair_hermitianForm_invertible_similitude p G P v`. Use `set H := G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C) with hH`. Use `set A := G.psi v (P.γ : G.C) with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set q : ℂ := star x ⬝ᵥ (H *ᵥ x) with hq`. Establish `hq0 : q ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : star x ⬝ᵥ ((Aᴴ * H * A) *ᵥ x) = (star μ * μ) * q`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hx, dotProduct_mulVec, ← star_mulVec, hx, mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, hq]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hlaw, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : star μ * μ = ((P.c : ℚ) : ℂ)`. Use `mul_right_cancel₀ hq0 key.symm` as an intermediate fact. Conclude with `this`. Establish `h2 : ((‖μ‖ ^ 2 : ℝ) : ℂ) = ((((P.c : ℚ) : ℝ)) : ℂ)`. Rewrite using `[Complex.sq_norm, Complex.normSq_eq_conj_mul_self]`.
-
-Use `push_cast`. Conclude with `hc`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem Pair.mark_norm_sq : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), P.Mark μ →
     ‖μ‖ ^ 2 = ((P.c : ℚ) : ℝ) := by

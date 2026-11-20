@@ -6,11 +6,11 @@ open Formalism.NG (KO)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ G _ _ _ ε M _ _ _ _ _ N hmono hopen hcov z`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hK : IsCompact (Set.range f.1)` using `isCompact_range f.2.1`. Establish `hmono' : Monotone (fun n => (N n : Set M))` using `fun a b h => SetLike.coe_subset_coe.mpr (hmono h)`. Take `⟨n, hn⟩` from `hK.elim_directed_cover (fun n => (N n : Set M)) hopen (fun x _ => Set.mem_iUnion.mpr (hcov x)) hmono'.directed_le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f' : G × G → N n` to `fun x => ⟨f.1 x, hn ⟨x, rfl⟩⟩`. Establish `hc : Continuous f'` using `f.2.1.subtype_mk _`. Establish `hcoc : f' ∈ Z2 (twist ε (N n))`. Use `⟨hc, fun g h k => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e` using `f.2.2 g h k`. Establish `key : ∀ x : N n, ((twist ε (N n) g x : N n) : M) = twist ε M g (x : M)` using `fun x => rfl`. Simplify `e` using `[f', key]`. Use `⟨n, Submodule.Quotient.mk ⟨f', hcoc⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem h2_twist_exists_of_iUnion_open : ∀ {O : Type} [CommRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     (ε : G →* Oˣ) {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]

@@ -15,9 +15,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.RowsRead
 
 /- English proof (translation)
-Establish `hx : x.1 = GlobalTheory.Mem.R3.RowAd.ptE X h`. Use extensionality with `i j`. Use `hM.2 (Fin.cast (GlobalTheory.Mem.R3.RowAd.rank_X' X).symm i) (Fin.cast (GlobalTheory.Mem.R3.RowAd.rank_X' X).symm j) i j rfl rfl` as an intermediate fact. Rewrite `this` using `[hβ, matIn, mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Col.decoPt_mk, hx]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem decoPt_eq_decoAd (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) {U : Set I.ι} (t : TupU I U)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hβ : L.βX = 1) (hc : CMData X.B.fields.F X.B.fields.E)
@@ -34,7 +34,7 @@ theorem decoPt_eq_decoAd (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B 
   rfl
 
 /- English proof (translation)
-Use `⟨X.toD7.sp.cm, fun h => ⟨⟨GlobalTheory.Mem.R3.RowAd.ptE X h, GlobalTheory.Mem.R3.RowDeco.ptE_mem_UAd X I hI h⟩, GlobalTheory.Mem.R3.RowAd.rank_X' X, ?_⟩⟩` and prove the remaining obligations. Introduce `i j i' j' hi hj`. Take `rfl : i = Fin.cast (GlobalTheory.Mem.R3.RowAd.rank_X' X).symm i'` from `Fin.ext hi`. Take `rfl : j = Fin.cast (GlobalTheory.Mem.R3.RowAd.rank_X' X).symm j'` from `Fin.ext hj`. Rewrite using `[hβ, matIn, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -52,9 +52,9 @@ theorem exists_matEq_ptE (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgr hmap hin hβ _`. Take `⟨c, -, hli, -, -, hcI, hP⟩` from `GlobalTheory.Mem.R3.RowStd.exists_std_wtCast X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgr hmap hin hβ`. Use `choose P hPr hCo using hP`. Establish `hRd : ∀ t, GlobalTheory.Mem.R3.RowAd.ReadsDeco X I hX Xg tr cX t (P t)` using `fun t => ⟨c, hPr t⟩`. Use `choose a ha using fun t => GlobalTheory.T.rowFormsFiniteGroupAction_eq_flagLevelRightTranslation X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgr hmap hin t (P t) (hRd t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun t => { pres := P t, act_tie := a t, hecke := (GlobalTheory.T.splitHecke_rows_eq_doubleCoset_operators X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgr hmap hin t (P t) (hRd t)).some }, fun t => ⟨ha t, hCo t, GlobalTheory.Mem.R3.RowAd.Inert.exists_inertTie X px I hX U …` and prove the remaining obligations. Introduce `hc t φ h x hM`. Use `(hPr t _ h).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `congrArg (fun d => c (φ.2.1 d)) (decoPt_eq_decoAd X I t L hβ hc h x hM).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rowSide : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),

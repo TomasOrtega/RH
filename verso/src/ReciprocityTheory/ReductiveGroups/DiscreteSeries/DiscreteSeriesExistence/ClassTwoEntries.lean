@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.square_integrable_of_lipschitz Formalism.REAL.log_frobenius_lipschitz_holds Formalism.REAL.integral_right_derivative_zero`.
+A detailed English derivation is pending.
 -/
 theorem r0bG : Formalism.REAL.SmoothVectorGrowthBound :=
   Formalism.REAL.square_integrable_of_lipschitz Formalism.REAL.log_frobenius_lipschitz_holds Formalism.REAL.integral_right_derivative_zero

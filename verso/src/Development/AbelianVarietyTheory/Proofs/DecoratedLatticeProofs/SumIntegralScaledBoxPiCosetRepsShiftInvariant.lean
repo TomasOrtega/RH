@@ -10,15 +10,13 @@ open scoped Topology
 namespace GlobalTheory.CosetSumShift
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ r R S hS huniq F hF a ha`. Establish `hadd : ∀ {s : kˣ} {x y : n → k}, x ∈ box n s → y ∈ box n s → x + y ∈ box n s` using `fun hx hy i _ => add_mem_cball (hx i trivial) (hy i trivial)`. Establish `hneg : ∀ {s : kˣ} {x : n → k}, x ∈ box n s → -x ∈ box n s` using `fun hx i _ => neg_mem_cball (hx i trivial)`. Establish `hzero : (0 : n → k) ∈ box n r` using `fun i _ => by simp [cball]`. Establish `hmem : ∀ b ∈ S, a + b ∈ box n R` using `fun b hb => hadd ha (hS b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! c hc using fun b (hb : b ∈ S) => (huniq (a + b) (hmem b hb)).exists`. Establish `hF' : ∀ b ∈ S, F (a + b) = F (c b)`. Introduce `b hb`. Use `hF _ (hc b hb).2 (c b)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hinj : ∀ x ∈ S, ∀ y ∈ S, c x = c y → x = y`. Introduce `x hx y hy h`. Establish `e : x - y = (a + x - c x) + -(a + y - c y)` using `by rw [h]; abel`. Establish `h1 : x - y ∈ box n r` using `e ▸ hadd (hc x hx).2 (hneg (hc y hy).2)`. Take `⟨z, -, huq⟩` from `huniq x (hS x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(huq x ⟨hx, by simpa using hzero⟩).trans (huq y ⟨hy, h1⟩).symm`. Establish `himg : S.image c = S`. Use `Finset.eq_of_subset_of_card_le (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `(hc b hb).1`.
-
-Rewrite using `[Finset.card_image_of_injOn (fun x hx y hy h => hinj x hx y hy h)]`. Rewrite using `[Finset.sum_congr rfl hF', ← Finset.sum_image hinj, himg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_shift : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] (r R : kˣ) (S : Finset (n → k)),

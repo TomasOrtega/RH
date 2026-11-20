@@ -17,9 +17,9 @@ namespace GlobalTheory.SS.MaxTorus
 open GlobalTheory.SplitTorus
 
 /- English proof (translation)
-Set `π : X →+ X ⧸ φ.range` to `QuotientAddGroup.mk' _`. Establish `h : π.comp φ = (0 : X →+ X ⧸ φ.range).comp φ`. Use extensionality with `y`. Simplify using `[π]`. Establish `h' : π = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `torusMap_injective (S := S)` to reduce the goal to its premises. Rewrite using `[← cancel_mono (torusMap S φ), ← torusMap_comp, ← torusMap_comp, h]`. Introduce `x`. Establish `: π x = 0` using `by rw [h']; rfl`. Conclude with `(QuotientAddGroup.eq_zero_iff x).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_mono {S : Scheme.{0}} [Nonempty S] {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     (φ : Y →+ X) [Mono (torusMap S φ)] : Function.Surjective φ := by
@@ -35,7 +35,7 @@ theorem surjective_of_mono {S : Scheme.{0}} [Nonempty S] {X Y : Type} [AddCommGr
   exact (QuotientAddGroup.eq_zero_iff x).1 this
 
 /- English proof (translation)
-Establish `h1 : Module.finrank ℤ X ≤ Module.finrank ℤ Y` using `LinearMap.finrank_le_finrank_of_surjective (f := φ.toIntLinearMap) h`. Set `e : Y ≃ₗ[ℤ] X` to `LinearEquiv.ofFinrankEq _ _ (le_antisymm hr h1)`. Conclude with `OrzechProperty.injective_of_surjective_of_injective e.toLinearMap φ.toIntLinearMap e.injective h`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem injective_of_surjective {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     [Module.Free ℤ X] [Module.Finite ℤ X] [Module.Free ℤ Y] [Module.Finite ℤ Y]
@@ -47,9 +47,9 @@ theorem injective_of_surjective {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
   exact OrzechProperty.injective_of_surjective_of_injective e.toLinearMap φ.toIntLinearMap e.injective h
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `exists_eq_torusMap σ`. Establish `hs` using `surjective_of_mono (S := S) φ`. Set `e : Y ≃+ X` to `AddEquiv.ofBijective φ ⟨injective_of_surjective φ hs hr, hs⟩`. Use `⟨torusMap S e.symm.toAddMonoidHom, ?_⟩` and prove the remaining obligations. Rewrite using `[← torusMap_comp, ← torusMap_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `y`. Conclude with `e.symm_apply_apply y`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_inv {S : Scheme.{0}} [ConnectedSpace S] {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     [Module.Free ℤ X] [Module.Finite ℤ X] [Module.Free ℤ Y] [Module.Finite ℤ Y]
@@ -65,21 +65,21 @@ theorem exists_inv {S : Scheme.{0}} [ConnectedSpace S] {X Y : Type} [AddCommGrou
   exact e.symm_apply_apply y
 
 /- English proof (translation)
-Introduce `k _ _ G _ hG`. Take `⟨hc, hsm, hsep, hqc, hgc⟩` from `id hG`. Establish `: ConnectedSpace G.left` using `GeometricallyConnected.connectedSpace_of_subsingleton G.hom`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected G.hom (Classical.arbitrary _)`. Set `P : ℕ → Prop` to `fun n => ∃ (X : Type) (_ : AddCommGroup X) (_ : Module.Free ℤ X) (_ : Module.Finite ℤ X) (i : splitTorus (Sp k) X ⟶ G), IsMonHom i ∧ (∀ x : G.left, ∃ V, x ∈ V ∧ GoodOpen i V) ∧ Module.finrank ℤ X = n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hb : ∀ n, P n → n ≤ g`. Introduce and unpack `_ ⟨X, _, _, _, i, hi, hV, rfl⟩`. Take `⟨B, _, q, -, hd⟩` from `GlobalTheory.T.exists_smooth_torus_quotient_of_goodOpen_cover k G hG X i hi hV`. Take `⟨a, -, ha⟩` from `hd g hg`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n₀, h₀⟩ : ∃ n, P n := by`. Take `⟨X', _, _, _, i', ρ, h1, -, -, -, hV⟩` from `GlobalTheory.T.splitTorus_image_factor_quotient_goodOpen k G hG PUnit 1 (inferInstanceAs (IsMonHom (toUnit _ ≫ η[G])))`. Conclude with `⟨_, X', _, ‹_›, ‹_›, i', h1, hV, rfl⟩`. Take `⟨X, _, _, _, i, hi, hV, hn⟩ : P (Nat.findGreatest P g)` from `Nat.findGreatest_spec (hb _ h₀) h₀`. Take `⟨B, _, q, hq, -⟩` from `GlobalTheory.T.exists_smooth_torus_quotient_of_goodOpen_cover k G hG X i hi hV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨X, _, inferInstance, inferInstance, B, _, i, q, hq, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `GlobalTheory.T.exists_lift_oneParameter_quotient_torus k G hG X B i q hq f hf`. Take `⟨-, hqm, -, -, -, hpb, -⟩` from `hq`. Establish `: Mono (η[B])` using `⟨fun a b _ => toUnit_unique a b⟩`. Establish `: Mono i` using `hpb.mono_fst_of_mono`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : splitTorus (Sp k) (X × ULift.{0} ℤ) ⟶ G` to `(torusMap _ (AddMonoidHom.inl X (ULift.{0} ℤ)) ≫ i) * (torusMap _ (AddMonoidHom.inr X (ULift.{0} ℤ)) ≫ j)`. Take `⟨X', _, _, _, i', ρ, h1, h2, -, h3, hV'⟩` from `GlobalTheory.T.splitTorus_image_factor_quotient_goodOpen k G hG (X × ULift.{0} ℤ) φ (by simp only [φ]; rw [Hom.mul_def]; infer_instance)`. Establish `hr : Module.finrank ℤ X' ≤ Module.finrank ℤ X`. Establish `hP : P (Module.finrank ℤ X')` using `⟨X', _, ‹_›, ‹_›, i', h1, hV', rfl⟩`. Rewrite using `[hn]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.le_findGreatest (hb _ hP) hP`. Establish `e1 : torusMap _ (AddMonoidHom.fst X (ULift.{0} ℤ)) ≫ φ = i`. Simplify using `only [φ, MonObj.comp_mul, ← Category.assoc, ← torusMap_comp, AddMonoidHom.fst_comp_inl, AddMonoidHom.fst_comp_inr, torusMap_id, torusMap_zero, Category.id_comp, MonObj.one_comp, _root_.mul_one]`. Establish `e2 : torusMap _ (AddMonoidHom.snd X (ULift.{0} ℤ)) ≫ φ = j`. Simplify using `only [φ, MonObj.comp_mul, ← Category.assoc, ← torusMap_comp, AddMonoidHom.snd_comp_inl, AddMonoidHom.snd_comp_inr, torusMap_id, torusMap_zero, Category.id_comp, MonObj.one_comp, _root_.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `σ` to `torusMap _ (AddMonoidHom.fst X (ULift.{0} ℤ)) ≫ ρ`. Establish `e3 : σ ≫ i' = i` using `by rw [Category.assoc, h3, e1]`. Establish `: Mono σ` using `mono_of_mono_fac e3`. Take `⟨τ, hτ⟩` from `exists_inv σ hr`. Establish `e4 : i' = τ ≫ i` using `by rw [← e3, ← Category.assoc, hτ, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : i ≫ q = 1` using `hpb.w`. Rewrite using `[← e2, ← h3, e4]`. Simplify using `only [Category.assoc, e5, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_quot_no_cocharacter : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∃ (X : Type) (_ : AddCommGroup X) (_ : Module.Free ℤ X) (_ : Module.Finite ℤ X) (B : Over (Sp k)) (_ : GrpObj B) (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), IsQuot i q ∧ ∀ f : Gm (Sp k) ⟶ B, IsMonHom f → f = 1 := by
   classical

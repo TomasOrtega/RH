@@ -20,21 +20,21 @@ noncomputable section
 namespace GlobalTheory.QkPairing
 
 /- English proof (translation)
-Establish `e₀` using `h.N_split k a m b`. Establish `e₁` using `h.N_add k a m x b`. Establish `e₂` using `h.N_add k a b x m`. Establish `e₃` using `h.N_split k (a * m ^ k) b x`. Establish `e₄` using `h.N_split k (a * b ^ k) m x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₅` using `h.N_split k a m x`. Establish `e₆` using `h.N_split k a b x`. Establish `e₇` using `h.N_split k a b m`. Establish `e₈` using `h.coc a (m ^ k) (b ^ k) x`. Establish `e₉` using `h.coc a (b ^ k) (m ^ k) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₉` using `[mul_comm (b ^ k), h.s01 (b ^ k)]`. Establish `f₁` using `h.coc x b m a`. Establish `f₂` using `h.coc x m b a`. Rewrite `f₂` using `[mul_comm m b, h.s01 m b a]`. Rewrite `f₁` using `[h.s12 (x * b), h.s01 (x * b), h.s12 x b a, h.s01 x a b]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f₂` using `[h.s12 (x * m), h.s01 (x * m), h.s12 x m a, h.s01 x a m]`. Establish `f₃ : θ b x m = θ m x b` using `by rw [h.s01 b, h.s12 x, h.s01 x]`. Rewrite `e₂` using `[f₃]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `a₀` using `E e₀`. Establish `a₁` using `E e₁`. Establish `a₂` using `E e₂`. Establish `a₃` using `E e₃`. Establish `a₄` using `E e₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₅` using `E e₅`. Establish `a₆` using `E e₆`. Establish `a₇` using `E e₇`. Establish `a₈` using `E e₈`. Establish `a₉` using `E e₉`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₁` using `E f₁`. Establish `b₂` using `E f₂`. Establish `c₁` using `E h₁`. Establish `c₂` using `E h₂`. Establish `c₃` using `E h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ofMul_mul, ofMul_inv] at *`. Take the linear combination `(norm := abel) -(a₁ - a₂ + a₃ - a₄ + a₅ - a₆ - a₇ + a₈ - a₉ - b₁ + b₂ + c₁ - c₂ - c₃ + a₀)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cub_comm {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h : IsCub θ) (k : ℕ) (a m b x : A)
     (Sa Sy Say τa τy τay ζ : U) (h₁ : Say * θ a (m ^ k) b = Sa * Sy) (h₂ : τay * θ a (b ^ k) m = τa * τy)
@@ -69,9 +69,9 @@ theorem cub_comm {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A �
   linear_combination (norm := abel) -(a₁ - a₂ + a₃ - a₄ + a₅ - a₆ - a₇ + a₈ - a₉ - b₁ + b₂ + c₁ - c₂ - c₃ + a₀)
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => (hF U h).trans (Fintype.prod_empty _).symm) u hu`. Establish `le : (⊤ : (Spec (CommRingCat.of F)).Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Spec (CommRingCat.of F) ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom (res le (t.s PEmpty.elim)), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Use `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans (congrArg (gs r z ⊤) ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_const {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {F : Type} [Field F] {K : Type} [Fintype K]
     {φ : K → (Spec (CommRingCat.of F) ⟶ X)} {ε : K → ℤ} (u : LB.Gen (LB.LinComb M φ ε)) (hu : u.IsGen)
@@ -99,11 +99,11 @@ def IsRatio (p p' : QkPt D F k) (ζ : F) : Prop :=
         (val (p'.g.s p.y) σ.left z J * cubN (th D z J) k 1 (σ ≫ p.g.b) (σ ≫ p'.g.b)).val
 
 /- English proof (translation)
-Take `⟨N, hN, vN⟩` from `exists_cubN D.cub 1 p'.g.b p.g.b k`. Take `⟨N', hN', vN'⟩` from `exists_cubN D.cub 1 p.g.b p'.g.b k`. Take `⟨ζ, hζ⟩` from `exists_const D.P.isLB (F := F) (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (p.g.s p'.y) N) (LB.invGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (p'.g.s p.y) N'))) (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (p.g.isGen _) hN) (invGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ …`. Use `(prod_sum₂ (K := Fin 4 ⊕ Fin 8) (K' := Fin 4 ⊕ Fin 8) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 8) (U := U) _ (prod_gt p.g.b p'.y h) rfl) (prod_neg _ _ (prod_sum₂ (K := Fin 4) (K' := Fin 8) (U := U) _ (prod_gt p'.g.b p.y h) rfl))).trans ?_` and prove the remaining obligations. Rewrite using `[cPoint_y, cPoint_y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, mul_comm p.g.b p'.g.b]`. Use the proof step `module)`. Use `⟨ζ, fun T σ z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hζ _ σ.left z J hJ`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[val_mul hJ, val_inv, val_mul hJ, val_mul hJ, vN T σ z J hJ, vN' T σ z J hJ, MonObj.comp_one]`. Rewrite using `[← e, ← Units.val_mul, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio (p p' : QkPt D F k) : ∃ ζ : Fˣ, IsRatio p p' ζ.val := by
   obtain ⟨N, hN, vN⟩ := exists_cubN D.cub 1 p'.g.b p.g.b k
@@ -126,17 +126,17 @@ theorem exists_ratio (p p' : QkPt D F k) : ∃ ζ : Fˣ, IsRatio p p' ζ.val := 
   rw [← e, ← Units.val_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Introduce `w w' hw hw' s s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄`. Rewrite `r₁`, `r₄` using `[phiRel_iff hG _ _ hw']`. Rewrite `r₂`, `r₃` using `[phiRel_iff hG _ _ hw]`. Rewrite using `[isSmul_iff]`. Use `fam_ext fun β j => sec_ext_val D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨α, rfl⟩ : ∃ α, α + p'.y + p.y = β` from `⟨β - p.y - p'.y, by abel⟩`. Establish `C : IsCub (th D (T` using `DegPre.BF D F) y J) := isCub_cubV D.cub hJ`. Establish `hy : ∀ q : QkPt D F k, cP D (DegPre.BF D F) q.y = (fst (TF (R` using `R) F) D.P.A ≫ q.g.b) ^ k := fun q => by`. Rewrite using `[← comp_cP D (fst (TF (R := R) F) D.P.A), cPoint_y]`. Conclude with `map_pow (preHom (fst (TF (R := R) F) D.P.A)) _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `r₂ (α + p'.y) _ rfl _ (𝟙 _) y J hJ`. Establish `e₁` using `r₁ α _ rfl _ (DegPre.trPt D F p.g.b) y J hJ`. Establish `e₄` using `r₄ (α + p.y) _ (add_right_comm α p.y p'.y) _ (𝟙 _) y J hJ`. Establish `e₃` using `r₃ α _ rfl _ (DegPre.trPt D F p'.g.b) y J hJ`. Rewrite `e₂` using `[Category.id_comp, Category.id_comp, Over.id_left, e₁, tr_fst, uVal_tr, uVal_id, val_mul hJ, val_mul hJ, cPoint_add, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₄` using `[Category.id_comp, Category.id_comp, Over.id_left, e₃, tr_fst, uVal_tr, uVal_id, val_mul hJ, val_mul hJ, cPoint_add, hy, tr_comm]`. Establish `t₁` using `gt_mul (fst (TF (R := R) F) D.P.A) hJ p'.g α p.y`. Establish `t₂` using `gt_mul (fst (TF (R := R) F) D.P.A) hJ p.g α p'.y`. Rewrite `t₁`, `t₂` using `[hy]`. Establish `t₃` using `H _ (fst (TF (R := R) F) D.P.A) y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c : ((DegPre.BF D F).left.presheaf.stalk y)ˣ, c.val = gs (fst (TF (R` from `R) F) D.P.A).left y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ζ.val) := ⟨_, (gs_unit _ y ⊤ trivial (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom ζ)).symm⟩`. Rewrite `t₃` using `[← hc, ← Units.val_mul]`. Establish `key` using `cub_comm C k _ _ _ (DegPre.prB D F) _ _ _ _ _ _ _ t₁ t₂ (Units.ext t₃)`. Rewrite using `[sval_smul _ _ _ _ y hJ, Category.id_comp, ← hc, e₂, e₄, _root_.mul_assoc (sval _ _ _ _), _root_.mul_assoc (sval _ _ _ _), ← Units.val_mul, ← Units.val_mul, mul_left_comm c.val, ← Units.val_mul]`. Use `congr 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `key'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv] at key' ⊢`. Take the linear combination `(norm := abel) key'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weil_of_ratio (hG : GlobalFnsSt) (p p' : QkPt D F k) {ζ : Fˣ} (H : IsRatio p p' ζ.val) :
     WeilQkIs D F k p p' ζ.val := by
@@ -175,7 +175,7 @@ theorem weil_of_ratio (hG : GlobalFnsSt) (p p' : QkPt D F k) {ζ : Fˣ} (H : IsR
   linear_combination (norm := abel) key'
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, tr_fst, Category.id_comp]`. Use `show (DegPre.trPt D F m⁻¹ ≫ DegPre.trPt D F m) ≫ DegPre.prB D F = 𝟙 _ ≫ DegPre.prB D F`. Rewrite using `[Category.assoc, tr_pr, MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_inv (m : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F m⁻¹ ≫ DegPre.trPt D F m = 𝟙 _ := by
   apply CartesianMonoidalCategory.hom_ext
@@ -185,7 +185,7 @@ theorem tr_inv (m : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F m⁻¹ ≫ DegPre
       inv_mul_cancel, MonObj.comp_one, _root_.mul_one, Category.id_comp]
 
 /- English proof (translation)
-Use `sec_ext_val (s' := SecOps.secZero) D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e` using `h α _ rfl _ (DegPre.trPt D F p.g.b⁻¹) y J hJ`. Rewrite `e` using `[tr_inv, UUA.sval_zero_of (ht _) _ y J (hJ.mem _ _)]`. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]`. Conclude with `(Units.mul_left_eq_zero _).1 e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_of_phi {p : QkPt D F k} {w : Frm D F k p.g.b} {s t : Fam D F k} (h : PhiVal p w s.s t.s)
     (ht : ∀ β j, (t.s β).f j = 0) (α : D.X) (j) : (s.s α).f j = 0 := by
@@ -196,9 +196,9 @@ theorem zero_of_phi {p : QkPt D F k} {w : Frm D F k p.g.b} {s t : Fam D F k} (h 
   exact (Units.mul_left_eq_zero _).1 e.symm
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w : Frm D F k p.g.b, w.IsGen` from `H1.ClosedPointWeilPower.gen_local_linComb D.P.L D.P.isLB _ _`. Take `⟨w', hw'⟩ : ∃ w : Frm D F k p'.g.b, w.IsGen` from `H1.ClosedPointWeilPower.gen_local_linComb D.P.L D.P.isLB _ _`. Take `⟨s, hs⟩` from `FamFree.exists_fam_support (D := D) (F := F) hG hT hB hk 0`. Take `⟨s₁, r₁⟩` from `exists_phi hG p' w' hw' hB s`. Take `⟨s₂, r₂⟩` from `exists_phi hG p w hw hB s₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₃, r₃⟩` from `exists_phi hG p w hw hB s`. Take `⟨s₄, r₄⟩` from `exists_phi hG p' w' hw' hB s₃`. Establish `a` using `fun {c : F} (h : WeilQkIs D F k p p' c) => (isSmul_iff _ _ _).1 (h w w' hw hw' s s₁ s₂ s₃ s₄ ((phiRel_iff hG _ _ hw' _ _).2 r₁) ((phiRel_iff hG _ _ hw _ _).2 r₂) ((phiRel_iff hG _ _ hw _ _).2 r₃) ((phiRel_iff hG _ _ hw' _ _).2 r₄))`. Establish `hne : s₄ ≠ 0` using `fun h0 => (hs 0).2 ⟨0, by simp⟩ (zero_of_phi r₃ (zero_of_phi r₄ fun β j => by rw [h0]; rfl) 0)`. Conclude with `smul_left_injective F hne ((a h).symm.trans (a h'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weil_unique (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) (hk : 1 ≤ k) (p p' : QkPt D F k) {ζ ζ' : F}
     (h : WeilQkIs D F k p p' ζ) (h' : WeilQkIs D F k p p' ζ') : ζ = ζ' := by
@@ -217,11 +217,11 @@ theorem weil_unique (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) (hk 
   exact smul_left_injective F hne ((a h).symm.trans (a h'))
 
 /- English proof (translation)
-Set `z : (TF (R` to `R) F).left := (⊥ : PrimeSpectrum F)`. Use `choose J hJ using fun χ : (TF (R := R) F).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`. Establish `C : IsCub (th D (T` using `TF (R := R) F) z J) := isCub_cubV D.cub hJ`. Establish `e` using `H _ (𝟙 _) z J hJ`. Establish `e₀ : val (p'.g.s p.y) (𝟙 _) z J = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `(val_corr hJ p'.g.s_zero _).trans (val_one _)`. Establish `e₁ : cubN (th D (T` using `TF (R := R) F) z J) k 1 (𝟙 _ ≫ p'.g.b) (𝟙 _ ≫ p.g.b) = 1 := by`. Rewrite using `[Category.id_comp p.g.b, ht.1]`. Conclude with `C.N_one _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂ : cubN (th D (T` using `TF (R := R) F) z J) k 1 (𝟙 _ ≫ p.g.b) (𝟙 _ ≫ p'.g.b) = 1 := by`. Rewrite using `[Category.id_comp p.g.b, ht.1]`. Conclude with `Finset.prod_eq_one fun _ _ => C.face₂ _ _`. Rewrite `e` using `[e₁, e₂, Over.id_left, e₀, _root_.mul_one, _root_.mul_one, Units.val_one, _root_.mul_one, ht.2 _ z J hJ, cst, gs_eq _ z ⊤ trivial, gs_eq _ z ⊤ trivial]`. Conclude with `((((TF (R := R) F).left.presheaf.germ ⊤ z trivial).hom.comp (((𝟙 (TF (R := R) F).left : (TF (R := R) F).left ⟶ _).app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom)).injective e).symm`.
+A detailed English derivation is pending.
 -/
 theorem ratio_tor (p p' : QkPt D F k) (t : Multiplicative D.X →* Fˣ) (hy : p.y = 0) (ht : IsTor t p.g) {ζ : F}
     (H : IsRatio p p' ζ) : ζ = (t (Multiplicative.ofAdd p'.y)).val := by
@@ -243,9 +243,9 @@ theorem ratio_tor (p p' : QkPt D F k) (t : Multiplicative D.X →* Fˣ) (hy : p.
 end GlobalTheory.QkPairing
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I _ D F _ _ _ k hk p p'`. Take `⟨ζ, hζ⟩` from `GlobalTheory.QkPairing.exists_ratio p p'`. Establish `hW` using `GlobalTheory.QkPairing.weil_of_ratio hL.1.globalFns p p' hζ`. Use `⟨⟨ζ, hW, fun ζ' h => Units.ext (GlobalTheory.QkPairing.weil_unique hL.1.globalFns hL.2.1.secTwist D.tau_bimult hk p p' h hW)⟩, fun t hy ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.QkPairing.ratio_tor p p' t hy ht hζ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.weilQk_existsUnique : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (k : ℕ), 1 ≤ k → ∀ p p' : QkPt D.toPre F k, (∃! ζ : Fˣ, WeilQkIs D.toPre F k p p' ζ) ∧ ∀ t, p.y = 0 → IsTor t p.g → WeilQkIs D.toPre F k p p' (t (Multiplicative.ofAdd p'.y)).val := by
   intro hL R _ _ _ I _ D F _ _ _ k hk p p'

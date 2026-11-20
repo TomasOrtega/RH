@@ -43,7 +43,7 @@ def wtB (ρ k : ℕ) (s : Bool) {r : ℕ} (i _j : Fin r) : ℤ :=
   if i.1 < ρ then 0 else if i.1 + 1 < ρ + k then (if s then 0 else -1) else if i.1 = ρ + k then 1 else -1
 
 /- English proof (translation)
-Unfold `wtA wtB`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_add (ρ k : ℕ) (s : Bool) {r : ℕ} (i j : Fin r) :
     wtA ρ k s i j + wtB ρ k s i j = 1 ∨ wtA ρ k s i j + wtB ρ k s i j = -1 := by
@@ -51,7 +51,7 @@ theorem wt_add (ρ k : ℕ) (s : Bool) {r : ℕ} (i j : Fin r) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hA_smul_right' (X : HidaSetting D) (c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) (x y : VA X.B.I) :
     hA X.B.I x (c • y) = c * hA X.B.I x y := by
@@ -60,36 +60,32 @@ theorem hA_smul_right' (X : HidaSetting D) (c : X.B.I.E ⊗[X.B.I.F] Formalism.M
   ring
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_right' (X : HidaSetting D) (x y z : VA X.B.I) :
     hA X.B.I x (y + z) = hA X.B.I x y + hA X.B.I x z := by
   simp only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_right' (X : HidaSetting D) (x : VA X.B.I) : hA X.B.I x 0 = 0 := by
   simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨⟨y, hy⟩, rfl⟩` from `hv`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, y', hy', rfl⟩` from `hy`. Establish `e : (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (((a : X.B.I.E) • y') i)) = Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (a : X.B.I.E) • (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (y' i)) := by`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`. Use `show hA X.B.I x (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (((a : X.B.I.E) • y') i)) ∈ wInt X w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hA_smul_right']`. Establish `hint : hA X.B.I x (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (y' i)) ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E := GlobalTheory.St.G.FrameClose.hA_int hx (Submodule.subset_span ⟨⟨y', hy'⟩, rfl⟩)`. Rewrite using `[mul_comm]`. Conclude with `(wInt X w).smul_mem (⟨_, hint⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) (Submodule.subset_span ⟨a, ha, rfl⟩)`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((0 : Fin X.B.I.n → X.B.I.E) i)) = 0 := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `show hA X.B.I x (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((0 : Fin X.B.I.n → X.B.I.E) i)) ∈ wInt X w`. Rewrite using `[e, hA_zero_right']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `e : (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((a + b) i)) = (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (a i)) + (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (b i)) := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show hA X.B.I x (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((a + b) i)) ∈ wInt X w`. Rewrite using `[e, hA_add_right']`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `e : (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((c • a) i)) = Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (c : X.B.I.E) • (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (a i)) := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, map_mul]`. Use `show hA X.B.I x (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) ((c • a) i)) ∈ wInt X w`. Rewrite using `[e, hA_smul_right']`. Apply the tactic sequence `have hc : Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (c : X.B.I.E) ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E := Formalism.UG.P.easyc_inclE_mem _ _ _ (by first | exact ⟨c, rfl⟩ | exact c.2 | simp [Formalism.UG.intOE])`.
-
-Conclude with `(wInt X w).smul_mem (⟨_, hc⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) ha`. Consider the case `zero => rw [hA_zero_right']`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [hA_add_right']`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c a _ ha => show hA X.B.I x ((c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • a) ∈ wInt X w`. Rewrite using `[hA_smul_right']`. Conclude with `(wInt X w).smul_mem c ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_mem_wInt (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {x v : VA X.B.I} (hx : x ∈ X.B.I.Lf)
     (hv : v ∈ wLf X w) : hA X.B.I x v ∈ wInt X w := by
@@ -141,14 +137,14 @@ theorem hA_mem_wInt (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) 
     exact (wInt X w).smul_mem c ha
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_sub_right' (X : HidaSetting D) (x y z : VA X.B.I) :
     hA X.B.I x (y - z) = hA X.B.I x y - hA X.B.I x z := by
   simp only [hA, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `hA_zero_right' X x`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hA_add_right', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hA_sum_right' (X : HidaSetting D) {ι : Type} (s : Finset ι) (x : VA X.B.I) (y : ι → VA X.B.I) :
     hA X.B.I x (∑ j ∈ s, y j) = ∑ j ∈ s, hA X.B.I x (y j) := by
@@ -158,7 +154,7 @@ theorem hA_sum_right' (X : HidaSetting D) {ι : Type} (s : Finset ι) (x : VA X.
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hA_add_right', ih]
 
 /- English proof (translation)
-Establish `h` using `hA_mem_wInt X w hy (hN i)`. Rewrite `h` using `[hA_sub_right', hA_sum_right']`. Simplify `h` using `only [hA_smul_right']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hA_isMatIn (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {g : ℕ} {u : Fin D.R.r → VA X.B.I}
     {x : X.B.I.Gf} {N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod g)} (hN : GlobalTheory.Mem.SymFrame.IsMatIn X w u x N)
@@ -170,11 +166,11 @@ theorem hA_isMatIn (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {
   simpa only [hA_smul_right'] using h
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `hc`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : D.host.g k ∣ X.B.g := by`. Rewrite using `[X.g_eq]`. Use `fin_cases k`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `dvd_mul_left _ _`. Establish `hgen : ((D.host.g k : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`. Use `Submodule.subset_span ⟨(D.host.g k : 𝓞 X.B.I.E), ⟨_, hg, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * t = ((m : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * t) * (D.host.g k : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)`. Rewrite using `[hm, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(wInt X w).smul_mem (⟨_, mul_mem (natCast_mem _ m) ht⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) hgen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wInt_of_zmod (X : HidaSetting D) {w : HeightOneSpectrum (𝓞 D.host.E)} (k : Fin 2)
     (hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) {c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F}

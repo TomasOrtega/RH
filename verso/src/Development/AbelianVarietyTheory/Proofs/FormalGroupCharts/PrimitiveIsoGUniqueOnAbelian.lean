@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hcov : ∀ x : A.left, ∃ i, x ∈ (LB.LinComb L φ ε).U i` using `fun x => by choose I hI using fun k => exists_chart hL (φ k x)`. Conclude with `⟨I, Set.mem_iInter.2 hI⟩`. Take `⟨u, hu⟩` from `ChartFrameTrA.exists_ratio_gen hcov ha hb`. It suffices to establish `hu1 : u = 1 by`. Consider the cases of `a`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(hu p).trans (by rw [hu1, map_one, _root_.one_mul])`. Apply `ChartFrameTrA.unit_eq_one_of_eSec hGF A hA u` to reduce the goal to its premises.
+Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : pullU (eSec A) ⊤ u = 1`. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : (𝟙_ (Over S)).left ⟶ X => exists_chart hL (χ z)`. Establish `hJ' : Good L z J` using `hJ`. Establish `e1` using `(val_pull hJ' a (eSec A) (𝟙 _)).symm.trans ((val_corr hJ' har (𝟙 _)).trans ((val_corr hJ' hbr (𝟙 _)).symm.trans (val_pull hJ' b (eSec A) (𝟙 _))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hJ'.mem φ (𝟙 _ ≫ eSec A)`. Establish `e2 : val a (𝟙 _ ≫ eSec A) z J = gm (𝟙 _ ≫ eSec A) z ⊤ u * val b (𝟙 _ ≫ eSec A) z J` using `(congrArg (gm _ z _) (hu _)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ z _ hm _) rfl))`. Establish `e3 : gm (𝟙 _ ≫ eSec A) z ⊤ u = 1` using `mul_eq_right.1 (e2.symm.trans e1)`. Conclude with `(gm_pull (𝟙 _) (eSec A) z ⊤ trivial u).trans (e3.trans (map_one _).symm)`. Conclude with `congrArg Units.val key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linComb_gen_eq_of_eSec (hGF : GlobalFnsSt) {S X : Scheme.{0}} (A : Over S) [GrpObj A]
     (hA : IsAbelianScheme A) {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
@@ -59,7 +59,7 @@ theorem linComb_gen_eq_of_eSec (hGF : GlobalFnsSt) {S X : Scheme.{0}} (A : Over 
   exact congrArg Units.val key
 
 /- English proof (translation)
-Introduce `hGF _ _ _ _ _ _ t hA _ _ h h'` and use `linComb_gen_eq_of_eSec hGF t.G hA t.PP.isLB h.1 h'.1 h.2 h'.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPrimG_unique : GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (X0 : Scheme.{0}) (t : SAB H X0), IsAbelianScheme t.G → ∀ wP wP' : PrimTyG t,

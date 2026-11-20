@@ -16,9 +16,9 @@ variable {p q : ℕ}
 abbrev unitP (ab : PIx p q) : Mat p q := Eab ab.1.1 ab.1.2
 
 /- English proof (translation)
-Unfold `pLin`. Rewrite using `[Finset.sum_eq_single ab]`. Simplify using `[unitP, Eab]`. Introduce `c _ hc`. Establish `hne : ¬ (ab.1.1 = c.1.1 ∧ ab.1.2 = c.1.2)` using `fun hh => hc (Subtype.ext (Prod.ext hh.1.symm hh.2.symm))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[unitP, Eab, Matrix.single_apply, hne]`. Introduce `hab`. Conclude with `absurd (Finset.mem_univ ab) hab`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pLin_unitP (ab : PIx p q) : pLin (unitP ab) = MvPolynomial.X ab := by
   unfold pLin
@@ -32,7 +32,7 @@ theorem pLin_unitP (ab : PIx p q) : pLin (unitP ab) = MvPolynomial.X ab := by
     exact absurd (Finset.mem_univ ab) hab
 
 /- English proof (translation)
-Establish `hl` using `(UniversalEnvelopingAlgebra.ι ℂ : Mat p q →ₗ⁅ℂ⁆ Ug p q).map_lie Y Z`. Rewrite `hl` using `[Ring.lie_def, Ring.lie_def]`. Simplify `hl` using `[ugι]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ug_comm (Y Z : Mat p q) :
     ugι p q (Y * Z - Z * Y) = ugι p q Y * ugι p q Z - ugι p q Z * ugι p q Y := by
@@ -41,7 +41,7 @@ theorem ug_comm (Y Z : Mat p q) :
   simpa [ugι] using hl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `MvPolynomial.mkDerivation ℂ (fun c : PIx p q => pLin (Y * Eab c.1.1 c.1.2 - Eab c.1.1 c.1.2 * Y)) (MvPolynomial.X ab) = _`. Rewrite using `[MvPolynomial.mkDerivation_X]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem kOnS_X (Y : Mat p q) (ab : PIx p q) :
     kOnS Y (MvPolynomial.X ab) = pLin (Y * unitP ab - unitP ab * Y) := by
@@ -50,14 +50,14 @@ theorem kOnS_X (Y : Mat p q) (ab : PIx p q) :
   rw [MvPolynomial.mkDerivation_X]
 
 /- English proof (translation)
-Conclude with `(MvPolynomial.mkDerivation ℂ fun c : PIx p q => pLin (Y * Eab c.1.1 c.1.2 - Eab c.1.1 c.1.2 * Y)).map_one_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem kOnS_one (Y : Mat p q) : kOnS Y 1 = 0 := by
   exact (MvPolynomial.mkDerivation ℂ fun c : PIx p q =>
     pLin (Y * Eab c.1.1 c.1.2 - Eab c.1.1 c.1.2 * Y)).map_one_eq_zero
 
 /- English proof (translation)
-Conclude with `(MvPolynomial.mkDerivation ℂ fun c : PIx p q => pLin (Y * Eab c.1.1 c.1.2 - Eab c.1.1 c.1.2 * Y)).leibniz P Q`.
+A detailed English derivation is pending.
 -/
 theorem kOnS_mul (Y : Mat p q) (P Q : MvPolynomial (PIx p q) ℂ) :
     kOnS Y (P * Q) = P * kOnS Y Q + Q * kOnS Y P := by
@@ -76,7 +76,7 @@ theorem cls_apply (v : V) (u : Ug p q) :
     cls act v u = (indRel act).mkQ (TensorProduct.tmul ℂ u v) := rfl
 
 /- English proof (translation)
-Rewrite using `[cls_apply, cls_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨u, Y, v, hY, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_mul (v : V) (u : Ug p q) {Y : Mat p q} (hY : IsKC Y) :
     cls act v (u * ugι p q Y) = cls act (act Y v) u := by
@@ -84,7 +84,7 @@ theorem cls_mul (v : V) (u : Ug p q) {Y : Mat p q} (hY : IsKC Y) :
   exact Submodule.subset_span ⟨u, Y, v, hY, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `nil => rfl`. Consider the case `cons c a ih => simp only [List.map_cons, pLin_unitP, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_pLin (a : List (PIx p q)) :
     (a.map unitP).map pLin = a.map MvPolynomial.X := by
@@ -93,7 +93,7 @@ theorem map_pLin (a : List (PIx p q)) :
   | cons c a ih => simp only [List.map_cons, pLin_unitP, ih]
 
 /- English proof (translation)
-Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 private theorem mul_commutator_mul_expand {R : Type*} [Ring R] (B y x P : R) :
     B * (y * (x * P) - x * P * y) = B * ((y * x - x * y) * P) + B * x * (y * P - P * y) := by
@@ -107,11 +107,11 @@ private theorem mul_leibniz_comm {R : Type*} [CommRing R] (B x Q dx dQ : R) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `nil`. Introduce `b`. Simplify using `[kOnS_one]`. Consider the case `cons e a ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `b`. Establish `h1` using `h (b ++ (Y * unitP e - unitP e * Y) :: a.map unitP) v`. Establish `h2` using `ih (b ++ [unitP e])`. Rewrite `h1` using `[← cls_apply, ← cls_apply]`. Simplify using `only [List.map_append, List.map_cons, List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, List.length_append, List.length_cons, List.length_nil, zero_add, List.length_map, ug_comm, map_pLin, pLin_unitP] at h1 h2 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[← kOnS_X]`. Rewrite `h2` using `[show b.length + 1 + a.length = b.length + (a.length + 1) by omega]`. Rewrite using `[kOnS_mul, mul_commutator_mul_expand, mul_leibniz_comm, map_add, map_add, map_add]`. Establish `hs` using `Submodule.add_mem _ h1 h2`. Use `hs using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -142,9 +142,9 @@ theorem comm_mem (h : SymbolCongr act) (Y : Mat p q) (v : V) (a : List (PIx p q)
     abel
 
 /- English proof (translation)
-Establish `h1` using `comm_mem act h Y v a []`. Establish `h2` using `h (a.map unitP) (act Y v)`. Rewrite `h2` using `[← cls_apply, ← cls_apply, map_pLin, List.length_map]`. Simplify using `only [List.map_nil, List.prod_nil, one_mul, List.length_nil, zero_add, map_sub] at h1`. Rewrite `h1` using `[cls_mul act v _ hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `Submodule.neg_mem _ (Submodule.add_mem _ h1 h2)`. Use `hs using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 -/
 theorem list_mem (h : SymbolCongr act) {Y : Mat p q} (hY : IsKC Y) (v : V) (a : List (PIx p q)) :
     cls act v (symU p q (kOnS Y (a.map MvPolynomial.X).prod)) +
@@ -160,7 +160,7 @@ theorem list_mem (h : SymbolCongr act) {Y : Mat p q} (hY : IsKC Y) (v : V) (a : 
   abel
 
 /- English proof (translation)
-Rewrite using `[← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList, Finset.prod_multiset_map_count, Finsupp.toFinset_toMultiset, MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul, Finsupp.prod]`. Simplify using `[Finsupp.count_toMultiset]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toList_prod (α : PIx p q →₀ ℕ) :
     ((Finsupp.toMultiset α).toList.map (MvPolynomial.X (R := ℂ))).prod =
@@ -170,9 +170,9 @@ theorem toList_prod (α : PIx p q →₀ ℕ) :
   simp [Finsupp.count_toMultiset]
 
 /- English proof (translation)
-Rewrite using `[show MvPolynomial.monomial α (1 : ℂ) = MvPolynomial.basisMonomials (PIx p q) ℂ α by`. Rewrite using `[MvPolynomial.coe_basisMonomials]]`. Unfold `symU`. Rewrite using `[Module.Basis.constr_basis]`. Unfold `symProd`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_smul_comm, Finset.mul_sum]`. Simplify using `only [List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem mul_symU_monomial_eq_avg_perm (α : PIx p q →₀ ℕ) (y : Ug p q) :
     y * symU p q (MvPolynomial.monomial α 1) =
@@ -190,7 +190,7 @@ private theorem mul_symU_monomial_eq_avg_perm (α : PIx p q →₀ ℕ) (y : Ug 
   rfl
 
 /- English proof (translation)
-Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Use `conv_rhs => rw [← List.ofFn_get l, List.map_ofFn, List.prod_ofFn]`. Conclude with `Equiv.prod_comp σ (fun i => MvPolynomial.X (l.get i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_ofFn_perm_map_X_eq_prod (l : List (PIx p q)) (σ : Equiv.Perm (Fin l.length)) :
     ((List.ofFn fun i => l.get (σ i)).map (MvPolynomial.X (R := ℂ))).prod =
@@ -200,7 +200,7 @@ private theorem prod_ofFn_perm_map_X_eq_prod (l : List (PIx p q)) (σ : Equiv.Pe
   exact Equiv.prod_comp σ (fun i => MvPolynomial.X (l.get i))
 
 /- English proof (translation)
-Establish `hx : x = ((n.factorial : ℂ)⁻¹) • ∑ _σ : Equiv.Perm (Fin n), x`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)), one_smul]`. Rewrite using `[hx, ← smul_sub, ← Finset.sum_sub_distrib]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun σ _ => hf σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_inv_factorial_smul_sum_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M)
     (n : ℕ) (x : M) (f : Equiv.Perm (Fin n) → M) (hf : ∀ σ, x - f σ ∈ S) :
@@ -213,9 +213,9 @@ private theorem sub_inv_factorial_smul_sum_mem {M : Type*} [AddCommGroup M] [Mod
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun σ _ => hf σ)
 
 /- English proof (translation)
-Rewrite using `[mul_symU_monomial_eq_avg_perm, map_smul, map_sum]`. Apply `sub_inv_factorial_smul_sum_mem` to reduce the goal to its premises. Introduce `σ`. Establish `hσ` using `list_mem act h hY v (List.ofFn fun i => (Finsupp.toMultiset α).toList.get (σ i))`. Rewrite `hσ` using `[prod_ofFn_perm_map_X_eq_prod, toList_prod, List.length_ofFn]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hσ`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem (h : SymbolCongr act) {Y : Mat p q} (hY : IsKC Y) (v : V)
     (α : PIx p q →₀ ℕ) :
@@ -231,11 +231,11 @@ theorem monomial_mem (h : SymbolCongr act) {Y : Mat p q} (hY : IsKC Y) (v : V)
   exact hσ
 
 /- English proof (translation)
-Establish `hlin : ∀ Q : MvPolynomial (PIx p q) ℂ, cls act v (symU p q (kOnS Y Q)) + cls act (act Y v) (symU p q Q) - cls act v (ugι p q Y * symU p q Q) = (cls act v ∘ₗ symU p q ∘ₗ kOnS Y + cls act (act Y v) ∘ₗ symU p q - cls act v ∘ₗ LinearMap.mulLeft ℂ (ugι p q Y) ∘ₗ symU p q) Q` using `fun Q => by`. Simplify using the standard rewrite rules. Rewrite using `[hlin, MvPolynomial.as_sum P, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[show MvPolynomial.monomial d (P.coeff d) = P.coeff d • MvPolynomial.monomial d 1 by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← hlin]`. Establish `hk : (Finsupp.toMultiset d).toList.length = k`. Establish `hw` using `hP (MvPolynomial.mem_support_iff.mp hd)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hw` using `[Multiset.length_toList, Finsupp.card_toMultiset, Finsupp.weight_apply, Finsupp.sum]`. Establish `hm` using `monomial_mem act h hY v d`. Rewrite `hm` using `[hk]`. Conclude with `hm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_mem (h : SymbolCongr act) {Y : Mat p q} (hY : IsKC Y) (v : V) (k : ℕ)
     (P : MvPolynomial (PIx p q) ℂ) (hP : P.IsHomogeneous k) :
@@ -267,11 +267,11 @@ namespace GlobalTheory.InducedPBW
 open Equivariant in
 
 /- English proof (translation)
-Introduce `p q V _ _ act h k Y hY z hz`. Unfold `symTens at hz`. Rewrite `hz` using `[LinearMap.mem_range]`. Take `⟨w, rfl⟩` from `hz`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul P v`. Simplify using `only [LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, Submodule.coe_subtype, map_add, LinearMap.mulLeft_apply, ← cls_apply]`. Conclude with `homog_mem act h hY v k P ((MvPolynomial.mem_homogeneousSubmodule k _).mp P.2)`. Consider the case `add x y hx hy`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs` using `Submodule.add_mem _ hx hy`. Use `hs using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add]`. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem symmetrisation_equivariant : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V), SymbolCongr act → ∀ (k : ℕ) (Y : Mat p q), IsKC Y → ∀ z ∈ symTens p q V k, (indRel act).mkQ (LinearMap.rTensor V (symU p q) (LinearMap.rTensor V (kOnS Y) z + LinearMap.lTensor _ (act Y) z)) - (indRel act).mkQ (LinearMap.rTensor V (LinearMap.mulLeft ℂ (ugι p q Y)) (LinearMap.rTensor V (symU p q) z)) ∈ indFlt act k := by
   intro p q V _ _ act h k Y hY z hz

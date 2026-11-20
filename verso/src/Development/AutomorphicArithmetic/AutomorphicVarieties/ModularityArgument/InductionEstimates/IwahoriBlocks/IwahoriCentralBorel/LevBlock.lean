@@ -33,7 +33,7 @@ private def bHom : GL (Fin a) R × GL (Fin b) R →* GL (Fin (a + b)) R where
       Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f ((PositivityTheory.Rg.Tf.Adel.blk x y).val i j) = (PositivityTheory.Rg.Tf.Adel.blk _ _).val i j`. Simplify using `only [bval, Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bHom_map (f : R →+* S) (x : GL (Fin a) R) (y : GL (Fin b) R) :
     Matrix.GeneralLinearGroup.map f (bHom (x, y)) =
@@ -45,7 +45,7 @@ private theorem bHom_map (f : R →+* S) (x : GL (Fin a) R) (y : GL (Fin b) R) :
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_val.comp continuous_fst) continuous_const continuous_const (Units.continuous_val.comp continuous_snd)).matrix_reindex _ _`. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_coe_inv.comp continuous_fst) continuous_const continuous_const (Units.continuous_coe_inv.comp continuous_snd)).matrix_reindex _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bHom_cont [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (bHom : GL (Fin a) R × GL (Fin b) R → GL (Fin (a + b)) R) := by
@@ -56,7 +56,7 @@ private theorem bHom_cont [TopologicalSpace R] [IsTopologicalRing R] :
       (Units.continuous_coe_inv.comp continuous_snd)).matrix_reindex _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(PositivityTheory.Rg.Tf.Adel.blk x y).val i j ∈ O`. Simplify using `only [bval, Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [hx, hy]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bHom_ent (O : Subring S) (x : GL (Fin a) S) (y : GL (Fin b) S) (hx : ∀ i j, x i j ∈ O)
     (hy : ∀ i j, y i j ∈ O) (i j : Fin (a + b)) : bHom (x, y) i j ∈ O := by
@@ -71,7 +71,7 @@ section Glob
 variable {K : Type} [Field K] [NumberField K] {a b : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GLnLocal.mem_integralGL_iff, ← map_inv]`. Establish `h1` using `(GLnLocal.mem_integralGL_iff _ _).1 hx`. Establish `h2` using `(GLnLocal.mem_integralGL_iff _ _).1 hy`. Conclude with `⟨bHom_ent _ _ _ h1.1 h2.1, bHom_ent _ _ _ h1.2 h2.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem bHom_int (v : Pl K) {x : Gw a v} {y : Gw b v} (hx : x ∈ GLnLocal.integralGL (v.adicCompletion K) a)
     (hy : y ∈ GLnLocal.integralGL (v.adicCompletion K) b) :
@@ -82,18 +82,18 @@ private theorem bHom_int (v : Pl K) {x : Gw a v} {y : Gw b v} (hx : x ∈ GLnLoc
   exact ⟨bHom_ent _ _ _ h1.1 h2.1, bHom_ent _ _ _ h1.2 h2.2⟩
 
 /- English proof (translation)
-The claim follows from `bHom_map (finEval v) x y`.
+A detailed English derivation is pending.
 -/
 private theorem finAt_bHom (v : Pl K) (x : AdelicGLn.AdelicGL K a) (y : AdelicGLn.AdelicGL K b) :
     finAt v (bHom (x, y)) = bHom (finAt v x, finAt v y) :=
   bHom_map (finEval v) x y
 
 /- English proof (translation)
-Apply `(AdelicGLn.prodEquiv K (a + b)).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_finEmb]`. Establish `e1 : ∀ {c : ℕ} (p : AdelicGLn.AdelicGL K c), (AdelicGLn.prodEquiv K c p).1 = Matrix.GeneralLinearGroup.map (show AdeleRing (𝓞 K) K →+* InfiniteAdeleRing K from RingHom.fst _ _) p` using `fun p => Units.ext (Matrix.ext fun _ _ => rfl)`. Establish `e2 : ∀ {c : ℕ} (p : AdelicGLn.AdelicGL K c), (AdelicGLn.prodEquiv K c p).2 = Matrix.GeneralLinearGroup.map (show AdeleRing (𝓞 K) K →+* FiniteAdeleRing (𝓞 K) K from RingHom.snd _ _) p` using `fun p => Units.ext (Matrix.ext fun _ _ => rfl)`. Establish `h1 : ∀ (p : AdelicGLn.AdelicGL K a) (q : AdelicGLn.AdelicGL K b), (AdelicGLn.prodEquiv K (a + b) (bHom (p, q))).1 = bHom ((AdelicGLn.prodEquiv K a p).1, (AdelicGLn.prodEquiv K b q).1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p q`. Rewrite using `[e1, e1, e1, bHom_map]`. Establish `h2 : ∀ (p : AdelicGLn.AdelicGL K a) (q : AdelicGLn.AdelicGL K b), (AdelicGLn.prodEquiv K (a + b) (bHom (p, q))).2 = bHom ((AdelicGLn.prodEquiv K a p).2, (AdelicGLn.prodEquiv K b q).2)`. Introduce `p q`. Rewrite using `[e2, e2, e2, bHom_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h1, prodEquiv_finEmb, prodEquiv_finEmb]`. Conclude with `(map_one bHom).symm`. Rewrite using `[h2, prodEquiv_finEmb, prodEquiv_finEmb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finEmb_bHom (x : FA K a) (y : FA K b) :
     finEmb K (a + b) (bHom (x, y)) = bHom (finEmb K a x, finEmb K b y) := by
@@ -121,14 +121,14 @@ private theorem finEmb_bHom (x : FA K a) (y : FA K b) :
   · rw [h2, prodEquiv_finEmb, prodEquiv_finEmb]
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact hu)))`.
+A detailed English derivation is pending.
 -/
 private theorem coe_finite_adele_inclusion {n : ℕ} {u : FA K n} (hu : u ∈ AdelicGLn.integralFiniteGL K n) :
     ((fin1 u : G1 K n) : AdelicGLn.AdelicGL K n) = finEmb K n u :=
   congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact hu)))
 
 /- English proof (translation)
-Rewrite using `[zt, ← map_one (centralSection K 2)]`. Conclude with `congrArg _ (Subtype.ext Real.exp_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zt0 : zt K 0 = 1 := by
   rw [zt, ← map_one (centralSection K 2)]
@@ -137,17 +137,17 @@ private theorem zt0 : zt K 0 = 1 := by
 end Glob
 
 /- English proof (translation)
-Introduce `K _ _ r w ι hw hι U hU g`. Take `⟨h4, -, hcomm, -, -, hconj⟩` from `levLaws (K := K) (2 + 2) (im w)`. Take `⟨U', hU', hc⟩` from `hconj w ι hw hι rfl U hU g`. Set `U₂ : ∀ v : Pl K, Subgroup (Gw 2 v)` to `fun v => GLnLocal.integralGL (v.adicCompletion K) 2 ⊓ ((U' v).comap (bHom.comp (MonoidHom.inl _ _)) ⊓ (U' v).comap (bHom.comp (MonoidHom.inr _ _)))`. Establish `hU₂ : Lev U₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v`. Establish `ho : IsOpen (U₂ v : Set (Gw 2 v))` using `(GLnLocal.isOpen_integralGL _ _).inter (((hU' v).1.2.preimage (bHom_cont.comp (continuous_id.prodMk continuous_const))).inter ((hU' v).1.2.preimage (bHom_cont.comp (continuous_const.prodMk continuous_id))))`. Conclude with `⟨⟨(GLnLocal.isCompact_integralGL _ _).of_isClosed_subset ((U₂ v).isClosed_of_isOpen ho) (fun x hx => hx.1), ho⟩, inf_le_left⟩`. Use `⟨U₂, hU₂, fun u₁ h₁ u₂ h₂ => ?_⟩` and prove the remaining obligations. Establish `hm : bHom (u₁, u₂) ∈ levOn (im w) U'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `v`. Establish `e₁` using `h₁ v`. Establish `e₂` using `h₂ v`. Rewrite using `[finEmb_bHom, finAt_bHom]`. Distinguish the cases in `hv : v ∈ im w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hv, if_true] at e₁ e₂ ⊢`. Use `(U' v).mul_mem e₁.2.1 e₂.2.2` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_mul]`. Simplify using `using this`. Simplify using `only [hv, if_false] at e₁ e₂ ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `bHom_int v e₁ e₂`. Establish `hl : lv (fin1 u₁) (fin1 u₂) 0 = fin1 (bHom (u₁, u₂))`. Establish `h2` using `((levLaws (K := K) 2 (im w)).1 U₂ hU₂).2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[blkLaws.1, neg_zero, zt0, mul_one, mul_one, coe_finite_adele_inclusion (h2 h₁), coe_finite_adele_inclusion (h2 h₂), coe_finite_adele_inclusion ((h4 U' hU').2 hm), finEmb_bHom]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨_, hc _ hm, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hl, ← (hcomm k _).eq, mul_assoc, mul_assoc, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.levBlock :
     ∀ {K : Type} [Field K] [NumberField K] {r : ℕ} (w : Fin r → Pl K) (ι₄ : GS (2 + 2) w →* FA K (2 + 2)), Function.Injective w → IsEmb w ι₄ →

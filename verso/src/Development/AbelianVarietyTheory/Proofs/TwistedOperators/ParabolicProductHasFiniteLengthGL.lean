@@ -31,15 +31,15 @@ def mapSub {β : Representation F G V} {γ : Representation F G X} (p : β.Inter
     exact Representation.IntertwiningMap.isIntertwining _ _ p g v⟩
 
 /- English proof (translation)
-Take `⟨hα1, hα2⟩` from `(hasFiniteLength_iff_wellFounded α).1 hα`. Take `⟨hγ1, hγ2⟩` from `(hasFiniteLength_iff_wellFounded γ).1 hγ`. Set `f : Subrepresentation β → Subrepresentation α × Subrepresentation γ` to `fun S => (comapSub ι S, mapSub p S)`. Establish `hmono : Monotone f` using `fun S T h => ⟨fun v hv => h hv, Submodule.map_mono (f := p.toLinearMap) h⟩`. Establish `hf : StrictMono f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S T hST`. Use `lt_of_le_of_ne (hmono hST.le) fun heq => hST.not_ge ?_` and prove the remaining obligations. Establish `h1 : (comapSub ι S).toSubmodule = (comapSub ι T).toSubmodule` using `congrArg (fun x => x.1.toSubmodule) heq`. Establish `h2 : (mapSub p S).toSubmodule = (mapSub p T).toSubmodule` using `congrArg (fun x => x.2.toSubmodule) heq`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpx : p x ∈ (mapSub p T).toSubmodule` using `⟨x, hx, rfl⟩`. Rewrite `hpx` using `[← h2]`. Take `⟨y, hy, hyx⟩` from `hpx`. Establish `hyx' : p y = p x` using `hyx`. Take `⟨u, hu⟩` from `hex (x - y) (by rw [map_sub, hyx', sub_self])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `huT : u ∈ (comapSub ι T).toSubmodule` using `by show ι u ∈ T.toSubmodule`. Rewrite using `[hu]`. Conclude with `T.toSubmodule.sub_mem hx (hST.le hy)`. Rewrite `huT` using `[← h1]`. Establish `huS : ι u ∈ S.toSubmodule` using `huT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `huS` using `[hu]`. Use `S.toSubmodule.add_mem huS hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(hasFiniteLength_iff_wellFounded β).2 ⟨hf.wellFoundedGT, hf.wellFoundedLT⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_exact {α : Representation F G U} {β : Representation F G V}
     {γ : Representation F G X} (ι : α.IntertwiningMap β) (p : β.IntertwiningMap γ)
@@ -74,11 +74,11 @@ theorem hasFiniteLength_of_exact {α : Representation F G U} {β : Representatio
   exact (hasFiniteLength_iff_wellFounded β).2 ⟨hf.wellFoundedGT, hf.wellFoundedLT⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded β).1 hβ`. Establish `hmono : Monotone (mapSub ι)` using `fun S T h => Submodule.map_mono (f := ι.toLinearMap) h`. Establish `hf : StrictMono (mapSub ι)`. Introduce `S T hST`. Use `lt_of_le_of_ne (hmono hST.le) fun heq => hST.not_ge ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (mapSub ι S).toSubmodule = (mapSub ι T).toSubmodule` using `congrArg (·.toSubmodule) heq`. Introduce `x hx`. Establish `hx' : ι x ∈ (mapSub ι T).toSubmodule` using `⟨x, hx, rfl⟩`. Rewrite `hx'` using `[← h3]`. Take `⟨y, hy, hyx⟩` from `hx'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hι hyx]` and apply the resulting hypothesis. Conclude with `(hasFiniteLength_iff_wellFounded α).2 ⟨hf.wellFoundedGT, hf.wellFoundedLT⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_injective {α : Representation F G U} {β : Representation F G V}
     (ι : α.IntertwiningMap β) (hι : Function.Injective ι) (hβ : HasFiniteLength β) :
@@ -97,7 +97,7 @@ theorem hasFiniteLength_of_injective {α : Representation F G U} {β : Represent
   exact (hasFiniteLength_iff_wellFounded α).2 ⟨hf.wellFoundedGT, hf.wellFoundedLT⟩
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Subrepresentation β) := ⟨fun S T => by`. Use extensionality with `v`. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `⟨fun _ => T.toSubmodule.zero_mem, fun _ => S.toSubmodule.zero_mem⟩⟩`. Conclude with `(hasFiniteLength_iff_wellFounded β).2 ⟨Finite.to_wellFoundedGT, Finite.to_wellFoundedLT⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_subsingleton [Subsingleton V] (β : Representation F G V) :
     HasFiniteLength β := by
@@ -114,15 +114,13 @@ open GlobalTheory.ParIndExact
 variable {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded A).1 hA`. Establish `key : ∀ S T : Subrepresentation A, T ≤ S → HasFiniteLength (extTensor (subQuot S T) B)`. Introduce `S₀`. Use `WellFoundedLT.induction (motive := fun S => ∀ T, T ≤ S → HasFiniteLength (extTensor (subQuot S T) B)) S₀ ?_` and prove the remaining obligations. Introduce `S ihS T₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `WellFoundedGT.induction (motive := fun T => T ≤ S → HasFiniteLength (extTensor (subQuot S T) B)) T₀ ?_` and prove the remaining obligations. Introduce `T ihT hTS`. Break down `eq_or_lt_of_le hTS with hEq | hlt` into its components or cases. Substitute `hEq haveI := subsingleton_subQuot_self T haveI := tensor_subsingleton_left (F := ℂ) (V := ↥T.toSubmodule ⧸ Submodule.comap T.toSubmodule.subtype T.toSubmodule) (W := W)` using the available equality. Conclude with `hasFiniteLength_of_subsingleton _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : T ⋖ S`. Conclude with `hbase _ _ (isIrreducible_subQuot hc) (isSubquotient_subQuot S T)`. Choose the witnesses or unpack the hypotheses as in `⟨U, hTU, hUS⟩ : ∃ U, T < U ∧ U < S := by`. Assume the negation of the conclusion as `hno`. Conclude with `hc ⟨hlt, fun U h1 h2 => hno ⟨U, h1, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, p, hι, hp, hpι, hex⟩` from `subQuot_exact (ρ := A) hTU.le hUS.le`. Take `⟨ι', p', -, hex'⟩` from `extTensor_exact_left B ι p hι hp hpι hex`. Conclude with `hasFiniteLength_of_exact ι' p' hex' (ihS U hUS T hTU.le) (ihT U hTU hUS.le)`. Take `⟨ι, hι⟩` from `subQuot_top_bot A`. Take `⟨ι', hι'⟩` from `extTensor_injective_left B ι hι`.
-
-Conclude with `hasFiniteLength_of_injective ι' hι' (key ⊤ ⊥ bot_le)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_extTensor_left (A : Representation ℂ G V) (B : Representation ℂ H W)
     (hA : HasFiniteLength A)
@@ -157,15 +155,13 @@ theorem hasFiniteLength_extTensor_left (A : Representation ℂ G V) (B : Represe
   exact hasFiniteLength_of_injective ι' hι' (key ⊤ ⊥ bot_le)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded B).1 hB`. Establish `key : ∀ S T : Subrepresentation B, T ≤ S → HasFiniteLength (extTensor A (subQuot S T))`. Introduce `S₀`. Use `WellFoundedLT.induction (motive := fun S => ∀ T, T ≤ S → HasFiniteLength (extTensor A (subQuot S T))) S₀ ?_` and prove the remaining obligations. Introduce `S ihS T₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `WellFoundedGT.induction (motive := fun T => T ≤ S → HasFiniteLength (extTensor A (subQuot S T))) T₀ ?_` and prove the remaining obligations. Introduce `T ihT hTS`. Break down `eq_or_lt_of_le hTS with hEq | hlt` into its components or cases. Substitute `hEq haveI := subsingleton_subQuot_self T haveI := tensor_subsingleton_right (F := ℂ) (V := V) (W := ↥T.toSubmodule ⧸ Submodule.comap T.toSubmodule.subtype T.toSubmodule)` using the available equality. Conclude with `hasFiniteLength_of_subsingleton _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : T ⋖ S`. Conclude with `hbase _ _ (isIrreducible_subQuot hc) (isSubquotient_subQuot S T)`. Choose the witnesses or unpack the hypotheses as in `⟨U, hTU, hUS⟩ : ∃ U, T < U ∧ U < S := by`. Assume the negation of the conclusion as `hno`. Conclude with `hc ⟨hlt, fun U h1 h2 => hno ⟨U, h1, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, p, hι, hp, hpι, hex⟩` from `subQuot_exact (ρ := B) hTU.le hUS.le`. Take `⟨ι', p', -, hex'⟩` from `extTensor_exact_right A ι p hι hp hpι hex`. Conclude with `hasFiniteLength_of_exact ι' p' hex' (ihS U hUS T hTU.le) (ihT U hTU hUS.le)`. Take `⟨ι, hι⟩` from `subQuot_top_bot B`. Take `⟨ι', hι'⟩` from `extTensor_injective_right A ι hι`.
-
-Conclude with `hasFiniteLength_of_injective ι' hι' (key ⊤ ⊥ bot_le)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_extTensor_right (A : Representation ℂ G V) (B : Representation ℂ H W)
     (hB : HasFiniteLength B)
@@ -203,9 +199,9 @@ end Tensor
 end GlobalTheory.ProdLength
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂`. Take `⟨hAdm, -, hInd, -⟩` from `hBZ k`. Establish `schur : ∀ (n : ℕ) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (σ : Representation ℂ (GL (Fin n) k) Y), IsSmooth σ → σ.IsIrreducible → ∀ φ : Y →ₗ[ℂ] Y, (∀ g x, φ (σ g x) = σ g (φ x)) → ∃ c : ℂ, φ = c • LinearMap.id` using `fun n Y _ _ σ hs hi => GlobalTheory.SchurAdm.schur_admissible _ (KO k (Fin n)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO Y σ hi (hAdm (Fin n) Y σ hs hi)`. Establish `hT : HasFiniteLength (extTensor π₁ π₂)` using `GlobalTheory.ProdLength.hasFiniteLength_extTensor_left π₁ π₂ h₁ fun Y _ _ σ hσ hsq => GlobalTheory.ProdLength.hasFiniteLength_extTensor_right σ π₂ h₂ fun Z _ _ τ hτ hsq' => hasFiniteLength_of_isIrreducible (GlobalTheory.JacFactor.isIrreducible_extTensor σ τ hσ hτ (schur r Y σ (hs …`. Establish `hc : Continuous (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom` using `(continuous_apply false).prodMk (continuous_apply true)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hInd Bool (Fin (r + t)) (Two (Fin r) (Fin t)) (two (stdSum rfl)) _ _ (isSmooth_comp (isSmooth_extTensor s₁ s₂) _ hc) ((hasFiniteLength_comp_iff _ _ (leviTwo k (Fin r) (Fin t)).symm.surjective).2 hT)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ProdLength.prod₂_hasFiniteLength : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W), HasFiniteLength π₁ → HasFiniteLength π₂ → IsSmooth π₁ → IsSmooth π₂ → HasFiniteLength (prod₂ π₁ π₂) := by
   intro hBZ k _ _ _ _ r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂

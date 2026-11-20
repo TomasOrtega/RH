@@ -21,7 +21,7 @@ theorem toOm_apply (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField 
     toOm e L y = e.symm ((y : L) : AlgebraicClosure K) := rfl
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.Gal.mem_of_isIntegral_int A ((Algebra.IsIntegral.isIntegral (R := ℤ) y).map (toOm e L).toIntAlgHom)`.
+A detailed English derivation is pending.
 -/
 theorem toOm_mem (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K))
     (A : ValuationSubring Ω) (y : 𝓞 L) : toOm e L y ∈ A :=
@@ -36,7 +36,7 @@ def primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (A
   Ideal.comap (toA e L A) (IsLocalRing.maximalIdeal A)
 
 /- English proof (translation)
-Unfold `primeBelow`. Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K))
     (A : ValuationSubring Ω) (y : 𝓞 L) : y ∈ primeBelow e L A ↔ A.valuation (toOm e L y) < 1 := by
@@ -49,7 +49,7 @@ instance (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (Algebra
   unfold primeBelow; infer_instance
 
 /- English proof (translation)
-Rewrite using `[toOm_apply]`. Establish `h1 : (((algebraMap (𝓞 K) (𝓞 L) x : 𝓞 L) : L) : AlgebraicClosure K) = algebraMap K (AlgebraicClosure K) (x : K)` using `rfl`. Rewrite using `[h1, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem toOm_algebraMap (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K)) (x : 𝓞 K) :
     toOm e L (algebraMap (𝓞 K) (𝓞 L) x) = algebraMap K Ω (x : K) := by
@@ -58,7 +58,7 @@ theorem toOm_algebraMap (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateF
   rw [h1, AlgEquiv.commutes]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, mem_primeBelow, toOm_algebraMap]`. Conclude with `(hA x).symm`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liesOver_primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K))
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (hA : Formalism.ConjugateSelfDual.IsPlaceOver A v) :
@@ -69,13 +69,11 @@ theorem liesOver_primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : Intermedi
   exact (hA x).symm
 
 /- English proof (translation)
-Use `haveI : NumberField L := NumberField.of_module_finite K L`. Use `haveI := liesOver_primeBelow e L A v hA`. Rewrite using `[ReciprocityTheory.DiscreteGroups.GlobalClassField.isFrobAt_iff_forall]`. Establish `hu : (primeBelow e L A).under (𝓞 K) = v.asIdeal` using `(Ideal.LiesOver.over).symm`. Rewrite using `[hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[mem_primeBelow, map_sub, map_pow]`. Establish `hy : toOm e L (AlgEquiv.restrictNormalHom L ((e.symm.trans σ).trans e) • y) = σ (toOm e L y)`. Rewrite using `[toOm_apply, toOm_apply]`. Establish `h2 : (((AlgEquiv.restrictNormalHom L ((e.symm.trans σ).trans e) • y : 𝓞 L) : L) : AlgebraicClosure K) = ((e.symm.trans σ).trans e) ((y : L) : AlgebraicClosure K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← AlgEquiv.restrictNormalHom_apply]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[hy]`.
-
-Conclude with `hσ.2 _ ((A.valuation_le_one_iff _).mpr (toOm_mem e L A y))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrobAt_primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K))
     [FiniteDimensional K L] [IsGalois K L]
@@ -100,7 +98,7 @@ theorem isFrobAt_primeBelow (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : Intermedi
   exact hσ.2 _ ((A.valuation_le_one_iff _).mpr (toOm_mem e L A y))
 
 /- English proof (translation)
-The claim follows from `h.finiteDimensional; haveI := h.isGalois; IsFrobAt K L (AlgEquiv.restrictNormalHom L ((e.symm.trans σ).trans e)) Q := by intro K _ _ Ω _ _ _ e L h v A hA σ hσ Q hQ hQv haveI := h.finiteDimensional haveI := h.isGalois haveI : NumberField L := NumberField.of_module_finite K L haveI …`.
+A detailed English derivation is pending.
 -/
 theorem isFrobAt_restrict : ∀ {K : Type} [Field K] [NumberField K] {Ω : Type} [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K)) (h : IsFiniteAbelian K L)

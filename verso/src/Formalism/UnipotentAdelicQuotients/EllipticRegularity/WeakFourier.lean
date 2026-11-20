@@ -25,28 +25,26 @@ Both sides reduce to the same expression.
 theorem dw_cons (k : Fin d) (w : List (Fin d)) (f : E d → ℂ) : dw (k :: w) f = Dk k (dw w f) := rfl
 
 /- English proof (translation)
-Conclude with `(contDiff_infty_iff_fderiv.mp hf).2`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_fderiv'_lemma_2 {f : ZetaZeros.D.EllReg.E d → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (fderiv ℝ f) := by
   exact (contDiff_infty_iff_fderiv.mp hf).2
 
 /- English proof (translation)
-Conclude with `(contDiff_fderiv'_lemma_2 hf).clm_apply contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_Dk {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) (k : Fin d) : ContDiff ℝ ∞ (Dk k f) := by
   exact (contDiff_fderiv'_lemma_2 hf).clm_apply contDiff_const
 
 /- English proof (translation)
-The claim follows from `| [] => hf | k :: w => contDiff_Dk (contDiff_dw hf w) k`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dw {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : ∀ w : List (Fin d), ContDiff ℝ ∞ (dw w f)
   | [] => hf
   | k :: w => contDiff_Dk (contDiff_dw hf w) k
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h : f =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `by filter_upwards [hK.isOpen_compl.mem_nhds hy] with z hz`. Conclude with `hf z hz`. Use `show fderiv ℝ f y (ZetaZeros.D.EllReg.ev k) = 0`. Rewrite using `[h.fderiv_eq]`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dk_zero_off {f : E d → ℂ} {K : Set (E d)} (hK : IsClosed K) (hf : ∀ y ∉ K, f y = 0) (k : Fin d) :
     ∀ y ∉ K, Dk k f y = 0 := by
@@ -59,13 +57,13 @@ theorem Dk_zero_off {f : E d → ℂ} {K : Set (E d)} (hK : IsClosed K) (hf : �
   simp
 
 /- English proof (translation)
-Conclude with `(contDiff_infty_iff_fderiv.mp hf).1`.
+A detailed English derivation is pending.
 -/
 private theorem differentiable_of_contDiff'_lemma {f : ZetaZeros.D.EllReg.E d → ℂ} (hf : ContDiff ℝ ∞ f) : Differentiable ℝ f := by
   exact (contDiff_infty_iff_fderiv.mp hf).1
 
 /- English proof (translation)
-Establish `H` using `((differentiable_of_contDiff'_lemma hf y).hasFDerivAt.add (differentiable_of_contDiff'_lemma hg y).hasFDerivAt).fderiv`. Use `show fderiv ℝ (f + g) y (ZetaZeros.D.EllReg.ev k) = fderiv ℝ f y (ZetaZeros.D.EllReg.ev k) + fderiv ℝ g y (ZetaZeros.D.EllReg.ev k)`. Rewrite using `[H]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Dk_add {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : Fin d) (y : E d) :
     Dk k (fun z => f z + g z) y = Dk k f y + Dk k g y := by
@@ -75,7 +73,7 @@ theorem Dk_add {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ 
   rfl
 
 /- English proof (translation)
-Establish `H` using `((differentiable_of_contDiff'_lemma hf y).hasFDerivAt.mul (differentiable_of_contDiff'_lemma hg y).hasFDerivAt).fderiv`. Use `show fderiv ℝ (f * g) y (ZetaZeros.D.EllReg.ev k) = fderiv ℝ f y (ZetaZeros.D.EllReg.ev k) * g y + f y * fderiv ℝ g y (ZetaZeros.D.EllReg.ev k)`. Rewrite using `[H]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Dk_mul {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : Fin d) (y : E d) :
     Dk k (fun z => f z * g z) y = Dk k f y * g y + f y * Dk k g y := by
@@ -86,13 +84,11 @@ theorem Dk_mul {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ 
   ring
 
 /- English proof (translation)
-Use `revert hL`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Establish `h0 : ev ([] : List (List (Fin d) × (ZetaZeros.D.EllReg.E d → ℂ))) g = fun _ => 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [ev, List.map_nil, List.sum_nil]`. Rewrite using `[h0]`. Conclude with `contDiff_const`. Consider the case `cons p L ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hL`. Establish `h1 : ev (p :: L) g = fun y => p.2 y * ZetaZeros.D.EllReg.dw p.1 g y + ev L g y`. Use function extensionality and compare the values at `y`. Simplify using `only [ev, List.map_cons, List.sum_cons]`. Rewrite using `[h1]`.
-
-Conclude with `((hL p (by simp)).mul (contDiff_dw hg p.1)).add (ih fun q hq => hL q (by simp [hq]))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_ev {L : List (List (Fin d) × (E d → ℂ))} (hL : ∀ p ∈ L, ContDiff ℝ ∞ p.2)
     {g : E d → ℂ} (hg : ContDiff ℝ ∞ g) : ContDiff ℝ ∞ (ev L g) := by
@@ -111,20 +107,20 @@ theorem contDiff_ev {L : List (List (Fin d) × (E d → ℂ))} (hL : ∀ p ∈ L
     exact ((hL p (by simp)).mul (contDiff_dw hg p.1)).add (ih fun q hq => hL q (by simp [hq]))
 
 /- English proof (translation)
-Simplify using `only [ev, List.map_cons, List.sum_cons]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_cons (p : List (Fin d) × (E d → ℂ)) (L : List (List (Fin d) × (E d → ℂ))) (g : E d → ℂ) (y : E d) :
     ev (p :: L) g y = p.2 y * dw p.1 g y + ev L g y := by
   simp only [ev, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Simplify using `only [ev, List.map_nil, List.sum_nil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_nil (g : E d → ℂ) (y : E d) : ev ([] : List (List (Fin d) × (E d → ℂ))) g y = 0 := by
   simp only [ev, List.map_nil, List.sum_nil]
 
 /- English proof (translation)
-Simplify using `only [ev, List.map_append, List.sum_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_append (L1 L2 : List (List (Fin d) × (E d → ℂ))) (g : E d → ℂ) (y : E d) :
     ev (L1 ++ L2) g y = ev L1 g y + ev L2 g y := by
@@ -134,9 +130,9 @@ def sc (C : E d → ℂ) (L : List (List (Fin d) × (E d → ℂ))) : List (List
   L.map fun p => (p.1, fun y => C y * p.2 y)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp only [sc, List.map_nil, ev_nil, mul_zero]`. Consider the case `cons p L ih`. Establish `h1 : sc C (p :: L) = (p.1, fun z => C z * p.2 z) :: sc C L` using `rfl`. Rewrite using `[h1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ev_cons, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ev_sc (C : E d → ℂ) (L : List (List (Fin d) × (E d → ℂ))) (g : E d → ℂ) (y : E d) :
     ev (sc C L) g y = C y * ev L g y := by
@@ -149,13 +145,13 @@ theorem ev_sc (C : E d → ℂ) (L : List (List (Fin d) × (E d → ℂ))) (g : 
     ring
 
 /- English proof (translation)
-Use `revert hL`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Establish `h0 : ev ([] : List (List (Fin d) × (ZetaZeros.D.EllReg.E d → ℂ))) g = fun _ => 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [ev, List.map_nil, List.sum_nil]`. Rewrite using `[h0]`. Simplify using `[Dk, ev]`. Consider the case `cons p L ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hL`. Establish `hp : ContDiff ℝ ∞ p.2` using `hL p (by simp)`. Establish `hL' : ∀ q ∈ L, ContDiff ℝ ∞ q.2` using `fun q hq => hL q (by simp [hq])`. Establish `h1 : ev (p :: L) g = fun z => p.2 z * ZetaZeros.D.EllReg.dw p.1 g z + ev L g z`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ev_cons p L g z`. Rewrite using `[h1, Dk_add (hp.mul (contDiff_dw hg p.1)) (contDiff_ev hL' hg) k y, Dk_mul hp (contDiff_dw hg p.1) k y, ih hL']`. Simplify using `only [List.map_cons, ev_cons, dw_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Dk_ev {L : List (List (Fin d) × (E d → ℂ))} (hL : ∀ p ∈ L, ContDiff ℝ ∞ p.2)
     {g : E d → ℂ} (hg : ContDiff ℝ ∞ g) (k : Fin d) (y : E d) :
@@ -184,7 +180,7 @@ def lb : List (Fin d) → (E d → ℂ) → List (List (Fin d) × (E d → ℂ))
   | k :: w, f => (w, Dk k f) :: ((lb w f).map (fun p => (p.1, Dk k p.2)) ++ (lb w f).map (fun p => (k :: p.1, p.2)))
 
 /- English proof (translation)
-The claim follows from `| [] => by intro p hp; simp [lb] at hp | k :: w => by have ih := lb_good hf hK hfK w intro p hp simp only [lb, List.mem_cons, List.mem_append, List.mem_map] at hp rcases hp with rfl | ⟨q, hq, rfl⟩ | ⟨q, hq, rfl⟩ · exact ⟨by simp, contDiff_Dk hf k, Dk_zero_off hK hfK k⟩ · obtain ⟨ …`.
+A detailed English derivation is pending.
 -/
 theorem lb_good {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) {K : Set (E d)} (hK : IsClosed K)
     (hfK : ∀ y ∉ K, f y = 0) : ∀ w : List (Fin d), Good w.length K (lb w f)
@@ -201,7 +197,7 @@ theorem lb_good {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) {K : Set (E d)} (hK 
       exact ⟨by simp; omega, h2, h3⟩
 
 /- English proof (translation)
-The claim follows from `| [], g, hg => by funext y; simp [dw, lb, ev] | k :: w, g, hg => by have hgood := lb_good hf isClosed_univ (by simp) w have hc : ∀ p ∈ lb w f, ContDiff ℝ ∞ p.2 := fun p hp => (hgood p hp).2.1 funext y rw [dw_cons, leib hf w g hg, Dk_add (hf.mul (contDiff_dw hg w)) (contDiff_ev hc …`.
+A detailed English derivation is pending.
 -/
 theorem leib {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : ∀ (w : List (Fin d)) (g : E d → ℂ), ContDiff ℝ ∞ g →
     dw w (fun z => f z * g z) = fun y => f y * dw w g y + ev (lb w f) g y
@@ -220,7 +216,7 @@ def sb (a : E d → ℂ) : List (List (Fin d) × (E d → ℂ)) → List (List (
   | p :: L => (p.1, fun y => p.2 y * a y) :: (sc p.2 (lb p.1 a) ++ sb a L)
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [ev, sb] | p :: L => by rw [ev_cons, ev_sb ha he y L, leib ha p.1 e he] simp only [sb, ev_cons, ev_append, ev_sc] ring`.
+A detailed English derivation is pending.
 -/
 theorem ev_sb {a : E d → ℂ} (ha : ContDiff ℝ ∞ a) {e : E d → ℂ} (he : ContDiff ℝ ∞ e) (y : E d) :
     ∀ L : List (List (Fin d) × (E d → ℂ)), ev L (fun z => a z * e z) y = ev (sb a L) e y
@@ -231,7 +227,7 @@ theorem ev_sb {a : E d → ℂ} (ha : ContDiff ℝ ∞ a) {e : E d → ℂ} (he 
     ring
 
 /- English proof (translation)
-The claim follows from `| [], _ => by intro p hp; simp [sb] at hp | p :: L, hL => by have hp := hL p (by simp) have ih := sb_good ha L (fun q hq => hL q (by simp [hq])) have hlb := lb_good ha isClosed_univ (by simp) p.1 intro q hq simp only [sb, sc, List.mem_cons, List.mem_append, List.mem_map] at hq rc …`.
+A detailed English derivation is pending.
 -/
 theorem sb_good {a : E d → ℂ} (ha : ContDiff ℝ ∞ a) {k : ℕ} {K : Set (E d)} :
     ∀ L : List (List (Fin d) × (E d → ℂ)), Good k K L → Good k K (sb a L)
@@ -249,7 +245,7 @@ theorem sb_good {a : E d → ℂ} (ha : ContDiff ℝ ∞ a) {k : ℕ} {K : Set (
     · exact ih q hq
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨h1, h2⟩` from `hL p hp`. Conclude with `⟨lt_of_lt_of_le h1 hk, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_mono {k k' : ℕ} {K : Set (E d)} {L : List (List (Fin d) × (E d → ℂ))} (hL : Good k K L)
     (hk : k ≤ k') : Good k' K L := by
@@ -261,19 +257,17 @@ def cf (L : List (List (Fin d) × (E d → ℂ))) (n : ℕ) (w : Fin n → Fin d
   (L.map fun p => if p.1 = List.ofFn w then p.2 y else 0).sum
 
 /- English proof (translation)
-Use `revert hL`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Establish `h0 : cf ([] : List (List (Fin d) × (ZetaZeros.D.EllReg.E d → ℂ))) n w = fun _ => 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [cf, List.map_nil, List.sum_nil]`. Rewrite using `[h0]`. Conclude with `⟨contDiff_const, fun _ _ => rfl⟩`. Consider the case `cons p L ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hL`. Establish `hp` using `hL p (by simp)`. Establish `hL' : Good k K L`. Introduce `r hr; exact hL r (by simp [hr])`. Take `⟨ih1, ih2⟩` from `ih hL'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : cf (p :: L) n w = fun y => (if p.1 = List.ofFn w then p.2 y else 0) + cf L n w y`. Use function extensionality and compare the values at `y`. Simplify using `only [cf, List.map_cons, List.sum_cons]`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiff.add ?_ ih1` and prove the remaining obligations. Distinguish the cases in `hc : p.1 = List.ofFn w`. Simplify using `only [if_pos hc]`. Conclude with `hp.2.1`. Simplify using `only [if_neg hc]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiff_const`. Introduce `y hy show (if p.1 = List.ofFn w then p.2 y else 0) + cf L n w y = 0`. Rewrite using `[ih2 y hy]`. Distinguish the cases in `hc : p.1 = List.ofFn w`. Simplify using `[if_pos hc, hp.2.2 y hy]`.
-
-Simplify using `[if_neg hc]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cf_good {k : ℕ} {K : Set (E d)} {L : List (List (Fin d) × (E d → ℂ))} (hL : Good k K L)
     (n : ℕ) (w : Fin n → Fin d) : ContDiff ℝ ∞ (cf L n w) ∧ ∀ y ∉ K, cf L n w y = 0 := by
@@ -306,17 +300,17 @@ theorem cf_good {k : ℕ} {K : Set (E d)} {L : List (List (Fin d) × (E d → �
       · simp [if_neg hc]
 
 /- English proof (translation)
-Take `⟨v, c⟩` from `p`. Simplify using `only at hp ⊢`. Establish `key : ∀ (n : ℕ) (w : Fin n → Fin d), (if v = List.ofFn w then c y else 0) * ZetaZeros.D.EllReg.dw (List.ofFn w) g y = if v = List.ofFn w then c y * ZetaZeros.D.EllReg.dw v g y else 0`. Introduce `n w`. Distinguish the cases in `h : v = List.ofFn w`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos h, h]`. Rewrite using `[if_neg h, if_neg h, zero_mul]`. Simplify using `only [key]`. Rewrite using `[Finset.sum_eq_single v.length]`. Rewrite using `[Finset.sum_eq_single v.get]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (List.ofFn_get v).symm]`. Introduce `w _ hw`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h' : List.ofFn w = List.ofFn v.get` using `by rw [← h, List.ofFn_get]`. Conclude with `List.ofFn_injective h'`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `n _ hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hn` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, List.length_ofFn]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr hp) h`.
+A detailed English derivation is pending.
 -/
 theorem single_term {m : ℕ} (p : List (Fin d) × (E d → ℂ)) (hp : p.1.length < m) (g : E d → ℂ) (y : E d) :
     ∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d,
@@ -351,7 +345,7 @@ theorem single_term {m : ℕ} (p : List (Fin d) × (E d → ℂ)) (hp : p.1.leng
     exact absurd (Finset.mem_range.mpr hp) h
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [ev, cf] | p :: L, hL => by rw [ev_cons, ev_eq_cf g y L (fun q hq => hL q (by simp [hq])), ← single_term p (hL p (by simp)) g y, ← Finset.sum_add_distrib] apply Finset.sum_congr rfl; intro n _ rw [← Finset.sum_add_distrib] apply Finset.sum_congr rfl; intro w _ …`.
+A detailed English derivation is pending.
 -/
 theorem ev_eq_cf {m : ℕ} (g : E d → ℂ) (y : E d) : ∀ L : List (List (Fin d) × (E d → ℂ)),
     (∀ p ∈ L, p.1.length < m) →
@@ -367,7 +361,7 @@ theorem ev_eq_cf {m : ℕ} (g : E d → ℂ) (y : E d) : ∀ L : List (List (Fin
     ring
 
 /- English proof (translation)
-The claim follows from `| [], _, h => h | k :: v, y, h => by have ih := dw_congr v y h filter_upwards [ih.eventuallyEq_nhds] with x hx simp only [dw_cons, Dk, hx.fderiv_eq]`.
+A detailed English derivation is pending.
 -/
 theorem dw_congr {F G : E d → ℂ} : ∀ (v : List (Fin d)) (y : E d), F =ᶠ[𝓝 y] G → dw v F =ᶠ[𝓝 y] dw v G
   | [], _, h => h
@@ -377,9 +371,9 @@ theorem dw_congr {F G : E d → ℂ} : ∀ (v : List (Fin d)) (y : E d), F =ᶠ[
     simp only [dw_cons, Dk, hx.fderiv_eq]
 
 /- English proof (translation)
-Establish `h` using `Complex.ofRealCLM.contDiff.comp hχ`. Establish `e : (Complex.ofRealCLM ∘ χ) = fun y => (χ y : ℂ)`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_ofReal' {χ : E d → ℝ} (hχ : ContDiff ℝ ∞ χ) : ContDiff ℝ ∞ (fun y => (χ y : ℂ)) := by
   have h := Complex.ofRealCLM.contDiff.comp hχ
@@ -389,11 +383,9 @@ theorem contDiff_ofReal' {χ : E d → ℝ} (hχ : ContDiff ℝ ∞ χ) : ContDi
   exact h
 
 /- English proof (translation)
-Establish `hz0 : ∀ z, z ∉ tsupport χ → χ z = 0` using `fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `hz (subset_tsupport χ (Function.mem_support.mpr h))`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ U`. Conclude with `(contDiff_ofReal' hχ).contDiffAt.mul (ha.contDiffAt (hU.mem_nhds hx))`. Establish `hxs : x ∉ tsupport χ` using `fun h => hx (hχU h)`. Establish `hev : (fun y => (χ y : ℂ) * a y) =ᶠ[𝓝 x] fun _ => (0 : ℂ)` using `by filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hxs] with z hz`. Simplify using `[hz0 z hz]`.
-
-Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_cut {U : Set (E d)} (hU : IsOpen U) {a : E d → ℂ} (ha : ContDiffOn ℝ ∞ a U)
     {χ : E d → ℝ} (hχ : ContDiff ℝ ∞ χ) (hχU : tsupport χ ⊆ U) :
@@ -412,11 +404,11 @@ theorem smooth_cut {U : Set (E d)} (hU : IsOpen U) {a : E d → ℂ} (ha : ContD
     exact contDiffAt_const.congr_of_eventuallyEq hev
 
 /- English proof (translation)
-Establish `hKc : IsClosed K` using `hK.isClosed`. Establish `hcont : Continuous (fun y => u y * F y)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hu.continuousAt (hU.mem_nhds hx)).mul hF.continuousAt`. Establish `hxK : x ∉ K` using `fun h => hx (hKU h)`. Establish `hev : (fun _ => (0 : ℂ)) =ᶠ[𝓝 x] fun y => u y * F y` using `by filter_upwards [hKc.isOpen_compl.mem_nhds hxK] with z hz`. Simplify using `[hFK z hz]`. Conclude with `continuousAt_const.congr hev`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcs : HasCompactSupport (fun y => u y * F y)`. Apply `HasCompactSupport.intro hK` to reduce the goal to its premises. Introduce `y hy`. Simplify using `[hFK y hy]`. Conclude with `hcont.integrable_of_hasCompactSupport hcs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intg {U K : Set (E d)} (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U) {u F : E d → ℂ}
     (hu : ContinuousOn u U) (hF : Continuous F) (hFK : ∀ y ∉ K, F y = 0) :
@@ -439,9 +431,7 @@ theorem intg {U K : Set (E d)} (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U
   exact hcont.integrable_of_hasCompactSupport hcs
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun n' _ => Finset.sum_comm)`. Use `_ = ∑ n' ∈ t, ∑ n ∈ s, ∑ w' : Fin n' → Fin d, ∑ w : Fin n → Fin d, f n w n' w' := Finset.sum_comm`.
-
-Use `_ = ∑ n' ∈ t, ∑ w' : Fin n' → Fin d, ∑ n ∈ s, ∑ w : Fin n → Fin d, f n w n' w' := Finset.sum_congr rfl (fun n' _ => Finset.sum_comm)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap4 {α : Type*} [AddCommMonoid α] (s t : Finset ℕ)
     (f : (n : ℕ) → (Fin n → Fin d) → (n' : ℕ) → (Fin n' → Fin d) → α) :
@@ -457,11 +447,11 @@ theorem swap4 {α : Type*} [AddCommMonoid α] (s t : Finset ℕ)
         Finset.sum_congr rfl (fun n' _ => Finset.sum_comm)
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (w : Fin n → Fin d), ZetaZeros.D.EllReg.dw (List.ofFn w) (fun z => B n w z * (a z * φ z)) y = a y * ZetaZeros.D.EllReg.dw (List.ofFn w) (fun z => B n w z * φ z) y + ev (sb (B n w) (lb (List.ofFn w) a)) φ y`. Introduce `n w`. Establish `e1 : (fun z => B n w z * (a z * φ z)) = fun z => a z * (B n w z * φ z)`. Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, leib ha (List.ofFn w) _ ((hB n w).mul hφ)]`. Simplify using `only [ev_sb (hB n w) hφ y]`. Simplify using `only [ZetaZeros.D.EllReg.trOp, key, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem formalAdjoint_mul_expand_lemma_3 {m : ℕ} {B : (n : ℕ) → (Fin n → Fin d) → ZetaZeros.D.EllReg.E d → ℂ}
     (hB : ∀ n w, ContDiff ℝ ∞ (B n w)) {a φ : ZetaZeros.D.EllReg.E d → ℂ} (ha : ContDiff ℝ ∞ a) (hφ : ContDiff ℝ ∞ φ) (y : ZetaZeros.D.EllReg.E d) :
@@ -482,9 +472,9 @@ private theorem formalAdjoint_mul_expand_lemma_3 {m : ℕ} {B : (n : ℕ) → (F
   ring
 
 /- English proof (translation)
-Establish `e : ZetaZeros.D.EllReg.trOp m B φ = fun x => ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * ZetaZeros.D.EllReg.dw (List.ofFn w) (fun y => B n w y * φ y) x`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `continuous_finsetSum _ (fun n _ => continuous_finsetSum _ (fun w _ => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const.mul (contDiff_dw ((hB n w).mul hφ) _).continuous`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_formalAdjoint_lemma_4 {m : ℕ} {B : (n : ℕ) → (Fin n → Fin d) → ZetaZeros.D.EllReg.E d → ℂ}
     (hB : ∀ n w, ContDiff ℝ ∞ (B n w)) {φ : ZetaZeros.D.EllReg.E d → ℂ} (hφ : ContDiff ℝ ∞ φ) :
@@ -497,9 +487,9 @@ private theorem continuous_formalAdjoint_lemma_4 {m : ℕ} {B : (n : ℕ) → (F
   exact continuous_const.mul (contDiff_dw ((hB n w).mul hφ) _).continuous
 
 /- English proof (translation)
-Unfold `ZetaZeros.D.EllReg.trOp`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply `Filter.EventuallyEq.eq_of_nhds` to reduce the goal to its premises. Apply `dw_congr` to reduce the goal to its premises. Use `filter_upwards [h n w] with z hz`. Rewrite using `[hz]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem formalAdjoint_congr_at_lemma_5 {m : ℕ} {b b' : (n : ℕ) → (Fin n → Fin d) → ZetaZeros.D.EllReg.E d → ℂ} {φ : ZetaZeros.D.EllReg.E d → ℂ}
     {y : ZetaZeros.D.EllReg.E d} (h : ∀ n w, b n w =ᶠ[𝓝 y] b' n w) : ZetaZeros.D.EllReg.trOp m b φ y = ZetaZeros.D.EllReg.trOp m b' φ y := by
@@ -513,7 +503,7 @@ private theorem formalAdjoint_congr_at_lemma_5 {m : ℕ} {b b' : (n : ℕ) → (
   rw [hz]
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fun y : ZetaZeros.D.EllReg.E d => (inner ℝ y ξ : ℝ))`. Conclude with `contDiff_id.inner ℝ contDiff_const`. Establish `h2` using `contDiff_ofReal' h1`. Establish `h3 : ContDiff ℝ ∞ (fun y : ZetaZeros.D.EllReg.E d => -(2 * Real.pi * Complex.I * ((inner ℝ y ξ : ℝ) : ℂ)))` using `(contDiff_const.mul h2).neg`. Conclude with `h3.cexp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_eF (ξ : E d) : ContDiff ℝ ∞ (eF ξ) := by
   have h1 : ContDiff ℝ ∞ (fun y : ZetaZeros.D.EllReg.E d => (inner ℝ y ξ : ℝ)) := by
@@ -527,63 +517,57 @@ end WF
 
 open WF in
 /- English proof (translation)
-Introduce `d ι _ P U u hE i χ χ' hχ hχc hχU hχ' hχ'c hχ'U hχχ'`. Take `⟨hU, hcoef, -, hu, hweak⟩` from `hE`. Establish `hKcl : IsClosed (tsupport χ)` using `isClosed_tsupport χ`. Establish `hKc : IsCompact (tsupport χ)` using `hχc.isCompact`. Establish `hz0 : ∀ z, z ∉ tsupport χ → χ z = 0` using `fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hz (subset_tsupport χ (Function.mem_support.mpr h))`. Establish `hone : ∀ z ∈ tsupport χ, χ' z = 1` using `fun z hz => (hχχ' z hz).eq_of_nhds`. Take `⟨a, ha_def⟩ : ∃ a : E d → ℂ, a = fun z => (χ z : ℂ)` from `⟨_, rfl⟩`. Establish `ha : ContDiff ℝ ∞ a` using `by rw [ha_def]; exact ZetaZeros.D.EllReg.WF.contDiff_ofReal' hχ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haK : ∀ z ∉ tsupport χ, a z = 0` using `fun z hz => by rw [ha_def]; simp [hz0 z hz]`. Take `⟨B, hB_def⟩ : ∃ B : (n : ℕ) → (Fin n → Fin d) → E d → ℂ, B = fun n w z => (χ' z : ℂ) * P.a i n w z` from `⟨_, rfl⟩`. Establish `hB : ∀ n w, ContDiff ℝ ∞ (B n w)`. Introduce `n w`. Rewrite using `[hB_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ZetaZeros.D.EllReg.WF.smooth_cut hU (hcoef i n w) hχ' hχ'U`. Establish `hBev : ∀ y ∈ tsupport χ, ∀ n w, P.a i n w =ᶠ[𝓝 y] B n w`. Introduce `y hy n w`. Use `filter_upwards [hχχ' y hy] with z hz`. Rewrite using `[hB_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hz]`. Establish `hMadm : ∀ n ∈ Finset.range (P.ord i + 1), ∀ w : Fin n → Fin d, ZetaZeros.D.EllReg.WF.Good (P.ord i) (tsupport χ) (ZetaZeros.D.EllReg.WF.sb (B n w) (ZetaZeros.D.EllReg.WF.lb (List.ofFn w) a))`. Introduce `n hn w`. Establish `h1` using `ZetaZeros.D.EllReg.WF.sb_good (hB n w) _ (ZetaZeros.D.EllReg.WF.lb_good ha hKcl haK (List.ofFn w))`. Rewrite `h1` using `[List.length_ofFn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : n ≤ P.ord i` using `by have := Finset.mem_range.mp hn; omega`. Conclude with `(ZetaZeros.D.EllReg.WF.good_mono h1) hn'`. Take `⟨c, hc_def⟩ : ∃ c : (n : ℕ) → (Fin n → Fin d) → E d → ℂ, c = fun n' w' y => -∑ n ∈ Finset.range (P.ord i + 1), ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * ZetaZeros.D.EllReg.WF.cf (ZetaZeros.D.EllReg.WF.sb (B n w) (ZetaZeros.D.EllReg.WF.lb (List.ofFn w) a)) n' w' y` from `⟨_, rfl⟩`. Establish `hc : ∀ n' (w' : Fin n' → Fin d), ContDiff ℝ ∞ (c n' w')`. Introduce `n' w'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc_def]`. Apply `ContDiff.neg` to reduce the goal to its premises. Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `n hn`. Apply `ContDiff.sum` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w _`. Conclude with `contDiff_const.mul (ZetaZeros.D.EllReg.WF.cf_good (hMadm n hn w) n' w').1`. Establish `hc0 : ∀ n' (w' : Fin n' → Fin d), ∀ y ∉ tsupport χ, c n' w' y = 0`. Introduce `n' w' y hy`. Simplify using `only [hc_def, neg_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `n hn`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[(ZetaZeros.D.EllReg.WF.cf_good (hMadm n hn w) n' w').2 y hy, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, fun n' w' => ⟨hc n' w', HasCompactSupport.intro hKc (hc0 n' w')⟩, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hφ` using `ZetaZeros.D.EllReg.WF.contDiff_eF ξ`. Take `⟨ψ, hψ_def⟩ : ∃ ψ : E d → ℂ, ψ = fun z => a z * eF ξ z` from `⟨_, rfl⟩`. Establish `hψs : ContDiff ℝ ∞ ψ` using `by rw [hψ_def]; exact ha.mul hφ`. Establish `hψc : HasCompactSupport ψ` using `HasCompactSupport.intro hKc (fun z hz => by rw [hψ_def]; simp [haK z hz])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hψU : tsupport ψ ⊆ U`. Use `subset_trans ?_ hχU` and prove the remaining obligations. Use `closure_minimal ?_ hKcl` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `hzK`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Function.mem_support.mp hz) (by rw [hψ_def]; simp [haK z hzK])`. Establish `hint_r : ∫ x, u x * P.tr i ψ x = 0` using `hweak i ψ hψs hψc hψU`. Establish `hψB : ∀ y, P.tr i ψ y = trOp (P.ord i) B ψ y`. Introduce `y`. Use `show trOp (P.ord i) (P.a i) ψ y = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `trOp`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (fun z => P.a i n w z * ψ z) = fun z => B n w z * ψ z`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ tsupport χ`. Rewrite using `[hB_def]`. Simplify using `[hone z hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hψ_def]`. Simplify using `[haK z hz]`. Rewrite using `[e]`. Establish `hL : ∀ y, cut χ u y * P.tr i (eF ξ) y = u y * (a y * trOp (P.ord i) B (eF ξ) y)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ tsupport χ`. Establish `e : P.tr i (eF ξ) y = trOp (P.ord i) B (eF ξ) y` using `by show trOp (P.ord i) (P.a i) (eF ξ) y = _`. Conclude with `_root_.ZetaZeros.D.EllReg.WF.formalAdjoint_congr_at_lemma_5 (hBev y hy)`. Rewrite using `[e, ha_def]`. Simplify using `only [cut]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : χ y = 0` using `hz0 y hy`. Rewrite using `[ha_def]`. Simplify using `[cut, h0]`. Establish `hR : ∀ y, ∑ n ∈ Finset.range (P.ord i + 1), ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * ZetaZeros.D.EllReg.WF.ev (ZetaZeros.D.EllReg.WF.sb (B n w) (ZetaZeros.D.EllReg.WF.lb (List.ofFn w) a)) (eF ξ) y = -∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, c n' w' y * dw (List.ofFn w') ( …`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `y`. Establish `h1 : ∀ n ∈ Finset.range (P.ord i + 1), ∀ w : Fin n → Fin d, (-1 : ℂ) ^ n * ZetaZeros.D.EllReg.WF.ev (ZetaZeros.D.EllReg.WF.sb (B n w) (ZetaZeros.D.EllReg.WF.lb (List.ofFn w) a)) (eF ξ) y = ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, (-1 : ℂ) ^ n * (ZetaZeros.D.EllReg.WF …`. Introduce `n hn w`. Rewrite using `[ZetaZeros.D.EllReg.WF.ev_eq_cf (eF ξ) y _ (fun p hp => (hMadm n hn w p hp).1), Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n' _`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Conclude with `h1 n hn w`. Use `_ = ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, ∑ n ∈ Finset.range (P.ord i + 1), ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * (ZetaZeros.D.EllReg.WF.cf (ZetaZeros.D.EllReg.WF.sb (B n w) (ZetaZeros.D.EllReg.WF.lb (List.ofFn w) a)) n' w' y * dw (List.ofFn w') (eF ξ) y) := ZetaZer …`. Use `_ = -∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, c n' w' y * dw (List.ofFn w') (eF ξ) y := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n' _`. Rewrite using `[← Finset.sum_neg_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w' _`. Rewrite using `[hc_def]`. Simplify using `only [Finset.sum_mul, neg_mul, neg_neg, mul_assoc]`. Establish `hpt : ∀ y, u y * P.tr i ψ y = u y * (a y * trOp (P.ord i) B (eF ξ) y) - ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y)`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hψB y, hψ_def, _root_.ZetaZeros.D.EllReg.WF.formalAdjoint_mul_expand_lemma_3 hB ha hφ y, hR y, mul_add, mul_neg, sub_eq_add_neg, Finset.mul_sum]`. Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n' _`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hG : Integrable (fun y => u y * (a y * trOp (P.ord i) B (eF ξ) y))` using `ZetaZeros.D.EllReg.WF.intg hU hKc hχU hu (ha.continuous.mul (_root_.ZetaZeros.D.EllReg.WF.continuous_formalAdjoint_lemma_4 hB hφ)) (fun y hy => by simp [haK y hy])`. Establish `hH : ∀ n' (w' : Fin n' → Fin d), Integrable (fun y => u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y))` using `fun n' w' => ZetaZeros.D.EllReg.WF.intg hU hKc hχU hu ((hc n' w').continuous.mul (ZetaZeros.D.EllReg.WF.contDiff_dw hφ _).continuous) (fun y hy => by simp [hc0 n' w' y hy])`. Establish `hmain : ∫ y, u y * (a y * trOp (P.ord i) B (eF ξ) y) = ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, ∫ y, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y)`. Establish `e` using `hint_r`. Rewrite `e` using `[show (fun x => u x * P.tr i ψ x) = fun y => u y * (a y * trOp (P.ord i) B (eF ξ) y) - ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y) from funext hpt]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e` using `[integral_sub hG (integrable_finsetSum _ fun n' _ => integrable_finsetSum _ fun w' _ => hH n' w'), integral_finsetSum _ (fun n' _ => integrable_finsetSum _ fun w' _ => hH n' w')]`. Establish `e2 : ∀ n' ∈ Finset.range (P.ord i), ∫ y, ∑ w' : Fin n' → Fin d, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y) = ∑ w' : Fin n' → Fin d, ∫ y, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y)` using `fun n' _ => integral_finsetSum _ (fun w' _ => hH n' w')`. Rewrite `e` using `[Finset.sum_congr rfl e2]`. Conclude with `sub_eq_zero.mp e`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `hL y`. Use `_ = ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, ∫ y, u y * (c n' w' y * dw (List.ofFn w') (eF ξ) y) := hmain`. Use `_ = ∑ n' ∈ Finset.range (P.ord i), ∑ w' : Fin n' → Fin d, ∫ y, cut χ' u y * c n' w' y * dw (List.ofFn w') (eF ξ) y := by`.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n' _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w' _`. Use `congr 1`.
-
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ tsupport χ`. Simplify using `only [cut, hone y hy, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc0 n' w' y hy]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weakEquationFourier : WeakFourier := by
   intro d ι _ P U u hE i χ χ' hχ hχc hχU hχ' hχ'c hχ'U hχχ'

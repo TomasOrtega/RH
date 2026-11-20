@@ -6,11 +6,11 @@ open Formalism.UG GlobalTheory.SatakeWeyl GlobalTheory.InertZeta
 namespace GlobalTheory.CompanionTheory.InertZeta
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `fun i j => ⟨_, h1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `fun i j => ⟨_, h2 i j⟩`. Establish `hM : (Formalism.UG.intL L).subtype.mapMatrix M = g` using `by ext i j; rfl`. Establish `hM' : (Formalism.UG.intL L).subtype.mapMatrix M' = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `inj : Function.Injective ((Formalism.UG.intL L).subtype.mapMatrix : Matrix (Fin n) (Fin n) (Formalism.UG.intL L) → Matrix (Fin n) (Fin n) L)` using `fun A B h => Matrix.ext fun i j => Subtype.ext (by simpa [RingHom.mapMatrix_apply] using congrFun (congrFun h i) j)`. Use `⟨⟨M, M', inj ?_, inj ?_⟩, Units.ext hM⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hM, hM']`. Conclude with `g.mul_inv`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_one, hM, hM']`. Conclude with `g.inv_mul`.
+A detailed English derivation is pending.
 -/
 private theorem mem_range_bc_of_entries_mem_intL {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
     (g : GL (Fin n) L) (h1 : ∀ i j, (g : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L)
@@ -31,11 +31,9 @@ private theorem mem_range_bc_of_entries_mem_intL {L : Type} [Field L] [Valued L 
     exact g.inv_mul
 
 /- English proof (translation)
-Establish `hg : Formalism.UG.cT σ ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * Formalism.UG.antiJ L 1 * ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) = Formalism.UG.antiJ L 1` using `g.2`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `set x := ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) 0 0 with hx`. Establish `e : σ x * x = 1`. Use `congrFun (congrFun hg 0) 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mul_apply, Formalism.UG.cT, Formalism.UG.antiJ, hx]`. Establish `e2 : Valued.v x ^ 2 = 1`. Rewrite using `[sq]`. Use `nth_rewrite 1 [← hv x]`. Rewrite using `[← map_mul, e, map_one]`.
-
-Use `(Valuation.mem_integer_iff _ _).mpr ?_` and prove the remaining obligations. Conclude with `(pow_le_one_iff two_ne_zero).mp e2.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem entry_lemma_2 {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L}
     (hv : ∀ x, Valued.v (σ x) = Valued.v x) (g : Formalism.UG.GU σ 1) (i j : Fin 1) :
@@ -55,9 +53,7 @@ private theorem entry_lemma_2 {L : Type} [Field L] [Valued L (WithZero (Multipli
   exact (pow_le_one_iff two_ne_zero).mp e2.le
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hσ hn g`. Rewrite using `[Formalism.UG.KU, Subgroup.mem_subgroupOf, Formalism.UG.intPts, Subgroup.mem_inf]`. Use `⟨g.2, ?_⟩` and prove the remaining obligations. Use `interval_cases n`. Conclude with `mem_range_bc_of_entries_mem_intL _ (fun i => i.elim0) (fun i => i.elim0)`.
-
-Conclude with `mem_range_bc_of_entries_mem_intL _ (entry_lemma_2 hσ.2.1 g) (entry_lemma_2 hσ.2.1 g⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smallRank : SmallRank := by
   intro L _ _ ϖ σ q n hσ hn g

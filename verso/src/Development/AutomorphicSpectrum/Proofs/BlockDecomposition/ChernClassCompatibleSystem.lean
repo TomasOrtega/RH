@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.ChernSys
 
 /- English proof (translation)
-Introduce and unpack `U ⟨z⟩`. Take `⟨x, y, h, -⟩` from `(hpt Y X f 0 U).1 z`. Establish `h1 : IsUnit (l : Γ(U, ⊤))`. Use `hl.map x.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `h1.pow n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_cech (hpt : CrystallineSemistableComparison.E.CechPt) (l : ℕ) {Y X : Scheme.{0}} (f : Y ⟶ X)
     (hl : IsUnit (l : Γ(X, ⊤))) (n : ℕ) : GlobalTheory.EtC.Inv (l ^ n) (cech f) := by
@@ -23,11 +23,9 @@ theorem inv_cech (hpt : CrystallineSemistableComparison.E.CechPt) (l : ℕ) {Y X
   exact h1.pow n
 
 /- English proof (translation)
-Introduce `a2 a11 l _ Y X f _ _ hl L`. Establish `hinv` using `inv_cech hpt l f hl`. Establish `hne : ∀ n, NeZero (l ^ n)` using `fun n => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `⟨hinv, ?_⟩` and prove the remaining obligations. Establish `hb : ∀ n, Function.Bijective (pull (ZMod (l ^ n)) (cechAug f) (tw (l ^ n) 1) 2)` using `fun n => a2 (ZMod (l ^ n)) f (tw (l ^ n) 1) 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose x hx using fun n => (hb n).2 (c1 (l ^ n) L)`. Use `⟨⟨x, fun k => ?_⟩, hx⟩` and prove the remaining obligations. Apply `(hb k).1` to reduce the goal to its premises. Establish `e` using `((a11 (l ^ (k + 1)) (l ^ k) (pow_dvd_pow l (Nat.le_succ k)) (cech f)).2.1 (hinv (k + 1))).2 L`. Establish `e2` using `pull_red (l ^ (k + 1)) (l ^ k) (cechAug f) 2 1 (x (k + 1))`.
-
-Conclude with `e2.trans ((congrArg _ (hx (k + 1))).trans (e.trans (hx k).symm))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chern_class_compatible_system (hpt : CrystallineSemistableComparison.E.CechPt) : CrystallineSemistableComparison.E.FirstChernCompatibleSystem := by
   intro a2 a11 l _ Y X f _ _ hl L

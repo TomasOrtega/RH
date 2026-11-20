@@ -31,7 +31,7 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsH
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hF`. Establish `hc' : Continuous fun y : G n => F y.val` using `hc.comp_continuous Units.continuous_val val_mem_GLs`. Use `hc'.integrable_of_hasCompactSupport (HasCompactSupport.intro ((hL n).2.2.2.2.1 R) ?_)` and prove the remaining obligations. Introduce `y hy`. Conclude with `hR _ (val_mem_GLs y) (not_le.1 hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integrable_of_cpt (hL : LgFacts) {F : Mat n → ℂ} (hc : ContinuousOn F (GLs n)) (hF : Cpt F) :
     Integrable (fun y : G n => F y.val) μ := by
@@ -43,14 +43,14 @@ theorem integrable_of_cpt (hL : LgFacts) {F : Mat n → ℂ} (hc : ContinuousOn 
   exact hR _ (val_mem_GLs y) (not_le.1 hy)
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hu`. Conclude with `⟨R, fun y hy h => by simp [hR y hy h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cpt_inner_left {u v : Mat n → V} (hu : Cpt u) : Cpt fun y => ⟪u y, v y⟫_ℂ := by
   obtain ⟨R, hR⟩ := hu
   exact ⟨R, fun y hy h => by simp [hR y hy h]⟩
 
 /- English proof (translation)
-The claim follows from `integrable_of_cpt μ hL (F := fun y => ⟪u y, v y⟫_ℂ) (hu.inner ℂ hv).continuousOn hc`.
+A detailed English derivation is pending.
 -/
 theorem integrable_inner (hL : LgFacts) {u v : Mat n → V} (hu : ContDiffOn ℝ ∞ u (GLs n))
     (hv : ContDiffOn ℝ ∞ v (GLs n)) (hc : Cpt fun y => ⟪u y, v y⟫_ℂ) :

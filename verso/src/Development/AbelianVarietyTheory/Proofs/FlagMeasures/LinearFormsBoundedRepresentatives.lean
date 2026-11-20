@@ -15,9 +15,9 @@ variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Modul
   [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ProjectiveRetraction.exists_retraction`. Consider the case `exact _root_.GlobalTheory.ProjectiveRetraction.exists_retraction`. Consider the case `(apply _root_.GlobalTheory.ProjectiveRetraction.exists_retraction <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProjectiveRetraction.exists_retraction <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ProjectiveRetraction.exists_retraction <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProjectiveRetraction.exists_retraction ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_retraction (M0 L : Submodule (𝓞 E) V) (hL : L.FG) (h : IsPrimitiveSub M0 L) :
     ∃ r : L →ₗ[𝓞 E] M0, ∀ x : M0, r ⟨x, h.1 x.2⟩ = x := by
@@ -30,15 +30,13 @@ theorem exists_retraction (M0 L : Submodule (𝓞 E) V) (hL : L.FG) (h : IsPrimi
   | (intros; exact _root_.GlobalTheory.ProjectiveRetraction.exists_retraction ..)
 
 /- English proof (translation)
-Use `haveI : IsLocalizedModule (nonZeroDivisors (𝓞 E)) L.subtype := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[Module.End.isUnit_iff]`. Establish `ha0 : ((a : 𝓞 E) : E) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `nonZeroDivisors.ne_zero a.2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `e : ⇑(algebraMap (𝓞 E) (Module.End (𝓞 E) V) a) = fun v => ((a : 𝓞 E) : E) • v`. Use function extensionality and compare the values at `v`. Conclude with `(algebraMap_smul E (a : 𝓞 E) v).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `MulAction.bijective (Units.mk0 _ ha0)`. Introduce `y`. Establish `hy : y ∈ Submodule.span E (L : Set V)` using `hL ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E _ y hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Introduce `x y hxy`. Conclude with `⟨1, by rw [Subtype.ext hxy]⟩`. Set `g : L →ₗ[𝓞 E] E` to `Algebra.linearMap (𝓞 E) E ∘ₗ ψ`.
-
-Establish `hu : ∀ a : nonZeroDivisors (𝓞 E), IsUnit (algebraMap (𝓞 E) (Module.End (𝓞 E) E) a)` using `fun a => IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 E)) (Algebra.linearMap (𝓞 E) E) a`. Use `⟨(IsLocalizedModule.lift (nonZeroDivisors (𝓞 E)) L.subtype g hu).extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 E)) E, fun x => ?_⟩` and prove the remaining obligations. Conclude with `IsLocalizedModule.lift_apply (nonZeroDivisors (𝓞 E)) L.subtype g hu x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extend_fun (L : Submodule (𝓞 E) V) (hL : Submodule.span E (L : Set V) = ⊤)
     (ψ : L →ₗ[𝓞 E] 𝓞 E) : ∃ φ : V →ₗ[E] E, ∀ x : L, φ x = (ψ x : E) := by
@@ -73,11 +71,11 @@ end Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Set `G : S.V →ₗ[E] (Fin S.rank → E)` to `LinearMap.pi fun i => S.hT (S.frame i)`. Establish `hG : Function.Injective G`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `S.nondeg.2 y` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `: S.hT.flip y = 0` using `S.frame.ext fun i => congrFun hy i`. Conclude with `LinearMap.congr_fun this x`. Establish `hs : Function.Surjective G` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [S.rank_eq])).1 hG`. Take `⟨w, hw⟩` from `hs fun i => star (φ (S.frame i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, fun x => LinearMap.congr_fun (S.frame.ext fun i => ?_ : φ = S.hT w) x⟩` and prove the remaining obligations. Establish `h1 : S.hT (S.frame i) w = star (φ (S.frame i))` using `congrFun hw i`. Establish `h2 : star (S.hT (S.frame i) w) = S.hT w (S.frame i)` using `S.herm.eq _ _`. Rewrite using `[← h2, h1, star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vec (S : HSpace E) (φ : S.V →ₗ[E] E) : ∃ w, ∀ x, φ x = S.hT w x := by
   let G : S.V →ₗ[E] (Fin S.rank → E) := LinearMap.pi fun i => S.hT (S.frame i)
@@ -97,13 +95,13 @@ theorem exists_vec (S : HSpace E) (φ : S.V →ₗ[E] E) : ∃ w, ∀ x, φ x = 
   rw [← h2, h1, star_star]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_retraction M0 L hL.fg h`. Take `⟨φ, hφ⟩` from `exists_extend_fun L hL.span_eq_top (ψ ∘ₗ r)`. Take `⟨w, hw⟩` from `exists_vec S φ`. Use `⟨⟨w, ?_, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun y => (Submodule.mem_iInf _).2 fun hy => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `S.hT y w ∈ (1 : Submodule (𝓞 E) E)`. Establish `h2 : star (S.hT w y) = S.hT y w` using `S.herm.eq _ _`. Establish `h3 : IsIntegral ℤ (S.hT y w)`. Rewrite using `[← h2, ← hw, hφ ⟨y, hy⟩]`. Conclude with `(RingOfIntegers.isIntegral_coe _).map (starRingEnd E).toIntAlgHom`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Submodule.mem_one.2 ⟨⟨_, h3⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `w ∈ Submodule.span E (L : Set S.V)`. Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `hφ ⟨x, h.1 x.2⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[LinearMap.comp_apply, hr]`. Rewrite using `[← this, hw]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual_vec (S : HSpace E) (M0 L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L)
     (h : IsPrimitiveSub M0 L) (ψ : M0 →ₗ[𝓞 E] 𝓞 E) :
@@ -126,11 +124,11 @@ theorem exists_dual_vec (S : HSpace E) (M0 L : Submodule (𝓞 E) S.V) (hL : Sub
     rw [← this, hw]
 
 /- English proof (translation)
-Use `choose w hw using exists_dual_vec S M0 L hL h`. Use `haveI : Finite (dualInH S.hT L ⧸ L.comap (dualInH S.hT L).subtype) := Nat.finite_of_card_ne_zero (by omega)`. Use `letI := Fintype.ofFinite (dualInH S.hT L ⧸ L.comap (dualInH S.hT L).subtype)`. Set `g : (M0 →ₗ[𝓞 E] 𝓞 E) → (dualInH S.hT L ⧸ L.comap (dualInH S.hT L).subtype)` to `fun ψ => Submodule.Quotient.mk (w ψ)`. Use `⟨Finset.univ.image (Function.invFun g), ?_, fun ψ => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `Finset.card_image_le`. Use `⟨Function.invFun g (g ψ), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Establish `h1 : g ψ = g (Function.invFun g (g ψ))` using `(Function.invFun_eq ⟨ψ, rfl⟩).symm`. Establish `h2` using `(Submodule.Quotient.eq _).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨_, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.subtype_apply, Submodule.coe_sub, map_sub, LinearMap.sub_apply, ← hw, ← hw]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_reps (S : HSpace E) (M0 L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L)
     (h : IsPrimitiveSub M0 L)
@@ -155,9 +153,9 @@ theorem exists_reps (S : HSpace E) (M0 L : Submodule (𝓞 E) S.V) (hL : Submodu
     rfl
 
 /- English proof (translation)
-Introduce `D u u' F0 Λ hS hB hR M0 hM`. Take `⟨-, -, hpd, hlat, hint, hdet, -⟩` from `GlobalTheory.T.standardBaseFlag_complement_integralLattice D u u' F0 Λ hS hB hR`. Take `⟨h1, h2, -⟩` from `GlobalTheory.LoopC.DetCard.main D _ hlat.fg hpd hint`. Take `⟨reps, hc, hr⟩` from `exists_reps (D.sp.X 0) M0 _ hlat hM h1`. Use `⟨reps, ?_, hr⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hdet, ← h2]`. Conclude with `hc` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funIdx : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D), Stand D u u' → IsBase D u F0 → IsRowLat D F0 Λ → ∀ M0 : LatW D, IsPrimitiveSub M0 (L0X D Λ (lf D F0)) → ∃ reps : Finset (M0 →ₗ[𝓞 D.host.E] 𝓞 D.host.E), (reps.card : ℝ) ≤ NT D u ^ 2 ∧ ∀ ψ : M0 →ₗ[𝓞 D.host.E] 𝓞 D.host.E, ∃ ψ₀ ∈ reps, ∃ v ∈ L0X D Λ (lf D F0), ∀ x : M0, ((ψ x - ψ₀ x : 𝓞 D.host.E) : D.host.E) = (D.sp.X 0).hT v x := by
   intro D u u' F0 Λ hS hB hR M0 hM

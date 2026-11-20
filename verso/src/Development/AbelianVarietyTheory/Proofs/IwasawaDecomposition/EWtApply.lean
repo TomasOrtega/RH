@@ -16,7 +16,7 @@ def eWt (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) :
   LinearEquiv.refl ℂ _
 
 /- English proof (translation)
-Establish `e : s' = s` using `Subtype.ext h`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eWt_apply (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (z : (I.per l u a).Wrow)
     (c : (I.fm l u a).clsP) (s : Formalism.L2.Forms.FrP (I.rec7 l Z)) (s' : GlobalTheory.Mem.Col2.Fr B.fields.emb B.embLL (B.R.N B.R.m - 1))

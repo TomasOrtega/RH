@@ -15,20 +15,20 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-Use `show ((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S (a * b))) = _`. Rewrite using `[map_mul, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scal_mul' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
@@ -38,7 +38,7 @@ theorem scal_mul' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PP
   rfl
 
 /- English proof (translation)
-Use `show ((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S (a + b))) = _`. Rewrite using `[map_add, map_add, map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scal_add' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a + b) i = scal x a i + scal x b i := by
@@ -48,7 +48,7 @@ theorem scal_add' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PP
   rfl
 
 /- English proof (translation)
-Use `show ((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S 1)) = _`. Rewrite using `[map_one, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_one' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) :
     scal x 1 i = 1 := by
@@ -57,9 +57,9 @@ theorem scal_one' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) :
   rw [map_one, map_one, map_one]
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+A detailed English derivation is pending.
 -/
 theorem ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -76,13 +76,11 @@ theorem ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : 
   exact hp' k
 
 /- English proof (translation)
-Establish `key : ∀ (q : Gx x' ⟶ Sp S), q = (fst (Over.mk x') Xo.univ.t.G).left ≫ spMap φ → ∀ e : (PPx x').U i ≤ q ⁻¹ᵁ ⊤, q.appLE ⊤ ((PPx x').U i) e = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appLE ⊤ _ (le_top)`. Introduce and unpack `q rfl e`. Conclude with `Scheme.Hom.comp_appLE _ _ _ _ _`. Establish `M : (fst (Over.mk x) Xo.univ.t.G).left.appTop ≫ (Gx x).presheaf.map (homOfLE le_top).op ≫ pm.appLE _ _ h = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appTop ≫ (Gx x').presheaf.map (homOfLE le_top).op`. Rewrite using `[Scheme.Hom.map_appLE]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (fst (Over.mk x) Xo.univ.t.G).left.appTop = (fst (Over.mk x) Xo.univ.t.G).left.appLE ⊤ ⊤ le_top` using `(Scheme.Hom.appLE_eq_app _).symm`. Rewrite using `[e1]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ((key _ hf _).trans rfl)`. Establish `M'` using `congrArg (fun f => f.hom (toΓ S a)) M`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at M'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `N` using `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at N`. Use `show (pm.appLE _ _ h).hom (((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S a))) = ((Gx x').presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x') Xo.univ.t.G).left.appTop.hom (toΓ T (φ a)))`. Rewrite using `[M']`. Use `congr 2`.
-
-Conclude with `N.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem scal_pull' {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -113,7 +111,7 @@ theorem scal_pull' {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : 
   exact N.symm
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext (f := (Over.mk x).hom) (g := Xo.univ.t.G.hom) hf hs`.
+A detailed English derivation is pending.
 -/
 theorem pm_ext {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {Y : Scheme.{0}} (p q : Y ⟶ Gx x)
     (hs : p ≫ (snd (Over.mk x) Xo.univ.t.G).left = q ≫ (snd (Over.mk x) Xo.univ.t.G).left)
@@ -121,7 +119,7 @@ theorem pm_ext {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {Y : Scheme.{0}} (p q
   pullback.hom_ext (f := (Over.mk x).hom) (g := Xo.univ.t.G.hom) hf hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.lift (pullback.fst (Over.mk x').hom Xo.univ.t.G.hom ≫ spMap φ) (pullback.snd (Over.mk x').hom Xo.univ.t.G.hom) (by show pullback.fst (Over.mk x').hom Xo.univ.t.G.hom ≫ spMap φ ≫ x = pullback.snd (Over.mk x').hom Xo.univ.t.G.hom ≫ Xo.univ.t.G.hom rw [← hx] exact pullback …`.
+Supply the required witnesses or components.
 -/
 theorem pm_exists {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (hx : x' = spMap φ ≫ x) : ∃ pm : Gx x' ⟶ Gx x,
@@ -136,9 +134,9 @@ theorem pm_exists {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : S
         exact pullback.condition), pullback.lift_snd _ _ _, pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, qs, qf, ha⟩ i`. Take `rfl : q = pm` from `pm_ext _ _ (qs.trans hs.symm) (qf.trans hf.symm)`. Rewrite using `[← ha i (ppx_le q hs i), map_mul, scal_pull' φ q hf]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨pm, hs, hf, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[h i, map_mul, scal_pull' φ pm hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secBC_iff {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) {x : Sp S ⟶ Xo.X}
     {x' : Sp T ⟶ Xo.X} (pm : Gx x' ⟶ Gx x)
@@ -156,15 +154,15 @@ theorem secBC_iff {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S
     rw [h i, map_mul, scal_pull' φ pm hf]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S T U _ _ _ φ ψ x x' x'' hx hx'`. Take `⟨p, ps, pf⟩` from `pm_exists φ hx`. Take `⟨q, qs, qf⟩` from `pm_exists ψ hx'`. Use `⟨fun a s s' s'' h => ?_, fun a s t => ?_, fun a s s' t' h => ?_, fun a b i => ⟨scal_mul' x a b i, scal_add' x a b i, scal_one' x i⟩⟩` and prove the remaining obligations. Establish `rs : (q ≫ p) ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x'') Xo.univ.t.G).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ps, qs]`. Establish `rf : (q ≫ p) ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk x'') Xo.univ.t.G).left ≫ spMap (ψ.comp φ)`. Rewrite using `[Category.assoc, pf, ← Category.assoc, qf, Category.assoc, spMap_comp']`. Rewrite `h` using `[secBC_iff φ a p ps pf]`. Rewrite using `[secBC_iff ψ 1 q qs qf, secBC_iff (ψ.comp φ) a (q ≫ p) rs rf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e : (q ≫ p).appLE _ _ (ppx_le (q ≫ p) rs i) = p.appLE _ _ (ppx_le p ps i) ≫ q.appLE _ _ (ppx_le q qs i)` using `(Scheme.Hom.appLE_comp_appLE q p _ _ _ _ _).symm`. Rewrite using `[e, CommRingCat.hom_comp, RingHom.comp_apply, h i, map_one, scal_one' x'' i, _root_.one_mul, map_mul, scal_pull' ψ q qf]`. Both sides reduce to the same expression. Rewrite using `[secBC_iff (RingHom.id S) a (𝟙 (Gx x)) (Category.id_comp _) (by rw [spMap_id']; exact (Category.id_comp _).trans (Category.comp_id _).symm)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e : ∀ hh : (PPx x).U i ≤ (𝟙 (Gx x) : Gx x ⟶ Gx x) ⁻¹ᵁ (PPx x).U i, (𝟙 (Gx x) : Gx x ⟶ Gx x).appLE _ _ hh = 𝟙 _`. Introduce `hh`. Conclude with `(Scheme.Hom.appLE_eq_app (𝟙 (Gx x) : Gx x ⟶ Gx x)).trans (Scheme.Hom.id_app _)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[secBC_iff φ 1 p ps pf]`. Rewrite using `[secBC_iff φ a p ps pf]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[h i, map_one, scal_one' x' i, _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_calc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S T U : Type) [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X) (x'' : Sp U ⟶ Xo.X), x' = spMap φ ≫ x → x'' = spMap ψ ≫ x' → (∀ (a : S) s s' s'', SecBC φ a x x' s s' → (SecBC ψ 1 x' x'' s' s'' ↔ SecBC (ψ.comp φ) a x x'' s s'')) ∧ (∀ (a : S) (s t : LB.Sec (PPx x)), SecBC (RingHom.id S) a x x s t ↔ ∀ i, t.f i = scal x a i * s.f i) ∧ (∀ (a : S) s (s' t' : LB.Sec (PPx x')), SecBC φ 1 x x' s s' → (SecBC φ a x x' s t' ↔ ∀ i, t'.f i = scal x' (φ a) i * s'.f i)) ∧ (∀ (a b : S) i, scal x (a * b) i = scal x a i * scal x b i ∧ scal x (a + b) i = scal x a i + scal x b i ∧ scal x 1 i = 1) := by
   intro E _ _ _ H Dw l Xo S T U _ _ _ φ ψ x x' x'' hx hx'

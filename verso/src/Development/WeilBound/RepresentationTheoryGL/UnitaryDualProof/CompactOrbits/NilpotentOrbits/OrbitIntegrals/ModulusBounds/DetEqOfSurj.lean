@@ -16,7 +16,7 @@ def adL (g : GL (Fin n) k) : Module.End k (Matrix (Fin n) (Fin n) k) :=
   LinearMap.mulLeft k g.val ∘ₗ LinearMap.mulRight k g⁻¹.val
 
 /- English proof (translation)
-Simplify using `[adL, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adL_apply (g : GL (Fin n) k) (y : Matrix (Fin n) (Fin n) k) : adL g y = g.val * y * g⁻¹.val := by
   simp [adL, mul_assoc]
@@ -47,7 +47,7 @@ def cAv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n
   (cA Z x).map (mulVecR v)
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite using `[adL_apply]`. Conclude with `PositivityTheory.RgUd.T.Desc.UniPf.conj_mem Z g hg a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cC_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) (hg : g ∈ Gz Z) :
     ∀ a ∈ (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule,
@@ -57,15 +57,13 @@ theorem cC_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) 
   exact PositivityTheory.RgUd.T.Desc.UniPf.conj_mem Z g hg a ha
 
 /- English proof (translation)
-Introduce `a ha`. Establish `hgi : g⁻¹.val * g.val = 1` using `Units.inv_mul g`. Establish `hB : a ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ha.1 z hz`. Establish `hc` using `PositivityTheory.RgUd.T.Desc.UniPf.conj_mem Z g hg a hB`. Rewrite `hc` using `[Subalgebra.mem_centralizer_iff]`. Rewrite using `[adL_apply]`. Use `⟨fun z hz => hc z hz, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `smul_right_injective (Matrix (Fin n) (Fin n) k) ht` to reduce the goal to its premises. Simplify using `only`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc g⁻¹.val g.val, hgi, one_mul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = g.val * (x * a) * g⁻¹.val := by rw [ha.2]`. Use `_ = g.val * x * g⁻¹.val * (g.val * a * g⁻¹.val) := by`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc g⁻¹.val g.val, hgi, one_mul]`. Use `_ = (t • x) * (g.val * a * g⁻¹.val) := by rw [hgx]`.
-
-Use `_ = t • (x * (g.val * a * g⁻¹.val)) := by rw [smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) (g : GL (Fin n) k)
     (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x) :
@@ -91,9 +89,9 @@ theorem cA_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n)
     _ = t • (x * (g.val * a * g⁻¹.val)) := by rw [smul_mul_assoc]
 
 /- English proof (translation)
-Introduce `a ha`. Use `⟨cA_inv Z x g hg t ht hgx a ha.1, ?_⟩` and prove the remaining obligations. Establish `hv : g⁻¹.val *ᵥ v = v` using `by conv_lhs => rw [← hgv]`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `show adL g a *ᵥ v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adL_apply, ← Matrix.mulVec_mulVec, hv, ← Matrix.mulVec_mulVec, ha.2, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cS_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k)
     (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x)
@@ -107,9 +105,9 @@ theorem cS_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n)
   rw [adL_apply, ← Matrix.mulVec_mulVec, hv, ← Matrix.mulVec_mulVec, ha.2, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 hy`. Use `Submodule.mem_map.2 ⟨adL g a, cA_inv Z x g hg t ht hgx a ha, ?_⟩` and prove the remaining obligations. Establish `hv : g⁻¹.val *ᵥ v = v` using `by conv_lhs => rw [← hgv]`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show adL g a *ᵥ v = Matrix.toLin' g.val (a *ᵥ v)`. Rewrite using `[Matrix.toLin'_apply, adL_apply, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cAv_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k)
     (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x)
@@ -124,9 +122,9 @@ theorem cAv_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n
   rw [Matrix.toLin'_apply, adL_apply, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `h` using `PositivityTheory.RgUd.T.Desc.UniPf.det_conjL Z hZ g hg`. Set `e : (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule ≃ₗ[k] Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))` to `{ toFun := fun y => ⟨y.1, y.2⟩, invFun := fun y => ⟨y.1, y.2⟩, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Establish `he : PositivityTheory.RgUd.T.Desc.UniPf.conjL Z g hg = (e : _ →ₗ[k] _) ∘ₗ (adL g).restrict (cC_inv Z g hg) ∘ₗ (e.symm : _ →ₗ[k] _)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show g.val * (y : Matrix (Fin n) (Fin n) k) * g⁻¹.val = adL g (y : Matrix (Fin n) (Fin n) k)`. Rewrite using `[adL_apply]`. Rewrite `h` using `[he, LinearMap.det_conj]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_C [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (g : GL (Fin n) k)
     (hg : g ∈ Gz Z) : LinearMap.det ((adL g).restrict (cC_inv Z g hg)) = 1 := by
@@ -144,11 +142,11 @@ theorem det_C [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : C
   exact h
 
 /- English proof (translation)
-Establish `he : LinearMap.ker L ≤ Submodule.comap f (LinearMap.ker L)` using `hf`. Rewrite using `[LinearMap.det_eq_det_mul_det (LinearMap.ker L) f he]`. Use `congr 1`. Set `e` to `L.quotKerEquivOfSurjective hL`. Establish `key : (LinearMap.ker L).mapQ (LinearMap.ker L) f he = (e.symm : W →ₗ[K] _) ∘ₗ F ∘ₗ (e.symm.symm : _ →ₗ[K] W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply, LinearEquiv.coe_coe, LinearEquiv.symm_symm]`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Simplify `h v` using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[key, LinearMap.det_conj F e.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq_of_surj {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     [AddCommGroup W] [Module K W] [FiniteDimensional K W] (f : V →ₗ[K] V) (F : W →ₗ[K] W) (L : V →ₗ[K] W)
@@ -170,21 +168,21 @@ theorem det_eq_of_surj {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [
   rw [key, LinearMap.det_conj F e.symm]
 
 /- English proof (translation)
-Establish `hv : g⁻¹.val *ᵥ v = v` using `by conv_lhs => rw [← hgv]`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `set f := (adL g).restrict (cA_inv Z x g hg t ht hgx)`. Use `set F := (Matrix.toLin' g.val).restrict (cAv_inv Z x v g hg t ht hgx hgv)`. Set `L : cA Z x →ₗ[k] cAv Z x v` to `(mulVecR v).submoduleMap (cA Z x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Function.Surjective L` using `(mulVecR v).submoduleMap_surjective (cA Z x)`. Establish `hLa : ∀ a : cA Z x, ((L a : cAv Z x v) : Fin n → k) = (a : Matrix (Fin n) (Fin n) k) *ᵥ v` using `fun a => rfl`. Establish `hint : ∀ a, L (f a) = F (L a)`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLa]`. Use `show adL g (a : Matrix (Fin n) (Fin n) k) *ᵥ v = Matrix.toLin' g.val ((L a : cAv Z x v) : Fin n → k)`. Rewrite using `[hLa, Matrix.toLin'_apply, adL_apply, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_mulVec]`. Establish `hker : ∀ a : cA Z x, a ∈ LinearMap.ker L ↔ (a : Matrix (Fin n) (Fin n) k) ∈ cS Z x v`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `⟨a.2, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : cAv Z x v => (y : Fin n → k)) h0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `[hLa]`. Introduce `h0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hLa]`. Conclude with `h0.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : ∀ y ∈ LinearMap.ker L, f y ∈ LinearMap.ker L`. Introduce `y hy`. Rewrite `hy`, the goal using `[hker]`. Conclude with `cS_inv Z x v g hg t ht hgx hgv _ hy`. Rewrite using `[det_eq_of_surj f F L hL hint hf]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hSA : cS Z x v ≤ cA Z x` using `fun a ha => ha.1`. Establish `hP : LinearMap.ker L = Submodule.comap (cA Z x).subtype (cS Z x v)`. Use extensionality with `a`. Rewrite using `[hker]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Set `e0` to `Submodule.comapSubtypeEquivOfLe hSA`. Set `e : LinearMap.ker L ≃ₗ[k] cS Z x v` to `(LinearEquiv.ofEq _ _ hP).trans e0`. Rewrite using `[← LinearMap.det_conj (f.restrict hf) e]`. Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem det_split (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k)
     (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x)

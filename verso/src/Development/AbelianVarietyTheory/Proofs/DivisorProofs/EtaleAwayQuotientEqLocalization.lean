@@ -10,41 +10,35 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationInverse
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B D _ _ _ _ _ f hf P hP hfP Q hQ hQP hres`. Establish `hQmax : Q.IsMaximal`. Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h1 => ?_, fun J x hQJ hx hxJ => ?_⟩` and prove the remaining obligations. Establish `: (1 : B) ∈ Q.comap (algebraMap B D)` using `by simpa using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hQP]`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Take `⟨b, hb⟩` from `hres x`. Establish `hbP : b ∉ P`. Introduce `hbP`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Establish `: algebraMap B D b ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQP]`. Conclude with `hbP`. Simplify using `using Q.add_mem hb this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : B, c * b - 1 ∈ P := by`. Take `⟨c, i, hi, hci⟩` from `hP.exists_inv hbP`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: c * b - 1 = -i` using `by rw [← hci]; ring`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.neg_mem hi`. Establish `h1 : algebraMap B D (c * b - 1) ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQP]`. Conclude with `hc`. Establish `h2 : algebraMap B D c * x - 1 ∈ Q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap B D c * x - 1 = algebraMap B D c * (x - algebraMap B D b) + algebraMap B D (c * b - 1)`. Simplify using `only [map_sub, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Q.add_mem (Q.mul_mem_left _ hb) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : algebraMap B D c * x ∈ J` using `J.mul_mem_left _ hxJ`. Establish `: (1 : D) = algebraMap B D c * x - (algebraMap B D c * x - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `J.sub_mem h3 (hQJ h2)`. Take `⟨g, hgQ, hQ'⟩` from `GlobalTheory.T.isolate_maximal_among_primes_containing_etale B D f hf Q hQmax`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.Etale D (Localization.Away g) := Algebra.Etale.of_isLocalizationAway g`. Use `haveI : Algebra.Etale B (Localization.Away g) := Algebra.Etale.comp B D (Localization.Away g)`. Establish `hφ : ∀ b : B, algebraMap B (Localization.Away g) b = algebraMap D (Localization.Away g) (algebraMap B D b)` using `fun b => IsScalarTower.algebraMap_apply B D (Localization.Away g) b`. Establish `hunit` using `GlobalTheory.T.localization_inverse_mod_f B D f P Q g hQP hQ'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hker : ∀ b : B, (∃ s : B, s ∉ P ∧ s * b ∈ Ideal.span {f}) → algebraMap B (Localization.Away g) b ∈ Ideal.span {algebraMap B (Localization.Away g) f}`. Introduce and unpack `b ⟨s, hs, hsb⟩`. Take `⟨t, ht⟩` from `hunit s hs`. Establish `h1 : algebraMap B (Localization.Away g) (s * b) ∈ Ideal.span {algebraMap B (Localization.Away g) f}`. Rewrite `hsb`, the goal using `[Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hsb`. Conclude with `⟨algebraMap B _ c, by rw [hc, map_mul]⟩`. Establish `: algebraMap B (Localization.Away g) b = algebraMap B _ (s * b) * t - (algebraMap B _ s * t - 1) * algebraMap B (Localization.Away g) b`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ h1) (Ideal.mul_mem_right _ _ ht)`. Use `⟨?_, fun b => ⟨fun hb => ?_, hker b⟩⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `GlobalTheory.T.dedekind_power_localization B f hf P hP`. Establish `hPN : (P ^ N).map (algebraMap B (Localization.Away g)) ≤ Ideal.span {algebraMap B (Localization.Away g) f}`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Conclude with `hker b (hN b hb)`. Establish `hfib : ∀ Q' : Ideal (Localization.Away g), Q'.IsPrime → P.map (algebraMap B (Localization.Away g)) ≤ Q' → Q' = Q.map (algebraMap D (Localization.Away g))`. Introduce `Q' hQ'p hPQ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc : Q'.comap (algebraMap D (Localization.Away g)) = Q`. Apply `hQ' _ (Ideal.comap_isPrime _ _)` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap, ← hφ]`. Conclude with `hPQ' (Ideal.mem_map_of_mem _ hfP)`. Introduce `hg`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg` using `[Ideal.mem_comap]`. Conclude with `hQ'p.ne_top (Ideal.eq_top_of_isUnit_mem _ hg (IsLocalization.Away.algebraMap_isUnit g))`. Rewrite using `[← hc]`. Conclude with `(IsLocalization.map_comap (Submonoid.powers g) (Localization.Away g) Q').symm`. Establish `hle` using `GlobalTheory.T.etale_unique_prime_le_map_maximal B (Localization.Away g) P hP (Q.map (algebraMap D (Localization.Away g))) hfib`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hres'` using `GlobalTheory.T.localization_residue_approximation B D P hP Q g hgQ hQP hres`. Use `GlobalTheory.T.nilpotent_approximation_surjective B (Localization.Away g) P _ N (fun a => ?_) hPN` and prove the remaining obligations. Take `⟨b, hb⟩` from `hres' a`. Conclude with `⟨b, Ideal.mem_sup_left (hle hb)⟩`. Establish `hgu : IsUnit (algebraMap D (Localization.AtPrime Q) g)` using `IsLocalization.map_units (Localization.AtPrime Q) (⟨g, hgQ⟩ : Q.primeCompl)`.
-
-Set `ρ : Localization.Away g →+* Localization.AtPrime Q` to `IsLocalization.Away.lift g hgu`. Establish `hρ : ∀ d : D, ρ (algebraMap D (Localization.Away g) d) = algebraMap D (Localization.AtPrime Q) d` using `fun d => IsLocalization.Away.lift_eq g hgu d`. Establish `e : ∀ x : B, algebraMap B (Localization.AtPrime Q) x = ρ (algebraMap B (Localization.Away g) x)`. Introduce `x`. Rewrite using `[hφ, hρ, IsScalarTower.algebraMap_apply B D (Localization.AtPrime Q)]`.
-
-Establish `hloc : algebraMap B (Localization.AtPrime Q) b ∈ Ideal.span {algebraMap B (Localization.AtPrime Q) f}`. Rewrite `hb`, the goal using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hb`. Conclude with `⟨ρ c, by rw [e, e, hc, map_mul]⟩`. Take `⟨s, hs, hsb⟩` from `GlobalTheory.T.flat_localization_membership B D Q f b hloc`.
-
-Rewrite `hs` using `[hQP]`. Conclude with `⟨s, hs, hsb⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_away_quotient_eq_localization :
     ∀ (B D : Type) [CommRing B] [IsDedekindDomain B] [CommRing D] [Algebra B D] [Algebra.Etale B D]

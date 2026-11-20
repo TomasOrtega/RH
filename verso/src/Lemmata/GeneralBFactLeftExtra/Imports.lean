@@ -7,9 +7,9 @@ namespace Bl.general_b_fact_left_extra
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hM`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj]`. Use `(FinitePlace.add_le w _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h j (Finset.mem_insert_self j s)`. Conclude with `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem goal1 {ι : Type*} (w : FinitePlace K) (t : Finset ι) (a : ι → K) {M : ℝ}
     (hM : 0 ≤ M) (h : ∀ i ∈ t, w (a i) ≤ M) : w (∑ i ∈ t, a i) ≤ M := by

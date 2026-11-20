@@ -7,9 +7,9 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil
 
 /- English proof (translation)
-Establish `h1 : (A.comap (LinearMap.toSpanSingleton R X y)).toAddSubgroup = A.toAddSubgroup.comap (LinearMap.toSpanSingleton R X y).toAddMonoidHom` using `rfl`. Rewrite using `[h1, AddSubgroup.index_comap]`. Introduce `h0`. Use `hAB (AddSubgroup.relIndex_eq_zero_of_le_right ?_ h0)` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `B.smul_mem r hy`.
+A detailed English derivation is pending.
 -/
 theorem index_comap_toSpanSingleton_ne_zero {R X : Type} [CommRing R] [AddCommGroup X] [Module R X]
     (A B : Submodule R X) (hAB : idx A B ≠ 0) {y : X} (hy : y ∈ B) :
@@ -23,21 +23,19 @@ theorem index_comap_toSpanSingleton_ne_zero {R X : Type} [CommRing R] [AddCommGr
   exact B.smul_mem r hy
 
 /- English proof (translation)
-Establish `hex : ∃ n, ∃ y ∈ B, y ∉ A ∧ (A.comap (LinearMap.toSpanSingleton R X y)).toAddSubgroup.index = n`. Take `⟨y, hyB, hyA⟩` from `SetLike.not_le_iff_exists.1 hBA`. Conclude with `⟨_, y, hyB, hyA, rfl⟩`. Take `⟨x, hxB, hxA, hx⟩` from `Nat.find_spec hex`. Establish `hne` using `index_comap_toSpanSingleton_ne_zero A B hAB hxB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `P : Ideal R` to `A.comap (LinearMap.toSpanSingleton R X x)`. Establish `hP : ∀ r : R, r • x ∈ A ↔ r ∈ P` using `fun r => Iff.rfl`. Establish `hfin : Finite (R ⧸ P)` using `Nat.finite_of_card_ne_zero hne`. Establish `hprime : P.IsPrime`. Use `⟨fun htop => hxA ?_, fun {r s} hrs => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (1 : R) ∈ P` using `htop ▸ Submodule.mem_top`. Simplify using `using (hP 1).2 this`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`. Establish `hs : s • x ∉ A` using `fun h => hcon.2 ((hP s).1 h)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmin` using `Nat.find_min' hex ⟨s • x, B.smul_mem s hxB, hs, rfl⟩`. Establish `hne'` using `index_comap_toSpanSingleton_ne_zero A B hAB (B.smul_mem s hxB)`. Establish `hle : (A.comap (LinearMap.toSpanSingleton R X x)).toAddSubgroup ≤ (A.comap (LinearMap.toSpanSingleton R X (s • x))).toAddSubgroup`. Introduce `a ha`. Establish `ha' : a • x ∈ A` using `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show a • s • x ∈ A`. Rewrite using `[smul_comm]`. Conclude with `A.smul_mem s ha'`. Establish `hmul` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `hmin` using `[← hx, ← hmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (A.comap (LinearMap.toSpanSingleton R X x)).toAddSubgroup.relIndex (A.comap (LinearMap.toSpanSingleton R X (s • x))).toAddSubgroup = 1`. Rewrite `hne` using `[← hmul]`. Establish `h2` using `Nat.pos_of_ne_zero (left_ne_zero_of_mul hne)`. Establish `h3` using `Nat.pos_of_ne_zero hne'`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[AddSubgroup.relIndex_eq_one]`. Establish `hr : r ∈ (A.comap (LinearMap.toSpanSingleton R X (s • x))).toAddSubgroup` using `by show r • s • x ∈ A`. Rewrite using `[smul_smul]`. Conclude with `(hP _).2 hrs`. Conclude with `hcon.1 (h1 hr)`.
-
-Use `haveI := hprime`. Conclude with `⟨x, hxB, P, Ideal.Quotient.maximal_of_isField P (Finite.isField_of_domain _), hfin, hP⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_maximal_annihilator {R X : Type} [CommRing R] [AddCommGroup X] [Module R X]
     (A B : Submodule R X) (hAB : idx A B ≠ 0) (hBA : ¬ B ≤ A) :
@@ -85,17 +83,15 @@ theorem exists_mem_maximal_annihilator {R X : Type} [CommRing R] [AddCommGroup X
   exact ⟨x, hxB, P, Ideal.Quotient.maximal_of_isField P (Finite.isField_of_domain _), hfin, hP⟩
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h A B hA hB hAB hBA`. Take `⟨x, hxB, P, hPm, hPf, hP⟩` from `exists_mem_maximal_annihilator A B hAB hBA`. Set `T : Submodule R X` to `Submodule.span R {x}`. Establish `hTB : T ≤ B` using `(Submodule.span_singleton_le_iff_mem x B).2 hxB`. Establish `hxT : x ∈ T` using `Submodule.mem_span_singleton_self x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : Submodule R X` to `{ carrier := {a | a ∈ A ∧ ∀ t ∈ T, γ a t = 1} add_mem' := fun {a b} ha hb => ⟨A.add_mem ha.1 hb.1, fun t ht => by`. Rewrite using `[h.add_left, ha.2 t ht, hb.2 t ht, one_mul]⟩`. Use the proof step `zero_mem' := ⟨A.zero_mem, fun t _ => h.zero_left t⟩`. Use the proof step `smul_mem' := fun r a ha => ⟨A.smul_mem r ha.1, fun t ht => by`. Rewrite using `[h.adj]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha.2 _ (T.smul_mem _ ht)⟩ }`. Establish `hS : ∀ a, a ∈ S ↔ a ∈ A ∧ ∀ t ∈ T, γ a t = 1` using `fun a => Iff.rfl`. Establish `hSA : S ≤ A` using `fun a ha => ha.1`. Establish `hidx : A.toAddSubgroup.relIndex T.toAddSubgroup ≠ 0` using `fun h0 => hAB (AddSubgroup.relIndex_eq_zero_of_le_right (fun t ht => hTB ht) h0)`. Take `⟨-, hdual, -⟩` from `perfect_pairing_quotients h S.toAddSubgroup A.toAddSubgroup A.toAddSubgroup T.toAddSubgroup (fun a ha => ⟨fun h1 => h1.2, fun h1 => ⟨ha, h1⟩⟩) (fun t _ => ⟨fun h1 a ha => h.iso hA ha h1, fun h1 => (hA t).2 fun a ha => h.swap_eq_one (h1 a ha)⟩) hidx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S ⊔ T, fun y => ⟨fun hy z hz => ?_, fun hy => ?_⟩, ⟨x, Submodule.mem_sup_right hxT, P, hPm, hPf, hP, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, t, ht, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨b, hb, u, hu, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[h.add_left, h.add_right, h.add_right, h.iso hA ha.1 hb.1, ha.2 u hu, h.swap_eq_one (hb.2 t ht), h.iso hB (hTB ht) (hTB hu)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, hyt⟩` from `hdual y fun a _ ha => h.swap_eq_one (hy a (Submodule.mem_sup_left ha))`. Establish `ht' : t ∈ T` using `ht`. Establish `h1 : y + -t ∈ S`. Use `⟨(hA _).2 fun a ha => h.swap_eq_one ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[h.add_right, h.neg_right, hyt a ha, mul_inv_cancel₀ (h.ne_zero _ _)]`.
-
-Rewrite using `[h.add_left, hy u (Submodule.mem_sup_right hu), h.iso hB (B.neg_mem (hTB ht')) (hTB hu), one_mul]`. Conclude with `Submodule.mem_sup.2 ⟨_, h1, t, ht', by abel⟩`. Conclude with `sup_le_sup_right (le_inf hSA le_sup_left) _`. Conclude with `sup_le_sup (le_inf le_sup_left hSA) (le_inf le_sup_right hTB)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adj_selfDual_step : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ (A B : Submodule R X), SelfDual γ A → SelfDual γ B → idx A B ≠ 0 → ¬ B ≤ A → ∃ A' : Submodule R X, SelfDual γ A' ∧ Adj A A' ∧ A' ≤ (A' ⊓ A) ⊔ (A' ⊓ B) := by
   intro R X M _ _ _ _ _ σ w γ W h A B hA hB hAB hBA

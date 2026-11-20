@@ -13,13 +13,13 @@ namespace PositivityTheory.ThKF0.Chr
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `hM : IsUnit (Matrix.diagonal fun _ : Unit => u.1).det` using `by simp`. Establish `h` using `chi_AF F (Matrix.diagonal fun _ : Unit => u.1) hM`. Rewrite `h` using `[show (Matrix.diagonal fun _ : Unit => u.1).det = u.1 by simp]`. Rewrite using `[← h]`. Set `e : AF F ≃ₜ+ AF F` to `{ toFun := fun x => u.1 * x, invFun := fun x => (u⁻¹).1 * x, left_inv := fun x => by simp, right_inv := fun x => by simp map_add' := mul_add _, continuous_toFun := continuous_const.mul continuous_id continuous_invFun := continuous_const.mul continuous_id }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `j : AF F →+ (Unit → AF F)` to `{ toFun := fun x _ => x, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hj : IsOpenEmbedding j` using `(Homeomorph.funUnique Unit (AF F)).symm.isOpenEmbedding`. Rewrite using `[GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ j hj _ e (fun x => by funext i; simp [mulVecCE_apply, Matrix.mulVec_diagonal, j, e])]`. Use `congr 1`. Take `⟨K, hK⟩` from `exists_compact_mem_nhds (0 : AF F)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Set `μ : Measure (AF F)` to `Measure.addHaar`. Establish `h0 : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hK.2).ne'`. Use `distribHaarChar_eq_of_measure_smul_eq_mul h0 hK.1.measure_lt_top.ne ?_` and prove the remaining obligations. Use `addEquivAddHaarChar_smul_preimage μ (X := e '' K) e` as an intermediate fact. Rewrite `this` using `[Set.preimage_image_eq _ e.injective]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem distrib_eq [IsTotallyReal F] (u : (AF F)ˣ) :
     (distribHaarChar (AF F) u : ℝ) = (∏ w, ‖(fstA F u.1) w‖) * ∏ᶠ v, ‖evalV F v (sndA F u.1)‖ := by
@@ -44,21 +44,21 @@ theorem distrib_eq [IsTotallyReal F] (u : (AF F)ˣ) :
   exact this.symm
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_injective (by rw [chi_AF, distrib_eq, hM.unit_spec])`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq [IsTotallyReal F] [DecidableEq κ] (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
     addEquivAddHaarChar (mulVecCE M hM) = distribHaarChar (AF F) hM.unit :=
   NNReal.coe_injective (by rw [chi_AF, distrib_eq, hM.unit_spec])
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_injective (by rw [distrib_eq, ← GlobalTheory.T.tensorIdeleNormalizedAbs_eq_adelic_abs_norm]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem absE_eq [IsTotallyReal F] {E : Type} [Field E] [NumberField E] [Algebra F E] (t : (AF F ⊗[F] E)ˣ) :
     GlobalTheory.Doubling.absE F E t = distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) t) :=
   NNReal.coe_injective (by rw [distrib_eq, ← GlobalTheory.T.tensorIdeleNormalizedAbs_eq_adelic_abs_norm]; rfl)
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)
@@ -66,9 +66,7 @@ theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
@@ -107,33 +105,29 @@ def glueE : (Vi F κ × Vf F κ) ≃ₜ+ (κ → AF F) where
       (continuous_pi fun i => continuous_snd.comp (continuous_apply i))
 
 /- English proof (translation)
-Introduce `κ _`. Set `r : ((κ → AF F) → ℂ) →ₗ[ℂ] (Vi F κ × Vf F κ → ℂ)` to `LinearMap.funLeft ℂ ℂ glue`. Set `cI : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] SchwartzMap (Vi F κ) ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eI F κ)`. Establish `hp : ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) g, r (pureA F f g) = fun p => cI f p.1 * g p.2` using `fun f g => funext fun p => by show f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _)) * g p.2 = _`. Simplify using `only [RingEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hg : ∀ g ∈ SB (Vf F κ), Integrable g (Measure.addHaar : Measure (Vf F κ))` using `fun g hg => hg.1.continuous.integrable_of_hasCompactSupport hg.2`. Establish `hi : ∀ φ ∈ schA F κ, Integrable (r φ) (mu F κ)` using `fun φ hφ => by`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨f, g, hg', rfl⟩` from `hx`. Rewrite using `[hp]`. Conclude with `(cI f).integrable.mul_prod (hg g hg')`. Consider the case `zero => rw [map_zero]`. Conclude with `integrable_zero _ _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `hx.smul c`. Establish `: (mu F κ).IsAddHaarMeasure` using `by unfold mu; infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ν : Measure (κ → AF F)` to `(mu F κ).map (glueE F κ)`. Establish `: ν.IsAddHaarMeasure` using `(glueE F κ).isAddHaarMeasure_map _`. Establish `hI : ∀ φ ∈ schA F κ, (Lext F κ ∘ₗ r) φ = ∫ x, φ x ∂ν` using `fun φ hφ => by`. Rewrite using `[LinearMap.comp_apply, Lext_apply _ (hi φ hφ)]`. Conclude with `((glueE F κ).toHomeomorph.toMeasurableEquiv.measurableEmbedding.integral_map φ).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨Lext F κ ∘ₗ r, fun g hg' => ?_, ?_, fun a φ hφ => ?_, fun g φ hφ hφ' => ?_⟩` and prove the remaining obligations. Use `⟨(∫ v : Vf F κ, g v ∂Measure.addHaar) • ((SchwartzMap.integralCLM ℂ (volume : Measure (Vi F κ))).comp cI), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Lext_apply _ (hi _ (Submodule.subset_span ⟨f, g, hg', rfl⟩)), hp, mu, integral_prod_mul (fun u => cI f u) g, mul_comm]`. Both sides reduce to the same expression. Take `⟨hO, hK⟩` from `PI.IntAdCpctOpenWork.main F set O := {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : FiniteAdeleRing (𝓞 F) F) ∈ O` using `fun v => (v.adicCompletionIntegers F).zero_mem`. Use `set U : Set (Vf F κ) := Set.univ.pi fun _ => O`. Establish `hUo : IsOpen U` using `isOpen_set_pi Set.finite_univ fun _ _ => hO`. Establish `hUc : IsCompact U` using `isCompact_univ_pi fun _ => hK`. Use `set g : Vf F κ → ℂ := U.indicator fun _ => 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg' : g ∈ SB (Vf F κ)` using `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) ⟨hUc.isClosed, hUo⟩).isLocallyConstant, HasCompactSupport.intro hUc fun z hz => Set.indicator_of_notMem hz _⟩`. Establish `hc : (∫ v : Vf F κ, g v ∂Measure.addHaar) ≠ 0`. Rewrite using `[integral_indicator_const _ hUo.measurableSet]`. Establish `hpos : 0 < (Measure.addHaar : Measure (Vf F κ)) U` using `hUo.measure_pos _ ⟨0, fun i _ => h0⟩`. Establish `hfin : (Measure.addHaar : Measure (Vf F κ)) U < ⊤` using `hUc.measure_lt_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: 0 < (Measure.addHaar : Measure (Vf F κ)).real U` using `ENNReal.toReal_pos hpos.ne' hfin.ne`. Simplify using `using this.ne'`. Set `b : ContDiffBump (0 : Vi F κ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f₀ : SchwartzMap (Vi F κ) ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `f` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eI F κ).symm f₀`. Establish `e : ∀ u, cI f u = ((b u : ℝ) : ℂ)` using `fun u => by show f₀ ((eI F κ).symm (eI F κ u)) = _`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Use `⟨pureA F f g, Submodule.subset_span ⟨f, g, hg', rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, Lext_apply _ (hi _ (Submodule.subset_span ⟨f, g, hg', rfl⟩)), hp, mu, integral_prod_mul (fun u => cI f u) g]`. Use `mul_ne_zero ?_ hc` and prove the remaining obligations. Simplify using `only [e, integral_complex_ofReal]`. Conclude with `(b.integral_pos (μ := volume)).ne'` after adjusting the coercions. Establish `e : r (fun x => φ (x + a)) = fun p => r φ (p + shiftOf a)` using `funext fun p => congrArg φ (glue_add_shiftOf p a).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e, Lext_apply _ ((hi φ hφ).comp_add_right _), Lext_apply _ (hi φ hφ), integral_add_right_eq_self]`. Set `M` to `LinearMap.toMatrix' g.toLinearMap`. Establish `hd : M.det = (LinearEquiv.det g : (AF F)ˣ)`. Rewrite using `[LinearEquiv.coe_det, LinearMap.det_toMatrix']`. Establish `hM : IsUnit M.det` using `hd ▸ Units.isUnit _`.
-
-Establish `hu : hM.unit = LinearEquiv.det g` using `Units.ext hd`. Establish `hge : ∀ x, mulVecCE M hM x = g x` using `fun x => LinearMap.toMatrix'_mulVec _ _`. Rewrite using `[hI _ hφ', hI _ hφ]`. Use `conv_lhs => rw [← addEquivAddHaarChar_smul_map ν (mulVecCE M hM)]`. Rewrite using `[integral_smul_nnreal_measure, chi_eq, hu, MeasurableEmbedding.integral_map (f := mulVecCE M hM) (mulVecCE M hM).toHomeomorph.toMeasurableEquiv.measurableEmbedding]`.
-
-Simplify using `only [hge, LinearEquiv.symm_apply_apply, NNReal.smul_def, Complex.real_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem axInt [IsTotallyReal F] : AxInt (adeleClass F) := by
   intro κ _

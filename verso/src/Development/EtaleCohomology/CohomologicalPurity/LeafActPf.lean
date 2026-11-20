@@ -22,17 +22,15 @@ def actV (M : Matrix (Fin d) (Fin d) A) {U : Scheme.{0}} (s : U ⟶ Spec (CommRi
   Fin.cons (v 0) ((M.map (φ s)).mulVec (Fin.tail v))
 
 /- English proof (translation)
-Take `⟨i, hi, hp⟩` from `h`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hM' : IsUnit (M.map (φ s)).det`. Establish `h` using `hM.map (φ s)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `hz : ∀ j : Fin d, (U.Γevaluation p).hom ((M.map (φ s)).mulVec (Fin.tail v) j) = 0`. Introduce `j`. Use `hc j.succ (by simp; omega)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [actV, Fin.cons_succ] at this`. Conclude with `(Scheme.evaluation_eq_zero_iff_notMem_basicOpen _ _ _ _).2 this`. Establish `ht : ∀ j : Fin d, (U.Γevaluation p).hom (Fin.tail v j) = 0`. Introduce `j`. Establish `hinv : (M.map (φ s))⁻¹.mulVec ((M.map (φ s)).mulVec (Fin.tail v)) = Fin.tail v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hM', Matrix.one_mulVec]`. Rewrite using `[← hinv, RingHom.map_mulVec]`. Establish `: ((U.Γevaluation p).hom ∘ (M.map (φ s)).mulVec (Fin.tail v)) = 0` using `funext hz`. Rewrite using `[this, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Use `hc 0 (by simp at hi; omega)` as an intermediate fact. Simplify using `only [actV, Fin.cons_zero] at this`. Conclude with `this hp`.
-
-Consider the case `succ j`. Conclude with `((Scheme.evaluation_eq_zero_iff_notMem_basicOpen _ _ _ _).1 (ht j)) hp`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actV_mem (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} (hk : k ≤ 1) {U : Scheme.{0}}
     (s : U ⟶ Spec (CommRingCat.of A)) (v : Fin (d + 1) → Γ(U, ⊤)) (p : U)
@@ -84,15 +82,15 @@ theorem comp_val {N k : ℕ} {U : Scheme.{0}} {X Y Z : Vec N k U} (a : X ⟶ Y) 
     (a ≫ b).1 = b.1 * a.1 := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eqToHom_val {N k : ℕ} {U : Scheme.{0}} {X Y : Vec N k U} (h : X = Y) : (eqToHom h).1 = 1 := by
   subst h; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [actV]`. Consider the case `succ j`. Simplify using `only [actV, Fin.cons_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.map_mulVec, φ_comp, Matrix.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actV_map (M : Matrix (Fin d) (Fin d) A) {V U : Scheme.{0}} (f : V ⟶ U) (s : U ⟶ Spec (CommRingCat.of A))
     (v : Fin (d + 1) → Γ(U, ⊤)) :
@@ -106,7 +104,7 @@ theorem actV_map (M : Matrix (Fin d) (Fin d) A) {V U : Scheme.{0}} (f : V ⟶ U)
     rfl
 
 /- English proof (translation)
-Use `CategoryTheory.Functor.ext (fun v => Subtype.ext (actV_map M f s v.1)) (fun v w u => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [comp_val, eqToHom_val, one_mul]`. Use `erw [eqToHom_val, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actF_map (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} (hk : k ≤ 1) {V U : Scheme.{0}}
     (f : V ⟶ U) (s : U ⟶ Spec (CommRingCat.of A)) :
@@ -140,7 +138,7 @@ def actSp (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} (hk : k �
           (s : U.unop ⟶ Spec (CommRingCat.of A)) => (F ⋙ actF M hM hk s : Fin (m.unop.len + 1) ⥤ _)) h1 h2).trans rfl
 
 /- English proof (translation)
-Use extensionality with `n U x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem actSp_comp (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} (hk : k ≤ 1) {E' E : Spc}
     (g : E' ⟶ E) (a : E ⟶ Pj (d + 1) k) (b : E ⟶ sp A) :
@@ -148,7 +146,7 @@ theorem actSp_comp (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} 
   ext n U x; rfl
 
 /- English proof (translation)
-Use extensionality with `n U x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem actSp_incl (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {E : Spc}
     (a : E ⟶ Pj (d + 1) 1) (b : E ⟶ sp A) :
@@ -156,7 +154,7 @@ theorem actSp_incl (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {E : Spc}
   ext n U x; rfl
 
 /- English proof (translation)
-Use extensionality with `n U x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem actSp_line (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} (hk : k ≤ 1) {E : Spc}
     (a : E ⟶ Pj (d + 1) k) (b : E ⟶ sp A) :
@@ -164,11 +162,11 @@ theorem actSp_line (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) {k : ℕ} 
   ext n U x; rfl
 
 /- English proof (translation)
-Use extensionality with `n U f`. Use `CategoryTheory.Functor.ext (fun _ => Subtype.ext ?_) (fun _ _ _ => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ j => show ((M.map (φ _)).mulVec _) j = φ _ ((M.mulVec x) j)`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Apply `Subtype.ext erw [comp_val, comp_val, eqToHom_val, eqToHom_val]` to reduce the goal to its premises. Simplify using `only [one_mul, mul_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `erw [eqToHom_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actSp_pt (M : Matrix (Fin d) (Fin d) A) (hM : IsUnit M.det) (x : Fin d → A) :
     actSp M hM (Nat.zero_le 1) (Pj.pt (vec1 x)) (𝟙 (sp A)) = Pj.pt (vec1 (M.mulVec x)) := by
@@ -191,13 +189,13 @@ end ActPf
 
 open ActPf in
 /- English proof (translation)
-Introduce `d A _ M hM`. Set `gR : PR (d + 1) 0 A ⟶ PR (d + 1) 0 A` to `prod.lift (actSp M hM (Nat.zero_le 1) prod.fst prod.snd) prod.snd`. Set `gL : PR (d + 1) 1 A ⟶ PR (d + 1) 1 A` to `prod.lift (actSp M hM le_rfl prod.fst prod.snd) prod.snd`. Establish `hw : gL ≫ (pr d A).hom = (pr d A).hom ≫ gR`. Apply `prod.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [pr, Arrow.mk_hom, Category.assoc, prod.map_fst, prod.lift_fst, gL, gR]`. Rewrite using `[prod.lift_fst_assoc, actSp_incl, actSp_comp, prod.map_fst, prod.map_snd, Category.comp_id]`. Simplify using `only [pr, Arrow.mk_hom, Category.assoc, prod.map_snd, Category.comp_id, prod.lift_snd, gL, gR]`. Use `⟨Arrow.homMk gL gR hw, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gR ≫ prod.fst ≫ Pj.line (d + 1) 0 = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[prod.lift_fst_assoc, actSp_line]`. Express the relevant statement in the definitionally equal form `gR ≫ prod.snd = _`. Conclude with `prod.lift_snd _ _`. Introduce `x`. Express the relevant statement in the definitionally equal form `chart x ≫ gR = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `prod.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prod.lift_fst, actSp_comp, chart, prod.lift_fst, prod.lift_snd, actSp_pt, chart, prod.lift_fst]`. Rewrite using `[Category.assoc, prod.lift_snd, chart, chart, prod.lift_snd, prod.lift_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafAct_of : LeafAct := by
   intro d A _ M hM

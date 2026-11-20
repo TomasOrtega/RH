@@ -20,13 +20,11 @@ open GlobalTheory.AV GlobalTheory.AV.AbVar GlobalTheory.AV.KerPart GlobalTheory.
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `he0 : (e : k) ≠ 0` using `he.ne_zero`. Establish `hepos : 0 < e` using `Nat.pos_of_ne_zero (by rintro rfl; exact he0 Nat.cast_zero)`. Establish `key : ∃ p : ℕ, p.Prime ∧ ¬ p ∣ e ∧ ∀ n : ℕ, ¬ p ∣ n → (n : k) ≠ 0`. Break down `CharP.char_is_prime_or_zero k (ringChar k) with hp | hp0` into its components or cases. Use `⟨ringChar k, hp, fun h => he0 ((ringChar.spec k e).2 h), fun n hn h0 => hn ((ringChar.spec k n).1 h0)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hpe, hp⟩` from `Nat.exists_infinite_primes (e + 1)`. Use `⟨p, hp, fun h => ?_, fun n hn h0 => ?_⟩` and prove the remaining obligations. Use `Nat.le_of_dvd hepos h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `(ringChar.spec k n).1 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[hp0, zero_dvd_iff]`. Conclude with `hn (h1 ▸ dvd_zero p)`. Take `⟨p, hp, hpe, hpk⟩` from `key`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨H, _, _, i, hi, hH⟩` from `exists_kerPow_not_dvd p k A B f e hepos hpe`.
-
-Conclude with `⟨H, inferInstance, inferInstance, i, hi, hpk _ hH⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_kerPow_finrank_ne_zero {A B : AbVar k} (f : A ⟶ B) (e : ℕ) (he : IsUnit (e : k)) :
     ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X),
@@ -50,9 +48,9 @@ theorem exists_kerPow_finrank_ne_zero {A B : AbVar k} (f : A ⟶ B) (e : ℕ) (h
   exact ⟨H, inferInstance, inferInstance, i, hi, hpk _ hH⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite k H := Module.finite_of_finrank_pos (Nat.pos_of_ne_zero hH)`. Establish `hx : ∀ x : (ptMap f).ker, x.1 ≫ f.hom = 1` using `fun x => MonoidHom.mem_ker.mp x.2`. Set `φ : (ptMap f).ker → (H →ₐ[k] AlgebraicClosure k)` to `fun x => (hi.2 (AlgebraicClosure k) x.1 (hx x) (hkill _ x.1 (hx x))).exists.choose`. Establish `hφ : ∀ x, spMap (φ x).toRingHom ≫ i.left = x.1.left` using `fun x => (hi.2 (AlgebraicClosure k) x.1 (hx x) (hkill _ x.1 (hx x))).exists.choose_spec`. Use `Finite.of_injective φ fun x y hxy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hφ x, ← hφ y, hxy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_ker_of_kerPow {A B : AbVar k} (f : A ⟶ B) (e : ℕ) {H : Type} [CommRing H] [Algebra k H]
     {i : ptOver k H ⟶ A.X} (hi : KerPow f e H i) (hH : Module.finrank k H ≠ 0)
@@ -69,35 +67,31 @@ theorem finite_ker_of_kerPow {A B : AbVar k} (f : A ⟶ B) (e : ℕ) {H : Type} 
   rw [← hφ x, ← hφ y, hxy]
 
 /- English proof (translation)
-Take `⟨H, _, _, i, hi, hH⟩` from `exists_kerPow_finrank_ne_zero f e he`. Establish `hH0 : Module.finrank k H ≠ 0` using `fun h0 => hH (by rw [h0, Nat.cast_zero])`. Establish `hfin : IsFinite f.hom.left` using `(isFinite_iff_finite_ker k A B f).2 (finite_ker_of_kerPow f e hi hH0 hkill)`. Establish `hf : IsIsogeny f` using `⟨hfin, surjective_of_isFinite_of_dim_eq k A B f hdim hfin⟩`. Establish `hd : ((deg f : ℕ) : k) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨H0, _, _, i0, hi0, h0⟩` from `exists_kerPow_zero_finrank_eq_deg k A B f hf`. Rewrite using `[← h0, finrank_eq_of_kerPow hi0 hi (fun R _ _ x hx => ⟨fun _ => hkill _ x hx, fun _ => pow_zero x⟩)]`. Conclude with `hH`. Use `haveI hGfin := finite_invKer f hf`. Take `⟨C, q, hq, hdq, hker, huniv⟩` from `GlobalTheory.T.exists_quotient_of_galoisStable_finite_subgroup k A (invKer f) hGfin (card_invKer_ne_zero f hf) (galPts_mem_invKer f)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hqh⟩` from `huniv B f (fun x hx => hx.1)`. Establish `hdimAC` using `(GlobalTheory.AV.AbVar.isogeny_flat_finrank k A C q hq).1`. Establish `hdimAB` using `(GlobalTheory.AV.AbVar.isogeny_flat_finrank k A B f hf).1`. Establish `hcomp` using `GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp k A C B q h hdimAC (hdimAC.symm.trans hdimAB)`. Rewrite `hcomp` using `[hqh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : deg f = deg q * deg h` using `hcomp.2`. Establish `hv : ∀ l : ℕ, l.Prime → (l : k) ≠ 0 → padicValNat l (deg f) = padicValNat l (deg q)`. Introduce `l hl hlK`. Use `haveI := Fact.mk hl`. Establish `e1` using `GlobalTheory.T.card_lPowerTorsion_kernel_eq_lPart_isogenyDegree k l hlK A B f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2` using `GlobalTheory.T.card_lPowerTorsion_kernel_eq_lPart_isogenyDegree k l hlK A C q hq`. Establish `hset : Nat.card {x : A.Pt // x ≫ f.hom = 1 ∧ ∃ n : ℕ, x ^ l ^ n = 1} = Nat.card {x : A.Pt // x ≫ q.hom = 1 ∧ ∃ n : ℕ, x ^ l ^ n = 1}`. Apply `Nat.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, n, hn⟩`. Use `⟨?_, n, hn⟩` and prove the remaining obligations. Establish `hm : x ∈ invKer f` using `⟨h1, l ^ n, by push_cast; exact pow_ne_zero _ hlK, hn⟩`. Rewrite `hm` using `[← hker]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Introduce and unpack `⟨h1, n, hn⟩`. Use `⟨?_, n, hn⟩` and prove the remaining obligations. Rewrite using `[← hqh, comp_hom, ← Category.assoc, h1]`. Conclude with `(ptMap h).map_one`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hset` using `[e1, e2]`. Conclude with `Nat.pow_right_injective hl.two_le hset`. Establish `hd0 : deg f ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hq0 : deg q ≠ 0`. Introduce `h0`. Apply `hd0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdeg, h0, zero_mul]`. Establish `hh0 : deg h ≠ 0`. Introduce `h0`. Apply `hd0` to reduce the goal to its premises. Rewrite using `[hdeg, h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `hh1 : deg h = 1`. Rewrite using `[Nat.eq_one_iff_not_exists_prime_dvd]`. Introduce `l hl hdvd`. Distinguish the cases in `hlK : (l : k) = 0`. Apply `hd` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩ : l ∣ deg f` from `hdeg ▸ dvd_mul_of_dvd_right hdvd _`. Rewrite using `[hc]`. Use `push_cast`. Rewrite using `[hlK, zero_mul]`. Use `haveI := Fact.mk hl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e'` using `hv l hl hlK`. Rewrite `e'` using `[hdeg, padicValNat.mul hq0 hh0]`. Establish `h1` using `one_le_padicValNat_of_dvd hh0 hdvd`. Use linear arithmetic over natural numbers and integers. Establish `hiso : IsIso h` using `(GlobalTheory.AV.AbVar.isIso_iff_deg_eq_one k C B h).2 hh1`.
-
-Take `⟨r, hr⟩` from `huniv A (e • 𝟙 A) (fun x hx => by`. Express the relevant statement in the definitionally equal form `x ≫ (e • 𝟙 A).hom = 1`. Rewrite using `[nsmul_hom, id_hom, GlobalTheory.AV.DegSep.comp_pow_id]`. Conclude with `hkill _ x hx.1)`. Use `⟨inv h ≫ r, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hqh, Category.assoc, IsIso.hom_inv_id_assoc, hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comp_eq_nsmul (A B : AbVar k) (f : A ⟶ B) (hdim : A.dim = B.dim) (e : ℕ) (he : IsUnit (e : k))
     (hkill : ∀ (T : Over (Sp k)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ e = 1) :
@@ -173,9 +167,9 @@ end GlobalTheory.AV.AbVar.KilledInverse
 namespace GlobalTheory.AV
 
 /- English proof (translation)
-Introduce `k _ A B _ _ _ _ g hA hB sA sB l hl e he hkill`. Set `A' : AbVar k` to `{ X := A, ab := hA, dim := g, smooth := sA }`. Set `B' : AbVar k` to `{ X := B, ab := hB, dim := g, smooth := sB }`. Take `⟨m, hm⟩` from `AbVar.KilledInverse.exists_comp_eq_nsmul A' B' (AbVar.Hom.mk (A := A') (B := B') l) rfl e he (fun T x hx => hkill T x hx)`. Use `⟨m.hom, inferInstance, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `congrArg AbVar.Hom.hom hm`. Rewrite `h2` using `[AbVar.comp_hom, AbVar.mk_hom, AbVar.nsmul_hom, AbVar.id_hom]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comp_eq_pow_of_ker_killed : ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ (l : A ⟶ B), IsMonHom l → ∀ e : ℕ, IsUnit (e : k) → (∀ (T : Over (Sp k)) (x : T ⟶ A), x ≫ l = 1 → x ^ e = 1) → ∃ m : B ⟶ A, IsMonHom m ∧ l ≫ m = 𝟙 A ^ e := by
   intro k _ A B _ _ _ _ g hA hB sA sB l hl e he hkill

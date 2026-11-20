@@ -30,7 +30,7 @@ def galoisConjugate (g : G F Ω) (t : G K Ω) : G K Ω :=
     simp)
 
 /- English proof (translation)
-Use extensionality with `z`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem restrict_galois_conjugate (g : G F Ω) (t : G K Ω) : res F Ω K (galoisConjugate K g t) = g * res F Ω K t * g⁻¹ := by
   ext z; rfl
@@ -46,12 +46,12 @@ def conj (g : G F Ω) : G K Ω →* G K Ω where
   map_mul' s t := by ext z; simp [galois_conjugate_apply, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-The claim follows from `restrict_galois_conjugate K g t`.
+A detailed English derivation is pending.
 -/
 theorem res_conj (g : G F Ω) (t : G K Ω) : res F Ω K (conj K g t) = g * res F Ω K t * g⁻¹ := restrict_galois_conjugate K g t
 
 /- English proof (translation)
-Introduce `u`. Use `⟨conj K g⁻¹ u, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Simplify using `[conj, galois_conjugate_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_surjective (g : G F Ω) : Function.Surjective (conj K g) := by
   intro u
@@ -60,7 +60,7 @@ theorem conj_surjective (g : G F Ω) : Function.Surjective (conj K g) := by
   simp [conj, galois_conjugate_apply]
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictScalars_injective F`.
+A detailed English derivation is pending.
 -/
 theorem res_injective : Function.Injective (res F Ω K) := AlgEquiv.restrictScalars_injective F
 
@@ -73,11 +73,9 @@ noncomputable section
 namespace GlobalTheory.RealGal.TrInv
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsGalois K Ω := inferInstance`. Use `haveI : T2Space (G F Ω) := krullTopology_t2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous (res F Ω K)` using `UpperTheory.V.Af.continuous_restrictScalarsHom F K Ω`. Establish `he` using `hc.isClosedEmbedding (res_injective (F := F) (Ω := Ω) K)`. Rewrite using `[he.isEmbedding.continuous_iff]`. Establish `: (res F Ω K) ∘ (conj K g) = fun t => g * res F Ω K t * g⁻¹` using `funext (res_conj K g)`. Rewrite using `[this]`.
-
-Conclude with `(continuous_const.mul hc).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_conj {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [CharZero F] [Algebra F K] [Algebra K Ω]
     [IsScalarTower F K Ω] [IsAlgClosure K Ω] [Normal F K] (g : G F Ω) : Continuous (conj K g) := by
@@ -94,9 +92,9 @@ theorem continuous_conj {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [IsAlg
   exact (continuous_const.mul hc).mul continuous_const
 
 /- English proof (translation)
-Introduce `W hW`. Establish `hW' : IsInv r W`. Introduce `s v hv`. Take `⟨t, rfl⟩` from `hc s`. Conclude with `hW t v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', h1, h2⟩` from `hr W hW'`. Conclude with `⟨W', fun t v hv => h1 (c t) v hv, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSSRep_comp {Γ k : Type} [Group Γ] [Field k] {a : ℕ} (r : Γ →* GL (Fin a) k) (c : Γ →* Γ)
     (hc : Function.Surjective c) (hr : IsSSRep r) : IsSSRep (r.comp c) := by
@@ -115,11 +113,11 @@ namespace GlobalTheory.RealGal
 open TrInv in
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ K _ _ _ _ _ _ h2 l _ ι a π r hr hss hatt g s s' hs`. Use `haveI : Algebra.IsQuadraticExtension F K := ⟨h2⟩`. Use `haveI : Normal F K := Algebra.IsQuadraticExtension.normal F K`. Establish `hsur` using `conj_surjective (F := F) (Ω := Ω) K g`. Establish `hatt' : AttRes π ι K (r.comp (conj K g))` using `GlobalTheory.T.attached_rep_conjugate_invariant F Ω K l ι a π r g (conj K g) (res_conj K g) hsur hatt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `GlobalTheory.T.attached_galois_rep_unique F Ω K l ι a π r (r.comp (conj K g)) hr (hr.comp (continuous_conj K g)) hss (isSSRep_comp r _ hsur hss) hatt hatt'`. Establish `hs' : s' = conj K g s` using `res_injective (F := F) (Ω := Ω) K (by rw [hs, res_conj])`. Substitute `hs'` using the available equality. Rewrite using `[← MonoidHom.comp_apply, hh s]`. Simplify using `only [Units.val_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.trace_mul_cycle]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem trace_conj_of_attRes : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω], Module.finrank F K = 2 → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (r : G K Ω →* GL (Fin a) (Qbar l)), Continuous r → IsSSRep r → AttRes π ι K r → ∀ (g : G F Ω) (s s' : G K Ω), res F Ω K s' = g * res F Ω K s * g⁻¹ → ((r s' : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r s : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace := by
   intro F Ω _ _ _ _ _ _ K _ _ _ _ _ _ h2 l _ ι a π r hr hss hatt g s s' hs

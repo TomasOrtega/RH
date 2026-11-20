@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CechKS
 
 /- English proof (translation)
-Set `φ` to `GlobalTheory.Points.valMap P.x U.1 h`. Establish `hc : ∀ r : R, φ.hom (algebraMap R (CechDR.Sec s U.1) r) = algebraMap R P.B r`. Introduce `r`. Express the relevant statement in the definitionally equal form `φ.hom ((s.appLE ⊤ U.1 le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = _`. Rewrite using `[← GlobalTheory.Points.valR_eq P.x U.1 h, GlobalTheory.Points.valR_appLE P.x s le_top h, P.w, GlobalTheory.Points.valR_specMap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨⟨{ φ.hom with commutes' := hc }, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Points.specMap_valMap_fromSpec U.2 P.x h`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Pt.nonempty_affHom_of_in {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens) (P : Pt s) (h : P.In U.1) :
     Nonempty ((Pt.aff s U).Hom P) := by
@@ -29,13 +29,13 @@ theorem Pt.nonempty_affHom_of_in {R : Type} [CommRing R] {X : Scheme.{0}} (s : X
   exact GlobalTheory.Points.specMap_valMap_fromSpec U.2 P.x h
 
 /- English proof (translation)
-Establish `hpre : ⊤ ≤ (CechDR.affPt s U) ⁻¹ᵁ U.1` using `U.2.fromSpec_preimage_self.ge`. Establish `hid : valR (CechDR.affPt s U) U.1 b = b`. Rewrite using `[GlobalTheory.Points.valR_eq _ _ hpre]`. Establish `h1 : Spec.map (𝟙 Γ(X, U.1)) ≫ U.2.fromSpec = CechDR.affPt s U`. Rewrite using `[Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.Points.valMap_specMap_fromSpec U.2 (𝟙 Γ(X, U.1)) (h1 ▸ hpre)`. Establish `h3 : GlobalTheory.Points.valMap (CechDR.affPt s U) U.1 hpre = 𝟙 _`. Establish `key : ∀ (x : Spec Γ(X, U.1) ⟶ X) (hx : x = CechDR.affPt s U) (h : ⊤ ≤ x ⁻¹ᵁ U.1), GlobalTheory.Points.valMap x U.1 h = GlobalTheory.Points.valMap (CechDR.affPt s U) U.1 hpre`. Introduce and unpack `_ rfl _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `(key _ h1 _).symm.trans h2`. Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[← a.pt, GlobalTheory.Points.valR_spMap_comp _ _ _ hpre, hid]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem Pt.affHom_ρ_eq_valR {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens) (P : Pt s)
     (a : (Pt.aff s U).Hom P) (b : Γ(X, U.1)) : a.ρ b = valR P.x U.1 b := by
@@ -55,13 +55,13 @@ theorem Pt.affHom_ρ_eq_valR {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶
   rfl
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf V f g fun x hx ↦ ?_` and prove the remaining obligations. Establish `hxW : x ∈ ⨆ j, W j` using `by rw [hW]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxW`. Take `⟨U', hU', hxU', hsub⟩` from `exists_isAffineOpen_mem_and_subset (U := V ⊓ W j) ⟨hx, hj⟩`. Establish `hle : U' ≤ V ⊓ W j` using `hsub`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hleV : U' ≤ V` using `hle.trans inf_le_left`. Set `Ua : X.affineOpens` to `⟨U', hU'⟩`. Establish `hPU : (Pt.aff s Ua).In U'` using `hU'.fromSpec_preimage_self.ge`. Establish `hv` using `h (Pt.aff s Ua) j (hPU.mono hleV) (hPU.mono (hle.trans inf_le_right))`. Establish `key : ∀ b : Γ(X, V), valR (Pt.aff s Ua).x V b = (X.presheaf.map (homOfLE hleV).op).hom b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[← GlobalTheory.Points.valR_res (Pt.aff s Ua).x hleV hPU b]`. Conclude with `(Pt.affHom_ρ_eq_valR s Ua (Pt.aff s Ua) (Pt.Hom.id _) _).symm`. Rewrite `hv` using `[key, key]`. Use `congrArg (X.presheaf.germ U' x hxU') hv` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eq_of_valR_eq_on_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) {J : Type} (W : J → X.Opens)
     (hW : ⨆ j, W j = ⊤) (V : X.Opens) (f g : Γ(X, V))
@@ -84,7 +84,7 @@ theorem eq_of_valR_eq_on_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X �
   rwa [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at this
 
 /- English proof (translation)
-Take `⟨ρ, e⟩` from `a`. Take `⟨ρ', e'⟩` from `a'`. Establish `: ρ = ρ'` using `AlgHom.ext fun b ↦ (Pt.affHom_ρ_eq_valR s U P ⟨ρ, e⟩ b).trans (Pt.affHom_ρ_eq_valR s U P ⟨ρ', e'⟩ b).symm`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem Pt.affHom_subsingleton {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens) (P : Pt s)
     (a a' : (Pt.aff s U).Hom P) : a = a' := by
@@ -94,30 +94,30 @@ theorem Pt.affHom_subsingleton {R : Type} [CommRing R] {X : Scheme.{0}} (s : X �
   subst this; rfl
 
 /- English proof (translation)
-The claim follows from `Thick.hom_ext fun _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 theorem Pt.Hom.comp_triv {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} {P Q T : Pt s}
     (φ : P.Hom Q) (ψ : Q.Hom T) : (φ.comp ψ).triv = φ.triv ≫ ψ.triv :=
   Thick.hom_ext fun _ ↦ rfl
 
 /- English proof (translation)
-Introduce `R _ X s J W hW c hc`. Take `⟨G, hG1, hG2⟩` from `hc`. Establish `hG : ∀ j j' (P : Pt s), P.In (W j) → P.In (W j') → G j P = G j' P` using `fun j j' P h h' ↦ sub_eq_zero.1 (hG2 j j' P h h')`. Express the relevant statement in the definitionally equal form `toH1O s (H1.mk _ c) = 0`. Apply `GlobalTheory.CechDR.cmpO_injective R X s` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, ← GlobalTheory.CechDR.structureSheaf_comparison_comm, GlobalTheory.CechDR.comparison_mk]`. Use `H1.mk_eq_zero.2 ?_` and prove the remaining obligations. Set `aP : ∀ (U : X.affineOpens) (P : Pt s), P.In U.1 → (Pt.aff s U).Hom P` to `fun U P h ↦ (Pt.nonempty_affHom_of_in s U P h).some`. Set `FU : X.affineOpens → PtFn s` to `fun U P ↦ if h : P.In U.1 ∧ ∃ j, P.In (W j) then G h.2.choose P - ev c (aP U P h.1).triv else 0`. Establish `FU_eq : ∀ U (P : Pt s) j (hU : P.In U.1), P.In (W j) → FU U P = G j P - ev c (aP U P hU).triv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `U P j hU hj`. Establish `h : P.In U.1 ∧ ∃ j, P.In (W j)` using `⟨hU, j, hj⟩`. Simplify using `only [FU, dif_pos h]`. Rewrite using `[hG _ j P h.2.choose_spec hj]`. Establish `ex : ∀ U : X.affineOpens, ∃ f : Γ(X, U.1), ∀ (j : J) (P : Pt s), P.In (U.1 ⊓ W j) → FU U P = valR P.x U.1 f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `U`. Use `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover R X s J (fun j ↦ U.1 ⊓ W j) U.1 (fun j ↦ inf_le_left) ?_ (FU U) ?_` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq, hW, inf_top_eq]`. Introduce `j P Q φ hP`. Establish `hU : P.In U.1` using `hP.mono inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj : P.In (W j)` using `hP.mono inf_le_right`. Rewrite using `[FU_eq U P j hU hj, FU_eq U Q j (hU.map φ) (hj.map φ), Pt.affHom_subsingleton s U Q (aP U Q (hU.map φ)) ((aP U P hU).comp φ), Pt.Hom.comp_triv, ev_comp, hG1 j P Q φ hj, map_sub]`. Establish `e : φ.triv.φ (ev c (aP U P hU).triv) = φ.ρ (ev c (aP U P hU).triv)` using `rfl`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `choose f hf using ex`. Use `⟨fun U ↦ f U.unop, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `U V a`. Establish `hle : V.unop.1 ≤ U.unop.1` using `leOfHom a.unop`. Use `eq_of_valR_eq_on_cover s W hW V.unop.1 _ _ fun P j hV hj ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `valR P.x V.unop.1 (@HSub.hSub Γ(X, V.unop.1) Γ(X, V.unop.1) Γ(X, V.unop.1) _ (f V.unop) (GlobalTheory.CechDR.Sec.res s hle (f U.unop))) = valR P.x V.unop.1 (ev c (Pt.affHom s hle).triv)`. Establish `hU : P.In U.unop.1` using `hV.mono hle`. Use `set b := aP V.unop P hV`. Establish `e1 : valR P.x V.unop.1 (f V.unop) = FU V.unop P` using `(hf V.unop j P (hV.inf hj)).symm`. Establish `e2 : valR P.x V.unop.1 (GlobalTheory.CechDR.Sec.res s hle (f U.unop)) = FU U.unop P` using `(GlobalTheory.Points.valR_res P.x hle hV (f U.unop)).trans (hf U.unop j P (hU.inf hj)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : aP U.unop P hU = (Pt.affHom s hle).comp b` using `Pt.affHom_subsingleton s _ P _ _`. Establish `e4 : ev c (aP U.unop P hU).triv = b.ρ (ev c (Pt.affHom s hle).triv) + ev c b.triv`. Rewrite using `[e3, Pt.Hom.comp_triv, ev_comp]`. Both sides reduce to the same expression. Establish `e5 : valR P.x V.unop.1 (ev c (Pt.affHom s hle).triv) = b.ρ (ev c (Pt.affHom s hle).triv)` using `(Pt.affHom_ρ_eq_valR s V.unop P b _).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e6 : b.ρ (@HSub.hSub Γ(X, V.unop.1) Γ(X, V.unop.1) Γ(X, V.unop.1) _ (f V.unop) (GlobalTheory.CechDR.Sec.res s hle (f U.unop))) = b.ρ (f V.unop) - b.ρ (GlobalTheory.CechDR.Sec.res s hle (f U.unop))` using `map_sub b.ρ _ _`. Rewrite using `[e5, ← Pt.affHom_ρ_eq_valR s V.unop P b, e6, Pt.affHom_ρ_eq_valR s V.unop P b (f V.unop), Pt.affHom_ρ_eq_valR s V.unop P b (GlobalTheory.CechDR.Sec.res s hle (f U.unop)), e1, e2, FU_eq V.unop P j hV hj, FU_eq U.unop P j hU hj, e4]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h1_mk_mem_f1_of_isRep_zero : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Type) (W : J → X.Opens), ⨆ j, W j = ⊤ → ∀ c : Z1 (O (dp0 R) s), IsRep W c 0 → H1.mk _ c ∈ F1 s := by
   intro R _ X s J W hW c hc

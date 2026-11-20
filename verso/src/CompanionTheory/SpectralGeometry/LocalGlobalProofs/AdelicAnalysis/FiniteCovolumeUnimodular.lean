@@ -6,19 +6,19 @@ open scoped ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.LatticeUnimod
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ 𝓕 h𝓕 hfin`. Establish `h0 : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne μ)`. Establish `hmap : ∀ g : G, μ.map (· * g) = μ`. Introduce `g`. Establish `hc : μ.map (· * g) = Measure.haarScalarFactor (μ.map (· * g)) μ • μ` using `Measure.isMulLeftInvariant_eq_smul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : IsFundamentalDomain Γ ((· * g) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv (quasiMeasurePreserving_mul_right μ g) (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Establish `hm : μ ((· * g) ⁻¹' 𝓕) = μ 𝓕` using `hF.measure_eq h𝓕`. Establish `e1 : (μ.map (· * g)) 𝓕 = μ ((· * g) ⁻¹' 𝓕)` using `(MeasurableEquiv.mulRight g).map_apply 𝓕`. Establish `e2 : ((Measure.haarScalarFactor (μ.map (· * g)) μ : ℝ≥0) : ℝ≥0∞) * μ 𝓕 = 1 * μ 𝓕`. Establish `e3` using `congrArg (fun m : Measure G => m 𝓕) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.smul_apply] at e3`. Rewrite `e3` using `[e1, hm]`. Rewrite using `[one_mul]`. Conclude with `e3.symm`. Establish `e4` using `(ENNReal.mul_left_inj h0 hfin.ne).1 e2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : Measure.haarScalarFactor (μ.map (· * g)) μ = 1` using `ENNReal.coe_eq_one.1 e4`. Rewrite `hc` using `[e5, one_smul]`. Conclude with `hc`. Use `haveI hR : μ.IsMulRightInvariant := ⟨hmap⟩`. Use `⟨h0, hR, ⟨?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : ℝ≥0∞` to `Measure.haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Establish `h2 : Measure.map Inv.inv (Measure.map Inv.inv μ) = c ^ 2 • μ`. Rewrite using `[← Measure.inv_def μ, hc, Measure.map_smul, ← Measure.inv_def μ, hc, smul_smul, pow_two]`. Establish `μeq : μ = c ^ 2 • μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h2` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Take `⟨V, hV, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hVpos : 0 < μ V` using `Measure.measure_pos_of_mem_nhds μ hV1`. Establish `e : c ^ 2 * μ V = 1 ^ 2 * μ V` using `by conv_rhs => rw [μeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e2 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj hVpos.ne' hV.measure_lt_top.ne).1 e`. Establish `e3 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective e2`. Rewrite using `[hc, e3, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodular_of_isFundamentalDomain :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]

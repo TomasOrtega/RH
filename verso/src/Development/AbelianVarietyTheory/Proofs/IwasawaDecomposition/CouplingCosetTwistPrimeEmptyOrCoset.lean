@@ -8,19 +8,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.ChEx
 
 /- English proof (translation)
-Introduce `X Pr R sel S mu cst u j hQ r P`. Establish `hP : P.1 ∉ Pr.vGs` using `hQ P.1 P.2`. Distinguish the cases in `hj : j + 1 = R.m`. Use `right`. Take `⟨y0, -, hY⟩` from `r.mem_ybSet hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : ((qOf P.1 : X.E) ^ cst.M) ≠ 0` using `pow_ne_zero _ (by`. Rewrite using `[Nat.cast_ne_zero]`. Unfold `qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.1.ne_bot)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨(frsF sel mu r.1.1 ⟨P.1, Finset.mem_union_right _ P.2⟩).symm y0, (qOf P.1 : X.E) ^ cst.M, hq, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [cqOf, cosetIn, Set.mem_setOf_eq, if_neg hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hx⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[hY]`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy ⟨P.1, Finset.mem_union_right _ P.2⟩`. Simplify using `only [if_neg hP, zpow_natCast] at h1`. Establish `h2` using `(GlobalTheory.ColPeriod.TopTwist.frsF_mem' sel mu r.1.1 ⟨P.1, Finset.mem_union_right _ P.2⟩ hP (((qOf P.1 : X.E) ^ cst.M)⁻¹ • ((frsF sel mu r.1.1 ⟨P.1, Finset.mem_union_right _ P.2⟩).symm y - (frsF sel mu r.1.1 ⟨P.1, Finset.mem_union_right _ P.2⟩).symm y0))).1 (by`. Rewrite using `[map_smul, map_sub, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h1)`. Establish `h3` using `Submodule.add_mem _ hx h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← smul_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Normalize the expressions using the abelian group laws. Introduce `hx`. Conclude with `⟨y0, by rw [hY]; simp, hx⟩`. Use `left`. Establish `h1 : r.1.2 = ∅`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `r.2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne _ _ _ hj]`. Then use the resulting hypothesis. Use extensionality with `x`. Simplify using `[cqOf, cosetIn, h1]`.
+A detailed English derivation is pending.
 -/
 theorem cqOf_empty_or_coset : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}, (∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) → ∀ (r : PtAt R sel mu cst u j) (P : QE sel (mu : Chr X.F X.E X.K)), GlobalTheory.Mem.Col2.ChEx.cqOf r P = ∅ ∨ ∃ (z : Sp X.E (R.N j)) (c : X.E), c ≠ 0 ∧ GlobalTheory.Mem.Col2.ChEx.cqOf r P = {x | c⁻¹ • (x - z) ∈ stdAt X.E (R.N j) P.1} := by
   intro X Pr R sel S mu cst u j hQ r P

@@ -22,7 +22,7 @@ def kap (h : HidaSetting p n' W Qq O Kf ι σ j w) : KK O ≃ₐ[O] Kf :=
 def kapR (h : HidaSetting p n' W Qq O Kf ι σ j w) : KK O →+* Kf := ((kap h : KK O ≃ₐ[O] Kf) : KK O →+* Kf)
 
 /- English proof (translation)
-Unfold `kapR`. Conclude with `(kap h).commutes x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kapR_alg (h : HidaSetting p n' W Qq O Kf ι σ j w) (x : O) :
     kapR h (algebraMap O (KK O) x) = algebraMap O Kf x := by
@@ -30,20 +30,20 @@ theorem kapR_alg (h : HidaSetting p n' W Qq O Kf ι σ j w) (x : O) :
   exact (kap h).commutes x
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `(kap h).injective hab`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kapR_inj (h : HidaSetting p n' W Qq O Kf ι σ j w) : Function.Injective (kapR h) := by
   intro a b hab
   exact (kap h).injective hab
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc choose c hc using hc`. Use `⟨∑ m ∈ P.support, monomial m (c m), ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[coeff_map, coeff_smul, coeff_map, smul_eq_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (∑ x ∈ P.support, monomial x (c x)).coeff m = if m ∈ P.support then c m else 0`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Conclude with `Finset.sum_ite_eq' _ _ _`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m ∈ P.support`. Rewrite using `[if_pos hm, hc m, kapR_alg, map_mul]`. Rewrite using `[if_neg hm, map_zero, mul_zero]`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hm, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨P0, hP0⟩ m`. Use `⟨P0.coeff m, kapR_inj h ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun Q => Q.coeff m) hP0`. Simplify using `only [coeff_map, coeff_smul, smul_eq_mul] at e`. Rewrite using `[e, kapR_alg, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffs_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (a : O) (P : MvPolynomial τ (KK O)) :
     (∀ m, ∃ c : O, P.coeff m = algebraMap O (KK O) (a * c)) ↔
@@ -72,7 +72,7 @@ theorem coeffs_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (a : O
     rw [e, kapR_alg, map_mul]
 
 /- English proof (translation)
-Unfold `InA`. Establish `e` using `coeffs_iff h (1 : O) P`. Simplify using `only [one_mul, map_one, one_smul] at e`. Conclude with `e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inA_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (P : MvPolynomial τ (KK O)) :
     InA (O := O) P ↔ ∃ P0 : MvPolynomial τ O, map (kapR h) P = map (algebraMap O Kf) P0 := by
@@ -82,7 +82,7 @@ theorem inA_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (P : MvPo
   exact e
 
 /- English proof (translation)
-Unfold `InWj`. Establish `e` using `coeffs_iff h (w ^ i) P`. Rewrite `e` using `[map_pow]`. Conclude with `e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWj_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (P : MvPolynomial τ (KK O)) (i : ℕ) :
     InWj w P i ↔
@@ -93,7 +93,7 @@ theorem inWj_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (P : MvP
   exact e
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.G.Pol, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[MvPolynomial.support_map_of_injective _ (kapR_inj h)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pol_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {S : Type} (k : ℕ) (d : S → ℕ)
     (P : MvPolynomial (S × Fin k) (KK O)) : P ∈ Formalism.MainNotions.G.Pol (KK O) k d ↔ map (kapR h) P ∈ Formalism.MainNotions.G.Pol Kf k d := by
@@ -103,9 +103,9 @@ theorem pol_iff (h : HidaSetting p n' W Qq O Kf ι σ j w) {S : Type} (k : ℕ) 
 variable [Fact p.Prime]
 
 /- English proof (translation)
-Proceed by induction on `s generalizing x with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[pow_succ', pow_succ']`. Express the relevant statement in the definitionally equal form `σ ((σ ^ s) _) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih, hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_iter (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (s : ℕ) (x : WF p n') :
     (σ ^ s) (algebraMap W Qq (φ x)) =
@@ -119,7 +119,7 @@ theorem sig_iter (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (s : ℕ) (x :
     rfl
 
 /- English proof (translation)
-Establish `h1 : ((s : ℤ) % (n' : ℤ)) = s` using `Int.emod_eq_of_lt (by positivity) (by exact_mod_cast hs)`. Unfold `sigPow`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sigPow_nat (s : ℕ) (hs : s < n') :
     sigPow p n' (s : ℤ) = (WittVector.frobenius : WF p n' →+* WF p n') ^ s := by
@@ -129,7 +129,7 @@ theorem sigPow_nat (s : ℕ) (hs : s < n') :
   simp
 
 /- English proof (translation)
-Simplify using `only [sigMat, Matrix.of_apply, kapR_alg, sigPow_nat s hs, la_tw, RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.comp_apply, RingEquiv.coe_toRingHom, matQ]`. Rewrite using `[sig_iter φ hφ, h.ι_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_tw (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) {k : ℕ}
     (g : Matrix (Fin k) (Fin k) (WF p n')) (s : ℕ) (hs : s < n') (a b : Fin k) :
@@ -140,7 +140,7 @@ theorem sig_tw (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W)
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `sig_tw h φ hφ g s hs a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_tw_mat (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) {k : ℕ}
     (g : Matrix (Fin k) (Fin k) (WF p n')) (s : ℕ) (hs : s < n') :
@@ -151,9 +151,9 @@ theorem sig_tw_mat (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+
   exact sig_tw h φ hφ g s hs a b
 
 /- English proof (translation)
-Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `e : sigMat p n' O g s = ((algebraMap O (KK O)).comp ((algebraMap (WF p n') O).comp (sigPow p n' s))).mapMatrix g`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_det]`.
+Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.map _ hg`.
+A detailed English derivation is pending.
 -/
 theorem sigMat_det (φ : WF p n' ≃+* W) {k : ℕ} (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) (s : ℤ) :
     letI : Algebra (WF p n') O := algOfIdent j φ
@@ -166,9 +166,9 @@ theorem sigMat_det (φ : WF p n' ≃+* W) {k : ℕ} (g : Matrix (Fin k) (Fin k) 
   exact IsUnit.map _ hg
 
 /- English proof (translation)
-Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hdet` using `sigMat_det (O := O) (j := j) φ g hg (s : ℤ)`. Establish `key : (kapR h).mapMatrix ((sigMat p n' O g (s : ℤ))⁻¹) = (la_tw ι σ s (matQ φ g))⁻¹`. Rewrite using `[← sig_tw_mat h φ hφ g s hs]`. Use `symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← map_mul, Matrix.nonsing_inv_mul _ hdet, map_one]`. Establish `e` using `congrFun (congrFun key a) b`. Rewrite `e` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_tw_inv (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) {k : ℕ}
     (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) (s : ℕ) (hs : s < n') (a b : Fin k) :
@@ -186,7 +186,7 @@ theorem sig_tw_inv (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+
   exact e
 
 /- English proof (translation)
-Establish `e : la_tw ι σ s (matQ (Qq` using `Qq) φ g) = ((ι.comp ((σ ^ s : Qq ≃+* Qq) : Qq →+* Qq)).comp ((algebraMap W Qq).comp (φ : WF p n' →+* W))).mapMatrix g := by`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `IsUnit.map _ hg`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matQ_tw_det (φ : WF p n' ≃+* W) {k : ℕ} (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) (s : ℕ) :
     IsUnit (la_tw ι σ s (matQ (Qq := Qq) φ g)).det := by
@@ -203,17 +203,15 @@ def Bm {S : Type} (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (w : O) (φ : WF p n' �
     else (if b.val < r then algebraMap O Kf w else 1) * la_tw ι σ (pos x).val (matQ φ g) c b
 
 /- English proof (translation)
-Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hinv : ∀ x b c, kapR h ((sigMat p n' O g (LL.pos x))⁻¹ b c) = (la_tw ι σ (pos x).val (matQ φ g))⁻¹ b c`. Introduce `x b c`. Rewrite using `[hpos x]`. Conclude with `sig_tw_inv h φ hφ g hg _ (pos x).isLt b c`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : ∀ x b c, kapR h (sigMat p n' O g (LL.pos x) b c) = la_tw ι σ (pos x).val (matQ φ g) b c`. Introduce `x b c`. Rewrite using `[hpos x]`. Conclude with `sig_tw h φ hφ g _ (pos x).isLt b c`. Establish `e : (MvPolynomial.map (kapR h)).comp (liftSubst p n' O w r LL g).toRingHom = (Lin (Bm ι σ w φ r LL.vec pos g)).toRingHom.comp (MvPolynomial.map (kapR h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[Lin, liftSubst]`. Introduce `v`. Take `⟨x, c⟩` from `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, liftSubst, aeval_X, map_X, Lin]`. Distinguish the cases in `hv : LL.vec x`. Simplify using `only [hv, if_true, Bm, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_C, hinv]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp [map_C, map_X, kapR_alg, C_mul] <;> ring`. Simplify using `only [hv, Bool.false_eq_true, if_false, Bm, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_C, hmat]`. Apply the tactic sequence `split_ifs <;> simp [map_C, map_X, kapR_alg, C_mul] <;> ring`.
-
-Conclude with `RingHom.congr_fun e F`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lift_eq {S : Type} [Fintype S] [DecidableEq S] (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W)
     (hφ : IsWittIdent σ φ) (r : ℕ) {k : ℕ} (LL : LiftLetters S) (pos : S → Fin n')

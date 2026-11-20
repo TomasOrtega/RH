@@ -12,9 +12,9 @@ def DomOpen : Prop := ∀ (T D : Type) [CommRing T] [IsDomain T] [CommRing D] [I
   AIC T → IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap T D)))
 
 /- English proof (translation)
-Introduce `T C _ _ _ _ _ hT`. Take `⟨n, e, he, hdom⟩` from `hS T C hT`. Use `⟨n, e, he, fun j => ?_⟩` and prove the remaining obligations. Establish `: Algebra.Etale C (Localization.Away (e j))` using `inferInstance`. Establish `: Algebra.Etale T (Localization.Away (e j))` using `Algebra.Etale.comp T C _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hD T (Localization.Away (e j)) hT`. Rewrite `h` using `[IsScalarTower.algebraMap_eq T C (Localization.Away (e j))]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem EtAIC_of (hS : Split) (hD : DomOpen) : LateralTheory.E.t_E1Cut.EtAIC := by
   intro T C _ _ _ _ _ hT

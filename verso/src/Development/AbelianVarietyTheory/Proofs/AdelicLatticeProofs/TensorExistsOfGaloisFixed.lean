@@ -6,15 +6,15 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `F M E K _ _ _ _ _ _ _ _ _ _ _ _ y hy`. Establish `key : ∀ x : K ⊗[F] E, ∃ z : K ⊗[F] M, Algebra.TensorProduct.map (AlgHom.id K K) (IsScalarTower.toAlgHom F M E) z = ∑ h : E ≃ₐ[M] E, Algebra.TensorProduct.map (AlgHom.id K K) ((h.restrictScalars F : E ≃ₐ[F] E) : E →ₐ[F] E) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul k e`. Use `⟨k ⊗ₜ Algebra.trace M E e, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[← TensorProduct.tmul_sum]`. Use `congr 1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `trace_eq_sum_automorphisms e`. Consider the case `add a b ha hb`. Take `⟨za, ha⟩` from `ha`. Take `⟨zb, hb⟩` from `hb`. Use `⟨za + zb, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, Finset.sum_add_distrib, ha, hb]`. Take `⟨z, hz⟩` from `key y`. Simplify using `only [hy, Finset.sum_const, Finset.card_univ] at hz`. Establish `hm : ((Fintype.card (E ≃ₐ[M] E) : ℕ) : F) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `⟨((Fintype.card (E ≃ₐ[M] E) : ℕ) : F)⁻¹ • z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMapClass.map_smul_of_tower, hz, ← Nat.cast_smul_eq_nsmul F, smul_smul, inv_mul_cancel₀ hm, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_exists_of_galois_fixed :
     ∀ (F M E K : Type) [Field F] [CharZero F] [Field M] [Field E] [Algebra F M] [Algebra M E] [Algebra F E] [IsScalarTower F M E] [FiniteDimensional M E] [IsGalois M E] [CommRing K] [Algebra F K] (y : K ⊗[F] E), (∀ h : E ≃ₐ[M] E, Algebra.TensorProduct.map (AlgHom.id K K) ((h.restrictScalars F : E ≃ₐ[F] E) : E →ₐ[F] E) y = y) → ∃ z : K ⊗[F] M, Algebra.TensorProduct.map (AlgHom.id K K) (IsScalarTower.toAlgHom F M E) z = y := by

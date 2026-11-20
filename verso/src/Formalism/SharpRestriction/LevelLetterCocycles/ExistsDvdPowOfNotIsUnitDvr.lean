@@ -18,11 +18,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, u, hyu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ`. Take `⟨e, u', hpe⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `he : 1 ≤ e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (by rw [hpe, h, pow_zero, mul_one]; exact u'.isUnit) hpu`. Conclude with `h`. Use `⟨m, ((u⁻¹ : Oˣ) : O) * (u' : O) ^ m * ϖ ^ (e * m - m), ?_⟩` and prove the remaining obligations. Establish `hm : m ≤ e * m` using `Nat.le_mul_of_pos_left m he`. Rewrite using `[hpe, hyu, mul_pow, ← pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ϖ ^ (e * m) = ϖ ^ m * ϖ ^ (e * m - m)` using `by rw [← pow_add, Nat.add_sub_cancel' hm]`. Rewrite using `[e1]`. Establish `e2 : ((u : O) * ((u⁻¹ : Oˣ) : O)) = 1` using `Units.mul_inv u`. Take the linear combination `(-((u' : O) ^ m * ϖ ^ m * ϖ ^ (e * m - m))) * e2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_dvd_pow_of_not_isUnit_dvr [IsDomain O] [IsDiscreteValuationRing O] (p : O) (hp0 : p ≠ 0) (hpu : ¬ IsUnit p)
     {y : O} (hy : y ≠ 0) : ∃ (κ : ℕ) (z : O), p ^ κ = y * z := by
@@ -44,13 +44,11 @@ theorem exists_dvd_pow_of_not_isUnit_dvr [IsDomain O] [IsDiscreteValuationRing O
 variable [IsDomain O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
 
 /- English proof (translation)
-Take `⟨H, r, hdeg, heq⟩` from `wdiv_ps W hR hT hpu a s (g a)`. Use `⟨r, hdeg, fun ζ => ?_⟩` and prove the remaining obligations. Use `set wH : LetA O n := Pi.single a H with hwH`. Establish `hRr : (fun _ : ZMod n => (r : PowerSeries O)) = Polynomial.aeval (letπ : LetA O n) r`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show (r : PowerSeries O) = Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) i (Polynomial.aeval letπ r)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `(aeval_X_coe r).symm`. Establish `key : (letE a : LetA O n) * g = ps W s * wH + letE a * Polynomial.aeval (letπ : LetA O n) r`. Rewrite using `[← hRr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `only [Pi.mul_apply, Pi.add_apply, hwH, letE, Pi.single_eq_same, one_mul, heq]`. Simplify using `[Pi.mul_apply, Pi.add_apply, hwH, letE, Pi.single_eq_of_ne hi]`.
-
-Establish `h1` using `congrArg (hB.ev ζ) key`. Rewrite `h1` using `[map_mul, hB.ev_letE, one_mul, map_add, map_mul, hB.ev_ps, zero_mul, zero_add, map_mul, hB.ev_letE, one_mul, ev_aeval hB]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levRatPf_ev (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)
     (hpu : ¬ IsUnit ((PD.p : ℕ) : O)) (a : ZMod n) (s : ℕ) (hB : LevBasics W a s) (g : LetA O n) :
@@ -77,23 +75,19 @@ theorem levRatPf_ev (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formal
   exact h1
 
 /- English proof (translation)
-Introduce `g _ d _ hd c hc`. Take `⟨rg, hgdeg, hg⟩` from `levRatPf_ev W hR hT hpu a s hB g`. Take `⟨rd, hddeg, hdv⟩` from `levRatPf_ev W hR hT hpu a s hB d`. Establish `hN : ∀ r : Polynomial O, r.degree < ((PD.p - 1) * PD.p ^ s : ℕ) → (r.map (algebraMap O hB.F)).natDegree < (PD.p - 1) * PD.p ^ s`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNpos : 0 < (PD.p - 1) * PD.p ^ s` using `Nat.mul_pos (by have := PD.hp.two_le; omega) (pow_pos PD.hp.pos _)`. Use `lt_of_le_of_lt Polynomial.natDegree_map_le ?_` and prove the remaining obligations. Distinguish the cases in `h0 : r = 0`. Rewrite using `[h0, Polynomial.natDegree_zero]`. Conclude with `hNpos`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Polynomial.natDegree_lt_iff_degree_lt h0).2 hr`. Use `set R : Polynomial hB.F := rg.map (algebraMap O hB.F) - Polynomial.C c * rd.map (algebraMap O hB.F) with hRdef`. Establish `hR0 : R = 0`. Use `poly_eq_zero hB R ?_ ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (Polynomial.natDegree_sub_le _ _) (max_lt (hN rg hgdeg) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (Polynomial.natDegree_C_mul_le _ _) (hN rd hddeg)`. Introduce `ζ`. Rewrite using `[hRdef, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_map, Polynomial.eval_map, ← Polynomial.aeval_def, ← Polynomial.aeval_def, ← hg ζ, ← hdv ζ, hc ζ, sub_self]`. Establish `hne : Nonempty (Rs hB.F PD.p s)`. Rewrite using `[← Fintype.card_pos_iff, card_Rs hB]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Nat.mul_pos (by have := PD.hp.two_le; omega) (pow_pos PD.hp.pos _)`. Take `⟨ζ₀⟩` from `hne`. Establish `hrd : rd ≠ 0`. Introduce `h`. Apply `hd ζ₀` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hdv ζ₀, h, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, rd.coeff k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hrd (Polynomial.ext fun k => by simpa using h k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hck : algebraMap O hB.F (rg.coeff k) = c * algebraMap O hB.F (rd.coeff k)`. Use `congrArg (fun P : Polynomial hB.F => P.coeff k) hR0` as an intermediate fact. Simplify using `only [hRdef, Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_map, Polynomial.coeff_zero] at this`. Conclude with `sub_eq_zero.1 this`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`.
-
-Introduce `h`. Apply `hB.hp` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap O hB.F), h, map_zero]`. Take `⟨κ, z, hz⟩` from `exists_dvd_pow_of_not_isUnit_dvr ((PD.p : ℕ) : O) hp0 hpu hk`. Use `⟨κ, z * rg.coeff k, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hck, ← map_natCast (algebraMap O hB.F), ← map_pow, hz, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levRat_of [IsDiscreteValuationRing O] (W : LocWach PD LL O v n) (hR : ToolsR.RingP W)
     (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W) (hpu : ¬ IsUnit ((PD.p : ℕ) : O)) (a : ZMod n) (s : ℕ)

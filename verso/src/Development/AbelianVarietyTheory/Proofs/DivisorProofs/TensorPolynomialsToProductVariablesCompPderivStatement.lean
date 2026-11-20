@@ -8,7 +8,7 @@ open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHec
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CCRFock.polMap_comp_atPl_pderiv | exact GlobalTheory.CCRFock.polMap_comp_atPl_pderiv | (intros; apply GlobalTheory.CCRFock.polMap_comp_atPl_pderiv <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tensorPolynomialsToProductVariables_comp_pderiv : ∀ (W Λ : Type) [Fintype W] [DecidableEq W] (w : W) (l : Λ),
     GlobalTheory.CCRFock.polMap W Λ ∘ₗ GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w

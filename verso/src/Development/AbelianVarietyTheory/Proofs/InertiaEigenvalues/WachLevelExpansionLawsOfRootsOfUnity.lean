@@ -29,7 +29,7 @@ noncomputable def evOne (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) : O⟦X�
 omit [CharZero L] [Algebra ℚ L] in
 
 /- English proof (translation)
-Establish `h` using `W.lev_letter i ζ (a - fun _ => a i) (by simp)`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_eq (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) (a : LetA O n) :
     W.lev i ζ a = evOne W i ζ (a i) := by
@@ -38,7 +38,7 @@ theorem lev_eq (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) (a : LetA O n) :
   exact h
 
 /- English proof (translation)
-Take `⟨E, h0, h1, h2⟩` from `W.lev_π i ζ h`. Establish `hE : E = exp L` using `ode_unique 1 (by rw [h1, map_one, one_mul]) (by rw [derivative_exp, map_one, one_mul]) (by rw [h0, constantCoeff_exp])`. Rewrite using `[← hE, ← h2, lev_eq, add_sub_cancel_left]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evOne_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     evOne W i ζ X = C ζ * exp L - 1 := by
@@ -49,13 +49,13 @@ theorem evOne_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ,
   rfl
 
 /- English proof (translation)
-Establish `hc' : ∀ g, algebraMap O L (W.χΓ g : O) = algebraMap ℤ_[l] L (c g)` using `fun g => by rw [← hc, ← IsScalarTower.algebraMap_apply]`. Establish `hpr : PD.p.Prime` using `hp ▸ (Fact.out : l.Prime)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `g i ζ _ j a h hj rfl f`. Rewrite `hj`, the goal using `[hc']`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : W.γA g f i = GlobalTheory.Fon.gam O (c g) (f i)`. Rewrite using `[← GlobalTheory.Cyc.Series.act_eq, ← hγ]`. Both sides reduce to the same expression. Rewrite using `[lev_eq, lev_eq, e]`. Conclude with `ev_gam H (hp ▸ h.pow_eq_one) _ (hv _ j a hj) (evOne_X W i ⟨j, h⟩) (evOne_X W i (root_pow hpr ⟨j, h⟩ a)) (f i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `i ζ ⟨j, h⟩ f`. Establish `e : W.φA f i = GlobalTheory.Fon.gam O (l : ℤ_[l]) (f (i - 1))`. Rewrite using `[← GlobalTheory.Cyc.Series.act_eq, ← GlobalTheory.Cyc.phi, ← hφ]`. Both sides reduce to the same expression. Use `ev_gam H (j := j) (hp ▸ h.pow_eq_one) (l : ℤ_[l]) (a := l) (by simp) (evOne_X W i ⟨j, h⟩) (evOne_X W (i - 1) (root_pow hpr ⟨j, h⟩ l)) (f (i - 1))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_natCast]`. Rewrite using `[lev_eq, lev_eq, e, hp]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levLaws_of_evLaw (W : LocWach PD L O v n) (hp : PD.p = l) (c : W.Gam → ℤ_[l])
     (hc : ∀ g, algebraMap ℤ_[l] O (c g) = (W.χΓ g : O)) (hφ : W.φ₀ = GlobalTheory.Cyc.phi l O)
@@ -85,11 +85,9 @@ theorem levLaws_of_evLaw (W : LocWach PD L O v n) (hp : PD.p = l) (c : W.Gam →
 end Generic
 
 /- English proof (translation)
-Introduce `D HW l _ K s LL h W`. Take `⟨χ, h1⟩` from `exists_padic_char (LL := LL) (gamOf W ((HW l).W_s K s LL h))`. Take `⟨_, hcomp, -, hu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Establish `hl : (l : ↥(OL LL)) ≠ 0` using `fun h0 => by`. Establish `h2` using `congrArg (algebraMap ↥(OL LL) ↥LL.1) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h2`. Establish `key` using `fun g : W.Gam => GlobalTheory.Cyc.act_unique l ↥(OL LL) hl hu (W.γ₀ g) W.φ₀ (χ g : ℤ_[l]) (by rw [W.φ₀_X, W.q₀_def, (D.loc l).PD_p K]) (W.γ₀_comm g) (W.γ₀_X g).1 ((W.γ₀_X g).2.trans (h1 g).symm)`. Use `levLaws_of_evLaw W ((D.loc l).PD_p K) (fun g => χ g) h1 (key 1).1 (fun g => (key g).2) (dvd_of_le_v (D.loc l)) ?_` and prove the remaining obligations. Use `evLaw_integers (D.loc l) LL using 1` and compare the differences between its conclusion and the goal.
-
-Conclude with `Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem levLaws : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; LevLaws W := by
   intro D HW l _ K s LL h W

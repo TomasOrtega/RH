@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.TwistHomotopy
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `hb`. Use `split_ifs with h1 h2`. Simplify using the standard rewrite rules. Simplify using `[conjTranspose_smul, conjTranspose_add, add_comm]`. Establish `e : star (((Real.sqrt 2 : ℂ))⁻¹ * Complex.I) = -(((Real.sqrt 2 : ℂ))⁻¹ * Complex.I)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_smul, conjTranspose_sub, e]`. Simplify using `[neg_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hb_conjTranspose (p : Fin n × Fin n) : (hb p)ᴴ = hb p := by
   unfold hb

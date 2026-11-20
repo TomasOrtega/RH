@@ -5,15 +5,15 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j hij`. Establish `hji : j = i` using `Fin.ext (by simpa using hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `i j hij`. Establish `hja` using `j.isLt`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : (i : ℕ) + k < a` using `by omega`. Establish `h1` using `ih i ⟨(i : ℕ) + k, hk⟩ rfl`. Establish `hmj : (j : ℕ) = ((⟨(i : ℕ) + k, hk⟩ : Fin a) : ℕ) + 1` using `by simp; omega`. Establish `hu` using `hup _ j hmj`. Establish `hd` using `hdown _ j hmj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : Fin a := ⟨(i : ℕ) + k, hk⟩`. Establish `hrj : r j ≤ t⁻¹ * r m`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coneChain_step_bounds {a : ℕ} {t ρ K : ℝ} (ht : 0 < t) (hKt : t⁻¹ ≤ K) (hK0 : 0 ≤ K)
     (hρ0 : 0 ≤ ρ) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i)
@@ -48,21 +48,21 @@ theorem coneChain_step_bounds {a : ℕ} {t ρ K : ℝ} (ht : 0 < t) (hKt : t⁻�
         _ = ρ ^ (k + 1) * r j := by ring
 
 /- English proof (translation)
-Introduce `a t ht`. Take `⟨K, hK1, hKt⟩ : ∃ K : ℝ, 1 ≤ K ∧ t⁻¹ ≤ K` from `⟨max 1 t⁻¹, le_max_left _ _, le_max_right _ _⟩`. Use `⟨K ^ a, one_le_pow₀ hK1, ?_⟩` and prove the remaining obligations. Introduce `r ρ hr hup hprod hρ hdown i`. Establish `hK0 : (0 : ℝ) ≤ K` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ0 : (0 : ℝ) ≤ ρ` using `by linarith`. Establish `hC0 : 0 ≤ K ^ a * ρ ^ a` using `mul_nonneg (pow_nonneg hK0 _) (pow_nonneg hρ0 _)`. Establish `step` using `coneChain_step_bounds ht hKt hK0 hρ0 r hr hup hdown`. Establish `pair : ∀ p q : Fin a, r p ≤ K ^ a * ρ ^ a * r q`. Introduce `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `le_total (q : ℕ) p with h | h` into its components or cases. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le h`. Establish `hka : k ≤ a` using `by have := p.isLt; omega`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (hr q).le` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le h`. Establish `hka : k ≤ a` using `by have := q.isLt; omega`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (hr q).le` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hne : (Finset.univ : Finset (Fin a)).Nonempty` using `⟨i, Finset.mem_univ _⟩`. Establish `ex_le : ∃ j, r j ≤ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `Finset.prod_lt_prod_of_nonempty (s := Finset.univ) (f := fun _ => (1 : ℝ)) (g := r) (fun _ _ => one_pos) (fun j _ => hcon j) hne` as an intermediate fact. Simplify using `[hprod] at this`. Establish `ex_ge : ∃ j, 1 ≤ r j`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_lt_prod_of_nonempty (s := Finset.univ) (f := r) (g := fun _ => (1 : ℝ)) (fun j _ => hr j) (fun j _ => hcon j) hne` as an intermediate fact. Simplify using `[hprod] at this`. Take `⟨j, hj⟩` from `ex_le`. Take `⟨l, hl⟩` from `ex_ge`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_eq_one_div, div_le_iff₀ (hr i)]`. Use `pair l i` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coneCoord_le_pow_of_prod_eq_one : ∀ (a : ℕ) (t : ℝ), 0 < t → ∃ C : ℝ, 1 ≤ C ∧
     ∀ (r : Fin a → ℝ) (ρ : ℝ), (∀ i, 0 < r i) →

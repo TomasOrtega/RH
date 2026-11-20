@@ -6,13 +6,13 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.Adelic
 namespace GlobalTheory.TamOneInert
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub]`. Use `congrFun (congrFun h a) b` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use extensionality with `a b`. Use `h a b` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_mk_eq_one_iff {R : Type} [CommRing R] (I : Ideal R) {r : ℕ} (M : Matrix (Fin r) (Fin r) R) :
     M.map (Ideal.Quotient.mk I) = 1 ↔ ∀ a b, (M - 1) a b ∈ I := by
@@ -35,17 +35,17 @@ theorem map_mk_eq_one_iff {R : Type} [CommRing R] (I : Ideal R) {r : ℕ} (M : M
     · simp [Matrix.one_apply_ne hab]
 
 /- English proof (translation)
-Introduce `E _ _ _ r v`. Rewrite using `[← Nat.card_coe_set_eq]`. Use `congr 2`. Establish `hconj : ∀ g : Matrix (Fin r) (Fin r) (𝓞 E), (g.map (Ideal.Quotient.mk (extIdeal v))).map (resConj v) = (g.map (IsCMField.ringOfIntegersComplexConj E)).map (Ideal.Quotient.mk (extIdeal v))`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `a b`. Simplify using `[resConj_mk]`. Establish `hdet : ∀ g : Matrix (Fin r) (Fin r) (𝓞 E), (g.map (Ideal.Quotient.mk (extIdeal v))).det = Ideal.Quotient.mk (extIdeal v) g.det`. Introduce `g`. Rewrite using `[RingHom.map_det]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hkey : ∀ g : Matrix (Fin r) (Fin r) (𝓞 E), g.map (Ideal.Quotient.mk (extIdeal v)) ∈ suMat (𝓞 E ⧸ extIdeal v) (resConj v) r ↔ (g.det - 1 ∈ extIdeal v ∧ ∀ a b, (gᵀ * g.map (IsCMField.ringOfIntegersComplexConj E) - 1) a b ∈ extIdeal v)`. Introduce `g`. Rewrite using `[← map_mk_eq_one_iff]`. Simplify using `only [suMat, Set.mem_setOf_eq]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hconj, hdet, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, sub_eq_zero]`. Establish `ht : (gᵀ * g.map (IsCMField.ringOfIntegersComplexConj E)).map (Ideal.Quotient.mk (extIdeal v)) = (((g.map (IsCMField.ringOfIntegersComplexConj E)).map (Ideal.Quotient.mk (extIdeal v)))ᵀ * g.map (Ideal.Quotient.mk (extIdeal v)))ᵀ`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[ht, Matrix.transpose_eq_one]`. Conclude with `and_comm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `(hkey g).2 hg`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, rfl⟩ : ∃ g : Matrix (Fin r) (Fin r) (𝓞 E), g.map (Ideal.Quotient.mk (extIdeal v)) = x` from `⟨fun a b => (Ideal.Quotient.mk_surjective (x a b)).choose, by ext a b; exact (Ideal.Quotient.mk_surjective (x a b)).choose_spec⟩`. Conclude with `⟨g, (hkey g).1 hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))), Set.ncard ((fun g : Matrix (Fin r) (Fin r) (𝓞 E) => g.map (Ideal.Quotient.mk (v.asIdeal.map (algebraMap _ (𝓞 E))))) '' {g | g.det - 1 ∈ v.asIdeal.map (algebraMap _ (𝓞 E)) ∧ ∀ a b, (gᵀ * g.map (IsCMField.ringOfIntegersComplexConj E) - 1) a b ∈ v.asIdeal.map (algebraMap _ (𝓞 E))}) = Nat.card (suMat (𝓞 E ⧸ extIdeal v) (resConj v) r) := by
   intro E _ _ _ r v

@@ -7,11 +7,11 @@ namespace LateralTheory.KummerTheory.NatLESPf
 open LateralTheory.KummerTheory.BockCut
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `: g' (eB y) = 0` using `by rw [← hg, hy, map_zero]`. Take `⟨x', hx'⟩` from `(h (eB y)).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨eA.symm x', eB.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hf, AddEquiv.apply_symm_apply, hx']`. Introduce and unpack `⟨x, rfl⟩`. Apply `eC.injective` to reduce the goal to its premises. Rewrite using `[hg, hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h _).2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exact_transport {A B C A' B' C' : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
     [AddCommGroup A'] [AddCommGroup B'] [AddCommGroup C'] (eA : A ≃+ A') (eB : B ≃+ B') (eC : C ≃+ C')
@@ -31,17 +31,15 @@ theorem exact_transport {A B C A' B' C' : Type*} [AddCommGroup A] [AddCommGroup 
     exact (h _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `R _ K`. Use `letI := HasDerivedCategory.standard (Shv R)`. Take `⟨e, he⟩` from `hD R K`. Set `F` to `preadditiveCoyoneda.obj (op (DerivedCategory.Q.obj K))`. Establish `hpost : ∀ {X Y : Shv R} (φ : X ⟶ Y) (n : ℤ) (x : HK R K X n), e Y n (HK.post R K φ n x) = (F.shift n).map ((DerivedCategory.singleFunctor (Shv R) 0).map φ) (e X n x)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `X Y φ n x`. Rewrite using `[he]`. Both sides reduce to the same expression. Set `d : ∀ (S : ShortComplex (Shv R)), S.ShortExact → ∀ n : ℤ, HK R K S.X₃ n →+ HK R K S.X₁ (n + 1)` to `fun S hS n => (e S.X₁ (n + 1)).symm.toAddMonoidHom.comp ((F.homologySequenceδ hS.singleTriangle n (n + 1) rfl).hom.comp (e S.X₃ n).toAddMonoidHom)`. Establish `hd : ∀ (S : ShortComplex (Shv R)) (hS : S.ShortExact) (n : ℤ) (x : HK R K S.X₃ n), e S.X₁ (n + 1) (d S hS n x) = F.homologySequenceδ hS.singleTriangle n (n + 1) rfl (e S.X₃ n x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `S hS n x`. Conclude with `AddEquiv.apply_symm_apply _ _`. Use `⟨d, fun S hS n => ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `F.homologySequence_exact₂ _ hS.singleTriangle_distinguished n` as an intermediate fact. Rewrite `this` using `[ShortComplex.ab_exact_iff_function_exact]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `exact_transport (e S.X₁ n) (e S.X₂ n) (e S.X₃ n) _ _ _ _ (hpost _ n) (hpost _ n) this`. Use `F.homologySequence_exact₃ _ hS.singleTriangle_distinguished n (n + 1) rfl` as an intermediate fact. Rewrite `this` using `[ShortComplex.ab_exact_iff_function_exact]`. Conclude with `exact_transport (e S.X₂ n) (e S.X₃ n) (e S.X₁ (n + 1)) _ _ _ _ (hpost _ n) (hd S hS n) this`. Use `F.homologySequence_exact₁ _ hS.singleTriangle_distinguished n (n + 1) rfl` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[ShortComplex.ab_exact_iff_function_exact]`. Conclude with `exact_transport (e S.X₃ n) (e S.X₁ (n + 1)) (e S.X₂ (n + 1)) _ _ _ _ (hd S hS n) (hpost _ (n + 1)) this`. Introduce `S T hS hT φ n x`. Apply `(e T.X₁ (n + 1)).injective` to reduce the goal to its premises. Rewrite using `[hpost, hd, hd, hpost]`.
-
-Use `F.homologySequenceδ_naturality (φ := ShortComplex.ShortExact.singleTriangle.map hS hT φ) (n₀ := n) (n₁ := n + 1) (h := rfl)` as an intermediate fact. Establish `h2` using `ConcreteCategory.congr_hom this (show ((F.shift n).obj hS.singleTriangle.obj₃ : Type _) from e S.X₃ n x)`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NatLES_of (hD : DerDict) : NatLES := by
   intro R _ K

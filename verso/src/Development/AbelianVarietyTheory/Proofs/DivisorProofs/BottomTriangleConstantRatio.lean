@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConstRatio
 
 /- English proof (translation)
-Take `⟨c, h⟩` from `GlobalTheory.T.bottom_triangle_polynomial_surjection hPr.minguezThetaGL hPr hK hM`. Take `⟨c', h'⟩` from `GlobalTheory.T.bottom_triangle_integrals_ne_zero hPr hK hM hL`. Use `⟨max c c', fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `h ε CF (le_of_max_le_left hCF)`. Take `⟨C1, x1, h'⟩` from `h' ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max C0 C1, max x0 x1, fun C hC D large₂ a b r T Lc μ hLc G W hW i j A A' WW X hX => ?_⟩` and prove the remaining obligations. Take `⟨Pi, p, p', J, hs, hJ, hlam, hI'⟩` from `h C (le_of_max_le_left hC) D large₂ a (le_of_max_le_left b) r T Lc μ hLc G W hW i j A A' WW X hX`. Establish `hnv` using `h' C (le_of_max_le_right hC) D large₂ a (le_of_max_le_right b) r T Lc μ hLc G W i j A A' WW X hX`. Take `⟨P', g', hg'⟩` from `(hnv μ).2`. Establish `hP' : p' P' ≠ 0` using `fun h0 => hg' (by rw [hI' μ P', h0]; simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose lam hlam using hlam`. Establish `key : ∀ t, lam t ≠ 0 ∧ Function.Injective (J t)` using `fun t => by`. Take `⟨P, g, hPg⟩` from `(hnv t).1`. Rewrite `hPg` using `[hlam t P]`. Use `⟨fun h0 => hPg (by simp [h0]), (hJ t).resolve_left fun h0 => hPg (by simp [h0])⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨lam, fun t => (key t).1, Pi, p, p', J, hs, fun t => (key t).2, fun t P g => (hX.integrable t).1 P g, fun t P => hlam t P, fun t P' _ => hI' t P', P', hP', fun t g => (hX.integrable t).2 P' g⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem bottomTri_factor (hPr : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) (hL : LNe) :

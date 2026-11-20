@@ -39,11 +39,9 @@ def HWExists : Prop := ∀ (a : AlgWt L n) (τ : L →+* ℂ), ∃ lam, a.HWAt �
 variable {L n}
 
 /- English proof (translation)
-Unfold `UniR`. Use `⟨?_, hh.2⟩` and prove the remaining obligations. Unfold `ParaR`. Take `⟨⟨g, hg⟩, hlow⟩` from `hh.1`. Use `⟨?_, ?_, hlow⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Rewrite using `[← hg]`. Conclude with `(g.val a b).2`. Introduce `a b`. Rewrite using `[← hg, ← map_inv]`.
-
-Conclude with `(g⁻¹.val a b).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniR_of_uniRT {s : SplitPlace L} {r : ℕ} {h : GL (Fin n) (s.v.adicCompletion L⁺)} (hh : UniRT s r h) :
     UniR r h := by
@@ -60,7 +58,7 @@ theorem uniR_of_uniRT {s : SplitPlace L} {r : ℕ} {h : GL (Fin n) (s.v.adicComp
     exact (g⁻¹.val a b).2
 
 /- English proof (translation)
-Unfold `UniCharMul at H`. Introduce `s r ψ₀ ξ hψ hξ g h ug uh ugh hg hh hug huh hugh`. Conclude with `@H (s.v.adicCompletion L⁺) _ _ n r ψ₀ ξ hψ.1 hξ g h ug uh ugh (uniR_of_uniRT hg) (uniR_of_uniRT hh) hug huh hugh`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uniCharMul_ng (H : UniCharMul) : UniCharMulNG L n := by
   unfold UniCharMul at H

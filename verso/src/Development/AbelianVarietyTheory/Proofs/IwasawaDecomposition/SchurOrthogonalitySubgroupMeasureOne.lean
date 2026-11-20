@@ -5,9 +5,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SchurOrthOnSubgroup
 
 /- English proof (translation)
-Rewrite using `[← integral_indicator hΩ, ← integral_indicator hΩ]`. Establish `: (Ω : Set G).indicator (fun g => f (h * g)) = fun g => (Ω : Set G).indicator f (h * g)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ Ω`. Establish `hg' : h * g ∈ Ω` using `Ω.mul_mem hh hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_of_mem, hg, hg']`. Establish `hg' : h * g ∉ Ω` using `fun H => hg ((Ω.mul_mem_cancel_left hh).1 H)`. Simplify using `[Set.indicator_of_notMem, hg, hg']`. Rewrite using `[this, integral_mul_left_eq_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_subgroup_mul_left {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (ν : Measure G) [ν.IsMulLeftInvariant] (Ω : Subgroup G) (hΩ : MeasurableSet (Ω : Set G))
@@ -26,28 +26,28 @@ theorem setIntegral_subgroup_mul_left {G : Type} [Group G] [MeasurableSpace G] [
 variable {G : Type} [Group G] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Use `show (ρ g * ρ g⁻¹) v = v`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rep_apply_inv_apply (ρ : G →* Module.End ℂ W) (g : G) (v : W) : ρ g (ρ g⁻¹ v) = v := by
   show (ρ g * ρ g⁻¹) v = v
   rw [← map_mul, mul_inv_cancel, map_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[← hU g (ρ g⁻¹ x) y, rep_apply_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_rep_inv (ρ : G →* Module.End ℂ W) (hU : ∀ g x y, ⟪ρ g x, ρ g y⟫_ℂ = ⟪x, y⟫_ℂ)
     (g : G) (x y : W) : ⟪ρ g⁻¹ x, y⟫_ℂ = ⟪x, ρ g y⟫_ℂ := by
   rw [← hU g (ρ g⁻¹ x) y, rep_apply_inv_apply]
 
 /- English proof (translation)
-Rewrite using `[← hU g x (ρ g⁻¹ y), rep_apply_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_rep_inv' (ρ : G →* Module.End ℂ W) (hU : ∀ g x y, ⟪ρ g x, ρ g y⟫_ℂ = ⟪x, y⟫_ℂ)
     (g : G) (x y : W) : ⟪x, ρ g⁻¹ y⟫_ℂ = ⟪ρ g x, y⟫_ℂ := by
   rw [← hU g x (ρ g⁻¹ y), rep_apply_inv_apply]
 
 /- English proof (translation)
-Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hU]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_rep (ρ : G →* Module.End ℂ W) (hU : ∀ g x y, ⟪ρ g x, ρ g y⟫_ℂ = ⟪x, y⟫_ℂ)
     (g : G) (v : W) : ‖ρ g v‖ = ‖v‖ := by
@@ -58,53 +58,49 @@ end GlobalTheory.SchurOrthOnSubgroup
 namespace GlobalTheory.SchurOrthOnSubgroup
 
 /- English proof (translation)
-Use `set F : W → W → G → ℂ := fun y y' g => star ⟪a, ρ g⁻¹ y⟫_ℂ * ⟪a', ρ g⁻¹ y'⟫_ℂ with hF`. Establish `hfin : ν (Ω : Set G) < ⊤` using `by rw [hν]; exact ENNReal.one_lt_top`. Establish `hint : ∀ y y', IntegrableOn (F y y') Ω ν`. Introduce `y y'`. Establish `hmeas : Measurable (F y y')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Measurable fun g : G => ⟪a, ρ g⁻¹ y⟫_ℂ` using `(hM a y).comp measurable_inv`. Establish `h2 : Measurable fun g : G => ⟪a', ρ g⁻¹ y'⟫_ℂ` using `(hM a' y').comp measurable_inv`. Conclude with `(continuous_star.measurable.comp h1).mul h2`. Use `Integrable.mono' (g := fun _ => (‖a‖ * ‖y‖) * (‖a'‖ * ‖y'‖)) ?_ hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `integrableOn_const hfin.ne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Simplify using `only [hF, norm_mul, norm_star] gcongr`. Conclude with `(norm_inner_le_norm _ _).trans (by rw [norm_rep ρ hU])`. Conclude with `(norm_inner_le_norm _ _).trans (by rw [norm_rep ρ hU])`. Use `⟨hint x x', ?_⟩` and prove the remaining obligations. Use `set B : W → W → ℂ := fun y y' => ∫ g in (Ω : Set G), F y y' g ∂ν with hB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `b` to `stdOrthonormalBasis ℂ W`. Establish `hBadd : ∀ y y1 y2, B y (y1 + y2) = B y y1 + B y y2`. Introduce `y y1 y2`. Simplify using `only [hB]`. Rewrite using `[← integral_add (hint y y1) (hint y y2)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [hF, map_add, inner_add_right, mul_add]`. Establish `hBsmul : ∀ y (c : ℂ) y', B y (c • y') = c * B y y'`. Introduce `y c y'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hB]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [hF, map_smul, inner_smul_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hBexp : ∀ y y', B y y' = ∑ i, ⟪y, b i⟫_ℂ * B (b i) y'`. Introduce `y y'`. Simplify using `only [hB]`. Repeatedly rewrite using `[← integral_const_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← integral_finset_sum _ (fun i _ => (hint (b i) y').const_mul _)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [hF]`. Establish `hs : ∀ z, star ⟪a, ρ g⁻¹ z⟫_ℂ = ⟪z, ρ g a⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[inner_rep_inv' ρ hU]`. Conclude with `inner_conj_symm _ _`. Repeatedly rewrite using `[hs, ← mul_assoc, ← Finset.sum_mul]`. Rewrite using `[b.sum_inner_mul_inner]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hBinv : ∀ h ∈ Ω, ∀ y y', B (ρ h y) (ρ h y') = B y y'`. Introduce `h hh y y'`. Simplify using `only [hB]`. Rewrite using `[← setIntegral_subgroup_mul_left ν Ω hΩ (F y y') (Ω.inv_mem hh)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `g`. Establish `hg : ∀ z, ρ g⁻¹ (ρ h z) = ρ (h⁻¹ * g)⁻¹ z`. Introduce `z`. Rewrite using `[mul_inv_rev, inv_inv, map_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hF, hg]`. Set `T : W →ₗ[ℂ] W` to `{ toFun := fun y' => ∑ i, B (b i) y' • b i map_add' := by`. Introduce `y1 y2`. Simplify using `only [hBadd, add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c y'`. Simplify using `only [hBsmul, mul_smul, RingHom.id_apply, Finset.smul_sum] }`. Establish `hT : ∀ y y', ⟪y, T y'⟫_ℂ = B y y'`. Introduce `y y'`. Rewrite using `[hBexp y y']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [T, LinearMap.coe_mk, AddHom.coe_mk, inner_sum, inner_smul_right]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Establish `hcomm : ∀ h ∈ Ω, ∀ v, T (ρ h v) = ρ h (T v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h hh v`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`. Rewrite using `[hT, ← inner_rep_inv ρ hU, hT]`. Use `conv_lhs => rw [← rep_apply_inv_apply ρ h y]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hBinv h hh _ _`. Establish `hsum : ∑ i, B (b i) (b i) = ⟪a', a⟫_ℂ`. Simplify using `only [hB]`. Rewrite using `[← integral_finset_sum _ (fun i _ => hint (b i) (b i))]`. Establish `: ∀ g, ∑ i, F (b i) (b i) g = ⟪a', a⟫_ℂ`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Simplify using `only [hF]`. Establish `hs : ∀ z, star ⟪a, ρ g⁻¹ z⟫_ℂ = ⟪z, ρ g a⟫_ℂ`. Introduce `z`. Rewrite using `[inner_rep_inv' ρ hU]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `inner_conj_symm _ _`. Repeatedly rewrite using `[hs, inner_rep_inv' ρ hU]`. Repeatedly rewrite using `[mul_comm (⟪b _, ρ g a⟫_ℂ)]`. Rewrite using `[b.sum_inner_mul_inner, hU]`. Repeatedly rewrite using `[this]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[setIntegral_const, Measure.real, hν]`. Simplify using the standard rewrite rules. Break down `subsingleton_or_nontrivial W with hW | hW` into its components or cases. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Simplify using `[Module.finrank_zero_of_subsingleton, ha]`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T : Module.End ℂ W)`. Establish `hU' : Module.End.eigenspace (T : Module.End ℂ W) c = ⊤`. Break down `hirr (Module.End.eigenspace (T : Module.End ℂ W) c) (by` into its components or cases. Introduce `g hg`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[Module.End.mem_eigenspace_iff, hcomm g hg, hv, map_smul]) with h0 | h0`. It suffices to derive a contradiction. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Establish `: v ∈ Module.End.eigenspace (T : Module.End ℂ W) c` using `hv.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `hv.2 this`. Conclude with `h0`. Establish `hTc : ∀ v, T v = c • v` using `fun v => Module.End.mem_eigenspace_iff.1 (hU' ▸ Submodule.mem_top)`. Establish `hBc : ∀ y y', B y y' = c * ⟪y, y'⟫_ℂ`.
-
-Introduce `y y'`. Rewrite using `[← hT, hTc, inner_smul_right]`. Establish `hnc : (Module.finrank ℂ W : ℂ) * c = ⟪a', a⟫_ℂ`. Rewrite using `[← hsum]`. Establish `h1 : ∀ i, ⟪b i, b i⟫_ℂ = 1` using `fun i => by`.
-
-Simplify using `using orthonormal_iff_ite.1 b.orthonormal i i`. Simplify using `only [hBc, h1, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `show (Module.finrank ℂ W : ℂ) * B x x' = _`. Rewrite using `[hBc, ← mul_assoc, hnc]`.
+A detailed English derivation is pending.
 -/
 theorem schur_orthogonality {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableInv G]
     (ν : Measure G) [ν.IsMulLeftInvariant] (Ω : Subgroup G) (hΩ : MeasurableSet (Ω : Set G))

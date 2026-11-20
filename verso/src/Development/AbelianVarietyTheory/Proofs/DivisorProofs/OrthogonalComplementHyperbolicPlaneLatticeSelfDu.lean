@@ -11,7 +11,7 @@ namespace GlobalTheory.PlaneSkewDual
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `form`. Establish `: (fun i => σ ((b + c) i)) = (fun i => σ (b i)) + (fun i => σ (c i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J a (b + c) = form σ J a b + form σ J a c := by
@@ -21,7 +21,7 @@ theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
   rw [this, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `form`. Establish `: (fun i => σ ((s • b) i)) = σ s • (fun i => σ (b i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) (s : E) :
     form σ J a (s • b) = σ s * form σ J a b := by
@@ -31,7 +31,7 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
   rw [this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `form`. Establish `h : (fun i => σ ((ι *ᵥ u') i)) = ι.map σ *ᵥ (fun i => σ (u' i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (σ : E →+* E) ι u' i`. Rewrite using `[h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_restrict (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin n₁) E)
     (u u' : Fin n₁ → E) : form σ (ιᵀ * J * ι.map σ) u u' = form σ J (ι *ᵥ u) (ι *ᵥ u') := by
@@ -46,11 +46,11 @@ end GlobalTheory.PlaneSkewDual
 namespace GlobalTheory.PlaneSkewDual
 
 /- English proof (translation)
-Introduce `u`. Simplify using `only [mem_lowLat, form_restrict]`. Prove the components needed by the constructor for the conclusion. Introduce `hu u' hu' o`. Conclude with `(hL _).1 hu _ hu' o`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(hL _).2 fun z hz o => ?_` and prove the remaining obligations. Take `⟨s, t, u', -, -, hu', rfl⟩` from `hsplit z hz`. Establish `hz' : form σ J (ι *ᵥ u) (s • x + ι *ᵥ u' + t • y) = form σ J (ι *ᵥ u) (ι *ᵥ u')`. Rewrite using `[form_add_right, form_add_right, form_smul_right, form_smul_right, (horth u).1, (horth u).2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz']`. Conclude with `h u' hu' o`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowLat_selfDual (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n₁ : ℕ) (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E) (L : Submodule (𝓞 E) (Fin (n₁ + 2) → E))

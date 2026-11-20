@@ -6,25 +6,21 @@ open scoped NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω L K _ _ _ _ _ _ _ _ _ j s hs x`. Use `haveI : IsAlgClosure K L := ⟨‹_›, ‹_›⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hint : IsIntegral K (j x)` using `Algebra.IsIntegral.isIntegral _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxint : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral _`. Establish `hcomp : j.comp (algebraMap ℚ Ω) = (algebraMap K L).comp (algebraMap ℚ K)` using `RingHom.ext_rat _ _`. Use `set Q : Polynomial Ω := (minpoly ℚ x).map (algebraMap ℚ Ω) with hQ`. Establish `hQ0 : Q ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero hxint)`. Establish `hQj : Q.map j = ((minpoly ℚ x).map (algebraMap ℚ K)).map (algebraMap K L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, Polynomial.map_map, Polynomial.map_map, hcomp]`. Establish `hdvd : minpoly K (j x) ∣ (minpoly ℚ x).map (algebraMap ℚ K)`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_def, ← eval_map, ← hQj, eval_map, eval₂_at_apply, hQ, eval_map, ← aeval_def, minpoly.aeval, map_zero]`. Use `set P : L[X] := (minpoly K (j x)).map (algebraMap K L) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPm : P.Monic` using `(minpoly.monic hint).map _`. Establish `hPQ : P ∣ Q.map j`. Rewrite using `[hQj]`. Conclude with `Polynomial.map_dvd _ hdvd`. Establish `hroots : ∀ r ∈ P.roots, r ∈ Set.range j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `h1 : r ∈ (Q.map j).roots` using `Multiset.mem_of_le (roots.le_of_dvd (Polynomial.map_ne_zero hQ0) hPQ) hr`. Rewrite `h1` using `[(IsAlgClosed.splits Q).roots_map j]`. Take `⟨a, -, ha⟩` from `Multiset.mem_map.1 h1`. Conclude with `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlift : P ∈ lifts j`. Rewrite using `[(IsAlgClosed.splits P).eq_prod_roots_of_monic hPm]`. Use `Subsemiring.multiset_prod_mem _ _ ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `hroots r hr`. Conclude with `(mem_lifts _).2 ⟨X - C a, by simp⟩`. Take `⟨M, hM⟩` from `(mem_lifts _).1 hlift`. Establish `hMs : M.map (s : Ω →+* Ω) = M`. Use extensionality with `n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_map]`. Use `hs _ ⟨(minpoly K (j x)).coeff n, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_map, ← coeff_map, hM]`. Establish `hMx : M.eval x = 0`. Apply `j.injective` to reduce the goal to its premises.
-
-Rewrite using `[← eval₂_at_apply, ← eval_map, hM, hP, eval_map, ← aeval_def, minpoly.aeval, map_zero]`. Establish `hMsx : M.eval (s x) = 0`. Establish `h` using `eval₂_at_apply (p := M) (s : Ω →+* Ω) x`. Rewrite `h` using `[← eval_map, hMs, hMx, map_zero]`. Conclude with `h`.
-
-Establish `hroot : aeval (j (s x)) (minpoly K (j x)) = 0`. Rewrite using `[aeval_def, ← eval_map, ← hP, ← hM, eval_map, eval₂_at_apply, hMsx, map_zero]`. Conclude with `(isConjRoot_of_aeval_eq_zero hint hroot).symm.exists_algEquiv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algEquiv_apply_eq_of_fixes_preimage_base :
     ∀ (Ω L K : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [Field L] [IsAlgClosed L] [Field K] [CharZero K] [Algebra K L] [Algebra.IsAlgebraic K L] (j : Ω →+* L) (s : Ω ≃ₐ[ℚ] Ω), (∀ a : Ω, j a ∈ Set.range (algebraMap K L) → s a = a) → ∀ x : Ω, ∃ g : L ≃ₐ[K] L, g (j x) = j (s x) := by

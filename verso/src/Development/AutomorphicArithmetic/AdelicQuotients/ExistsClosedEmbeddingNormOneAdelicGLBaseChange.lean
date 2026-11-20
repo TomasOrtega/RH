@@ -6,11 +6,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
 /- English proof (translation)
-Introduce `h5 F E _ _ _ _ _ _ σ hσ n hn`. Take `⟨hemb, hdet, -⟩` from `h5 F E σ hσ n hn`. Establish `hpos : Module.finrank F E ≠ 0` using `by haveI : FiniteDimensional F E := Module.Finite.right ℚ F E`. Conclude with `Module.finrank_pos.ne'`. Establish `key : ∀ t : AdelicGLn.AdelicGL F n, mapGL n (adeleMap F E) t ∈ normOneGL E n ↔ t ∈ normOneGL F n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Rewrite using `[mem_normOneGL_iff_detModule, mem_normOneGL_iff_detModule, Subtype.ext_iff, Subtype.ext_iff]`. Rewrite using `[hdet t]`. Conclude with `pow_eq_one_iff_of_nonneg (detModule F n t).2.le hpos`. Set `j : normOneGL F n →* normOneGL E n` to `MonoidHom.codRestrict ((mapGL n (adeleMap F E) : AdelicGLn.AdelicGL F n →* AdelicGLn.AdelicGL E n).comp (normOneGL F n).subtype) (normOneGL E n) (fun t => (key t.1).2 t.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨j, ?_, fun t => rfl, fun t ht => (key t).1 ht⟩` and prove the remaining obligations. Establish `hF : Topology.IsClosedEmbedding (Subtype.val : normOneGL F n → AdelicGLn.AdelicGL F n)` using `(isClosed_normOneGL (K := F) (n := n)).isClosedEmbedding_subtypeVal`. Establish `hE : Topology.IsEmbedding (Subtype.val : normOneGL E n → AdelicGLn.AdelicGL E n)` using `Topology.IsEmbedding.subtypeVal`. Establish `hc : Topology.IsClosedEmbedding ((Subtype.val : normOneGL E n → AdelicGLn.AdelicGL E n) ∘ j)` using `hemb.comp hF`. Conclude with `Topology.IsClosedEmbedding.of_comp hE hc`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_closedEmbedding_normOneAdelicGL_baseChange :
     N5 → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E),

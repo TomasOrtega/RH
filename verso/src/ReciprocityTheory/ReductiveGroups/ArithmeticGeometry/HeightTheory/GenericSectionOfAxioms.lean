@@ -45,15 +45,15 @@ noncomputable def htOf (hd : d.AxH 𝒜) (h : d.S1) : Formalism.MainNotions.Gaps
   vEt := fun _ ζ => (d.ord ζ.1 (d.Wres ζ.1 ζ.2.1) (d.n1 • d.wde) (d.et ζ.1) : ℝ)
 
 /- English proof (translation)
-Introduce `c`. Establish `hS` using `(ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS K (Ω c) d.D d.N (d.x c) (hd.fg c) (hd.trdeg c) (hd.a1 c)).1`. Establish `key : ∀ {M : Type} (j0 : Fin (d.N + 1)) (a : M) (f : Fin d.N → M), Fin.succAboveCases (α` using `fun _ => M) j0 a f j0 = a ∧ ∀ k, Fin.succAboveCases (α := fun _ => M) j0 a f (j0.succAbove k) = f k := fun j0 a f => ⟨by exact Fin.insertNth_apply_same (α := fun _ => _) j0 a f, fun k => by exact Fin.insertNth_apply_succAbove (α := fun _ => _) j0 a f k⟩`. Set `σ : Fin (d.N + 1) → Fin (d.N + 1)` to `Fin.succAboveCases (α := fun _ => Fin (d.N + 1)) (d.jc c) 0 Fin.succ`. Set `ρ : Fin (d.N + 1) → Fin (d.N + 1)` to `Fin.cases (motive := fun _ => Fin (d.N + 1)) (d.jc c) (d.jc c).succAbove`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hρσ : Function.LeftInverse ρ σ`. Introduce `j`. Break down `Fin.eq_self_or_eq_succAbove (d.jc c) j with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `only [σ, ρ, (key _ _ _).1, Fin.cases_zero]`. Simplify using `only [σ, ρ, (key _ _ _).2, Fin.cases_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `g : TVar d.D d.N → Fin (d.D + 1) × Fin (d.N + 1)` to `fun p => (p.1, σ p.2)`. Establish `hg : Function.Injective g`. Introduce `p q hpq`. Simplify using `only [g, Prod.mk.injEq] at hpq`. Conclude with `Prod.ext hpq.1 (hρσ.injective hpq.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `heq : ∀ p, sImg (d.jc c) (d.x c) p = ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c) (g p) := by`. Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove (d.jc c) j with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `only [sImg, ReciprocityTheory.MultiplicativeHeights.sImage, g, σ, (key _ _ _).1, Fin.cases_zero]`. Simplify using `only [sImg, ReciprocityTheory.MultiplicativeHeights.sImage, g, σ, (key _ _ _).2, Fin.cases_succ]`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfun : sImg (d.jc c) (d.x c) = ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c) ∘ g := funext heq`. Establish `hI : AlgebraicIndependent K (sImg (D` using `d.D) (d.jc c) (d.x c)) := by`. Rewrite using `[hfun]`. Conclude with `hS.comp g hg`. Conclude with `hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericSection_of_axioms (hd : d.AxH 𝒜) : d.S1 := by
   intro c

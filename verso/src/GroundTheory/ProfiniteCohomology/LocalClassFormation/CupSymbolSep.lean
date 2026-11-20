@@ -19,7 +19,7 @@ noncomputable def brauerInvZOfIsSepClosure : cohomology (galUnitsZ K Ω) 2 →+ 
   brauerInvZ K Ω
 
 /- English proof (translation)
-The claim follows from `letI := algebraicValuativeRel K Ω letI := algebraicTopology K Ω haveI := algebraicTopology_isValuativeTopology K Ω haveI := algebraicValuativeRel_valuativeExtension K Ω brauerInvZ_bijective K Ω`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvZOfIsSepClosure_bijective : Function.Bijective (brauerInvZOfIsSepClosure K Ω) :=
   letI := algebraicValuativeRel K Ω
@@ -31,7 +31,7 @@ theorem brauerInvZOfIsSepClosure_bijective : Function.Bijective (brauerInvZOfIsS
 variable {K Ω}
 
 /- English proof (translation)
-The claim follows from `letI := algebraicValuativeRel K Ω letI := algebraicTopology K Ω haveI := algebraicTopology_isValuativeTopology K Ω haveI := algebraicValuativeRel_valuativeExtension K Ω brauerInvZ_galCupClass χ a g hg`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvZOfIsSepClosure_galCupClass (χ : Additive Gal(Ω/K) →ₜ+ QZ) (a : Kˣ) (g : Gal(Ω/K))
     (hg : ∀ (y : Ω) (hy : y ∈ maximalAbelianExtension K Ω),

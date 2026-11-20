@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.DifferentiableDet
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableAt.fun_sum fun π _ => ?_` and prove the remaining obligations. Use `DifferentiableAt.const_mul ?_ _` and prove the remaining obligations. Conclude with `(HasDerivAt.fun_finset_prod (u := Finset.univ) (f := fun i s => M s (π i) i) (fun i _ => (h (π i) i).hasDerivAt)).differentiableAt`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableAt_det {σ : Type} [Fintype σ] [DecidableEq σ] (M : ℝ → Matrix σ σ ℂ) (t : ℝ)
     (h : ∀ (i j : σ), DifferentiableAt ℝ (fun (s : ℝ) ↦ M s i j) t) :

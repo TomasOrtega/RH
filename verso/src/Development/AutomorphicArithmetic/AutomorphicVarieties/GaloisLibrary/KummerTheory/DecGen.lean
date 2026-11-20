@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite k`. Set `E` to `IntermediateField.adjoin k (S : Set L)`. Use `haveI : FiniteDimensional k E := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Use `haveI : Finite E := Module.finite_of_finite k`. Use `haveI : Normal k E := inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `τE : E →ₐ[k] E` to `τ.restrictNormal E`. Establish `hbij : Function.Bijective τE` using `Finite.injective_iff_bijective.1 τE.toRingHom.injective`. Set `e : E ≃ₐ[k] E` to `AlgEquiv.ofBijective τE hbij`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow k E).2 e`. Establish `hn' : FiniteField.frobeniusAlgEquivOfAlgebraic k E ^ (n : ℕ) = e` using `hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxE : x ∈ E` using `IntermediateField.subset_adjoin k _ hx`. Establish `h1` using `τ.restrictNormal_commutes E ⟨x, hxE⟩`. Establish `h3 : e ⟨x, hxE⟩ = ⟨x, hxE⟩ ^ Fintype.card k ^ (n : ℕ)`. Rewrite using `[← hn', AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Nat.card_eq_fintype_card]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, map_pow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem frob_pow_fin (k L : Type) [Field k] [Finite k] [Field L] [Algebra k L] [Algebra.IsAlgebraic k L]
     (τ : L →ₐ[k] L) (S : Finset L) : ∃ i : ℕ, ∀ x ∈ S, τ x = x ^ Nat.card k ^ i := by
@@ -39,21 +39,19 @@ private theorem frob_pow_fin (k L : Type) [Field k] [Finite k] [Field L] [Algebr
       rfl
 
 /- English proof (translation)
-Take `⟨p, hp0, hpx⟩` from `hx`. Establish `hq : p.primPart.IsPrimitive` using `p.isPrimitive_primPart`. Establish `hqx : Polynomial.aeval x p.primPart = 0`. Establish `h1 : Polynomial.aeval (x : Ω) p = (p.content : Ω) * Polynomial.aeval (x : Ω) p.primPart` using `by conv_lhs => rw [p.eq_C_content_mul_primPart]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : (p.content : Ω) ≠ 0`. Conclude with `(Polynomial.content_eq_zero_iff.not.2 hp0)` after adjusting the coercions. Rewrite `h1` using `[hpx]`. Establish `h2 : Polynomial.aeval (x : Ω) p.primPart = 0` using `(mul_eq_zero.1 h1.symm).resolve_left hc`. Establish `h3 : ((Polynomial.aeval x p.primPart : A) : Ω) = Polynomial.aeval (x : Ω) p.primPart` using `(Polynomial.aeval_algebraMap_apply Ω x p.primPart).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h3, h2]`. Both sides reduce to the same expression. Use `⟨p.primPart.map (algebraMap ℤ k), ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `CharP.char_is_prime_or_zero k (ringChar k) with hr | hr` into its components or cases. Establish `hdvd : Polynomial.C ((ringChar k : ℕ) : ℤ) ∣ p.primPart`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Use `congrArg (fun P => Polynomial.coeff P i) h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero, eq_intCast] at this`. Conclude with `(CharP.intCast_eq_zero_iff k (ringChar k) _).1 this`. Establish `hu` using `hq _ hdvd`. Rewrite `hu` using `[Int.isUnit_iff]`. Use `hr.two_le` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : CharZero k := (CharP.ringChar_zero_iff_CharZero k).1 hr`. Establish `: p.primPart = 0`. Apply `Polynomial.map_injective (algebraMap ℤ k) (RingHom.injective_int (algebraMap ℤ k))` to reduce the goal to its premises. Rewrite using `[h, Polynomial.map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq.ne_zero this`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Establish `e : (algebraMap k (IsLocalRing.ResidueField A)).comp (algebraMap ℤ k) = algebraMap ℤ (IsLocalRing.ResidueField A)` using `RingHom.ext_int _ _`. Rewrite using `[e, ← Polynomial.aeval_def]`. Use `Polynomial.aeval_algebraMap_apply (IsLocalRing.ResidueField A) x p.primPart` as an intermediate fact.
-
-Rewrite `this` using `[IsLocalRing.ResidueField.algebraMap_eq]`. Rewrite using `[this, hqx, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem alg_residue {Ω : Type} [Field Ω] [CharZero Ω] (A : ValuationSubring Ω) (k : Type) [Field k]
     [Algebra k (IsLocalRing.ResidueField A)] (x : A) (hx : IsAlgebraic ℤ (x : Ω)) :
@@ -100,17 +98,17 @@ private theorem alg_residue {Ω : Type} [Field Ω] [CharZero Ω] (A : ValuationS
     rw [this, hqx, map_zero]
 
 /- English proof (translation)
-Establish `hD : φ ∈ ValuationSubring.decompositionSubgroup F A` using `hφ.1`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨by rw [pow_zero]; exact one_mem _, fun x _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Use `⟨pow_mem hD (n + 1), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxA : x ∈ A` using `(A.valuation_le_one_iff x).1 hx`. Establish `hyA : (φ ^ n) x ∈ A` using `(apply_mem_iff_of_mem_Dec (pow_mem hD n) x).2 hxA`. Establish `hxA' : x ^ q ^ n ∈ A` using `pow_mem hxA _`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : A.valuation (φ ((φ ^ n) x) - ((φ ^ n) x) ^ q) < 1` using `hφ.2 _ ((A.valuation_le_one_iff _).2 hyA)`. Establish `e2 : A.valuation ((φ ^ n) x - x ^ q ^ n) < 1` using `ih.2 x hx`. Establish `e3 : A.valuation (((φ ^ n) x) ^ q - (x ^ q ^ n) ^ q) < 1`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (⟨(φ ^ n) x, hyA⟩ : A) ⟨x ^ q ^ n, hxA'⟩ q`. Establish `h4 : ((φ ^ n) x) ^ q - (x ^ q ^ n) ^ q = ((φ ^ n) x - x ^ q ^ n) * c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun z : A => (z : Ω)) hc` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h4, map_mul]`. Establish `hc1 : A.valuation (c : Ω) ≤ 1` using `A.valuation_le_one c`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `e2`. Establish `h5 : (φ ^ (n + 1)) x - x ^ q ^ (n + 1) = (φ ((φ ^ n) x) - ((φ ^ n) x) ^ q) + (((φ ^ n) x) ^ q - (x ^ q ^ n) ^ q)`. Rewrite using `[pow_succ' φ n, AlgEquiv.mul_apply, pow_succ q n, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Conclude with `lt_of_le_of_lt (A.valuation.map_add _ _) (max_lt e1 e3)`.
+A detailed English derivation is pending.
 -/
 private theorem frob_pow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {A : ValuationSubring Ω} {q : ℕ} {φ : G F Ω} (hφ : IsFrob A q φ) (n : ℕ) :
@@ -148,21 +146,15 @@ private theorem frob_pow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
     exact lt_of_le_of_lt (A.valuation.map_add _ _) (max_lt e1 e3)
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 K ⧸ v.asIdeal) := Ideal.Quotient.field _`. Establish `hint : ∀ a : 𝓞 K, ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) a ∈ A` using `fun a => mem_of_isIntegral_int A ((NumberField.RingOfIntegers.isIntegral_coe a).algebraMap (B := Ω))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f0 : 𝓞 K →+* A` to `((algebraMap K Ω).comp (algebraMap (𝓞 K) K)).codRestrict A hint`. Set `f1 : 𝓞 K →+* IsLocalRing.ResidueField A` to `(IsLocalRing.residue A).comp f0`. Establish `hker : ∀ a ∈ v.asIdeal, f1 a = 0`. Introduce `a ha`. Use `show IsLocalRing.residue A (f0 a) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `(hA a).2 ha`. Use `letI : Algebra (𝓞 K ⧸ v.asIdeal) (IsLocalRing.ResidueField A) := (Ideal.Quotient.lift v.asIdeal f1 hker).toAlgebra`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ K Ω`. Use `haveI : Algebra.IsAlgebraic (𝓞 K ⧸ v.asIdeal) (IsLocalRing.ResidueField A) := ⟨fun y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `alg_residue A _ x ((IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic (x : Ω)))⟩`. Set `gD : ValuationSubring.decompositionSubgroup K A` to `⟨g, hg⟩`. Establish `hfix : ∀ a : 𝓞 K, gD • f0 a = f0 a`. Introduce `a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show g (algebraMap K Ω (a : K)) = algebraMap K Ω (a : K)`. Conclude with `g.commutes _`. Set `τ : IsLocalRing.ResidueField A →ₐ[𝓞 K ⧸ v.asIdeal] IsLocalRing.ResidueField A` to `{ MulSemiringAction.toRingHom _ (IsLocalRing.ResidueField A) gD with commutes' := by`. Introduce `c`.
-
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `show gD • (Ideal.Quotient.lift v.asIdeal f1 hker (Ideal.Quotient.mk _ a)) = _`. Rewrite using `[Ideal.Quotient.lift_mk]`. Use `show gD • IsLocalRing.residue A (f0 a) = IsLocalRing.residue A (f0 a)`. Rewrite using `[← IsLocalRing.ResidueField.residue_smul (ValuationSubring.decompositionSubgroup K A) gD (f0 a), hfix] }`.
-
-Take `⟨i, hi⟩` from `frob_pow_fin (𝓞 K ⧸ v.asIdeal) (IsLocalRing.ResidueField A) τ (S.image (IsLocalRing.residue A))`. Use `⟨i, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : gD • IsLocalRing.residue A x = IsLocalRing.residue A x ^ normV v ^ i` using `hi _ (Finset.mem_image_of_mem _ hx)`. Establish `h2 : IsLocalRing.residue A (gD • x - x ^ normV v ^ i) = 0`. Rewrite using `[map_sub, IsLocalRing.ResidueField.residue_smul, map_pow, h1, sub_self]`.
-
-Rewrite `h2` using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dec_pow_fin {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} (hA : IsPlaceOver A v) {g : G K Ω}
@@ -214,9 +206,9 @@ private theorem dec_pow_fin {K Ω : Type} [Field K] [NumberField K] [Field Ω] [
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `h hh`. Use `haveI : FiniteDimensional K (IntermediateField.adjoin K {x}) := IntermediateField.adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Use `⟨(fun k => h * k) '' (((IntermediateField.adjoin K {x}).fixingSubgroup : Subgroup (G K Ω)) : Set (G K Ω)), ?_, ?_, ⟨1, one_mem _, mul_one h⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hkx : k x = x` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hk x (IntermediateField.mem_adjoin_simple_self K x)`. Use `show ¬ P ((h * k) x)`. Rewrite using `[AlgEquiv.mul_apply, hkx]`. Conclude with `hh`. Conclude with `isOpenMap_mul_left h _ (IntermediateField.fixingSubgroup_isOpen _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closed_ev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (x : Ω)
     (P : Ω → Prop) : IsClosed {h : G K Ω | P (h x)} := by
@@ -235,33 +227,29 @@ private theorem closed_ev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [Alg
   · exact isOpenMap_mul_left h _ (IntermediateField.fixingSubgroup_isOpen _)
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ A v σ H hA hσ hHo hI hσH g hg`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Establish `hHc : IsClosed (H : Set (G K Ω))` using `Subgroup.isClosed_of_isOpen H hHo`. Establish `hσD : σ ∈ Dec (F` using `K) A := hσ.1`. Establish `hDc : IsClosed (Dec (F` using `K) A : Set (G K Ω)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Dec (F` using `K) A : Set (G K Ω)) = ⋂ x : Ω, {h : G K Ω | (h x ∈ A ↔ x ∈ A)} := by`. Use extensionality with `h`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hh x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `apply_mem_iff_of_mem_Dec hh x`. Introduce `hh`. Rewrite using `[mem_Dec]`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `hh (h⁻¹ y)`. Rewrite `h1`, the goal using `[AlgEquiv.aut_inv]`. Rewrite `h1` using `[AlgEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `isClosed_iInter fun x => closed_ev x (fun y => (y ∈ A ↔ x ∈ A))`. Set `Cl : Set (G K Ω)` to `closure (Set.range fun i : ℕ => σ ^ i)`. Establish `hClH : Cl ⊆ H` using `closure_minimal (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `H.pow_mem hσH i) hHc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hClD : Cl ⊆ Dec (F` using `K) A := closure_minimal (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(Dec (F := K) A).pow_mem hσD i) hDc`. Set `C : Finset A → Set (G K Ω)` to `fun S => Cl ∩ {τ | ∀ x ∈ S, A.valuation (g x - τ x) < 1}`. Establish `hCcl : ∀ S, IsClosed (C S)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `S`. Apply `isClosed_closure.inter` to reduce the goal to its premises. Establish `e : {τ : G K Ω | ∀ x ∈ S, A.valuation (g x - τ x) < 1} = ⋂ x ∈ S, {τ : G K Ω | A.valuation (g x - τ x) < 1}`. Use extensionality with `τ`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `isClosed_biInter fun x _ => closed_ev (x : Ω) (fun y => A.valuation (g x - y) < 1)`. Establish `hCne : ∀ S, (C S).Nonempty`. Introduce `S`. Take `⟨i, hi⟩` from `dec_pow_fin hA hg S`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨σ ^ i, subset_closure ⟨i, rfl⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hi x hx`. Establish `h2` using `(frob_pow hσ i).2 x (A.valuation_le_one x)`. Establish `e : g x - (σ ^ i) x = (g x - (x : Ω) ^ normV v ^ i) - ((σ ^ i) x - (x : Ω) ^ normV v ^ i)`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (A.valuation.map_sub _ _) (max_lt h1 h2)`. Establish `hdir : Directed (fun s t => s ⊇ t) C`. Introduce `S T`. Use `⟨S ∪ T, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `τ ⟨h1, h2⟩`. Conclude with `⟨h1, fun x hx => h2 x (Finset.mem_union_left _ hx)⟩`. Introduce and unpack `τ ⟨h1, h2⟩`. Conclude with `⟨h1, fun x hx => h2 x (Finset.mem_union_right _ hx)⟩`. Take `⟨τ, hτ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed C hdir hCne (fun S => (hCcl S).isCompact) hCcl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hτ` using `[Set.mem_iInter]`. Establish `hτCl : τ ∈ Cl` using `(hτ ∅).1`. Establish `hτD` using `hClD hτCl`. Establish `hτx : ∀ x : A, A.valuation (g x - τ x) < 1` using `fun x => (hτ {x}).2 x (Finset.mem_singleton_self x)`. Establish `hι : τ⁻¹ * g ∈ Ine (F` using `K) A := by show τ⁻¹ * g ∈ Inertia A`.
-
-Use `⟨(Dec (F := K) A).mul_mem ((Dec (F := K) A).inv_mem hτD) hg, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxA : x ∈ A` using `(A.valuation_le_one_iff x).1 hx`. Establish `e : (τ⁻¹ * g) x - x = τ⁻¹ (g x - τ x)`. Rewrite using `[AlgEquiv.mul_apply, map_sub, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Rewrite using `[e, valuation_apply_lt_one_iff ((Dec (F := K) A).inv_mem hτD)]`.
-
-Conclude with `hτx ⟨x, hxA⟩`. Establish `e : g = τ * (τ⁻¹ * g)` using `by group`. Rewrite using `[e]`. Conclude with `H.mul_mem (hClH hτCl) (hI hι)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.decGen :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (σ : G K Ω) (H : Subgroup (G K Ω)),

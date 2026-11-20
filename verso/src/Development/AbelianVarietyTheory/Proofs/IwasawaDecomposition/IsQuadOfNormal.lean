@@ -16,9 +16,9 @@ namespace GlobalTheory.Mem.Lift.Normal
 variable {ι : Type}
 
 /- English proof (translation)
-Establish `hc : c • z = c.re • z + c.im • (I • z)`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem real_lin_smul (l : (ι → ℂ) →ₗ[ℝ] ℂ) (c : ℂ) (z : ι → ℂ) :
     l (c • z) = c.re * l z + c.im * l (I • z) := by
@@ -30,7 +30,7 @@ theorem real_lin_smul (l : (ι → ℂ) →ₗ[ℝ] ℂ) (c : ℂ) (z : ι → �
   rw [hc, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]
 
 /- English proof (translation)
-Rewrite using `[smul_smul, I_mul_I, neg_one_smul, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem real_lin_I_I (l : (ι → ℂ) →ₗ[ℝ] ℂ) (z : ι → ℂ) : l (I • I • z) = - l z := by
   rw [smul_smul, I_mul_I, neg_one_smul, map_neg]
@@ -54,13 +54,13 @@ def antiPart (l : (ι → ℂ) →ₗ[ℝ] ℂ) : (ι → ℂ) →ₗ⋆[ℂ] �
     linear_combination (c.im * l (I • z)) * I_mul_I
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem im_add_I_re (h : ℂ) : ((h.im : ℂ) + I * ((I * h).im : ℂ)) = I * (starRingEnd ℂ) h := by
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem im_sub_I_re (h : ℂ) : ((h.im : ℂ) - I * ((I * h).im : ℂ)) = - I * h := by
   apply Complex.ext <;> simp
@@ -77,9 +77,9 @@ def nQ (H : Matrix ι ι ℂ) (i : ι × ι × Bool × Bool) : ι → ℂ :=
   if i.2.2.2 then I • H⁻¹ *ᵥ Pi.single i.2.1 1 else H⁻¹ *ᵥ Pi.single i.2.1 1
 
 /- English proof (translation)
-Establish `hx : X *ᵥ v = ∑ k, (∑ j, X k j * v j) • (Pi.single k (1 : ℂ) : ι → ℂ)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hx, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, smul_eq_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_lin (X : Matrix ι ι ℂ) (A : (ι → ℂ) →ₗ[ℂ] ℂ) (v : ι → ℂ) :
     ∑ k, ∑ j, X k j * (v j * A (Pi.single k 1)) = A (X *ᵥ v) := by
@@ -93,21 +93,19 @@ theorem sum_lin (X : Matrix ι ι ℂ) (A : (ι → ℂ) →ₗ[ℂ] ℂ) (v : �
   ring
 
 /- English proof (translation)
-Establish `hinv' : H⁻¹ * H = 1` using `Matrix.nonsing_inv_mul H (isUnit_iff_ne_zero.mpr hd)`. Use `set w := X *ᵥ v with hw`. Establish `hexp : w = ∑ j, (H *ᵥ w) j • (H⁻¹ *ᵥ Pi.single j 1)`. Establish `h1 : H *ᵥ w = ∑ j, (H *ᵥ w) j • (Pi.single j (1 : ℂ) : ι → ℂ)`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Establish `hA : A w = ∑ j, (starRingEnd ℂ) ((H *ᵥ w) j) * A (H⁻¹ *ᵥ Pi.single j 1)` using `by conv_lhs => rw [hexp]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, smul_eq_mul]`. Establish `hcoef : ∀ j, ∑ k, X k j * (star v ⬝ᵥ H *ᵥ Pi.single k 1) = -(starRingEnd ℂ) ((H *ᵥ w) j)`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ k, star v ⬝ᵥ H *ᵥ Pi.single k 1 = (star v ᵥ* H) k`. Introduce `k`. Rewrite using `[Matrix.dotProduct_mulVec]`. Simplify using `[dotProduct, Pi.single_apply]`. Establish `hXH : (H * X)ᴴ = -(H * X)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul, hH]`. Conclude with `eq_neg_of_add_eq_zero_left hX`. Establish `hstar : (starRingEnd ℂ) ((H *ᵥ w) j) = (star v ᵥ* (H * X)ᴴ) j`. Rewrite using `[hw, Matrix.mulVec_mulVec, ← Matrix.star_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hs]`. Rewrite using `[hstar, hXH, Matrix.vecMul_neg, Pi.neg_apply, neg_neg, ← Matrix.vecMul_vecMul]`. Simplify using `[vecMul, dotProduct, mul_comm]`. Rewrite using `[hA, Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = _ := by`. Rewrite using `[hcoef j]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_anti {H X : Matrix ι ι ℂ} (hH : Hᴴ = H) (hd : H.det ≠ 0) (hX : Xᴴ * H + H * X = 0)
     (A : (ι → ℂ) →ₗ⋆[ℂ] ℂ) (v : ι → ℂ) :
@@ -156,17 +154,17 @@ theorem sum_anti {H X : Matrix ι ι ℂ} (hH : Hᴴ = H) (hd : H.det ≠ 0) (hX
         ring
 
 /- English proof (translation)
-Introduce `l v`. Use `beta_reduce`. Establish `hinv : H * H⁻¹ = 1` using `Matrix.mul_nonsing_inv H (isUnit_iff_ne_zero.mpr hd)`. Establish `hkj : ∀ k j, (∑ b1 : Bool, ∑ b2 : Bool, nC X (k, j, b1, b2) * (((star v ⬝ᵥ H *ᵥ nQ H (k, j, b1, b2)).im : ℂ) * l (nP (k, j, b1, b2)) + ((star v ⬝ᵥ H *ᵥ nP (k, j, b1, b2)).im : ℂ) * l (nQ H (k, j, b1, b2)))) = X k j * (-(1 / (4 * π))) * (I * (v j * linPart l (Pi.single k 1)) + (-I …`. Introduce `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha : ((star v ⬝ᵥ H *ᵥ (H⁻¹ *ᵥ Pi.single j 1)).im : ℂ) + I * ((star v ⬝ᵥ H *ᵥ (I • H⁻¹ *ᵥ Pi.single j 1)).im : ℂ) = I * v j`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, im_add_I_re, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, dotProduct_single, mul_one, Pi.star_apply, starRingEnd_apply, star_star]`. Establish `hp : ((star v ⬝ᵥ H *ᵥ Pi.single k 1).im : ℂ) - I * ((star v ⬝ᵥ H *ᵥ (I • Pi.single k 1)).im : ℂ) = -I * (star v ⬝ᵥ H *ᵥ Pi.single k 1)`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, im_sub_I_re]`. Simplify using `only [Fintype.sum_bool, nC, nP, nQ, Bool.false_eq_true, ↓reduceIte, linPart, antiPart, LinearMap.coe_mk, AddHom.coe_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(X k j * (-(1 / (4 * π))) * (l (Pi.single k 1) - I * l (I • Pi.single k 1))) * ha + (X k j * (-(1 / (4 * π))) * (l (H⁻¹ *ᵥ Pi.single j 1) + I * l (I • H⁻¹ *ᵥ Pi.single j 1))) * hp`. Establish `hsum : ∀ F : ι × ι × Bool × Bool → ℂ, ∑ i, F i = ∑ k, ∑ j, ∑ b1, ∑ b2, F (k, j, b1, b2)` using `fun F => by simp only [Fintype.sum_prod_type]`. Rewrite using `[hsum, Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => hkj k j]`. Establish `hsplit : (∑ k, ∑ j, X k j * (-(1 / (4 * π))) * (I * (v j * linPart l (Pi.single k 1)) + (-I) * ((star v ⬝ᵥ H *ᵥ Pi.single k 1) * antiPart l (H⁻¹ *ᵥ Pi.single j 1)))) = (-(1 / (4 * π)) * I : ℂ) * ((∑ k, ∑ j, X k j * (v j * linPart l (Pi.single k 1))) - ∑ k, ∑ j, X k j * ((star v ⬝ …`. Rewrite using `[mul_sub, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hLA : linPart l (X *ᵥ v) + antiPart l (X *ᵥ v) = 2 * l (X *ᵥ v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [linPart, antiPart, LinearMap.coe_mk, AddHom.coe_mk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hπ : (π : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr Real.pi_ne_zero`. Establish `hfin : ∀ z : ℂ, 2 * (π : ℂ) * I * (-(1 / (4 * (π : ℂ))) * I * (2 * z)) = z`. Introduce `z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show 2 * (π : ℂ) * I * (-(1 / (4 * (π : ℂ))) * I * (2 * z)) = -(I * I) * ((π : ℂ) * (π : ℂ)⁻¹) * z by ring, I_mul_I, mul_inv_cancel₀ hπ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, sum_lin, sum_anti hH hd hX, sub_neg_eq_add, hLA]`. Conclude with `hfin _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuadOf_normal {H X : Matrix ι ι ℂ} (hH : Hᴴ = H) (hd : H.det ≠ 0) (hX : Xᴴ * H + H * X = 0) :
     IsQuadOf (fun x y => (star y ⬝ᵥ H *ᵥ x).im) (fun v => X *ᵥ v) (nC X) nP (nQ H) := by
@@ -215,7 +213,7 @@ theorem isQuadOf_normal {H X : Matrix ι ι ℂ} (hH : Hᴴ = H) (hd : H.det ≠
   exact hfin _
 
 /- English proof (translation)
-Unfold `Sm at *`. Simplify using `only [map_add]`. Conclude with `hf.add hg`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sm_add' {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     {ρ : (ι → ℂ) → B →L[ℂ] B} {f g : B} (hf : Sm ρ f) (hg : Sm ρ g) : Sm ρ (f + g) := by
@@ -224,7 +222,7 @@ private theorem sm_add' {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
   exact hf.add hg
 
 /- English proof (translation)
-Unfold `Sm at *`. Simplify using `only [map_smul]`. Conclude with `hf.const_smul a`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sm_smul' {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     {ρ : (ι → ℂ) → B →L[ℂ] B} {f : B} (a : ℂ) (hf : Sm ρ f) : Sm ρ (a • f) := by
@@ -233,11 +231,11 @@ private theorem sm_smul' {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
   exact hf.const_smul a
 
 /- English proof (translation)
-Establish `hy : ∀ j : ι, Sm ρ (dH ρ (H⁻¹ *ᵥ Pi.single j 1) f)` using `fun j => hs _`. Establish `hIy : ∀ j : ι, Sm ρ (dH ρ (I • H⁻¹ *ᵥ Pi.single j 1) f)` using `fun j => hs _`. Establish `hexp : ∀ (u : ι → ℂ) (j : ι), dH ρ u (dOp ρ H j f) = (-(1 / (4 * π)) : ℂ) • (dH ρ u (dH ρ (H⁻¹ *ᵥ Pi.single j 1) f) + I • dH ρ u (dH ρ (I • H⁻¹ *ᵥ Pi.single j 1) f))`. Introduce `u j`. Unfold `dOp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dH_smul u _ (sm_add' (hy j) (sm_smul' I (hIy j))), dH_add u (hy j) (sm_smul' I (hIy j)), dH_smul u I (hIy j)]`. Unfold `quad nOp xOp`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [nC, nP, nQ, Bool.false_eq_true, ↓reduceIte, hexp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem quad_normal (H X : Matrix ι ι ℂ) {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     (ρ : (ι → ℂ) → B →L[ℂ] B) (f : B) (hs : ∀ v, Sm ρ (dH ρ v f)) :
@@ -267,7 +265,7 @@ def omH (H : Matrix ι ι ℂ) : (ι → ℂ) →L[ℝ] (ι → ℂ) →L[ℝ] �
         (fun r x y => by simp))
 
 /- English proof (translation)
-Introduce `ι _ _ H X hH hd hX`. Use `⟨ι × ι × Bool × Bool, inferInstance, nC X, nP, nQ H, isQuadOf_normal hH hd hX, ?_⟩` and prove the remaining obligations. Introduce `B _ _ ρ hρ f hf`. Conclude with `quad_normal H X ρ f fun v => DCalc.sm_dH (om := omH H) hρ hf v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_quad : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H X : Matrix ι ι ℂ), Hᴴ = H → H.det ≠ 0 → Xᴴ * H + H * X = 0 → ∃ (κ : Type) (_ : Fintype κ) (c : κ → ℂ) (p q : κ → ι → ℂ), IsQuadOf (fun x y => (star y ⬝ᵥ H *ᵥ x).im) (fun v => X *ᵥ v) c p q ∧ ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] (ρ : (ι → ℂ) → B →L[ℂ] B), IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ → ∀ f, Sm ρ f → quad ρ c p q f = nOp ρ H X f := by
   intro ι _ _ H X hH hd hX

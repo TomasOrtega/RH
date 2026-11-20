@@ -5,7 +5,7 @@ import CompanionTheory.AutomorphicTheory.MirabolicRestriction.MirabolicInduction
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.Mirab.cuspidalMirabolic`.
+A detailed English derivation is pending.
 -/
 theorem cuspidalMirabolic_holds : GlobalTheory.Published.CuspidalMirabolic :=
   CompanionTheory.Mirab.cuspidalMirabolic

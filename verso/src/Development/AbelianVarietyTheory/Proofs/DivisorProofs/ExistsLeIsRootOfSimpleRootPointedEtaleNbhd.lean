@@ -13,11 +13,9 @@ namespace StageHensel
 variable {R : Type} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `h1 : EtNbhd.trans hij (algebraMap i.A i.B a) = algebraMap j.A j.B (hij.choose a)` using `Localization.localRingHom_to_map _ _ _ _ _`. Rewrite using `[h1]`. Establish `key : (IsScalarTower.toAlgHom R j.A j.B).comp hij.choose = (IsScalarTower.toAlgHom R j.A j.B).comp φ`. Apply `GlobalTheory.EtaleHensel.algHom_eq_of_residue_eq` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← map_sub, IsLocalization.AtPrime.to_map_mem_maximal_iff j.B j.q]`. Use `show _ ∈ RingHom.ker j.pt`. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `(congr($(hij.choose_spec) x)).trans (congr($hφ x)).symm`.
-
-Conclude with `congr($key a)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_algebraMap_eq_of_comp {i j : EtNbhd R} (hij : i ≤ j) (φ : i.A →ₐ[R] j.A)
     (hφ : j.pt.comp φ = i.pt) (a : i.A) :
@@ -42,23 +40,19 @@ end StageHensel
 open StageHensel in
 
 /- English proof (translation)
-Set `P : StandardEtalePair i.A` to `⟨h, hm, derivative h, ⟨1, 0, 1, by simp⟩⟩`. Use `letI : Algebra R P.Ring := ((algebraMap i.A P.Ring).comp (algebraMap R i.A)).toAlgebra`. Use `haveI : IsScalarTower R i.A P.Ring := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.Etale R P.Ring := Algebra.Etale.comp R i.A P.Ring`. Use `letI : Algebra i.A (ResidueField R) := (i.pt : i.A →+* ResidueField R).toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI : IsScalarTower R i.A (ResidueField R) := IsScalarTower.of_algebraMap_eq' (i.pt.comp_algebraMap).symm`. Establish `hmap : P.HasMap (i.pt a₀)`. Prove the components needed by the constructor for the conclusion. Use `show eval₂ (i.pt : i.A →+* ResidueField R) ((i.pt : i.A →+* ResidueField R) a₀) h = 0`. Rewrite using `[eval₂_at_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0`. Use `show IsUnit (eval₂ (i.pt : i.A →+* ResidueField R) ((i.pt : i.A →+* ResidueField R) a₀) (derivative h))`. Rewrite using `[eval₂_at_apply]`. Conclude with `isUnit_iff_ne_zero.2 h1`. Set `x : P.Ring →ₐ[R] ResidueField R` to `(P.lift _ hmap).restrictScalars R`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxA : ∀ a : i.A, x (algebraMap i.A P.Ring a) = i.pt a` using `fun a => (P.lift _ hmap).commutes a`. Establish `hxX : x P.X = i.pt a₀` using `P.lift_X _ hmap`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType R P.Ring)`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hf`. Set `j : EtNbhd R` to `⟨n, RingHom.ker f, Algebra.Etale.of_equiv e.symm, x.comp (e : _ →ₐ[R] P.Ring)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjpt : ∀ y : P.Ring, j.pt (e.symm y) = x y` using `fun y => by show x (e (e.symm y)) = x y`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Set `φ : i.A →ₐ[R] j.A` to `(e.symm : P.Ring →ₐ[R] j.A).comp (IsScalarTower.toAlgHom R i.A P.Ring)`. Establish `hφa : ∀ a, φ a = e.symm (algebraMap i.A P.Ring a)` using `fun a => rfl`. Establish `hφ : j.pt.comp φ = i.pt` using `AlgHom.ext fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, hφa, hjpt, hxA]`. Use `⟨j, ⟨φ, hφ⟩, algebraMap j.A j.B (e.symm P.X), ?_, ?_⟩` and prove the remaining obligations. Establish `hc : (EtNbhd.trans (⟨φ, hφ⟩ : i ≤ j)).comp (algebraMap i.A i.B) = ((algebraMap j.A j.B).comp (e.symm : P.Ring →+* j.A)).comp (algebraMap i.A P.Ring)` using `RingHom.ext fun a => by`. Rewrite using `[RingHom.comp_apply, trans_algebraMap_eq_of_comp _ φ hφ, hφa]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, IsRoot, eval_map]`. Establish `hX` using `(StandardEtalePair.hasMap_X (P := P)).1`. Rewrite `hX` using `[aeval_def]`. Establish `: eval₂ (((algebraMap j.A j.B).comp (e.symm : P.Ring →+* j.A)).comp (algebraMap i.A P.Ring)) (algebraMap j.A j.B (e.symm P.X)) h = ((algebraMap j.A j.B).comp (e.symm : P.Ring →+* j.A)) (eval₂ (algebraMap i.A P.Ring) P.X h)`. Rewrite using `[hom_eval₂]`.
-
-Both sides reduce to the same expression. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `_ = (0 : j.B)`. Rewrite using `[show eval₂ (algebraMap i.A P.Ring) P.X h = 0 from hX, map_zero]`. Use `haveI : j.q.IsPrime := RingHom.ker_isPrime _`.
-
-Rewrite using `[trans_algebraMap_eq_of_comp _ φ hφ, ← map_sub, IsLocalization.AtPrime.to_map_mem_maximal_iff j.B j.q]`. Use `show _ ∈ RingHom.ker j.pt`. Rewrite using `[RingHom.mem_ker, map_sub, hjpt, hxX, sub_eq_zero]`. Conclude with `(congr($hφ a₀)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_le_isRoot_of_simple_root (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R)
     (h : Polynomial i.A) (a₀ : i.A) (hm : h.Monic) (h0 : i.pt (h.eval a₀) = 0)

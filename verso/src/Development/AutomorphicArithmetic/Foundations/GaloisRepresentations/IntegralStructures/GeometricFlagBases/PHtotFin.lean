@@ -8,15 +8,13 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Set `S : Finset ℤ` to `Finset.Icc 0 N`. Establish `hall : ∀ x : DirectSum ℤ A, x ∈ ⨆ n ∈ S, LinearMap.range (DirectSum.lof K ℤ A n)`. Introduce `x`. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `of i a`. Distinguish the cases in `hi : i ∈ S`. Conclude with `Submodule.mem_iSup_of_mem i (Submodule.mem_iSup_of_mem hi ⟨a, rfl⟩)`. Establish `hout : i < 0 ∨ N < i`. Simplify using `only [S, Finset.mem_Icc, not_and_or, not_le] at hi`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi`. Use `haveI := hs i hout`. Rewrite using `[Subsingleton.elim a 0, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htop : (⨆ n ∈ S, LinearMap.range (DirectSum.lof K ℤ A n)) = ⊤` using `eq_top_iff.2 (fun x _ => hall x)`. Use `Module.finite_def.2 ?_` and prove the remaining obligations. Rewrite using `[← htop]`. Use `Submodule.fg_biSup S _ (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map]`.
-
-Conclude with `(Module.finite_def.1 (hf n)).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finOfDeg {K : Type} [Field K] {A : ℤ → Type*} [∀ n, AddCommGroup (A n)]
     [∀ n, Module K (A n)] (hf : ∀ n, FiniteDimensional K (A n)) (N : ℤ)
@@ -47,7 +45,7 @@ private theorem finOfDeg {K : Type} [Field K] {A : ℤ → Type*} [∀ n, AddCom
   exact (Module.finite_def.1 (hf n)).map _
 
 /- English proof (translation)
-Introduce `h l _ k _ _ hl X p hp hproj`. Take `⟨hf, N, hN⟩` from `h l k hl p hp hproj`. Conclude with `finOfDeg hf N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.htotFin_of :
     DegFin → HtotFin := by

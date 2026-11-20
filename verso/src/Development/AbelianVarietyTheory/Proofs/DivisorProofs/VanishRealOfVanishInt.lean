@@ -8,13 +8,13 @@ open scoped Classical
 namespace GlobalTheory.IntRealPow
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => intro P; exact ⟨C (Φ P), fun β => by simp⟩`. Consider the case `succ e ih`. Introduce `P`. Use `choose Q hQ using ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, X i * Q (P * X (some i)), fun β => ?_⟩` and prove the remaining obligations. Establish `h : P * rename some (lin β) ^ (e + 1) = ∑ i, β i • (P * X (some i) * rename some (lin β) ^ e)`. Rewrite using `[pow_succ']`. Generalize the expression as in `rename some (lin β) ^ e = R`. Unfold `lin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C, rename_X, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, map_sum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hQ, map_mul, eval_X, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_eval {ι : Type} [Fintype ι] (Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ) (e : ℕ) :
     ∀ P : MvPolynomial (Option ι) ℝ, ∃ Q : MvPolynomial ι ℝ, ∀ β : ι → ℝ,
@@ -39,9 +39,9 @@ theorem exists_poly_eval {ι : Type} [Fintype ι] (Φ : MvPolynomial (Option ι)
     rw [map_smul, hQ, map_mul, eval_X, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `exists_poly_eval Φ e P`. Establish `hQ0 : Q = 0`. Use `MvPolynomial.funext_set (fun _ => Set.range (Int.cast : ℤ → ℝ)) (fun _ => Set.infinite_range_of_injective Int.cast_injective) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : ∀ i, ∃ n : ℤ, (n : ℝ) = x i` using `fun i => hx i (Set.mem_univ i)`. Use `choose n hn using hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxn : x = fun i => (n i : ℝ)` using `funext fun i => (hn i).symm`. Rewrite using `[← hQ, hxn, h, map_zero]`. Rewrite using `[hQ, hQ0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_real_of_vanish_int {ι : Type} [Fintype ι]
     (Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ) (P : MvPolynomial (Option ι) ℝ) (e : ℕ)

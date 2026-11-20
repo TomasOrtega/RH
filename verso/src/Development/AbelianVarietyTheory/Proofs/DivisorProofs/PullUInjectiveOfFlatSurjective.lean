@@ -8,11 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EigenDescent
 
 /- English proof (translation)
-Introduce `s t h`. Apply `TopCat.Presheaf.section_ext Y.sheaf V s t` to reduce the goal to its premises. Introduce `y hy`. Take `⟨x, rfl⟩` from `π.surjective y`. Establish `hinj : Function.Injective (π.stalkMap x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf` using `Flat.stalkMap π x`. Use `algebraize [(π.stalkMap x).hom]`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (π x)) (X.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (π.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (π x)) (B := X.presheaf.stalk x)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (π x)) (X.presheaf.stalk x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `hinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `π.stalkMap x (Y.presheaf.germ V (π x) hy s) = π.stalkMap x (Y.presheaf.germ V (π x) hy t)`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective_of_flat_surjective {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat π] [Surjective π]
     (V : Y.Opens) : Function.Injective (π.app V) := by
@@ -33,7 +33,7 @@ theorem app_injective_of_flat_surjective {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat
   rw [Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply, h]
 
 /- English proof (translation)
-Introduce `X Y π _ _ V u v h`. Conclude with `Units.ext (app_injective_of_flat_surjective π V (congrArg Units.val h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pullU_injective_of_flat_surjective : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y), Flat π → Surjective π →
     ∀ V : Y.Opens, Function.Injective (pullU π V) := by

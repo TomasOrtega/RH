@@ -17,11 +17,11 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Break down `hpq with h | h` into its components or cases. Rewrite `h` using `[pOf, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `ha` using `h (Finset.mem_univ a)`. Establish `hb` using `h (Finset.mem_univ b)`. Simplify using `only [Bool.not_eq_true] at ha hb`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, hb]`. Rewrite `h` using `[qOf, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `ha` using `h (Finset.mem_univ a)`. Establish `hb` using `h (Finset.mem_univ b)`. Simplify using `only [Bool.not_eq_false] at ha hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmpt_eps_eq {ε : Fin n → Bool} (hpq : pOf ε = 0 ∨ qOf ε = 0) (a b : Fin n) : ε a = ε b := by
   rcases hpq with h | h
@@ -37,7 +37,7 @@ theorem cmpt_eps_eq {ε : Fin n → Bool} (hpq : pOf ε = 0 ∨ qOf ε = 0) (a b
     rw [ha, hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, he i j]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmpt_Jm_comm {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) (g : Matrix (Fin n) (Fin n) ℂ) :
     g * Jm ε = Jm ε * g := by
@@ -46,13 +46,13 @@ theorem cmpt_Jm_comm {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) (g : Matr
   ring
 
 /- English proof (translation)
-Establish `hJJ : Jm ε * Jm ε = 1` using `by first`. Consider the case `(rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num)`.
+Establish an intermediate fact. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(ext i j`. Simplify using `only [Jm, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> norm_num)`. Use `show g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Jm ε = Jm ε * g`. Use `⟨?_, cmpt_Jm_comm he g⟩` and prove the remaining obligations.
+Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Jm ε * (gᴴ * g) = Jm ε`. Rewrite using `[← Matrix.mul_assoc, ← cmpt_Jm_comm he gᴴ]`. Conclude with `hg`. Establish `h2 : gᴴ * g = 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact Matrix.mem_unitaryGroup_iff'.mpr (by rw [Matrix.star_eq_conjTranspose]; exact h2)`. Consider the case `exact unitary.mem_iff.mpr ⟨by rw [Matrix.star_eq_conjTranspose]; exact h2, by rw [Matrix.star_eq_conjTranspose]; exact Matrix.mul_eq_one_comm.mp h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem cmpt_inUJ_Kset {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : inUJ ε g) : g ∈ Kset ε := by
@@ -80,11 +80,11 @@ theorem cmpt_inUJ_Kset {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) {g : Ma
       by rw [Matrix.star_eq_conjTranspose]; exact Matrix.mul_eq_one_comm.mp h2⟩
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm ε = Jm ε` using `rfl`. Use extensionality with `g`. Simplify using `only [Formalism.MainNotions.S.UJset, Formalism.REAL.Kset, Formalism.REAL.inUJ, Set.mem_setOf_eq, hJ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cmpt_inUJ_Kset he h`. Introduce and unpack `⟨hu, -⟩`. Establish `hu' : gᴴ * g = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Use `first`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Matrix.mem_unitaryGroup_iff'.mp hu`. Consider the case `exact unitary.star_mul_self_of_mem hu`. Rewrite using `[cmpt_Jm_comm he gᴴ, Matrix.mul_assoc, hu', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpt_set_eq {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) :
     Formalism.MainNotions.S.UJset ε = Formalism.REAL.Kset ε := by
@@ -103,11 +103,9 @@ theorem cmpt_set_eq {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) :
     rw [cmpt_Jm_comm he gᴴ, Matrix.mul_assoc, hu', Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hc : IsCompact {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g}`. Establish `hsub : {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} ⊆ Set.pi Set.univ (fun _ : Fin n => Set.pi Set.univ (fun _ : Fin n => Metric.closedBall (0 : ℂ) 1))`. Introduce `g hg i _ j _`. Simplify `entry_norm_bound_of_unitary (cmpt_inUJ_Kset he hg).1 i j` using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1).of_isClosed_subset (S7.isClosed_inUJ ε) hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hK` using `(S7.isClosedEmbedding_toM ε).isCompact_preimage hc`. Establish `hu : (fun g : S7.UJ ε => S7.toM g) ⁻¹' {g | inUJ ε g} = Set.univ`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_univ, iff_true]`. Conclude with `g.2`.
-
-Rewrite `hK` using `[hu]`. Conclude with `isCompact_univ_iff.mp hK`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpt_compact {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) : CompactSpace (S7.UJ ε) := by
   have hc : IsCompact {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} := by
@@ -129,11 +127,11 @@ section Cas
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ)
 
 /- English proof (translation)
-Establish `hs : casSg ε p = 1` using `by simp [casSg, he p.1 p.2]`. Establish `hskew : (casGen ε p)ᴴ = -casGen ε p`. Take `⟨a, b⟩` from `p`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.neg_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Unfold `casGen`. Simplify using `only [hs, one_smul]`. Apply the tactic sequence `split_ifs <;>`. Apply the tactic sequence `simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.single_apply, smul_eq_mul] <;>`. Apply the tactic sequence `split_ifs <;> (try simp_all [Complex.conj_I, Complex.star_def]) <;> (try subst_vars) <;> (try simp_all [Complex.conj_I, Complex.star_def]) <;> (obtain ⟨h1, h2⟩ := ‹_ ∧ _›; exact absurd (h1.symm.trans h2) ‹_›)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `inK inG`. Use `⟨?_, cmpt_Jm_comm he _⟩` and prove the remaining obligations. Rewrite using `[hskew, Matrix.neg_mul, cmpt_Jm_comm he]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cmpt_inK_casGen (he : ∀ a b, ε a = ε b) (p : Fin n × Fin n) : inK ε (casGen ε p) := by
   have hs : casSg ε p = 1 := by simp [casSg, he p.1 p.2]
@@ -155,13 +153,13 @@ theorem cmpt_inK_casGen (he : ∀ a b, ε a = ε b) (p : Fin n × Fin n) : inK �
   abel
 
 /- English proof (translation)
-Establish `hK : ∀ t : ℝ, inK ε ((t : ℂ) • X)`. Introduce `t`. Establish `hX'` using `hX`. Unfold `inK inG at hX' ⊢`. Take `⟨h1, h2⟩` from `hX'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hst : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, h2]`. Establish `hD` using `T.hasDeriv X hX (fun t => HW.torepK ε (exp_mem_Kset (hK t))) (fun t => HW.toMK_torepK ε _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD2 : HasDerivAt (fun t : ℝ => ((T.τ (HW.torepK ε (exp_mem_Kset (hK t))) : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) u) (T.dτ X u) 0` using `by first`. Consider the case `simpa using hD.clm_apply (hasDerivAt_const (0 : ℝ) u)`. Consider the case `simpa [Function.comp_def] using ((ContinuousLinearMap.apply ℂ T.V u).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hD`. Consider the case `simpa [Function.comp_def] using ((ContinuousLinearMap.apply ℂ (M₂ := T.V) u).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hD`. Unfold `dS`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hD2.deriv]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [HW.torepSig, dif_pos (exp_mem_Kset (hK t))]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmpt_dS {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (u : T.V) :
     dS (HW.torepSig T) X u = T.dτ X u := by
@@ -195,19 +193,19 @@ theorem cmpt_dS {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (u : T.V) :
   try rfl
 
 /- English proof (translation)
-Introduce `a b c d` and use `HW.KType.kRel T a b c d (he a b) (he c d)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cmpt_glRep (he : ∀ a b, ε a = ε b) : IsGlRep (HW.kunits T) :=
   fun a b c d => HW.KType.kRel T a b c d (he a b) (he c d)
 
 /- English proof (translation)
-Use `set c : ℂ := ((nsq (Λ + rho n) - nsq (rho n) : ℝ) : ℂ)`. Establish `hE` using `cmpt_glRep T he`. Establish `hw : casimir (HW.kunits T) T.w = c • T.w` using `casimir_hwVec hE ⟨fun a => T.w_wt a, fun a b h => T.w_hw a b h (he a b)⟩`. Set `W : Submodule ℂ T.V` to `LinearMap.ker (casimir (HW.kunits T) - c • 1)`. Establish `hmem : ∀ x, x ∈ W ↔ casimir (HW.kunits T) x = c • x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using `[W, sub_eq_zero]`. Break down `HW.KType.dτ_irred T W (fun a b _ x hx => by` into its components or cases. Rewrite `hx`, the goal using `[hmem]`. Establish `h1` using `congrArg (fun F : Module.End ℂ T.V => F x) (casimir_comm hE a b)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply] at h1`. Express the relevant statement in the definitionally equal form `casimir (HW.kunits T) (HW.kunits T a b x) = c • HW.kunits T a b x`. Rewrite using `[h1, hx, map_smul]) with h | h`. It suffices to derive a contradiction. Establish `: T.w ∈ W` using `(hmem _).2 hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `HW.KType.w_ne_zero T this`. Conclude with `(hmem v).1 (h ▸ Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem cmpt_casimir (he : ∀ a b, ε a = ε b) (v : T.V) :
     casimir (HW.kunits T) v = ((nsq (Λ + rho n) - nsq (rho n) : ℝ) : ℂ) • v := by
@@ -231,11 +229,11 @@ theorem cmpt_casimir (he : ∀ a b, ε a = ε b) (v : T.V) :
   · exact (hmem v).1 (h ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Establish `h1 : casSg ε (a, b) = 1` using `by simp [casSg, he a b]`. Establish `h2 : casSg ε (b, a) = 1` using `by simp [casSg, he b a]`. Establish `w1 : casWt (a, b) = 1 / 2` using `by simp [casWt, hab.ne]`. Establish `w2 : casWt (b, a) = 1 / 2` using `by simp [casWt, hab.ne']`. Establish `g1 : casGen ε (a, b) = Matrix.single a b 1 - Matrix.single b a 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[casGen, hab.ne, hab, h1]`. Establish `g2 : casGen ε (b, a) = Complex.I • (Matrix.single a b 1 + Matrix.single b a 1)`. Simplify using `[casGen, hab.ne', not_lt.mpr hab.le, h2]`. Establish `key : ∀ X : T.V →L[ℂ] T.V, (Complex.I • X) * (Complex.I • X) = -(X * X)`. Introduce `X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul]`. Rewrite using `[h1, h2, w1, w2, g1, g2, map_sub, map_smul, map_add, key]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmpt_pair (he : ∀ a b, ε a = ε b) {a b : Fin n} (hab : a < b) :
     (casWt (a, b) * casSg ε (a, b)) • (T.dτ (casGen ε (a, b)) * T.dτ (casGen ε (a, b))) +
@@ -257,13 +255,13 @@ theorem cmpt_pair (he : ∀ a b, ε a = ε b) {a b : Fin n} (hab : a < b) :
   module
 
 /- English proof (translation)
-Establish `hs : ∀ g : Fin n → Fin n → M, ∑ a, ∑ b, g b a = ∑ a, ∑ b, g a b` using `fun g => Finset.sum_comm`. Establish `e1 : (2 : ℂ) • ∑ a, ∑ b, t a b = ∑ a, ∑ b, (t a b + t b a)`. Rewrite using `[two_smul]`. Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[hs t]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (2 : ℂ) • -∑ a, ∑ b, f a b = ∑ a, ∑ b, -(f a b + f b a)`. Rewrite using `[two_smul]`. Simplify using `only [Finset.sum_neg_distrib, Finset.sum_add_distrib]`. Rewrite using `[hs f]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : (2 : ℂ) • ∑ a, ∑ b, t a b = (2 : ℂ) • -∑ a, ∑ b, f a b`. Rewrite using `[e1, e2]`. Simplify using `only [h]`. Establish `h3` using `congrArg (fun x : M => (2 : ℂ)⁻¹ • x) h2`. Simplify using `only [smul_smul, inv_mul_cancel₀ (two_ne_zero : (2 : ℂ) ≠ 0), one_smul] at h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_neg_of_symm_sum {M : Type*} [AddCommGroup M] [Module ℂ M] (t f : Fin n → Fin n → M)
     (h : ∀ a b, t a b + t b a = -(f a b + f b a)) : ∑ a, ∑ b, t a b = -∑ a, ∑ b, f a b := by
@@ -286,11 +284,9 @@ theorem sum_eq_neg_of_symm_sum {M : Type*} [AddCommGroup M] [Module ℂ M] (t f 
   exact h3
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type]`. Apply `sum_eq_neg_of_symm_sum (fun a b => (casWt (a, b) * casSg ε (a, b)) • (T.dτ (casGen ε (a, b)) * T.dτ (casGen ε (a, b)))) (fun a b => T.dτ (Matrix.single a b 1) * T.dτ (Matrix.single b a 1))` to reduce the goal to its premises. Introduce `a b`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `cmpt_pair T he hab`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `w : casWt (a, a) = 1` using `by simp [casWt]`. Establish `s : casSg ε (a, a) = 1` using `by simp [casSg]`. Establish `g : casGen ε (a, a) = Complex.I • Matrix.single a a 1` using `by simp [casGen]`. Apply the tactic sequence `try simp only []`. Rewrite using `[w, s, g, map_smul]`.
-
-Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, mul_one]`. Use `module`. Conclude with `(add_comm _ _).trans ((cmpt_pair T he hab).trans (congrArg Neg.neg (add_comm _ _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmpt_sum (he : ∀ a b, ε a = ε b) :
     ∑ p : Fin n × Fin n, (casWt p * casSg ε p) • (T.dτ (casGen ε p) * T.dτ (casGen ε p)) =
@@ -312,9 +308,9 @@ theorem cmpt_sum (he : ∀ a b, ε a = ε b) :
   · exact (add_comm _ _).trans ((cmpt_pair T he hab).trans (congrArg Neg.neg (add_comm _ _)))
 
 /- English proof (translation)
-Establish `hd : ∀ p w, dS (HW.torepSig T) (casGen ε p) w = T.dτ (casGen ε p) w` using `fun p w => cmpt_dS T (cmpt_inK_casGen he p) w`. Establish `hs` using `congrArg (fun L : T.V →L[ℂ] T.V => L v) (cmpt_sum T he)`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.neg_apply] at hs`. Simplify using `only [casU, hd, hs, neg_neg, casimir, HW.kunits]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `simp only [LinearMap.coeFn_sum, Finset.sum_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe]`. Consider the case `simp only [LinearMap.sum_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe]`. Consider the case `simp only [LinearMap.sum_apply, LinearMap.mul_apply, ContinuousLinearMap.coe_coe]`. Consider the case `simp [Module.End.mul_apply]`. Consider the case `simp [LinearMap.mul_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cmpt_casU (he : ∀ a b, ε a = ε b) (v : T.V) :
     casU ε (HW.torepSig T) v = casimir (HW.kunits T) v := by
@@ -335,9 +331,9 @@ theorem cmpt_casU (he : ∀ a b, ε a = ε b) (v : T.V) :
 end Cas
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1 : (univ.filter fun b => a < b ∧ ε b ≠ ε a) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `b _ hb`. Conclude with `hb.2 (he b a)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (univ.filter fun b => b < a ∧ ε b ≠ ε a) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `b _ hb`. Conclude with `hb.2 (he b a)`. Simplify using `only [rhoN, h1, h2, Finset.card_empty, Nat.cast_zero, sub_self, zero_div, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmpt_rhoN {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) : rhoN ε = 0 := by
   funext a
@@ -352,11 +348,11 @@ theorem cmpt_rhoN {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) : rhoN ε = 
   simp only [rhoN, h1, h2, Finset.card_empty, Nat.cast_zero, sub_self, zero_div, Pi.zero_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `e1 : (univ.filter fun b => a < b ∧ ε b = ε a) = Finset.Ioi a`. Use extensionality with `b`. Simplify using `[he b a]`. Establish `e2 : (univ.filter fun b => b < a ∧ ε b = ε a) = Finset.Iio a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using `[he b a]`. Establish `hN` using `congrFun (cmpt_rhoN he) a`. Establish `ha` using `a.isLt`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply, hN, Pi.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rhoC, rho, e1, e2, Fin.card_Ioi, Fin.card_Iio]`. Rewrite using `[Nat.cast_sub (show (a : ℕ) ≤ n - 1 by omega), Nat.cast_sub (show 1 ≤ n by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmpt_lowK_add_rho {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) (lam : Fin n → ℝ) :
     lowK ε lam + rho n = lam := by
@@ -376,25 +372,23 @@ theorem cmpt_lowK_add_rho {ε : Fin n → Bool} (he : ∀ a b, ε a = ε b) (lam
   ring
 
 /- English proof (translation)
-Establish `he` using `cmpt_eps_eq hpq`. Establish `hset` using `cmpt_set_eq he`. Establish `hU` using `HW.torep_isURepOn T`. Establish `hΛ : Formalism.QuantumDeterminants.lowK ε lam = lowK ε lam` using `mir_lowK_eq ε lam`. Establish `hKT : Formalism.MainNotions.S.IsKTypeOf ε (HW.torepSig T) (lowK ε lam) ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨inferInstance, fun g _ v _ => Submodule.mem_top, ?_, ⟨T.w, Submodule.mem_top, HW.KType.w_ne_zero T, HW.torep_wt_w T⟩, ?_⟩` and prove the remaining obligations. Introduce `S' _ hS'`. Conclude with `T.irred S' (fun k v hv => by`. Use `hS' (S7.toMK k) k.2 v hv` as an intermediate fact. Rewrite using `[HW.torepSig_toMK] at this)` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ v _ hv hwt`. Take `⟨c, hc, he'⟩` from `HW.KType.weight_le T hv (HW.torep_dτ_of_wt T hwt)`. Conclude with `⟨c, hc, he'⟩`. Use `⟨HW.torepSig T, ?_, ?_, fun k => HW.torepSig_toMK T k⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.IsDS`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inferInstance, nontrivial_of_ne T.w 0 (HW.KType.w_ne_zero T), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `hU`. Introduce `S _ hS`. Conclude with `T.irred S (fun k v hv => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hS (S7.toMK k) (by rw [hset]; exact k.2) v hv` as an intermediate fact. Rewrite using `[HW.torepSig_toMK] at this)` and apply the resulting hypothesis. Introduce `v w`. Use `cmpt_compact he` as an intermediate fact. Conclude with `memLp_muG_of_haar ε (fun g => ⟪w, HW.torepSig T g v⟫_ℂ) 2 (fun μ _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmK : ∀ g : S7.UJ ε, S7.toM g ∈ Formalism.REAL.Kset ε` using `fun g => by`. Rewrite using `[mir_Kset_eq]`. Conclude with `cmpt_inUJ_Kset he g.2`. Establish `hc : Continuous (fun g : S7.UJ ε => ⟪w, HW.torepSig T (S7.toM g) v⟫_ℂ)` using `continuous_const.inner ((hU.2.2 v).comp_continuous (S7.continuous_toM ε) hmK)`. Use `MemLp.of_bound hc.aestronglyMeasurable (‖w‖ * ‖v‖) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⊤, by rw [hΛ]; exact hKT⟩`. Introduce `μ S hS`. Rewrite using `[hΛ]`. Take `⟨_, hK, _, ⟨v, hvS, hv0, hvwt⟩, hdom⟩` from `hS`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. It suffices to derive a contradiction.
 
-Establish `hStop : S = ⊤`. Break down `T.irred S (fun k x hx => by` into its components or cases. Use `hK (S7.toMK k) k.2 x hx` as an intermediate fact. Rewrite using `[HW.torepSig_toMK] at this) with h | h` and apply the resulting hypothesis. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvS` using `[h, Submodule.mem_bot]`. Conclude with `hv0 hvS`. Conclude with `h`. Establish `h1 : Formalism.MainNotions.S.CDom ε μ (lowK ε lam)` using `hKT.2.2.2.2 μ v Submodule.mem_top hv0 hvwt`. Establish `h2 : Formalism.MainNotions.S.CDom ε (lowK ε lam) μ` using `hdom _ T.w (by rw [hStop]; exact Submodule.mem_top) (HW.KType.w_ne_zero T) (HW.torep_wt_w T)`.
-
-Conclude with `le_of_eq (by rw [cdom_antisymm ε h1 h2])`. Introduce `v _`. Rewrite using `[cmpt_casU T he, cmpt_casimir T he, cmpt_lowK_add_rho he]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isDS_compact {ε : Fin n → Bool} {lam : Fin n → ℝ} (hpq : pOf ε = 0 ∨ qOf ε = 0)
     (hlam : S7.IsHCParam lam) (T : S7.KType ε (lowK ε lam)) :

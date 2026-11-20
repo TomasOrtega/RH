@@ -17,9 +17,9 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Fi
   [LocallyCompactSpace H]
 
 /- English proof (translation)
-Establish `e : (fun x => ∫ p, ρ p * Φ x p ∂ν) = fun x => ∫ p in tsupport ρ, ρ p * Φ x p ∂ν`. Use function extensionality and compare the values at `x`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun p hp => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hp, zero_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_parametric_integral_of_continuous ((hρ.comp continuous_snd).mul hΦ) hρc`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_cont (ν : Measure H) [ν.IsHaarMeasure] {ρ : H → ℝ} (hρ : Continuous ρ)
     (hρc : HasCompactSupport ρ) {Φ : G → H → ℝ} (hΦ : Continuous (Function.uncurry Φ)) :
@@ -32,7 +32,7 @@ private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_cont (ν 
   exact continuous_parametric_integral_of_continuous ((hρ.comp continuous_snd).mul hΦ) hρc
 
 /- English proof (translation)
-Take `⟨V₁, h₁, e₁⟩` from `exists_nhds_split_inv hO`. Take `⟨V₂, h₂, e₂⟩` from `exists_nhds_one_split h₁`. Use `⟨V₁ ∩ V₂, inter_mem h₁ h₂, fun a ha b hb c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv]`. Conclude with `e₁ _ (e₂ a ha.2 b hb.2) c hc.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_split {O : Set G} (hO : O ∈ 𝓝 (1 : G)) :
     ∃ V ∈ 𝓝 (1 : G), ∀ a ∈ V, ∀ b ∈ V, ∀ c ∈ V, a * b * c⁻¹ ∈ O := by
@@ -43,19 +43,19 @@ private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_split {O 
   exact e₁ _ (e₂ a ha.2 b hb.2) c hc.1
 
 /- English proof (translation)
-Use `set F : G → ℝ := fun y => ∫ q, ρ q * h (y * π q) ∂ν with hF`. Establish `hFc : Continuous F` using `bump_cont ν hρ hρc (Φ := fun y q => h (y * π q)) (hh.comp (continuous_fst.mul (hπ.comp continuous_snd)))`. Establish `hF0 : ∀ y, 0 ≤ F y` using `fun y => integral_nonneg fun q => mul_nonneg (hρ0 q) (hh0 _)`. Establish `hF1 : 0 < F (π p₀)⁻¹`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := p₀) (hρ.mul (hh.comp (continuous_const.mul hπ))) hρc.mul_right (fun q => mul_nonneg (hρ0 q) (hh0 _)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ⟨hρ1, hh1⟩`. Establish `ha : ∀ x, ∫ p, ρ p * F ((π p)⁻¹ * x) ∂ν = ∫ p, ∫ q, ρ p * (ρ q * h ((π p)⁻¹ * x * π q)) ∂ν ∂ν`. Introduce `x`. Simplify using `only [hF, integral_const_mul]`. Use `⟨F, fun x => ∫ p, ρ p * F ((π p)⁻¹ * x) ∂ν, hFc, fun _ => rfl, fun u hu x => ?_, ?_, fun x => integral_nonneg fun q => mul_nonneg (hρ0 q) (hF0 _), ne_of_gt ?_, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, mul_assoc, hu]`. Conclude with `bump_cont ν hρ hρc (Φ := fun x p => F ((π p)⁻¹ * x)) (hFc.comp ((hπ.comp continuous_snd).inv.mul continuous_fst))`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := p₀) (hρ.mul (hFc.comp (hπ.inv.mul continuous_const))) hρc.mul_right (fun q => mul_nonneg (hρ0 q) (hF0 _)) ?_` and prove the remaining obligations. Simplify using `using ⟨hρ1, hF1.ne'⟩`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ha, ha, integral_integral_swap_of_hasCompactSupport]`. Use `integral_congr_ae (Eventually.of_forall fun p => integral_congr_ae (Eventually.of_forall fun q => ?_)) beta_reduce` and prove the remaining obligations. Rewrite using `[← hs ((π p)⁻¹ * x * π q)]`. Simplify using `only [mul_inv_rev, inv_inv, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(hρ.comp continuous_fst).mul ((hρ.comp continuous_snd).mul (hh.comp (((hπ.comp continuous_fst).inv.mul continuous_const).mul (hπ.comp continuous_snd))))`. Use `HasCompactSupport.intro (hρc.isCompact.prod hρc.isCompact) fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[mem_prod, not_and_or]`. Apply the tactic sequence `rcases hz with hz | hz <;> simp [Function.uncurry, image_eq_zero_of_notMem_tsupport hz]`. Assume the negation of the conclusion as `hxO`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ha]`. Establish `: ∀ p q, ρ p * (ρ q * h ((π p)⁻¹ * x * π q)) = 0`. Introduce `p q`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h0`. Use `hxO ?_` and prove the remaining obligations. Use `hO p q _ (left_ne_zero_of_mul h0) (left_ne_zero_of_mul (right_ne_zero_of_mul h0)) (right_ne_zero_of_mul (right_ne_zero_of_mul h0))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_step (ν : Measure H) [ν.IsHaarMeasure] (π : H →* G) (hπ : Continuous π)
     {ρ : H → ℝ} (hρ : Continuous ρ) (hρc : HasCompactSupport ρ) (hρ0 : ∀ p, 0 ≤ ρ p) {p₀ : H} (hρ1 : ρ p₀ ≠ 0)
@@ -113,29 +113,27 @@ private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bump_step (ν 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ O hO`. Take `⟨O', hO', hO'O, hO'c⟩` from `local_compact_nhds hO`. Take `⟨V₂, hV₂, e₂⟩` from `bump_split hO'`. Take `⟨V₁, hV₁, e₁⟩` from `bump_split hV₂`. Take `⟨f, hf1, hf0, -, hf⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : G1 K n))) (isOpen_interior (s := V₁)).isClosed_compl (disjoint_singleton_left.2 fun h => h (mem_interior_iff_mem_nhds.2 hV₁))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf1' : f 1 = 1` using `hf1 rfl`. Establish `hfV : ∀ y, f y ≠ 0 → y ∈ V₁` using `fun y hy => by`. Assume the negation of the conclusion as `hn`. Conclude with `hy (hf0 fun h => hn (interior_subset h))`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ((isOpen_interior (s := V₁)).preimage (continuous_finOne (K := K) (n := n))) (by rw [mem_preimage, map_one]; exact mem_interior_iff_mem_nhds.2 hV₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set U : Subgroup (AdelicGLn.integralFiniteGL K n) := N.toOpenSubgroup.toSubgroup`. Establish `hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n))` using `N.toOpenSubgroup.isOpen`. Establish `hUV : ∀ u : U, finOne K n u ∈ V₁` using `fun u => interior_subset (hN u.2)`. Use `compactSpace_of_isOpen U hU` as an intermediate fact. Take `⟨F₁, h, -, hF₁, -, hc, h0, h1, hs, hV⟩` from `bump_step (haarProb U) ((finOne K n).comp U.subtype) (continuous_finOne.comp continuous_subtype_val) (ρ := fun _ => 1) continuous_const (HasCompactSupport.of_compactSpace _) (fun _ => zero_le_one) (p₀ := 1) one_ne_zero (h := fun x => f x * f x⁻¹) (f.continuous.mul (f.continuous.c …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ u ∈ U, ∀ x, h (finOne K n u * x) = h x`. Introduce `u hu x`. Rewrite using `[hF₁, hF₁, ← integral_mul_left_eq_self _ (⟨u, hu⟩ : U)]`. Simplify using `[mul_assoc]`. Set `ν : Measure (archGroup K n)` to `Measure.haar`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρ0, hρt, hρ1, -, -, hρN, -⟩` from `exists_archBump ν (N := archP K n ⁻¹' V₂) (continuous_archP.continuousAt.preimage_mem_nhds (by rwa [map_one]))`. Establish `hρc : Continuous ρ` using `Complex.continuous_re.comp (hρt.continuous _)`. Establish `hρs : HasCompactSupport ρ` using `hρt.2.comp_left (g := Complex.re) rfl`. Choose the witnesses or unpack the hypotheses as in `⟨p₀, hp₀⟩ : ∃ p, ρ p ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `push Not at hn`. Simplify using `[hn] at hρ1`. Take `⟨F, a, hFc, hF, hFi, ac, a0, a1, as, aO⟩` from `bump_step ν (archP K n) continuous_archP hρc hρs hρ0 hp₀ hc h0 h1 hs (O := O') (fun p q y hp hq hy => e₂ _ (hρN p hp) _ (hV y hy) _ (hρN q hq))`. Establish `acs : HasCompactSupport a` using `HasCompactSupport.intro hO'c fun x hx => by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx (aO x hn)`. Establish `hI : 0 < ∫ x, a x ∂μ` using `ac.integral_pos_of_hasCompactSupport_nonneg_nonzero acs a0 a1`. Use `set I := ∫ x, a x ∂μ with hIdef`. Use `⟨⟨⟨fun x => ((a x * I⁻¹ : ℝ) : ℂ), Complex.continuous_ofReal.comp (ac.mul continuous_const)⟩, HasCompactSupport.comp_left (g := Complex.ofReal) (f := fun x => a x * I⁻¹) acs.mul_right Complex.ofReal_zero⟩, ?_, fun g => ⟨?_, Complex.ofReal_im _⟩, ?_, ?_, fun x => ?_, U, hU, fun u …` and prove the remaining obligations. Use `Subset.trans (closure_minimal (fun x hx => aO x fun h0 => ?_) hO'c.isClosed) hO'O` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hx' : ((a x * I⁻¹ : ℝ) : ℂ) ≠ 0` using `hx`. Simplify using `[h0] at hx'`. Conclude with `mul_nonneg (a0 g) (inv_nonneg.2 hI.le)`. Express the relevant statement in the definitionally equal form `∫ x, ((a x * I⁻¹ : ℝ) : ℂ) ∂μ = 1`. Rewrite using `[integral_complex_ofReal, integral_mul_const, mul_inv_cancel₀ hI.ne', Complex.ofReal_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `conj ((a g⁻¹ * I⁻¹ : ℝ) : ℂ) = ((a g * I⁻¹ : ℝ) : ℂ)`. Rewrite using `[Complex.conj_ofReal, as]`. Express the relevant statement in the definitionally equal form `(isExpLieAlgebra K n).IsSmoothFun fun A => ((a (archP K n A * x) * I⁻¹ : ℝ) : ℂ)`. Establish `hΨ : Continuous fun y : archGroup K n => ((F ((archP K n y)⁻¹ * x) * I⁻¹ : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp ((hFc.comp (continuous_archP.inv.mul continuous_const)).mul continuous_const)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hsm` using `IsExpLieAlgebra.isSmoothFun_comp_inv ((isExpLieAlgebra K n).isSmoothFun_integral_mul ν hΨ hρt)`. Use `hsm using 2 with A` and compare the differences between its conclusion and the goal. Rewrite using `[hF, ← integral_mul_const, ← integral_complex_ofReal]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, mul_inv_rev, inv_inv, mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `((a (finOne K n u * x) * I⁻¹ : ℝ) : ℂ) = ((a x * I⁻¹ : ℝ) : ℂ)`. Rewrite using `[hF, hF]`. Simplify using `only [archimedeanProjection_apply, ← mul_assoc, archProj_inv_mul_finOne]`.
-
-Simplify using `only [mul_assoc, hFi _ (hinv u hu)]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bumpEx :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (O : Set (G1 K n)), O ∈ 𝓝 (1 : G1 K n) →

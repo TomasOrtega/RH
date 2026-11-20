@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.L
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(liftEx E Ω N).2 g.toRingEquiv`. Introduce `x hx`. Establish `h : ∀ k : ℕ, (g ^ k) x = x ^ ((b : ZMod N).val ^ k)`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_pow, pow_succ', pow_mul]`. Use `congr 1`. Conclude with `hb x hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, pow_eq_pow_mod _ hx, (Nat.ModEq.pow_totient (ZMod.val_coe_unit_coprime b) : _ % N = 1 % N), ← pow_eq_pow_mod _ hx, pow_one]`.
+A detailed English derivation is pending.
 -/
 private theorem pow_tot_mem (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (N : ℕ) [NeZero N] (g : G E Ω) : g ^ N.totient ∈ fixMu E Ω N := by
@@ -27,15 +27,15 @@ private theorem pow_tot_mem (E Ω : Type) [Field E] [NumberField E] [Field Ω] [
     ← pow_eq_pow_mod _ hx, pow_one]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ D e N _ he hP x hx`. Establish `hadd : ∀ a b : Uinf E Ω l, resInf D e x (a * b) = resInf D e x a + resInf D e x b`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hchi : ∀ g : G E Ω, D.chi (toGS Ω _ g) = cycZ E Ω l g` using `fun g => DFunLike.congr_fun D.hchi g`. Establish `htriv : ∀ g : G E Ω, cycZ E Ω l g = 1 → ∀ m, qzTw D e (toGS Ω _ g) m = m` using `fun g hg m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[qzTw_apply, hchi, hg, one_zpow, Units.val_one, one_smul]`. Establish `hz : ∀ a b, z.1 (a * b) = z.1 a + qzTw D e a (z.1 b)` using `z.2.2`. Introduce `a b`. Rewrite using `[resInf_mk, resInf_mk, resInf_mk, Subgroup.coe_mul, map_mul, hz, htriv _ a.2.2]`. Establish `hpow : ∀ (u : Uinf E Ω l) (k : ℕ), resInf D e x (u ^ k) = k • resInf D e x u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u k`. Proceed by induction on `k with`. Consider the case `zero`. Use `hadd 1 1` as an intermediate fact. Rewrite `this` using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_zero, zero_smul]`. Conclude with `left_eq_add.1 this`. Consider the case `succ k ih => rw [pow_succ, hadd, ih, succ_nsmul]`. Apply `resInfInj E Ω l D e he hP` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[Pi.smul_apply, ← hpow]`. Conclude with `hx _ (by rw [Subgroup.coe_pow]; exact pow_tot_mem E Ω N u.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.totKill :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℤ) (N : ℕ) [NeZero N], e ≠ 0 → Procyc E Ω l → ∀ x : H1 (qzTw D e), (∀ u : Uinf E Ω l, u.1 ∈ fixMu E Ω N → resInf D e x u = 0) → N.totient • x = 0 := by

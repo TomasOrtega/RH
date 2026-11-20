@@ -17,9 +17,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FinPartAt
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg`. Establish `hinj : Function.Injective (pushHom hg (Hs P' x0 hu))`. Introduce `x y hxy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hg.1.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun z => z.left) hxy`. Rewrite using `[Over.w x, Over.w y]`. Establish `hw : (pushHom hg (Hs P' x0 hu) (aH P' x0 hu hg.1)) ^ q = 1` using `GlobalTheory.HTMap.tors_of (g := spMap (inB P' x0 hu)) (w := P'.u) (aH_left_π P' x0 hu hg.1) P'.fin.tors`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, hw, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_pow_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) (G' : Over (Sp O)) [GrpObj G'] (π : G'.left ⟶ t.G.left) (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π), aH P' x0 hu hg.1 ^ q = 1 := by
   intro E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg

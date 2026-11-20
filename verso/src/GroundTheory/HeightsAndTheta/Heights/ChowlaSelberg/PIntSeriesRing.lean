@@ -12,7 +12,7 @@ noncomputable section
 namespace IntSeriesRing
 
 /- English proof (translation)
-The claim follows from `Summable.of_nonneg_of_le (fun n ↦ mul_nonneg (abs_nonneg _) (pow_nonneg h0 n)) (fun n ↦ mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 hle n) (abs_nonneg _)) hF`.
+A detailed English derivation is pending.
 -/
 theorem conv_mono {F : PowerSeries ℤ} {r r' : ℝ} (hF : IntSeriesConv F r) (h0 : 0 ≤ r')
     (hle : r' ≤ r) : IntSeriesConv F r' :=
@@ -20,7 +20,7 @@ theorem conv_mono {F : PowerSeries ℤ} {r r' : ℝ} (hF : IntSeriesConv F r) (h
     (fun n ↦ mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 hle n) (abs_nonneg _)) hF
 
 /- English proof (translation)
-The claim follows from `Summable.of_nonneg_of_le (fun n ↦ mul_nonneg (abs_nonneg _) (pow_nonneg hr n)) (fun n ↦ by rw [← add_mul] refine mul_le_mul_of_nonneg_right ?_ (pow_nonneg hr n) simpa using abs_add_le ((coeff n F : ℤ) : ℝ) ((coeff n G : ℤ) : ℝ)) (hF.add hG)`.
+A detailed English derivation is pending.
 -/
 theorem conv_add {F G : PowerSeries ℤ} {r : ℝ} (hr : 0 ≤ r) (hF : IntSeriesConv F r)
     (hG : IntSeriesConv G r) : IntSeriesConv (F + G) r :=
@@ -31,13 +31,13 @@ theorem conv_add {F G : PowerSeries ℤ} {r : ℝ} (hr : 0 ≤ r) (hF : IntSerie
       simpa using abs_add_le ((coeff n F : ℤ) : ℝ) ((coeff n G : ℤ) : ℝ)) (hF.add hG)
 
 /- English proof (translation)
-Simplify `hF` using `[IntSeriesConv]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conv_neg {F : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F r) : IntSeriesConv (-F) r := by
   simpa [IntSeriesConv] using hF
 
 /- English proof (translation)
-Apply `summable_of_ne_finset_zero (s := {0})` to reduce the goal to its premises. Introduce `n hn`. Simplify using `only [Finset.mem_singleton] at hn`. Simplify using `[coeff_one, hn]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conv_one (r : ℝ) : IntSeriesConv 1 r := by
   apply summable_of_ne_finset_zero (s := {0})
@@ -46,17 +46,17 @@ theorem conv_one (r : ℝ) : IntSeriesConv 1 r := by
   simp [coeff_one, hn]
 
 /- English proof (translation)
-Simplify using `[IntSeriesConv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conv_zero (r : ℝ) : IntSeriesConv 0 r := by
   simp [IntSeriesConv]
 
 /- English proof (translation)
-Establish `hf0 : ∀ n, 0 ≤ |((coeff n F : ℤ) : ℝ)| * r ^ n` using `fun n ↦ mul_nonneg (abs_nonneg _) (pow_nonneg hr n)`. Establish `hg0 : ∀ n, 0 ≤ |((coeff n G : ℤ) : ℝ)| * r ^ n` using `fun n ↦ mul_nonneg (abs_nonneg _) (pow_nonneg hr n)`. Establish `hS` using `summable_norm_sum_mul_antidiagonal_of_summable_norm (f := fun n ↦ |((coeff n F : ℤ) : ℝ)| * r ^ n) (g := fun n ↦ |((coeff n G : ℤ) : ℝ)| * r ^ n) ((show Summable _ from hF).congr fun n ↦ (Real.norm_of_nonneg (hf0 n)).symm) ((show Summable _ from hG).congr fun n ↦ (Real.norm_of_no …`. Use `Summable.of_nonneg_of_le (fun n ↦ mul_nonneg (abs_nonneg _) (pow_nonneg hr n)) (fun n ↦ ?_) hS` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (sum_nonneg fun _ _ ↦ mul_nonneg (hf0 _) (hg0 _)), coeff_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_mul]`. Use `sum_congr rfl fun q hq ↦ ?_` and prove the remaining obligations. Rewrite `hq` using `[HasAntidiagonal.mem_antidiagonal]`.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[abs_mul, ← hq, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conv_mul {F G : PowerSeries ℤ} {r : ℝ} (hr : 0 ≤ r) (hF : IntSeriesConv F r)
     (hG : IntSeriesConv G r) : IntSeriesConv (F * G) r := by
@@ -84,7 +84,7 @@ theorem conv_mul {F G : PowerSeries ℤ} {r : ℝ} (hr : 0 ≤ r) (hF : IntSerie
         ring
 
 /- English proof (translation)
-The claim follows from `Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun n ↦ by rw [norm_mul, norm_pow, Complex.norm_intCast] exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hz n) (abs_nonneg _)) hF`.
+A detailed English derivation is pending.
 -/
 theorem summable_norm_term {F : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F r) {z : ℂ}
     (hz : ‖z‖ ≤ r) : Summable fun n ↦ ‖((coeff n F : ℤ) : ℂ) * z ^ n‖ :=
@@ -93,16 +93,16 @@ theorem summable_norm_term {F : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F
     exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hz n) (abs_nonneg _)) hF
 
 /- English proof (translation)
-The claim follows from `(summable_norm_term hF hz).of_norm.hasSum`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_eval {F : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F r) {z : ℂ}
     (hz : ‖z‖ ≤ r) : HasSum (fun n ↦ ((coeff n F : ℤ) : ℂ) * z ^ n) (intSeriesEval F z) :=
   (summable_norm_term hF hz).of_norm.hasSum
 
 /- English proof (translation)
-Unfold `intSeriesEval`. Rewrite using `[tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summable_norm_term hF hz) (summable_norm_term hG hz)]`. Use `tsum_congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[sum_mul]`. Use `sum_congr rfl fun q hq ↦ ?_` and prove the remaining obligations. Rewrite `hq` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hq, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_mul {F G : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F r) (hG : IntSeriesConv G r)
     {z : ℂ} (hz : ‖z‖ ≤ r) : intSeriesEval (F * G) z = intSeriesEval F z * intSeriesEval G z := by
@@ -119,15 +119,15 @@ theorem eval_mul {F G : PowerSeries ℤ} {r : ℝ} (hF : IntSeriesConv F r) (hG 
   ring
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hp) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_left_injective' {p : ℕ} (hp : p ≠ 0) : Function.Injective fun m : ℕ ↦ p * m :=
   fun _ _ h ↦ Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hp) h
 
 /- English proof (translation)
-Unfold `IntSeriesConv at *`. Use `((mul_left_injective' hp).summable_iff ?_).mp ?_` and prove the remaining obligations. Introduce and unpack `n hn`. Establish `h : ¬ p ∣ n` using `fun ⟨m, hm⟩ ↦ hn ⟨m, hm.symm⟩`. Simplify using `[coeff_expand_of_not_dvd p hp _ h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `hF` using `[Function.comp_def, coeff_expand_mul, pow_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conv_expand {p : ℕ} (hp : p ≠ 0) {F : PowerSeries ℤ} {r : ℝ}
     (hF : IntSeriesConv F (r ^ p)) : IntSeriesConv (expand p hp F) r := by
@@ -139,9 +139,9 @@ theorem conv_expand {p : ℕ} (hp : p ≠ 0) {F : PowerSeries ℤ} {r : ℝ}
   · simpa [Function.comp_def, coeff_expand_mul, pow_mul] using hF
 
 /- English proof (translation)
-Unfold `intSeriesEval`. Rewrite using `[← (mul_left_injective' hp).tsum_eq]`. Simplify using `[coeff_expand_mul, pow_mul]`. Introduce `n hn`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h' : ¬ p ∣ n` using `fun ⟨m, hm⟩ ↦ h ⟨m, hm.symm⟩`. Conclude with `hn (by simp [coeff_expand_of_not_dvd p hp _ h'])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_expand {p : ℕ} (hp : p ≠ 0) (F : PowerSeries ℤ) (z : ℂ) :
     intSeriesEval (expand p hp F) z = intSeriesEval F (z ^ p) := by
@@ -162,7 +162,7 @@ def convSubring (r : ℝ) (hr : 0 ≤ r) : Subring (PowerSeries ℤ) where
   neg_mem' := conv_neg
 
 /- English proof (translation)
-The claim follows from `fun r hr ↦ ⟨⟨convSubring r hr, fun _ ↦ Iff.rfl⟩, fun _ _ hF hG _ hz ↦ eval_mul hF hG hz, fun _ hF _ hz ↦ hasSum_eval hF hz, fun _ _ hF h0 hle ↦ conv_mono hF h0 hle, fun _ hp F hF ↦ ⟨conv_expand hp hF, fun z _ ↦ eval_expand hp F z⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem proof : IntSeriesRing.Statement := fun r hr ↦
   ⟨⟨convSubring r hr, fun _ ↦ Iff.rfl⟩,

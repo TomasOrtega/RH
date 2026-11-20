@@ -4,35 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StmtFields
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
 /- English proof (translation)
-Introduce `eps K C heps`. Use `set N : ℝ := Real.log 2 + |C| + |K| + 1 with hN`. Use `set D : ℝ := 9 + 2 * |C| with hD`. Use `set T : ℝ := 2 * (D + Real.log N + 1) with hTdef`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : 1 ≤ N`. Use `abs_nonneg C` as an intermediate fact. Use `abs_nonneg K` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogN : 0 ≤ Real.log N` using `Real.log_nonneg hN1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hD0 : 9 ≤ D`. Use `abs_nonneg C` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT : 0 ≤ T` using `by linarith`. Use `⟨max 1 (T ^ (5 / eps)), fun x hx u hu hlog => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : 1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hxpos : 0 < x` using `by linarith`. Use `set a := x ^ (eps / 4) with ha`. Use `set b := x ^ (4 * eps / 5) with hb`. Use `set s := x ^ (eps / 5) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hab : a ≤ b` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `hb1 : 1 ≤ b` using `Real.one_le_rpow hx1 (by positivity)`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `hc : x ^ eps = b * s`. Rewrite using `[hb, hs, ← Real.rpow_add hxpos]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hsT : T ≤ s`. Establish `h1 : T = (T ^ (5 / eps)) ^ (eps / 5)`. Rewrite using `[← Real.rpow_mul hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 5 / eps * (eps / 5) = 1` using `by field_simp`. Rewrite using `[this, Real.rpow_one]`. Rewrite using `[h1, hs]`. Conclude with `Real.rpow_le_rpow (by positivity) (le_trans (le_max_right _ _) hx) (by positivity)`. Establish `hlogu : 0 ≤ Real.log u` using `Real.log_nonneg hu`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hupos : 0 < u` using `by linarith`. Establish `huC : u ^ C ≤ Real.exp (D * b)`. Rewrite using `[Real.rpow_def_of_pos hupos]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `e1 : Real.log u * C ≤ Real.log u * |C|` using `mul_le_mul_of_nonneg_left (le_abs_self C) hlogu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : Real.log u * |C| ≤ (2 * a) * |C|` using `mul_le_mul_of_nonneg_right hlog (abs_nonneg C)`. Establish `e3 : (2 * a) * |C| ≤ (2 * b) * |C|` using `mul_le_mul_of_nonneg_right (by linarith) (abs_nonneg C)`. Establish `e4 : (2 * b) * |C| ≤ D * b`. Rewrite using `[hD]`. Use polynomial arithmetic with `[abs_nonneg C]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : K * Real.exp (8 * a) ≤ |K| * Real.exp (D * b)`. Establish `: K * Real.exp (8 * a) ≤ |K| * Real.exp (8 * a)` using `mul_le_mul_of_nonneg_right (le_abs_self K) (Real.exp_pos _).le`. Establish `h2 : Real.exp (8 * a) ≤ Real.exp (D * b)` using `Real.exp_le_exp.mpr (by nlinarith)`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (abs_nonneg K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE : Real.exp b ≤ Real.exp (D * b)` using `Real.exp_le_exp.mpr (by nlinarith)`. Establish `hCE : C * Real.exp b ≤ |C| * Real.exp (D * b)`. Establish `: C * Real.exp b ≤ |C| * Real.exp b` using `mul_le_mul_of_nonneg_right (le_abs_self C) (Real.exp_pos _).le`. Establish `h3` using `mul_le_mul_of_nonneg_left hE (abs_nonneg C)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL2 : Real.exp b * Real.log 2 ≤ Real.exp (D * b) * Real.log 2` using `mul_le_mul_of_nonneg_right hE hl2.le`. Establish `hsum : Real.exp b * Real.log 2 + K * Real.exp (8 * a) + (u ^ C + C * Real.exp b) ≤ N * Real.exp (D * b)`. Rewrite using `[hN]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfin : N * Real.exp (D * b) ≤ Real.exp (x ^ eps / 2)`. Rewrite using `[← Real.exp_log (by linarith : (0:ℝ) < N), ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[hc]`. Establish `: b * (D + Real.log N + 1) ≤ b * s / 2`.
-
-Use `mul_le_mul_of_nonneg_left hsT (by linarith : (0:ℝ) ≤ b)` as an intermediate fact. Rewrite `this` using `[hTdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hfin` using `[Real.exp_half]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.error_terms_le_sqrt_exp_rpow :
     ∀ eps K C : ℝ, 0 < eps → ∃ x0 : ℝ, ∀ x ≥ x0, ∀ u : ℝ, 1 ≤ u → Real.log u ≤ 2 * x ^ (eps / 4) →

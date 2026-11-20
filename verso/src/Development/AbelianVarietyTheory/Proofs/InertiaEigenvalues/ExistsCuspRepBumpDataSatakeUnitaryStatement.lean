@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep Glob
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.BumpData.bumpData) | (exact GlobalTheory.BumpData.bumpData) | (intros; apply GlobalTheory.BumpData.bumpData <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_cuspRep_bump_data_satake_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a), π.IsUnitary →
     ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T π →

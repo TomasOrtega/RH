@@ -15,19 +15,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ p E r x a hp hE hord hax hx hne`. Establish `hadd : ∀ σ τ : L ≃ₐ[F] L, (p : ℤ) ^ r ∣ a (σ * τ) - a σ - a τ` using `fun σ τ => GlobalTheory.T.integer_coboundary_additive_mod_prime_pow F L p E r ⊤ x a hp hE hord (fun σ _ => hx σ) σ (Subgroup.mem_top _) τ (Subgroup.mem_top _)`. Take `⟨J, hJn, σ₁, c, hJ, hc, hpc⟩` from `GlobalTheory.T.character_mod_prime_pow_kernel_generator (L ≃ₐ[F] L) p r a hp hadd hne`. Use `⟨J, hJ, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : L) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1 : ((p : 𝒪[L]) : L) = 0` using `by simpa using h0`. Establish `h2 : (p : 𝒪[L]) = 0` using `Subtype.ext (by simpa using h1)`. Unfold `OrdIs at hord`. Rewrite `hord` using `[h2, AddValuation.map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ENat.top_ne_coe E hord`. Use `set M := IntermediateField.fixedField J with hM`. Use `haveI : IsGalois F M := IsGalois.of_fixedField_normal_subgroup J`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_integer_fixedField_trace_eq_sq_mul_of_ax F L p r x a J σ₁ c hp0 hax hx (fun σ hσ => (hJ σ).1 hσ) hc`. Take `⟨e, hordF, hEe, -⟩` from `GlobalTheory.T.normalizedValuationOfPrime_of_galoisExtension F L p E hord`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `he : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hEe`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hdM : differentExponent F M < ramificationIndex F M * (3 * e)`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Take `⟨w, hw, hwt⟩` from `GlobalTheory.T.exists_trace_mem_maximalIdeal_pow_of_differentExponent F M (3 * e) hle z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.sq_mul_not_mem_maximalIdeal_pow_three_mul F p e c hp he hordF hpc w hw (hwt.trans hz)`. Establish `htow` using `differentExponent_tower F M L`. Establish `hram` using `ramificationIndex_tower F M L`. Establish `hjs : jumpSum (wild F L) ⊤ J + 2 * differentExponent M L ≤ 2 * differentExponent F L` using `GlobalTheory.T.ramificationJumpSum_add_two_mul_differentExponent_le F L J`. Establish `key : jumpSum (wild F L) ⊤ J ≤ 2 * (ramificationIndex M L * differentExponent F M)` using `by omega`.
-
-Establish `hML : ramificationIndex M L * differentExponent F M ≤ ramificationIndex M L * (ramificationIndex F M * (3 * e))` using `Nat.mul_le_mul_left _ hdM.le`. Establish `: ramificationIndex M L * (ramificationIndex F M * (3 * e)) * 2 = 6 * E`. Rewrite using `[hEe, hram]`. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem jumpSum_kernel_le_six_mul :
     ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra F L] [ValuativeExtension F L] [FiniteDimensional F L] [IsGalois F L] (p E r : ℕ) (x : L) (a : (L ≃ₐ[F] L) → ℤ), p.Prime → 0 < E → OrdIs L p E → AxIn F L p → (∀ σ : L ≃ₐ[F] L, ∃ z ∈ 𝒪[L], σ x - x = (a σ : L) + (p : L) ^ r * z) → (∃ σ, ¬ (p : ℤ) ^ r ∣ a σ) → ∃ J : Subgroup (L ≃ₐ[F] L), (∀ σ, σ ∈ J ↔ (p : ℤ) ^ r ∣ a σ) ∧ jumpSum (wild F L) ⊤ J ≤ 6 * E := by

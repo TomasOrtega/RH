@@ -30,9 +30,9 @@ def pQ (a : ℤ) {e b : ℤ} (heb : Mxi AA ξ b ≤ Mxi AA ξ e) : Qab AA ξ a b
   Submodule.mapQ _ _ LinearMap.id (fun _ hx => heb hx)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : (Submodule.Quotient.mk (Submodule.inclusion hae y) : Qab AA ξ a b) = 0` using `hx`. Rewrite `hx'`, the goal using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem iQ_injective {a e : ℤ} (b : ℤ) (hae : Mxi AA ξ e ≤ Mxi AA ξ a) :
     Function.Injective (iQ b hae) := by
@@ -44,7 +44,7 @@ theorem iQ_injective {a e : ℤ} (b : ℤ) (hae : Mxi AA ξ e ≤ Mxi AA ξ a) :
   exact hx'
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pQ_surjective (a : ℤ) {e b : ℤ} (heb : Mxi AA ξ b ≤ Mxi AA ξ e) :
     Function.Surjective (pQ a heb) := by
@@ -53,11 +53,11 @@ theorem pQ_surjective (a : ℤ) {e b : ℤ} (heb : Mxi AA ξ b ≤ Mxi AA ξ e) 
   exact ⟨Submodule.Quotient.mk y, rfl⟩
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[pQ, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Submodule.Quotient.mk ⟨y.1, hx⟩, rfl⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite using `[← hz]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (Submodule.inclusion hae w) : Qab AA ξ a e) = 0`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `w.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_iQ_pQ {a e b : ℤ} (hae : Mxi AA ξ e ≤ Mxi AA ξ a) (heb : Mxi AA ξ b ≤ Mxi AA ξ e) :
     Function.Exact (iQ b hae) (pQ a heb) := by
@@ -77,9 +77,9 @@ theorem exact_iQ_pQ {a e b : ℤ} (hae : Mxi AA ξ e ≤ Mxi AA ξ a) (heb : Mxi
 variable {T : Type} [AddCommGroup T] [Module O T] (ρT : G →* (T →ₗ[O] T)) (h : XiOK AA act ξ)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem iQ_equiv {a e : ℤ} (b : ℤ) (hae : Mxi AA ξ e ≤ Mxi AA ξ a) (g : G)
     (x : TensorProduct O T (Qab AA ξ e b)) :
@@ -93,9 +93,9 @@ theorem iQ_equiv {a e : ℤ} (b : ℤ) (hae : Mxi AA ξ e ≤ Mxi AA ξ a) (g : 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem pQ_equiv (a : ℤ) {e b : ℤ} (heb : Mxi AA ξ b ≤ Mxi AA ξ e) (g : G)
     (x : TensorProduct O T (Qab AA ξ a b)) :
@@ -109,7 +109,7 @@ theorem pQ_equiv (a : ℤ) {e b : ℤ} (heb : Mxi AA ξ b ≤ Mxi AA ξ e) (g : 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `rfl : act' = act.comp φ` from `MonoidHom.ext hact`. Take `rfl : ρ' = ρT.comp φ` from `MonoidHom.ext hρ`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem repX_res {G' : Type} [Group G'] (φ : G' →* G) (act' : G' →* (WC ≃ₐ[O] WC))
     (hact : ∀ g, act' g = act (φ g)) (ρ' : G' →* (T →ₗ[O] T)) (hρ : ∀ g, ρ' g = ρT (φ g))
@@ -121,11 +121,11 @@ theorem repX_res {G' : Type} [Group G'] (φ : G' →* G) (act' : G' →* (WC ≃
 end Maps
 
 /- English proof (translation)
-Introduce and unpack `f ⟨hfc, hf⟩ ⟨k, x, hx⟩`. Establish `hcont : Continuous (Subgroup.inclusion hHG)` using `Continuous.subtype_mk continuous_subtype_val _`. Take `⟨y, hy⟩` from `hT (fun g => f (Subgroup.inclusion hHG g)) ⟨hfc.comp hcont, fun g g' => by simp only [map_mul, hf, hρ]⟩ ⟨k, x, fun g => by rw [hρ, ← hx]; rfl⟩`. Establish `: (H.subgroupOf G).FiniteIndex` using `⟨by`. Express the relevant statement in the definitionally equal form `H.relIndex G ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hidx]`. Conclude with `pow_ne_zero _ hl⟩`. Take `⟨z, hz⟩` from `GlobalTheory.index_smul_cocycle_eq_coboundary R G X ρ (H.subgroupOf G) ((l : R) ^ c • f) (fun g g' => by simp only [Pi.smul_apply, hf, smul_add, map_smul]) ⟨y, fun g hg => by`. Use `hy ⟨g.1, hg⟩` as an intermediate fact. Rewrite `this` using `[hρ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this⟩`. Use `⟨z, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hz g]`. Express the relevant statement in the definitionally equal form `_ = H.relIndex G • _`. Rewrite using `[hidx, ← Nat.cast_smul_eq_nsmul R, Pi.smul_apply, Pi.smul_apply, smul_smul, pow_add, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tors_of_subgroup {R Γ X : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup X]
     [Module R X] [TopologicalSpace X] (G H : Subgroup Γ) (hHG : H ≤ G) (ρ : Representation R G X)
@@ -153,7 +153,7 @@ theorem tors_of_subgroup {R Γ X : Type} [CommRing R] [Group Γ] [TopologicalSpa
   rw [hidx, ← Nat.cast_smul_eq_nsmul R, Pi.smul_apply, Pi.smul_apply, smul_smul, pow_add, Nat.cast_pow]
 
 /- English proof (translation)
-The claim follows from `tors_of_subgroup G H hHG _ _ (fun g => repX_res ρ hG (Subgroup.inclusion hHG) _ (fun _ => rfl) ρ' hρ hH a b g) l v c hl hidx hT`.
+A detailed English derivation is pending.
 -/
 theorem tors_repX {O Γ WC : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [CommRing WC]
     [Algebra O WC] {AA : Subalgebra O WC} {act : Γ →* (WC ≃ₐ[O] WC)} {ξ : WCˣ} (G H : Subgroup Γ)
@@ -178,7 +178,7 @@ theorem comp_inclusion {Γ M : Type} [Group Γ] [Monoid M] {L G H : Subgroup Γ}
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `repQ at hT ⊢`. Conclude with `tors_repX G H hHG ρ ρ' hρ _ _ a b l v c (Fact.out : l.Prime).ne_zero hidx hT`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tors_repQ {P : LocPrime l} (AI : LocAinf l P) (G H : Subgroup (GQ l))
     (hHG : H ≤ G) {T : Type} [AddCommGroup T] [Module ℤ_[l] T] (ρ : ↥G →* (T →ₗ[ℤ_[l]] T))
@@ -191,9 +191,9 @@ theorem tors_repQ {P : LocPrime l} (AI : LocAinf l P) (G H : Subgroup (GQ l))
   exact tors_repX G H hHG ρ ρ' hρ _ _ a b l v c (Fact.out : l.Prime).ne_zero hidx hT
 
 /- English proof (translation)
-Use `IntermediateField.fixingSubgroup_le (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hij`. Express the relevant statement in the definitionally equal form `x ^ l ^ i = 1 at hx`. Express the relevant statement in the definitionally equal form `x ^ l ^ (i + k) = 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pow_add, pow_mul, hx, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gj_anti (K : FinExt l) {i j : ℕ} (hij : i ≤ j) : Gj K j ≤ Gj K i := by
   refine IntermediateField.fixingSubgroup_le (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _)
@@ -204,13 +204,13 @@ theorem Gj_anti (K : FinExt l) {i j : ℕ} (hij : i ≤ j) : Gj K j ≤ Gj K i :
   rw [pow_add, pow_mul, hx, one_pow]
 
 /- English proof (translation)
-The claim follows from `isCompact_iff_compactSpace.mp (InfiniteGalois.fixingSubgroup_isClosed (Ks K j)).isCompact`.
+A detailed English derivation is pending.
 -/
 theorem compact_Gj (K : FinExt l) (j : ℕ) : CompactSpace ↥(Gj K j) :=
   isCompact_iff_compactSpace.mp (InfiniteGalois.fixingSubgroup_isClosed (Ks K j)).isCompact
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Conclude with `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_cyclotomicTowerBase_ne_zero (K : FinExt l) : Module.finrank ℚ_[l] ↥(K0 K) ≠ 0 := by
   have : FiniteDimensional ℚ_[l] ↥K.1 := K.2
@@ -221,9 +221,9 @@ theorem finrank_cyclotomicTowerBase_ne_zero (K : FinExt l) : Module.finrank ℚ_
   exact Module.finrank_pos.ne'
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h1` using `(finrank_Ks_and_chi_surjective l K).1`. Rewrite using `[h1 j (hi.trans hij), h1 i hi]`. Use `⟨?_, mul_ne_zero (finrank_cyclotomicTowerBase_ne_zero K) (mul_ne_zero ?_ (pow_ne_zero _ hl.ne_zero))⟩` and prove the remaining obligations. Establish `: j - 1 = (j - i) + (i - 1)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem deg_Ks (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
     Module.finrank ℚ_[l] ↥(Ks K j) = l ^ (j - i) * Module.finrank ℚ_[l] ↥(Ks K i) ∧
@@ -237,7 +237,7 @@ theorem deg_Ks (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
   · have := hl.two_le; omega
 
 /- English proof (translation)
-Establish `h` using `Subgroup.relIndex_mul_index (Gj_anti K hij)`. Take `⟨h1, h2⟩` from `deg_Ks K hi hij`. Rewrite `h` using `[Gj, Gj, ← IntermediateField.finrank_eq_fixingSubgroup_index, ← IntermediateField.finrank_eq_fixingSubgroup_index, h1]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h2) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_Gj (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
     (Gj K j).relIndex (Gj K i) = l ^ (j - i) := by
@@ -248,7 +248,7 @@ theorem relIndex_Gj (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
   exact Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h2) h
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Take `⟨h1, h2⟩` from `deg_Ks K hi hij`. Rewrite using `[h1, padicValNat.mul (pow_ne_zero _ hl.ne_zero) h2, padicValNat.prime_pow]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_deg (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
     padicValNat l (Module.finrank ℚ_[l] ↥(Ks K j)) - padicValNat l (Module.finrank ℚ_[l] ↥(Ks K i))
@@ -259,7 +259,7 @@ theorem val_deg (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i) (hij : i ≤ j) :
   omega
 
 /- English proof (translation)
-Take `⟨d, M, A, hM⟩` from `(GlobalTheory.Cyc.isMat_exists_and_props l K LL T).1`. Unfold `IsMat at hM`. Take `⟨bT, _⟩` from `hM`. Use `letI := zlMod LL T`. Conclude with `⟨Module.Free.of_basis bT, Module.Finite.of_basis bT⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem free_finite (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) :
     letI := zlMod LL T
@@ -271,17 +271,17 @@ theorem free_finite (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(
   exact ⟨Module.Free.of_basis bT, Module.Finite.of_basis bT⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `e : a + ((0 : ℕ) : ℤ) + 1 = a + 1` using `by simp`. Rewrite using `[e]`. Establish `e2 : Finset.Ico a (a + 1) = {a}`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, Finset.sum_singleton]`. Conclude with `hC a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `e : a + ((n + 1 : ℕ) : ℤ) + 1 = (a + n + 1) + 1` using `by push_cast; ring`. Rewrite using `[e]`. Generalize the expression as in `hb : a + n + 1 = b at ih ⊢`. Establish `hab : a ≤ b` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : b ≤ b + 1` using `by omega`. Establish `e2 : Finset.Ico a (b + 1) = insert b (Finset.Ico a b)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Finset.sum_insert (by simp)]`. Establish `hae` using `Mxi_anti (xiOK AI) hab`. Establish `heb` using `Mxi_anti (xiOK AI) hb1`. Take `⟨_, _⟩` from `GlobalTheory.XiQuotient.tensor_quotient_torsionFree_complete l P AI a (b + 1) (hab.trans hb1) T`. Take `⟨_, _⟩` from `GlobalTheory.XiQuotient.tensor_quotient_torsionFree_complete l P AI b (b + 1) hb1 T`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _⟩` from `GlobalTheory.XiQuotient.tensor_quotient_torsionFree_complete l P AI a b hab T`. Conclude with `GlobalTheory.torsKilledBy_devissage l ↥G _ _ _ (repQ AI G ρ a (b + 1)) (repQ AI G ρ b (b + 1)) (repQ AI G ρ a b) (LinearMap.lTensor T (iQ (b + 1) hae)) (LinearMap.lTensor T (pQ a heb)) _ _ (Module.Flat.lTensor_preserves_injective_linearMap _ (iQ_injective _ hae)) (LinearMap.lTens …`.
+A detailed English derivation is pending.
 -/
 theorem tors_induction {P : LocPrime l} (AI : LocAinf l P) (G : Subgroup (GQ l)) [CompactSpace ↥G]
     (T : Type) [AddCommGroup T] [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T]
@@ -339,7 +339,7 @@ theorem tors_induction {P : LocPrime l} (AI : LocAinf l P) (G : Subgroup (GQ l))
       (hC b) ih
 
 /- English proof (translation)
-The claim follows from `tors_repQ AI (Gj K i) (Gj K j) (Gj_anti K hij) _ _ (comp_inclusion (Gj_anti K hij) hle hle' ρ) a b _ _ (relIndex_Gj K hi hij) h`.
+A detailed English derivation is pending.
 -/
 theorem tors_descend {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i)
     (hij : i ≤ j) (G : Subgroup (GQ l)) (hle : Gj K i ≤ G) (hle' : Gj K j ≤ G)
@@ -355,7 +355,7 @@ theorem tors_descend {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {i j : �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Take `⟨n, rfl⟩ : ∃ n : ℕ, b = a + n + 1` from `⟨(b - a - 1).toNat, by omega⟩`. Use `compact_Gj K j` as an intermediate fact. Establish `key` using `tors_induction AI (Gj K j) T (ρ.comp (Subgroup.inclusion hle')) c hcont hinv hC a n`. Conclude with `@tors_descend l _ P AI K i j hi hij G hle hle' T _ _ ρ a _ _ (_) key`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tors_combine {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {i j : ℕ} (hi : 1 ≤ i)
     (hij : i ≤ j) (G : Subgroup (GQ l)) (hle : Gj K i ≤ G) (hle' : Gj K j ≤ G)
@@ -390,7 +390,7 @@ theorem tors_combine {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {i j : �
   exact @tors_descend l _ P AI K i j hi hij G hle hle' T _ _ ρ a _ _ (_) key
 
 /- English proof (translation)
-Establish `h1 : ell (sit D.loc HW l (D.locA l) K s LL h) = l` using `(D.loc l).PD_p K`. Establish `h2 : (sit D.loc HW l (D.locA l) K s LL h).W.s = s` using `(HW l).W_s K s LL h`. Rewrite using `[vdegMs, h1, h2]`. Conclude with `val_deg K h.1 hsm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdeg_eq (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) (m : ℕ) (hsm : s ≤ m) :
@@ -403,9 +403,9 @@ theorem vdeg_eq (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt l)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F h5 h7 l _ K s LL h S E T M0 h0 a b hle hab hW`. Establish `hsm : s ≤ mN l s (M0 + h0)` using `by unfold mN; omega`. Establish `hc : cLL l (mN l s (M0 + h0)) (vdegMs S (mN l s (M0 + h0))) (Jset S T) a b = mN l s (M0 + h0) - s + ∑ e ∈ Finset.Ico a b, (2 + max 1 (rI l (mN l s (M0 + h0)) (Jset S T) e))`. Rewrite using `[cLL, vdeg_eq D HW K s LL h _ hsm]`. Establish `hle'` using `(Gj_anti K hsm).trans hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hfree, hfin⟩` from `free_finite K LL T`. Establish `hC` using `fun i : ℤ => GlobalTheory.Cyc.GradedTorsion.torsion_killed D HW F h7 l K s LL h T M0 h0 i hle' hW`. Establish `hcont` using `fun a b : ℤ => GlobalTheory.AinfCont.continuous_orbit_tensor_Qab D HW F l K s LL h T a b _ hle'`. Establish `hinv` using `fun (a e b : ℤ) (hae : a ≤ e) (heb : e ≤ b) => GlobalTheory.T.xiQuotient_invariants_lift_rationally D HW F h5 h7 l K s LL h T a e b _ hle' hsm hae heb hW.1`. Conclude with `@tors_combine l _ _ (D.locA l) K _ _ h.1 hsm (GK K) hle hle' _ _ (zlMod LL T) hfree hfin (actTZ LL T) _ hcont hinv hC a b hab _ hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torsion_bound_at_level : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm5 D → adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ) (a b : ℤ) (hle : Gj K s ≤ GK K), a < b → HypW S E T M0 h0 → letI := zlMod LL T; letI : TopologicalSpace (TensorProduct ℤ_[l] ↥T.L.T (Qab (AinfSub l) (xiU (D.locA l)) a b)) := (Ideal.span {(l : ℤ_[l])}).adicModuleTopology _; TorsKilledBy (repQ (D.locA l) (Gj K s) ((actTZ LL T).comp (Subgroup.inclusion hle)) a b) (l : ℤ_[l]) ((l : ℤ_[l]) ^ cLL l (mN l s (M0 + h0)) (vdegMs S (mN l s (M0 + h0))) (Jset S T) a b) := by
   intro D HW F h5 h7 l _ K s LL h S E T M0 h0 a b hle hab hW

@@ -6,7 +6,7 @@ open GlobalTheory.Count Finset
 namespace GlobalTheory.Count
 
 /- English proof (translation)
-Simplify using `only [layerProd, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem layerProd_mul_layerProd (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : Fin a → ℝ) (G H : ℝ → ℝ) :
     layerProd n f j τ G * layerProd n f j τ H = layerProd n f j τ (fun la => G la * H la) := by
@@ -14,7 +14,7 @@ theorem layerProd_mul_layerProd (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : 
   ring
 
 /- English proof (translation)
-Simplify using `only [layerProd, ← pow_add, Finset.prod_pow_eq_pow_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem layerProd_const_eq_pow (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : Fin a → ℝ) (c : ℝ) :
     layerProd n f j τ (fun _ => c) = c ^ (∑ i, ∑ k ∈ univ.filter (fun k => i < k),
@@ -22,15 +22,13 @@ private theorem layerProd_const_eq_pow (n f : ℕ) {a : ℕ} (j : Fin a → ℕ)
   simp only [layerProd, ← pow_add, Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Take `⟨S, hS⟩ : ∃ S, S = ∑ i, j i` from `⟨_, rfl⟩`. Rewrite `hn`, the goal using `[← hS]`. Establish `h1 : ∑ i, ∑ k ∈ univ.filter (fun k => i < k), j i * j k ≤ S * S`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∑ i, j i ^ 2 ≤ S * S`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sq, hS]`. Conclude with `Nat.mul_le_mul_left _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Use `_ = S * S := by rw [← Finset.sum_mul, hS]`. Take `⟨m, rfl⟩ : ∃ m, n = 2 * S + m` from `⟨n - 2 * S, by omega⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 2 * S + m - 2 * S = m` using `by omega`. Establish `e1 : ∑ i, ∑ k ∈ univ.filter (fun k => i < k), (2 * j i * j k * f + 2 * j i * j k * f) = 4 * f * ∑ i, ∑ k ∈ univ.filter (fun k => i < k), j i * j k`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `e2 : ∑ i, (2 * j i * m * f + j i ^ 2 * f) = 2 * m * f * S + f * ∑ i, j i ^ 2`. Rewrite using `[hS, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hm, e1, e2]`.
-
-Use polynomial arithmetic with `[Nat.mul_le_mul_left f h1, Nat.mul_le_mul_left f h2, Nat.zero_le (S * m * f)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem layerProd_exponent_le_three_mul_sum_mul (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (hn : 2 * ∑ i, j i ≤ n) :
     ∑ i, ∑ k ∈ univ.filter (fun k => i < k), (2 * j i * j k * f + 2 * j i * j k * f) +
@@ -61,23 +59,21 @@ private theorem layerProd_exponent_le_three_mul_sum_mul (n f : ℕ) {a : ℕ} (j
   nlinarith [Nat.mul_le_mul_left f h1, Nat.mul_le_mul_left f h2, Nat.zero_le (S * m * f)]
 
 /- English proof (translation)
-Establish `hpos : ∀ i, 0 < τ i` using `fun i => (h01 i).1`. Establish `hlt : ∀ i, τ i < 1` using `fun i => (h01 i).2`. Establish `hb : ∀ la, 0 < la → la < 1 → ∀ e : ℕ, 0 ≤ G la ^ e ∧ G la ^ e ≤ Real.exp x ^ e` using `fun la h0 h1 e => ⟨pow_nonneg (hG la h0 h1).1 e, pow_le_pow_left₀ (hG la h0 h1).1 (hG la h0 h1).2 e⟩`. Establish `hr : ∀ i k, i < k → 0 < τ i / τ k ∧ τ i / τ k < 1` using `fun i k hik => ⟨div_pos (hpos i) (hpos k), (div_lt_one (hpos k)).2 (hτ hik)⟩`. Establish `hp : ∀ i k, 0 < τ i * τ k ∧ τ i * τ k < 1` using `fun i k => ⟨mul_pos (hpos i) (hpos k), by nlinarith [hpos i, hpos k, hlt i, hlt k]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ i, 0 < τ i ^ 2 ∧ τ i ^ 2 < 1` using `fun i => ⟨pow_pos (hpos i) 2, by nlinarith [hpos i, hlt i]⟩`. Establish `hex : 0 ≤ Real.exp x` using `(Real.exp_pos x).le`. Establish `key : layerProd n f j τ G ≤ layerProd n f j τ (fun _ => Real.exp x)`. Simplify using `only [layerProd]`. Apply `mul_le_mul` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `k hk`. Establish `hik` using `(Finset.mem_filter.1 hk).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (hb _ (hr i k hik).1 (hr i k hik).2 _).1 (hb _ (hp i k).1 (hp i k).2 _).1`. Introduce `i _`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `k hk`. Establish `hik` using `(Finset.mem_filter.1 hk).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_nonneg (hb _ (hr i k hik).1 (hr i k hik).2 _).1 (hb _ (hp i k).1 (hp i k).2 _).1`. Introduce `k hk`. Establish `hik` using `(Finset.mem_filter.1 hk).2`. Conclude with `mul_le_mul (hb _ (hr i k hik).1 (hr i k hik).2 _).2 (hb _ (hp i k).1 (hp i k).2 _).2 (hb _ (hp i k).1 (hp i k).2 _).1 (pow_nonneg hex _)`. Apply `Finset.prod_le_prod` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Conclude with `mul_nonneg (hb _ (hpos i) (hlt i) _).1 (hb _ (hs i).1 (hs i).2 _).1`. Introduce `i _`. Conclude with `mul_le_mul (hb _ (hpos i) (hlt i) _).2 (hb _ (hs i).1 (hs i).2 _).2 (hb _ (hs i).1 (hs i).2 _).1 (pow_nonneg hex _)`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `mul_nonneg (hb _ (hpos i) (hlt i) _).1 (hb _ (hs i).1 (hs i).2 _).1`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k _`. Check the signs of the components of the expression. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[layerProd_const_eq_pow, ← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
-
-Apply `mul_le_mul_of_nonneg_right _ hx` to reduce the goal to its premises. Conclude with `layerProd_exponent_le_three_mul_sum_mul n f j hn` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem layerProd_le_exp (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : Fin a → ℝ) (G : ℝ → ℝ) (x : ℝ)
     (hx : 0 ≤ x) (hn : 2 * ∑ i, j i ≤ n) (hτ : StrictMono τ) (h01 : ∀ i, 0 < τ i ∧ τ i < 1)
@@ -132,7 +128,7 @@ theorem layerProd_le_exp (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : Fin a �
   exact_mod_cast layerProd_exponent_le_three_mul_sum_mul n f j hn
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_mul_distrib]`. Establish `hA : 0 ≤ ∏ i, u i` using `Finset.prod_nonneg fun i _ => hu i`. Establish `hB0 : 0 ≤ ∏ i, v i` using `Finset.prod_nonneg fun i _ => hv0 i`. Establish `hB1 : ∏ i, v i ≤ 1` using `Finset.prod_le_one (fun i _ => hv0 i) (fun i _ => hv1 i)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_prod_mul_le_prod_of_le_one {a : ℕ} (X : ℝ) (u v : Fin a → ℝ) (hX0 : 0 ≤ X) (hX1 : X ≤ 1)
     (hu : ∀ i, 0 ≤ u i) (hv0 : ∀ i, 0 ≤ v i) (hv1 : ∀ i, v i ≤ 1) :
@@ -146,21 +142,19 @@ private theorem mul_prod_mul_le_prod_of_le_one {a : ℕ} (X : ℝ) (u v : Fin a 
     _ ≤ ∏ i, u i := by rw [one_mul]; exact mul_le_of_le_one_right hA hB1
 
 /- English proof (translation)
-Introduce `n f q a j τ de hq hqn hτ h01 hde hsmall`. Establish `hS2 : 2 * ∑ i, j i ≤ n` using `by omega`. Establish `hpos : ∀ i, 0 < τ i` using `fun i => (h01 i).1`. Establish `hlt : ∀ i, τ i < 1` using `fun i => by linarith [(h01 i).2]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[layerProd_mul_layerProd]`. Establish `hb` using `layerProd_le_exp n f j τ (fun la => (1 + 12 * de / la) * la) (12 * de) (by positivity) hS2 hτ (fun i => ⟨hpos i, hlt i⟩) (fun la h0 h1 => by show 0 ≤ (1 + 12 * de / la) * la ∧ (1 + 12 * de / la) * la ≤ Real.exp (12 * de)`. Rewrite using `[add_mul, div_mul_cancel₀ _ h0.ne', one_mul]`. Conclude with `⟨by linarith, by linarith [Real.add_one_le_exp (12 * de)]⟩)`. Use `hb.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnat : 3 * (∑ i, j i) * n * f ≤ 3 * q * n * f` using `by gcongr`. Establish `hcast : ((3 * (∑ i, j i) * n * f : ℕ) : ℝ) ≤ 3 * q * n * f` using `by exact_mod_cast hnat`. Establish `hexp : ((3 * (∑ i, j i) * n * f : ℕ) : ℝ) * (12 * de) ≤ 36 / 100`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Unfold `layerProd`. Use `mul_prod_mul_le_prod_of_le_one _ (fun i => τ i ^ (2 * j i * (n - 2 * ∑ l, j l) * f)) (fun i => (τ i ^ 2) ^ (j i ^ 2 * f)) ?_ ?_ (fun i => pow_nonneg (hpos i).le _) (fun i => pow_nonneg (pow_pos (hpos i) 2).le _) ?_` and prove the remaining obligations. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k _`. Conclude with `mul_nonneg (pow_nonneg (div_pos (hpos i) (hpos k)).le _) (pow_nonneg (mul_pos (hpos i) (hpos k)).le _)`. Apply `Finset.prod_le_one` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Conclude with `mul_nonneg (pow_nonneg (div_pos (hpos i) (hpos k)).le _) (pow_nonneg (mul_pos (hpos i) (hpos k)).le _)`. Introduce `i _`. Apply `Finset.prod_le_one` to reduce the goal to its premises. Introduce `k _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (pow_nonneg (div_pos (hpos i) (hpos k)).le _) (pow_nonneg (mul_pos (hpos i) (hpos k)).le _)`. Introduce `k hk`. Establish `hik` using `(Finset.mem_filter.1 hk).2`. Establish `hq1 : τ i / τ k ≤ 1` using `((div_lt_one (hpos k)).2 (hτ hik)).le`. Establish `hp1 : τ i * τ k ≤ 1` using `by nlinarith [hpos i, hpos k, hlt i, hlt k]`.
-
-Conclude with `mul_le_one₀ (pow_le_one₀ (div_pos (hpos i) (hpos k)).le hq1) (pow_nonneg (mul_pos (hpos i) (hpos k)).le _) (pow_le_one₀ (mul_pos (hpos i) (hpos k)).le hp1)`. Introduce `i`. Establish `: τ i ^ 2 ≤ 1` using `by nlinarith [hpos i, hlt i]`. Conclude with `pow_le_one₀ (pow_pos (hpos i) 2).le this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem layerProd_count_mul_density_le_two :
     ∀ (n f q a : ℕ) (j : Fin a → ℕ) (τ : Fin a → ℝ) (de : ℝ), ∑ i, j i ≤ q → 2 * q ≤ n → StrictMono τ →

@@ -7,19 +7,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `A _ hA Y f hf hs`. Take `⟨hH, hsep⟩` from `hA`. Use `haveI := hH`. Take `⟨y, hy⟩` from `f.surjective (IsLocalRing.closedPoint A)`. Set `𝒰` to `Y.affineOpenCover`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i` to `𝒰.idx y`. Take `⟨z, hz⟩` from `𝒰.covers y`. Set `g : Spec (𝒰.X i) ⟶ Spec (CommRingCat.of A)` to `𝒰.f i ≫ f`. Use `haveI : IsOpenImmersion (𝒰.f i) := 𝒰.map_prop i`. Use `haveI : Etale g := inferInstance`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : CommRingCat.of A ⟶ 𝒰.X i` to `Spec.preimage g`. Establish `hφ : Spec.map φ = g` using `Spec.map_preimage g`. Establish `hEt : φ.hom.Etale`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Etale), hφ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra A (𝒰.X i) := φ.hom.toAlgebra`. Use `haveI : Algebra.Etale A (𝒰.X i) := hEt`. Establish `hq : z.asIdeal.comap (algebraMap A (𝒰.X i)) = IsLocalRing.maximalIdeal A`. Establish `h1 : (Spec.map φ).base z = IsLocalRing.closedPoint A`. Rewrite using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show f.base ((𝒰.f i).base z) = _`. Rewrite using `[hz, hy]`. Establish `h2` using `congrArg PrimeSpectrum.asIdeal h1`. Conclude with `h2`. Use `haveI : z.asIdeal.IsPrime := PrimeSpectrum.isPrime z`.
-
-Take `⟨s, -⟩` from `(GlobalTheory.StrictHensel.strictlyHenselian_iff A).2 ⟨hH, hsep⟩ (𝒰.X i) z.asIdeal hq`. Use `⟨Spec.map (CommRingCat.ofHom s.toRingHom) ≫ 𝒰.f i, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom s.toRingHom) ≫ g = _`. Rewrite using `[← hφ, ← Spec.map_comp]`.
-
-Establish `: φ ≫ CommRingCat.ofHom s.toRingHom = 𝟙 _`. Use extensionality with `a`. Conclude with `s.commutes a`. Conclude with `(congrArg Spec.map this).trans (Spec.map_id _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem etale_surjective_section_of_SH : ∀ (A : Type) [CommRing A], SH A → ∀ (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of A)), Etale f → Surjective f →

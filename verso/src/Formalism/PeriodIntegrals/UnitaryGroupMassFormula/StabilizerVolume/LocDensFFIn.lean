@@ -12,9 +12,9 @@ section matrix
 variable {K : Type} [Field K] {σ : K →+* K}
 
 /- English proof (translation)
-Unfold `PI.VolStabS.ffH`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b hb`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, hb]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ffH_single_right {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K)
     (j : Fin M) :
@@ -27,13 +27,11 @@ private theorem ffH_single_right {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : F
     simp [Pi.single_apply, hb]
 
 /- English proof (translation)
-Simplify using `only [ffH, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `smul_right c x y := by`. Simplify using `only [ffH, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Use `herm x y := by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [ffH, map_sum, map_mul, hσ, hJ]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Use `nondeg x hx := by`. Establish `hv : Matrix.vecMul (fun i => σ (x i)) J = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `j0`. Use `hx (Pi.single j0 1)` as an intermediate fact. Simplify `this` using `[ffH, Pi.single_apply, Matrix.vecMul, dotProduct]`. Establish `hinv : (fun i => σ (x i)) = 0`. Use `congrArg (fun v => Matrix.vecMul v J⁻¹) hv` as an intermediate fact.
-
-Simplify `this` using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv J hdet, Matrix.vecMul_one, Matrix.zero_vecMul]`. Use function extensionality and compare the values at `i`. Conclude with `σ.injective (by simpa using congrFun hinv i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ffH_isHS (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) K)
     (hJ : ∀ i j, σ (J j i) = J i j) (hdet : IsUnit J.det) : IsHS σ (ffH σ J) where
@@ -59,7 +57,7 @@ theorem ffH_isHS (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin
     exact σ.injective (by simpa using congrFun hinv i)
 
 /- English proof (translation)
-Rewrite using `[ffH_single_right, Fintype.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b hb`. Simplify using `[Pi.single_apply, hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ffH_single {n : ℕ} (T : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     ffH σ T (Pi.single i 1) (Pi.single j 1) = T i j := by
@@ -71,7 +69,7 @@ theorem ffH_single {n : ℕ} (T : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
 end matrix
 
 /- English proof (translation)
-The claim follows from `{ add_right x y z := by show hV (φ x) (φ (y + z)) = hV (φ x) (φ y) + hV (φ x) (φ z) rw [map_add, hsV.add_right] smul_right c x y := by show hV (φ x) (φ (c • y)) = c * hV (φ x) (φ y) rw [map_smul, hsV.smul_right] herm x y := hsV.herm (φ x) (φ y) }`.
+A detailed English derivation is pending.
 -/
 private theorem isSq_comp_linearMap {K : Type} [Field K] {σ : K →+* K} {U V : Type}
     [AddCommGroup U] [Module K U] [AddCommGroup V] [Module K V] {hV : V → V → K}
@@ -86,9 +84,9 @@ private theorem isSq_comp_linearMap {K : Type} [Field K] {σ : K →+* K} {U V :
   herm x y := hsV.herm (φ x) (φ y) }
 
 /- English proof (translation)
-Use `Nat.card_congr { toFun := fun φ => ⟨fun i => φ.1 (b i), fun i j => φ.2 (b i) (b j)⟩ invFun := fun Y => ⟨b.constr K Y.1, fun x y => (isSq_comp_linearMap hsV (b.constr K Y.1)).ext_basis hsU b (fun i j => by simpa only [Basis.constr_basis] using Y.2 i j) x y⟩ left_inv := fun φ => by` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `right_inv := fun Y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `}`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_isom {K : Type} [Field K] {σ : K →+* K} {U V : Type} [AddCommGroup U] [Module K U]
     [AddCommGroup V] [Module K V] {hU : U → U → K} {hV : V → V → K} (hsU : IsSq σ hU)
@@ -115,7 +113,7 @@ section field
 variable {k K : Type} [Field k] [Fintype k] [Field K] [Fintype K] [DecidableEq K] [Algebra k K]
 
 /- English proof (translation)
-Rewrite using `[← h2]`. Conclude with `Module.card_eq_pow_finrank`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_eq_card_sq_of_finrank_two (h2 : finrank k K = 2) :
     Fintype.card K = Fintype.card k ^ 2 := by
@@ -123,9 +121,7 @@ private theorem card_eq_card_sq_of_finrank_two (h2 : finrank k K = 2) :
   exact Module.card_eq_pow_finrank
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists k`. Take `⟨n, hprime, hn⟩` from `FiniteField.card k p`. Use `haveI : Fact p.Prime := ⟨hprime⟩`. Use `haveI : CharP K p := charP_of_injective_algebraMap (algebraMap k K).injective p`. Rewrite using `[hn]`.
-
-Conclude with `add_pow_char_pow a b p (n : ℕ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem add_pow_card_eq_add_pow_card (a b : K) :
     (a + b) ^ Fintype.card k = a ^ Fintype.card k + b ^ Fintype.card k := by
@@ -137,11 +133,11 @@ private theorem add_pow_card_eq_add_pow_card (a b : K) :
   exact add_pow_char_pow a b p (n : ℕ)
 
 /- English proof (translation)
-Establish `hq1 : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `hP : (X ^ Fintype.card k - X : K[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero K hq1`. Establish `hsub : Finset.univ.image (algebraMap k K) ⊆ (X ^ Fintype.card k - X : K[X]).roots.toFinset`. Introduce `x hx`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Multiset.mem_toFinset, mem_roots hP, IsRoot.def, eval_sub, eval_pow, eval_X, ← map_pow, FiniteField.pow_card, sub_self]`. Establish `hcard : (X ^ Fintype.card k - X : K[X]).roots.toFinset.card ≤ (Finset.univ.image (algebraMap k K)).card`. Rewrite using `[Finset.card_image_of_injective _ (algebraMap k K).injective, Finset.card_univ]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hcard`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmem : d ∈ (X ^ Fintype.card k - X : K[X]).roots.toFinset`. Rewrite using `[Multiset.mem_toFinset, mem_roots hP, IsRoot.def, eval_sub, eval_pow, eval_X, hd, sub_self]`. Rewrite `hmem` using `[← heq]`. Take `⟨y, -, hy⟩` from `Finset.mem_image.mp hmem`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mem_range_algebraMap_of_pow_card_eq (d : K) (hd : d ^ Fintype.card k = d) :
     ∃ d0 : k, algebraMap k K d0 = d := by
@@ -167,21 +163,19 @@ private theorem mem_range_algebraMap_of_pow_card_eq (d : K) (hd : d ^ Fintype.ca
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `hK` using `card_eq_card_sq_of_finrank_two (k := k) (K := K) h2`. Establish `hqq : ∀ y : K, (y ^ Fintype.card k) ^ Fintype.card k = y` using `fun y => by`. Rewrite using `[← pow_mul, ← sq, ← hK, FiniteField.pow_card]`. Establish `hfix : ∀ c : K, c ^ Fintype.card k = c → σ c = c`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d0, rfl⟩` from `mem_range_algebraMap_of_pow_card_eq c hc`. Conclude with `σ.commutes d0`. Establish `hdich : ∀ x : K, σ x = x ∨ σ x = x ^ Fintype.card k`. Introduce `x`. Establish `hs : σ x + σ x ^ Fintype.card k = x + x ^ Fintype.card k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_add]`. Conclude with `hfix _ (by rw [add_pow_card_eq_add_pow_card, hqq, add_comm])`. Establish `hm : σ x * σ x ^ Fintype.card k = x * x ^ Fintype.card k`. Rewrite using `[← map_pow, ← map_mul]`. Conclude with `hfix _ (by rw [mul_pow, hqq, mul_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h0 : (σ x - x) * (σ x - x ^ Fintype.card k) = 0`. Take the linear combination `σ x * hs - hm`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.mp h)`. Conclude with `Or.inr (sub_eq_zero.mp h)`.
+Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `x`. Assume the negation of the conclusion as `ha`. Establish `hq0 : Fintype.card k ≠ 0` using `Fintype.card_ne_zero`. Establish `hax : σ x = x` using `(hdich x).resolve_right ha`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, σ b ≠ b := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (AlgEquiv.ext fun y => by simpa using hcon y)`. Establish `hbq : σ b = b ^ Fintype.card k` using `(hdich b).resolve_left hb`. Establish `hx0 : x ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `ha (by rw [map_zero, zero_pow hq0])`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hb (map_zero σ)`.
-
-Break down `hdich (x * b) with h | h` into its components or cases. Rewrite `h` using `[map_mul, hax, hbq]`. Conclude with `hb (hbq.trans (mul_left_cancel₀ hx0 h))`. Rewrite `h` using `[map_mul, hax, hbq, mul_pow]`. Conclude with `ha (hax.trans (mul_right_cancel₀ (pow_ne_zero _ hb0) h))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_of_ne (σ : K ≃ₐ[k] K) (h2 : finrank k K = 2) (hne : σ ≠ AlgEquiv.refl) :
     ∀ x, σ x = x ^ Fintype.card k := by
@@ -227,39 +221,35 @@ theorem frob_of_ne (σ : K ≃ₐ[k] K) (h2 : finrank k K = 2) (hne : σ ≠ Alg
     exact ha (hax.trans (mul_right_cancel₀ (pow_ne_zero _ hb0) h))
 
 /- English proof (translation)
-The claim follows from `mem_range_algebraMap_of_pow_card_eq d hd`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_pow (d : K) (hd : d ^ Fintype.card k = d) :
     ∃ d0 : k, algebraMap k K d0 = d := mem_range_algebraMap_of_pow_card_eq d hd
 
 /- English proof (translation)
-Distinguish the cases in `hd0 : d = 0`. Substitute `hd0` using the available equality. Rewrite using `[if_pos rfl, Nat.card_eq_one_iff_exists]`. Use `⟨⟨0, by simp⟩, fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Break down `mul_eq_zero.mp y.2 with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `(map_eq_zero σ).mp h`. Rewrite using `[if_neg hd0]`. Establish `hK` using `card_eq_card_sq_of_finrank_two (k := k) (K := K) h2`. Establish `hqq : ∀ y : K, (y ^ Fintype.card k) ^ Fintype.card k = y` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, ← sq, ← hK, FiniteField.pow_card]`. Establish `hN : ∀ t : K, t * σ t = t ^ (Fintype.card k + 1)` using `fun t => by`. Rewrite using `[hfrob, pow_succ']`. Establish `hfixset : Finset.univ.filter (fun e : K => σ e = e) = Finset.univ.image (algebraMap k K)`. Use extensionality with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Conclude with `mem_range_algebraMap_of_pow_card_eq e ((hfrob e).symm.trans he)`. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `σ.commutes y`. Establish `hfixcard : (Finset.univ.filter (fun e : K => σ e = e)).card = Fintype.card k`. Rewrite using `[hfixset, Finset.card_image_of_injective _ (algebraMap k K).injective, Finset.card_univ]`. Establish `hD : (Finset.univ.filter (fun e : K => σ e = e ∧ e ≠ 0)).card + 1 = Fintype.card k`. Establish `hset : Finset.univ.filter (fun e : K => σ e = e ∧ e ≠ 0) = (Finset.univ.filter (fun e : K => σ e = e)).erase 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `e`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]`. Conclude with `and_comm`. Rewrite using `[hset, Finset.card_erase_add_one (by simp), hfixcard]`. Establish `hS : (Finset.univ.filter (fun t : K => t ≠ 0)).card + 1 = Fintype.card k ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.filter_ne', Finset.card_erase_add_one (Finset.mem_univ _), Finset.card_univ, hK]`. Establish `hmaps : ∀ t ∈ Finset.univ.filter (fun t : K => t ≠ 0), t * σ t ∈ Finset.univ.filter (fun e : K => σ e = e ∧ e ≠ 0)`. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢`. Use `⟨?_, mul_ne_zero ht ((map_ne_zero σ).mpr ht)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, hfrob (σ t), hfrob t, hqq, mul_comm]`. Establish `hsum` using `Finset.card_eq_sum_card_fiberwise hmaps`. Establish `hbound : ∀ e : K, ((Finset.univ.filter (fun t : K => t ≠ 0)).filter (fun t => t * σ t = e)).card ≤ Fintype.card k + 1`. Introduce `e`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht`. Rewrite using `[Multiset.mem_toFinset, mem_nthRoots (Nat.succ_pos _), ← hN]`. Conclude with `ht.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `_ ≤ Multiset.card (nthRoots (Fintype.card k + 1) e) := Multiset.toFinset_card_le _`. Use `_ ≤ Fintype.card k + 1 := card_nthRoots _ _`. Establish `htarget : Nat.card {t : K // t * σ t = d} = ((Finset.univ.filter (fun t : K => t ≠ 0)).filter (fun t => t * σ t = d)).card`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `t`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Use `⟨?_, ht⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `rfl`. Conclude with `hd0 (by simpa using ht.symm)`. Conclude with `fun ht => ht.2`. Rewrite using `[htarget]`. Use `le_antisymm (hbound d) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations.
-
-Establish `hdD : d ∈ Finset.univ.filter (fun e : K => σ e = e ∧ e ≠ 0)`. Simplify using `[hd, hd0]`. Establish `hlt2 : (Finset.univ.filter (fun t : K => t ≠ 0)).card < (Finset.univ.filter (fun e : K => σ e = e ∧ e ≠ 0)).card * (Fintype.card k + 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hS`, `hlt2` using `[← hD]`.
-
-Use polynomial arithmetic with `[hS, hlt2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.card k)
     (h2 : finrank k K = 2) (d : K) (hd : σ d = d) :
@@ -343,27 +333,23 @@ theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.
 end field
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ σ hσ hrank hne h2k M a haM J hJ hJdet T hT hTdet`. Use `haveI : Module.Finite k K := Module.finite_of_finrank_eq_succ hrank`. Use `haveI : Finite K := Module.finite_of_finite k`. Use `letI : Fintype k := Fintype.ofFinite k`. Use `letI : Fintype K := Fintype.ofFinite K`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrob` using `frob_of_ne σ hrank hne`. Establish `hσr : ∀ x, (σ : K →+* K) ((σ : K →+* K) x) = x` using `fun x => hσ x`. Establish `h2K : (2 : K) ≠ 0`. Establish `h2'` using `(algebraMap k K).injective.ne h2k`. Rewrite `h2'` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : Fintype.card K = Nat.card k ^ 2`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `card_eq_card_sq_of_finrank_two hrank`. Establish `hq0 : 0 < Nat.card k` using `Nat.card_pos`. Establish `hN : ∀ d, (σ : K →+* K) d = d → Nat.card {t : K // t * (σ : K →+* K) t = d} = if d = 0 then 1 else Nat.card k + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `d hd`. Rewrite using `[Nat.card_eq_fintype_card (α := k)]`. Conclude with `card_norm_fiber σ hfrob hrank d hd`. Establish `hsV : IsHS (σ : K →+* K) (PI.VolStabS.ffH (σ : K →+* K) J)` using `ffH_isHS hσr J hJ hJdet`. Establish `hsU : IsHS (σ : K →+* K) (PI.VolStabS.ffH (σ : K →+* K) T)` using `ffH_isHS hσr T hT hTdet`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : Nat.card {X : Fin a → Fin M → K // PI.VolStabS.ffGram (σ : K →+* K) J X = T} = Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabS.ffH (σ : K →+* K) J (Y i) (Y j) = PI.VolStabS.ffH (σ : K →+* K) T (Pi.basisFun K (Fin a) i) (Pi.basisFun K (Fin a) j)}`. Apply `Nat.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `X`. Simplify using `only [Pi.basisFun_apply, ffH_single]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Substitute `h` using the available equality. Both sides reduce to the same expression. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Matrix.ext fun i j => h i j`. Take `⟨f, hf1, hf2⟩` from `exists_orth h2K a (Fin a → K) (PI.VolStabS.ffH (σ : K →+* K) T) hsU (by simp)`. Establish `hli` using `linIndep_orth hsU.toIsSq f hf1 hf2`. Choose the witnesses or unpack the hypotheses as in `⟨b', hb'⟩ : ∃ b' : Basis (Fin a) K (Fin a → K), ∀ i, b' i = f i := by`. Break down `isEmpty_or_nonempty (Fin a) with hE | hE` into its components or cases.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Basis.empty _, fun i => isEmptyElim i⟩`. Conclude with `⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp), fun i => by simp⟩`. Establish `e2` using `card_isom hsU.toIsSq hsV.toIsSq (Pi.basisFun K (Fin a))`. Establish `e3` using `card_isom hsU.toIsSq hsV.toIsSq b'`. Establish `e4 : Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabS.ffH (σ : K →+* K) J (Y i) (Y j) = PI.VolStabS.ffH (σ : K →+* K) T (b' i) (b' j)} = Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabS.ffH (σ : K →+* K) J (Y i) (Y j) = if i = j then PI.VolStabS.ffH (σ : K →+* K) T (f i …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hdiag : ∀ i j, PI.VolStabS.ffH (σ : K →+* K) T (b' i) (b' j) = if i = j then PI.VolStabS.ffH (σ : K →+* K) T (f i) (f i) else 0`. Introduce `i j`. Rewrite using `[hb', hb']`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
-
-Both sides reduce to the same expression. Conclude with `hf1 i j hij`. Simplify using `only [hdiag]`. Establish `key` using `e1.trans (e2.symm.trans (e3.trans e4))`. Establish `final` using `card_diag (Nat.card k) hq0 hK hσr h2K hN a M haM (Fin M → K) (PI.VolStabS.ffH (σ : K →+* K) J) hsV (by simp) (fun i => PI.VolStabS.ffH (σ : K →+* K) T (f i) (f i)) (fun i => hsU.toIsSq.self_fixed (f i)) hf2`.
-
-Conclude with `(congrArg (fun n : ℕ => (n : ℝ)) key).trans final`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fFInert_holds : FFInert := by
   intro k K _ _ _ _ σ hσ hrank hne h2k M a haM J hJ hJdet T hT hTdet

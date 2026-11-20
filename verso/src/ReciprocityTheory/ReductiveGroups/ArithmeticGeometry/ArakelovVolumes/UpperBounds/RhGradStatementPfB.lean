@@ -10,7 +10,7 @@ open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.ChartRestriction.G.AR.U
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ k, wdb n k (fun _ : V n => (c : ℂ)) = fun _ => 0`. Introduce `k`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`. Simplify using `[leviV, h, wd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem leviV_const (c : ℝ) (x : V n) (ξ : Fin n → ℂ) :
     leviV n (fun _ => (c : ℂ)) x ξ = 0 := by
@@ -19,7 +19,7 @@ theorem leviV_const (c : ℝ) (x : V n) (ξ : Fin n → ℂ) :
   simp [leviV, h, wd]
 
 /- English proof (translation)
-Use `contDiff_const.sub (ContDiff.sum fun a _ => ContDiff.sum fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Complex.normSq_eq_norm_sq]`. Conclude with `(contDiff_norm_sq ℝ).comp ((hℓ a b).restrict_scalars ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_contDiff {r s : ℕ} (τ : ℝ) (ℓ : Fin r → Fin s → V n → ℂ)
     (hℓ : ∀ a b, ContDiff ℂ ∞ (ℓ a b)) :
@@ -29,13 +29,13 @@ theorem quad_contDiff {r s : ℕ} (τ : ℝ) (ℓ : Fin r → Fin s → V n → 
   exact (contDiff_norm_sq ℝ).comp ((hℓ a b).restrict_scalars ℝ)
 
 /- English proof (translation)
-Establish `hc : ∀ a b, ContDiffAt ℝ 2 (fun y => Complex.normSq (ℓ a b y)) x`. Introduce `a b`. Establish `h` using `quad_contDiff (r := 1) (s := 1) 0 (fun _ _ => ℓ a b) (fun _ _ => hℓ a b)`. Establish `h2 : ContDiff ℝ ∞ (fun y => Complex.normSq (ℓ a b y))`. Use `h.neg` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `h2.contDiffAt.of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hca : ∀ a, ContDiffAt ℝ 2 (fun y => ∑ b, Complex.normSq (ℓ a b y)) x` using `fun a => ContDiffAt.sum fun b _ => hc a b`. Establish `hS : ContDiffAt ℝ 2 (fun y => ∑ a, ∑ b, Complex.normSq (ℓ a b y)) x` using `ContDiffAt.sum fun a _ => hca a`. Establish `e1 : (fun y => ((τ - ∑ a, ∑ b, Complex.normSq (ℓ a b y) : ℝ) : ℂ)) = fun y => ((τ + (-1) * ∑ a, ∑ b, Complex.normSq (ℓ a b y) : ℝ) : ℂ)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_add contDiffAt_const (contDiffAt_const.mul hS) ξ, leviV_const, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (-1) hS ξ, ReciprocityTheory.L2DbarEstimates.l …`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.leviV_ofReal_sum (fun b => hc _ b) ξ]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ReciprocityTheory.L2DbarEstimates.H.leviV_normSq_comp ((hℓ _ _).contDiffAt.of_le (WithTop.coe_le_coe.2 le_top)) ξ]`. Simplify using `only [zero_add, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.re_sum, Complex.im_sum, zero_mul, sub_zero]`. Establish `: 0 ≤ ∑ a : Fin r, ∑ b : Fin s, Complex.normSq (∑ j, wd n j (ℓ a b) x * ξ j)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => Complex.normSq_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem levi_quad_nonpos {r s : ℕ} (τ : ℝ) (ℓ : Fin r → Fin s → V n → ℂ)
     (hℓ : ∀ a b, ContDiff ℂ ∞ (ℓ a b)) (x : V n) (ξ : Fin n → ℂ) :
@@ -66,7 +66,7 @@ theorem levi_quad_nonpos {r s : ℕ} (τ : ℝ) (ℓ : Fin r → Fin s → V n �
   nlinarith
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.re_sum, Complex.star_def, Complex.mul_conj, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_conjTranspose_re {r s : ℕ} (B : Matrix (Fin r) (Fin s) ℂ) :
     (B * Bᴴ).trace.re = ∑ a, ∑ b, Complex.normSq (B a b) := by
@@ -74,7 +74,7 @@ theorem trace_mul_conjTranspose_re {r s : ℕ} (B : Matrix (Fin r) (Fin s) ℂ) 
     Complex.star_def, Complex.mul_conj, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[← trace_mul_conjTranspose_re, Matrix.sub_mul, Matrix.one_mul, Matrix.trace_sub, Complex.sub_re]`. Use `congr 2`. Rewrite using `[Matrix.conjTranspose_mul, ← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Q_formula {r s : ℕ} (Z : Matrix (Fin r) (Fin s) ℂ) (y : Matrix (Fin r) (Fin r) ℂ) :
     ((1 - Z * Zᴴ) * (yᴴ * y)).trace.re =
@@ -86,11 +86,11 @@ theorem Q_formula {r s : ℕ} (Z : Matrix (Fin r) (Fin s) ℂ) (y : Matrix (Fin 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hu : IsUnit (1 - Z * Zᴴ).det` using `isUnit_iff_ne_zero.2 h.det_pos.ne'`. Use `set S := (1 - Z * Zᴴ)⁻¹ with hS`. Establish `hAS : (1 - Z * Zᴴ) * S = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `key : (1 - Zᴴ * Z) * (1 + Zᴴ * S * Z) = 1`. Establish `e : (1 - Zᴴ * Z) * (1 + Zᴴ * S * Z) = 1 + Zᴴ * ((1 - Z * Zᴴ) * S - 1) * Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hAS, sub_self, Matrix.mul_zero, Matrix.zero_mul, add_zero]`. Establish `hinv : (1 - Zᴴ * Z)⁻¹ = 1 + Zᴴ * S * Z` using `Matrix.inv_eq_right_inv key`. Establish `hP : (1 + Zᴴ * S * Z).PosDef` using `PosDef.one.add_posSemidef ((h.inv).posSemidef.conjTranspose_mul_mul_same Z)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[← hinv]`. Conclude with `Matrix.posDef_inv_iff.1 hP`.
+A detailed English derivation is pending.
 -/
 theorem posDef_swap {r s : ℕ} {Z : Matrix (Fin r) (Fin s) ℂ} (h : (1 - Z * Zᴴ).PosDef) :
     (1 - Zᴴ * Z).PosDef := by
@@ -121,29 +121,25 @@ open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.ChartRestriction.G.AR.U
 variable {f p q : ℕ}
 
 /- English proof (translation)
-Break down `le_total p q with hpq | hqp` into its components or cases. Rewrite `hm`, the goal using `[min_eq_left hpq]`. Establish `hA0` using `hv0 k`. Take `⟨y, hy⟩` from `RgB.exists_factor hA0.inv.posSemidef`. Use `set Q : V (nD f p q) → ℝ := fun v => ((1 - Zof v k * (Zof v k)ᴴ) * (1 - Zof v0 k * (Zof v0 k)ᴴ)⁻¹).trace.re with hQdef`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hℓ : ∀ a b, ContDiff ℂ ∞ (fun v : V (nD f p q) => (y * Zof v k) a b)`. Introduce `a b`. Simplify using `only [Matrix.mul_apply, Zof, Matrix.of_apply]`. Conclude with `ContDiff.sum fun c _ => contDiff_const.mul (cd_coord _)`. Establish `hQ : Q = fun v => (yᴴ * y).trace.re - ∑ a, ∑ b, Complex.normSq ((fun a b (v : V (nD f p q)) => (y * Zof v k) a b) a b v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [hQdef]`. Rewrite using `[hy, Q_formula]`. Use `⟨Q, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `quad_contDiff _ _ hℓ`. Introduce `ξ`. Rewrite using `[hQ]`. Conclude with `levi_quad_nonpos _ _ hℓ v0 ξ`. Simplify using `only [hQdef]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hA0.det_pos.ne')]`. Simplify using the standard rewrite rules. Introduce `v hv`. Conclude with `RgB.amgm hm (hv k) hA0`. Rewrite `hm`, the goal using `[min_eq_right hqp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hA0` using `posDef_swap (hv0 k)`. Take `⟨y, hy⟩` from `RgB.exists_factor hA0.inv.posSemidef`. Use `set Q : V (nD f p q) → ℝ := fun v => ((1 - (Zof v k)ᴴ * Zof v k) * (1 - (Zof v0 k)ᴴ * Zof v0 k)⁻¹).trace.re with hQdef`. Establish `hℓ : ∀ a b, ContDiff ℂ ∞ (fun v : V (nD f p q) => ∑ c, star (y a c) * Zof v k b c)`. Introduce `a b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Zof, Matrix.of_apply]`. Conclude with `ContDiff.sum fun c _ => contDiff_const.mul (cd_coord _)`. Establish `hQ : Q = fun v => (yᴴ * y).trace.re - ∑ a, ∑ b, Complex.normSq ((fun a b (v : V (nD f p q)) => ∑ c, star (y a c) * Zof v k b c) a b v)`. Use function extensionality and compare the values at `v`. Simplify using `only [hQdef]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `Q_formula (Zof v k)ᴴ y`. Rewrite `h1` using `[Matrix.conjTranspose_conjTranspose]`. Rewrite using `[hy, h1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.normSq_conj]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, conjTranspose_apply, map_sum, Complex.star_def, mul_comm]`. Use `⟨Q, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `quad_contDiff _ _ hℓ`. Introduce `ξ`. Rewrite using `[hQ]`. Conclude with `levi_quad_nonpos _ _ hℓ v0 ξ`. Simplify using `only [hQdef]`.
-
-Rewrite using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hA0.det_pos.ne')]`. Simplify using the standard rewrite rules. Introduce `v hv`. Establish `h` using `RgB.amgm hm (posDef_swap (hv k)) hA0`. Simplify using `only [dk]`.
-
-Rewrite using `[Matrix.det_one_sub_mul_comm, Matrix.det_one_sub_mul_comm (Zof v0 k)]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block (hm : 0 < min p q) {v0 : V (nD f p q)} (hv0 : v0 ∈ Dset f p q) (k : Fin f) :
     ∃ Q : V (nD f p q) → ℝ, ContDiff ℝ ∞ Q ∧

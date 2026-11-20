@@ -29,7 +29,7 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory.DimPartsFull
 
 /- English proof (translation)
-Simplify using `[dualLab, List.map_reverse, List.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_dualLab' (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, List.map_map]
@@ -38,14 +38,14 @@ section Tw
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool)
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy, h⟩ => h ▸ hy, fun hx => ⟨Tw.out x, hx, rfl⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem twSub_map (V : Submodule ℂ E) : V.map (Tw.mkL s E) = Tw.sub s V := by
   ext x
   exact ⟨fun ⟨y, hy, h⟩ => h ▸ hy, fun hx => ⟨Tw.out x, hx, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← twSub_map, Submodule.map_iSup]`. Use `iSup_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_iSup]`. Use `iSup_congr fun _ => ?_` and prove the remaining obligations. Conclude with `twSub_map s (V c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twSub_iSup {C : Type} (S : C → Prop) (V : C → Submodule ℂ E) :
     Tw.sub s (⨆ (c : C) (_ : S c), V c) = ⨆ (c : C) (_ : S c), Tw.sub s (V c) := by
@@ -56,7 +56,7 @@ theorem twSub_iSup {C : Type} (S : C → Prop) (V : C → Submodule ℂ E) :
   exact twSub_map s (V c)
 
 /- English proof (translation)
-Unfold `Module.finrank`. Use `congr 1`. Use `symm`. Conclude with `rank_eq_of_equiv_equiv (cj s) (show V ≃+ Tw.sub s V from { toFun := fun x => ⟨Tw.mk s x.1, x.2⟩ invFun := fun x => ⟨Tw.out x.1, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }) (Function.Involutive.bijective (cj_cj s)) (fun r m => Subtype.ext …`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem twSub_finrank (V : Submodule ℂ E) : Module.finrank ℂ (Tw.sub s V) = Module.finrank ℂ V := by
   unfold Module.finrank
@@ -73,12 +73,12 @@ theorem twSub_finrank (V : Submodule ℂ E) : Module.finrank ℂ (Tw.sub s V) = 
     (fun r m => Subtype.ext ((Tw.mkL s E).map_smulₛₗ r m.1))
 
 /- English proof (translation)
-Introduce `_ hx` and use `h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twSub_le {V V' : Submodule ℂ E} (h : V ≤ V') : Tw.sub s V ≤ Tw.sub s V' := fun _ hx => h hx
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h g ⟨Tw.out x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem twSub_stable {G : Type} [Group G] (ρ : Representation ℂ G E) (V : Submodule ℂ E)
     (h : ∀ g, V.map (ρ g) ≤ V) (g : G) : (Tw.sub s V).map (Tw.rep s ρ g) ≤ Tw.sub s V := by
@@ -88,7 +88,7 @@ theorem twSub_stable {G : Type} [Group G] (ρ : Representation ℂ G E) (V : Sub
 end Tw
 
 /- English proof (translation)
-Rewrite using `[twSub_iSup, hLev, ← inf_assoc, inf_eq_left.2 (iSup₂_le fun c _ => twSub_le s (hUB c)), GlobalTheory.iSup_stable_inf_typeSpace (Tw.rep s ρ) P ψ _ S (fun c g => twSub_stable s ρ _ (hstab c) g), twSub_iSup]`. Use `iSup_congr fun c => iSup_congr fun _ => ?_` and prove the remaining obligations. Use `show _ = Tw.sub s (U c) ⊓ Tw.sub s Lev`. Rewrite using `[hLev, ← inf_assoc, inf_eq_left.2 (twSub_le s (hUB c))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twSub_iSup_inf_level {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool) {G : Type} [Group G] [Fintype G]
     (ρ : Representation ℂ G E) (P : Subgroup G) (ψ : P →* ℂˣ) {C : Type} (S : C → Prop) (U : C → Submodule ℂ E)
@@ -104,7 +104,7 @@ theorem twSub_iSup_inf_level {E : Type} [NormedAddCommGroup E] [InnerProductSpac
 
 open Classical in
 /- English proof (translation)
-Unfold `GlobalTheory.Hk3.evC`. Rewrite using `[Finsupp.sum_single_index]`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evC_single {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) (d : List ℤ) :
     GlobalTheory.Hk3.evC V P a (Finsupp.single d 1) = if IsLab V P d then a d else 0 := by
@@ -114,29 +114,27 @@ theorem evC_single {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ)
   · split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨hC, hSF, hEE, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hIrr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Take `⟨hE, -, -, -, hEev, hEchar⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 hC hS R.SF hSF`. Introduce `j p`. Take `⟨hWo, -, -, -, hWtop, hWstab, hWev, hWchar⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hC hS hIrr R.SF hSF j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `(GlobalTheory.Hk3.eH_laws R.toRealDat F.lv2 hC hIrr j).1`. Establish `hlab : ∀ P d, Good R.toRealDat A3.A.μ0 P → (IsLab (Wc D j) P d ↔ IsLab (Yc D 0) P (dualLab d))` using `fun P d hP => (GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual (s := 0) R.toRealDat F.lv2 hC j P d hP).1`. Set `LevW : Submodule ℂ (R.HW j (sg0 D A3.A)).H` to `(R.toRealDat.Wat j (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))).comap (R.HW j (sg0 D A3.A)).e`. Set `LevE : Submodule ℂ R.HE.H` to `(R.toRealDat.EEat (R.toRealDat.levR F.lv2 false)).comap R.HE.e`. Establish `hWle : ∀ c, Wcc R.toRealDat R.SF j c ≤ LinearMap.range (eH R.toRealDat j)` using `fun c => hWtop ▸ le_iSup (fun c => Wcc R.toRealDat R.SF j c) c`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr1 : LinearMap.range ((R.toCx3 F).w0C false j) = Tw.sub (twAt D.what₂.embLL A3.A.v0) LevW` using `GlobalTheory.T.range_complex_points_level_forms_eq_good_forms R F hOk hW hU false j`. Establish `hr2` using `GlobalTheory.T.range_goodProjector_baseLevel_twistedModel R F hOk hW hEx hU j`. Establish `hWside : (R.toCx3 F).Wp j p ⊓ LinearMap.range ((R.toCx3 F).w0C false j) = Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c), Wcc R.toRealDat R.SF j c ⊓ LevW)`. Establish `e0 : (R.toCx3 F).Wp j p = Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c), Wcc R.toRealDat R.SF j c)` using `by show Tw.sub _ (R.Wp3 j p) = _`. Unfold `RealDat3.Wp3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hWc]`. Rewrite using `[e0, hr1]`. Conclude with `twSub_iSup_inf_level _ (R.gW j (sg0 D A3.A)) F.P0 ((Units.map A3.A.fam.v0.embedding.toMonoidHom).comp F.ψ0⁻¹) (R.Carries p) _ _ LevW hWle hWstab (hr1.symm.trans hr2)`. Establish `hEside : (R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl false = Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c), EEc R.toRealDat R.SF c ⊓ LevE)`. Establish `e0 : (R.toCx3 F).EEp p = Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c), EEc R.toRealDat R.SF c)` using `by show Tw.sub _ (R.EEp3 p) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `RealDat3.EEp3`. Simplify using `only [hEE]`. Establish `hl : Tw.sub (twAt D.what₂.embLL A3.A.v0) LevE = Tw.sub (twAt D.what₂.embLL A3.A.v0) ⊤ ⊓ ⨅ h : F.P0, LinearMap.ker (Tw.rep (twAt D.what₂.embLL A3.A.v0) R.gE (h : G) - ((((Units.map A3.A.fam.v0.embedding.toMonoidHom).comp F.ψ0) h : ℂˣ) : ℂ) • LinearMap.id)`. Use `(GlobalTheory.T.level_rows_eq_type_vectors_of_level R F hW).1` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `⟨fun h => ⟨trivial, h⟩, fun h => h.2⟩`. Rewrite using `[e0]`. Conclude with `twSub_iSup_inf_level _ R.gE F.P0 _ (R.Carries p) _ ⊤ LevE (fun _ => le_top) (fun c g => GlobalTheory.T.rowParts_full_spherical_algebra_stable_finiteGroup (s := 0) R.toRealDat F.lv2 hC R.SF hSF c g) hl`. Rewrite using `[hWside, hEside]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(twSub_finrank (E := (R.HW j (sg0 D A3.A)).H) _ _).trans (Eq.trans ?_ (twSub_finrank (E := R.HE.H) _ _).symm)` and prove the remaining obligations. Establish `hWfix : ∀ c, ∀ x ∈ Wcc R.toRealDat R.SF j c, eH R.toRealDat j x = x`. Introduce `c x hx`. Take `⟨y, rfl⟩` from `hWle c hx`. Rewrite using `[← Module.End.mul_apply, hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `I` to `{x : Pl D.host.E × List ℤ // Good R.toRealDat A3.A.μ0 x.1 ∧ IsLab (Wc D j) x.1 x.2}`. Set `lab : (Pl D.host.E → List ℤ → ℂ) → I → ℂ` to `fun c i => c i.1.1 i.1.2`. Establish `hEle : ∀ c c', lab c = lab c' → EEc R.toRealDat R.SF c ≤ EEc R.toRealDat R.SF c'`. Introduce `c c' hcc x hx`. Use `hEchar c' x fun P d hP hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hEev c P hP _ x hx, evC_single, if_pos hd]`. Establish `hl : IsLab (Wc D j) P (dualLab d)` using `(hlab P (dualLab d) hP).2 (by rwa [dualLab_dualLab'])`. Conclude with `congrArg (· • x) (congrFun hcc ⟨(P, dualLab d), hP, hl⟩)`. Establish `hWcle : ∀ c c', lab c = lab c' → Wcc R.toRealDat R.SF j c ≤ Wcc R.toRealDat R.SF j c'`. Introduce `c c' hcc x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `hWchar c' x (hWfix c x hx) fun P d hP hd => ?_` and prove the remaining obligations. Rewrite using `[hWev c P hP _ x hx, evC_single, if_pos hd]`. Conclude with `congrArg (· • x) (congrFun hcc ⟨(P, d), hP, hd⟩)`. Use `symm`. Use `GlobalTheory.finrank_iSup_joint_eigen_eq (I := I) (fun i => hE i.1.1 (Finsupp.single (dualLab i.1.2) 1)) (fun i => hWo i.1.1 (Finsupp.single i.1.2 1)) (fun c => EEc R.toRealDat R.SF c ⊓ LevE) (fun c => Wcc R.toRealDat R.SF j c ⊓ LevW) lab ?_ ?_ ?_ ?_ (R.Carries p)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c x hx ⟨⟨P, d⟩, hP, hd⟩`. Rewrite using `[hEev c P hP _ x hx.1, evC_single, if_pos ((hlab P d hP).1 hd), dualLab_dualLab']`. Introduce and unpack `c x hx ⟨⟨P, d⟩, hP, hd⟩`. Rewrite using `[hWev c P hP _ x hx.1, evC_single, if_pos hd]`. Introduce `c c' hcc`.
-
-Rewrite using `[le_antisymm (hEle c c' hcc) (hEle c' c hcc.symm), le_antisymm (hWcle c c' hcc) (hWcle c' c hcc.symm)]`. Conclude with `⟨rfl, rfl⟩`. Introduce `c`. Conclude with `(GlobalTheory.T.finrank_W_eigenpart_eq_rows_full_hecke R.toRealDat F.lv2 hOk.ok2 hC hS hX hD hM R.SF hSF F.P0 F.ψ0 j c).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dimParts_of_schur {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

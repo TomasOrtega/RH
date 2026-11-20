@@ -9,7 +9,7 @@ open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology Glob
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.NormPrimes.normPrimes_short_interval` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNormPrimesShortIntervalLower.lean&line=93#L93)
 -/

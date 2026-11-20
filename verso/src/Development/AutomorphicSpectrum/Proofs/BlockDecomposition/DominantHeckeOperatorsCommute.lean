@@ -8,7 +8,7 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 namespace GlobalTheory.CompanionTheory.CassHecke
 
 /- English proof (translation)
-Introduce `v f hf`. Establish `hv : π c (v : V) = v` using `by simpa using v.2 ⟨c, hc⟩`. Rewrite using `[map_mul, Module.End.mul_apply, hv]`. Conclude with `h v f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeckeOpG_mul_mem {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} {K : Subgroup G} {g c : G} (hc : c ∈ K)
@@ -20,11 +20,11 @@ theorem isHeckeOpG_mul_mem {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V
   exact h v f hf
 
 /- English proof (translation)
-Introduce `G _ _ _ D hcomm V _ _ π hπ t t' ht ht' U U' hU hU'`. Establish `h1` using `GlobalTheory.T.casselman_first_property G D V π hπ t t' ht ht' U U' hU hU'`. Establish `h2` using `GlobalTheory.T.casselman_first_property G D V π hπ t' t ht' ht U' U hU' hU`. Establish `hc : (t' : G)⁻¹ * (t : G)⁻¹ * (t' : G) * (t : G) ∈ D.J`. Use `hcomm (t' : G)⁻¹ (D.T.inv_mem t'.2) (t : G)⁻¹ (D.T.inv_mem t.2)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h3 : PositivityTheory.Lbc.IsHeckeOpG π D.J ((t : G) * t') (U' * U)`. Use `isHeckeOpG_mul_mem (D.J.inv_mem hc) h2` as an intermediate fact. Establish `e : (t' : G) * (t : G) * ((t' : G)⁻¹ * (t : G)⁻¹ * (t' : G) * (t : G))⁻¹ = (t : G) * t'` using `by group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(GlobalTheory.T.hecke_character_exists_unique G D.J D.isOpen_J D.isCompact_J V π hπ ((t : G) * t')).unique h1 h3`.
+A detailed English derivation is pending.
 -/
 theorem heckeOp_commute : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (D : PositivityTheory.SphericalProduct.CassData G), (∀ a ∈ D.T, ∀ b ∈ D.T, a * b * a⁻¹ * b⁻¹ ∈ D.J) →

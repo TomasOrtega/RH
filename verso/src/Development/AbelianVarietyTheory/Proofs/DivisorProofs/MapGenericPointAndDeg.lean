@@ -33,13 +33,11 @@ set_option autoImplicit false
 namespace GlobalTheory.CoverModelDeg
 
 /- English proof (translation)
-Introduce `F _ _ Y V M b _ hsq`. Use `haveI := M.ar.isIntegral`. Use `haveI := ModelBirational.isPreimmersion_j M`. Establish `hπ : V.π (genericPoint V.G) = genericPoint Y.X`. Take `⟨z, hz⟩` from `V.π.surjective (genericPoint Y.X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : V.π (genericPoint V.G) ⤳ genericPoint Y.X`. Rewrite using `[← hz]`. Conclude with `(genericPoint_specializes z).map V.π.continuous`. Conclude with `(h.antisymm (genericPoint_specializes _)).eq`. Establish `hpt : b (genericPoint V.X) = genericPoint M.X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← CoverDeg.j_genericPoint V, ← Scheme.Hom.comp_apply, hsq, Scheme.Hom.comp_apply, hπ, ModelBirational.j_genericPoint M]`. Use `⟨hpt, ?_⟩` and prove the remaining obligations. Establish `h1` using `CurveDegreesCompare.residueDegree_comp V.j b (genericPoint V.G)`. Establish `h2` using `CurveDegreesCompare.residueDegree_comp V.π M.j (genericPoint V.G)`. Rewrite `h1` using `[hsq, h2, CoverDeg.j_residueDegree, mul_one, CoverDeg.j_genericPoint V, CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks M.j, one_mul]`.
-
-Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_genericPoint_and_deg : ∀ (F : Type) [Field F] [NumberField F] (Y : GlobalTheory.ProjVar.Var F) (V : GlobalTheory.Mean4O.Cover Y) (M : GlobalTheory.TrueGeo.Model Y) (b : V.X ⟶ M.X), b ≫ M.p = V.p → V.j ≫ b = V.π ≫ M.j → (haveI := M.ar.isIntegral; b (genericPoint V.X) = genericPoint M.X) ∧ Scheme.Hom.residueDegree b (genericPoint V.X) = V.deg := by
   intro F _ _ Y V M b _ hsq

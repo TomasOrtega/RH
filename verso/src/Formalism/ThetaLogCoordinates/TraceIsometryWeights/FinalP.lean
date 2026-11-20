@@ -12,75 +12,75 @@ import Formalism.ThetaLogCoordinates.TraceIsometryWeights.SchurTraceProofs.Disch
 namespace Formalism.InvariantFactorPaths.PW.Top
 
 /- English proof (translation)
-The claim follows from `invariant_inverse_holds`.
+A detailed English derivation is pending.
 -/
 theorem invInv : InvInv := invariant_inverse_holds
 /- English proof (translation)
-The claim follows from `invariant_natural_holds`.
+A detailed English derivation is pending.
 -/
 theorem invNat : InvNat := invariant_natural_holds
 /- English proof (translation)
-The claim follows from `invariant_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem invInt : InvInt := invariant_integral_holds
 /- English proof (translation)
-The claim follows from `hom_relation_holds`.
+A detailed English derivation is pending.
 -/
 theorem homRel : HomRel := hom_relation_holds
 /- English proof (translation)
-The claim follows from `hom_divided_holds`.
+A detailed English derivation is pending.
 -/
 theorem homDiv : HomDiv := hom_divided_holds
 /- English proof (translation)
-The claim follows from `hom_trace_holds`.
+A detailed English derivation is pending.
 -/
 theorem homTrace : HomTrace := hom_trace_holds
 /- English proof (translation)
-The claim follows from `homInv_of invInv`.
+A detailed English derivation is pending.
 -/
 theorem homInv : HomInv := homInv_of invInv
 /- English proof (translation)
-The claim follows from `schurTrace_of invInv`.
+A detailed English derivation is pending.
 -/
 theorem schurTrace : SchurTrace := schurTrace_of invInv
 /- English proof (translation)
-The claim follows from `typeInt_of invNat homInv schurTrace`.
+A detailed English derivation is pending.
 -/
 theorem typeInt : TypeInt := typeInt_of invNat homInv schurTrace
 /- English proof (translation)
-The claim follows from `fischerAdjointness_holds`.
+A detailed English derivation is pending.
 -/
 theorem fockAdj : FockAdj := fischerAdjointness_holds
 /- English proof (translation)
-The claim follows from `divided_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem divInt : DivInt := divided_integral_holds
 /- English proof (translation)
-The claim follows from `lattice_basis_polynomial`.
+A detailed English derivation is pending.
 -/
 theorem latBasisPol : LatBasisPol := lattice_basis_polynomial
 /- English proof (translation)
-The claim follows from `span_isomorphism_holds`.
+A detailed English derivation is pending.
 -/
 theorem spanIso : SpanIso := span_isomorphism_holds
 /- English proof (translation)
-The claim follows from `orthogonal_isomorphism_holds`.
+A detailed English derivation is pending.
 -/
 theorem orthIso : OrthIso := orthogonal_isomorphism_holds
 /- English proof (translation)
-The claim follows from `projection_lattice_holds`.
+A detailed English derivation is pending.
 -/
 theorem projP : ProjP := projection_lattice_holds
 /- English proof (translation)
-The claim follows from `comm_projection_holds`.
+A detailed English derivation is pending.
 -/
 theorem commP : CommP := comm_projection_holds
 /- English proof (translation)
-The claim follows from `intP_of typeInt latBasisPol`.
+A detailed English derivation is pending.
 -/
 theorem intP : IntP := intP_of typeInt latBasisPol
 /- English proof (translation)
-The claim follows from `dischargeP_of projP commP intP`.
+A detailed English derivation is pending.
 -/
 theorem dischargeP : DischargeP := dischargeP_of projP commP intP
 

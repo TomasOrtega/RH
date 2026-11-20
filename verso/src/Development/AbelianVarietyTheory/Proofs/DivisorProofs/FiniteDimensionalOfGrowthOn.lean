@@ -16,14 +16,14 @@ open scoped ENNReal
 namespace GlobalTheory.DegTop
 
 /- English proof (translation)
-The claim follows from `Filter.limsup_le_limsup ((Filter.eventually_ge_atTop 1).mono fun k hk => ENNReal.div_le_div_right (mul_le_mul_right (ENat.toENNReal_le.2 (h k hk)) _) _)`.
+A detailed English derivation is pending.
 -/
 theorem growth_mono (D : ℕ) {s s' : ℕ → ℕ∞} (h : ∀ k, 1 ≤ k → s k ≤ s' k) : growth D s ≤ growth D s' :=
   Filter.limsup_le_limsup ((Filter.eventually_ge_atTop 1).mono fun k hk => ENNReal.div_le_div_right
     (mul_le_mul_right (ENat.toENNReal_le.2 (h k hk)) _) _)
 
 /- English proof (translation)
-Rewrite using `[growth, ← Filter.limsup_const (f := (Filter.atTop : Filter ℕ)) (⊤ : ℝ≥0∞)]`. Use `Filter.limsup_congr (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Rewrite using `[ENat.toENNReal_top, ENNReal.mul_top (Nat.cast_ne_zero.2 D.factorial_ne_zero)]`. Conclude with `ENNReal.top_div_of_ne_top (ENNReal.pow_ne_top (ENNReal.natCast_ne_top k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_top (D : ℕ) : growth D (fun _ => ⊤) = ⊤ := by
   rw [growth, ← Filter.limsup_const (f := (Filter.atTop : Filter ℕ)) (⊤ : ℝ≥0∞)]
@@ -32,7 +32,7 @@ theorem growth_top (D : ℕ) : growth D (fun _ => ⊤) = ⊤ := by
   exact ENNReal.top_div_of_ne_top (ENNReal.pow_ne_top (ENNReal.natCast_ne_top k))
 
 /- English proof (translation)
-Use `⟨?_, not_lt.1 fun h2 => h (Module.rank_lt_aleph0_iff.1 h2)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Establish `: Subsingleton V` using `subsingleton_of_forall_eq 0 h0`. Conclude with `h inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem of_not_finiteDimensional {K V : Type} [Field K] [AddCommGroup V] [Module K V] (h : ¬ FiniteDimensional K V) :
     (∃ v : V, v ≠ 0) ∧ Cardinal.aleph0 ≤ Module.rank K V := by
@@ -46,9 +46,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, holCusp_mem_holSub X la⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.1`. Consider the case `add x y _ _ hx hy => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.1 _ (hx k) _ (hy k)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 a _ (hx k)`.
+Treat this case separately.
 -/
 theorem mem_holSub_iff {Cp : Type} (X : Cp → Data E r) (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X) :
     P ∈ holSub X la ↔ ∀ k, P k ∈ (X k).SS (la k) := by
@@ -60,7 +60,7 @@ theorem mem_holSub_iff {Cp : Type} (X : Cp → Data E r) (la : ∀ k, Wt (X k).�
   | smul a x _ hx => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 a _ (hx k)
 
 /- English proof (translation)
-Use `secZ_eq_zero_of_genVal hf.1.1 fun Z' => ?_` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`. Rewrite using `[hZ, h0]`. Conclude with `evC_eq_zero (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1 hZ hf.2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_genVal {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) (h0 : genVal Z f = 0) :
     f = 0 := by
@@ -70,11 +70,9 @@ theorem eq_zero_of_genVal {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈
   · exact evC_eq_zero (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1 hZ hf.2
 
 /- English proof (translation)
-Use `⟨?_, by rw [mul_comm]; exact mul_mem_suppOn _ hf.2⟩` and prove the remaining obligations. Establish `hf'` using `mem_cuspW.1 hf.1`. Rewrite `hg` using `[mem_cuspW]`. Use `mem_cuspW.2 ⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `e : exZ Dw (G + G') = exZ Dw G + exZ Dw G'` using `funext fun i => exZ_add _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `mul_mem_secZ hf'.1 hg.1`. Rewrite using `[AllWt.rdU_mul, mem_holSub_iff]`. Introduce `k`. Rewrite using `[modelWt_add (U σ) hG hG' k]`.
-
-Conclude with `(siegelSpaceAlgebra_holds (E := E) r _ _ _ 0).2.1 _ ((mem_holSub_iff _ _ _).1 (hf'.2 σ hσ) k) _ ((mem_holSub_iff _ _ _).1 (hg.2 σ hσ) k).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_cuspOn {Z : Comp Xo c} {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {f g : Rul Xo c}
     (hf : f ∈ cuspOn U Z G) (hg : g ∈ cuspW Xo c U G') : f * g ∈ cuspOn U Z (G + G') := by
@@ -94,17 +92,17 @@ theorem mul_mem_cuspOn {Z : Comp Xo c} {G G' : WTZ E} (hG : Even G.2) (hG' : Eve
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[Prod.smul_snd, nsmul_eq_mul]`. Conclude with `hG.mul_left n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_nsmul {G : WTZ E} (hG : Even G.2) (n : ℕ) : Even (n • G).2 := by
   rw [Prod.smul_snd, nsmul_eq_mul]; exact hG.mul_left n
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce and unpack `_ hy`. Rewrite `hy` using `[zero_add, pow_one]`. Take `⟨v, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, by simp, rfl⟩`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Use `Submodule.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `ih ha`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hb`. Use `⟨f * v, ?_, map_mul (genVal Z) _ _⟩` and prove the remaining obligations. Rewrite using `[succ_nsmul]`. Conclude with `mul_mem_cuspOn (even_nsmul hG _) hG hf v.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_pow_le {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) (n : ℕ) :
     (LinearMap.range (genPoint Z (cuspOn U Z G))) ^ (n + 1) ≤
@@ -125,7 +123,7 @@ theorem range_pow_le {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) (n : ℕ) :
     exact mul_mem_cuspOn (even_nsmul hG _) hG hf v.2.1
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, τ = n + 1` from `⟨τ - 1, by omega⟩`. Conclude with `OrderHomClass.mono Cardinal.toENat ((Submodule.rank_mono (range_pow_le hG n)).trans (rank_map_le _ _))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hilb_le {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) {τ : ℕ} (hτ : 1 ≤ τ) :
     hilb (genPoint Z (cuspOn U Z G)) τ ≤ Cardinal.toENat (Module.rank c.F (cuspOn U Z (τ • G))) := by
@@ -133,9 +131,9 @@ theorem hilb_le {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) {τ : ℕ} (hτ : 1 
   exact OrderHomClass.mono Cardinal.toENat ((Submodule.rank_mono (range_pow_le hG n)).trans (rank_map_le _ _))
 
 /- English proof (translation)
-Establish `hi : Function.Injective (((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F θ) ∘ₗ (cuspOn U Z G).subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Establish `h1 : genVal Z (θ * f) = 0` using `hf`. Rewrite `h1` using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (eq_zero_of_genVal f.2 ((mul_eq_zero.1 h1).resolve_left hθ))`. Rewrite using `[← rank_range_of_injective _ hi, LinearMap.range_comp, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_map_mul {Z : Comp Xo c} {G : WTZ E} {θ : Rul Xo c} (hθ : genVal Z θ ≠ 0) :
     Module.rank c.F ((cuspOn U Z G).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F θ)) =
@@ -149,13 +147,13 @@ theorem rank_map_mul {Z : Comp Xo c} {G : WTZ E} {θ : Rul Xo c} (hθ : genVal Z
   rw [← rank_range_of_injective _ hi, LinearMap.range_comp, Submodule.range_subtype]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hfd`. Take `⟨⟨v, hv⟩, hr⟩` from `of_not_finiteDimensional hfd`. Establish `hv' : genVal Z (v : Rul Xo c) ≠ 0` using `fun h0 => hv (Subtype.ext (eq_zero_of_genVal v.2 h0))`. Establish `key : ∀ n : ℕ, ∀ f ∈ cuspOn U Z G, (v : Rul Xo c) ^ n * f ∈ cuspOn U Z ((n + 1) • G)` using `fun n f hf => by`. Proceed by induction on `n with`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simpa using hf`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, pow_succ, mul_right_comm]`. Conclude with `mul_mem_cuspOn (even_nsmul hG _) hG ih v.2.1`. Use `h (top_le_iff.1 ((growth_top (dimFlag Dw)).symm.trans_le (growth_mono _ fun k hk => ?_)))` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Establish `h1 : Module.rank c.F (cuspOn U Z G) ≤ Module.rank c.F (cuspOn U Z ((n + 1) • G))`. Rewrite using `[← rank_map_mul (U := U) (G := G) (θ := (v : Rul Xo c) ^ n) (by rw [map_pow]; exact pow_ne_zero _ hv')]`. Use `(Submodule.rank_mono ?_).trans (rank_map_le (genVal Z).toLinearMap _)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, key n f hf, rfl⟩`. Rewrite using `[top_le_iff, Cardinal.toENat_eq_top]`. Conclude with `hr.trans h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_growthOn {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) (h : growthOn U Z G ≠ ⊤) :
     FiniteDimensional c.F (cuspOn U Z G) := by
@@ -179,17 +177,17 @@ theorem finiteDimensional_of_growthOn {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2
   exact hr.trans h1
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (vZero_nonneg U Z) (Int.cast_pos.2 (vdm_pos hu)).le`.
+A detailed English derivation is pending.
 -/
 theorem topDeg_nonneg (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) : 0 ≤ topDeg U Z u :=
   mul_nonneg (vZero_nonneg U Z) (Int.cast_pos.2 (vdm_pos hu)).le
 
 /- English proof (translation)
-Establish `h1 : ∀ τ, StrictAnti ((a • u) τ)` using `fun τ i j hij => by`. Use `hu τ hij` as an intermediate fact. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Conclude with `mul_lt_mul_of_pos_left this (by exact_mod_cast ha)`. Establish `h2` using `hP Z (a • u) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : wtOf Dw (a • u) 0 = a • wtOf Dw u 0` using `by rw [nsmul_wtOf, smul_zero]`. Establish `h4 : topDeg U Z (a • u) = (a : ℝ) ^ dimFlag Dw * topDeg U Z u`. Rewrite using `[topDeg, topDeg, ← Nat.cast_smul_eq_nsmul ℤ a u, vdm_smul, dimFlag]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4, ← h2, growthOn, h3]`. Conclude with `congrArg _ (funext fun k => by rw [mul_nsmul])`.
+A detailed English derivation is pending.
 -/
 theorem growth_mul_eq (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) {a : ℕ}
     (ha : 1 ≤ a) : growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • wtOf Dw u 0)))) =
@@ -207,14 +205,14 @@ theorem growth_mul_eq (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀
   exact congrArg _ (funext fun k => by rw [mul_nsmul])
 
 /- English proof (translation)
-The claim follows from `finiteDimensional_of_growthOn (even_wtOf u 0) (by rw [hP Z u hu]; exact ENNReal.ofReal_ne_top)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_cuspOn (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) :
     FiniteDimensional c.F (cuspOn U Z (wtOf Dw u 0)) :=
   finiteDimensional_of_growthOn (even_wtOf u 0) (by rw [hP Z u hu]; exact ENNReal.ofReal_ne_top)
 
 /- English proof (translation)
-The claim follows from `(growth_mono _ fun _ hk => hilb_le (even_wtOf u 0) (Nat.mul_pos ha hk)).trans_eq (growth_mul_eq hP Z hu ha)`.
+A detailed English derivation is pending.
 -/
 theorem growth_hilb_le (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) {a : ℕ}
     (ha : 1 ≤ a) : growth (dimFlag Dw) (fun k => hilb (genPoint Z (cuspOn U Z (wtOf Dw u 0))) (a * k)) ≤
@@ -222,9 +220,9 @@ theorem growth_hilb_le (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : �
   (growth_mono _ fun _ hk => hilb_le (even_wtOf u 0) (Nat.mul_pos ha hk)).trans_eq (growth_mul_eq hP Z hu ha)
 
 /- English proof (translation)
-Break down `(compDeg U Z (wtOf Dw u 0)).eq_zero_or_pos with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero]`. Conclude with `topDeg_nonneg Z hu`. Use `finiteDimensional_cuspOn hP Z hu` as an intermediate fact. Establish `h1` using `GlobalTheory.T.cone_degree_growth_chowForm_integrality.1 c.F _ _ _ _ 1 le_rfl _ ((imageDeg_pos_iff _ _).1 h0)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `growth_hilb_le hP Z hu le_rfl`. Rewrite `h2` using `[h1, Nat.cast_one, Nat.cast_one, one_pow, one_pow, one_mul, one_mul, ← ENNReal.ofReal_natCast]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (topDeg_nonneg Z hu)).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compDeg_le (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) :
     (compDeg U Z (wtOf Dw u 0) : ℝ) ≤ topDeg U Z u := by
@@ -244,7 +242,7 @@ section Fac
 variable {σ : c.F →+* ℂ} (U₁ : Unf Xo c σ r) (x)
 
 /- English proof (translation)
-Use `show _ * (‖rdU U₁ f z.1 z.2‖ * (U₁.X z.1).nfac (modelWt U₁ G z.1) z.2) = _`. Rewrite using `[normFac]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homN_eq (G : WTZ E) (f : Rul Xo c) (z : Σ k, Frame (U₁.X k).Ψ r) :
     homN U₁ x G f z = normFac U₁ x G z * ‖rdU U₁ f z.1 z.2‖ := by
@@ -252,7 +250,7 @@ theorem homN_eq (G : WTZ E) (f : Rul Xo c) (z : Σ k, Frame (U₁.X k).Ψ r) :
   rw [normFac]; ring
 
 /- English proof (translation)
-Establish `hd : ∀ τ i, dmin (U₁.X z.1).Gm z.2 τ i ≠ 0` using `fun τ i h0 => by`. Use `(hz τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Conclude with `mul_pos (lieFacZ_pos _ _) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normFac_pos (G : WTZ E) {z : Σ k, Frame (U₁.X k).Ψ r} (hz : z.2 ∈ (U₁.X z.1).dom) : 0 < normFac U₁ x G z := by
   have hd : ∀ τ i, dmin (U₁.X z.1).Gm z.2 τ i ≠ 0 := fun τ i h0 => by
@@ -262,13 +260,13 @@ theorem normFac_pos (G : WTZ E) {z : Σ k, Frame (U₁.X k).Ψ r} (hz : z.2 ∈ 
     Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _)
 
 /- English proof (translation)
-Establish `hd : ∀ τ i, dmin (U₁.X z.1).Gm z.2 τ i ≠ 0` using `fun τ i h0 => by`. Use `(hz τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `key : ∀ la la' : Wt (U₁.X z.1).Ψ r, (U₁.X z.1).nfac (la + la') z.2 = (U₁.X z.1).nfac la z.2 * (U₁.X z.1).nfac la' z.2` using `fun la la' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Data.nfac`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Real.rpow_add (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _)))]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[normFac, normFac, normFac, modelWt_add U₁ hG hG', key, lieFacZ_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normFac_add {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {z : Σ k, Frame (U₁.X k).Ψ r}
     (hz : z.2 ∈ (U₁.X z.1).dom) : normFac U₁ x (G + G') z = normFac U₁ x G z * normFac U₁ x G' z := by
@@ -291,9 +289,9 @@ theorem normFac_add {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {z : Σ k, 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `normFac_add x U₁ (G := 0) (G' := 0) Even.zero Even.zero hz`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_nsmul, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_left_cancel₀ (normFac_pos x U₁ 0 hz).ne' (h.symm.trans (mul_one _).symm))`. Consider the case `succ n ih => rw [succ_nsmul, normFac_add x U₁ (even_nsmul hG n) hG hz, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem normFac_nsmul {G : WTZ E} (hG : Even G.2) {z : Σ k, Frame (U₁.X k).Ψ r} (hz : z.2 ∈ (U₁.X z.1).dom) (n : ℕ) :
     normFac U₁ x (n • G) z = normFac U₁ x G z ^ n := by
@@ -306,7 +304,7 @@ theorem normFac_nsmul {G : WTZ E} (hG : Even G.2) {z : Σ k, Frame (U₁.X k).Ψ
   | succ n ih => rw [succ_nsmul, normFac_add x U₁ (even_nsmul hG n) hG hz, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul', add_assoc, pow_succ', mul_assoc, homN_mul U₁ x hG ((even_nsmul hG n).add hG') _ _ z hz, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem homN_pow_mul {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (θ f : Rul Xo c) {z : Σ k, Frame (U₁.X k).Ψ r}
     (hz : z.2 ∈ (U₁.X z.1).dom) (n : ℕ) :
@@ -318,7 +316,7 @@ theorem homN_pow_mul {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (θ f : Ru
     ring
 
 /- English proof (translation)
-Use `choose B hB using fun k => ((mem_holSub_iff _ _ _).1 hf k).1.2`. Take `⟨M, hM⟩` from `(Set.finite_range B).bddAbove`. Conclude with `⟨lieFacZ Dw x G * M, fun z hz => mul_le_mul_of_nonneg_left ((hB z.1 z.2 hz).trans (hM ⟨z.1, rfl⟩)) (lieFacZ_pos _ _).le⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homN_le {G : WTZ E} {f : Rul Xo c} (hf : rdU U₁ f ∈ holSub U₁.X (modelWt U₁ G)) :
     ∃ B : ℝ, ∀ z : Σ k, Frame (U₁.X k).Ψ r, z.2 ∈ (U₁.X z.1).dom → homN U₁ x G f z ≤ B := by
@@ -330,7 +328,7 @@ theorem exists_homN_le {G : WTZ E} {f : Rul Xo c} (hf : rdU U₁ f ∈ holSub U�
 end Fac
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: exZ Dw (n • G) i = exZ Dw G i * n`. Apply the tactic sequence `rcases i with _ | i <;> simp [exZ, mul_comm]`. Rewrite using `[this, zpow_mul, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_exZ_nsmul {M : Type} [CommGroup M] (t : Formalism.L2.Pj.Ix Dw → M) (G : WTZ E) (n : ℕ) :
     ∏ i, t i ^ exZ Dw (n • G) i = (∏ i, t i ^ exZ Dw G i) ^ n := by
@@ -341,11 +339,11 @@ theorem prod_exZ_nsmul {M : Type} [CommGroup M] (t : Formalism.L2.Pj.Ix Dw → M
   rw [this, zpow_mul, zpow_natCast]
 
 /- English proof (translation)
-Take `⟨R, hR, s, hmem, hpt⟩` from `GlobalTheory.T.unfolding_sections_finite_type E H Dw l Xo c r σ (U σ) (hU σ hσ) Z`. Take `⟨n, w, C, hC⟩` from `hb`. Use `GlobalTheory.T.integral_degree_of_norm_bound c.F _ _ _ R σ (∏ i, s i ^ exZ Dw G i) n τ w (fun i => ⟨_, hmem _ _ (w i).2.1.1⟩) _ ⟨_, hmem _ _ ht.1.1⟩ C (fun i => rfl) (by simp only [prod_exZ_nsmul, Units.val_pow_eq_pow_val]) fun φ hφ => ?_` and prove the remaining obligations. Take `⟨z, hz, s', hs⟩` from `hpt φ hφ`. Establish `h1` using `hC z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `normFac_pos x (U σ) G hz.1`. Simplify using `only [homN_eq, normFac_nsmul x (U σ) hG hz.1, mul_pow, ← Finset.mul_sum] at h1`. Rewrite using `[hs _ _ ht.1.1 _ rfl, prod_exZ_nsmul, Units.val_pow_eq_pow_val]`. Establish `h2 : ∀ i, φ ⟨_, hmem _ _ (w i).2.1.1⟩ = _` using `fun i => hs _ _ (w i).2.1.1 _ rfl`. Simplify using `only [h2, norm_mul, norm_pow, mul_pow, ← Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, the goal using `[← pow_mul, mul_comm τ 2, pow_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_mul_le_mul_left h1 (by positivity)) (by positivity)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntDeg_of_boundedBy (hU : UnfAll U) {Z : Comp Xo c} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {G : WTZ E} {τ : ℕ}
     (hG : Even G.2) {t : Rul Xo c} (ht : t ∈ cuspOn U Z (τ • G)) (hb : BoundedBy U x Z σ (τ • G) t G τ) :
@@ -365,9 +363,9 @@ theorem isIntDeg_of_boundedBy (hU : UnfAll U) {Z : Comp Xo c} {σ : c.F →+* �
   exact mul_le_mul_of_nonneg_left (le_of_mul_le_mul_left h1 (by positivity)) (by positivity)
 
 /- English proof (translation)
-Take `⟨n, w, C, hC⟩` from `hb`. Take `⟨B, hB⟩` from `exists_homN_le x (U σ) ((mem_cuspW.1 hf.1).2 σ hσ)`. Use `⟨n, w, C ^ k * B ^ 2, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : (a * k) • G = k • (a • (G - G')) + (a * k) • G'` using `by rw [← mul_nsmul, nsmul_sub, sub_add_cancel]`. Rewrite using `[e, homN_pow_mul x (U σ) (even_nsmul (hG.sub hG') a) (even_nsmul hG' _) _ _ hz.1, mul_pow, ← pow_mul, mul_comm k 2, pow_mul, pow_mul, mul_right_comm, ← mul_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `pow_le_pow_left₀ (sq_nonneg _) (hC z hz) k`. Conclude with `mul_le_mul h1 (pow_le_pow_left₀ (homN_nonneg _ _ _ _ _) (hB z hz.1) 2) (sq_nonneg _) ((pow_nonneg (sq_nonneg _) k).trans h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem boundedBy_pow_mul {Z : Comp Xo c} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {G G' : WTZ E} (hG : Even G.2)
     (hG' : Even G'.2) {a : ℕ} {θ : Rul Xo c} (hb : BoundedBy U x Z σ (a • (G - G')) θ G a) (k : ℕ) {f : Rul Xo c}
@@ -383,11 +381,11 @@ theorem boundedBy_pow_mul {Z : Comp Xo c} {σ : c.F →+* ℂ} (hσ : GoodEmb c 
     ((pow_nonneg (sq_nonneg _) k).trans h1)
 
 /- English proof (translation)
-Break down `le_or_gt (topDeg U Z u') 0 with h0 | h0` into its components or cases. Conclude with `h0.trans (Nat.cast_nonneg _)`. Take `⟨a, θ, ha, -, hθ, hmul, σ, hσ, hb⟩` from `hM`. Use `finiteDimensional_cuspOn hP Z hu` as an intermediate fact. Establish `h1` using `GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.2.1 c.F _ _ (genPoint Z (cuspOn U Z (wtOf Dw u 0))) (dimFlag Dw) a ha (fun k => (cuspOn U Z ((a * k) • wtOf Dw u' 0)).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F (θ ^ k))) (by`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k _ ⟨f, hf, rfl⟩`. Conclude with `⟨isIntDeg_of_boundedBy hU hσ (even_wtOf u 0) (hmul k f hf) (boundedBy_pow_mul hσ (even_wtOf u 0) (even_wtOf u' 0) hb k hf), hR _ _ (hmul k f hf)⟩)`. Establish `h2 : ∀ k : ℕ, genVal Z (θ ^ k) ≠ 0` using `fun k => by rw [map_pow]; exact pow_ne_zero _ hθ`. Simplify using `only [rank_map_mul (h2 _)] at h1`. Rewrite `h1` using `[growth_mul_eq hP Z hu' ha]`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : (0 : ℝ) < (a : ℝ) ^ dimFlag Dw` using `pow_pos (Nat.cast_pos.2 ha) _`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.1 c.F _ _ _ _ a ha ((ENNReal.ofReal_pos.2 (mul_pos ha' h0)).trans_le h1).ne' (ne_top_of_le_ne_top ENNReal.ofReal_ne_top (growth_hilb_le hP Z hu ha))`. Rewrite `h1` using `[GlobalTheory.T.cone_degree_growth_chowForm_integrality.1 c.F _ _ _ _ a ha δ hδ, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_natCast δ, ← ENNReal.ofReal_pow (Nat.cast_nonneg a), ← ENNReal.ofReal_mul ha'.le, ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Rewrite using `[compDeg, hδ.imageDeg_eq]`. Conclude with `le_of_mul_le_mul_left h1 ha'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_compDeg (hU : UnfAll U) (hP : Proport U) (Z : Comp Xo c) {u u' : Weight Dw} (hu : ∀ τ, StrictAnti (u τ))
     (hu' : ∀ τ, StrictAnti (u' τ)) (hR : RatioOn U Z (wtOf Dw u 0))
@@ -414,9 +412,9 @@ theorem le_compDeg (hU : UnfAll U) (hP : Proport U) (Z : Comp Xo c) {u u' : Weig
   exact le_of_mul_le_mul_left h1 ha'
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x K _ _ _ P F u ⟨⟨e, he⟩, ⟨Z, hZ⟩, hρ⟩ hU hu hu' hP hV hR hM k`. Establish `h1 : 0 < 1 - rhoB Dw u` using `sub_pos.2 (rhoOf_lt_one hu' hu)`. Establish `h2 : ∀ la, topDeg U Z la = topDeg U (e k) la` using `fun la => by rw [topDeg, topDeg, hV Z (e k)]`. Rewrite using `[he k, hZ, hρ]`. Use `⟨(h2 _).trans_le (le_compDeg hU hP _ hu hu' (hR _) (hM _)), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[delPrime_eq U Z (vdm_pos hu).ne', mul_div_cancel_left₀ _ h1.ne', h2]`. Conclude with `compDeg_le hP _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafDeg_of_ties : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (K : Type) [Field K] [NumberField K] [StarRing K] (P : SlopeBoundParameters) (F : SlopeBoundLiftData K P) (u : Weight Dw), DegTie U F u → UnfAll U → (∀ τ, StrictAnti (u τ)) → (∀ τ, StrictAnti (uPrime Dw u τ)) → Proport U → EqVolume U → (∀ Z, RatioOn U Z (wtOf Dw u 0)) → (∀ Z, Multiplier U x Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0)) → LeafDeg F := by
   intro E _ _ _ H Dw l Xo c r U x K _ _ _ P F u ⟨⟨e, he⟩, ⟨Z, hZ⟩, hρ⟩ hU hu hu' hP hV hR hM k

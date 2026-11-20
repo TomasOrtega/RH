@@ -8,9 +8,9 @@ open Function
 universe u
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ U hU`. Take `⟨t, ht, htU, hc⟩` from `ContinuousSections.core U hU`. Set `r0 : G → U` to `fun g => ⟨g * (t g)⁻¹, by simpa using U.inv_mem (htU g)⟩`. Establish `hr0 : Continuous r0` using `(continuous_id.mul ht.inv).subtype_mk _`. Use `⟨fun g => r0 g * (r0 1)⁻¹, hr0.mul continuous_const, mul_inv_cancel _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x g`. Establish `h : t (x * g) = t g` using `hc _ _ (by rw [mul_inv_cancel_right]; exact x.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [r0, Subgroup.coe_mul, Subgroup.coe_inv, h, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem groupSection_holds : GroupSectionStatement.{u} := by
   intro G _ _ _ _ _ _ U hU
@@ -24,21 +24,19 @@ theorem groupSection_holds : GroupSectionStatement.{u} := by
   simp only [r0, Subgroup.coe_mul, Subgroup.coe_inv, h, mul_assoc]
 
 /- English proof (translation)
-Introduce `B C _ _ _ _ _ _ p hp hsurj hcase`. Break down `hcase with hd | ⟨hcB, hT2, hTD, hT2C⟩` into its components or cases. Conclude with `⟨surjInv hsurj, continuous_of_discreteTopology, surjInv_eq hsurj⟩`. Establish `: CompactSpace (Multiplicative B)` using `hcB`. Establish `: T2Space (Multiplicative B)` using `hT2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: TotallyDisconnectedSpace (Multiplicative B)` using `hTD`. Set `U : Subgroup (Multiplicative B)` to `{ carrier := {x | p x.toAdd = 0} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, toAdd_mul, map_add] at ha hb ⊢`. Rewrite using `[ha, hb, add_zero]`. Use the proof step `one_mem' := by simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_ofPred_eq, toAdd_inv, map_neg] at ha ⊢`. Rewrite using `[ha, neg_zero] }`. Establish `hU : IsClosed (U : Set (Multiplicative B))` using `isClosed_singleton.preimage (hp.comp continuous_toAdd)`. Take `⟨t, ht, htU, hc⟩` from `ContinuousSections.core U hU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : B → B` to `fun b => Multiplicative.toAdd (t (Multiplicative.ofAdd b))`. Establish `hf : Continuous f` using `continuous_toAdd.comp (ht.comp continuous_ofAdd)`. Establish `hpf : ∀ b, p (f b) = p b`. Introduce `b`. Establish `h` using `htU (Multiplicative.ofAdd b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `p (Multiplicative.toAdd (t (Multiplicative.ofAdd b) * (Multiplicative.ofAdd b)⁻¹)) = 0 at h`. Rewrite `h` using `[toAdd_mul, toAdd_inv, toAdd_ofAdd, map_add, map_neg, add_neg_eq_zero]`. Conclude with `h`. Establish `hfc : ∀ b b', p b = p b' → f b = f b'`. Introduce `b b' hbb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Multiplicative.toAdd (hc _ _ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p (Multiplicative.toAdd (Multiplicative.ofAdd b * (Multiplicative.ofAdd b')⁻¹)) = 0`. Rewrite using `[toAdd_mul, toAdd_inv, toAdd_ofAdd, toAdd_ofAdd, map_add, map_neg, hbb, add_neg_cancel]`. Use `⟨fun c => f (surjInv hsurj c), continuous_iff_isClosed.2 fun F hF => ?_, fun c => by rw [hpf, surjInv_eq hsurj]⟩` and prove the remaining obligations. Establish `e : (fun c => f (surjInv hsurj c)) ⁻¹' F = p '' (f ⁻¹' F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc'`. Conclude with `⟨surjInv hsurj c, hc', surjInv_eq hsurj c⟩`. Introduce and unpack `⟨b, hb, rfl⟩ show f (surjInv hsurj (p b)) ∈ F`.
-
-Rewrite using `[hfc _ b (surjInv_eq hsurj _)]`. Conclude with `hb`. Rewrite using `[e]`. Conclude with `hp.isClosedMap _ (hF.preimage hf)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_holds : SectionStatement.{u} := by
   intro B C _ _ _ _ _ _ p hp hsurj hcase

@@ -16,33 +16,31 @@ namespace GlobalTheory.EisMidHt
 open GlobalTheory.Doubling (absEv absEw unitFin unitInf)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hCM _ hJ hW hA hI`. Establish `hx0 : firstColumn X ≠ 0`. Introduce `e`. Establish `h1` using `congrFun (congrFun hW.xy 0) 0`. Establish `h2 : (Formalism.UG.cT (σ : E →+* E) X * J * Y) 0 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_zero fun i _ => by rw [show X i 0 = 0 from congrFun e i, map_zero, zero_mul], zero_mul]`. Rewrite `h1` using `[h2]`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hfin, hpos⟩` from `normFin_first_column_finite_pos σ J X Y L a hCM hJ hW hA`. Use `set u := adVec F (firstColumn X) with hu`. Establish `hfinR : (Function.mulSupport fun v => (normFin F L v (fun i => compFin F E v (u i)) : ℝ)).Finite` using `hfin.subset (fun v hv => fun e => hv (by simp [e]))`. Use `⟨mul_pos ?_ (Finset.prod_pos fun w _ => normInf_adVec_pos σ hCM a w _ hx0), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_prod _ hfinR]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.prod_pos fun v _ => by exact_mod_cast hpos v`. Take `⟨p, l, hpl, k, hk, rfl⟩` from `hI.1 g`. Rewrite using `[hI.2 p l hpl k hk]`. Establish `hpv : (matHom _ σ J p).1 *ᵥ u = l.1 • u`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrFun hpl i) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, hu, adVec, firstColumn, col0]`. Establish `hpinv : (matHom _ σ J p⁻¹).1 *ᵥ u = (l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u`. Establish `e1 : (matHom _ σ J p⁻¹).1 *ᵥ ((matHom _ σ J p).1 *ᵥ u) = u`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e1` using `[hpv, Matrix.mulVec_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [e1]`. Establish `hg : (matHom _ σ J (p * k)⁻¹).1 *ᵥ u = (matHom _ σ J k⁻¹).1 *ᵥ ((l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_rev, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hpinv]`. Rewrite using `[hg]`. Establish `hk'` using `mem_levelAll.1 (inv_mem hk)`. Establish `hfv : ∀ v, normFin F L v (fun i => compFin F E v (((matHom _ σ J k⁻¹).1 *ᵥ ((l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u)) i)) = absEv F E v (unitFin F E v l⁻¹) * normFin F L v (fun i => compFin F E v (u i))`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun i => compFin F E v (((matHom _ σ J k⁻¹).1 *ᵥ ((l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u)) i)) = (matHom _ σ J (proj σ J v k⁻¹)).1 *ᵥ ((unitFin F E v l⁻¹ : Fv F v ⊗[F] E) • fun i => compFin F E v (u i))`. Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec, matHom_proj]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.Doubling.unitFin]`. Rewrite using `[e, normFin_stab σ J L v _ (hk'.1 v), normFin_unit_smul]`. Establish `hiw : ∀ w, normInf a w (fun i => compInf F E w (((matHom _ σ J k⁻¹).1 *ᵥ ((l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u)) i)) = absEw F E w (unitInf F E w l⁻¹) * normInf a w (fun i => compInf F E w (u i))`. Introduce `w`. Establish `e : (fun i => compInf F E w (((matHom _ σ J k⁻¹).1 *ᵥ ((l⁻¹ : (AF F ⊗[F] E)ˣ).1 • u)) i)) = (matHom _ σ J (projArch σ J w k⁻¹)).1 *ᵥ ((unitInf F E w l⁻¹ : w.Completion ⊗[F] E) • fun i => compInf F E w (u i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec, matHom_projArch]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.Doubling.unitInf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, normInf_stab σ J hCM a w _ (hk'.2 w), normInf_unit_smul]`. Unfold `ht`. Simplify using `only [hfv, hiw, NNReal.coe_mul]`. Establish `hA1 : (Function.mulSupport fun v => ((absEv F E v (unitFin F E v l⁻¹) : ℝ≥0) : ℝ)).Finite` using `(GlobalTheory.Doubling.finite_mulSupport_absEv l⁻¹).subset (fun v hv => by`. Simplify using `only [Function.mem_mulSupport, ne_eq, NNReal.coe_eq_one] at hv ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv)`. Rewrite using `[finprod_mul_distrib hA1 hfinR, Finset.prod_mul_distrib]`. Establish `hl : (absE F E l : ℝ) * ((∏ w, (absEw F E w (unitInf F E w l⁻¹) : ℝ)) * ∏ᶠ v, (absEv F E v (unitFin F E v l⁻¹) : ℝ)) = 1`. Establish `h1 : (absE F E l : ℝ) * (absE F E l⁻¹ : ℝ) = 1`. Rewrite using `[← NNReal.coe_mul, ← map_mul, mul_inv_cancel, map_one, NNReal.coe_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `NNReal.toRealHom.toMonoidHom.map_finprod (GlobalTheory.Doubling.finite_mulSupport_absEv l⁻¹)`. Establish `e2 : (absE F E l⁻¹ : ℝ) = (∏ w, (absEw F E w (unitInf F E w l⁻¹) : ℝ)) * ∏ᶠ v, (absEv F E v (unitFin F E v l⁻¹) : ℝ)`. Rewrite using `[GlobalTheory.Doubling.absE_apply, NNReal.coe_mul, NNReal.coe_prod]`. Use `congr 1`. Rewrite using `[← e2]`.
-
-Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ht_iwasawa_anyDim : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E)

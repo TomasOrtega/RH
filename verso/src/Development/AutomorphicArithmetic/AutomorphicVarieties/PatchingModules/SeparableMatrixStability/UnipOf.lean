@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hni : ¬ Function.Injective (algebraMap ℤ_[l] K)` using `by haveI : Infinite ℤ_[l] := Infinite.of_injective (Nat.cast : ℕ → ℤ_[l]) Nat.cast_injective`. Conclude with `not_injective_infinite_finite _`. Establish `hker : RingHom.ker (algebraMap ℤ_[l] K) ≠ ⊥`. Introduce `h`. Conclude with `hni ((RingHom.injective_iff_ker_eq_bot _).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `PadicInt.ideal_eq_span_pow_p hker`. Establish `hmem : (l : ℤ_[l]) ^ e ∈ RingHom.ker (algebraMap ℤ_[l] K)`. Rewrite using `[he]`. Conclude with `Ideal.subset_span rfl`. Rewrite `hmem` using `[RingHom.mem_ker, map_pow, map_natCast]`.
-
-Conclude with `pow_eq_zero_iff'.mp hmem |>.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] [Algebra ℤ_[l] K] : (l : K) = 0 := by
   have hni : ¬ Function.Injective (algebraMap ℤ_[l] K) := by
@@ -24,25 +22,21 @@ private theorem cast_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite 
   exact pow_eq_zero_iff'.mp hmem |>.1
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨0, fun i => i.elim0⟩`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Use `haveI : CharP K l := (CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).2 hl`. Use `haveI : CharP (PowerSeries K) l := charP_of_injective_algebraMap (algebraMap K (PowerSeries K)).injective l`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set I : Ideal (PowerSeries K) := Ideal.span {PowerSeries.X} with hI`. Establish `hmul : ∀ (A B : Matrix (Fin n) (Fin n) (PowerSeries K)) (J J' : Ideal (PowerSeries K)), (∀ i j, A i j ∈ J) → (∀ i j, B i j ∈ J') → ∀ i j, (A * B) i j ∈ J * J'`. Introduce `A B J J' hA hB i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_mul (hA i k) (hB k j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hpow : ∀ (A : Matrix (Fin n) (Fin n) (PowerSeries K)) (J : Ideal (PowerSeries K)), (∀ i j, A i j ∈ J) → ∀ k : ℕ, ∀ i j, (A ^ k) i j ∈ J ^ k`. Introduce `A J hA k`. Proceed by induction on `k with`. Consider the case `zero => intro i j`. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `i j`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `hmul _ _ _ _ ih hA i j`. Use `set d := P.charpoly - (Polynomial.X - 1) ^ n with hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdmap : d.map (PowerSeries.constantCoeff : PowerSeries K →+* K) = 0`. Rewrite using `[hd, Polynomial.map_sub, hP, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one, sub_self]`. Establish `hdc : ∀ k, d.coeff k ∈ I`. Introduce `k`. Rewrite using `[hI, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun q => Polynomial.coeff q k) hdmap` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Establish `hev : Polynomial.aeval P d = -(P - 1) ^ n`. Rewrite using `[hd, map_sub, Matrix.aeval_self_charpoly, map_pow, map_sub, Polynomial.aeval_X, map_one, zero_sub]`. Establish `hA : ∀ i j, (Polynomial.aeval P d) i j ∈ I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[Polynomial.aeval_eq_sum_range, Matrix.sum_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hdc k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hQ : ∀ i j, ((P - 1) ^ n) i j ∈ I`. Introduce `i j`. Establish `h1 : (P - 1) ^ n = -(Polynomial.aeval P d)` using `by rw [hev, neg_neg]`. Rewrite using `[h1, Matrix.neg_apply]`. Conclude with `I.neg_mem (hA i j)`.
-
-Use `⟨n * m, fun i j => ?_⟩` and prove the remaining obligations. Establish `hle : n * m ≤ l ^ (n * m)` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`. Establish `hsub : P ^ l ^ (n * m) - 1 = (P - 1) ^ l ^ (n * m)`. Rewrite using `[sub_pow_char_pow_of_commute l (n * m) (Commute.one_right P), one_pow]`. Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le hle`.
-
-Rewrite using `[hsub, hr, pow_add, pow_mul]`. Establish `h2` using `hmul (((P - 1) ^ n) ^ m) ((P - 1) ^ r) (I ^ m) ⊤ (hpow _ _ hQ m) (fun a b => Submodule.mem_top (x := ((P - 1) ^ r) a b)) i j`. Rewrite `h2` using `[Ideal.mul_top, hI, Ideal.span_singleton_pow]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem key (l : ℕ) [Fact l.Prime] (K : Type) [Field K] (hl : (l : K) = 0) (n : ℕ)
     (P : Matrix (Fin n) (Fin n) (PowerSeries K))
@@ -104,7 +98,7 @@ private theorem key (l : ℕ) [Fact l.Prime] (K : Type) [Field K] (hl : (l : K) 
   rwa [Ideal.mul_top, hI, Ideal.span_singleton_pow] at h2
 
 /- English proof (translation)
-Introduce `l _ F n x H hH m h hh`. Take `⟨e, he⟩` from `key l x.K (cast_zero l x.K) n (mat x.ρ h) (hH h hh) m`. Conclude with `⟨e, fun i j => by rw [map_pow]; exact he i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Pa.unip_of :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (H : Subgroup F.Γ), (∀ h : F.G₀, (h : F.Γ) ∈ H → (mat x.ρ h).charpoly.map (PowerSeries.constantCoeff : x.A →+* x.K) = (Polynomial.X - 1) ^ n) → x.UnipOn H := by

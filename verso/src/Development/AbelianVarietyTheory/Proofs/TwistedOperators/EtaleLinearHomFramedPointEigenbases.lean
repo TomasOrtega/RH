@@ -17,9 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori Globa
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Set `π : CommRingCat.of (DualNumber T) ⟶ CommRingCat.of T` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom T T T).toRingHom`. Establish `hπ : Function.Surjective π` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hsq : ∀ a b : DualNumber T, a.fst = 0 → b.fst = 0 → a * b = 0` using `fun a b ha hb => by`. Apply the tactic sequence `ext <;> simp [ha, hb]`. Establish `hnil : IsNilpotent (RingHom.ker π.hom)` using `⟨2, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Conclude with `fun a ha b hb => hsq a b ha hb⟩`. Conclude with `GlobalTheory.existsUnique_lift_of_etale_of_surjective f π hπ hnil x₀ s h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem existsUnique_dual_lift {X Y : Scheme.{0}} (f : X ⟶ Y) [Etale f] {T : Type} [CommRing T]
     (s : Sp (DualNumber T) ⟶ Y) (x₀ : Sp T ⟶ X)
@@ -47,20 +47,20 @@ abbrev epsBase (T : Type) [CommRing T] : Sp (DualNumber T) ⟶ Sp T := spMap (al
 abbrev epsZero (T : Type) [CommRing T] : Sp T ⟶ Sp (DualNumber T) := spMap (TrivSqZeroExt.fstHom T T T).toRingHom
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Rewrite using `[spMap_spMap]`. Conclude with `(congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsZero_base : epsZero T ≫ epsBase T = 𝟙 _ := by
   rw [spMap_spMap]
   exact (congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id _)
 
 /- English proof (translation)
-Rewrite using `[spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_base (a : T) : spMap (epsMul a) ≫ epsBase T = epsBase T := by
   rw [spMap_spMap]
@@ -68,7 +68,7 @@ theorem eps_base (a : T) : spMap (epsMul a) ≫ epsBase T = epsBase T := by
   ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Simplify using `[epsMul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem epsZero_eps (a : T) : epsZero T ≫ spMap (epsMul a) = epsZero T := by
   rw [spMap_spMap]
@@ -76,7 +76,7 @@ theorem epsZero_eps (a : T) : epsZero T ≫ spMap (epsMul a) = epsZero T := by
   simp [epsMul]
 
 /- English proof (translation)
-Rewrite using `[spMap_spMap, spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_comm (a b : T) : spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul b) ≫ spMap (epsMul a) := by
   rw [spMap_spMap, spMap_spMap]
@@ -84,7 +84,7 @@ theorem eps_comm (a b : T) : spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsM
   ext <;> simp [epsMul, mul_left_comm]
 
 /- English proof (translation)
-Establish `: (epsMul a).comp (epsMul b) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, ← _root_.mul_assoc, h]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_cancel {a b : T} (h : a * b = 1) : spMap (epsMul a) ≫ spMap (epsMul b) = 𝟙 _ := by
   have : (epsMul a).comp (epsMul b) = RingHom.id _ := by
@@ -98,34 +98,34 @@ abbrev zeroAt (x : Sp T ⟶ Xo.X) : (Over.mk x : Over Xo.X) ⟶ tEps x := sec' x
 abbrev scaleAt (x : Sp T ⟶ Xo.X) (a : T) : tEps x ⟶ tEps x := res x (spMap (epsMul a)) (eps_base a)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (epsZero_eps a)`.
+A detailed English derivation is pending.
 -/
 theorem zeroAt_scaleAt (x : Sp T ⟶ Xo.X) (a : T) : zeroAt x ≫ scaleAt x a = zeroAt x :=
   Over.OverMorphism.ext (epsZero_eps a)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (eps_comm a b)`.
+A detailed English derivation is pending.
 -/
 theorem scaleAt_comm (x : Sp T ⟶ Xo.X) (a b : T) : scaleAt x a ≫ scaleAt x b = scaleAt x b ≫ scaleAt x a :=
   Over.OverMorphism.ext (eps_comm a b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Over.OverMorphism.ext h.2, fun h => ⟨Over.w a, congrArg (·.left) h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTanAt_iff {x : Sp T ⟶ Xo.X} (a : tEps x ⟶ Xo.univ.t.G) : IsTanAt x a.left ↔ zeroAt x ≫ a = 1 :=
   ⟨fun h => Over.OverMorphism.ext h.2, fun h => ⟨Over.w a, congrArg (·.left) h⟩⟩
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (·.left) h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isEigAt_iff {c : Coeff l} [Algebra c.F T] {x : Sp T ⟶ Xo.X} (τ : E →+* ℂ) (a : tEps x ⟶ Xo.univ.t.G) :
     IsEigAt c τ a.left ↔ ∀ r : 𝓞 E, a ≫ Xo.univ.t.act.act r = scaleAt x (algebraMap c.F T (embK c τ r)) ≫ a :=
   forall_congr' fun _ => ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (·.left) h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`. Take `rfl : u = fun i => scaleAt x (cf i) ≫ a i` from `funext fun i => Over.OverMorphism.ext (hu i)`. Conclude with `Over.OverMorphism.ext h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨_, fun _ => rfl, congrArg (·.left) h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCombAt_iff {x : Sp T ⟶ Xo.X} {m : ℕ} (a : Fin m → (tEps x ⟶ Xo.univ.t.G)) (cf : Fin m → T)
     (b : tEps x ⟶ Xo.univ.t.G) :
@@ -149,14 +149,14 @@ Both sides reduce to the same expression.
 theorem tanMap_left (h : IsLinHom Ψ) (a : tEps x ⟶ Xo.univ.t.G) : (tanMap h a).left = push Ψ (epsBase T) a := rfl
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (push_res Ψ _ _ a)`.
+A detailed English derivation is pending.
 -/
 theorem tanMap_scale (h : IsLinHom Ψ) (s : T) (a : tEps x ⟶ Xo.univ.t.G) :
     tanMap h (scaleAt x s ≫ a) = scaleAt x' s ≫ tanMap h a :=
   Over.OverMorphism.ext (push_res Ψ _ _ a)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `e : toFib x (epsBase T) (a ≫ Xo.univ.t.act.act r) = toFib x (epsBase T) a ≫ (Over.mk x ◁ Xo.univ.t.act.act r).left`. Rewrite using `[toFib, toFib, ← Over.comp_left, lift_whiskerLeft]`. Rewrite using `[Over.comp_left, tanMap_left, tanMap_left, push, push, e, Category.assoc, reassoc_of% (h.2.2 r), ← Over.comp_left, whiskerLeft_snd, Over.comp_left]`. Simplify using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tanMap_act (h : IsLinHom Ψ) (r : 𝓞 E) (a : tEps x ⟶ Xo.univ.t.G) :
     tanMap h (a ≫ Xo.univ.t.act.act r) = tanMap h a ≫ Xo.univ.t.act.act r := by
@@ -169,27 +169,27 @@ theorem tanMap_act (h : IsLinHom Ψ) (r : 𝓞 E) (a : tEps x ⟶ Xo.univ.t.G) :
   simp only [Category.assoc]
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `exists_pointHom h`. Simplify using `using hf 1`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sends_one (h : IsLinHom Ψ) : Sends Ψ 1 1 := by
   obtain ⟨f, hf, -⟩ := exists_pointHom h
   simpa using hf 1
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((sends_sec'_iff h.1 (epsZero T) epsZero_base a 1).1 (by rw [ha]; exact sends_one h))`.
+A detailed English derivation is pending.
 -/
 theorem tanMap_zero (h : IsLinHom Ψ) {a : tEps x ⟶ Xo.univ.t.G} (ha : zeroAt x ≫ a = 1) :
     zeroAt x' ≫ tanMap h a = 1 :=
   Over.OverMorphism.ext ((sends_sec'_iff h.1 (epsZero T) epsZero_base a 1).1 (by rw [ha]; exact sends_one h))
 
 /- English proof (translation)
-Establish `e₀ : ∀ (y : Sp T ⟶ Xo.X) (a : tEps y ⟶ Xo.univ.t.G), zeroAt y ≫ a = 1 ↔ epsZero T ≫ toFib y (epsBase T) a = (lift (𝟙 (Over.mk y)) (1 : Over.mk y ⟶ Xo.univ.t.G)).left` using `fun y a => by`. Rewrite using `[← lift_sec' y _ epsZero_base]`. Use `⟨fun e => by rw [← e], fun e => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← lift_l_snd (𝟙 (Over.mk y)) (_ ≫ a), e, lift_l_snd]`. Establish `e₁ : ∀ a : tEps x ⟶ Xo.univ.t.G, tanMap h a = w ↔ toFib x (epsBase T) a ≫ Ψ = toFib x' (epsBase T) w` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun e => gx_ext ?_ ?_, fun e => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.1, toFib_fst, toFib_fst]`. Rewrite using `[toFib_snd, ← e, tanMap_left, push, Category.assoc]`. Rewrite using `[tanMap_left, push, reassoc_of% e, toFib_snd]`. Take `⟨v, ⟨h₁, h₂⟩, hu⟩` from `existsUnique_dual_lift Ψ (toFib x' (epsBase T) w) (lift (𝟙 (Over.mk x)) (1 : Over.mk x ⟶ Xo.univ.t.G)).left ((sends_one h).trans ((e₀ x' w).1 hw).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv : v ≫ (fst (Over.mk x) Xo.univ.t.G).left = epsBase T` using `by rw [← h.1, reassoc_of% h₂, toFib_fst]`. Set `a : tEps x ⟶ Xo.univ.t.G` to `Over.homMk (v ≫ (snd (Over.mk x) Xo.univ.t.G).left) (by`. Rewrite using `[Category.assoc, snd_hom, reassoc_of% hv]`. Use the proof step `rfl)`. Establish `ha : toFib x (epsBase T) a = v` using `gx_ext (by rw [toFib_fst, hv]) (by rw [toFib_snd]; rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ⟨(e₀ x a).2 (by rw [ha, h₁]), (e₁ a).2 (by rw [ha, h₂])⟩, fun b hb => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← toFib_snd x _ b, hu _ ⟨(e₀ x b).1 hb.1, (e₁ b).1 hb.2⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem existsUnique_tanMap (h : IsLinHom Ψ) [Etale Ψ] {w : tEps x' ⟶ Xo.univ.t.G} (hw : zeroAt x' ≫ w = 1) :
     ∃! a : tEps x ⟶ Xo.univ.t.G, zeroAt x ≫ a = 1 ∧ tanMap h a = w := by
@@ -215,19 +215,17 @@ theorem existsUnique_tanMap (h : IsLinHom Ψ) [Etale Ψ] {w : tEps x' ⟶ Xo.uni
   rfl
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a : Fin m → (tEps x ⟶ Xo.univ.t.G), u = fun i => (a i).left` from `⟨fun i => Over.homMk (u i) (tan i).1, rfl⟩`. Establish `c₁ : ∀ y : Sp T ⟶ Xo.X, scaleAt y q ≫ scaleAt y p = 𝟙 _` using `fun y => Over.OverMorphism.ext (eps_cancel hq)`. Establish `c₂ : ∀ y : Sp T ⟶ Xo.X, scaleAt y p ≫ scaleAt y q = 𝟙 _` using `fun y => Over.OverMorphism.ext (eps_cancel ((mul_comm _ _).trans hq))`. Set `L : (tEps x ⟶ Xo.univ.t.G) →* (tEps x' ⟶ Xo.univ.t.G)` to `MonoidHom.mk' (fun b => scaleAt x' q ≫ tanMap h b) fun b b' => by rw [map_mul, MonObj.comp_mul]`. Establish `hL : ∀ b, L b = scaleAt x' q ≫ tanMap h b` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `zs : ∀ (y : Sp T ⟶ Xo.X) (s : T) (b : tEps y ⟶ Xo.univ.t.G), zeroAt y ≫ b = 1 → zeroAt y ≫ scaleAt y s ≫ b = 1` using `fun y s b hb => by rw [← Category.assoc, zeroAt_scaleAt, hb]`. Establish `Lz : ∀ b, zeroAt x ≫ b = 1 → zeroAt x' ≫ L b = 1` using `fun b hb => zs _ _ _ (tanMap_zero h hb)`. Establish `Ls : ∀ s b, L (scaleAt x s ≫ b) = scaleAt x' s ≫ L b` using `fun s b => by`. Rewrite using `[hL, hL, tanMap_scale, ← Category.assoc, scaleAt_comm, Category.assoc]`. Establish `La : ∀ r b, L (b ≫ Xo.univ.t.act.act r) = L b ≫ Xo.univ.t.act.act r` using `fun r b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL, hL, tanMap_act, Category.assoc]`. Establish `Li : ∀ b b', zeroAt x ≫ b = 1 → zeroAt x ≫ b' = 1 → L b = L b' → b = b'` using `fun b b' hb hb' e => by`. Establish `e'` using `congrArg (scaleAt x' p ≫ ·) e`. Simplify using `only [hL, reassoc_of% (c₂ x')] at e'`. Conclude with `(existsUnique_tanMap h (tanMap_zero h hb')).unique ⟨hb, e'⟩ ⟨hb', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ta : ∀ i, zeroAt x ≫ a i = 1` using `fun i => (isTanAt_iff _).1 (tan i)`. Use `⟨fun i => (L (a i)).left, fun i => ⟨tan i, (isTanAt_iff _).2 (Lz _ (ta i)), a i, rfl, ?_⟩, fun i => (isEigAt_iff τ _).2 fun r => ?_, fun w hw hw' => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (·.left) (show scaleAt x' p ≫ L (a i) = tanMap h (a i) by rw [hL, reassoc_of% (c₂ x')])`. Rewrite using `[← La, (isEigAt_iff τ _).1 (eig i), Ls]`. Take `⟨w, rfl⟩ : ∃ b : tEps x' ⟶ Xo.univ.t.G, w = b.left` from `⟨Over.homMk w hw.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, ⟨hv, e⟩, -⟩` from `existsUnique_tanMap h (zs x' p w ((isTanAt_iff _).1 hw))`. Take `rfl : L v = w` from `by rw [hL, e, reassoc_of% (c₁ x')]`. Establish `ev : IsEigAt c τ v.left` using `(isEigAt_iff τ _).2 fun r => Li _ _ (by have := Xo.univ.t.act.hom r; rw [← Category.assoc, hv, MonObj.one_comp]) (zs _ _ _ hv) (by rw [La, Ls, (isEigAt_iff τ _).1 hw'])`. Use `(existsUnique_congr fun cf => ?_).1 (basis _ ((isTanAt_iff _).2 hv) ev)` and prove the remaining obligations. Establish `e : L (List.ofFn fun i => scaleAt x (cf i) ≫ a i).prod = (List.ofFn fun i => scaleAt x' (cf i) ≫ L (a i)).prod`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_list_prod, List.map_ofFn]`. Conclude with `congrArg (fun f => (List.ofFn f).prod) (funext fun i => Ls _ _)`. Rewrite using `[isCombAt_iff, isCombAt_iff, ← e]`. Use `⟨congrArg L, Li _ _ (LieEtale.comp_listProd _ _ fun b hb => ?_) hv⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hb`.
-
-Conclude with `zs _ _ _ (ta i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_basis_image {c : Coeff l} [Algebra c.F T] (h : IsLinHom Ψ) [Etale Ψ] {p : ℕ} {q : T}
     (hq : q * p = 1) (τ : E →+* ℂ) {m : ℕ} (u : Fin m → (Sp (DualNumber T) ⟶ Xo.univ.t.G.left))
@@ -284,9 +282,9 @@ open GlobalTheory.ThetaTrace GlobalTheory.HkFam GlobalTheory.Frames GlobalTheory
 open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLinHom IsLieImg IsThGen IsHeckeIsog)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T _ _ y x' Ψ p hp h het`. Establish `hF : ((p : c.F)) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Establish `hq : algebraMap c.F T ((p : c.F)⁻¹) * (p : T) = 1`. Rewrite using `[← map_natCast (algebraMap c.F T) p, ← map_mul, inv_mul_cancel₀ hF, map_one]`. Use `choose u h₁ h₂ h₃ using fun τ => GlobalTheory.HeckePointLawRing.exists_basis_image (c := c) h hq τ (y.u τ) (y.tan τ) (y.eig τ) (y.basis τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨u, h₁, h₂, h₃⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckePointLawRing.exists_frame_image : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : Type) [CommRing T] [Algebra c.F T]

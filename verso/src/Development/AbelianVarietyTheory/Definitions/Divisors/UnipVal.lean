@@ -82,9 +82,9 @@ theorem unip_val (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) :
 abbrev mat (g : UG c (stdJ ν E)) : Matrix (ν ⊕ ν) (ν ⊕ ν) E := ((g : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)
 
 /- English proof (translation)
-Establish `hg : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E` using `(mem_UG_iff c (g : GL (ν ⊕ ν) E)).1 g.2`. Establish `hr : mat c g * -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) = 1`. Rewrite using `[Matrix.mul_neg, ← mul_assoc, ← mul_assoc, hg, stdJ_mul_stdJ, neg_neg]`. Establish `hl : mat c g⁻¹ * mat c g = 1`. Simplify using `[mat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr, mul_one]`. Use `_ = -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) := by`. Rewrite using `[← mul_assoc, hl, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv (g : UG c (stdJ ν E)) : mat c g⁻¹ = -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) := by
   have hg : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E := (mem_UG_iff c (g : GL (ν ⊕ ν) E)).1 g.2
@@ -116,7 +116,7 @@ def sieg (ν : Type) [Fintype ν] [DecidableEq ν] : Subgroup (UG c (stdJ ν E))
     simp [stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_neg, h0]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sieg {g : UG c (stdJ ν E)} : g ∈ sieg c ν ↔ (mat c g).toBlocks₂₁ = 0 := by
   exact Iff.rfl

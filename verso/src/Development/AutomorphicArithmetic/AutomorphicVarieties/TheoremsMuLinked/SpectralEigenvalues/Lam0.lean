@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Lam0
 open IsLocalRing Polynomial
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf1.lam0`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.lam0 :
     ∀ (O B M : Type) [CommRing O] [IsDomain O] [CommRing B] [Algebra O B] [AddCommGroup M] [Module B M] [Module.Finite B M] (x : B →ₐ[O] O), Module.annihilator B M ≤ RingHom.ker x → ∃ (lam : M →+ O) (m₀ : M), (∀ (a : B) m, lam (a • m) = x a * lam m) ∧ lam m₀ ≠ 0 :=

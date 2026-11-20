@@ -15,7 +15,7 @@ open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 namespace GlobalTheory.FlagCell
 
 /- English proof (translation)
-Use `⟨(Spec A).topIso.inv ≫ ψ.resLE W ⊤ hψ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp]`. Rewrite using `[Category.assoc, ← Scheme.Opens.toSpecΓ_SpecMap_appLE, Scheme.Opens.toSpecΓ_top, Spec.map_comp, SpecMap_ΓSpecIso_hom, ← Category.assoc, ← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_toSpecΓ {Y : Scheme.{0}} (W : Y.Opens) (A : CommRingCat.{0})
     (ψ : Spec A ⟶ Y) (hψ : ⊤ ≤ ψ ⁻¹ᵁ W) :
@@ -29,19 +29,15 @@ theorem exists_lift_toSpecΓ {Y : Scheme.{0}} (W : Y.Opens) (A : CommRingCat.{0}
       Scheme.toIso_inv_ι, Category.id_comp]
 
 /- English proof (translation)
-Introduce `B Y π U hU W hW N n ψ hπ hψ hn hι`. Take `⟨ψ', h0, h1⟩` from `exists_lift_toSpecΓ W _ ψ hψ`. Use `set g := ψ.appLE W ⊤ hψ ≫ (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial N Γ(B, U)))).hom with hg`. Establish `h2 : π.appLE U W hW ≫ g = CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U))`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono hU.fromSpec, ← hπ, Spec.map_comp, ← h1, Category.assoc, Category.assoc, ← Category.assoc W.toSpecΓ, Scheme.Opens.toSpecΓ_SpecMap_appLE, Category.assoc, hU.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι, ← Category.assoc, h0]`. Use `set ev : CommRingCat.of (MvPolynomial N Γ(B, U)) ⟶ Γ(Y, W) := CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) with hev`. Establish `h3 : ev ≫ g = 𝟙 _`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Use `congrArg (fun f => f.hom c) h2` as an intermediate fact. Simplify `this` using `[hev]`. Introduce `s`. Simplify using `[hev, hg, hn s]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ψ' ≫ (W.toSpecΓ ≫ Spec.map ev) = 𝟙 _`. Rewrite using `[← Category.assoc, h1, ← Spec.map_comp, h3, Spec.map_id]`. Establish `h5 : (W.toSpecΓ ≫ Spec.map ev) ≫ ψ' = 𝟙 _`. Rewrite using `[← cancel_mono W.ι, Category.assoc, h0, Category.assoc, hι, Category.id_comp]`. Use `haveI : IsIso (W.toSpecΓ ≫ Spec.map ev) := ⟨ψ', h5, h4⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hWa : IsAffineOpen W` using `IsAffine.of_isIso (W.toSpecΓ ≫ Spec.map ev)`. Use `⟨hWa, ?_⟩` and prove the remaining obligations. Use `haveI : IsIso W.toSpecΓ := by`. Rewrite using `[← hWa.isoSpec_hom]`. Use `infer_instance`.
-
-Use `haveI : IsIso (Spec.map ev) := IsIso.of_isIso_comp_left W.toSpecΓ _`. Use `haveI : IsIso ev := by`. Establish `h : IsIso (Scheme.Spec.map ev.op)` using `this`. Use `haveI := isIso_of_reflects_iso ev.op Scheme.Spec`. Conclude with `isIso_of_op ev`.
-
-Conclude with `ConcreteCategory.bijective_of_isIso ev`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_and_bijective_of_section :
     ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (U : B.Opens) (hU : IsAffineOpen U) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (N : Type) (n : N → Γ(Y, W)) (ψ : Spec (CommRingCat.of (MvPolynomial N Γ(B, U))) ⟶ Y), ψ ≫ π = Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U))) ≫ hU.fromSpec → ∀ (hψ : ⊤ ≤ ψ ⁻¹ᵁ W), (∀ s, (ψ.appLE W ⊤ hψ).hom (n s) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial N Γ(B, U)))).inv.hom (MvPolynomial.X s)) → W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n)) ≫ ψ = W.ι → IsAffineOpen W ∧ Function.Bijective (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) := by

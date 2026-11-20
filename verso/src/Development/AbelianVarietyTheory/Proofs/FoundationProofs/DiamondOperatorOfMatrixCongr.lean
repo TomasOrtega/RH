@@ -7,9 +7,9 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l k d σ τ hN hσ hτ f`. Establish `h` using `GlobalTheory.T.diamond_mul_inv_mem_gamma1InterGamma0Level N l d σ τ hN hσ hτ`. Establish `hτ' : τ = (τ * σ⁻¹) * σ` using `by group`. Establish `hinv : ⇑f ∣[k] (τ * σ⁻¹) = ⇑f` using `SlashInvariantForm.slash_action_eqn f _ (Subgroup.mem_map_of_mem _ h)`. Unfold `GlobalTheory.Hk.dia`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hτ', SlashAction.slash_mul, hinv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dia_congr : ∀ (N l : ℕ) (k d : ℤ) (σ τ : SL(2, ℤ)), 0 < N → GlobalTheory.Hk.IsDia N l d σ →
     GlobalTheory.Hk.IsDia N l d τ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k,

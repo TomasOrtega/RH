@@ -7,11 +7,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ C _ _ _ ι`. Use `letI : Module L C := Module.compHom C ι.toRingHom`. Establish `hsmul : ∀ (l : L) (x : C), l • x = ι l * x` using `fun _ _ => rfl`. Use `haveI : IsScalarTower ℚ L C := ⟨fun q l x => by`. Rewrite using `[hsmul, hsmul, map_smul, smul_mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite L C := Module.Finite.of_restrictScalars_finite ℚ L C`. Set `b` to `Module.finBasis L C`. Use `⟨Module.finrank L C, b, fun x => ⟨b.repr x, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [← hsmul]`. Conclude with `(b.sum_repr x).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Simplify using `only [← hsmul] at hc`. Rewrite using `[hc, b.repr_sum_self]`.
+A detailed English derivation is pending.
 -/
 theorem exists_left_basis_through_algHom : ∀ (L : Type) [Field L] [NumberField L] (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C]
     (ι : L →ₐ[ℚ] C), ∃ (r : ℕ) (e : Fin r → C), ∀ x : C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i := by

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinPl.ExtAllPf.ext_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExtensionByZeroAtSplitPlacesProof.lean&line=209#L209)
 -/

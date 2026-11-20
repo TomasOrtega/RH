@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact isAmpleLB_tens_of_isNef_of_dim_le_zero k`. Consider the case `succ d ih => exact GlobalTheory.T.ample_plus_nef_induction k d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isAmpleLB_tens_of_isNef_of_dim_le (k : Type) [Field k] [Infinite k] : ∀ d : ℕ,
     ∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) →
@@ -26,9 +26,9 @@ theorem isAmpleLB_tens_of_isNef_of_dim_le (k : Type) [Field k] [Infinite k] : �
   | succ d ih => exact GlobalTheory.T.ample_plus_nef_induction k d ih
 
 /- English proof (translation)
-Introduce `k _ _ X p hp A N P hA hN hP hcls`. Use `letI := algebraΓOfHom p`. Establish `hs : strHom k X = p` using `strHom_eq fun _ => rfl`. Establish `hp' : IsProjOver (strHom k X)` using `hs ▸ hp`. Take `⟨n, i, hi, -⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd : topologicalKrullDim X ≤ (n : ℕ)` using `i.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans (ProjSpace.topologicalKrullDim_eq k n).le`. Establish `hT : IsAmpleLB (tens A N)` using `isAmpleLB_tens_of_isNef_of_dim_le k n X hp' hd A N hA hN`. Use `IsAmpleLB.of_lbIso hT hP ((cls_eq_iff hP hT.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[hcls, cls_tens hA.isLB hN.isLB hT.isLB]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAmpleLB_of_cls_eq_ample_add_nef : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsProjOver p → ∀ (A N P : LB X) (hA : IsAmpleLB A) (hN : letI := algebraΓOfHom p; IsNef k N) (hP : P.IsLB), cls P hP = cls A hA.isLB + cls N (letI := algebraΓOfHom p; hN.isLB) → IsAmpleLB P := by
   intro k _ _ X p hp A N P hA hN hP hcls

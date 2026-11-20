@@ -17,15 +17,13 @@ variable {O : Type} [CommRing O] [IsDomain O] {H : Type} [AddCommGroup H] [Modul
   [Module (FractionRing O) H] [IsScalarTower O (FractionRing O) H]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨t, ht, hty⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul, mul_comm s t, mul_smul]`. Conclude with `S.add_mem (S.smul_mem s hty) (S.smul_mem t hsz)`. Consider the case `smul a y _ hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hty⟩` from `hy`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) a`. Simplify using `only at hnd`. Establish `key : (d : O) • a = algebraMap O (FractionRing O) n`. Rewrite using `[← hnd, Algebra.smul_def, mul_comm]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsLocalization.mk'_spec (FractionRing O) n d`. Use `⟨(d : O) * t, mul_ne_zero (nonZeroDivisors.coe_ne_zero d) ht, ?_⟩` and prove the remaining obligations. Establish `e : ((d : O) * t) • (a • y) = n • (t • y)`. Rewrite using `[mul_comm, ← smul_smul, ← smul_assoc (d : O) a y, key, algebraMap_smul, smul_comm]`. Rewrite using `[e]`.
-
-Conclude with `S.smul_mem n hty`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanK (S : Submodule O H) {x : H} (hx : x ∈ Submodule.span (FractionRing O) (S : Set H)) :
     ∃ t : O, t ≠ 0 ∧ t • x ∈ S := by
@@ -89,7 +87,7 @@ Both sides reduce to the same expression.
 theorem psiR_apply (c : Γ → Dt.T') (g : G) : psiR e eO heO ι Dt c g = tr e ((c (ι g) : VT')) := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `γ`. Take `⟨g, rfl⟩` from `hι.2 γ`. Conclude with `Subtype.ext (congrFun h g)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psiR_inj (hι : Function.Bijective ι) : Function.Injective (psiR e eO heO ι Dt) := by
   intro a b h
@@ -109,19 +107,17 @@ Both sides reduce to the same expression.
 theorem coe_rhoTl' (γ : Γ) (t : Dt.T') : ((Dt.ρTl' γ t : Dt.T') : VT') = Dt.ρT' γ t := rfl
 
 /- English proof (translation)
-Establish `hx' : (fun γ => ((x : Γ → Dt.T') γ : VT')) ∈ ReciprocityTheory.Gal.Z1 Dt.ρT'` using `⟨continuous_subtype_val.comp x.2.1, fun g h => by show (((x : Γ → Dt.T') (g * h) : Dt.T') : VT') = _`. Rewrite using `[x.2.2 g h]`. Use the proof step `rfl⟩`. Establish `hj : Dt.j' (Submodule.mkQ _ x) = Submodule.mkQ _ ⟨_, hx'⟩` using `rfl`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hF`. Establish `hF' : Dt.j' (Submodule.mkQ _ x) ∈ Submodule.span (FractionRing O) (finiteClassesContinuous e PD ι Dt.ρT' Dt.ρT' LinearMap.id : Set (ReciprocityTheory.Gal.H1 Dt.ρT'))` using `hF`. Take `⟨t, ht, hS⟩` from `mem_spanK _ hF'`. Rewrite `hS` using `[hj, ← map_smul]`. Take `⟨f, hf, hfe⟩` from `hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfz : ((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') ∈ finZ e PD Dt.ρT' ι` using `hf`. Rewrite `hfe` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨v, hv⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hfe`. Establish `htK : algebraMap O (FractionRing O) t ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ht)`. Establish `heq : (fun γ => ((x : Γ → Dt.T') γ : VT')) = (algebraMap O (FractionRing O) t)⁻¹ • (((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') - fun γ => Dt.ρT' γ v - v)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `γ`. Establish `e1 : ((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') γ - t • ((x : Γ → Dt.T') γ : VT') = Dt.ρT' γ v - v` using `hv γ`. Use `show ((x : Γ → Dt.T') γ : VT') = (algebraMap O (FractionRing O) t)⁻¹ • (((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') γ - (Dt.ρT' γ v - v))`. Establish `e2 : ((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') γ - (Dt.ρT' γ v - v) = algebraMap O (FractionRing O) t • ((x : Γ → Dt.T') γ : VT')`. Rewrite using `[algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((f : ReciprocityTheory.Gal.Z1 Dt.ρT') : Γ → VT') γ = Dt.ρT' γ v - v + t • ((x : Γ → Dt.T') γ : VT')`. Rewrite using `[← e1]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, smul_smul, inv_mul_cancel₀ htK, one_smul]`. Rewrite using `[heq]`. Conclude with `(finZ e PD Dt.ρT' ι).smul_mem _ ((finZ e PD Dt.ρT' ι).sub_mem hfz (hcob v))`. Introduce `h show Dt.j' (Submodule.mkQ _ x) ∈ Submodule.span (FractionRing O) _`. Rewrite using `[hj]`.
-
-Conclude with `Submodule.subset_span ⟨⟨_, hx'⟩, h, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_FsG (hcob : ∀ v : VT', (fun γ => Dt.ρT' γ v - v) ∈ finZ e PD Dt.ρT' ι)
     (x : ReciprocityTheory.Gal.Z1 Dt.ρTl') :
@@ -187,13 +183,13 @@ abbrev L2 : Lattice (O := Ow) (repL e Dt.ρT' ι) :=
 abbrev f0 : MK (O := O) T₁ →ₗ[O] VT' := liftK (Dt.T'.subtype ∘ₗ v.toLinearMap ∘ₗ π)
 
 /- English proof (translation)
-The claim follows from `liftK_mkK _ m`.
+A detailed English derivation is pending.
 -/
 theorem lift_map_mk (m : T₁) : f0 Dt π v (mkK m) = Dt.T'.subtype ((v.toLinearMap ∘ₗ π) m) := liftK_mkK _ m
 
 include he in
 /- English proof (translation)
-The claim follows from `liftK_equiv Dt.ρT' ρ₁ _ (fun g m => congrArg Subtype.val (he g m)) γ x`.
+A detailed English derivation is pending.
 -/
 theorem lift_map_equivariant (γ : Γ) (x : MK (O := O) T₁) : f0 Dt π v (locRep ρ₁ γ x) = Dt.ρT' γ (f0 Dt π v x) :=
   liftK_equiv Dt.ρT' ρ₁ _ (fun g m => congrArg Subtype.val (he g m)) γ x
@@ -203,7 +199,7 @@ abbrev FR : LatHom (L1 e eO heO ι ρ₁) (L2 e eO heO ι Dt hsp) :=
     (lift_map_equivariant Dt ρ₁ π v he) (fun m => lift_map_mk Dt π v m)
 
 /- English proof (translation)
-Establish `h : psiR e eO heO ι Dt (x : Γ → Dt.T') ∈ finiteCocycles PD (repL e Dt.ρT' ι)` using `(mem_FsG e PD ι Dt hcob x).1 hx`. Conclude with `⟨⟨h.1, fun g _ => ⟨(x : Γ → Dt.T') (ι g), rfl⟩⟩, h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem psi_mem_Z1fT (hcob : ∀ x : VT', (fun γ => Dt.ρT' γ x - x) ∈ finZ e PD Dt.ρT' ι)
     (x : ReciprocityTheory.Gal.Z1 Dt.ρTl') (hx : Submodule.mkQ _ x ∈ FsG e PD ι Dt) :
@@ -212,19 +208,17 @@ theorem psi_mem_Z1fT (hcob : ∀ x : VT', (fun γ => Dt.ρT' γ x - x) ∈ finZ 
   exact ⟨⟨h.1, fun g _ => ⟨(x : Γ → Dt.T') (ι g), rfl⟩⟩, h⟩
 
 /- English proof (translation)
-Set `σ : Γ ≃ G` to `(Equiv.ofBijective ι hι).symm`. Establish `hισ : ∀ γ, ι (σ γ) = γ` using `fun γ => (Equiv.ofBijective ι hι).apply_symm_apply γ`. Establish `hσι : ∀ g, σ (ι g) = g` using `fun g => (Equiv.ofBijective ι hι).symm_apply_apply g`. Establish `hσmul : ∀ γ δ, σ (γ * δ) = σ γ * σ δ` using `fun γ δ => hι.1 (by rw [hισ, ι.map_mul, hισ, hισ])`. Establish `hval : ∀ g, ∃ m : Dt.T', tr e (Dt.T'.subtype m) = y g` using `fun g => hy.1.2 g (Set.mem_univ g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x0 : Γ → Dt.T'` to `fun γ => Classical.choose (hval (σ γ))`. Establish `hx0 : ∀ γ, ((x0 γ : Dt.T') : VT') = untr e (y (σ γ))` using `fun γ => Classical.choose_spec (hval (σ γ))`. Establish `hpsi : psiR e eO heO ι Dt x0 = y`. Use function extensionality and compare the values at `g`. Use `show ((x0 (ι g) : Dt.T') : VT') = untr e (y g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx0, hσι]`. Establish `hcv : Continuous fun γ => ((x0 γ : Dt.T') : VT')`. Apply `htopV` to reduce the goal to its premises. Establish `: (fun g => tr e (((x0 (ι g) : Dt.T') : VT'))) = y` using `hpsi`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy.1.1.1`. Establish `hcont : Continuous x0` using `continuous_induced_rng.2 hcv`. Establish `hcoc : ∀ γ δ, x0 (γ * δ) = x0 γ + Dt.ρTl' γ (x0 δ)`. Introduce `γ δ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((x0 (γ * δ) : Dt.T') : VT') = ((x0 γ : Dt.T') : VT') + Dt.ρT' γ ((x0 δ : Dt.T') : VT')`. Rewrite using `[hx0, hx0, hx0, hσmul]`. Establish `h2` using `hy.1.1.2 (σ γ) (σ δ)`. Use `show untr e (y (σ γ * σ δ)) = untr e (y (σ γ)) + Dt.ρT' γ (untr e (y (σ δ)))`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show untr e (y (σ γ)) + Dt.ρT' (ι (σ γ)) (untr e (y (σ δ))) = _`. Rewrite using `[hισ]`. Set `x : ReciprocityTheory.Gal.Z1 Dt.ρTl'` to `⟨x0, hcont, hcoc⟩`. Use `⟨x, (mem_FsG e PD ι Dt hcob x).2 ?_, hpsi⟩` and prove the remaining obligations. Use `show psiR e eO heO ι Dt x0 ∈ finiteCocycles PD (repL e Dt.ρT' ι)`.
-
-Rewrite using `[hpsi]`. Conclude with `hy.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_pre (hι : Function.Bijective ι)
     (hcob : ∀ x : VT', (fun γ => Dt.ρT' γ x - x) ∈ finZ e PD Dt.ρT' ι)
@@ -265,29 +259,27 @@ theorem exists_pre (hι : Function.Bijective ι)
   exact hy.2
 
 /- English proof (translation)
-Set `σ : Γ ≃ G` to `(Equiv.ofBijective ι hι).symm`. Establish `hισ : ∀ γ, ι (σ γ) = γ` using `fun γ => (Equiv.ofBijective ι hι).apply_symm_apply γ`. Establish `hσι : ∀ g, σ (ι g) = g` using `fun g => (Equiv.ofBijective ι hι).symm_apply_apply g`. Establish `hσmul : ∀ γ δ, σ (γ * δ) = σ γ * σ δ` using `fun γ δ => hι.1 (by rw [hισ, ι.map_mul, hισ, hισ])`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, ⟨c₁, hc₁, rfl⟩, hzx⟩`. Establish `hfin : (fun γ => mkK (O` using `O) ((c₁ : Γ → T₁) γ)) ∈ finZ e PD (locRep ρ₁) ι := hc₁`. Establish `hzx' : Submodule.mkQ _ (ReciprocityTheory.Gal.cocycles1MapOfEquivariant ρ₁ Dt.ρTl' (v.toLinearMap ∘ₗ π) hc he c₁) = Submodule.mkQ _ x` using `hzx`. Rewrite `hzx'` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨t, ht⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hzx'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `d₁ : G → TrV e (MK (O` to `O) T₁) := fun g => tr e (mkK (O := O) ((c₁ : Γ → T₁) (ι g)))`. Establish `hd₁ : d₁ ∈ latticeFiniteCocycles PD (L1 e eO heO ι ρ₁)` using `⟨⟨hfin.1, fun g _ => ⟨_, rfl⟩⟩, hfin⟩`. Use `Submodule.mem_sup.2 ⟨_, ⟨d₁, hd₁, rfl⟩, _, ⟨tr e (((-t : Dt.T')) : VT'), ⟨-t, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `h1 : ((v (π ((c₁ : Γ → T₁) (ι g))) : Dt.T') : VT') - (((x : Γ → Dt.T') (ι g) : Dt.T') : VT') = Dt.ρT' (ι g) (t : VT') - (t : VT')` using `congrArg Subtype.val (ht (ι g))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show f0 Dt π v (mkK ((c₁ : Γ → T₁) (ι g))) + (Dt.ρT' (ι g) (((-t : Dt.T')) : VT') - (((-t : Dt.T')) : VT')) = (((x : Γ → Dt.T') (ι g) : Dt.T') : VT')`. Rewrite using `[lift_map_mk]`. Establish `h2 : (((x : Γ → Dt.T') (ι g) : Dt.T') : VT') = ((v (π ((c₁ : Γ → T₁) (ι g))) : Dt.T') : VT') - (Dt.ρT' (ι g) (t : VT') - (t : VT'))`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Simplify using `only [Submodule.coe_neg, map_neg]`. Use `show ((v (π ((c₁ : Γ → T₁) (ι g))) : Dt.T') : VT') + (-(Dt.ρT' (ι g) (t : VT')) - -(t : VT')) = _`. Normalize the expressions using the abelian group laws. Introduce `h`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ⟨d₁, hd₁, rfl⟩, b, ⟨yv, ⟨t, rfl⟩, rfl⟩, hab⟩` from `Submodule.mem_sup.1 h`. Establish `hval : ∀ g, ∃ m : T₁, tr e (mkK (O` using `O) m) = d₁ g := fun g => hd₁.1.2 g (Set.mem_univ g)`. Set `c0 : Γ → T₁` to `fun γ => Classical.choose (hval (σ γ))`. Establish `hc0 : ∀ γ, mkK (O` using `O) (c0 γ) = untr e (d₁ (σ γ)) := fun γ => Classical.choose_spec (hval (σ γ))`. Establish `hd : (fun g => tr e (mkK (O` using `O) (c0 (ι g)))) = d₁ := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Use `show mkK (O := O) (c0 (ι g)) = untr e (d₁ g)`. Rewrite using `[hc0, hσι]`. Establish `hcont : Continuous c0` using `htop1 c0 (by rw [hd]; exact hd₁.1.1.1)`. Establish `hcoc : ∀ γ δ, c0 (γ * δ) = c0 γ + ρ₁ γ (c0 δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ δ`. Apply `mkK_inj (O := O)` to reduce the goal to its premises. Rewrite using `[map_add, ← locRep_mkK, hc0, hc0, hc0, hσmul]`. Establish `h2` using `hd₁.1.1.2 (σ γ) (σ δ)`. Use `show untr e (d₁ (σ γ * σ δ)) = untr e (d₁ (σ γ)) + locRep ρ₁ γ (untr e (d₁ (σ δ)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Use `show untr e (d₁ (σ γ)) + locRep ρ₁ (ι (σ γ)) (untr e (d₁ (σ δ))) = _`. Rewrite using `[hισ]`. Set `c₁ : ReciprocityTheory.Gal.Z1 ρ₁` to `⟨c0, hcont, hcoc⟩`. Establish `hfin : (fun γ => mkK (O` using `O) (c0 γ)) ∈ finZ e PD (locRep ρ₁) ι := by show (fun g => tr e (mkK (O := O) (c0 (ι g)))) ∈ finiteCocycles PD (repL e (locRep ρ₁) ι)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hd]`. Conclude with `hd₁.2`. Use `⟨Submodule.mkQ _ c₁, ⟨c₁, hfin, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Submodule.mkQ _ (ReciprocityTheory.Gal.cocycles1MapOfEquivariant ρ₁ Dt.ρTl' (v.toLinearMap ∘ₗ π) hc he c₁) = Submodule.mkQ _ x`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).2 ⟨-t, fun γ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3` using `congrFun hab (σ γ)`. Establish `h5 : f0 Dt π v (untr e (d₁ (σ γ))) + (Dt.ρT' (ι (σ γ)) (t : VT') - (t : VT')) = (((x : Γ → Dt.T') (ι (σ γ)) : Dt.T') : VT')` using `h3`. Rewrite `h5` using `[← hc0, lift_map_mk, hισ]`.
-
-Establish `h4 : ((v (π (c0 γ)) : Dt.T') : VT') + (Dt.ρT' γ (t : VT') - (t : VT')) = (((x : Γ → Dt.T') γ : Dt.T') : VT')` using `h5`. Use `show ((v (π (c0 γ)) : Dt.T') : VT') - (((x : Γ → Dt.T') γ : Dt.T') : VT') = Dt.ρT' γ ((-t : Dt.T') : VT') - ((-t : Dt.T') : VT')`. Rewrite using `[← h4]`. Simplify using `only [Submodule.coe_neg, map_neg]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem im_iff (hι : Function.Bijective ι)
     (htop1 : ∀ c : Γ → T₁, Continuous (fun g => tr e (mkK (O := O) (c (ι g)))) → Continuous c)
@@ -364,11 +356,11 @@ theorem im_iff (hι : Function.Bijective ι)
     abel
 
 /- English proof (translation)
-Use `haveI h1 := RingHomInvPair.of_ringEquiv eO`. Use `haveI h2 := RingHomInvPair.symm (eO : O →+* Ow) (eO.symm : Ow →+* O)`. Rewrite using `[← len_comap_surj (Submodule.mkQ _) (Submodule.mkQ_surjective _)]`. Unfold `LatHom.col`. Use `len_semi eO ((psiR e eO heO ι Dt).comp (ReciprocityTheory.Gal.Z1 Dt.ρTl').subtype) ((psiR_inj e eO heO ι Dt hι).comp Subtype.val_injective) _ _ _ _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, hx, hxy⟩` from `exists_pre e eO heO PD ι Dt hsp hι hcob htopV y hy`. Conclude with `⟨x, hx, hxy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `psi_mem_Z1fT e eO heO PD ι Dt hsp hcob x hx`. Introduce `x _`. Conclude with `im_iff e eO heO PD ι Dt ρ₁ π v hc he hsp hι htop1 x`.
+A detailed English derivation is pending.
 -/
 theorem len_eq_col (hι : Function.Bijective ι)
     (hcob : ∀ x : VT', (fun γ => Dt.ρT' γ x - x) ∈ finZ e PD Dt.ρT' ι)

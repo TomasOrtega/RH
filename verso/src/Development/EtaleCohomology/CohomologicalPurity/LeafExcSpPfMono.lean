@@ -6,11 +6,9 @@ open CategoryTheory Limits Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom.ExcSp
 
 /- English proof (translation)
-Establish `: Mono ((freeP R).map g)`. Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `U`. Establish `hg : Function.Injective (g.app U)` using `(mono_iff_injective _).1 (inferInstance)`. Rewrite using `[ModuleCat.mono_iff_injective]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Function.Injective ((ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map (g.app U))).hom`. Establish `hu : Function.Injective (uliftFunctor.{1}.map (g.app U))`. Introduce `a b h`. Conclude with `ULift.ext _ _ (hg (congrArg ULift.down h))`. Conclude with `Finsupp.mapDomain_injective hu`.
-
-Express the relevant statement in the definitionally equal form `Mono ((presheafToSheaf _ _).map ((freeP R).map g))`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem free_mono (R : Type) [CommRing R] {A B : PSh} (g : A ⟶ B) [Mono g] : Mono ((free R).map g) := by
   have : Mono ((freeP R).map g) := by
@@ -27,13 +25,11 @@ theorem free_mono (R : Type) [CommRing R] {A B : PSh} (g : A ⟶ B) [Mono g] : M
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ E' E f hf n`. Distinguish the cases in `hn : ∃ p : ℕ, -(p : ℤ) = n`. Take `⟨p, rfl⟩` from `hn`. Establish `h : ComplexShape.embeddingDownNat.f p = -(p : ℤ)` using `rfl`. Express the relevant statement in the definitionally equal form `Mono ((HomologicalComplex.extendMap ((chainsN R).map f) _).f _)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[HomologicalComplex.extendMap_f _ _ h]`. Establish `: Mono (f.app (op (SimplexCategory.mk p)))`. Rewrite `hf` using `[NatTrans.mono_iff_mono_app]`. Conclude with `hf _`. Establish `: Mono (((chainsN R).map f).f p)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Mono ((AlgebraicTopology.AlternatingFaceMapComplex.map _).f p)`. Rewrite using `[AlgebraicTopology.AlternatingFaceMapComplex.map_f]`. Conclude with `free_mono R _`. Use `infer_instance`. Use `push Not at hn`.
-
-Use `⟨fun g h _ => ?_⟩` and prove the remaining obligations. Conclude with `(HomologicalComplex.isZero_extend_X _ _ _ (fun i => hn i)).eq_of_tgt _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leafChainsMono : LeafChainsMono := by
   intro R _ E' E f hf n
@@ -55,7 +51,7 @@ theorem leafChainsMono : LeafChainsMono := by
     exact (HomologicalComplex.isZero_extend_X _ _ _ (fun i => hn i)).eq_of_tgt _ _
 
 /- English proof (translation)
-The claim follows from `etaleSplitExcision_of_mono_cokernel_relative leafChainsMono hK hR`.
+A detailed English derivation is pending.
 -/
 theorem etaleSplitExcision_of_cokernel_relative (hK : LeafCokIso) (hR : LeafHsRel) : LateralTheory.CohomologicalPurity.Thom.LeafExcSp :=
   etaleSplitExcision_of_mono_cokernel_relative leafChainsMono hK hR

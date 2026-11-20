@@ -15,20 +15,18 @@ noncomputable section
 namespace GlobalTheory.Poinc.GCTrait
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp'' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `c`. Proceed by induction on `hc using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `hi`. Consider the case `zero => rw [show (⟨0, _⟩ : cycAway n) = 0 from rfl, map_zero]`. Conclude with `K.zero_mem`. Consider the case `one => rw [show (⟨1, _⟩ : cycAway n) = 1 from rfl, map_one]`. Conclude with `K.one_mem`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy ihx ihy`. Rewrite using `[show (⟨x + y, _⟩ : cycAway n) = ⟨x, hx⟩ + ⟨y, hy⟩ from rfl, map_add]`. Conclude with `K.add_mem ihx ihy`. Consider the case `neg x hx ih`. Rewrite using `[show (⟨-x, _⟩ : cycAway n) = -⟨x, hx⟩ from rfl, map_neg]`.
-
-Conclude with `K.neg_mem ih`. Consider the case `mul x y hx hy ihx ihy`. Rewrite using `[show (⟨x * y, _⟩ : cycAway n) = ⟨x, hx⟩ * ⟨y, hy⟩ from rfl, map_mul]`. Conclude with `K.mul_mem ihx ihy`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cycAway_mem {n : ℕ} {L : Type} [Field L] (φ : cycAway n →+* L) (K : Subring L)
     (hz : φ (zetaAway n) ∈ K) (hi : φ ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩ ∈ K) (c : cycAway n) : φ c ∈ K := by
@@ -48,19 +46,17 @@ theorem map_cycAway_mem {n : ℕ} {L : Type} [Field L] (φ : cycAway n →+* L) 
     rw [show (⟨x * y, _⟩ : cycAway n) = ⟨x, hx⟩ * ⟨y, hy⟩ from rfl, map_mul]; exact K.mul_mem ihx ihy
 
 /- English proof (translation)
-Take `⟨U, hU, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := y (default : PrimeSpectrum (PadicAlgCl p))) trivial`. Establish `hr : Set.range y ⊆ Set.range hU.fromSpec`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[hU.range_fromSpec, Subsingleton.elim (α := PrimeSpectrum (PadicAlgCl p)) q default]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU.fromSpec y hr)`. Take `⟨a, ha⟩` from `Spec.map_surjective (hU.fromSpec ≫ s)`. Establish `hft : a.hom.FiniteType`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), ha]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := a.hom.toAlgebra`. Take `⟨T, hT⟩` from `Algebra.FiniteType.out (R := cycAway n) (A := Γ(X, U)) (self := hft)`. Set `S : Set (PadicAlgCl p)` to `φ.hom '' (T : Set Γ(X, U)) ∪ {φ.hom (a.hom (zetaAway n)), φ.hom (a.hom ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩)}`. Establish `hSfin : S.Finite` using `(T.finite_toSet.image _).union (Set.toFinite _)`. Use `haveI : Finite S := hSfin.to_subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K` to `IntermediateField.adjoin ℚ_[p] S`. Establish `hK : FiniteDimensional ℚ_[p] K` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hS : S ⊆ K` using `IntermediateField.subset_adjoin ℚ_[p] S`. Establish `hc : ∀ c : cycAway n, φ.hom (a.hom c) ∈ K.toSubfield.toSubring` using `map_cycAway_mem (φ.hom.comp a.hom) K.toSubfield.toSubring (hS (Or.inr (Or.inl rfl))) (hS (Or.inr (Or.inr rfl)))`. Establish `hmem : ∀ b, φ.hom b ∈ K` using `fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hb : b ∈ Algebra.adjoin (cycAway n) (T : Set Γ(X, U))` using `hT ▸ Algebra.mem_top`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hS (Or.inl ⟨x, hx, rfl⟩)`. Consider the case `algebraMap c => exact hc c`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `K.add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `K.mul_mem ha hb`. Set `φK : Γ(X, U) →+* K` to `φ.hom.codRestrict K hmem`. Use `⟨K, hK, spMap φK ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, spMap_comp'', ← IsOpenImmersion.lift_fac hU.fromSpec y hr, ← hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finite_point (n : ℕ) {X : Scheme.{0}} (s : X ⟶ Sp (cycAway n)) [LocallyOfFiniteType s]
     (p : ℕ) [Fact p.Prime] (y : Sp (PadicAlgCl p) ⟶ X) :
@@ -103,13 +99,11 @@ theorem exists_finite_point (n : ℕ) {X : Scheme.{0}} (s : X ⟶ Sp (cycAway n)
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra V W := f.toAlgebra`. Use `letI : Algebra (FractionRing V) (FractionRing W) := fK.toAlgebra`. Use `letI : Algebra (FractionRing V) (PadicAlgCl p) := κ.toAlgebra`. Use `haveI : Algebra.IsIntegral V W := ⟨fun w => hfin.to_isIntegral w⟩`. Use `haveI : IsLocalHom (algebraMap V W) := hloc`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hint : ∀ w : W, IsIntegral (FractionRing V) (algebraMap W (FractionRing W) w)` using `fun w => IsIntegral.map_of_comp_eq (algebraMap V (FractionRing V)) (algebraMap W (FractionRing W)) (RingHom.ext fun v => hc v) (Algebra.IsIntegral.isIntegral w)`. Use `haveI : Algebra.IsAlgebraic (FractionRing V) (FractionRing W) := by`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := W) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `((hint a).mul (hint b).inv).isAlgebraic`. Set `ι : FractionRing W →ₐ[FractionRing V] PadicAlgCl p` to `IsAlgClosed.lift`. Establish `hι : ι.toRingHom.comp fK = κ` using `RingHom.ext fun x => ι.commutes x`. Use `⟨ι.toRingHom, hι, GlobalTheory.unitBall_eq_of_integral_dvr p V W hinj κ ι.toRingHom (fun v => ?_) hV⟩` and prove the remaining obligations.
-
-Use `show ι (algebraMap W (FractionRing W) (f v)) = _`. Rewrite using `[← hc]`. Conclude with `ι.commutes _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_emb (p : ℕ) [Fact p.Prime] (V W : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (f : V →+* W) (fK : FractionRing V →+* FractionRing W)
@@ -140,17 +134,15 @@ theorem exists_ext_emb (p : ℕ) [Fact p.Prime] (V W : Type) [CommRing V] [IsDom
   exact ι.commutes _
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn hodd hi p _ y hr`. Set `y₁ : Sp (PadicAlgCl p) ⟶ F.X` to `IsOpenImmersion.lift i (gPt p ≫ y ≫ X₁.π) hr`. Establish `hy₁ : y₁ ≫ i = gPt p ≫ y ≫ X₁.π` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI := F.smooth`. Use `haveI : Smooth F.s := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) F.s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, x, hx⟩` from `exists_finite_point n F.s p y₁`. Take `⟨hdvr, hcomp, hunit⟩` from `GlobalTheory.intRing_complete_dvr p K hK`. Use `haveI := hdvr`. Use `haveI : CharZero (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K) := inferInstance`. Set `e : FractionRing (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K) ≃ₐ[GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K] K` to `FractionRing.algEquiv _ K`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `es : K →+* FractionRing (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K)` to `e.symm.toRingEquiv.toRingHom`. Establish `hbase : GlobalTheory.Mum.Base (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K)` using `⟨⟨inferInstance, inferInstance, inferInstance, hcomp⟩, inferInstance⟩`. Take `⟨T, f, fK, hinj, hloc, hfin, hc, hTy⟩` from `GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n (cycAway n) (zetaAway n) F _ hbase hdvr (spMap es ≫ x)`. Take `⟨ι, hι, hint⟩` from `exists_ext_emb p _ T.V f fK hinj hloc hfin hc _ hunit`. Establish `h2 : algebraMap (FractionRing (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K)) (PadicAlgCl p) = (algebraMap K (PadicAlgCl p)).comp e.toRingEquiv.toRingHom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsLocalization.ringHom_ext (nonZeroDivisors (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K)) (RingHom.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply]`. Use `(IsFractionRing.lift_algebraMap (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing_injective K) v).trans ?_` and prove the remaining obligations. Use `show _ = algebraMap K (PadicAlgCl p) (e (algebraMap _ _ v))`. Rewrite using `[AlgEquiv.commutes]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hκ : (algebraMap (FractionRing (GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K)) (PadicAlgCl p)).comp es = algebraMap K (PadicAlgCl p)`. Use extensionality with `k`. Rewrite using `[h2]`. Use `show algebraMap K (PadicAlgCl p) (e (e.symm k)) = _`.
-
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Establish `key : spMap ι ≫ spMap fK ≫ spMap es = spMap (algebraMap K (PadicAlgCl p))`. Rewrite using `[spMap_comp'', spMap_comp'', ← RingHom.comp_assoc, hι, hκ]`. Use `⟨⟨y, rfl, T, ι, hint, ?_⟩, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_cTrait : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ X₁.M.Z), Set.range (gPt p ≫ y ≫ X₁.π) ⊆ Set.range i → ∃ c : CTrait X₁ p (y (cPt p)), c.y = y := by
   intro g n F W Z i X₁ hg hn hodd hi p _ y hr

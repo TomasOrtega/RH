@@ -9,7 +9,7 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.R4.lift_eigen ρ hψ hne hy hq hv`.
+A detailed English derivation is pending.
 -/
 private theorem lift_eigen {T V : Type} [CommGroup T] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ T V) {ψ μ : T →* ℂˣ} {v y : V} (hψ : ∀ t, ρ t v = (ψ t : ℂ) • v)
@@ -19,23 +19,19 @@ private theorem lift_eigen {T V : Type} [CommGroup T] [AddCommGroup V] [Module �
   _root_.UpperTheory.Reformulated.B.R4.lift_eigen ρ hψ hne hy hq hv
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `V _ _ _ ρ h`. Use `haveI : Subsingleton V := Module.finrank_zero_iff.1 h`. Use `⟨0, fun t => ?_, fun μ => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Subsingleton.elim (ρ t) 0]`. Simplify using `[Subsingleton.elim _ (0 : V)]`. Consider the case `succ d ih`. Introduce `V _ _ _ ρ h`. Use `haveI : Nontrivial V := Module.finrank_pos_iff.1 (by rw [h]; exact d.succ_pos)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, v, hv, hψ⟩` from `GlobalTheory.exists_character_eigenvector_of_commute ℂ T V ρ fun a b => by`. Rewrite using `[← map_mul, mul_comm, map_mul]`. Establish `hst : ∀ g, Submodule.span ℂ {v} ≤ (Submodule.span ℂ {v}).comap (ρ g)` using `fun g => by`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Submodule.mem_comap, hψ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : Module.finrank ℂ (V ⧸ Submodule.span ℂ {v}) = d`. Use `(Submodule.span ℂ {v}).finrank_quotient_add_finrank` as an intermediate fact. Rewrite `this` using `[finrank_span_singleton hv, h]`. Use linear arithmetic over natural numbers and integers. Take `⟨E, h1, h2⟩` from `ih _ (ρ.quotient _ hst) hd`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨ψ ::ₘ E, fun t => ?_, fun μ => ⟨fun hμ => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IwahoriTraceProof.trace_eq_add_quot (ρ t) hv (hψ t) (ρ.quotient _ hst t) fun _ => rfl, h1, Multiset.map_cons, Multiset.sum_cons]`. Distinguish the cases in `hne : μ = ψ`. Conclude with `⟨v, hv, hne ▸ hψ⟩`. Take `⟨q, hq0, hq⟩` from `(h2 μ).1 ((Multiset.mem_cons.1 hμ).resolve_left hne)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `lift_eigen ρ hψ hne (fun hy => hq0 ((Submodule.Quotient.mk_eq_zero _).2 hy)) (fun t => ?_) hv` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).1 ?_` and prove the remaining obligations. Conclude with `hq t`. Introduce and unpack `⟨y, hy, hμ⟩`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hne : μ = ψ`. Conclude with `hne ▸ Multiset.mem_cons_self _ _`. Use `Multiset.mem_cons_of_mem ((h2 μ).2 ⟨Submodule.Quotient.mk y, fun h0 => hne ?_, fun t => ?_⟩)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Use `MonoidHom.ext fun t => Units.ext ?_` and prove the remaining obligations.
-
-Establish `h3` using `hμ t`. Rewrite `h3` using `[map_smul, hψ, smul_comm, ← sub_eq_zero, ← sub_smul]`. Break down `smul_eq_zero.1 h3 with h3 | h3` into its components or cases. Conclude with `(sub_eq_zero.1 h3).symm`. Conclude with `absurd h3 hy`.
-
-Conclude with `congrArg (Submodule.Quotient.mk (p := Submodule.span ℂ {v})) (hμ t)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem exists_eigenchars {T : Type} [CommGroup T] (d : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ρ : Representation ℂ T V), Module.finrank ℂ V = d →
@@ -85,13 +81,13 @@ private theorem exists_eigenchars {T : Type} [CommGroup T] (d : ℕ) : ∀ (V : 
       · exact congrArg (Submodule.Quotient.mk (p := Submodule.span ℂ {v})) (hμ t)
 
 /- English proof (translation)
-Introduce `T X _ _ _ ρ P _ hP`. Set `R : Representation ℂ T P` to `{ toFun := fun t => (ρ t).restrict (hP t) map_one' := by`. Use extensionality with `y`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `}`. Take `⟨E, h1, h2⟩` from `exists_eigenchars (T := T) _ P R rfl`. Use `⟨E, fun t => ?_, fun μ => ?_⟩` and prove the remaining obligations. Rewrite using `[trIn, dif_pos (hP t)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 t`. Rewrite using `[h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨y, y.2, fun h0 => hy (Subtype.ext h0), fun t => congrArg Subtype.val (h t)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hyP, hy, h⟩`. Conclude with `⟨⟨y, hyP⟩, fun h0 => hy (congrArg Subtype.val h0), fun t => Subtype.ext (h t)⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.traceExp :
     UpperTheory.Gal.Join.TraceExp := by

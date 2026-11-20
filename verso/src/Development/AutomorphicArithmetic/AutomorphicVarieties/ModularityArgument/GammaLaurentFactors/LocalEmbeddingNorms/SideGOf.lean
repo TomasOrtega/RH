@@ -15,7 +15,7 @@ namespace UpperTheory.V.Z.Gam
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h0 : (Ideal.absNorm w.asIdeal : ℕ) ≠ 0`. Simplify `w.ne_bot` using `[Ideal.absNorm_eq_zero_iff]`. Conclude with `h0` after adjusting the coercions.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem norm_ne (w : HeightOneSpectrum (𝓞 K)) : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0 := by
   have h0 : (Ideal.absNorm w.asIdeal : ℕ) ≠ 0 := by
@@ -23,9 +23,9 @@ private theorem norm_ne (w : HeightOneSpectrum (𝓞 K)) : ((Ideal.absNorm w.asI
   exact_mod_cast h0
 
 /- English proof (translation)
-Unfold `eulerL`. Use `tprod_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ (norm_ne w.1)]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem euler_shift (B : HeightOneSpectrum (𝓞 K) → Multiset ℂ) (S : Set (HeightOneSpectrum (𝓞 K))) (z s : ℂ) :
     eulerL K (fun w => (B w).map fun b => b * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-z)) S (s - z) = eulerL K B S s := by
@@ -39,9 +39,9 @@ private theorem euler_shift (B : HeightOneSpectrum (𝓞 K) → Multiset ℂ) (S
   ring
 
 /- English proof (translation)
-Unfold `eulerLd eulerL`. Use `tprod_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_inv, Complex.cpow_neg, inv_inv, mul_assoc, ← Complex.cpow_add _ _ (norm_ne w.1)]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem eulerd_shift (B : HeightOneSpectrum (𝓞 K) → Multiset ℂ) (S : Set (HeightOneSpectrum (𝓞 K))) (z s : ℂ) :
     eulerLd K (fun w => (B w).map fun b => b * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-z)) S (s - z) = eulerLd K B S s := by
@@ -55,9 +55,9 @@ private theorem eulerd_shift (B : HeightOneSpectrum (𝓞 K) → Multiset ℂ) (
   ring
 
 /- English proof (translation)
-Unfold `cnt`. Use `congr 1`. Use `Multiset.filter_congr fun y _ => ?_` and prove the remaining obligations. Establish `key : ∀ ξ : kˣ →* ℂˣ, IsUnram (ξ * χ) ↔ IsUnram (ξ * 1)` using `fun ξ => forall_congr' fun x => forall_congr' fun hx => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, h x hx, MonoidHom.one_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cnt_unram {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : Multiset (IrrGL k)) {χ : kˣ →* ℂˣ} (h : IsUnram χ) : cnt s χ = cnt s 1 := by
@@ -70,7 +70,7 @@ private theorem cnt_unram {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   simp only [key]
 
 /- English proof (translation)
-Introduce `x hx`. Use `haveI : (Valued.v : Valuation (v.adicCompletion K) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `h x ((ValuativeRel.isEquiv (ValuativeRel.valuation (v.adicCompletion K)) Valued.v).eq_one_iff_eq_one.1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem unram_loc {χ : HChar K} {v : HeightOneSpectrum (𝓞 K)} (h : χ.UnrAt v) : IsUnram (χ.loc v) := by
   intro x hx
@@ -82,29 +82,29 @@ end UpperTheory.V.Z.Gam
 
 open UpperTheory.V.Z.Gam in
 /- English proof (translation)
-Introduce `hO hF hC K _ _ _ n hn σ S hS B hB s q f hq hs`. Set `x : GlobalTheory.ResW.Letter K` to `⟨n, σ⟩`. Establish `hd : ((n : ℂ) * (Module.finrank ℚ K : ℂ)) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (by omega)) (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Set `z : ℂ` to `-GlobalTheory.ResW.cex x / ((n : ℂ) * (Module.finrank ℚ K : ℂ))`. Set `χ : HChar K` to `Model.absC K z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hspec` using `(GlobalTheory.ResW.letter_centralExponent K x).1`. Establish `htr : (Matrix.of (oneL K n)).trace = (n : ℝ) • (1 : Cinf K)`. Express the relevant statement in the definitionally equal form `(Matrix.of (fun i j : Fin n => if i = j then (1 : Cinf K) else 0)).trace = _`. Simplify using `[Matrix.trace, Nat.cast_smul_eq_nsmul]`. Establish `hz : ∀ φ ∈ (σ.twist χ).V, lie K n (oneL K n) φ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Establish `e0 : lie K n (oneL K n) ψ = GlobalTheory.ResW.cex x • ψ` using `hspec ψ hψ`. Establish `e1 : dchi χ (Matrix.of (oneL K n)).trace = -GlobalTheory.ResW.cex x`. Rewrite using `[htr, map_smul, GlobalTheory.ResW.dchi_absC_one_finrank]`. Establish `hzd : z * ((n : ℂ) * (Module.finrank ℚ K : ℂ)) = -GlobalTheory.ResW.cex x` using `div_mul_cancel₀ _ hd`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.real_smul, Complex.ofReal_natCast]`. Take the linear combination `hzd`. Express the relevant statement in the definitionally equal form `lie K n (oneL K n) (mulChi n χ ψ) = 0`. Rewrite using `[lie_mulChi, e0, e1, ← add_smul, add_neg_cancel, zero_smul, map_zero]`. Establish `hval : ∀ v, χ.UnrAt v ∧ ((χ.val v : ℂˣ) : ℂ) = ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-z)` using `fun v => by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun y hy => Units.ext ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (z * GlobalTheory.Mem.Chr.CharModel.logNorm K (GlobalTheory.Mem.Chr.localIdele K v y)) = 1`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local v y 0 (by simpa [IsUnitAt] using hy)]; simp`. Express the relevant statement in the definitionally equal form `Complex.exp (z * GlobalTheory.Mem.Chr.CharModel.logNorm K (GlobalTheory.Mem.Chr.localIdele K v (atFin v (unif v)))) = _`. Establish `h0 : (Ideal.absNorm v.asIdeal : ℕ) ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using v.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local v _ 1 (unif_spec v), Complex.cpow_def_of_ne_zero (by exact_mod_cast h0), ← Complex.natCast_log]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : ∀ v, ∃ s', v ∈ S → SuppAt (σ.twist χ) v s' ∧ cnt s' 1 = cnt (s v) 1` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ S`. Take `⟨s', h1, h2, -⟩` from `(hF K n (by omega) σ v).2.2.2.2 χ (s v) (hs v hv).1`. Use `⟨s', fun _ => ⟨h1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h2, mul_one, cnt_unram _ (unram_loc (hval v).1)]`. Conclude with `⟨0, fun h => absurd h hv⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `choose s' hs' using hex`. Take `⟨β, P, hβ, hP0, hdeg, hP⟩` from `hC K n hn (σ.twist χ) (Cm.carrier_le_central _ hz) S hS (fun w => (B w).map (· * χ.val w)) (fun w hw => by`. Establish `h` using `(hB w hw).twist (hval w).1`. Rewrite using `[CG.twist_mk] at h) s' q f hq` and apply the resulting hypothesis. Use the proof step `(fun v hv => ⟨(hs' v hv).1, fun h => (hs v hv).2 (by rwa [← (hs' v hv).2])⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP2` using `hO.2.2.2 _ _ _ _ _ z (by exact_mod_cast hq) hP`. Establish `e : ∀ w, cx (fun w => (B w).map (· * χ.val w)) w = (cx B w).map fun b => b * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-z)` using `fun w => by`. Simplify using `only [cx, Multiset.map_map, Function.comp_def, Units.val_mul, (hval w).2]`. Establish `e' : cx (fun w => (B w).map (· * χ.val w)) = fun w => (cx B w).map fun b => b * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-z)` using `funext e`. Rewrite `hP2` using `[e']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqz : (((q : ℝ) : ℂ) ^ z) ≠ 0`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Introduce and unpack `⟨h, -⟩`. Establish `: q = 0` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨β.comp (X - C z), P.comp (C (((q : ℝ) : ℂ) ^ z) * X), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hβ` to reduce the goal to its premises. Use `congrArg (fun p => p.comp (X + C z)) h` as an intermediate fact. Simplify `this` using `[comp_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eval_comp, hP0]`. Rewrite using `[natDegree_comp, natDegree_C_mul_X _ hqz, mul_one, hdeg]`. Conclude with `Finset.sum_congr rfl fun v hv => by rw [(hs' v hv).2]`. Simplify `hP2` using `only [euler_shift, eulerd_shift]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Gam.sideGOf :
     UpperTheory.V.Z.Gam.SideGOf := by

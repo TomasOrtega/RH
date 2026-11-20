@@ -20,7 +20,7 @@ def translateSpan (φ : AdelicGL ℚ 2 → ℂ) : Submodule ℂ (AdelicGL ℚ 2 
   Submodule.span ℂ (Set.range fun g : FiniteAdelicGL ℚ 2 => finRightRep g φ)
 
 /- English proof (translation)
-Rewrite using `[translateSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨h, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, ← Module.End.mul_apply, ← map_mul]`. Conclude with `Submodule.subset_span ⟨g * h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translateSpan_le_comap (φ : AdelicGL ℚ 2 → ℂ) (g : FiniteAdelicGL ℚ 2) :
     translateSpan φ ≤ (translateSpan φ).comap (finRightRep g) := by

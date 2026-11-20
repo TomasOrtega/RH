@@ -12,13 +12,13 @@ variable {l : ℕ} [Fact l.Prime] {act : GQ l →* (PadicComplex l ≃+* PadicCo
   {χ : GQ l →* ℚ_[l]ˣ} {r : ℕ} {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)}
 
 /- English proof (translation)
-Simplify using `[chiC, zpow_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiC_add (i j : ℤ) (g : GQ l) : chiC χ (i + j) g = chiC χ i g * chiC χ j g := by
   simp [chiC, zpow_add]
 
 /- English proof (translation)
-Unfold `twAct`. Rewrite using `[chiC_add, mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_twist (i j : ℤ) (g : GQ l) (y : Fin r → PadicComplex l) :
     twAct act χ (i + j) U g y = chiC χ i g • twAct act χ j U g y := by
@@ -26,9 +26,9 @@ theorem twAct_twist (i j : ℤ) (g : GQ l) (y : Fin r → PadicComplex l) :
   rw [chiC_add, mul_smul]
 
 /- English proof (translation)
-Unfold `twAct`. Establish `: (fun b => act g ((∑ k, c k • x k) b)) = ∑ k, act g (c k) • fun b => act g (x k b)`. Use function extensionality and compare the values at `b`. Simplify using `[Finset.sum_apply]`. Rewrite using `[this, Matrix.mulVec_sum, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_comb {n : ℕ} (i : ℤ) (g : GQ l) (c : Fin n → PadicComplex l)
     (x : Fin n → Fin r → PadicComplex l) :
@@ -41,7 +41,7 @@ theorem twAct_comb {n : ℕ} (i : ℤ) (g : GQ l) (c : Fin n → PadicComplex l)
   rw [Matrix.mulVec_smul, smul_comm]
 
 /- English proof (translation)
-Unfold `twAct`. Establish `: (fun b => act g ((0 : Fin r → PadicComplex l) b)) = 0`. Use function extensionality and compare the values at `b`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_zero, smul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_zero (i : ℤ) (g : GQ l) : twAct act χ i U g 0 = 0 := by
   unfold twAct
@@ -50,25 +50,23 @@ theorem twAct_zero (i : ℤ) (g : GQ l) : twAct act χ i U g 0 = 0 := by
   rw [this, Matrix.mulVec_zero, smul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ (s : Finset (Fin n)) (c : Fin n → PadicComplex l), (∀ k, k ∉ s → c k = 0) → ∑ k, c k • e k = 0 → ∀ k, c k = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro c hc _ k; exact hc k (by simp)`. Consider the case `insert k0 s hk0 ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `c hc hsum`. Distinguish the cases in `h0 : c k0 = 0`. Use `ih c (fun k hk => ?_) hsum` and prove the remaining obligations. Distinguish the cases in `hkk : k = k0`. Rewrite using `[hkk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Conclude with `hc k (by simp [hkk, hk])`. It suffices to derive a contradiction. Use `set d : Fin n → PadicComplex l := fun k => (c k0)⁻¹ * c k with hd`. Establish `hd0 : d k0 = 1` using `inv_mul_cancel₀ h0`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hds : ∑ k, d k • e k = 0`. Simplify using `only [hd, mul_smul]`. Rewrite using `[← Finset.smul_sum, hsum, smul_zero]`. Establish `hfix : ∀ k, ∀ g ∈ G, chiC χ (u k0 - u k) g * act g (d k) = d k`. Introduce `k g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∑ k, (chiC χ (u k0 - u k) g * act g (d k)) • e k = 0`. Establish `h` using `twAct_comb (act := act) (χ := χ) (U := U) (u k0) g d e`. Rewrite `h` using `[hds, twAct_zero]`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `conv_rhs => rw [← sub_add_cancel (u k0) (u k), twAct_twist, he g hg k]`. Rewrite using `[smul_smul, mul_comm]`. Establish `h2` using `ih (fun k => chiC χ (u k0 - u k) g * act g (d k) - d k) (fun k hk => ?_) ?_ k`. Conclude with `sub_eq_zero.1 h2`. Distinguish the cases in `hkk : k = k0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hkk` using the available equality. Simplify using `[hd0, chiC]`. Establish `: c k = 0` using `hc k (by simp [hkk, hk])`. Simplify using `[hd, this]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, hds, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hex : ∀ k, ∃ x : ↥E, (((x : ↥E) : Om l) : PadicComplex l) = d k ∧ (u k ≠ u k0 → x = 0)`. Introduce `k`. Distinguish the cases in `hu : u k = u k0`. Take `⟨x, hx, hxd⟩` from `(hinv _ _ (hfix k)).2 (by rw [hu, sub_self])`. Conclude with `⟨⟨x, hx⟩, hxd, fun h => (h hu).elim⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨0, ?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[(hinv _ _ (hfix k)).1 (sub_ne_zero.2 (Ne.symm hu))]`. Simplify using the standard rewrite rules. Use `choose x hx hx0 using hex`. Establish `h3` using `hE (u k0) x hx0 (by simp only [hx, hds]) k0`.
-
-Establish `h4` using `hx k0`. Rewrite `h4` using `[h3, hd0]`. Simplify using `at h4`. Conclude with `Fintype.linearIndependent_iff.2 fun c hc => key Finset.univ c (by simp) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_weightwise (l : ℕ) [Fact l.Prime]
     (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ)

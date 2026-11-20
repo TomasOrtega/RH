@@ -20,7 +20,7 @@ def sh (Λ : (V × V) ≃ₜ+ (V × V)) (Q : V × V → A) (Z : V → V → A) (
   (c.1 + (Λ (p.2.1, p.1)).2, c.2 + (p.2.2 + (Q (p.2.1, p.1) + Z c.1 (Λ (p.2.1, p.1)).1)))
 
 /- English proof (translation)
-Use `show Measurable fun p : V × (V × A) => ((c.1 + (Λ (p.2.1, p.1)).2, c.2 + (p.2.2 + (Q (p.2.1, p.1) + Z c.1 (Λ (p.2.1, p.1)).1))) : V × A)`. Establish `hΛm : Measurable fun p : V × (V × A) => Λ (p.2.1, p.1)` using `Λ.continuous.measurable.comp (measurable_snd.fst.prodMk measurable_fst)`. Conclude with `(hΛm.snd.const_add _).prodMk ((measurable_snd.snd.add ((hQ.comp (measurable_snd.fst.prodMk measurable_fst)).add (hZ.comp (measurable_const.prodMk hΛm.fst)))).const_add _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_sh {Λ : (V × V) ≃ₜ+ (V × V)} {Q : V × V → A} (hQ : Measurable Q) {Z : V → V → A}
     (hZ : Measurable (Function.uncurry Z)) (c : V × A) : Measurable (sh Λ Q Z c) := by
@@ -33,29 +33,21 @@ theorem measurable_sh {Λ : (V × V) ≃ₜ+ (V × V)} {Q : V × V → A} (hQ : 
       (hZ.comp (measurable_const.prodMk hΛm.fst)))).const_add _)
 
 /- English proof (translation)
-Establish `hsh : ∀ c : V × A, Measurable (sh Λ Q Z c)` using `fun c => measurable_sh hQ hZ c`. Establish `hFm : Measurable fun x : V => ∫⁻ s, ψ (x, s) ∂lam` using `hψ.lintegral_prod_right'`. Establish `hfib : ∀ u b : V, ∫⁻ a in 𝓐, ∑' c : Γ × Δ, ψ (sh Λ Q Z ((c.1 : V), (c.2 : A)) (u, (b, a))) ∂lam = ∑' r : Γ, ∫⁻ s, ψ ((r : V) + (Λ (b, u)).2, s) ∂lam`. Introduce `u b`. Rewrite using `[lintegral_tsum (f := fun (c : Γ × Δ) (a : A) => ψ (sh Λ Q Z ((c.1 : V), (c.2 : A)) (u, (b, a)))) fun c => (hψ.comp ((hsh _).comp (measurable_prodMk_left.comp measurable_prodMk_left))).aemeasurable, ENNReal.tsum_prod']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun r => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Simplify using `only [sh, AddSubgroup.vadd_def, vadd_eq_add, add_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `_ = ∫⁻ s, ψ ((r : V) + (Λ (b, u)).2, s + (Q (b, u) + Z r (Λ (b, u)).1)) ∂lam := (hA.lintegral_eq_tsum'' (fun s => ψ ((r : V) + (Λ (b, u)).2, s + (Q (b, u) + Z r (Λ (b, u)).1)))).symm`. Use `_ = _ := lintegral_add_right_eq_self (fun s => ψ ((r : V) + (Λ (b, u)).2, s)) _`. Use `set H : V × V → ℝ≥0∞ := fun w => ∑' r : Γ, ∫⁻ s, ψ ((r : V) + w.2, s) ∂lam with hH`. Establish `hHm : Measurable H` using `Measurable.ennreal_tsum fun r => hFm.comp (measurable_snd.const_add _)`. Establish `hHinv : ∀ (g : Γ.prod Γ) (x : V × V), H (g +ᵥ x) = H x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `g x`. Establish `hg2 : (g : V × V).2 ∈ Γ` using `(AddSubgroup.mem_prod.1 g.2).2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hH, AddSubgroup.vadd_def, vadd_eq_add, Prod.snd_add]`. Use `tsum_congr fun r => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[add_assoc]`. Use `_ = H x := Equiv.tsum_eq (Equiv.addRight (⟨_, hg2⟩ : Γ)) (fun r : Γ => ∫⁻ s, ψ ((r : V) + x.2, s) ∂lam)`. Establish `hμ : (ν.prod ν) (𝓤 ×ˢ 𝓤) = 1` using `by rw [Measure.prod_prod, hU1, one_mul]`. Use `haveI : Countable (Γ.prod Γ) := Countable.of_equiv (Γ × Γ) (AddSubgroup.prodEquiv Γ Γ).toEquiv.symm`. Establish `hsymm : MeasurePreserving Λ.symm (ν.prod ν) (ν.prod ν)` using `⟨Λ.symm.continuous.measurable, latHaar (V × V) (ν.prod ν) (Γ.prod Γ) Λ.symm (fun x => by simpa using hΛ (Λ.symm x)) (𝓤 ×ˢ 𝓤) hUU (by rw [hμ]; exact one_ne_zero) (by rw [hμ]; exact ENNReal.one_ne_top)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hT : IsAddFundamentalDomain (Γ.prod Γ) (Λ.symm ⁻¹' (𝓤 ×ˢ 𝓤)) (ν.prod ν)`. Use `hUU.preimage_of_equiv hsymm.quasiMeasurePreserving (e := fun g => ⟨Λ g, (hΛ g).1 g.2⟩) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `g h hgh`. Conclude with `Subtype.ext (Λ.injective (congrArg Subtype.val hgh))`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨Λ.symm h, (hΛ _).2 (by simp [h.2])⟩, Subtype.ext (by simp)⟩`. Introduce `g x`. Simplify using `[AddSubgroup.vadd_def, vadd_eq_add, map_add]`. Establish `hM : Measurable fun p : V × (V × A) => ∑' c : Γ × Δ, ψ (sh Λ Q Z ((c.1 : V), (c.2 : A)) p)` using `Measurable.ennreal_tsum fun c => hψ.comp (hsh _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_prod _ hM.aemeasurable]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Use `(lintegral_prod (fun q : V × A => ∑' c : Γ × Δ, ψ (sh Λ Q Z ((c.1 : V), (c.2 : A)) (u, q))) (hM.comp measurable_prodMk_left).aemeasurable).trans ?_` and prove the remaining obligations. Conclude with `lintegral_congr fun b => hfib u b`. Use `_ = ∫⁻ w in 𝓤 ×ˢ 𝓤, H (Λ w) ∂(ν.prod ν) := by`.
-
-Rewrite using `[← Measure.prod_restrict]`. Conclude with `(lintegral_prod_symm (fun w => H (Λ w)) (hHm.comp Λ.continuous.measurable).aemeasurable).symm`. Use `_ = ∫⁻ w in Λ.symm ⁻¹' (𝓤 ×ˢ 𝓤), H w ∂(ν.prod ν) := by`. Use `hsymm.setLIntegral_comp_preimage_emb Λ.symm.toHomeomorph.measurableEmbedding (fun w => H (Λ w)) (𝓤 ×ˢ 𝓤)` as an intermediate fact. Rewrite using `[← this]`.
-
-Simplify using `only [ContinuousAddEquiv.apply_symm_apply]`. Use `_ = ∫⁻ w in 𝓤 ×ˢ 𝓤, H w ∂(ν.prod ν) := hT.setLIntegral_eq hUU H hHinv`. Use `_ = ∫⁻ b in 𝓤, ∫⁻ v in 𝓤, ∑' r : Γ, ∫⁻ s, ψ ((r : V) + v, s) ∂lam ∂ν ∂ν := by`. Rewrite using `[← Measure.prod_restrict]`. Conclude with `lintegral_prod _ hHm.aemeasurable`.
-
-Use `_ = ∫⁻ v in 𝓤, ∑' r : Γ, ∫⁻ s, ψ ((r : V) + v, s) ∂lam ∂ν := by`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, hU1, mul_one]`. Use `_ = ∫⁻ v, ∫⁻ s, ψ (v, s) ∂lam ∂ν := by`. Rewrite using `[hU.lintegral_eq_tsum'' (fun v => ∫⁻ s, ψ (v, s) ∂lam)]`. Conclude with `lintegral_tsum fun r => (hFm.comp (measurable_const_add (r : V))).aemeasurable`.
-
-Use `_ = ∫⁻ c, ψ c ∂(ν.prod lam) := (lintegral_prod _ hψ.aemeasurable).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unf_lint {Γ : AddSubgroup V} {Δ : AddSubgroup A} [Countable Γ] [Countable Δ]
     {ν : Measure V} [ν.IsAddHaarMeasure] {lam : Measure A} [lam.IsAddHaarMeasure]
@@ -146,9 +138,9 @@ theorem unf_lint {Γ : AddSubgroup V} {Δ : AddSubgroup A} [Countable Γ] [Count
     _ = ∫⁻ c, ψ c ∂(ν.prod lam) := (lintegral_prod _ hψ.aemeasurable).symm
 
 /- English proof (translation)
-Use extensionality with `S hS`. Establish `hsh : ∀ c : V × A, Measurable (sh Λ Q Z c)` using `fun c => measurable_sh hQ hZ c`. Establish `h` using `unf_lint hU hU1 hUU hA Λ hΛ hQ hZ (measurable_one.indicator hS)`. Rewrite `h` using `[lintegral_indicator_one hS]`. Rewrite using `[Measure.sum_apply _ hS, ← h, lintegral_tsum (f := fun (c : Γ × Δ) (p : V × (V × A)) => S.indicator 1 (sh Λ Q Z ((c.1 : V), (c.2 : A)) p)) fun c => ((measurable_one.indicator hS).comp (hsh _)).aemeasurable]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (hsh _) hS, ← lintegral_indicator_one (hsh _ hS)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unf_sum {Γ : AddSubgroup V} {Δ : AddSubgroup A} [Countable Γ] [Countable Δ]
     {ν : Measure V} [ν.IsAddHaarMeasure] {lam : Measure A} [lam.IsAddHaarMeasure]
@@ -171,11 +163,11 @@ theorem unf_sum {Γ : AddSubgroup V} {Δ : AddSubgroup A} [Countable Γ] [Counta
   rfl
 
 /- English proof (translation)
-Establish `hsh : ∀ c : V × A, Measurable (sh Λ Q Z c)` using `fun c => measurable_sh hQ hZ c`. Establish `hsum` using `unf_sum hU hU1 hUU hA Λ hΛ hQ hZ`. Establish `hlin` using `unf_lint hU hU1 hUU hA Λ hΛ hQ hZ hg.enorm`. Establish `hf' : ∑' c : Γ × Δ, ∫⁻ p, ‖g (sh Λ Q Z ((c.1 : V), (c.2 : A)) p)‖ₑ ∂((ν.restrict 𝓤).prod ((ν.restrict 𝓤).prod (lam.restrict 𝓐))) ≠ ⊤`. Rewrite using `[← lintegral_tsum (f := fun (c : Γ × Δ) (p : V × (V × A)) => ‖g (sh Λ Q Z ((c.1 : V), (c.2 : A)) p)‖ₑ) fun c => (hg.comp (hsh _)).enorm.aemeasurable, hlin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin.ne`. Rewrite using `[integral_tsum (f := fun (c : Γ × Δ) (p : V × (V × A)) => g (sh Λ Q Z ((c.1 : V), (c.2 : A)) p)) (fun c => (hg.comp (hsh _)).aestronglyMeasurable) hf']`. Establish `hI : Integrable g (ν.prod lam)` using `⟨hg.aestronglyMeasurable, hfin⟩`. Rewrite `hI`, the goal using `[← hsum]`. Rewrite using `[integral_sum_measure hI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[integral_map (hsh _).aemeasurable hg.aestronglyMeasurable]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unf_int {Γ : AddSubgroup V} {Δ : AddSubgroup A} [Countable Γ] [Countable Δ]
     {ν : Measure V} [ν.IsAddHaarMeasure] {lam : Measure A} [lam.IsAddHaarMeasure]

@@ -19,11 +19,11 @@ def cupflip_sub_res : Prop :=
     (x.res g).sub j l h = (x.sub j l h).res g
 
 /- English proof (translation)
-Introduce `R _ I J K μ E n m k hk α β`. Take `⟨γ, hγ⟩` from `hm R (E := E) (I := K) (n := k) (fun N w h U x => ∑ p : Fin (N + 1), (m * (p : ℕ)).negOnePow • μ.mul U (-((p : ℕ) : ℤ) + n) (-((N - p : ℕ) : ℤ) + m) w (by omega) (ev α p _ rfl U (x.sub 0 p (by omega))) (ev β (N - p) _ rfl U (x.sub p (N - p) (by omega)))) (by`. Introduce `N w h V U g x`. Simplify using `only [Sec.res, map_sum, Units.smul_def, map_zsmul]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `μ.nat g (-((p : ℕ) : ℤ) + n) (-((N - p : ℕ) : ℤ) + m) w (by omega) (ev α p _ rfl U (x.sub 0 p (by omega))) (ev β (N - p) _ rfl U (x.sub p (N - p) (by omega)))` as an intermediate fact. Simplify using `only [Sec.res] at this`. Rewrite using `[this]`. Establish `e1` using `he R α p _ rfl V U g (x.sub 0 p (by omega))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `he R β (N - p) _ rfl V U g (x.sub p (N - p) (by omega))`. Simplify using `only [Sec.res] at e1 e2`. Rewrite using `[e1, e2, hs, hs])`. Conclude with `⟨γ, fun N w h U x => hγ N w h U x⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cupflip_aw_cochain_of (hm : cupflip_ev_mk) (he : cupflip_ev_res) (hs : cupflip_sub_res) :
     cupflip_aw_cochain := by
@@ -48,7 +48,7 @@ theorem cupflip_aw_cochain_of (hm : cupflip_ev_mk) (he : cupflip_ev_res) (hs : c
   exact ⟨γ, fun N w h U x => hγ N w h U x⟩
 
 /- English proof (translation)
-Introduce `E U N x j l h V g`. Simplify using `only [Sx.res, Sx.sub]`. Conclude with `NatTrans.naturality_apply (E.map (SimplexCategory.subinterval j l h).op) g.op x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupflip_sub_res_holds : cupflip_sub_res := by
   intro E U N x j l h V g
@@ -56,9 +56,9 @@ theorem cupflip_sub_res_holds : cupflip_sub_res := by
   exact NatTrans.naturality_apply (E.map (SimplexCategory.subinterval j l h).op) g.op x
 
 /- English proof (translation)
-Establish `key` using `NatTrans.naturality_apply (toSheafify Scheme.etaleTopology ((freeP R).obj P)) g.op (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up x))`. Simplify using `only [freeGen]`. Use `erw [← key]`. Use `congr 1`. Simplify using `only [freeP, ModuleCat.freeMk, ModuleCat.free]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `erw [Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem freeGen_res {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((free R).obj P).obj.map g.op).hom (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
@@ -72,9 +72,7 @@ theorem freeGen_res {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V 
   rfl
 
 /- English proof (translation)
-Introduce `R _ E I n α p s h V U g x`. Establish `key` using `NatTrans.naturality_apply (((chainsXIso R E p).inv ≫ α.v _ _ h).hom) g.op (freeGen R _ U x)`. Simplify using `only [Sec.res, ev]`. Use `erw [← key]`. Use `congr 1`.
-
-Conclude with `freeGen_res _ g x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cupflip_ev_res_holds : cupflip_ev_res := by
   intro R _ E I n α p s h V U g x
@@ -85,7 +83,7 @@ theorem cupflip_ev_res_holds : cupflip_ev_res := by
   exact freeGen_res _ g x
 
 /- English proof (translation)
-The claim follows from `cupflip_aw_exists_of (cupflip_aw_cochain_of hm cupflip_ev_res_holds cupflip_sub_res_holds) hl`.
+A detailed English derivation is pending.
 -/
 theorem cupflip_aw_exists_of_leaves (hm : cupflip_ev_mk) (hl : cupflip_aw_leibniz) :
     cupflip_aw_exists :=

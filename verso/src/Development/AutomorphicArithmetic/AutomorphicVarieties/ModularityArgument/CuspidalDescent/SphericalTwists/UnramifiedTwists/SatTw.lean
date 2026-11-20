@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
 
 /- English proof (translation)
-Introduce `E _ _ _ a P s w B h`. Establish `h1` using `(GlobalTheory.CuspRep.CG.HasSat.twist_absPow h s).1`. Establish `h2` using `(GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s).2.1 w`. Establish `h3 : GlobalTheory.WeilDeligne.qPow w (-s) = (GlobalTheory.HeckeGal.Model.absPow E s).val w`. Use `Units.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, GlobalTheory.WeilDeligne.coe_qPow]`. Simplify using `only [Formalism.ConjugateSelfDual.normV, Complex.ofReal_neg]`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h3]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.W.satTw :
     UpperTheory.V.Z.Desc.W.SatTw := by

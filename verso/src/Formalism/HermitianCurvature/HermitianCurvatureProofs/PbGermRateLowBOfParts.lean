@@ -15,13 +15,13 @@ open Classical
 section frame
 
 /- English proof (translation)
-Unfold `GermFibreKernels.fs`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_eq (r : ℕ) (g : ℝ) (b s : ℕ) (t : ℂ) : GermFibreKernels.fs r g b s t = GermFibreKernels.fs r g b s 1 * t := by
   unfold GermFibreKernels.fs; ring
 
 /- English proof (translation)
-Unfold `GermFibreKernels.fs`. Establish `h1 : (((g / (2 * Real.pi)) ^ S6.nuBlock (r : ℤ) (b : ℤ) (s : ℤ) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (zpow_pos (div_pos hg (by positivity)) _).ne'`. Simplify using `only [mul_one]`. Conclude with `mul_ne_zero h1 (pow_ne_zero _ Complex.I_ne_zero)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fs_one_ne (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) : GermFibreKernels.fs r g b s 1 ≠ 0 := by
   unfold GermFibreKernels.fs
@@ -31,13 +31,13 @@ theorem fs_one_ne (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) : GermFibreKernel
   exact mul_ne_zero h1 (pow_ne_zero _ Complex.I_ne_zero)
 
 /- English proof (translation)
-Rewrite using `[fs_eq]`. Conclude with `mul_ne_zero (fs_one_ne r hg b s) ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fs_ne_zero (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) {t : ℂ} (ht : t ≠ 0) : GermFibreKernels.fs r g b s t ≠ 0 := by
   rw [fs_eq]; exact mul_ne_zero (fs_one_ne r hg b s) ht
 
 /- English proof (translation)
-The claim follows from `| _, [] => by simp [D.toStd] | b, (s, t) :: rest => by have ih := toStd_blocks r hg (b + s) rest simp only [D.toStd, List.mem_cons, forall_eq_or_imp] rw [ih] have hf : ((((g / (2 * Real.pi)) ^ S6.nuBlock (r : ℤ) (b : ℤ) (s : ℤ) : ℝ) : ℂ) * Complex.I ^ (s - 1) * t ≠ 0) ↔ t ≠ 0 := …`.
+A detailed English derivation is pending.
 -/
 theorem toStd_blocks (r : ℕ) {g : ℝ} (hg : 0 < g) : ∀ (b : ℕ) (P : C.LPt),
     (∀ x ∈ D.toStd r g b P, 1 ≤ x.1 ∧ x.2 ≠ 0) ↔ (∀ x ∈ P, 1 ≤ x.1 ∧ x.2 ≠ 0)
@@ -55,7 +55,7 @@ theorem toStd_blocks (r : ℕ) {g : ℝ} (hg : 0 < g) : ∀ (b : ℕ) (P : C.LPt
     simp only [hf]
 
 /- English proof (translation)
-Unfold `D.IsLocPt`. Rewrite using `[toStd_blocks r hg b P, ptSize_toStd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocPt_toStdD (r : ℕ) {g : ℝ} (hg : 0 < g) (b : ℕ) (P : C.LPt) (i : ℕ) :
     D.IsLocPt (D.toStd r g b P) i ↔ D.IsLocPt P i := by
@@ -71,7 +71,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [PBASM.cutSeq, D.cutF]`. Rewrite using `[smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cutSeq_eq (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (n : ℕ) (v : Fin S.f)
@@ -82,7 +82,7 @@ theorem cutSeq_eq (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (W
   rw [smul_comm]
 
 /- English proof (translation)
-Unfold `KB.gN C.HidaSetting.gramLoc PBL.setC KB.withRR`. Simplify using `only`. Unfold `PBL.rrC KB.Pl.RR D.RRplace`. Rewrite using `[dif_neg (fun h => hP ((isLocPt_toStdD S.G.r hg 1 P i).1 h.1))]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gN_setC_zero (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (hg : (0 : ℝ) < (S.g : ℝ))
@@ -99,7 +99,7 @@ end cut
 section psi
 
 /- English proof (translation)
-Unfold `G.psi`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, mul_neg, Complex.neg_re, Complex.ofReal_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_conj (β w : ℂ) : conj (G.psi β w) = G.psi β (-w) := by
   unfold G.psi
@@ -109,7 +109,7 @@ theorem psi_conj (β w : ℂ) : conj (G.psi β w) = G.psi β (-w) := by
   ring
 
 /- English proof (translation)
-Simplify using `[G.rootSet, Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hs)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_rootSet4 {s : ℕ} (hs : s ≠ 0) {a z : ℂ} : z ∈ G.rootSet s a ↔ z ^ s = a := by
   simp [G.rootSet, Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hs)]
@@ -119,7 +119,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Rewrite using `[GermFibreKernels.char_std S hg b s hs x⁻¹ z (inv_ne_zero hx), psi_conj, ← GermRealisation.psi_betaL, inv_inv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem char_conj (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < (S.g : ℝ)) (b s : ℕ) (hs : 2 ≤ s) (x z : ℂ)
     (hx : x ≠ 0) :
@@ -134,13 +134,13 @@ end psi
 section roots
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `by omega`. Use extensionality with `w`. Rewrite using `[mem_rootSet4 hs0, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨w / GermFibreKernels.fs r g b s 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_rootSet4 hs0]`. Establish `e : GermFibreKernels.fs r g b s (w / GermFibreKernels.fs r g b s 1) = w`. Rewrite using `[fs_eq]`. Clear denominators, using `[fs_one_ne r hg b s]` for the nonvanishing conditions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `(GermFibreKernels.roots_std r g hg b s hs t c (w / GermFibreKernels.fs r g b s 1)).1` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this hw`. Rewrite using `[fs_eq]`. Clear denominators, using `[fs_one_ne r hg b s]` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite `hz` using `[mem_rootSet4 hs0]`. Conclude with `(GermFibreKernels.roots_std r g hg b s hs t c z).2 hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootSet_std (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) (hs : 2 ≤ s) (t c : ℂ) :
     G.rootSet s ((-1) ^ (s + 1) * (GermFibreKernels.fs r g (b + (s - 1)) 1 c * GermFibreKernels.fs r g b (s - 1) t ^ (s - 1))) =
@@ -169,9 +169,7 @@ section cutn
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hcs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : B.Mat k r => PBASM.cutN n g)`. Establish `e : (fun g : B.Mat k r => PBASM.cutN n g) = fun g => 1 - JCx2.pdPsi ((n : ℝ) + 1) g`. Use function extensionality and compare the values at `fun g => PBE.cut_eq (fun n g => PBASM.cutN n g) (fun n g => rfl) n g`. Rewrite using `[e]`. Conclude with `contDiff_const.sub (JCx2.pd_psi_cd _)`.
-
-Conclude with `JCx2.pd_smooth_smul hcs hf`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutN_smooth {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E}
     (hf : B.CkOn (⊤ : ℕ∞) (B.GV k r) f) (n : ℕ) :
@@ -184,17 +182,17 @@ theorem cutN_smooth {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace �
   exact JCx2.pd_smooth_smul hcs hf
 
 /- English proof (translation)
-Introduce `g _ hne`. Establish `hc : PBASM.cutN n g ≠ 0` using `by intro h0; apply hne; simp [h0]`. Unfold `PBASM.cutN at hc`. Establish `hpos : 0 < (4 - ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j)) / 3`. Assume the negation of the conclusion as `hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hle`. Apply `hc` to reduce the goal to its premises. Rewrite using `[Real.smoothTransition.zero_of_nonpos hle]`. Simplify using the standard rewrite rules. Establish `hn1 : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j) = ((n : ℝ) + 1)⁻¹ ^ 2 * ∑ i, ∑ j, Complex.normSq (g i j)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, Complex.real_smul, Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlt : ∑ i, ∑ j, Complex.normSq (g i j) < 4 * ((n : ℝ) + 1) ^ 2`. Rewrite `hpos` using `[hsum]`. Establish `h1 : ((n : ℝ) + 1)⁻¹ ^ 2 * ∑ i, ∑ j, Complex.normSq (g i j) < 4` using `by linarith`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((n : ℝ) + 1) ^ 2 * (((n : ℝ) + 1)⁻¹ ^ 2 * ∑ i, ∑ j, Complex.normSq (g i j)) = ∑ i, ∑ j, Complex.normSq (g i j)`. Clear the denominators using the available nonvanishing facts. Establish `h3 : ((n : ℝ) + 1) ^ 2 * (((n : ℝ) + 1)⁻¹ ^ 2 * ∑ i, ∑ j, Complex.normSq (g i j)) < ((n : ℝ) + 1) ^ 2 * 4` using `mul_lt_mul_of_pos_left h1 (by positivity)`. Rewrite `h3` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Unfold `B.gN`. Rewrite using `[show (2 * ((n : ℝ) + 1)) = Real.sqrt ((2 * ((n : ℝ) + 1)) ^ 2) from (Real.sqrt_sq (by positivity)).symm]`. Conclude with `Real.sqrt_le_sqrt (by nlinarith)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutN_supp {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : B.Mat k r → E) (n : ℕ) :
     ∀ g ∈ B.GV k r, PBASM.cutN n g • f g ≠ 0 → B.gN g ≤ 2 * ((n : ℝ) + 1) := by
@@ -248,11 +246,11 @@ def aCo (S : C.HidaSetting E Wp Wq) (s : ℕ) (dl1 dl2 : ℝ) (x : ℂ) : Option
   | some z => -(G.psi (GermRealisation.betaL S) ((s : ℂ) * z * x) * ((((s : ℝ) * ‖z‖ ^ (s - 1))⁻¹ * (√dl2)⁻¹ : ℝ) : ℂ))
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `by omega`. Rewrite using `[Finset.sum_insertNone]`. Unfold `GermRealisation.utOf GermFibreKernels.vOf GermRealisation.ptX PBK.mainD`. Simplify using `only [aCo, PPt, one_mul, one_smul]`. Rewrite using `[sub_eq_add_neg, ← Finset.sum_neg_distrib, smul_smul, ← Complex.ofReal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [List.append_assoc, List.cons_append, List.nil_append]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hz` using `[mem_rootSet4 hs0, zero_pow hs0]`. Conclude with `hD hz.symm`. Simplify using `only [GermFibreKernels.btOf, if_neg hz0, smul_smul, neg_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem utOf_sub_mainD {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (S : C.HidaSetting E Wp Wq) (s : ℕ) (hs : 2 ≤ s) (dl1 dl2 : ℝ) (Vec : C.LPt → H) (h : C.LPt) (x D : ℂ)
@@ -285,17 +283,17 @@ def qq (r : ℕ) (g : ℝ) (b s : ℕ) (x D : ℂ) : Option ℂ → (ℂ × ℂ)
 def kapD (r : ℕ) (g : ℝ) (b s : ℕ) : ℂ := GermFibreKernels.fs r g (b + s - 1) 1 1 * GermFibreKernels.fs r g b (s - 1) 1 ^ (s - 1)
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (fs_one_ne r hg _ _) (pow_ne_zero _ (fs_one_ne r hg _ _))`.
+A detailed English derivation is pending.
 -/
 theorem kapD_ne (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) : kapD r g b s ≠ 0 :=
   mul_ne_zero (fs_one_ne r hg _ _) (pow_ne_zero _ (fs_one_ne r hg _ _))
 
 /- English proof (translation)
-Establish `e1 : 1 + D.ptSize h = b` using `by omega`. Establish `e2 : 1 + D.ptSize h + (s - 1) = b + s - 1` using `by omega`. Establish `e3 : s - 2 + 1 = s - 1` using `by omega`. Establish `e4 : s - 2 + 2 = s` using `by omega`. Consider the cases of `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `none`. Simplify using `only [PPt, ptG, qq]`. Rewrite using `[(GermFibreKernels.toStd_germPts r g h s x⁻¹ (x ^ (s - 1) * Dc) 0).1, e1, e3, show b + (s - 1) = b + s - 1 by omega]`. Consider the case `some z`. Simplify using `only [PPt, ptG, qq]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[(GermFibreKernels.toStd_germPts r g h s 1 1 z).2, e1, e4]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toStd_PPt (r : ℕ) (g : ℝ) (b s : ℕ) (hb : 1 ≤ b) (hs : 2 ≤ s) (h : C.LPt) (hh : D.ptSize h = b - 1)
     (x Dc : ℂ) (j : Option ℂ) :
@@ -313,7 +311,7 @@ theorem toStd_PPt (r : ℕ) (g : ℝ) (b s : ℕ) (hb : 1 ≤ b) (hs : 2 ≤ s) 
     rw [(GermFibreKernels.toStd_germPts r g h s 1 1 z).2, e1, e4]
 
 /- English proof (translation)
-Unfold `kapD`. Rewrite using `[fs_eq r g (b + s - 1) 1, fs_eq r g b (s - 1) x⁻¹, mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cD_eq (r : ℕ) {g : ℝ} (b s : ℕ) (hs : 2 ≤ s) (x D : ℂ) (hx : x ≠ 0) :
     GermFibreKernels.fs r g (b + s - 1) 1 (x ^ (s - 1) * D) * GermFibreKernels.fs r g b (s - 1) x⁻¹ ^ (s - 1) = kapD r g b s * D := by
@@ -322,13 +320,13 @@ theorem cD_eq (r : ℕ) {g : ℝ} (b s : ℕ) (hs : 2 ≤ s) (x D : ℂ) (hx : x
   field_simp
 
 /- English proof (translation)
-Establish `e3 : s - 2 + 1 = s - 1` using `by omega`. Establish `e4 : s - 2 + 2 = s` using `by omega`. Establish `e5 : s - 2 + 3 = s + 1` using `by omega`. Consider the cases of `j with`. Consider the case `none`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [qq, okG]`. Use `⟨fs_ne_zero r hg b (s - 1) (inv_ne_zero hx), ⟨D, hD, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e3, cD_eq r b s hs x D hx]`. Consider the case `some z`. Simplify using `only [qq, okG]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hj' : z ∈ G.rootSet s D` using `Finset.mem_insertNone.1 hj z rfl`. Establish `hz` using `(mem_rootSet4 (by omega : s ≠ 0)).1 hj'`. Use `⟨kapD r g b s * D, ⟨D, hD, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hb1 : b + (s - 1) = b + s - 1` using `by omega`. Establish `key` using `(GermFibreKernels.roots_std r g hg b s hs x⁻¹ (x ^ (s - 1) * D) z).2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz, inv_pow]`. Use the proof step `field_simp)`. Rewrite `key` using `[hb1, cD_eq r b s hs x D hx]`. Rewrite using `[e4, e5]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem okG_qq (r : ℕ) {g : ℝ} (hg : 0 < g) (b s : ℕ) (hs : 2 ≤ s) (K : Set ℂ) (x D : ℂ) (hx : x ≠ 0)
     (hD : D ∈ K) (j : Option ℂ) (hj : j ∈ Finset.insertNone (G.rootSet s D)) :
@@ -362,19 +360,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Use `set T1 := GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 1) x⁻¹ with hT1`. Use `set C1 := GermFibreKernels.fs S.G.r (S.g : ℝ) (b + (m + 1)) 1 (x ^ (m + 1) * D) with hC1`. Establish `hT0 : T1 ≠ 0` using `fs_ne_zero _ hg _ _ (inv_ne_zero hx)`. Rewrite using `[Finset.sum_insertNone, smul_sub, sub_eq_add_neg]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `show conj (((‖x‖ ^ (m + 1) * (√dl1)⁻¹ : ℝ) : ℂ)) • (((lam none : ℝ) : ℂ) • (((kapB m : ℝ) : ℂ) • G.OmBlock U.betaU (m + 1) Φ T1 C1)) = _`. Unfold `U.uD`. Establish `hc : C1 * T1 ^ (m + 1) / T1 ^ (m + 1) = C1` using `by field_simp`. Rewrite using `[hc, Complex.conj_ofReal, smul_smul, smul_smul, smul_smul, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Complex.ofReal_mul, h1]`. Establish `hR : G.rootSet (m + 2) ((-1) ^ (m + 3) * (C1 * T1 ^ (m + 1))) = (G.rootSet (m + 2) D).image (fun z => GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 2) z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `rootSet_std S.G.r hg b (m + 2) (by omega) x⁻¹ (x ^ (m + 1) * D)`. Establish `e : x ^ (m + 1) * D * x⁻¹ ^ (m + 2 - 1) = D` using `by show x ^ (m + 1) * D * x⁻¹ ^ (m + 1) = D`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite `h0` using `[e]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `h0`. Establish `hinj : Set.InjOn (fun z => GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 2) z) (G.rootSet (m + 2) D)`. Introduce `z1 _ z2 _ h`. Simplify using `only at h`. Rewrite `h` using `[fs_eq, fs_eq S.G.r (S.g : ℝ) b (m + 2) z2]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_cancel₀ (fs_one_ne _ hg _ _) h`. Unfold `U.aD G.mainTerm`. Rewrite using `[hR, Finset.sum_image hinj, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Simplify using `only [aCo, qq, yG, smul_smul, ← neg_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Establish `hc' : conj (G.psi (GermRealisation.betaL S) (((m + 2 : ℕ) : ℂ) * z * x)) = G.psi U.betaU (((m + 2 : ℕ) : ℂ) * GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 2) z / T1)` using `char_conj S hg b (m + 2) (by omega) x z hx`. Rewrite using `[map_neg, map_mul, Complex.conj_ofReal, hc', show m + 2 - 1 = m + 1 from rfl]`. Establish `key` using `congrArg (fun r : ℝ => (r : ℂ)) (h2 z hz)`. Move the coercions through the operations in `at key ⊢`.
-
-Take the linear combination `(-(G.psi U.betaU (((m : ℂ) + 2) * GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 2) z / T1))) * key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem conjSum_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (S : C.HidaSetting E Wp Wq)
     (hg : (0 : ℝ) < (S.g : ℝ)) (b m : ℕ) (dl1 dl2 μ₀ : ℝ) (Φ : G.Mat (m + 2) → V) (M : ℕ) (x D : ℂ)
@@ -438,7 +434,7 @@ end conjsum
 section main
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem slv_congr {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp))
@@ -447,15 +443,13 @@ theorem slv_congr {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   subst e; rfl
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [PPt, List.mem_append, List.mem_cons, List.not_mem_nil, or_false] at hy`. Break down `hy with hy | rfl | rfl` into its components or cases.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hloc y hy`. Conclude with `⟨by omega, inv_ne_zero hx⟩`. Conclude with `⟨le_rfl, mul_ne_zero (pow_ne_zero _ hx) hD⟩`. Simplify using `[PPt, D.ptSize, List.map_append, List.sum_append] at hh ⊢`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `some z`. Establish `hj' : z ∈ G.rootSet s Dc` using `Finset.mem_insertNone.1 hj z rfl`. Establish `hz` using `(mem_rootSet4 (by omega : s ≠ 0)).1 hj'`. Establish `hz0 : z ≠ 0` using `by rintro rfl; rw [zero_pow (by omega)] at hz; exact hD hz.symm`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [PPt, List.mem_append, List.mem_cons, List.not_mem_nil, or_false] at hy`. Break down `hy with hy | rfl` into its components or cases. Conclude with `hloc y hy`. Conclude with `⟨by omega, hz0⟩`. Simplify using `[PPt, D.ptSize, List.map_append, List.sum_append] at hh ⊢`.
-
-Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isLocPt_PPt (s : ℕ) (hs : 2 ≤ s) (b : ℕ) (hb : 1 ≤ b) (h : C.LPt) (hh : D.ptSize h = b - 1)
     (hloc : ∀ y ∈ h, 1 ≤ y.1 ∧ y.2 ≠ 0) (x Dc : ℂ) (hx : x ≠ 0) (hD : Dc ≠ 0) (j : Option ℂ)
@@ -485,9 +479,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Introduce `j hj l hl`. Establish `hPj` using `isLocPt_PPt s hs b hb h hh hloc x Dc hx hD j hj`. Establish `hPl` using `isLocPt_PPt s hs b hb h hh hloc x Dc hx hD l hl`. Rewrite using `[hGN E Wp Wq S p (PBASM.cutSeq S p f χ n) v ε (b + s - 1) hi a _ _ hPj hPl]`. Simplify using `only [cutSeq_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[slv_congr _ _ _ _ _ (toStd_PPt S.G.r (S.g : ℝ) b s hb hs h hh x Dc j) _ (by rw [ptSize_ptG, hsz]), slv_congr _ _ _ _ _ (toStd_PPt S.G.r (S.g : ℝ) b s hb hs h hh x Dc l) _ (by rw [ptSize_ptG, hsz]), hker _ _ (hKc j hj) (hKc l hl)]`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kernel_PPt (hGN : GNSetC) (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (n : ℕ) (v : Fin S.f)
@@ -525,29 +519,27 @@ end main
 section final
 
 /- English proof (translation)
-Introduce `_hA Cb`. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`. Take `⟨hg1, hg2, -, hχ, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB`. Take `⟨-, -, -, hf, -⟩` from `hv v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : (0 : ℝ) < (S.g : ℝ)` using `by unfold C.HidaSetting.g; exact_mod_cast Nat.mul_pos hg1 hg2`. Introduce `ε hε b s hb hs hbs a _ha H _ _ _ Vec hVec`. Use `⟨1, fun _ => 1, by simp, fun _ => by simp, continuousOn_const, ?_⟩` and prove the remaining obligations. Introduce `h hh K hK hK0`. Establish `hr : (PBL.setC S p (PBASM.cutSeq S p f χ n)).G.r = S.G.r` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : b + s - 1 ≤ S.G.r` using `by omega`. Distinguish the cases in `hloc : ∀ y ∈ h, 1 ≤ y.1 ∧ y.2 ≠ 0`. Use `swap`. Use `⟨0, fun x _ Dv hD => ?_⟩` and prove the remaining obligations. Establish `hD0 : Dv ≠ 0` using `fun h0 => hK0 (h0 ▸ hD)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[utOf_sub_mainD _ s hs _ _ Vec h x Dv hD0]`. Establish `hz : ∀ j, Vec (PPt s h x Dv j) = 0`. Introduce `j`. Establish `hnl : ¬ D.IsLocPt (PPt s h x Dv j) (b + s - 1)`. Apply the tactic sequence `intro hl; apply hloc; intro y hy; exact hl.1 y (by cases j <;> simp [PPt, hy])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h0` using `gN_setC_zero S p (PBASM.cutSeq S p f χ n) hg v ε (b + s - 1) a _ (PPt s h x Dv j) hnl`. Rewrite `h0` using `[hVec]`. Conclude with `inner_self_eq_zero.1 h0`. Simplify using `[hz]`. Take `⟨m, rfl⟩ : ∃ m, s = m + 2` from `⟨s - 2, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsz : D.ptSize (D.toStd S.G.r (S.g : ℝ) 1 h) + (m + 2 - 2 + 2) = b + (m + 2) - 1`. Rewrite using `[ptSize_toStd, hh]`. Use linear arithmetic over natural numbers and integers. Establish `hlocStd : D.IsLocPt (D.toStd S.G.r (S.g : ℝ) 1 h) (D.ptSize (D.toStd S.G.r (S.g : ℝ) 1 h))` using `(isLocPt_toStdD _ hg 1 h _).2 ⟨hloc, (ptSize_toStd _ _ 1 h).symm⟩`. Use `set Kc : Set ℂ := (fun D => kapD S.G.r (S.g : ℝ) b (m + 2) * D) '' K with hKcdef`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKc : IsCompact Kc` using `hK.image (continuous_const.mul continuous_id)`. Establish `hKc0 : (0 : ℂ) ∉ Kc`. Introduce and unpack `⟨D, hD, hD0⟩`. Use `mul_eq_zero.1 hD0` as an intermediate fact. Break down `this with h1 | h1` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `kapD_ne _ hg _ _ h1`. Conclude with `hK0 (h1 ▸ hD)`. Take `⟨V, i1, i2, i3, Bf, Φ, Cp, Cst, hCp, hBf, hker, hgerm⟩` from `hGP (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v).T (M.sgn (D.parOf S v) (p v).l0) a (fun g => PBASM.cutN n g • f v g) χ ε (D.toStd S.G.r (S.g : ℝ) 1 h) (m + 2 - 2) (b + (m + 2) - 1) hi hsz (cutN_smooth hf n) ⟨_, cutN_supp (f v) n⟩ hχ hε (p v).hl.2.2 hlocStd Kc hKc hKc0`. Take `⟨μ₀, hμ⟩` from `hGC E Wp Wq (PBL.setC S p (PBASM.cutSeq S p f χ n)) v a b (m + 2) hg1 hg2 hb hs hi h hh`. Use `⟨Cp * |μ₀| * Cst * ‖GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 1) 1‖, fun x hx D hD => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : D ≠ 0` using `fun h0 => hK0 (h0 ▸ hD)`. Take `⟨z0, hz0⟩` from `IsAlgClosed.exists_pow_nat_eq D (by omega : 0 < m + 2)`. Rewrite using `[utOf_sub_mainD _ (m + 2) hs _ _ Vec h x D hD0]`. Establish `hKcj` using `fun j hj => okG_qq S.G.r hg b (m + 2) hs K x D hx hD j hj`. Establish `hyy` using `kernel_PPt hGN S p f χ n v ε hg b (m + 2) hb hs hi a h hh hloc x D hx hD0 Bf Φ Kc hKcj hsz hker`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `norm_sum_le_of_form (KB.gN (PBL.setC S p (PBASM.cutSeq S p f χ n)) v ε (b + (m + 2) - 1) a) Vec hVec Bf Cp hCp hBf (Finset.insertNone (G.rootSet (m + 2) D)) (aCo (PBL.setC S p (PBASM.cutSeq S p f χ n)) (m + 2) (KB.dlB (PBL.setC S p (PBASM.cutSeq S p f χ n)) (b + (m + 2) - 1) 1) ( …`. Establish `hcs` using `conjSum_eq (V := V) (PBL.setC S p (PBASM.cutSeq S p f χ n)) hg b m (KB.dlB (PBL.setC S p (PBASM.cutSeq S p f χ n)) (b + (m + 2) - 1) 1) (KB.dlB (PBL.setC S p (PBASM.cutSeq S p f χ n)) b (m + 2)) μ₀ Φ (U.Mlev S.G.k (S.G.r - (b + (m + 2) - 1))) x D hx hD0 (fun j => lamP S v a (b + …`. Establish `hT0 : GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 1) x⁻¹ ≠ 0` using `fs_ne_zero _ hg _ _ (inv_ne_zero hx)`. Establish `hg'` using `hgerm _ _ hT0 ⟨D, hD, (cD_eq S.G.r b (m + 2) hs x D hx).symm⟩`. Establish `hle2` using `hle.trans_eq (congrArg (fun X => Cp * ‖X‖) hcs)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [norm_smul, Complex.norm_real, Real.norm_eq_abs] at hle2`. Establish `hnT : ‖GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 1) x⁻¹‖ = ‖GermFibreKernels.fs S.G.r (S.g : ℝ) b (m + 1) 1‖ * ‖x‖⁻¹`. Rewrite using `[fs_eq, norm_mul, norm_inv]`. Use `hle2.trans ?_` and prove the remaining obligations. Establish `hμ0 : 0 ≤ |μ₀|` using `abs_nonneg _`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hnT]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem germRateLowB_of (hGP : GermPlace) (hGN : GNSetC) (hGC : GermConst) : GermRateSplit.GermRateLowB := by
   intro _hA Cb
@@ -630,7 +622,7 @@ end
 end Formalism.FourierDecayAlt.P.FormNormSumIdentities
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FormNormSumIdentities.germRateLowB_of`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.pb_germRateLowB_of_parts :
     Formalism.FourierDecayAlt.P.FormNormSumIdentities.GermPlace → Formalism.FourierDecayAlt.P.FormNormSumIdentities.GNSetC → Formalism.FourierDecayAlt.P.FormNormSumIdentities.GermConst →

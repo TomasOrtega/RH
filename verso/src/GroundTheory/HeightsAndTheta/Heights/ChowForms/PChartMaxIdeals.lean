@@ -15,9 +15,9 @@ namespace ChartMaxIdeals
 variable {F : Type} [Field F] {n e : ℕ}
 
 /- English proof (translation)
-Unfold `chartIncIdeal`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ (le_sup_right.trans le_sup_left)` and prove the remaining obligations. Rewrite using `[Ideal.map_sup]`. Conclude with `sup_le le_sup_right (((Ideal.map_mono le_sup_right).trans le_sup_left).trans le_sup_left)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le (sup_le ?_ le_sup_right) ?_` and prove the remaining obligations. Conclude with `(Ideal.map_mono (sup_le_sup_right h _)).trans le_sup_left`. Conclude with `(Ideal.map_mono le_sup_left).trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem chartIncIdeal_eq_sup {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     chartIncIdeal W t e = chartIncIdeal I t e ⊔ W.map (rename Sum.inl) := by
@@ -31,7 +31,7 @@ theorem chartIncIdeal_eq_sup {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W
     · exact (Ideal.map_mono le_sup_left).trans le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_left.trans_eq (chartIncIdeal_eq_sup h t).symm`.
+A detailed English derivation is pending.
 -/
 theorem chartIncIdeal_le {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     chartIncIdeal I t e ≤ chartIncIdeal W t e :=
@@ -42,15 +42,13 @@ def toSub {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F)
   Ideal.Quotient.factor (chartIncIdeal_le h t)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := chartIncIdeal I t e) x`. Establish `hy : y ∈ chartIncIdeal W t e` using `Ideal.Quotient.eq_zero_iff_mem.mp hx`. Rewrite `hy` using `[chartIncIdeal_eq_sup h t, Submodule.mem_sup]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `hy`. Establish `hb' : Ideal.Quotient.mk (chartIncIdeal I t e) b ∈ W.map (chartX I t e)`. Establish `hle : W.map (rename Sum.inl) ≤ (W.map (chartX I t e)).comap (Ideal.Quotient.mk (chartIncIdeal I t e))`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mem_map_of_mem (chartX I t e) hw`. Conclude with `hle hb`. Establish `ha' : Ideal.Quotient.mk (chartIncIdeal I t e) a = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr ha`. Rewrite using `[map_add, ha', zero_add]`. Conclude with `hb'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `w hw`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `show Ideal.Quotient.mk (chartIncIdeal W t e) (rename Sum.inl w) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, chartIncIdeal_eq_sup h t]`.
-
-Conclude with `Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toSub {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     RingHom.ker (toSub h t e) = W.map (chartX I t e) := by
@@ -77,14 +75,14 @@ theorem ker_toSub {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin 
     exact Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hw)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toSub_comp_chartX {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     (toSub h t e).comp (chartX I t e) = chartX W t e :=
   RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toSub_comp_algebraMap {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     (toSub h t e).comp (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) =
@@ -92,14 +90,14 @@ theorem toSub_comp_algebraMap {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ 
   RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[← ker_toSub h t, RingHom.comap_ker, toSub_comp_chartX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_chartX_map {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     (W.map (chartX I t e)).comap (chartX I t e) = RingHom.ker (chartX W t e) := by
   rw [← ker_toSub h t, RingHom.comap_ker, toSub_comp_chartX]
 
 /- English proof (translation)
-Rewrite using `[← ker_toSub h t, RingHom.comap_ker, toSub_comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_algebraMap_map {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W) (t : Fin n → F) :
     (W.map (chartX I t e)).comap (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) =
@@ -107,9 +105,9 @@ theorem comap_algebraMap_map {I W : Ideal (MvPolynomial (Fin n) F)} (h : I ≤ W
   rw [← ker_toSub h t, RingHom.comap_ker, toSub_comp_algebraMap]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hd s hs`. Assume the negation of the conclusion as `hsp`. Conclude with `Set.disjoint_left.mp hd ⟨s, hsp, rfl⟩ hs`. Introduce `hle`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hmem`. Conclude with `hs (hle hmem)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem disjoint_iff {I : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F}
     {p : Ideal (MvPolynomial (Fin e × Fin n) F)} [p.IsPrime] (P : Ideal (ChartInc I t e)) :
@@ -125,7 +123,7 @@ theorem disjoint_iff {I : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F}
     exact hs (hle hmem)
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite using `[← sum_homogeneousComponent g]`. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Conclude with `hD F n W₂ t _ d h₂ hh₂ ht₂ (homogeneousComponent_isHomogeneous d g) (h (Ideal.mem_sup_left (hh₁ g hg d)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_of_sup_le (hD : ChartDehomog.Statement) {W₁ W₂ : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F}
     (hh₁ : IsHomogIdeal W₁) (h₂ : W₂.IsPrime) (hh₂ : IsHomogIdeal W₂) (ht₂ : linForm t ∉ W₂)
@@ -141,41 +139,37 @@ end ChartMaxIdeals
 open ChartMaxIdeals in
 
 /- English proof (translation)
-Introduce `F _ n e I f t u q p _ hI hf hu hq hp hqt`. Establish `hdim` using `h₁ F n (e + 1) I f hI hf`. Establish `hpt : specFirst f t ∉ p` using `by rw [hp, Ideal.mem_span_singleton]; exact hqt`. Establish `: Module.Finite (Localization.AtPrime p) (ChartLoc I t e p)` using `h₇ F n e I f t p hI hf hpt`. Establish `: Algebra.IsIntegral (Localization.AtPrime p) (ChartLoc I t e p)` using `Algebra.IsIntegral.of_finite _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : ∀ W, W ∈ (divCycle I u).support ↔ W ∈ relComps (I ⊔ Ideal.span {linForm u}) ∧ localMult (I ⊔ Ideal.span {linForm u}) W ≠ 0`. Introduce `W`. Rewrite using `[Finsupp.mem_support_iff, divCycle, fundCycle, Finsupp.onFinset_apply]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`. Establish `htower : (algebraMap (Localization.AtPrime p) (ChartLoc I t e p)).comp (algebraMap (MvPolynomial (Fin e × Fin n) F) (Localization.AtPrime p)) = (algebraMap (ChartInc I t e) (ChartLoc I t e p)).comp (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Establish `key : ∀ W : Ideal (MvPolynomial (Fin n) F), IsProjPrime W → linForm t ∉ W → I ≤ W → incIdeal W e = p → (chartIdeal I t e p W).IsMaximal ∧ (chartIdeal I t e p W).comap (algebraMap (ChartInc I t e) (ChartLoc I t e p)) = W.map (chartX I t e) ∧ (W.map (chartX I t e)).comap (chartX I …`. Introduce `W hW ht hIW hWp`. Take `⟨hdom, hker⟩` from `h₈ F n e W t hW ht`. Establish `hk` using `h₉ F n e W t hW ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hprime : (W.map (chartX I t e)).IsPrime`. Rewrite using `[← ker_toSub hIW t]`. Conclude with `RingHom.ker_isPrime _`. Establish `hcS : (W.map (chartX I t e)).comap (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) = p`. Rewrite using `[comap_algebraMap_map hIW t, hk, hWp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdisj` using `(disjoint_iff (p := p) (W.map (chartX I t e))).mpr hcS.le`. Establish `h𝔓 : (chartIdeal I t e p W).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint _ _ _ hprime hdisj`. Establish `hc𝔓 : (chartIdeal I t e p W).comap (algebraMap (ChartInc I t e) (ChartLoc I t e p)) = W.map (chartX I t e)` using `IsLocalization.under_map_of_isPrime_disjoint _ _ hprime hdisj`. Establish `hO : ((chartIdeal I t e p W).comap (algebraMap (Localization.AtPrime p) (ChartLoc I t e p))).comap (algebraMap (MvPolynomial (Fin e × Fin n) F) (Localization.AtPrime p)) = p`. Rewrite using `[Ideal.comap_comap, htower, ← Ideal.comap_comap, hc𝔓, hcS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmaxO : (chartIdeal I t e p W).comap (algebraMap (Localization.AtPrime p) (ChartLoc I t e p)) = IsLocalRing.maximalIdeal (Localization.AtPrime p)`. Rewrite using `[← IsLocalization.map_under p.primeCompl (Localization.AtPrime p) ((chartIdeal I t e p W).comap (algebraMap (Localization.AtPrime p) (ChartLoc I t e p)))]`. Express the relevant statement in the definitionally equal form `Ideal.map _ (Ideal.comap (algebraMap (MvPolynomial (Fin e × Fin n) F) (Localization.AtPrime p)) _) = _`. Rewrite using `[hO, Localization.AtPrime.map_eq_maximalIdeal]`. Use `⟨Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := Localization.AtPrime p) _ ?_, hc𝔓, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmaxO]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Rewrite using `[comap_chartX_map hIW t, hker]`. Establish `hmem : ∀ W ∈ {W | W ∈ (divCycle I u).support ∧ Ideal.span {q} = incIdeal W e}, IsProjPrime W ∧ linForm t ∉ W ∧ I ≤ W ∧ linForm u ∈ W ∧ incIdeal W e = p`. Introduce and unpack `W ⟨hWs, hWq⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hrel, -⟩` from `(hsupp W).mp hWs`. Take `⟨hWproj, -⟩` from `h₂ F n e I W u hI hdim hu hrel`. Establish `hJW : I ⊔ Ideal.span {linForm u} ≤ W` using `hrel.1.1.2`. Establish `hIW : I ≤ W` using `le_sup_left.trans hJW`. Establish `ht : linForm t ∉ W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `htW`. Use `h₆ F n e I W f t hf hIW htW` as an intermediate fact. Rewrite `this` using `[← hWq, Ideal.mem_span_singleton]`. Conclude with `hqt this`. Conclude with `⟨hWproj, ht, hIW, hJW (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)), hWq.symm.trans hp.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW`. Take `⟨hWp, ht, hIW, huW, hinc⟩` from `hmem W hW`. Use `⟨(key W hWp ht hIW hinc).1, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ huW)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `W₁ hW₁ W₂ hW₂ heq`. Take `⟨hp₁, ht₁, hI₁, -, hinc₁⟩` from `hmem W₁ hW₁`. Take `⟨hp₂, ht₂, hI₂, -, hinc₂⟩` from `hmem W₂ hW₂`. Take `⟨-, hc₁, hx₁⟩` from `key W₁ hp₁ ht₁ hI₁ hinc₁`. Take `⟨-, hc₂, hx₂⟩` from `key W₂ hp₂ ht₂ hI₂ hinc₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h12 : W₁ ⊔ Ideal.span {linForm t - 1} = W₂ ⊔ Ideal.span {linForm t - 1}`. Rewrite using `[← hx₁, ← hx₂, ← hc₁, ← hc₂]`. Rewrite using `[heq]`. Conclude with `le_antisymm (le_of_sup_le hD hp₁.isHomog hp₂.isPrime hp₂.isHomog ht₂ h12.le) (le_of_sup_le hD hp₂.isHomog hp₁.isPrime hp₁.isHomog ht₁ h12.ge)`. Introduce and unpack `𝔓 ⟨hmax, hθ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hmax.isPrime` as an intermediate fact. Use `set P := 𝔓.comap (algebraMap (ChartInc I t e) (ChartLoc I t e p)) with hPdef`. Use `set Q := P.comap (chartX I t e) with hQdef`. Establish `hzero : ∀ g ∈ I ⊔ Ideal.span {linForm t - 1}, chartX I t e g = 0` using `fun g hg => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))`. Establish `hLQ : linForm t - 1 ∈ Q` using `by show chartX I t e (linForm t - 1) ∈ P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hzero _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))]`. Conclude with `P.zero_mem`. Establish `hIQ : I ≤ Q` using `fun g hg => by show chartX I t e g ∈ P`. Rewrite using `[hzero g (Ideal.mem_sup_left hg)]`. Conclude with `P.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `huQ : linForm u ∈ Q` using `hθ`. Take `⟨W, hWp, ht, hWQ, hWmax⟩` from `hH F n Q t inferInstance hLQ`. Establish `hJW : I ⊔ Ideal.span {linForm u} ≤ W` using `hWmax _ (isHomogIdeal_sup_span_linForm hI.isHomog u) (sup_le hIQ (by rw [Ideal.span_le, Set.singleton_subset_iff]; exact huQ))`. Establish `hIW : I ≤ W` using `le_sup_left.trans hJW`. Establish `hPW : W.map (chartX I t e) ≤ P` using `Ideal.map_le_iff_le_comap.mpr (le_sup_left.trans hWQ.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPp : P.comap (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) ≤ p`. Introduce `s hs`. Assume the negation of the conclusion as `hsp`. Establish `hunit : IsUnit (algebraMap (ChartInc I t e) (ChartLoc I t e p) (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e) s))` using `IsLocalization.map_units (ChartLoc I t e p) (⟨_, s, hsp, rfl⟩ : Algebra.algebraMapSubmonoid (ChartInc I t e) p.primeCompl)`. Conclude with `hmax.ne_top (Ideal.eq_top_of_isUnit_mem _ hs hunit)`.
-
-Establish `hincle : incIdeal W e ≤ Ideal.span {q}`. Rewrite using `[← hp, ← h₉ F n e W t hWp ht, ← comap_algebraMap_map hIW t]`. Conclude with `(Ideal.comap_mono hPW).trans hPp`. Take `⟨hrel, hinc⟩` from `hC F n e I W u q hI hdim hu hWp hJW hq hincle`. Use `⟨W, ⟨(hsupp W).mpr ⟨hrel, localMult_ne_zero_of_mem_minimalPrimes hrel.1⟩, hinc.symm⟩, ?_⟩` and prove the remaining obligations.
-
-Establish `hmaxW` using `(key W hWp ht hIW (hinc.trans hp.symm)).1`. Establish `hle : chartIdeal I t e p W ≤ 𝔓`. Rewrite using `[chartIdeal, Ideal.map_le_iff_le_comap]`. Conclude with `hPW`. Conclude with `hmaxW.eq_of_le hmax.ne_top hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartMaxIdeals.proof (h₁ : ConeDimOfChowForm.Statement) (h₂ : ConeDimComponent.Statement)
     (h₆ : SpecFirstMemIncIdeal.Statement) (h₇ : ChartFinite.Statement) (h₈ : ChartIncDomain.Statement)

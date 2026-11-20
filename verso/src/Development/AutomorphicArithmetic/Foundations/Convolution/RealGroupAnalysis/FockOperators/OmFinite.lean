@@ -7,17 +7,17 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ C hC`. Take `⟨pi, pf, hpf, hp⟩` from `UpperTheory.ConvolutionTheory.R2.Fo.proj F`. Establish `hU : ∀ k₀ ∈ C, {k | W.Om (pf k) φ = W.Om (pf k₀) φ} ∈ 𝓝 k₀`. Introduce `k₀ _`. Establish `hc : Continuous fun k : G1 F => pf (k₀⁻¹ * k)` using `hpf.comp (continuous_const.mul continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun k : G1 F => pf (k₀⁻¹ * k)) (𝓝 k₀) (𝓝 1)`. Establish `h` using `hc.tendsto k₀`. Simplify using `using h`. Use `filter_upwards [h1.eventually (W.level φ)] with k hk`. Establish `h2` using `hk (hp _).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : pf k = pf k₀ * pf (k₀⁻¹ * k)` using `by rw [← map_mul, mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `W.Om (pf k) φ = W.Om (pf k₀) φ`. Rewrite using `[h3, map_mul, Module.End.mul_apply, h2]`. Take `⟨t, -, hcov⟩` from `hC.elim_nhds_subcover _ hU`. Use `⟨pf '' (t : Set (G1 F)), t.finite_toSet.image _, ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `(hp k).2.1`. Introduce `k hk`. Take `⟨k₀, hk₀, hkk⟩` from `Set.mem_iUnion₂.1 (hcov hk)`. Use `⟨pf k₀, ⟨k₀, hk₀, rfl⟩, pi k, (hp k).1, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ho i j`. Establish `e : ∀ a b, ((pi k).1 a b).1 = (k.1 a b).1` using `(hp k).2.2.2.1`. Establish `key : (((pi k).1 * (pi k).1ᵀ) i j).1 = ((k.1 * k.1ᵀ) i j).1`. Establish `hadd : ∀ a b c d : A F, (a * b + c * d).1 = a.1 * b.1 + c.1 * d.1` using `fun _ _ _ _ => rfl`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hadd, hadd, e i 0, e j 0, e i 1, e j 1]`. Conclude with `key.trans (ho i j)`. Establish `h4 : W.Om k = W.Om (pi k) * W.Om (pf k)` using `by rw [← map_mul, (hp k).2.2.1]`. Rewrite using `[h4, Module.End.mul_apply]`. Conclude with `congrArg _ hkk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.omFinite :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (φ : S4 F) (C : Set (G1 F)), IsCompact C → ∃ s : Set (G1 F), s.Finite ∧ (∀ g ∈ s, InfOne g) ∧

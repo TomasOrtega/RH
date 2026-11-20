@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CechOne
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem widePullbackCone_congr {X Y W : Scheme.{0}} {n : ℕ} (f : Y ⟶ X) (b : W ⟶ X)
     (π π' : Fin n → (W ⟶ Y)) (h : ∀ i, π i ≫ f = b) (h' : ∀ i, π' i ≫ f = b) (e : π = π')
@@ -27,9 +27,9 @@ def l3 : Fin (2 + 1) → (B →+* B ⊗[A] (B ⊗[A] B)) :=
         (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B)).toRingHom]
 
 /- English proof (translation)
-Introduce `i`. Apply the tactic sequence `fin_cases i <;>`. Simplify using `only [l3, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons]`. Rewrite using `[AlgHom.toRingHom_eq_coe]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact AlgHom.comp_algebraMap _`. Consider the case `exact AlgHom.comp_algebraMap (_ : B →ₐ[A] B ⊗[A] (B ⊗[A] B))`. Consider the case `(ext a; simp [Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.one_def])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem triple_tensor_inclusion_comp_algebraMap : ∀ i, (l3 A B i).comp (algebraMap A B) = algebraMap A (B ⊗[A] (B ⊗[A] B)) := by
   intro i
@@ -42,18 +42,18 @@ theorem triple_tensor_inclusion_comp_algebraMap : ∀ i, (l3 A B i).comp (algebr
     | (ext a; simp [Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.one_def])
 
 /- English proof (translation)
-Simplify using `[l3, Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_tmul_eq (x y z : B) :
     x ⊗ₜ[A] (y ⊗ₜ[A] z) = l3 A B 0 x * l3 A B 1 y * l3 A B 2 z := by
   simp [l3, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Consider the case `tmul x s`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add p q hp hq => rw [TensorProduct.tmul_add, map_add, map_add, hp, hq]`. Consider the case `tmul y z`. Rewrite using `[tmul_tmul_eq, map_mul, map_mul, map_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `RingHom.congr_fun (h 0) x`. Establish `h1` using `RingHom.congr_fun (h 1) y`. Establish `h2` using `RingHom.congr_fun (h 2) z`. Simplify using `only [RingHom.comp_apply] at h0 h1 h2`. Rewrite using `[h0, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem triple_tensor_ring_hom_ext {T : Type} [CommRing T] (v w : B ⊗[A] (B ⊗[A] B) →+* T)
     (h : ∀ i, v.comp (l3 A B i) = w.comp (l3 A B i)) : v = w := by
@@ -74,13 +74,13 @@ theorem triple_tensor_ring_hom_ext {T : Type} [CommRing T] (v w : B ⊗[A] (B �
       rw [h0, h1, h2]
 
 /- English proof (translation)
-Use `letI : Algebra A T := c.toAlgebra`. Set `G : Fin (2 + 1) → (B →ₐ[A] T)` to `fun i => { g i with commutes' := fun a => by`. Use `RingHom.congr_fun (hg i) a` as an intermediate fact. Simplify `this }` using `[RingHom.algebraMap_toAlgebra]`. Set `inner : B ⊗[A] B →ₐ[A] T` to `Algebra.TensorProduct.lift (G 1) (G 2) (fun _ _ => Commute.all _ _)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `U : B ⊗[A] (B ⊗[A] B) →ₐ[A] T` to `Algebra.TensorProduct.lift (G 0) inner (fun _ _ => Commute.all _ _)`. Establish `hU : ∀ i, U.toRingHom.comp (l3 A B i) = g i`. Introduce `i`. Apply the tactic sequence `fin_cases i <;>`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Simplify using `[l3, U, inner, G]`. Use `⟨U.toRingHom, ⟨?_, hU⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce and unpack `u ⟨-, hu⟩`. Conclude with `triple_tensor_ring_hom_ext A B _ _ (fun i => (hu i).trans (hU i).symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tensor3_univ (T : Type) [CommRing T] (g : Fin (2 + 1) → (B →+* T)) (c : A →+* T)
     (hg : ∀ i, (g i).comp (algebraMap A B) = c) :
@@ -106,7 +106,7 @@ theorem tensor3_univ (T : Type) [CommRing T] (g : Fin (2 + 1) → (B →+* T)) (
     exact triple_tensor_ring_hom_ext A B _ _ (fun i => (hu i).trans (hU i).symm)
 
 /- English proof (translation)
-Introduce `A B _ _ _`. Establish `H` using `GlobalTheory.spec_widePushout_isLimit (2 + 1) A B (B ⊗[A] (B ⊗[A] B)) (algebraMap A B) (algebraMap A _) (l3 A B) (triple_tensor_inclusion_comp_algebraMap A B) (fun T _ g c hg => tensor3_univ A B T g c hg)`. Use `widePullbackCone_congr _ _ _ _ _ _ ?_ H` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spec_tensor3_isLimit : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B],
     Nonempty (IsLimit (WidePullbackCone.mk (f := fun _ : Fin (2 + 1) => GlobalTheory.CechOne.fB A B)

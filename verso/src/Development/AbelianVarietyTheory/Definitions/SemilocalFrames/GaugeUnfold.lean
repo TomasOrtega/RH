@@ -49,12 +49,12 @@ def GaugeUnfold : Prop :=
         gaugeVol I' c' μf' * ENNReal.ofReal (2 ^ (I.n * I.f) * ∏ v, gaussDens (I.ε v) (sgn ℝ s))
 
 /- English proof (translation)
-The claim follows from `Real.exp_pos _`.
+A detailed English derivation is pending.
 -/
 theorem gauss_pos {n : ℕ} (y : Fin n → ℂ) : 0 < gauss y := Real.exp_pos _
 
 /- English proof (translation)
-Simplify using `[qEps]`.
+Simplify using the standard rewrite rules.
 -/
 example : qEps (fun _ : Fin 1 => true) (fun _ => 1) = 1 := by simp [qEps]
 

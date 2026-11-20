@@ -8,69 +8,63 @@ noncomputable section
 namespace PI.TwNormLat.W
 
 /- English proof (translation)
-Introduce `E _ _ _ P N c kj j hp hq h hB`. Establish `Madd : ∀ u v : Fin (N + c) → E, h⁻¹ u ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 → h⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 → h⁻¹ (u + v) ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0` using `fun u v hu hv => by rw [map_add]; exact add_mem hu hv`. Establish `Msmul : ∀ (t : E) (v : Fin (N + c) → E), IntAt P t → h⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 → h⁻¹ (t • v) ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0` using `fun t v ht hv => by`. Rewrite using `[map_smul, mem_lam]`. Rewrite `hv` using `[mem_lam]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `intAt_mul P ht (hv l)`. Establish `Mlam : ∀ v : Fin (N + c) → E, (∀ l, IntAt P (v l)) → h⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0` using `fun v hv => (hB v ((mem_lam P N c v).2 hv)).1`. Establish `Mbd : ∀ v : Fin (N + c) → E, h⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 → ∀ l, IntAt P (qE P ^ j * v l)` using `fun v hv l => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hB _ hv).2` as an intermediate fact. Rewrite `this` using `[LinearEquiv.coe_inv, LinearEquiv.apply_symm_apply, mem_lam]`. Simplify `this l` using `[smul_eq_mul]`. Take `⟨K, b, hKj, hbM, hbl, hUT, hrep⟩` from `herm P (fun v => h⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0) Madd Msmul Mlam hp hq j Mbd`. Establish `hq0` using `qE_ne_zero P hp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ l, b l l ≠ 0` using `fun l => by rw [hbl]; exact inv_ne_zero (pow_ne_zero _ hq0)`. Set `d : Fin (N + c) → E` to `fun l => if l.1 < N then 1 else qE P ^ K l`. Set `x1 : Fin (N + c) → E` to `if hN : N < N + c then d ⟨N, hN⟩ • b ⟨N, hN⟩ - Pi.single ⟨N, hN⟩ 1 else 0`. Establish `hx1M : h⁻¹ x1 ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0`. Distinguish the cases in `hN : N < N + c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [x1, dif_pos hN]`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul E (Pi.single _ _)]`. Use `Madd _ _ (Msmul _ _ ?_ (hbM _)) (Msmul _ _ (intAt_neg P (intAt_one P)) (Mlam _ fun k => ?_))` and prove the remaining obligations. Simplify using `only [d, lt_irrefl, if_false]`. Conclude with `intAt_pow P (intAt_natCast P _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : k = ⟨N, hN⟩`. Rewrite using `[hk]`. Simplify using `using intAt_one P`. Simplify `intAt_zero P` using `[Pi.single_apply, hk]`. Simplify using `only [x1, dif_neg hN, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Establish `hx1Z : Zab N x1`. Introduce `l hl`. Distinguish the cases in `hN : N < N + c`. Simplify using `only [x1, dif_pos hN, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.lt_or_eq_of_le hl with hlt | heq` into its components or cases. Rewrite using `[hUT _ l (by rw [Fin.lt_def]; exact hlt)]`. Establish `: l ≠ ⟨N, hN⟩` using `fun e => by rw [e] at hlt; exact lt_irrefl _ hlt`. Simplify using `[Pi.single_apply, this]`. Establish `: l = ⟨N, hN⟩` using `Fin.ext heq.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this, hbl]`. Simplify using `only [d, lt_irrefl, if_false, Pi.single_eq_same]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[x1, dif_neg hN]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨ζ, hζ, hx1ζ⟩` from `hrep x1 hx1M`. Establish `hζZ : Zab N ζ` using `comb_reflect hUT hbd ζ N (by rw [← hx1ζ]; exact hx1Z)`. Set `c' : Fin (N + c) → Fin (N + c) → E` to `fun l => d l • b l - (if l.1 = N then x1 else 0)`. Establish `hcUT : UT c'`. Introduce `l k hlk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [c', Pi.sub_apply, Pi.smul_apply, hUT l k hlk, smul_zero, zero_sub, neg_eq_zero]`. Use `split_ifs with h1`. Conclude with `hx1Z k (by rw [Fin.lt_def] at hlk; omega)`. Both sides reduce to the same expression. Establish `hc1 : ∀ l : Fin (N + c), N ≤ l.1 → c' l l = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Introduce `l hl`. Distinguish the cases in `h1 : l.1 = N`. Simplify using `only [c', if_pos h1, d, if_neg (not_lt.2 hl), Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hbl, hx1Z l hl]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try simp`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c', if_neg h1, d, if_neg (not_lt.2 hl), Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hbl, Pi.zero_apply, sub_zero]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try simp`. Establish `hcd : ∀ l, c' l l ≠ 0`. Introduce `l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : N ≤ l.1`. Rewrite using `[hc1 l hl]`. Conclude with `one_ne_zero`. Establish `h1 : l.1 ≠ N` using `by omega`. Simplify using `only [c', if_neg h1, d, if_pos (not_le.1 hl), Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hbl, Pi.zero_apply, sub_zero, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_ne_zero (pow_ne_zero _ hq0)`. Establish `hca : ∀ hN : N < N + c, c' ⟨N, hN⟩ = Pi.single ⟨N, hN⟩ 1`. Introduce `hN`. Use `show d _ • b _ - (if N = N then x1 else 0) = _`. Rewrite using `[if_pos rfl]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [x1, dif_pos hN]`. Conclude with `sub_sub_cancel _ _`. Establish `hr : (combE hcUT hcd)⁻¹ ∈ Loc.R1 E N c` using `combinationEquiv_inv_mem_unipotentFlagGroup hcUT hcd hc1 hca`. Use `⟨(combE hcUT hcd)⁻¹, hr, 1, Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ v, ((combE hcUT hcd)⁻¹ * h * 1)⁻¹ v = h⁻¹ (combE hcUT hcd v)` using `fun v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, mul_inv_rev, inv_inv]`. Both sides reduce to the same expression. Set `u : (Fin (N + c) → E) → Fin (N + c) → E` to `fun v l => v l * d l - Loc.atN v N * ζ l`. Establish `hsv : ∀ v, combE hcUT hcd v = ∑ l, u v l • b l`. Introduce `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[combE_apply]`. Establish `e1 : ∀ l, v l • c' l = (v l * d l) • b l - v l • (if l.1 = N then x1 else 0)` using `fun l => by`. Simplify using `only [c', smul_sub, smul_smul]`. Establish `e2 : ∑ l, v l • (if l.1 = N then x1 else 0) = Loc.atN v N • x1`. Distinguish the cases in `hN : N < N + c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single ⟨N, hN⟩]`. Simplify using `[Loc.atN, hN]`. Introduce `l _ hl`. Establish `: l.1 ≠ N` using `fun e => hl (Fin.ext e)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Establish `hz : Loc.atN v N = 0` using `by simp [Loc.atN, hN]`. Rewrite using `[hz, zero_smul]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: l.1 ≠ N` using `by have := l.2; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`. Rewrite using `[Finset.sum_congr rfl (fun l _ => e1 l), Finset.sum_sub_distrib, e2, hx1ζ, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← sub_smul]`. Set `n : ℕ → ℤ` to `fun i => if hi : i < c then -(K (Fin.natAdd N ⟨i, hi⟩) : ℤ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `z : Sp E N` to `fun l => ζ (Fin.castAdd c l)`. Establish `hu1 : ∀ v (l : Fin N), u v (Fin.castAdd c l) = v (Fin.castAdd c l) - Loc.atN v N * z l`. Introduce `v l`. Simplify using `only [u, d, z]`. Rewrite using `[if_pos (show (Fin.castAdd c l).1 < N from l.2), mul_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hu2 : ∀ v (i : Fin c), u v (Fin.natAdd N i) = (qE P ^ (n i.1))⁻¹ * v (Fin.natAdd N i)`. Introduce `v i`. Simplify using `only [u, d, n]`. Rewrite using `[if_neg (show ¬ (Fin.natAdd N i).1 < N by simp), hζZ _ (by simp), dif_pos i.2, zpow_neg, inv_inv, zpow_natCast, mul_zero, sub_zero, mul_comm]`. Establish `hU : ∀ v, (∀ l, IntAt P (u v l)) ↔ Crit P N c n z v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun l => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `H (Fin.castAdd c l)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `this` using `[hu1]`. Then use the resulting hypothesis. Use `H (Fin.natAdd N i)` as an intermediate fact. Rewrite `this` using `[hu2]`. Then use the resulting hypothesis. Introduce `H l`. Break down `fin_split l with ⟨l', rfl⟩ | ⟨i, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hu1]`. Conclude with `H.1 l'`. Rewrite using `[hu2]`. Conclude with `H.2 i`. Establish `hcrit : ∀ v, ((combE hcUT hcd)⁻¹ * h * 1)⁻¹ v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 ↔ Crit P N c n z v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `v`. Rewrite using `[hinv, hsv, ← hU]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨w, hw, hwe⟩` from `hrep _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz0 : Zab 0 (u v - w)`. Apply `comb_reflect hUT hbd _ 0` to reduce the goal to its premises. Establish `: ∑ l, (u v - w) l • b l = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hwe, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Introduce `_ _`. Both sides reduce to the same expression. Introduce `l`. Use `hz0 l (Nat.zero_le _)` as an intermediate fact.
-
-Rewrite `this` using `[Pi.sub_apply, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `hw l`. Introduce `H`. Conclude with `comb_mem P _ Madd Msmul Mlam b hbM _ H`.
-
-Establish `hn : ∀ i, -(j : ℤ) ≤ n i ∧ n i ≤ 0`. Introduce `i`. Simplify using `only [n]`. Use `split_ifs with hi`. Apply the tactic sequence `have := hKj (Fin.natAdd N ⟨i, hi⟩); constructor <;> omega`.
-
-Apply the tactic sequence `constructor <;> omega`. Establish `hz : z ∈ stdAt E N P` using `(mem_stdAt P z).2 fun l => hζ _`. Conclude with `⟨bdd_of_nf P hp _ n z hn hz hcrit, ⟨n, z, hn, hz, hcrit⟩, prX_le_of_nf P kj _ n z hcrit⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twNormLat_main : PI.TwNormLat.TwNormLat := by
   intro E _ _ _ P N c kj j hp hq h hB

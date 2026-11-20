@@ -17,7 +17,7 @@ namespace ExtInhabitants
 def c0 : Fin (flatAtlas 1).n := ⟨0, Nat.one_pos⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [piece, mem_ofPred_eq, mem_univ, iff_true]`. Conclude with `⟨by simp, fun k hk => absurd hk (by simp [c0, Fin.lt_def])⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem piece_flat : piece (flatAtlas 1) c0 = univ := by
   ext y
@@ -25,7 +25,7 @@ theorem piece_flat : piece (flatAtlas 1) c0 = univ := by
   exact ⟨by simp, fun k hk => absurd hk (by simp [c0, Fin.lt_def])⟩
 
 /- English proof (translation)
-Unfold `chartIntegral`. Rewrite using `[Fintype.sum_subsingleton _ c0, piece_flat, Measure.restrict_univ]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chartIntegral_flat (f : Fin (flatAtlas 1).n → (Fin 1 → ℂ) → ℝ≥0∞) :
     chartIntegral (flatAtlas 1) f = ∫⁻ y, f c0 y := by
@@ -34,9 +34,9 @@ theorem chartIntegral_flat (f : Fin (flatAtlas 1).n → (Fin 1 → ℂ) → ℝ�
   simp
 
 /- English proof (translation)
-Establish `he : ∑ k : Fin 2, ‖exE k c0 y‖ ^ 2 = 1 + ‖y 0‖ ^ 2`. Simplify using `[exE, Fin.sum_univ_two]`. Establish `he₂ : ∑ k : Fin 1, ‖exE₂ k c0 y‖ ^ 2 = 1` using `by simp [exE₂]`. Simplify using `only [EmbDatum.wt, fsWeight]`. Express the relevant statement in the definitionally equal form `Real.exp (-(Real.log (∑ k : Fin 1, ‖exE₂ k c0 y‖ ^ 2) + (m : ℝ) * Real.log (∑ k : Fin 2, ‖exE k c0 y‖ ^ 2))) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[he, he₂, Real.log_one, zero_add, Real.exp_neg, Real.exp_nat_mul, Real.exp_log (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_wt (m : ℕ) (y : Fin 1 → ℂ) :
     Real.exp (-exEmb.wt m c0 y) = ((1 + ‖y 0‖ ^ 2) ^ m)⁻¹ := by
@@ -50,22 +50,22 @@ theorem exp_neg_wt (m : ℕ) (y : Fin 1 → ℂ) :
     Real.exp_log (by positivity)]
 
 /- English proof (translation)
-Use polynomial arithmetic with `[sq_nonneg (t - 1 / 2), sq_nonneg (t ^ 2 - t), sq_nonneg t, mul_nonneg ht (sq_nonneg t), mul_nonneg ht (sq_nonneg (t - 1))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_pow_three_le (t : ℝ) (ht : 0 ≤ t) : (1 + t) ^ 3 ≤ 4 * (1 + t ^ 2) ^ 2 := by
   nlinarith [sq_nonneg (t - 1 / 2), sq_nonneg (t ^ 2 - t), sq_nonneg t, mul_nonneg ht (sq_nonneg t),
     mul_nonneg ht (sq_nonneg (t - 1))]
 
 /- English proof (translation)
-Establish `hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `hI` using `finite_integral_one_add_norm (E := Fin 1 → ℂ) (μ := volume) hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hpt : ∀ y : Fin 1 → ℂ, ENNReal.ofReal (c * ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹) ≤ ENNReal.ofReal (4 * |c|) * ENNReal.ofReal ((1 + ‖y‖) ^ (-(3 : ℝ)))`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hy : ‖y‖ ≤ ‖y 0‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Establish `hr : (1 + ‖y‖) ^ (-(3 : ℝ)) = ((1 + ‖y‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[hr]`. Establish `he : ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹ ≤ 4 * ((1 + ‖y 0‖) ^ 3)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Combine the linear relations using `[one_add_pow_three_le ‖y 0‖ (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hmono : ((1 + ‖y 0‖) ^ 3)⁻¹ ≤ ((1 + ‖y‖) ^ 3)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_inv_one_add_sq_sq_lt_top (c : ℝ) :
     ∫⁻ y : Fin 1 → ℂ, ENNReal.ofReal (c * ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹) < ⊤ := by
@@ -110,7 +110,7 @@ end ExtInhabitants
 open ExtInhabitants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exEmb, exZ, le_rfl, le_rfl, ⟨0, by change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) rw [exZero]; rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem extDelta_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤ 2 ∧ Z.S.Nonempty :=
   ⟨exEmb, exZ, le_rfl, le_rfl, ⟨0, by
@@ -118,9 +118,9 @@ theorem extDelta_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤
     rw [exZero]; rfl⟩⟩
 
 /- English proof (translation)
-Establish `hfin : topNormSq exEmb.A (exEmb.wt 2) exOne < ⊤`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`. Rewrite using `[chartIntegral_flat]`. Simplify using `only [exOne, norm_one, one_pow, mul_one]`. Simplify using `only [exp_neg_wt]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `using lintegral_inv_one_add_sq_sq_lt_top 2`. Use `⟨fun _ => exOne, (topNormSq exEmb.A (exEmb.wt 2) exOne).toReal, fun _ => mem_topSections_flat 2 (fun _ => 1) analyticOnNhd_const, fun _ => (ENNReal.ofReal_toReal hfin.ne).ge, fun h => ?_⟩` and prove the remaining obligations. Use `congr_fun (congr_fun h c0) 0` as an intermediate fact. Simplify using `[exOne] at this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem topSecCompact_hyp : ∃ (F : ℕ → Fin exEmb.A.n → exEmb.U → ℂ) (C : ℝ),
     (∀ n, F n ∈ topSections exEmb.A exEmb.L₂ exEmb.L 2) ∧
@@ -138,21 +138,21 @@ theorem topSecCompact_hyp : ∃ (F : ℕ → Fin exEmb.A.n → exEmb.U → ℂ) 
   simp [exOne] at this
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun k l x _ => by simp [exZdz, jac_flat, trivLB], ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_apply 0).continuousOn`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`. Rewrite using `[chartIntegral_flat]`. Use `lt_of_le_of_lt (lintegral_mono fun y => ?_) (lintegral_inv_one_add_sq_sq_lt_top 2)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hev : extEv exZ c0 y = ‖y 0‖ ^ 2 * (1 + ‖y 0‖ ^ 2)⁻¹`. Establish `hs : ∑ i : Fin 1, ‖exZ.s i c0 y‖ ^ 2 = ‖y 0‖ ^ 2`. Simplify using `[ZeroDatum.s, exS_apply]`. Establish `he : fsWeight exE c0 y = Real.log (1 + ‖y 0‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[fsWeight, exE, Fin.sum_univ_two]`. Establish `hr : rSq exZ.c = 1`. Simplify using `[rSq, exC, Fin.sum_univ_two]`. Unfold `extEv`. Rewrite using `[hs, he, hr, Real.exp_neg, Real.exp_log (by positivity), div_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : Real.exp (-exEmb.wt 3 c0 y) = ((1 + ‖y 0‖ ^ 2) ^ 3)⁻¹` using `exp_neg_wt 3 y`. Establish `ha0 : 0 ≤ ‖y 0‖ ^ 2` using `by positivity`. Simplify using `only [exZdz, hw, hev]`. Unfold `extFactor`. Rewrite using `[zero_pow two_ne_zero, add_zero, pow_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `‖y 0‖ ^ 2 = a at ha0 ⊢`. Break down `ha0.lt_or_eq with hapos | ha0'` into its components or cases. Establish `hden : 1 ≤ extDen 1 (a * (1 + a)⁻¹)`. Establish `ht1 : a * (1 + a)⁻¹ ≤ 1`. Rewrite using `[← div_eq_mul_inv, div_le_one (by positivity)]; linarith`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : 1 ≤ extX 1 (a * (1 + a)⁻¹)`. Unfold `extX`. Establish `: Real.log (a * (1 + a)⁻¹ + 1 ^ 2) ≤ Real.log (1 + 1 ^ 2)` using `Real.log_le_log (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `extDen curvEta`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `Real.log_nonneg hx` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hne : (1 + a) ≠ 0` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ha0']`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `congr_fun (congr_fun h c0) (fun _ => 1)` as an intermediate fact. Simplify using `[exZdz] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extNonInt_hyp :
     (∀ k, ContinuousOn (exZdz k ∘ (exEmb.A.chart k).symm) (exEmb.A.chart k).target) ∧

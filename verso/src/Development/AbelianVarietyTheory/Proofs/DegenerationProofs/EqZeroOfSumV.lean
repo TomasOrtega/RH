@@ -16,9 +16,9 @@ namespace GlobalTheory.ZH.TorsionUnit
 open GlobalTheory.TorusExt
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h q`. Establish `a` using `v.map_le_add (hS (insert i₀ S) (Finset.subset_insert _ _)) (v.map_le_sum (s := (insert i₀ S).erase i₀) (f := x) fun i hi => hq i (Finset.ne_of_mem_erase hi))`. Establish `e : s = x i₀ + (s - ∑ i ∈ insert i₀ S, x i + ∑ i ∈ (insert i₀ S).erase i₀, x i)`. Rewrite using `[← Finset.add_sum_erase _ x (Finset.mem_insert_self i₀ S)]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `lt : v (x i₀) < v (s - ∑ i ∈ insert i₀ S, x i + ∑ i ∈ (insert i₀ S).erase i₀, x i)`. Rewrite using `[h₀]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast q0) a`. Rewrite using `[e, v.map_add_eq_of_lt_left lt, h₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sumV {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix : Type} {x : Ix → F} {s : F}
     (h : SumV v x s) {q : ℚ} (q0 : 0 < q) (i₀ : Ix) (h₀ : v (x i₀) = 0)
@@ -37,19 +37,19 @@ theorem eq_zero_of_sumV {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} 
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Introduce `hL h₁ h₂ h₃ h₄ V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th ϑ hE hP k hk hu`. Establish `hB` using `D.tau_bimult`. Establish `k1 : 1 ≤ k` using `by omega`. Take `⟨h, o, g₂, ho, hh, hg₂, hv₂⟩` from `GlobalTheory.UT.ExactTerm.exact_term_after_torsion hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv ϑ hP k hk hu 0 0`. Rewrite `ho` using `[isZero_iff_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[isNsmul_iff_eq]`. Rewrite `hg₂` using `[isAdd_iff_eq, zero_add]`. Substitute `hg₂` using the available equality. Establish `z : k • g₂ = iota hB F 0` using `by rw [map_zero, ← hh, ho]`. Use `⟨qkMk hB 0 g₂ z, rfl, fun x hx e he c hval => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w₁, hw₁, hv₁, hsum⟩` from `GlobalTheory.T.section_value_at_torsionPoint_eq_sum_terms hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN k k1 _ x hx e he`. Establish `hS : SumV v (coef ϑ g₂ w₁) c` using `hsum 1 le_rfl w₁ ⟨hw₁, fun z J _ => (pow_one _).symm⟩ th ϑ c hE hval`. Take `⟨-, -, -, -, hqk, -, hterm⟩` from `GlobalTheory.UT.CoefVal.main hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv g₂`. Establish `hl` using `hqk k k1 (qkMk hB 0 g₂ z)`. Establish `q0 : Q 0 = 0` using `QForm.Q_zero hϖ D hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b0 : ∀ χ, QForm.bOf D.toPre Q 0 χ = 0` using `fun χ => by`. Rewrite using `[QForm.bOf, zero_add, q0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv₁ : GenV hϖ hv w₁ 0`. Establish `e0 : ((Q (qkMk hB 0 g₂ z).y : ℚ) / (k : ℚ) ^ 2) = 0` using `by rw [qkMk_y, q0]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv₁` using `[e0]`. Then use the resulting hypothesis. Establish `hl : GtV hϖ hv g₂ fun _ => 0`. Introduce `χ`. Establish `a` using `hl χ`. Establish `e0 : ((QForm.bOf D.toPre Q (qkMk hB 0 g₂ z).y χ : ℚ) / (k : ℚ)) = 0` using `by rw [qkMk_y, b0]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e0] at a`. Conclude with `a`. Use `eq_zero_of_sumV hS one_pos 0 ?_ fun χ hχ => ?_` and prove the remaining obligations. Rewrite using `[hv₂ w₁ _ _ hw₁ hl hv₁, q0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (WithTop.coe_le_coe.2 ?_) ((hterm 1 le_rfl w₁ ϑ hw₁).2 _ 0 0 hl hv₁ hP.1 χ)` and prove the remaining obligations. Establish `b : (1 : ℚ) ≤ (Q χ : ℚ)` using `by exact_mod_cast QForm.Q_pos hϖ D hQ hχ`. Simplify using `using b`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unit_value : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (th₀ : SecA A F 1) (ϑ : Fam D.toPre F 1), U.ExpandsF F 1 w₀ th₀ ϑ → Prim D Q v ϑ → ∀ (k : ℕ), 2 ≤ k → IsUnit (k : V) → ∃ pk : QkPt D.toPre F k, pk.y = 0 ∧ ∀ x, QkToAkU U.toUnifPre F k pk x → ∀ e : FrAt x, IsTorsFrame A ρ k x e → ∀ c : F, ValAt th₀ x e c → v c = 0 := by
   intro hL h₁ h₂ h₃ h₄ V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th ϑ hE hP k hk hu

@@ -9,13 +9,13 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 open MeasureTheory Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j'`. Simplify using `[blkM, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `h : ¬Fin.castAdd 1 i' = Fin.natAdd n j'`. Rewrite using `[Fin.ext_iff]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[blkM, Matrix.one_apply, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `h : ¬Fin.natAdd n i' = Fin.castAdd 1 j'`. Rewrite using `[Fin.ext_iff]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[blkM, Matrix.one_apply, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Take `rfl` from `Subsingleton.elim i' j'`. Simplify using `[blkM]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem one_add_I_blkM_eq {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ) :
     (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) + Complex.I • blkM b u d =
@@ -38,13 +38,13 @@ theorem one_add_I_blkM_eq {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n 
     simp [blkM]
 
 /- English proof (translation)
-Rewrite using `[one_add_I_blkM_eq, Matrix.det_reindex_self]`. Use `set D : Matrix (Fin n) (Fin n) ℂ := 1 + Complex.I • b with hD`. Use `set u : Fin n → ℂ := D *ᵥ v with hu`. Establish `hcol : D * Matrix.replicateCol (Fin 1) v = Matrix.replicateCol (Fin 1) u`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hu, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hmul : Matrix.fromBlocks D (Complex.I • Matrix.replicateCol (Fin 1) u) (Complex.I • Matrix.replicateRow (Fin 1) (star u)) (Matrix.of fun _ _ => 1 + Complex.I * (d : ℂ)) * Matrix.fromBlocks 1 (-Complex.I • Matrix.replicateCol (Fin 1) v) 0 (1 : Matrix (Fin 1) (Fin 1) ℂ) = Matrix.fr …`. Rewrite using `[Matrix.fromBlocks_multiply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_smul, hcol]`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Simplify using `[Matrix.mul_apply, dotProduct, Finset.mul_sum, mul_assoc, mul_left_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [← mul_assoc, hI, neg_mul, one_mul, Finset.sum_neg_distrib, neg_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet` using `congrArg Matrix.det hmul`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂]`. Simplify using `using hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_one_add_I_blkM {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (d : ℝ) :
     Matrix.det (1 + Complex.I • blkM b ((1 + Complex.I • b) *ᵥ v) d) =
@@ -79,7 +79,7 @@ theorem det_one_add_I_blkM {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (v : Fin n
   simpa using hdet
 
 /- English proof (translation)
-Establish `h : star (star v ⬝ᵥ (b *ᵥ v)) = star v ⬝ᵥ (b *ᵥ v)`. Rewrite using `[← Matrix.star_dotProduct, Matrix.star_mulVec, hb.eq, Matrix.dotProduct_mulVec]`. Conclude with `Complex.conj_eq_iff_re.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quad_real {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (v : Fin n → ℂ) :
     ((star v ⬝ᵥ (b *ᵥ v)).re : ℂ) = star v ⬝ᵥ (b *ᵥ v) := by
@@ -88,9 +88,9 @@ theorem quad_real {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian
   exact Complex.conj_eq_iff_re.1 h
 
 /- English proof (translation)
-Rewrite using `[quad_real hb, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Establish `hH : (1 + Complex.I • b)ᴴ = 1 - Complex.I • b`. Simplify using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hb.eq, sub_eq_add_neg]`. Rewrite using `[hH, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[dotProduct, Complex.normSq_eq_conj_mul_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec_dot {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian)
     (v : Fin n → ℂ) :
@@ -105,9 +105,7 @@ theorem star_mulVec_dot {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHer
   simp [dotProduct, Complex.normSq_eq_conj_mul_self]
 
 /- English proof (translation)
-Rewrite using `[det_one_add_I_blkM, map_mul, star_mulVec_dot hb]`. Use `congr 1`. Use `set r : ℝ := ∑ i, Complex.normSq (v i)`. Use `set m : ℝ := (star v ⬝ᵥ (b *ᵥ v)).re`. Establish `: (1 + Complex.I * (d : ℂ) + ((r : ℂ) - Complex.I * (m : ℂ))) = (((1 + r : ℝ) : ℂ)) + (((d - m : ℝ) : ℂ)) * Complex.I` using `by push_cast; ring`.
-
-Rewrite using `[this, Complex.normSq_add_mul_I]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_det_one_add_I_blkM (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian)
     (_hdet : Matrix.det (1 + Complex.I • b) ≠ 0) (v : Fin n → ℂ) (d : ℝ) :

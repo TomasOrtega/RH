@@ -5,9 +5,9 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `φ : S ⊗[B] M ≃ₗ[B] (Module.Free.ChooseBasisIndex B S →₀ M)` to `(TensorProduct.congr (Module.Free.chooseBasis B S).repr (LinearEquiv.refl B M)).trans (TensorProduct.finsuppScalarLeft B M _)`. Establish `key : ∀ (a : Λ) (x : X), φ (e (a • x)) = a • φ (e x)`. Introduce `a x`. Rewrite using `[he, algebraMap_smul, map_smul]`. Use extensionality with `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Finsupp.smul_apply, hl]`. Set `ψ : X ≃ₗ[Λ] (Module.Free.ChooseBasisIndex B S →₀ M)` to `{ toFun := fun x => φ (e x) invFun := fun f => e.symm (φ.symm f) map_add' := fun x y => by simp map_smul' := key left_inv := fun x => by simp right_inv := fun f => by simp }`. Conclude with `⟨Module.Free.of_equiv ψ.symm, Module.Finite.equiv ψ.symm⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem tens_free {Λ B S M X : Type} [CommRing Λ] [CommRing B] [CommRing S] [Algebra B S]
     [AddCommGroup M] [Module B M] [Module Λ M] [Module.Free B S] [Module.Finite B S]
@@ -34,11 +34,9 @@ private theorem tens_free {Λ B S M X : Type} [CommRing Λ] [CommRing B] [CommRi
   exact ⟨Module.Free.of_equiv ψ.symm, Module.Finite.equiv ψ.symm⟩
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m hT`. Take `⟨⟨hco, hfree, hfin, -⟩, -⟩` from `spoCo l L G0 T Λ n O r B u J D A hT`. Use `haveI := A.b.free`. Use `haveI := A.b.fin`. Use `haveI := hfree`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hfin`. Establish `hs : ∀ (t : W.R) (x : X0 m), t • x = m.π t • x` using `fun _ _ => rfl`. Take `⟨h1, h2⟩` from `tens_free (Λ := abelian₂ O Unit D) (X := X0 m) A.b.lam A.b.smul_lam (AddEquiv.refl _) (fun a x => X0.lam_smul_def m a x)`. Use `⟨h1, h2, fun a x => ?_, fun p x => ?_⟩` and prove the remaining obligations. Rewrite using `[X0.lam_smul_def, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hs, m.π_s, MvPowerSeries.constantCoeff_C]`.
-
-Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hs, m.π_s, MvPowerSeries.constantCoeff_X, map_zero, map_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.patchedModule_free_finite_over_iwasawaAlgebra :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W), Adapted T (r := r) → Module.Free (abelian₂ O Unit D) (X0 m) ∧ Module.Finite (abelian₂ O Unit D) (X0 m) ∧ (∀ (a : abelian₂ O Unit D) (x : X0 m), a • x = m.s.toRingHom (MvPowerSeries.C a) • x) ∧ ∀ p (x : X0 m), m.s.toRingHom (MvPowerSeries.X p) • x = 0 := by

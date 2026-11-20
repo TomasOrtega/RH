@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D V θ c hθ hc τ f v`. Use `letI := c.nW`. Use `letI := c.iW`. Use `haveI := c.fW`. Establish `h1 : Continuous fun h : GA D V => c.ρ h v` using `hc.2.2.1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : Continuous (fun h : GA D V => h⁻¹)` using `continuous_inv`. Establish `hf : Continuous f` using `LinearMap.continuous_of_finiteDimensional f`. Conclude with `(hf.comp (h1.comp hinv)).comp_continuousOn (GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coefA_dual_coef_continuousOn :
     ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V), IsInfFam θ → c.Is → ∀ (τ : D.what₂.Tau) (f : Module.Dual ℂ c.W) (v : c.W), ContinuousOn (fun g => f (c.ρ (atTau θ V τ g)⁻¹ v)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) := by

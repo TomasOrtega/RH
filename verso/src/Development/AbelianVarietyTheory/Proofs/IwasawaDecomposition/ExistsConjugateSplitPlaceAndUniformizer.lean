@@ -8,7 +8,7 @@ open Formalism.L2.Fam.NPC Formalism.L2.Fam.NPC.BaseC GlobalTheory.HeckeLocN
 namespace GlobalTheory.SplitExConj
 
 /- English proof (translation)
-Introduce `D` and use `GlobalTheory.SplitConjPlace.splitEx_all D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_splitPlace_conj_unif : ∀ (D : D7), (∀ v : PlE D.host, IsSplitPl D.host v → ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ) :=
   fun D => GlobalTheory.SplitConjPlace.splitEx_all D

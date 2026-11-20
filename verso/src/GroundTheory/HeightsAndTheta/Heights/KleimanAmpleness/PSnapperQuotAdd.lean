@@ -16,15 +16,15 @@ universe u v w
 namespace SnapperQuotientAdditivity
 
 /- English proof (translation)
-Establish `hB : ∀ i, (Module.finrank k (B i) : ℤ) = Module.finrank k (LinearMap.range (f i)) + Module.finrank k (LinearMap.range (g i))`. Introduce `i`. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (g i), LinearMap.exact_iff.1 (hfg i)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hC : ∀ i, (Module.finrank k (C i) : ℤ) = Module.finrank k (LinearMap.range (g i)) + Module.finrank k (LinearMap.range (δ i))`. Introduce `i`. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (δ i), LinearMap.exact_iff.1 (hgδ i)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA : ∀ i, (Module.finrank k (A (i + 1)) : ℤ) = Module.finrank k (LinearMap.range (δ i)) + Module.finrank k (LinearMap.range (f (i + 1)))`. Introduce `i`. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (f (i + 1)), LinearMap.exact_iff.1 (hδf i)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA0 : (Module.finrank k (A 0) : ℤ) = Module.finrank k (LinearMap.range (f 0))`. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (f 0), LinearMap.ker_eq_bot.2 h0, finrank_bot]`. Simplify using the standard rewrite rules. Proceed by induction on `M with`. Consider the case `zero => rw [Finset.sum_range_one, hA0, hB 0, hC 0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ M ih => rw [Finset.sum_range_succ, ih, hA M, hB (M + 1), hC (M + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem altSum_eq {k : Type u} [Field k] (A B C : ℕ → Type v)
     [∀ i, AddCommGroup (A i)] [∀ i, Module k (A i)] [∀ i, FiniteDimensional k (A i)]
@@ -64,19 +64,19 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type u} [CommRing R] (G : Cell U �
   [∀ I, AddCommGroup (G I)] [∀ I, Module R (G I)] (ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J)
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `[Cech.Cdeg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cdeg_top (i : ℕ) : Cech.Cdeg G (fun _ => (⊤ : Submodule R _)) i = ⊤ := by
   ext s; simp [Cech.Cdeg]
 
 /- English proof (translation)
-Rewrite using `[Cech.cocyDeg, cdeg_top, inf_top_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cocyDeg_top (i : ℕ) : Cech.cocyDeg G (fun _ => ⊤) ρ i = LinearMap.ker (Cech.d G ρ i) := by
   rw [Cech.cocyDeg, cdeg_top, inf_top_eq]
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => rfl`. Consider the case `succ i => rw [Cech.bdryDeg, Cech.bdry, cdeg_top, Submodule.map_top]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem bdryDeg_top (i : ℕ) : Cech.bdryDeg G (fun _ => ⊤) ρ i = Cech.bdry G ρ i := by
   cases i with
@@ -96,7 +96,7 @@ def hdegTopEquiv (i : ℕ) : Cech.Hdeg G (fun _ => ⊤) ρ i ≃ₗ[R] Cech.H G 
       rw [bdryDeg_top]; exact hz)
 
 /- English proof (translation)
-Establish `: Subsingleton (Cech.cocyDeg G deg ρ' i)` using `⟨fun a b => Subtype.ext (funext fun I => isEmptyElim I)⟩`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Cech.Hdeg_mk_surjective a`. Take `⟨z', rfl⟩` from `Cech.Hdeg_mk_surjective b`. Rewrite using `[Subsingleton.elim z z']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hdeg_subsingleton {R' : Type*} [CommRing R'] [∀ I, Module R' (G I)] (deg : ∀ I, Submodule R' (G I))
     (ρ' : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R'] G J) (i : ℕ) [IsEmpty (Cech.Idx U i)] :
@@ -111,7 +111,7 @@ theorem hdeg_subsingleton {R' : Type*} [CommRing R'] [∀ I, Module R' (G I)] (d
 end Top
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun I => by have h1 := Finset.card_le_card I.1.2.2 have h2 := Finset.card_le_univ (support x) have h3 := I.2 simp only [Fintype.card_fin] at h2 omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem idx_isEmpty {Ω : Type w} [Field Ω] {N : ℕ} (x : Fin (N + 1) → Ω) : IsEmpty (Cech.Idx (support x) (N + 1)) :=
   ⟨fun I => by
@@ -137,7 +137,7 @@ def quotPr (F₁ F₂ F₃ : SubSystem k x E) (h32 : ∀ I, F₃.sub I ≤ F₂.
   (SubSystem.quotSub F₁ F₃ I).mapQ (SubSystem.quotSub F₁ F₂ I) LinearMap.id (by intro _ hy; exact h32 I hy)
 
 /- English proof (translation)
-The claim follows from `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem quotRes_comp (F₁ F₂ : SubSystem k x E) (I J K : Chart x) (hIJ : I.1 ⊆ J.1) (hJK : J.1 ⊆ K.1) :
     (SubSystem.quotRes F₁ F₂ J K hJK).comp (SubSystem.quotRes F₁ F₂ I J hIJ) =
@@ -145,7 +145,7 @@ theorem quotRes_comp (F₁ F₂ : SubSystem k x E) (I J K : Chart x) (hIJ : I.1 
   Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem quotInl_comm (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I) (I J : Chart x) (h : I.1 ⊆ J.1)
     (m : F₂.sub I ⧸ SubSystem.quotSub F₂ F₃ I) :
@@ -154,7 +154,7 @@ theorem quotInl_comm (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub I
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ m; rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem quotPr_comm (F₁ F₂ F₃ : SubSystem k x E) (h32 : ∀ I, F₃.sub I ≤ F₂.sub I) (I J : Chart x) (h : I.1 ⊆ J.1)
     (m : F₁.sub I ⧸ SubSystem.quotSub F₁ F₃ I) :
@@ -163,9 +163,9 @@ theorem quotPr_comm (F₁ F₂ F₃ : SubSystem k x E) (h32 : ∀ I, F₃.sub I 
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ m; rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `m hm`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h' : (Submodule.Quotient.mk (⟨(y : E), h21 I y.2⟩ : F₁.sub I) : F₁.sub I ⧸ SubSystem.quotSub F₁ F₃ I) = 0` using `hm`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotInl_injective (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I) (I : Chart x) :
     Function.Injective (quotInl F₁ F₂ F₃ h21 I) := by
@@ -179,7 +179,7 @@ theorem quotInl_injective (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.
   exact h'
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Use `show (Submodule.Quotient.mk (⟨(y : E), h21 I y.2⟩ : F₁.sub I) : F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotPr_quotInl (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I)
     (h32 : ∀ I, F₃.sub I ≤ F₂.sub I) (I : Chart x) (m : F₂.sub I ⧸ SubSystem.quotSub F₂ F₃ I) :
@@ -190,7 +190,7 @@ theorem quotPr_quotInl (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub
   exact y.2
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h' : (Submodule.Quotient.mk z : F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) = 0` using `hm`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Submodule.Quotient.mk ⟨z, h'⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_quotInl (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I)
     (h32 : ∀ I, F₃.sub I ≤ F₂.sub I) (I : Chart x) (m : F₁.sub I ⧸ SubSystem.quotSub F₁ F₃ I)
@@ -201,7 +201,7 @@ theorem exists_quotInl (F₁ F₂ F₃ : SubSystem k x E) (h21 : ∀ I, F₂.sub
   exact ⟨Submodule.Quotient.mk ⟨z, h'⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `m`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Conclude with `⟨Submodule.Quotient.mk z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotPr_surjective (F₁ F₂ F₃ : SubSystem k x E) (h32 : ∀ I, F₃.sub I ≤ F₂.sub I) (I : Chart x) :
     Function.Surjective (quotPr F₁ F₂ F₃ h32 I) := by
@@ -210,7 +210,7 @@ theorem quotPr_surjective (F₁ F₂ F₃ : SubSystem k x E) (h32 : ∀ I, F₃.
   exact ⟨Submodule.Quotient.mk z, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(hdegTopEquiv _ _ i).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_quotH (F₁ F₂ : SubSystem k x E) (i : ℕ) :
     Module.finrank k (SubSystem.quotH F₁ F₂ i) =
@@ -226,19 +226,19 @@ set_option maxHeartbeats 1000000 in
 open SnapperQuotientAdditivity in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x E _ _ _ _ F₁ F₂ F₃ hfg h21 h32`. Establish `h31 : ∀ I, F₃.sub I ≤ F₁.sub I` using `fun I => (h32 I).trans (h21 I)`. Establish `hdd` using `CechDSq.proof (N + 1) (support x) k (fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁.toSubSystem F₃.toSubSystem I) (SubSystem.quotRes F₁.toSubSystem F₃.toSubSystem) (quotRes_comp F₁.toSubSystem F₃.toSubSystem)`. Establish `L` using `Cech.longExact (R := k) (U := support x) (A := fun I : Chart x => F₂.sub I ⧸ SubSystem.quotSub F₂.toSubSystem F₃.toSubSystem I) (B := fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁.toSubSystem F₃.toSubSystem I) (C := fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁.toSubSys …`. Establish `L1` using `L (quotInl_comm _ _ _ h21)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L2` using `L1 (quotPr_comm _ _ _ h32)`. Establish `L3` using `L2 (fun _ _ _ => Submodule.mem_top) (fun _ _ _ => Submodule.mem_top)`. Establish `L4` using `L3 (quotInl_injective _ _ _ h21)`. Establish `L5` using `L4 (quotPr_quotInl _ _ _ h21 h32)`. Establish `L6` using `L5 (fun I m _ hm => (exists_quotInl _ _ _ h21 h32 I m hm).imp fun y hy => ⟨Submodule.mem_top, hy⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L7` using `L6 (fun I m _ => (quotPr_surjective _ _ _ h32 I m).imp fun y hy => ⟨Submodule.mem_top, hy⟩)`. Establish `L8` using `L7 (fun _ _ _ _ _ => Submodule.mem_top)`. Establish `liftZP_newton` using `L8 hdd`. Establish `h0` using `liftZP_newton.1`. Establish `hex` using `liftZP_newton.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose δ hgδ hδf using fun i => (hex i).2`. Establish `fin : ∀ (G₁ G₂ : SubFamily k x E), (∀ I, G₁.sub I ≤ F₁.sub I) → (∀ I, G₂.sub I ≤ G₁.sub I) → ∀ i, FiniteDimensional k (Cech.Hdeg (fun I : Chart x => G₁.sub I ⧸ SubSystem.quotSub G₁.toSubSystem G₂.toSubSystem I) (fun _ => ⊤) (SubSystem.quotRes G₁.toSubSystem G₂.toSubSystem) i)`. Introduce `G₁ G₂ h1 h2 i`. Establish `: FiniteDimensional k (Cech.H (fun I : Chart x => G₁.sub I ⧸ SubSystem.quotSub G₁.toSubSystem G₂.toSubSystem I) (SubSystem.quotRes G₁.toSubSystem G₂.toSubSystem) i)` using `hfin k Ω N x E F₁ G₁ G₂ hfg h1 h2 i`. Conclude with `(hdegTopEquiv _ _ i).symm.finiteDimensional`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin F₂ F₃ h21 h32` as an intermediate fact. Use `fin F₁ F₃ (fun _ => le_rfl) h31` as an intermediate fact. Use `fin F₁ F₂ (fun _ => le_rfl) h21` as an intermediate fact. Establish `key` using `altSum_eq _ _ _ _ _ δ h0 (fun i => (hex i).1) hgδ hδf N`. Use `idx_isEmpty x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `hdeg_subsingleton (fun I : Chart x => F₂.sub I ⧸ SubSystem.quotSub F₂.toSubSystem F₃.toSubSystem I) (fun _ => (⊤ : Submodule k _)) (SubSystem.quotRes F₂.toSubSystem F₃.toSubSystem) (N + 1)`. Establish `hδN : Module.finrank k (LinearMap.range (δ N)) = 0`. Establish `hz : Module.finrank k (Cech.Hdeg (fun I : Chart x => F₂.sub I ⧸ SubSystem.quotSub F₂.toSubSystem F₃.toSubSystem I) (fun _ => (⊤ : Submodule k _)) (SubSystem.quotRes F₂.toSubSystem F₃.toSubSystem) (N + 1)) = 0` using `Module.finrank_zero_of_subsingleton`. Conclude with `Nat.eq_zero_of_le_zero ((Submodule.finrank_le (LinearMap.range (δ N))).trans hz.le)`. Rewrite `key` using `[hδN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Nat.cast_zero, mul_zero, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib] at key`. Simplify using `only [eulerCharQuot, finrank_quotH]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem SnapperQuotAdd.proof (hfin : SnapperSubquotFinite.Statement.{u, v, w}) :
     SnapperQuotAdd.Statement.{u, v, w} := by

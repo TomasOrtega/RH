@@ -25,15 +25,15 @@ namespace GlobalTheory.VolBr.BallFinite
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨hL, hA, -⟩` from `GlobalTheory.T.represents_base_bundles_and_trivial k X p P`. Establish `h1 : ∃ M : HermLB p, P.Rep a 0 M`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg a`. Use `GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 1 0 P.L n hL` as an intermediate fact. Rewrite `this` using `[mul_one, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, this⟩`. Use `GlobalTheory.T.represents_hermitianLineBundle_dual k X p P _ _ _ (GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 1 0 P.L n hL)` as an intermediate fact. Rewrite `this` using `[mul_one, mul_zero, neg_zero]`. Conclude with `⟨_, this⟩`. Establish `h2 : ∃ M : HermLB p, P.Rep 0 c M`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Use `GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A n hA` as an intermediate fact. Rewrite `this` using `[mul_one, mul_zero]`. Conclude with `⟨_, this⟩`. Use `GlobalTheory.T.represents_hermitianLineBundle_dual k X p P _ _ _ (GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A n hA)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one, mul_zero, neg_zero]`. Conclude with `⟨_, this⟩`. Take `⟨M₁, h₁⟩` from `h1`. Take `⟨M₂, h₂⟩` from `h2`. Use `GlobalTheory.T.hermPairWithSections_represents_tensor k X p P _ _ _ _ M₁ M₂ h₁ h₂` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero, zero_add]`. Conclude with `⟨_, this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_rep (P : Pair p) (a c : ℤ) : ∃ M : HermLB p, P.Rep a c M := by
   obtain ⟨hL, hA, -⟩ := GlobalTheory.T.represents_base_bundles_and_trivial k X p P
@@ -60,14 +60,14 @@ theorem exists_rep (P : Pair p) (a c : ℤ) : ∃ M : HermLB p, P.Rep a c M := b
   exact ⟨_, this⟩
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`.
+A detailed English derivation is pending.
 -/
 theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
     0 ≤ P.nu a b σ y f :=
   mul_nonneg (norm_nonneg _) (Real.exp_pos _).le
 
 /- English proof (translation)
-Introduce `u hu σ y` and use `by refine le_of_eq_of_le ?_ (hu σ y) simp only [Weight.nsq, HermLB.tens, HermLB.shift, Weight.tens, Weight.addFn] congr 2 ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smallSec_tens_shift (N M : HermLB p) (t : ℝ) :
     ((N.tens M).shift (fun _ => t) fun _ => rfl).smallSec ⊆ (N.tens (M.shift (fun _ => t) fun _ => rfl)).smallSec :=
@@ -78,15 +78,15 @@ theorem smallSec_tens_shift (N M : HermLB p) (t : ℝ) :
     ring
 
 /- English proof (translation)
-Introduce `hHS k _ X _ p D hX P b s t hG a c R hC`. Take `⟨M, hM⟩` from `exists_rep P a c`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k X p D hX).2 Unit (fun _ => P.A)).1`. Establish `hSI` using `((hC.arIso k X p D hX).2 Unit (fun _ => P.A) Φ hΦ).1 ()`. Take `⟨m, hm⟩` from `((hHS k X p D hX P.A (M.shift (fun _ => R) fun _ => rfl) _ hG.nef hSI).1).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `(GlobalTheory.T.represents_base_bundles_and_trivial k X p P).2.1`. Establish `hAm` using `GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A m hA`. Establish `hT` using `GlobalTheory.T.hermPairWithSections_represents_tensor k X p P _ _ _ _ _ _ hAm hM`. Establish `hsm : (((P.A.pow m).tens M).shift (fun _ => R) fun _ => rfl).smallSec.Finite` using `hm.subset (smallSec_tens_shift _ _ _)`. Establish `hB : (P.Bl (m * 0 + a) (m * 1 + c) (Real.exp R)).Finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(GlobalTheory.T.smallSections_twistedPower_encard_eq_ball k X p P _ _ _ hT R 0).2.2`. Rewrite using `[← Set.encard_lt_top_iff, ← e]`. Conclude with `hsm.encard_lt_top`. Establish `hs` using `hG.s_mem`. Take `⟨hsH, hsn⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hs.1 m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hB.preimage (f := fun f => s ^ m * f) (mul_right_injective₀ (pow_ne_zero m hG.s_ne)).injOn).subset ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨h1, h2⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P _ _ _ _ (s ^ m) f hsH hf.1`. Use `⟨h1, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hsn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `n1 : P.nu 0 1 σ y s ≤ 1` using `hs.2 σ y`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bl_finite : GlobalTheory.Published.ArithHilbertSamuel → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (b : ℕ) (s t : X.functionField), P.Good D b s t →

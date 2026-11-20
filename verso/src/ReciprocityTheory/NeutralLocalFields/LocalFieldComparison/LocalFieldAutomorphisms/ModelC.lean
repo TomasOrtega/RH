@@ -12,15 +12,15 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
 attribute [local instance] locRel
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `key : ∀ m, ‖∑ i ∈ Finset.range (m + 1), P.coeff i * x ^ i‖ ≤ ‖x‖ ^ m`. Introduce `m`. Proceed by induction on `m with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hc 0`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ]`. Use `(norm_add_le_max_padic _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `ih.trans (pow_le_pow_right₀ hlt.le (Nat.le_succ m))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `he` using `P.eval_eq_sum_range (x := x)`. Rewrite `he` using `[hx]`. Break down `Nat.eq_zero_or_pos P.natDegree with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `he` using `[h0]`. Simplify using `[hP.coeff_natDegree ▸ (show P.coeff 0 = P.coeff P.natDegree by rw [h0])] at he`. Take `⟨m, hm⟩ : ∃ m, P.natDegree = m + 1` from `⟨P.natDegree - 1, by omega⟩`. Rewrite `he` using `[hm, Finset.sum_range_succ, ← hm, hP.coeff_natDegree, one_mul, hm]`. Establish `e2 : x ^ (m + 1) = -∑ i ∈ Finset.range (m + 1), P.coeff i * x ^ i`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-he`. Use `key m` as an intermediate fact. Rewrite `this` using `[← norm_neg, ← e2, norm_pow]`. Establish `h3 : ‖x‖ ^ m < ‖x‖ ^ (m + 1)` using `pow_lt_pow_right₀ hlt (Nat.lt_succ_self m)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_monic_root (P : Polynomial (PadicAlgCl p)) (hP : P.Monic) (hc : ∀ i, ‖P.coeff i‖ ≤ 1)
     {x : PadicAlgCl p} (hx : P.eval x = 0) : ‖x‖ ≤ 1 := by

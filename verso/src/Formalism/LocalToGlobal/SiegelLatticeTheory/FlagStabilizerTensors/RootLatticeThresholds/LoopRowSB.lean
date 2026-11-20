@@ -39,7 +39,7 @@ def YtR (hyF : YFOK sel yF) (C1f : List ℝ → ℝ)
     (B Fm hc x hx i u u') (M Fm hc x hx i u u')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨normTieC_holds D X Y hF hI (wOf X) (hOf X Y hF hI) (aOfW X Y hF hI hWD) (hvOfW X Y hF hI hWD) u u', Formalism.L2.SG.Pf.LoopBGenIdx.gram_determinant_relation D X Y hF hI (wOf X) (hOf X Y hF hI) (aOfW X Y hF hI hWD) (hvOfW X Y hF hI hWD) u u', entryLatC_holds D X Y hF hI (wOf X) ( …`.
+Supply the required witnesses or components.
 -/
 theorem tiesAt {D : D7} (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF))
     (hWD : Formalism.L2.SG.WuDecay.WuDecay X) (u u' : D.what₂.Word) :
@@ -50,7 +50,7 @@ theorem tiesAt {D : D7} (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIs
     entryLatC_holds D X Y hF hI (wOf X) (hOf X Y hF hI) (aOfW X Y hF hI hWD) (hvOfW X Y hF hI hWD) u u'⟩
 
 /- English proof (translation)
-Establish `hTI : ∀ x (hx : (Fm.raise (yR sel yF Fm hc)).x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), Formalism.MainNotions.BridgeLemma₂.wordPairTermInjective (AtR sel yF hyF Fm hc x hx i) (YtR sel yF hyF C1f B M Fm hc x hx i u u')` using `fun x hx i u u' t t' hL hE => frameEqvInj_of (wOf ((sel Fm hc).2 x (raise_lt hx) (h0R sel yF hx) i).X) (((sel Fm hc).2 x (raise_lt hx) (h0R sel yF hx) i).hI (hyF Fm hc x (raise_lt hx) (h0R sel yF hx) (hyR sel yF hx) i).1) (hOf ((sel Fm hc).2 x (raise_lt hx) (h0R sel yF hx) i).X ( …`. Use `⟨Formalism.MainNotions.BridgeLemma₂.family_gram_facts_of_hypotheses _ _ _ _ fun x hx i u u' => ⟨(tiesAt ((sel Fm hc).2 x (raise_lt hx) (h0R sel yF hx) i).X ((sel Fm hc).2 x (raise_lt hx) (h0R sel yF hx) i).Y (hyF Fm hc x (raise_lt hx) (h0R sel yF hx) (hyR sel yF hx) i).1 (((sel F …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tiesR (hyF : YFOK sel yF) (C1f : List ℝ → ℝ)
     (B : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (_ : (Fm.raise (yR sel yF Fm hc)).x1 < x) (i : Fm.Ix x)
@@ -77,7 +77,7 @@ theorem tiesR (hyF : YFOK sel yF) (C1f : List ℝ → ℝ)
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `loopRowS_of_U C0 sel yF hyF C1f Uf (YtR sel yF hyF C1f B M) hAdmR hUR ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ hc => tiesR sel yF hyF C1f B M Fm hc⟩⟩ hForm`.
+A detailed English derivation is pending.
 -/
 theorem loopRowS_of_BM (hyF : YFOK sel yF) (C1f : List ℝ → ℝ) (Uf : (List ℝ → ℝ) → List ℝ → Formalism.L2.SG.RowsU.UC)
     (B : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (_ : (Fm.raise (yR sel yF Fm hc)).x1 < x) (i : Fm.Ix x)
@@ -98,7 +98,7 @@ theorem loopRowS_of_BM (hyF : YFOK sel yF) (C1f : List ℝ → ℝ) (Uf : (List 
     hForm
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩` from `h`. Conclude with `⟨a1, a2, fun x hx i => a3 x (raise_lt hx) i, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, fun x hx => a15 x (raise_lt hx), a16, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_raise {eps : ℝ} {Fm : FamP eps} {C1 : ℝ} (y : ℝ) (h : AdmRec Fm C1) : AdmRec (Fm.raise y) C1 := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩ := h
@@ -106,7 +106,7 @@ theorem admissible_raise {eps : ℝ} {Fm : FamP eps} {C1 : ℝ} (y : ℝ) (h : A
     fun x hx => a15 x (raise_lt hx), a16, h⟩
 
 /- English proof (translation)
-The claim follows from `family_admitted_of_parts (Fm.raise y) C1 At Yt (admissible_raise y h) hV`.
+A detailed English derivation is pending.
 -/
 theorem admissible_family_raise {eps : ℝ} {Fm : FamP eps} {C1 : ℝ} (y : ℝ)
     (At : ∀ x, (Fm.raise y).x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))

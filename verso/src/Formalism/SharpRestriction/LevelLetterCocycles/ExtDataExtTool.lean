@@ -16,7 +16,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS at hx`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.MiW Formalism.MainNotions.RamifiedCoefficientChains.hiW`. Apply the tactic sequence `split_ifs at hx ⊢ with h <;> simp only [Set.mem_union, Set.mem_Icc] at hx ⊢ <;> push_cast at hx ⊢ <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extData_win (d : ℕ) (b : ZMod n → ℕ) (S η : ℕ) (i : ZMod n) (hηb : η ≤ b i) :
     Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS d b S η i ⊆
@@ -27,7 +27,7 @@ theorem extData_win (d : ℕ) (b : ZMod n → ℕ) (S η : ℕ) (i : ZMod n) (h�
   split_ifs at hx ⊢ with h <;> simp only [Set.mem_union, Set.mem_Icc] at hx ⊢ <;> push_cast at hx ⊢ <;> omega
 
 /- English proof (translation)
-Rewrite using `[← bF.sum_equivFun f, map_sum]`. Conclude with `Finset.sum_induction _ P hadd h0 fun j _ => by rw [map_smul]; exact hsmul _ _ (h j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extData_lin {FF M I : Type} [AddCommGroup FF] [Module O FF] [AddCommGroup M] [Module O M] [Fintype I]
     (P : M → Prop) (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y)) (hsmul : ∀ (c : O) x, P x → P (c • x))
@@ -36,45 +36,37 @@ theorem extData_lin {FF M I : Type} [AddCommGroup FF] [Module O FF] [AddCommGrou
   exact Finset.sum_induction _ P hadd h0 fun j _ => by rw [map_smul]; exact hsmul _ _ (h j)
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS FF _ _ _ _ g`. Establish `hS'` using `hS`. Take `⟨hA, h11, -, hOd, hζ, hSur, hJ1, -, hab, -⟩` from `hS`. Establish `hηb : ∀ i, η ≤ b i` using `fun i => by`. Establish `h0` using `Formalism.MainNotions.RamifiedCoefficientChains.aR_nonneg PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hab i`. Establish `h2 : (η : ℝ) ≤ (b i : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Use `set Mi := Formalism.MainNotions.RamifiedCoefficientChains.MiW d b S η with hMi`. Use `set hi := Formalism.MainNotions.RamifiedCoefficientChains.hiW d b S η with hhi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := ⌈Formalism.MainNotions.RamifiedCoefficientChains.aR PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η)⌉₊ with ha`. Establish `c1 : IsCrys PD T₁.ρ` using `hSur.1`. Establish `c2 : IsCrys PD T₂.ρ` using `hSur.2.1`. Establish `hOc : IsCrys PD W.one.ρ` using `hOne.1`. Establish `hJL1 : Formalism.MainNotions.LiftingTheory.JumpsLet W T₁ Mi hi` using `fun i τ hτ x hx => extData_win d b S η i (hηb i) (hJ1 i τ hτ x hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨T₀, ι₀, hses₀, c0⟩` from `hKer T₁ T₂ F hSur`. Establish `hJY : ∀ (Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L), IsSESLat (Qp` using `Qp) (O := O) ι π → IsCrys PD Y.ρ → Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W Y Mi hi := by`. Introduce `Y ι π hses hY τ i hτ x hx`. Break down `(hJmp T₂ Y W.one ι π hses c2 hY hOc τ x).1 hx with h | h` into its components or cases. Conclude with `hJL1 i τ hτ x ((hJmp T₀ T₁ T₂ ι₀ F hses₀ c0 c1 c2 τ x).2 (Or.inr h))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hOne.2.1 τ x h]`. Simplify using the standard rewrite rules. Establish `hQ1` using `(hQ d T₁ T₂ F b S η m Mi hi hS' hJL1).2`. Use `set N := eWA PD.p (Hmax n Mi hi) with hN`. Establish `hK : ∀ (Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L), IsSESLat (Qp` using `Qp) (O := O) ι π → IsCrys PD Y.ρ → ∀ i : ZMod n, Kills W π i (lp W N) ∧ Kills W π i (qp W ^ a) := fun Y ι π hses hY i => ⟨(hQ1 Y ι π hses hY i).2.1, (hQ1 Y ι π hses hY i).2.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `I` to `Module.Free.ChooseBasisIndex O FF`. Set `bF : Module.Basis I O FF` to `Module.Free.chooseBasis O FF`. Establish `one` using `fun j : I => extDataOne_exists W hH hExt hOne hEx hdex h5 h6 h9 hA hζ hOd T₂ c2 Mi hi a N hJY hK (g (bF j) : G → T₂.V) (g (bF j)).2`. Use `choose yj zj μj νj hZj hcZj hclj hRelj using one`. Set `y : FF →ₗ[O] W.DD T₂` to `bF.constr O yj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z : FF →ₗ[O] W.DD T₂` to `bF.constr O zj`. Set `μ : ZMod n → FF →ₗ[O] W.DD T₂` to `fun i => bF.constr O fun j => μj j i`. Set `ν : ZMod n → FF →ₗ[O] W.DD T₂` to `fun i => bF.constr O fun j => νj j i`. Establish `hyb : ∀ j, y (bF j) = yj j` using `fun j => bF.constr_basis O yj j`. Establish `hzb : ∀ j, z (bF j) = zj j` using `fun j => bF.constr_basis O zj j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμb : ∀ i j, μ i (bF j) = μj j i` using `fun i j => bF.constr_basis O (fun j => μj j i) j`. Establish `hνb : ∀ i j, ν i (bF j) = νj j i` using `fun i j => bF.constr_basis O (fun j => νj j i) j`. Use `⟨N, y, z, μ, ν, fun f => ?_, fun i f => ?_⟩` and prove the remaining obligations. Establish `hκ : ((g f : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V) ∈ latticeCocycles T₂.L` using `(Submodule.mem_inf.1 (g f).2).1`. Establish `hyf : y f = ∑ j, bF.equivFun f j • yj j` using `by simp [y, Module.Basis.constr_apply_fintype]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzf : z f = ∑ j, bF.equivFun f j • zj j` using `by simp [z, Module.Basis.constr_apply_fintype]`. Establish `hpair : ((y f, z f) : W.DD T₂ × W.DD T₂) = ∑ j, bF.equivFun f j • ((yj j, zj j) : W.DD T₂ × W.DD T₂)`. Rewrite using `[hyf, hzf]`. Apply the tactic sequence `ext <;> simp [Prod.fst_sum, Prod.snd_sum]`. Establish `hmem : ((y f, z f) : W.DD T₂ × W.DD T₂) ∈ herrZ1Δ (W.γD T₂ W.gamK) (W.φD T₂) W.DelF (W.γD T₂)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hpair]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hZj j)`. Use `⟨⟨(y f, z f), hmem⟩, hκ, rfl, ?_⟩` and prove the remaining obligations. Establish `hx : (⟨(y f, z f), hmem⟩ : ↥(herrZ1Δ (W.γD T₂ W.gamK) (W.φD T₂) W.DelF (W.γD T₂))) = ∑ j, bF.equivFun f j • (⟨(yj j, zj j), hZj j⟩ : ↥(herrZ1Δ (W.γD T₂ W.gamK) (W.φD T₂) W.DelF (W.γD T₂)))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Conclude with `hpair`. Establish `hsum : (⟨((g f : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V), hκ⟩ : ↥(latticeCocycles T₂.L)) = ∑ j, bF.equivFun f j • (⟨((g (bF j) : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V), hcZj j⟩ : ↥(latticeCocycles T₂.L))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Use `conv_lhs => rw [← bF.sum_equivFun f]`. Rewrite using `[map_sum, Submodule.coe_sum]`. Simplify using `only [map_smul, Submodule.coe_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show W.clK T₂ (⟨(y f, z f), hmem⟩ : ↥(herrZ1Δ (W.γD T₂ W.gamK) (W.φD T₂) W.DelF (W.γD T₂))) = _`. Rewrite using `[hx, map_sum, hsum]`. Simplify using `only [map_smul, hclj, ← Submodule.mkQ_apply, map_sum]`. Set `sA : LetA O n → (W.DD T₂ →ₗ[O] W.DD T₂)` to `fun c => ((c • LinearMap.id : W.DD T₂ →ₗ[LetA O n] W.DD T₂)).restrictScalars O`. Establish `hsA : ∀ c x, sA c x = c • x` using `fun c x => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [sA, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hNs : ∀ (c : O) (x : W.DD T₂), x ∈ W.N T₂ → c • x ∈ W.N T₂` using `fun c x h => by`. Rewrite using `[← algebraMap_smul (LetA O n) c x]`. Conclude with `(W.N T₂).smul_mem _ h`. Establish `hJs : ∀ (c : O) (x : W.DD T₂), x ∈ pullJ W T₂ (i - 1) 1 → c • x ∈ pullJ W T₂ (i - 1) 1` using `fun c x h => by rw [← algebraMap_smul (LetA O n) c x]; exact Submodule.smul_mem _ _ h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `Φ4 : FF →ₗ[O] W.DD T₂` to `((PD.p : ℕ) : O) ^ N • (sA (letE i) ∘ₗ y) + (W.φD T₂ ∘ₗ μ (i - 1)) - μ i`. Establish `hΦ4 : ∀ f', Φ4 f' = ((PD.p : ℕ) : O) ^ N • ((letE i : LetA O n) • y f') + W.φD T₂ (μ (i - 1) f') - μ i f'` using `fun f' => by`. Simplify using `only [Φ4, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, hsA]`. Establish `hΦ4b : ∀ j, Φ4 (bF j) = ((PD.p : ℕ) : O) ^ N • ((letE i : LetA O n) • yj j) + W.φD T₂ (μj j (i - 1)) - μj j i` using `fun j => by rw [hΦ4, hyb, hμb, hμb]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `extData_lin (DL W T₂ i) ⟨smul_zero _, fun δ _ => map_zero _⟩ (fun x y hx hy => Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_add W T₂ hx hy) (fun c x hx => Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_smul W T₂ c hx) bF (μ i) (fun j => by rw [hμb]; exact (hRelj j …`. Conclude with `extData_lin (DL W T₂ i) ⟨smul_zero _, fun δ _ => map_zero _⟩ (fun x y hx hy => Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_add W T₂ hx hy) (fun c x hx => Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_smul W T₂ c hx) bF (ν i) (fun j => by rw [hνb]; exact (hRelj j …`. Set `Φ3 : FF →ₗ[O] W.DD T₂` to `((PD.p : ℕ) : O) ^ N • (sA (letE i) ∘ₗ z) + ((W.γ T₂) ∘ₗ μ i - μ i)`. Establish `hΦ3 : ∀ f', Φ3 f' = ((PD.p : ℕ) : O) ^ N • ((letE i : LetA O n) • z f') + (W.γ T₂ (μ i f') - μ i f')` using `fun f' => by`. Simplify using `only [Φ3, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, hsA]`.
-
-Rewrite using `[← hΦ3]`. Conclude with `extData_lin (InPN W T₂ 1) ⟨0, (W.N T₂).zero_mem, fun δ _ => map_zero _, (smul_zero _).symm⟩ (fun x y hx hy => Formalism.MainNotions.RamifiedCoefficientChains.S9.inPN_add W T₂ hx hy) (fun c x hx => Formalism.MainNotions.RamifiedCoefficientChains.S9.inPN_smul W T₂ c hx) bF Φ3 (fun …`. Use `extData_lin (fun x => x ∈ W.N T₂) (W.N T₂).zero_mem (fun x y hx hy => (W.N T₂).add_mem hx hy) hNs bF (sA (qp W ^ Mi i) ∘ₗ Φ4) (fun j => by` as an intermediate fact. Rewrite using `[LinearMap.comp_apply, hsA, hΦ4b]`. Conclude with `(hRelj j i).2.2.2.1) f`.
-
-Rewrite `this` using `[LinearMap.comp_apply, hsA, hΦ4]`. Then use the resulting hypothesis. Use `extData_lin (fun x => ∃ s : ℕ, ((PD.p : ℕ) : O) ^ s • x ∈ pullJ W T₂ (i - 1) 1) ⟨0, by rw [smul_zero]; exact Submodule.zero_mem _⟩ (fun x y ⟨s₁, h₁⟩ ⟨s₂, h₂⟩ => ⟨s₁ + s₂, by` as an intermediate fact. Simplify using `only [smul_add, pow_add, mul_smul]`. Rewrite using `[smul_comm (((PD.p : ℕ) : O) ^ s₁) (((PD.p : ℕ) : O) ^ s₂) x]`. Conclude with `Submodule.add_mem _ (hJs _ _ h₁) (hJs _ _ h₂)⟩)`.
-
-Use the proof step `(fun c x ⟨s₀, h₀⟩ => ⟨s₀, by rw [smul_comm]; exact hJs c _ h₀⟩)`. Use `bF (sA (qp W ^ hi i) ∘ₗ Φ4) (fun j => by`. Rewrite using `[LinearMap.comp_apply, hsA, hΦ4b]`. Conclude with `(hRelj j i).2.2.2.2.1) f`. Rewrite `this` using `[LinearMap.comp_apply, hsA, hΦ4]`. Then use the resulting hypothesis.
-
-Set `Φ6 : FF →ₗ[O] W.DD T₂` to `((PD.p : ℕ) : O) ^ N • ν i - sA (qp W ^ a) ∘ₗ μ i`. Establish `hΦ6 : ∀ f', Φ6 f' = ((PD.p : ℕ) : O) ^ N • ν i f' - qp W ^ a • μ i f'` using `fun f' => by`. Simplify using `only [Φ6, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, hsA]`. Rewrite using `[← hΦ6]`. Conclude with `extData_lin (fun x => x ∈ W.N T₂) (W.N T₂).zero_mem (fun x y hx hy => (W.N T₂).add_mem hx hy) hNs bF Φ6 (fun j => by rw [hΦ6, hνb, hμb]; exact (hRelj j i).2.2.2.2.2) f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extData_extTool [NeZero n] (W : LocWach PD LL O v n)
     (hH : Formalism.MainNotions.ElementDenominator.coreHerrExtΔ W) (hExt : Formalism.MainNotions.LiftingTheory.liftb_HExt W) (hOne : Formalism.MainNotions.LiftingTheory.liftb_HOne W)

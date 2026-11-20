@@ -21,7 +21,7 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (N : ℕ) {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Take `⟨F, rfl⟩` from `hx`. Take `⟨G, rfl⟩` from `hy`. Take `⟨H, hH⟩` from `X.inc_mul wL _ G F`. Rewrite using `[← wadd_addL, mul_comm, hH]`. Conclude with `⟨H, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem range_mul_step {m : ℕ} {x y : X.Forms} (hx : x ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m)))
     (hy : y ∈ LinearMap.range (X.inc wL)) : x * y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (m + 1))) := by
@@ -32,7 +32,7 @@ theorem range_mul_step {m : ℕ} {x y : X.Forms} (hx : x ∈ LinearMap.range (X.
   exact ⟨H, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using hy`. Consider the case `succ e ih`. Rewrite using `[pow_succ, ← mul_assoc, ← add_assoc]`. Conclude with `range_mul_step X ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m)))
     (hx : x ∈ LinearMap.range (X.inc wL)) (e : ℕ) :
@@ -44,9 +44,9 @@ theorem range_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ LinearMap.range (X.inc (
     exact range_mul_step X ih hx
 
 /- English proof (translation)
-Use `Finset.induction_on s (by rwa [Finset.prod_empty, Finset.sum_empty, mul_one, add_zero]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Establish `e1 : y * (X.inc wL (w a) ^ d a * ∏ i ∈ s, X.inc wL (w i) ^ d i) = (y * ∏ i ∈ s, X.inc wL (w i) ^ d i) * X.inc wL (w a) ^ d a` using `by ring`. Establish `e2 : m + (d a + ∑ i ∈ s, d i) = m + ∑ i ∈ s, d i + d a` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `range_pow X ih ⟨w a, rfl⟩ (d a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms}
     (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m))) (s : Finset (Fin N)) :
@@ -62,9 +62,9 @@ theorem range_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms}
   exact range_pow X ih ⟨w a, rfl⟩ (d a)
 
 /- English proof (translation)
-Rewrite using `[Pw.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, mul_left_comm, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hPw (MvPolynomial.mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `h` using `range_prod X N w d hy d.support`. Rewrite `h` using `[hdeg]`. Conclude with `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHomogeneous k) {m : ℕ} {y : X.Forms}
     (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m))) :
@@ -82,13 +82,13 @@ theorem range_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHomog
   exact h
 
 /- English proof (translation)
-Take `⟨k0, hk0⟩` from `hk`. Take `⟨k, g, Pw, hPw, hne, he⟩` from `hB a`. Establish `h1 : X.inc wL (w k0) ∈ LinearMap.range (X.inc (addL (wt0 D j) wL 1))`. Rewrite using `[add_zero_weight_one_eq]`. Conclude with `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨p, hp⟩` from `range_aeval X N w Pw hPw h1`. Establish `hG : X.inc wL (w k0) * X.inc (wsmul k wL) g ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (1 + k)))`. Take `⟨H, hH⟩` from `X.inc_mul wL _ (w k0) g`. Rewrite using `[add_comm, ← wadd_addL, addL, zero_weight_add, hH]`. Conclude with `⟨H, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨q, hq⟩` from `hG`. Establish `hPv : gF (MvPolynomial.aeval (fun i => X.inc wL (w i)) Pw) = MvPolynomial.aeval (fun i => gF (X.inc wL (w i))) Pw` using `MvPolynomial.comp_aeval_apply (fun i => X.inc wL (w i)) gF Pw`. Use `⟨1 + k, p, q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, map_mul, hPv]`. Conclude with `mul_ne_zero hk0 hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, hq, map_mul, map_mul, hPv, ← he]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_ratio {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
     (hB : CurveLoc.BirAt X N w gF) (hk : ∃ k, gF (X.inc wL (w k)) ≠ 0) (a : Ω) :
@@ -116,14 +116,14 @@ def evK {F : Type} [Field F] (ev : Rp X la N →+* F) : Kp X la N →+* F :=
   ev.comp (algebraMap (Kp X la N) (Rp X la N))
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_smul {F : Type} [Field F] (ev : Rp X la N →+* F) (c : Kp X la N) (g : Rp X la N) :
     ev (c • g) = evK X la N ev c * ev g := by
   rw [Algebra.smul_def, map_mul]; rfl
 
 /- English proof (translation)
-Use `show IsLocalization.Away.lift (sec X la w 0) hu (algebraMap (Kp X la N) (Lw X la w) c) = _`. Rewrite using `[IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), liftEv_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_algKp {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev (sec X la w 0))) (c : Kp X la N) :
     IsLocalization.Away.lift (sec X la w 0) hu
@@ -137,21 +137,21 @@ section Fam
 variable {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `letI : Algebra (Kp X la N) F := (evK X la N ev).toAlgebra`. Set `ψ : ↥(Frac0 X la w) →ₐ[Kp X la N] F` to `{ (IsLocalization.Away.lift (sec X la w 0) hu).comp (Frac0 X la w).val.toRingHom with commutes' := fun c => lift_algKp X la N w ev hu c }`. Establish `hψ : ∀ (x : ↥(Frac0 X la w)) (k : ℕ) (g : Rp X la N), (x : Lw X la w) = frac X la w k g → ψ x = ev g * (ev (sec X la w 0))⁻¹ ^ k` using `fun x k g hx => by show IsLocalization.Away.lift (sec X la w 0) hu (x : Lw X la w) = _`. Rewrite using `[hx, liftEv_frac]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime _`. Establish `hJ : Jid X la w ≤ RingHom.ker ψ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hψ _ 1 _ (coe_sfr X la w i.succ), honS, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf : (Finset.univ : Finset ι).inf (fun Z => RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)) ≤ RingHom.ker ψ`. Introduce `f hf`. Establish `hf' : ∀ Z, phiZ X la N (Ω Z) (gF Z) w f = 0` using `fun Z => RingHom.mem_ker.1 (Finset.inf_le (f := fun Z => RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)) (Finset.mem_univ Z) hf)`. Rewrite using `[CurveInj.fraction_zero_injective X la N Ω gF w hinj f hf']`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, -, hZ⟩` from `(Ideal.IsPrime.inf_le' hQ).1 hinf`. Take `⟨χ, hχ⟩` from `pos_factor (phiZ X la N (Ω Z) (gF Z) w) ψ (fun f hf => RingHom.mem_ker.1 (hZ (RingHom.mem_ker.2 hf))) (fun r => by`. Take `⟨a, p, hp, hr⟩` from `CurveLoc.loc_of_bir X la N w (gF Z) (hB Z) (hC Z) r`. Conclude with `⟨a, p, fun h0 => hp _ hQ hJ hZ (RingHom.mem_ker.2 h0), hr⟩)`. Establish `hs` using `pos_sec_ne X la N w (gF Z) χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0` using `hu.ne_zero`. Use `⟨Z, χ.toRingHom.comp (CurveLoc.psiZ X la N w (gF Z)), ev (sec X la w 0) * (χ (algebraMap (RZ X la N (Ω Z)) (RZs X la N (Ω Z) (gF Z) w) (rzMap X la N (Ω Z) (gF Z) (sec X la w 0))))⁻¹, mul_ne_zero hs0 (inv_ne_zero hs), fun u G h0 => ?_, fun a => (congrArg χ (pos_psiZ_alg X la N w ( …` and prove the remaining obligations. Use `choose g hg using hsplit Z`. Establish `hmem : frac X la w 1 (CurveLoc.secOf X la N g) ∈ Frac0 X la w` using `Algebra.subset_adjoin (frac_mem_Hfr X la w (by rw [add_zero_weight_one_eq]; exact CurveLoc.secOf_mem X la N g))`. Establish `h1 : (⟨_, hmem⟩ : ↥(Frac0 X la w)) - 1 ∈ RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_one, CurveLoc.phiZ_of_eq X la N w (gF Z) _ 1 _ rfl, CurveLoc.rzMap_secOf X la N (gF Z) g w (fun k => (hg k).1), CurveLoc.secOf_self, pow_one, CurveLoc.weight_zero_section_mul_inv, sub_self]`. Establish `h2` using `hZ h1`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, map_one, hψ _ 1 _ rfl, pow_one, sub_eq_zero]`. Establish `he : ev (CurveLoc.secOf X la N g) ≠ 0` using `left_ne_zero_of_mul_eq_one h2`. Establish `hHe : emb X la N (X.inc u G) * CurveLoc.secOf X la N g = 0` using `CurveInj.vw_inj X la N Ω gF (wadd u wL) (hinj _) (mul_mem_Vw X la N (emb_mem_Vw X la N u G) (CurveLoc.secOf_mem X la N g)) fun Z' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `hZ' : Z' = Z`. Substitute `hZ'` using the available equality. Rewrite using `[rzMap_emb, h0, TensorProduct.tmul_zero, TensorProduct.tmul_zero, zero_mul]`. Rewrite using `[CurveLoc.rzMap_secOf_zero X la N (gF Z') g (fun k => (hg k).2 Z' hZ'), mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg ev hHe`. Rewrite `h3` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.1 h3).resolve_right he`. Establish `h1` using `((hχ _).trans (hψ _ k _ rfl)).symm.trans (phi_fraction_base_value X la N w (gF Z) χ k G hG) show _ = χ (CurveLoc.psiZ X la N w (gF Z) (gF Z G)) * _`. Rewrite using `[mul_pow, mul_left_comm, ← h1, mul_left_comm, ← mul_pow, mul_inv_cancel₀ hs0, one_pow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point [Finite ι]
     (hinj : ∀ (u : WeightFamilies.Wt D j) (G : B.Cusp j u), (∀ Z, gF Z (X.inc u G) = 0) → G = 0)
@@ -232,7 +232,7 @@ section One
 variable {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ev_smul, hc 1 _ (by rw [add_zero_weight_one_eq]; exact emb_mem_Vw X la N wL (w k)), pow_one, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sec {F : Type} [Field F] (ev : Rp X la N →+* F) (τ : Ω →+* F) (σ : F)
     (hc : ∀ (k : ℕ) (G : X.Forms), emb X la N G ∈ Vw X la N (addL (wt0 D j) wL k) →

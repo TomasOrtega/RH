@@ -28,14 +28,14 @@ def blkId (hld : l + d ≤ n) : Matrix (Fin n) (Fin d) R :=
   fun i j => if i.val = l + j.val then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blkId, apply_ite f]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkId_map {S : Type} [CommRing S] (f : R →+* S) (hld : l + d ≤ n) : (blkId R hld).map f = blkId S hld := by
   ext i j
   simp [blkId, apply_ite f]
 
 /- English proof (translation)
-Simplify using `only [tripPlace, Equiv.trans_apply, finCongr_apply, Fin.val_cast, finSigmaFinEquiv_apply]`. Use `congr 1`. Apply the tactic sequence `fin_cases a <;> simp [tripSizes, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tripPlace_val (hld : l + d ≤ n) (a : Fin 3) (i : Fin (tripSizes l d n a)) :
     (tripPlace hld ⟨a, i⟩).val = ![0, l, l + d] a + i.val := by
@@ -44,9 +44,9 @@ theorem tripPlace_val (hld : l + d ≤ n) (a : Fin 3) (i : Fin (tripSizes l d n 
   fin_cases a <;> simp [tripSizes, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[blkId, if_neg]`. Rewrite using `[tripPlace_val]`. Use `fin_cases a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[tripSizes] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd rfl ha`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blkId_ne (hld : l + d ≤ n) (a : Fin 3) (ha : a ≠ 1) (i : Fin (tripSizes l d n a)) (j : Fin d) :
     blkId R hld (tripPlace hld ⟨a, i⟩) j = 0 := by
@@ -60,7 +60,7 @@ theorem blkId_ne (hld : l + d ≤ n) (a : Fin 3) (ha : a ≠ 1) (i : Fin (tripSi
   · simp; omega
 
 /- English proof (translation)
-Establish `e : (tripPlace hld ⟨1, i⟩).val = l + i.val` using `tripPlace_val hld 1 i`. Rewrite using `[blkId, e]`. Simplify using `[Fin.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkId_one (hld : l + d ≤ n) (i : Fin d) (j : Fin d) :
     blkId R hld (tripPlace hld ⟨1, i⟩) j = if i = j then 1 else 0 := by
@@ -69,7 +69,7 @@ theorem blkId_one (hld : l + d ≤ n) (i : Fin d) (j : Fin d) :
   simp [Fin.ext_iff]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkId_mid (hld : l + d ≤ n) (A : Matrix (Fin d) (Fin d) R) (i j : Fin d) (a b : Fin n)
     (ha : ∀ k, blkId R hld a k = if i = k then 1 else 0) (hb : ∀ k, blkId R hld b k = if j = k then 1 else 0) :
@@ -77,15 +77,15 @@ theorem blkId_mid (hld : l + d ≤ n) (A : Matrix (Fin d) (Fin d) R) (i j : Fin 
   simp [Matrix.mul_apply, ha, hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(tripPlace hld).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(tripPlace hld).surjective j`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `ha : a = 1`. Substitute `ha` using the available equality. Establish `e : midHom R l d n g 1 = g` using `Pi.mulSingle_eq_same (M := fun j : Fin 3 => GL (Fin (tripSizes l d n j)) R) 1 g`. Rewrite using `[e, Matrix.add_apply, blkId_mid R hld _ i j _ _ (blkId_one R hld i) (blkId_one R hld j)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (1 : Matrix (Fin n) (Fin n) R) (tripPlace hld ⟨1, i⟩) (tripPlace hld ⟨1, j⟩) = (1 : Matrix (Fin (tripSizes l d n 1)) (Fin (tripSizes l d n 1)) R) i j`. Simplify using `[Matrix.one_apply]`. Rewrite using `[e2]`. Conclude with `(add_sub_cancel _ _).symm`. Establish `e : midHom R l d n g a = 1` using `Pi.mulSingle_eq_of_ne ha _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `[Matrix.mul_apply, blkId_ne R hld a ha, Matrix.one_apply]`. Rewrite using `[leviEmb_apply_ne _ _ _ hab]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) R) (tripPlace hld ⟨a, i⟩) (tripPlace hld ⟨b, j⟩) = 0` using `Matrix.one_apply_ne fun e => hab (congrArg Sigma.fst ((tripPlace hld).injective e))`. Rewrite using `[Matrix.add_apply, h1, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : a = 1`. Establish `hb : b ≠ 1` using `fun e => hab (ha.trans e.symm)`. Simplify using `[Matrix.mul_apply, blkId_ne R hld b hb]`. Simplify using `[Matrix.mul_apply, blkId_ne R hld a ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviEmb_midHom (hld : l + d ≤ n) (g : GL (Fin d) R) :
     (GlobalTheory.SmGL.leviEmb R (tripPlace hld) (midHom R l d n g)).1 = 1 + blkId R hld * (g.1 - 1) * (blkId R hld)ᵀ := by
@@ -120,7 +120,7 @@ theorem leviEmb_midHom (hld : l + d ≤ n) (g : GL (Fin d) R) :
 variable {R}
 
 /- English proof (translation)
-Establish `h1 : (cT s Q).map p = 1`. Rewrite using `[← Matrix.transpose_one, ← hQ]`. Both sides reduce to the same expression. Rewrite using `[Matrix.map_add _ (map_add p), Matrix.map_add _ (map_add p), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_sub _ (map_sub p), Matrix.map_sub _ (map_sub p), h1, Matrix.map_one _ (map_zero p) (map_one p), Matrix.map_one _ (map_zero p) (map_one p)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_formula {T : Type} [CommRing T] (p : R →+* T) (s : R →+* R) (X Y : Matrix (Fin n) (Fin d) R)
     (X' Y' : Matrix (Fin d) (Fin n) R) (P Q : Matrix (Fin d) (Fin d) R) (hQ : Q.map (p.comp s) = 1) :
@@ -133,7 +133,7 @@ theorem map_formula {T : Type} [CommRing T] (p : R →+* T) (s : R →+* R) (X Y
   simp
 
 /- English proof (translation)
-Establish `h3 : Y' = (blkId R hld)ᵀ * (B⁻¹).1` using `by rw [← h2, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[Units.val_mul, Units.val_mul, leviEmb_midHom, h3, ← h1, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.mul_inv]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_leviEmb (hld : l + d ≤ n) (B : GL (Fin n) R) (g : GL (Fin d) R) {X : Matrix (Fin n) (Fin d) R}
     {Y' : Matrix (Fin d) (Fin n) R} (h1 : B.1 * blkId R hld = X) (h2 : Y' * B.1 = (blkId R hld)ᵀ) :
@@ -152,7 +152,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {C : GL (Fin n) E} {l d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrArg σ (congrFun₂ hW.xy j i)`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, RingHom.coe_coe, cm_conj_conj hσ, hJ.1, Matrix.one_apply, apply_ite σ, map_one, map_zero, Finset.sum_mul] at h ⊢`. Rewrite using `[Finset.sum_comm, if_congr eq_comm rfl rfl, ← h]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yx_eq_one (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     cT (σ : E →+* E) Y * J * X = 1 := by
@@ -165,9 +165,9 @@ theorem yx_eq_one (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `k j`. Establish `hj` using `j.2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (⟨l + j.val, by omega⟩ : Fin n)]`. Simplify using `only [blkId, if_true, mul_one]`. Conclude with `hC.colX _ _ rfl k`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[blkId, if_neg fun e => hb (Fin.ext e), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_blkId (hC : IsAdapted σ J X Y C) (h : l + d ≤ r) (hld : l + d ≤ n) :
     C.1 * blkId E hld = blkCols h X := by
@@ -181,13 +181,13 @@ theorem mul_blkId (hC : IsAdapted σ J X Y C) (h : l + d ≤ r) (hld : l + d ≤
   · simp
 
 /- English proof (translation)
-Use extensionality with `j i`. Establish `hj` using `j.2`. Establish `hi` using `i.2`. Establish `hr` using `hC.le`. Establish `e : (cT (σ : E →+* E) (blkCols h Y) * J * C.1) j i = ((cT (σ : E →+* E) Y * J) *ᵥ (fun k => C.1 k i)) ⟨l + j.val, by omega⟩` using `rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.transpose_apply, blkId]`. Distinguish the cases in `h1 : i.val < r`. Establish `e1 : (fun k => C.1 k i) = fun k => X k ⟨i.val, h1⟩` using `funext (hC.colX _ _ rfl)`. Rewrite using `[e1]`. Use `(congrFun₂ (yx_eq_one hσ hJ hW) ⟨l + j.val, by omega⟩ ⟨i.val, h1⟩).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.one_apply, eq_comm]`. Rewrite using `[if_neg (by omega)]`. Distinguish the cases in `h2 : i.val + r < n`. Rewrite using `[hC.perpY i (by omega) h2]; rfl`. Establish `e1 : (fun k => C.1 k i) = fun k => Y k ⟨n - 1 - i.val, by omega⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(hC.columnBlock _ _ (by simp; omega))`. Rewrite using `[e1]`. Conclude with `congrFun₂ hW.yy ⟨l + j.val, by omega⟩ ⟨n - 1 - i.val, by omega⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_mul (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (hC : IsAdapted σ J X Y C)
     (h : l + d ≤ r) (hld : l + d ≤ n) :
@@ -217,7 +217,7 @@ end Frame
 section Adele
 
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_entry {R : Type} [CommRing R] {d : ℕ} {x y : GL (Fin d) R} (h : x = y) (a b : Fin d) : x.1 a b = y.1 a b := by
   rw [h]
@@ -228,7 +228,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_eq (u : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     compFin F E u z = Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u) (AlgHom.id F E) (finTens F E z) := by
@@ -239,7 +239,7 @@ theorem compFin_eq (u : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_sigR (σ : E →ₐ[F] E) (u : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     compFin F E u (sigR _ σ z) = sigR _ σ (compFin F E u z) := by
@@ -250,7 +250,7 @@ theorem compFin_sigR (σ : E →ₐ[F] E) (u : HeightOneSpectrum (𝓞 F)) (z : 
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem infTens_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
     infTens F E (sigR _ σ z) = sigR _ σ (infTens F E z) := by
@@ -260,18 +260,18 @@ theorem infTens_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite using `[compFin_eq, ← finAdEquiv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toCompl_compFin {u : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = u)
     (z : AF F ⊗[F] E) : toCompl h (compFin F E u z) = pLoc E w (finAdEquiv F E (finTens F E z)) := by
   rw [compFin_eq, ← finAdEquiv_apply]; rfl
 
 /- English proof (translation)
-Establish `h1 : ((singleFin u (1 : Fv F u)) ⊗ₜ[F] (1 : E)) * finTens F E z = 0`. Use `(finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Express the relevant statement in the definitionally equal form `pLoc E w (_ * _) = pLoc E w 0`. Rewrite using `[map_mul, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w.under (𝓞 F) = u`. Rewrite using `[hz w hw, mul_zero]`. Establish `e : pLoc E w (finAdEquiv F E ((singleFin u (1 : Fv F u)) ⊗ₜ[F] (1 : E))) = 0`. Use `Eq.trans (b := toCompl (rfl : w.under (𝓞 F) = _) _) (finAdEquiv_apply rfl ((singleFin u (1 : Fv F u)) ⊗ₜ[F] (1 : E))) ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, evalV_singleFin_ne hw, TensorProduct.zero_tmul, map_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, zero_mul]`. Establish `h2` using `congrArg (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u) (AlgHom.id F E)) h1`. Rewrite `h2` using `[map_mul, map_zero, Algebra.TensorProduct.map_tmul, evalV_singleFin_self, map_one, ← Algebra.TensorProduct.one_def, one_mul, ← compFin_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem compFin_eq_zero (u : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E)
     (hz : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = u → pLoc E w (finAdEquiv F E (finTens F E z)) = 0) :
@@ -294,14 +294,14 @@ theorem compFin_eq_zero (u : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E)
 
 omit [Algebra F E] [NumberField F] [Field F] in
 /- English proof (translation)
-The claim follows from `gl_entry (map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k) a b`.
+A detailed English derivation is pending.
 -/
 theorem pFin_finGL {d : ℕ} (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) (a b : Fin d) : pFin E ((finGL E d k).1 a b) = k.1 a b :=
   gl_entry (map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k) a b
 
 omit [Algebra F E] [NumberField F] [Field F] in
 /- English proof (translation)
-The claim follows from `gl_entry ((map_cornerGL_of_zero (S := Ad E) (sFin E) (RingHom.fst (InfiniteAdeleRing E) (GlobalTheory.CuspRep.Af E)) (fun _ => rfl) k)) a b`.
+A detailed English derivation is pending.
 -/
 theorem fst_finGL {d : ℕ} (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) (a b : Fin d) :
     RingHom.fst (InfiniteAdeleRing E) (GlobalTheory.CuspRep.Af E) ((finGL E d k).1 a b) =
@@ -314,13 +314,13 @@ variable {Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E} {j : Ainf F ⊗[F] E �
 include hΦ
 
 /- English proof (translation)
-The claim follows from `(congrArg Prod.snd (hΦ (Φ.symm a))).symm.trans (congrArg (pFin E) (Φ.apply_symm_apply a))`.
+A detailed English derivation is pending.
 -/
 theorem fin_symm (a : Ad E) : finAdEquiv F E (finTens F E (Φ.symm a)) = pFin E a :=
   (congrArg Prod.snd (hΦ (Φ.symm a))).symm.trans (congrArg (pFin E) (Φ.apply_symm_apply a))
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `j.injective (((congrArg Prod.fst (hΦ (Φ.symm _))).symm.trans (congrArg Prod.fst (Φ.apply_symm_apply _))).trans ((fst_finGL k a b).trans ?_))` and prove the remaining obligations. Simplify using `[Matrix.one_apply, apply_ite j]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_infTens (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) : ((finGL E d k).1.map Φ.symm).map (infTens F E) = 1 := by
   refine Matrix.ext fun a b => ?_
@@ -329,11 +329,11 @@ theorem map_infTens (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) : ((finGL E d k
   simp [Matrix.one_apply, apply_ite j]
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1` using `compFin_eq_zero u (Φ.symm ((finGL E d (locGL E d w k)).1 a b) - (1 : Matrix (Fin d) (Fin d) _) a b) fun w' hw' => by`. Establish `hne : w' ≠ w` using `fun e => hu (e ▸ hw')`. Apply the tactic sequence `have h2 : pLoc E w' ((locGL E d w k).1 a b) = (1 : Matrix (Fin d) (Fin d) _) a b := gl_entry (pLoc_locGL_of_ne hne k) a b`. Rewrite using `[map_sub, map_sub, map_sub, fin_symm hΦ, pFin_finGL, h2, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`. Simplify using `only [Matrix.one_apply_ne e, map_zero]`. Rewrite `h1` using `[map_sub, sub_eq_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`. Simplify using `only [Matrix.one_apply_ne e, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_compFin_ne {u : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (hu : w.under (𝓞 F) ≠ u)
     (k : GL (Fin d) (w.adicCompletion E)) :
@@ -355,7 +355,7 @@ theorem map_compFin_ne {u : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (
   · simp only [Matrix.one_apply_ne e, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← toCompl_eq_complMap, toCompl_compFin, fin_symm hΦ, pFin_finGL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem complMap_splitProj {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v) (k : GL (Fin d) (GlobalTheory.CuspRep.Af E))
     (a b : Fin d) : complMap (splitPrime_under t) (splitProj t (compFin F E v (Φ.symm ((finGL E d k).1 a b)))) =
@@ -363,7 +363,7 @@ theorem complMap_splitProj {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv 
   rw [← toCompl_eq_complMap, toCompl_compFin, fin_symm hΦ, pFin_finGL]
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `(complMap_bijective t (splitPrime_under t)).1 ((complMap_splitProj hΦ t _ a b).trans ?_)` and prove the remaining obligations. Apply the tactic sequence `exact gl_entry (pLoc_locGL (splitPrime t) _) a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_split_self {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v) (g : GL (Fin d) (Fv F v)) :
     ((finGL E d (locGL E d (splitPrime t) (glEquiv d (complEquiv t (splitPrime_under t)) g))).1.map Φ.symm).map
@@ -373,9 +373,9 @@ theorem map_split_self {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v)
   exact gl_entry (pLoc_locGL (splitPrime t) _) a b
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `(complMap_bijective t (splitPrime_under t)).1 ((complMap_splitProj hΦ t _ a b).trans ?_)` and prove the remaining obligations. Apply the tactic sequence `refine (gl_entry (pLoc_locGL_of_ne hw k) a b).trans ?_`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Units.val_one, Matrix.one_apply_eq, map_one]`. Simplify using `only [Units.val_one, Matrix.one_apply_ne e, map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_split_ne {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v) {w : HeightOneSpectrum (𝓞 E)}
     (hw : splitPrime t ≠ w) (k : GL (Fin d) (w.adicCompletion E)) :
@@ -393,23 +393,23 @@ end Adele
 open GlobalTheory.LFun GlobalTheory.CuspRep in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n J hJ r X Y hW v t C hC l d h hld ι hι g`. Take `⟨Φ, j, -, -, -, hΦ, hM⟩` from `hι`. Use `set H := glEquiv d (complEquiv t (splitPrime_under t)) g with hH`. Establish `hM'` using `hM (finGL E d (locGL E d (splitPrime t) H))`. Rewrite `hM'` using `[← map_inv, ← map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨proj σ J v (ι (finGL E d (locGL E d (splitPrime t) H))), ?_, ?_⟩` and prove the remaining obligations. Set `p : AF F ⊗[F] E →+* Fv F v` to `(splitProj t : Fv F v ⊗[F] E →+* Fv F v).comp (compFin F E v)`. Establish `hp : ∀ {a b : Type} (Z : Matrix a b E), (adMat F Z).map p = Z.map (t : E →+* Fv F v)` using `fun Z => Matrix.ext fun a b => by`. Express the relevant statement in the definitionally equal form `splitProj t (Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] (Z a b))) = t (Z a b)`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : p.comp (sigR (AF F) σ) = (splitProj (t.comp σ) : Fv F v ⊗[F] E →+* Fv F v).comp (compFin F E v)` using `RingHom.ext fun z => by`. Express the relevant statement in the definitionally equal form `splitProj t (compFin F E v (sigR _ σ z)) = splitProj (t.comp σ) (compFin F E v z)`. Rewrite using `[compFin_sigR, splitProj_comp]`. Express the relevant statement in the definitionally equal form `(matHom _ σ J (ι (finGL E d (locGL E d (splitPrime t) H)))).1.map p = _`. Rewrite using `[hM', map_formula p _ _ _ _ _ _ _ (by rw [hs]; exact map_split_ne hΦ _ (splitPrime_comp_ne hσ t) _), map_split_self hΦ t g, hp, hp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set B := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) C with hB`. Establish `hBv : B.1 = C.1.map (t : E →+* Fv F v)` using `rfl`. Establish `h1 : B.1 * blkId _ hld = (blkCols h X).map (t : E →+* Fv F v)`. Rewrite using `[hBv, ← mul_blkId hC h hld, ← blkId_map E (t : E →+* Fv F v) hld]`. Conclude with `Matrix.map_mul.symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : (cT (σ : E →+* E) (blkCols h Y) * J).map (t : E →+* Fv F v) * B.1 = (blkId _ hld)ᵀ`. Rewrite using `[hBv, ← Matrix.map_mul, dual_mul hσ hJ hW hC h hld, ← blkId_map E (t : E →+* Fv F v) hld]`. Both sides reduce to the same expression. Conclude with `conj_leviEmb hld B g h1 h2`. Use `ext_inf_fin σ J ?_ (GFin_ext σ J fun u => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projInf_emb]`. Use `matHom_injective _ σ J (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 = (matHom _ σ J (ι (finGL E d (locGL E d (splitPrime t) H)))).1.map (infTens F E)`. Rewrite using `[hM', map_formula _ _ _ _ _ _ _ _ ?_, map_infTens hΦ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : (infTens F E).comp (sigR (AF F) σ) = (sigR _ σ).comp (infTens F E)` using `RingHom.ext (infTens_sigR σ)`. Rewrite using `[e, RingHom.coe_comp, ← Matrix.map_map, map_infTens hΦ, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[projFinLoc_projFin, projFinLoc_projFin]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[proj_emb_self]`. Establish `hu' : (splitPrime t).under (𝓞 F) ≠ u` using `fun e => hu (e.symm.trans (splitPrime_under t))`. Rewrite using `[proj_emb_ne σ J hu]`. Use `matHom_injective _ σ J (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 = (matHom _ σ J (ι (finGL E d (locGL E d (splitPrime t) H)))).1.map (compFin F E u)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM', map_formula _ _ _ _ _ _ _ _ ?_, map_compFin_ne hΦ hu']`. Simplify using the standard rewrite rules. Establish `e : (compFin F E u).comp (sigR (AF F) σ) = (sigR _ σ).comp (compFin F E u)` using `RingHom.ext (compFin_sigR σ u)`. Rewrite using `[e, RingHom.coe_comp, ← Matrix.map_map, map_compFin_ne hΦ hu', Matrix.map_one _ (map_zero _) (map_one _)]`.
+A detailed English derivation is pending.
 -/
 theorem blockEmb_locGL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

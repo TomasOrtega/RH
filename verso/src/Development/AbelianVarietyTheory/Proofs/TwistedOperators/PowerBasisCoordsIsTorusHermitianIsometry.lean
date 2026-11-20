@@ -11,11 +11,9 @@ namespace GlobalTheory.TrUnitLat
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} (P : PPol σ r)
 
 /- English proof (translation)
-Establish `hs : star' P z' = ∑ i, σ ((powB P).repr z' i) • star' P (powB P i)` using `by conv_lhs => rw [← (powB P).sum_repr z']`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[Algebra.smul_def, map_mul, star'_algebraMap, ← Algebra.smul_def]`. Rewrite using `[hs, Finset.mul_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← (powB P).sum_repr z]`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, map_smul, smul_eq_mul, gramOne, Matrix.of_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_mul_star_eq_sum (z z' : Fld P) :
     ∑ i, ∑ j, σ ((powB P).repr z' i) * gramOne P i j * (powB P).repr z j =
@@ -34,13 +32,13 @@ theorem trace_mul_star_eq_sum (z z' : Fld P) :
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ r P k _ _ y y'`. Simplify using `only [Formalism.UG.hform, hx, one_mul, coordEquiv_apply]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, mul_add, add_mul, Finset.sum_add_distrib, h₁, h₂]`. Consider the case `tmul a z`. Proceed by induction on `y' using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, mul_add, add_mul, Finset.sum_add_distrib, h₁, h₂]`. Consider the case `tmul a' z'`. Establish `e1 : ∀ e : E, sigR k σ (a' ⊗ₜ[F] e) = a' ⊗ₜ[F] σ e` using `fun e => rfl`. Establish `e2 : sigR k (star' P) (a' ⊗ₜ[F] z') = a' ⊗ₜ[F] star' P z'` using `rfl`. Establish `e3 : ∀ i j, JR k (gramOne P) i j = (1 : k) ⊗ₜ[F] gramOne P i j` using `fun i j => rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : ∀ (b : k) (w : Fld P), trBase P k (b ⊗ₜ[F] w) = b ⊗ₜ[F] Algebra.trace E (Fld P) w` using `fun b w => rfl`. Simplify using `only [coordF_tmul, e1, e2, e3, Algebra.TensorProduct.tmul_mul_tmul, e4, mul_one, ← TensorProduct.tmul_sum, trace_mul_star_eq_sum]`. Rewrite using `[mul_comm a' a]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIsom_coordEquiv : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (r : ℕ) (P : PPol σ r)
     (k : Type) [CommRing k] [Algebra F k],

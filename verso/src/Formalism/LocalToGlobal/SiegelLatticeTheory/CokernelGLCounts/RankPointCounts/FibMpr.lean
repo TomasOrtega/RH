@@ -14,7 +14,7 @@ variable {D : Formalism.BasicNotions.D7} (u u' : D.what₂.Word) (F0 : FlagG (VS
   (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-Rewrite `h` using `[Formalism.L2.SG.Pf.StabilizerIndexVolumes.zhatOM_eq]`. Unfold `sbs`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem zv (Z a b : MatR D) (h : a * ZhatOM Z * b = ZhatOM Z) : a * Z * sbs b = Z := by
   rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.zhatOM_eq] at h
@@ -24,11 +24,11 @@ theorem zv (Z a b : MatR D) (h : a * ZhatOM Z * b = ZhatOM Z) : a * Z * sbs b = 
     _ = Z := by rw [h, Matrix.mul_assoc, Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM_sq, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e2 : a₂ * Z = Z * V₂⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : a₁⁻¹ * Z = Z * V₁`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : Z * (V₁ * V₂⁻¹ * uu') = Z * 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `e5 : V₁ * V₂⁻¹ * uu' = 1`. Use `congrArg (fun M => Z⁻¹ * M) e4` as an intermediate fact. Simplify `this` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hZ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e6 : uu' = V₂ * V₁⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc V₂, ← Matrix.mul_assoc V₁⁻¹, ← Matrix.mul_assoc V₁⁻¹, Matrix.nonsing_inv_mul _ hV₁, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_left _ _ hV₂]`. Use `_ = V₂ * V₁⁻¹ := by rw [e5, Matrix.mul_one]`. Rewrite using `[e6, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hV₁, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uu'_eq (Z a₁ a₂ V₁ V₂ uu' : MatR D) (hZ : IsUnit Z.det) (ha₁ : IsUnit a₁.det)
     (hV₁ : IsUnit V₁.det) (hV₂ : IsUnit V₂.det)
@@ -56,33 +56,31 @@ theorem uu'_eq (Z a₁ a₂ V₁ V₂ uu' : MatR D) (hZ : IsUnit Z.det) (ha₁ :
   rw [e6, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hV₁, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨ha₁, hb₁, hZ₁, -, hν₁, -, hν₁f, hm₁f, -, -, hF₁⟩` from `hd₁`. Take `⟨ha₂, hb₂, hZ₂, -, hν₂, -, hν₂f, hm₂f, -, -, hF₂⟩` from `hd₂`. Take `⟨s, ⟨hsF, hsF'⟩, uu, hu, hx⟩` from `(mem_stabAut_iff u u' F0 what₂ γ F' L hL hT0 _).1 hh`. Establish `hLd : IsUnit L.det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det hL]; exact isUnit_one`. Establish `ha₁d : IsUnit (a₁ : MatR D).det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det ha₁]; exact isUnit_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₁` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_conjT ha₁`. Establish `hU₂` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_conjT ha₂`. Establish `hV₁ : IsUpUni (sbs b₁)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_sgn hb₁`. Establish `hV₂ : IsUpUni (sbs b₂)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_sgn hb₂`. Establish `hV₁d : IsUnit (sbs b₁).det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_det hV₁]; exact isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₂d : IsUnit (sbs b₂).det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_det hV₂]; exact isUnit_one`. Establish `hU₁d : IsUnit ((a₁ : MatR D).conjTranspose).det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_det hU₁]; exact isUnit_one`. Establish `hsF0` using `hsF`. Take `⟨hAut, hf1, hf2⟩` from `hsF`. Take `⟨-, hg1, hg2⟩` from `hsF'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hiso : ∀ x y, (VS D).hT (s x) (s y) = (VS D).hT x y` using `((Formalism.L2.SG.Pf.isAutLam_iff _ s).1 hAut).1`. Take `⟨uu0, huu0, hu0⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F0 s hf1 hf2`. Establish `heq : uu = uu0` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.coef_unique (Formalism.L2.SG.Pf.StabilizerIndexVolumes.frame_indep F0 hT0) (fun b => s (F0.fvec b)) uu uu0 hu hu0`. Substitute `heq` using the available equality. Take `⟨uu', -, hu'⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F'.fl s hg1 hg2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hZc` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.zhat_conj F0 F'.fl s hiso uu uu' hu0 hu'`. Establish `himg` using `img_quot L _ _ hLd ha₁d x₁ x₂ hx₁ hx₂`. Rewrite `himg` using `[hx]`. Establish `hcanc : uu.conjTranspose = ((a₂ : MatR D).conjTranspose * ((a₁ : MatR D).conjTranspose)⁻¹).conjTranspose`. Use `congrArg (fun M => L * M * L⁻¹) himg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hLd, Matrix.mul_one] at this`. Simplify `this` using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hLd, Matrix.one_mul]`. Establish `huu : uu = (a₂ : MatR D).conjTranspose * ((a₁ : MatR D).conjTranspose)⁻¹`. Use `congrArg Matrix.conjTranspose hcanc` as an intermediate fact. Simplify `this` using `only [Matrix.conjTranspose_conjTranspose]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcT : uu.conjTranspose = ((a₁ : MatR D))⁻¹ * (a₂ : MatR D)`. Rewrite using `[hcanc, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Establish `hc : ((a₁ : MatR D))⁻¹ * (a₂ : MatR D) * Zhat F0 F'.fl * uu' = Zhat F0 F'.fl`. Rewrite using `[← hcT]`. Conclude with `hZc.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmove` using `uu'_eq _ _ _ _ _ uu' hZu ha₁d hV₁d hV₂d (zv _ _ _ hZ₁) (zv _ _ _ hZ₂) hc`. Use `set n : (VS D).V ≃ₗ[D.host.E] (VS D).V := ν₂⁻¹ * s * ν₁ with hn`. Establish `hnN : n ∈ NLam γ.lam (lf D F0)` using `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_inv hν₂) hsF0) hν₁`. Establish `hnf` using `act_mul _ _ _ _ _ (act_mul _ _ _ _ _ (act_inv' _ ν₂ _ hU₂ hν₂f) hu0) hν₁f`. Establish `hone : ((a₂ : MatR D).conjTranspose)⁻¹ * uu * (a₁ : MatR D).conjTranspose = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[huu, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ hU₁d, Matrix.nonsing_inv_mul _ (by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_det hU₂]; exact isUnit_one)]`. Rewrite `hnf` using `[hone]`. Establish `hnf' : ∀ b, n (F0.fvec b) = F0.fvec b` using `fun b => by`. Rewrite using `[show F0.fvec b = frame (lf D F0) b from rfl, hnf b, ← act_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n, ⟨hnN, fun a => ?_, ?_⟩, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `hnf' (Fin.castSucc a)` as an intermediate fact. Simplify `this` using `[FlagG.fvec, Fin.snoc_castSucc]`. Use `hnf' (Fin.last _)` as an intermediate fact. Simplify `this` using `[FlagG.fvec, Fin.snoc_last]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `all_goals`. Establish `hsm : ∀ c, s (m₁ (frame F' c)) = m₂ (frame F' c)` using `fun c => by`. Use `act_mul (frame F') s m₁ uu' (sbs b₁) hu' hm₁f c` as an intermediate fact. Rewrite `this` using `[hmove]`. Rewrite using `[hm₂f c]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hnF : ∀ c, n (frame F₁ c) = frame F₂ c` using `fun c => by`. Rewrite using `[hF₁ c, hF₂ c]`. Use `show ν₂⁻¹ (s (ν₁ (ν₁⁻¹ (m₁ (frame F' c))))) = _`. Rewrite using `[show ν₁ (ν₁⁻¹ (m₁ (frame F' c))) = (ν₁ * ν₁⁻¹) (m₁ (frame F' c)) from rfl, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show ν₂⁻¹ (s (m₁ (frame F' c))) = _`. Rewrite using `[hsm c]`. Use `hnF (Fin.castSucc a)` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec, Fin.snoc_castSucc]`. Use `hnF (Fin.last _)` as an intermediate fact.
-
-Simplify `this` using `[frame, FlagG.fvec, Fin.snoc_last]`.
+A detailed English derivation is pending.
 -/
 theorem fib_mpr (γ : Term D u u' F0 what₂) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L : MatR D)
     (hL : IsLoUni L) (hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0) (hZu : IsUnit (Zhat F0 F'.fl).det)

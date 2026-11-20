@@ -11,31 +11,29 @@ namespace PositivityTheory.Rg.Sw.Glob
 open SchDH
 
 /- English proof (translation)
-Introduce `m n c hc X P`. Take `⟨φ0, hφ0⟩` from `exists_fP (m := m) (n := n) c hc P`. Take `⟨φ1, hφ1⟩` from `exists_fP (m := m) (n := n) c hc (vfX c X P)`. Use `set A : ℝ → (Fin m → Fin n → ℂ) →L[ℝ] (Fin m → Fin n → ℂ) := fun t => matL (NormedSpace.exp ((t : ℂ) • X)) with hAdef`. Establish `hA : ContDiff ℝ ∞ A` using `contDiff_A X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ t y, A (-t) (A t y) = y`. Introduce `t y`. Simplify using `only [hAdef]`. Rewrite using `[← matL_mul, ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)]`. Rewrite using `[← add_smul, Complex.ofReal_neg, neg_add_cancel, zero_smul, NormedSpace.exp_zero, matL_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Aeq : ℝ → (Fin m → Fin n → ℂ) ≃L[ℝ] (Fin m → Fin n → ℂ)` to `fun t => ContinuousLinearEquiv.equivOfInverse (A t) (A (-t)) (fun y => hinv t y) (fun y => by have h := hinv (-t) y; rwa [neg_neg] at h)`. Establish `hAeq : ∀ t y, Aeq t y = A t y` using `fun t y => rfl`. Set `S : ℝ → SchwartzMap (Fin m → Fin n → ℂ) ℂ` to `fun t => SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Aeq t) φ0`. Establish `hS : ∀ t y, S t y = φ0 (A t y)` using `fun t y => by`. Simplify using `only [S, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hAeq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, φ1, fun t y => ?_, fun y => hφ1 y, ?_⟩` and prove the remaining obligations. Rewrite using `[hS, hφ0]`. Use `congr 1`. Use `set F : ℝ × (Fin m → Fin n → ℂ) → ℂ := fun q => φ0 (A q.1 q.2) with hFdef`. Establish `hF : ContDiff ℝ ∞ F` using `(φ0.smooth ⊤).comp ((hA.comp contDiff_fst).clm_apply contDiff_snd)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ p, ⇑(S p) = fun x => F (p, x)` using `fun p => by funext x; rw [hS]`. Establish `hder : ∀ x, HasDerivAt (fun t : ℝ => F (t, x)) (φ1 x) 0` using `fun x => by`. Establish `h` using `hasDerivAt_curve c X P x`. Rewrite using `[hφ1]`. Establish `e : (fun t : ℝ => F (t, x)) = fun t : ℝ => fP c P (matL (NormedSpace.exp ((t : ℂ) • X)) x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [hFdef, hAdef, hφ0]`. Rewrite using `[e]`. Conclude with `h`. Establish `hD : ∀ v : ℝ, ⇑(v • φ1) = fun x => fderiv ℝ F ((0 : ℝ), x) (v, 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `v`. Use function extensionality and compare the values at `x`. Establish `hFd : HasFDerivAt F (fderiv ℝ F ((0 : ℝ), x)) ((0 : ℝ), x)` using `((hF.differentiable (by simp)) _).hasFDerivAt`. Establish `hc : HasDerivAt (fun t : ℝ => ((t, x) : ℝ × (Fin m → Fin n → ℂ))) ((1 : ℝ), (0 : Fin m → Fin n → ℂ)) 0` using `(hasDerivAt_id (0 : ℝ)).prodMk (hasDerivAt_const (0 : ℝ) x)`. Establish `h1` using `hFd.comp_hasDerivAt (0 : ℝ) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `(hder x).unique h1`. Establish `e : ((v, 0) : ℝ × (Fin m → Fin n → ℂ)) = v • ((1 : ℝ), (0 : Fin m → Fin n → ℂ))`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[SchwartzMap.smul_apply, e, map_smul]`. Express the relevant statement in the definitionally equal form `v • φ1 x = v • (fderiv ℝ F ((0 : ℝ), x)) ((1 : ℝ), (0 : Fin m → Fin n → ℂ))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `hb : ∀ k N : ℕ, ∃ C, ∀ p : ℝ, ‖p - 0‖ ≤ 1 → ∀ x : Fin m → Fin n → ℂ, ‖x‖ ^ k * ‖iteratedFDeriv ℝ N F (p, x)‖ ≤ C` using `fun k N => bound_comp φ0 A hA hinv k N`. Rewrite using `[(schwartz_withSeminorms ℂ (Fin m → Fin n → ℂ) ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, N⟩ ε hε`. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.OM.SchDiff.seminorm_remainder hF (0 : ℝ) hb S (fun v => v • φ1) hR hD k N`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C' := max C 1 with hC'`. Establish `hC'0 : 0 < C'` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hev : ∀ᶠ t in 𝓝[≠] (0 : ℝ), |t| < min 1 (ε / C')`. Establish `h` using `(continuous_abs.tendsto (0 : ℝ)).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))`. Rewrite `h` using `[abs_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (Iio_mem_nhds (lt_min one_pos (div_pos hε hC'0)))`. Use `filter_upwards [hev, self_mem_nhdsWithin] with t ht htne`. Establish `htne' : t ≠ 0` using `htne`. Establish `ht1 : ‖t‖ ≤ 1` using `by rw [Real.norm_eq_abs]; exact (lt_of_lt_of_le ht (min_le_left _ _)).le`. Establish `key : t⁻¹ • (S t - S 0) - φ1 = ((t⁻¹ : ℝ) : ℂ) • (S (0 + t) - S 0 - t • φ1)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.coe_smul, zero_add]`. Simplify using `only [smul_sub, smul_smul, inv_mul_cancel₀ htne', one_smul]`. Express the relevant statement in the definitionally equal form `SchwartzMap.seminorm ℂ k N (t⁻¹ • (S t - S 0) - φ1) < ε`. Rewrite using `[key, map_smul_eq_mul, Complex.norm_real, norm_inv]`. Establish `hCt` using `hC t ht1`.
-
-Establish `hpos : 0 < ‖t‖` using `norm_pos_iff.2 htne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_eq_abs]`. Conclude with `lt_of_lt_of_le ht (min_le_right _ _)`. Use `_ = ε := by field_simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schDeriv : SchDeriv := by
   intro m n c hc X P

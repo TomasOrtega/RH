@@ -13,9 +13,9 @@ namespace GlobalTheory.ConjExph
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h1` using `(ι z).2`. Rewrite `h1` using `[h z, Category.assoc, z.2]`. Establish `e : spMap (ComplexEmbedding.conjugate σ') = spMap σ`. Rewrite using `[← h1, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(congrArg CommRingCat.Hom.hom (Spec.map_injective e)).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_conjugate_of_isConjMap (Y : Var F) {σ σ' : F →+* ℂ} {ι : Pts Y σ' → Pts Y σ} (h : IsConjMap ι)
     (z : Pts Y σ') : σ = ComplexEmbedding.conjugate σ' := by
@@ -27,14 +27,14 @@ theorem eq_conjugate_of_isConjMap (Y : Var F) {σ σ' : F →+* ℂ} {ι : Pts Y
   exact (congrArg CommRingCat.Hom.hom (Spec.map_injective e)).symm
 
 /- English proof (translation)
-The claim follows from `funext fun z => Subtype.ext ((h z).trans (h' z).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isConjMap_unique (Y : Var F) {σ σ' : F →+* ℂ} {ι ι' : Pts Y σ' → Pts Y σ} (h : IsConjMap ι)
     (h' : IsConjMap ι') : ι = ι' :=
   funext fun z => Subtype.ext ((h z).trans (h' z).symm)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨CxPts.conjEquiv Y.str σ', fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_isConjMap (Y : Var F) {σ σ' : F →+* ℂ} (h : σ = ComplexEmbedding.conjugate σ') :
     ∃ ι : Pts Y σ' → Pts Y σ, IsConjMap ι := by
@@ -42,7 +42,7 @@ theorem exists_isConjMap (Y : Var F) {σ σ' : F →+* ℂ} (h : σ = ComplexEmb
   exact ⟨CxPts.conjEquiv Y.str σ', fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `star_star σ`.
+A detailed English derivation is pending.
 -/
 theorem conjugate_conjugate (σ : F →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ :=
   star_star σ

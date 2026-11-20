@@ -17,9 +17,9 @@ section Fr
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Introduce `i i' hii' hi'`. Proceed by induction on `i' with`. Consider the case `zero => omega`. Consider the case `succ k ih`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hii' with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(ih h (by omega)).trans (hV.2.2.1 j k hi')`. Substitute `h` using the available equality. Conclude with `hV.2.2.1 j i hi'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem fr_lt_fr_of_lt (hV : Fr.Valid L₁ N₁) (j : ℤ) :
     ∀ i i', i < i' → i' < r → Fr.fr j i < Fr.fr j i' := by
@@ -33,7 +33,7 @@ private theorem fr_lt_fr_of_lt (hV : Fr.Valid L₁ N₁) (j : ℤ) :
       exact hV.2.2.1 j i hi'
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `(fr_lt_fr_of_lt hV j 0 i h hi).le`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fr_le_fr_of_le (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) (hi : i < r) :
     Fr.fr j 0 ≤ Fr.fr j i := by
@@ -42,19 +42,17 @@ private theorem fr_le_fr_of_le (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) (hi
   · exact (fr_lt_fr_of_lt hV j 0 i h hi).le
 
 /- English proof (translation)
-Establish `hlen : ((Fr.LLset j).sort (· ≤ ·)).length = N` using `by rw [Finset.length_sort, hN]`. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hx`. Unfold `Frames.IsW at hW`. Use `push_neg at hW`. Take `⟨⟨hx1, hx2⟩, hxT⟩` from `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge x (Fr.fr j 0) with hlt | hge` into its components or cases. Establish `hxL : x ∈ Fr.LLset j`. Simplify using `only [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo]`. Conclude with `⟨⟨hW, hlt⟩, hxT⟩`. Take `⟨u, hu, hux⟩` from `List.mem_iff_getElem.mp ((Finset.mem_sort (· ≤ ·)).mpr hxL)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, by omega, ?_⟩` and prove the remaining obligations. Unfold `posU llPos`. Rewrite using `[if_pos (by omega), List.getD_eq_getElem _ _ hu, hux]`. Establish `key : ∃ i, i < r ∧ Fr.fr j i = x`. Assume the negation of the conclusion as `hne`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hne`. Establish `hall : ∀ i, i < r → Fr.fr j i < x`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_ne hge (hne 0 h0)`. Consider the case `succ k ih`. Introduce `hk`. Establish `h1` using `ih (by omega)`. Assume the negation of the conclusion as `h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `push_neg at h2`. Establish `h3 : x < Fr.fr j (k + 1)` using `lt_of_le_of_ne h2 (fun h' => hne (k + 1) hk h'.symm)`. Conclude with `hV.2.2.2.2.2.1 j k x hk h1 h3 hxT`. Establish `h4` using `hall (r - 1) (by omega)`. Use linear arithmetic over natural numbers and integers.
-
-Take `⟨i, hi, hix⟩` from `key`. Use `⟨N + i, by omega, ?_⟩` and prove the remaining obligations. Unfold `posU`. Rewrite using `[if_neg (by omega), Nat.add_sub_cancel_left, hix]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_posU (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (N : ℕ) (hN : N = (Fr.LLset j).card) (x : ℤ)
     (hx : x ∈ Fr.letters j) (hW : ¬ Fr.IsW j x) : ∃ u, u < N + r ∧ posU Fr N j u = x := by
@@ -93,7 +91,7 @@ theorem exists_posU (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (N : ℕ)
     rw [if_neg (by omega), Nat.add_sub_cancel_left, hix]
 
 /- English proof (translation)
-Unfold `posU`. Rewrite using `[if_neg (by omega)]`. Conclude with `(hV.2.2.2.2.1 j (u - N) (by omega)).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posU_even (hV : Fr.Valid L₁ N₁) (j : ℤ) (N u : ℕ) (h1 : N ≤ u) (h2 : u < N + r) : Even (posU Fr N j u) := by
   unfold posU
@@ -101,17 +99,15 @@ theorem posU_even (hV : Fr.Valid L₁ N₁) (j : ℤ) (N u : ℕ) (h1 : N ≤ u)
   exact (hV.2.2.2.2.1 j (u - N) (by omega)).2
 
 /- English proof (translation)
-Establish `hmemLL : ∀ x ∈ Fr.LLset j, x ∈ Fr.letters j ∧ ¬ Fr.IsW j x`. Introduce `x hx`. Simplify using `only [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo] at hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨?_, ?_⟩, hx.2⟩` and prove the remaining obligations. Conclude with `(fr_le_fr_of_le hV (j - 1) (r - 1) (by omega)).trans hx.1.1.le`. Conclude with `hx.1.2.le.trans (fr_le_fr_of_le hV j (r - 1) (by omega))`. Unfold `Frames.IsW push_neg`. Conclude with `hx.1.1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Unfold `posU`. Break down `Nat.lt_or_ge u N with hu' | hu'` into its components or cases. Rewrite using `[if_pos hu']`. Apply `hmemLL` to reduce the goal to its premises. Unfold `llPos`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlen : u < ((Fr.LLset j).sort (· ≤ ·)).length` using `by rw [Finset.length_sort]; omega`. Rewrite using `[List.getD_eq_getElem _ _ hlen]`. Conclude with `(Finset.mem_sort _).mp (List.getElem_mem _)`. Establish `hu'' : u = N` using `le_antisymm hu hu'`. Rewrite using `[if_neg (by omega), hu'', Nat.sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hg` using `hV.2.2.2.1 (j - 1)`. Rewrite `hg` using `[sub_add_cancel]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨(fr_le_fr_of_le hV (j - 1) (r - 1) (by omega)).trans hg.le, fr_le_fr_of_le hV j (r - 1) (by omega)⟩, (hV.2.2.2.2.1 j 0 (by omega)).1⟩`.
-
-Unfold `Frames.IsW push_neg`. Conclude with `hg`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem posU_letter (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (N : ℕ) (hN : N = (Fr.LLset j).card) (u : ℕ)
     (hu : u ≤ N) : posU Fr N j u ∈ Fr.letters j ∧ ¬ Fr.IsW j (posU Fr N j u) := by
@@ -154,14 +150,14 @@ variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (deg : Fin n' →
   {J : ℕ} (nL : ZMod J → ℕ) (K : ℕ) [NeZero K] (ka : ZMod J → ℕ → Fin K → ℤ) (j : ZMod J) (u : ℕ)
 
 /- English proof (translation)
-Unfold `thStar`. Conclude with `le_max_left _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem th_ge_B : Bo p Fr deg (segZ j) (posU Fr (nL j) (segZ j) u) / 2 ≤ thStar Fr p deg Y k mS nL K ka j u := by
   unfold thStar
   exact le_max_left _ _
 
 /- English proof (translation)
-Unfold `thStar slU`. Simplify using `only`. Rewrite using `[if_pos h]`. Conclude with `le_max_of_le_right (le_max_left _ _)`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem threshold_ge_even_position (h : Even (posU Fr (nL j) (segZ j) u)) :
     (ka j (u + 1) 0 : ℝ) + mS + slU Fr p deg Y k nL j u ≤ thStar Fr p deg Y k mS nL K ka j u := by
@@ -171,7 +167,7 @@ theorem threshold_ge_even_position (h : Even (posU Fr (nL j) (segZ j) u)) :
   exact le_max_of_le_right (le_max_left _ _)
 
 /- English proof (translation)
-Unfold `thStar slU`. Simplify using `only`. Establish `hc : 1 ≤ u + 1 ∧ ¬ Even (posU Fr (nL j) (segZ j) u)` using `⟨by omega, h⟩`. Rewrite using `[add_tsub_cancel_right, if_pos hc]`. Conclude with `le_max_of_le_right (le_max_right _ _)`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem threshold_ge_odd_position (h : ¬ Even (posU Fr (nL j) (segZ j) u)) :
     (ka j u 0 : ℝ) + mS + slU Fr p deg Y k nL j (u + 1) ≤ thStar Fr p deg Y k mS nL K ka j (u + 1) := by
@@ -184,7 +180,7 @@ theorem threshold_ge_odd_position (h : ¬ Even (posU Fr (nL j) (segZ j) u)) :
 end Th
 
 /- English proof (translation)
-Establish `h3 : z ≤ ⌈t⌉`. Establish `h4 : (z : ℝ) ≤ ((⌈t⌉ : ℤ) : ℝ)` using `h1.trans (Int.le_ceil t)`. Conclude with `h4` after adjusting the coercions. Conclude with `(WithTop.coe_le_coe.mpr h3).trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_le_val {z : ℤ} {t : ℝ} {v : WithTop ℤ} (h1 : (z : ℝ) ≤ t) (h2 : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ v) :
     ((z : ℤ) : WithTop ℤ) ≤ v := by
@@ -194,7 +190,7 @@ theorem int_le_val {z : ℤ} {t : ℝ} {v : WithTop ℤ} (h1 : (z : ℝ) ≤ t) 
   exact (WithTop.coe_le_coe.mpr h3).trans h2
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `h2` using `[hz]`. Establish `h3 : ⌈t⌉ ≤ z` using `WithTop.coe_le_coe.mp h2`. Conclude with `h1.trans (Int.ceil_le.mp h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geR_of_ceil {s t : ℝ} {v : WithTop ℤ} (h1 : s ≤ t) (h2 : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ v) : geR v s := by
   intro z hz
@@ -219,9 +215,7 @@ section Sup
 variable {O : Type} [CommRing O] {r K : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : (rename f A).coeff a = 0` using `MvPolynomial.coeff_rename_eq_zero f A a (fun u hu => by`. Assume the negation of the conclusion as `hu0`. Conclude with `hc u (MvPolynomial.mem_support_iff.mpr hu0) hu)`.
-
-Conclude with `(MvPolynomial.mem_support_iff.mp ha) h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_of_rename {σ τ : Type} (f : σ → τ) (A : MvPolynomial σ O) (a : τ →₀ ℕ) (ha : a ∈ (rename f A).support) :
     ∃ u ∈ A.support, Finsupp.mapDomain f u = a := by
@@ -233,19 +227,19 @@ theorem exists_of_rename {σ τ : Type} (f : σ → τ) (A : MvPolynomial σ O) 
   exact (MvPolynomial.mem_support_iff.mp ha) h0
 
 /- English proof (translation)
-Take `⟨a', ha', b', hb', rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hmm)`. Take `⟨ua, hua, rfl⟩` from `exists_of_rename (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) A a' ha'`. Take `⟨ub, hub, rfl⟩` from `exists_of_rename (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) B b' hb'`. Establish `hinj1 : Function.Injective (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2))`. Introduce and unpack `⟨a1, a2⟩ ⟨b1, b2⟩ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective _ _ h.2)`. Establish `hinj2 : Function.Injective (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2))`. Introduce and unpack `⟨a1, a2⟩ ⟨b1, b2⟩ h`. Simplify using `only [Prod.mk.injEq] at h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Prod.ext h.1 (Fin.natAdd_injective _ _ h.2)`. Use `⟨ua, hua, ub, hub, fun x => ⟨fun c => ?_, fun c => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `Finsupp.mapDomain_apply hinj1 ua (x, c)`. Simplify using `only at e1`. Establish `e2 : Finsupp.mapDomain (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) ub (x, Fin.castAdd K c) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨y, d⟩, hyd⟩`. Simplify using `only [Prod.mk.injEq] at hyd`. Establish `h5` using `congrArg Fin.val hyd.2`. Simplify using `only [Fin.coe_natAdd, Fin.coe_castAdd] at h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.add_apply, e1, e2, add_zero]`. Establish `e1` using `Finsupp.mapDomain_apply hinj2 ub (x, c)`. Simplify using `only at e1`. Establish `e2 : Finsupp.mapDomain (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) ua (x, Fin.natAdd r c) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨y, d⟩, hyd⟩`. Simplify using `only [Prod.mk.injEq] at hyd`. Establish `h5` using `congrArg Fin.val hyd.2`. Simplify using `only [Fin.coe_natAdd, Fin.coe_castAdd] at h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.add_apply, e1, e2, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem deg_mul (A : MvPolynomial (ℤ × Fin r) O) (B : MvPolynomial (ℤ × Fin K) O) (mm : ℤ × Fin (r + K) →₀ ℕ)
     (hmm : mm ∈ (plEmb O r K A * nmEmb O r K B).support) :

@@ -20,13 +20,13 @@ def gX (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (y : (D
   ((β.surj a hM j).choose_spec y).choose
 
 /- English proof (translation)
-The claim follows from `((β.surj a hM j).choose_spec y).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem gX_fil (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (y : (D.A a).N j) :
     D.fil a j (gN β a hM j) (gX β a hM j y) := ((β.surj a hM j).choose_spec y).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `((β.surj a hM j).choose_spec y).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem gX_spec (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (y : (D.A a).N j) :
     β.β a j (gX β a hM j y) = R.t ^ gN β a hM j • y := ((β.surj a hM j).choose_spec y).choose_spec.2
@@ -38,14 +38,14 @@ def gamma (hF : R.Facts) (β : BMap G D) (κ : PMap G D) {M : Model l K} (a : D.
   if hM : G M then Gam.hom (κ.lin a hM j) hF.t_ne (β.inj a hM j) (gN β a hM j) (gX β a hM j) (gX_spec β a hM j) else 0
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hF.t_ne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_pow_ne (hF : R.Facts) (n : ℕ) : R.i (R.t ^ n) ≠ 0 := by rw [map_pow]; exact pow_ne_zero _ hF.t_ne
 
 variable (hF : R.Facts) (β : BMap G D) (κ : PMap G D)
 
 /- English proof (translation)
-Rewrite using `[gamma, dif_pos hM]`. Conclude with `Gam.hom_key _ _ _ _ _ _ h φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_key {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} {c : R.A} {x : (D.H a).N j} {y : (D.A a).N j}
     (h : β.β a j x = c • y) (φ : Module.Dual K (HdR M.q j)) : κ.κ a j x φ = R.i c * gamma hF β κ a j y φ := by
@@ -53,14 +53,14 @@ theorem gamma_key {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} {c : R.A} {x
   exact Gam.hom_key _ _ _ _ _ _ h φ
 
 /- English proof (translation)
-The claim follows from `gamma_key hF β κ hM (gX_spec β a hM j y) φ`.
+A detailed English derivation is pending.
 -/
 theorem gamma_key' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a).N j) (φ : Module.Dual K (HdR M.q j)) :
     κ.κ a j (gX β a hM j y) φ = R.i (R.t ^ gN β a hM j) * gamma hF β κ a j y φ :=
   gamma_key hF β κ hM (gX_spec β a hM j y) φ
 
 /- English proof (translation)
-Establish `h1` using `gamma_key hF β κ hM (x := c • gX β a hM j y) (c := R.t ^ gN β a hM j) (y := c • y) (by rw [map_smul, gX_spec, smul_comm]) φ`. Rewrite `h1` using `[κ.lin a hM, gamma_key' hF β κ hM]`. Apply `mul_left_cancel₀ (t_pow_ne hF (gN β a hM j))` to reduce the goal to its premises. Take the linear combination `-h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gamma_smul {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (c : R.A) (y : (D.A a).N j)
     (φ : Module.Dual K (HdR M.q j)) : gamma hF β κ a j (c • y) φ = R.i c * gamma hF β κ a j y φ := by
@@ -71,7 +71,7 @@ theorem gamma_smul {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (c : R.A) (
   linear_combination -h1
 
 /- English proof (translation)
-Establish `h1` using `gamma_key' hF β κ hM y (k • φ)`. Rewrite `h1` using `[κ.lin' a hM, gamma_key' hF β κ hM]`. Apply `mul_left_cancel₀ (t_pow_ne hF (gN β a hM j))` to reduce the goal to its premises. Take the linear combination `-h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gamma_lin' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a).N j) (k : K)
     (φ : Module.Dual K (HdR M.q j)) : gamma hF β κ a j y (k • φ) = R.o k * gamma hF β κ a j y φ := by
@@ -81,7 +81,7 @@ theorem gamma_lin' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a
   linear_combination -h1
 
 /- English proof (translation)
-Establish `h1` using `gamma_key hF β κ hM (x := (D.H a).act j σ (gX β a hM j y)) (c := R.σA σ (R.t ^ gN β a hM j)) (y := (D.A a).act j σ y) (by rw [β.act a hM, gX_spec, hL.act_smul]) φ`. Rewrite `h1` using `[κ.act a hM, gamma_key' hF β κ hM, map_mul, hF.i_σ]`. Establish `ht : R.σ σ (R.i (R.t ^ gN β a hM j)) ≠ 0` using `(map_ne_zero _).2 (t_pow_ne hF _)`. Conclude with `(mul_left_cancel₀ ht h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gamma_act (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (σ : K.fixingSubgroup)
     (y : (D.A a).N j) (φ : Module.Dual K (HdR M.q j)) :
@@ -93,7 +93,7 @@ theorem gamma_act (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : �
   exact (mul_left_cancel₀ ht h1).symm
 
 /- English proof (translation)
-Establish `h1` using `gamma_key hF β κ hM (x := D.pullH m j (gX β b hN j y)) (c := R.t ^ gN β b hN j) (y := D.pullA m j y) (by rw [β.nat m hM hN, gX_spec, map_smul]) φ`. Rewrite `h1` using `[κ.nat m hM hN, gamma_key' hF β κ hN]`. Conclude with `(mul_left_cancel₀ (t_pow_ne hF _) h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : D.Ch M} {b : D.Ch N}
     (m : D.Mo u hu a b) (hM : G M) (hN : G N) (j : ℕ) (y : (D.A b).N j) (φ : Module.Dual K (HdR M.q j)) :
@@ -105,9 +105,9 @@ theorem gamma_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a 
   exact (mul_left_cancel₀ (t_pow_ne hF _) h1).symm
 
 /- English proof (translation)
-Take `⟨z, hz, e⟩` from `κ.fil a hM j (gN β a hM j) r (gX β a hM j y) φ (gX_fil β a hM j y) hφ`. Rewrite `e` using `[gamma_key' hF β κ hM, map_pow]`. Establish `ht : R.tB ^ gN β a hM j ≠ 0` using `pow_ne_zero _ hF.t_ne`. Establish `: R.tB ^ r * gamma hF β κ a j y φ = z`. Apply `mul_left_cancel₀ ht` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e' : R.tB ^ r * (R.tB ^ gN β a hM j * gamma hF β κ a j y φ) = R.tB ^ gN β a hM j * z` using `e`. Take the linear combination `e'`. Rewrite using `[this]`. Conclude with `hz`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_fil {M : Model l K} {a : D.Ch M} (hM : G M) (j r : ℕ) (y : (D.A a).N j) (φ : Module.Dual K (HdR M.q j))
     (hφ : ∀ h ∈ FilR M.q j (r + 1), φ h = 0) : R.tB ^ r * gamma hF β κ a j y φ ∈ R.P := by
@@ -121,11 +121,11 @@ theorem gamma_fil {M : Model l K} {a : D.Ch M} (hM : G M) (j r : ℕ) (y : (D.A 
   rw [this]; exact hz
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hL.cup_ex a (gX β a hM i y₁) (gX β a hM j y₂)`. Establish `hc'` using `β.cup a hM _ _ z hz`. Rewrite `hc'` using `[gX_spec, gX_spec]`. Establish `e` using `hL.cup_uniq a _ _ _ _ hc' (hL.cup_smul a _ _ y₁ y₂ y₃ hc)`. Establish `h1` using `gamma_key hF β κ hM e φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[κ.cup a hM _ _ z hz b b' φ]`. Simplify using `only [gamma_key' hF β κ hM] at h1`. Establish `ht` using `mul_ne_zero (t_pow_ne hF (gN β a hM i)) (t_pow_ne hF (gN β a hM j))`. Apply `mul_left_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[← map_mul, ← h1, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gamma_cup (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {i j : ℕ} (y₁ : (D.A a).N i)
     (y₂ : (D.A a).N j) (y₃ : (D.A a).N (i + j)) (hc : (D.A a).cup y₁ y₂ y₃) {m m' : ℕ}

@@ -12,7 +12,7 @@ section Lifts
 variable {R E : Type*} [Field R] [Field E]
 
 /- English proof (translation)
-Establish `hPm0 : P.map i ≠ 0` using `Polynomial.map_ne_zero hP0`. Establish `hQs : Q.Splits` using `(hP.map i).of_dvd hPm0 hdvd`. Use `hQs.mem_lift_of_roots_mem_range hQ i fun a ha => ?_` and prove the remaining obligations. Establish `ha' : a ∈ (P.map i).roots` using `Multiset.mem_of_le (roots.le_of_dvd hPm0 hdvd) ha`. Conclude with `hP.mem_range_of_isRoot hP0 (isRoot_of_mem_roots ha')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_lifts_of_dvd_map_of_splits (i : R →+* E) {P : R[X]} (hP : P.Splits) (hP0 : P ≠ 0)
     {Q : E[X]} (hQ : Q.Monic) (hdvd : Q ∣ P.map i) : Q ∈ lifts i := by
@@ -31,33 +31,27 @@ variable {K₀ C E : Type*} [Field K₀] [Field C] [Field E] [Algebra K₀ C] [A
   (L : Type*) [Field L] [Algebra K₀ L] [Algebra L C] [IsScalarTower K₀ L C]
 
 /- English proof (translation)
-Use `set α : C := algebraMap L C pb.gen with hα`. Use `set x : E := j α with hx`. Use `set n := pb.dim`. Use `set P := minpoly K₀ pb.gen`. Set `f : L →ₐ[K₀] E` to `j.comp (IsScalarTower.toAlgHom K₀ L C)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfx : f pb.gen = x` using `rfl`. Establish `hxint : IsIntegral F x`. Establish `h1 : IsIntegral K₀ x` using `hfx ▸ (pb.isIntegral_gen).map f`. Conclude with `h1.tower_top`. Use `set m := minpoly F x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hm0 : m ≠ 0` using `minpoly.ne_zero hxint`. Establish `hP0 : P ≠ 0` using `minpoly.ne_zero pb.isIntegral_gen`. Establish `hPx : aeval x P = 0`. Rewrite using `[← hfx, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hdvdF : m ∣ P.map (algebraMap K₀ F)` using `minpoly.dvd F x (by rw [Polynomial.aeval_map_algebraMap]; exact hPx)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `i : N →+* E` to `j.toRingHom.comp (algebraMap N C)`. Establish `hi : i.comp (algebraMap K₀ N) = algebraMap K₀ E`. Use extensionality with `a`. Simplify using `only [i, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← IsScalarTower.algebraMap_apply, AlgHom.commutes]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hFE : (algebraMap F E).comp (algebraMap K₀ F) = algebraMap K₀ E` using `(IsScalarTower.algebraMap_eq K₀ F E).symm`. Establish `hdvdE : m.map (algebraMap F E) ∣ (P.map (algebraMap K₀ N)).map i`. Rewrite using `[Polynomial.map_map, hi, ← hFE, ← Polynomial.map_map]`. Conclude with `Polynomial.map_dvd _ hdvdF`. Establish `hlift` using `mem_lifts_of_dvd_map_of_splits i hN (Polynomial.map_ne_zero hP0) ((minpoly.monic hxint).map _) hdvdE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨D, hD⟩` from `(Polynomial.mem_lifts _).1 hlift`. Establish `hiinj : Function.Injective i` using `i.injective`. Establish `hDdeg : D.natDegree = m.natDegree`. Rewrite using `[← natDegree_map_eq_of_injective hiinj, hD, natDegree_map_eq_of_injective (algebraMap F E).injective]`. Establish `hcoeff : ∀ k, ((D.coeff k : N) : C) ∈ M ⊓ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Use `⟨hM _ ?_, (D.coeff k).2⟩` and prove the remaining obligations. Establish `e : j ((D.coeff k : N) : C) = (D.map i).coeff k`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[e, hD, coeff_map]`. Conclude with `(m.coeff k).2`. Establish `hDα : (D.map (algebraMap N C)).eval α = 0`. Establish `h0 : j.toRingHom ((D.map (algebraMap N C)).eval α) = 0`. Rewrite using `[Polynomial.eval_map, Polynomial.hom_eval₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.eval₂ i x = 0`. Rewrite using `[← Polynomial.eval_map, hD, Polynomial.eval_map, ← Polynomial.aeval_def, minpoly.aeval]`. Conclude with `(map_eq_zero_iff _ j.toRingHom.injective).1 h0`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hDlt : (D.map (algebraMap N C)).natDegree < n`. Rewrite using `[natDegree_map_eq_of_injective (algebraMap N C).injective, hDdeg]`. Conclude with `hlt`. Establish `hsum` using `hDα`. Rewrite `hsum` using `[Polynomial.eval_eq_sum_range' hDlt, ← Fin.sum_univ_eq_sum_range (fun k => (D.map (algebraMap N C)).coeff k * α ^ k) n]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `li` using `hdisj.linearIndependent_right' pb.basis.linearIndependent`. Establish `hzero` using `Fintype.linearIndependent_iff.1 li (fun k => ⟨((D.coeff k : N) : C), hcoeff k⟩) (by`. Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, PowerBasis.coe_basis, map_pow, Algebra.smul_def, coeff_map]`.
-
-Use the proof step `rfl)`. Establish `hD0 : D = 0`. Use `Polynomial.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_zero]`. Distinguish the cases in `hk : k < n`.
-
-Establish `h1` using `congrArg Subtype.val (hzero ⟨k, hk⟩)`. Simplify using `using h1`. Conclude with `coeff_eq_zero_of_natDegree_lt (p := D) (n := k) (by rw [hDdeg]; omega)`. Apply `hm0` to reduce the goal to its premises. Establish `h2` using `hD`.
-
-Rewrite `h2` using `[hD0, Polynomial.map_zero]`. Conclude with `(Polynomial.map_eq_zero_iff (algebraMap F E).injective).1 h2.symm`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_natDegree_minpoly_of_linearDisjoint (pb : PowerBasis K₀ L)
     (hM : ∀ y : C, j y ∈ F → y ∈ M)
@@ -140,13 +134,13 @@ theorem le_natDegree_minpoly_of_linearDisjoint (pb : PowerBasis K₀ L)
   exact (Polynomial.map_eq_zero_iff (algebraMap F E).injective).1 h2.symm
 
 /- English proof (translation)
-Set `pb` to `Field.powerBasisOfFiniteOfSeparable K₀ L`. Use `set x : E := j (algebraMap L C pb.gen) with hx`. Establish `hle` using `le_natDegree_minpoly_of_linearDisjoint j F M N L pb hM (hN pb.gen) hdisj`. Establish `li : LinearIndependent F (fun k : Fin pb.dim => x ^ (k : ℕ))` using `(linearIndependent_pow x).comp (Fin.castLE hle) (Fin.castLE_injective hle)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_left pb.basis z`. Establish `hc : c = 0`. Use extensionality with `k`. Establish `h3` using `Fintype.linearIndependent_iff.1 li (fun k => c k) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[map_finsuppSum, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[← hz]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.lift_tmul, PowerBasis.coe_basis, Algebra.smul_def, mul_comm]`. Simplify using `[x, map_pow])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3 k`. Rewrite using `[hc, Finsupp.sum_zero_index]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_lift_of_linearDisjoint [FiniteDimensional K₀ L] [Algebra.IsSeparable K₀ L]
     (hM : ∀ y : C, j y ∈ F → y ∈ M)
@@ -174,11 +168,11 @@ theorem injective_lift_of_linearDisjoint [FiniteDimensional K₀ L] [Algebra.IsS
   rw [hc, Finsupp.sum_zero_index]
 
 /- English proof (translation)
-Set `g' : B →ₐ[K₀] F` to `{ toFun := fun b => ⟨g b, hgF b⟩ map_one' := Subtype.ext (map_one g) map_mul' := fun a b => Subtype.ext (map_mul g a b) map_zero' := Subtype.ext (map_zero g) map_add' := fun a b => Subtype.ext (map_add g a b) commutes' := fun r => Subtype.ext (g.commutes r) }`. Establish `hg' : Function.Injective g'` using `fun a b h => hg (congrArg Subtype.val h)`. Establish `hflat : Function.Injective (g'.toLinearMap.lTensor L)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hg'`. Establish `heq : ∀ z, Algebra.TensorProduct.lift (j.comp (IsScalarTower.toAlgHom K₀ L C)) F.val (fun _ _ => Commute.all _ _) (g'.toLinearMap.lTensor L z) = Algebra.TensorProduct.lift (j.comp (IsScalarTower.toAlgHom K₀ L C)) g (fun _ _ => Commute.all _ _) z`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [g']`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add]`. Introduce `z₁ z₂ h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hflat` to reduce the goal to its premises. Apply `injective_lift_of_linearDisjoint j F M N L hM hN hdisj` to reduce the goal to its premises. Rewrite using `[heq, heq, h]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_lift_of_forall_mem [FiniteDimensional K₀ L] [Algebra.IsSeparable K₀ L]
     (hM : ∀ y : C, j y ∈ F → y ∈ M)

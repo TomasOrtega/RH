@@ -44,7 +44,7 @@ namespace WittFrame
 variable {V : HSpace E} (Φ : WittFrame V)
 
 /- English proof (translation)
-The claim follows from `LinearIndependent.of_pairwise_dual_eq_zero_one _ (fun j => V.hT (Φ.f j)) (fun j i h => (Φ.ef i j).trans (if_neg h.symm)) fun i => (Φ.ef i i).trans (if_pos rfl)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_e : LinearIndependent E Φ.e :=
   LinearIndependent.of_pairwise_dual_eq_zero_one _ (fun j => V.hT (Φ.f j))
@@ -57,7 +57,7 @@ def stdFlag (J : Finset (Fin (wittIndex V))) : IsoFlag V := subFlag Φ.flag0 J
 def sub (u : SV (wittIndex V)) : Submodule E V.V := Submodule.span E (Φ.e '' {i | u i = 1} ∪ Φ.f '' {i | u i = -1})
 
 /- English proof (translation)
-Establish `h1 : {i | stdVec j i = 1} = {i : Fin (wittIndex V) | i.val < j.succ.val}` using `Set.ext fun i => by`. Simplify using `[stdVec, Nat.lt_succ_iff]`. Establish `h2 : {i | stdVec j i = -1} = ∅` using `Set.ext fun i => by`. Apply the tactic sequence `simp only [stdVec, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]; split_ifs <;> decide`. Rewrite using `[sub, h1, h2, Set.image_empty, Set.union_empty]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -81,7 +81,7 @@ def coef (i : Fin (wittIndex V)) : (Fin V.rank → R ⊗[F] E) →ₗ[R ⊗[F] E
   map_smul' c y := hLin_smul_left _ _ _ c y _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `hR R hc.sig V.gram _ _ = inclR R (V.hT _ _)`. Rewrite using `[IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord]`. Simplify using `[hR, Formalism.UG.hform, coordR, JR, inclR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_coordR (i : Fin (wittIndex V)) (x : V.V) : Φ.coef hc R i (coordR V R x) = inclR R (V.hD x (Φ.f i)) := by
   change hR R hc.sig V.gram _ _ = inclR R (V.hT _ _)
@@ -89,9 +89,7 @@ theorem coef_coordR (i : Fin (wittIndex V)) (x : V.V) : Φ.coef hc R i (coordR V
   simp [hR, Formalism.UG.hform, coordR, JR, inclR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := LinearMap.ker (Φ.coef hc R i))).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: V.hT (Φ.f i) x = 0` using `(Submodule.span_le (p := LinearMap.ker (V.hT (Φ.f i)))).2 (by`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `(Φ.ef j i).trans (if_neg (Fin.ne_of_val_ne (ne_of_lt hj)))) hx`.
-
-Conclude with `(Φ.coef_coordR hc R i x).trans (by rw [HSpace.hD, this, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coef_eq_zero (i : Fin (wittIndex V)) {y : Fin V.rank → R ⊗[F] E}
     (hy : y ∈ extSub (F := F) V R (Φ.flag0.X i.castSucc)) : Φ.coef hc R i y = 0 := by
@@ -103,13 +101,13 @@ theorem coef_eq_zero (i : Fin (wittIndex V)) {y : Fin V.rank → R ⊗[F] E}
   exact (Φ.coef_coordR hc R i x).trans (by rw [HSpace.hD, this, map_zero])
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ Φ.flag0.X i.succ, x - V.hT (Φ.f i) x • Φ.e i ∈ Φ.flag0.X i.castSucc` using `fun x hx => by`. Use `(Submodule.span_le (p := (Φ.flag0.X i.castSucc).comap (LinearMap.id - (V.hT (Φ.f i)).smulRight (Φ.e i)))).2 (by` as an intermediate fact. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smulRight_apply]`. Rewrite using `[show V.hT (Φ.f i) (Φ.e j) = _ from Φ.ef j i]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with e`. Rewrite using `[e, one_smul, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[zero_smul, sub_zero]`. Conclude with `Submodule.subset_span ⟨j, lt_of_le_of_ne (Nat.lt_succ_iff.1 hj) (Fin.val_ne_of_ne e), rfl⟩) hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. It suffices to establish `h : extSub (F` using `F) V R (Φ.flag0.X i.succ) ≤ (extSub (F := F) V R (Φ.flag0.X i.castSucc)).comap (LinearMap.id - (Φ.coef hc R i).smulRight (coordR V R (Φ.e i))) by simpa using h hy`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `h1 x hx` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smulRight_apply]`. Rewrite using `[coef_coordR]`. Use `coordR_mem (F := F) V R this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `[coordR, HSpace.hD]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_coef_mem (i : Fin (wittIndex V)) {y : Fin V.rank → R ⊗[F] E}
     (hy : y ∈ extSub (F := F) V R (Φ.flag0.X i.succ)) :
@@ -159,13 +157,13 @@ def IsGood (L : Submodule (𝓞 E) (Fin V.rank → E)) (a : GL (Fin V.rank) (AF 
 end WittFrame
 
 /- English proof (translation)
-Take `⟨W, hW, e⟩` from `le_wittIndex_iff.1 (le_refl (wittIndex V))`. Take `⟨r, C, hC, rfl⟩` from `AutFunCompare.exists_colSpan V W`. Take `rfl : r = wittIndex V` from `((finrank_span_eq_card (hC.map' V.frame.equivFun.symm.toLinearMap (LinearEquiv.ker _))).trans (Fintype.card_fin r)).symm.trans e`. Establish `key : ∀ (A B : Matrix (Fin V.rank) (Fin (wittIndex V)) E) i j, V.hD (AutFunCompare.vecOf V (Aᵀ i)) (AutFunCompare.vecOf V (Bᵀ j)) = (Formalism.UG.cT (hc.sig : E →+* E) B * V.gram * A) j i` using `fun A B i j => by`. Rewrite using `[HSpace.hD, AutFunCompare.hT_col hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AutFunCompare.repr_vecOf]`. Both sides reduce to the same expression. Establish `h0 : Formalism.UG.cT (hc.sig : E →+* E) C * V.gram * C = 0` using `Matrix.ext fun a b => (key C C b a).symm.trans (mem_perp.1 (hW (Submodule.subset_span ⟨b, rfl⟩)) _ (Submodule.subset_span ⟨a, rfl⟩))`. Take `⟨L, hL, hL'⟩` from `AutFunCompare.exists_dual hc V C hC h0`. Establish `hu` using `IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : Formalism.UG.cT (hc.sig : E →+* E) (V.gram⁻¹ * Formalism.UG.cT (hc.sig : E →+* E) L) * V.gram = L`. Rewrite using `[Formalism.UG.cT_mul, AutFunCompare.cT_cT', AutFunCompare.cT_gram_inv, Matrix.nonsing_inv_mul_cancel_right _ _ hu]`. Use `⟨⟨fun i => AutFunCompare.vecOf V (Cᵀ i), fun i => AutFunCompare.vecOf V ((V.gram⁻¹ * Formalism.UG.cT (hc.sig : E →+* E) L)ᵀ i), fun i j => ?_, fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[key, h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[key, e1, ← Matrix.mul_assoc, hL']`. Both sides reduce to the same expression. Rewrite using `[key, e1, hL, Matrix.one_apply]`. Simplify using `only [eq_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nonempty_wittFrame (hc : CMData F E) (V : HSpace E) : Nonempty (WittFrame V) := by
   obtain ⟨W, hW, e⟩ := le_wittIndex_iff.1 (le_refl (wittIndex V))

@@ -35,27 +35,21 @@ open scoped TensorProduct Classical
 namespace UpperTheory.Gal.Spc
 
 /- English proof (translation)
-Use `haveI : CharZero L := (RingHom.charZero_iff (π.comp (algebraMap ℚ M)).injective).1 inferInstance`. Use `haveI : Module.Finite ℚ L := Module.Finite.of_surjective π.toRatAlgHom.toLinearMap hπ`. Use `haveI : NumberField L := ⟨⟩`. Set `τ₀ : L →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Establish `hker : ∀ a, π a = 0 → π (c a) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `a ha`. Apply `(τ₀ : L →+* ℂ).injective` to reduce the goal to its premises. Establish `h` using `hc ((τ₀ : L →+* ℂ).comp π) a`. Simplify using `only [RingHom.comp_apply] at h`. Rewrite `h` using `[ha, map_zero, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using h`. Set `s` to `Function.surjInv hπ`. Establish `hs : ∀ y, π (s y) = y` using `Function.surjInv_eq hπ`. Establish `hcomp : ∀ a, π (c (s (π a))) = π (c a)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h` using `hker (s (π a) - a) (by rw [map_sub, hs, sub_self])`. Rewrite `h` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h`. Set `cL : L →ₐ[ℚ] L` to `{ toFun := fun y => π (c (s y)) map_one' := by`. Use `hcomp 1` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Use the proof step `map_mul' := fun y y' => by`. Take `⟨a, rfl⟩` from `hπ y`. Take `⟨b, rfl⟩` from `hπ y'`. Rewrite using `[← map_mul, hcomp, hcomp, hcomp, map_mul, map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_zero' := by`. Use `hcomp 0` as an intermediate fact. Simplify using `using this`. Use the proof step `map_add' := fun y y' => by`. Take `⟨a, rfl⟩` from `hπ y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, rfl⟩` from `hπ y'`. Rewrite using `[← map_add, hcomp, hcomp, hcomp, map_add, map_add]`. Use the proof step `commutes' := fun r => by`. Use `hcomp (algebraMap ℚ M r)` as an intermediate fact. Simplify using `using this }`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcL : ∀ a, cL (π a) = π (c a)` using `hcomp`. Establish `hcLc : ∀ (τ : L →+* ℂ) (y : L), τ (cL y) = (starRingEnd ℂ) (τ y)`. Introduce `τ y`. Take `⟨a, rfl⟩` from `hπ y`. Rewrite using `[hcL]`.
-
-Conclude with `hc (τ.comp π) a`. Use `⟨_, GlobalTheory.LKTorus.simT_integral_finite L cL hcLc, fun x hx h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hx`. Use `⟨⟨t, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show π (x : M) * cL (π (x : M)) = _`.
-
-Rewrite using `[hcL, ← map_mul, ht]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.isIntegral_of_forall_padicAlgCl_norm_le_one L _ fun q _ τ => h1 q (τ.comp π)`. Establish `e : ((Units.map (π : M →* L) x)⁻¹ : Lˣ) = Units.map (π : M →* L) x⁻¹` using `(map_inv _ _).symm`. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.isIntegral_of_forall_padicAlgCl_norm_le_one L _ fun q _ τ => h2 q (τ.comp π)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem units_field {M L : Type} [CommRing M] [Algebra ℚ M] [Module.Finite ℚ M] [Field L]
     (π : M →+* L) (hπ : Function.Surjective π) (c : M →ₐ[ℚ] M)
@@ -119,15 +113,13 @@ private theorem units_field {M L : Type} [CommRing M] [Algebra ℚ M] [Module.Fi
     exact GlobalTheory.isIntegral_of_forall_padicAlgCl_norm_le_one L _ fun q _ τ => h2 q (τ.comp π)
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing M := IsArtinianRing.of_finite ℚ M`. Use `haveI : Finite (MaximalSpectrum M) := inferInstance`. Establish `key : ∀ m : MaximalSpectrum M, ∃ T : Set (M ⧸ m.asIdeal)ˣ, T.Finite ∧ ∀ x : Mˣ, x ∈ GlobalTheory.LKTorus.simT ℚ c → (∀ (q : ℕ) [Fact q.Prime] (τ : M →+* PadicAlgCl q), ‖τ (x : M)‖ ≤ 1) → (∀ (q : ℕ) [Fact q.Prime] (τ : M →+* PadicAlgCl q), ‖τ ((x⁻¹ : Mˣ) : M)‖ ≤ 1) → Units.map ((I …`. Introduce `m`. Use `haveI := m.isMaximal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Field (M ⧸ m.asIdeal) := Ideal.Quotient.field m.asIdeal`. Conclude with `units_field (Ideal.Quotient.mk m.asIdeal) Ideal.Quotient.mk_surjective c hc`. Use `choose T hT hxT using key`. Set `φ : Mˣ → ∀ m : MaximalSpectrum M, (M ⧸ m.asIdeal)ˣ` to `fun x m => Units.map ((Ideal.Quotient.mk m.asIdeal : M →+* M ⧸ m.asIdeal) : M →* M ⧸ m.asIdeal) x`. Establish `hφ : Function.Injective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Establish `hmem : ((x : M) - y) ∈ (⊥ : Ideal M).jacobson`. Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `J ⟨-, hJ⟩`. Establish `h1` using `congrArg Units.val (congrFun h ⟨J, hJ⟩)`. Conclude with `Ideal.Quotient.eq.1 h1`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := M)`. Establish `h2 : ((x : M) - y) ^ n ∈ ((⊥ : Ideal M).jacobson) ^ n` using `Ideal.pow_mem_pow hmem n`.
-
-Rewrite `h2` using `[hn]`. Conclude with `IsReduced.eq_zero _ ⟨n, by simpa using h2⟩`. Use `((Set.Finite.pi' hT).preimage hφ.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h0, h1, h2⟩`. Conclude with `fun m => hxT m x h0 h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem units_finite {M : Type} [CommRing M] [Algebra ℚ M] [Module.Finite ℚ M] [IsReduced M]
     (c : M →ₐ[ℚ] M) (hc : ∀ (τ : M →+* ℂ) (a : M), τ (c a) = (starRingEnd ℂ) (τ a)) :
@@ -164,9 +156,9 @@ private theorem units_finite {M : Type} [CommRing M] [Algebra ℚ M] [Module.Fin
   exact fun m => hxT m x h0 h1 h2
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective a`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Establish `h1 : (1 : FM P) = 0` using `by simpa using hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[← mul_one (AdjoinRoot.mk P.pol f), h1, mul_zero]`. Rewrite `hn` using `[← map_pow, AdjoinRoot.mk_eq_zero]`. Establish `hsq : Squarefree P.pol` using `P.reg.2.squarefree`. Conclude with `AdjoinRoot.mk_eq_zero.2 ((hsq.dvd_pow_iff_dvd hpos.ne').1 hn)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fm_reduced {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G) : IsReduced (FM P) := by
   refine ⟨fun a ha => ?_⟩
@@ -180,7 +172,7 @@ private theorem fm_reduced {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G)
   exact AdjoinRoot.mk_eq_zero.2 ((hsq.dvd_pow_iff_dvd hpos.ne').1 hn)
 
 /- English proof (translation)
-Use `haveI : Module.Finite G.F (FM P) := (AdjoinRoot.powerBasis (minpoly.ne_zero (IsIntegral.of_finite G.F (P.γ : G.C)))).finite`. Conclude with `Module.Finite.trans G.F (FM P)`.
+A detailed English derivation is pending.
 -/
 private theorem fm_finite {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G) : Module.Finite ℚ (FM P) := by
   haveI : Module.Finite G.F (FM P) :=
@@ -188,33 +180,27 @@ private theorem fm_finite {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G) 
   exact Module.Finite.trans G.F (FM P)
 
 /- English proof (translation)
-Use `set S := stab (P.toAf x t hx) (P.toQr r z) L.K.toSubgroup K y with hSdef`. Establish `hmem : ∀ w : P.cent, w ∈ S ↔ P.toAf x t hx w ∈ L.K.toSubgroup.map (MulAut.conj y.1).toMonoidHom ∧ P.toQr r z w ∈ K.map (MulAut.conj y.2).toMonoidHom` using `fun w => Iff.rfl`. Establish `hpre : ∀ w : P.cent, ∃ a : FM P, jM P a = ((w : G.Cˣ × ℚˣ).1 : G.C)` using `fun w => exists_jM P _ (by have := w.2.1; exact congrArg Units.val this)`. Use `choose A hA using hpre`. Establish `hApow : ∀ (w : P.cent) (k : ℕ), A (w ^ k) = A w ^ k` using `fun w k => jM_injective P (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA, map_pow, hA]`. Use the proof step `rfl)`. Establish `hAinv : ∀ w : P.cent, A w * A w⁻¹ = 1` using `fun w => jM_injective P (by`. Rewrite using `[map_mul, hA, hA, map_one]`. Use `show ((w : G.Cˣ × ℚˣ).1 : G.C) * (((w : G.Cˣ × ℚˣ).1⁻¹ : G.Cˣ) : G.C) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `Units.mul_inv _)`. Establish `hbd : ∀ w ∈ S, ∀ (q : ℕ) [Fact q.Prime] (τ : FM P →+* PadicAlgCl q), ‖τ (A w)‖ ≤ 1`. Introduce `w hw q _ τ`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hov : LiesOver G.Kq G.u (τ.comp (algebraMap G.F (FM P)))`. Conclude with `GlobalTheory.T.centralizer_element_padic_bounded q G P r z K y.2 hr hK w ((hmem w).1 hw).2 _ (hA w) τ hov`. Establish `hov'` using `GlobalTheory.T.conjugate_place_lies_over q G _ hov set τ' := τ.comp (iM P).toRingHom`. Establish `hτ' : LiesOver G.Kq G.u (τ'.comp (algebraMap G.F (FM P)))`. Introduce `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hov' k` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this ⊢`. Rewrite using `[← this]`. Use `show τ (iM P (algebraMap G.F (FM P) k)) = _`. Rewrite using `[iM_algF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hwi : w⁻¹ ∈ S` using `S.inv_mem hw`. Establish `h1` using `GlobalTheory.T.centralizer_element_padic_bounded q G P r z K y.2 hr hK w⁻¹ ((hmem _).1 hwi).2 _ (hA _) τ' hτ'`. Establish `h2` using `GlobalTheory.T.centralizer_scalar_padic_bounded q G P r z K y.2 hr hK w ((hmem w).1 hw).2`. Establish `e : A w = iM P (algebraMap ℚ (FM P) (((w : G.Cˣ × ℚˣ).2 : ℚ)) * A w⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : algebraMap ℚ (FM P) (((w : G.Cˣ × ℚˣ).2 : ℚ)) * A w⁻¹ = iM P (A w)`. Rewrite using `[← mul_iM_of_cent P w (A w) (hA w), mul_comm (A w), mul_assoc, hAinv, mul_one]`. Rewrite using `[e0, iM_iM]`. Establish `e2 : τ (A w) = τ' (algebraMap ℚ (FM P) (((w : G.Cˣ × ℚˣ).2 : ℚ))) * τ' (A w⁻¹)`. Rewrite using `[e, ← map_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Rewrite using `[e2, norm_mul, RingHom.map_rat_algebraMap, eq_ratCast, ← map_ratCast (algebraMap ℚ_[q] (PadicAlgCl q)), PadicAlgCl.norm_extends]`. Conclude with `mul_le_one₀ h2 (norm_nonneg _) h1`. Take `⟨B, hB⟩` from `UpperTheory.Gal.Spc.boundQ p G P x t hx L y.1 q hq`. Set `f : FM P →ₗ[ℚ] (Fin (Module.finrank ℚ G.C) → ℚ)` to `(Finsupp.linearEquivFunOnFinite ℚ ℚ _).toLinearMap ∘ₗ (Module.finBasis ℚ G.C).repr.toLinearMap ∘ₗ ((jM P).restrictScalars ℚ).toLinearMap`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf : Function.Injective f`. Introduce `a b hab`. Apply `jM_injective P` to reduce the goal to its premises. Simplify `hab` using `[f]`. Use `GlobalTheory.T.bounded_powers_padic_integral (FM P) q _ f hf (A w) B (fun k i => ?_) τ` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hApow]`. Use `hB (w ^ k) (S.pow_mem hw k).1 i` as an intermediate fact. Simplify `this` using `[f, hA]`. Use `haveI := fm_reduced P`. Use `haveI := fm_finite P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `units_finite (iM P) (GlobalTheory.T.betaTwistedInvolution_eq_complexConj_of_marked p G P μ ha hM)`. Set `U : S → (FM P)ˣ` to `fun w => ⟨A w, A (w : P.cent)⁻¹, hAinv w, by rw [mul_comm]; exact hAinv w⟩`. Establish `hU : ∀ w : S, U w ∈ {x : (FM P)ˣ | x ∈ GlobalTheory.LKTorus.simT ℚ (iM P) ∧ (∀ (q : ℕ) [Fact q.Prime] (τ : FM P →+* PadicAlgCl q), ‖τ (x : FM P)‖ ≤ 1) ∧ ∀ (q : ℕ) [Fact q.Prime] (τ : FM P →+* PadicAlgCl q), ‖τ ((x⁻¹ : (FM P)ˣ) : FM P)‖ ≤ 1}`. Introduce `w`. Use `⟨⟨(w : P.cent).1.2, ?_⟩, fun q _ τ => hbd w w.2 q τ, fun q _ τ => hbd _ (S.inv_mem w.2) q τ⟩` and prove the remaining obligations.
-
-Conclude with `mul_iM_of_cent P w (A w) (hA w)`. Establish `hUinj : Function.Injective U`. Introduce `w w' h`. Establish `h1 : A w = A w'` using `congrArg Units.val h`. Establish `hu : ((w : P.cent) : G.Cˣ × ℚˣ).1 = ((w' : P.cent) : G.Cˣ × ℚˣ).1` using `Units.ext (by rw [← hA, ← hA, h1])`.
-
-Establish `hs : ((w : P.cent) : G.Cˣ × ℚˣ).2 = ((w' : P.cent) : G.Cˣ × ℚˣ).2`. Establish `e1` using `(w : P.cent).2.2`. Establish `e2` using `(w' : P.cent).2.2`. Rewrite `e1` using `[hu, e2]`. Establish `e3 : algebraMap ℚ G.C (((w' : P.cent) : G.Cˣ × ℚˣ).2 : ℚ) = algebraMap ℚ G.C (((w : P.cent) : G.Cˣ × ℚˣ).2 : ℚ)` using `(Units.mul_left_inj P.β).1 e1`.
-
-Conclude with `Units.ext ((algebraMap ℚ G.C).injective e3).symm`. Conclude with `Subtype.ext (Subtype.ext (Prod.ext hu hs))`. Use `haveI := hfin.to_subtype`. Conclude with `Finite.of_injective (fun w => (⟨U w, hU w⟩ : {x : (FM P)ˣ | x ∈ GlobalTheory.LKTorus.simT ℚ (iM P) ∧ (∀ (q : ℕ) [Fact q.Prime] (τ : FM P →+* PadicAlgCl q), ‖τ (x : FM P)‖ ≤ 1) ∧ ∀ (q : ℕ) [Fact q.Prime] (τ : FM P →+* PadicAlgCl q), ‖τ ((x⁻¹ : (FM P)ˣ) : FM P)‖ ≤ 1})) (fun w w' h …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem stab_finite {p : ℕ} [Fact p.Prime] (G : HTGroup p) (ha : G.a = 1) (P : Pair G) (μ : ℂ) (hM : P.Mark μ)
     (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (r : ℕ) (z : Gr G r) (L : G.Level)
@@ -301,9 +287,9 @@ private theorem stab_finite {p : ℕ} [Fact p.Prime] (G : HTGroup p) (ha : G.a =
     (fun w w' h => hUinj (congrArg Subtype.val h))
 
 /- English proof (translation)
-Distinguish the cases in `hs : {q : DoubleCoset.Quotient ((ι₁.prod ι₂).range : Set (G₁ × G₂)) ((K₁.prod K₂ : Subgroup (G₁ × G₂)) : Set (G₁ × G₂)) | f₁ ((Quotient.out q).1⁻¹ * γ * (Quotient.out q).1) * φ ((Quotient.out q).2⁻¹ * δ * θ (Quotient.out q).2) ≠ 0}.Finite`. Rewrite using `[GlobalTheory.T.kottwitz_pointCount_one_class_commensurable ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ hK₁ hK₂ hθ hf₁ hφ hc₁ hc₂ hι hstab hs]`. Unfold `pointSide`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pointSum`. Use `finsum_of_infinite_support fun hfin => hs (hfin.subset fun q hq => ?_)` and prove the remaining obligations. Use `haveI := hstab (Quotient.out q)`. Conclude with `mul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.2 Nat.card_pos.ne')) hq`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pointSum_zero {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂)
     (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (δ : G₂) (f₁ : G₁ → ℂ) (φ : G₂ → ℂ)
@@ -327,17 +313,15 @@ private theorem pointSum_zero {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Gro
     exact mul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.2 Nat.card_pos.ne')) hq
 
 /- English proof (translation)
-Establish `hreg` using `GlobalTheory.T.similitudePair_regular_image_at_p p G Q`. Establish `hB` using `GlobalTheory.T.map_centralizer_regular_twistedCentraliser p G 1 Q.atP δ z one_pos hreg.2.1 hn`. Establish `hK184` using `GlobalTheory.T.unitarySimilitudeIntegralSubgroup_commensurated_frobenius p G 1 one_pos`. Establish `hc1 : ∀ g : Q.cent, Q.toAf x t hx g * Q.toAf x t hx Q.self = Q.toAf x t hx Q.self * Q.toAf x t hx g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext ?_ (mul_comm _ _)` and prove the remaining obligations. Conclude with `g.2.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc2 : ∀ g : Q.cent, Q.toQr 1 z g * δ = δ * sigG G 1 (Q.toQr 1 z g)`. Introduce `g`. Establish `hm : carry G 1 z (locC G g.1) ∈ GlobalTheory.BCT.twCent (sigG G 1) δ` using `hB ▸ Subgroup.mem_map_of_mem _ (hreg.2.2 g)`. Conclude with `hm`. Establish `hbi : Formalism.UG.IsBiInv Lv.K.toSubgroup f` using `hf.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ k ∈ Kp G, ∀ y, oneP G (k⁻¹ * y * sigG G 1 k) = oneP G y`. Introduce `k hk y`. Establish `hk' : sigG G 1 k ∈ Kp G` using `hK184.2.2 (Subgroup.mem_map_of_mem _ hk)`. Establish `hiff : k⁻¹ * y * sigG G 1 k ∈ Kp G ↔ y ∈ Kp G`. Rewrite using `[(Kp G).mul_mem_cancel_right hk', (Kp G).mul_mem_cancel_left ((Kp G).inv_mem hk)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `oneP`. Distinguish the cases in `hw : y ∈ Kp G`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (Kp G : Set (Gr G 1)) from hiff.2 hw), Set.indicator_of_mem (show _ ∈ (Kp G : Set (Gr G 1)) from hw)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ (Kp G : Set (Gr G 1)) from fun h => hw (hiff.1 h)), Set.indicator_of_notMem (show _ ∉ (Kp G : Set (Gr G 1)) from hw)]`.
-
-Conclude with `pointSum_zero _ _ _ _ _ _ _ _ _ (GlobalTheory.T.compactOpenLevel_conj_commensurable p G Lv) hK184.1 hK184.2.2 (fun k hk y => hbi ⟨k⁻¹, Subgroup.inv_mem _ hk⟩ ⟨k, hk⟩ _) hφ hc1 hc2 (GlobalTheory.T.similitudePair_adelicProdUnramifiedEmbedding_injective p G Q x t hx 1 z) (stab_finit …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem termAt_zero {p : ℕ} [Fact p.Prime] (G : HTGroup p) (ha : G.a = 1) (Lv : G.Level) (Q : Pair G) (μ : ℂ)
     (hM : Q.Mark μ) (f : G.GAf → ℂ) (hf : f ∈ Hecke ℂ Lv.K.toSubgroup) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
@@ -377,9 +361,9 @@ private theorem termAt_zero {p : ℕ} [Fact p.Prime] (G : HTGroup p) (ha : G.a =
     (stab_finite G ha Q μ hM x t hx 1 z Lv (Kp G) one_pos (Subgroup.Commensurable.refl _)) h0
 
 /- English proof (translation)
-Establish `h` using `Matrix.charpoly_units_conj (Units.map (R.κ : AfP p ⊗[ℚ] G.C →* Matrix (Fin G.n) (Fin G.n) k) x) (R.ι (Q.γ : G.C))`. Rewrite using `[← h, ← R.κ_ι]`. Establish `e : R.at (Q.toAf x t hx Q.self) = R.κ (x : AfP p ⊗[ℚ] G.C) * R.κ (1 ⊗ₜ (Q.γ : G.C)) * R.κ ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)`. Rewrite using `[← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ← Matrix.coe_units_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem charpoly_at_self {p : ℕ} [Fact p.Prime] {G : HTGroup p} {k : Type} [Field k] [Algebra G.F k] (R : Pl G k)
     (Q : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) Q.β x t) :
@@ -398,11 +382,9 @@ end UpperTheory.Gal.Spc
 
 open UpperTheory.Gal.Spc in
 /- English proof (translation)
-Introduce `p _ G ha Lv k _ _ _ _ _ _ _ R H _ _ _ _ S k₁ _ _ P₁ f hf hC _ Q hm hirr`. Take `⟨μ, hM⟩` from `hm`. Unfold `Pair.term`. Use `split_ifs with h`. Establish `hcp` using `GlobalTheory.charpoly_algHom_eq_map_minpoly G.F k G.C G.n G.rankC R.ι (Q.γ : G.C) Q.reg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat` using `charpoly_at_self R Q Q.trivAf.choose Q.trivAf.choose_spec.choose Q.trivAf.choose_spec.choose_spec`. Rewrite `hat` using `[hcp]`. Use `termAt_zero G ha Lv Q μ hM f hf _ _ _ h.choose.1 h.choose.2 h.choose_spec ?_` and prove the remaining obligations. Conclude with `orbK_eq_zero_of_cuspSlices S f hf hC _ (by rw [hat]; exact Q.reg.2.map) (by`. Rewrite using `[hat]`.
-
-Conclude with `GlobalTheory.VanishNonEll.not_irreducible_map _ _ (minpoly.monic (IsIntegral.of_finite G.F _)) hirr)`. Use the proof step `(GlobalTheory.LKCentAf.twCent_comm Q _ _ _)`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.vanPairs :
     UpperTheory.Gal.Spc.VanPairs := by

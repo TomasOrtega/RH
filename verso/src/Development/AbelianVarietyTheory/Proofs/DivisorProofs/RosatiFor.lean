@@ -30,25 +30,25 @@ def GeomAt (D : Datum p) (N : ℕ) {A : Over S} [GrpObj A] (act : OActN D.O A) (
 variable {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {s : S ⟶ Sp R}
 
 /- English proof (translation)
-The claim follows from `o.rosati`.
+A detailed English derivation is pending.
 -/
 theorem Obj.rosatiFor (o : Obj b N s) : RosatiFor D o.act o.P := o.rosati
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨o.eta_add, o.eta_lin, o.eta_ker⟩`.
+Supply the required witnesses or components.
 -/
 theorem Obj.etaOK (o : Obj b N s) : EtaOK D N o.act o.eta := ⟨o.eta_add, o.eta_lin, o.eta_ker⟩
 
 /- English proof (translation)
-The claim follows from `o.geom k x β hx`.
+A detailed English derivation is pending.
 -/
 theorem Obj.geomAt (o : Obj b N s) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (β : R →+* k)
     (hx : x ≫ s = spMap β) : GeomAt D N o.act o.P o.eta k x := o.geom k x β hx
 
 /- English proof (translation)
-Introduce `R'' _ g`. Establish `e₁ : (spMap g ≫ x) ≫ s = spMap (g.comp β)`. Rewrite using `[Category.assoc, hx]`. Simplify using `[spMap, ← Spec.map_comp]`. Apply the tactic sequence `try rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o.lie R'' (g.comp β) (spMap g ≫ x) e₁, fun k _ _ g' i => ?_⟩` and prove the remaining obligations. Use `o.lieRank k (spMap g' ≫ spMap g ≫ x) (g'.comp (g.comp β)) ?_ i` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hx]`. Simplify using `[spMap, ← Spec.map_comp]`. Apply the tactic sequence `try rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Obj.lieHer (o : Obj b N s) (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ S)
     (hx : x ≫ s = spMap β) : LieHer b o.act β x := by
@@ -64,7 +64,7 @@ theorem Obj.lieHer (o : Obj b N s) (R' : Type) [CommRing R'] (β : R →+* R') (
   try rfl
 
 /- English proof (translation)
-Introduce `c` and use `LBIso.trans (pull_isLB hP' _) (pull_isLB hP _) (pull_isLB hP' _) (GlobalTheory.RigidBundleGlue.LBIso.pull H _).symm (LBIso.trans (pull_isLB hP _) (pull_isLB hP _) (pull_isLB hP' _) (h c) (GlobalTheory.RigidBundleGlue.LBIso.pull H _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RosatiFor.of_iso {A : Over S} [GrpObj A] {act : OActN D.O A} {P P' : LB (G2 A).left} (hP : P.IsLB)
     (hP' : P'.IsLB) (H : LBIso P P') (h : RosatiFor D act P) : RosatiFor D act P' := fun c =>

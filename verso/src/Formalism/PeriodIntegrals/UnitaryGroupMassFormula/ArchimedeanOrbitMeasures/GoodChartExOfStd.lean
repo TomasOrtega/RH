@@ -63,7 +63,7 @@ def TupStd : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     StdConj X hb u' c S → LieCompl X S L → TupJac X u' hT μinf νinf a (kap0 X hb c L)
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Take `⟨hb, -⟩` from `hP.1`. Take `⟨c, S, ι, hι, L, hc, hL⟩` from `h1 X u' ψ hT μinf νinf fibInf hP hb`. Take `⟨Ω, a, hC, hJ⟩` from `h3 X u' ψ hT μinf νinf fibInf hP`. Conclude with `⟨Ω, a, hC, ι, hι, kap0 X hb c L, h2 X u' ψ hT μinf νinf fibInf hP hb c S L hc hL, hJ hb c S L hc hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodChartEx_of_std (h1 : StdDataEx) (h2 : GrpStd) (h3 : TupStd) : GoodChartEx := by
   intro D X u' ψ hT μinf νinf fibInf hP
@@ -73,11 +73,11 @@ theorem goodChartEx_of_std (h1 : StdDataEx) (h2 : GrpStd) (h3 : TupStd) : GoodCh
   exact ⟨Ω, a, hC, ι, hι, kap0 X hb c L, h2 X u' ψ hT μinf νinf fibInf hP hb c S L hc hL, hJ hb c S L hc hL⟩
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ`. Use `set J := Formalism.REAL.Jm ε with hJdef`. Establish `hJJ : J * J = 1` using `Formalism.REAL.Jm_mul_self ε`. Set `U : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨J, J, hJJ, hJJ⟩`. Establish `hMh : Mᴴ = J * (-M) * J`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Mᴴ * J = -(J * M)` using `eq_neg_of_add_eq_zero_left hM`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : NormedSpace.exp (J * (-M) * J) = J * NormedSpace.exp (-M) * J`. Establish `h` using `Matrix.exp_units_conj U (-M)`. Conclude with `h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : NormedSpace.exp (-M) * NormedSpace.exp M = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl M)), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[← Matrix.exp_conjTranspose, hMh, e1, Matrix.mul_assoc (J * NormedSpace.exp (-M)) J J, hJJ, Matrix.mul_one, Matrix.mul_assoc, e2, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inUJ_exp {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (hM : Mᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * M = 0) : Formalism.REAL.inUJ ε (NormedSpace.exp M) := by
@@ -100,7 +100,7 @@ theorem inUJ_exp {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ
     Matrix.mul_assoc, e2, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `expU`. Rewrite using `[dif_pos (inUJ_exp ε M hM)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem expU_val {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (hM : Mᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * M = 0) :
@@ -110,7 +110,7 @@ theorem expU_val {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[expU_val ε 0 (by simp), NormedSpace.exp_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem expU_zero {n : ℕ} (ε : Fin n → Bool) : expU ε 0 = 1 := by
   apply Subtype.ext
@@ -119,7 +119,7 @@ theorem expU_zero {n : ℕ} (ε : Fin n → Bool) : expU ε 0 = 1 := by
   rfl
 
 /- English proof (translation)
-Establish `h` using `PI.AprimeInfU.toInf_mul X hb 1 1`. Rewrite `h` using `[one_mul]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toInf_one {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) : X.toInf hb 1 = 1 := by
   have h := PI.AprimeInfU.toInf_mul X hb 1 1
@@ -127,9 +127,9 @@ theorem toInf_one {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.Ad
   exact mul_eq_left.mp h.symm
 
 /- English proof (translation)
-Establish `: (fun v => expU (X.B.I.ε v) (L 0 v)) = 1`. Use function extensionality and compare the values at `v`. Rewrite using `[map_zero]`. Conclude with `expU_zero _`. Unfold `kap0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_one, mul_inv_cancel, toInf_one]`.
+A detailed English derivation is pending.
 -/
 theorem kap0_zero {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (c : X.B.I.Ginf) {ι : Type}
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)) :
@@ -148,7 +148,7 @@ def GrpPiecesStd : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word
     StdConj X hb u' c S → LieCompl X S L → GrpPieces X u' (kap0 X hb c L)
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL`. Conclude with `grpLim_of_pieces X u' _ (h X u' ψ hT μinf νinf fibInf hP hb c S L hc hL)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem grpStd_of (h : GrpPiecesStd) : GrpStd := by
   intro D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL

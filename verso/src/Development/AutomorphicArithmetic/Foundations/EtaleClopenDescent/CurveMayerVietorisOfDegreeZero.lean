@@ -6,11 +6,11 @@ import Development.EtaleCohomology.EtaleTrace.LocalSplitting.Cover2
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `_ _ R _ F X U V hUV n`. Take `⟨d, hd, -⟩` from `mayerVietoris R F`. Establish `hc` using `LateralTheory.EtaleTrace.LSplitPf.Sch.cover2 R U V hUV`. Use `haveI : PreservesLimitsOfShape WalkingCospan sch := by`. Unfold `sch`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `P` using `(isPullback_opens_inf U V).map sch`. Use `⟨(d _ _ hc n).comp (pull R P.isoPullback.inv F n), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[(hd _ _ hc n).2.2 x]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, rfl⟩`. Use `⟨pull R P.isoPullback.hom F n c, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.comp_apply, ← pull_comp, Iso.inv_hom_id, pull_id]`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.curve_mayer_vietoris_of_degree_zero :
     LateralTheory.E.E4.H0TwistOverClosedField → LateralTheory.E.E4.CurveCut.LeafMV := by

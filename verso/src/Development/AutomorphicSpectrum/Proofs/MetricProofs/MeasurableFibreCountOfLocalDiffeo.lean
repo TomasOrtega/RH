@@ -19,7 +19,7 @@ section FibreMeas
 variable {e : ℕ}
 
 /- English proof (translation)
-Unfold `fibSum`. Rewrite using `[← finsum_mem_sub_distrib _ _ hy]`. Use `finsum_mem_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_div, max_zero_sub_max_neg_zero_eq_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibSum_eq_sub_of_finite {O : Set (Fin e → ℂ)} {Q : (Fin e → ℂ) → (Fin e → ℂ)}
     (h : (Fin e → ℂ) → ℝ) (y : Fin e → ℂ) (hy : (O ∩ Q ⁻¹' {y}).Finite) :
@@ -30,7 +30,7 @@ theorem fibSum_eq_sub_of_finite {O : Set (Fin e → ℂ)} {Q : (Fin e → ℂ) �
   rw [← sub_div, max_zero_sub_max_neg_zero_eq_self]
 
 /- English proof (translation)
-Establish `h1` using `(LintegralFibSum.lintegral_fibSum_open hO hQ hh (hm.comp measurable_subtype_coe) hfin).1`. Use `h1.ennreal_toReal.congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `ENNReal.toReal_ofReal (LintegralFibSum.fibSum_nonneg _ _ hh y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aemeasurable_fibSum_of_nonneg {O : Set (Fin e → ℂ)} (hO : IsOpen O)
     {Q : (Fin e → ℂ) → (Fin e → ℂ)}
@@ -44,15 +44,13 @@ theorem aemeasurable_fibSum_of_nonneg {O : Set (Fin e → ℂ)} (hO : IsOpen O)
   exact ENNReal.toReal_ofReal (LintegralFibSum.fibSum_nonneg _ _ hh y)
 
 /- English proof (translation)
-Establish `hmm : Measurable (hm.mk h)` using `hm.stronglyMeasurable_mk.measurable`. Establish `hae : ∀ᵐ u, u ∈ O → h u = hm.mk h u` using `(ae_restrict_iff' hO.measurableSet).mp hm.ae_eq_mk`. Establish `hnull : volume (O ∩ {u | h u ≠ hm.mk h u}) = 0`. Use `measure_mono_null ?_ (ae_iff.mp hae)` and prove the remaining obligations. Introduce and unpack `u ⟨huO, hne⟩ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hne (hu huO)`. Establish `himg : volume (Q '' (O ∩ {u | h u ≠ hm.mk h u})) = 0`. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ hnull` and prove the remaining obligations. Introduce `u hu`. Conclude with `((hQ u hu.1).1.differentiableAt.restrictScalars ℝ).differentiableWithinAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : AEMeasurable (fibSum O Q fun u => max (hm.mk h u) 0)` using `aemeasurable_fibSum_of_nonneg hO hQ (fun u => le_max_right _ _) (hmm.max measurable_const) hfin`. Establish `hn : AEMeasurable (fibSum O Q fun u => max (-hm.mk h u) 0)` using `aemeasurable_fibSum_of_nonneg hO hQ (fun u => le_max_right _ _) (hmm.neg.max measurable_const) hfin`. Use `(hp.sub hn).aestronglyMeasurable.congr ?_` and prove the remaining obligations. Use `filter_upwards [hfin, measure_eq_zero_iff_ae_notMem.mp himg] with y hy hyn`. Use `show fibSum O Q (fun u => max (hm.mk h u) 0) y - fibSum O Q (fun u => max (-hm.mk h u) 0) y = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[fibSum_eq_sub_of_finite _ y hy]`. Unfold `fibSum`. Use `finsum_mem_congr rfl fun u hu => ?_` and prove the remaining obligations. Establish `: h u = hm.mk h u`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hyn ⟨u, ⟨hu.1, hne⟩, hu.2⟩`. Rewrite using `[this]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_fibSum {O : Set (Fin e → ℂ)} (hO : IsOpen O)
     {Q : (Fin e → ℂ) → (Fin e → ℂ)}
@@ -89,17 +87,13 @@ theorem aestronglyMeasurable_fibSum {O : Set (Fin e → ℂ)} (hO : IsOpen O)
 end FibreMeas
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Φ q S G hS hq hfin hsm hG`. Take `⟨Pt⟩` from `existsPartition A`. Use `set hj : Fin A.n → (Fin e → ℂ) → ℝ := fun j u => Pt.χ j ((A.chart j).symm u) * (G ((A.chart j).symm u) * locDens A Φ j u) with hhj`. Establish `hN : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `(hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Conclude with `measure_mono_null (Set.inter_subset_inter_left _ fun u (hu : u ∈ goodT A q j) => hu.1) (hS j)`. Establish `hfinj : ∀ j, ∀ᵐ y, (goodT A q j ∩ (q ∘ (A.chart j).symm) ⁻¹' {y}).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp (hN j)] with y hy`. Rewrite using `[goodT_fibre_eq A q S hq j hy]`. Conclude with `((hfin y).subset Set.inter_subset_right).image _`. Establish `hχc : ∀ j, ContinuousOn (fun u => Pt.χ j ((A.chart j).symm u)) (A.chart j).target`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `(Pt.smooth j j).continuousOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Conclude with `this`. Establish `hjm : ∀ j, AEStronglyMeasurable (hj j) (volume.restrict (goodT A q j))` using `fun j => (((hχc j).aestronglyMeasurable (A.chart j).open_target.measurableSet).mul (hG j)).mono_measure (Measure.restrict_mono (fun u hu => hu.1) le_rfl)`.
-
-Establish `hsum` using `sum_fibSum_ae A q S hN hq hfin Pt hj (fun x => G x * pushDens A Φ q x) (by`. Introduce `j x hx hxS`. Establish `hd` using `locDens_div_jacN A Φ q S hq hsm j hx hxS`. Simplify using `only [hhj, (A.chart j).left_inv hx]`. Rewrite using `[← hd]`.
-
-Use the proof step `ring)`. Conclude with `(Finset.aestronglyMeasurable_fun_sum Finset.univ fun j _ => aestronglyMeasurable_fibSum (isOpen_goodT A q j) (fun u hu => hu.2) (hjm j) (hfinj j)).congr hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_fibreSum_pushDens : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (q : X → Fin e → ℂ) (S : Set X) (G : X → ℝ), (∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' S) = 0) → (∀ x ∉ S, ∀ j, x ∈ (A.chart j).source → AnalyticAt ℂ (q ∘ (A.chart j).symm) (A.chart j x) ∧ LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) (A.chart j x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0) → (∀ y, (q ⁻¹' {y} \ S).Finite) → (∀ x ∉ S, ∀ i k, x ∈ (A.chart k).source → ContDiffAt ℝ 2 ((Φ i).φ x ∘ (A.chart k).symm) (A.chart k x)) → (∀ j, AEStronglyMeasurable (fun u => G ((A.chart j).symm u) * locDens A Φ j u) (volume.restrict (A.chart j).target)) → AEStronglyMeasurable (fun y => ∑ᶠ x ∈ q ⁻¹' {y} \ S, G x * pushDens A Φ q x) volume := by
   intro e X _ _ _ A Φ q S G hS hq hfin hsm hG

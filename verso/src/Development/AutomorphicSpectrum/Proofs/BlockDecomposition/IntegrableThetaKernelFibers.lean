@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ColumnSplitting.Form
 
 /- English proof (translation)
-Unfold `jn`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, id]`. Consider the cases of `(finSumFinEquiv.trans (finCongr hn)).symm j with`. Consider the case `inl c => simpa using continuous_fst.matrix_elem i c`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr c => simpa using continuous_snd.matrix_elem i c`.
+Treat this case separately.
 -/
 theorem continuous_jn_pair {D : D7} {a r t n : ℕ} (hn : r + t = n) :
     Continuous fun z : Mx D a r × Mx D a t => jn hn z.1 z.2 := by
@@ -33,7 +33,7 @@ theorem continuous_jn_pair {D : D7} {a r t n : ℕ} (hn : r + t = n) :
   | inr c => simpa using continuous_snd.matrix_elem i c
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Unfold `yv ip`. Conclude with `continuous_const.matrix_mul ((continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_snd))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_yv_pair {D : D7} {r t : ℕ} (V : HSp D) (b₀ : HermE D r) :
     Continuous (yv (t := t) V b₀) := by
@@ -43,23 +43,23 @@ theorem continuous_yv_pair {D : D7} {r t : ℕ} (V : HSp D) (b₀ : HermE D r) :
     (continuous_const.matrix_mul continuous_snd))
 
 /- English proof (translation)
-Introduce `hZ hA hJ hE hF D n t B W d hn I θ hθ μ hμ b₀ hb x₀ hx Φ hΦ η hη hint`. Take `⟨g1, g2⟩` from `top_pair (D := D) B.rank W.rank t`. Take `⟨-, -, p3, -, p5⟩` from `top_mx (D := D) B.rank W.rank`. Take `⟨-, -, p3', -, p5'⟩` from `top_mx (D := D) B.rank t`. Establish `hΦc` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ Φ hΦ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hηc` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ η hη).1`. Establish `hGc : Continuous fun z : Mx D B.rank W.rank × Mx D B.rank t => Φ (jn hn z.1 z.2) * conj (η (yv B b₀ z))` using `(hΦc.comp (continuous_jn_pair hn)).mul (Complex.continuous_conj.comp (hηc.comp (continuous_yv_pair B b₀)))`. Establish `hπ` using `measurable_pi hn I x₀`. Establish `hcomp : (fun z : Mx D B.rank W.rank × Mx D B.rank t => Φ (jn hn z.1 z.2) * conj (η (yv B b₀ z))) ∘ (fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)) = core hn I x₀ Φ η`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨k, q⟩` from `p`. Simplify using `only [Function.comp, core]`. Rewrite using `[hJ D n t B W d hn x₀ _ q, (hA D W.rank t B b₀ _ _).2.1, (hZ D n t B W d hn b₀ hb x₀ hx q).2.1]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `nuT`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[integrable_map_measure hGc.aestronglyMeasurable hπ.aemeasurable, hcomp]`. Conclude with `hint`. Establish `e1 : ∫ z, Φ (jn hn z.1 z.2) * conj (η (yv B b₀ z)) ∂(nuT hn I μ x₀) = ∫ p, core hn I x₀ Φ η p ∂(I.νK.prod (Q0 I μ))`. Unfold `nuT`. Rewrite using `[integral_map hπ.aemeasurable hGc.aestronglyMeasurable, ← hcomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Take `⟨-, i2, i3, i4, i5⟩` from `top_mx (D := D) t n`. Take `⟨-, j2, j3, j4, j5⟩` from `top_mx (D := D) W.rank t`. Take `⟨-, k2, k3, -, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace (GA D W)` using `⟨rfl⟩`. Take `⟨hc, 𝓕, hf⟩` from `I.cov₁`. Use `hf.1` as an intermediate fact. Use `I.haar` as an intermediate fact. Use `I.probK` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(hF I.l.K (GA D W) (Mx D t n) (Mx D W.rank t) I.νK I.m I.μ₁ μ).1 _ hint`. Unfold `Q0`. Rewrite using `[e2]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [core]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[integral_mul_const]`. Use `congr 1`. Unfold `orb`. Use `integral_congr_ae (ae_of_all _ fun h => ?_)` and prove the remaining obligations. Simplify using `only [hE D n t W hn x₀ h, ikp, ikS, projS, XU]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun u => integral_congr_ae (ae_of_all _ fun k => ?_))` and prove the remaining obligations. Simplify using `only [mm, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuT_form : ZpEq → AcEq → JnPi → Ext0 → Fub4 → ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t)
     (hn : W.rank + t = n) (I : IkD d n) θ, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank t)), μ.IsAddHaarMeasure →

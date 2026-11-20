@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SchrSchA
 
 /- English proof (translation)
-Introduce `D ψ hψ κ _ w φ hφ`. Conclude with `GlobalTheory.HeisSchA.schr_mem_schA ψ (GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ) w φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schr_mem_schA_of_isStdChar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ]
     (w : (κ → AF D.host.F) × (κ → AF D.host.F)), ∀ φ ∈ GlobalTheory.WeilM.schA D.host.F κ,

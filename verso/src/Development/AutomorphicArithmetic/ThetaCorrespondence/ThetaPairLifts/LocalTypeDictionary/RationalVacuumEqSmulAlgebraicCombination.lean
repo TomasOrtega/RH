@@ -13,17 +13,17 @@ open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.RatVacAlg
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hN hL hX t γ hγ a ha γ' hγ' a' ha' hfa hfa'`. Establish `hI` using `hX.is`. Establish `hom` using `hI.weil t`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (GlobalTheory.Grid.neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hI.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hI.rigW.2.2 τ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsdS : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' hI.rigA.1`. Establish `hx : (GlobalTheory.Grid.ofSgn true A).symm (γ * a) ∈ GfC (GlobalTheory.Grid.neg A)` using `by show (GlobalTheory.Grid.ofSgn true A) ((GlobalTheory.Grid.ofSgn true A).symm (γ * a)) ∈ GfC A`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hfa`. Take `⟨κ₁, F, hF, hκ₁⟩` from `GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination hI.isVac hsdS hI.rigW.1 cS cT hom _ hx _ hfa'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, -, hC⟩` from `GlobalTheory.T.realPoint_acts_on_vacuum_by_algebraicScalar hX t γ hγ a ha γ' hγ' a' ha' hfa hfa'`. Establish `e1 : X.ω t (γ * a, γ' * a') X.vac = κ₁ • F` using `hκ₁`. Establish `e2 : X.ω t (γ * a, γ' * a') X.vac = C • X.ω t (γ, γ') X.vac`. Rewrite using `[show ((γ * a, γ' * a') : GA D A × GA D WW) = (γ, γ') * (a, a') from rfl, map_mul, Module.End.mul_apply, hC, map_smul]`. Establish `hv : X.vac ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨⟨p, hp⟩, hn⟩` from `hI.isVac.2.norm`. Establish `h1` using `hn p hp`. Simplify using `[h0, nrm2] at h1`. Establish `hC0 : C ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hv` to reduce the goal to its premises. Establish `h2` using `congrArg (X.ω t (a, a')⁻¹) hC`. Rewrite `h2` using `[zero_smul, map_zero, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Conclude with `h2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨C⁻¹ * κ₁, F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← e1, e2, smul_smul, inv_mul_cancel₀ hC0, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem rational_vacuum_eq_smul_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -74,7 +74,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | exact _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | (intros; apply _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination <;> assumpti …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rational_vacuum_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

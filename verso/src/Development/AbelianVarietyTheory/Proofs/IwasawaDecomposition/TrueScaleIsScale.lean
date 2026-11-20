@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Vol.ScaleExists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.Vol.Scale.cdScaleIs_trueScale`.
+A detailed English derivation is pending.
 -/
 theorem trueScale_isScale : ∀ cd : CDHaar, CdScaleIs cd (trueScale cd) :=
   GlobalTheory.Mem.Vol.Scale.cdScaleIs_trueScale

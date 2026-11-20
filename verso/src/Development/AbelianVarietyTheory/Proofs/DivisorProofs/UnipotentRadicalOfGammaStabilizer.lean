@@ -17,7 +17,7 @@ abbrev i2 (m : ℕ) : Ix m := ⟨2, (0 : Fin 1)⟩
 abbrev i1 {m : ℕ} (k : Fin m) : Ix m := ⟨1, k⟩
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Fin.sum_univ_three]`. Use `congr 1`. Use `congr 1`. Conclude with `Fin.sum_univ_one (fun j : Fin 1 => f ⟨0, j⟩)`. Conclude with `Fin.sum_univ_one (fun j : Fin 1 => f ⟨2, j⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_ix (f : Ix m → R) : ∑ x, f x = f (i0 m) + ∑ k : Fin m, f (i1 k) + f (i2 m) := by
   rw [Fintype.sum_sigma, Fin.sum_univ_three]
@@ -66,64 +66,60 @@ Both sides reduce to the same expression.
 theorem g12 (j : Fin m) : gamS K (i1 j) (i2 m) = 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem left0 (y : Ix m) : (gamS K * A) (i0 m) y = A (i2 m) y := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem left2 (y : Ix m) : (gamS K * A) (i2 m) y = - A (i0 m) y := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem left1 (i : Fin m) (y : Ix m) : (gamS K * A) (i1 i) y = ∑ k, K i k * A (i1 k) y := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem right0 (x : Ix m) : (A * gamS K) x (i0 m) = - A x (i2 m) := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem right2 (x : Ix m) : (A * gamS K) x (i2 m) = A x (i0 m) := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_ix]`. Simplify using `only [g02, g20, g11, g00, g22, g01, g10, g21, g12]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem right1 (x : Ix m) (j : Fin m) : (A * gamS K) x (i1 j) = ∑ k, A x (i1 k) * K k j := by
   rw [Matrix.mul_apply, sum_ix]; simp only [g02, g20, g11, g00, g22, g01, g10, g21, g12]; simp
 
 /- English proof (translation)
-Take `⟨hp, hd⟩` from `mem_unipRad.1 (inv_mem hN)`. Rewrite `hp` using `[mem_parab_iff]`. Use `set M : Matrix (Fin n) (Fin n) R := ((N⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) with hM`. Establish `h1 : gam e (K : Matrix (Fin m) (Fin m) R) * (N' : Matrix (Fin n) (Fin n) R) = Mᵀ * gam e (K : Matrix (Fin m) (Fin m) R)` using `by conv_rhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Mᵀ, ← Matrix.transpose_mul, hM, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A : Matrix (Ix m) (Ix m) R := (N' : Matrix (Fin n) (Fin n) R).submatrix e e with hA`. Use `set C : Matrix (Ix m) (Ix m) R := Mᵀ.submatrix e e with hC`. Establish `hg : (gam e (K : Matrix (Fin m) (Fin m) R)).submatrix e e = gamS (K : Matrix (Fin m) (Fin m) R)`. Use extensionality with `x y`. Simplify using `[gam]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : gamS (K : Matrix (Fin m) (Fin m) R) * A = C * gamS (K : Matrix (Fin m) (Fin m) R)`. Rewrite using `[← hg, hA, hC, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h1]`. Establish `c00 : C (i0 m) (i0 m) = 1` using `(hd 0 (0 : Fin 1) (0 : Fin 1)).trans (Matrix.one_apply_eq _)`. Establish `c22 : C (i2 m) (i2 m) = 1` using `(hd 2 (0 : Fin 1) (0 : Fin 1)).trans (Matrix.one_apply_eq _)`. Establish `c11 : ∀ i j : Fin m, C (i1 i) (i1 j) = (1 : Matrix (Fin m) (Fin m) R) i j` using `fun i j => (hd 1 j i).trans (by show (1 : Matrix (Fin m) (Fin m) R) j i = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply, eq_comm])`. Establish `c02 : C (i0 m) (i2 m) = 0` using `hp 2 0 (0 : Fin 1) (0 : Fin 1) (by decide)`. Establish `c01 : ∀ j : Fin m, C (i0 m) (i1 j) = 0` using `fun j => hp 1 0 j (0 : Fin 1) (by decide)`. Establish `c12 : ∀ j : Fin m, C (i1 j) (i2 m) = 0` using `fun j => hp 2 1 (0 : Fin 1) j (by decide)`. Establish `a00 : A (i0 m) (i0 m) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun h2 (i2 m)) (i0 m)` as an intermediate fact. Rewrite `this` using `[left2, right0, c22]`. Conclude with `neg_injective this`. Establish `a22 : A (i2 m) (i2 m) = 1`. Use `congrFun (congrFun h2 (i0 m)) (i2 m)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[left0, right2, c00]`. Then use the resulting hypothesis. Establish `a20 : A (i2 m) (i0 m) = 0`. Use `congrFun (congrFun h2 (i0 m)) (i0 m)` as an intermediate fact. Rewrite `this` using `[left0, right0, c02, neg_zero]`. Then use the resulting hypothesis. Establish `a21 : ∀ j : Fin m, A (i2 m) (i1 j) = 0` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrFun (congrFun h2 (i0 m)) (i1 j)` as an intermediate fact. Rewrite `this` using `[left0, right1]`. Simplify `this` using `[c01]`. Establish `a10 : ∀ j : Fin m, A (i1 j) (i0 m) = 0`. Establish `hv : (K : Matrix (Fin m) (Fin m) R) * (Matrix.of fun k (_ : Fin m) => A (i1 k) (i0 m)) = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h2 (i1 i)) (i0 m)` as an intermediate fact. Rewrite `this` using `[left1, right0, c12, neg_zero]`. Conclude with `this`. Use `(Units.mul_right_eq_zero K).1 hv` as an intermediate fact.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `fun j => congrFun (congrFun this j) j`. Establish `a11 : ∀ i j : Fin m, A (i1 i) (i1 j) = (1 : Matrix (Fin m) (Fin m) R) i j`. Establish `hv : (K : Matrix (Fin m) (Fin m) R) * (Matrix.of fun k j => A (i1 k) (i1 j)) = K * 1`. Use extensionality with `i j`. Use `congrFun (congrFun h2 (i1 i)) (i1 j)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[left1, right1]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [c11]`. Rewrite using `[Matrix.mul_one, ← Matrix.mul_apply, Matrix.one_mul]`. Use `(Units.mul_right_inj K).1 hv` as an intermediate fact.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `fun i j => congrFun (congrFun this i) j`. Establish `fin1 : ∀ i : Fin 1, i = 0` using `fun i => Subsingleton.elim _ _`. Use `mem_unipRad.2 ⟨mem_parab_iff.2 ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b i j hab fin_cases a <;> fin_cases b <;> try exact absurd hab (by decide)`. Take `rfl` from `fin1 j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `a10 i`. Take `rfl` from `fin1 i`. Take `rfl` from `fin1 j`. Conclude with `a20`. Take `rfl` from `fin1 i`.
-
-Conclude with `a21 j`. Introduce `a i j fin_cases a`. Take `rfl` from `fin1 i`. Take `rfl` from `fin1 j`. Conclude with `a00.trans (Matrix.one_apply_eq _).symm`.
-
-Conclude with `a11 i j`. Take `rfl` from `fin1 i`. Take `rfl` from `fin1 j`. Conclude with `a22.trans (Matrix.one_apply_eq _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unipRad_dual (R : Type) [Field R] (m n : ℕ) (e : GlobalTheory.SplitCoord.Ix m ≃ Fin n) (K : GL (Fin m) R)
     (N N' : GL (Fin n) R) (hN : N ∈ GlobalTheory.SmGL.unipRad R e)

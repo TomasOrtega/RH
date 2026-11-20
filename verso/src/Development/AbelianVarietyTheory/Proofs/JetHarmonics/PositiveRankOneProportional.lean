@@ -7,17 +7,17 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T W _ _ _ l₀ La hadj hpos ⟨v₀, hv₀⟩`. Use `set a : ℂ := ⟪La v₀, l₀ v₀⟫_ℂ with ha`. Use `set n : ℝ := ‖l₀ v₀‖ ^ 2 with hn`. Establish `hnpos : 0 < n` using `by rw [hn]; exact pow_pos (norm_pos_iff.mpr hv₀) 2`. Establish `hnn : ⟪l₀ v₀, l₀ v₀⟫_ℂ = (n : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hn]`. Simplify using the standard rewrite rules. Establish `hnc : (n : ℂ) ≠ 0` using `by exact_mod_cast hnpos.ne'`. Take `⟨him, hre⟩` from `hpos v₀ (l₀ v₀)`. Establish `e : ⟪l₀ v₀, ((innerSL ℂ (La v₀)).smulRight (l₀ v₀)) (l₀ v₀)⟫_ℂ = a * (n : ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.smulRight_apply, inner_smul_right, hnn, innerSL_apply_apply]`. Rewrite `him`, `hre` using `[e]`. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, zero_add, sub_zero] at him hre`. Establish `haim : a.im = 0` using `(mul_eq_zero.mp him).resolve_right hnpos.ne'`. Establish `hare : 0 ≤ a.re` using `nonneg_of_mul_nonneg_left hre hnpos`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hareal : a = (a.re : ℂ)` using `Complex.ext (by simp) (by simp [haim])`. Use `⟨a.re / n, div_nonneg hare hnpos.le, fun v => ?_⟩` and prove the remaining obligations. Establish `key : (n : ℂ) • La v = a • l₀ v`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `ContinuousLinearMap.adjoint_inner_left ((innerSL ℂ (La v)).smulRight (l₀ v₀)) y (l₀ v₀)`. Rewrite `h` using `[hadj v v₀, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, innerSL_apply_apply, inner_smul_right, hnn, ← ha]`. Rewrite using `[h, inner_smul_left, Complex.conj_ofReal, mul_comm]`. Establish `: La v = (n : ℂ)⁻¹ • ((n : ℂ) • La v)` using `by rw [smul_smul, inv_mul_cancel₀ hnc, one_smul]`. Rewrite using `[this, key, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Complex.ofReal_div, ← hareal, div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_rankOne_kernel_shape : ∀ (T W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [CompleteSpace W] (l₀ La : T → W), (∀ v w, ContinuousLinearMap.adjoint ((innerSL ℂ (La v)).smulRight (l₀ w)) = (innerSL ℂ (La w)).smulRight (l₀ v)) → (∀ v ξ, (⟪ξ, ((innerSL ℂ (La v)).smulRight (l₀ v)) ξ⟫_ℂ).im = 0 ∧ 0 ≤ (⟪ξ, ((innerSL ℂ (La v)).smulRight (l₀ v)) ξ⟫_ℂ).re) → (∃ v, l₀ v ≠ 0) → ∃ c : ℝ, 0 ≤ c ∧ ∀ v, La v = (c : ℂ) • l₀ v := by
   intro T W _ _ _ l₀ La hadj hpos ⟨v₀, hv₀⟩

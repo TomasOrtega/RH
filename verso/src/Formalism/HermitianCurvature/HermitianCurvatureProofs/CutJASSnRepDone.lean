@@ -10,7 +10,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.GaugeConstructionHo
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.MC
 
 /- English proof (translation)
-The claim follows from `modConst_of_cut line_nonvanishing_holds line_at_most_one_holds datum_transitivity_holds s_raise_section s_norm_section Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.theta_facts_hold`.
+A detailed English derivation is pending.
 -/
 theorem modular_constancy_holds : ModConst :=
   modConst_of_cut line_nonvanishing_holds line_at_most_one_holds datum_transitivity_holds s_raise_section s_norm_section
@@ -21,7 +21,7 @@ end Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.MC
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep
 
 /- English proof (translation)
-The claim follows from `ssnRep_of_open2 rho_projection_existence Core.TC.MC.modular_constancy_holds Core.TC.line_nonvanishing_holds (Or.inr h)`.
+A detailed English derivation is pending.
 -/
 theorem ssnRep_of_polyS (h : Core.TC.PolyRadialS) : SSnRep :=
   ssnRep_of_open2 rho_projection_existence Core.TC.MC.modular_constancy_holds Core.TC.line_nonvanishing_holds (Or.inr h)
@@ -31,7 +31,7 @@ end Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt2_of_SSnRep hJ (JA.SSn.Rep.ssnRep_of_polyS h)`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_polyS (hJ : JfSmoothDS) (h : JA.SSn.Rep.Core.TC.PolyRadialS) :
     Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=

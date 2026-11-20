@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {Γ O : Type} [Group Γ] [TopologicalSpace Γ] [CommRing O] {I : Ideal O} {γ δ : Γ →* Oˣ}
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [MonoidHom.mul_apply, Units.val_mul, map_mul] exact (h N).mul (h' N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ac_mul (h : AdicCont I fun g => (γ g : O)) (h' : AdicCont I fun g => (δ g : O)) :
     AdicCont I fun g => ((γ * δ) g : O) := fun N => by
@@ -21,7 +21,7 @@ theorem ac_mul (h : AdicCont I fun g => (γ g : O)) (h' : AdicCont I fun g => (�
   exact (h N).mul (h' N)
 
 /- English proof (translation)
-Introduce `N` and use `by have h1 : IsLocallyConstant fun g => Units.map (Ideal.Quotient.mk (I ^ N)).toMonoidHom (γ g) := IsLocallyConstant.desc _ Units.val (h N) Units.val_injective have h2 := h1.comp fun u => ((u ^ n : (O ⧸ I ^ N)ˣ) : O ⧸ I ^ N) refine (congrArg IsLocallyConstant (funext fun g => ?_) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ac_zpow (h : AdicCont I fun g => (γ g : O)) (n : ℤ) : AdicCont I fun g => ((γ ^ n) g : O) := fun N => by
   have h1 : IsLocallyConstant fun g => Units.map (Ideal.Quotient.mk (I ^ N)).toMonoidHom (γ g) :=
@@ -33,7 +33,7 @@ theorem ac_zpow (h : AdicCont I fun g => (γ g : O)) (n : ℤ) : AdicCont I fun 
   rfl
 
 /- English proof (translation)
-Introduce `N` and use `by rw [IsLocallyConstant.iff_exists_open] refine fun x => ⟨(fun y => x⁻¹ * y) ⁻¹' γ.ker, h.preimage (continuous_const_mul _), by simp, fun y hy => ?_⟩ have h1 : γ (x⁻¹ * y) = 1 := hy beta_reduce rw [← mul_inv_cancel_left x y, map_mul γ, h1, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ac_ker [IsTopologicalGroup Γ] (h : IsOpen (γ.ker : Set Γ)) : AdicCont I fun g => (γ g : O) := fun N => by
   rw [IsLocallyConstant.iff_exists_open]
@@ -48,7 +48,7 @@ noncomputable def rd {l : ℕ} [Fact l.Prime] (c : Coef l) : c.Oˣ →* (Residue
   Units.map (residue c.O).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `(congrFacts (AlgebraicClosure ℚ) l c).2.2.2.1 x y m ((Nat.Prime.coprime_iff_not_dvd Fact.out).1 hm) hx hy (Ideal.Quotient.eq.1 (congrArg Units.val h))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_rd {l : ℕ} [Fact l.Prime] {c : Coef l} {x y : c.Oˣ} {m : ℕ} (hm : l.Coprime m) (hx : x ^ m = 1)
     (hy : y ^ m = 1) (h : rd c x = rd c y) : x = y :=
@@ -56,7 +56,7 @@ theorem eq_of_rd {l : ℕ} [Fact l.Prime] {c : Coef l} {x y : c.Oˣ} {m : ℕ} (
     (Ideal.Quotient.eq.1 (congrArg Units.val h))
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_zpow, ofMul_inv]`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem grpF {M : Type} [CommGroup M] (η ω ξ ψ : M) (e k : ℤ) :
     (η ^ (e + 2 - k)) ^ 2 * ((η ^ 2 * ω) ^ (k - 1) * (ξ * ψ)) =
@@ -66,7 +66,7 @@ theorem grpF {M : Type} [CommGroup M] (η ω ξ ψ : M) (e k : ℤ) :
   module
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_zpow, ofMul_inv]`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem grpT {M : Type} [CommGroup M] (η ω ξ ψ : M) (e k : ℤ) :
     (ω ^ e * ψ * η ^ (e + 2 - k)) ^ 2 * ((η ^ 2 * ω) ^ (k - 1) * (ξ * ψ⁻¹)) =
@@ -76,7 +76,7 @@ theorem grpT {M : Type} [CommGroup M] (η ω ξ ψ : M) (e k : ℤ) :
   module
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Apply `mul_right_cancel (b := b)` to reduce the goal to its premises. Rewrite using `[h, sq, mul_right_comm]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel3 {M : Type} [CommGroup M] {a b d p : M} (h : a * b = d ^ 2 * p) (hb : b = d) : a = d * p := by
   subst hb
@@ -87,45 +87,41 @@ end UpperTheory.V.Cu.RankFourTwistExistence
 
 open UpperTheory.V.Cu.RankFourTwistExistence in
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T h3 k hk1 hk`. Establish `h : D.Good` using `h3.1`. Take `⟨-, he2, -, ⟨mψ, -, hmψ, hψ⟩, -⟩` from `UpperTheory.V.Ws.large₂.host3 D h3`. Take `⟨-, -, -, -, -, -, -, -, -, -, hcont, -, homo, -⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D h`. Take `⟨mξ, hmξ, hξ⟩` from `h.xi_ord`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl1 : l.Coprime (l - 1)` using `(Nat.coprime_self_sub_right hl.out.one_le).2 (Nat.coprime_one_right l)`. Use `set ε := chiO ℚ Ω l c.O with hε`. Use `set μ : G ℚ Ω →* c.Oˣ := D.al * D.ξ ^ (-1 : ℤ) with hμ`. Use `set P : G ℚ Ω →* c.Oˣ := D.om ^ (D.e : ℤ) * D.ψ with hP`. Establish `al_eq : ∀ g, D.al g = ε g * (D.om g)⁻¹ * D.ξ g` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mu_eq : ∀ g, μ g = ε g * (D.om g)⁻¹` using `fun g => by`. Rewrite using `[hμ, MonoidHom.mul_apply, MonoidHom.zpow_apply, al_eq, zpow_neg_one, mul_inv_cancel_right]`. Establish `charpoly_eq_of_isIso : ∀ g, P g = D.om g ^ D.e * D.ψ g` using `fun g => by`. Rewrite using `[hP, MonoidHom.mul_apply, MonoidHom.zpow_apply, zpow_natCast]`. Establish `P_eqz : ∀ g, P g = D.om g ^ (D.e : ℤ) * D.ψ g` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, MonoidHom.mul_apply, MonoidHom.zpow_apply]`. Establish `Psi_z : ∀ g, D.Psi g = ε g ^ (D.e : ℤ) * D.ψ g` using `fun _ => rfl`. Establish `Psi_eq : ∀ g, D.Psi g = μ g ^ D.e * P g` using `fun g => by`. Establish `: D.Psi g = ε g ^ D.e * D.ψ g` using `by rw [← zpow_natCast]; rfl`. Rewrite using `[this, mu_eq, charpoly_eq_of_isIso, mul_pow, inv_pow, mul_assoc, inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `al_eq' : ∀ g, D.al g = μ g * D.ξ g` using `fun g => by rw [al_eq, mu_eq]`. Establish `th_eq : ∀ g, D.th g = D.al g * D.Psi g` using `fun _ => rfl`. Establish `rmu : ∀ g, rd c (μ g) = 1` using `fun g => by`. Establish `: rd c (D.om g) = rd c (ε g)` using `Units.ext (h.om_bar g)`. Rewrite using `[mu_eq, map_mul, map_inv, this, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ral : ∀ g, rd c (D.al g) = rd c (D.ξ g)` using `fun g => by rw [al_eq', map_mul, rmu, one_mul]`. Establish `rPsi : ∀ g, rd c (D.Psi g) = rd c (P g)` using `fun g => by rw [Psi_eq, map_mul, map_pow, rmu, one_pow, one_mul]`. Establish `omp : ∀ g, D.om g ^ (l - 1) = 1` using `fun g => DFunLike.congr_fun h.om_pow g`. Establish `hM : l.Coprime ((l - 1) * mψ * mξ)` using `(hl1.mul_right hmψ).mul_right hmξ`. Establish `PM : ∀ g, P g ^ ((l - 1) * mψ * mξ) = 1` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : D.ψ g ^ mψ = 1` using `DFunLike.congr_fun hψ g`. Rewrite using `[charpoly_eq_of_isIso, mul_pow, ← pow_mul, mul_comm D.e, mul_assoc, mul_assoc, pow_mul, omp, one_pow, one_mul, mul_assoc, mul_left_comm, pow_mul, h1, one_pow]`. Establish `xM : ∀ g, D.ξ g ^ ((l - 1) * mψ * mξ) = 1` using `fun g => by`. Establish `h1 : D.ξ g ^ mξ = 1` using `DFunLike.congr_fun hξ g`. Rewrite using `[mul_comm, pow_mul, h1, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : IsUnit (2 : c.O)`. Establish `: IsUnit ((2 : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes hl.out Nat.prime_two).2 h.l_odd`. Simplify `this.map (algebraMap ℤ_[l] c.O)` using `[map_ofNat]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η, η2, ηr, ηc, η1⟩` from `UpperTheory.exists_square_root_character c.O h2 (G ℚ Ω) μ (fun g => congrArg Units.val (rmu g)) (ac_mul (hcont 2) (ac_zpow (ac_ker h.xi_open) _))`. Establish `rη : ∀ g, rd c (η g) = 1` using `fun g => Units.ext (ηr g)`. Establish `eps_eq : ∀ g, ε g = η g ^ 2 * D.om g` using `fun g => by rw [η2, mu_eq, inv_mul_cancel_right]`. Establish `epz : ∀ g, ε g ^ (k - 1) = ε g ^ ((k : ℤ) - 1)` using `fun g => by`. Rewrite using `[← zpow_natCast, Nat.cast_sub hk1, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkz : ((k : ℤ) - 1) = ((k - 1 : ℕ) : ℤ)` using `by omega`. Establish `omz : ∀ g, D.om g ^ ((k : ℤ) - 1) = D.om g ^ (D.e : ℤ)` using `fun g => by`. Rewrite using `[hkz, zpow_natCast, zpow_natCast]`. Conclude with `pow_eq_pow_iff_modEq.2 (hk.of_dvd (orderOf_dvd_of_pow_eq_one (omp g)))`. Establish `om2 : ∀ g, (D.om g ^ (D.e : ℤ)) ^ 2 = 1` using `fun g => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨n, hn⟩` from `he2`. Rewrite using `[zpow_natCast, ← pow_mul, mul_comm, hn, pow_mul, omp, one_pow]`. Use `set j : ℤ := (D.e : ℤ) + 2 - k with hj`. Establish `hc03 : ∀ g, chi D T.pr 0 g * chi D T.pr 3 g = D.th g` using `fun g => by`. Consider the cases of `T.pr`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `D.th g * 1 = D.th g`. Rewrite using `[mul_one]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨t, tc, tmul, tred, t1⟩ : ∃ t : G ℚ Ω →* c.Oˣ, AdicCont (maximalIdeal c.O) (fun g => (t g : c.O)) ∧ (∀ g, (t g * η g ^ j) ^ 2 * UpperTheory.V.Cu.Phi D T.pr k g = D.th g) ∧ (∀ g, rd c (chi D T.pr 3 g) = rd c (t g)) ∧ ∀ g, P g = 1 → t g = 1 := by`. Consider the cases of `hpr : T.pr`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨1, ac_ker (by rw [MonoidHom.ker_one]; exact isOpen_univ), fun g => ?_, fun g => ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 * η g ^ j) ^ 2 * (ε g ^ (k - 1) * (D.ξ g * D.ψ g)) = ε g * (D.om g)⁻¹ * D.ξ g * (ε g ^ (D.e : ℤ) * D.ψ g)`. Rewrite using `[one_mul, epz, eps_eq, hj, grpF, omz, mul_inv_cancel, mul_one]`. Both sides reduce to the same expression. Use `⟨P, ac_mul (ac_zpow (ac_ker homo) _) (ac_ker h.psi_open), fun g => ?_, fun g => rPsi g, fun _ h => h⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(P g * η g ^ j) ^ 2 * (ε g ^ (k - 1) * (D.ξ g * (D.ψ g)⁻¹)) = ε g * (D.om g)⁻¹ * D.ξ g * (ε g ^ (D.e : ℤ) * D.ψ g)`. Rewrite using `[P_eqz, epz, eps_eq, hj, grpT, omz, mul_inv_cancel, mul_one, om2, mul_one]`. Establish `δ_eq : ∀ g, (t * η ^ j) g = t g * η g ^ j` using `fun _ => rfl`. Establish `rδ : ∀ g, rd c ((t * η ^ j) g) = rd c (t g)` using `fun g => by rw [δ_eq, map_mul, map_zpow, rη, one_zpow, mul_one]`. Use `⟨t * η ^ j, ⟨ac_mul tc (ac_zpow ηc j), fun g => ?_, fun g => ?_, fun g => ?_, fun g hg hr => ?_, D.om.ker ⊓ D.ψ.ker, j, homo.inter h.psi_open, fun g hg => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[δ_eq]`. Conclude with `tmul g`. Establish `e0 : chi D T.pr 0 g * chi D T.pr 3 g = (t * η ^ j) g ^ 2 * UpperTheory.V.Cu.Phi D T.pr k g` using `(hc03 g).trans (tmul g).symm`. Establish `e1` using `congrArg (rd c) e0`. Rewrite `e1` using `[map_mul, map_mul, map_pow]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val (cancel3 e1 ((tred g).trans (rδ g).symm))`. Conclude with `congrArg Units.val ((tred g).trans (rδ g).symm)`. Establish `hr' : ∀ i, rd c (D.ps i g) = 1` using `fun i => Units.ext (by`. Use `congrFun (congrFun hr i) i` as an intermediate fact. Express the relevant statement in the definitionally equal form `residue c.O (D.ps i g : c.O) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Simplify `this)` using `[Raw.rbar, Raw.r0, diagRep]`. Establish `e1 : ε g = 1` using `by rw [hε, chiO, MonoidHom.comp_apply, hg, map_one]`. Establish `o1 : D.om g = 1` using `eq_of_rd hl1 (omp g) (one_pow _) (e1 ▸ Units.ext (h.om_bar g))`. Establish `p1 : P g = 1` using `eq_of_rd hM (PM g) (one_pow _) (by rw [← rPsi, map_one]; exact hr' 1)`. Establish `x1 : D.ξ g = 1` using `eq_of_rd hM (xM g) (one_pow _) (by rw [← ral, map_one]; exact hr' 2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s1 : D.ψ g = 1` using `by rw [charpoly_eq_of_isIso, o1, one_pow, one_mul] at p1; exact p1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_eq, t1 g p1, η1 g (by rw [mu_eq, e1, o1, inv_one, mul_one]), one_zpow, mul_one]`. Consider the cases of `T.pr`. Express the relevant statement in the definitionally equal form `D.ξ g * D.ψ g = 1`.
-
-Rewrite using `[x1, s1, mul_one]`. Express the relevant statement in the definitionally equal form `D.ξ g * (D.ψ g)⁻¹ = 1`. Rewrite using `[x1, s1, inv_one, mul_one]`. Establish `o1 : D.om g = 1` using `hg.1`. Establish `o2 : D.ψ g = 1` using `hg.2`.
-
-Rewrite using `[← hε, δ_eq, t1 g (by rw [charpoly_eq_of_isIso, o1, o2, one_pow, mul_one]), one_mul, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, η2, mu_eq, o1, inv_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.twEx4 : UpperTheory.V.Cu.TwEx4 := by
   intro Ω _ _ _ l hl c D T h3 k hk1 hk

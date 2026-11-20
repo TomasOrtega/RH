@@ -11,19 +11,17 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol F
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `P hP hP0 _`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨hc.deg2⟩`. Set `c : Gal(E/F)` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun r => (hc.fixed (algebraMap F E r)).2 ⟨r, rfl⟩)`. Use `haveI : P.LiesOver (P.under (𝓞 F)) := ⟨rfl⟩`. Establish `hp0 : P.under (𝓞 F) ≠ ⊥` using `Ideal.IsIntegral.comap_ne_bot (𝓞 F) hP0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (P.inertia Gal(E/F)) = P.ramificationIdx (𝓞 F)`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(E/F)) (P.under (𝓞 F)) P, Ideal.ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 F)) P Gal(E/F)]`. Assume the negation of the conclusion as `hne`. Establish `hG : Nat.card Gal(E/F) = 2` using `by first`. Consider the case `(rw [IsGalois.card_aut_eq_finrank]; exact hc.deg2)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(rw [Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]; exact hc.deg2)`. Use `haveI : Fact (Nat.card Gal(E/F)).Prime := ⟨by rw [hG]; exact Nat.prime_two⟩`. Establish `htop : P.inertia Gal(E/F) = ⊤`. Break down `Subgroup.eq_bot_or_eq_top_of_prime_card (P.inertia Gal(E/F)) with h | h` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hcard, h]`. Simplify using the standard rewrite rules. Conclude with `h`. Establish `hcI : c ∈ P.inertia Gal(E/F)` using `htop ▸ Subgroup.mem_top c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨θ, t, ht, hθ⟩` from `hc.cmUnram.2.2 P (hP.isMaximal hP0)`. Apply `hθ` to reduce the goal to its premises. Establish `h1` using `hcI θ`. Establish `e : c • θ = t`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Establish `: θ - t = -(t - θ)` using `by ring`. Rewrite using `[this]`.
-
-Conclude with `P.neg_mem h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramAt_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (v : HeightOneSpectrum (𝓞 F)) : UnramAt (E := E) v := by
@@ -65,11 +63,11 @@ theorem unramAt_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-Introduce `h1 h2`. Use `⟨?_, ?_, h1, h2⟩` and prove the remaining obligations. Unfold `IsCMExt`. Use `⟨X.B.I.cm.totReal, X.B.I.cm.cmUnram.1, X.B.I.cm.deg2, ?_⟩` and prove the remaining obligations. Conclude with `fun τ x => X.B.I.cm.cmUnram.2.1 τ x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Unfold `IsHermND`. Establish `hH` using `X.B.I.J_herm`. Unfold `Formalism.UG.IsHerm at hH`. Use `⟨fun i j => ?_, X.B.I.J_det⟩` and prove the remaining obligations. Establish `h3` using `congrFun (congrFun hH i) j`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem omega_standard_holds : OmVStd X ψ := by
   intro h1 h2
@@ -85,12 +83,12 @@ theorem omega_standard_holds : OmVStd X ψ := by
     exact h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem omega_lattice_holds : OmVLat X := ⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `v` and use `unramAt_of_cm X.B.I.cm v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem omega_unramified_holds : OmVUnram X := fun v => unramAt_of_cm X.B.I.cm v
 

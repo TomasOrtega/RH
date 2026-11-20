@@ -9,7 +9,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 namespace UpperTheory.V.ZK
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.ZK.lemmaK_of_litN_alt hN bOdd`.
+A detailed English derivation is pending.
 -/
 theorem lemmaK_litN_alt (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : ∃ CK, LemmaK CK := _root_.UpperTheory.V.ZK.lemmaK_of_litN_alt hN bOdd
 end UpperTheory.V.ZK

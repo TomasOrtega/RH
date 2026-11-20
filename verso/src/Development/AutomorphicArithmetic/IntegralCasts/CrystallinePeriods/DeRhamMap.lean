@@ -15,7 +15,7 @@ variable {S : Type v} [CommRing S] [Fact ¬IsUnit (p : S)] [IsAdicComplete (span
 variable {U : Type w} [CommRing U] [Fact ¬IsUnit (p : U)] [IsAdicComplete (span {(p : U)}) U]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, AinfInv.theta_map, RingHom.mem_ker.1 hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem AinfInv.kerTheta_le_comap (f : R →+* S) :
     AinfInv.kerTheta p R ≤ (AinfInv.kerTheta p S).comap (AinfInv.map p f) := by
@@ -24,7 +24,7 @@ theorem AinfInv.kerTheta_le_comap (f : R →+* S) :
 
 variable {p} in
 /- English proof (translation)
-Use `RingHom.congr_fun (padic_hom_ext (f := (AinfInv.map p f).comp (algebraMap ℚ_[p] _)) (g := algebraMap ℚ_[p] (AinfInv p S)) fun b => ?_) a` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (AinfInv p R), IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p S) (AinfInv p S), AinfInv.map_algebraMap, Ainf.map_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem AinfInv.map_algebraMap_padic (f : R →+* S) (a : ℚ_[p]) :
     AinfInv.map p f (algebraMap ℚ_[p] _ a) = algebraMap ℚ_[p] _ a := by
@@ -43,7 +43,7 @@ def map (f : R →+* S) : BdRPlus p R →+* BdRPlus p S :=
 variable {p}
 
 /- English proof (translation)
-The claim follows from `evalₐ_adicMap _ _ _ _ n x`.
+A detailed English derivation is pending.
 -/
 theorem eval_map (f : R →+* S) (n : ℕ) (x : BdRPlus p R) :
     eval p S n (map p f x) = Ideal.quotientMap _ (AinfInv.map p f)
@@ -51,14 +51,14 @@ theorem eval_map (f : R →+* S) (n : ℕ) (x : BdRPlus p R) :
   evalₐ_adicMap _ _ _ _ n x
 
 /- English proof (translation)
-The claim follows from `adicMap_algebraMap _ _ _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (x : AinfInv p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (AinfInv.map p f x) :=
   adicMap_algebraMap _ _ _ _ x
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply _ (AinfInv p R), map_algebraMap, AinfInv.map_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_ainf (f : R →+* S) (x : Ainf p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (Ainf.map p f x) := by
@@ -66,7 +66,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply _ (AinfInv p R), map_algebraMap, 
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply _ (AinfInv p R), map_algebraMap, AinfInv.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_padic (f : R →+* S) (a : ℚ_[p]) :
     map p f (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -74,20 +74,20 @@ Rewrite using `[IsScalarTower.algebraMap_apply _ (AinfInv p R), map_algebraMap, 
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-The claim follows from `adicMap_eq_id _ _ _ AinfInv.map_id x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (x : BdRPlus p R) : map p (RingHom.id R) x = x :=
   adicMap_eq_id _ _ _ AinfInv.map_id x
 
 /- English proof (translation)
-The claim follows from `adicMap_adicMap _ _ _ _ _ _ _ _ _ (AinfInv.map_map f g) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : BdRPlus p R) :
     map p g (map p f x) = map p (g.comp f) x :=
   adicMap_adicMap _ _ _ _ _ _ _ _ _ (AinfInv.map_map f g) x
 
 /- English proof (translation)
-Establish `h1` using `AdicCompletion.factorₐ_evalₐ_one (AinfInv.kerTheta p R) x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor _ (eval p R 1 x) = _ at h1`. Rewrite `h1` using `[h]`. Express the relevant statement in the definitionally equal form `RingHom.kerLift _ (AdicCompletion.evalOneₐ (AinfInv.kerTheta p R) x) = _`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -101,7 +101,7 @@ theorem theta_eq_of_eval_one {x : BdRPlus p R} {a : AinfInv p R}
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (eval p R 1 x)`. Rewrite using `[theta_eq_of_eval_one ha.symm, ← AinfInv.theta_map]`. Apply `theta_eq_of_eval_one` to reduce the goal to its premises. Rewrite using `[eval_map, ← ha, Ideal.quotientMap_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_map (f : R →+* S) (x : BdRPlus p R) :
     theta p S (map p f x) = awayMap p f (theta p R x) := by
@@ -111,7 +111,7 @@ theorem theta_map (f : R →+* S) (x : BdRPlus p R) :
   rw [eval_map, ← ha, Ideal.quotientMap_mk]
 
 /- English proof (translation)
-The claim follows from `pow_le_comap_pow (I := RingHom.ker (theta p R)) (J := RingHom.ker (theta p S)) (f := map p f) (fun y hy => by rw [Ideal.mem_comap, RingHom.mem_ker, theta_map, RingHom.mem_ker.1 hy, map_zero]) n hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_fil (f : R →+* S) {n : ℕ} {x : BdRPlus p R} (hx : x ∈ fil p R n) :
     map p f x ∈ fil p S n :=
@@ -120,7 +120,7 @@ theorem map_mem_fil (f : R →+* S) {n : ℕ} {x : BdRPlus p R} (hx : x ∈ fil 
       rw [Ideal.mem_comap, RingHom.mem_ker, theta_map, RingHom.mem_ker.1 hy, map_zero]) n hx
 
 /- English proof (translation)
-Use `ext_eval fun n => ?_` and prove the remaining obligations. Rewrite using `[eval_map, eval_log, eval_log, map_truncLog, ← eval_map, map_sub (map p f), map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_log (f : R →+* S) (u : BdRPlus p R) (hu : theta p R u = 1) :
     map p f (log u hu) = log (map p f u) (by rw [theta_map, hu, map_one]) := by
@@ -149,21 +149,21 @@ def map (e : R ≃+* S) : BdR p R ≃+* BdR p S :=
 variable {p}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (BdRPlus p R)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {B : Type*} [CommRing B] {f g : BdR p R →+* B}
     (h : ∀ x : BdRPlus p R, f (algebraMap _ _ x) = g (algebraMap _ _ x)) : f = g :=
   IsLocalization.ringHom_ext (nonZeroDivisors (BdRPlus p R)) (RingHom.ext h)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (e : R ≃+* S) (x : BdRPlus p R) :
     map p e (algebraMap _ _ x) = algebraMap _ _ (BdRPlus.map p (e : R →+* S) x) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply _ (BdRPlus p R), map_algebraMap, BdRPlus.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_padic (e : R ≃+* S) (a : ℚ_[p]) :
     map p e (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -171,14 +171,14 @@ Rewrite using `[IsScalarTower.algebraMap_apply _ (BdRPlus p R), map_algebraMap, 
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p (RingEquiv.refl R) : _ →+* _)) (g := RingHom.id _) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_refl (x : BdR p R) : map p (RingEquiv.refl R) x = x :=
   RingHom.congr_fun (hom_ext (f := (map p (RingEquiv.refl R) : _ →+* _)) (g := RingHom.id _)
     (by simp)) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p e').toRingHom.comp (map p e).toRingHom) (g := (map p (e.trans e')).toRingHom) (by simp [BdRPlus.map_map])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (e : R ≃+* S) (e' : S ≃+* U) (x : BdR p R) :
     map p e' (map p e x) = map p (e.trans e') x :=
@@ -186,7 +186,7 @@ theorem map_map (e : R ≃+* S) (e' : S ≃+* U) (x : BdR p R) :
     (g := (map p (e.trans e')).toRingHom) (by simp [BdRPlus.map_map])) x
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨_, BdRPlus.map_mem_fil (e : R →+* S) hy, (map_algebraMap e y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_mem_filNat (e : R ≃+* S) {n : ℕ} {x : BdR p R} (hx : x ∈ filNat p R n) :
     map p e x ∈ filNat p S n := by
@@ -194,7 +194,7 @@ theorem map_mem_filNat (e : R ≃+* S) {n : ℕ} {x : BdR p R} (hx : x ∈ filNa
   exact ⟨_, BdRPlus.map_mem_fil (e : R →+* S) hy, (map_algebraMap e y).symm⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[fil, Submodule.mem_div_iff_forall_mul_mem]`. Introduce `y hy`. Establish `h` using `map_mem_filNat e (hx _ (map_mem_filNat e.symm hy))`. Rewrite `h` using `[map_mul, map_map, RingEquiv.symm_trans_self, map_refl]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_mem_fil (e : R ≃+* S) {i : ℤ} {x : BdR p R} (hx : x ∈ fil p R i) :
     map p e x ∈ fil p S i := by

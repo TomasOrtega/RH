@@ -27,9 +27,9 @@ section
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Unfold `tens`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `F`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Submodule.mem_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨g, hg, k, hk, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨g, hg, rfl⟩, _, ⟨k, hk, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨g, hg, rfl⟩, _, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨g, hg, k, hk, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tens_map {X Y X' Y' : Type} (M : Submodule R (X' → C)) (M' : Submodule R (Y' → C))
     (i : X → X') (j : Y → Y') :
@@ -47,7 +47,7 @@ theorem tens_map {X Y X' Y' : Type} (M : Submodule R (X' → C)) (M' : Submodule
     exact ⟨_, ⟨g, hg, k, hk, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, k, hk, rfl⟩`. Conclude with `⟨g, h hg, k, h' hk, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tens_mono {X Y : Type} {M M₁ : Submodule R (X → C)} {M' M₁' : Submodule R (Y → C)}
     (h : M ≤ M₁) (h' : M' ≤ M₁') : tens M M' ≤ tens M₁ M₁' := by
@@ -56,13 +56,11 @@ theorem tens_mono {X Y : Type} {M M₁ : Submodule R (X → C)} {M' M₁' : Subm
   exact ⟨g, h hg, k, h' hk, rfl⟩
 
 /- English proof (translation)
-Take `⟨A, x, L, hA, hL, hAmp, T, N, inst, pt, hpt, i, π, hπ, hs, hM⟩` from `h₁`. Take `⟨A', x', L', hA', hL', hAmp', T', N', inst', pt', hpt', i', π', hπ', hs', hM'⟩` from `h₂`. Take `⟨hAA, L₂, hL₂, hAmp₂⟩` from `ample_prod R A A' L L' hA hL hAmp hA' hL' hAmp'`. Establish `key : (tens (torsFun C T pt) (torsFun C T' pt')).map (LinearMap.funLeft R C (Prod.map (i ∘ π) (i' ∘ π'))) ≤ tens (torsFun C T pt) (torsFun C T' pt')`. Rewrite using `[tens_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `tens_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hs g hg`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hs' g hg`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨A ⊗ A', inferInstance, L₂, hAA, hL₂, hAmp₂, prodRep T T', N × N', inferInstance, fun z => lift (pt z.1) (pt' z.2), isTorsPts_prod hpt hpt', i.prodMap i', π.prodMap π', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z`. Conclude with `Prod.ext (hπ z.1) (hπ' z.2)`. Introduce `g hg`. Rewrite `hg`, the goal using `[torsFun_prod C T T' hpt hpt']`.
-
-Conclude with `key ⟨g, hg, rfl⟩`. Rewrite using `[torsFun_prod C T T' hpt hpt', hM, hM']`. Conclude with `(tens_map _ _ i i').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbFactor_tens {p : ℕ} {N₁ N₂ : Type} [AddCommGroup N₁] [AddCommGroup N₂]
     {M₁ : Submodule R (N₁ → C)} {M₂ : Submodule R (N₂ → C)} (h₁ : IsAbFactor p M₁)
@@ -89,11 +87,11 @@ theorem isAbFactor_tens {p : ℕ} {N₁ N₂ : Type} [AddCommGroup N₁] [AddCom
     exact (tens_map _ _ i i').symm
 
 /- English proof (translation)
-Take `⟨A, x, L, hA, hL, hAmp, T, N, inst, pt, hpt, i', π', hπ', hs', hM⟩` from `h`. Substitute `hM` using the available equality. Use `⟨A, x, L, hA, hL, hAmp, T, N, inst, pt, hpt, i'.comp i, π.comp π', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Simplify using `[hπ', hπ]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Establish `h1 : (fun y => g (i' y)) ∈ (torsFun C T pt).map (LinearMap.funLeft R C (i' : N₂ → N))` using `⟨g, hg, rfl⟩`. Take `⟨g2, hg2, e⟩` from `hs _ h1`. Establish `h3` using `hs' g2 hg2`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Establish `e2` using `congrFun e (π' y)`. Simplify using `using e2.symm`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAbFactor_map {p : ℕ} {N₁ N₂ : Type} [AddCommGroup N₁] [AddCommGroup N₂]
     {M : Submodule R (N₂ → C)} (i : N₁ →+ N₂) (π : N₂ →+ N₁) (hπ : ∀ x, π (i x) = x)
@@ -119,7 +117,7 @@ theorem isAbFactor_map {p : ℕ} {N₁ N₂ : Type} [AddCommGroup N₁] [AddComm
 end
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ _ _`. Conclude with `⟨fun _ _ _ _ _ _ h h' => isAbFactor_tens h h', fun _ _ _ _ _ i π h h' h'' => isAbFactor_map i π h h' h''⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem abfac_prod : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → (∀ (N₁ N₂ : Type) [AddCommGroup N₁] [AddCommGroup N₂] (M₁ : Submodule R (N₁ → C)) (M₂ : Submodule R (N₂ → C)), IsAbFactor p M₁ → IsAbFactor p M₂ → IsAbFactor p (tens M₁ M₂)) ∧ ∀ (N₁ N₂ : Type) [AddCommGroup N₁] [AddCommGroup N₂] (M : Submodule R (N₂ → C)) (i : N₁ →+ N₂) (π : N₂ →+ N₁), (∀ x, π (i x) = x) → (∀ g ∈ M, (fun x => g (i (π x))) ∈ M) → IsAbFactor p M → IsAbFactor p (M.map (LinearMap.funLeft R C (i : N₁ → N₂))) := by
   intro p _ C _ _ _ v R _ _ _ _

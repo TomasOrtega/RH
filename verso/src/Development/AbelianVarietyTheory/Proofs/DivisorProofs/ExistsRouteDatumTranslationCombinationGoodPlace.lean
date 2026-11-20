@@ -21,7 +21,7 @@ open ValuativeRel
 namespace GlobalTheory.SmallDatum
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ΦB, hD, m, f, φ, φ₀, rfl, hSB, hvac, h₀, ι, P, Λ, c, hι, hφ₀⟩` from `GlobalTheory.T.exists_routeDatum_finite_pureTensors_vacuum hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ν, α, hν, hact⟩` from `GlobalTheory.T.goodSplitPlace_translation_acts_through_weil W t i j M e Bs Γ X om om' h hTr`. Conclude with `⟨_, hD, GlobalTheory.T.exists_goodPlace_translateCombination_latticeIndicator Bs Γ hTr.geo.hM' hTr.geo.lt om' _ ν α hν ι hι (hact ι hι) f φ φ₀ hSB hvac h₀ P Λ c hφ₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_datum_comb_mem_So : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))

@@ -19,7 +19,7 @@ def liftClosed {K G H : PDivGroup p k} (i : K ⟶ G) (hi : ∀ n : ℕ, Function
     rw [liftSurj_apply, res_app, res_app, liftSurj_apply]⟩
 
 /- English proof (translation)
-The claim follows from `hom_ext fun n => BialgHom.ext fun a => liftSurj_apply (i.app n) (hi n) (f.app n) (hf n) a`.
+A detailed English derivation is pending.
 -/
 theorem liftClosed_comp {K G H : PDivGroup p k} (i : K ⟶ G)
     (hi : ∀ n : ℕ, Function.Surjective (i.app n)) (f : H ⟶ G)
@@ -28,7 +28,7 @@ theorem liftClosed_comp {K G H : PDivGroup p k} (i : K ⟶ G)
   hom_ext fun n => BialgHom.ext fun a => liftSurj_apply (i.app n) (hi n) (f.app n) (hf n) a
 
 /- English proof (translation)
-The claim follows from `hom_ext fun n => BialgHom.ext fun b => by obtain ⟨a, rfl⟩ := hi n b have := DFunLike.congr_fun (congrArg (fun u : H ⟶ G => u.app n) h) a simpa using this`.
+A detailed English derivation is pending.
 -/
 theorem cancel_closed {K G H : PDivGroup p k} (i : K ⟶ G)
     (hi : ∀ n : ℕ, Function.Surjective (i.app n)) (g g' : H ⟶ K) (h : g ≫ i = g' ≫ i) :
@@ -41,7 +41,7 @@ theorem cancel_closed {K G H : PDivGroup p k} (i : K ⟶ G)
 end GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ i hi` and use `⟨fun _ f hf => ⟨liftClosed i hi f hf, liftClosed_comp i hi f hf⟩, fun _ g g' h => cancel_closed i hi g g' h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PDivGroup.factor_closedImmersion : ∀ (p : ℕ) (k : Type) [CommRing k] (K G : PDivGroup p k) (i : K ⟶ G), (∀ n : ℕ, Function.Surjective (i.app n)) → (∀ (H : PDivGroup p k) (f : H ⟶ G), (∀ n : ℕ, RingHom.ker (i.app n) ≤ RingHom.ker (f.app n)) → ∃ g : H ⟶ K, g ≫ i = f) ∧ ∀ (H : PDivGroup p k) (g g' : H ⟶ K), g ≫ i = g' ≫ i → g = g' :=
   fun _ _ _ _ _ i hi => ⟨fun _ f hf => ⟨liftClosed i hi f hf, liftClosed_comp i hi f hf⟩,

@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-Use `Fin.addCases (fun a => ?_) (fun b => ?_) i` and prove the remaining obligations. Rewrite using `[scl, Fin.append_left]`. Conclude with `OmW.alp_ne_zero v _ _`. Rewrite using `[scl, Fin.append_right]`. Conclude with `inv_ne_zero (OmW.alp_ne_zero v _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scl_ne_zero (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) : scl X v i ≠ 0 := by
   refine Fin.addCases (fun a => ?_) (fun b => ?_) i
@@ -28,7 +28,7 @@ theorem scl_ne_zero (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) : scl X v i ≠ 
   · rw [scl, Fin.append_right]; exact inv_ne_zero (OmW.alp_ne_zero v _ _)
 
 /- English proof (translation)
-Use `Fin.addCases (fun a => ?_) (fun b => ?_) i` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) a` and prove the remaining obligations. Rewrite using `[OmW.pivot_castAdd_last, scl, Fin.append_left, OmW.alp_last, inv_one]`. Rewrite using `[OmW.piv_e, scl, Fin.append_left, Fin.append_right]`. Rewrite using `[OmW.piv_f, scl, Fin.append_left, Fin.append_right, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem scl_piv (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) :
     scl X v (OmW.piv D.R.rS i) = (scl X v i)⁻¹ := by
@@ -49,7 +49,7 @@ def dU (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) : (Fv X.B.I.F v ⊗[X.B.I.F] 
       Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show sc (E := X.B.I.E) v (scl X v (OmW.piv D.R.rS i)) = sc (E := X.B.I.E) v (scl X v i)⁻¹`. Rewrite using `[scl_piv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dU_piv (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) : dU X v (OmW.piv D.R.rS i) = (dU X v i)⁻¹ := by
   apply Units.ext
@@ -57,7 +57,7 @@ theorem dU_piv (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) : dU X v (OmW.piv D.R
   rw [scl_piv]
 
 /- English proof (translation)
-Use `show _ = mulTup (Matrix.diagonal fun i => (dU X v i : Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)) _`. Rewrite using `[mulTup_diagonal]`. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem yTup_eq (v : PlX X) :
     yTup X u' v = mulTup ((diagUnit (dU X v) : (Matrix _ _ _)ˣ) : Matrix _ _ _)
@@ -68,7 +68,7 @@ theorem yTup_eq (v : PlX X) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Conclude with `OmW.hR_ratTup (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J _ a b`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gram_ratTup (v : PlX X) :
     gramR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (ratTup (Fv X.B.I.F v) (tupH (frameOf X u'))) = localGramMatrixFrame X u' v := by
@@ -76,7 +76,7 @@ theorem gram_ratTup (v : PlX X) :
   exact OmW.hR_ratTup (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J _ a b
 
 /- English proof (translation)
-Rewrite using `[mulTup_diagonal, mulTup_diagonal]`. Use function extensionality and compare the values at `j i`. Use `show g.mulVec (f j • Y j) i = f j * g.mulVec (Y j) i`. Rewrite using `[Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_mulTup {K : Type} [CommRing K] {a M : ℕ} (g : Matrix (Fin M) (Fin M) K) (f : Fin a → K)
     (Y : Fin a → Fin M → K) :
@@ -88,9 +88,9 @@ theorem act_mulTup {K : Type} [CommRing K] {a M : ℕ} (g : Matrix (Fin M) (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hc : ∀ k : HA (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J, k • yTup X u' v = mulTup ((diagUnit (dU X v) : (Matrix _ _ _)ˣ) : Matrix _ _ _) (k • ratTup (Fv X.B.I.F v) (tupH (frameOf X u')))`. Introduce `k`. Rewrite using `[yTup_eq]`. Conclude with `act_mulTup _ _ _`. Use extensionality with `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨_, ⟨k, hk, rfl⟩, (hc k).symm⟩`. Introduce and unpack `⟨Z, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `⟨k, hk, (hc k).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbit_eq (v : PlX X) :
     {Y | ∃ k ∈ Kv X.B.I.cm.sig X.B.I.J (abelian₂ X) v, Y = k • yTup X u' v} =
@@ -110,23 +110,19 @@ theorem orbit_eq (v : PlX X) :
     exact ⟨k, hk, (hc k).symm⟩
 
 /- English proof (translation)
-Introduce `h1 h2 v`. Establish `hS` using `OmW.omVStd_holds X ψ h1 h2`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `PI.VolStabSW.sigma_invol _ hS.1.2.2.2`. Establish `hJ : ∀ i j, X.B.I.cm.sig (X.B.I.J j i) = X.B.I.J i j` using `hS.2.1.1`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.finite_of_finrank_pos (by rw [hS.1.2.2.1]; norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[orbit_eq]`. Unfold `omAt`. Use `split_ifs with hT`. Use `swap`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Unfold `omFam`. Use `split_ifs with hfib`. Use `swap`. Both sides reduce to the same expression. Use `PI.VolStabSW.secondCountable_Fv X.B.I.F v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PI.VolStabSW.locallyCompact_Fv X.B.I.F v` as an intermediate fact. Establish `: SecondCountableTopology (Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E))` using `inferInstanceAs (SecondCountableTopology (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E))`. Establish `: SecondCountableTopology (HermR (Fv X.B.I.F v) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS))` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hEx` using `PI.SelfDualBridge.W.sdExists_holds X.B.I.cm.sig X.B.I.J ψ v (D.R.rS + 1 + D.R.rS) (Fin 1) hS`. Establish `hμ : SdW X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J (Fv X.B.I.F v) (psiV X.B.I.F ψ v) (D.R.rS + 1 + D.R.rS) (dX X.B.I.cm.sig X.B.I.J ψ v (D.R.rS + 1 + D.R.rS))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dX`. Rewrite using `[dif_pos hEx.1]`. Conclude with `hEx.1.choose_spec`. Establish `hν : SdHerm X.B.I.F X.B.I.E X.B.I.cm.sig (Fv X.B.I.F v) (psiV X.B.I.F ψ v) (D.R.rS + 1 + D.R.rS) (dT X.B.I.cm.sig ψ v (D.R.rS + 1 + D.R.rS))`. Unfold `dT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hEx.2.1]`. Conclude with `hEx.2.1.choose_spec`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact. Establish `hπ : ∀ i, (Function.Involutive.toPerm _ (OmW.piv_invol D.R.rS)) ((Function.Involutive.toPerm _ (OmW.piv_invol D.R.rS)) i) = i` using `fun i => OmW.piv_invol D.R.rS i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : ∀ i, dU X v ((Function.Involutive.toPerm _ (OmW.piv_invol D.R.rS)) i) = (dU X v i)⁻¹` using `fun i => dU_piv X v i`. Establish `hfix : hermMap (Fv X.B.I.F v) X.B.I.cm.sig hσ ((diagUnit (dU X v) : (Matrix _ _ _)ˣ) : Matrix _ _ _) ⟨localGramMatrixFrame X u' v, hT⟩ = ⟨localGramMatrixFrame X u' v, hT⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hermMap_coe]`. Use `show _ * localGramMatrixFrame X u' v * _ = localGramMatrixFrame X u' v`.
-
-Establish `hg` using `OmW.omVGram_holds X u' v`. Rewrite `hg` using `[yTup_eq, PI.NcVal.OmVc1.gramMulTup_holds _ _ _ _ _ _ _ _ _, gram_ratTup]`. Conclude with `hg`. Establish `key` using `fib_image_mulTup X.B.I.cm.sig hσ X.B.I.J hJ (Fv X.B.I.F v) PI.NcVal.OmVc1.gramMulTup_holds (PI.VolStabSW.isOpen_units_Fv X.B.I.F v) (lip_field _) _ _ hfib.choose hfib.choose_spec (diagUnit (dU X v)) ⟨localGramMatrixFrame X u' v, hT⟩ hfix {Y | ∃ k ∈ Kv X.B.I.cm.sig X.B.I.J (abelia …`. Rewrite `key` using `[cTup_eq_one (Fv X.B.I.F v) (dU X v) _ hπ hd, cHerm_eq_one X.B.I.cm.sig hσ (Fv X.B.I.F v) (dU X v) _ hπ hd]`.
-
-Simplify using `only [ENNReal.coe_one, one_mul] at key`. Conclude with `key.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omVScale_holds : OmVScale X u' ψ := by
   intro h1 h2 v

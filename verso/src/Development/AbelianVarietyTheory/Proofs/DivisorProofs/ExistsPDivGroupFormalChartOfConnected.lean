@@ -16,7 +16,7 @@ open TensorProduct
 namespace GlobalTheory.ChartEx
 
 /- English proof (translation)
-Use `⟨fun i => by simp [h.1 i], fun m => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hN f hf`. Conclude with `⟨φ a, by rw [AlgHom.comp_apply, ha, map_mul, map_pow, map_natCast]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isEval_comp {p : ℕ} {O A A' σ : Type} [CommRing O] [CommRing A] [CommRing A'] [Algebra O A]
     [Algebra O A'] {x : σ → A} {E : MvPowerSeries σ O →ₐ[O] A} (φ : A →ₐ[O] A')
@@ -28,7 +28,7 @@ theorem isEval_comp {p : ℕ} {O A A' σ : Type} [CommRing O] [CommRing A] [Comm
   exact ⟨φ a, by rw [AlgHom.comp_apply, ha, map_mul, map_pow, map_natCast]⟩
 
 /- English proof (translation)
-Take `⟨N, b, hb⟩` from `h`. Conclude with `⟨N, φ b, by rw [← map_pow, hb, map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nil_map {p : ℕ} {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') {a : A}
     (h : ∃ N : ℕ, (p : A) ∣ a ^ N) : ∃ N : ℕ, (p : A') ∣ φ a ^ N := by
@@ -36,7 +36,7 @@ theorem nil_map {p : ℕ} {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+*
   exact ⟨N, φ b, by rw [← map_pow, hb, map_mul, map_natCast]⟩
 
 /- English proof (translation)
-Use `IsHausdorff.haus' (I := Ideal.span {(p : O)}) c fun m => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `h m`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `⟨b, hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eq_zero_of_dvd {p : ℕ} {O : Type} [CommRing O] [IsHausdorff (Ideal.span {(p : O)}) O]
     {c : O} (h : ∀ m : ℕ, (p : O) ^ m ∣ c) : c = 0 := by
@@ -46,7 +46,7 @@ theorem eq_zero_of_dvd {p : ℕ} {O : Type} [CommRing O] [IsHausdorff (Ideal.spa
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Use extensionality with `α`. Rewrite using `[map_zero]`. Use `eq_zero_of_dvd (p := p) fun m => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hker m (α.degree + 1)`. Conclude with `hn f (hf n) α (Nat.lt_succ_self _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ker {p : ℕ} {O σ : Type} [CommRing O] [IsHausdorff (Ideal.span {(p : O)}) O]
     {A : ℕ → Type} [∀ n, CommRing (A n)] [∀ n, Algebra O (A n)]
@@ -60,33 +60,29 @@ theorem eq_zero_of_ker {p : ℕ} {O σ : Type} [CommRing O] [IsHausdorff (Ideal.
   exact hn f (hf n) α (Nat.lt_succ_self _)
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G hG`. Take `⟨d, x, ev, hnil, hev, hres, haug, hsurj, hker⟩` from `GlobalTheory.T.exists_coordinates_of_isConnected p C v O hv G hG`. Establish `hc2 : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n)` using `fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _`. Establish `hc3 : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] (G.A n ⊗[O] G.A n))}) (G.A n ⊗[O] (G.A n ⊗[O] G.A n))` using `fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _`. Establish `hcA : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n)` using `fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nil2 : ∀ n, ∀ j, ∃ N : ℕ, (p : G.A n ⊗[O] G.A n) ∣ (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) fun i => (1 : G.A n) ⊗ₜ[O] x n i) j ^ N`. Introduce and unpack `n (i | i)`. Simplify using `using nil_map (Algebra.TensorProduct.includeLeft : G.A n →ₐ[O] G.A n ⊗[O] G.A n).toRingHom (hnil n i)`. Simplify using `using nil_map (Algebra.TensorProduct.includeRight : G.A n →ₐ[O] G.A n ⊗[O] G.A n).toRingHom (hnil n i)`. Establish `nil3 : ∀ n, ∀ j, ∃ N : ℕ, (p : G.A n ⊗[O] (G.A n ⊗[O] G.A n)) ∣ (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) (Sum.elim (fun i => (1 : G.A n) ⊗ₜ[O] (x n i ⊗ₜ[O] (1 : G.A n))) fun i => (1 : G.A n) ⊗ₜ[O] ((1 : G.A n) ⊗ₜ[O] x n i))) j ^ N`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `n (i | i | i)`. Simplify using `using nil_map (Algebra.TensorProduct.includeLeft : G.A n →ₐ[O] G.A n ⊗[O] (G.A n ⊗[O] G.A n)).toRingHom (hnil n i)`. Simplify using `using nil_map ((Algebra.TensorProduct.includeRight : G.A n ⊗[O] G.A n →ₐ[O] G.A n ⊗[O] (G.A n ⊗[O] G.A n)).comp (Algebra.TensorProduct.includeLeft : G.A n →ₐ[O] G.A n ⊗[O] G.A n)).toRingHom (hnil n i)`. Simplify using `using nil_map ((Algebra.TensorProduct.includeRight : G.A n ⊗[O] G.A n →ₐ[O] G.A n ⊗[O] (G.A n ⊗[O] G.A n)).comp (Algebra.TensorProduct.includeRight : G.A n →ₐ[O] G.A n ⊗[O] G.A n)).toRingHom (hnil n i)`. Establish `hE2 : ∀ n, ∃ E : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] G.A n ⊗[O] G.A n, IsEval p (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) fun i => (1 : G.A n) ⊗ₜ[O] x n i) E`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `n`. Use `haveI := hc2 n`. Conclude with `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil2 n)).1.exists`. Use `choose E₂ hE₂ using hE2`. Establish `hE3 : ∀ n, ∃ E : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) O →ₐ[O] G.A n ⊗[O] (G.A n ⊗[O] G.A n), IsEval p (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) (Sum.elim (fun i => (1 : G.A n) ⊗ₜ[O] (x n i ⊗ₜ[O] (1 : G.A n))) fun i => (1 : G.A n) ⊗ₜ[O] ((1 : G.A n) ⊗ₜ[O] x n i))) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n`. Use `haveI := hc3 n`. Conclude with `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil3 n)).1.exists`. Use `choose E₃ hE₃ using hE3`. Establish `hsurj2 : ∀ n, Function.Surjective (E₂ n)` using `fun n => by haveI := hc2 n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.surjective_isEval_tmul_of_surjective p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n)`. Establish `hker2 : ∀ m N : ℕ, ∃ n, ∀ f, E₂ n f = 0 → ∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f`. Introduce `m N`. Take `⟨n, hn⟩` from `hker m N`. Conclude with `⟨n, GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hker3 : ∀ m N : ℕ, ∃ n, ∀ f, E₃ n f = 0 → ∀ α : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f`. Introduce `m N`. Take `⟨n, hn⟩` from `hker m N`. Establish `hn2` using `GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn`. Establish `hpt : (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) fun j => (1 : G.A n) ⊗ₜ[O] (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] x n i) j)) = (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) (Sum.elim (fun i => (1 : G.A n) ⊗ₜ[O] (x n i ⊗ₜ[O …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `rcases j with j | j | j <;> rfl`. Establish `hE3'` using `hE₃ n`. Rewrite `hE3'` using `[← hpt]`. Conclude with `⟨n, GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) _ (ev n) (E₂ n) (E₃ n) m N (hev n) (hE₂ n) hE3' (hsurj n) (hsurj2 n) hn hn2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hstep : ∀ i n f, E₂ (n + 1) f = Coalgebra.comul (R` using `O) (x (n + 1) i) → E₂ n f = Coalgebra.comul (R := O) (x n i) := by`. Introduce `i n f hf`. Set `ρ : G.A (n + 1) ⊗[O] G.A (n + 1) →ₐ[O] G.A n ⊗[O] G.A n` to `Algebra.TensorProduct.map (AlgHomClass.toAlgHom (G.res n)) (AlgHomClass.toAlgHom (G.res n))`. Establish `hρ : ρ.comp (E₂ (n + 1)) = E₂ n` using `by haveI := hc2 n`. Use `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil2 n)).1.unique ?_ (hE₂ n)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `isEval_comp ρ (hE₂ (n + 1))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `rcases j with j | j <;> simp [ρ, hres]`. Rewrite using `[← hρ, AlgHom.comp_apply, hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(CoalgHomClass.map_comp_comul_apply (G.res n) (x (n + 1) i)).trans (by rw [hres])`. Establish `hμ : ∀ i, ∃ g, ∀ n, E₂ n g = Coalgebra.comul (R` using `O) (x n i) := by`. Introduce `i`. Conclude with `GlobalTheory.T.exists_series_of_compatible' p O (Fin d ⊕ Fin d) (fun n => G.A n ⊗[O] G.A n) (fun n => (hc2 n).toIsHausdorff) _ E₂ (fun n => Coalgebra.comul (R := O) (x n i)) hE₂ (fun n => hsurj2 n _) (hstep i) hker2`. Use `choose μ hμ using hμ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hconst : ∀ i, constantCoeff (μ i) = 0` using `GlobalTheory.T.constantCoeff_eq_zero_of_eval_eq_comul' p O (G.A 0) (x 0) (E₂ 0) μ (haug 0) (hE₂ 0) (fun i => hμ i 0)`. Use `⟨d, ⟨⟨x, ev, E₂, μ, hnil, hev, hE₂, hres, haug, hsurj, hker, ?_, fun n i => hμ i n⟩⟩⟩` and prove the remaining obligations. Use `⟨hconst, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (eq_zero_of_ker (p := p) ev hker fun n => ?_)` and prove the remaining obligations.
-
-Use `haveI := hcA n`. Rewrite using `[map_sub, GlobalTheory.T.formalChart_groupLaw_eval_right_unit p O (G.A n) (x n) (ev n) (E₂ n) μ (hnil n) (haug n) (hev n) (hE₂ n) (fun i => hμ i n) i, (hev n).1 i, sub_self]`. Use `sub_eq_zero.1 (eq_zero_of_ker (p := p) E₂ hker2 fun n => ?_) haveI := hc2 n` and prove the remaining obligations. Rewrite using `[map_sub, GlobalTheory.T.eval_swap_eq' p O (G.A n) (x n) (E₂ n) μ (hnil n) (hE₂ n) (fun i => hμ i n) i, sub_self]`. Use function extensionality and compare the values at `i`.
-
-Use `sub_eq_zero.1 (eq_zero_of_ker (p := p) E₃ hker3 fun n => ?_)` and prove the remaining obligations. Use `haveI := hc3 n`. Rewrite using `[map_sub, GlobalTheory.T.isEval_comul_assoc_of_isEval p O (G.A n) (x n) (E₂ n) (E₃ n) μ (hnil n) hconst (hE₂ n) (hE₃ n) (fun i => hμ i n) i, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ G : PDivGroup p O, IsConn G → ∃ d : ℕ, Nonempty (QLog.Chart G d) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G hG

@@ -10,17 +10,17 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O W Y hY`. Establish `hOne : ∀ t, One F (ex Y t)`. Introduce `t`. Use `oneOf F E D (ex Y t) fun w => ?_` and prove the remaining obligations. Rewrite using `[(exPar E Y).2.2.2.1 hY t]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hL : ∀ (s : ℝ) (ψ : S4 F) (u : V4 F), (W.L (infGL E 2 (ex Y s)) ψ).1 u = ψ.1 (D.act (infGL E 2 (ex Y s))⁻¹ u)`. Introduce `s ψ u`. Establish `h1 : nu F (infGL E 2 (ex Y s)) = 1` using `hOne s`. Rewrite using `[W.L_apply, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ab (1 : (A F)ˣ) = 1` using `by simp [ab]`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Use `⟨hOne, fun φ t v => ?_⟩` and prove the remaining obligations. Use `set v' : V4 F := D.act (infGL E 2 (ex Y t))⁻¹ v with hv'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, x', hx0, hx, hact, hH⟩` from `vfDer F E D Y v'`. Establish `h0 : HasDerivAt (fun s => φ.1 fun i => v' i + TR.sInf F (x s i)) ((O.dL D Y φ).1 v') 0`. Establish `h` using `sDiff F O φ v' x x' hx0 hx`. Rewrite `h` using `[vfOps F E D O Y hY v' x' hH φ]`. Then use the resulting hypothesis. Establish `hshift : ∀ s, (W.L (infGL E 2 (ex Y (t + s))) φ).1 v = φ.1 fun i => v' i + TR.sInf F (x s i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[(exPar E Y).1 t s, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `(W.L (infGL E 2 (ex Y t)) (W.L (infGL E 2 (ex Y s)) φ)).1 v = _`. Rewrite using `[hL t, hL s, hact s]`. Establish `h1 : HasDerivAt (fun s => (W.L (infGL E 2 (ex Y (t + s))) φ).1 v) ((O.dL D Y φ).1 v') 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `only [hshift]`. Establish `h2 : HasDerivAt (fun s => (W.L (infGL E 2 (ex Y (t + (s - t)))) φ).1 v) ((O.dL D Y φ).1 v') t` using `HasDerivAt.comp_sub_const t t (by simpa using h1)`. Rewrite using `[hL t (O.dL D Y φ) v]`. Simplify `h2` using `only [add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.dLDer :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D), DLDer O W := by

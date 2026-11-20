@@ -15,7 +15,7 @@ namespace GlobalTheory.InertLatIndex
 open GlobalTheory.InertLoc Formalism.UG
 
 /- English proof (translation)
-Introduce `b`. Take `⟨a, ha⟩` from `Algebra.TensorProduct.map_surjective (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (fun b => ⟨pairA D.host.F 0 b, rfl⟩) Function.surjective_id b`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finPart_surjective (D : D7) : Function.Surjective (finPart D) := by
   intro b
@@ -24,9 +24,9 @@ theorem finPart_surjective (D : D7) : Function.Surjective (finPart D) := by
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Use `(hC.2.2.1 a).2 ?_` and prove the remaining obligations. Use `GlobalTheory.LatVac.tensor_prod_eq_zero (F := D.host.F) (A := _) (B := _) _ ?_ ?_` and prove the remaining obligations. Use `show infPart D (e * a) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hC.1.2.2, zero_mul]`. Use `show finPart D (e * a) = 0`. Rewrite using `[map_mul, ha, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_finPart_le {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D} {σ : LP D P →+* LP D P}
     {π : AE D →+* LP D P} (hC : Chart e σ π) : RingHom.ker (finPart D) ≤ RingHom.ker π := by
@@ -40,15 +40,13 @@ theorem ker_finPart_le {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE 
     rw [map_mul, ha, mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Rewrite using `[Pi.basisFun_apply]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, Ne.symm hij]`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i`. Conclude with `add_mem (hx i) (hy i)`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => intro i`. Conclude with `mul_mem a.2 (hx i)`. Introduce `hz`. Establish `: z = ∑ i, (⟨z i, hz i⟩ : O) • Pi.basisFun K n i` using `by conv_lhs => rw [← (Pi.basisFun K n).sum_repr z]`. Both sides reduce to the same expression.
-
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_basisFun {K : Type} [Field K] (O : ValuationSubring K) {n : Type} [Fintype n] [DecidableEq n]
     (z : n → K) : z ∈ Submodule.span O (Set.range (Pi.basisFun K n)) ↔ ∀ i, z i ∈ O := by
@@ -79,9 +77,9 @@ theorem finMat_apply {D : D7} {W : HSp D} (x : GA D W) (i j : Fin W.rank) :
     finMat D.sp.cm.sig W.gram x i j = finPart D (Formalism.L2.Theta.mt W x i j) := rfl
 
 /- English proof (translation)
-Establish `h1ij : (1 : Matrix (Fin W.rank) (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) i j = finPart D ((1 : Matrix (Fin W.rank) (Fin W.rank) (AE D)) i j)`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1ij, finMat_apply, ← RingHom.map_sub, ← RingHom.map_mul, ← Matrix.sub_apply, hx i j]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finMat_sub_one_eq {D : D7} {W : HSp D} {e : AE D} (x : GA D W) (hx : SuppF W e x) (i j : Fin W.rank) :
     finMat D.sp.cm.sig W.gram x i j - (1 : Matrix (Fin W.rank) (Fin W.rank)
@@ -96,9 +94,9 @@ theorem finMat_sub_one_eq {D : D7} {W : HSp D} {e : AE D} (x : GA D W) (hx : Sup
   rw [h1ij, finMat_apply, ← RingHom.map_sub, ← RingHom.map_mul, ← Matrix.sub_apply, hx i j]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `key : ∀ j, finMat D.sp.cm.sig W.gram x i j * (y - finPart D e • y) j = (1 : Matrix (Fin W.rank) (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) i j * (y - finPart D e • y) j`. Introduce `j`. Use `finMat_sub_one_eq x hx i j` as an intermediate fact. Rewrite using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(y j) * this`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j)]`. Simplify using `[Matrix.one_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finMat_mulVec_fix {D : D7} {W : HSp D} {e : AE D} (x : GA D W) (hx : SuppF W e x)
     (y : Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
@@ -116,7 +114,7 @@ theorem finMat_mulVec_fix {D : D7} {W : HSp D} {e : AE D} (x : GA D W) (hx : Sup
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_conj {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq n] (β g : GL n K) (w : n → K) :
     (β⁻¹).1 *ᵥ ((β.1 * g.1 * (β⁻¹).1) *ᵥ w) = g.1 *ᵥ ((β⁻¹).1 *ᵥ w) := by
@@ -127,39 +125,35 @@ theorem inv_mulVec_conj {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `πf : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E →+* LP D P` to `(RingHom.liftOfSurjective (finPart D) (finPart_surjective D)) ⟨π, ker_finPart_le hC⟩`. Establish `hπf : ∀ a, πf (finPart D a) = π a` using `fun a => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`. Establish `hπe : π e = 1`. Establish `h0 : e * (e - 1) = 0` using `by rw [mul_sub, hC.1.1, mul_one, sub_self]`. Use `(hC.2.2.1 (e - 1)).2 h0` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Then use the resulting hypothesis. Set `T : (Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)` to `(finMat D.sp.cm.sig W.gram x).mulVecLin.toAddMonoidHom`. Set `p : (Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)` to `DistribMulAction.toAddMonoidHom _ (finPart D e)`. Set `Φ : (Fin W.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin W.rank → LP D P)` to `((β⁻¹).1 : Matrix (Fin W.rank) (Fin W.rank) (LP D P)).mulVecLin.toAddMonoidHom.comp (πf.toAddMonoidHom.compLeft (Fin W.rank))`. Set `h : (Fin W.rank → LP D P) →+ (Fin W.rank → LP D P)` to `((g.1 : Matrix (Fin W.rank) (Fin W.rank) (LP D P)).mulVecLin.restrictScalars (P.adicCompletionIntegers D.host.E)).toAddMonoidHom`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ y, Φ y = (β⁻¹).1 *ᵥ (fun k => πf (y k))` using `fun y => rfl`. Establish `h1 : ∀ y ∈ Formalism.L2.NTheta.LamHat W, p y ∈ Formalism.L2.NTheta.LamHat W`. Establish `hle : Formalism.L2.NTheta.LamHat W ≤ (Formalism.L2.NTheta.LamHat W).comap p`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, z, hz, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show p _ ∈ Formalism.L2.NTheta.LamHat W`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨α * a, hαint a ha, z, hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show finPart D e * (a ⊗ₜ[D.host.F] z i) = _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hα, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `fun y hy => hle hy`. Establish `h2 : ∀ y, T (p y) = p (T y)` using `fun y => by show finMat D.sp.cm.sig W.gram x *ᵥ (finPart D e • y) = finPart D e • (finMat D.sp.cm.sig W.gram x *ᵥ y)`. Conclude with `Matrix.mulVec_smul _ _ _`. Establish `h3 : ∀ y, T (y - p y) = y - p y` using `fun y => finMat_mulVec_fix x hx y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : ∀ y, Φ y = 0 → p y = 0`. Introduce `y hy`. Establish `h0 : ∀ k, πf (y k) = 0`. Introduce `k`. Use `congrArg (fun w => β.1 *ᵥ w) hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hΦ, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `congrFun this k`. Use function extensionality and compare the values at `k`. Take `⟨a, ha⟩` from `finPart_surjective D (y k)`. Establish `hπa : π a = 0` using `by rw [← hπf, ha]; exact h0 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show finPart D e * y k = 0`. Rewrite using `[← ha, ← RingHom.map_mul, (hC.2.2.1 a).1 hπa, RingHom.map_zero]`. Establish `h5 : ∀ y, Φ (T y) = h (Φ y)`. Introduce `y`. Establish `hmap : (finMat D.sp.cm.sig W.gram x).map πf = β.1 * g.1 * (β⁻¹).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hxg]`. Conclude with `Matrix.ext fun i j => hπf _`. Establish `hT : (fun k => πf ((finMat D.sp.cm.sig W.gram x *ᵥ y) k)) = (finMat D.sp.cm.sig W.gram x).map πf *ᵥ (fun k => πf (y k))`. Use function extensionality and compare the values at `fun k => RingHom.map_mulVec πf _ y k`. Use `show Φ (finMat D.sp.cm.sig W.gram x *ᵥ y) = g.1 *ᵥ Φ y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hΦ, hΦ, hT, hmap]`. Conclude with `inv_mulVec_conj β g _`. Establish `hmapΦ : (Formalism.L2.NTheta.LamHat W).map Φ = (Submodule.span (P.adicCompletionIntegers D.host.E) (Set.range (Pi.basisFun (LP D P) (Fin W.rank)))).toAddSubgroup`. Use extensionality with `z`. Rewrite using `[AddSubgroup.mem_map, Submodule.mem_toAddSubgroup]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Iff.trans ?_ (mem_span_basisFun _ z).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ choose a ha using fun k => finPart_surjective D (y k)`. Establish `hpy : (fun i => finPart D (e * a i)) ∈ Formalism.L2.NTheta.LamHat W`. Use `h1 y hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `show finPart D (e * a i) = finPart D e * y i`. Rewrite using `[RingHom.map_mul, ha]`. Establish `hi` using `(hF.2 a).1 hpy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Φ y = (β⁻¹).1 *ᵥ fun k => π (a k)`. Rewrite using `[hΦ]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← ha, hπf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hz]`. Conclude with `hi`. Introduce `hz choose a ha using fun k => hC.2.1 ((β.1 *ᵥ z) k)`. Establish `hb : (β⁻¹).1 *ᵥ (fun k => π (a k)) = z`. Establish `: (fun k => π (a k)) = β.1 *ᵥ z` using `funext ha`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `⟨fun i => finPart D (e * a i), (hF.2 a).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `hz`. Rewrite using `[hΦ]`.
-
-Use `hb using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[hπf, RingHom.map_mul, hπe, one_mul]`. Unfold `latIndex`. Rewrite using `[GlobalTheory.index_transfer_along_projection (Formalism.L2.NTheta.LamHat W) T p Φ h h1 h2 h3 h4 h5, hmapΦ, Submodule.map_toAddSubgroup]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem latIndex_eq_of_chart {D : D7} {W : HSp D} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D}
     {σ : LP D P →+* LP D P} {π : AE D →+* LP D P} {β : GL (Fin W.rank) (LP D P)}
@@ -268,11 +262,11 @@ theorem latIndex_eq_of_chart {D : D7} {W : HSp D} {P : HeightOneSpectrum (𝓞 D
   rfl
 
 /- English proof (translation)
-Introduce `D W v ε hε P σ π β ι hC hF hG g`. Take `⟨α, hεα, hα1, hα0⟩` from `hε`. Establish `hα : finPart D (algebraMap (AF D.host.F) (AE D) ε) = α ⊗ₜ[D.host.F] (1 : D.host.E)`. Substitute `hεα` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hαint : ∀ a ∈ intAf D.host.F, α * a ∈ intAf D.host.F`. Introduce `a ha w`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hα1, one_mul]`. Conclude with `ha w`. Rewrite using `[hα0 w hw, zero_mul]`. Conclude with `zero_mem _`. Conclude with `latIndex_eq_of_chart α hα hαint hC hF (ι g) (hG.1 g) g.1 (hG.2.1 g)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latIndex_chart_eq : ∀ (D : D7) (W : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F), IsPlaceIdem D v ε → ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (σ : GlobalTheory.InertLoc.LP D P →+* GlobalTheory.InertLoc.LP D P) (π : AE D →+* GlobalTheory.InertLoc.LP D P) (β : GL (Fin W.rank) (GlobalTheory.InertLoc.LP D P)) (ι : Formalism.UG.UJ σ (1 : Matrix (Fin W.rank) (Fin W.rank) (GlobalTheory.InertLoc.LP D P)) →* GA D W), GlobalTheory.InertLoc.Chart (algebraMap (AF D.host.F) (AE D) ε) σ π → GlobalTheory.InertLoc.Frame W (algebraMap (AF D.host.F) (AE D) ε) σ π β → GlobalTheory.InertLoc.GrpChart W (algebraMap (AF D.host.F) (AE D) ε) σ π β ι → ∀ (g : Formalism.UG.UJ σ (1 : Matrix (Fin W.rank) (Fin W.rank) (GlobalTheory.InertLoc.LP D P))), latIndex W (ι g) = ((Submodule.span (P.adicCompletionIntegers D.host.E) (Set.range (Pi.basisFun (GlobalTheory.InertLoc.LP D P) (Fin W.rank)))).map (((g : GL (Fin W.rank) (GlobalTheory.InertLoc.LP D P)) : Matrix (Fin W.rank) (Fin W.rank) (GlobalTheory.InertLoc.LP D P)).mulVecLin.restrictScalars (P.adicCompletionIntegers D.host.E))).toAddSubgroup.relIndex (Submodule.span (P.adicCompletionIntegers D.host.E) (Set.range (Pi.basisFun (GlobalTheory.InertLoc.LP D P) (Fin W.rank)))).toAddSubgroup := by
   intro D W v ε hε P σ π β ι hC hF hG g

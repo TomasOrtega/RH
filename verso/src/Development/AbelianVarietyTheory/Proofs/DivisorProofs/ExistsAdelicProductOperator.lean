@@ -22,9 +22,9 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 namespace GlobalTheory.TensorGlue
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker P ≤ LinearMap.ker Q` using `fun t ht => h t ht`. Take `⟨H, hH⟩` from `LinearMap.exists_extend (((LinearMap.ker P).liftQ Q hk) ∘ₗ (P.quotKerEquivRange.symm : LinearMap.range P →ₗ[ℂ] _))`. Use `⟨H, fun t => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hH ⟨P t, LinearMap.mem_range_self P t⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor {U M N : Type*} [AddCommGroup U] [Module ℂ U] [AddCommGroup M] [Module ℂ M]
     [AddCommGroup N] [Module ℂ N] (P : U →ₗ[ℂ] M) (Q : U →ₗ[ℂ] N) (h : ∀ t, P t = 0 → Q t = 0) :
@@ -39,23 +39,23 @@ theorem exists_factor {U M N : Type*} [AddCommGroup U] [Module ℂ U] [AddCommGr
   exact this
 
 /- English proof (translation)
-Set `P : V ⊗[ℂ] (Y → ℂ) →ₗ[ℂ] (Z → ℂ)` to `TensorProduct.lift (LinearMap.mk₂ ℂ (fun f g => fun z => e f (p z) * g (q z)) (by intros; ext; simp [add_mul]) (by intros; ext; simp [mul_assoc]) (by intros; ext; simp [mul_add]) (by intros; ext; simp [mul_left_comm]))`. Establish `hP : ∀ f g, P (f ⊗ₜ g) = fun z => e f (p z) * g (q z)` using `fun _ _ => rfl`. Set `L : Y → V ⊗[ℂ] (Y → ℂ) →ₗ[ℂ] V` to `fun y => TensorProduct.lift (LinearMap.mk₂ ℂ (fun f g => g y • f) (by intros; simp) (by intros; rw [smul_comm]) (by intros; simp [add_smul]) (by intros; simp [mul_smul]))`. Establish `hL : ∀ y f g, L y (f ⊗ₜ g) = g y • f` using `fun _ _ _ => rfl`. Set `R : X → V ⊗[ℂ] (Y → ℂ) →ₗ[ℂ] (Y → ℂ)` to `fun x => TensorProduct.lift (LinearMap.mk₂ ℂ (fun f g => e (A f) x • g) (by intros; simp [add_smul]) (by intros; simp [mul_smul]) (by intros; simp) (by intros; rw [smul_comm]))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hR : ∀ x f g, R x (f ⊗ₜ g) = e (A f) x • g` using `fun _ _ _ => rfl`. Establish `h1 : ∀ t z, P t z = e (L (q z) t) (p z)`. Introduce `t z`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul f g => simp [hP, hL, mul_comm]`. Consider the case `add a b ha hb => simp [ha, hb]`. Establish `h2 : ∀ t x y, R x t y = e (A (L y t)) x`. Introduce `t x y`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul f g => simp [hR, hL, mul_comm]`. Consider the case `add a b ha hb => simp [ha, hb]`. Establish `h3 : ∀ t z, P (TensorProduct.map A B t) z = B (R (p z) t) (q z)`. Introduce `t z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g => simp [hR, hP]`. Consider the case `add a b ha hb => simp [ha, hb]`. Take `⟨H, hH⟩` from `exists_factor P (P ∘ₗ TensorProduct.map A B) (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Establish `hLt : ∀ y, L y t = 0`. Introduce `y`. Apply `he` to reduce the goal to its premises. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Take `⟨z, rfl, rfl⟩` from `hpq x y`. Rewrite using `[← h1, ht]`. Simplify using the standard rewrite rules. Establish `hRt : ∀ x, R x t = 0`. Introduce `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Rewrite using `[h2, hLt]`. Simplify using the standard rewrite rules. Use extensionality with `z`. Rewrite using `[LinearMap.comp_apply, h3, hRt]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use `⟨H, fun f g => ?_⟩` and prove the remaining obligations. Use `hH (f ⊗ₜ g)` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, TensorProduct.map_tmul, hP, hP]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_glue {V X Y Z : Type*} [AddCommGroup V] [Module ℂ V] (e : V →ₗ[ℂ] (X → ℂ))
     (he : Function.Injective e) (p : Z → X) (q : Z → Y) (hpq : ∀ x y, ∃ z, p z = x ∧ q z = y)
@@ -114,7 +114,7 @@ theorem exists_glue {V X Y Z : Type*} [AddCommGroup V] [Module ℂ V] (e : V →
   rwa [LinearMap.comp_apply, TensorProduct.map_tmul, hP, hP] at this
 
 /- English proof (translation)
-Introduce `F _ _ ι _ A B`. Set `e : SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] ((ι → mixedEmbedding.mixedSpace F) → ℂ)` to `{ toFun := fun f => f map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `exists_glue (Z := ι → AF F) e DFunLike.coe_injective (fun x i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) (fun x i => (x i).2) (fun x y => ⟨fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), y i),`. Use function extensionality and compare the values at `fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x i), rfl⟩) A B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_pure_operator : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (A : SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ)

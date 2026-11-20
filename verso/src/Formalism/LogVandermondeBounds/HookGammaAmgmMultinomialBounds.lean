@@ -18,7 +18,7 @@ import Formalism.LogVandermondeBounds.LogVandermondeProofs.LogRatioUpperBoundOfU
 namespace Formalism.LogVandermondeBounds
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨flipTwoThree.interlacing_separation, flipTwoThree.jet_exponential_bound, flipTwoThree.gamma_integral_polynomial_bound, flipTwoThree.amgm_period_lattice_bound, flipTwoThree.hook_product_bounds, flipTwoThree.multinomial_le_pow_card⟩`.
+Supply the required witnesses or components.
 -/
 theorem hook_gamma_amgm_multinomial_bounds :
     flipTwoThree.InterlacingSeparation ∧ flipTwoThree.MinRatioPowerExponentialBound ∧ flipTwoThree.GammaIntegralBound ∧ flipTwoThree.AmgmSumLowerBoundOfProd ∧ flipTwoThree.HookProductBounds ∧ flipTwoThree.MultinomialPowerBound :=
@@ -26,12 +26,12 @@ theorem hook_gamma_amgm_multinomial_bounds :
     flipTwoThree.hook_product_bounds, flipTwoThree.multinomial_le_pow_card⟩
 
 /- English proof (translation)
-The claim follows from `StandardLattice.logRatioLowerBound_of_logVandermondeGap StandardLattice.VandPlace_holds`.
+A detailed English derivation is pending.
 -/
 theorem vandermonde_place_lower_bound : StandardLattice.LogRatioLowerBound := StandardLattice.logRatioLowerBound_of_logVandermondeGap StandardLattice.VandPlace_holds
 
 /- English proof (translation)
-The claim follows from `StandardLattice.log_ratio_upper_bound_of_upper_place StandardLattice.UpperPlace_holds`.
+A detailed English derivation is pending.
 -/
 theorem upper_place_bound : StandardLattice.LogRatioUpperBound := StandardLattice.log_ratio_upper_bound_of_upper_place StandardLattice.UpperPlace_holds
 

@@ -11,13 +11,13 @@ open Formalism.MainNotions.GrowthW
 variable {m : ℕ}
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p with`. Consider the case `zero`. Introduce `i j hij`. Rewrite using `[pow_zero, Matrix.one_apply_ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Consider the case `succ p ih`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ X p, Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) < i + p`. Rewrite using `[ih i l hl, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX l j (Fin.le_iff_val_le_val.mpr (by omega)), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_entry_zero {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) :
     ∀ (p : ℕ) (i j : Fin m), (j : ℕ) < i + p → (X ^ p) i j = 0 := by
@@ -40,9 +40,9 @@ theorem pow_entry_zero {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) :
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X`. Set `L : Matrix (Fin m) (Fin m) ℂ →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)`. Establish `h1 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) * (X ^ n) i j) ((NormedSpace.exp X) i j)` using `L.hasSum h`. Establish `h2 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) * (X ^ n) i j) (∑ n ∈ range (m + 1 + 1), ((n.factorial : ℂ)⁻¹) * (X ^ n) i j)`. Apply `hasSum_sum_of_ne_finset_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n hn`. Rewrite `hn` using `[Finset.mem_range]`. Establish `hj` using `j.isLt`. Rewrite using `[pow_entry_zero hX n i j (by omega), mul_zero]`. Conclude with `h1.unique h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_entry_eq {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : Fin m) :
     (NormedSpace.exp X) i j = ∑ n ∈ range (m + 1 + 1), ((n.factorial : ℂ)⁻¹) * (X ^ n) i j := by
@@ -61,7 +61,7 @@ theorem exp_entry_eq {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : Fin
   exact h1.unique h2
 
 /- English proof (translation)
-Rewrite using `[exp_entry_eq hX, Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `only [zero_add, Nat.factorial_zero, Nat.factorial_one, Nat.cast_one, inv_one, one_mul, pow_one, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_entry_peel {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : Fin m) :
     (NormedSpace.exp X) i j = ∑ q ∈ range m, ((Nat.factorial (q + 1 + 1) : ℂ)⁻¹) * (X ^ (q + 1 + 1)) i j
@@ -71,7 +71,7 @@ theorem exp_entry_peel {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : F
     pow_zero]
 
 /- English proof (translation)
-Rewrite using `[exp_entry_peel hX, Finset.sum_eq_zero (fun q _ => by`. Rewrite using `[pow_entry_zero hX (q + 1 + 1) i i (by omega), mul_zero]), hX i i le_rfl, Matrix.one_apply_eq,`. Use the proof step `zero_add, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_diag {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i : Fin m) :
     (NormedSpace.exp X) i i = 1 := by
@@ -80,7 +80,7 @@ theorem exp_diag {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i : Fin m) :
     zero_add, zero_add]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_def, hsN]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le_hsN (A : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖A i j‖ ≤ hsN A := by
   rw [Complex.norm_def, hsN]
@@ -93,9 +93,9 @@ theorem entry_le_hsN (A : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖A i j�
           (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `hsN`. Establish `key : ∑ i, ∑ j, Complex.normSq (A i j) ≤ ((m : ℝ) * b) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[mul_le_mul (h i j) (h i j) (norm_nonneg _) hb, norm_nonneg (A i j)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = ((m : ℝ) * b) ^ 2 := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hsN_le (A : Matrix (Fin m) (Fin m) ℂ) {b : ℝ} (hb : 0 ≤ b) (h : ∀ i j, ‖A i j‖ ≤ b) :
     hsN A ≤ m * b := by
@@ -112,7 +112,7 @@ theorem hsN_le (A : Matrix (Fin m) (Fin m) ℂ) {b : ℝ} (hb : 0 ≤ b) (h : �
     _ = m * b := Real.sqrt_sq (mul_nonneg (Nat.cast_nonneg _) hb)
 
 /- English proof (translation)
-Establish `h` using `entry_le_hsN (NormedSpace.exp X) ⟨0, hm⟩ ⟨0, hm⟩`. Rewrite `h` using `[exp_diag hX, norm_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_hsN_exp (hm : 0 < m) {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) :
     1 ≤ hsN (NormedSpace.exp X) := by
@@ -121,15 +121,15 @@ theorem one_le_hsN_exp (hm : 0 < m) {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUppe
   exact h
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p with`. Consider the case `zero`. Introduce `i j hij`. Simplify using `using hB i j (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ p ih`. Introduce `i j hij`. Rewrite using `[pow_succ X (p + 1), Matrix.mul_apply]`. Establish `hR0 : 0 ≤ (m : ℝ) ^ p * b ^ (p + 1)` using `mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (pow_nonneg hb _)`. Establish `hR : 0 ≤ (m : ℝ) ^ p * b ^ (p + 1) * b` using `mul_nonneg hR0 hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ l : Fin m, ‖(X ^ (p + 1)) i l * X l j‖ ≤ (m : ℝ) ^ p * b ^ (p + 1) * b`. Introduce `l`. Distinguish the cases in `h1 : (j : ℕ) ≤ l`. Rewrite using `[hX l j (Fin.le_iff_val_le_val.mpr h1), mul_zero, norm_zero]`. Conclude with `hR`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : (l : ℕ) < i + (p + 1)`. Rewrite using `[pow_entry_zero hX (p + 1) i l h2, zero_mul, norm_zero]`. Conclude with `hR`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (ih i l (by omega)) (hB l j (by omega)) (norm_nonneg _) hR0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pow_entry_bound {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) {h : ℕ} {b : ℝ} (hb : 0 ≤ b)
     (hB : ∀ i j : Fin m, (j : ℕ) < i + h → ‖X i j‖ ≤ b) :
@@ -161,15 +161,15 @@ theorem pow_entry_bound {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) {h : �
           ring
 
 /- English proof (translation)
-Establish `hp` using `exp_entry_peel hX i j`. Establish `h1 : ‖(1 : Matrix (Fin m) (Fin m) ℂ) i j‖ ≤ 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne h]`. Establish `h2 : ‖∑ q ∈ range m, ((Nat.factorial (q + 1 + 1) : ℂ)⁻¹) * (X ^ (q + 1 + 1)) i j‖ ≤ ∑ q ∈ range m, ‖(X ^ (q + 1 + 1)) i j‖`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `hf : ‖((Nat.factorial (q + 1 + 1) : ℂ)⁻¹)‖ ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_inv, Complex.norm_natCast]`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises. Conclude with `Nat.succ_le_of_lt (Nat.factorial_pos _)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `hx : X i j = NormedSpace.exp X i j - (∑ q ∈ range m, ((Nat.factorial (q + 1 + 1) : ℂ)⁻¹) * (X ^ (q + 1 + 1)) i j) - (1 : Matrix (Fin m) (Fin m) ℂ) i j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`. Establish `t1` using `norm_sub_le (NormedSpace.exp X i j - (∑ q ∈ range m, ((Nat.factorial (q + 1 + 1) : ℂ)⁻¹) * (X ^ (q + 1 + 1)) i j)) ((1 : Matrix (Fin m) (Fin m) ℂ) i j)`. Establish `t2` using `norm_sub_le (NormedSpace.exp X i j) (∑ q ∈ range m, ((Nat.factorial (q + 1 + 1) : ℂ)⁻¹) * (X ^ (q + 1 + 1)) i j)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem entry_le_sum {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : Fin m) :
     ‖X i j‖ ≤ ‖(NormedSpace.exp X) i j‖ + 1 + ∑ q ∈ range m, ‖(X ^ (q + 1 + 1)) i j‖ := by
@@ -203,13 +203,13 @@ theorem entry_le_sum {X : Matrix (Fin m) (Fin m) ℂ} (hX : SUpper X) (i j : Fin
   linarith
 
 /- English proof (translation)
-Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hNe : 1 ≤ N ^ e` using `one_le_pow₀ hN`. Establish `h1 : 1 + A * N ^ e ≤ (1 + A) * N ^ e`. Establish `: (1 + A) * N ^ e = N ^ e + A * N ^ e` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : 0 ≤ 1 + A * N ^ e` using `by have := mul_nonneg hA (pow_nonneg hN0 e); linarith`. Establish `h2 : (1 + A * N ^ e) ^ (m + 1) ≤ (1 + A) ^ (m + 1) * N ^ (e * (m + 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `hm0 : (0 : ℝ) ≤ (m : ℝ) ^ (m + 1)` using `pow_nonneg (Nat.cast_nonneg _) _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key : (m : ℝ) * ((m : ℝ) ^ m * (1 + A * N ^ e) ^ (m + 1)) ≤ (m : ℝ) ^ (m + 1) * ((1 + A) ^ (m + 1) * N ^ (e * (m + 1)))`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : e * (m + 1) ≠ 0` using `Nat.mul_ne_zero (by omega) (by omega)`. Establish `hNE : N ≤ N ^ (e * (m + 1))` using `le_self_pow₀ hN hpos`. Establish `h1E : 1 ≤ N ^ (e * (m + 1))` using `one_le_pow₀ hN`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eq : (2 + (m : ℝ) ^ (m + 1) * (1 + A) ^ (m + 1)) * N ^ (e * (m + 1)) = 2 * N ^ (e * (m + 1)) + (m : ℝ) ^ (m + 1) * ((1 + A) ^ (m + 1) * N ^ (e * (m + 1)))` using `by ring`. Rewrite using `[eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem real_step {N A : ℝ} {e m : ℕ} (hN : 1 ≤ N) (hA : 0 ≤ A) (he : 1 ≤ e) :
     N + 1 + (m : ℝ) * ((m : ℝ) ^ m * (1 + A * N ^ e) ^ (m + 1)) ≤
@@ -238,15 +238,15 @@ theorem real_step {N A : ℝ} {e m : ℕ} (hN : 1 ≤ N) (hA : 0 ≤ A) (he : 1 
   linarith
 
 /- English proof (translation)
-Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`. Use `⟨0, le_rfl, fun X hX i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[hX i j (Fin.le_iff_val_le_val.2 (by omega)), norm_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ h ih`. Take `⟨A, hA, hAX⟩` from `ih`. Use `⟨2 + (m : ℝ) ^ (m + 1) * (1 + A) ^ (m + 1), add_nonneg zero_le_two (mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (pow_nonneg (by linarith) _)), fun X hX i j hij => ?_⟩` and prove the remaining obligations. Establish `hN : 1 ≤ hsN (NormedSpace.exp X)` using `one_le_hsN_exp hm hX`. Establish `hb : 0 ≤ A * hsN (NormedSpace.exp X) ^ ((m + 1) ^ h)` using `mul_nonneg hA (pow_nonneg (by linarith) _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `pow_entry_bound hX (h := h) hb (hAX X hX)`. Establish `hm1 : (1 : ℝ) ≤ m` using `Nat.one_le_cast.2 hm`. Establish `hsum : ∑ q ∈ range m, ‖(X ^ (q + 1 + 1)) i j‖ ≤ (m : ℝ) * ((m : ℝ) ^ m * (1 + A * hsN (NormedSpace.exp X) ^ ((m + 1) ^ h)) ^ (m + 1))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun q hq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq' : q < m` using `Finset.mem_range.1 hq`. Use `(hP (q + 1) i j (by omega)).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul (pow_le_pow_right₀ hm1 (by omega)) ((pow_le_pow_left₀ hb (by linarith) _).trans (pow_le_pow_right₀ (by linarith) (by omega))) (pow_nonneg hb _) (pow_nonneg (Nat.cast_nonneg _) _)`. Use `_ = _ := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hE` using `entry_le_hsN (NormedSpace.exp X) i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain` using `entry_le_sum hX i j`. Establish `he : (m + 1) ^ (h + 1) = (m + 1) ^ h * (m + 1)` using `pow_succ _ _`. Rewrite using `[he]`. Establish `hst` using `real_step (m := m) hN hA (Nat.one_le_pow _ _ (by omega) : 1 ≤ (m + 1) ^ h)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem height_bound (hm : 0 < m) : ∀ h : ℕ, ∃ A : ℝ, 0 ≤ A ∧ ∀ X : Matrix (Fin m) (Fin m) ℂ, SUpper X →
     ∀ i j : Fin m, (j : ℕ) < i + h → ‖X i j‖ ≤ A * hsN (NormedSpace.exp X) ^ ((m + 1) ^ h) := by
@@ -284,11 +284,11 @@ theorem height_bound (hm : 0 < m) : ∀ h : ℕ, ∃ A : ℝ, 0 ≤ A ∧ ∀ X 
     linarith
 
 /- English proof (translation)
-Take `⟨A, hA, hH⟩` from `height_bound hm m`. Use `⟨1 + m * A, (((m + 1) ^ m : ℕ) : ℝ), by positivity, fun X hX => ?_⟩` and prove the remaining obligations. Establish `hE : 1 ≤ hsN (NormedSpace.exp X)` using `one_le_hsN_exp hm hX`. Establish `hEp : 1 ≤ hsN (NormedSpace.exp X) ^ ((m + 1) ^ m)` using `one_le_pow₀ hE`. Establish `hX' : hsN X ≤ m * (A * hsN (NormedSpace.exp X) ^ ((m + 1) ^ m))` using `hsN_le X (mul_nonneg hA (pow_nonneg (by linarith) _)) (fun i j => hH X hX i j (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Use the proof step `omega))`. Rewrite using `[Real.rpow_natCast]`. Establish `hq : (1 + (m : ℝ) * A) * hsN (NormedSpace.exp X) ^ ((m + 1) ^ m) = hsN (NormedSpace.exp X) ^ ((m + 1) ^ m) + (m : ℝ) * (A * hsN (NormedSpace.exp X) ^ ((m + 1) ^ m))`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem expUpper_pos (m : ℕ) (hm : 0 < m) : ∃ C D : ℝ, 0 < D ∧ ∀ X : Matrix (Fin m) (Fin m) ℂ, SUpper X →
     1 + hsN X ≤ C * hsN (NormedSpace.exp X) ^ D := by
@@ -312,7 +312,7 @@ end Formalism.MainNotions.GrowthW.ExpUp
 namespace Formalism.MainNotions.GrowthW
 
 /- English proof (translation)
-Introduce `m hm` and use `ExpUp.expUpper_pos m hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem expUpper : ExpUpper := fun m hm => ExpUp.expUpper_pos m hm
 

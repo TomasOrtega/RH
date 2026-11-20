@@ -54,7 +54,7 @@ def arVol (L : HermLB p) (D : ℕ) : EReal :=
     ((((D + 1).factorial : ℝ) / (m : ℝ) ^ (D + 1) : ℝ) : EReal)) atTop
 
 /- English proof (translation)
-The claim follows from `h.vertical`.
+A detailed English derivation is pending.
 -/
 theorem nefFib_of_isNef {L : HermLB p} {D : ℕ} (h : L.IsNef D) : NefFib L := h.vertical
 

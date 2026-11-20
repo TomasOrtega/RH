@@ -18,7 +18,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨F, hF, hF0⟩` from `d.componentForm_poly hd h c`. Take `⟨hmh, hmm⟩` from `d.DegreeSumIdentity hd h c F hF`. Conclude with `⟨F, hF, hF0, hmh, hmm, fun x hx => d.SpecialFibreFactorization hd h c F hF x hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem componentForm_properties (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     ∃ F : KTp K d.D d.N, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c ∧ F ≠ 0 ∧

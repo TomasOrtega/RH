@@ -14,17 +14,17 @@ namespace GlobalTheory.CompanionTheory.Twist
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.Host in
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ w PP hP => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hr : ¬ (R.xiH (R.mu w)).UnrAt PP` using `(s.core.lev.Q_ram (R.mu w) PP).2 (Or.inl hP)`. Distinguish the cases in `hw : w ∈ R.twPl`. Take `⟨ψ, Q, hψ, e⟩` from `s.mu_on w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `e' : R.xiH (R.mu w) = R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w) * ψ` using `e`. Distinguish the cases in `hd : (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).UnrAt PP`. Use `Or.inr fun l hl h1 h2 => hr fun x hx => ?_` and prove the remaining obligations. Establish `hp : Formalism.EigenvalueLevelCeiling.plc w = l`. Conclude with `((Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.plc_prime w) hl).1 ((ringChar.spec _ l).1 (by simpa using Ideal.Quotient.eq_zero_iff_mem.2 h2)))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hd x hx`. Establish `a2` using `hψ.atl PP (hp ▸ h1) x`. Rewrite using `[e']`. Express the relevant statement in the definitionally equal form `(R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).loc PP x * ψ.loc PP x = 1`. Rewrite using `[a1, a2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl (ch.G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_)))` and prove the remaining obligations. Establish `key : ∀ p : ℕ, OverP D.host p PP → (p : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `fun p hp => by`. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 D.host.E) (p : 𝓞 D.host.F) ∈ PP.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Unfold `CharFrame.delAt at hd`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Prove the second alternative.
 
-Use `split_ifs at hd`. Conclude with `Or.inr (Or.inr (Or.inr (key _ (by by_contra h; exact hd (R.C.isDel'.unr PP h)))))`. Conclude with `Or.inr (Or.inr (Or.inl (key _ (by by_contra h; exact hd (R.C.isDel.unr PP h)))))`. Establish `e : R.mu w = A.μ0` using `s.mu_off w hw`. Use `absurd (fun x _ => ?_) hr` and prove the remaining obligations.
+Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, show R.xiH A.μ0 = 1 from s.core.lev.xi_base]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem twist_trivial_away_from_level : _root_.GlobalTheory.FunPr.ThetaLocalInputs → AwayK := by
   intro _
@@ -62,7 +62,7 @@ end TwistAwayFromPlace
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twist.twist_trivial_away_from_level | exact _root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twist.twist_trivial_away_from_level | (intros; apply _root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twi …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.twisted_local_factor_away_from_level : _root_.GlobalTheory.FunPr.ThetaLocalInputs → AwayK := by
   first | exact @_root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twist.twist_trivial_away_from_level | exact _root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twist.twist_trivial_away_from_level | (intros; apply _root_.TwistAwayFromPlace.GlobalTheory.CompanionTheory.Twist.twist_trivial_away_from_level <;> assumption)

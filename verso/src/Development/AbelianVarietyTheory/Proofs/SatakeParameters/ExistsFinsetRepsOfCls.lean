@@ -7,11 +7,9 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `S : Set C` to `{x | ∃ L, P L ∧ cls L = x}`. Establish `hS : ∀ x : S, ∃ L, P L ∧ cls L = x.1` using `fun x => x.2`. Use `choose f hf using hS`. Use `haveI : Fintype S := Fintype.ofFinite S`. Use `⟨Finset.univ.image f, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `L hL`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hL`. Conclude with `(hf x).1`. Introduce `L hL`. Set `x : S` to `⟨cls L, L, hL, rfl⟩`.
-
-Conclude with `⟨f x, Finset.mem_image_of_mem f (Finset.mem_univ x), h (f x) L (hf x).1 hL (hf x).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.exists_finset_reps_of_cls {T Γ C : Type} [Finite C] (P : T → Prop) (sm : Γ → T → T) (cls : T → C)
     (h : ∀ L L', P L → P L' → cls L = cls L' → ∃ γ, L' = sm γ L) :
@@ -32,7 +30,7 @@ theorem GlobalTheory.TwV.exists_finset_reps_of_cls {T Γ C : Type} [Finite C] (P
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J j c`. Express the relevant statement in the definitionally equal form `(Lv.lev j c).FinClasses`. Distinguish the cases in `hj : j ≤ D.R.m`. Conclude with `GlobalTheory.TwV.exists_finset_reps_of_cls (C := (D.chTw u μ).cls j) _ (Lv.lev j c).smul ((labAt X H).cls j c) (fun L L' hL hL' e => (((labAt X H).cls_iff j hj c c L L' hL hL').1 e).2)`. Conclude with `(J.empty j (by omega)).elim c`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.finClasses_sysS : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), ∀ j c, ((sysS H X std).Lv.lev j c).FinClasses := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J j c

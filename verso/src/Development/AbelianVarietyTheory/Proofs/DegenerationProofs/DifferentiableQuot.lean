@@ -14,17 +14,17 @@ namespace GlobalTheory.Ex.Arch.FibPrim
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter GlobalTheory.FrameValue
 
 /- English proof (translation)
-Introduce `v₀`. Take `⟨j, hj⟩ : ∃ j, ⊤ ≤ ((u.ex v₀).left ≫ φ) ⁻¹ᵁ L.wchart ψ j` from `⟨_, (le_preimage_wchart _ L ψ _).2 fun _ => hJ _⟩`. Take `⟨i, hi⟩ : ∃ i : K → L'.ι, ∀ k, ⊤ ≤ (u.ex (z v₀ k)).left ⁻¹ᵁ L'.U (i k)` from `⟨_, fun _ => le_chartAt hL' _⟩`. Establish `key : ∀ v, ⊤ ≤ ((u.ex v).left ≫ φ) ⁻¹ᵁ L.wchart ψ j → ∀ k, ⊤ ≤ (u.ex (z v k)).left ⁻¹ᵁ L.wchart (fun _ : PUnit => φ) (fun _ => j k)` using `fun v hv k => (le_preimage_wchart _ L _ _).2 fun _ => hz v k ▸ (le_preimage_wchart _ L ψ _).1 hv k`. Take `⟨ho, hh⟩` from `u.hol (φ ⁻¹ᵁ L.wchart ψ j) ((φ.app _).hom (t.s j).val)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn : {v | ⊤ ≤ ((u.ex v).left ≫ φ) ⁻¹ᵁ L.wchart ψ j} ∈ nhds v₀` using `ho.mem_nhds hj`. Establish `d₁ : DifferentiableAt ℂ (fun v => valAt' ((u.ex v).left ≫ φ) (L.wchart ψ j) (t.s j).val) v₀`. Use `(hh.differentiableAt (ho.mem_nhds hj)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Conclude with `((valueRules _ (u.ex v).left).2.2.2.1 _ φ _ _).symm`. Set `G : K → (Fin g → ℂ) → ℂ` to `fun k x => valAt' (u.ex x).left (L.wchart (fun _ : PUnit => φ) (fun _ => j k) ⊓ L'.U (i k)) (w.s (fun _ => j k, i k)).val * u.fr (i k) x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₀` using `fun k => (le_preimage_inf _ _ _).2 ⟨key v₀ hj k, hi k⟩`. Establish `n₀ : ∀ k, G k (z v₀ k) ≠ 0` using `fun k => mul_ne_zero (val_unit_ne_zero _ valueRules (h₀ k) _) (u.fr_ne _ _ (hi k))`. Establish `d₂ : DifferentiableAt ℂ (fun v => ∏ k, G k (z v k) ^ ε k) v₀`. Establish `a : ∀ k, DifferentiableAt ℂ (fun v => G k (z v k) ^ ε k) v₀` using `fun k => by`. Use `DifferentiableAt.zpow ?_ (Or.inl (n₀ k))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableAt.comp v₀ (g := G k) ?_ (hd k v₀)` and prove the remaining obligations. Conclude with `((u.hol _ _).2.differentiableAt ((u.hol _ 0).1.mem_nhds (h₀ k))).fun_mul ((u.fr_hol (i k)).differentiableAt ((u.hol _ 0).1.mem_nhds (hi k)))`. Conclude with `(HasFDerivAt.finsetProd (u := Finset.univ) fun k _ => (a k).hasFDerivAt).differentiableAt`. Use `(d₁.fun_mul (d₂.fun_inv (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (n₀ k)))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hn' : ∀ᶠ v in nhds v₀, ∀ k, ⊤ ≤ (u.ex (z v k)).left ⁻¹ᵁ L'.U (i k)` using `Filter.eventually_all.2 fun k => (hd k v₀).continuousAt.preimage_mem_nhds ((u.hol _ 0).1.mem_nhds (hi k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hn, hn'] with v hv hv'`. Establish `hJv : ⊤ ≤ ((u.ex v).left ≫ φ) ⁻¹ᵁ L.wchart ψ fun k => J (((u.ex v).left ≫ φ) ≫ ψ k)` using `(le_preimage_wchart _ L ψ _).2 fun _ => hJ _`. Establish `e₁` using `(val_gen _ valueRules t ht _ _ hJv hv).trans (congrArg (· * _) (val_linComb _ valueRules L ψ ε _ _ hJv hv))`. Establish `e₂ : ∀ k, fr (z v k) = valAt' (((u.ex v).left ≫ φ) ≫ ψ k) (L.U (J (((u.ex v).left ≫ φ) ≫ ψ k)) ⊓ L.U (j k)) (L.g _ _).val * G k (z v k)` using `fun k => by`. Rewrite using `[hfr _ _ (hv' k), hz v k, ← _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (· * _) ((GlobalTheory.PowUnif.val_iso _ L L' (fun _ : PUnit => φ) w hw _ _ _ _ ((le_preimage_wchart _ L _ _).2 fun _ => hJ _) (key v hv k) (hv' k) (hv' k)).trans ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.PowUnif.val_g_self hL' _ _ (hv' k), inv_one, _root_.mul_one, Fintype.prod_unique]`. Establish `n : (∏ k, valAt' (((u.ex v).left ≫ φ) ≫ ψ k) (L.U (J (((u.ex v).left ≫ φ) ≫ ψ k)) ⊓ L.U (j k)) (L.g _ _).val ^ ε k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (val_unit_ne_zero _ valueRules ((le_preimage_inf _ _ _).2 ⟨hJ _, (le_preimage_wchart _ L ψ _).1 hv k⟩) _)`. Simplify using `only [e₂, mul_zpow, Finset.prod_mul_distrib]`. Conclude with `(congrArg (· / _) e₁).trans ((mul_div_mul_left _ _ n).trans (div_eq_mul_inv _ _))`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_quot {A : Over (Sp ℂ)} [GrpObj A] {X : Scheme.{0}} {L : LB X} {L' : LB A.left} (hL' : L'.IsLB)
     {φ : A.left ⟶ X} {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) {g : ℕ} (u : HolUnif A L' g)
@@ -83,9 +83,9 @@ theorem differentiable_quot {A : Over (Sp ℂ)} [GrpObj A] {X : Scheme.{0}} {L :
   exact (congrArg (· / _) e₁).trans ((mul_div_mul_left _ _ n).trans (div_eq_mul_inv _ _))
 
 /- English proof (translation)
-Establish `h₁ : ⊤ ≤ y ⁻¹ᵁ L.wchart (fun k => e ≫ ψ k) fun k => J (y ≫ e ≫ ψ k)` using `(le_preimage_wchart _ L _ _).2 fun _ => hJ _`. Establish `h₂ : ⊤ ≤ y ⁻¹ᵁ L.wchart (PEmpty.elim : PEmpty → (Z ⟶ X)) PEmpty.elim` using `(le_preimage_wchart _ L _ _).2 fun k => k.elim`. Establish `h₃` using `(le_preimage_inf y _ _).2 ⟨h₁, h₂⟩`. Use `congrArg (fun q : Γ(Z, _)ˣ => valAt' y _ q.val) (h (fun k => J (y ≫ e ≫ ψ k)) PEmpty.elim (fun a b q => congrArg (fun q => J (y ≫ q)) q) (fun a => a.elim) (fun _ b => b.elim))` as an intermediate fact. Establish `e₁` using `(val_res y valueRules inf_le_left h₃ _).symm.trans (this.trans (val_res y valueRules inf_le_right h₃ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `(valueRules Z y).2.1 _ h₂`. Conclude with `((val_res y valueRules _ h₁ _).trans (val_pullU y valueRules e _ _)).symm.trans (e₁.trans ((hr _).trans (map_one r)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vF_eq_one {X Y Z : Scheme.{0}} {L : LB X} {J : (Sp ℂ ⟶ X) → L.ι} (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ))
     {K : Type} [Fintype K] {ψ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L ψ ε)} {e : Z ⟶ Y}
@@ -103,35 +103,31 @@ theorem vF_eq_one {X Y Z : Scheme.{0}} {L : LB X} {J : (Sp ℂ ⟶ X) → L.ι} 
     (e₁.trans ((hr _).trans (map_one r)))
 
 /- English proof (translation)
-Introduce and unpack `R _ _ _ D J g Λ Hm χ ex fr ⟨hJ, P', φ, w, u, rfl, hφ, hw, hAH, -, -, -, hex, hfr⟩ f hf F hF hFf hH Ef hEf t ⟨ht, h₀⟩`. Express the relevant statement in the definitionally equal form `u.IsAH Hm χ at hAH`. Establish `hL` using `P'.isLB`. Establish `add : ∀ z z', ex (z + z') = ex z * ex z'` using `fun z z' => Over.OverMorphism.ext (by`. Rewrite using `[hex, u.ex_add, ← hφ.2 _ _ _ (pushPt hφ.1.w (u.ex z)) (pushPt hφ.1.w (u.ex z')) rfl rfl]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_congr (Category.id_comp _) _ _ _ _ (hex z).symm (hex z').symm)`. Establish `zero : ex 0 = 1` using `mul_eq_left.1 ((add 0 0).symm.trans (by rw [add_zero]))`. Establish `per : ∀ (l : u.Λ) z, (ex (z + l)).left = (ex z).left` using `fun l z => by`. Rewrite using `[hex, hex, ex_add_period u z l l.2]`. Establish `fac : ∀ (l : u.Λ) z, (fr z : ℂ) = ahFactor Hm χ l z * fr (z + l)` using `fun l z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `le_chartAt hL (u.ex z).left`. Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ P'.L.U (chartAt hL (u.ex z).left)`. Rewrite using `[ex_add_period u z l l.2]`. Conclude with `hi`. Rewrite using `[hfr _ _ hi, hfr _ _ hi', hAH.2.2.2 l _ z hi, per, ex_add_period u z l l.2, mul_left_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨V, hV⟩ : ∃ V : (Fin g → ℂ) → ℂ, ∀ v, V v = vF t (ex v).left J / (fr (v + F v) * ((fr v : ℂ) ^ 2)⁻¹ * (fr (F v) : ℂ)⁻¹ * fr 0 ^ 2)` from `⟨_, fun _ => rfl⟩`. Establish `dF : Differentiable ℂ F` using `(LinearMap.toContinuousLinearMap F).differentiable`. Establish `hd : Differentiable ℂ V`. Apply the tactic sequence `have := differentiable_quot hL hw u hJ (fr := fun z => fr z) (fun z i hi => by rw [← hex]; exact hfr z i hi) ht (z := fun v => ![v + F v, v, F v, 0]) (fun k => by fin_cases k <;> simp <;> fun_prop) (fun v k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hex, ← hex]`. Use `fin_cases k`. Conclude with `congrArg (fun m => m.left) (show ex v ≫ (𝟙 _ * f) = ex (v + F v) by`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← hFf, add])`. Conclude with `Category.comp_id _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun m => m.left) (hFf v).symm`. Conclude with `congrArg (fun m => m.left) ((MonObj.comp_one (ex v)).trans zero.symm))`. Use `this using 2 with v` and compare the differences between its conclusion and the goal. Rewrite using `[hV, hex]`. Simplify using `[Fin.prod_univ_four]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hper : ∀ (l : u.Λ) v, V (v + l) = (-1) ^ Ef l ⟨F l, hF l l.2⟩ / χ l * V v` using `fun l v => by`. Establish `a₁` using `fac (l + ⟨F l, hF l l.2⟩) (v + F v)`. Establish `a₂` using `fac l v`. Establish `a₃` using `fac ⟨F l, hF l l.2⟩ (F v)`. Establish `c` using `chi_add hL hAH l ⟨F l, hF l l.2⟩`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s : Complex.exp (Real.pi * Complex.I * (hermForm Hm l (F l)).im) = (-1) ^ Ef l ⟨F l, hF l l.2⟩`. Rewrite using `[← hEf l ⟨F l, hF l l.2⟩, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `x : Complex.exp (Real.pi * hermForm Hm (v + F v) (l + F l) + Real.pi / 2 * hermForm Hm (l + F l) (l + F l)) = Complex.exp (Real.pi * hermForm Hm v l + Real.pi / 2 * hermForm Hm l l) ^ 2 * Complex.exp (Real.pi * hermForm Hm (F v) (F l) + Real.pi / 2 * hermForm Hm (F l) (F l))`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [EigenNorm.hermForm_add_left, EigenNorm.hermForm_add_right]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-Real.pi : ℂ) * hH v l - (Real.pi / 2 : ℂ) * hH l l`. Rewrite `c` using `[s]`. Rewrite using `[hV, hV, per, a₁, a₂, a₃, map_add, add_add_add_comm v]`. Simplify using `only [ahFactor, c, Submodule.coe_add, x]`. Establish `n` using `chi_ne_zero hAH l`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n'` using `chi_ne_zero hAH ⟨F l, hF l l.2⟩`. Establish `n'' : (-1 : ℂ) ^ Ef l ⟨F l, hF l l.2⟩ ≠ 0` using `zpow_ne_zero _ (by simp)`. Clear the denominators using the available nonvanishing facts. Establish `hc` using `const_of_norm_periodic u hd (fun l v => by`. Rewrite using `[hper, norm_mul, norm_div, hAH.2.2.1, norm_zpow, norm_neg, norm_one, one_zpow, div_one, _root_.one_mul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : V 0 = 1`. Establish `e : (ex 0).left = (TF (R` using `R) ℂ).hom ≫ eSec D.P.A := by rw [zero, Hom.one_def]; simp [eSec]`. Rewrite using `[hV, e, vF_eq_one hJ h₀, map_zero, add_zero]`. Use `(fr 0).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun l => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `hper l 0` as an intermediate fact. Rewrite `this` using `[hc _ 0, h1, _root_.mul_one]`. Conclude with `((div_eq_one_iff_eq (chi_ne_zero hAH l)).1 this.symm).symm`. Use `(hV z).symm.trans ((hc z 0).trans h1)` as an intermediate fact.
-
-Establish `a` using `(fr z).ne_zero`. Establish `b` using `(fr (F z)).ne_zero`. Establish `c` using `(fr (z + F z)).ne_zero`. Establish `d` using `(fr 0).ne_zero`. Clear denominators, using `at this` for the nonvanishing conditions.
-
-Conclude with `this`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fibPrim : FibPrimSt := by
   rintro R _ _ _ D J g Λ Hm χ ex fr ⟨hJ, P', φ, w, u, rfl, hφ, hw, hAH, -, -, -, hex, hfr⟩ f hf F hF hFf hH Ef hEf t ⟨ht, h₀⟩
@@ -210,7 +206,7 @@ theorem fibPrim : FibPrimSt := by
     exact this
 
 /- English proof (translation)
-Introduce `_` and use `fibPrim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fibPrim_of_laws : Laws → FibPrimSt := fun _ => fibPrim
 

@@ -25,15 +25,15 @@ section Places
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])`.
+A detailed English derivation is pending.
 -/
 theorem cP_cP (P : Pl D.host.E) : cP (cP P) = P :=
   HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])
 
 /- English proof (translation)
-Establish `: {r : 𝓞 D.host.E | ∃ s ∈ P.asIdeal, algebraMap _ D.host.E r = star (algebraMap _ D.host.E s)} = ((cP P).asIdeal : Set (𝓞 D.host.E))`. Use extensionality with `r`. Use `⟨fun ⟨s, hs, e⟩ => ?_, fun h => ⟨cO D r, h, (star_star _).symm⟩⟩` and prove the remaining obligations. Establish `: r = cO D s` using `RingOfIntegers.ext e`. Express the relevant statement in the definitionally equal form `cO D r ∈ P.asIdeal`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this, cO_cO]` and apply the resulting hypothesis. Rewrite using `[Formalism.HermitianLatticesTheory.conjIdeal, this, Ideal.span_eq]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjIdeal_eq_cP (P : Pl D.host.E) : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = (cP P).asIdeal := by
   have : {r : 𝓞 D.host.E | ∃ s ∈ P.asIdeal, algebraMap _ D.host.E r = star (algebraMap _ D.host.E s)} =
@@ -46,32 +46,32 @@ theorem conjIdeal_eq_cP (P : Pl D.host.E) : Formalism.HermitianLatticesTheory.co
   rw [Formalism.HermitianLatticesTheory.conjIdeal, this, Ideal.span_eq]
 
 /- English proof (translation)
-Rewrite using `[mem_cP, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nat_mem_cP (P : Pl D.host.E) (n : ℕ) : (n : 𝓞 D.host.E) ∈ (cP P).asIdeal ↔ (n : 𝓞 D.host.E) ∈ P.asIdeal := by
   rw [mem_cP, map_natCast]
 
 /- English proof (translation)
-The claim follows from `(Ideal.map_symm (cO D)).symm`.
+A detailed English derivation is pending.
 -/
 theorem asIdeal_cP (P : Pl D.host.E) : (cP P).asIdeal = P.asIdeal.map (cO D).symm :=
   (Ideal.map_symm (cO D)).symm
 
 /- English proof (translation)
-Rewrite using `[asIdeal_cP, ← Ideal.map_pow, Ideal.map_symm, Ideal.mem_comap, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nat_mem_sq_cP (P : Pl D.host.E) (n : ℕ) :
     (n : 𝓞 D.host.E) ∈ (cP P).asIdeal ^ 2 ↔ (n : 𝓞 D.host.E) ∈ P.asIdeal ^ 2 := by
   rw [asIdeal_cP, ← Ideal.map_pow, Ideal.map_symm, Ideal.mem_comap, map_natCast]
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal (cP P).asIdeal (cO D).symm (asIdeal_cP P)).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_cP (P : Pl D.host.E) : Nat.card (kP (cP P)) = Nat.card (kP P) :=
   (Nat.card_congr (Ideal.quotientEquiv P.asIdeal (cP P).asIdeal (cO D).symm (asIdeal_cP P)).toEquiv).symm
 
 /- English proof (translation)
-Use `or_congr_right ⟨fun ⟨P', h, e⟩ => ?_, fun h => ⟨_, h, (isConjPl_iff _ _).2 (cP_cP P).symm⟩⟩` and prove the remaining obligations. Rewrite using `[(isConjPl_iff _ _).1 e, cP_cP]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_or_conj {Q : Finset (Pl D.host.E)} {P : Pl D.host.E} :
     (P ∈ Q ∨ ∃ P' ∈ Q, Lev.IsConjPl P' P) ↔ P ∈ Q ∨ cP P ∈ Q := by
@@ -80,7 +80,7 @@ theorem mem_or_conj {Q : Finset (Pl D.host.E)} {P : Pl D.host.E} :
   exact h
 
 /- English proof (translation)
-Rewrite using `[Bridge.SplitOff, conjIdeal_eq_cP]`. Use `and_congr (not_congr ⟨fun h => HeightOneSpectrum.ext h, fun h => by rw [h]⟩) (and_congr_right fun _ => ?_)` and prove the remaining obligations. Conclude with `⟨fun h hm => h _ hm rfl, fun h Q hQ e => h ((HeightOneSpectrum.ext e : Q = cP P) ▸ hQ)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem splitOff_iff {P : Pl D.host.E} {S : Set (Pl D.host.E)} : Bridge.SplitOff P S ↔ cP P ≠ P ∧ P ∉ S ∧ cP P ∉ S := by
   rw [Bridge.SplitOff, conjIdeal_eq_cP]
@@ -88,11 +88,9 @@ theorem splitOff_iff {P : Pl D.host.E} {S : Set (Pl D.host.E)} : Bridge.SplitOff
   exact ⟨fun h hm => h _ hm rfl, fun h Q hQ e => h ((HeightOneSpectrum.ext e : Q = cP P) ▸ hQ)⟩
 
 /- English proof (translation)
-Use `choose r hr using fun a : (kP P)ˣ => Ideal.Quotient.mk_surjective (a : kP P)`. Use `haveI : P.asIdeal.IsPrime := P.isPrime`. Establish `hn : ∀ {b : 𝓞 D.host.E} {a : (kP P)ˣ}, Ideal.Quotient.mk P.asIdeal b = a → b ∉ P.asIdeal` using `fun {b a} e hb => a.ne_zero (e ▸ Ideal.Quotient.eq_zero_iff_mem.2 hb)`. Establish `h0 : ∀ {b : 𝓞 D.host.E}, b ∉ P.asIdeal → (b : D.host.E) ≠ 0` using `fun {b} hb e => hb ((RingOfIntegers.coe_eq_zero_iff.1 e) ▸ zero_mem _)`. Establish `h1 : ∀ {b : 𝓞 D.host.E}, b ∉ P.asIdeal → P.valuation D.host.E (b : D.host.E) = 1` using `fun {b} hb => le_antisymm (HeightOneSpectrum.valuation_le_one _ _) (not_lt.1 fun h => hb ((HeightOneSpectrum.valuation_lt_one_iff_mem _ _).1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (kP P)ˣ → ℂˣ` to `fun a => χ.locK P (Units.mk0 _ (h0 (hn (hr a))))`. Establish `hf : ∀ (a : (kP P)ˣ) (b : 𝓞 D.host.E) (x : D.host.Eˣ), (x : D.host.E) = b → Ideal.Quotient.mk P.asIdeal b = a → f a = χ.locK P x` using `fun a b x hx hb => by`. Rewrite using `[GlobalTheory.NormOneUnit.locK_tame ht (y := Units.mk0 _ (h0 (hn (hr a)))) (h1 (hn (hr a)))]`. Rewrite using `[hx]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem P (b - r a)).2 (Ideal.Quotient.eq.1 (hb.trans (hr a).symm))`.
-
-Use `⟨MonoidHom.mk' f fun a a' => ?_, fun b k u hk hu => hf u b k hk hu.symm⟩` and prove the remaining obligations. Rewrite using `[hf _ (r a * r a') (Units.mk0 _ (h0 (hn (hr a))) * Units.mk0 _ (h0 (hn (hr a')))) rfl (by rw [map_mul, hr, hr, Units.val_mul]), map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRes {χ : HChar D.host.E} {P : Pl D.host.E} (ht : χ.TameAt P) : ∃ c, IsRes χ P c := by
   choose r hr using fun a : (kP P)ˣ => Ideal.Quotient.mk_surjective (a : kP P)
@@ -122,21 +120,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Use `choose xiR hxiR using fun v => exists_isRes (h4 v)`. Establish `k : ∀ P ∈ Q, ∃ P' ∈ R.Q t, P = P' ∨ P = cP P'` using `fun P hP => ((hc P).1 (Or.inl hP)).elim (fun h => ⟨P, h, Or.inl rfl⟩) fun h => ⟨_, h, Or.inr (cP_cP P).symm⟩`. Establish `kn : ∀ P ∈ Q, ∃ P' ∈ R.Q t, (∀ n : ℕ, (n : 𝓞 D.host.E) ∈ P.asIdeal ↔ (n : 𝓞 D.host.E) ∈ P'.asIdeal) ∧ (∀ n : ℕ, (n : 𝓞 D.host.E) ∈ P.asIdeal ^ 2 ↔ (n : 𝓞 D.host.E) ∈ P'.asIdeal ^ 2) ∧ Nat.card (kP P) = Nat.card (kP P') ∧ cP P ≠ P` using `fun P hP => by`. Take `⟨P', h, e⟩` from `k P hP`. Establish `hne : cP P' ≠ P'` using `fun e => (hL.Q_pl t P' h).2 P' h ((isConjPl_iff _ _).2 e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `e with rfl | rfl` into its components or cases. Conclude with `⟨P, h, fun _ => Iff.rfl, fun _ => Iff.rfl, rfl, hne⟩`. Conclude with `⟨P', h, nat_mem_cP P', nat_mem_sq_cP P', card_cP P', by rw [cP_cP]; exact hne.symm⟩`. Use `⟨xiR, h1, h2, h3, h4, fun P hP => ⟨?_, fun P' hP' hc' => ?_⟩, fun P hP => ?_, fun p hp => ?_, fun P => ?_, fun P _ => hxiR P, fun P hP => ?_, fun i P hP => ?_, fun P hP P' hP' => hch.one P (hQ P hP) P' (hQ P' hP'), fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨P', h, -, e2, e3, -⟩` from `kn P hP`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, a1, a2, a3, a4⟩` from `(hL.Q_pl t P' h).1`. Conclude with `⟨q, a1, e3.trans a2, fun hm => a3 ((e2 q).1 hm), a4⟩`. Take `⟨-, -, -, -, -, hne⟩` from `kn P hP`. Establish `e` using `(isConjPl_iff _ _).1 hc'`. Conclude with `(hch.pair P P' (isConjPl_of_lev hc') (e ▸ hne.symm)).1 (hQ P hP) (hQ P' hP')`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P', h, e1, -⟩` from `kn P hP`. Conclude with `⟨fun hm => (hL.Q_off t P' h).1 ((e1 _).1 hm), fun u hm => (hL.Q_off t P' h).2 u ((e1 _).1 hm)⟩`. Take `⟨𝔭, h𝔭⟩` from `hL.Q_de p hp`. Conclude with `⟨𝔭, h𝔭, fun P hP hm => h𝔭 t P (hde p hp P hP hm) hm⟩`. Rewrite using `[h5, hL.Q_ram, mem_or_conj, mem_or_conj, hc]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P', h, -, -, e3, -⟩` from `kn P hP`. Rewrite using `[e3]`. Conclude with `hF.roots t P' (Or.inr h)`. Take `⟨g, c0R, c0L, ht⟩` from `hF.tie`. Rewrite `hP` using `[splitOff_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hno : ¬ (R.pl P ∈ R.Q t ∨ cP (R.pl P) ∈ R.Q t)` using `fun h => ((hc _).2 h).elim (fun h => hP.2.1 (Or.inr h)) fun h => hP.2.2 (Or.inr h)`. Establish `hok : P ∈ A.ok t` using `(ht.ok t P).2 (splitOff_iff.2 ⟨hP.1, fun h => h.elim (fun h => hP.2.1 (Or.inl h)) fun h => hno (Or.inl h), fun h => h.elim (fun h => hP.2.2 (Or.inl h)) fun h => hno (Or.inr h)⟩)`. Establish `hu : (R.xiH t).UnrAt (R.pl P)`. Assume the negation of the conclusion as `h`. Conclude with `hno (mem_or_conj.1 ((hL.Q_ram t _).1 h))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `h6 _ hu`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero, zero_mul]`. Conclude with `Units.ne_zero _ hy.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨A.muVal i t P * Units.mk0 y hy0, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hF.muVal i t P hok, HChar.val_mul, HChar.val_mul, Units.val_mul, Units.val_mul, ← hy, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨P', h, e1, -⟩` from `kn P hP`. Conclude with `fun hm => hG.2 t P' h ((e1 _).1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem twLev_of_conj {R : RealDat D A Ks} (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) (hG : QGuard R) (t : T0)
     {χ : HChar D.host.E} {xi : (AE D)ˣ →* Circle} {Q : Finset (Pl D.host.E)} {ch : Set (Pl D.host.E)} (hch : IsChoice ch)
@@ -200,7 +198,7 @@ section Chars
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, pow_succ, Formalism.L2.Host.HChar.loc_mul, ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem loc_pow (χ : HChar D.host.E) (n : ℕ) (v : Pl D.host.E) (x : (v.adicCompletion D.host.E)ˣ) :
     (χ ^ n).loc v x = χ.loc v x ^ n := by
@@ -209,7 +207,7 @@ theorem loc_pow (χ : HChar D.host.E) (n : ℕ) (v : Pl D.host.E) (x : (v.adicCo
   | succ n ih => rw [pow_succ, pow_succ, Formalism.L2.Host.HChar.loc_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rwa [zero_add, pow_one, pow_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ χ]`. Conclude with `GlobalTheory.TwistChr.chrEq_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chrEq_pow {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h : ChrEq c χ) (n : ℕ) :
     ChrEq (c ^ (n + 1)) (χ ^ (n + 1)) := by
@@ -218,7 +216,7 @@ theorem chrEq_pow {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h : ChrEq c 
   | succ n ih => rw [pow_succ, pow_succ χ]; exact GlobalTheory.TwistChr.chrEq_mul ih h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rwa [zero_add, pow_one]`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trivOn_pow {χ : HChar D.host.E} (h : χ.TrivOn D.host.F) (n : ℕ) : (χ ^ (n + 1)).TrivOn D.host.F := by
   induction n with
@@ -228,7 +226,7 @@ theorem trivOn_pow {χ : HChar D.host.E} (h : χ.TrivOn D.host.F) (n : ℕ) : (�
 variable {q l : ℕ} {δ ψ : HChar D.host.E} {Q : Finset (Pl D.host.E)}
 
 /- English proof (translation)
-Introduce `hu` and use `by obtain ⟨n, hn⟩ := hψ.ord have h15 := (hδ.ine v hv (l ^ n)).1 fun x hx => by have h3 : ψ.loc v x ^ (l ^ n) = 1 := by rw [← loc_pow, show ψ ^ (l ^ n) = 1 from hn] rfl have h4 := hu x hx rw [Formalism.L2.Host.HChar.loc_mul, loc_pow] at h4 rw [eq_inv_of_mul_eq_one_left h4, inv_pow …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_unr (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) (a : ℕ) {v : Pl D.host.E}
     (hv : (q : 𝓞 D.host.E) ∈ v.asIdeal) : ¬ (δ * ψ ^ a).UnrAt v := fun hu => by
@@ -245,11 +243,11 @@ theorem not_unr (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) (a : �
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hv : (q : 𝓞 D.host.E) ∈ v.asIdeal`. Establish `h` using `not_unr hδ hψ hl 1 hv`. Rewrite `h` using `[pow_one]`. Conclude with `iff_of_false (not_unr hδ hψ hl a hv) h`. Take `⟨n, hn⟩` from `hψ.ord`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall₂_congr fun x hx => ?_` and prove the remaining obligations. Establish `h3 : ψ.loc v x ^ (l ^ n) = 1`. Rewrite using `[← loc_pow, show ψ ^ (l ^ n) = 1 from hn]`. Both sides reduce to the same expression. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, hδ.unr v hv x hx, one_mul, one_mul, loc_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => ?_, fun h => by rw [h, one_pow]⟩` and prove the remaining obligations. Use `pow_gcd_eq_one.2 ⟨h, h3⟩` as an intermediate fact. Rewrite `this` using `[Nat.Coprime.gcd_eq_one (ha.pow_right n), pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unr_iff (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) {a : ℕ} (ha : a.Coprime l) (v : Pl D.host.E) :
     (δ * ψ ^ a).UnrAt v ↔ (δ * ψ).UnrAt v := by
@@ -268,7 +266,7 @@ theorem unr_iff (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) {a : �
     rwa [Nat.Coprime.gcd_eq_one (ha.pow_right n), pow_one] at this
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hψ.ord`. Take `⟨m, hm0, hm⟩` from `hδ.fin`. Use `⟨m * l ^ n, Nat.mul_pos hm0 (pow_pos hl.pos n), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(δ * ψ ^ a) ^ (m * l ^ n) = 1`. Rewrite using `[mul_pow, pow_mul δ, show δ ^ m = 1 from hm, one_pow, one_mul, ← pow_mul, mul_comm m, ← mul_assoc, mul_comm a, mul_assoc, pow_mul, show ψ ^ (l ^ n) = 1 from hn, one_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_mul (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) (a : ℕ) : ∃ n : ℕ, 0 < n ∧ (δ * ψ ^ a).OrderDvd n := by
   obtain ⟨n, hn⟩ := hψ.ord
@@ -279,15 +277,15 @@ theorem fin_mul (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (hl : l.Prime) (a : �
     show ψ ^ (l ^ n) = 1 from hn, one_pow]
 
 /- English proof (translation)
-Introduce `x hx h1` and use `by rw [Formalism.L2.Host.HChar.loc_mul, loc_pow, hδ.tame v x hx h1, hψ.tame v x hx h1, one_pow, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tame_mul (hδ : IsDelta q δ) (hψ : IsPsi l Q ψ) (a : ℕ) (v : Pl D.host.E) : (δ * ψ ^ a).TameAt v := fun x hx h1 => by
   rw [Formalism.L2.Host.HChar.loc_mul, loc_pow, hδ.tame v x hx h1, hψ.tame v x hx h1, one_pow, one_mul]
 
 /- English proof (translation)
-Establish `hu : ¬ IsUnit (q : 𝓞 D.host.E)` using `fun h => by`. Establish `h1` using `h.map (Algebra.norm ℤ)`. Rewrite `h1` using `[show (q : 𝓞 D.host.E) = algebraMap ℤ _ (q : ℤ) by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hq.one_lt.ne' h1`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (Ideal.span_singleton_ne_top hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqM : (q : 𝓞 D.host.E) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, fun e => ?_⟩, hqM⟩` and prove the remaining obligations. Rewrite `hqM` using `[e, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqM)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_over {q : ℕ} (hq : q.Prime) : ∃ v : Pl D.host.E, (q : 𝓞 D.host.E) ∈ v.asIdeal := by
   have hu : ¬ IsUnit (q : 𝓞 D.host.E) := fun h => by
@@ -302,13 +300,13 @@ theorem exists_over {q : ℕ} (hq : q.Prime) : ∃ v : Pl D.host.E, (q : 𝓞 D.
   exact hq.ne_zero (by exact_mod_cast hqM)
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing (D.ntw.Ok i k)) := (ρ.ek i b k).charZero`. Establish `hn : D.ntw.l i ^ k ≠ 0` using `pow_ne_zero _ (D.ntw.lPrime i).out.ne_zero`. Establish `h1 : ∀ σ, ψ σ ^ (D.ntw.l i ^ k) = 1` using `fun σ => by`. Take `⟨n, hn⟩` from `hψ.2.2.2.2.1 σ`. Establish `hz : D.ntw.zk i k ^ (D.ntw.l i ^ k) = 1` using `Units.ext (by simpa using (D.ntw.zk_prim i k).pow_eq_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz, one_zpow]`. Take `⟨a, ha, h⟩` from `GlobalTheory.charPowPrimeOrder_embeddings_differ_by_coprime_power _ (FractionRing (D.ntw.Ok i k)) _ k (D.ntw.lPrime i).out ((Units.map (algebraMap (D.ntw.Ok i k) (FractionRing (D.ntw.Ok i k))).toMonoidHom).comp ψ) (fun g => by rw [MonoidHom.comp_apply, ← map_pow, h1, map_one]) (ρ …`. Use `⟨a, ha, MonoidHom.ext fun x => Circle.ext ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym x`. Establish `e1` using `charOf_eq ρ.rc (ρ.eOk i b k) hψ.2.2.1 hσ hn (h1 σ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `charOf_eq ρ.rc (ρ'.eOk i b k) hψ.2.2.1 hσ hn (h1 σ)`. Rewrite using `[MonoidHom.pow_apply, Circle.coe_pow]`. Express the relevant statement in the definitionally equal form `((GlobalTheory.SeriesTie.charOf ρ'.rc (ρ'.eOk i b k) ψ x : Circle) : ℂ) = ((GlobalTheory.SeriesTie.charOf ρ.rc (ρ.eOk i b k) ψ x : Circle) : ℂ) ^ a`. Rewrite using `[hs, e1, e2]`. Use `h σ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow {ρ ρ' : Setup D.ntw} (hs : ρ'.rc = ρ.rc) {i : D.ntw.Tw} (b : Bool) {k : ℕ} {Q : Finset (Pl D.host.E)}
     {ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} (hψ : IntegralHeckeForms.TwOK i k Q ψ) :
@@ -342,7 +340,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz} {w : D.what₂.places.Pl}
 
 /- English proof (translation)
-Use `⟨if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde, ?_, ?_, fun P => ?_⟩` and prove the remaining obligations. Use `split_ifs exacts [D.host.pde'_prime, D.host.pde_prime]`. Unfold `Formalism.L2.Host.CharFrame.delAt split_ifs exacts [C.isDel', C.isDel]`. Rewrite using `[← Finset.mem_coe, D.ntw.pD_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_delta (C : Formalism.L2.Host.CharFrame D) (i : D.ntw.Tw) : ∃ q : ℕ, q.Prime ∧ IsDelta q (C.delAt (D.ntw.l i)) ∧
     ∀ P : Pl D.host.E, P ∈ D.ntw.pD i ↔ (q : 𝓞 D.host.E) ∈ P.asIdeal := by
@@ -358,21 +356,19 @@ theorem exists_delta (C : Formalism.L2.Host.CharFrame D) (i : D.ntw.Tw) : ∃ q 
 open Classical in
 
 /- English proof (translation)
-Establish `hw'` using `(p.tw_iff w).1 hw`. Establish `hL` using `p.charW.base.lev`. Establish `hψ` using `p.Tp.psi_is w hw'`. Rewrite `hψ` using `[← ex.nch.twI_l]`. Establish `hl` using `(D.ntw.lPrime (ex.nch.twI w)).out`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : p.R.toRealDat.toLevCh.xiH (p.R.mu (D.plEq w)) = p.R.C.delAt (D.ntw.l (ex.nch.twI w)) * p.Tp.psi w`. Rewrite using `[← p.tupAt w, p.tupXi _ (Or.inr ⟨w, rfl⟩), (D.what₂.muAt_or w).resolve_left hw', p.Tp.xi_tw, ex.nch.twI_l]`. Take `⟨q, -, hδ, hq⟩` from `exists_delta p.R.C (ex.nch.twI w)`. Take `⟨k1, k2⟩` from `placesAt (j := j) hw hρ hp`. Simplify using `only [mem_or_conj] at k2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hch` using `hρ.ch (ex.nch.twI w)`. Establish `hQ : ∀ P, P ∈ (baseW ex w j ρ).de.Q ∪ half (ρ.ch (ex.nch.twI w)) (ex.nch.Q w) ↔ (P ∈ D.ntw.pD (ex.nch.twI w) ∨ P ∈ ex.nch.Q w) ∧ P ∈ ρ.ch (ex.nch.twI w)` using `fun P => by`. Rewrite using `[Finset.mem_union, baseW, hρ.delta, or_and_right]`. Conclude with `or_congr mem_half mem_half`. Use `twLev_of_conj hL hF hG (p.R.mu (D.plEq w)) hch (fun P hP => ((hQ P).1 hP).2) (fun P => ?_) (fun r hr P hP hm => ?_) (GlobalTheory.TwistChr.chrEq_mul (hp.delta _ j _) hc) (fin_mul hδ hψ hl _) (hδ.triv.mul (trivOn_pow hψ.triv a)) (tame_mul hδ hψ _) (fun v => by rw [h2]; exact unr_i …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, hQ, ← k2, ← k2, cP_cP, or_comm (a := cP P ∈ _) (b := P ∈ _), ← and_or_left, and_iff_left_iff_imp]`. Introduce `h`. Establish `hne : P ≠ cP P` using `fun e => by`. Establish `h' : P ∈ p.R.Q (p.R.mu (D.plEq w))` using `h.elim id fun h => e ▸ h`. Conclude with `(hL.Q_pl _ P h').2 P h' ((isConjPl_iff _ _).2 e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `hP : cP P ∈ ρ.ch (ex.nch.twI w)`. Conclude with `Or.inr hP`. Conclude with `Or.inl ((hch.pair P _ (isConjPl_of_lev ((isConjPl_iff _ _).2 rfl)) hne).2 hP)`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `((k1 P).1 h).1`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `absurd ?_ (hlow P (mem_half.1 h).1)` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Break down `hr with rfl | rfl` into its components or cases. Use `exacts [Ideal.mul_mem_right _ _ hm, Ideal.mul_mem_left _ _ hm]`. Establish `hv' : v ∉ ex.nch.Q w` using `fun h => (hL.Q_ram _ v).2 (mem_or_conj.2 ((k2 v).2 (Or.inr h))) hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `hm.psiVal w hw' v ((hψ.ram v).2 hv')`. Establish `hy' : D.what₂.embLL y = (((p.Tp.psi w).val v : ℂˣ) : ℂ)` using `by simpa [Formalism.L2.Host.HChar.valTw] using hy`. Establish `hv2 : (p.Tp.psi w ^ (a + 1)).val v = (p.Tp.psi w).val v ^ (a + 1)` using `loc_pow _ _ _ _`. Use `⟨y ^ a, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, map_pow, hy', Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_mul, hv2]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twLev_pow (hm : RecTies p) (hF : p.R.toRealDat.IsFam) (hG : QGuard p.R.toRealDat) (hw : D.plEq w ∈ p.R.twPl) (j : Fin D.R.m)
     (hlow : ∀ P ∈ ex.nch.Q w, ((D.host.pde * D.host.pde' : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal)
@@ -430,7 +426,7 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open LevAt in
 
 /- English proof (translation)
-Introduce `_ _ _ hA hC` and use `by refine AtTw.imp (AtTw.and hA (AtTw.and hC lowAt_holds)) fun Fm x hx i p hr hm w hw j H => ?_ obtain ⟨⟨a1, -, -⟩, a2, a3⟩ := H intro ρ ρ' hρ hρ' hp hs hA have hl := ((Fm.D x i).ntw.lPrime ((Fm.ex x hx i).nch.twI w)).out have hlow : ∀ P ∈ (Fm.ex x hx i).nch.Q w, (((Fm.D x i).hos …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twLevAt_holds : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → TwAdm → TwChr →
     GlobalTheory.BigOn.Exp.TwConj.TwLevAt := fun _ _ _ hA hC => by

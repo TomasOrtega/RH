@@ -16,9 +16,9 @@ section T
 variable {N : Type*} [AddCommGroup N] [Module ℂ N]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m f`. Simplify using `only [diagE, sgE_cpT, eT, LinearMap.add_apply, TensorProduct.map_tmul, LinearMap.lTensor_tmul, LinearMap.id_apply, map_add, tcoef_tmul, LinearMap.coe_comp, Function.comp_apply, map_smul]`. Consider the case `add y y' hy hy'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_add, map_add, hy, hy', map_add, map_add, map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem tco_diagE (E : Fin n → Fin n → Module.End ℂ N) (a b : Fin n)
     (y : TensorProduct ℂ N (Fock n)) (s : Finset (Fin (n * n))) :
@@ -35,9 +35,9 @@ theorem tco_diagE (E : Fin n → Fin n → Module.End ℂ N) (a b : Fin n)
     abel
 
 /- English proof (translation)
-Rewrite using `[tco_diagE, tcoef_eq_sum ((fockBasis n).coord s ∘ₗ sgE ε (cpFock (n := n)) cmFock a a) y]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using `[fockBasis_wt]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[fockBasis_wt, Finsupp.single_apply, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tco_diagE_wt (E : Fin n → Fin n → Module.End ℂ N) (a : Fin n)
     (y : TensorProduct ℂ N (Fock n)) (s : Finset (Fin (n * n))) :
@@ -54,9 +54,9 @@ theorem tco_diagE_wt (E : Fin n → Fin n → Module.End ℂ N) (a : Fin n)
 end T
 
 /- English proof (translation)
-Unfold `modeChar modeWt`. Distinguish the cases in `h : IsPhys ε x`. Rewrite using `[if_pos h, if_pos (show ε x.1 = true ∧ ε x.2 = false from h), Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [root, Pi.sub_apply, Pi.single_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (show ¬(ε x.1 = true ∧ ε x.2 = false) from h)]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modeChar_exp (θ : Fin n → ℝ) (x : Fin n × Fin n) :
     modeChar ε (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) x =
@@ -73,9 +73,9 @@ theorem modeChar_exp (θ : Fin n → ℝ) (x : Fin n × Fin n) :
     simp
 
 /- English proof (translation)
-Simplify using `only [modeChar_exp]`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[← Finset.sum_mul, ← Complex.ofReal_sum]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [fockWt, Finset.sum_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_modeChar_exp (θ : Fin n → ℝ) (s : Finset (Fin (n * n))) :
     ∏ m ∈ s, modeChar ε (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (finProdFinEquiv.symm m) =
@@ -89,7 +89,7 @@ theorem prod_modeChar_exp (θ : Fin n → ℝ) (s : Finset (Fin (n * n))) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-The claim follows from `bwt_diag_mem_Kset ε θ`.
+A detailed English derivation is pending.
 -/
 theorem diag_mem_Kset' (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset ε :=
@@ -99,15 +99,15 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Apply `coordH_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[map_smul, Pi.smul_apply, coordH_apply, coordH_apply, tco_wK]`. Rewrite using `[Finset.sum_eq_single s]`. Rewrite using `[ff_diag, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same, smul_eq_mul, mul_one, prod_modeChar_exp]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hts : ∀ a, E a a (tcoef ((fockBasis n).coord s) y) = (((μ - fockWt ε s) a : ℝ) : ℂ) • tcoef ((fockBasis n).coord s) y`. Introduce `a`. Establish `h` using `congrArg (tcoef ((fockBasis n).coord s)) (hy a)`. Rewrite `h` using `[tco_diagE_wt, map_smul]`. Rewrite using `[Pi.sub_apply, Complex.ofReal_sub, sub_smul, ← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hw` using `(isWtOn_iff hσ hD (tcoef ((fockBasis n).coord s) y) (μ - fockWt ε s)).2 hts θ (bwt_diag_mem_Kset ε θ)`. Rewrite using `[Submodule.coe_smul]`. Express the relevant statement in the definitionally equal form `_ • σ _ _ = _`. Rewrite using `[hw, smul_smul, ← Complex.exp_add]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Simplify using `only [Pi.sub_apply, Complex.ofReal_sub, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ff_diag, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, if_neg hb, smul_zero, zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wK_diag_wt (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {μ : Fin n → ℝ}
     {y : TensorProduct ℂ D (Fock n)} (hy : ∀ a, diagE ε (eT E) cpT cmT a a y = ((μ a : ℝ) : ℂ) • y)
@@ -141,7 +141,7 @@ theorem wK_diag_wt (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {
   · simp
 
 /- English proof (translation)
-Use `⟨bwtDiag_inG ε θ, ?_⟩` and prove the remaining obligations. Unfold `bwtDiag Jm`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -154,7 +154,7 @@ theorem bwtDiag_inK (ε : Fin n → Bool) (θ : Fin n → ℝ) : inK ε (bwtDiag
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem wK_congr (hD : IsDerivedOn ε σ D E) {k k' : Matrix (Fin n) (Fin n) ℂ} (h : k = k')
     (hk : k ∈ Kset ε) (hk' : k' ∈ Kset ε) (y : TensorProduct ℂ D (Fock n)) :
@@ -163,17 +163,17 @@ theorem wK_congr (hD : IsDerivedOn ε σ D E) {k k' : Matrix (Fin n) (Fin n) ℂ
   rfl
 
 /- English proof (translation)
-Use `set θ : Fin n → ℝ := Pi.single a 1 with hθ`. Establish `hX` using `bwtDiag_inK ε θ`. Establish `hcurve : ∀ t : ℝ, coordH (wK hD (exp_mem_Kset (USum.inK_real_smul hX t)) y) = Complex.exp (((t * μ a : ℝ) : ℂ) * Complex.I) • coordH y`. Introduce `t`. Rewrite using `[wK_congr hD (bwt_exp θ t) _ (diag_mem_Kset' ε (fun b => t * θ b)), hy, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 4`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [hθ, Pi.single_apply, hb]) (by simp)]`. Simplify using `[hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hder1 : HasDerivAt (fun t : ℝ => coordH (wK hD (exp_mem_Kset (USum.inK_real_smul hX t)) y)) (coordH (actM (diagE ε (eT E) cpT cmT) (bwtDiag θ) y)) 0` using `hasDerivAt_pi.2 fun s => tco_wK_hasDeriv hσ hD hX y s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : HasDerivAt (fun t : ℝ => Complex.exp (((t * μ a : ℝ) : ℂ) * Complex.I)) (((μ a : ℝ) : ℂ) * Complex.I) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => ((t * μ a : ℝ) : ℂ)) ((1 * μ a : ℝ) : ℂ) 0` using `((hasDerivAt_id (0 : ℝ)).mul_const (μ a)).ofReal_comp`. Establish `h2` using `(h1.mul_const Complex.I).cexp`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hder2` using `he.smul_const (coordH y)`. Rewrite `hder1` using `[funext hcurve]`. Establish `heq` using `hder1.unique hder2`. Establish `h2 : actM (diagE ε (eT E) cpT cmT) (bwtDiag θ) y = (((μ a : ℝ) : ℂ) * Complex.I) • y` using `coordH_injective (by rw [heq, map_smul])`. Rewrite `h2` using `[bwtDiag, bwt_actM_diag, LinearMap.sum_apply, Finset.sum_eq_single a (fun b _ hb => by simp [hθ, Pi.single_apply, hb]) (by simp)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hθ, Pi.single_eq_same, Complex.ofReal_one, one_mul, LinearMap.smul_apply] at h2`. Establish `h3` using `congrArg (fun v => (-Complex.I) • v) h2`. Simplify using `only [smul_smul] at h3`. Establish `hI : -Complex.I * Complex.I = 1` using `by rw [neg_mul, Complex.I_mul_I, neg_neg]`. Establish `hI' : -Complex.I * (((μ a : ℝ) : ℂ) * Complex.I) = ((μ a : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-((μ a : ℝ) : ℂ)) * Complex.I_mul_I`. Rewrite `h3` using `[hI, one_smul, hI']`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagE_wt_of_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {μ : Fin n → ℝ}
     {y : TensorProduct ℂ D (Fock n)}
@@ -220,17 +220,15 @@ section Orth
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `horth : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) → tform y (lowWord A z l) = 0`. Introduce `l hl`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, μ a ≠ lowWt γ l a := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne l hl (funext h)`. Establish `h1` using `hA a y (lowWord A z l)`. Rewrite `h1` using `[hμ a, lowerWord_weight hK hz.1 l hl a, tensorForm_smul_left, tform_smul_right, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : (((μ a : ℝ) : ℂ) - ((lowWt γ l a : ℝ) : ℂ)) * tform y (lowWord A z l) = 0`. Rewrite using `[sub_mul, h1, sub_self]`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast sub_eq_zero.1 h) ha`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ w ∈ kLowSpan ε A z, tform y w = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `horth l hl`. Consider the case `zero => simp [tform]`. Consider the case `add x x' _ _ hx hx' => rw [tform_add_right, hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [tform_smul_right, hx, mul_zero]`. Use `tform_self_re_pos hy0` as an intermediate fact.
-
-Rewrite `this` using `[hall y hy]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kLow_wt_eq_lowWt {A : Fin n → Fin n → Module.End ℂ (TensorProduct ℂ M (Fock n))}
     (hK : Formalism.REAL.KRel ε A)
@@ -271,7 +269,7 @@ theorem kLow_wt_eq_lowWt {A : Fin n → Fin n → Module.End ℂ (TensorProduct 
 end Orth
 
 /- English proof (translation)
-The claim follows from `| [], _ => ⟨fun _ _ => 0, fun a b h => absurd rfl h, by simp [lowWt]⟩ | p :: l, hl => by obtain ⟨c, hc, heq⟩ := cdom_lowWt γ l fun q hq => hl q (List.mem_cons_of_mem _ hq) obtain ⟨c0, d0⟩ := p have hp : IsKLow ε (c0, d0) := hl _ (List.mem_cons_self ..) refine ⟨fun a b => c a b + …`.
+A detailed English derivation is pending.
 -/
 theorem cdom_lowWt (γ : Fin n → ℝ) :
     ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) → Formalism.MainNotions.S.CDom ε (lowWt γ l) γ

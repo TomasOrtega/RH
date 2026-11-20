@@ -12,17 +12,15 @@ noncomputable section
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ fr u`. Establish `hmap : ∀ {a b c : ℕ} (X : Matrix (Fin a) (Fin b) E) (Y : Matrix (Fin b) (Fin c) E), adMat F (X * Y) = adMat F X * adMat F Y` using `fun X Y => by`. Simplify using `only [adMat]`. Conclude with `Matrix.map_mul`. Establish `hsub : adMat F ((1 : Matrix (Fin n) (Fin n) E) - D * (cT (σ : E →+* E) C * J)) = adMat F C * adMat F (cT (σ : E →+* E) D * J) + adMat F Z * adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (1 : Matrix (Fin n) (Fin n) E) - D * (cT (σ : E →+* E) C * J) = C * (cT (σ : E →+* E) D * J) + Z * (J₀⁻¹ * (cT (σ : E →+* E) Z * J))`. Rewrite using `[← fr.sum]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, ← hmap, ← hmap]`. Simplify using `only [adMat]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Matrix.map_add _ (map_add _) _ _`. Establish `hZ : ((1 : Matrix (Fin n) (Fin n) E) - D * (cT (σ : E →+* E) C * J)) * Z = Z`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, fr.cz, Matrix.mul_zero, sub_zero]`. Rewrite using `[GlobalTheory.EisCT.mem_unipRad_iff_dual fr.cd u]`. Use `set M := (matHom _ σ J u).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, B, h2⟩`. Use `⟨by rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h1; exact h1, B * adMat F Z, ?_⟩` and prove the remaining obligations. Use `congrArg (· * adMat F Z) h2` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← hmap, hZ, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_iff_eq_add]`. Rewrite using `[this, add_comm]`. Introduce and unpack `⟨h1, b, h2⟩`. Use `⟨by rw [Matrix.sub_mul, Matrix.one_mul, h1, sub_self], b * adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J)), ?_⟩` and prove the remaining obligations. Establish `h1' : (M - 1) * adMat F C = 0` using `by rw [Matrix.sub_mul, Matrix.one_mul, h1, sub_self]`.
-
-Establish `h2' : (M - 1) * adMat F Z = adMat F C * b` using `by rw [Matrix.sub_mul, Matrix.one_mul, h2]; abel`. Rewrite using `[hsub, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1', h2', Matrix.zero_mul, zero_add, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_iff_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ u : GAd σ J, u ∈ unipRad σ J C ↔ ((matHom _ σ J u).1 * adMat F C = adMat F C ∧ ∃ b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E), (matHom _ σ J u).1 * adMat F Z = adMat F Z + adMat F C * b) := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ fr u

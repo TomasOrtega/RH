@@ -13,11 +13,11 @@ section LocGen
 variable {W : Scheme.{u}} {ι' : Type*} {V : ι' → W.Opens} {g : ∀ c, Γ(W, V c)}
 
 /- English proof (translation)
-Establish `hc : ∀ z : U.1, ∃ t : Γ(W, U), ∃ c, W.basicOpen t ≤ V c ∧ (z : W) ∈ W.basicOpen t`. Introduce `z`. Take `⟨c, hc⟩` from `hV z`. Take `⟨t, ht, hzt⟩` from `U.2.exists_basicOpen_le ⟨(z : W), hc⟩ z.2`. Conclude with `⟨t, c, ht, hzt⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose t c ht hzt using hc`. Establish `hm : ∀ z : U.1, ∃ m : ℕ, ∀ y (hy : y ∈ W.basicOpen (t z)), W.presheaf.germ U.1 y (W.basicOpen_le (t z) hy) (s ^ m * a) ∈ dsK V g y` using `fun z => ds_local hg s a ha (c z) (t z) (ht z)`. Use `choose m hm using hm`. Take `⟨F, hF⟩` from `U.2.isCompact.elim_finite_subcover (fun z : U.1 => (W.basicOpen (t z) : Set W)) (fun z => (W.basicOpen (t z)).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hzt ⟨y, hy⟩⟩)`. Use `⟨∑ z ∈ F, m z, mem_dsJ.2 fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hzF, hyz⟩` from `Set.mem_iUnion₂.1 (hF hy)`. Establish `hle : m z ≤ ∑ z ∈ F, m z` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hzF`. Establish `h1` using `hm z y hyz`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ds_core (hV : ∀ x : W, ∃ c, x ∈ V c)
     (hg : ∀ c c' (x : W) (hx : x ∈ V c) (hx' : x ∈ V c'), ∃ u : (W.presheaf.stalk x)ˣ,
@@ -47,19 +47,17 @@ lemma ds_core (hV : ∀ x : W, ∃ c, x ∈ V c)
   exact Ideal.mul_mem_left _ _ h1
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Ideal.map_le_of_le_comap fun b hb => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom b ∈ dsJ V g (W.affineBasicOpen f)`. Use `mem_dsJ.2 fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `(mem_dsJ.1 hb) y (W.basicOpen_le f hy)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : W.presheaf.germ (W.affineBasicOpen f).1 y hy ((W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom b) = W.presheaf.germ U.1 y (W.basicOpen_le f hy) b` using `TopCat.Presheaf.germ_res_apply W.presheaf (homOfLE <| W.basicOpen_le f) y hy b`. Rewrite using `[e]`. Conclude with `h1`. Introduce `b hb`. Use `letI := (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI := U.2.isLocalization_basicOpen f`. Take `⟨⟨a, s'⟩, hab⟩` from `IsLocalization.surj (Submonoid.powers f) b`. Take `⟨n, hn⟩` from `s'.2`. Simplify using `only [RingHom.algebraMap_toAlgebra, ← hn] at hab`. Establish `ha : ∀ z (hz : z ∈ U.1), z ∈ W.basicOpen f → W.presheaf.germ U.1 z hz a ∈ dsK V g z`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz hzf`. Establish `h1` using `(mem_dsJ.1 hb) z hzf`. Establish `e1 : W.presheaf.germ (W.basicOpen f) z hzf ((W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom a) = W.presheaf.germ U.1 z hz a` using `TopCat.Presheaf.germ_res_apply W.presheaf (homOfLE <| W.basicOpen_le f) z hzf a`. Establish `e2 : W.presheaf.germ (W.basicOpen f) z hzf ((W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ n)) = W.presheaf.germ U.1 z hz (f ^ n)` using `TopCat.Presheaf.germ_res_apply W.presheaf (homOfLE <| W.basicOpen_le f) z hzf (f ^ n)`. Rewrite using `[← e1, ← hab, map_mul, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ h1`. Take `⟨m, hm⟩` from `ds_core hV hg f a ha`. Establish `hx : (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ m * a) ∈ (dsJ V g U).map (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom` using `Ideal.mem_map_of_mem _ hm`. Establish `hu : IsUnit ((W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ (m + n)))`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(IsLocalization.Away.algebraMap_isUnit f).pow _`. Establish `heq : b * (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ (m + n)) = (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ m * a)`. Rewrite using `[map_mul, ← hab, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv⟩` from `hu`.
-
-Establish `hb' : b = (W.presheaf.map (homOfLE <| W.basicOpen_le f).op).hom (f ^ m * a) * ↑v⁻¹`. Rewrite using `[← heq, ← hv, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[hb']`. Conclude with `Ideal.mul_mem_right _ _ hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dsJ_basicOpen (hV : ∀ x : W, ∃ c, x ∈ V c)
     (hg : ∀ c c' (x : W) (hx : x ∈ V c) (hx' : x ∈ V c'), ∃ u : (W.presheaf.stalk x)ˣ,
@@ -117,13 +115,13 @@ lemma dsJ_basicOpen (hV : ∀ x : W, ∃ c, x ∈ V c)
 end LocGen
 
 /- English proof (translation)
-Use `⟨⟨fun U => dsJ V g U, fun U f => dsJ_basicOpen hV hg U f, _, rfl⟩, fun c x hx => ?_⟩` and prove the remaining obligations. Take `⟨U', hU', hxU', hsub⟩` from `exists_isAffineOpen_mem_and_subset hx`. Rewrite using `[ds_stalkId_eq_map _ ⟨U', hU'⟩ x hxU']`. Express the relevant statement in the definitionally equal form `Ideal.map _ (dsJ V g ⟨U', hU'⟩) = _`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Rewrite using `[Ideal.mem_comap, ← dsK_eq hg c hx]`. Conclude with `(mem_dsJ.1 hf) x hxU'`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : U' ≤ V c` using `hsub`. Establish `hr : W.presheaf.map (homOfLE hle).op (g c) ∈ dsJ V g ⟨U', hU'⟩`. Rewrite using `[mem_dsJ]`. Introduce `y hy`. Rewrite using `[dsK_eq hg c (hsub hy)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.subset_span` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `e : W.presheaf.germ U' x hxU' (W.presheaf.map (homOfLE hle).op (g c)) = W.presheaf.germ (V c) x hx (g c)` using `by simp`. Rewrite using `[← e]`. Conclude with `Ideal.mem_map_of_mem _ hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idealSheaf_of_locGen {W : Scheme.{0}} {ι' : Type} (V : ι' → W.Opens)
     (hV : ∀ x : W, ∃ c, x ∈ V c) (g : ∀ c, Γ(W, V c))
@@ -154,15 +152,13 @@ theorem exists_idealSheaf_of_locGen {W : Scheme.{0}} {ι' : Type} (V : ι' → W
     exact Ideal.mem_map_of_mem _ hr
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U0, hU0, hxU0, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : IsNoetherianRing Γ(W, U0) := IsLocallyNoetherian.component_noetherian ⟨U0, hU0⟩`. Take `⟨t, ht, hst⟩` from `hG x`. Use `letI := (W.presheaf.germ U0 x hxU0).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := hU0.isLocalization_stalk ⟨x, hxU0⟩`. Establish `hI : (G.ideal ⟨U0, hU0⟩).map (algebraMap Γ(W, U0) (W.presheaf.stalk x)) = Ideal.span {t}`. Rewrite using `[← hst, ds_stalkId_eq_map G ⟨U0, hU0⟩ x hxU0]`. Both sides reduce to the same expression. Take `⟨y, ⟨h, hh, rfl⟩, c, hyc⟩` from `ds_gen_of_span ((algebraMap Γ(W, U0) (W.presheaf.stalk x)) '' (G.ideal ⟨U0, hU0⟩ : Set Γ(W, U0))) t ht hI`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (G.ideal ⟨U0, hU0⟩).map (algebraMap Γ(W, U0) (W.presheaf.stalk x)) = Ideal.span {algebraMap Γ(W, U0) (W.presheaf.stalk x) h}`. Rewrite using `[hI, hyc, Ideal.span_singleton_mul_left_unit c.isUnit]`. Establish `hnzd : algebraMap Γ(W, U0) (W.presheaf.stalk x) h ∈ nonZeroDivisors (W.presheaf.stalk x)`. Rewrite using `[hyc]`. Conclude with `mul_mem c.isUnit.mem_nonZeroDivisors ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, hT⟩` from `ds_spread (hU0.primeIdealOf ⟨x, hxU0⟩).asIdeal _ h hh hmap hnzd`. Use `letI := (W.presheaf.map (homOfLE <| W.basicOpen_le σ).op).hom.toAlgebra`. Use `haveI := hU0.isLocalization_basicOpen σ`. Take `⟨h1, h2⟩` from `hT Γ(W, W.basicOpen σ)`. Use `⟨W.affineBasicOpen (U := ⟨U0, hU0⟩) σ, algebraMap Γ(W, U0) Γ(W, W.basicOpen σ) h, ?_, h2, ?_⟩` and prove the remaining obligations.
-
-Establish `hu` using `(IsLocalization.AtPrime.isUnit_to_map_iff (W.presheaf.stalk x) (hU0.primeIdealOf ⟨x, hxU0⟩).asIdeal σ).2 hσ`. Conclude with `(Scheme.mem_basicOpen W σ x hxU0).2 hu`. Rewrite using `[← G.map_ideal_basicOpen ⟨U0, hU0⟩ σ]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_of_stalkId {W : Scheme.{0}} [IsNoetherian W] (G : W.IdealSheafData)
     (hG : ∀ x : W, ∃ t ∈ nonZeroDivisors (W.presheaf.stalk x), FinalTheorems.stalkId G x = Ideal.span {t}) :
@@ -198,13 +194,11 @@ theorem effCartier_of_stalkId {W : Scheme.{0}} [IsNoetherian W] (G : W.IdealShea
     exact h1
 
 /- English proof (translation)
-Take `⟨U', hU', hxU', -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Establish `hxU : x ∈ (⟨U', hU'⟩ : W.affineOpens).1` using `hxU'`. Use `(Scheme.IdealSheafData.mem_support_iff_of_mem hxU).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.mem_zeroLocus_iff, ds_stalkId_eq_map G _ x hxU]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h htop`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hu⟩ : ∃ f ∈ G.ideal ⟨U', hU'⟩, IsUnit (W.presheaf.germ U' x hxU' f) := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hle : Ideal.map (W.presheaf.germ U' x hxU').hom (G.ideal ⟨U', hU'⟩) ≤ IsLocalRing.maximalIdeal _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (hno f hf)`. Rewrite `hle` using `[htop]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 hle)`.
-
-Conclude with `h f hf ((Scheme.mem_basicOpen _ _ _ _).2 hu)`. Introduce `h f hf hxf`. Apply `h` to reduce the goal to its premises. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hf) ((Scheme.mem_basicOpen _ _ _ hxU).1 hxf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mem_support_iff_stalkId {W : Scheme.{0}} (G : W.IdealSheafData) (x : W) :
     x ∈ (G.support : Set W) ↔ FinalTheorems.stalkId G x ≠ ⊤ := by

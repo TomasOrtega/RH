@@ -13,7 +13,7 @@ namespace GlobalTheory.SecPullIso
 variable {Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Establish `: Z.basicOpen (resG Z h a) = V ⊓ Z.basicOpen a` using `Z.basicOpen_res a (homOfLE h).op`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_bo_res {U V : Z.Opens} (h : V ≤ U) (a : Γ(Z, U)) (x : Z) :
     x ∈ Z.basicOpen (resG Z h a) ↔ x ∈ V ∧ x ∈ Z.basicOpen a := by
@@ -21,7 +21,7 @@ theorem mem_bo_res {U V : Z.Opens} (h : V ≤ U) (a : Γ(Z, U)) (x : Z) :
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `: Y.basicOpen ((f.appLE U V h).hom a) = V ⊓ f ⁻¹ᵁ Z.basicOpen a` using `Scheme.basicOpen_appLE f V U h a`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_bo_appLE (f : Y ⟶ Z) {U : Z.Opens} {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U)
     (a : Γ(Z, U)) (y : Y) :
@@ -31,22 +31,22 @@ theorem mem_bo_appLE (f : Y ⟶ Z) {U : Z.Opens} {V : Y.Opens} (h : V ≤ f ⁻�
   rw [this]; rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.basicOpen_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_bo_mul {U : Z.Opens} (a b : Γ(Z, U)) (x : Z) :
     x ∈ Z.basicOpen (a * b) ↔ x ∈ Z.basicOpen a ∧ x ∈ Z.basicOpen b := by
   rw [Scheme.basicOpen_mul]; rfl
 
 /- English proof (translation)
-Introduce `X X' F L L' w hw hL hL' V θ hθ W hW`. Establish `hP : (L.pull F).IsLB` using `Semi.LB.isLB_pull hL F`. Set `e` to `GlobalTheory.LB.isoOfGen hL' hP w hw`. Set `s0 : Γ(GlobalTheory.LB.toMod (L.pull F), W)` to `(GlobalTheory.LB.toMod (L.pull F)).presheaf.map (homOfLE hW).op (GlobalTheory.LB.pullSec L F V (GlobalTheory.LB.mkSec θ hθ))`. Set `s' : Γ(GlobalTheory.LB.toMod L', W)` to `e.inv.app W s0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : e.hom.app W s' = s0`. Use `congrArg (fun q => q.app W s0) e.inv_hom_id` as an intermediate fact. Conclude with `this`. Use `⟨GlobalTheory.LB.coord s', GlobalTheory.LB.coord_mem s', fun g i j hg hi hj => ?_⟩` and prove the remaining obligations. Establish `hgp : g ∈ (L.pull F).U (fun _ => j)` using `Set.mem_iInter.2 fun _ => hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgO : g ∈ W ⊓ (L.pull F).U (fun _ => j) ⊓ L'.U i` using `⟨⟨hg, hgp⟩, hi⟩`. Establish `key` using `GlobalTheory.LB.coord_isoOfGen_hom_app hL' hP w hw s' (fun _ => j) i (W := W ⊓ (L.pull F).U (fun _ => j) ⊓ L'.U i) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (inf_le_inf_right _ inf_le_right)`. Rewrite `key` using `[hs]`. Establish `hl : g ∈ X'.basicOpen (resG X' (inf_le_left : W ⊓ (L.pull F).U (fun _ => j) ⊓ L'.U i ≤ W ⊓ (L.pull F).U (fun _ => j)) (GlobalTheory.LB.coord s0 (fun _ => j))) ↔ F g ∈ X.basicOpen (θ j)`. Express the relevant statement in the definitionally equal form `g ∈ X'.basicOpen (resG X' _ (resG X' _ ((F.appLE _ _ _).hom (θ j)))) ↔ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_bo_res, mem_bo_res, mem_bo_appLE]`. Conclude with `⟨fun h => h.2.2.2, fun h => ⟨hgO, ⟨hg, hgp⟩, ⟨hW hg, hgp⟩, h⟩⟩`. Rewrite using `[← hl, key, mem_bo_mul, mem_bo_res, mem_bo_res]`. Establish `hu : ∀ u : Γ(X', (L.pull F).U (fun _ => j) ⊓ L'.U i)ˣ, g ∈ X'.basicOpen (u : Γ(X', (L.pull F).U (fun _ => j) ⊓ L'.U i))` using `fun u => by`. Rewrite using `[X'.basicOpen_of_isUnit u.isUnit]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hgp, hi⟩`. Conclude with `⟨fun h => ⟨⟨hgO, hu _⟩, hgO, h⟩, fun h => h.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secOn_pull_of_iso : ∀ (X X' : Scheme.{0}) (F : X' ⟶ X) (L : LB X) (L' : LB X') (w : LB.Iso L' (L.pull F)), w.IsGen → L.IsLB → L'.IsLB →
     ∀ (V : X.Opens) (θ : ∀ j, Γ(X, V ⊓ L.U j)), θ ∈ secOn L V → ∀ (W : X'.Opens), W ≤ F ⁻¹ᵁ V →

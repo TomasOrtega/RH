@@ -6,9 +6,9 @@ open GlobalTheory.SiegelTor
 namespace GlobalTheory.EffCartierData
 
 /- English proof (translation)
-Introduce `X _ D K hK`. Establish `hc : ∀ y : X, ∃ x : X, IsClosed ({x} : Set X) ∧ y ⤳ x` using `fun y => by`. Take `⟨x, hx, hxc⟩` from `(isClosed_closure (s := ({y} : Set X))).exists_closed_singleton ⟨y, subset_closure rfl⟩`. Conclude with `⟨x, hxc, specializes_iff_mem_closure.2 hx⟩`. Use `choose x hxc hyx using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose W i h hxW hmem using fun y => hK (x y) (hxc y)`. Use `Scheme.IdealSheafData.le_of_iSup_eq_top W (eq_top_iff.2 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, (hyx y).mem_open (W y).1.isOpen (hxW y)⟩) fun y => ?_` and prove the remaining obligations. Rewrite using `[D.ideal_idealSheaf (W y) (i y) (h y), Ideal.span_singleton_le_iff_mem]`. Conclude with `hmem y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_le_of_closedPoints : ∀ (X : Scheme.{0}) [CompactSpace X] (D : EffCartierData X)
     (K : X.IdealSheafData), (∀ x : X, IsClosed ({x} : Set X) → ∃ (W : X.affineOpens) (i : D.ι)

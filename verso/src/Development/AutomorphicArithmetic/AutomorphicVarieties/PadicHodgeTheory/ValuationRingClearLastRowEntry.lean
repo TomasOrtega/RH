@@ -19,7 +19,7 @@ variable {ι A C C' : Type} [CommRing A] [CommRing C] [CommRing C'] {M : ι → 
   {d : ι → Fin 3 → A} {S T : Set ι}
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← Matrix.map_apply (f := ψ), Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem conjugate_entry_map (X : Matrix (Fin 3) (Fin 3) A) (φ : A →+* C) (ψ : C →+* C') (h : GL (Fin 3) C) (a b : Fin 3) :
     ((((Matrix.GeneralLinearGroup.map ψ h)⁻¹ : GL (Fin 3) C') : Matrix (Fin 3) (Fin 3) C') * X.map (ψ.comp φ) *
@@ -29,7 +29,7 @@ private theorem conjugate_entry_map (X : Matrix (Fin 3) (Fin 3) A) (φ : A →+*
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g hg a b hab => by rw [conjugate_entry_map, H.1 g hg a b hab, map_zero], fun g hg a => by rw [conjugate_entry_map, H.2 g hg a]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem triangular_form_map {φ : A →+* C} {h : GL (Fin 3) C} (ψ : C →+* C') (H : TriangularForm M d S T φ h) :
     TriangularForm M d S T (ψ.comp φ) (Matrix.GeneralLinearGroup.map ψ h) :=
@@ -37,7 +37,7 @@ private theorem triangular_form_map {φ : A →+* C} {h : GL (Fin 3) C} (ψ : C 
     fun g hg a => by rw [conjugate_entry_map, H.2 g hg a]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g hg a b hab => hψ (by rw [← conjugate_entry_map, H.1 g hg a b hab, map_zero]), fun g hg a => hψ (by rw [← conjugate_entry_map, H.2 g hg a]; rfl)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem triangular_form_of_injective_map {φ : A →+* C} {h : GL (Fin 3) C} (ψ : C →+* C') (hψ : Function.Injective ψ)
     (H : TriangularForm M d S T (ψ.comp φ) (Matrix.GeneralLinearGroup.map ψ h)) : TriangularForm M d S T φ h :=
@@ -45,7 +45,7 @@ private theorem triangular_form_of_injective_map {φ : A →+* C} {h : GL (Fin 3
     fun g hg a => hψ (by rw [← conjugate_entry_map, H.2 g hg a]; rfl)⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[hX h, zero_mul]`. Rewrite using `[hY h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -59,11 +59,11 @@ private theorem triangular_mul_diag {X Y : Matrix (Fin 3) (Fin 3) C} (hX : X.Blo
   · simp
 
 /- English proof (translation)
-Take `⟨b, hb⟩ : ∃ b, b = k * h` from `⟨_, rfl⟩`. Rewrite `hk` using `[← hb]`. Take `rfl : k = b * h⁻¹` from `by rw [hb, mul_inv_cancel_right]`. Establish `hi : ((b⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C).BlockTriangular id`. Rewrite using `[Matrix.coe_units_inv]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := b.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hk`. Establish `e : ∀ X : Matrix (Fin 3) (Fin 3) C, (((b * h⁻¹)⁻¹⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * X * ((b * h⁻¹)⁻¹ : GL (Fin 3) C) = b * (((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * X * h) * (b⁻¹ : GL (Fin 3) C)` using `fun X => by`. Simplify using `only [inv_inv, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`. Establish `hU : ∀ g ∈ S, (((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * (M g).map φ * h).BlockTriangular id` using `fun g hg a b hab => H.1 g hg a b hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g hg a c hac => ?_, fun g hg a => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `((hk.mul (hU g hg)).mul hi) hac`. Rewrite using `[e, triangular_mul_diag (hk.mul (hU g (hT hg))) hi, triangular_mul_diag hk (hU g (hT hg)), H.2 g hg a, mul_right_comm, ← triangular_mul_diag hk hi, Units.mul_inv, Matrix.one_apply_eq, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem triangular_form_borel_change {φ : A →+* C} {h : GL (Fin 3) C} (hT : T ⊆ S) (H : TriangularForm M d S T φ h) (k : GL (Fin 3) C)
     (hk : ((k * h : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C).BlockTriangular id) : TriangularForm M d S T φ k⁻¹ := by
@@ -89,9 +89,9 @@ private theorem triangular_form_borel_change {φ : A →+* C} {h : GL (Fin 3) C}
 end
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Conclude with `⟨0, -1, 1, 0, by simp, by simp [ha]⟩`. Distinguish the cases in `hb : b = 0`. Conclude with `⟨1, 0, 0, 1, by simp, by simp [hb]⟩`. Break down `V.mem_or_inv_mem (b / a) with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨1, 0, -⟨_, h⟩, 1, by simp, by simp [ha]⟩`. Conclude with `⟨0, -1, 1, -⟨_, h⟩, by simp, by simp [hb]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem exists_sl2_valuation_kill {F : Type} [Field F] (V : ValuationSubring F) (a b : F) :
     ∃ x y z w : V, x * w - y * z = 1 ∧ (z : F) * a + w * b = 0 := by
@@ -104,9 +104,9 @@ private theorem exists_sl2_valuation_kill {F : Type} [Field F] (V : ValuationSub
   · exact ⟨0, -1, 1, -⟨_, h⟩, by simp, by simp [hb]⟩
 
 /- English proof (translation)
-Take `⟨x, y, z, w, h1, h2⟩` from `exists_sl2_valuation_kill V (Y 1 c) (Y 2 c)`. Use `⟨!![1, 0, 0; 0, x, y; 0, z, w], ?_, ?_, fun e1 e2 => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify `h1` using `[Matrix.det_fin_three]`. Simplify `h2` using `[Matrix.mul_apply, Fin.sum_univ_three]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, e1, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, e1, e2]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valuation_ring_clear_last_row_entry {F : Type} [Field F] (V : ValuationSubring F) (Y : Matrix (Fin 3) (Fin 3) F) (c : Fin 3) :
     ∃ k : Matrix (Fin 3) (Fin 3) V, k.det = 1 ∧ (k.map V.subtype * Y) 2 c = 0 ∧
@@ -119,7 +119,7 @@ private theorem valuation_ring_clear_last_row_entry {F : Type} [Field F] (V : Va
   · simp [Matrix.mul_apply, Fin.sum_univ_three, e1, e2]
 
 /- English proof (translation)
-Take `⟨x, y, z, w, h1, h2⟩` from `exists_sl2_valuation_kill V (Y 0 0) (Y 1 0)`. Use `⟨!![x, y, 0; z, w, 0; 0, 0, 1], ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Matrix.det_fin_three]`. Simplify `h2` using `[Matrix.mul_apply, Fin.sum_univ_three]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 private theorem valuation_ring_clear_first_column {F : Type} [Field F] (V : ValuationSubring F) (Y : Matrix (Fin 3) (Fin 3) F) :
     ∃ k : Matrix (Fin 3) (Fin 3) V, k.det = 1 ∧ (k.map V.subtype * Y) 1 0 = 0 ∧
@@ -131,7 +131,7 @@ private theorem valuation_ring_clear_first_column {F : Type} [Field F] (V : Valu
   · simp [Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem upper_triangular_of_entries_zero {F : Type} [Field F] {Z : Matrix (Fin 3) (Fin 3) F} (h1 : Z 1 0 = 0) (h2 : Z 2 0 = 0)
     (h3 : Z 2 1 = 0) : Z.BlockTriangular id := by
@@ -139,9 +139,9 @@ private theorem upper_triangular_of_entries_zero {F : Type} [Field F] {Z : Matri
   fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | simpa
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨k1, d1, a1, -⟩ := valuation_ring_clear_last_row_entry V X 0`. Take `⟨k2, d2, a2, b2⟩` from `valuation_ring_clear_first_column V (k1.map V.subtype * X)`. Apply the tactic sequence `obtain ⟨k3, d3, a3, b3⟩ := valuation_ring_clear_last_row_entry V (k2.map V.subtype * (k1.map V.subtype * X)) 1`. Take `⟨b3, c3⟩` from `b3 a2 (b2.trans a1)`. Take `⟨k, hk⟩` from `(Matrix.isUnit_iff_isUnit_det (k3 * (k2 * k1))).2 (by rw [Matrix.det_mul, Matrix.det_mul, d1, d2, d3, one_mul, one_mul]; exact isUnit_one)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, Matrix.map_mul, Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_assoc]`. Conclude with `upper_triangular_of_entries_zero b3 c3 a3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwasawa_triangularization {F : Type} [Field F] (V : ValuationSubring F) (X : Matrix (Fin 3) (Fin 3) F) :
     ∃ k : GL (Fin 3) V, ((k : Matrix (Fin 3) (Fin 3) V).map V.subtype * X).BlockTriangular id := by
@@ -156,9 +156,9 @@ private theorem iwasawa_triangularization {F : Type} [Field F] (V : ValuationSub
   exact upper_triangular_of_entries_zero b3 c3 a3
 
 /- English proof (translation)
-Use `letI : Algebra (A ⧸ RingHom.ker f) K := (RingHom.kerLift f).toAlgebra`. Use `letI : Algebra (A ⧸ RingHom.ker f) L := (Ideal.Quotient.lift _ g fun a ha => by rwa [h] at ha).toAlgebra`. Establish `h2 : Function.Injective (algebraMap (A ⧸ RingHom.ker f) L)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, h]`. Conclude with `ha`. Use `⟨TensorProduct (A ⧸ RingHom.ker f) K L, inferInstance, Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain _ _ _ (RingHom.kerLift_injective f) h2, (Algebra.TensorProduct.includeLeft (S := A ⧸ RingHom.ker f)).toRingHom, Algebra.TensorProduct.includeRight.toRingHom …` and prove the remaining obligations. Conclude with `((Algebra.TensorProduct.includeLeft (S := A ⧸ RingHom.ker f) (A := K) (B := L)).commutes (Ideal.Quotient.mk _ a)).trans ((Algebra.TensorProduct.includeRight (A := K) (B := L)).commutes (Ideal.Quotient.mk _ a)).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_common_ring_same_kernel {A K L : Type} [CommRing A] [Field K] [Field L] (f : A →+* K) (g : A →+* L)
     (h : RingHom.ker f = RingHom.ker g) :
@@ -180,13 +180,11 @@ private theorem exists_common_ring_same_kernel {A K L : Type} [CommRing A] [Fiel
     ((Algebra.TensorProduct.includeRight (A := K) (B := L)).commutes (Ideal.Quotient.mk _ a)).symm
 
 /- English proof (translation)
-Use `letI := i.toAlgebra`. Set `s : Set B` to `Set.range (fun p : Fin 3 × Fin 3 => (h : Matrix (Fin 3) (Fin 3) B) p.1 p.2) ∪ Set.range (fun p : Fin 3 × Fin 3 => ((h⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B) p.1 p.2)`. Establish `hs : s.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Set `B₀` to `Algebra.adjoin K s`. Use `haveI : Algebra.FiniteType K B₀ := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨s, hs, rfl⟩)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `X : Matrix (Fin 3) (Fin 3) B₀` to `fun a b => ⟨_, Algebra.subset_adjoin (Or.inl ⟨(a, b), rfl⟩)⟩`. Set `Y : Matrix (Fin 3) (Fin 3) B₀` to `fun a b => ⟨_, Algebra.subset_adjoin (Or.inr ⟨(a, b), rfl⟩)⟩`. Establish `hXY : X * Y = 1`. Apply `Matrix.map_injective (f := B₀.val.toRingHom) Subtype.val_injective` to reduce the goal to its premises. Use `show (X * Y).map B₀.val.toRingHom = (1 : Matrix (Fin 3) (Fin 3) B₀).map B₀.val.toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h.mul_inv`. Set `h₀ : GL (Fin 3) B₀` to `⟨X, Y, hXY, mul_eq_one_comm.1 hXY⟩`. Establish `H0 : TriangularForm M d S T ((algebraMap K B₀).comp f) h₀` using `triangular_form_of_injective_map B₀.val.toRingHom Subtype.val_injective H`. Take `⟨m, hm⟩` from `Ideal.exists_maximal B₀`.
-
-Use `letI := Ideal.Quotient.field m`. Conclude with `⟨B₀ ⧸ m, inferInstance, inferInstance, finite_of_finite_type_of_isJacobsonRing K (B₀ ⧸ m), _, triangular_form_map (Ideal.Quotient.mk m) H0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem triangular_form_finite_extension {ι A K B : Type} [CommRing A] [Field K] [CommRing B] [Nontrivial B]
     {M : ι → Matrix (Fin 3) (Fin 3) A} {d : ι → Fin 3 → A} {S T : Set ι} (f : A →+* K) (i : K →+* B)
@@ -216,13 +214,13 @@ private theorem triangular_form_finite_extension {ι A K B : Type} [CommRing A] 
     triangular_form_map (Ideal.Quotient.mk m) H0⟩
 
 /- English proof (translation)
-Use `haveI := RingHom.ker_isPrime f`. Establish `hu : ∀ y : (RingHom.ker f).primeCompl, IsUnit (φ y)` using `fun y => Ne.isUnit fun e => y.2 (hf e)`. Take `⟨V, hV, hl⟩` from `IsLocalRing.exists_factor_valuationRing (IsLocalization.lift (S := Localization.AtPrime (RingHom.ker f)) hu)`. Set `g₀ : Localization.AtPrime (RingHom.ker f) →+* V` to `(IsLocalization.lift hu).codRestrict V.toSubring hV`. Use `haveI : IsLocalHom g₀ := hl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : A →+* V` to `g₀.comp (algebraMap _ _)`. Establish `hg : V.subtype.comp g = φ` using `RingHom.ext fun a => IsLocalization.lift_eq hu a`. Establish `hk : RingHom.ker f = RingHom.ker ((residue V).comp g)`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker (f := (residue V).comp g), RingHom.comp_apply, residue_eq_zero_iff, ← IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime (RingHom.ker f)) (RingHom.ker f) a, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(isUnit_map_iff g₀ _).not.symm`. Take `⟨k, hk'⟩` from `iwasawa_triangularization V h`. Establish `H1` using `triangular_form_borel_change hT H (Matrix.GeneralLinearGroup.map V.subtype k) hk'`. Rewrite `H1` using `[← map_inv, ← hg]`. Establish `H2` using `triangular_form_map (residue V) (triangular_form_of_injective_map V.subtype Subtype.val_injective H1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨B, _, _, i, j, e⟩` from `exists_common_ring_same_kernel f _ hk`. Establish `H3` using `triangular_form_map j H2`. Rewrite `H3` using `[← e]`. Conclude with `triangular_form_finite_extension f i _ H3`.
+A detailed English derivation is pending.
 -/
 private theorem triangular_form_specialization {ι A F K : Type} [CommRing A] [Field F] [Field K]
     {M : ι → Matrix (Fin 3) (Fin 3) A} {d : ι → Fin 3 → A} {S T : Set ι} (hT : T ⊆ S) (φ : A →+* F) (f : A →+* K)
@@ -253,13 +251,13 @@ private theorem triangular_form_specialization {ι A F K : Type} [CommRing A] [F
   exact triangular_form_finite_extension f i _ H3
 
 /- English proof (translation)
-Establish `e : ∀ g, η g = 1 → (conjBy h⁻¹ (push φ u) g).mat = ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * (u g).mat.map (φ : A →+* C) * h`. Introduce `g hg`. Establish `h1 : (push φ u g).right = 1` using `(hu g).trans hg`. Establish `h2 : (push φ u g).left.val = (u g).mat.map (φ : A →+* C)` using `rfl`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[conjBy, GG.mat, h1]`. Establish `hw : ∀ a b : Fin 3, wt a b < 0 ↔ b < a` using `by decide`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun g hg a b hab => ?_, fun g hg a => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e g hg]`. Conclude with `h1 g hg a b ((hw a b).2 hab)`. Rewrite using `[← e g hg.2, h2 g hg.1 hg.2 a]`. Conclude with `(φ.commutes _).symm`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g hg a b hab => ?_, fun g hg hg' a => ?_⟩` and prove the remaining obligations. Rewrite using `[e g hg]`. Conclude with `h1 g hg a b ((hw a b).1 hab)`. Rewrite using `[e g hg', h2 g ⟨hg, hg'⟩ a]`. Conclude with `φ.commutes _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem triangular_in_iff_triangular_form {O A C D : Type} [CommRing O] [CommRing A] [CommRing C] [Algebra O A] [Algebra O C] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (u : D →* GG 3 A) (hu : HasMult η u) (φ : A →ₐ[O] C)
@@ -291,15 +289,13 @@ private theorem triangular_in_iff_triangular_form {O A C D : Type} [CommRing O] 
 end UpperTheory.V.Loc
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U K _ _ r ⟨f, hr, hf⟩`. Take `⟨-, hp, hl, -⟩` from `UpperTheory.V.Loc.rtBasic hP D U`. Use `haveI : IsDomain (D.Rt U) := Ideal.Quotient.isDomain _`. Set `φ : U.R →ₐ[O] FractionRing (D.Rt U)` to `(IsScalarTower.toAlgHom O (D.Rt U) (FractionRing (D.Rt U))).comp (Ideal.Quotient.mkₐ O _)`. Establish `hφ : RingHom.ker φ = D.It U`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `map_eq_zero_iff _ (IsFractionRing.injective (D.Rt U) (FractionRing (D.Rt U)))`. Establish `hl0 : ((l : ℕ) : FractionRing (D.Rt U)) ≠ 0` using `fun e => hl (by rw [← hφ, RingHom.mem_ker, map_natCast, e])`. Use `haveI : CharZero (FractionRing (D.Rt U)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1 : (n : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 h0`. Establish `h2` using `congrArg ((algebraMap O (FractionRing (D.Rt U))).comp (algebraMap ℤ_[l] O)) (PadicInt.unitCoeff_spec h1)`. Rewrite `h2` using `[map_natCast, hn, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero ((Units.isUnit _).map _).ne_zero (pow_ne_zero _ hl0) h2.symm`. Take `⟨⟨h, H⟩, -⟩` from `UpperTheory.V.Loc.lemma2b hP D U _ (push φ U.r.hom) ⟨φ, rfl, hφ.ge⟩`. Rewrite `H` using `[UpperTheory.V.Loc.triangular_in_iff_triangular_form _ _ _ _ U.r.hasMult]`. Take `⟨K', _, _, _, h', H'⟩` from `UpperTheory.V.Loc.triangular_form_specialization (fun g hg => hg.2) _ (f : U.R →+* K) (hφ.le.trans hf) h H`. Use `letI : Algebra O K' := ((algebraMap K K').comp (algebraMap O K)).toAlgebra`.
-
-Use `haveI : IsScalarTower O K K' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨K', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h', ?_⟩` and prove the remaining obligations. Substitute `hr` using the available equality. Conclude with `(UpperTheory.V.Loc.triangular_in_iff_triangular_form _ _ _ _ U.r.hasMult ((IsScalarTower.toAlgHom O K K').comp f) h').2 H'`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.lemma2c :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (K : Type) [Field K] [Algebra O K] (r : GQ l →* GG 3 K), D.On U r → ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : Algebra O K') (_ : IsScalarTower O K K') (_ : FiniteDimensional K K') (h : GL (Fin 3) K'), UpperTheory.V.UnitaryThreeInertia.TriIn D.η D.Ψ (Iq l) ((GG.map (algebraMap K K')).comp r) h := by

@@ -93,32 +93,32 @@ def weylPar (π : Equiv.Perm (Fin k)) (ε : Fin k → SignTypeˣ) : Finset (SV k
 def Regular (c : ℝ) (T : A0 k) : Prop := (∀ i j, i < j → c ≤ T i - T j) ∧ ∀ i, c ≤ T i
 
 /- English proof (translation)
-Simplify using `[parF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_parF {𝔞 : Submodule ℝ (A0 k)} {R Q : Finset (SV k)} : Q ∈ parF 𝔞 R ↔ IsPar Q ∧ aP Q ≤ 𝔞 ∧ R ⊆ Q := by
   simp [parF]
 
 /- English proof (translation)
-Simplify using `[parP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_parP {𝔞 : Submodule ℝ (A0 k)} {R P : Finset (SV k)} : P ∈ parP 𝔞 R ↔ IsPar P ∧ aP P = 𝔞 ∧ R ⊆ P := by
   simp [parP]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h0 => h.1 (e h0), fun u hu u' hu' => h.2 u (e hu) u' (e hu')⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPar.mono {P Q : Finset (SV k)} (h : IsPar P) (e : Q ⊆ P) : IsPar Q :=
   ⟨fun h0 => h.1 (e h0), fun u hu u' hu' => h.2 u (e hu) u' (e hu')⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono e)`.
+A detailed English derivation is pending.
 -/
 theorem vecSpan_mono {P Q : Finset (SV k)} (e : Q ⊆ P) : aP Q ≤ aP P := Submodule.span_mono (Set.image_mono e)
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun u hu u' hu' => ?_⟩` and prove the remaining obligations. Take `⟨j, -, e⟩` from `mem_image.1 h`. Simplify `congrFun e j` using `[stdVec]`. Take `⟨j, -, rfl⟩` from `mem_image.1 hu`. Take `⟨j', -, rfl⟩` from `mem_image.1 hu'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ a b : Fin k, a ≤ b → Below (stdVec a) (stdVec b)` using `fun a b h i hi => by`. Establish `: i ≤ a` using `by by_contra e; exact hi (if_neg e)`. Simplify using `[stdVec, this, this.trans h]`. Conclude with `(le_total j j').imp (key _ _) (key _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPar_stdPar (J : Finset (Fin k)) : IsPar (stdPar J) := by
   refine ⟨fun h => ?_, fun u hu u' hu' => ?_⟩
@@ -132,9 +132,9 @@ theorem isPar_stdPar (J : Finset (Fin k)) : IsPar (stdPar J) := by
     exact (le_total j j').imp (key _ _) (key _ _)
 
 /- English proof (translation)
-Proceed by induction on `hA using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, mem_singleton_self a, fun b hb => (mem_singleton.1 hb).symm ▸ or_self_iff.1 (h a (by simp) a (by simp))⟩`. Consider the case `cons a s ha hs ih`. Take `⟨b, hb, hb'⟩` from `ih fun x hx y hy => h x (mem_cons_of_mem hx) y (mem_cons_of_mem hy)`. Break down `h a (mem_cons_self _ _) b (mem_cons_of_mem hb) with e | e` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨b, mem_cons_of_mem hb, fun c hc => (mem_cons.1 hc).elim (· ▸ e) (hb' c)⟩`. Conclude with `⟨a, mem_cons_self _ _, fun c hc => (mem_cons.1 hc).elim (·.symm ▸ or_self_iff.1 (h a (mem_cons_self _ _) a (mem_cons_self _ _))) fun hc => ht _ _ _ (hb' c hc) e⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_top {α : Type} {r : α → α → Prop} (ht : ∀ a b c, r a b → r b c → r a c) (A : Finset α) (hA : A.Nonempty)
     (h : ∀ a ∈ A, ∀ b ∈ A, r a b ∨ r b a) : ∃ a ∈ A, ∀ b ∈ A, r b a := by
@@ -148,21 +148,17 @@ theorem exists_top {α : Type} {r : α → α → Prop} (ht : ∀ a b c, r a b �
         (·.symm ▸ or_self_iff.1 (h a (mem_cons_self _ _) a (mem_cons_self _ _))) fun hc => ht _ _ _ (hb' c hc) e⟩
 
 /- English proof (translation)
-Take `⟨a, ha, hA⟩` from `exists_top (r := Below) (fun a b c h h' i hi => (h' i (h i hi ▸ hi)).trans (h i hi)) (insert 0 ((P.erase u).filter (Below · u))) (insert_nonempty _ _) fun a ha b hb => by`. Break down `mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `.inl fun i hi => (hi rfl).elim`. Break down `mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `.inr fun i hi => (hi rfl).elim`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `h.2 a (mem_of_mem_erase (mem_filter.1 ha).1) b (mem_of_mem_erase (mem_filter.1 hb).1)`. Establish `key : ∀ a b : SV k, Below a b → a ≠ b → ∃ i, b i ≠ 0 ∧ a i = 0` using `fun a b hab hne => by by_contra! hn`. Conclude with `hne (funext fun i => by`. Distinguish the cases in `e : b i = 0`. Assume the negation of the conclusion as `e'`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `e' ((hab i (e ▸ e')).symm)`. Conclude with `(hab i (hn i e)).symm)`. Take `⟨i, hi, hai⟩` from `key a u (by`. Break down `mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `fun i hi => (hi rfl).elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(mem_filter.1 ha).2) (by`. Break down `mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `fun e => h.1 (e ▸ hu)`. Conclude with `ne_of_mem_erase (mem_filter.1 ha).1)`. Establish `h1 : ∀ b ∈ P.erase u, Below b u → b i = 0` using `fun b hb hbu => by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Assume the negation of the conclusion as `e`. Conclude with `e ((hA b (mem_insert_of_mem (mem_filter.2 ⟨hb, hbu⟩)) i e).symm.trans hai)`. Establish `fin : ∀ φ : A0 k →ₗ[ℝ] ℝ, φ (vec u) ≠ 0 → (∀ b ∈ P.erase u, φ (vec b) = 0) → vec u ∉ aP (P.erase u)` using `fun φ h0 hb hm => h0 ((Submodule.span_le (p := LinearMap.ker φ)).2 (by rintro _ ⟨b, hb', rfl⟩; exact hb b hb') hm)`. Apply the tactic sequence `have sq : ∀ s : SignType, s ≠ 0 → (s : ℝ) * s = 1 := fun s hs => by cases s <;> simp_all`. Distinguish the cases in `hB : ((P.erase u).filter (Below u ·)).Nonempty`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨b, hb, hB⟩` from `exists_top (r := fun a b => Below b a) (fun a b c h h' i hi => (h i (h' i hi ▸ hi)).trans (h' i hi)) _ hB fun a ha b hb => h.2 b (mem_of_mem_erase (mem_filter.1 hb).1) a (mem_of_mem_erase (mem_filter.1 ha).1)`. Take `⟨j, hj, huj⟩` from `key u b (mem_filter.1 hb).2 (ne_of_mem_erase (mem_filter.1 hb).1).symm`. Use `fin ((u i : ℝ) • EuclideanSpace.projₗ i - (b j : ℝ) • EuclideanSpace.projₗ j) (by simp [vec, huj, sq _ hi]) fun c hc => ?_` and prove the remaining obligations. Break down `h.2 c (mem_of_mem_erase hc) u hu with e | e` into its components or cases. Establish `: c j = 0` using `by by_contra e'; exact e' ((e j e').symm.trans huj)`.
-
-Simplify using `[vec, h1 c hc e, this]`. Simplify using `[vec, e i hi, hB c (mem_filter.2 ⟨hc, e⟩) j hj, sq _ hi, sq _ hj]`. Use `fin (EuclideanSpace.projₗ i) (left_ne_zero_of_mul ((sq _ hi).trans_ne one_ne_zero)) fun c hc => ?_` and prove the remaining obligations. Break down `h.2 c (mem_of_mem_erase hc) u hu with e | e` into its components or cases. Simplify using `[vec, h1 c hc e]`.
-
-Conclude with `(hB ⟨c, mem_filter.2 ⟨hc, e⟩⟩).elim`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsPar.vec_notMem {P : Finset (SV k)} (h : IsPar P) {u : SV k} (hu : u ∈ P) : vec u ∉ aP (P.erase u) := by
   obtain ⟨a, ha, hA⟩ := exists_top (r := Below) (fun a b c h h' i hi => (h' i (h i hi ▸ hi)).trans (h i hi))
@@ -207,16 +203,16 @@ theorem IsPar.vec_notMem {P : Finset (SV k)} (h : IsPar P) {u : SV k} (hu : u �
     · exact (hB ⟨c, mem_filter.2 ⟨hc, e⟩⟩).elim
 
 /- English proof (translation)
-Introduce `h0` and use `h.vec_notMem (mem_sdiff.1 hu).1 (vecSpan_mono (fun v hv => mem_erase.2 ⟨fun (e' : v = u) => (mem_sdiff.1 hu).2 (e' ▸ hv), e hv⟩) (sub_eq_zero.1 h0 ▸ Submodule.starProjection_apply_mem _ _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPar.wt_ne_zero {P Q : Finset (SV k)} (h : IsPar P) (e : Q ⊆ P) {u : SV k} (hu : u ∈ P \ Q) : wt Q u ≠ 0 :=
   fun h0 => h.vec_notMem (mem_sdiff.1 hu).1 (vecSpan_mono (fun v hv => mem_erase.2
     ⟨fun (e' : v = u) => (mem_sdiff.1 hu).2 (e' ▸ hv), e hv⟩) (sub_eq_zero.1 h0 ▸ Submodule.starProjection_apply_mem _ _))
 
 /- English proof (translation)
-Establish `e : generic k = ⋂ x : {x : Finset (SV k) × Finset (SV k) × SV k // IsPar x.1 ∧ x.2.1 ⊆ x.1 ∧ x.2.2 ∈ x.1 \ x.2.1}, ((Submodule.span ℝ {wt x.1.2.1 x.1.2.2})ᗮ : Set (A0 k))ᶜ`. Use extensionality with `l`. Simplify using `only [generic, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_compl_iff, SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_left]`. Conclude with `⟨fun h x => h _ x.2.1 _ x.2.2.1 _ x.2.2.2, fun h P hP Q hQ u hu => h ⟨(P, Q, u), hP, hQ, hu⟩⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `dense_iInter_of_isOpen (fun x => (Submodule.isClosed_orthogonal _).isOpen_compl) fun x => ?_` and prove the remaining obligations. Rewrite using `[← interior_eq_empty_iff_dense_compl, ← Set.not_nonempty_iff_eq_empty]`. Introduce `h`. Use `(Submodule.orthogonal_eq_top_iff _).1 (Submodule.eq_top_of_nonempty_interior' _ h)` as an intermediate fact. Conclude with `x.2.1.wt_ne_zero x.2.2.1 x.2.2.2 (Submodule.span_singleton_eq_bot.1 this)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dense_generic : Dense (generic k) := by
   have e : generic k = ⋂ x : {x : Finset (SV k) × Finset (SV k) × SV k // IsPar x.1 ∧ x.2.1 ⊆ x.1 ∧ x.2.2 ∈ x.1 \ x.2.1},
@@ -233,23 +229,23 @@ theorem dense_generic : Dense (generic k) := by
   exact x.2.1.wt_ne_zero x.2.2.1 x.2.2.2 (Submodule.span_singleton_eq_bot.1 this)
 
 /- English proof (translation)
-Introduce `P hP` and use `h P (mem_parF.2 ⟨(mem_parF.1 hP).1, (mem_parF.1 hP).2.1.trans e, empty_subset _⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsOrth.mono {𝔞 𝔟 : Submodule ℝ (A0 k)} {X : Finset (SV k) → A0 k} (h : IsOrth 𝔞 X) (e : 𝔟 ≤ 𝔞) : IsOrth 𝔟 X :=
   fun P hP => h P (mem_parF.2 ⟨(mem_parF.1 hP).1, (mem_parF.1 hP).2.1.trans e, empty_subset _⟩)
 
 /- English proof (translation)
-Introduce `P hP Q e` and use `by rw [Pi.sub_apply, Pi.sub_apply, map_sub, ← h P hP Q e, ← h' P hP Q e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsOrth.sub {𝔞 : Submodule ℝ (A0 k)} {X Y : Finset (SV k) → A0 k} (h : IsOrth 𝔞 X) (h' : IsOrth 𝔞 Y) :
     IsOrth 𝔞 (X - Y) := fun P hP Q e => by rw [Pi.sub_apply, Pi.sub_apply, map_sub, ← h P hP Q e, ← h' P hP Q e]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `mem_parP.1 hP`. Take `⟨h1', h2', -⟩` from `mem_parP.1 hP'`. Establish `hF` using `mem_parF.2 ⟨h1, h2.le, empty_subset P⟩`. Establish `hF'` using `mem_parF.2 ⟨h1', h2'.le, empty_subset P'⟩`. Establish `hm : X P - X P' ∈ aP P` using `sub_mem (h P hF P subset_rfl ▸ Submodule.starProjection_apply_mem _ _) (h2 ▸ h2' ▸ h P' hF' P' subset_rfl ▸ Submodule.starProjection_apply_mem _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : pr (P.erase u) (X P - X P') = 0` using `by rw [map_sub, ← h P hF _ (erase_subset _ _), ← h P' hF' _ e, sub_self]`. Rewrite `hm` using `[aP, ← insert_erase hu, coe_insert, Set.image_insert_eq, Submodule.mem_span_insert, insert_erase hu]`. Take `⟨c, y, hy, e⟩` from `hm`. Use `Submodule.mem_span_singleton.2 ⟨c, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[e, map_add, map_smul, show pr (P.erase u) y = y from Submodule.starProjection_eq_self_iff.2 hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, rt, wt, smul_sub, sub_eq_add_neg, neg_eq_of_add_eq_zero_right h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsOrth.sub_mem_span {𝔞 : Submodule ℝ (A0 k)} {X : Finset (SV k) → A0 k} (h : IsOrth 𝔞 X) {P P' : Finset (SV k)}
     (hP : P ∈ parP 𝔞 ∅) (hP' : P' ∈ parP 𝔞 ∅) {u : SV k} (hu : u ∈ P) (e : P.erase u ⊆ P') :
@@ -268,7 +264,7 @@ theorem IsOrth.sub_mem_span {𝔞 : Submodule ℝ (A0 k)} {X : Finset (SV k) →
   rw [e, rt, wt, smul_sub, sub_eq_add_neg, neg_eq_of_add_eq_zero_right h0]
 
 /- English proof (translation)
-Introduce `P hP` and use `⟨Complex.contDiff_exp.comp (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const))), fun Q e l => by simp only [expFam, eL, h P hP Q e, pr, Submodule.inner_starProjection_left_eq_right]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsOrth.isGMFam {𝔞 : Submodule ℝ (A0 k)} {X : Finset (SV k) → A0 k} (h : IsOrth 𝔞 X) : IsGMFam 𝔞 (expFam X) :=
   fun P hP => ⟨Complex.contDiff_exp.comp (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp
@@ -276,14 +272,14 @@ theorem IsOrth.isGMFam {𝔞 : Submodule ℝ (A0 k)} {X : Finset (SV k) → A0 k
       simp only [expFam, eL, h P hP Q e, pr, Submodule.inner_starProjection_left_eq_right]⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `⟨(h P hP).1.mul (h' P hP).1, fun Q e l => congrArg₂ (· * ·) ((h P hP).2 Q e l) ((h' P hP).2 Q e l)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsGMFam.mul {𝔞 : Submodule ℝ (A0 k)} {c d : Finset (SV k) → A0 k → ℂ} (h : IsGMFam 𝔞 c) (h' : IsGMFam 𝔞 d) :
     IsGMFam 𝔞 (c * d) := fun P hP =>
   ⟨(h P hP).1.mul (h' P hP).1, fun Q e l => congrArg₂ (· * ·) ((h P hP).2 Q e l) ((h' P hP).2 Q e l)⟩
 
 /- English proof (translation)
-Establish `h : ∀ b : SV k → A0 k, epsOf (∅ \ ∅) b l = 1` using `fun b => by`. Establish `: IsEmpty ↥((∅ : Finset (SV k)) \ ∅)` using `⟨fun x => by simpa using x.2⟩`. Rewrite using `[epsOf, Matrix.det_isEmpty]`. Simplify using the standard rewrite rules. Simplify using `only [sumP, between, powerset_empty, filter_singleton, Subset.refl, if_true, sum_singleton, eps, epsHat, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -295,9 +291,9 @@ example (c : Finset (SV k) → A0 k → ℂ) (l : A0 k) : sumP ∅ ∅ c l = c �
   simp
 
 /- English proof (translation)
-Establish `: parF (⊥ : Submodule ℝ (A0 k)) ∅ = {∅}`. Use extensionality with `Q`. Rewrite using `[mem_parF, mem_singleton]`. Use `⟨fun h => eq_empty_of_forall_notMem fun u hu => h.1.vec_notMem hu ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot ℝ).1 (h.2.1 (Submodule.subset_span ⟨u, hu, rfl⟩))]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Substitute `e` using the available equality. Simplify using `[IsPar, aP]`. Simplify using `[gamM, this, tauHat]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (X : Finset (SV k) → A0 k) (H : A0 k) : gamM ⊥ ∅ X H = 1 := by
   have : parF (⊥ : Submodule ℝ (A0 k)) ∅ = {∅} := by

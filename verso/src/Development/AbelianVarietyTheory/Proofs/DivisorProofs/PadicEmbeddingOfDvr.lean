@@ -15,9 +15,9 @@ section Dvr
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Establish `h1 : (IsDiscreteValuationRing.maximalIdeal V).intValuation ϖ = WithZero.exp (-1 : ℤ)` using `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal V).intValuation (u : V) = 1`. Rewrite using `[HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Unfold `vV valV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the relevant objects with their definitions.
 
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, map_mul, map_pow, h1, h2, one_mul, ← WithZero.exp_nsmul, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vV_unit_mul_pow {ϖ : V} (hϖ : Irreducible ϖ) (u : Vˣ) (k : ℕ) :
     vV V (algebraMap V (FractionRing V) (u * ϖ ^ k)) = k := by
@@ -34,9 +34,9 @@ theorem vV_unit_mul_pow {ϖ : V} (hϖ : Irreducible ϖ) (u : Vˣ) (k : ℕ) :
 variable {C : Type} [NormedField C] (eF : FractionRing V →+* C)
 
 /- English proof (translation)
-Establish `h : ‖eF (algebraMap V _ (u : V))‖ * ‖eF (algebraMap V _ ((u⁻¹ : Vˣ) : V))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Establish `a` using `h1 u`. Establish `b` using `h1 ((u⁻¹ : Vˣ) : V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (eF (algebraMap V _ (u : V))), norm_nonneg (eF (algebraMap V _ ((u⁻¹ : Vˣ) : V)))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_unit (h1 : ∀ a : V, ‖eF (algebraMap V _ a)‖ ≤ 1) (u : Vˣ) :
     ‖eF (algebraMap V _ (u : V))‖ = 1 := by
@@ -47,15 +47,15 @@ theorem norm_unit (h1 : ∀ a : V, ‖eF (algebraMap V _ a)‖ ≤ 1) (u : Vˣ) 
   nlinarith [norm_nonneg (eF (algebraMap V _ (u : V))), norm_nonneg (eF (algebraMap V _ ((u⁻¹ : Vˣ) : V)))]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective V _`. Establish `hc0 : ‖eF (algebraMap V _ ϖ)‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff, map_ne_zero, Ne, ← map_zero (algebraMap V (FractionRing V)), hinj.eq_iff]`. Conclude with `hϖ.ne_zero`. Establish `key : ∀ a : V, a ≠ 0 → ‖eF (algebraMap V _ a)‖ = ‖eF (algebraMap V _ ϖ)‖ ^ (vV V (algebraMap V (FractionRing V) a))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Rewrite using `[vV_unit_mul_pow hϖ, map_mul, map_mul, norm_mul, norm_unit eF h1, one_mul, map_pow, map_pow, norm_pow, zpow_natCast]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) z`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : algebraMap V (FractionRing V) b ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap V (FractionRing V)), hinj.eq_iff]`. Conclude with `hb0`. Establish `ha' : algebraMap V (FractionRing V) a ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hz` to reduce the goal to its premises. Rewrite using `[h, zero_div]`. Establish `ha0 : a ≠ 0` using `by intro h; apply ha'; rw [h, map_zero]`. Establish `hv : vV V (algebraMap V (FractionRing V) a / algebraMap V (FractionRing V) b) = vV V (algebraMap V (FractionRing V) a) - vV V (algebraMap V (FractionRing V) b)`. Use `vV_mul (V := V) hz hb'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[div_mul_cancel₀ _ hb']`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv, zpow_sub₀ hc0, ← key a ha0, ← key b hb0, map_div₀, norm_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_zpow (h1 : ∀ a : V, ‖eF (algebraMap V _ a)‖ ≤ 1) {ϖ : V} (hϖ : Irreducible ϖ)
     (z : FractionRing V) (hz : z ≠ 0) :
@@ -86,7 +86,7 @@ theorem norm_eq_zpow (h1 : ∀ a : V, ‖eF (algebraMap V _ a)‖ ≤ 1) {ϖ : V
 end Dvr
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h` using `[Padic.norm_p, map_natCast, PadicComplex.coe_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   have h := PadicComplex.norm_extends' l (l : ℚ_[l])
@@ -94,7 +94,7 @@ theorem norm_l (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ :
   exact h
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' l (n : ℚ_[l])`. Rewrite `h` using `[(Padic.norm_natCast_eq_one_iff).2 hn.symm, map_natCast, PadicComplex.coe_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_of_coprime (l : ℕ) [Fact l.Prime] {n : ℕ} (hn : Nat.Coprime n l) : ‖(n : ℂ_[l])‖ = 1 := by
   have h := PadicComplex.norm_extends' l (n : ℚ_[l])
@@ -102,36 +102,32 @@ theorem norm_natCast_of_coprime (l : ℕ) [Fact l.Prime] {n : ℕ} (hn : Nat.Cop
   exact h
 
 /- English proof (translation)
-Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_iff {p : ℕ} [Fact p.Prime] (x : ℂ_[p]) : x ∈ PadicComplexInt p ↔ ‖x‖ ≤ 1 := by
   rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm]
   exact (Valued.toNormedField.norm_le_one_iff).symm
 
 /- English proof (translation)
-Introduce `K _ _ pl p _ hpl T io e ho hT`. Take `⟨q, hq, k, kO, hk⟩` from `GlobalTheory.CompleteDvrEmbedding.exists_embedding_padicComplexInt T hT`. Establish `h1 : ∀ a : T.V, ‖k (algebraMap T.V T.Fr a)‖ ≤ 1` using `fun a => by`. Rewrite using `[← hk]`. Conclude with `(mem_int_iff _).1 (kO a).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Establish `hn` using `norm_eq_zpow k h1 hϖ`. Use `set c := ‖k (algebraMap T.V T.Fr ϖ)‖ with hcdef`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : 0 < c`. Rewrite using `[hcdef, norm_pos_iff, map_ne_zero, Ne, ← map_zero (algebraMap T.V T.Fr), hinj.eq_iff]`. Conclude with `hϖ.ne_zero`. Establish `hnat : ∀ n : ℕ, n ≠ 0 → (n : T.Fr) ≠ 0` using `fun n hn0 => by`. Rewrite using `[← map_natCast (algebraMap T.V T.Fr), Ne, ← map_zero (algebraMap T.V T.Fr), hinj.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hn0` after adjusting the coercions. Establish `hc1 : c ≠ 1`. Introduce `h`. Establish `h3` using `hn (q : T.Fr) (hnat q hq.out.ne_zero)`. Rewrite `h3` using `[h, one_zpow, map_natCast, norm_l]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) < q` using `by exact_mod_cast hq.out.one_lt`. Establish `h4 : (q : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hio : io (p : K) = (p : T.Fr)` using `map_natCast io p`. Establish `hN0 : vV T.V (io (p : K)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ho.2, mul_ne_zero_iff]`. Use `⟨by exact_mod_cast ho.1.ne', ?_⟩` and prove the remaining obligations. Introduce `h2`. Establish `e1 : ((p : ℕ) : K) = algebraMap (𝓞 K) K (p : 𝓞 K)` using `by simp`. Establish `h0 : pl.intValuation ((p : ℕ) : 𝓞 K) ≠ 0` using `pl.intValuation_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[vLa, e1, HeightOneSpectrum.valuation_of_algebraMap, neg_eq_zero, ← WithZero.exp_inj, WithZero.exp_log h0, WithZero.exp_zero, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `h2 hpl`. Establish `hpc : ‖(p : ℂ_[q])‖ = c ^ vV T.V (io (p : K))`. Rewrite using `[← hn _ (by rw [hio]; exact hnat p hp.ne_zero), hio, map_natCast]`. Establish `hqp : p = q`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `h3 : ‖(p : ℂ_[q])‖ = 1` using `norm_natCast_of_coprime q ((Nat.coprime_primes hp hq.out).2 hne)`. Rewrite `hpc` using `[h3]`. Establish `h4` using `congrArg Real.log hpc`. Rewrite `h4` using `[Real.log_one, Real.log_zpow]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : Real.log c ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one hc0 hc1`. Break down `mul_eq_zero.1 h4.symm with h5 | h5` into its components or cases. Conclude with `hN0 (by exact_mod_cast h5)`. Conclude with `hl h5`. Substitute `hqp` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨k, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hpn : c ^ vV T.V (io (p : K)) = (p : ℝ)⁻¹` using `by rw [← hpc, norm_l]`. Establish `hN' : (vV T.V (io (p : K)) : ℝ) ≠ 0` using `by exact_mod_cast hN0`. Establish `hp0 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `_ = (c ^ vV T.V (io (p : K))) ^ ((vV T.V z : ℝ) / (vV T.V (io (p : K)) : ℝ)) := by`. Rewrite using `[Real.rpow_mul hc0.le, Real.rpow_intCast]`. Use `_ = (p : ℝ) ^ (-((vV T.V z : ℝ) / (vV T.V (io (p : K)) : ℝ))) := by`.
-
-Rewrite using `[hpn, Real.inv_rpow hp0, Real.rpow_neg hp0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding_norm_eq :
     ∀ {K : Type} [Field K] [NumberField K] (pl : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime],

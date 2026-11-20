@@ -25,20 +25,20 @@ def chartGens (P : Ideal (MRing ι F)) [P.IsPrime] (u : ∀ k, ι k) :
 omit [Fintype K] [DecidableEq K] in
 
 /- English proof (translation)
-The claim follows from `aeval_range _`.
+A detailed English derivation is pending.
 -/
 theorem range_chartMap (P : Ideal (MRing ι F)) [P.IsPrime] (u : ∀ k, ι k) :
     (chartMap P u).range = Algebra.adjoin F (chartGens P u) :=
   aeval_range _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨b, f, g, hf, hg, -, rfl⟩`. Establish `hm : algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P (chartMonomial u b)) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[chartMonomial, map_prod, map_prod]`. Use `Finset.prod_ne_zero_iff.mpr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu k`. Establish `hr : ∀ p, chartMap P u p ∈ IntermediateField.adjoin F (chartGens P u)` using `fun p => IntermediateField.algebra_adjoin_le_adjoin F _ (by rw [← range_chartMap]; exact ⟨p, rfl⟩)`. Establish `key` using `div_mem (hr f) (hr g)`. Rewrite `key` using `[hD F K ι P u hu f b hf, hD F K ι P u hu g b hg, div_div_div_cancel_right₀ hm]`. Then use the resulting hypothesis. Rewrite using `[IntermediateField.adjoin_le_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨blockWeight ι v, X v, X ⟨v.1, u v.1⟩, isWeightedHomogeneous_X _ _ _, isWeightedHomogeneous_X _ _ _, hu v.1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem homFracDegZero_eq (hD : MChartDehomog.Statement.{u}) (P : Ideal (MRing ι F)) [P.IsPrime]
     (u : ∀ k, ι k) (hu : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ P) :
@@ -67,7 +67,7 @@ theorem homFracDegZero_eq (hD : MChartDehomog.Statement.{u}) (P : Ideal (MRing �
 open IntermediateField.algebraAdjoinAdjoin in
 
 /- English proof (translation)
-Rewrite using `[← hT F K ι P hP u hu, homFracDegZero_eq hD P u hu, GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_isFractionRing (k := F) (A := Algebra.adjoin F (chartGens P u)), ← range_chartMap]`. Conclude with `congrArg (· + _) (Ideal.quotientKerEquivRange (chartMap P u)).trdeg_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_homFracDegZero (hD : MChartDehomog.Statement.{u}) (hT : MChartTrdeg.Statement.{u})
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)) [P.IsPrime] (hP : IsMultiHomogIdeal P)
@@ -79,11 +79,11 @@ theorem trdeg_homFracDegZero (hD : MChartDehomog.Statement.{u}) (hT : MChartTrde
   exact congrArg (· + _) (Ideal.quotientKerEquivRange (chartMap P u)).trdeg_eq.symm
 
 /- English proof (translation)
-Use `choose u hu using hP.relevant`. Establish `h1` using `trdeg_homFracDegZero hD hT P hP.multiHomog u hu`. Take `⟨m, hdim, htr⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (k := F) (A := MRing ι F ⧸ P)`. Rewrite `h1` using `[htr]`. Establish `hlt : Algebra.trdeg F (homFracDegZero P) < Cardinal.aleph0` using `lt_of_le_of_lt (h1 ▸ self_le_add_right _ _) (Cardinal.natCast_lt_aleph0 (n := m))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Cardinal.lt_aleph0.mp hlt`. Rewrite `h1` using `[hn]`. Establish `hnm : n + Fintype.card K = m` using `by exact_mod_cast h1`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `hz : (((n + Fintype.card K : ℕ) : ℤ) - Fintype.card K : ℤ) = n` using `by push_cast; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[relDim, hdim, ← hnm, ← hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relDim_eq_trdeg (hD : MChartDehomog.Statement.{u}) (hT : MChartTrdeg.Statement.{u})
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)) [P.IsPrime] (hP : IsMultiProjPrime P) :
@@ -109,23 +109,19 @@ end FunctionFieldFinite
 open FunctionFieldFinite in
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' hrel`. Use `hP'.isPrime` as an intermediate fact. Establish `hP` using `isMultiProjPrime_contractPrime j ι' hP'`. Take `⟨n, hn, hrn⟩` from `relDim_eq_trdeg hD hT (contractPrime j P') hP`. Take `⟨n', hn', hrn'⟩` from `relDim_eq_trdeg hD hT P' hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnn : n = n'`. Rewrite `hrn` using `[hrel, hrn']`. Conclude with `(WithTop.coe_injective (WithBot.coe_injective hrn)).symm` after adjusting the coercions. Use `set E := (homFracDegZero (contractPrime j P')).map (contractFracMap j P')`. Use `set κ' := homFracDegZero P'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : E ≤ κ'` using `map_homFracDegZero_le j ι' P'`. Establish `hE : Algebra.trdeg F E = n` using `(IntermediateField.equivMap _ (contractFracMap j P')).trdeg_eq.symm.trans hn`. Set `_ : Algebra E κ'` to `(IntermediateField.inclusion h).toAlgebra`. Establish `: IsScalarTower F E κ'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: FaithfulSMul E κ'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IntermediateField.inclusion h).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: FaithfulSMul F E` using `(faithfulSMul_iff_algebraMap_injective F E).2 (algebraMap F E).injective`. Establish `htow` using `trdeg_add_eq F E (A := κ')`. Rewrite `htow` using `[hE, hn', ← hnn]`. Establish `hlt : Algebra.trdeg E κ' < Cardinal.aleph0` using `lt_of_le_of_lt (htow ▸ self_le_add_left _ _) (Cardinal.natCast_lt_aleph0 (n := n))`. Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.mp hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `htow` using `[hm]`. Establish `hm0 : m = 0`. Establish `: n + m = n` using `by exact_mod_cast htow`. Use linear arithmetic over natural numbers and integers. Establish `: Algebra.IsAlgebraic E κ'` using `trdeg_eq_zero_iff.mp (by rw [hm, hm0]; rfl)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : κ' →ₐ[E] FractionRing (MRing ι' F ⧸ P')` to `{ (κ'.val : κ' →+* FractionRing (MRing ι' F ⧸ P')) with commutes' := fun _ => rfl }`. Use `choose u hu using hP'.relevant`. Establish `hκ' : κ' = IntermediateField.adjoin F (chartGens P' u)` using `homFracDegZero_eq hD P' u hu`. Establish `hint : ∀ x ∈ chartGens P' u, IsIntegral E x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ κ'` using `hκ' ▸ IntermediateField.subset_adjoin F _ hx`. Establish `hy : IsAlgebraic E (⟨x, hx'⟩ : κ')` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `IsIntegral.map g hy.isIntegral`. Establish `: Finite (chartGens P' u)` using `(Set.finite_range _).to_subtype`. Use `IntermediateField.finiteDimensional_adjoin hint` as an intermediate fact.
-
-Use `show IntermediateField.relfinrank E κ' ≠ 0`. Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le h]`. Establish `hext : IntermediateField.extendScalars h = IntermediateField.adjoin E (chartGens P' u)`. Rewrite using `[← IntermediateField.extendScalars_adjoin (h.trans hκ'.le)]`. Conclude with `IntermediateField.ext fun x => show x ∈ κ' ↔ x ∈ IntermediateField.adjoin F (chartGens P' u) by rw [hκ']`.
-
-Rewrite using `[hext]`. Conclude with `Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FunctionFieldFinite.proof (hD : MChartDehomog.Statement.{u})
     (hT : MChartTrdeg.Statement.{u}) : FunctionFieldFinite.Statement.{u} := by

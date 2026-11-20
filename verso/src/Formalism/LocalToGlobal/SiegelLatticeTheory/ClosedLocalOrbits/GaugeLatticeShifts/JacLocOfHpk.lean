@@ -49,17 +49,15 @@ def TransEx : Prop := HpkEx → RightInvS → JacExGood
 def DegRed : Prop := RightInvS → JacExGood → JacEx
 
 /- English proof (translation)
-Introduce `n r k ε e z z' T T' sc hF hsc μS μS' hμ hμ' h hh`. Take `⟨h0, hh0, hD⟩` from `hE n r k ε e z z' T T' sc hF hsc`. Take `⟨C, hC, hDC⟩` from `hD μS μS' hμ hμ'`. Establish `hF' : FrameLoc ε k e z' z T' T` using `⟨hF.dim, hF.k_pos, hF.sig, hF.e_li, hF.ee, hF.ez', hF.ez, hF.zz', hF.zz, hF.T'_pos, hF.T_pos⟩`. Use `⟨C, hC, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hDC φ hφ]`. Use `setLIntegral_congr_fun (measurableSet_goodLoc r T T') ?_` and prove the remaining obligations. Introduce `c hc`. Take `⟨s₁, hs₁, s₁', hs₁', hcs⟩` from `h1 n r k ε e z z' T T' sc hF c hc (h0 c) (h c) (hh0 c hc) (hh c hc)`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hcs]`. Use `symm`. Establish `eS` using `hR n r k ε e z z' T T' hF μS hμ s₁ hs₁`. Establish `eS'` using `hR n r k ε e z' z T' T hF' μS' hμ' s₁' hs₁'`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ (a : Formalism.REAL.UJ ε) (ν : Measure (Formalism.REAL.UJ ε)), ν.map (fun x => x * a) = ν → ∀ F : Formalism.REAL.UJ ε → ℝ≥0∞, ∫⁻ x, F (x * a) ∂ν = ∫⁻ x, F x ∂ν`. Introduce `a ν hν F`. Use `lintegral_map_equiv F (MeasurableEquiv.mulRight a) (μ := ν)` as an intermediate fact. Rewrite `this` using `[show ⇑(MeasurableEquiv.mulRight a) = (fun x => x * a) from rfl, hν]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [_root_.mul_inv_rev, mul_assoc]`. Use `_ = ∫⁻ s, ∫⁻ s', φ (s * h0 c * (s' * s₁')⁻¹) ∂μS' ∂μS := hmap s₁ μS eS (fun s => ∫⁻ s', φ (s * h0 c * (s' * s₁')⁻¹) ∂μS')`. Use `_ = ∫⁻ s, ∫⁻ s', φ (s * h0 c * s'⁻¹) ∂μS' ∂μS := by`. Use `congr 1`.
-
-Use function extensionality and compare the values at `s`. Conclude with `hmap s₁' μS' eS' (fun s' => φ (s * h0 c * s'⁻¹))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem jacLoc_of_ex (h1 : DiagDCLoc) (hR : RightInvS) (hE : JacEx) : JacLoc := by
   intro n r k ε e z z' T T' sc hF hsc μS μS' hμ hμ' h hh

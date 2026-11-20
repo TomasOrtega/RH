@@ -27,9 +27,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WhitFree.Coefs
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, e⟩`. Establish `: c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ R X = u` using `Subtype.ext e`. Rewrite using `[this]` and apply the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_gramNear_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (c : HermR R σ n) (U : Set (HermR R σ n)) (X : Fin n → Fin M → R ⊗[F] E) :
     X ∈ gramNear R σ J c U ↔ c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ R X ∈ U := by
@@ -41,7 +41,7 @@ theorem mem_gramNear_iff {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     exact ⟨_, h, rfl⟩
 
 /- English proof (translation)
-Establish `h : (c : Matrix (Fin n) (Fin n) (R ⊗[F] E)) - gramR R σ J X ∈ HermR R σ n` using `(c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ R X).2`. Unfold `gramTest`. Conclude with `dif_pos h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gramTest_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (c : HermR R σ n) (ρ : HermR R σ n → ℝ) (X : Fin n → Fin M → R ⊗[F] E) :
     gramTest R σ J c ρ X = ρ (c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ R X) := by
@@ -51,7 +51,7 @@ theorem gramTest_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact dif_pos h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_sub, GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_gramH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermMap_sub_gramH {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') {n : ℕ} (c : HermR R σ n) (X : Fin n → Fin M → R ⊗[F] E) :
     GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap f σ (c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ R X) =
@@ -59,14 +59,14 @@ theorem hermMap_sub_gramH {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   rw [GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_sub, GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_gramH]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_hermOf f σ T hT`.
+A detailed English derivation is pending.
 -/
 theorem hermMap_hermOf' {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c) :
     GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap f σ (hermOf R σ T hT) = hermOf R' σ T hT :=
   GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap_hermOf f σ T hT
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.SiegelND.Coef.hermV GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin`. Rewrite using `[hermMap_sub_gramH hCM hJ, hermMap_sub_gramH hCM hJ, hermMap_hermOf', hermMap_hermOf']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermV_sub_gram {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c) (x : Fin n → Fin M → AF F ⊗[F] E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     GlobalTheory.CompanionTheory.SiegelND.Coef.hermV σ v (GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x)) =
@@ -76,7 +76,7 @@ theorem hermV_sub_gram {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.SiegelND.Coef.hermInf`. Rewrite using `[hermMap_sub_gramH hCM hJ, hermMap_hermOf']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermInf_sub_gram {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c) (x : Fin n → Fin M → AF F ⊗[F] E) :
     GlobalTheory.CompanionTheory.SiegelND.Coef.hermInf σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) =
@@ -93,9 +93,9 @@ theorem hermV_entries {F E : Type} [Field F] [NumberField F] [Field E] [Algebra 
       HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin (fun a i => (B : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) a i)) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `hh : HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin (fun a i => (B : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) a i)) ∈ (latV (M` using `n) (n := n) b v : Set (Fin n → Fin n → Fv F v ⊗[F] E)) := h v hv`. Rewrite `hh` using `[← hermV_entries]`. Conclude with `(h3 v hv _).2 hh`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h v hv`. Establish `hh` using `(h3 v hv _).1 (h v hv)`. Rewrite `hh` using `[hermV_entries]`. Conclude with `hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intH_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {d n : ℕ} (b : Module.Basis (Fin d) F E) (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) (B : HermR (AF F) σ n)
     (h3 : ∀ v, v ∉ S → ∀ Y : HermR (Fv F v) σ n, Y ∈ GlobalTheory.CompanionTheory.SiegelND.Coef.latH σ b v n ↔
@@ -112,7 +112,7 @@ theorem mem_intH_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
     exact hh
 
 /- English proof (translation)
-Establish `hiff` using `mem_intH_iff b S B h3`. Distinguish the cases in `h : B ∈ intH σ b S`. Conclude with `(Set.indicator_of_mem h (fun _ => (1 : ℂ))).trans (Set.indicator_of_mem (hiff.1 h) (fun _ => (1 : ℂ))).symm`. Conclude with `(Set.indicator_of_notMem h (fun _ => (1 : ℂ))).trans (Set.indicator_of_notMem (fun h' => h (hiff.2 h')) (fun _ => (1 : ℂ))).symm`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem indicator_intH {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {d n : ℕ} (b : Module.Basis (Fin d) F E) (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) (B : HermR (AF F) σ n)
     (h3 : ∀ v, v ∉ S → ∀ Y : HermR (Fv F v) σ n, Y ∈ GlobalTheory.CompanionTheory.SiegelND.Coef.latH σ b v n ↔
@@ -126,11 +126,9 @@ theorem indicator_intH {F E : Type} [Field F] [NumberField F] [Field E] [Algebra
   · exact (Set.indicator_of_notMem h (fun _ => (1 : ℂ))).trans (Set.indicator_of_notMem (fun h' => h (hiff.2 h')) (fun _ => (1 : ℂ))).symm
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1`. Use `haveI := a1`. Use `haveI := a2`. Use `haveI := a3`. Use `haveI := a4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t1, -, -, -, -, -, -, hB, -, hG⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Ainf F)`. Use `haveI := t1`. Use `haveI := hB n M`. Establish `e : gramTest (Ainf F) σ J c ρ = fun X => ρ (c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Ainf F) X)`. Use function extensionality and compare the values at `(gramTest_eq hCM hJ (Ainf F) c ρ)`.
-
-Rewrite using `[e]`. Establish `hc : Continuous fun X : Fin n → Fin M → Ainf F ⊗[F] E => c - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Ainf F) X` using `Continuous.subtype_mk (continuous_const.sub (hG n M J)) _`. Conclude with `(hρ.comp hc).measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_gramTest {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) {n : ℕ} (c : HermR (Ainf F) σ n) (ρ : HermR (Ainf F) σ n → ℝ) (hρ : Continuous ρ) :
     Measurable (gramTest (Ainf F) σ J c ρ) := by
@@ -147,11 +145,7 @@ theorem measurable_gramTest {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact (hρ.comp hc).measurable
 
 /- English proof (translation)
-Take `⟨⟨a1, a2, a3⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Take `⟨t1, t2, t3, t4, -, -, -, -, hC, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := t1`. Use `haveI : LocallyCompactSpace (AF F ⊗[F] E) := t2`. Use `haveI : SecondCountableTopology (AF F ⊗[F] E) := t3`.
-
-Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AF F ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AF F ⊗[F] E))`. Use `haveI : LocallyCompactSpace (HermR (AF F) σ n) := (hC n).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (HermR (AF F) σ n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace (HermR (AF F) σ n) := inferInstance`.
-
-Use `haveI := h`. Use `haveI := Measure.IsAddHaarMeasure.sigmaFinite db`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sfinite_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {n : ℕ} (db : Measure (HermR (AF F) σ n)) (h : db.IsAddHaarMeasure) : SFinite db := by
   obtain ⟨⟨a1, a2, a3⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
@@ -173,65 +167,55 @@ theorem sfinite_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 set_option maxHeartbeats 600000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn h2n ψ hψ dx hdx db hdb d b laminf lam hinf hlam minf hminf m hm T hT`. Take `⟨hEu, hlat⟩` from `GlobalTheory.T.siegel_weil_product_over_places F E σ hCM M J hJ n hn h2n ψ hψ dx hdx d b laminf lam hinf hlam`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.euler_product_almost_all_standard F E M n d b dx 1 _ _ hEu`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.hermitian_euler_product_standard F E σ hCM n hn ψ hψ db hdb d b laminf lam hinf hlam`. Establish `hq` using `GlobalTheory.T.lattice_gram_integral_almost_all F E σ hCM M J hJ n d b T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlc` using `GlobalTheory.T.hermitian_lattice_mem_iff_entries F E σ hCM n d b`. Establish `hqf` using `Filter.eventually_cofinite.1 hq`. Establish `hlf` using `Filter.eventually_cofinite.1 hlc`. Use `⟨S₀ ∪ S₁ ∪ hqf.toFinset ∪ hlf.toFinset, fun S hS φ hφ A hA hAl => ?_⟩` and prove the remaining obligations. Establish `hS0 : S₀ ⊆ S` using `fun x hx => hS (by simp [hx])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS1 : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS2 : ∀ v, v ∉ S → ∀ X ∈ (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)), hermOf (Fv F v) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Fv F v) X ∈ GlobalTheory.CompanionTheory.SiegelND.Coef.latH σ b v n`. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inl (Or.inr hc)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hS3 : ∀ v, v ∉ S → ∀ Y : HermR (Fv F v) σ n, Y ∈ GlobalTheory.CompanionTheory.SiegelND.Coef.latH σ b v n ↔ (fun a i => (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a i) ∈ (latV (M` using `n) (n := n) b v : Set (Fin n → Fin n → Fv F v ⊗[F] E)) := by`. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inr hc))`. Take `⟨ρ, U, hρ, hρs, hU, hUs, hUpos, hI, hc, hbd, hlim⟩` from `hS₁ S hS1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦSB : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A)` using `GlobalTheory.T.factorizable_siegel_weil_finite_set F E σ hCM M J hJ n hn h2n d b S φ A hφ hA hAl`. Establish `hΦdx : Integrable (pureN φ A) dx` using `GlobalTheory.T.schwartz_bruhat_integrable_any_haar F E σ hCM M n dx hdx.1 _ hΦSB`. Establish `hstar : Integrable (starN σ J ψ dx (pureN φ A)) db` using `GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n h2n ψ hψ dx hdx db hdb _ hΦSB`. Establish `hsd` using `hdx.1`. Establish `hdb1` using `hdb.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : SFinite dx := by infer_instance`. Use `haveI : SFinite db := sfinite_herm hCM db hdb1`. Use `set cI : HermR (Ainf F) σ n := hermOf (Ainf F) σ T hT with hcI`. Establish `hInf` using `GlobalTheory.T.archimedean_siegel_weil_measure F E σ hCM M J hJ n hn h2n d b laminf hinf minf hminf cI φ hφ`. Take `⟨hφm, -, hInf⟩` from `hInf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hInf` using `hInf ρ hρ hρs`. Establish `hV0` using `fun v => GlobalTheory.T.local_siegel_weil_unramified_measure F E σ hCM M J hJ n hn h2n d b v (lam v) (hlam v) (m v) (hm v) (hermOf (Fv F v) σ T hT) (A v) (hA v).1 (hA v).2`. Establish `hV` using `fun v => (hV0 v).2.2 (fun k => U k v) (fun k => hU k v) (hUs v)`. Establish `hρpos : ∀ k, 0 < ∫ y, ρ k y ∂(GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n)` using `fun k => (hρ k).2.2.2`. Establish `hck : ∀ k, (∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k) y ∂db) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hc k]`. Use `mul_ne_zero (by exact_mod_cast (hρpos k).ne') (Finset.prod_ne_zero_iff.2 fun v _ => ?_)` and prove the remaining obligations. Conclude with `(hUpos k v).ne'` after adjusting the coercions. Establish `hfub` using `fun k => GlobalTheory.T.fubini_fourier_hermitian_integral F E σ M J hJ n hCM ψ hψ dx db inferInstance inferInstance _ hΦdx (GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k)) (hI k).1 (hI k).2 T hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hchi : Continuous (GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T)` using `(hfub 0).1`. Establish `hφ'm : ∀ k, Measurable (fun X => φ X * (gramTest (Ainf F) σ J cI (ρ k) X : ℂ))`. Introduce `k`. Conclude with `hφm.mul (Complex.measurable_ofReal.comp (measurable_gramTest hCM hJ cI (ρ k) (hρ k).1))`. Establish `key : ∀ k, ∫ B, (GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db (GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k)) B / ∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) B * GlobalTheory.Companion …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `hf` using `(hfub k).2`. Set `A' : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E)` to `fun v => if v ∈ S then A v ∩ gramNear (Fv F v) σ J (hermOf (Fv F v) σ T hT) (U k v) else A v`. Establish `hA'S : ∀ v ∈ S, A' v = A v ∩ gramNear (Fv F v) σ J (hermOf (Fv F v) σ T hT) (U k v)` using `fun v hv => if_pos hv`. Establish `hA'n : ∀ v, v ∉ S → A' v = latV b v` using `fun v hv => (if_neg hv).trans (hAl v hv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `h3 : ∀ (x : Fin n → Fin M → AF F ⊗[F] E) v, GlobalTheory.CompanionTheory.SiegelND.Coef.hermV σ v (GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x)) = hermOf (Fv F v) σ T hT - GlobalTheor …`. Introduce `x v`. Conclude with `hermV_sub_gram hCM hJ T hT x v`. Establish `h0 : ∀ x : Fin n → Fin M → AF F ⊗[F] E, GlobalTheory.CompanionTheory.SiegelND.Coef.hermInf σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) = cI - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Ainf F) (HeckeCharacterZeroLocus. …`. Introduce `x`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hermInf_sub_gram hCM hJ T hT x`. Establish `hmem : ∀ x : Fin n → Fin M → AF F ⊗[F] E, (HeckeCharacterZeroLocus.SiegelWeilU.projFin x ∈ boxF A ∧ GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) ∈ GlobalTheory.CompanionTheory.Siegel …`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩ v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`. Use `⟨h v, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_gramNear_iff hCM hJ, ← h3 x v]`. Conclude with `h'.1 v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show A' v = A v from if_neg hv]`. Conclude with `h v`. Introduce `h`. Use `⟨fun v => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h v` as an intermediate fact. Rewrite `this` using `[hA'S v hv]`. Conclude with `this.1`. Use `h v` as an intermediate fact. Rewrite `this` using `[show A' v = A v from if_neg hv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `h v` as an intermediate fact. Rewrite `this` using `[hA'S v hv]`. Rewrite using `[h3 x v, ← mem_gramNear_iff hCM hJ]`. Conclude with `this.2`. Use `h v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[hA'n v hv]`. Rewrite using `[h3 x v]`. Conclude with `hS2 v hv _ this`. Establish `hpt : ∀ x, pureN φ A x * GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k) (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) = pureN (fun X => φ X * (gramTest (Ainf F) σ J cI (ρ k) X : ℂ)) A' x`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eR : pureN (fun X => φ X * (gramTest (Ainf F) σ J cI (ρ k) X : ℂ)) A' x = (φ (HeckeCharacterZeroLocus.SiegelWeilU.projInf x) * (ρ k (cI - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Ainf F) (HeckeCharacterZeroLocus.SiegelWeilU.projInf x)) : ℂ)) * (boxF A').indicator …` using `by show (φ _ * (gramTest (Ainf F) σ J cI (ρ k) _ : ℂ)) * _ = _`. Rewrite using `[gramTest_eq hCM hJ]`. Rewrite using `[eR]`. Unfold `pureN GlobalTheory.CompanionTheory.SiegelND.Coef.testH`. Rewrite using `[h0 x]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : HeckeCharacterZeroLocus.SiegelWeilU.projFin x ∈ boxF A'`. Take `⟨ha, hb⟩` from `(hmem x).2 h`. Rewrite using `[Set.indicator_of_mem ha, Set.indicator_of_mem hb, Set.indicator_of_mem h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : HeckeCharacterZeroLocus.SiegelWeilU.projFin x ∈ boxF A`. Establish `hb : GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) ∉ GlobalTheory.CompanionTheory.SiegelND.Coef.boxH σ b n S (U k)` using `fun hb => h ((hmem x).1 ⟨ha, hb⟩)`. Rewrite using `[Set.indicator_of_notMem hb]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hmeasA' : ∀ v, MeasurableSet (A' v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hV v).1 k).1`. Rewrite using `[show A' v = A v from if_neg hv]`. Conclude with `(hV0 v).1`. Establish `hfinA' : ∀ v, GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A' v) ≠ ⊤`. Introduce `v`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`. Conclude with `((hV v).1 k).2`. Rewrite using `[hA'n v hv, hlat v]`. Conclude with `ENNReal.one_ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `he` using `(hS₀ S hS0 _ (hφ'm k) (hInf.1 k) A' hmeasA' hfinA' hA'n).2`. Establish `htail : (∏' v : {v // v ∉ S}, (GlobalTheory.CompanionTheory.SW.coordW (Fv F v.1) b (lam v.1) n M (latV b v.1)).toReal) = 1`. Simplify using `[hlat]`. Rewrite `he` using `[htail]`. Establish `hprod : (∏ v ∈ S, ((GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A' v)).toReal : ℂ)) = ∏ v ∈ S, ((GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A v ∩ gramNear (Fv F v) σ J (hermOf (Fv F v) σ T hT) (U k v))).toReal : ℂ)` using `Finset.prod_congr rfl fun v hv => by rw [hA'S v hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∫ B, (GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db (GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k)) B / ∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) B * GlobalTheory.CompanionTheory …`. Rewrite using `[← integral_div]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun bb => by simp only []; ring)`. Rewrite using `[e1, hf, integral_congr_ae (Filter.Eventually.of_forall hpt), he, hprod, hc k]`. Use `push_cast`.
-
-Rewrite using `[Finset.prod_div_distrib]`. Simplify using `only [NNReal.coe_one, Complex.ofReal_one, one_mul, mul_one]`. Rewrite using `[div_mul_div_comm]`. Establish `hint : ∀ B : HermR (AF F) σ n, (intH σ b S).indicator (fun _ => (1 : ℂ)) B = (GlobalTheory.CompanionTheory.SiegelND.Coef.intH σ b n S).indicator (fun _ => (1 : ℂ)) (GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ B)`. Introduce `B`.
-
-Conclude with `indicator_intH b S B hS3`. Establish `lim1 : Filter.Tendsto (fun k => ∫ B, (GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db (GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k)) B / ∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) B * G …`. Establish `hcs : coefS σ J ψ dx db (pureN φ A) T b S = ∫ B, (GlobalTheory.CompanionTheory.SiegelND.Coef.intH σ b n S).indicator (fun _ => (1 : ℂ)) (GlobalTheory.CompanionTheory.SiegelND.Coef.hermFin σ B) * (starN σ J ψ dx (pureN φ A) B * GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T …`. Unfold `coefS`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun B => by`.
-
-Simplify using `only [hint B]`. Use the proof step `rfl)`. Rewrite using `[hcs]`. Establish `hnorm : ∀ B, ‖GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T B‖ = 1` using `fun B => hψ.2.1 _`. Use `tendsto_integral_of_dominated_convergence (fun B => ‖starN σ J ψ dx (pureN φ A) B‖) ?_ hstar.norm ?_ ?_` and prove the remaining obligations.
-
-Introduce `k`. Conclude with `((hI k).1.div_const _).aestronglyMeasurable.mul (hstar.aestronglyMeasurable.mul hchi.aestronglyMeasurable)`. Introduce `k`. Use `Filter.Eventually.of_forall fun B => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hnorm, mul_one, norm_div]`.
-
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) ((div_le_one (norm_pos_iff.2 (hck k))).2 (hbd k B))`. Use `Filter.Eventually.of_forall fun B => ?_` and prove the remaining obligations. Conclude with `(hlim B).mul_const _`. Establish `lim2` using `hInf.2.mul (tendsto_finset_prod S fun v _ => (Complex.continuous_ofReal.tendsto _).comp (hV v).2)`. Conclude with `tendsto_nhds_unique lim1 (lim2.congr fun k => by simpa using (key k).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coefS_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ dx : Measure (Fin n → Fin M → AF F ⊗[F] E), SdW F E σ M J (AF F) ψ n dx → ∀ db : Measure (HermR (AF F) σ n), SdHerm F E σ (AF F) ψ n db → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∀ (minf : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E)), IsGramFibFree (Ainf F) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) minf → ∀ (m : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b (lam v) n) (m v)) → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c), ∃ S₁ : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), ∀ S, S₁ ⊆ S → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → ∀ A : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E), (∀ v, IsCompact (A v) ∧ IsOpen (A v)) → (∀ v, v ∉ S → A v = latV b v) → coefS σ J ψ dx db (pureN φ A) T b S = (∫ X, φ X ∂(minf (hermOf (Ainf F) σ T hT))) * ∏ v ∈ S, ((m v (hermOf (Fv F v) σ T hT) (A v)).toReal : ℂ) := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn h2n ψ hψ dx hdx db hdb d b laminf lam hinf hlam minf hminf m hm T hT

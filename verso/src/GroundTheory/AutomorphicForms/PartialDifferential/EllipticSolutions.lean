@@ -21,9 +21,9 @@ def ofIntegrable {h : E → ℂ} (hh : Integrable h) : 𝓢'(E, ℂ) :=
 end Integrable
 
 /- English proof (translation)
-Establish `hK` using `(hu.mono_set hφΩ).integrableOn_isCompact hφc.isCompact`. Establish `hind` using `hK.integrable_indicator (isClosed_tsupport _).measurableSet`. Establish `h` using `hind.bdd_mul (c := SchwartzMap.seminorm ℝ 0 0 φ) φ.continuous.aestronglyMeasurable (ae_of_all _ fun x ↦ SchwartzMap.norm_le_seminorm ℝ _ _)`. Use `h.congr (ae_of_all _ fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x ∈ tsupport φ`. Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx, image_eq_zero_of_notMem_tsupport hx, zero_mul, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_smul_of_locallyIntegrableOn {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]

@@ -3,21 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L α N hN hα hL`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Establish `: (N : ℂ) = 0` using `by simpa using hα`. Conclude with `hN.ne' (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (AddMonoidHom.mulLeft α)` using `mul_right_injective₀ hα0`. Use `set A := L.lattice.toAddSubgroup with hA`. Use `set f := AddMonoidHom.mulLeft α with hf`. Establish `h1 : A.map f ≤ A`. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hL l hl`. Establish `h2 : (A.map f).map f ≤ A.map f` using `AddSubgroup.map_mono h1`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex _ _ _ h2 h1`. Rewrite `hmul` using `[AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Establish `hr : Module.finrank ℤ L.lattice = 2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `using Module.finrank_eq_card_basis L.latticeBasis`. Establish `hidx : ((A.map f).map f).relIndex A = N ^ 2`. Rewrite using `[← hr, ← AddSubgroup.index_range_nsmul, AddSubgroup.relIndex]`. Use `congr 1`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨l, hl, rfl⟩, hx⟩`. Use `⟨⟨-l, L.lattice.neg_mem hl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hx' : α * (α * l) = (x : ℂ)` using `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show N • (-l) = (x : ℂ)`. Rewrite using `[← hx', nsmul_eq_mul]`. Take the linear combination `(-l) * hα`. Introduce and unpack `⟨l, hx⟩`. Establish `hx' : N • (l : ℂ) = (x : ℂ)` using `congrArg Subtype.val hx`.
-
-Use `⟨_, ⟨-(l : ℂ), L.lattice.neg_mem l.2, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show α * (α * -(l : ℂ)) = (x : ℂ)`. Rewrite using `[← hx', nsmul_eq_mul]`. Take the linear combination `(-(l : ℂ)) * hα`. Rewrite `hmul` using `[hidx, ← sq]`.
-
-Conclude with `Nat.pow_left_injective two_ne_zero hmul`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_map_mulLeft_lattice_of_sq_eq_neg :
     ∀ (L : PeriodPair) (α : ℂ) (N : ℕ), 0 < N → α ^ 2 = -(N : ℂ) →

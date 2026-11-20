@@ -17,14 +17,14 @@ section Group
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Smooth (pullback.fst A.hom B.hom ≫ A.hom)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem smooth_tensor (A B : Over S) [Smooth A.hom] [Smooth B.hom] : Smooth (A ⊗ B).hom := by
   change Smooth (pullback.fst A.hom B.hom ≫ A.hom)
   infer_instance
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst A.hom B.hom ≫ A.hom)`. Conclude with `GeometricallyConnected.comp _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_tensor (A B : Over S) [Smooth A.hom] [Smooth B.hom]
     [GeometricallyConnected A.hom] [GeometricallyConnected B.hom] :
@@ -35,12 +35,12 @@ theorem geometricallyConnected_tensor (A B : Over S) [Smooth A.hom] [Smooth B.ho
 variable (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `Over.w η[G]`.
+A detailed English derivation is pending.
 -/
 theorem eSec_comp : eSec G ≫ G.hom = 𝟙 S := Over.w η[G]
 
 /- English proof (translation)
-Unfold `eSec`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [Hom.one_def]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eSec_three :
     eSec (G3 G) = (lift (1 : 𝟙_ (Over S) ⟶ G) (lift (1 : 𝟙_ (Over S) ⟶ G) (1 : 𝟙_ (Over S) ⟶ G))).left := by
@@ -49,7 +49,7 @@ theorem eSec_three :
   ext <;> simp [Hom.one_def]
 
 /- English proof (translation)
-Introduce `U _ h`. Rewrite using `[eSec_three, prod_cub]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem formEq_origin :
     FormEq (K := PEmpty) (PEmpty.elim : PEmpty → ((𝟙_ (Over S)).left ⟶ G.left)) PEmpty.elim
@@ -61,7 +61,7 @@ theorem formEq_origin :
 end Group
 
 /- English proof (translation)
-Use `lbGen_ext fun j => congrArg Units.val ?_` and prove the remaining obligations. Conclude with `LB.pull_res_comp h f _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullGen_genPull {X Y Z : Scheme.{0}} (M : LB X) (c : LB.Gen M) (f : Y ⟶ X) (h : Z ⟶ Y) :
     LB.pullGen M _ _ (LB.genPull M c f) h = LB.genPull M c (h ≫ f) := by
@@ -73,9 +73,9 @@ end CubeExtension
 open CubeExtension
 
 /- English proof (translation)
-Introduce `V _ _ _ K _ _ _ G _ _ _ _ _ _ eA heA L t hc ht`. Establish `s₂` using `smooth_tensor G G`. Establish `s₃` using `smooth_tensor G (G ⊗ G)`. Establish `c₂` using `geometricallyConnected_tensor G G`. Establish `c₃` using `geometricallyConnected_tensor G (G ⊗ G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, hρ, hv⟩` from `exists_gen L.isLB (formEq_origin G) (LB.oneGen L.L) (LB.isGen_oneGen L.L)`. Use `h₂ V K (G3 G).left G.left (G3 G).hom (eSec (G3 G)) s₃ (h₁ _ _ _ s₃ c₃) (eSec_comp _) eA heA L.L L.isLB thK (thφ G (x3 G)) thε t ρ ht hρ (corr_of_val L.isLB fun y J hJ => ?_)` and prove the remaining obligations. Use `(val_corr hJ hc (𝟙 _)).trans ((val_one _).trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(val_pull hJ ρ _ _).trans ((hv _ _ y J hJ).trans (val_one _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cubical_extends_of_extension
     (h₁ : (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f))
@@ -92,9 +92,9 @@ theorem cubical_extends_of_extension
   exact (val_pull hJ ρ _ _).trans ((hv _ _ y J hJ).trans (val_one _))
 
 /- English proof (translation)
-Introduce `V _ _ _ K _ _ _ G _ _ _ _ _ _ eA heA N r hr hc`. Take `⟨c, ⟨hc₁, hc₂⟩, hu⟩` from `h₂ V K G.left G.left G.hom (eSec G) inferInstance (h₁ _ _ _ inferInstance inferInstance) (eSec_comp _) eA heA N.L N.isLB PUnit (fun _ => 𝟙 _) (fun _ => 1) r N.rig hr N.rigGen hc`. Take `⟨r', ⟨h₃, h₄⟩, hu'⟩` from `existsUnique_genPull_eq (𝟙 G.left) (fun _ => Function.bijective_id) N.L c hc₁`. Use `⟨r', ⟨h₃, ?_⟩, fun r'' ⟨h₅, h₆⟩ => hu' r'' ⟨h₅, hu _ ⟨LB.isGen_genPull _ _ h₅ _, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite `hc₂` using `[← h₄, pullGen_genPull]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc₂`. Rewrite using `[pullGen_genPull]`. Conclude with `h₆`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendGen_of_extension
     (h₁ : (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f))
@@ -112,7 +112,7 @@ theorem extendGen_of_extension
     exact h₆
 
 /- English proof (translation)
-Introduce `h₁ h₂` and use `⟨cubical_extends_of_extension h₁ h₂, extendGen_of_extension h₁ h₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cubical_extends_and_extendGen :
     (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) →

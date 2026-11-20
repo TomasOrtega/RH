@@ -16,9 +16,7 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K
 
 open SplitBAux in
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun g => ⟨res S g.1 (autL_iff.mp g.2.1).1 g.2.2, autL_iff.mpr ⟨res_mem_isom S _ _ _, gmap_res S _ _ _ (autL_iff.mp g.2.1).2⟩⟩ invFun := fun g' => ⟨extOf S g'.1, autL_iff.mpr ⟨extOf_mem_isom hs S (autL_iff.mp g'.2).1, by`. Use `gmap_extOf S g'.1 (autL_iff.mp g'.2).2` as an intermediate fact. Rewrite using `[hL] at this⟩, extOf_x₀ S _⟩` and apply the resulting hypothesis. Use `left_inv := fun g => Subtype.ext (LinearEquiv.toLinearMap_injective (linearMap_ext S (by simp [extOf_x₀, g.2.2]) (fun a => by simp [extOf_ι, res_spec])))`.
-
-Use `right_inv := fun g' => Subtype.ext (LinearEquiv.ext fun a => S.inj (by`. Simplify using `[res_spec, extOf_ι])) }`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VecSplit.card_stab (hs : h.IsSymm) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : S.adjoin (S.cut L) = L) :

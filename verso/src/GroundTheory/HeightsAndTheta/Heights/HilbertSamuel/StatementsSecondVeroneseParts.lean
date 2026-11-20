@@ -39,16 +39,16 @@ def wt {D : ℕ} (q : Ix (Idx D)) : ℝ := if q.2.1.1 = q.2.1.2 then 1 else 2
 def scale (D : ℕ) (z : Ix (Idx D) → ℂ) : Ix (Idx D) → ℂ := fun q => (Real.sqrt (wt q) : ℂ) * z q
 
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_pos {D : ℕ} (q : Ix (Idx D)) : 0 < wt q := by
   unfold wt
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Introduce `h`. Apply `hz` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Establish `h1` using `congrFun h q`. Establish `h2 : (Real.sqrt (wt q) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Real.sqrt_pos.mpr (wt_pos q)).ne'` after adjusting the coercions. Simplify `h1` using `[scale, h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scale_ne_zero {D : ℕ} {z : Ix (Idx D) → ℂ} (hz : z ≠ 0) : scale D z ≠ 0 := by
   intro h
@@ -111,12 +111,12 @@ def VeroneseGenDeg.Statement : Prop :=
   ∀ D : ℕ, 1 ≤ D → genDeg (ι := GlobalTheory (Idx D)) (coordIdeal ℤ (Veronese.x D)) D 1 = 2 ^ D
 
 /- English proof (translation)
-The claim follows from `le_rfl`.
+A detailed English derivation is pending.
 -/
 example : (1 : ℕ) ≤ 1 := le_rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (D : ℕ) : CharZero (Veronese.Fld D) := inferInstance
 

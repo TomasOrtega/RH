@@ -19,25 +19,25 @@ def PDPoly.derVal (Q : PDPoly B) : ℕ → Q.P
 def PDPoly.derLin (Q : PDPoly B) : Q.P →ₗ[B] Q.P := Q.e.constr B Q.derVal
 
 /- English proof (translation)
-Simplify using `[PDPoly.derLin, Module.Basis.constr_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PDPoly.derLin_e (Q : PDPoly B) (n : ℕ) : Q.derLin (Q.e n) = Q.derVal n := by
   simp [PDPoly.derLin, Module.Basis.constr_basis]
 
 /- English proof (translation)
-The claim follows from `Q.derLin_e (n + 1)`.
+A detailed English derivation is pending.
 -/
 theorem PDPoly.derLin_e_succ (Q : PDPoly B) (n : ℕ) : Q.derLin (Q.e (n + 1)) = Q.e n := Q.derLin_e (n + 1)
 
 /- English proof (translation)
-The claim follows from `Q.derLin_e 0`.
+A detailed English derivation is pending.
 -/
 theorem PDPoly.derLin_e_zero (Q : PDPoly B) : Q.derLin (Q.e 0) = 0 := Q.derLin_e 0
 
 /- English proof (translation)
-Break down `m with _ | a` into its components or cases. Rewrite using `[Q.derLin_e_zero, Q.e_zero]`. Simplify using the standard rewrite rules. Break down `n with _ | b` into its components or cases. Rewrite using `[Q.derLin_e_zero, Q.e_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Q.derLin_e_succ, Q.derLin_e_succ, Q.e_mul, Q.e_mul, Q.e_mul, ← nsmul_eq_mul, map_nsmul, show a + 1 + (b + 1) = (a + b + 1) + 1 by omega, Q.derLin_e_succ, show a + 1 + b = a + b + 1 by omega, show b + 1 + a = a + b + 1 by omega, Nat.choose_succ_succ' (a + b + 1) a, Nat.choose_sym …`. Use `push_cast`. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,7 +57,7 @@ theorem PDPoly.derLin_e_mul_e (Q : PDPoly B) (m n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `h2 : ∀ x n, Q.derLin (x * Q.e n) = x * Q.derLin (Q.e n) + Q.e n * Q.derLin x` using `fun x n ↦ by`. Use `Q.e.ext (f₁ := Q.derLin ∘ₗ LinearMap.mulRight B (Q.e n)) (f₂ := LinearMap.mulRight B (Q.derLin (Q.e n)) + LinearMap.mulLeft B (Q.e n) ∘ₗ Q.derLin) (fun m ↦ by simpa using Q.derLin_e_mul_e m n)` as an intermediate fact. Simplify using `using LinearMap.congr_fun this x`. Use `Q.e.ext (f₁ := Q.derLin ∘ₗ LinearMap.mulLeft B x) (f₂ := LinearMap.mulLeft B x ∘ₗ Q.derLin + LinearMap.mulRight B (Q.derLin x)) (fun n ↦ by simpa using h2 x n)` as an intermediate fact. Simplify using `using LinearMap.congr_fun this y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PDPoly.derLin_mul (Q : PDPoly B) (x y : Q.P) :
     Q.derLin (x * y) = x * Q.derLin y + y * Q.derLin x := by
@@ -86,29 +86,27 @@ namespace GlobalTheory.PDA
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Use `set D := Q.der`. Set `P : Q.P → Prop` to `fun a ↦ ∀ n, D (η.dpow n a) = dpPred η n a • D a`. Establish `hzero : P 0` using `fun n ↦ by`. Consider the cases of `n with`. Consider the case `zero => simp [η.dpow_zero (Q.ext J).zero_mem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n => simp [dpow_eval_zero _ n.succ_ne_zero]`. Establish `hadd : ∀ a ∈ Q.ext J, ∀ b ∈ Q.ext J, P a → P b → P (a + b)` using `fun a ha b hb iha ihb n ↦ by`. Establish `iha : ∀ n, D (η.dpow n a) = dpPred η n a • D a` using `iha`. Establish `ihb : ∀ n, D (η.dpow n b) = dpPred η n b • D b` using `ihb`. Simplify using `only [η.dpow_add ha hb, map_sum, D.leibniz, iha, ihb, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul, sum_dpow_mul_dpPred η ha hb, sum_dpow_mul_dpPred' η ha hb, map_add, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `add_comm _ _`. Establish `hmul : ∀ r, ∀ a ∈ Q.ext J, P a → P (r * a)` using `fun r a ha hP n ↦ by`. Consider the cases of `n with`. Consider the case `zero => simp [η.dpow_zero (Ideal.mul_mem_left _ r ha), dpPred]`. Consider the case `succ m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hP (m + 1)`. Establish `hs` using `dpPred_mul_self η ha (m + 1)`. Simplify using `only [dpPred, smul_eq_mul] at hm hs ⊢`. Rewrite using `[η.dpow_mul ha, η.dpow_mul ha, D.leibniz, D.leibniz, D.leibniz_pow, hm]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at hs ⊢`. Take the linear combination `(-(r ^ m * D r)) * hs`. Establish `hspan : ∀ s : Set Q.P, s ⊆ Q.ext J → (∀ x ∈ s, P x) → ∀ a ∈ Ideal.span s, P a`. Introduce `s hs hP a ha`. Establish `hle : Ideal.span s ≤ Q.ext J` using `Ideal.span_le.2 hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hP x hx`. Consider the case `zero => exact hzero`. Consider the case `add x y hx hy ihx ihy => exact hadd x (hle hx) y (hle hy) ihx ihy`. Consider the case `smul r x hx ih => exact hmul r x (hle hx) ih`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJ : ∀ x ∈ J.map (algebraMap B Q.P), P x`. Use `hspan _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `Q.algebraMap_mem_ext hj`. Introduce and unpack `_ ⟨j, hj, rfl⟩ n`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h.dp.2 j hj, Derivation.map_algebraMap, Derivation.map_algebraMap, smul_zero]`. Establish `he1` using `Q.e_one_mem_ext J`. Establish `hA : ∀ x ∈ Q.aug, P x`. Use `hspan _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `Ideal.mem_sup_right (Q.e_succ_mem_aug k)`. Introduce and unpack `_ ⟨k, rfl⟩ n`. Consider the cases of `n with`. Consider the case `zero => simp [η.dpow_zero (Ideal.mem_sup_right (Q.e_succ_mem_aug k)), dpPred]`. Consider the case `succ m`.
+Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : η.dpow (m + 1) (Q.e (k + 1)) = (Nat.uniformBell (m + 1) (k + 1) : Q.P) * Q.e ((m * (k + 1) + k) + 1)`. Rewrite using `[← h.var (k + 1), η.dpow_comp (by omega) he1, h.var, show (m + 1) * (k + 1) = m * (k + 1) + k + 1 by ring]`. Establish `c2 : dpPred η (m + 1) (Q.e (k + 1)) * Q.e k = (Nat.uniformBell (m + 1) (k + 1) : Q.P) * Q.e (m * (k + 1) + k)`. Use `dpPred_dpow η he1 (m + 1) (n := k + 1) (by omega)` as an intermediate fact. Rewrite `this` using `[h.var, show dpPred η (k + 1) (Q.e 1) = Q.e k from h.var k, show (m + 1) * (k + 1) = m * (k + 1) + k + 1 by ring, show dpPred η (m * (k + 1) + k + 1) (Q.e 1) = Q.e (m * (k + 1) + k) from h.var _]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this`. Rewrite using `[c1, D.leibniz, D.map_natCast, smul_zero, add_zero, smul_eq_mul, smul_eq_mul, Q.der_apply, Q.der_apply, Q.derLin_e_succ, Q.derLin_e_succ, c2]`. Establish `hall : ∀ x ∈ Q.ext J, P x` using `fun x hx ↦ by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Conclude with `hadd y (Ideal.mem_sup_left hy) z (Ideal.mem_sup_right hz) (hJ y hy) (hA z hz)`.
-
-Simplify `hall a ha (n + 1)` using `[dpPred, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem PDPoly.der_dpow_succ {J : Ideal B} (δ : DividedPowers J) (Q : PDPoly B) (η : DividedPowers (Q.ext J))
     (h : Q.IsStd δ η) (n : ℕ) {a : Q.P} (ha : a ∈ Q.ext J) :
@@ -175,9 +173,9 @@ theorem PDPoly.der_dpow_succ {J : Ideal B} (δ : DividedPowers J) (Q : PDPoly B)
   simpa [dpPred, smul_eq_mul] using hall a ha (n + 1)
 
 /- English proof (translation)
-Introduce `h`. Use `⟨Q.der.restrictScalars R, fun b ↦ ?_, fun n ↦ ?_, fun n a ha ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Derivation.restrictScalars_apply, Derivation.map_algebraMap]`. Rewrite using `[Derivation.restrictScalars_apply, Q.der_apply, Q.derLin_e_succ]`. Simplify using `only [Derivation.restrictScalars_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Q.der_dpow_succ δ η h n ha`.
+A detailed English derivation is pending.
 -/
 theorem PDPoly.exists_der (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B)
     (δ : DividedPowers J) (Q : PDPoly B) [Algebra R Q.P] [IsScalarTower R B Q.P] (η : DividedPowers (Q.ext J)) :

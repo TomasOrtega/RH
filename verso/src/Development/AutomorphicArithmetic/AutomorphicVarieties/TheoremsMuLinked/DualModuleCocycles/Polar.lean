@@ -4,31 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Introduce `l _ F O R X _ _ _ _ _ n _ x δ ρ P t c d hP hF ht hd`. Take `⟨hsm, hsa, hsr, hss, -, hsρ⟩` from `starFacts F (O := O) (R := R) (n := n)`. Establish `hρs` using `hsρ x ρ P hF`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hεε, hPt⟩ : ∃ ε : O, ε * ε = 1 ∧ (P : Matrix (Fin n) (Fin n) O)ᵀ = ε • (P : Matrix (Fin n) (Fin n) O) := by`. Break down `hP with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨1, one_mul 1, by rw [h, one_smul]⟩`. Conclude with `⟨-1, by ring, by rw [h, neg_one_smul]⟩`. Establish `hmap : ∀ A B : Matrix (Fin n) (Fin n) O, bar X (A * B) = bar X A * bar X B` using `fun A B => Matrix.map_mul`. Use `set Pb := bar X (P : Matrix (Fin n) (Fin n) O) with hPb`. Use `set Q := bar X ((P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) with hQ`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set e : X := algebraMap O X ε with he`. Establish `hQP : Q * Pb = 1`. Rewrite using `[hQ, hPb, ← hmap, Units.inv_mul]`. Simplify using `[bar]`. Establish `hPQ : Pb * Q = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hQ, hPb, ← hmap, Units.mul_inv]`. Simplify using `[bar]`. Establish `hQP' : ∀ M, Q * (Pb * M) = M` using `fun M => by rw [← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Establish `hPQ' : ∀ M, Pb * (Q * M) = M` using `fun M => by rw [← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hee : e * e = 1` using `by rw [he, ← map_mul, hεε, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hPbt : Pbᵀ = e • Pb`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hPt i) j`. Simplify using `only [Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul] at h`. Simplify using `[hPb, bar, Matrix.transpose_apply, h, map_mul, he]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQt : Qᵀ = e • Q`. Establish `h0 : e • (Pb * Qᵀ) = 1`. Rewrite using `[← Matrix.smul_mul, ← hPbt, ← Matrix.transpose_mul, hQP, Matrix.transpose_one]`. Establish `h1 : Pb * Qᵀ = e • 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hρ : ∀ a, bar X (repR x (mat ρ) (F.star O R n a)) = Q * (bar X (repR x (mat ρ) a))ᵀ * Pb`. Introduce `a`. Rewrite using `[hρs, hmap, hmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hρT : ∀ a, (bar X (repR x (mat ρ) (F.star O R n a)))ᵀ = Pb * bar X (repR x (mat ρ) a) * Q`. Introduce `a`. Rewrite using `[hρ, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hPbt, hQt]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hee, one_smul, Matrix.mul_assoc]`. Set `eD : MonoidAlgebra R F.G₀ →+ Matrix (Fin n) (Fin n) X` to `AddMonoidHom.mk' (fun a => Q * (d (F.star O R n a))ᵀ * Pb) (by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [hsa, map_add, Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul])`. Establish `heD : ∀ a, eD a = Q * (d (F.star O R n a))ᵀ * Pb` using `fun a => rfl`. Establish `h0 : F.star O R n 0 = 0` using `by simpa using hsr 0 0`. Establish `htS : ∀ a, t (F.star O R n a) = t a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => rw [h0]`. Consider the case `add a b ha hb => rw [hsa, map_add, map_add, ha, hb]`. Consider the case `single g r`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (MonoidAlgebra.single g r : MonoidAlgebra R F.G₀) = r • MonoidAlgebra.single g 1`. Rewrite using `[MonoidAlgebra.smul_single', mul_one]`. Rewrite using `[hs, hsr, map_smul, map_smul, ht]`. Use `⟨d + eD, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AddMonoidHom.add_apply, heD, hd.mul, hsm, Matrix.transpose_add, Matrix.transpose_mul, hρT, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hQP', hQP, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Introduce `r a`. Simplify using `only [AddMonoidHom.add_apply, heD, hd.smul, hsr, Matrix.transpose_add, Matrix.transpose_smul, hρT, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, hQP', hQP, Matrix.mul_one, smul_add, two_mul, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[AddMonoidHom.add_apply, Matrix.trace_add, hd.tr, heD, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hPQ, Matrix.one_mul, Matrix.trace_transpose, hd.tr, htS, two_mul, add_smul]`. Introduce `a`. Simplify using `only [AddMonoidHom.add_apply, heD, hss, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_transpose, hPbt, hQt, Matrix.mul_add, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hee, one_smul, Matrix.mul_assoc, hPQ', hPQ, hQP, hQP', Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.polar :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} [Algebra ℤ_[l] O] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ : F.G₀ →* GL (Fin n) O) (P : GL (Fin n) O) (t : MonoidAlgebra R F.G₀ →ₗ[R] R) (c : O) (d : MonoidAlgebra R F.G₀ →+ Matrix (Fin n) (Fin n) X), ((P : Matrix (Fin n) (Fin n) O)ᵀ = P ∨ (P : Matrix (Fin n) (Fin n) O)ᵀ = -P) → F.IsForm O n ρ P → (∀ g, t (F.star O R n (MonoidAlgebra.single g 1)) = t (MonoidAlgebra.single g 1)) → IsLift x δ (repR x (mat ρ)) t c d → ∃ d' : MonoidAlgebra R F.G₀ →+ Matrix (Fin n) (Fin n) X, IsLift x δ (repR x (mat ρ)) t (2 * c) d' ∧ ∀ a, bar X (P : Matrix (Fin n) (Fin n) O) * d' (F.star O R n a) = (d' a)ᵀ * bar X (P : Matrix (Fin n) (Fin n) O) := by

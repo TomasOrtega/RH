@@ -22,11 +22,11 @@ namespace GlobalTheory.CoeffNonvanish
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `D n lam`. Use `⟨⟨Formalism.L2.Col.extVV D.what₂.LL lam, Formalism.L2.Col.extVV_mem D.what₂.LL lam⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hmap : MvPolynomial.map D.what₂.embLL (Formalism.L2.Col.extVV D.what₂.LL lam) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.ExportSeries.eq_zero_of_coefFn_id_eq_zero D n lam` to reduce the goal to its premises. Introduce `x`. Establish `hx` using `h x`. Simplify using `only [coefFn] at hx ⊢`. Rewrite `*` using `[eval₂Hom_map_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx`. Conclude with `Formalism.L2.Col.extVV_ne_zero D.what₂.LL lam ((map_eq_zero_iff _ (MvPolynomial.map_injective _ D.what₂.embLL.injective)).mp hmap)`.
+A detailed English derivation is pending.
 -/
 theorem exists_coefFn_ne_zero : ∀ {D : D7} {n : ℕ} (lam : D.what₂.Tau → DomWeight n),
     ∃ (F : VV D.what₂.LL lam) (x : GLR D n), coefFn D.what₂.embLL lam (F : Pol D.what₂.LL D.what₂.Tau n) x ≠ 0 := by

@@ -11,7 +11,7 @@ section
 variable {F : Type} [Field F] [Algebra ℂ F] {d : ℕ} (x : Fin (d + 1) → Fˣ)
 
 /- English proof (translation)
-Use `Algebra.adjoin_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨i, hi, a, rfl⟩`. Take `rfl` from `Finset.mem_singleton.1 hi`. Conclude with `⟨i, hj, a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma rA_single_le {I : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hj : j ∈ I) :
     rA ℂ (xv x) {j} ≤ rA ℂ (xv x) I := by
@@ -21,7 +21,7 @@ private lemma rA_single_le {I : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hj : j 
   exact ⟨i, hj, a, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(⟨a, ha⟩ : rA ℂ (xv x) I) ⊗ₜ[ℂ] (⟨b, hb⟩ : rA ℂ (xv x) J), by simp [Algebra.TensorProduct.map_tmul]⟩`.
+Supply the required witnesses or components.
 -/
 private lemma tmul_mem_tensorRing {I J : Finset (Fin (d + 1))} {a b : F} (ha : a ∈ rA ℂ (xv x) I)
     (hb : b ∈ rA ℂ (xv x) J) : a ⊗ₜ[ℂ] b ∈ R0 x I J :=
@@ -32,7 +32,7 @@ private abbrev PP (I J : Finset (Fin (d + 1))) (j : Fin (d + 1)) : Submodule ℂ
   sm (Algebra.lmul ℂ (F ⊗[ℂ] F)) (Subalgebra.toSubmodule (R0 x I J)) (Set.range (f0 x j))
 
 /- English proof (translation)
-Establish `h : (Subalgebra.toSubmodule (R0 x I J)).map (Algebra.lmul ℂ (F ⊗[ℂ] F) t) ≤ PP x I J j` using `le_iSup₂ (f := fun r (_ : r ∈ Set.range (f0 x j)) => (Subalgebra.toSubmodule (R0 x I J)).map (Algebra.lmul ℂ (F ⊗[ℂ] F) r)) t ht`. Conclude with `h ⟨m, hm, rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma f_mul_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} {t m : F ⊗[ℂ] F}
     (ht : t ∈ Set.range (f0 x j)) (hm : m ∈ R0 x I J) : t * m ∈ PP x I J j := by
@@ -42,9 +42,7 @@ private lemma f_mul_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} {t m : F 
   exact h ⟨m, hm, rfl⟩
 
 /- English proof (translation)
-Establish `h : PP x I J j ≤ (PP x I J j).comap (LinearMap.mulLeft ℂ r)`. Use `iSup₂_le fun t ht => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `show r * (t * m) ∈ PP x I J j`. Rewrite using `[mul_left_comm]`.
-
-Conclude with `f_mul_mem x ht ((R0 x I J).mul_mem hr hm)`. Conclude with `h hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_mem_PP {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} {r p : F ⊗[ℂ] F}
     (hr : r ∈ R0 x I J) (hp : p ∈ PP x I J j) : r * p ∈ PP x I J j := by
@@ -57,15 +55,15 @@ private lemma mul_mem_PP {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} {r p : F
   exact h hp
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, a, rfl⟩` from `hy`. Take `rfl` from `Finset.mem_singleton.1 hi`. Distinguish the cases in `hne : a = i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hne` using the available equality. Simplify using the standard rewrite rules. Take `⟨l, rfl⟩` from `Fin.exists_succAbove_eq hne`. Use `f_mul_mem x (I := I) (J := J) (j := i) ⟨l, rfl⟩ (one_mem _)` as an intermediate fact. Simplify `this` using `[f0]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `algebraMap c`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, sub_self]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `e : (a + b) ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] (a + b) = (a ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] a) + (b ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] b)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.add_tmul, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem ha hb`. Consider the case `mul a b ha' hb' ha hb`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (a * b) ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] (a * b) = (a ⊗ₜ[ℂ] (1 : F)) * (b ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] b) + ((1 : F) ⊗ₜ[ℂ] b) * (a ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] a)`. Simplify using `only [mul_sub, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_comm b a]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (mul_mem_PP x (tmul_mem_tensorRing x (rA_single_le x hI ha') (one_mem _)) hb) (mul_mem_PP x (tmul_mem_tensorRing x (one_mem _) (rA_single_le x hJ hb')) ha)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma diff_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hI : j ∈ I) (hJ : j ∈ J) {a : F}
     (ha : a ∈ rA ℂ (xv x) {j}) : a ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] a ∈ PP x I J j := by
@@ -99,11 +97,11 @@ private lemma diff_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hI : j �
       (mul_mem_PP x (tmul_mem_tensorRing x (one_mem _) (rA_single_le x hJ hb')) ha)
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `e : (a : F) ⊗ₜ[ℂ] (b : F) - (1 : F) ⊗ₜ[ℂ] ((a : F) * b) = ((1 : F) ⊗ₜ[ℂ] (b : F)) * ((a : F) ⊗ₜ[ℂ] (1 : F) - (1 : F) ⊗ₜ[ℂ] (a : F))`. Simplify using `only [mul_sub, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_comm (b : F) (a : F)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.TensorProduct.map_tmul, Subalgebra.coe_val, Algebra.TensorProduct.lmul'_apply_tmul]`. Rewrite using `[e]`. Conclude with `mul_mem_PP x (tmul_mem_tensorRing x (one_mem _) (rA_single_le x hJ b.2)) (diff_mem x hI hJ a.2)`. Consider the case `add a b ha hb`. Use `add_mem ha hb` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, TensorProduct.tmul_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private lemma diag_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hI : j ∈ I) (hJ : j ∈ J)
     (w : rA ℂ (xv x) {j} ⊗[ℂ] rA ℂ (xv x) {j}) :
@@ -126,26 +124,24 @@ private lemma diag_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hI : j �
     abel
 
 /- English proof (translation)
-The claim follows from `prod_mem fun i _ => Algebra.subset_adjoin ⟨j, Finset.mem_singleton_self j, i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma prod_mem_single (I : Finset (Fin (d + 1))) (j : Fin (d + 1)) :
     (∏ i ∈ I, (x i : F) / x j) ∈ rA ℂ (xv x) {j} :=
   prod_mem fun i _ => Algebra.subset_adjoin ⟨j, Finset.mem_singleton_self j, i, rfl⟩
 
 /- English proof (translation)
-Establish `hs` using `prod_mem_single x I j`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, b, rfl⟩` from `hy`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (∏ i ∈ I, (x i : F) / x j) ^ 1 * (xv x b / xv x i) = (∏ i' ∈ I.erase i, (x i' : F) / x j) * ((x b : F) / x j)`. Rewrite using `[pow_one, ← Finset.mul_prod_erase I _ hi]`. Establish `h1 : (x i : F) ≠ 0` using `(x i).ne_zero`. Establish `h2 : (x j : F) ≠ 0` using `(x j).ne_zero`. Simplify using `only [xv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (prod_mem_single x _ j) (Algebra.subset_adjoin ⟨j, Finset.mem_singleton_self j, b, rfl⟩)`. Consider the case `algebraMap c => exact ⟨0, by simpa using (rA ℂ (xv x) {j}).algebraMap_mem c⟩`. Consider the case `add a b _ _ ha hb`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `ha`. Take `⟨N', hN'⟩` from `hb`. Use `⟨N + N', ?_⟩` and prove the remaining obligations. Establish `e : (∏ i ∈ I, (x i : F) / x j) ^ (N + N') * (a + b) = (∏ i ∈ I, (x i : F) / x j) ^ N' * ((∏ i ∈ I, (x i : F) / x j) ^ N * a) + (∏ i ∈ I, (x i : F) / x j) ^ N * ((∏ i ∈ I, (x i : F) / x j) ^ N' * b)`. Rewrite using `[pow_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (pow_mem hs _) hN) (mul_mem (pow_mem hs _) hN')`. Consider the case `mul a b _ _ ha hb`. Take `⟨N, hN⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N', hN'⟩` from `hb`. Use `⟨N + N', ?_⟩` and prove the remaining obligations. Establish `e : (∏ i ∈ I, (x i : F) / x j) ^ (N + N') * (a * b) = ((∏ i ∈ I, (x i : F) / x j) ^ N * a) * ((∏ i ∈ I, (x i : F) / x j) ^ N' * b)`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `mul_mem hN hN'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pow_mul_mem (I : Finset (Fin (d + 1))) (j : Fin (d + 1)) {a : F} (ha : a ∈ rA ℂ (xv x) I) :
     ∃ N : ℕ, (∏ i ∈ I, (x i : F) / x j) ^ N * a ∈ rA ℂ (xv x) {j} := by
@@ -185,14 +181,14 @@ private lemma pow_mul_mem (I : Finset (Fin (d + 1))) (j : Fin (d + 1)) {a : F} (
     exact mul_mem hN hN'
 
 /- English proof (translation)
-The claim follows from `prod_mem fun i hi => Algebra.subset_adjoin ⟨i, hi, j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma inv_prod_mem {I : Finset (Fin (d + 1))} {j : Fin (d + 1)} (hj : j ∈ I) :
     (∏ i ∈ I, (x j : F) / x i) ∈ rA ℂ (xv x) I :=
   prod_mem fun i hi => Algebra.subset_adjoin ⟨i, hi, j, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (x i : F) ≠ 0` using `(x i).ne_zero`. Establish `h2 : (x j : F) ≠ 0` using `(x j).ne_zero`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 private lemma prod_mul_inv (I : Finset (Fin (d + 1))) (j : Fin (d + 1)) :
     (∏ i ∈ I, (x j : F) / x i) * (∏ i ∈ I, (x i : F) / x j) = 1 := by
@@ -203,15 +199,15 @@ private lemma prod_mul_inv (I : Finset (Fin (d + 1))) (j : Fin (d + 1)) :
   field_simp
 
 /- English proof (translation)
-Establish `hs` using `prod_mem_single x I j`. Establish `ht` using `prod_mem_single x J j`. Establish `hst` using `tmul_mem_tensorRing x hs ht`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Take `⟨N, hN⟩` from `pow_mul_mem x I j a.2`. Take `⟨N', hN'⟩` from `pow_mul_mem x J j b.2`. Use `⟨N + N', ?_⟩` and prove the remaining obligations. Establish `e : ((∏ i ∈ I, (x i : F) / x j) ⊗ₜ[ℂ] (∏ i ∈ J, (x i : F) / x j)) ^ (N + N') * Algebra.TensorProduct.map (rA ℂ (xv x) I).val (rA ℂ (xv x) J).val (a ⊗ₜ[ℂ] b) = (((∏ i ∈ I, (x i : F) / x j) ^ N') ⊗ₜ[ℂ] ((∏ i ∈ J, (x i : F) / x j) ^ N)) * (((∏ i ∈ I, (x i : F) / x j) ^ N * (a : F)) …`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.map_tmul, Subalgebra.coe_val, Algebra.TensorProduct.tmul_mul_tmul, pow_add]`. Apply the tactic sequence `congr 1 <;> ring`. Rewrite using `[e]`. Conclude with `(R0 x {j} {j}).mul_mem (tmul_mem_tensorRing x (pow_mem hs _) (pow_mem ht _)) (tmul_mem_tensorRing x hN hN')`. Consider the case `add a b ha hb`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `ha`. Take `⟨N', hN'⟩` from `hb`. Use `⟨N + N', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mul_add, pow_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (_ ^ N), mul_assoc]`. Conclude with `(R0 x {j} {j}).mul_mem (pow_mem hst _) hN`. Rewrite using `[mul_assoc]`. Conclude with `(R0 x {j} {j}).mul_mem (pow_mem hst _) hN'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma scale_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (w : rA ℂ (xv x) I ⊗[ℂ] rA ℂ (xv x) J) :
     ∃ N : ℕ, ((∏ i ∈ I, (x i : F) / x j) ⊗ₜ[ℂ] (∏ i ∈ J, (x i : F) / x j)) ^ N *
@@ -248,15 +244,13 @@ private lemma scale_mem {I J : Finset (Fin (d + 1))} {j : Fin (d + 1)} (w : rA �
 end
 
 /- English proof (translation)
-Introduce `F _ _ d x _ I J j hI hJ m hm h0`. Take `⟨w, rfl⟩` from `hm`. Take `⟨N, hN⟩` from `scale_mem x (j := j) w`. Use `set m := Algebra.TensorProduct.map (rA ℂ (xv x) I).val (rA ℂ (xv x) J).val w with hm`. Use `set c := (∏ i ∈ I, (x i : F) / x j) ⊗ₜ[ℂ] (∏ i ∈ J, (x i : F) / x j) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := (∏ i ∈ I, (x j : F) / x i) ⊗ₜ[ℂ] (∏ i ∈ J, (x j : F) / x i) with hu`. Establish `huR : u ∈ R0 x I J` using `tmul_mem_tensorRing x (inv_prod_mem x hI) (inv_prod_mem x hJ)`. Establish `huc : u * c = 1`. Rewrite using `[hu, hc, Algebra.TensorProduct.tmul_mul_tmul, prod_mul_inv, prod_mul_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w', hw'⟩` from `hN`. Establish `h1` using `diag_mem x hI hJ w'`. Establish `hz : Algebra.TensorProduct.lmul' ℂ (c ^ N * m) = 0`. Establish `h0' : Algebra.TensorProduct.lmul' ℂ m = 0` using `h0`. Rewrite using `[map_mul, h0', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : c ^ N * m ∈ PP x I J j`. Establish `e : Algebra.TensorProduct.map (rA ℂ (xv x) {j}).val (rA ℂ (xv x) {j}).val w' = c ^ N * m` using `hw'`. Rewrite `h1` using `[e, hz]`. Simplify using `using h1`. Establish `h3` using `mul_mem_PP x (pow_mem huR N) h2`.
-
-Rewrite `h3` using `[← mul_assoc, ← mul_pow, huc, one_pow, one_mul]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem kernelZero_holds :
     Ker0 := by

@@ -30,13 +30,13 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V} {L : Submodule (
   {n : ℕ} {b : Fin n → V} {a : Fin n → 𝓞 F}
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K, IsScalarTower.algebraMap_apply (𝓞 F) F K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coe_iota_eq_algebraMap_coe (a : 𝓞 F) : jK (ι a) = algebraMap F K (a : F) := by
   rw [← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K, IsScalarTower.algebraMap_apply (𝓞 F) F K]
 
 /- English proof (translation)
-Rewrite using `[coe_iota_eq_algebraMap_coe]`. Use `(map_ne_zero (algebraMap F K)).mpr ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem jK_iota_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 := by
   rw [coe_iota_eq_algebraMap_coe]
@@ -44,7 +44,7 @@ private theorem jK_iota_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 :=
   exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr ha
 
 /- English proof (translation)
-Establish `hdiag' : ∀ i, h (b i) (b i) = jK (ι (a i))` using `fun i => by`. Rewrite using `[hdiag i]`. Conclude with `(coe_iota_eq_algebraMap_coe (a i)).symm`. Use `show h (b k) (∑ i, (jK (z i) / jK (ι (a i))) • b i) = jK (z k)`. Rewrite using `[h_sum horth hdiag' _ k, div_mul_cancel₀ _ (jK_iota_ne_zero (ha k))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_phi (horth : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (hdiag : ∀ i, h (b i) (b i) = algebraMap F K ((a i : 𝓞 F) : F)) (ha : ∀ i, a i ≠ 0)
@@ -55,22 +55,22 @@ theorem h_phi (horth : ∀ i j, i ≠ j → h (b i) (b j) = 0)
   rw [h_sum horth hdiag' _ k, div_mul_cancel₀ _ (jK_iota_ne_zero (ha k))]
 
 /- English proof (translation)
-Use `show (∑ i, (jK (z i) / jK (ι (a i))) • b i) ∈ X`. Conclude with `X.sum_mem fun i _ => X.smul_mem _ (hbX i)`.
+A detailed English derivation is pending.
 -/
 theorem phi_mem (hbX : ∀ i, b i ∈ X) (z : Fin n → 𝓞 K) : phi b a z ∈ X := by
   show (∑ i, (jK (z i) / jK (ι (a i))) • b i) ∈ X
   exact X.sum_mem fun i _ => X.smul_mem _ (hbX i)
 
 /- English proof (translation)
-Use `haveI := h𝔭.isPrime`. Establish `hA : ∀ z, phi b a z ∈ locF 𝔭 (dualIn h X L)` using `fun z => (mem_locF_dualIn_iff hbX hloc horth hdiag ha hF h𝔭 hL _).mpr ⟨phi_mem hbX z, fun i => by rw [h_phi horth hdiag ha]; exact HU.jK_mem_SP _⟩`. Set `ψ₀ : (Fin n → 𝓞 K) →ₗ[𝓞 K] locF 𝔭 (dualIn h X L)` to `LinearMap.codRestrict _ (phi b a) hA`. Set `ψ` to `((locF 𝔭 L).comap (locF 𝔭 (dualIn h X L)).subtype).mkQ.comp ψ₀`. Establish `hker : LinearMap.ker ψ = Submodule.pi Set.univ (fun i => extP K 𝔭 ^ vF 𝔭 (a i))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using `only [ψ, ψ₀, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, LinearMap.codRestrict_apply, Submodule.mem_pi, Set.mem_univ, forall_const]`. Rewrite using `[mem_B_iff hbX hloc horth hdiag ha h𝔭.isPrime hL]`. Simplify using `only [h_phi horth hdiag ha, div_mem_SP_iff h𝔭 (ha _)]`. Conclude with `⟨fun hz => hz.2, fun hz => ⟨phi_mem hbX z, hz⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective ψ`. Introduce `q`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective ((locF 𝔭 L).comap (locF 𝔭 (dualIn h X L)).subtype) q`. Establish `hx'` using `(mem_locF_dualIn_iff hbX hloc horth hdiag ha hF h𝔭 hL x).mp hx`. Use `choose z hz using fun i => exists_sub_div_mem_SP h𝔭 (ha i) (hx'.2 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [ψ₀, Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_sub, LinearMap.codRestrict_apply]`. Rewrite using `[mem_B_iff hbX hloc horth hdiag ha h𝔭.isPrime hL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨X.sub_mem (phi_mem hbX z) hx'.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, h_phi horth hdiag ha]`. Use `Subring.neg_mem _ (hz i)` as an intermediate fact. Rewrite `this` using `[← neg_div, neg_sub]`. Then use the resulting hypothesis. Conclude with `⟨(LinearMap.quotKerEquivOfSurjective ψ hsurj).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker ≪≫ₗ Submodule.quotientPi _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem disc_equiv (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) (hL : IsLatIn X L) (hbX : ∀ i, b i ∈ X)
     (hloc : locF 𝔭 (Submodule.span (𝓞 K) (Set.range b)) = locF 𝔭 L)

@@ -22,9 +22,9 @@ instance (S : Scheme.{0}) : (covSurj S).IsStableUnderComposition := by
   exact (inferInstance : Surjective (g.unop.left ≫ f.unop.left))
 
 /- English proof (translation)
-Establish `w : 𝟙 X ≫ f = (f ≫ inv g) ≫ g`. Rewrite using `[Category.id_comp, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Use `⟨⟨pullback.lift (𝟙 _) (f ≫ inv g) w, ?_, pullback.lift_fst _ _ _⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.comp_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_isIso {C : Type*} [Category C] {X Y Z : C} (f : X ⟶ Z) (g : Y ⟶ Z) [IsIso g] [HasPullback f g] :
     IsIso (pullback.fst f g) := by
@@ -37,19 +37,17 @@ theorem fst_isIso {C : Type*} [Category C] {X Y Z : C} (f : X ⟶ Z) (g : Y ⟶ 
       IsIso.hom_inv_id, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R _ F S E E' α p hF hq hq' hst`. Set `Φ : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ` to `(Scheme.Etale.forget S ⋙ bc (α ≫ p)).op`. Set `Φ' : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ` to `(Scheme.Etale.forget S ⋙ bc p).op`. Set `β : Φ' ⟶ Φ` to `NatTrans.op (Functor.whiskerLeft (Scheme.Etale.forget S) (bcMap α p))`. Establish `hLG` using `GlobalTheory.T.etale_cohomology_equivalence_of_strictly_henselian_stalks R F S E E' α p hF hq hq' hst`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD` using `GlobalTheory.T.etaleSpace_descent_local_equivalence R F (S.Etale)ᵒᵖ (covSurj S) Φ Φ' β (GlobalTheory.refines_of_coAug _ (covSurj S) _ (fun U V g hg => ⟨GlobalTheory.T.smallEtale_cechNerve_resolution_of_surjective R S E (α ≫ p) U V g hg, GlobalTheory.T.smallEtale_cechNerve_resolut …`. Introduce `U n x`. Take `⟨V, h, y, hV, hs, hy⟩` from `(hLG ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).1 x`. Set `V' : S.Etale` to `MorphismProperty.Over.mk ⊤ V.hom hV`. Set `h' : V' ⟶ U.unop` to `MorphismProperty.Over.homMk h.left (Over.w h) trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `⟨op V', h'.op, hs, y, hy⟩)`. Use the proof step `(by`. Introduce `U n y hy`. Take `⟨V, h, hV, hs, hy⟩` from `(hLG ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).2 y hy`. Set `V' : S.Etale` to `MorphismProperty.Over.mk ⊤ V.hom hV`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `h' : V' ⟶ U.unop` to `MorphismProperty.Over.homMk h.left (Over.w h) trivial`. Conclude with `⟨op V', h'.op, hs, hy⟩)`. Establish `h1` using `hD (op (Scheme.Etale.mk (𝟙 S)))`. Set `U0 : Over S` to `(Scheme.Etale.forget S).obj (Scheme.Etale.mk (𝟙 S))`. Establish `h2 : Eqv R ((bcMap α p).app U0) F` using `h1`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.EtC.eqv_basic R F`. Establish `hsq : (bcMap α p).app U0 ≫ pullback.fst p (sch.map U0.hom) = pullback.fst (α ≫ p) (sch.map U0.hom) ≫ α`. Simplify using `only [bcMap, pullback.map]`. Conclude with `pullback.lift_fst _ _ _`. Use `haveI hI : IsIso (sch.map U0.hom) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsIso (sch.map (𝟙 S))`. Rewrite using `[CategoryTheory.Functor.map_id]`. Use `infer_instance`. Establish `key : Eqv R ((bcMap α p).app U0 ≫ pullback.fst p (sch.map U0.hom)) F` using `(hcomp _ _ _ _ _).1 h2 (hiso _ _ _ (fst_isIso _ _))`. Rewrite `key` using `[hsq]`.
-
-Conclude with `(hcomp _ _ _ _ _).2.1 (hiso _ _ _ (fst_isIso _ _)) key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E E' : Spc) (α : E ⟶ E') (p : E' ⟶ sch.obj S), Finitary F → QcqsOver (α ≫ p) → QcqsOver p → (∀ (O : Type) [CommRing O] (s : Spec (CommRingCat.of O) ⟶ S), IsStalk O s → Eqv R ((bcMap α p).app (Over.mk s)) F) → Eqv R α F := by
   intro R _ F S E E' α p hF hq hq' hst

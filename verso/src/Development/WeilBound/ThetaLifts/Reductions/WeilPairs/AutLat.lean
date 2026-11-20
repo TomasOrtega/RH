@@ -18,27 +18,27 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 
 /- English proof (translation)
-The claim follows from `AutLatA.mem_iff C hR hA y`.
+A detailed English derivation is pending.
 -/
 theorem finRatF_mem_iff (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ)) (y : Matrix (Fin nT) (Fin nS) E) :
     finRatF F y ∈ latF F E nS nT Λ ↔ y ∈ Λ := AutLatA.mem_iff C hR hA y
 
 /- English proof (translation)
-The claim follows from `AutLatA.finLat hB hG R`.
+A detailed English derivation is pending.
 -/
 theorem finite_lat (hB : B.IsGood σ) (hG : GoodLat Λ) (R : ℝ) : {y | y ∈ Λ ∧ ‖infRatF (tauB B) y‖ ≤ R}.Finite :=
   AutLatA.finLat hB hG R
 
 /- English proof (translation)
-The claim follows from `AutLatA.level hG N hN`.
+A detailed English derivation is pending.
 -/
 theorem exists_level (hG : GoodLat Λ) (N : ℕ) (hN : 0 < N) : ∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧
     ∀ u ∈ U, ∃ l ∈ latF F E nS nT Λ, finIdem F E • u = ((N • l : XFF F E nS nT) : WOF F E nS nT) :=
   AutLatA.level hG N hN
 
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ ((N : E) ^ M * (b ⊗ₖ aᵀ).det)| := AutLatA.data C hG hR hO ha hb hΔ hd`.
+A detailed English derivation is pending.
 -/
 theorem finite_data (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) {g : GAF σ JS} {h : GAF σ JT} {a b}

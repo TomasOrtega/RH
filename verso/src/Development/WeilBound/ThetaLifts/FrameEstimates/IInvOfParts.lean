@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (GL (Fin n) (AE F E))` using `inferInstance`. Conclude with `Subgroup.instIsTopologicalGroupSubtypeMem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topGroup_UA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) : IsTopologicalGroup (UA σ J) := by
@@ -22,13 +22,13 @@ theorem topGroup_UA {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact Subgroup.instIsTopologicalGroupSubtypeMem _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp Φ hΦ`. Establish `hi` using `((hB F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1`. Use `⟨fun γ hγ h => ?_, fun g₀ => funext fun h => ?_, fun h h' => ?_⟩` and prove the remaining obligations. Simplify using `only [Model.I]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Simplify using `using hi 1 (one_mem _) γ hγ g h`. Take `⟨h1, -, h3⟩` from `hU F E σ hp.base.cm n X.J 1 (fun i j => by simpa using hp.herm.herm i j) (hE F E σ B hp.base n X r s (Or.inl hp.herm)).1.2`. Use `topGroup_UA σ X.J` as an intermediate fact. Use `h3 _ hp.good.haar` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hp.good.haar` as an intermediate fact. Establish `: BorelSpace (UA σ X.J)` using `⟨rfl⟩`. Establish `e : ∀ g, theta om (om (g₀, 1) Φ) g h = theta om Φ (g * g₀) h` using `fun g => by`. Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [Model.I, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `PositivityTheory.ThKF.L2.integral_right hp.good.dom (fun g => theta om Φ g h) (fun γ hγ g => by simpa using hi γ hγ 1 (one_mem _) g h) g₀`. Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iInv_of_parts (hB : ThetaBasic) (hU : PositivityTheory.ThKF.Unimod) (hE : EpsOf) : IInv := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp Φ hΦ
@@ -52,7 +52,7 @@ theorem iInv_of_parts (hB : ThetaBasic) (hU : PositivityTheory.ThKF.Unimod) (hE 
   · simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-The claim follows from `iInv_of_parts hB PositivityTheory.ThKF.unimodularity_holds epsOf_of`.
+A detailed English derivation is pending.
 -/
 theorem iInv_of (hB : ThetaBasic) : IInv := iInv_of_parts hB PositivityTheory.ThKF.unimodularity_holds epsOf_of
 

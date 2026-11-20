@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Matrix Filter Topology
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.LFun UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp
 
 /- English proof (translation)
-The claim follows from `h.mono fun _ _ _ _ hxy => hxy.trans hab`.
+A detailed English derivation is pending.
 -/
 private theorem rel_le_mono {s t : Multiset ℂ} {a b : ℝ} (hab : a ≤ b)
     (h : Multiset.Rel (fun x y => ‖x - y‖ ≤ a) s t) :
@@ -13,9 +13,9 @@ private theorem rel_le_mono {s t : Multiset ℂ} {a b : ℝ} (hab : a ≤ b)
   h.mono fun _ _ _ _ hxy => hxy.trans hab
 
 /- English proof (translation)
-Rewrite `h` using `[Multiset.rel_map_left]`. Rewrite using `[Multiset.rel_map_right]`. Use `h.mono fun x _ y _ hxy => ?_` and prove the remaining obligations. Establish `: x - (y - α) = x + α - y` using `by ring`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxy`.
+A detailed English derivation is pending.
 -/
 private theorem rel_shift {s c : Multiset ℂ} {ε : ℝ} (α : ℂ)
     (h : Multiset.Rel (fun x y => ‖x - y‖ ≤ ε) (s.map (· + α)) c) :
@@ -28,29 +28,25 @@ private theorem rel_shift {s c : Multiset ℂ} {ε : ℝ} (α : ℂ)
   exact hxy
 
 /- English proof (translation)
-Introduce `E _ _ _ m₀ α β`. Set `A : (E →+* ℂ) → Set (Multiset ℂ × Multiset ℂ)` to `fun t => {x | x.1 + x.2 = m₀ t}`. Establish `hA : ∀ t, (A t).Finite` using `fun t => by`. Use `((Multiset.antidiagonal (m₀ t)).toFinset.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hx` using `[A, Multiset.mem_antidiagonal]`. Establish `hS : (Set.pi Set.univ A).Finite` using `Set.Finite.pi' hA |>.subset (fun σ hσ t => hσ t (Set.mem_univ t))`. Set `F : ((E →+* ℂ) → Multiset ℂ × Multiset ℂ) → ((E →+* ℂ) → Multiset ℂ) × ((E →+* ℂ) → Multiset ℂ)` to `fun σ => (fun t => (σ t).1.map (· - α), fun t => (σ t).2.map (· - β))`. Use `⟨(hS.image F).toFinset, ?_⟩` and prove the remaining obligations. Introduce `m m₁ m₂ hm hto`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Good : ((E →+* ℂ) → Multiset ℂ × Multiset ℂ) → ℕ → ℕ → Prop` to `fun σ j k => ∀ t, Multiset.Rel (fun x y => ‖x - y‖ ≤ 1 / ((j : ℝ) + 1)) (m₁ k t) ((F σ).1 t) ∧ Multiset.Rel (fun x y => ‖x - y‖ ≤ 1 / ((j : ℝ) + 1)) (m₂ k t) ((F σ).2 t)`. Establish `hmono : ∀ σ {i j : ℕ} {k : ℕ}, i ≤ j → Good σ j k → Good σ i k`. Introduce `σ i j k hij h t`. Establish `hle : 1 / ((j : ℝ) + 1) ≤ 1 / ((i : ℝ) + 1)` using `Nat.one_div_le_one_div hij`. Conclude with `⟨rel_le_mono hle (h t).1, rel_le_mono hle (h t).2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `step1 : ∀ j, ∀ᶠ k in atTop, ∃ σ ∈ Set.pi Set.univ A, Good σ j k`. Introduce `j`. Establish `hpos : (0 : ℝ) < 1 / ((j : ℝ) + 1)` using `Nat.one_div_pos_of_nat`. Establish `hall : ∀ᶠ k in atTop, ∀ t, Multiset.Rel (fun x y => ‖x - y‖ ≤ 1 / ((j : ℝ) + 1)) (m k t) (m₀ t)` using `eventually_all.2 fun t => hto t _ hpos`. Use `filter_upwards [hall] with k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : ∀ t, ∃ x : Multiset ℂ × Multiset ℂ, x.1 + x.2 = m₀ t ∧ Multiset.Rel (fun x y => ‖x - y‖ ≤ 1 / ((j : ℝ) + 1)) ((m₁ k t).map (· + α)) x.1 ∧ Multiset.Rel (fun x y => ‖x - y‖ ≤ 1 / ((j : ℝ) + 1)) ((m₂ k t).map (· + β)) x.2`. Introduce `t`. Establish `h` using `hk t`. Rewrite `h` using `[hm k t, Multiset.rel_add_left]`. Take `⟨c₁, c₂, h₁, h₂, hc⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(c₁, c₂), hc.symm, h₁, h₂⟩`. Use `choose σ hσ h₁ h₂ using hsplit`. Conclude with `⟨σ, fun t _ => hσ t, fun t => ⟨rel_shift α (h₁ t), rel_shift β (h₂ t)⟩⟩`. Establish `step2 : ∃ σ ∈ Set.pi Set.univ A, ∀ j, ∃ᶠ k in atTop, Good σ j k`. Assume the negation of the conclusion as `hcon`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : ∀ σ, ∃ j, σ ∈ Set.pi Set.univ A → ∀ᶠ k in atTop, ¬ Good σ j k`. Introduce `σ`. Distinguish the cases in `hσ : σ ∈ Set.pi Set.univ A`. Assume the negation of the conclusion as `hno`. Use `hcon ⟨σ, hσ, fun j => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hev`. Conclude with `hno ⟨j, fun _ => hev⟩`. Conclude with `⟨0, fun h => absurd h hσ⟩`. Use `choose J hJ using hJ`. Set `N` to `hS.toFinset.sup J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hN : ∀ᶠ k in atTop, ∀ σ ∈ Set.pi Set.univ A, ¬ Good σ N k`. Use `(Filter.eventually_all_finite hS).2 fun σ hσ => ?_` and prove the remaining obligations. Use `filter_upwards [hJ σ hσ] with k hk hg`. Conclude with `hk (hmono σ (Finset.le_sup (f := J) (hS.mem_toFinset.2 hσ)) hg)`. Take `⟨k, hk₁, hk₂⟩` from `(hN.and (step1 N)).exists`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, hg⟩` from `hk₂`. Conclude with `hk₁ σ hσ hg`. Take `⟨σ, hσ, hfreq⟩` from `step2`. Take `⟨s, hs, hgood⟩` from `Filter.extraction_forall_of_frequently hfreq`. Establish `hlim : ∀ (ε : ℝ), 0 < ε → ∀ᶠ k : ℕ in atTop, 1 / ((k : ℝ) + 1) ≤ ε`.
-
-Introduce `ε hε`. Take `⟨j₀, hj₀⟩` from `exists_nat_one_div_lt hε`. Use `filter_upwards [eventually_ge_atTop j₀] with k hk`. Conclude with `(Nat.one_div_le_one_div hk).trans hj₀.le`. Use `⟨F σ, ?_, s, hs, ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify using `using Set.mem_image_of_mem F hσ`. Introduce `τ ε hε filter_upwards [hlim ε hε] with k hk`. Conclude with `rel_le_mono hk (hgood k τ).1`. Introduce `τ ε hε filter_upwards [hlim ε hε] with k hk`. Conclude with `rel_le_mono hk (hgood k τ).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.splitLim :
     SplitLim := by

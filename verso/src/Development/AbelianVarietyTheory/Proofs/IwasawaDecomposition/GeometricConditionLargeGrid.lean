@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `hR hL CF N S Γ hN hD hT`. Establish `hA` using `GlobalTheory.T.class_sum_divisor_all hR hL (NEa hL N (GridA CF)) S Γ (fun K B f T w Z Wt p0 t nch n xd c h => (hN K B f T w Z Wt p0 t nch n xd c h.1).map fun x => x.1) hD`. Establish `hG : RL.At (prmR (NEa hL N (GridA CF)) S Γ) fun S L => Row S L (AtAll fun D O c (b : Bundle D O c) => ∀ t : b.Comparison₂, (b.part t).pt.Ties → GlobalTheory.BigTop.Fun.HasGrid @GlobalTheory.BigTop.Fun.Fld (b.part t).pt CF)` using `RL.At.of_row (RowE.row (GlobalTheory.T.grid_field_has_lattices hL CF N S Γ hN))`. Take `⟨R, r, h⟩` from `RowL.and (RowL.and hA hG) hT`. Use `⟨R, r, Row.imp h fun 𝒜 σ _ H => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `eps Fm hc x hx i`. Take `⟨t⟩` from `H.2 Fm hc x hx i`. Take `⟨a, b, c, d, e⟩` from `H.1.1 Fm hc x hx i t`. Conclude with `⟨t, a, b, c, d, e, H.1.2 Fm hc x hx i t c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowGeo_at_gridA : GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (CF : ℝ) (N : NExt hL) (S : SExt) (Γ : GeoP),
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c →

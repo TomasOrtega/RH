@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FiniteCharNontrivial
 
 /- English proof (translation)
-Establish `h1 : Algebra.trace ℚ I.E (star x) = Algebra.trace ℚ I.E x` using `Algebra.trace_eq_of_algEquiv ((starRingAut : I.E ≃+* I.E).equivRatAlgEquiv _ _) x`. Establish `h2 : Algebra.trace ℚ I.E (algebraMap I.F I.E (PI.ScPsiExists.UnitaryGroupMassFormula.tau I.cm.fixed x)) = 2 * Algebra.trace ℚ I.F (PI.ScPsiExists.UnitaryGroupMassFormula.tau I.cm.fixed x)`. Rewrite using `[← Algebra.trace_trace (S := I.F), Algebra.trace_algebraMap, I.cm.deg2, map_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions. Rewrite `h2` using `[PI.ScPsiExists.UnitaryGroupMassFormula.tau_apply, map_add, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -26,13 +26,13 @@ theorem trace_eq_tau (I : AutInst) (x : I.E) :
   linarith
 
 /- English proof (translation)
-Establish `hfin : {v : HeightOneSpectrum (𝓞 E) | v.asIdeal ∣ Ideal.span {g}}.Finite` using `Ideal.finite_factors (by simpa using hg)`. Establish `hch : ∀ v : HeightOneSpectrum (𝓞 E), ∃ a : 𝓞 E, a ∉ Q.asIdeal ∧ (v ≠ Q → a ∈ v.asIdeal)`. Introduce `v`. Distinguish the cases in `hv : v = Q`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 Q.isPrime.ne_top, fun h => (h hv).elim⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hn : ¬ v.asIdeal ≤ Q.asIdeal` using `fun hle => hv (HeightOneSpectrum.ext (v.isMaximal.eq_of_le Q.isPrime.ne_top hle))`. Take `⟨a, ha, ha'⟩` from `SetLike.not_le_iff_exists.1 hn`. Conclude with `⟨a, ha', fun _ => ha⟩`. Use `choose a ha ha' using hch`. Use `⟨∏ v ∈ hfin.toFinset, a v, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Q.isPrime` as an intermediate fact. Introduce `h`. Take `⟨v, -, hv⟩` from `Ideal.IsPrime.prod_mem_iff.1 h`. Conclude with `ha v hv`. Introduce `Q' hQ' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : Q' ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]`. Conclude with `hQ'`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a hm) (ha' Q' hne)`.
+A detailed English derivation is pending.
 -/
 theorem exists_away {E : Type} [Field E] [NumberField E] (g : 𝓞 E) (hg : g ≠ 0)
     (Q : HeightOneSpectrum (𝓞 E)) :
@@ -61,15 +61,15 @@ theorem exists_away {E : Type} [Field E] [NumberField E] (g : 𝓞 E) (hg : g �
     exact Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a hm) (ha' Q' hne)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hgE : (g : I.E) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Establish `htr : ∀ z : 𝓞 I.E, ∃ n : ℤ, Algebra.trace ℚ I.E ((g : I.E)⁻¹ * algebraMap (𝓞 I.E) I.E j * algebraMap (𝓞 I.E) I.E z) = n`. Introduce `z`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : divN I g (Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (algebraMap (𝓞 I.E) I.E (j * z))) = Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) ((g : I.E)⁻¹ * algebraMap (𝓞 I.E) I.E j * algebraMap (𝓞 I.E) I.E z) := by`. Establish `e1 : algebraMap I.F (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) ((g : I.F)⁻¹) = Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) ((g : I.E)⁻¹) := by`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, map_inv₀, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[divN, e1, ← RingHom.map_mul, RingHom.map_mul (algebraMap (𝓞 I.E) I.E), mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hcon z`. Rewrite `h1` using `[e]`. Establish `h2` using `hrat ((g : I.E)⁻¹ * algebraMap (𝓞 I.E) I.E j * algebraMap (𝓞 I.E) I.E z)`. Rewrite `h2` using `[h1, one_mul]`. Rewrite using `[trace_eq_tau]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `PsiCondAllPf.trace_of_psi I _ h2`. Take `⟨d, hd, hdQ⟩` from `PsiCondAllPf.exists_diff_not_mem Q hun`. Take `⟨c, hc⟩` from `PsiCondAllPf.mul_diff_int _ htr d hd`. Establish `hcg : (g : 𝓞 I.E) * c = j * d`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[RingHom.map_mul, RingHom.map_mul, hc, map_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `hm : j * d ∈ Q.asIdeal` using `hcg ▸ Ideal.mul_mem_right _ _ hgQ`. Break down `Q.isPrime.mem_or_mem hm with h | h` into its components or cases. Use `exacts [hj h, hdQ h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem core (I : AutInst) (psiEf : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F → ℂ)
     (hrat : ∀ x : I.E, psiEf (Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) x) * psiEinf I x = 1)
@@ -108,11 +108,11 @@ theorem core (I : AutInst) (psiEf : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F 
   exacts [hj h, hdQ h]
 
 /- English proof (translation)
-Introduce `D psiEf _ _ hrat Q hQ`. Establish `hg : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal := by`. Establish `hQ'` using `hQ`. Rewrite `hQ'` using `[Nat.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Q.isPrime.mem_or_mem hQ' with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`. Establish `hun : Algebra.IsUnramifiedAt ℤ Q.asIdeal` using `PsiCondAllPf.unram_of (D.host.g i) (D.host.g_prime i) Q hi (Formalism.L2.SG.Pf.TypedLoc.tower_ef D.host.E D.host.E (D.host.g_prime i) (D.nd.g_split i) Q hi).1`. Take `⟨j, hj, hj'⟩` from `exists_away ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) (Nat.cast_ne_zero.2 hg) Q`. Take `⟨z, hz⟩` from `core (instOf D) psiEf hrat _ hg Q hQ hun j hj`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `z' : 𝓞 D.host.E` to `z`. Use `⟨oToS D.host.F D.host.E (j * z'), fun Q' h1 h2 => ?_, hz⟩` and prove the remaining obligations. Rewrite using `[resS_oToS, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (hj' Q' h1 h2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi_ne_one : ∀ (D : D7) (psiEf : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af (instOf D).F → ℂ), (∀ x y, psiEf (x + y) = psiEf x * psiEf y) → (∀ x ∈ IntAf (instOf D).F (instOf D).E, psiEf x = 1) → (∀ x : (instOf D).E, psiEf (Formalism.UG.inclE (F := (instOf D).F) (Formalism.MainNotions.S.Af (instOf D).F) x) * psiEinf (instOf D) x = 1) → ∀ Q : Pl D.host.E, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ∃ s : Formalism.L2.Herm.intAf D.host.F D.host.E, (∀ Q' : Pl D.host.E, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ Q'.asIdeal → Q' ≠ Q → resS D.host.F Q' s = 0) ∧ psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1) ≠ 1 := by
   intro D psiEf _ _ hrat Q hQ

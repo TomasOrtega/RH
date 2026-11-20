@@ -5,13 +5,13 @@ open GlobalTheory.GalV (HTower)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 /- English proof (translation)
-Introduce `O k _ _ _ _ _ Y p`. Use `haveI : IsPreimmersion (gen O k) := IsPreimmersion.of_isLocalization (nonZeroDivisors O)`. Establish `hker : RingHom.ker (algebraMap O k) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective O k)`. Use `⟨?_, (pullback.fst p (gen O k)).isEmbedding⟩` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Rewrite using `[← hz]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O k) (z : PrimeSpectrum k).asIdeal = ⊥`. Use `haveI : (z : PrimeSpectrum k).asIdeal.IsPrime := (z : PrimeSpectrum k).isPrime`. Rewrite using `[Ideal.eq_bot_of_prime (z : PrimeSpectrum k).asIdeal, ← RingHom.ker_eq_comap_bot, hker]`. Introduce `h`. Use `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O k) ⊥ = (p y).asIdeal`. Rewrite using `[h, ← RingHom.ker_eq_comap_bot, hker]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Cut.genRange :
     UpperTheory.Gal.Int.Geo.Cut.GenRange := by

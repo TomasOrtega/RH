@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.TypeProductCover
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `(IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x).trans (D.host.conjE_apply D.host.φ₀ x).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
@@ -22,7 +22,7 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
     (D.host.conjE_apply D.host.φ₀ x).symm
 
 /- English proof (translation)
-Introduce `c hc` and use `⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) c, (h c _ rfl).1 hc, by show D.host.conj (c : D.host.E) = star (c : D.host.E) rw [star_eq_conj]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lev_of_isConjPl (D : D7) {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.BasicNotions.IsConjPl D.host P P') :
     Formalism.IndefR.Lev.IsConjPl P P' := fun c hc =>
@@ -32,13 +32,11 @@ theorem lev_of_isConjPl (D : D7) {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Form
       rw [star_eq_conj]⟩
 
 /- English proof (translation)
-Introduce `D Pg plg hplg PP hPP`. Establish `hmul : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← Nat.cast_mul]`. Conclude with `hPP`. Establish `hk : ∃ k : Fin 2, PP ∈ placesOver D.host.E (D.host.g k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `PP.isPrime.mem_or_mem hmul with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨k, hk⟩` from `hk`. Take `⟨v, hv | hv⟩` from `GlobalTheory.TypePlaceCover.place_cover D k PP hk`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hv, ← hplg ⟨k, v⟩]`. Conclude with `(plg ⟨k, v⟩).2`. Use `right`. Use `⟨(plg ⟨k, v⟩ : Formalism.L2.DIV.Pl D.host.E), (plg ⟨k, v⟩).2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hplg ⟨k, v⟩]`. Conclude with `lev_of_isConjPl D hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_cover_prod : ∀ (D : D7) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg),
     (∀ kv, ((plg kv : ↥Pg) : Formalism.L2.DIV.Pl D.host.E) = D.naut.plGw kv.1 kv.2) →

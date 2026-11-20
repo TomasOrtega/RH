@@ -40,13 +40,13 @@ def RunT : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E
         (∀ w, GlobalTheory.LGrp.IsSpherical (locProd D.h w (D.σ · w)) (K w)) ∧ ∀ i, HasKType (W (D.N i)) (D.V i)
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨K, W, hK, hW', hT⟩` from `hR E hE n hn π hπ S hS`. Use `choose lam hlam using hW E n π hπ`. Take `⟨k, D, hD⟩` from `hF E n K W (fun τ => infOfWeight (lam τ)) hK hW'`. Use `choose DT hDT using hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hj : ∀ T, ∃ j, PreEquiv (D j) (DT T)` using `fun T => hD (DT T) (fun τ => (hDT T).1.1 τ (lam τ) (hlam τ)) (hDT T).2.2.2.1 (hDT T).2.2.2.2`. Set `T' : Fin k → Finset (HeightOneSpectrum (𝓞 E))` to `fun j => if h : ∃ T, PreEquiv (D j) (DT T) then h.choose else ∅`. Use `⟨k, fun j => DT (T' j), fun j => ⟨(hDT _).1, (hDT _).2.1⟩, fun T => ?_⟩` and prove the remaining obligations. Take `⟨j, hjT⟩` from `hj T`. Establish `h : ∃ T, PreEquiv (D j) (DT T)` using `⟨T, hjT⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, h1, -⟩` from `hjT`. Choose the witnesses or unpack the hypotheses as in `⟨e2, h2, -⟩ : PreEquiv (D j) (DT (T' j)) := by`. Simplify using `only [T', dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨j, fun w hw hu hs => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨B, hB, hα⟩` from `(hDT T).2.2.1 w hw hu hs`. Use `⟨B, hQ E n (DT T) (DT (T' j)) (e1.symm.trans e2) w (fun i => ?_) B hB, hα⟩` and prove the remaining obligations. Use `h1 (e1.symm i) w` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Rewrite using `[← this, Equiv.trans_apply, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem runFin_of (hR : RunT) (hF : FinFam) (hW : WeightEx) (hQ : PermSat) : RunFin := by
   classical

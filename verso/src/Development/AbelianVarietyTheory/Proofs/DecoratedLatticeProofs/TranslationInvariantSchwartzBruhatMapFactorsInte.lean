@@ -14,26 +14,26 @@ variable {X₀ A : Type*} [TopologicalSpace X₀] [AddCommGroup A] [TopologicalS
   [T2Space X₀] [T2Space A]
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.eq_iff_sub_mem`.
+A detailed English derivation is pending.
 -/
 example (U : AddSubgroup A) (a b : A) : ((a : A ⧸ U) = b) ↔ a - b ∈ U := QuotientAddGroup.eq_iff_sub_mem
 
 /- English proof (translation)
-Use `⟨hG.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hG.2.image continuous_fst) fun x hx => ?_⟩` and prove the remaining obligations. Use `image_eq_zero_of_notMem_tsupport fun h => hx ⟨(x, c), h, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem slice_mem {G : X₀ × A → ℂ} (hG : G ∈ SB (X₀ × A)) (c : A) : (fun x => G (x, c)) ∈ SB X₀ := by
   refine ⟨hG.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hG.2.image continuous_fst) fun x hx => ?_⟩
   refine image_eq_zero_of_notMem_tsupport fun h => hx ⟨(x, c), h, rfl⟩
 
 /- English proof (translation)
-Use `⟨hG.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hG.2.image continuous_snd) fun a ha => ?_⟩` and prove the remaining obligations. Use `image_eq_zero_of_notMem_tsupport fun h => ha ⟨(x, a), h, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem fiber_mem {G : X₀ × A → ℂ} (hG : G ∈ SB (X₀ × A)) (x : X₀) : (fun a => G (x, a)) ∈ SB A := by
   refine ⟨hG.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hG.2.image continuous_snd) fun a ha => ?_⟩
   refine image_eq_zero_of_notMem_tsupport fun h => ha ⟨(x, a), h, rfl⟩
 
 /- English proof (translation)
-Use `⟨(hf.1.comp_continuous continuous_fst).mul (hφ.1.comp_continuous continuous_snd), HasCompactSupport.intro (hf.2.prod hφ.2) fun z hz => ?_⟩` and prove the remaining obligations. Break down `not_and_or.mp (Set.mem_prod.not.mp hz) with h | h` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_mem {f : X₀ → ℂ} (hf : f ∈ SB X₀) {φ : A → ℂ} (hφ : φ ∈ SB A) :
     (fun z : X₀ × A => f z.1 * φ z.2) ∈ SB (X₀ × A) := by
@@ -44,7 +44,7 @@ theorem tens_mem {f : X₀ → ℂ} (hf : f ∈ SB X₀) {φ : A → ℂ} (hφ :
   · rw [image_eq_zero_of_notMem_tsupport h, mul_zero]
 
 /- English proof (translation)
-Use `⟨hG.1.comp_continuous (by fun_prop), ?_⟩` and prove the remaining obligations. Conclude with `hG.2.comp_homeomorph ((Homeomorph.refl X₀).prodCongr (Homeomorph.subRight c))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem transl_mem {G : X₀ × A → ℂ} (hG : G ∈ SB (X₀ × A)) (c : A) :
     (fun z : X₀ × A => G (z.1, z.2 - c)) ∈ SB (X₀ × A) := by
@@ -52,9 +52,9 @@ theorem transl_mem {G : X₀ × A → ℂ} (hG : G ∈ SB (X₀ × A)) (c : A) :
   exact hG.2.comp_homeomorph ((Homeomorph.refl X₀).prodCongr (Homeomorph.subRight c))
 
 /- English proof (translation)
-Establish `hcl : IsClopen (U : Set A)` using `⟨U.isClosed_of_isOpen hUo, hUo⟩`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_, HasCompactSupport.intro hUc fun y hy => Set.indicator_of_notMem hy _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (U : Set A)`. Use `filter_upwards [hcl.isOpen.mem_nhds hx] with z hz`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hcl.compl.isOpen.mem_nhds hx] with z hz`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hz]`.
+A detailed English derivation is pending.
 -/
 theorem ind_mem {U : AddSubgroup A} (hUo : IsOpen (U : Set A)) (hUc : IsCompact (U : Set A)) :
     (U : Set A).indicator (fun _ => (1 : ℂ)) ∈ SB A := by
@@ -73,11 +73,11 @@ def tensL (φ : SB A) : SB X₀ →ₗ[ℂ] SB (X₀ × A) where
   map_smul' c f := by ext z; simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ t in 𝓝 (0 : A), ∀ z ∈ tsupport G, G (z.1, z.2 + t) = G z`. Use `IsCompact.eventually_forall_of_forall_eventually hG.2 fun z _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : A × (X₀ × A) => (G (q.2.1, q.2.2 + q.1), G q.2)` using `(hG.1.comp_continuous (by fun_prop)).prodMk (hG.1.comp_continuous continuous_snd)`. Use `filter_upwards [h2.eventually_eq (0, z)] with q hq`. Simplify using `only [Prod.mk.injEq, add_zero, Prod.mk.eta] at hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq.1, hq.2]`. Take `⟨U, hUo, hUc, hUs⟩` from `hbasis _ h1`. Use `⟨U, hUo, hUc, fun u hu z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ tsupport G`. Conclude with `hUs hu z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hz' : (z.1, z.2 + u) ∈ tsupport G`. Use `hUs (U.neg_mem hu) _ hz'` as an intermediate fact. Simplify using `only [add_neg_cancel_right, Prod.mk.eta] at this`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subgroup_invariant
     (hbasis : ∀ V ∈ 𝓝 (0 : A), ∃ U : AddSubgroup A, IsOpen (U : Set A) ∧ IsCompact (U : Set A) ∧ (U : Set A) ⊆ V)
@@ -102,13 +102,13 @@ theorem exists_subgroup_invariant
   · rw [image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']
 
 /- English proof (translation)
-Establish `hK : IsCompact (Prod.snd '' tsupport G)` using `hG.2.image continuous_snd`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun a => (fun b => b - a) ⁻¹' (U : Set A)) (fun a _ => (hU.preimage (by fun_prop)).mem_nhds (by simp))`. Use `⟨t.image (QuotientAddGroup.mk : A → A ⧸ U), fun z => ?_⟩` and prove the remaining obligations. Establish `hind : ∀ q : A ⧸ U, (U : Set A).indicator (fun _ => (1 : ℂ)) (z.2 - q.out) = if (z.2 : A ⧸ U) = q then 1 else 0`. Introduce `q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (z.2 : A ⧸ U) = q ↔ z.2 - q.out ∈ U` using `by conv_lhs => rw [← QuotientAddGroup.out_eq' q]`. Conclude with `QuotientAddGroup.eq_iff_sub_mem`. Distinguish the cases in `h : z.2 - q.out ∈ U`. Rewrite using `[Set.indicator_of_mem (show z.2 - q.out ∈ (U : Set A) from h), if_pos (this.mpr h)]`. Rewrite using `[Set.indicator_of_notMem (show z.2 - q.out ∉ (U : Set A) from h), if_neg (fun h' => h (this.mp h'))]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hind, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Use `split_ifs with h`. Establish `h2 : -z.2 + (z.2 : A ⧸ U).out ∈ U` using `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' _).symm`. Use `hinv _ h2 z` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `this.symm`. Use `image_eq_zero_of_notMem_tsupport fun hz => h ?_` and prove the remaining obligations. Take `⟨a, ha, hza⟩` from `Set.mem_iUnion₂.mp (ht ⟨z, hz, rfl⟩)`. Conclude with `Finset.mem_image.mpr ⟨a, ha, (QuotientAddGroup.eq_iff_sub_mem.mpr hza).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_decomp {U : AddSubgroup A} (hU : IsOpen (U : Set A)) {G : X₀ × A → ℂ} (hG : G ∈ SB (X₀ × A))
     (hinv : ∀ u ∈ U, ∀ z : X₀ × A, G (z.1, z.2 + u) = G z) :
@@ -142,13 +142,13 @@ section Meas
 variable [MeasurableSpace A] [BorelSpace A] (μ : Measure A) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `hφ.1.continuous.integrable_of_hasCompactSupport hφ.2`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_SB {φ : A → ℂ} (hφ : φ ∈ SB A) : Integrable φ μ :=
   hφ.1.continuous.integrable_of_hasCompactSupport hφ.2
 
 /- English proof (translation)
-Establish `h1 : 0 < μ (U : Set A)` using `hUo.measure_pos μ ⟨0, U.zero_mem⟩`. Establish `h2 : μ (U : Set A) ≠ ⊤` using `hUc.measure_lt_top.ne`. Conclude with `(ENNReal.toReal_pos h1.ne' h2).ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_ne_zero {U : AddSubgroup A} (hUo : IsOpen (U : Set A)) (hUc : IsCompact (U : Set A)) :
     (μ.real (U : Set A) : ℂ) ≠ 0 := by
@@ -157,9 +157,9 @@ theorem real_ne_zero {U : AddSubgroup A} (hUo : IsOpen (U : Set A)) (hUc : IsCom
   exact_mod_cast (ENNReal.toReal_pos h1.ne' h2).ne'
 
 /- English proof (translation)
-Establish `he` using `integrable_of_SB μ (ind_mem hUo hUc)`. Establish `hshift : ∀ c : A, ∫ a, (U : Set A).indicator (fun _ => (1 : ℂ)) (a - c) ∂μ = (μ.real (U : Set A) : ℂ)`. Introduce `c`. Rewrite using `[integral_sub_right_eq_self (fun a => (U : Set A).indicator (fun _ => (1 : ℂ)) a) c, integral_indicator_const _ hUo.measurableSet]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_finset_sum _ fun q _ => (he.comp_sub_right _).const_mul _]`. Simplify using `only [integral_const_mul, hshift, ← Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fiber_integral {U : AddSubgroup A} (hUo : IsOpen (U : Set A)) (hUc : IsCompact (U : Set A))
     {G : X₀ × A → ℂ} (T : Finset (A ⧸ U))
@@ -179,13 +179,13 @@ theorem fiber_integral {U : AddSubgroup A} (hUo : IsOpen (U : Set A)) (hUc : IsC
       simp only [integral_const_mul, hshift, ← Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨U, hUo, hUc, hinv⟩` from `exists_subgroup_invariant hbasis G.2`. Take `⟨T, hT⟩` from `exists_decomp hUo G.2 hinv`. Establish `hsum : ∀ x, ∑ q ∈ T, G.1 (x, q.out) = 0` using `fun x => by`. Use `(fiber_integral μ hUo hUc T hT x).symm.trans (hG x)` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_right (real_ne_zero μ hUo hUc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : SB A` to `⟨_, ind_mem hUo hUc⟩`. Set `g : A ⧸ U → SB X₀` to `fun q => ⟨_, slice_mem G.2 q.out⟩`. Set `Gq : A ⧸ U → SB (X₀ × A)` to `fun q => ⟨fun z => (tensL e (g q)).1 (z.1, z.2 - q.out), transl_mem (tensL e (g q)).2 q.out⟩`. Establish `hdec : G = ∑ q ∈ T, Gq q`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[hT z, Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hq : ∀ q, L (Gq q) = L (tensL e (g q))` using `fun q => (hL q.out (Gq q) (tensL e (g q)) fun z => by simp [Gq, tensL, g, e]).symm`. Establish `hg : ∑ q ∈ T, g q = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `hsum x`. Rewrite using `[hdec, map_sum, Finset.sum_congr rfl fun q _ => hq q, ← map_sum, ← map_sum, hg, map_zero, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_fiber
     (hbasis : ∀ V ∈ 𝓝 (0 : A), ∃ U : AddSubgroup A, IsOpen (U : Set A) ∧ IsCompact (U : Set A) ∧ (U : Set A) ⊆ V)
@@ -216,13 +216,13 @@ theorem map_eq_zero_of_fiber
   rw [hdec, map_sum, Finset.sum_congr rfl fun q _ => hq q, ← map_sum, ← map_sum, hg, map_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨B, hBo, hBc, -⟩` from `hbasis Set.univ Filter.univ_mem`. Establish `hpos` using `real_ne_zero μ hBo hBc`. Set `φ₀ : SB A` to `(μ.real (B : Set A) : ℂ)⁻¹ • ⟨_, ind_mem hBo hBc⟩`. Establish `hφ₀ : ∫ a, φ₀.1 a ∂μ = 1` using `by show ∫ a, (μ.real (B : Set A) : ℂ)⁻¹ * (B : Set A).indicator (fun _ => (1 : ℂ)) a ∂μ = 1`. Rewrite using `[integral_const_mul, integral_indicator_const _ hBo.measurableSet]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hpos]`. Use `⟨L ∘ₗ tensL φ₀, fun G => ?_⟩` and prove the remaining obligations. Take `⟨U, hUo, hUc, hinv⟩` from `exists_subgroup_invariant hbasis G.2`. Take `⟨T, hT⟩` from `exists_decomp hUo G.2 hinv`. Establish `hΨ : (fun x => ∫ a, G.1 (x, a) ∂μ) ∈ SB X₀`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(SB X₀).smul_mem (μ.real (U : Set A) : ℂ) (Submodule.sum_mem _ fun q (_ : q ∈ T) => slice_mem G.2 q.out)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[fiber_integral μ hUo hUc T hT x]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨_, hΨ⟩, fun x => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, LinearMap.comp_apply, ← map_sub]`. Use `map_eq_zero_of_fiber μ hbasis L hL _ fun x => ?_` and prove the remaining obligations. Use `show ∫ a, (G.1 (x, a) - (∫ a', G.1 (x, a') ∂μ) * φ₀.1 a) ∂μ = 0`. Rewrite using `[integral_sub (integrable_of_SB μ (fiber_mem G.2 x)) ((integrable_of_SB μ φ₀.2).const_mul _), integral_const_mul, hφ₀, mul_one, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor
     (hbasis : ∀ V ∈ 𝓝 (0 : A), ∃ U : AddSubgroup A, IsOpen (U : Set A) ∧ IsCompact (U : Set A) ∧ (U : Set A) ⊆ V)
@@ -269,7 +269,7 @@ def cballSub (s : kˣ) : AddSubgroup k where
 def boxSub (n : Type*) (s : kˣ) : AddSubgroup (n → k) := AddSubgroup.pi Set.univ fun _ => cballSub s
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, boxSub, AddSubgroup.mem_pi, FourierPi.box, Set.mem_pi]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coe_boxSub (n : Type*) (s : kˣ) : (boxSub n s : Set (n → k)) = FourierPi.box n s := by
   ext x
@@ -277,9 +277,9 @@ theorem coe_boxSub (n : Type*) (s : kˣ) : (boxSub n s : Set (n → k)) = Fourie
   rfl
 
 /- English proof (translation)
-Introduce `V hV`. Rewrite `hV` using `[Prod.zero_eq_mk, nhds_prod_eq, Filter.mem_prod_iff]`. Take `⟨t₁, h₁, t₂, h₂, hsub⟩` from `hV`. Take `⟨s₁, hs₁⟩` from `FourierPi.exists_box_subset h₁`. Take `⟨s₂, hs₂⟩` from `FourierPi.exists_box_subset h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `refine ⟨(boxSub m₁ s₁).prod (boxSub m₂ s₂), ?_, ?_, ?_⟩ <;> rw [AddSubgroup.coe_prod, coe_boxSub, coe_boxSub]`. Conclude with `(FourierPi.isOpen_box s₁).prod (FourierPi.isOpen_box s₂)`. Conclude with `(FourierPi.isCompact_box s₁).prod (FourierPi.isCompact_box s₂)`. Conclude with `(Set.prod_mono hs₁ hs₂).trans hsub`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem basis_prod (m₁ m₂ : Type*) [Fintype m₁] [Fintype m₂] :
     ∀ V ∈ 𝓝 (0 : (m₁ → k) × (m₂ → k)), ∃ U : AddSubgroup ((m₁ → k) × (m₂ → k)),
@@ -298,11 +298,9 @@ theorem basis_prod (m₁ m₂ : Type*) [Fintype m₁] [Fintype m₂] :
 end Concrete
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν X₀ _ _ _ _ m₁ m₂ _ _ M _ _ L hL`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI := hν`. Use `haveI : LocallyCompactSpace k := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : (Measure.pi fun _ : m₁ => ν).IsAddHaarMeasure := inferInstance`. Use `haveI : (Measure.pi fun _ : m₂ => ν).IsAddHaarMeasure := inferInstance`. Take `⟨l₀, hl₀⟩` from `exists_factor ((Measure.pi fun _ : m₁ => ν).prod (Measure.pi fun _ : m₂ => ν)) (basis_prod m₁ m₂) L hL`. Use `⟨l₀, fun G => ?_⟩` and prove the remaining obligations.
-
-Take `⟨Ψ, hΨ, hLG⟩` from `hl₀ G`. Use `⟨Ψ, fun x => ?_, hLG⟩` and prove the remaining obligations. Rewrite using `[hΨ x, integral_prod _ (integrable_of_SB _ (fiber_mem G.2 x))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translation_invariant_factors : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (X₀ : Type) [TopologicalSpace X₀] [T2Space X₀] [LocallyCompactSpace X₀] [TotallyDisconnectedSpace X₀] (m₁ m₂ : Type) [Fintype m₁] [Fintype m₂] (M : Type) [AddCommGroup M] [Module ℂ M] (L : SB (X₀ × ((m₁ → k) × (m₂ → k))) →ₗ[ℂ] M), (∀ (a : (m₁ → k) × (m₂ → k)) (G G' : SB (X₀ × ((m₁ → k) × (m₂ → k)))), (∀ z, G'.1 z = G.1 (z.1, z.2 + a)) → L G' = L G) → ∃ l₀ : SB X₀ →ₗ[ℂ] M, ∀ G, ∃ Ψ : SB X₀, (∀ x, Ψ.1 x = ∫ a₁, ∫ a₂, G.1 (x, (a₁, a₂)) ∂(Measure.pi fun _ => ν) ∂(Measure.pi fun _ => ν)) ∧ L G = l₀ Ψ := by
   intro k _ _ _ _ _ _ ν hν X₀ _ _ _ _ m₁ m₂ _ _ M _ _ L hL

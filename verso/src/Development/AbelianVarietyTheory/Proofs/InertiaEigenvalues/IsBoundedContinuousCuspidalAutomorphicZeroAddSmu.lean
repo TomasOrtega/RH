@@ -9,9 +9,7 @@ namespace GlobalTheory.JSW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hn : Continuous fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add hn`. Conclude with `continuous_const.sub hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unip_adele {r : ℕ} : Continuous fun x : BlockIx a r → Ad E => (unip x : GA E a) := by
   have hn : Continuous fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E)) := by
@@ -25,15 +23,15 @@ theorem continuous_unip_adele {r : ℕ} : Continuous fun x : BlockIx a r → Ad 
   · exact continuous_const.sub hn
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Use `⟨⟨continuous_const, ⟨0, fun g => by simp⟩, ?_, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `r _ _ _ _ μ 𝓕 _ _ g`. Simplify using the standard rewrite rules. Introduce `c F G hF hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨CF, hCF⟩` from `hF.bdd`. Take `⟨CG, hCG⟩` from `hG.bdd`. Use `⟨(hF.cont.const_smul c).add hG.cont, ⟨‖c‖ * CF + CG, fun g => ?_⟩, ?_, fun γ g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_add_le _ _).trans (add_le_add ?_ (hCG g))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hCF g) (norm_nonneg c)`. Introduce `r h0 h1 _ _ μ 𝓕 hμ hFd g haveI := hμ`. Establish `hfin` using `covol_lt_top μ 𝓕 hFd`. Establish `hint : ∀ H : GA E a → ℂ, IsBCC H → IntegrableOn (fun x => H (unip x * g)) 𝓕 μ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H hH`. Take `⟨C, hC⟩` from `hH.bdd`. Establish `hc : Continuous fun x : BlockIx a r → Ad E => H (unip x * g)` using `hH.cont.comp (continuous_unip_adele.mul continuous_const)`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Conclude with `Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun x => hC _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add ((hint F hF).const_mul c) (hint G hG), integral_const_mul, hF.cusp r h0 h1 μ 𝓕 hμ hFd g, hG.cusp r h0 h1 μ 𝓕 hμ hFd g]`. Simplify using the standard rewrite rules. Simplify using `only [Pi.add_apply, Pi.smul_apply, hF.left, hG.left]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBCC_zero_and_add : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     IsBCC (0 : GA E a → ℂ) ∧

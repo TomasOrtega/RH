@@ -13,19 +13,19 @@ section Sesq
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (x x' y : Fin n → E) : hform σ J (x + x') y = hform σ J x y + hform σ J x' y := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (x y y' : Fin n → E) : hform σ J x (y + y') = hform σ J x y + hform σ J x y' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_left (r : E) (x y : Fin n → E) : hform σ J (r • x) y = σ r * hform σ J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -33,7 +33,7 @@ theorem hform_smul_left (r : E) (x y : Fin n → E) : hform σ J (r • x) y = �
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_right (r : E) (x y : Fin n → E) : hform σ J x (r • y) = r * hform σ J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -45,27 +45,25 @@ end Sesq
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨x, hxL, w, hw, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Establish `haz : (a • z : Fin n → E) = algebraMap (𝓞 E) E a • z` using `(algebraMap_smul E a z).symm`. Rewrite `hyy`, the goal using `[haz]`. Establish `hxz` using `hzL x hxL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hexp : hform σ J (x + algebraMap (𝓞 E) E a • z) (x + algebraMap (𝓞 E) E a • z) = hform σ J x x + σ (algebraMap (𝓞 E) E a) * algebraMap (𝓞 E) E a * hform σ J z z`. Simplify using `only [hform_add_left, hform_add_right, hform_smul_left, hform_smul_right, hxz.1, hxz.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (T : E) * hform σ J x x + σ (algebraMap (𝓞 E) E a) * algebraMap (𝓞 E) E a = 1`. Rewrite `hyy` using `[hexp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `hyy - σ (algebraMap (𝓞 E) E a) * algebraMap (𝓞 E) E a * hz`. Take `⟨c0, hc0⟩` from `hint x hxL`. Establish `hT1 : (1 : ℝ) < T` using `by exact_mod_cast hT`. Establish `hemb : ∀ φ : E →+* ℂ, ‖φ (c0 : E)‖ < 1 ∧ ‖φ (algebraMap (𝓞 E) E a)‖ ≤ 1 ∧ (‖φ (c0 : E)‖ = 0 → ‖φ (algebraMap (𝓞 E) E a)‖ = 1)`. Introduce `φ`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr0, hr, -⟩` from `hdef φ x`. Establish `hk` using `congrArg φ key`. Rewrite `hk` using `[map_add, map_mul, map_mul, hσ, map_natCast, map_one, hr, Complex.conj_mul']`. Establish `hk' : (T : ℝ) * r + ‖φ (algebraMap (𝓞 E) E a)‖ ^ 2 = 1` using `by exact_mod_cast hk`. Establish `hc : ‖φ (c0 : E)‖ = r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc0, hr, Complex.norm_real, Real.norm_of_nonneg hr0]`. Establish `hn0` using `norm_nonneg (φ (algebraMap (𝓞 E) E a))`. Establish `hTr : 0 ≤ (T : ℝ) * r` using `mul_nonneg (by linarith) hr0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg ‖φ (algebraMap (𝓞 E) E a)‖]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `h0`. Rewrite `h0` using `[hc]`. Rewrite `hk'` using `[h0, mul_zero, zero_add]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg hn0 two_ne_zero).1 hk'`. Establish `hne : Nonempty (E →+* ℂ)`. Rewrite using `[← Fintype.card_pos_iff, NumberField.Embeddings.card E ℂ]`. Conclude with `Module.finrank_pos`. Take `⟨φ0⟩` from `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc0z : (c0 : E) = 0`. Assume the negation of the conclusion as `hc`. Take `⟨m, hm, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_le_one E ℂ hc c0.isIntegral_coe (fun φ => (hemb φ).1.le)`. Establish `h1` using `congrArg (fun t => ‖φ0 t‖) hpow`. Simplify using `only [map_pow, norm_pow, map_one, norm_one] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : ‖φ0 (c0 : E)‖ ^ m < 1` using `pow_lt_one₀ (norm_nonneg _) (hemb φ0).1 hm.ne'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx0 : x = 0`. Take `⟨r, hr0, hr, hr0'⟩` from `hdef φ0 x`. Apply `hr0'` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hr` using `[← hc0, hc0z, map_zero]`. Conclude with `hr.symm` after adjusting the coercions. Take `⟨m, hm, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one E ℂ (x := algebraMap (𝓞 E) E a) (by exact a.isIntegral_coe) (fun φ => (hemb φ).2.2 (by rw [hc0z, map_zero, norm_zero]))`. Use `⟨a, ⟨m, hm, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises.
-
-Rewrite using `[map_pow, hpow, map_one]`. Rewrite using `[hx0, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_inverse_bound (σ : E →+* E) (hσ : ∀ (φ : E →+* ℂ) (x : E), φ (σ x) = (starRingEnd ℂ) (φ x))
     (J : Matrix (Fin n) (Fin n) E)
@@ -134,19 +132,17 @@ theorem length_inverse_bound (σ : E →+* E) (hσ : ∀ (φ : E →+* ℂ) (x :
   · rw [hx0, zero_add]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hfin : IsOfFinOrder b` using `isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, hb⟩`. Establish `hd1 : orderOf b ≠ 1` using `fun h1 => hne (orderOf_eq_one_iff.1 h1)`. Take `⟨q, hq, e, he⟩` from `Nat.exists_prime_and_dvd hd1`. Establish `hη : IsPrimitiveRoot (b ^ e) q` using `(IsPrimitiveRoot.orderOf b).pow hfin.orderOf_pos (by rw [he, mul_comm])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbP : Ideal.Quotient.mk P b = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk P), Ideal.Quotient.eq]`. Conclude with `hb1`. Establish `hqP : (q : 𝓞 E) ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `congrArg (Ideal.Quotient.mk P) (hη.geom_sum_eq_zero hq.one_lt)`. Simplify `h0` using `[map_sum, map_pow, hbP]`. Establish `hTq : T = q`. Assume the negation of the conclusion as `hne'`. Establish `hcop : Nat.Coprime T q` using `(Nat.coprime_primes hT hq).2 hne'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ((Nat.gcd T q : ℤ) : 𝓞 E) = (T : 𝓞 E) * (Nat.gcdA T q : 𝓞 E) + (q : 𝓞 E) * (Nat.gcdB T q : 𝓞 E)`. Rewrite using `[Nat.gcd_eq_gcd_ab]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hcop.gcd_eq_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 E) ∈ P`. Establish `h` using `P.add_mem (P.mul_mem_right (Nat.gcdA T q : 𝓞 E) hTP) (P.mul_mem_right (Nat.gcdB T q : 𝓞 E) hqP)`. Rewrite `h` using `[← key]`. Simplify using `using h`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hηE : IsPrimitiveRoot (algebraMap (𝓞 E) E (b ^ e)) T`. Rewrite using `[hTq]`. Conclude with `hη.map_of_injective (IsFractionRing.injective (𝓞 E) E)`. Establish `hdg` using `minpoly.natDegree_le (A := ℚ) (algebraMap (𝓞 E) E (b ^ e))`. Rewrite `hdg` using `[← Polynomial.cyclotomic_eq_minpoly_rat hηE hT.pos, Polynomial.natDegree_cyclotomic, Nat.totient_prime hT]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem root_eq_one (P : Ideal (𝓞 E)) (T k : ℕ) (b : 𝓞 E) (hT : T.Prime) (hP : P.IsPrime)
     (hTP : (T : 𝓞 E) ∈ P) (hk : 0 < k) (hb : b ^ k = 1) (hb1 : b - 1 ∈ P) (hdeg : Module.finrank ℚ E < T - 1) : b = 1 := by

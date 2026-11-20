@@ -19,17 +19,17 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ) {e f : ι → K} (h
 include hσ hJ he hff hef hfix h2i hδ hσδ
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨b1, r1, c1⟩ : ∃ b', Reach σ J e f a b b' ∧ IsCoprime (hf σ J b' f) (hf σ J b' e) := by`. Apply the tactic sequence `apply stage1 (hmax := hmax) (hb := hb) (hν := hν) <;> first | exact hδ | exact hσδ | assumption`. Establish `i1 : (∀ j, hf σ J b1 (a j) = 0) ∧ hf σ J b1 b1 = hf σ J b b`. Apply the tactic sequence `apply reach_inv (h := r1) (hb := hb) <;> first | exact hδ | exact hσδ | assumption`. Choose the witnesses or unpack the hypotheses as in `⟨b2, r2, u2⟩ : ∃ b', Reach σ J e f a b1 b' ∧ IsUnit (hf σ J b' e) := by`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `apply stage2 (hcop := c1) <;> first | exact hδ | exact hσδ | assumption`. Establish `i2' : (∀ j, hf σ J b2 (a j) = 0) ∧ hf σ J b2 b2 = hf σ J b1 b1`. Apply the tactic sequence `apply reach_inv (h := r2) (hb := i1.1) <;> first | exact hδ | exact hσδ | assumption`. Choose the witnesses or unpack the hypotheses as in `⟨b3, r3, f3, u3⟩ : ∃ b', Reach σ J e f a b2 b' ∧ b' = hf σ J b' f • e + hf σ J b' e • f ∧ IsUnit (hf σ J b' e) := by`. Apply the tactic sequence `apply stage3 (hb := i2'.1) (hβ := u2) <;> first | exact hδ | exact hσδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `i3 : (∀ j, hf σ J b3 (a j) = 0) ∧ hf σ J b3 b3 = hf σ J b2 b2`. Apply the tactic sequence `apply reach_inv (h := r3) (hb := i2'.1) <;> first | exact hδ | exact hσδ | assumption`. Establish `c3 : IsCoprime (hf σ J b3 f) (hf σ J b3 e)` using `⟨0, ↑u3.unit⁻¹, by rw [zero_mul, zero_add]; exact u3.val_inv_mul⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b4, r4, f4, u4⟩ : ∃ b', Reach σ J e f a b3 b' ∧ b' = hf σ J b' f • e + hf σ J b' e • f ∧ IsUnit (hf σ J b' f) := by`. Apply the tactic sequence `apply stage4 (hform := f3) (hcop := c3) <;> first | exact hδ | exact hσδ | assumption`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `i4 : (∀ j, hf σ J b4 (a j) = 0) ∧ hf σ J b4 b4 = hf σ J b3 b3`. Apply the tactic sequence `apply reach_inv (h := r4) (hb := i3.1) <;> first | exact hδ | exact hσδ | assumption`. Establish `r5 : Reach σ J e f a b4 (e + (hf σ J b4 b4 * i2) • f)`. Apply the tactic sequence `apply stage5 (hform := f4) (hα := u4) <;> first | exact hδ | exact hσδ | assumption`. Establish `hν4 : hf σ J b4 b4 = hf σ J b b` using `by rw [i4.2, i3.2, i2'.2, i1.2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `r5` using `[hν4]`. Establish `t4 : Reach σ J e f a b3 (e + (hf σ J b b * i2) • f)`. Apply the tactic sequence `apply reach_trans (h1 := r4) (h2 := r5) <;> first | exact hδ | exact hσδ | assumption`. Establish `t3 : Reach σ J e f a b2 (e + (hf σ J b b * i2) • f)`. Apply the tactic sequence `apply reach_trans (h1 := r3) (h2 := t4) <;> first | exact hδ | exact hσδ | assumption`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `t2 : Reach σ J e f a b1 (e + (hf σ J b b * i2) • f)`. Apply the tactic sequence `apply reach_trans (h1 := r2) (h2 := t3) <;> first | exact hδ | exact hσδ | assumption`. Apply the tactic sequence `apply reach_trans (h1 := r1) (h2 := t2) <;> first | exact hδ | exact hσδ | assumption`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem move {s : ℕ} {a : Fin s → ι → K} (hae : ∀ j, hf σ J (a j) e = 0)
     (haf : ∀ j, hf σ J (a j) f = 0) (hmax : ∀ m₀ m₁ m₂ : Ideal K, m₀.IsMaximal → m₁.IsMaximal →
@@ -69,45 +69,39 @@ theorem move {s : ℕ} {a : Fin s → ι → K} (hae : ∀ j, hf σ J (a j) e = 
   apply reach_trans (h1 := r1) (h2 := t2) <;> first | exact hδ | exact hσδ | assumption
 
 /- English proof (translation)
-Establish `hae` using `F.ha_e`. Establish `haf` using `F.ha_f`. Establish `hlin : ∀ (k l : K) (x y z : ι → K), hf σ J (k • x + l • y) z = k * hf σ J x z + l * hf σ J y z`. Introduce `k l x y z`. Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Establish `hsym : ∀ x y, hf σ J y x = σ (hf σ J x y)` using `fun x y => (hf_symm hσ hJ x y).symm`. Establish `hfe : hf σ J f e = 1` using `by rw [hsym, hef, map_one]`. Establish `hea : ∀ j, hf σ J e (F.a j) = 0` using `fun j => by rw [hsym, F.ha_e j, map_zero]`. Establish `hfa : ∀ j, hf σ J f (F.a j) = 0` using `fun j => by rw [hsym, F.ha_f j, map_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : ∀ x, (∀ j, hf σ J x (F.a j) = 0) → x = hf σ J x f • e + hf σ J x e • f`. Introduce `x hx`. Establish `h1` using `hF x`. Simplify using `only [OFam.proj, hx, zero_mul, zero_smul, Finset.sum_const_zero, add_zero] at h1`. Conclude with `h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `horth : ∀ (M : Matrix ι ι K), (∀ x y, hf σ J (M *ᵥ x) (M *ᵥ y) = hf σ J x y) → (∀ j, M *ᵥ F.a j = F.a j) → ∀ x, (∀ j, hf σ J x (F.a j) = 0) → ∀ j, hf σ J (M *ᵥ x) (F.a j) = 0`. Introduce `M hM hMa x hx j`. Rewrite using `[← hMa j, hM, hx]`. Use `set b := h *ᵥ e with hbdef`. Use `set c := h *ᵥ f with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `clear_value b c`. Establish `hba : ∀ j, hf σ J b (F.a j) = 0` using `by rw [hbdef]; exact horth h hpres hfixa e hea`. Establish `hca : ∀ j, hf σ J c (F.a j) = 0` using `by rw [hcdef]; exact horth h hpres hfixa f hfa`. Establish `hbform` using `hspan b hba`. Establish `hcform` using `hspan c hca`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcb : hf σ J c b = 1` using `by rw [hcdef, hbdef, hpres, hfe]`. Establish `hcop : IsCoprime (hf σ J b f) (hf σ J b e)`. Use `⟨σ (hf σ J c e), σ (hf σ J c f), ?_⟩` and prove the remaining obligations. Establish `h1 : hf σ J c f * σ (hf σ J b e) + hf σ J c e * σ (hf σ J b f) = 1`. Rewrite using `[← hcb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `conv_rhs => rw [hcform]`. Rewrite using `[hlin, hsym b e, hsym b f]`. Establish `h2` using `congrArg σ h1`. Rewrite `h2` using `[map_add, map_mul, map_mul, hσ, hσ, map_one]`. Take the linear combination `h2`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b4, r4, f4, u4⟩ : ∃ b', Reach σ J e f F.a b b' ∧ b' = hf σ J b' f • e + hf σ J b' e • f ∧ IsUnit (hf σ J b' f) := by`. Apply the tactic sequence `apply stage4 (hform := hbform) (hcop := hcop) <;> first | exact hδ | exact hσδ | assumption`. Establish `i4 : (∀ j, hf σ J b4 (F.a j) = 0) ∧ hf σ J b4 b4 = hf σ J b b`. Apply the tactic sequence `apply reach_inv (h := r4) (hb := hba) <;> first | exact hδ | exact hσδ | assumption`. Establish `r5 : Reach σ J e f F.a b4 (e + (hf σ J b4 b4 * i2) • f)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply stage5 (hform := f4) (hα := u4) <;> first | exact hδ | exact hσδ | assumption`. Establish `hbb : hf σ J b b = 0` using `by rw [hbdef, hpres, he]`. Rewrite `r5` using `[i4.2, hbb, zero_mul, zero_smul, add_zero]`. Establish `rt : Reach σ J e f F.a b e`. Apply the tactic sequence `apply reach_trans (h1 := r4) (h2 := r5) <;> first | exact hδ | exact hσδ | assumption`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp, hpa, hpb⟩` from `rt`. Establish `gp : ∀ x y, hf σ J (p *ᵥ x) (p *ᵥ y) = hf σ J x y`. Introduce `x y`. Conclude with `good_preserves hσ hJ he hff hef hae haf hp x y`. Use `set g := p * h with hgdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `clear_value g`. Establish `hgpres : ∀ x y, hf σ J (g *ᵥ x) (g *ᵥ y) = hf σ J x y`. Introduce `x y`. Rewrite using `[hgdef, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, gp, hpres]`. Establish `hga : ∀ j, g *ᵥ F.a j = F.a j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[hgdef, ← Matrix.mulVec_mulVec, hfixa, hpa]`. Establish `hge : g *ᵥ e = e` using `by rw [hgdef, ← Matrix.mulVec_mulVec, ← hbdef, hpb]`. Use `set y := g *ᵥ f with hydef`. Use `clear_value y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hya : ∀ j, hf σ J y (F.a j) = 0` using `by rw [hydef]; exact horth g hgpres hga f hfa`. Establish `hye : hf σ J y e = 1` using `by rw [hydef, ← hge, hgpres, hfe]`. Establish `hyy : hf σ J y y = 0` using `by rw [hydef, hgpres, hff]`. Use `set γ := hf σ J y f with hγ`. Use `clear_value γ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hyform : y = γ • e + f`. Use `hspan y hya` as an intermediate fact. Rewrite `this` using `[hye, one_smul, ← hγ]`. Conclude with `this`. Establish `hγσ : γ + σ γ = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `hyy`. Use `nth_rewrite 1 [hyform] at h1`. Rewrite `h1` using `[show γ • e + f = γ • e + (1 : K) • f by rw [one_smul], hlin, hsym y e, hsym y f, hye, map_one, one_mul]`. Rewrite `h1`, the goal using `[hγ]`. Take the linear combination `h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `set E := eich σ J e 0 γ with hEdef`. Use `clear_value E`. Establish `hEm : E ∈ eichSet σ J e f` using `Or.inl ⟨0, γ, by simp [hf], by simp [hf], by simp [hf, hγσ], hEdef⟩`. Establish `hE : E ∈ Good σ J e f`. Apply the tactic sequence `apply good_of_closure (hn := Submonoid.subset_closure hEm) <;> first | exact hδ | exact hσδ | assumption`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ x, hf σ J x 0 = 0` using `fun x => by simp [hf]`. Establish `key : ∀ x, g *ᵥ x = E *ᵥ x`. Introduce `x`. Establish `hx` using `hF x`. Simplify using `only [OFam.proj] at hx`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_sum, hge, ← hydef, hyform]`. Simplify using `only [Matrix.mulVec_smul, hga]`. Use `_ = (hf σ J x f • e + hf σ J x e • f + ∑ j, (hf σ J x (F.a j) * F.inv j) • F.a j) + (γ * hf σ J x e) • e := by`. Rewrite using `[smul_add, smul_smul, mul_comm (hf σ J x e) γ]`.
-
-Normalize the expressions using the abelian group laws. Use `_ = E *ᵥ x := by rw [hx, hEdef, eich_mulVec, h0]; simp`. Establish `hgE : g = E` using `Matrix.toLin'.injective (LinearMap.ext fun x => by`. Simplify using `only [Matrix.toLin'_apply]`. Conclude with `key x)`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨p', hp', hp'p, -⟩ : ∃ g' ∈ Good σ J e f, g' * p = 1 ∧ p * g' = 1 := by`. Apply the tactic sequence `apply good_inv (hg := hp) <;> first | exact hδ | exact hσδ | assumption`. Establish `: h = p' * g` using `by rw [hgdef, ← mul_assoc, hp'p, one_mul]`. Rewrite using `[this, hgE]`. Apply the tactic sequence `apply good_mul (hg := hp') (hg' := hE) <;> first | exact hδ | exact hσδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fix_all_good {r : ℕ} (F : OFam σ J e f r) (hF : F.Spans) {h : Matrix ι ι K}
     (hpres : ∀ x y, hf σ J (h *ᵥ x) (h *ᵥ y) = hf σ J x y) (hfixa : ∀ j, h *ᵥ F.a j = F.a j) :
@@ -222,41 +216,37 @@ theorem fix_all_good {r : ℕ} (F : OFam σ J e f r) (hF : F.Spans) {h : Matrix 
   apply good_mul (hg := hp') (hg' := hE) <;> first | exact hδ | exact hσδ | assumption
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hdetg : g.det = 1` using `hg.1`. Establish `hpresg : ∀ x y, hf σ J (g *ᵥ x) (g *ᵥ y) = hf σ J x y`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `intro x y; apply SU_preserves (hg := hg) <;> first | exact hδ | exact hσδ | assumption`. Choose the witnesses or unpack the hypotheses as in `⟨r, F, hF⟩ : ∃ r, ∃ F : OFam σ J e f r, F.Spans := by`. Apply `exists_spans hσ hJ he hff hef hdet hfix` to reduce the goal to its premises. Apply the tactic sequence `all_goals first`. Consider the case `exact hσδ | exact hδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Units.mkOfMulEqOne _ _ h2i).isUnit`. Establish `gp : ∀ p ∈ Good σ J e f, ∀ x y, hf σ J (p *ᵥ x) (p *ᵥ y) = hf σ J x y`. Introduce `p hp x y`. Conclude with `good_preserves hσ hJ he hff hef F.ha_e F.ha_f hp x y`. Establish `hunit : ∀ k, IsUnit (hf σ J (F.a k) (F.a k))` using `fun k => (Units.mkOfMulEqOne _ (F.inv k) (by rw [mul_comm]; exact F.hinv k)).isUnit`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step : ∀ k, k ≤ r → ∃ p ∈ Good σ J e f, ∀ j : Fin r, j.val < k → (p * g) *ᵥ F.a j = F.a j`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨1, ?_, fun j hj => absurd hj (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Apply the tactic sequence `apply good_of_closure (hn := Submonoid.one_mem _) <;> first | exact hδ | exact hσδ | assumption`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨p, hp, hpa⟩` from `ih (by omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a' : Fin k → ι → K := fun j => F.a ⟨j.val, by omega⟩ with ha'`. Establish `hae' : ∀ j, hf σ J (a' j) e = 0` using `fun j => F.ha_e _`. Establish `haf' : ∀ j, hf σ J (a' j) f = 0` using `fun j => F.ha_f _`. Use `set kk : Fin r := ⟨k, by omega⟩ with hkk`. Use `set b := (p * g) *ᵥ F.a kk with hbdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpg : ∀ x y, hf σ J ((p * g) *ᵥ x) ((p * g) *ᵥ y) = hf σ J x y`. Introduce `x y`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, gp p hp, hpresg]`. Establish `hne : ∀ j : Fin k, (⟨j.val, by omega⟩ : Fin r) ≠ kk`. Introduce `j h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Fin.val h`. Establish `h2` using `j.isLt`. Simplify using `only [hkk, Fin.val_mk] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hbk : ∀ j, hf σ J b (a' j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `show hf σ J b (F.a ⟨j.val, by omega⟩) = 0`. Rewrite using `[← hpa ⟨j.val, by omega⟩ j.isLt, hbdef, hpg]`. Conclude with `F.ho _ _ (Ne.symm (hne j))`. Establish `hak : ∀ j, hf σ J (F.a kk) (a' j) = 0` using `fun j => F.ho _ _ (Ne.symm (hne j))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbb : hf σ J b b = hf σ J (F.a kk) (F.a kk)` using `by rw [hbdef, hpg]`. Establish `m1 : Reach σ J e f a' b (e + (hf σ J b b * i2) • f)`. Apply the tactic sequence `apply move (hae := hae') (haf := haf') (hmax := hmax) (hb := hbk) (hν := by rw [hbb]; exact hunit kk) <;> first | exact hδ | exact hσδ | assumption`. Establish `m2 : Reach σ J e f a' (F.a kk) (e + (hf σ J (F.a kk) (F.a kk) * i2) • f)`. Apply the tactic sequence `apply move (hae := hae') (haf := haf') (hmax := hmax) (hb := hak) (hν := hunit kk) <;> first | exact hδ | exact hσδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `m1` using `[hbb]`. Establish `m3 : Reach σ J e f a' (e + (hf σ J (F.a kk) (F.a kk) * i2) • f) (F.a kk)`. Apply the tactic sequence `apply reach_symm (h := m2) <;> first | exact hδ | exact hσδ | assumption`. Establish `m4 : Reach σ J e f a' b (F.a kk)`. Apply the tactic sequence `apply reach_trans (h1 := m1) (h2 := m3) <;> first | exact hδ | exact hσδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨q, hq, hqa, hqb⟩` from `m4`. Use `⟨q * p, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply good_mul (hg := hq) (hg' := hp) <;> first | exact hδ | exact hσδ | assumption`. Rewrite using `[mul_assoc, ← Matrix.mulVec_mulVec]`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hj with hj' | hj'` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hpa j hj']`. Use `hqa ⟨j.val, hj'⟩` as an intermediate fact. Simplify `this` using `[ha']`. Establish `hjk : j = kk` using `Fin.ext (by simp [hkk, hj'])`. Rewrite using `[hjk, ← hbdef, hqb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨p, hp, hpa⟩` from `step r le_rfl`. Establish `hpgood : p * g ∈ Good σ J e f`. Apply `fix_all_good (F := F) (hF := hF) (hpres := fun x y => by` to reduce the goal to its premises. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, gp p hp, hpresg])`. Apply the tactic sequence `(hfixa := fun j => hpa j j.isLt) <;> first | exact hδ | exact hσδ | assumption`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p', hp', hp'p, -⟩ : ∃ g' ∈ Good σ J e f, g' * p = 1 ∧ p * g' = 1 := by`. Apply the tactic sequence `apply good_inv (hg := hp) <;> first | exact hδ | exact hσδ | assumption`. Establish `hgg : g ∈ Good σ J e f`. Establish `: g = p' * (p * g)` using `by rw [← mul_assoc, hp'p, one_mul]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `apply good_mul (hg := hp') (hg' := hpgood) <;> first | exact hδ | exact hσδ | assumption`. Apply the tactic sequence `apply good_SU (hδ := hδ) (hσδ := hσδ) (hg := hgg) (hdet := hdetg) <;> first | exact hδ | exact hσδ | assumption`. Introduce `hg`. Rewrite `hg` using `[SetLike.mem_coe]`. Proceed by induction on `hg using Submonoid.closure_induction with`.
-
-Consider the case `mem x hx`. Break down `hx with hx | hx` into its components or cases. Apply the tactic sequence `exact (by apply eichAlong_sub (he := he) <;> first | exact hδ | exact hσδ | assumption : eichAlong σ J e f ⊆ SU σ J) hx`. Apply the tactic sequence `exact (by apply eichAlong_sub (he := hff) <;> first | exact hδ | exact hσδ | assumption : eichAlong σ J f e ⊆ SU σ J) hx`. Consider the case `one => apply one_mem_SU <;> first | exact hδ | exact hσδ | assumption`.
-
-Consider the case `mul x y _ _ hx hy => apply mul_mem_SU (hg := hx) (hh := hy) <;> first | exact hδ | exact hσδ | assumption`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SU_eq_closure (hdet : IsUnit J.det) [Nontrivial K]
     (hmax : ∀ m₀ m₁ m₂ : Ideal K, m₀.IsMaximal → m₁.IsMaximal → m₂.IsMaximal →

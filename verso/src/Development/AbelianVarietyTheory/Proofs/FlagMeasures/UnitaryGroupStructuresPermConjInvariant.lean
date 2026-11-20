@@ -11,13 +11,13 @@ namespace GlobalTheory.Dec.PermGroup
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hE : (Measure.map e (muG ε')).IsHaarMeasure` using `e.isHaarMeasure_map (muG ε')`. Establish `hc : Measure.map e (muG ε') = Measure.haarScalarFactor (Measure.map e (muG ε')) (muG ε) • muG ε` using `Measure.isMulLeftInvariant_eq_smul _ _`. Use `set c : ENNReal := ((Measure.haarScalarFactor (Measure.map e (muG ε')) (muG ε) : NNReal) : ENNReal) with hcdef`. Establish `hc' : Measure.map e (muG ε') = c • muG ε` using `by rw [hcdef, ← ENNReal.smul_def]; exact hc`. Establish `hT : c ≠ ⊤` using `ENNReal.coe_ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : c ≠ 0`. Introduce `hz`. Establish `hz' : Measure.map e (muG ε') = 0` using `by rw [hc', hz, zero_smul]`. Rewrite `hz'` using `[Measure.map_eq_zero_iff (show AEMeasurable (⇑e) (muG ε') from (map_continuous e).measurable.aemeasurable)]`. Conclude with `NeZero.ne _ hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hm` using `(e.toHomeomorph.toMeasurableEquiv).memLp_map_measure_iff (g := F) (p := p) (μ := muG ε')`. Express the relevant statement in the definitionally equal form `MemLp F p (Measure.map e (muG ε')) ↔ MemLp (F ∘ e) p (muG ε') at hm`. Express the relevant statement in the definitionally equal form `MemLp F p (muG ε) ↔ MemLp (F ∘ e) p (muG ε')`. Rewrite using `[← hm, hc']`. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `h.smul_measure hT`. Introduce `h`. Establish `h'` using `h.smul_measure (ENNReal.inv_ne_top.2 h0)`. Rewrite `h'` using `[smul_smul, ENNReal.inv_mul_cancel h0 hT, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma memLp_equiv {ε ε' : Fin n → Bool} (e : UJ ε' ≃ₜ* UJ ε) (F : UJ ε → ℂ) (p : ENNReal) :
     MemLp F p (muG ε) ↔ MemLp (fun g => F (e g)) p (muG ε') := by
@@ -50,7 +50,7 @@ def homUJ {ε ε' : Fin n → Bool} (φ : Matrix (Fin n) (Fin n) ℂ →* Matrix
   ((Units.map φ).comp (UJ ε').subtype).codRestrict (UJ ε) fun g => h _ g.2
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hc.comp (Units.continuous_val.comp continuous_subtype_val), hc.comp (Units.continuous_coe_inv.comp continuous_subtype_val)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma homUJ_cont {ε ε' : Fin n → Bool} (φ : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ g ∈ UJset ε', φ g ∈ UJset ε) (hc : Continuous φ) : Continuous (homUJ φ h) := by
@@ -60,7 +60,7 @@ lemma homUJ_cont {ε ε' : Fin n → Bool} (φ : Matrix (Fin n) (Fin n) ℂ →*
     hc.comp (Units.continuous_coe_inv.comp continuous_subtype_val)⟩
 
 /- English proof (translation)
-Set `e : UJ ε' ≃ₜ* UJ ε` to `{ toFun := homUJ φ h invFun := homUJ ψ h' left_inv := fun g => Subtype.ext (Units.ext (h1 ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))) right_inv := fun g => Subtype.ext (Units.ext (h2 ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))) map_mul' := …`. Conclude with `memLp_equiv e (fun g => f (umat g)) p`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma memLp_hom {ε ε' : Fin n → Bool} (φ ψ : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ g ∈ UJset ε', φ g ∈ UJset ε) (h' : ∀ g ∈ UJset ε, ψ g ∈ UJset ε')
@@ -88,7 +88,7 @@ lemma perm_apply (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     perm s g = g.submatrix s.symm s.symm := rfl
 
 /- English proof (translation)
-Establish `h : ⇑(perm s) = fun g => g.submatrix s.symm s.symm` using `funext (perm_apply s)`. Rewrite using `[h]`. Conclude with `continuous_id.matrix_submatrix _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma perm_cont (s : Equiv.Perm (Fin n)) : Continuous (perm s) := by
   have h : ⇑(perm s) = fun g => g.submatrix s.symm s.symm := funext (perm_apply s)
@@ -101,9 +101,9 @@ Both sides reduce to the same expression.
 lemma perm_ct (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) : (perm s g)ᴴ = perm s gᴴ := rfl
 
 /- English proof (translation)
-Rewrite using `[perm_apply]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Jm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hij' : s.symm i ≠ s.symm j` using `fun h => hij (s.symm.injective h)`. Simplify using `[Jm, hij, hij']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma perm_Jm (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) : Jm ε = perm s (Jm (ε ∘ s)) := by
   rw [perm_apply]
@@ -115,7 +115,7 @@ lemma perm_Jm (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) : Jm ε = perm s (J
     simp [Jm, hij, hij']
 
 /- English proof (translation)
-Simplify using `only [UJset, Set.mem_ofPred_eq, inUJ]`. Rewrite using `[perm_ct, perm_Jm ε s]`. Simplify using `only [← map_mul]`. Conclude with `(perm s).injective.eq_iff.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma perm_UJ (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ UJset (ε ∘ s) ↔ perm s g ∈ UJset ε := by
@@ -125,7 +125,7 @@ lemma perm_UJ (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n)
   exact (perm s).injective.eq_iff.symm
 
 /- English proof (translation)
-Simplify using `only [Kset, Set.mem_ofPred_eq, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Rewrite using `[perm_ct, perm_Jm ε s]`. Simplify using `only [← map_mul, EmbeddingLike.map_eq_one_iff, (perm s).injective.eq_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma perm_K (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ Kset (ε ∘ s) ↔ perm s g ∈ Kset ε := by
@@ -134,7 +134,7 @@ lemma perm_K (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) 
   simp only [← map_mul, EmbeddingLike.map_eq_one_iff, (perm s).injective.eq_iff]
 
 /- English proof (translation)
-Simplify using `only [inP, inG]`. Rewrite using `[perm_ct, perm_Jm ε s]`. Simplify using `only [← map_mul, ← map_add, ← map_neg, EmbeddingLike.map_eq_zero_iff, (perm s).injective.eq_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma perm_P (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     inP (ε ∘ s) g ↔ inP ε (perm s g) := by
@@ -145,7 +145,7 @@ lemma perm_P (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) 
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-The claim follows from `(NormedSpace.map_exp (perm s) (perm_cont s) g).symm`.
+A detailed English derivation is pending.
 -/
 lemma perm_exp (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (perm s g) = perm s (NormedSpace.exp g) := (NormedSpace.map_exp (perm s) (perm_cont s) g).symm
@@ -156,7 +156,7 @@ def permM (s : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin
   map_mul' := map_mul (perm s)
 
 /- English proof (translation)
-Use `show (g.submatrix s.symm s.symm).submatrix s.symm.symm s.symm.symm = g`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma permM_symm (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     permM s.symm (permM s g) = g := by
@@ -165,7 +165,7 @@ lemma permM_symm (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
   simp
 
 /- English proof (translation)
-Use `show (g.submatrix s.symm.symm s.symm.symm).submatrix s.symm s.symm = g`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma permM_symm' (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     permM s (permM s.symm g) = g := by
@@ -179,22 +179,18 @@ def conj : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin n) (Fin n) ℂ where
   map_mul' := FormF.map_star_mul
 
 /- English proof (translation)
-Use `show Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.map star`. Conclude with `continuous_id.matrix_map continuous_star`.
+A detailed English derivation is pending.
 -/
 lemma conj_cont : Continuous (conj (n := n)) := by
   show Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.map star
   exact continuous_id.matrix_map continuous_star
 
 /- English proof (translation)
-Introduce `n ε s`. Establish `hpm : ∀ (t : Equiv.Perm (Fin n)) (x : Matrix (Fin n) (Fin n) ℂ), permM t x = perm t x` using `fun t x => (perm_apply t x).symm`. Establish `hcont : ∀ t : Equiv.Perm (Fin n), Continuous (permM t)` using `fun t => by`. Establish `h : ⇑(permM t) = ⇑(perm t)` using `funext (hpm t)`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `perm_cont t`. Use `⟨fun g => ⟨?_, ?_, ?_, ?_⟩, fun f p => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← perm_apply]`. Conclude with `perm_UJ ε s g`. Rewrite using `[← perm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `perm_K ε s g`. Rewrite using `[← perm_apply]`. Conclude with `perm_P ε s g`. Rewrite using `[← perm_apply, ← perm_apply]`. Conclude with `perm_exp s g`.
-
-Use `memLp_hom (permM s) (permM s.symm) (fun g hg => ?_) (fun g hg => ?_) (hcont s) (hcont s.symm) (permM_symm s) (permM_symm' s) f p` and prove the remaining obligations. Rewrite using `[hpm]`. Conclude with `(perm_UJ ε s g).1 hg`. Apply `(perm_UJ ε s _).2` to reduce the goal to its premises. Rewrite using `[← hpm, permM_symm']`.
-
-Conclude with `hg`. Conclude with `memLp_hom GlobalTheory.Dec.PermGroup.conj GlobalTheory.Dec.PermGroup.conj (fun g hg => FormF.UJ_star hg) (fun g hg => FormF.UJ_star hg) conj_cont conj_cont (fun g => FormF.map_star_star g) (fun g => FormF.map_star_star g) f p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permGroup : ∀ (n : ℕ) (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)), (∀ g : Matrix (Fin n) (Fin n) ℂ, (g ∈ UJset (ε ∘ s) ↔ g.submatrix s.symm s.symm ∈ UJset ε) ∧ (g ∈ Kset (ε ∘ s) ↔ g.submatrix s.symm s.symm ∈ Kset ε) ∧ (inP (ε ∘ s) g ↔ inP ε (g.submatrix s.symm s.symm)) ∧ NormedSpace.exp (g.submatrix s.symm s.symm) = (NormedSpace.exp g).submatrix s.symm s.symm) ∧ ∀ (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (p : ENNReal), (MemLp (fun g : UJ ε => f (umat g)) p (muG ε) ↔ MemLp (fun g : UJ (ε ∘ s) => f ((umat g).submatrix s.symm s.symm)) p (muG (ε ∘ s))) ∧ (MemLp (fun g : UJ ε => f (umat g)) p (muG ε) ↔ MemLp (fun g : UJ ε => f ((umat g).map star)) p (muG ε)) := by
   intro n ε s

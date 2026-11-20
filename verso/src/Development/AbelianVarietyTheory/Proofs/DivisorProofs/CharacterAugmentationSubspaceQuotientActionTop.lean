@@ -15,7 +15,7 @@ abbrev chiC (χ : C →+* k) : MonoidAlgebra k C →ₐ[k] k :=
   MonoidAlgebra.lift k k C χ.toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[actC, MonoidAlgebra.lift_apply, Finsupp.sum, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actC_apply (τ : O →+* Module.End k V) (f : MonoidAlgebra k C) (v : V) :
     actC τ f v = ∑ c ∈ f.coeff.support, f.coeff c • τ (algebraMap C O c) v := by
@@ -23,7 +23,7 @@ theorem actC_apply (τ : O →+* Module.End k V) (f : MonoidAlgebra k C) (v : V)
   rfl
 
 /- English proof (translation)
-Rewrite using `[chiC, MonoidAlgebra.lift_apply, Finsupp.sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiC_apply (χ : C →+* k) (f : MonoidAlgebra k C) :
     chiC χ f = ∑ c ∈ f.coeff.support, f.coeff c * χ c := by
@@ -31,22 +31,22 @@ theorem chiC_apply (χ : C →+* k) (f : MonoidAlgebra k C) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[actC, MonoidAlgebra.lift_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actC_of (τ : O →+* Module.End k V) (c : C) :
     actC τ (MonoidAlgebra.of k C c) = τ (algebraMap C O c) := by
   rw [actC, MonoidAlgebra.lift_of]; rfl
 
 /- English proof (translation)
-Rewrite using `[chiC, MonoidAlgebra.lift_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiC_of (χ : C →+* k) (c : C) : chiC χ (MonoidAlgebra.of k C c) = χ c := by
   rw [chiC, MonoidAlgebra.lift_of]; rfl
 
 /- English proof (translation)
-Establish `hmem : actC τ f v ∈ jSub τ χ ⊤`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨f.coeff.support.card, fun l => f.coeff (f.coeff.support.equivFin.symm l), fun l => (f.coeff.support.equivFin.symm l : C), v, trivial, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Equiv.sum_comp f.coeff.support.equivFin.symm (fun x : f.coeff.support => f.coeff x * χ i x) beta_reduce at h1`. Rewrite using `[h1, Finset.sum_coe_sort f.coeff.support (fun x => f.coeff x * χ i x), ← chiC_apply, hf i]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `Equiv.sum_comp f.coeff.support.equivFin.symm (fun x : f.coeff.support => f.coeff x • τ (algebraMap C O x) v) beta_reduce at h1`. Rewrite using `[h1, Finset.sum_coe_sort f.coeff.support (fun x => f.coeff x • τ (algebraMap C O x) v), actC_apply]`. Rewrite `hmem` using `[hJ]`. Simplify using `using hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem actC_eq_zero {Idx : Type*} (τ : O →+* Module.End k V) (χ : Idx → C →+* k)
     (hJ : jSub τ χ ⊤ = ⊥) (f : MonoidAlgebra k C) (hf : ∀ i, chiC (χ i) f = 0) (v : V) :
@@ -68,7 +68,7 @@ theorem actC_eq_zero {Idx : Type*} (τ : O →+* Module.End k V) (χ : Idx → C
   simpa using hmem
 
 /- English proof (translation)
-Establish `h : actC τ f x = ∑ c ∈ f.coeff.support, f.coeff c • (τ (algebraMap C O c) x - χ c • x)`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, smul_smul]`. Rewrite using `[actC_apply, ← Finset.sum_smul, ← chiC_apply, hf, zero_smul, sub_zero]`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, x, trivial, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actC_mem_mSub (τ : O →+* Module.End k V) (χ : C →+* k) (f : MonoidAlgebra k C)
     (hf : chiC χ f = 0) (x : V) : actC τ f x ∈ mSub τ χ ⊤ := by
@@ -79,11 +79,11 @@ theorem actC_mem_mSub (τ : O →+* Module.End k V) (χ : C →+* k) (f : Monoid
   exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, x, trivial, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, x, -, rfl⟩` from `hz`. Establish `h2 : τ (algebraMap C O c) x - χ i c • x = actC τ (MonoidAlgebra.of k C c - algebraMap k _ (χ i c)) x`. Rewrite using `[map_sub, AlgHom.commutes, actC_of, LinearMap.sub_apply, Module.algebraMap_end_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← Module.End.mul_apply, ← map_mul]`. Use `actC_eq_zero τ χ hJ _ (fun l => ?_) x` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_sub, AlgHom.commutes, chiC_of, Algebra.algebraMap_self, RingHom.id_apply, sub_self, mul_zero]`. Rewrite using `[he l hl, zero_mul]`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add, h1, h2, add_zero]`. Consider the case `smul a _ _ h => rw [map_smul, h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem actC_mSub_eq_zero {Idx : Type*} (τ : O →+* Module.End k V) (χ : Idx → C →+* k)
     (hJ : jSub τ χ ⊤ = ⊥) (i : Idx) (e : MonoidAlgebra k C) (he : ∀ l, l ≠ i → chiC (χ l) e = 0)
@@ -111,33 +111,31 @@ end GlobalTheory.HTRho.CRTSplit
 open GlobalTheory.HTRho.CRTSplit in
 
 /- English proof (translation)
-Introduce `k O C Idx W V _ _ _ _ _ _ _ _ _ _ _ σW τ χ hχ hJ`. Establish `hb : ∀ i j, ∃ b : MonoidAlgebra k C, i ≠ j → chiC (χ i) b = 1 ∧ chiC (χ j) b = 0`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Conclude with `⟨0, fun h => (h hij).elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `DFunLike.ne_iff.mp (hχ.ne hij)`. Establish `hc' : χ i c - χ j c ≠ 0` using `sub_ne_zero.mpr hc`. Use `⟨(χ i c - χ j c)⁻¹ • (MonoidAlgebra.of k C c - algebraMap k _ (χ j c)), fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sub, AlgHom.commutes, chiC_of, Algebra.algebraMap_self, RingHom.id_apply, smul_eq_mul, inv_mul_cancel₀ hc']`. Rewrite using `[map_smul, map_sub, AlgHom.commutes, chiC_of, Algebra.algebraMap_self, RingHom.id_apply, sub_self, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose b hb using hb`. Set `e : Idx → MonoidAlgebra k C` to `fun i => ∏ j ∈ Finset.univ.erase i, b i j`. Establish `he : ∀ i l, chiC (χ l) (e i) = if l = i then 1 else 0`. Introduce `i l`. Simplify using `only [e, map_prod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `split_ifs with hl`. Substitute `hl` using the available equality. Conclude with `Finset.prod_eq_one fun j hj => (hb l j (Finset.ne_of_mem_erase hj).symm).1`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hl, Finset.mem_univ l⟩) (hb i l (Ne.symm hl)).2`. Establish `hsum : ∀ v : V, v = ∑ i, actC τ (e i) v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `v`. Establish `h0 : actC τ (1 - ∑ i, e i) v = 0` using `actC_eq_zero τ χ hJ _ (fun l => by simp [map_sub, map_sum, he]) v`. Rewrite `h0` using `[map_sub, map_one, map_sum, LinearMap.sub_apply, Module.End.one_apply, LinearMap.sum_apply, sub_eq_zero]`. Conclude with `h0`. Set `Φ : V →ₗ[k] ((i : Idx) → V ⧸ mSub τ (χ i) ⊤)` to `LinearMap.pi fun i => (mSub τ (χ i) ⊤).mkQ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `hv' : ∀ i, v ∈ mSub τ (χ i) ⊤` using `fun i => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr_fun hv i` as an intermediate fact. Simplify `this` using `[Φ, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[hsum v]`. Conclude with `Finset.sum_eq_zero fun i _ => actC_mSub_eq_zero τ χ hJ i (e i) (fun l hl => by rw [he, if_neg hl]) v (hv' i)`. Introduce `q choose w hw using fun i => Submodule.Quotient.mk_surjective (mSub τ (χ i) ⊤) (q i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨∑ j, actC τ (e j) (w j), funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Φ, LinearMap.pi_apply, Submodule.mkQ_apply]`. Rewrite using `[← hw i, Submodule.Quotient.eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), add_sub_right_comm]`. Use `add_mem ?_ (Submodule.sum_mem _ fun j hj => actC_mem_mSub τ (χ i) _ (by rw [he, if_neg (Finset.ne_of_mem_erase hj).symm]) (w j))` and prove the remaining obligations. Establish `h3` using `actC_mem_mSub τ (χ i) (e i - 1) (by rw [map_sub, he, if_pos rfl, map_one, sub_self]) (w i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Simplify `h3` using `[map_sub]`. Set `Φe` to `LinearEquiv.ofBijective Φ hΦ`. Set `Ψ : homO σW τ →ₗ[k] ((i : Idx) → homO σW (qAct τ (mSub τ (χ i) ⊤) (mSub_stable τ (χ i) ⊤ (fun _ _ _ => trivial))))` to `LinearMap.pi fun i => { toFun := fun T => ⟨(mSub τ (χ i) ⊤).mkQ ∘ₗ T.1, (mem_homO _ _ _).mpr fun a x => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, (mem_homO _ _ _).mp T.2 a x, qAct_mk]⟩`. Use the proof step `map_add' := fun S T => by ext; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `map_smul' := fun c T => by ext; simp }`. Establish `hΨ : Function.Bijective Ψ`. Prove the components needed by the constructor for the conclusion. Introduce `S T h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `hΦ.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun F => ((F i).1 x)) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `[Ψ, Φ]`. Introduce `F`. Set `T : W →ₗ[k] V` to `Φe.symm.toLinearMap ∘ₗ LinearMap.pi (fun i => (F i).1)`. Establish `hT : ∀ x i, (mSub τ (χ i) ⊤).mkQ (T x) = (F i).1 x` using `fun x i => congr_fun (Φe.apply_symm_apply (fun i => (F i).1 x)) i`. Establish `hTm : T ∈ homO σW τ`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_homO]`. Introduce `a x`. Apply `hΦ.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(mSub τ (χ i) ⊤).mkQ (T (σW a x)) = (mSub τ (χ i) ⊤).mkQ (τ a (T x))`.
-
-Rewrite using `[hT, ← qAct_mk τ _ (mSub_stable τ (χ i) ⊤ (fun _ _ _ => trivial)), hT, (mem_homO _ _ _).mp (F i).2 a x]`. Use `⟨⟨T, hTm⟩, funext fun i => Subtype.ext (LinearMap.ext fun x => ?_)⟩` and prove the remaining obligations. Conclude with `hT x i`. Rewrite using `[LinearEquiv.finrank_eq (LinearEquiv.ofBijective Ψ hΨ), Module.finrank_pi_fintype]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HTRho.finrank_homO_eq_sum_quot : ∀ {k O C Idx W V : Type*} [Field k] [Ring O] [CommRing C] [Algebra C O]
     [Fintype Idx] [AddCommGroup W] [Module k W] [FiniteDimensional k W] [AddCommGroup V] [Module k V]

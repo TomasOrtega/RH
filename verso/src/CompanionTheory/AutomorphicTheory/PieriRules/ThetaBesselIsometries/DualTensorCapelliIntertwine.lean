@@ -27,9 +27,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `letI instNR : NormedRing (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : @CompleteSpace (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (@PseudoMetricSpace.toUniformSpace _ (@SeminormedRing.toPseudoMetricSpace _ (@NormedRing.toSeminormedRing _ instNR))) := (inferInstance : CompleteSpace (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Establish `h1 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • Y)) (NormedSpace.exp (((0 : ℝ) : ℂ) • Y) * Y) ((0 : ℝ) : ℂ)` using `hasDerivAt_exp_smul_const Y _`. Set `f : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun M => M j c, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap f`. Establish `he : ∀ M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, e M = M j c` using `fun M => rfl`. Establish `h2` using `(e.hasFDerivAt.comp_hasDerivAt _ h1).comp_ofReal`. Simplify using `only [Function.comp_def, he, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, one_mul] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_exp_smul_apply_zero'
     (Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (j c : Fin (2 * r + k + 1)) :
@@ -53,9 +53,9 @@ private theorem hasDerivAt_exp_smul_apply_zero'
   exact h2
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_apply_zero' (-X) j c`. Establish `hfun : (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c) = fun s : ℝ => NormedSpace.exp ((s : ℂ) • (-X)) j c`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_neg, Matrix.exp_neg]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_inv_exp_entry (X : Mx k r) (j c : Fin (2 * r + k + 1)) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c) (-X j c) 0 := by
@@ -68,7 +68,7 @@ theorem hasDerivAt_inv_exp_entry (X : Mx k r) (j c : Fin (2 * r + k + 1)) :
   simpa using h
 
 /- English proof (translation)
-Establish `hI` using `Gp91.GlobalTheory.CWDeriv.hInvol k r`. Establish `h` using `(AAInvW.ana_hpartMem hI Y).1`. Rewrite `h` using `[AAInvW.ana_hpart1_eq hI]`. Rewrite using `[← sub_eq_add_neg]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_part₁ (Y : Mx k r) :
     InLieHpk k r ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
@@ -79,7 +79,7 @@ theorem lie_part₁ (Y : Mx k r) :
   exact h
 
 /- English proof (translation)
-Establish `hI` using `Gp91.GlobalTheory.CWDeriv.hInvol k r`. Establish `h` using `(AAInvW.ana_hpartMem hI Y).2.1`. Rewrite `h` using `[AAInvW.ana_hpart2_eq hI]`. Rewrite using `[sub_neg_eq_add]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_part₂ (Y : Mx k r) :
     InLieHpk k r ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
@@ -90,15 +90,15 @@ theorem lie_part₂ (Y : Mx k r) :
   exact h
 
 /- English proof (translation)
-Establish `hsmc` using `hT.io_sm s c`. Establish `hcw : PI.BesselMapUniq.IsCWCont (RI s).σ (io s c)`. Establish `h0` using `hsmc.cont [] (by simp)`. Conclude with `h0`. Establish `hL` using `((Gp91.GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r ε (muI s) (RI s) (hI s) R.H (io s c) hsmc.add hsmc.smul hcw) y hy).2 X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDA` using `Gp91.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR X hX`. Establish `hexp : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ BranchingSupport.GG k r` using `fun t => Gp91.GlobalTheory.DerivedAction.exp_mem hX t`. Establish `hfun : (fun t : ℝ => io s c ((RI s).σ (NormedSpace.exp ((t : ℂ) • X)) y)) = fun t : ℝ => ∑ j, (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c • R.σ (NormedSpace.exp ((t : ℂ) • X)) (io s j y)`. Use function extensionality and compare the values at `t`. Establish `h` using `congrFun (hT.io_eq s _ (hexp t) y hy) c`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[BranchingSupport.act, BranchingSupport.dualM, Matrix.transpose_apply]`. Rewrite `hL` using `[hfun]`. Establish `hR' : HasDerivAt (fun t : ℝ => ∑ j, (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c • R.σ (NormedSpace.exp ((t : ℂ) • X)) (io s j y)) (∑ j, ((NormedSpace.exp (((0 : ℝ) : ℂ) • X))⁻¹ j c • dsig (k` using `k) (r := r) R.σ X (io s j y) + (-X j c) • R.σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) (io s j y))) 0 := by`. Apply the tactic sequence `have hs := HasDerivAt.sum (u := Finset.univ) (fun j _ => (hasDerivAt_inv_exp_entry X j c).smul ((hDA.1 (io s j y) ((hT.io_sm s j).mem y hy)).2))`. Use `hs using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using `[Finset.sum_apply]`. Establish `key` using `hL.unique hR'`. Establish `hone : R.σ 1 = 1`. Take `⟨P, ⟨⟨hPu, -⟩, -⟩, hds⟩` from `hR.ds`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hds.2.2.1.1.1`. Simplify using `only [mul_one] at h1`. Rewrite `h1` using `[Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).mp hPu)]`. Then use the resulting hypothesis. Rewrite using `[key]`. Simplify using `[hone, Matrix.one_apply, Finset.sum_add_distrib, ite_smul, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_dsig (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {R : Rep k r}
     (hR : R.IsDG ε mu) {RI : Fin (2 * r + k + 1) → Rep k r}
@@ -150,19 +150,19 @@ namespace GlobalTheory
 open DualEmb
 
 /- English proof (translation)
-Introduce `hK k r ε mu R hR RI muI io pr hI hT s Y y hy c`. Establish `h1` using `DualEmb.lie_part₁ (k := k) (r := r) Y`. Establish `h2` using `DualEmb.lie_part₂ (k := k) (r := r) Y`. Establish `e1` using `DualEmb.io_dsig hK hR hI hT s h1 hy c`. Establish `e2` using `DualEmb.io_dsig hK hR hI hT s h2 hy c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmc` using `hT.io_sm s c`. Establish `hd1` using `((Gp91.GlobalTheory.DerivedAction.derived_action hK k r ε (muI s) (RI s) (hI s) _ h1).1 y hy).1`. Establish `hd2` using `((Gp91.GlobalTheory.DerivedAction.derived_action hK k r ε (muI s) (RI s) (hI s) _ h2).1 y hy).1`. Establish `hzero : (0 : (RI s).H) ∈ (RI s).sm`. Establish `hneg : -y ∈ (RI s).sm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Gp91.GlobalTheory.CWDeriv.sm_comb (R := RI s) 1 hy hy hy` as an intermediate fact. Simplify using `using this`. Establish `h3` using `Gp91.GlobalTheory.CWDeriv.sm_comb (R := RI s) (1 / 2) hy hneg hy`. Establish `e : (1 / 2 : ℂ) • (y - -y) - y = 0`. Rewrite using `[sub_neg_eq_add, ← two_smul ℂ y, smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Establish `hsmul : ∀ (a : ℂ) {v : (RI s).H}, v ∈ (RI s).sm → a • v ∈ (RI s).sm`. Introduce `a v hv`. Use `Gp91.GlobalTheory.CWDeriv.sm_comb (R := RI s) a hv hzero hzero` as an intermediate fact.
+Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hYsplit : ∀ j, ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) j c + Complex.I * ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) j c = Y j c`. Introduce `j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.neg_apply, Matrix.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ j, Y j c • io s j y = ∑ j, ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) j c • io s j y + Complex.I • ∑ j, ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDetermin …`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hYsplit j, add_smul, mul_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [BranchingSupport.Rep.dC]`. Rewrite using `[hsmc.add _ hd1 _ (hsmul Complex.I hd2), hsmc.smul Complex.I _ hd2, e1, e2, hsum, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dualTens_io_dC : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDG ε mu → ∀ (RI : Fin (2 * r + k + 1) → Rep k r) (muI : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℝ) (io : ∀ s, Fin (2 * r + k + 1) → (RI s).H → R.H) (pr : ∀ s, Fin (2 * r + k + 1) → R.H → (RI s).H), (∀ s, (RI s).IsDG ε (muI s)) → TensRaw dualM R RI io pr → ∀ s Y, ∀ y ∈ (RI s).sm, ∀ c, io s c ((RI s).dC Y y) = R.dC Y (io s c y) - ∑ j, Y j c • io s j y := by
   intro hK k r ε mu R hR RI muI io pr hI hT s Y y hy c

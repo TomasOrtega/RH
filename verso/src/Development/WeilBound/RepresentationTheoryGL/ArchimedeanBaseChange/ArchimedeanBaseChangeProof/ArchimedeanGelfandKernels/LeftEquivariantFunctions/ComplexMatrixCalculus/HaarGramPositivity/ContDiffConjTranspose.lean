@@ -16,7 +16,7 @@ set_option linter.unusedSectionVars false
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[contDiffOn_matrix_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun k _ => (hf i k).mul (hg k j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E}
     {f g : E → Matrix ι ι ℂ} (hf : ContDiffOn ℝ ∞ f s) (hg : ContDiffOn ℝ ∞ g s) : ContDiffOn ℝ ∞ (fun x => f x * g x) s := by
@@ -26,7 +26,7 @@ theorem contDiffOn_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {s 
   exact ContDiffOn.sum fun k _ => (hf i k).mul (hg k j)
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[contDiffOn_matrix_iff]`. Introduce and unpack `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.kroneckerMap_apply]`. Conclude with `(hf i k).mul (hg j l)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_kron {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E}
     {f : E → Matrix ι ι ℂ} {g : E → Matrix κ κ ℂ} (hf : ContDiffOn ℝ ∞ f s) (hg : ContDiffOn ℝ ∞ g s) :
@@ -37,7 +37,7 @@ theorem contDiffOn_kron {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {s
   exact (hf i k).mul (hg j l)
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[contDiffOn_matrix_iff]`. Introduce `i j`. Conclude with `hf j i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiffOn_transpose {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E}
     {f : E → Matrix ι ι ℂ} (hf : ContDiffOn ℝ ∞ f s) : ContDiffOn ℝ ∞ (fun x => (f x)ᵀ) s := by
@@ -46,7 +46,7 @@ theorem contDiffOn_transpose {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ 
   exact hf j i
 
 /- English proof (translation)
-Rewrite using `[contDiff_matrix_iff]`. Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Apply the tactic sequence `exact Complex.conjCLE.contDiff.comp (contDiff_entry j i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_conjTranspose : ContDiff ℝ ∞ (fun x : Matrix ι ι ℂ => xᴴ) := by
   rw [contDiff_matrix_iff]
@@ -86,20 +86,20 @@ Both sides reduce to the same expression.
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `isOpen_det_ne`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := isOpen_det_ne
 
 /- English proof (translation)
-Simplify using `[GLs, isUnit_iff_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_GLs {x : Mat n} : x ∈ GLs n ↔ IsUnit x.det := by
   simp [GLs, isUnit_iff_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[contDiff_matrix_iff]`. Introduce `p q`. Simplify using `only [Mt, cf, LinearMap.coe_mk, AddHom.coe_mk]`. Use `Complex.ofRealCLM.contDiff.comp (Complex.reCLM.contDiff.comp ?_)` and prove the remaining obligations. Simplify using `only [Matrix.trace]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ContDiff.sum fun i _ => ?_` and prove the remaining obligations. Establish `h : ContDiff ℝ ∞ (fun y : Mat n => y * hbM q * yᴴ * hbM p)`. Establish `h1 : ContDiffOn ℝ ∞ (fun y : Mat n => y * hbM q * yᴴ * hbM p) Set.univ` using `contDiffOn_mul (contDiffOn_mul (contDiffOn_mul contDiffOn_id contDiffOn_const) contDiff_conjTranspose.contDiffOn) contDiffOn_const`. Conclude with `contDiffOn_univ.mp h1`. Conclude with `(contDiff_matrix_iff _).mp h i i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_Mt : ContDiff ℝ ∞ (fun y : Mat n => Mt y) := by
   rw [contDiff_matrix_iff]
@@ -116,7 +116,7 @@ theorem contDiff_Mt : ContDiff ℝ ∞ (fun y : Mat n => Mt y) := by
   exact (contDiff_matrix_iff _).mp h i i
 
 /- English proof (translation)
-Establish `hx' : IsUnit (x⁻¹).det` using `Matrix.isUnit_nonsing_inv_det x hx`. Establish `h : Rm lam x⁻¹ * Rm lam x = 1`. Rewrite using `[← (hR n lam).2.1 _ _ hx' hx, Matrix.nonsing_inv_mul x hx, (hR n lam).1]`. Conclude with `(Matrix.inv_eq_left_inv h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rm_inv (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x.det) : Rm lam x⁻¹ = (Rm lam x)⁻¹ := by
   have hx' : IsUnit (x⁻¹).det := Matrix.isUnit_nonsing_inv_det x hx
@@ -125,9 +125,9 @@ theorem rm_inv (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x.de
   exact (Matrix.inv_eq_left_inv h).symm
 
 /- English proof (translation)
-Establish `hx' : IsUnit (x⁻¹).det` using `Matrix.isUnit_nonsing_inv_det x hx`. Establish `h : Rm lam x * Rm lam x⁻¹ = 1`. Rewrite using `[← (hR n lam).2.1 _ _ hx hx', Matrix.mul_nonsing_inv x hx, (hR n lam).1]`. Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rm_det (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x.det) : (Rm lam x).det ≠ 0 := by
   have hx' : IsUnit (x⁻¹).det := Matrix.isUnit_nonsing_inv_det x hx
@@ -139,13 +139,13 @@ theorem rm_det (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x.de
   exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hx.star`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_cT {x : Mat n} (hx : IsUnit x.det) : IsUnit xᴴ.det := by
   rw [Matrix.det_conjTranspose]; exact hx.star
 
 /- English proof (translation)
-Establish `hRm` using `(hR n lam).2.2`. Establish `h1 : ContDiffOn ℝ ∞ (fun x : Mat n => (Rm lam x)⁻¹) (GLs n)` using `contDiffOn_inv.comp hRm fun x hx => rm_det hR lam (mem_GLs.mp hx)`. Establish `h2 : ContDiffOn ℝ ∞ (fun x : Mat n => Rm lam xᴴ) (GLs n)` using `hRm.comp contDiff_conjTranspose.contDiffOn fun x hx => mem_GLs.mpr (isUnit_det_cT (mem_GLs.mp hx))`. Conclude with `contDiffOn_kron (contDiffOn_transpose h1) (contDiffOn_transpose h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rhoW_contDiffOn (hR : RmLaws) (lam : Fin n → ℤ) : ContDiffOn ℝ ∞ (rhoW lam) (GLs n) := by
   have hRm := (hR n lam).2.2
@@ -156,7 +156,7 @@ theorem rhoW_contDiffOn (hR : RmLaws) (lam : Fin n → ℤ) : ContDiffOn ℝ ∞
   exact contDiffOn_kron (contDiffOn_transpose h1) (contDiffOn_transpose h2)
 
 /- English proof (translation)
-Establish `hg : ContDiff ℝ ∞ (gamM (n` using `n)) := (hD n).1.restrict_scalars ℝ`. Establish `hinv : ContDiffOn ℝ ∞ (fun x : Mat n => (Mt x⁻¹)ᵀ) (GLs n)` using `contDiffOn_transpose (contDiff_Mt.comp_contDiffOn contDiffOn_inv)`. Conclude with `contDiffOn_kron (hg.comp_contDiffOn hinv) (rhoW_contDiffOn hR lam)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frame_zero_contDiffOn (hR : RmLaws) (hD : GamDer) (lam : Fin n → ℤ) : ContDiffOn ℝ ∞ (fr0 lam) (GLs n) := by
   have hg : ContDiff ℝ ∞ (gamM (n := n)) := (hD n).1.restrict_scalars ℝ
@@ -165,9 +165,9 @@ theorem frame_zero_contDiffOn (hR : RmLaws) (hD : GamDer) (lam : Fin n → ℤ) 
   exact contDiffOn_kron (hg.comp_contDiffOn hinv) (rhoW_contDiffOn hR lam)
 
 /- English proof (translation)
-Introduce `n lam`. Use `⟨?_, ?_, frame_zero_contDiffOn hR hD lam⟩` and prove the remaining obligations. Simplify using `only [fr0, rhoW, inv_one, (hM n).1, Matrix.transpose_one, (hG n).1, (hR n lam).1, Matrix.conjTranspose_one, Matrix.one_kronecker_one]`. Introduce `x y hx hy`. Establish `hxy` using `(hR n lam).2.1 x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyx` using `(hR n lam).2.1 yᴴ xᴴ (isUnit_det_cT hy) (isUnit_det_cT hx)`. Simplify using `only [fr0, rhoW]`. Rewrite using `[Matrix.mul_inv_rev, (hM n).2.1, Matrix.transpose_mul, (hG n).2, Matrix.conjTranspose_mul, hxy, hyx, Matrix.mul_inv_rev, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_kronecker_mul, Matrix.mul_kronecker_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr0Laws_of (hR : RmLaws) (hG : GamMul) (hM : MtLaws) (hD : GamDer) : MatrixFrechetDerivativeAtZeroLaws := by
   intro n lam
@@ -182,7 +182,7 @@ theorem fr0Laws_of (hR : RmLaws) (hG : GamMul) (hM : MtLaws) (hD : GamDer) : Mat
       Matrix.mul_inv_rev, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_kronecker_mul, Matrix.mul_kronecker_mul]
 
 /- English proof (translation)
-Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.mul_apply, swapJ, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, ite_and]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq', mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem swap_kron (lam : Fin n → ℤ) (A B : Matrix (Jd n lam) (Jd n lam) ℂ) :
     swapJ lam * (A ⊗ₖ B) = (B ⊗ₖ A) * swapJ lam := by
@@ -192,7 +192,7 @@ theorem swap_kron (lam : Fin n → ℤ) (A B : Matrix (Jd n lam) (Jd n lam) ℂ)
   simp [Finset.sum_ite_eq, Finset.sum_ite_eq', mul_comm]
 
 /- English proof (translation)
-Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.mul_apply, swapJ, Fintype.sum_prod_type, ite_mul, one_mul, zero_mul, ite_and, Matrix.one_apply, Prod.mk.injEq]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_swap (lam : Fin n → ℤ) : swapJ lam * swapJ lam = 1 := by
   ext ⟨i, j⟩ ⟨k, l⟩
@@ -202,9 +202,9 @@ theorem swap_swap (lam : Fin n → ℤ) : swapJ lam * swapJ lam = 1 := by
   by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.conjTranspose_apply, swapJ]`. Distinguish the cases in `h : k = j ∧ l = i`. Rewrite using `[if_pos h, if_pos ⟨h.2.symm, h.1.symm⟩]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg fun h' => h ⟨h'.2.symm, h'.1.symm⟩]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swap_cT (lam : Fin n → ℤ) : (swapJ lam)ᴴ = swapJ lam := by
   ext ⟨i, j⟩ ⟨k, l⟩
@@ -214,7 +214,7 @@ theorem swap_cT (lam : Fin n → ℤ) : (swapJ lam)ᴴ = swapJ lam := by
   · rw [if_neg h, if_neg fun h' => h ⟨h'.2.symm, h'.1.symm⟩]; simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, swapJ, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, mul_ite, mul_one, mul_zero, ite_and]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trace_kron_swap (lam : Fin n → ℤ) (A B : Matrix (Jd n lam) (Jd n lam) ℂ) :
     ((A ⊗ₖ B) * swapJ lam).trace = (A * B).trace := by
@@ -223,7 +223,7 @@ theorem trace_kron_swap (lam : Fin n → ℤ) (A B : Matrix (Jd n lam) (Jd n lam
   simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Establish `hxc` using `isUnit_det_cT hx`. Establish `e1 : ((xᴴ)⁻¹)ᴴ = x⁻¹` using `by rw [Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose]`. Establish `e2 : (Rm lam (xᴴ)⁻¹)⁻¹ = Rm lam xᴴ` using `by rw [rm_inv hR lam hxc, Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.mpr (rm_det hR lam hxc))]`. Simplify using `only [rhoW]`. Rewrite using `[e1, e2, rm_inv hR lam hx, swap_kron]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_rhoW (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x.det) :
     swapJ lam * rhoW lam (xᴴ)⁻¹ = rhoW lam x * swapJ lam := by
@@ -234,17 +234,15 @@ theorem swap_rhoW (hR : RmLaws) (lam : Fin n → ℤ) {x : Mat n} (hx : IsUnit x
   rw [e1, e2, rm_inv hR lam hx, swap_kron]
 
 /- English proof (translation)
-Introduce `n lam`. Use `⟨swap_swap lam, ?_, fun x hx => swap_rhoW hR lam hx, ?_, trace_kron_swap lam⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, swap_cT, swap_swap]`. Introduce `X hXh0`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ (rhoW lam) 1` using `((rhoW_contDiffOn hR lam).contDiffAt (isOpen_GLs.mem_nhds h1)).differentiableAt (by simp)`. Use `set D := fderiv ℝ (rhoW lam) 1`. Establish `hD : HasFDerivAt (rhoW lam) D 1` using `hd.hasFDerivAt`. Establish `hθ : HasFDerivAt (fun x : Mat n => (xᴴ)⁻¹) ((-ContinuousLinearMap.id ℝ (Mat n)).comp cTL) 1`. Establish `h' : HasFDerivAt (fun x : Mat n => x⁻¹) (-ContinuousLinearMap.id ℝ (Mat n)) (cTL (1 : Mat n))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cTL_apply, Matrix.conjTranspose_one]`. Conclude with `hasFDerivAt_inv_one`. Conclude with `h'.comp (1 : Mat n) (cTL.hasFDerivAt (x := (1 : Mat n)))`. Establish `hF : HasFDerivAt (fun x : Mat n => swapJ lam * rhoW lam (xᴴ)⁻¹) ((mulLL (swapJ lam)).comp (D.comp ((-ContinuousLinearMap.id ℝ (Mat n)).comp cTL))) 1`. Establish `hc : HasFDerivAt (fun x : Mat n => rhoW lam (xᴴ)⁻¹) (D.comp ((-ContinuousLinearMap.id ℝ (Mat n)).comp cTL)) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((1 : Mat n))ᴴ)⁻¹ = 1` using `by simp`. Establish `hD' : HasFDerivAt (rhoW lam) D (((1 : Mat n))ᴴ)⁻¹` using `by rw [e]; exact hD`. Conclude with `hD'.comp (1 : Mat n) hθ`. Conclude with `(mulLL (swapJ lam)).hasFDerivAt.comp (1 : Mat n) hc`. Establish `hG : HasFDerivAt (fun x : Mat n => rhoW lam x * swapJ lam) ((mulRL (swapJ lam)).comp D) 1` using `(mulRL (swapJ lam)).hasFDerivAt.comp (1 : Mat n) hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev : (fun x : Mat n => swapJ lam * rhoW lam (xᴴ)⁻¹) =ᶠ[nhds 1] fun x => rhoW lam x * swapJ lam` using `by filter_upwards [isOpen_GLs.mem_nhds h1] with x hx`. Conclude with `swap_rhoW hR lam (mem_GLs.mp hx)`. Establish `huniq` using `hF.unique (hG.congr_of_eventuallyEq hev)`. Establish `hX` using `congrArg (fun T : Mat n →L[ℝ] Matrix (Jd n lam × Jd n lam) (Jd n lam × Jd n lam) ℂ => T X) huniq`. Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply, cTL_apply, ContinuousLinearMap.neg_apply, ContinuousLinearMap.id_apply, mulLL_apply, mulRL_apply, map_neg] at hX`.
-
-Rewrite `hX` using `[hXh0.eq]`. Rewrite using `[← hX, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapLaws_of (hR : RmLaws) : SwapLaws := by
   intro n lam

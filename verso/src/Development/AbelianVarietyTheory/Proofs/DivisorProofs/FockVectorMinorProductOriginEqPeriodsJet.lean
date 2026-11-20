@@ -32,7 +32,7 @@ theorem scaleCLM_apply {D : D7} {N N' : ℕ} (c : D.what₂.Tau → ℂ) (Z : VC
     scaleCLM c Z = fun τ i j => c τ * Z τ i j := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [scaleCLM_apply, Formalism.MainNotions.TaylorLogMetric.coordV, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs with h`. Rewrite using `[h.1]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaleCLM_coordV {D : D7} {N N' : ℕ} (c : D.what₂.Tau → ℂ) (k : D.what₂.Tau × Fin N' × Fin N) :
     scaleCLM c (Formalism.MainNotions.TaylorLogMetric.coordV D k) = c k.1 • Formalism.MainNotions.TaylorLogMetric.coordV D k := by
@@ -43,7 +43,7 @@ theorem scaleCLM_coordV {D : D7} {N N' : ℕ} (c : D.what₂.Tau → ℂ) (k : D
   · simp
 
 /- English proof (translation)
-Establish `hl : (Finsupp.toMultiset m).card = (Finsupp.toMultiset m).toList.length` using `(Multiset.length_toList _).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.map_coe, Multiset.prod_coe]`. Use `_ = m.prod fun k e => g k ^ e := by`. Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_toList_get {ι : Type} (m : ι →₀ ℕ) (g : ι → ℂ)
     (h : ∀ i : Fin (Finsupp.toMultiset m).card, (i : ℕ) < (Finsupp.toMultiset m).toList.length) :
@@ -62,9 +62,9 @@ theorem prod_toList_get {ι : Type} (m : ι →₀ ℕ) (g : ι → ℂ)
           Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]
 
 /- English proof (translation)
-Establish `hfun : (fun Z : VC D N N' => G fun τ i j => c τ * Z τ i j) = G ∘ scaleCLM c` using `rfl`. Establish `hGc : ContDiff ℂ ⊤ G` using `(GlobalTheory.SCV.analyticOnNhd_of_differentiable hG Set.univ).contDiff`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.taylor, Formalism.MainNotions.TaylorLogMetric.taylor, hfun, (scaleCLM c).iteratedFDeriv_comp_right hGc 0 le_top, ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero]`. Simplify using `only [scaleCLM_coordV]`. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul, mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `prod_toList_get α (fun k => c k.1) _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem taylor_scale {D : D7} {N N' : ℕ} (c : D.what₂.Tau → ℂ) (G : VC D N N' → ℂ) (hG : Differentiable ℂ G)
     (α : Formalism.MainNotions.TaylorLogMetric.Mono D N N') :
@@ -87,9 +87,9 @@ namespace GlobalTheory.NormExact
 def placeWt (D : D7) (a d : ℕ) : Formalism.MainNotions.GL3Theta.Idx D a d → D.what₂.Tau → ℕ := fun k => Pi.single k.1 1
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, ← Finset.prod_pow_eq_pow_sum, Finsupp.prod]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single k.1]`. Simplify using `[placeWt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `τ _ hτ`. Simplify using `[placeWt, hτ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_eq_prod_weight {D : D7} {a d : ℕ} (f : D.what₂.Tau → ℂ) (v : Formalism.MainNotions.GL3Theta.Idx D a d →₀ ℕ) :
     (v.prod fun k e => f k.1 ^ e) = ∏ τ, f τ ^ Finsupp.weight (placeWt D a d) v τ := by
@@ -103,11 +103,11 @@ theorem prod_eq_prod_weight {D : D7} {a d : ℕ} (f : D.what₂.Tau → ℂ) (v 
   · simp
 
 /- English proof (translation)
-Establish `hdet : ∀ τ j, (Matrix.of fun i i' => (MvPolynomial.X (τ, (t τ j).1 i, i') : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)).det.IsWeightedHomogeneous (placeWt D a d) (a • Pi.single τ 1)`. Introduce `τ j`. Rewrite using `[← MvPolynomial.mem_weightedHomogeneousSubmodule, Matrix.det_apply]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`. Use `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ (fun i => (MvPolynomial.X (τ, (t τ j).1 (σ i), i) : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)) (fun _ => (Pi.single τ 1 : D.what₂.Tau → ℕ)) (fun i _ => MvPolynomial.isWeightedHomogeneous_X ℂ (placeWt D a d) (τ, …` as an intermediate fact. Simplify using `using this`. Establish `h` using `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ _ fun τ _ => MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ _ fun j _ => hdet τ j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdeg : (fun τ => a * n τ) = ∑ τ, ∑ _j : Fin (n τ), a • (Pi.single τ 1 : D.what₂.Tau → ℕ)`. Use function extensionality and compare the values at `τ'`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`. Rewrite using `[hdeg]`. Conclude with `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorPol_isWeightedHomogeneous {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (t : Tup D a d n) :
     (minorPol D t).IsWeightedHomogeneous (placeWt D a d) (fun τ => a * n τ) := by
@@ -137,19 +137,17 @@ end GlobalTheory.NormExact
 namespace GlobalTheory.NormExact
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT cc δ r hs G f hG hR n t`. Substitute `hS hT` using the available equality. Establish `hren : MvPolynomial.rename (fun k : Formalism.MainNotions.GL3Theta.Idx D S.rank T.rank => ((k.1, Fin.cast rfl k.2.1, Fin.cast rfl k.2.2) : FVar D T.rank S.rank)) (minorPol D t) = minorPol D t` using `MvPolynomial.rename_id_apply _`. Rewrite using `[hren]`. Take `⟨hstd, hinf, hgS, hgT, hcrv, hsc⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hrd` using `(reads_iff hcrv hsc G f).1 hR`. Establish `hΦ : Differentiable ℂ (fun Z : VC D S.rank T.rank => G fun τ i j => δ * embT D τ r * Z τ i j)` using `hG.comp (scaleCLM (fun τ => δ * embT D τ r)).differentiable`. Establish `hfr : ∀ m, GlobalTheory.FockPos.frAt (D` using `D) (1 : GL (Fin m) D.host.E) = fun _ => 1 := fun m =>`. Use function extensionality and compare the values at `fun _ => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hon : ∀ V : HSp D, V.gram = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin V.rank) D.host.E).1 * V.gram * (1 : GL (Fin V.rank) D.host.E).1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `V hV`. Simplify using `[Formalism.UG.cT, hV]`. Establish `hmono` using `GlobalTheory.FockPos.fock_monomial_zero_of_on ψ θ S T 1 1 hstd hinf (hon S hgS) (hon T hgT) f _ hΦ hrd.2`. Rewrite `hmono` using `[hfr, hfr]`. Use `set P := minorPol D t with hPdef`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : P = ∑ v ∈ P.support, MvPolynomial.coeff v P • MvPolynomial.monomial v (1 : ℂ)` using `by conv_lhs => rw [MvPolynomial.as_sum P]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [hP, map_sum, Finset.sum_apply]`. Rewrite using `[Formalism.MainNotions.GL3Theta.applyAt0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, hmono v]`. Establish `happ : Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial v 1) (fun Z : VC D S.rank T.rank => G fun τ i j => δ * embT D τ r * Z τ i j) = (v.prod fun _ e => (e.factorial : ℂ)) * Formalism.MainNotions.TaylorLogMetric.taylor D (fun Z : VC D S.rank T.rank => G fun τ i j …`. Rewrite using `[Formalism.MainNotions.GL3Theta.applyAt0, Finset.sum_subset MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`. Introduce `x _ hx`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hx, zero_mul, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[happ, taylor_scale (fun τ => δ * embT D τ r) G hG v]`. Establish `hw : Finsupp.weight (placeWt D S.rank T.rank) v = fun τ => S.rank * n τ` using `minorPol_isWeightedHomogeneous t (MvPolynomial.mem_support_iff.1 hv)`. Establish `hper : (∏ τ, period D δ r τ ^ (S.rank * n τ)) = (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) ^ (v.sum fun _ e => e) * v.prod fun k e => (δ * embT D k.1 r) ^ e`. Rewrite using `[← Finset.prod_congr rfl fun τ _ => congrArg (period D δ r τ ^ ·) (congrFun hw τ), ← prod_eq_prod_weight]`. Simplify using `only [period, Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib, ← mul_pow, div_eq_mul_inv]`.
-
-Conclude with `Finset.prod_congr rfl fun k _ => by ring`. Rewrite using `[hper]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fock_minorPol_zero : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

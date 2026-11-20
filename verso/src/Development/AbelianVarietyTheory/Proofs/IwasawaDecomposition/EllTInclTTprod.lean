@@ -11,24 +11,24 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Mem.SchurTensor
 
 /- English proof (translation)
-Simplify using `[ellT, inclT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ellT_inclT_tprod {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (w : ∀ τ, M.H τ) (v : M.Vec) :
     ellT M w (inclT M (PiTensorProduct.tprod ℂ v)) = ∏ τ, ⟪w τ, (v τ : M.H τ)⟫_ℂ := by
   simp [ellT, inclT]
 
 /- English proof (translation)
-Introduce `D θ V S M J χ μ 𝓕 hS hθ hq x hx y hy v w`. Establish `hx'` using `(mem_multT θ M J χ x).1 hx`. Establish `hy'` using `(mem_multT θ M J χ y).1 hy`. Establish `hm` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M J χ _).1 hy'`. Establish `hI` using `ipM_spec M μ 𝓕 _ _ (hS hθ hq.1 hq.2 _ hx' _ hy')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hm.aut w, hm.cusp w⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c u`. Take `⟨h1, h2⟩` from `hI u w`. Establish `e : (fun g => star (x (c • PiTensorProduct.tprod ℂ u) g) * y (PiTensorProduct.tprod ℂ w) g) = fun g => star c * (star (x (PiTensorProduct.tprod ℂ u) g) * y (PiTensorProduct.tprod ℂ w) g)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`. Rewrite using `[e]`. Use `⟨h1.const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, map_smul, map_smul, ellT_inclT_tprod, smul_eq_mul, star_mul', star_prod]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (star c * ·) h2).trans ?_` and prove the remaining obligations. Establish `e2 : ∏ τ, star ⟪(w τ : M.H τ), (u τ : M.H τ)⟫_ℂ = ∏ τ, ⟪(u τ : M.H τ), (w τ : M.H τ)⟫_ℂ` using `Finset.prod_congr rfl fun τ _ => inner_conj_symm _ _`. Rewrite using `[e2, ipT]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `e : (fun g => star (x (a + b) g) * y (PiTensorProduct.tprod ℂ w) g) = fun g => star (x a g) * y (PiTensorProduct.tprod ℂ w) g + star (x b g) * y (PiTensorProduct.tprod ℂ w) g`. Use function extensionality and compare the values at `g`. Rewrite using `[map_add, Pi.add_apply, star_add, add_mul]`. Rewrite using `[e]`. Use `⟨ha.1.add hb.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_add ha.1 hb.1, ha.2, hb.2, map_add, map_add, star_add, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schur_tensor : ∀ (D : D7) (θ : InfF D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), SchurMult θ M J χ μ 𝓕 → IsInfFam θ → IsQuot V μ 𝓕 → ∀ x ∈ MultT θ M J χ, ∀ y ∈ MultT θ M J χ, ∀ (v : SmT M) (w : M.Vec), IsCuspForm θ V (y (PiTensorProduct.tprod ℂ w)) ∧ IntegrableOn (fun g => star (x v g) * y (PiTensorProduct.tprod ℂ w) g) 𝓕 μ ∧ ∫ g in 𝓕, star (x v g) * y (PiTensorProduct.tprod ℂ w) g ∂μ = ipT M μ 𝓕 y x * star (ellT M (fun τ => (w τ : M.H τ)) (inclT M v)) := by
   intro D θ V S M J χ μ 𝓕 hS hθ hq x hx y hy v w

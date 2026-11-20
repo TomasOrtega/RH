@@ -24,7 +24,7 @@ def intSpan (v : AddValuation C (WithTop ℝ)) {ι : Type} [Fintype ι] {d : ℕ
   {x | ∃ a : ι → C, (∀ k, IsIntV v (a k)) ∧ x = ∑ k, a k • u k}
 
 /- English proof (translation)
-Use `⟨fun b => by simp, fun b α => ?_, fun b => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `unfold IsIntV; rw [coeff_X]; split_ifs <;> simp`. Rewrite using `[show (fun a => (X a : MvPowerSeries (Fin d) C)) = X from rfl, subst_self]`. Simplify using `[Matrix.one_apply, ite_smul]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {d : ℕ} (G : LogFGL v d) : IsIntHom G G (fun a => X a) 1 := by
   refine ⟨fun b => by simp, fun b α => ?_, fun b => ?_⟩
@@ -43,7 +43,7 @@ def SplitInK (H : Host E) (p : ℕ) : Prop := (H.d : ZMod p) ≠ 0 ∧ IsSquare 
 def InertInK (H : Host E) (p : ℕ) : Prop := ¬ IsSquare (-(H.d : ZMod p))
 
 /- English proof (translation)
-Establish `h : (H.d : ZMod 2) = 1`. Use `H.d_mod` as an intermediate fact. Rewrite using `[← ZMod.natCast_mod H.d 2, show H.d % 2 = 1 by omega]; rfl`. Use `⟨by rw [h]; decide, 1, by rw [h]; decide⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 example (H : Host E) : SplitInK H 2 := by
   have h : (H.d : ZMod 2) = 1 := by
@@ -60,7 +60,7 @@ variable {c : Coeff l} {T : CDVR} (io : c.F →+* T.Fr) {p : ℕ} [Fact p.Prime]
 def embX (τ : E →+* ℂ) : 𝓞 E →+* X.C := X.ιF.comp (io.comp (embK c τ))
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (embX io X τ a)` using `map_isIntegral_int _ (RingOfIntegers.isIntegral a)`. Conclude with `X.ints.isIntegral_iff_v_le_one.1 h1.tower_top`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem v_embX_le_one (τ : E →+* ℂ) (a : 𝓞 E) : X.v (embX io X τ a) ≤ 1 := by
   have h1 : IsIntegral ℤ (embX io X τ a) := map_isIntegral_int _ (RingOfIntegers.isIntegral a)
@@ -120,7 +120,7 @@ def TypedPartAt (τ : E →+* ℂ) : Prop :=
 omit [StarRing (𝓞 E)] in
 
 /- English proof (translation)
-Rewrite using `[Dw.rank]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 example : Module.finrank (𝓞 E) Dw.La - Dw.q = Dw.p := by rw [Dw.rank]; omega
 

@@ -8,25 +8,23 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 open private kgl_eq loc_comm from Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.LocComm
 
 /- English proof (translation)
-Establish `hne : rt E a k φ ≠ 0` using `fun e => h.ne (by`. Use `congrArg (rt E a k⁻¹) e` as an intermediate fact. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero, Module.End.one_apply] at this)` and apply the resulting hypothesis. Use `set kf := GeneralLinearGroup.map (pFin E) k with hkf`. Establish `hmem : ∀ w, GeneralLinearGroup.map (pLoc E w) kf ∈ KGL w a` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← kgl_eq]`. Establish `e : GeneralLinearGroup.map (pLoc E w) kf = Reduction.finAt w k`. Use extensionality with `i j : 2`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hk.2 w`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k₀ : Kinf E a, k = infGL E a (Unitary.toUnits k₀) * finGL E a kf := by`. Take `⟨k₀, e⟩` from `(UpperTheory.V.Cm.cptEq E a).surjective ⟨archPart k, archPart_mem_archCompact hk⟩`. Use `⟨k₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.V.Cm.infEmb_cptEq, e, ← UpperTheory.V.Fb.finEmb_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(infEmb_archPart_mul_finEmb_finPart k).symm`. Use `⟨hne, (UpperTheory.V.Cm.isAutForm_iff _).2 (((UpperTheory.V.Cm.isAutForm_iff _).1 h.aut).rightTranslate_of_mem_maxCompact hk), ⟨fun u hu g => ?_, fun g => ?_⟩, fun t => ⟨(h.cap t).1, fun u => ?_⟩, fun w hw' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E a u * k) = φ.1 (g * k)`. Rewrite using `[← h.ty.1 _ (hle (hn kf hmem u hu)) (g * k)]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hk₀]`. Use `conv_rhs => rw [hk₀]`. Rewrite using `[mul_assoc g, ← mul_assoc (finGL E a u), ← infGL_comm]`. Simplify using `only [map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`. Establish `h1` using `hT (fun k' => φ.1 (g * finGL E a kf * infGL E a (Unitary.toUnits k'))) (fun c => by`.
+Simplify to obtain the desired conclusion from the available facts. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify `h.ty.2 (g * finGL E a kf * infGL E a (Unitary.toUnits c))) k₀` using `only [map_mul, mul_assoc]`. Use `h1 using 2 with k'` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `φ.1 (g * _ * k) = _`. Use `congr 1`. Use `conv_lhs => rw [hk₀]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc g (finGL E a kf), ← infGL_comm, map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Establish `e` using `LinearMap.congr_fun ((capAct E a t u).1 k).eq φ`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e, (h.cap t).2 u, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw` using `h.sat w hw' set kw := GeneralLinearGroup.map (pLoc E w) kf with hkw set u := kf * (locGL E a w kw)⁻¹ with hu`. Establish `hu1 : GeneralLinearGroup.map (pLoc E w) u = 1`. Rewrite using `[hu, map_mul, map_inv, pLoc_locGL, mul_inv_cancel]`. Use `set k' := infGL E a (GeneralLinearGroup.map (pInf E) k) * finGL E a u with hk'`. Establish `hdec : k' * finGL E a (locGL E a w kw) = k`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hk', mul_assoc, ← map_mul, hu, inv_mul_cancel_right, infGL_mul_finGL]`. Establish `hfix : rt E a (finGL E a (locGL E a w kw)) φ = φ` using `GlobalTheory.LGrp.mem_fixed.1 hw.2.1 kw (hmem w)`. Establish `e : rt E a k' φ = rt E a k φ` using `by conv_rhs => rw [← hdec, map_mul (rt E a), Module.End.mul_apply, hfix]`. Rewrite `hne`, the goal using `[← e]`. Use `hw.map (rt E a k') (fun g y => ?_) hne` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `rt E a k' (rt E a (finGL E a (locGL E a w g)) y) = rt E a (finGL E a (locGL E a w g)) (rt E a k' y)`. Establish `hcm : k' * finGL E a (locGL E a w g) = finGL E a (locGL E a w g) * k'`. Rewrite using `[hk', mul_assoc, ← map_mul (finGL E a), loc_comm w g hu1, map_mul (finGL E a), ← mul_assoc, ← mul_assoc, infGL_comm _ (locGL E a w g)]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul (rt E a), ← map_mul (rt E a), hcm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rt_eig {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} {bad : Set (UpperTheory.V.Cj.S.Pl E)}
     {K K' : Subgroup (GL (Fin a) (Af E))} {W W' : Submodule ℂ (Kinf E a → ℂ)} (hle : K' ≤ K)
@@ -89,11 +87,11 @@ private theorem rt_eig {E : Type} [Field E] [NumberField E] [IsCMField E] {a : �
     rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul (rt E a), ← map_mul (rt E a), hcm]
 
 /- English proof (translation)
-Introduce `hL hT E _ _ _ r s bad K W hK hW`. Take `⟨K', hle, hK', hn⟩` from `hL E _ bad K hK.isOpen hK.loc`. Take `⟨W', hW', hT⟩` from `hT _ W hW`. Use `⟨K', W', hK', hW', fun φ m B h ⟨g, hg⟩ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, k, hk, rfl⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (K := E) (n := r + s) g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨X, m₁, m₂, rfl⟩` from `UpperTheory.upperTriangular_eq_unipotent_mul_levi _ r s b (Reduction.mem_adelicBorel.1 hb)`. Use `⟨_, rt_eig hle hn hT h hk, m₁, m₂, ?_⟩` and prove the remaining obligations. Establish `hl : IsLeftInvariant φ.1` using `h.aut.left`. Rewrite `hg` using `[mul_assoc, UpperTheory.constantTerm_unipotent_left_invariant E (r + s) r φ.1 hl]`. Rewrite `hg` using `[← constantTerm_rightTranslate]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.iwaT :
     LevShrink → TypeSat → IwaT := by

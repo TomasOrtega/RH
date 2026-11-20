@@ -5,25 +5,23 @@ open scoped ENNReal NNReal Topology
 namespace GlobalTheory.CompanionTheory.RingSqrt
 
 /- English proof (translation)
-Introduce `B V _ _ _ _ _ _ ψ hψ hψs`. Set `L : V → (V →L[ℝ] V)` to `fun x => AddMonoidHom.toRealLinearMap { toFun := fun y => ψ (ψ.symm x * ψ.symm y) map_zero' := by simp map_add' := by intro a b; simp [mul_add] } (hψ.comp (continuous_const.mul hψs))`. Establish `hL : ∀ x y, L x y = ψ (ψ.symm x * ψ.symm y)` using `fun _ _ => rfl`. Set `A : V →L[ℝ] (V →L[ℝ] V)` to `AddMonoidHom.toRealLinearMap { toFun := L map_zero' := by ext y; simp [hL] map_add' := by intro a b; ext y; simp [hL, add_mul] } (continuous_clm_apply.2 fun y => hψ.comp (hψs.mul continuous_const))`. Establish `hA : ∀ x y, A x y = ψ (ψ.symm x * ψ.symm y)` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Q, hQdef⟩ : ∃ Q : V → V, Q = fun y => y + y + A y y` from `⟨_, rfl⟩`. Establish `hQ : ∀ y, (1 + ψ.symm y) * (1 + ψ.symm y) = 1 + ψ.symm (Q y)`. Introduce `y`. Simplify using `only [hQdef, hA, map_add, AddEquiv.symm_apply_apply, mul_add, add_mul, one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hQ0 : Q 0 = 0` using `by simp [hQdef]`. Set `e : V ≃L[ℝ] V` to `ContinuousLinearEquiv.smulLeft (Units.mk0 (2 : ℝ) two_ne_zero)`. Establish `hder : HasStrictFDerivAt Q (e : V →L[ℝ] V) 0`. Establish `h1 : HasStrictFDerivAt (fun y : V => y) (ContinuousLinearMap.id ℝ V) 0` using `hasStrictFDerivAt_id 0`. Establish `h2` using `A.hasStrictFDerivAt.clm_apply h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(h1.add h1).add h2`. Rewrite using `[hQdef]`. Use `h3.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`. Simplify using `[e, two_smul, Units.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hsub : Filter.Tendsto (fun h : B => ψ (h - 1)) (𝓝 1) (𝓝 0)`. Establish `hc : Continuous fun h : B => ψ (h - 1)` using `hψ.comp (continuous_id.sub continuous_const)`. Simplify using `using hc.tendsto 1`. Establish `hg : Filter.Tendsto (hder.localInverse Q e 0) (𝓝 0) (𝓝 0)`. Use `hder.localInverse_tendsto` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hQ0]`. Then use the resulting hypothesis. Establish `hr : ∀ᶠ y in 𝓝 (0 : V), Q (hder.localInverse Q e 0 y) = y`. Use `hder.eventually_right_inverse` as an intermediate fact. Rewrite `this` using `[hQ0]`. Then use the resulting hypothesis. Use `⟨fun h => 1 + ψ.symm (hder.localInverse Q e 0 (ψ (h - 1))), (fun x => ψ (x - 1)) ⁻¹' (hder.toOpenPartialHomeomorph Q).source, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsub ((hder.toOpenPartialHomeomorph Q).open_source.mem_nhds hder.mem_toOpenPartialHomeomorph_source)`. Establish `h0 : Filter.Tendsto (fun h : B => ψ.symm (hder.localInverse Q e 0 (ψ (h - 1)))) (𝓝 1) (𝓝 0)`. Use `(hψs.tendsto 0).comp (hg.comp hsub)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Simplify using `using (tendsto_const_nhds (x := (1 : B))).add h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hsub hr] with h hh`. Rewrite using `[hQ, hh]`. Simplify using the standard rewrite rules. Introduce `x hx y hy hxy`. Establish `key : Q (ψ (x - 1)) = Q (ψ (y - 1))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hQ (ψ (x - 1))`. Establish `e2` using `hQ (ψ (y - 1))`. Simplify using `only [AddEquiv.symm_apply_apply, add_sub_cancel] at e1 e2`. Conclude with `ψ.symm.injective (add_left_cancel (e1.symm.trans (hxy.trans e2)))`. Establish `h1 : ψ (x - 1) = ψ (y - 1)` using `(hder.toOpenPartialHomeomorph Q).injOn hx hy key`.
-
-Conclude with `sub_left_inj.1 (ψ.injective h1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_local_sqrt : ∀ (B V : Type) [Ring B] [TopologicalSpace B] [IsTopologicalRing B]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (ψ : B ≃+ V),

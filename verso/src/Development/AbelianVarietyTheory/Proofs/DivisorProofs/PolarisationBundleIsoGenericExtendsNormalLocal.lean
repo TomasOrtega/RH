@@ -22,9 +22,9 @@ namespace GlobalTheory.Mum.GenBundle
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_)))` and prove the remaining obligations. Establish `a` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `b` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`. Use `show gm (𝟙 X) y _ (L.g p.1 q.1) * (gm (𝟙 X) y _ (L.g p.2 q.2))⁻¹ * gm (𝟙 X) y _ (L.g q.1 q.2) = gm (𝟙 X) y _ (L.g p.1 p.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, a, ← b, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_self {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
@@ -37,7 +37,7 @@ theorem lbIso_self {L : LB X} (hL : L.IsLB) : LBIso L L := by
   rw [mul_right_comm, a, ← b, mul_inv_cancel_right]
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame L (fun _ : PUnit => g ≫ f) (fun _ => f) (fun _ => 1) g fun _ => rfl) (chartPullPull _ g) (lbIso_self (pull_isLB hL f))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp' {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (g : Z ⟶ Y) :
     LBIso (L.pull (g ≫ f)) ((L.pull f).pull g) :=
@@ -49,13 +49,11 @@ end GlobalTheory.Mum.GenBundle
 open GlobalTheory.Mum.GenBundle in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ ρ hA _ D₁ D₂ D₃ E p q₁ q₂ Φ κ _ hκ h1 h2`. Take `⟨hN, -, hI, -⟩` from `hA`. Use `haveI := D₃.P.isAb`. Use `haveI : Smooth D₃.P.A.hom := D₃.P.isAb.smooth`. Use `haveI : GeometricallyIntegral D₃.P.A.hom := geometricallyIntegral_of_isAbelianScheme D₃.P.A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL₁` using `D₁.P.isLB`. Establish `hL₂` using `D₂.P.isLB`. Establish `hL₃` using `D₃.P.isLB`. Establish `hLE` using `E.P.isLB`. Establish `a₁ : LBIso (D₃.P.L.pull κ) (D₁.P.L.pull (GlobalTheory.PsiEvenPull.proj q₁))` using `LBIso.chartPull (chartPullPull D₃.P.L κ) (chartPullSame D₁.P.L (fun _ : PUnit => GlobalTheory.PsiEvenPull.proj q₁) (fun _ => GlobalTheory.PsiEvenPull.proj p) (fun _ => 1) κ fun _ => h1.symm) ⟨p.w, p.w_gen⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : LBIso (D₃.P.L.pull κ) E.P.L` using `LBIso.trans (pull_isLB hL₃ κ) (pull_isLB hL₁ _) hLE a₁ (LBIso.symm ⟨q₁.w, q₁.w_gen⟩)`. Establish `b₀ : LBIso E.P.L (D₂.P.L.pull (κ ≫ Φ))` using `h2 ▸ ⟨q₂.w, q₂.w_gen⟩`. Establish `b : LBIso (D₃.P.L.pull κ) ((D₂.P.L.pull Φ).pull κ)` using `LBIso.trans (pull_isLB hL₃ κ) (pull_isLB hL₂ _) (pull_isLB (pull_isLB hL₂ Φ) κ) (LBIso.trans (pull_isLB hL₃ κ) hLE (pull_isLB hL₂ _) a b₀) (lbIso_pull_comp' hL₂ Φ κ)`. Establish `hj : pullback.fst D₃.P.A.hom (jK R') = hκ.1.isoPullback.inv ≫ κ`. Conclude with `(Iso.inv_hom_id_assoc hκ.1.isoPullback _).symm.trans (congrArg (hκ.1.isoPullback.inv ≫ ·) hκ.1.isoPullback_hom_fst)`.
-
-Establish `c : LBIso (D₃.P.L.pull (pullback.fst D₃.P.A.hom (jK R'))) ((D₂.P.L.pull Φ).pull (pullback.fst D₃.P.A.hom (jK R')))` using `LBIso.chartPull (chartPullSame D₃.P.L (fun _ : PUnit => pullback.fst D₃.P.A.hom (jK R')) (fun _ => κ) (fun _ => 1) hκ.1.isoPullback.inv fun _ => hj) (chartPullSame (D₂.P.L.pull Φ) (fun _ : PUnit => pullback.fst D₃.P.A.hom (jK R')) (fun _ => κ) (fun _ => 1) hκ.1.isoPullback.inv fu …`. Take `⟨w, hw⟩` from `GlobalTheory.Mum.lbIso_of_generic_local R' D₃.P.A (eSec D₃.P.A) (Over.w η[D₃.P.A]) D₃.P.L (D₂.P.L.pull Φ) hL₃ (pull_isLB hL₂ Φ) c`. Conclude with `⟨w, (isGen_iff w).1 hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.genBundle_extends : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), AdmBase R' (maximalIdeal R') → Function.Injective ρ → ∀ (D₁ D₂ : DegPre R) (D₃ : DegPre R') (E : DegPre (FractionRing R')) (p : IsPullDeg ρ D₁ D₃) (q₁ : IsPullDeg ((algebraMap R' (FractionRing R')).comp ρ) D₁ E) (q₂ : IsPullDeg ((algebraMap R' (FractionRing R')).comp ρ) D₂ E) (Φ : D₃.P.A.left ⟶ D₂.P.A.left) (κ : E.P.A.left ⟶ D₃.P.A.left), IsGrpPullback D₃.P.A D₂.P.A (spMap ρ) Φ → IsGrpPullback E.P.A D₃.P.A (spMap (algebraMap R' (FractionRing R'))) κ → κ ≫ GlobalTheory.PsiEvenPull.proj p = GlobalTheory.PsiEvenPull.proj q₁ → κ ≫ Φ = GlobalTheory.PsiEvenPull.proj q₂ → ∃ w : LB.Iso D₃.P.L (D₂.P.L.pull Φ), PGen w := by
   intro R R' _ _ _ _ _ ρ hA _ D₁ D₂ D₃ E p q₁ q₂ Φ κ _ hκ h1 h2

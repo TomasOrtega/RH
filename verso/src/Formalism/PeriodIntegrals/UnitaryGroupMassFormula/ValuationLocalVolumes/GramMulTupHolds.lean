@@ -9,9 +9,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.DegenerateSieg
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `only [gramR, hR, Formalism.UG.hform, mulTup, conjT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Establish `h1 : ∀ f : Fin M → Fin M → Fin n → Fin n → R ⊗[F] E, (∑ i, ∑ j, ∑ l, ∑ k, f i j l k) = ∑ l, ∑ k, ∑ i, ∑ j, f i j l k`. Introduce `f`. Combine the equalities or inequalities in the displayed calculation. Use `(h1 _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_entry {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) (n M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -33,7 +33,7 @@ theorem gram_entry {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Co
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ R _ _ σ n M J D X`. Use extensionality with `a b`. Apply the tactic sequence `exact gram_entry R σ n M J D X a b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramMulTup_holds : GramMulTup := by
   intro F E _ _ _ R _ _ σ n M J D X

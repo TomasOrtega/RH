@@ -127,7 +127,7 @@ def StMove : Prop :=
   ∀ (G G' : Type) [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] (_ : G ≃ₜ* G'), HasCartan G' → HasCartan G
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h2 d l`. Use `⟨C ^ 2 + 1, h7 G K _ hp fun b => ?_⟩` and prove the remaining obligations. Take `⟨N, ρ, hρ, h0⟩` from `h5 G K hp hs (stdPoly 1 b)`. Conclude with `h0 (h3 C _ (hC _ (h4 G K d l hp hc)) _ ρ hρ b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasPI_of (h2 : StSimple) (h3 : StStar) (h4 : StHecke) (h5 : StMod) (h7 : StTransfer)
     {G : Type} [Group G] {K : Subgroup G} {d l : ℕ} (hp : IsHeckePair K) (hc : IsCartan K d l) (hs : IsSep K) :

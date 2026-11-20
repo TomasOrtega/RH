@@ -5,19 +5,19 @@ open GlobalTheory.UnitLemma GlobalTheory.StableLatCount Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e : P ≃ₗ[O] P` to `LinearEquiv.ofBijective T hT`. Establish `he1 : ∀ y, T (e.symm y) = y` using `fun y => e.apply_symm_apply y`. Establish `he2 : ∀ x, e.symm (T x) = x` using `fun x => e.symm_apply_apply x`. Set `g : N →ₗ[O] P ⧸ N` to `N.mkQ ∘ₗ (e.symm : P →ₗ[O] P) ∘ₗ N.subtype`. Establish `hg : ∀ y : N, g y = Submodule.Quotient.mk (e.symm (y : P))` using `fun y => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker g = (N.map T).comap N.subtype`. Use extensionality with `⟨y, hy⟩`. Rewrite using `[LinearMap.mem_ker, hg, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨e.symm y, h, he1 y⟩`. Introduce and unpack `⟨x, hx, hxy⟩`. Simplify using `only at hxy`. Substitute `hxy` using the available equality. Use `show e.symm (T x) ∈ N`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he2]`. Conclude with `hx`. Establish `hrange : ∀ z : P ⧸ N, z ∈ LinearMap.range g ↔ ∀ x : P, Submodule.Quotient.mk x = z → T x ∈ N`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨⟨y, hy⟩, rfl⟩ x hx`. Rewrite `hx` using `[hg]`. Establish `h1 : x - e.symm y ∈ N` using `(Submodule.Quotient.eq N).mp hx`. Establish `h2 : T (x - e.symm y) ∈ N` using `hN _ h1`. Rewrite `h2` using `[map_sub, he1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using N.add_mem h2 hy`. Introduce `h`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N z`. Use `⟨⟨T x, h x rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[he2]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_kernel_quot_of_bijective (O : Type) [CommRing O] (P : Type) [AddCommGroup P]
     [Module O P] (N : Submodule O P) (T : P →ₗ[O] P) (hT : Function.Bijective T)

@@ -40,7 +40,7 @@ def prodMonoid : Submonoid (Matrix (Fin 2) (Fin 2) R) where
         _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `⟨!![1, t; 0, 1], by simp [det_fin_two], !![1, ε * s; 0, 1], by simp [det_fin_two], ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [← mul_assoc, hε]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upper_mem (hε : ε * ε = ε) (t : K) (s : R) : !![1, φ t + ε * s; 0, 1] ∈ prodMonoid φ ε := by
   refine ⟨!![1, t; 0, 1], by simp [det_fin_two], !![1, ε * s; 0, 1], by simp [det_fin_two], ?_, ?_⟩
@@ -50,7 +50,7 @@ theorem upper_mem (hε : ε * ε = ε) (t : K) (s : R) : !![1, φ t + ε * s; 0,
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Use `⟨!![1, 0; t, 1], by simp [det_fin_two], !![1, 0; ε * s, 1], by simp [det_fin_two], ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [← mul_assoc, hε]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lower_mem (hε : ε * ε = ε) (t : K) (s : R) : !![1, 0; φ t + ε * s, 1] ∈ prodMonoid φ ε := by
   refine ⟨!![1, 0; t, 1], by simp [det_fin_two], !![1, 0; ε * s, 1], by simp [det_fin_two], ?_, ?_⟩
@@ -60,11 +60,11 @@ theorem lower_mem (hε : ε * ε = ε) (t : K) (s : R) : !![1, 0; φ t + ε * s,
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Rewrite `hg` using `[det_fin_two]`. Establish `e : g = !![1, (g 0 0 + g 0 1 * s - 1) * u; 0, 1] * !![1, 0; g 1 0 + g 1 1 * s, 1] * !![1, (g 1 1 - 1) * u; 0, 1] * !![1, 0; -s, 1]`. Establish `e1 : g * !![1, 0; s, 1] = !![1, (g 0 0 + g 0 1 * s - 1) * u; 0, 1] * !![1, 0; g 1 0 + g 1 1 * s, 1] * !![1, (g 1 1 - 1) * u; 0, 1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Take the linear combination `(-(g 0 0 + g 0 1 * s - 1)) * hu`. Take the linear combination `(-(g 0 1) - (g 0 0 + g 0 1 * s - 1) * (g 1 1 - 1) * u) * hu - u * hg`. Take the linear combination `(-(g 1 1 - 1)) * hu`. Establish `e2 : (!![1, 0; s, 1] * !![1, 0; -s, 1] : Matrix (Fin 2) (Fin 2) R) = 1`. Use extensionality with `i j`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[← e1, Matrix.mul_assoc, e2, Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `M.mul_mem (M.mul_mem (M.mul_mem (hU _) (hL _)) (hU _)) (hL _)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_elementary (M : Submonoid (Matrix (Fin 2) (Fin 2) R)) (hU : ∀ x : R, !![1, x; 0, 1] ∈ M)
     (hL : ∀ x : R, !![1, 0; x, 1] ∈ M) (g : Matrix (Fin 2) (Fin 2) R) (hg : g.det = 1) (s u : R)
@@ -87,9 +87,9 @@ theorem mem_of_elementary (M : Submonoid (Matrix (Fin 2) (Fin 2) R)) (hU : ∀ x
   exact M.mul_mem (M.mul_mem (M.mul_mem (hU _) (hL _)) (hU _)) (hL _)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw.exists_right_inv`. Establish `h1 : a * c * w = a` using `by linear_combination a * hw - c * w * haa - d * w * hab`. Establish `h2 : b * d * w = b` using `by linear_combination b * hw - d * w * hbb - c * w * hab`. Use `⟨b * (1 - c) * w, a * w + b, ?_⟩` and prove the remaining obligations. Establish `h3 : c + d * (b * (1 - c) * w) = a * c + b` using `by linear_combination (1 - c) * h2 - c * hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Take the linear combination `hs + h1 + hbb + (c + w) * hab + c * w * haa`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_unit_of_idem {c d a b : R} (haa : a * a = a) (hbb : b * b = b) (hab : a * b = 0) (hs : a + b = 1)
     (hw : IsUnit (a * c + b * d)) : ∃ s u : R, (c + d * s) * u = 1 := by
@@ -102,11 +102,11 @@ theorem exists_unit_of_idem {c d a b : R} (haa : a * a = a) (hbb : b * b = b) (h
   linear_combination hs + h1 + hbb + (c + w) * hab + c * w * haa
 
 /- English proof (translation)
-Establish `key : ∀ f : R → Matrix (Fin 2) (Fin 2) R, Continuous f → (∀ t s, f (φ t + ε * s) ∈ prodMonoid φ ε) → ∀ x, f x ∈ (prodMonoid φ ε).topologicalClosure`. Introduce `f hf h x`. Express the relevant statement in the definitionally equal form `f x ∈ closure _`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `V hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, s, hts⟩` from `hd x _ (hf.continuousAt.preimage_mem_nhds hV)`. Conclude with `⟨_, hts, h t s⟩`. Use `mem_of_elementary (prodMonoid φ ε).topologicalClosure ?_ ?_ g hg s u hu` and prove the remaining obligations. Use `key (fun x => !![1, x; 0, 1]) ?_ (upper_mem φ ε hε)` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Use `key (fun x => !![1, 0; x, 1]) ?_ (lower_mem φ ε hε)` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_closure_of_dense [TopologicalSpace R] [IsTopologicalRing R] (hε : ε * ε = ε)
     (hd : ∀ (x : R) (U : Set R), U ∈ 𝓝 x → ∃ t : K, ∃ s : R, φ t + ε * s ∈ U)
@@ -131,9 +131,9 @@ theorem mem_closure_of_dense [TopologicalSpace R] [IsTopologicalRing R] (hε : �
 end General
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `Prod.ext (funext fun w => ?_) (RestrictedProduct.ext _ _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F ε w * fstA F ε w = fstA F ε w`. Distinguish the cases in `hw : w ∈ S₁`. Rewrite using `[h1 w hw, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 w hw, zero_mul]`. Express the relevant statement in the definitionally equal form `evalV F v (sndA F ε) * evalV F v (sndA F ε) = evalV F v (sndA F ε)`. Distinguish the cases in `hv : v ∈ S₂`. Rewrite using `[h3 v hv, one_mul]`. Rewrite using `[h4 v hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_of_isPlacesIdem {F : Type} [Field F] [NumberField F] {S₁ : Finset (InfinitePlace F)}
     {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (h : IsPlacesIdem S₁ S₂ ε) : ε * ε = ε := by
@@ -149,11 +149,11 @@ theorem idem_of_isPlacesIdem {F : Type} [Field F] [NumberField F] {S₁ : Finset
     · rw [h4 v hv, zero_mul]
 
 /- English proof (translation)
-Introduce `F _ _ S₁ S₂ ε hε hS g hg`. Establish `hdet : ∑ i : Fin 2, ![-g 0 1, g 0 0] i * g 1 i = 1`. Rewrite `hg` using `[det_fin_two]`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `hg`. Take `⟨η, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_orthogonal_idempotents_adele_unit_combination F (Fin 2) (g 1) ![-g 0 1, g 0 0] (hdet ▸ isUnit_one)`. Rewrite `h3`, `h4` using `[Fin.sum_univ_two]`. Take `⟨s, u, hu⟩` from `exists_unit_of_idem (h1 0) (h1 1) (h2 0 1 (by decide)) h3 h4`. Use `mem_closure_of_dense (algebraMap F (AF F)) ε (idem_of_isPlacesIdem hε) (fun x U hU => ?_) g hg s u hu` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, -, s, h⟩` from `GlobalTheory.T.additive_strongApproximation_avoiding_finset F S₁ S₂ ε hε hS x U hU ∅`. Conclude with `⟨t, s, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem strongApprox_SL2 : ∀ (F : Type) [Field F] [NumberField F], ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (S₁.Nonempty ∨ S₂.Nonempty) → ∀ g : Matrix (Fin 2) (Fin 2) (AF F), g.det = 1 → g ∈ closure {x : Matrix (Fin 2) (Fin 2) (AF F) | ∃ γ : Matrix (Fin 2) (Fin 2) F, γ.det = 1 ∧ ∃ h : Matrix (Fin 2) (Fin 2) (AF F), h.det = 1 ∧ ε • (h - 1) = h - 1 ∧ x = γ.map (algebraMap F (AF F)) * h} := by
   intro F _ _ S₁ S₂ ε hε hS g hg

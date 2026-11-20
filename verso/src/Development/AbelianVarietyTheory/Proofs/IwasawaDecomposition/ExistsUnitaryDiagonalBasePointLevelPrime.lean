@@ -15,7 +15,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mem_divs_iff' {E : Type} [Field E] [NumberField E] {π : 𝓞 E} {P : HeightOneSpectrum (𝓞 E)}
     (h : P ∈ divs π) : π ∈ P.asIdeal := by
@@ -25,7 +25,7 @@ private lemma mem_divs_iff' {E : Type} [Field E] [NumberField E] {π : 𝓞 E} {
   · simp at h
 
 /- English proof (translation)
-Take `⟨u, v, h⟩` from `hcp`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← h]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma false_of_mem_of_conj_mem_of_isCoprime {E : Type} [Field E] [NumberField E] [StarRing E] {π : 𝓞 E} (hcp : IsCoprime π (cO E π))
     (P : HeightOneSpectrum (𝓞 E)) (h1 : π ∈ P.asIdeal) (h2 : cO E π ∈ P.asIdeal) : False := by
@@ -35,7 +35,7 @@ private lemma false_of_mem_of_conj_mem_of_isCoprime {E : Type} [Field E] [Number
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
 /- English proof (translation)
-Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_le_one P r`.
+A detailed English derivation is pending.
 -/
 private lemma valued_algebraMap_int_le_one' {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     Valued.v (algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) ≤ 1 := by
@@ -43,7 +43,7 @@ private lemma valued_algebraMap_int_le_one' {E : Type} [Field E] [NumberField E]
   exact HeightOneSpectrum.intValuation_le_one P r
 
 /- English proof (translation)
-Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h2 : ¬ P.intValuation r < 1` using `fun h => hr ((HeightOneSpectrum.intValuation_lt_one_iff_mem P r).1 h)`. Conclude with `le_antisymm (HeightOneSpectrum.intValuation_le_one P r) (not_lt.1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma valued_algebraMap_eq_one_of_not_mem {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E)
     (hr : r ∉ P.asIdeal) : Valued.v (algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) = 1 := by
@@ -52,39 +52,35 @@ private lemma valued_algebraMap_eq_one_of_not_mem {E : Type} [Field E] [NumberFi
   exact le_antisymm (HeightOneSpectrum.intValuation_le_one P r) (not_lt.1 h2)
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, map_inv₀, valued_algebraMap_eq_one_of_not_mem P r hr, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma valued_inv_algebraMap_le_one_of_not_mem {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E)
     (hr : r ∉ P.asIdeal) : Valued.v (algebraMap E (P.adicCompletion E) ((algebraMap (𝓞 E) E r)⁻¹)) ≤ 1 := by
   rw [map_inv₀, map_inv₀, valued_algebraMap_eq_one_of_not_mem P r hr, inv_one]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Col2.mem_rInt_iff F E y).2 h`.
+A detailed English derivation is pending.
 -/
 private lemma mem_RInt_of_valued_le_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (y : AfE F E)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (adAt F P y) ≤ 1) : y ∈ RInt F E :=
   (GlobalTheory.Mem.Col2.mem_rInt_iff F E y).2 h
 
 /- English proof (translation)
-Establish `hmem : ∀ {P : HeightOneSpectrum (𝓞 E)}, P ∈ divs π → π ∈ P.asIdeal` using `fun h => mem_divs_iff' h`. Establish `hQ : ∀ P ∈ divs π, conjPrime₂ P ∉ divs π`. Introduce `P hP hP'`. Conclude with `false_of_mem_of_conj_mem_of_isCoprime hcp P (hmem hP) ((mem_conjP P π).1 (hmem hP'))`. Establish `hc0 : (algebraMap (𝓞 E) E (cO E π)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `h1 ((map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).1 h)`. Establish `hst : star (algebraMap (𝓞 E) E (cO E π)) = algebraMap (𝓞 E) E π`. Express the relevant statement in the definitionally equal form `star (starRingEnd E (algebraMap (𝓞 E) E π)) = _`. Rewrite using `[starRingEnd_apply, star_star]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `α : HeightOneSpectrum (𝓞 E) → E` to `fun _ => (algebraMap (𝓞 E) E (cO E π))⁻¹`. Set `β : HeightOneSpectrum (𝓞 E) → E` to `fun _ => algebraMap (𝓞 E) E (cO E π)`. Set `a` to `GlobalTheory.Mem.Col2.PtExist.glue hc (divs π) 1 α β`. Establish `ha : ∀ w, adAt F w a = if w ∈ divs π then algebraMap E _ (α w) else if conjPrime₂ w ∈ divs π then algebraMap E _ (star (β (conjPrime₂ w))) else 1` using `fun w => by`. Rewrite using `[GlobalTheory.Mem.Col2.PtExist.adAt_glue hc (divs π) hQ 1 α β w, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : ∀ w, adAt F w (sigR hc.sig (FiniteAdeleRing (𝓞 F) F) a) = if w ∈ divs π then algebraMap E _ (β w) else if conjPrime₂ w ∈ divs π then algebraMap E _ (star (α (conjPrime₂ w))) else 1` using `fun w => by`. Rewrite using `[GlobalTheory.Mem.Col2.PtExist.sig_glue hc (divs π) 1 α β, map_one, GlobalTheory.Mem.Col2.PtExist.adAt_glue hc (divs π) hQ 1 β α w, map_one]`. Use `⟨a, sigR hc.sig (FiniteAdeleRing (𝓞 F) F) a, ?_, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.Mem.Col2.PtExist.ad_ext` to reduce the goal to its premises. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ha, ha', map_one]`. Use `split_ifs with hw hw'`. Rewrite using `[← map_mul, mul_inv_cancel₀ hc0, map_one]`. Rewrite using `[← map_mul, star_inv₀, inv_mul_cancel₀ (star_ne_zero.2 hc0), map_one]`. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `mem_RInt_of_valued_le_one` to reduce the goal to its premises. Introduce `P`. Rewrite using `[ha]`. Use `split_ifs with hw hw'`. Conclude with `valued_inv_algebraMap_le_one_of_not_mem P _ (fun h => false_of_mem_of_conj_mem_of_isCoprime hcp P (hmem hw) h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hst]`. Conclude with `valued_algebraMap_int_le_one' P π`. Rewrite using `[map_one]`. Apply `mem_RInt_of_valued_le_one` to reduce the goal to its premises. Introduce `P`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha']`. Use `split_ifs with hw hw'`. Conclude with `valued_algebraMap_int_le_one' P _`. Rewrite using `[star_inv₀, hst]`. Conclude with `valued_inv_algebraMap_le_one_of_not_mem P π (fun h => false_of_mem_of_conj_mem_of_isCoprime hcp P h ((mem_conjP P π).1 (hmem hw')))`.
-
-Rewrite using `[map_one]`. Introduce `P hP`. Rewrite using `[ha', if_pos hP]`. Introduce `w hw`. Rewrite using `[ha]`.
-
-Use `split_ifs with h2 h3`. Conclude with `absurd (Ideal.mul_mem_right _ _ (hmem h2)) hw`. Conclude with `absurd (Ideal.mul_mem_left _ _ ((mem_conjP w π).1 (hmem h3))) hw`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_unit (hc : Formalism.BasicNotions.CMData F E) {π : 𝓞 E} (h0 : π ≠ 0) (h1 : cO E π ≠ 0) (hcp : IsCoprime π (cO E π)) :
     ∃ a a' : AfE F E, a' * a = 1 ∧ sigR hc.sig (FiniteAdeleRing (𝓞 F) F) a = a' ∧ a ∈ RInt F E ∧ a' ∈ RInt F E ∧
@@ -153,39 +149,33 @@ def stdPt (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) : DecoF E 
       fun P => (Finset.notMem_empty _ P.2).elim⟩, fun _ => 1), fun P => (Finset.notMem_empty _ P.2).elim⟩
 
 /- English proof (translation)
-Establish `hT0 : ((T : ℕ) : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hT`. Establish `h0 : π ≠ 0` using `fun h => hT0 (by rw [← hπ, h, zero_mul])`. Establish `h1 : cO E π ≠ 0` using `fun h => hT0 (by rw [← hπ, h, mul_zero])`. Take `⟨a, a', haa, hσ, hai, hai', hP, hw⟩` from `exists_unit hc h0 h1 hcp`. Set `d : Fin n → AfE F E` to `fun i => if i.1 + 1 = n then a else 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `d' : Fin n → AfE F E` to `fun i => if i.1 + 1 = n then a' else 1`. Establish `hd : ∀ i, d' i * d i = 1` using `fun i => by`. Simplify using `only [d, d']`. Use `split_ifs`. Conclude with `haa`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_one 1`. Establish `hd' : ∀ i, d i * d' i = 1` using `fun i => by rw [mul_comm]; exact hd i`. Establish `hdi : ∀ i, d i ∈ RInt F E` using `fun i => by`. Simplify using `only [d]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hai`. Conclude with `one_mem _`. Establish `hdi' : ∀ i, d' i ∈ RInt F E` using `fun i => by`. Simplify using `only [d']`. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Conclude with `hai'`. Conclude with `one_mem _`. Set `k : GL (Fin n) (AfE F E)` to `⟨Matrix.diagonal d, Matrix.diagonal d', by rw [Matrix.diagonal_mul_diagonal]; simp only [hd']; exact Matrix.diagonal_one, by rw [Matrix.diagonal_mul_diagonal]; simp only [hd]; exact Matrix.diagonal_one⟩`. Establish `hk : ((k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) = Matrix.diagonal d` using `rfl`. Establish `hk' : ((k⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) = Matrix.diagonal d'` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, ⟨stdPt E n, ?_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Apply `(GlobalTheory.Mem.Col2.PtExist.mem_uad_iff k).2` to reduce the goal to its premises. Unfold `Formalism.UG.cT`. Rewrite using `[hk, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [d]`. Use `split_ifs`. Rewrite using `[hσ, haa]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_one, one_mul]`. Introduce `x`. Unfold `Formalism.L2.Herm.hatL`. Express the relevant statement in the definitionally equal form `x ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (Formalism.L2.Col.stdLat E n) ↔ _`. Rewrite using `[Formalism.L2.Col.mem_latS_std, Formalism.L2.Col.mem_latS_std, hk']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[Matrix.mulVec_diagonal]`. Conclude with `mul_mem (hdi' i) (h i)`. Introduce `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem (hdi i) (h i)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_diagonal, ← mul_assoc, hd' i, one_mul]`. Then use the resulting hypothesis. Apply the tactic sequence `all_goals intro P`. Conclude with `(Finset.notMem_empty _ P.2).elim`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hpa : prV (E` using `E) v a = 1 := by`. Establish `h` using `((GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E v (a - 1)).1).2 (fun w hwv => by`. Establish `hnot : π * cO E π ∉ w.asIdeal`. Introduce `hmw`. Apply `hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hwv]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) (T : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[map_natCast, ← hπ]`. Conclude with `hmw`. Rewrite using `[map_sub, hw w hnot, map_one, sub_self])`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal d).map (prV (E := E) v) = 1`. Rewrite using `[Matrix.diagonal_map (map_zero _), ← Matrix.diagonal_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [d]`. Use `split_ifs`. Conclude with `hpa`.
-
-Conclude with `map_one _`. Introduce `P r j hr`. Rewrite using `[hk']`. Unfold `HasRes`. Distinguish the cases in `hj : j = r`.
-
-Substitute `hj` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, if_pos rfl]`. Simplify using `only [d', if_pos hr]`. Rewrite using `[hP P.1 P.2]`. Conclude with `⟨cO E π, rfl, by rw [sub_self, map_zero]; exact zero_lt_one⟩`.
-
-Rewrite using `[Matrix.diagonal_apply_ne _ (Ne.symm hj), if_neg hj, map_zero]`. Conclude with `⟨0, map_zero _, by rw [map_zero, map_zero, sub_self, map_zero]; exact zero_lt_one⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_base (hc : Formalism.BasicNotions.CMData F E) {π : 𝓞 E} {T : ℕ} (hT : T ≠ 0) (hπ : π * cO E π = T)
     (hcp : IsCoprime π (cO E π)) (n : ℕ) :
@@ -284,7 +274,7 @@ end General
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X hX u n`. Conclude with `exists_base B.sp.cm (π := X.piT u) (T := B.T u) (hX.T_prime u).ne_zero (hX.piT_norm u) (hX.piT_cop u) n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_kStd : ∀ {B : Base} (X : PreX B.toPre), (B.primes X).Ok → ∀ (u : B.Word) (n : ℕ), ∃ k : GA B n, (∃ p : DecoF B.fields.E n ∅ ∅ ∅, PtOf k p ∧ p.deco.1.N = stdLat B.fields.E n) ∧ (∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E := B.host.E) v) k = 1) ∧ ∀ (P : (B.primes X).vT u) (r j : Fin n), r.1 + 1 = n → HasRes P.1 (adAt B.host.F P.1 ((k⁻¹ : GA B n).1 r j)) (if j = r then Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) else 0) := by
   intro B X hX u n

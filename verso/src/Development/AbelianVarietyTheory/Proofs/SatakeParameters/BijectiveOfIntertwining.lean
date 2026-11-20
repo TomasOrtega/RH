@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.BijectiveIntertwining
 
 /- English proof (translation)
-Set `K : Subrepresentation ρ` to `{ toSubmodule := LinearMap.ker F apply_mem_toSubmodule := by`. Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hF, hv, map_zero] }`. Set `R : Subrepresentation ρ'` to `{ toSubmodule := LinearMap.range F apply_mem_toSubmodule := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨ρ g v, hF g v⟩ }`. Prove the components needed by the constructor for the conclusion. Break down `h.eq_bot_or_eq_top K with hK | hK` into its components or cases. Rewrite using `[← LinearMap.ker_eq_bot]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subrepresentation.toSubmodule hK`. Conclude with `absurd (LinearMap.ker_eq_top.mp (congrArg Subrepresentation.toSubmodule hK)) h0`. Break down `h'.eq_bot_or_eq_top R with hR | hR` into its components or cases. Conclude with `absurd (LinearMap.range_eq_bot.mp (congrArg Subrepresentation.toSubmodule hR)) h0`. Rewrite using `[← LinearMap.range_eq_top]`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule hR`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_intertwining {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'}

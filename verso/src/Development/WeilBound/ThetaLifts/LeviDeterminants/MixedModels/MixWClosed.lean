@@ -2,6 +2,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.
 import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.AdelicEstimatesHolds
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.ThKF0.mixW_of_adel PositivityTheory.Mix.adelic_estimates_holds`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Mix.mixW_closed : PositivityTheory.ThKG.MixW := PositivityTheory.ThKF0.mixW_of_adel PositivityTheory.Mix.adelic_estimates_holds

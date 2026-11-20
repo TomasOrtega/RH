@@ -9,9 +9,9 @@ namespace GlobalTheory.BoundarySmooth
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover y0`. Establish `h1 : AnalyticAt ℂ (s y0 ∘ (A.chart j).symm) (A.chart j y0)`. Use `hs.1 y0 j _ ⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `L.mem_U y0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt ((s y0 ∘ (A.chart j).symm) ∘ A.chart j) y0` using `ContinuousAt.comp (f := A.chart j) h1.continuousAt ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[Function.comp_apply, (A.chart j).left_inv hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_continuousAt (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → ℂ)
     (hs : IsSection A L s) (y0 : X) : ContinuousAt (s y0) y0 := by
@@ -27,9 +27,9 @@ theorem sec_continuousAt (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → �
   simp [Function.comp_apply, (A.chart j).left_inv hy]
 
 /- English proof (translation)
-Use `filter_upwards [(sec_continuousAt A L s hs y0).eventually_ne h0, (L.isOpen_U y0).mem_nhds (L.mem_U y0)] with z hz hzU`. Introduce `hzz`. Use `hs.2 z y0 z ⟨L.mem_U z, hzU⟩` as an intermediate fact. Rewrite `this` using `[hzz, norm_zero, zero_mul]`. Establish `hpos : 0 < ‖s y0 z‖ * Real.exp (-L.φ y0 z)` using `mul_pos (norm_pos_iff.mpr hz) (Real.exp_pos _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sec_eventually_ne (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → ℂ)
     (hs : IsSection A L s) (y0 : X) (h0 : s y0 y0 ≠ 0) : ∀ᶠ z in 𝓝 y0, s z z ≠ 0 := by
@@ -43,11 +43,11 @@ theorem sec_eventually_ne (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → 
   linarith
 
 /- English proof (translation)
-Use `set y0 := (A.chart j).symm y with hy0def`. Establish `hyU : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U y0` using `⟨hy, L.mem_U y0⟩`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U y0)` using `(A.chart j).isOpen_inter_preimage_symm (L.isOpen_U y0)`. Establish `hΦ : ContDiffAt ℝ ∞ (L.φ y0 ∘ (A.chart j).symm) y` using `(hL.1 y0 j).contDiffAt (hopen.mem_nhds hyU)`. Establish `hS : ContDiffAt ℝ ∞ (s y0 ∘ (A.chart j).symm) y` using `((hs.1 y0 j y hyU).contDiffAt (n := ∞)).restrict_scalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSz : (s y0 ∘ (A.chart j).symm) y ≠ 0` using `hne`. Establish `hG : ContDiffAt ℝ ∞ (fun w => Real.log (‖(s y0 ∘ (A.chart j).symm) w‖ * Real.exp (-((L.φ y0 ∘ (A.chart j).symm) w)))) y`. Use `ContDiffAt.log ((hS.norm ℝ hSz).mul hΦ.neg.exp) ?_` and prove the remaining obligations. Establish `: 0 < ‖(s y0 ∘ (A.chart j).symm) y‖` using `norm_pos_iff.mpr hSz`. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `hG.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds hyU] with w hw`. Establish `hg` using `hs.2 ((A.chart j).symm w) y0 ((A.chart j).symm w) ⟨L.mem_U _, hw.2⟩`. Simplify using `only [Function.comp_apply, logNormSec]`. Rewrite using `[hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logNormSec_contDiffAt (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → ℂ)
     (hL : IsPotential A L) (hs : IsSection A L s) (j : Fin A.n) (y : Fin d → ℂ)
@@ -74,15 +74,15 @@ theorem logNormSec_contDiffAt (A : FinHolAtlas d X) (L : LocPot X) (s : X → X 
   rw [hg]
 
 /- English proof (translation)
-Introduce `d X _ A m Λ σ c h`. Establish `hcl : IsClosed (boundary σ)`. Use `isOpen_compl_iff.mp (isOpen_iff_mem_nhds.mpr fun y0 hy0 => ?_)` and prove the remaining obligations. Establish `hy0' : ∀ i, σ i y0 y0 ≠ 0` using `fun i hi => hy0 ⟨i, hi⟩`. Establish `hev : ∀ᶠ z in 𝓝 y0, ∀ i, σ i z z ≠ 0` using `Filter.eventually_all.mpr fun i => sec_eventually_ne A (Λ i) (σ i) (h i).2.1 y0 (hy0' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with z hz`. Introduce and unpack `⟨i, hi⟩`. Conclude with `hz i hi`. Use `⟨hcl, fun j => ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hne : ∀ i, σ i ((A.chart j).symm y) ((A.chart j).symm y) ≠ 0` using `fun i hi => hy.2 ⟨i, hi⟩`. Establish `hr : ∀ i, ContDiffAt ℝ ∞ (fun w => Real.log (rFun (Λ i) (σ i) ((A.chart j).symm w))) y`. Introduce `i`. Establish `hl` using `logNormSec_contDiffAt A (Λ i) (σ i) (h i).1 (h i).2.1 j y hy.1 (hne i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContDiffAt.log (contDiffAt_const.sub (contDiffAt_const.mul hl)) ?_` and prove the remaining obligations. Establish `hle : logNormSec (Λ i) (σ i) ((A.chart j).symm y) ≤ 0`. Unfold `logNormSec`. Conclude with `Real.log_nonpos (by positivity) ((h i).2.2 _)`. Use `Real.exp_pos 1` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [rFun]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ContDiffAt ℝ ∞ (fun w => ∑ i, Real.log (rFun (Λ i) (σ i) ((A.chart j).symm w))) y` using `ContDiffAt.sum fun i _ => hr i`. Use `(contDiffAt_const (c := -c)).mul hsum |>.div_const 2` as an intermediate fact. Simplify `this` using `[Function.comp_def, pFun]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem boundary_isClosed_and_smoothOn :
     ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ)

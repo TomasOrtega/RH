@@ -17,7 +17,7 @@ def nrm (a : G → ℂ) : ℝ := (eLpNorm a 2 μ).toReal
 variable {μ}
 
 /- English proof (translation)
-Establish `h` using `MeasureTheory.L2.integrable_inner (𝕜 := ℂ) (ha.toLp a) (hb.toLp b)`. Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with x hx1 hx2`. Rewrite using `[hx1, hx2, RCLike.inner_apply, starRingEnd_apply, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_int {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
     Integrable (fun x => star (a x) * b x) μ := by
@@ -27,7 +27,7 @@ theorem pr_int {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
   rw [hx1, hx2, RCLike.inner_apply, starRingEnd_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.L2.inner_def]`. Unfold `pr`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with x hx1 hx2`. Rewrite using `[hx1, hx2, RCLike.inner_apply, starRingEnd_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_eq_inner {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
     pr μ a b = inner ℂ (ha.toLp a) (hb.toLp b) := by
@@ -38,7 +38,7 @@ theorem pr_eq_inner {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
   rw [hx1, hx2, RCLike.inner_apply, starRingEnd_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[pr_eq_inner ha hb]`. Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) (ha.toLp a) (hb.toLp b)`. Simplify `h` using `only [nrm, Lp.norm_toLp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pr_bound {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
     ‖pr μ a b‖ ≤ nrm μ a * nrm μ b := by
@@ -47,9 +47,9 @@ theorem pr_bound {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
   simpa only [nrm, Lp.norm_toLp] using h
 
 /- English proof (translation)
-Unfold `pr`. Establish `h : ∫ x, (starRingEnd ℂ) (star (a x) * b x) ∂μ = (starRingEnd ℂ) (∫ x, star (a x) * b x ∂μ)` using `integral_conj`. Simplify using `only [starRingEnd_apply] at h`. Rewrite using `[← h]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[star_mul, star_star]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_star (a b : G → ℂ) : star (pr μ a b) = pr μ b a := by
   unfold pr
@@ -62,7 +62,7 @@ theorem pr_star (a b : G → ℂ) : star (pr μ a b) = pr μ b a := by
   rw [star_mul, star_star]
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_sub (pr_int ha hb) (pr_int ha₁ hb)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[star_sub, sub_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_sub_left {a a₁ b : G → ℂ} (ha : MemLp a 2 μ) (ha₁ : MemLp a₁ 2 μ) (hb : MemLp b 2 μ) :
     pr μ (fun x => a x - a₁ x) b = pr μ a b - pr μ a₁ b := by
@@ -73,7 +73,7 @@ theorem pr_sub_left {a a₁ b : G → ℂ} (ha : MemLp a 2 μ) (ha₁ : MemLp a�
   rw [star_sub, sub_mul]
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_neg]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_neg_right (a b : G → ℂ) : pr μ a (fun x => -b x) = -pr μ a b := by
   unfold pr
@@ -83,11 +83,11 @@ theorem pr_neg_right (a b : G → ℂ) : pr μ a (fun x => -b x) = -pr μ a b :=
   rw [mul_neg]
 
 /- English proof (translation)
-Establish `hA : MemLp (fun x => ‖a x‖) 2 μ` using `ha.norm`. Establish `hB : MemLp (fun x => ‖b x‖) 2 μ` using `hb.norm`. Establish `h1 : ∫ x, ‖star (a x) * b x‖ ∂μ = inner ℝ (hA.toLp _) (hB.toLp _)`. Rewrite using `[MeasureTheory.L2.inner_def]`. Apply `integral_congr_ae` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [hA.coeFn_toLp, hB.coeFn_toLp] with x hx1 hx2`. Rewrite using `[hx1, hx2, RCLike.inner_apply, norm_mul, norm_star]`. Simplify using `only [starRingEnd_apply, star_trivial]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [nrm, Lp.norm_toLp, eLpNorm_norm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_norm_le {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
     ∫ x, ‖star (a x) * b x‖ ∂μ ≤ nrm μ a * nrm μ b := by
@@ -106,7 +106,7 @@ theorem int_norm_le {a b : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
       simp only [nrm, Lp.norm_toLp, eLpNorm_norm]
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_add (pr_int ha hb) (pr_int ha₁ hb)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, star_add, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pr_add_left {a a₁ b : G → ℂ} (ha : MemLp a 2 μ) (ha₁ : MemLp a₁ 2 μ) (hb : MemLp b 2 μ) :
     pr μ (a + a₁) b = pr μ a b + pr μ a₁ b := by
@@ -117,7 +117,7 @@ theorem pr_add_left {a a₁ b : G → ℂ} (ha : MemLp a 2 μ) (ha₁ : MemLp a�
   simp only [Pi.add_apply, star_add, add_mul]
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_add (pr_int ha hb) (pr_int ha hb₁)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pr_add_right {a b b₁ : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) (hb₁ : MemLp b₁ 2 μ) :
     pr μ a (b + b₁) = pr μ a b + pr μ a b₁ := by
@@ -128,7 +128,7 @@ theorem pr_add_right {a b b₁ : G → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 
   simp only [Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -141,7 +141,7 @@ theorem pr_smul_left (c : ℂ) (a b : G → ℂ) : pr μ (c • a) b = star c * 
   ring
 
 /- English proof (translation)
-Unfold `pr`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -154,9 +154,9 @@ theorem pr_smul_right (c : ℂ) (a b : G → ℂ) : pr μ a (c • b) = c * pr �
   ring
 
 /- English proof (translation)
-Establish `hI : Integrable (fun x => ‖a x‖ ^ 2) μ`. Use `(pr_int ha ha).norm.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_star, sq]`. Use `⟨?_, hI⟩` and prove the remaining obligations. Unfold `pr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.ofReal_pow]`. Conclude with `Complex.conj_mul' (a x)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_self_re {a : G → ℂ} (ha : MemLp a 2 μ) :
     pr μ a a = ((∫ x, ‖a x‖ ^ 2 ∂μ : ℝ) : ℂ) ∧ Integrable (fun x => ‖a x‖ ^ 2) μ := by
@@ -176,13 +176,13 @@ section Invariant
 variable [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-Conclude with `ha.comp_measurePreserving (measurePreserving_mul_right μ g)`.
+A detailed English derivation is pending.
 -/
 theorem memLp_rt {a : G → ℂ} (ha : MemLp a 2 μ) (g : G) : MemLp (fun x => a (x * g)) 2 μ := by
   exact ha.comp_measurePreserving (measurePreserving_mul_right μ g)
 
 /- English proof (translation)
-Unfold `nrm`. Establish `h` using `eLpNorm_comp_measurePreserving (p := 2) ha (measurePreserving_mul_right μ g)`. Conclude with `congrArg ENNReal.toReal h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrm_rt {a : G → ℂ} (ha : AEStronglyMeasurable a μ) (g : G) :
     nrm μ (fun x => a (x * g)) = nrm μ a := by
@@ -191,7 +191,7 @@ theorem nrm_rt {a : G → ℂ} (ha : AEStronglyMeasurable a μ) (g : G) :
   exact congrArg ENNReal.toReal h
 
 /- English proof (translation)
-Unfold `pr`. Conclude with `integral_mul_right_eq_self (fun x => star (a x) * b x) g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pr_rt (a b : G → ℂ) (g : G) :
     pr μ (fun x => a (x * g)) (fun x => b (x * g)) = pr μ a b := by
@@ -199,7 +199,7 @@ theorem pr_rt (a b : G → ℂ) (g : G) :
   exact integral_mul_right_eq_self (fun x => star (a x) * b x) g
 
 /- English proof (translation)
-Rewrite using `[← pr_rt (fun x => a (x * g)) b g⁻¹]`. Simplify using `only [inv_mul_cancel_right, mul_inv_cancel_right]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pr_shift (a b : G → ℂ) (g : G) :
     pr μ (fun x => a (x * g)) b = pr μ a (fun x => b (x * g⁻¹)) := by
@@ -209,7 +209,7 @@ theorem pr_shift (a b : G → ℂ) (g : G) :
 end Invariant
 
 /- English proof (translation)
-Establish `h` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun s => a (x * φ s)) (f' := fun s => a' (x * φ s)) (a := 0) (b := t) (fun s _ => hd x s) ((ha'.comp (continuous_const.mul hφc)).intervalIntegrable 0 t)`. Simplify `h` using `only [hφ0, mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ftc {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0 = 1) {a a' : G → ℂ} (ha' : Continuous a')
     (hd : ∀ x t, HasDerivAt (fun s => a (x * φ s)) (a' (x * φ t)) t) (x : G) (t : ℝ) :
@@ -224,15 +224,15 @@ section Flow
 variable [μ.IsMulRightInvariant] [SFinite μ]
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (volume.restrict (Set.Ioc (0:ℝ) t)) := ⟨by rw [Measure.restrict_apply_univ, Real.volume_Ioc]; exact ENNReal.ofReal_lt_top⟩`. Establish `hFc : Continuous (fun p : ℝ × G => star (a' (p.2 * φ p.1)) * b p.2)` using `(continuous_star.comp (ha'.comp (continuous_snd.mul (hφc.comp continuous_fst)))).mul (hb.comp continuous_snd)`. Establish `hm : AEStronglyMeasurable (fun p : ℝ × G => star (a' (p.2 * φ p.1)) * b p.2) ((volume.restrict (Set.Ioc (0:ℝ) t)).prod μ)` using `hFc.aestronglyMeasurable`. Establish `hFint : Integrable (fun p : ℝ × G => star (a' (p.2 * φ p.1)) * b p.2) ((volume.restrict (Set.Ioc (0:ℝ) t)).prod μ)`. Rewrite using `[integrable_prod_iff hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Filter.Eventually.of_forall fun s => pr_int (memLp_rt ha'L (φ s)) hbL, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (integrable_const (nrm μ a' * nrm μ b)) hm.norm.integral_prod_right' (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Establish `h` using `int_norm_le (memLp_rt ha'L (φ s)) hbL`. Rewrite `h` using `[nrm_rt ha'L.aestronglyMeasurable]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hInner` using `hFint.integral_prod_left`. Use `⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le ht).mpr hInner, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x, star (a (x * φ t) - a x) * b x = ∫ s in Set.Ioc 0 t, star (a' (x * φ s)) * b x`. Introduce `x`. Rewrite using `[← ftc hφc hφ0 ha' hd x t, intervalIntegral.integral_of_le ht, integral_mul_const]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h` using `integral_conj (μ := volume.restrict (Set.Ioc (0:ℝ) t)) (f := fun s => a' (x * φ s))`. Simplify using `only [starRingEnd_apply] at h`. Conclude with `h.symm`. Establish `hL : pr μ (fun x => a (x * φ t)) b - pr μ a b = ∫ x, star (a (x * φ t) - a x) * b x ∂μ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← pr_sub_left (memLp_rt haL (φ t)) haL hbL]`. Both sides reduce to the same expression. Rewrite using `[hL, intervalIntegral.integral_of_le ht]`. Repeatedly rewrite using `[h1]`. Conclude with `(integral_integral_swap (f := fun s x => star (a' (x * φ s)) * b x) hFint).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incr {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0 = 1) {a a' b : G → ℂ}
     (ha' : Continuous a') (hb : Continuous b)
@@ -275,11 +275,11 @@ theorem incr {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0 = 1) {a a' b :
   exact (integral_integral_swap (f := fun s x => star (a' (x * φ s)) * b x) hFint).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hD`. Establish `hpos : 0 < ‖D‖` using `norm_pos_iff.mpr hD`. Establish `h1` using `h 1 one_pos le_rfl`. Establish `hC : 0 < C` using `by linarith`. Establish `hC0 : C ≠ 0` using `hC.ne'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < min 1 (‖D‖ / (2 * C))` using `lt_min one_pos (div_pos hpos (by linarith))`. Establish `ht1 : min 1 (‖D‖ / (2 * C)) ≤ 1` using `min_le_left _ _`. Establish `ht2 : min 1 (‖D‖ / (2 * C)) ≤ ‖D‖ / (2 * C)` using `min_le_right _ _`. Establish `h2` using `h _ ht0 ht1`. Establish `h3 : min 1 (‖D‖ / (2 * C)) * C ≤ ‖D‖ / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem small_zero {D : ℂ} {C : ℝ} (h : ∀ t : ℝ, 0 < t → t ≤ 1 → ‖D‖ ≤ t * C) : D = 0 := by
   by_contra hD
@@ -297,7 +297,7 @@ theorem small_zero {D : ℂ} {C : ℝ} (h : ∀ t : ℝ, 0 < t → t ≤ 1 → �
   linarith
 
 /- English proof (translation)
-Introduce `x t`. Establish `h` using `(hd x (-t)).scomp t (hasDerivAt_id t).neg`. Simplify `h` using `[Function.comp_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem negder_lemma {φ : ℝ → G} {a a' : G → ℂ}
     (hd : ∀ x t, HasDerivAt (fun s => a (x * φ s)) (a' (x * φ t)) t) :
@@ -307,7 +307,7 @@ private theorem negder_lemma {φ : ℝ → G} {a a' : G → ℂ}
   simpa [Function.comp_def] using h
 
 /- English proof (translation)
-Establish `h : φ s * φ (-s) = 1`. Rewrite using `[← hφa]`. Simplify using `[hφ0]`. Conclude with `(eq_inv_of_mul_eq_one_right h).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inv_lemma_2 {φ : ℝ → G} (hφ0 : φ 0 = 1) (hφa : ∀ s t, φ (s + t) = φ s * φ t) (s : ℝ) :
     (φ s)⁻¹ = φ (-s) := by
@@ -317,19 +317,19 @@ private theorem inv_lemma_2 {φ : ℝ → G} (hφ0 : φ 0 = 1) (hφa : ∀ s t, 
   exact (eq_inv_of_mul_eq_one_right h).symm
 
 /- English proof (translation)
-Establish `hψc : Continuous fun s => φ (-s)` using `hφc.comp continuous_neg`. Take `⟨hI, hE⟩` from `incr hφc hφ0 ha' hb haL ha'L hbL hd ht`. Establish `hbd : ∀ s ∈ Set.uIoc 0 t, ‖pr μ (fun x => a' (x * φ s)) b - pr μ a' b‖ ≤ t * (nrm μ a' * nrm μ b')`. Introduce `s hs`. Rewrite `hs` using `[Set.uIoc_of_le ht]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs0 : 0 ≤ s` using `hs.1.le`. Establish `e1 : pr μ (fun x => a' (x * φ s)) b = pr μ a' (fun x => b (x * φ (-s)))`. Rewrite using `[pr_shift, inv_lemma_2 hφ0 hφa]`. Establish `e2 : pr μ (fun x => b (x * φ (-s))) a' - pr μ b a' = ∫ r in (0:ℝ)..s, pr μ (fun x => -b' (x * φ (-r))) a'` using `(incr (φ := fun s => φ (-s)) hψc (by simp [hφ0]) (a' := fun y => -b' y) hb'.neg ha' hbL hb'L.neg ha'L (negder_lemma hdb) hs0).2`. Establish `e3 : pr μ (fun x => a' (x * φ s)) b - pr μ a' b = star (pr μ (fun x => b (x * φ (-s))) a' - pr μ b a')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, star_sub, pr_star, pr_star]`. Establish `hC : ∀ r ∈ Set.uIoc 0 s, ‖pr μ (fun x => -b' (x * φ (-r))) a'‖ ≤ nrm μ b' * nrm μ a'`. Introduce `r _`. Establish `h` using `pr_bound (memLp_rt hb'L.neg (φ (-r))) ha'L`. Establish `hn : nrm μ (fun x => (-b') (x * φ (-r))) = nrm μ b'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nrm_rt hb'L.neg.aestronglyMeasurable]`. Unfold `nrm`. Rewrite using `[eLpNorm_neg]`. Rewrite `h` using `[hn]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, norm_star, e2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_zero, abs_of_nonneg hs0]`. Establish `h1 : 0 ≤ nrm μ a'` using `ENNReal.toReal_nonneg`. Establish `h2 : 0 ≤ nrm μ b'` using `ENNReal.toReal_nonneg`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ nrm μ a' * nrm μ b'` using `mul_nonneg h1 h2`. Use polynomial arithmetic with `[hs.2]`. Establish `hmain : pr μ (fun x => a (x * φ t)) b - pr μ a b - (t : ℂ) * pr μ a' b = ∫ s in (0:ℝ)..t, (pr μ (fun x => a' (x * φ s)) b - pr μ a' b)`. Rewrite using `[intervalIntegral.integral_sub hI intervalIntegrable_const, intervalIntegral.integral_const, ← hE, sub_zero, Complex.real_smul]`. Rewrite using `[hmain]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem lin_lemma_3 {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0 = 1)
     (hφa : ∀ s t, φ (s + t) = φ s * φ t) {a a' b b' : G → ℂ}
@@ -381,17 +381,17 @@ private theorem lin_lemma_3 {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0
     _ = _ := by rw [sub_zero, abs_of_nonneg ht]; ring
 
 /- English proof (translation)
-Establish `hψc : Continuous fun s => φ (-s)` using `hφc.comp continuous_neg`. Establish `hψa : ∀ s t, φ (-(s + t)) = φ (-s) * φ (-t)` using `fun s t => by rw [neg_add, hφa]`. Establish `hnv : nrm μ (fun y => -v' y) = nrm μ v'`. Unfold `nrm`. Rewrite using `[show (fun y => -v' y) = -v' from rfl, eLpNorm_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hnu : nrm μ (fun y => -u' y) = nrm μ u'`. Unfold `nrm`. Rewrite using `[show (fun y => -u' y) = -u' from rfl, eLpNorm_neg]`. It suffices to establish `h : pr μ u' v + pr μ u v' = 0 by linear_combination h`. Apply `small_zero (C := 2 * (nrm μ u' * nrm μ v'))` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t ht0 ht1`. Establish `E1 : ‖(pr μ (fun x => u (x * φ t)) v - pr μ u v) - (t : ℂ) * pr μ u' v‖ ≤ t * (t * (nrm μ u' * nrm μ v'))` using `lin_lemma_3 hφc hφ0 hφa hu' hv hv' huL hu'L hvL hv'L hdu hdv ht0.le`. Establish `E2 : ‖(pr μ (fun x => v (x * φ (-t))) u - pr μ v u) - (t : ℂ) * pr μ (fun y => -v' y) u‖ ≤ t * (t * (nrm μ (fun y => -v' y) * nrm μ (fun y => -u' y)))` using `lin_lemma_3 (φ := fun s => φ (-s)) hψc (by simp [hφ0]) hψa hv'.neg hu hu'.neg hvL hv'L.neg huL hu'L.neg (negder_lemma hdv) (negder_lemma hdu) ht0.le`. Rewrite `E2` using `[hnv, hnu]`. Establish `e1 : pr μ (fun x => u (x * φ t)) v = pr μ u (fun x => v (x * φ (-t)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pr_shift, inv_lemma_2 hφ0 hφa]`. Establish `e2 : star ((pr μ (fun x => v (x * φ (-t))) u - pr μ v u) - (t : ℂ) * pr μ (fun y => -v' y) u) = (pr μ (fun x => u (x * φ t)) v - pr μ u v) + (t : ℂ) * pr μ u v'`. Rewrite using `[star_sub, star_sub, star_mul', pr_star, pr_star, pr_star, e1, Complex.star_def, Complex.conj_ofReal, pr_neg_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `E3 : ‖(pr μ (fun x => u (x * φ t)) v - pr μ u v) + (t : ℂ) * pr μ u v'‖ ≤ t * (t * (nrm μ u' * nrm μ v'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← e2, norm_star]`. Combine the linear relations using `[E2]`. Establish `key : (t : ℂ) * (pr μ u' v + pr μ u v') = ((pr μ (fun x => u (x * φ t)) v - pr μ u v) + (t : ℂ) * pr μ u v') - ((pr μ (fun x => u (x * φ t)) v - pr μ u v) - (t : ℂ) * pr μ u' v)` using `by ring`. Establish `hn : ‖(t : ℂ) * (pr μ u' v + pr μ u v')‖ ≤ 2 * (t * (t * (nrm μ u' * nrm μ v')))`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_sub_le _ _).trans (by linarith)`. Rewrite `hn` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ht0.le]`. Conclude with `le_of_mul_le_mul_left (by linarith : t * ‖pr μ u' v + pr μ u v'‖ ≤ t * (t * (2 * (nrm μ u' * nrm μ v')))) ht0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew {φ : ℝ → G} (hφc : Continuous φ) (hφ0 : φ 0 = 1) (hφa : ∀ s t, φ (s + t) = φ s * φ t)
     {u u' v v' : G → ℂ} (hu : Continuous u) (hu' : Continuous u') (hv : Continuous v)

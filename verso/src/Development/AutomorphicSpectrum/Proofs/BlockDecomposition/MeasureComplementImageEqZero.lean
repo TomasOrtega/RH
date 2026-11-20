@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.NullFr.SmallUnit
 variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A]
 
 /- English proof (translation)
-Introduce `hfin`. Establish `hfin' : ({x | x ∈ W ∧ f * x = x} \ {0}).Finite` using `hfin.subset Set.diff_subset`. Establish `hV : ({x | x ∈ W ∧ f * x = x} \ {0})ᶜ ∈ 𝓝 (0 : A)` using `hfin'.isClosed.isOpen_compl.mem_nhds (by simp)`. Take `⟨x, hx, hx0, hfx⟩` from `hf _ (inter_mem hW hV)`. Conclude with `hx.2 ⟨⟨hx.1, hfx⟩, hx0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem infinite_factor_points {f : A} (hf : NonDiscreteAt f) {W : Set A} (hW : W ∈ 𝓝 (0 : A)) :
     {x | x ∈ W ∧ f * x = x}.Infinite := by
@@ -20,17 +20,17 @@ theorem infinite_factor_points {f : A} (hf : NonDiscreteAt f) {W : Set A} (hW : 
   exact hx.2 ⟨⟨hx.1, hfx⟩, hx0⟩
 
 /- English proof (translation)
-Use `set Q : Set A := (fun w => (1 - f) * w) '' W with hQ`. Establish `hQc : IsCompact Q` using `hWc.image (by fun_prop)`. Assume the negation of the conclusion as `hne`. Use `set K : Set A := (fun p : A × A => p.1 + p.2) '' (W ×ˢ Q) with hK`. Establish `hKc : IsCompact K` using `(hWc.prod hQc).image (by fun_prop)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKfin : h K ≠ ∞` using `hKc.measure_lt_top.ne`. Take `⟨n, hn⟩` from `ENNReal.exists_nat_mul_gt hne hKfin`. Take `⟨T, hTS, hTc⟩` from `(infinite_factor_points hf hW).exists_subset_card_eq n`. Establish `hdisj : (T : Set A).PairwiseDisjoint (fun p => (fun q => p + q) '' Q)`. Introduce `p hp p' hp' hpp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨w, -, rfl⟩, rfl⟩ ⟨_, ⟨w', -, rfl⟩, hEq⟩`. Apply `hpp` to reduce the goal to its premises. Establish `hfp : f * p = p` using `(hTS hp).2`. Establish `hfp' : f * p' = p'` using `(hTS hp').2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : f * (1 - f) = 0` using `by rw [mul_sub, mul_one, hid, sub_self]`. Use `congrArg (fun t => f * t) hEq` as an intermediate fact. Simplify using `only [mul_add, ← mul_assoc, hz, zero_mul, add_zero, hfp, hfp'] at this`. Conclude with `this.symm`. Establish `hmeas : ∀ p ∈ T, MeasurableSet ((fun q => p + q) '' Q)` using `fun p _ => (hQc.image (by fun_prop)).isClosed.measurableSet`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum` using `measure_biUnion_finset (μ := h) hdisj hmeas`. Establish `each : ∀ p, h ((fun q => p + q) '' Q) = h Q` using `fun p => by`. Rewrite using `[Set.image_add_left]`. Conclude with `measure_preimage_add h (-p) Q`. Establish `hle : h (⋃ p ∈ T, (fun q => p + q) '' Q) ≤ h K`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `measure_mono (Set.iUnion₂_subset fun p hp => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `⟨(p, q), ⟨(hTS hp).1, hq⟩, rfl⟩`. Rewrite `hle` using `[hsum, Finset.sum_congr rfl (fun p _ => each p), Finset.sum_const, hTc, nsmul_eq_mul]`. Conclude with `absurd hle (not_le.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem measure_complement_image_eq_zero [MeasurableSpace A] [BorelSpace A]
     (h : Measure A) [h.IsAddHaarMeasure] {f : A} (hid : f * f = f) (hf : NonDiscreteAt f)
@@ -69,9 +69,9 @@ theorem measure_complement_image_eq_zero [MeasurableSpace A] [BorelSpace A]
   exact absurd hle (not_le.2 hn)
 
 /- English proof (translation)
-Establish `hn : IsOpen ((fun p : A × A × A => p.2.1 + p.1 * p.2.2) ⁻¹' O)` using `hO.preimage (by fun_prop)`. Take `⟨u, v, hu, -, h0u, hQWv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : A))) (hQ.prod hW) hn (by`. Introduce and unpack `⟨x, q, w⟩ ⟨hx, hq, hw⟩`. Establish `hx0 : x = 0` using `hx`. Simplify `hQO hq)` using `[hx0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨u, hu.mem_nhds (h0u rfl), fun x hx q hq w hw => huv (Set.mk_mem_prod hx (show (q, w) ∈ v from hQWv ⟨hq, hw⟩))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nhds_add_mul_subset {Q W O : Set A} (hQ : IsCompact Q) (hW : IsCompact W)
     (hO : IsOpen O) (hQO : Q ⊆ O) :
@@ -92,25 +92,23 @@ namespace GlobalTheory.CompanionTheory.NullFr
 open SmallUnit in
 
 /- English proof (translation)
-Take `⟨W, hWc, hW⟩` from `exists_compact_mem_nhds (0 : A)`. Set `h : Measure A` to `Measure.addHaar`. Establish `hWpos : 0 < h W` using `Measure.measure_pos_of_mem_nhds h hW`. Establish `hWfin : h W ≠ ∞` using `hWc.measure_lt_top.ne`. Use `set Q : Set A := (fun w => (1 - f) * w) '' W with hQdef`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQc : IsCompact Q` using `hWc.image (by fun_prop)`. Establish `hQ0 : h Q = 0` using `measure_complement_image_eq_zero h hfi.idem hnd hWc hW`. Establish `hεW : h Q < (ε : ℝ≥0∞) * h W`. Rewrite using `[hQ0]`. Conclude with `ENNReal.mul_pos (by exact_mod_cast hε.ne') hWpos.ne' |>.bot_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨O, hQO, hOo, hOlt⟩` from `Q.exists_isOpen_lt_of_lt _ hεW`. Take `⟨N, hN, hNO⟩` from `exists_nhds_add_mul_subset hQc hWc hOo hQO`. Take `⟨x, ⟨hxN, hxV⟩, hx0, hfx⟩` from `hnd _ (inter_mem hN hV)`. Take `⟨y, hy⟩` from `hfi.inv x (by rwa [hfx])`. Rewrite `hy` using `[hfx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : f * (1 - f) = 0` using `by rw [mul_sub, mul_one, hfi.idem, sub_self]`. Establish `hzz : (1 - f) * (1 - f) = 1 - f`. Rewrite using `[sub_mul, one_mul, hz, sub_zero]`. Establish `hxz : (1 - f) * x = 0` using `by rw [← hfx, ← mul_assoc, mul_comm (1 - f), hz, zero_mul]`. Establish `huv : (1 - f + x) * (1 - f + f * y) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (1 - f + x) * (1 - f + f * y) = (1 - f) * (1 - f) + (f * (1 - f)) * y + (1 - f) * x + (f * x) * y` using `by ring`. Rewrite using `[e, hzz, hz, hxz, hfx, hy]`. Expand and normalize the polynomial expressions, which then agree. Set `u : Aˣ` to `⟨1 - f + x, 1 - f + f * y, huv, by rw [mul_comm]; exact huv⟩`. Establish `hu : (u : A) = 1 - f + x` using `rfl`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, mul_add, hzz, hxz, add_zero]`. Rewrite using `[hu, mul_add, hz, zero_add, hfx]`. Conclude with `hxV`. Establish `hmap` using `hmd h inferInstance u⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWm : MeasurableSet W` using `hWc.isClosed.measurableSet`. Establish `hg : Measurable (fun z : A => ((u⁻¹ : Aˣ) : A) * z)` using `(by fun_prop : Continuous _).measurable`. Establish `hpre : h ((fun z : A => ((u⁻¹ : Aˣ) : A) * z) ⁻¹' W) = (md u : ℝ≥0∞) * h W`. Rewrite using `[← Measure.map_apply hg hWm, hmap, Measure.smul_apply, smul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : md u⁻¹ * md u = 1` using `by rw [← map_mul]; simp`. Establish `: (md u⁻¹ : ℝ≥0∞) * (md u : ℝ≥0∞) = 1` using `by exact_mod_cast hm`. Conclude with `(ENNReal.eq_inv_of_mul_eq_one_left (by rwa [mul_comm])).symm`. Establish `hsub : (fun z : A => ((u⁻¹ : Aˣ) : A) * z) ⁻¹' W ⊆ O`. Introduce `z hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hzw : ((u⁻¹ : Aˣ) : A) * z ∈ W` using `hz'`. Establish `hzeq : z = (1 - f) * (((u⁻¹ : Aˣ) : A) * z) + x * (((u⁻¹ : Aˣ) : A) * z)`. Rewrite using `[← add_mul, ← hu, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[hzeq]`. Conclude with `hNO x hxN _ ⟨_, hzw, rfl⟩ _ hzw`.
-
-Establish `hlt : (md u : ℝ≥0∞) * h W < (ε : ℝ≥0∞) * h W` using `lt_of_le_of_lt (hpre ▸ measure_mono hsub) hOlt`. Establish `: (md u : ℝ≥0∞) < ε` using `lt_of_mul_lt_mul_right' hlt`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit_small_module {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [LocallyCompactSpace A] [T2Space A] [SecondCountableTopology A] [MeasurableSpace A]

@@ -8,23 +8,21 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 namespace GlobalTheory.LowFilt
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_theta_vec D m`. Take `⟨ζ, hζZ, -, hζs, hopp⟩` from `h.exists_rank_one hm θ hθ`. Establish `himg' : ∀ I : Ideal (𝓞 E), img D y Z' I = LinearMap.range (y ∘ₗ Z'.subtype) ⊔ I • ⊤` using `fun I => by`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `himg'' : ∀ (ℓ : Z' →ₗ[𝓞 E] 𝓞 E) (I : Ideal (𝓞 E)), img D y (LinearMap.range (Z'.subtype + ℓ.smulRight (m + ζ ℓ))) I = LinearMap.range (y ∘ₗ Z'.subtype + ℓ.smulRight (y (m + ζ ℓ))) ⊔ I • ⊤` using `fun ℓ I => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: y ∘ₗ (Z'.subtype + ℓ.smulRight (m + ζ ℓ)) = y ∘ₗ Z'.subtype + ℓ.smulRight (y (m + ζ ℓ))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[img, ← LinearMap.range_comp, this]`. Establish `he𝔭 : e ∉ 𝔭` using `fun h' => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem h' he1))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hℓv : (e • ℓ₀) v ∉ 𝔭`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `fun h' => (h𝔭.isPrime.mem_or_mem h').elim he𝔭 hℓ₀`. Establish `hker` using `range_le_of_ker (y ∘ₗ Z'.subtype) (e • ℓ₀) (y (m + ζ (e • ℓ₀))) 𝔭 h𝔭 (v := v) hv hℓv`. Use `⟨_, hopp (e • ℓ₀), fun 𝔮 h𝔮 hn𝔮 => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[himg', himg'']`. Distinguish the cases in `hq : 𝔮 = 𝔭`. Substitute `hq` using the available equality. Conclude with `hker.2`. Conclude with `range_le_of_mem _ _ _ 𝔮 fun x => by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (he 𝔮 h𝔮 hn𝔮 hq)`. Rewrite using `[himg'']`. Introduce `hle`. Establish `hu'` using `hle hker.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hz : y (ζ (e • ℓ₀)) ∈ img D y Z' 𝔭`. Break down `hA with hA | hA` into its components or cases. Use `haveI := h𝔭`. Establish `h𝔭' : (𝔭.map (H.bar : 𝓞 E →+* 𝓞 E)).IsMaximal` using `Ideal.map_isMaximal_of_equiv H.bar`. Establish `hn' : (n : 𝓞 E) ∈ 𝔭.map (H.bar : 𝓞 E →+* 𝓞 E)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hn𝔭`. Establish `he'` using `he _ h𝔭' hn' hA`. Rewrite `he'` using `[Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Establish `hbe : H.bar e ∈ 𝔭`. Establish `: H.bar.symm e = H.bar e` using `by rw [RingEquiv.symm_apply_eq, bar_bar]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `he'` using `[this]`. Then use the resulting hypothesis. Rewrite using `[hζs, map_smul]`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul hbe trivial)`. Conclude with `hA (Submodule.mem_map_of_mem (hζZ _))`. Apply `hym` to reduce the goal to its premises.
-
-Establish `: y m = y (m + ζ (e • ℓ₀)) - y (ζ (e • ℓ₀))` using `by simp`. Rewrite using `[this]`. Conclude with `sub_mem hu' hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_improves_of_perp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (y : D.La →ₗ[𝓞 E] X) (n : ℕ)

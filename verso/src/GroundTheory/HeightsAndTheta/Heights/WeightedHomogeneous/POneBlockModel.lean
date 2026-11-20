@@ -20,7 +20,7 @@ def genericT (K : Type) [Field K] (r : ℕ) : Fin r → LatticeField K r :=
   fun j ↦ algebraMap (MvPolynomial (Fin r) K) (LatticeField K r) (X j)
 
 /- English proof (translation)
-Establish `h` using `(MvPolynomial.algebraicIndependent_X (Fin r) K).map' (f := IsScalarTower.toAlgHom K (MvPolynomial (Fin r) K) (LatticeField K r)) (IsFractionRing.injective _ _)`. Conclude with `h.restrictScalars (algebraMap ℚ K).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_genericT : AlgebraicIndependent ℚ (genericT K r) := by
   have h := (MvPolynomial.algebraicIndependent_X (Fin r) K).map'
@@ -28,20 +28,20 @@ theorem algebraicIndependent_genericT : AlgebraicIndependent ℚ (genericT K r) 
   exact h.restrictScalars (algebraMap ℚ K).injective
 
 /- English proof (translation)
-Simplify using `[genericT, dehom, latticeForm, Pi.single_apply, genericVal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genericT_eq (j : Fin r) : genericT K r j = dehom K r (latticeForm (Pi.single j.succ 1)) := by
   simp [genericT, dehom, latticeForm, Pi.single_apply, genericVal]
 
 /- English proof (translation)
-Rewrite using `[latticeCoord_eq]`. Conclude with `dehom_latticeForm_ne_zero (hφ.independent.ne_zero b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeCoord_ne_zero (hφ : IsDualBasis L φ) (b : Fin (N + 1)) : latticeCoord φ ⟨(), b⟩ ≠ 0 := by
   rw [latticeCoord_eq]
   exact dehom_latticeForm_ne_zero (hφ.independent.ne_zero b)
 
 /- English proof (translation)
-Rewrite using `[latticeForm_sum, map_sum]`. Use `Finset.sum_congr rfl fun b _ ↦ ?_` and prove the remaining obligations. Rewrite using `[latticeForm_zsmul, map_mul, latticeCoord_eq]`. Simplify using `[dehom]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dehom_latticeForm_sum (c : Fin (N + 1) → ℤ) :
     dehom K r (latticeForm (∑ b, c b • φ b)) = ∑ b, (c b : LatticeField K r) * latticeCoord φ ⟨(), b⟩ := by
@@ -51,11 +51,11 @@ theorem dehom_latticeForm_sum (c : Fin (N + 1) → ℤ) :
   simp [dehom]
 
 /- English proof (translation)
-Use `set E := IntermediateField.adjoin ℚ (coneRatios (latticeCoord φ) fun _ : Unit ↦ (0 : Fin (N + 1)))`. Establish `hb : ∀ b, latticeCoord φ ⟨(), b⟩ / latticeCoord φ ⟨(), 0⟩ ∈ E` using `fun b ↦ IntermediateField.subset_adjoin _ _ ⟨⟨(), b⟩, rfl⟩`. Take `⟨n, hn, hnu⟩` from `exists_int_smul_mem_latticeDual hL u`. Take `⟨c, hc⟩` from `(mem_dual_iff hφ _).mp hnu`. Establish `h1 : (n : LatticeField K r) * dehom K r (latticeForm u) / latticeCoord φ ⟨(), 0⟩ ∈ E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← dehom_latticeForm_intSmul, ← hc, dehom_latticeForm_sum, Finset.sum_div]`. Use `sum_mem fun b _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem (intCast_mem _ _) (hb b)`. Establish `h2 : (n : LatticeField K r) ≠ 0` using `Int.cast_ne_zero.mpr hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `div_mem h1 (intCast_mem E n)`. Establish `e : (n : LatticeField K r) * dehom K r (latticeForm u) / latticeCoord φ ⟨(), 0⟩ / n = dehom K r (latticeForm u) / latticeCoord φ ⟨(), 0⟩`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dehom_div_mem_adjoin (hL : L.FG) (hφ : IsDualBasis L φ) (u : Fin (r + 1) → K) :
     dehom K r (latticeForm u) / latticeCoord φ ⟨(), 0⟩ ∈
@@ -78,9 +78,9 @@ theorem dehom_div_mem_adjoin (hL : L.FG) (hφ : IsDualBasis L φ) (u : Fin (r + 
   rwa [e] at h3
 
 /- English proof (translation)
-Establish `h` using `div_mem (dehom_div_mem_adjoin hL hφ (Pi.single j.succ 1)) (dehom_div_mem_adjoin hL hφ (Pi.single 0 1))`. Establish `hy` using `latticeCoord_ne_zero hφ 0`. Rewrite `h` using `[dehom_single_zero, ← genericT_eq]`. Establish `e : genericT K r j / latticeCoord φ ⟨(), 0⟩ / (1 / latticeCoord φ ⟨(), 0⟩) = genericT K r j`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genericT_mem_adjoin (hL : L.FG) (hφ : IsDualBasis L φ) (j : Fin r) :
     genericT K r j ∈ IntermediateField.adjoin ℚ (coneRatios (latticeCoord φ) fun _ : Unit ↦ (0 : Fin (N + 1))) := by
@@ -93,11 +93,11 @@ theorem genericT_mem_adjoin (hL : L.FG) (hφ : IsDualBasis L φ) (j : Fin r) :
   rwa [e] at h
 
 /- English proof (translation)
-Use `set E := IntermediateField.adjoin ℚ (Set.range (genericT K r))`. Rewrite using `[← Subalgebra.mem_algebraicClosure, dehom_latticeForm_apply]`. Use `sum_mem fun j _ ↦ mul_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_algebraicClosure]`. Establish `h : IsAlgebraic ℚ (algebraMap K (LatticeField K r) (u j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (u j)).algHom (IsScalarTower.toAlgHom ℚ K (LatticeField K r))`. Conclude with `h.tower_top E`. Rewrite using `[Subalgebra.mem_algebraicClosure]`. Use `Fin.cases ?_ (fun i ↦ ?_) j` and prove the remaining obligations. Simplify `isAlgebraic_one (R := E) (A := LatticeField K r)` using `[genericVal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hi : genericT K r i ∈ E` using `IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`. Simplify `isAlgebraic_algebraMap (R := E) (A := LatticeField K r) ⟨_, hi⟩` using `[genericVal, genericT]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_dehom (u : Fin (r + 1) → K) :
     IsAlgebraic (IntermediateField.adjoin ℚ (Set.range (genericT K r))) (dehom K r (latticeForm u)) := by
@@ -116,9 +116,9 @@ theorem isAlgebraic_dehom (u : Fin (r + 1) → K) :
       simpa [genericVal, genericT] using isAlgebraic_algebraMap (R := E) (A := LatticeField K r) ⟨_, hi⟩
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `hs`. Establish `h0` using `isAlgebraic_dehom (r := r) (φ 0)`. Establish `hp` using `isAlgebraic_dehom (r := r) (φ p.2)`. Establish `e : latticeCoord φ p / latticeCoord φ ⟨p.1, 0⟩ = dehom K r (latticeForm (φ p.2)) * (dehom K r (latticeForm (φ 0)))⁻¹`. Rewrite using `[latticeCoord_eq, latticeCoord_eq, div_eq_mul_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsAlgebraic _ (latticeCoord φ p / latticeCoord φ ⟨p.1, 0⟩)`. Rewrite using `[e]`. Conclude with `hp.mul h0.inv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratios_isAlgebraic (s : LatticeField K r)
     (hs : s ∈ coneRatios (latticeCoord φ) (fun _ : Unit ↦ (0 : Fin (N + 1)))) :
@@ -136,7 +136,7 @@ theorem ratios_isAlgebraic (s : LatticeField K r)
 end LatticeModel
 
 /- English proof (translation)
-Introduce `K _ _ r N F φ hφ`. Use `⟨⟨LatticeModel.latticeVariety φ hφ, rfl⟩, LatticeModel.mCoordIdeal_latticeCoord φ, ?_, LatticeModel.birational_latticeCoord F.fg hφ, fun m hm ↦ LatticeModel.latticeMap_image_homogeneous hφ hm⟩` and prove the remaining obligations. Rewrite using `[← LatticeModel.mCoordIdeal_latticeCoord φ]`. Conclude with `hCC Unit (blockIdx fun _ : Unit ↦ N) (LatticeField K r) (latticeCoord φ) (fun _ ↦ 0) r (LatticeModel.genericT K r) ⟨()⟩ (fun _ ↦ LatticeModel.latticeCoord_ne_zero hφ 0) LatticeModel.algebraicIndependent_genericT (LatticeModel.genericT_mem_adjoin F.fg hφ) LatticeModel.ratios_isAlg …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OneBlockModel.proof (hCC : CoordConeArithVar.Statement) : OneBlockModel.Statement := by
   intro K _ _ r N F φ hφ

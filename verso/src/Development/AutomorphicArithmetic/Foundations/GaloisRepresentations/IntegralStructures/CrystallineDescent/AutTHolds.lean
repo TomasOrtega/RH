@@ -9,13 +9,13 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.C
 open GlobalTheory.PRep Formalism.UG GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot`. Set `L : Subgroup (finU E a)` to `{ carrier := {k | RU E a k φ = φ} one_mem' := by simp mul_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := by`. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hLo : IsOpen (L : Set (finU E a))` using `(hU.aut φ hφ).level`. Establish `hunr : ∀ᶠ w in Filter.cofinite, IsUnramU U w` using `by filter_upwards [GlobalTheory.T.eventually_localIntegralPoints_mem_openSubgroup_definiteUnitary E a L hLo] with w hw`. Conclude with `⟨φ, hφ, hφ0, fun x hx hxK => hw x hx hxK hx.1⟩`. Establish `hfin : {w | ¬ IsUnramU U w}.Finite` using `hunr`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨hfin.toFinset.filter (fun w => ¬ IsSplitAt w), fun w hw => (Finset.mem_filter.1 hw).2, hU, fun w hs hT => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hT (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hn, hs⟩)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.autT_holds : UpperTheory.Gal.Int.Core.AutT := by
   classical

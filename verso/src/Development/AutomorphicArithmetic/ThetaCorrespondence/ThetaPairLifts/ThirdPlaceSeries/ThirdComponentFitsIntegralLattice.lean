@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000
 namespace GlobalTheory.HeightCounting.Up.ThirdFits
 /- English proof (translation)
-Introduce `_ _ _` and use `GlobalTheory.Mem.Top.Bl.StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ _ L _ _ => GlobalTheory.HeightCounting.Fin3.fitsL (x := x) L`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem third_component_fits_integral_lattice_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → AllSt fun _ _ _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), _root_.GlobalTheory.CoefDuty.BuiltAlt l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → (GlobalTheory.HeightCounting.Fin3.oL x L).Fits :=
   fun _ _ _ => GlobalTheory.Mem.Top.Bl.StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ _ L _ _ => GlobalTheory.HeightCounting.Fin3.fitsL (x := x) L

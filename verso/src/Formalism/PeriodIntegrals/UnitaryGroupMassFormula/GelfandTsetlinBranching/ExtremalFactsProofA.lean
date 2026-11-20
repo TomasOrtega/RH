@@ -10,7 +10,7 @@ namespace PI.WGB
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) i.isLt`. Establish `hle : lam.w ⟨N - 1, by omega⟩ ≤ lam.w i` using `lam.anti (show i ≤ ⟨N - 1, by omega⟩ by rw [Fin.le_def]; simp; omega)`. Unfold `DomWeight.natW DomWeight.detShift`. Rewrite using `[dif_pos hN, Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem natW_add_A {N : ℕ} (lam : DomWeight N) (i : Fin N) :
     ((lam.natW i : ℕ) : ℤ) + lam.detShift = lam.w i := by
@@ -22,7 +22,7 @@ theorem natW_add_A {N : ℕ} (lam : DomWeight N) (i : Fin N) :
   ring
 
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natW_anti_A {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -31,7 +31,7 @@ theorem natW_anti_A {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (by omega)
 
 /- English proof (translation)
-Unfold `sqAct`. Conclude with `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n mu.natW _ s hs)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sqAct_mem_nabla_A (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) ℂ)
     (s : MvPolynomial (Fin n × Fin n) ℂ) (hs : s ∈ nablaSq ℂ n mu) :
@@ -40,22 +40,22 @@ theorem sqAct_mem_nabla_A (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) ℂ)
   exact Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n mu.natW _ s hs)
 
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowAct_X_A {r n : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (v : Fin r × Fin n) :
     Formalism.GradedWeylDivisibility.rowAct ℂ M (X v) = ∑ b : Fin r, C (M v.1 b) * X (b, v.2) := by
   simp [Formalism.GradedWeylDivisibility.rowAct]
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[AlgHom.map_det, AlgHom.mapMatrix_apply]`. Establish `hmat : (Matrix.of fun p q : Fin s => (X (Fin.castLE hs p, Fin.castLE hs q) : MvPolynomial (Fin n × Fin n) ℂ)).map (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) M) = (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) : MvPolynomial (Fin n × Fin n) ℂ)) * Matrix.of fun p q : Fin s => (X (Fin.castLE hs p, Fin.castLE hs q) : MvPolynomial (Fin n × Fin n) ℂ) := by`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[rowAct_X_A]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb hs))), Finset.sum_map]`. Both sides reduce to the same expression. Introduce `b _ hb`. Establish `hbs : s ≤ b.val`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Apply `hb` to reduce the goal to its premises. Conclude with `Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`. Simplify using `only`. Rewrite using `[hM _ _ (by rw [Fin.lt_def]; simp; omega), map_zero, zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) : MvPolynomial (Fin n × Fin n) ℂ)).IsLowerTriangular`. Introduce `i j hij`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hM _ _ (by rw [Fin.lt_def]; simpa using hij), map_zero]`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_of_isLowerTriangular _ hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hd]`.
+A detailed English derivation is pending.
 -/
 theorem rowAct_lpMinor_A (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i j, i < j → M i j = 0)
     (hd : ∀ i, M i i = 1) (s : ℕ) (hs : s ≤ n) :
@@ -89,7 +89,7 @@ theorem rowAct_lpMinor_A (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i 
   simp [hd]
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, rowAct_lpMinor_A n M hM hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_hw_A (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i j, i < j → M i j = 0)
     (hd : ∀ i, M i i = 1) (ν : Fin n → ℕ) :
@@ -100,7 +100,7 @@ theorem rowAct_hw_A (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i j, i 
   rw [map_pow, rowAct_lpMinor_A n M hM hd]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular]`. Simplify using `[hd]`. Introduce `i j hij`. Conclude with `hl i j hij`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_unitri_A (n : ℕ) (g : GL (Fin n) ℂ) (hl : ∀ i j, j < i → g i j = 0) (hd : ∀ i, g i i = 1) :
     Matrix.GeneralLinearGroup.det g = 1 := by
@@ -111,19 +111,17 @@ theorem det_unitri_A (n : ℕ) (g : GL (Fin n) ℂ) (hl : ∀ i j, j < i → g i
     exact hl i j hij
 
 /- English proof (translation)
-Introduce `n mu`. Use `⟨?_, ?_, fun g s hs => sqAct_mem_nabla_A n mu g s hs⟩` and prove the remaining obligations. Introduce `g hl hd`. Unfold `sqAct detPow extremal`. Rewrite using `[det_unitri_A n g hl hd, one_zpow, Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `rowAct_hw_A` to reduce the goal to its premises. Introduce `i j hij`. Simplify using `only [Matrix.transpose_apply]`. Conclude with `hl j i hij`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply]`. Conclude with `hd i`. Introduce `t`. Unfold `sqAct detPow extremal`. Establish `hdiag : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).transpose = Matrix.diagonal fun a => (t a : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[diagGL]`. Rewrite using `[hdiag, Formalism.GradedWeylDivisibility.rowActDiagWeight ℂ n n _ _ _ (Formalism.GradedWeylDivisibility.hwRowWeight ℂ n n le_rfl mu.natW (natW_anti_A mu)), smul_smul]`. Use `congr 1`. Establish `hdet : Matrix.GeneralLinearGroup.det (diagGL ℂ n t) = ∏ a, t a`. Use `ext`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, diagGL, Matrix.det_diagonal]`. Establish `hrow : ∀ a : Fin n, Formalism.GradedWeylDivisibility.rowNu (r` using `n) mu.natW a = mu.natW a := by`. Introduce `a`. Simplify using `[Formalism.GradedWeylDivisibility.rowNu]`. Simplify using `only [hrow, hdet]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (∏ a, t a) ^ mu.detShift * ∏ a, t a ^ ((mu.natW a : ℕ) : ℤ) = ∏ a, t a ^ mu.w a`. Rewrite using `[← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add, add_comm, natW_add_A]`. Rewrite using `[← key, Units.val_mul, Units.coe_prod]`.
-
-Simplify using `[zpow_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extremalFacts_proof_A : ExtremalFacts := by
   intro n mu
@@ -161,7 +159,7 @@ theorem extremalFacts_proof_A : ExtremalFacts := by
     simp [zpow_natCast]
 
 /- English proof (translation)
-The claim follows from `extremalFacts_proof_A`.
+A detailed English derivation is pending.
 -/
 theorem extremalFacts_of_A (_h : PI.HwIrred) : ExtremalFacts := extremalFacts_proof_A
 

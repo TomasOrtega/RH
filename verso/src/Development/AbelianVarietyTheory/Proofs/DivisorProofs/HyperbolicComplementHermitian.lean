@@ -10,31 +10,27 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LeviSpan
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n n₁ J J₁ x y ι hσ hJ hn hxx hyy hxy hι hG hdet z`. Establish `fadd : ∀ u v w : Fin n → E, form σ J (u + v) w = form σ J u w + form σ J v w`. Introduce `u v w`. Simplify using `[form, add_dotProduct]`. Establish `fsmul : ∀ (c : E) (u w : Fin n → E), form σ J (c • u) w = c * form σ J u w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c u w`. Simplify using `[form, smul_dotProduct]`. Establish `hswap : form σ J y x = σ (form σ J x y)`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ]`. Repeatedly rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hyx : form σ J y x = 1` using `by rw [hswap, hxy, map_one]`. Establish `hinjι : ∀ w : Fin n₁ → E, ι *ᵥ w = 0 → w = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hdet` to reduce the goal to its premises. Rewrite using `[← hG, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hw]`. Simplify using the standard rewrite rules. Set `L : (E × (Fin n₁ → E) × E) →ₗ[E] (Fin n → E)` to `{ toFun := fun p => p.1 • x + ι *ᵥ p.2.1 + p.2.2 • y map_add' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `p q`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_smul, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := by`. Introduce `c p`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul, RingHom.id_apply, Matrix.mulVec_smul, smul_add, mul_smul] }`. Establish `hL : ∀ p, L p = p.1 • x + ι *ᵥ p.2.1 + p.2.2 • y` using `fun _ => rfl`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨a, w, b⟩ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hL]`. Establish `h1` using `congrArg (fun v => form σ J v y) h`. Establish `h2` using `congrArg (fun v => form σ J v x) h`. Simplify using `only [fadd, fsmul, hxy, hyy, hxx, hyx, (hι w).1, (hι w).2] at h1 h2`. Establish `hzero : ∀ v : Fin n → E, form σ J 0 v = 0` using `by intro v; simp [form]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[hzero]`. Simplify using `at h1 h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `at h`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hinjι w h]`. Establish `hsurj : Function.Surjective L`. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]`. Conclude with `hinj`. Simplify using `[Module.finrank_prod, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `choose p hp using fun i : Fin n => hsurj (Pi.single i 1)`. Use `set R := inclR (F := F) (E := E) (AF F) with hR`. Use `⟨∑ i, z i * R (p i).1, ∑ i, z i * R (p i).2.2, fun k => ∑ i, z i * R ((p i).2.1 k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : z j = ∑ i, z i * R ((Pi.single i 1 : Fin n → E) j)`. Simplify using `[Pi.single_apply, Finset.sum_ite_eq', eq_comm]`. Rewrite using `[key]`. Simplify using `only [← hp, hL, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, map_add, map_mul, map_sum, incV, incM, Matrix.map_apply]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, mul_add, Finset.sum_add_distrib]`.
-
-Rewrite using `[Finset.sum_comm (f := fun k i => R (ι j k) * (z i * R ((p i).2.1 k)))]`. Use `congr 1`. Use `congr 1`. Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl (fun i _ => ?_))`. Apply the tactic sequence `all_goals (try refine Finset.sum_congr rfl (fun i _ => ?_))`.
-
-Apply the tactic sequence `all_goals ring`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem span_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J₁ : Matrix (Fin n₁) (Fin n₁) E) (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E),

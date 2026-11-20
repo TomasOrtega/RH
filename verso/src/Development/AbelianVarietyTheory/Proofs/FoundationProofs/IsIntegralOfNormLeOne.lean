@@ -10,9 +10,9 @@ section Local
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Rewrite `h` using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)]`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Conclude with `fun n => ⟨⟨_, h n⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (minpoly.monic hx)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegral_of_norm_le_one (x : PadicAlgCl l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
   have hx : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -25,7 +25,7 @@ theorem isIntegral_of_norm_le_one (x : PadicAlgCl l) (h : ‖x‖ ≤ 1) : IsInt
   rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]
 
 /- English proof (translation)
-The claim follows from `(isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).1 (isIntegral_of_norm_le_one _ h)`.
+A detailed English derivation is pending.
 -/
 theorem mem_OL_of_norm_le_one (K : Loc.FinExt l) (x : K.1) (h : ‖(x : PadicAlgCl l)‖ ≤ 1) :
     x ∈ Loc.OL K :=
@@ -33,7 +33,7 @@ theorem mem_OL_of_norm_le_one (K : Loc.FinExt l) (x : K.1) (h : ‖(x : PadicAlg
     (isIntegral_of_norm_le_one _ h)
 
 /- English proof (translation)
-Use `haveI := K.2`. Establish `h : IsClosed ((Loc.GK K : Subgroup (Loc.GQ l)) : Set (Loc.GQ l))` using `IntermediateField.fixingSubgroup_isClosed K.1`. Conclude with `isCompact_iff_compactSpace.1 h.isCompact`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_GK (K : Loc.FinExt l) : CompactSpace ↥(Loc.GK K) := by
   haveI := K.2
@@ -42,11 +42,11 @@ theorem compactSpace_GK (K : Loc.FinExt l) : CompactSpace ↥(Loc.GK K) := by
   exact isCompact_iff_compactSpace.1 h.isCompact
 
 /- English proof (translation)
-Establish `hc' : Continuous fun g (j : Fin m) => ((c g j : K.1) : PadicAlgCl l)` using `continuous_pi fun j => continuous_subtype_val.comp ((continuous_apply j).comp hc)`. Take `⟨C, hC⟩` from `(isCompact_range hc').isBounded.exists_norm_le`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt C hl`. Use `⟨N, fun g j => mem_OL_of_norm_le_one K _ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖((c g j : K.1) : PadicAlgCl l)‖ ≤ C` using `(norm_le_pi_norm (fun j : Fin m => ((c g j : K.1) : PadicAlgCl l)) j).trans (hC _ ⟨g, rfl⟩)`. Establish `h2 : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Use `PadicAlgCl.norm_extends l (l : ℚ_[l])` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[this, Padic.norm_p]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (((l : K.1) ^ N * c g j : K.1) : PadicAlgCl l) = (l : PadicAlgCl l) ^ N * ((c g j : K.1) : PadicAlgCl l)`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h3, norm_mul, norm_pow, h2, inv_pow, inv_mul_le_iff₀ (by positivity), mul_one]`. Conclude with `h1.trans hN.le`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_OL {X : Type} [TopologicalSpace X] [CompactSpace X] (K : Loc.FinExt l) {m : ℕ}
     (c : X → Fin m → K.1) (hc : Continuous c) :
@@ -75,27 +75,27 @@ variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
   (Bw : LocBridge l E Ω Gw O₀) (P : LocPrime l) {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp Bw.eO.injective`.
+A detailed English derivation is pending.
 -/
 theorem toLL_injective : Function.Injective Bw.toLL :=
   Subtype.val_injective.comp Bw.eO.injective
 
 /- English proof (translation)
-Use `haveI := compactSpace_GK Bw.Kw`. Take `⟨N, hN⟩` from `exists_pow_mul_mem_OL Bw.LL c hc.1.1`. Set `f : ↥Gw → Fin m → O₀` to `fun g j => Bw.eO.symm ⟨_, hN (Bw.e g) j⟩`. Establish `hf : ∀ g j, Bw.toLL (f g j) = (l : Bw.LL.1) ^ N * c (Bw.e g) j`. Introduce `g j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ((Bw.eO (Bw.eO.symm _) : Loc.OL Bw.LL) : Bw.LL.1) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Establish `hφ : Function.Injective ((algebraMap O' (FractionRing O')).comp ι)` using `(IsFractionRing.injective O' (FractionRing O')).comp hι`. Establish `hl0 : (l : O₀) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Bw.toLL h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast this)`. Establish `hl1 : (l : FractionRing O') ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hl0` to reduce the goal to its premises. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero, h]`. Use `Submodule.subset_span ⟨((l : FractionRing O') ^ N)⁻¹, f, ?_, fun g j => ?_⟩` and prove the remaining obligations. Use `(Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype))).smul_mem ((l : Bw.LL.1) ^ N) hc` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `IsCrysCocycle`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g j`. Rewrite using `[hf, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hz]`. Use `congr 1`. Take `⟨n, d, ⟨hd, h1⟩, h2⟩` from `hy g j`. Establish `h3 : d * f g j = (l : O₀) ^ N * n`. Apply `toLL_injective Bw` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, hf, map_pow, map_natCast, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `congrArg ((algebraMap O' (FractionRing O')).comp ι) h3`. Rewrite `h4` using `[map_mul, map_mul, map_pow, map_natCast]`. Simplify using `only [RingHom.comp_apply] at h4`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hd' : algebraMap O' (FractionRing O') (ι d) ≠ 0` using `fun h => hd (hφ (by rw [map_zero]; exact h))`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ hl1)]`. Apply `mul_left_cancel₀ hd'` to reduce the goal to its premises. Rewrite using `[h4, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_crysSpan_of_rational {O' : Type} [CommRing O'] [IsDomain O'] (ι : O₀ →+* O')
     (hι : Function.Injective ι) (T : (Ω ≃ₐ[E] Ω) →* GL (Fin m) O₀)
@@ -152,9 +152,9 @@ theorem mem_crysSpan_of_rational {O' : Type} [CommRing O'] [IsDomain O'] (ι : O
 end Local
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h : ∀ b, ((Formalism.MainNotions.N.mapRep (toOk D i k) (latT D i s) g : GL _ _) : Matrix _ _ _) a b = Gen.phiK D.ntw i k (Gen.Tmat i s g a b)`. Introduce `b`. Rewrite using `[← Gen.Tgl_coe]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [actDiv, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, h]`. Simplify using `only [Gen.Trep, twRep, MonoidHom.coe_mk, OneHom.coe_mk, hg, inv_one, one_mul, LinearMap.smul_apply, Pi.smul_apply, matAct, LinearMap.coe_mk, AddHom.coe_mk, Finset.smul_sum, smul_smul, Gen.Tmat, Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.map_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Trep_eq_actDiv (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ : GE D →* (D.ntw.Ok i k)ˣ)
     (g : GE D) (hg : ψ g = 1) (x : Fin D.R.r → KmodO (D.ntw.Ok i k)) :
@@ -172,11 +172,11 @@ theorem Trep_eq_actDiv (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ :
   rfl
 
 /- English proof (translation)
-Establish `hB' : (ReciprocityTheory.Gal.B1 ρ).comap (ReciprocityTheory.Gal.Z1 ρ).subtype ≤ S.comap (ReciprocityTheory.Gal.Z1 ρ).subtype`. Introduce `w hw`. Take `⟨x, hx⟩` from `(mem_coboundaries1 ρ _).1 hw`. Establish `: (ReciprocityTheory.Gal.Z1 ρ).subtype w = fun g => ρ g x - x` using `funext hx`. Rewrite using `[Submodule.mem_comap, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB x`. Establish `hle : Submodule.span R A ≤ (S.comap (ReciprocityTheory.Gal.Z1 ρ).subtype).map (Submodule.mkQ _)`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `hA x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w, hw, rfl⟩`. Establish `h2 : w ∈ ((S.comap (ReciprocityTheory.Gal.Z1 ρ).subtype).map (Submodule.mkQ ((ReciprocityTheory.Gal.B1 ρ).comap (ReciprocityTheory.Gal.Z1 ρ).subtype))).comap (Submodule.mkQ _)` using `hle hw`. Rewrite `h2` using `[Submodule.comap_map_mkQ, sup_eq_right.2 hB']`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mk_mem_span {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M]
     [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -202,9 +202,9 @@ theorem mem_of_mk_mem_span {R G M : Type} [CommRing R] [Group G] [TopologicalSpa
   exact h2
 
 /- English proof (translation)
-Introduce `D i s k ψ v hv hψ z hz`. Use `replace hz := ((Gen.bk.eq_1 (bk0 D) i s k ψ v).trans (dif_pos hv)).le hz`. Use `mem_of_mk_mem_span ((Gen.Trep i s k ψ).comp (decAt D v).subtype) (crysSpan (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (toOk D i k) (latT D i s) ⊔ cobOn ((Formalism.MainNotions.N.mapRep (toOk D i k) (latT D i s)).comp (decAt D v).subtype) ⊤) ?_ _ ?_ (restrictCocycles1 (Gen.Trep i s k ψ) …` and prove the remaining obligations. Introduce `x`. Use `Submodule.mem_sup_right ⟨x, fun g _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg (· - x) (Trep_eq_actDiv D i s k ψ g (hψ g g.2) x)`. Introduce and unpack `x ⟨w, c, y, hc, hy, hw, hx⟩`. Use `⟨w, Submodule.mem_sup_left ?_, hx⟩` and prove the remaining obligations. Conclude with `mem_crysSpan_of_rational (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (toOk D i k) ((D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)) (latT D i s) c hc y hy _ hw`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_bkAt_of_mem_bk : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ : GE D →* (D.ntw.Ok i k)ˣ) (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i)), (∀ σ ∈ decAt D v, ψ σ = 1) → ∀ z : ReciprocityTheory.Gal.Z1 (Gen.Trep i s k ψ), ReciprocityTheory.Gal.resH1 (Gen.Trep i s k ψ) (decAt D v).subtype continuous_subtype_val (Submodule.Quotient.mk z) ∈ Gen.bk (bk0 D) i s k ψ v → (z : GE D → Fin D.R.r → KmodO (D.ntw.Ok i k)) ∈ bkAt (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (toOk D i k) (latT D i s) := by
   intro D i s k ψ v hv hψ z hz

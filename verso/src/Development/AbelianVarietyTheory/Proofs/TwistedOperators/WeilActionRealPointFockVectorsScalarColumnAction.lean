@@ -24,17 +24,17 @@ namespace GlobalTheory.Ker.RealColAct
 open GlobalTheory.Ker.ColChange
 
 /- English proof (translation)
-Establish `hU : ∀ τ, (compAt C.θ τ (Formalism.L2.Theta.mt S h))⁻¹ = (compAt C.θ τ (Formalism.L2.Theta.mt S h))ᴴ` using `fun τ => Matrix.inv_eq_left_inv (GlobalTheory.Ker.ColChange.compAt_unitary C h τ)`. Establish `key : ∀ g : WO S T → ℂ, C.IsTh g → ∀ v : FVar D T.rank S.rank, aPlusAll (heisO C.ψ S T) C.θ (fun τ => cplxO 1 (C.sB B τ)) (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) B v g = ∑ l, (if (v.2.1 : ℕ) < C.X.p0 then conj (compAt C.θ v.1 (Formalism.L2.Theta.mt S h) l v.2.2) else …`. Introduce and unpack `g hg ⟨τ, i, j⟩`. Establish `hc : ∀ z : Matrix (Fin T.rank) (Fin S.rank) ℂ, aPlus (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) z g = ((fockScale D τ : ℂ)⁻¹) • crea (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) z g`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.Ker.FockAlg.aPlus_eq C]`. Unfold `crea`. Rewrite using `[sub_eq_add_neg, neg_smul]`. Express the relevant statement in the definitionally equal form `aPlus (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) (unitMap (compAt C.θ τ (Formalism.L2.Theta.mt S h)) (B τ) i j) g = ∑ l, (if (i : ℕ) < C.X.p0 then conj (compAt C.θ τ (Formalism.L2.Theta.mt S h) l j) else compAt C.θ τ (Formalism.L2.Theta.mt S h) l j) • aPlus (heisO C.ψ S T) C.θ τ …`. Simplify using `only [hc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.Ker.ColChange.unitMap_expand, GlobalTheory.Ker.ColChange.crea_sum C hg, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Ker.ColChange.crea_smul C hg τ (C.sB B τ) (unitMap 1 (B τ) i l) ((i : ℕ) < C.X.p0) (GlobalTheory.Ker.ColChange.sB_unitMap C hB τ i l), hU τ, Matrix.conjTranspose_apply, smul_smul, smul_smul]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [Complex.star_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `Lc` using `fun P : MvPolynomial (FVar D T.rank S.rank) ℂ => GlobalTheory.Ker.FockAlg.fock_vec_laws D S T C B hB (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) f hf P`. Establish `L1` using `fun P : MvPolynomial (FVar D T.rank S.rank) ℂ => GlobalTheory.Ker.FockAlg.fock_vec_laws D S T C B hB (fun _ => 1) f hf P`. Establish `hX : ∀ v : FVar D T.rank S.rank, ColChange.sub C h (MvPolynomial.X v) = ∑ l, (if (v.2.1 : ℕ) < C.X.p0 then conj (compAt C.θ v.1 (Formalism.L2.Theta.mt S h) l v.2.2) else compAt C.θ v.1 (Formalism.L2.Theta.mt S h) l v.2.2) • MvPolynomial.X (v.1, v.2.1, l)` using `fun v => MvPolynomial.aeval_X _ v`. Use `show pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB B) (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) B f Q = pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB B) (fun _ => 1) B f (ColChange.sub C h Q)`. Proceed by induction on `Q using MvPolynomial.induction_on`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Establish an intermediate fact.
 
-Use `next a =>`. Establish `e : (MvPolynomial.C a : MvPolynomial (FVar D T.rank S.rank) ℂ) = a • 1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Rewrite using `[e, map_smul, map_smul, map_smul, map_one (ColChange.sub C h), (Lc 1).2.2.1, (L1 1).2.2.1]`. Use `next p q hp hq =>`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, map_add, hp, hq]`. Use `next p v hp =>`. Rewrite using `[mul_comm p, (Lc p).2.1 v, hp, key _ (L1 (ColChange.sub C h p)).1 v, map_mul, hX, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, (L1 (ColChange.sub C h p)).2.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureTensor_compAt {D : D7} {S T : HSp D} (C : Ctx S T) (h : GA D S) {B : C.Bas} (hB : C.IsB B)
     {f : WO S T → ℂ} (hf : C.IsTh f) (Q : MvPolynomial (FVar D T.rank S.rank) ℂ) :
@@ -88,11 +88,9 @@ theorem pureTensor_compAt {D : D7} {S T : HSp D} (C : Ctx S T) (h : GA D S) {B :
     rw [smul_mul_assoc, map_smul, (L1 (ColChange.sub C h p)).2.1]
 
 /- English proof (translation)
-Introduce `D S T C om hom B hB f hf hF h hh`. Take `⟨φ, hφ, hfφ⟩` from `GlobalTheory.Ker.exists_test_of_fock D S T C B hB f hf hF`. Take `⟨c, hc, hcφ⟩` from `GlobalTheory.Ker.RealScalar.om_real_Th D S T C om hom h hh 1 (one_mem _) B hB`. Establish `h1 : C.mvB 1 B = B` using `GlobalTheory.Ker.ONBasis.mvB_fin C B (one_mem _)`. Establish `hom1 : om (h, 1) f = c • f` using `by rw [hfφ, hcφ φ hφ, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, fun h0 => by simp [h0] at hc, fun Q Q' hQ => ?_⟩` and prove the remaining obligations. Establish `hQ' : Q' = ColChange.sub C h Q` using `C.toH_bijective.1 (by`. Rewrite using `[hQ]`. Conclude with `(DFunLike.congr_fun (GlobalTheory.Ker.ColChange.toH_sub C h) Q).symm)`. Rewrite using `[hQ', GlobalTheory.Ker.WeakMove.om_fvec C hom h 1 hf B Q, h1, hom1, pureTensor_compAt C h hB (GlobalTheory.Ker.FockAlg.th_smul C c hf) Q]`.
-
-Conclude with `(GlobalTheory.Ker.FockAlg.fock_vec_laws D S T C B hB (fun _ => 1) f hf (ColChange.sub C h Q)).2.2.2.2.1 c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_real_fvec : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak C.ψ S T om → ∀ B, C.IsB B → ∀ f, C.IsTh f → C.IsFock B f → ∀ h ∈ GinfC S, ∃ c : ℂ, c ≠ 0 ∧ ∀ Q Q' : MvPolynomial (FVar D T.rank S.rank) ℂ, C.toH Q' = Harm.colActHom (GlobalTheory.Ker.ColChange.colU C h) (C.toH Q) → om (h, 1) (C.fvec B f Q) = c • C.fvec B f Q' := by
   intro D S T C om hom B hB f hf hF h hh

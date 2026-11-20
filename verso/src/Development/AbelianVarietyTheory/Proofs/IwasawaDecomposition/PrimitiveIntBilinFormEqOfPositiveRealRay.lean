@@ -5,27 +5,25 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PrimRay
 
 /- English proof (translation)
-Introduce `X _ x y d hd hx hy h`. Establish `hx0 : x ≠ 0` using `fun h0 => by`. Use `hx 0 0 (by simp [h0])` as an intermediate fact. Simplify using `at this`. Establish `hy0 : y ≠ 0` using `fun h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hy 0 0 (by simp [h0])` as an intermediate fact. Simplify using `at this`. Take `⟨a, b, ha, hb, hab⟩` from `GlobalTheory.T.exists_pos_rat_multiple_of_pos_real_multiple_intForm x y d hd hy0 h`. Establish `hg : 0 < Nat.gcd a b` using `Nat.gcd_pos_of_pos_left b ha`. Establish `hcop0` using `Nat.coprime_div_gcd_div_gcd (m := a) (n := b) hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a', ha'⟩` from `Nat.gcd_dvd_left a b`. Take `⟨b', hb'⟩` from `Nat.gcd_dvd_right a b`. Generalize the expression as in `Nat.gcd a b = g at hg hcop0 ha' hb'`. Substitute `ha' hb'` using the available equality. Establish `hcop : Nat.Coprime a' b'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hcop0` as an intermediate fact. Establish `e1 : g * a' / g = a'` using `Nat.mul_div_cancel_left a' hg`. Establish `e2 : g * b' / g = b'` using `Nat.mul_div_cancel_left b' hg`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis. Take `⟨u, w, huw⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hgz : ((g : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `h1 : ∀ p q, (a' : ℤ) * x p q = (b' : ℤ) * y p q` using `fun p q => by`. Use `LinearMap.congr_fun₂ hab p q` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at this`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply `mul_left_cancel₀ hgz` to reduce the goal to its premises. Take the linear combination `this`. Use `set z : LinearMap.BilinForm ℤ X := u • y + w • x with hz`. Establish `hxz : ((b' : ℕ) : ℤ) • z = x`. Use extensionality with `p q`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`. Take the linear combination `(-u) * h1 p q + (x p q) * huw`. Establish `hyz : ((a' : ℕ) : ℤ) • z = y`. Use extensionality with `p q`. Simplify using `only [hz, LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `w * h1 p q + (y p q) * huw`. Establish `hb1 : b' = 1` using `hx b' z hxz`. Establish `ha1 : a' = 1` using `hy a' z hyz`. Establish `hxy : x = y`. Use extensionality with `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1 p q` using `[ha1, hb1]`. Use `⟨hxy, ?_⟩` and prove the remaining obligations. Substitute `hxy` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨p, q, hpq⟩ : ∃ p q, x p q ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hx0 (LinearMap.ext₂ hc)`. Use `LinearMap.congr_fun₂ h p q` as an intermediate fact. Simplify using `only [toReal_apply, LinearMap.smul_apply, smul_eq_mul] at this`. Establish `hne : (x p q : ℝ) ≠ 0` using `by exact_mod_cast hpq`.
-
-Use `mul_right_cancel₀ hne (this.symm.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_toReal_eq_smul : ∀ {X : Type} [AddCommGroup X] (x y : LinearMap.BilinForm ℤ X) (d : ℝ), 0 < d →
   (∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = x → k = 1) → (∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = y → k = 1) →

@@ -18,7 +18,7 @@ section Alg
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotent_mul_unipotent_add (x y : R) : uni2 x * uni2 y = uni2 (x + y) := by
   apply Units.ext
@@ -26,7 +26,7 @@ theorem unipotent_mul_unipotent_add (x y : R) : uni2 x * uni2 y = uni2 (x + y) :
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_mul_diagonal_alt (a b c d : Rˣ) : dg2 a b * dg2 c d = dg2 (a * c) (b * d) := by
   apply Units.ext
@@ -34,7 +34,7 @@ theorem diagonal_mul_diagonal_alt (a b c d : Rˣ) : dg2 a b * dg2 c d = dg2 (a *
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_mul_unipotent (a : Rˣ) (x : R) : dg2 a 1 * uni2 x = uni2 ((a : R) * x) * dg2 a 1 := by
   apply Units.ext
@@ -42,14 +42,14 @@ theorem diagonal_mul_unipotent (a : Rˣ) (x : R) : dg2 a 1 * uni2 x = uni2 ((a :
   fin_cases i <;> fin_cases j <;> simp [dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [uni2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_unipotent_bottom_row (c x : R) : ![0, c] ᵥ* ((uni2 x : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) = ![0, c] := by
   ext i
   fin_cases i <;> simp [uni2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_diagonal_bottom_row (c : R) (a b : Rˣ) :
     ![0, c] ᵥ* ((dg2 a b : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) = ![0, c * b] := by
@@ -63,7 +63,7 @@ def e0 : Fin 2 → ℚ := ![0, 1]
 def pp (α : ℚˣ) (b : ℚ) : GL (Fin 2) ℚ := dg2 α 1 * uni2 b
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, AdelicGLn.diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rationalEmbedding_unipotent (b : ℚ) : dia2 (uni2 b) = uni2 (algebraMap ℚ 𝔸[ℚ] b) := by
   apply Units.ext
@@ -71,7 +71,7 @@ theorem rationalEmbedding_unipotent (b : ℚ) : dia2 (uni2 b) = uni2 (algebraMap
   fin_cases i <;> fin_cases j <;> simp [uni2, AdelicGLn.diagonal]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, pri, AdelicGLn.diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rationalEmbedding_diagonal (α : ℚˣ) : dia2 (dg2 α 1) = dg2 (pri α) 1 := by
   apply Units.ext
@@ -79,7 +79,7 @@ theorem rationalEmbedding_diagonal (α : ℚˣ) : dia2 (dg2 α 1) = dg2 (pri α)
   fin_cases i <;> fin_cases j <;> simp [dg2, pri, AdelicGLn.diagonal]
 
 /- English proof (translation)
-Establish `h : (dg2 (pri α) 1 : G2) * uni2 (algebraMap ℚ 𝔸[ℚ] b + x) * dg2 a 1 = uni2 ((pri α : 𝔸[ℚ]) * (x + algebraMap ℚ 𝔸[ℚ] b)) * dg2 (pri α * a) 1`. Rewrite using `[diagonal_mul_unipotent, mul_assoc, diagonal_mul_diagonal_alt, mul_one, add_comm]`. Simplify using `only [pp, pt, map_mul, rationalEmbedding_unipotent, rationalEmbedding_diagonal]`. Rewrite using `[← h, ← unipotent_mul_unipotent_add]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mirabolic_mul_iwasawa_coordinates (α : ℚˣ) (b : ℚ) (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) :
     dia2 (pp α b) * pt x a z κ =
@@ -92,7 +92,7 @@ theorem mirabolic_mul_iwasawa_coordinates (α : ℚˣ) (b : ℚ) (x : 𝔸[ℚ])
   simp only [mul_assoc]
 
 /- English proof (translation)
-Unfold `Ad3.R.row`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, AdelicGLn.diagonal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem row_dia (ξ : Fin 2 → ℚ) (γ : GL (Fin 2) ℚ) (g : G2) :
     row ξ (dia2 γ * g) = row (ξ ᵥ* (γ : Matrix (Fin 2) (Fin 2) ℚ)) g := by
@@ -103,9 +103,9 @@ theorem row_dia (ξ : Fin 2 → ℚ) (γ : GL (Fin 2) ℚ) (g : G2) :
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, AdelicGLn.diagonal]
 
 /- English proof (translation)
-Establish `h0 : (fun i => algebraMap ℚ 𝔸[ℚ] (e0 i)) = ![0, 1]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [e0]`. Unfold `Ad3.R.row lrow pt`. Rewrite using `[h0]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_unipotent_bottom_row, vecMul_diagonal_bottom_row, one_mul, Units.val_one, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bottom_row_iwasawa_coordinates (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) : row e0 (pt x a z κ) = lrow z κ := by
   have h0 : (fun i => algebraMap ℚ 𝔸[ℚ] (e0 i)) = ![0, 1] := by
@@ -116,7 +116,7 @@ theorem bottom_row_iwasawa_coordinates (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) : ro
   simp only [Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_unipotent_bottom_row, vecMul_diagonal_bottom_row, one_mul, Units.val_one, mul_one]
 
 /- English proof (translation)
-Unfold `pp e0`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_diagonal_bottom_row, vecMul_unipotent_bottom_row]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bottom_row_vector_mirabolic_fixed (α : ℚˣ) (b : ℚ) : e0 ᵥ* ((pp α b : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = e0 := by
   unfold pp e0
@@ -124,17 +124,17 @@ theorem bottom_row_vector_mirabolic_fixed (α : ℚˣ) (b : ℚ) : e0 ᵥ* ((pp 
   simp
 
 /- English proof (translation)
-Rewrite using `[row_dia, bottom_row_vector_mirabolic_fixed]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bottom_row_mirabolic_invariance (α : ℚˣ) (b : ℚ) (g : G2) : row e0 (dia2 (pp α b) * g) = row e0 g := by
   rw [row_dia, bottom_row_vector_mirabolic_fixed]
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `ξ`. Distinguish the cases in `h1 : ξ 1 = 0`. Establish `h0 : ξ 0 ≠ 0`. Introduce `h0`. Apply `hξ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [h0, h1]`. Use `⟨GeneralLinearGroup.mkOfDetNeZero !![0, 1; ξ 0, ξ 1] (by simpa [Matrix.det_fin_two] using h0), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [e0, GeneralLinearGroup.mkOfDetNeZero, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨GeneralLinearGroup.mkOfDetNeZero !![1, 0; ξ 0, ξ 1] (by simpa [Matrix.det_fin_two] using h1), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [e0, GeneralLinearGroup.mkOfDetNeZero, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_section (ξ : NZ) : ∃ γ : GL (Fin 2) ℚ, e0 ᵥ* (γ : Matrix (Fin 2) (Fin 2) ℚ) = ξ.1 := by
   obtain ⟨ξ, hξ⟩ := ξ
@@ -152,13 +152,13 @@ theorem exists_section (ξ : NZ) : ∃ γ : GL (Fin 2) ℚ, e0 ᵥ* (γ : Matrix
     fin_cases i <;> simp [e0, GeneralLinearGroup.mkOfDetNeZero, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h10 : (q : Matrix (Fin 2) (Fin 2) ℚ) 1 0 = 0`. Use `congrFun hq 0` as an intermediate fact. Simplify `this` using `[e0, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h11 : (q : Matrix (Fin 2) (Fin 2) ℚ) 1 1 = 1`. Use `congrFun hq 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[e0, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `hd : (q : Matrix (Fin 2) (Fin 2) ℚ).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det _).1 q.isUnit` as an intermediate fact. Conclude with `this.ne_zero`. Establish `h00 : (q : Matrix (Fin 2) (Fin 2) ℚ) 0 0 ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Simplify using `[Matrix.det_fin_two, h, h10]`. Use `⟨Units.mk0 _ h00, (q : Matrix (Fin 2) (Fin 2) ℚ) 0 1 / (q : Matrix (Fin 2) (Fin 2) ℚ) 0 0, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[pp, dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two, h10, h11, h00, mul_div_cancel₀]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pp (q : GL (Fin 2) ℚ) (hq : e0 ᵥ* (q : Matrix (Fin 2) (Fin 2) ℚ) = e0) :
     ∃ α b, q = pp α b := by
@@ -182,9 +182,9 @@ theorem exists_pp (q : GL (Fin 2) ℚ) (hq : e0 ᵥ* (q : Matrix (Fin 2) (Fin 2)
     simp [pp, dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two, h10, h11, h00, mul_div_cancel₀]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun q : GL (Fin 2) ℚ => (q : Matrix (Fin 2) (Fin 2) ℚ) 0 0) h`. Establish `h2` using `congrArg (fun q : GL (Fin 2) ℚ => (q : Matrix (Fin 2) (Fin 2) ℚ) 0 1) h`. Simplify using `[pp, dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two] at h1 h2`. Establish `hα : α = α'` using `Units.ext h1`. Substitute `hα` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨rfl, by simpa using h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pp_inj {α α' : ℚˣ} {b b' : ℚ} (h : pp α b = pp α' b') : α = α' ∧ b = b' := by
   have h1 := congrArg (fun q : GL (Fin 2) ℚ => (q : Matrix (Fin 2) (Fin 2) ℚ) 0 0) h
@@ -199,21 +199,19 @@ instance countableGL : Countable (GL (Fin 2) ℚ) :=
   Function.Injective.countable (f := fun u : GL (Fin 2) ℚ => (u : Matrix (Fin 2) (Fin 2) ℚ)) Units.val_injective
 
 /- English proof (translation)
-Establish `hinv : ∀ (α : ℚˣ) (b : ℚ), e0 ᵥ* (((pp α b)⁻¹ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = e0`. Introduce `α b`. Use `conv_lhs => rw [← bottom_row_vector_mirabolic_fixed α b]`. Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨α, b, ξ⟩ ⟨α', b', ξ'⟩ h`. Simplify using `only at h`. Establish `h1 : (pp α b)⁻¹ * γs ξ = (pp α' b')⁻¹ * γs ξ'`. Use `congrArg (·⁻¹) h` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ξ.1 = ξ'.1`. Use `congrArg (fun q : GL (Fin 2) ℚ => e0 ᵥ* (q : Matrix (Fin 2) (Fin 2) ℚ)) h1` as an intermediate fact. Simplify using `only [Units.val_mul, ← Matrix.vecMul_vecMul, hinv, hγ] at this`. Conclude with `this`. Establish `h3 : ξ = ξ'` using `Subtype.ext h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `h3` using the available equality. Take `⟨rfl, rfl⟩` from `pp_inj (mul_left_cancel h)`. Both sides reduce to the same expression. Introduce `γ`. Establish `hne : e0 ᵥ* ((γ⁻¹ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) ≠ 0`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : e0 = 0`. Use `congrArg (· ᵥ* (γ : Matrix (Fin 2) (Fin 2) ℚ)) h` as an intermediate fact. Simplify using `only [Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one, Matrix.zero_vecMul] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrFun h' 1` as an intermediate fact. Simplify using `[e0] at this`. Use `set ξ : NZ := ⟨_, hne⟩ with hξ`. Establish `hq : e0 ᵥ* ((γs ξ * γ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = e0`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, hγ ξ, hξ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`. Take `⟨α, b, h⟩` from `exists_pp _ hq`. Use `⟨⟨α, b, ξ⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← h]`.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem param_bij (γs : NZ → GL (Fin 2) ℚ) (hγ : ∀ ξ, e0 ᵥ* ((γs ξ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = ξ.1) :
     Function.Bijective (fun t : ℚˣ × ℚ × NZ => (γs t.2.2)⁻¹ * pp t.1 t.2.1) := by
@@ -255,9 +253,9 @@ theorem param_bij (γs : NZ → GL (Fin 2) ℚ) (hγ : ∀ ξ, e0 ᵥ* ((γs ξ 
     group
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`. Express the relevant statement in the definitionally equal form `Continuous fun x : 𝔸[ℚ] => (!![1, -x; 0, 1] : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → G2) := by
   rw [Units.continuous_iff]
@@ -269,9 +267,9 @@ theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → G2) := by
     fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : Jd × Jd => ((p.1 : Jd) : 𝔸[ℚ])` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous fun p : Jd × Jd => ((p.2 : Jd) : 𝔸[ℚ])` using `Units.continuous_val.comp continuous_snd`. Establish `h3 : Continuous fun p : Jd × Jd => ((p.1⁻¹ : Jd) : 𝔸[ℚ])` using `Units.continuous_val.comp (continuous_fst.inv)`. Establish `h4 : Continuous fun p : Jd × Jd => ((p.2⁻¹ : Jd) : 𝔸[ℚ])` using `Units.continuous_val.comp (continuous_snd.inv)`. Rewrite using `[Units.continuous_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [dg2] <;> first | exact h1 | exact h2 | fun_prop`. Express the relevant statement in the definitionally equal form `Continuous fun p : Jd × Jd => (!![((p.1⁻¹ : Jd) : 𝔸[ℚ]), 0; 0, ((p.2⁻¹ : Jd) : 𝔸[ℚ])] : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> first | exact h3 | exact h4 | fun_prop`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_diagGL2 : Continuous (fun p : Jd × Jd => (dg2 p.1 p.2 : G2)) := by
   have h1 : Continuous fun p : Jd × Jd => ((p.1 : Jd) : 𝔸[ℚ]) := Units.continuous_val.comp continuous_fst
@@ -294,7 +292,7 @@ instance secondCountable_adelic_GL2 : SecondCountableTopology G2 := by
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
 /- English proof (translation)
-Unfold `pt`. Establish `h1 : Continuous fun y => (uni2 (x y) : G2)` using `continuous_unipotentGL2.comp hx`. Establish `h2 : Continuous fun y => (dg2 (a y) 1 : G2)` using `continuous_diagGL2.comp (ha.prodMk continuous_const)`. Establish `h3 : Continuous fun y => (dg2 (z y) (z y) : G2)` using `continuous_diagGL2.comp (hz.prodMk hz)`. Conclude with `((h1.mul h2).mul h3).mul hκ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pt {Y : Type*} [TopologicalSpace Y] {x : Y → 𝔸[ℚ]} {a z : Y → Jd} {κ : Y → G2}
     (hx : Continuous x) (ha : Continuous a) (hz : Continuous z) (hκ : Continuous κ) :
@@ -306,36 +304,36 @@ theorem continuous_pt {Y : Type*} [TopologicalSpace Y] {x : Y → 𝔸[ℚ]} {a 
   exact ((h1.mul h2).mul h3).mul hκ
 
 /- English proof (translation)
-Unfold `Ad3.R.row`. Conclude with `Continuous.matrix_vecMul continuous_const Units.continuous_val`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_row (ξ : Fin 2 → ℚ) : Continuous (row ξ) := by
   unfold Ad3.R.row
   exact Continuous.matrix_vecMul continuous_const Units.continuous_val
 
 /- English proof (translation)
-Establish `: pri α = IdeleGroup.diagonal ℚ α` using `rfl`. Simplify using `[md, this, IdeleGroup.ideleModule_diagonal]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem md_pri (α : ℚˣ) : md (pri α) = 1 := by
   have : pri α = IdeleGroup.diagonal ℚ α := rfl
   simp [md, this, IdeleGroup.ideleModule_diagonal]
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule ℚ a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos (a : Jd) : 0 < md a := (IdeleGroup.ideleModule ℚ a).2
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-Establish `hU : (⋃ i, (T i) ⁻¹' S) = Set.univ`. Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ?_` and prove the remaining obligations. Take `⟨i, hi, -⟩` from `hu x`. Conclude with `⟨i, hi⟩`. Establish `hd : Pairwise (Function.onFun Disjoint fun i => (T i) ⁻¹' S)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `i j hij`. Use `Set.disjoint_left.2 fun x hi hj => hij ?_` and prove the remaining obligations. Conclude with `(hu x).unique hi hj`. Combine the equalities or inequalities in the displayed calculation. Use `(hT i).setLIntegral_comp_preimage_emb (T i).measurableEmbedding (fun y => K ((T i).symm y)) S` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_part {X ι : Type*} [MeasurableSpace X] [Countable ι] (m : Measure X) {S : Set X}
     (hS : MeasurableSet S) (T : ι → X ≃ᵐ X) (hT : ∀ i, MeasurePreserving (T i) m m)
@@ -356,7 +354,7 @@ theorem lintegral_part {X ι : Type*} [MeasurableSpace X] [Countable ι] (m : Me
       simpa using this
 
 /- English proof (translation)
-Rewrite using `[lintegral_part (ideleMeasure ℚ) hD (fun α : ℚˣ => MeasurableEquiv.mulLeft (pri α)) (fun α => measurePreserving_mul_left _ _) hu K, ← (Equiv.inv ℚˣ).tsum_eq]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Simplify using `[pri, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_cut_a {𝓓 : Set Jd} (hD : MeasurableSet 𝓓) (hu : ∀ a : Jd, ∃! α : ℚˣ, pri α * a ∈ 𝓓)
     (K : Jd → ℝ≥0∞) :
@@ -367,7 +365,7 @@ theorem lintegral_cut_a {𝓓 : Set Jd} (hD : MeasurableSet 𝓓) (hu : ∀ a : 
   simp [pri, map_inv]
 
 /- English proof (translation)
-Use `⟨(continuous_const_smul _).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul_adeleMeasure]`. Establish `: (IdeleGroup.ideleModule ℚ (pri α) : ℝ) = 1` using `md_pri α`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem map_scale (α : ℚˣ) : MeasurePreserving (fun x : 𝔸[ℚ] => pri α • x) (adeleMeasure ℚ) (adeleMeasure ℚ) := by
   refine ⟨(continuous_const_smul _).measurable, ?_⟩
@@ -376,9 +374,9 @@ theorem map_scale (α : ℚˣ) : MeasurePreserving (fun x : 𝔸[ℚ] => pri α 
   simp [this]
 
 /- English proof (translation)
-Establish `h1 : ∫⁻ x, K x ∂adeleMeasure ℚ = ∫⁻ x, K ((pri α : 𝔸[ℚ]) * x) ∂adeleMeasure ℚ` using `((map_scale α).lintegral_comp_emb (Homeomorph.smul (pri α)).measurableEmbedding K).symm`. Rewrite using `[h1, lintegral_part (adeleMeasure ℚ) (measurableSet_fundamentalSet ℚ) (fun b : ℚ => MeasurableEquiv.addRight (-algebraMap ℚ 𝔸[ℚ] b)) (fun b => measurePreserving_add_right _ _) ?_ (fun x => K ((pri α : 𝔸[ℚ]) * x))]`. Use `tsum_congr fun b => ?_` and prove the remaining obligations. Simplify using `[sub_eq_add_neg]`. Introduce `x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `existsUnique_sub_mem_fundamentalSet ℚ x` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lintegral_adeles_rational_translates (α : ℚˣ) (K : 𝔸[ℚ] → ℝ≥0∞) :
     ∫⁻ x, K x ∂adeleMeasure ℚ =
@@ -396,31 +394,31 @@ theorem lintegral_adeles_rational_translates (α : ℚˣ) (K : 𝔸[ℚ] → ℝ
 def wt (a : Jd) : ℝ≥0∞ := ENNReal.ofReal (md a)⁻¹
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.comp IdeleGroup.continuous_ideleModule).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_md : Measurable md :=
   (continuous_subtype_val.comp IdeleGroup.continuous_ideleModule).measurable
 
 /- English proof (translation)
-The claim follows from `(measurable_md.inv).ennreal_ofReal`.
+A detailed English derivation is pending.
 -/
 theorem measurable_wt : Measurable wt := (measurable_md.inv).ennreal_ofReal
 
 /- English proof (translation)
-Use `inv_pos.2 (md_pos a)` as an intermediate fact. Simplify `this` using `[wt]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wt_ne_zero (a : Jd) : wt a ≠ 0 := by
   have := inv_pos.2 (md_pos a)
   simpa [wt] using this
 
 /- English proof (translation)
-Simplify using `[wt, md_mul, md_pri]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_pri_mul (α : ℚˣ) (a : Jd) : wt (pri α * a) = wt a := by
   simp [wt, md_mul, md_pri]
 
 /- English proof (translation)
-Establish `h : Continuous fun q : ((KA × Jd) × Jd) × 𝔸[ℚ] => pt q.2 q.1.2 q.1.1.2 q.1.1.1.1` using `continuous_pt continuous_snd continuous_fst.snd continuous_fst.fst.snd (continuous_subtype_val.comp continuous_fst.fst.fst)`. Conclude with `(hF.comp h.measurable).mul (measurable_wt.comp (measurable_fst.snd))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_pt_full {F : G2 → ℝ≥0∞} (hF : Measurable F) :
     Measurable fun q : ((KA × Jd) × Jd) × 𝔸[ℚ] => F (pt q.2 q.1.2 q.1.1.2 q.1.1.1.1) * wt q.1.2 := by
@@ -430,15 +428,15 @@ theorem measurable_pt_full {F : G2 → ℝ≥0∞} (hF : Measurable F) :
   exact (hF.comp h.measurable).mul (measurable_wt.comp (measurable_fst.snd))
 
 /- English proof (translation)
-Establish `hY : ∀ (α : ℚˣ) (b : ℚ), Measurable fun q : Jd × 𝔸[ℚ] => F (dia2 (pp α b) * pt q.2 q.1 z κ.1) * wt q.1`. Introduce `α b`. Establish `h0 : Continuous fun q : Jd × 𝔸[ℚ] => pt q.2 q.1 z κ.1` using `continuous_pt continuous_snd continuous_fst continuous_const continuous_const`. Establish `h : Continuous fun q : Jd × 𝔸[ℚ] => dia2 (pp α b) * pt q.2 q.1 z κ.1` using `continuous_const.mul h0`. Conclude with `(hF.comp h.measurable).mul (measurable_wt.comp measurable_fst)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYx : ∀ (α : ℚˣ) (b : ℚ) (a : Jd), Measurable fun x : 𝔸[ℚ] => F (dia2 (pp α b) * pt x a z κ.1) * wt a` using `fun α b a => (hF.comp (continuous_const.mul (continuous_pt continuous_id continuous_const continuous_const continuous_const)).measurable).mul_const _`. Establish `hYa : ∀ (α : ℚˣ) (b : ℚ), Measurable fun a : Jd => ∫⁻ x in fundamentalSet ℚ, F (dia2 (pp α b) * pt x a z κ.1) * wt a ∂adeleMeasure ℚ` using `fun α b => (hY α b).lintegral_prod_right'`. Rewrite using `[lintegral_cut_a hD hu]`. Establish `h1 : ∀ (α : ℚˣ) (a : Jd), ∫⁻ x, F (pt x (pri α * a) z κ.1) * wt (pri α * a) ∂adeleMeasure ℚ = ∑' b : ℚ, ∫⁻ x in fundamentalSet ℚ, F (dia2 (pp α b) * pt x a z κ.1) * wt a ∂adeleMeasure ℚ`. Introduce `α a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_adeles_rational_translates α]`. Use `tsum_congr fun b => lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[mirabolic_mul_iwasawa_coordinates, wt_pri_mul]`. Simplify using `only [h1]`. Establish `h2 : ∀ a : Jd, ∫⁻ x in fundamentalSet ℚ, (∑' α : ℚˣ, ∑' b : ℚ, F (dia2 (pp α b) * pt x a z κ.1)) * wt a ∂adeleMeasure ℚ = ∑' α : ℚˣ, ∑' b : ℚ, ∫⁻ x in fundamentalSet ℚ, F (dia2 (pp α b) * pt x a z κ.1) * wt a ∂adeleMeasure ℚ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Simplify using `only [← ENNReal.tsum_mul_right]`. Rewrite using `[lintegral_tsum fun α => (Measurable.ennreal_tsum fun b => hYx α b a).aemeasurable]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Rewrite using `[lintegral_tsum fun b => (hYx α b a).aemeasurable]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2]`. Rewrite using `[lintegral_tsum fun α => (Measurable.ennreal_tsum fun b => hYa α b).aemeasurable]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut {𝓓 : Set Jd} (hD : MeasurableSet 𝓓) (hu : ∀ a : Jd, ∃! α : ℚˣ, pri α * a ∈ 𝓓)
     {F : G2 → ℝ≥0∞} (hF : Measurable F) (z : Jd) (κ : KA) :
@@ -480,15 +478,13 @@ theorem cut {𝓓 : Set Jd} (hD : MeasurableSet 𝓓) (hu : ∀ a : Jd, ∃! α 
   rw [lintegral_tsum fun α => (Measurable.ennreal_tsum fun b => hYa α b).aemeasurable]
 
 /- English proof (translation)
-Use `set F : G2 → ℝ≥0∞ := N.indicator 1 with hFdef`. Establish `hF : Measurable F` using `measurable_one.indicator hN`. Establish `h4` using `measurable_pt_full hF`. Establish `h3` using `h4.lintegral_prod_right' (ν := adeleMeasure ℚ)`. Establish `h2` using `h3.lintegral_prod_right' (ν := ideleMeasure ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h2.lintegral_prod_right' (ν := ideleMeasure ℚ)`. Establish `hz : ∫⁻ κ : KA, ∫⁻ z, ∫⁻ a, ∫⁻ x, F (pt x a z κ.1) * wt a ∂adeleMeasure ℚ ∂ideleMeasure ℚ ∂ideleMeasure ℚ ∂mK = 0`. Establish `hh` using `hC.2 F hF`. Establish `hl : ∫⁻ g, F g ∂μ = 0`. Rewrite using `[hFdef, lintegral_indicator_one hN, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[hl]`. Use `(mul_eq_zero.1 hh.symm).resolve_left (by simpa using hC.1)` as an intermediate fact. Conclude with `this`. Rewrite `hz` using `[lintegral_eq_zero_iff h1]`. Use `filter_upwards [hz] with κ hκ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ'` using `(lintegral_eq_zero_iff (h2.comp measurable_prodMk_left)).1 hκ`. Use `filter_upwards [hκ'] with z hz'`. Establish `hz''` using `(lintegral_eq_zero_iff (h3.comp (measurable_prodMk_left (x := (κ, z))))).1 hz'`. Use `filter_upwards [hz''] with a ha`. Establish `ha'` using `(lintegral_eq_zero_iff (h4.comp (measurable_prodMk_left (x := ((κ, z), a))))).1 ha`.
-
-Use `filter_upwards [ha'] with x hx hmem`. Establish `h` using `(mul_eq_zero.1 hx).resolve_right (wt_ne_zero a)`. Simplify using `[hFdef, hmem] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem null_pull {μ : Measure G2} {mK : Measure KA} {C : NNReal} [SFinite mK] (hC : Coord μ mK C)
     {N : Set G2} (hN : MeasurableSet N) (h0 : μ N = 0) :
@@ -519,19 +515,17 @@ theorem null_pull {μ : Measure G2} {mK : Measure KA} {C : NNReal} [SFinite mK] 
   simp [hFdef, hmem] at h
 
 /- English proof (translation)
-Establish `hcount : Countable (AdelicGLn.diagonal ℚ 2).range`. Establish `: (Set.range (AdelicGLn.diagonal ℚ 2)).Countable` using `Set.countable_range _`. Conclude with `this.to_subtype`. Establish `hdis : ∀ᵐ x ∂μ, ∀ g g' : (AdelicGLn.diagonal ℚ 2).range, g ≠ g' → ¬ (x ∈ g • 𝓕 ∧ x ∈ g' • 𝓕)`. Rewrite using `[ae_all_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[ae_all_iff]`. Introduce `g'`. Distinguish the cases in `h : g = g'`. Conclude with `Filter.Eventually.of_forall fun _ hne => absurd h hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : μ (g • 𝓕 ∩ g' • 𝓕) = 0` using `fd.aedisjoint h filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with x hx _`. Conclude with `hx`. Use `filter_upwards [fd.ae_covers, hdis] with g ⟨⟨_, γ₀, rfl⟩, h₀⟩ hd`. Establish `hdia : Function.Injective fun γ : GL (Fin 2) ℚ => dia2 γ`. Introduce `γ γ' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h1` using `congrArg (fun q : G2 => (q : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i j) h`. Simplify using `only [AdelicGLn.diagonal] at h1`. Conclude with `AdeleRing.algebraMap_injective (𝓞 ℚ) ℚ (by simpa using h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : ∀ {γ γ' : GL (Fin 2) ℚ}, dia2 γ * g ∈ 𝓕 → dia2 γ' * g ∈ 𝓕 → γ = γ'`. Introduce `γ γ' h h'`. Assume the negation of the conclusion as `hne`. Establish `hne' : (⟨dia2 γ, γ, rfl⟩ : (AdelicGLn.diagonal ℚ 2).range)⁻¹ ≠ (⟨dia2 γ', γ', rfl⟩ : (AdelicGLn.diagonal ℚ 2).range)⁻¹`. Introduce `he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne (hdia (congrArg Subtype.val (inv_injective he)))`. Use `hd _ _ hne' ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `h`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`.
-
-Conclude with `h'`. Establish `h₁ : dia2 γ₀ * g ∈ 𝓕` using `h₀`. Rewrite using `[tsum_eq_single γ₀ fun γ hne => Set.indicator_of_notMem (fun hm => hne (hinj hm h₁)) _, Set.indicator_of_mem h₁]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ae_unique {μ : Measure G2} {𝓕 : Set G2}
     (fd : IsFundamentalDomain (AdelicGLn.diagonal ℚ 2).range 𝓕 μ) :
@@ -579,17 +573,15 @@ variable {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℝ≥0∞} {Φ : (Fin 2 
   [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Use `set f : G2 → ℝ≥0∞ := fun g => H g * Φ (row e0 g) with hf`. Establish `hmf : Measurable f` using `hH.mul (hΦ.comp (continuous_row e0).measurable)`. Establish `hmul : ∀ h : G2, Measurable fun g : G2 => h * g` using `fun h => measurable_const_mul h`. Establish `hind : Measurable (𝓕.indicator (1 : G2 → ℝ≥0∞))` using `measurable_one.indicator hF`. Establish `h1 : ∀ (ξ : NZ) (g : G2), H g * Φ (row ξ.1 g) = f (dia2 (γs ξ) * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ g`. Simplify using `only [hf]`. Rewrite using `[hL, row_dia, hγ]`. Establish `h2 : ∀ ξ : NZ, ∫⁻ g in 𝓕, f (dia2 (γs ξ) * g) ∂μ = ∫⁻ g, f g * 𝓕.indicator (1 : G2 → ℝ≥0∞) (dia2 (γs ξ)⁻¹ * g) ∂μ`. Introduce `ξ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_mul_left_eq_self (μ := μ) (fun g => f g * 𝓕.indicator (1 : G2 → ℝ≥0∞) (dia2 (γs ξ)⁻¹ * g)) (dia2 (γs ξ)), ← lintegral_indicator hF]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hc : dia2 (γs ξ)⁻¹ * (dia2 (γs ξ) * g) = g`. Express the relevant statement in the definitionally equal form `AdelicGLn.diagonal ℚ 2 (γs ξ)⁻¹ * (AdelicGLn.diagonal ℚ 2 (γs ξ) * g) = g`. Rewrite using `[map_inv, inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Apply the tactic sequence `by_cases hg : g ∈ 𝓕 <;> simp [hg]`. Establish `h3 : ∀ ξ : NZ, Measurable fun g => f (dia2 (γs ξ) * g)` using `fun ξ => hmf.comp (hmul _)`. Establish `h4 : ∀ ξ : NZ, Measurable fun g => f g * 𝓕.indicator (1 : G2 → ℝ≥0∞) (dia2 (γs ξ)⁻¹ * g)` using `fun ξ => hmf.mul (hind.comp (hmul _))`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Conclude with `tsum_congr fun ξ => h1 ξ g`. Use `_ = ∑' ξ : NZ, ∫⁻ g in 𝓕, f (dia2 (γs ξ) * g) ∂μ := lintegral_tsum fun ξ => (h3 ξ).aemeasurable`. Use `_ = ∑' ξ : NZ, ∫⁻ g, f g * 𝓕.indicator (1 : G2 → ℝ≥0∞) (dia2 (γs ξ)⁻¹ * g) ∂μ := tsum_congr h2`.
-
-Use `_ = ∫⁻ g, ∑' ξ : NZ, f g * 𝓕.indicator (1 : G2 → ℝ≥0∞) (dia2 (γs ξ)⁻¹ * g) ∂μ := (lintegral_tsum fun ξ => (h4 ξ).aemeasurable).symm`. Use `_ = _ := lintegral_congr fun g => ENNReal.tsum_mul_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_step (hF : MeasurableSet 𝓕) (hH : Measurable H) (hL : LInv H) (hΦ : Measurable Φ)
     (γs : NZ → GL (Fin 2) ℚ)
@@ -632,23 +624,19 @@ theorem unfold_step (hF : MeasurableSet 𝓕) (hH : Measurable H) (hL : LInv H) 
 end Unfold
 
 /- English proof (translation)
-Introduce `μ 𝓕 mK 𝓓 C h0 hC H Φ hH hL hΦ`. Use `choose γs hγ using exists_section`. Use `haveI := h0.haar`. Use `haveI := h0.probK`. Use `set ind : G2 → ℝ≥0∞ := 𝓕.indicator 1 with hind`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set bet : G2 → ℝ≥0∞ := fun g => ∑' ξ : NZ, ind (dia2 (γs ξ)⁻¹ * g) with hbet`. Use `set f : G2 → ℝ≥0∞ := fun g => H g * Φ (row e0 g) with hf`. Establish `hmf : Measurable f` using `hH.mul (hΦ.comp (continuous_row e0).measurable)`. Establish `hmul : ∀ h : G2, Measurable fun g : G2 => h * g` using `fun h => measurable_const_mul h`. Establish `hmind : Measurable ind` using `measurable_one.indicator h0.meas`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmbet : Measurable bet` using `Measurable.ennreal_tsum fun ξ => hmind.comp (hmul _)`. Establish `hB : ∀ᵐ g ∂μ, ∑' α : ℚˣ, ∑' b : ℚ, bet (dia2 (pp α b) * g) = 1` using `by filter_upwards [ae_unique h0.fd] with g hg`. Rewrite `hg` using `[← (Equiv.ofBijective _ (param_bij γs hγ)).tsum_eq]`. Rewrite `hg` using `[ENNReal.tsum_prod']`. Simplify using `only [ENNReal.tsum_prod', Equiv.ofBijective_apply, map_mul, mul_assoc] at hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hg` using `only [hbet]`. Use `set N : Set G2 := {g | ∑' α : ℚˣ, ∑' b : ℚ, bet (dia2 (pp α b) * g) ≠ 1} with hN`. Establish `hmN : MeasurableSet N`. Establish `: Measurable fun g : G2 => ∑' α : ℚˣ, ∑' b : ℚ, bet (dia2 (pp α b) * g)` using `Measurable.ennreal_tsum fun α => Measurable.ennreal_tsum fun b => hmbet.comp (hmul _)`. Conclude with `(this (measurableSet_singleton 1)).compl`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN0 : μ N = 0` using `hB`. Rewrite using `[unfold_step h0.meas hH hL hΦ γs hγ]`. Use `(hC.2 (fun g => f g * bet g) (hmf.mul hmbet)).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `filter_upwards [null_pull hC hmN hN0] with κ hκ`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hκ] with z hz`. Establish `hcut` using `cut (F := fun g => f g * bet g) h0.measD h0.uniqD (hmf.mul hmbet) z κ`. Simplify using `only [wt] at hcut`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hcut.trans ?_` and prove the remaining obligations. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_restrict_of_ae hz] with a ha`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_restrict_of_ae ha] with x hx`.
-
-Establish `hx' : ∑' α : ℚˣ, ∑' b : ℚ, bet (dia2 (pp α b) * pt x a z κ.1) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `hx hne`. Establish `hfp : ∀ (α : ℚˣ) (b : ℚ), f (dia2 (pp α b) * pt x a z κ.1) = f (pt x a z κ.1)`. Introduce `α b`.
-
-Simplify using `only [hf]`. Rewrite using `[hL, bottom_row_mirabolic_invariance]`. Simplify using `only [hfp, ENNReal.tsum_mul_left, hx', mul_one]`. Simplify using `only [hf, bottom_row_iwasawa_coordinates]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unfolding_mirabolic_cosets : Ad3.R.G2b := by
   intro μ 𝓕 mK 𝓓 C h0 hC H Φ hH hL hΦ

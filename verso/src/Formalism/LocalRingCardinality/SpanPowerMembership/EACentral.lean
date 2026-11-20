@@ -50,9 +50,9 @@ def nzEL {R : Ranks} (H : Host R) (Lb : Lbl H) (what₂ : Rows.Data R) (h : NHyp
   ⟨I.eA, I.eL, I.eA_def, I.eA_idem, I.eA_central, I.Psi, I.hPsi⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨i, -, hi⟩` from `Finset.mem_image.mp (show jB σ b x ∈ Finset.univ.image b from hx)`. Conclude with `⟨i, jB_inj σ b ((jB_single σ b i).trans hi)⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `(Finset.mem_image.mpr ⟨i, Finset.mem_univ i, (jB_single σ b i).symm⟩ : jB σ b (Pi.basisFun K (Fin n) i) ∈ Finset.univ.image b)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem jB_gen_set {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] (b : OrthonormalBasis (Fin n) ℂ V) :
@@ -117,7 +117,7 @@ def nchStd : NChoice (recN D C (Ed.toIn n) he) :=
   nchN D C (Ed.toIn n) he (embCOf D C (Ed.toIn n) he hLL0) (stdMtOf D C Ed n Z)
 
 /- English proof (translation)
-The claim follows from `nchN_tie D C (Ed.toIn n) he _ _`.
+A detailed English derivation is pending.
 -/
 theorem nchStd_tie : NChTie (recN D C (Ed.toIn n) he) (nchStd D C Ed n he Z hLL0) :=
   nchN_tie D C (Ed.toIn n) he _ _

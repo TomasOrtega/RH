@@ -9,27 +9,27 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 open Formalism.BasicNotions Formalism.MainNotions.flipTwoThree
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ _ => column_lattice_exact_slope _⟩`.
+Supply the required witnesses or components.
 -/
 theorem column_exact_slope_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : fam0 Fm ColSlopeEq :=
   ⟨0, fun _ _ _ _ => column_lattice_exact_slope _⟩
 
 /- English proof (translation)
-The claim follows from `familySlopeLowerOpen_of_std standard_slope_lower hook_length_bound Fm (column_exact_slope_family Fm)`.
+A detailed English derivation is pending.
 -/
 theorem lower_slope_inequality_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilySlopeLowerOpenPart Fm :=
   familySlopeLowerOpen_of_std standard_slope_lower hook_length_bound Fm (column_exact_slope_family Fm)
 
 /- English proof (translation)
-The claim follows from `familySlopeLower_of_open Fm (lower_slope_inequality_family Fm)`.
+A detailed English derivation is pending.
 -/
 theorem slope_proposition_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ConclusionF5 Fm :=
   familySlopeLower_of_open Fm (lower_slope_inequality_family Fm)
 
 /- English proof (translation)
-Unfold `Link6F at h6`. Unfold `KudlaFamilyOfMinkowskiTransference`. Introduce `eps Fm hF hT _ hTr _`. Unfold `KudlaFamilyStatement AdmF ConclusionOnFamily`. Introduce and unpack `⟨a1, a2, -, -, a6, -⟩`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨family_mass_count_bound Fm, family_first_bound_of_theta Fm a2, theorem_three_family_large_constant Fm, family_bound_of_period_theta_lowering Fm a1 a2 a6, slope_proposition_family Fm, h6 eps Fm hF hT hTr, familySupBound_holds Fm, propZ_second_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem packet_of_third_proposition (h6 : Link6F) : KudlaFamilyOfMinkowskiTransference := by
   unfold Link6F at h6

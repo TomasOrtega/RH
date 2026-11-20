@@ -21,14 +21,14 @@ def cmp (X : Over S) {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem cmp_fst (X : Over S) {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S) :
     cmp X c t ≫ pullback.fst X.hom t = pullback.fst X.hom (c ≫ t) := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cmp_snd (X : Over S) {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S) :
     cmp X c t ≫ pullback.snd X.hom t = pullback.snd X.hom (c ≫ t) ≫ c := pullback.lift_snd _ _ _
@@ -45,7 +45,7 @@ def baseHom {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseHom_fst {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S)
     (Φ : (Over.pullback t).obj A ⟶ (Over.pullback t).obj B) :
@@ -55,9 +55,9 @@ theorem baseHom_fst {T T' : Scheme.{0}} (c : T' ⟶ T) (t : T ⟶ S)
 abbrev Pair (T : Scheme.{0}) : Type := Σ t : T ⟶ S, (Over.pullback t).obj A ⟶ (Over.pullback t).obj B
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : pullback.map A.hom t₁ A.hom t₁ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `apply pullback.hom_ext <;> simp`. Rewrite `hΦ` using `[e, Category.id_comp]`. Use `congr 1`.
+Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `hΦ`. Conclude with `(Over.w Φ₁).trans (Over.w Φ₂).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pair_ext {T : Scheme.{0}} {t₁ t₂ : T ⟶ S} (h : t₁ = t₂)
     (Φ₁ : (Over.pullback t₁).obj A ⟶ (Over.pullback t₁).obj B)
@@ -79,7 +79,7 @@ abbrev basePair {T T' : Scheme.{0}} (c : T' ⟶ T) (p : Pair A B T) : Pair A B T
   ⟨c ≫ p.1, baseHom A B c p.1 p.2⟩
 
 /- English proof (translation)
-Take `⟨t, Φ⟩` from `p`. Use `pair_ext A B (Category.id_comp t) _ _ ?_` and prove the remaining obligations. Simplify using `only [basePair, baseHom_fst]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem basePair_id {T : Scheme.{0}} (p : Pair A B T) : basePair A B (𝟙 T) p = p := by
   obtain ⟨t, Φ⟩ := p
@@ -88,11 +88,9 @@ theorem basePair_id {T : Scheme.{0}} (p : Pair A B T) : basePair A B (𝟙 T) p 
   congr 1
 
 /- English proof (translation)
-Take `⟨t, Φ⟩` from `p`. Use `pair_ext A B (Category.assoc c' c t) _ _ ?_` and prove the remaining obligations. Establish `e : pullback.map A.hom ((c' ≫ c) ≫ t) A.hom (c' ≫ c ≫ t) (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ cmp A c' (c ≫ t) ≫ cmp A c t = cmp A (c' ≫ c) t`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[pullback.map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `pullback.lift_fst _ _ _`. Simplify using `[pullback.map]`. Conclude with `pullback.lift_snd_assoc _ _ _ _`. Simplify using `only [basePair, baseHom_fst, baseHom_fst_assoc]`. Rewrite using `[← e]`.
-
-Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basePair_comp {T T' T'' : Scheme.{0}} (c : T' ⟶ T) (c' : T'' ⟶ T') (p : Pair A B T) :
     basePair A B (c' ≫ c) p = basePair A B c' (basePair A B c p) := by
@@ -118,7 +116,7 @@ def Good' {T : Scheme.{0}} (p : Pair A B T) : Prop :=
   ∀ (T' : Scheme.{0}) (c : T' ⟶ T), Good A B L M (basePair A B c p)
 
 /- English proof (translation)
-Introduce `T'' c'` and use `by rw [← basePair_comp]; exact h T'' (c' ≫ c)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good'_basePair {T T' : Scheme.{0}} (c : T' ⟶ T) {p : Pair A B T} (h : Good' A B L M p) :
     Good' A B L M (basePair A B c p) := fun T'' c' => by

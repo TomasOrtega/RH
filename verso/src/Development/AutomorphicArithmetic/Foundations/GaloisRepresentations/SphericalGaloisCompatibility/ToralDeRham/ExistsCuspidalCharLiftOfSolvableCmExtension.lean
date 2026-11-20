@@ -21,41 +21,33 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RoadU
 
 /- English proof (translation)
-Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `K _ _ _ _ _ _ _ hd π χ hsc r hr N hN hS`. Take `⟨hgal, hsol, hdec⟩` from `hS`. Distinguish the cases in `h1 : Module.finrank K M = 1`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨P, hP⟩` from `GlobalTheory.T.exists_characterSupportBaseChangeLift_degreeOne K M h1 a ha π`. Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.T.polarizedPair_baseChange_polarized_same_weight GlobalTheory.automorphicFormsFiniteGL hI.js hI.gk K M l a ha π χ P hP.1 hsc`. Conclude with `⟨P, χ', hχ', hP⟩`. Use `haveI : Group.IsSolvable (M ≃ₐ[K] M) := hsol`. Use `haveI : Nontrivial (M ≃ₐ[K] M) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finite.one_lt_card_iff_nontrivial, IsGalois.card_aut_eq_finrank]`. Use `Module.finrank_pos (R := K) (M := M)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨H, hH, hp⟩` from `GlobalTheory.SolvUp.exists_normal_prime_index (M ≃ₐ[K] M)`. Set `K₁` to `IntermediateField.fixedField H`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsGalois K K₁ := IsGalois.of_fixedField_normal_subgroup H`. Use `haveI : IsCMField K₁ := GlobalTheory.SolvUp.isCMField_intermediate Ω K M K₁`. Use `haveI : Module.IsTorsionFree K₁ Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure K₁ Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.tower_top (K := K) K₁⟩`. Use `haveI : Group.IsSolvable (M ≃ₐ[K₁] M) := Group.isSolvable_of_isSolvable_injective (f := AlgEquiv.restrictScalarsHom K) (AlgEquiv.restrictScalars_injective K)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : Module.finrank K K₁ = H.index`. Establish `h2` using `Module.finrank_mul_finrank K K₁ M`. Rewrite `h2` using `[IntermediateField.finrank_fixedField_eq_card, ← IsGalois.card_aut_eq_finrank K M, ← H.index_mul_card]`. Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos h2`. Establish `hp₁ : (Module.finrank K K₁).Prime` using `hdeg ▸ hp`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hlt : Module.finrank K₁ M < d`. Rewrite using `[← hd, ← Module.finrank_mul_finrank K K₁ M, hdeg]`. Conclude with `lt_mul_of_one_lt_left Module.finrank_pos hp.one_lt`. Establish `hmove : ∃ g : G K Ω, (∃ x : K₁, g (algebraMap K₁ Ω x) ≠ algebraMap K₁ Ω x) ∧ (r g).val.trace ≠ 0`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : K₁, x ∉ Set.range (algebraMap K K₁) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hb : Function.Bijective (algebraMap K K₁)` using `⟨(algebraMap K K₁).injective, fun y => hc y⟩`. Conclude with `hp.one_lt.ne' (hdeg ▸ Algebra.finrank_eq_one_iff_bijective_algebraMap.2 hb)`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hc`. Establish `hfixN : ∀ n ∈ N, n (algebraMap K₁ Ω x) = algebraMap K₁ Ω x`. Introduce `n hn`. Assume the negation of the conclusion as `hne`. Conclude with `hN n hn (hc n ⟨x, hne⟩)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ g : G K Ω, g (algebraMap K₁ Ω x) = algebraMap K₁ Ω x`. Introduce `g`. Take `⟨z, n, hn, rfl⟩` from `hdec g`. Establish `hz : algebraMap K₁ Ω x = algebraMap M Ω (x : M)` using `IsScalarTower.algebraMap_apply K₁ M Ω x`. Use `show z (n (algebraMap K₁ Ω x)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfixN n hn, hz]`. Conclude with `z.commutes _`. Establish `hmem : algebraMap K₁ Ω x ∈ (⊥ : IntermediateField K Ω)`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (⊥ : IntermediateField K Ω), IntermediateField.fixingSubgroup_bot, IntermediateField.mem_fixedField_iff]`. Introduce `g _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hfix g`. Take `⟨k, hk⟩` from `IntermediateField.mem_bot.1 hmem`. Apply `hx` to reduce the goal to its premises. Use `⟨k, (algebraMap K₁ Ω).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hnotw : ∀ η : HChar K, UpperTheory.V.Published.IsNormChar K₁ η → ¬ UpperTheory.V.Published.SelfTw (CG.mk π).HasSat η`. Introduce `η hη hst`. Take `⟨g, hgM, htr⟩` from `hmove`. Conclude with `htr (GlobalTheory.T.trace_eq_zero_off_subgroup_of_selfTwist Ω K K₁ hp₁ l ι a π r hr η hη hst g hgM)`. Take `⟨P₁, hP₁⟩` from `hI.ac K K₁ hp₁ a ha π hnotw`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc₁ : CharLift π P₁` using `hI.chl K K₁ hp₁ a ha π P₁ hP₁`. Take `⟨⟨χ₁, hχ₁⟩, -⟩` from `GlobalTheory.T.polarizedPair_baseChange_polarized_same_weight GlobalTheory.automorphicFormsFiniteGL hI.js hI.gk K K₁ l a ha π χ P₁ hP₁ hsc`. Establish `hr₁ : Weak P₁ ι (resTo K₁ r)` using `GlobalTheory.T.weaklyAttachedGaloisRepresentation_baseChange_restrict K K₁ Ω l ι a π P₁ hP₁ r hr`. Set `N₁ : Subgroup (G K₁ Ω)` to `N.comap (AlgEquiv.restrictScalarsHom K)`. Establish `hS₁ : SolvDisj M N₁`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨inferInstance, ‹Group.IsSolvable (M ≃ₐ[K₁] M)›, fun g₁ => ?_⟩` and prove the remaining obligations. Take `⟨z, n, hn, he⟩` from `hdec (AlgEquiv.restrictScalarsHom K g₁)`. Establish `hn₁ : ∀ y : K₁, n (algebraMap K₁ Ω y) = algebraMap K₁ Ω y`. Introduce `y`. Establish `hy : algebraMap K₁ Ω y = algebraMap M Ω (y : M)` using `IsScalarTower.algebraMap_apply K₁ M Ω y`.
-
-Establish `h3` using `DFunLike.congr_fun he (algebraMap K₁ Ω y)`. Express the relevant statement in the definitionally equal form `g₁ (algebraMap K₁ Ω y) = z (n (algebraMap K₁ Ω y)) at h3`. Rewrite `h3` using `[g₁.commutes]`. Apply `z.injective` to reduce the goal to its premises. Rewrite using `[← h3, hy]`.
-
-Conclude with `(z.commutes _).symm`. Set `n₁ : G K₁ Ω` to `AlgEquiv.ofRingEquiv (f := n.toRingEquiv) hn₁`. Use `⟨z, n₁, ?_, ?_⟩` and prove the remaining obligations. Use `show AlgEquiv.restrictScalarsHom K n₁ ∈ N`. Use `hn using 1` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `w`. Both sides reduce to the same expression. Use extensionality with `w`. Establish `h3` using `DFunLike.congr_fun he w`. Conclude with `h3`.
-
-Take `⟨P, χ', hsc', hc'⟩` from `ih _ hlt K₁ rfl P₁ χ₁ hχ₁ (resTo K₁ r) hr₁ N₁ (fun n hn => hN _ hn) hS₁`. Conclude with `⟨P, χ', hsc', GlobalTheory.T.cuspRep_characterSupportLift_trans_tower K K₁ M a π P₁ P hc₁ hc'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isWeaklyAttached_of_cmBaseChange_of_finrank (hI : UpperTheory.Gal.ToralGalois.Inq) (Ω : Type) [Field Ω] (M : Type) [Field M] [NumberField M] [IsCMField M]
     [Algebra M Ω] [IsAlgClosure M Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (ha : 1 ≤ a) (d : ℕ) :
@@ -157,7 +149,7 @@ theorem isWeaklyAttached_of_cmBaseChange_of_finrank (hI : UpperTheory.Gal.ToralG
   exact ⟨P, χ', hsc', GlobalTheory.T.cuspRep_characterSupportLift_trans_tower K K₁ M a π P₁ P hc₁ hc'⟩
 
 /- English proof (translation)
-Introduce `hI Ω _ K _ _ _ _ _ M _ _ _ _ _ _ _ l _ ι a ha π χ hsc r hr N hN hS`. Conclude with `isWeaklyAttached_of_cmBaseChange_of_finrank hI Ω M l ι a ha _ K rfl π χ hsc r hr N hN hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem upWeak : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [IsCMField M] [Algebra M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower K M Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a → ∀ (π : CuspSub K a) (χ : HChar (maximalRealSubfield K)), InScope .all l π χ → ∀ r : G K Ω →* GL (Fin a) (Qbar l), Weak π ι r → ∀ N : Subgroup (G K Ω), (∀ x ∈ N, (r x).val.trace ≠ 0) → SolvDisj M N → ∃ (P : CuspSub M a) (χ' : HChar (maximalRealSubfield M)), InScope .all l P χ' ∧ CharLift π P := by
   intro hI Ω _ K _ _ _ _ _ M _ _ _ _ _ _ _ l _ ι a ha π χ hsc r hr N hN hS
@@ -172,7 +164,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.RoadU.upWeak) | (exact GlobalTheory.RoadU.upWeak) | (intros; apply GlobalTheory.RoadU.upWeak <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.T.exists_cuspidal_charLift_of_solvable_cmExtension : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [IsCMField M] [Algebra M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower K M Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a → ∀ (π : CuspSub K a) (χ : HChar (maximalRealSubfield K)), InScope .all l π χ → ∀ r : G K Ω →* GL (Fin a) (Qbar l), Weak π ι r → ∀ N : Subgroup (G K Ω), (∀ x ∈ N, (r x).val.trace ≠ 0) → SolvDisj M N → ∃ (P : CuspSub M a) (χ' : HChar (maximalRealSubfield M)), InScope .all l P χ' ∧ CharLift π P := by
   first | (exact @GlobalTheory.RoadU.upWeak) | (exact GlobalTheory.RoadU.upWeak) | (intros; apply GlobalTheory.RoadU.upWeak  <;> assumption)

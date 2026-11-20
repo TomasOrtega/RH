@@ -25,27 +25,25 @@ namespace GlobalTheory.GridJoin.ColIt
 open GlobalTheory.CompactIntertwiner in
 
 /- English proof (translation)
-Establish `fM` using `finite_tensor M fun τ => (hM τ).1`. Establish `fM'` using `finite_tensor M' fun τ => (hM' τ).1`. Set `e` to `LinearEquiv.ofBijective (inclT M) (inclT_bij M fun τ => (hM τ).2)`. Set `e'` to `LinearEquiv.ofBijective (inclT M') (inclT_bij M' fun τ => (hM' τ).2)`. Establish `he : ∀ x, inclT M (e.symm x) = x` using `fun x => e.apply_symm_apply x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he' : ∀ x, inclT M' (e'.symm x) = x` using `fun x => e'.apply_symm_apply x`. Set `It : MvPolynomial σ ℂ →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M` to `(I.compl₂ (inclT M')).compr₂ e.symm.toLinearMap`. Establish `hIt : ∀ φ v, inclT M (It φ v) = I φ (inclT M' v)` using `fun φ v => he _`. Establish `hinj : Function.Injective (inclT M)` using `e.injective`. Use `⟨It, fun ω pt hpt hω hω' => ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Use `hI (LinearMap.ext fun φ => LinearMap.ext fun x => ?_)` and prove the remaining obligations. Use `hIt φ (e'.symm x)` as an intermediate fact. Rewrite `this` using `[he', h0]`. Simplify using `using this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `φ w haveI := fun τ => (hM' τ).1`. Set `m : MultilinearMap ℂ (fun τ => M'.H τ) ℂ` to `(ellT M w ∘ₗ I φ).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Take `⟨c, -, hc⟩` from `m.exists_bound_of_continuous (continuous_tprod M' this (ellT M w ∘ₗ I φ))`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hIt]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hc fun τ => (v τ : M'.H τ)` as an intermediate fact. Simplify `this` using `[m, inclT]`. Introduce `τ g hg φ φ' h v`. Rewrite `h` using `[hω τ g hg]`. Rewrite using `[hpt h, hIt, hIt, hρ τ g hg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ X hX φ φ' h v w`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (isUnit_gram M τ) hX t`. Simplify using `only [oneP, hω τ _ (hm _)] at h`. Use `hasDerivAt_pol pt hpt (fun t : ℝ => ρ τ (NormedSpace.exp (t • X)) φ) _ (fun t => hd τ _ φ) φ' h (ellT M w ∘ₗ I.flip (inclT M' v))` as an intermediate fact. Simplify using `only [hIt, ← hρ τ _ (hm _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Introduce `τ g hg φ φ' v v' h h'`. Rewrite `h` using `[hω' τ g hg]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hpt h, hIt, hIt, h', hρ' τ g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ X hX φ φ' v v' h h'`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (isUnit_gram M' τ) hX t`. Simplify using `only [oneP, hω' τ _ (hm _)] at h`. Establish `h1 : ∀ ψ, ρ' τ 1 ψ = ψ` using `fun ψ => hpt (by`. Rewrite using `[← hω' τ 1 (one_mem_UH _), GlobalTheory.PointAtPlaceHom.atTau_one hθ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun f : Module.End ℂ (Xs → ℂ) => f (pt ψ)) (map_one ω))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, hIt, hIt, map_zero]`. Use `ellT_sep M (fun τ => (hM τ).1) _ fun w => ?_` and prove the remaining obligations. Establish `hB` using `hasDerivAt_bilin (I.compr₂ (ellT M w)) (fun t : ℝ => ρ' τ (NormedSpace.exp (t • X)) φ) φ' (fun t : ℝ => actT M' τ (NormedSpace.exp (t • X)) (inclT M' v)) (inclT M' v') (hasDerivAt_pol pt hpt _ _ (fun t => hd' τ _ φ) φ' h) (hasDerivAt_dual_of_sep (ellT M') (ellT_sep M' fun τ => (h …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.compr₂_apply, hρ' τ _ (hm _), zero_smul, NormedSpace.exp_zero, h1] at hB`. Establish `h2` using `hρ' τ 1 (one_mem_UH _) φ' (inclT M' v)`. Rewrite `h2` using `[h1]`. Rewrite `hB` using `[h2]`. Rewrite using `[map_add]`.
-
-Conclude with `hB.unique (hasDerivAt_const _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIntw {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {σ Xs : Type} [Finite σ]
     (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
@@ -125,13 +123,11 @@ theorem exists_isIntw {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {σ
 open GlobalTheory.CompactHowe.LastStep in
 
 /- English proof (translation)
-Unfold `GlobalTheory.Chain.ptOf`. Rewrite `hv`, the goal using `[cart_eq_one M hε, cart_eq_one M' hε']`. Establish `e1` using `GlobalTheory.T.vacuum_character_positive_definite_source D ψ θ V W χS χT ω hω hθ hV hW (fun _ => 1) (isCartan_one M hε) (isCartan_one M' hε') _ _ ha hb x₁ (fun τ => x₁ τ - V.rank) x₃ h1 (fun τ => by push_cast; rw [h1]; ring) (fun τ => by`. Use `congrArg (fun q : ℚ => (q : ℂ)) (h3 τ)` as an intermediate fact. Simplify using `only [Matrix.trace_one, Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at this`. Conclude with `this)`. Use `f hf hv g hg h hh (fun τ => by rw [Matrix.one_mul, Matrix.mul_one])`. Establish `e2` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ V W χS χT ω hω hθ (fun _ => 1) (fun _ => 1) (onb M) (fun τ => onb M τ * inFr M τ (compAt θ τ (Formalism.L2.Theta.mt V g))) (fun _ => 1) (fun _ => 1) (onb M') (fun τ => onb M' τ * inFr M' τ (compAt θ τ (Formalism.L2.Theta.mt W h))) g …`. Rewrite using `[onb, inFr, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (fr_det M τ)])`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun τ => by`. Rewrite using `[onb, inFr, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (fr_det M' τ)]) f hf φ).2`. Rewrite using `[e2, e1, GlobalTheory.FiniteFock.pureTensorO_smul, GlobalTheory.T.fockPolynomialVector_basisChange_eq_substitution D ψ θ V W hω.std hθ _ _ _ _ f hf, polAct, map_smul]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
-
-Establish `a1 : (1 / 2 : ℂ) • ((1 : Matrix (Fin W.rank) (Fin W.rank) ℂ) + 1) = 1` using `by module`. Rewrite using `[det_inFr, det_inFr, a1, sub_self, smul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add, Matrix.det_one, _root_.one_zpow, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_ptOf_exp {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hθ : IsInfFam θ) (hV : V.SigOK) (hW : W.SigOK)
@@ -172,9 +168,9 @@ theorem om_ptOf_exp {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ :
     _root_.one_zpow, mul_one]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hL.mu0 k) (GlobalTheory.InnerSteps.hasInfQ_tauE (L.C.isMu0 k).inf) τ`. Simplify using `only [Formalism.L2.Host.eExp, Equiv.symm_apply_apply] at h1`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Use `haveI : IsTotallyComplex D.host.E := by infer_instance`. Establish `h3` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun _ => 0) (hL.xi t) ⟨fun _ => 0, fun _ => by norm_num, fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TypeValues.inf_eq_one _ hn ho x]`. Use the proof step `simp⟩ τ`. Conclude with `GlobalTheory.InnerSteps.hasInfExp_mul_zero h1 h3`.
+A detailed English derivation is pending.
 -/
 theorem hasInfExp_mu {D : D7} {T0 : Type} (L : LevCh D T0) {μ0 : T0} (hL : L.Is μ0) (t : T0) (k : Fin D.R.m)
     (τ : D.what₂.Tau) : HasInfExp D (L.mu t ((k : ℕ) + 1)) τ (-(D.hc τ).e k) := by
@@ -188,7 +184,7 @@ theorem hasInfExp_mu {D : D7} {T0 : Type} (L : LevCh D T0) {μ0 : T0} (hL : L.Is
   exact GlobalTheory.InnerSteps.hasInfExp_mul_zero h1 h3
 
 /- English proof (translation)
-Use `⟨hf.2.theta, ?_, hf.2.fock⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`. Use `hn p hp` as an intermediate fact. Simplify using `[Formalism.IndefR.Datum.nrm2] at this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isVacVec_of_isVac {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : GlobalTheory.Grid.Node D}
     {f : WO S.V T.V → ℂ} (hf : GlobalTheory.Grid.IsVac ψ θ false S T f) : GlobalTheory.Chain.IsVacVec ψ θ S.M T.M f := by
@@ -201,21 +197,19 @@ theorem isVacVec_of_isVac {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam
 open GlobalTheory.CompactHowe.LastStep in
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc _hDS _hHC _hHost F hC _hgap G' W _hW G hsp _hch _hag _hcos j hj ω f hω hf`. Establish `hθ : IsInfFam R.θ` using `hC.models.inf`. Establish `hS : (G.Xp j).V.SigOK ∧ (G.Xp j).S = parXp D j`. Consider the cases of `j with`. Consider the case `zero => exact ⟨(hsp.P _ le_rfl).sigOK, (hsp.P _ le_rfl).par.trans (parP_m D)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ k => exact ⟨(hsp.X k (by omega)).sigOK, (hsp.X k (by omega)).par⟩`. Establish `hT : (G.nX j).V.SigOK ∧ (G.nX j).S = parXp D (j + 1)` using `⟨(hsp.X j (by omega)).sigOK, (hsp.X j (by omega)).par⟩`. Establish `en : ∀ τ, IsEnum (parXp D j τ) ((G.Xp j).M.lam τ) ((G.Xp j).M.ε τ)` using `fun τ => hS.2 ▸ (G.Xp j).M.enum τ`. Establish `en' : ∀ τ, IsEnum (parXp D (j + 1) τ) ((G.nX j).M.lam τ) ((G.nX j).M.ε τ)` using `fun τ => hT.2 ▸ (G.nX j).M.enum τ`. Establish `hp` using `fun τ => GlobalTheory.T.gridRowRealParameter_succ_allPlus_lowestWeights D j hj τ (G.Xp j).V.rank (G.nX j).V.rank _ _ _ _ (en τ) (en' τ)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε` using `fun τ => (hp τ).1`. Establish `hε'` using `fun τ => (hp τ).2.1`. Use `choose x₁ x₃ h1 h3 hn ν n1 n2 n3 n4 using fun τ => (hp τ).2.2`. Establish `m` using `fun τ => GlobalTheory.T.allPositive_model_finiteDimensional_compactType D (G.Xp j).V _ (G.Xp j).M τ (hε τ)`. Establish `m'` using `fun τ => GlobalTheory.T.allPositive_model_finiteDimensional_compactType D (G.nX j).V _ (G.nX j).M τ (hε' τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `fun τ => haveI := (m τ).1 haveI := (m' τ).1 GlobalTheory.T.exists_howeDuality_intertwiner_unitaryPair_local (G.nX j).V.rank (G.Xp j).V.rank (hn τ) (ν τ) (x₁ τ) (x₃ τ) _ _ ((G.Xp j).M.H τ) ((G.Xp j).M.σ τ) ((G.nX j).M.H τ) ((G.nX j).M.σ τ) (n1 τ) (n2 τ) (n3 τ) (n4 τ) (m τ).2.2.1 ( …`. Use `choose I I0 hI using hl`. Take `⟨J, J0, hJ⟩` from `GlobalTheory.T.exists_equivariant_piTensor_polynomialBilinear D.what₂.Tau (G.nX j).V.rank (G.Xp j).V.rank (G.Xp j).M.H (G.nX j).M.H I I0`. Establish `key : ∀ (g : D.what₂.Tau → Matrix (Fin (G.Xp j).V.rank) (Fin (G.Xp j).V.rank) ℂ) (h : D.what₂.Tau → Matrix (Fin (G.nX j).V.rank) (Fin (G.nX j).V.rank) ℂ), (∀ τ, g τ ∈ Formalism.QuantumDeterminants.UH (gramAt D (G.Xp j).V τ)) → (∀ τ, h τ ∈ Formalism.QuantumDeterminants.UH (gramAt …` using `fun g h hg hh => hJ _ _ _ _ _ fun τ P v => hI τ _ (hε' τ ▸ inFr_mem (G.nX j).M τ (hh τ)) _ (hε τ ▸ inFr_mem (G.Xp j).M τ (hg τ)) P v`. Take `⟨It, hIt⟩` from `exists_isIntw (Xs := WO (G.Xp j).V (G.nX j).V) R.θ (G.nX j).M (G.Xp j).M J (fun τ g => polAct (G.Xp j).M (G.nX j).M x₁ x₃ (fun _ => 1) (Function.update (fun _ => 1) τ g)) (fun τ h => polAct (G.Xp j).M (G.nX j).M x₁ x₃ (Function.update (fun _ => 1) τ h) fun _ => 1) hθ (fun τ => ⟨( …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `key (fun _ => 1) _ (fun _ => GlobalTheory.PointAtPlaceHom.one_mem_UH _) (update_mem τ hg) φ x` as an intermediate fact. Rewrite using `[map_update, GlobalTheory.CompactHowe.LastStep.map_one'] at this)` and apply the resulting hypothesis. Use the proof step `(fun τ h hh φ x => by`. Use `key _ (fun _ => 1) (update_mem τ hh) (fun _ => GlobalTheory.PointAtPlaceHom.one_mem_UH _) φ x` as an intermediate fact. Rewrite using `[map_update, GlobalTheory.CompactHowe.LastStep.map_one'] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvv` using `isVacVec_of_isVac hf`. Establish `hstd : IsStdChar D R.ψ (-1)` using `hf.1`. Establish `hinj` using `GlobalTheory.T.fockVectorsOfThetaDatum_injective D (G.Xp j).V (G.nX j).V _ _ R.ψ R.θ (G.Xp j).M (G.nX j).M f hstd hθ hvv`. Establish `hmu` using `fun t τ => hasInfExp_mu R.toLevCh hC.lev t ⟨j, hj⟩ τ`. Use `⟨It, fun t => hIt ((ω t).swap) (GlobalTheory.Grid.fock R.ψ R.θ false (G.Xp j) (G.nX j) f) hinj (fun τ g hg φ => ?_) fun τ h hh φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[WRep.swap_apply]`. Use `om_ptOf_exp hθ hS.1 hT.1 (G.Xp j).M (G.nX j).M hε hε' _ _ x₁ x₃ h1 h3 (hω t) (hmu t) (hmu t) hvv.theta hvv.vac (one_mem _) (GlobalTheory.PointAtPlaceHom.atTau_mem (θ := R.θ) (G.nX j).V τ g) φ` as an intermediate fact. Rewrite `this` using `[compAt_atTau hθ τ hg, compAt_one]`. Then use the resulting hypothesis. Rewrite using `[WRep.swap_apply]`. Use `om_ptOf_exp hθ hS.1 hT.1 (G.Xp j).M (G.nX j).M hε hε' _ _ x₁ x₃ h1 h3 (hω t) (hmu t) (hmu t) hvv.theta hvv.vac (GlobalTheory.PointAtPlaceHom.atTau_mem (θ := R.θ) (G.Xp j).V τ h) (one_mem _) φ` as an intermediate fact.
-
-Rewrite `this` using `[compAt_atTau hθ τ hh, compAt_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_col_intertwiner : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ j, j < D.R.m → ∀ (ω : T → GlobalTheory.Grid.WRep (G.Xp j).V (G.nX j).V) (f : WO (G.Xp j).V (G.nX j).V → ℂ), (∀ t, GlobalTheory.Grid.IsWeil R.ψ false (G.Xp j).V (G.nX j).V (R.toLevCh.mu t (j + 1)) (R.toLevCh.mu t (j + 1)) (ω t)) → GlobalTheory.Grid.IsVac R.ψ R.θ false (G.Xp j) (G.nX j) f → ∃ It : GlobalTheory.Grid.Pol (G.Xp j) (G.nX j) →ₗ[ℂ] SmT (G.Xp j).M →ₗ[ℂ] SmT (G.nX j).M, ∀ t, GlobalTheory.Grid.IsIntw R.θ (G.nX j).M (G.Xp j).M (ω t).swap (GlobalTheory.Grid.fock R.ψ R.θ false (G.Xp j) (G.nX j) f) It := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc _hDS _hHC _hHost F hC _hgap G' W _hW G hsp _hch _hag _hcos j hj ω f hω hf

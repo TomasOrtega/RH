@@ -18,9 +18,9 @@ def coneAdjoinQ (x : J → Ω) : Subalgebra ℚ (Polynomial Ω) :=
   Algebra.adjoin ℚ (Set.range fun j => Polynomial.C (x j) * Polynomial.X)
 
 /- English proof (translation)
-Establish `h : Polynomial.C (matAct A x i) * Polynomial.X = ∑ j, A i j • (Polynomial.C (x j) * Polynomial.X)`. Simplify using `only [matAct, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Polynomial.algebraMap_apply, eq_ratCast, Polynomial.C_mul, mul_assoc]`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range_self j)) _`.
+A detailed English derivation is pending.
 -/
 theorem mem_coneAdjoinQ_matAct (A : Matrix J J ℚ) (x : J → Ω) (i : J) :
     Polynomial.C (matAct A x i) * Polynomial.X ∈ coneAdjoinQ x := by
@@ -34,14 +34,14 @@ theorem mem_coneAdjoinQ_matAct (A : Matrix J J ℚ) (x : J → Ω) (i : J) :
     Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range_self j)) _
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_le (Set.range_subset_iff.mpr fun i => mem_coneAdjoinQ_matAct A x i)`.
+A detailed English derivation is pending.
 -/
 theorem coneAdjoinQ_matAct_le (A : Matrix J J ℚ) (x : J → Ω) :
     coneAdjoinQ (matAct A x) ≤ coneAdjoinQ x :=
   Algebra.adjoin_le (Set.range_subset_iff.mpr fun i => mem_coneAdjoinQ_matAct A x i)
 
 /- English proof (translation)
-Take `⟨B', _, hB'B⟩` from `isInvMat_mul hB`. Use `le_antisymm (coneAdjoinQ_matAct_le B x) ?_` and prove the remaining obligations. Establish `h` using `coneAdjoinQ_matAct_le B' (matAct B x)`. Rewrite `h` using `[matAct_matAct hB'B]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coneAdjoinQ_matAct_eq {B : Matrix J J ℚ} (hB : IsInvMat B) (x : J → Ω) :
     coneAdjoinQ (matAct B x) = coneAdjoinQ x := by
@@ -52,7 +52,7 @@ theorem coneAdjoinQ_matAct_eq {B : Matrix J J ℚ} (hB : IsInvMat B) (x : J → 
   rwa [matAct_matAct hB'B] at h
 
 /- English proof (translation)
-Take `⟨s, h1, h2⟩` from `GroundTheory.Heights₂.Heights.TrdegAdjoin.ringKrullDim_quotient_ker (coneMap ℤ x : MvPolynomial J ℤ →+* Polynomial Ω)`. Establish `hX : (fun v => (coneMap ℤ x : MvPolynomial J ℤ →+* Polynomial Ω) (X v)) = fun j => Polynomial.C (x j) * Polynomial.X`. Use function extensionality and compare the values at `fun v => by simp [coneMap]`. Rewrite `h1` using `[hX]`. Conclude with `⟨s, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ringKrullDim_quot_coordIdeal (x : J → Ω) :
     ∃ s : ℕ, Algebra.trdeg ℚ (coneAdjoinQ x) = s ∧
@@ -66,9 +66,9 @@ theorem ringKrullDim_quot_coordIdeal (x : J → Ω) :
   exact ⟨s, h1, h2⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ J _ x B hB`. Take `⟨s, hs, hds⟩` from `ringKrullDim_quot_coordIdeal (matAct B x)`. Take `⟨t, ht, hdt⟩` from `ringKrullDim_quot_coordIdeal x`. Rewrite `hs` using `[coneAdjoinQ_matAct_eq hB, ht]`. Establish `hst : s = t` using `by exact_mod_cast hs.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hds, hdt, hst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proof : KrullDimMatAct.Statement := by
   intro Ω _ _ J _ x B hB

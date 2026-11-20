@@ -6,25 +6,23 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 open PositivityTheory.Rg.Fx UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `τ _ _ n C`. Take `⟨K, hK, hR⟩` from `UpperTheory.ConvolutionTheory.FX.reduce τ n`. Establish `hC : (1 : ℝ) ≤ max |C| 1` using `le_max_right _ _`. Use `⟨K * max |C| 1, one_le_mul_of_one_le_of_one_le hK hC, ?_⟩` and prove the remaining obligations. Introduce `κ A V r _ _ _ _ _ _ Z H I t c idx Λ h good S φ R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set ξ : τ × Fin n → A := fun q => algebraMap ℂ A (Λ q) + I (idx q.2) with hξ`. Establish `cen : ∀ (G : MvPolynomial (τ × Fin n) ℂ) (ψ : V), c (MvPolynomial.aeval Z G • ψ) = c (MvPolynomial.aeval ξ (MvPolynomial.aeval blockE G) • ψ)` using `fun G => by`. Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a => intro ψ`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add p q hp hq => intro ψ`. Simplify using `only [map_add, add_smul, hp, hq]`. Consider the case `mul_X p j hp`. Introduce `ψ`. Rewrite using `[map_mul, map_mul, map_mul, MvPolynomial.aeval_X, MvPolynomial.aeval_X, mul_smul, hp, smul_comm, S.cen, mul_comm, mul_smul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `L : ∀ P : MvPolynomial (Fin r) ℂ, ∃ B : ℝ, 0 ≤ B ∧ ∀ (α : τ × Fin n →₀ ℕ) (x : Fin r → ℝ), ‖x‖ ≤ R → ‖c ((α.prod (fun p e => Z p ^ e) * MvPolynomial.aeval I P) • φ) x‖ ≤ B * max |C| 1 ^ α.degree` using `fun P => by`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial β a`. Take `⟨B, hB⟩` from `S.bound φ β R`. Use `⟨‖a‖ * |B|, by positivity, fun α x hx => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_monomial, ← Algebra.smul_def, mul_smul_comm, smul_assoc, map_smul, Pi.smul_apply, norm_smul, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ((hB α x hx).trans ((le_abs_self _).trans ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_pow]`. Use `gcongr`. Conclude with `le_max_left _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add p q hp hq`. Take `⟨B, hB, h1⟩` from `hp`. Take `⟨B', hB', h2⟩` from `hq`. Use `⟨B + B', by positivity, fun α x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mul_add, add_smul, map_add, Pi.add_apply, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add (h1 α x hx) (h2 α x hx))`. Use `choose B hB0 hB using fun β : τ × Fin n → Fin n => L (∏ u, (MvPolynomial.C (Λ u) + MvPolynomial.X (idx u.2)) ^ (β u : ℕ))`. Use `⟨∑ β, B β, fun α x hx => ?_⟩` and prove the remaining obligations. Take `⟨G, h1, h2, h3⟩` from `hR α`. Establish `hl : ∀ p : MvPolynomial (τ × Fin n) ℂ, 0 ≤ l1 p` using `fun p => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_sum, Finset.sum_smul, map_sum, Finset.sum_apply, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun β _ => ?_)` and prove the remaining obligations. Establish `e : MvPolynomial.aeval ξ (∏ u, (MvPolynomial.X u : MvPolynomial (τ × Fin n) ℂ) ^ (β u : ℕ)) = MvPolynomial.aeval I (∏ u, (MvPolynomial.C (Λ u) + MvPolynomial.X (idx u.2) : MvPolynomial (Fin r) ℂ) ^ (β u : ℕ))`. Simplify using `[hξ]`. Rewrite using `[map_mul, mul_smul, ← cen, e, ← mul_smul, MvPolynomial.aeval_def Z, MvPolynomial.eval₂_eq, Finset.sum_mul, Finset.sum_smul, map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : l1 (G β) ≤ K ^ α.degree` using `(Finset.single_le_sum (fun β _ => hl (G β)) (Finset.mem_univ β)).trans h2`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun γ hγ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Algebra.smul_def, smul_assoc, map_smul, Pi.smul_apply, norm_smul]`. Use `mul_le_mul_of_nonneg_left ((hB β γ x hx).trans ?_) (norm_nonneg _)` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hC ((MvPolynomial.le_totalDegree hγ).trans (h3 β))) (hB0 β)`. Use `_ = l1 (G β) * (B β * max |C| 1 ^ α.degree) := by rw [← Finset.sum_mul]; rfl`. Use `_ ≤ K ^ α.degree * (B β * max |C| 1 ^ α.degree) := mul_le_mul_of_nonneg_right hG (mul_nonneg (hB0 β) (by positivity))`. Use `_ = _ := by rw [mul_pow]; ring`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.abs_growth :
     ∀ (τ : Type) [Fintype τ] [Nonempty τ] (n : ℕ) (C : ℝ), ∃ K : ℝ, 1 ≤ K ∧ ∀ (κ A V : Type) (r : ℕ) [CommRing A] [Algebra ℂ A] [AddCommGroup V] [Module ℂ V] [Module A V]

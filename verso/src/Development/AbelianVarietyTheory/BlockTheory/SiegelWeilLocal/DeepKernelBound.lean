@@ -32,7 +32,7 @@ def DeepKernelBound : Prop :=
         (B.D : ℝ) * (∏ v, c v) / (B.μf (B.I.Kg B.g)).toReal
 
 /- English proof (translation)
-Unfold `stepBe`. Establish `: (P : ℝ) ≤ P'` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example (n : ℕ) (b : ℝ) {P P' : ℕ} (h : P ≤ P') : stepBe n b P ≤ stepBe n b P' := by
   unfold stepBe
@@ -40,7 +40,7 @@ example (n : ℕ) (b : ℝ) {P P' : ℕ} (h : P ≤ P') : stepBe n b P ≤ stepB
   linarith
 
 /- English proof (translation)
-Establish `: Real.sqrt (4 : ℕ) = 2`. Rewrite using `[show ((4 : ℕ) : ℝ) = 2 ^ 2 by norm_num]; exact Real.sqrt_sq (by norm_num)`. Unfold `stepBe`. Rewrite using `[this]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : stepBe 4 1 2 = 20 := by
   have : Real.sqrt (4 : ℕ) = 2 := by

@@ -19,15 +19,13 @@ noncomputable section
 namespace GlobalTheory.ZV.HilbFn
 
 /- English proof (translation)
-Establish `hQ : ∀ x, x ∈ GlobalTheory.quotPiece I e ↔ ∃ y, y ∈ MvPolynomial.homogeneousSubmodule σ K e ∧ Ideal.Quotient.mkₐ K I y = x`. Introduce `x`. Rewrite using `[GlobalTheory.quotPiece_natCast, Submodule.mem_map]`. Both sides reduce to the same expression. Establish `: Module.Finite K (GlobalTheory.quotPiece I e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.quotPiece_natCast]`. Conclude with `Module.Finite.map _ _`. Set `b` to `Module.finBasis K (GlobalTheory.quotPiece I e)`. Establish `hlift : ∀ i, ∃ G : MvPolynomial σ K, G.IsHomogeneous e ∧ Ideal.Quotient.mkₐ K I G = (b i : MvPolynomial σ K ⧸ I)` using `fun i => (hQ _).1 (b i).2`. Use `choose G hG hGb using hlift`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ a : Fin (Module.finrank K (GlobalTheory.quotPiece I e)) → K, Ideal.Quotient.mkₐ K I (∑ i, a i • G i) = ((∑ i, a i • b i : GlobalTheory.quotPiece I e) : MvPolynomial σ K ⧸ I)`. Introduce `a`. Simplify using `only [map_sum, map_smul, hGb, Submodule.coe_sum, Submodule.coe_smul]`. Use `⟨G, hG, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hF' : Ideal.Quotient.mkₐ K I F ∈ GlobalTheory.quotPiece I e` using `(hQ _).2 ⟨F, hF, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiff : ∀ a : Fin (Module.finrank K (GlobalTheory.quotPiece I e)) → K, F - ∑ i, a i • G i ∈ I ↔ (∑ i, a i • b i) = (⟨_, hF'⟩ : GlobalTheory.quotPiece I e)`. Introduce `a`. Rewrite using `[← Ideal.Quotient.eq, ← Ideal.Quotient.mkₐ_eq_mk K, hsum, Subtype.ext_iff, eq_comm]`. Use `⟨fun i => b.repr ⟨_, hF'⟩ i, (hiff _).2 (b.sum_repr _), fun a ha => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[← (hiff a).1 ha, b.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_forms_basis {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     ∃ G : Fin (Module.finrank K (GlobalTheory.quotPiece I e)) → MvPolynomial σ K, (∀ i, (G i).IsHomogeneous e) ∧
@@ -64,11 +62,11 @@ theorem exists_forms_basis {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPol
   rw [← (hiff a).1 ha, b.repr_sum_self]
 
 /- English proof (translation)
-Set `H` to `MvPolynomial.homogeneousSubmodule σ K e`. Set `f : H →ₗ[K] MvPolynomial σ K ⧸ I` to `(Ideal.Quotient.mkₐ K I).toLinearMap.comp H.subtype`. Establish `hr : LinearMap.range f = GlobalTheory.quotPiece I e`. Rewrite using `[GlobalTheory.quotPiece_natCast, LinearMap.range_comp, Submodule.range_subtype]`. Establish `hk : LinearMap.ker f = (I.restrictScalars K).comap H.subtype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[f, LinearMap.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `hrk` using `[hr, hk]`. Establish `hm : Module.finrank K ((I.restrictScalars K).comap H.subtype) = Module.finrank K ↥(H ⊓ I.restrictScalars K)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype]`. Unfold `dimDeg`. Rewrite using `[← hm, add_comm]`. Conclude with `hrk`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimDeg_add {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     dimDeg I e + Module.finrank K (GlobalTheory.quotPiece I e) =
@@ -117,13 +115,13 @@ def toPw (M : LB X) (e : ℕ) (t : (lbPow M e).Sec) : (AbLaw.pw M e).Sec where
     · exact (AbLaw.rs_rs _ _ _).trans (AbLaw.rs_rs _ _ _).symm
 
 /- English proof (translation)
-Take `⟨m, ε, hε⟩` from `h.exists_veryAmpleBy`. Take `⟨t₀, ht⟩` from `(AbLaw.serre_h1Zero_and_sections_polynomial).2 K X p M m (fun i => th (ε i)) hM hε`. Use `Filter.eventually_atTop.2 ⟨t₀, fun e he t => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hFe⟩` from `ht e he (toPw M e t)`. Use `⟨MvPolynomial.rename ε F, hF.rename_isHomogeneous, fun j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj` using `hFe (j PUnit.unit)`. Unfold `toPw at hj`. Unfold `AbLaw.cst at hj`. Establish `hrs : ∀ {U V : X.Opens} (hUV : V ≤ U), resG X hUV = AbLaw.rs X hUV` using `fun _ => rfl`. Establish `hA : (lbPow M e).U j ≤ M.U (j PUnit.unit)` using `LB.wchart_le M (fun _ : PUnit => 𝟙 X) j PUnit.unit`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj'` using `congrArg (AbLaw.rs X hA) hj`. Simplify using `only [hrs] at hj' ⊢`. Use `erw [AbLaw.rs_rs, AbLaw.rs_self] at hj'`. Rewrite using `[hj', MvPolynomial.map_eval₂Hom, MvPolynomial.eval₂_rename, MvPolynomial.coe_eval₂Hom]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, AbLaw.rs_rs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eventually_surj [Finite σ] [Nonempty σ] (p : X ⟶ Sp K) (M : LB X) (th : σ → M.Sec) (hM : M.IsLB)
     (h : VAmp p M th) : ∀ᶠ e : ℕ in Filter.atTop, ∀ t : (lbPow M e).Sec, ∃ F : MvPolynomial σ K,
@@ -152,21 +150,21 @@ theorem eventually_surj [Finite σ] [Nonempty σ] (p : X ⟶ Sp K) (M : LB X) (t
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `K σ _ _ _ X p M th hM h`. Take `⟨hhom, -, hsec⟩` from `GlobalTheory.T.homogeneous_ideal_sections_of_line_bundle_power K σ X p M th hM h`. Establish `hI : (idealOf p M th (𝟙 X)).IsHomogeneous (MvPolynomial.homogeneousSubmodule σ K)`. Introduce `i r hr`. Use `hhom r hr i using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `MvPolynomial.decomposition.decompose'_apply r i`. Use `⟨GlobalTheory.idealHilbertPoly (idealOf p M th (𝟙 X)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.eventually_finrank_quotPiece hI, eventually_surj p M th hM h] with e he hsurj`. Use `⟨Module.finrank K (GlobalTheory.quotPiece (idealOf p M th (𝟙 X)) e), ?_, he, dimDeg_add _ e⟩` and prove the remaining obligations. Take `⟨G, hG, hGu⟩` from `exists_forms_basis (idealOf p M th (𝟙 X)) e`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose s hs1 hs2 hs3 using fun i => hsec e (G i) (hG i)`. Establish `lin : ∀ (R : Type) [CommRing R] (φ : K →+* R) (v : σ → R) (a : Fin (Module.finrank K (GlobalTheory.quotPiece (idealOf p M th (𝟙 X)) e)) → K), MvPolynomial.eval₂ φ v (∑ i, a i • G i) = ∑ i, φ (a i) * MvPolynomial.eval₂ φ v (G i)`. Introduce `R _ φ v a`. Rewrite using `[← MvPolynomial.coe_eval₂Hom, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`. Establish `hsumG : ∀ a : Fin (Module.finrank K (GlobalTheory.quotPiece (idealOf p M th (𝟙 X)) e)) → K, (∑ i, a i • G i).IsHomogeneous e`. Introduce `a`. Rewrite using `[← MvPolynomial.mem_homogeneousSubmodule]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ((MvPolynomial.mem_homogeneousSubmodule _ _).2 (hG i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ D : MvPolynomial σ K, D.IsHomogeneous e → ((∀ j : (lbPow M e).ι, MvPolynomial.eval₂ ((resG X le_top).comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)) (fun i => resG X (LB.wchart_le M (fun _ : PUnit => 𝟙 X) j PUnit.unit) ((th i).f (j PUnit.unit))) D …`. Introduce `D hD`. Take `⟨τ, hτ1, hτ2, -⟩` from `hsec e D hD`. Rewrite using `[← hτ2]`. Conclude with `forall_congr' fun j => by rw [hτ1 j]; exact Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, fun t => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hFt⟩` from `hsurj t`. Take `⟨a, ha, hau⟩` from `hGu F hF`. Use `⟨a, fun j => ?_, fun a' ha' => hau a' ?_⟩` and prove the remaining obligations. Establish `h0` using `(hzero _ (hF.sub (hsumG a))).2 ha j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h0` using `[MvPolynomial.eval₂_sub, sub_eq_zero]`. Rewrite using `[hFt j, h0, lin]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hs1 i j]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(hzero _ (hF.sub (hsumG a'))).1 fun j => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_sub, sub_eq_zero, ← hFt j, ha' j, lin]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hs1 i j]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hilbertFunction_idealOf : ∀ (K σ : Type) [Field K] [Finite σ] [Nonempty σ] (X : Scheme.{0}) (p : X ⟶ Sp K) (M : LB X) (th : σ → M.Sec), M.IsLB → VAmp p M th → ∃ Q : Polynomial ℚ, ∀ᶠ e : ℕ in Filter.atTop, ∃ r, SectionsHaveFiniteDimension p (lbPow M e) r ∧ (r : ℚ) = Q.eval (e : ℚ) ∧ dimDeg (idealOf p M th (𝟙 X)) e + r = Module.finrank K ↥(MvPolynomial.homogeneousSubmodule σ K e) := by
   intro K σ _ _ _ X p M th hM h

@@ -7,11 +7,9 @@ open NumberField
 namespace PI.Residue
 
 /- English proof (translation)
-Take `⟨C, hC1, hC⟩` from `hC`. Use `⟨C, hC1, fun E _ _ hm => ?_⟩` and prove the remaining obligations. Establish `hd : 4 / 9 * (3 * Real.pi / 4) ^ Module.finrank ℚ E ≤ ((|discr E| : ℤ) : ℝ)`. Use `NumberField.abs_discr_ge (K := E) (by omega)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hle⟩` from `hC (Module.finrank ℚ E) _ hm hd`. Take `⟨hsum, hz⟩` from `hA1 E s hs`. Use `(hB E s hs hsum).trans (le_trans ?_ hle)` and prove the remaining obligations. Establish `hd0 : (0 : ℝ) ≤ ((|discr E| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg _`. Establish `hz0 : 0 ≤ zetaR s` using `tsum_nonneg fun n => by positivity`.
-
-Use `gcongr`. Conclude with `hz.trans (pow_le_pow_left₀ hz0 (hA2 s hs) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residueBound_of (hA1 : ZetaLePow) (hA2 : ZetaRLe) (hB : HeckeLower) (hC : Optimise) :
     PI.ResidueBound := by

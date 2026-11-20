@@ -7,7 +7,7 @@ open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.ThFr Glo
 open GlobalTheory.SW hiding Level
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hL`. Take `⟨bas, hbas⟩` from `GlobalTheory.Dict.Letters.exists_isSympl X hL (Fintype.equivFin (X.Ψ × Fin r)).symm`. Conclude with `⟨_, bas, (Fintype.equivFin _).symm, hbas⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Ker.exists_symplectic_basis_of_selfD : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r : ℕ) (X : Data E r), SelfD X X.Λ →

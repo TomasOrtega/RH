@@ -14,9 +14,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ q n _ η hη`. Take `⟨c, hc⟩` from `(isFreeGen_baseForm q n).2 η`. Use `replace hc : c • baseForm q n = η := hc`. Establish `h0 : c ≠ 0` using `fun e => hη (by rw [← hc, e, zero_smul])`. Establish `h` using `(isDivOfForm_canonical q n).smul (Units.mk0 c h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Units.val_mk0, hc]`. Use `⟨⟨_, h⟩, fun K hK Kc => ?_⟩` and prove the remaining obligations. Rewrite using `[hK.unique hη h, map_add, toPic_principal]`. Simplify using `using (presents_canonical q n).toPic_eq.trans ((cls_eq_iff _ _).2 (CanonLB.lbIso _ Kc))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isDivOfForm_and_toPic : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (η : RatForms q n), η ≠ 0 → (∃ K : CartierDiv Y, IsDivOfForm K η) ∧ ∀ K : CartierDiv Y, IsDivOfForm K η → ∀ Kc : CanonLB q n, toPic K = cls Kc.bundle Kc.isLB := by
   intro k _ _ Y _ _ q n _ η hη

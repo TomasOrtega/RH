@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnitPt
 
 /- English proof (translation)
-Rewrite using `[gs_eq T x U h]`. Establish `hu` using `(Y.mem_basicOpen a (T x) h).1 ha`. Rewrite using `[← Scheme.Hom.germ_stalkMap_apply T U x h a]`. Conclude with `hu.map _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs_of_mem_basicOpen {X Y : Scheme.{0}} (T : X ⟶ Y) (x : X) (U : Y.Opens) (h : T x ∈ U) (a : Γ(Y, U))
     (ha : T x ∈ Y.basicOpen a) : IsUnit (gs T x U a) := by
@@ -32,15 +32,13 @@ theorem isUnit_gs_of_mem_basicOpen {X Y : Scheme.{0}} (T : X ⟶ Y) (x : X) (U :
   exact hu.map _
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `not_forall.1 hs`. Establish `hsm` using `Q.P.isAb.smooth`. Set `p : (DegPre.BF Q (FractionRing R)).left ⟶ Spec (CommRingCat.of (FractionRing R))` to `(fst (TF (R := R) (FractionRing R)) Q.P.A).left`. Establish `hp : Smooth p` using `inferInstanceAs (Smooth (pullback.fst (TF (R := R) (FractionRing R)).hom Q.P.A.hom))`. Establish `: IsReduced (DegPre.BF Q (FractionRing R)).left` using `isReduced_of_smooth p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (DegPre.BF Q (FractionRing R)).left.basicOpen (s.f j) ≠ ⊥` using `fun h => hj ((basicOpen_eq_bot_iff _).1 h)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, w ∈ (DegPre.BF Q (FractionRing R)).left.basicOpen (s.f j) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (eq_bot_iff.2 fun x hx => (h x hx).elim)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hwU` using `Scheme.basicOpen_le _ _ hw`. Use `set T := (DegPre.trF Q (FractionRing R) ν).left with hT`. Set `z` to `(DegPre.trF Q (FractionRing R) (-ν)).left w`. Establish `hz : T z = w`. Express the relevant statement in the definitionally equal form `((DegPre.trF Q (FractionRing R) (-ν)).left ≫ T) w = w`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hT, ← Over.comp_left, ReciprocityTheory.ChartRestriction.G.DVR.UUA.trF_add, neg_add_cancel, ReciprocityTheory.ChartRestriction.G.DVR.UUA.trF_zero]`. Both sides reduce to the same expression. Take `⟨J, hJ⟩ : ∃ J, Good Q.P.L z J` from `⟨_, fun ψ => (exists_chart Q.P.isLB (ψ z)).choose_spec⟩`. Use `⟨z, J, hJ, ?_⟩` and prove the remaining obligations. Establish `hz' : T z ∈ LB.wchart Q.P.L (DegPre.famφ Q (FractionRing R) α) j` using `hz ▸ hwU`.
-
-Establish `hzb : T z ∈ (DegPre.BF Q (FractionRing R)).left.basicOpen (s.f j)` using `hz ▸ hw`. Rewrite using `[sval, sec_trans s T z (hJ.mem _ T) hz']`. Conclude with `(Units.isUnit _).mul (isUnit_gs_of_mem_basicOpen T z _ hz' (s.f j) hzb)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_sval (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (k : ℕ) (α ν : Q.X)
     (s : LB.Sec (LB.LinComb Q.P.L (DegPre.famφ Q (FractionRing R) α) (DegPre.famε k))) (hs : ¬ ∀ j, s.f j = 0) :

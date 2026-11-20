@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.Shares
 
 /- English proof (translation)
-Use `(Set.Finite.pi' (fun _ : Fin D => Set.finite_Iic a)).subset ?_` and prove the remaining obligations. Introduce `α hα i`. Conclude with `(Finset.single_le_sum (f := α) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans hα`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_sum_le (D a : ℕ) : {α : Fin D → ℕ | ∑ i, α i ≤ a}.Finite := by
   refine (Set.Finite.pi' (fun _ : Fin D => Set.finite_Iic a)).subset ?_
@@ -21,11 +21,11 @@ theorem finite_sum_le (D a : ℕ) : {α : Fin D → ℕ | ∑ i, α i ≤ a}.Fin
   exact (Finset.single_le_sum (f := α) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans hα
 
 /- English proof (translation)
-Establish `hp : ∀ i m n x, Q n x → Q (n + m) (s i ^ m * x)`. Introduce `i m`. Proceed by induction on `m with`. Consider the case `zero => intro n x hx`. Simplify using `using hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih => intro n x hx`. Rewrite using `[pow_succ', mul_assoc, ← add_assoc]`. Conclude with `h _ _ _ (ih n x hx)`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert i F hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, mul_assoc, add_comm (α i), ← add_assoc]`. Conclude with `hp _ _ _ _ ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graded_prod_pow_mul {A ι : Type} [CommRing A] (Q : ℕ → A → Prop) (s : ι → A)
     (h : ∀ n i x, Q n x → Q (n + 1) (s i * x)) (α : ι → ℕ) (F : Finset ι) (n : ℕ) (x : A) (hx : Q n x) :
@@ -43,7 +43,7 @@ theorem graded_prod_pow_mul {A ι : Type} [CommRing A] (Q : ℕ → A → Prop) 
     exact hp _ _ _ _ ih
 
 /- English proof (translation)
-Consider the cases of `u`. Unfold `addL wadd wsmul`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem addL_zero' {D : D7} {j : ℕ} (u wL : WeightFamilies.Wt D j) : addL u wL 0 = u := by
   cases u
@@ -51,43 +51,39 @@ theorem addL_zero' {D : D7} {j : ℕ} (u wL : WeightFamilies.Wt D j) : addL u wL
   simp
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G R t T Mg δ xs hgen hA hka hD hT hLat S la`. Take `⟨d1, d2, d3, d4, d5, d6, d7, d8⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la G.N wL G.w t`. Establish `hDT : WeightFamilies.dimY D j < T` using `by nlinarith`. Take `⟨b1, b2⟩` from `GlobalTheory.T.card_exponents_and_choose_ratio_bounds_pair (WeightFamilies.dimY D j) T`. Take `⟨θ, -, hθ⟩` from `GlobalTheory.T.exists_valueBasis_in_spanning_forms D B P j X ka wL wF G.N G.w R t T Mg δ xs hA Set.univ Submodule.span_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd : X.rk ka (B.Mlat j ka) = Module.finrank ℂ (R.sp ka Set.univ)`. Establish `h1` using `(d8 ka ⊤).2`. Rewrite `h1` using `[Submodule.top_coe]`. Rewrite using `[h1]`. Unfold `PJ.rk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `: Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤` using `Submodule.IsLattice.span_eq_top (self := hLat)`. Rewrite using `[this]`. Use `haveI hfin : FiniteDimensional ℂ (R.sp ka Set.univ) := by`. Establish `h1` using `(d8 ka ⊤).1`. Rewrite `h1` using `[Submodule.top_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set a := a0 D j T with ha`. Establish `haD : WeightFamilies.dimY D j + a = T` using `by rw [ha]; unfold a0; omega`. Set `p1 : Fin (WeightFamilies.dimY D j + 1) → MvPolynomial (Idx D j G.N) X.Forms` to `fun i => ∑ k, MvPolynomial.X (i, k) * MvPolynomial.C (X.inc wL (G.w k))`. Set `pm : (Fin (WeightFamilies.dimY D j) → ℕ) → MvPolynomial (Idx D j G.N) X.Forms` to `fun α => ∏ i, p1 i.succ ^ α i`. Establish `pmK : ∀ α, toRp X la G.N (pm α) = secPow X la G.w α`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `α`. Simplify using `only [pm, map_prod, map_pow, secPow]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [(d1 i.succ).1]`. Establish `pmC : ∀ α, R.toFn t (pm α) = R.mon G.w t α`. Introduce `α`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [pm, map_prod, map_pow, Rdg.mon]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [(d1 i.succ).2.1]`. Establish `hstep : ∀ n i x, OfWt X (addL wF wL n) x → OfWt X (addL wF wL (n + 1)) (p1 i * x)`. Introduce `n i x hx`. Rewrite using `[← wadd_addL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `d4 _ _ _ _ (d1 i).2.2 hx`. Establish `hpm : ∀ α n x, OfWt X (addL wF wL n) x → OfWt X (addL wF wL (n + ∑ i, α i)) (pm α * x)` using `fun α n x hx => graded_prod_pow_mul (fun n x => OfWt X (addL wF wL n) x) (fun i : Fin (WeightFamilies.dimY D j) => p1 i.succ) (fun n i x hx => hstep n i.succ x hx) α Finset.univ n x hx`. Establish `hp0 : ∀ m n x, OfWt X (addL wF wL n) x → OfWt X (addL wF wL (n + m)) (p1 0 ^ m * x)` using `fun m n x hx => by`. Simplify using `using graded_prod_pow_mul (fun n x => OfWt X (addL wF wL n) x) (fun _ : Unit => p1 0) (fun n _ x hx => hstep n 0 x hx) (fun _ => m) Finset.univ n x hx`. Take `⟨n, b, hb⟩` from `Module.Finite.exists_fin (R := B.KO) (M := B.Cusp j (X.wF0 wL wF))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i = a} := ((finite_sum_le (WeightFamilies.dimY D j) a).subset (t := {α | ∑ i, α i = a}) fun α (h : ∑ i, α i = a) => h.le).to_subtype`. Use `haveI : Finite {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i < a} := ((finite_sum_le (WeightFamilies.dimY D j) a).subset (t := {α | ∑ i, α i < a}) fun α (h : ∑ i, α i < a) => h.le).to_subtype`. Use `letI := Fintype.ofFinite {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i = a}`. Use `letI := Fintype.ofFinite {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i < a}`. Set `q : {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i = a} × Fin n → MvPolynomial (Idx D j G.N) X.Forms` to `fun p => pm p.1.1 * MvPolynomial.C (X.inc (X.wF0 wL wF) (b p.2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ∀ p, OfWt X ka (q p)`. Introduce `p`. Use `hpm p.1.1 (WeightFamilies.dimY D j) _ (d3 (X.wF0 wL wF) (b p.2))` as an intermediate fact. Rewrite `this` using `[p.1.2, haD, hka]`. Then use the resulting hypothesis. Establish `htr` using `(GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la G.N t hgen ka _ q hq).2.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hK : Submodule.span (Kp X la G.N) (zAll G la S T) ≤ Submodule.span (Kp X la G.N) (Set.range fun p => toRp X la G.N (q p))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨α, F, hα, -, rfl⟩`. Establish `hF` using `emb_mem_Vw X la G.N _ F`. Rewrite `hF` using `[Vw_eq_span_image X la G.N _ hb]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la G.N) (secPow X la G.w α)) hF` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨_, ⟨k, rfl⟩, rfl⟩, rfl⟩`. Use `⟨(⟨α, hα⟩, k), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [q, map_mul, pmK, (d2 _).1, LinearMap.mulLeft_apply]`. Establish `hC : Submodule.span ℂ (Set.range fun p => R.toFn t (q p)) ≤ R.deep G.w t (X.wF0 wL wF) a`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨p.1.1, R.ev (X.inc _ (b p.2)), p.1.2, Submodule.subset_span ⟨b p.2, trivial, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [q, map_mul, pmC, (d2 _).2]`. Establish `hCk : Submodule.span ℂ (Set.range fun p => R.toFn t (q p)) ≤ R.sp ka Set.univ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(d5 ka _ (hq p)).2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hli, hdis⟩` from `hA.indep δ (fun i => R.ev (X.inc wF (θ i))) (fun i => Submodule.subset_span ⟨θ i, trivial, rfl⟩) hθ`. Rewrite `hli`, `hdis` using `[← ha]`. Establish `hLk : Submodule.span ℂ (Set.range (R.lead G.w t T a fun i => R.ev (X.inc wF (θ i)))) ≤ R.sp ka Set.univ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : OfWt X (addL wF wL 0) (MvPolynomial.C (X.inc wF (θ p.2)) : MvPolynomial (Idx D j G.N) X.Forms)`. Rewrite using `[addL_zero']`. Conclude with `d3 _ _`. Establish `h1` using `hpm p.1.1 _ _ (hp0 (T - ∑ i, p.1.1 i) _ _ h0)`. Establish `h2` using `p.1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[show 0 + (T - ∑ i, p.1.1 i) + ∑ i, p.1.1 i = T by omega, hka]`. Establish `h3` using `(d5 ka _ h1).2`. Rewrite `h3` using `[map_mul, map_mul, map_pow, pmC, (d1 0).2.1, (d2 _).2, ← mul_assoc]`. Conclude with `h3`. Establish `hrk` using `finrank_span_eq_card hli`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hrk` using `[Fintype.card_prod, Fintype.card_fin, ← Nat.card_eq_fintype_card]`. Establish `hcard : Nat.card {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i < a} = (T - 1).choose (WeightFamilies.dimY D j)` using `b1 (by omega) hDT`. Rewrite `hrk` using `[hcard]`. Use `haveI := Submodule.finiteDimensional_of_le hLk`. Use `haveI := Submodule.finiteDimensional_of_le hCk`.
-
-Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span ℂ (Set.range (R.lead G.w t T a fun i => R.ev (X.inc wF (θ i))))) (Submodule.span ℂ (Set.range fun p => R.toFn t (q p)))`. Rewrite `hsum` using `[(hdis.mono_right hC).eq_bot, finrank_bot, add_zero, hrk]`. Establish `hle` using `Submodule.finrank_mono (sup_le hLk hCk)`. Use `haveI : FiniteDimensional (Kp X la G.N) (Submodule.span (Kp X la G.N) (Set.range fun p => toRp X la G.N (q p))) := FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Establish `hKle` using `Submodule.finrank_mono hK`.
-
-Rewrite using `[hd]`. Use `(b2 δ _ _ hD hT hA.upper).1 ?_` and prove the remaining obligations. Rewrite using `[mul_comm δ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shareRhoR_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData X ka wL wF) (R : Rdg X) (t : Idx D j G.N → ℂ) (T : ℕ) (Mg : Submodule B.KO (B.Cusp j ka)) (δ : ℕ) (xs : Fin δ → R.Y), R.Generic t → AnFacts R G.w t ka wF T Mg xs → addL wF wL T = ka → 2 ≤ WeightFamilies.dimY D j → 11 * WeightFamilies.dimY D j ^ 2 ≤ T → LatAt B j ka → ∀ S : Scal B, ShareRhoR G S T (X.rk ka (B.Mlat j ka)) := by
   intro D B P j X ka wL wF G R t T Mg δ xs hgen hA hka hD hT hLat S la

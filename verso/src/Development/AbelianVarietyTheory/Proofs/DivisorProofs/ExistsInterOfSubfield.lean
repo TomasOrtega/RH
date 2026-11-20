@@ -20,13 +20,13 @@ instance embField_fd : FiniteDimensional ℚ (embField E) := by
   exact IntermediateField.finiteDimensional_iSup_of_finite
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun ψ : E →+* ℂ => ψ.toRatAlgHom.fieldRange) ψ ⟨k, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem (ψ : E →+* ℂ) (k : E) : ψ k ∈ embField E :=
   le_iSup (fun ψ : E →+* ℂ => ψ.toRatAlgHom.fieldRange) ψ ⟨k, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[h k]`. Use `prod_mem fun i _ => ?_` and prove the remaining obligations. Establish `h0 : φ i (k : E) ≠ 0` using `by simp`. Rewrite using `[zpow_mul, show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, zpow_natCast, GlobalTheory.HalfIntChars.unit_sq _ h0]`. Conclude with `zpow_mem (div_mem (emb_mem _ _) (emb_mem ((starRingEnd ℂ).comp (φ i)) (k : E))) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_mem_of_even {I : Type} [Fintype I] {φ : I → E →+* ℂ} {c : I → ℤ} {χ : HChar E}
     (h : χ.HasInf φ (fun i => 2 * c i)) (k : Eˣ) : ((χ.inf k : ℂˣ) : ℂ) ∈ embField E := by
@@ -37,7 +37,7 @@ theorem inf_mem_of_even {I : Type} [Fintype I] {φ : I → E →+* ℂ} {c : I �
   exact zpow_mem (div_mem (emb_mem _ _) (emb_mem ((starRingEnd ℂ).comp (φ i)) (k : E))) _
 
 /- English proof (translation)
-Set `M : IntermediateField ℚ ℂ` to `C.toIntermediateField fun x => by simpa using SubfieldClass.ratCast_mem C x`. Set `e : C ≃ₗ[ℚ] M` to `{ toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun q x => Subtype.ext (by simp [Rat.smul_def]) left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Conclude with `⟨M, e.finiteDimensional, fun _ h => h⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_inter_of_subfield (C : Subfield ℂ) [FiniteDimensional ℚ C] :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ (C : Set ℂ) ⊆ M := by
@@ -58,7 +58,7 @@ namespace GlobalTheory.HeckeLocVals
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_fsum {G : Type} [CommGroup G] (a : G) {ι : Type} (s : Finset ι) (f : ι → ℤ) :
     a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
@@ -68,15 +68,15 @@ theorem zpow_fsum {G : Type} [CommGroup G] (a : G) {ι : Type} (s : Finset ι) (
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, zpow_add, ih]
 
 /- English proof (translation)
-Use `⟨fun ψ => ∑ i, ((if φ i = ψ then c i else 0) - (if (starRingEnd ℂ).comp (φ i) = ψ then c i else 0)), fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.ofReal_zero, Complex.cpow_zero, Finset.prod_const_one, mul_one]`. Rewrite using `[h k]`. Set `u : (E →+* ℂ) → ℂˣ` to `fun ψ => Units.mk0 (ψ (k : E)) (by simp)`. Establish `hu : ∀ ψ (n : ℤ), ψ (k : E) ^ n = ((u ψ ^ n : ℂˣ) : ℂ)` using `fun ψ n => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Establish `hL : ∀ i, (φ i (k : E) / ((‖φ i (k : E)‖ : ℝ) : ℂ)) ^ (2 * c i) = ((u (φ i) ^ c i * (u ((starRingEnd ℂ).comp (φ i)) ^ c i)⁻¹ : ℂˣ) : ℂ)` using `fun i => by`. Rewrite using `[zpow_mul, show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, zpow_natCast, GlobalTheory.HalfIntChars.unit_sq _ (by simp), div_zpow]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, ← hu, ← hu, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[hL, hu]`. Rewrite using `[← Units.coe_prod, ← Units.coe_prod]`. Use `congr 1`. Use `symm`.
+Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation.
 
-Rewrite using `[Finset.prod_congr rfl fun ψ _ => (zpow_fsum (u ψ) Finset.univ _).trans (Finset.prod_congr rfl fun i _ => zpow_sub (u ψ) _ _), Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Establish `e1 : ∏ ψ : E →+* ℂ, u ψ ^ (if φ i = ψ then c i else 0) = u (φ i) ^ c i`. Rewrite using `[Finset.prod_eq_single (φ i) (fun ψ _ hψ => by rw [if_neg (Ne.symm hψ), zpow_zero]) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e2 : ∏ ψ : E →+* ℂ, u ψ ^ (if (starRingEnd ℂ).comp (φ i) = ψ then c i else 0) = u ((starRingEnd ℂ).comp (φ i)) ^ c i`. Rewrite using `[Finset.prod_eq_single ((starRingEnd ℂ).comp (φ i)) (fun ψ _ hψ => by rw [if_neg (Ne.symm hψ), zpow_zero]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem algType_of_even {I : Type} [Fintype I] {φ : I → E →+* ℂ} {c : I → ℤ} {χ : HChar E}
     (h : χ.HasInf φ (fun i => 2 * c i)) : ∃ m : (E →+* ℂ) → ℤ, ∀ k : Eˣ,
@@ -111,9 +111,9 @@ theorem algType_of_even {I : Type} [Fintype I] {φ : I → E →+* ℂ} {c : I �
   rw [e1, e2]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `algType_of_even h`. Take `⟨C, hC, hv⟩` from `CharEx.algValsFin E χ 0 m hm`. Take `⟨C', hC', hCC⟩` from `exists_inter_of_subfield C`. Use `⟨C' ⊔ embField E, inferInstance, fun v x => ?_⟩` and prove the remaining obligations. Establish `hle : GlobalTheory.Mem.Fld.valueField χ 0 ≤ C' ⊔ embField E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Mem.Fld.valueField_le_iff]`. Introduce `w hw`. Take `⟨y, hy⟩` from `hv w hw`. Conclude with `⟨⟨y, le_sup_left (a := C') (hCC y.2)⟩, hy⟩`. Conclude with `GlobalTheory.HeckeValField.mem_unitsIn.1 (GlobalTheory.HeckeValField.loc_mem χ hle (fun k => le_sup_right (a := C') (inf_mem_of_even h k)) v x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locVals_of_even {I : Type} [Fintype I] {φ : I → E →+* ℂ} {c : I → ℤ} {χ : HChar E}
     (h : χ.HasInf φ (fun i => 2 * c i)) :

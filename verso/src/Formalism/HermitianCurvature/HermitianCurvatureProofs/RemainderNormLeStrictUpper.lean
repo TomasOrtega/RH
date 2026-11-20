@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.G6
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, finSumFinEquiv.symm (i.castSucc : Fin (n+1)) = Sum.inl i` using `fun i => finSumFinEquiv_symm_apply_castAdd (n := 1) i`. Simplify using `[blk, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i j : Fin n) :
     blk A b a e i.castSucc j.castSucc = A i j := by
@@ -16,7 +16,7 @@ theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h]
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, finSumFinEquiv.symm (i.castSucc : Fin (n+1)) = Sum.inl i` using `fun i => finSumFinEquiv_symm_apply_castAdd (n := 1) i`. Establish `h2 : finSumFinEquiv.symm (Fin.last n : Fin (n+1)) = Sum.inr (0 : Fin 1)` using `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`. Simplify using `[blk, h, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i : Fin n) :
     blk A b a e i.castSucc (Fin.last n) = b i := by
@@ -27,28 +27,28 @@ theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h, h2]
 
 /- English proof (translation)
-Rewrite using `[xOf, Fin.succ_castSucc, blk_cc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xOf_castSucc {m : ℕ} (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ)
     (k : Fin m) : xOf X B k.castSucc = X k.castSucc k.succ := by
   rw [xOf, Fin.succ_castSucc, blk_cc]
 
 /- English proof (translation)
-Rewrite using `[xOf, Fin.succ_last, blk_cl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xOf_last {m : ℕ} (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ) :
     xOf X B (Fin.last m) = B (Fin.last m) := by
   rw [xOf, Fin.succ_last, blk_cl]
 
 /- English proof (translation)
-Introduce `i j h`. Simplify using `[strictUpper, not_lt.mpr h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isStrictUpper_strictUpper {d : ℕ} (v : UT d → ℂ) : IsStrictUpper (strictUpper v) := by
   intro i j h
   simp [strictUpper, not_lt.mpr h]
 
 /- English proof (translation)
-Introduce `i j h`. Simplify using `[hX i j h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isStrictUpper_neg {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStrictUpper X) :
     IsStrictUpper (-X) := by
@@ -56,11 +56,11 @@ theorem isStrictUpper_neg {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStr
   simp [hX i j h]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j h`. Rewrite using `[pow_zero]`. Use `Matrix.one_apply_ne ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e`. Substitute `e` using the available equality. Simplify using `at h`. Consider the case `succ k ih`. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (l : ℕ) < i + k`. Rewrite using `[ih i l hl, zero_mul]`. Rewrite using `[hX l j (by rw [Fin.le_def]; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStrictUpper X) (k : ℕ) :
     ∀ i j : Fin d, (j : ℕ) < i + k → (X ^ k) i j = 0 := by
@@ -81,7 +81,7 @@ theorem pow_apply_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStr
     · rw [hX l j (by rw [Fin.le_def]; omega), mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `pow_apply_eq_zero hX d i j (by have := j.2; omega)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pow_card_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStrictUpper X) :
     X ^ d = 0 := by
@@ -89,11 +89,11 @@ theorem pow_card_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStri
   exact pow_apply_eq_zero hX d i j (by have := j.2; omega)
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro hj`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hj`. Rewrite using `[pow_succ, Matrix.mul_apply, Finset.sum_eq_single (⟨j, by omega⟩ : Fin (m + 1)), ih (by omega), Fin.prod_univ_castSucc]`. Both sides reduce to the same expression. Introduce `l _ hl`. Distinguish the cases in `h : (l : ℕ) < j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[pow_apply_eq_zero hX j 0 l (by simpa using h), zero_mul]`. Establish `h2 : (l : ℕ) ≠ j` using `fun e => hl (Fin.ext e)`. Rewrite using `[hX l ⟨j + 1, hj⟩ (by rw [Fin.le_def]; simp only; omega), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_apply_zero {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (hX : IsStrictUpper X) :
     ∀ (j : ℕ) (hj : j < m + 1), (X ^ j) 0 ⟨j, hj⟩ =
@@ -114,11 +114,11 @@ theorem pow_apply_zero {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (h
     · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (Fin.last m), Fin.prod_univ_castSucc, xOf_last]`. Use `congr 1`. Use `pow_apply_zero hX m (Nat.lt_succ_self m)` as an intermediate fact. Rewrite using `[show (Fin.last m) = ⟨m, Nat.lt_succ_self m⟩ from rfl, this]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[xOf_castSucc]`. Both sides reduce to the same expression. Introduce `l _ hl`. Establish `h2 : (l : ℕ) ≠ m` using `fun e => hl (Fin.ext e)`. Establish `h3` using `l.2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_apply_eq_zero hX m 0 l (by simp only [Fin.val_zero]; omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_mulVec_zero {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (hX : IsStrictUpper X)
     (B : Fin (m + 1) → ℂ) : (X ^ m *ᵥ B) 0 = ∏ k, xOf X B k := by
@@ -136,7 +136,7 @@ theorem pow_mulVec_zero {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[pow_apply_eq_zero hX m k.succ l (by have := l.2; simp only [Fin.val_succ]; omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mulVec_succ {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (hX : IsStrictUpper X)
     (B : Fin (m + 1) → ℂ) (k : Fin m) : (X ^ m *ᵥ B) k.succ = 0 := by
@@ -145,7 +145,7 @@ theorem pow_mulVec_succ {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (
   rw [pow_apply_eq_zero hX m k.succ l (by have := l.2; simp only [Fin.val_succ]; omega), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero, Nat.sub_self, pow_zero, mul_one, zero_add]`. Introduce `j hj`. Use `Finset.mem_range.mp hj` as an intermediate fact. Rewrite using `[zero_pow (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_zero_pow (m : ℕ) (f : ℕ → ℂ) :
     ∑ j ∈ Finset.range (m + 1), f j * (0 : ℂ) ^ (m - j) = f m := by
@@ -155,11 +155,11 @@ theorem sum_mul_zero_pow (m : ℕ) (f : ℕ → ℂ) :
   rw [zero_pow (by omega), mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro i`. Simplify using `using hB i`. Consider the case `succ j ih`. Introduce `i`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul ?_ (ih l) (norm_nonneg _) hL` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hX i l`. Use `_ = ((m : ℝ) + 1) ^ (j + 1) * L ^ (j + 1 + 1) := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_pow_mulVec_le {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} {B : Fin (m + 1) → ℂ}
     {L : ℝ} (hL : 0 ≤ L) (hX : ∀ i j, ‖X i j‖ ≤ L) (hB : ∀ i, ‖B i‖ ≤ L) (j : ℕ) :
@@ -182,19 +182,17 @@ theorem norm_pow_mulVec_le {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ
           ring
 
 /- English proof (translation)
-Establish `hL0 : 0 ≤ L` using `le_trans zero_le_one hL`. Establish `hm1 : (1 : ℝ) ≤ (m : ℝ) + 1`. Establish `: (0 : ℝ) ≤ (m : ℝ)` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `term : ∀ j ∈ Finset.range (m + 1), ‖(∑ k : Fin m, ρ' k * ((-X) ^ j *ᵥ B) k.succ) * t ^ (m - j)‖ ≤ ((m : ℝ) * ((m : ℝ) + 1) ^ m) * (L ^ (m + 2) * ‖t‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`. Distinguish the cases in `hjm : j = m`. Substitute `hjm` using the available equality. Rewrite using `[Finset.sum_eq_zero, zero_mul, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Introduce `k _`. Rewrite using `[pow_mulVec_succ (isStrictUpper_neg hS), mul_zero]`. Establish `hlt : j < m` using `by omega`. Rewrite using `[norm_mul, norm_pow]`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖∑ k : Fin m, ρ' k * ((-X) ^ j *ᵥ B) k.succ‖ ≤ (m : ℝ) * ((m : ℝ) + 1) ^ m * L ^ (m + 2)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hρ k) (norm_pow_mulVec_le hL0 hX hB j k.succ) (norm_nonneg _) hL0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (m : ℝ) * (((m : ℝ) + 1) ^ j * L ^ (j + 2)) := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (m : ℝ) * (((m : ℝ) + 1) ^ m * L ^ (m + 2)) := by`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg m)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul (pow_le_pow_right₀ hm1 hlt.le) (pow_le_pow_right₀ hL (by omega)) (by positivity) (by positivity)` and prove the remaining obligations. Use `_ = (m : ℝ) * ((m : ℝ) + 1) ^ m * L ^ (m + 2) := by ring`. Establish `h2 : ‖t‖ ^ (m - j) ≤ ‖t‖` using `pow_le_of_le_one (norm_nonneg _) ht (by omega)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem remainder_norm_le_strict_upper {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} {B : Fin (m + 1) → ℂ}
     {ρ' : Fin m → ℂ} {t : ℂ} {L : ℝ} (hL : 1 ≤ L) (ht : ‖t‖ ≤ 1) (hS : IsStrictUpper X)
@@ -248,9 +246,9 @@ theorem remainder_norm_le_strict_upper {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin 
         ring
 
 /- English proof (translation)
-Establish `hm : (0 : ℝ) < 2 * ((m : ℝ) + 2)` using `by positivity`. Establish `h1 : ε * (2 * ((m : ℝ) + 2)) ≤ 1` using `(le_div_iff₀ hm).mp hε`. Establish `e : (T ^ (-ε)) ^ (m + 2) * T = T ^ (-ε * ((m : ℝ) + 2) + 1)`. Rewrite using `[Real.rpow_add hT, Real.rpow_one, Real.rpow_mul hT.le, ← Real.rpow_natCast]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[e, Real.sqrt_eq_rpow]`. Conclude with `Real.rpow_le_rpow_of_exponent_ge hT hT1 (by nlinarith)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_bound (m : ℕ) {T ε : ℝ} (hT : 0 < T) (hT1 : T ≤ 1)
     (hε : ε ≤ 1 / (2 * ((m : ℝ) + 2))) : (T ^ (-ε)) ^ (m + 2) * T ≤ Real.sqrt T := by
@@ -270,11 +268,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.G6
 
 /- English proof (translation)
-Introduce `n t c a b v`. Establish `hN : (-(strictUpper v)) ^ n = 0` using `pow_card_eq_zero (isStrictUpper_neg (isStrictUpper_strictUpper v))`. Establish `key : ∀ j ∈ Finset.range n, (rhoOf t a v ⬝ᵥ ((-(Xof t v)) ^ j *ᵥ (t • b))) * t ^ (n - 1 - j) = t ^ n * (a ⬝ᵥ ((wMat n * ((1 - -(strictUpper v)) * (-(strictUpper v)) ^ j)) *ᵥ (t • b)))`. Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : -(Xof t v) = t • (-(strictUpper v))` using `by simp [Xof]`. Establish `e2 : t ^ n = t * t ^ j * t ^ (n - 1 - j)`. Rewrite using `[← pow_succ', ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e1, smul_pow, rhoOf, Formalism.FourierDecayAlt.G.upper, sub_neg_eq_add, Matrix.smul_mulVec, smul_dotProduct, dotProduct_smul, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, e2, smul_eq_mul, smul_eq_mul, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl key, ← Finset.mul_sum, ← dotProduct_sum, ← Matrix.sum_mulVec, ← Finset.mul_sum, ← Finset.mul_sum, mul_neg_geom_sum, hN, sub_zero, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem corner_relation : Formalism.FourierDecayAlt.G.CornerRelation := by
   intro n t c a b v
@@ -297,7 +295,7 @@ theorem corner_relation : Formalism.FourierDecayAlt.G.CornerRelation := by
   ring
 
 /- English proof (translation)
-Introduce `m X B ρ₁ ρ' t`. Simplify using `only [Cof, R0, dotProduct, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Finset.sum_mul, Nat.add_sub_cancel]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[add_mul, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -310,9 +308,9 @@ theorem corner_split : Formalism.FourierDecayAlt.G.CornerSplit := by
   rw [add_mul, Finset.sum_mul]; ring
 
 /- English proof (translation)
-Introduce `m X B ρ' hX`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Cof, sum_mul_zero_pow m (fun j => ((-X) ^ j *ᵥ B) 0)]`. Establish `e : (-X) ^ m = ((-1 : ℂ) ^ m) • X ^ m`. Rewrite using `[← smul_pow, neg_one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.smul_mulVec, Pi.smul_apply, pow_mulVec_zero hX, smul_eq_mul]`. Rewrite using `[R0, sum_mul_zero_pow m (fun j => ∑ k : Fin m, ρ' k * ((-X) ^ j *ᵥ B) k.succ)]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mulVec_succ (isStrictUpper_neg hX), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leading_cofactor : Formalism.FourierDecayAlt.G.CofLead := by
   intro m X B ρ' hX
@@ -326,9 +324,9 @@ theorem leading_cofactor : Formalism.FourierDecayAlt.G.CofLead := by
     rw [pow_mulVec_succ (isStrictUpper_neg hX), mul_zero]
 
 /- English proof (translation)
-Introduce `m D σ ρ' X B hX`. Take `⟨h1, h2⟩` from `leading_cofactor m X B ρ' hX`. Rewrite using `[rho1, h1, h2, zero_pow (Nat.succ_ne_zero m), zero_mul, zero_sub, sub_zero]`. Break down `neg_one_pow_eq_or ℂ m with h | h` into its components or cases. Rewrite using `[pow_add, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[pow_add, h]`. Evaluate the numerical expressions using `[neg_div_neg_eq]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem first_coordinate_limit : Formalism.FourierDecayAlt.G.Rho1Limit := by
   intro m D σ ρ' X B hX
@@ -339,21 +337,19 @@ theorem first_coordinate_limit : Formalism.FourierDecayAlt.G.Rho1Limit := by
   · rw [pow_add, h]; norm_num [neg_div_neg_eq]
 
 /- English proof (translation)
-Introduce `m Kc hK h0`. Take `⟨d, hd, hball⟩` from `Metric.isOpen_iff.mp hK.isClosed.isOpen_compl 0 h0`. Establish `hD : ∀ D ∈ Kc, d ≤ ‖D‖`. Introduce `D hDK`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hball (by simpa [Metric.mem_ball] using not_le.mp hlt) hDK`. Use `set Cm : ℝ := ((m : ℝ) + 1) * ((m : ℝ) * ((m : ℝ) + 1) ^ m) with hCm`. Establish `hCm0 : 0 ≤ Cm` using `by positivity`. Use `set q : ℝ := d / (2 * (Cm + 1)) with hq`. Establish `hq0 : 0 < q` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨min 1 (q ^ 2), d / 2, by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `ε hε hε2 D hDK t ht htle X B ρ₁ ρ' σ hS hX hB hρ₁ hρ' hσ hrel`. Establish `hT : 0 < ‖t‖` using `norm_pos_iff.mpr ht`. Establish `hT1 : ‖t‖ ≤ 1` using `le_trans htle (min_le_left _ _)`. Establish `hTq : ‖t‖ ≤ q ^ 2` using `le_trans htle (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L : ℝ := ‖t‖ ^ (-ε) with hLdef`. Establish `hL : 1 ≤ L` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hT hT1 (by linarith)`. Establish `hL0 : 0 < L` using `lt_of_lt_of_le one_pos hL`. Establish `hsq : L ^ (m + 2) * ‖t‖ ≤ q` using `le_trans (rpow_bound m hT hT1 hε2) (Real.sqrt_le_iff.mpr ⟨hq0.le, hTq⟩)`. Establish `hR` using `remainder_norm_le_strict_upper (t := t) hL hT1 hS hX hB hρ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ‖t ^ (m + 1) * σ‖ ≤ L ^ (m + 2) * ‖t‖`. Rewrite using `[norm_mul, norm_pow, mul_comm]`. Use `mul_le_mul (le_trans hσ (le_self_pow₀ hL (by omega))) (pow_le_of_le_one hT.le hT1 (by omega)) (by positivity) (by positivity)` and prove the remaining obligations. Establish `h2 : ‖Cof X B t * ρ₁‖ ≤ ‖Cof X B t‖ * L`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hρ₁ (norm_nonneg _)`. Establish `hDeq : D = t ^ (m + 1) * σ - Cof X B t * ρ₁ - R0 X B ρ' t`. Rewrite using `[hrel]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖D‖ ≤ L ^ (m + 2) * ‖t‖ + ‖Cof X B t‖ * L + Cm * (L ^ (m + 2) * ‖t‖)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (Cm + 1) * (L ^ (m + 2) * ‖t‖) ≤ d / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : d / 2 ≤ ‖Cof X B t‖ * L`. Use `hD D hDK` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `hinv : ‖t‖ ^ ε = L⁻¹`. Rewrite using `[hLdef, Real.rpow_neg hT.le, inv_inv]`. Rewrite using `[hinv, ← div_eq_mul_inv, div_le_iff₀ hL0]`. Conclude with `h5`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cofactor_lower_bound : Formalism.FourierDecayAlt.G.CofLower := by
   intro m Kc hK h0

@@ -10,7 +10,7 @@ def scaledTorusMean {ι : Type*} [Fintype ι] (r : ι → ℂ) (f : MvPolynomial
   ∫ θ, Real.log ‖MvPolynomial.eval (fun j => r j * torusPoint θ j) f‖ ∂(torusProb ι)
 
 /- English proof (translation)
-Unfold `scaledTorusMean torusMean`. Simplify using `only [one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem scaledTorusMean_one {ι : Type*} [Fintype ι] (f : MvPolynomial ι ℂ) :
     scaledTorusMean (fun _ => 1) f = torusMean f := by
@@ -18,9 +18,9 @@ theorem scaledTorusMean_one {ι : Type*} [Fintype ι] (f : MvPolynomial ι ℂ) 
   simp only [one_mul]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Simplify the hypotheses and the goal together. Name the introduced variables `p j hp`. Simplify using `only [map_mul, MvPolynomial.eval_X, MvPolynomial.aeval_X, Polynomial.eval_mul, hp]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_update_eq_eval_aeval {ι : Type*} [DecidableEq ι] (w : ι → ℂ) (i : ι) (z : ℂ)
     (f : MvPolynomial ι ℂ) :
@@ -39,7 +39,7 @@ theorem eval_update_eq_eval_aeval {ι : Type*} [DecidableEq ι] (w : ι → ℂ)
   · simp [h, Function.update_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Simplify the hypotheses and the goal together. Simplify the hypotheses and the goal together.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify the hypotheses and the goal together. Simplify the hypotheses and the goal together.
 -/
 theorem eval_bind₁_scale {ι : Type*} (r w : ι → ℂ) (f : MvPolynomial ι ℂ) :
     MvPolynomial.eval w
@@ -51,11 +51,11 @@ theorem eval_bind₁_scale {ι : Type*} (r w : ι → ℂ) (f : MvPolynomial ι 
   · simp_all
 
 /- English proof (translation)
-Introduce `h`. Apply `hf` to reduce the goal to its premises. Use `MvPolynomial.funext fun v => ?_` and prove the remaining obligations. Establish `hv` using `eval_bind₁_scale r (fun j => v j / r j) f`. Rewrite `hv` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun j => r j * (v j / r j)) = v`. Use function extensionality and compare the values at `j`. Use `first`. Consider the case `exact mul_div_cancel₀ (v j) (hr j)`. Consider the case `field_simp [hr j]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [mul_comm]; exact div_mul_cancel₀ (v j) (hr j))`. Rewrite `hv` using `[e]`. Rewrite using `[← hv, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bind1_C_mul_X_ne_zero_of_ne_zero {ι : Type} (r : ι → ℂ) (hr : ∀ j, r j ≠ 0)
     (f : MvPolynomial ι ℂ) (hf : f ≠ 0) :
@@ -75,7 +75,7 @@ private theorem bind1_C_mul_X_ne_zero_of_ne_zero {ι : Type} (r : ι → ℂ) (h
   rw [← hv, map_zero]
 
 /- English proof (translation)
-Establish `h` using `(hBasic ι).1 _ (bind1_C_mul_X_ne_zero_of_ne_zero r hr f hf)`. Simplify `h` using `only [eval_bind₁_scale]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_scaled {ι : Type} [Fintype ι] (hBasic : TorusMeanBasicStatement)
     (f : MvPolynomial ι ℂ) (hf : f ≠ 0) (r : ι → ℂ) (hr : ∀ j, r j ≠ 0) :
@@ -85,17 +85,15 @@ theorem integrable_scaled {ι : Type} [Fintype ι] (hBasic : TorusMeanBasicState
   simpa only [eval_bind₁_scale] using h
 
 /- English proof (translation)
-Establish `hr' : ∀ j, Function.update r i 1 j ≠ 0`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne h]`. Conclude with `hr j`. Take `⟨hI1, hE1⟩` from `integral_torus_eq_iter i (integrable_scaled hBasic f hf r hr)`. Take `⟨hI2, hE2⟩` from `integral_torus_eq_iter i (integrable_scaled hBasic f hf _ hr')`. Unfold `scaledTorusMean`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE1, hE2]`. Use `integral_mono hI1 hI2 fun x => ?_` and prove the remaining obligations. Use `set p : Polynomial ℂ := MvPolynomial.aeval (fun j => if j = i then (Polynomial.X : Polynomial ℂ) else Polynomial.C (r j * torusPoint x j)) f`. Establish `key : ∀ (s : ι → ℂ), (∀ j, j ≠ i → s j = r j) → ∀ t : ℝ, MvPolynomial.eval (fun j => s j * torusPoint (Function.update x i t) j) f = p.eval (s i * Complex.exp (2 * Real.pi * Complex.I * (t : ℂ)))`. Introduce `s hs t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← eval_update_eq_eval_aeval]`. Use `congrArg (fun w => MvPolynomial.eval w f) (funext fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[torusPoint]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Function.update_of_ne h, hs j h, torusPoint]`. Establish `k1` using `key r (fun _ _ => rfl)`. Establish `k2` using `key (Function.update r i 1) (fun j h => Function.update_of_ne h _ _)`. Simplify using `only [Function.update_self, one_mul] at k2`. Use `beta_reduce`.
-
-Simplify using `only [k1, k2]`. Conclude with `integral_log_eval_mul_le p (hr i) hri`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaledTorusMean_le_update {ι : Type} [Fintype ι] [DecidableEq ι]
     (hBasic : TorusMeanBasicStatement) (f : MvPolynomial ι ℂ) (hf : f ≠ 0) (r : ι → ℂ)
@@ -130,15 +128,15 @@ theorem scaledTorusMean_le_update {ι : Type} [Fintype ι] [DecidableEq ι]
   exact integral_log_eval_mul_le p (hr i) hri
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, scaledTorusMean r f ≤ scaledTorusMean (fun j => if j ∈ s then (1 : ℂ) else r j) f`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih.trans ?_` and prove the remaining obligations. Apply the tactic sequence `have hr' : ∀ j, (fun j => if j ∈ s then (1 : ℂ) else r j) j ≠ 0 := fun j => by dsimp only split_ifs <;> simp [hr j]`. Establish `hra : ‖(fun j => if j ∈ s then (1 : ℂ) else r j) a‖ ≤ 1`. Simplify using `[ha, hr1 a]`. Establish `hle` using `scaledTorusMean_le_update hBasic f hf _ hr' a hra`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : Function.update (fun j => if j ∈ s then (1 : ℂ) else r j) a 1 = fun j => if j ∈ insert a s then (1 : ℂ) else r j`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Finset.mem_insert, hj, Function.update_of_ne hj]`. Rewrite `hle` using `[e]`. Conclude with `hle`. Establish `hu` using `key Finset.univ`. Simplify using `only [Finset.mem_univ, if_true] at hu`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[scaledTorusMean_one]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem scaledTorusMean_le_torusMean {ι : Type} [Fintype ι] [DecidableEq ι]
     (hBasic : TorusMeanBasicStatement) (f : MvPolynomial ι ℂ) (hf : f ≠ 0) (r : ι → ℂ)

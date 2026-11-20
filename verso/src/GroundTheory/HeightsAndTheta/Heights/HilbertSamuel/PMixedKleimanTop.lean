@@ -11,11 +11,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `d hd hAt hLow K _ ι _ P P0 M II hII h1 hP h0 hsM hnM hcM hhM`. Take `⟨hsH, hcH, hmH⟩` from `hFS K ι P P0`. Establish `haH : (scaledFSH ι).a = fun k => (((fun _ => 1 : K → ℕ) k : ℕ) : ℤ)`. Rewrite using `[scaledFSH_a]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e0 : II K ι P d (fun _ => M) = (fun i : ℕ => II K ι P d (fun j : Fin d => if (j : ℕ) < d - i then M else scaledFSH ι)) 0`. Simplify using the standard rewrite rules. Rewrite using `[e0]`. Use `hA d (fun i : ℕ => II K ι P d (fun j : Fin d => if (j : ℕ) < d - i then M else scaledFSH ι)) hd (fun i hi1 hid => hLow K ι P P0 M (scaledFSH ι) (fun _ => 1) II hII h1 hP h0 hsM hnM hcM hhM haH hsH hmH hcH (d - i) (by omega)) ?_ ?_` and prove the remaining obligations. Simplify using `using hH K ι P d II hII h1 hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `q p _ hp hpos`. Take `⟨e1, e2⟩` from `hE K ι (II K ι) (hII K ι) P d M (scaledFSH ι) q p hP hsM.1 hsH.1`. Rewrite using `[← e2 h1]`. Conclude with `hSec K ι P P0 d M (scaledFSH ι) II hII hd hP h0 hsM hnM hcM hhM (scaledFSH_a ι) hsH hmH hcH hAt q p hp (by rw [e1]; exact hpos)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MixedKleimanTop.proof (hFS : ScaledFSHProps.Statement) (hE : ZCombExpand.Statement)
     (hSec : MixedSectionStep.Statement) (hH : ScaledFSTopPos.Statement) (hA : MixedTopAlgebra.Statement) :

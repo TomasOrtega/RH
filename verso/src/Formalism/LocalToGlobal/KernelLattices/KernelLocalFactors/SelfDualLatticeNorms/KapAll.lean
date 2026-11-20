@@ -12,7 +12,7 @@ open Formalism.L2.Th1.H (IsSelfDual)
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
 /- English proof (translation)
-Distinguish the cases in `hs : SplitK D p`. Conclude with `kappaAt_split B hsd p ι hs`. Conclude with `kappaAt_nonsplit_of B h0 hcc p hs ι (kappa_norm_nonsplit B.kc ι hs)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem kappaAt_of (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) B.latA) (hcc : cc ≠ ⊥) (h0 : δ ≠ 0)
     (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : B.KappaAt p ι := by
@@ -21,20 +21,20 @@ theorem kappaAt_of (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.wh
   · exact kappaAt_nonsplit_of B h0 hcc p hs ι (kappa_norm_nonsplit B.kc ι hs)
 
 /- English proof (translation)
-The claim follows from `kappaAt_of B (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.selfDual B hcc hδ) hcc.1 (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.base_linkage_nonempty D cc δ B) p ι`.
+A detailed English derivation is pending.
 -/
 theorem kappaAt (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
     B.KappaAt p ι :=
   kappaAt_of B (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.selfDual B hcc hδ) hcc.1 (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.base_linkage_nonempty D cc δ B) p ι
 
 /- English proof (translation)
-Introduce `_ _ B hcc hδ p _ ι _` and use `kappaAt B hcc hδ p ι`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kappaAll (D : D7) : KappaAll D :=
   fun _ _ B hcc hδ p _ ι _ => kappaAt B hcc hδ p ι
 
 /- English proof (translation)
-Introduce `_ _ B hcc hδ p _ ι _` and use `kappaAt B hcc hδ p ι`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kappaSplit (D : D7) : KappaSplit D :=
   fun _ _ B hcc hδ p _ ι _ => kappaAt B hcc hδ p ι

@@ -20,7 +20,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ConjPlaceDual
 
 /- English proof (translation)
-Introduce `x y hy`. Establish `hx : (x : D.host.E) = D.host.conj (y : D.host.E)`. Rewrite using `[hy, GlobalTheory.SplitPlaceOver.host_conj_eq', GlobalTheory.SplitPlaceOver.host_conj_eq', IsCMField.complexConj_apply_apply]`. Conclude with `(h y x hx).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_symm (D : D7) {w w' : PlE D.host} (h : IsConjPl D.host w w') : IsConjPl D.host w' w := by
   intro x y hy
@@ -29,19 +29,17 @@ theorem conjPl_symm (D : D7) {w w' : PlE D.host} (h : IsConjPl D.host w w') : Is
   exact (h y x hx).symm
 
 /- English proof (translation)
-Introduce `hPr hL D P hLab i PI k v w' hc`. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `hLab`. Take `⟨c, hc1, hc2, hc3⟩` from `hγ2 k v w' hc`. Establish `hw'g : w' ∈ placesOver D.host.E (D.host.g k)`. Establish `h0` using `D.naut.plGw_over k v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [placesOver, Set.mem_setOf_eq] at h0 ⊢`. Conclude with `(hc _ _ (by simp)).1 h0`. Rewrite using `[hγ3 k w' hw'g, hγ3 k _ (D.naut.plGw_over k v), hγ1 k v]`. Take `⟨s, hs⟩` from `GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩`. Establish `hc3' : ∀ y, γ k w' (c y) = c (D.ntypes.tg k v y)` using `hc3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `clear hγ1 hγ2 hγ3`. Generalize the expression as in `D.naut.plGw k v = w at hs hc hc2 ⊢`. Substitute `hs` using the available equality. Take `⟨hsw', -⟩` from `GlobalTheory.TypeTame.conjSP_w_of_isConjPl D s w' (conjPl_symm D hc)`. Substitute `hsw'` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV (P.H.av.rep i PI) s`. Take `⟨κ, σ', e, hκ, hκc, hσ', he⟩` from `GlobalTheory.T.splitPlaceLocalComponent_conj_eq_inverseTranspose D D.R.nV (P.H.av.rep i PI) s σ hσ`. Establish `hloc : ∀ w, D.naut.locV i PI w = D.nbc.locAU (D.nd.j i) (P.H.au.cls (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI)) w` using `fun w => by rw [D.nbc.embAV_loc, P.H.emb]`. Establish `hA` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI) s σ hσ`. Establish `hA'` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI) _ σ' hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hA`, `hA'` using `[← hloc]`. Take `⟨b, b', hb, hb', hN, hρ⟩` from `GlobalTheory.T.conjugate_completion_iso hPr hL D s.w (GlobalTheory.TypeTame.conjSP s).w c hc1 hc2 κ hκ hκc D.R.nV σ σ' e he`. Rewrite `hb` using `[← hA]`. Rewrite `hb'` using `[← hA']`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.weilDeligneDualTransport_monodromy_dim_wild D _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `GlobalTheory.T.weilDeligneLabel_transportDual_inverseRoots D k _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ _ _ hc3'`. Use `⟨fun hm => (P.T.mono0 _ _).2 (h1 ((P.T.mono0 _ _).1 hm)), fun ht σ₁ hσ₁ hw₁ => ?_, h4⟩` and prove the remaining obligations. Rewrite using `[P.T.inePol _ _ σ₁ hσ₁, ← P.T.dim]`. Use `h3 (fun σ₂ hσ₂ hw₂ => ?_) σ₁ hσ₁ hw₁` and prove the remaining obligations. Rewrite using `[← P.T.inePol _ _ σ₂ hσ₂, P.T.dim]`.
-
-Conclude with `ht σ₂ hσ₂ hw₂`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), LabAll D P.T → ConjDual D := by
   intro hPr hL D P hLab i PI k v w' hc

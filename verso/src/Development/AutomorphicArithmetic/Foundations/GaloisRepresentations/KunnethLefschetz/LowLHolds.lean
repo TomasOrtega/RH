@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Establish `hx : ∀ x : Hl l E n 0, x = 0`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `@Subsingleton.elim _ (h j) _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z w => ?_⟩` and prove the remaining obligations. Take `⟨b, x, -, rfl⟩` from `tensor_form l z`. Take `⟨c, y, -, rfl⟩` from `tensor_form l w`. Rewrite using `[hx x, hx y, TensorProduct.tmul_zero, TensorProduct.tmul_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_of (l : ℕ) [Fact l.Prime] {E : Spc} {n : ℤ} (h : ∀ j, Subsingleton (Ht (l ^ j) E n 0)) :
     Subsingleton (HQ l E n 0) := by
@@ -25,39 +25,35 @@ private theorem sub_of (l : ℕ) [Fact l.Prime] {E : Spc} {n : ℤ} (h : ∀ j, 
   rw [hx x, hx y, TensorProduct.tmul_zero, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Introduce `hI hP l _ k _ _ hl hR hT`. Establish `hu : IsUnit ((l : ℕ) : Γ(S k, ⊤))`. Simplify using `using (isUnit_iff_ne_zero.mpr hl).map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Take `⟨ω, hω, hone⟩` from `hR.one_def (S k) hu`. Take `⟨hsurj, hinj⟩` from `rep_of ω (fun j z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(hT j).1.1 z`. Conclude with `⟨a, by rw [ha]; simp [lv, hω]⟩)`. Use the proof step `(fun j a ha => (hT j).1.2 a (by simpa [lv, hω] using ha))`. Set `e : ℤ_[l] ≃ₗ[ℤ_[l]] Hl l (sch.obj (S k)) 0 0` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton ℤ_[l] _ ω) ⟨fun c d hcd => by`. Establish `h0 : (c - d) • ω = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hcd` using `[sub_smul, sub_eq_zero]`. Conclude with `sub_eq_zero.mp (hinj _ h0),`. Use `fun x => by`. Take `⟨c, hc⟩` from `hsurj x`. Conclude with `⟨c, by simp [hc]⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φ : V l (S k) 0 ≃ₗ[ℤ_[l]] ℚ_[l]` to `(TensorProduct.congr (LinearEquiv.refl ℤ_[l] ℚ_[l]) e.symm).trans (TensorProduct.rid ℤ_[l] ℚ_[l])`. Establish `hΦ : ∀ (q : ℚ_[l]) (u : Hl l (sch.obj (S k)) 0 0), Φ (q ⊗ₜ u) = ((e.symm u : ℤ_[l]) : ℚ_[l]) * q`. Introduce `q u`. Simplify using `[Φ, Algebra.smul_def]`. Establish `he : ∀ c : ℤ_[l], e.symm (c • ω) = c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `hsm : ∀ r : ℚ_[l], r • oneV l (S k) = r ⊗ₜ ω`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hone, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hΦr : ∀ r : ℚ_[l], Φ (r • oneV l (S k)) = r`. Introduce `r`. Rewrite using `[hsm, hΦ]`. Use `he 1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[one_smul]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `key : ∀ (b : ℤ_[l]) (u : Hl l (sch.obj (S k)) 0 0), b ≠ 0 → ((b : ℚ_[l])⁻¹ ⊗ₜ[ℤ_[l]] u : V l (S k) 0) = 0 → u = 0`. Introduce `b u hb h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Φ h`. Rewrite `h1` using `[hΦ, map_zero]`. Establish `hb' : (b : ℚ_[l]) ≠ 0` using `fun h' => hb (Subtype.ext h')`. Establish `h2 : ((e.symm u : ℤ_[l]) : ℚ_[l]) = 0`. Break down `mul_eq_zero.mp h1 with h3 | h3` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `h3`. Conclude with `absurd h3 (inv_ne_zero hb')`. Establish `h4 : e.symm u = 0` using `Subtype.ext h2`. Simplify using `using congrArg e h4`. Establish `hpb : ∀ {X : Scheme} (y : S k ⟶ X) (q : ℚ_[l]) (x : Hl l (sch.obj X) 0 0), pb l y 0 (q ⊗ₜ x) = q ⊗ₜ pullHl l (sch.map y) 0 0 x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X y q x`. Simplify using `only [pb, pullHQ, LinearMap.baseChange_tmul]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X n hn`. Conclude with `sub_of l (fun j => ((In.a9 hI) (ZMod (l ^ j)) (tw (l ^ j) 0)).1 (sch.obj X) n hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n hn`. Conclude with `sub_of l (fun j => hP hI k (l ^ j) n 0 hn)`. Introduce `z`. Take `⟨b, x, hb, rfl⟩` from `tensor_form l z`. Take `⟨c, rfl⟩` from `hsurj x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(c : ℚ_[l]) * (b : ℚ_[l])⁻¹, ?_, ?_⟩` and prove the remaining obligations. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[hΦr, hΦ, he]`. Introduce `r hr`. Establish `h1` using `congrArg Φ hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[hΦr, hΦ, he]`. Conclude with `h1.symm`. Introduce `X p hp z hz`. Take `⟨b, x, hb, rfl⟩` from `tensor_form l z`. Establish `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply `((hT j).2 p hp (x.1 j)).1` to reduce the goal to its premises. Introduce `y`. Establish `h1` using `hz y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[hpb]`. Establish `h2` using `key b _ hb h1`. Conclude with `congrArg (fun w : Hl l (sch.obj (S k)) 0 0 => w.1 j) h2`. Rewrite using `[hx, TensorProduct.tmul_zero]`. Introduce `X p hp hc z y y'`.
-
-Take `⟨b, x, hb, rfl⟩` from `tensor_form l z`. Rewrite using `[hpb, hpb]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
-
-Conclude with `((hT j).2 p hp (x.1 j)).2 hc y y'`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lowL_holds : LowL := by
   intro hI hP l _ k _ _ hl hR hT

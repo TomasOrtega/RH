@@ -26,7 +26,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨p, s, e, rfl⟩` from `h₁`. Take `⟨p', s', e', rfl⟩` from `h₂`. Establish `: s = s'` using `h.inj ⟨centre z, p⟩ (e.trans e'.symm)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (h : IsCptGen ξ) {R : Type} [CommRing R]
     [IsLocalRing R] {z : Sp R ⟶ X} {a : Ω} {r r' : R} (h₁ : ValAt ξ z a r) (h₂ : ValAt ξ z a r') : r = r' := by
@@ -36,11 +36,11 @@ theorem valAt_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} 
   rw [this]
 
 /- English proof (translation)
-Establish `mono : ∀ {v : Vecs y D.p} {w : Vecs y D.q}, IsFramed U τ σ y v w → IsFramed Set.univ τ σ y v w` using `fun h => ⟨h.1, Set.subset_univ _, h.2.2⟩`. Use `choose A hA _ using fun i => h.2.2.1.2 (v' i) (h'.2.2.1.1 i)`. Use `choose B hB _ using fun j => h.2.2.2.2 (w' j) (h'.2.2.2.1 j)`. Establish `hmix : IsFramed U τ σ y v' w` using `⟨h.1, h.2.1, h'.2.2.1, h.2.2.2⟩`. Establish `d₁` using `hφ.chg ℂ σ y v w v' w (Matrix.of A) 1 h hmix hA (FlatModel.isComb_one fun j => (h.2.2.2.1 j).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `dA : (Matrix.of A).det ≠ 0`. Introduce `h0`. Rewrite `d₁` using `[h0, mul_zero, Matrix.det_one, _root_.mul_one]`. Conclude with `hφ.ne ℂ σ y v w h d₁.symm`. Establish `c₁` using `hφ.chg ℂ σ y v w v' w' (Matrix.of A) (Matrix.of B) h h' hA hB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `c₂` using `hΦ.chg y v w v' w' (Matrix.of A) (Matrix.of B) (mono h) (mono h') hA hB`. Apply `mul_right_cancel₀ dA` to reduce the goal to its premises. Rewrite using `[c₁, _root_.mul_assoc, c₂, ← _root_.mul_assoc, e]`.
+A detailed English derivation is pending.
 -/
 theorem chg_eq {U : Set (Xo.XF c)} {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} {φ : FrameFn Xo c}
     (hΦ : IsUnitAn τ σ Φ) (hφ : IsLineFn U τ φ) {y : Sp ℂ ⟶ Xo.XF c} {v v' : Vecs y D.p} {w w' : Vecs y D.q}
@@ -62,15 +62,15 @@ theorem chg_eq {U : Set (Xo.XF c)} {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ :
   rw [c₁, _root_.mul_assoc, c₂, ← _root_.mul_assoc, e]
 
 /- English proof (translation)
-Set `S` to `Submodule.span K (Set.range e)`. Set `B : Module.Basis (Fin n) K S` to `Module.Basis.span he`. Set `g : S [⋀^Fin n]→ₗ[K] ⋀[K]^n V` to `(exteriorPower.ιMulti K n).compLinearMap S.subtype`. Establish `key : g = (LinearMap.toSpanSingleton K _ (g B)).compAlternatingMap B.det`. Use `Module.Basis.ext_alternating B fun v hv => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `s : Equiv.Perm (Fin n)` to `Equiv.ofBijective v (Finite.injective_iff_bijective.1 hv)`. Establish `e₁ : (fun i => B (v i)) = (B ∘ s)` using `rfl`. Rewrite using `[e₁, AlternatingMap.map_perm]`. Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.toSpanSingleton_apply]`. Rewrite using `[AlternatingMap.map_perm, Module.Basis.det_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hb : ∀ i, b i ∈ S` using `fun i => by show b i ∈ Submodule.span K (Set.range e)`. Rewrite using `[← h]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Use `⟨B.det (fun i => ⟨b i, hb i⟩), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁ : exteriorPower.ιMulti K n b = g (fun i => ⟨b i, hb i⟩)` using `rfl`. Establish `e₂ : exteriorPower.ιMulti K n e = g B` using `by show _ = exteriorPower.ιMulti K n (fun i => ((B i : S) : V))`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply he i).symm`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₁, e₂]`. Use `conv_lhs => rw [key]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem iMulti_eq_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ} {b e : Fin n → V}
     (he : LinearIndependent K e) (h : Submodule.span K (Set.range b) = Submodule.span K (Set.range e)) :
@@ -102,15 +102,13 @@ theorem iMulti_eq_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n :
   simp
 
 /- English proof (translation)
-Introduce `z hz`. Set `L : ℂ → (Fin d → ℂ)` to `fun t => t • z`. Establish `hL : Continuous L` using `by fun_prop`. Set `S : Set ℂ` to `L ⁻¹' ball 0 1`. Establish `hSo : IsOpen S` using `isOpen_ball.preimage hL`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSc : IsPreconnected S`. Establish `: Convex ℝ S`. Introduce `a ha b hb s t hs ht hst`. Use `(convex_ball (0 : Fin d → ℂ) 1) ha hb hs ht hst` as an intermediate fact. Use `show (s • a + t • b) • z ∈ ball (0 : Fin d → ℂ) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[add_smul, smul_assoc, smul_assoc]` and apply the resulting hypothesis. Conclude with `this.isPreconnected`. Establish `h0S : (0 : ℂ) ∈ S` using `by simp [S, L]`. Establish `h1S : (1 : ℂ) ∈ S` using `by simpa [S, L] using hz`. Establish `hl : DifferentiableOn ℂ (fun t => h (L t)) S` using `hd.comp (by fun_prop) (fun t ht => ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han` using `hl.analyticOnNhd hSo`. Establish `hev : (fun t => h (L t)) =ᶠ[𝓝 0] 0`. Establish `h1 : ∀ᶠ t in 𝓝 (0 : ℂ), L t ∈ ball (0 : Fin d → ℂ) 1` using `hL.continuousAt.eventually_mem (by simpa [L] using isOpen_ball.mem_nhds (mem_ball_self one_pos))`. Establish `h2 : ∀ᶠ t in 𝓝 (0 : ℂ), L t ∈ ball (0 : Fin d → ℂ) ε` using `hL.continuousAt.eventually_mem (by simpa [L] using isOpen_ball.mem_nhds (mem_ball_self hε))`. Use `filter_upwards [h1, h2] with t a b using h0 _ a b`.
-
-Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero hSc h0S hev h1S` as an intermediate fact. Simplify `this` using `[L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_on_ball {d : ℕ} {h : (Fin d → ℂ) → ℂ} (hd : DifferentiableOn ℂ h (ball 0 1)) {ε : ℝ} (hε : 0 < ε)
     (h0 : ∀ z ∈ ball (0 : Fin d → ℂ) 1, z ∈ ball (0 : Fin d → ℂ) ε → h z = 0) :
@@ -142,9 +140,9 @@ theorem eq_zero_on_ball {d : ℕ} {h : (Fin d → ℂ) → ℂ} (hd : Differenti
   simpa [L] using this
 
 /- English proof (translation)
-Introduce `t _`. Establish `hm : (spMap χ) t ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen g`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Set `t' : PrimeSpectrum ℂ` to `t`. Use `show χ g ∉ t'.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_bot_of_prime t'.asIdeal]`. Simplify using `using h`. Conclude with `hm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ) (g : Γ(X, V))
     (h : χ g ≠ 0) : ⊤ ≤ (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ X.basicOpen g := by
@@ -158,7 +156,7 @@ theorem mem_basicOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (χ :
   exact hm
 
 /- English proof (translation)
-Establish `h : (spMap χ ≫ hV.fromSpec) t ∈ Set.range hV.fromSpec` using `⟨spMap χ t, by simp⟩`. Rewrite `h` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem comp_mem {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ) (t : Sp ℂ) :
     (spMap χ ≫ hV.fromSpec) t ∈ V := by
@@ -166,9 +164,9 @@ theorem comp_mem {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X
   rwa [hV.range_fromSpec] at h
 
 /- English proof (translation)
-Take `⟨g, hg, hpg⟩` from `hV.exists_basicOpen_le (V := W) ⟨p, hpW⟩ hpV`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hz : ∀ z ∈ ball (0 : Fin d → ℂ) 1, z ∈ ball (0 : Fin d → ℂ) ε → ψ z g = 0`. Introduce `z h₁ h₂`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hcon z h₁ h₂ ((mem_basicOpen hV (ψ z) g hne).trans (Scheme.Hom.preimage_mono _ hg))`. Use `h0 g (eq_zero_on_ball (hψ.2 g) hε hz)` as an intermediate fact. Substitute `this` using the available equality. Simplify using `at hpg`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_near {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) {d : ℕ}
     {ψ : (Fin d → ℂ) → (Γ(X, V) →+* ℂ)} (hψ : IsHolPts (ball 0 1) ψ)
@@ -214,35 +212,33 @@ def vecAt {S : Scheme.{0}} {G : Over S} {R R' : Type} [CommRing R] [CommRing R']
 variable {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Introduce `y₀ v₀ w₀ hf`. Take `⟨U', hU', hdom⟩` from `GlobalTheory.T.component_open_stalks_domain _ H D l Xo c O β Y U Z hO`. Take `⟨V₀, hV₀, c₁, c₂, vR, wR, hy₀, l₁, s₁, l₂, s₂, hfr⟩` from `GlobalTheory.T.component_point_value_holomorphic _ H D l Xo c O β Y U Z τ σ y₀ hO hτ hf.1 hf.2.1`. Take `⟨α, hα⟩` from `ha c₁ l₁ s₁`. Take `⟨κ', hκ'⟩` from `hb c₂ l₂ s₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eU : ∀ χ : Γ(Xo.XF c, V₀) →+* ℂ, spMap χ ≫ under hV₀.fromSpec = under (spMap χ ≫ hV₀.fromSpec)` using `fun χ => (Category.assoc _ _ _).symm`. Set `vat : ∀ χ : Γ(Xo.XF c, V₀) →+* ℂ, Vecs (spMap χ ≫ hV₀.fromSpec) D.p` to `fun χ a => vecAt χ (eU χ) (vR a)`. Set `wat : ∀ χ : Γ(Xo.XF c, V₀) →+* ℂ, Vecs (spMap χ ≫ hV₀.fromSpec) D.q` to `fun χ a => vecAt χ (eU χ) (wR a)`. Establish `val : ∀ χ : Γ(Xo.XF c, V₀) →+* ℂ, (spMap χ ≫ hV₀.fromSpec) ≫ pullback.snd _ _ = spMap σ → Set.range (spMap χ ≫ hV₀.fromSpec) ⊆ U → IsFramed U τ σ _ (vat χ) (wat χ) ∧ ValAt (Z.ξ₀ ≫ Y.j) ((spMap χ ≫ hV₀.fromSpec) ≫ Y.j) (α / κ') (φ ℂ _ (vat χ) (wat χ))`. Introduce `χ h1 h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f1, f2, f3⟩` from `hfr χ (vat χ) (wat χ) h1 h2 (fun _ => rfl) (fun _ => rfl)`. Conclude with `⟨f1, hr ℂ σ _ _ _ c₁ c₂ α κ' f1 hα hκ' f2 f3⟩`. Establish `hrange : Set.range y₀ ⊆ Set.range hV₀.fromSpec`. Rewrite using `[hV₀.range_fromSpec]`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hy₀ (show t ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Take `⟨χ₀, hχ₀⟩ : ∃ χ₀ : Γ(Xo.XF c, V₀) →+* ℂ, spMap χ₀ ≫ hV₀.fromSpec = y₀` from `⟨(Spec.preimage (IsOpenImmersion.lift hV₀.fromSpec y₀ hrange)).hom, by simp [spMap]⟩`. Establish `hval₀ : ∃ r₀, ValAt (Z.ξ₀ ≫ Y.j) (y₀ ≫ Y.j) (α / κ') r₀`. Rewrite using `[← hχ₀]`. Conclude with `⟨_, (val χ₀ (by rw [hχ₀]; exact hf.1) (by rw [hχ₀]; exact hf.2.1)).2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, hr₀⟩` from `hval₀`. Take `⟨W₁, hW₁, hsec⟩` from `GlobalTheory.T.value_locally_regular_function _ _ Y.j Z.Ω (Z.ξ₀ ≫ Y.j) Z.gen y₀ _ r₀ hr₀`. Establish `hcU : centre y₀ ∈ U` using `hf.2.1 ⟨_, rfl⟩`. Establish `hy₀' : ⊤ ≤ y₀ ⁻¹ᵁ (V₀ ⊓ U' ⊓ W₁)`. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hU'' : y₀ t ∈ (U' : Set (Xo.XF c))` using `by rw [hU']; exact hf.2.1 ⟨t, rfl⟩`. Conclude with `⟨⟨hy₀ ht, hU''⟩, hW₁ ht⟩`. Establish `hsm : SmoothOfRelativeDimension D.dim (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth`. Take `⟨V, hV, ψ, hle, hhol, hψ0, hover, hinj⟩` from `GlobalTheory.T.holomorphic_chart_near_point c.F σ (Xo.XF c) (pullback.snd _ _) D.dim hsm y₀ _ hf.1 hy₀' (hdom _ hcU)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hsec V hV (hle.trans inf_le_right)`. Establish `hVV₀ : V ≤ V₀` using `hle.trans (inf_le_left.trans inf_le_left)`. Set `res : Γ(Xo.XF c, V₀) →+* Γ(Xo.XF c, V)` to `((Xo.XF c).presheaf.map (homOfLE hVV₀).op).hom`. Establish `hpt : ∀ z, spMap ((ψ z).comp res) ≫ hV₀.fromSpec = spMap (ψ z) ≫ hV.fromSpec`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : spMap res ≫ hV₀.fromSpec = hV.fromSpec`. Use `hV₀.map_fromSpec hV (homOfLE hVV₀).op` as an intermediate fact. Simplify `this` using `[spMap, res]`. Rewrite using `[← h1, ← Category.assoc]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `ψ' : (Fin D.dim → ℂ) → (Γ(Xo.XF c, V₀) →+* ℂ)` to `fun z => (ψ z).comp res`. Establish `hin : ∀ z, Set.range (spMap (ψ z) ≫ hV.fromSpec) ⊆ U`. Introduce `z`. Rewrite using `[← hU']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(hle.trans (inf_le_left.trans inf_le_right)) (Cmp.comp_mem hV (ψ z) t)`. Establish `val' : ∀ z ∈ ball (0 : Fin D.dim → ℂ) 1, IsFramed U τ σ _ (vat (ψ' z)) (wat (ψ' z)) ∧ φ ℂ _ (vat (ψ' z)) (wat (ψ' z)) = ψ z g`. Introduce `z hz`. Take `⟨f1, f2⟩` from `val (ψ' z) (by rw [hpt]; exact hover z hz) (by rw [hpt]; exact hin z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨f1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ r, ValAt (Z.ξ₀ ≫ Y.j) ((spMap (ψ' z) ≫ hV₀.fromSpec) ≫ Y.j) (α / κ') r → r = ψ z g` using `fun r hr => by`. Rewrite `hr` using `[hpt]`. Conclude with `hg _ r hr`. Conclude with `key _ f2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hol : DifferentiableOn ℂ (fun z => Φ (spMap (ψ' z) ≫ hV₀.fromSpec) (vat (ψ' z)) (wat (ψ' z))) (ball 0 1)` using `hΦ.hol Γ(Xo.XF c, V₀) hV₀.fromSpec vR wR D.dim (ball 0 1) ψ' (fun z => vat (ψ' z)) (fun z => wat (ψ' z)) isOpen_ball (fun r => hhol.2 (res r)) (fun z hz => ⟨⟨(val' z hz).1.1, Set.subset_univ _, (val' z hz).1.2.2⟩, fun _ => rfl, fun _ => rfl⟩)`. Establish `m0 : (0 : Fin D.dim → ℂ) ∈ ball (0 : Fin D.dim → ℂ) 1` using `mem_ball_self one_pos`. Establish `hcont : ContinuousAt (fun z => ψ z g - κ₀ * Φ (spMap (ψ' z) ≫ hV₀.fromSpec) (vat (ψ' z)) (wat (ψ' z))) 0` using `((hhol.2 g).continuousOn.continuousAt (isOpen_ball.mem_nhds m0)).sub (continuousAt_const.mul (hol.continuousOn.continuousAt (isOpen_ball.mem_nhds m0)))`. Establish `hpV : genPt Z.ξ₀ ∈ V`. Establish `hs : genPt Z.ξ₀ ⤳ centre y₀` using `(Z.closure _).1 hcU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `hs.mem_open V.isOpen ?_` and prove the remaining obligations. Rewrite using `[← hψ0]`. Conclude with `Cmp.comp_mem hV (ψ 0) _`. Establish `hz : ψ 0 g - κ₀ * Φ (spMap (ψ' 0) ≫ hV₀.fromSpec) (vat (ψ' 0)) (wat (ψ' 0)) = 0`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ε, hε, hb'⟩` from `Metric.eventually_nhds_iff_ball.1 (hcont.eventually_ne hne)`. Take `⟨z, h1, h2, h3⟩` from `Cmp.exists_near hV hhol hinj W hpV hgW hε`. Use `hb' z h2 ?_` and prove the remaining obligations. Take `⟨v', w', hf', he'⟩` from `hW (spMap (ψ' z) ≫ hV₀.fromSpec) (by rw [hpt]; exact hover z h1) (by rw [hpt]; exact h3) (by rw [hpt]; exact hin z)`. Rewrite using `[← (val' z h1).2, chg_eq hΦ hφ hf' (val' z h1).1 he', sub_self]`.
-
-Establish `fin : ∀ (y' : Sp ℂ ⟶ Xo.XF c) (_ : y' = y₀) (v' : Vecs y' D.p) (w' : Vecs y' D.q), IsFramed U τ σ y' v' w' → φ ℂ y' v' w' = κ₀ * Φ y' v' w' → φ ℂ y₀ v₀ w₀ = κ₀ * Φ y₀ v₀ w₀`. Introduce and unpack `y' rfl v' w' h1 h2`. Conclude with `chg_eq hΦ hφ h1 hf h2`. Conclude with `fin _ ((hpt 0).trans hψ0) _ _ (val' 0 m0).1 ((val' 0 m0).2.trans (sub_eq_zero.1 hz))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ : E →+* ℂ} {σ : c.F →+* ℂ}
     {Φ : CFn Xo c} {φ : FrameFn Xo c}
@@ -353,15 +349,13 @@ end GlobalTheory.CompanionTheory.Ar.Flat.Cmp
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `hR hG E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ φ hO hpq hτ hσ hgeo hΦ hL hF`. Take `⟨h1, h2, -, ⟨p₀, hp₀⟩⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hO hτ`. Take `⟨N₁, hN₁, b₁, sb₁, fb₁⟩` from `h1 p₀ hp₀`. Take `⟨N₂, hN₂, b₂, sb₂, fb₂⟩` from `h2 p₀ hp₀`. Establish `l₁` using `(fb₁ p₀ hp₀ hN₁).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `l₂` using `(fb₂ p₀ hp₀ hN₂).1`. Take `⟨f, κ₀, W, hκ₀, hgW, hgen, hpts⟩` from `GlobalTheory.T.eigen_frames_analytic hR hG E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσ hgeo hΦ l₁ sb₁ l₂ sb₂`. Take `⟨φ₀, hL₀, hrep⟩` from `GlobalTheory.T.wedge_eigen_line_generator E H D l Xo c O β Y U Z τ _ _ hO hτ hgen`. Establish `hF₀` using `FlatOnModel.of_gen hL₀ hgen hrep`. Take `⟨x, hx, hsc⟩` from `GlobalTheory.T.frame_functions_flat_agree E H D l Xo c O β Y U Z τ φ₀ φ hO hτ hgeo hL₀ hF₀ hL hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hext` using `Cmp.ext_frames Z hO hτ hΦ hL₀ hrep (fun c₁ lc sc => by`. Take `⟨d, hd⟩` from `Cmp.iMulti_eq_smul lc (sb₁.trans sc.symm)`. Conclude with `⟨f * d, by rw [hd, smul_smul]⟩)`. Use the proof step `(fun c₂ lc sc => Cmp.iMulti_eq_smul lc (sb₂.trans sc.symm))`. Use `W hgW (κ₀ := κ₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun y h₁ h₂ h₃ => by`. Take `⟨v, w, hf, hv, hval⟩` from `hpts y h₁ h₂ h₃`. Use `hrep ℂ σ y v w b₁ b₂ f 1 hf rfl (one_smul _ _).symm hv.1 hv.2` as an intermediate fact. Rewrite `this` using `[div_one]`. Conclude with `⟨v, w, hf, Cmp.valAt_unique Z.gen this hval⟩)`.
-
-Use `⟨σ x * κ₀, mul_ne_zero ((map_ne_zero σ).2 hx) hκ₀, fun y v w hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hsc ℂ σ y v w hf, hext y v w hf, _root_.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_eq_const_mul_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (φ : FrameFn Xo c), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → σ (tauIn c τ H.rt) = H.rt0 → Z.IsGeom → IsUnitAn τ σ Φ → IsLineFn U τ φ → FlatOnModel Z τ φ → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ y v w, IsFramed U τ σ y v w → φ ℂ y v w = κ * Φ y v w := by
   intro hR hG E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ φ hO hpq hτ hσ hgeo hΦ hL hF

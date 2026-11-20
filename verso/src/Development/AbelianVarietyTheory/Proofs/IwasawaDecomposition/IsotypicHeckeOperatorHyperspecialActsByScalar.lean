@@ -13,15 +13,13 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type}
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-Establish `tr : ∀ x ∈ D, ∀ y ∈ D, TrivOutside {v} (x⁻¹ * y)` using `fun x hx y hy => GlobalTheory.HeckeScalarSph.triv_mul (GlobalTheory.HeckeScalarSph.triv_inv (hD x hx)) (hD y hy)`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, NG.heckeD, finsum_eq_sum_of_support_subset (s := R.image fun x : GAf L n => (x : GAf L n ⧸ J)), Finset.sum_image]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Establish `hc : ∃ x ∈ D, (x : GAf L n ⧸ J) = γ` using `⟨γ, h1 γ hγ, rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hc]`. Establish `ht` using `tr γ (h1 γ hγ) _ hc.choose_spec.1`. Establish `hu : γ⁻¹ * hc.choose ∈ Umax L n` using `(hJ _ ht).1 (QuotientGroup.eq.1 hc.choose_spec.2.symm)`. Use `congrFun (hf _ hu ht) (g * γ)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f _ = f _`. Use `congr 1`. Use `group`. Introduce `γ hγ δ hδ e`. Conclude with `(h2 δ (h1 δ hδ)).unique ⟨hγ, (hJ _ (tr γ (h1 γ hγ) δ (h1 δ hδ))).1 (QuotientGroup.eq.1 e)⟩ ⟨hδ, by rw [inv_mul_cancel]; exact one_mem _⟩`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Distinguish the cases in `h : ∃ x ∈ D, (x : GAf L n ⧸ J) = c`. Take `⟨x, hx, rfl⟩` from `h`. Take `⟨γ, ⟨hγ, e⟩, -⟩` from `h2 x hx`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨γ, hγ, QuotientGroup.eq.2 ((hJ _ (tr γ (h1 γ hγ) x hx)).2 e)⟩)`.
-
-Conclude with `absurd (dif_neg h) hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem heckeD_eq_sum_of {v : HeightOneSpectrum (𝓞 L⁺)} {J : Subgroup (GAf L n)}
     (hJ : ∀ κ, TrivOutside {v} κ → (κ ∈ J ↔ κ ∈ Umax L n)) {D : Set (GAf L n)} (hD : ∀ x ∈ D, TrivOutside {v} x)
@@ -55,37 +53,35 @@ theorem heckeD_eq_sum_of {v : HeightOneSpectrum (𝓞 L⁺)} {J : Subgroup (GAf 
     · exact absurd (dif_neg h) hc
 
 /- English proof (translation)
-Establish `tc : ∀ κ : GAf L n, TrivOutside {s.v} κ → TrivOutside Bᶜ κ` using `fun κ hκ v hv => hκ v fun h => hv (by rw [Set.mem_compl_iff, Set.mem_singleton_iff.1 h]; exact hsB)`. Establish `hJU : ∀ κ, TrivOutside {s.v} κ → (κ ∈ J ↔ κ ∈ Umax L n)` using `fun κ hκ => (hyp κ (tc κ hκ)).1`. Establish `hfin : ((fun x : GAf L n => (x : GAf L n ⧸ Umax L n)) '' tSet L n s ϖ k).Finite` using `GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level L n (Umax L n) 1 ∅ (fun κ _ => ⟨Iff.rfl, fun _ => MonoidHom.one_apply _⟩) s ϖ k (Set.notMem_empty _) hϖ`. Take `⟨R, hR1, hR2⟩` from `GlobalTheory.HeckeScalarSph.exists_reps (Umax L n) _ hfin`. Use `set q : ℂ := ((s.q : ℂ) ^ (k * (n - 1)))⁻¹ with hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJeq : ∀ f : GAf L n → a.W, (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → NG.tN J s ϖ k f = q • ∑ γ ∈ R, NG.rt L n γ f` using `fun f hf => by`. Rewrite using `[NG.tN, heckeD_eq_sum_of hJU (fun x hx => hx.1) hR1 hR2 hf]`. Establish `hUeq : ∀ f : GAf L n → a.W, (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → NG.tN (Umax L n) s ϖ k f = q • ∑ γ ∈ R, NG.rt L n γ f` using `fun f hf => by`. Rewrite using `[NG.tN, GlobalTheory.HeckeScalarSph.heckeD_eq_sum (v := s.v) (fun x hx => hx.1) hR1 hR2 hf]`. Take `⟨c, hc⟩` from `GlobalTheory.T.splitPlace_heckeOperator_scalar_on_spherical L n a S hS s ϖ k hϖ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS0 : ∀ f ∈ S, (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → q • ∑ γ ∈ R, NG.rt L n γ f = c • f` using `fun f hf hx => (hUeq f hx).symm.trans (hc f hf hx)`. Establish `hiso : ∀ S' : Submodule ℂ (GAf L n → a.W), NG.IsoRep S S' → ∀ f ∈ S', (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → q • ∑ γ ∈ R, NG.rt L n γ f = c • f`. Introduce and unpack `S' ⟨T, hT⟩ f hf hfx`. Use `set g : S := T.symm ⟨f, hf⟩ with hg`. Establish `hTg : ((T g : S') : GAf L n → a.W) = f` using `by simp [g]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgx : ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ (g : GAf L n → a.W) = g`. Introduce `κ h1 h2`. Establish `e` using `hT κ g ⟨NG.rt L n κ (g : GAf L n → a.W), hS.1.stable κ _ g.2⟩ rfl`. Rewrite `e` using `[hTg, hfx κ h1 h2]`. Establish `e2 : T ⟨NG.rt L n κ (g : GAf L n → a.W), hS.1.stable κ _ g.2⟩ = T g` using `Subtype.ext (e.trans hTg.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg Subtype.val (T.injective e2)`. Establish `key : (c • g : S) = q • ∑ γ ∈ R, (⟨NG.rt L n γ (g : GAf L n → a.W), hS.1.stable γ _ g.2⟩ : S)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, Submodule.coe_smul, Submodule.coe_sum]`. Conclude with `(hS0 g g.2 hgx).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ γ : GAf L n, ((T ⟨NG.rt L n γ (g : GAf L n → a.W), hS.1.stable γ _ g.2⟩ : S') : GAf L n → a.W) = NG.rt L n γ f`. Introduce `γ`. Rewrite using `[hT γ g _ rfl, hTg]`. Use `congrArg (fun u : S => ((T u : S') : GAf L n → a.W)) key` as an intermediate fact. Simplify using `only [map_smul, map_sum, Submodule.coe_smul, Submodule.coe_sum, hTg, hterm] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `this.symm`. Establish `hsum : ∀ t : Finset (Submodule ℂ (GAf L n → a.W)), (↑t : Set (Submodule ℂ (GAf L n → a.W))) ⊆ {S' | NG.IsIrrRep a.ρ S' ∧ NG.IsoRep S S'} → (∀ h, ∀ f ∈ ⨆ S' ∈ t, S', NG.rt L n h f ∈ ⨆ S' ∈ t, S') ∧ ∀ f ∈ ⨆ S' ∈ t, S', (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → q • …`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `_`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot]`. Use `⟨fun h f hf => ?_, fun f hf _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, map_zero]`. Simplify using `[hf]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `insert S₁ t hS₁ ih`. Introduce `hs`. Rewrite `hs` using `[Finset.coe_insert, Set.insert_subset_iff]`. Take `⟨hst, hfx⟩` from `ih hs.2`. Establish `h1` using `hs.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.iSup_insert]`. Use `⟨fun h f hf => ?_, fun f hf hfix => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h1.1.1.stable h x hx) (hst h y hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hd : S₁ ⊓ (⨆ S' ∈ t, S') = ⊥`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `hxy : ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ x = x ∧ NG.rt L n κ y = y`. Introduce `κ hκ hκ'`. Establish `e` using `hfix κ hκ hκ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[map_add]`. Establish `e1 : NG.rt L n κ x - x = y - NG.rt L n κ y`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e, add_comm]`. Establish `hm : NG.rt L n κ x - x ∈ S₁ ⊓ (⨆ S' ∈ t, S')` using `⟨S₁.sub_mem (h1.1.1.stable κ x hx) hx, e1 ▸ Submodule.sub_mem _ hy (hst κ y hy)⟩`. Rewrite `hm` using `[hd, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨sub_eq_zero.1 hm, ?_⟩` and prove the remaining obligations. Rewrite `e1` using `[hm]`. Conclude with `(sub_eq_zero.1 e1.symm).symm`. Simplify using `only [map_add, Finset.sum_add_distrib, smul_add]`. Rewrite using `[hiso S₁ h1.2 x hx fun κ h h' => (hxy κ h h').1, hfx y hy fun κ h h' => (hxy κ h h').2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : NG.IsSubrep a.ρ (S₁ ⊓ (⨆ S' ∈ t, S'))` using `⟨inf_le_left.trans h1.1.1.le, fun h f hf => ⟨h1.1.1.stable h f hf.1, hst h f hf.2⟩⟩`. Establish `heq : S₁ ⊓ (⨆ S' ∈ t, S') = S₁` using `(h1.1.2.2 _ hsub inf_le_left).resolve_left hd`. Establish `hle : S₁ ≤ ⨆ S' ∈ t, S'` using `heq ▸ inf_le_right`. Conclude with `hfx f ((sup_le hle le_rfl) hf) hfix`. Use `⟨c, fun f hf hT => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hfix : ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f`. Introduce `κ h1 h2`. Establish `hκ : κ ∈ J` using `(hJU κ h2).2 h1`. Establish `e` using `hT.2 ⟨κ, hκ⟩`. Rewrite `e` using `[(hyp κ (tc κ h2)).2 hκ]`.
-
-Simplify using `using e`. Rewrite using `[hJeq f hfix]`. Unfold `NG.isoTyp at hf`. Take `⟨t, ht, hft⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hf`. Conclude with `(hsum t ht).2 f hft hfix`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isoTyp_scalar (a : NG.AlgWt L n) (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (B : Set (HeightOneSpectrum (𝓞 L⁺)))
     (hyp : NG.HypOutside J χ B) (S : Submodule ℂ (GAf L n → a.W)) (hS : NG.IsIrrRep a.ρ S) (s : SplitPlace L)
@@ -190,7 +186,7 @@ theorem isoTyp_scalar (a : NG.AlgWt L n) (J : Subgroup (GAf L n)) (χ : J →* �
   exact (hsum t ht).2 f hft hfix
 
 /- English proof (translation)
-Introduce `D μ j Mr B _ hyp S hS s ϖ k hsB hϖ _ _`. Take `⟨c, hc⟩` from `isoTyp_scalar Mr.wt Mr.J Mr.χ B hyp S hS s ϖ k hsB hϖ`. Use `⟨c, fun y hy => hc _ (Submodule.mem_comap.1 hy) ?_⟩` and prove the remaining obligations. Rewrite using `[← Mr.real_range]`. Conclude with `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (μ : D.what₂.Tup) (j : ℕ) (Mr : MtReal D μ j) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))), NG.IsProdLevel Mr.J → NG.HypOutside Mr.J Mr.χ B → ∀ (S : Submodule ℂ (GAf D.host.E D.R.nV → Mr.wt.W)), NG.IsIrrRep Mr.wt.ρ S → ∀ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (k : ℕ), s.v ∉ B → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∃ c : ℂ, ∀ y ∈ (NG.isoTyp Mr.wt.ρ S).comap Mr.real, NG.tN Mr.J s ϖ k (Mr.real y) = c • Mr.real y := by
   intro D μ j Mr B _ hyp S hS s ϖ k hsB hϖ _ _

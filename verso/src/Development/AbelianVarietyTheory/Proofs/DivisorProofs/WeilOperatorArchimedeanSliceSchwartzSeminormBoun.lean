@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ _ co hco ω hω om hom Φ hΦ y p0 k n`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace D.host.F) := Pi.borelSpace`. Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace D.host.F) := ContinuousAdd.measurableAdd`. Use `haveI : (MeasureTheory.volume : MeasureTheory.Measure (κ → mixedEmbedding.mixedSpace D.host.F)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Take `⟨N, C, hC, hsob⟩` from `GlobalTheory.T.schwartz_seminorm_l2_bound (MeasureTheory.volume : MeasureTheory.Measure (κ → mixedEmbedding.mixedSpace D.host.F)) k n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose B hB using fun i j => GlobalTheory.T.weilTransport_archimedeanSlice_sobolev_bounds D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom Φ hΦ y p0 i j`. Establish `hev : ∀ᶠ p in nhds p0, ∀ i ∈ Finset.range (N + 1), ∀ j ∈ Finset.range (N + 1), ∫ x, (‖x‖ ^ i * ‖iteratedFDeriv ℝ j (fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin D.host.F x y)) x‖) ^ 2 ≤ B i j` using `(Filter.eventually_all_finset _).2 fun i _ => (Filter.eventually_all_finset _).2 fun j _ => hB i j`. Establish `hpres` using `(GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom).1`. Use `⟨C * Real.sqrt (∑ i ∈ Finset.range (N + 1), ∑ j ∈ Finset.range (N + 1), B i j), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with p hp x`.
-
-Take `⟨s, hs⟩` from `GlobalTheory.WeilCont.exists_slice D.host.F (hpres p Φ hΦ) y`. Establish `hfs : (fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin D.host.F x y)) = ⇑s` using `funext fun x => (hs x).symm`. Rewrite `hp`, the goal using `[hfs]`. Use `(hsob s x).trans (mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt ?_) hC)` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun i hi => Finset.sum_le_sum fun j hj => hp i hi j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilCont.slice_bounds : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

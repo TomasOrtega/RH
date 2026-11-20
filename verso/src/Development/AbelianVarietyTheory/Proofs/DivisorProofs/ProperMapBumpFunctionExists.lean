@@ -5,21 +5,19 @@ open Metric
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P U _ _ _ _ π hπ W' hW' hprop p₀ hp₀ O hO hfib`. Take `⟨r₀, hr₀, hball⟩` from `Metric.isOpen_iff.mp hW' (π p₀) hp₀`. Establish `hR : 0 < r₀ / 2` using `half_pos hr₀`. Establish `hcbR : closedBall (π p₀) (r₀ / 2) ⊆ W'` using `(closedBall_subset_ball (half_lt_self hr₀)).trans hball`. Establish `hK : IsCompact (π ⁻¹' closedBall (π p₀) (r₀ / 2) ∩ Oᶜ)` using `(hprop _ (isCompact_closedBall _ _) hcbR).inter_right hO.isClosed_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKi : IsCompact (π '' (π ⁻¹' closedBall (π p₀) (r₀ / 2) ∩ Oᶜ))` using `hK.image hπ`. Establish `hx : π p₀ ∉ π '' (π ⁻¹' closedBall (π p₀) (r₀ / 2) ∩ Oᶜ)`. Introduce and unpack `⟨p, ⟨_, hpO⟩, hpx⟩`. Conclude with `hpO (hfib (by simpa using hpx))`. Take `⟨r, hr, hrb⟩` from `Metric.isOpen_iff.mp hKi.isClosed.isOpen_compl (π p₀) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s := min r (r₀ / 2) / 2 with hs_def`. Establish `hmin : 0 < min r (r₀ / 2)` using `lt_min hr hR`. Establish `hs : 0 < s` using `half_pos hmin`. Establish `hsR : s ≤ r₀ / 2` using `(half_le_self hmin.le).trans (min_le_right _ _)`. Establish `hsr : s < r` using `(half_lt_self hmin).trans_le (min_le_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : ContDiffBump (π p₀)` to `⟨s / 2, s, half_pos hs, half_lt_self hs⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), π ⁻¹' closedBall (π p₀) s, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Express the relevant statement in the definitionally equal form `(((b x : ℝ) : ℂ)).im = 0 ∧ 0 ≤ (((b x : ℝ) : ℂ)).re`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[b.nonneg]`. Express the relevant statement in the definitionally equal form `0 < (((b (π p₀) : ℝ) : ℂ)).re`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self (half_pos hs).le)]`. Simplify using the standard rewrite rules. Conclude with `hprop _ (isCompact_closedBall _ _) ((closedBall_subset_closedBall hsR).trans hcbR)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hpO`. Establish `hmem : π p ∈ π '' (π ⁻¹' closedBall (π p₀) (r₀ / 2) ∩ Oᶜ)` using `⟨p, ⟨closedBall_subset_closedBall hsR hp, hpO⟩, rfl⟩`. Conclude with `hrb (closedBall_subset_ball hsr hp) hmem`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((b (π p) : ℝ) : ℂ) = 0`. Establish `hd : s ≤ dist (π p) (π p₀)`. Simplify using `only [Set.mem_preimage, mem_closedBall, not_le] at hp`. Conclude with `hp.le`. Rewrite using `[b.zero_of_le_dist hd]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_bump_of_proper_onto_open :
     ∀ {P U : Type} [TopologicalSpace P] [NormedAddCommGroup U] [InnerProductSpace ℝ U]

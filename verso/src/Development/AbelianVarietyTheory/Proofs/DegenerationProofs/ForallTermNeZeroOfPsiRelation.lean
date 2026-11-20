@@ -18,13 +18,13 @@ open GlobalTheory.PsiRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral (TF (R` using `R) F).left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of F)))`. Establish `: IsIntegral (DegPre.BF D F).left` using `isIntegral_tensor_left_of_smooth_grpObj _ D.P.A (TF (R := R) F)`. Take `⟨J, hJ⟩` from `exists_good_pt (Z := (DegPre.BF D F).left) D.P.isLB (genericPoint _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `PsiExists.isIso_trF D F χ` as an intermediate fact. Establish `: IsIso (DegPre.trF D F χ).left` using `inferInstanceAs (IsIso ((Over.forget _).map (DegPre.trF D F χ)))`. Set `κ : DegPre.BF D F ⟶ TK R` to `Over.homMk ((fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) ((Category.assoc _ _ _).trans (Over.w (fst (TF (R := R) F) D.P.A)))`. Establish `e` using `h χ (DegPre.BF D F) (fst _ _) κ (snd _ _) _ J hJ`. Establish `e₁ : (lift (fst (TF (R` using `R) F) D.P.A) (snd _ _)).left = 𝟙 (DegPre.BF D F).left := congrArg (fun q : DegPre.BF D F ⟶ DegPre.BF D F => q.left) lift_fst_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : sval (s χ) (𝟙 (DegPre.BF D F).left) (genericPoint _) J = (val (D.psi χ) κ.left (genericPoint _) J * rigV D (T` using `DegPre.BF D F) (genericPoint _) J).val * sval (s 0) (DegPre.trF D F χ).left (genericPoint _) J := (congrArg (fun q => sval (s χ) q (genericPoint _) J) e₁).symm.trans e`. Rewrite using `[exists_ne_zero_iff_sval_ne_zero _ hJ, e₂]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_not] at hn`. Conclude with `h0 (by rw [sval_eq_zero_of_local_eq_zero (s 0) hn _ _ J hJ, MulZeroClass.mul_zero])`. Introduce `h0`. Conclude with `mul_ne_zero (Units.ne_zero _) (sval_ne_zero_of_isIso _ _ D.P.L D.P.isLB _ _ _ (s 0) h0 _ _ _ J hJ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiRel_field_ne_zero_iff {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (s : Raw D F 1) (h : PsiRel D (TF (R := R) F) s) (χ : D.X) :
@@ -55,7 +55,7 @@ theorem psiRel_field_ne_zero_iff {R : Type} [CommRing R] [IsDomain R] (D : DegPr
     exact mul_ne_zero (Units.ne_zero _) (sval_ne_zero_of_isIso _ _ D.P.L D.P.isLB _ _ _ (s 0) h0 _ _ _ J hJ)
 
 /- English proof (translation)
-Introduce and unpack `R _ _ D f h ⟨α, hα⟩ β`. Take `⟨s, hs⟩` from `PsiExists.exists_pullB D (FractionRing R) (toUnit _) 1 f`. Establish `h'` using `psiRel_of_pullB R D _ f s hs h`. Establish `i` using `pullB_ne_zero_iff R D _ 1 f s hs`. Conclude with `(i β).1 ((psiRel_field_ne_zero_iff D _ s h' β).2 ((psiRel_field_ne_zero_iff D _ s h' α).1 ((i α).2 hα)))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem forall_ne_zero_of_psiRel : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (f : ∀ α, SecBT D (𝟙_ _) 1 α), PsiRel D (𝟙_ _) f → (∃ α j, (f α).f j ≠ 0) → ∀ α, ∃ j, (f α).f j ≠ 0 := by
   rintro R _ _ D f h ⟨α, hα⟩ β

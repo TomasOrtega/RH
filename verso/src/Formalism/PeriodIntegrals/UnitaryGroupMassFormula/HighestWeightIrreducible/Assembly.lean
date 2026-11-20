@@ -8,7 +8,7 @@ namespace PI.WHw
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `Formalism.BasicNotions.DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by linarith [lam.anti hij])`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natW_antitone {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -16,11 +16,11 @@ theorem natW_antitone {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (by linarith [lam.anti hij])
 
 /- English proof (translation)
-Introduce `N lam`. Establish `hν` using `natW_antitone lam`. Establish `hsub : delSq ℂ N lam ≤ nablaSq ℂ N lam` using `weylLeDual ℂ N N le_rfl lam.natW hν`. Establish `hclosed : RowDivClosed (delSq ℂ N lam)` using `fun a b k f hf => weylRowDivStable ℂ N N le_rfl lam.natW a b k f hf`. Establish `hhw : extremal ℂ N lam ∈ delSq ℂ N lam` using `Submodule.subset_span ⟨[], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(hB2 N N le_rfl lam.natW hν _ hsub hclosed hhw).symm, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU hst`. Distinguish the cases in `h0 : U = ⊥`. Conclude with `Or.inl h0`. Conclude with `Or.inr (hB2 N N le_rfl lam.natW hν U hU (hA1 N lam U hU hst) (hB1 N N le_rfl lam.natW hν U hU (hA1 N lam U hU hst) h0))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Introduce `f hf hfix`. Conclude with `hwLine ℂ N N le_rfl lam.natW hν f hf (hA2 N lam f hf hfix)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hwIrred_of (hA1 : StableClosedC) (hA2 : FixedKilledC) (hB1 : HWInClosedC)
     (hB2 : ClosedEqNablaC) : PI.HwIrred := by

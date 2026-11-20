@@ -19,7 +19,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Scheme.Hom.le_ker_comp e g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem ker_le_ker_of_comp_eq {A B T : Scheme.{u}} (f : A ⟶ T) (g : B ⟶ T) (e : A ⟶ B)
     (h : e ≫ g = f) : g.ker ≤ f.ker := by
@@ -27,19 +27,19 @@ private theorem ker_le_ker_of_comp_eq {A B T : Scheme.{u}} (f : A ⟶ T) (g : B 
   exact Scheme.Hom.le_ker_comp e g
 
 /- English proof (translation)
-Establish `hRHS : Blowup.strictTransform (f.hom ≫ π) Z D = Blowup.strictTransform f.hom (Z.comap π) (D.comap π)` using `strictTransform_eq_of_comap_eq (f.hom ≫ π) f.hom Z D (Z.comap π) (D.comap π) (by rw [Scheme.IdealSheafData.comap_comp]) (by rw [Scheme.IdealSheafData.comap_comp])`. Take `⟨m₀, hiso, hm₀⟩` from `Scheme.IdealSheafData.exists_iso_subscheme_comap_of_isIso f.hom (D.comap π)`. Use `hiso` as an intermediate fact. Establish `hsupp : ((Z.comap π).comap f.hom).support.compl = f.hom ⁻¹ᵁ (Z.comap π).support.compl`. Rewrite using `[Scheme.IdealSheafData.support_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1 : m₀ ⁻¹ᵁ strictTransformOpens π Z D = ((D.comap π).comap f.hom).subschemeι ⁻¹ᵁ (f.hom ⁻¹ᵁ (Z.comap π).support.compl)` using `congrArg (fun w => w ⁻¹ᵁ (Z.comap π).support.compl) hm₀`. Establish `hV' : strictTransformOpens f.hom (Z.comap π) (D.comap π) = m₀ ⁻¹ᵁ strictTransformOpens π Z D`. Rewrite using `[h1]`. Conclude with `congrArg (fun W => ((D.comap π).comap f.hom).subschemeι ⁻¹ᵁ W) hsupp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm₀2 : m₀ ≫ ((D.comap π).subschemeι ≫ inv f.hom) = ((D.comap π).comap f.hom).subschemeι`. Rewrite using `[← Category.assoc, hm₀, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hm₀3 : inv m₀ ≫ ((D.comap π).comap f.hom).subschemeι = (D.comap π).subschemeι ≫ inv f.hom`. Rewrite using `[IsIso.inv_comp_eq, hm₀2]`. Establish `hinvle : strictTransformOpens π Z D ≤ inv m₀ ⁻¹ᵁ strictTransformOpens f.hom (Z.comap π) (D.comap π)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV']`. Establish `h3 : inv m₀ ⁻¹ᵁ (m₀ ⁻¹ᵁ strictTransformOpens π Z D) = (inv m₀ ≫ m₀) ⁻¹ᵁ strictTransformOpens π Z D` using `rfl`. Rewrite using `[h3, IsIso.inv_hom_id]`. Simplify using the standard rewrite rules. Establish `hfac1 : (Scheme.Hom.resLE m₀ (strictTransformOpens π Z D) (strictTransformOpens f.hom (Z.comap π) (D.comap π)) (le_of_eq hV')) ≫ (strictTransformι π Z D ≫ inv f.hom) = strictTransformι f.hom (Z.comap π) (D.comap π)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strictTransformι_eq_ι_comp_subschemeι π Z D, strictTransformι_eq_ι_comp_subschemeι f.hom (Z.comap π) (D.comap π), ← Category.assoc, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, Category.assoc, hm₀2]`. Establish `hfac2 : (Scheme.Hom.resLE (inv m₀) (strictTransformOpens f.hom (Z.comap π) (D.comap π)) (strictTransformOpens π Z D) hinvle) ≫ strictTransformι f.hom (Z.comap π) (D.comap π) = strictTransformι π Z D ≫ inv f.hom`. Rewrite using `[strictTransformι_eq_ι_comp_subschemeι f.hom (Z.comap π) (D.comap π), strictTransformι_eq_ι_comp_subschemeι π Z D, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, hm₀3, Category.assoc]`. Establish `hcomp : (strictTransformι π Z D ≫ inv f.hom) ≫ f.hom = strictTransformι π Z D`. Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: QuasiCompact (strictTransformι π Z D ≫ inv f.hom)` using `inferInstance`. Establish `: QuasiCompact ((strictTransformι π Z D ≫ inv f.hom) ≫ f.hom)`. Rewrite using `[hcomp]`. Use `infer_instance`. Establish `hL` using `Blowup.comap_ker_comp_of_isOpenImmersion (strictTransformι π Z D ≫ inv f.hom) f.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hL` using `[hcomp]`. Rewrite using `[hRHS, strictTransform_eq_ker_strictTransformι π Z D, hL, strictTransform_eq_ker_strictTransformι f.hom (Z.comap π) (D.comap π)]`. Conclude with `le_antisymm (ker_le_ker_of_comp_eq _ _ _ hfac1) (ker_le_ker_of_comp_eq _ _ _ hfac2)`.
+A detailed English derivation is pending.
 -/
 theorem comap_strictTransform_of_iso {X X₁ X₁' : Scheme.{u}} (π : X₁ ⟶ X)
     (f : X₁' ≅ X₁) (Z D : X.IdealSheafData) (_hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (Z.comap π))
@@ -109,9 +109,9 @@ theorem comap_strictTransform_of_iso {X X₁ X₁' : Scheme.{u}} (π : X₁ ⟶ 
   exact le_antisymm (ker_le_ker_of_comp_eq _ _ _ hfac1) (ker_le_ker_of_comp_eq _ _ _ hfac2)
 
 /- English proof (translation)
-Establish `hkH : (Scheme.Hom.ker ι).subschemeι.ker = Scheme.Hom.ker ι` using `Scheme.IdealSheafData.ker_subschemeι _`. Establish `hkT : (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι.ker = Blowup.strictTransform π Z (Scheme.Hom.ker ι)` using `Scheme.IdealSheafData.ker_subschemeι _`. Establish `hu : IsClosedImmersion.lift (Scheme.Hom.ker ι).subschemeι ι (le_of_eq hkH) ≫ (Scheme.Hom.ker ι).subschemeι = ι` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsIso (IsClosedImmersion.lift (Scheme.Hom.ker ι).subschemeι ι (le_of_eq hkH))` using `IsClosedImmersion.isIso_of_ker_eq ι (Scheme.Hom.ker ι).subschemeι _ hu hkH.symm`. Establish `hu₁ : IsClosedImmersion.lift (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι ι₁ (le_of_eq (hkT.trans hker.symm)) ≫ (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι = ι₁` using `IsClosedImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (IsClosedImmersion.lift (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι ι₁ (le_of_eq (hkT.trans hker.symm)))` using `IsClosedImmersion.isIso_of_ker_eq ι₁ (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι _ hu₁ (hker.trans hkT.symm)`. Use `⟨asIso (IsClosedImmersion.lift (Scheme.Hom.ker ι).subschemeι ι (le_of_eq hkH)), asIso (IsClosedImmersion.lift (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι ι₁ (le_of_eq (hkT.trans hker.symm))), hu, hu₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (Scheme.Hom.ker ι).subschemeι, Category.assoc, strictTransformSubschemeLift_comp_subschemeι π Z (Scheme.Hom.ker ι), ← Category.assoc]`. Simplify using `only [asIso_hom]`. Rewrite using `[hu₁, Category.assoc, hu, hsq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_iso_subscheme_of_ker_eq_strictTransform {X X₁ S S₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (ι : S ⟶ X) (ι₁ : S₁ ⟶ X₁) (ρ : S₁ ⟶ S)
@@ -149,11 +149,11 @@ theorem exists_iso_subscheme_of_ker_eq_strictTransform {X X₁ S S₁ : Scheme.{
   rw [hu₁, Category.assoc, hu, hsq]
 
 /- English proof (translation)
-Take `⟨e, e₁, he, he₁, hcomm⟩` from `exists_iso_subscheme_of_ker_eq_strictTransform π Z ι ι₁ ρ hsq hker`. Establish `: IsLocallyNoetherian (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subscheme` using `isLocallyNoetherian_subscheme _`. Establish `hq` using `isBlowupAlongIdealSheaf_strictTransformSubschemeLift π Z (Scheme.Hom.ker ι) hπ`. Establish `hfinal : (e₁.hom ≫ strictTransformSubschemeLift π Z (Scheme.Hom.ker ι)) ≫ (Scheme.Hom.ker ι).subschemeι = ρ ≫ ι`. Rewrite using `[Category.assoc, strictTransformSubschemeLift_comp_subschemeι, ← Category.assoc, he₁, hsq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain` using `comap_strictTransform_eq_strictTransformSubschemeLift p π Z (Scheme.Hom.ker ι) E hsnc hHZ hπ D hD`. Establish `h1 : (Blowup.strictTransform π Z D).comap ι₁ = ((Blowup.strictTransform π Z D).comap (Blowup.strictTransform π Z (Scheme.Hom.ker ι)).subschemeι).comap e₁.hom`. Rewrite using `[← he₁, Scheme.IdealSheafData.comap_comp]`. Rewrite using `[h1, hmain, comap_strictTransform_of_iso (strictTransformSubschemeLift π Z (Scheme.Hom.ker ι)) e₁ (Z.comap (Scheme.Hom.ker ι).subschemeι) (D.comap (Scheme.Hom.ker ι).subschemeι) hq.1]`. Use `strictTransform_eq_of_comap_eq _ ρ _ _ _ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfinal]`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfinal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_strictTransform_of_closedImmersion_commSq {X X₁ S S₁ : Scheme.{u}}
     {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -189,7 +189,7 @@ theorem comap_strictTransform_of_closedImmersion_commSq {X X₁ S S₁ : Scheme.
   · rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfinal]
 
 /- English proof (translation)
-Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Blowup.exceptionalIdeal_eq_comap, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hsq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_exceptionalIdeal_of_commSq {X X₁ S S₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (ι : S ⟶ X) (ι₁ : S₁ ⟶ X₁) (ρ : S₁ ⟶ S) (hsq : ι₁ ≫ π = ρ ≫ ι)
@@ -199,9 +199,9 @@ theorem comap_exceptionalIdeal_of_commSq {X X₁ S S₁ : Scheme.{u}} (π : X₁
     ← Scheme.IdealSheafData.comap_comp, hsq]
 
 /- English proof (translation)
-Simplify using `only [List.map_append, List.map_map, List.map_cons, List.map_nil]`. Use `congrArg₂ (· ++ ·) ?_ ?_` and prove the remaining obligations. Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `D hD`. Conclude with `comap_strictTransform_of_closedImmersion_commSq p π Z ι ι₁ ρ hsq hker E hsnc hHZ hπ D hD`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comap_exceptionalIdeal_of_commSq π ι ι₁ ρ hsq Z]`.
+A detailed English derivation is pending.
 -/
 theorem map_comap_strictTransform_append_exceptionalIdeal {X X₁ S S₁ : Scheme.{u}}
     {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)

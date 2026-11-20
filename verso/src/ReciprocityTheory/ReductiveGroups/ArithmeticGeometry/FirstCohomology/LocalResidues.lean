@@ -19,11 +19,11 @@ def kappa (p : X ⟶ Spec (CommRingCat.of k)) (y : X) : k →+* X.presheaf.stalk
     ((p.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)
 
 /- English proof (translation)
-Establish `hiso : IsIso (h0.stalkMap y)` using `((isIso_iff_isIso_stalkMap h0).1 inferInstance).2 y`. Take `⟨f0, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (h0.stalkMap y)).2 f`. Set `_ : Algebra Γ(W, D) (W.presheaf.stalk (h0 y))` to `TopCat.Presheaf.algebra_section_stalk W.presheaf ⟨h0 y, hy⟩`. Use `hD.isLocalization_stalk ⟨h0 y, hy⟩` as an intermediate fact. Take `⟨⟨g, g'⟩, hmk⟩` from `IsLocalization.mk'_surjective (hD.primeIdealOf ⟨h0 y, hy⟩).asIdeal.primeCompl f0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmk' : IsLocalization.mk' (W.presheaf.stalk (h0 y)) g g' = f0` using `hmk`. Establish `hspec` using `IsLocalization.mk'_spec (W.presheaf.stalk (h0 y)) g g'`. Establish `hunit` using `IsLocalization.map_units (W.presheaf.stalk (h0 y)) g'`. Establish `ge : ∀ a : Γ(W, D), gs h0 y D a = (h0.stalkMap y).hom (algebraMap Γ(W, D) (W.presheaf.stalk (h0 y)) a)` using `fun a => (gs_stalkMap h0 y D hy a).trans (congrArg _ (gs_eq (𝟙 W) (h0 y) D hy a))`. Use `⟨g, g'.1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ge]`. Conclude with `hunit.map _`. Rewrite using `[ge, ge, ← map_mul, ← hmk', hspec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frac (h0 : X ⟶ W) [IsIso h0] (D : W.Opens) (hD : IsAffineOpen D) (y : X) (hy : h0 y ∈ D)
     (f : X.presheaf.stalk y) :
@@ -43,11 +43,11 @@ theorem exists_frac (h0 : X ⟶ W) [IsIso h0] (D : W.Opens) (hD : IsAffineOpen D
   · rw [ge, ge, ← map_mul, ← hmk', hspec]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom ((inv (e.app ⊤)).hom a), ?_⟩` and prove the remaining obligations. Establish `h1 : (e.app ⊤).hom ((inv (e.app ⊤)).hom a) = a`. Conclude with `congrArg (fun f => f.hom a) (IsIso.inv_hom_id (e.app ⊤))`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom ((inv (e.app ⊤)).hom a)) = (inv (e.app ⊤)).hom a`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun f => f.hom ((inv (e.app ⊤)).hom a)) (Scheme.ΓSpecIso (CommRingCat.of k)).hom_inv_id`. Simplify using `only [kappa, gs, RingHom.comp_apply, h2]`. Rewrite using `[dif_pos (show q y ∈ (⊤ : Y'.Opens) from trivial)]`. Use `first`. Consider the case `(show _ = (X.presheaf.germ _ y _).hom ((q.app ⊤).hom ((e.app ⊤).hom ((inv (e.app ⊤)).hom a)))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h1])`. Consider the case `(simp [Scheme.Hom.comp_app, h1]; done)`. Consider the case `(erw [Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, h1]; rfl)`. Consider the case `(simp only [Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, h1]; clear * -; done)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gs_const {Y' : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : X ⟶ Y') (e : Y' ⟶ Spec (CommRingCat.of k))
     [IsIso e] (hq : q ≫ e = p) (y : X) (a : Γ(Y', ⊤)) : ∃ c : k, gs q y ⊤ a = kappa p y c := by
@@ -68,7 +68,7 @@ theorem gs_const {Y' : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : X �
     | (simp only [Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, h1]; clear * -; done)
 
 /- English proof (translation)
-Establish `hm : r z ∈ D ⊓ (LB.LinComb L φ ε).U (fun k => J (r ≫ φ k))` using `⟨hz, hJ.mem φ r⟩`. Establish `e` using `congrArg (gs r z _) (hrel (fun k => J (r ≫ φ k)))`. Rewrite `e` using `[gs_res r z _ hm, gs_mul r z _ hm, gs_res r z _ hm, gs_res r z _ hm]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_rel {L : LB X} {K : Type} [Fintype K] {φ : K → (W ⟶ X)} {ε : K → ℤ}
     (s s₀ : LB.Sec (LB.LinComb L φ ε)) (D : W.Opens) (rr : Γ(W, D))

@@ -30,7 +30,7 @@ def cmU : StructuredArrow e (Comma.fst ι j) ⥤ StructuredArrow (ι.obj e) j wh
   map_comp f g := by ext; simp
 
 /- English proof (translation)
-Establish `h2` using `StructuredArrow.w g`. Simplify using `[cmL] at h2`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify by unfolding definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cm_w {y : StructuredArrow (ι.obj e) j} {x : StructuredArrow e (Comma.fst ι j)} (g : (cmL j ι e).obj y ⟶ x) :
     g.right.left = x.hom := by
@@ -77,7 +77,7 @@ def cmMor {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [
   nat _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← fib_aug m T]`. Use `(relMor (𝟭 C) m T).hom.comm 0 (aug (relF (𝟭 C) F T) (fun T' => ((relF (𝟭 C) F T).map ((fib_init T).to T')).hom) a)` as an intermediate fact. Establish `h0` using `(CrystallineSemistableComparison.P.initial (relF (𝟭 C) F T) _ (fib_init T)).1 a`. Conclude with `this.trans ((congrArg _ h0).trans (map_zero _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cm_aug_cocycle {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w'} R} (m : Mor F F' (RingHom.id R)) (T : C) (a : F.obj T) :
@@ -90,7 +90,7 @@ theorem cm_aug_cocycle {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C'
   exact this.trans ((congrArg _ h0).trans (map_zero _))
 
 /- English proof (translation)
-Establish `h1 : ∀ n, UpTo (1 : R) (φ.mapH n)` using `fun n => ((CrystallineSemistableComparison.P.upTo_alg (φ.mapH n) LinearMap.id (1 : R) 1).2.2.2.2).2 (hb n)`. Use `(CrystallineSemistableComparison.P.res_transfer φ ε s 1 h1).2 hd hL` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cm_transfer {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R))
     (hb : ∀ n, Function.Bijective (φ.mapH n)) {M : Type u''} [AddCommGroup M] [Module R M] (ε : M →ₗ[R] K.X 0)
@@ -103,11 +103,11 @@ theorem cm_transfer {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ :
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ E _ F j ι s h hD n`. Use `CrystallineSemistableComparison.B.P.fib _ s (fun e => ?_) n` and prove the remaining obligations. Establish `: (CrystallineSemistableComparison.B.cmMor F j ι e).G.IsLeftAdjoint` using `(CrystallineSemistableComparison.B.cmAdj j ι e).isLeftAdjoint`. Use `CrystallineSemistableComparison.B.cm_transfer (CrystallineSemistableComparison.B.cmMor F j ι e).hom (fun k => CrystallineSemistableComparison.P.adj_mor (CrystallineSemistableComparison.B.cmMor F j ι e) (fun _ => Function.bijective_id) k) _ (CrystallineSemistableComparison.B.cm_au …` and prove the remaining obligations. Establish `eq : (CrystallineSemistableComparison.B.cmMor F j ι e).hom.f 0 ∘ₗ (aug (StructuredArrow.proj e (Comma.fst ι j) ⋙ Comma.snd ι j ⋙ j ⋙ F) fun x => (F.map x.right.hom).hom ∘ₗ ((ι ⋙ F).map x.hom).hom) = unAug F j (ι.obj e)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `(F.map (c.obj (Fin.last 0)).hom).hom ((F.map (ι.map (𝟙 e))).hom a) = (F.map (c.obj (Fin.last 0)).hom).hom a`. Rewrite using `[ι.map_id, F.map_id]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `eq ▸ hD (ι.obj e)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.comma1 : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {E : Type u''} [Category.{v''} E] (F : C ⥤ ModuleCat.{w} R) (j : C' ⥤ C) (ι : E ⥤ C) (s : R) (h : ∀ {x y : Comma ι j} (φ : x ⟶ y) (a : F.obj (ι.obj x.left)), (F.map y.hom).hom ((F.map (ι.map φ.left)).hom a) = (F.map (j.map φ.right)).hom ((F.map x.hom).hom a)), Desc s F j → ∀ n, IsoLe (s ^ (2 * n + 3)) n (⟨Comma.fst ι j, fun x => (F.map x.hom).hom, fun φ a => h φ a⟩ : Mor (ι ⋙ F) (Comma.snd ι j ⋙ j ⋙ F) (RingHom.id R)) := by
   intro R _ C _ C' _ E _ F j ι s h hD n

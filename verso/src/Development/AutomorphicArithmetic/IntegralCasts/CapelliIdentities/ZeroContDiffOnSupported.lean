@@ -40,7 +40,7 @@ import Mathlib
                 (@NumberField.RingOfIntegers.instIsFractionRing E inst inst_1) w))))
 
 /- English proof (translation)
-Introduce `k _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.aux3 :
     ∀ (k : Type) [inst : Field k],
@@ -52,7 +52,7 @@ theorem UpperTheory.Reformulated.B.H23.aux3 :
   infer_instance
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.aux4 :
     ∀ (k : Type) [inst : Field k]
@@ -104,7 +104,7 @@ noncomputable def UpperTheory.Reformulated.B.H23.blk :
           (@Equiv.symm (@Sigma α fun (a : α) ↦ m a) n e) i)
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x y hx hy`. Conclude with `Matrix.BlockTriangular.mul hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.aux6 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -218,7 +218,7 @@ theorem UpperTheory.Reformulated.B.H23.aux6 :
   exact Matrix.BlockTriangular.mul hx hy
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e`. Conclude with `Matrix.blockTriangular_one`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.aux7 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -272,7 +272,7 @@ theorem UpperTheory.Reformulated.B.H23.aux7 :
   exact Matrix.blockTriangular_one
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x hx`. Express the relevant statement in the definitionally equal form `Matrix.BlockTriangular (x⁻¹ : Matrix.GeneralLinearGroup n R).val _`. Rewrite using `[Matrix.coe_units_inv]`. Use `letI := x.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.aux8 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -1081,13 +1081,11 @@ noncomputable def UpperTheory.Reformulated.B.H23.iwahori :
 
 open IsDedekindDomain NumberField in
 /- English proof (translation)
-Establish `hval : ∀ k : F, Valued.v (algebraMap F (p.adicCompletion F) k) = p.valuation F k` using `fun k ↦ p.valuedAdicCompletion_eq_valuation' k`. Establish `hn : {y : p.adicCompletion F | Valued.v (y - x) < 1} ∈ nhds x`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun y hy ↦ ?_⟩` and prove the remaining obligations. Conclude with `(Valuation.restrict_lt_one_iff _).mp hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(p.denseRange_algebraMap F).mem_nhds hn`. Establish `hk' : Valued.v (algebraMap F (p.adicCompletion F) k - x) < 1` using `hk`. Establish `hk1 : p.valuation F k ≤ 1`. Rewrite using `[← hval, ← sub_add_cancel (algebraMap F (p.adicCompletion F) k) x]`. Conclude with `Valuation.map_add_le _ hk'.le hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `p.exists_valuation_sub_lt_of_integer hk1 1`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_add_sub_cancel _ (algebraMap F (p.adicCompletion F) k) x]`. Use `Valuation.map_add_lt _ ?_ hk'` and prove the remaining obligations. Rewrite using `[← map_sub, hval]`.
-
-Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.H23.exists_global_approx {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (RingOfIntegers F)) (x : p.adicCompletion F)
@@ -1114,15 +1112,13 @@ private theorem UpperTheory.Reformulated.B.H23.exists_global_approx {F : Type} [
 
 open IsDedekindDomain NumberField in
 /- English proof (translation)
-Establish `hval : ∀ k : F, Valued.v (algebraMap F (p.adicCompletion F) k) = p.valuation F k` using `fun k ↦ p.valuedAdicCompletion_eq_valuation' k`. Establish `hmem : ∀ y : p.adicCompletionIntegers F, Valued.v (y : p.adicCompletion F) < 1 → IsLocalRing.residue (p.adicCompletionIntegers F) y = 0`. Introduce `y hy`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Conclude with `hy.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : RingOfIntegers F →+* IsLocalRing.ResidueField (p.adicCompletionIntegers F)` to `(IsLocalRing.residue _).comp (algebraMap (RingOfIntegers F) (p.adicCompletionIntegers F))`. Establish `hker : ∀ a ∈ p.asIdeal, f a = 0`. Introduce `a ha`. Use `hmem _ ?_` and prove the remaining obligations. Establish `h` using `(p.valuation_lt_one_iff_mem (K := F) a).mpr ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hval]`. Conclude with `h`. Establish `hsurj : Function.Surjective f`. Introduce `z`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `UpperTheory.Reformulated.B.H23.exists_global_approx p x.1 x.2`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Establish `h` using `hmem (algebraMap (RingOfIntegers F) (p.adicCompletionIntegers F) r - x) hr`. Rewrite `h` using `[map_sub]`.
-
-Conclude with `h`. Establish `: Finite (RingOfIntegers F ⧸ p.asIdeal)` using `p.asIdeal.finiteQuotientOfFreeOfNeBot p.ne_bot`. Conclude with `Finite.of_surjective (Ideal.Quotient.lift p.asIdeal f hker) (Ideal.Quotient.lift_surjective_of_surjective _ hker hsurj)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.H23.finite_residueField {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (RingOfIntegers F)) :
@@ -1158,7 +1154,7 @@ private theorem UpperTheory.Reformulated.B.H23.finite_residueField {F : Type} [F
 
 open IsDedekindDomain NumberField in
 /- English proof (translation)
-Establish `hc : CompactSpace (Valued.integer (p.adicCompletion F))`. Rewrite using `[Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField]`. Use `⟨(Valued.isClosed_integer (p.adicCompletion F)).completeSpace_coe, inferInstanceAs (IsDiscreteValuationRing (p.adicCompletionIntegers F)), UpperTheory.Reformulated.B.H23.finite_residueField p⟩` and prove the remaining obligations. Establish `hc' : IsCompact (Valued.integer (p.adicCompletion F) : Set (p.adicCompletion F))` using `isCompact_iff_compactSpace.mpr hc`. Conclude with `hc'.locallyCompactSpace_of_mem_nhds_of_addGroup (x := 0) ((Valued.isOpen_integer (p.adicCompletion F)).mem_nhds (zero_mem _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.H23.locallyCompact {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (RingOfIntegers F)) :
@@ -1174,7 +1170,7 @@ private theorem UpperTheory.Reformulated.B.H23.locallyCompact {F : Type} [Field 
     ((Valued.isOpen_integer (p.adicCompletion F)).mem_nhds (zero_mem _))
 
 /- English proof (translation)
-Introduce `F _ _ p`. Use `letI := UpperTheory.Reformulated.B.H23.complRel p`. Use `haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `{ toIsValuativeTopology := IsValuativeTopology.of_mem_nhds_iff_vle (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))) Valued.mem_nhds toLocallyCompactSpace := UpperTheory.Reformulated.B.H23.locallyCompact p toIsNontrivial := (ValuativeRel.isNontrivial_iff_i …`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H23.zero_contDiffOn_supported :
     ∀ {F : Type} [inst : Field F] [inst_1 : @NumberField F inst]
@@ -2066,9 +2062,9 @@ noncomputable def UpperTheory.Reformulated.B.H23.dcos :
         (@OfNat.ofNat Complex (nat_lit 0) (@Zero.toOfNat0 Complex Complex.instZero))
 
 /- English proof (translation)
-Introduce `E _ _ _ m w t k g hk`. Unfold `UpperTheory.Reformulated.B.H23.dcos`. Use `@if_congr _ _ _ (Classical.propDecidable _) (Classical.propDecidable _) _ _ _ _ ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨x, hx, z, hz, h⟩`. Conclude with `⟨x, hx, z * k⁻¹, Subgroup.mul_mem _ hz (Subgroup.inv_mem _ hk), by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[← mul_assoc, ← h, mul_inv_cancel_right]⟩`. Introduce and unpack `⟨x, hx, z, hz, h⟩`. Conclude with `⟨x, hx, z * k, Subgroup.mul_mem _ hz hk, by rw [h, mul_assoc (x * t)]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.H23.dcos_right :
     ∀ {E : Type} [inst : Field E] [inst_1 : @NumberField E inst]

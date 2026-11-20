@@ -15,16 +15,16 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.RankinWhittaker
 
 /- English proof (translation)
-The claim follows from `(AdelicGLn.prodEquiv ℚ 2).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem prodEquiv_realEmb (x : GL (Fin 2) ℝ) :
     AdelicGLn.prodEquiv ℚ 2 (realEmb x) = (GL2Classical.realInf x, 1) :=
   (AdelicGLn.prodEquiv ℚ 2).apply_symm_apply _
 
 /- English proof (translation)
-Establish `e : (AdelicGLn.prodEquiv ℚ 2 g).1 = (AdelicGLn.prodEquiv ℚ 2 g').1`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `(g a b).1 = (g' a b).1`. Use function extensionality and compare the values at `w`. Use `congrArg (fun x : GL (Fin 2) w.Completion => x a b) (h w)` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `only [GL2Classical.realPart, e]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem realPart_congr {g g' : G2} (h : ∀ w, infAt w g = infAt w g') : realPart g = realPart g' := by
   have e : (AdelicGLn.prodEquiv ℚ 2 g).1 = (AdelicGLn.prodEquiv ℚ 2 g').1 := by
@@ -36,9 +36,9 @@ theorem realPart_congr {g g' : G2} (h : ∀ w, infAt w g = infAt w g') : realPar
   simp only [GL2Classical.realPart, e]
 
 /- English proof (translation)
-Establish `e : (AdelicGLn.prodEquiv ℚ 2 (realEmb (realPart g))).1 = (AdelicGLn.prodEquiv ℚ 2 g).1`. Rewrite using `[prodEquiv_realEmb]`. Use extensionality with `a b`. Simplify using `[GL2Classical.realPart, GL2Classical.realInf]`. Express the relevant statement in the definitionally equal form `(AdelicGLn.infiniteEquiv ℚ 2 (AdelicGLn.prodEquiv ℚ 2 (realEmb (realPart g))).1) w = (AdelicGLn.infiniteEquiv ℚ 2 (AdelicGLn.prodEquiv ℚ 2 g).1) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infAt_realEmb_realPart (g : G2) (w : InfinitePlace ℚ) : infAt w (realEmb (realPart g)) = infAt w g := by
   have e : (AdelicGLn.prodEquiv ℚ 2 (realEmb (realPart g))).1 = (AdelicGLn.prodEquiv ℚ 2 g).1 := by
@@ -50,7 +50,7 @@ theorem infAt_realEmb_realPart (g : G2) (w : InfinitePlace ℚ) : infAt w (realE
   rw [e]
 
 /- English proof (translation)
-Establish `e : (AdelicGLn.prodEquiv ℚ 2 (realEmb x)).2 = 1`. Rewrite using `[prodEquiv_realEmb]`. Express the relevant statement in the definitionally equal form `(AdelicGLn.finiteRestrictedEquiv ℚ 2 (AdelicGLn.prodEquiv ℚ 2 (realEmb x)).2) v = 1`. Rewrite using `[e, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finAt_realEmb (x : GL (Fin 2) ℝ) (v : Pl) : finAt v (realEmb x) = 1 := by
   have e : (AdelicGLn.prodEquiv ℚ 2 (realEmb x)).2 = 1 := by
@@ -60,26 +60,26 @@ theorem finAt_realEmb (x : GL (Fin 2) ℝ) (v : Pl) : finAt v (realEmb x) = 1 :=
   rfl
 
 /- English proof (translation)
-Unfold `Wh`. Simplify using `only [← mul_assoc, h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Wh_mul_right {φ : G2 → ℂ} {κ : G2} (h : ∀ g, φ (g * κ) = φ g) (g : G2) : Wh φ (g * κ) = Wh φ g := by
   unfold Wh
   simp only [← mul_assoc, h]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg`. Establish `hinf : ∀ w, infAt w ((realEmb (realPart g))⁻¹ * g) = 1` using `fun w => by`. Rewrite using `[Reduction.infAt_mul, Reduction.infAt_inv, infAt_realEmb_realPart, inv_mul_cancel]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ v, finAt v ((realEmb (realPart g))⁻¹ * g) = finAt v g` using `fun v => by`. Rewrite using `[Reduction.finAt_mul, Reduction.finAt_inv, finAt_realEmb, inv_one, one_mul]`. Establish `hκ : (realEmb (realPart g))⁻¹ * g ∈ (maxCompact : Subgroup G2)` using `⟨fun w => by rw [hinf w]; exact one_mem _, fun v => by`. Rewrite using `[hfin v]; exact (hg v (by simp)).1⟩`. Establish `h` using `Wh_mul_right (hglob ⟨_, hκ⟩ hinf (fun v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `finAt v ((realEmb (realPart g))⁻¹ * g) = 1`. Rewrite using `[hfin v]; exact (hg v (by simp)).2 hv)) (realEmb (realPart g))`. Simplify using `only [mul_inv_cancel_left] at h`. Simplify using `using h`. Consider the case `insert v T hv ih`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `g hg`. Take `⟨h, hh⟩` from `hloc v (finAt v g)`. Establish `hv1 : finAt v (g * h⁻¹) = 1`. Rewrite using `[Reduction.finAt_mul, Reduction.finAt_inv, hh.1, mul_inv_cancel]`. Establish `hoth : ∀ v', v' ≠ v → finAt v' (g * h⁻¹) = finAt v' g` using `fun v' hne => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Reduction.finAt_mul, Reduction.finAt_inv, hh.2.1 v' hne, inv_one, mul_one]`. Establish `hinf : ∀ w, infAt w (g * h⁻¹) = infAt w g` using `fun w => by`. Rewrite using `[Reduction.infAt_mul, Reduction.infAt_inv, hh.2.2 w, inv_one, mul_one]`. Establish `hfac` using `hmod.fac v (g * h⁻¹) hv1 (finAt v g) h hh`. Rewrite `hfac` using `[inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hoff : ∀ v' ∉ T, finAt v' (g * h⁻¹) ∈ integralGL (Qv v') 2 ∧ (pOf v' ∣ N → finAt v' (g * h⁻¹) = 1)`. Introduce `v' hv'`. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Conclude with `⟨by rw [hv1]; exact one_mem _, fun _ => hv1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Rewrite using `[hoth v' e]`. Conclude with `hg v' (by simp [e, hv'])`. Rewrite using `[hfac, ih _ hoff, realPart_congr hinf, Finset.prod_insert hv, Finset.prod_congr rfl (fun v' hv' => by`. Rewrite using `[hoth v' (fun e => hv (e ▸ hv'))])]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Wh_eq_prod {N : ℕ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     {μ₁ μ₂ : ∀ v : Pl, (Qv v)ˣ →* ℂˣ} {φ₀ : ∀ v : Pl, (Fin 2 → Qv v) → ℂ}
@@ -127,15 +127,15 @@ theorem Wh_eq_prod {N : ℕ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     ring
 
 /- English proof (translation)
-Introduce `hB hM hF k N _ h3 χ hχ f a hform heig ω φ hom hlift μ₁ μ₂ φ₀ hmod g`. Take `⟨h1, hinj, -, -, -, -, hfin, -⟩` from `hB`. Establish `hH : Hk k N a ω φ` using `hF k N h3 χ hχ f a hform heig ω φ hom hlift`. Establish `hbad : {v : Pl | pOf v ∣ N}.Finite` using `((Finset.finite_toSet (Nat.divisors N)).preimage hinj.injOn).subset fun v hv => by`. Simplify `hv` using `[Nat.mem_divisors, NeZero.ne N]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hT : ∀ v, v ∉ (hfin g).toFinset ∪ hbad.toFinset → finAt v g ∈ integralGL (Qv v) 2 ∧ ¬ pOf v ∣ N`. Introduce `v hv`. Simplify using `using hv`. Rewrite using `[Wh_eq_prod hH.glob hmod (fun v => (h1 v).2.2.2.2.2.1) ((hfin g).toFinset ∪ hbad.toFinset) g (fun v hv => ⟨(hT v hv).1, fun hd => absurd hd (hT v hv).2⟩)]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `symm`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `hvT`. Apply `hv` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨hint, hnb⟩` from `hT v hvT`. Take `⟨hu1, hu2, hφ⟩` from `hmod.good v hnb`. Use `beta_reduce`. Rewrite using `[hφ]`. Take `⟨-, hone, htype⟩` from `hM (Qv v) (localAdelicChar ℚ v) (h1 v).1 (μ₁ v) (μ₂ v) (hmod.u₁ v) (hmod.u₂ v) hu1 hu2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `htype.1 (finAt v g) hint 1`. Rewrite `h` using `[one_mul]`. Rewrite using `[h, hone]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_factorisation : B0 → M0 → F3 → E0 := by
   intro hB hM hF k N _ h3 χ hχ f a hform heig ω φ hom hlift μ₁ μ₂ φ₀ hmod g

@@ -17,15 +17,15 @@ noncomputable section
 namespace GlobalTheory.DoubledFlatDiag
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP _ W₂ _ _ _ i hi K _ hIw φ₀ hφ₀ _ μ _ s h y`. Establish `hJ : W.J.det ≠ 0` using `GlobalTheory.FlipOnto.det_ne_zero_of_isSkew hP.skew`. Establish `hiP : ∀ h : UA σ W.J, i (h, h) ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype` using `fun h => by`. Rewrite using `[mem_siegelOf]`. Express the relevant statement in the definitionally equal form `KeepsDiag finSumFinEquiv (mat (i (h, h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hi]`. Conclude with `(keepsDiag_blkMat finSumFinEquiv).2 rfl`. Establish `haOf : ∀ h : UA σ W.J, aOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype ⟨i (h, h), hiP h⟩ = Matrix.GeneralLinearGroup.det h.1` using `fun h => by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_aOf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(leviMat finSumFinEquiv (mat (i (h, h)))).det = _`. Rewrite using `[hi, leviMat_blkMat]`. Both sides reduce to the same expression. Establish `hδ1 : ∀ h : UA σ W.J, absAOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) ⟨i (h, h), hiP h⟩ = 1` using `fun h => by`. Express the relevant statement in the definitionally equal form `absE F E (aOf _ _ _) = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[haOf]`. Conclude with `GlobalTheory.LeviModulus.CharVec.absE_det_eq_one σ hJ h`. Establish `hl : IndLaw (absAOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E)) (χX.comp (aOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype)) (((n : ℂ) - (d : ℂ)) / 2 + (Fintype.card (Fin d) : ℂ) / 2) φ₀` using `((mem_degPSOf).1 hφ₀).1`. Use `(IsIwasawa.indLaw_flatSec hIw hl s) ⟨i (h, h), hiP h⟩ y` as an intermediate fact. Rewrite `this` using `[hδ1, GlobalTheory.Doubling.npow, NNReal.coe_one, Complex.ofReal_one, Complex.one_cpow, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `flatSec _ _ _ _ _ _ = _ * flatSec _ _ _ _ _ _`. Rewrite using `[this, MonoidHom.comp_apply, haOf]`.
+A detailed English derivation is pending.
 -/
 theorem flatOf_diag : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → 1 ≤ d →

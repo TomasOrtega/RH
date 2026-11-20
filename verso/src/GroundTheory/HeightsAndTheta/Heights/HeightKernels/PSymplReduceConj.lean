@@ -9,7 +9,7 @@ open Matrix
 namespace PSymplReduceConj
 
 /- English proof (translation)
-Simplify using `[symplCons, Fintype.sum_sum_type, Fin.sum_univ_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_symplCons {n : ℕ} (p q : ℝ) (w : Fin n ⊕ Fin n → ℝ)
     (F : Fin (n + 1) ⊕ Fin (n + 1) → ℝ) :
@@ -26,14 +26,14 @@ theorem row_e {n : ℕ} (Q : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) :
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ends_rank_three_of_local {n : ℕ} (Q : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (a : Fin n ⊕ Fin n) :
     symplExt (1 : ℝ) 0 0 1 Q (Sum.map Fin.succ Fin.succ a) = symplCons 0 0 (Q a) := by
   cases a <;> rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entry {l : Type*} [Fintype l] (E H : Matrix l l ℝ) (x y : l) :
     (E * H * Eᵀ) x y = ∑ w, E x w * ∑ z, E y z * H w z := by
@@ -47,17 +47,15 @@ end PSymplReduceConj
 open PSymplReduceConj in
 
 /- English proof (translation)
-Introduce `n H Q`. Establish `kee : (symplExt (1 : ℝ) 0 0 1 Q * H * (symplExt (1 : ℝ) 0 0 1 Q)ᵀ) (Sum.inl 0) (Sum.inl 0) = H (Sum.inl 0) (Sum.inl 0)`. Rewrite using `[entry, row_e]`. Simplify using `only [sum_symplCons, zero_mul, one_mul, add_zero, Pi.zero_apply, Finset.sum_const_zero]`. Use `⟨kee, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Establish `kse : (symplExt (1 : ℝ) 0 0 1 Q * H * (symplExt (1 : ℝ) 0 0 1 Q)ᵀ) (Sum.map Fin.succ Fin.succ a) (Sum.inl 0) = ∑ q, Q a q * H (Sum.map Fin.succ Fin.succ q) (Sum.inl 0)`. Rewrite using `[entry, ends_rank_three_of_local, row_e]`. Simplify using `only [sum_symplCons, zero_mul, one_mul, add_zero, zero_add, Pi.zero_apply, Finset.sum_const_zero]`. Establish `kes : (symplExt (1 : ℝ) 0 0 1 Q * H * (symplExt (1 : ℝ) 0 0 1 Q)ᵀ) (Sum.inl 0) (Sum.map Fin.succ Fin.succ b) = ∑ r, Q b r * H (Sum.inl 0) (Sum.map Fin.succ Fin.succ r)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[entry, ends_rank_three_of_local, row_e]`. Simplify using `only [sum_symplCons, zero_mul, one_mul, add_zero, zero_add, Pi.zero_apply, Finset.sum_const_zero]`. Establish `kss : (symplExt (1 : ℝ) 0 0 1 Q * H * (symplExt (1 : ℝ) 0 0 1 Q)ᵀ) (Sum.map Fin.succ Fin.succ a) (Sum.map Fin.succ Fin.succ b) = ∑ q, Q a q * ∑ r, Q b r * H (Sum.map Fin.succ Fin.succ q) (Sum.map Fin.succ Fin.succ r)`. Rewrite using `[entry, ends_rank_three_of_local, ends_rank_three_of_local]`. Simplify using `only [sum_symplCons, zero_mul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show _ - _ * _ / _ = _`. Rewrite using `[kss, kse, kes, kee]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [symplReduce]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
-
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SymplReduceConj.proof : SymplReduceConj.Statement := by
   intro n H Q

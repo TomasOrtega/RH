@@ -9,9 +9,9 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro T t _ v`. Simplify using the standard rewrite rules. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `T t h v`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, h, ih (fun i => T i.succ) (fun i => t i.succ) (fun i => h _) v]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem prod_res {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (X : Submodule ℂ H) :
     ∀ (r : ℕ) (T : Fin r → H →L[ℂ] H) (t : Fin r → Module.End ℂ X), (∀ i (v : X), ((t i v : X) : H) = T i v) →
@@ -26,7 +26,7 @@ private theorem prod_res {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
     rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun y hy => (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun x hx => (h x hx y hy).symm).symm`.
+A detailed English derivation is pending.
 -/
 private theorem comm_adj {A : Type} [Ring A] [Algebra ℂ A] {s t : Set A} (h : ∀ a ∈ s, ∀ b ∈ t, Commute a b) {a b : A}
     (ha : a ∈ Algebra.adjoin ℂ s) (hb : b ∈ Algebra.adjoin ℂ t) : Commute a b :=
@@ -35,35 +35,31 @@ private theorem comm_adj {A : Type} [Ring A] [Algebra ℂ A] {s t : Set A} (h : 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `r G _ _ _ _ _ _ H _ _ _ S _ _ π τ V Z hsm hirr hcm hZc hZV hZi hV U hU hfd hne`. Use `set X := Z ⊓ ⨅ i, fixU (π i) (U i) with hX`. Set `D : Fin r → Submodule ℂ H` to `fun i => Z ⊓ ⨅ j, ⨅ _ : j ≠ i, fixU (π j) (U j)`. Establish `hD : ∀ i v, v ∈ D i ↔ v ∈ Z ∧ ∀ j, j ≠ i → v ∈ fixU (π j) (U j)` using `fun i v => by`. Simplify using `only [D, Submodule.mem_inf, Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hDc : ∀ i, IsClosed (D i : Set H)` using `fun i => by`. Establish `: (D i : Set H) = (Z : Set H) ∩ ⋂ j, ⋂ _ : j ≠ i, (fixU (π j) (U j) : Set H)`. Use extensionality with `v`. Rewrite using `[SetLike.mem_coe, hD]`. Simplify using `only [SetLike.mem_coe, Set.mem_inter_iff, Set.mem_iInter]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hZc.inter (isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_fixU _ _)`. Establish `hDi : ∀ i, (π i).IsInvariant (D i)` using `fun i g v hv => (hD i _).2 ⟨hZi i g v ((hD i v).1 hv).1, fun j hj u hu => by`. Rewrite using `[hcm j i hj, ((hD i v).1 hv).2 j hj u hu]⟩`. Establish `hXD : ∀ i, X = D i ⊓ fixU (π i) (U i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Simplify using `only [hX, Submodule.mem_inf, Submodule.mem_iInf, hD]`. Use `⟨fun h => ⟨⟨h.1, fun j _ => h.2 j⟩, h.2 i⟩, fun h => ⟨h.1.1, fun j => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `e : j = i`. Conclude with `e ▸ h.2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.1.2 j e`. Establish `hle : ∀ i, X ≤ spanFix (τ i) (π i) (D i) (U i)` using `fun i => (hXD i).le.trans (UpperTheory.inf_fixed_le_spanFix_of_dense_spanAll (G i) H (S i) (τ i) (hsm i) (π i) (U i) (hU i).1 (hU i).2 V (D i) (hDc i) (hDi i) (inf_le_left.trans hZV) (hV i) (hXD i ▸ hfd))`. Establish `hm : ∀ i f, Eqv (τ i) (π i) (D i) f → ∀ x : fixedVectors (τ i) (U i), f x ∈ X` using `fun i f hf x => by`. Rewrite using `[hXD i]`. Conclude with `⟨hf.mem _, fun u hu => by rw [← hf.map, mem_fixedVectors.1 x.2 u hu]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i)) ∧ fixedVectors (τ i) (U i) ≠ ⊥` using `fun i => by`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, x, hx, h0⟩ : ∃ f, Eqv (τ i) (π i) (D i) f ∧ ∃ x ∈ fixedVectors (τ i) (U i), f x ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Use `hne (le_bot_iff.1 ((hle i).trans (Submodule.span_le.2 ?_)))` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨f, hf, x, hx, rfl⟩`. Conclude with `hno f hf x hx`. Use `hirr i` as an intermediate fact. Establish `hinj : Function.Injective f`. Break down `eq_bot_or_eq_top (⟨LinearMap.ker f, fun g v hv => by` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf.map, hv, map_zero]⟩ : Subrepresentation (τ i)) with e | e`. Conclude with `LinearMap.ker_eq_bot.1 (congrArg Subrepresentation.toSubmodule e)`. Conclude with `(h0 (by rw [LinearMap.ker_eq_top.1 (congrArg Subrepresentation.toSubmodule e)]; rfl)).elim`. Use `⟨Module.Finite.of_injective ((f ∘ₗ (fixedVectors (τ i) (U i)).subtype).codRestrict X (hm i f hf)) fun a b e => Subtype.ext (hinj (congrArg Subtype.val e)), fun e => h0 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[e]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hx, map_zero]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `fun i => (h1 i).1` as an intermediate fact. Use `fun i => Submodule.nontrivial_iff_ne_bot.2 (h1 i).2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc1 hc2 using fun i => UpperTheory.exists_algHom_end_fixedVectors_to_fixed_subspace (G i) H (S i) (τ i) (hsm i) (hirr i) (π i) (U i) (hU i).1 (hU i).2 (D i) X (hDc i) (hDi i) (hXD i) (hle i)`. Take `⟨N, hN⟩` from `UpperTheory.trace_pairing_separates_endomorphisms r X (fun i => fixedVectors (τ i) (U i)) c fun i j hij s t => by`. Use `comm_adj ?_ (hc2 i s) (hc2 j t)` and prove the remaining obligations. Introduce and unpack `a ⟨g, ha⟩ b ⟨h, hb⟩`. Take `⟨q1, q2⟩` from `(UpperTheory.fixedProjection_invariant_and_commuting_reps (G i) (G j) H (π i) (π j) (U i) (U j)).2.2.2 (hcm i j hij)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨q3, -⟩` from `(UpperTheory.fixedProjection_invariant_and_commuting_reps (G j) (G i) H (π j) (π i) (U j) (U i)).2.2.2 (hcm j i hij.symm)`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, ha, hb, hb, ha, ← q3, ← q1, q2, hcm i j hij]`. Use `⟨N, fun T B hT hB => ?_⟩` and prove the remaining obligations. Rewrite using `[← hN B]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `(UpperTheory.trOn_restrict_and_eq_of_maps_into H X X _).1 _ (prod_res X r T _ fun i v => ?_)` and prove the remaining obligations. Establish `key : ∀ y ∈ spanFix (τ i) (π i) (D i) (U i), ∃ h : y ∈ X, ((c i (B i) ⟨y, h⟩ : X) : H) = T i y` using `fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, x, hx, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `⟨hm i f hf ⟨x, hx⟩, (hc1 i (B i) f hf ⟨x, hx⟩ _ rfl).trans (hB i f ⟨fun _ => trivial, hf.map⟩ ⟨x, hx⟩).symm⟩`. Consider the case `zero => exact ⟨X.zero_mem, (congrArg Subtype.val (map_zero (c i (B i)))).trans (map_zero (T i)).symm⟩`. Consider the case `add u v _ _ h1 h2`. Take `⟨a, ha⟩` from `h1`. Take `⟨b, hb⟩` from `h2`.
-
-Use `⟨X.add_mem a b, (congrArg Subtype.val (map_add (c i (B i)) ⟨u, a⟩ ⟨v, b⟩)).trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← ha, ← hb]`. Both sides reduce to the same expression. Consider the case `smul k u _ h1`. Take `⟨a, ha⟩` from `h1`.
-
-Use `⟨X.smul_mem k a, (congrArg Subtype.val (map_smul (c i (B i)) k ⟨u, a⟩)).trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← ha]`. Both sides reduce to the same expression. Conclude with `(key v (hle i v.2)).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.commuting_smooth_irreducible_fixed_vectors :
     ∀ (r : ℕ) (G : Fin r → Type) [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] [∀ i, LocallyCompactSpace (G i)] [∀ i, T2Space (G i)] [∀ i, TotallyDisconnectedSpace (G i)] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] (π : ∀ i, UnitaryRep (G i) H) (τ : ∀ i, Representation ℂ (G i) (S i)) (V Z : Submodule ℂ H), (∀ i, GroundTheory.Automorphic.IsSmooth (τ i)) → (∀ i, (τ i).IsIrreducible) → (∀ i j, i ≠ j → ∀ g h v, π i g (π j h v) = π j h (π i g v)) → IsClosed (Z : Set H) → Z ≤ V → (∀ i, (π i).IsInvariant Z) → (∀ i, V ≤ (spanAll (τ i) (π i) V).topologicalClosure) → ∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → FiniteDimensional ℂ ↥(Z ⊓ ⨅ i, fixU (π i) (U i)) → (Z ⊓ ⨅ i, fixU (π i) (U i)) ≠ ⊥ → (∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i)) ∧ fixedVectors (τ i) (U i) ≠ ⊥) ∧ ∃ N : ℕ, ∀ (T : Fin r → H →L[ℂ] H) (B : ∀ i, Module.End ℂ (fixedVectors (τ i) (U i))), (∀ i, ∀ v ∈ (Z ⊓ ⨅ i, fixU (π i) (U i)), T i v ∈ (Z ⊓ ⨅ i, fixU (π i) (U i))) → (∀ i f, Eqv (τ i) (π i) ⊤ f → ∀ x : fixedVectors (τ i) (U i), T i (f x) = f (B i x)) → trOn (Z ⊓ ⨅ i, fixU (π i) (U i)) (List.ofFn T).prod = N * ∏ i, LinearMap.trace ℂ (fixedVectors (τ i) (U i)) (B i) := by

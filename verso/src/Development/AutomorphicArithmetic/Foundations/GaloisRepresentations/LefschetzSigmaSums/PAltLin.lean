@@ -10,7 +10,7 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.HodgeCoh
 namespace UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum, ← Module.End.mul_eq_comp, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem trace_comb {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ} {A : Type*}
     (u : Fin m → Module.End ℂ M) (c : Fin m → ℂ) (w : A →₀ ℂ) (e : A → Module.End ℂ M) :
@@ -23,7 +23,7 @@ private theorem trace_comb {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ}
   ring
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_rearrange {m : ℕ} {A : Type*} (R : Finset ℕ) (S : Finset A) (c : Fin m → ℂ) (w : A → ℂ)
     (x z : ℕ → ℂ) (t : Fin m → A → ℕ → ℕ → ℂ) :
@@ -43,7 +43,7 @@ private theorem sum_rearrange {m : ℕ} {A : Type*} (R : Finset ℕ) (S : Finset
         ring
 
 /- English proof (translation)
-Simplify using `only [trace_comb]`. Simplify using `only [Finsupp.sum]`. Conclude with `sum_rearrange (Finset.range (d + 1)) w.support c (fun α => w α) (fun a => (-y) ^ a) (fun b => (-1 : ℂ) ^ b) fun i α a b => LinearMap.trace ℂ (M a b) (u i a b ∘ₗ e α a b)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem alt_family {M : ℕ → ℕ → Type*} [∀ a b, AddCommGroup (M a b)] [∀ a b, Module ℂ (M a b)]
     (d m : ℕ) {A : Type*} (u : Fin m → ∀ a b : ℕ, Module.End ℂ (M a b)) (c : Fin m → ℂ) (w : A →₀ ℂ)
@@ -58,7 +58,7 @@ private theorem alt_family {M : ℕ → ℕ → Type*} [∀ a b, AddCommGroup (M
     fun i α a b => LinearMap.trace ℂ (M a b) (u i a b ∘ₗ e α a b)
 
 /- English proof (translation)
-Introduce `Z s d m A u c w e y` and use `alt_family (M := fun a b => hodgeH s a b) d m u c w e y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem altLin_of : AltLin := fun Z s d m A u c w e y =>
   alt_family (M := fun a b => hodgeH s a b) d m u c w e y

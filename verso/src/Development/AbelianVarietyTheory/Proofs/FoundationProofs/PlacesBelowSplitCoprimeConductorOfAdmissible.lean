@@ -13,7 +13,7 @@ def IsClassTerm {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (φ 
   ∃ S : ℂ → ℂ, IsLatSum φ (2 * s) κ (lattice c y) S ∧ T = ((finPart χ y : ℂ) * ((modF y ^ s : ℝ) : ℂ))⁻¹ * S 0
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `h`. Take `⟨S', hS', rfl⟩` from `h'`. Rewrite using `[hS.unique hS']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsClassTerm.unique {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ}
     {c : Ideal (OF E)} {χ : HChar E} {y : (Af E)ˣ} {T T' : ℂ} (h : IsClassTerm φ s κ c χ y T) (h' : IsClassTerm φ s κ c χ y T') :
@@ -23,7 +23,7 @@ theorem IsClassTerm.unique {E : Type} [Field E] [NumberField E] {I : Type} [Fint
   rw [hS.unique hS']
 
 /- English proof (translation)
-Use `and_congr_right fun _ => ⟨fun ⟨S, hS, hT⟩ => ⟨_, fun q => ⟨S q, hS q, rfl⟩, hT⟩, fun ⟨t, ht, hT⟩ => ?_⟩` and prove the remaining obligations. Use `choose S hS hS' using ht`. Conclude with `⟨S, hS, by rw [hT]; exact finsum_congr hS'⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isToricSum_iff {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (s : ℕ) (κ : I → ℕ)
     (c : Ideal (OF E)) (χ : HChar E) (T : ℂ) :
@@ -50,11 +50,11 @@ def belowSet {E : Type} [Field E] [NumberField E] (Q : Finset (HeightOneSpectrum
   Q.image below
 
 /- English proof (translation)
-Take `⟨x, hx, hx'⟩` from `h`. Set `c : 𝓞 H.E ≃+* 𝓞 H.E` to `RingOfIntegers.mapRingEquiv H.conj.toRingEquiv`. Establish `hc : ∀ a : 𝓞 H.E, ((c a : 𝓞 H.E) : H.E) = H.conj (a : H.E)` using `fun a => rfl`. Use `⟨P, P.comap c.toRingHom c.surjective, fun e => ?_, rfl, ?_⟩` and prove the remaining obligations. Establish `: x ∈ (P.comap c.toRingHom c.surjective).asIdeal` using `e ▸ hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hx' (c x) (hc x) this`. Use extensionality with `a`. Establish `: c (algebraMap (OF H.E) (𝓞 H.E) a) = algebraMap (OF H.E) (𝓞 H.E) a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `H.φ₀.injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show H.φ₀ (H.conj ((a : maximalRealSubfield H.E) : H.E)) = H.φ₀ ((a : maximalRealSubfield H.E) : H.E)`. Rewrite using `[H.toHostAx.conjE_apply]`. Conclude with `(a : maximalRealSubfield H.E).2 H.φ₀`. Use `show c (algebraMap (OF H.E) (𝓞 H.E) a) ∈ P.asIdeal ↔ algebraMap (OF H.E) (𝓞 H.E) a ∈ P.asIdeal`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_below {R : Ranks} (H : Host R) {P : HeightOneSpectrum (𝓞 H.E)} (h : IsSplitPl H P) : Splits (below P) := by
   obtain ⟨x, hx, hx'⟩ := h
@@ -109,9 +109,9 @@ def IsToricElt : Prop :=
 variable {X}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q hq`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `⟨splits_below D.host (hQ.1 P hP), fun h => Finset.disjoint_left.1 hQ.2.1 hP (h𝔣 P h)⟩`. Introduce `q hq h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hq`. Use `Finset.disjoint_left.1 hQ.2.1 hP (X.twistExcludedPlaces_contains_residueChar i ?_)` and prove the remaining obligations. Establish `: algebraMap (OF D.host.E) (𝓞 D.host.E) ((X.l i : ℕ) : OF D.host.E) ∈ P.asIdeal` using `h`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem placesBelow_splitCoprimeConductor_of_admissible {i : X.Tw} {Q : Finset (HeightOneSpectrum (𝓞 D.host.E))} (hQ : BlochKatoReduction.Gen.QOk X i Q) {𝔣 : Ideal (OF D.host.E)}
     (h𝔣 : ∀ P, (below P).asIdeal ∣ 𝔣 → P ∈ X.S0 i) :

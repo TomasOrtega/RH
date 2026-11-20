@@ -24,9 +24,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {A' D : Type} [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D] {a : ℕ}
 
 /- English proof (translation)
-Establish `e1 : (invT (h * c⁻¹)).val = (invT h).val * c.valᵀ` using `by rw [map_mul, map_inv, Units.val_mul, invT_inv_val]`. Establish `e2 : gdet h = gdet (h * c⁻¹) * gdet c` using `by rw [← gdet_mul, inv_mul_cancel_right]`. Rewrite using `[bigZetaIntegral_eq, bigZetaIntegral_eq, e1, e2, apow_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hc), map_mul, Units.val_mul]`. Unfold `bigF`. Rewrite using `[← GlobalTheory.FlipMatch.ZMat.shellSum_mul_left μ ϖ ν _ (fun x => Φ (x * (X0 k σ * ((invT h).val * c.valᵀ)))) hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bigZetaIntegral_equivariant (μ : Measure (GL (Fin a) k)) [μ.IsHaarMeasure] (ϖ : kˣ) (σ : Fin a ⊕ A' ≃ D) (ν β : kˣ →* ℂˣ)
     {g : GL (Fin a) k} (hg : g ∈ KO k (Fin a)) {c : GL D k} (hc : c ∈ KO k D) (Φ : Matrix (Fin a) D k → ℂ) (h : GL D k) :
@@ -41,11 +41,11 @@ theorem bigZetaIntegral_equivariant (μ : Measure (GL (Fin a) k)) [μ.IsHaarMeas
   ring
 
 /- English proof (translation)
-Establish `e2 : gdet h = gdet (h * c⁻¹) * gdet c` using `by rw [← gdet_mul, inv_mul_cancel_right]`. Establish `e3 : ∀ Y : Matrix A' D k, smallF μ ν (fun Y => Ψ ((invT g).val * Y * (c⁻¹).val)) Y = ν (gdet g) * smallF μ ν Ψ (Y * (c⁻¹).val)` using `fun Y => by`. Unfold `smallF`. Rewrite using `[← integral_mul_left_eq_self (fun x : GL A' k => Ψ (x.val * (Y * (c⁻¹).val)) * (ν (gdet x) : ℂ) * apow (gdet x) ((Fintype.card D : ℂ) / 2)) (invT g), ← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Establish `h4 : (ν (gdet g) : ℂ) ≠ 0` using `Units.ne_zero _`. Rewrite using `[gdet_mul, apow_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (invT_mem_KO hg)), gdet_invT, map_mul, map_inv, Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]`. Simplify using `only [Matrix.mul_assoc]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Unfold `smallP`. Rewrite using `[e3, e2, apow_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hc), map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smallP_change {A : Type} (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ : A ⊕ A' ≃ D) (ν α : kˣ →* ℂˣ)
     {g : GL A' k} (hg : g ∈ KO k A') {c : GL D k} (hc : c ∈ KO k D) (Ψ : Matrix A' D k → ℂ) (h : GL D k) :
@@ -70,7 +70,7 @@ theorem smallP_change {A : Type} (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ
   ring
 
 /- English proof (translation)
-Simplify using `only [bigZetaIntegral_eq, bigF, Pi.smul_apply, smul_eq_mul, shellSum_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bigZetaIntegral_smul (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (σ : Fin a ⊕ A' ≃ D) (ν β : kˣ →* ℂˣ) (z : ℂ)
     (Φ : Matrix (Fin a) D k → ℂ) (h : GL D k) : bigP μ ϖ σ ν β (z • Φ) h = z * bigP μ ϖ σ ν β Φ h := by
@@ -78,9 +78,9 @@ theorem bigZetaIntegral_smul (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (σ : Fin 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `h1` using `bigZetaIntegral_equivariant μ ϖ σ ν β hg hc ((ν (gdet g * gdet g' * gdet c) : ℂ) • Φ) h`. Rewrite `h1` using `[bigZetaIntegral_smul, H]`. Rewrite using `[smallP_change μ' σ ν α hg' hc, hν]`. Use `mul_left_cancel₀ (Units.ne_zero (ν (gdet g))) ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Simplify using `only [map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zeta_change (μ : Measure (GL (Fin a) k)) [μ.IsHaarMeasure] (μ' : Measure (GL A' k)) [μ'.IsHaarMeasure] (ϖ : kˣ)
     (σ : Fin a ⊕ A' ≃ D) (ν α β : kˣ →* ℂˣ) (hν : ∀ x, α x = ν x * β x) {g : GL (Fin a) k} (hg : g ∈ KO k (Fin a))
@@ -110,14 +110,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d r s r' s' : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {v : Pl F}
 
 /- English proof (translation)
-Rewrite using `[psiLoc, map_zero, map_zero]`. Conclude with `AddChar.map_zero_eq_one ψ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiLoc_zero' (ψ : AddChar (AF F) ℂ) (v : Pl F) : psiLoc ψ v 0 = 1 := by
   rw [psiLoc, map_zero, map_zero]
   exact AddChar.map_zero_eq_one ψ
 
 /- English proof (translation)
-Simplify using `only [coX, mul_inv_rev, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.transpose_mul k.val, Units.mul_inv, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc g.val, Units.mul_inv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coX_mul (t : E →ₐ[F] Fv F v) (b g : GL (Fin n) (Fv F v)) (c k : GL (Fin d) (Fv F v))
     (u : Matrix (Fin n) (Fin d) (AE F E)) : coX t b c u = g.val * coX t (b * g) (c * k) u * k.valᵀ := by
@@ -126,40 +126,40 @@ theorem coX_mul (t : E →ₐ[F] Fv F v) (b g : GL (Fin n) (Fv F v)) (c k : GL (
     Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [coY, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coY_mul (t : E →ₐ[F] Fv F v) (b g : GL (Fin n) (Fv F v)) (c k : GL (Fin d) (Fv F v))
     (u : Matrix (Fin n) (Fin d) (AE F E)) : coY σ X W t (b * g) (c * k) u = g.valᵀ * coY σ X W t b c u * k.val := by
   simp only [coY, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LinWShape.frob_mul A Y C P`.
+A detailed English derivation is pending.
 -/
 theorem pairM_mul {K : Type} [CommRing K] {m n : Type} [Fintype m] [Fintype n]
     (A : Matrix m m K) (Y : Matrix m n K) (C : Matrix n n K) (P : Matrix m n K) :
     pairM (A * Y * C) P = pairM Y (Aᵀ * P * Cᵀ) := GlobalTheory.LinWShape.frob_mul A Y C P
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.LinWShape.linForm_eq l Y).symm`.
+A detailed English derivation is pending.
 -/
 theorem pairM_lin {K : Type} [Field K] {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (l : Matrix m n K →ₗ[K] K) (Y : Matrix m n K) : pairM Y (Matrix.of fun i j => l (Matrix.single i j 1)) = l Y :=
   (GlobalTheory.LinWShape.linForm_eq l Y).symm
 
 /- English proof (translation)
-Simplify using `[pairM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_neg {K : Type} [CommRing K] {m n : Type} [Fintype m] [Fintype n] (Y P : Matrix m n K) :
     pairM Y (-P) = -pairM Y P := by simp [pairM]
 
 /- English proof (translation)
-Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt _ hB.std.1 v`. Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one _ hB.std v`. Establish `hsb` using `fun (u : Matrix (Fin n) (Fin d) (AE F E)) φ hφ => GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v (GlobalTheory.LatVac.locCo M.co v u) φ hφ`. Establish `act` using `fun b c u hu hp φ hφ => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX) (GlobalTheory.FinUniq.det_ne_zero_skew hW) M B.ψ hB.std t b c u hu hp φ hφ _ (hsb u φ hφ) (GlobalTheory.VacBridge.rho_a …`. Use `choose zX hzX hzX0 hzXe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose zY hzY hzY0 hzYe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2`. Establish `y0 : ∀ b c Z, coY σ X W t b c (zX Z) = 0` using `fun b c Z => by simp [coY, hzX0]`. Establish `x0 : ∀ b c Z, coX t b c (zY Z) = 0` using `fun b c Z => by simp [coX, hzY0]`. Establish `p0 : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM Y 0 = 0` using `fun Y => by simp [pairM]`. Establish `p0' : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM 0 Y = 0` using `fun Y => by simp [pairM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂ (fun φ Y => ι φ (g.val * Y * k.valᵀ)) (Model.IsLin.bij hι₂) (fun x _ y _ a => by rw [map_add, map_smul]; rfl) (fun C φ => schr (Globa …` and prove the remaining obligations. Rewrite using `[act _ _ _ (hzX C) (by rw [y0, p0]) x hx ι₂ hι₂, y0, p0, psiLoc_zero', one_mul, hzXe]`. Rewrite using `[act _ _ _ (hzX C) (by rw [y0, p0]) x hx ι hι, y0, p0, psiLoc_zero', one_mul, coX_mul t b g c k, hzXe, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[act _ _ _ (hzY _) (by rw [x0, p0']) x hx ι₂ hι₂, x0, add_zero, hzYe, pairM_lin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[act _ _ _ (hzY _) (by rw [x0, p0']) x hx ι hι, x0, add_zero, pairM_mul, Matrix.transpose_transpose, ← coY_mul, hzYe, pairM_lin]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem linW_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (M : Model σ X W)
     (t : E →ₐ[F] Fv F v) (b g : GL (Fin n) (Fv F v)) (c k : GL (Fin d) (Fv F v)) {ι ι₂} (hι : M.IsLinW B.ψ t b c ι)
@@ -195,15 +195,15 @@ theorem linW_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew �
     rfl
 
 /- English proof (translation)
-Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt _ hB.std.1 v`. Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one _ hB.std v`. Establish `hsb` using `fun (u : Matrix (Fin n) (Fin d) (AE F E)) φ hφ => GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v (GlobalTheory.LatVac.locCo M.co v u) φ hφ`. Establish `act` using `fun b c u hu hp φ hφ => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX) (GlobalTheory.FinUniq.det_ne_zero_skew hW) M B.ψ hB.std t b c u hu hp φ hφ _ (hsb u φ hφ) (GlobalTheory.VacBridge.rho_a …`. Use `choose zX hzX hzX0 hzXe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose zY hzY hzY0 hzYe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2`. Establish `y0 : ∀ b c Z, coY σ X W t b c (zX Z) = 0` using `fun b c Z => by simp [coY, hzX0]`. Establish `x0 : ∀ b c Z, coX t b c (zY Z) = 0` using `fun b c Z => by simp [coX, hzY0]`. Establish `p0 : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM Y 0 = 0` using `fun Y => by simp [pairM]`. Establish `p0' : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM 0 Y = 0` using `fun Y => by simp [pairM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eY : ∀ u, coY σ X W t b c u = (GlobalTheory.SplitFlip.invT g).val * coY σ X W t (b * g) (c * k) u * (k⁻¹).val` using `fun u => by`. Use `coY_mul (σ := σ) (X := X) (W := W) t (b * g) g⁻¹ (c * k) k⁻¹ u` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right, mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `eX : ∀ u, coX t (b * g) (c * k) u = (GlobalTheory.SplitFlip.invT g).valᵀ * coX t b c u * (k⁻¹).valᵀ` using `fun u => by`. Use `coX_mul t (b * g) g⁻¹ (c * k) k⁻¹ u` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[mul_inv_cancel_right, mul_inv_cancel_right]`. Then use the resulting hypothesis. Use `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂ (fun φ Y => ι φ ((GlobalTheory.SplitFlip.invT g).val * Y * (k⁻¹).val)) (Model.IsLin.bij hι₂) (fun x _ y _ a => by rw [map_add, map_sm …` and prove the remaining obligations. Rewrite using `[act _ _ _ (hzY C) (by rw [x0, p0']) x hx ι₂ hι₂, x0, p0, neg_zero, psiLoc_zero', one_mul, hzYe]`. Rewrite using `[act _ _ _ (hzY C) (by rw [x0, p0']) x hx ι hι, x0, p0, neg_zero, psiLoc_zero', one_mul, eY, hzYe, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[act _ _ _ (hzX _) (by rw [y0, p0]) x hx ι₂ hι₂, y0, add_zero, hzXe, pairM_neg, neg_neg, pairM_lin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[act _ _ _ (hzX _) (by rw [y0, p0]) x hx ι hι, y0, add_zero, pairM_mul, ← eX, hzXe, pairM_neg, neg_neg, pairM_lin]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linBar_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (M : Model σ X W)
     (t : E →ₐ[F] Fv F v) (b g : GL (Fin n) (Fv F v)) (c k : GL (Fin d) (Fv F v)) {ι ι₂} (hι : M.IsLinBar B.ψ t b c ι)
@@ -246,7 +246,7 @@ theorem linBar_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew
     rfl
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, ← map_one (ValuativeRel.valuation (Fv F v)), ← Valuation.Compatible.vle_iff_le, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, ← map_one (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_O_iff (v : Pl F) (a : Fv F v) : a ∈ 𝒪[Fv F v] ↔ a ∈ v.adicCompletionIntegers F := by
   rw [Valuation.mem_integer_iff, ← map_one (ValuativeRel.valuation (Fv F v)), ← Valuation.Compatible.vle_iff_le,
@@ -255,7 +255,7 @@ theorem mem_O_iff (v : Pl F) (a : Fv F v) : a ∈ 𝒪[Fv F v] ↔ a ∈ v.adicC
   exact Iff.rfl
 
 /- English proof (translation)
-Use `mem_GLint_iff.1 (h.iff_mem_GLint.1 h₂)` as an intermediate fact. Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Conclude with `⟨fun i j => (mem_O_iff v _).2 (this.1 i j), fun i j => (mem_O_iff v _).2 (this.2 i j)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_KO_of_bases {t : E →ₐ[F] Fv F v} {L : Submodule (𝓞 E) (Fin n → E)} {b b₂ : GL (Fin n) (Fv F v)}
     (h : IsSplitBasis t L b) (h₂ : IsSplitBasis t L b₂) : b⁻¹ * b₂ ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin n) := by
@@ -272,7 +272,7 @@ def kap (G : Geo σ a a') (V : Spc F E a) (V' : Spc F E a') (Z : Spc F E (a + a'
 variable {G : Geo σ a a'} {V : Spc F E a} {V' : Spc F E a'} {Z : Spc F E (a + a')}
 
 /- English proof (translation)
-Rewrite using `[kap, Units.val_mul, Units.val_mul, map_mul, map_mul, GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO (mem_KO_of_bases (b₂ := V.bas v) (hG.hV.bas v) (hG₂.hV.bas v)), GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO (mem_KO_of_bases (b₂ := V'.bas v) (hG.hV'.bas v) (hG₂.hV'.bas v)), …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_kap (hG : G.IsGood B) (hG₂ : (reG G V V' Z).IsGood B) (v : B.P) :
     ValuativeRel.valuation (Fv F v.1) (kap G V V' Z v.1 : Fv F v.1) = 1 := by
@@ -284,17 +284,15 @@ theorem valuation_kap (hG : G.IsGood B) (hG₂ : (reG G V V' Z).IsGood B) (v : B
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL Formalism.DoubleCosetMeasures.instMeasMat in
 
 /- English proof (translation)
-Take `⟨ι, ι', hι, hι', hv, hv', H⟩` from `h`. Take `⟨ι₂, ι₂', hι₂, hι₂', hv₂, hv₂', H₂⟩` from `h₂`. Establish `j₂ : G.M.IsLinW B.ψ (B.τ v) (G.V.bas v * ((G.V.bas v)⁻¹ * V.bas v)) (G.W.bas v * ((G.W.bas v)⁻¹ * Z.bas v)) ι₂`. Rewrite using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Conclude with `⟨hι₂.1, hι₂.2, hι₂.3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `j₂' : G.M'.IsLinBar B.ψ (B.τ v) (G.V'.bas v * ((G.V'.bas v)⁻¹ * V'.bas v)) (G.W.bas v * ((G.W.bas v)⁻¹ * Z.bas v)) ι₂'`. Rewrite using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Conclude with `⟨hι₂'.1, hι₂'.2, hι₂'.3⟩`. Take `⟨z, hz⟩` from `linW_change hB hG.hV hG.hW G.M (B.τ v) _ _ _ _ hι j₂`. Take `⟨z', hz'⟩` from `linBar_change hB hG.hV' hG.hW G.M' (B.τ v) _ _ _ _ hι' j₂'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `z1 : z = 1`. Use `congrFun (hz _ (hG.hM.vac v).1) 0` as an intermediate fact. Rewrite `this` using `[show ι₂ (G.M.vac v) = _ from hv₂, hv, Matrix.mul_zero, Matrix.zero_mul, Pi.smul_apply, Set.indicator_of_mem (by intro i j; exact zero_mem _)]`. Simplify using `using this.symm`. Establish `z1' : z' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrFun (hz' _ (hG.hM'.vac v).1) 0` as an intermediate fact. Rewrite `this` using `[show ι₂' (G.M'.vac v) = _ from hv₂', hv', Matrix.mul_zero, Matrix.zero_mul, Pi.smul_apply, Set.indicator_of_mem (by intro i j; exact zero_mem _)]`. Simplify using `using this.symm`. Substitute `z1 z1'` using the available equality. Establish `hs` using `(SB _).smul_mem (chrW X.ν (B.τ v) (kap G V V' Z v.1) : ℂ) hφ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[H₂ _ hs _ hφ', ← one_smul ℂ (ι₂ _), ← one_smul ℂ (ι₂' _), ← hz _ hs, ← hz' _ hφ', map_smul]`. Use `letI : MeasurableSpace (Fv F v.1) := borel _`. Use `haveI : BorelSpace (Fv F v.1) := ⟨rfl⟩`. Conclude with `zeta_change _ _ _ _ _ _ _ (fun x => by`. Simplify using `only [Chars.ν, chrW, locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div, div_mul_cancel])`.
-
-Use the proof step `(mem_KO_of_bases (hG.hV.bas v) (hG₂.hV.bas v)) (mem_KO_of_bases (hG.hV'.bas v) (hG₂.hV'.bas v))`. Use the proof step `(mem_KO_of_bases (hG.hW.bas v) (hG₂.hW.bas v)) _ _ ((H _ hφ _ hφ').1 e)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zeta_rel (hB : B.IsGood σ) (hG : G.IsGood B) (hG₂ : (reG G V V' Z).IsGood B) {X : Chars F E}
     {Rf S : FinMaps F a a'} {v : B.P} (h : IsZetaAt B G X Rf v) (h₂ : IsZetaAt B (reG G V V' Z) X S v)

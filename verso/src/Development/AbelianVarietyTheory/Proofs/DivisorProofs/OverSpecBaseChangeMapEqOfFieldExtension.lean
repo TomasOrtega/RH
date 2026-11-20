@@ -18,17 +18,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieAdd
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R k Ω _ _ _ _ _ _ _ V W f g h`. Establish `hu : Spec.map (CommRingCat.ofHom (algebraMap R Ω)) = Spec.map (CommRingCat.ofHom (algebraMap k Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R k))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Establish `h1 : pullback.fst V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) ≫ f.left = pullback.fst V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) ≫ g.left`. Use `congrArg (fun φ => φ.left ≫ pullback.fst W.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Over.pullback_map_left] at this`. Use `erw [pullback.lift_fst, pullback.lift_fst] at this`. Conclude with `this`. Use `set s := Spec.map (CommRingCat.ofHom (algebraMap R k)) with hs`. Use `set t := Spec.map (CommRingCat.ofHom (algebraMap k Ω)) with ht`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hu]`. Establish `f₁ : Flat t`. Rewrite using `[ht, HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField k) _`. Establish `f₂ : Surjective t` using `⟨fun y => ⟨(default : PrimeSpectrum Ω), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Epi (pullback.fst (pullback.snd V.hom s) t)` using `Flat.epi_of_flat_of_surjective _`. Establish `key : pullback.fst V.hom s ≫ f.left = pullback.fst V.hom s ≫ g.left`. Rewrite using `[← cancel_epi (pullback.fst (pullback.snd V.hom s) t)]`. Establish `hc : (pullback.fst (pullback.snd V.hom s) t ≫ pullback.fst V.hom s) ≫ V.hom = pullback.snd (pullback.snd V.hom s) t ≫ t ≫ s`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pullback.condition, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `he` using `pullback.lift_fst _ _ hc`. Rewrite using `[← Category.assoc, ← Category.assoc, ← he, Category.assoc, Category.assoc, h1]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.pullback_map_left]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
-
-Use `erw [pullback.lift_fst, pullback.lift_fst]`. Conclude with `key`. Use `erw [pullback.lift_snd, pullback.lift_snd]`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_map_eq_of_fieldExtension : ∀ (R k Ω : Type) [CommRing R] [Field k] [Field Ω] [Algebra R k] [Algebra k Ω] [Algebra R Ω] [IsScalarTower R k Ω] (V W : Over (Spec (CommRingCat.of R))) (f g : V ⟶ W), (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map f = (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map g → (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R k).map f = (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R k).map g := by
   intro R k Ω _ _ _ _ _ _ _ V W f g h

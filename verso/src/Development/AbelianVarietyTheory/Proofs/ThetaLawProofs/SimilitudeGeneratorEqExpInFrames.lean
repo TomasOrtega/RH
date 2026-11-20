@@ -29,11 +29,11 @@ noncomputable section
 namespace GlobalTheory.SimilTheta
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single y]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Establish `hz : y c ∈ Submodule.span ℝ Λ` using `h ▸ Submodule.mem_top`. Generalize the expression as in `y c = v at hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem v hv => exact Submodule.subset_span ⟨c, v, hv, rfl⟩`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add v v' _ _ hv hv' => rw [Pi.single_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hv hv'`. Consider the case `smul r v _ hv => rw [Pi.single_smul]`. Conclude with `Submodule.smul_mem _ r hv`.
+A detailed English derivation is pending.
 -/
 theorem span_single_block_eq_top {V : Type} [AddCommGroup V] [Module ℝ V] {Λ : Set V} (h : Submodule.span ℝ Λ = ⊤) :
     Submodule.span ℝ {s : Fin 4 → V | ∃ c, ∃ l ∈ Λ, s = Pi.single c l} = ⊤ := by
@@ -49,7 +49,7 @@ theorem span_single_block_eq_top {V : Type} [AddCommGroup V] [Module ℝ V] {Λ 
   | smul r v _ hv => rw [Pi.single_smul]; exact Submodule.smul_mem _ r hv
 
 /- English proof (translation)
-The claim follows from `map_zpow (MonoidHom.mk' (fun z : Multiplicative (Fin g → ℂ) => u.ex z.toAdd) fun _ _ => u.ex_add _ _) (Multiplicative.ofAdd z) s`.
+A detailed English derivation is pending.
 -/
 theorem ex_zsmul_eq_zpow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (s : ℤ) (z : Fin g → ℂ) :
     u.ex (s • z) = u.ex z ^ s :=
@@ -57,7 +57,7 @@ theorem ex_zsmul_eq_zpow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ
     (Multiplicative.ofAdd z) s
 
 /- English proof (translation)
-Establish `e₀ : pt ≫ toUnit _ = 𝟙 _` using `toUnit_unique _ _`. Simplify using `only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul, GrpObj.comp_zpow, MonObj.comp_one, hpt, reassoc_of% e₀, Fin.sum_univ_succ, Fin.sum_univ_zero, u.ex_add, ex_zsmul_eq_zpow, GlobalTheory.PowUnif.ex_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem comp_alMap_ex {g : ℕ} (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g) (al : Matrix (Fin 4) (Fin 4) ℤ) (r : Fin 4)
     (t : Fin g → ℂ) (y : Fin 4 → Fin g → ℂ) (pt : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4)
@@ -69,39 +69,35 @@ theorem comp_alMap_ex {g : ℕ} (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g) (al 
     GlobalTheory.PowUnif.ex_zero]
 
 /- English proof (translation)
-Introduce `g m x h u τ a b al hab hW hm hal k n ξ hξ w hw`. Take `rfl : ξ = fun r => u.ex (tors τ al m k n r)` from `funext hξ`. Set `P : (Fin 4 → Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4)` to `fun y => (Out.powIsLimit x.P.A 4).lift (Fan.mk _ fun c => u.ex (y c))`. Establish `hP : ∀ y c, P y ≫ Out.powPr x.P.A c = u.ex (y c)` using `fun y c => (Out.powIsLimit x.P.A 4).fac (Fan.mk _ fun c => u.ex (y c)) ⟨c⟩`. Establish `hPu : ∀ (y : Fin 4 → Fin g → ℂ) (pt : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4), (∀ c, pt ≫ Out.powPr x.P.A c = u.ex (y c)) → pt = P y` using `fun y pt hpt => (Out.powIsLimit x.P.A 4).hom_ext fun ⟨c⟩ => (hpt c).trans (hP y c).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : GlobalTheory.PowUnif.IsHolFamily (fun z => (u.ex z).left)` using `u.hol`. Set `z : Fin 4 ⊕ Fin 4 → (Fin 4 → Fin g → ℂ) → Fin g → ℂ` to `Sum.elim (fun r y => ∑ c, al r c • y c + tors τ al m k n r) (fun c y => y c)`. Take `⟨T, hT, hT0, hTv⟩` from `GlobalTheory.T.exists_entire_ne_zero_val_eq_mul_prod_frames x.P.A x.P.L g u x.P.isLB _ _ _ _ w hw (Fin 4 → Fin g → ℂ) (fun y => (P y).left) z (GlobalTheory.PowUnif.isHolFamily_powObj _ 4 P fun c => by`. Simplify using `only [hP]`. Conclude with `hd.precomp (T := fun y : Fin 4 → Fin g → ℂ => y c) (by fun_prop))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by`. Introduce and unpack `(r | c)`. Express the relevant statement in the definitionally equal form `Differentiable ℂ fun y : Fin 4 → Fin g → ℂ => ∑ c, al r c • y c + tors τ al m k n r fun_prop`. Express the relevant statement in the definitionally equal form `Differentiable ℂ fun y : Fin 4 → Fin g → ℂ => y c fun_prop)`. Use the proof step `(by`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `y (r | c)`. Conclude with `congrArg (·.left) (comp_alMap_ex x u al r _ y (P y) (hP y))`. Conclude with `congrArg (·.left) (hP y c))`. Set `ee : (Fin 4 → Fin g → ℂ) → ℂ` to `fun y => Complex.exp (2 * Real.pi * Complex.I * ∑ c, (fun i => (n c i : ℂ)) ⬝ᵥ y c)`. Establish `hee : Differentiable ℂ ee`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [ee, dotProduct]`. Use `fun_prop`. Establish `hper : ∀ y, ∀ s ∈ {s : Fin 4 → Fin g → ℂ | ∃ c, ∃ l ∈ (u.Λ : Set (Fin g → ℂ)), s = Pi.single c l}, T (y + s) * ee (y + s) = T y * ee y`. Introduce and unpack `y _ ⟨c, l, hl, rfl⟩`. Take `⟨k₀, n₀, hl'⟩` from `(hW.2.2.1 l).1 hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : l = lat τ k₀ n₀` from `hl'`. Establish `hlat : ∀ (k n : Fin g → ℤ) (v : Fin g → ℂ), u.ex (v + lat τ k n) = u.ex v` using `fun k n v => by`. Rewrite using `[u.ex_add, (u.ker (lat τ k n)).2 ((hW.2.2.1 _).2 ⟨k, n, rfl⟩), _root_.mul_one]`. Use `set y' := y + Pi.single c (lat τ k₀ n₀) with hy'`. Establish `hz₁ : ∀ r, z (Sum.inl r) y' = z (Sum.inl r) y + lat τ (al r c • k₀) (al r c • n₀)` using `fun r => by`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [z, Sum.elim_inl, hy', Pi.add_apply, smul_add, Finset.sum_add_distrib, lat_zsmul]`. Rewrite using `[Finset.sum_eq_single c (f := fun c' => al r c' • (Pi.single c (lat τ k₀ n₀) : Fin 4 → Fin g → ℂ) c') (fun c' _ hc => by rw [Pi.single_eq_of_ne hc, smul_zero]) (by simp), Pi.single_eq_same]`. Normalize the expressions using the abelian group laws. Establish `hz₂ : y' c = y c + lat τ k₀ n₀` using `by simp [hy']`. Establish `hz₃ : ∀ c', c' ≠ c → y' c' = y c'` using `fun c' hc => by simp [hy', Pi.single_eq_of_ne hc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∀ q, u.ex (z q y') = u.ex (z q y)`. Introduce and unpack `(r | c')`. Rewrite using `[hz₁, hlat]`. Express the relevant statement in the definitionally equal form `u.ex (y' c') = u.ex (y c')`. Distinguish the cases in `hc : c' = c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc, hz₂, hlat]`. Rewrite using `[hz₃ c' hc]`. Establish `hPP : P y' = P y` using `hPu y _ fun c' => (hP y' c').trans (hex (Sum.inr c'))`. Use `choose j hj using fun q => GlobalTheory.PowUnif.exists_chart x.P.isLB (u.ex (z q y)).left`. Establish `hj' : ∀ q, ⊤ ≤ (u.ex (z q y')).left ⁻¹ᵁ x.P.L.U (j q)` using `fun q => by rw [hex]; exact hj q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁` using `hTv y j hj`. Establish `e₂` using `hTv y' j hj'`. Rewrite `e₂` using `[hPP, e₁]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_one] at e₂`. Establish `f₁ : ∏ r, u.fr (j (Sum.inl r)) (z (Sum.inl r) y) = (∏ r, aut τ a b (al r c • k₀) (al r c • n₀) (z (Sum.inl r) y)) * ∏ r, u.fr (j (Sum.inl r)) (z (Sum.inl r) y')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hz₁]`. Conclude with `GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul g x h u τ a b hab hW _ _ _ _ (hj _)`. Establish `f₂ : ∏ c', u.fr (j (Sum.inr c')) (z (Sum.inr c') y) ^ (-(m : ℤ)) = aut τ a b k₀ n₀ (y c) ^ (-(m : ℤ)) * ∏ c', u.fr (j (Sum.inr c')) (z (Sum.inr c') y') ^ (-(m : ℤ))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ c), ← Finset.mul_prod_erase _ _ (Finset.mem_univ c), ← _root_.mul_assoc, ← mul_zpow]`. Use `congrArg₂ (· * ·) (congrArg (· ^ _) ?_) (Finset.prod_congr rfl fun c' hc => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.fr _ (y c) = _ * u.fr _ (y' c)`. Rewrite using `[hz₂]`. Conclude with `GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul g x h u τ a b hab hW _ _ _ _ (hj (Sum.inr c))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `u.fr _ (y c') ^ _ = u.fr _ (y' c') ^ _`. Rewrite using `[hz₃ c' (Finset.ne_of_mem_erase hc)]`. Establish `n₁ : ∏ r, u.fr (j (Sum.inl r)) (z (Sum.inl r) y') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => u.fr_ne _ _ (hj' _)`. Establish `n₂ : ∏ c', u.fr (j (Sum.inr c')) (z (Sum.inr c') y') ^ (-(m : ℤ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (u.fr_ne _ _ (hj' _))`. Establish `e₃ : T y' = T y * (∏ r, aut τ a b (al r c • k₀) (al r c • n₀) (z (Sum.inl r) y)) * aut τ a b k₀ n₀ (y c) ^ (-(m : ℤ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e₂` using `[f₁, f₂]`. Use `mul_right_cancel₀ (mul_ne_zero n₁ n₂) (e₂.symm.trans ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `e₄ : ee y' = ee y * Complex.exp (2 * Real.pi * Complex.I * ((fun i => (n c i : ℂ)) ⬝ᵥ lat τ k₀ n₀))`. Simplify using `only [ee, hy', Pi.add_apply, dotProduct_add, Finset.sum_add_distrib, mul_add, Complex.exp_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single c (f := fun c' => (fun i => (n c' i : ℂ)) ⬝ᵥ (Pi.single c (lat τ k₀ n₀) : Fin 4 → Fin g → ℂ) c') (fun c' _ hc => by rw [Pi.single_eq_of_ne hc, dotProduct_zero]) (by simp), Pi.single_eq_same]`. Establish `e₅ : (∏ r, aut τ a b (al r c • k₀) (al r c • n₀) (z (Sum.inl r) y)) * _ = _` using `(aut_similitude_and_mul g m τ a b al hab hW.1 hm hal).1 k n y c k₀ n₀`. Establish `n₃` using `pow_ne_zero m (aut_ne_zero τ a b k₀ n₀ (y c))`. Rewrite using `[e₃, e₄, zpow_neg, zpow_natCast]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hc` using `GlobalTheory.entire_apply_eq_of_periodic_of_span_real (F := fun y => T y * ee y) (hT.mul hee) (span_single_block_eq_top u.full) hper`. Use `⟨T 0 * ee 0, mul_ne_zero (hT0 0) (Complex.exp_ne_zero _), fun y pt hpt j hj₁ hj₂ => ?_⟩` and prove the remaining obligations. Take `rfl` from `hPu y pt hpt`. Establish `e₁` using `hTv y j (by rintro (r | c); exacts [hj₁ r, hj₂ c])`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_one, z] at e₁`.
-
-Rewrite using `[← hc y 0]`. Use `(congrArg (· * ee y) e₁).trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem simil_generator_eq_exp : ∀ (g m : ℕ) (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (al : Matrix (Fin 4) (Fin 4) ℤ), charHalf g a b → Wit x h u τ a b → 1 ≤ m → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → ∀ (k n : Fin 4 → Fin g → ℤ) (ξ : Fin 4 → Pt x), (∀ r, ξ r = u.ex (tors τ al m k n r)) → ∀ w : LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ)))), w.IsGen → ∃ C : ℂ, C ≠ 0 ∧ ∀ (y : Fin 4 → Fin g → ℂ) (pt : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4), (∀ c, pt ≫ Out.powPr x.P.A c = u.ex (y c)) → ∀ j : Fin 4 ⊕ Fin 4 → x.P.L.ι, (∀ r, ⊤ ≤ (u.ex (∑ c, al r c • y c + tors τ al m k n r)).left ⁻¹ᵁ x.P.L.U (j (Sum.inl r))) → (∀ c, ⊤ ≤ (u.ex (y c)).left ⁻¹ᵁ x.P.L.U (j (Sum.inr c))) → valAt' pt.left (LB.wchart x.P.L (Sum.elim (fun r => (alMap x al r (ξ r)).left) (fun c => (Out.powPr x.P.A c).left)) j) (w.s j).val * Complex.exp (2 * Real.pi * Complex.I * ∑ c, (fun i => (n c i : ℂ)) ⬝ᵥ y c) = C * ((∏ r, u.fr (j (Sum.inl r)) (∑ c, al r c • y c + tors τ al m k n r)) * ∏ c, u.fr (j (Sum.inr c)) (y c) ^ (-(m : ℤ))) := by
   intro g m x h u τ a b al hab hW hm hal k n ξ hξ w hw

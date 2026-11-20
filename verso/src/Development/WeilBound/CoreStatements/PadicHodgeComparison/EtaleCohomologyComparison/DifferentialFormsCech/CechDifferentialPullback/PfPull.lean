@@ -15,7 +15,7 @@ namespace CrystallineSemistableComparison.Om.Cech
 open GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull
 
 /- English proof (translation)
-Introduce `K _ X Y q p u hu κ ι V hV hVaff U hU hUaff τ hτ a j x`. Establish `h1` using `GlobalTheory.T.cover_system_cech_pull_natural u.base isCoverSystem_isBasicCover isCoverSystem_isBasicCover V hV (fun i => by rw [inter_eq_iInf]; exact hVaff _ i) U hU (fun i => by rw [inter_eq_iInf]; exact hUaff _ i) τ hτ j (goodAcyclic_modulesAb (GlobalTheory.HodgeCoh.Omega p a) …`. Establish `h2` using `hPull_omega_pf q p u hu a j (cechHAddEquivH V hV hVaff (GlobalTheory.HodgeCoh.Omega p a) j x)`. Conclude with `(congrArg (GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).symm h1).trans h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cechOm_pull_pf : ∀ {K : Type} [Field K] {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (p : Y ⟶ Spec (CommRingCat.of K)) (u : X ⟶ Y) (hu : u ≫ p = q) {κ ι : Type} (V : κ → Y.Opens) (hV : iSup V = ⊤)

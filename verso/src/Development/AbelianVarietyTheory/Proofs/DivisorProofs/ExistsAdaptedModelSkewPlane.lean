@@ -15,19 +15,19 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} :
     incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁`. Establish `hd : d = d₁ + 2` using `hH.rank`. Take `⟨co, hco⟩` from `GlobalTheory.T.adapted_plane_darboux_coordinates_exist F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁`. Take `⟨vac, hvac, hstd, hres⟩` from `GlobalTheory.T.exists_vacuum_family_eventually_indicator_ev_eq F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁ co hco`. Establish `hpol` using `GlobalTheory.T.adapted_plane_darboux_evaluation_identity F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁ co hco`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hlow, hmulX, -, hrat⟩` from `hco`. Set `Ma : Model σ X W` to `⟨co, vac, M.μ, M.dom⟩`. Establish `hev : ∀ (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = Ma.vac v) → evA F hd (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pu …` using `fun f φ _ _ => evA_pure hd f φ`. Establish `hloc : ∀ v, ev hd v (Ma.vac v) = M₁.vac v ∧ (SB _).map (ev hd v) = SB _` using `fun v => ⟨hres v, GlobalTheory.T.local_evaluation_schwartz_bruhat_image F n d d₁ hd v⟩`. Use `⟨Ma, evA F hd, ⟨hrat, hvac, hstd, hM.haar, hM.dom⟩, ⟨fun Φ hΦ => GlobalTheory.T.adelic_evaluation_preserves_schwartz F n d d₁ hd Φ hΦ, ?_, ?_, ⟨ei F hd, fun v => ev hd v, ei_ne_zero (F := F) hd, hloc, hev⟩⟩, ei F hd, fun v => ev hd v, hpol, hloc, hev⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z Φ _`. Use function extensionality and compare the values at `x`. Simplify using `only [evA_apply, Darboux.rho, schr, incM_one', Matrix.one_mul]`. Rewrite using `[hlow z, ins0_dotProduct_ins0, ins0_dotProduct_ins0, ← ins0_add]`. Introduce and unpack `u ⟨y, rfl⟩ Φ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [evA_apply, Darboux.rho, schr]`. Establish `h0 : (fun p => (co.e (Matrix.vecMulVec y (incV F H'.x))).2 ((idx hd).symm (Sum.inl p))) = 0`. Use function extensionality and compare the values at `(hmulX y).2`. Rewrite using `[(hmulX y).1, ins0_dotProduct, h0, dotProduct_zero, zero_dotProduct, mul_zero, add_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalZero_adapted : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

@@ -8,11 +8,11 @@ open Formalism.HN Formalism.HermitianLatticesTheory Matrix NumberField Finset
 namespace GlobalTheory.DualBound
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ i, ∑ j, ‖M i j‖ ^ 2` using `by positivity`. Establish `h : ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M)‖ ≤ Real.sqrt (∑ i, ∑ j, ‖M i j‖ ^ 2)`. Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun x => ?_` and prove the remaining obligations. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt hS, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ‖(LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M) x) i‖ ≤ ∑ j, ‖M i j‖ * ‖x j‖`. Establish `: (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M) x) i = ∑ j, M i j * x j`. Simplify using `[Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_sum_le _ _).trans (le_of_eq (by simp))`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem opNorm_sq_le_hs {a b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) :
     ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M)‖ ^ 2 ≤ ∑ i, ∑ j, ‖M i j‖ ^ 2 := by
@@ -36,9 +36,9 @@ theorem opNorm_sq_le_hs {a b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) :
     _ = _ := Real.sq_sqrt hS
 
 /- English proof (translation)
-Establish `hf : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `h` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ : ι => (1 : ℝ) / (Fintype.card ι : ℝ)) (fun i => z i ^ 2) (fun _ _ => by positivity) (by simp [hf.ne']) (fun _ _ => by positivity)`. Establish `hp : 0 ≤ ∏ i, z i` using `Finset.prod_nonneg fun i _ => hz i`. Rewrite `h` using `[Real.finset_prod_rpow _ _ (fun _ _ => by positivity), Finset.prod_pow, ← Finset.mul_sum]`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp, mul_comm (1 / _ : ℝ), Real.rpow_mul hp, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem card_mul_geom_sq_le {ι : Type} [Fintype ι] [Nonempty ι] (z : ι → ℝ) (hz : ∀ i, 0 ≤ z i) :
     (Fintype.card ι : ℝ) * ((∏ i, z i) ^ ((1 : ℝ) / (Fintype.card ι : ℝ))) ^ 2 ≤
@@ -56,11 +56,11 @@ theorem card_mul_geom_sq_le {ι : Type} [Fintype ι] [Nonempty ι] (z : ι → �
     _ = _ := by field_simp
 
 /- English proof (translation)
-Establish `hd : differentIdeal ℤ (𝓞 K) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hrk : rkK (differentIdeal ℤ (𝓞 K) • N) = rkK N`. Unfold `rkK`. Rewrite using `[Formalism.HN.DualPolygon.twist_span_smul N _ hd]`. Establish `hnorm : (Ideal.absNorm (differentIdeal ℤ (𝓞 K)) : ℝ) = |(NumberField.discr K : ℝ)|`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[NumberField.absNorm_differentIdeal K (𝓞 K), Nat.cast_natAbs, Int.cast_abs]`. Establish `hj : (rkK N : ℝ) ≠ 0` using `by exact_mod_cast (Formalism.LFunctionChainParameters.slopeLatticeData.rkK_pos hN0).ne'`. Establish `hf : (nPl K : ℝ) ≠ 0`. Establish `: 0 < nPl K` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `size`. Rewrite using `[Formalism.LFunctionChainParameters.slopeLatticeData.ht_ideal _ X hX hN hd, hrk, hnorm, Real.mul_rpow (Formalism.LFunctionChainParameters.slopeLatticeData.ht_pos _ X hX hN).le (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem size_different_smul {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     {a : ℕ} (X : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ) (hX : ∀ w, IsUnit (X w).det)
@@ -84,27 +84,25 @@ theorem size_different_smul {K : Type} [Field K] [NumberField K] [StarRing K] [I
   field_simp
 
 /- English proof (translation)
-Introduce `K _ _ _ _ a b X X' A B lo hi hX hX' _ hB hlo hA hhi ψ ⟨y, hyB, hy⟩ hψ`. Use `set φ : (Fin b → K) →ₗ[K] (Fin a → K) := Matrix.toLin' ψ with hφ`. Use `set A' : Submodule (𝓞 K) (Fin a → K) := B.map (φ.restrictScalars (𝓞 K)) with hA'`. Use `set rd : ℝ := |(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (nPl K : ℝ))) with hrd`. Establish `hrdpos : 0 < rd` using `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero K)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA'fg : A'.FG` using `hB.map _`. Establish `hA'0 : A' ≠ ⊥`. Introduce `h`. Establish `: ψ *ᵥ y ∈ A'` using `⟨y, hyB, by simp [hφ]⟩`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hy this`. Establish `hB0 : B ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hA'0 (by rw [hA', Submodule.map_bot])`. Establish `hd : differentIdeal ℤ (𝓞 K) ≠ ⊥` using `differentIdeal_ne_bot`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleast : lo / rd ≤ leastSize (Pi.basisFun K (Fin a)) X A'`. Use `le_csInf ⟨_, A', le_rfl, hA'0, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨N, hN, hN0, rfl⟩`. Establish `hNfg : N.FG` using `Submodule.FG.of_le hA'fg hN`. Establish `h1 : differentIdeal ℤ (𝓞 K) • N ≤ A`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_le.2 fun δ hδ v hv => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hN hv`. Simplify `hψ δ hδ z hz` using `[hφ]`. Establish `h2 : differentIdeal ℤ (𝓞 K) • N ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `Formalism.HN.DualPolygon.twist_span_smul N _ hd`. Rewrite `h3` using `[h]`. Apply `hN0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: v ∈ Submodule.span K (N : Set (Fin a → K))` using `Submodule.subset_span hv`. Rewrite `this` using `[← h3]`. Simplify using `using this`. Establish `h3` using `hA _ h1 h2`. Rewrite `h3` using `[size_different_smul X hX hNfg hN0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hrdpos]`. Conclude with `h3`. Establish `hLpos : 0 < largestSize (Pi.basisFun K (Fin b)) X' B`. Rewrite using `[(sizeMu K _ _ (Pi.basisFun K (Fin b)) X' hX' B hB hB0).2.2.2.2.1]`. Conclude with `Real.exp_pos _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hM` using `sizeIneq K _ _ _ _ (Pi.basisFun K (Fin b)) X' (Pi.basisFun K (Fin a)) X hX' hX φ B A' hB hA'fg le_rfl hA'0`. Establish `hhipos : 0 < hi` using `hLpos.trans_le hhi`. Establish `h4 : lo / (rd * hi) ≤ (∏ v, opNormAt (Pi.basisFun K (Fin b)) X' (Pi.basisFun K (Fin a)) X v φ) ^ ((1 : ℝ) / (nPl K : ℝ))`. Use `le_trans ?_ hM` and prove the remaining obligations. Rewrite using `[← div_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `div_le_div₀ ((div_pos hlo hrdpos).le.trans hleast) hleast hLpos hhi`. Establish `h5` using `card_mul_geom_sq_le (fun v => opNormAt (Pi.basisFun K (Fin b)) X' (Pi.basisFun K (Fin a)) X v φ) (fun v => norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Establish `h6 : LinearMap.toMatrix (Pi.basisFun K (Fin b)) (Pi.basisFun K (Fin a)) φ = ψ`.
-
-Use extensionality with `i j`. Simplify using `[hφ, LinearMap.toMatrix_apply]`. Unfold `opNormAt`. Rewrite using `[h6]`. Conclude with `opNorm_sq_le_hs _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_lower_bound :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (a b : ℕ) (X : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ) (X' : InfinitePlace K → Matrix (Fin b) (Fin b) ℂ) (A : Submodule (𝓞 K) (Fin a → K)) (B : Submodule (𝓞 K) (Fin b → K)) (lo hi : ℝ), (∀ w, IsUnit (X w).det) → (∀ w, IsUnit (X' w).det) → A.FG → B.FG → 0 < lo → (∀ N, N ≤ A → N ≠ ⊥ → lo ≤ size (Pi.basisFun K (Fin a)) X N) → largestSize (Pi.basisFun K (Fin b)) X' B ≤ hi → ∀ ψ : Matrix (Fin a) (Fin b) K, (∃ y ∈ B, ψ *ᵥ y ≠ 0) → (∀ δ ∈ differentIdeal ℤ (𝓞 K), ∀ y ∈ B, δ • (ψ *ᵥ y) ∈ A) → (nPl K : ℝ) * (lo / (|(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (nPl K : ℝ))) * hi)) ^ 2 ≤ ∑ w, ∑ i, ∑ j, ‖((X w)⁻¹ * ψ.map w.embedding * X' w) i j‖ ^ 2 := by

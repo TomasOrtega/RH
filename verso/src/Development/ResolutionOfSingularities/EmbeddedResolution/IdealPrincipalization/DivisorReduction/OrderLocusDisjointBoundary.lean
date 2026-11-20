@@ -26,13 +26,11 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hx hker`. Establish `hcl : IsClosed (Set.range ⇑ι.base)` using `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding ι).isClosed_range`. Establish `hmem : x ∈ closure (Set.range ⇑ι.base)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hker` using `[Scheme.Hom.support_ker ι]`. Conclude with `hker`. Rewrite `hmem` using `[hcl.closure_eq]`. Take `⟨y, hy⟩` from `hmem`. Establish `hxo : (m : ℕ∞) ≤ orderAt J x` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyo : (m : ℕ∞) ≤ orderAt (J.comap ι) y`. Use `le_trans ?_ (orderAt_le_orderAt_comap ι J y)` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hxo`. Establish `hy' : y ∈ orderAtLeastLocus (J.comap ι) m` using `hyo`.
-
-Rewrite `hy'` using `[h]`. Conclude with `hy'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
     {S X : Scheme.{u}} (ι : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion ι]
@@ -58,9 +56,9 @@ theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
   exact hy'
 
 /- English proof (translation)
-Establish `hid : lowerIdealWithoutBlowup T = T.ideal` using `by show T.ideal.comap (CategoryStruct.id T.scheme) = T.ideal`. Simplify using the standard rewrite rules. Establish `hcomap` using `comap_controlledTransform_embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr s.length le_rfl hdiv`. Establish `hctrl : (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform T.ideal T.mult s.length = (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform (lower …` using `congrArg (fun I => (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform I T.mult s.length) hid.symm`. Use `orderAtLeastLocus_inter_ker_support_eq_empty_of_comap (embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr s.length) _ T.mult ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hctrl, hcomap]`. Conclude with `hempty`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_inter_support_ker_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
@@ -106,7 +104,7 @@ theorem orderAtLeastLocus_inter_support_ker_eq_empty
   exact hempty
 
 /- English proof (translation)
-Establish `h1` using `BlowupSequenceData.controlledTransform_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) T.ideal (lowerIdealAfterBlowup T j hj) T.mult hone s.length`. Establish `h2` using `comap_controlledTransform_embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr s.length le_rfl hdiv`. Use `orderAtLeastLocus_inter_ker_support_eq_empty_of_comap (embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr s.length) _ T.mult ?_` and prove the remaining obligations. Rewrite using `[h1, h2]`. Conclude with `hempty`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_controlledTransform_inter_ker_support_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})

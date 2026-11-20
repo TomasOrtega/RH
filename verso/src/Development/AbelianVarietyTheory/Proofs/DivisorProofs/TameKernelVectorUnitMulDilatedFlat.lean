@@ -43,21 +43,19 @@ namespace GlobalTheory.BaseCmp
 open Classical in
 
 /- English proof (translation)
-Take `⟨⟨hψ, -⟩, e, he, hTe⟩` from `hK.vec`. Establish `hSV` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βV i))`. Establish `hSW` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βW i))`. Take `⟨t, ht⟩` from `hQ`. Establish `hd : Disjoint R.Pg Q` using `Disjoint.mono_right ht (GlobalTheory.TwistPlaces.typePlaces_disjoint_twistPlaces R F hC t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : e = eg + eQ`. Rewrite using `[← GlobalTheory.ExportSeries.idem_eq he, ← GlobalTheory.ExportSeries.idem_eq hg, ← GlobalTheory.ExportSeries.idem_eq hq]`. Conclude with `Finset.sum_union hd`. Substitute `hsum` using the available equality. Establish `heg` using `GlobalTheory.PlaceVec.idemSum_mul_self hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heQ` using `GlobalTheory.PlaceVec.idemSum_mul_self hq`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hgQ : eg * eQ = 0`. Use `GlobalTheory.PlaceVec.natCast_mul_eq_zero 2 _ two_pos ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hee - heg - heQ`. Establish `hcg : cA D eg * cA D eg = cA D eg` using `by rw [← map_mul, heg]`. Establish `hcQ : cA D eQ * cA D eQ = cA D eQ` using `by rw [← map_mul, heQ]`. Establish `hQg : cA D eQ * cA D eg = 0` using `by rw [← map_mul, mul_comm, hgQ, map_zero]`. Establish `hgQ' : cA D eg * cA D eQ = 0` using `by rw [mul_comm, hQg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ : ∀ a : AE D, a * a = a → ∀ u ∈ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True), a • u ∈ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True)` using `fun a ha u hu => GlobalTheory.PlaceModelSum.idem_smul_latO ha hu`. Establish `hinfg : infPart D (cA D eg) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hg)`. Establish `hinfQ : infPart D (cA D eQ) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hq)`. Establish `hSBg` using `GlobalTheory.PlaceVec.isSBHalf_of_red hSV.1 hSW.1 hinfg (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceVec.frMapAdj_add _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_up _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_down _ _ _ _) R.Pg (fun y => omegaK R.Pg y) fun y y' h = …`. Establish `hSBQ` using `GlobalTheory.PlaceVec.isSBHalf_of_red hSV.1 hSW.1 hinfQ (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceVec.frMapAdj_add _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_up _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_down _ _ _ _) Q (fun y => omegaQ Q (Wc D i).rank ξR (-1) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨Te, hTe1⟩, hTe2⟩` from `hTe`. Establish `hc : cA D (eg + eQ) = cA D eQ + cA D eg` using `by rw [map_add, add_comm]`. Establish `hc' : cA D (eg + eQ) = cA D eg + cA D eQ` using `map_add _ _ _`. Establish `hm1` using `GlobalTheory.TwoStepModel.isPlaceModel_comp_tensorHalf hcQ hcg hQg hΛ hSBg (hc ▸ hTe1)`. Establish `hm2` using `GlobalTheory.ExportSeries.isPlaceModel_comp_restrictHalf hcg hcQ hgQ' hΛ (hc' ▸ hTe1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbase` using `hfg.2 _ hm2`. Simplify using `only [LinearMap.comp_apply] at hbase`. Rewrite `hm1` using `[← hbase]`. Use `⟨⟨_, hm1⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[hTe2 Te hTe1, GlobalTheory.TwoStepModel.datum_eq_tensorHalf (R.βV i) (R.βW i) hg hq hd he ξR]`.
-
-Conclude with `GlobalTheory.PlaceVec.placeModel_unique hψ hSV hSW hcQ hinfQ hm1 hT' hSBQ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerDat_twoStep {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
@@ -118,31 +116,27 @@ namespace GlobalTheory.BaseCmp
 open GlobalTheory.ChainOnto in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F _ i ξ χ ξR Q ω φ hK`. Introduce `PP hP h1`. Use `(hK.ram PP).2 (Or.inl hP) fun x hx => ?_` and prove the remaining obligations. Establish `hc` using `hK.res PP hP`. Rewrite `hc` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : IsOpen {z : PP.adicCompletion D.host.E | Valued.v (z - x) < 1}` using `(GlobalTheory.ChainOnto.TameRes.isOpen_ltOne PP).preimage (continuous_sub_right _)`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap D.host.E PP).exists_mem_open hU ⟨x, by simp⟩`. Establish `hk' : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k - x) < Valued.v (x : PP.adicCompletion D.host.E)`. Rewrite using `[hx]`. Conclude with `hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k) = 1`. Rewrite using `[Valuation.map_eq_of_sub_lt _ hk']`. Conclude with `hx`. Establish `hv1 : PP.valuation D.host.E k = 1` using `by rw [← GlobalTheory.ChainOnto.TameRes.val_alg]; exact hv`. Establish `hk0 : k ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `at hv1`. Take `⟨a, s, h⟩` from `PP.exists_primeCompl_mul_eq_of_integer k hv1.le`. Establish `hs : (s : 𝓞 D.host.E) ∉ PP.asIdeal` using `s.2`. Establish `hsv` using `GlobalTheory.ChainOnto.TameRes.valuation_eq_one_of_not_mem PP _ hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hav : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E a) = 1`. Rewrite using `[← h, map_mul, hv1, hsv, one_mul]`. Establish `ha : a ∉ PP.asIdeal` using `fun hm => absurd hav (ne_of_lt ((PP.valuation_lt_one_iff_mem (K := D.host.E) a).mpr hm))`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Establish `key : ∀ (b : 𝓞 D.host.E), b ∉ PP.asIdeal → ∀ y : D.host.Eˣ, (y : D.host.E) = b → ξ.locK PP y = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb y hy`. Establish `hms : (Ideal.Quotient.mk PP.asIdeal b : kP PP) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hb`. Take `⟨b', hb'⟩` from `Ideal.Quotient.exists_inv hms`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hc b y (Units.mkOfMulEqOne _ b' hb') hy rfl).symm`. Establish `hs0 : algebraMap (𝓞 D.host.E) D.host.E s ≠ 0` using `fun h0 => by`. Rewrite `hsv` using `[h0, map_zero]`. Conclude with `zero_ne_one hsv`. Establish `ha0 : algebraMap (𝓞 D.host.E) D.host.E a ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hav` using `[h0, map_zero]`. Conclude with `zero_ne_one hav`. Establish `hkk : Units.mk0 k hk0 * Units.mk0 _ hs0 = Units.mk0 _ ha0` using `Units.ext h`. Establish `hk1 : ξ.locK PP (Units.mk0 k hk0) = 1`. Use `congrArg (ξ.locK PP) hkk` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, key _ hs (Units.mk0 _ hs0) rfl, key _ ha (Units.mk0 _ ha0) rfl, mul_one]`. Then use the resulting hypothesis. Use `set y := Formalism.L2.Host.atFin PP (Units.mk0 k hk0) with hy`. Establish `hyv : (y : PP.adicCompletion D.host.E) = algebraMap D.host.E (PP.adicCompletion D.host.E) k` using `rfl`. Establish `ht` using `hK.tame PP (y * x⁻¹) (by`. Unfold `Formalism.L2.Host.IsUnitAt at *`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hyv, hv, hx, inv_one, mul_one]) (by`. Establish `e : ((y * x⁻¹ : (PP.adicCompletion D.host.E)ˣ) : PP.adicCompletion D.host.E) - 1 = (algebraMap D.host.E (PP.adicCompletion D.host.E) k - x) * (x : PP.adicCompletion D.host.E)⁻¹`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, hyv, sub_mul, mul_inv_cancel₀ x.ne_zero]`. Unfold `Formalism.L2.Host.IsUnitAt at hx`. Rewrite using `[e, map_mul, map_inv₀, hx, inv_one, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hlt : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k - x) < 1` using `hk`. Generalize the expression as in `Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k - x) = z at hlt`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Conclude with `zero_le'`. Rewrite `hlt`, the goal using `[← WithZero.exp_log hz]`.
-
-Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use `push_cast`. Use the proof step `omega)`. Establish `hk2 : ξ.loc PP y = 1` using `hk1`.
-
-Rewrite `ht` using `[map_mul, hk2, one_mul, map_inv, inv_eq_one]`. Conclude with `ht`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerDat_xiR_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (ξ : Formalism.L2.Host.HChar D.host.E) (χ : (AE D)ˣ →* Circle)
@@ -216,11 +210,11 @@ namespace GlobalTheory.BaseCmp
 open Classical in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV ξ χ ξR Q ω φ hK hQ N hN hNQ eg eQ fg hg hq hfg ϖ hϖ0 hϖ`. Establish `hθ` using `kerDat_twoStep hC hK hQ hg hq hfg`. Take `⟨Y, a, Gc, hU, hY, hΦ, hS⟩` from `GlobalTheory.T.lift_datum_conjugate_half_finite_fourier_sum D G Pl0 T0 A Ks R F hC hG i hV ξR Q hQ (kerDat_xiR_ne D G Pl0 T0 A Ks R F hC i ξ χ ξR Q ω φ hK) N hN hNQ eQ hq ϖ hϖ0 hϖ`. Use `⟨Gc, hU, GlobalTheory.T.dilatedFlatDatum_isSBHalf_tameKernel D G Pl0 T0 A Ks R F hC hG i hV ξR Q hQ eQ hq ϖ hϖ0 hϖ Gc, fun Tm hTm => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.DatumFourier.thetaAt_eq_sum (fun q : Y => q.1) (fun q : Y => a q.1) hθ (fun q => by rw [GlobalTheory.LatVac.cA_cA]; exact hY q.1 q.2) (fun t => by rw [hΦ t]; congr 1; exact (Finset.sum_coe_sort Y fun y => a y * R.ψ (symplO (Vc D i) (Wc D i) t y)).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (fun x => Gc * flatDat R i Q ξR eQ (dil i (ϖ : D.host.E) x)) = ∑ y ∈ Y, a y • fun t => halfInd eQ (lattice₂ R i) (t + y)`. Use function extensionality and compare the values at `t`. Rewrite using `[← hS t, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hvac : Tm (halfInd eQ (lattice₂ R i)) = fg` using `by simpa using hTm.vac`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, map_sum, ← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hTm.trans _ (GlobalTheory.isSBHalf_halfInd eQ (lattice₂ R i)) _ (hY q.1 q.2), hvac]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftKer_of_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F →

@@ -14,26 +14,26 @@ private noncomputable def th {w : Plc E} (hw : IsSplitAt w) : GLw n w →* GLw n
   (cLoc (cj w)).comp ((finU E n).subtype.comp (locF hw))
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BCT.GlobLev.continuous_cLoc (cj w)).comp ((continuous_subtype_val (p := (· ∈ locU n w))).comp (locE hw).symm.continuous)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_th {w : Plc E} (hw : IsSplitAt w) : Continuous (th (n := n) hw) :=
   (GlobalTheory.BCT.GlobLev.continuous_cLoc (cj w)).comp
     ((continuous_subtype_val (p := (· ∈ locU n w))).comp (locE hw).symm.continuous)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocInj.cLoc_conj_eq w u.1 (locF hw (cLoc w u.1)).1 (cLoc_locF hw _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem cLoc_cj_eq {w : Plc E} (hw : IsSplitAt w) (u : finU E n) :
     cLoc (cj w) u.1 = th hw (cLoc w u.1) :=
   GlobalTheory.LocInj.cLoc_conj_eq w u.1 (locF hw (cLoc w u.1)).1 (cLoc_locF hw _).symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitPts.conjSrc_conjSrc_cm w`.
+A detailed English derivation is pending.
 -/
 private theorem cj_cj (w : Plc E) : cj (cj w) = w := GlobalTheory.SplitPts.conjSrc_conjSrc_cm w
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `exists_wellOrder α`. Conclude with `⟨(· < ·), fun a b h => lt_or_gt_of_ne h, fun a b h => lt_asymm h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_lt (α : Type) : ∃ lt : α → α → Prop, (∀ a b, a ≠ b → lt a b ∨ lt b a) ∧ ∀ a b, lt a b → ¬ lt b a := by
   obtain ⟨_, _⟩ := exists_wellOrder α
@@ -43,11 +43,11 @@ private def Top (lt : Plc E → Plc E → Prop) (Up : Plc E → Prop) (w₀ w : 
   Up w ∧ (Up (cj w) → w = w₀ ∨ (cj w ≠ w₀ ∧ lt w (cj w)))
 
 /- English proof (translation)
-Distinguish the cases in `ha : Up w`. Distinguish the cases in `hb : Up (cj w)`. Distinguish the cases in `e : w = w₀`. Conclude with `Or.inl ⟨ha, fun _ => Or.inl e⟩`. Distinguish the cases in `e' : cj w = w₀`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr ⟨hb, fun _ => Or.inl e'⟩`. Break down `h1 w (cj w) hne.symm with h | h` into its components or cases. Conclude with `Or.inl ⟨ha, fun _ => Or.inr ⟨e', h⟩⟩`. Conclude with `Or.inr ⟨hb, fun _ => Or.inr ⟨by rwa [cj_cj], by rwa [cj_cj]⟩⟩`. Conclude with `Or.inl ⟨ha, fun h => absurd h hb⟩`.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the first alternative.
 
-Establish `hb` using `hup.resolve_left ha`. Conclude with `Or.inr ⟨hb, fun h => absurd (by rwa [cj_cj] at h) ha⟩`.
+Establish an intermediate fact. Prove the second alternative.
 -/
 private theorem top_or {lt : Plc E → Plc E → Prop} (h1 : ∀ a b, a ≠ b → lt a b ∨ lt b a) {Up : Plc E → Prop} (w₀ : Plc E)
     {w : Plc E} (hne : cj w ≠ w) (hup : Up w ∨ Up (cj w)) : Top lt Up w₀ w ∨ Top lt Up w₀ (cj w) := by
@@ -65,9 +65,9 @@ private theorem top_or {lt : Plc E → Plc E → Prop} (h1 : ∀ a b, a ≠ b �
     exact Or.inr ⟨hb, fun h => absurd (by rwa [cj_cj] at h) ha⟩
 
 /- English proof (translation)
-Establish `hb2` using `hb.2 (by rw [cj_cj]; exact ha.1)`. Rewrite `hb2` using `[cj_cj]`. Break down `ha.2 hb.1 with e | ⟨e, h⟩` into its components or cases. Break down `hb2 with e' | ⟨e', _⟩` into its components or cases. Conclude with `hne (e'.trans e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `e' e`. Break down `hb2 with e' | ⟨_, h'⟩` into its components or cases. Conclude with `e e'`. Conclude with `h2 _ _ h h'`.
+A detailed English derivation is pending.
 -/
 private theorem not_both {lt : Plc E → Plc E → Prop} (h2 : ∀ a b, lt a b → ¬ lt b a) {Up : Plc E → Prop} {w₀ w : Plc E}
     (hne : cj w ≠ w) (ha : Top lt Up w₀ w) (hb : Top lt Up w₀ (cj w)) : False := by
@@ -85,29 +85,23 @@ end UpperTheory.Gal.CertificateRingHomMap.PNbhdU
 
 open UpperTheory.Gal.CertificateRingHomMap.PNbhdU in
 /- English proof (translation)
-Introduce `h2 hI hL _ E _ _ _ n O hO Up hUp w₀ hw₀ hu₀`. Take `⟨S₀, K₀, hK₀, hS₀⟩` from `h2 E n O hO`. Take `⟨lt, hlt1, hlt2⟩` from `exists_lt (Plc E)`. Establish `hne : ∀ w : Plc E, IsSplitAt w → cj w ≠ w` using `fun w hw => (hL E n w hw).2.2.1`. Establish `hsp : ∀ w : Plc E, IsSplitAt w → IsSplitAt (cj w)` using `fun w hw => (hL E n w hw).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T : Finset (Plc E)` to `insert w₀ (S₀ ∪ S₀.image (fun w => cj w))`. Set `S : Finset (Plc E)` to `T.filter (fun w => IsSplitAt w → Top lt Up w₀ w)`. Set `Kw : ∀ w : Plc E, Subgroup (GLw n w)` to `fun w => if hw : IsSplitAt w then K₀ w ⊓ (K₀ (cj w)).comap (th hw) else K₀ w`. Establish `hKle : ∀ w, Kw w ≤ K₀ w`. Introduce `w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : IsSplitAt w`. Simplify using `only [Kw, dif_pos hw]`. Conclude with `inf_le_left`. Simplify using `only [Kw, dif_neg hw]`. Conclude with `le_rfl`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKopen : ∀ w, IsOpen (Kw w : Set (GLw n w))`. Introduce `w`. Distinguish the cases in `hw : IsSplitAt w`. Simplify using `only [Kw, dif_pos hw, Subgroup.coe_inf, Subgroup.coe_comap]`. Conclude with `(hK₀ w).1.inter ((hK₀ (cj w)).1.preimage (continuous_th hw))`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Kw, dif_neg hw]`. Conclude with `(hK₀ w).1`. Establish `hKKGL : ∀ w, Kw w ≤ GlobalTheory.LFun.KGL w n` using `fun w => (hKle w).trans (hK₀ w).2`. Establish `hmemS : ∀ w, w ∈ T → (IsSplitAt w → Top lt Up w₀ w) → w ∈ S` using `fun w h h' => Finset.mem_filter.2 ⟨h, h'⟩`. Use `⟨S, Kw, ⟨?_, fun w _ => hKopen w, fun w _ => ?_, fun w _ _ => hKKGL w, fun w hw hs => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hmemS _ (Finset.mem_insert_self _ _) fun _ => ⟨hu₀, fun _ => Or.inl rfl⟩`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen (Kw w) (hKopen w)) (hKKGL w)`. Establish `hw'` using `(Finset.mem_filter.1 hw).2 hs`. Conclude with `⟨hw'.1, fun hc => not_both hlt2 (hne w hs) hw' ((Finset.mem_filter.1 hc).2 (hsp w hs))⟩`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨hz, hS, hout⟩` from `mem_lev.1 hu`. Establish `hint : ∀ w, cLoc w u.1 ∈ GlobalTheory.LFun.KGL w n`. Introduce `w`. Distinguish the cases in `h1 : w ∈ S`. Conclude with `hKKGL w (hS w h1)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : cj w ∈ S`. Establish `h3` using `hI E n (ofU u) (cj w) hz (hKKGL _ (hS _ h2))`. Establish `key : ∀ v : Plc E, v = w → comp v (ofU u) ∈ GlobalTheory.LFun.KGL v n → cLoc w u.1 ∈ GlobalTheory.LFun.KGL w n`. Introduce and unpack `v rfl h`. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `key _ (cj_cj w) h3`. Conclude with `hout w h1 h2`. Use `hS₀ u hint fun w hw => ?_` and prove the remaining obligations. Establish `hT : w ∈ T` using `Finset.mem_insert_of_mem (Finset.mem_union_left _ hw)`. Distinguish the cases in `hs : IsSplitAt w`.
-
-Distinguish the cases in `ht : Top lt Up w₀ w`. Conclude with `hKle w (hS w (hmemS w hT fun _ => ht))`. Establish `ht'` using `(top_or hlt1 w₀ (hne w hs) (hUp w hs)).resolve_left ht`. Establish `hT' : cj w ∈ T` using `Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hw))`. Establish `h3` using `hS (cj w) (hmemS _ hT' fun _ => ht')`.
-
-Simplify using `only [Kw, dif_pos (hsp w hs)] at h3`. Establish `h4 : th (hsp w hs) (cLoc (cj w) u.1) ∈ K₀ (cj (cj w))` using `(Subgroup.mem_inf.1 h3).2`. Rewrite `h4` using `[← cLoc_cj_eq (hsp w hs) u]`. Establish `key : ∀ v : Plc E, v = w → cLoc v u.1 ∈ K₀ v → cLoc w u.1 ∈ K₀ w`. Introduce and unpack `v rfl h`.
-
-Conclude with `h`. Conclude with `key _ (cj_cj w) h4`. Conclude with `hKle w (hS w (hmemS w hT fun h => absurd h hs))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pNbhdU_of :
     UpperTheory.Gal.CertificateRingHomMap.Nbhd2 → UpperTheory.Gal.CertificateRingHomMap.IntConj → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.OfUBij → UpperTheory.Gal.CertificateRingHomMap.NbhdU := by

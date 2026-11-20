@@ -147,7 +147,7 @@ def RootHeight.Statement : Prop :=
         grassConst f j m * degC (rootPointIdeal ζ)
 
 /- English proof (translation)
-Introduce `τ a b`. Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Use `fin_cases a`. Use `fin_cases b`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : IsRootMatrix (fun _ : Fin 1 => (!![-1] : Matrix (Fin 1) (Fin 1) ℂ)) := by
   intro τ a b
@@ -155,7 +155,7 @@ example : IsRootMatrix (fun _ : Fin 1 => (!![-1] : Matrix (Fin 1) (Fin 1) ℂ)) 
   fin_cases a; fin_cases b; simp
 
 /- English proof (translation)
-The claim follows from `le_rfl`.
+A detailed English derivation is pending.
 -/
 example : 1 ≤ (1 : ℕ) := le_rfl
 
@@ -166,15 +166,13 @@ def lineExampleT : Fin 1 → FractionRing (MvPolynomial (Fin 1) ℚ) :=
   fun _ => algebraMap _ _ (X 0 : MvPolynomial (Fin 1) ℚ)
 
 /- English proof (translation)
-Use `⟨fun _ => by simp [lineExampleCoord], ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(MvPolynomial.algebraicIndependent_X (Fin 1) ℚ).map' (f := (IsScalarTower.toAlgHom ℚ (MvPolynomial (Fin 1) ℚ) (FractionRing (MvPolynomial (Fin 1) ℚ)))) (IsFractionRing.injective _ _)`. Establish `e : lineExampleT = (IsScalarTower.toAlgHom ℚ (MvPolynomial (Fin 1) ℚ) (FractionRing (MvPolynomial (Fin 1) ℚ))) ∘ X`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`. Introduce `i`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨(), 1⟩, ?_⟩` and prove the remaining obligations. Simplify using `[lineExampleCoord, lineExampleT]`. Introduce and unpack `r ⟨p, rfl⟩`. Establish `hr : lineExampleCoord p / lineExampleCoord ⟨p.1, 0⟩ ∈ IntermediateField.adjoin ℚ (Set.range lineExampleT)`. Distinguish the cases in `h : p.2 = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[lineExampleCoord, h]`. Establish `: lineExampleCoord p / lineExampleCoord ⟨p.1, 0⟩ = lineExampleT 0`. Simplify using `[lineExampleCoord, h, lineExampleT]`. Rewrite using `[this]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨0, rfl⟩`.
-
-Conclude with `isAlgebraic_algebraMap (R := IntermediateField.adjoin ℚ (Set.range lineExampleT)) (A := FractionRing (MvPolynomial (Fin 1) ℚ)) ⟨_, hr⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : (∀ k : Unit, lineExampleCoord ⟨k, 0⟩ ≠ 0) ∧ AlgebraicIndependent ℚ lineExampleT ∧
     (∀ i, lineExampleT i ∈ IntermediateField.adjoin ℚ (coneRatios lineExampleCoord fun _ => 0)) ∧
@@ -205,9 +203,9 @@ example : (∀ k : Unit, lineExampleCoord ⟨k, 0⟩ ≠ 0) ∧ AlgebraicIndepen
       (A := FractionRing (MvPolynomial (Fin 1) ℚ)) ⟨_, hr⟩
 
 /- English proof (translation)
-Introduce `μ hμ k`. Simplify using `only [rootAnchorSection, Fin.prod_univ_two] at hμ`. Rewrite `hμ` using `[MvPolynomial.support_X_mul]`. Simplify using `only [Finset.mem_map, MvPolynomial.support_X, Finset.mem_singleton] at hμ`. Take `⟨ν, rfl, hν⟩` from `hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Substitute `hν` using the available equality. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply]`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : IsMultiHomog (rootAnchorSection 2 1 1) (fun _ => 1) := by
   intro μ hμ k

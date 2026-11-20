@@ -13,11 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.TypeBlockPf
 /- English proof (translation)
-Introduce `hL D P S hT i w hw ⟨k, hk⟩ htame`. Use `⟨htame, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `splitAt D w hw`. Take `⟨c, T, hc, hcs, -, -, -⟩` from `hT.rep i s hw Q`. Establish `hf : ∃ f ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q), f ≠ 0 ∧ ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) ∈ blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t → NG.rt D.host.E D.R.nV x f = blockChar (S i s.w hw).mu ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, e | e⟩` from `GlobalTheory.DimPartsCompare.cover k s.w hk`. Conclude with `_root_.GlobalTheory.T.split_place_completion_iso_tame_alt hL D P S hT i k v s hw e htame c hc hcs Q`. Conclude with `_root_.GlobalTheory.T.conjugate_place_completion_iso_tame_alt hL D P S hT i k v s hw e htame c hc hcs Q`. Take `⟨f, hfS, hf0, hfe⟩` from `hf`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.T.local_irreducible_fixed_vectors D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hcs (blockGrp _ D.R.r D.R.t) (blockChar (S i s.w hw).mu) (fun h hh => hh.1) (fun h hh => ⟨kOne_le_blockGrp _ _ hh, blockChar_kOne _ htame hh⟩) …`.
-
-Conclude with `⟨y, hy0, isBlockVec_of _ _ _ hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S → ∀ i w hw, (∃ k, w ∈ placesOver D.host.E (D.host.g k)) → GlobalTheory.SplitWeil.IsTame (S i w hw).mu → TypeBlock S i w hw := by
   intro hL D P S hT i w hw ⟨k, hk⟩ htame

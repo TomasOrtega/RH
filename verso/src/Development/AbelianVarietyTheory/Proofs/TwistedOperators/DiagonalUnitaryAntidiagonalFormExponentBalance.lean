@@ -11,19 +11,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨_, _, hcϖ, hv, _⟩` from `hU`. Establish `hmem` using `t.2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT c (t.1.1) * Formalism.UG.antiJ L r * t.1.1 = Formalism.UG.antiJ L r at hmem`. Rewrite `hmem` using `[ht]`. Establish `hcT : Formalism.UG.cT c (Matrix.diagonal (fun i => ϖ ^ d i)) = Matrix.diagonal (fun i => ϖ ^ d i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[map_zpow₀, hcϖ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Rewrite `hmem` using `[hcT]`. Establish `hϖ : ϖ ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe hv`. Establish `key : ∀ i : Fin r, d (Fin.rev i) = -d i`. Introduce `i`. Establish `e` using `congrArg (fun M => M i (Fin.rev i)) hmem`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hJ : Formalism.UG.antiJ L r i (Fin.rev i) = 1`. Simplify using `only [Formalism.UG.antiJ, Fin.val_rev]`. Rewrite using `[if_pos]`. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[hJ, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← zpow_add₀ hϖ]`. Establish `e2` using `congrArg (fun x => Valued.v x) e`. Simplify using `only [map_zpow₀, map_one, hv] at e2`. Rewrite `e2` using `[← WithZero.coe_zpow, ← ofAdd_zsmul]`. Establish `e3 : (d i + d (Fin.rev i)) • (-1 : ℤ) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `WithZero.coe_injective e2` as an intermediate fact. Conclude with `Multiplicative.ofAdd.injective (this.trans ofAdd_zero.symm)`. Simplify using `at e3`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem diag_unitary_exp_sym {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (c : L →+* L) (q : ℕ)
     (hU : IsUnramInv ϖ c q) (r : ℕ) (d : Fin r → ℤ) (t : GU c r)

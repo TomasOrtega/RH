@@ -12,23 +12,23 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `⟨-, hh, hne⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ X.Ψ := by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Conclude with `⟨_, h⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨τ, (X.cmType τ).2 h⟩`. Take `⟨P, hP, hG⟩` from `X.signature ⟨τ, hτ⟩`. Use `set v : Fin r → ℂ := fun a => τ (ξ a) with hv`. Use `set w : Fin r → ℂ := P⁻¹.mulVec v with hw`. Establish `hPw : P.mulVec w = v`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hP), Matrix.one_mulVec]`. Establish `h1 : hermC τ X.Gm v v = 0`. Use `congrArg τ hh` as an intermediate fact. Rewrite `this` using `[map_zero]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hermC, herm, map_sum, map_mul, hv, cc, IsCMField.complexEmbedding_complexConj]`. Establish `h2 : hermC τ X.Gm v v = ∑ a, ∑ b, w a * gram τ X.Gm P a b * conj (w b)`. Establish `sw : ∀ f : Fin r → Fin r → Fin r → Fin r → ℂ, ∑ x, ∑ y, ∑ a, ∑ b, f x y a b = ∑ a, ∑ b, ∑ x, ∑ y, f x y a b` using `fun f =>`. Combine the equalities or inequalities in the displayed calculation. Establish `L : ∀ x y, P.mulVec w x * τ (X.Gm x y) * conj (P.mulVec w y) = ∑ a, ∑ b, w a * (P x a * τ (X.Gm x y) * conj (P y b)) * conj (w b)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x y`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hPw]`. Simplify using `only [hermC, L, gram, col, Matrix.of_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sw]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Establish `h3 : ∑ a, Complex.normSq (w a) = 0`. Rewrite `h1` using `[h2, hG]`. Establish `: ∑ a, (Complex.normSq (w a) : ℂ) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← neg_eq_zero, ← Finset.sum_neg_distrib, ← h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [Matrix.diagonal_apply_ne _ hb.symm]) (by simp)]`. Simplify using `[sgn, h0, Complex.mul_conj]`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h4 : w = 0` using `funext fun a => Complex.normSq_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg fun a _ => Complex.normSq_nonneg _).mp h3 a (Finset.mem_univ a))`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `: v a = 0` using `by rw [← hPw, h4, Matrix.mulVec_zero]; rfl`. Conclude with `(map_eq_zero τ).mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isIso_of_p0_zero (X : Data E r) (h0 : X.p0 = 0) (ξ : Fin r → E) : ¬ X.IsIso ξ := by
   rintro ⟨-, hh, hne⟩
@@ -87,7 +87,7 @@ theorem not_isIso_of_p0_zero (X : Data E r) (h0 : X.p0 = 0) (ξ : Fin r → E) :
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => le_rfl, Even.zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem dom_zero : Dom (0 : (E →+* ℂ) × ℕ → ℕ) 0 := ⟨fun _ _ _ _ => le_rfl, Even.zero⟩
 

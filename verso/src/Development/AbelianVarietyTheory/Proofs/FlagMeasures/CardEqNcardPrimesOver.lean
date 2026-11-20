@@ -11,11 +11,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.SgAl
 namespace GlobalTheory.SplitResidue
 
 /- English proof (translation)
-Establish `hp : Prime (g : ℤ)` using `Nat.prime_iff_prime_int.mp hg`. Use `haveI : (Ideal.span {(g : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).mpr hp`. Establish `hne : (Ideal.span {(g : ℤ)}) ≠ ⊥` using `by simpa using hg.ne_zero`. Use `haveI hmax : (Ideal.span {(g : ℤ)}).IsMaximal := Ideal.IsPrime.isMaximal inferInstance hne`. Rewrite using `[← Nat.card_coe_set_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr (Equiv.ofBijective (fun w => ⟨w.1.asIdeal, w.1.isPrime, ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Use `haveI := w.1.isPrime`. Use `⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using w.2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b h`. Conclude with `Subtype.ext (HeightOneSpectrum.ext (congrArg Subtype.val h))`. Introduce and unpack `⟨P, hP, hPl⟩`. Use `⟨⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot hne P⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `using (Ideal.mem_of_liesOver P (Ideal.span {(g : ℤ)}) (g : ℤ)).1 (Ideal.mem_span_singleton_self _)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_eq_ncard_primesOver (E : Type) [Field E] [NumberField E] {g : ℕ} (hg : g.Prime) :
     Nat.card {w : HeightOneSpectrum (𝓞 E) // (g : 𝓞 E) ∈ w.asIdeal} =
@@ -38,13 +38,11 @@ theorem card_eq_ncard_primesOver (E : Type) [Field E] [NumberField E] {g : ℕ} 
       (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `E _ _ g hg h w hw`. Use `haveI := w.isPrime`. Use `haveI := Fact.mk hg`. Establish `h'` using `(card_eq_ncard_primesOver E hg).symm.trans h`. Take `⟨h1, h2⟩` from `GlobalTheory.LocSplit.split_prime hg h' w.asIdeal hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, h1⟩` and prove the remaining obligations. Use `haveI : Nontrivial (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`. Use `haveI : CharP (𝓞 E ⧸ w.asIdeal) g := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hg, ← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(RingEquiv.ofBijective (ZMod.castHom (dvd_refl g) (𝓞 E ⧸ w.asIdeal)) ⟨ZMod.castHom_injective _, fun y => ?_⟩).symm⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨m, hm⟩` from `h2 x`. Use `⟨(m : ZMod g), ?_⟩` and prove the remaining obligations. Rewrite using `[map_intCast, ← map_intCast (Ideal.Quotient.mk w.asIdeal), eq_comm, Ideal.Quotient.eq]`.
-
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem residue_and_unramified : ∀ (E : Type) [Field E] [NumberField E] (g : ℕ), g.Prime →
     FlagUnipotentStabilizers.SplitsCompletely E g →

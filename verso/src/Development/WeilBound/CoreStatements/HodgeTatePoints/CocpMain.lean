@@ -18,29 +18,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace PositivityTheory.HtPt.Cocp
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hstar X0 t k _ _ p _ _ hp x d g w hα`. Take `⟨hy0, hy1, -⟩` from `PositivityTheory.HtPt.Ce.pt_of_vec E H hstar X0 t k p hp x d g w`. Establish `hwv : (hw g.B p).mulVec (fun i => w i ^ p) = 0`. Use `congrArg Prod.fst hα` as an intermediate fact. Rewrite `this` using `[alpha_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hyp` using `hy1 hwv`. Take `⟨gs, hax, hpow, -⟩` from `GlobalTheory.T.pow_one_series_p_formula k p d (𝓞 E) g.B`. Establish `hkill` using `GlobalTheory.T.alpha_kernel_derivative_vanishes k p d (𝓞 E) g.B (fun i => w i ^ p) gs hα hpow`. Establish `hf : ∀ q, MvPowerSeries.pderiv k q (dSer gs fun i => w i ^ p) = 0`. Introduce and unpack `⟨i, j⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `hkill j`. Take `⟨hI, hN, hCh, hT⟩` from `GlobalTheory.T.formal_germ_jet_lift E H hstar X0 t k p x d g (fun m => xkZ t.G x (g.x m)) (fun m => xkZ_fst t.G x _) (fun m => xkZ_snd t.G x _)`. Take `⟨C, hC, hnorm, hB⟩` from `GlobalTheory.CompanionTheory.Ar.Coc.Pf.pfold E H hstar X0 t k p x d g w gs hax hpow _ rfl hy0 hyp`. Establish `hL` using `t.PP.isLB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Take `⟨s⟩ : Nonempty (Sp k)` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j₀, ⊤ ≤ (1 : overAt x k ⟶ t.G).left ⁻¹ᵁ t.PP.L.U j₀ := by`. Establish `hc` using `hL.cover`. Establish `: (1 : overAt x k ⟶ t.G).left s ∈ (⊤ : t.G.left.Opens)` using `trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hc]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Use `⟨j, fun s' _ => ?_⟩` and prove the remaining obligations. Establish `e : s' = s` using `Subsingleton.elim (α := Sp k) _ _`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hj`. Establish `hU : ∀ m, ⊤ ≤ xkZ t.G x (g.x m) ⁻¹ᵁ (pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j₀)`. Introduce `m q _`. Establish `e : (homAt x (jetAug : Jet k (Fin 1 × Fin d) m →ₐ[k] k) ≫ g.x m).left = (1 : overAt x k ⟶ t.G).left` using `congrArg (fun q => q.left) (g.chart.zero m)`. Establish `e₁ : pullback.fst t.G.hom x (xkZ t.G x (g.x m) q) = (g.x m).left q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, xkZ_fst]`. Establish `e₂ : (g.x m).left q = (1 : overAt x k ⟶ t.G).left s`. Rewrite using `[← jet_pt m q s, ← e]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `pullback.fst t.G.hom x (xkZ t.G x (g.x m) q) ∈ t.PP.L.U j₀`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂]`. Conclude with `hj₀ trivial`. Use `haveI : Nonempty (pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j₀) := ⟨⟨_, hU 0 (show (spMap ((jetAug : Jet k (Fin 1 × Fin d) 0 →ₐ[k] k) : Jet k (Fin 1 × Fin d) 0 →+* k) s) ∈ ⊤ from trivial)⟩⟩`. Establish `main` using `PositivityTheory.HtPt.Qam.core_firstOrder X0 t.G k x p hp hN t.PP.L hL _ _ (prZ_fst t.G x p).symm (secZ_pa t.G x _ hy0) C hC hnorm j₀ (fun c h hc => by`. Take `⟨F, hF1, -, hF3⟩` from `hT _ hU (c (Fin.last p))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hF3 (GlobalTheory.T.pderiv_zero_of_jet_pth_power_diff k p d F _ hf fun m => ?_)` and prove the remaining obligations. Take `⟨v, hv⟩` from `hB j₀ hj₀ m`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `hr : ⊤ ≤ rQ t.G x p (g.x m) ⁻¹ᵁ (prZ t.G x p ⁻¹ᵁ (pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j₀))`. Introduce `q _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : prZ t.G x p (rQ t.G x p (g.x m) q) = xkZ t.G x (g.x m) (spMap ((inR (k` using `k) (Jet k (Fin 1 × Fin d) m) p : Jet k (Fin 1 × Fin d) m →ₐ[k] Jet (Jet k (Fin 1 × Fin d) m) Unit p) : Jet k (Fin 1 × Fin d) m →+* Jet (Jet k (Fin 1 × Fin d) m) Unit p) q) := by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, rQ_prZ]`. Express the relevant statement in the definitionally equal form `prZ t.G x p (rQ t.G x p (g.x m) q) ∈ (pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j₀)`. Rewrite using `[e]`. Conclude with `hU m trivial`.
-
-Establish `hr' : ⊤ ≤ rQ t.G x p (g.x m) ⁻¹ᵁ LB.wchart t.PP.L (K` using `Fin 2) ![_, _] (fun _ => j₀) := hr.trans fun q hq => h hq`. Establish `h2` using `GlobalTheory.T.delta_expansion_restriction X0 t.G k x p hp _ (g.x m) _ (hU m) c _ (v ^ p - psJet m (dSer gs fun i => w i ^ p)) hc hr (by`. Rewrite using `[← hv hr']`. Conclude with `congrArg (fun q => q.hom (C.s fun _ => j₀).val) (Scheme.Hom.map_appLE (rQ t.G x p (g.x m)) hr (homOfLE h).op))`. Conclude with `toΓ_inj _ ((hF1 m).symm.trans h2))`.
-
-Rewrite `main` using `[trY_pa, trY_pb]`. Conclude with `main`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (hp : 1 ≤ p) (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d) (w : Fin d → k), alpha g.B p (fun i => w i ^ p) = 0 → ∃ c : LB.Gen (Out.translDiff t.G t.PP.L (homAt x (toFirst k p hp) ≫ (homAt x (jetSubstP p fun q : Fin 1 × Fin d => MvPolynomial.C (w q.2) * MvPolynomial.X ()) ≫ g.x p : overAt x (Jet k Unit p) ⟶ t.G))), c.IsGen := by
   intro E _ _ _ H _ hstar X0 t k _ _ p _ _ hp x d g w hα
@@ -108,7 +104,7 @@ theorem cocycle_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   exact main
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Ce.tanpf_inj_of cocycle_p`.
+A detailed English derivation is pending.
 -/
 theorem tanpf_inj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d), TanPF t x p → ConjInj g.B p :=
   PositivityTheory.HtPt.Ce.tanpf_inj_of cocycle_p

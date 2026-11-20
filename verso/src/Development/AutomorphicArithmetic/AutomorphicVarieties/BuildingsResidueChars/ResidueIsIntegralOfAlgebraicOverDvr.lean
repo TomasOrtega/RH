@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `hi : IsIntegral k y` using `h.isIntegral`. Use `haveI : FiniteDimensional k (IntermediateField.adjoin k {y}) := IntermediateField.adjoin.finiteDimensional hi`. Use `haveI : Finite (IntermediateField.adjoin k {y}) := Module.finite_of_finite k`. Set `g : ℕ → IntermediateField.adjoin k {y}` to `fun n => ⟨y ^ (n + 1), pow_mem (IntermediateField.mem_adjoin_simple_self k y) _⟩`. Take `⟨m, n, hmn, hg⟩` from `Finite.exists_ne_map_eq_of_infinite g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hpow : y ^ (m + 1) = y ^ (n + 1)` using `congrArg Subtype.val hg`. Break down `lt_or_gt_of_ne hmn with hlt | hlt` into its components or cases. Use `⟨Polynomial.X ^ (n + 1) - Polynomial.X ^ (m + 1), Polynomial.monic_X_pow_sub ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.degree_X_pow]`. Conclude with `Nat.succ_lt_succ hlt` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hpow]`. Use `⟨Polynomial.X ^ (m + 1) - Polynomial.X ^ (n + 1), Polynomial.monic_X_pow_sub ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.degree_X_pow]`. Conclude with `Nat.succ_lt_succ hlt` after adjusting the coercions. Simplify using `[hpow]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.algebraic_over_finite_field_integral (k L : Type) [Field k] [Finite k] [Field L] [Algebra k L]
     (y : L) (h : IsAlgebraic k y) : IsIntegral ℤ y := by
@@ -28,21 +28,19 @@ private theorem UpperTheory.algebraic_over_finite_field_integral (k L : Type) [F
 
 open Polynomial in
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ V f hf _ x hx`. Take `⟨p, hp0, hpx⟩` from `hx`. Use `letI : NormalizationMonoid A := UniqueFactorizationMonoid.normalizationMonoid.toNormalizationMonoid`. Use `letI : NormalizedGCDMonoid A := UniqueFactorizationMonoid.toNormalizedGCDMonoid A`. Establish `hV : Polynomial.eval₂ f x p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[ZeroMemClass.coe_zero]`. Conclude with `(Polynomial.hom_eval₂ p f V.subtype x).trans hpx`. Use `set q := p.primPart with hq`. Establish `hcont : f p.content ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[← Polynomial.content_eq_zero_iff]`. Conclude with `hf (h0.trans (map_zero f).symm)`. Establish `hqx : Polynomial.eval₂ f x q = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e` using `Polynomial.eq_C_content_mul_primPart p`. Rewrite `hV` using `[e, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Conclude with `(mul_eq_zero.1 hV).resolve_left hcont`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hqbar : q.map (IsLocalRing.residue A) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hdvd : Polynomial.C π ∣ q`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Establish `hi : IsLocalRing.residue A (q.coeff i) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.coeff_map, h0, Polynomial.coeff_zero]`. Rewrite `hi` using `[IsLocalRing.residue_eq_zero_iff, hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `hi`. Conclude with `hπ.not_isUnit (Polynomial.isPrimitive_primPart p π hdvd)`. Use `letI : Algebra (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField V) := (IsLocalRing.ResidueField.map f).toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `halg : IsAlgebraic (IsLocalRing.ResidueField A) (IsLocalRing.residue V x)`. Use `⟨q.map (IsLocalRing.residue A), hqbar, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Establish `e : (algebraMap (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField V)).comp (IsLocalRing.residue A) = (IsLocalRing.residue V).comp f`. Use extensionality with `a`.
-
-Conclude with `IsLocalRing.ResidueField.map_residue f a`. Rewrite using `[e, ← Polynomial.hom_eval₂, hqx, map_zero]`. Conclude with `UpperTheory.algebraic_over_finite_field_integral (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField V) _ halg`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.residue_isIntegral_of_algebraic_over_dvr :
     ∀ (A K : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (IsLocalRing.ResidueField A)] [Field K] (V : ValuationSubring K) (f : A →+* V), Function.Injective f → IsLocalHom f → ∀ x : V, (∃ p : Polynomial A, p ≠ 0 ∧ p.eval₂ (V.subtype.comp f) x = 0) → IsIntegral ℤ (IsLocalRing.residue V x) := by

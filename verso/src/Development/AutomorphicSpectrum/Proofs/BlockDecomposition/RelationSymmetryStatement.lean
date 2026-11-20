@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompat
 open LocalGlobalAboveLAlt
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.RelSym.relSymm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRelationSymmetry.lean&line=596#L596)
 -/
